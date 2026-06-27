@@ -21,11 +21,11 @@ def create_app(config_class=Config):
     # app.register_blueprint(players.bp)
     # app.register_blueprint(api.bp)
 
-    from app.cli import seed
+    from app.cli import seed, predict
     app.cli.add_command(seed.seed_command)
+    app.cli.add_command(predict.predict_command)
     # Will be uncommented when modules are created in later tasks
-    # from app.cli import scrape, predict
+    # from app.cli import scrape
     # app.cli.add_command(scrape.scrape_command)
-    # app.cli.add_command(predict.predict_command)
 
     return app
