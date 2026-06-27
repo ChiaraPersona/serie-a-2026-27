@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Arbitri Serie A 2026/27</h1>
+<p>Commissione Arbitri Nazionale (C.A.N.) — 42 arbitri</p>
+
+<table>
+    <thead>
+        <tr><th>Arbitro</th><th>Sezione</th><th>Esordio</th><th>Partite</th><th>Gialli</th><th>Secondi Gialli</th><th>Rossi</th><th>Rigori</th><th>Media Cart./Partita</th></tr>
+    </thead>
+    <tbody>
+    {% for r in referees %}
+    <tr>
+        <td>{{ r.name }}</td>
+        <td>{{ r.section }}</td>
+        <td>{{ r.debut or '-' }}</td>
+        <td>{{ r.matches_officiated }}</td>
+        <td>{{ r.yellow_cards }}</td>
+        <td>{{ r.second_yellows }}</td>
+        <td>{{ r.red_cards }}</td>
+        <td>{{ r.penalties }}</td>
+        <td>{{ "%.2f"|format(r.avg_cards_per_match) }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

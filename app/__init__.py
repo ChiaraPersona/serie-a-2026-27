@@ -9,7 +9,7 @@ def _seed_if_empty():
         import json
         import os
         from datetime import date
-        from app.models import Player, Match, HeadToHead
+        from app.models import Player, Match, HeadToHead, Referee
 
         data_dir = os.path.join(os.path.dirname(__file__), "..", "data", "seed")
 
@@ -40,6 +40,18 @@ def _seed_if_empty():
                 t2 = teams.get(item.pop("team2_short"))
                 if t1 and t2:
                     db.session.add(HeadToHead(team1_id=t1.id, team2_id=t2.id, **item))
+
+        with open(os.path.join(data_dir, "referees.json"), encoding="utf-8") as f:
+            for item in json.load(f):
+                total_cards = item["yellow_cards"] + item["second_yellows"] + item["red_cards"]
+                avg = total_cards / item["matches_officiated"] if item["matches_officiated"] > 0 else 0.0
+                db.session.add(Referee(
+                    name=item["name"], section=item["section"],
+                    debut=item.get("debut"), matches_officiated=item["matches_officiated"],
+                    yellow_cards=item["yellow_cards"], second_yellows=item["second_yellows"],
+                    red_cards=item["red_cards"], penalties=item["penalties"],
+                    avg_cards_per_match=round(avg, 2),
+                ))
 
         db.session.commit()
 

@@ -1,6 +1,6 @@
 import numpy as np
 from app.extensions import db
-from app.models import Match, Player, Prediction, PlayerPrediction
+from app.models import Match, Player, Prediction, PlayerPrediction, Referee
 from app.services.team_service import TeamService
 from app.services.player_service import PlayerService
 from app.services.ranking_service import RankingService
@@ -30,6 +30,13 @@ class PredictionEngine:
 
         home_cards = max(0, int(rng.normal(2.0 - strength_diff * 0.01, 1.0)))
         away_cards = max(0, int(rng.normal(2.0 + strength_diff * 0.01, 1.0)))
+
+        referee = Referee.query.order_by(db.func.random()).first()
+        if referee and referee.avg_cards_per_match > 0:
+            league_avg = 4.0
+            ref_factor = referee.avg_cards_per_match / league_avg
+            home_cards = max(0, int(home_cards * ref_factor))
+            away_cards = max(0, int(away_cards * ref_factor))
 
         home_sot = max(0, int(rng.normal(home_goals * 3.0 + 1, 1.5)))
         away_sot = max(0, int(rng.normal(away_goals * 3.0 + 1, 1.5)))

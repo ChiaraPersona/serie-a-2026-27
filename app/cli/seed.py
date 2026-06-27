@@ -4,7 +4,7 @@ from datetime import date
 
 import click
 from app.extensions import db
-from app.models import Team, Player, Match, HeadToHead
+from app.models import Team, Player, Match, HeadToHead, Referee
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "data", "seed")
 
@@ -18,6 +18,9 @@ def seed_command():
 @seed_command.command()
 def teams():
     """Seed teams from data/seed/teams.json."""
+    if Team.query.first() is not None:
+        click.echo("Teams already seeded, skipping.")
+        return
     path = os.path.join(DATA_DIR, "teams.json")
     with open(path, encoding="utf-8") as f:
         data = json.load(f)
@@ -37,6 +40,9 @@ def teams():
 @seed_command.command()
 def players():
     """Seed players from data/seed/players.json."""
+    if Player.query.first() is not None:
+        click.echo("Players already seeded, skipping.")
+        return
     path = os.path.join(DATA_DIR, "players.json")
     with open(path, encoding="utf-8") as f:
         data = json.load(f)
@@ -64,6 +70,9 @@ def players():
 @seed_command.command()
 def matches():
     """Seed matches from data/seed/matches.json."""
+    if Match.query.first() is not None:
+        click.echo("Matches already seeded, skipping.")
+        return
     path = os.path.join(DATA_DIR, "matches.json")
     with open(path, encoding="utf-8") as f:
         data = json.load(f)
@@ -89,6 +98,9 @@ def matches():
 @seed_command.command()
 def head_to_head():
     """Seed head-to-head records from data/seed/h2h.json."""
+    if HeadToHead.query.first() is not None:
+        click.echo("Head-to-head already seeded, skipping.")
+        return
     path = os.path.join(DATA_DIR, "h2h.json")
     with open(path, encoding="utf-8") as f:
         data = json.load(f)
@@ -121,4 +133,29 @@ def all():
     ctx.invoke(players)
     ctx.invoke(matches)
     ctx.invoke(head_to_head)
+    ctx.invoke(referees)
     click.echo("All seed data loaded.")
+
+
+@seed_command.command()
+def referees():
+    """Seed referees from data/seed/referees.json."""
+    if Referee.query.first() is not None:
+        click.echo("Referees already seeded, skipping.")
+        return
+    path = os.path.join(DATA_DIR, "referees.json")
+    with open(path, encoding="utf-8") as f:
+        data = json.load(f)
+    for item in data:
+        total_cards = item["yellow_cards"] + item["second_yellows"] + item["red_cards"]
+        avg = total_cards / item["matches_officiated"] if item["matches_officiated"] > 0 else 0.0
+        referee = Referee(
+            name=item["name"], section=item["section"],
+            debut=item.get("debut"), matches_officiated=item["matches_officiated"],
+            yellow_cards=item["yellow_cards"], second_yellows=item["second_yellows"],
+            red_cards=item["red_cards"], penalties=item["penalties"],
+            avg_cards_per_match=round(avg, 2),
+        )
+        db.session.add(referee)
+    db.session.commit()
+    click.echo(f"Seeded {len(data)} referees.")
