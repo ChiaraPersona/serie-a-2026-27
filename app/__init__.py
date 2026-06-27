@@ -13,16 +13,22 @@ def create_app(config_class=Config):
         from app.models import team, player, match, prediction, head_to_head  # noqa: F401
         db.create_all()
 
-    from app.routes import main, predictions, teams, players, api
-    app.register_blueprint(main.bp)
-    app.register_blueprint(predictions.bp)
-    app.register_blueprint(teams.bp)
-    app.register_blueprint(players.bp)
-    app.register_blueprint(api.bp)
+    try:
+        from app.routes import main, predictions, teams, players, api
+        app.register_blueprint(main.bp)
+        app.register_blueprint(predictions.bp)
+        app.register_blueprint(teams.bp)
+        app.register_blueprint(players.bp)
+        app.register_blueprint(api.bp)
+    except ImportError:
+        pass
 
-    from app.cli import seed, scrape, predict
-    app.cli.add_command(seed.seed_command)
-    app.cli.add_command(scrape.scrape_command)
-    app.cli.add_command(predict.predict_command)
+    try:
+        from app.cli import seed, scrape, predict
+        app.cli.add_command(seed.seed_command)
+        app.cli.add_command(scrape.scrape_command)
+        app.cli.add_command(predict.predict_command)
+    except ImportError:
+        pass
 
     return app
