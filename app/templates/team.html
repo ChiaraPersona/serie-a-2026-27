@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+{% if mode == "classifica" %}
+<h1>Classifica Serie A 2026/27</h1>
+<table>
+    <thead>
+        <tr><th>#</th><th>Squadra</th><th>Città</th><th>Stadio</th><th>Obiettivo</th></tr>
+    </thead>
+    <tbody>
+    {% for team in teams %}
+    <tr>
+        <td>{{ team.ranking }}</td>
+        <td><a href="{{ url_for('teams.squadra', team_id=team.id) }}">{{ team.name }}</a></td>
+        <td>{{ team.city }}</td>
+        <td>{{ team.stadium }}</td>
+        <td>{{ team.season_objective }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<h1>{{ team.name }}</h1>
+<p>Città: {{ team.city }} | Stadio: {{ team.stadium }}</p>
+<p>Ranking: {{ team.ranking }} | Obiettivo: {{ team.season_objective }}</p>
+<p>Umore: {{ "%.2f"|format(team.mood) }} | Vantaggio casa: {{ "%.2f"|format(team.home_advantage) }}</p>
+
+<h2>Rosa</h2>
+<table>
+    <thead>
+        <tr><th>Nome</th><th>Ruolo</th><th>Età</th><th>Valore (M€)</th><th>Gol prec.</th><th>Assist prec.</th><th>Cart. prec.</th></tr>
+    </thead>
+    <tbody>
+    {% for player in players %}
+    <tr>
+        <td><a href="{{ url_for('players.calciatore', player_id=player.id) }}">{{ player.name }}</a></td>
+        <td>{{ player.position }}</td>
+        <td>{{ player.age }}</td>
+        <td>{{ "%.1f"|format(player.market_value) }}</td>
+        <td>{{ player.prev_goals }}</td>
+        <td>{{ player.prev_assists }}</td>
+        <td>{{ player.prev_cards }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+{% endblock %}

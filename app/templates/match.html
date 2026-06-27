@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{{ match.home_team.name }} vs {{ match.away_team.name }}</h1>
+<p>Giornata {{ match.matchday }} | Data: {{ match.date or 'TBD' }} | {{ match.home_team.short_name }} vs {{ match.away_team.short_name }}</p>
+
+{% if prediction %}
+<h2>Pronostico Monte Carlo ({{ prediction.simulations }} simulazioni)</h2>
+<table>
+    <tr><th></th><th>{{ match.home_team.short_name }}</th><th>{{ match.away_team.short_name }}</th></tr>
+    <tr><td>Gol attesi</td><td>{{ "%.2f"|format(prediction.pred_home_score) }}</td><td>{{ "%.2f"|format(prediction.pred_away_score) }}</td></tr>
+    <tr><td>Probabilità vittoria</td><td>{{ "%.0f"|format(prediction.prob_home_win * 100) }}%</td><td>{{ "%.0f"|format(prediction.prob_away_win * 100) }}%</td></tr>
+    <tr><td>Pareggio</td><td colspan="2">{{ "%.0f"|format(prediction.prob_draw * 100) }}%</td></tr>
+    <tr><td>Corner</td><td>{{ "%.1f"|format(prediction.pred_home_corners) }}</td><td>{{ "%.1f"|format(prediction.pred_away_corners) }}</td></tr>
+    <tr><td>Cartellini</td><td>{{ "%.1f"|format(prediction.pred_home_cards) }}</td><td>{{ "%.1f"|format(prediction.pred_away_cards) }}</td></tr>
+    <tr><td>Tiri in porta</td><td>{{ "%.1f"|format(prediction.pred_home_sot) }}</td><td>{{ "%.1f"|format(prediction.pred_away_sot) }}</td></tr>
+    <tr><td>Tiri totali</td><td>{{ "%.1f"|format(prediction.pred_home_shots) }}</td><td>{{ "%.1f"|format(prediction.pred_away_shots) }}</td></tr>
+</table>
+
+<h3>Pronostici calciatori</h3>
+<table>
+    <thead>
+        <tr><th>Calciatore</th><th>Squadra</th><th>Gol attesi</th><th>Prob. gol</th><th>Cart. attesi</th><th>Prob. cart.</th><th>Tiri porta</th><th>Tiri tot</th></tr>
+    </thead>
+    <tbody>
+    {% for pp in prediction.player_predictions %}
+    <tr>
+        <td><a href="{{ url_for('players.calciatore', player_id=pp.player.id) }}">{{ pp.player.name }}</a></td>
+        <td>{{ pp.player.team.short_name }}</td>
+        <td>{{ "%.2f"|format(pp.pred_goals) }}</td>
+        <td>{{ "%.0f"|format(pp.prob_goal * 100) }}%</td>
+        <td>{{ "%.2f"|format(pp.pred_cards) }}</td>
+        <td>{{ "%.0f"|format(pp.prob_card * 100) }}%</td>
+        <td>{{ "%.1f"|format(pp.pred_shots_on_target) }}</td>
+        <td>{{ "%.1f"|format(pp.pred_shots_total) }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>Nessun pronostico disponibile. <a href="{{ url_for('predictions.giornata', matchday=match.matchday) }}">Vai alla giornata {{ match.matchday }}</a> per eseguire la simulazione.</p>
+{% endif %}
+{% endblock %}

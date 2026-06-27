@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Giornata {{ current_matchday }}</h1>
+
+<form method="post" action="{{ url_for('predictions.simula', matchday=current_matchday) }}">
+    <label>Simulazioni: <input type="number" name="runs" value="10000" min="100" max="100000"></label>
+    <button type="submit">Esegui Simulazione Monte Carlo</button>
+</form>
+
+{% if matches %}
+<table>
+    <thead>
+        <tr><th>Casa</th><th>Trasferta</th><th>1</th><th>X</th><th>2</th><th>Gol C</th><th>Gol T</th><th>Corner C</th><th>Corner T</th><th>Cart. C</th><th>Cart. T</th><th>Tiri Porta C</th><th>Tiri Porta T</th><th>Tiri Tot C</th><th>Tiri Tot T</th></tr>
+    </thead>
+    <tbody>
+    {% for match in matches %}
+    {% set pred = predictions.get(match.id) %}
+    <tr>
+        <td><a href="{{ url_for('teams.squadra', team_id=match.home_team.id) }}">{{ match.home_team.short_name }}</a></td>
+        <td><a href="{{ url_for('teams.squadra', team_id=match.away_team.id) }}">{{ match.away_team.short_name }}</a></td>
+        {% if pred %}
+        <td>{{ "%.0f"|format(pred.prob_home_win * 100) }}%</td>
+        <td>{{ "%.0f"|format(pred.prob_draw * 100) }}%</td>
+        <td>{{ "%.0f"|format(pred.prob_away_win * 100) }}%</td>
+        <td>{{ "%.2f"|format(pred.pred_home_score) }}</td>
+        <td>{{ "%.2f"|format(pred.pred_away_score) }}</td>
+        <td>{{ "%.1f"|format(pred.pred_home_corners) }}</td>
+        <td>{{ "%.1f"|format(pred.pred_away_corners) }}</td>
+        <td>{{ "%.1f"|format(pred.pred_home_cards) }}</td>
+        <td>{{ "%.1f"|format(pred.pred_away_cards) }}</td>
+        <td>{{ "%.1f"|format(pred.pred_home_sot) }}</td>
+        <td>{{ "%.1f"|format(pred.pred_away_sot) }}</td>
+        <td>{{ "%.1f"|format(pred.pred_home_shots) }}</td>
+        <td>{{ "%.1f"|format(pred.pred_away_shots) }}</td>
+        {% else %}
+        <td colspan="13">Nessun pronostico. <a href="#" onclick="event.preventDefault(); this.closest('form').submit();">Esegui simulazione</a></td>
+        {% endif %}
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>Nessuna partita per questa giornata.</p>
+{% endif %}
+
+<h3>Giornate</h3>
+<ul>
+{% for md in matchdays %}
+    <li><a href="{{ url_for('predictions.giornata', matchday=md) }}">Giornata {{ md }}</a></li>
+{% endfor %}
+</ul>
+{% endblock %}

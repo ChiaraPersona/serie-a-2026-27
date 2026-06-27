@@ -13,13 +13,12 @@ def create_app(config_class=Config):
         from app.models import team, player, match, prediction, head_to_head  # noqa: F401
         db.create_all()
 
-    # Will be uncommented when modules are created in later tasks
-    # from app.routes import main, predictions, teams, players, api
-    # app.register_blueprint(main.bp)
-    # app.register_blueprint(predictions.bp)
-    # app.register_blueprint(teams.bp)
-    # app.register_blueprint(players.bp)
-    # app.register_blueprint(api.bp)
+    from app.routes import main, predictions, teams, players, api
+    app.register_blueprint(main.bp)
+    app.register_blueprint(predictions.bp)
+    app.register_blueprint(teams.bp)
+    app.register_blueprint(players.bp)
+    app.register_blueprint(api.bp)
 
     from app.cli import seed, predict
     app.cli.add_command(seed.seed_command)

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Serie A 2026/27 - Pronostici</h1>
+
+<h2>Giornata {{ current_matchday }}</h2>
+{% if matches %}
+<table>
+    <thead>
+        <tr><th>Casa</th><th>Trasferta</th><th>Data</th><th></th></tr>
+    </thead>
+    <tbody>
+    {% for match in matches %}
+    <tr>
+        <td>{{ match.home_team.short_name }}</td>
+        <td>{{ match.away_team.short_name }}</td>
+        <td>{{ match.date or 'TBD' }}</td>
+        <td><a href="{{ url_for('predictions.partita', match_id=match.id) }}">Dettaglio</a></td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>Nessuna partita trovata per questa giornata.</p>
+{% endif %}
+
+<h3>Giornate disponibili</h3>
+<ul>
+{% for md in matchdays %}
+    <li><a href="{{ url_for('predictions.giornata', matchday=md) }}">Giornata {{ md }}</a></li>
+{% endfor %}
+</ul>
+{% endblock %}
