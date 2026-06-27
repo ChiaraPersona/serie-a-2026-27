@@ -1,0 +1,122 @@
+﻿# Review package: 267df69..0be5962
+
+## Commits
+0be5962 feat: add scraper service stubs and CLI commands
+
+## Files changed
+ app/__init__.py         |  6 ++----
+ app/cli/scrape.py       | 29 +++++++++++++++++++++++++++++
+ app/services/scraper.py | 44 ++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 75 insertions(+), 4 deletions(-)
+
+## Diff
+diff --git a/app/__init__.py b/app/__init__.py
+index 0f3bd54..2599318 100644
+--- a/app/__init__.py
++++ b/app/__init__.py
+@@ -13,18 +13,16 @@ def create_app(config_class=Config):
+         from app.models import team, player, match, prediction, head_to_head  # noqa: F401
+         db.create_all()
+ 
+     from app.routes import main, predictions, teams, players, api
+     app.register_blueprint(main.bp)
+     app.register_blueprint(predictions.bp)
+     app.register_blueprint(teams.bp)
+     app.register_blueprint(players.bp)
+     app.register_blueprint(api.bp)
+ 
+-    from app.cli import seed, predict
++    from app.cli import seed, predict, scrape
+     app.cli.add_command(seed.seed_command)
+     app.cli.add_command(predict.predict_command)
+-    # Will be uncommented when modules are created in later tasks
+-    # from app.cli import scrape
+-    # app.cli.add_command(scrape.scrape_command)
++    app.cli.add_command(scrape.scrape_command)
+ 
+     return app
+diff --git a/app/cli/scrape.py b/app/cli/scrape.py
+new file mode 100644
+index 0000000..bfb0bf8
+--- /dev/null
++++ b/app/cli/scrape.py
+@@ -0,0 +1,29 @@
++import click
++from app.services.scraper import ScraperService
++
++
++@click.group(name="scrape")
++def scrape_command():
++    """Scrape data from external sources."""
++    pass
++
++
++@scrape_command.command()
++def transfermarkt():
++    """Scrape player market values from Transfermarkt."""
++    path = ScraperService.scrape_transfermarkt()
++    click.echo(f"Transfermarkt data saved to {path}")
++
++
++@scrape_command.command()
++def fbref():
++    """Scrape player statistics from FBref."""
++    path = ScraperService.scrape_fbref()
++    click.echo(f"FBref data saved to {path}")
++
++
++@scrape_command.command()
++def diretta():
++    """Scrape match results from Diretta.it."""
++    path = ScraperService.scrape_diretta()
++    click.echo(f"Diretta data saved to {path}")
+diff --git a/app/services/scraper.py b/app/services/scraper.py
+new file mode 100644
+index 0000000..bfeccbc
+--- /dev/null
++++ b/app/services/scraper.py
+@@ -0,0 +1,44 @@
++import json
++import os
++import requests
++from bs4 import BeautifulSoup
++
++DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "data", "scraped")
++
++
++class ScraperService:
++    @staticmethod
++    def scrape_transfermarkt():
++        """Scrape player market values from Transfermarkt.
++        This is a stub - real implementation requires handling anti-bot measures.
++        """
++        os.makedirs(DATA_DIR, exist_ok=True)
++        output_path = os.path.join(DATA_DIR, "transfermarkt_values.json")
++        data = {"source": "transfermarkt", "status": "stub", "players": []}
++        with open(output_path, "w", encoding="utf-8") as f:
++            json.dump(data, f, indent=2)
++        return output_path
++
++    @staticmethod
++    def scrape_fbref():
++        """Scrape player statistics from FBref.
++        This is a stub - real implementation requires parsing FBref tables.
++        """
++        os.makedirs(DATA_DIR, exist_ok=True)
++        output_path = os.path.join(DATA_DIR, "fbref_stats.json")
++        data = {"source": "fbref", "status": "stub", "players": []}
++        with open(output_path, "w", encoding="utf-8") as f:
++            json.dump(data, f, indent=2)
++        return output_path
++
++    @staticmethod
++    def scrape_diretta():
++        """Scrape match results from Diretta.it.
++        This is a stub - real implementation requires parsing match pages.
++        """
++        os.makedirs(DATA_DIR, exist_ok=True)
++        output_path = os.path.join(DATA_DIR, "diretta_results.json")
++        data = {"source": "diretta", "status": "stub", "matches": []}
++        with open(output_path, "w", encoding="utf-8") as f:
++            json.dump(data, f, indent=2)
++        return output_path

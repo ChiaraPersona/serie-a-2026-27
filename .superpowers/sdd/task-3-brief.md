@@ -1,0 +1,291 @@
+### Task 3: Seed Data and CLI Seed Commands
+
+**Files:**
+- Create: `app/cli/__init__.py`, `app/cli/seed.py`
+- Create: `data/seed/teams.json`, `data/seed/players.json`, `data/seed/matches.json`, `data/seed/h2h.json`
+
+**Interfaces:**
+- Consumes: `Team`, `Player`, `Match`, `HeadToHead` from `app.models`
+- Produces: `seed_command` Click group registered on Flask app
+
+- [ ] **Step 1: Write `data/seed/teams.json`**
+
+```json
+[
+  {"name": "Inter", "short_name": "INT", "stadium": "San Siro", "city": "Milano", "ranking": 1, "mood": 0.2, "season_objective": "scudetto", "home_advantage": 1.1},
+  {"name": "AC Milan", "short_name": "MIL", "stadium": "San Siro", "city": "Milano", "ranking": 3, "mood": 0.1, "season_objective": "champions", "home_advantage": 1.1},
+  {"name": "Juventus", "short_name": "JUV", "stadium": "Allianz Stadium", "city": "Torino", "ranking": 2, "mood": 0.15, "season_objective": "scudetto", "home_advantage": 1.15},
+  {"name": "Atalanta", "short_name": "ATA", "stadium": "Gewiss Stadium", "city": "Bergamo", "ranking": 4, "mood": 0.1, "season_objective": "champions", "home_advantage": 1.05},
+  {"name": "Napoli", "short_name": "NAP", "stadium": "Diego Armando Maradona", "city": "Napoli", "ranking": 5, "mood": 0.05, "season_objective": "champions", "home_advantage": 1.1},
+  {"name": "Lazio", "short_name": "LAZ", "stadium": "Olimpico", "city": "Roma", "ranking": 6, "mood": 0.0, "season_objective": "europa", "home_advantage": 1.05},
+  {"name": "Roma", "short_name": "ROM", "stadium": "Olimpico", "city": "Roma", "ranking": 7, "mood": -0.05, "season_objective": "europa", "home_advantage": 1.05},
+  {"name": "Fiorentina", "short_name": "FIO", "stadium": "Artemio Franchi", "city": "Firenze", "ranking": 8, "mood": 0.0, "season_objective": "europa", "home_advantage": 1.0},
+  {"name": "Bologna", "short_name": "BOL", "stadium": "Renato Dall'Ara", "city": "Bologna", "ranking": 9, "mood": 0.05, "season_objective": "europa", "home_advantage": 1.0},
+  {"name": "Torino", "short_name": "TOR", "stadium": "Olimpico Grande Torino", "city": "Torino", "ranking": 10, "mood": 0.0, "season_objective": "mid_table", "home_advantage": 1.0},
+  {"name": "Genoa", "short_name": "GEN", "stadium": "Luigi Ferraris", "city": "Genova", "ranking": 11, "mood": 0.0, "season_objective": "mid_table", "home_advantage": 1.0},
+  {"name": "Monza", "short_name": "MON", "stadium": "Brianteo", "city": "Monza", "ranking": 12, "mood": 0.0, "season_objective": "mid_table", "home_advantage": 0.95},
+  {"name": "Udinese", "short_name": "UDI", "stadium": "Friuli", "city": "Udine", "ranking": 13, "mood": 0.0, "season_objective": "mid_table", "home_advantage": 1.0},
+  {"name": "Cagliari", "short_name": "CAG", "stadium": "Unipol Domus", "city": "Cagliari", "ranking": 14, "mood": 0.0, "season_objective": "salvezza", "home_advantage": 1.05},
+  {"name": "Como", "short_name": "COM", "stadium": "Giuseppe Sinigaglia", "city": "Como", "ranking": 15, "mood": 0.0, "season_objective": "salvezza", "home_advantage": 0.95},
+  {"name": "Parma", "short_name": "PAR", "stadium": "Ennio Tardini", "city": "Parma", "ranking": 16, "mood": 0.0, "season_objective": "salvezza", "home_advantage": 1.0},
+  {"name": "Verona", "short_name": "VER", "stadium": "Marcantonio Bentegodi", "city": "Verona", "ranking": 17, "mood": -0.05, "season_objective": "salvezza", "home_advantage": 1.0},
+  {"name": "Empoli", "short_name": "EMP", "stadium": "Carlo Castellani", "city": "Empoli", "ranking": 18, "mood": -0.1, "season_objective": "salvezza", "home_advantage": 0.95},
+  {"name": "Lecce", "short_name": "LEC", "stadium": "Via del Mare", "city": "Lecce", "ranking": 19, "mood": -0.1, "season_objective": "salvezza", "home_advantage": 1.0},
+  {"name": "Venezia", "short_name": "VEN", "stadium": "Pier Luigi Penzo", "city": "Venezia", "ranking": 20, "mood": -0.15, "season_objective": "salvezza", "home_advantage": 0.95}
+]
+```
+
+- [ ] **Step 2: Write `data/seed/players.json`** (3 players per team, 60 total)
+
+```json
+[
+  {"name": "Lautaro Martinez", "team_short": "INT", "position": "ATT", "age": 28, "market_value": 100.0, "prev_goals": 22, "prev_assists": 6, "prev_cards": 4, "prev_shots_total": 95, "prev_shots_on_target": 48, "prev_corners_won": 0},
+  {"name": "Nicolo Barella", "team_short": "INT", "position": "CEN", "age": 28, "market_value": 75.0, "prev_goals": 5, "prev_assists": 8, "prev_cards": 6, "prev_shots_total": 45, "prev_shots_on_target": 15, "prev_corners_won": 0},
+  {"name": "Yann Sommer", "team_short": "INT", "position": "POR", "age": 36, "market_value": 5.0, "prev_goals": 0, "prev_assists": 0, "prev_cards": 1, "prev_shots_total": 0, "prev_shots_on_target": 0, "prev_corners_won": 0},
+  {"name": "Rafael Leao", "team_short": "MIL", "position": "ATT", "age": 26, "market_value": 85.0, "prev_goals": 14, "prev_assists": 10, "prev_cards": 3, "prev_shots_total": 78, "prev_shots_on_target": 35, "prev_corners_won": 0},
+  {"name": "Theo Hernandez", "team_short": "MIL", "position": "DIF", "age": 27, "market_value": 60.0, "prev_goals": 5, "prev_assists": 7, "prev_cards": 8, "prev_shots_total": 40, "prev_shots_on_target": 12, "prev_corners_won": 0},
+  {"name": "Mike Maignan", "team_short": "MIL", "position": "POR", "age": 30, "market_value": 35.0, "prev_goals": 0, "prev_assists": 0, "prev_cards": 1, "prev_shots_total": 0, "prev_shots_on_target": 0, "prev_corners_won": 0},
+  {"name": "Dusan Vlahovic", "team_short": "JUV", "position": "ATT", "age": 26, "market_value": 70.0, "prev_goals": 18, "prev_assists": 4, "prev_cards": 5, "prev_shots_total": 85, "prev_shots_on_target": 42, "prev_corners_won": 0},
+  {"name": "Kenan Yildiz", "team_short": "JUV", "position": "ATT", "age": 21, "market_value": 50.0, "prev_goals": 8, "prev_assists": 6, "prev_cards": 2, "prev_shots_total": 50, "prev_shots_on_target": 20, "prev_corners_won": 0},
+  {"name": "Gleison Bremer", "team_short": "JUV", "position": "DIF", "age": 28, "market_value": 55.0, "prev_goals": 2, "prev_assists": 1, "prev_cards": 7, "prev_shots_total": 15, "prev_shots_on_target": 5, "prev_corners_won": 0},
+  {"name": "Ademola Lookman", "team_short": "ATA", "position": "ATT", "age": 27, "market_value": 60.0, "prev_goals": 16, "prev_assists": 9, "prev_cards": 3, "prev_shots_total": 70, "prev_shots_on_target": 32, "prev_corners_won": 0},
+  {"name": "Charles De Ketelaere", "team_short": "ATA", "position": "ATT", "age": 25, "market_value": 45.0, "prev_goals": 12, "prev_assists": 11, "prev_cards": 2, "prev_shots_total": 55, "prev_shots_on_target": 25, "prev_corners_won": 0},
+  {"name": "Ederson", "team_short": "ATA", "position": "CEN", "age": 26, "market_value": 40.0, "prev_goals": 4, "prev_assists": 5, "prev_cards": 8, "prev_shots_total": 35, "prev_shots_on_target": 10, "prev_corners_won": 0},
+  {"name": "Khvicha Kvaratskhelia", "team_short": "NAP", "position": "ATT", "age": 25, "market_value": 80.0, "prev_goals": 12, "prev_assists": 8, "prev_cards": 2, "prev_shots_total": 65, "prev_shots_on_target": 30, "prev_corners_won": 0},
+  {"name": "Romelu Lukaku", "team_short": "NAP", "position": "ATT", "age": 32, "market_value": 25.0, "prev_goals": 15, "prev_assists": 5, "prev_cards": 4, "prev_shots_total": 60, "prev_shots_on_target": 28, "prev_corners_won": 0},
+  {"name": "Alex Meret", "team_short": "NAP", "position": "POR", "age": 28, "market_value": 15.0, "prev_goals": 0, "prev_assists": 0, "prev_cards": 0, "prev_shots_total": 0, "prev_shots_on_target": 0, "prev_corners_won": 0},
+  {"name": "Mattia Zaccagni", "team_short": "LAZ", "position": "ATT", "age": 29, "market_value": 30.0, "prev_goals": 10, "prev_assists": 7, "prev_cards": 5, "prev_shots_total": 55, "prev_shots_on_target": 22, "prev_corners_won": 0},
+  {"name": "Nuno Tavares", "team_short": "LAZ", "position": "DIF", "age": 26, "market_value": 25.0, "prev_goals": 2, "prev_assists": 9, "prev_cards": 6, "prev_shots_total": 20, "prev_shots_on_target": 5, "prev_corners_won": 0},
+  {"name": "Ivan Provedel", "team_short": "LAZ", "position": "POR", "age": 31, "market_value": 12.0, "prev_goals": 0, "prev_assists": 0, "prev_cards": 1, "prev_shots_total": 0, "prev_shots_on_target": 0, "prev_corners_won": 0},
+  {"name": "Paulo Dybala", "team_short": "ROM", "position": "ATT", "age": 31, "market_value": 20.0, "prev_goals": 13, "prev_assists": 9, "prev_cards": 2, "prev_shots_total": 60, "prev_shots_on_target": 28, "prev_corners_won": 0},
+  {"name": "Artem Dovbyk", "team_short": "ROM", "position": "ATT", "age": 28, "market_value": 35.0, "prev_goals": 14, "prev_assists": 4, "prev_cards": 3, "prev_shots_total": 58, "prev_shots_on_target": 26, "prev_corners_won": 0},
+  {"name": "Gianluca Mancini", "team_short": "ROM", "position": "DIF", "age": 29, "market_value": 20.0, "prev_goals": 3, "prev_assists": 2, "prev_cards": 10, "prev_shots_total": 20, "prev_shots_on_target": 6, "prev_corners_won": 0},
+  {"name": "Moise Kean", "team_short": "FIO", "position": "ATT", "age": 26, "market_value": 30.0, "prev_goals": 16, "prev_assists": 3, "prev_cards": 4, "prev_shots_total": 62, "prev_shots_on_target": 30, "prev_corners_won": 0},
+  {"name": "Albert Gudmundsson", "team_short": "FIO", "position": "ATT", "age": 28, "market_value": 25.0, "prev_goals": 10, "prev_assists": 6, "prev_cards": 2, "prev_shots_total": 48, "prev_shots_on_target": 20, "prev_corners_won": 0},
+  {"name": "David De Gea", "team_short": "FIO", "position": "POR", "age": 34, "market_value": 8.0, "prev_goals": 0, "prev_assists": 0, "prev_cards": 0, "prev_shots_total": 0, "prev_shots_on_target": 0, "prev_corners_won": 0},
+  {"name": "Riccardo Orsolini", "team_short": "BOL", "position": "ATT", "age": 28, "market_value": 20.0, "prev_goals": 11, "prev_assists": 5, "prev_cards": 4, "prev_shots_total": 50, "prev_shots_on_target": 22, "prev_corners_won": 0},
+  {"name": "Dan Ndoye", "team_short": "BOL", "position": "ATT", "age": 24, "market_value": 25.0, "prev_goals": 8, "prev_assists": 6, "prev_cards": 3, "prev_shots_total": 42, "prev_shots_on_target": 18, "prev_corners_won": 0},
+  {"name": "Lewis Ferguson", "team_short": "BOL", "position": "CEN", "age": 26, "market_value": 22.0, "prev_goals": 6, "prev_assists": 4, "prev_cards": 7, "prev_shots_total": 30, "prev_shots_on_target": 10, "prev_corners_won": 0},
+  {"name": "Duvan Zapata", "team_short": "TOR", "position": "ATT", "age": 34, "market_value": 8.0, "prev_goals": 9, "prev_assists": 3, "prev_cards": 3, "prev_shots_total": 40, "prev_shots_on_target": 18, "prev_corners_won": 0},
+  {"name": "Samuele Ricci", "team_short": "TOR", "position": "CEN", "age": 24, "market_value": 30.0, "prev_goals": 2, "prev_assists": 4, "prev_cards": 6, "prev_shots_total": 25, "prev_shots_on_target": 6, "prev_corners_won": 0},
+  {"name": "Vanja Milinkovic-Savic", "team_short": "TOR", "position": "POR", "age": 28, "market_value": 10.0, "prev_goals": 0, "prev_assists": 0, "prev_cards": 2, "prev_shots_total": 0, "prev_shots_on_target": 0, "prev_corners_won": 0},
+  {"name": "Mateo Retegui", "team_short": "GEN", "position": "ATT", "age": 26, "market_value": 25.0, "prev_goals": 10, "prev_assists": 3, "prev_cards": 3, "prev_shots_total": 45, "prev_shots_on_target": 20, "prev_corners_won": 0},
+  {"name": "Morten Frendrup", "team_short": "GEN", "position": "CEN", "age": 24, "market_value": 18.0, "prev_goals": 2, "prev_assists": 3, "prev_cards": 8, "prev_shots_total": 20, "prev_shots_on_target": 5, "prev_corners_won": 0},
+  {"name": "Koni De Winter", "team_short": "GEN", "position": "DIF", "age": 23, "market_value": 15.0, "prev_goals": 1, "prev_assists": 1, "prev_cards": 6, "prev_shots_total": 10, "prev_shots_on_target": 3, "prev_corners_won": 0},
+  {"name": "Andrea Colpani", "team_short": "MON", "position": "CEN", "age": 26, "market_value": 15.0, "prev_goals": 6, "prev_assists": 5, "prev_cards": 2, "prev_shots_total": 35, "prev_shots_on_target": 12, "prev_corners_won": 0},
+  {"name": "Dany Mota", "team_short": "MON", "position": "ATT", "age": 27, "market_value": 10.0, "prev_goals": 7, "prev_assists": 3, "prev_cards": 4, "prev_shots_total": 30, "prev_shots_on_target": 12, "prev_corners_won": 0},
+  {"name": "Pablo Mari", "team_short": "MON", "position": "DIF", "age": 31, "market_value": 5.0, "prev_goals": 1, "prev_assists": 0, "prev_cards": 5, "prev_shots_total": 8, "prev_shots_on_target": 2, "prev_corners_won": 0},
+  {"name": "Lorenzo Lucca", "team_short": "UDI", "position": "ATT", "age": 24, "market_value": 18.0, "prev_goals": 10, "prev_assists": 2, "prev_cards": 5, "prev_shots_total": 42, "prev_shots_on_target": 18, "prev_corners_won": 0},
+  {"name": "Florian Thauvin", "team_short": "UDI", "position": "ATT", "age": 32, "market_value": 5.0, "prev_goals": 8, "prev_assists": 6, "prev_cards": 2, "prev_shots_total": 38, "prev_shots_on_target": 15, "prev_corners_won": 0},
+  {"name": "Jaka Bijol", "team_short": "UDI", "position": "DIF", "age": 26, "market_value": 15.0, "prev_goals": 2, "prev_assists": 1, "prev_cards": 6, "prev_shots_total": 12, "prev_shots_on_target": 4, "prev_corners_won": 0},
+  {"name": "Roberto Piccoli", "team_short": "CAG", "position": "ATT", "age": 25, "market_value": 8.0, "prev_goals": 8, "prev_assists": 2, "prev_cards": 3, "prev_shots_total": 35, "prev_shots_on_target": 14, "prev_corners_won": 0},
+  {"name": "Nicolas Viola", "team_short": "CAG", "position": "CEN", "age": 35, "market_value": 2.0, "prev_goals": 4, "prev_assists": 5, "prev_cards": 4, "prev_shots_total": 25, "prev_shots_on_target": 8, "prev_corners_won": 0},
+  {"name": "Yerry Mina", "team_short": "CAG", "position": "DIF", "age": 30, "market_value": 5.0, "prev_goals": 2, "prev_assists": 0, "prev_cards": 7, "prev_shots_total": 10, "prev_shots_on_target": 3, "prev_corners_won": 0},
+  {"name": "Patrick Cutrone", "team_short": "COM", "position": "ATT", "age": 28, "market_value": 6.0, "prev_goals": 7, "prev_assists": 2, "prev_cards": 3, "prev_shots_total": 30, "prev_shots_on_target": 12, "prev_corners_won": 0},
+  {"name": "Nico Paz", "team_short": "COM", "position": "CEN", "age": 21, "market_value": 20.0, "prev_goals": 4, "prev_assists": 5, "prev_cards": 2, "prev_shots_total": 28, "prev_shots_on_target": 10, "prev_corners_won": 0},
+  {"name": "Marc-Oliver Kempf", "team_short": "COM", "position": "DIF", "age": 30, "market_value": 4.0, "prev_goals": 1, "prev_assists": 0, "prev_cards": 6, "prev_shots_total": 8, "prev_shots_on_target": 2, "prev_corners_won": 0},
+  {"name": "Ange-Yoan Bonny", "team_short": "PAR", "position": "ATT", "age": 22, "market_value": 15.0, "prev_goals": 6, "prev_assists": 3, "prev_cards": 2, "prev_shots_total": 28, "prev_shots_on_target": 12, "prev_corners_won": 0},
+  {"name": "Adrian Bernabe", "team_short": "PAR", "position": "CEN", "age": 24, "market_value": 12.0, "prev_goals": 3, "prev_assists": 4, "prev_cards": 5, "prev_shots_total": 22, "prev_shots_on_target": 7, "prev_corners_won": 0},
+  {"name": "Zion Suzuki", "team_short": "PAR", "position": "POR", "age": 22, "market_value": 8.0, "prev_goals": 0, "prev_assists": 0, "prev_cards": 1, "prev_shots_total": 0, "prev_shots_on_target": 0, "prev_corners_won": 0},
+  {"name": "Casper Tengstedt", "team_short": "VER", "position": "ATT", "age": 25, "market_value": 8.0, "prev_goals": 7, "prev_assists": 2, "prev_cards": 2, "prev_shots_total": 30, "prev_shots_on_target": 12, "prev_corners_won": 0},
+  {"name": "Ondrej Duda", "team_short": "VER", "position": "CEN", "age": 30, "market_value": 4.0, "prev_goals": 3, "prev_assists": 4, "prev_cards": 6, "prev_shots_total": 20, "prev_shots_on_target": 6, "prev_corners_won": 0},
+  {"name": "Diego Coppola", "team_short": "VER", "position": "DIF", "age": 22, "market_value": 8.0, "prev_goals": 1, "prev_assists": 0, "prev_cards": 5, "prev_shots_total": 8, "prev_shots_on_target": 2, "prev_corners_won": 0},
+  {"name": "Sebastiano Esposito", "team_short": "EMP", "position": "ATT", "age": 23, "market_value": 10.0, "prev_goals": 6, "prev_assists": 2, "prev_cards": 3, "prev_shots_total": 28, "prev_shots_on_target": 10, "prev_corners_won": 0},
+  {"name": "Alberto Grassi", "team_short": "EMP", "position": "CEN", "age": 30, "market_value": 3.0, "prev_goals": 1, "prev_assists": 2, "prev_cards": 8, "prev_shots_total": 15, "prev_shots_on_target": 3, "prev_corners_won": 0},
+  {"name": "Devis Vasquez", "team_short": "EMP", "position": "POR", "age": 27, "market_value": 3.0, "prev_goals": 0, "prev_assists": 0, "prev_cards": 1, "prev_shots_total": 0, "prev_shots_on_target": 0, "prev_corners_won": 0},
+  {"name": "Nikola Krstovic", "team_short": "LEC", "position": "ATT", "age": 25, "market_value": 10.0, "prev_goals": 9, "prev_assists": 2, "prev_cards": 4, "prev_shots_total": 40, "prev_shots_on_target": 16, "prev_corners_won": 0},
+  {"name": "Ylber Ramadani", "team_short": "LEC", "position": "CEN", "age": 29, "market_value": 5.0, "prev_goals": 2, "prev_assists": 2, "prev_cards": 7, "prev_shots_total": 18, "prev_shots_on_target": 4, "prev_corners_won": 0},
+  {"name": "Federico Baschirotto", "team_short": "LEC", "position": "DIF", "age": 28, "market_value": 6.0, "prev_goals": 1, "prev_assists": 1, "prev_cards": 9, "prev_shots_total": 10, "prev_shots_on_target": 3, "prev_corners_won": 0},
+  {"name": "Joel Pohjanpalo", "team_short": "VEN", "position": "ATT", "age": 31, "market_value": 5.0, "prev_goals": 8, "prev_assists": 2, "prev_cards": 2, "prev_shots_total": 32, "prev_shots_on_target": 14, "prev_corners_won": 0},
+  {"name": "Gaetano Oristanio", "team_short": "VEN", "position": "CEN", "age": 22, "market_value": 8.0, "prev_goals": 3, "prev_assists": 4, "prev_cards": 3, "prev_shots_total": 22, "prev_shots_on_target": 8, "prev_corners_won": 0},
+  {"name": "Jesse Joronen", "team_short": "VEN", "position": "POR", "age": 32, "market_value": 2.0, "prev_goals": 0, "prev_assists": 0, "prev_cards": 1, "prev_shots_total": 0, "prev_shots_on_target": 0, "prev_corners_won": 0}
+]
+```
+
+- [ ] **Step 3: Write `data/seed/matches.json`** (first 2 matchdays, 20 matches)
+
+```json
+[
+  {"matchday": 1, "home_short": "INT", "away_short": "MON", "date": "2026-08-23"},
+  {"matchday": 1, "home_short": "MIL", "away_short": "TOR", "date": "2026-08-23"},
+  {"matchday": 1, "home_short": "JUV", "away_short": "COM", "date": "2026-08-23"},
+  {"matchday": 1, "home_short": "ATA", "away_short": "LEC", "date": "2026-08-23"},
+  {"matchday": 1, "home_short": "NAP", "away_short": "EMP", "date": "2026-08-23"},
+  {"matchday": 1, "home_short": "LAZ", "away_short": "VEN", "date": "2026-08-23"},
+  {"matchday": 1, "home_short": "ROM", "away_short": "CAG", "date": "2026-08-23"},
+  {"matchday": 1, "home_short": "FIO", "away_short": "PAR", "date": "2026-08-23"},
+  {"matchday": 1, "home_short": "BOL", "away_short": "VER", "date": "2026-08-23"},
+  {"matchday": 1, "home_short": "GEN", "away_short": "UDI", "date": "2026-08-23"},
+  {"matchday": 2, "home_short": "MON", "away_short": "JUV", "date": "2026-08-30"},
+  {"matchday": 2, "home_short": "TOR", "away_short": "ATA", "date": "2026-08-30"},
+  {"matchday": 2, "home_short": "COM", "away_short": "NAP", "date": "2026-08-30"},
+  {"matchday": 2, "home_short": "LEC", "away_short": "MIL", "date": "2026-08-30"},
+  {"matchday": 2, "home_short": "EMP", "away_short": "LAZ", "date": "2026-08-30"},
+  {"matchday": 2, "home_short": "VEN", "away_short": "ROM", "date": "2026-08-30"},
+  {"matchday": 2, "home_short": "CAG", "away_short": "FIO", "date": "2026-08-30"},
+  {"matchday": 2, "home_short": "PAR", "away_short": "BOL", "date": "2026-08-30"},
+  {"matchday": 2, "home_short": "VER", "away_short": "GEN", "date": "2026-08-30"},
+  {"matchday": 2, "home_short": "UDI", "away_short": "INT", "date": "2026-08-30"}
+]
+```
+
+- [ ] **Step 4: Write `data/seed/h2h.json`** (5 rivalries)
+
+```json
+[
+  {"team1_short": "INT", "team2_short": "MIL", "matches_played": 180, "team1_wins": 70, "team2_wins": 55, "draws": 55, "avg_goals_team1": 1.4, "avg_goals_team2": 1.2},
+  {"team1_short": "JUV", "team2_short": "INT", "matches_played": 180, "team1_wins": 85, "team2_wins": 50, "draws": 45, "avg_goals_team1": 1.3, "avg_goals_team2": 1.0},
+  {"team1_short": "ROM", "team2_short": "LAZ", "matches_played": 160, "team1_wins": 60, "team2_wins": 45, "draws": 55, "avg_goals_team1": 1.2, "avg_goals_team2": 1.0},
+  {"team1_short": "JUV", "team2_short": "NAP", "matches_played": 150, "team1_wins": 70, "team2_wins": 40, "draws": 40, "avg_goals_team1": 1.4, "avg_goals_team2": 1.1},
+  {"team1_short": "ATA", "team2_short": "MIL", "matches_played": 120, "team1_wins": 25, "team2_wins": 55, "draws": 40, "avg_goals_team1": 1.0, "avg_goals_team2": 1.5}
+]
+```
+
+- [ ] **Step 5: Write `app/cli/__init__.py`**
+
+```python
+# CLI commands registered in app factory
+```
+
+- [ ] **Step 6: Write `app/cli/seed.py`**
+
+```python
+import json
+import os
+from datetime import date
+
+import click
+from flask import current_app
+from app.extensions import db
+from app.models import Team, Player, Match, HeadToHead
+
+DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "data", "seed")
+
+
+@click.group(name="seed")
+def seed_command():
+    """Populate the database with seed data."""
+    pass
+
+
+@seed_command.command()
+def teams():
+    """Seed teams from data/seed/teams.json."""
+    path = os.path.join(DATA_DIR, "teams.json")
+    with open(path, encoding="utf-8") as f:
+        data = json.load(f)
+    for item in data:
+        team = Team(
+            name=item["name"], short_name=item["short_name"],
+            stadium=item["stadium"], city=item["city"],
+            ranking=item["ranking"], mood=item["mood"],
+            season_objective=item["season_objective"],
+            home_advantage=item["home_advantage"],
+        )
+        db.session.add(team)
+    db.session.commit()
+    click.echo(f"Seeded {len(data)} teams.")
+
+
+@seed_command.command()
+def players():
+    """Seed players from data/seed/players.json."""
+    path = os.path.join(DATA_DIR, "players.json")
+    with open(path, encoding="utf-8") as f:
+        data = json.load(f)
+    teams = {t.short_name: t for t in Team.query.all()}
+    count = 0
+    for item in data:
+        team = teams.get(item["team_short"])
+        if team is None:
+            click.echo(f"Team {item['team_short']} not found, skipping {item['name']}")
+            continue
+        player = Player(
+            name=item["name"], team_id=team.id, position=item["position"],
+            age=item["age"], market_value=item["market_value"],
+            prev_goals=item["prev_goals"], prev_assists=item["prev_assists"],
+            prev_cards=item["prev_cards"], prev_shots_total=item["prev_shots_total"],
+            prev_shots_on_target=item["prev_shots_on_target"],
+            prev_corners_won=item["prev_corners_won"],
+        )
+        db.session.add(player)
+        count += 1
+    db.session.commit()
+    click.echo(f"Seeded {count} players.")
+
+
+@seed_command.command()
+def matches():
+    """Seed matches from data/seed/matches.json."""
+    path = os.path.join(DATA_DIR, "matches.json")
+    with open(path, encoding="utf-8") as f:
+        data = json.load(f)
+    teams = {t.short_name: t for t in Team.query.all()}
+    count = 0
+    for item in data:
+        home = teams.get(item["home_short"])
+        away = teams.get(item["away_short"])
+        if home is None or away is None:
+            click.echo(f"Skipping match: {item['home_short']} vs {item['away_short']}")
+            continue
+        match_date = date.fromisoformat(item["date"]) if item.get("date") else None
+        match = Match(
+            matchday=item["matchday"], home_team_id=home.id,
+            away_team_id=away.id, date=match_date,
+        )
+        db.session.add(match)
+        count += 1
+    db.session.commit()
+    click.echo(f"Seeded {count} matches.")
+
+
+@seed_command.command()
+def head_to_head():
+    """Seed head-to-head records from data/seed/h2h.json."""
+    path = os.path.join(DATA_DIR, "h2h.json")
+    with open(path, encoding="utf-8") as f:
+        data = json.load(f)
+    teams = {t.short_name: t for t in Team.query.all()}
+    count = 0
+    for item in data:
+        t1 = teams.get(item["team1_short"])
+        t2 = teams.get(item["team2_short"])
+        if t1 is None or t2 is None:
+            continue
+        h2h = HeadToHead(
+            team1_id=t1.id, team2_id=t2.id,
+            matches_played=item["matches_played"],
+            team1_wins=item["team1_wins"], team2_wins=item["team2_wins"],
+            draws=item["draws"], avg_goals_team1=item["avg_goals_team1"],
+            avg_goals_team2=item["avg_goals_team2"],
+        )
+        db.session.add(h2h)
+        count += 1
+    db.session.commit()
+    click.echo(f"Seeded {count} head-to-head records.")
+
+
+@seed_command.command()
+def all():
+    """Run all seed commands."""
+    ctx = click.get_current_context()
+    ctx.invoke(teams)
+    ctx.invoke(players)
+    ctx.invoke(matches)
+    ctx.invoke(head_to_head)
+    click.echo("All seed data loaded.")
+```
+
+- [ ] **Step 7: Verify seed works**
+
+```bash
+flask seed all
+```
+Expected: "Seeded 20 teams.", "Seeded 60 players.", "Seeded 20 matches.", "Seeded 5 head-to-head records.", "All seed data loaded."
+
+- [ ] **Step 8: Commit**
+
+```bash
+git add app/cli/ data/seed/
+git commit -m "feat: add seed data and CLI seed commands"
+```

@@ -1,0 +1,129 @@
+﻿# Review package: c71e1f2..bd8a554
+
+## Commits
+bd8a554 feat: project scaffolding with Flask app factory and test config
+
+## Files changed
+ app/__init__.py   | 28 ++++++++++++++++++++++++++++
+ app/config.py     | 13 +++++++++++++
+ requirements.txt  |  9 +++++++++
+ run.py            |  6 ++++++
+ tests/conftest.py | 29 +++++++++++++++++++++++++++++
+ 5 files changed, 85 insertions(+)
+
+## Diff
+diff --git a/app/__init__.py b/app/__init__.py
+new file mode 100644
+index 0000000..bc1ef13
+--- /dev/null
++++ b/app/__init__.py
+@@ -0,0 +1,28 @@
++from flask import Flask
++from app.config import Config
++from app.extensions import db
++
++
++def create_app(config_class=Config):
++    app = Flask(__name__)
++    app.config.from_object(config_class)
++
++    db.init_app(app)
++
++    with app.app_context():
++        from app.models import team, player, match, prediction, head_to_head  # noqa: F401
++        db.create_all()
++
++    from app.routes import main, predictions, teams, players, api
++    app.register_blueprint(main.bp)
++    app.register_blueprint(predictions.bp)
++    app.register_blueprint(teams.bp)
++    app.register_blueprint(players.bp)
++    app.register_blueprint(api.bp)
++
++    from app.cli import seed, scrape, predict
++    app.cli.add_command(seed.seed_command)
++    app.cli.add_command(scrape.scrape_command)
++    app.cli.add_command(predict.predict_command)
++
++    return app
+diff --git a/app/config.py b/app/config.py
+new file mode 100644
+index 0000000..9748473
+--- /dev/null
++++ b/app/config.py
+@@ -0,0 +1,13 @@
++import os
++
++basedir = os.path.abspath(os.path.dirname(__file__))
++
++
++class Config:
++    SECRET_KEY = os.environ.get("SECRET_KEY", "dev-secret-key-change-in-production")
++    SQLALCHEMY_DATABASE_URI = os.environ.get(
++        "DATABASE_URL", f"sqlite:///{os.path.join(basedir, '..', 'instance', 'serie_a.db')}"
++    )
++    SQLALCHEMY_TRACK_MODIFICATIONS = False
++    MONTE_CARLO_RUNS = int(os.environ.get("MONTE_CARLO_RUNS", 10000))
++    MONTE_CARLO_SEED = int(os.environ.get("MONTE_CARLO_SEED", 42))
+diff --git a/requirements.txt b/requirements.txt
+new file mode 100644
+index 0000000..1ee538a
+--- /dev/null
++++ b/requirements.txt
+@@ -0,0 +1,9 @@
++Flask==3.1.0
++Flask-SQLAlchemy==3.1.1
++SQLAlchemy==2.0.36
++Jinja2==3.1.4
++numpy==2.2.1
++beautifulsoup4==4.12.3
++requests==2.32.3
++pytest==8.3.4
++pytest-flask==1.3.0
+diff --git a/run.py b/run.py
+new file mode 100644
+index 0000000..488dae9
+--- /dev/null
++++ b/run.py
+@@ -0,0 +1,6 @@
++from app import create_app
++
++app = create_app()
++
++if __name__ == "__main__":
++    app.run(debug=True)
+diff --git a/tests/conftest.py b/tests/conftest.py
+new file mode 100644
+index 0000000..af435c8
+--- /dev/null
++++ b/tests/conftest.py
+@@ -0,0 +1,29 @@
++import pytest
++from app import create_app
++from app.config import Config
++from app.extensions import db as _db
++
++
++class TestConfig(Config):
++    TESTING = True
++    SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"
++
++
++@pytest.fixture
++def app():
++    app = create_app(TestConfig)
++    with app.app_context():
++        _db.create_all()
++        yield app
++        _db.session.remove()
++        _db.drop_all()
++
++
++@pytest.fixture
++def client(app):
++    return app.test_client()
++
++
++@pytest.fixture
++def db(app):
++    return _db
