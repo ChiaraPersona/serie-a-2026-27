@@ -1,7 +1,7 @@
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, render_template, request, redirect, url_for, abort
 from app.services.match_service import MatchService
 from app.services.prediction_engine import PredictionEngine
-from app.models import Prediction
+from app.models import Prediction, Match
 
 bp = Blueprint("predictions", __name__)
 
@@ -24,12 +24,13 @@ def giornata(matchday):
 @bp.route("/giornata/<int:matchday>/simula", methods=["POST"])
 def simula(matchday):
     runs = int(request.form.get("runs", 10000))
+    runs = max(100, min(runs, 100000))
     PredictionEngine.predict_matchday(matchday, runs=runs)
     return redirect(url_for("predictions.giornata", matchday=matchday))
 
 
 @bp.route("/partita/<int:match_id>")
 def partita(match_id):
-    match = MatchService.get_match(match_id)
+    match = Match.query.get_or_404(match_id)
     pred = Prediction.query.filter_by(match_id=match_id).order_by(Prediction.created_at.desc()).first()
     return render_template("match.html", match=match, prediction=pred)

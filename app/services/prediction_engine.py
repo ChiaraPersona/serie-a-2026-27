@@ -233,7 +233,8 @@ class PredictionEngine:
         from app.services.match_service import MatchService
         matches = MatchService.get_matchday(matchday)
         predictions = []
-        for match in matches:
-            pred = PredictionEngine.run_simulation(match, runs=runs, seed=seed)
+        for i, match in enumerate(matches):
+            match_seed = None if seed is None else seed + i
+            pred = PredictionEngine.run_simulation(match, runs=runs, seed=match_seed)
             predictions.append(pred)
         return predictions
