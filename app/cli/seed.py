@@ -3,7 +3,6 @@ import os
 from datetime import date
 
 import click
-from flask import current_app
 from app.extensions import db
 from app.models import Team, Player, Match, HeadToHead
 
@@ -99,6 +98,7 @@ def head_to_head():
         t1 = teams.get(item["team1_short"])
         t2 = teams.get(item["team2_short"])
         if t1 is None or t2 is None:
+            click.echo(f"Skipping h2h: {item['team1_short']} vs {item['team2_short']}")
             continue
         h2h = HeadToHead(
             team1_id=t1.id, team2_id=t2.id,
