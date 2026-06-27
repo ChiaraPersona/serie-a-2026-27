@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>{{ match.home_team.name }} vs {{ match.away_team.name }}</h1>
+<h1><img src="{{ url_for('static', filename='img/logos/' + match.home_team.short_name + '.png') }}" class="team-logo-lg" alt=""> {{ match.home_team.name }} vs {{ match.away_team.name }} <img src="{{ url_for('static', filename='img/logos/' + match.away_team.short_name + '.png') }}" class="team-logo-lg" alt=""></h1>
 <p>Giornata {{ match.matchday }} | Data: {{ match.date or 'TBD' }} | {{ match.home_team.short_name }} vs {{ match.away_team.short_name }}</p>
 
 {% if prediction %}

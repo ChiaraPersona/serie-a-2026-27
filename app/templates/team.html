@@ -10,7 +10,7 @@
     {% for team in teams %}
     <tr>
         <td>{{ team.ranking }}</td>
-        <td><a href="{{ url_for('teams.squadra', team_id=team.id) }}">{{ team.name }}</a></td>
+        <td><img src="{{ url_for('static', filename='img/logos/' + team.short_name + '.png') }}" class="team-logo" alt=""><a href="{{ url_for('teams.squadra', team_id=team.id) }}">{{ team.name }}</a></td>
         <td>{{ team.city }}</td>
         <td>{{ team.stadium }}</td>
         <td>{{ team.season_objective }}</td>
@@ -19,7 +19,7 @@
     </tbody>
 </table>
 {% else %}
-<h1>{{ team.name }}</h1>
+<h1><img src="{{ url_for('static', filename='img/logos/' + team.short_name + '.png') }}" class="team-logo-lg" alt="">{{ team.name }}</h1>
 <p>Città: {{ team.city }} | Stadio: {{ team.stadium }}</p>
 <p>Ranking: {{ team.ranking }} | Obiettivo: {{ team.season_objective }}</p>
 <p>Umore: {{ "%.2f"|format(team.mood) }} | Vantaggio casa: {{ "%.2f"|format(team.home_advantage) }}</p>

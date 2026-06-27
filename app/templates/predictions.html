@@ -16,8 +16,8 @@
     {% for match in matches %}
     {% set pred = predictions.get(match.id) %}
     <tr>
-        <td><a href="{{ url_for('teams.squadra', team_id=match.home_team.id) }}">{{ match.home_team.short_name }}</a></td>
-        <td><a href="{{ url_for('teams.squadra', team_id=match.away_team.id) }}">{{ match.away_team.short_name }}</a></td>
+        <td><img src="{{ url_for('static', filename='img/logos/' + match.home_team.short_name + '.png') }}" class="team-logo" alt=""><a href="{{ url_for('teams.squadra', team_id=match.home_team.id) }}">{{ match.home_team.short_name }}</a></td>
+        <td><img src="{{ url_for('static', filename='img/logos/' + match.away_team.short_name + '.png') }}" class="team-logo" alt=""><a href="{{ url_for('teams.squadra', team_id=match.away_team.id) }}">{{ match.away_team.short_name }}</a></td>
         {% if pred %}
         <td>{{ "%.0f"|format(pred.prob_home_win * 100) }}%</td>
         <td>{{ "%.0f"|format(pred.prob_draw * 100) }}%</td>
