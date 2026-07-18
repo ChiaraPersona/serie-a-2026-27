@@ -1,7 +1,7 @@
 const fs=require("fs"), path=require("path");
 const dir=path.resolve(__dirname,"../data/normalized"), root=path.resolve(__dirname,"..");
 const read=name=>JSON.parse(fs.readFileSync(path.join(dir,name),"utf8"));
-const teams=read("teams.json"), matches=read("matches.json"), teamIds=new Set(teams.map(t=>t.id));
+const teams=read("teams.json"), matches=read("matches.json"), previousStandings=read("standings-2025-26.json"), teamIds=new Set(teams.map(t=>t.id));
 function assert(condition,message){if(!condition)throw new Error(message)}
 
 assert(teams.length===20,`Squadre: ${teams.length}, attese 20`);
@@ -40,9 +40,18 @@ assert(firstFive.length===50,"Prime cinque giornate incomplete");
 assert(firstFive.every(m=>m.dateStatus!=="tbd"),"Programmazione mancante nelle prime cinque giornate");
 assert(provisional.length===5,`Gare provvisorie: ${provisional.length}, attese 5`);
 assert(league.every(m=>!m.isDemo)&&teams.every(t=>!t.isDemo),"Dati demo ancora presenti");
+assert(previousStandings.season==="2025-26"&&previousStandings.status==="final","Metadati classifica 2025/26 non validi");
+assert(previousStandings.rows.length===20,"Classifica 2025/26: attese 20 squadre");
+assert(new Set(previousStandings.rows.map(r=>r.position)).size===20,"Classifica 2025/26: posizioni duplicate");
+for(const row of previousStandings.rows){
+  assert(row.played===38&&row.won+row.drawn+row.lost===38,`Classifica 2025/26: partite incoerenti per ${row.teamName}`);
+  assert(row.goalDifference===row.goalsFor-row.goalsAgainst,`Classifica 2025/26: differenza reti incoerente per ${row.teamName}`);
+  assert(row.points===row.won*3+row.drawn,`Classifica 2025/26: punti incoerenti per ${row.teamName}`);
+}
 console.log("OK 20 squadre ufficiali e 20 loghi locali");
 console.log("OK 38 giornate x 10 partite = 380");
 console.log("OK ogni squadra: 38 gare, 19 casa, 19 trasferta");
 console.log("OK 190 coppie: doppio confronto con casa/trasferta invertite");
 console.log(`OK prime 5 giornate: 50 programmazioni (${50-provisional.length} confermate, ${provisional.length} provvisorie)`);
 console.log("OK nessuna data o orario assegnati oltre la quinta giornata");
+console.log("OK classifica finale 2025/26: 20 squadre e valori coerenti");
