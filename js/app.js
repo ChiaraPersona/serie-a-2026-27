@@ -1,4 +1,4 @@
-const DATA="data/normalized/",RELEASE="20260718-referee-history-home-photo";
+const DATA="data/normalized/",RELEASE="20260718-home-photo-no-counter";
 const labels={scheduled:"Programmata",live:"In corso",finished:"Conclusa",postponed:"Rinviata"};
 const esc=v=>String(v??"").replace(/[&<>\"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 async function load(name){const r=await fetch(`${DATA}${name}?v=${RELEASE}`);if(!r.ok)throw new Error(`${name}: ${r.status}`);return r.json()}
@@ -26,7 +26,7 @@ function empty(text){return `<div class="empty">${text}</div>`}
 async function render(){
   const page=document.body.dataset.page,[teams,matches,players,readings,refs,previousStandings]=await Promise.all([load("teams.json"),load("matches.json"),load("players.json"),load("readings.json"),load("referees.json"),load("standings-2025-26.json")]);
   const league=matches.filter(m=>m.competition==="serie-a"),cup=matches.filter(m=>m.competition==="coppa-italia"),standings=calculateStandings(teams,matches),standingsTeams=[...teams,...previousStandings.historicalTeams];let html="";
-  if(page==="home")html=hero("Stagione ufficiale","Il calcio italiano, giornata dopo giornata.","Tutte le 380 partite della Serie A Enilive 2026/27, con programmazione aggiornata senza inventare date ancora da definire.",`<div class="hero-stat"><strong>380</strong><span>partite ufficiali importate</span></div>`)+`<section class="section"><h2>Esplora la stagione</h2><div class="grid">${[["calendario.html","Calendario","Tutti gli accoppiamenti delle 38 giornate."],["classifica.html","Classifica","Calcolata automaticamente dai risultati conclusi."],["statistiche-squadre.html","Statistiche squadre","Rendimento generale aggiornato dai risultati ufficiali."]].map(x=>`<a class="card card-link" href="${x[0]}"><h3>${x[1]}</h3><p class="muted">${x[2]}</p></a>`).join("")}</div></section>`;
+  if(page==="home")html=hero("Stagione ufficiale","Il calcio italiano, giornata dopo giornata.","Tutte le 380 partite della Serie A Enilive 2026/27, con programmazione aggiornata senza inventare date ancora da definire.")+`<section class="section"><h2>Esplora la stagione</h2><div class="grid">${[["calendario.html","Calendario","Tutti gli accoppiamenti delle 38 giornate."],["classifica.html","Classifica","Calcolata automaticamente dai risultati conclusi."],["statistiche-squadre.html","Statistiche squadre","Rendimento generale aggiornato dai risultati ufficiali."]].map(x=>`<a class="card card-link" href="${x[0]}"><h3>${x[1]}</h3><p class="muted">${x[2]}</p></a>`).join("")}</div></section>`;
   if(page==="calendar"){
     html=hero("Serie A","Calendario 2026/27","Tutte le 38 giornate in un'unica pagina. Usa le barre rapide per cercare una giornata o il calendario di una squadra.")+dayNav()+teamNav(teams)+`<div class="calendar-list">${calendarDays(league,teams)}</div>`;
     document.querySelector("#app").innerHTML=html;return;
