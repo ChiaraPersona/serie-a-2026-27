@@ -41,6 +41,8 @@ assert(firstFive.every(m=>m.dateStatus!=="tbd"),"Programmazione mancante nelle p
 assert(provisional.length===5,`Gare provvisorie: ${provisional.length}, attese 5`);
 assert(league.every(m=>!m.isDemo)&&teams.every(t=>!t.isDemo),"Dati demo ancora presenti");
 assert(previousStandings.season==="2025-26"&&previousStandings.status==="final","Metadati classifica 2025/26 non validi");
+assert(previousStandings.historicalTeams.length===3,"Classifica 2025/26: attesi 3 loghi per squadre non presenti nel 2026/27");
+for(const team of previousStandings.historicalTeams){assert(fs.existsSync(path.join(root,team.logo)),`Logo storico locale mancante: ${team.id}`);assert(team.logoSource?.sourceUrl&&team.logoSource?.sourceType==="official-club",`Fonte logo storico non valida: ${team.id}`)}
 assert(previousStandings.rows.length===20,"Classifica 2025/26: attese 20 squadre");
 assert(new Set(previousStandings.rows.map(r=>r.position)).size===20,"Classifica 2025/26: posizioni duplicate");
 for(const row of previousStandings.rows){
