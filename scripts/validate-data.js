@@ -68,6 +68,17 @@ for(const total of previousStandings.rows){
   for(const field of ["played","won","drawn","lost","goalsFor","goalsAgainst","goalDifference","points"])
     assert(home[field]+away[field]===total[field],`Totale casa+trasferta incoerente per ${total.teamName}: ${field}`);
 }
+const summary=previousStandings.summary;
+assert(summary.teams===20&&summary.matches===380,"Riepilogo 2025/26: squadre o partite non validi");
+assert(summary.goals===previousStandings.rows.reduce((sum,r)=>sum+r.goalsFor,0),"Riepilogo 2025/26: gol totali incoerenti");
+assert(summary.homeGoals===previousStandings.homeRows.reduce((sum,r)=>sum+r.goalsFor,0),"Riepilogo 2025/26: gol in casa incoerenti");
+assert(summary.awayGoals===previousStandings.awayRows.reduce((sum,r)=>sum+r.goalsFor,0),"Riepilogo 2025/26: gol in trasferta incoerenti");
+assert(summary.goals===summary.homeGoals+summary.awayGoals,"Riepilogo 2025/26: ripartizione gol incoerente");
+assert(summary.draws===previousStandings.rows.reduce((sum,r)=>sum+r.drawn,0)/2,"Riepilogo 2025/26: pareggi incoerenti");
+assert(summary.homeWins===previousStandings.homeRows.reduce((sum,r)=>sum+r.won,0)&&summary.awayWins===previousStandings.awayRows.reduce((sum,r)=>sum+r.won,0),"Riepilogo 2025/26: vittorie casa/trasferta incoerenti");
+assert(summary.decisiveMatches===summary.homeWins+summary.awayWins&&summary.matches===summary.draws+summary.decisiveMatches,"Riepilogo 2025/26: esiti incoerenti");
+assert(Math.abs(summary.goalsPerMatch-summary.goals/summary.matches)<0.01&&Math.abs(summary.homeGoalsPerMatch-summary.homeGoals/summary.matches)<0.01&&Math.abs(summary.awayGoalsPerMatch-summary.awayGoals/summary.matches)<0.01,"Riepilogo 2025/26: medie gol incoerenti");
+assert(summary.champion.team===previousStandings.rows[0].team&&summary.champion.points===previousStandings.rows[0].points,"Riepilogo 2025/26: campione incoerente");
 console.log("OK 20 squadre ufficiali e 20 loghi locali");
 console.log("OK 38 giornate x 10 partite = 380");
 console.log("OK ogni squadra: 38 gare, 19 casa, 19 trasferta");
@@ -77,3 +88,4 @@ console.log("OK nessuna data o orario assegnati oltre la quinta giornata");
 console.log("OK classifica finale 2025/26: 20 squadre e valori coerenti");
 console.log("OK rendimento casa 2025/26: 20 squadre e valori coerenti");
 console.log("OK rendimento trasferta 2025/26 e riconciliazione con classifica finale");
+console.log("OK riepilogo statistico 2025/26 riconciliato con classifiche generale/casa/trasferta");
