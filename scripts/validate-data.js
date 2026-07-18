@@ -48,6 +48,13 @@ for(const row of previousStandings.rows){
   assert(row.goalDifference===row.goalsFor-row.goalsAgainst,`Classifica 2025/26: differenza reti incoerente per ${row.teamName}`);
   assert(row.points===row.won*3+row.drawn,`Classifica 2025/26: punti incoerenti per ${row.teamName}`);
 }
+assert(previousStandings.homeRows.length===20,"Rendimento casa 2025/26: attese 20 squadre");
+assert(new Set(previousStandings.homeRows.map(r=>r.position)).size===20,"Rendimento casa 2025/26: posizioni duplicate");
+for(const row of previousStandings.homeRows){
+  assert(row.played===19&&row.won+row.drawn+row.lost===19,`Rendimento casa 2025/26: partite incoerenti per ${row.teamName}`);
+  assert(row.goalDifference===row.goalsFor-row.goalsAgainst,`Rendimento casa 2025/26: differenza reti incoerente per ${row.teamName}`);
+  assert(row.points===row.won*3+row.drawn,`Rendimento casa 2025/26: punti incoerenti per ${row.teamName}`);
+}
 console.log("OK 20 squadre ufficiali e 20 loghi locali");
 console.log("OK 38 giornate x 10 partite = 380");
 console.log("OK ogni squadra: 38 gare, 19 casa, 19 trasferta");
@@ -55,3 +62,4 @@ console.log("OK 190 coppie: doppio confronto con casa/trasferta invertite");
 console.log(`OK prime 5 giornate: 50 programmazioni (${50-provisional.length} confermate, ${provisional.length} provvisorie)`);
 console.log("OK nessuna data o orario assegnati oltre la quinta giornata");
 console.log("OK classifica finale 2025/26: 20 squadre e valori coerenti");
+console.log("OK rendimento casa 2025/26: 20 squadre e valori coerenti");
