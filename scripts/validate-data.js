@@ -20,6 +20,7 @@ for(const match of league){
   assert(teamIds.has(match.homeTeam)&&teamIds.has(match.awayTeam),`Squadra sconosciuta: ${match.id}`);
   assert(match.homeTeam!==match.awayTeam,`Autopartita: ${match.id}`);
   assert(match.matchdayDate&&["confirmed","provisional","tbd"].includes(match.dateStatus),`Data giornata/stato non valido: ${match.id}`);
+  assert(/^\d{4}-\d{2}-\d{2}$/.test(match.matchdayDate)&&(!match.date||/^\d{4}-\d{2}-\d{2}$/.test(match.date)),`Formato data non valido: ${match.id}`);
   assert(match.timezone==="Europe/Rome"&&Array.isArray(match.sources)&&match.sources.length,`Timezone/fonti mancanti: ${match.id}`);
   if(match.dateStatus==="confirmed")assert(match.date&&match.kickoff,`Data confermata incompleta: ${match.id}`);
   if(match.matchday>5)assert(match.date===null&&match.kickoff===null&&match.dateStatus==="tbd",`Data inventata oltre la quinta giornata: ${match.id}`);
