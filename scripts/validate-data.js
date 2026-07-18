@@ -79,6 +79,13 @@ assert(summary.homeWins===previousStandings.homeRows.reduce((sum,r)=>sum+r.won,0
 assert(summary.decisiveMatches===summary.homeWins+summary.awayWins&&summary.matches===summary.draws+summary.decisiveMatches,"Riepilogo 2025/26: esiti incoerenti");
 assert(Math.abs(summary.goalsPerMatch-summary.goals/summary.matches)<0.01&&Math.abs(summary.homeGoalsPerMatch-summary.homeGoals/summary.matches)<0.01&&Math.abs(summary.awayGoalsPerMatch-summary.awayGoals/summary.matches)<0.01,"Riepilogo 2025/26: medie gol incoerenti");
 assert(summary.champion.team===previousStandings.rows[0].team&&summary.champion.points===previousStandings.rows[0].points,"Riepilogo 2025/26: campione incoerente");
+const verdicts=summary.verdicts,positions=previousStandings.rows.map(r=>r.team);
+assert(verdicts.champion.length===1&&verdicts.champion[0]===positions[0],"Verdetti 2025/26: campione incoerente");
+assert(JSON.stringify(verdicts.championsLeague)===JSON.stringify(positions.slice(0,4)),"Verdetti 2025/26: qualificate Champions incoerenti");
+assert(JSON.stringify(verdicts.europaLeague)===JSON.stringify(positions.slice(4,6)),"Verdetti 2025/26: qualificate Europa League incoerenti");
+assert(JSON.stringify(verdicts.conferenceLeague)===JSON.stringify(positions.slice(6,7)),"Verdetti 2025/26: qualificata Conference incoerente");
+assert(JSON.stringify(verdicts.relegated)===JSON.stringify(positions.slice(17,20)),"Verdetti 2025/26: retrocesse incoerenti");
+assert(verdicts.promoted.length===3&&verdicts.promoted.every(id=>teamIds.has(id)&&!positions.includes(id)),"Verdetti 2025/26: promosse incoerenti con le 20 squadre 2026/27");
 console.log("OK 20 squadre ufficiali e 20 loghi locali");
 console.log("OK 38 giornate x 10 partite = 380");
 console.log("OK ogni squadra: 38 gare, 19 casa, 19 trasferta");
@@ -89,3 +96,4 @@ console.log("OK classifica finale 2025/26: 20 squadre e valori coerenti");
 console.log("OK rendimento casa 2025/26: 20 squadre e valori coerenti");
 console.log("OK rendimento trasferta 2025/26 e riconciliazione con classifica finale");
 console.log("OK riepilogo statistico 2025/26 riconciliato con classifiche generale/casa/trasferta");
+console.log("OK verdetti 2025/26 e promosse 2026/27 coerenti con le classifiche");
