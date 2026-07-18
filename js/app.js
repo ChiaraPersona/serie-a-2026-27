@@ -1,4 +1,4 @@
-const DATA="data/normalized/",RELEASE="20260718-no-matchday-page";
+const DATA="data/normalized/",RELEASE="20260718-no-sources-page";
 const labels={scheduled:"Programmata",live:"In corso",finished:"Conclusa",postponed:"Rinviata"};
 const esc=v=>String(v??"").replace(/[&<>\"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 async function load(name){const r=await fetch(`${DATA}${name}?v=${RELEASE}`);if(!r.ok)throw new Error(`${name}: ${r.status}`);return r.json()}
@@ -40,7 +40,6 @@ async function render(){
   if(page==="readings")html=hero("Analisi prepartita","Lettura","Le letture verranno pubblicate senza inventare quote o pronostici.")+`<section class="section">${readings.length?`<div class="grid">${readings.map(r=>`<article class="card"><h3>${esc(r.title)}</h3><p>${esc(r.summary)}</p></article>`).join("")}</div>`:empty("Nessuna lettura pubblicata per la stagione 2026/27.")}</section>`;
   if(page==="cup")html=hero("Eliminazione diretta","Coppa Italia","Il tabellone userà la stessa scheda partita condivisa quando verranno importati gli incontri ufficiali.")+`<section class="section bracket">${cup.length?cup.map(m=>matchCard(m,teams)).join(""):empty("Calendario Coppa Italia non ancora importato.")}</section>`;
   if(page==="referees")html=hero("Direzione gara","Arbitri","Designazioni e statistiche saranno aggiunte soltanto da fonti ufficiali tracciate.")+`<section class="section">${refs.length?"":empty("Designazioni arbitrali non ancora pubblicate.")}</section>`;
-  if(page==="sources")html=hero("Trasparenza","Metodo e fonti","Ogni record conserva provenienza, comunicato e data di acquisizione.")+`<section class="section"><div class="grid"><article class="card"><h3>C.U. n. 205</h3><p>Accoppiamenti e date di riferimento delle 38 giornate.</p></article><article class="card"><h3>C.U. n. 208</h3><p>Date e orari delle prime cinque giornate, incluse le condizioni UEFA.</p></article><article class="card"><h3>Club Lega Serie A</h3><p>Stemmi locali acquisiti dalla pagina ufficiale dei club, senza hotlink.</p></article></div></section>`;
   document.querySelector("#app").innerHTML=html;
 }
 document.querySelectorAll("[data-page-link]").forEach(a=>a.classList.toggle("active",a.dataset.pageLink===document.body.dataset.page));
