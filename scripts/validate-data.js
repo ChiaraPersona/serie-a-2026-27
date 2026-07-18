@@ -55,6 +55,19 @@ for(const row of previousStandings.homeRows){
   assert(row.goalDifference===row.goalsFor-row.goalsAgainst,`Rendimento casa 2025/26: differenza reti incoerente per ${row.teamName}`);
   assert(row.points===row.won*3+row.drawn,`Rendimento casa 2025/26: punti incoerenti per ${row.teamName}`);
 }
+assert(previousStandings.awayRows.length===20,"Rendimento trasferta 2025/26: attese 20 squadre");
+assert(new Set(previousStandings.awayRows.map(r=>r.position)).size===20,"Rendimento trasferta 2025/26: posizioni duplicate");
+for(const row of previousStandings.awayRows){
+  assert(row.played===19&&row.won+row.drawn+row.lost===19,`Rendimento trasferta 2025/26: partite incoerenti per ${row.teamName}`);
+  assert(row.goalDifference===row.goalsFor-row.goalsAgainst,`Rendimento trasferta 2025/26: differenza reti incoerente per ${row.teamName}`);
+  assert(row.points===row.won*3+row.drawn,`Rendimento trasferta 2025/26: punti incoerenti per ${row.teamName}`);
+}
+for(const total of previousStandings.rows){
+  const home=previousStandings.homeRows.find(r=>r.team===total.team),away=previousStandings.awayRows.find(r=>r.team===total.team);
+  assert(home&&away,`Rendimento casa/trasferta mancante per ${total.teamName}`);
+  for(const field of ["played","won","drawn","lost","goalsFor","goalsAgainst","goalDifference","points"])
+    assert(home[field]+away[field]===total[field],`Totale casa+trasferta incoerente per ${total.teamName}: ${field}`);
+}
 console.log("OK 20 squadre ufficiali e 20 loghi locali");
 console.log("OK 38 giornate x 10 partite = 380");
 console.log("OK ogni squadra: 38 gare, 19 casa, 19 trasferta");
@@ -63,3 +76,4 @@ console.log(`OK prime 5 giornate: 50 programmazioni (${50-provisional.length} co
 console.log("OK nessuna data o orario assegnati oltre la quinta giornata");
 console.log("OK classifica finale 2025/26: 20 squadre e valori coerenti");
 console.log("OK rendimento casa 2025/26: 20 squadre e valori coerenti");
+console.log("OK rendimento trasferta 2025/26 e riconciliazione con classifica finale");
