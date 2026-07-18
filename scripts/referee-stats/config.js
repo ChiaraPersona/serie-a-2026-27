@@ -1,0 +1,4 @@
+const path=require("path");
+const competitions={"serie-a":{id:"serie-a",name:"Serie A",apiFootballLeagueId:135,espnLeague:"ita.1"},"serie-b":{id:"serie-b",name:"Serie B",apiFootballLeagueId:136,espnLeague:"ita.2"}};
+function loadConfig(){return {provider:process.env.REFEREE_STATS_PROVIDER||"api-football",season:process.env.REFEREE_STATS_SEASON||"2025-26",apiKey:process.env.REFEREE_STATS_API_KEY||null,apiBaseUrl:process.env.REFEREE_STATS_API_BASE_URL||"https://v3.football.api-sports.io",fileSource:process.env.REFEREE_STATS_FILE_SOURCE||null,rawRoot:path.resolve(__dirname,"../../data/raw/referee-stats"),normalizedRoot:path.resolve(__dirname,"../../data/normalized/referee-matches"),generatedRoot:path.resolve(__dirname,"../../data/generated/referee-stats"),competitions}}
+module.exports={loadConfig,competitions};

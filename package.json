@@ -4,7 +4,9 @@
   "scripts": {
     "build": "node scripts/build-site.js",
     "import:calendar": "node scripts/import-official-calendar.js",
+    "import:referees:pilot": "node scripts/referee-stats/import.js --competition all --season 2025-26 --limit 10 --pilot",
+    "import:referees": "node scripts/referee-stats/import.js --competition all --season 2025-26 --limit 500",
     "download:logos": "python scripts/download-team-logos.py",
-    "test": "node scripts/validate-data.js"
+    "test": "node scripts/validate-data.js && node scripts/referee-stats/test.js"
   }
 }

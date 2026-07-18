@@ -1,0 +1,5 @@
+function createEspnProvider(){
+  const request=async url=>{const response=await fetch(url,{headers:{accept:"application/json","user-agent":"serie-a-2026-27-referee-importer/1.0"}});if(!response.ok)throw new Error(`ESPN ${response.status}: ${url}`);return response.json()};
+  return {id:"espn",async listFixtures({competition,limit}){const url=`https://site.api.espn.com/apis/site/v2/sports/soccer/${competition.espnLeague}/scoreboard?dates=20250801-20260731&limit=1000`,payload=await request(url),fixtures=(payload.events||[]).filter(event=>event.status?.type?.completed).slice(0,limit).map(event=>({...event,_refereeStatsEspnLeague:competition.espnLeague}));return {sourceUrl:url,fixtures}},async fetchFixtureBundle(event){const espnLeague=event._refereeStatsEspnLeague,summaryUrl=`https://site.api.espn.com/apis/site/v2/sports/soccer/${espnLeague}/summary?event=${event.id}`,summary=await request(summaryUrl);return {event,summary,source:{fixtureId:String(event.id),url:`https://www.espn.com/soccer/match/_/gameId/${event.id}`,summaryUrl}}}};
+}
+module.exports={createEspnProvider};

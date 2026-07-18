@@ -1,11 +1,28 @@
 const fs=require("fs"), path=require("path");
 const dir=path.resolve(__dirname,"../data/normalized"), root=path.resolve(__dirname,"..");
 const read=name=>JSON.parse(fs.readFileSync(path.join(dir,name),"utf8"));
-const teams=read("teams.json"), matches=read("matches.json"), previousStandings=read("standings-2025-26.json"), teamIds=new Set(teams.map(t=>t.id));
+const teams=read("teams.json"), matches=read("matches.json"), referees=read("referees.json"), refereeHistory=read("referee-stats-2025-26.json"), previousStandings=read("standings-2025-26.json"), teamIds=new Set(teams.map(t=>t.id));
 function assert(condition,message){if(!condition)throw new Error(message)}
 
 assert(teams.length===20,`Squadre: ${teams.length}, attese 20`);
 assert(new Set(teams.map(t=>t.id)).size===20,"ID squadra duplicati");
+assert(referees.length===42,`Arbitri CAN: ${referees.length}, attesi 42`);
+assert(new Set(referees.map(r=>r.id)).size===42&&new Set(referees.map(r=>r.slug)).size===42,"ID o slug arbitro duplicati");
+const refereeStats=["serieAAppearances","serieBAppearances","yellowCards","secondYellowCards","straightRedCards","penalties","fouls","yellowCardsPerMatch","redCardsPerMatch","penaltiesPerMatch","homeWins","draws","awayWins","varInterventions"];
+for(const referee of referees){
+  assert(referee.name&&referee.section&&referee.season==="2026-27"&&referee.role==="arbitro CAN"&&referee.status==="active",`Anagrafica arbitro incompleta: ${referee.id}`);
+  assert(referee.promotedFrom===null&&referee.isNew===null,`Promozione non verificata valorizzata: ${referee.id}`);
+  assert(refereeStats.every(field=>referee[field]===null),`Statistica non verificata valorizzata: ${referee.id}`);
+  assert(/^\d{4}-\d{2}-\d{2}$/.test(referee.lastUpdated)&&Array.isArray(referee.sources)&&referee.sources.length,`Aggiornamento/fonti arbitro mancanti: ${referee.id}`);
+}
+assert(refereeHistory.season==="2025-26"&&refereeHistory.minimumSampleForRanking===5,"Metadati storico arbitri non validi");
+assert(refereeHistory.referees.length===42,"Storico arbitri 2025/26: attese 42 righe");
+const refereeIds=new Set(referees.map(r=>r.id));
+for(const row of refereeHistory.referees){
+  assert(refereeIds.has(row.refereeId),`Arbitro storico fuori organico 2026/27: ${row.refereeId}`);
+  for(const competition of ["serieA","serieB"]){const stats=row[competition];assert(Number.isInteger(stats.matches)&&stats.matches>=0,`Presenze non valide: ${row.refereeId} ${competition}`);assert(["yellowCardsPerMatch","redCardsPerMatch"].every(field=>Number.isFinite(stats[field])&&stats[field]>=0),`Medie non valide: ${row.refereeId} ${competition}`)}
+  assert(row.serieA.yellowCards>=0&&row.serieA.redCards>=0&&Number.isFinite(row.serieB.foulsPerMatch),`Statistiche storiche incomplete: ${row.refereeId}`);
+}
 for(const team of teams){
   assert(team.logoSource?.sourceUrl&&team.logoSource?.sourceType&&team.logoSource?.retrievedAt&&team.logoSource?.licenseNote,`Metadati logo incompleti: ${team.id}`);
   assert(fs.existsSync(path.join(root,team.logo)),`Logo locale mancante: ${team.id}`);
@@ -89,6 +106,8 @@ assert(JSON.stringify(verdicts.conferenceLeague)===JSON.stringify(positions.slic
 assert(JSON.stringify(verdicts.relegated)===JSON.stringify(positions.slice(17,20)),"Verdetti 2025/26: retrocesse incoerenti");
 assert(verdicts.promoted.length===3&&verdicts.promoted.every(id=>teamIds.has(id)&&!positions.includes(id)),"Verdetti 2025/26: promosse incoerenti con le 20 squadre 2026/27");
 console.log("OK 20 squadre ufficiali e 20 loghi locali");
+console.log("OK organico CAN 2026/27: 42 arbitri con fonti e statistiche non inventate");
+console.log("OK snapshot arbitri 2025/26: Serie A e Serie B separate per 42 arbitri");
 console.log("OK 38 giornate x 10 partite = 380");
 console.log("OK ogni squadra: 38 gare, 19 casa, 19 trasferta");
 console.log("OK 190 coppie: doppio confronto con casa/trasferta invertite");
