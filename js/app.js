@@ -1,7 +1,7 @@
-const DATA="data/normalized/";
+const DATA="data/normalized/",RELEASE="20260718-official-3";
 const labels={scheduled:"Programmata",live:"In corso",finished:"Conclusa",postponed:"Rinviata"};
 const esc=v=>String(v??"").replace(/[&<>\"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-async function load(name){const r=await fetch(DATA+name);if(!r.ok)throw new Error(`${name}: ${r.status}`);return r.json()}
+async function load(name){const r=await fetch(`${DATA}${name}?v=${RELEASE}`);if(!r.ok)throw new Error(`${name}: ${r.status}`);return r.json()}
 const dateOnly=v=>{if(!v)return null;const [year,month,day]=String(v).slice(0,10).split("-");const months=["gen","feb","mar","apr","mag","giu","lug","ago","set","ott","nov","dic"];return `${Number(day)} ${months[Number(month)-1]} ${year}`};
 const sourceBanner=()=>`<aside class="source-banner"><strong>Dati ufficiali Lega Serie A.</strong> Calendario dal C.U. n. 205; date e orari delle prime cinque giornate dal C.U. n. 208.</aside>`;
 const hero=(eyebrow,title,text,aside="")=>`${sourceBanner()}<section class="hero"><div><p class="eyebrow">${eyebrow}</p><h1>${title}</h1><p class="lead">${text}</p></div>${aside}</section>`;
