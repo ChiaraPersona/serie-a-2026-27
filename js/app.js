@@ -1,4 +1,4 @@
-const DATA="data/normalized/",RELEASE="20260718-calendar-redesign";
+const DATA="data/normalized/",RELEASE="20260718-team-calendars";
 const labels={scheduled:"Programmata",live:"In corso",finished:"Conclusa",postponed:"Rinviata"};
 const esc=v=>String(v??"").replace(/[&<>\"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 async function load(name){const r=await fetch(`${DATA}${name}?v=${RELEASE}`);if(!r.ok)throw new Error(`${name}: ${r.status}`);return r.json()}
@@ -17,6 +17,7 @@ function matchCard(m,teams){
 }
 function standingsTable(rows,teams){const name=id=>teams.find(t=>t.id===id)?.name||id;return `<div class="table-wrap"><table><thead><tr><th>#</th><th>Squadra</th><th>PG</th><th>V</th><th>N</th><th>P</th><th>GF</th><th>GS</th><th>DR</th><th>Pt</th></tr></thead><tbody>${rows.map((r,i)=>`<tr><td>${i+1}</td><td>${esc(name(r.team))}</td><td>${r.played}</td><td>${r.won}</td><td>${r.drawn}</td><td>${r.lost}</td><td>${r.goalsFor}</td><td>${r.goalsAgainst}</td><td>${r.goalDifference}</td><td><strong>${r.points}</strong></td></tr>`).join("")}</tbody></table></div>`}
 const dayNav=(selected=0,anchors=false)=>`<nav class="day-nav" aria-label="Selezione rapida giornata"><span>Vai alla giornata</span><div>${Array.from({length:38},(_,i)=>{const day=i+1;return `<a class="day-link ${day===selected?'active':''}" href="${anchors?`#giornata-${day}`:`giornata.html?day=${day}`}" aria-label="Giornata ${day}">${day}</a>`}).join("")}</div></nav>`;
+const teamNav=(teams,selected="")=>`<nav class="team-nav" aria-label="Calendari delle squadre"><span>Calendario per squadra</span><div>${teams.map(team=>`<a class="team-nav-link ${team.id===selected?'active':''}" href="squadra.html?team=${team.id}" aria-label="Calendario ${esc(team.name)}" title="${esc(team.name)}"><img src="${team.logo}" alt="" onerror="this.hidden=true;this.nextElementSibling.hidden=false"><b hidden>${esc(team.shortName.slice(0,2).toUpperCase())}</b></a>`).join("")}</div></nav>`;
 const calendarDays=(league,teams)=>Array.from({length:38},(_,i)=>{const day=i+1,matches=league.filter(m=>m.matchday===day);return `<section class="calendar-day" id="giornata-${day}"><header class="calendar-day-head"><div><p class="eyebrow">Serie A 2026/27</p><h2>Giornata ${day}</h2></div><span>${dateOnly(matches[0]?.matchdayDate)||"Data di riferimento da definire"}</span></header><div class="day-matches">${matches.map(m=>matchCard(m,teams)).join("")}</div></section>`}).join("");
 function empty(text){return `<div class="empty">${text}</div>`}
 
@@ -25,8 +26,13 @@ async function render(){
   const league=matches.filter(m=>m.competition==="serie-a"),cup=matches.filter(m=>m.competition==="coppa-italia"),standings=calculateStandings(teams,matches);let html="";
   if(page==="home")html=hero("Stagione ufficiale","Il calcio italiano, giornata dopo giornata.","Tutte le 380 partite della Serie A Enilive 2026/27, con programmazione aggiornata senza inventare date ancora da definire.",`<div class="hero-stat"><strong>380</strong><span>partite ufficiali importate</span></div>`)+`<section class="section"><h2>Esplora la stagione</h2><div class="grid">${[["giornata.html","Giornata","Dieci partite e stato della programmazione."],["classifica.html","Classifica","Calcolata automaticamente dai risultati conclusi."],["calendario.html","Calendario","Tutti gli accoppiamenti delle 38 giornate."]].map(x=>`<a class="card card-link" href="${x[0]}"><h3>${x[1]}</h3><p class="muted">${x[2]}</p></a>`).join("")}</div></section>`;
   if(page==="calendar"){
-    html=hero("Serie A","Calendario 2026/27","Tutte le 38 giornate in un'unica pagina. Usa la barra rapida per raggiungere subito quella che cerchi.")+dayNav(0,true)+`<div class="calendar-list">${calendarDays(league,teams)}</div>`;
+    html=hero("Serie A","Calendario 2026/27","Tutte le 38 giornate in un'unica pagina. Usa le barre rapide per cercare una giornata o il calendario di una squadra.")+dayNav(0,true)+teamNav(teams)+`<div class="calendar-list">${calendarDays(league,teams)}</div>`;
     document.querySelector("#app").innerHTML=html;return;
+  }
+  if(page==="team"){
+    const teamId=new URLSearchParams(location.search).get("team"),team=teams.find(t=>t.id===teamId)||teams[0],teamMatches=league.filter(m=>m.homeTeam===team.id||m.awayTeam===team.id).sort((a,b)=>a.matchday-b.matchday);
+    html=hero("Calendario squadra",team.name,`Tutte le 38 partite di ${esc(team.name)}, dalla prima all'ultima giornata.`,`<div class="team-hero-logo"><img src="${team.logo}" alt="Stemma ${esc(team.name)}"></div>`)+teamNav(teams,team.id)+`<section class="section team-schedule"><div class="team-schedule-head"><h2>Le 38 giornate</h2><a class="button" href="calendario.html">Calendario completo</a></div><div class="team-match-list">${teamMatches.map(m=>`<section class="team-matchday"><h3>Giornata ${m.matchday}</h3>${matchCard(m,teams)}</section>`).join("")}</div></section>`;
+    document.title=`${team.name} | Calendario Serie A 2026/27`;document.querySelector("#app").innerHTML=html;return;
   }
   if(page==="matchday"){
     const queryDay=Math.min(38,Math.max(1,Number(new URLSearchParams(location.search).get("day"))||1));
