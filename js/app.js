@@ -1,4 +1,4 @@
-const DATA="data/normalized/",RELEASE="20260718-even-standing-columns";
+const DATA="data/normalized/",RELEASE="20260718-centered-header-logo";
 const labels={scheduled:"Programmata",live:"In corso",finished:"Conclusa",postponed:"Rinviata"};
 const esc=v=>String(v??"").replace(/[&<>\"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 async function load(name){const r=await fetch(`${DATA}${name}?v=${RELEASE}`);if(!r.ok)throw new Error(`${name}: ${r.status}`);return r.json()}
