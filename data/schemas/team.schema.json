@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Serie A team",
+  "type": "object",
+  "required": [
+    "id",
+    "currentSeason",
+    "previousSeason",
+    "teamStats",
+    "squad",
+    "sources",
+    "lastUpdated"
+  ],
+  "properties": {
+    "squad": {
+      "type": "array",
+      "items": {
+        "$ref": "player.schema.json"
+      }
+    }
+  }
+}

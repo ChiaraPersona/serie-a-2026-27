@@ -2,13 +2,19 @@
   "name": "serie-a-2026-27",
   "private": true,
   "scripts": {
-    "build": "node scripts/build-site.js",
+    "build": "node scripts/team-pages/build.js && node scripts/build-site.js",
+    "build:teams": "node scripts/team-pages/build.js && node scripts/build-site.js",
+    "import:milan": "node scripts/team-pages/import-milan.js --refresh",
+    "compress:milan-raw": "node scripts/team-pages/compress-milan-raw.js",
+    "build:milan": "node scripts/team-pages/import-milan.js && node scripts/team-pages/build.js && node scripts/build-site.js",
     "import:calendar": "node scripts/import-official-calendar.js",
     "import:referee-calendars": "node scripts/referee-stats/import-calendars.js --season 2025-26",
     "import:referees:pilot": "node scripts/referee-stats/import.js --competition all --season 2025-26 --limit 10 --pilot",
     "import:referees": "node scripts/referee-stats/import.js --competition all --season 2025-26 --full",
     "validate:referees:2025-26": "node scripts/referee-stats/validate-2025-26.js",
     "download:logos": "python scripts/download-team-logos.py",
-    "test": "node scripts/validate-data.js && node scripts/referee-stats/test.js && node scripts/referee-stats/validate-2025-26.js"
+    "test:teams": "node scripts/team-pages/test.js",
+    "test:milan": "node scripts/team-pages/test-milan.js",
+    "test": "node scripts/validate-data.js && node scripts/referee-stats/test.js && node scripts/referee-stats/validate-2025-26.js && node scripts/team-pages/test.js && node scripts/team-pages/test-milan.js"
   }
 }
