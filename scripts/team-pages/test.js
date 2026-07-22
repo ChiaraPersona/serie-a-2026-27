@@ -30,4 +30,17 @@ assert.ok(!fs.existsSync(path.join(root, "statistiche-giocatori.html")), "La pag
 const generatedHtml = fs.readdirSync(root).filter(file => file.endsWith(".html")).map(file => fs.readFileSync(path.join(root, file), "utf8"))
   .concat(fs.readdirSync(path.join(root, "statistiche-squadra")).filter(file => file.endsWith(".html")).map(file => fs.readFileSync(path.join(root, "statistiche-squadra", file), "utf8"))).join("\n");
 assert.ok(!generatedHtml.includes("statistiche-giocatori"), "Un collegamento alla pagina rimossa è ancora presente");
+const expectedNavigation = [
+  ["index.html", "Home"], ["calendario.html", "Calendario"], ["classifica.html", "Classifica"],
+  ["statistiche-squadre.html", "Statistiche squadre"], ["lettura.html", "Lettura"],
+  ["coppa-italia.html", "Coppa Italia"], ["arbitri.html", "Arbitri"]
+];
+for (const file of fs.readdirSync(root).filter(file => file.endsWith(".html")).map(file => path.join(root, file))
+  .concat(fs.readdirSync(path.join(root, "statistiche-squadra")).filter(file => file.endsWith(".html")).map(file => path.join(root, "statistiche-squadra", file)))) {
+  const html = fs.readFileSync(file, "utf8");
+  const nav = html.match(/<nav id="site-nav"[^>]*>([\s\S]*?)<\/nav>/)?.[1];
+  assert.ok(nav, `${path.basename(file)}: navbar assente`);
+  const links = [...nav.matchAll(/<a[^>]+href="([^"]+)"[^>]*>([^<]+)<\/a>/g)].map(match => [match[1].replace(/^\.\.\//, ""), match[2]]);
+  assert.deepStrictEqual(links, expectedNavigation, `${path.basename(file)}: navbar non uniforme`);
+}
 console.log("Team pages: 20 JSON e 20 pagine valide; competizioni separate; null preservati.");
