@@ -3,7 +3,7 @@
   if (!root) return;
 
   const base = document.body.dataset.depth === "team" ? "../" : "";
-  const release = "20260722-specific-player-roles";
+  const release = "20260722-role-order";
   const esc = value => String(value ?? "").replace(/[&<>\"]/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[char]));
   const value = (input, suffix = "") => input === null || input === undefined || input === "" ? "N/D" : `${esc(input)}${suffix}`;
   const pct = input => value(input, "%");
@@ -20,6 +20,11 @@
     if (per90Fields[key]) return player.previousSeason?.totals?.per90?.[per90Fields[key]];
     return player.previousSeason?.totals?.[key];
   };
+  const roleOrder = { Portiere: 0, Difensore: 1, Centrocampista: 2, Attaccante: 3 };
+  const compareByRole = (left, right) =>
+    (roleOrder[left.role] ?? 99) - (roleOrder[right.role] ?? 99) ||
+    String(left.detailedRole || left.role).localeCompare(String(right.detailedRole || right.role), "it") ||
+    left.name.localeCompare(right.name, "it");
 
   const labels = {
     played: "Partite", won: "Vittorie", drawn: "Pareggi", lost: "Sconfitte", points: "Punti",
@@ -53,7 +58,7 @@
     root.innerHTML = `<section class="team-directory-hero"><p class="eyebrow">Serie A 2026/27</p><h1>Rose e statistiche squadra</h1><p class="lead">20 pagine alimentate da JSON. Campionato 2025/26 sempre indicato, con Serie B separata per le neopromosse.</p></section><section class="team-directory-grid">${data.teams.map(team => `<a class="team-directory-card" href="${team.id}.html"><img src="${team.logo}" alt="Stemma ${esc(team.name)}"><div><span class="competition-chip">${esc(team.previousSeason.competition)} 2025/26</span><h2>${esc(team.name)}</h2><p>${team.previousSeason.position ? `${team.previousSeason.position}ª posizione · ${team.previousSeason.points} punti` : "Posizione N/D"}</p><small>Città: ${value(team.city)} · Stadio: ${value(team.stadium)}</small><small>Allenatore: ${value(team.coach)} · Rosa disponibile: ${team.playerCount}</small></div><strong aria-hidden="true">→</strong></a>`).join("")}</section>`;
   }
 
-  const filters = () => `<div class="squad-controls"><label>Ricerca<input id="player-search" type="search" placeholder="Nome calciatore"></label><label>Ruolo<select id="role-filter"><option value="">Tutti</option><option>Portiere</option><option>Difensore</option><option>Centrocampista</option><option>Attaccante</option></select></label><label>Stato<select id="status-filter"><option value="">Tutti</option><option>confermato</option><option>nuovo acquisto</option><option>prestito</option><option>rientro dal prestito</option><option>primavera</option><option>da verificare</option></select></label><label>Ordina<select id="player-sort"><option value="appearances">Presenze</option><option value="minutes">Minuti</option><option value="goals">Gol totali</option><option value="goalsPer90">Gol / 90</option><option value="assists">Assist totali</option><option value="assistsPer90">Assist / 90</option><option value="shots">Tiri totali</option><option value="shotsPer90">Tiri totali / 90</option><option value="shotsOnTarget">Tiri nello specchio</option><option value="shotsOnTargetPer90">Tiri nello specchio / 90</option><option value="cards">Cartellini totali</option><option value="cardsPer90">Cartellini / 90</option><option value="foulsCommitted">Falli commessi totali</option><option value="foulsCommittedPer90">Falli commessi / 90</option><option value="foulsWon">Falli subiti totali</option><option value="foulsWonPer90">Falli subiti / 90</option><option value="age">Età</option></select></label></div>`;
+  const filters = () => `<div class="squad-controls"><label>Ricerca<input id="player-search" type="search" placeholder="Nome calciatore"></label><label>Ruolo<select id="role-filter"><option value="">Tutti</option><option>Portiere</option><option>Difensore</option><option>Centrocampista</option><option>Attaccante</option></select></label><label>Stato<select id="status-filter"><option value="">Tutti</option><option>confermato</option><option>nuovo acquisto</option><option>prestito</option><option>rientro dal prestito</option><option>primavera</option><option>da verificare</option></select></label><label>Ordina<select id="player-sort"><option value="role">Ruolo</option><option value="appearances">Presenze</option><option value="minutes">Minuti</option><option value="goals">Gol totali</option><option value="goalsPer90">Gol / 90</option><option value="assists">Assist totali</option><option value="assistsPer90">Assist / 90</option><option value="shots">Tiri totali</option><option value="shotsPer90">Tiri totali / 90</option><option value="shotsOnTarget">Tiri nello specchio</option><option value="shotsOnTargetPer90">Tiri nello specchio / 90</option><option value="cards">Cartellini totali</option><option value="cardsPer90">Cartellini / 90</option><option value="foulsCommitted">Falli commessi totali</option><option value="foulsCommittedPer90">Falli commessi / 90</option><option value="foulsWon">Falli subiti totali</option><option value="foulsWonPer90">Falli subiti / 90</option><option value="age">Età</option></select></label></div>`;
 
   const primaryEntry = player => player.previousSeason?.entries?.find(item => item.competitionType === "domestic-league") || player.previousSeason?.entries?.[0] || {};
   const leaderboardValue = (entry, key) => key === "cards" ? cards(entry) : entry?.[key];
@@ -135,6 +140,7 @@
       const selected = team.squad
         .filter(player => (!query || searchKey(player.name).includes(query)) && (!role || player.role === role) && (!status || player.status === status))
         .sort((left, right) => {
+          if (sort === "role") return compareByRole(left, right);
           const leftValue = metric(left, sort);
           const rightValue = metric(right, sort);
           if (leftValue === null || leftValue === undefined) return rightValue === null || rightValue === undefined ? left.name.localeCompare(right.name, "it") : 1;
@@ -156,6 +162,7 @@
     dialog.addEventListener("click", event => {
       if (event.target === dialog) dialog.close();
     });
+    apply();
   }
 
   (async () => {
