@@ -1,11 +1,21 @@
 const fs=require("fs"), path=require("path");
 const dir=path.resolve(__dirname,"../data/normalized"), root=path.resolve(__dirname,"..");
 const read=name=>JSON.parse(fs.readFileSync(path.join(dir,name),"utf8"));
-const teams=read("teams.json"), matches=read("matches.json"), referees=read("referees.json"), refereeHistory=read("referee-stats-2025-26.json"), previousStandings=read("standings-2025-26.json"), teamIds=new Set(teams.map(t=>t.id));
+const teams=read("teams.json"), matches=read("matches.json"), referees=read("referees.json"), refereeHistory=read("referee-stats-2025-26.json"), previousStandings=read("standings-2025-26.json"), objectives=JSON.parse(fs.readFileSync(path.join(root,"data/team-objectives.json"),"utf8")), teamIds=new Set(teams.map(t=>t.id));
+const {calculateObjectiveMetrics}=require("./objective-metrics.js");
 function assert(condition,message){if(!condition)throw new Error(message)}
 
 assert(teams.length===20,`Squadre: ${teams.length}, attese 20`);
 assert(new Set(teams.map(t=>t.id)).size===20,"ID squadra duplicati");
+assert(objectives.schemaVersion===1&&objectives.season==="2026-27"&&objectives.teams.length===20,"Dataset obiettivi non valido");
+assert(new Set(objectives.teams.map(team=>team.teamId)).size===20,"Profili obiettivo duplicati");
+for(const profile of objectives.teams){
+  assert(profile.idealPosition<=profile.targetPosition&&profile.targetPosition<=profile.minimumAcceptable,`Gerarchia posizioni non valida: ${profile.teamId}`);
+  for(const field of ["ambition","pressure","expectation","boardPatience","motivationStart"])assert(Number.isInteger(profile[field])&&profile[field]>=0&&profile[field]<=100,`${field} non valido: ${profile.teamId}`);
+  const initial=calculateObjectiveMetrics(profile,{played:0,position:profile.targetPosition,points:0},0);
+  assert(initial.objectiveProgress===0&&initial.seasonOverperformance===0&&initial.motivationCurrent===profile.motivationStart&&initial.pressureCurrent===profile.pressure,`Metriche iniziali non coerenti: ${profile.teamId}`);
+}
+assert(objectives.teams.filter(profile=>teamIds.has(profile.teamId)).length===17,"Copertura obiettivi corrente diversa da 17/20");
 assert(referees.length===42,`Arbitri CAN: ${referees.length}, attesi 42`);
 assert(new Set(referees.map(r=>r.id)).size===42&&new Set(referees.map(r=>r.slug)).size===42,"ID o slug arbitro duplicati");
 const refereeStats=["serieAAppearances","serieBAppearances","yellowCards","secondYellowCards","straightRedCards","penalties","fouls","yellowCardsPerMatch","redCardsPerMatch","penaltiesPerMatch","homeWins","draws","awayWins","varInterventions"];

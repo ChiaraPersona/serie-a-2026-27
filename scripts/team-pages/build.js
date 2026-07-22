@@ -136,8 +136,6 @@ for (const team of builtTeams) write(`data/teams/${team.id}.json`, team);
 write("data/teams/index.json", index);
 
 const leaderboardMetrics = [
-  { id: "appearances", label: "Presenze", field: "appearances", hasPer90: false },
-  { id: "minutes", label: "Minuti", field: "minutes", hasPer90: false },
   { id: "goals", label: "Gol", field: "goals", hasPer90: true },
   { id: "assists", label: "Assist", field: "assists", hasPer90: true },
   { id: "shots", label: "Tiri totali", field: "shots", hasPer90: true },
