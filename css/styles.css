@@ -89,6 +89,16 @@ body[data-page="home"] .hero{min-height:360px;border-color:rgba(255,255,255,.18)
 .detail-section code{background:var(--surface2);color:#ffe59a}
 .squad-table th:first-child,.squad-table td:first-child{text-align:left}
 .squad-table thead th[rowspan]{vertical-align:middle}.squad-table thead th[colspan]{border-left:1px solid var(--line);text-align:center}.squad-table thead tr:nth-child(2) th{padding-top:6px;padding-bottom:8px;text-align:center;font-size:.68rem}
+.squad-table-wrap{position:relative;max-height:min(72vh,760px);overflow:auto;overscroll-behavior:contain;scrollbar-gutter:stable}
+.squad-table-wrap:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.squad-table{min-width:2100px}
+.squad-table thead th{position:sticky;top:0;z-index:4;background:var(--surface2);box-shadow:0 1px 0 var(--line)}
+.squad-table thead tr:nth-child(2) th{top:42px}
+.squad-table th:first-child,.squad-table td:first-child{position:sticky;left:0;min-width:235px;background:var(--surface);box-shadow:8px 0 14px -12px rgba(0,0,0,.9)}
+.squad-table thead th:first-child{z-index:7;background:var(--surface2)}
+.squad-table tbody tr:hover td,.squad-table tbody tr:focus-within td{background:#142d5d}
+.squad-table tbody tr:hover td:first-child,.squad-table tbody tr:focus-within td:first-child{box-shadow:8px 0 14px -10px rgba(0,0,0,.95)}
+@media(max-width:580px){.squad-table-wrap{max-height:68vh}.squad-table th:first-child,.squad-table td:first-child{min-width:220px}.squad-table thead tr:nth-child(2) th{top:38px}}
 .milan-pilot-card{display:grid;grid-template-columns:96px minmax(0,1fr);gap:22px;align-items:center;margin-top:18px;padding:24px;border:1px solid #4168a5;border-radius:20px;background:linear-gradient(135deg,rgba(23,79,165,.72),rgba(8,29,72,.98) 62%,rgba(181,126,27,.22));box-shadow:0 18px 46px rgba(0,7,31,.35)}
 .milan-pilot-card>img{width:96px;height:96px;object-fit:contain;filter:drop-shadow(0 10px 18px rgba(0,0,0,.3))}
 .milan-pilot-card h3{margin:8px 0 4px;font-size:clamp(1.4rem,3vw,2rem)}

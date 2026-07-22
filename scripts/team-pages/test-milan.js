@@ -6,6 +6,7 @@ const read = relative => JSON.parse(fs.readFileSync(path.join(root, relative), "
 const generated = read("data/generated/team-pages/milan-squad.json");
 const team = read("data/teams/milan.json");
 const interfaceSource = fs.readFileSync(path.join(root, "js/team-squads.js"), "utf8");
+const stylesSource = fs.readFileSync(path.join(root, "css/styles.css"), "utf8");
 const allowedStatuses = new Set(["confermato", "nuovo acquisto", "prestito", "rientro dal prestito", "primavera", "da verificare"]);
 const sortable = ["appearances", "minutes", "goals", "assists", "shots", "shotsOnTarget", "foulsCommitted", "yellowCards"];
 
@@ -58,6 +59,7 @@ assert.strictEqual(generated.players.filter(player => player.dataQuality.status 
 assert.deepStrictEqual(generated.players.filter(player => player.dataQuality.status === "partial").map(player => player.name).sort(), ["Gonçalo Ramos", "Lorenzo Torriani"]);
 assert.deepStrictEqual(generated.players.filter(player => player.dataQuality.uncertainAssociation).map(player => player.name), []);
 assert.strictEqual(generated.players.find(player => player.name === "David Odogu").dataQuality.associationMethod, "nome+squadra+numero-maglia");
-for (const contract of ["Tiri totali", "Tiri nello specchio", "Falli commessi", "Falli subiti", "goalsPer90", "assistsPer90", "shotsPer90", "shotsOnTargetPer90", "cardsPer90", "foulsCommittedPer90", "foulsWonPer90", "player-detail", "searchKey", "da verificare"]) assert.ok(interfaceSource.includes(contract), `Interfaccia: contratto ${contract} assente`);
+for (const contract of ["Tiri totali", "Tiri nello specchio", "Falli commessi", "Falli subiti", "goalsPer90", "assistsPer90", "shotsPer90", "shotsOnTargetPer90", "cardsPer90", "foulsCommittedPer90", "foulsWonPer90", "squad-table-wrap", "player-detail", "searchKey", "da verificare"]) assert.ok(interfaceSource.includes(contract), `Interfaccia: contratto ${contract} assente`);
+for (const contract of [".squad-table-wrap", "position:sticky", ".squad-table thead tr:nth-child(2) th", ".squad-table tbody tr:hover td"]) assert.ok(stylesSource.includes(contract), `Stili tabella: contratto ${contract} assente`);
 assert.strictEqual(team.availability.squad, "available");
 console.log(`Milan pilot: ${generated.players.length} giocatori, ${generated.players.filter(player => player.previousSeason.entries.length).length} con statistiche, duplicati 0, per90 validato.`);
