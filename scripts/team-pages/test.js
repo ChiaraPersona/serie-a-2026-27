@@ -20,12 +20,9 @@ for (const summary of index.teams) {
     assert.ok(Object.values(section).every(value => value === null), "Un campo non disponibile deve essere null");
   }
 }
-for (const teamId of ["milan", "inter", "juventus", "napoli"]) {
-  assert.ok(mainApp.includes(`"${teamId}"`), `${teamId} assente dal blocco delle pagine complete`);
-  assert.ok(teamStatsShell.includes(`href="statistiche-squadra/${teamId}.html"`), `Collegamento alla pagina ${teamId} assente da Statistiche squadre`);
-}
+assert.ok(teamStatsShell.includes('href="statistiche-squadra/index.html"'), "Collegamento all'indice delle 20 squadre assente");
 const teamInterface = fs.readFileSync(path.join(root, "js/team-squads.js"), "utf8");
-assert.ok(teamInterface.includes("completed-team-grid") && teamInterface.includes('href="${team.id}.html"'), "Pagine complete non evidenziate nell'indice delle squadre");
+assert.ok(teamInterface.includes("coverage-complete-card") && mainApp.includes("20 squadre su 20"), "Copertura completa non evidenziata" );
 assert.ok(!fs.existsSync(path.join(root, "statistiche-giocatori.html")), "La pagina Statistiche giocatori deve essere rimossa");
 const generatedHtml = fs.readdirSync(root).filter(file => file.endsWith(".html")).map(file => fs.readFileSync(path.join(root, file), "utf8"))
   .concat(fs.readdirSync(path.join(root, "statistiche-squadra")).filter(file => file.endsWith(".html")).map(file => fs.readFileSync(path.join(root, "statistiche-squadra", file), "utf8"))).join("\n");

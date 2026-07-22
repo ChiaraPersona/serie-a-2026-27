@@ -13,6 +13,8 @@ Sito statico autonomo per Serie A, Coppa Italia e statistiche arbitrali, compati
 - `npm run download:logos` scarica e converte localmente gli stemmi.
 - `npm run import:completed-teams` aggiorna rose e riepiloghi ESPN per Inter, Juventus e Napoli.
 - `npm run build:completed-teams` rigenera i dataset e le pagine delle tre squadre usando la cache locale.
+- `npm run import:all-teams` aggiorna le rose correnti di tutte le 20 squadre e completa le cache statistiche mancanti.
+- `npm run build:all-teams` rigenera tutte le rose e le pagine usando le cache locali di Serie A e Serie B.
 - `npm test` esegue tutte le validazioni.
 
 Per la verifica locale: `python -m http.server 8000`, poi aprire `http://localhost:8000`.
@@ -33,4 +35,4 @@ Le stagioni 2023/24 e 2024/25 sono registrate nei profili dell'importatore ma ha
 
 `scripts/build-site.js` genera le shell HTML; `js/app.js` carica i JSON e costruisce le viste. Gli HTML generati non devono essere modificati manualmente.
 
-Le pagine complete di Milan, Inter, Juventus e Napoli sono collegate da `statistiche-squadre.html` e da `statistiche-squadra/index.html`. Le rose correnti e i dati 2025/26 restano separati: per la Juventus i nominativi non ancora presenti nella pagina ufficiale 2026/27 sono marcati `da verificare`; i campi non pubblicati dalla fonte restano `null` e sono mostrati come `N/D`.
+Le pagine complete di tutte le 20 squadre sono collegate da `statistiche-squadre.html` e da `statistiche-squadra/index.html`. Le rose correnti e i dati 2025/26 restano separati; i dati della Serie B sono mantenuti distinti per le neopromosse. I nominativi rilevati durante il mercato estivo possono essere marcati `da verificare`; i campi non pubblicati dalla fonte restano `null` e sono mostrati come `N/D`.

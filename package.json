@@ -9,6 +9,8 @@
     "build:milan": "node scripts/team-pages/import-milan.js && node scripts/team-pages/build.js && node scripts/build-site.js",
     "import:completed-teams": "node scripts/team-pages/import-completed-teams.js --refresh-rosters --refresh-espn",
     "build:completed-teams": "node scripts/team-pages/import-completed-teams.js && node scripts/team-pages/build.js && node scripts/build-site.js",
+    "import:all-teams": "node scripts/team-pages/import-completed-teams.js --refresh-rosters",
+    "build:all-teams": "node scripts/team-pages/import-completed-teams.js && node scripts/team-pages/build.js && node scripts/build-site.js",
     "import:calendar": "node scripts/import-official-calendar.js",
     "import:referee-calendars": "node scripts/referee-stats/import-calendars.js --season 2025-26",
     "import:referees:pilot": "node scripts/referee-stats/import.js --competition all --season 2025-26 --limit 10 --pilot",
@@ -18,6 +20,7 @@
     "test:teams": "node scripts/team-pages/test.js",
     "test:milan": "node scripts/team-pages/test-milan.js",
     "test:completed-teams": "node scripts/team-pages/test-completed-teams.js",
-    "test": "node scripts/validate-data.js && node scripts/referee-stats/test.js && node scripts/referee-stats/validate-2025-26.js && node scripts/team-pages/test.js && node scripts/team-pages/test-milan.js && node scripts/team-pages/test-completed-teams.js"
+    "test:all-teams": "node scripts/team-pages/test-all-teams.js",
+    "test": "node scripts/validate-data.js && node scripts/referee-stats/test.js && node scripts/referee-stats/validate-2025-26.js && node scripts/team-pages/test.js && node scripts/team-pages/test-milan.js && node scripts/team-pages/test-completed-teams.js && node scripts/team-pages/test-all-teams.js"
   }
 }

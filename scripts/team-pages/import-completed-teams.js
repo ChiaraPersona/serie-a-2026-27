@@ -6,7 +6,8 @@ const { PLAYER_FIELDS, playerEntry, round } = require("./model");
 
 const root = path.resolve(__dirname, "../..");
 const generatedAt = "2026-07-22";
-const config = JSON.parse(fs.readFileSync(path.join(root, "data/sources/team-pages/completed-teams-2026-27.json"), "utf8"));
+const configFiles = ["completed-teams-2026-27.json", "remaining-teams-2026-27.json"];
+const config = { teams: Object.assign({}, ...configFiles.map(file => JSON.parse(fs.readFileSync(path.join(root, "data/sources/team-pages", file), "utf8")).teams)) };
 const selectedArg = process.argv.find(argument => argument.startsWith("--teams="));
 const selectedTeams = selectedArg ? selectedArg.slice(8).split(",").map(value => value.trim()).filter(Boolean) : Object.keys(config.teams);
 const refreshRosters = process.argv.includes("--refresh") || process.argv.includes("--refresh-rosters");
@@ -54,51 +55,56 @@ function rosterCache(teamId) {
 async function refreshRoster(teamId, teamConfig) {
   const target = rosterCache(teamId);
   if (!refreshRosters && fs.existsSync(target)) return;
-  const url = `https://site.api.espn.com/apis/site/v2/sports/soccer/ita.1/teams/${teamConfig.espnTeamId}/roster`;
+  const url = `https://site.api.espn.com/apis/site/v2/sports/soccer/${teamConfig.espnLeague || "ita.1"}/teams/${teamConfig.espnTeamId}/roster`;
   const response = await fetch(url, { headers: { "user-agent": "Mozilla/5.0", accept: "application/json" } });
   if (!response.ok) throw new Error(`${teamConfig.name}: rosa ESPN HTTP ${response.status}`);
   writeGzip(target, { provider: "ESPN", season: "2026/27", retrievedAt: new Date().toISOString(), sourceUrl: url, roster: await response.json() });
 }
 
-function existingSummary(fixtureId) {
-  const generic = path.join(root, `data/raw/team-pages/espn/2025-26/serie-a/${fixtureId}.json.gz`);
+function existingSummary(competition, fixtureId) {
+  const generic = path.join(root, `data/raw/team-pages/espn/2025-26/${competition}/${fixtureId}.json.gz`);
   if (fs.existsSync(generic)) return generic;
-  const milan = path.join(root, `data/raw/team-pages/milan/espn/serie-a/${fixtureId}.json.gz`);
+  const milan = path.join(root, `data/raw/team-pages/milan/espn/${competition}/${fixtureId}.json.gz`);
   return fs.existsSync(milan) ? milan : null;
 }
 
 async function refreshEspnMatches() {
-  const matches = read("data/normalized/referee-matches/2025-26/serie-a.json").matches;
-  const targetDir = path.join(root, "data/raw/team-pages/espn/2025-26/serie-a");
-  fs.mkdirSync(targetDir, { recursive: true });
-  const jobs = [];
-  let reused = 0;
-  for (const match of matches) {
-    const target = path.join(targetDir, `${match.providerFixtureId}.json.gz`);
-    if (!refreshEspn && fs.existsSync(target)) continue;
-    const reusable = existingSummary(match.providerFixtureId);
-    if (reusable && reusable !== target) {
-      fs.copyFileSync(reusable, target);
-      reused++;
-      continue;
+  const leagueCode = competition => competition === "serie-a" ? "ita.1" : "ita.2";
+  for (const competition of ["serie-a", "serie-b"]) {
+    const matches = read(`data/normalized/referee-matches/2025-26/${competition}.json`).matches;
+    const targetDir = path.join(root, `data/raw/team-pages/espn/2025-26/${competition}`);
+    fs.mkdirSync(targetDir, { recursive: true });
+    const jobs = [];
+    let reused = 0;
+    for (const match of matches) {
+      const target = path.join(targetDir, `${match.providerFixtureId}.json.gz`);
+      if (!refreshEspn && fs.existsSync(target)) continue;
+      const reusable = existingSummary(competition, match.providerFixtureId);
+      if (reusable && reusable !== target) {
+        fs.copyFileSync(reusable, target);
+        reused++;
+        continue;
+      }
+      jobs.push({ fixtureId: match.providerFixtureId, target });
     }
-    jobs.push({ fixtureId: match.providerFixtureId, target });
+    for (let index = 0; index < jobs.length; index += 8) {
+      await Promise.all(jobs.slice(index, index + 8).map(async job => {
+        const url = `https://site.api.espn.com/apis/site/v2/sports/soccer/${leagueCode(competition)}/summary?event=${job.fixtureId}`;
+        const response = await fetch(url, { headers: { "user-agent": "Mozilla/5.0", accept: "application/json" } });
+        if (!response.ok) throw new Error(`ESPN ${job.fixtureId}: HTTP ${response.status}`);
+        writeGzip(job.target, { provider: "espn", competition, season: "2025-26", retrievedAt: new Date().toISOString(), sourceUrl: url, bundle: { summary: await response.json() } });
+      }));
+      console.log(`ESPN ${competition === "serie-a" ? "Serie A" : "Serie B"}: ${Math.min(index + 8, jobs.length)}/${jobs.length} riepiloghi scaricati`);
+    }
+    console.log(`ESPN ${competition === "serie-a" ? "Serie A" : "Serie B"}: cache completa (${matches.length} partite; ${reused} riepiloghi riutilizzati).`);
   }
-  for (let index = 0; index < jobs.length; index += 8) {
-    await Promise.all(jobs.slice(index, index + 8).map(async job => {
-      const url = `https://site.api.espn.com/apis/site/v2/sports/soccer/ita.1/summary?event=${job.fixtureId}`;
-      const response = await fetch(url, { headers: { "user-agent": "Mozilla/5.0", accept: "application/json" } });
-      if (!response.ok) throw new Error(`ESPN ${job.fixtureId}: HTTP ${response.status}`);
-      writeGzip(job.target, { provider: "espn", competition: "serie-a", season: "2025-26", retrievedAt: new Date().toISOString(), sourceUrl: url, bundle: { summary: await response.json() } });
-    }));
-    console.log(`ESPN Serie A: ${Math.min(index + 8, jobs.length)}/${jobs.length} riepiloghi scaricati`);
-  }
-  console.log(`ESPN Serie A: cache completa (${matches.length} partite; ${reused} riepiloghi riutilizzati).`);
 }
 
 function rawFiles() {
-  const dir = path.join(root, "data/raw/team-pages/espn/2025-26/serie-a");
-  return fs.readdirSync(dir).filter(name => name.endsWith(".json.gz")).map(name => path.join(dir, name));
+  return ["serie-a", "serie-b"].flatMap(competition => {
+    const dir = path.join(root, `data/raw/team-pages/espn/2025-26/${competition}`);
+    return fs.readdirSync(dir).filter(name => name.endsWith(".json.gz")).map(name => ({ competition, file: path.join(dir, name) }));
+  });
 }
 
 function matchMinutes(entry) {
@@ -113,7 +119,7 @@ function matchMinutes(entry) {
 
 function allEntries(playersByEspnId) {
   const buckets = new Map();
-  for (const file of rawFiles()) {
+  for (const { competition, file } of rawFiles()) {
     const raw = readRaw(file);
     for (const roster of raw.bundle?.summary?.rosters || []) {
       for (const row of roster.roster || []) {
@@ -121,8 +127,8 @@ function allEntries(playersByEspnId) {
         if (!player) continue;
         const stats = statMap(row.stats);
         if ((stats.appearances ?? 0) < 1) continue;
-        const key = `${player.id}|${roster.team?.id || roster.team?.displayName}`;
-        if (!buckets.has(key)) buckets.set(key, { playerId: player.id, playerRole: player.role, providerPlayerId: String(row.athlete.id), team: roster.team?.displayName || "N/D", matches: [] });
+        const key = `${player.id}|${competition}|${roster.team?.id || roster.team?.displayName}`;
+        if (!buckets.has(key)) buckets.set(key, { playerId: player.id, playerRole: player.role, providerPlayerId: String(row.athlete.id), team: roster.team?.displayName || "N/D", competition, matches: [] });
         buckets.get(key).matches.push({ row, stats, minutes: matchMinutes(row), retrievedAt: raw.retrievedAt || null });
       }
     }
@@ -136,7 +142,7 @@ function allEntries(playersByEspnId) {
     const shotsFaced = isGoalkeeper ? total("shotsFaced") : null;
     return playerEntry({
       playerId: bucket.playerId, providerPlayerId: bucket.providerPlayerId, team: bucket.team === "AC Milan" ? "Milan" : bucket.team,
-      competition: "Serie A", competitionType: "domestic-league", appearances: matches.length,
+      competition: bucket.competition === "serie-a" ? "Serie A" : "Serie B", competitionType: "domestic-league", appearances: matches.length,
       starts: matches.filter(item => item.row.starter).length, substituteAppearances: matches.filter(item => item.row.subbedIn).length,
       minutes, minutesPerAppearance: minutes === null ? null : round(minutes / matches.length),
       completeMatches: matches.filter(item => item.row.starter && !item.row.subbedOut).length,
@@ -222,7 +228,7 @@ async function buildTeam(teamId, teamConfig, entries) {
       ],
       dataQuality: {
         status: completeness, uncertainAssociation: false, associationMethod: seed.espnId ? "provider-id" : null,
-        note: playerEntries.length ? "Statistiche aggregate dai roster partita ESPN." : "Nessuna statistica 2025/26 verificata nel perimetro Serie A ESPN; i valori restano N/D."
+        note: playerEntries.length ? "Statistiche aggregate dai roster partita ESPN." : "Nessuna statistica 2025/26 verificata nel perimetro Serie A/Serie B ESPN; i valori restano N/D."
       }
     };
     write(`data/players/${teamId}/${player.id}.json`, player);

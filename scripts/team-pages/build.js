@@ -14,8 +14,8 @@ const today = "2026-07-22";
 const teams = read("data/normalized/teams.json");
 const serieAStandings = read("data/normalized/standings-2025-26.json");
 const currentIds = new Set(teams.map(team => team.id));
-const completedTeamIds = new Set(["milan", "inter", "juventus", "napoli"]);
-const generatedSquads = new Map([...completedTeamIds].map(teamId => {
+const generatedSquads = new Map(teams.map(team => {
+  const teamId = team.id;
   const file = path.join(root, `data/generated/team-pages/${teamId}-squad.json`);
   return [teamId, fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, "utf8")) : null];
 }));

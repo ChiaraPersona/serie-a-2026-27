@@ -41,8 +41,9 @@ for (const [teamId, expectedCount] of Object.entries(expectedCounts)) {
 const interfaceSource = fs.readFileSync(path.join(root, "js/team-squads.js"), "utf8");
 const rootShell = fs.readFileSync(path.join(root, "statistiche-squadre.html"), "utf8");
 for (const teamId of Object.keys(expectedCounts)) {
-  assert.ok(rootShell.includes(`statistiche-squadra/${teamId}.html`), `${teamId}: collegamento rapido assente`);
+  assert.ok(fs.existsSync(path.join(root, `statistiche-squadra/${teamId}.html`)), `${teamId}: pagina assente`);
 }
 assert.ok(interfaceSource.includes('href="${team.id}.html"') && interfaceSource.includes("completed-team-grid"), "Collegamenti dinamici dell'indice assenti");
+assert.ok(rootShell.includes('statistiche-squadra/index.html'), "Collegamento all'indice squadre assente");
 assert.ok(interfaceSource.includes("squadLeaderboards"), "Top 3 non condivisa con le nuove pagine");
 console.log("Inter, Juventus e Napoli: rose, statistiche /90, pagine, fonti e collegamenti validati.");
