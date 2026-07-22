@@ -41,7 +41,7 @@ for (const player of generated.players) {
     assert.ok(value === null || typeof value === "number", `${player.name}: ${field} non numerico`);
   }
   const totals = player.previousSeason.totals;
-  for (const field of ["goals", "assists", "shots", "shotsOnTarget"]) {
+  for (const field of ["goals", "assists", "shots", "shotsOnTarget", "foulsCommitted", "foulsWon"]) {
     const expected = totals[field] == null || !totals.minutes ? null : Number((totals[field] * 90 / totals.minutes).toFixed(2));
     assert.strictEqual(totals.per90[field], expected, `${player.name}: totale ${field}/90 errato`);
   }
@@ -58,6 +58,6 @@ assert.strictEqual(generated.players.filter(player => player.dataQuality.status 
 assert.deepStrictEqual(generated.players.filter(player => player.dataQuality.status === "partial").map(player => player.name).sort(), ["Gonçalo Ramos", "Lorenzo Torriani"]);
 assert.deepStrictEqual(generated.players.filter(player => player.dataQuality.uncertainAssociation).map(player => player.name), []);
 assert.strictEqual(generated.players.find(player => player.name === "David Odogu").dataQuality.associationMethod, "nome+squadra+numero-maglia");
-for (const contract of ["Tiri totali", "Tiri nello specchio", "goalsPer90", "assistsPer90", "shotsPer90", "shotsOnTargetPer90", "cardsPer90", "player-detail", "searchKey", "da verificare"]) assert.ok(interfaceSource.includes(contract), `Interfaccia: contratto ${contract} assente`);
+for (const contract of ["Tiri totali", "Tiri nello specchio", "Falli commessi", "Falli subiti", "goalsPer90", "assistsPer90", "shotsPer90", "shotsOnTargetPer90", "cardsPer90", "foulsCommittedPer90", "foulsWonPer90", "player-detail", "searchKey", "da verificare"]) assert.ok(interfaceSource.includes(contract), `Interfaccia: contratto ${contract} assente`);
 assert.strictEqual(team.availability.squad, "available");
 console.log(`Milan pilot: ${generated.players.length} giocatori, ${generated.players.filter(player => player.previousSeason.entries.length).length} con statistiche, duplicati 0, per90 validato.`);
