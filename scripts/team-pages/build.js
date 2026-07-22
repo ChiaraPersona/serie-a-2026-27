@@ -131,7 +131,10 @@ function buildTeam(team) {
 }
 
 const builtTeams = teams.map(buildTeam);
-const index = { schemaVersion: 1, season: "2026/27", previousSeason: "2025/26", generatedAt: today, teams: builtTeams.map(team => ({ id: team.id, name: team.name, officialName: team.officialName, shortName: team.shortName, logo: team.logo, city: team.city, stadium: team.stadium, coach: team.coach, previousSeason: team.previousSeason, playerCount: team.squad.length, lastUpdated: team.lastUpdated })) };
+const index = { schemaVersion: 1, season: "2026/27", previousSeason: "2025/26", generatedAt: today, teams: builtTeams.map(team => {
+  const normalizedTeam = teams.find(item => item.id === team.id);
+  return { id: team.id, name: team.name, officialName: team.officialName, shortName: team.shortName, logo: team.logo, colors: normalizedTeam.colors, city: team.city, stadium: team.stadium, coach: team.coach, previousSeason: team.previousSeason, playerCount: team.squad.length, lastUpdated: team.lastUpdated };
+}) };
 for (const team of builtTeams) write(`data/teams/${team.id}.json`, team);
 write("data/teams/index.json", index);
 
