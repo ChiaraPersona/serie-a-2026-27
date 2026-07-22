@@ -15,7 +15,7 @@ for(const profile of objectives.teams){
   const initial=calculateObjectiveMetrics(profile,{played:0,position:profile.targetPosition,points:0},0);
   assert(initial.objectiveProgress===0&&initial.seasonOverperformance===0&&initial.motivationCurrent===profile.motivationStart&&initial.pressureCurrent===profile.pressure,`Metriche iniziali non coerenti: ${profile.teamId}`);
 }
-assert(objectives.teams.filter(profile=>teamIds.has(profile.teamId)).length===17,"Copertura obiettivi corrente diversa da 17/20");
+assert(objectives.teams.every(profile=>teamIds.has(profile.teamId)),"Copertura obiettivi corrente diversa da 20/20");
 assert(referees.length===42,`Arbitri CAN: ${referees.length}, attesi 42`);
 assert(new Set(referees.map(r=>r.id)).size===42&&new Set(referees.map(r=>r.slug)).size===42,"ID o slug arbitro duplicati");
 const refereeStats=["serieAAppearances","serieBAppearances","yellowCards","secondYellowCards","straightRedCards","penalties","fouls","yellowCardsPerMatch","redCardsPerMatch","penaltiesPerMatch","homeWins","draws","awayWins","varInterventions"];
