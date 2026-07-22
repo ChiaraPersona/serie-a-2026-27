@@ -32,8 +32,11 @@ for (const [metric, ranking] of Object.entries(playerLeaderboards.rankings)) {
   assert.strictEqual(new Set(ranking.players.map(player => `${player.currentTeamId}|${player.id}`)).size, 15, `${metric}: calciatori duplicati`);
   assert.ok(ranking.players.every(player => index.teams.some(team => team.id === player.currentTeamId)), `${metric}: squadra 2026/27 non valida`);
 }
-for (const contract of ["loadPlayerLeaderboards", "globalPlayerLeaderboards", "globalPlayerLeaderboardTable", "Top 15 calciatori per statistica", "global-player-stat"]) assert.ok(mainApp.includes(contract), `Top 15 globale: contratto ${contract} assente`);
-for (const contract of [".global-player-leaders", ".global-player-table", ".global-leader-player", ".global-leader-value"]) assert.ok(styles.includes(contract), `Top 15 globale: stile ${contract} assente`);
+for (const contract of ["loadPlayerLeaderboards", "globalPlayerLeaderboards", "globalPlayerLeaderboardTable", "Top 15 calciatori per statistica", "data-player-stat", "serie-b-marker", "aria-pressed"]) assert.ok(mainApp.includes(contract), `Top 15 globale: contratto ${contract} assente`);
+for (const contract of [".global-player-leaders", ".global-player-table", ".global-leader-player", ".global-leader-value", ".global-stat-button", ".serie-b-marker"]) assert.ok(styles.includes(contract), `Top 15 globale: stile ${contract} assente`);
+const globalTableSource = mainApp.slice(mainApp.indexOf("function globalPlayerLeaderboardTable"), mainApp.indexOf("function globalPlayerLeaderboards"));
+assert.ok(!globalTableSource.includes("<th>Competizione</th>"), "La Top 15 non deve mostrare la colonna Competizione");
+assert.ok(!mainApp.includes('id="global-player-stat"'), "La selezione Top 15 non deve usare un menu a tendina");
 assert.ok(!mainApp.includes("Riepilogo statistico") && !mainApp.includes("season-summary"), "Il riepilogo statistico non deve essere mostrato in Statistiche squadre");
 const teamInterface = fs.readFileSync(path.join(root, "js/team-squads.js"), "utf8");
 assert.ok(!teamInterface.includes("Copertura completa") && !mainApp.includes("Copertura completa") && !teamStatsShell.includes("Copertura completa"), "Il banner Copertura completa non deve essere mostrato");
