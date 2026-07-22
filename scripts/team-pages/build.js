@@ -10,12 +10,15 @@ const write = (relative, value) => {
   fs.writeFileSync(target, `${JSON.stringify(value, null, 2)}\n`);
 };
 const slugAliases = { "hellas-verona": "verona" };
-const today = "2026-07-20";
+const today = "2026-07-22";
 const teams = read("data/normalized/teams.json");
 const serieAStandings = read("data/normalized/standings-2025-26.json");
 const currentIds = new Set(teams.map(team => team.id));
-const milanSquadPath = path.join(root, "data/generated/team-pages/milan-squad.json");
-const milanSquad = fs.existsSync(milanSquadPath) ? JSON.parse(fs.readFileSync(milanSquadPath, "utf8")).players : [];
+const completedTeamIds = new Set(["milan", "inter", "juventus", "napoli"]);
+const generatedSquads = new Map([...completedTeamIds].map(teamId => {
+  const file = path.join(root, `data/generated/team-pages/${teamId}-squad.json`);
+  return [teamId, fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, "utf8")) : null];
+}));
 
 function competitionMatches(slug) {
   const file = slug === "serie-a" ? "serie-a.json" : "serie-b.json";
@@ -102,21 +105,23 @@ function buildTeam(team) {
     straightRedCards: straightRed, dismissals: secondYellow + straightRed, penaltiesConceded: penaltiesAgainst,
     penaltiesWon: penaltiesFor, disciplineIndex: round((yellow + secondYellow * 2 + straightRed * 3) / (played || 1))
   };
-  const squad = team.id === "milan" ? milanSquad : [];
+  const generatedSquad = generatedSquads.get(team.id);
+  const squad = generatedSquad?.players || [];
+  const teamLastUpdated = generatedSquad?.rosterSource?.retrievedAt || "2026-07-20";
   const sources = [
     { provider: "ESPN", scope: `${competitionName} 2025/26 - risultati e disciplina`, url: "https://www.espn.com/soccer/", retrievedAt: "2026-07-18" },
     { provider: previousCompetition === "serie-a" ? "Classifica fornita dall'utente" : "ESPN", scope: `${competitionName} 2025/26 - classifica calcolata dai risultati`, url: null, retrievedAt: "2026-07-18" },
-    ...(team.id === "milan" ? [{ provider: "AC Milan", scope: "Rosa ufficiale prima squadra 2026/27", url: "https://www.acmilan.com/en/teams/men-first-team", retrievedAt: today }] : [])
+    ...(generatedSquad?.rosterSource ? [generatedSquad.rosterSource] : [])
   ];
   return {
     schemaVersion: 1, id: team.id, name: team.name, officialName: team.officialName, shortName: team.shortName,
-    slug: team.slug, logo: `../${team.logo}`, currentSeason: "2026/27", city: null, stadium: null, coach: null,
+    slug: team.slug, logo: `../${team.logo}`, currentSeason: "2026/27", city: null, stadium: null, coach: generatedSquad?.coach || null,
     previousSeason: { season: "2025/26", competition: competitionName, competitionId: previousCompetition, promoted: previousCompetition === "serie-b", position: row?.position ?? null, points: row?.points ?? null },
-    europeanCompetitions: [], lastUpdated: today,
+    europeanCompetitions: [], lastUpdated: teamLastUpdated,
     teamStats: { season: "2025/26", competition: competitionName, source: "ESPN", lastUpdated: "2026-07-18", results, attack: nullObject(STAT_FIELDS.attack), defence: { ...nullObject(STAT_FIELDS.defence), goalsAgainstPerGame: rate(row?.goalsAgainst, played), cleanSheets: results.cleanSheets }, discipline, possession: nullObject(STAT_FIELDS.possession), homeAway: { home: matchData.home, away: matchData.away } },
     squad, sources,
     availability: squad.length
-      ? { squad: "available", playerStats: squad.every(player => player.dataQuality.status === "complete") ? "complete" : "partial", note: "Pilota Milan alimentato da rosa ufficiale AC Milan e statistiche ESPN separate per squadra e competizione." }
+      ? { squad: "available", playerStats: squad.every(player => player.dataQuality.status === "complete") ? "complete" : "partial", note: "Rosa 2026/27 e statistiche ESPN 2025/26 separate per squadra e competizione; i dati non esposti restano N/D." }
       : { squad: "unavailable", playerStats: "unavailable", note: "Nessuna rosa 2026/27 verificata è presente nei dati del progetto. I valori mancanti restano null." }
   };
 }
