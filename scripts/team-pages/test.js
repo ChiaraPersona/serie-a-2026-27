@@ -26,4 +26,8 @@ for (const teamId of ["milan", "inter", "juventus", "napoli"]) {
 }
 const teamInterface = fs.readFileSync(path.join(root, "js/team-squads.js"), "utf8");
 assert.ok(teamInterface.includes("completed-team-grid") && teamInterface.includes('href="${team.id}.html"'), "Pagine complete non evidenziate nell'indice delle squadre");
+assert.ok(!fs.existsSync(path.join(root, "statistiche-giocatori.html")), "La pagina Statistiche giocatori deve essere rimossa");
+const generatedHtml = fs.readdirSync(root).filter(file => file.endsWith(".html")).map(file => fs.readFileSync(path.join(root, file), "utf8"))
+  .concat(fs.readdirSync(path.join(root, "statistiche-squadra")).filter(file => file.endsWith(".html")).map(file => fs.readFileSync(path.join(root, "statistiche-squadra", file), "utf8"))).join("\n");
+assert.ok(!generatedHtml.includes("statistiche-giocatori"), "Un collegamento alla pagina rimossa è ancora presente");
 console.log("Team pages: 20 JSON e 20 pagine valide; competizioni separate; null preservati.");
