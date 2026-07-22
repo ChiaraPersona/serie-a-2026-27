@@ -21,6 +21,7 @@ for (const summary of index.teams) {
   }
 }
 assert.ok(teamStatsShell.includes('href="statistiche-squadra/index.html"'), "Collegamento all'indice delle 20 squadre assente");
+assert.ok(!mainApp.includes("Riepilogo statistico") && !mainApp.includes("season-summary"), "Il riepilogo statistico non deve essere mostrato in Statistiche squadre");
 const teamInterface = fs.readFileSync(path.join(root, "js/team-squads.js"), "utf8");
 assert.ok(teamInterface.includes("coverage-complete-card") && mainApp.includes("20 squadre su 20"), "Copertura completa non evidenziata" );
 assert.ok(!fs.existsSync(path.join(root, "statistiche-giocatori.html")), "La pagina Statistiche giocatori deve essere rimossa");

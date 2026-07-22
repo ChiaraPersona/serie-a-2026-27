@@ -5,6 +5,9 @@
   "required": [
     "id",
     "currentSeason",
+    "city",
+    "stadium",
+    "coach",
     "previousSeason",
     "teamStats",
     "squad",
@@ -12,6 +15,18 @@
     "lastUpdated"
   ],
   "properties": {
+    "city": {
+      "type": "string",
+      "minLength": 1
+    },
+    "stadium": {
+      "type": "string",
+      "minLength": 1
+    },
+    "coach": {
+      "type": "string",
+      "minLength": 1
+    },
     "squad": {
       "type": "array",
       "items": {
