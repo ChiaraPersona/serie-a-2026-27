@@ -23,17 +23,18 @@ for (const summary of index.teams) {
   }
 }
 assert.ok(mainApp.includes("data/teams/index.json") && mainApp.includes("team-directory-grid") && mainApp.includes("statistiche-squadra/${team.id}.html"), "Elenco delle 20 squadre non integrato nella pagina principale");
-const expectedLeaderboardMetrics = ["appearances", "minutes", "goals", "goalsPer90", "assists", "assistsPer90", "shots", "shotsPer90", "shotsOnTarget", "shotsOnTargetPer90", "cards", "cardsPer90", "foulsCommitted", "foulsCommittedPer90", "foulsWon", "foulsWonPer90"];
+const expectedLeaderboardMetrics = ["appearances", "minutes", "goals", "assists", "shots", "shotsOnTarget", "cards", "foulsCommitted", "foulsWon"];
 assert.deepStrictEqual(Object.keys(playerLeaderboards.rankings), expectedLeaderboardMetrics, "Le Top 15 non coprono tutte le statistiche giocatore");
 for (const [metric, ranking] of Object.entries(playerLeaderboards.rankings)) {
   assert.strictEqual(ranking.players.length, 15, `${metric}: la classifica deve contenere 15 calciatori`);
   assert.ok(ranking.availablePlayers >= 15, `${metric}: copertura insufficiente`);
-  assert.ok(ranking.players.every((player, index) => Number.isFinite(player.value) && (!index || player.value <= ranking.players[index - 1].value)), `${metric}: valori non ordinati`);
+  assert.ok(ranking.players.every((player, index) => Number.isFinite(player.totalValue) && (!index || player.totalValue <= ranking.players[index - 1].totalValue)), `${metric}: valori non ordinati`);
+  assert.ok(ranking.players.every(player => !ranking.hasPer90 || player.per90Value === null || Number.isFinite(player.per90Value)), `${metric}: media /90 non valida`);
   assert.strictEqual(new Set(ranking.players.map(player => `${player.currentTeamId}|${player.id}`)).size, 15, `${metric}: calciatori duplicati`);
   assert.ok(ranking.players.every(player => index.teams.some(team => team.id === player.currentTeamId)), `${metric}: squadra 2026/27 non valida`);
 }
-for (const contract of ["loadPlayerLeaderboards", "globalPlayerLeaderboards", "globalPlayerLeaderboardTable", "Top 15 calciatori per statistica", "data-player-stat", "serie-b-marker", "aria-pressed"]) assert.ok(mainApp.includes(contract), `Top 15 globale: contratto ${contract} assente`);
-for (const contract of [".global-player-leaders", ".global-player-table", ".global-leader-player", ".global-leader-value", ".global-stat-button", ".serie-b-marker"]) assert.ok(styles.includes(contract), `Top 15 globale: stile ${contract} assente`);
+for (const contract of ["loadPlayerLeaderboards", "globalPlayerLeaderboards", "globalPlayerLeaderboardTable", "Top 15 calciatori per statistica", "data-player-stat", "serie-b-marker", "aria-pressed", "per90Value", "stessa riga"]) assert.ok(mainApp.includes(contract), `Top 15 globale: contratto ${contract} assente`);
+for (const contract of [".global-player-leaders", ".global-player-table", ".global-leader-player", ".global-leader-value", ".global-leader-rate", ".global-stat-button", ".serie-b-marker"]) assert.ok(styles.includes(contract), `Top 15 globale: stile ${contract} assente`);
 const globalTableSource = mainApp.slice(mainApp.indexOf("function globalPlayerLeaderboardTable"), mainApp.indexOf("function globalPlayerLeaderboards"));
 assert.ok(!globalTableSource.includes("<th>Competizione</th>"), "La Top 15 non deve mostrare la colonna Competizione");
 assert.ok(!mainApp.includes('id="global-player-stat"'), "La selezione Top 15 non deve usare un menu a tendina");
