@@ -130,9 +130,59 @@ function buildTeam(team) {
   };
 }
 
-const index = { schemaVersion: 1, season: "2026/27", previousSeason: "2025/26", generatedAt: today, teams: teams.map(buildTeam).map(team => ({ id: team.id, name: team.name, officialName: team.officialName, shortName: team.shortName, logo: team.logo, city: team.city, stadium: team.stadium, coach: team.coach, previousSeason: team.previousSeason, playerCount: team.squad.length, lastUpdated: team.lastUpdated })) };
-for (const team of teams.map(buildTeam)) write(`data/teams/${team.id}.json`, team);
+const builtTeams = teams.map(buildTeam);
+const index = { schemaVersion: 1, season: "2026/27", previousSeason: "2025/26", generatedAt: today, teams: builtTeams.map(team => ({ id: team.id, name: team.name, officialName: team.officialName, shortName: team.shortName, logo: team.logo, city: team.city, stadium: team.stadium, coach: team.coach, previousSeason: team.previousSeason, playerCount: team.squad.length, lastUpdated: team.lastUpdated })) };
+for (const team of builtTeams) write(`data/teams/${team.id}.json`, team);
 write("data/teams/index.json", index);
+
+const leaderboardMetrics = [
+  { id: "appearances", label: "Presenze", field: "appearances", mode: "total" },
+  { id: "minutes", label: "Minuti", field: "minutes", mode: "total" },
+  { id: "goals", label: "Gol totali", field: "goals", mode: "total" },
+  { id: "goalsPer90", label: "Gol / 90", field: "goals", mode: "per90" },
+  { id: "assists", label: "Assist totali", field: "assists", mode: "total" },
+  { id: "assistsPer90", label: "Assist / 90", field: "assists", mode: "per90" },
+  { id: "shots", label: "Tiri totali", field: "shots", mode: "total" },
+  { id: "shotsPer90", label: "Tiri totali / 90", field: "shots", mode: "per90" },
+  { id: "shotsOnTarget", label: "Tiri nello specchio", field: "shotsOnTarget", mode: "total" },
+  { id: "shotsOnTargetPer90", label: "Tiri nello specchio / 90", field: "shotsOnTarget", mode: "per90" },
+  { id: "cards", label: "Cartellini totali", field: "cards", mode: "total" },
+  { id: "cardsPer90", label: "Cartellini / 90", field: "cards", mode: "per90" },
+  { id: "foulsCommitted", label: "Falli commessi", field: "foulsCommitted", mode: "total" },
+  { id: "foulsCommittedPer90", label: "Falli commessi / 90", field: "foulsCommitted", mode: "per90" },
+  { id: "foulsWon", label: "Falli subiti", field: "foulsWon", mode: "total" },
+  { id: "foulsWonPer90", label: "Falli subiti / 90", field: "foulsWon", mode: "per90" }
+];
+const cardTotal = entry => {
+  const values = [entry.yellowCards, entry.secondYellowCards, entry.straightRedCards];
+  return values.every(value => value === null || value === undefined) ? null : values.reduce((sum, value) => sum + (value ?? 0), 0);
+};
+const domesticEntry = player => player.previousSeason?.entries?.find(entry => entry.competitionType === "domestic-league") || player.previousSeason?.entries?.[0] || null;
+const leaderboardValue = (entry, metric) => metric.mode === "per90"
+  ? entry.per90?.[metric.field]
+  : metric.field === "cards" ? cardTotal(entry) : entry[metric.field];
+const leaderboardPlayers = builtTeams.flatMap(team => team.squad.map(player => {
+  const entry = domesticEntry(player);
+  return entry ? { team, player, entry } : null;
+}).filter(Boolean));
+const rankings = Object.fromEntries(leaderboardMetrics.map(metric => {
+  const players = leaderboardPlayers.map(({ team, player, entry }) => ({
+    id: player.id,
+    name: player.name,
+    currentTeamId: team.id,
+    currentTeam: team.name,
+    role: player.detailedRole || player.role,
+    previousTeam: entry.team,
+    competition: entry.competition,
+    appearances: entry.appearances,
+    minutes: entry.minutes,
+    value: leaderboardValue(entry, metric),
+    tieValue: metric.mode === "per90" ? entry.minutes : (entry.per90?.[metric.field] ?? entry.minutes)
+  })).filter(player => typeof player.value === "number" && Number.isFinite(player.value))
+    .sort((left, right) => right.value - left.value || (right.tieValue ?? -1) - (left.tieValue ?? -1) || left.name.localeCompare(right.name, "it"));
+  return [metric.id, { ...metric, availablePlayers: players.length, players: players.slice(0, 15).map(({ tieValue, ...player }) => player) }];
+}));
+write("data/teams/player-leaderboards.json", { schemaVersion: 1, currentSeason: "2026/27", statisticsSeason: "2025/26", generatedAt: today, rankings });
 write("data/schemas/team.schema.json", { $schema: "https://json-schema.org/draft/2020-12/schema", title: "Serie A team", type: "object", required: ["id", "currentSeason", "city", "stadium", "coach", "previousSeason", "teamStats", "squad", "sources", "lastUpdated"], properties: { city: { type: "string", minLength: 1 }, stadium: { type: "string", minLength: 1 }, coach: { type: "string", minLength: 1 }, squad: { type: "array", items: { $ref: "player.schema.json" } } } });
 write("data/schemas/player.schema.json", { $schema: "https://json-schema.org/draft/2020-12/schema", title: "Serie A player", type: "object", required: ["id", "name", "currentTeam", "currentSeason", "role", "detailedRole", "status", "previousSeason", "sources", "dataQuality"], properties: { detailedRole: { type: "string", minLength: 1 }, status: { enum: ["confermato", "nuovo acquisto", "prestito", "rientro dal prestito", "primavera", "da verificare"] }, previousSeason: { type: "object", required: ["season", "entries", "totals", "totalsByCompetition"] } } });
 console.log(`Generati dati per ${teams.length} club (${index.teams.filter(team => team.previousSeason.promoted).length} da Serie B).`);
