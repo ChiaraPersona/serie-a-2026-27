@@ -66,13 +66,13 @@ tbody tr:hover{background:rgba(23,79,165,.18)}
 @media(max-width:580px){.match.fixture-card .fixture-teams{column-gap:58px;padding:22px 12px 18px}.match.fixture-card .team-logo{flex-basis:70px;width:70px;height:70px}.match.fixture-card .team-with-logo{font-size:13px}.match.fixture-card .team-name{min-height:32px}.match.fixture-card .fixture-score .score{min-width:40px;height:40px}.match.fixture-card .match-events{margin-inline:12px}}
 
 /* Le due metà della card riprendono i doppi colori dei club, con taglio centrale diagonale. */
-.match.fixture-card{isolation:isolate}
-.match.fixture-card::before,.match.fixture-card::after{content:"";position:absolute;top:0;bottom:0;display:block;width:53%;z-index:0;pointer-events:none;opacity:.58}
-.match.fixture-card::before{left:0;background:linear-gradient(145deg,var(--home-color-1),var(--home-color-2));clip-path:polygon(0 0,100% 0,91% 100%,0 100%)}
-.match.fixture-card::after{right:0;background:linear-gradient(145deg,var(--away-color-1),var(--away-color-2));clip-path:polygon(9% 0,100% 0,100% 100%,0 100%)}
+.match.fixture-card{isolation:isolate;border-color:rgba(190,215,255,.34);background:linear-gradient(145deg,rgba(20,42,76,.7),rgba(4,17,38,.62));box-shadow:0 16px 38px rgba(0,8,28,.3),inset 0 1px 0 rgba(255,255,255,.16),inset 0 -1px 0 rgba(255,255,255,.04);backdrop-filter:blur(14px) saturate(125%)}
+.match.fixture-card::before,.match.fixture-card::after{content:"";position:absolute;inset:0;display:block;width:100%;z-index:0;pointer-events:none;opacity:.56}
+.match.fixture-card::before{background:linear-gradient(145deg,var(--home-color-1),var(--home-color-2));-webkit-mask-image:linear-gradient(100deg,#000 0,#000 43%,transparent 58%);mask-image:linear-gradient(100deg,#000 0,#000 43%,transparent 58%)}
+.match.fixture-card::after{background:linear-gradient(145deg,var(--away-color-1),var(--away-color-2));-webkit-mask-image:linear-gradient(100deg,transparent 42%,#000 57%,#000 100%);mask-image:linear-gradient(100deg,transparent 42%,#000 57%,#000 100%)}
 .match.fixture-card>*{position:relative;z-index:1}
-.match.fixture-card .match-head,.match.fixture-card .actions{background:rgba(5,17,37,.64);backdrop-filter:blur(3px)}
-.match.fixture-card .match-events{background:rgba(5,17,37,.52);backdrop-filter:blur(3px)}
+.match.fixture-card .match-head,.match.fixture-card .actions{background:linear-gradient(100deg,rgba(5,17,37,.5),rgba(12,30,57,.34));backdrop-filter:blur(11px) saturate(130%)}
+.match.fixture-card .match-events{border-color:rgba(190,215,255,.2);background:rgba(7,20,43,.38);box-shadow:inset 0 1px 0 rgba(255,255,255,.07);backdrop-filter:blur(12px) saturate(125%)}
 
 /* Logo Serie A fornito per l'identità del sito. */
 .brand-mark{overflow:hidden;width:62px;height:68px;border:0;border-radius:12px;background:transparent;box-shadow:none}.brand-mark img{display:block;width:130px;height:auto;max-width:none;object-fit:contain;transform:none;filter:drop-shadow(0 5px 8px rgba(0,8,28,.35))}
