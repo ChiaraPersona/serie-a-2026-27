@@ -5,8 +5,10 @@ const assert = require("assert");
 const root = path.resolve(__dirname, "../..");
 const read = relative => JSON.parse(fs.readFileSync(path.join(root, relative), "utf8"));
 const index = read("data/teams/index.json");
+const roleReport = read("data/generated/team-pages/detailed-role-report.json");
 let totalPlayers = 0;
 let coveredPlayers = 0;
+let specificRoles = 0;
 
 assert.strictEqual(index.teams.length, 20, "Sono richieste 20 squadre");
 for (const summary of index.teams) {
@@ -24,6 +26,12 @@ for (const summary of index.teams) {
   assert.strictEqual(summary.playerCount, generated.players.length, `${summary.id}: conteggio indice errato`);
   assert.strictEqual(new Set(generated.players.map(player => player.id)).size, generated.players.length, `${summary.id}: ID duplicati`);
   assert.ok(generated.rosterSource?.url, `${summary.id}: fonte rosa assente`);
+  if (summary.id !== "milan") {
+    const teamSpecificRoles = generated.players.filter(player => player.detailedRole !== player.role);
+    assert.ok(teamSpecificRoles.length >= 10, `${summary.id}: ruoli specifici insufficienti`);
+    assert.ok(teamSpecificRoles.every(player => player.detailedRoleSource && player.detailedRoleEvidence?.starts), `${summary.id}: evidenza dei ruoli specifici assente`);
+    specificRoles += teamSpecificRoles.length;
+  }
   totalPlayers += generated.players.length;
 
   for (const player of generated.players) {
@@ -41,4 +49,6 @@ for (const summary of index.teams) {
 
 assert.strictEqual(index.teams.filter(team => team.playerCount > 0).length, 20, "Copertura squadre incompleta");
 assert.ok(coveredPlayers >= 450, `Copertura individuale insufficiente: ${coveredPlayers}`);
-console.log(`Tutte le squadre: 20/20, ${totalPlayers} calciatori, ${coveredPlayers} con statistiche 2025/26.`);
+assert.strictEqual(roleReport.teams.length, 19, "Report ruoli specifici incompleto");
+assert.ok(specificRoles >= 400, `Copertura ruoli specifici insufficiente: ${specificRoles}`);
+console.log(`Tutte le squadre: 20/20, ${totalPlayers} calciatori, ${coveredPlayers} con statistiche 2025/26, ${specificRoles} ruoli tattici specifici fuori dal Milan.`);

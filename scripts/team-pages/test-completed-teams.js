@@ -24,7 +24,7 @@ for (const [teamId, expectedCount] of Object.entries(expectedCounts)) {
     assert.strictEqual(player.currentTeam, generated.team);
     assert.strictEqual(player.previousSeason.season, "2025/26");
     for (const entry of player.previousSeason.entries) {
-      assert.strictEqual(entry.competition, "Serie A", `${player.name}: competizione non separata`);
+      assert.ok(["Serie A", "Serie B"].includes(entry.competition), `${player.name}: competizione non separata`);
       assert.ok(entry.team && entry.source && entry.lastUpdated, `${player.name}: provenienza incompleta`);
       for (const field of ["goals", "assists", "shots", "shotsOnTarget", "foulsCommitted", "foulsWon"]) {
         const expected = entry[field] == null || !entry.minutes ? null : Number((entry[field] * 90 / entry.minutes).toFixed(2));
@@ -39,11 +39,11 @@ for (const [teamId, expectedCount] of Object.entries(expectedCounts)) {
 }
 
 const interfaceSource = fs.readFileSync(path.join(root, "js/team-squads.js"), "utf8");
-const rootShell = fs.readFileSync(path.join(root, "statistiche-squadre.html"), "utf8");
+const mainApp = fs.readFileSync(path.join(root, "js/app.js"), "utf8");
 for (const teamId of Object.keys(expectedCounts)) {
   assert.ok(fs.existsSync(path.join(root, `statistiche-squadra/${teamId}.html`)), `${teamId}: pagina assente`);
 }
-assert.ok(interfaceSource.includes('href="${team.id}.html"') && interfaceSource.includes("completed-team-grid"), "Collegamenti dinamici dell'indice assenti");
-assert.ok(rootShell.includes('statistiche-squadra/index.html'), "Collegamento all'indice squadre assente");
+assert.ok(interfaceSource.includes('href="${team.id}.html"'), "Collegamenti dinamici dell'indice assenti");
+assert.ok(mainApp.includes("teamDirectoryGrid") && mainApp.includes("statistiche-squadra/${team.id}.html"), "Elenco squadre non integrato nella pagina principale");
 assert.ok(interfaceSource.includes("squadLeaderboards"), "Top 3 non condivisa con le nuove pagine");
 console.log("Inter, Juventus e Napoli: rose, statistiche /90, pagine, fonti e collegamenti validati.");

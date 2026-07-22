@@ -3,6 +3,7 @@
   if (!root) return;
 
   const base = document.body.dataset.depth === "team" ? "../" : "";
+  const release = "20260722-specific-player-roles";
   const esc = value => String(value ?? "").replace(/[&<>\"]/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[char]));
   const value = (input, suffix = "") => input === null || input === undefined || input === "" ? "N/D" : `${esc(input)}${suffix}`;
   const pct = input => value(input, "%");
@@ -43,7 +44,7 @@
   const nav = `<header class="subpage-header"><a href="${base}statistiche-squadra/index.html">← Tutte le squadre</a><a href="${base}statistiche-squadre.html">Statistiche squadre</a></header>`;
 
   async function load(path) {
-    const response = await fetch(`${base}${path}`);
+    const response = await fetch(`${base}${path}?v=${release}`);
     if (!response.ok) throw new Error(`${path}: ${response.status}`);
     return response.json();
   }

@@ -47,6 +47,36 @@ const countryNames = {
   Switzerland: "Svizzera", Turkey: "Turchia", Uruguay: "Uruguay", USA: "Stati Uniti"
 };
 const roleNames = { Goalkeeper: "Portiere", Defender: "Difensore", Midfielder: "Centrocampista", Forward: "Attaccante" };
+const tacticalRoleNames = {
+  Goalkeeper: "Portiere",
+  "Center Defender": "Difensore centrale",
+  "Center Left Defender": "Difensore centrale sinistro",
+  "Center Right Defender": "Difensore centrale destro",
+  "Left Back": "Terzino sinistro",
+  "Right Back": "Terzino destro",
+  "Left Midfielder": "Esterno sinistro",
+  "Right Midfielder": "Esterno destro",
+  "Center Midfielder": "Centrocampista centrale",
+  "Center Left Midfielder": "Centrocampista centrale sinistro",
+  "Center Right Midfielder": "Centrocampista centrale destro",
+  "Defensive Midfielder": "Mediano",
+  Sweeper: "Mediano",
+  "Rear Center Midfielder": "Mediano",
+  "Attacking Midfielder": "Trequartista",
+  "Attacking Midfielder Left": "Trequartista sinistro",
+  "Attacking Midfielder Right": "Trequartista destro",
+  "Rear Center Forward": "Seconda punta",
+  "Left Forward": "Ala sinistra",
+  "Right Forward": "Ala destra",
+  Forward: "Centravanti"
+};
+
+function tacticalRole(positionName, formation) {
+  if (positionName === "Center Left Forward" || positionName === "Center Right Forward") {
+    return String(formation || "").endsWith("-1") ? "Trequartista" : "Seconda punta";
+  }
+  return tacticalRoleNames[positionName] || null;
+}
 
 function rosterCache(teamId) {
   return path.join(root, `data/raw/team-pages/${teamId}/espn-roster-2026-27.json.gz`);
@@ -119,12 +149,19 @@ function matchMinutes(entry) {
 
 function allEntries(playersByEspnId) {
   const buckets = new Map();
+  const roleCountsByEspnId = new Map();
   for (const { competition, file } of rawFiles()) {
     const raw = readRaw(file);
     for (const roster of raw.bundle?.summary?.rosters || []) {
       for (const row of roster.roster || []) {
         const player = playersByEspnId.get(String(row.athlete?.id));
         if (!player) continue;
+        const inferredRole = row.starter ? tacticalRole(row.position?.name, roster.formation) : null;
+        if (inferredRole) {
+          const playerRoles = roleCountsByEspnId.get(player.espnId) || new Map();
+          playerRoles.set(inferredRole, (playerRoles.get(inferredRole) || 0) + 1);
+          roleCountsByEspnId.set(player.espnId, playerRoles);
+        }
         const stats = statMap(row.stats);
         if ((stats.appearances ?? 0) < 1) continue;
         const key = `${player.id}|${competition}|${roster.team?.id || roster.team?.displayName}`;
@@ -133,7 +170,7 @@ function allEntries(playersByEspnId) {
       }
     }
   }
-  return [...buckets.values()].map(bucket => {
+  const entries = [...buckets.values()].map(bucket => {
     const matches = bucket.matches;
     const total = field => sumNullable(matches.map(item => item.stats[field]));
     const minutes = sumNullable(matches.map(item => item.minutes));
@@ -157,6 +194,12 @@ function allEntries(playersByEspnId) {
       fieldSources: { employment: "ESPN match rosters", attack: "ESPN match rosters", discipline: "ESPN match rosters", goalkeeping: "ESPN match rosters" }
     });
   });
+  const detailedRoles = new Map([...roleCountsByEspnId].map(([espnId, counts]) => {
+    const ranked = [...counts].sort((left, right) => right[1] - left[1] || left[0].localeCompare(right[0], "it"));
+    const starts = ranked.reduce((total, [, count]) => total + count, 0);
+    return [espnId, { role: ranked[0][0], starts, occurrences: ranked[0][1], confidence: round(ranked[0][1] / starts, 2) }];
+  }));
+  return { entries, detailedRoles };
 }
 
 function totals(entries) {
@@ -208,15 +251,19 @@ function rosterPlayers(teamId, teamConfig) {
   return players;
 }
 
-async function buildTeam(teamId, teamConfig, entries) {
+async function buildTeam(teamId, teamConfig, entries, detailedRoles) {
   const seeds = rosterPlayers(teamId, teamConfig);
   const squad = seeds.map(seed => {
     const playerEntries = entries.filter(entry => entry.playerId === seed.id).sort((left, right) => (right.appearances ?? 0) - (left.appearances ?? 0));
     const completeness = playerEntries.length ? (playerEntries.some(entry => entry.minutes != null) ? "complete" : "partial") : "unavailable";
     const photoUrl = seed.espnId ? `https://a.espncdn.com/i/headshots/soccer/players/full/${seed.espnId}.png` : null;
+    const inferredRole = seed.espnId ? detailedRoles.get(seed.espnId) : null;
+    const configuredDetailedRole = seed.detailedRole && seed.detailedRole !== seed.role ? seed.detailedRole : null;
     const player = {
       schemaVersion: 1, id: seed.id, name: seed.name, providerIds: { espn: seed.espnId }, currentTeam: teamConfig.name, currentSeason: "2026/27",
-      shirtNumber: seed.shirtNumber ?? null, role: seed.role, detailedRole: seed.detailedRole || seed.role,
+      shirtNumber: seed.shirtNumber ?? null, role: seed.role, detailedRole: inferredRole?.role || configuredDetailedRole || seed.role,
+      detailedRoleSource: inferredRole ? "ESPN - posizione da titolare 2025/26" : configuredDetailedRole ? "Configurazione rosa" : "ESPN - ruolo rosa generico",
+      detailedRoleEvidence: inferredRole ? { starts: inferredRole.starts, occurrences: inferredRole.occurrences, confidence: inferredRole.confidence } : null,
       dateOfBirth: seed.dateOfBirth || null, age: ageAt(seed.dateOfBirth), nationality: seed.nationality || null,
       heightCm: seed.heightCm ?? null, weightKg: seed.weightKg ?? null, preferredFoot: null, birthplace: null, atMilanSince: null,
       photo: photoUrl, remotePhotoSource: photoUrl, arrivalDate: null, status: seed.status || teamConfig.defaultStatus,
@@ -228,7 +275,7 @@ async function buildTeam(teamId, teamConfig, entries) {
       ],
       dataQuality: {
         status: completeness, uncertainAssociation: false, associationMethod: seed.espnId ? "provider-id" : null,
-        note: playerEntries.length ? "Statistiche aggregate dai roster partita ESPN." : "Nessuna statistica 2025/26 verificata nel perimetro Serie A/Serie B ESPN; i valori restano N/D."
+        note: `${playerEntries.length ? "Statistiche aggregate dai roster partita ESPN." : "Nessuna statistica 2025/26 verificata nel perimetro Serie A/Serie B ESPN; i valori restano N/D."}${inferredRole ? ` Ruolo tattico ricavato da ${inferredRole.starts} presenze da titolare 2025/26 (${inferredRole.occurrences} nel ruolo prevalente).` : " Ruolo specifico non assegnato senza evidenza tattica da titolare."}`
       }
     };
     write(`data/players/${teamId}/${player.id}.json`, player);
@@ -239,6 +286,7 @@ async function buildTeam(teamId, teamConfig, entries) {
     coach: teamConfig.coach || null, rosterSource: teamConfig.source, players: squad
   });
   console.log(`${teamConfig.name}: ${squad.length} giocatori; complete=${squad.filter(player => player.dataQuality.status === "complete").length}; partial=${squad.filter(player => player.dataQuality.status === "partial").length}; unavailable=${squad.filter(player => player.dataQuality.status === "unavailable").length}`);
+  return squad;
 }
 
 async function main() {
@@ -250,8 +298,24 @@ async function main() {
   const seedsByTeam = Object.fromEntries(selectedTeams.map(teamId => [teamId, rosterPlayers(teamId, config.teams[teamId])]));
   const byEspnId = new Map();
   for (const seeds of Object.values(seedsByTeam)) for (const seed of seeds) if (seed.espnId) byEspnId.set(seed.espnId, seed);
-  const entries = allEntries(byEspnId);
-  for (const teamId of selectedTeams) await buildTeam(teamId, config.teams[teamId], entries);
+  const { entries, detailedRoles } = allEntries(byEspnId);
+  const built = [];
+  for (const teamId of selectedTeams) built.push({ teamId, players: await buildTeam(teamId, config.teams[teamId], entries, detailedRoles) });
+  if (selectedTeams.length === Object.keys(config.teams).length) {
+    write("data/generated/team-pages/detailed-role-report.json", {
+      schemaVersion: 1,
+      season: "2026/27",
+      evidenceSeason: "2025/26",
+      generatedAt: new Date().toISOString(),
+      method: "Ruolo tattico più frequente tra le presenze da titolare ESPN 2025/26; in assenza di evidenza resta il ruolo rosa generico.",
+      teams: built.map(({ teamId, players }) => ({
+        teamId,
+        players: players.length,
+        specificRoles: players.filter(player => player.detailedRole !== player.role).length,
+        genericRoles: players.filter(player => player.detailedRole === player.role).length
+      }))
+    });
+  }
 }
 
 main().catch(error => { console.error(error.stack || error.message); process.exit(1); });
