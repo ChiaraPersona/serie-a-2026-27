@@ -146,6 +146,8 @@ const leaderboardMetrics = [
   { id: "foulsCommitted", label: "Falli commessi", field: "foulsCommitted", hasPer90: true },
   { id: "foulsWon", label: "Falli subiti", field: "foulsWon", hasPer90: true }
 ];
+const leaderboardTeamAliases = { Internazionale: "Inter", "AS Roma": "Roma" };
+const leaderboardTeamName = name => leaderboardTeamAliases[name] || name;
 const cardTotal = entry => {
   const values = [entry.yellowCards, entry.secondYellowCards, entry.straightRedCards];
   return values.every(value => value === null || value === undefined) ? null : values.reduce((sum, value) => sum + (value ?? 0), 0);
@@ -163,7 +165,8 @@ const rankings = Object.fromEntries(leaderboardMetrics.map(metric => {
     currentTeamId: team.id,
     currentTeam: team.name,
     role: player.detailedRole || player.role,
-    previousTeam: entry.team,
+    previousTeam: leaderboardTeamName(entry.team),
+    sameClub: leaderboardTeamName(entry.team) === team.name,
     competition: entry.competition,
     appearances: entry.appearances,
     minutes: entry.minutes,
