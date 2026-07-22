@@ -26,6 +26,7 @@ for(const row of refereeHistory.referees){
 for(const team of teams){
   assert(team.logoSource?.sourceUrl&&team.logoSource?.sourceType&&team.logoSource?.retrievedAt&&team.logoSource?.licenseNote,`Metadati logo incompleti: ${team.id}`);
   assert(fs.existsSync(path.join(root,team.logo)),`Logo locale mancante: ${team.id}`);
+  assert(Array.isArray(team.colors)&&team.colors.length===2&&team.colors.every(color=>/^#[0-9a-f]{6}$/i.test(color)),`Coppia colori non valida: ${team.id}`);
 }
 const league=matches.filter(m=>m.competition==="serie-a"&&m.season==="2026-27");
 assert(league.length===380,`Partite: ${league.length}, attese 380`);

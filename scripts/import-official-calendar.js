@@ -21,10 +21,19 @@ const teamDefinitions = [
   ["sassuolo","Sassuolo","Unione Sportiva Sassuolo Calcio"],["torino","Torino","Torino Football Club"],
   ["udinese","Udinese","Udinese Calcio"],["venezia","Venezia","Venezia Football Club"]
 ];
+const teamColors = {
+  atalanta:["#1673c9","#111820"], bologna:["#c8212b","#10254a"], cagliari:["#c92335","#162d59"],
+  como:["#1767a8","#f4f7fb"], fiorentina:["#6f2da8","#f4f0fa"], frosinone:["#f5c400","#174a91"],
+  genoa:["#b51f35","#172b55"], inter:["#1266b1","#101820"], juventus:["#f5f5f5","#111111"],
+  lazio:["#75bce7","#f4f8fb"], lecce:["#f2cf20","#c62828"], milan:["#d71920","#171717"],
+  monza:["#d7192d","#f5f5f5"], napoli:["#159bd7","#1261a0"], parma:["#f2cf20","#174a91"],
+  roma:["#8e1f2f","#f0b323"], sassuolo:["#18a558","#111820"], torino:["#8a1538","#f2f0ed"],
+  udinese:["#f5f5f5","#111111"], venezia:["#ef6c23","#08783e"]
+};
 const logoSources = JSON.parse(fs.readFileSync(path.join(root,"data/raw/teams/logo-sources.json"),"utf8"));
 const logoById = new Map(logoSources.map(item => [item.id,item.sourceUrl]));
 const teams = teamDefinitions.map(([id,name,officialName]) => ({
-  id,name,officialName,shortName:name,slug:id,logo:`assets/images/teams/${id}.png`,
+  id,name,officialName,shortName:name,slug:id,logo:`assets/images/teams/${id}.png`,colors:teamColors[id],
   logoSource:{sourceUrl:logoById.get(id),sourceType:"lega-serie-a",retrievedAt,licenseNote:"Stemma distribuito dal CDN ufficiale Lega Serie A; marchio del rispettivo club, usato a fini identificativi."}
 }));
 const upperToId = new Map(teams.map(team => [team.name.toUpperCase(),team.id]));
