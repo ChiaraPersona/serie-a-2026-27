@@ -1,0 +1,110 @@
+const fs = require("fs");
+const path = require("path");
+
+const root = path.resolve(__dirname, "../..");
+const target = path.join(root, "data/sources/team-pages/transfermarkt-market-values-2026-27.json");
+const reportTarget = path.join(root, "data/generated/team-pages/market-value-import-report.json");
+const baseUrl = "https://www.transfermarkt.it/serie-a/marktwerte/pokalwettbewerb/IT1";
+const retrievedAt = new Date().toISOString().slice(0, 10);
+const headers = {
+  "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/138.0 Safari/537.36",
+  "accept-language": "it-IT,it;q=0.9,en;q=0.8"
+};
+const teamAliases = {
+  "ac milan": "milan", "juventus fc": "juventus", "ssc napoli": "napoli", "as roma": "roma",
+  "acf fiorentina": "fiorentina", "ss lazio": "lazio", "torino fc": "torino", "bologna fc": "bologna",
+  "genoa cfc": "genoa", "udinese calcio": "udinese", "cagliari calcio": "cagliari", "parma calcio": "parma",
+  "como 1907": "como", "us sassuolo": "sassuolo", "us lecce": "lecce", "venezia fc": "venezia",
+  "ac monza": "monza", "frosinone calcio": "frosinone", "atalanta": "atalanta", "inter": "inter"
+};
+const decode = value => String(value || "")
+  .replace(/&nbsp;/g, " ").replace(/&amp;/g, "&").replace(/&quot;/g, '"')
+  .replace(/&#039;|&apos;/g, "'").replace(/&euro;/g, "€").replace(/<[^>]+>/g, "").trim();
+const key = value => decode(value).normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+  .toLowerCase().replace(/[’']/g, "").replace(/[^a-z0-9]+/g, " ").trim();
+const parseEuro = value => {
+  const text = decode(value).toLowerCase().replace(/\s/g, "").replace("€", "").replace(",", ".");
+  const amount = Number.parseFloat(text);
+  if (!Number.isFinite(amount)) return null;
+  if (text.includes("mln")) return Math.round(amount * 1_000_000);
+  if (text.includes("mila")) return Math.round(amount * 1_000);
+  return Math.round(amount);
+};
+const write = (file, value) => {
+  fs.mkdirSync(path.dirname(file), { recursive: true });
+  fs.writeFileSync(file, `${JSON.stringify(value, null, 2)}\n`);
+};
+
+function parsePage(html) {
+  const pattern = /<a title="([^"]+)" href="(\/[^"]+\/profil\/spieler\/(\d+))">[\s\S]*?<a title="([^"]+)" href="\/[^"]+\/startseite\/verein\/(\d+)\/saison_id\/2026">[\s\S]*?<td class="rechts hauptlink"><a[^>]*>([^<]+)<\/a>/g;
+  return [...html.matchAll(pattern)].map(match => {
+    return {
+      transfermarktId: match[3],
+      name: decode(match[1]),
+      teamId: teamAliases[key(match[4])] || null,
+      transfermarktClubId: match[5],
+      club: decode(match[4]),
+      marketValueEur: parseEuro(match[6]),
+      marketValueLabel: decode(match[6]),
+      profileUrl: `https://www.transfermarkt.it${match[2]}`
+    };
+  }).filter(Boolean);
+}
+
+async function main() {
+  const sourcePlayers = [];
+  for (let page = 1; page <= 30; page++) {
+    const url = `${baseUrl}/page/${page}`;
+    const response = await fetch(url, { headers });
+    if (!response.ok) throw new Error(`Transfermarkt pagina ${page}: HTTP ${response.status}`);
+    const rows = parsePage(await response.text());
+    if (!rows.length) break;
+    sourcePlayers.push(...rows);
+    process.stdout.write(`Pagina ${page}: ${rows.length} valori\n`);
+    if (rows.length < 25) break;
+  }
+  const localPlayers = [];
+  for (const teamId of Object.values(teamAliases).filter((id, index, list) => list.indexOf(id) === index)) {
+    const file = path.join(root, `data/generated/team-pages/${teamId}-squad.json`);
+    if (!fs.existsSync(file)) continue;
+    const squad = JSON.parse(fs.readFileSync(file, "utf8"));
+    for (const player of squad.players || []) localPlayers.push({ teamId, id: player.id, name: player.name });
+  }
+  const matched = [], missing = [], ambiguous = [];
+  for (const local of localPlayers) {
+    const candidates = sourcePlayers.filter(source => source.teamId === local.teamId && key(source.name) === key(local.name));
+    if (candidates.length === 1) matched.push({ ...candidates[0], playerId: local.id, localName: local.name });
+    else if (candidates.length > 1) ambiguous.push({ ...local, candidates });
+    else missing.push(local);
+  }
+  const unmatchedSource = sourcePlayers.filter(source => !matched.some(item => item.transfermarktId === source.transfermarktId));
+  const dataset = {
+    schemaVersion: 1,
+    season: "2026-27",
+    provider: "Transfermarkt",
+    sourceUrl: baseUrl,
+    retrievedAt,
+    currency: "EUR",
+    disclaimer: "Valori stimati da Transfermarkt; non equivalgono necessariamente al prezzo di trasferimento.",
+    players: matched
+  };
+  write(target, dataset);
+  write(reportTarget, {
+    generatedAt: new Date().toISOString(),
+    sourcePlayers: sourcePlayers.length,
+    localPlayers: localPlayers.length,
+    matched: matched.length,
+    missing: missing.length,
+    ambiguous: ambiguous.length,
+    unmatchedSource: unmatchedSource.length,
+    missingPlayers: missing,
+    ambiguousPlayers: ambiguous,
+    unmatchedSourcePlayers: unmatchedSource
+  });
+  console.log(`Valori mercato: ${matched.length}/${localPlayers.length} abbinati; ${missing.length} mancanti; ${ambiguous.length} ambigui.`);
+}
+
+main().catch(error => {
+  console.error(error.stack || error.message);
+  process.exitCode = 1;
+});
