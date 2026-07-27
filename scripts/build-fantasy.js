@@ -59,6 +59,7 @@ const candidates = [];
 for (const team of teamFiles) {
   for (const player of team.squad || []) {
     const totals = player.previousSeason?.totals || {};
+    const entries = player.previousSeason?.entries || [];
     const role = roleCode(player.role);
     const appearances = number(totals.appearances);
     const starts = number(totals.starts);
@@ -68,10 +69,17 @@ for (const team of teamFiles) {
     const cleanSheets = number(totals.cleanSheets);
     const saves = number(totals.saves);
     const cards = number(totals.yellowCards) + number(totals.secondYellowCards) * 2 + number(totals.straightRedCards) * 3;
+    const serieAMinutes = entries.filter(entry => entry.competition === "Serie A").reduce((sum, entry) => sum + number(entry.minutes), 0);
+    const serieBMinutes = entries.filter(entry => entry.competition === "Serie B").reduce((sum, entry) => sum + number(entry.minutes), 0);
+    const leagueMinutes = serieAMinutes + serieBMinutes;
+    const serieAAppearances = entries.filter(entry => entry.competition === "Serie A").reduce((sum, entry) => sum + number(entry.appearances), 0);
+    const leagueAppearances = entries.reduce((sum, entry) => sum + number(entry.appearances), 0);
+    const serieAShare = leagueMinutes > 0 ? serieAMinutes / leagueMinutes : leagueAppearances > 0 ? serieAAppearances / leagueAppearances : 0;
+    const competitionCoefficient = round(.72 + serieAShare * .28, 2);
     const availability = clamp((minutes / 2600) * 55 + (starts / 30) * 30 + (appearances / 34) * 15, 0, 100);
     const bonusWeights = role === "P" ? [5, 2.5] : role === "D" ? [7, 4] : role === "C" ? [8, 5] : [10, 4];
     const bonus = goals * bonusWeights[0] + assists * bonusWeights[1] + cleanSheets * (role === "P" ? 1.6 : role === "D" ? .7 : 0) + saves * (role === "P" ? .08 : 0);
-    const rawScore = availability * .48 + Math.min(100, bonus * 1.65) * .42 + teamCalendar[team.id].index * .1 - Math.min(10, cards * .35);
+    const rawScore = availability * .48 * (.82 + competitionCoefficient * .18) + Math.min(100, bonus * 1.65) * .42 * competitionCoefficient + teamCalendar[team.id].index * .1 - Math.min(10, cards * .35);
     if (appearances === 0 && minutes === 0) continue;
     candidates.push({
       id: player.id,
@@ -89,6 +97,13 @@ for (const team of teamFiles) {
       marketValueEur: player.marketValue?.amountEur ?? null,
       marketValueLabel: player.marketValue?.label ?? null,
       reliability: minutes >= 2200 ? "Alta" : minutes >= 1100 ? "Media" : "Da verificare",
+      competitionProfile: {
+        serieAMinutes,
+        serieBMinutes,
+        serieAShare: round(serieAShare * 100),
+        coefficient: competitionCoefficient,
+        label: serieAShare >= .8 ? "Serie A" : serieAShare <= .2 ? "Serie B" : "Serie A / B"
+      },
       calendar: { index: teamCalendar[team.id].index, label: teamCalendar[team.id].label }
     });
   }
@@ -108,6 +123,7 @@ for (const role of ["P", "D", "C", "A"]) {
   group.forEach((player, index) => {
     const percentile = index / Math.max(1, group.length);
     player.stars = percentile < .1 ? 5 : percentile < .25 ? 4 : percentile < .5 ? 3 : percentile < .75 ? 2 : 1;
+    if (player.competitionProfile.serieAShare <= 20) player.stars = Math.min(player.stars, 4);
     const roleMax = { P: 38, D: 45, C: 85, A: 185 }[role];
     player.value500 = Math.max(1, Math.round(1 + Math.pow(player.score / 100, 2.15) * roleMax));
   });
@@ -182,6 +198,7 @@ const output = {
   baseBudget: 500,
   calendarWindow: 38,
   methodology: {
+    competitionAdjustment: "Le statistiche di Serie B hanno coefficiente 0,72 rispetto alla Serie A; un calciatore con dati quasi esclusivamente di Serie B non puÃ² ricevere 5 stelle.",
     description: "Indice orientativo costruito da statistiche 2025/26, disponibilità e calendario completo 2026/27. Il valore di mercato, quando disponibile, incide soltanto per il 12% sul profilo del calciatore. La forza avversaria pesa per l'82% sul rendimento recente e per il 18% sulla storia in Serie A.",
     caveat: "Non è una quotazione ufficiale. Ruolo, titolarità, trasferimenti e listone della lega vanno verificati prima dell'asta.",
     missingValues: "I dati assenti restano N/D e non producono bonus."
