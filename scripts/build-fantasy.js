@@ -113,6 +113,67 @@ for (const role of ["P", "D", "C", "A"]) {
   });
 }
 
+function buildGoalkeeperTrios() {
+  const bestByTeam = [...candidates.filter(player => player.role === "P").reduce((map, player) => {
+    const current = map.get(player.teamId);
+    if (!current || player.score > current.score) map.set(player.teamId, player);
+    return map;
+  }, new Map()).values()];
+  const trios = [];
+  for (let first = 0; first < bestByTeam.length - 2; first += 1) {
+    for (let second = first + 1; second < bestByTeam.length - 1; second += 1) {
+      for (let third = second + 1; third < bestByTeam.length; third += 1) {
+        const players = [bestByTeam[first], bestByTeam[second], bestByTeam[third]];
+        const cost500 = players.reduce((sum, player) => sum + player.value500, 0);
+        if (cost500 > 35) continue;
+        const starts = Object.fromEntries(players.map(player => [player.id, 0]));
+        const weeklyPlan = Array.from({ length: 38 }, (_, index) => {
+          const options = players.map(player => ({
+            player,
+            fixture: teamCalendar[player.teamId].fixtures[index]
+          })).sort((a, b) => b.fixture.ease - a.fixture.ease || b.player.score - a.player.score);
+          const selected = options[0];
+          starts[selected.player.id] += 1;
+          return {
+            matchday: index + 1,
+            playerId: selected.player.id,
+            teamId: selected.player.teamId,
+            opponent: selected.fixture.opponent,
+            venue: selected.fixture.venue,
+            ease: selected.fixture.ease,
+            label: selected.fixture.label
+          };
+        });
+        const rotationIndex = round(weeklyPlan.reduce((sum, fixture) => sum + fixture.ease, 0) / weeklyPlan.length);
+        const favorableDays = weeklyPlan.filter(fixture => fixture.ease >= 65).length;
+        const coveredDays = weeklyPlan.filter(fixture => fixture.ease >= 48).length;
+        const difficultDays = weeklyPlan.length - coveredDays;
+        const quality = round(players.reduce((sum, player) => sum + player.score, 0) / players.length);
+        trios.push({
+          score: round(rotationIndex * .62 + quality * .38),
+          cost500,
+          rotationIndex,
+          favorableDays,
+          coveredDays,
+          difficultDays,
+          players: players.map(player => ({
+            id: player.id,
+            name: player.name,
+            teamId: player.teamId,
+            team: player.team,
+            score: player.score,
+            value500: player.value500,
+            starts: starts[player.id]
+          })),
+          weeklyPlan
+        });
+      }
+    }
+  }
+  return trios.sort((a, b) => b.score - a.score || b.coveredDays - a.coveredDays || a.cost500 - b.cost500).slice(0, 5);
+}
+
+const goalkeeperTrios = buildGoalkeeperTrios();
 candidates.sort((a, b) => b.score - a.score);
 const output = {
   schemaVersion: 1,
@@ -144,6 +205,12 @@ const output = {
     { role: "C", label: "Centrocampisti", players: 8, pct: 23 },
     { role: "A", label: "Attaccanti", players: 6, pct: 53 }
   ],
+  goalkeeperTrios: {
+    budgetPct: 7,
+    budget500: 35,
+    method: "Tre portieri di squadre diverse entro il 7% del budget. Per ogni giornata viene scelto il portiere con la partita piÃ¹ favorevole; il punteggio premia copertura del calendario e qualitÃ  individuale.",
+    examples: goalkeeperTrios
+  },
   slotGuide: {
     A: "Punto fermo: alto investimento e priorità d'asta.",
     B: "Titolare di valore: obiettivo forte con prezzo controllato.",
