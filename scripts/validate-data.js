@@ -4,6 +4,7 @@ const read=name=>JSON.parse(fs.readFileSync(path.join(dir,name),"utf8"));
 const teams=read("teams.json"), matches=read("matches.json"), referees=read("referees.json"), refereeHistory=read("referee-stats-2025-26.json"), previousStandings=read("standings-2025-26.json"), objectives=JSON.parse(fs.readFileSync(path.join(root,"data/team-objectives.json"),"utf8")), teamIds=new Set(teams.map(t=>t.id));
 const {calculateObjectiveMetrics}=require("./objective-metrics.js");
 const fantasy=JSON.parse(fs.readFileSync(path.join(root,"data/generated/fantacalcio-advice.json"),"utf8"));
+const fantasyWorkbook=JSON.parse(fs.readFileSync(path.join(root,"data/sources/fantacalcio-stats-2025-26.json"),"utf8"));
 const marketValues=JSON.parse(fs.readFileSync(path.join(root,"data/sources/team-pages/transfermarkt-market-values-2026-27.json"),"utf8"));
 function assert(condition,message){if(!condition)throw new Error(message)}
 
@@ -16,7 +17,10 @@ assert(fantasy.players.every(player=>["P","D","C","A"].includes(player.role)&&Nu
 assert([1,2,3,4,5].every(stars=>fantasy.players.some(player=>player.stars===stars)),"Distribuzione stelle fantacalcio incompleta");
 assert(fantasy.players.every(player=>player.competitionProfile&&player.competitionProfile.coefficient>=.72&&player.competitionProfile.coefficient<=1),"Coefficiente Serie A/Serie B non valido");
 assert(!fantasy.players.some(player=>player.competitionProfile.serieAShare<=20&&player.stars===5),"Un profilo quasi esclusivamente di Serie B ha ricevuto 5 stelle");
-assert(fantasy.methodology.scoringRules.goal===3&&fantasy.methodology.scoringRules.assist===1&&fantasy.methodology.scoringRules.yellowCard===-.5&&fantasy.methodology.scoringRules.redCard===-1&&fantasy.methodology.scoringRules.penaltyMissed===-3&&fantasy.methodology.scoringRules.didNotPlay==="SV","Regole punteggio fantacalcio non valide");
+assert(fantasy.methodology.scoringRules.goal===3&&fantasy.methodology.scoringRules.assist===1&&fantasy.methodology.scoringRules.yellowCard===-.5&&fantasy.methodology.scoringRules.redCard===-1&&fantasy.methodology.scoringRules.penaltyMissed===-3&&fantasy.methodology.scoringRules.penaltySaved===3&&fantasy.methodology.scoringRules.ownGoal===-3&&fantasy.methodology.scoringRules.didNotPlay==="SV","Regole punteggio fantacalcio non valide");
+assert(fantasyWorkbook.players.length===663&&fantasyWorkbook.coverage.matchedCurrentPlayers>=400,"Importazione foglio Fantacalcio incompleta");
+assert(fantasy.sources.fantasyStatistics.matchedPlayers===fantasyWorkbook.coverage.matchedCurrentPlayers,"Fonte Fantacalcio non collegata alla metodologia");
+assert(fantasy.players.filter(player=>player.fantasyScoring.averageRating!==null).length>=375,"PV, MV e FM non integrati nei profili");
 assert(fantasy.players.every(player=>player.fantasyScoring&&player.fantasyScoring.unavailableTreatment==="SV: escluso dalla media"),"Gestione SV fantacalcio non valida");
 assert(fantasy.goalkeeperHierarchy.como.playerId==="jean-butez"&&fantasy.players.find(player=>player.id==="jean-butez")?.goalkeeperStatus==="Titolare confermato","Gerarchia portieri Como non valida");
 assert(!fantasy.goalkeeperTrios.examples.some(trio=>trio.players.some(player=>player.teamId==="como"&&player.id!=="jean-butez")),"Un tris usa un portiere del Como diverso da Butez");

@@ -6,6 +6,8 @@ const read = file => JSON.parse(fs.readFileSync(path.join(root, file), "utf8"));
 const teams = read("data/normalized/teams.json");
 const matches = read("data/normalized/matches.json").filter(match => match.competition === "serie-a" && match.season === "2026-27");
 const teamFiles = teams.map(team => read(`data/teams/${team.id}.json`));
+const fantasyWorkbook = read("data/sources/fantacalcio-stats-2025-26.json");
+const fantasyStatsByPlayerId = new Map(fantasyWorkbook.players.filter(player => player.playerId && player.appearancesWithVote > 0).map(player => [player.playerId, player]));
 
 const roleCode = role => {
   if (role === "Portiere") return "P";
@@ -63,19 +65,24 @@ for (const team of teamFiles) {
   for (const player of team.squad || []) {
     const totals = player.previousSeason?.totals || {};
     const entries = player.previousSeason?.entries || [];
+    const fantasyStat = fantasyStatsByPlayerId.get(player.id) || null;
     const role = roleCode(player.role);
-    const appearances = number(totals.appearances);
+    const appearances = fantasyStat ? number(fantasyStat.appearancesWithVote) : number(totals.appearances);
     const starts = number(totals.starts);
     const minutes = number(totals.minutes);
-    const goals = number(totals.goals);
-    const assists = number(totals.assists);
+    const goals = fantasyStat ? number(fantasyStat.goalsFor) : number(totals.goals);
+    const assists = fantasyStat ? number(fantasyStat.assists) : number(totals.assists);
     const cleanSheets = number(totals.cleanSheets);
     const saves = number(totals.saves);
-    const yellowCards = number(totals.yellowCards);
-    const dismissals = number(totals.secondYellowCards) + number(totals.straightRedCards);
-    const penaltiesMissed = Number.isFinite(totals.penaltiesTaken) && Number.isFinite(totals.penaltiesScored)
+    const yellowCards = fantasyStat ? number(fantasyStat.yellowCards) : number(totals.yellowCards);
+    const dismissals = fantasyStat ? number(fantasyStat.redCards) : number(totals.secondYellowCards) + number(totals.straightRedCards);
+    const penaltiesMissed = fantasyStat ? number(fantasyStat.penaltiesMissed) : Number.isFinite(totals.penaltiesTaken) && Number.isFinite(totals.penaltiesScored)
       ? Math.max(0, totals.penaltiesTaken - totals.penaltiesScored)
       : null;
+    const penaltiesSaved = fantasyStat ? number(fantasyStat.penaltiesSaved) : number(totals.penaltiesSaved);
+    const ownGoals = fantasyStat ? number(fantasyStat.ownGoals) : number(totals.ownGoals);
+    const averageRating = fantasyStat && fantasyStat.averageRating > 0 ? number(fantasyStat.averageRating) : null;
+    const fantasyAverage = fantasyStat && fantasyStat.fantasyAverage > 0 ? number(fantasyStat.fantasyAverage) : null;
     const serieAMinutes = entries.filter(entry => entry.competition === "Serie A").reduce((sum, entry) => sum + number(entry.minutes), 0);
     const serieBMinutes = entries.filter(entry => entry.competition === "Serie B").reduce((sum, entry) => sum + number(entry.minutes), 0);
     const leagueMinutes = serieAMinutes + serieBMinutes;
@@ -84,10 +91,15 @@ for (const team of teamFiles) {
     const serieAShare = leagueMinutes > 0 ? serieAMinutes / leagueMinutes : leagueAppearances > 0 ? serieAAppearances / leagueAppearances : 0;
     const competitionCoefficient = round(.72 + serieAShare * .28, 2);
     const availability = clamp((minutes / 2600) * 55 + (starts / 30) * 30 + (appearances / 34) * 15, 0, 100);
-    const fantasyEventPoints = goals * 3 + assists - yellowCards * .5 - dismissals - (penaltiesMissed || 0) * 3;
+    const fantasyEventPoints = goals * 3 + assists - yellowCards * .5 - dismissals - (penaltiesMissed || 0) * 3 + penaltiesSaved * 3 - ownGoals * 3;
     const fantasyPointsPerAppearance = appearances > 0 ? fantasyEventPoints / appearances : null;
     const eventIndex = clamp(50 + number(fantasyPointsPerAppearance) * 45, 0, 100);
-    const rawScore = availability * .4 * (.82 + competitionCoefficient * .18) + eventIndex * .45 * competitionCoefficient + teamCalendar[team.id].index * .15;
+    const observedIndex = fantasyStat
+      ? clamp((50 + (averageRating - 6) * 50) * .45 + (50 + (fantasyAverage - averageRating) * 30) * .55, 0, 100)
+      : null;
+    const rawScore = fantasyStat
+      ? availability * .3 * (.82 + competitionCoefficient * .18) + eventIndex * .25 * competitionCoefficient + observedIndex * .3 * competitionCoefficient + teamCalendar[team.id].index * .15
+      : availability * .4 * (.82 + competitionCoefficient * .18) + eventIndex * .45 * competitionCoefficient + teamCalendar[team.id].index * .15;
     if (appearances === 0 && minutes === 0) continue;
     candidates.push({
       id: player.id,
@@ -99,12 +111,12 @@ for (const team of teamFiles) {
       appearances: appearances || null,
       starts: starts || null,
       minutes: minutes || null,
-      goals: totals.goals ?? null,
-      assists: totals.assists ?? null,
+      goals: fantasyStat ? fantasyStat.goalsFor : totals.goals ?? null,
+      assists: fantasyStat ? fantasyStat.assists : totals.assists ?? null,
       score: round(clamp(rawScore, 1, 99)),
       marketValueEur: player.marketValue?.amountEur ?? null,
       marketValueLabel: player.marketValue?.label ?? null,
-      reliability: minutes >= 2200 ? "Alta" : minutes >= 1100 ? "Media" : "Da verificare",
+      reliability: fantasyStat ? (appearances >= 28 ? "Alta" : appearances >= 15 ? "Media" : "Da verificare") : minutes >= 2200 ? "Alta" : minutes >= 1100 ? "Media" : "Da verificare",
       goalkeeperStatus: role === "P"
         ? (goalkeeperStarterOverrides[team.id] === player.id ? "Titolare confermato" : goalkeeperStarterOverrides[team.id] ? "Alternativa" : "Da valutare")
         : null,
@@ -116,6 +128,11 @@ for (const team of teamFiles) {
         yellowCards,
         dismissals,
         penaltiesMissed,
+        penaltiesSaved,
+        ownGoals,
+        averageRating,
+        fantasyAverage,
+        source: fantasyStat ? fantasyWorkbook.provider : "Statistiche squadra 2025/26",
         appearancesWithVoteProxy: appearances,
         unavailableMatches: Math.max(0, 38 - appearances),
         unavailableTreatment: "SV: escluso dalla media"
@@ -226,9 +243,9 @@ const output = {
   baseBudget: 500,
   calendarWindow: 38,
   methodology: {
-    scoringRules: { goal: 3, assist: 1, yellowCard: -.5, redCard: -1, penaltyMissed: -3, didNotPlay: "SV" },
+    scoringRules: { goal: 3, assist: 1, yellowCard: -.5, redCard: -1, penaltyMissed: -3, penaltySaved: 3, ownGoal: -3, didNotPlay: "SV" },
     competitionAdjustment: "Le statistiche di Serie B hanno coefficiente 0,72 rispetto alla Serie A; un calciatore con dati quasi esclusivamente di Serie B non puÃ² ricevere 5 stelle.",
-    description: "Indice orientativo costruito da statistiche 2025/26, disponibilità e calendario completo 2026/27. Il valore di mercato, quando disponibile, incide soltanto per il 12% sul profilo del calciatore. La forza avversaria pesa per l'82% sul rendimento recente e per il 18% sulla storia in Serie A.",
+    description: "Indice orientativo costruito da PV, media voto, fantamedia, bonus/malus 2025/26, disponibilità e calendario completo 2026/27. Per i profili collegati al foglio Fantacalcio, MV e FM incidono direttamente sul 30% dell'indice prima del correttivo del valore di mercato. La forza avversaria pesa per l'82% sul rendimento recente e per il 18% sulla storia in Serie A.",
     caveat: "Non è una quotazione ufficiale. Ruolo, titolarità, trasferimenti e listone della lega vanno verificati prima dell'asta.",
     missingValues: "I dati assenti restano N/D e non producono bonus."
   },
@@ -243,6 +260,13 @@ const output = {
       provider: "Lega Serie A / dataset locale verificato",
       season: "2025-26",
       use: "Componente principale, 82% della forza avversaria."
+    },
+    fantasyStatistics: {
+      provider: fantasyWorkbook.provider,
+      sourceFile: fantasyWorkbook.sourceFile,
+      season: fantasyWorkbook.season,
+      matchedPlayers: fantasyWorkbook.coverage.matchedCurrentPlayers,
+      use: "PV, MV, FM, gol, assist, cartellini, rigori parati/sbagliati e autogol."
     }
   },
   budgetPlan: [
