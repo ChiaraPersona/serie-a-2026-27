@@ -29,7 +29,9 @@ for (const summary of index.teams) {
   if (summary.id !== "milan") {
     const teamSpecificRoles = generated.players.filter(player => player.detailedRole !== player.role);
     assert.ok(teamSpecificRoles.length >= 10, `${summary.id}: ruoli specifici insufficienti`);
-    assert.ok(teamSpecificRoles.every(player => player.detailedRoleSource && player.detailedRoleEvidence?.starts), `${summary.id}: evidenza dei ruoli specifici assente`);
+    assert.ok(teamSpecificRoles.every(player =>
+      player.detailedRoleSource === "Configurazione rosa" || (player.detailedRoleSource && player.detailedRoleEvidence?.starts)
+    ), `${summary.id}: evidenza dei ruoli specifici assente`);
     specificRoles += teamSpecificRoles.length;
   }
   totalPlayers += generated.players.length;

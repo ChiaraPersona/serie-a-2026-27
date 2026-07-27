@@ -8,6 +8,7 @@ const root = path.resolve(__dirname, "../..");
 const generatedAt = "2026-07-22";
 const configFiles = ["completed-teams-2026-27.json", "remaining-teams-2026-27.json"];
 const config = { teams: Object.assign({}, ...configFiles.map(file => JSON.parse(fs.readFileSync(path.join(root, "data/sources/team-pages", file), "utf8")).teams)) };
+const externalStats = JSON.parse(fs.readFileSync(path.join(root, "data/sources/team-pages/espn-external-stats-2025-26.json"), "utf8"));
 const selectedArg = process.argv.find(argument => argument.startsWith("--teams="));
 const selectedTeams = selectedArg ? selectedArg.slice(8).split(",").map(value => value.trim()).filter(Boolean) : Object.keys(config.teams);
 const refreshRosters = process.argv.includes("--refresh") || process.argv.includes("--refresh-rosters");
@@ -230,7 +231,9 @@ function rosterPlayers(teamId, teamConfig) {
   const payload = readRaw(rosterCache(teamId)).roster;
   const athletes = payload.athletes || [];
   const included = new Set(teamConfig.includeEspnIds || []);
-  const selected = teamConfig.rosterPolicy === "include" ? athletes.filter(athlete => included.has(String(athlete.id))) : athletes;
+  const excluded = new Set(teamConfig.excludeEspnIds || []);
+  const selected = (teamConfig.rosterPolicy === "include" ? athletes.filter(athlete => included.has(String(athlete.id))) : athletes)
+    .filter(athlete => !excluded.has(String(athlete.id)));
   const players = selected.map(athlete => {
     const espnId = String(athlete.id);
     const role = athleteRole(athlete);
@@ -253,8 +256,14 @@ function rosterPlayers(teamId, teamConfig) {
 
 async function buildTeam(teamId, teamConfig, entries, detailedRoles) {
   const seeds = rosterPlayers(teamId, teamConfig);
+  const externalByPlayer = new Map();
+  for (const entry of externalStats.entries) {
+    if (!externalByPlayer.has(entry.playerId)) externalByPlayer.set(entry.playerId, []);
+    externalByPlayer.get(entry.playerId).push(playerEntry(entry));
+  }
   const squad = seeds.map(seed => {
-    const playerEntries = entries.filter(entry => entry.playerId === seed.id).sort((left, right) => (right.appearances ?? 0) - (left.appearances ?? 0));
+    let playerEntries = entries.filter(entry => entry.playerId === seed.id).sort((left, right) => (right.appearances ?? 0) - (left.appearances ?? 0));
+    if (!playerEntries.length && externalByPlayer.has(seed.id)) playerEntries = externalByPlayer.get(seed.id);
     const completeness = playerEntries.length ? (playerEntries.some(entry => entry.minutes != null) ? "complete" : "partial") : "unavailable";
     const photoUrl = seed.espnId ? `https://a.espncdn.com/i/headshots/soccer/players/full/${seed.espnId}.png` : null;
     const inferredRole = seed.espnId ? detailedRoles.get(seed.espnId) : null;
@@ -266,11 +275,12 @@ async function buildTeam(teamId, teamConfig, entries, detailedRoles) {
       detailedRoleEvidence: inferredRole ? { starts: inferredRole.starts, occurrences: inferredRole.occurrences, confidence: inferredRole.confidence } : null,
       dateOfBirth: seed.dateOfBirth || null, age: ageAt(seed.dateOfBirth), nationality: seed.nationality || null,
       heightCm: seed.heightCm ?? null, weightKg: seed.weightKg ?? null, preferredFoot: null, birthplace: null, atMilanSince: null,
-      photo: photoUrl, remotePhotoSource: photoUrl, arrivalDate: null, status: seed.status || teamConfig.defaultStatus,
+      photo: photoUrl, remotePhotoSource: photoUrl, arrivalDate: seed.arrivalDate || null, status: seed.status || teamConfig.defaultStatus,
       previousTeam: playerEntries[0]?.team || null, previousCompetition: playerEntries[0]?.competition || null,
       previousSeason: { season: "2025/26", entries: playerEntries, totals: totals(playerEntries), totalsByCompetition: playerEntries.map(entry => ({ competition: entry.competition, team: entry.team, ...totals([entry]) })) },
       sources: [
         { ...teamConfig.source },
+        ...(seed.transferSource ? [seed.transferSource] : []),
         ...playerEntries.map(entry => ({ provider: entry.source, scope: `${entry.team} - ${entry.competition} 2025/26`, url: entry.sourceUrl, retrievedAt: entry.lastUpdated }))
       ],
       dataQuality: {
