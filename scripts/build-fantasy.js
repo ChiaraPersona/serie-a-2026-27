@@ -55,6 +55,9 @@ function calendarIndex(teamId) {
 }
 
 const teamCalendar = Object.fromEntries(teams.map(team => [team.id, calendarIndex(team.id)]));
+const goalkeeperStarterOverrides = {
+  como: "jean-butez"
+};
 const candidates = [];
 for (const team of teamFiles) {
   for (const player of team.squad || []) {
@@ -102,6 +105,9 @@ for (const team of teamFiles) {
       marketValueEur: player.marketValue?.amountEur ?? null,
       marketValueLabel: player.marketValue?.label ?? null,
       reliability: minutes >= 2200 ? "Alta" : minutes >= 1100 ? "Media" : "Da verificare",
+      goalkeeperStatus: role === "P"
+        ? (goalkeeperStarterOverrides[team.id] === player.id ? "Titolare confermato" : goalkeeperStarterOverrides[team.id] ? "Alternativa" : "Da valutare")
+        : null,
       fantasyScoring: {
         points: round(fantasyEventPoints, 2),
         pointsPerAppearance: fantasyPointsPerAppearance === null ? null : round(fantasyPointsPerAppearance, 2),
@@ -149,7 +155,12 @@ for (const role of ["P", "D", "C", "A"]) {
 function buildGoalkeeperTrios() {
   const bestByTeam = [...candidates.filter(player => player.role === "P").reduce((map, player) => {
     const current = map.get(player.teamId);
-    if (!current || player.score > current.score) map.set(player.teamId, player);
+    const preferredId = goalkeeperStarterOverrides[player.teamId];
+    if (preferredId) {
+      if (player.id === preferredId) map.set(player.teamId, player);
+    } else if (!current || player.score > current.score) {
+      map.set(player.teamId, player);
+    }
     return map;
   }, new Map()).values()];
   const trios = [];
@@ -246,6 +257,7 @@ const output = {
     method: "Tre portieri di squadre diverse entro il 7% del budget. Per ogni giornata viene scelto il portiere con la partita piÃ¹ favorevole; il punteggio premia copertura del calendario e qualitÃ  individuale.",
     examples: goalkeeperTrios
   },
+  goalkeeperHierarchy: Object.fromEntries(Object.entries(goalkeeperStarterOverrides).map(([teamId, playerId]) => [teamId, { playerId, status: "Titolare confermato", source: "Indicazione utente" }])),
   starGuide: {
     5: "Top di ruolo: priorita d'asta e investimento importante.",
     4: "Titolare di alto valore: obiettivo forte con prezzo controllato.",

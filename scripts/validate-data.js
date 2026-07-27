@@ -18,6 +18,8 @@ assert(fantasy.players.every(player=>player.competitionProfile&&player.competiti
 assert(!fantasy.players.some(player=>player.competitionProfile.serieAShare<=20&&player.stars===5),"Un profilo quasi esclusivamente di Serie B ha ricevuto 5 stelle");
 assert(fantasy.methodology.scoringRules.goal===3&&fantasy.methodology.scoringRules.assist===1&&fantasy.methodology.scoringRules.yellowCard===-.5&&fantasy.methodology.scoringRules.redCard===-1&&fantasy.methodology.scoringRules.penaltyMissed===-3&&fantasy.methodology.scoringRules.didNotPlay==="SV","Regole punteggio fantacalcio non valide");
 assert(fantasy.players.every(player=>player.fantasyScoring&&player.fantasyScoring.unavailableTreatment==="SV: escluso dalla media"),"Gestione SV fantacalcio non valida");
+assert(fantasy.goalkeeperHierarchy.como.playerId==="jean-butez"&&fantasy.players.find(player=>player.id==="jean-butez")?.goalkeeperStatus==="Titolare confermato","Gerarchia portieri Como non valida");
+assert(!fantasy.goalkeeperTrios.examples.some(trio=>trio.players.some(player=>player.teamId==="como"&&player.id!=="jean-butez")),"Un tris usa un portiere del Como diverso da Butez");
 assert(fantasy.calendarWindow===38&&fantasy.teams.every(team=>team.calendar.fixtures.length===38),"Calendario formazione fantacalcio incompleto");
 assert(fantasy.sources.historicalTable.provider==="Transfermarkt"&&fantasy.sources.historicalTable.url,"Fonte classifica perpetua mancante");
 const fantasyComo=fantasy.teams.find(team=>team.id==="como"),fantasyFiorentina=fantasy.teams.find(team=>team.id==="fiorentina");
