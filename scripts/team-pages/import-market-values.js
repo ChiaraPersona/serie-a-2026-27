@@ -150,7 +150,7 @@ async function main() {
     const globalSlug = sourcePlayers.filter(source => slugKey(source.profileUrl) === local.id);
     const candidates = sameTeam.length ? sameTeam : global.length ? global : sameTeamSlug.length ? sameTeamSlug : globalSlug;
     const method = sameTeam.length ? "name-and-team" : global.length ? "unique-name" : sameTeamSlug.length ? "profile-slug-and-team" : "unique-profile-slug";
-    if (candidates.length === 1) matched.push({ ...candidates[0], playerId: local.id, localName: local.name, matchMethod: method });
+    if (candidates.length === 1) matched.push({ ...candidates[0], teamId: local.teamId, playerId: local.id, localName: local.name, matchMethod: method });
     else if (candidates.length > 1) ambiguous.push({ ...local, candidates });
     else missing.push(local);
   }
@@ -164,6 +164,7 @@ async function main() {
     if (result.candidates.length === 1) {
       matched.push({
         ...result.candidates[0],
+        teamId: result.local.teamId,
         playerId: result.local.id,
         localName: result.local.name,
         matchMethod: "global-search-exact",
