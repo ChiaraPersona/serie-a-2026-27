@@ -44,6 +44,7 @@ const write = (file, value) => {
   fs.mkdirSync(path.dirname(file), { recursive: true });
   fs.writeFileSync(file, `${JSON.stringify(value, null, 2)}\n`);
 };
+const slugKey = value => String(value || "").split("/").filter(Boolean)[0] || "";
 
 function parsePage(html) {
   const pattern = /<a title="([^"]+)" href="(\/[^"]+\/profil\/spieler\/(\d+))">[\s\S]*?<a title="([^"]+)" href="\/[^"]+\/startseite\/verein\/(\d+)\/saison_id\/2026">[\s\S]*?<td class="rechts hauptlink"><a[^>]*>([^<]+)<\/a>/g;
@@ -75,6 +76,51 @@ function parseClubPage(html, teamId, clubId) {
   })).filter(player => player.marketValueEur !== null);
 }
 
+function parseSearchPage(html) {
+  const body = html.match(/<div id="player-grid"[\s\S]*?<tbody>([\s\S]*?)<\/tbody>/)?.[1] || "";
+  const pattern = /<td class="hauptlink"><a title="([^"]+)" href="(\/[^"]+\/profil\/spieler\/(\d+))">[\s\S]*?<tr><td><a title="([^"]+)" href="\/[^"]+\/startseite\/verein\/(\d+)">[\s\S]*?<td class="rechts hauptlink">([^<]+)<\/td>/g;
+  return [...body.matchAll(pattern)].map(match => {
+    return {
+      transfermarktId: match[3],
+      name: decode(match[1]),
+      teamId: teamAliases[key(match[4])] || null,
+      transfermarktClubId: match[5],
+      club: decode(match[4]),
+      marketValueEur: parseEuro(match[6]),
+      marketValueLabel: decode(match[6]),
+      profileUrl: `https://www.transfermarkt.it${match[2]}`
+    };
+  }).filter(player => player && player.marketValueEur !== null);
+}
+
+async function fetchSearch(local) {
+  const url = `https://www.transfermarkt.it/schnellsuche/ergebnis/schnellsuche?query=${encodeURIComponent(repairEncoding(local.name))}`;
+  for (let attempt = 1; attempt <= 3; attempt += 1) {
+    const response = await fetch(url, { headers });
+    if (response.ok) {
+      const exact = parseSearchPage(await response.text()).filter(player => key(player.name) === key(local.name));
+      return { url, candidates: exact };
+    }
+    if (attempt === 3) throw new Error(`Ricerca Transfermarkt ${local.name}: HTTP ${response.status}`);
+    await new Promise(resolve => setTimeout(resolve, attempt * 1000));
+  }
+  return { url, candidates: [] };
+}
+
+async function mapLimit(items, limit, mapper) {
+  const results = new Array(items.length);
+  let next = 0;
+  async function worker() {
+    while (next < items.length) {
+      const index = next++;
+      results[index] = await mapper(items[index], index);
+      await new Promise(resolve => setTimeout(resolve, 200));
+    }
+  }
+  await Promise.all(Array.from({ length: Math.min(limit, items.length) }, worker));
+  return results;
+}
+
 async function main() {
   const sourcePlayers = [];
   const seenSourceIds = new Set();
@@ -100,10 +146,34 @@ async function main() {
   for (const local of localPlayers) {
     const sameTeam = sourcePlayers.filter(source => source.teamId === local.teamId && key(source.name) === key(local.name));
     const global = sourcePlayers.filter(source => key(source.name) === key(local.name));
-    const candidates = sameTeam.length ? sameTeam : global;
-    if (candidates.length === 1) matched.push({ ...candidates[0], playerId: local.id, localName: local.name, matchMethod: sameTeam.length ? "name-and-team" : "unique-name" });
+    const sameTeamSlug = sourcePlayers.filter(source => source.teamId === local.teamId && slugKey(source.profileUrl) === local.id);
+    const globalSlug = sourcePlayers.filter(source => slugKey(source.profileUrl) === local.id);
+    const candidates = sameTeam.length ? sameTeam : global.length ? global : sameTeamSlug.length ? sameTeamSlug : globalSlug;
+    const method = sameTeam.length ? "name-and-team" : global.length ? "unique-name" : sameTeamSlug.length ? "profile-slug-and-team" : "unique-profile-slug";
+    if (candidates.length === 1) matched.push({ ...candidates[0], playerId: local.id, localName: local.name, matchMethod: method });
     else if (candidates.length > 1) ambiguous.push({ ...local, candidates });
     else missing.push(local);
+  }
+  const secondPassResults = await mapLimit(missing, 3, async (local, index) => {
+    const result = await fetchSearch(local);
+    process.stdout.write(`secondo passaggio ${index + 1}/${missing.length}: ${local.name} (${result.candidates.length})\n`);
+    return { local, ...result };
+  });
+  const stillMissing = [];
+  for (const result of secondPassResults) {
+    if (result.candidates.length === 1) {
+      matched.push({
+        ...result.candidates[0],
+        playerId: result.local.id,
+        localName: result.local.name,
+        matchMethod: "global-search-exact",
+        searchUrl: result.url
+      });
+    } else if (result.candidates.length > 1) {
+      ambiguous.push({ ...result.local, searchUrl: result.url, candidates: result.candidates });
+    } else {
+      stillMissing.push({ ...result.local, searchUrl: result.url });
+    }
   }
   const unmatchedSource = sourcePlayers.filter(source => !matched.some(item => item.transfermarktId === source.transfermarktId));
   const dataset = {
@@ -122,14 +192,16 @@ async function main() {
     sourcePlayers: sourcePlayers.length,
     localPlayers: localPlayers.length,
     matched: matched.length,
-    missing: missing.length,
+    firstPassMissing: missing.length,
+    secondPassRecovered: secondPassResults.filter(result => result.candidates.length === 1).length,
+    missing: stillMissing.length,
     ambiguous: ambiguous.length,
     unmatchedSource: unmatchedSource.length,
-    missingPlayers: missing,
+    missingPlayers: stillMissing,
     ambiguousPlayers: ambiguous,
     unmatchedSourcePlayers: unmatchedSource
   });
-  console.log(`Valori mercato: ${matched.length}/${localPlayers.length} abbinati; ${missing.length} mancanti; ${ambiguous.length} ambigui.`);
+  console.log(`Valori mercato: ${matched.length}/${localPlayers.length} abbinati; ${stillMissing.length} mancanti; ${ambiguous.length} ambigui.`);
 }
 
 main().catch(error => {
