@@ -17,10 +17,20 @@ const teamAliases = {
   "como 1907": "como", "us sassuolo": "sassuolo", "us lecce": "lecce", "venezia fc": "venezia",
   "ac monza": "monza", "frosinone calcio": "frosinone", "atalanta": "atalanta", "inter": "inter"
 };
+const clubs = [
+  ["inter", "inter-mailand", 46], ["milan", "ac-mailand", 5], ["juventus", "juventus-turin", 506],
+  ["napoli", "ssc-neapel", 6195], ["como", "como-1907", 1047], ["atalanta", "atalanta-bergamo", 800],
+  ["roma", "as-rom", 12], ["fiorentina", "ac-florenz", 430], ["bologna", "fc-bologna", 1025],
+  ["lazio", "lazio-rom", 398], ["udinese", "udinese-calcio", 410], ["sassuolo", "us-sassuolo", 6574],
+  ["parma", "parma-calcio-1913", 130], ["genoa", "genua-cfc", 252], ["cagliari", "cagliari-calcio", 1390],
+  ["torino", "fc-turin", 416], ["venezia", "venezia-fc", 607], ["lecce", "us-lecce", 1005],
+  ["monza", "ac-monza", 2919], ["frosinone", "frosinone-calcio", 8970]
+];
 const decode = value => String(value || "")
   .replace(/&nbsp;/g, " ").replace(/&amp;/g, "&").replace(/&quot;/g, '"')
   .replace(/&#039;|&apos;/g, "'").replace(/&euro;/g, "€").replace(/<[^>]+>/g, "").trim();
-const key = value => decode(value).normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+const repairEncoding = value => /Ã|Ä|Å|â/.test(value) ? Buffer.from(value, "latin1").toString("utf8") : value;
+const key = value => repairEncoding(decode(value)).normalize("NFD").replace(/[\u0300-\u036f]/g, "")
   .toLowerCase().replace(/[’']/g, "").replace(/[^a-z0-9]+/g, " ").trim();
 const parseEuro = value => {
   const text = decode(value).toLowerCase().replace(/\s/g, "").replace("€", "").replace(",", ".");
@@ -51,17 +61,33 @@ function parsePage(html) {
   }).filter(Boolean);
 }
 
+function parseClubPage(html, teamId, clubId) {
+  const pattern = /<a href="(\/[^"]+\/profil\/spieler\/(\d+))">\s*([^<]+?)\s*<\/a>[\s\S]*?<td class="rechts hauptlink"><a[^>]*>([^<]+)<\/a>/g;
+  return [...html.matchAll(pattern)].map(match => ({
+    transfermarktId: match[2],
+    name: decode(match[3]),
+    teamId,
+    transfermarktClubId: String(clubId),
+    club: teamId,
+    marketValueEur: parseEuro(match[4]),
+    marketValueLabel: decode(match[4]),
+    profileUrl: `https://www.transfermarkt.it${match[1]}`
+  })).filter(player => player.marketValueEur !== null);
+}
+
 async function main() {
   const sourcePlayers = [];
-  for (let page = 1; page <= 30; page++) {
-    const url = `${baseUrl}/page/${page}`;
+  const seenSourceIds = new Set();
+  for (const [teamId, slug, clubId] of clubs) {
+    const url = `https://www.transfermarkt.it/${slug}/kader/verein/${clubId}/saison_id/2026/plus/1`;
     const response = await fetch(url, { headers });
-    if (!response.ok) throw new Error(`Transfermarkt pagina ${page}: HTTP ${response.status}`);
-    const rows = parsePage(await response.text());
-    if (!rows.length) break;
-    sourcePlayers.push(...rows);
-    process.stdout.write(`Pagina ${page}: ${rows.length} valori\n`);
-    if (rows.length < 25) break;
+    if (!response.ok) throw new Error(`Transfermarkt rosa ${teamId}: HTTP ${response.status}`);
+    const rows = parseClubPage(await response.text(), teamId, clubId);
+    if (!rows.length) throw new Error(`Transfermarkt rosa ${teamId}: nessun valore trovato`);
+    const fresh = rows.filter(row => !seenSourceIds.has(row.transfermarktId));
+    fresh.forEach(row => seenSourceIds.add(row.transfermarktId));
+    sourcePlayers.push(...fresh);
+    process.stdout.write(`${teamId}: ${rows.length} valori\n`);
   }
   const localPlayers = [];
   for (const teamId of Object.values(teamAliases).filter((id, index, list) => list.indexOf(id) === index)) {
@@ -72,8 +98,10 @@ async function main() {
   }
   const matched = [], missing = [], ambiguous = [];
   for (const local of localPlayers) {
-    const candidates = sourcePlayers.filter(source => source.teamId === local.teamId && key(source.name) === key(local.name));
-    if (candidates.length === 1) matched.push({ ...candidates[0], playerId: local.id, localName: local.name });
+    const sameTeam = sourcePlayers.filter(source => source.teamId === local.teamId && key(source.name) === key(local.name));
+    const global = sourcePlayers.filter(source => key(source.name) === key(local.name));
+    const candidates = sameTeam.length ? sameTeam : global;
+    if (candidates.length === 1) matched.push({ ...candidates[0], playerId: local.id, localName: local.name, matchMethod: sameTeam.length ? "name-and-team" : "unique-name" });
     else if (candidates.length > 1) ambiguous.push({ ...local, candidates });
     else missing.push(local);
   }

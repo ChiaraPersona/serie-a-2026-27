@@ -4,10 +4,14 @@ const read=name=>JSON.parse(fs.readFileSync(path.join(dir,name),"utf8"));
 const teams=read("teams.json"), matches=read("matches.json"), referees=read("referees.json"), refereeHistory=read("referee-stats-2025-26.json"), previousStandings=read("standings-2025-26.json"), objectives=JSON.parse(fs.readFileSync(path.join(root,"data/team-objectives.json"),"utf8")), teamIds=new Set(teams.map(t=>t.id));
 const {calculateObjectiveMetrics}=require("./objective-metrics.js");
 const fantasy=JSON.parse(fs.readFileSync(path.join(root,"data/generated/fantacalcio-advice.json"),"utf8"));
+const marketValues=JSON.parse(fs.readFileSync(path.join(root,"data/sources/team-pages/transfermarkt-market-values-2026-27.json"),"utf8"));
 function assert(condition,message){if(!condition)throw new Error(message)}
 
 assert(teams.length===20,`Squadre: ${teams.length}, attese 20`);
 assert(fantasy.season==="2026-27"&&fantasy.players.length>100,"Dataset fantacalcio non valido");
+assert(marketValues.provider==="Transfermarkt"&&marketValues.players.length>=500,"Copertura valori di mercato insufficiente");
+assert(marketValues.players.every(player=>player.marketValueEur>0&&player.transfermarktId&&player.profileUrl),"Valore di mercato privo di importo, ID o fonte");
+assert(fantasy.players.filter(player=>player.marketValueEur!==null).length>=400,"Valori di mercato non integrati nel Fantacalcio");
 assert(fantasy.players.every(player=>["P","D","C","A"].includes(player.role)&&["A","B","C","D"].includes(player.slot)&&player.value500>=1),"Ruoli, slot o valori fantacalcio non validi");
 assert(fantasy.calendarWindow===38&&fantasy.teams.every(team=>team.calendar.fixtures.length===38),"Calendario formazione fantacalcio incompleto");
 assert(fantasy.sources.historicalTable.provider==="Transfermarkt"&&fantasy.sources.historicalTable.url,"Fonte classifica perpetua mancante");

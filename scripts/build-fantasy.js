@@ -86,9 +86,20 @@ for (const team of teamFiles) {
       goals: totals.goals ?? null,
       assists: totals.assists ?? null,
       score: round(clamp(rawScore, 1, 99)),
+      marketValueEur: player.marketValue?.amountEur ?? null,
+      marketValueLabel: player.marketValue?.label ?? null,
       reliability: minutes >= 2200 ? "Alta" : minutes >= 1100 ? "Media" : "Da verificare",
       calendar: { index: teamCalendar[team.id].index, label: teamCalendar[team.id].label }
     });
+  }
+}
+
+const marketValuesAvailable = candidates.map(player => player.marketValueEur).filter(Number.isFinite);
+const maxMarketLog = Math.log10(Math.max(...marketValuesAvailable, 1) + 1);
+for (const player of candidates) {
+  if (player.marketValueEur !== null) {
+    const marketIndex = 100 * Math.log10(player.marketValueEur + 1) / maxMarketLog;
+    player.score = round(clamp(player.score * .88 + marketIndex * .12, 1, 99));
   }
 }
 
@@ -110,7 +121,7 @@ const output = {
   baseBudget: 500,
   calendarWindow: 38,
   methodology: {
-    description: "Indice orientativo costruito da statistiche 2025/26, disponibilità e calendario completo 2026/27. La forza avversaria pesa per l'82% sul rendimento recente e per il 18% sulla storia in Serie A.",
+    description: "Indice orientativo costruito da statistiche 2025/26, disponibilità e calendario completo 2026/27. Il valore di mercato, quando disponibile, incide soltanto per il 12% sul profilo del calciatore. La forza avversaria pesa per l'82% sul rendimento recente e per il 18% sulla storia in Serie A.",
     caveat: "Non è una quotazione ufficiale. Ruolo, titolarità, trasferimenti e listone della lega vanno verificati prima dell'asta.",
     missingValues: "I dati assenti restano N/D e non producono bonus."
   },

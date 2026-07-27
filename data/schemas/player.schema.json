@@ -10,6 +10,7 @@
     "role",
     "detailedRole",
     "status",
+    "marketValue",
     "previousSeason",
     "sources",
     "dataQuality"
@@ -27,6 +28,23 @@
         "rientro dal prestito",
         "primavera",
         "da verificare"
+      ]
+    },
+    "marketValue": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "required": [
+            "amountEur",
+            "currency",
+            "provider",
+            "retrievedAt",
+            "sourceUrl"
+          ]
+        }
       ]
     },
     "previousSeason": {
