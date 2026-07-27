@@ -107,7 +107,7 @@ for (const role of ["P", "D", "C", "A"]) {
   const group = candidates.filter(player => player.role === role).sort((a, b) => b.score - a.score);
   group.forEach((player, index) => {
     const percentile = index / Math.max(1, group.length);
-    player.slot = percentile < .15 ? "A" : percentile < .4 ? "B" : percentile < .7 ? "C" : "D";
+    player.stars = percentile < .1 ? 5 : percentile < .25 ? 4 : percentile < .5 ? 3 : percentile < .75 ? 2 : 1;
     const roleMax = { P: 38, D: 45, C: 85, A: 185 }[role];
     player.value500 = Math.max(1, Math.round(1 + Math.pow(player.score / 100, 2.15) * roleMax));
   });
@@ -210,6 +210,13 @@ const output = {
     budget500: 35,
     method: "Tre portieri di squadre diverse entro il 7% del budget. Per ogni giornata viene scelto il portiere con la partita piÃ¹ favorevole; il punteggio premia copertura del calendario e qualitÃ  individuale.",
     examples: goalkeeperTrios
+  },
+  starGuide: {
+    5: "Top di ruolo: priorita d'asta e investimento importante.",
+    4: "Titolare di alto valore: obiettivo forte con prezzo controllato.",
+    3: "Buon titolare o prima rotazione, da incrociare con il calendario.",
+    2: "Alternativa utile: acquistare a costo contenuto.",
+    1: "Scommessa o copertura profonda, da verificare prima dell'asta."
   },
   slotGuide: {
     A: "Punto fermo: alto investimento e priorità d'asta.",

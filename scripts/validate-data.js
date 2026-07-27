@@ -12,7 +12,8 @@ assert(fantasy.season==="2026-27"&&fantasy.players.length>100,"Dataset fantacalc
 assert(marketValues.provider==="Transfermarkt"&&marketValues.players.length>=500,"Copertura valori di mercato insufficiente");
 assert(marketValues.players.every(player=>player.marketValueEur>0&&player.transfermarktId&&player.profileUrl),"Valore di mercato privo di importo, ID o fonte");
 assert(fantasy.players.filter(player=>player.marketValueEur!==null).length>=400,"Valori di mercato non integrati nel Fantacalcio");
-assert(fantasy.players.every(player=>["P","D","C","A"].includes(player.role)&&["A","B","C","D"].includes(player.slot)&&player.value500>=1),"Ruoli, slot o valori fantacalcio non validi");
+assert(fantasy.players.every(player=>["P","D","C","A"].includes(player.role)&&Number.isInteger(player.stars)&&player.stars>=1&&player.stars<=5&&player.value500>=1),"Ruoli, stelle o valori fantacalcio non validi");
+assert([1,2,3,4,5].every(stars=>fantasy.players.some(player=>player.stars===stars)),"Distribuzione stelle fantacalcio incompleta");
 assert(fantasy.calendarWindow===38&&fantasy.teams.every(team=>team.calendar.fixtures.length===38),"Calendario formazione fantacalcio incompleto");
 assert(fantasy.sources.historicalTable.provider==="Transfermarkt"&&fantasy.sources.historicalTable.url,"Fonte classifica perpetua mancante");
 const fantasyComo=fantasy.teams.find(team=>team.id==="como"),fantasyFiorentina=fantasy.teams.find(team=>team.id==="fiorentina");
