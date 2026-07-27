@@ -16,10 +16,12 @@ for (const summary of index.teams) {
   assert.ok(fs.existsSync(path.join(root, generatedPath)), `${summary.id}: rosa generata assente`);
   const generated = read(generatedPath);
   const team = read(`data/teams/${summary.id}.json`);
-  for (const field of ["city", "stadium", "coach"]) {
+  for (const field of ["city", "stadium", "coach", "preferredFormation"]) {
     assert.ok(team[field], `${summary.id}: ${field} assente`);
     assert.strictEqual(summary[field], team[field], `${summary.id}: ${field} non sincronizzato nell'indice`);
   }
+  assert.match(team.preferredFormation, /^[1-9](?:-[1-9]){2,4}$/, `${summary.id}: formato modulo non valido`);
+  assert.ok(team.sources.some(source => source.scope.includes("Modulo preferito")), `${summary.id}: fonte modulo preferito assente`);
   assert.ok(team.sources.some(source => source.provider === "Lega Serie A" && source.scope.includes("Allenatori")), `${summary.id}: fonte allenatore assente`);
   assert.ok(generated.players.length >= 20, `${summary.id}: rosa troppo corta`);
   assert.strictEqual(team.squad.length, generated.players.length, `${summary.id}: rosa non propagata`);

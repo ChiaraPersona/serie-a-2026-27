@@ -8,6 +8,7 @@
     "city",
     "stadium",
     "coach",
+    "preferredFormation",
     "previousSeason",
     "teamStats",
     "squad",
@@ -26,6 +27,10 @@
     "coach": {
       "type": "string",
       "minLength": 1
+    },
+    "preferredFormation": {
+      "type": "string",
+      "pattern": "^[1-9](?:-[1-9]){2,4}$"
     },
     "squad": {
       "type": "array",
