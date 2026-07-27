@@ -200,3 +200,13 @@ button,a,select,input{outline-offset:3px}:focus-visible{outline:2px solid var(--
 .standings-table tbody tr{transition:background .16s ease}.standings-table tbody tr:hover td{background:rgba(29,79,164,.3)}
 @media(max-width:760px){.directory-controls,.referee-controls{grid-template-columns:1fr 1fr;top:80px}.directory-controls>strong,.referee-controls>strong{grid-column:1/-1;text-align:left}.metric-track{height:5px}}
 @media(max-width:520px){.directory-controls,.referee-controls{grid-template-columns:1fr;top:76px}.directory-controls>strong,.referee-controls>strong{grid-column:auto}.directory-controls{margin-inline:0}.referee-controls{position:static}}
+
+/* La hero fotografica appartiene solo alla home. */
+body:not([data-page="home"]) .hero{display:flex;min-height:0;padding:32px 0 28px;overflow:visible;border:0;border-bottom:1px solid var(--line);border-radius:0;background:none;box-shadow:none}
+body:not([data-page="home"]) .hero::after{display:none}
+body:not([data-page="home"]) .hero>div:first-child{width:100%}
+body:not([data-page="home"]) .hero h1{max-width:920px;font-size:clamp(40px,5vw,68px)}
+body:not([data-page="home"]) .hero .lead{max-width:780px;color:var(--muted);font-size:16px}
+body:not([data-page="home"]) .hero-stat{display:flex;align-items:baseline;gap:10px;margin-left:auto;padding-left:32px}
+body:not([data-page="home"]) .hero-stat strong{font-size:38px}
+@media(max-width:760px){body:not([data-page="home"]) .hero{display:block;padding:24px 0 22px}body:not([data-page="home"]) .hero h1{font-size:clamp(38px,11vw,54px)}body:not([data-page="home"]) .hero-stat{margin-top:18px;padding-left:0}}
