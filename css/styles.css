@@ -293,4 +293,23 @@ footer{margin-top:32px;border-color:rgba(255,255,255,.08);color:#7f899b}
 @media(max-width:900px){.site-header{top:8px;width:calc(100% - 20px);margin-top:8px;border-radius:18px}.site-nav{top:72px;left:0;right:0;border-color:rgba(255,255,255,.12);border-radius:18px;background:rgba(8,14,29,.94);backdrop-filter:blur(24px)}}
 @media(max-width:580px){main{padding-top:30px}.site-header{min-height:62px;padding:7px 9px}.brand-mark{width:40px;height:40px}.hero{border-radius:26px}.section{margin-top:64px}.season-overview{border-radius:20px}.calendar-toolbar{top:80px}}
 .fantasy-controls #fantasy-search{background:#071326!important;color:#fff!important;-webkit-text-fill-color:#fff!important;caret-color:#f3c969}.fantasy-controls #fantasy-search::placeholder{color:#aebbd0!important;opacity:1}
-.site-nav .page-link[data-page-link="fantasy"]{color:#67c7ff;font-weight:850}.site-nav .page-link[data-page-link="fantasy"]:hover{background:rgba(68,176,255,.12);color:#9bddff}.site-nav .page-link[data-page-link="fantasy"].active{background:rgba(68,176,255,.16);color:#9bddff;box-shadow:inset 0 0 0 1px rgba(103,199,255,.2)}
+.site-nav .page-link[data-page-link="fantasy"],.site-nav .page-link[data-page-link="fantasy"]:hover,.site-nav .page-link[data-page-link="fantasy"].active{border-color:transparent;background:transparent;color:#67c7ff;font-weight:850;box-shadow:none}
+
+/* Palette blu principale */
+:root{--bg:#031a3d;--surface:rgba(7,39,87,.86);--surface2:rgba(12,55,119,.88);--surface3:#123f84;--line:rgba(104,164,238,.3);--line-strong:rgba(129,186,255,.52);--text:#f6f9ff;--muted:#adbfda;--shadow-sm:0 12px 34px rgba(0,20,62,.24);--shadow-lg:0 34px 90px rgba(0,14,51,.42)}
+body{background:radial-gradient(circle at 78% -10%,rgba(48,126,230,.52),transparent 34rem),radial-gradient(circle at -8% 48%,rgba(18,89,190,.32),transparent 40rem),linear-gradient(180deg,#06265b 0,#031a3d 48%,#02132f 100%)}
+.site-header{border-color:rgba(116,174,244,.3);background:rgba(5,31,72,.82);box-shadow:0 16px 46px rgba(0,17,55,.3),inset 0 1px rgba(151,197,255,.1)}
+.hero{border-color:rgba(119,178,248,.27);background:radial-gradient(circle at 86% 12%,rgba(59,133,231,.26),transparent 25rem),linear-gradient(145deg,rgba(16,67,139,.82),rgba(5,34,80,.92));box-shadow:0 34px 90px rgba(0,17,57,.34),inset 0 1px rgba(157,201,255,.12)}
+.card,.home-next,.home-rail a,.feature-card,.season-overview,.calendar-toolbar,.day-nav,.referee-controls,.editorial-empty,.cup-stage,.objective-card,.squad-leader-card,.pilot-section,.goalkeeper-trios>article,.fantasy-slots article{border-color:rgba(111,172,244,.25);background:linear-gradient(145deg,rgba(18,72,148,.78),rgba(7,39,89,.78));box-shadow:inset 0 1px rgba(160,202,255,.09),0 18px 48px rgba(0,18,60,.22)}
+.card-link:hover,.feature-card:hover,.home-rail a:hover{border-color:rgba(125,190,255,.5);box-shadow:inset 0 1px rgba(178,215,255,.12),0 24px 58px rgba(0,20,68,.3)}
+.calendar-toolbar,.fantasy-controls{background:rgba(6,35,82,.92)}
+.fantasy-config{border-color:rgba(111,172,244,.28);background:linear-gradient(135deg,rgba(20,76,155,.74),rgba(7,37,84,.9))}
+.fantasy-plan article,.goalkeeper-trios dl div{border-color:rgba(110,171,242,.2);background:rgba(38,101,187,.15)}
+.table-wrap{border-color:rgba(109,170,242,.25);background:rgba(7,38,85,.74);box-shadow:inset 0 1px rgba(155,200,255,.08),0 20px 52px rgba(0,17,57,.24)}
+table{background:rgba(5,34,77,.62)}th{background:rgba(30,88,169,.3);color:#b8cbea}th,td{border-color:rgba(104,164,238,.17)}tbody tr:hover{background:rgba(40,107,199,.18)}
+select,input{border-color:rgba(117,177,247,.28)!important;background:rgba(12,55,116,.76)!important}
+.fantasy-controls #fantasy-search{background:#082d66!important}.fantasy-controls select,.fantasy-controls select option{background:#0b397b;color:#f7faff}
+.match.fixture-card{border-color:rgba(110,172,245,.25);background:linear-gradient(155deg,rgba(20,72,144,.74),rgba(6,34,79,.86));box-shadow:inset 0 1px rgba(160,203,255,.09),0 18px 48px rgba(0,17,57,.27)}
+.match.fixture-card .match-head{background:rgba(3,27,66,.5)}.match.fixture-card .fixture-team{border-color:rgba(111,172,244,.17);background:rgba(35,94,180,.12)}
+.button{border-color:rgba(113,174,245,.3);background:rgba(31,91,175,.2)}.button:hover{border-color:rgba(134,196,255,.55);background:rgba(43,111,204,.3)}
+@media(max-width:900px){.site-nav{border-color:rgba(111,172,244,.3);background:rgba(5,31,72,.96)}}
