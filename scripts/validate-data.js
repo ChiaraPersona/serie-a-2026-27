@@ -9,6 +9,10 @@ function assert(condition,message){if(!condition)throw new Error(message)}
 assert(teams.length===20,`Squadre: ${teams.length}, attese 20`);
 assert(fantasy.season==="2026-27"&&fantasy.players.length>100,"Dataset fantacalcio non valido");
 assert(fantasy.players.every(player=>["P","D","C","A"].includes(player.role)&&["A","B","C","D"].includes(player.slot)&&player.value500>=1),"Ruoli, slot o valori fantacalcio non validi");
+assert(fantasy.calendarWindow===38&&fantasy.teams.every(team=>team.calendar.fixtures.length===38),"Calendario formazione fantacalcio incompleto");
+assert(fantasy.sources.historicalTable.provider==="Transfermarkt"&&fantasy.sources.historicalTable.url,"Fonte classifica perpetua mancante");
+const fantasyComo=fantasy.teams.find(team=>team.id==="como"),fantasyFiorentina=fantasy.teams.find(team=>team.id==="fiorentina");
+assert(fantasyComo.strength.recent>fantasyFiorentina.strength.recent&&fantasyComo.strength.combined>fantasyFiorentina.strength.combined,"Rendimento recente Como/Fiorentina sovrascritto dalla storia");
 assert(new Set(teams.map(t=>t.id)).size===20,"ID squadra duplicati");
 assert(objectives.schemaVersion===1&&objectives.season==="2026-27"&&objectives.teams.length===20,"Dataset obiettivi non valido");
 assert(new Set(objectives.teams.map(team=>team.teamId)).size===20,"Profili obiettivo duplicati");

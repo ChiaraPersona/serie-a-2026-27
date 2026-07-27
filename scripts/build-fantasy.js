@@ -17,28 +17,40 @@ const number = value => Number.isFinite(value) ? value : 0;
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 const round = (value, digits = 1) => Number(value.toFixed(digits));
 
-const strength = new Map(teamFiles.map(team => {
+const historicalRank = {
+  juventus: 1, inter: 2, milan: 3, roma: 4, fiorentina: 5, napoli: 6, lazio: 7, torino: 8,
+  bologna: 9, atalanta: 11, genoa: 12, udinese: 13, cagliari: 14, parma: 15, lecce: 26,
+  como: 29, sassuolo: 30, venezia: 43, monza: 56, frosinone: 61
+};
+const strengthDetails = new Map(teamFiles.map(team => {
   const previous = team.previousSeason || {};
-  const position = previous.competition === "Serie A" && previous.position ? previous.position : 18;
-  return [team.id, clamp(21 - position, 2, 20)];
+  const playedSerieA = previous.competition === "Serie A" && previous.position;
+  const recent = playedSerieA ? clamp(104.5 - previous.position * 4.5, 15, 100) : clamp(38 - (previous.position || 3) * 3, 22, 35);
+  const history = clamp(102 - (historicalRank[team.id] || 61) * 1.55, 8, 100);
+  const combined = round(recent * .82 + history * .18);
+  return [team.id, { combined, recent: round(recent), history: round(history), historicalRank: historicalRank[team.id] || null }];
 }));
 
 function calendarIndex(teamId) {
-  const fixtures = matches.filter(match => match.matchday <= 5 && (match.homeTeam === teamId || match.awayTeam === teamId));
-  const raw = fixtures.reduce((sum, match) => {
+  const fixtures = matches.filter(match => match.homeTeam === teamId || match.awayTeam === teamId).sort((a, b) => a.matchday - b.matchday);
+  const fullFixtures = fixtures.map(match => {
     const home = match.homeTeam === teamId;
     const opponent = home ? match.awayTeam : match.homeTeam;
-    return sum + strength.get(opponent) + (home ? -1.2 : 1.2);
-  }, 0) / Math.max(1, fixtures.length);
-  const index = round(clamp(100 - raw * 4.2, 20, 90));
+    const opponentStrength = strengthDetails.get(opponent).combined;
+    const ease = round(clamp(100 - opponentStrength + (home ? 7 : -7), 8, 92));
+    return {
+      matchday: match.matchday,
+      opponent,
+      venue: home ? "C" : "T",
+      ease,
+      label: ease >= 65 ? "Favorevole" : ease >= 48 ? "Equilibrata" : "Impegnativa"
+    };
+  });
+  const index = round(fullFixtures.reduce((sum, fixture) => sum + fixture.ease, 0) / fullFixtures.length);
   return {
     index,
-    label: index >= 67 ? "Favorevole" : index >= 48 ? "Equilibrato" : "Impegnativo",
-    fixtures: fixtures.map(match => ({
-      matchday: match.matchday,
-      opponent: match.homeTeam === teamId ? match.awayTeam : match.homeTeam,
-      venue: match.homeTeam === teamId ? "C" : "T"
-    }))
+    label: index >= 57 ? "Favorevole" : index >= 44 ? "Equilibrato" : "Impegnativo",
+    fixtures: fullFixtures
   };
 }
 
@@ -75,7 +87,7 @@ for (const team of teamFiles) {
       assists: totals.assists ?? null,
       score: round(clamp(rawScore, 1, 99)),
       reliability: minutes >= 2200 ? "Alta" : minutes >= 1100 ? "Media" : "Da verificare",
-      calendar: teamCalendar[team.id]
+      calendar: { index: teamCalendar[team.id].index, label: teamCalendar[team.id].label }
     });
   }
 }
@@ -96,11 +108,24 @@ const output = {
   season: "2026-27",
   generatedAt: new Date().toISOString().slice(0, 10),
   baseBudget: 500,
-  openingWindow: 5,
+  calendarWindow: 38,
   methodology: {
-    description: "Indice orientativo costruito da statistiche 2025/26, disponibilità e difficoltà delle prime cinque giornate 2026/27.",
+    description: "Indice orientativo costruito da statistiche 2025/26, disponibilità e calendario completo 2026/27. La forza avversaria pesa per l'82% sul rendimento recente e per il 18% sulla storia in Serie A.",
     caveat: "Non è una quotazione ufficiale. Ruolo, titolarità, trasferimenti e listone della lega vanno verificati prima dell'asta.",
     missingValues: "I dati assenti restano N/D e non producono bonus."
+  },
+  sources: {
+    historicalTable: {
+      provider: "Transfermarkt",
+      url: "https://www.transfermarkt.it/serie-a/ewigeTabelle/wettbewerb/IT1",
+      retrievedAt: "2026-07-27",
+      use: "Correttivo storico limitato al 18% della forza avversaria."
+    },
+    recentSeason: {
+      provider: "Lega Serie A / dataset locale verificato",
+      season: "2025-26",
+      use: "Componente principale, 82% della forza avversaria."
+    }
   },
   budgetPlan: [
     { role: "P", label: "Portieri", players: 3, minPct: 6, maxPct: 9 },
@@ -114,7 +139,7 @@ const output = {
     C: "Rotazione utile: profilo da incrociare con calendario e titolarità.",
     D: "Scommessa o copertura: acquistare solo a costo contenuto."
   },
-  teams: teams.map(team => ({ id: team.id, name: team.name, logo: team.logo, calendar: teamCalendar[team.id] })),
+  teams: teams.map(team => ({ id: team.id, name: team.name, logo: team.logo, strength: strengthDetails.get(team.id), calendar: teamCalendar[team.id] })),
   players: candidates
 };
 
