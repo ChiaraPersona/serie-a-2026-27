@@ -3,9 +3,12 @@ const dir=path.resolve(__dirname,"../data/normalized"), root=path.resolve(__dirn
 const read=name=>JSON.parse(fs.readFileSync(path.join(dir,name),"utf8"));
 const teams=read("teams.json"), matches=read("matches.json"), referees=read("referees.json"), refereeHistory=read("referee-stats-2025-26.json"), previousStandings=read("standings-2025-26.json"), objectives=JSON.parse(fs.readFileSync(path.join(root,"data/team-objectives.json"),"utf8")), teamIds=new Set(teams.map(t=>t.id));
 const {calculateObjectiveMetrics}=require("./objective-metrics.js");
+const fantasy=JSON.parse(fs.readFileSync(path.join(root,"data/generated/fantacalcio-advice.json"),"utf8"));
 function assert(condition,message){if(!condition)throw new Error(message)}
 
 assert(teams.length===20,`Squadre: ${teams.length}, attese 20`);
+assert(fantasy.season==="2026-27"&&fantasy.players.length>100,"Dataset fantacalcio non valido");
+assert(fantasy.players.every(player=>["P","D","C","A"].includes(player.role)&&["A","B","C","D"].includes(player.slot)&&player.value500>=1),"Ruoli, slot o valori fantacalcio non validi");
 assert(new Set(teams.map(t=>t.id)).size===20,"ID squadra duplicati");
 assert(objectives.schemaVersion===1&&objectives.season==="2026-27"&&objectives.teams.length===20,"Dataset obiettivi non valido");
 assert(new Set(objectives.teams.map(team=>team.teamId)).size===20,"Profili obiettivo duplicati");

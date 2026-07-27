@@ -2,7 +2,8 @@
   "name": "serie-a-2026-27",
   "private": true,
   "scripts": {
-    "build": "node scripts/team-pages/build.js && node scripts/build-site.js",
+    "build": "node scripts/team-pages/build.js && node scripts/build-fantasy.js && node scripts/build-site.js",
+    "build:fantasy": "node scripts/build-fantasy.js && node scripts/build-site.js",
     "build:teams": "node scripts/team-pages/build.js && node scripts/build-site.js",
     "import:milan": "node scripts/team-pages/import-milan.js --refresh",
     "compress:milan-raw": "node scripts/team-pages/compress-milan-raw.js",
