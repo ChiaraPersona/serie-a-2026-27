@@ -1,4 +1,4 @@
-const DATA="data/normalized/",RELEASE="20260727-internal-headers";
+const DATA="data/normalized/",RELEASE="20260727-clean-home";
 const labels={scheduled:"Programmata",live:"In corso",finished:"Conclusa",postponed:"Rinviata"};
 const esc=v=>String(v??"").replace(/[&<>\"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const playerRoleAbbreviations={Portiere:"POR",Difensore:"DC","Difensore centrale":"DC","Difensore centrale destro":"DC","Difensore centrale sinistro":"DC","Terzino destro":"TD","Terzino sinistro":"TS",Centrocampista:"CC","Centrocampista centrale":"CC","Centrocampista centrale destro":"CC","Centrocampista centrale sinistro":"CC",Mediano:"CDC","Mediano / regista":"CDC","Esterno destro":"ED","Esterno sinistro":"ES",Trequartista:"COC","Trequartista destro":"COC","Trequartista sinistro":"COC","Trequartista / ala":"COC",Regista:"COC",Attaccante:"ATT","Seconda punta":"ATT",Centravanti:"ATT","Ala destra":"AD","Ala sinistra":"AS"};
@@ -9,8 +9,7 @@ async function loadTeamDirectory(){const r=await fetch(`data/teams/index.json?v=
 async function loadPlayerLeaderboards(){const r=await fetch(`data/teams/player-leaderboards.json?v=${RELEASE}`);if(!r.ok)throw new Error(`data/teams/player-leaderboards.json: ${r.status}`);return r.json()}
 async function loadObjectiveProfiles(){const r=await fetch(`data/team-objectives.json?v=${RELEASE}`);if(!r.ok)throw new Error(`data/team-objectives.json: ${r.status}`);return r.json()}
 const dateOnly=v=>{if(!v)return null;const [year,month,day]=String(v).slice(0,10).split("-");const months=["gen","feb","mar","apr","mag","giu","lug","ago","set","ott","nov","dic"];return `${Number(day)} ${months[Number(month)-1]} ${year}`};
-const sourceBanner=()=>`<aside class="source-banner"><span class="source-banner-icon" aria-hidden="true">✓</span><span><strong>Dati verificabili</strong> Calendario dal C.U. n. 205 · programmazione iniziale dal C.U. n. 208.</span></aside>`;
-const hero=(eyebrow,title,text,aside="")=>`${document.body.dataset.page==="home"?sourceBanner():""}<section class="hero"><div><p class="eyebrow">${eyebrow}</p><h1>${title}</h1><p class="lead">${text}</p></div>${aside}</section>`;
+const hero=(eyebrow,title,text,aside="")=>`<section class="hero"><div><p class="eyebrow">${eyebrow}</p><h1>${title}</h1><p class="lead">${text}</p></div>${aside}</section>`;
 function scheduleLabel(m){
   if(!m.date)return `Data da definire · giornata di riferimento ${dateOnly(m.matchdayDate)}`;
   return `${dateOnly(m.date)} · ${m.kickoff||"orario da definire"}${m.dateStatus==="provisional"?" · programmazione provvisoria UEFA":""}`;
