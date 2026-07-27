@@ -198,7 +198,13 @@ function allEntries(playersByEspnId) {
   const detailedRoles = new Map([...roleCountsByEspnId].map(([espnId, counts]) => {
     const ranked = [...counts].sort((left, right) => right[1] - left[1] || left[0].localeCompare(right[0], "it"));
     const starts = ranked.reduce((total, [, count]) => total + count, 0);
-    return [espnId, { role: ranked[0][0], starts, occurrences: ranked[0][1], confidence: round(ranked[0][1] / starts, 2) }];
+    return [espnId, {
+      role: ranked[0][0],
+      roles: ranked.map(([role, occurrences]) => ({ role, occurrences })),
+      starts,
+      occurrences: ranked[0][1],
+      confidence: round(ranked[0][1] / starts, 2)
+    }];
   }));
   return { entries, detailedRoles };
 }
@@ -271,8 +277,9 @@ async function buildTeam(teamId, teamConfig, entries, detailedRoles) {
     const player = {
       schemaVersion: 1, id: seed.id, name: seed.name, providerIds: { espn: seed.espnId }, currentTeam: teamConfig.name, currentSeason: "2026/27",
       shirtNumber: seed.shirtNumber ?? null, role: seed.role, detailedRole: inferredRole?.role || configuredDetailedRole || seed.role,
+      detailedRoles: inferredRole?.roles?.map(item => item.role) || [configuredDetailedRole || seed.role],
       detailedRoleSource: inferredRole ? "ESPN - posizione da titolare 2025/26" : configuredDetailedRole ? "Configurazione rosa" : "ESPN - ruolo rosa generico",
-      detailedRoleEvidence: inferredRole ? { starts: inferredRole.starts, occurrences: inferredRole.occurrences, confidence: inferredRole.confidence } : null,
+      detailedRoleEvidence: inferredRole ? { starts: inferredRole.starts, occurrences: inferredRole.occurrences, confidence: inferredRole.confidence, roles: inferredRole.roles } : null,
       dateOfBirth: seed.dateOfBirth || null, age: ageAt(seed.dateOfBirth), nationality: seed.nationality || null,
       heightCm: seed.heightCm ?? null, weightKg: seed.weightKg ?? null, preferredFoot: null, birthplace: null, atMilanSince: null,
       photo: photoUrl, remotePhotoSource: photoUrl, arrivalDate: seed.arrivalDate || null, status: seed.status || teamConfig.defaultStatus,

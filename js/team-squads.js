@@ -3,7 +3,7 @@
   if (!root) return;
 
   const base = document.body.dataset.depth === "team" ? "../" : "";
-  const release = "20260727-role-abbreviations";
+  const release = "20260727-multi-role";
   const esc = value => String(value ?? "").replace(/[&<>\"]/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[char]));
   const value = (input, suffix = "") => input === null || input === undefined || input === "" ? "N/D" : `${esc(input)}${suffix}`;
   const pct = input => value(input, "%");
@@ -29,7 +29,10 @@
     Trequartista: "COC", "Trequartista destro": "COC", "Trequartista sinistro": "COC", "Trequartista / ala": "COC", Regista: "COC",
     Attaccante: "ATT", "Seconda punta": "ATT", Centravanti: "ATT", "Ala destra": "AD", "Ala sinistra": "AS"
   };
-  const displayRole = player => roleAbbreviations[player.detailedRole || player.role] || player.detailedRole || player.role || "N/D";
+  const displayRole = player => {
+    const roles = Array.isArray(player.detailedRoles) && player.detailedRoles.length ? player.detailedRoles : [player.detailedRole || player.role];
+    return [...new Set(roles.map(role => roleAbbreviations[role] || role).filter(Boolean))].join(" / ") || "N/D";
+  };
   const compareByRole = (left, right) =>
     (roleOrder[left.role] ?? 99) - (roleOrder[right.role] ?? 99) ||
     String(left.detailedRole || left.role).localeCompare(String(right.detailedRole || right.role), "it") ||

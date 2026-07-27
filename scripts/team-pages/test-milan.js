@@ -19,6 +19,8 @@ assert.ok(generated.players.some(player => player.status === "rientro dal presti
 
 for (const player of generated.players) {
   assert.ok(allowedStatuses.has(player.status), `${player.name}: stato non ammesso`);
+  assert.ok(Array.isArray(player.detailedRoles) && player.detailedRoles.length >= 1, `${player.name}: elenco ruoli tattici assente`);
+  assert.strictEqual(new Set(player.detailedRoles).size, player.detailedRoles.length, `${player.name}: ruoli tattici duplicati`);
   assert.ok(player.sources.some(source => source.provider === "AC Milan"), `${player.name}: fonte rosa assente`);
   assert.ok(fs.existsSync(path.join(root, `data/players/milan/${player.id}.json`)), `${player.name}: JSON individuale assente`);
   for (const entry of player.previousSeason.entries) {
@@ -62,6 +64,7 @@ assert.strictEqual(generated.players.find(player => player.name === "David Odogu
 for (const contract of ["Tiri totali", "Tiri nello specchio", "Falli commessi", "Falli subiti", "goalsPer90", "assistsPer90", "shotsPer90", "shotsOnTargetPer90", "cardsPer90", "foulsCommittedPer90", "foulsWonPer90", "squad-table-wrap", "squadLeaderboards", "Top 3 per statistica", "leader-player", "player-detail", "searchKey", "da verificare", "roleOrder", "compareByRole", "<option value=\"role\">Ruolo</option>"]) assert.ok(interfaceSource.includes(contract), `Interfaccia: contratto ${contract} assente`);
 for (const abbreviation of ['Portiere: "POR"', '"Difensore centrale": "DC"', '"Terzino destro": "TD"', '"Terzino sinistro": "TS"', '"Centrocampista centrale": "CC"', 'Mediano: "CDC"', '"Esterno destro": "ED"', '"Esterno sinistro": "ES"', 'Trequartista: "COC"', 'Attaccante: "ATT"', '"Ala destra": "AD"', '"Ala sinistra": "AS"']) assert.ok(interfaceSource.includes(abbreviation), `Interfaccia: abbreviazione ${abbreviation} assente`);
 assert.ok(interfaceSource.includes("displayRole(player)"), "Interfaccia: abbreviazioni non applicate ai giocatori");
+assert.ok(interfaceSource.includes("player.detailedRoles") && interfaceSource.includes('join(" / ")'), "Interfaccia: multiruolo non visualizzato");
 for (const contract of [".squad-table-wrap", "position:sticky", ".squad-table thead tr:nth-child(2) th", ".squad-table tbody tr:hover td", ".squad-leader-grid", ".squad-leader-card"]) assert.ok(stylesSource.includes(contract), `Stili tabella: contratto ${contract} assente`);
 assert.ok(!stylesSource.includes(".squad-table .goal-stat") && !interfaceSource.includes("goal-stat"), "Gol deve usare le stesse dimensioni delle altre statistiche");
 assert.ok(interfaceSource.includes('Array.from({ length: 14 }') && interfaceSource.includes('class="squad-col-stat"'), "Le colonne statistiche devono condividere lo stesso modello di larghezza");

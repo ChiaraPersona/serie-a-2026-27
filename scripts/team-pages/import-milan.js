@@ -40,6 +40,19 @@ const ageAt = (birth, at = "2026-07-20") => {
   if (d.getUTCMonth() < b.getUTCMonth() || (d.getUTCMonth() === b.getUTCMonth() && d.getUTCDate() < b.getUTCDate())) age--;
   return age;
 };
+const tacticalRoleNames = {
+  Goalkeeper: "Portiere", "Center Defender": "Difensore centrale", "Center Left Defender": "Difensore centrale sinistro",
+  "Center Right Defender": "Difensore centrale destro", "Left Back": "Terzino sinistro", "Right Back": "Terzino destro",
+  "Left Midfielder": "Esterno sinistro", "Right Midfielder": "Esterno destro", "Center Midfielder": "Centrocampista centrale",
+  "Center Left Midfielder": "Centrocampista centrale sinistro", "Center Right Midfielder": "Centrocampista centrale destro",
+  "Defensive Midfielder": "Mediano", Sweeper: "Mediano", "Rear Center Midfielder": "Mediano",
+  "Attacking Midfielder": "Trequartista", "Attacking Midfielder Left": "Trequartista sinistro", "Attacking Midfielder Right": "Trequartista destro",
+  "Rear Center Forward": "Seconda punta", "Left Forward": "Ala sinistra", "Right Forward": "Ala destra", Forward: "Centravanti"
+};
+const tacticalRole = (positionName, formation) => {
+  if (positionName === "Center Left Forward" || positionName === "Center Right Forward") return String(formation || "").endsWith("-1") ? "Trequartista" : "Seconda punta";
+  return tacticalRoleNames[positionName] || null;
+};
 
 async function profile(player) {
   const url = `https://www.acmilan.com/en/teams/men-first-team/players/${player.profileSlug}`;
@@ -172,12 +185,19 @@ function localEntries(players) {
   const byPlayer = new Map(players.map(player => [player.espnId, player]).filter(([id]) => id));
   const byName = new Map(players.map(player => [normalize(player.name), player]));
   const buckets = new Map();
+  const roleCounts = new Map();
   for (const { competition, file } of rawFiles()) {
     const raw = readRawJson(file);
     for (const roster of raw.bundle?.summary?.rosters || []) {
       for (const row of roster.roster || []) {
         const player = byPlayer.get(String(row.athlete?.id)) || byName.get(normalize(row.athlete?.displayName));
         if (!player) continue;
+        const inferredRole = row.starter ? tacticalRole(row.position?.name, roster.formation) : null;
+        if (inferredRole) {
+          const counts = roleCounts.get(player.id) || new Map();
+          counts.set(inferredRole, (counts.get(inferredRole) || 0) + 1);
+          roleCounts.set(player.id, counts);
+        }
         const stats = statMap(row.stats);
         if ((stats.appearances ?? 0) < 1) continue;
         const key = `${player.id}|${competition}|${roster.team?.id || roster.team?.displayName}`;
@@ -186,7 +206,7 @@ function localEntries(players) {
       }
     }
   }
-  return [...buckets.values()].map(bucket => {
+  const entries = [...buckets.values()].map(bucket => {
     const m = bucket.matches, total = field => sumNullable(m.map(item => item.stats[field]));
     const minutes = sumNullable(m.map(item => item.minutes));
     const isGoalkeeper = bucket.playerRole === "Portiere";
@@ -204,6 +224,11 @@ function localEntries(players) {
       fieldSources: { employment: "ESPN match rosters", attack: "ESPN match rosters", discipline: "ESPN match rosters", goalkeeping: "ESPN match rosters" }
     });
   });
+  const rolesByPlayer = new Map([...roleCounts].map(([playerId, counts]) => [
+    playerId,
+    [...counts].sort((left, right) => right[1] - left[1] || left[0].localeCompare(right[0], "it")).map(([role, occurrences]) => ({ role, occurrences }))
+  ]));
+  return { entries, rolesByPlayer };
 }
 
 function totals(entries) {
@@ -223,7 +248,7 @@ async function main() {
   }
   const inferredIds = discoveredEspnIds(source.players);
   const linkedPlayers = source.players.map(player => ({ ...player, espnId: player.espnId || inferredIds[player.id] || null }));
-  const local = localEntries(linkedPlayers);
+  const { entries: local, rolesByPlayer } = localEntries(linkedPlayers);
   const externalByPlayer = new Map();
   for (const entry of external.entries) {
     if (!externalByPlayer.has(entry.playerId)) externalByPlayer.set(entry.playerId, []);
@@ -241,7 +266,11 @@ async function main() {
     const photo = await downloadPhoto(seed.id, espnId);
     const player = {
       schemaVersion: 1, id: seed.id, name: seed.name, providerIds: { espn: espnId }, currentTeam: "Milan", currentSeason: "2026/27",
-      shirtNumber: seed.shirtNumber, role: seed.role, detailedRole: seed.detailedRole, dateOfBirth: p.dateOfBirth, age: ageAt(p.dateOfBirth), nationality: seed.nationality,
+      shirtNumber: seed.shirtNumber, role: seed.role, detailedRole: rolesByPlayer.get(seed.id)?.[0]?.role || seed.detailedRole,
+      detailedRoles: rolesByPlayer.get(seed.id)?.map(item => item.role) || [seed.detailedRole],
+      detailedRoleSource: rolesByPlayer.has(seed.id) ? "ESPN - posizioni da titolare 2025/26" : "Configurazione rosa",
+      detailedRoleEvidence: rolesByPlayer.has(seed.id) ? { starts: rolesByPlayer.get(seed.id).reduce((total, item) => total + item.occurrences, 0), roles: rolesByPlayer.get(seed.id) } : null,
+      dateOfBirth: p.dateOfBirth, age: ageAt(p.dateOfBirth), nationality: seed.nationality,
       heightCm: p.heightCm, weightKg: p.weightKg ?? null, preferredFoot: p.preferredFoot, birthplace: p.birthplace ?? null, atMilanSince: p.atMilanSince ?? null,
       photo, remotePhotoSource: photo ? `https://a.espncdn.com/i/headshots/soccer/players/full/${espnId}.png` : p.remoteImage, arrivalDate: seed.arrivalDate || null, status: seed.status,
       previousTeam: entries[0]?.team || seed.previousTeam || null, previousCompetition: entries[0]?.competition || seed.previousCompetition || null,
