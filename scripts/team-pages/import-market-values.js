@@ -37,7 +37,53 @@ const verifiedProfiles = {
     marketValueLabel: "75,00 mln €",
     marketValueUpdatedAt: "2026-05-29",
     profileUrl: "https://www.transfermarkt.it/kenan-yildiz/profil/spieler/845654"
+  },
+  "lazio:patric": {
+    transfermarktId: "126729", name: "Patric", teamId: "lazio", transfermarktClubId: "398", club: "SS Lazio",
+    marketValueEur: 1_500_000, marketValueLabel: "1,50 mln €", marketValueUpdatedAt: null,
+    profileUrl: "https://www.transfermarkt.it/patric/profil/spieler/126729"
+  },
+  "genoa:wedtoin-ouedraogo": {
+    transfermarktId: "1385195", name: "Wedtoin Latif Ouedraogo", teamId: "genoa", transfermarktClubId: null, club: "Genoa Primavera",
+    marketValueEur: 1_000_000, marketValueLabel: "1,00 mln €", marketValueUpdatedAt: "2026-05-11",
+    profileUrl: "https://www.transfermarkt.it/latif-ouedraogo/profil/spieler/1385195"
+  },
+  "udinese:juan-david-arizala": {
+    transfermarktId: "1118347", name: "Juan David Arizala Micolta", teamId: "udinese", transfermarktClubId: "410", club: "Udinese Calcio",
+    marketValueEur: 3_500_000, marketValueLabel: "3,50 mln €", marketValueUpdatedAt: "2026-05-29",
+    profileUrl: "https://www.transfermarkt.it/juan-arizala/profil/spieler/1118347"
+  },
+  "parma:enrico-del-prato": {
+    transfermarktId: "392956", name: "Enrico Delprato", teamId: "parma", transfermarktClubId: "130", club: "Parma Calcio",
+    marketValueEur: 6_000_000, marketValueLabel: "6,00 mln €", marketValueUpdatedAt: "2025-12-23",
+    profileUrl: "https://www.transfermarkt.it/enrico-delprato/profil/spieler/392956"
   }
+};
+const verifiedProfileIds = {
+  "juventus:arthur": "362842",
+  "napoli:nosa-obaretin": "704456",
+  "napoli:jesper-lindstrom": "513245",
+  "lazio:romano-floriani": "708086",
+  "torino:marcus-holmgren-pedersen": "583404",
+  "torino:adrian-ismajli": "435228",
+  "torino:come-bianay": "1059298",
+  "torino:faustino-anjorin": "433181",
+  "bologna:jon-rowe": "672381",
+  "bologna:benjamin-dominguez": "961022",
+  "genoa:mikael-ellertsson": "566615",
+  "genoa:alexsandro-amorim": "1082774",
+  "genoa:ethan-meichtry": "1172166",
+  "udinese:bayo-youssouf": "375877",
+  "parma:benjamin-cremaschi": "999127",
+  "como:andrea-leborgne": "1204163",
+  "sassuolo:agustin-alvarez-martinez": "812625",
+  "lecce:kialonda-gaspar": "836441",
+  "lecce:owen-kouassi": "1057563",
+  "venezia:calixte-ligue": "862744",
+  "venezia:enrique-perez": "527698",
+  "venezia:bjarki-steinn-bjarkason": "566613",
+  "monza:manga-foe-ondoa": "1143375",
+  "atalanta:sulemana": "982267"
 };
 const decode = value => String(value || "")
   .replace(/&nbsp;/g, " ").replace(/&amp;/g, "&").replace(/&quot;/g, '"')
@@ -160,6 +206,12 @@ async function main() {
     const verified = verifiedProfiles[`${local.teamId}:${local.id}`];
     if (verified) {
       matched.push({ ...verified, playerId: local.id, localName: local.name, matchMethod: "verified-profile" });
+      continue;
+    }
+    const verifiedId = verifiedProfileIds[`${local.teamId}:${local.id}`];
+    const verifiedSource = verifiedId ? sourcePlayers.find(source => source.transfermarktId === verifiedId) : null;
+    if (verifiedSource) {
+      matched.push({ ...verifiedSource, teamId: local.teamId, playerId: local.id, localName: local.name, matchMethod: "verified-profile-id" });
       continue;
     }
     const sameTeam = sourcePlayers.filter(source => source.teamId === local.teamId && key(source.name) === key(local.name));
