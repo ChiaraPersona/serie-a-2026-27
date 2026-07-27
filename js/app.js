@@ -1,4 +1,4 @@
-const DATA="data/normalized/",RELEASE="20260727-compact-team-stats";
+const DATA="data/normalized/",RELEASE="20260727-apple-refinement";
 const labels={scheduled:"Programmata",live:"In corso",finished:"Conclusa",postponed:"Rinviata"};
 const esc=v=>String(v??"").replace(/[&<>\"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const playerRoleAbbreviations={Portiere:"POR",Difensore:"DC","Difensore centrale":"DC","Difensore centrale destro":"DC","Difensore centrale sinistro":"DC","Terzino destro":"TD","Terzino sinistro":"TS",Centrocampista:"CC","Centrocampista centrale":"CC","Centrocampista centrale destro":"CC","Centrocampista centrale sinistro":"CC",Mediano:"CDC","Mediano / regista":"CDC","Esterno destro":"ED","Esterno sinistro":"ES",Trequartista:"COC","Trequartista destro":"COC","Trequartista sinistro":"COC","Trequartista / ala":"COC",Regista:"COC",Attaccante:"ATT","Seconda punta":"ATT",Centravanti:"ATT","Ala destra":"AD","Ala sinistra":"AS"};
