@@ -114,7 +114,7 @@ function buildTeam(team) {
   const generatedSquad = generatedSquads.get(team.id);
   const squad = (generatedSquad?.players || []).map(player => {
     const market = marketValueByPlayer.get(`${team.id}:${player.id}`);
-    return { ...player, providerIds: { ...(player.providerIds || {}), transfermarkt: market?.transfermarktId || null }, marketValue: market ? { amountEur: market.marketValueEur, label: market.marketValueLabel, currency: "EUR", provider: marketValues.provider, retrievedAt: marketValues.retrievedAt, sourceUrl: market.profileUrl } : null };
+    return { ...player, providerIds: { ...(player.providerIds || {}), transfermarkt: market?.transfermarktId || null }, marketValue: market ? { amountEur: market.marketValueEur, label: market.marketValueLabel, currency: "EUR", provider: marketValues.provider, retrievedAt: marketValues.retrievedAt, providerUpdatedAt: market.marketValueUpdatedAt || null, sourceUrl: market.profileUrl } : null };
   });
   const teamLastUpdated = [generatedSquad?.rosterSource?.retrievedAt, teamDetails.lastUpdated].filter(Boolean).sort().at(-1) || "2026-07-20";
   const sources = [

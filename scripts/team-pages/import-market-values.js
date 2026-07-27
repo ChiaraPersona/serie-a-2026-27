@@ -26,6 +26,19 @@ const clubs = [
   ["torino", "fc-turin", 416], ["venezia", "venezia-fc", 607], ["lecce", "us-lecce", 1005],
   ["monza", "ac-monza", 2919], ["frosinone", "frosinone-calcio", 8970]
 ];
+const verifiedProfiles = {
+  "juventus:kenan-yildiz": {
+    transfermarktId: "845654",
+    name: "Kenan Yıldız",
+    teamId: "juventus",
+    transfermarktClubId: "506",
+    club: "Juventus FC",
+    marketValueEur: 75_000_000,
+    marketValueLabel: "75,00 mln €",
+    marketValueUpdatedAt: "2026-05-29",
+    profileUrl: "https://www.transfermarkt.it/kenan-yildiz/profil/spieler/845654"
+  }
+};
 const decode = value => String(value || "")
   .replace(/&nbsp;/g, " ").replace(/&amp;/g, "&").replace(/&quot;/g, '"')
   .replace(/&#039;|&apos;/g, "'").replace(/&euro;/g, "€").replace(/<[^>]+>/g, "").trim();
@@ -144,6 +157,11 @@ async function main() {
   }
   const matched = [], missing = [], ambiguous = [];
   for (const local of localPlayers) {
+    const verified = verifiedProfiles[`${local.teamId}:${local.id}`];
+    if (verified) {
+      matched.push({ ...verified, playerId: local.id, localName: local.name, matchMethod: "verified-profile" });
+      continue;
+    }
     const sameTeam = sourcePlayers.filter(source => source.teamId === local.teamId && key(source.name) === key(local.name));
     const global = sourcePlayers.filter(source => key(source.name) === key(local.name));
     const sameTeamSlug = sourcePlayers.filter(source => source.teamId === local.teamId && slugKey(source.profileUrl) === local.id);
