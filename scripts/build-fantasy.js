@@ -139,10 +139,10 @@ const output = {
     }
   },
   budgetPlan: [
-    { role: "P", label: "Portieri", players: 3, minPct: 6, maxPct: 9 },
-    { role: "D", label: "Difensori", players: 8, minPct: 14, maxPct: 18 },
-    { role: "C", label: "Centrocampisti", players: 8, minPct: 24, maxPct: 30 },
-    { role: "A", label: "Attaccanti", players: 6, minPct: 45, maxPct: 54 }
+    { role: "P", label: "Portieri", players: 3, pct: 7 },
+    { role: "D", label: "Difensori", players: 8, pct: 17 },
+    { role: "C", label: "Centrocampisti", players: 8, pct: 23 },
+    { role: "A", label: "Attaccanti", players: 6, pct: 53 }
   ],
   slotGuide: {
     A: "Punto fermo: alto investimento e priorità d'asta.",
