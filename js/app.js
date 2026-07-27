@@ -1,4 +1,4 @@
-const DATA="data/normalized/",RELEASE="20260727-apple-refinement";
+const DATA="data/normalized/",RELEASE="20260727-fantasy-fixed-sort";
 const labels={scheduled:"Programmata",live:"In corso",finished:"Conclusa",postponed:"Rinviata"};
 const esc=v=>String(v??"").replace(/[&<>\"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const playerRoleAbbreviations={Portiere:"POR",Difensore:"DC","Difensore centrale":"DC","Difensore centrale destro":"DC","Difensore centrale sinistro":"DC","Terzino destro":"TD","Terzino sinistro":"TS",Centrocampista:"CC","Centrocampista centrale":"CC","Centrocampista centrale destro":"CC","Centrocampista centrale sinistro":"CC",Mediano:"CDC","Mediano / regista":"CDC","Esterno destro":"ED","Esterno sinistro":"ES",Trequartista:"COC","Trequartista destro":"COC","Trequartista sinistro":"COC","Trequartista / ala":"COC",Regista:"COC",Attaccante:"ATT","Seconda punta":"ATT",Centravanti:"ATT","Ala destra":"AD","Ala sinistra":"AS"};
@@ -84,10 +84,10 @@ function fantasyPlayerCalendar(data,player){
 function fantasyPlayerRows(data,budget=500,role="",stars="",query="",sortKey=null){
   const teamById=new Map(data.teams.map(team=>[team.id,team])),needle=query.trim().toLowerCase();
   sortKey=sortKey||document.querySelector(".fantasy-sort.active")?.dataset.fantasySort||"score";
-  const sortValues={score:player=>player.score,marketValue:player=>player.marketValueEur,minutes:player=>player.minutes,goalAssist:player=>(player.goals??0)+(player.assists??0),cards:player=>(player.fantasyScoring?.yellowCards??0)+(player.fantasyScoring?.dismissals??0),price:player=>fantasyPrice(player.value500,budget)};
+  const sortValues={team:player=>player.team,score:player=>player.score,marketValue:player=>player.marketValueEur,minutes:player=>player.minutes,goalAssist:player=>(player.goals??0)+(player.assists??0),cards:player=>(player.fantasyScoring?.yellowCards??0)+(player.fantasyScoring?.dismissals??0),price:player=>fantasyPrice(player.value500,budget)};
   const valueFor=sortValues[sortKey]||sortValues.score;
   const filtered=data.players.filter(player=>(!role||player.role===role)&&(!stars||player.stars===Number(stars))&&(!needle||`${player.name} ${player.team}`.toLowerCase().includes(needle)));
-  const rows=[...filtered].sort((a,b)=>{const av=valueFor(a),bv=valueFor(b),aMissing=av===null||av===undefined,bMissing=bv===null||bv===undefined;if(aMissing!==bMissing)return aMissing?1:-1;return (bv??0)-(av??0)||b.score-a.score||a.name.localeCompare(b.name,"it")}).slice(0,80);
+  const rows=[...filtered].sort((a,b)=>{const av=valueFor(a),bv=valueFor(b),aMissing=av===null||av===undefined,bMissing=bv===null||bv===undefined;if(aMissing!==bMissing)return aMissing?1:-1;const primary=typeof av==="string"?String(bv).localeCompare(av,"it"):(bv??0)-(av??0);return primary||b.score-a.score||a.name.localeCompare(b.name,"it")}).slice(0,80);
   return {count:filtered.length,html:rows.map(player=>{const team=teamById.get(player.teamId),yellow=player.fantasyScoring?.yellowCards,red=player.fantasyScoring?.dismissals;return `<tr><td><span class="fantasy-role role-${player.role}">${player.role}</span><span class="fantasy-stars" aria-label="${player.stars} ${player.stars===1?"stella":"stelle"}">${"★".repeat(player.stars)}${"☆".repeat(5-player.stars)}</span></td><td><button class="fantasy-player fantasy-player-button" type="button" data-fantasy-player="${esc(player.id)}"><strong>${esc(player.name)}</strong><small>${esc(player.detailedRole)} · ${esc(player.reliability)} · dati ${esc(player.competitionProfile.label)}${player.goalkeeperStatus?` · ${esc(player.goalkeeperStatus)}`:""}</small></button></td><td><span class="fantasy-team"><img src="${esc(String(team?.logo||"").replace(/^\.\.\//,""))}" alt="">${esc(player.team)}</span></td><td><strong>${player.score}</strong><small class="fantasy-index">/100</small></td><td>${player.marketValueLabel?`<strong class="market-value">${esc(player.marketValueLabel)}</strong>`:"N/D"}</td><td>${player.minutes??"N/D"}</td><td>${player.goals??"N/D"} / ${player.assists??"N/D"}</td><td>${yellow===null||yellow===undefined?"N/D":`${yellow} G / ${red??0} R`}</td><td><strong class="fantasy-price">${fantasyPrice(player.value500,budget)}</strong></td></tr>`}).join("")};
 }
 function configureFantasyHeaders(){
@@ -95,7 +95,7 @@ function configureFantasyHeaders(){
   headers.find(th=>th.textContent.includes("Calendario"))?.remove();
   const goalAssist=headers.find(th=>th.textContent.trim()==="G / A");
   goalAssist?.insertAdjacentHTML("afterend",'<th>Cartellini</th>');
-  const sortable=new Map([["Indice","score"],["Valore mercato","marketValue"],["Minuti","minutes"],["G / A","goalAssist"],["Cartellini","cards"],["Max crediti","price"]]);
+  const sortable=new Map([["Squadra","team"],["Indice","score"],["Valore mercato","marketValue"],["Minuti","minutes"],["G / A","goalAssist"],["Cartellini","cards"],["Max crediti","price"]]);
   document.querySelectorAll(".fantasy-table th").forEach(th=>{const label=th.textContent.trim(),key=sortable.get(label);if(key)th.innerHTML=`<button type="button" class="fantasy-sort${key==="score"?" active":""}" data-fantasy-sort="${key}" aria-label="Ordina per ${label} in ordine decrescente" aria-pressed="${key==="score"}">${label}<span aria-hidden="true"> ↓</span></button>`});
 }
 function fantasyGoalkeeperTrios(data,budget=500){
