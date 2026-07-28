@@ -9,6 +9,13 @@
   const value = (input, suffix = "") => input === null || input === undefined || input === "" ? "N/D" : `${esc(input)}${suffix}`;
   const pct = input => value(input, "%");
   const initials = name => String(name).split(/\s+/).map(part => part[0]).slice(0, 2).join("").toUpperCase();
+  const matchStatusLabels = { scheduled: "Programmata", live: "In corso", finished: "Conclusa", postponed: "Rinviata" };
+  const dateOnly = input => {
+    if (!input) return null;
+    const [year, month, day] = String(input).slice(0, 10).split("-");
+    const months = ["gen", "feb", "mar", "apr", "mag", "giu", "lug", "ago", "set", "ott", "nov", "dic"];
+    return `${Number(day)} ${months[Number(month) - 1]} ${year}`;
+  };
   root.addEventListener("error", event => {
     const image = event.target;
     if (!image?.matches?.("img[data-player-photo]") || image.getAttribute("src") === defaultPlayerPhoto) return;
@@ -80,6 +87,30 @@
   const statGrid = (object, keys, compact = false) => `<div class="${compact ? "player-stat-grid" : "team-stat-grid"}">${keys.map(key => `<article><span>${labels[key] || key}</span><strong>${key.endsWith("Percentage") || key === "passAccuracy" || key === "savePercentage" ? pct(object?.[key]) : value(object?.[key])}</strong></article>`).join("")}</div>`;
   const nav = `<header class="subpage-header"><a href="${base}statistiche-squadra/index.html">← Tutte le squadre</a><a href="${base}statistiche-squadre.html">Statistiche squadre</a></header>`;
 
+  const scheduleLabel = match => {
+    if (!match.date) return `Data da definire · riferimento ${dateOnly(match.matchdayDate) || "N/D"}`;
+    return `${dateOnly(match.date)} · ${match.kickoff || "orario da definire"}${match.dateStatus === "provisional" ? " · programmazione provvisoria UEFA" : ""}`;
+  };
+
+  const calendarTeam = (team, currentTeamId) => `<span class="team-calendar-club${team.id === currentTeamId ? " is-current" : ""}"><img src="${base}${esc(team.logo)}" alt="" loading="lazy"><span>${esc(team.name)}</span></span>`;
+
+  function teamFixtureRow(match, teams, currentTeamId) {
+    const home = teams.find(team => team.id === match.homeTeam);
+    const away = teams.find(team => team.id === match.awayTeam);
+    if (!home || !away) return "";
+    const opponentId = match.homeTeam === currentTeamId ? match.awayTeam : match.homeTeam;
+    const venue = match.homeTeam === currentTeamId ? "Casa" : "Trasferta";
+    const score = match.score ? `${match.score.home} – ${match.score.away}` : "VS";
+    return `<article class="team-calendar-row"><div class="team-calendar-round"><strong>${match.matchday}</strong><span>Giornata</span></div><div class="team-calendar-when"><strong>${scheduleLabel(match)}</strong><span class="status ${esc(match.status)}">${esc(matchStatusLabels[match.status] || match.status)}</span></div><span class="status venue-status">${venue}</span><div class="team-calendar-match">${calendarTeam(home, currentTeamId)}<strong class="team-calendar-score">${esc(score)}</strong>${calendarTeam(away, currentTeamId)}</div><div class="team-calendar-actions"><a href="${base}lettura.html?match=${esc(match.id)}">Lettura</a><a href="${base}statistiche-squadra/${esc(opponentId)}.html">Avversaria</a></div></article>`;
+  }
+
+  function personalCalendar(team, teams, matches) {
+    const fixtures = matches
+      .filter(match => match.competition === "serie-a" && match.season === "2026-27" && (match.homeTeam === team.id || match.awayTeam === team.id))
+      .sort((left, right) => left.matchday - right.matchday);
+    return `<section class="detail-section team-personal-calendar" aria-labelledby="team-calendar-heading"><header class="team-schedule-head"><div><p class="eyebrow">Serie A 2026/27</p><h2 id="team-calendar-heading">Calendario di ${esc(team.name)}</h2><p class="muted">${fixtures.length} giornate · calendario personale completo, con gare in casa e in trasferta.</p></div><a class="button" href="${base}calendario.html">Calendario completo</a></header><div class="team-calendar-list">${fixtures.map(match => teamFixtureRow(match, teams, team.id)).join("")}</div></section>`;
+  }
+
   async function load(path) {
     const response = await fetch(`${base}${path}?v=${release}`);
     if (!response.ok) throw new Error(`${path}: ${response.status}`);
@@ -145,7 +176,7 @@
   }
   const marketValuePanel = player => `<div class="player-market-panel"><span>Valore di mercato</span><strong>${value(player.marketValue?.label)}</strong><small>${player.marketValue ? `${esc(player.marketValue.provider)} · aggiornato ${esc(player.marketValue.retrievedAt)}` : "Dato non disponibile"}</small></div>`;
 
-  function teamPage(team, objectiveDataset, standings) {
+  function teamPage(team, objectiveDataset, standings, teams, matches) {
     const results = team.teamStats.results;
     const discipline = team.teamStats.discipline;
     const homeAway = team.teamStats.homeAway;
@@ -156,6 +187,7 @@
     }, {});
 
     root.innerHTML = `${nav}<section class="team-detail-hero"><img src="${team.logo}" alt="Stemma ${esc(team.name)}"><div><p class="eyebrow">${esc(team.previousSeason.competition)} 2025/26${team.previousSeason.promoted ? " · neopromossa" : ""}</p><h1>${esc(team.officialName)}</h1><p>${esc(team.shortName)} · Città ${value(team.city)} · Stadio ${value(team.stadium)} · Allenatore ${value(team.coach)}</p><p class="updated">Aggiornato ${esc(team.lastUpdated)}</p></div></section>${team.previousSeason.promoted ? `<aside class="competition-warning"><strong>Statistiche di provenienza: Serie B 2025/26.</strong> Non sono confrontate direttamente con i valori grezzi di Serie A.</aside>` : ""}<section class="detail-section"><h2>Risultati 2025/26</h2>${statGrid(results, ["played", "won", "drawn", "lost", "points", "pointsPerGame", "goalsFor", "goalsAgainst", "goalDifference", "cleanSheets", "failedToScore", "winPercentage", "drawPercentage", "lossPercentage"])}</section><section class="detail-section"><h2>Disciplina</h2>${statGrid(discipline, ["foulsCommitted", "foulsCommittedPerGame", "foulsWon", "foulsWonPerGame", "yellowCards", "yellowCardsPerGame", "secondYellowCards", "straightRedCards", "dismissals", "penaltiesConceded", "penaltiesWon", "disciplineIndex"])}</section><section class="detail-section"><h2>Casa e trasferta</h2><div class="split-grid"><article><h3>Casa</h3>${statGrid(homeAway.home, ["played", "won", "drawn", "lost", "goalsFor", "goalsAgainst", "yellowCards"])}</article><article><h3>Trasferta</h3>${statGrid(homeAway.away, ["played", "won", "drawn", "lost", "goalsFor", "goalsAgainst", "yellowCards"])}</article></div></section><section class="detail-section"><h2>Rosa 2026/27</h2><p class="roster-summary">${team.squad.length} calciatori · ${quality.complete || 0} schede complete · ${quality.partial || 0} parziali · ${quality.unavailable || 0} non disponibili. Seleziona un nome per il dettaglio.</p>${filters()}<div id="squad-results">${squadTable(team.squad)}</div>${squadLeaderboards(team.squad, team.name)}</section><section class="detail-section"><h2>Copertura statistica individuale</h2><p class="muted">Le schede separano squadra e competizione 2025/26, mantengono i campi non esposti come N/D e calcolano i valori per 90 minuti soltanto quando i minuti sono disponibili.</p></section><section class="detail-section"><h2>Fonti</h2><ul class="source-list">${team.sources.map(source => `<li><strong>${esc(source.provider)}</strong> · ${esc(source.scope)} · aggiornamento ${esc(source.retrievedAt)}${source.url ? ` · <a href="${esc(source.url)}" target="_blank" rel="noreferrer">fonte</a>` : ""}</li>`).join("")}</ul></section><dialog id="player-detail" class="player-detail"><div id="player-detail-content"></div></dialog>`;
+    root.querySelector(".team-detail-hero")?.insertAdjacentHTML("afterend", personalCalendar(team, teams, matches));
     root.querySelector(".team-detail-hero")?.insertAdjacentHTML("afterend", objectiveStatus(team, objectiveDataset, standings));
     root.querySelector(".team-detail-hero .updated")?.insertAdjacentHTML("beforebegin", `<p><strong>Modulo preferito:</strong> ${value(team.preferredFormation)}</p>`);
 
@@ -216,7 +248,7 @@
           load("data/normalized/teams.json"),
           load("data/normalized/matches.json")
         ]);
-        teamPage(team, objectiveDataset, calculateStandings(teams, matches));
+        teamPage(team, objectiveDataset, calculateStandings(teams, matches), teams, matches);
       }
       else indexPage(await load("data/teams/index.json"));
     } catch (error) {

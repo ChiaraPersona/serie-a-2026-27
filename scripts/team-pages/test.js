@@ -51,14 +51,26 @@ assert.ok(!mainApp.includes('id="global-player-stat"'), "La selezione Top 15 non
 assert.ok(!mainApp.includes("Riepilogo statistico") && !mainApp.includes("season-summary"), "Il riepilogo statistico non deve essere mostrato in Statistiche squadre");
 const teamInterface = fs.readFileSync(path.join(root, "js/team-squads.js"), "utf8");
 assert.ok(teamInterface.includes("Stato degli obiettivi") && teamInterface.includes("calculateObjectiveMetrics"), "Lo stato degli obiettivi non è integrato nelle pagine squadra");
+assert.ok(teamInterface.includes("personalCalendar") && teamInterface.includes("Calendario di ${esc(team.name)}"), "Il calendario personale non è integrato nelle pagine squadra");
+assert.ok(teamInterface.includes("team-calendar-list") && teamInterface.includes("teamFixtureRow") && !teamInterface.includes("team-calendar-fixture"), "Il calendario personale deve essere renderizzato ad elenco, non con card");
+const currentMatches = read("data/normalized/matches.json").filter(match => match.competition === "serie-a" && match.season === "2026-27");
+for (const summary of index.teams) {
+  const fixtures = currentMatches.filter(match => match.homeTeam === summary.id || match.awayTeam === summary.id);
+  assert.strictEqual(fixtures.length, 38, `${summary.id}: il calendario personale deve contenere 38 partite`);
+  assert.deepStrictEqual(fixtures.map(match => match.matchday).sort((left, right) => left - right), Array.from({ length: 38 }, (_, index) => index + 1), `${summary.id}: giornate mancanti o duplicate nel calendario personale`);
+}
 assert.ok(teamPageShell.includes("scripts/standings.js") && teamPageShell.includes("scripts/objective-metrics.js"), "Le pagine squadra non caricano il motore condiviso degli obiettivi");
 assert.ok(!teamInterface.includes("Copertura completa") && !mainApp.includes("Copertura completa") && !teamStatsShell.includes("Copertura completa"), "Il banner Copertura completa non deve essere mostrato");
 assert.ok(!fs.existsSync(path.join(root, "statistiche-giocatori.html")), "La pagina Statistiche giocatori deve essere rimossa");
+assert.ok(!fs.existsSync(path.join(root, "classifica.html")), "La pagina Classifica deve essere rimossa");
 const generatedHtml = fs.readdirSync(root).filter(file => file.endsWith(".html")).map(file => fs.readFileSync(path.join(root, file), "utf8"))
   .concat(fs.readdirSync(path.join(root, "statistiche-squadra")).filter(file => file.endsWith(".html")).map(file => fs.readFileSync(path.join(root, "statistiche-squadra", file), "utf8"))).join("\n");
 assert.ok(!generatedHtml.includes("statistiche-giocatori"), "Un collegamento alla pagina rimossa è ancora presente");
+assert.ok(!generatedHtml.includes('href="classifica.html"') && !generatedHtml.includes('href="../classifica.html"'), "Un collegamento alla pagina Classifica rimossa è ancora presente");
+assert.ok(mainApp.includes('if(page==="home")') && mainApp.includes('data-standings-tab="current"') && mainApp.includes('data-standings-tab="archive"'), "Le due classifiche devono essere renderizzate nella Home");
+assert.ok(mainApp.includes('leader=completed===0?{teamName:"N/D",points:0}:standings[0]'), "Prima dell'inizio del campionato la Home deve mostrare N/D come capolista");
 const expectedNavigation = [
-  ["index.html", "Home"], ["calendario.html", "Calendario"], ["classifica.html", "Classifica"],
+  ["index.html", "Home"], ["calendario.html", "Calendario"],
   ["statistiche-squadre.html", "Statistiche squadre"], ["lettura.html", "Lettura"],
   ["coppa-italia.html", "Coppa Italia"], ["arbitri.html", "Arbitri"], ["fantacalcio.html", "Fantacalcio"]
 ];
