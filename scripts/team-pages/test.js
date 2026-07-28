@@ -8,6 +8,7 @@ const playerLeaderboards = read("data/teams/player-leaderboards.json");
 const mainApp = fs.readFileSync(path.join(root, "js/app.js"), "utf8");
 const styles = fs.readFileSync(path.join(root, "css/styles.css"), "utf8");
 const teamStatsShell = fs.readFileSync(path.join(root, "statistiche-squadre.html"), "utf8");
+const teamPageShell = fs.readFileSync(path.join(root, "statistiche-squadra", "inter.html"), "utf8");
 assert.strictEqual(index.teams.length, 20, "Sono richieste 20 squadre");
 assert.strictEqual(new Set(index.teams.map(team => team.id)).size, 20, "ID squadra duplicati");
 for (const summary of index.teams) {
@@ -45,6 +46,8 @@ assert.ok(!mainApp.includes("classifiche disponibili"), "Il conteggio delle clas
 assert.ok(!mainApp.includes('id="global-player-stat"'), "La selezione Top 15 non deve usare un menu a tendina");
 assert.ok(!mainApp.includes("Riepilogo statistico") && !mainApp.includes("season-summary"), "Il riepilogo statistico non deve essere mostrato in Statistiche squadre");
 const teamInterface = fs.readFileSync(path.join(root, "js/team-squads.js"), "utf8");
+assert.ok(teamInterface.includes("Stato degli obiettivi") && teamInterface.includes("calculateObjectiveMetrics"), "Lo stato degli obiettivi non è integrato nelle pagine squadra");
+assert.ok(teamPageShell.includes("scripts/standings.js") && teamPageShell.includes("scripts/objective-metrics.js"), "Le pagine squadra non caricano il motore condiviso degli obiettivi");
 assert.ok(!teamInterface.includes("Copertura completa") && !mainApp.includes("Copertura completa") && !teamStatsShell.includes("Copertura completa"), "Il banner Copertura completa non deve essere mostrato");
 assert.ok(!fs.existsSync(path.join(root, "statistiche-giocatori.html")), "La pagina Statistiche giocatori deve essere rimossa");
 const generatedHtml = fs.readdirSync(root).filter(file => file.endsWith(".html")).map(file => fs.readFileSync(path.join(root, file), "utf8"))

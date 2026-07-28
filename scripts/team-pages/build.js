@@ -16,6 +16,9 @@ const teamDetails = read("data/sources/team-pages/team-details-2026-27.json");
 const marketValuesFile = path.join(root, "data/sources/team-pages/transfermarkt-market-values-2026-27.json");
 const marketValues = fs.existsSync(marketValuesFile) ? JSON.parse(fs.readFileSync(marketValuesFile, "utf8")) : { players: [], retrievedAt: null };
 const marketValueByPlayer = new Map(marketValues.players.map(player => [`${player.teamId}:${player.playerId}`, player]));
+const wikimediaPhotosFile = path.join(root, "data/sources/team-pages/wikimedia-player-photos.json");
+const wikimediaPhotos = fs.existsSync(wikimediaPhotosFile) ? JSON.parse(fs.readFileSync(wikimediaPhotosFile, "utf8")) : { entries: [], retrievedAt: null };
+const wikimediaPhotoByPlayer = new Map(wikimediaPhotos.entries.map(photo => [`${photo.teamId}:${photo.playerId}`, photo]));
 const serieAStandings = read("data/normalized/standings-2025-26.json");
 const currentIds = new Set(teams.map(team => team.id));
 const generatedSquads = new Map(teams.map(team => {
@@ -114,7 +117,29 @@ function buildTeam(team) {
   const generatedSquad = generatedSquads.get(team.id);
   const squad = (generatedSquad?.players || []).map(player => {
     const market = marketValueByPlayer.get(`${team.id}:${player.id}`);
-    return { ...player, providerIds: { ...(player.providerIds || {}), transfermarkt: market?.transfermarktId || null }, marketValue: market ? { amountEur: market.marketValueEur, label: market.marketValueLabel, currency: "EUR", provider: marketValues.provider, retrievedAt: marketValues.retrievedAt, providerUpdatedAt: market.marketValueUpdatedAt || null, sourceUrl: market.profileUrl } : null };
+    const wikimediaPhoto = wikimediaPhotoByPlayer.get(`${team.id}:${player.id}`);
+    const photoSource = wikimediaPhoto ? {
+      provider: "Wikimedia Commons",
+      scope: `Foto di ${player.name}`,
+      url: wikimediaPhoto.descriptionUrl,
+      retrievedAt: wikimediaPhoto.retrievedAt
+    } : null;
+    return {
+      ...player,
+      providerIds: { ...(player.providerIds || {}), transfermarkt: market?.transfermarktId || null, wikidata: wikimediaPhoto?.wikidataId || null },
+      marketValue: market ? { amountEur: market.marketValueEur, label: market.marketValueLabel, currency: "EUR", provider: marketValues.provider, retrievedAt: marketValues.retrievedAt, providerUpdatedAt: market.marketValueUpdatedAt || null, sourceUrl: market.profileUrl } : null,
+      photo: wikimediaPhoto ? (wikimediaPhoto.localPath ? `../${wikimediaPhoto.localPath}` : wikimediaPhoto.thumbnailUrl) : player.photo,
+      photoAttribution: wikimediaPhoto ? {
+        provider: "Wikimedia Commons",
+        pageUrl: wikimediaPhoto.descriptionUrl,
+        artist: wikimediaPhoto.artist,
+        credit: wikimediaPhoto.credit,
+        license: wikimediaPhoto.license,
+        licenseUrl: wikimediaPhoto.licenseUrl,
+        originalUrl: wikimediaPhoto.originalUrl
+      } : null,
+      sources: photoSource ? [...(player.sources || []), photoSource] : player.sources
+    };
   });
   const teamLastUpdated = [generatedSquad?.rosterSource?.retrievedAt, teamDetails.lastUpdated].filter(Boolean).sort().at(-1) || "2026-07-20";
   const sources = [
@@ -122,6 +147,7 @@ function buildTeam(team) {
     { provider: previousCompetition === "serie-a" ? "Classifica fornita dall'utente" : "ESPN", scope: `${competitionName} 2025/26 - classifica calcolata dai risultati`, url: null, retrievedAt: "2026-07-18" },
     ...(generatedSquad?.rosterSource ? [generatedSquad.rosterSource] : []),
     ...(marketValues.retrievedAt ? [{ provider: "Transfermarkt", scope: `Valori di mercato individuali 2026/27 (${squad.filter(player => player.marketValue).length}/${squad.length})`, url: marketValues.sourceUrl, retrievedAt: marketValues.retrievedAt }] : []),
+    ...(wikimediaPhotos.retrievedAt ? [{ provider: "Wikimedia Commons", scope: `Foto locali con attribuzione (${squad.filter(player => player.photoAttribution).length}/${squad.length})`, url: wikimediaPhotos.sourceUrl, retrievedAt: wikimediaPhotos.retrievedAt }] : []),
     ...teamDetails.sources
   ];
   return {
@@ -187,5 +213,5 @@ const rankings = Object.fromEntries(leaderboardMetrics.map(metric => {
 }));
 write("data/teams/player-leaderboards.json", { schemaVersion: 1, currentSeason: "2026/27", statisticsSeason: "2025/26", generatedAt: today, rankings });
 write("data/schemas/team.schema.json", { $schema: "https://json-schema.org/draft/2020-12/schema", title: "Serie A team", type: "object", required: ["id", "currentSeason", "city", "stadium", "coach", "preferredFormation", "previousSeason", "teamStats", "squad", "sources", "lastUpdated"], properties: { city: { type: "string", minLength: 1 }, stadium: { type: "string", minLength: 1 }, coach: { type: "string", minLength: 1 }, preferredFormation: { type: "string", pattern: "^[1-9](?:-[1-9]){2,4}$" }, squad: { type: "array", items: { $ref: "player.schema.json" } } } });
-write("data/schemas/player.schema.json", { $schema: "https://json-schema.org/draft/2020-12/schema", title: "Serie A player", type: "object", required: ["id", "name", "currentTeam", "currentSeason", "role", "detailedRole", "status", "marketValue", "previousSeason", "sources", "dataQuality"], properties: { detailedRole: { type: "string", minLength: 1 }, status: { enum: ["confermato", "nuovo acquisto", "prestito", "rientro dal prestito", "primavera", "da verificare"] }, marketValue: { anyOf: [{ type: "null" }, { type: "object", required: ["amountEur", "currency", "provider", "retrievedAt", "sourceUrl"] }] }, previousSeason: { type: "object", required: ["season", "entries", "totals", "totalsByCompetition"] } } });
+write("data/schemas/player.schema.json", { $schema: "https://json-schema.org/draft/2020-12/schema", title: "Serie A player", type: "object", required: ["id", "name", "currentTeam", "currentSeason", "role", "detailedRole", "status", "marketValue", "previousSeason", "sources", "dataQuality"], properties: { detailedRole: { type: "string", minLength: 1 }, status: { enum: ["confermato", "nuovo acquisto", "prestito", "rientro dal prestito", "primavera", "da verificare"] }, marketValue: { anyOf: [{ type: "null" }, { type: "object", required: ["amountEur", "currency", "provider", "retrievedAt", "sourceUrl"] }] }, photoAttribution: { anyOf: [{ type: "null" }, { type: "object", required: ["provider", "pageUrl", "artist", "license"] }] }, previousSeason: { type: "object", required: ["season", "entries", "totals", "totalsByCompetition"] } } });
 console.log(`Generati dati per ${teams.length} club (${index.teams.filter(team => team.previousSeason.promoted).length} da Serie B).`);

@@ -3,7 +3,7 @@
   if (!root) return;
 
   const base = document.body.dataset.depth === "team" ? "../" : "";
-  const release = "20260727-market-values";
+  const release = "20260728-team-objectives";
   const esc = value => String(value ?? "").replace(/[&<>\"]/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[char]));
   const value = (input, suffix = "") => input === null || input === undefined || input === "" ? "N/D" : `${esc(input)}${suffix}`;
   const pct = input => value(input, "%");
@@ -38,6 +38,17 @@
     (roleOrder[left.role] ?? 99) - (roleOrder[right.role] ?? 99) ||
     String(left.detailedRole || left.role).localeCompare(String(right.detailedRole || right.role), "it") ||
     left.name.localeCompare(right.name, "it");
+
+  const signed = number => `${number > 0 ? "+" : ""}${number}`;
+  const objectiveStatus = (team, dataset, standings) => {
+    const profile = dataset.teams.find(item => item.teamId === team.id);
+    const row = standings.map((item, index) => ({ ...item, position: index + 1 })).find(item => item.team === team.id);
+    if (!profile || !row || !window.ObjectiveMetrics) return "";
+    const metrics = window.ObjectiveMetrics.calculateObjectiveMetrics(profile, row, row.played || 0);
+    const metricCard = (label, display, numeric = null, tone = "") =>
+      `<div class="objective-metric ${tone}"><span>${label}</span><strong>${display}</strong>${numeric === null ? "" : `<i class="metric-track" aria-hidden="true"><b style="width:${Math.max(0, Math.min(100, numeric))}%"></b></i>`}</div>`;
+    return `<section class="detail-section team-objective-section" aria-labelledby="team-objective-heading"><header class="objective-section-head"><div><p class="eyebrow">Stagione 2026/27</p><h2 id="team-objective-heading">Stato degli obiettivi</h2></div><p>La situazione viene ricalcolata in base ai risultati conclusi ed è un indicatore di contesto, non un pronostico.</p></header><article class="objective-card"><header><span class="team-objective-team">${esc(team.name)}</span><span>${metrics.status === "preseason" ? "Valori iniziali" : "Aggiornato automaticamente"}</span></header><div class="objective-title"><small>Obiettivo iniziale</small><h3>${esc(profile.primaryObjective)}</h3><p>Secondario: ${esc(profile.secondaryObjective)} · posizione obiettivo ${profile.targetPosition}ª</p></div><div class="objective-metrics">${metricCard("Progresso obiettivo", `${metrics.objectiveProgress}%`, metrics.objectiveProgress)}${metricCard("Rendimento sulle attese", signed(metrics.seasonOverperformance), null, metrics.seasonOverperformance > 0 ? "positive" : metrics.seasonOverperformance < 0 ? "negative" : "")}${metricCard("Motivazione", `${metrics.motivationCurrent}/100`, metrics.motivationCurrent)}${metricCard("Pressione", `${metrics.pressureCurrent}/100`, metrics.pressureCurrent)}${metricCard("Urgenza punti", `${metrics.urgency}/100`, metrics.urgency, metrics.urgency >= 80 ? "urgent" : "")}</div></article><p class="objective-method">A inizio stagione progresso e scostamento restano neutrali; dopo ogni giornata il calcolo considera posizione, punti, proiezione a 38 gare e distanza dall'obiettivo.</p></section>`;
+  };
 
   const labels = {
     played: "Partite", won: "Vittorie", drawn: "Pareggi", lost: "Sconfitte", points: "Punti",
@@ -104,7 +115,8 @@
     const statColumns = Array.from({ length: 14 }, () => '<col class="squad-col-stat">').join("");
     return `<p class="squad-count" aria-live="polite">${players.length} calciator${players.length === 1 ? "e" : "i"}</p><div class="table-wrap squad-table-wrap" role="region" aria-label="Statistiche calciatori; scorri orizzontalmente e verticalmente" tabindex="0"><table class="squad-table"><colgroup><col class="squad-col-player"><col class="squad-col-role"><col class="squad-col-status"><col class="squad-col-market"><col class="squad-col-team"><col class="squad-col-competition"><col class="squad-col-played"><col class="squad-col-minutes">${statColumns}</colgroup><thead><tr><th rowspan="2">Calciatore</th><th rowspan="2">Ruolo</th><th rowspan="2">Stato</th><th rowspan="2">Valore mercato</th><th rowspan="2">Squadra 2025/26</th><th rowspan="2">Competizione</th><th rowspan="2">PG</th><th rowspan="2">Min</th><th colspan="2">Gol</th><th colspan="2">Assist</th><th colspan="2">Tiri totali</th><th colspan="2">Tiri nello specchio</th><th colspan="2">Cartellini</th><th colspan="2">Falli commessi</th><th colspan="2">Falli subiti</th></tr><tr><th>Tot.</th><th>/90</th><th>Tot.</th><th>/90</th><th>Tot.</th><th>/90</th><th>Tot.</th><th>/90</th><th>Tot.</th><th>/90</th><th>Tot.</th><th>/90</th><th>Tot.</th><th>/90</th></tr></thead><tbody>${players.map(player => {
       const entry = primaryEntry(player);
-      return `<tr data-player-id="${esc(player.id)}"><td><button class="player-open" type="button" data-player-id="${esc(player.id)}"><span class="mini-avatar">${initials(player.name)}</span><span><strong>${esc(player.name)}</strong><small>${value(player.shirtNumber)} · ${value(player.nationality)}</small></span></button></td><td>${value(displayRole(player))}</td><td><span class="status-badge">${value(player.status)}</span></td><td>${player.marketValue ? `<a class="market-value" href="${esc(player.marketValue.sourceUrl)}" target="_blank" rel="noreferrer">${value(player.marketValue.label)}</a>` : "N/D"}</td><td>${value(entry.team)}</td><td>${value(entry.competition)}</td><td>${value(entry.appearances)}</td><td>${value(entry.minutes)}</td><td>${value(entry.goals)}</td><td>${value(entry.per90?.goals)}</td><td>${value(entry.assists)}</td><td>${value(entry.per90?.assists)}</td><td>${value(entry.shots)}</td><td>${value(entry.per90?.shots)}</td><td>${value(entry.shotsOnTarget)}</td><td>${value(entry.per90?.shotsOnTarget)}</td><td>${value(cards(entry))}</td><td>${value(entry.per90?.cards)}</td><td>${value(entry.foulsCommitted)}</td><td>${value(entry.per90?.foulsCommitted)}</td><td>${value(entry.foulsWon)}</td><td>${value(entry.per90?.foulsWon)}</td></tr>`;
+      const avatar = player.photo ? `<img class="mini-avatar" src="${esc(player.photo)}" alt="" loading="lazy" decoding="async">` : `<span class="mini-avatar">${initials(player.name)}</span>`;
+      return `<tr data-player-id="${esc(player.id)}"><td><button class="player-open" type="button" data-player-id="${esc(player.id)}">${avatar}<span><strong>${esc(player.name)}</strong><small>${value(player.shirtNumber)} · ${value(player.nationality)}</small></span></button></td><td>${value(displayRole(player))}</td><td><span class="status-badge">${value(player.status)}</span></td><td>${player.marketValue ? `<a class="market-value" href="${esc(player.marketValue.sourceUrl)}" target="_blank" rel="noreferrer">${value(player.marketValue.label)}</a>` : "N/D"}</td><td>${value(entry.team)}</td><td>${value(entry.competition)}</td><td>${value(entry.appearances)}</td><td>${value(entry.minutes)}</td><td>${value(entry.goals)}</td><td>${value(entry.per90?.goals)}</td><td>${value(entry.assists)}</td><td>${value(entry.per90?.assists)}</td><td>${value(entry.shots)}</td><td>${value(entry.per90?.shots)}</td><td>${value(entry.shotsOnTarget)}</td><td>${value(entry.per90?.shotsOnTarget)}</td><td>${value(cards(entry))}</td><td>${value(entry.per90?.cards)}</td><td>${value(entry.foulsCommitted)}</td><td>${value(entry.per90?.foulsCommitted)}</td><td>${value(entry.foulsWon)}</td><td>${value(entry.per90?.foulsWon)}</td></tr>`;
     }).join("")}</tbody></table></div>`;
   }
 
@@ -119,13 +131,15 @@
 
   function playerDetail(player) {
     const entries = player.previousSeason?.entries || [];
-    const portrait = player.photo ? `<img class="player-portrait" src="${esc(player.photo)}" alt="Foto di ${esc(player.name)}">` : `<div class="player-portrait player-initials" aria-label="Foto non disponibile">${initials(player.name)}</div>`;
+    const attribution = player.photoAttribution;
+    const attributionHtml = attribution ? `<figcaption>Foto: ${esc(attribution.artist)} · ${attribution.licenseUrl ? `<a href="${esc(attribution.licenseUrl)}" target="_blank" rel="noreferrer">${value(attribution.license)}</a>` : value(attribution.license)} · <a href="${esc(attribution.pageUrl)}" target="_blank" rel="noreferrer">Wikimedia Commons</a></figcaption>` : "";
+    const portrait = player.photo ? `<figure class="player-portrait-wrap"><img class="player-portrait" src="${esc(player.photo)}" alt="Foto di ${esc(player.name)}" decoding="async">${attributionHtml}</figure>` : `<div class="player-portrait player-initials" aria-label="Foto non disponibile">${initials(player.name)}</div>`;
     const sourceList = (player.sources || []).map(source => `<li><strong>${esc(source.provider)}</strong> · ${esc(source.scope)} · ${esc(source.retrievedAt)}${source.url ? ` · <a href="${esc(source.url)}" target="_blank" rel="noreferrer">fonte</a>` : ""}</li>`).join("");
     return `<button class="player-detail-close" type="button" aria-label="Chiudi dettaglio">×</button><div class="player-profile-head">${portrait}<div><span class="status-badge">${value(player.status)}</span><h2>${esc(player.name)}</h2><p>${value(displayRole(player))} · ${value(player.nationality)} · maglia ${value(player.shirtNumber)}</p><p class="quality-${esc(player.dataQuality?.status || "unavailable")}">Dati ${value(player.dataQuality?.status)} · ${value(player.dataQuality?.note)}</p></div></div><div class="player-bio-grid"><div><span>Nascita</span><strong>${value(player.dateOfBirth)} · ${value(player.age, " anni")}</strong></div><div><span>Luogo</span><strong>${value(player.birthplace)}</strong></div><div><span>Altezza / peso</span><strong>${value(player.heightCm, " cm")} · ${value(player.weightKg, " kg")}</strong></div><div><span>Piede</span><strong>${value(player.preferredFoot)}</strong></div><div><span>Nel club dal</span><strong>${value(player.atMilanSince)}</strong></div><div><span>Arrivo</span><strong>${value(player.arrivalDate)}</strong></div><div><span>Club attuale</span><strong>${value(player.currentTeam)}</strong></div><div><span>Club precedente</span><strong>${value(player.previousTeam)} · ${value(player.previousCompetition)}</strong></div></div>${entries.length > 1 ? `<label class="competition-selector">Squadra / competizione<select id="player-entry-select">${entries.map((entry, index) => `<option value="${index}">${esc(entry.team)} · ${esc(entry.competition)}</option>`).join("")}</select></label>` : ""}<div id="player-entry-detail">${entryDetail(player, 0)}</div><section><h3>Qualità e fonti</h3><p>${player.dataQuality?.uncertainAssociation ? "Associazione giocatore-provider da verificare." : "Associazione giocatore-provider verificata."} Metodo: ${value(player.dataQuality?.associationMethod)}.</p><ul class="source-list">${sourceList}</ul></section>`;
   }
   const marketValuePanel = player => `<div class="player-market-panel"><span>Valore di mercato</span><strong>${value(player.marketValue?.label)}</strong><small>${player.marketValue ? `${esc(player.marketValue.provider)} · aggiornato ${esc(player.marketValue.retrievedAt)}` : "Dato non disponibile"}</small></div>`;
 
-  function teamPage(team) {
+  function teamPage(team, objectiveDataset, standings) {
     const results = team.teamStats.results;
     const discipline = team.teamStats.discipline;
     const homeAway = team.teamStats.homeAway;
@@ -136,6 +150,7 @@
     }, {});
 
     root.innerHTML = `${nav}<section class="team-detail-hero"><img src="${team.logo}" alt="Stemma ${esc(team.name)}"><div><p class="eyebrow">${esc(team.previousSeason.competition)} 2025/26${team.previousSeason.promoted ? " · neopromossa" : ""}</p><h1>${esc(team.officialName)}</h1><p>${esc(team.shortName)} · Città ${value(team.city)} · Stadio ${value(team.stadium)} · Allenatore ${value(team.coach)}</p><p class="updated">Aggiornato ${esc(team.lastUpdated)}</p></div></section>${team.previousSeason.promoted ? `<aside class="competition-warning"><strong>Statistiche di provenienza: Serie B 2025/26.</strong> Non sono confrontate direttamente con i valori grezzi di Serie A.</aside>` : ""}<section class="detail-section"><h2>Risultati 2025/26</h2>${statGrid(results, ["played", "won", "drawn", "lost", "points", "pointsPerGame", "goalsFor", "goalsAgainst", "goalDifference", "cleanSheets", "failedToScore", "winPercentage", "drawPercentage", "lossPercentage"])}</section><section class="detail-section"><h2>Disciplina</h2>${statGrid(discipline, ["foulsCommitted", "foulsCommittedPerGame", "foulsWon", "foulsWonPerGame", "yellowCards", "yellowCardsPerGame", "secondYellowCards", "straightRedCards", "dismissals", "penaltiesConceded", "penaltiesWon", "disciplineIndex"])}</section><section class="detail-section"><h2>Casa e trasferta</h2><div class="split-grid"><article><h3>Casa</h3>${statGrid(homeAway.home, ["played", "won", "drawn", "lost", "goalsFor", "goalsAgainst", "yellowCards"])}</article><article><h3>Trasferta</h3>${statGrid(homeAway.away, ["played", "won", "drawn", "lost", "goalsFor", "goalsAgainst", "yellowCards"])}</article></div></section><section class="detail-section"><h2>Rosa 2026/27</h2><p class="roster-summary">${team.squad.length} calciatori · ${quality.complete || 0} schede complete · ${quality.partial || 0} parziali · ${quality.unavailable || 0} non disponibili. Seleziona un nome per il dettaglio.</p>${filters()}<div id="squad-results">${squadTable(team.squad)}</div>${squadLeaderboards(team.squad, team.name)}</section><section class="detail-section"><h2>Copertura statistica individuale</h2><p class="muted">Le schede separano squadra e competizione 2025/26, mantengono i campi non esposti come N/D e calcolano i valori per 90 minuti soltanto quando i minuti sono disponibili.</p></section><section class="detail-section"><h2>Fonti</h2><ul class="source-list">${team.sources.map(source => `<li><strong>${esc(source.provider)}</strong> · ${esc(source.scope)} · aggiornamento ${esc(source.retrievedAt)}${source.url ? ` · <a href="${esc(source.url)}" target="_blank" rel="noreferrer">fonte</a>` : ""}</li>`).join("")}</ul></section><dialog id="player-detail" class="player-detail"><div id="player-detail-content"></div></dialog>`;
+    root.querySelector(".team-detail-hero")?.insertAdjacentHTML("afterend", objectiveStatus(team, objectiveDataset, standings));
     root.querySelector(".team-detail-hero .updated")?.insertAdjacentHTML("beforebegin", `<p><strong>Modulo preferito:</strong> ${value(team.preferredFormation)}</p>`);
 
     const dialog = document.getElementById("player-detail");
@@ -188,7 +203,15 @@
   (async () => {
     try {
       const teamId = document.body.dataset.team;
-      if (teamId) teamPage(await load(`data/teams/${teamId}.json`));
+      if (teamId) {
+        const [team, objectiveDataset, teams, matches] = await Promise.all([
+          load(`data/teams/${teamId}.json`),
+          load("data/team-objectives.json"),
+          load("data/teams.json"),
+          load("data/matches.json")
+        ]);
+        teamPage(team, objectiveDataset, calculateStandings(teams, matches));
+      }
       else indexPage(await load("data/teams/index.json"));
     } catch (error) {
       root.innerHTML = `<div class="data-warning"><strong>Errore di caricamento</strong><p>${esc(error.message)}. Apri il sito tramite server locale, non con file://.</p></div>`;

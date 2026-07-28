@@ -95,7 +95,8 @@ body[data-page="home"] .hero{min-height:360px;border-color:rgba(255,255,255,.18)
 
 /* Schede giocatore Milan */
 .roster-summary,.squad-count{color:var(--muted,#667085)}.squad-count{margin:4px 0 10px;font-size:.85rem}.squad-table .player-open{display:flex;align-items:center;gap:10px;min-width:205px;padding:0;border:0;background:transparent;color:inherit;text-align:left;cursor:pointer}.squad-table .player-open:hover strong,.squad-table .player-open:focus-visible strong{text-decoration:underline}.mini-avatar{display:grid;place-items:center;flex:0 0 34px;width:34px;height:34px;border-radius:50%;background:#171717;color:#fff;font-size:.72rem;font-weight:900}.status-badge{display:inline-flex;align-items:center;padding:4px 8px;border-radius:999px;background:#f0f2f5;color:#343a46;font-size:.72rem;font-weight:800;white-space:nowrap}.player-detail{width:min(980px,calc(100% - 32px));max-height:90vh;padding:0;border:0;border-radius:20px;background:var(--card,#fff);color:inherit;box-shadow:0 24px 70px rgba(0,0,0,.28)}.player-detail::backdrop{background:rgba(4,10,20,.68);backdrop-filter:blur(3px)}#player-detail-content{padding:28px}.player-detail-close{position:sticky;z-index:2;top:12px;float:right;width:40px;height:40px;border:1px solid var(--line,#d7dbe2);border-radius:50%;background:var(--card,#fff);color:inherit;font-size:1.65rem;line-height:1;cursor:pointer}.player-profile-head{display:flex;align-items:center;gap:22px;padding-right:48px}.player-profile-head h2{margin:6px 0;font-size:2rem}.player-profile-head p{margin:4px 0;color:var(--muted,#667085)}.player-portrait{width:132px;height:132px;flex:0 0 132px;border-radius:18px;object-fit:cover;object-position:top;background:#eceff3}.player-initials{display:grid;place-items:center;background:linear-gradient(145deg,#161616,#b00020);color:#fff;font-size:2.2rem;font-weight:900}.player-bio-grid,.player-stat-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:22px 0}.player-bio-grid>div,.player-stat-grid article,.player-competition-heading>div{padding:12px;border:1px solid var(--line,#e1e5ec);border-radius:12px;background:var(--surface,#f8f9fb)}.player-bio-grid span,.player-stat-grid span,.player-competition-heading span{display:block;color:var(--muted,#667085);font-size:.75rem}.player-bio-grid strong,.player-stat-grid strong,.player-competition-heading strong{display:block;margin-top:5px}.player-detail section{margin-top:24px}.player-detail section h3{margin-bottom:10px}.competition-selector{display:block;margin:22px 0;font-size:.78rem;font-weight:800}.competition-selector select{display:block;width:100%;margin-top:5px;padding:10px;border:1px solid var(--line,#ccd2dc);border-radius:9px;background:var(--card,#fff);color:inherit}.player-competition-heading{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:22px}.quality-complete{color:#08783e!important}.quality-partial{color:#946100!important}.quality-unavailable{color:#a12828!important}
-@media(max-width:760px){.player-bio-grid,.player-stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.player-detail{width:calc(100% - 16px);max-height:96vh}.player-profile-head{align-items:flex-start}.player-portrait{width:92px;height:92px;flex-basis:92px}.player-profile-head h2{font-size:1.45rem}.player-competition-heading{grid-template-columns:1fr}}
+.mini-avatar{object-fit:cover;object-position:top}.player-portrait-wrap{width:132px;flex:0 0 132px;margin:0}.player-portrait-wrap .player-portrait{display:block;flex:none}.player-portrait-wrap figcaption{margin-top:7px;color:var(--muted,#667085);font-size:.65rem;line-height:1.35}.player-portrait-wrap figcaption a{color:inherit;text-decoration:underline}
+@media(max-width:760px){.player-bio-grid,.player-stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.player-detail{width:calc(100% - 16px);max-height:96vh}.player-profile-head{align-items:flex-start}.player-portrait-wrap{width:92px;flex-basis:92px}.player-portrait{width:92px;height:92px;flex-basis:92px}.player-profile-head h2{font-size:1.45rem}.player-competition-heading{grid-template-columns:1fr}}
 @media(max-width:430px){#player-detail-content{padding:18px}.player-profile-head{display:block;padding-right:38px}.player-portrait{margin-bottom:14px}.player-bio-grid,.player-stat-grid{grid-template-columns:1fr 1fr}.player-bio-grid strong,.player-stat-grid strong{font-size:.9rem}}
 .player-detail{border:1px solid var(--line);background:linear-gradient(155deg,var(--surface2),var(--surface));color:var(--text);box-shadow:0 24px 70px rgba(0,0,0,.45)}
 .player-detail-close{background:var(--surface2);color:var(--text)}
@@ -167,7 +168,7 @@ main{padding-top:44px}.source-banner{display:flex;align-items:center;gap:10px;wi
 .hero-season{justify-self:end;align-self:end;display:grid;min-width:190px;padding:22px;border:1px solid rgba(244,203,105,.32);border-radius:22px;background:rgba(2,11,34,.68);backdrop-filter:blur(12px)}.hero-season>span{color:var(--gold);font-size:11px;font-weight:900;letter-spacing:.14em;text-transform:uppercase}.hero-season strong{font-size:55px;line-height:1}.hero-season strong span{color:var(--gold)}.hero-season small{margin-top:8px;color:var(--muted)}
 .section{margin-top:72px}.section-heading{display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:22px}.section-heading h2{margin:0}.text-link{color:var(--gold);font-size:13px;font-weight:800;text-decoration:none}.text-link:hover{text-decoration:underline}
 .season-overview{display:grid;grid-template-columns:repeat(4,1fr);margin-top:18px;overflow:hidden;border:1px solid var(--line);border-radius:18px;background:rgba(6,25,61,.76);box-shadow:var(--shadow-sm)}.season-overview article{padding:18px 20px;border-right:1px solid var(--line)}.season-overview article:last-child{border:0}.season-overview span,.season-overview small{display:block;color:var(--muted);font-size:11px}.season-overview span{font-weight:800;letter-spacing:.08em;text-transform:uppercase}.season-overview strong{display:block;overflow:hidden;margin:4px 0 2px;color:#fff;font-size:25px;line-height:1.15;text-overflow:ellipsis;white-space:nowrap}
-.home-dashboard-grid{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(270px,.65fr);gap:18px}.home-next{padding:22px;border:1px solid var(--line);border-radius:22px;background:rgba(5,22,54,.72)}.home-next>h3{margin-bottom:16px;color:var(--muted);font-size:12px;letter-spacing:.1em;text-transform:uppercase}.home-next>div{display:grid;grid-template-columns:1fr 1fr;gap:12px}.home-next .match-events,.home-next .actions{display:none}.home-next .match.fixture-card .fixture-teams{padding:12px}.home-rail{display:grid;gap:10px}.home-rail a{display:flex;flex-direction:column;justify-content:center;min-height:126px;padding:18px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(145deg,rgba(18,54,118,.62),rgba(5,22,54,.82));text-decoration:none;transition:.2s ease}.home-rail a:hover{border-color:var(--gold);transform:translateX(3px)}.home-rail span{color:var(--gold);font-size:10px;font-weight:900;letter-spacing:.1em;text-transform:uppercase}.home-rail strong{margin:4px 0;font-size:17px}.home-rail small{color:var(--muted)}
+.home-dashboard-grid{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(270px,.65fr);gap:18px}.home-next{padding:22px;border:1px solid var(--line);border-radius:22px;background:rgba(5,22,54,.72)}.home-next>h3{margin-bottom:16px;color:var(--muted);font-size:12px;letter-spacing:.1em;text-transform:uppercase}.home-match-list{margin:0;padding:0;list-style:none;border-top:1px solid var(--line)}.home-match-row{display:grid;grid-template-columns:minmax(150px,.8fr) minmax(280px,1.5fr) auto;align-items:center;gap:18px;padding:15px 2px;border-bottom:1px solid var(--line)}.home-match-meta{display:flex;flex-direction:column;gap:3px}.home-match-meta span{color:var(--gold);font-size:10px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}.home-match-meta time{color:var(--muted);font-size:12px;line-height:1.35}.home-match-teams{display:grid;grid-template-columns:minmax(0,1fr) 18px minmax(0,1fr);align-items:center;gap:8px}.home-match-teams .team-with-logo{min-width:0}.home-match-teams .team-logo{width:32px;height:32px;flex:0 0 32px}.home-match-teams .team-logo img{width:24px;height:24px}.home-match-teams .team-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:14px;font-weight:800}.home-match-teams>b{text-align:center;color:var(--muted);font-weight:500}.home-match-row>a{color:var(--text);font-size:12px;font-weight:800;text-decoration:none;white-space:nowrap}.home-match-row>a span{margin-left:5px;color:var(--gold)}.home-match-row>a:hover{color:var(--gold)}.home-rail{display:grid;gap:10px}.home-rail a{display:flex;flex-direction:column;justify-content:center;min-height:126px;padding:18px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(145deg,rgba(18,54,118,.62),rgba(5,22,54,.82));text-decoration:none;transition:.2s ease}.home-rail a:hover{border-color:var(--gold);transform:translateX(3px)}.home-rail span{color:var(--gold);font-size:10px;font-weight:900;letter-spacing:.1em;text-transform:uppercase}.home-rail strong{margin:4px 0;font-size:17px}.home-rail small{color:var(--muted)}
 .feature-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.feature-card{display:grid;grid-template-columns:42px 1fr auto;gap:16px;align-items:start;min-height:132px;padding:20px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(145deg,rgba(13,40,93,.78),rgba(5,20,50,.92));text-decoration:none;transition:.2s ease}.feature-card:hover{border-color:var(--gold);transform:translateY(-2px);box-shadow:var(--shadow-sm)}.feature-card>span{color:var(--gold);font-size:11px;font-weight:900}.feature-card h3{font-size:20px}.feature-card p{margin:0;color:var(--muted);font-size:13px}.feature-card>b{color:var(--gold);font-size:18px}
 .calendar-toolbar{position:sticky;z-index:12;top:92px;display:grid;grid-template-columns:minmax(220px,1fr) 180px 220px auto;gap:12px;align-items:end;margin:24px 0 14px;padding:14px;border:1px solid var(--line-strong);border-radius:18px;background:rgba(4,18,46,.92);box-shadow:0 16px 44px rgba(0,6,28,.36);backdrop-filter:blur(18px)}.calendar-toolbar-copy{display:flex;flex-direction:column}.calendar-toolbar-copy .eyebrow{margin:0}.calendar-toolbar-copy strong{font-size:17px}.calendar-toolbar-copy span{color:var(--muted);font-size:11px}.calendar-toolbar label>span{display:block;margin-bottom:5px;color:var(--muted);font-size:10px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}.calendar-toolbar select{width:100%;height:42px;border-radius:11px;background:#0a2557}.calendar-stepper{display:flex;gap:6px}.calendar-stepper button{display:grid;place-items:center;width:42px;height:42px;border:1px solid var(--line);border-radius:11px;background:var(--surface2);color:#fff;font-size:18px;cursor:pointer}.calendar-stepper button:hover{border-color:var(--gold);color:var(--gold)}
 .day-nav{position:static;margin:0 0 14px;background:rgba(5,22,54,.68);box-shadow:none}.calendar-day[hidden],[data-calendar-teams][hidden]{display:none!important}.calendar-list{gap:0}.calendar-day{min-height:640px;padding-top:14px}.day-matches>div{min-width:0}.day-matches .match{height:100%}
@@ -178,7 +179,7 @@ main{padding-top:44px}.source-banner{display:flex;align-items:center;gap:10px;wi
 button,a,select,input{outline-offset:3px}:focus-visible{outline:2px solid var(--gold)}
 @media(prefers-reduced-motion:no-preference){.hero,.season-overview,.section{animation:section-in .5s ease both}.section{animation-delay:.05s}@keyframes section-in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}}
 @media(max-width:980px){.calendar-toolbar{grid-template-columns:1fr 1fr}.calendar-toolbar-copy{grid-column:1/-1}.season-overview{grid-template-columns:1fr 1fr}.season-overview article:nth-child(2){border-right:0}.season-overview article:nth-child(-n+2){border-bottom:1px solid var(--line)}.home-dashboard-grid{grid-template-columns:1fr}.home-rail{grid-template-columns:repeat(3,1fr)}.home-rail a{min-height:110px}.editorial-empty{grid-template-columns:100px 1fr}.editorial-empty-mark{width:90px;height:90px}.editorial-empty ol{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.editorial-empty li{border:0}}
-@media(max-width:760px){.calendar-toolbar{top:80px}.hero{min-height:0}.hero-season{justify-self:start}.home-next>div,.feature-grid,.cup-match-grid{grid-template-columns:1fr}.home-rail{grid-template-columns:1fr}.home-rail a{min-height:96px}.editorial-empty{grid-template-columns:1fr}.editorial-empty ol{grid-template-columns:1fr}.editorial-empty-mark{width:76px;height:76px;border-radius:22px;font-size:48px}}
+@media(max-width:760px){.calendar-toolbar{top:80px}.hero{min-height:0}.hero-season{justify-self:start}.feature-grid,.cup-match-grid{grid-template-columns:1fr}.home-match-row{grid-template-columns:1fr auto;gap:10px 14px}.home-match-meta{grid-column:1/-1}.home-match-teams{grid-template-columns:minmax(0,1fr) 14px minmax(0,1fr)}.home-match-row>a{align-self:center}.home-rail{grid-template-columns:1fr}.home-rail a{min-height:96px}.editorial-empty{grid-template-columns:1fr}.editorial-empty ol{grid-template-columns:1fr}.editorial-empty-mark{width:76px;height:76px;border-radius:22px;font-size:48px}}
 @media(max-width:580px){main{width:min(100% - 20px,var(--max))}.source-banner{align-items:flex-start;width:100%;border-radius:14px}.hero{padding:26px 22px;border-radius:22px}.hero h1{font-size:clamp(40px,13vw,58px)}.hero-season{width:100%;min-width:0}.season-overview{grid-template-columns:1fr 1fr}.season-overview article{padding:14px}.season-overview strong{font-size:20px}.calendar-toolbar{grid-template-columns:1fr;top:76px}.calendar-toolbar-copy{grid-column:auto}.calendar-stepper button{width:100%;flex:1}.day-nav{display:none}.calendar-day{min-height:0}.section-heading{align-items:flex-start;flex-direction:column}.editorial-empty,.cup-stage{padding:22px;border-radius:20px}.feature-card{grid-template-columns:34px 1fr auto}.team-directory-grid{padding-inline:0}.team-directory-card{border-radius:16px}}
 
 /* Seconda fase: ricerca, ordinamento e indicatori comparativi */
@@ -217,7 +218,8 @@ body:not([data-page="home"]) .hero-stat strong{font-size:38px}
 @media(max-width:980px){.fantasy-config{grid-template-columns:1fr}.fantasy-plan,.fantasy-slots>div{grid-template-columns:1fr 1fr}.goalkeeper-trios{grid-template-columns:1fr}.fantasy-controls{grid-template-columns:1fr 1fr}.fantasy-controls>strong{grid-column:1/-1}.fantasy-table{min-width:1150px}}
 @media(max-width:580px){.fantasy-config{padding:18px}.fantasy-plan,.fantasy-slots>div,.fantasy-controls{grid-template-columns:1fr}.fantasy-controls{top:76px}.fantasy-controls>strong{grid-column:auto}.fantasy-board>.section-heading>p,.goalkeeper-rotation>.section-heading>p{text-align:left}}
 .fantasy-player-button{padding:0;border:0;background:none;text-align:left;cursor:pointer}.lineup-calendar{scroll-margin-top:110px}.lineup-calendar>header{display:flex;align-items:end;justify-content:space-between;gap:18px;margin-bottom:18px}.lineup-calendar>header h2{margin-bottom:4px}.lineup-calendar>header p:last-child{margin:0;color:var(--muted)}.lineup-calendar-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.lineup-day{padding:14px;border:1px solid var(--line);border-radius:16px;background:var(--surface)}.lineup-day>span,.lineup-day>small{display:block;color:var(--muted);font-size:10px}.lineup-day>div{display:flex;align-items:center;gap:9px;margin:10px 0}.lineup-day img{width:34px;height:34px;object-fit:contain}.lineup-day b{display:inline-flex;margin-bottom:5px;padding:4px 8px;border-radius:999px;font-size:10px}.lineup-da-schierare b{background:rgba(112,209,160,.15);color:#8be5b9}.lineup-schierabile b{background:rgba(106,162,255,.15);color:#9bc0ff}.lineup-con-cautela b{background:rgba(243,201,105,.14);color:#f3c969}.lineup-da-evitare b{background:rgba(255,124,124,.14);color:#ff9d9d}
-@media(max-width:980px){.lineup-calendar-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:680px){.lineup-calendar-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.lineup-calendar>header{align-items:flex-start;flex-direction:column}}@media(max-width:420px){.lineup-calendar-grid{grid-template-columns:1fr}}
+.fantasy-player-stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:0 0 20px}.fantasy-player-stats article{padding:16px;border:1px solid var(--line);border-radius:16px;background:var(--surface)}.fantasy-player-stats span,.fantasy-player-stats small{display:block;color:var(--muted);font-size:10px}.fantasy-player-stats strong{display:block;margin:5px 0;color:var(--gold);font-size:20px}
+@media(max-width:980px){.fantasy-player-stats{grid-template-columns:repeat(3,minmax(0,1fr))}.lineup-calendar-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:680px){.fantasy-player-stats,.lineup-calendar-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.lineup-calendar>header{align-items:flex-start;flex-direction:column}}@media(max-width:420px){.fantasy-player-stats,.lineup-calendar-grid{grid-template-columns:1fr}}
 
 /* Directory squadre 4x5 con card fronte/retro. */
 .team-directory-grid.team-flip-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;padding-inline:0}
@@ -228,7 +230,6 @@ body:not([data-page="home"]) .hero-stat strong{font-size:38px}
 .team-flip-face{position:absolute;display:flex;inset:0;overflow:hidden;border:1px solid color-mix(in srgb,var(--team-primary) 68%,white);border-radius:20px;backface-visibility:hidden;-webkit-backface-visibility:hidden}
 .team-flip-front{align-items:center;justify-content:center;flex-direction:column;gap:13px;padding:22px;background:radial-gradient(circle at 50% 30%,rgba(255,255,255,.16),transparent 42%),linear-gradient(145deg,color-mix(in srgb,var(--team-primary) 82%,#061020),color-mix(in srgb,var(--team-secondary) 80%,#061020));box-shadow:inset 0 1px rgba(255,255,255,.12),var(--shadow-sm)}
 .team-flip-front img{width:112px;height:112px;object-fit:contain;filter:drop-shadow(0 12px 18px rgba(0,0,0,.36))}
-.team-flip-front strong{font-size:1.35rem;line-height:1.05;text-align:center}
 .team-flip-front small{color:rgba(255,255,255,.72);font-size:.68rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
 .team-flip-back{align-items:flex-start;justify-content:center;flex-direction:column;gap:7px;padding:22px;background:linear-gradient(145deg,color-mix(in srgb,var(--team-secondary) 72%,#061020),color-mix(in srgb,var(--team-primary) 74%,#061020));transform:rotateY(180deg)}
 .team-flip-back strong{margin-bottom:5px;color:#fff;font-size:1.3rem}
@@ -236,7 +237,7 @@ body:not([data-page="home"]) .hero-stat strong{font-size:38px}
 .team-flip-back b{width:100%;margin-top:8px;padding-top:11px;border-top:1px solid rgba(255,255,255,.24);color:var(--gold);font-size:.78rem}
 .team-flip-card:focus-visible{outline:2px solid var(--gold);outline-offset:4px}
 @media(max-width:1000px){.team-directory-grid.team-flip-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
-@media(max-width:760px){.team-directory-grid.team-flip-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.team-flip-card{height:260px}.team-flip-front img{width:88px;height:88px}.team-flip-front strong{font-size:1.1rem}.team-flip-back{padding:16px}.team-flip-back strong{font-size:1.05rem}}
+@media(max-width:760px){.team-directory-grid.team-flip-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.team-flip-card{height:260px}.team-flip-front img{width:88px;height:88px}.team-flip-back{padding:16px}.team-flip-back strong{font-size:1.05rem}}
 @media(max-width:430px){.team-directory-grid.team-flip-grid{grid-template-columns:1fr}}
 @media(hover:none){.team-flip-card{height:auto;perspective:none}.team-flip-inner{display:grid;height:auto;transform:none!important}.team-flip-face{position:relative;backface-visibility:visible;-webkit-backface-visibility:visible}.team-flip-front{min-height:220px;border-radius:18px 18px 0 0}.team-flip-back{min-height:220px;border-top:0;border-radius:0 0 18px 18px;transform:none}}
 
@@ -534,8 +535,8 @@ footer{border-color:rgba(18,64,119,.1);color:#687487}
     #b5faff31;
 }
 .team-flip-front img{
-  width:108px;
-  height:108px;
+  width:126px;
+  height:126px;
   opacity:.68;
   mix-blend-mode:multiply;
   filter:
@@ -544,11 +545,6 @@ footer{border-color:rgba(18,64,119,.1);color:#687487}
     contrast(1.55)
     drop-shadow(-1px -1px 0 rgba(255,255,255,.96))
     drop-shadow(1px 2px 1px rgba(40,58,59,.42));
-}
-.team-flip-front strong{
-  color:#283a3b;
-  font-weight:720;
-  text-shadow:0 1px 0 rgba(255,255,255,.72);
 }
 .team-flip-back{
   color:#283a3b;
@@ -566,5 +562,237 @@ footer{border-color:rgba(18,64,119,.1);color:#687487}
 }
 .team-flip-card:focus-visible{outline-color:#283a3b}
 @media(max-width:760px){
-  .team-flip-front img{width:86px;height:86px}
+  .team-flip-front img{width:98px;height:98px}
+}
+
+/* Sistema glass globale: superfici coerenti e contrasto leggibile */
+:root{
+  --glass-surface:#b5faff31;
+  --glass-surface-strong:rgba(247,253,253,.72);
+  --glass-border:#00000015;
+  --glass-text:#283a3b;
+  --glass-muted:#586769;
+  --glass-blue:#245a78;
+  --glass-gold:#7a5615;
+}
+body{background:#e8e8e8;color:var(--glass-text)}
+h1,h2,h3,h4,strong{color:var(--glass-text)}
+.muted,.lead,.updated{color:var(--glass-muted)}
+.eyebrow{color:var(--glass-gold)}
+.hero:not(.team-flip-face){
+  border:1px solid var(--glass-border);
+  background:linear-gradient(115deg,rgba(255,255,255,.5),transparent 38%),linear-gradient(295deg,rgba(255,255,255,.16),transparent 52%),var(--glass-surface);
+  box-shadow:0 8px 4px #00000012,0 24px 28px #0000000d,inset 0 1px 4px #ffffff80;
+  backdrop-filter:blur(22px) saturate(130%);
+  -webkit-backdrop-filter:blur(22px) saturate(130%);
+}
+body[data-page="home"] .hero h1,
+body[data-page="home"] .hero .lead{color:#fff}
+.card,.home-next,.home-rail a,.feature-card,.season-overview,.calendar-toolbar,.day-nav,.directory-controls,.referee-controls,.referee-nav,.editorial-empty,.cup-stage,.objective-card,.squad-leader-card,.pilot-section,.goalkeeper-trios>article,.fantasy-slots article,.fantasy-config,.fantasy-plan article,.global-leaderboard-controls,.team-stat-grid article,.player-bio-grid>div,.player-stat-grid article,.player-competition-heading>div,.lineup-day,.method-note,.fantasy-method{
+  border-color:var(--glass-border);
+  background:linear-gradient(115deg,rgba(255,255,255,.46),transparent 38%),linear-gradient(295deg,rgba(255,255,255,.14),transparent 54%),var(--glass-surface);
+  color:var(--glass-text);
+  box-shadow:0 6px 3px #00000010,0 18px 24px #0000000b,inset 0 1px 4px #ffffff78;
+  backdrop-filter:blur(20px) saturate(130%);
+  -webkit-backdrop-filter:blur(20px) saturate(130%);
+}
+.card p,.feature-card p,.home-rail small,.season-overview span,.season-overview small,.objective-card p,.squad-leader-card span,.lineup-day>span,.lineup-day>small{color:var(--glass-muted)}
+.card-link:hover,.feature-card:hover,.home-rail a:hover{
+  border-color:rgba(40,58,59,.2);
+  background:linear-gradient(115deg,rgba(255,255,255,.62),transparent 40%),rgba(181,250,255,.24);
+  box-shadow:0 8px 4px #00000012,0 22px 28px #0000000e,inset 0 1px 4px #ffffff8a;
+}
+.button,.text-link{
+  border-color:rgba(36,90,120,.18);
+  background:rgba(255,255,255,.38);
+  color:var(--glass-blue);
+}
+.button:hover,.text-link:hover{border-color:rgba(36,90,120,.34);background:rgba(255,255,255,.62);color:#173f58}
+.button-primary{border-color:rgba(122,86,21,.28);background:rgba(255,255,255,.48);color:var(--glass-gold)}
+.table-wrap,.squad-table-wrap{
+  border-color:var(--glass-border);
+  background:rgba(255,255,255,.48);
+  box-shadow:0 8px 4px #0000000d,0 22px 28px #0000000a,inset 0 1px 4px #ffffff8a;
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+}
+table{background:transparent;color:var(--glass-text)}
+th{background:rgba(255,255,255,.52);color:#47575a}
+th,td{border-color:rgba(40,58,59,.1)}
+tbody tr:hover{background:rgba(181,250,255,.18)}
+.squad-table thead th,.squad-table th:first-child,.squad-table td:first-child{background:rgba(247,253,253,.9)}
+.calendar-toolbar,.directory-controls,.referee-controls,.fantasy-controls{
+  border-color:var(--glass-border);
+  background:rgba(239,250,250,.78);
+  box-shadow:0 10px 18px #0000000d,inset 0 1px 4px #ffffff8a;
+  backdrop-filter:blur(22px);
+  -webkit-backdrop-filter:blur(22px);
+}
+select,input,.fantasy-controls input,.fantasy-controls select,.squad-controls input,.squad-controls select{
+  border-color:rgba(40,58,59,.15)!important;
+  background:rgba(255,255,255,.78)!important;
+  color:var(--glass-text)!important;
+  box-shadow:inset 0 1px 3px rgba(40,58,59,.06);
+}
+input::placeholder{color:#718083}
+.calendar-stepper button{
+  border-color:rgba(40,58,59,.14);
+  background:rgba(255,255,255,.58);
+  color:var(--glass-blue);
+}
+.calendar-stepper button:hover{border-color:var(--glass-gold);color:var(--glass-gold)}
+.match.fixture-card{
+  border-color:var(--glass-border);
+  background:linear-gradient(115deg,rgba(255,255,255,.5),transparent 40%),var(--glass-surface);
+  color:var(--glass-text);
+  box-shadow:0 6px 3px #00000010,0 18px 24px #0000000b,inset 0 1px 4px #ffffff78;
+}
+.match.fixture-card .match-head,.match.fixture-card .actions,.match.fixture-card .match-events{background:rgba(255,255,255,.3);color:var(--glass-text)}
+.match.fixture-card .fixture-team{color:var(--glass-text)}
+.status{background:rgba(255,255,255,.55);color:#4c5b5e}
+.status.finished,.status.won{background:#dcefe6;color:#17653e}
+.status.live{background:#f8dfe1;color:#9e2630}
+.status.postponed,.status.lost{background:#f3ead5;color:#76500d}
+.competition-chip,.matchday-chip,.cup-badge{border-color:rgba(36,90,120,.2);background:rgba(36,90,120,.08);color:var(--glass-blue)}
+.source-banner{border-color:var(--glass-border);background:rgba(255,255,255,.42);color:var(--glass-muted)}
+.source-banner strong{color:var(--glass-blue)}
+.metric-track{background:rgba(40,58,59,.12)}
+.metric-track b{background:linear-gradient(90deg,var(--glass-blue),#b18430)}
+.objective-metric strong,.season-overview strong,.squad-leader-card h4,.squad-leader-card li>strong,.global-leaderboard-caption strong{color:var(--glass-text)}
+.objective-metric.positive strong{color:#17653e}.objective-metric.negative strong{color:#9e2630}.objective-metric.urgent strong{color:var(--glass-gold)}
+.global-stat-button{border-color:rgba(36,90,120,.2);background:rgba(255,255,255,.38);color:var(--glass-blue)}
+.global-stat-button:hover,.global-stat-button:focus-visible{border-color:rgba(122,86,21,.34);color:var(--glass-gold)}
+.player-detail,.player-detail-close{border-color:var(--glass-border);background:#f4f7f7;color:var(--glass-text)}
+.player-detail::backdrop{background:rgba(40,58,59,.42)}
+.quality-complete{color:#17653e!important}.quality-partial{color:#76500d!important}.quality-unavailable{color:#9e2630!important}
+footer{border-color:rgba(40,58,59,.1);color:var(--glass-muted)}
+@media(prefers-reduced-motion:reduce){.card,.feature-card,.home-rail a,.match.fixture-card{transition:none}}
+
+/* Contrasto loghi nella tabella Consigli per l'asta */
+.fantasy-table .fantasy-team img{
+  width:36px;
+  height:36px;
+  padding:5px;
+  border:1px solid rgba(255,255,255,.72);
+  border-radius:10px;
+  background:linear-gradient(145deg,#6f878c,#526a70);
+  box-shadow:inset 0 1px 2px rgba(255,255,255,.42),0 3px 8px rgba(40,58,59,.14);
+}
+/* Stato obiettivi nella pagina della singola squadra */
+.team-objective-section{margin-top:42px}
+.team-objective-section .objective-section-head{align-items:center}
+.team-objective-section .objective-card,.team-objective-section .objective-method{max-width:920px}
+.team-objective-team{color:var(--glass-text);font-weight:800}
+
+/* Hover leggibile e uniforme per tutte le tabelle */
+table tbody tr:hover,
+table tbody tr:focus-within,
+table tbody tr:hover td,
+table tbody tr:focus-within td{
+  background:rgba(181,250,255,.34);
+  color:#283a3b;
+}
+.squad-table tbody tr:hover td:first-child,
+.squad-table tbody tr:focus-within td:first-child{
+  background:rgba(224,250,250,.96);
+  box-shadow:8px 0 14px -10px rgba(40,58,59,.28);
+}
+
+/* Home: il separatore resta centrato tra due colonne squadra simmetriche. */
+.home-match-teams{column-gap:12px}
+.home-match-teams .team-with-logo:first-child{justify-self:end;flex-direction:row-reverse;text-align:right}
+.home-match-teams .team-with-logo:last-child{justify-self:start}
+.home-next>h3{text-transform:none}.home-next>h3>span{text-transform:uppercase}
+
+/* Selettore squadre: fascia compatta e stemmi otticamente uniformi. */
+.team-nav{
+  display:grid;
+  grid-template-columns:180px minmax(0,1fr);
+  align-items:center;
+  gap:14px;
+  margin:22px 0 42px;
+  padding:12px 14px;
+  border:1px solid rgba(40,58,59,.12);
+  border-radius:20px;
+  background:linear-gradient(115deg,rgba(255,255,255,.62),rgba(239,250,250,.68));
+  box-shadow:0 10px 24px rgba(40,58,59,.08),inset 0 1px 3px rgba(255,255,255,.9);
+  backdrop-filter:blur(20px) saturate(125%);
+  -webkit-backdrop-filter:blur(20px) saturate(125%);
+}
+.team-nav>span{
+  margin:0;
+  padding-left:5px;
+  color:#586769;
+  font-size:10px;
+  line-height:1.35;
+  letter-spacing:.11em;
+}
+.team-nav>div{display:grid;grid-template-columns:repeat(20,minmax(38px,1fr));gap:5px;min-width:0}
+.team-nav-link{
+  width:100%;
+  height:46px;
+  min-width:0;
+  padding:7px;
+  border:1px solid rgba(40,58,59,.06);
+  border-radius:12px;
+  background:rgba(255,255,255,.32);
+  box-shadow:inset 0 1px 2px rgba(255,255,255,.75);
+}
+.team-nav-link img{width:32px;height:32px;max-width:32px;max-height:32px}
+.team-nav-link[data-team="juventus"] img{width:23px;max-width:23px}
+.team-nav-link:hover,.team-nav-link.active{
+  border-color:rgba(122,86,21,.34);
+  background:rgba(255,255,255,.74);
+  box-shadow:0 7px 16px rgba(40,58,59,.1),inset 0 1px 2px #fff;
+  transform:translateY(-2px);
+}
+@media(max-width:1100px){
+  .team-nav{grid-template-columns:1fr;gap:10px}
+  .team-nav>span{padding-left:2px}
+  .team-nav>div{grid-template-columns:repeat(10,minmax(44px,1fr))}
+}
+@media(max-width:580px){
+  .team-nav{margin:18px 0 34px;padding:12px;border-radius:18px}
+  .team-nav>div{display:flex;gap:7px;overflow-x:auto;padding:2px 1px 7px;scroll-snap-type:x proximity}
+  .team-nav-link{flex:0 0 48px;width:48px;height:48px;scroll-snap-align:start}
+}
+
+/* Tipografia editoriale: Anton per titoli e banner, Inter per testi e controlli. */
+:root{
+  --font-display:"Anton",Impact,sans-serif;
+  --font-body:"Inter","Segoe UI",Arial,sans-serif;
+  font-family:var(--font-body);
+  font-optical-sizing:auto;
+}
+body,button,input,select,textarea{font-family:var(--font-body)}
+h1,h2,h3,
+.hero-stat strong,
+.hero-season strong,
+.editorial-empty-mark{
+  font-family:var(--font-display);
+  font-weight:400!important;
+  font-style:normal;
+  letter-spacing:.025em!important;
+  word-spacing:.06em;
+}
+
+/* Selettore classifica: palette chiara con stato attivo blu Serie A. */
+.standings-switch{
+  border-color:rgba(36,90,120,.16);
+  background:rgba(255,255,255,.58);
+  box-shadow:0 8px 24px rgba(40,58,59,.08),inset 0 1px 0 rgba(255,255,255,.82);
+}
+.standings-switch button{
+  color:#4d5f69;
+}
+.standings-switch button:hover{
+  border-color:rgba(31,100,184,.24);
+  background:rgba(31,100,184,.09);
+  color:#174f8f;
+}
+.standings-switch button.active{
+  border-color:#2f75c5;
+  background:linear-gradient(135deg,#2468b6,#174f91);
+  color:#fff;
+  box-shadow:0 5px 14px rgba(23,79,145,.22),inset 0 1px 0 rgba(255,255,255,.18);
 }
