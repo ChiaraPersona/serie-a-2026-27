@@ -3,7 +3,7 @@
   if (!root) return;
 
   const base = document.body.dataset.depth === "team" ? "../" : "";
-  const release = "20260728-team-objectives";
+  const release = "20260728-wikimedia-photos-objectives";
   const esc = value => String(value ?? "").replace(/[&<>\"]/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[char]));
   const value = (input, suffix = "") => input === null || input === undefined || input === "" ? "N/D" : `${esc(input)}${suffix}`;
   const pct = input => value(input, "%");
@@ -207,8 +207,8 @@
         const [team, objectiveDataset, teams, matches] = await Promise.all([
           load(`data/teams/${teamId}.json`),
           load("data/team-objectives.json"),
-          load("data/teams.json"),
-          load("data/matches.json")
+          load("data/normalized/teams.json"),
+          load("data/normalized/matches.json")
         ]);
         teamPage(team, objectiveDataset, calculateStandings(teams, matches));
       }
