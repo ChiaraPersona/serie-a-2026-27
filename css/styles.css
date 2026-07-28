@@ -198,6 +198,7 @@ button,a,select,input{outline-offset:3px}:focus-visible{outline:2px solid var(--
 .standings-table tbody tr{transition:background .16s ease}.standings-table tbody tr:hover td{background:rgba(29,79,164,.3)}
 @media(max-width:760px){.directory-controls,.referee-controls{grid-template-columns:1fr 1fr;top:80px}.directory-controls>strong,.referee-controls>strong{grid-column:1/-1;text-align:left}.metric-track{height:5px}}
 @media(max-width:520px){.directory-controls,.referee-controls{grid-template-columns:1fr;top:76px}.directory-controls>strong,.referee-controls>strong{grid-column:auto}.directory-controls{margin-inline:0}.referee-controls{position:static}}
+.referee-controls{grid-template-columns:1fr}
 
 /* La hero fotografica appartiene solo alla home. */
 body:not([data-page="home"]) .hero{display:flex;min-height:0;padding:32px 0 28px;overflow:visible;border:0;border-bottom:1px solid var(--line);border-radius:0;background:none;box-shadow:none}
@@ -592,6 +593,11 @@ body[data-page="home"] .hero .lead{color:#fff}
   backdrop-filter:blur(20px) saturate(130%);
   -webkit-backdrop-filter:blur(20px) saturate(130%);
 }
+body[data-page="referees"] .referee-nav a{color:var(--glass-text)}
+body[data-page="referees"] .referee-nav span{color:var(--glass-text)}
+body[data-page="referees"] .referee-nav strong{background:rgba(36,90,120,.2);color:var(--glass-gold)}
+body[data-page="referees"] .referee-nav a:hover,
+body[data-page="referees"] .referee-nav a:focus-visible{border-color:rgba(36,90,120,.28);background:rgba(255,255,255,.46)}
 .card p,.feature-card p,.home-rail small,.season-overview span,.season-overview small,.objective-card p,.squad-leader-card span,.lineup-day>span,.lineup-day>small{color:var(--glass-muted)}
 .card-link:hover,.feature-card:hover,.home-rail a:hover{
   border-color:rgba(40,58,59,.2);
