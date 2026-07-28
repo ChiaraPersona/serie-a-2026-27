@@ -3,10 +3,12 @@ const path = require("path");
 
 const root = path.resolve(__dirname, "../..");
 const outputFile = path.join(root, "data/sources/team-pages/wikimedia-player-photos.json");
+const overridesFile = path.join(root, "data/sources/team-pages/wikimedia-player-photo-overrides.json");
 const args = process.argv.slice(2);
 const refresh = args.includes("--refresh");
 const dryRun = args.includes("--dry-run");
 const downloadOnly = args.includes("--download-only");
+const secondPass = args.includes("--second-pass");
 const option = name => {
   const index = args.indexOf(name);
   return index >= 0 ? args[index + 1] : null;
@@ -321,6 +323,8 @@ async function main() {
     }));
   });
   const previous = fs.existsSync(outputFile) ? read(outputFile) : { entries: [] };
+  const overrides = fs.existsSync(overridesFile) ? read(overridesFile).entries || [] : [];
+  const overridesByKey = new Map(overrides.map(entry => [`${entry.teamId}:${entry.playerId}`, entry]));
   if (downloadOnly) {
     if (!previous.entries?.length) throw new Error("Esegui prima l'importazione Wikimedia per creare la mappa delle foto.");
     const pendingDownloads = previous.entries.filter(entry =>
@@ -363,13 +367,27 @@ async function main() {
     return entry?.status === "matched" && entry.localPath && fs.existsSync(path.join(root, ...entry.localPath.split("/")));
   });
   const reusableKeys = new Set(reusable.map(player => `${player.teamId}:${player.playerId}`));
-  const pending = allPlayers.filter(player => !reusableKeys.has(`${player.teamId}:${player.playerId}`)).slice(0, limit);
+  const pendingPool = allPlayers.filter(player => !reusableKeys.has(`${player.teamId}:${player.playerId}`));
+  const pending = (secondPass
+    ? pendingPool.filter(player => overridesByKey.has(`${player.teamId}:${player.playerId}`))
+    : pendingPool
+  ).slice(0, limit);
 
-  console.log(`Wikimedia: ${allPlayers.length} calciatori, ${reusable.length} foto riutilizzate, ${pending.length} da cercare.`);
-  const withEspnId = pending.filter(player => player.espnId);
-  const byEspnId = await loadWikidataByEspnId(withEspnId);
-  const byName = await loadWikidataByName(pending);
+  console.log(`Wikimedia: ${allPlayers.length} calciatori, ${reusable.length} foto riutilizzate, ${pending.length} da cercare${secondPass ? " nella seconda passata verificata" : ""}.`);
+  const withEspnId = secondPass ? [] : pending.filter(player => player.espnId);
+  const byEspnId = secondPass ? new Map() : await loadWikidataByEspnId(withEspnId);
+  const byName = secondPass ? new Map() : await loadWikidataByName(pending);
   const resolutions = pending.map(player => {
+    const override = overridesByKey.get(`${player.teamId}:${player.playerId}`);
+    if (override) {
+      return {
+        ...player,
+        status: "matched",
+        fileName: override.fileName,
+        wikidataId: override.wikidataId || null,
+        matchMethod: "verified-commons-second-pass"
+      };
+    }
     const idResolution = player.espnId
       ? resolveEspnMatch(player, byEspnId.get(player.espnId) || [])
       : { status: "unresolved" };
@@ -420,17 +438,26 @@ async function main() {
   );
   const entries = [...reusedEntries, ...untouchedEntries, ...downloaded.filter(item => item.status === "matched")]
     .sort((left, right) => left.teamId.localeCompare(right.teamId) || left.name.localeCompare(right.name, "it"));
-  const unresolved = [
+  const currentUnresolved = [
     ...resolutions.filter(item => item.status !== "matched"),
     ...downloaded.filter(item => item.status !== "matched")
   ]
     .map(({ teamId, playerId, name, status, reason, candidates }) => ({ teamId, playerId, name, status, reason, candidates: candidates || [] }));
+  const unresolved = secondPass
+    ? [
+        ...(previous.unresolved || []).filter(item =>
+          allPlayers.some(player => player.teamId === item.teamId && player.playerId === item.playerId)
+          && !processedKeys.has(`${item.teamId}:${item.playerId}`)
+        ),
+        ...currentUnresolved
+      ].sort((left, right) => left.teamId.localeCompare(right.teamId) || left.name.localeCompare(right.name, "it"))
+    : currentUnresolved;
   const output = {
     schemaVersion: 1,
     provider: "Wikimedia Commons",
     sourceUrl: "https://commons.wikimedia.org/w/api.php",
     retrievedAt,
-    methodology: "Ricerca Wikidata per nome esatto; priorità alla data di nascita; immagini e licenze recuperate tramite imageinfo di Wikimedia Commons. I casi ambigui restano esclusi.",
+    methodology: "Ricerca Wikidata per nome esatto; priorità alla data di nascita; seconda passata verificata sui file e sulle categorie Wikimedia Commons; immagini e licenze recuperate tramite imageinfo. I casi ambigui restano esclusi.",
     summary: {
       playersInScope: allPlayers.length,
       matchedPhotos: entries.length,

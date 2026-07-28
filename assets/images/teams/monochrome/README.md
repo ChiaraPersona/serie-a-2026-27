@@ -5,7 +5,7 @@ Black and white variants downloaded on 2026-07-28 from
 
 - `*-black.svg` and `*-black.png` are intended for light backgrounds.
 - `*-white.svg` and `*-white.png` are intended for dark backgrounds.
-- The files are stored for future use and are not currently wired into the site.
+- The black SVG variants are used by the Fantacalcio auction-advice table.
 - Club crests and related marks remain trademarks of their respective owners.
 - FootyLogos requests source credit when these files are used.
 

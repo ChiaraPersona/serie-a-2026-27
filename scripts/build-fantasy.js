@@ -7,6 +7,15 @@ const teams = read("data/normalized/teams.json");
 const matches = read("data/normalized/matches.json").filter(match => match.competition === "serie-a" && match.season === "2026-27");
 const teamFiles = teams.map(team => read(`data/teams/${team.id}.json`));
 const fantasyWorkbook = read("data/sources/fantacalcio-stats-2025-26.json");
+const monochromeLogoManifest = read("assets/images/teams/monochrome/manifest.json");
+const monochromeLogoIds = new Set(monochromeLogoManifest.teams.map(team => team.id));
+const missingMonochromeLogos = teams.filter(team => {
+  const logoFile = path.join(root, `assets/images/teams/monochrome/${team.id}-black.svg`);
+  return !monochromeLogoIds.has(team.id) || !fs.existsSync(logoFile);
+});
+if (missingMonochromeLogos.length) {
+  throw new Error(`Loghi neri mancanti: ${missingMonochromeLogos.map(team => team.id).join(", ")}`);
+}
 const fantasyStatsByPlayerId = new Map(fantasyWorkbook.players.filter(player => player.playerId && player.appearancesWithVote > 0).map(player => [player.playerId, player]));
 
 const roleCode = role => {
@@ -267,6 +276,13 @@ const output = {
       season: fantasyWorkbook.season,
       matchedPlayers: fantasyWorkbook.coverage.matchedCurrentPlayers,
       use: "PV, MV, FM, gol, assist, cartellini, rigori parati/sbagliati e autogol."
+    },
+    teamLogos: {
+      provider: monochromeLogoManifest.source.provider,
+      collectionUrl: monochromeLogoManifest.source.collectionUrl,
+      retrievedAt: monochromeLogoManifest.source.retrievedAt,
+      variant: "black",
+      use: "Loghi monocromatici nella tabella Consigli per l'asta."
     }
   },
   budgetPlan: [
@@ -295,7 +311,14 @@ const output = {
     C: "Rotazione utile: profilo da incrociare con calendario e titolarità.",
     D: "Scommessa o copertura: acquistare solo a costo contenuto."
   },
-  teams: teams.map(team => ({ id: team.id, name: team.name, logo: team.logo, strength: strengthDetails.get(team.id), calendar: teamCalendar[team.id] })),
+  teams: teams.map(team => ({
+    id: team.id,
+    name: team.name,
+    logo: team.logo,
+    fantasyLogo: `assets/images/teams/monochrome/${team.id}-black.svg`,
+    strength: strengthDetails.get(team.id),
+    calendar: teamCalendar[team.id]
+  })),
   players: candidates
 };
 
