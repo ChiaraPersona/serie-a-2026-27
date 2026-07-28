@@ -3,7 +3,7 @@
   if (!root) return;
 
   const base = document.body.dataset.depth === "team" ? "../" : "";
-  const release = "20260728-player-photo-fallback-team-colors";
+  const release = "20260728-hide-photo-attribution";
   const defaultPlayerPhoto = `${base}assets/images/players/player-placeholder.png`;
   const esc = value => String(value ?? "").replace(/[&<>\"]/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[char]));
   const value = (input, suffix = "") => input === null || input === undefined || input === "" ? "N/D" : `${esc(input)}${suffix}`;
@@ -15,7 +15,6 @@
     image.setAttribute("src", defaultPlayerPhoto);
     image.classList.add("is-fallback");
     if (image.getAttribute("alt")) image.setAttribute("alt", `Foto non disponibile per ${image.dataset.playerName || "il calciatore"}`);
-    image.closest("figure")?.querySelector("figcaption")?.setAttribute("hidden", "");
   }, true);
   const searchKey = text => String(text || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase("it");
   const cards = stats => {
@@ -140,9 +139,7 @@
 
   function playerDetail(player) {
     const entries = player.previousSeason?.entries || [];
-    const attribution = player.photoAttribution;
-    const attributionHtml = attribution ? `<figcaption>Foto: ${esc(attribution.artist)} · ${attribution.licenseUrl ? `<a href="${esc(attribution.licenseUrl)}" target="_blank" rel="noreferrer">${value(attribution.license)}</a>` : value(attribution.license)} · <a href="${esc(attribution.pageUrl)}" target="_blank" rel="noreferrer">Wikimedia Commons</a></figcaption>` : "";
-    const portrait = `<figure class="player-portrait-wrap"><img class="player-portrait${player.photo ? "" : " is-fallback"}" src="${esc(player.photo || defaultPlayerPhoto)}" data-player-photo data-player-name="${esc(player.name)}" data-fallback="${esc(defaultPlayerPhoto)}" alt="${player.photo ? `Foto di ${esc(player.name)}` : `Foto non disponibile per ${esc(player.name)}`}" decoding="async">${attributionHtml}</figure>`;
+    const portrait = `<figure class="player-portrait-wrap"><img class="player-portrait${player.photo ? "" : " is-fallback"}" src="${esc(player.photo || defaultPlayerPhoto)}" data-player-photo data-player-name="${esc(player.name)}" data-fallback="${esc(defaultPlayerPhoto)}" alt="${player.photo ? `Foto di ${esc(player.name)}` : `Foto non disponibile per ${esc(player.name)}`}" decoding="async"></figure>`;
     const sourceList = (player.sources || []).map(source => `<li><strong>${esc(source.provider)}</strong> · ${esc(source.scope)} · ${esc(source.retrievedAt)}${source.url ? ` · <a href="${esc(source.url)}" target="_blank" rel="noreferrer">fonte</a>` : ""}</li>`).join("");
     return `<button class="player-detail-close" type="button" aria-label="Chiudi dettaglio">×</button><div class="player-profile-head">${portrait}<div><span class="status-badge">${value(player.status)}</span><h2>${esc(player.name)}</h2><p>${value(displayRole(player))} · ${value(player.nationality)} · maglia ${value(player.shirtNumber)}</p><p class="quality-${esc(player.dataQuality?.status || "unavailable")}">Dati ${value(player.dataQuality?.status)} · ${value(player.dataQuality?.note)}</p></div></div><div class="player-bio-grid"><div><span>Nascita</span><strong>${value(player.dateOfBirth)} · ${value(player.age, " anni")}</strong></div><div><span>Luogo</span><strong>${value(player.birthplace)}</strong></div><div><span>Altezza / peso</span><strong>${value(player.heightCm, " cm")} · ${value(player.weightKg, " kg")}</strong></div><div><span>Piede</span><strong>${value(player.preferredFoot)}</strong></div><div><span>Nel club dal</span><strong>${value(player.atMilanSince)}</strong></div><div><span>Arrivo</span><strong>${value(player.arrivalDate)}</strong></div><div><span>Club attuale</span><strong>${value(player.currentTeam)}</strong></div><div><span>Club precedente</span><strong>${value(player.previousTeam)} · ${value(player.previousCompetition)}</strong></div></div>${entries.length > 1 ? `<label class="competition-selector">Squadra / competizione<select id="player-entry-select">${entries.map((entry, index) => `<option value="${index}">${esc(entry.team)} · ${esc(entry.competition)}</option>`).join("")}</select></label>` : ""}<div id="player-entry-detail">${entryDetail(player, 0)}</div><section><h3>Qualità e fonti</h3><p>${player.dataQuality?.uncertainAssociation ? "Associazione giocatore-provider da verificare." : "Associazione giocatore-provider verificata."} Metodo: ${value(player.dataQuality?.associationMethod)}.</p><ul class="source-list">${sourceList}</ul></section>`;
   }

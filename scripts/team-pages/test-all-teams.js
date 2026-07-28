@@ -10,7 +10,9 @@ const wikimediaPhotos = read("data/sources/team-pages/wikimedia-player-photos.js
 const wikimediaPhotoByPlayer = new Map(wikimediaPhotos.entries.map(entry => [`${entry.teamId}:${entry.playerId}`, entry]));
 const playerPlaceholder = "assets/images/players/player-placeholder.png";
 assert.ok(fs.existsSync(path.join(root, playerPlaceholder)), "Immagine fallback calciatore assente");
-assert.ok(fs.readFileSync(path.join(root, "js/team-squads.js"), "utf8").includes(playerPlaceholder), "Fallback calciatore non collegato al renderer");
+const teamSquadsRenderer = fs.readFileSync(path.join(root, "js/team-squads.js"), "utf8");
+assert.ok(teamSquadsRenderer.includes(playerPlaceholder), "Fallback calciatore non collegato al renderer");
+assert.ok(!teamSquadsRenderer.includes("<figcaption>Foto:"), "Il testo della fonte foto non deve essere mostrato");
 let totalPlayers = 0;
 let coveredPlayers = 0;
 let specificRoles = 0;
