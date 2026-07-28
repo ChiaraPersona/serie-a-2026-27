@@ -506,3 +506,65 @@ footer{border-color:rgba(18,64,119,.1);color:#687487}
 }
 @media(max-width:580px){.brand-mark{width:40px;height:40px}}
 @media(prefers-reduced-motion:reduce){.page-link{transition:none}}
+
+/* Card squadre: vetro coordinato alla navbar */
+.team-directory-grid.team-flip-grid{gap:18px}
+.team-flip-card{filter:drop-shadow(0 16px 16px rgba(40,58,59,.08))}
+.team-flip-face{
+  border:1px solid #00000015;
+  border-radius:26px;
+  background:
+    linear-gradient(115deg,rgba(255,255,255,.46),transparent 34%),
+    linear-gradient(295deg,rgba(255,255,255,.18),transparent 50%),
+    #b5faff31;
+  box-shadow:
+    0 6px 2px #00000012,
+    0 14px 12px #0000000d,
+    0 28px 28px #0000000a,
+    inset 0 1px 4px 1px #ffffff78;
+  backdrop-filter:blur(22px) saturate(135%);
+  -webkit-backdrop-filter:blur(22px) saturate(135%);
+}
+.team-flip-front{
+  color:#283a3b;
+  background:
+    radial-gradient(circle at 50% 28%,color-mix(in srgb,var(--team-primary) 12%,transparent),transparent 46%),
+    linear-gradient(115deg,rgba(255,255,255,.48),transparent 34%),
+    linear-gradient(295deg,rgba(255,255,255,.18),transparent 50%),
+    #b5faff31;
+}
+.team-flip-front img{
+  width:108px;
+  height:108px;
+  opacity:.68;
+  mix-blend-mode:multiply;
+  filter:
+    grayscale(1)
+    brightness(.5)
+    contrast(1.55)
+    drop-shadow(-1px -1px 0 rgba(255,255,255,.96))
+    drop-shadow(1px 2px 1px rgba(40,58,59,.42));
+}
+.team-flip-front strong{
+  color:#283a3b;
+  font-weight:720;
+  text-shadow:0 1px 0 rgba(255,255,255,.72);
+}
+.team-flip-back{
+  color:#283a3b;
+  background:
+    radial-gradient(circle at 100% 0,color-mix(in srgb,var(--team-primary) 11%,transparent),transparent 52%),
+    radial-gradient(circle at 0 100%,color-mix(in srgb,var(--team-secondary) 9%,transparent),transparent 48%),
+    linear-gradient(115deg,rgba(255,255,255,.46),transparent 36%),
+    #b5faff31;
+}
+.team-flip-back strong{color:#283a3b;text-shadow:0 1px 0 rgba(255,255,255,.74)}
+.team-flip-back span{color:rgba(40,58,59,.76)}
+.team-flip-back b{
+  border-top-color:rgba(40,58,59,.14);
+  color:#8a6116;
+}
+.team-flip-card:focus-visible{outline-color:#283a3b}
+@media(max-width:760px){
+  .team-flip-front img{width:86px;height:86px}
+}
