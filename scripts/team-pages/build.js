@@ -152,7 +152,7 @@ function buildTeam(team) {
   ];
   return {
     schemaVersion: 1, id: team.id, name: team.name, officialName: team.officialName, shortName: team.shortName,
-    slug: team.slug, logo: `../${team.logo}`, currentSeason: "2026/27", city: details.city, stadium: details.stadium, coach: details.coach, preferredFormation: details.preferredFormation,
+    slug: team.slug, logo: `../${team.logo}`, monochromeLogo: `../assets/images/teams/monochrome/${team.id}-black.svg`, currentSeason: "2026/27", city: details.city, stadium: details.stadium, coach: details.coach, preferredFormation: details.preferredFormation,
     previousSeason: { season: "2025/26", competition: competitionName, competitionId: previousCompetition, promoted: previousCompetition === "serie-b", position: row?.position ?? null, points: row?.points ?? null },
     europeanCompetitions: [], lastUpdated: teamLastUpdated,
     teamStats: { season: "2025/26", competition: competitionName, source: "ESPN", lastUpdated: "2026-07-18", results, attack: nullObject(STAT_FIELDS.attack), defence: { ...nullObject(STAT_FIELDS.defence), goalsAgainstPerGame: rate(row?.goalsAgainst, played), cleanSheets: results.cleanSheets }, discipline, possession: nullObject(STAT_FIELDS.possession), homeAway: { home: matchData.home, away: matchData.away } },
@@ -166,7 +166,7 @@ function buildTeam(team) {
 const builtTeams = teams.map(buildTeam);
 const index = { schemaVersion: 1, season: "2026/27", previousSeason: "2025/26", generatedAt: today, teams: builtTeams.map(team => {
   const normalizedTeam = teams.find(item => item.id === team.id);
-  return { id: team.id, name: team.name, officialName: team.officialName, shortName: team.shortName, logo: team.logo, colors: normalizedTeam.colors, city: team.city, stadium: team.stadium, coach: team.coach, preferredFormation: team.preferredFormation, previousSeason: team.previousSeason, playerCount: team.squad.length, lastUpdated: team.lastUpdated };
+  return { id: team.id, name: team.name, officialName: team.officialName, shortName: team.shortName, logo: team.logo, monochromeLogo: team.monochromeLogo, colors: normalizedTeam.colors, city: team.city, stadium: team.stadium, coach: team.coach, preferredFormation: team.preferredFormation, previousSeason: team.previousSeason, playerCount: team.squad.length, lastUpdated: team.lastUpdated };
 }) };
 for (const team of builtTeams) write(`data/teams/${team.id}.json`, team);
 write("data/teams/index.json", index);
