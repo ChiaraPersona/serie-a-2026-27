@@ -50,9 +50,10 @@ assert.ok(!mainApp.includes("classifiche disponibili"), "Il conteggio delle clas
 assert.ok(!mainApp.includes('id="global-player-stat"'), "La selezione Top 15 non deve usare un menu a tendina");
 assert.ok(!mainApp.includes("Riepilogo statistico") && !mainApp.includes("season-summary"), "Il riepilogo statistico non deve essere mostrato in Statistiche squadre");
 const teamInterface = fs.readFileSync(path.join(root, "js/team-squads.js"), "utf8");
+assert.ok(!mainApp.includes("giornata di riferimento") && !teamInterface.includes("Data da definire · riferimento"), "Le date non definite non devono mostrare una data di riferimento");
 assert.ok(teamInterface.includes("Stato degli obiettivi") && teamInterface.includes("calculateObjectiveMetrics"), "Lo stato degli obiettivi non è integrato nelle pagine squadra");
 assert.ok(teamInterface.includes("personalCalendar") && teamInterface.includes("Calendario di ${esc(team.name)}"), "Il calendario personale non è integrato nelle pagine squadra");
-assert.ok(teamInterface.includes("team-calendar-list") && teamInterface.includes("teamFixtureRow") && !teamInterface.includes("team-calendar-fixture"), "Il calendario personale deve essere renderizzato ad elenco, non con card");
+assert.ok(teamInterface.includes('id="team-calendar-select"') && teamInterface.includes('id="team-calendar-selection"') && teamInterface.includes("teamFixtureRow") && !teamInterface.includes("team-calendar-list"), "Il calendario personale deve usare un menu a tendina e mostrare una sola partita");
 const currentMatches = read("data/normalized/matches.json").filter(match => match.competition === "serie-a" && match.season === "2026-27");
 for (const summary of index.teams) {
   const fixtures = currentMatches.filter(match => match.homeTeam === summary.id || match.awayTeam === summary.id);
@@ -68,7 +69,11 @@ const generatedHtml = fs.readdirSync(root).filter(file => file.endsWith(".html")
 assert.ok(!generatedHtml.includes("statistiche-giocatori"), "Un collegamento alla pagina rimossa è ancora presente");
 assert.ok(!generatedHtml.includes('href="classifica.html"') && !generatedHtml.includes('href="../classifica.html"'), "Un collegamento alla pagina Classifica rimossa è ancora presente");
 assert.ok(mainApp.includes('if(page==="home")') && mainApp.includes('data-standings-tab="current"') && mainApp.includes('data-standings-tab="archive"'), "Le due classifiche devono essere renderizzate nella Home");
+const homeRenderSource = mainApp.slice(mainApp.indexOf('if(page==="home"){'), mainApp.indexOf('if(page==="calendar")'));
+assert.ok(homeRenderSource.indexOf("homeStandings(standings,previousStandings,objectiveProfiles,teams,standingsTeams)") < homeRenderSource.indexOf("Esplora il progetto"), "La classifica deve precedere Esplora il progetto nella Home");
 assert.ok(mainApp.includes('leader=completed===0?{teamName:"N/D",points:0}:standings[0]'), "Prima dell'inizio del campionato la Home deve mostrare N/D come capolista");
+const homeStandingsSource = mainApp.slice(mainApp.indexOf("function homeStandings"), mainApp.indexOf("const dayNav"));
+assert.ok(!homeStandingsSource.includes("objectiveStatusSection(") && !homeStandingsSource.includes("Stato degli obiettivi"), "Lo stato degli obiettivi non deve essere renderizzato nella Home");
 const expectedNavigation = [
   ["index.html", "Home"], ["calendario.html", "Calendario"],
   ["statistiche-squadre.html", "Statistiche squadre"], ["lettura.html", "Lettura"],

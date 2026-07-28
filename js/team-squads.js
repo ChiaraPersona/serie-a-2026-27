@@ -88,7 +88,7 @@
   const nav = `<header class="subpage-header"><a href="${base}statistiche-squadra/index.html">← Tutte le squadre</a><a href="${base}statistiche-squadre.html">Statistiche squadre</a></header>`;
 
   const scheduleLabel = match => {
-    if (!match.date) return `Data da definire · riferimento ${dateOnly(match.matchdayDate) || "N/D"}`;
+    if (!match.date) return "Data da definire";
     return `${dateOnly(match.date)} · ${match.kickoff || "orario da definire"}${match.dateStatus === "provisional" ? " · programmazione provvisoria UEFA" : ""}`;
   };
 
@@ -104,11 +104,13 @@
     return `<article class="team-calendar-row"><div class="team-calendar-round"><strong>${match.matchday}</strong><span>Giornata</span></div><div class="team-calendar-when"><strong>${scheduleLabel(match)}</strong><span class="status ${esc(match.status)}">${esc(matchStatusLabels[match.status] || match.status)}</span></div><span class="status venue-status">${venue}</span><div class="team-calendar-match">${calendarTeam(home, currentTeamId)}<strong class="team-calendar-score">${esc(score)}</strong>${calendarTeam(away, currentTeamId)}</div><div class="team-calendar-actions"><a href="${base}lettura.html?match=${esc(match.id)}">Lettura</a><a href="${base}statistiche-squadra/${esc(opponentId)}.html">Avversaria</a></div></article>`;
   }
 
+  const teamFixtures = (team, matches) => matches
+    .filter(match => match.competition === "serie-a" && match.season === "2026-27" && (match.homeTeam === team.id || match.awayTeam === team.id))
+    .sort((left, right) => left.matchday - right.matchday);
+
   function personalCalendar(team, teams, matches) {
-    const fixtures = matches
-      .filter(match => match.competition === "serie-a" && match.season === "2026-27" && (match.homeTeam === team.id || match.awayTeam === team.id))
-      .sort((left, right) => left.matchday - right.matchday);
-    return `<section class="detail-section team-personal-calendar" aria-labelledby="team-calendar-heading"><header class="team-schedule-head"><div><p class="eyebrow">Serie A 2026/27</p><h2 id="team-calendar-heading">Calendario di ${esc(team.name)}</h2><p class="muted">${fixtures.length} giornate · calendario personale completo, con gare in casa e in trasferta.</p></div><a class="button" href="${base}calendario.html">Calendario completo</a></header><div class="team-calendar-list">${fixtures.map(match => teamFixtureRow(match, teams, team.id)).join("")}</div></section>`;
+    const fixtures = teamFixtures(team, matches);
+    return `<section class="detail-section team-personal-calendar" aria-labelledby="team-calendar-heading"><header class="team-schedule-head"><div><p class="eyebrow">Serie A 2026/27</p><h2 id="team-calendar-heading">Calendario di ${esc(team.name)}</h2><p class="muted">${fixtures.length} giornate disponibili nel menu.</p></div><a class="button" href="${base}calendario.html">Calendario completo</a></header><div class="team-calendar-picker"><label for="team-calendar-select"><span>Scegli la giornata</span><select id="team-calendar-select">${fixtures.map(match => `<option value="${esc(match.id)}">Giornata ${match.matchday} · ${scheduleLabel(match)}</option>`).join("")}</select></label><div id="team-calendar-selection" aria-live="polite">${fixtures[0] ? teamFixtureRow(fixtures[0], teams, team.id) : '<p class="muted">Calendario non disponibile.</p>'}</div></div></section>`;
   }
 
   async function load(path) {
@@ -190,6 +192,11 @@
     root.querySelector(".team-detail-hero")?.insertAdjacentHTML("afterend", personalCalendar(team, teams, matches));
     root.querySelector(".team-detail-hero")?.insertAdjacentHTML("afterend", objectiveStatus(team, objectiveDataset, standings));
     root.querySelector(".team-detail-hero .updated")?.insertAdjacentHTML("beforebegin", `<p><strong>Modulo preferito:</strong> ${value(team.preferredFormation)}</p>`);
+    const calendarSelect = document.getElementById("team-calendar-select");
+    calendarSelect?.addEventListener("change", () => {
+      const selectedMatch = teamFixtures(team, matches).find(match => match.id === calendarSelect.value);
+      document.getElementById("team-calendar-selection").innerHTML = selectedMatch ? teamFixtureRow(selectedMatch, teams, team.id) : '<p class="muted">Partita non disponibile.</p>';
+    });
 
     const dialog = document.getElementById("player-detail");
     const showPlayer = playerId => {
