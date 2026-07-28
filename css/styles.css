@@ -313,4 +313,74 @@ select,input{border-color:rgba(117,177,247,.28)!important;background:rgba(12,55,
 .match.fixture-card .match-head{background:rgba(3,27,66,.5)}.match.fixture-card .fixture-team{border-color:rgba(111,172,244,.17);background:rgba(35,94,180,.12)}
 .button{border-color:rgba(113,174,245,.3);background:rgba(31,91,175,.2)}.button:hover{border-color:rgba(134,196,255,.55);background:rgba(43,111,204,.3)}
 @media(max-width:900px){.site-nav{border-color:rgba(111,172,244,.3);background:rgba(5,31,72,.96)}}
+
+/* Navbar: blocco di vetro sospeso */
+.site-header{
+  isolation:isolate;
+  overflow:visible;
+  border:1px solid rgba(190,220,255,.42);
+  background:
+    linear-gradient(112deg,rgba(255,255,255,.18) 0%,rgba(255,255,255,.045) 30%,rgba(108,169,247,.11) 65%,rgba(255,255,255,.12) 100%),
+    rgba(5,31,72,.54);
+  box-shadow:
+    0 26px 56px rgba(0,12,43,.46),
+    0 8px 18px rgba(0,17,55,.28),
+    inset 0 1px 0 rgba(255,255,255,.44),
+    inset 0 -1px 0 rgba(92,153,231,.16);
+  backdrop-filter:blur(28px) saturate(165%);
+  -webkit-backdrop-filter:blur(28px) saturate(165%);
+}
+.site-header::before{
+  content:"";
+  position:absolute;
+  z-index:-1;
+  inset:1px 12px auto;
+  height:42%;
+  border-radius:20px 20px 14px 14px;
+  background:linear-gradient(180deg,rgba(255,255,255,.16),rgba(255,255,255,0));
+  pointer-events:none;
+}
+.site-header::after{
+  content:"";
+  position:absolute;
+  z-index:-2;
+  left:7%;
+  right:7%;
+  bottom:-18px;
+  height:28px;
+  border-radius:50%;
+  background:rgba(0,10,35,.48);
+  filter:blur(18px);
+  opacity:.9;
+  pointer-events:none;
+}
+.site-header>.brand,.site-header>.menu-button,.site-header>.site-nav{position:relative;z-index:1}
+.site-header .brand-mark{
+  border:1px solid rgba(255,255,255,.23);
+  background:linear-gradient(145deg,rgba(255,255,255,.22),rgba(92,157,238,.11));
+  box-shadow:inset 0 1px rgba(255,255,255,.3),0 8px 18px rgba(0,15,49,.25);
+}
+.site-header .page-link{transition:background-color .22s ease,color .22s ease,box-shadow .22s ease,transform .22s ease}
+.site-header .page-link:hover{background:rgba(255,255,255,.11);box-shadow:inset 0 1px rgba(255,255,255,.16);transform:translateY(-1px)}
+.site-header .page-link.active{
+  background:linear-gradient(180deg,rgba(255,255,255,.19),rgba(255,255,255,.095));
+  box-shadow:inset 0 1px rgba(255,255,255,.25),0 7px 16px rgba(0,15,49,.2);
+}
+.menu-button{
+  border-color:rgba(190,220,255,.28);
+  background:linear-gradient(180deg,rgba(255,255,255,.16),rgba(255,255,255,.07));
+  box-shadow:inset 0 1px rgba(255,255,255,.18);
+}
+@media(max-width:900px){
+  .site-nav{
+    border-color:rgba(190,220,255,.34);
+    background:
+      linear-gradient(145deg,rgba(255,255,255,.13),rgba(93,153,231,.08)),
+      rgba(5,31,72,.78);
+    box-shadow:0 24px 54px rgba(0,12,43,.48),inset 0 1px rgba(255,255,255,.24);
+    backdrop-filter:blur(30px) saturate(160%);
+    -webkit-backdrop-filter:blur(30px) saturate(160%);
+  }
+}
+@media(prefers-reduced-motion:reduce){.site-header .page-link{transition:none}}
 .match.fixture-card .fixture-team,.match.fixture-card .fixture-team:hover{border:0;background:transparent;box-shadow:none}
