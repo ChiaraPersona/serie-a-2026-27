@@ -13,6 +13,9 @@ assert.strictEqual(index.teams.length, 20, "Sono richieste 20 squadre");
 assert.strictEqual(new Set(index.teams.map(team => team.id)).size, 20, "ID squadra duplicati");
 for (const summary of index.teams) {
   const team = read(`data/teams/${summary.id}.json`);
+  assert.strictEqual(summary.monochromeLogo, `../assets/images/teams/monochrome/${summary.id}-black.svg`);
+  assert.strictEqual(team.monochromeLogo, summary.monochromeLogo);
+  assert.ok(fs.existsSync(path.join(root, summary.monochromeLogo.replace(/^\.\.\//, ""))), `${summary.id}: logo monocromatico nero assente`);
   assert.strictEqual(team.previousSeason.season, "2025/26");
   assert.ok(["Serie A", "Serie B"].includes(team.previousSeason.competition));
   assert.ok(Array.isArray(team.squad));
@@ -24,6 +27,7 @@ for (const summary of index.teams) {
   }
 }
 assert.ok(mainApp.includes("data/teams/index.json") && mainApp.includes("team-directory-grid") && mainApp.includes("statistiche-squadra/${team.id}.html"), "Elenco delle 20 squadre non integrato nella pagina principale");
+assert.ok(mainApp.includes("team.monochromeLogo||team.logo"), "Le card Statistiche squadre non usano il logo monocromatico nero");
 const expectedLeaderboardMetrics = ["goals", "assists", "shots", "shotsOnTarget", "cards", "foulsCommitted", "foulsWon"];
 assert.deepStrictEqual(Object.keys(playerLeaderboards.rankings), expectedLeaderboardMetrics, "Le Top 15 non coprono tutte le statistiche giocatore");
 for (const [metric, ranking] of Object.entries(playerLeaderboards.rankings)) {
