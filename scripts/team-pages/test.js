@@ -52,8 +52,8 @@ const generatedHtml = fs.readdirSync(root).filter(file => file.endsWith(".html")
 assert.ok(!generatedHtml.includes("statistiche-giocatori"), "Un collegamento alla pagina rimossa è ancora presente");
 const expectedNavigation = [
   ["index.html", "Home"], ["calendario.html", "Calendario"], ["classifica.html", "Classifica"],
-  ["statistiche-squadre.html", "Statistiche squadre"], ["fantacalcio.html", "Fantacalcio"], ["lettura.html", "Lettura"],
-  ["coppa-italia.html", "Coppa Italia"], ["arbitri.html", "Arbitri"]
+  ["statistiche-squadre.html", "Statistiche squadre"], ["lettura.html", "Lettura"],
+  ["coppa-italia.html", "Coppa Italia"], ["arbitri.html", "Arbitri"], ["fantacalcio.html", "Fantacalcio"]
 ];
 for (const file of fs.readdirSync(root).filter(file => file.endsWith(".html")).map(file => path.join(root, file))
   .concat(fs.readdirSync(path.join(root, "statistiche-squadra")).filter(file => file.endsWith(".html")).map(file => path.join(root, "statistiche-squadra", file)))) {
