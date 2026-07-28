@@ -382,5 +382,168 @@ select,input{border-color:rgba(117,177,247,.28)!important;background:rgba(12,55,
     -webkit-backdrop-filter:blur(30px) saturate(160%);
   }
 }
+
+/* Tipografia navbar */
+.site-header .page-link,
+.site-header .page-link:hover,
+.site-header .page-link.active,
+.site-nav .page-link[data-page-link="fantasy"],
+.site-nav .page-link[data-page-link="fantasy"]:hover,
+.site-nav .page-link[data-page-link="fantasy"].active{
+  color:#283a3b;
+}
+.site-nav .page-link[data-page-link="fantasy"],
+.site-nav .page-link[data-page-link="fantasy"]:hover,
+.site-nav .page-link[data-page-link="fantasy"].active{
+  font-weight:850;
+}
 @media(prefers-reduced-motion:reduce){.site-header .page-link{transition:none}}
 .match.fixture-card .fixture-team,.match.fixture-card .fixture-team:hover{border:0;background:transparent;box-shadow:none}
+
+/* Tema chiaro: base neutra, blu e oro come accenti */
+:root{
+  color-scheme:light;
+  --bg:#e8e8e8;
+  --surface:rgba(255,255,255,.78);
+  --surface2:rgba(255,255,255,.92);
+  --surface3:#dce6f5;
+  --line:rgba(16,48,92,.13);
+  --line-strong:rgba(20,65,125,.24);
+  --text:#172033;
+  --muted:#657083;
+  --accent:#1459a6;
+  --gold:#a77416;
+  --danger:#b4232c;
+  --shadow-sm:0 12px 34px rgba(24,42,69,.1);
+  --shadow-lg:0 32px 80px rgba(24,42,69,.16);
+}
+body{
+  background:#e8e8e8;
+  color:var(--text);
+}
+body::before{
+  display:block;
+  background:
+    radial-gradient(circle at 80% -10%,rgba(31,100,184,.1),transparent 32rem),
+    radial-gradient(circle at 4% 42%,rgba(183,132,31,.07),transparent 34rem);
+  mask-image:none;
+}
+.site-header{
+  border-color:rgba(255,255,255,.92);
+  background:
+    linear-gradient(112deg,rgba(255,255,255,.88),rgba(255,255,255,.58) 48%,rgba(220,232,247,.64)),
+    rgba(255,255,255,.64);
+  box-shadow:
+    0 26px 56px rgba(36,52,76,.16),
+    0 8px 18px rgba(36,52,76,.08),
+    inset 0 1px 0 #fff,
+    inset 0 -1px 0 rgba(24,76,139,.08);
+}
+.site-header::before{background:linear-gradient(180deg,rgba(255,255,255,.94),rgba(255,255,255,0))}
+.site-header::after{background:rgba(47,61,82,.18);opacity:.72}
+.brand strong{color:#102a50}.brand small{color:#68768a}
+.site-header .brand-mark{
+  border-color:rgba(255,255,255,.92);
+  background:linear-gradient(145deg,#fff,rgba(218,231,248,.7));
+  box-shadow:inset 0 1px #fff,0 8px 18px rgba(34,57,88,.13);
+}
+.page-link{color:#556277}
+.site-header .page-link:hover{background:rgba(20,89,166,.08);color:#104f97;box-shadow:inset 0 1px rgba(255,255,255,.7)}
+.site-header .page-link.active{
+  background:linear-gradient(180deg,rgba(28,99,183,.14),rgba(28,99,183,.08));
+  color:#0d4f9b;
+  box-shadow:inset 0 1px rgba(255,255,255,.86),0 7px 16px rgba(26,70,126,.08);
+}
+.site-nav .page-link[data-page-link="fantasy"],.site-nav .page-link[data-page-link="fantasy"].active{color:#1264ad}
+.site-nav .page-link[data-page-link="fantasy"]:hover{background:rgba(20,89,166,.08);color:#0b4c8e}
+.menu-button{border-color:rgba(19,72,137,.16);background:rgba(255,255,255,.66);color:#174a85}
+.hero{
+  border-color:rgba(255,255,255,.86);
+  background:
+    radial-gradient(circle at 86% 12%,rgba(28,99,183,.1),transparent 25rem),
+    linear-gradient(145deg,rgba(255,255,255,.9),rgba(247,249,252,.72));
+  box-shadow:0 30px 70px rgba(30,47,70,.12),inset 0 1px #fff;
+}
+.hero .lead{color:#566276}
+.hero-season{border-color:rgba(167,116,22,.24);background:rgba(255,255,255,.62)}
+.hero-season>span,.hero-season strong span,.eyebrow{color:#9a6912}
+.hero-stat span,.muted{color:var(--muted)}
+.card,.home-next,.home-rail a,.feature-card,.season-overview,.calendar-toolbar,.day-nav,.referee-controls,.editorial-empty,.cup-stage,.objective-card,.squad-leader-card,.pilot-section,.goalkeeper-trios>article,.fantasy-slots article{
+  border-color:rgba(255,255,255,.9);
+  background:linear-gradient(145deg,rgba(255,255,255,.9),rgba(255,255,255,.6));
+  box-shadow:inset 0 1px #fff,0 16px 42px rgba(32,49,73,.09);
+}
+.card-link:hover,.feature-card:hover,.home-rail a:hover{
+  border-color:rgba(35,93,161,.2);
+  box-shadow:inset 0 1px #fff,0 22px 48px rgba(32,49,73,.13);
+}
+.calendar-toolbar,.fantasy-controls,.directory-controls,.referee-controls{
+  background:rgba(245,247,250,.88);
+  border-color:rgba(255,255,255,.92);
+}
+.calendar-toolbar-copy span,.calendar-toolbar label>span,.fantasy-controls label span{color:#647086}
+.calendar-stepper button{border-color:rgba(18,64,119,.13);background:rgba(255,255,255,.72);color:#174f91}
+.calendar-stepper button:hover{border-color:#a77416;color:#8d5d08}
+select,input,.fantasy-controls input,.fantasy-controls select{
+  border-color:rgba(18,64,119,.14)!important;
+  background:rgba(255,255,255,.82)!important;
+  color:#172033!important;
+}
+.fantasy-controls #fantasy-search{background:#fff!important;color:#172033!important;-webkit-text-fill-color:#172033!important;caret-color:#1459a6}
+.fantasy-controls #fantasy-search::placeholder{color:#788397!important}
+.fantasy-controls select,.fantasy-controls select option{background:#fff;color:#172033}
+.table-wrap{
+  border-color:rgba(255,255,255,.9);
+  background:rgba(255,255,255,.68);
+  box-shadow:inset 0 1px #fff,0 18px 44px rgba(30,47,70,.09);
+}
+table{background:rgba(255,255,255,.5)}
+th{background:rgba(20,89,166,.07);color:#55657b}
+th,td{border-color:rgba(18,64,119,.1)}
+tbody tr:hover{background:rgba(20,89,166,.055)}
+.squad-table thead th{background:#edf2f8}
+.squad-table th:first-child,.squad-table td:first-child{background:#f8f9fb}
+.match.fixture-card{
+  border-color:rgba(255,255,255,.9);
+  background:linear-gradient(155deg,rgba(255,255,255,.92),rgba(248,250,253,.68));
+  box-shadow:inset 0 1px #fff,0 18px 44px rgba(30,47,70,.1);
+}
+.match.fixture-card .match-head,.match.fixture-card .actions{background:rgba(20,89,166,.045)}
+.match.fixture-card .match-events{border-color:rgba(18,64,119,.1);background:rgba(255,255,255,.56)}
+.button{border-color:rgba(19,72,137,.15);background:rgba(255,255,255,.68);color:#174f91}
+.button:hover{border-color:rgba(20,89,166,.32);background:#fff;color:#0c478a}
+.status{background:#e5e9ee;color:#4e5c6d}
+.status.finished,.status.won{background:#dcefe6;color:#17653e}
+.status.live{background:#f8dfe1;color:#a5232b}
+.status.postponed,.status.lost{background:#f3ead5;color:#8a5d0d}
+.fantasy-config{border-color:rgba(255,255,255,.9);background:linear-gradient(135deg,rgba(255,255,255,.86),rgba(244,247,251,.7))}
+.fantasy-plan article,.goalkeeper-trios dl div,.team-stat-grid article,.player-bio-grid>div,.player-stat-grid article{border-color:rgba(18,64,119,.1);background:rgba(255,255,255,.58)}
+.season-overview strong,.squad-leader-card h4,.squad-leader-card li>strong,.objective-metric strong,.global-leaderboard-caption strong{color:#172033}
+.leader-rank{background:rgba(20,89,166,.1);color:#1459a6}
+.squad-leader-card li:first-child .leader-rank{background:rgba(167,116,22,.13);color:#8a5d0d}
+.leader-player:hover,.leader-player:focus-visible,.global-leader-player:hover strong,.global-leader-player:focus-visible strong{color:#0d559f}
+.global-leaderboard-controls{border-color:rgba(18,64,119,.1);background:rgba(255,255,255,.58)}
+.global-stat-group>strong{color:#53647b}
+.global-stat-button{border-color:rgba(20,89,166,.18);background:rgba(20,89,166,.06);color:#174f91}
+.global-stat-button:hover,.global-stat-button:focus-visible{border-color:#a77416;color:#8a5d0d}
+.global-leader-value{color:#8a5d0d}.global-leader-rate{color:#174f91}
+.serie-b-marker{border-color:rgba(167,116,22,.25);background:rgba(167,116,22,.08);color:#865a0d}
+.source-banner{border-color:rgba(20,89,166,.14);background:rgba(255,255,255,.64);color:#5b687b}
+.source-banner strong{color:#174f91}
+.objective-metric.positive strong{color:#187044}.objective-metric.negative strong{color:#b4232c}.objective-metric.urgent strong{color:#91620d}
+.competition-warning,.data-warning{background:linear-gradient(135deg,rgba(167,116,22,.1),rgba(255,255,255,.72))}
+.fantasy-player{color:#172033}
+.tone-favorevole{background:#dcefe6;color:#17653e}.tone-equilibrato{background:#dfe9f7;color:#174f91}.tone-impegnativo{background:#f8dfe1;color:#a5232b}
+.player-detail,.player-detail-close{background:#f5f5f5;color:#172033}
+.detail-section:nth-of-type(4) .split-grid>article{border-color:rgba(18,64,119,.1);background:rgba(255,255,255,.55)}
+.method-note,.fantasy-method{background:rgba(167,116,22,.08)}
+footer{border-color:rgba(18,64,119,.1);color:#687487}
+@media(max-width:900px){
+  .site-nav{
+    border-color:rgba(255,255,255,.92);
+    background:
+      linear-gradient(145deg,rgba(255,255,255,.9),rgba(231,238,248,.82)),
+      rgba(255,255,255,.88);
+    box-shadow:0 24px 54px rgba(36,52,76,.2),inset 0 1px #fff;
+  }
+}
