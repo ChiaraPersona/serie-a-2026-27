@@ -8,6 +8,7 @@ const retrievedAt = "2026-07-18";
 const calendarUrl = "https://images.legaseriea.it/image/private/fl_attachment/prd/blpfycdm1ozusg4otblb.pdf";
 const scheduleUrl = "https://images.legaseriea.it/image/private/fl_attachment/prd/czailts3apyt3kuxjran.pdf";
 const clubIndexUrl = "https://www.legaseriea.it/team/index";
+const teamColorSource = JSON.parse(fs.readFileSync(path.join(root, "data/sources/team-pages/footylogos-club-colors.json"), "utf8"));
 
 const teamDefinitions = [
   ["atalanta","Atalanta","Atalanta Bergamasca Calcio"],["bologna","Bologna","Bologna Football Club 1909"],
@@ -21,15 +22,9 @@ const teamDefinitions = [
   ["sassuolo","Sassuolo","Unione Sportiva Sassuolo Calcio"],["torino","Torino","Torino Football Club"],
   ["udinese","Udinese","Udinese Calcio"],["venezia","Venezia","Venezia Football Club"]
 ];
-const teamColors = {
-  atalanta:["#00529F","#111111"], bologna:["#9E1B32","#002B5C"], cagliari:["#A61E2D","#003E7E"],
-  como:["#004B93","#0A2E5D"], fiorentina:["#5B2C83","#3B1C57"], frosinone:["#0057B8","#D4A017"],
-  genoa:["#9B1C31","#003D7A"], inter:["#0057B8","#111111"], juventus:["#111111","#3C3C3C"],
-  lazio:["#6DB7E8","#1B4F72"], lecce:["#B32025","#D4A017"], milan:["#B00020","#111111"],
-  monza:["#C8102E","#6B0015"], napoli:["#0088CE","#005A9C"], parma:["#F4C300","#003A70"],
-  roma:["#8C1D40","#C69214"], sassuolo:["#0B7A3E","#111111"], torino:["#7A1F2B","#3D0F15"],
-  udinese:["#111111","#4A4A4A"], venezia:["#0B6E4F","#111111"]
-};
+const teamColors = Object.fromEntries(
+  Object.entries(teamColorSource.teams).map(([id, entry]) => [id, entry.displayColors])
+);
 const logoSources = JSON.parse(fs.readFileSync(path.join(root,"data/raw/teams/logo-sources.json"),"utf8"));
 const logoById = new Map(logoSources.map(item => [item.id,item.sourceUrl]));
 const teams = teamDefinitions.map(([id,name,officialName]) => ({

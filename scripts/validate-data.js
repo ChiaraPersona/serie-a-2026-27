@@ -6,9 +6,13 @@ const {calculateObjectiveMetrics}=require("./objective-metrics.js");
 const fantasy=JSON.parse(fs.readFileSync(path.join(root,"data/generated/fantacalcio-advice.json"),"utf8"));
 const fantasyWorkbook=JSON.parse(fs.readFileSync(path.join(root,"data/sources/fantacalcio-stats-2025-26.json"),"utf8"));
 const marketValues=JSON.parse(fs.readFileSync(path.join(root,"data/sources/team-pages/transfermarkt-market-values-2026-27.json"),"utf8"));
+const teamColorSource=JSON.parse(fs.readFileSync(path.join(root,"data/sources/team-pages/footylogos-club-colors.json"),"utf8"));
 function assert(condition,message){if(!condition)throw new Error(message)}
 
 assert(teams.length===20,`Squadre: ${teams.length}, attese 20`);
+assert(teamColorSource.provider==="FootyLogos","Provider colori club non valido");
+assert(teamColorSource.competitionUrl==="https://www.footylogos.com/team-color-codes/serie-a","URL raccolta colori club non valido");
+assert(Object.keys(teamColorSource.teams).length===20,"La fonte colori deve coprire 20 squadre");
 assert(fantasy.season==="2026-27"&&fantasy.players.length>100,"Dataset fantacalcio non valido");
 assert(marketValues.provider==="Transfermarkt"&&marketValues.players.length>=500,"Copertura valori di mercato insufficiente");
 assert(marketValues.players.every(player=>player.marketValueEur>0&&player.transfermarktId&&player.profileUrl),"Valore di mercato privo di importo, ID o fonte");
@@ -59,6 +63,11 @@ for(const team of teams){
   assert(team.logoSource?.sourceUrl&&team.logoSource?.sourceType&&team.logoSource?.retrievedAt&&team.logoSource?.licenseNote,`Metadati logo incompleti: ${team.id}`);
   assert(fs.existsSync(path.join(root,team.logo)),`Logo locale mancante: ${team.id}`);
   assert(Array.isArray(team.colors)&&team.colors.length===2&&team.colors.every(color=>/^#[0-9a-f]{6}$/i.test(color)),`Coppia colori non valida: ${team.id}`);
+  const colorEntry=teamColorSource.teams[team.id];
+  assert(colorEntry&&colorEntry.sourceUrl&&["color-code-page","current-logo-svg"].includes(colorEntry.sourceType),`Fonte colori non valida: ${team.id}`);
+  assert(Array.isArray(colorEntry.palette)&&colorEntry.palette.length>=1&&colorEntry.palette.every(color=>/^#[0-9a-f]{6}$/i.test(color)),`Palette FootyLogos non valida: ${team.id}`);
+  assert(Array.isArray(colorEntry.displayColors)&&colorEntry.displayColors.length===2&&colorEntry.displayColors.every(color=>colorEntry.palette.includes(color)),`Colori visuali fuori palette: ${team.id}`);
+  assert(JSON.stringify(team.colors)===JSON.stringify(colorEntry.displayColors),`Colori non sincronizzati con FootyLogos: ${team.id}`);
 }
 const league=matches.filter(m=>m.competition==="serie-a"&&m.season==="2026-27");
 assert(league.length===380,`Partite: ${league.length}, attese 380`);
