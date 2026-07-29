@@ -132,8 +132,7 @@ const cupBracketTie=(match,start,mergeHeight=0)=>`<article class="cup-bracket-ti
 function cupBracketSide(side,data){
   const branchRange=side==="left"?[1,4]:[5,8];
   const rounds=[
-    {id:"round-32",label:"Trentaduesimi",starts:[1,5,9,13,17,21,25,29],merge:0},
-    {id:"round-16",label:"Sedicesimi",starts:[3,11,19,27],merge:72},
+    {id:"round-16",label:"Sedicesimi",starts:[3,11,19,27],merge:0},
     {id:"round-of-16",label:"Ottavi di finale",starts:[3,11,19,27],merge:0},
     {id:"quarter",label:"Quarti di finale",starts:[7,23],merge:144}
   ];
