@@ -395,6 +395,44 @@ body[data-page="cup"] .cup-badge{
   font-size:12px;
   font-weight:750;
 }
+.cup-preliminary{
+  display:grid;
+  grid-template-columns:170px minmax(0,1fr);
+  gap:18px;
+  align-items:center;
+  margin-top:24px;
+  padding:16px;
+  border:1px solid rgba(40,58,59,.11);
+  border-radius:20px;
+  background:rgba(255,255,255,.34);
+}
+.cup-preliminary header h3{margin:0;font-size:18px}
+.cup-preliminary header .eyebrow{margin-bottom:4px}
+.cup-preliminary>div{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:10px;
+}
+.cup-preliminary article{
+  overflow:hidden;
+  border:1px solid rgba(36,90,120,.17);
+  border-radius:12px;
+  background:rgba(255,255,255,.48);
+}
+.cup-preliminary article>span{display:block}
+.cup-preliminary article>small{
+  display:block;
+  overflow:hidden;
+  padding:4px 7px;
+  border-top:1px solid rgba(40,58,59,.1);
+  color:#52646a;
+  font-size:8px;
+  font-weight:800;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.cup-preliminary .cup-team-slot{height:20px;color:#30454e}
+.cup-preliminary .cup-team-slot+.cup-team-slot{border-top-color:rgba(40,58,59,.1)}
 .cup-bracket-scroll{
   margin-top:24px;
   overflow-x:auto;
@@ -443,7 +481,7 @@ body[data-page="cup"] .cup-badge{
   position:relative;
   z-index:1;
   align-self:center;
-  height:44px;
+  height:58px;
   border:1px solid rgba(111,151,214,.46);
   border-radius:8px;
   background:linear-gradient(145deg,rgba(16,53,116,.97),rgba(7,27,65,.99));
@@ -454,13 +492,17 @@ body[data-page="cup"] .cup-badge{
   align-items:center;
   gap:7px;
   min-width:0;
-  height:21px;
+  height:20px;
   padding:0 8px;
   color:#c3cfe1;
   font-size:9px;
   font-weight:750;
   letter-spacing:.015em;
   white-space:nowrap;
+}
+.cup-team-slot>span{
+  overflow:hidden;
+  text-overflow:ellipsis;
 }
 .cup-team-slot+.cup-team-slot{border-top:1px solid rgba(123,157,208,.25)}
 .cup-team-slot i{
@@ -470,6 +512,19 @@ body[data-page="cup"] .cup-badge{
   border:1px solid rgba(242,193,78,.58);
   border-radius:50%;
   background:rgba(242,193,78,.12);
+}
+.cup-tie-meta{
+  display:block;
+  overflow:hidden;
+  height:16px;
+  padding:2px 7px 0;
+  border-top:1px solid rgba(123,157,208,.22);
+  color:#91a7c9;
+  font-size:7px;
+  font-style:normal;
+  font-weight:750;
+  text-overflow:ellipsis;
+  white-space:nowrap;
 }
 .cup-bracket-side--left .cup-bracket-tie:after,
 .cup-bracket-side--right .cup-bracket-tie:after{
@@ -524,16 +579,6 @@ body[data-page="cup"] .cup-badge{
   box-shadow:inset 0 1px rgba(255,255,255,.08),0 28px 60px rgba(0,4,23,.42);
   text-align:center;
 }
-.cup-final-core:before,.cup-final-core:after{
-  position:absolute;
-  top:234px;
-  width:48px;
-  height:1px;
-  background:var(--cup-line);
-  content:"";
-}
-.cup-final-core:before{left:-48px}
-.cup-final-core:after{right:-48px}
 .cup-coccarda{
   display:grid;
   place-items:center;
@@ -552,22 +597,44 @@ body[data-page="cup"] .cup-badge{
   background:#0b2b63;
 }
 .cup-final-core h3{
-  margin:0 0 17px;
+  margin:0;
   color:#fff;
   font-size:23px;
 }
 .cup-semifinalists{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
+  position:absolute;
+  inset:0;
 }
-.cup-semifinalists small{
+.cup-semifinal-match{
+  position:absolute;
+  right:18px;
+  left:18px;
+  overflow:hidden;
+  border:1px solid rgba(127,162,218,.4);
+  border-radius:9px;
+  background:rgba(4,19,48,.72);
+}
+.cup-semifinal-match:first-child{top:126px}
+.cup-semifinal-match:nth-child(2){top:386px}
+.cup-semifinal-match>small{
   display:block;
-  margin-bottom:5px;
+  padding:3px 7px;
+  border-bottom:1px solid rgba(127,162,218,.22);
   color:#8ea5ca;
-  font-size:9px;
+  font-size:8px;
   font-weight:850;
   text-transform:uppercase;
+}
+.cup-semifinal-match>em{
+  display:block;
+  overflow:hidden;
+  padding:3px 7px;
+  border-top:1px solid rgba(127,162,218,.22);
+  color:#8ea5ca;
+  font-size:7px;
+  font-style:normal;
+  text-overflow:ellipsis;
+  white-space:nowrap;
 }
 .cup-final-core .cup-team-slot{
   justify-content:center;
@@ -575,11 +642,12 @@ body[data-page="cup"] .cup-badge{
   border-radius:7px;
   background:rgba(4,19,48,.66);
 }
-.cup-final-line{
-  width:1px;
-  height:62px;
-  margin:0 auto;
-  background:linear-gradient(var(--cup-line),rgba(242,193,78,.55));
+.cup-final-center{
+  position:absolute;
+  top:244px;
+  right:18px;
+  left:18px;
+  text-align:center;
 }
 .cup-final-label{
   margin:0 0 10px;
@@ -595,6 +663,13 @@ body[data-page="cup"] .cup-badge{
   gap:7px;
   align-items:center;
 }
+.cup-final-center>small{
+  display:block;
+  margin-top:6px;
+  color:#9fb0c9;
+  font-size:8px;
+  font-weight:750;
+}
 .cup-final-match strong{
   color:var(--gold);
   font-size:9px;
@@ -603,8 +678,8 @@ body[data-page="cup"] .cup-badge{
   display:grid;
   place-items:center;
   width:74px;
-  height:82px;
-  margin:22px auto 0;
+  height:70px;
+  margin:14px auto 0;
   border:1px solid rgba(242,193,78,.26);
   border-radius:18px;
   background:linear-gradient(150deg,rgba(242,193,78,.16),rgba(5,22,54,.65));
@@ -639,6 +714,8 @@ body[data-page="cup"] .cup-badge{
   white-space:nowrap;
 }
 .cup-stage-note p{margin:0}
+.cup-stage-note a{color:#385d78;font-weight:800}
+.cup-stage-note a:hover{text-decoration:none}
 @media(max-width:900px){
   .cup-stage-heading{align-items:flex-start}
   .cup-scroll-note{display:flex}
@@ -656,6 +733,16 @@ body[data-page="cup"] .cup-badge{
   .cup-bracket-scroll{
     margin-inline:-12px;
     border-radius:18px;
+  }
+  .cup-preliminary{
+    display:block;
+    overflow-x:auto;
+    padding:14px;
+  }
+  .cup-preliminary header{margin-bottom:12px}
+  .cup-preliminary>div{
+    grid-template-columns:repeat(4,150px);
+    width:max-content;
   }
   .cup-stage-note{padding-inline:0}
 }

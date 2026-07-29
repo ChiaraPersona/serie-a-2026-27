@@ -6,6 +6,7 @@ const {calculateObjectiveMetrics}=require("./objective-metrics.js");
 const fantasy=JSON.parse(fs.readFileSync(path.join(root,"data/generated/fantacalcio-advice.json"),"utf8"));
 const fantasyWorkbook=JSON.parse(fs.readFileSync(path.join(root,"data/sources/fantacalcio-stats-2025-26.json"),"utf8"));
 const marketValues=JSON.parse(fs.readFileSync(path.join(root,"data/sources/team-pages/transfermarkt-market-values-2026-27.json"),"utf8"));
+const cup=JSON.parse(fs.readFileSync(path.join(dir,"coppa-italia-2026-27.json"),"utf8"));
 const teamColorSource=JSON.parse(fs.readFileSync(path.join(root,"data/sources/team-pages/footylogos-club-colors.json"),"utf8"));
 function assert(condition,message){if(!condition)throw new Error(message)}
 
@@ -72,6 +73,13 @@ for(const team of teams){
 const league=matches.filter(m=>m.competition==="serie-a"&&m.season==="2026-27");
 assert(league.length===380,`Partite: ${league.length}, attese 380`);
 assert(new Set(league.map(m=>m.id)).size===380,"ID partita duplicati");
+assert(cup.competition==="coppa-italia"&&cup.season==="2026-27","Dataset Coppa Italia non valido");
+assert(cup.source?.url?.includes("goal.com/it/liste/tabellone-coppa-italia-2026-2027"),"Fonte Coppa Italia mancante");
+assert(cup.matches.length===43&&new Set(cup.matches.map(match=>match.id)).size===43,"Incontri o percorsi Coppa Italia incompleti");
+assert(JSON.stringify(cup.counts)===JSON.stringify({preliminary:4,"round-32":16,"round-16":8,"round-of-16":8,quarter:4,semifinal:2,final:1}),"Conteggi turni Coppa Italia incoerenti");
+assert(cup.matches.every(match=>match.competition==="coppa-italia"&&match.season==="2026-27"&&match.status==="scheduled"&&match.scheduleLabel&&match.sources?.length),"Metadati Coppa Italia incompleti");
+assert(cup.matches.filter(match=>match.stage==="round-32").every(match=>match.date&&match.kickoff&&["confirmed"].includes(match.dateStatus)),"Programmazione trentaduesimi incompleta");
+assert(cup.matches.find(match=>match.id==="final")?.date==="2027-05-19","Data finale Coppa Italia non valida");
 for(let day=1;day<=38;day++)assert(league.filter(m=>m.matchday===day).length===10,`Giornata ${day}: numero partite diverso da 10`);
 
 const counters=new Map(teams.map(t=>[t.id,{total:0,home:0,away:0,opponents:new Map()}]));
@@ -151,6 +159,7 @@ console.log("OK 20 squadre ufficiali e 20 loghi locali");
 console.log("OK organico CAN 2026/27: 42 arbitri con fonti e statistiche non inventate");
 console.log("OK snapshot arbitri 2025/26: Serie A e Serie B separate per 42 arbitri");
 console.log("OK 38 giornate x 10 partite = 380");
+console.log("OK Coppa Italia 2026/27: 43 incontri e percorsi con fonte, turni e programmazione");
 console.log("OK ogni squadra: 38 gare, 19 casa, 19 trasferta");
 console.log("OK 190 coppie: doppio confronto con casa/trasferta invertite");
 console.log(`OK prime 5 giornate: 50 programmazioni (${50-provisional.length} confermate, ${provisional.length} provvisorie)`);

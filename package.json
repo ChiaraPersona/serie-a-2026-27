@@ -2,7 +2,8 @@
   "name": "serie-a-2026-27",
   "private": true,
   "scripts": {
-    "build": "node scripts/team-pages/build.js && node scripts/build-fantasy.js && node scripts/build-site.js",
+    "build": "node scripts/team-pages/build.js && node scripts/build-fantasy.js && node scripts/build-coppa-italia.js && node scripts/build-site.js",
+    "build:cup": "node scripts/build-coppa-italia.js && node scripts/build-site.js",
     "build:fantasy": "node scripts/build-fantasy.js && node scripts/build-site.js",
     "build:teams": "node scripts/team-pages/build.js && node scripts/build-site.js",
     "import:milan": "node scripts/team-pages/import-milan.js --refresh",
@@ -13,7 +14,7 @@
     "import:all-teams": "node scripts/team-pages/import-completed-teams.js --refresh-rosters",
     "check:transfers": "node scripts/team-pages/check-transfers.js",
     "build:all-teams": "node scripts/team-pages/import-completed-teams.js && node scripts/team-pages/build.js && node scripts/build-site.js",
-    "import:calendar": "node scripts/import-official-calendar.js",
+    "import:calendar": "node scripts/import-official-calendar.js && node scripts/build-coppa-italia.js",
     "import:market-values": "node scripts/team-pages/import-market-values.js",
     "import:wikimedia-photos": "node scripts/team-pages/import-wikimedia-photos.js",
     "import:referee-calendars": "node scripts/referee-stats/import-calendars.js --season 2025-26",
