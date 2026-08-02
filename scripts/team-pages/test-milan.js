@@ -10,12 +10,16 @@ const stylesSource = fs.readFileSync(path.join(root, "css/styles.css"), "utf8");
 const allowedStatuses = new Set(["confermato", "nuovo acquisto", "prestito", "rientro dal prestito", "primavera", "da verificare"]);
 const sortable = ["appearances", "minutes", "goals", "assists", "shots", "shotsOnTarget", "foulsCommitted", "yellowCards"];
 
-assert.strictEqual(generated.players.length, 26, "La rosa ufficiale Milan deve contenere 26 giocatori");
-assert.strictEqual(team.squad.length, 26, "La pagina Milan deve ricevere 26 giocatori");
-assert.strictEqual(new Set(generated.players.map(player => player.id)).size, 26, "ID giocatore duplicati");
-assert.strictEqual(new Set(generated.players.map(player => player.name.toLocaleLowerCase("it"))).size, 26, "Nomi giocatore duplicati");
+assert.strictEqual(generated.players.length, 27, "La rosa ufficiale Milan deve contenere 27 giocatori");
+assert.strictEqual(team.squad.length, 27, "La pagina Milan deve ricevere 27 giocatori");
+assert.strictEqual(new Set(generated.players.map(player => player.id)).size, 27, "ID giocatore duplicati");
+assert.strictEqual(new Set(generated.players.map(player => player.name.toLocaleLowerCase("it"))).size, 27, "Nomi giocatore duplicati");
 assert.ok(generated.players.some(player => player.status === "nuovo acquisto"));
 assert.ok(generated.players.some(player => player.status === "rientro dal prestito"));
+const diawara = generated.players.find(player => player.id === "sankhoun-diawara");
+assert.ok(diawara, "Sankhoun Diawara assente dalla rosa Milan");
+assert.strictEqual(diawara.status, "nuovo acquisto");
+assert.ok(diawara.sources.some(source => source.provider === "Sky Sport / AC Milan"), "Fonte trasferimento Diawara assente");
 
 for (const player of generated.players) {
   assert.ok(allowedStatuses.has(player.status), `${player.name}: stato non ammesso`);

@@ -11,6 +11,14 @@ const configuredTeams = Object.assign(
     JSON.parse(fs.readFileSync(path.join(root, "data/sources/team-pages", file), "utf8")).teams
   )
 );
+const confirmedDestinationByEspnId = new Map();
+for (const [teamId, team] of Object.entries(configuredTeams)) {
+  for (const player of team.supplementalPlayers || []) {
+    if (player.espnId && player.status === "nuovo acquisto") {
+      confirmedDestinationByEspnId.set(String(player.espnId), teamId);
+    }
+  }
+}
 const teams = {
   milan: {
     name: "Milan",
@@ -81,7 +89,7 @@ async function livePlayers(teamId) {
   };
 }
 
-function compare(current, live) {
+function compare(current, live, teamId) {
   const currentById = new Map(current.filter(player => player.espnId).map(player => [player.espnId, player]));
   const liveById = new Map(live.filter(player => player.espnId).map(player => [player.espnId, player]));
   const currentNames = new Set(current.map(player => normalize(player.name)));
@@ -91,7 +99,11 @@ function compare(current, live) {
     .filter(player => player.espnId ? !currentById.has(player.espnId) : !currentNames.has(normalize(player.name)))
     .map(playerView);
   const possibleDepartures = current
-    .filter(player => player.espnId ? !liveById.has(player.espnId) : !liveNames.has(normalize(player.name)))
+    .filter(player => {
+      if (!player.espnId) return !liveNames.has(normalize(player.name));
+      if (confirmedDestinationByEspnId.get(player.espnId) === teamId) return false;
+      return !liveById.has(player.espnId);
+    })
     .map(playerView);
 
   return { possibleArrivals, possibleDepartures };
@@ -101,7 +113,7 @@ async function checkTeam(teamId) {
   if (!teams[teamId]) throw new Error(`Squadra non configurata: ${teamId}`);
   const current = currentPlayers(teamId);
   const live = await livePlayers(teamId);
-  const changes = compare(current, live.players);
+  const changes = compare(current, live.players, teamId);
   const notes = [];
   if (teamId === "napoli") {
     notes.push("La rosa pubblicata segue i convocati ufficiali del ritiro: le differenze ESPN richiedono conferma dal club.");
@@ -136,10 +148,24 @@ async function main() {
     }
   }
   const possibleInternalMoves = [];
+  const providerLagConfirmedMoves = [];
   for (const result of results) {
     for (const player of result.possibleArrivals) {
       const departure = player.espnId ? departuresById.get(player.espnId) : null;
       if (!departure || departure.teamId === result.teamId) continue;
+      const confirmedDestination = confirmedDestinationByEspnId.get(player.espnId);
+      if (confirmedDestination === departure.teamId) {
+        providerLagConfirmedMoves.push({
+          espnId: player.espnId,
+          player: player.name,
+          providerTeamId: result.teamId,
+          providerTeam: result.team,
+          confirmedTeamId: departure.teamId,
+          confirmedTeam: departure.team,
+          reason: "provider-roster-lag"
+        });
+        continue;
+      }
       possibleInternalMoves.push({
         espnId: player.espnId,
         player: player.name,
@@ -162,9 +188,11 @@ async function main() {
       teamsWithChanges: results.filter(result => result.status === "changes-detected").length,
       possibleArrivals: results.reduce((total, result) => total + result.possibleArrivals.length, 0),
       possibleDepartures: results.reduce((total, result) => total + result.possibleDepartures.length, 0),
-      possibleInternalMoves: possibleInternalMoves.length
+      possibleInternalMoves: possibleInternalMoves.length,
+      providerLagConfirmedMoves: providerLagConfirmedMoves.length
     },
     possibleInternalMoves,
+    providerLagConfirmedMoves,
     teams: results
   };
   if (writeReport) {

@@ -238,19 +238,41 @@ function rosterPlayers(teamId, teamConfig) {
   const athletes = payload.athletes || [];
   const included = new Set(teamConfig.includeEspnIds || []);
   const excluded = new Set(teamConfig.excludeEspnIds || []);
+  const supplementalByEspnId = new Map(
+    (teamConfig.supplementalPlayers || [])
+      .filter(player => player.espnId)
+      .map(player => [String(player.espnId), player])
+  );
   const selected = (teamConfig.rosterPolicy === "include" ? athletes.filter(athlete => included.has(String(athlete.id))) : athletes)
     .filter(athlete => !excluded.has(String(athlete.id)));
   const players = selected.map(athlete => {
     const espnId = String(athlete.id);
     const role = athleteRole(athlete);
     const birth = athleteDate(athlete.dateOfBirth);
-    return {
+    const base = {
       id: slug(athlete.fullName || athlete.displayName), name: athlete.fullName || athlete.displayName, espnId, role,
       detailedRole: roleNames[athlete.position?.name] || athlete.position?.displayName || role,
       nationality: athleteCountry(athlete), dateOfBirth: birth, shirtNumber: num(athlete.jersey),
       heightCm: athlete.height ? Math.round(Number(athlete.height) * 2.54) : null,
       weightKg: athlete.weight ? Math.round(Number(athlete.weight) * 0.453592) : null,
       status: teamConfig.statusOverrides?.[espnId] || (teamConfig.confirmedEspnIds || []).includes(espnId) ? (teamConfig.statusOverrides?.[espnId] || "confermato") : teamConfig.defaultStatus
+    };
+    const supplemental = supplementalByEspnId.get(espnId);
+    if (!supplemental) return base;
+    return {
+      ...base,
+      ...supplemental,
+      id: slug(supplemental.name || base.name),
+      name: supplemental.name || base.name,
+      espnId,
+      role: supplemental.role || base.role,
+      detailedRole: supplemental.detailedRole || base.detailedRole,
+      nationality: supplemental.nationality || base.nationality,
+      dateOfBirth: supplemental.dateOfBirth || base.dateOfBirth,
+      shirtNumber: supplemental.shirtNumber ?? base.shirtNumber,
+      heightCm: supplemental.heightCm ?? base.heightCm,
+      weightKg: supplemental.weightKg ?? base.weightKg,
+      status: supplemental.status || base.status
     };
   });
   for (const supplemental of teamConfig.supplementalPlayers || []) {

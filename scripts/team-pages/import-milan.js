@@ -264,19 +264,21 @@ async function main() {
     const associationMethod = seed.espnId ? "provider-id" : inferredIds[seed.id] ? "nome+squadra+numero-maglia" : null;
     const uncertainAssociation = false;
     const photo = await downloadPhoto(seed.id, espnId);
+    const remotePhotoSource = espnId ? `https://a.espncdn.com/i/headshots/soccer/players/full/${espnId}.png` : p.remoteImage;
     const player = {
       schemaVersion: 1, id: seed.id, name: seed.name, providerIds: { espn: espnId }, currentTeam: "Milan", currentSeason: "2026/27",
       shirtNumber: seed.shirtNumber, role: seed.role, detailedRole: rolesByPlayer.get(seed.id)?.[0]?.role || seed.detailedRole,
       detailedRoles: rolesByPlayer.get(seed.id)?.map(item => item.role) || [seed.detailedRole],
       detailedRoleSource: rolesByPlayer.has(seed.id) ? "ESPN - posizioni da titolare 2025/26" : "Configurazione rosa",
       detailedRoleEvidence: rolesByPlayer.has(seed.id) ? { starts: rolesByPlayer.get(seed.id).reduce((total, item) => total + item.occurrences, 0), roles: rolesByPlayer.get(seed.id) } : null,
-      dateOfBirth: p.dateOfBirth, age: ageAt(p.dateOfBirth), nationality: seed.nationality,
-      heightCm: p.heightCm, weightKg: p.weightKg ?? null, preferredFoot: p.preferredFoot, birthplace: p.birthplace ?? null, atMilanSince: p.atMilanSince ?? null,
-      photo, remotePhotoSource: photo ? `https://a.espncdn.com/i/headshots/soccer/players/full/${espnId}.png` : p.remoteImage, arrivalDate: seed.arrivalDate || null, status: seed.status,
+      dateOfBirth: p.dateOfBirth || seed.dateOfBirth || null, age: ageAt(p.dateOfBirth || seed.dateOfBirth), nationality: seed.nationality,
+      heightCm: p.heightCm ?? seed.heightCm ?? null, weightKg: p.weightKg ?? seed.weightKg ?? null, preferredFoot: p.preferredFoot || seed.preferredFoot || null, birthplace: p.birthplace ?? null, atMilanSince: p.atMilanSince ?? null,
+      photo: photo || p.remoteImage || remotePhotoSource, remotePhotoSource, arrivalDate: seed.arrivalDate || null, status: seed.status,
       previousTeam: entries[0]?.team || seed.previousTeam || null, previousCompetition: entries[0]?.competition || seed.previousCompetition || null,
       previousSeason: { season: "2025/26", entries, totals: totals(entries), totalsByCompetition: entries.map(entry => ({ competition: entry.competition, team: entry.team, ...totals([entry]) })) },
       sources: [
         { provider: "AC Milan", scope: "Rosa e anagrafica", url: p.sourceUrl, retrievedAt: "2026-07-20" },
+        ...(seed.transferSource ? [seed.transferSource] : []),
         ...entries.map(entry => ({ provider: entry.source, scope: `${entry.team} - ${entry.competition} 2025/26`, url: entry.sourceUrl, retrievedAt: entry.lastUpdated }))
       ],
       dataQuality: { status: completeness, uncertainAssociation, associationMethod, note: entries.length ? (entries.some(entry => entry.minutes == null) ? "Statistiche stagionali disponibili; minuti non esposti dalla fonte." : "Statistiche aggregate dai roster partita ESPN.") : "Nessuna statistica 2025/26 verificata nel perimetro dei provider disponibili." }

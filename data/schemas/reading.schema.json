@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "reading.schema.json",
+  "title": "Lettura prepartita",
+  "type": "object",
+  "required": ["id", "matchId", "status", "updatedAt", "title", "summary", "sections"],
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "matchId": { "type": "string", "minLength": 1 },
+    "status": { "enum": ["draft", "published", "archived"] },
+    "updatedAt": { "type": "string", "format": "date" },
+    "title": { "type": ["string", "null"] },
+    "summary": { "type": ["string", "null"] },
+    "sections": {
+      "type": "object",
+      "required": ["context", "form", "availability", "tactics", "referee", "market", "synthesis"],
+      "additionalProperties": false,
+      "properties": {
+        "context": { "$ref": "#/$defs/section" },
+        "form": { "$ref": "#/$defs/section" },
+        "availability": { "$ref": "#/$defs/section" },
+        "tactics": { "$ref": "#/$defs/section" },
+        "referee": { "$ref": "#/$defs/section" },
+        "market": { "$ref": "#/$defs/section" },
+        "synthesis": { "$ref": "#/$defs/section" }
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "section": {
+      "type": "object",
+      "required": ["content", "signals", "sources"],
+      "properties": {
+        "content": { "type": ["string", "null"] },
+        "signals": { "type": "array", "items": { "type": "string" } },
+        "sources": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["label", "url"],
+            "properties": {
+              "label": { "type": "string" },
+              "url": { "type": "string", "format": "uri" }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

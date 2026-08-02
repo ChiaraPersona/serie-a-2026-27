@@ -14,6 +14,12 @@ const option = name => {
   return index >= 0 ? args[index + 1] : null;
 };
 const onlyTeam = option("--team");
+const onlyPlayers = new Set(
+  String(option("--players") || "")
+    .split(",")
+    .map(value => value.trim())
+    .filter(Boolean)
+);
 const limit = Number(option("--limit")) || Infinity;
 const retrievedAt = new Date().toISOString().slice(0, 10);
 const apiHeaders = {
@@ -313,7 +319,6 @@ async function main() {
     .sort();
   const allPlayers = teamFiles.flatMap(name => {
     const teamId = name.replace(/-squad\.json$/, "");
-    if (onlyTeam && teamId !== onlyTeam) return [];
     return read(path.join(root, "data/generated/team-pages", name)).players.map(player => ({
       teamId,
       playerId: player.id,
@@ -322,13 +327,21 @@ async function main() {
       espnId: player.providerIds?.espn ? String(player.providerIds.espn) : null
     }));
   });
+  const scopedPlayers = allPlayers.filter(player =>
+    (!onlyTeam || player.teamId === onlyTeam)
+    && (!onlyPlayers.size || onlyPlayers.has(player.playerId))
+  );
+  const partialScope = Boolean(onlyTeam || onlyPlayers.size);
   const previous = fs.existsSync(outputFile) ? read(outputFile) : { entries: [] };
   const overrides = fs.existsSync(overridesFile) ? read(overridesFile).entries || [] : [];
   const overridesByKey = new Map(overrides.map(entry => [`${entry.teamId}:${entry.playerId}`, entry]));
   if (downloadOnly) {
     if (!previous.entries?.length) throw new Error("Esegui prima l'importazione Wikimedia per creare la mappa delle foto.");
+    const scopedKeys = new Set(scopedPlayers.map(player => `${player.teamId}:${player.playerId}`));
     const pendingDownloads = previous.entries.filter(entry =>
       !entry.localPath || !fs.existsSync(path.join(root, ...entry.localPath.split("/")))
+    ).filter(entry =>
+      !partialScope || scopedKeys.has(`${entry.teamId}:${entry.playerId}`)
     );
     console.log(`Wikimedia download-only: ${pendingDownloads.length} foto da localizzare.`);
     let completed = 0;
@@ -342,6 +355,7 @@ async function main() {
         delete entry.downloadError;
         completed++;
       } catch (error) {
+        entry.localPath = null;
         entry.delivery = "remote-fallback";
         entry.downloadError = error.message;
       }
@@ -362,18 +376,18 @@ async function main() {
     return;
   }
   const previousByKey = new Map((previous.entries || []).map(entry => [`${entry.teamId}:${entry.playerId}`, entry]));
-  const reusable = refresh ? [] : allPlayers.filter(player => {
+  const reusable = refresh ? [] : scopedPlayers.filter(player => {
     const entry = previousByKey.get(`${player.teamId}:${player.playerId}`);
     return entry?.status === "matched" && entry.localPath && fs.existsSync(path.join(root, ...entry.localPath.split("/")));
   });
   const reusableKeys = new Set(reusable.map(player => `${player.teamId}:${player.playerId}`));
-  const pendingPool = allPlayers.filter(player => !reusableKeys.has(`${player.teamId}:${player.playerId}`));
+  const pendingPool = scopedPlayers.filter(player => !reusableKeys.has(`${player.teamId}:${player.playerId}`));
   const pending = (secondPass
     ? pendingPool.filter(player => overridesByKey.has(`${player.teamId}:${player.playerId}`))
     : pendingPool
   ).slice(0, limit);
 
-  console.log(`Wikimedia: ${allPlayers.length} calciatori, ${reusable.length} foto riutilizzate, ${pending.length} da cercare${secondPass ? " nella seconda passata verificata" : ""}.`);
+  console.log(`Wikimedia: ${scopedPlayers.length} calciatori nel filtro, ${reusable.length} foto riutilizzate, ${pending.length} da cercare${secondPass ? " nella seconda passata verificata" : ""}.`);
   const withEspnId = secondPass ? [] : pending.filter(player => player.espnId);
   const byEspnId = secondPass ? new Map() : await loadWikidataByEspnId(withEspnId);
   const byName = secondPass ? new Map() : await loadWikidataByName(pending);
@@ -443,7 +457,7 @@ async function main() {
     ...downloaded.filter(item => item.status !== "matched")
   ]
     .map(({ teamId, playerId, name, status, reason, candidates }) => ({ teamId, playerId, name, status, reason, candidates: candidates || [] }));
-  const unresolved = secondPass
+  const unresolved = secondPass || partialScope
     ? [
         ...(previous.unresolved || []).filter(item =>
           allPlayers.some(player => player.teamId === item.teamId && player.playerId === item.playerId)

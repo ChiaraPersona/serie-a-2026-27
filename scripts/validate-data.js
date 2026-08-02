@@ -1,7 +1,7 @@
 const fs=require("fs"), path=require("path");
 const dir=path.resolve(__dirname,"../data/normalized"), root=path.resolve(__dirname,"..");
 const read=name=>JSON.parse(fs.readFileSync(path.join(dir,name),"utf8"));
-const teams=read("teams.json"), matches=read("matches.json"), referees=read("referees.json"), refereeHistory=read("referee-stats-2025-26.json"), previousStandings=read("standings-2025-26.json"), objectives=JSON.parse(fs.readFileSync(path.join(root,"data/team-objectives.json"),"utf8")), teamIds=new Set(teams.map(t=>t.id));
+const teams=read("teams.json"), matches=read("matches.json"), readings=read("readings.json"), referees=read("referees.json"), refereeHistory=read("referee-stats-2025-26.json"), previousStandings=read("standings-2025-26.json"), objectives=JSON.parse(fs.readFileSync(path.join(root,"data/team-objectives.json"),"utf8")), teamIds=new Set(teams.map(t=>t.id));
 const {calculateObjectiveMetrics}=require("./objective-metrics.js");
 const fantasy=JSON.parse(fs.readFileSync(path.join(root,"data/generated/fantacalcio-advice.json"),"utf8"));
 const fantasyWorkbook=JSON.parse(fs.readFileSync(path.join(root,"data/sources/fantacalcio-stats-2025-26.json"),"utf8"));
@@ -73,6 +73,16 @@ for(const team of teams){
 const league=matches.filter(m=>m.competition==="serie-a"&&m.season==="2026-27");
 assert(league.length===380,`Partite: ${league.length}, attese 380`);
 assert(new Set(league.map(m=>m.id)).size===380,"ID partita duplicati");
+const readingModules=["context","form","availability","tactics","referee","market","synthesis"],matchIds=new Set(matches.map(match=>match.id));
+assert(new Set(readings.map(reading=>reading.id)).size===readings.length,"ID lettura duplicati");
+assert(new Set(readings.map(reading=>reading.matchId)).size===readings.length,"Piu letture collegate alla stessa partita");
+for(const reading of readings){
+  assert(matchIds.has(reading.matchId),`Partita lettura non trovata: ${reading.matchId}`);
+  assert(["draft","published","archived"].includes(reading.status),`Stato lettura non valido: ${reading.id}`);
+  assert(/^\d{4}-\d{2}-\d{2}$/.test(reading.updatedAt),`Data lettura non valida: ${reading.id}`);
+  assert(reading.sections&&readingModules.every(moduleId=>reading.sections[moduleId]),`Sette sezioni lettura incomplete: ${reading.id}`);
+  for(const moduleId of readingModules){const section=reading.sections[moduleId];assert(section.content===null||typeof section.content==="string",`Contenuto lettura non valido: ${reading.id}/${moduleId}`);assert(Array.isArray(section.signals)&&Array.isArray(section.sources),`Segnali o fonti lettura non validi: ${reading.id}/${moduleId}`)}
+}
 assert(cup.competition==="coppa-italia"&&cup.season==="2026-27","Dataset Coppa Italia non valido");
 assert(cup.source?.url?.includes("goal.com/it/liste/tabellone-coppa-italia-2026-2027"),"Fonte Coppa Italia mancante");
 assert(cup.matches.length===43&&new Set(cup.matches.map(match=>match.id)).size===43,"Incontri o percorsi Coppa Italia incompleti");
