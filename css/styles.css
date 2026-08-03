@@ -54,15 +54,14 @@ tbody tr:hover{background:rgba(23,79,165,.18)}
 .match.fixture-card .team-name{display:block;min-height:36px;overflow:visible;white-space:normal;text-wrap:balance}
 .match.fixture-card .fixture-score{position:absolute;left:50%;top:50%;display:grid;grid-template-columns:1fr;place-items:center;width:max-content;padding:0;transform:translate(-50%,-50%)}
 .match.fixture-card .fixture-score .score{min-width:46px;height:46px;padding:0 10px;border-color:rgba(242,193,78,.48);background:rgba(242,193,78,.11);font-size:13px;font-weight:950}
-.match.fixture-card .fixture-score .score-versus{width:66px;height:87px;min-width:0;padding:0;border:0;border-radius:0;background:transparent}
-.match.fixture-card .versus-image{display:block;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 7px 10px rgba(0,0,0,.38))}
+.match.fixture-card .fixture-score .score-versus{width:auto;height:auto;min-width:0;padding:0;border:0;border-radius:0;background:transparent;color:var(--glass-muted);font-size:13px;font-weight:800;letter-spacing:.08em;text-transform:lowercase}
 .match.fixture-card .match-events{display:grid;grid-template-columns:1fr 1fr;gap:0;margin:0 16px 14px;border:1px solid rgba(88,126,181,.24);border-radius:10px;background:rgba(5,17,37,.28)}
 .match.fixture-card .match-events>div{min-width:0;padding:8px 10px}
 .match.fixture-card .match-events>div+div{border-left:1px solid rgba(88,126,181,.24)}
 .match.fixture-card .match-events span,.match.fixture-card .match-events small{display:block}
 .match.fixture-card .match-events span{margin-bottom:2px;color:#8fa9cf;font-size:9px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
 .match.fixture-card .match-events small{min-height:17px;overflow-wrap:anywhere;color:#cbd8ea;font-size:11px}
-@media(max-width:580px){.match.fixture-card .fixture-teams{column-gap:58px;padding:22px 12px 18px}.match.fixture-card .team-logo{flex-basis:70px;width:70px;height:70px}.match.fixture-card .team-with-logo{font-size:13px}.match.fixture-card .team-name{min-height:32px}.match.fixture-card .fixture-score .score-result{min-width:40px;height:40px}.match.fixture-card .fixture-score .score-versus{width:54px;height:71px}.match.fixture-card .match-events{margin-inline:12px}}
+@media(max-width:580px){.match.fixture-card .fixture-teams{column-gap:58px;padding:22px 12px 18px}.match.fixture-card .team-logo{flex-basis:70px;width:70px;height:70px}.match.fixture-card .team-with-logo{font-size:13px}.match.fixture-card .team-name{min-height:32px}.match.fixture-card .fixture-score .score-result{min-width:40px;height:40px}.match.fixture-card .match-events{margin-inline:12px}}
 
 /* Le due metà della card riprendono i doppi colori dei club, con taglio centrale diagonale. */
 .match.fixture-card{isolation:isolate;border-color:rgba(190,215,255,.34);background:linear-gradient(145deg,rgba(20,42,76,.7),rgba(4,17,38,.62));box-shadow:0 16px 38px rgba(0,8,28,.3),inset 0 1px 0 rgba(255,255,255,.16),inset 0 -1px 0 rgba(255,255,255,.04);backdrop-filter:blur(14px) saturate(125%)}
@@ -1419,3 +1418,11 @@ main > .loading{
 @media(max-width:760px){.site-footer-inner{padding-top:42px}.site-footer-top{grid-template-columns:1fr;gap:38px}.footer-nav{max-width:520px}.site-footer-bottom{align-items:flex-start;flex-direction:column-reverse;gap:16px}}
 @media(max-width:480px){.site-footer-inner{width:min(100% - 28px,var(--max));padding-top:36px}.site-footer-top{padding-bottom:34px}.footer-nav{grid-template-columns:1fr;gap:28px}.site-footer-bottom p span{display:none}}
 @media(prefers-reduced-motion:reduce){.footer-nav a{transition:none}.footer-nav a:hover,.footer-nav a:focus-visible{transform:none}}
+
+/* Classifiche ordinabili: le colonne esistenti mantengono la stessa larghezza. */
+.standings-table{width:calc(100% + 288px);min-width:1088px}
+.standings-sort{display:block;width:100%;padding:0;border:0;background:transparent;color:inherit;font:inherit;font-weight:inherit;letter-spacing:inherit;text-align:inherit;text-transform:inherit;white-space:nowrap;cursor:pointer}
+.standings-sort:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:3px}
+.standings-table tbody tr:nth-child(-n+4) td:first-child,.standings-table tbody tr:nth-last-child(-n+3) td:first-child{box-shadow:none}
+.standings-table tbody tr.standing-zone-top td:first-child{box-shadow:inset 3px 0 #4e9cff}
+.standings-table tbody tr.standing-zone-bottom td:first-child{box-shadow:inset 3px 0 #ff7c7c}
