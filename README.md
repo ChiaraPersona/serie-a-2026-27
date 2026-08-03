@@ -44,7 +44,9 @@ Ogni acquisizione produce un raw compresso e immutabile in `data/raw/odds/sisal/
 
 ## Motore pronostici
 
-`scripts/predictions/engine.js` è il motore unico condiviso da ogni partita. Combina quote 1X2 depurate dal margine, rendimento storico, profilo tattico e obiettivi con pesi dichiarati. Il fattore sorpresa misura equilibrio, probabilità dell'esito sfavorito, divergenza tra mercato e dati tecnici e incompletezza prepartita; non sceglie automaticamente l'outsider. Il dataset generato è `data/normalized/predictions.json`. Indisponibili e designazione arbitrale entrano soltanto quando verificati.
+`scripts/predictions/engine.js` è il motore unico condiviso da ogni partita. Combina quote 1X2 depurate dal margine (35%), rendimento storico (30%), profilo tattico (25%) e obiettivi (10%). Le quote sono quindi un controllo importante, non il segnale dominante. Il modello tattico distingue fascia sinistra, zona centrale e fascia destra e incrocia questi canali con le vulnerabilità avversarie.
+
+Ogni pronostico contiene probabilità 1X2, tre risultati esatti, fattore sorpresa, confidenza, proiezioni per squadra di tiri totali, tiri nello specchio e corner, cinque probabili ammoniti e un candidato MVP. I volumi sono intervalli e non forzano una partita ricca o povera di gol. Il dataset generato è `data/normalized/predictions.json`. Indisponibili e designazione arbitrale entrano soltanto quando verificati.
 
 ## Flusso del sito
 

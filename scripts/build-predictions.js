@@ -23,6 +23,7 @@ const oddsByMatch = byId(odds.events);
 const homeByTeam = byId(standings.homeRows);
 const awayByTeam = byId(standings.awayRows);
 const teamById = new Map(teams.map(team => [team.id, team]));
+const squadsByTeam = new Map(teams.map(team => [team.id, read(`data/generated/team-pages/${team.id}-squad.json`)]));
 
 const targetMatches = matches
   .filter(match => match.competition === "serie-a" && match.season === "2026-27" && oddsByMatch.has(match.id))
@@ -39,6 +40,8 @@ const predictions = targetMatches.map(match => predictMatch({
   awayObjective: objectiveByTeam.get(match.awayTeam),
   homeTeam: teamById.get(match.homeTeam),
   awayTeam: teamById.get(match.awayTeam),
+  homeSquad: squadsByTeam.get(match.homeTeam),
+  awaySquad: squadsByTeam.get(match.awayTeam),
   leagueSummary: standings.summary,
   oddsEvent: oddsByMatch.get(match.id),
   oddsRetrievedAt: odds.retrievedAt,
@@ -55,7 +58,10 @@ const output = {
     principle: "Un solo motore deterministico e condiviso per ogni partita.",
     weights: WEIGHTS,
     surpriseFactor: "Apertura della gara, probabilita dell'esito sfavorito, divergenza mercato-dati e incompletezza prepartita. Non determina da solo il verdetto.",
-    limitations: ["Quote disponibili in un solo snapshot.", "Forma ufficiale 2026/27 non ancora disponibile.", "Indisponibili e arbitri saranno integrati soltanto quando verificati."]
+    spatialModel: "Valuta separatamente sviluppo a sinistra, al centro e a destra e lo incrocia con le vulnerabilita avversarie.",
+    volumeModel: "Stima per squadra tiri totali, tiri nello specchio e corner come intervalli, senza imporre una partita ricca o povera di gol.",
+    playerModel: "I cinque probabili ammoniti e il candidato MVP provengono dalle probabili formazioni e dallo storico individuale disponibile.",
+    limitations: ["Quote disponibili in un solo snapshot e usate come uno dei quattro segnali.", "Forma ufficiale 2026/27 non ancora disponibile.", "Indisponibili e arbitri saranno integrati soltanto quando verificati."]
   },
   predictions
 };
