@@ -9,6 +9,7 @@
     "stadium",
     "coach",
     "preferredFormation",
+    "probableLineup",
     "previousSeason",
     "teamStats",
     "squad",
@@ -31,6 +32,34 @@
     "preferredFormation": {
       "type": "string",
       "pattern": "^[1-9](?:-[1-9]){2,4}$"
+    },
+    "probableLineup": {
+      "type": "object",
+      "required": [
+        "formation",
+        "players",
+        "context",
+        "status",
+        "source"
+      ],
+      "properties": {
+        "formation": {
+          "type": "string",
+          "pattern": "^[1-9](?:-[1-9]){2,4}$"
+        },
+        "players": {
+          "type": "array",
+          "minItems": 11,
+          "maxItems": 11,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "status": {
+          "const": "probable"
+        }
+      }
     },
     "squad": {
       "type": "array",

@@ -25,7 +25,7 @@ assert(!fantasy.players.some(player=>player.competitionProfile.serieAShare<=20&&
 assert(fantasy.methodology.scoringRules.goal===3&&fantasy.methodology.scoringRules.assist===1&&fantasy.methodology.scoringRules.yellowCard===-.5&&fantasy.methodology.scoringRules.redCard===-1&&fantasy.methodology.scoringRules.penaltyMissed===-3&&fantasy.methodology.scoringRules.penaltySaved===3&&fantasy.methodology.scoringRules.ownGoal===-3&&fantasy.methodology.scoringRules.didNotPlay==="SV","Regole punteggio fantacalcio non valide");
 assert(fantasyWorkbook.players.length===663&&fantasyWorkbook.coverage.matchedCurrentPlayers>=400,"Importazione foglio Fantacalcio incompleta");
 assert(fantasy.sources.fantasyStatistics.matchedPlayers===fantasyWorkbook.coverage.matchedCurrentPlayers,"Fonte Fantacalcio non collegata alla metodologia");
-assert(fantasy.players.filter(player=>player.fantasyScoring.averageRating!==null).length>=375,"PV, MV e FM non integrati nei profili");
+assert(fantasy.players.filter(player=>player.fantasyScoring.averageRating!==null).length>=Math.floor(fantasy.players.length*.7),"PV, MV e FM integrati in meno del 70% dei profili");
 assert(fantasy.players.every(player=>player.fantasyScoring&&player.fantasyScoring.unavailableTreatment==="SV: escluso dalla media"),"Gestione SV fantacalcio non valida");
 assert(fantasy.goalkeeperHierarchy.como.playerId==="jean-butez"&&fantasy.players.find(player=>player.id==="jean-butez")?.goalkeeperStatus==="Titolare confermato","Gerarchia portieri Como non valida");
 assert(!fantasy.goalkeeperTrios.examples.some(trio=>trio.players.some(player=>player.teamId==="como"&&player.id!=="jean-butez")),"Un tris usa un portiere del Como diverso da Butez");

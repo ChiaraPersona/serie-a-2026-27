@@ -10,9 +10,10 @@ const write = (relative, value) => {
   fs.writeFileSync(target, `${JSON.stringify(value, null, 2)}\n`);
 };
 const slugAliases = { "hellas-verona": "verona" };
-const today = "2026-07-22";
+const today = "2026-08-03";
 const teams = read("data/normalized/teams.json");
 const teamDetails = read("data/sources/team-pages/team-details-2026-27.json");
+const probableLineupSource = teamDetails.sources.find(source => source.provider === "Calciomercato.com");
 const marketValuesFile = path.join(root, "data/sources/team-pages/transfermarkt-market-values-2026-27.json");
 const marketValues = fs.existsSync(marketValuesFile) ? JSON.parse(fs.readFileSync(marketValuesFile, "utf8")) : { players: [], retrievedAt: null };
 const marketValueByPlayer = new Map(marketValues.players.map(player => [`${player.teamId}:${player.playerId}`, player]));
@@ -84,6 +85,7 @@ function matchStats(teamId, competition) {
 function buildTeam(team) {
   const details = teamDetails.teams[team.id];
   if (!details?.city || !details?.stadium || !details?.coach || !details?.preferredFormation) throw new Error(`${team.name}: anagrafica 2026/27 incompleta`);
+  if (!details.probableLineup || !/^[1-9](?:-[1-9]){2,4}$/.test(details.probableLineup.formation) || details.probableLineup.players?.length !== 11) throw new Error(`${team.name}: probabile formazione incompleta`);
   const previousCompetition = aRows.some(row => row.team === team.id) ? "serie-a" : "serie-b";
   const competitionName = previousCompetition === "serie-a" ? "Serie A" : "Serie B";
   const table = previousCompetition === "serie-a" ? aRows : serieBTable;
@@ -153,6 +155,13 @@ function buildTeam(team) {
   return {
     schemaVersion: 1, id: team.id, name: team.name, officialName: team.officialName, shortName: team.shortName,
     slug: team.slug, logo: `../${team.logo}`, monochromeLogo: `../assets/images/teams/monochrome/${team.id}-black.svg`, currentSeason: "2026/27", city: details.city, stadium: details.stadium, coach: details.coach, preferredFormation: details.preferredFormation,
+    probableLineup: {
+      formation: details.probableLineup.formation,
+      players: details.probableLineup.players,
+      context: "Proiezione della prima giornata",
+      status: "probable",
+      source: probableLineupSource
+    },
     previousSeason: { season: "2025/26", competition: competitionName, competitionId: previousCompetition, promoted: previousCompetition === "serie-b", position: row?.position ?? null, points: row?.points ?? null },
     europeanCompetitions: [], lastUpdated: teamLastUpdated,
     teamStats: { season: "2025/26", competition: competitionName, source: "ESPN", lastUpdated: "2026-07-18", results, attack: nullObject(STAT_FIELDS.attack), defence: { ...nullObject(STAT_FIELDS.defence), goalsAgainstPerGame: rate(row?.goalsAgainst, played), cleanSheets: results.cleanSheets }, discipline, possession: nullObject(STAT_FIELDS.possession), homeAway: { home: matchData.home, away: matchData.away } },
@@ -166,7 +175,7 @@ function buildTeam(team) {
 const builtTeams = teams.map(buildTeam);
 const index = { schemaVersion: 1, season: "2026/27", previousSeason: "2025/26", generatedAt: today, teams: builtTeams.map(team => {
   const normalizedTeam = teams.find(item => item.id === team.id);
-  return { id: team.id, name: team.name, officialName: team.officialName, shortName: team.shortName, logo: team.logo, monochromeLogo: team.monochromeLogo, colors: normalizedTeam.colors, city: team.city, stadium: team.stadium, coach: team.coach, preferredFormation: team.preferredFormation, previousSeason: team.previousSeason, playerCount: team.squad.length, lastUpdated: team.lastUpdated };
+  return { id: team.id, name: team.name, officialName: team.officialName, shortName: team.shortName, logo: team.logo, monochromeLogo: team.monochromeLogo, colors: normalizedTeam.colors, city: team.city, stadium: team.stadium, coach: team.coach, preferredFormation: team.preferredFormation, probableLineup: team.probableLineup, previousSeason: team.previousSeason, playerCount: team.squad.length, lastUpdated: team.lastUpdated };
 }) };
 for (const team of builtTeams) write(`data/teams/${team.id}.json`, team);
 write("data/teams/index.json", index);
@@ -212,6 +221,6 @@ const rankings = Object.fromEntries(leaderboardMetrics.map(metric => {
   return [metric.id, { ...metric, availablePlayers: players.length, players: players.slice(0, 15).map(({ tieValue, ...player }) => player) }];
 }));
 write("data/teams/player-leaderboards.json", { schemaVersion: 1, currentSeason: "2026/27", statisticsSeason: "2025/26", generatedAt: today, rankings });
-write("data/schemas/team.schema.json", { $schema: "https://json-schema.org/draft/2020-12/schema", title: "Serie A team", type: "object", required: ["id", "currentSeason", "city", "stadium", "coach", "preferredFormation", "previousSeason", "teamStats", "squad", "sources", "lastUpdated"], properties: { city: { type: "string", minLength: 1 }, stadium: { type: "string", minLength: 1 }, coach: { type: "string", minLength: 1 }, preferredFormation: { type: "string", pattern: "^[1-9](?:-[1-9]){2,4}$" }, squad: { type: "array", items: { $ref: "player.schema.json" } } } });
+write("data/schemas/team.schema.json", { $schema: "https://json-schema.org/draft/2020-12/schema", title: "Serie A team", type: "object", required: ["id", "currentSeason", "city", "stadium", "coach", "preferredFormation", "probableLineup", "previousSeason", "teamStats", "squad", "sources", "lastUpdated"], properties: { city: { type: "string", minLength: 1 }, stadium: { type: "string", minLength: 1 }, coach: { type: "string", minLength: 1 }, preferredFormation: { type: "string", pattern: "^[1-9](?:-[1-9]){2,4}$" }, probableLineup: { type: "object", required: ["formation", "players", "context", "status", "source"], properties: { formation: { type: "string", pattern: "^[1-9](?:-[1-9]){2,4}$" }, players: { type: "array", minItems: 11, maxItems: 11, items: { type: "string", minLength: 1 } }, status: { const: "probable" } } }, squad: { type: "array", items: { $ref: "player.schema.json" } } } });
 write("data/schemas/player.schema.json", { $schema: "https://json-schema.org/draft/2020-12/schema", title: "Serie A player", type: "object", required: ["id", "name", "currentTeam", "currentSeason", "role", "detailedRole", "status", "marketValue", "previousSeason", "sources", "dataQuality"], properties: { detailedRole: { type: "string", minLength: 1 }, status: { enum: ["confermato", "nuovo acquisto", "prestito", "rientro dal prestito", "primavera", "da verificare"] }, marketValue: { anyOf: [{ type: "null" }, { type: "object", required: ["amountEur", "currency", "provider", "retrievedAt", "sourceUrl"] }] }, photoAttribution: { anyOf: [{ type: "null" }, { type: "object", required: ["provider", "pageUrl", "artist", "license"] }] }, previousSeason: { type: "object", required: ["season", "entries", "totals", "totalsByCompetition"] } } });
 console.log(`Generati dati per ${teams.length} club (${index.teams.filter(team => team.previousSeason.promoted).length} da Serie B).`);

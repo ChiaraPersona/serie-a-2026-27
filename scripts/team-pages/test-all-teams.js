@@ -9,6 +9,13 @@ const roleReport = read("data/generated/team-pages/detailed-role-report.json");
 const wikimediaPhotos = read("data/sources/team-pages/wikimedia-player-photos.json");
 const wikimediaPhotoByPlayer = new Map(wikimediaPhotos.entries.map(entry => [`${entry.teamId}:${entry.playerId}`, entry]));
 const playerPlaceholder = "assets/images/players/player-placeholder.png";
+const expectedRosterAdditions = {
+  atalanta: ["paolo-vismara", "relja-obric", "federico-cassa"],
+  fiorentina: ["gianmaria-fei", "alessandro-perrotti", "federico-croci", "brando-mazzeo"],
+  genoa: ["rendijs-mihelsons", "matteo-barbini", "lukas-klisys"],
+  torino: ["diego-mascardi", "gaetano-oristanio", "giovanni-simeone", "sandro-kulenovic"],
+  udinese: ["rene-pirih"]
+};
 assert.ok(fs.existsSync(path.join(root, playerPlaceholder)), "Immagine fallback calciatore assente");
 const teamSquadsRenderer = fs.readFileSync(path.join(root, "js/team-squads.js"), "utf8");
 assert.ok(teamSquadsRenderer.includes(playerPlaceholder), "Fallback calciatore non collegato al renderer");
@@ -28,13 +35,23 @@ for (const summary of index.teams) {
     assert.strictEqual(summary[field], team[field], `${summary.id}: ${field} non sincronizzato nell'indice`);
   }
   assert.match(team.preferredFormation, /^[1-9](?:-[1-9]){2,4}$/, `${summary.id}: formato modulo non valido`);
+  assert.deepStrictEqual(summary.probableLineup, team.probableLineup, `${summary.id}: probabile formazione non sincronizzata nell'indice`);
+  assert.match(team.probableLineup.formation, /^[1-9](?:-[1-9]){2,4}$/, `${summary.id}: modulo probabile non valido`);
+  assert.strictEqual(team.probableLineup.players.length, 11, `${summary.id}: la probabile formazione deve avere 11 calciatori`);
+  assert.strictEqual(new Set(team.probableLineup.players).size, 11, `${summary.id}: nomi duplicati nella probabile formazione`);
+  assert.strictEqual(team.probableLineup.status, "probable", `${summary.id}: stato della formazione non prudente`);
+  assert.strictEqual(team.probableLineup.source.provider, "Calciomercato.com", `${summary.id}: fonte probabile formazione assente`);
   assert.ok(team.sources.some(source => source.scope.includes("Modulo preferito")), `${summary.id}: fonte modulo preferito assente`);
+  assert.ok(team.sources.some(source => source.provider === "Calciomercato.com" && source.scope.includes("Probabili formazioni")), `${summary.id}: fonte probabile formazione non registrata`);
   assert.ok(team.sources.some(source => source.provider === "Lega Serie A" && source.scope.includes("Allenatori")), `${summary.id}: fonte allenatore assente`);
   assert.ok(generated.players.length >= 20, `${summary.id}: rosa troppo corta`);
   assert.strictEqual(team.squad.length, generated.players.length, `${summary.id}: rosa non propagata`);
   assert.strictEqual(summary.playerCount, generated.players.length, `${summary.id}: conteggio indice errato`);
   assert.strictEqual(new Set(generated.players.map(player => player.id)).size, generated.players.length, `${summary.id}: ID duplicati`);
   assert.ok(generated.rosterSource?.url, `${summary.id}: fonte rosa assente`);
+  for (const playerId of expectedRosterAdditions[summary.id] || []) {
+    assert.ok(generated.players.some(player => player.id === playerId), `${summary.id}: calciatore aggiunto assente (${playerId})`);
+  }
   if (summary.id !== "milan") {
     const teamSpecificRoles = generated.players.filter(player => player.detailedRole !== player.role);
     assert.ok(teamSpecificRoles.length >= 10, `${summary.id}: ruoli specifici insufficienti`);

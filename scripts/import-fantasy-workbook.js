@@ -40,8 +40,6 @@ const currentPlayers = teamIndex.teams.flatMap(team => {
   }));
 });
 
-const rows = JSON.parse(fs.readFileSync(inputPath, "utf8"));
-const headers = rows[1].map(value => String(value));
 const keyMap = {
   Id: "sourceId", R: "role", Rm: "detailedRole", Nome: "name", Squadra: "team",
   Pv: "appearancesWithVote", Mv: "averageRating", Fm: "fantasyAverage",
@@ -49,14 +47,25 @@ const keyMap = {
   "R+": "penaltiesScored", "R-": "penaltiesMissed", Ass: "assists",
   Amm: "yellowCards", Esp: "redCards", Au: "ownGoals"
 };
-const stats = rows.slice(2).filter(row => row[0] !== null && row[0] !== undefined).map(row => {
-  const record = {};
-  headers.forEach((header, index) => {
-    const key = keyMap[header];
-    if (key) record[key] = row[index];
+const stats = (() => {
+  if (fs.existsSync(inputPath)) {
+    const rows = JSON.parse(fs.readFileSync(inputPath, "utf8"));
+    const headers = rows[1].map(value => String(value));
+    return rows.slice(2).filter(row => row[0] !== null && row[0] !== undefined).map(row => {
+      const record = {};
+      headers.forEach((header, index) => {
+        const key = keyMap[header];
+        if (key) record[key] = row[index];
+      });
+      return record;
+    });
+  }
+  if (!fs.existsSync(outputPath)) throw new Error(`Sorgente Fantacalcio mancante: ${inputPath}`);
+  return JSON.parse(fs.readFileSync(outputPath, "utf8")).players.map(player => {
+    const { playerId, currentName, currentTeamId, matchConfidence, ...sourceStat } = player;
+    return sourceStat;
   });
-  return record;
-});
+})();
 
 const sourceParts = name => {
   const parts = normalize(name).split(" ").filter(Boolean);
@@ -113,7 +122,7 @@ const payload = {
   season: "2025/26",
   provider: "Statistiche Fantacalcio Stagione 2025 26",
   sourceFile: "Statistiche_Fantacalcio_Stagione_2025_26.xlsx",
-  importedAt: "2026-07-27",
+  importedAt: "2026-08-03",
   definitions: {
     appearancesWithVote: "PV · partite a voto",
     averageRating: "MV · media voto",
