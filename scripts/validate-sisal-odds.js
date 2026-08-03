@@ -18,6 +18,7 @@ assert(fs.existsSync(rawFile), `Raw Sisal mancante: ${rawFile}`);
 const raw = JSON.parse(zlib.gunzipSync(fs.readFileSync(rawFile)).toString("utf8"));
 assert(raw.provider === "sisal" && Array.isArray(raw.responses), "Raw Sisal non valido");
 assert(raw.responses.every((response) => !Object.keys(response.headers || {}).some((name) => /cookie|authorization|token/i.test(name))), "Header sensibili presenti nel raw Sisal");
+assert((raw.detailRequests || []).every((request) => request.status === 200), "Richiesta dettaglio Sisal fallita");
 assert(Array.isArray(dataset.events), "Eventi Sisal mancanti");
 assert(dataset.summary.events === dataset.events.length, "Conteggio eventi Sisal incoerente");
 assert(new Set(dataset.events.map((event) => event.providerEventId)).size === dataset.events.length, "Eventi Sisal duplicati");

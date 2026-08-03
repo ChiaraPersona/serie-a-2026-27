@@ -1,4 +1,4 @@
-const DATA="data/normalized/",RELEASE="20260803-reading-three-info-panels";
+const DATA="data/normalized/",RELEASE="20260803-reading-no-duplicate-context";
 const labels={scheduled:"Programmata",live:"In corso",finished:"Conclusa",postponed:"Rinviata"};
 const esc=v=>String(v??"").replace(/[&<>\"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const contrastInk=color=>{const hex=String(color||"").replace("#","");const value=hex.length===3?hex.split("").map(char=>char+char).join(""):hex;if(!/^[0-9a-f]{6}$/i.test(value))return"#fff";const channels=[0,2,4].map(index=>parseInt(value.slice(index,index+2),16)/255).map(channel=>channel<=.03928?channel/12.92:((channel+.055)/1.055)**2.4);return channels[0]*.2126+channels[1]*.7152+channels[2]*.0722>.42?"#0b1320":"#fff"};
@@ -109,7 +109,7 @@ function renderProbableLineups(match,teamDirectory){
 }
 function renderReadingPilotEvidence(reading){
   if(!reading)return;
-  const completed=readingModules.filter(([key])=>reading.sections?.[key]?.content).length,available=[["context","Contesto e obiettivi"],["form","Base storica 2025/26"],["tactics","Base tattica"]].filter(([key])=>reading.sections?.[key]?.content);
+  const completed=readingModules.filter(([key])=>reading.sections?.[key]?.content).length,available=[["form","Base storica 2025/26"],["tactics","Base tattica"]].filter(([key])=>reading.sections?.[key]?.content);
   document.querySelector(".reading-progress").textContent=`${completed}/7 sezioni compilate`;
   const banner=document.querySelector(".reading-prototype-banner strong");if(banner)banner.textContent="Prima lettura pilota";
   if(!available.length)return;

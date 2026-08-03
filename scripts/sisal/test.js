@@ -62,4 +62,18 @@ assert.strictEqual(normalized.events[0].canonicalMatchId, "atalanta-sassuolo-202
 assert.strictEqual(normalized.events[0].markets[0].selections[0].odds, 1.85);
 assert.strictEqual(normalized.events[0].markets[0].selections[2].status, "suspended");
 assert.strictEqual(normalizedName("A.C. Milan"), "milan");
+const manifestCapture = {
+  ...capture,
+  responses: [{
+    url: "https://betting.sisal.it/api/lettura-palinsesto-sport/palinsesto/prematch/v1/schedaManifestazione/0/1-1",
+    payload: {
+      avvenimentoFeList: [event],
+      scommessaMap: capture.responses[0].payload.scommessaMap,
+      infoAggiuntivaMap: capture.responses[0].payload.infoAggiuntivaMap,
+    },
+  }],
+};
+const manifestNormalized = normalizeSisalCapture({ capture: manifestCapture, competitionKey: "serie-a", competition, rawFile: "raw.json.gz", root });
+assert.strictEqual(manifestNormalized.summary.events, 1);
+assert.strictEqual(manifestNormalized.summary.selections, 3);
 console.log("OK normalizzazione Sisal, quote decimali e matching calendario");

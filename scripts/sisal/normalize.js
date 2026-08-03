@@ -87,11 +87,28 @@ function normalizeSisalCapture({ capture, competitionKey, competition, rawFile, 
   const details = capture.responses
     .filter((response) => response.url.includes("/eventDetail/") && response.payload?.avvenimentoFe)
     .map((response) => response.payload);
-  const events = details.map((payload) => {
+  const payloadByEvent = new Map(details.map((payload) => [
+    String(payload.avvenimentoFe.regulatorEventId || `${payload.avvenimentoFe.codicePalinsesto}-${payload.avvenimentoFe.codiceAvvenimento}`),
+    payload,
+  ]));
+  for (const response of capture.responses.filter((item) => Array.isArray(item.payload?.avvenimentoFeList))) {
+    for (const event of response.payload.avvenimentoFeList) {
+      const regulatorEventId = String(event.regulatorEventId || `${event.codicePalinsesto}-${event.codiceAvvenimento}`);
+      if (!payloadByEvent.has(regulatorEventId)) {
+        payloadByEvent.set(regulatorEventId, {
+          avvenimentoFe: event,
+          scommessaMap: response.payload.scommessaMap || {},
+          infoAggiuntivaMap: response.payload.infoAggiuntivaMap || {},
+        });
+      }
+    }
+  }
+  const events = [...payloadByEvent.values()].map((payload) => {
     const event = payload.avvenimentoFe;
     const isMatch = event.eventType === "MATCH" && event.firstCompetitor && event.secondCompetitor;
     const match = matchCanonicalEvent(event, competition, root, teamLookup);
     const markets = Object.values(payload.infoAggiuntivaMap || {})
+      .filter((info) => info.codicePalinsesto === event.codicePalinsesto && info.codiceAvvenimento === event.codiceAvvenimento)
       .filter((info) => Array.isArray(info.esitoList) && info.esitoList.length)
       .map((info) => {
         const key = `${info.codicePalinsesto}-${info.codiceAvvenimento}-${info.codiceScommessa}`;

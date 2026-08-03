@@ -36,7 +36,7 @@ Le stagioni 2023/24 e 2024/25 sono registrate nei profili dell'importatore ma ha
 
 ## Quote Sisal
 
-La configurazione e gli alias sono in `data/sources/sisal-odds.json`. Sisal protegge le API con Akamai, quindi l'importatore non esegue richieste HTTP isolate: apre Chrome o Edge con un profilo temporaneo, visita la pagina pubblica e cattura tramite DevTools i payload che il sito carica normalmente. Non usa credenziali e non salva cookie, token o header sensibili.
+La configurazione e gli alias sono in `data/sources/sisal-odds.json`. L'importatore richiede Node.js 22 o successivo. Sisal protegge le API con Akamai, quindi l'importatore non esegue richieste HTTP isolate: apre Chrome o Edge con un profilo temporaneo, visita la pagina pubblica e cattura tramite DevTools i payload che il sito carica normalmente. Non usa credenziali e non salva cookie, token o header sensibili.
 
 Ogni acquisizione produce un raw compresso e immutabile in `data/raw/odds/sisal/<competizione>/` e aggiorna il dataset normalizzato in `data/normalized/odds/sisal/<competizione>.json`. Per Serie A, squadre e partite vengono collegate a `data/normalized/matches.json`; eventi non riconosciuti restano espliciti e fanno fallire la validazione. La finestra del browser si chiude al termine. `--headless` è disponibile, ma può essere respinto da Sisal; `--no-details` limita l'importazione ai dati di manifestazione senza scaricare tutti i mercati delle singole partite.
 
