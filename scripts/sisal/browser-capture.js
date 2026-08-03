@@ -126,16 +126,20 @@ async function waitForRenderedOdds(client, timeoutMs) {
   return 0;
 }
 
-async function settleBodyJobs(bodyJobs) {
+async function settleBodyJobs(bodyJobs, maxWaitMs = 5000) {
+  const deadline = Date.now() + maxWaitMs;
   let previousLength = -1;
-  while (previousLength !== bodyJobs.length) {
+  while (previousLength !== bodyJobs.length && Date.now() < deadline) {
     previousLength = bodyJobs.length;
-    await Promise.allSettled([...bodyJobs]);
-    await sleep(100);
+    const remaining = Math.max(1, deadline - Date.now());
+    await Promise.race([Promise.allSettled([...bodyJobs]), sleep(remaining)]);
+    if (Date.now() < deadline) await sleep(100);
   }
 }
 
-async function captureSisalPage({ pageUrl, waitMs = 15000, headed = true, includeDetails = true }) {
+async function captureSisalPage({ pageUrl, pageUrls, waitMs = 15000, headed = true, includeDetails = true }) {
+  const urls = pageUrls || [pageUrl];
+  if (!urls.length || urls.some((url) => !url)) throw new Error("Nessuna URL Sisal valida da acquisire.");
   const browserPath = findBrowserExecutable();
   const port = await reservePort();
   const profileDirectory = fs.mkdtempSync(path.join(os.tmpdir(), "sisal-odds-"));
@@ -174,18 +178,22 @@ async function captureSisalPage({ pageUrl, waitMs = 15000, headed = true, includ
     const requestMethods = new Map();
     const bodies = [];
     const bodyJobs = [];
+    let activePageUrl = urls[0];
     client.on("Network.requestWillBeSent", ({ requestId, request }) => {
       requestMethods.set(requestId, request?.method || "");
     });
     client.on("Network.responseReceived", ({ requestId, response, type }) => {
       const url = response?.url || "";
-      const isOddsPayload = url.includes("/palinsesto/prematch/alberaturaPrematch") ||
+      const isEventDetail = url.includes("/palinsesto/prematch/v1/eventDetail/");
+      const isOddsPayload = isEventDetail || (urls.length === 1 && (
+        url.includes("/palinsesto/prematch/alberaturaPrematch") ||
         url.includes("/palinsesto/prematch/schedaManifestazione") ||
-        url.includes("/palinsesto/prematch/v1/schedaManifestazione") ||
-        url.includes("/palinsesto/prematch/v1/eventDetail/");
+        url.includes("/palinsesto/prematch/v1/schedaManifestazione")
+      ));
       if (requestMethods.get(requestId) === "GET" && response?.status === 200 && isOddsPayload) {
         candidates.set(requestId, {
           url,
+          sourcePageUrl: activePageUrl,
           status: response.status,
           mimeType: response.mimeType,
           type,
@@ -200,7 +208,7 @@ async function captureSisalPage({ pageUrl, waitMs = 15000, headed = true, includ
       const metadata = candidates.get(requestId);
       if (!metadata) return;
       candidates.delete(requestId);
-      const job = client.call("Network.getResponseBody", { requestId })
+      const job = client.call("Network.getResponseBody", { requestId }, 5000)
         .then(({ body, base64Encoded }) => {
           const decoded = base64Encoded ? Buffer.from(body, "base64").toString("utf8") : body;
           let payload = decoded;
@@ -211,10 +219,22 @@ async function captureSisalPage({ pageUrl, waitMs = 15000, headed = true, includ
       bodyJobs.push(job);
     });
 
-    await client.call("Page.navigate", { url: pageUrl });
-    const renderedOdds = await waitForRenderedOdds(client, waitMs);
-    await sleep(1200);
-    await settleBodyJobs(bodyJobs);
+    const pages = [];
+    let renderedOdds = 0;
+    for (const url of urls) {
+      activePageUrl = url;
+      await client.call("Page.navigate", { url });
+      const pageOdds = await waitForRenderedOdds(client, waitMs);
+      renderedOdds += pageOdds;
+      await sleep(800);
+      await settleBodyJobs(bodyJobs);
+      const state = await client.call("Runtime.evaluate", {
+        expression: "JSON.stringify({title:document.title,url:location.href,text:document.body.innerText.slice(0,1000)})",
+        returnByValue: true,
+      });
+      const parsed = JSON.parse(state.result?.value || "{}");
+      pages.push({ sourceUrl: url, title: parsed.title, url: parsed.url, renderedOdds: pageOdds, ...(parsed.url?.startsWith("chrome-error://") ? { text: parsed.text } : {}) });
+    }
 
     const detailRequests = [];
     const manifest = bodies.find((response) => Array.isArray(response.payload?.avvenimentoFeList));
@@ -236,19 +256,14 @@ async function captureSisalPage({ pageUrl, waitMs = 15000, headed = true, includ
       await sleep(500);
       await settleBodyJobs(bodyJobs);
     }
-    const pageState = await client.call("Runtime.evaluate", {
-      expression: "JSON.stringify({title:document.title,url:location.href,text:document.body.innerText.slice(0,5000)})",
-      returnByValue: true,
-    });
-
-    const parsedPage = JSON.parse(pageState.result?.value || "{}");
-    if (!parsedPage.url?.startsWith("chrome-error://")) delete parsedPage.text;
+    const uniqueBodies = [...new Map(bodies.map((body) => [body.url, body])).values()];
     return {
       browser: { executable: browserPath, product: "Chromium CDP" },
       renderedOdds,
-      page: parsedPage,
+      page: pages[pages.length - 1],
+      pages,
       detailRequests,
-      responses: bodies.sort((a, b) => a.url.localeCompare(b.url)),
+      responses: uniqueBodies.sort((a, b) => a.url.localeCompare(b.url)),
     };
   } finally {
     if (client) {

@@ -60,6 +60,7 @@ function matchCanonicalEvent(event, competition, root, teamLookup) {
 }
 
 function normalizeMarket(info, market) {
+  const providerPlayerIds = [...new Set((Array.isArray(info.playerIds) ? info.playerIds : []).map(String))];
   const selections = (info.esitoList || [])
     .filter((selection) => Number.isFinite(selection.quota) && selection.quota > 0)
     .map((selection) => ({
@@ -78,6 +79,8 @@ function normalizeMarket(info, market) {
     threshold: info.soglia === "" || info.soglia == null ? null : String(info.soglia),
     status: info.stato === 1 ? "open" : "suspended",
     updatedAt: info.dataUltimaModifica || market?.dataUltimaModifica || null,
+    marketScope: providerPlayerIds.length ? "player" : "match",
+    providerPlayerIds,
     selections,
   };
 }
@@ -91,7 +94,7 @@ function normalizeSisalCapture({ capture, competitionKey, competition, rawFile, 
     String(payload.avvenimentoFe.regulatorEventId || `${payload.avvenimentoFe.codicePalinsesto}-${payload.avvenimentoFe.codiceAvvenimento}`),
     payload,
   ]));
-  for (const response of capture.responses.filter((item) => Array.isArray(item.payload?.avvenimentoFeList))) {
+  for (const response of details.length ? [] : capture.responses.filter((item) => Array.isArray(item.payload?.avvenimentoFeList))) {
     for (const event of response.payload.avvenimentoFeList) {
       const regulatorEventId = String(event.regulatorEventId || `${event.codicePalinsesto}-${event.codiceAvvenimento}`);
       if (!payloadByEvent.has(regulatorEventId)) {
@@ -135,6 +138,7 @@ function normalizeSisalCapture({ capture, competitionKey, competition, rawFile, 
   }).sort((a, b) => String(a.startsAt).localeCompare(String(b.startsAt)) || a.name.localeCompare(b.name, "it"));
 
   const selectionCount = events.reduce((sum, event) => sum + event.markets.reduce((marketSum, market) => marketSum + market.selections.length, 0), 0);
+  const playerMarketCount = events.reduce((sum, event) => sum + event.markets.filter((market) => market.marketScope === "player").length, 0);
   const matchEvents = events.filter((event) => event.eventType === "MATCH");
   const matchedEvents = matchEvents.filter((event) => event.canonicalMatchId).length;
   return {
@@ -153,6 +157,7 @@ function normalizeSisalCapture({ capture, competitionKey, competition, rawFile, 
       matchedEvents,
       unmatchedEvents: matchEvents.length - matchedEvents,
       markets: events.reduce((sum, event) => sum + event.markets.length, 0),
+      playerMarkets: playerMarketCount,
       selections: selectionCount,
     },
     events,

@@ -15,7 +15,7 @@ Sito statico autonomo per Serie A, Coppa Italia e statistiche arbitrali, compati
 - `npm run build:completed-teams` rigenera i dataset e le pagine delle tre squadre usando la cache locale.
 - `npm run import:all-teams` aggiorna le rose correnti di tutte le 20 squadre e completa le cache statistiche mancanti.
 - `npm run build:all-teams` rigenera tutte le rose e le pagine usando le cache locali di Serie A e Serie B.
-- `npm run import:sisal-odds -- --competition serie-a` apre una finestra browser temporanea e importa le quote Sisal.
+- `npm run import:sisal-odds -- --competition serie-a --matchday 1` apre una finestra browser temporanea e importa le quote delle 10 gare della giornata.
 - `npm run normalize:sisal-odds -- --competition serie-a` rigenera il dataset normalizzato dall'ultimo raw senza riaprire Sisal.
 - `npm run validate:sisal-odds -- --competition serie-a` valida raw, quote, identificatori e matching con il calendario.
 - `npm test` esegue tutte le validazioni.
@@ -38,7 +38,7 @@ Le stagioni 2023/24 e 2024/25 sono registrate nei profili dell'importatore ma ha
 
 La configurazione e gli alias sono in `data/sources/sisal-odds.json`. L'importatore richiede Node.js 22 o successivo. Sisal protegge le API con Akamai, quindi l'importatore non esegue richieste HTTP isolate: apre Chrome o Edge con un profilo temporaneo, visita la pagina pubblica e cattura tramite DevTools i payload che il sito carica normalmente. Non usa credenziali e non salva cookie, token o header sensibili.
 
-Ogni acquisizione produce un raw compresso e immutabile in `data/raw/odds/sisal/<competizione>/` e aggiorna il dataset normalizzato in `data/normalized/odds/sisal/<competizione>.json`. Per Serie A, squadre e partite vengono collegate a `data/normalized/matches.json`; eventi non riconosciuti restano espliciti e fanno fallire la validazione. La finestra del browser si chiude al termine. `--headless` è disponibile, ma può essere respinto da Sisal; `--no-details` limita l'importazione ai dati di manifestazione senza scaricare tutti i mercati delle singole partite.
+Ogni acquisizione produce un raw compresso e immutabile in `data/raw/odds/sisal/<competizione>/` e aggiorna il dataset normalizzato in `data/normalized/odds/sisal/<competizione>.json`. Per Serie A, l'importatore genera le URL delle singole partite dalla giornata richiesta in `data/normalized/matches.json`, poi collega squadre e gare agli identificatori canonici. La giornata predefinita è configurabile in `data/sources/sisal-odds.json`; `--matchday N` la sovrascrive. Gli eventi non riconosciuti restano espliciti e fanno fallire la validazione. Ogni mercato espone `marketScope`; i mercati giocatore sono conteggiati separatamente e, se Sisal non li pubblica, il conteggio resta esplicitamente `0`. La finestra del browser si chiude al termine. `--headless` è disponibile, ma può essere respinto da Sisal; `--url` consente di acquisire una sola scheda partita.
 
 ## Flusso del sito
 

@@ -12,7 +12,7 @@
     "rawFile": { "type": "string", "pattern": "\\.json\\.gz$" },
     "summary": {
       "type": "object",
-      "required": ["events", "matchedEvents", "unmatchedEvents", "markets", "selections"]
+      "required": ["events", "matchedEvents", "unmatchedEvents", "markets", "playerMarkets", "selections"]
     },
     "events": {
       "type": "array",
@@ -24,7 +24,11 @@
             "type": "array",
             "items": {
               "type": "object",
-              "required": ["providerMarketId", "marketCode", "marketName", "selections"]
+              "required": ["providerMarketId", "marketCode", "marketName", "marketScope", "providerPlayerIds", "selections"],
+              "properties": {
+                "marketScope": { "enum": ["match", "player"] },
+                "providerPlayerIds": { "type": "array", "items": { "type": "string" } }
+              }
             }
           }
         }

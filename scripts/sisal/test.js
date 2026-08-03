@@ -58,9 +58,12 @@ const normalized = normalizeSisalCapture({ capture, competitionKey: "serie-a", c
 assert.strictEqual(normalized.summary.events, 1);
 assert.strictEqual(normalized.summary.markets, 1);
 assert.strictEqual(normalized.summary.selections, 3);
+assert.strictEqual(normalized.summary.playerMarkets, 0);
 assert.strictEqual(normalized.events[0].canonicalMatchId, "atalanta-sassuolo-2026-27-md-01");
 assert.strictEqual(normalized.events[0].markets[0].selections[0].odds, 1.85);
 assert.strictEqual(normalized.events[0].markets[0].selections[2].status, "suspended");
+assert.strictEqual(normalized.events[0].markets[0].marketScope, "match");
+assert.deepStrictEqual(normalized.events[0].markets[0].providerPlayerIds, []);
 assert.strictEqual(normalizedName("A.C. Milan"), "milan");
 const manifestCapture = {
   ...capture,
