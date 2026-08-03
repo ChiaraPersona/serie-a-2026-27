@@ -3,9 +3,16 @@
   if (!root) return;
 
   const base = document.body.dataset.depth === "team" ? "../" : "";
-  const release = "20260803-reading-remove-duplicates-name-only-lineups";
+  const release = "20260803-reading-no-field-card-compact-lineups";
   const defaultPlayerPhoto = `${base}assets/images/players/player-placeholder.png`;
   const esc = value => String(value ?? "").replace(/[&<>\"]/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[char]));
+  const contrastInk = color => {
+    const hex = String(color || "").replace("#", "");
+    const value = hex.length === 3 ? hex.split("").map(char => char + char).join("") : hex;
+    if (!/^[0-9a-f]{6}$/i.test(value)) return "#fff";
+    const channels = [0, 2, 4].map(index => parseInt(value.slice(index, index + 2), 16) / 255).map(channel => channel <= .03928 ? channel / 12.92 : ((channel + .055) / 1.055) ** 2.4);
+    return channels[0] * .2126 + channels[1] * .7152 + channels[2] * .0722 > .42 ? "#0b1320" : "#fff";
+  };
   const value = (input, suffix = "") => input === null || input === undefined || input === "" ? "N/D" : `${esc(input)}${suffix}`;
   const pct = input => value(input, "%");
   const initials = name => String(name).split(/\s+/).map(part => part[0]).slice(0, 2).join("").toUpperCase();
@@ -91,7 +98,7 @@
     }).reverse().join("");
     const [primary = "#0e2a69", secondary = "#07152f"] = teamSummary?.colors || [];
     const sourceLink = lineup.source?.url ? `<a href="${esc(lineup.source.url)}" target="_blank" rel="noreferrer">${esc(lineup.source.provider || "Fonte")}</a>` : esc(lineup.source?.provider || "Fonte non disponibile");
-    return `<section class="detail-section team-probable-lineup" aria-labelledby="probable-lineup-heading" style="--lineup-primary:${esc(primary)};--lineup-secondary:${esc(secondary)}"><header class="probable-lineup-heading"><div><p class="eyebrow">Serie A 2026/27 · proiezione prima giornata</p><h2 id="probable-lineup-heading">Probabile formazione</h2></div><span>Visualizzazione sperimentale</span></header><div class="probable-lineup-board"><header class="probable-lineup-board-head"><img src="${esc(team.logo)}" alt=""><div><small>Probabile XI</small><h3>${esc(team.name)}</h3></div><strong>${esc(lineup.formation)}</strong></header><div class="probable-lineup-pitch" aria-label="Probabile formazione ${esc(team.name)} con modulo ${esc(lineup.formation)}"><span class="pitch-centre-line" aria-hidden="true"></span><span class="pitch-centre-circle" aria-hidden="true"></span><span class="pitch-box pitch-box-top" aria-hidden="true"></span><span class="pitch-box pitch-box-bottom" aria-hidden="true"></span>${rows}</div><footer><p>Proiezione editoriale, non distinta ufficiale · aggiornata al ${esc(lineup.source?.retrievedAt || team.lastUpdated)}</p>${sourceLink}</footer></div></section>`;
+    return `<section class="detail-section team-probable-lineup" aria-labelledby="probable-lineup-heading" style="--lineup-primary:${esc(primary)};--lineup-secondary:${esc(secondary)};--lineup-head-ink:${contrastInk(secondary)}"><header class="probable-lineup-heading"><div><p class="eyebrow">Serie A 2026/27 · proiezione prima giornata</p><h2 id="probable-lineup-heading">Probabile formazione</h2></div><span>Visualizzazione sperimentale</span></header><div class="probable-lineup-board"><header class="probable-lineup-board-head"><img src="${esc(team.logo)}" alt=""><div><small>Probabile XI</small><h3>${esc(team.name)}</h3></div><strong>${esc(lineup.formation)}</strong></header><div class="probable-lineup-pitch" aria-label="Probabile formazione ${esc(team.name)} con modulo ${esc(lineup.formation)}"><span class="pitch-centre-line" aria-hidden="true"></span><span class="pitch-centre-circle" aria-hidden="true"></span><span class="pitch-box pitch-box-top" aria-hidden="true"></span><span class="pitch-box pitch-box-bottom" aria-hidden="true"></span>${rows}</div><footer><p>Proiezione editoriale, non distinta ufficiale · aggiornata al ${esc(lineup.source?.retrievedAt || team.lastUpdated)}</p>${sourceLink}</footer></div></section>`;
   };
 
   const labels = {
