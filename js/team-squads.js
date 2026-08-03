@@ -3,7 +3,7 @@
   if (!root) return;
 
   const base = document.body.dataset.depth === "team" ? "../" : "";
-  const release = "20260803-probable-lineups";
+  const release = "20260803-reading-remove-duplicates-visual-lineups-v3";
   const defaultPlayerPhoto = `${base}assets/images/players/player-placeholder.png`;
   const esc = value => String(value ?? "").replace(/[&<>\"]/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[char]));
   const value = (input, suffix = "") => input === null || input === undefined || input === "" ? "N/D" : `${esc(input)}${suffix}`;
@@ -78,18 +78,32 @@
     return `<section class="detail-section team-style-section" aria-labelledby="team-style-heading"><header class="team-style-heading"><div><p class="eyebrow">Baseline tattica storica · ${esc(profile.competition)} 2025/26</p><h2 id="team-style-heading">Stile di gioco</h2></div><span class="team-style-quality quality-${esc(profile.dataQuality)}">${esc(qualityLabels[profile.dataQuality] || profile.dataQuality)}</span></header>${profile.notes?.length ? `<aside class="competition-warning"><strong>Limiti del campione</strong><p>${profile.notes.map(esc).join(" ")}</p></aside>` : ""}<div class="team-style-metrics">${metric("Partite", value(profile.summary.appearances))}${metric("Gol / gara", value(profile.derived.goalsPerGame))}${metric("Tiri / gara", value(profile.summary.shotsPerGame))}${metric("Possesso", pct(profile.summary.possessionPct))}${metric("Passaggi riusciti", pct(profile.summary.passSuccessPct))}${metric("Duelli aerei", value(profile.summary.aerialWonPerGame))}${metric("Gialli / gara", value(profile.derived.yellowCardsPerGame))}${metric("Modulo più usato", profile.formation.code ? `${esc(profile.formation.code)} · ${value(profile.formation.appearances)} gare` : "N/D")}</div><div class="team-style-trait-grid">${traits("Punti di forza", profile.strengths || [], "Punti di forza non esposti dal provider.")}${traits("Debolezze", profile.weaknesses || [], "Debolezze non esposte dal provider.")}${traits("Comportamenti ricorrenti", profile.playingStyle || [], "Stile non esposto dal provider.")}</div><div class="team-style-lower"><article><h3>Origine dei gol</h3>${goalTypes}</article><article><h3>Leader statistici</h3><div class="team-style-leaders">${leaderList("Gol", profile.leaders?.goals)}${leaderList("Assist", profile.leaders?.assists)}${leaderList("Rating", profile.leaders?.rating)}</div></article></div><p class="objective-method">Uso previsto: fattore contestuale per le letture, da ricalibrare con forma 2026/27, assenze, allenatore, arbitro, meteo e quote. <a href="${esc(profile.source.url)}" target="_blank" rel="noreferrer">WhoScored</a>.</p></section>`;
   };
 
-  const probableLineupSection = team => {
+  const probableLineupSection = (team, teamSummary) => {
     const lineup = team.probableLineup;
     if (!lineup?.players?.length) return "";
+    const playerForLineupName = lineupName => {
+      const target = searchKey(lineupName);
+      return team.squad.find(player => {
+        const fullName = searchKey(player.name);
+        const surname = fullName.split(/\s+/).at(-1);
+        return fullName === target || fullName.endsWith(` ${target}`) || surname === target;
+      });
+    };
     const shape = lineup.formation.split("-").map(Number);
     const units = [1, ...shape];
     let offset = 0;
-    const rows = units.map(size => {
+    const rows = units.map((size, unitIndex) => {
       const players = lineup.players.slice(offset, offset + size);
       offset += size;
-      return `<div class="probable-lineup-row">${players.map(player => `<span>${esc(player)}</span>`).join("")}</div>`;
+      return `<div class="probable-lineup-row probable-lineup-unit-${unitIndex}" style="--lineup-count:${size}">${players.map(lineupName => {
+        const player = playerForLineupName(lineupName);
+        const photo = player?.photo && !/pla(?:ce|che)holder/i.test(player.photo) ? player.photo : null;
+        return `<article class="probable-lineup-player"><div class="probable-lineup-photo"><span class="probable-lineup-initials" aria-hidden="true">${esc(initials(lineupName))}</span>${photo ? `<img src="${esc(photo)}" data-player-photo data-player-name="${esc(player?.name || lineupName)}" alt="" loading="lazy" decoding="async">` : ""}</div><strong>${esc(lineupName)}</strong></article>`;
+      }).join("")}</div>`;
     }).reverse().join("");
-    return `<section class="detail-section team-probable-lineup" aria-labelledby="probable-lineup-heading"><header class="probable-lineup-heading"><div><p class="eyebrow">Serie A 2026/27 · proiezione prima giornata</p><h2 id="probable-lineup-heading">Probabile formazione</h2></div><strong>${esc(lineup.formation)}</strong></header><div class="probable-lineup-layout"><div class="probable-lineup-pitch" aria-label="Probabile formazione ${esc(team.name)} con modulo ${esc(lineup.formation)}">${rows}</div><aside><h3>Undici indicato dalla fonte</h3><ol>${lineup.players.map(player => `<li>${esc(player)}</li>`).join("")}</ol><p>È una proiezione editoriale aggiornata al ${esc(lineup.source?.retrievedAt || team.lastUpdated)}, non una distinta ufficiale. Non modifica automaticamente la rosa verificata.</p>${lineup.source?.url ? `<a href="${esc(lineup.source.url)}" target="_blank" rel="noreferrer">Calciomercato.com</a>` : ""}</aside></div></section>`;
+    const [primary = "#0e2a69", secondary = "#07152f"] = teamSummary?.colors || [];
+    const sourceLink = lineup.source?.url ? `<a href="${esc(lineup.source.url)}" target="_blank" rel="noreferrer">${esc(lineup.source.provider || "Fonte")}</a>` : esc(lineup.source?.provider || "Fonte non disponibile");
+    return `<section class="detail-section team-probable-lineup" aria-labelledby="probable-lineup-heading" style="--lineup-primary:${esc(primary)};--lineup-secondary:${esc(secondary)}"><header class="probable-lineup-heading"><div><p class="eyebrow">Serie A 2026/27 · proiezione prima giornata</p><h2 id="probable-lineup-heading">Probabile formazione</h2></div><span>Visualizzazione sperimentale</span></header><div class="probable-lineup-board"><header class="probable-lineup-board-head"><img src="${esc(team.logo)}" alt=""><div><small>Probabile XI</small><h3>${esc(team.name)}</h3></div><strong>${esc(lineup.formation)}</strong></header><div class="probable-lineup-pitch" aria-label="Probabile formazione ${esc(team.name)} con modulo ${esc(lineup.formation)}"><span class="pitch-centre-line" aria-hidden="true"></span><span class="pitch-centre-circle" aria-hidden="true"></span><span class="pitch-box pitch-box-top" aria-hidden="true"></span><span class="pitch-box pitch-box-bottom" aria-hidden="true"></span>${rows}</div><footer><p>Proiezione editoriale, non distinta ufficiale · aggiornata al ${esc(lineup.source?.retrievedAt || team.lastUpdated)}</p>${sourceLink}</footer></div></section>`;
   };
 
   const labels = {
@@ -218,7 +232,7 @@
     root.innerHTML = `${nav}<section class="team-detail-hero"><img src="${team.logo}" alt="Stemma ${esc(team.name)}"><div><p class="eyebrow">${esc(team.previousSeason.competition)} 2025/26${team.previousSeason.promoted ? " · neopromossa" : ""}</p><h1>${esc(team.officialName)}</h1><p>${esc(team.shortName)} · Città ${value(team.city)} · Stadio ${value(team.stadium)} · Allenatore ${value(team.coach)}</p><p class="updated">Aggiornato ${esc(team.lastUpdated)}</p></div></section>${team.previousSeason.promoted ? `<aside class="competition-warning"><strong>Statistiche di provenienza: Serie B 2025/26.</strong> Non sono confrontate direttamente con i valori grezzi di Serie A.</aside>` : ""}<section class="detail-section"><h2>Risultati 2025/26</h2>${statGrid(results, ["played", "won", "drawn", "lost", "points", "pointsPerGame", "goalsFor", "goalsAgainst", "goalDifference", "cleanSheets", "failedToScore", "winPercentage", "drawPercentage", "lossPercentage"])}</section><section class="detail-section"><h2>Disciplina</h2>${statGrid(discipline, ["foulsCommitted", "foulsCommittedPerGame", "foulsWon", "foulsWonPerGame", "yellowCards", "yellowCardsPerGame", "secondYellowCards", "straightRedCards", "dismissals", "penaltiesConceded", "penaltiesWon", "disciplineIndex"])}</section><section class="detail-section"><h2>Casa e trasferta</h2><div class="split-grid"><article><h3>Casa</h3>${statGrid(homeAway.home, ["played", "won", "drawn", "lost", "goalsFor", "goalsAgainst", "yellowCards"])}</article><article><h3>Trasferta</h3>${statGrid(homeAway.away, ["played", "won", "drawn", "lost", "goalsFor", "goalsAgainst", "yellowCards"])}</article></div></section><section class="detail-section"><h2>Rosa 2026/27</h2><p class="roster-summary">${team.squad.length} calciatori · ${quality.complete || 0} schede complete · ${quality.partial || 0} parziali · ${quality.unavailable || 0} non disponibili. Seleziona un nome per il dettaglio.</p>${filters()}<div id="squad-results">${squadTable(team.squad)}</div>${squadLeaderboards(team.squad, team.name)}</section><section class="detail-section"><h2>Copertura statistica individuale</h2><p class="muted">Le schede separano squadra e competizione 2025/26, mantengono i campi non esposti come N/D e calcolano i valori per 90 minuti soltanto quando i minuti sono disponibili.</p></section><section class="detail-section"><h2>Fonti</h2><ul class="source-list">${team.sources.map(source => `<li><strong>${esc(source.provider)}</strong> · ${esc(source.scope)} · aggiornamento ${esc(source.retrievedAt)}${source.url ? ` · <a href="${esc(source.url)}" target="_blank" rel="noreferrer">fonte</a>` : ""}</li>`).join("")}</ul></section><dialog id="player-detail" class="player-detail"><div id="player-detail-content"></div></dialog>`;
     root.querySelector(".team-detail-hero")?.insertAdjacentHTML("afterend", personalCalendar(team, teams, matches));
     root.querySelector(".team-detail-hero")?.insertAdjacentHTML("afterend", objectiveStatus(team, objectiveDataset, standings));
-    root.querySelector(".team-objective-section")?.insertAdjacentHTML("afterend", probableLineupSection(team));
+    root.querySelector(".team-objective-section")?.insertAdjacentHTML("afterend", probableLineupSection(team, teams.find(item => item.id === team.id)));
     root.querySelector(".team-probable-lineup")?.insertAdjacentHTML("afterend", tacticalProfileSection(team, teamStyleProfiles));
     root.querySelector(".team-detail-hero .updated")?.insertAdjacentHTML("beforebegin", `<p><strong>Modulo preferito:</strong> ${value(team.preferredFormation)}</p>`);
     const calendarSelect = document.getElementById("team-calendar-select");
