@@ -2,8 +2,9 @@
   "name": "serie-a-2026-27",
   "private": true,
   "scripts": {
-    "build": "node scripts/team-pages/build.js && node scripts/build-team-style-profiles.js && node scripts/build-team-referee-profiles.js && node scripts/build-fantasy.js && node scripts/build-coppa-italia.js && node scripts/build-readings.js && node scripts/build-site.js",
-    "build:readings": "node scripts/build-readings.js && node scripts/build-site.js",
+    "build": "node scripts/team-pages/build.js && node scripts/build-team-style-profiles.js && node scripts/build-team-referee-profiles.js && node scripts/build-fantasy.js && node scripts/build-coppa-italia.js && node scripts/build-readings.js && node scripts/build-predictions.js && node scripts/build-site.js",
+    "build:readings": "node scripts/build-readings.js && node scripts/build-predictions.js && node scripts/build-site.js",
+    "build:predictions": "node scripts/build-predictions.js && node scripts/build-site.js",
     "build:cup": "node scripts/build-coppa-italia.js && node scripts/build-site.js",
     "build:fantasy": "node scripts/build-fantasy.js && node scripts/build-site.js",
     "build:teams": "node scripts/team-pages/build.js && node scripts/build-site.js",
@@ -34,6 +35,7 @@
     "test:milan": "node scripts/team-pages/test-milan.js",
     "test:completed-teams": "node scripts/team-pages/test-completed-teams.js",
     "test:all-teams": "node scripts/team-pages/test-all-teams.js",
-    "test": "node scripts/validate-data.js && node scripts/referee-stats/test.js && node scripts/referee-stats/validate-2025-26.js && node scripts/test-team-referee-profiles.js && node scripts/team-pages/test.js && node scripts/team-pages/test-milan.js && node scripts/team-pages/test-completed-teams.js && node scripts/team-pages/test-all-teams.js && node scripts/sisal/test.js"
+    "test:predictions": "node scripts/test-predictions.js",
+    "test": "node scripts/validate-data.js && node scripts/referee-stats/test.js && node scripts/referee-stats/validate-2025-26.js && node scripts/test-team-referee-profiles.js && node scripts/team-pages/test.js && node scripts/team-pages/test-milan.js && node scripts/team-pages/test-completed-teams.js && node scripts/team-pages/test-all-teams.js && node scripts/sisal/test.js && node scripts/test-predictions.js"
   }
 }

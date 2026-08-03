@@ -1,7 +1,7 @@
 const fs=require("fs"), path=require("path");
 const dir=path.resolve(__dirname,"../data/normalized"), root=path.resolve(__dirname,"..");
 const read=name=>JSON.parse(fs.readFileSync(path.join(dir,name),"utf8"));
-const teams=read("teams.json"), matches=read("matches.json"), readings=read("readings.json"), referees=read("referees.json"), refereeHistory=read("referee-stats-2025-26.json"), previousStandings=read("standings-2025-26.json"), teamStyleProfiles=read("team-style-profiles.json"), objectives=JSON.parse(fs.readFileSync(path.join(root,"data/team-objectives.json"),"utf8")), teamIds=new Set(teams.map(t=>t.id));
+const teams=read("teams.json"), matches=read("matches.json"), readings=read("readings.json"), predictions=read("predictions.json"), referees=read("referees.json"), refereeHistory=read("referee-stats-2025-26.json"), previousStandings=read("standings-2025-26.json"), teamStyleProfiles=read("team-style-profiles.json"), objectives=JSON.parse(fs.readFileSync(path.join(root,"data/team-objectives.json"),"utf8")), teamIds=new Set(teams.map(t=>t.id));
 const {calculateObjectiveMetrics}=require("./objective-metrics.js");
 const fantasy=JSON.parse(fs.readFileSync(path.join(root,"data/generated/fantacalcio-advice.json"),"utf8"));
 const fantasyWorkbook=JSON.parse(fs.readFileSync(path.join(root,"data/sources/fantacalcio-stats-2025-26.json"),"utf8"));
@@ -102,6 +102,9 @@ assert(prototypeReadings.length===10&&prototypeReadings.every(reading=>firstMatc
 const atalantaSassuoloReading=readings.find(reading=>reading.matchId==="atalanta-sassuolo-2026-27-md-01");
 assert(["context","form","tactics"].every(moduleId=>atalantaSassuoloReading?.sections[moduleId].content),"La lettura pilota Atalanta-Sassuolo deve avere contesto, storico e base tattica");
 assert(["availability","referee","market","synthesis"].every(moduleId=>atalantaSassuoloReading.sections[moduleId].content===null),"La lettura pilota non deve inventare dati prepartita mancanti");
+assert(predictions.engine?.version&&predictions.predictions?.length===10,"Il motore pronostici deve coprire le 10 gare quotate della prima giornata");
+assert(Math.abs(Object.values(predictions.engine.weights).reduce((total,value)=>total+value,0)-1)<1e-9,"Pesi del motore pronostici non normalizzati");
+for(const prediction of predictions.predictions){const values=Object.values(prediction.probabilities.final);assert(matchIds.has(prediction.matchId),`Partita pronostico non trovata: ${prediction.matchId}`);assert(Math.abs(values.reduce((total,value)=>total+value,0)-100)<=0.2,`Probabilita pronostico non normalizzate: ${prediction.matchId}`);assert(prediction.exactScores.length===3,`Risultati esatti incompleti: ${prediction.matchId}`);assert(prediction.surprise.value>=0&&prediction.surprise.value<=100,`Fattore sorpresa non valido: ${prediction.matchId}`)}
 assert(cup.competition==="coppa-italia"&&cup.season==="2026-27","Dataset Coppa Italia non valido");
 assert(cup.source?.url?.includes("goal.com/it/liste/tabellone-coppa-italia-2026-2027"),"Fonte Coppa Italia mancante");
 assert(cup.matches.length===43&&new Set(cup.matches.map(match=>match.id)).size===43,"Incontri o percorsi Coppa Italia incompleti");

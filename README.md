@@ -18,6 +18,8 @@ Sito statico autonomo per Serie A, Coppa Italia e statistiche arbitrali, compati
 - `npm run import:sisal-odds -- --competition serie-a --matchday 1` apre una finestra browser temporanea e importa le quote delle 10 gare della giornata.
 - `npm run normalize:sisal-odds -- --competition serie-a` rigenera il dataset normalizzato dall'ultimo raw senza riaprire Sisal.
 - `npm run validate:sisal-odds -- --competition serie-a` valida raw, quote, identificatori e matching con il calendario.
+- `npm run build:predictions` applica lo stesso motore a tutte le partite con quote abbinate e rigenera i pronostici preliminari.
+- `npm run test:predictions` valida probabilità, risultati esatti, confidenza e fattore sorpresa.
 - `npm test` esegue tutte le validazioni.
 
 Per la verifica locale: `python -m http.server 8000`, poi aprire `http://localhost:8000`.
@@ -39,6 +41,10 @@ Le stagioni 2023/24 e 2024/25 sono registrate nei profili dell'importatore ma ha
 La configurazione e gli alias sono in `data/sources/sisal-odds.json`. L'importatore richiede Node.js 22 o successivo. Sisal protegge le API con Akamai, quindi l'importatore non esegue richieste HTTP isolate: apre Chrome o Edge con un profilo temporaneo, visita la pagina pubblica e cattura tramite DevTools i payload che il sito carica normalmente. Non usa credenziali e non salva cookie, token o header sensibili.
 
 Ogni acquisizione produce un raw compresso e immutabile in `data/raw/odds/sisal/<competizione>/` e aggiorna il dataset normalizzato in `data/normalized/odds/sisal/<competizione>.json`. Per Serie A, l'importatore genera le URL delle singole partite dalla giornata richiesta in `data/normalized/matches.json`, poi collega squadre e gare agli identificatori canonici. La giornata predefinita è configurabile in `data/sources/sisal-odds.json`; `--matchday N` la sovrascrive. Gli eventi non riconosciuti restano espliciti e fanno fallire la validazione. Ogni mercato espone `marketScope`; i mercati giocatore sono conteggiati separatamente e, se Sisal non li pubblica, il conteggio resta esplicitamente `0`. La finestra del browser si chiude al termine. `--headless` è disponibile, ma può essere respinto da Sisal; `--url` consente di acquisire una sola scheda partita.
+
+## Motore pronostici
+
+`scripts/predictions/engine.js` è il motore unico condiviso da ogni partita. Combina quote 1X2 depurate dal margine, rendimento storico, profilo tattico e obiettivi con pesi dichiarati. Il fattore sorpresa misura equilibrio, probabilità dell'esito sfavorito, divergenza tra mercato e dati tecnici e incompletezza prepartita; non sceglie automaticamente l'outsider. Il dataset generato è `data/normalized/predictions.json`. Indisponibili e designazione arbitrale entrano soltanto quando verificati.
 
 ## Flusso del sito
 

@@ -3,7 +3,7 @@
   if (!root) return;
 
   const base = document.body.dataset.depth === "team" ? "../" : "";
-  const release = "20260803-reading-no-field-card-compact-lineups";
+  const release = "20260803-team-calendar-black-vector-logos";
   const defaultPlayerPhoto = `${base}assets/images/players/player-placeholder.png`;
   const esc = value => String(value ?? "").replace(/[&<>\"]/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[char]));
   const contrastInk = color => {
@@ -128,7 +128,7 @@
     return `${dateOnly(match.date)} · ${match.kickoff || "orario da definire"}${match.dateStatus === "provisional" ? " · programmazione provvisoria UEFA" : ""}`;
   };
 
-  const calendarTeam = (team, currentTeamId) => `<span class="team-calendar-club${team.id === currentTeamId ? " is-current" : ""}"><img src="${base}${esc(team.logo)}" alt="" loading="lazy"><span>${esc(team.name)}</span></span>`;
+  const calendarTeam = (team, currentTeamId) => `<span class="team-calendar-club${team.id === currentTeamId ? " is-current" : ""}"><img src="${base}assets/images/teams/monochrome/${esc(team.id)}-black.svg" alt="" loading="lazy"><span>${esc(team.name)}</span></span>`;
 
   function teamFixtureRow(match, teams, currentTeamId) {
     const home = teams.find(team => team.id === match.homeTeam);
