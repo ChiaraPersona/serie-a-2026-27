@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chiarapersona.github.io/serie-a-2026-27/data/schemas/sisal-odds.schema.json",
+  "title": "Sisal normalized odds",
+  "type": "object",
+  "required": ["provider", "competition", "retrievedAt", "sourceUrl", "rawFile", "summary", "events"],
+  "properties": {
+    "provider": { "const": "sisal" },
+    "competition": { "type": "string", "minLength": 1 },
+    "retrievedAt": { "type": "string", "format": "date-time" },
+    "sourceUrl": { "type": "string", "format": "uri" },
+    "rawFile": { "type": "string", "pattern": "\\.json\\.gz$" },
+    "summary": {
+      "type": "object",
+      "required": ["events", "matchedEvents", "unmatchedEvents", "markets", "selections"]
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["providerEventId", "regulatorEventId", "name", "startsAt", "eventType", "home", "away", "markets"],
+        "properties": {
+          "markets": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["providerMarketId", "marketCode", "marketName", "selections"]
+            }
+          }
+        }
+      }
+    }
+  }
+}

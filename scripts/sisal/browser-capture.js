@@ -126,7 +126,16 @@ async function waitForRenderedOdds(client, timeoutMs) {
   return 0;
 }
 
-async function captureSisalPage({ pageUrl, waitMs = 15000, headed = false }) {
+async function settleBodyJobs(bodyJobs) {
+  let previousLength = -1;
+  while (previousLength !== bodyJobs.length) {
+    previousLength = bodyJobs.length;
+    await Promise.allSettled([...bodyJobs]);
+    await sleep(100);
+  }
+}
+
+async function captureSisalPage({ pageUrl, waitMs = 15000, headed = true, includeDetails = true }) {
   const browserPath = findBrowserExecutable();
   const port = await reservePort();
   const profileDirectory = fs.mkdtempSync(path.join(os.tmpdir(), "sisal-odds-"));
@@ -172,7 +181,8 @@ async function captureSisalPage({ pageUrl, waitMs = 15000, headed = false }) {
       const url = response?.url || "";
       const isOddsPayload = url.includes("/palinsesto/prematch/alberaturaPrematch") ||
         url.includes("/palinsesto/prematch/schedaManifestazione") ||
-        url.includes("/palinsesto/prematch/v1/schedaManifestazione");
+        url.includes("/palinsesto/prematch/v1/schedaManifestazione") ||
+        url.includes("/palinsesto/prematch/v1/eventDetail/");
       if (requestMethods.get(requestId) === "GET" && response?.status === 200 && isOddsPayload) {
         candidates.set(requestId, {
           url,
@@ -204,16 +214,40 @@ async function captureSisalPage({ pageUrl, waitMs = 15000, headed = false }) {
     await client.call("Page.navigate", { url: pageUrl });
     const renderedOdds = await waitForRenderedOdds(client, waitMs);
     await sleep(1200);
-    await Promise.allSettled(bodyJobs);
+    await settleBodyJobs(bodyJobs);
+
+    const detailRequests = [];
+    const manifest = bodies.find((response) => Array.isArray(response.payload?.avvenimentoFeList));
+    if (includeDetails && manifest) {
+      const regulatorEventIds = [...new Set(manifest.payload.avvenimentoFeList
+        .map((event) => event.regulatorEventId || `${event.codicePalinsesto}-${event.codiceAvvenimento}`)
+        .filter(Boolean))];
+      if (regulatorEventIds.length > 40) throw new Error(`Troppi eventi Sisal da dettagliare: ${regulatorEventIds.length}`);
+      for (const regulatorEventId of regulatorEventIds) {
+        const detailUrl = `https://betting.sisal.it/api/lettura-palinsesto-sport/palinsesto/prematch/v1/eventDetail/${regulatorEventId}?offerId=0&metaTplEnabled=true`;
+        const request = await client.call("Runtime.evaluate", {
+          expression: `(async()=>{const response=await fetch(${JSON.stringify(detailUrl)},{credentials:"include"});return {status:response.status,url:response.url};})()`,
+          awaitPromise: true,
+          returnByValue: true,
+        }, 30000).catch((error) => ({ result: { value: { status: 0, url: detailUrl, error: error.message } } }));
+        detailRequests.push({ regulatorEventId, ...(request.result?.value || {}) });
+        await sleep(150);
+      }
+      await sleep(500);
+      await settleBodyJobs(bodyJobs);
+    }
     const pageState = await client.call("Runtime.evaluate", {
       expression: "JSON.stringify({title:document.title,url:location.href,text:document.body.innerText.slice(0,5000)})",
       returnByValue: true,
     });
 
+    const parsedPage = JSON.parse(pageState.result?.value || "{}");
+    if (!parsedPage.url?.startsWith("chrome-error://")) delete parsedPage.text;
     return {
       browser: { executable: browserPath, product: "Chromium CDP" },
       renderedOdds,
-      page: JSON.parse(pageState.result?.value || "{}"),
+      page: parsedPage,
+      detailRequests,
       responses: bodies.sort((a, b) => a.url.localeCompare(b.url)),
     };
   } finally {
@@ -222,7 +256,14 @@ async function captureSisalPage({ pageUrl, waitMs = 15000, headed = false }) {
       client.close();
     }
     if (!browserProcess.killed) browserProcess.kill();
-    try { fs.rmSync(profileDirectory, { recursive: true, force: true }); } catch { /* Chrome may release it shortly. */ }
+    await Promise.race([
+      new Promise((resolve) => browserProcess.once("exit", resolve)),
+      sleep(3000),
+    ]);
+    for (let attempt = 0; attempt < 6 && fs.existsSync(profileDirectory); attempt += 1) {
+      try { fs.rmSync(profileDirectory, { recursive: true, force: true, maxRetries: 2, retryDelay: 150 }); } catch { /* Retry after Chrome releases file handles. */ }
+      if (fs.existsSync(profileDirectory)) await sleep(300);
+    }
   }
 }
 

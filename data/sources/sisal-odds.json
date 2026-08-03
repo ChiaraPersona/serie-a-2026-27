@@ -1,0 +1,26 @@
+{
+  "provider": "sisal",
+  "retrievalMethod": "public-page-browser-cdp",
+  "notes": "Le richieste dirette sono protette da Akamai. L'importatore usa una finestra Chrome/Edge temporanea, senza autenticazione, e conserva raw compresso e normalizzato separatamente.",
+  "competitions": {
+    "serie-a": {
+      "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/serie-a?cluster=27&cde=1000001",
+      "canonicalCompetition": "serie-a",
+      "season": "2026-27",
+      "matchSource": "data/normalized/matches.json",
+      "teamAliases": {
+        "inter": ["Inter", "Internazionale", "Inter Milano"],
+        "milan": ["Milan", "AC Milan"],
+        "roma": ["Roma", "AS Roma"],
+        "lazio": ["Lazio", "SS Lazio"]
+      }
+    },
+    "champions-league": {
+      "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001",
+      "canonicalCompetition": null,
+      "season": "2026-27",
+      "matchSource": null,
+      "teamAliases": {}
+    }
+  }
+}
