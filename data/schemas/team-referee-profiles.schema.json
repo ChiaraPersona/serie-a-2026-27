@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "team-referee-profiles.schema.json",
+  "type": "object",
+  "required": ["schemaVersion", "season", "provider", "coverage", "profiles"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "season": { "const": "2025-26" },
+    "profiles": {
+      "type": "array",
+      "minItems": 20,
+      "maxItems": 20,
+      "items": {
+        "type": "object",
+        "required": ["teamId", "teamName", "availability", "sourceUrl", "coverage", "rows"],
+        "properties": {
+          "teamId": { "type": "string" },
+          "availability": { "enum": ["available", "not_available"] },
+          "sourceUrl": { "type": "string", "pattern": "^https://it\\.whoscored\\.com/" },
+          "rows": { "type": "array", "maxItems": 20 }
+        }
+      }
+    }
+  }
+}

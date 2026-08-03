@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "team-style-profiles.schema.json",
+  "title": "Profili tattici storici delle squadre",
+  "type": "object",
+  "required": ["schemaVersion", "season", "targetSeason", "retrievedAt", "provider", "usage", "profiles"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "season": { "const": "2025-26" },
+    "targetSeason": { "const": "2026-27" },
+    "retrievedAt": { "type": "string", "format": "date" },
+    "provider": {
+      "type": "object",
+      "required": ["name", "baseUrl", "methodology"],
+      "properties": {
+        "name": { "const": "WhoScored" },
+        "baseUrl": { "type": "string", "format": "uri" },
+        "methodology": { "type": "string" }
+      }
+    },
+    "usage": { "type": "object" },
+    "profiles": {
+      "type": "array",
+      "minItems": 20,
+      "maxItems": 20,
+      "items": {
+        "type": "object",
+        "required": ["teamId", "teamName", "season", "retrievedAt", "source", "competition", "summary", "formation", "strengths", "weaknesses", "playingStyle", "leaders", "goalTypes"],
+        "properties": {
+          "teamId": { "type": "string", "minLength": 1 },
+          "teamName": { "type": "string", "minLength": 1 },
+          "season": { "const": "2025-26" },
+          "competition": { "enum": ["Serie A", "Serie B"] },
+          "retrievedAt": { "type": "string", "format": "date" },
+          "source": { "type": "object" },
+          "summary": { "type": "object" },
+          "formation": { "type": "object" },
+          "strengths": { "type": "array" },
+          "weaknesses": { "type": "array" },
+          "playingStyle": { "type": "array" },
+          "leaders": { "type": "object" },
+          "goalTypes": { "type": "array" }
+        }
+      }
+    }
+  }
+}

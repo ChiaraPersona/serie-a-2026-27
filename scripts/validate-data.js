@@ -1,7 +1,7 @@
 const fs=require("fs"), path=require("path");
 const dir=path.resolve(__dirname,"../data/normalized"), root=path.resolve(__dirname,"..");
 const read=name=>JSON.parse(fs.readFileSync(path.join(dir,name),"utf8"));
-const teams=read("teams.json"), matches=read("matches.json"), readings=read("readings.json"), referees=read("referees.json"), refereeHistory=read("referee-stats-2025-26.json"), previousStandings=read("standings-2025-26.json"), objectives=JSON.parse(fs.readFileSync(path.join(root,"data/team-objectives.json"),"utf8")), teamIds=new Set(teams.map(t=>t.id));
+const teams=read("teams.json"), matches=read("matches.json"), readings=read("readings.json"), referees=read("referees.json"), refereeHistory=read("referee-stats-2025-26.json"), previousStandings=read("standings-2025-26.json"), teamStyleProfiles=read("team-style-profiles.json"), objectives=JSON.parse(fs.readFileSync(path.join(root,"data/team-objectives.json"),"utf8")), teamIds=new Set(teams.map(t=>t.id));
 const {calculateObjectiveMetrics}=require("./objective-metrics.js");
 const fantasy=JSON.parse(fs.readFileSync(path.join(root,"data/generated/fantacalcio-advice.json"),"utf8"));
 const fantasyWorkbook=JSON.parse(fs.readFileSync(path.join(root,"data/sources/fantacalcio-stats-2025-26.json"),"utf8"));
@@ -43,6 +43,19 @@ for(const profile of objectives.teams){
   assert(initial.objectiveProgress===0&&initial.seasonOverperformance===0&&initial.motivationCurrent===profile.motivationStart&&initial.pressureCurrent===profile.pressure,`Metriche iniziali non coerenti: ${profile.teamId}`);
 }
 assert(objectives.teams.every(profile=>teamIds.has(profile.teamId)),"Copertura obiettivi corrente diversa da 20/20");
+assert(teamStyleProfiles.schemaVersion===1&&teamStyleProfiles.season==="2025-26"&&teamStyleProfiles.targetSeason==="2026-27","Metadati profili tattici non validi");
+assert(teamStyleProfiles.provider?.name==="WhoScored"&&teamStyleProfiles.profiles.length===20,"Provider o copertura profili tattici non validi");
+assert(new Set(teamStyleProfiles.profiles.map(profile=>profile.teamId)).size===20,"Profili tattici duplicati");
+assert(teamStyleProfiles.profiles.every(profile=>teamIds.has(profile.teamId)),"Profili tattici fuori dalle 20 squadre correnti");
+assert(teamStyleProfiles.coverage.complete===17&&teamStyleProfiles.coverage.statisticalOnly===2&&teamStyleProfiles.coverage.limitedSample===1,"Riepilogo copertura profili tattici inatteso");
+for(const profile of teamStyleProfiles.profiles){
+  assert(profile.source?.provider==="WhoScored"&&profile.source.url&&profile.source.statisticsUrl,`Fonti tattiche incomplete: ${profile.teamId}`);
+  assert(["Serie A","Serie B"].includes(profile.competition)&&profile.summary.appearances>0,`Campione tattico non valido: ${profile.teamId}`);
+  assert(profile.modelInputs?.numeric&&profile.modelInputs?.categorical,`Input modello mancanti: ${profile.teamId}`);
+  if(profile.coverage.goalTypes)assert(profile.goalTypes.reduce((sum,item)=>sum+item.goals,0)===profile.summary.goals,`Tipi di gol incoerenti: ${profile.teamId}`);
+  if(profile.coverage.formation)assert(profile.formation.wins+profile.formation.draws+profile.formation.losses===profile.formation.appearances,`Esiti modulo incoerenti: ${profile.teamId}`);
+  if(profile.competition==="Serie B")assert(profile.notes.some(note=>note.includes("non confrontare direttamente")),`Avvertenza Serie B mancante: ${profile.teamId}`);
+}
 assert(referees.length===42,`Arbitri CAN: ${referees.length}, attesi 42`);
 assert(new Set(referees.map(r=>r.id)).size===42&&new Set(referees.map(r=>r.slug)).size===42,"ID o slug arbitro duplicati");
 const refereeStats=["serieAAppearances","serieBAppearances","yellowCards","secondYellowCards","straightRedCards","penalties","fouls","yellowCardsPerMatch","redCardsPerMatch","penaltiesPerMatch","homeWins","draws","awayWins","varInterventions"];
@@ -185,3 +198,4 @@ console.log("OK rendimento casa 2025/26: 20 squadre e valori coerenti");
 console.log("OK rendimento trasferta 2025/26 e riconciliazione con classifica finale");
 console.log("OK riepilogo statistico 2025/26 riconciliato con classifiche generale/casa/trasferta");
 console.log("OK verdetti 2025/26 e promosse 2026/27 coerenti con le classifiche");
+console.log("OK profili tattici WhoScored 2025/26: 20/20 con copertura e campioni dichiarati");

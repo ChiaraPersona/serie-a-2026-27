@@ -3,7 +3,7 @@
   if (!root) return;
 
   const base = document.body.dataset.depth === "team" ? "../" : "";
-  const release = "20260728-second-pass-player-photos";
+  const release = "20260803-team-style-profiles";
   const defaultPlayerPhoto = `${base}assets/images/players/player-placeholder.png`;
   const esc = value => String(value ?? "").replace(/[&<>\"]/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[char]));
   const value = (input, suffix = "") => input === null || input === undefined || input === "" ? "N/D" : `${esc(input)}${suffix}`;
@@ -63,6 +63,19 @@
     const metricCard = (label, display, numeric = null, tone = "") =>
       `<div class="objective-metric ${tone}"><span>${label}</span><strong>${display}</strong>${numeric === null ? "" : `<i class="metric-track" aria-hidden="true"><b style="width:${Math.max(0, Math.min(100, numeric))}%"></b></i>`}</div>`;
     return `<section class="detail-section team-objective-section" aria-labelledby="team-objective-heading"><header class="objective-section-head"><div><p class="eyebrow">Stagione 2026/27</p><h2 id="team-objective-heading">Stato degli obiettivi</h2></div><p>La situazione viene ricalcolata in base ai risultati conclusi ed è un indicatore di contesto, non un pronostico.</p></header><article class="objective-card"><header><span class="team-objective-team">${esc(team.name)}</span><span>${metrics.status === "preseason" ? "Valori iniziali" : "Aggiornato automaticamente"}</span></header><div class="objective-title"><small>Obiettivo iniziale</small><h3>${esc(profile.primaryObjective)}</h3><p>Secondario: ${esc(profile.secondaryObjective)} · posizione obiettivo ${profile.targetPosition}ª</p></div><div class="objective-metrics">${metricCard("Progresso obiettivo", `${metrics.objectiveProgress}%`, metrics.objectiveProgress)}${metricCard("Rendimento sulle attese", signed(metrics.seasonOverperformance), null, metrics.seasonOverperformance > 0 ? "positive" : metrics.seasonOverperformance < 0 ? "negative" : "")}${metricCard("Motivazione", `${metrics.motivationCurrent}/100`, metrics.motivationCurrent)}${metricCard("Pressione", `${metrics.pressureCurrent}/100`, metrics.pressureCurrent)}${metricCard("Urgenza punti", `${metrics.urgency}/100`, metrics.urgency, metrics.urgency >= 80 ? "urgent" : "")}</div></article><p class="objective-method">A inizio stagione progresso e scostamento restano neutrali; dopo ogni giornata il calcolo considera posizione, punti, proiezione a 38 gare e distanza dall'obiettivo.</p></section>`;
+  };
+
+  const tacticalProfileSection = (team, dataset) => {
+    const profile = dataset?.profiles?.find(item => item.teamId === team.id);
+    if (!profile) return "";
+    const metric = (label, content) => `<div><span>${label}</span><strong>${content}</strong></div>`;
+    const traits = (title, items, emptyNote) => `<article class="team-style-traits"><h3>${title}</h3>${items.length ? `<ul>${items.map(item => `<li><span>${esc(item.label)}</span>${item.level ? `<small>${esc(item.level)}</small>` : ""}</li>`).join("")}</ul>` : `<p class="muted">${emptyNote}</p>`}</article>`;
+    const goalTypes = profile.goalTypes?.length
+      ? `<div class="team-style-goals">${profile.goalTypes.map(item => `<div><span>${esc(item.type)}</span><strong>${value(item.goals)}</strong><small>${value(item.sharePct, "%")}</small></div>`).join("")}</div>`
+      : '<p class="muted">Composizione dei gol: N/D nella pagina WhoScored disponibile.</p>';
+    const leaderList = (title, items) => `<article><h4>${title}</h4>${items?.length ? `<ol>${items.map(item => `<li><span>${esc(item.player)}</span><strong>${value(item.value)}</strong></li>`).join("")}</ol>` : '<p class="muted">N/D</p>'}</article>`;
+    const qualityLabels = { complete: "Profilo completo", "statistical-only": "Solo riepilogo statistico", "limited-sample": "Campione limitato" };
+    return `<section class="detail-section team-style-section" aria-labelledby="team-style-heading"><header class="team-style-heading"><div><p class="eyebrow">Baseline tattica storica · ${esc(profile.competition)} 2025/26</p><h2 id="team-style-heading">Stile di gioco</h2></div><span class="team-style-quality quality-${esc(profile.dataQuality)}">${esc(qualityLabels[profile.dataQuality] || profile.dataQuality)}</span></header>${profile.notes?.length ? `<aside class="competition-warning"><strong>Limiti del campione</strong><p>${profile.notes.map(esc).join(" ")}</p></aside>` : ""}<div class="team-style-metrics">${metric("Partite", value(profile.summary.appearances))}${metric("Gol / gara", value(profile.derived.goalsPerGame))}${metric("Tiri / gara", value(profile.summary.shotsPerGame))}${metric("Possesso", pct(profile.summary.possessionPct))}${metric("Passaggi riusciti", pct(profile.summary.passSuccessPct))}${metric("Duelli aerei", value(profile.summary.aerialWonPerGame))}${metric("Gialli / gara", value(profile.derived.yellowCardsPerGame))}${metric("Modulo più usato", profile.formation.code ? `${esc(profile.formation.code)} · ${value(profile.formation.appearances)} gare` : "N/D")}</div><div class="team-style-trait-grid">${traits("Punti di forza", profile.strengths || [], "Punti di forza non esposti dal provider.")}${traits("Debolezze", profile.weaknesses || [], "Debolezze non esposte dal provider.")}${traits("Comportamenti ricorrenti", profile.playingStyle || [], "Stile non esposto dal provider.")}</div><div class="team-style-lower"><article><h3>Origine dei gol</h3>${goalTypes}</article><article><h3>Leader statistici</h3><div class="team-style-leaders">${leaderList("Gol", profile.leaders?.goals)}${leaderList("Assist", profile.leaders?.assists)}${leaderList("Rating", profile.leaders?.rating)}</div></article></div><p class="objective-method">Uso previsto: fattore contestuale per le letture, da ricalibrare con forma 2026/27, assenze, allenatore, arbitro, meteo e quote. <a href="${esc(profile.source.url)}" target="_blank" rel="noreferrer">WhoScored</a>.</p></section>`;
   };
 
   const labels = {
@@ -178,7 +191,7 @@
   }
   const marketValuePanel = player => `<div class="player-market-panel"><span>Valore di mercato</span><strong>${value(player.marketValue?.label)}</strong><small>${player.marketValue ? `${esc(player.marketValue.provider)} · aggiornato ${esc(player.marketValue.retrievedAt)}` : "Dato non disponibile"}</small></div>`;
 
-  function teamPage(team, objectiveDataset, standings, teams, matches) {
+  function teamPage(team, objectiveDataset, standings, teams, matches, teamStyleProfiles) {
     const results = team.teamStats.results;
     const discipline = team.teamStats.discipline;
     const homeAway = team.teamStats.homeAway;
@@ -191,6 +204,7 @@
     root.innerHTML = `${nav}<section class="team-detail-hero"><img src="${team.logo}" alt="Stemma ${esc(team.name)}"><div><p class="eyebrow">${esc(team.previousSeason.competition)} 2025/26${team.previousSeason.promoted ? " · neopromossa" : ""}</p><h1>${esc(team.officialName)}</h1><p>${esc(team.shortName)} · Città ${value(team.city)} · Stadio ${value(team.stadium)} · Allenatore ${value(team.coach)}</p><p class="updated">Aggiornato ${esc(team.lastUpdated)}</p></div></section>${team.previousSeason.promoted ? `<aside class="competition-warning"><strong>Statistiche di provenienza: Serie B 2025/26.</strong> Non sono confrontate direttamente con i valori grezzi di Serie A.</aside>` : ""}<section class="detail-section"><h2>Risultati 2025/26</h2>${statGrid(results, ["played", "won", "drawn", "lost", "points", "pointsPerGame", "goalsFor", "goalsAgainst", "goalDifference", "cleanSheets", "failedToScore", "winPercentage", "drawPercentage", "lossPercentage"])}</section><section class="detail-section"><h2>Disciplina</h2>${statGrid(discipline, ["foulsCommitted", "foulsCommittedPerGame", "foulsWon", "foulsWonPerGame", "yellowCards", "yellowCardsPerGame", "secondYellowCards", "straightRedCards", "dismissals", "penaltiesConceded", "penaltiesWon", "disciplineIndex"])}</section><section class="detail-section"><h2>Casa e trasferta</h2><div class="split-grid"><article><h3>Casa</h3>${statGrid(homeAway.home, ["played", "won", "drawn", "lost", "goalsFor", "goalsAgainst", "yellowCards"])}</article><article><h3>Trasferta</h3>${statGrid(homeAway.away, ["played", "won", "drawn", "lost", "goalsFor", "goalsAgainst", "yellowCards"])}</article></div></section><section class="detail-section"><h2>Rosa 2026/27</h2><p class="roster-summary">${team.squad.length} calciatori · ${quality.complete || 0} schede complete · ${quality.partial || 0} parziali · ${quality.unavailable || 0} non disponibili. Seleziona un nome per il dettaglio.</p>${filters()}<div id="squad-results">${squadTable(team.squad)}</div>${squadLeaderboards(team.squad, team.name)}</section><section class="detail-section"><h2>Copertura statistica individuale</h2><p class="muted">Le schede separano squadra e competizione 2025/26, mantengono i campi non esposti come N/D e calcolano i valori per 90 minuti soltanto quando i minuti sono disponibili.</p></section><section class="detail-section"><h2>Fonti</h2><ul class="source-list">${team.sources.map(source => `<li><strong>${esc(source.provider)}</strong> · ${esc(source.scope)} · aggiornamento ${esc(source.retrievedAt)}${source.url ? ` · <a href="${esc(source.url)}" target="_blank" rel="noreferrer">fonte</a>` : ""}</li>`).join("")}</ul></section><dialog id="player-detail" class="player-detail"><div id="player-detail-content"></div></dialog>`;
     root.querySelector(".team-detail-hero")?.insertAdjacentHTML("afterend", personalCalendar(team, teams, matches));
     root.querySelector(".team-detail-hero")?.insertAdjacentHTML("afterend", objectiveStatus(team, objectiveDataset, standings));
+    root.querySelector(".team-objective-section")?.insertAdjacentHTML("afterend", tacticalProfileSection(team, teamStyleProfiles));
     root.querySelector(".team-detail-hero .updated")?.insertAdjacentHTML("beforebegin", `<p><strong>Modulo preferito:</strong> ${value(team.preferredFormation)}</p>`);
     const calendarSelect = document.getElementById("team-calendar-select");
     calendarSelect?.addEventListener("change", () => {
@@ -249,13 +263,14 @@
     try {
       const teamId = document.body.dataset.team;
       if (teamId) {
-        const [team, objectiveDataset, teams, matches] = await Promise.all([
+        const [team, objectiveDataset, teams, matches, teamStyleProfiles] = await Promise.all([
           load(`data/teams/${teamId}.json`),
           load("data/team-objectives.json"),
           load("data/normalized/teams.json"),
-          load("data/normalized/matches.json")
+          load("data/normalized/matches.json"),
+          load("data/normalized/team-style-profiles.json")
         ]);
-        teamPage(team, objectiveDataset, calculateStandings(teams, matches), teams, matches);
+        teamPage(team, objectiveDataset, calculateStandings(teams, matches), teams, matches, teamStyleProfiles);
       }
       else indexPage(await load("data/teams/index.json"));
     } catch (error) {

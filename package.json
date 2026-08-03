@@ -2,11 +2,13 @@
   "name": "serie-a-2026-27",
   "private": true,
   "scripts": {
-    "build": "node scripts/team-pages/build.js && node scripts/build-fantasy.js && node scripts/build-coppa-italia.js && node scripts/build-readings.js && node scripts/build-site.js",
+    "build": "node scripts/team-pages/build.js && node scripts/build-team-style-profiles.js && node scripts/build-team-referee-profiles.js && node scripts/build-fantasy.js && node scripts/build-coppa-italia.js && node scripts/build-readings.js && node scripts/build-site.js",
     "build:readings": "node scripts/build-readings.js && node scripts/build-site.js",
     "build:cup": "node scripts/build-coppa-italia.js && node scripts/build-site.js",
     "build:fantasy": "node scripts/build-fantasy.js && node scripts/build-site.js",
     "build:teams": "node scripts/team-pages/build.js && node scripts/build-site.js",
+    "build:team-styles": "node scripts/build-team-style-profiles.js && node scripts/build-site.js",
+    "build:team-referees": "node scripts/build-team-referee-profiles.js && node scripts/build-site.js",
     "import:milan": "node scripts/team-pages/import-milan.js --refresh",
     "compress:milan-raw": "node scripts/team-pages/compress-milan-raw.js",
     "build:milan": "node scripts/team-pages/import-milan.js && node scripts/team-pages/build.js && node scripts/build-site.js",
@@ -22,11 +24,12 @@
     "import:referees:pilot": "node scripts/referee-stats/import.js --competition all --season 2025-26 --limit 10 --pilot",
     "import:referees": "node scripts/referee-stats/import.js --competition all --season 2025-26 --full",
     "validate:referees:2025-26": "node scripts/referee-stats/validate-2025-26.js",
+    "test:team-referees": "node scripts/test-team-referee-profiles.js",
     "download:logos": "python scripts/download-team-logos.py",
     "test:teams": "node scripts/team-pages/test.js",
     "test:milan": "node scripts/team-pages/test-milan.js",
     "test:completed-teams": "node scripts/team-pages/test-completed-teams.js",
     "test:all-teams": "node scripts/team-pages/test-all-teams.js",
-    "test": "node scripts/validate-data.js && node scripts/referee-stats/test.js && node scripts/referee-stats/validate-2025-26.js && node scripts/team-pages/test.js && node scripts/team-pages/test-milan.js && node scripts/team-pages/test-completed-teams.js && node scripts/team-pages/test-all-teams.js"
+    "test": "node scripts/validate-data.js && node scripts/referee-stats/test.js && node scripts/referee-stats/validate-2025-26.js && node scripts/test-team-referee-profiles.js && node scripts/team-pages/test.js && node scripts/team-pages/test-milan.js && node scripts/team-pages/test-completed-teams.js && node scripts/team-pages/test-all-teams.js"
   }
 }

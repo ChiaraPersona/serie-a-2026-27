@@ -9,7 +9,7 @@ const navigationPages = pages.filter(([,id]) => id !== "team");
 const navigation = (depth = "", activeId = "") => navigationPages.map(([file, id, label]) => `<a class="page-link${id === activeId ? " active" : ""}" data-page-link="${id}" href="${depth}${file}">${label}</a>`).join("");
 const fontLinks = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">';
 const withFonts = html => html.replace("</title>", `</title>${fontLinks}`);
-const version = "20260803-atalanta-sassuolo-pilot";
+const version = "20260803-team-referee-profiles";
 for (const obsoletePage of ["classifica.html"]) {
   const obsoletePath = path.join(root, obsoletePage);
   if (fs.existsSync(obsoletePath)) fs.unlinkSync(obsoletePath);
