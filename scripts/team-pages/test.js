@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const assert = require("assert");
+const { calculateStandings } = require("../standings.js");
 const root = path.resolve(__dirname, "../..");
 const read = file => JSON.parse(fs.readFileSync(path.join(root, file), "utf8"));
 const index = read("data/teams/index.json");
@@ -70,6 +71,15 @@ const generatedHtml = fs.readdirSync(root).filter(file => file.endsWith(".html")
 assert.ok(!generatedHtml.includes("statistiche-giocatori"), "Un collegamento alla pagina rimossa è ancora presente");
 assert.ok(!generatedHtml.includes('href="classifica.html"') && !generatedHtml.includes('href="../classifica.html"'), "Un collegamento alla pagina Classifica rimossa è ancora presente");
 assert.ok(mainApp.includes('if(page==="home")') && mainApp.includes('data-standings-tab="current"') && mainApp.includes('data-standings-tab="archive"'), "Le due classifiche devono essere renderizzate nella Home");
+for (const marker of ['label:"R+"', 'label:"R-"', 'label:"C+"', 'label:"C-"', "configureStandingsTables()", "data-sortable-standings"]) assert.ok(mainApp.includes(marker), `Classifica dinamica: manca ${marker}`);
+for (const tooltip of ["Rigori assegnati a favore", "Rigori subiti contro", "Cartellini assegnati agli avversari", "Cartellini ricevuti dalla squadra"]) assert.ok(mainApp.includes(tooltip), `Tooltip classifica mancante: ${tooltip}`);
+assert.ok(styles.includes("width:calc(100% + 288px);min-width:1088px"), "Le quattro nuove colonne devono essere aggiunte senza restringere quelle esistenti");
+for (const zone of ["standing-zone-champion", "standing-zone-top", "standing-zone-europa", "standing-zone-conference", "standing-zone-bottom"]) assert.ok(mainApp.includes(zone) && styles.includes(zone), `Fascia classifica mancante: ${zone}`);
+const disciplineStandings = calculateStandings([{ id: "a" }, { id: "b" }], [{ id: "a-b", competition: "serie-a", status: "finished", homeTeam: "a", awayTeam: "b", score: { home: 1, away: 0 }, teamStats: { home: { penaltiesFor: 1, penaltiesAgainst: 2, yellowCards: 2, secondYellowCards: 0, straightRedCards: 1 }, away: { penaltiesFor: 2, penaltiesAgainst: 1, yellowCards: 4, secondYellowCards: 1, straightRedCards: 0 } } }]);
+const disciplineHome = disciplineStandings.find(row => row.team === "a");
+assert.deepStrictEqual([disciplineHome.penaltiesFor, disciplineHome.penaltiesAgainst, disciplineHome.cardsFor, disciplineHome.cardsAgainst], [1, 2, 5, 3], "Conteggio R+/R-/C+/C- errato");
+const unavailableDiscipline = calculateStandings([{ id: "a" }, { id: "b" }], [{ id: "a-b", competition: "serie-a", status: "finished", homeTeam: "a", awayTeam: "b", score: { home: 0, away: 0 } }]).find(row => row.team === "a");
+assert.deepStrictEqual([unavailableDiscipline.penaltiesFor, unavailableDiscipline.penaltiesAgainst, unavailableDiscipline.cardsFor, unavailableDiscipline.cardsAgainst], [null, null, null, null], "I dati disciplinari assenti devono restare N/D");
 const homeRenderSource = mainApp.slice(mainApp.indexOf('if(page==="home"){'), mainApp.indexOf('if(page==="calendar")'));
 assert.ok(homeRenderSource.includes("homeStandings(standings,previousStandings,objectiveProfiles,teams,standingsTeams)"), "Le classifiche devono essere presenti nella Home");
 assert.ok(!homeRenderSource.includes("Esplora il progetto") && !homeRenderSource.includes("feature-grid"), "Esplora il progetto deve essere rimosso dalla Home");

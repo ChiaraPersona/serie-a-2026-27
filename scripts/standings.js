@@ -1,4 +1,4 @@
-const standingsNumber = value => Number.isFinite(Number(value)) ? Number(value) : null;
+const standingsNumber = value => value === null || value === undefined || value === "" ? null : Number.isFinite(Number(value)) ? Number(value) : null;
 const standingsFirstNumber = (...values) => values.map(standingsNumber).find(value => value !== null) ?? null;
 const standingsSideStats = (match, side) => match.teamStats?.[side] || match.statistics?.[side] || null;
 const standingsCardTotal = stats => {
