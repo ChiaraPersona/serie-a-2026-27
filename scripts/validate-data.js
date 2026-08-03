@@ -81,8 +81,11 @@ for(const reading of readings){
   assert(["draft","published","archived"].includes(reading.status),`Stato lettura non valido: ${reading.id}`);
   assert(/^\d{4}-\d{2}-\d{2}$/.test(reading.updatedAt),`Data lettura non valida: ${reading.id}`);
   assert(reading.sections&&readingModules.every(moduleId=>reading.sections[moduleId]),`Sette sezioni lettura incomplete: ${reading.id}`);
+  assert(reading.prototype===undefined||typeof reading.prototype==="boolean",`Flag prototipo non valido: ${reading.id}`);
   for(const moduleId of readingModules){const section=reading.sections[moduleId];assert(section.content===null||typeof section.content==="string",`Contenuto lettura non valido: ${reading.id}/${moduleId}`);assert(Array.isArray(section.signals)&&Array.isArray(section.sources),`Segnali o fonti lettura non validi: ${reading.id}/${moduleId}`)}
 }
+const prototypeReadings=readings.filter(reading=>reading.prototype),firstMatchdayIds=new Set(league.filter(match=>match.matchday===1).map(match=>match.id));
+assert(prototypeReadings.length===10&&prototypeReadings.every(reading=>firstMatchdayIds.has(reading.matchId)),"Il prototipo Letture deve coprire le 10 gare della prima giornata");
 assert(cup.competition==="coppa-italia"&&cup.season==="2026-27","Dataset Coppa Italia non valido");
 assert(cup.source?.url?.includes("goal.com/it/liste/tabellone-coppa-italia-2026-2027"),"Fonte Coppa Italia mancante");
 assert(cup.matches.length===43&&new Set(cup.matches.map(match=>match.id)).size===43,"Incontri o percorsi Coppa Italia incompleti");

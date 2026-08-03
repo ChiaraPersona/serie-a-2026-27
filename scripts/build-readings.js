@@ -11,12 +11,27 @@ const moduleIds = ["context", "form", "availability", "tactics", "referee", "mar
 const files = fs.readdirSync(sourceDir)
   .filter(file => file.endsWith(".json") && !file.startsWith("_"))
   .sort();
-const readings = files.map(file => JSON.parse(fs.readFileSync(path.join(sourceDir, file), "utf8")));
+const emptySections = () => Object.fromEntries(moduleIds.map(moduleId => [moduleId, { content: null, signals: [], sources: [] }]));
+const readings = files.flatMap(file => {
+  const source = JSON.parse(fs.readFileSync(path.join(sourceDir, file), "utf8"));
+  if (source.type !== "prototype-batch") return [source];
+  return source.matchIds.map(matchId => ({
+    id: `lettura-${matchId}`,
+    matchId,
+    status: source.status || "draft",
+    updatedAt: source.updatedAt,
+    title: null,
+    summary: null,
+    prototype: true,
+    sections: emptySections()
+  }));
+});
 
 for (const reading of readings) {
   if (!reading.id || !reading.matchId || !["draft", "published", "archived"].includes(reading.status)) {
     throw new Error(`Lettura non valida: ${reading.id || "senza ID"}`);
   }
+  if (reading.prototype !== undefined && typeof reading.prototype !== "boolean") throw new Error(`Flag prototipo non valido: ${reading.id}`);
   if (!matchIds.has(reading.matchId)) throw new Error(`Partita non trovata per ${reading.id}: ${reading.matchId}`);
   if (!reading.sections || moduleIds.some(moduleId => !reading.sections[moduleId])) {
     throw new Error(`Sette sezioni obbligatorie non complete: ${reading.id}`);
