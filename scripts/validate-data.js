@@ -86,6 +86,9 @@ for(const reading of readings){
 }
 const prototypeReadings=readings.filter(reading=>reading.prototype),firstMatchdayIds=new Set(league.filter(match=>match.matchday===1).map(match=>match.id));
 assert(prototypeReadings.length===10&&prototypeReadings.every(reading=>firstMatchdayIds.has(reading.matchId)),"Il prototipo Letture deve coprire le 10 gare della prima giornata");
+const atalantaSassuoloReading=readings.find(reading=>reading.matchId==="atalanta-sassuolo-2026-27-md-01");
+assert(["context","form","tactics"].every(moduleId=>atalantaSassuoloReading?.sections[moduleId].content),"La lettura pilota Atalanta-Sassuolo deve avere contesto, storico e base tattica");
+assert(["availability","referee","market","synthesis"].every(moduleId=>atalantaSassuoloReading.sections[moduleId].content===null),"La lettura pilota non deve inventare dati prepartita mancanti");
 assert(cup.competition==="coppa-italia"&&cup.season==="2026-27","Dataset Coppa Italia non valido");
 assert(cup.source?.url?.includes("goal.com/it/liste/tabellone-coppa-italia-2026-2027"),"Fonte Coppa Italia mancante");
 assert(cup.matches.length===43&&new Set(cup.matches.map(match=>match.id)).size===43,"Incontri o percorsi Coppa Italia incompleti");
