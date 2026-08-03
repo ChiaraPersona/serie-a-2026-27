@@ -3,7 +3,7 @@
   if (!root) return;
 
   const base = document.body.dataset.depth === "team" ? "../" : "";
-  const release = "20260803-reading-remove-duplicates-visual-lineups-v3";
+  const release = "20260803-reading-remove-duplicates-name-only-lineups";
   const defaultPlayerPhoto = `${base}assets/images/players/player-placeholder.png`;
   const esc = value => String(value ?? "").replace(/[&<>\"]/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[char]));
   const value = (input, suffix = "") => input === null || input === undefined || input === "" ? "N/D" : `${esc(input)}${suffix}`;
@@ -81,25 +81,13 @@
   const probableLineupSection = (team, teamSummary) => {
     const lineup = team.probableLineup;
     if (!lineup?.players?.length) return "";
-    const playerForLineupName = lineupName => {
-      const target = searchKey(lineupName);
-      return team.squad.find(player => {
-        const fullName = searchKey(player.name);
-        const surname = fullName.split(/\s+/).at(-1);
-        return fullName === target || fullName.endsWith(` ${target}`) || surname === target;
-      });
-    };
     const shape = lineup.formation.split("-").map(Number);
     const units = [1, ...shape];
     let offset = 0;
     const rows = units.map((size, unitIndex) => {
       const players = lineup.players.slice(offset, offset + size);
       offset += size;
-      return `<div class="probable-lineup-row probable-lineup-unit-${unitIndex}" style="--lineup-count:${size}">${players.map(lineupName => {
-        const player = playerForLineupName(lineupName);
-        const photo = player?.photo && !/pla(?:ce|che)holder/i.test(player.photo) ? player.photo : null;
-        return `<article class="probable-lineup-player"><div class="probable-lineup-photo"><span class="probable-lineup-initials" aria-hidden="true">${esc(initials(lineupName))}</span>${photo ? `<img src="${esc(photo)}" data-player-photo data-player-name="${esc(player?.name || lineupName)}" alt="" loading="lazy" decoding="async">` : ""}</div><strong>${esc(lineupName)}</strong></article>`;
-      }).join("")}</div>`;
+      return `<div class="probable-lineup-row probable-lineup-unit-${unitIndex}" style="--lineup-count:${size}">${players.map(lineupName => `<article class="probable-lineup-player"><strong>${esc(lineupName)}</strong></article>`).join("")}</div>`;
     }).reverse().join("");
     const [primary = "#0e2a69", secondary = "#07152f"] = teamSummary?.colors || [];
     const sourceLink = lineup.source?.url ? `<a href="${esc(lineup.source.url)}" target="_blank" rel="noreferrer">${esc(lineup.source.provider || "Fonte")}</a>` : esc(lineup.source?.provider || "Fonte non disponibile");
