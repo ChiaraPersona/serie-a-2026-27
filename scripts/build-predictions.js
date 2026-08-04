@@ -18,6 +18,8 @@ const odds = read("data/normalized/odds/sisal/serie-a.json");
 const headToHead = read("data/generated/head-to-head/first-leg-2026-27.json");
 const backtestPath = path.join(root, "data/generated/prediction-backtest-2025-26.json");
 const backtest = fs.existsSync(backtestPath) ? JSON.parse(fs.readFileSync(backtestPath, "utf8")) : null;
+const multiSeasonBacktestPath = path.join(root, "data/generated/prediction-backtest-multiseason.json");
+const multiSeasonBacktest = fs.existsSync(multiSeasonBacktestPath) ? JSON.parse(fs.readFileSync(multiSeasonBacktestPath, "utf8")) : null;
 const generatedAt = odds.retrievedAt || new Date().toISOString();
 
 const byId = items => new Map(items.map(item => [item.teamId || item.team || item.matchId || item.canonicalMatchId, item]));
@@ -51,26 +53,6 @@ function recentForm(teamId) {
   return { matches: rows.length, goalsFor: goalsFor / weightTotal, goalsAgainst: goalsAgainst / weightTotal, decay: 0.82, opponentAdjusted: true };
 }
 
-function scoreCalibration() {
-  const factorial = value => { let result = 1; for (let number = 2; number <= value; number += 1) result *= number; return result; };
-  const poisson = (goals, lambda) => Math.exp(-lambda) * (lambda ** goals) / factorial(goals);
-  const counts = new Map();
-  historicalMatches.forEach(match => counts.set(`${match.score.home}-${match.score.away}`, (counts.get(`${match.score.home}-${match.score.away}`) || 0) + 1));
-  const factors = {};
-  for (let home = 0; home <= 7; home += 1) {
-    for (let away = 0; away <= 7; away += 1) {
-      const key = `${home}-${away}`;
-      const expected = historicalMatches.length * poisson(home, standings.summary.homeGoalsPerMatch) * poisson(away, standings.summary.awayGoalsPerMatch);
-      const observed = counts.get(key) || 0;
-      const raw = (observed + 4) / (expected + 4);
-      factors[key] = Number(Math.max(0.72, Math.min(1.35, raw ** 0.55)).toFixed(3));
-    }
-  }
-  return { season: "2025-26", matches: historicalMatches.length, method: "Frequenze punteggio Serie A con pseudo-conteggio 4, shrink 55% e limiti 0.72-1.35.", factors };
-}
-
-const sharedScoreCalibration = scoreCalibration();
-
 const targetMatches = matches
   .filter(match => match.competition === "serie-a" && match.season === "2026-27" && oddsByMatch.has(match.id))
   .sort((a, b) => a.matchday - b.matchday || a.id.localeCompare(b.id));
@@ -98,7 +80,6 @@ const predictions = targetMatches.map(match => {
     oddsEvent: oddsByMatch.get(match.id),
     oddsRetrievedAt: odds.retrievedAt,
     oddsSourceUrl: odds.sourceUrl,
-    scoreCalibration: sharedScoreCalibration,
     generatedAt
   });
   const validation = backtest?.headToHead?.outOfSample?.selected;
@@ -116,7 +97,17 @@ const predictions = targetMatches.map(match => {
       improvementVsWithoutHeadToHeadPct: validation.improvementVsWithoutHeadToHeadPct,
       withoutHeadToHead,
       headToHeadConfiguration: validation.configuration,
-      scope: `${backtest.methodology.modelScope} Il correttivo H2H e ricostruito senza usare incontri successivi alla gara stimata.`
+      scope: `${backtest.methodology.modelScope} Il correttivo H2H e ricostruito senza usare incontri successivi alla gara stimata.`,
+      multiSeason: multiSeasonBacktest ? {
+        method: multiSeasonBacktest.methodology.type,
+        matches: multiSeasonBacktest.archive.outOfSamplePredictions,
+        testSeasons: multiSeasonBacktest.methodology.testSeasons,
+        selectedScoreModel: "poisson",
+        poisson: multiSeasonBacktest.variants.poisson.aggregate,
+        empirical: multiSeasonBacktest.variants.empirical.aggregate,
+        dixonColesRecommendation: multiSeasonBacktest.decision.recommendation,
+        calibrationRecommendation: multiSeasonBacktest.decision.calibrationRecommendation
+      } : null
     }
   } : prediction;
 });
@@ -132,8 +123,13 @@ const output = {
     weights: WEIGHTS,
     surpriseFactor: "Apertura della gara, probabilita dell'esito sfavorito, divergenza mercato-dati e incompletezza prepartita. Non determina da solo il verdetto.",
     spatialModel: "Valuta separatamente sviluppo a sinistra, al centro e a destra e lo incrocia con le vulnerabilita avversarie.",
-    goalModel: "Forze relative casa/trasferta e complessive, ultime otto gare corrette per avversario, probabile XI, divisione di provenienza, calibrazione empirica 2025/26 e correttivo H2H limitato al 5% per lato.",
-    scoreCalibration: sharedScoreCalibration,
+    goalModel: "Forze relative casa/trasferta e complessive, ultime otto gare corrette per avversario, probabile XI, divisione di provenienza, matrice Poisson selezionata con backtest pluristagionale e correttivo H2H limitato al 5% per lato.",
+    scoreModel: {
+      type: "poisson",
+      calibration: "none",
+      reason: "La correzione empirica per singolo punteggio e stata rimossa: nel walk-forward su quattro stagioni peggiora lo score log-loss rispetto a Poisson.",
+      validationReport: "data/generated/prediction-backtest-multiseason.json"
+    },
     validation: backtest ? {
       season: backtest.season,
       method: backtest.methodology.type,
@@ -142,11 +138,20 @@ const output = {
       baseline: backtest.outOfSample.baseline,
       headToHeadStatus: backtest.headToHead.status,
       headToHead: backtest.headToHead.outOfSample.selected,
-      scope: backtest.methodology.modelScope
+      scope: backtest.methodology.modelScope,
+      multiSeason: multiSeasonBacktest ? {
+        method: multiSeasonBacktest.methodology.type,
+        testSeasons: multiSeasonBacktest.methodology.testSeasons,
+        outOfSampleMatches: multiSeasonBacktest.archive.outOfSamplePredictions,
+        poisson: multiSeasonBacktest.variants.poisson.aggregate,
+        empirical: multiSeasonBacktest.variants.empirical.aggregate,
+        dixonColes: multiSeasonBacktest.variants["dixon-coles"].aggregate,
+        decision: multiSeasonBacktest.decision
+      } : null
     } : null,
     volumeModel: "Stima per squadra tiri totali, tiri nello specchio e corner come intervalli, senza imporre una partita ricca o povera di gol.",
     playerModel: "I cinque probabili ammoniti e il candidato MVP provengono dalle probabili formazioni e dallo storico individuale disponibile.",
-    limitations: ["Quote disponibili in un solo snapshot del 3 agosto 2026.", "Forma ufficiale 2026/27 non ancora disponibile: la forma recente usa le ultime otto gare 2025/26.", "Indisponibili, arbitri e meteo saranno integrati soltanto quando verificati.", "Le probabili formazioni sono proiezioni editoriali e non distinte ufficiali.", "Il backtest walk-forward copre una sola stagione e soltanto i segnali retrodatabili; serve ancora una verifica pluristagionale.", "Il correttivo H2H e limitato al 5% per lato: il vantaggio fuori campione e positivo ma modesto, quindi non deve dominare il pronostico."]
+    limitations: ["Quote disponibili in un solo snapshot del 3 agosto 2026.", "Forma ufficiale 2026/27 non ancora disponibile: la forma recente usa le ultime otto gare 2025/26.", "Indisponibili, arbitri e meteo saranno integrati soltanto quando verificati.", "Le probabili formazioni sono proiezioni editoriali e non distinte ufficiali.", "Il backtest pluristagionale copre il nucleo statistico retrodatabile, ma non probabili XI, indisponibili e tattica per assenza di snapshot storici.", "Il correttivo H2H e limitato al 5% per lato: il vantaggio fuori campione e positivo ma modesto, quindi non deve dominare il pronostico."]
   },
   sources: [
     { label: "Lega Serie A - programma prime cinque giornate", url: "https://www.legaseriea.it/serie-a/news/date-orari-e-programmazione-tv-delle-prime-cinque-giornate" },

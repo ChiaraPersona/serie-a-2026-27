@@ -19,5 +19,5 @@ assert(app.includes('loadGenerated("head-to-head/first-leg-2026-27.json")'), "La
 assert(app.includes("Precedenti per tutte le 190 partite"), "La directory del girone di andata non è renderizzata");
 assert(app.includes("match.matchday<=19&&match.matchday!==nextDay"), "La directory non deve ripetere la giornata gia mostrata nel prossimo turno");
 assert(app.includes("Dettaglio ammoniti N/D"), "La UI non distingue i cartellini mancanti dallo zero");
-assert(page.includes("20260804-h2h-backtest"), "Cache busting non propagato alla pagina Lettura");
+assert(page.includes("20260805-multiseason-poisson"), "Cache busting non propagato alla pagina Lettura");
 console.log("OK collegamento H2H: motore, 190 letture, copertura esplicita e cache aggiornata");

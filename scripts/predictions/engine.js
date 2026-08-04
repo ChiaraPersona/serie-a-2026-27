@@ -1,6 +1,6 @@
 "use strict";
 
-const ENGINE_VERSION = "4.1.0";
+const ENGINE_VERSION = "4.2.0";
 const OUTCOMES = ["1", "X", "2"];
 const WEIGHTS = Object.freeze({ venueHistorical: 0.46, overallHistorical: 0.25, recentForm: 0.16, tacticalMatchup: 0.07, probableLineup: 0.05, objectives: 0.01 });
 
@@ -701,7 +701,7 @@ function predictMatch(input) {
   const market = marketProbabilities(findMainOneXTwo(input.oddsEvent));
   if (!market) throw new Error(`Mercato 1X2 principale assente: ${input.match.id}`);
   const expected = expectedGoals(input);
-  const matrix = scoreMatrix(expected.home, expected.away, 7, input.scoreCalibration);
+  const matrix = scoreMatrix(expected.home, expected.away, 7);
   const parts = {
     historical: technicalProbabilities(matrix),
     tactical: tacticalProbabilities(input.homeProfile, input.awayProfile),
@@ -717,7 +717,7 @@ function predictMatch(input) {
   const orderedOutcomes = OUTCOMES.map((outcome, index) => ({ outcome, probability: final[index] })).sort((a, b) => b.probability - a.probability);
   const topTwo = new Set(orderedOutcomes.slice(0, 2).map(item => item.outcome));
   const doubleChance = topTwo.has("1") && topTwo.has("X") ? "1X" : topTwo.has("X") && topTwo.has("2") ? "X2" : "12";
-  const matrices = sensitivityMatrices(expected, matrix, input.scoreCalibration);
+  const matrices = sensitivityMatrices(expected, matrix, null);
   const evaluatedMarkets = marketEvaluation(input.oddsEvent, matrices, dataCompleteness);
   const valueCandidates = evaluatedMarkets.rows.filter(row => row.family === "1x2");
   const teamProjections = [
