@@ -88,6 +88,80 @@
         "7-7": 1
       }
     },
+    "validation": {
+      "season": "2025-26",
+      "method": "walk-forward",
+      "outOfSampleMatches": 190,
+      "configuredCore": {
+        "parameters": {
+          "venueWeight": 0.46,
+          "overallWeight": 0.25,
+          "recentWeight": 0.16,
+          "venueReliability": 0.7,
+          "overallReliability": 0.62,
+          "recentReliability": 0.48,
+          "calibrationExponent": 0.55
+        },
+        "metrics": {
+          "matches": 190,
+          "oneXTwoLogLoss": 1.0066,
+          "oneXTwoBrier": 0.601,
+          "oneXTwoAccuracyPct": 52.6,
+          "scoreLogLoss": 2.8516,
+          "exactModeHitPct": 10,
+          "exactTopThreeHitPct": 28.4,
+          "goalBandBrier": 0.6302,
+          "goalBandAccuracyPct": 50,
+          "totalGoalsMae": 1.2673
+        },
+        "improvementVsBaselinePct": {
+          "oneXTwoLogLoss": 6.6,
+          "oneXTwoBrier": 8,
+          "scoreLogLoss": 3.4,
+          "goalBandBrier": -0.8
+        },
+        "pairedBootstrap": {
+          "oneXTwoLogLoss": {
+            "meanImprovement": 0.0714,
+            "confidenceInterval95": [
+              0.0354,
+              0.1064
+            ],
+            "interpretation": "Valori positivi favoriscono il modello; un intervallo che include zero non dimostra un vantaggio stabile."
+          },
+          "oneXTwoBrier": {
+            "meanImprovement": 0.0523,
+            "confidenceInterval95": [
+              0.0261,
+              0.0776
+            ],
+            "interpretation": "Valori positivi favoriscono il modello; un intervallo che include zero non dimostra un vantaggio stabile."
+          },
+          "scoreLogLoss": {
+            "meanImprovement": 0.0993,
+            "confidenceInterval95": [
+              0.0449,
+              0.1547
+            ],
+            "interpretation": "Valori positivi favoriscono il modello; un intervallo che include zero non dimostra un vantaggio stabile."
+          }
+        }
+      },
+      "baseline": {
+        "matches": 190,
+        "oneXTwoLogLoss": 1.0781,
+        "oneXTwoBrier": 0.6534,
+        "oneXTwoAccuracyPct": 41.1,
+        "scoreLogLoss": 2.951,
+        "exactModeHitPct": 8.4,
+        "exactTopThreeHitPct": 27.9,
+        "goalBandBrier": 0.6249,
+        "goalBandAccuracyPct": 50,
+        "totalGoalsMae": 1.2738
+      },
+      "headToHeadStatus": "pending-dataset",
+      "scope": "Nucleo statistico di forza casa/trasferta, forza complessiva, forma recente e calibrazione punteggi. Probabili XI, tattica e obiettivi non sono retrodatabili senza snapshot storici."
+    },
     "volumeModel": "Stima per squadra tiri totali, tiri nello specchio e corner come intervalli, senza imporre una partita ricca o povera di gol.",
     "playerModel": "I cinque probabili ammoniti e il candidato MVP provengono dalle probabili formazioni e dallo storico individuale disponibile.",
     "limitations": [
@@ -95,7 +169,8 @@
       "Forma ufficiale 2026/27 non ancora disponibile: la forma recente usa le ultime otto gare 2025/26.",
       "Indisponibili, arbitri e meteo saranno integrati soltanto quando verificati.",
       "Le probabili formazioni sono proiezioni editoriali e non distinte ufficiali.",
-      "La calibrazione empirica usa una sola stagione e deve essere verificata con backtest pluristagionale."
+      "Il backtest walk-forward copre una sola stagione e soltanto il nucleo statistico retrodatabile; serve ancora una verifica pluristagionale.",
+      "Gli ultimi cinque scontri diretti saranno valutati con un test con/senza H2H quando il relativo dataset sara disponibile."
     ]
   },
   "sources": [
@@ -1101,6 +1176,22 @@
           "meteo attendibile alla data della gara",
           "quote giocatore verificate"
         ]
+      },
+      "modelValidation": {
+        "season": "2025-26",
+        "method": "walk-forward",
+        "matches": 190,
+        "oneXTwoLogLoss": 1.0066,
+        "oneXTwoBrier": 0.601,
+        "oneXTwoAccuracyPct": 52.6,
+        "exactTopThreeHitPct": 28.4,
+        "improvementVsBaselinePct": {
+          "oneXTwoLogLoss": 6.6,
+          "oneXTwoBrier": 8,
+          "scoreLogLoss": 3.4,
+          "goalBandBrier": -0.8
+        },
+        "scope": "Nucleo statistico di forza casa/trasferta, forza complessiva, forma recente e calibrazione punteggi. Probabili XI, tattica e obiettivi non sono retrodatabili senza snapshot storici."
       }
     },
     {
@@ -2007,6 +2098,22 @@
           "meteo attendibile alla data della gara",
           "quote giocatore verificate"
         ]
+      },
+      "modelValidation": {
+        "season": "2025-26",
+        "method": "walk-forward",
+        "matches": 190,
+        "oneXTwoLogLoss": 1.0066,
+        "oneXTwoBrier": 0.601,
+        "oneXTwoAccuracyPct": 52.6,
+        "exactTopThreeHitPct": 28.4,
+        "improvementVsBaselinePct": {
+          "oneXTwoLogLoss": 6.6,
+          "oneXTwoBrier": 8,
+          "scoreLogLoss": 3.4,
+          "goalBandBrier": -0.8
+        },
+        "scope": "Nucleo statistico di forza casa/trasferta, forza complessiva, forma recente e calibrazione punteggi. Probabili XI, tattica e obiettivi non sono retrodatabili senza snapshot storici."
       }
     },
     {
@@ -2869,6 +2976,22 @@
           "meteo attendibile alla data della gara",
           "quote giocatore verificate"
         ]
+      },
+      "modelValidation": {
+        "season": "2025-26",
+        "method": "walk-forward",
+        "matches": 190,
+        "oneXTwoLogLoss": 1.0066,
+        "oneXTwoBrier": 0.601,
+        "oneXTwoAccuracyPct": 52.6,
+        "exactTopThreeHitPct": 28.4,
+        "improvementVsBaselinePct": {
+          "oneXTwoLogLoss": 6.6,
+          "oneXTwoBrier": 8,
+          "scoreLogLoss": 3.4,
+          "goalBandBrier": -0.8
+        },
+        "scope": "Nucleo statistico di forza casa/trasferta, forza complessiva, forma recente e calibrazione punteggi. Probabili XI, tattica e obiettivi non sono retrodatabili senza snapshot storici."
       }
     },
     {
@@ -3713,6 +3836,22 @@
           "meteo attendibile alla data della gara",
           "quote giocatore verificate"
         ]
+      },
+      "modelValidation": {
+        "season": "2025-26",
+        "method": "walk-forward",
+        "matches": 190,
+        "oneXTwoLogLoss": 1.0066,
+        "oneXTwoBrier": 0.601,
+        "oneXTwoAccuracyPct": 52.6,
+        "exactTopThreeHitPct": 28.4,
+        "improvementVsBaselinePct": {
+          "oneXTwoLogLoss": 6.6,
+          "oneXTwoBrier": 8,
+          "scoreLogLoss": 3.4,
+          "goalBandBrier": -0.8
+        },
+        "scope": "Nucleo statistico di forza casa/trasferta, forza complessiva, forma recente e calibrazione punteggi. Probabili XI, tattica e obiettivi non sono retrodatabili senza snapshot storici."
       }
     },
     {
@@ -4594,6 +4733,22 @@
           "meteo attendibile alla data della gara",
           "quote giocatore verificate"
         ]
+      },
+      "modelValidation": {
+        "season": "2025-26",
+        "method": "walk-forward",
+        "matches": 190,
+        "oneXTwoLogLoss": 1.0066,
+        "oneXTwoBrier": 0.601,
+        "oneXTwoAccuracyPct": 52.6,
+        "exactTopThreeHitPct": 28.4,
+        "improvementVsBaselinePct": {
+          "oneXTwoLogLoss": 6.6,
+          "oneXTwoBrier": 8,
+          "scoreLogLoss": 3.4,
+          "goalBandBrier": -0.8
+        },
+        "scope": "Nucleo statistico di forza casa/trasferta, forza complessiva, forma recente e calibrazione punteggi. Probabili XI, tattica e obiettivi non sono retrodatabili senza snapshot storici."
       }
     },
     {
@@ -5440,6 +5595,22 @@
           "meteo attendibile alla data della gara",
           "quote giocatore verificate"
         ]
+      },
+      "modelValidation": {
+        "season": "2025-26",
+        "method": "walk-forward",
+        "matches": 190,
+        "oneXTwoLogLoss": 1.0066,
+        "oneXTwoBrier": 0.601,
+        "oneXTwoAccuracyPct": 52.6,
+        "exactTopThreeHitPct": 28.4,
+        "improvementVsBaselinePct": {
+          "oneXTwoLogLoss": 6.6,
+          "oneXTwoBrier": 8,
+          "scoreLogLoss": 3.4,
+          "goalBandBrier": -0.8
+        },
+        "scope": "Nucleo statistico di forza casa/trasferta, forza complessiva, forma recente e calibrazione punteggi. Probabili XI, tattica e obiettivi non sono retrodatabili senza snapshot storici."
       }
     },
     {
@@ -6286,6 +6457,22 @@
           "meteo attendibile alla data della gara",
           "quote giocatore verificate"
         ]
+      },
+      "modelValidation": {
+        "season": "2025-26",
+        "method": "walk-forward",
+        "matches": 190,
+        "oneXTwoLogLoss": 1.0066,
+        "oneXTwoBrier": 0.601,
+        "oneXTwoAccuracyPct": 52.6,
+        "exactTopThreeHitPct": 28.4,
+        "improvementVsBaselinePct": {
+          "oneXTwoLogLoss": 6.6,
+          "oneXTwoBrier": 8,
+          "scoreLogLoss": 3.4,
+          "goalBandBrier": -0.8
+        },
+        "scope": "Nucleo statistico di forza casa/trasferta, forza complessiva, forma recente e calibrazione punteggi. Probabili XI, tattica e obiettivi non sono retrodatabili senza snapshot storici."
       }
     },
     {
@@ -7132,6 +7319,22 @@
           "meteo attendibile alla data della gara",
           "quote giocatore verificate"
         ]
+      },
+      "modelValidation": {
+        "season": "2025-26",
+        "method": "walk-forward",
+        "matches": 190,
+        "oneXTwoLogLoss": 1.0066,
+        "oneXTwoBrier": 0.601,
+        "oneXTwoAccuracyPct": 52.6,
+        "exactTopThreeHitPct": 28.4,
+        "improvementVsBaselinePct": {
+          "oneXTwoLogLoss": 6.6,
+          "oneXTwoBrier": 8,
+          "scoreLogLoss": 3.4,
+          "goalBandBrier": -0.8
+        },
+        "scope": "Nucleo statistico di forza casa/trasferta, forza complessiva, forma recente e calibrazione punteggi. Probabili XI, tattica e obiettivi non sono retrodatabili senza snapshot storici."
       }
     },
     {
@@ -7978,6 +8181,22 @@
           "meteo attendibile alla data della gara",
           "quote giocatore verificate"
         ]
+      },
+      "modelValidation": {
+        "season": "2025-26",
+        "method": "walk-forward",
+        "matches": 190,
+        "oneXTwoLogLoss": 1.0066,
+        "oneXTwoBrier": 0.601,
+        "oneXTwoAccuracyPct": 52.6,
+        "exactTopThreeHitPct": 28.4,
+        "improvementVsBaselinePct": {
+          "oneXTwoLogLoss": 6.6,
+          "oneXTwoBrier": 8,
+          "scoreLogLoss": 3.4,
+          "goalBandBrier": -0.8
+        },
+        "scope": "Nucleo statistico di forza casa/trasferta, forza complessiva, forma recente e calibrazione punteggi. Probabili XI, tattica e obiettivi non sono retrodatabili senza snapshot storici."
       }
     },
     {
@@ -8840,6 +9059,22 @@
           "meteo attendibile alla data della gara",
           "quote giocatore verificate"
         ]
+      },
+      "modelValidation": {
+        "season": "2025-26",
+        "method": "walk-forward",
+        "matches": 190,
+        "oneXTwoLogLoss": 1.0066,
+        "oneXTwoBrier": 0.601,
+        "oneXTwoAccuracyPct": 52.6,
+        "exactTopThreeHitPct": 28.4,
+        "improvementVsBaselinePct": {
+          "oneXTwoLogLoss": 6.6,
+          "oneXTwoBrier": 8,
+          "scoreLogLoss": 3.4,
+          "goalBandBrier": -0.8
+        },
+        "scope": "Nucleo statistico di forza casa/trasferta, forza complessiva, forma recente e calibrazione punteggi. Probabili XI, tattica e obiettivi non sono retrodatabili senza snapshot storici."
       }
     }
   ]

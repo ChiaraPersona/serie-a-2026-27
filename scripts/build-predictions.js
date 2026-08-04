@@ -15,6 +15,8 @@ const historicalMatches = read("data/normalized/referee-matches/2025-26/serie-a.
 const objectives = read("data/team-objectives.json");
 const teams = read("data/teams/index.json").teams;
 const odds = read("data/normalized/odds/sisal/serie-a.json");
+const backtestPath = path.join(root, "data/generated/prediction-backtest-2025-26.json");
+const backtest = fs.existsSync(backtestPath) ? JSON.parse(fs.readFileSync(backtestPath, "utf8")) : null;
 const generatedAt = odds.retrievedAt || new Date().toISOString();
 
 const byId = items => new Map(items.map(item => [item.teamId || item.team || item.matchId || item.canonicalMatchId, item]));
@@ -71,30 +73,47 @@ const targetMatches = matches
   .filter(match => match.competition === "serie-a" && match.season === "2026-27" && oddsByMatch.has(match.id))
   .sort((a, b) => a.matchday - b.matchday || a.id.localeCompare(b.id));
 
-const predictions = targetMatches.map(match => predictMatch({
-  match,
-  reading: readingByMatch.get(match.id),
-  homeVenue: homeByTeam.get(match.homeTeam),
-  awayVenue: awayByTeam.get(match.awayTeam),
-  homeProfile: styleByTeam.get(match.homeTeam),
-  awayProfile: styleByTeam.get(match.awayTeam),
-  homeRecent: recentForm(match.homeTeam),
-  awayRecent: recentForm(match.awayTeam),
-  homeDiscipline: disciplineByTeam.get(match.homeTeam),
-  awayDiscipline: disciplineByTeam.get(match.awayTeam),
-  homeObjective: objectiveByTeam.get(match.homeTeam),
-  awayObjective: objectiveByTeam.get(match.awayTeam),
-  homeTeam: teamById.get(match.homeTeam),
-  awayTeam: teamById.get(match.awayTeam),
-  homeSquad: squadsByTeam.get(match.homeTeam),
-  awaySquad: squadsByTeam.get(match.awayTeam),
-  leagueSummary: standings.summary,
-  oddsEvent: oddsByMatch.get(match.id),
-  oddsRetrievedAt: odds.retrievedAt,
-  oddsSourceUrl: odds.sourceUrl,
-  scoreCalibration: sharedScoreCalibration,
-  generatedAt
-}));
+const predictions = targetMatches.map(match => {
+  const prediction = predictMatch({
+    match,
+    reading: readingByMatch.get(match.id),
+    homeVenue: homeByTeam.get(match.homeTeam),
+    awayVenue: awayByTeam.get(match.awayTeam),
+    homeProfile: styleByTeam.get(match.homeTeam),
+    awayProfile: styleByTeam.get(match.awayTeam),
+    homeRecent: recentForm(match.homeTeam),
+    awayRecent: recentForm(match.awayTeam),
+    homeDiscipline: disciplineByTeam.get(match.homeTeam),
+    awayDiscipline: disciplineByTeam.get(match.awayTeam),
+    homeObjective: objectiveByTeam.get(match.homeTeam),
+    awayObjective: objectiveByTeam.get(match.awayTeam),
+    homeTeam: teamById.get(match.homeTeam),
+    awayTeam: teamById.get(match.awayTeam),
+    homeSquad: squadsByTeam.get(match.homeTeam),
+    awaySquad: squadsByTeam.get(match.awayTeam),
+    leagueSummary: standings.summary,
+    oddsEvent: oddsByMatch.get(match.id),
+    oddsRetrievedAt: odds.retrievedAt,
+    oddsSourceUrl: odds.sourceUrl,
+    scoreCalibration: sharedScoreCalibration,
+    generatedAt
+  });
+  const validation = backtest?.outOfSample?.configuredV4Core;
+  return validation ? {
+    ...prediction,
+    modelValidation: {
+      season: backtest.season,
+      method: backtest.methodology.type,
+      matches: validation.metrics.matches,
+      oneXTwoLogLoss: validation.metrics.oneXTwoLogLoss,
+      oneXTwoBrier: validation.metrics.oneXTwoBrier,
+      oneXTwoAccuracyPct: validation.metrics.oneXTwoAccuracyPct,
+      exactTopThreeHitPct: validation.metrics.exactTopThreeHitPct,
+      improvementVsBaselinePct: validation.improvementVsBaselinePct,
+      scope: backtest.methodology.modelScope
+    }
+  } : prediction;
+});
 
 const output = {
   schemaVersion: 1,
@@ -109,9 +128,18 @@ const output = {
     spatialModel: "Valuta separatamente sviluppo a sinistra, al centro e a destra e lo incrocia con le vulnerabilita avversarie.",
     goalModel: "Forze relative casa/trasferta e complessive, ultime otto gare corrette per avversario, probabile XI, divisione di provenienza e calibrazione empirica dei punteggi 2025/26.",
     scoreCalibration: sharedScoreCalibration,
+    validation: backtest ? {
+      season: backtest.season,
+      method: backtest.methodology.type,
+      outOfSampleMatches: backtest.outOfSample.configuredV4Core.metrics.matches,
+      configuredCore: backtest.outOfSample.configuredV4Core,
+      baseline: backtest.outOfSample.baseline,
+      headToHeadStatus: backtest.headToHead.status,
+      scope: backtest.methodology.modelScope
+    } : null,
     volumeModel: "Stima per squadra tiri totali, tiri nello specchio e corner come intervalli, senza imporre una partita ricca o povera di gol.",
     playerModel: "I cinque probabili ammoniti e il candidato MVP provengono dalle probabili formazioni e dallo storico individuale disponibile.",
-    limitations: ["Quote disponibili in un solo snapshot del 3 agosto 2026.", "Forma ufficiale 2026/27 non ancora disponibile: la forma recente usa le ultime otto gare 2025/26.", "Indisponibili, arbitri e meteo saranno integrati soltanto quando verificati.", "Le probabili formazioni sono proiezioni editoriali e non distinte ufficiali.", "La calibrazione empirica usa una sola stagione e deve essere verificata con backtest pluristagionale."]
+    limitations: ["Quote disponibili in un solo snapshot del 3 agosto 2026.", "Forma ufficiale 2026/27 non ancora disponibile: la forma recente usa le ultime otto gare 2025/26.", "Indisponibili, arbitri e meteo saranno integrati soltanto quando verificati.", "Le probabili formazioni sono proiezioni editoriali e non distinte ufficiali.", "Il backtest walk-forward copre una sola stagione e soltanto il nucleo statistico retrodatabile; serve ancora una verifica pluristagionale.", "Gli ultimi cinque scontri diretti saranno valutati con un test con/senza H2H quando il relativo dataset sara disponibile."]
   },
   sources: [
     { label: "Lega Serie A - programma prime cinque giornate", url: "https://www.legaseriea.it/serie-a/news/date-orari-e-programmazione-tv-delle-prime-cinque-giornate" },

@@ -1,0 +1,168 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-08-04T10:31:15.370Z",
+  "competition": "serie-a",
+  "season": "2025-26",
+  "methodology": {
+    "type": "walk-forward",
+    "leakageControl": "Ogni pronostico usa soltanto partite di giornate precedenti. Le giornate 9-19 selezionano i parametri; le giornate 20-38 restano fuori campione.",
+    "trainingWindow": {
+      "fromMatchday": 9,
+      "toMatchday": 19,
+      "matches": 110
+    },
+    "testWindow": {
+      "fromMatchday": 20,
+      "toMatchday": 38,
+      "matches": 190
+    },
+    "baseline": "Poisson dinamico con sole medie gol casa/trasferta note prima della giornata.",
+    "modelScope": "Nucleo statistico di forza casa/trasferta, forza complessiva, forma recente e calibrazione punteggi. Probabili XI, tattica e obiettivi non sono retrodatabili senza snapshot storici.",
+    "selectionMetric": "70% log-loss 1X2 + 30% Brier delle fasce gol.",
+    "candidateConfigurations": 54
+  },
+  "selectedParameters": {
+    "venueWeight": 0.35,
+    "overallWeight": 0.25,
+    "recentWeight": 0.08,
+    "venueReliability": 0.7,
+    "overallReliability": 0.62,
+    "recentReliability": 0.48,
+    "calibrationExponent": 0
+  },
+  "trainingMetrics": {
+    "matches": 110,
+    "oneXTwoLogLoss": 1.0487,
+    "oneXTwoBrier": 0.6339,
+    "oneXTwoAccuracyPct": 48.2,
+    "scoreLogLoss": 2.7656,
+    "exactModeHitPct": 10,
+    "exactTopThreeHitPct": 33.6,
+    "goalBandBrier": 0.6513,
+    "goalBandAccuracyPct": 46.4,
+    "totalGoalsMae": 1.1723
+  },
+  "outOfSample": {
+    "model": {
+      "matches": 190,
+      "oneXTwoLogLoss": 1.0055,
+      "oneXTwoBrier": 0.6003,
+      "oneXTwoAccuracyPct": 51.6,
+      "scoreLogLoss": 2.848,
+      "exactModeHitPct": 10,
+      "exactTopThreeHitPct": 30,
+      "goalBandBrier": 0.6288,
+      "goalBandAccuracyPct": 50,
+      "totalGoalsMae": 1.2667
+    },
+    "baseline": {
+      "matches": 190,
+      "oneXTwoLogLoss": 1.0781,
+      "oneXTwoBrier": 0.6534,
+      "oneXTwoAccuracyPct": 41.1,
+      "scoreLogLoss": 2.951,
+      "exactModeHitPct": 8.4,
+      "exactTopThreeHitPct": 27.9,
+      "goalBandBrier": 0.6249,
+      "goalBandAccuracyPct": 50,
+      "totalGoalsMae": 1.2738
+    },
+    "configuredV4Core": {
+      "parameters": {
+        "venueWeight": 0.46,
+        "overallWeight": 0.25,
+        "recentWeight": 0.16,
+        "venueReliability": 0.7,
+        "overallReliability": 0.62,
+        "recentReliability": 0.48,
+        "calibrationExponent": 0.55
+      },
+      "metrics": {
+        "matches": 190,
+        "oneXTwoLogLoss": 1.0066,
+        "oneXTwoBrier": 0.601,
+        "oneXTwoAccuracyPct": 52.6,
+        "scoreLogLoss": 2.8516,
+        "exactModeHitPct": 10,
+        "exactTopThreeHitPct": 28.4,
+        "goalBandBrier": 0.6302,
+        "goalBandAccuracyPct": 50,
+        "totalGoalsMae": 1.2673
+      },
+      "improvementVsBaselinePct": {
+        "oneXTwoLogLoss": 6.6,
+        "oneXTwoBrier": 8,
+        "scoreLogLoss": 3.4,
+        "goalBandBrier": -0.8
+      },
+      "pairedBootstrap": {
+        "oneXTwoLogLoss": {
+          "meanImprovement": 0.0714,
+          "confidenceInterval95": [
+            0.0354,
+            0.1064
+          ],
+          "interpretation": "Valori positivi favoriscono il modello; un intervallo che include zero non dimostra un vantaggio stabile."
+        },
+        "oneXTwoBrier": {
+          "meanImprovement": 0.0523,
+          "confidenceInterval95": [
+            0.0261,
+            0.0776
+          ],
+          "interpretation": "Valori positivi favoriscono il modello; un intervallo che include zero non dimostra un vantaggio stabile."
+        },
+        "scoreLogLoss": {
+          "meanImprovement": 0.0993,
+          "confidenceInterval95": [
+            0.0449,
+            0.1547
+          ],
+          "interpretation": "Valori positivi favoriscono il modello; un intervallo che include zero non dimostra un vantaggio stabile."
+        }
+      }
+    },
+    "improvementVsBaselinePct": {
+      "oneXTwoLogLoss": 6.7,
+      "oneXTwoBrier": 8.1,
+      "scoreLogLoss": 3.5,
+      "goalBandBrier": -0.6,
+      "totalGoalsMae": 0.6
+    },
+    "pairedBootstrap": {
+      "oneXTwoLogLoss": {
+        "meanImprovement": 0.0725,
+        "confidenceInterval95": [
+          0.0362,
+          0.1072
+        ],
+        "interpretation": "Valori positivi favoriscono il modello; un intervallo che include zero non dimostra un vantaggio stabile."
+      },
+      "oneXTwoBrier": {
+        "meanImprovement": 0.053,
+        "confidenceInterval95": [
+          0.0272,
+          0.0784
+        ],
+        "interpretation": "Valori positivi favoriscono il modello; un intervallo che include zero non dimostra un vantaggio stabile."
+      },
+      "scoreLogLoss": {
+        "meanImprovement": 0.1029,
+        "confidenceInterval95": [
+          0.0512,
+          0.1534
+        ],
+        "interpretation": "Valori positivi favoriscono il modello; un intervallo che include zero non dimostra un vantaggio stabile."
+      }
+    }
+  },
+  "headToHead": {
+    "status": "pending-dataset",
+    "note": "Il confronto con e senza ultimi cinque scontri diretti verra eseguito quando il dataset H2H sara disponibile nel repository."
+  },
+  "caveats": [
+    "Una sola stagione non basta per dichiarare il modello stabilmente calibrato.",
+    "Il test misura il nucleo statistico, non i segnali prepartita privi di snapshot storici.",
+    "Il risultato esatto resta un mercato ad alta dispersione: top-3 hit e log-loss sono piu informativi della sola moda."
+  ]
+}
