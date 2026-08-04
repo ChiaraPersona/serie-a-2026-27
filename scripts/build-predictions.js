@@ -101,7 +101,8 @@ const predictions = targetMatches.map(match => {
     scoreCalibration: sharedScoreCalibration,
     generatedAt
   });
-  const validation = backtest?.outOfSample?.configuredV4Core;
+  const validation = backtest?.headToHead?.outOfSample?.selected;
+  const withoutHeadToHead = backtest?.headToHead?.outOfSample?.withoutHeadToHead;
   return validation ? {
     ...prediction,
     modelValidation: {
@@ -112,8 +113,10 @@ const predictions = targetMatches.map(match => {
       oneXTwoBrier: validation.metrics.oneXTwoBrier,
       oneXTwoAccuracyPct: validation.metrics.oneXTwoAccuracyPct,
       exactTopThreeHitPct: validation.metrics.exactTopThreeHitPct,
-      improvementVsBaselinePct: validation.improvementVsBaselinePct,
-      scope: backtest.methodology.modelScope
+      improvementVsWithoutHeadToHeadPct: validation.improvementVsWithoutHeadToHeadPct,
+      withoutHeadToHead,
+      headToHeadConfiguration: validation.configuration,
+      scope: `${backtest.methodology.modelScope} Il correttivo H2H e ricostruito senza usare incontri successivi alla gara stimata.`
     }
   } : prediction;
 });
@@ -137,12 +140,13 @@ const output = {
       outOfSampleMatches: backtest.outOfSample.configuredV4Core.metrics.matches,
       configuredCore: backtest.outOfSample.configuredV4Core,
       baseline: backtest.outOfSample.baseline,
-      headToHeadStatus: "integrated-not-backtested",
+      headToHeadStatus: backtest.headToHead.status,
+      headToHead: backtest.headToHead.outOfSample.selected,
       scope: backtest.methodology.modelScope
     } : null,
     volumeModel: "Stima per squadra tiri totali, tiri nello specchio e corner come intervalli, senza imporre una partita ricca o povera di gol.",
     playerModel: "I cinque probabili ammoniti e il candidato MVP provengono dalle probabili formazioni e dallo storico individuale disponibile.",
-    limitations: ["Quote disponibili in un solo snapshot del 3 agosto 2026.", "Forma ufficiale 2026/27 non ancora disponibile: la forma recente usa le ultime otto gare 2025/26.", "Indisponibili, arbitri e meteo saranno integrati soltanto quando verificati.", "Le probabili formazioni sono proiezioni editoriali e non distinte ufficiali.", "Il backtest walk-forward copre una sola stagione e soltanto il nucleo statistico retrodatabile; serve ancora una verifica pluristagionale.", "Il correttivo H2H e limitato al 5% per lato e non e incluso nel backtest, per evitare leakage temporale dal dataset costruito per il 2026/27."]
+    limitations: ["Quote disponibili in un solo snapshot del 3 agosto 2026.", "Forma ufficiale 2026/27 non ancora disponibile: la forma recente usa le ultime otto gare 2025/26.", "Indisponibili, arbitri e meteo saranno integrati soltanto quando verificati.", "Le probabili formazioni sono proiezioni editoriali e non distinte ufficiali.", "Il backtest walk-forward copre una sola stagione e soltanto i segnali retrodatabili; serve ancora una verifica pluristagionale.", "Il correttivo H2H e limitato al 5% per lato: il vantaggio fuori campione e positivo ma modesto, quindi non deve dominare il pronostico."]
   },
   sources: [
     { label: "Lega Serie A - programma prime cinque giornate", url: "https://www.legaseriea.it/serie-a/news/date-orari-e-programmazione-tv-delle-prime-cinque-giornate" },

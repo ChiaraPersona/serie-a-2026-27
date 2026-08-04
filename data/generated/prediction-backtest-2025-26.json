@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-04T10:31:15.370Z",
+  "generatedAt": "2026-08-04T13:42:37.564Z",
   "competition": "serie-a",
   "season": "2025-26",
   "methodology": {
@@ -40,7 +40,10 @@
     "exactTopThreeHitPct": 33.6,
     "goalBandBrier": 0.6513,
     "goalBandAccuracyPct": 46.4,
-    "totalGoalsMae": 1.1723
+    "totalGoalsMae": 1.1723,
+    "headToHeadCoveragePct": 0,
+    "completeHeadToHeadCoveragePct": 0,
+    "averageHeadToHeadSample": 0
   },
   "outOfSample": {
     "model": {
@@ -53,7 +56,10 @@
       "exactTopThreeHitPct": 30,
       "goalBandBrier": 0.6288,
       "goalBandAccuracyPct": 50,
-      "totalGoalsMae": 1.2667
+      "totalGoalsMae": 1.2667,
+      "headToHeadCoveragePct": 0,
+      "completeHeadToHeadCoveragePct": 0,
+      "averageHeadToHeadSample": 0
     },
     "baseline": {
       "matches": 190,
@@ -65,7 +71,10 @@
       "exactTopThreeHitPct": 27.9,
       "goalBandBrier": 0.6249,
       "goalBandAccuracyPct": 50,
-      "totalGoalsMae": 1.2738
+      "totalGoalsMae": 1.2738,
+      "headToHeadCoveragePct": 0,
+      "completeHeadToHeadCoveragePct": 0,
+      "averageHeadToHeadSample": 0
     },
     "configuredV4Core": {
       "parameters": {
@@ -87,7 +96,10 @@
         "exactTopThreeHitPct": 28.4,
         "goalBandBrier": 0.6302,
         "goalBandAccuracyPct": 50,
-        "totalGoalsMae": 1.2673
+        "totalGoalsMae": 1.2673,
+        "headToHeadCoveragePct": 0,
+        "completeHeadToHeadCoveragePct": 0,
+        "averageHeadToHeadSample": 0
       },
       "improvementVsBaselinePct": {
         "oneXTwoLogLoss": 6.6,
@@ -157,8 +169,160 @@
     }
   },
   "headToHead": {
-    "status": "pending-dataset",
-    "note": "Il confronto con e senza ultimi cinque scontri diretti verra eseguito quando il dataset H2H sara disponibile nel repository."
+    "status": "validated",
+    "archiveEvents": 5255,
+    "leakageControl": "Per ogni gara sono usati soltanto eventi H2H con data precedente al calcio d'inizio.",
+    "candidateConfigurations": 25,
+    "selectionWindow": {
+      "fromMatchday": 9,
+      "toMatchday": 19,
+      "withoutHeadToHead": {
+        "matches": 110,
+        "oneXTwoLogLoss": 1.0524,
+        "oneXTwoBrier": 0.6362,
+        "oneXTwoAccuracyPct": 49.1,
+        "scoreLogLoss": 2.7789,
+        "exactModeHitPct": 9.1,
+        "exactTopThreeHitPct": 24.5,
+        "goalBandBrier": 0.6542,
+        "goalBandAccuracyPct": 46.4,
+        "totalGoalsMae": 1.1719,
+        "headToHeadCoveragePct": 0,
+        "completeHeadToHeadCoveragePct": 0,
+        "averageHeadToHeadSample": 0
+      },
+      "selected": {
+        "configuration": {
+          "cap": 0.05,
+          "decay": 0.6,
+          "lowerDivisionWeight": 0.8,
+          "cupWeight": 0.72,
+          "oppositeVenueWeight": 1,
+          "tempoCap": 0.02
+        },
+        "metrics": {
+          "matches": 110,
+          "oneXTwoLogLoss": 1.0484,
+          "oneXTwoBrier": 0.6335,
+          "oneXTwoAccuracyPct": 50,
+          "scoreLogLoss": 2.7742,
+          "exactModeHitPct": 9.1,
+          "exactTopThreeHitPct": 26.4,
+          "goalBandBrier": 0.654,
+          "goalBandAccuracyPct": 45.5,
+          "totalGoalsMae": 1.1737,
+          "headToHeadCoveragePct": 96.4,
+          "completeHeadToHeadCoveragePct": 78.2,
+          "averageHeadToHeadSample": 4.45
+        },
+        "selectionScore": 0.93008
+      }
+    },
+    "outOfSample": {
+      "withoutHeadToHead": {
+        "matches": 190,
+        "oneXTwoLogLoss": 1.0066,
+        "oneXTwoBrier": 0.601,
+        "oneXTwoAccuracyPct": 52.6,
+        "scoreLogLoss": 2.8516,
+        "exactModeHitPct": 10,
+        "exactTopThreeHitPct": 28.4,
+        "goalBandBrier": 0.6302,
+        "goalBandAccuracyPct": 50,
+        "totalGoalsMae": 1.2673,
+        "headToHeadCoveragePct": 0,
+        "completeHeadToHeadCoveragePct": 0,
+        "averageHeadToHeadSample": 0
+      },
+      "selected": {
+        "configuration": {
+          "cap": 0.05,
+          "decay": 0.6,
+          "lowerDivisionWeight": 0.8,
+          "cupWeight": 0.72,
+          "oppositeVenueWeight": 1,
+          "tempoCap": 0.02
+        },
+        "metrics": {
+          "matches": 190,
+          "oneXTwoLogLoss": 1.003,
+          "oneXTwoBrier": 0.5985,
+          "oneXTwoAccuracyPct": 53.2,
+          "scoreLogLoss": 2.8471,
+          "exactModeHitPct": 10.5,
+          "exactTopThreeHitPct": 28.9,
+          "goalBandBrier": 0.6303,
+          "goalBandAccuracyPct": 50,
+          "totalGoalsMae": 1.2674,
+          "headToHeadCoveragePct": 100,
+          "completeHeadToHeadCoveragePct": 84.7,
+          "averageHeadToHeadSample": 4.64
+        },
+        "improvementVsWithoutHeadToHeadPct": {
+          "oneXTwoLogLoss": 0.4,
+          "oneXTwoBrier": 0.4,
+          "scoreLogLoss": 0.2,
+          "goalBandBrier": 0
+        },
+        "pairedBootstrap": {
+          "oneXTwoLogLoss": {
+            "meanImprovement": 0.0035,
+            "confidenceInterval95": [
+              0.0003,
+              0.0067
+            ],
+            "interpretation": "Valori positivi favoriscono il modello; un intervallo che include zero non dimostra un vantaggio stabile."
+          },
+          "oneXTwoBrier": {
+            "meanImprovement": 0.0025,
+            "confidenceInterval95": [
+              0.0001,
+              0.0049
+            ],
+            "interpretation": "Valori positivi favoriscono il modello; un intervallo che include zero non dimostra un vantaggio stabile."
+          },
+          "scoreLogLoss": {
+            "meanImprovement": 0.0044,
+            "confidenceInterval95": [
+              -0.0001,
+              0.0087
+            ],
+            "interpretation": "Valori positivi favoriscono il modello; un intervallo che include zero non dimostra un vantaggio stabile."
+          }
+        }
+      },
+      "productionRule": {
+        "configuration": {
+          "cap": 0.05,
+          "decay": 0.72,
+          "lowerDivisionWeight": 1,
+          "cupWeight": 1,
+          "oppositeVenueWeight": 1,
+          "tempoCap": 0.02
+        },
+        "metrics": {
+          "matches": 190,
+          "oneXTwoLogLoss": 1.0033,
+          "oneXTwoBrier": 0.5987,
+          "oneXTwoAccuracyPct": 54.2,
+          "scoreLogLoss": 2.8478,
+          "exactModeHitPct": 10.5,
+          "exactTopThreeHitPct": 28.9,
+          "goalBandBrier": 0.6303,
+          "goalBandAccuracyPct": 50,
+          "totalGoalsMae": 1.2679,
+          "headToHeadCoveragePct": 100,
+          "completeHeadToHeadCoveragePct": 84.7,
+          "averageHeadToHeadSample": 4.64
+        },
+        "improvementVsWithoutHeadToHeadPct": {
+          "oneXTwoLogLoss": 0.3,
+          "oneXTwoBrier": 0.4,
+          "scoreLogLoss": 0.1,
+          "goalBandBrier": 0
+        }
+      }
+    }
   },
   "caveats": [
     "Una sola stagione non basta per dichiarare il modello stabilmente calibrato.",

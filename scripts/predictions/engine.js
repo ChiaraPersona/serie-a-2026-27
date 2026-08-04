@@ -177,7 +177,8 @@ function headToHeadGoalFactors(history, homeTeamId, leagueSummary) {
     const currentHomeWasHome = meeting.homeTeam?.id === homeTeamId;
     const scored = currentHomeWasHome ? meeting.score.home : meeting.score.away;
     const conceded = currentHomeWasHome ? meeting.score.away : meeting.score.home;
-    const weight = 0.72 ** index;
+    const competitionWeight = meeting.competition === "Serie B" ? 0.8 : meeting.competition === "Coppa Italia" ? 0.72 : 1;
+    const weight = (0.6 ** index) * competitionWeight;
     weightTotal += weight;
     goalsFor += scored * weight;
     goalsAgainst += conceded * weight;
@@ -202,7 +203,7 @@ function headToHeadGoalFactors(history, homeTeamId, leagueSummary) {
     usedInModel: true,
     record: { wins, draws, losses },
     goals: { for: round(weightedFor, 2), against: round(weightedAgainst, 2), averageTotal: round(averageTotal, 2) },
-    method: "Ultimi cinque precedenti ufficiali con decadimento 0,72; correzione complessiva limitata al 5% per lato."
+    method: "Ultimi cinque precedenti ufficiali con decadimento 0,60, peso Serie B 0,80 e Coppa Italia 0,72; correzione complessiva limitata al 5% per lato e validata fuori campione."
   };
 }
 
