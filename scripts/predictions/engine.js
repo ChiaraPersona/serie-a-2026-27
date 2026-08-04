@@ -1,8 +1,8 @@
 "use strict";
 
-const ENGINE_VERSION = "3.0.0";
+const ENGINE_VERSION = "4.0.0";
 const OUTCOMES = ["1", "X", "2"];
-const WEIGHTS = Object.freeze({ historical: 0.55, tactical: 0.35, objectives: 0.1 });
+const WEIGHTS = Object.freeze({ venueHistorical: 0.46, overallHistorical: 0.25, recentForm: 0.16, tacticalMatchup: 0.07, probableLineup: 0.05, objectives: 0.01 });
 
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 const round = (value, digits = 1) => Number(value.toFixed(digits));
@@ -93,11 +93,12 @@ function poisson(k, lambda) {
   return Math.exp(-lambda) * (lambda ** k) / factorial;
 }
 
-function scoreMatrix(homeGoals, awayGoals, maxGoals = 7) {
+function scoreMatrix(homeGoals, awayGoals, maxGoals = 7, calibration = null) {
   const scores = [];
   for (let home = 0; home <= maxGoals; home += 1) {
     for (let away = 0; away <= maxGoals; away += 1) {
-      scores.push({ home, away, probability: poisson(home, homeGoals) * poisson(away, awayGoals) });
+      const calibrationFactor = calibration?.factors?.[`${home}-${away}`] || 1;
+      scores.push({ home, away, probability: poisson(home, homeGoals) * poisson(away, awayGoals) * calibrationFactor });
     }
   }
   const total = sum(scores.map(score => score.probability));
@@ -105,29 +106,113 @@ function scoreMatrix(homeGoals, awayGoals, maxGoals = 7) {
 }
 
 function profileGoals(profile, fallbackFor, fallbackAgainst) {
-  const appearances = profile?.formation?.appearances || profile?.summary?.appearances || 0;
+  const formationAppearances = profile?.formation?.appearances || 0;
+  const formationFor = Number.isFinite(profile?.formation?.goalsFor) && formationAppearances ? profile.formation.goalsFor / formationAppearances : null;
+  const formationAgainst = Number.isFinite(profile?.formation?.goalsAgainst) && formationAppearances ? profile.formation.goalsAgainst / formationAppearances : null;
   return {
-    for: profile?.derived?.goalsPerGame ?? (appearances ? profile.formation.goalsFor / appearances : fallbackFor),
-    against: appearances ? profile.formation.goalsAgainst / appearances : fallbackAgainst
+    for: profile?.derived?.goalsPerGame ?? formationFor ?? fallbackFor,
+    against: formationAgainst ?? fallbackAgainst
   };
 }
 
-function expectedGoals({ homeVenue, awayVenue, homeProfile, awayProfile, leagueSummary }) {
+function weightedGeometric(values) {
+  const available = values.filter(item => Number.isFinite(item.value) && item.value > 0 && item.weight > 0);
+  const totalWeight = sum(available.map(item => item.weight));
+  if (!totalWeight) return 1;
+  return Math.exp(sum(available.map(item => Math.log(item.value) * item.weight)) / totalWeight);
+}
+
+function regressedRatio(rate, baseline, reliability = 0.72) {
+  if (!(rate >= 0) || !(baseline > 0)) return null;
+  return clamp(1 + (rate / baseline - 1) * reliability, 0.48, 1.8);
+}
+
+function divisionAdjustedRate(profile, type, leagueOverall) {
+  const goals = profileGoals(profile, leagueOverall, leagueOverall);
+  const serieB = profile?.competition !== "Serie A";
+  const raw = type === "for" ? goals.for : goals.against;
+  if (!serieB) return raw;
+  return type === "for" ? raw * 0.62 : raw * 1.18;
+}
+
+function lineupImpact(team, squad) {
+  const candidates = lineupPlayers(team, squad);
+  if (candidates.length !== 11) return { attack: 1, defenceWeakness: 1, resolved: candidates.filter(item => item.player).length, status: "N/D" };
+  const baselines = { Attaccante: 0.58, Centrocampista: 0.24, Difensore: 0.075, Portiere: 0 };
+  let observedAttack = 0, baselineAttack = 0;
+  const defensiveReliability = [];
+  for (const candidate of candidates) {
+    const baseline = baselines[candidate.role] ?? 0.2;
+    const totals = candidate.player?.previousSeason?.totals || {};
+    const per90 = totals.per90 || {};
+    const reliability = totals.minutes ? clamp(totals.minutes / 1800, 0.3, 1) : 0.25;
+    const production = (per90.goals ?? baseline * 0.72) + (per90.assists ?? baseline * 0.22) * 0.55 + (per90.shotsOnTarget ?? baseline * 0.65) * 0.15;
+    observedAttack += production * reliability + baseline * (1 - reliability);
+    baselineAttack += baseline;
+    if (candidate.role === "Portiere" || candidate.role === "Difensore") defensiveReliability.push(reliability);
+  }
+  const attackRatio = baselineAttack ? observedAttack / baselineAttack : 1;
+  const continuity = defensiveReliability.length ? sum(defensiveReliability) / defensiveReliability.length : 0.7;
+  return {
+    attack: round(clamp(1 + (attackRatio - 1) * 0.08, 0.93, 1.08), 3),
+    defenceWeakness: round(clamp(1 + (0.72 - continuity) * 0.08, 0.96, 1.04), 3),
+    resolved: candidates.filter(item => item.player).length,
+    status: candidates.filter(item => item.player).length >= 8 ? "usable" : "limited"
+  };
+}
+
+function objectiveGoalFactors(homeObjective, awayObjective) {
+  const score = objective => objective
+    ? objective.motivationStart * 0.55 + objective.ambition * 0.2 + objective.expectation * 0.15 - objective.pressure * 0.1
+    : 50;
+  const delta = clamp((score(homeObjective) - score(awayObjective)) / 100, -0.5, 0.5);
+  return { home: 1 + delta * 0.025, away: 1 - delta * 0.025 };
+}
+
+function expectedGoals({ homeVenue, awayVenue, homeProfile, awayProfile, homeRecent, awayRecent, homeTeam, awayTeam, homeSquad, awaySquad, homeObjective, awayObjective, leagueSummary }) {
   const leagueHome = leagueSummary?.homeGoalsPerMatch || 1.28;
   const leagueAway = leagueSummary?.awayGoalsPerMatch || 1.15;
-  const homeStyle = profileGoals(homeProfile, leagueHome, leagueAway);
-  const awayStyle = profileGoals(awayProfile, leagueAway, leagueHome);
-  const homeAttack = homeVenue ? homeVenue.goalsFor / homeVenue.played : homeStyle.for;
-  const homeDefence = homeVenue ? homeVenue.goalsAgainst / homeVenue.played : homeStyle.against;
-  const awayAttack = awayVenue ? awayVenue.goalsFor / awayVenue.played : awayStyle.for;
-  const awayDefence = awayVenue ? awayVenue.goalsAgainst / awayVenue.played : awayStyle.against;
-  let home = clamp(((homeAttack * 0.38) + (awayDefence * 0.27) + (homeStyle.for * 0.25) + (leagueHome * 0.1)) * matchupMultiplier(homeProfile, awayProfile), 0.3, 3.4);
-  let away = clamp(((awayAttack * 0.38) + (homeDefence * 0.27) + (awayStyle.for * 0.25) + (leagueAway * 0.1)) * matchupMultiplier(awayProfile, homeProfile), 0.25, 3.2);
+  const leagueOverall = (leagueHome + leagueAway) / 2;
+  const homeLineup = lineupImpact(homeTeam, homeSquad);
+  const awayLineup = lineupImpact(awayTeam, awaySquad);
+  const objectiveFactors = objectiveGoalFactors(homeObjective, awayObjective);
+
+  const homeAttackStrength = weightedGeometric([
+    { value: homeVenue ? regressedRatio(homeVenue.goalsFor / homeVenue.played, leagueHome) : null, weight: WEIGHTS.venueHistorical },
+    { value: regressedRatio(divisionAdjustedRate(homeProfile, "for", leagueOverall), leagueOverall, 0.62), weight: WEIGHTS.overallHistorical },
+    { value: homeRecent ? regressedRatio(homeRecent.goalsFor, leagueOverall, 0.48) : null, weight: WEIGHTS.recentForm }
+  ]);
+  const homeDefenceWeakness = weightedGeometric([
+    { value: homeVenue ? regressedRatio(homeVenue.goalsAgainst / homeVenue.played, leagueAway) : null, weight: WEIGHTS.venueHistorical },
+    { value: regressedRatio(divisionAdjustedRate(homeProfile, "against", leagueOverall), leagueOverall, 0.62), weight: WEIGHTS.overallHistorical },
+    { value: homeRecent ? regressedRatio(homeRecent.goalsAgainst, leagueOverall, 0.48) : null, weight: WEIGHTS.recentForm }
+  ]);
+  const awayAttackStrength = weightedGeometric([
+    { value: awayVenue ? regressedRatio(awayVenue.goalsFor / awayVenue.played, leagueAway) : null, weight: WEIGHTS.venueHistorical },
+    { value: regressedRatio(divisionAdjustedRate(awayProfile, "for", leagueOverall), leagueOverall, 0.62), weight: WEIGHTS.overallHistorical },
+    { value: awayRecent ? regressedRatio(awayRecent.goalsFor, leagueOverall, 0.48) : null, weight: WEIGHTS.recentForm }
+  ]);
+  const awayDefenceWeakness = weightedGeometric([
+    { value: awayVenue ? regressedRatio(awayVenue.goalsAgainst / awayVenue.played, leagueHome) : null, weight: WEIGHTS.venueHistorical },
+    { value: regressedRatio(divisionAdjustedRate(awayProfile, "against", leagueOverall), leagueOverall, 0.62), weight: WEIGHTS.overallHistorical },
+    { value: awayRecent ? regressedRatio(awayRecent.goalsAgainst, leagueOverall, 0.48) : null, weight: WEIGHTS.recentForm }
+  ]);
+  const homeShotFactor = clamp(((homeProfile?.summary?.shotsPerGame || 12.5) / 12.5) ** 0.08, 0.95, 1.05);
+  const awayShotFactor = clamp(((awayProfile?.summary?.shotsPerGame || 12.5) / 12.5) ** 0.08, 0.95, 1.05);
+  let home = leagueHome * homeAttackStrength * awayDefenceWeakness * matchupMultiplier(homeProfile, awayProfile) * homeShotFactor * homeLineup.attack * awayLineup.defenceWeakness * objectiveFactors.home;
+  let away = leagueAway * awayAttackStrength * homeDefenceWeakness * matchupMultiplier(awayProfile, homeProfile) * awayShotFactor * awayLineup.attack * homeLineup.defenceWeakness * objectiveFactors.away;
+  home = clamp(home, 0.28, 3.5);
+  away = clamp(away, 0.24, 3.3);
   return {
     home: round(home, 2),
     away: round(away, 2),
     total: round(home + away, 2),
-    method: "Poisson indipendente dalle quote: rendimento casa/trasferta 2025/26, profili offensivi/difensivi e matchup tattico."
+    method: "Forze relative attacco/difesa, forma recente corretta per avversario, matchup, probabili XI e correttivo obiettivi; quote escluse.",
+    components: {
+      home: { attackStrength: round(homeAttackStrength, 3), defenceWeakness: round(homeDefenceWeakness, 3), lineup: homeLineup },
+      away: { attackStrength: round(awayAttackStrength, 3), defenceWeakness: round(awayDefenceWeakness, 3), lineup: awayLineup },
+      objectiveFactors: { home: round(objectiveFactors.home, 3), away: round(objectiveFactors.away, 3) }
+    }
   };
 }
 
@@ -137,16 +222,6 @@ function technicalProbabilities(matrix) {
     sum(matrix.filter(score => score.home === score.away).map(score => score.probability)),
     sum(matrix.filter(score => score.home < score.away).map(score => score.probability))
   ]);
-}
-
-function calibratedScoreMatrix(matrix, sourceProbabilities, targetProbabilities) {
-  const outcomeIndex = score => score.home > score.away ? 0 : score.home === score.away ? 1 : 2;
-  const adjusted = matrix.map(score => {
-    const index = outcomeIndex(score);
-    return { ...score, probability: score.probability * targetProbabilities[index] / sourceProbabilities[index] };
-  });
-  const total = sum(adjusted.map(score => score.probability));
-  return adjusted.map(score => ({ ...score, probability: score.probability / total }));
 }
 
 function softmaxOutcome(homeScore, awayScore, drawBase = 0.29) {
@@ -170,14 +245,6 @@ function objectiveProbabilities(homeObjective, awayObjective) {
     ? objective.motivationStart * 0.55 + objective.ambition * 0.2 + objective.expectation * 0.15 - objective.pressure * 0.1
     : 50;
   return softmaxOutcome(score(homeObjective) + 0.8, score(awayObjective), 0.4);
-}
-
-function combineSignals(parts) {
-  return normalize(OUTCOMES.map((_, index) =>
-    parts.historical[index] * WEIGHTS.historical
-    + parts.tactical[index] * WEIGHTS.tactical
-    + parts.objectives[index] * WEIGHTS.objectives
-  ));
 }
 
 function surpriseFactor({ final, market, historical, dataCompleteness, crossCompetition }) {
@@ -217,6 +284,23 @@ function exactScores(matrix, expectedTotal) {
   }
   return selected
     .map((score, index) => ({ score: `${score.home}-${score.away}`, probabilityPct: round(score.probability * 100, 1), rank: index + 1 }));
+}
+
+function scoreProfile(matrix, exact) {
+  const bands = [
+    { id: "tight", label: "0-1 gol", probabilityPct: round(matrixProbability(matrix, score => score.home + score.away <= 1) * 100, 1) },
+    { id: "balanced", label: "2-3 gol", probabilityPct: round(matrixProbability(matrix, score => score.home + score.away >= 2 && score.home + score.away <= 3) * 100, 1) },
+    { id: "open", label: "4+ gol", probabilityPct: round(matrixProbability(matrix, score => score.home + score.away >= 4) * 100, 1) }
+  ];
+  const topThreeCoveragePct = round(sum(exact.map(item => item.probabilityPct)), 1);
+  const ordered = [...matrix].sort((a, b) => b.probability - a.probability);
+  return {
+    bands,
+    dominantBand: [...bands].sort((a, b) => b.probabilityPct - a.probabilityPct)[0].id,
+    topThreeCoveragePct,
+    modalGapPct: round((ordered[0].probability - ordered[1].probability) * 100, 1),
+    interpretation: "Il primo punteggio e soltanto la moda della distribuzione, non un risultato centrale o certo."
+  };
 }
 
 const cleanName = value => String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9 ]/g, " ").replace(/\s+/g, " ").trim();
@@ -384,13 +468,13 @@ function noMarginMap(market) {
   return Object.fromEntries(selections.map((selection, index) => [selection.name, total ? raw[index] / total : null]));
 }
 
-function sensitivityMatrices(expected, centralMatrix) {
+function sensitivityMatrices(expected, centralMatrix, calibration) {
   return [
     centralMatrix,
-    scoreMatrix(expected.home * 0.9, expected.away * 1.1),
-    scoreMatrix(expected.home * 1.1, expected.away * 0.9),
-    scoreMatrix(expected.home * 0.9, expected.away * 0.9),
-    scoreMatrix(expected.home * 1.1, expected.away * 1.1)
+    scoreMatrix(expected.home * 0.9, expected.away * 1.1, 7, calibration),
+    scoreMatrix(expected.home * 1.1, expected.away * 0.9, 7, calibration),
+    scoreMatrix(expected.home * 0.9, expected.away * 0.9, 7, calibration),
+    scoreMatrix(expected.home * 1.1, expected.away * 1.1, 7, calibration)
   ];
 }
 
@@ -577,14 +661,13 @@ function predictMatch(input) {
   const market = marketProbabilities(findMainOneXTwo(input.oddsEvent));
   if (!market) throw new Error(`Mercato 1X2 principale assente: ${input.match.id}`);
   const expected = expectedGoals(input);
-  const matrix = scoreMatrix(expected.home, expected.away);
+  const matrix = scoreMatrix(expected.home, expected.away, 7, input.scoreCalibration);
   const parts = {
     historical: technicalProbabilities(matrix),
     tactical: tacticalProbabilities(input.homeProfile, input.awayProfile),
     objectives: objectiveProbabilities(input.homeObjective, input.awayObjective)
   };
-  const final = combineSignals(parts);
-  const finalScoreMatrix = calibratedScoreMatrix(matrix, parts.historical, final);
+  const final = parts.historical;
   const crossCompetition = input.homeProfile?.competition !== "Serie A" || input.awayProfile?.competition !== "Serie A";
   const completedSections = Object.values(input.reading?.sections || {}).filter(section => section?.content).length;
   const lineupsComplete = input.homeTeam?.probableLineup?.players?.length === 11 && input.awayTeam?.probableLineup?.players?.length === 11;
@@ -594,13 +677,14 @@ function predictMatch(input) {
   const orderedOutcomes = OUTCOMES.map((outcome, index) => ({ outcome, probability: final[index] })).sort((a, b) => b.probability - a.probability);
   const topTwo = new Set(orderedOutcomes.slice(0, 2).map(item => item.outcome));
   const doubleChance = topTwo.has("1") && topTwo.has("X") ? "1X" : topTwo.has("X") && topTwo.has("2") ? "X2" : "12";
-  const matrices = sensitivityMatrices(expected, finalScoreMatrix);
+  const matrices = sensitivityMatrices(expected, matrix, input.scoreCalibration);
   const evaluatedMarkets = marketEvaluation(input.oddsEvent, matrices, dataCompleteness);
   const valueCandidates = evaluatedMarkets.rows.filter(row => row.family === "1x2");
   const teamProjections = [
     teamProjection(input.homeTeam, input.homeProfile, input.awayProfile, input.homeSquad, input.homeDiscipline, final[0], final[2], expected.home),
     teamProjection(input.awayTeam, input.awayProfile, input.homeProfile, input.awaySquad, input.awayDiscipline, final[2], final[0], expected.away)
   ];
+  const exact = exactScores(matrix, expected.total);
   return {
     matchId: input.match.id,
     generatedAt: input.generatedAt,
@@ -614,7 +698,8 @@ function predictMatch(input) {
       objectives: probabilityObject(parts.objectives)
     },
     expectedGoals: expected,
-    exactScores: exactScores(finalScoreMatrix, expected.total),
+    exactScores: exact,
+    scoreProfile: scoreProfile(matrix, exact),
     verdict: {
       outcome: orderedOutcomes[0].outcome,
       doubleChance,
