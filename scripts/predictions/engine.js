@@ -1,6 +1,6 @@
 "use strict";
 
-const ENGINE_VERSION = "4.3.0";
+const ENGINE_VERSION = "4.4.0";
 const OUTCOMES = ["1", "X", "2"];
 const WEIGHTS = Object.freeze({ venueHistorical: 0.46, overallHistorical: 0.25, recentForm: 0.16, tacticalMatchup: 0.07, probableLineup: 0.05, objectives: 0.01 });
 
@@ -132,7 +132,7 @@ function divisionAdjustedRate(profile, type, leagueOverall) {
   const serieB = profile?.competition !== "Serie A";
   const raw = type === "for" ? goals.for : goals.against;
   if (!serieB) return raw;
-  return type === "for" ? raw * 0.62 : raw * 1.18;
+  return type === "for" ? raw * 0.51 : raw * 1.29;
 }
 
 function lineupImpact(team, squad) {

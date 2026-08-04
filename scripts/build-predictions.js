@@ -21,6 +21,8 @@ const backtestPath = path.join(root, "data/generated/prediction-backtest-2025-26
 const backtest = fs.existsSync(backtestPath) ? JSON.parse(fs.readFileSync(backtestPath, "utf8")) : null;
 const multiSeasonBacktestPath = path.join(root, "data/generated/prediction-backtest-multiseason.json");
 const multiSeasonBacktest = fs.existsSync(multiSeasonBacktestPath) ? JSON.parse(fs.readFileSync(multiSeasonBacktestPath, "utf8")) : null;
+const openingBacktestPath = path.join(root, "data/generated/prediction-backtest-opening-rounds.json");
+const openingBacktest = fs.existsSync(openingBacktestPath) ? JSON.parse(fs.readFileSync(openingBacktestPath, "utf8")) : null;
 const generatedAt = odds.retrievedAt || new Date().toISOString();
 
 const byId = items => new Map(items.map(item => [item.teamId || item.team || item.matchId || item.canonicalMatchId, item]));
@@ -148,6 +150,16 @@ const predictions = targetMatches.map(match => {
         xgBlend25: multiSeasonBacktest.variants["xg-blend-25"].aggregate,
         dixonColesRecommendation: multiSeasonBacktest.decision.recommendation,
         calibrationRecommendation: multiSeasonBacktest.decision.calibrationRecommendation
+      } : null,
+      openingRounds: openingBacktest ? {
+        method: openingBacktest.methodology.type,
+        validationMatches: openingBacktest.samples.validation,
+        firstRoundMatches: openingBacktest.samples.firstRoundValidation,
+        configuration: openingBacktest.regularized.configuration,
+        validation: openingBacktest.regularized.validation,
+        firstRound: openingBacktest.regularized.firstRound,
+        improvementVsCurrentPct: openingBacktest.regularizedImprovementVsCurrentPct,
+        recommendation: openingBacktest.recommendation
       } : null
     }
   } : prediction;
@@ -180,6 +192,12 @@ const output = {
       fallback: "Poisson sui gol quando una delle due squadre non ha storico xG di Serie A.",
       validationReport: "data/generated/prediction-backtest-multiseason.json"
     },
+    promotedTeamModel: {
+      attackFactor: 0.51,
+      defenceWeaknessFactor: 1.29,
+      method: "Carry-over regolarizzato Serie B-Serie A, selezionato su dieci stagioni e validato sulle tre successive.",
+      validationReport: "data/generated/prediction-backtest-opening-rounds.json"
+    },
     validation: backtest ? {
       season: backtest.season,
       method: backtest.methodology.type,
@@ -198,7 +216,8 @@ const output = {
         dixonColes: multiSeasonBacktest.variants["dixon-coles"].aggregate,
         xgBlend25: multiSeasonBacktest.variants["xg-blend-25"].aggregate,
         decision: multiSeasonBacktest.decision
-      } : null
+      } : null,
+      openingRounds: openingBacktest
     } : null,
     volumeModel: "Stima per squadra tiri totali, tiri nello specchio e corner come intervalli, senza imporre una partita ricca o povera di gol.",
     playerModel: "I cinque probabili ammoniti e il candidato MVP provengono dalle probabili formazioni e dallo storico individuale disponibile.",
