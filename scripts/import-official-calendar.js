@@ -27,9 +27,29 @@ const teamColors = Object.fromEntries(
 );
 const logoSources = JSON.parse(fs.readFileSync(path.join(root,"data/raw/teams/logo-sources.json"),"utf8"));
 const logoById = new Map(logoSources.map(item => [item.id,item.sourceUrl]));
+const logoOverrides = {
+  juventus: {
+    logo: "assets/images/teams/monochrome/juventus-black.svg",
+    logoSource: {
+      sourceUrl: "https://www.footylogos.com/logos/serie-a-italy",
+      sourceType: "footylogos-monochrome-svg",
+      retrievedAt: "2026-07-28",
+      licenseNote: "Variante nera per sfondi chiari; marchio del club usato a fini identificativi."
+    }
+  },
+  napoli: {
+    logo: "assets/images/teams/napoli.svg",
+    logoSource: {
+      sourceUrl: "https://football-logos.cc/italy/napoli",
+      sourceType: "football-logos.cc",
+      retrievedAt: "2026-08-04",
+      licenseNote: "Stemma del club fornito dall'utente e usato a fini identificativi."
+    }
+  }
+};
 const teams = teamDefinitions.map(([id,name,officialName]) => ({
-  id,name,officialName,shortName:name,slug:id,logo:`assets/images/teams/${id}.png`,colors:teamColors[id],
-  logoSource:{sourceUrl:logoById.get(id),sourceType:"lega-serie-a",retrievedAt,licenseNote:"Stemma distribuito dal CDN ufficiale Lega Serie A; marchio del rispettivo club, usato a fini identificativi."}
+  id,name,officialName,shortName:name,slug:id,logo:logoOverrides[id]?.logo || `assets/images/teams/${id}.png`,colors:teamColors[id],
+  logoSource:logoOverrides[id]?.logoSource || {sourceUrl:logoById.get(id),sourceType:"lega-serie-a",retrievedAt,licenseNote:"Stemma distribuito dal CDN ufficiale Lega Serie A; marchio del rispettivo club, usato a fini identificativi."}
 }));
 const upperToId = new Map(teams.map(team => [team.name.toUpperCase(),team.id]));
 const teamPattern = new RegExp(`\\b(${[...upperToId.keys()].sort((a,b)=>b.length-a.length).join("|")})\\b`,"g");

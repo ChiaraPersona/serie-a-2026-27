@@ -1,8 +1,8 @@
 "use strict";
 
-const ENGINE_VERSION = "2.0.0";
+const ENGINE_VERSION = "3.0.0";
 const OUTCOMES = ["1", "X", "2"];
-const WEIGHTS = Object.freeze({ market: 0.35, historical: 0.3, tactical: 0.25, objectives: 0.1 });
+const WEIGHTS = Object.freeze({ historical: 0.55, tactical: 0.35, objectives: 0.1 });
 
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 const round = (value, digits = 1) => Number(value.toFixed(digits));
@@ -12,7 +12,12 @@ const normalize = values => {
   if (!Number.isFinite(total) || total <= 0) return [1 / 3, 1 / 3, 1 / 3];
   return values.map(value => value / total);
 };
-const probabilityObject = values => Object.fromEntries(OUTCOMES.map((outcome, index) => [outcome, round(values[index] * 100, 1)]));
+const probabilityObject = values => {
+  const first = round(values[0] * 100, 1);
+  const second = round(values[1] * 100, 1);
+  const third = round(100 - first - second, 1);
+  return Object.fromEntries(OUTCOMES.map((outcome, index) => [outcome, [first, second, third][index]]));
+};
 
 function findMainOneXTwo(oddsEvent) {
   return oddsEvent?.markets?.find(market => market.marketCode === "3" || market.marketCode === 3)
@@ -107,7 +112,7 @@ function profileGoals(profile, fallbackFor, fallbackAgainst) {
   };
 }
 
-function expectedGoals({ homeVenue, awayVenue, homeProfile, awayProfile, leagueSummary, oddsEvent }) {
+function expectedGoals({ homeVenue, awayVenue, homeProfile, awayProfile, leagueSummary }) {
   const leagueHome = leagueSummary?.homeGoalsPerMatch || 1.28;
   const leagueAway = leagueSummary?.awayGoalsPerMatch || 1.15;
   const homeStyle = profileGoals(homeProfile, leagueHome, leagueAway);
@@ -118,12 +123,12 @@ function expectedGoals({ homeVenue, awayVenue, homeProfile, awayProfile, leagueS
   const awayDefence = awayVenue ? awayVenue.goalsAgainst / awayVenue.played : awayStyle.against;
   let home = clamp(((homeAttack * 0.38) + (awayDefence * 0.27) + (homeStyle.for * 0.25) + (leagueHome * 0.1)) * matchupMultiplier(homeProfile, awayProfile), 0.3, 3.4);
   let away = clamp(((awayAttack * 0.38) + (homeDefence * 0.27) + (awayStyle.for * 0.25) + (leagueAway * 0.1)) * matchupMultiplier(awayProfile, homeProfile), 0.25, 3.2);
-  const modelTotal = home + away;
-  const marketTotal = marketGoalExpectation(findOverUnder25(oddsEvent));
-  const blendedTotal = marketTotal ? modelTotal * 0.75 + marketTotal * 0.25 : modelTotal;
-  home *= blendedTotal / modelTotal;
-  away *= blendedTotal / modelTotal;
-  return { home: round(home, 2), away: round(away, 2), modelTotal: round(modelTotal, 2), marketTotal, blendedTotal: round(blendedTotal, 2) };
+  return {
+    home: round(home, 2),
+    away: round(away, 2),
+    total: round(home + away, 2),
+    method: "Poisson indipendente dalle quote: rendimento casa/trasferta 2025/26, profili offensivi/difensivi e matchup tattico."
+  };
 }
 
 function technicalProbabilities(matrix) {
@@ -169,8 +174,7 @@ function objectiveProbabilities(homeObjective, awayObjective) {
 
 function combineSignals(parts) {
   return normalize(OUTCOMES.map((_, index) =>
-    parts.market[index] * WEIGHTS.market
-    + parts.historical[index] * WEIGHTS.historical
+    parts.historical[index] * WEIGHTS.historical
     + parts.tactical[index] * WEIGHTS.tactical
     + parts.objectives[index] * WEIGHTS.objectives
   ));
@@ -292,7 +296,17 @@ function rangeMetric(value, spread, min = 0) {
   return { min: Math.max(min, Math.floor(value - spread)), central: round(value, 1), max: Math.ceil(value + spread) };
 }
 
-function teamProjection(team, profile, opponentProfile, squad, outcomeProbability, opponentProbability, expectedGoal) {
+function disciplineBaseline(profile, disciplineProfile) {
+  const rows = disciplineProfile?.rows || [];
+  const appearances = sum(rows.map(row => row.appearances || 0));
+  const fouls = appearances
+    ? sum(rows.map(row => (row.foulsAwardedAgainstPerAppearance || 0) * (row.appearances || 0))) / appearances
+    : null;
+  const yellowCards = profile?.modelInputs?.numeric?.yellowCardsPerGame ?? null;
+  return { fouls, yellowCards };
+}
+
+function teamProjection(team, profile, opponentProfile, squad, disciplineProfile, outcomeProbability, opponentProbability, expectedGoal) {
   const players = lineupPlayers(team, squad);
   const channels = attackChannels(profile);
   const matchup = matchupMultiplier(profile, opponentProfile);
@@ -303,14 +317,17 @@ function teamProjection(team, profile, opponentProfile, squad, outcomeProbabilit
   const shotsOnTarget = clamp(shots * shotAccuracy(players), 1.5, 9);
   const wideShare = (channels.left + channels.right) / 100;
   const corners = clamp(1.7 + shots * 0.19 + wideShare * 1.15 + ((profile?.playingStyle || []).some(item => item.id === "tentano-spesso-il-cross") ? 0.55 : 0), 2, 9.5);
+  const discipline = disciplineBaseline(profile, disciplineProfile);
   return {
     teamId: team.id,
     attackChannels: channels,
     shotsTotal: rangeMetric(shots, 2.1, 4),
     shotsOnTarget: rangeMetric(shotsOnTarget, 1.15, 1),
     corners: rangeMetric(corners, 1.35, 1),
+    fouls: discipline.fouls == null ? null : rangeMetric(discipline.fouls, 2.4, 3),
+    cards: discipline.yellowCards == null ? null : rangeMetric(discipline.yellowCards, 0.85, 0),
     expectedGoals: expectedGoal,
-    basis: "Profilo tiri 2025/26, possesso, canali offensivi, vulnerabilita avversarie e scenario partita."
+    basis: "Profili 2025/26, rendimento casa/trasferta, possesso, canali offensivi, vulnerabilita avversarie e disciplina storica."
   };
 }
 
@@ -337,13 +354,231 @@ function mvpCandidate(homeTeam, awayTeam, homeSquad, awaySquad, homeProfile, awa
   return { name: best.name, teamId: best.teamId, role: best.role, evidence, confidence: best.player ? "moderata" : "prudente" };
 }
 
+const scoreOutcome = score => score.home > score.away ? "1" : score.home === score.away ? "X" : "2";
+const matrixProbability = (matrix, predicate) => sum(matrix.filter(predicate).map(score => score.probability));
+const conditionForOutcome = outcome => score => scoreOutcome(score) === outcome;
+const conditionForDoubleChance = selection => score => selection.includes(scoreOutcome(score));
+const conditionForGoals = (selection, threshold) => score => selection === "UNDER"
+  ? score.home + score.away < threshold
+  : score.home + score.away > threshold;
+const conditionForBothTeamsScore = selection => score => selection === "GOAL"
+  ? score.home > 0 && score.away > 0
+  : score.home === 0 || score.away === 0;
+const conditionForTeamScore = (side, selection) => score => selection === "SI"
+  ? score[side] > 0
+  : score[side] === 0;
+
+function findMarket(oddsEvent, marketName, threshold = null) {
+  return oddsEvent?.markets?.find(market => market.marketName === marketName
+    && (threshold === null || Number(market.threshold) === Number(threshold))) || null;
+}
+
+function openSelections(market) {
+  return (market?.selections || []).filter(selection => selection.status === "open" && selection.odds > 1);
+}
+
+function noMarginMap(market) {
+  const selections = openSelections(market);
+  const raw = selections.map(selection => 1 / selection.odds);
+  const total = sum(raw);
+  return Object.fromEntries(selections.map((selection, index) => [selection.name, total ? raw[index] / total : null]));
+}
+
+function sensitivityMatrices(expected, centralMatrix) {
+  return [
+    centralMatrix,
+    scoreMatrix(expected.home * 0.9, expected.away * 1.1),
+    scoreMatrix(expected.home * 1.1, expected.away * 0.9),
+    scoreMatrix(expected.home * 0.9, expected.away * 0.9),
+    scoreMatrix(expected.home * 1.1, expected.away * 1.1)
+  ];
+}
+
+function evaluateMarketRow({ market, selection, family, label, predicate, matrices, marketProbability, dataCompleteness, pushPredicate = null }) {
+  const quote = openSelections(market).find(item => item.name === selection);
+  if (!quote) return null;
+  const probabilities = matrices.map(matrix => matrixProbability(matrix, predicate));
+  const pushProbabilities = pushPredicate ? matrices.map(matrix => matrixProbability(matrix, pushPredicate)) : matrices.map(() => 0);
+  const displayProbabilities = pushPredicate
+    ? probabilities.map((probability, index) => probability / Math.max(0.0001, 1 - pushProbabilities[index]))
+    : probabilities;
+  const probability = displayProbabilities[0];
+  const conservativeProbability = Math.min(...displayProbabilities);
+  const expectedValues = probabilities.map((winProbability, index) => pushPredicate
+    ? winProbability * quote.odds + pushProbabilities[index] - 1
+    : winProbability * quote.odds - 1);
+  const expectedValue = expectedValues[0];
+  const conservativeExpectedValue = Math.min(...expectedValues);
+  const width = Math.max(...displayProbabilities) - Math.min(...displayProbabilities);
+  const edge = marketProbability == null ? null : probability - marketProbability;
+  const qualifies = expectedValue >= 0.03 && conservativeExpectedValue > 0 && dataCompleteness >= 0.58 && width <= 0.14;
+  return {
+    id: `${family}:${selection}:${market.threshold ?? "main"}`,
+    family,
+    market: label,
+    selection,
+    providerSelectionId: quote.providerSelectionId,
+    odds: quote.odds,
+    modelProbabilityPct: round(probability * 100, 1),
+    conservativeProbabilityPct: round(conservativeProbability * 100, 1),
+    fairOdds: round(1 / probability, 2),
+    marketNoMarginPct: marketProbability == null ? null : round(marketProbability * 100, 1),
+    edgePct: edge == null ? null : round(edge * 100, 1),
+    expectedValuePct: round(expectedValue * 100, 1),
+    conservativeExpectedValuePct: round(conservativeExpectedValue * 100, 1),
+    sensitivityWidthPct: round(width * 100, 1),
+    confidence: dataCompleteness >= 0.72 && width <= 0.08 ? "Alta" : dataCompleteness >= 0.58 && width <= 0.14 ? "Media" : "Bassa",
+    qualifies,
+    classification: qualifies ? "value" : probability >= 0.65 && expectedValue <= 0 ? "probabile ma senza valore" : conservativeExpectedValue <= 0 && expectedValue > 0 ? "fragile" : "neutrale"
+  };
+}
+
+function marketEvaluation(oddsEvent, matrices, dataCompleteness) {
+  const rows = [];
+  const main = findMainOneXTwo(oddsEvent);
+  const mainNoMargin = noMarginMap(main);
+  for (const outcome of OUTCOMES) rows.push(evaluateMarketRow({
+    market: main, selection: outcome, family: "1x2", label: "1X2",
+    predicate: conditionForOutcome(outcome), matrices, marketProbability: mainNoMargin[outcome], dataCompleteness
+  }));
+
+  const doubleChance = findMarket(oddsEvent, "DOPPIA CHANCE");
+  for (const selection of ["1X", "12", "X2"]) rows.push(evaluateMarketRow({
+    market: doubleChance, selection, family: "double-chance", label: "Doppia chance",
+    predicate: conditionForDoubleChance(selection), matrices,
+    marketProbability: sum(selection.split("").map(outcome => mainNoMargin[outcome] || 0)), dataCompleteness
+  }));
+
+  const drawNoBet = findMarket(oddsEvent, "DRAW NO BET");
+  const drawNoBetNoMargin = noMarginMap(drawNoBet);
+  for (const selection of ["1", "2"]) rows.push(evaluateMarketRow({
+    market: drawNoBet, selection, family: "draw-no-bet", label: "Draw No Bet",
+    predicate: conditionForOutcome(selection), pushPredicate: conditionForOutcome("X"), matrices,
+    marketProbability: drawNoBetNoMargin[selection], dataCompleteness
+  }));
+
+  for (const threshold of [1.5, 2.5, 3.5]) {
+    const market = findMarket(oddsEvent, "UNDER/OVER", threshold);
+    const prices = noMarginMap(market);
+    for (const selection of ["UNDER", "OVER"]) rows.push(evaluateMarketRow({
+      market, selection, family: "goals", label: `Under/Over ${threshold}`,
+      predicate: conditionForGoals(selection, threshold), matrices, marketProbability: prices[selection], dataCompleteness
+    }));
+  }
+
+  const bothTeamsScore = findMarket(oddsEvent, "GOAL/NOGOAL");
+  const bothTeamsScorePrices = noMarginMap(bothTeamsScore);
+  for (const selection of ["GOAL", "NOGOAL"]) rows.push(evaluateMarketRow({
+    market: bothTeamsScore, selection, family: "btts", label: "Goal/No Goal",
+    predicate: conditionForBothTeamsScore(selection), matrices, marketProbability: bothTeamsScorePrices[selection], dataCompleteness
+  }));
+
+  for (const [marketName, side, label] of [["CASA: SEGNA GOAL", "home", "Casa segna"], ["OSPITE: SEGNA GOAL", "away", "Ospite segna"]]) {
+    const market = findMarket(oddsEvent, marketName);
+    const prices = noMarginMap(market);
+    for (const selection of ["SI", "NO"]) rows.push(evaluateMarketRow({
+      market, selection, family: "team-goal", label,
+      predicate: conditionForTeamScore(side, selection), matrices, marketProbability: prices[selection], dataCompleteness
+    }));
+  }
+
+  const available = rows.filter(Boolean);
+  const ranked = available.filter(row => row.qualifies)
+    .sort((a, b) => b.conservativeExpectedValuePct - a.conservativeExpectedValuePct || b.modelProbabilityPct - a.modelProbabilityPct);
+  const primary = ranked.filter(row => row.modelProbabilityPct >= 55 && row.sensitivityWidthPct <= 14).slice(0, 2);
+  const primaryIds = new Set(primary.map(row => row.id));
+  const secondary = ranked.filter(row => !primaryIds.has(row.id)).slice(0, 3);
+  const avoid = available.filter(row => row.classification === "probabile ma senza valore" || row.classification === "fragile")
+    .sort((a, b) => b.modelProbabilityPct - a.modelProbabilityPct).slice(0, 3);
+  const pricingErrors = available.filter(row => row.edgePct >= 8 && row.conservativeExpectedValuePct > 0)
+    .sort((a, b) => b.edgePct - a.edgePct).slice(0, 3);
+  return {
+    rows: available,
+    selections: { primary, secondary, avoid, pricingErrors },
+    playerMarkets: { status: "N/D", reason: "Nessuna quota giocatore verificata nello snapshot; titolarita e minutaggio restano proiezioni editoriali." }
+  };
+}
+
+function comboPredicate(selection, threshold) {
+  const [first, second] = selection.split(" + ");
+  const predicates = [];
+  if (["1", "X", "2"].includes(first)) predicates.push(conditionForOutcome(first));
+  else if (["1X", "12", "X2"].includes(first)) predicates.push(conditionForDoubleChance(first));
+  if (["U", "UNDER"].includes(second)) predicates.push(conditionForGoals("UNDER", threshold));
+  if (["O", "OVER"].includes(second)) predicates.push(conditionForGoals("OVER", threshold));
+  if (["GOAL", "NOGOAL"].includes(second)) predicates.push(conditionForBothTeamsScore(second));
+  return predicates.length === 2 ? score => predicates.every(predicate => predicate(score)) : null;
+}
+
+function comboPortfolio(oddsEvent, matrices, dataCompleteness) {
+  if (dataCompleteness < 0.58) return [];
+  const candidates = [];
+  for (const market of (oddsEvent?.markets || []).filter(item => ["COMBO: DC + U/O", "COMBO: 1X2 + U/O", "COMBO: DC + GOAL/NOGOAL"].includes(item.marketName))) {
+    for (const selection of openSelections(market)) {
+      const predicate = comboPredicate(selection.name, Number(market.threshold));
+      if (!predicate) continue;
+      const probabilities = matrices.map(matrix => matrixProbability(matrix, predicate));
+      const evs = probabilities.map(probability => probability * selection.odds - 1);
+      candidates.push({
+        market: market.marketName,
+        selection: selection.name,
+        providerSelectionId: selection.providerSelectionId,
+        odds: selection.odds,
+        probabilityPct: round(probabilities[0] * 100, 1),
+        prudentProbabilityPct: round(Math.min(...probabilities) * 100, 1),
+        expectedValuePct: round(evs[0] * 100, 1),
+        prudentExpectedValuePct: round(Math.min(...evs) * 100, 1)
+      });
+    }
+  }
+  const eligible = candidates.filter(candidate => candidate.expectedValuePct >= 3 && candidate.prudentExpectedValuePct > 0);
+  const used = new Set();
+  const pick = (tier, predicate, risk) => {
+    const selected = eligible.filter(candidate => !used.has(candidate.providerSelectionId) && predicate(candidate))
+      .sort((a, b) => b.prudentProbabilityPct - a.prudentProbabilityPct || b.prudentExpectedValuePct - a.prudentExpectedValuePct)[0];
+    if (!selected) return null;
+    used.add(selected.providerSelectionId);
+    return { tier, risk, ...selected, logic: "Quota combinata gia presente nello snapshot; probabilita congiunta calcolata sulla matrice dei punteggi, senza moltiplicare eventi correlati." };
+  };
+  return [
+    pick("Safe", candidate => candidate.prudentProbabilityPct >= 58 && candidate.odds <= 2, "relativo inferiore"),
+    pick("Balanced", candidate => candidate.prudentProbabilityPct >= 38 && candidate.prudentProbabilityPct < 65 && candidate.odds >= 1.6 && candidate.odds <= 3.5, "medio"),
+    pick("Aggressive", candidate => candidate.prudentProbabilityPct >= 18 && candidate.prudentProbabilityPct < 45 && candidate.odds >= 2.5, "elevato")
+  ].filter(Boolean);
+}
+
+function matchScenarios(input, final, expected) {
+  const favorite = final[0] >= final[2] ? input.homeTeam.name : input.awayTeam.name;
+  const outsider = final[0] >= final[2] ? input.awayTeam.name : input.homeTeam.name;
+  const totalTone = expected.total >= 2.65 ? "ritmo e volume offensivo sopra la media" : "gara tendenzialmente controllata e con margini ridotti";
+  return [
+    {
+      id: "A", label: "Scenario principale",
+      description: `${favorite} prova a imporre il proprio matchup; il modello vede ${totalTone}.`,
+      improves: expected.total >= 2.65 ? "Over e Goal, se il vantaggio iniziale non spegne il ritmo." : "Under e protezioni sull'esito favorito.",
+      worsens: expected.total >= 2.65 ? "Under bassi e risultati bloccati." : "Over alti e mercati di goleada."
+    },
+    {
+      id: "B", label: "Scenario alternativo",
+      description: `${outsider} segna per primo oppure lo 0-0 resiste oltre l'intervallo, costringendo la favorita a cambiare altezza e volume.`,
+      improves: "Tiri e corner della squadra costretta a inseguire; live Over se aumentano davvero ritmo e occasioni.",
+      worsens: "1X2 prepartita della favorita e combinazioni che richiedono controllo immediato."
+    },
+    {
+      id: "C", label: "Scenario di rottura",
+      description: "Espulsione, infortunio nel riscaldamento, XI inatteso o condizioni ambientali anomale invalidano parte delle ipotesi prepartita.",
+      improves: "Solo mercati rivalutati dopo la nuova informazione e con prezzo ancora disponibile.",
+      worsens: "Mercati giocatore, cartellini e combinazioni correlate costruite sulle formazioni attuali."
+    }
+  ];
+}
+
 function predictMatch(input) {
   const market = marketProbabilities(findMainOneXTwo(input.oddsEvent));
   if (!market) throw new Error(`Mercato 1X2 principale assente: ${input.match.id}`);
   const expected = expectedGoals(input);
   const matrix = scoreMatrix(expected.home, expected.away);
   const parts = {
-    market: market.probabilities,
     historical: technicalProbabilities(matrix),
     tactical: tacticalProbabilities(input.homeProfile, input.awayProfile),
     objectives: objectiveProbabilities(input.homeObjective, input.awayObjective)
@@ -352,20 +587,19 @@ function predictMatch(input) {
   const finalScoreMatrix = calibratedScoreMatrix(matrix, parts.historical, final);
   const crossCompetition = input.homeProfile?.competition !== "Serie A" || input.awayProfile?.competition !== "Serie A";
   const completedSections = Object.values(input.reading?.sections || {}).filter(section => section?.content).length;
-  const dataCompleteness = clamp(0.62 + completedSections * 0.035 - (crossCompetition ? 0.08 : 0), 0.5, 0.9);
-  const surprise = surpriseFactor({ final, market: parts.market, historical: parts.historical, dataCompleteness, crossCompetition });
+  const lineupsComplete = input.homeTeam?.probableLineup?.players?.length === 11 && input.awayTeam?.probableLineup?.players?.length === 11;
+  const dataCompleteness = clamp(0.52 + completedSections * 0.035 + (lineupsComplete ? 0.12 : 0) - (crossCompetition ? 0.08 : 0), 0.45, 0.86);
+  const surprise = surpriseFactor({ final, market: market.probabilities, historical: parts.historical, dataCompleteness, crossCompetition });
   const confidenceResult = confidence(final, surprise, dataCompleteness);
   const orderedOutcomes = OUTCOMES.map((outcome, index) => ({ outcome, probability: final[index] })).sort((a, b) => b.probability - a.probability);
   const topTwo = new Set(orderedOutcomes.slice(0, 2).map(item => item.outcome));
   const doubleChance = topTwo.has("1") && topTwo.has("X") ? "1X" : topTwo.has("X") && topTwo.has("2") ? "X2" : "12";
-  const valueCandidates = OUTCOMES.map((outcome, index) => {
-    const odds = market.selections[outcome].odds;
-    const edgePct = round((final[index] * odds - 1) * 100, 1);
-    return { outcome, odds, fairOdds: round(1 / final[index], 2), edgePct, qualifies: edgePct >= 5 && confidenceResult.value >= 52 };
-  });
+  const matrices = sensitivityMatrices(expected, finalScoreMatrix);
+  const evaluatedMarkets = marketEvaluation(input.oddsEvent, matrices, dataCompleteness);
+  const valueCandidates = evaluatedMarkets.rows.filter(row => row.family === "1x2");
   const teamProjections = [
-    teamProjection(input.homeTeam, input.homeProfile, input.awayProfile, input.homeSquad, final[0], final[2], expected.home),
-    teamProjection(input.awayTeam, input.awayProfile, input.homeProfile, input.awaySquad, final[2], final[0], expected.away)
+    teamProjection(input.homeTeam, input.homeProfile, input.awayProfile, input.homeSquad, input.homeDiscipline, final[0], final[2], expected.home),
+    teamProjection(input.awayTeam, input.awayProfile, input.homeProfile, input.awaySquad, input.awayDiscipline, final[2], final[0], expected.away)
   ];
   return {
     matchId: input.match.id,
@@ -374,13 +608,13 @@ function predictMatch(input) {
     engineVersion: ENGINE_VERSION,
     probabilities: {
       final: probabilityObject(final),
-      marketNoMargin: probabilityObject(parts.market),
+      marketNoMargin: probabilityObject(market.probabilities),
       historical: probabilityObject(parts.historical),
       tactical: probabilityObject(parts.tactical),
       objectives: probabilityObject(parts.objectives)
     },
     expectedGoals: expected,
-    exactScores: exactScores(finalScoreMatrix, expected.blendedTotal),
+    exactScores: exactScores(finalScoreMatrix, expected.total),
     verdict: {
       outcome: orderedOutcomes[0].outcome,
       doubleChance,
@@ -391,20 +625,31 @@ function predictMatch(input) {
     teamProjections,
     likelyBooked: bookingCandidates(input.homeTeam, input.awayTeam, input.homeSquad, input.awaySquad, input.homeProfile, input.awayProfile),
     mvpCandidate: mvpCandidate(input.homeTeam, input.awayTeam, input.homeSquad, input.awaySquad, input.homeProfile, input.awayProfile, final, expected),
+    scenarios: matchScenarios(input, final, expected),
+    marketComparison: evaluatedMarkets.rows,
+    recommendations: evaluatedMarkets.selections,
+    combinations: comboPortfolio(input.oddsEvent, matrices, dataCompleteness),
+    playerMarkets: evaluatedMarkets.playerMarkets,
     market: {
       provider: "Sisal",
+      sourceUrl: input.oddsSourceUrl,
       retrievedAt: input.oddsRetrievedAt,
       overroundPct: market.overroundPct,
       selections: market.selections,
-      valueCandidates
+      valueCandidates,
+      role: "Confronto esterno: le quote non entrano nei gol attesi ne nelle probabilita del modello."
     },
     dataQuality: {
       completenessPct: Math.round(dataCompleteness * 100),
       crossCompetitionBaseline: crossCompetition,
+      updatedAt: String(input.generatedAt || "").slice(0, 10),
+      probableLineups: lineupsComplete ? "20/20 titolari proiettati; fonte editoriale da riconfermare" : "N/D",
       missing: [
         "forma ufficiale 2026/27",
         ...(input.reading?.sections?.availability?.content ? [] : ["indisponibili verificati"]),
-        ...(input.reading?.sections?.referee?.content ? [] : ["designazione arbitrale"])
+        ...(input.reading?.sections?.referee?.content ? [] : ["designazione arbitrale"]),
+        "meteo attendibile alla data della gara",
+        "quote giocatore verificate"
       ]
     }
   };

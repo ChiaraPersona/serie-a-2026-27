@@ -2,12 +2,13 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Pronostico partita Serie A",
   "type": "object",
-  "required": ["matchId", "engineVersion", "probabilities", "exactScores", "verdict", "confidence", "surprise", "teamProjections", "likelyBooked", "mvpCandidate", "market", "dataQuality"],
+  "required": ["matchId", "engineVersion", "probabilities", "expectedGoals", "exactScores", "verdict", "confidence", "surprise", "teamProjections", "likelyBooked", "mvpCandidate", "scenarios", "marketComparison", "recommendations", "combinations", "playerMarkets", "market", "dataQuality"],
   "properties": {
     "matchId": { "type": "string" },
     "engineVersion": { "type": "string" },
     "status": { "enum": ["preliminary", "ready", "archived"] },
     "probabilities": { "type": "object" },
+    "expectedGoals": { "type": "object" },
     "exactScores": { "type": "array", "minItems": 3, "maxItems": 3 },
     "verdict": { "type": "object" },
     "confidence": { "type": "object" },
@@ -15,6 +16,11 @@
     "teamProjections": { "type": "array", "minItems": 2, "maxItems": 2 },
     "likelyBooked": { "type": "array", "minItems": 5, "maxItems": 5 },
     "mvpCandidate": { "type": "object" },
+    "scenarios": { "type": "array", "minItems": 3, "maxItems": 3 },
+    "marketComparison": { "type": "array", "minItems": 16 },
+    "recommendations": { "type": "object" },
+    "combinations": { "type": "array" },
+    "playerMarkets": { "type": "object" },
     "market": { "type": "object" },
     "dataQuality": { "type": "object" }
   }
