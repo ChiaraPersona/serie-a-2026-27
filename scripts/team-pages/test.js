@@ -41,11 +41,13 @@ for (const [metric, ranking] of Object.entries(playerLeaderboards.rankings)) {
   assert.ok(ranking.players.every(player => !["Internazionale", "AS Roma"].includes(player.previousTeam)), `${metric}: alias squadra non normalizzato`);
   assert.ok(ranking.players.every(player => !player.sameClub || player.previousTeam === player.currentTeam), `${metric}: duplicato fra squadra attuale e precedente non riconosciuto`);
 }
-for (const contract of ["loadPlayerLeaderboards", "globalPlayerLeaderboards", "globalPlayerLeaderboardTable", "Top 15 calciatori per statistica", "data-player-stat", "serie-b-marker", "same-club-marker", "aria-pressed", "per90Value", "stessa riga"]) assert.ok(mainApp.includes(contract), `Top 15 globale: contratto ${contract} assente`);
-for (const contract of [".global-player-leaders", ".global-player-table", ".global-leader-player", ".global-leader-value", ".global-leader-rate", ".global-stat-button", ".serie-b-marker", ".same-club-marker"]) assert.ok(styles.includes(contract), `Top 15 globale: stile ${contract} assente`);
+for (const contract of ["loadPlayerLeaderboards", "globalPlayerLeaderboards", "globalPlayerLeaderboardTable", "Top 15 calciatori per statistica", "data-player-stat", "serie-b-marker", "aria-pressed", "per90Value", "stessa riga"]) assert.ok(mainApp.includes(contract), `Top 15 globale: contratto ${contract} assente`);
+for (const contract of [".global-player-leaders", ".global-player-table", ".global-leader-player", ".global-leader-value", ".global-leader-rate", ".global-stat-button", ".serie-b-marker", ".global-col-player", ".global-col-rate"]) assert.ok(styles.includes(contract), `Top 15 globale: stile ${contract} assente`);
 const globalTableSource = mainApp.slice(mainApp.indexOf("function globalPlayerLeaderboardTable"), mainApp.indexOf("function globalPlayerLeaderboards"));
 assert.ok(!globalTableSource.includes("<th>Competizione</th>"), "La Top 15 non deve mostrare la colonna Competizione");
 assert.ok(globalTableSource.includes("<th>PG</th><th>Min</th>"), "Presenze e minuti devono comparire in ogni classifica");
+assert.ok(!globalTableSource.includes("Squadra 2025/26") && !globalTableSource.includes("same-club-marker"), "La Top 15 non deve mostrare la squadra 2025/26");
+assert.ok(globalTableSource.includes("<colgroup>") && styles.includes("table-layout:fixed"), "Le colonne della Top 15 devono mantenere larghezze fisse fra le classifiche");
 assert.ok(!mainApp.includes('data-player-stat="appearances"') && !mainApp.includes('data-player-stat="minutes"'), "Presenze e minuti non devono avere classifiche autonome");
 assert.ok(!mainApp.includes("classifiche disponibili"), "Il conteggio delle classifiche non deve comparire nel selettore compatto");
 assert.ok(!mainApp.includes('id="global-player-stat"'), "La selezione Top 15 non deve usare un menu a tendina");
@@ -65,6 +67,9 @@ assert.ok(matchCardSource.includes('m.status!=="scheduled"') && !matchCardSource
 assert.ok(!matchCardSource.includes('match-events') && !matchCardSource.includes('Marcatori') && !matchCardSource.includes('Ammoniti'), "Le card partita non devono mostrare riquadri evento prima dei dati reali");
 assert.ok(teamNavSource.includes('src="${esc(team.logo)}"') && !teamNavSource.includes("monochrome"), "La barra Calendario per squadra deve usare i loghi originali colorati");
 assert.ok(styles.includes('.team-nav-link img') && styles.includes('filter:drop-shadow('), "I loghi del selettore squadre devono avere un'ombreggiatura di contrasto");
+assert.ok(styles.includes('.calendar-list{gap:88px}') && styles.includes('.calendar-list{gap:56px}'), "Le giornate del calendario devono avere una separazione leggibile su desktop e mobile");
+assert.ok(styles.includes('.match.fixture-card .matchday-chip{') && styles.includes('background:transparent;'), "Il testo Giornata X nelle card deve restare privo di riquadro");
+assert.ok(styles.includes('body[data-page="cup"] main>.hero+.cup-stage') && styles.includes('body[data-page="readings"] main>.hero+.section{margin-top:24px}'), "Coppa Italia e Lettura devono usare la spaziatura compatta delle altre pagine interne");
 const currentMatches = read("data/normalized/matches.json").filter(match => match.competition === "serie-a" && match.season === "2026-27");
 for (const summary of index.teams) {
   const fixtures = currentMatches.filter(match => match.homeTeam === summary.id || match.awayTeam === summary.id);
@@ -80,6 +85,7 @@ const generatedHtml = fs.readdirSync(root).filter(file => file.endsWith(".html")
 assert.ok(!generatedHtml.includes("statistiche-giocatori"), "Un collegamento alla pagina rimossa è ancora presente");
 assert.ok(!generatedHtml.includes('href="classifica.html"') && !generatedHtml.includes('href="../classifica.html"'), "Un collegamento alla pagina Classifica rimossa è ancora presente");
 assert.ok(mainApp.includes('if(page==="home")') && mainApp.includes('data-standings-tab="current"') && mainApp.includes('data-standings-tab="archive"'), "Le due classifiche devono essere renderizzate nella Home");
+assert.ok(!mainApp.includes('class="season-overview"'), "Il riepilogo Squadre/Partite/Capolista/Copertura non deve essere mostrato nella Home");
 for (const marker of ['label:"R+"', 'label:"R-"', 'label:"C+"', 'label:"C-"', "configureStandingsTables()", "data-sortable-standings"]) assert.ok(mainApp.includes(marker), `Classifica dinamica: manca ${marker}`);
 for (const tooltip of ["Rigori assegnati a favore", "Rigori subiti contro", "Cartellini assegnati agli avversari", "Cartellini ricevuti dalla squadra"]) assert.ok(mainApp.includes(tooltip), `Tooltip classifica mancante: ${tooltip}`);
 assert.ok(styles.includes("width:calc(100% + 288px);min-width:1088px"), "Le quattro nuove colonne devono essere aggiunte senza restringere quelle esistenti");
@@ -92,7 +98,8 @@ assert.deepStrictEqual([unavailableDiscipline.penaltiesFor, unavailableDisciplin
 const homeRenderSource = mainApp.slice(mainApp.indexOf('if(page==="home"){'), mainApp.indexOf('if(page==="calendar")'));
 assert.ok(homeRenderSource.includes("homeStandings(standings,previousStandings,objectiveProfiles,teams,standingsTeams)"), "Le classifiche devono essere presenti nella Home");
 assert.ok(!homeRenderSource.includes("Esplora il progetto") && !homeRenderSource.includes("feature-grid"), "Esplora il progetto deve essere rimosso dalla Home");
-assert.ok(mainApp.includes('leader=completed===0?{teamName:"N/D",points:0}:standings[0]'), "Prima dell'inizio del campionato la Home deve mostrare N/D come capolista");
+assert.ok(!homeRenderSource.includes("Apri il calendario"), "Il link Apri il calendario deve essere rimosso dalla Home");
+assert.ok(!homeRenderSource.includes("Capolista") && !homeRenderSource.includes("leader="), "La Home non deve calcolare o mostrare la capolista dopo la rimozione del riepilogo");
 const homeStandingsSource = mainApp.slice(mainApp.indexOf("function homeStandings"), mainApp.indexOf("const dayNav"));
 assert.ok(!homeStandingsSource.includes("objectiveStatusSection(") && !homeStandingsSource.includes("Stato degli obiettivi"), "Lo stato degli obiettivi non deve essere renderizzato nella Home");
 const expectedNavigation = [
