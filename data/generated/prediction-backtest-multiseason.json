@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-04T14:45:29.951Z",
+  "generatedAt": "2026-08-04T15:02:36.395Z",
   "competition": "serie-a",
   "methodology": {
     "type": "multi-season-walk-forward",
@@ -20,7 +20,8 @@
       "2025-26"
     ],
     "warmup": "Almeno otto gare stagionali precedenti per entrambe le squadre.",
-    "leakageControl": "Lambda, calibrazione empirica, H2H e rho usano esclusivamente eventi antecedenti alla partita stimata.",
+    "leakageControl": "Lambda, xG, calibrazione empirica, H2H e rho usano esclusivamente eventi antecedenti alla partita stimata.",
+    "xg": "Dati partita Understat; confronto tra Poisson sui gol, fusione geometrica 50% gol/50% xG e solo xG.",
     "dixonColes": "Correzione dei risultati 0-0, 0-1, 1-0 e 1-1; rho selezionato per ogni data su tre anni precedenti con emivita 365 giorni.",
     "scope": "Nucleo statistico retrodatabile con correttivo H2H; probabili XI, indisponibili e tattica non sono inclusi per assenza di snapshot storici."
   },
@@ -306,6 +307,282 @@
           "averageRhoSample": 910
         }
       }
+    },
+    "xg-blend-25": {
+      "aggregate": {
+        "matches": 1201,
+        "oneXTwoLogLoss": 1.0109,
+        "oneXTwoBrier": 0.6046,
+        "oneXTwoAccuracyPct": 51.5,
+        "scoreLogLoss": 2.7957,
+        "exactModeHitPct": 13.8,
+        "exactTopThreeHitPct": 36.9,
+        "goalBandBrier": 0.6292,
+        "goalBandAccuracyPct": 49.3,
+        "averageRho": 0,
+        "averageRhoSample": 0
+      },
+      "bySeason": {
+        "2022-23": {
+          "matches": 301,
+          "oneXTwoLogLoss": 1.015,
+          "oneXTwoBrier": 0.6074,
+          "oneXTwoAccuracyPct": 52.5,
+          "scoreLogLoss": 2.8101,
+          "exactModeHitPct": 14,
+          "exactTopThreeHitPct": 36.5,
+          "goalBandBrier": 0.6189,
+          "goalBandAccuracyPct": 51.8,
+          "averageRho": 0,
+          "averageRhoSample": 0
+        },
+        "2023-24": {
+          "matches": 300,
+          "oneXTwoLogLoss": 1.0092,
+          "oneXTwoBrier": 0.6039,
+          "oneXTwoAccuracyPct": 49,
+          "scoreLogLoss": 2.776,
+          "exactModeHitPct": 15,
+          "exactTopThreeHitPct": 39.7,
+          "goalBandBrier": 0.6256,
+          "goalBandAccuracyPct": 49,
+          "averageRho": 0,
+          "averageRhoSample": 0
+        },
+        "2024-25": {
+          "matches": 300,
+          "oneXTwoLogLoss": 1.0005,
+          "oneXTwoBrier": 0.5964,
+          "oneXTwoAccuracyPct": 53.7,
+          "scoreLogLoss": 2.7867,
+          "exactModeHitPct": 16.3,
+          "exactTopThreeHitPct": 40,
+          "goalBandBrier": 0.639,
+          "goalBandAccuracyPct": 48,
+          "averageRho": 0,
+          "averageRhoSample": 0
+        },
+        "2025-26": {
+          "matches": 300,
+          "oneXTwoLogLoss": 1.0191,
+          "oneXTwoBrier": 0.6109,
+          "oneXTwoAccuracyPct": 51,
+          "scoreLogLoss": 2.8099,
+          "exactModeHitPct": 10,
+          "exactTopThreeHitPct": 31.3,
+          "goalBandBrier": 0.6335,
+          "goalBandAccuracyPct": 48.3,
+          "averageRho": 0,
+          "averageRhoSample": 0
+        }
+      }
+    },
+    "xg-blend-50": {
+      "aggregate": {
+        "matches": 1201,
+        "oneXTwoLogLoss": 1.0115,
+        "oneXTwoBrier": 0.6049,
+        "oneXTwoAccuracyPct": 52,
+        "scoreLogLoss": 2.7943,
+        "exactModeHitPct": 14.1,
+        "exactTopThreeHitPct": 37.7,
+        "goalBandBrier": 0.628,
+        "goalBandAccuracyPct": 49.4,
+        "averageRho": 0,
+        "averageRhoSample": 0
+      },
+      "bySeason": {
+        "2022-23": {
+          "matches": 301,
+          "oneXTwoLogLoss": 1.015,
+          "oneXTwoBrier": 0.6073,
+          "oneXTwoAccuracyPct": 52.5,
+          "scoreLogLoss": 2.8058,
+          "exactModeHitPct": 14.3,
+          "exactTopThreeHitPct": 37.5,
+          "goalBandBrier": 0.6178,
+          "goalBandAccuracyPct": 51.8,
+          "averageRho": 0,
+          "averageRhoSample": 0
+        },
+        "2023-24": {
+          "matches": 300,
+          "oneXTwoLogLoss": 1.0103,
+          "oneXTwoBrier": 0.6047,
+          "oneXTwoAccuracyPct": 50.7,
+          "scoreLogLoss": 2.7758,
+          "exactModeHitPct": 15.3,
+          "exactTopThreeHitPct": 39.7,
+          "goalBandBrier": 0.6249,
+          "goalBandAccuracyPct": 49,
+          "averageRho": 0,
+          "averageRhoSample": 0
+        },
+        "2024-25": {
+          "matches": 300,
+          "oneXTwoLogLoss": 1.0003,
+          "oneXTwoBrier": 0.5962,
+          "oneXTwoAccuracyPct": 53.7,
+          "scoreLogLoss": 2.7853,
+          "exactModeHitPct": 17,
+          "exactTopThreeHitPct": 40.7,
+          "goalBandBrier": 0.6374,
+          "goalBandAccuracyPct": 48,
+          "averageRho": 0,
+          "averageRhoSample": 0
+        },
+        "2025-26": {
+          "matches": 300,
+          "oneXTwoLogLoss": 1.0203,
+          "oneXTwoBrier": 0.6115,
+          "oneXTwoAccuracyPct": 51.3,
+          "scoreLogLoss": 2.8102,
+          "exactModeHitPct": 9.7,
+          "exactTopThreeHitPct": 33,
+          "goalBandBrier": 0.632,
+          "goalBandAccuracyPct": 48.7,
+          "averageRho": 0,
+          "averageRhoSample": 0
+        }
+      }
+    },
+    "xg-blend-75": {
+      "aggregate": {
+        "matches": 1201,
+        "oneXTwoLogLoss": 1.0132,
+        "oneXTwoBrier": 0.6061,
+        "oneXTwoAccuracyPct": 51.5,
+        "scoreLogLoss": 2.7968,
+        "exactModeHitPct": 13.4,
+        "exactTopThreeHitPct": 37.1,
+        "goalBandBrier": 0.628,
+        "goalBandAccuracyPct": 49.5,
+        "averageRho": 0,
+        "averageRhoSample": 0
+      },
+      "bySeason": {
+        "2022-23": {
+          "matches": 301,
+          "oneXTwoLogLoss": 1.0166,
+          "oneXTwoBrier": 0.6083,
+          "oneXTwoAccuracyPct": 50.5,
+          "scoreLogLoss": 2.8048,
+          "exactModeHitPct": 13.6,
+          "exactTopThreeHitPct": 36.5,
+          "goalBandBrier": 0.6174,
+          "goalBandAccuracyPct": 51.8,
+          "averageRho": 0,
+          "averageRhoSample": 0
+        },
+        "2023-24": {
+          "matches": 300,
+          "oneXTwoLogLoss": 1.0125,
+          "oneXTwoBrier": 0.6062,
+          "oneXTwoAccuracyPct": 49.7,
+          "scoreLogLoss": 2.7784,
+          "exactModeHitPct": 15,
+          "exactTopThreeHitPct": 39,
+          "goalBandBrier": 0.6248,
+          "goalBandAccuracyPct": 49,
+          "averageRho": 0,
+          "averageRhoSample": 0
+        },
+        "2024-25": {
+          "matches": 300,
+          "oneXTwoLogLoss": 1.0012,
+          "oneXTwoBrier": 0.5968,
+          "oneXTwoAccuracyPct": 54.7,
+          "scoreLogLoss": 2.7869,
+          "exactModeHitPct": 16.7,
+          "exactTopThreeHitPct": 40.7,
+          "goalBandBrier": 0.6367,
+          "goalBandAccuracyPct": 48.3,
+          "averageRho": 0,
+          "averageRhoSample": 0
+        },
+        "2025-26": {
+          "matches": 300,
+          "oneXTwoLogLoss": 1.0227,
+          "oneXTwoBrier": 0.613,
+          "oneXTwoAccuracyPct": 51,
+          "scoreLogLoss": 2.817,
+          "exactModeHitPct": 8.3,
+          "exactTopThreeHitPct": 32,
+          "goalBandBrier": 0.633,
+          "goalBandAccuracyPct": 48.7,
+          "averageRho": 0,
+          "averageRhoSample": 0
+        }
+      }
+    },
+    "xg-only": {
+      "aggregate": {
+        "matches": 1201,
+        "oneXTwoLogLoss": 1.0162,
+        "oneXTwoBrier": 0.6082,
+        "oneXTwoAccuracyPct": 51.1,
+        "scoreLogLoss": 2.8033,
+        "exactModeHitPct": 13.7,
+        "exactTopThreeHitPct": 36.6,
+        "goalBandBrier": 0.6293,
+        "goalBandAccuracyPct": 49.5,
+        "averageRho": 0,
+        "averageRhoSample": 0
+      },
+      "bySeason": {
+        "2022-23": {
+          "matches": 301,
+          "oneXTwoLogLoss": 1.0196,
+          "oneXTwoBrier": 0.6104,
+          "oneXTwoAccuracyPct": 50.2,
+          "scoreLogLoss": 2.8073,
+          "exactModeHitPct": 14.3,
+          "exactTopThreeHitPct": 35.9,
+          "goalBandBrier": 0.6179,
+          "goalBandAccuracyPct": 51.8,
+          "averageRho": 0,
+          "averageRhoSample": 0
+        },
+        "2023-24": {
+          "matches": 300,
+          "oneXTwoLogLoss": 1.0157,
+          "oneXTwoBrier": 0.6086,
+          "oneXTwoAccuracyPct": 50.7,
+          "scoreLogLoss": 2.7838,
+          "exactModeHitPct": 16.3,
+          "exactTopThreeHitPct": 38,
+          "goalBandBrier": 0.6256,
+          "goalBandAccuracyPct": 49,
+          "averageRho": 0,
+          "averageRhoSample": 0
+        },
+        "2024-25": {
+          "matches": 300,
+          "oneXTwoLogLoss": 1.003,
+          "oneXTwoBrier": 0.5982,
+          "oneXTwoAccuracyPct": 54,
+          "scoreLogLoss": 2.7914,
+          "exactModeHitPct": 16,
+          "exactTopThreeHitPct": 40,
+          "goalBandBrier": 0.6368,
+          "goalBandAccuracyPct": 48.7,
+          "averageRho": 0,
+          "averageRhoSample": 0
+        },
+        "2025-26": {
+          "matches": 300,
+          "oneXTwoLogLoss": 1.0264,
+          "oneXTwoBrier": 0.6155,
+          "oneXTwoAccuracyPct": 49.7,
+          "scoreLogLoss": 2.8307,
+          "exactModeHitPct": 8.3,
+          "exactTopThreeHitPct": 32.3,
+          "goalBandBrier": 0.6368,
+          "goalBandAccuracyPct": 48.3,
+          "averageRho": 0,
+          "averageRhoSample": 0
+        }
+      }
     }
   },
   "decision": {
@@ -387,7 +664,106 @@
         }
       }
     },
+    "xgComparison": {
+      "xg-blend-25": {
+        "improvementVsPoissonPct": {
+          "oneXTwoLogLoss": 0.06,
+          "oneXTwoBrier": 0.1,
+          "scoreLogLoss": 0.18,
+          "goalBandBrier": 0.38
+        },
+        "pairedBootstrap": {
+          "oneXTwoLogLoss": {
+            "meanImprovement": 0.0006,
+            "confidenceInterval95": [
+              -0.0011,
+              0.0024
+            ]
+          },
+          "scoreLogLoss": {
+            "meanImprovement": 0.005,
+            "confidenceInterval95": [
+              0.0016,
+              0.0083
+            ]
+          }
+        }
+      },
+      "xg-blend-50": {
+        "improvementVsPoissonPct": {
+          "oneXTwoLogLoss": 0,
+          "oneXTwoBrier": 0.05,
+          "scoreLogLoss": 0.23,
+          "goalBandBrier": 0.57
+        },
+        "pairedBootstrap": {
+          "oneXTwoLogLoss": {
+            "meanImprovement": 0,
+            "confidenceInterval95": [
+              -0.0034,
+              0.0036
+            ]
+          },
+          "scoreLogLoss": {
+            "meanImprovement": 0.0063,
+            "confidenceInterval95": [
+              -0.0005,
+              0.0129
+            ]
+          }
+        }
+      },
+      "xg-blend-75": {
+        "improvementVsPoissonPct": {
+          "oneXTwoLogLoss": -0.17,
+          "oneXTwoBrier": -0.15,
+          "scoreLogLoss": 0.14,
+          "goalBandBrier": 0.57
+        },
+        "pairedBootstrap": {
+          "oneXTwoLogLoss": {
+            "meanImprovement": -0.0017,
+            "confidenceInterval95": [
+              -0.0069,
+              0.0037
+            ]
+          },
+          "scoreLogLoss": {
+            "meanImprovement": 0.0038,
+            "confidenceInterval95": [
+              -0.0064,
+              0.0135
+            ]
+          }
+        }
+      },
+      "xg-only": {
+        "improvementVsPoissonPct": {
+          "oneXTwoLogLoss": -0.46,
+          "oneXTwoBrier": -0.5,
+          "scoreLogLoss": -0.09,
+          "goalBandBrier": 0.36
+        },
+        "pairedBootstrap": {
+          "oneXTwoLogLoss": {
+            "meanImprovement": -0.0047,
+            "confidenceInterval95": [
+              -0.0117,
+              0.0025
+            ]
+          },
+          "scoreLogLoss": {
+            "meanImprovement": -0.0027,
+            "confidenceInterval95": [
+              -0.0164,
+              0.01
+            ]
+          }
+        }
+      }
+    },
     "recommendation": "keep-current",
-    "calibrationRecommendation": "adopt-poisson"
+    "calibrationRecommendation": "adopt-poisson",
+    "xgRecommendation": "adopt-xg-blend-25"
   }
 }

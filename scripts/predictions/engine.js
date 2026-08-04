@@ -1,6 +1,6 @@
 "use strict";
 
-const ENGINE_VERSION = "4.2.0";
+const ENGINE_VERSION = "4.3.0";
 const OUTCOMES = ["1", "X", "2"];
 const WEIGHTS = Object.freeze({ venueHistorical: 0.46, overallHistorical: 0.25, recentForm: 0.16, tacticalMatchup: 0.07, probableLineup: 0.05, objectives: 0.01 });
 
@@ -207,7 +207,23 @@ function headToHeadGoalFactors(history, homeTeamId, leagueSummary) {
   };
 }
 
-function expectedGoals({ homeVenue, awayVenue, homeProfile, awayProfile, homeRecent, awayRecent, homeTeam, awayTeam, homeSquad, awaySquad, homeObjective, awayObjective, headToHead, leagueSummary }) {
+function xgExpectedGoals(homeProfile, awayProfile, summary) {
+  if (!homeProfile || !awayProfile || !summary) return null;
+  const leagueHome = summary.homeXgPerMatch;
+  const leagueAway = summary.awayXgPerMatch;
+  const leagueOverall = (leagueHome + leagueAway) / 2;
+  const component = (profile, venue, type, venueBaseline) => weightedGeometric([
+    { value: regressedRatio(profile[venue][type], venueBaseline), weight: WEIGHTS.venueHistorical },
+    { value: regressedRatio(profile.overall[type], leagueOverall, 0.62), weight: WEIGHTS.overallHistorical },
+    { value: regressedRatio(profile.recent[type], leagueOverall, 0.48), weight: WEIGHTS.recentForm }
+  ]);
+  return {
+    home: leagueHome * component(homeProfile, "home", "for", leagueHome) * component(awayProfile, "away", "against", leagueHome),
+    away: leagueAway * component(awayProfile, "away", "for", leagueAway) * component(homeProfile, "home", "against", leagueAway)
+  };
+}
+
+function expectedGoals({ homeVenue, awayVenue, homeProfile, awayProfile, homeRecent, awayRecent, homeXgProfile, awayXgProfile, xgLeagueSummary, homeTeam, awayTeam, homeSquad, awaySquad, homeObjective, awayObjective, headToHead, leagueSummary }) {
   const leagueHome = leagueSummary?.homeGoalsPerMatch || 1.28;
   const leagueAway = leagueSummary?.awayGoalsPerMatch || 1.15;
   const leagueOverall = (leagueHome + leagueAway) / 2;
@@ -238,20 +254,35 @@ function expectedGoals({ homeVenue, awayVenue, homeProfile, awayProfile, homeRec
   ]);
   const homeShotFactor = clamp(((homeProfile?.summary?.shotsPerGame || 12.5) / 12.5) ** 0.08, 0.95, 1.05);
   const awayShotFactor = clamp(((awayProfile?.summary?.shotsPerGame || 12.5) / 12.5) ** 0.08, 0.95, 1.05);
-  let home = leagueHome * homeAttackStrength * awayDefenceWeakness * matchupMultiplier(homeProfile, awayProfile) * homeShotFactor * homeLineup.attack * awayLineup.defenceWeakness * objectiveFactors.home * headToHeadFactors.home;
-  let away = leagueAway * awayAttackStrength * homeDefenceWeakness * matchupMultiplier(awayProfile, homeProfile) * awayShotFactor * awayLineup.attack * homeLineup.defenceWeakness * objectiveFactors.away * headToHeadFactors.away;
+  const homeContext = matchupMultiplier(homeProfile, awayProfile) * homeShotFactor * homeLineup.attack * awayLineup.defenceWeakness * objectiveFactors.home * headToHeadFactors.home;
+  const awayContext = matchupMultiplier(awayProfile, homeProfile) * awayShotFactor * awayLineup.attack * homeLineup.defenceWeakness * objectiveFactors.away * headToHeadFactors.away;
+  let home = leagueHome * homeAttackStrength * awayDefenceWeakness * homeContext;
+  let away = leagueAway * awayAttackStrength * homeDefenceWeakness * awayContext;
+  const xgExpected = xgExpectedGoals(homeXgProfile, awayXgProfile, xgLeagueSummary);
+  const xgWeight = xgExpected ? 0.25 : 0;
+  if (xgExpected) {
+    home = home ** (1 - xgWeight) * (xgExpected.home * homeContext) ** xgWeight;
+    away = away ** (1 - xgWeight) * (xgExpected.away * awayContext) ** xgWeight;
+  }
   home = clamp(home, 0.28, 3.5);
   away = clamp(away, 0.24, 3.3);
   return {
     home: round(home, 2),
     away: round(away, 2),
     total: round(home + away, 2),
-    method: "Forze relative attacco/difesa, forma recente corretta per avversario, matchup, probabili XI, obiettivi e correttivo H2H limitato; quote escluse.",
+    method: "Forze relative attacco/difesa, forma recente corretta per avversario, xG Understat al 25% quando coperti entrambi i club, matchup, probabili XI, obiettivi e correttivo H2H limitato; quote escluse.",
     components: {
       home: { attackStrength: round(homeAttackStrength, 3), defenceWeakness: round(homeDefenceWeakness, 3), lineup: homeLineup },
       away: { attackStrength: round(awayAttackStrength, 3), defenceWeakness: round(awayDefenceWeakness, 3), lineup: awayLineup },
       objectiveFactors: { home: round(objectiveFactors.home, 3), away: round(objectiveFactors.away, 3) },
-      headToHead: headToHeadFactors
+      headToHead: headToHeadFactors,
+      xg: {
+        weight: xgWeight,
+        status: xgExpected ? "used" : "fallback-goals",
+        homeRaw: xgExpected ? round(xgExpected.home * homeContext, 3) : null,
+        awayRaw: xgExpected ? round(xgExpected.away * awayContext, 3) : null,
+        source: xgExpected ? "Understat 2025-26" : null
+      }
     }
   };
 }

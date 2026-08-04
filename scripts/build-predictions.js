@@ -16,6 +16,7 @@ const objectives = read("data/team-objectives.json");
 const teams = read("data/teams/index.json").teams;
 const odds = read("data/normalized/odds/sisal/serie-a.json");
 const headToHead = read("data/generated/head-to-head/first-leg-2026-27.json");
+const understatXg = read("data/normalized/understat-serie-a-xg.json");
 const backtestPath = path.join(root, "data/generated/prediction-backtest-2025-26.json");
 const backtest = fs.existsSync(backtestPath) ? JSON.parse(fs.readFileSync(backtestPath, "utf8")) : null;
 const multiSeasonBacktestPath = path.join(root, "data/generated/prediction-backtest-multiseason.json");
@@ -35,6 +36,42 @@ const teamById = new Map(teams.map(team => [team.id, team]));
 const squadsByTeam = new Map(teams.map(team => [team.id, read(`data/generated/team-pages/${team.id}-squad.json`)]));
 const standingsByTeam = new Map(standings.rows.map(row => [row.team, row]));
 const meanStandingPoints = standings.rows.reduce((total, row) => total + row.points, 0) / standings.rows.length;
+const understatTeamIds = {
+  "AC Milan": "milan", Inter: "inter", "Parma Calcio 1913": "parma", Roma: "roma", Verona: "verona"
+};
+const canonicalTeamId = name => understatTeamIds[name] || String(name).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+const xgMatches = understatXg.matches.filter(match => match.season === "2025-26").map(match => ({
+  ...match,
+  homeTeamId: canonicalTeamId(match.homeTeam.name),
+  awayTeamId: canonicalTeamId(match.awayTeam.name)
+}));
+const xgLeagueSummary = {
+  homeXgPerMatch: xgMatches.reduce((total, match) => total + match.xg.home, 0) / xgMatches.length,
+  awayXgPerMatch: xgMatches.reduce((total, match) => total + match.xg.away, 0) / xgMatches.length
+};
+
+function xgProfile(teamId) {
+  const rows = xgMatches.filter(match => match.homeTeamId === teamId || match.awayTeamId === teamId);
+  if (!rows.length) return null;
+  const rate = (selected, type) => selected.reduce((total, match) => {
+    const atHome = match.homeTeamId === teamId;
+    return total + (type === "for" ? (atHome ? match.xg.home : match.xg.away) : (atHome ? match.xg.away : match.xg.home));
+  }, 0) / selected.length;
+  const home = rows.filter(match => match.homeTeamId === teamId);
+  const away = rows.filter(match => match.awayTeamId === teamId);
+  const recent = [...rows].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 8);
+  return {
+    teamId,
+    season: "2025-26",
+    matches: rows.length,
+    home: { matches: home.length, for: rate(home, "for"), against: rate(home, "against") },
+    away: { matches: away.length, for: rate(away, "for"), against: rate(away, "against") },
+    overall: { for: rate(rows, "for"), against: rate(rows, "against") },
+    recent: { matches: recent.length, for: rate(recent, "for"), against: rate(recent, "against") },
+    source: understatXg.source
+  };
+}
+const xgProfiles = new Map(teams.map(team => [team.id, xgProfile(team.id)]));
 
 function recentForm(teamId) {
   const rows = historicalMatches.filter(match => match.homeTeam.slug === teamId || match.awayTeam.slug === teamId)
@@ -67,6 +104,9 @@ const predictions = targetMatches.map(match => {
     awayProfile: styleByTeam.get(match.awayTeam),
     homeRecent: recentForm(match.homeTeam),
     awayRecent: recentForm(match.awayTeam),
+    homeXgProfile: xgProfiles.get(match.homeTeam),
+    awayXgProfile: xgProfiles.get(match.awayTeam),
+    xgLeagueSummary,
     homeDiscipline: disciplineByTeam.get(match.homeTeam),
     awayDiscipline: disciplineByTeam.get(match.awayTeam),
     homeObjective: objectiveByTeam.get(match.homeTeam),
@@ -105,6 +145,7 @@ const predictions = targetMatches.map(match => {
         selectedScoreModel: "poisson",
         poisson: multiSeasonBacktest.variants.poisson.aggregate,
         empirical: multiSeasonBacktest.variants.empirical.aggregate,
+        xgBlend25: multiSeasonBacktest.variants["xg-blend-25"].aggregate,
         dixonColesRecommendation: multiSeasonBacktest.decision.recommendation,
         calibrationRecommendation: multiSeasonBacktest.decision.calibrationRecommendation
       } : null
@@ -123,11 +164,20 @@ const output = {
     weights: WEIGHTS,
     surpriseFactor: "Apertura della gara, probabilita dell'esito sfavorito, divergenza mercato-dati e incompletezza prepartita. Non determina da solo il verdetto.",
     spatialModel: "Valuta separatamente sviluppo a sinistra, al centro e a destra e lo incrocia con le vulnerabilita avversarie.",
-    goalModel: "Forze relative casa/trasferta e complessive, ultime otto gare corrette per avversario, probabile XI, divisione di provenienza, matrice Poisson selezionata con backtest pluristagionale e correttivo H2H limitato al 5% per lato.",
+    goalModel: "Forze relative casa/trasferta e complessive, ultime otto gare corrette per avversario, xG Understat al 25% quando sono coperti entrambi i club, probabile XI, divisione di provenienza, matrice Poisson e correttivo H2H limitato al 5% per lato.",
     scoreModel: {
       type: "poisson",
       calibration: "none",
       reason: "La correzione empirica per singolo punteggio e stata rimossa: nel walk-forward su quattro stagioni peggiora lo score log-loss rispetto a Poisson.",
+      validationReport: "data/generated/prediction-backtest-multiseason.json"
+    },
+    xgModel: {
+      provider: understatXg.provider,
+      season: "2025-26",
+      weightWhenAvailable: 0.25,
+      coveredTeams: [...xgProfiles.values()].filter(Boolean).length,
+      totalTeams: teams.length,
+      fallback: "Poisson sui gol quando una delle due squadre non ha storico xG di Serie A.",
       validationReport: "data/generated/prediction-backtest-multiseason.json"
     },
     validation: backtest ? {
@@ -146,12 +196,13 @@ const output = {
         poisson: multiSeasonBacktest.variants.poisson.aggregate,
         empirical: multiSeasonBacktest.variants.empirical.aggregate,
         dixonColes: multiSeasonBacktest.variants["dixon-coles"].aggregate,
+        xgBlend25: multiSeasonBacktest.variants["xg-blend-25"].aggregate,
         decision: multiSeasonBacktest.decision
       } : null
     } : null,
     volumeModel: "Stima per squadra tiri totali, tiri nello specchio e corner come intervalli, senza imporre una partita ricca o povera di gol.",
     playerModel: "I cinque probabili ammoniti e il candidato MVP provengono dalle probabili formazioni e dallo storico individuale disponibile.",
-    limitations: ["Quote disponibili in un solo snapshot del 3 agosto 2026.", "Forma ufficiale 2026/27 non ancora disponibile: la forma recente usa le ultime otto gare 2025/26.", "Indisponibili, arbitri e meteo saranno integrati soltanto quando verificati.", "Le probabili formazioni sono proiezioni editoriali e non distinte ufficiali.", "Il backtest pluristagionale copre il nucleo statistico retrodatabile, ma non probabili XI, indisponibili e tattica per assenza di snapshot storici.", "Il correttivo H2H e limitato al 5% per lato: il vantaggio fuori campione e positivo ma modesto, quindi non deve dominare il pronostico."]
+    limitations: ["Quote disponibili in un solo snapshot del 3 agosto 2026.", "Forma ufficiale 2026/27 non ancora disponibile: la forma recente usa le ultime otto gare 2025/26.", "Gli xG Understat 2025/26 coprono 17 squadre su 20; negli incontri con una neopromossa non coperta resta attivo il fallback sui gol.", "Indisponibili, arbitri e meteo saranno integrati soltanto quando verificati.", "Le probabili formazioni sono proiezioni editoriali e non distinte ufficiali.", "Il backtest pluristagionale non include probabili XI, indisponibili e tattica per assenza di snapshot storici.", "Il correttivo H2H e limitato al 5% per lato: il vantaggio fuori campione e positivo ma modesto, quindi non deve dominare il pronostico."]
   },
   sources: [
     { label: "Lega Serie A - programma prime cinque giornate", url: "https://www.legaseriea.it/serie-a/news/date-orari-e-programmazione-tv-delle-prime-cinque-giornate" },

@@ -7,10 +7,31 @@ const zlib = require("zlib");
 const root = path.resolve(__dirname, "..", "..");
 const scoreboardsRoot = path.join(root, "data", "raw", "head-to-head", "espn", "scoreboards");
 const outputPath = path.join(root, "data", "generated", "prediction-backtest-multiseason.json");
+const xgPath = path.join(root, "data", "normalized", "understat-serie-a-xg.json");
 const seasons = ["2019-20", "2020-21", "2021-22", "2022-23", "2023-24", "2024-25", "2025-26"];
 const testSeasons = new Set(["2022-23", "2023-24", "2024-25", "2025-26"]);
 const parameters = { venueWeight: 0.46, overallWeight: 0.25, recentWeight: 0.16, venueReliability: 0.7, overallReliability: 0.62, recentReliability: 0.48 };
 const headToHeadConfiguration = { cap: 0.05, decay: 0.6, lowerDivisionWeight: 0.8, cupWeight: 0.72, tempoCap: 0.02 };
+const xgDataset = fs.existsSync(xgPath) ? JSON.parse(fs.readFileSync(xgPath, "utf8")) : { matches: [] };
+
+const normalizeTeamName = value => ({
+  "as roma": "roma", inter: "internazionale", "parma calcio 1913": "parma", "spal 2013": "spal", verona: "hellas verona"
+}[String(value).toLowerCase()] || String(value).toLowerCase());
+const xgBySeason = new Map();
+for (const match of xgDataset.matches) {
+  if (!xgBySeason.has(match.season)) xgBySeason.set(match.season, []);
+  xgBySeason.get(match.season).push(match);
+}
+
+function xgForMatch(match) {
+  const candidates = (xgBySeason.get(match.season) || []).filter(candidate =>
+    normalizeTeamName(candidate.homeTeam.name) === normalizeTeamName(match.homeTeam.name)
+    && normalizeTeamName(candidate.awayTeam.name) === normalizeTeamName(match.awayTeam.name));
+  if (!candidates.length) return null;
+  const matchTime = new Date(match.date).getTime();
+  const selected = candidates.sort((a, b) => Math.abs(new Date(a.date).getTime() - matchTime) - Math.abs(new Date(b.date).getTime() - matchTime))[0];
+  return Math.abs(new Date(selected.date).getTime() - matchTime) <= 172800000 ? selected.xg : null;
+}
 
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 const sum = values => values.reduce((total, value) => total + value, 0);
@@ -28,7 +49,7 @@ function readScoreboard(season, competition = "ita.1") {
   return (raw.payload?.events || []).filter(event => event.status?.type?.completed).map(event => {
     const competitors = event.competitions?.[0]?.competitors || [];
     const home = competitors.find(row => row.homeAway === "home"), away = competitors.find(row => row.homeAway === "away");
-    return {
+    const match = {
       id: String(event.id),
       season,
       date: event.date,
@@ -36,6 +57,7 @@ function readScoreboard(season, competition = "ita.1") {
       awayTeam: { id: String(away?.team?.id || ""), name: away?.team?.displayName || away?.team?.name || "N/D" },
       score: { home: Number(home?.score), away: Number(away?.score) }
     };
+    return { ...match, xg: competition === "ita.1" ? xgForMatch(match) : null };
   }).filter(match => match.date && match.homeTeam.id && match.awayTeam.id && Number.isFinite(match.score.home) && Number.isFinite(match.score.away))
     .sort((a, b) => new Date(a.date) - new Date(b.date) || a.id.localeCompare(b.id));
 }
@@ -89,11 +111,15 @@ function scoreMatrix(homeLambda, awayLambda, options = {}, maxGoals = 8) {
   return rows.map(row => ({ ...row, probability: row.probability / total }));
 }
 
-function leagueRates(history) {
+function matchMetric(match, side, metric) {
+  return metric === "xg" && Number.isFinite(match.xg?.[side]) ? match.xg[side] : match.score[side];
+}
+
+function leagueRates(history, metric = "score") {
   const priorMatches = 80;
   return {
-    home: (sum(history.map(match => match.score.home)) + priorMatches * 1.45) / (history.length + priorMatches),
-    away: (sum(history.map(match => match.score.away)) + priorMatches * 1.15) / (history.length + priorMatches)
+    home: (sum(history.map(match => matchMetric(match, "home", metric))) + priorMatches * 1.45) / (history.length + priorMatches),
+    away: (sum(history.map(match => matchMetric(match, "away", metric))) + priorMatches * 1.15) / (history.length + priorMatches)
   };
 }
 
@@ -101,11 +127,11 @@ function teamRows(history, teamId, venue = null) {
   return history.filter(match => venue === "home" ? match.homeTeam.id === teamId : venue === "away" ? match.awayTeam.id === teamId : match.homeTeam.id === teamId || match.awayTeam.id === teamId);
 }
 
-function teamRate(history, teamId, venue, type, baseline, priorMatches) {
+function teamRate(history, teamId, venue, type, baseline, priorMatches, metric = "score") {
   const rows = teamRows(history, teamId, venue);
   const goals = sum(rows.map(match => {
     const atHome = match.homeTeam.id === teamId;
-    return type === "for" ? (atHome ? match.score.home : match.score.away) : (atHome ? match.score.away : match.score.home);
+    return type === "for" ? (atHome ? matchMetric(match, "home", metric) : matchMetric(match, "away", metric)) : (atHome ? matchMetric(match, "away", metric) : matchMetric(match, "home", metric));
   }));
   return (goals + baseline * priorMatches) / (rows.length + priorMatches);
 }
@@ -127,7 +153,7 @@ function pointsBefore(history) {
   return table;
 }
 
-function recentRate(history, teamId, type, baseline) {
+function recentRate(history, teamId, type, baseline, metric = "score") {
   const table = pointsBefore(history);
   const leaguePpg = sum([...table.values()].map(row => row.points)) / Math.max(1, sum([...table.values()].map(row => row.played)));
   const rows = teamRows(history, teamId).slice(-8).reverse();
@@ -138,7 +164,7 @@ function recentRate(history, teamId, type, baseline) {
     const opponentRow = table.get(opponent);
     const opponentPpg = opponentRow ? (opponentRow.points + 4.5) / (opponentRow.played + 3) : leaguePpg;
     const opponentFactor = clamp((opponentPpg / Math.max(0.5, leaguePpg)) ** 0.2, 0.82, 1.18);
-    const goals = type === "for" ? (atHome ? match.score.home : match.score.away) * opponentFactor : (atHome ? match.score.away : match.score.home) / opponentFactor;
+    const goals = type === "for" ? (atHome ? matchMetric(match, "home", metric) : matchMetric(match, "away", metric)) * opponentFactor : (atHome ? matchMetric(match, "away", metric) : matchMetric(match, "home", metric)) / opponentFactor;
     const weight = 0.82 ** index;
     weighted += goals * weight;
     weights += weight;
@@ -174,14 +200,14 @@ function headToHeadFactors(match, league) {
   return { home: clamp((1 + edge) * (1 + tempo), 0.95, 1.05), away: clamp((1 - edge) * (1 + tempo), 0.95, 1.05) };
 }
 
-function expectedGoals(history, match) {
-  const league = leagueRates(history);
+function expectedGoals(history, match, metric = "score") {
+  const league = leagueRates(history, metric);
   const overall = (league.home + league.away) / 2;
   const strength = (rate, baseline, reliability) => 1 + (rate / baseline - 1) * reliability;
   const component = (teamId, venue, type, venueBaseline) => weightedGeometric([
-    { value: strength(teamRate(history, teamId, venue, type, venueBaseline, 4), venueBaseline, parameters.venueReliability), weight: parameters.venueWeight },
-    { value: strength(teamRate(history, teamId, null, type, overall, 7), overall, parameters.overallReliability), weight: parameters.overallWeight },
-    { value: strength(recentRate(history, teamId, type, overall), overall, parameters.recentReliability), weight: parameters.recentWeight }
+    { value: strength(teamRate(history, teamId, venue, type, venueBaseline, 4, metric), venueBaseline, parameters.venueReliability), weight: parameters.venueWeight },
+    { value: strength(teamRate(history, teamId, null, type, overall, 7, metric), overall, parameters.overallReliability), weight: parameters.overallWeight },
+    { value: strength(recentRate(history, teamId, type, overall, metric), overall, parameters.recentReliability), weight: parameters.recentWeight }
   ]);
   const homeAttack = component(match.homeTeam.id, "home", "for", league.home);
   const homeDefence = component(match.homeTeam.id, "home", "against", league.away);
@@ -233,7 +259,8 @@ for (const season of seasons) {
     const awayMatches = teamRows(history, match.awayTeam.id).length;
     if (homeMatches >= 8 && awayMatches >= 8) {
       const expected = expectedGoals(history, match);
-      predictionSamples.push({ ...match, homeLambda: expected.home, awayLambda: expected.away, calibration: scoreCalibration(history, leagueRates(history)) });
+      const xgExpected = expectedGoals(history, match, "xg");
+      predictionSamples.push({ ...match, homeLambda: expected.home, awayLambda: expected.away, xgHomeLambda: xgExpected.home, xgAwayLambda: xgExpected.away, calibration: scoreCalibration(history, leagueRates(history)) });
     }
     history.push(match);
   }
@@ -257,7 +284,10 @@ function evaluateRows(samples, variant) {
     const day = sample.date.slice(0, 10);
     if (variant.includes("dixon-coles") && !rhoByDay.has(day)) rhoByDay.set(day, estimateRho(predictionSamples, `${day}T00:00:00Z`));
     const rhoEstimate = variant.includes("dixon-coles") ? rhoByDay.get(day) : { rho: 0, sample: 0 };
-    const matrix = scoreMatrix(sample.homeLambda, sample.awayLambda, {
+    const xgWeight = variant === "xg-blend-25" ? 0.25 : variant === "xg-blend-50" ? 0.5 : variant === "xg-blend-75" ? 0.75 : variant === "xg-only" ? 1 : 0;
+    const homeLambda = sample.homeLambda ** (1 - xgWeight) * sample.xgHomeLambda ** xgWeight;
+    const awayLambda = sample.awayLambda ** (1 - xgWeight) * sample.xgAwayLambda ** xgWeight;
+    const matrix = scoreMatrix(homeLambda, awayLambda, {
       calibration: variant.includes("empirical") ? sample.calibration : null,
       rho: rhoEstimate.rho
     });
@@ -318,7 +348,7 @@ function bootstrapDifference(candidate, baseline, metric, iterations = 2000) {
 }
 
 const testSamples = predictionSamples.filter(sample => testSeasons.has(sample.season));
-const variants = ["poisson", "empirical", "dixon-coles", "empirical+dixon-coles"];
+const variants = ["poisson", "empirical", "dixon-coles", "empirical+dixon-coles", "xg-blend-25", "xg-blend-50", "xg-blend-75", "xg-only"];
 const results = Object.fromEntries(variants.map(variant => [variant, evaluateRows(testSamples, variant)]));
 const current = results.empirical;
 const candidate = results["dixon-coles"];
@@ -332,7 +362,8 @@ const output = {
     sourceSeasons: seasons,
     testSeasons: [...testSeasons],
     warmup: "Almeno otto gare stagionali precedenti per entrambe le squadre.",
-    leakageControl: "Lambda, calibrazione empirica, H2H e rho usano esclusivamente eventi antecedenti alla partita stimata.",
+    leakageControl: "Lambda, xG, calibrazione empirica, H2H e rho usano esclusivamente eventi antecedenti alla partita stimata.",
+    xg: "Dati partita Understat; confronto tra Poisson sui gol, fusione geometrica 50% gol/50% xG e solo xG.",
     dixonColes: "Correzione dei risultati 0-0, 0-1, 1-0 e 1-1; rho selezionato per ogni data su tre anni precedenti con emivita 365 giorni.",
     scope: "Nucleo statistico retrodatabile con correttivo H2H; probabili XI, indisponibili e tattica non sono inclusi per assenza di snapshot storici."
   },
@@ -376,7 +407,19 @@ const output = {
         scoreLogLoss: bootstrapDifference(results.poisson.rows, current.rows, "scoreLogLoss"),
         goalBandBrier: bootstrapDifference(results.poisson.rows, current.rows, "goalBandBrier")
       }
-    }
+    },
+    xgComparison: Object.fromEntries(["xg-blend-25", "xg-blend-50", "xg-blend-75", "xg-only"].map(variant => [variant, {
+      improvementVsPoissonPct: {
+        oneXTwoLogLoss: improvement(results.poisson.metrics.oneXTwoLogLoss, results[variant].metrics.oneXTwoLogLoss),
+        oneXTwoBrier: improvement(results.poisson.metrics.oneXTwoBrier, results[variant].metrics.oneXTwoBrier),
+        scoreLogLoss: improvement(results.poisson.metrics.scoreLogLoss, results[variant].metrics.scoreLogLoss),
+        goalBandBrier: improvement(results.poisson.metrics.goalBandBrier, results[variant].metrics.goalBandBrier)
+      },
+      pairedBootstrap: {
+        oneXTwoLogLoss: bootstrapDifference(results[variant].rows, results.poisson.rows, "oneXTwoLogLoss"),
+        scoreLogLoss: bootstrapDifference(results[variant].rows, results.poisson.rows, "scoreLogLoss")
+      }
+    }]))
   }
 };
 
@@ -389,5 +432,11 @@ const poissonWins = calibration.improvementVsEmpiricalPct.oneXTwoLogLoss >= 0
   && calibration.improvementVsEmpiricalPct.scoreLogLoss > 0
   && calibration.pairedBootstrap.scoreLogLoss.confidenceInterval95[0] >= 0;
 output.decision.calibrationRecommendation = poissonWins ? "adopt-poisson" : "keep-empirical";
+const xgCandidate = output.decision.xgComparison["xg-blend-25"];
+const xgWins = xgCandidate.improvementVsPoissonPct.oneXTwoLogLoss >= 0
+  && xgCandidate.improvementVsPoissonPct.oneXTwoBrier > 0
+  && xgCandidate.improvementVsPoissonPct.scoreLogLoss > 0
+  && xgCandidate.pairedBootstrap.scoreLogLoss.confidenceInterval95[0] > 0;
+output.decision.xgRecommendation = xgWins ? "adopt-xg-blend-25" : "keep-goals-only";
 fs.writeFileSync(outputPath, `${JSON.stringify(output, null, 2)}\n`);
 console.log(`OK backtest pluristagionale: ${testSamples.length} gare, decisione ${output.decision.recommendation}`);
