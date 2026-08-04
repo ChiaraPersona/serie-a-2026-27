@@ -32,6 +32,7 @@
     "import:head-to-head": "node scripts/head-to-head/import.js",
     "test:head-to-head": "node scripts/head-to-head/test.js",
     "validate:head-to-head": "node scripts/head-to-head/validate.js",
+    "test:head-to-head-integration": "node scripts/test-head-to-head-integration.js",
     "test:team-referees": "node scripts/test-team-referee-profiles.js",
     "download:logos": "python scripts/download-team-logos.py",
     "test:teams": "node scripts/team-pages/test.js",
@@ -41,6 +42,6 @@
     "test:predictions": "node scripts/test-predictions.js",
     "backtest:predictions": "node scripts/predictions/backtest.js",
     "test:prediction-backtest": "node scripts/test-prediction-backtest.js",
-    "test": "node scripts/validate-data.js && node scripts/referee-stats/test.js && node scripts/referee-stats/validate-2025-26.js && node scripts/test-team-referee-profiles.js && node scripts/team-pages/test.js && node scripts/team-pages/test-milan.js && node scripts/team-pages/test-completed-teams.js && node scripts/team-pages/test-all-teams.js && node scripts/sisal/test.js && node scripts/test-predictions.js && node scripts/test-prediction-backtest.js && node scripts/head-to-head/test.js"
+    "test": "node scripts/validate-data.js && node scripts/referee-stats/test.js && node scripts/referee-stats/validate-2025-26.js && node scripts/test-team-referee-profiles.js && node scripts/team-pages/test.js && node scripts/team-pages/test-milan.js && node scripts/team-pages/test-completed-teams.js && node scripts/team-pages/test-all-teams.js && node scripts/sisal/test.js && node scripts/test-predictions.js && node scripts/test-prediction-backtest.js && node scripts/head-to-head/test.js && node scripts/test-head-to-head-integration.js"
   }
 }

@@ -52,4 +52,4 @@ Ogni pronostico contiene probabilità 1X2, tre risultati esatti, fattore sorpres
 
 `scripts/build-site.js` genera le shell HTML; `js/app.js` carica i JSON e costruisce le viste. Gli HTML generati non devono essere modificati manualmente.
 
-Le pagine complete di tutte le 20 squadre sono collegate da `statistiche-squadre.html` e da `statistiche-squadra/index.html`. Le rose correnti e i dati 2025/26 restano separati; i dati della Serie B sono mantenuti distinti per le neopromosse. I nominativi rilevati durante il mercato estivo possono essere marcati `da verificare`; i campi non pubblicati dalla fonte restano `null` e sono mostrati come `N/D`.
+Le pagine complete di tutte le 20 squadre sono collegate da `statistiche-squadre.html`. Le rose correnti e i dati 2025/26 restano separati; i dati della Serie B sono mantenuti distinti per le neopromosse. I nominativi rilevati durante il mercato estivo possono essere marcati `da verificare`; i campi non pubblicati dalla fonte restano `null` e sono mostrati come `N/D`.

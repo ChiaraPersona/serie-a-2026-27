@@ -19,3 +19,5 @@ node scripts/head-to-head/import.js --pair atalanta,sassuolo --seasons 2022-23,2
 ```
 
 `--refresh` forza il nuovo download anche quando la cache è già presente. Gli eventi mancanti restano esplicitamente segnalati; non vengono interpretati come zero gol o zero ammoniti.
+
+Il dataset è collegato alla pagina `Lettura`: l'indice espone tutte le 19 giornate di andata e ogni scheda mostra risultato, marcatori, ammoniti, minuti e fonte dei precedenti. `scripts/build-predictions.js` passa inoltre lo storico al motore, che applica un correttivo sui gol attesi limitato al 5% per lato e non incluso nel backtest 2025/26.

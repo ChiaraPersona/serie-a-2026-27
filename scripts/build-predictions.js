@@ -15,6 +15,7 @@ const historicalMatches = read("data/normalized/referee-matches/2025-26/serie-a.
 const objectives = read("data/team-objectives.json");
 const teams = read("data/teams/index.json").teams;
 const odds = read("data/normalized/odds/sisal/serie-a.json");
+const headToHead = read("data/generated/head-to-head/first-leg-2026-27.json");
 const backtestPath = path.join(root, "data/generated/prediction-backtest-2025-26.json");
 const backtest = fs.existsSync(backtestPath) ? JSON.parse(fs.readFileSync(backtestPath, "utf8")) : null;
 const generatedAt = odds.retrievedAt || new Date().toISOString();
@@ -25,6 +26,7 @@ const styleByTeam = byId(styles.profiles);
 const disciplineByTeam = byId(discipline.profiles);
 const objectiveByTeam = byId(objectives.teams);
 const oddsByMatch = byId(odds.events);
+const headToHeadByMatch = new Map(headToHead.fixtures.map(fixture => [fixture.fixtureId, fixture]));
 const homeByTeam = byId(standings.homeRows);
 const awayByTeam = byId(standings.awayRows);
 const teamById = new Map(teams.map(team => [team.id, team]));
@@ -87,6 +89,7 @@ const predictions = targetMatches.map(match => {
     awayDiscipline: disciplineByTeam.get(match.awayTeam),
     homeObjective: objectiveByTeam.get(match.homeTeam),
     awayObjective: objectiveByTeam.get(match.awayTeam),
+    headToHead: headToHeadByMatch.get(match.id),
     homeTeam: teamById.get(match.homeTeam),
     awayTeam: teamById.get(match.awayTeam),
     homeSquad: squadsByTeam.get(match.homeTeam),
@@ -126,7 +129,7 @@ const output = {
     weights: WEIGHTS,
     surpriseFactor: "Apertura della gara, probabilita dell'esito sfavorito, divergenza mercato-dati e incompletezza prepartita. Non determina da solo il verdetto.",
     spatialModel: "Valuta separatamente sviluppo a sinistra, al centro e a destra e lo incrocia con le vulnerabilita avversarie.",
-    goalModel: "Forze relative casa/trasferta e complessive, ultime otto gare corrette per avversario, probabile XI, divisione di provenienza e calibrazione empirica dei punteggi 2025/26.",
+    goalModel: "Forze relative casa/trasferta e complessive, ultime otto gare corrette per avversario, probabile XI, divisione di provenienza, calibrazione empirica 2025/26 e correttivo H2H limitato al 5% per lato.",
     scoreCalibration: sharedScoreCalibration,
     validation: backtest ? {
       season: backtest.season,
@@ -134,17 +137,18 @@ const output = {
       outOfSampleMatches: backtest.outOfSample.configuredV4Core.metrics.matches,
       configuredCore: backtest.outOfSample.configuredV4Core,
       baseline: backtest.outOfSample.baseline,
-      headToHeadStatus: backtest.headToHead.status,
+      headToHeadStatus: "integrated-not-backtested",
       scope: backtest.methodology.modelScope
     } : null,
     volumeModel: "Stima per squadra tiri totali, tiri nello specchio e corner come intervalli, senza imporre una partita ricca o povera di gol.",
     playerModel: "I cinque probabili ammoniti e il candidato MVP provengono dalle probabili formazioni e dallo storico individuale disponibile.",
-    limitations: ["Quote disponibili in un solo snapshot del 3 agosto 2026.", "Forma ufficiale 2026/27 non ancora disponibile: la forma recente usa le ultime otto gare 2025/26.", "Indisponibili, arbitri e meteo saranno integrati soltanto quando verificati.", "Le probabili formazioni sono proiezioni editoriali e non distinte ufficiali.", "Il backtest walk-forward copre una sola stagione e soltanto il nucleo statistico retrodatabile; serve ancora una verifica pluristagionale.", "Gli ultimi cinque scontri diretti saranno valutati con un test con/senza H2H quando il relativo dataset sara disponibile."]
+    limitations: ["Quote disponibili in un solo snapshot del 3 agosto 2026.", "Forma ufficiale 2026/27 non ancora disponibile: la forma recente usa le ultime otto gare 2025/26.", "Indisponibili, arbitri e meteo saranno integrati soltanto quando verificati.", "Le probabili formazioni sono proiezioni editoriali e non distinte ufficiali.", "Il backtest walk-forward copre una sola stagione e soltanto il nucleo statistico retrodatabile; serve ancora una verifica pluristagionale.", "Il correttivo H2H e limitato al 5% per lato e non e incluso nel backtest, per evitare leakage temporale dal dataset costruito per il 2026/27."]
   },
   sources: [
     { label: "Lega Serie A - programma prime cinque giornate", url: "https://www.legaseriea.it/serie-a/news/date-orari-e-programmazione-tv-delle-prime-cinque-giornate" },
     { label: "Sisal - quote Serie A", url: odds.sourceUrl },
-    { label: "Calciomercato.com - proiezione formazioni 20 squadre", url: teams.find(team => team.probableLineup?.source?.url)?.probableLineup.source.url }
+    { label: "Calciomercato.com - proiezione formazioni 20 squadre", url: teams.find(team => team.probableLineup?.source?.url)?.probableLineup.source.url },
+    { label: "ESPN - ultimi cinque scontri diretti", url: "data/generated/head-to-head/first-leg-2026-27.json" }
   ],
   predictions
 };

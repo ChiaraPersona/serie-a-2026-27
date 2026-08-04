@@ -1,6 +1,6 @@
 "use strict";
 
-const ENGINE_VERSION = "4.0.0";
+const ENGINE_VERSION = "4.1.0";
 const OUTCOMES = ["1", "X", "2"];
 const WEIGHTS = Object.freeze({ venueHistorical: 0.46, overallHistorical: 0.25, recentForm: 0.16, tacticalMatchup: 0.07, probableLineup: 0.05, objectives: 0.01 });
 
@@ -169,13 +169,51 @@ function objectiveGoalFactors(homeObjective, awayObjective) {
   return { home: 1 + delta * 0.025, away: 1 - delta * 0.025 };
 }
 
-function expectedGoals({ homeVenue, awayVenue, homeProfile, awayProfile, homeRecent, awayRecent, homeTeam, awayTeam, homeSquad, awaySquad, homeObjective, awayObjective, leagueSummary }) {
+function headToHeadGoalFactors(history, homeTeamId, leagueSummary) {
+  const meetings = history?.previousMeetings || [];
+  if (!meetings.length) return { home: 1, away: 1, sample: 0, requested: 5, status: "unavailable", usedInModel: false, record: { wins: 0, draws: 0, losses: 0 }, goals: { for: 0, against: 0, averageTotal: null } };
+  let weightTotal = 0, goalsFor = 0, goalsAgainst = 0, wins = 0, draws = 0, losses = 0;
+  meetings.forEach((meeting, index) => {
+    const currentHomeWasHome = meeting.homeTeam?.id === homeTeamId;
+    const scored = currentHomeWasHome ? meeting.score.home : meeting.score.away;
+    const conceded = currentHomeWasHome ? meeting.score.away : meeting.score.home;
+    const weight = 0.72 ** index;
+    weightTotal += weight;
+    goalsFor += scored * weight;
+    goalsAgainst += conceded * weight;
+    if (scored > conceded) wins += 1;
+    else if (scored === conceded) draws += 1;
+    else losses += 1;
+  });
+  const weightedFor = goalsFor / weightTotal;
+  const weightedAgainst = goalsAgainst / weightTotal;
+  const reliability = meetings.length / 5;
+  const balance = clamp((weightedFor - weightedAgainst) / Math.max(1, weightedFor + weightedAgainst), -0.6, 0.6);
+  const leagueTotal = (leagueSummary?.homeGoalsPerMatch || 1.28) + (leagueSummary?.awayGoalsPerMatch || 1.15);
+  const averageTotal = (goalsFor + goalsAgainst) / weightTotal;
+  const edge = balance * 0.05 * reliability;
+  const tempo = clamp((averageTotal / leagueTotal - 1) * 0.035 * reliability, -0.02, 0.02);
+  return {
+    home: round(clamp((1 + edge) * (1 + tempo), 0.95, 1.05), 3),
+    away: round(clamp((1 - edge) * (1 + tempo), 0.95, 1.05), 3),
+    sample: meetings.length,
+    requested: 5,
+    status: meetings.length === 5 ? "complete" : "limited",
+    usedInModel: true,
+    record: { wins, draws, losses },
+    goals: { for: round(weightedFor, 2), against: round(weightedAgainst, 2), averageTotal: round(averageTotal, 2) },
+    method: "Ultimi cinque precedenti ufficiali con decadimento 0,72; correzione complessiva limitata al 5% per lato."
+  };
+}
+
+function expectedGoals({ homeVenue, awayVenue, homeProfile, awayProfile, homeRecent, awayRecent, homeTeam, awayTeam, homeSquad, awaySquad, homeObjective, awayObjective, headToHead, leagueSummary }) {
   const leagueHome = leagueSummary?.homeGoalsPerMatch || 1.28;
   const leagueAway = leagueSummary?.awayGoalsPerMatch || 1.15;
   const leagueOverall = (leagueHome + leagueAway) / 2;
   const homeLineup = lineupImpact(homeTeam, homeSquad);
   const awayLineup = lineupImpact(awayTeam, awaySquad);
   const objectiveFactors = objectiveGoalFactors(homeObjective, awayObjective);
+  const headToHeadFactors = headToHeadGoalFactors(headToHead, homeTeam?.id, leagueSummary);
 
   const homeAttackStrength = weightedGeometric([
     { value: homeVenue ? regressedRatio(homeVenue.goalsFor / homeVenue.played, leagueHome) : null, weight: WEIGHTS.venueHistorical },
@@ -199,19 +237,20 @@ function expectedGoals({ homeVenue, awayVenue, homeProfile, awayProfile, homeRec
   ]);
   const homeShotFactor = clamp(((homeProfile?.summary?.shotsPerGame || 12.5) / 12.5) ** 0.08, 0.95, 1.05);
   const awayShotFactor = clamp(((awayProfile?.summary?.shotsPerGame || 12.5) / 12.5) ** 0.08, 0.95, 1.05);
-  let home = leagueHome * homeAttackStrength * awayDefenceWeakness * matchupMultiplier(homeProfile, awayProfile) * homeShotFactor * homeLineup.attack * awayLineup.defenceWeakness * objectiveFactors.home;
-  let away = leagueAway * awayAttackStrength * homeDefenceWeakness * matchupMultiplier(awayProfile, homeProfile) * awayShotFactor * awayLineup.attack * homeLineup.defenceWeakness * objectiveFactors.away;
+  let home = leagueHome * homeAttackStrength * awayDefenceWeakness * matchupMultiplier(homeProfile, awayProfile) * homeShotFactor * homeLineup.attack * awayLineup.defenceWeakness * objectiveFactors.home * headToHeadFactors.home;
+  let away = leagueAway * awayAttackStrength * homeDefenceWeakness * matchupMultiplier(awayProfile, homeProfile) * awayShotFactor * awayLineup.attack * homeLineup.defenceWeakness * objectiveFactors.away * headToHeadFactors.away;
   home = clamp(home, 0.28, 3.5);
   away = clamp(away, 0.24, 3.3);
   return {
     home: round(home, 2),
     away: round(away, 2),
     total: round(home + away, 2),
-    method: "Forze relative attacco/difesa, forma recente corretta per avversario, matchup, probabili XI e correttivo obiettivi; quote escluse.",
+    method: "Forze relative attacco/difesa, forma recente corretta per avversario, matchup, probabili XI, obiettivi e correttivo H2H limitato; quote escluse.",
     components: {
       home: { attackStrength: round(homeAttackStrength, 3), defenceWeakness: round(homeDefenceWeakness, 3), lineup: homeLineup },
       away: { attackStrength: round(awayAttackStrength, 3), defenceWeakness: round(awayDefenceWeakness, 3), lineup: awayLineup },
-      objectiveFactors: { home: round(objectiveFactors.home, 3), away: round(objectiveFactors.away, 3) }
+      objectiveFactors: { home: round(objectiveFactors.home, 3), away: round(objectiveFactors.away, 3) },
+      headToHead: headToHeadFactors
     }
   };
 }
@@ -698,6 +737,7 @@ function predictMatch(input) {
       objectives: probabilityObject(parts.objectives)
     },
     expectedGoals: expected,
+    headToHead: expected.components.headToHead,
     exactScores: exact,
     scoreProfile: scoreProfile(matrix, exact),
     verdict: {

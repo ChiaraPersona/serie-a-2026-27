@@ -43,7 +43,8 @@ const mainApp = fs.readFileSync(path.join(root, "js/app.js"), "utf8");
 for (const teamId of Object.keys(expectedCounts)) {
   assert.ok(fs.existsSync(path.join(root, `statistiche-squadra/${teamId}.html`)), `${teamId}: pagina assente`);
 }
-assert.ok(interfaceSource.includes('href="${team.id}.html"'), "Collegamenti dinamici dell'indice assenti");
+assert.ok(!fs.existsSync(path.join(root, "statistiche-squadra/index.html")), "La pagina indice duplicata non deve essere generata");
+assert.ok(interfaceSource.includes('${base}statistiche-squadre.html') && !interfaceSource.includes("statistiche-squadra/index.html"), "Il ritorno all'elenco deve usare la pagina canonica");
 assert.ok(mainApp.includes("teamDirectoryGrid") && mainApp.includes("statistiche-squadra/${team.id}.html"), "Elenco squadre non integrato nella pagina principale");
 assert.ok(interfaceSource.includes("squadLeaderboards"), "Top 3 non condivisa con le nuove pagine");
 console.log("Inter, Juventus e Napoli: rose, statistiche /90, pagine, fonti e collegamenti validati.");
