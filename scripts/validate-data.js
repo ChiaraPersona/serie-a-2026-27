@@ -140,6 +140,8 @@ assert(firstFive.every(m=>m.dateStatus!=="tbd"),"Programmazione mancante nelle p
 assert(provisional.length===5,`Gare provvisorie: ${provisional.length}, attese 5`);
 assert(league.every(m=>!m.isDemo)&&teams.every(t=>!t.isDemo),"Dati demo ancora presenti");
 assert(previousStandings.season==="2025-26"&&previousStandings.status==="final","Metadati classifica 2025/26 non validi");
+const historicalDisciplineFields=["penaltiesFor","penaltiesAgainst","cardsFor","cardsAgainst"];
+assert(previousStandings.disciplineSource?.provider==="espn"&&previousStandings.disciplineSource.matches===380&&previousStandings.disciplineSource.teamMatchRecords===760&&previousStandings.disciplineSource.completeCoverage===true,"Fonte disciplinare classifica 2025/26 non valida");
 assert(previousStandings.historicalTeams.length===3,"Classifica 2025/26: attesi 3 loghi per squadre non presenti nel 2026/27");
 for(const team of previousStandings.historicalTeams){assert(fs.existsSync(path.join(root,team.logo)),`Logo storico locale mancante: ${team.id}`);assert(team.logoSource?.sourceUrl&&team.logoSource?.sourceType==="official-club",`Fonte logo storico non valida: ${team.id}`)}
 assert(previousStandings.rows.length===20,"Classifica 2025/26: attese 20 squadre");
@@ -148,6 +150,7 @@ for(const row of previousStandings.rows){
   assert(row.played===38&&row.won+row.drawn+row.lost===38,`Classifica 2025/26: partite incoerenti per ${row.teamName}`);
   assert(row.goalDifference===row.goalsFor-row.goalsAgainst,`Classifica 2025/26: differenza reti incoerente per ${row.teamName}`);
   assert(row.points===row.won*3+row.drawn,`Classifica 2025/26: punti incoerenti per ${row.teamName}`);
+  assert(historicalDisciplineFields.every(field=>Number.isInteger(row[field])&&row[field]>=0),`Classifica 2025/26: rigori/cartellini mancanti per ${row.teamName}`);
 }
 assert(previousStandings.homeRows.length===20,"Rendimento casa 2025/26: attese 20 squadre");
 assert(new Set(previousStandings.homeRows.map(r=>r.position)).size===20,"Rendimento casa 2025/26: posizioni duplicate");
@@ -155,6 +158,7 @@ for(const row of previousStandings.homeRows){
   assert(row.played===19&&row.won+row.drawn+row.lost===19,`Rendimento casa 2025/26: partite incoerenti per ${row.teamName}`);
   assert(row.goalDifference===row.goalsFor-row.goalsAgainst,`Rendimento casa 2025/26: differenza reti incoerente per ${row.teamName}`);
   assert(row.points===row.won*3+row.drawn,`Rendimento casa 2025/26: punti incoerenti per ${row.teamName}`);
+  assert(historicalDisciplineFields.every(field=>Number.isInteger(row[field])&&row[field]>=0),`Rendimento casa 2025/26: rigori/cartellini mancanti per ${row.teamName}`);
 }
 assert(previousStandings.awayRows.length===20,"Rendimento trasferta 2025/26: attese 20 squadre");
 assert(new Set(previousStandings.awayRows.map(r=>r.position)).size===20,"Rendimento trasferta 2025/26: posizioni duplicate");
@@ -162,13 +166,16 @@ for(const row of previousStandings.awayRows){
   assert(row.played===19&&row.won+row.drawn+row.lost===19,`Rendimento trasferta 2025/26: partite incoerenti per ${row.teamName}`);
   assert(row.goalDifference===row.goalsFor-row.goalsAgainst,`Rendimento trasferta 2025/26: differenza reti incoerente per ${row.teamName}`);
   assert(row.points===row.won*3+row.drawn,`Rendimento trasferta 2025/26: punti incoerenti per ${row.teamName}`);
+  assert(historicalDisciplineFields.every(field=>Number.isInteger(row[field])&&row[field]>=0),`Rendimento trasferta 2025/26: rigori/cartellini mancanti per ${row.teamName}`);
 }
 for(const total of previousStandings.rows){
   const home=previousStandings.homeRows.find(r=>r.team===total.team),away=previousStandings.awayRows.find(r=>r.team===total.team);
   assert(home&&away,`Rendimento casa/trasferta mancante per ${total.teamName}`);
-  for(const field of ["played","won","drawn","lost","goalsFor","goalsAgainst","goalDifference","points"])
+  for(const field of ["played","won","drawn","lost","goalsFor","goalsAgainst","goalDifference","points",...historicalDisciplineFields])
     assert(home[field]+away[field]===total[field],`Totale casa+trasferta incoerente per ${total.teamName}: ${field}`);
 }
+assert(previousStandings.rows.reduce((sum,row)=>sum+row.penaltiesFor,0)===previousStandings.rows.reduce((sum,row)=>sum+row.penaltiesAgainst,0),"Totale rigori a favore/contro 2025/26 non riconciliato");
+assert(previousStandings.rows.reduce((sum,row)=>sum+row.cardsFor,0)===previousStandings.rows.reduce((sum,row)=>sum+row.cardsAgainst,0),"Totale cartellini a favore/contro 2025/26 non riconciliato");
 const summary=previousStandings.summary;
 assert(summary.teams===20&&summary.matches===380,"Riepilogo 2025/26: squadre o partite non validi");
 assert(summary.goals===previousStandings.rows.reduce((sum,r)=>sum+r.goalsFor,0),"Riepilogo 2025/26: gol totali incoerenti");
