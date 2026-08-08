@@ -353,11 +353,13 @@ async function render(){
   if(page==="readings"){renderProbableLineups(activeReadingMatch,teamDirectory,activePrediction);renderReadingPilotEvidence(activeReading);renderTacticalBaselines(activeReadingMatch,teamStyleProfiles,teams)}
   if(page==="fantasy")configureFantasyHeaders();
   if(page==="fantasy"){
-    const budget=document.querySelector("#fantasy-budget"),role=document.querySelector("#fantasy-role"),slot=document.querySelector("#fantasy-slot"),search=document.querySelector("#fantasy-search"),tbody=document.querySelector("#fantasy-players"),count=document.querySelector("#fantasy-count"),calendar=document.querySelector("#calendario-formazione"),goalkeeperTrios=document.querySelector("#goalkeeper-trios"),squadPanel=document.querySelector("#fantasy-squad-panel"),recommendationPanel=document.querySelector("#fantasy-recommendations"),storageKey=`fantasy-squad-${fantasy.season}-v1`;
+    const budget=document.querySelector("#fantasy-budget"),pricingMode=document.querySelector("#fantasy-pricing-mode"),participants=document.querySelector("#fantasy-participants"),role=document.querySelector("#fantasy-role"),slot=document.querySelector("#fantasy-slot"),search=document.querySelector("#fantasy-search"),tbody=document.querySelector("#fantasy-players"),count=document.querySelector("#fantasy-count"),calendar=document.querySelector("#calendario-formazione"),goalkeeperTrios=document.querySelector("#goalkeeper-trios"),squadPanel=document.querySelector("#fantasy-squad-panel"),recommendationPanel=document.querySelector("#fantasy-recommendations"),storageKey=`fantasy-squad-${fantasy.season}-v1`;
     let selectedPlayerId=fantasy.players[0].id,strategyId="balanced",storedState=null;
     try{storedState=JSON.parse(localStorage.getItem(storageKey)||"null")}catch(error){storedState=null}
     let squadState=FantasySquad.normalizeState(storedState,fantasy.players,500);
     budget.value=squadState.budget;
+    pricingMode.value=fantasy.pricing?.defaultMode||"auction";
+    participants.value=String(fantasy.pricing?.defaultParticipants||8);
     document.querySelector(".fantasy-slots .eyebrow").textContent="Valutazione d'asta";
     document.querySelector(".fantasy-slots h2").textContent="Come leggere le stelle";
     document.querySelector('label[for="fantasy-budget"]')?.setAttribute("aria-label","Crediti iniziali");
@@ -369,14 +371,16 @@ async function render(){
     if(heroEyebrow)heroEyebrow.textContent="Asta 2026/27";
     if(heroText)heroText.textContent="Valore, continuità e tutte le 38 giornate diventano una guida d'asta adattabile al tuo budget. Le stelle confrontano i calciatori all'interno dello stesso ruolo.";
     const currentBudget=()=>Math.max(100,Math.min(2000,Number(budget.value)||500));
+    const currentPricingMode=()=>pricingMode.value==="classic"?"classic":"auction";
+    const currentParticipants=()=>[6,8,10].includes(Number(participants.value))?Number(participants.value):8;
     const save=()=>{try{localStorage.setItem(storageKey,JSON.stringify(squadState))}catch(error){}}
-    const refreshPriceInsights=()=>{const summary=FantasySquad.summarize(squadState,fantasy.players),cards=squadPanel.querySelectorAll(".fantasy-squad-summary article");[`${summary.total}/25`,summary.mains,summary.spent,summary.remaining].forEach((value,index)=>{const target=cards[index]?.querySelector("strong");if(target)target.textContent=value});cards[3]?.classList.toggle("is-alert",summary.overBudget);recommendationPanel.innerHTML=fantasyRecommendations(fantasy,squadState,strategyId);save()};
-    const showCalendar=playerId=>{selectedPlayerId=playerId;calendar.innerHTML=fantasyLineupCalendar(fantasy,playerId,currentBudget());calendar.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"})};
+    const refreshPriceInsights=()=>{const summary=FantasySquad.summarize(squadState,fantasy.players),cards=squadPanel.querySelectorAll(".fantasy-squad-summary article");[`${summary.total}/25`,summary.mains,summary.spent,summary.remaining].forEach((value,index)=>{const target=cards[index]?.querySelector("strong");if(target)target.textContent=value});cards[3]?.classList.toggle("is-alert",summary.overBudget);recommendationPanel.innerHTML=fantasyRecommendations(fantasy,squadState,strategyId,currentPricingMode(),currentParticipants());save()};
+    const showCalendar=playerId=>{selectedPlayerId=playerId;calendar.innerHTML=fantasyLineupCalendar(fantasy,playerId,currentBudget(),currentPricingMode(),currentParticipants());calendar.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"})};
     const update=()=>{
       const credits=currentBudget(),amounts=fantasyBudgetAmounts(fantasy.budgetPlan,credits);
       squadState=FantasySquad.normalizeState({...squadState,budget:credits},fantasy.players,credits);
-      const result=fantasyPlayerRows(fantasy,credits,role.value,slot.value,search.value,null,squadState);
-      tbody.innerHTML=result.html;count.textContent=result.shown<result.count?`${result.shown} di ${result.count}`:result.count===1?"1 calciatore":`${result.count} calciatori`;goalkeeperTrios.innerHTML=fantasyGoalkeeperTrios(fantasy,credits);calendar.innerHTML=fantasyLineupCalendar(fantasy,selectedPlayerId,credits);squadPanel.innerHTML=fantasySquadPanel(fantasy,squadState);recommendationPanel.innerHTML=fantasyRecommendations(fantasy,squadState,strategyId);
+      const mode=currentPricingMode(),leagueSize=currentParticipants(),result=fantasyPlayerRows(fantasy,credits,role.value,slot.value,search.value,null,squadState,mode,leagueSize);
+      tbody.innerHTML=result.html;count.textContent=result.shown<result.count?`${result.shown} di ${result.count}`:result.count===1?"1 calciatore":`${result.count} calciatori`;goalkeeperTrios.innerHTML=fantasyGoalkeeperTrios(fantasy,credits,mode,leagueSize);calendar.innerHTML=fantasyLineupCalendar(fantasy,selectedPlayerId,credits,mode,leagueSize);squadPanel.innerHTML=fantasySquadPanel(fantasy,squadState);recommendationPanel.innerHTML=fantasyRecommendations(fantasy,squadState,strategyId,mode,leagueSize);
       document.querySelectorAll("[data-budget-role]").forEach((card,index)=>{card.querySelector("strong").textContent=amounts[index]});
       save();
     };
@@ -386,9 +390,9 @@ async function render(){
       if(current){if(asMain)current.main=!current.main;update();return}
       const summary=FantasySquad.summarize(squadState,fantasy.players);
       if(summary.counts[player.role]>=FantasySquad.roleLimits[player.role])return;
-      squadState.entries.push({playerId,main:asMain,price:FantasySquad.targetPrice(player,currentBudget())});update();
+      squadState.entries.push({playerId,main:asMain,price:FantasySquad.targetPrice(player,currentBudget(),currentPricingMode(),currentParticipants())});update();
     };
-    [role,slot].forEach(control=>control.addEventListener("change",update));
+    [pricingMode,participants,role,slot].forEach(control=>control.addEventListener("change",update));
     budget.addEventListener("input",update);search.addEventListener("input",update);
     document.querySelector("#app").addEventListener("click",event=>{
       const playerButton=event.target.closest("[data-fantasy-player]");if(playerButton){showCalendar(playerButton.dataset.fantasyPlayer);return}
