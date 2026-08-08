@@ -37,6 +37,7 @@ const roleCode = role => {
 const number = value => Number.isFinite(value) ? value : 0;
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 const round = (value, digits = 1) => Number(value.toFixed(digits));
+const maxClassicFvm = Math.max(...fantasyQuotations.players.map(player => number(player.fvm)).filter(value => value > 0), 1);
 const injuryPenalty = report => {
   if (!report) return 0;
   const detail = report.description.toLowerCase();
@@ -95,7 +96,7 @@ for (const team of teamFiles) {
     const fantasyQuotation = fantasyQuotationByPlayerId.get(player.id) || null;
     const probable = probableByPlayerId.get(player.id) || null;
     const injury = injuryByPlayerId.get(player.id) || null;
-    const role = roleCode(player.role);
+    const role = fantasyQuotation?.role || roleCode(player.role);
     const appearances = fantasyStat ? number(fantasyStat.appearancesWithVote) : number(totals.appearances);
     const starts = number(totals.starts);
     const minutes = number(totals.minutes);
@@ -223,6 +224,12 @@ for (const role of ["P", "D", "C", "A"]) {
   });
 }
 
+for (const player of candidates) {
+  player.auctionValue1000 = Number.isFinite(player.quotations?.fvm)
+    ? Math.max(1, Math.round(player.quotations.fvm / maxClassicFvm * 250))
+    : Math.max(1, Math.round(Math.pow(player.score / 100, 2.15) * 250));
+}
+
 function buildGoalkeeperTrios() {
   const bestByTeam = [...candidates.filter(player => player.role === "P").reduce((map, player) => {
     const current = map.get(player.teamId);
@@ -278,6 +285,7 @@ function buildGoalkeeperTrios() {
             team: player.team,
             score: player.score,
             value500: player.value500,
+            auctionValue1000: player.auctionValue1000,
             starts: starts[player.id]
           })),
           weeklyPlan
@@ -295,6 +303,15 @@ const output = {
   season: "2026-27",
   generatedAt: new Date().toISOString().slice(0, 10),
   baseBudget: 500,
+  pricing: {
+    defaultMode: "auction",
+    defaultParticipants: 8,
+    participantFactors: { 6: .88, 8: 1, 10: 1.12 },
+    maxPlayerBudgetShare: .25,
+    maxClassicFvm,
+    classicDefinition: "La quotazione Classic ufficiale è mostrata senza adattamenti al budget o al numero di partecipanti.",
+    auctionDefinition: "Il massimo d'asta normalizza l'FVM sul miglior calciatore, applica il numero di partecipanti e non supera mai il 25% del budget."
+  },
   calendarWindow: 38,
   methodology: {
     scoringRules: { goal: 3, assist: 1, yellowCard: -.5, redCard: -1, penaltyMissed: -3, penaltySaved: 3, ownGoal: -3, didNotPlay: "SV" },
@@ -412,6 +429,7 @@ const output = {
       initialMantraQuotation: player.initialMantraQuotation,
       mantraQuotationDifference: player.mantraQuotationDifference,
       fvm: player.fvm,
+      auctionValue1000: Math.max(1, Math.round(player.fvm / maxClassicFvm * 250)),
       mantraFvm: player.mantraFvm,
       matchConfidence: player.matchConfidence,
       currentAvailability: {

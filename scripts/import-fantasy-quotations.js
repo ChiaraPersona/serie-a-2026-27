@@ -25,8 +25,11 @@ const roleCode = role => {
   return "C";
 };
 
-if (!fs.existsSync(inputPath)) throw new Error(`Estrazione listone mancante: ${inputPath}`);
-const extracted = JSON.parse(fs.readFileSync(inputPath, "utf8"));
+const existingPayload = !fs.existsSync(inputPath) && fs.existsSync(outputPath)
+  ? JSON.parse(fs.readFileSync(outputPath, "utf8"))
+  : null;
+if (!fs.existsSync(inputPath) && !existingPayload) throw new Error(`Estrazione listone mancante: ${inputPath}`);
+const extracted = fs.existsSync(inputPath) ? JSON.parse(fs.readFileSync(inputPath, "utf8")) : null;
 const teamIndex = JSON.parse(fs.readFileSync(path.join(root, "data/teams/index.json"), "utf8"));
 const teamIdByName = new Map(teamIndex.teams.map(team => [normalize(team.name), team.id]));
 const currentPlayers = teamIndex.teams.flatMap(team => {
@@ -61,13 +64,13 @@ function parseRows(rows, status) {
   });
 }
 
-const activePlayers = parseRows(extracted.sheets.Tutti, "active");
-const departedPlayers = parseRows(extracted.sheets.Ceduti, "departed");
+const activePlayers = existingPayload ? existingPayload.players.map(player => ({ ...player })) : parseRows(extracted.sheets.Tutti, "active");
+const departedPlayers = existingPayload ? existingPayload.departed.map(player => ({ ...player })) : parseRows(extracted.sheets.Ceduti, "departed");
 const assignments = [];
 const usedPlayerIds = new Set();
 
 function candidateScore(source, player) {
-  if (!source.teamId || source.teamId !== player.teamId || source.role !== player.role) return -1;
+  if (!source.teamId || source.teamId !== player.teamId) return -1;
   const sourceParts = normalize(source.name).split(" ").filter(Boolean);
   const words = sourceParts.filter(part => part.length > 1);
   const initials = sourceParts.filter(part => part.length === 1);
@@ -76,7 +79,7 @@ function candidateScore(source, player) {
   let score = 10 + words.length * 5;
   if (normalize(source.name) === player.normalizedName) score += 12;
   if (initials.length && initials.every(initial => player.parts.some(part => part.startsWith(initial)))) score += 4;
-  if (source.mantraRole && player.role === source.role) score += 1;
+  if (player.role === source.role) score += 4;
   return score;
 }
 
@@ -105,8 +108,8 @@ const payload = {
   schemaVersion: 1,
   season: "2026/27",
   provider: "Quotazioni Fantacalcio Stagione 2026 27",
-  sourceFile: extracted.sourceFile || "Quotazioni_Fantacalcio_Stagione_2026_27.xlsx",
-  importedAt: "2026-08-08",
+  sourceFile: extracted?.sourceFile || existingPayload?.sourceFile || "Quotazioni_Fantacalcio_Stagione_2026_27.xlsx",
+  importedAt: existingPayload?.importedAt || "2026-08-08",
   definitions: {
     currentQuotation: "Qt.A · quotazione Classic attuale",
     initialQuotation: "Qt.I · quotazione Classic iniziale",

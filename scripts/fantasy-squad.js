@@ -14,6 +14,7 @@
   const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
   const number = (value, fallback = 0) => Number.isFinite(Number(value)) ? Number(value) : fallback;
   const roleBudgetShares = { P: .07, D: .17, C: .23, A: .53 };
+  const participantFactors = { 6: .88, 8: 1, 10: 1.12 };
 
   function normalizeState(state, players, budget = 500) {
     const available = new Map(players.map(player => [player.id, player]));
@@ -56,9 +57,13 @@
     return player.reliability === "Alta" ? 100 : player.reliability === "Media" ? 68 : 35;
   }
 
-  function targetPrice(player, budget) {
-    const independentValue = Number.isFinite(Number(player.quotations?.fvm)) ? Number(player.quotations.fvm) : number(player.value500, 1);
-    return Math.max(1, Math.round(independentValue * budget / 500));
+  function targetPrice(player, budget, pricingMode = "auction", participants = 8) {
+    if (pricingMode === "classic") {
+      return Math.max(1, Math.round(number(player.quotations?.classic, 1)));
+    }
+    const factor = participantFactors[participants] || participantFactors[8];
+    const baseAt1000 = number(player.auctionValue1000, Math.pow(clamp(number(player.score, 1), 1, 100) / 100, 2.15) * 250);
+    return clamp(Math.max(1, Math.round(baseAt1000 * budget / 1000 * factor)), 1, Math.round(budget * .25));
   }
 
   function calendarScore(player, data, mains) {
@@ -84,11 +89,11 @@
     return clamp(opening * .55 + complement * .45, 0, 100);
   }
 
-  function recommendationScore(player, data, state, strategyId) {
+  function recommendationScore(player, data, state, strategyId, pricingMode = "auction", participants = 8) {
     const strategy = strategies[strategyId] || strategies.balanced;
     const summary = summarize(state, data.players);
     const mains = summary.entries.filter(entry => entry.main);
-    const price = targetPrice(player, state.budget);
+    const price = targetPrice(player, state.budget, pricingMode, participants);
     const roleReference = Math.max(1, state.budget * roleBudgetShares[player.role] / roleLimits[player.role]);
     const value = clamp((player.score / Math.max(price, 1)) * roleReference, 0, 100);
     const calendar = calendarScore(player, data, mains);
@@ -98,7 +103,7 @@
     return { score: Math.round(clamp(score, 0, 100) * 10) / 10, price, calendar: Math.round(calendar), value: Math.round(value) };
   }
 
-  function recommendations(data, state, strategyId = "balanced", limitPerRole = 3) {
+  function recommendations(data, state, strategyId = "balanced", limitPerRole = 3, pricingMode = "auction", participants = 8) {
     const summary = summarize(state, data.players);
     const selected = new Set(summary.entries.map(entry => entry.playerId));
     const missingTotal = Object.values(summary.missing).reduce((sum, value) => sum + value, 0);
@@ -108,7 +113,7 @@
       if (!summary.missing[role]) { roles[role] = []; continue; }
       roles[role] = data.players
         .filter(player => player.role === role && !selected.has(player.id))
-        .map(player => ({ player, ...recommendationScore(player, data, state, strategyId) }))
+        .map(player => ({ player, ...recommendationScore(player, data, state, strategyId, pricingMode, participants) }))
         .filter(item => summary.remaining > 0 && (item.price <= Math.max(affordableAverage * 2.4, state.budget * roleBudgetShares[role] / Math.max(1, summary.missing[role])) || item.player.score >= 72))
         .sort((a, b) => b.score - a.score || a.price - b.price || b.player.score - a.player.score)
         .slice(0, limitPerRole);
@@ -116,5 +121,5 @@
     return { strategy: strategies[strategyId] || strategies.balanced, roles, summary };
   }
 
-  return { roleLimits, roleLabels, strategies, normalizeState, summarize, targetPrice, calendarScore, recommendationScore, recommendations };
+  return { roleLimits, roleLabels, strategies, participantFactors, normalizeState, summarize, targetPrice, calendarScore, recommendationScore, recommendations };
 });
