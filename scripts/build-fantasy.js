@@ -8,6 +8,8 @@ const matches = read("data/normalized/matches.json").filter(match => match.compe
 const teamFiles = teams.map(team => read(`data/teams/${team.id}.json`));
 const fantasyWorkbook = read("data/sources/fantacalcio-stats-2025-26.json");
 const fantasyQuotations = read("data/sources/fantacalcio-quotations-2026-27.json");
+const probableLineups = read("data/sources/fantacalcio-probable-lineups-md1-2026-27.json");
+const fantasyInjuries = read("data/sources/fantacalcio-injuries-2026-27.json");
 const monochromeLogoManifest = read("assets/images/teams/monochrome/manifest.json");
 const monochromeLogoIds = new Set(monochromeLogoManifest.teams.map(team => team.id));
 const missingMonochromeLogos = teams.filter(team => {
@@ -19,6 +21,12 @@ if (missingMonochromeLogos.length) {
 }
 const fantasyStatsByPlayerId = new Map(fantasyWorkbook.players.filter(player => player.playerId && player.appearancesWithVote > 0).map(player => [player.playerId, player]));
 const fantasyQuotationByPlayerId = new Map(fantasyQuotations.players.filter(player => player.playerId).map(player => [player.playerId, player]));
+const probablePlayers = probableLineups.teams.flatMap(team => team.players);
+const injuryReports = fantasyInjuries.teams.flatMap(team => team.reports);
+const probableByPlayerId = new Map(probablePlayers.filter(player => player.playerId).map(player => [player.playerId, player]));
+const probableBySourceId = new Map(probablePlayers.map(player => [String(player.sourceId), player]));
+const injuryByPlayerId = new Map(injuryReports.filter(player => player.playerId).map(player => [player.playerId, player]));
+const injuryBySourceId = new Map(injuryReports.filter(player => player.sourceId).map(player => [String(player.sourceId), player]));
 
 const roleCode = role => {
   if (role === "Portiere") return "P";
@@ -29,6 +37,13 @@ const roleCode = role => {
 const number = value => Number.isFinite(value) ? value : 0;
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 const round = (value, digits = 1) => Number(value.toFixed(digits));
+const injuryPenalty = report => {
+  if (!report) return 0;
+  const detail = report.description.toLowerCase();
+  if (/out .*1a|non ci sar[aà].*1a/.test(detail)) return 12;
+  if (/da valutare|a rischio|rischio forfait/.test(detail)) return 5;
+  return 8;
+};
 
 const historicalRank = {
   juventus: 1, inter: 2, milan: 3, roma: 4, fiorentina: 5, napoli: 6, lazio: 7, torino: 8,
@@ -78,6 +93,8 @@ for (const team of teamFiles) {
     const entries = player.previousSeason?.entries || [];
     const fantasyStat = fantasyStatsByPlayerId.get(player.id) || null;
     const fantasyQuotation = fantasyQuotationByPlayerId.get(player.id) || null;
+    const probable = probableByPlayerId.get(player.id) || null;
+    const injury = injuryByPlayerId.get(player.id) || null;
     const role = roleCode(player.role);
     const appearances = fantasyStat ? number(fantasyStat.appearancesWithVote) : number(totals.appearances);
     const starts = number(totals.starts);
@@ -112,6 +129,7 @@ for (const team of teamFiles) {
     const rawScore = fantasyStat
       ? availability * .3 * (.82 + competitionCoefficient * .18) + eventIndex * .25 * competitionCoefficient + observedIndex * .3 * competitionCoefficient + teamCalendar[team.id].index * .15
       : availability * .4 * (.82 + competitionCoefficient * .18) + eventIndex * .45 * competitionCoefficient + teamCalendar[team.id].index * .15;
+    const currentScore = (probable ? rawScore * .92 + probable.probability * .08 : rawScore) - injuryPenalty(injury);
     if (appearances === 0 && minutes === 0) continue;
     candidates.push({
       id: player.id,
@@ -125,7 +143,7 @@ for (const team of teamFiles) {
       minutes: minutes || null,
       goals: fantasyStat ? fantasyStat.goalsFor : totals.goals ?? null,
       assists: fantasyStat ? fantasyStat.assists : totals.assists ?? null,
-      score: round(clamp(rawScore, 1, 99)),
+      score: round(clamp(currentScore, 1, 99)),
       marketValueEur: player.marketValue?.amountEur ?? null,
       marketValueLabel: player.marketValue?.label ?? null,
       reliability: fantasyStat ? (appearances >= 28 ? "Alta" : appearances >= 15 ? "Media" : "Da verificare") : minutes >= 2200 ? "Alta" : minutes >= 1100 ? "Media" : "Da verificare",
@@ -157,6 +175,15 @@ for (const team of teamFiles) {
         label: serieAShare >= .8 ? "Serie A" : serieAShare <= .2 ? "Serie B" : "Serie A / B"
       },
       calendar: { index: teamCalendar[team.id].index, label: teamCalendar[team.id].label },
+      currentAvailability: {
+        matchday: probableLineups.matchday,
+        starterProbability: probable?.probability ?? null,
+        lineupStatus: probable?.lineupStatus ?? null,
+        lineupUpdatedAt: probable ? probableLineups.teams.find(item => item.teamId === team.id)?.updatedAt ?? null : null,
+        injuryReported: Boolean(injury),
+        injuryDetail: injury?.description ?? null,
+        injuryPenalty: injuryPenalty(injury)
+      },
       quotations: fantasyQuotation ? {
         sourceId: fantasyQuotation.sourceId,
         classic: fantasyQuotation.currentQuotation,
@@ -272,7 +299,7 @@ const output = {
   methodology: {
     scoringRules: { goal: 3, assist: 1, yellowCard: -.5, redCard: -1, penaltyMissed: -3, penaltySaved: 3, ownGoal: -3, didNotPlay: "SV" },
     competitionAdjustment: "Le statistiche di Serie B hanno coefficiente 0,72 rispetto alla Serie A; un calciatore con dati quasi esclusivamente di Serie B non puÃ² ricevere 5 stelle.",
-    description: "Indice orientativo costruito da PV, media voto, fantamedia, bonus/malus 2025/26, disponibilità e calendario completo 2026/27. Per i profili collegati al foglio Fantacalcio, MV e FM incidono direttamente sul 30% dell'indice; il valore FVM 2026/27 aggiunge un correttivo del 15% normalizzato all'interno del ruolo. La forza avversaria pesa per l'82% sul rendimento recente e per il 18% sulla storia in Serie A.",
+    description: "Indice orientativo costruito da PV, media voto, fantamedia, bonus/malus 2025/26, disponibilità e calendario completo 2026/27. Per i profili collegati al foglio Fantacalcio, MV e FM incidono direttamente sul 30% dell'indice; il valore FVM 2026/27 aggiunge un correttivo del 15% normalizzato all'interno del ruolo. La probabilità editoriale di titolarità della 1ª giornata interviene soltanto per l'8% sul punteggio corrente; una segnalazione nella pagina infortuni applica un correttivo prudente da 5 a 12 punti senza trasformare i casi dubbi in assenze certe.",
     caveat: "Il listone fornito è riportato senza inventare collegamenti: i profili non associati alla rosa corrente restano visibili nel listone ma non ricevono un indice di consiglio.",
     missingValues: "I dati assenti restano N/D e non producono bonus."
   },
@@ -302,6 +329,21 @@ const output = {
       activePlayers: fantasyQuotations.coverage.activePlayers,
       matchedPlayers: fantasyQuotations.coverage.matchedCurrentPlayers,
       use: "Quotazioni Classic e Mantra, ruoli Mantra e FVM; FVM applicato come correttivo di ruolo al 15%."
+    },
+    probableLineups: {
+      provider: probableLineups.provider,
+      url: probableLineups.sourceUrl,
+      importedAt: probableLineups.importedAt,
+      matchday: probableLineups.matchday,
+      coverage: probableLineups.coverage,
+      use: probableLineups.interpretation
+    },
+    injuries: {
+      provider: fantasyInjuries.provider,
+      url: fantasyInjuries.sourceUrl,
+      importedAt: fantasyInjuries.importedAt,
+      coverage: fantasyInjuries.coverage,
+      use: fantasyInjuries.interpretation
     },
     teamLogos: {
       provider: monochromeLogoManifest.source.provider,
@@ -351,7 +393,10 @@ const output = {
     importedAt: fantasyQuotations.importedAt,
     definitions: fantasyQuotations.definitions,
     coverage: fantasyQuotations.coverage,
-    players: fantasyQuotations.players.map(player => ({
+    players: fantasyQuotations.players.map(player => {
+      const probable = probableBySourceId.get(String(player.sourceId));
+      const injury = injuryBySourceId.get(String(player.sourceId));
+      return ({
       sourceId: player.sourceId,
       playerId: player.playerId,
       name: player.name,
@@ -368,8 +413,16 @@ const output = {
       mantraQuotationDifference: player.mantraQuotationDifference,
       fvm: player.fvm,
       mantraFvm: player.mantraFvm,
-      matchConfidence: player.matchConfidence
-    })),
+      matchConfidence: player.matchConfidence,
+      currentAvailability: {
+        matchday: probableLineups.matchday,
+        starterProbability: probable?.probability ?? null,
+        lineupStatus: probable?.lineupStatus ?? null,
+        lineupUpdatedAt: probable ? probableLineups.teams.find(item => item.teamId === player.teamId)?.updatedAt ?? null : null,
+        injuryReported: Boolean(injury),
+        injuryDetail: injury?.description ?? null
+      }
+    });}),
     departed: fantasyQuotations.departed
   },
   players: candidates
