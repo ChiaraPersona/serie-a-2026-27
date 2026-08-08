@@ -7,6 +7,7 @@ const teams = read("data/normalized/teams.json");
 const matches = read("data/normalized/matches.json").filter(match => match.competition === "serie-a" && match.season === "2026-27");
 const teamFiles = teams.map(team => read(`data/teams/${team.id}.json`));
 const fantasyWorkbook = read("data/sources/fantacalcio-stats-2025-26.json");
+const fantasyQuotations = read("data/sources/fantacalcio-quotations-2026-27.json");
 const monochromeLogoManifest = read("assets/images/teams/monochrome/manifest.json");
 const monochromeLogoIds = new Set(monochromeLogoManifest.teams.map(team => team.id));
 const missingMonochromeLogos = teams.filter(team => {
@@ -17,6 +18,7 @@ if (missingMonochromeLogos.length) {
   throw new Error(`Loghi neri mancanti: ${missingMonochromeLogos.map(team => team.id).join(", ")}`);
 }
 const fantasyStatsByPlayerId = new Map(fantasyWorkbook.players.filter(player => player.playerId && player.appearancesWithVote > 0).map(player => [player.playerId, player]));
+const fantasyQuotationByPlayerId = new Map(fantasyQuotations.players.filter(player => player.playerId).map(player => [player.playerId, player]));
 
 const roleCode = role => {
   if (role === "Portiere") return "P";
@@ -75,6 +77,7 @@ for (const team of teamFiles) {
     const totals = player.previousSeason?.totals || {};
     const entries = player.previousSeason?.entries || [];
     const fantasyStat = fantasyStatsByPlayerId.get(player.id) || null;
+    const fantasyQuotation = fantasyQuotationByPlayerId.get(player.id) || null;
     const role = roleCode(player.role);
     const appearances = fantasyStat ? number(fantasyStat.appearancesWithVote) : number(totals.appearances);
     const starts = number(totals.starts);
@@ -153,7 +156,17 @@ for (const team of teamFiles) {
         coefficient: competitionCoefficient,
         label: serieAShare >= .8 ? "Serie A" : serieAShare <= .2 ? "Serie B" : "Serie A / B"
       },
-      calendar: { index: teamCalendar[team.id].index, label: teamCalendar[team.id].label }
+      calendar: { index: teamCalendar[team.id].index, label: teamCalendar[team.id].label },
+      quotations: fantasyQuotation ? {
+        sourceId: fantasyQuotation.sourceId,
+        classic: fantasyQuotation.currentQuotation,
+        classicInitial: fantasyQuotation.initialQuotation,
+        mantra: fantasyQuotation.currentMantraQuotation,
+        mantraInitial: fantasyQuotation.initialMantraQuotation,
+        mantraRole: fantasyQuotation.mantraRole,
+        fvm: fantasyQuotation.fvm,
+        mantraFvm: fantasyQuotation.mantraFvm
+      } : null
     });
   }
 }
@@ -168,6 +181,11 @@ for (const player of candidates) {
 }
 
 for (const role of ["P", "D", "C", "A"]) {
+  const roleFvmMax = Math.max(...candidates.filter(player => player.role === role && Number.isFinite(player.quotations?.fvm)).map(player => player.quotations.fvm), 1);
+  candidates.filter(player => player.role === role && Number.isFinite(player.quotations?.fvm)).forEach(player => {
+    const fvmIndex = 100 * player.quotations.fvm / roleFvmMax;
+    player.score = round(clamp(player.score * .85 + fvmIndex * .15, 1, 99));
+  });
   const group = candidates.filter(player => player.role === role).sort((a, b) => b.score - a.score);
   group.forEach((player, index) => {
     const percentile = index / Math.max(1, group.length);
@@ -254,8 +272,8 @@ const output = {
   methodology: {
     scoringRules: { goal: 3, assist: 1, yellowCard: -.5, redCard: -1, penaltyMissed: -3, penaltySaved: 3, ownGoal: -3, didNotPlay: "SV" },
     competitionAdjustment: "Le statistiche di Serie B hanno coefficiente 0,72 rispetto alla Serie A; un calciatore con dati quasi esclusivamente di Serie B non puÃ² ricevere 5 stelle.",
-    description: "Indice orientativo costruito da PV, media voto, fantamedia, bonus/malus 2025/26, disponibilità e calendario completo 2026/27. Per i profili collegati al foglio Fantacalcio, MV e FM incidono direttamente sul 30% dell'indice prima del correttivo del valore di mercato. La forza avversaria pesa per l'82% sul rendimento recente e per il 18% sulla storia in Serie A.",
-    caveat: "Non è una quotazione ufficiale. Ruolo, titolarità, trasferimenti e listone della lega vanno verificati prima dell'asta.",
+    description: "Indice orientativo costruito da PV, media voto, fantamedia, bonus/malus 2025/26, disponibilità e calendario completo 2026/27. Per i profili collegati al foglio Fantacalcio, MV e FM incidono direttamente sul 30% dell'indice; il valore FVM 2026/27 aggiunge un correttivo del 15% normalizzato all'interno del ruolo. La forza avversaria pesa per l'82% sul rendimento recente e per il 18% sulla storia in Serie A.",
+    caveat: "Il listone fornito è riportato senza inventare collegamenti: i profili non associati alla rosa corrente restano visibili nel listone ma non ricevono un indice di consiglio.",
     missingValues: "I dati assenti restano N/D e non producono bonus."
   },
   sources: {
@@ -276,6 +294,14 @@ const output = {
       season: fantasyWorkbook.season,
       matchedPlayers: fantasyWorkbook.coverage.matchedCurrentPlayers,
       use: "PV, MV, FM, gol, assist, cartellini, rigori parati/sbagliati e autogol."
+    },
+    fantasyQuotations: {
+      provider: fantasyQuotations.provider,
+      sourceFile: fantasyQuotations.sourceFile,
+      season: fantasyQuotations.season,
+      activePlayers: fantasyQuotations.coverage.activePlayers,
+      matchedPlayers: fantasyQuotations.coverage.matchedCurrentPlayers,
+      use: "Quotazioni Classic e Mantra, ruoli Mantra e FVM; FVM applicato come correttivo di ruolo al 15%."
     },
     teamLogos: {
       provider: monochromeLogoManifest.source.provider,
@@ -319,6 +345,33 @@ const output = {
     strength: strengthDetails.get(team.id),
     calendar: teamCalendar[team.id]
   })),
+  listone: {
+    provider: fantasyQuotations.provider,
+    sourceFile: fantasyQuotations.sourceFile,
+    importedAt: fantasyQuotations.importedAt,
+    definitions: fantasyQuotations.definitions,
+    coverage: fantasyQuotations.coverage,
+    players: fantasyQuotations.players.map(player => ({
+      sourceId: player.sourceId,
+      playerId: player.playerId,
+      name: player.name,
+      currentName: player.currentName,
+      team: player.team,
+      teamId: player.teamId,
+      role: player.role,
+      mantraRole: player.mantraRole,
+      currentQuotation: player.currentQuotation,
+      initialQuotation: player.initialQuotation,
+      quotationDifference: player.quotationDifference,
+      currentMantraQuotation: player.currentMantraQuotation,
+      initialMantraQuotation: player.initialMantraQuotation,
+      mantraQuotationDifference: player.mantraQuotationDifference,
+      fvm: player.fvm,
+      mantraFvm: player.mantraFvm,
+      matchConfidence: player.matchConfidence
+    })),
+    departed: fantasyQuotations.departed
+  },
   players: candidates
 };
 

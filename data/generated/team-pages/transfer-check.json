@@ -1,14 +1,14 @@
 {
   "schemaVersion": 1,
   "season": "2026/27",
-  "checkedAt": "2026-08-03T17:00:38.780Z",
+  "checkedAt": "2026-08-08T17:46:11.668Z",
   "provider": "ESPN",
   "method": "Confronto per ESPN player ID tra la rosa pubblicata e la rosa live del provider. Le differenze sono segnalazioni da verificare, non trasferimenti confermati.",
   "summary": {
     "teamsChecked": 20,
-    "teamsWithChanges": 14,
-    "possibleArrivals": 34,
-    "possibleDepartures": 31,
+    "teamsWithChanges": 15,
+    "possibleArrivals": 42,
+    "possibleDepartures": 44,
     "possibleInternalMoves": 0,
     "providerLagConfirmedMoves": 0
   },
@@ -18,11 +18,18 @@
     {
       "teamId": "atalanta",
       "team": "Atalanta",
-      "status": "no-change",
-      "publishedPlayers": 31,
+      "status": "changes-detected",
+      "publishedPlayers": 30,
       "liveEspnPlayers": 31,
       "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/ita.1/teams/105/roster",
-      "possibleArrivals": [],
+      "possibleArrivals": [
+        {
+          "espnId": "287430",
+          "name": "El Bilal Toure",
+          "role": "Forward",
+          "shirtNumber": null
+        }
+      ],
       "possibleDepartures": [],
       "notes": []
     },
@@ -72,8 +79,8 @@
       "teamId": "como",
       "team": "Como",
       "status": "no-change",
-      "publishedPlayers": 38,
-      "liveEspnPlayers": 38,
+      "publishedPlayers": 39,
+      "liveEspnPlayers": 39,
       "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/ita.1/teams/2572/roster",
       "possibleArrivals": [],
       "possibleDepartures": [],
@@ -83,7 +90,7 @@
       "teamId": "fiorentina",
       "team": "Fiorentina",
       "status": "changes-detected",
-      "publishedPlayers": 33,
+      "publishedPlayers": 34,
       "liveEspnPlayers": 32,
       "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/ita.1/teams/109/roster",
       "possibleArrivals": [],
@@ -93,6 +100,12 @@
           "name": "Abdelhamid Sabiri",
           "role": "Centrocampista",
           "shirtNumber": 11
+        },
+        {
+          "espnId": "418182",
+          "name": "Lapo Deli",
+          "role": "Centrocampista",
+          "shirtNumber": 64
         }
       ],
       "notes": []
@@ -112,8 +125,8 @@
       "teamId": "genoa",
       "team": "Genoa",
       "status": "changes-detected",
-      "publishedPlayers": 40,
-      "liveEspnPlayers": 41,
+      "publishedPlayers": 41,
+      "liveEspnPlayers": 40,
       "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/ita.1/teams/3263/roster",
       "possibleArrivals": [
         {
@@ -123,7 +136,20 @@
           "shirtNumber": null
         }
       ],
-      "possibleDepartures": [],
+      "possibleDepartures": [
+        {
+          "espnId": "365843",
+          "name": "Hugo Cuenca",
+          "role": "Centrocampista",
+          "shirtNumber": null
+        },
+        {
+          "espnId": "386271",
+          "name": "Alessandro Debenedetti",
+          "role": "Attaccante",
+          "shirtNumber": null
+        }
+      ],
       "notes": []
     },
     {
@@ -141,10 +167,16 @@
       "teamId": "juventus",
       "team": "Juventus",
       "status": "changes-detected",
-      "publishedPlayers": 38,
-      "liveEspnPlayers": 40,
+      "publishedPlayers": 36,
+      "liveEspnPlayers": 38,
       "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/ita.1/teams/111/roster",
       "possibleArrivals": [
+        {
+          "espnId": "403864",
+          "name": "Sebastiano Nava",
+          "role": "Goalkeeper",
+          "shirtNumber": null
+        },
         {
           "espnId": "270400",
           "name": "Bruno Martinez",
@@ -158,7 +190,14 @@
           "shirtNumber": 9
         }
       ],
-      "possibleDepartures": [],
+      "possibleDepartures": [
+        {
+          "espnId": "174496",
+          "name": "Filip Kostic",
+          "role": "Centrocampista",
+          "shirtNumber": 18
+        }
+      ],
       "notes": []
     },
     {
@@ -177,10 +216,53 @@
       "team": "Lecce",
       "status": "changes-detected",
       "publishedPlayers": 32,
-      "liveEspnPlayers": 30,
+      "liveEspnPlayers": 35,
       "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/ita.1/teams/113/roster",
-      "possibleArrivals": [],
+      "possibleArrivals": [
+        {
+          "espnId": "409073",
+          "name": "Plamen Penev",
+          "role": "Goalkeeper",
+          "shirtNumber": 33
+        },
+        {
+          "espnId": "422962",
+          "name": "Christian Lupo",
+          "role": "Goalkeeper",
+          "shirtNumber": 12
+        },
+        {
+          "espnId": "3115809",
+          "name": "Marlon Nnamdi Ubani",
+          "role": "Defender",
+          "shirtNumber": 36
+        },
+        {
+          "espnId": "3099569",
+          "name": "Hjalte Morel Lærke",
+          "role": "Forward",
+          "shirtNumber": 34
+        },
+        {
+          "espnId": "3123405",
+          "name": "Divine Onyemachi",
+          "role": "Forward",
+          "shirtNumber": 27
+        },
+        {
+          "espnId": "3123406",
+          "name": "Francisco Esteban Sánchez",
+          "role": "Forward",
+          "shirtNumber": 22
+        }
+      ],
       "possibleDepartures": [
+        {
+          "espnId": "259054",
+          "name": "Christian Früchtl",
+          "role": "Portiere",
+          "shirtNumber": 1
+        },
         {
           "espnId": "324828",
           "name": "Ed Mcjannet",
@@ -310,8 +392,8 @@
       "teamId": "monza",
       "team": "Monza",
       "status": "changes-detected",
-      "publishedPlayers": 36,
-      "liveEspnPlayers": 32,
+      "publishedPlayers": 37,
+      "liveEspnPlayers": 33,
       "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/ita.1/teams/4007/roster",
       "possibleArrivals": [],
       "possibleDepartures": [
@@ -347,7 +429,7 @@
       "team": "Napoli",
       "status": "changes-detected",
       "publishedPlayers": 31,
-      "liveEspnPlayers": 35,
+      "liveEspnPlayers": 34,
       "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/ita.1/teams/114/roster",
       "possibleArrivals": [
         {
@@ -413,6 +495,12 @@
       ],
       "possibleDepartures": [
         {
+          "espnId": "290044",
+          "name": "Miguel Gutiérrez",
+          "role": "Difensore",
+          "shirtNumber": 3
+        },
+        {
           "espnId": "403806",
           "name": "Vincenzo Prisco",
           "role": "Centrocampista",
@@ -457,8 +545,8 @@
       "teamId": "parma",
       "team": "Parma",
       "status": "changes-detected",
-      "publishedPlayers": 35,
-      "liveEspnPlayers": 30,
+      "publishedPlayers": 36,
+      "liveEspnPlayers": 29,
       "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/ita.1/teams/115/roster",
       "possibleArrivals": [],
       "possibleDepartures": [
@@ -491,6 +579,12 @@
           "name": "Elia Plicco",
           "role": "Centrocampista",
           "shirtNumber": 65
+        },
+        {
+          "espnId": "290667",
+          "name": "Daniel Mikolajewski",
+          "role": "Attaccante",
+          "shirtNumber": 76
         }
       ],
       "notes": []
@@ -499,8 +593,8 @@
       "teamId": "roma",
       "team": "Roma",
       "status": "changes-detected",
-      "publishedPlayers": 40,
-      "liveEspnPlayers": 39,
+      "publishedPlayers": 38,
+      "liveEspnPlayers": 37,
       "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/ita.1/teams/104/roster",
       "possibleArrivals": [
         {
@@ -530,16 +624,28 @@
       "teamId": "sassuolo",
       "team": "Sassuolo",
       "status": "changes-detected",
-      "publishedPlayers": 43,
+      "publishedPlayers": 45,
       "liveEspnPlayers": 40,
       "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/ita.1/teams/3997/roster",
       "possibleArrivals": [],
       "possibleDepartures": [
         {
+          "espnId": "310770",
+          "name": "Gioele Zacchi",
+          "role": "Portiere",
+          "shirtNumber": 16
+        },
+        {
           "espnId": "413868",
           "name": "Lorenzo Nyarko",
           "role": "Portiere",
           "shirtNumber": 22
+        },
+        {
+          "espnId": "366933",
+          "name": "Kevin Leone",
+          "role": "Centrocampista",
+          "shirtNumber": null
         },
         {
           "espnId": "415198",
@@ -634,7 +740,7 @@
       "team": "Venezia",
       "status": "changes-detected",
       "publishedPlayers": 45,
-      "liveEspnPlayers": 46,
+      "liveEspnPlayers": 42,
       "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/ita.1/teams/17530/roster",
       "possibleArrivals": [
         {
@@ -644,7 +750,32 @@
           "shirtNumber": null
         }
       ],
-      "possibleDepartures": [],
+      "possibleDepartures": [
+        {
+          "espnId": "327899",
+          "name": "Ahmed Sidibé",
+          "role": "Difensore",
+          "shirtNumber": 48
+        },
+        {
+          "espnId": "3098213",
+          "name": "Edoardo Mariani",
+          "role": "Centrocampista",
+          "shirtNumber": null
+        },
+        {
+          "espnId": "368005",
+          "name": "Lorenzo Da Pozzo",
+          "role": "Attaccante",
+          "shirtNumber": null
+        },
+        {
+          "espnId": "386952",
+          "name": "Simone Ascione",
+          "role": "Attaccante",
+          "shirtNumber": null
+        }
+      ],
       "notes": []
     }
   ]

@@ -8,6 +8,8 @@
     "build:predictions": "node scripts/build-predictions.js && node scripts/build-site.js",
     "build:cup": "node scripts/build-coppa-italia.js && node scripts/build-site.js",
     "build:fantasy": "node scripts/build-fantasy.js && node scripts/build-site.js",
+    "import:fantasy-quotations": "node scripts/import-fantasy-quotations.js",
+    "test:fantasy-listone": "node scripts/test-fantasy-listone.js",
     "build:teams": "node scripts/team-pages/build.js && node scripts/build-site.js",
     "build:team-styles": "node scripts/build-team-style-profiles.js && node scripts/build-site.js",
     "build:team-referees": "node scripts/build-team-referee-profiles.js && node scripts/build-site.js",
@@ -49,6 +51,7 @@
     "test:prediction-backtest:multiseason": "node scripts/test-prediction-backtest-multiseason.js",
     "test:prediction-backtest:opening": "node scripts/test-prediction-backtest-opening-rounds.js",
     "test:xg": "node scripts/test-understat-xg.js",
-    "test": "node scripts/validate-data.js && node scripts/referee-stats/test.js && node scripts/referee-stats/validate-2025-26.js && node scripts/test-team-referee-profiles.js && node scripts/team-pages/test.js && node scripts/team-pages/test-milan.js && node scripts/team-pages/test-completed-teams.js && node scripts/team-pages/test-all-teams.js && node scripts/sisal/test.js && node scripts/test-understat-xg.js && node scripts/test-predictions.js && node scripts/test-prediction-backtest.js && node scripts/test-prediction-backtest-multiseason.js && node scripts/test-prediction-backtest-opening-rounds.js && node scripts/head-to-head/test.js && node scripts/test-head-to-head-integration.js"
+    "test:fantasy-squad": "node scripts/test-fantasy-squad.js",
+    "test": "node scripts/validate-data.js && node scripts/referee-stats/test.js && node scripts/referee-stats/validate-2025-26.js && node scripts/test-team-referee-profiles.js && node scripts/team-pages/test.js && node scripts/team-pages/test-milan.js && node scripts/team-pages/test-completed-teams.js && node scripts/team-pages/test-all-teams.js && node scripts/sisal/test.js && node scripts/test-understat-xg.js && node scripts/test-predictions.js && node scripts/test-prediction-backtest.js && node scripts/test-prediction-backtest-multiseason.js && node scripts/test-prediction-backtest-opening-rounds.js && node scripts/head-to-head/test.js && node scripts/test-head-to-head-integration.js && node scripts/test-fantasy-squad.js"
   }
 }
