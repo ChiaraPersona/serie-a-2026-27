@@ -54,6 +54,9 @@ assert.ok(!appSource.includes("<th>Ruolo Mantra</th>"), "la colonna ruolo Mantra
 assert.ok(!appSource.includes("<th>Qt. Mantra</th>"), "la colonna quotazione Mantra non deve essere renderizzata");
 assert.ok(!appSource.includes("<th>FVM Mantra</th>"), "la colonna FVM Mantra non deve essere renderizzata");
 assert.ok(appSource.includes("data.sources?.probableLineups?.url"), "fallback per copie dati senza fonti correnti mancante");
+assert.ok(appSource.includes("data-fantasy-exclude"), "comando per escludere un consigliato mancante");
+assert.ok(appSource.includes("data-fantasy-restore"), "comando per ripristinare un escluso mancante");
+assert.ok(appSource.includes("Esclusi dai consigli"), "riepilogo degli esclusi mancante");
 assert.ok(appSource.includes("calendario completo: 50% giornate 1–8, 30% giornate 9–19, 20% giornate 20–38"), "pesi del calendario completo non dichiarati");
 const nicoPaz = generated.players.find(player => player.id === "nico-paz");
 assert.ok(nicoPaz, "Nico Paz non collegato alla rosa analitica");

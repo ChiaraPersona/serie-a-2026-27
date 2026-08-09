@@ -51,6 +51,10 @@ assert(Math.abs(Array.from({ length: 19 }, (_, index) => planner.calendarWeight(
 const balanced = planner.recommendations(data, normalized, "balanced");
 assert(!balanced.roles.A.some(item => item.player.id === "main-a"), "esclude i calciatori gia selezionati");
 assert.equal(balanced.roles.A[0].player.id, "value-a", "propone il profilo affidabile e complementare");
+const withExclusions = planner.normalizeState({ budget: 500, entries: normalized.entries, excludedIds: ["value-a", "missing", "value-a"] }, players);
+assert.deepEqual(withExclusions.excludedIds, ["value-a"], "mantiene soltanto esclusioni valide e senza duplicati");
+const excludedRecommendations = planner.recommendations(data, withExclusions, "balanced");
+assert(!excludedRecommendations.roles.A.some(item => item.player.id === "value-a"), "non ripropone un calciatore escluso");
 assert.equal(planner.targetPrice(players[1], 1000, "classic", 8), 12, "in modalità Classic usa la quotazione ufficiale");
 assert.equal(planner.targetPrice(players[1], 1000, "auction", 6), 88, "riduce il valore in una lega da 6");
 assert.equal(planner.targetPrice(players[1], 1000, "auction", 8), 100, "usa il valore base in una lega da 8");

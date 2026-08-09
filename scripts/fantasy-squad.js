@@ -19,13 +19,17 @@
   function normalizeState(state, players, budget = 500) {
     const available = new Map(players.map(player => [player.id, player]));
     const entries = [];
+    const excludedIds = [];
     for (const raw of Array.isArray(state?.entries) ? state.entries : []) {
       if (!available.has(raw.playerId) || entries.some(entry => entry.playerId === raw.playerId)) continue;
       const player = available.get(raw.playerId);
       if (entries.filter(entry => available.get(entry.playerId)?.role === player.role).length >= roleLimits[player.role]) continue;
       entries.push({ playerId: raw.playerId, main: Boolean(raw.main), price: Math.max(0, Math.round(number(raw.price))) });
     }
-    return { version: 1, budget: clamp(Math.round(number(state?.budget, budget)), 100, 2000), entries };
+    for (const playerId of Array.isArray(state?.excludedIds) ? state.excludedIds : []) {
+      if (available.has(playerId) && !excludedIds.includes(playerId)) excludedIds.push(playerId);
+    }
+    return { version: 2, budget: clamp(Math.round(number(state?.budget, budget)), 100, 2000), entries, excludedIds };
   }
 
   function summarize(state, players) {
@@ -115,13 +119,14 @@
   function recommendations(data, state, strategyId = "balanced", limitPerRole = 3, pricingMode = "auction", participants = 8) {
     const summary = summarize(state, data.players);
     const selected = new Set(summary.entries.map(entry => entry.playerId));
+    const excluded = new Set(Array.isArray(state.excludedIds) ? state.excludedIds : []);
     const missingTotal = Object.values(summary.missing).reduce((sum, value) => sum + value, 0);
     const affordableAverage = missingTotal ? Math.max(1, summary.remaining / missingTotal) : 0;
     const roles = {};
     for (const role of Object.keys(roleLimits)) {
       if (!summary.missing[role]) { roles[role] = []; continue; }
       roles[role] = data.players
-        .filter(player => player.role === role && !selected.has(player.id))
+        .filter(player => player.role === role && !selected.has(player.id) && !excluded.has(player.id))
         .map(player => ({ player, ...recommendationScore(player, data, state, strategyId, pricingMode, participants) }))
         .filter(item => summary.remaining > 0 && (item.price <= Math.max(affordableAverage * 2.4, state.budget * roleBudgetShares[role] / Math.max(1, summary.missing[role])) || item.player.score >= 72))
         .sort((a, b) => b.score - a.score || a.price - b.price || b.player.score - a.player.score)
