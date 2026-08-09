@@ -8,6 +8,7 @@ const COMPLETED_TEAMS_FILE = path.join(ROOT, "data/sources/team-pages/completed-
 const REMAINING_TEAMS_FILE = path.join(ROOT, "data/sources/team-pages/remaining-teams-2026-27.json");
 const RAW_ROOT = path.join(ROOT, "data/raw/head-to-head/espn");
 const OUTPUT_FILE = path.join(ROOT, "data/generated/head-to-head/first-leg-2026-27.json");
+const SUMMARY_FILE = path.join(ROOT, "data/generated/head-to-head/first-leg-2026-27-summary.json");
 const REPORT_FILE = path.join(ROOT, "data/generated/head-to-head/import-report.json");
 const LEAGUES = [
   { id: "ita.1", name: "Serie A" },
@@ -256,6 +257,7 @@ async function main() {
   };
   if (!selectedPair) {
     write(OUTPUT_FILE, output);
+    write(SUMMARY_FILE, { schemaVersion: output.schemaVersion, season: output.season, scope: output.scope, retrievedAt: output.retrievedAt, fixtures: output.fixtures.map(fixture => ({ fixtureId: fixture.fixtureId, coverage: fixture.coverage })) });
     write(REPORT_FILE, report);
   } else {
     const pilotRoot = path.join(ROOT, "data/generated/head-to-head/pilots");

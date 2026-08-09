@@ -99,12 +99,14 @@ assert.deepStrictEqual([disciplineHome.penaltiesFor, disciplineHome.penaltiesAga
 const unavailableDiscipline = calculateStandings([{ id: "a" }, { id: "b" }], [{ id: "a-b", competition: "serie-a", status: "finished", homeTeam: "a", awayTeam: "b", score: { home: 0, away: 0 } }]).find(row => row.team === "a");
 assert.deepStrictEqual([unavailableDiscipline.penaltiesFor, unavailableDiscipline.penaltiesAgainst, unavailableDiscipline.cardsFor, unavailableDiscipline.cardsAgainst], [null, null, null, null], "I dati disciplinari assenti devono restare N/D");
 const homeRenderSource = mainApp.slice(mainApp.indexOf('if(page==="home"){'), mainApp.indexOf('if(page==="calendar")'));
-assert.ok(homeRenderSource.includes("homeStandings(standings,previousStandings,objectiveProfiles,teams,standingsTeams)"), "Le classifiche devono essere presenti nella Home");
+assert.ok(homeRenderSource.includes("homeStandings(standings,previousStandings,teams,standingsTeams)"), "Le classifiche devono essere presenti nella Home");
 assert.ok(!homeRenderSource.includes("Esplora il progetto") && !homeRenderSource.includes("feature-grid"), "Esplora il progetto deve essere rimosso dalla Home");
 assert.ok(!homeRenderSource.includes("Apri il calendario"), "Il link Apri il calendario deve essere rimosso dalla Home");
 assert.ok(!homeRenderSource.includes("Capolista") && !homeRenderSource.includes("leader="), "La Home non deve calcolare o mostrare la capolista dopo la rimozione del riepilogo");
 const homeStandingsSource = mainApp.slice(mainApp.indexOf("function homeStandings"), mainApp.indexOf("const dayNav"));
 assert.ok(!homeStandingsSource.includes("objectiveStatusSection(") && !homeStandingsSource.includes("Stato degli obiettivi"), "Lo stato degli obiettivi non deve essere renderizzato nella Home");
+assert.ok(mainApp.includes('if(page==="home")[teams,matches,previousStandings]=await Promise.all') && mainApp.includes('if(page==="team-stats")[teamDirectory,playerLeaderboards]=await Promise.all'), "I dataset devono essere caricati soltanto dalle pagine che li usano");
+assert.ok(mainApp.includes('requestedMatchId?"first-leg-2026-27.json":"first-leg-2026-27-summary.json"'), "L'indice Letture deve usare il riepilogo H2H leggero");
 const expectedNavigation = [
   ["index.html", "Home"], ["calendario.html", "Calendario"],
   ["statistiche-squadre.html", "Statistiche squadre"], ["lettura.html", "Lettura"],
