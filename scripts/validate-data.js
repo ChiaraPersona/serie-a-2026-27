@@ -27,7 +27,9 @@ assert(fantasyWorkbook.players.length===663&&fantasyWorkbook.coverage.matchedCur
 assert(fantasy.sources.fantasyStatistics.matchedPlayers===fantasyWorkbook.coverage.matchedCurrentPlayers,"Fonte Fantacalcio non collegata alla metodologia");
 assert(fantasy.players.filter(player=>player.fantasyScoring.averageRating!==null).length>=Math.floor(fantasy.players.length*.7),"PV, MV e FM integrati in meno del 70% dei profili");
 assert(fantasy.players.every(player=>player.fantasyScoring&&player.fantasyScoring.unavailableTreatment==="SV: escluso dalla media"),"Gestione SV fantacalcio non valida");
-assert(fantasy.goalkeeperHierarchy.como.playerId==="jean-butez"&&fantasy.players.find(player=>player.id==="jean-butez")?.goalkeeperStatus==="Titolare confermato","Gerarchia portieri Como non valida");
+assert(fantasy.goalkeeperHierarchy.como.primaryIds[0]==="jean-butez"&&fantasy.players.find(player=>player.id==="jean-butez")?.goalkeeperStatus==="Titolare confermato","Gerarchia portieri Como non valida");
+assert(Object.keys(fantasy.goalkeeperHierarchy).length===20&&fantasy.sources.goalkeeperHierarchy.provider==="SOS Fanta","Fonte gerarchie portieri non valida");
+assert(fantasy.goalkeeperTrios.examples.every(trio=>trio.players.every(player=>fantasy.goalkeeperHierarchy[player.teamId]?.trioEligible&&fantasy.goalkeeperHierarchy[player.teamId].primaryIds[0]===player.id)),"Un tris usa un portiere senza gerarchia chiara");
 assert(!fantasy.goalkeeperTrios.examples.some(trio=>trio.players.some(player=>player.teamId==="como"&&player.id!=="jean-butez")),"Un tris usa un portiere del Como diverso da Butez");
 assert(fantasy.calendarWindow===38&&fantasy.teams.every(team=>team.calendar.fixtures.length===38),"Calendario formazione fantacalcio incompleto");
 assert(fantasy.sources.historicalTable.provider==="Transfermarkt"&&fantasy.sources.historicalTable.url,"Fonte classifica perpetua mancante");

@@ -7,6 +7,7 @@ const read = file => JSON.parse(fs.readFileSync(path.join(root, file), "utf8"));
 const source = read("data/sources/fantacalcio-quotations-2026-27.json");
 const probable = read("data/sources/fantacalcio-probable-lineups-md1-2026-27.json");
 const injuries = read("data/sources/fantacalcio-injuries-2026-27.json");
+const goalkeeperHierarchy = read("data/sources/fantasy-goalkeeper-hierarchy-2026-27.json");
 const generated = read("data/generated/fantacalcio-advice.json");
 const appSource = fs.readFileSync(path.join(root, "js/app.js"), "utf8");
 
@@ -49,7 +50,10 @@ assert.ok(unifiedCount >= generated.players.length && unifiedCount < 634, "l'uni
 assert.ok(appSource.includes("function fantasyUnifiedPlayers"), "funzione di unione tabella mancante");
 assert.ok(!appSource.includes("function fantasyListoneSection"), "il vecchio elenco separato non deve essere renderizzato");
 assert.ok(!appSource.includes('id="listone-players"'), "tbody del vecchio listone ancora presente");
-assert.ok(appSource.includes("<th>Ruolo · stelle</th><th>Calciatore</th><th>Squadra</th><th>Indice</th><th>Affidabilità</th><th>Titolarità 1ª</th><th>Stato fisico</th><th>Qt. Classic</th><th>FVM</th><th>Valore mercato</th><th>Valore consigliato</th>"), "ordine iniziale delle colonne unificate non valido");
+assert.ok(appSource.includes('removedColumns=new Set(["Affidabilità","Titolarità 1ª","Stato fisico"])'), "rimozione delle tre colonne non configurata");
+assert.ok(!appSource.includes("<td>${esc(player.reliability)}</td>"), "cella affidabilità ancora renderizzata");
+assert.ok(!appSource.includes("<td>${starter}</td>"), "cella titolarità ancora renderizzata");
+assert.ok(!appSource.includes("<td>${injury}</td>"), "cella stato fisico ancora renderizzata");
 assert.ok(!appSource.includes("<th>Ruolo Mantra</th>"), "la colonna ruolo Mantra non deve essere renderizzata");
 assert.ok(!appSource.includes("<th>Qt. Mantra</th>"), "la colonna quotazione Mantra non deve essere renderizzata");
 assert.ok(!appSource.includes("<th>FVM Mantra</th>"), "la colonna FVM Mantra non deve essere renderizzata");
@@ -64,6 +68,15 @@ assert.equal(nicoPaz.role, "C", "Nico Paz deve usare il ruolo Classic di centroc
 assert.equal(generated.sources.teamLogos.variant, "color", "la pagina Fantacalcio deve usare i loghi colorati");
 assert.ok(generated.teams.every(team => !team.fantasyLogo.includes("/monochrome/")), "la pagina Fantacalcio non deve usare loghi monocromatici");
 assert.equal(generated.teams.find(team => team.id === "juventus").fantasyLogo, "assets/images/teams/juventus.png");
+assert.equal(goalkeeperHierarchy.teams.length, 20, "gerarchie portieri incomplete");
+assert.equal(generated.sources.goalkeeperHierarchy.provider, "SOS Fanta");
+for (const trio of generated.goalkeeperTrios.examples) {
+  for (const player of trio.players) {
+    const hierarchy = goalkeeperHierarchy.teams.find(entry => entry.teamId === player.teamId);
+    assert.ok(hierarchy?.trioEligible, `${player.name}: gerarchia non abbastanza certa per il tris`);
+    assert.deepEqual(hierarchy.primaryIds, [player.id], `${player.name}: non è il primo portiere indicato`);
+  }
+}
 assert.ok(generated.players.filter(player => Number.isFinite(player.currentAvailability?.starterProbability)).length >= 350, "copertura titolarità insufficiente nei consigli");
 assert.equal(generated.listone.players.filter(player => Number.isFinite(player.currentAvailability?.starterProbability)).length, probable.coverage.players);
 assert.equal(generated.listone.players.filter(player => player.currentAvailability?.injuryReported).length, injuries.coverage.reports);

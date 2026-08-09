@@ -10,6 +10,7 @@ const fantasyWorkbook = read("data/sources/fantacalcio-stats-2025-26.json");
 const fantasyQuotations = read("data/sources/fantacalcio-quotations-2026-27.json");
 const probableLineups = read("data/sources/fantacalcio-probable-lineups-md1-2026-27.json");
 const fantasyInjuries = read("data/sources/fantacalcio-injuries-2026-27.json");
+const goalkeeperHierarchySource = read("data/sources/fantasy-goalkeeper-hierarchy-2026-27.json");
 const fantasyStatsByPlayerId = new Map(fantasyWorkbook.players.filter(player => player.playerId && player.appearancesWithVote > 0).map(player => [player.playerId, player]));
 const fantasyQuotationByPlayerId = new Map(fantasyQuotations.players.filter(player => player.playerId).map(player => [player.playerId, player]));
 const probablePlayers = probableLineups.teams.flatMap(team => team.players);
@@ -75,9 +76,8 @@ function calendarIndex(teamId) {
 }
 
 const teamCalendar = Object.fromEntries(teams.map(team => [team.id, calendarIndex(team.id)]));
-const goalkeeperStarterOverrides = {
-  como: "jean-butez"
-};
+const goalkeeperHierarchyByTeam = Object.fromEntries(goalkeeperHierarchySource.teams.map(entry => [entry.teamId, entry]));
+const goalkeeperPrimaryIds = new Set(goalkeeperHierarchySource.teams.flatMap(entry => entry.primaryIds));
 const candidates = [];
 for (const team of teamFiles) {
   for (const player of team.squad || []) {
@@ -122,7 +122,7 @@ for (const team of teamFiles) {
       ? availability * .3 * (.82 + competitionCoefficient * .18) + eventIndex * .25 * competitionCoefficient + observedIndex * .3 * competitionCoefficient + teamCalendar[team.id].index * .15
       : availability * .4 * (.82 + competitionCoefficient * .18) + eventIndex * .45 * competitionCoefficient + teamCalendar[team.id].index * .15;
     const currentScore = (probable ? rawScore * .92 + probable.probability * .08 : rawScore) - injuryPenalty(injury);
-    if (appearances === 0 && minutes === 0) continue;
+    if (appearances === 0 && minutes === 0 && !goalkeeperPrimaryIds.has(player.id)) continue;
     candidates.push({
       id: player.id,
       name: player.name,
@@ -140,7 +140,7 @@ for (const team of teamFiles) {
       marketValueLabel: player.marketValue?.label ?? null,
       reliability: fantasyStat ? (appearances >= 28 ? "Alta" : appearances >= 15 ? "Media" : "Da verificare") : minutes >= 2200 ? "Alta" : minutes >= 1100 ? "Media" : "Da verificare",
       goalkeeperStatus: role === "P"
-        ? (goalkeeperStarterOverrides[team.id] === player.id ? "Titolare confermato" : goalkeeperStarterOverrides[team.id] ? "Alternativa" : "Da valutare")
+        ? (goalkeeperHierarchyByTeam[team.id]?.primaryIds.includes(player.id) ? goalkeeperHierarchyByTeam[team.id].label : goalkeeperHierarchyByTeam[team.id] ? "Alternativa" : "Da valutare")
         : null,
       fantasyScoring: {
         points: round(fantasyEventPoints, 2),
@@ -223,13 +223,8 @@ for (const player of candidates) {
 
 function buildGoalkeeperTrios() {
   const bestByTeam = [...candidates.filter(player => player.role === "P").reduce((map, player) => {
-    const current = map.get(player.teamId);
-    const preferredId = goalkeeperStarterOverrides[player.teamId];
-    if (preferredId) {
-      if (player.id === preferredId) map.set(player.teamId, player);
-    } else if (!current || player.score > current.score) {
-      map.set(player.teamId, player);
-    }
+    const hierarchy = goalkeeperHierarchyByTeam[player.teamId];
+    if (hierarchy?.trioEligible && hierarchy.primaryIds.length === 1 && player.id === hierarchy.primaryIds[0]) map.set(player.teamId, player);
     return map;
   }, new Map()).values()];
   const trios = [];
@@ -353,6 +348,14 @@ const output = {
       coverage: fantasyInjuries.coverage,
       use: fantasyInjuries.interpretation
     },
+    goalkeeperHierarchy: {
+      provider: goalkeeperHierarchySource.provider,
+      title: goalkeeperHierarchySource.title,
+      url: goalkeeperHierarchySource.url,
+      publishedAt: goalkeeperHierarchySource.publishedAt,
+      importedAt: goalkeeperHierarchySource.importedAt,
+      use: goalkeeperHierarchySource.interpretation
+    },
     teamLogos: {
       provider: "Dataset locale squadre Serie A 2026/27",
       variant: "color",
@@ -368,10 +371,10 @@ const output = {
   goalkeeperTrios: {
     budgetPct: 7,
     budget500: 35,
-    method: "Tre portieri di squadre diverse entro il 7% del budget. Per ogni giornata viene scelto il portiere con la partita piÃ¹ favorevole; il punteggio premia copertura del calendario e qualitÃ  individuale.",
+    method: "Tre primi portieri con gerarchia chiara, di squadre diverse ed entro il 7% del budget. Per ogni giornata viene scelto il portiere con la partita più favorevole; il punteggio premia copertura del calendario e qualità individuale.",
     examples: goalkeeperTrios
   },
-  goalkeeperHierarchy: Object.fromEntries(Object.entries(goalkeeperStarterOverrides).map(([teamId, playerId]) => [teamId, { playerId, status: "Titolare confermato", source: "Indicazione utente" }])),
+  goalkeeperHierarchy: Object.fromEntries(goalkeeperHierarchySource.teams.map(entry => [entry.teamId, { primaryIds: entry.primaryIds, status: entry.status, label: entry.label, trioEligible: entry.trioEligible, source: goalkeeperHierarchySource.provider }])),
   starGuide: {
     5: "Top di ruolo: priorita d'asta e investimento importante.",
     4: "Titolare di alto valore: obiettivo forte con prezzo controllato.",
