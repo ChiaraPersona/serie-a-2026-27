@@ -32,6 +32,22 @@ const complementary = planner.calendarScore(players[1], data, summary.entries.fi
 const neutral = planner.calendarScore(players[2], data, summary.entries.filter(entry => entry.main));
 assert(complementary > neutral, "premia il calendario complementare al main dello stesso ruolo");
 
+const seasonFixtures = transform => Array.from({ length: 38 }, (_, index) => ({ matchday: index + 1, ease: transform(index + 1) }));
+const weightedTeams = [
+  { id: "flat", calendar: { fixtures: seasonFixtures(() => 50) } },
+  { id: "late", calendar: { fixtures: seasonFixtures(day => day === 38 ? 90 : 50) } },
+  { id: "early", calendar: { fixtures: seasonFixtures(day => day <= 8 ? 80 : 50) } },
+  { id: "middle", calendar: { fixtures: seasonFixtures(day => day >= 9 && day <= 19 ? 80 : 50) } }
+];
+const weightedData = { teams: weightedTeams, players: [] };
+const calendarPlayer = teamId => ({ id: teamId, teamId, role: "C", score: 70, reliability: "Media" });
+const flatScore = planner.calendarScore(calendarPlayer("flat"), weightedData, []);
+assert(planner.calendarScore(calendarPlayer("late"), weightedData, []) > flatScore, "anche la 38ª giornata deve incidere");
+assert(planner.calendarScore(calendarPlayer("early"), weightedData, []) > planner.calendarScore(calendarPlayer("middle"), weightedData, []), "le prime 8 giornate devono pesare più delle giornate 9-19");
+assert(Math.abs(Array.from({ length: 8 }, (_, index) => planner.calendarWeight(index + 1)).reduce((sum, value) => sum + value, 0) - .5) < 1e-9);
+assert(Math.abs(Array.from({ length: 11 }, (_, index) => planner.calendarWeight(index + 9)).reduce((sum, value) => sum + value, 0) - .3) < 1e-9);
+assert(Math.abs(Array.from({ length: 19 }, (_, index) => planner.calendarWeight(index + 20)).reduce((sum, value) => sum + value, 0) - .2) < 1e-9);
+
 const balanced = planner.recommendations(data, normalized, "balanced");
 assert(!balanced.roles.A.some(item => item.player.id === "main-a"), "esclude i calciatori gia selezionati");
 assert.equal(balanced.roles.A[0].player.id, "value-a", "propone il profilo affidabile e complementare");

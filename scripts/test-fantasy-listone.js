@@ -54,9 +54,13 @@ assert.ok(!appSource.includes("<th>Ruolo Mantra</th>"), "la colonna ruolo Mantra
 assert.ok(!appSource.includes("<th>Qt. Mantra</th>"), "la colonna quotazione Mantra non deve essere renderizzata");
 assert.ok(!appSource.includes("<th>FVM Mantra</th>"), "la colonna FVM Mantra non deve essere renderizzata");
 assert.ok(appSource.includes("data.sources?.probableLineups?.url"), "fallback per copie dati senza fonti correnti mancante");
+assert.ok(appSource.includes("calendario completo: 50% giornate 1–8, 30% giornate 9–19, 20% giornate 20–38"), "pesi del calendario completo non dichiarati");
 const nicoPaz = generated.players.find(player => player.id === "nico-paz");
 assert.ok(nicoPaz, "Nico Paz non collegato alla rosa analitica");
 assert.equal(nicoPaz.role, "C", "Nico Paz deve usare il ruolo Classic di centrocampista");
+assert.equal(generated.sources.teamLogos.variant, "color", "la pagina Fantacalcio deve usare i loghi colorati");
+assert.ok(generated.teams.every(team => !team.fantasyLogo.includes("/monochrome/")), "la pagina Fantacalcio non deve usare loghi monocromatici");
+assert.equal(generated.teams.find(team => team.id === "juventus").fantasyLogo, "assets/images/teams/juventus.png");
 assert.ok(generated.players.filter(player => Number.isFinite(player.currentAvailability?.starterProbability)).length >= 350, "copertura titolarità insufficiente nei consigli");
 assert.equal(generated.listone.players.filter(player => Number.isFinite(player.currentAvailability?.starterProbability)).length, probable.coverage.players);
 assert.equal(generated.listone.players.filter(player => player.currentAvailability?.injuryReported).length, injuries.coverage.reports);

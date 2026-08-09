@@ -66,27 +66,36 @@
     return clamp(Math.max(1, Math.round(baseAt1000 * budget / 1000 * factor)), 1, Math.round(budget * .25));
   }
 
+  function calendarWeight(matchday) {
+    const day = Math.max(1, Math.min(38, Math.round(number(matchday, 1))));
+    if (day <= 8) return .5 / 8;
+    if (day <= 19) return .3 / 11;
+    return .2 / 19;
+  }
+
   function calendarScore(player, data, mains) {
     const team = data.teams.find(item => item.id === player.teamId);
-    const fixtures = team?.calendar?.fixtures?.slice(0, 8) || [];
+    const fixtures = team?.calendar?.fixtures?.slice(0, 38) || [];
     if (!fixtures.length) return 50;
-    const opening = fixtures.reduce((sum, fixture) => sum + number(fixture.ease, 50), 0) / fixtures.length;
+    const totalWeight = fixtures.reduce((sum, fixture) => sum + calendarWeight(fixture.matchday), 0);
+    const season = fixtures.reduce((sum, fixture) => sum + number(fixture.ease, 50) * calendarWeight(fixture.matchday), 0) / Math.max(totalWeight, .001);
     const sameRoleMains = mains.filter(item => item.player.role === player.role);
-    if (!sameRoleMains.length) return clamp(opening, 0, 100);
+    if (!sameRoleMains.length) return clamp(season, 0, 100);
     let opportunities = 0;
     let covered = 0;
     for (const main of sameRoleMains) {
       const mainTeam = data.teams.find(item => item.id === main.player.teamId);
-      const mainFixtures = mainTeam?.calendar?.fixtures?.slice(0, 8) || [];
-      fixtures.forEach((fixture, index) => {
-        if (number(mainFixtures[index]?.ease, 50) < 48) {
-          opportunities += 1;
-          if (number(fixture.ease, 50) >= 48) covered += 1;
+      const mainFixtures = new Map((mainTeam?.calendar?.fixtures?.slice(0, 38) || []).map(fixture => [fixture.matchday, fixture]));
+      fixtures.forEach(fixture => {
+        const weight = calendarWeight(fixture.matchday);
+        if (number(mainFixtures.get(fixture.matchday)?.ease, 50) < 48) {
+          opportunities += weight;
+          if (number(fixture.ease, 50) >= 48) covered += weight;
         }
       });
     }
     const complement = opportunities ? covered / opportunities * 100 : 55;
-    return clamp(opening * .55 + complement * .45, 0, 100);
+    return clamp(season * .55 + complement * .45, 0, 100);
   }
 
   function recommendationScore(player, data, state, strategyId, pricingMode = "auction", participants = 8) {
@@ -121,5 +130,5 @@
     return { strategy: strategies[strategyId] || strategies.balanced, roles, summary };
   }
 
-  return { roleLimits, roleLabels, strategies, participantFactors, normalizeState, summarize, targetPrice, calendarScore, recommendationScore, recommendations };
+  return { roleLimits, roleLabels, strategies, participantFactors, normalizeState, summarize, targetPrice, calendarWeight, calendarScore, recommendationScore, recommendations };
 });

@@ -10,15 +10,6 @@ const fantasyWorkbook = read("data/sources/fantacalcio-stats-2025-26.json");
 const fantasyQuotations = read("data/sources/fantacalcio-quotations-2026-27.json");
 const probableLineups = read("data/sources/fantacalcio-probable-lineups-md1-2026-27.json");
 const fantasyInjuries = read("data/sources/fantacalcio-injuries-2026-27.json");
-const monochromeLogoManifest = read("assets/images/teams/monochrome/manifest.json");
-const monochromeLogoIds = new Set(monochromeLogoManifest.teams.map(team => team.id));
-const missingMonochromeLogos = teams.filter(team => {
-  const logoFile = path.join(root, `assets/images/teams/monochrome/${team.id}-black.svg`);
-  return !monochromeLogoIds.has(team.id) || !fs.existsSync(logoFile);
-});
-if (missingMonochromeLogos.length) {
-  throw new Error(`Loghi neri mancanti: ${missingMonochromeLogos.map(team => team.id).join(", ")}`);
-}
 const fantasyStatsByPlayerId = new Map(fantasyWorkbook.players.filter(player => player.playerId && player.appearancesWithVote > 0).map(player => [player.playerId, player]));
 const fantasyQuotationByPlayerId = new Map(fantasyQuotations.players.filter(player => player.playerId).map(player => [player.playerId, player]));
 const probablePlayers = probableLineups.teams.flatMap(team => team.players);
@@ -363,11 +354,9 @@ const output = {
       use: fantasyInjuries.interpretation
     },
     teamLogos: {
-      provider: monochromeLogoManifest.source.provider,
-      collectionUrl: monochromeLogoManifest.source.collectionUrl,
-      retrievedAt: monochromeLogoManifest.source.retrievedAt,
-      variant: "black",
-      use: "Loghi monocromatici nella tabella Consigli per l'asta."
+      provider: "Dataset locale squadre Serie A 2026/27",
+      variant: "color",
+      use: "Loghi colorati canonici nella pagina Fantacalcio."
     }
   },
   budgetPlan: [
@@ -400,7 +389,7 @@ const output = {
     id: team.id,
     name: team.name,
     logo: team.logo,
-    fantasyLogo: `assets/images/teams/monochrome/${team.id}-black.svg`,
+    fantasyLogo: team.id === "juventus" ? "assets/images/teams/juventus.png" : team.logo,
     strength: strengthDetails.get(team.id),
     calendar: teamCalendar[team.id]
   })),
