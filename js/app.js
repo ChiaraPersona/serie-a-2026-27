@@ -378,6 +378,8 @@ async function render(){
     const showCalendar=playerId=>{selectedPlayerId=playerId;calendar.innerHTML=fantasyLineupCalendar(fantasy,playerId,currentBudget(),currentPricingMode(),currentParticipants());calendar.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"})};
     const update=()=>{
       const credits=currentBudget(),amounts=fantasyBudgetAmounts(fantasy.budgetPlan,credits);
+      participants.disabled=currentPricingMode()==="classic";
+      participants.closest(".fantasy-config-field")?.classList.toggle("is-disabled",participants.disabled);
       squadState=FantasySquad.normalizeState({...squadState,budget:credits},fantasy.players,credits);
       const mode=currentPricingMode(),leagueSize=currentParticipants(),result=fantasyPlayerRows(fantasy,credits,role.value,slot.value,search.value,null,squadState,mode,leagueSize);
       tbody.innerHTML=result.html;count.textContent=result.shown<result.count?`${result.shown} di ${result.count}`:result.count===1?"1 calciatore":`${result.count} calciatori`;goalkeeperTrios.innerHTML=fantasyGoalkeeperTrios(fantasy,credits,mode,leagueSize);calendar.innerHTML=fantasyLineupCalendar(fantasy,selectedPlayerId,credits,mode,leagueSize);squadPanel.innerHTML=fantasySquadPanel(fantasy,squadState);recommendationPanel.innerHTML=fantasyRecommendations(fantasy,squadState,strategyId,mode,leagueSize);

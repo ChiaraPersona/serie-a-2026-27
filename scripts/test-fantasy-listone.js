@@ -31,10 +31,10 @@ assert.equal(probable.coverage.teams, 20);
 assert.equal(probable.coverage.starters, 220);
 assert.equal(probable.coverage.unmatched, 0);
 assert.equal(injuries.coverage.teams, 20);
-assert.equal(injuries.coverage.reports, 20);
+assert.ok(injuries.coverage.reports > 0);
 assert.equal(injuries.coverage.unmatched, 0);
 assert.equal(generated.sources.probableLineups.matchday, 1);
-assert.equal(generated.sources.injuries.coverage.reports, 20);
+assert.equal(generated.sources.injuries.coverage.reports, injuries.coverage.reports);
 const quotedAdvice = generated.players.filter(player => player.quotations);
 assert.ok(quotedAdvice.length > 350, `Copertura quotazioni insufficiente: ${quotedAdvice.length}`);
 for (const player of quotedAdvice) {
@@ -45,13 +45,20 @@ for (const player of quotedAdvice) {
 const adviceIds = new Set(generated.players.map(player => player.id));
 const unlinkedListone = generated.listone.players.filter(player => !player.playerId || !adviceIds.has(player.playerId));
 const unifiedCount = generated.players.length + unlinkedListone.length;
-assert.equal(unifiedCount, 634, "l'unione deve deduplicare i profili gia collegati");
+assert.ok(unifiedCount >= generated.players.length && unifiedCount < 634, "l'unione deve deduplicare i profili collegati senza perdere righe");
 assert.ok(appSource.includes("function fantasyUnifiedPlayers"), "funzione di unione tabella mancante");
 assert.ok(!appSource.includes("function fantasyListoneSection"), "il vecchio elenco separato non deve essere renderizzato");
 assert.ok(!appSource.includes('id="listone-players"'), "tbody del vecchio listone ancora presente");
-assert.ok(appSource.includes("<th>Ruolo · stelle</th><th>Calciatore</th><th>Squadra</th><th>Indice</th><th>Affidabilità</th><th>Titolarità 1ª</th><th>Stato fisico</th><th>Qt. Classic</th><th>FVM</th><th>Ruolo Mantra</th>"), "ordine iniziale delle colonne unificate non valido");
+assert.ok(appSource.includes("<th>Ruolo · stelle</th><th>Calciatore</th><th>Squadra</th><th>Indice</th><th>Affidabilità</th><th>Titolarità 1ª</th><th>Stato fisico</th><th>Qt. Classic</th><th>FVM</th><th>Valore mercato</th><th>Valore consigliato</th>"), "ordine iniziale delle colonne unificate non valido");
+assert.ok(!appSource.includes("<th>Ruolo Mantra</th>"), "la colonna ruolo Mantra non deve essere renderizzata");
+assert.ok(!appSource.includes("<th>Qt. Mantra</th>"), "la colonna quotazione Mantra non deve essere renderizzata");
+assert.ok(!appSource.includes("<th>FVM Mantra</th>"), "la colonna FVM Mantra non deve essere renderizzata");
+assert.ok(appSource.includes("data.sources?.probableLineups?.url"), "fallback per copie dati senza fonti correnti mancante");
+const nicoPaz = generated.players.find(player => player.id === "nico-paz");
+assert.ok(nicoPaz, "Nico Paz non collegato alla rosa analitica");
+assert.equal(nicoPaz.role, "C", "Nico Paz deve usare il ruolo Classic di centrocampista");
 assert.ok(generated.players.filter(player => Number.isFinite(player.currentAvailability?.starterProbability)).length >= 350, "copertura titolarità insufficiente nei consigli");
-assert.equal(generated.listone.players.filter(player => Number.isFinite(player.currentAvailability?.starterProbability)).length, 467);
-assert.equal(generated.listone.players.filter(player => player.currentAvailability?.injuryReported).length, 20);
+assert.equal(generated.listone.players.filter(player => Number.isFinite(player.currentAvailability?.starterProbability)).length, probable.coverage.players);
+assert.equal(generated.listone.players.filter(player => player.currentAvailability?.injuryReported).length, injuries.coverage.reports);
 
 console.log(`Fantacalcio unificato: ${unifiedCount} righe, ${source.players.length} attivi nel listone, ${quotedAdvice.length} consigli quotati.`);

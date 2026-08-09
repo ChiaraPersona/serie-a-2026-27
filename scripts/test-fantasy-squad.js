@@ -8,9 +8,9 @@ const teams = [
   { id: "gamma", calendar: { fixtures: fixtures([45, 46, 48, 49, 50, 51, 52, 53]) } }
 ];
 const players = [
-  { id: "main-a", name: "Main A", teamId: "alpha", role: "A", score: 88, reliability: "Alta", value500: 120 },
-  { id: "value-a", name: "Value A", teamId: "beta", role: "A", score: 76, reliability: "Alta", value500: 45 },
-  { id: "risk-a", name: "Risk A", teamId: "gamma", role: "A", score: 82, reliability: "Da verificare", value500: 38 },
+  { id: "main-a", name: "Main A", teamId: "alpha", role: "A", score: 88, reliability: "Alta", value500: 120, auctionValue1000: 250, quotations: { classic: 35 } },
+  { id: "value-a", name: "Value A", teamId: "beta", role: "A", score: 76, reliability: "Alta", value500: 45, auctionValue1000: 100, quotations: { classic: 12 } },
+  { id: "risk-a", name: "Risk A", teamId: "gamma", role: "A", score: 82, reliability: "Da verificare", value500: 38, auctionValue1000: 80, quotations: { classic: 9 } },
   { id: "keeper", name: "Keeper", teamId: "beta", role: "P", score: 70, reliability: "Media", value500: 20 }
 ];
 const data = { teams, players };
@@ -35,7 +35,11 @@ assert(complementary > neutral, "premia il calendario complementare al main dell
 const balanced = planner.recommendations(data, normalized, "balanced");
 assert(!balanced.roles.A.some(item => item.player.id === "main-a"), "esclude i calciatori gia selezionati");
 assert.equal(balanced.roles.A[0].player.id, "value-a", "propone il profilo affidabile e complementare");
-assert.equal(planner.targetPrice(players[1], 1000), 90, "adatta il prezzo obiettivo al budget");
-assert.equal(planner.targetPrice({ ...players[1], quotations: { fvm: 70 } }, 1000), 140, "preferisce il valore FVM indipendente quando disponibile");
+assert.equal(planner.targetPrice(players[1], 1000, "classic", 8), 12, "in modalità Classic usa la quotazione ufficiale");
+assert.equal(planner.targetPrice(players[1], 1000, "auction", 6), 88, "riduce il valore in una lega da 6");
+assert.equal(planner.targetPrice(players[1], 1000, "auction", 8), 100, "usa il valore base in una lega da 8");
+assert.equal(planner.targetPrice(players[1], 1000, "auction", 10), 112, "aumenta il valore in una lega da 10");
+assert.equal(planner.targetPrice(players[0], 1000, "auction", 8), 250, "il miglior calciatore non supera il 25% del budget");
+assert.equal(planner.targetPrice(players[0], 1000, "auction", 10), 250, "il tetto del 25% vale anche con 10 partecipanti");
 
 console.log("Fantasy squad planner: test superati.");
