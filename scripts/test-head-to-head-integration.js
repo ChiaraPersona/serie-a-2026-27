@@ -11,6 +11,7 @@ const historySummary = read("data/generated/head-to-head/first-leg-2026-27-summa
 const predictions = read("data/normalized/predictions.json");
 const app = fs.readFileSync(path.join(root, "js/app.js"), "utf8");
 const page = fs.readFileSync(path.join(root, "lettura.html"), "utf8");
+const appRelease = app.match(/RELEASE="([^"]+)"/)?.[1];
 
 assert.strictEqual(history.fixtures.length, 190, "Lo storico deve coprire le 190 partite di andata");
 assert.strictEqual(historySummary.fixtures.length, 190, "Il riepilogo H2H deve coprire le 190 partite di andata");
@@ -22,5 +23,5 @@ assert(app.includes('requestedMatchId?"first-leg-2026-27.json":"first-leg-2026-2
 assert(app.includes("Precedenti per tutte le 190 partite"), "La directory del girone di andata non è renderizzata");
 assert(app.includes("match.matchday<=19&&match.matchday!==nextDay"), "La directory non deve ripetere la giornata gia mostrata nel prossimo turno");
 assert(app.includes("Dettaglio ammoniti N/D"), "La UI non distingue i cartellini mancanti dallo zero");
-assert(page.includes("20260809-runtime-cleanup"), "Cache busting non propagato alla pagina Lettura");
+assert(appRelease && page.includes(appRelease), "Cache busting non propagato alla pagina Lettura");
 console.log("OK collegamento H2H: motore, 190 letture, copertura esplicita e cache aggiornata");
