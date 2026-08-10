@@ -54,7 +54,8 @@ assert.ok(!mainApp.includes('id="global-player-stat"'), "La selezione Top 15 non
 assert.ok(!mainApp.includes("Riepilogo statistico") && !mainApp.includes("season-summary"), "Il riepilogo statistico non deve essere mostrato in Statistiche squadre");
 for (const contract of ["reading-fixture-preview", "Anteprima della lettura", "prediction.verdict.label", "likelyScore", "prediction.confidence.value"]) assert.ok(mainApp.includes(contract), `Card Letture: anteprima ${contract} assente`);
 for (const contract of [".reading-fixture-preview", ".reading-fixture-preview-text"]) assert.ok(styles.includes(contract), `Card Letture: stile ${contract} assente`);
-for (const contract of ['reading-fixture match fixture-card fixture-card-link', 'class="match-head"', 'class="matchday-chip"', 'class="match-date"', 'reading-fixture-footer', 'teamColorStyle']) assert.ok(mainApp.includes(contract), `Card Letture: struttura calendario ${contract} assente`);
+for (const contract of ['reading-fixture match fixture-card fixture-card-link', 'class="match-head"', 'class="matchday-chip"', 'class="match-date"', 'teamColorStyle']) assert.ok(mainApp.includes(contract), `Card Letture: struttura calendario ${contract} assente`);
+for (const removed of ['reading-fixture-footer', 'Pronostico preliminare · sorpresa', 'Precedenti ${history.coverage.available}/5']) assert.ok(!mainApp.includes(removed), `Card Letture: contenuto inferiore ${removed} ancora presente`);
 const teamInterface = fs.readFileSync(path.join(root, "js/team-squads.js"), "utf8");
 assert.ok(!mainApp.includes("giornata di riferimento") && !teamInterface.includes("Data da definire · riferimento"), "Le date non definite non devono mostrare una data di riferimento");
 assert.ok(teamInterface.includes("Stato degli obiettivi") && teamInterface.includes("calculateObjectiveMetrics"), "Lo stato degli obiettivi non è integrato nelle pagine squadra");
@@ -92,6 +93,7 @@ assert.ok(!mainApp.includes('class="season-overview"'), "Il riepilogo Squadre/Pa
 for (const marker of ['label:"R+"', 'label:"R-"', 'label:"C+"', 'label:"C-"', "configureStandingsTables()", "data-sortable-standings"]) assert.ok(mainApp.includes(marker), `Classifica dinamica: manca ${marker}`);
 for (const scope of ['id:"general"', 'id:"home"', 'id:"away"', "data-standings-scope-tab", "data-standings-scope-panel", "activateScope"]) assert.ok(mainApp.includes(scope), `Selettore rendimento 2025/26: manca ${scope}`);
 assert.ok(mainApp.includes("standings-column-active") && styles.includes("standings-column-active") && mainApp.includes('aria-pressed="false"'), "La colonna ordinata deve essere evidenziata visivamente e annunciata ai lettori di schermo");
+assert.ok(!mainApp.includes("Esito della stagione") && !mainApp.includes("Verdetti 2025/26") && !mainApp.includes("verdictsPanel"), "Il blocco Verdetti 2025/26 deve essere rimosso dalla Home");
 for (const tooltip of ["Rigori assegnati a favore", "Rigori subiti contro", "Cartellini assegnati agli avversari", "Cartellini ricevuti dalla squadra"]) assert.ok(mainApp.includes(tooltip), `Tooltip classifica mancante: ${tooltip}`);
 assert.ok(styles.includes("width:calc(100% + 288px);min-width:1088px"), "Le quattro nuove colonne devono essere aggiunte senza restringere quelle esistenti");
 for (const zone of ["standing-zone-champion", "standing-zone-top", "standing-zone-europa", "standing-zone-conference", "standing-zone-bottom"]) assert.ok(mainApp.includes(zone) && styles.includes(zone), `Fascia classifica mancante: ${zone}`);
