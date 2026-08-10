@@ -27,6 +27,15 @@ assert.equal(summary.mains, 1);
 assert.equal(summary.remaining, 400);
 assert.equal(summary.missing.A, 5);
 assert.equal(summary.missing.P, 3);
+assert.equal(summary.targetTotal, 25, "mantiene il totale Classic predefinito");
+assert.deepEqual(summary.roleLimits, { P: 3, D: 8, C: 8, A: 6 }, "mantiene la composizione Classic predefinita");
+
+const customState = planner.normalizeState({ budget: 500, squadSize: 22, roleLimits: { P: 2, D: 7, C: 7, A: 6 }, entries: normalized.entries }, players);
+const customSummary = planner.summarize(customState, players);
+assert.equal(customSummary.targetTotal, 22, "salva il numero totale personalizzato");
+assert.equal(customSummary.roleTotal, 22, "calcola la somma dei limiti per ruolo");
+assert.equal(customSummary.missing.P, 2, "usa il limite personalizzato nei posti mancanti");
+assert.equal(customSummary.missing.A, 5, "considera i giocatori gia scelti nel limite personalizzato");
 
 const complementary = planner.calendarScore(players[1], data, summary.entries.filter(entry => entry.main));
 const neutral = planner.calendarScore(players[2], data, summary.entries.filter(entry => entry.main));

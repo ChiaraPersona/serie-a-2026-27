@@ -16,23 +16,35 @@
   const roleBudgetShares = { P: .07, D: .17, C: .23, A: .53 };
   const participantFactors = { 6: .88, 8: 1, 10: 1.12 };
 
+  function normalizeRoleLimits(limits) {
+    return Object.fromEntries(Object.entries(roleLimits).map(([role, fallback]) => [role, clamp(Math.round(number(limits?.[role], fallback)), 1, 20)]));
+  }
+
+  function squadConfig(state) {
+    const limits = normalizeRoleLimits(state?.roleLimits);
+    const defaultSize = Object.values(limits).reduce((sum, value) => sum + value, 0);
+    return { roleLimits: limits, squadSize: clamp(Math.round(number(state?.squadSize, defaultSize)), 4, 60) };
+  }
+
   function normalizeState(state, players, budget = 500) {
     const available = new Map(players.map(player => [player.id, player]));
+    const config = squadConfig(state);
     const entries = [];
     const excludedIds = [];
     for (const raw of Array.isArray(state?.entries) ? state.entries : []) {
       if (!available.has(raw.playerId) || entries.some(entry => entry.playerId === raw.playerId)) continue;
       const player = available.get(raw.playerId);
-      if (entries.filter(entry => available.get(entry.playerId)?.role === player.role).length >= roleLimits[player.role]) continue;
+      if (entries.filter(entry => available.get(entry.playerId)?.role === player.role).length >= config.roleLimits[player.role]) continue;
       entries.push({ playerId: raw.playerId, main: Boolean(raw.main), price: Math.max(0, Math.round(number(raw.price))) });
     }
     for (const playerId of Array.isArray(state?.excludedIds) ? state.excludedIds : []) {
       if (available.has(playerId) && !excludedIds.includes(playerId)) excludedIds.push(playerId);
     }
-    return { version: 2, budget: clamp(Math.round(number(state?.budget, budget)), 100, 2000), entries, excludedIds };
+    return { version: 3, budget: clamp(Math.round(number(state?.budget, budget)), 100, 2000), squadSize: config.squadSize, roleLimits: config.roleLimits, entries, excludedIds };
   }
 
   function summarize(state, players) {
+    const config = squadConfig(state);
     const byId = new Map(players.map(player => [player.id, player]));
     const counts = { P: 0, D: 0, C: 0, A: 0 };
     let spent = 0;
@@ -48,7 +60,10 @@
     return {
       entries,
       counts,
-      missing: Object.fromEntries(Object.keys(roleLimits).map(role => [role, Math.max(0, roleLimits[role] - counts[role])])),
+      missing: Object.fromEntries(Object.keys(config.roleLimits).map(role => [role, Math.max(0, config.roleLimits[role] - counts[role])])),
+      roleLimits: config.roleLimits,
+      targetTotal: config.squadSize,
+      roleTotal: Object.values(config.roleLimits).reduce((sum, value) => sum + value, 0),
       total: entries.length,
       mains,
       spent,
@@ -107,7 +122,8 @@
     const summary = summarize(state, data.players);
     const mains = summary.entries.filter(entry => entry.main);
     const price = targetPrice(player, state.budget, pricingMode, participants);
-    const roleReference = Math.max(1, state.budget * roleBudgetShares[player.role] / roleLimits[player.role]);
+    const limits = squadConfig(state).roleLimits;
+    const roleReference = Math.max(1, state.budget * roleBudgetShares[player.role] / limits[player.role]);
     const value = clamp((player.score / Math.max(price, 1)) * roleReference, 0, 100);
     const calendar = calendarScore(player, data, mains);
     const teamDuplication = summary.entries.filter(entry => entry.player.teamId === player.teamId).length;
@@ -123,7 +139,7 @@
     const missingTotal = Object.values(summary.missing).reduce((sum, value) => sum + value, 0);
     const affordableAverage = missingTotal ? Math.max(1, summary.remaining / missingTotal) : 0;
     const roles = {};
-    for (const role of Object.keys(roleLimits)) {
+    for (const role of Object.keys(summary.roleLimits)) {
       if (!summary.missing[role]) { roles[role] = []; continue; }
       roles[role] = data.players
         .filter(player => player.role === role && !selected.has(player.id) && !excluded.has(player.id))
@@ -135,5 +151,5 @@
     return { strategy: strategies[strategyId] || strategies.balanced, roles, summary };
   }
 
-  return { roleLimits, roleLabels, strategies, participantFactors, normalizeState, summarize, targetPrice, calendarWeight, calendarScore, recommendationScore, recommendations };
+  return { roleLimits, roleLabels, strategies, participantFactors, normalizeRoleLimits, squadConfig, normalizeState, summarize, targetPrice, calendarWeight, calendarScore, recommendationScore, recommendations };
 });
