@@ -90,6 +90,8 @@ assert.ok(!generatedHtml.includes('href="classifica.html"') && !generatedHtml.in
 assert.ok(mainApp.includes('if(page==="home")') && mainApp.includes('data-standings-tab="current"') && mainApp.includes('data-standings-tab="archive"'), "Le due classifiche devono essere renderizzate nella Home");
 assert.ok(!mainApp.includes('class="season-overview"'), "Il riepilogo Squadre/Partite/Capolista/Copertura non deve essere mostrato nella Home");
 for (const marker of ['label:"R+"', 'label:"R-"', 'label:"C+"', 'label:"C-"', "configureStandingsTables()", "data-sortable-standings"]) assert.ok(mainApp.includes(marker), `Classifica dinamica: manca ${marker}`);
+for (const scope of ['id:"general"', 'id:"home"', 'id:"away"', "data-standings-scope-tab", "data-standings-scope-panel", "activateScope"]) assert.ok(mainApp.includes(scope), `Selettore rendimento 2025/26: manca ${scope}`);
+assert.ok(mainApp.includes("standings-column-active") && styles.includes("standings-column-active") && mainApp.includes('aria-pressed="false"'), "La colonna ordinata deve essere evidenziata visivamente e annunciata ai lettori di schermo");
 for (const tooltip of ["Rigori assegnati a favore", "Rigori subiti contro", "Cartellini assegnati agli avversari", "Cartellini ricevuti dalla squadra"]) assert.ok(mainApp.includes(tooltip), `Tooltip classifica mancante: ${tooltip}`);
 assert.ok(styles.includes("width:calc(100% + 288px);min-width:1088px"), "Le quattro nuove colonne devono essere aggiunte senza restringere quelle esistenti");
 for (const zone of ["standing-zone-champion", "standing-zone-top", "standing-zone-europa", "standing-zone-conference", "standing-zone-bottom"]) assert.ok(mainApp.includes(zone) && styles.includes(zone), `Fascia classifica mancante: ${zone}`);
