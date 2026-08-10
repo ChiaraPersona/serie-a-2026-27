@@ -29,6 +29,7 @@ for (const summary of index.teams) {
 }
 assert.ok(mainApp.includes("data/teams/index.json") && mainApp.includes("team-directory-grid") && mainApp.includes("statistiche-squadra/${team.id}.html"), "Elenco delle 20 squadre non integrato nella pagina principale");
 assert.ok(mainApp.includes("team.monochromeLogo||team.logo"), "Le card Statistiche squadre non usano il logo monocromatico nero");
+assert.ok(styles.includes("Statistiche squadre mobile: logo e riepilogo dentro un'unica card") && styles.includes("grid-template-columns:98px minmax(0,1fr)") && styles.includes(".team-flip-face{\n    position:relative"), "Su mobile ogni squadra deve usare una sola card visiva");
 const expectedLeaderboardMetrics = ["goals", "assists", "shots", "shotsOnTarget", "cards", "foulsCommitted", "foulsWon"];
 assert.deepStrictEqual(Object.keys(playerLeaderboards.rankings), expectedLeaderboardMetrics, "Le Top 15 non coprono tutte le statistiche giocatore");
 for (const [metric, ranking] of Object.entries(playerLeaderboards.rankings)) {

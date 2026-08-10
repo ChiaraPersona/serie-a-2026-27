@@ -1392,3 +1392,43 @@ body[data-page="referees"] .referee-controls>strong{color:var(--glass-gold)}
 }
 .pitch-centre-line,.pitch-centre-circle,.pitch-box,
 .reading-lineup-field::before,.reading-lineup-field::after,.reading-lineup-centre{display:none}
+
+/* Statistiche squadre mobile: logo e riepilogo dentro un'unica card. */
+@media(max-width:760px){
+  .team-flip-card{height:auto;filter:none;perspective:none}
+  .team-flip-inner{
+    display:grid;
+    grid-template-columns:98px minmax(0,1fr);
+    align-items:center;
+    gap:18px;
+    height:auto;
+    min-height:220px;
+    padding:20px;
+    overflow:hidden;
+    border:1px solid var(--glass-border);
+    border-radius:26px;
+    background:radial-gradient(circle at 0 0,color-mix(in srgb,var(--team-primary) 12%,transparent),transparent 48%),linear-gradient(115deg,rgba(255,255,255,.5),transparent 38%),var(--glass-surface);
+    box-shadow:0 8px 4px #00000012,0 24px 28px #0000000d,inset 0 1px 4px #ffffff80;
+    transform:none!important;
+  }
+  .team-flip-face{
+    position:relative;
+    inset:auto;
+    min-height:0;
+    padding:0;
+    overflow:visible;
+    border:0;
+    border-radius:0;
+    background:none;
+    box-shadow:none;
+    backdrop-filter:none;
+    -webkit-backdrop-filter:none;
+    backface-visibility:visible;
+    -webkit-backface-visibility:visible;
+  }
+  .team-flip-front{justify-content:center}
+  .team-flip-front img{width:92px;height:92px}
+  .team-flip-back{gap:6px;transform:none}
+  .team-flip-back strong{margin-bottom:3px;font-size:1.18rem}
+  .team-flip-back b{margin-top:6px;padding-top:9px}
+}
