@@ -25,10 +25,10 @@ const matches = source.matches.map(match => ({
   ...match,
   competition: source.competition,
   season: source.season,
-  status: "scheduled",
+  status: match.status || "scheduled",
   dateStatus: match.date ? "confirmed" : "stage-window",
   scheduleLabel: scheduleLabel(match),
-  sources: [source.source]
+  sources: [source.source, match.resultSource].filter(Boolean)
 }));
 
 const counts = Object.fromEntries(source.stages.map(stage => [

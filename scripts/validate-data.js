@@ -111,7 +111,11 @@ assert(cup.competition==="coppa-italia"&&cup.season==="2026-27","Dataset Coppa I
 assert(cup.source?.url?.includes("goal.com/it/liste/tabellone-coppa-italia-2026-2027"),"Fonte Coppa Italia mancante");
 assert(cup.matches.length===43&&new Set(cup.matches.map(match=>match.id)).size===43,"Incontri o percorsi Coppa Italia incompleti");
 assert(JSON.stringify(cup.counts)===JSON.stringify({preliminary:4,"round-32":16,"round-16":8,"round-of-16":8,quarter:4,semifinal:2,final:1}),"Conteggi turni Coppa Italia incoerenti");
-assert(cup.matches.every(match=>match.competition==="coppa-italia"&&match.season==="2026-27"&&match.status==="scheduled"&&match.scheduleLabel&&match.sources?.length),"Metadati Coppa Italia incompleti");
+assert(cup.matches.every(match=>match.competition==="coppa-italia"&&match.season==="2026-27"&&["scheduled","finished"].includes(match.status)&&match.scheduleLabel&&match.sources?.length),"Metadati Coppa Italia incompleti");
+const cupPreliminary=cup.matches.filter(match=>match.stage==="preliminary");
+assert(cupPreliminary.every(match=>match.status==="finished"&&Number.isInteger(match.score?.home)&&Number.isInteger(match.score?.away)&&match.winner&&match.scorers?.length&&Array.isArray(match.bookings)&&match.resultSource?.url),"Risultati preliminari Coppa Italia incompleti");
+assert(cup.matches.find(match=>match.id==="pre-1")?.shootout?.away===4,"Esito ai rigori Vicenza-Catania non valido");
+assert(cup.matches.find(match=>match.id==="r32-01a")?.away==="Ascoli"&&cup.matches.find(match=>match.id==="r32-04b")?.away==="Catania"&&cup.matches.find(match=>match.id==="r32-05a")?.away==="Arezzo"&&cup.matches.find(match=>match.id==="r32-08b")?.away==="Benevento","Qualificate ai trentaduesimi non aggiornate");
 assert(cup.matches.filter(match=>match.stage==="round-32").every(match=>match.date&&match.kickoff&&["confirmed"].includes(match.dateStatus)),"Programmazione trentaduesimi incompleta");
 assert(cup.matches.find(match=>match.id==="final")?.date==="2027-05-19","Data finale Coppa Italia non valida");
 for(let day=1;day<=38;day++)assert(league.filter(m=>m.matchday===day).length===10,`Giornata ${day}: numero partite diverso da 10`);

@@ -1,4 +1,4 @@
-const DATA="data/normalized/",RELEASE="20260810-referee-history";
+const DATA="data/normalized/",RELEASE="20260810-coppa-preliminari";
 const labels={scheduled:"Programmata",live:"In corso",finished:"Conclusa",postponed:"Rinviata"};
 const esc=v=>String(v??"").replace(/[&<>\"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const contrastInk=color=>{const hex=String(color||"").replace("#","");const value=hex.length===3?hex.split("").map(char=>char+char).join(""):hex;if(!/^[0-9a-f]{6}$/i.test(value))return"#fff";const channels=[0,2,4].map(index=>parseInt(value.slice(index,index+2),16)/255).map(channel=>channel<=.03928?channel/12.92:((channel+.055)/1.055)**2.4);return channels[0]*.2126+channels[1]*.7152+channels[2]*.0722>.42?"#0b1320":"#fff"};
@@ -340,7 +340,11 @@ const cupRoundConfig=[
 ];
 function cupMatchCard(match,index,round){
   const pathLabel=["preliminary","round-32"].includes(round.id)?`Partita ${index+1}`:round.id==="final"?"Atto conclusivo":round.id==="semifinal"?`Semifinale ${index+1}`:`Percorso ${String(match.branch??index+1).padStart(2,"0")}`;
-  return `<article class="cup-match-card" aria-label="${esc(`${match.home} contro ${match.away}, ${match.scheduleLabel||"data da definire"}`)}"><header><span>${pathLabel}</span>${round.id==="final"?'<b aria-hidden="true">CI</b>':""}</header><div class="cup-match-teams">${cupBracketSlot(match.home)}${cupBracketSlot(match.away)}</div><footer><span>Data</span><strong>${esc(match.scheduleLabel||"Data da definire")}</strong></footer></article>`;
+  const result=match.score?`${match.score.home}-${match.score.away}${match.shootout?` (${match.shootout.home}-${match.shootout.away} d.c.r.)`:""}`:null;
+  const eventRows=(items,kind)=>items?.length?`<section><h4>${kind==="goal"?"Marcatori":"Ammoniti"}</h4><ul>${items.map(item=>`<li><span>${esc(item.player)} <small>${esc(item.team)}</small></span><strong>${esc(item.minute)}${item.detail?` · ${esc(item.detail)}`:""}</strong></li>`).join("")}</ul></section>`:"";
+  const events=match.status==="finished"?`<div class="cup-match-events">${eventRows(match.scorers,"goal")}${eventRows(match.bookings,"booking")}</div>`:"";
+  const source=match.resultSource?`<a class="cup-result-source" href="${esc(match.resultSource.url)}" target="_blank" rel="noreferrer">Tabellino</a>`:"";
+  return `<article class="cup-match-card${match.status==="finished"?" is-finished":""}" aria-label="${esc(`${match.home} contro ${match.away}, ${result||match.scheduleLabel||"data da definire"}`)}"><header><span>${pathLabel}</span>${result?`<b class="cup-result">${esc(result)}</b>`:round.id==="final"?'<b aria-hidden="true">CI</b>':""}</header><div class="cup-match-teams">${cupBracketSlot(match.home)}${cupBracketSlot(match.away)}</div>${events}<footer><span>${result?"Giocata":"Data"}</span><strong>${esc(match.scheduleLabel||"Data da definire")}</strong>${source}</footer></article>`;
 }
 function cupRound(round,data){
   const matches=data.matches.filter(match=>match.stage===round.id).sort((a,b)=>scheduleChronology(a,b)||(a.branch??0)-(b.branch??0));
