@@ -74,6 +74,10 @@ assert.ok(styles.includes('.calendar-list{gap:88px}') && styles.includes('.calen
 assert.ok(!calendarDaysSource.includes('dateOnly(') && !calendarDaysSource.includes('matchdayDate'), "L'intestazione della giornata non deve mostrare una data; le date restano nelle card");
 assert.ok(styles.includes('.match.fixture-card .matchday-chip{') && styles.includes('background:transparent;'), "Il testo Giornata X nelle card deve restare privo di riquadro");
 assert.ok(styles.includes('body[data-page="cup"] main>.hero+.cup-stage') && styles.includes('body[data-page="readings"] main>.hero+.section{margin-top:24px}'), "Coppa Italia e Lettura devono usare la spaziatura compatta delle altre pagine interne");
+const cupCardSource = mainApp.slice(mainApp.indexOf('function cupTeamSlot'), mainApp.indexOf('function cupRound'));
+assert.ok(cupCardSource.includes('assets/images/icons/goal-ball.jpg')&&cupCardSource.includes('cup-card-symbol is-${event.type}')&&styles.includes('.cup-card-symbol.is-yellow')&&styles.includes('.cup-card-symbol.is-red'), "Gli eventi Coppa Italia devono usare pallone, cartellino giallo e cartellino rosso");
+assert.ok(cupCardSource.includes('cup-team-events')&&!cupCardSource.includes('cup-match-events'), "Marcatori e cartellini devono essere disposti in riga dentro la rispettiva squadra");
+assert.ok(styles.includes('.cup-match-card>header .cup-result')&&styles.includes('background:transparent;color:#183047'), "Il risultato Coppa Italia deve essere privo di riquadro o sfondo");
 const currentMatches = read("data/normalized/matches.json").filter(match => match.competition === "serie-a" && match.season === "2026-27");
 for (const summary of index.teams) {
   const fixtures = currentMatches.filter(match => match.homeTeam === summary.id || match.awayTeam === summary.id);
