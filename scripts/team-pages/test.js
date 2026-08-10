@@ -77,7 +77,8 @@ assert.ok(styles.includes('body[data-page="cup"] main>.hero+.cup-stage') && styl
 const cupCardSource = mainApp.slice(mainApp.indexOf('function cupTeamSlot'), mainApp.indexOf('function cupRound'));
 assert.ok(cupCardSource.includes('assets/images/icons/goal-ball.jpg')&&cupCardSource.includes('cup-card-symbol is-${event.type}')&&styles.includes('.cup-card-symbol.is-yellow')&&styles.includes('.cup-card-symbol.is-red'), "Gli eventi Coppa Italia devono usare pallone, cartellino giallo e cartellino rosso");
 assert.ok(cupCardSource.includes('cup-team-events')&&!cupCardSource.includes('cup-match-events'), "Marcatori e cartellini devono essere disposti in riga dentro la rispettiva squadra");
-assert.ok(styles.includes('.cup-match-card>header .cup-result')&&styles.includes('background:transparent;color:#183047'), "Il risultato Coppa Italia deve essere privo di riquadro o sfondo");
+assert.ok(styles.includes('.cup-match-card>header .cup-result')&&styles.includes('background:transparent;color:#9a5a08;font-size:16px'), "Il risultato Coppa Italia deve essere evidente e privo di riquadro o sfondo");
+assert.ok(styles.includes('.cup-match-card.is-finished .cup-team-slot{height:120px')&&styles.includes('.cup-match-card.is-finished .cup-team-slot{height:200px'), "Le righe squadra delle partite concluse devono avere altezza uniforme su desktop e mobile");
 const currentMatches = read("data/normalized/matches.json").filter(match => match.competition === "serie-a" && match.season === "2026-27");
 for (const summary of index.teams) {
   const fixtures = currentMatches.filter(match => match.homeTeam === summary.id || match.awayTeam === summary.id);
