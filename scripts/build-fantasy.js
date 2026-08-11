@@ -11,6 +11,8 @@ const fantasyQuotations = read("data/sources/fantacalcio-quotations-2026-27.json
 const probableLineups = read("data/sources/fantacalcio-probable-lineups-md1-2026-27.json");
 const fantasyInjuries = read("data/sources/fantacalcio-injuries-2026-27.json");
 const goalkeeperHierarchySource = read("data/sources/fantasy-goalkeeper-hierarchy-2026-27.json");
+const fantasyHistoryByPlayerId = new Map(fantasyWorkbook.players.filter(player => player.playerId).map(player => [player.playerId, player]));
+const fantasyHistoryBySourceId = new Map(fantasyWorkbook.players.map(player => [String(player.sourceId), player]));
 const fantasyStatsByPlayerId = new Map(fantasyWorkbook.players.filter(player => player.playerId && player.appearancesWithVote > 0).map(player => [player.playerId, player]));
 const fantasyQuotationByPlayerId = new Map(fantasyQuotations.players.filter(player => player.playerId).map(player => [player.playerId, player]));
 const probablePlayers = probableLineups.teams.flatMap(team => team.players);
@@ -83,6 +85,7 @@ for (const team of teamFiles) {
   for (const player of team.squad || []) {
     const totals = player.previousSeason?.totals || {};
     const entries = player.previousSeason?.entries || [];
+    const fantasyHistory = fantasyHistoryByPlayerId.get(player.id) || null;
     const fantasyStat = fantasyStatsByPlayerId.get(player.id) || null;
     const fantasyQuotation = fantasyQuotationByPlayerId.get(player.id) || null;
     const probable = probableByPlayerId.get(player.id) || null;
@@ -133,8 +136,8 @@ for (const team of teamFiles) {
       appearances: appearances || null,
       starts: starts || null,
       minutes: minutes || null,
-      goals: fantasyStat ? fantasyStat.goalsFor : totals.goals ?? null,
-      assists: fantasyStat ? fantasyStat.assists : totals.assists ?? null,
+      goals: Number.isFinite(fantasyHistory?.goalsFor) ? fantasyHistory.goalsFor : totals.goals ?? null,
+      assists: Number.isFinite(fantasyHistory?.assists) ? fantasyHistory.assists : totals.assists ?? null,
       score: round(clamp(currentScore, 1, 99)),
       marketValueEur: player.marketValue?.amountEur ?? null,
       marketValueLabel: player.marketValue?.label ?? null,
@@ -154,7 +157,7 @@ for (const team of teamFiles) {
         ownGoals,
         averageRating,
         fantasyAverage,
-        source: fantasyStat ? fantasyWorkbook.provider : "Statistiche squadra 2025/26",
+        source: fantasyStat ? fantasyWorkbook.provider : fantasyHistory ? `${fantasyWorkbook.provider} (G/A)` : "Statistiche squadra 2025/26",
         appearancesWithVoteProxy: appearances,
         unavailableMatches: Math.max(0, 38 - appearances),
         unavailableTreatment: "SV: escluso dalla media"
@@ -405,6 +408,7 @@ const output = {
     players: fantasyQuotations.players.map(player => {
       const probable = probableBySourceId.get(String(player.sourceId));
       const injury = injuryBySourceId.get(String(player.sourceId));
+      const fantasyHistory = fantasyHistoryBySourceId.get(String(player.sourceId));
       return ({
       sourceId: player.sourceId,
       playerId: player.playerId,
@@ -424,6 +428,8 @@ const output = {
       auctionValue1000: Math.max(1, Math.round(player.fvm / maxClassicFvm * 250)),
       mantraFvm: player.mantraFvm,
       matchConfidence: player.matchConfidence,
+      goals: Number.isFinite(fantasyHistory?.goalsFor) ? fantasyHistory.goalsFor : null,
+      assists: Number.isFinite(fantasyHistory?.assists) ? fantasyHistory.assists : null,
       currentAvailability: {
         matchday: probableLineups.matchday,
         starterProbability: probable?.probability ?? null,

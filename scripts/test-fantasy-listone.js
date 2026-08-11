@@ -5,6 +5,7 @@ const path = require("path");
 const root = path.resolve(__dirname, "..");
 const read = file => JSON.parse(fs.readFileSync(path.join(root, file), "utf8"));
 const source = read("data/sources/fantacalcio-quotations-2026-27.json");
+const statsSource = read("data/sources/fantacalcio-stats-2025-26.json");
 const probable = read("data/sources/fantacalcio-probable-lineups-md1-2026-27.json");
 const injuries = read("data/sources/fantacalcio-injuries-2026-27.json");
 const goalkeeperHierarchy = read("data/sources/fantasy-goalkeeper-hierarchy-2026-27.json");
@@ -46,6 +47,23 @@ for (const player of quotedAdvice) {
 const adviceIds = new Set(generated.players.map(player => player.id));
 const unlinkedListone = generated.listone.players.filter(player => !player.playerId || !adviceIds.has(player.playerId));
 const unifiedCount = generated.players.length + unlinkedListone.length;
+const statsBySourceId = new Map(statsSource.players.map(player => [String(player.sourceId), player]));
+const recoverableGoalAssists = unlinkedListone.filter(player => {
+  const stats = statsBySourceId.get(String(player.sourceId));
+  return Number.isFinite(stats?.goalsFor) && Number.isFinite(stats?.assists);
+});
+assert.ok(recoverableGoalAssists.length > 0, "nessun G/A recuperabile per i profili solo listone");
+for (const player of recoverableGoalAssists) {
+  const stats = statsBySourceId.get(String(player.sourceId));
+  assert.equal(player.goals, stats.goalsFor, `${player.name}: gol storici non propagati`);
+  assert.equal(player.assists, stats.assists, `${player.name}: assist storici non propagati`);
+}
+for (const playerId of ["christos-mandas", "lorenzo-torriani"]) {
+  const player = generated.players.find(entry => entry.id === playerId);
+  const stats = statsSource.players.find(entry => entry.playerId === playerId);
+  assert.equal(player.goals, stats.goalsFor, `${playerId}: gol storici non propagati`);
+  assert.equal(player.assists, stats.assists, `${playerId}: assist storici non propagati`);
+}
 assert.ok(unifiedCount >= generated.players.length && unifiedCount < 634, "l'unione deve deduplicare i profili collegati senza perdere righe");
 assert.ok(appSource.includes("function fantasyUnifiedPlayers"), "funzione di unione tabella mancante");
 assert.ok(!appSource.includes("function fantasyListoneSection"), "il vecchio elenco separato non deve essere renderizzato");

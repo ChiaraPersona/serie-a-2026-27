@@ -1,4 +1,4 @@
-const DATA="data/normalized/",RELEASE="20260810-team-cards-mobile-single";
+const DATA="data/normalized/",RELEASE="20260811-fantasy-ga-coverage";
 const labels={scheduled:"Programmata",live:"In corso",finished:"Conclusa",postponed:"Rinviata"};
 const esc=v=>String(v??"").replace(/[&<>\"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const contrastInk=color=>{const hex=String(color||"").replace("#","");const value=hex.length===3?hex.split("").map(char=>char+char).join(""):hex;if(!/^[0-9a-f]{6}$/i.test(value))return"#fff";const channels=[0,2,4].map(index=>parseInt(value.slice(index,index+2),16)/255).map(channel=>channel<=.03928?channel/12.92:((channel+.055)/1.055)**2.4);return channels[0]*.2126+channels[1]*.7152+channels[2]*.0722>.42?"#0b1320":"#fff"};
@@ -265,7 +265,7 @@ function fantasyUnifiedPlayers(data){
   const adviceIds=new Set(data.players.map(player=>player.id)),rows=data.players.map(player=>({...player,adviceAvailable:true,listoneOnly:false}));
   for(const quote of data.listone?.players||[]){
     if(quote.playerId&&adviceIds.has(quote.playerId))continue;
-    rows.push({id:`listone-${quote.sourceId}`,name:quote.currentName||quote.name,teamId:quote.teamId,team:quote.team,role:quote.role,detailedRole:"Listone Classic",score:null,stars:null,reliability:"N/D",competitionProfile:{label:"2026/27"},quotations:{classic:quote.currentQuotation,classicInitial:quote.initialQuotation,fvm:quote.fvm},auctionValue1000:quote.auctionValue1000,currentAvailability:quote.currentAvailability||null,marketValueEur:null,marketValueLabel:null,minutes:null,goals:null,assists:null,fantasyScoring:null,value500:quote.fvm,adviceAvailable:false,listoneOnly:true});
+    rows.push({id:`listone-${quote.sourceId}`,name:quote.currentName||quote.name,teamId:quote.teamId,team:quote.team,role:quote.role,detailedRole:"Listone Classic",score:null,stars:null,reliability:"N/D",competitionProfile:{label:"2026/27"},quotations:{classic:quote.currentQuotation,classicInitial:quote.initialQuotation,fvm:quote.fvm},auctionValue1000:quote.auctionValue1000,currentAvailability:quote.currentAvailability||null,marketValueEur:null,marketValueLabel:null,minutes:null,goals:quote.goals??null,assists:quote.assists??null,fantasyScoring:null,value500:quote.fvm,adviceAvailable:false,listoneOnly:true});
   }
   return rows;
 }
