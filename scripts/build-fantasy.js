@@ -11,8 +11,10 @@ const fantasyQuotations = read("data/sources/fantacalcio-quotations-2026-27.json
 const probableLineups = read("data/sources/fantacalcio-probable-lineups-md1-2026-27.json");
 const fantasyInjuries = read("data/sources/fantacalcio-injuries-2026-27.json");
 const goalkeeperHierarchySource = read("data/sources/fantasy-goalkeeper-hierarchy-2026-27.json");
+const fantasyExternalStats = read("data/sources/fantasy-external-stats-2025-26.json");
 const fantasyHistoryByPlayerId = new Map(fantasyWorkbook.players.filter(player => player.playerId).map(player => [player.playerId, player]));
 const fantasyHistoryBySourceId = new Map(fantasyWorkbook.players.map(player => [String(player.sourceId), player]));
+const fantasyExternalByPlayerId = new Map(fantasyExternalStats.players.map(player => [player.playerId, player]));
 const fantasyStatsByPlayerId = new Map(fantasyWorkbook.players.filter(player => player.playerId && player.appearancesWithVote > 0).map(player => [player.playerId, player]));
 const fantasyQuotationByPlayerId = new Map(fantasyQuotations.players.filter(player => player.playerId).map(player => [player.playerId, player]));
 const probablePlayers = probableLineups.teams.flatMap(team => team.players);
@@ -86,20 +88,21 @@ for (const team of teamFiles) {
     const totals = player.previousSeason?.totals || {};
     const entries = player.previousSeason?.entries || [];
     const fantasyHistory = fantasyHistoryByPlayerId.get(player.id) || null;
+    const externalHistory = fantasyExternalByPlayerId.get(player.id) || null;
     const fantasyStat = fantasyStatsByPlayerId.get(player.id) || null;
     const fantasyQuotation = fantasyQuotationByPlayerId.get(player.id) || null;
     const probable = probableByPlayerId.get(player.id) || null;
     const injury = injuryByPlayerId.get(player.id) || null;
     const role = fantasyQuotation?.role || roleCode(player.role);
-    const appearances = fantasyStat ? number(fantasyStat.appearancesWithVote) : number(totals.appearances);
-    const starts = number(totals.starts);
-    const minutes = number(totals.minutes);
+    const appearances = fantasyStat ? number(fantasyStat.appearancesWithVote) : Number.isFinite(externalHistory?.totals?.appearances) ? externalHistory.totals.appearances : number(totals.appearances);
+    const starts = Number.isFinite(externalHistory?.totals?.starts) ? externalHistory.totals.starts : number(totals.starts);
+    const minutes = Number.isFinite(externalHistory?.totals?.minutes) ? externalHistory.totals.minutes : number(totals.minutes);
     const goals = fantasyStat ? number(fantasyStat.goalsFor) : number(totals.goals);
     const assists = fantasyStat ? number(fantasyStat.assists) : number(totals.assists);
     const cleanSheets = number(totals.cleanSheets);
     const saves = number(totals.saves);
-    const yellowCards = fantasyStat ? number(fantasyStat.yellowCards) : number(totals.yellowCards);
-    const dismissals = fantasyStat ? number(fantasyStat.redCards) : number(totals.secondYellowCards) + number(totals.straightRedCards);
+    const yellowCards = fantasyStat ? number(fantasyStat.yellowCards) : Number.isFinite(externalHistory?.totals?.yellowCards) ? externalHistory.totals.yellowCards : number(totals.yellowCards);
+    const dismissals = fantasyStat ? number(fantasyStat.redCards) : Number.isFinite(externalHistory?.totals?.redCards) ? externalHistory.totals.redCards : number(totals.secondYellowCards) + number(totals.straightRedCards);
     const penaltiesMissed = fantasyStat ? number(fantasyStat.penaltiesMissed) : Number.isFinite(totals.penaltiesTaken) && Number.isFinite(totals.penaltiesScored)
       ? Math.max(0, totals.penaltiesTaken - totals.penaltiesScored)
       : null;
@@ -125,7 +128,7 @@ for (const team of teamFiles) {
       ? availability * .3 * (.82 + competitionCoefficient * .18) + eventIndex * .25 * competitionCoefficient + observedIndex * .3 * competitionCoefficient + teamCalendar[team.id].index * .15
       : availability * .4 * (.82 + competitionCoefficient * .18) + eventIndex * .45 * competitionCoefficient + teamCalendar[team.id].index * .15;
     const currentScore = (probable ? rawScore * .92 + probable.probability * .08 : rawScore) - injuryPenalty(injury);
-    if (appearances === 0 && minutes === 0 && !goalkeeperPrimaryIds.has(player.id)) continue;
+    if (!fantasyStat && number(totals.appearances) === 0 && number(totals.minutes) === 0 && !goalkeeperPrimaryIds.has(player.id)) continue;
     candidates.push({
       id: player.id,
       name: player.name,
@@ -136,8 +139,8 @@ for (const team of teamFiles) {
       appearances: appearances || null,
       starts: starts || null,
       minutes: minutes || null,
-      goals: Number.isFinite(fantasyHistory?.goalsFor) ? fantasyHistory.goalsFor : totals.goals ?? null,
-      assists: Number.isFinite(fantasyHistory?.assists) ? fantasyHistory.assists : totals.assists ?? null,
+      goals: Number.isFinite(fantasyHistory?.goalsFor) ? fantasyHistory.goalsFor : externalHistory?.totals?.goals ?? totals.goals ?? null,
+      assists: Number.isFinite(fantasyHistory?.assists) ? fantasyHistory.assists : externalHistory?.totals?.assists ?? totals.assists ?? null,
       score: round(clamp(currentScore, 1, 99)),
       marketValueEur: player.marketValue?.amountEur ?? null,
       marketValueLabel: player.marketValue?.label ?? null,
@@ -157,7 +160,7 @@ for (const team of teamFiles) {
         ownGoals,
         averageRating,
         fantasyAverage,
-        source: fantasyStat ? fantasyWorkbook.provider : fantasyHistory ? `${fantasyWorkbook.provider} (G/A)` : "Statistiche squadra 2025/26",
+        source: fantasyStat ? fantasyWorkbook.provider : externalHistory ? (fantasyHistory ? `${fantasyWorkbook.provider} (G/A) + ESPN Core` : "ESPN Core") : fantasyHistory ? `${fantasyWorkbook.provider} (G/A)` : "Statistiche squadra 2025/26",
         appearancesWithVoteProxy: appearances,
         unavailableMatches: Math.max(0, 38 - appearances),
         unavailableTreatment: "SV: escluso dalla media"
@@ -328,6 +331,13 @@ const output = {
       matchedPlayers: fantasyWorkbook.coverage.matchedCurrentPlayers,
       use: "PV, MV, FM, gol, assist, cartellini, rigori parati/sbagliati e autogol."
     },
+    fantasyExternalStatistics: {
+      provider: fantasyExternalStats.provider,
+      season: fantasyExternalStats.season,
+      generatedAt: fantasyExternalStats.generatedAt,
+      coveredPlayers: fantasyExternalStats.players.length,
+      use: "Presenze, titolarita, minuti, gol, assist e cartellini dei campionati nazionali 2025/26 collegati tramite ID ESPN."
+    },
     fantasyQuotations: {
       provider: fantasyQuotations.provider,
       sourceFile: fantasyQuotations.sourceFile,
@@ -409,6 +419,7 @@ const output = {
       const probable = probableBySourceId.get(String(player.sourceId));
       const injury = injuryBySourceId.get(String(player.sourceId));
       const fantasyHistory = fantasyHistoryBySourceId.get(String(player.sourceId));
+      const externalHistory = fantasyExternalByPlayerId.get(player.playerId) || null;
       return ({
       sourceId: player.sourceId,
       playerId: player.playerId,
@@ -428,8 +439,12 @@ const output = {
       auctionValue1000: Math.max(1, Math.round(player.fvm / maxClassicFvm * 250)),
       mantraFvm: player.mantraFvm,
       matchConfidence: player.matchConfidence,
-      goals: Number.isFinite(fantasyHistory?.goalsFor) ? fantasyHistory.goalsFor : null,
-      assists: Number.isFinite(fantasyHistory?.assists) ? fantasyHistory.assists : null,
+      appearances: externalHistory?.totals?.appearances ?? null,
+      minutes: externalHistory?.totals?.minutes ?? null,
+      goals: Number.isFinite(fantasyHistory?.goalsFor) ? fantasyHistory.goalsFor : externalHistory?.totals?.goals ?? null,
+      assists: Number.isFinite(fantasyHistory?.assists) ? fantasyHistory.assists : externalHistory?.totals?.assists ?? null,
+      yellowCards: externalHistory?.totals?.yellowCards ?? null,
+      redCards: externalHistory?.totals?.redCards ?? null,
       currentAvailability: {
         matchday: probableLineups.matchday,
         starterProbability: probable?.probability ?? null,

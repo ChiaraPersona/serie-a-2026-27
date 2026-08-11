@@ -6,6 +6,7 @@ const root = path.resolve(__dirname, "..");
 const read = file => JSON.parse(fs.readFileSync(path.join(root, file), "utf8"));
 const source = read("data/sources/fantacalcio-quotations-2026-27.json");
 const statsSource = read("data/sources/fantacalcio-stats-2025-26.json");
+const externalStatsSource = read("data/sources/fantasy-external-stats-2025-26.json");
 const probable = read("data/sources/fantacalcio-probable-lineups-md1-2026-27.json");
 const injuries = read("data/sources/fantacalcio-injuries-2026-27.json");
 const goalkeeperHierarchy = read("data/sources/fantasy-goalkeeper-hierarchy-2026-27.json");
@@ -48,6 +49,7 @@ const adviceIds = new Set(generated.players.map(player => player.id));
 const unlinkedListone = generated.listone.players.filter(player => !player.playerId || !adviceIds.has(player.playerId));
 const unifiedCount = generated.players.length + unlinkedListone.length;
 const statsBySourceId = new Map(statsSource.players.map(player => [String(player.sourceId), player]));
+const externalStatsByPlayerId = new Map(externalStatsSource.players.map(player => [player.playerId, player]));
 const recoverableGoalAssists = unlinkedListone.filter(player => {
   const stats = statsBySourceId.get(String(player.sourceId));
   return Number.isFinite(stats?.goalsFor) && Number.isFinite(stats?.assists);
@@ -64,6 +66,18 @@ for (const playerId of ["christos-mandas", "lorenzo-torriani"]) {
   assert.equal(player.goals, stats.goalsFor, `${playerId}: gol storici non propagati`);
   assert.equal(player.assists, stats.assists, `${playerId}: assist storici non propagati`);
 }
+const externallyCoveredListone = unlinkedListone.filter(player => externalStatsByPlayerId.has(player.playerId));
+assert.ok(externallyCoveredListone.length >= 40, "copertura ESPN esterna insufficiente per i profili solo listone");
+for (const player of externallyCoveredListone) {
+  const stats = externalStatsByPlayerId.get(player.playerId).totals;
+  assert.equal(player.appearances, stats.appearances, `${player.name}: presenze ESPN non propagate`);
+  assert.equal(player.minutes, stats.minutes, `${player.name}: minuti ESPN non propagati`);
+  if (!statsBySourceId.has(String(player.sourceId))) {
+    assert.equal(player.goals, stats.goals, `${player.name}: gol ESPN non propagati`);
+    assert.equal(player.assists, stats.assists, `${player.name}: assist ESPN non propagati`);
+  }
+}
+assert.ok(appSource.includes('[["Indice","score"],["Qt. Classic","quotation"],["FVM","fvm"],["Valore mercato","marketValue"],["Valore consigliato","price"],["Pres.","appearances"]'), "ordinamento presenze non collegato");
 assert.ok(unifiedCount >= generated.players.length && unifiedCount < 634, "l'unione deve deduplicare i profili collegati senza perdere righe");
 assert.ok(appSource.includes("function fantasyUnifiedPlayers"), "funzione di unione tabella mancante");
 assert.ok(!appSource.includes("function fantasyListoneSection"), "il vecchio elenco separato non deve essere renderizzato");
