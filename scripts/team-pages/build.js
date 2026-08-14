@@ -10,13 +10,16 @@ const write = (relative, value) => {
   fs.writeFileSync(target, `${JSON.stringify(value, null, 2)}\n`);
 };
 const slugAliases = { "hellas-verona": "verona" };
-const today = "2026-08-03";
 const teams = read("data/normalized/teams.json");
 const teamDetails = read("data/sources/team-pages/team-details-2026-27.json");
 const probableLineupSource = teamDetails.sources.find(source => source.provider === "Calciomercato.com");
 const marketValuesFile = path.join(root, "data/sources/team-pages/transfermarkt-market-values-2026-27.json");
 const marketValues = fs.existsSync(marketValuesFile) ? JSON.parse(fs.readFileSync(marketValuesFile, "utf8")) : { players: [], retrievedAt: null };
 const marketValueByPlayer = new Map(marketValues.players.map(player => [`${player.teamId}:${player.playerId}`, player]));
+const playerDetailsFile = path.join(root, "data/sources/team-pages/transfermarkt-player-details-2026-27.json");
+const playerDetails = fs.existsSync(playerDetailsFile) ? JSON.parse(fs.readFileSync(playerDetailsFile, "utf8")) : { players: [], retrievedAt: null };
+const playerDetailsByPlayer = new Map(playerDetails.players.map(player => [`${player.teamId}:${player.playerId}`, player]));
+const today = ["2026-08-03", marketValues.retrievedAt, playerDetails.retrievedAt].filter(Boolean).sort().at(-1);
 const wikimediaPhotosFile = path.join(root, "data/sources/team-pages/wikimedia-player-photos.json");
 const wikimediaPhotos = fs.existsSync(wikimediaPhotosFile) ? JSON.parse(fs.readFileSync(wikimediaPhotosFile, "utf8")) : { entries: [], retrievedAt: null };
 const wikimediaPhotoByPlayer = new Map(wikimediaPhotos.entries.map(photo => [`${photo.teamId}:${photo.playerId}`, photo]));
@@ -27,6 +30,14 @@ const generatedSquads = new Map(teams.map(team => {
   const file = path.join(root, `data/generated/team-pages/${teamId}-squad.json`);
   return [teamId, fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, "utf8")) : null];
 }));
+const ageAt = birthDate => {
+  if (!birthDate) return null;
+  const born = new Date(`${birthDate}T00:00:00Z`);
+  const at = new Date(`${today}T00:00:00Z`);
+  let age = at.getUTCFullYear() - born.getUTCFullYear();
+  if (at.getUTCMonth() < born.getUTCMonth() || (at.getUTCMonth() === born.getUTCMonth() && at.getUTCDate() < born.getUTCDate())) age--;
+  return age;
+};
 
 function competitionMatches(slug) {
   const file = slug === "serie-a" ? "serie-a.json" : "serie-b.json";
@@ -105,6 +116,7 @@ function buildTeam(team) {
     lossPercentage: percentage(row?.lost, played)
   };
   const fouls = matchData.sum(matchData.selected, "fouls");
+  const foulsWon = matchData.selected.reduce((total, item) => total + (item.opponent.fouls ?? 0), 0);
   const yellow = matchData.sum(matchData.selected, "yellowCards");
   const secondYellow = matchData.sum(matchData.selected, "secondYellowCards");
   const straightRed = matchData.sum(matchData.selected, "straightRedCards");
@@ -112,6 +124,7 @@ function buildTeam(team) {
   const penaltiesAgainst = matchData.sum(matchData.selected, "penaltiesAgainst");
   const discipline = {
     ...nullObject(STAT_FIELDS.discipline), foulsCommitted: fouls, foulsCommittedPerGame: rate(fouls, played),
+    foulsWon, foulsWonPerGame: rate(foulsWon, played),
     yellowCards: yellow, yellowCardsPerGame: rate(yellow, played), secondYellowCards: secondYellow,
     straightRedCards: straightRed, dismissals: secondYellow + straightRed, penaltiesConceded: penaltiesAgainst,
     penaltiesWon: penaltiesFor, disciplineIndex: round((yellow + secondYellow * 2 + straightRed * 3) / (played || 1))
@@ -119,6 +132,7 @@ function buildTeam(team) {
   const generatedSquad = generatedSquads.get(team.id);
   const squad = (generatedSquad?.players || []).map(player => {
     const market = marketValueByPlayer.get(`${team.id}:${player.id}`);
+    const details = playerDetailsByPlayer.get(`${team.id}:${player.id}`);
     const wikimediaPhoto = wikimediaPhotoByPlayer.get(`${team.id}:${player.id}`);
     const photoSource = wikimediaPhoto ? {
       provider: "Wikimedia Commons",
@@ -128,6 +142,14 @@ function buildTeam(team) {
     } : null;
     return {
       ...player,
+      dateOfBirth: player.dateOfBirth || details?.dateOfBirth || null,
+      age: player.age ?? ageAt(details?.dateOfBirth),
+      nationality: player.nationality || details?.nationality || null,
+      heightCm: player.heightCm ?? details?.heightCm ?? null,
+      preferredFoot: player.preferredFoot || details?.preferredFoot || null,
+      birthplace: player.birthplace || details?.birthplace || null,
+      atMilanSince: player.atMilanSince || details?.clubSince || null,
+      arrivalDate: player.arrivalDate || details?.clubSince || null,
       providerIds: { ...(player.providerIds || {}), transfermarkt: market?.transfermarktId || null, wikidata: wikimediaPhoto?.wikidataId || null },
       marketValue: market ? { amountEur: market.marketValueEur, label: market.marketValueLabel, currency: "EUR", provider: marketValues.provider, retrievedAt: marketValues.retrievedAt, providerUpdatedAt: market.marketValueUpdatedAt || null, sourceUrl: market.profileUrl } : null,
       photo: wikimediaPhoto ? (wikimediaPhoto.localPath ? `../${wikimediaPhoto.localPath}` : wikimediaPhoto.thumbnailUrl) : player.photo,
@@ -140,7 +162,11 @@ function buildTeam(team) {
         licenseUrl: wikimediaPhoto.licenseUrl,
         originalUrl: wikimediaPhoto.originalUrl
       } : null,
-      sources: photoSource ? [...(player.sources || []), photoSource] : player.sources
+      sources: [
+        ...(player.sources || []),
+        ...(details ? [{ provider: "Transfermarkt", scope: `Anagrafica di ${player.name}`, url: details.profileUrl, retrievedAt: playerDetails.retrievedAt }] : []),
+        ...(photoSource ? [photoSource] : [])
+      ]
     };
   });
   const teamLastUpdated = [generatedSquad?.rosterSource?.retrievedAt, teamDetails.lastUpdated].filter(Boolean).sort().at(-1) || "2026-07-20";

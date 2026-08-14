@@ -32,6 +32,12 @@ if (!fs.existsSync(inputPath) && !existingPayload) throw new Error(`Estrazione l
 const extracted = fs.existsSync(inputPath) ? JSON.parse(fs.readFileSync(inputPath, "utf8")) : null;
 const teamIndex = JSON.parse(fs.readFileSync(path.join(root, "data/teams/index.json"), "utf8"));
 const teamIdByName = new Map(teamIndex.teams.map(team => [normalize(team.name), team.id]));
+const verifiedAssignments = {
+  "frosinone:raimondo": "antonio-raimondo",
+  "genoa:traore hj": "hamed-traore",
+  "lazio:floriani mussolini": "romano-floriani",
+  "napoli:zambo anguissa": "frank-anguissa",
+};
 const currentPlayers = teamIndex.teams.flatMap(team => {
   const data = JSON.parse(fs.readFileSync(path.join(root, `data/teams/${team.id}.json`), "utf8"));
   return (data.squad || []).map(player => ({
@@ -84,6 +90,18 @@ function candidateScore(source, player) {
 }
 
 for (const source of activePlayers) {
+  const verifiedPlayerId = verifiedAssignments[`${source.teamId}:${normalize(source.name)}`];
+  const verifiedPlayer = verifiedPlayerId
+    ? currentPlayers.find(player => player.id === verifiedPlayerId && player.teamId === source.teamId)
+    : null;
+  if (verifiedPlayer && !usedPlayerIds.has(verifiedPlayer.id)) {
+    source.playerId = verifiedPlayer.id;
+    source.currentName = verifiedPlayer.name;
+    source.matchConfidence = "verified-alias";
+    usedPlayerIds.add(verifiedPlayer.id);
+    assignments.push({ sourceId: source.sourceId, sourceName: source.name, playerId: verifiedPlayer.id, currentName: verifiedPlayer.name, score: null });
+    continue;
+  }
   const ranked = currentPlayers
     .map(player => ({ player, score: candidateScore(source, player) }))
     .filter(item => item.score >= 0 && !usedPlayerIds.has(item.player.id))
