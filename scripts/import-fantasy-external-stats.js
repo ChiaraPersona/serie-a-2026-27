@@ -58,6 +58,7 @@ async function importPlayer(target) {
       minutes: numberFrom(stats, "minutes"),
       goals: numberFrom(stats, "totalGoals", "goals"),
       assists: numberFrom(stats, "goalAssists", "assists"),
+      goalsConceded: numberFrom(stats, "goalsConceded"),
       yellowCards: numberFrom(stats, "yellowCards"),
       redCards: numberFrom(stats, "redCards", "totalRedCards"),
       sourceUrl: statsUrl
@@ -75,6 +76,7 @@ async function importPlayer(target) {
       minutes: sum(entries, "minutes"),
       goals: sum(entries, "goals"),
       assists: sum(entries, "assists"),
+      goalsConceded: sum(entries, "goalsConceded"),
       yellowCards: sum(entries, "yellowCards"),
       redCards: sum(entries, "redCards")
     },
@@ -103,14 +105,20 @@ async function mapLimit(items, limit, worker) {
 }
 
 async function main() {
+  const goalkeepersOnly = process.argv.includes("--goalkeepers-only");
   const targets = quotations.players
+    .filter(quote => !goalkeepersOnly || quote.role === "P")
     .filter(quote => quote.playerId)
     .map(quote => {
       const player = teamPlayers.get(quote.playerId);
       return player?.providerIds?.espn ? { playerId: quote.playerId, espnId: String(player.providerIds.espn) } : null;
     })
     .filter(Boolean);
-  const imported = (await mapLimit(targets, 6, importPlayer)).filter(Boolean);
+  const refreshed = (await mapLimit(targets, 6, importPlayer)).filter(Boolean);
+  const refreshedByPlayerId = new Map(refreshed.map(player => [player.playerId, player]));
+  const imported = goalkeepersOnly
+    ? [...previous.players.map(player => refreshedByPlayerId.get(player.playerId) || player), ...refreshed.filter(player => !previousByPlayerId.has(player.playerId))]
+    : refreshed;
   write(outputFile, {
     schemaVersion: 1,
     season: "2025/26",
@@ -119,7 +127,7 @@ async function main() {
     scope: "Campionati nazionali 2025/26 associati tramite provider ID ESPN; coppe e nazionali escluse.",
     players: imported.sort((a, b) => a.playerId.localeCompare(b.playerId))
   });
-  console.log(`Statistiche esterne Fantacalcio: ${imported.length}/${targets.length} profili coperti.`);
+  console.log(`Statistiche esterne Fantacalcio: ${refreshed.length}/${targets.length} profili aggiornati, ${imported.length} totali.`);
 }
 
 main().catch(error => {
