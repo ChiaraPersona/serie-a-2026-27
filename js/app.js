@@ -1,4 +1,4 @@
-const DATA="data/normalized/",RELEASE="20260811-fantasy-external-stats";
+const DATA="data/normalized/",RELEASE="20260817-coppa-r32-results";
 const labels={scheduled:"Programmata",live:"In corso",finished:"Conclusa",postponed:"Rinviata"};
 const esc=v=>String(v??"").replace(/[&<>\"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const contrastInk=color=>{const hex=String(color||"").replace("#","");const value=hex.length===3?hex.split("").map(char=>char+char).join(""):hex;if(!/^[0-9a-f]{6}$/i.test(value))return"#fff";const channels=[0,2,4].map(index=>parseInt(value.slice(index,index+2),16)/255).map(channel=>channel<=.03928?channel/12.92:((channel+.055)/1.055)**2.4);return channels[0]*.2126+channels[1]*.7152+channels[2]*.0722>.42?"#0b1320":"#fff"};
