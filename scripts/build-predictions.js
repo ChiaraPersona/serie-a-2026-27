@@ -19,6 +19,7 @@ const headToHead = read("data/generated/head-to-head/first-leg-2026-27.json");
 const understatXg = read("data/normalized/understat-serie-a-xg.json");
 const mvpHistory = read("data/sources/player-mvp-history-2025-26.json");
 const fantasy = read("data/generated/fantacalcio-advice.json");
+const volumeProfiles = read("data/normalized/team-volume-profiles-2025-26.json");
 const backtestPath = path.join(root, "data/generated/prediction-backtest-2025-26.json");
 const backtest = fs.existsSync(backtestPath) ? JSON.parse(fs.readFileSync(backtestPath, "utf8")) : null;
 const multiSeasonBacktestPath = path.join(root, "data/generated/prediction-backtest-multiseason.json");
@@ -41,6 +42,7 @@ const teamById = new Map(teams.map(team => [team.id, team]));
 const squadsByTeam = new Map(teams.map(team => [team.id, read(`data/generated/team-pages/${team.id}-squad.json`)]));
 const mvpHistoryByPlayer = new Map(mvpHistory.players.map(player => [player.normalizedName, player]));
 const fantasyHistoryByPlayer = new Map(fantasy.players.map(player => [playerKey(player.name), player]));
+const volumeByTeam = byId(volumeProfiles.profiles);
 const standingsByTeam = new Map(standings.rows.map(row => [row.team, row]));
 const meanStandingPoints = standings.rows.reduce((total, row) => total + row.points, 0) / standings.rows.length;
 const understatTeamIds = {
@@ -116,6 +118,8 @@ const predictions = targetMatches.map(match => {
     xgLeagueSummary,
     homeDiscipline: disciplineByTeam.get(match.homeTeam),
     awayDiscipline: disciplineByTeam.get(match.awayTeam),
+    homeVolume: volumeByTeam.get(match.homeTeam),
+    awayVolume: volumeByTeam.get(match.awayTeam),
     homeObjective: objectiveByTeam.get(match.homeTeam),
     awayObjective: objectiveByTeam.get(match.awayTeam),
     headToHead: headToHeadByMatch.get(match.id),
@@ -227,7 +231,19 @@ const output = {
       } : null,
       openingRounds: openingBacktest
     } : null,
-    volumeModel: "Stima per squadra tiri totali, tiri nello specchio e corner come intervalli, senza imporre una partita ricca o povera di gol.",
+    volumeModel: {
+      provider: volumeProfiles.source.provider,
+      season: volumeProfiles.season,
+      coverage: volumeProfiles.coverage,
+      teamWeight: 0.45,
+      opponentAllowedWeight: 0.35,
+      recentWeight: 0.2,
+      recentMatches: 8,
+      recentDecay: 0.82,
+      venueSplit: true,
+      interval: "p20-p80 storico; per il totale varianze squadra trattate come indipendenti",
+      fallback: "Profilo WhoScored, precisione della probabile formazione e stile offensivo quando manca lo storico Serie A della squadra."
+    },
     playerModel: "Il candidato MVP combina scenario 1X2, produzione e pagelle storiche, compatibilita tattica e storico ufficiale Panini Player of the Match; con favorita oltre il 50% e divario di almeno 15 punti, il candidato principale proviene normalmente dalla favorita.",
     mvpModel: {
       weights: MVP_WEIGHTS,
@@ -250,6 +266,7 @@ const output = {
     { label: "Sisal - quote Serie A", url: odds.sourceUrl },
     { label: `${teams.find(team => team.probableLineup?.source)?.probableLineup.source.provider || "Fonte editoriale"} - probabili formazioni 20 squadre`, url: teams.find(team => team.probableLineup?.source?.url)?.probableLineup.source.url },
     { label: "ESPN - ultimi cinque scontri diretti", url: "data/generated/head-to-head/first-leg-2026-27.json" },
+    { label: `${volumeProfiles.source.provider} - tiri, tiri in porta e corner ${volumeProfiles.season}`, url: "data/normalized/team-volume-profiles-2025-26.json" },
     { label: `${mvpHistory.provider} - ${mvpHistory.award} ${mvpHistory.season}`, url: mvpHistory.sourceUrl }
   ],
   predictions

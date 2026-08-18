@@ -1,6 +1,6 @@
 "use strict";
 
-const ENGINE_VERSION = "4.5.0";
+const ENGINE_VERSION = "4.6.0";
 const OUTCOMES = ["1", "X", "2"];
 const WEIGHTS = Object.freeze({ venueHistorical: 0.46, overallHistorical: 0.25, recentForm: 0.16, tacticalMatchup: 0.07, probableLineup: 0.05, objectives: 0.01 });
 const MVP_WEIGHTS = Object.freeze({ resultScenario: 0.3, individualProduction: 0.2, historicalRating: 0.15, officialMvpHistory: 0.15, tacticalFit: 0.1, opponentHistory: 0.05, dataReliability: 0.05 });
@@ -452,6 +452,64 @@ function rangeMetric(value, spread, min = 0) {
   return { min: Math.max(min, Math.floor(value - spread)), central: round(value, 1), max: Math.ceil(value + spread) };
 }
 
+function volumePrior(metric, profile, players, channels) {
+  const shots = profile?.summary?.shotsPerGame ?? 10.5;
+  if (metric === "totalShots") return { matches: profile?.summary?.appearances || 0, mean: shots, sd: 3.6, p20: Math.max(4, shots - 3.1), p80: shots + 3.1, source: "team-style-prior" };
+  if (metric === "shotsOnTarget") {
+    const mean = shots * shotAccuracy(players);
+    return { matches: profile?.summary?.appearances || 0, mean, sd: 1.65, p20: Math.max(0, mean - 1.4), p80: mean + 1.4, source: "lineup-accuracy-prior" };
+  }
+  const wideShare = (channels.left + channels.right) / 100;
+  const mean = 1.7 + shots * 0.19 + wideShare * 1.15 + ((profile?.playingStyle || []).some(item => item.id === "tentano-spesso-il-cross") ? 0.55 : 0);
+  return { matches: profile?.summary?.appearances || 0, mean, sd: 2.05, p20: Math.max(0, mean - 1.75), p80: mean + 1.75, source: "shot-width-prior" };
+}
+
+function volumeMetric(profile, opponentProfile, volumeProfile, opponentVolumeProfile, venue, metric, context, prior) {
+  const opponentVenue = venue === "home" ? "away" : "home";
+  const teamVenue = volumeProfile?.venues?.[venue]?.[metric]?.for || null;
+  const opponentVenueAgainst = opponentVolumeProfile?.venues?.[opponentVenue]?.[metric]?.against || null;
+  const recent = volumeProfile?.recent?.[metric]?.for || null;
+  const sources = [
+    { id: teamVenue?.matches ? `${venue}-for` : prior.source, stats: teamVenue?.matches ? teamVenue : prior, weight: 0.45, mean: teamVenue?.mean ?? prior.mean },
+    { id: `${opponentVenue}-opponent-against`, stats: opponentVenueAgainst, weight: 0.35, mean: opponentVenueAgainst?.mean },
+    { id: "recent-8", stats: recent, weight: 0.2, mean: recent?.weightedMean ?? recent?.mean }
+  ].filter(source => Number.isFinite(source.mean) && Number.isFinite(source.stats?.p20) && Number.isFinite(source.stats?.p80));
+  const totalWeight = sum(sources.map(source => source.weight));
+  const normalized = sources.map(source => ({ ...source, weight: source.weight / totalWeight }));
+  const rawMean = sum(normalized.map(source => source.mean * source.weight));
+  const rawP20 = sum(normalized.map(source => source.stats.p20 * source.weight));
+  const rawP80 = sum(normalized.map(source => source.stats.p80 * source.weight));
+  const rawVariance = sum(normalized.map(source => source.weight * ((source.stats.sd || 0) ** 2 + (source.mean - rawMean) ** 2)));
+  const limits = metric === "totalShots" ? [4, 24] : metric === "shotsOnTarget" ? [0, 12] : [0, 12];
+  const central = clamp(rawMean * context, limits[0], limits[1]);
+  const p20 = clamp(rawP20 * context, limits[0], limits[1]);
+  const p80 = clamp(rawP80 * context, limits[0], limits[1]);
+  return {
+    min: Math.floor(Math.min(p20, central)),
+    central: round(central, 1),
+    max: Math.ceil(Math.max(p80, central)),
+    interval: "p20-p80",
+    sd: round(Math.sqrt(rawVariance) * context, 2),
+    sampleSize: sum(normalized.map(source => source.stats.matches || 0)),
+    dataStatus: teamVenue?.matches && opponentVenueAgainst?.matches ? "venue-history" : "partial-history",
+    inputs: normalized.map(source => ({ source: source.id, weightPct: round(source.weight * 100, 1), mean: round(source.mean, 2), matches: source.stats.matches || 0 }))
+  };
+}
+
+function combineVolumeMetric(home, away) {
+  const central = home.central + away.central;
+  const sd = Math.sqrt((home.sd || 0) ** 2 + (away.sd || 0) ** 2);
+  return {
+    min: Math.max(0, Math.floor(central - sd * 0.84)),
+    central: round(central, 1),
+    max: Math.ceil(central + sd * 0.84),
+    interval: "p20-p80-independent",
+    sd: round(sd, 2),
+    sampleSize: Math.min(home.sampleSize || 0, away.sampleSize || 0),
+    dataStatus: home.dataStatus === "venue-history" && away.dataStatus === "venue-history" ? "venue-history" : "partial-history"
+  };
+}
+
 function disciplineBaseline(profile, disciplineProfile) {
   const rows = disciplineProfile?.rows || [];
   const appearances = sum(rows.map(row => row.appearances || 0));
@@ -462,28 +520,36 @@ function disciplineBaseline(profile, disciplineProfile) {
   return { fouls, yellowCards };
 }
 
-function teamProjection(team, profile, opponentProfile, squad, disciplineProfile, outcomeProbability, opponentProbability, expectedGoal) {
+function teamProjection(team, profile, opponentProfile, squad, disciplineProfile, volumeProfile, opponentVolumeProfile, venue, outcomeProbability, opponentProbability, expectedGoal) {
   const players = lineupPlayers(team, squad);
   const channels = attackChannels(profile);
   const matchup = matchupMultiplier(profile, opponentProfile);
   const possession = profile?.summary?.possessionPct ?? 50;
-  const baseShots = profile?.summary?.shotsPerGame ?? 10.5;
   const gameState = clamp(1 + (opponentProbability - outcomeProbability) * 0.16, 0.9, 1.1);
-  const shots = clamp(baseShots * matchup * gameState * (0.94 + possession / 850), 6, 22);
-  const shotsOnTarget = clamp(shots * shotAccuracy(players), 1.5, 9);
   const wideShare = (channels.left + channels.right) / 100;
-  const corners = clamp(1.7 + shots * 0.19 + wideShare * 1.15 + ((profile?.playingStyle || []).some(item => item.id === "tentano-spesso-il-cross") ? 0.55 : 0), 2, 9.5);
+  const shotsContext = clamp(1 + (matchup - 1) * 0.55 + (gameState - 1) * 0.65 + (possession - 50) * 0.002, 0.86, 1.14);
+  const historicalShots = volumeProfile?.venues?.[venue]?.totalShots?.for?.mean || profile?.summary?.shotsPerGame || 10.5;
+  const historicalOnTarget = volumeProfile?.venues?.[venue]?.shotsOnTarget?.for?.mean || historicalShots * 0.34;
+  const lineupAccuracyFactor = clamp(shotAccuracy(players) / clamp(historicalOnTarget / historicalShots, 0.2, 0.55), 0.9, 1.1);
+  const onTargetContext = clamp(shotsContext * lineupAccuracyFactor, 0.82, 1.2);
+  const cornerContext = clamp(1 + (shotsContext - 1) * 0.45 + (wideShare - 0.55) * 0.15 + ((profile?.playingStyle || []).some(item => item.id === "tentano-spesso-il-cross") ? 0.04 : 0), 0.86, 1.16);
+  const shotsTotal = volumeMetric(profile, opponentProfile, volumeProfile, opponentVolumeProfile, venue, "totalShots", shotsContext, volumePrior("totalShots", profile, players, channels));
+  const shotsOnTarget = volumeMetric(profile, opponentProfile, volumeProfile, opponentVolumeProfile, venue, "shotsOnTarget", onTargetContext, volumePrior("shotsOnTarget", profile, players, channels));
+  shotsOnTarget.central = Math.min(shotsOnTarget.central, shotsTotal.central);
+  shotsOnTarget.max = Math.min(shotsOnTarget.max, shotsTotal.max);
+  const corners = volumeMetric(profile, opponentProfile, volumeProfile, opponentVolumeProfile, venue, "wonCorners", cornerContext, volumePrior("wonCorners", profile, players, channels));
   const discipline = disciplineBaseline(profile, disciplineProfile);
   return {
     teamId: team.id,
+    venue,
     attackChannels: channels,
-    shotsTotal: rangeMetric(shots, 2.1, 4),
-    shotsOnTarget: rangeMetric(shotsOnTarget, 1.15, 1),
-    corners: rangeMetric(corners, 1.35, 1),
+    shotsTotal,
+    shotsOnTarget,
+    corners,
     fouls: discipline.fouls == null ? null : rangeMetric(discipline.fouls, 2.4, 3),
     cards: discipline.yellowCards == null ? null : rangeMetric(discipline.yellowCards, 0.85, 0),
     expectedGoals: expectedGoal,
-    basis: "Profili 2025/26, rendimento casa/trasferta, possesso, canali offensivi, vulnerabilita avversarie e disciplina storica."
+    basis: "Volumi ESPN 2025/26 prodotti e concessi per sede (45% squadra, 35% avversaria), ultime otto gare con peso 20%, matchup, possesso e probabile XI. Intervallo p20-p80 osservato."
   };
 }
 
@@ -838,9 +904,15 @@ function predictMatch(input) {
   const evaluatedMarkets = marketEvaluation(input.oddsEvent, matrices, dataCompleteness);
   const valueCandidates = evaluatedMarkets.rows.filter(row => row.family === "1x2");
   const teamProjections = [
-    teamProjection(input.homeTeam, input.homeProfile, input.awayProfile, input.homeSquad, input.homeDiscipline, final[0], final[2], expected.home),
-    teamProjection(input.awayTeam, input.awayProfile, input.homeProfile, input.awaySquad, input.awayDiscipline, final[2], final[0], expected.away)
+    teamProjection(input.homeTeam, input.homeProfile, input.awayProfile, input.homeSquad, input.homeDiscipline, input.homeVolume, input.awayVolume, "home", final[0], final[2], expected.home),
+    teamProjection(input.awayTeam, input.awayProfile, input.homeProfile, input.awaySquad, input.awayDiscipline, input.awayVolume, input.homeVolume, "away", final[2], final[0], expected.away)
   ];
+  const matchProjection = {
+    shotsTotal: combineVolumeMetric(teamProjections[0].shotsTotal, teamProjections[1].shotsTotal),
+    shotsOnTarget: combineVolumeMetric(teamProjections[0].shotsOnTarget, teamProjections[1].shotsOnTarget),
+    corners: combineVolumeMetric(teamProjections[0].corners, teamProjections[1].corners),
+    basis: "Somma delle medie squadra; intervallo p20-p80 del totale con varianze indipendenti."
+  };
   const exact = exactScores(matrix, expected.total);
   return {
     matchId: input.match.id,
@@ -865,6 +937,7 @@ function predictMatch(input) {
     },
     confidence: confidenceResult,
     surprise,
+    matchProjection,
     teamProjections,
     likelyBooked: bookingCandidates(input.homeTeam, input.awayTeam, input.homeSquad, input.awaySquad, input.homeProfile, input.awayProfile),
     mvpCandidate: mvpCandidate(input.homeTeam, input.awayTeam, input.homeSquad, input.awaySquad, input.homeProfile, input.awayProfile, final, expected, input.mvpHistory, input.fantasyHistory, input.mvpSourceUrl),

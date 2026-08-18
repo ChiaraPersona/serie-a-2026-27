@@ -49,11 +49,17 @@ for (const prediction of dataset.predictions) {
   assert.strictEqual(prediction.scenarios.length, 3, `${prediction.matchId}: scenari incompleti`);
   assert(prediction.playerMarkets.status === "N/D", `${prediction.matchId}: i mercati giocatore non verificati devono restare N/D`);
   assert.strictEqual(prediction.teamProjections.length, 2, `${prediction.matchId}: proiezioni squadra incomplete`);
+  assert(prediction.matchProjection?.shotsTotal && prediction.matchProjection?.shotsOnTarget && prediction.matchProjection?.corners, `${prediction.matchId}: totale volumi assente`);
   for (const projection of prediction.teamProjections) {
     for (const metric of [projection.shotsTotal, projection.shotsOnTarget, projection.corners, projection.fouls, projection.cards].filter(Boolean)) assert(metric.min <= metric.central && metric.central <= metric.max, `${prediction.matchId}/${projection.teamId}: intervallo volume non valido`);
     const channelTotal = projection.attackChannels.left + projection.attackChannels.central + projection.attackChannels.right;
     assert(Math.abs(channelTotal - 100) <= 0.2, `${prediction.matchId}/${projection.teamId}: canali offensivi non normalizzati`);
+    for (const metric of [projection.shotsTotal, projection.shotsOnTarget, projection.corners]) {
+      assert.strictEqual(metric.interval, "p20-p80", `${prediction.matchId}/${projection.teamId}: intervallo volume non storico`);
+      assert(metric.inputs.reduce((total, input) => total + input.weightPct, 0) >= 99.8, `${prediction.matchId}/${projection.teamId}: pesi volume non normalizzati`);
+    }
   }
+  for (const key of ["shotsTotal", "shotsOnTarget", "corners"]) assert(Math.abs(prediction.matchProjection[key].central - prediction.teamProjections.reduce((total, projection) => total + projection[key].central, 0)) <= 0.11, `${prediction.matchId}/${key}: totale non riconciliato`);
   assert.strictEqual(prediction.likelyBooked.length, 5, `${prediction.matchId}: servono cinque probabili ammoniti`);
   assert.strictEqual(prediction.likelyBooked.filter(candidate => candidate.possibleFirstBooked).length, 1, `${prediction.matchId}: serve un solo possibile primo ammonito`);
   assert.strictEqual(new Set(prediction.likelyBooked.map(candidate => candidate.teamId)).size, 2, `${prediction.matchId}: la gerarchia ammoniti deve rappresentare entrambe le squadre`);
@@ -70,6 +76,10 @@ for (const prediction of dataset.predictions) {
 const torinoMilan = dataset.predictions.find(prediction => prediction.matchId === "torino-milan-2026-27-md-01");
 assert.strictEqual(torinoMilan.mvpCandidate.teamId, "milan", "Torino-Milan: il candidato MVP principale deve seguire il Milan favorito");
 assert.strictEqual(torinoMilan.mvpCandidate.mvpHistory.status, "official", "Torino-Milan: storico MVP ufficiale non collegato al candidato");
+assert.strictEqual(torinoMilan.teamProjections[0].venue, "home", "Torino-Milan: Torino non usa il campione casa");
+assert.strictEqual(torinoMilan.teamProjections[1].venue, "away", "Torino-Milan: Milan non usa il campione trasferta");
+assert.strictEqual(torinoMilan.teamProjections[0].shotsTotal.inputs[0].source, "home-for", "Torino-Milan: produzione Torino casa non collegata");
+assert.strictEqual(torinoMilan.teamProjections[1].shotsTotal.inputs[0].source, "away-for", "Torino-Milan: produzione Milan trasferta non collegata");
 const goalTotals = dataset.predictions.map(prediction => prediction.expectedGoals.total);
 assert(Math.max(...goalTotals) >= 3 && Math.min(...goalTotals) <= 2.4, "Il motore non deve imporre sempre lo stesso profilo di gol");
 const modalScores = dataset.predictions.map(prediction => prediction.exactScores[0].score);

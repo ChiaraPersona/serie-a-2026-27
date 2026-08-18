@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Profili volume squadra Serie A 2025/26",
+  "type": "object",
+  "required": ["schemaVersion", "competition", "season", "generatedAt", "metrics", "coverage", "methodology", "source", "profiles"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "competition": { "const": "serie-a" },
+    "season": { "const": "2025-26" },
+    "metrics": { "const": ["totalShots", "shotsOnTarget", "wonCorners"] },
+    "coverage": {
+      "type": "object",
+      "properties": {
+        "matches": { "const": 380 },
+        "teamPerformances": { "const": 760 },
+        "teams": { "const": 20 },
+        "completeMetrics": { "const": true }
+      },
+      "required": ["matches", "teamPerformances", "teams", "completeMetrics"]
+    },
+    "profiles": { "type": "array", "minItems": 20, "maxItems": 20 }
+  }
+}
