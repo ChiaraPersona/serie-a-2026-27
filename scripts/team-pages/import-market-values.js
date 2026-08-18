@@ -57,6 +57,51 @@ const verifiedProfiles = {
     transfermarktId: "392956", name: "Enrico Delprato", teamId: "parma", transfermarktClubId: "130", club: "Parma Calcio",
     marketValueEur: 6_000_000, marketValueLabel: "6,00 mln €", marketValueUpdatedAt: "2025-12-23",
     profileUrl: "https://www.transfermarkt.it/enrico-delprato/profil/spieler/392956"
+  },
+  "sassuolo:agustin-alvarez-martinez": {
+    transfermarktId: "812625", name: "Agustín Álvarez Martínez", teamId: "sassuolo", transfermarktClubId: "6574", club: "US Sassuolo",
+    marketValueEur: 2_000_000, marketValueLabel: "2,00 mln €", marketValueUpdatedAt: "2026-06-04",
+    profileUrl: "https://www.transfermarkt.it/agustin-alvarez/profil/spieler/812625"
+  },
+  "venezia:bjarki-steinn-bjarkason": {
+    transfermarktId: "566613", name: "Bjarki Steinn Bjarkason", teamId: "venezia", transfermarktClubId: "607", club: "Venezia FC",
+    marketValueEur: 700_000, marketValueLabel: "700 mila €", marketValueUpdatedAt: "2026-06-04",
+    profileUrl: "https://www.transfermarkt.it/bjarki-bjarkason/profil/spieler/566613"
+  },
+  "sassuolo:benjamin-dominguez": {
+    transfermarktId: "961022", name: "Benjamín Domínguez", teamId: "sassuolo", transfermarktClubId: "1025", club: "Bologna FC",
+    marketValueEur: 9_000_000, marketValueLabel: "9,00 mln €", marketValueUpdatedAt: "2026-05-29",
+    profileUrl: "https://www.transfermarkt.it/benja-dominguez/profil/spieler/961022"
+  },
+  "venezia:okoro-obinna": {
+    transfermarktId: "816861", name: "Alvin Obinna Okoro", teamId: "venezia", transfermarktClubId: "607", club: "Venezia FC",
+    marketValueEur: 2_000_000, marketValueLabel: "2,00 mln €", marketValueUpdatedAt: "2026-06-04",
+    profileUrl: "https://www.transfermarkt.it/alvin-okoro/profil/spieler/816861"
+  },
+  "parma:benjamin-cremaschi": {
+    transfermarktId: "999127", name: "Benjamín Cremaschi", teamId: "parma", transfermarktClubId: "130", club: "Parma Calcio",
+    marketValueEur: 4_000_000, marketValueLabel: "4,00 mln €", marketValueUpdatedAt: "2026-05-29",
+    profileUrl: "https://www.transfermarkt.it/benja-cremaschi/profil/spieler/999127"
+  },
+  "parma:daniel-mikolajewski": {
+    transfermarktId: "991459", name: "Daniel Mikołajewski", teamId: "parma", transfermarktClubId: null, club: "Parma Primavera",
+    marketValueEur: 2_000_000, marketValueLabel: "2,00 mln €", marketValueUpdatedAt: "2026-06-25",
+    profileUrl: "https://www.transfermarkt.it/daniel-mikolajewski/profil/spieler/991459"
+  },
+  "lecce:matias-perez": {
+    transfermarktId: "1175410", name: "Matías Pérez", teamId: "lecce", transfermarktClubId: "1005", club: "US Lecce",
+    marketValueEur: 500_000, marketValueLabel: "500 mila €", marketValueUpdatedAt: "2026-05-29",
+    profileUrl: "https://www.transfermarkt.it/matias-perez/profil/spieler/1175410"
+  },
+  "venezia:lamine-dabo": {
+    transfermarktId: "1126888", name: "Mouhamed Lamine Fanne Dabo", teamId: "venezia", transfermarktClubId: "607", club: "Venezia FC",
+    marketValueEur: 1_600_000, marketValueLabel: "1,60 mln €", marketValueUpdatedAt: "2026-06-04",
+    profileUrl: "https://www.transfermarkt.it/lamine-fanne/profil/spieler/1126888"
+  },
+  "como:andrea-leborgne": {
+    transfermarktId: "1204163", name: "Andréa Le Borgne", teamId: "como", transfermarktClubId: "1047", club: "Como 1907",
+    marketValueEur: 2_500_000, marketValueLabel: "2,50 mln €", marketValueUpdatedAt: null,
+    profileUrl: "https://www.transfermarkt.it/andrea-le-borgne/profil/spieler/1204163"
   }
 };
 const verifiedProfileIds = {

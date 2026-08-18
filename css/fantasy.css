@@ -1,0 +1,531 @@
+/* fantasy.css - modulo del sistema grafico condiviso. */
+/* Fantacalcio: configuratore budget, slot e board d'asta. */
+.fantasy-config{display:grid;grid-template-columns:260px 1fr;gap:20px;margin-top:28px;padding:22px;border:1px solid var(--line);border-radius:24px;background:linear-gradient(135deg,rgba(243,201,105,.12),rgba(18,27,48,.78))}
+
+.fantasy-config label{display:block;margin-bottom:8px;font-weight:700}
+
+.fantasy-budget-input{display:flex;align-items:center;gap:10px}
+
+.fantasy-budget-input input{width:130px;height:52px;padding:0 14px;border:1px solid rgba(243,201,105,.45);border-radius:14px;background:rgba(5,8,18,.7);color:#fff;font-size:24px;font-weight:750}
+
+.fantasy-budget-input span{color:var(--muted);font-size:12px}
+
+.fantasy-plan{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+
+.fantasy-plan article{padding:14px;border:1px solid var(--line);border-radius:15px;background:rgba(255,255,255,.035)}
+
+.fantasy-plan span,.fantasy-plan small{display:block;color:var(--muted);font-size:10px}
+
+.fantasy-plan strong{display:block;margin:5px 0 1px;color:var(--gold);font-size:22px}
+
+.fantasy-slots>div{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+
+.fantasy-slots article{display:flex;gap:12px;align-items:flex-start;padding:17px;border:1px solid var(--line);border-radius:17px;background:var(--surface)}
+
+.fantasy-slots p{margin:0;color:var(--muted);font-size:12px}
+
+.fantasy-slot{display:grid;place-items:center;flex:0 0 30px;width:30px;height:30px;border-radius:9px;font-weight:900}
+
+.fantasy-board>.section-heading>p{max-width:260px;color:var(--muted);font-size:12px;text-align:right}
+
+.fantasy-controls{position:sticky;z-index:9;top:92px;display:grid;grid-template-columns:1fr 180px 150px auto;gap:10px;align-items:end;margin-bottom:14px;padding:14px;border:1px solid var(--line-strong);border-radius:18px;background:rgba(8,14,29,.92);backdrop-filter:blur(18px)}
+
+.fantasy-controls label span{display:block;margin-bottom:5px;color:var(--muted);font-size:10px;font-weight:800;text-transform:uppercase}
+
+.fantasy-controls input,.fantasy-controls select{width:100%;height:42px;padding:0 12px;border:1px solid var(--line);border-radius:11px;background:#111c32;color:#fff}
+
+.fantasy-controls>strong{align-self:center;color:var(--gold);font-size:12px}
+
+.fantasy-table th:nth-child(n),.fantasy-table td:nth-child(n){text-align:left}
+
+.fantasy-table td{vertical-align:middle}
+
+.fantasy-player{display:flex;flex-direction:column;color:#fff;text-decoration:none}
+
+.fantasy-player:hover strong{color:var(--gold)}
+
+.fantasy-player small,.fantasy-index{color:var(--muted);font-size:10px}
+
+.fantasy-team{display:flex;align-items:center;gap:8px}
+
+.fantasy-team img{width:28px;height:28px;object-fit:contain}
+
+.fantasy-price{color:var(--gold);font-size:18px}
+
+.fantasy-method{margin-top:16px;padding:18px;border-left:3px solid var(--gold);border-radius:0 14px 14px 0;background:rgba(243,201,105,.07)}
+
+.fantasy-method p{margin:4px 0;color:var(--muted);font-size:12px}
+
+.goalkeeper-rotation{margin-top:28px}
+
+.goalkeeper-rotation>.section-heading>p{max-width:330px;color:var(--muted);font-size:12px;text-align:right}
+
+.goalkeeper-trios{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+
+.goalkeeper-trios>article{padding:18px;border:1px solid var(--line);border-radius:18px;background:var(--surface)}
+
+.goalkeeper-trio-head,.goalkeeper-list>div{display:flex;align-items:center;justify-content:space-between;gap:12px}
+
+.goalkeeper-trio-head{padding-bottom:12px;border-bottom:1px solid var(--line)}
+
+.goalkeeper-trio-head span{color:var(--muted);font-size:11px;font-weight:800;text-transform:uppercase}
+
+.goalkeeper-trio-head strong{color:var(--gold)}
+
+.goalkeeper-list{display:grid;gap:9px;padding:14px 0}
+
+.goalkeeper-list span,.goalkeeper-list small{display:block}
+
+.goalkeeper-list small{margin-top:2px;color:var(--muted);font-size:10px}
+
+.goalkeeper-list>div>strong{color:var(--gold)}
+
+.goalkeeper-trios dl{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:0}
+
+.goalkeeper-trios dl div{padding:9px;border-radius:10px;background:rgba(255,255,255,.035)}
+
+.goalkeeper-trios dt{color:var(--muted);font-size:9px;text-transform:uppercase}
+
+.goalkeeper-trios dd{margin:2px 0 0;font-weight:800}
+
+.goalkeeper-note{margin:12px 0 0;color:var(--muted);font-size:11px}
+
+.fantasy-slots>div{grid-template-columns:repeat(5,1fr)}
+
+.fantasy-role{display:grid;place-items:center;width:32px;height:32px;margin-bottom:6px;border-radius:9px;color:#fff;font-weight:950}
+
+.fantasy-stars{display:block;color:#f3c969;font-size:15px;font-weight:900;letter-spacing:1px;white-space:nowrap;text-shadow:0 1px 8px rgba(243,201,105,.2)}
+
+.fantasy-slots .fantasy-stars{font-size:18px}
+
+.fantasy-controls #fantasy-search{background:#071326;color:#fff;caret-color:#f3c969;border-color:rgba(243,201,105,.48)}
+
+.fantasy-controls #fantasy-search::placeholder{color:#aebbd0;opacity:1}
+
+.fantasy-controls #fantasy-search:-webkit-autofill,.fantasy-controls #fantasy-search:-webkit-autofill:hover,.fantasy-controls #fantasy-search:-webkit-autofill:focus{-webkit-text-fill-color:#fff;box-shadow:0 0 0 1000px #071326 inset;caret-color:#f3c969}
+
+.fantasy-table{min-width:1150px;table-layout:fixed}
+
+.fantasy-table th:nth-child(1){width:132px}
+
+.fantasy-table th:nth-child(2){width:285px}
+
+.fantasy-table th:nth-child(3){width:150px}
+
+.fantasy-table th:nth-child(4){width:88px}
+
+.fantasy-table th:nth-child(5){width:135px}
+
+.fantasy-table th:nth-child(6){width:90px}
+
+.fantasy-table th:nth-child(7){width:90px}
+
+.fantasy-table th:nth-child(8){width:112px}
+
+.fantasy-table th:nth-child(9){width:105px}
+
+.fantasy-sort{display:inline-grid;grid-template-columns:1fr 12px;align-items:center;width:100%;gap:4px;padding:0;border:0;background:transparent;color:inherit;font:inherit;font-weight:800;text-align:left;cursor:pointer;white-space:nowrap}
+
+.fantasy-sort span{display:block;width:12px;color:var(--muted);opacity:.55;text-align:center}
+
+.fantasy-sort:hover,.fantasy-sort:focus-visible,.fantasy-sort.active{color:var(--gold)}
+
+.fantasy-sort.active span{opacity:1}
+
+.fantasy-controls select{color-scheme:dark;background-color:#111c32;color:#f7f9fc}
+
+.fantasy-controls select option{background:#111c32;color:#f7f9fc}
+
+.fantasy-controls select option:checked{background:#274266;color:#fff}
+
+.fantasy-player-button{padding:0;border:0;background:none;text-align:left;cursor:pointer}
+
+.lineup-calendar{scroll-margin-top:110px}
+
+.lineup-calendar>header{display:flex;align-items:end;justify-content:space-between;gap:18px;margin-bottom:18px}
+
+.lineup-calendar>header h2{margin-bottom:4px}
+
+.lineup-calendar>header p:last-child{margin:0;color:var(--muted)}
+
+.lineup-calendar-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+
+.fantasy-player-stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:0 0 20px}
+
+.fantasy-player-stats article{padding:16px;border:1px solid var(--line);border-radius:16px;background:var(--surface)}
+
+.fantasy-player-stats span,.fantasy-player-stats small{display:block;color:var(--muted);font-size:10px}
+
+.fantasy-player-stats strong{display:block;margin:5px 0;color:var(--gold);font-size:20px}
+
+.fantasy-controls #fantasy-search{background:#071326!important;color:#fff!important;-webkit-text-fill-color:#fff!important;caret-color:#f3c969}
+
+.fantasy-controls #fantasy-search::placeholder{color:#aebbd0!important;opacity:1}
+
+.card,.home-next,.home-rail a,.day-nav,.referee-controls,.editorial-empty,.cup-stage,.objective-card,.squad-leader-card,.pilot-section,.goalkeeper-trios>article,.fantasy-slots article{border-color:rgba(111,172,244,.25);background:linear-gradient(145deg,rgba(18,72,148,.78),rgba(7,39,89,.78));box-shadow:inset 0 1px rgba(160,202,255,.09),0 18px 48px rgba(0,18,60,.22)}
+
+.fantasy-controls{background:rgba(6,35,82,.92)}
+
+.fantasy-config{border-color:rgba(111,172,244,.28);background:linear-gradient(135deg,rgba(20,76,155,.74),rgba(7,37,84,.9))}
+
+.fantasy-plan article,.goalkeeper-trios dl div{border-color:rgba(110,171,242,.2);background:rgba(38,101,187,.15)}
+
+.fantasy-controls #fantasy-search{background:#082d66!important}
+
+.fantasy-controls select,.fantasy-controls select option{background:#0b397b;color:#f7faff}
+
+.card,.home-next,.home-rail a,.day-nav,.referee-controls,.editorial-empty,.cup-stage,.objective-card,.squad-leader-card,.pilot-section,.goalkeeper-trios>article,.fantasy-slots article{
+  border-color:rgba(255,255,255,.9);
+  background:linear-gradient(145deg,rgba(255,255,255,.9),rgba(255,255,255,.6));
+  box-shadow:inset 0 1px #fff,0 16px 42px rgba(32,49,73,.09);
+}
+
+.fantasy-controls,.referee-controls{
+  background:rgba(245,247,250,.88);
+  border-color:rgba(255,255,255,.92);
+}
+
+.fantasy-controls label span{color:#647086}
+
+select,input,.fantasy-controls input,.fantasy-controls select{
+  border-color:rgba(18,64,119,.14)!important;
+  background:rgba(255,255,255,.82)!important;
+  color:#172033!important;
+}
+
+.fantasy-controls #fantasy-search{background:#fff!important;color:#172033!important;-webkit-text-fill-color:#172033!important;caret-color:#1459a6}
+
+.fantasy-controls #fantasy-search::placeholder{color:#788397!important}
+
+.fantasy-controls select,.fantasy-controls select option{background:#fff;color:#172033}
+
+.fantasy-config{border-color:rgba(255,255,255,.9);background:linear-gradient(135deg,rgba(255,255,255,.86),rgba(244,247,251,.7))}
+
+.fantasy-plan article,.goalkeeper-trios dl div,.team-stat-grid article,.player-bio-grid>div,.player-stat-grid article{border-color:rgba(18,64,119,.1);background:rgba(255,255,255,.58)}
+
+.fantasy-player{color:#172033}
+
+.method-note,.fantasy-method{background:rgba(167,116,22,.08)}
+
+.page-link[data-page-link="fantasy"]{font-weight:850}
+
+.card,.home-next,.home-rail a,.day-nav,.referee-controls,.referee-nav,.editorial-empty,.cup-stage,.objective-card,.squad-leader-card,.pilot-section,.goalkeeper-trios>article,.fantasy-slots article,.fantasy-config,.fantasy-plan article,.global-leaderboard-controls,.team-stat-grid article,.player-bio-grid>div,.player-stat-grid article,.player-competition-heading>div,.lineup-day,.method-note,.fantasy-method{
+  border-color:var(--glass-border);
+  background:linear-gradient(115deg,rgba(255,255,255,.46),transparent 38%),linear-gradient(295deg,rgba(255,255,255,.14),transparent 54%),var(--glass-surface);
+  color:var(--glass-text);
+  box-shadow:0 6px 3px #00000010,0 18px 24px #0000000b,inset 0 1px 4px #ffffff78;
+  backdrop-filter:blur(20px) saturate(130%);
+  -webkit-backdrop-filter:blur(20px) saturate(130%);
+}
+
+.referee-controls,.fantasy-controls{
+  border-color:var(--glass-border);
+  background:rgba(239,250,250,.78);
+  box-shadow:0 10px 18px #0000000d,inset 0 1px 4px #ffffff8a;
+  backdrop-filter:blur(22px);
+  -webkit-backdrop-filter:blur(22px);
+}
+
+select,input,.fantasy-controls input,.fantasy-controls select,.squad-controls input,.squad-controls select{
+  border-color:rgba(40,58,59,.15)!important;
+  background:rgba(255,255,255,.78)!important;
+  color:var(--glass-text)!important;
+  box-shadow:inset 0 1px 3px rgba(40,58,59,.06);
+}
+
+/* Loghi colorati nella tabella Fantacalcio */
+.fantasy-table .fantasy-team img{
+  width:32px;
+  height:32px;
+  padding:0;
+  border:0;
+  border-radius:0;
+  background:transparent;
+  box-shadow:none;
+  filter:none;
+}
+
+/* Costruttore rosa Fantacalcio */
+.fantasy-composition{margin-bottom:14px;padding:16px;border:1px solid #d9e0e8;border-radius:18px;background:rgba(255,255,255,.62)}
+
+.fantasy-composition header{display:flex;justify-content:space-between;gap:18px;align-items:end;margin-bottom:13px}
+
+.fantasy-composition header span,.fantasy-composition header strong{display:block}
+
+.fantasy-composition header span,.fantasy-composition-controls label span{color:#647086;font-size:.66rem;font-weight:850;text-transform:uppercase}
+
+.fantasy-composition header strong{margin-top:3px;color:#172033}
+
+.fantasy-composition header p{margin:0;color:#3f6e55;font-size:.72rem;font-weight:800;text-align:right}
+
+.fantasy-composition header p.is-alert{color:#b52631}
+
+.fantasy-composition-controls{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px}
+
+.fantasy-composition-controls label{display:block}
+
+.fantasy-composition-controls label span{display:block;margin-bottom:5px}
+
+.fantasy-composition-controls input{width:100%;height:42px;padding:0 11px;border:1px solid #cbd4df;border-radius:10px;background:#fff;color:#172033;font-weight:800}
+
+.fantasy-total-control{padding-right:9px;border-right:1px solid #d9e0e8}
+
+.fantasy-squad-builder,.fantasy-recommendations{scroll-margin-top:96px}
+
+.fantasy-squad-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+
+.fantasy-squad-summary article{padding:16px;border:1px solid rgba(255,255,255,.86);border-radius:16px;background:rgba(255,255,255,.7);box-shadow:0 12px 32px rgba(28,39,55,.06)}
+
+.fantasy-squad-summary span,.fantasy-squad-summary strong{display:block}
+
+.fantasy-squad-summary span{color:#647086;font-size:.68rem;font-weight:800;text-transform:uppercase}
+
+.fantasy-squad-summary strong{margin-top:4px;color:#172033;font-size:1.55rem}
+
+.fantasy-squad-summary .is-alert{border-color:#d74b55;background:#fff1f2}
+
+.fantasy-squad-summary .is-alert strong{color:#b52631}
+
+.fantasy-role-progress{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:10px}
+
+.fantasy-role-progress article{padding:12px 14px;border:1px solid #d9e0e8;border-radius:14px;background:rgba(255,255,255,.54)}
+
+.fantasy-role-progress span,.fantasy-role-progress strong{display:block;color:#172033}
+
+.fantasy-role-progress span{font-size:.68rem}
+
+.fantasy-role-progress strong{margin-top:2px}
+
+.fantasy-role-progress i{display:block;height:4px;margin-top:8px;overflow:hidden;border-radius:999px;background:#dfe5ec}
+
+.fantasy-role-progress b{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#1459a6,#e0a72d)}
+
+.fantasy-squad-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:14px}
+
+.fantasy-squad-player{display:grid;grid-template-columns:minmax(0,1fr) 88px auto 34px;gap:10px;align-items:center;padding:12px;border:1px solid #d9e0e8;border-radius:15px;background:rgba(255,255,255,.76)}
+
+.fantasy-squad-player.is-main{border-color:#dfad3c;box-shadow:inset 3px 0 #dfad3c}
+
+.fantasy-squad-player>div{display:flex;align-items:center;gap:9px;min-width:0}
+
+.fantasy-squad-player .fantasy-role{flex:0 0 32px;margin:0}
+
+.fantasy-squad-player>div button,.fantasy-recommendation-role article>div button{min-width:0;padding:0;border:0;background:none;color:#172033;text-align:left;cursor:pointer}
+
+.fantasy-squad-player>div strong,.fantasy-squad-player>div small,.fantasy-recommendation-role article>div strong,.fantasy-recommendation-role article>div small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+.fantasy-squad-player>div small,.fantasy-recommendation-role article>div small{color:#647086;font-size:.66rem}
+
+.fantasy-squad-player label span{display:block;color:#647086;font-size:.6rem;font-weight:800;text-transform:uppercase}
+
+.fantasy-squad-player input{width:100%;height:36px;padding:0 9px;border:1px solid #cbd4df;border-radius:9px;background:#fff;color:#172033}
+
+.fantasy-main-toggle,.fantasy-reset,.fantasy-row-actions button,.fantasy-strategy-tabs button,.fantasy-recommendation-role article>button{border:1px solid #cbd4df;border-radius:999px;background:#fff;color:#344054;font-weight:800;cursor:pointer}
+
+.fantasy-main-toggle{padding:8px 11px;white-space:nowrap}
+
+.fantasy-main-toggle.active,.fantasy-main-action.is-main{border-color:#dca62e;background:#fff4d6;color:#845b00}
+
+.fantasy-remove{display:grid;place-items:center;width:32px;height:32px;border:0;border-radius:50%;background:#f1f3f6;color:#6a7481;font-size:1.2rem;cursor:pointer}
+
+.fantasy-reset{margin-top:12px;padding:8px 13px}
+
+.fantasy-squad-empty,.fantasy-recommendations-empty{padding:22px;border:1px dashed #bdc8d5;border-radius:16px;background:rgba(255,255,255,.48);text-align:center}
+
+.fantasy-squad-empty p,.fantasy-recommendations-empty p{max-width:620px;margin:5px auto 0;color:#647086}
+
+.fantasy-strategy-tabs{display:flex;flex-wrap:wrap;gap:8px}
+
+.fantasy-strategy-tabs button{padding:9px 15px}
+
+.fantasy-strategy-tabs button.active{border-color:#1459a6;background:#1459a6;color:#fff}
+
+.fantasy-recommendation-note{margin:10px 0 14px;color:#647086;font-size:.78rem}
+
+.fantasy-recommendation-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+
+.fantasy-recommendation-role{padding:15px;border:1px solid #d9e0e8;border-radius:17px;background:rgba(255,255,255,.64)}
+
+.fantasy-recommendation-role>header{margin-bottom:8px}
+
+.fantasy-recommendation-role>header span,.fantasy-recommendation-role>header strong{display:block}
+
+.fantasy-recommendation-role>header span{color:#1459a6;font-size:.68rem;font-weight:900;text-transform:uppercase}
+
+.fantasy-recommendation-role>header strong{color:#172033}
+
+.fantasy-recommendation-role>article{display:grid;grid-template-columns:minmax(0,1fr) 1.3fr auto;gap:10px;align-items:center;padding:10px 0;border-top:1px solid #dfe5ec}
+
+.fantasy-recommendation-role>article>div{display:flex;align-items:center;gap:8px;min-width:0}
+
+.fantasy-recommendation-role .fantasy-role{flex:0 0 32px;margin:0}
+
+.fantasy-recommendation-role dl{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:0}
+
+.fantasy-recommendation-role dl div{min-width:0;padding:6px;border-radius:9px;background:#f2f5f8;text-align:center}
+
+.fantasy-recommendation-role dt{color:#647086;font-size:.54rem;text-transform:uppercase}
+
+.fantasy-recommendation-role dd{margin:2px 0 0;color:#172033;font-size:.78rem;font-weight:850}
+
+.fantasy-recommendation-role article>button{padding:7px 10px}
+
+.fantasy-row-selected{background:rgba(20,89,166,.06)}
+
+.fantasy-row-actions{display:grid;gap:5px}
+
+.fantasy-row-actions button{padding:7px 9px;white-space:nowrap}
+
+.fantasy-squad-action.is-selected{border-color:#1459a6;background:#e8f1fb;color:#1459a6}
+
+.fantasy-table{min-width:1320px}
+
+.fantasy-table th:nth-child(10){width:120px}
+
+.fantasy-price-source{display:block;color:#647086;font-size:.58rem;font-weight:800}
+
+.fantasy-table{min-width:1560px}
+
+.fantasy-table th:nth-child(12){width:120px}
+
+.fantasy-row-nd{display:block;color:#7c8795;font-size:.65rem}
+
+.fantasy-table{min-width:2300px;table-layout:fixed}
+
+.fantasy-table th:nth-child(1){width:135px}
+
+.fantasy-table th:nth-child(2){width:280px}
+
+.fantasy-table th:nth-child(3){width:155px}
+
+.fantasy-table th:nth-child(4){width:90px}
+
+.fantasy-table th:nth-child(5){width:120px}
+
+.fantasy-table th:nth-child(6),.fantasy-table th:nth-child(7){width:105px}
+
+.fantasy-table th:nth-child(8){width:145px}
+
+.fantasy-table th:nth-child(9),.fantasy-table th:nth-child(10){width:110px}
+
+.fantasy-table th:nth-child(11){width:140px}
+
+.fantasy-table th:nth-child(12){width:125px}
+
+.fantasy-table th:nth-child(13),.fantasy-table th:nth-child(14){width:95px}
+
+.fantasy-table th:nth-child(15){width:115px}
+
+.fantasy-table th:nth-child(16){width:125px}
+
+.fantasy-table{min-width:2650px}
+
+.fantasy-table th:nth-child(6){width:150px}
+
+.fantasy-table th:nth-child(7){width:220px}
+
+.fantasy-table th:nth-child(8),.fantasy-table th:nth-child(9){width:105px}
+
+.fantasy-table th:nth-child(10){width:145px}
+
+.fantasy-table th:nth-child(11),.fantasy-table th:nth-child(12){width:110px}
+
+.fantasy-table th:nth-child(13){width:140px}
+
+.fantasy-table th:nth-child(14){width:125px}
+
+.fantasy-table th:nth-child(15),.fantasy-table th:nth-child(16){width:95px}
+
+.fantasy-table th:nth-child(17){width:115px}
+
+.fantasy-table th:nth-child(18){width:125px}
+
+.fantasy-config{grid-template-columns:200px 200px 200px minmax(360px,1fr)}
+
+.fantasy-config label.fantasy-config-field{display:flex;flex-direction:column;justify-content:center;margin:0}
+
+.fantasy-config-field>span,.fantasy-config-field small{display:block}
+
+.fantasy-config-field>span{margin-bottom:8px;color:var(--muted);font-size:11px;font-weight:850;text-transform:uppercase}
+
+.fantasy-config-field select{width:100%;height:44px;padding:0 12px;border:1px solid var(--line);border-radius:12px;background:#111c32;color:#fff}
+
+.fantasy-config-field small{margin-top:7px;color:var(--muted);font-size:10px;line-height:1.35}
+
+.fantasy-config-field.is-disabled{opacity:.48}
+
+.fantasy-table{min-width:2250px}
+
+.fantasy-table th:nth-child(1){width:135px}
+
+.fantasy-table th:nth-child(2){width:280px}
+
+.fantasy-table th:nth-child(3){width:155px}
+
+.fantasy-table th:nth-child(4){width:90px}
+
+.fantasy-table th:nth-child(5){width:120px}
+
+.fantasy-table th:nth-child(6){width:150px}
+
+.fantasy-table th:nth-child(7){width:220px}
+
+.fantasy-table th:nth-child(8),.fantasy-table th:nth-child(9){width:105px}
+
+.fantasy-table th:nth-child(10),.fantasy-table th:nth-child(11){width:140px}
+
+.fantasy-table th:nth-child(12),.fantasy-table th:nth-child(13){width:95px}
+
+.fantasy-table th:nth-child(14){width:115px}
+
+.fantasy-table th:nth-child(15){width:125px}
+
+/* Esclusioni reversibili dai consigli per la rosa */
+.fantasy-recommendation-actions{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:6px}
+
+.fantasy-recommendation-actions button{padding:7px 10px;border:1px solid #cbd4df;border-radius:999px;background:#fff;color:#344054;font-weight:800;white-space:nowrap;cursor:pointer}
+
+.fantasy-recommendation-actions [data-fantasy-squad-add]{border-color:#1459a6;background:#1459a6;color:#fff}
+
+.fantasy-recommendation-actions [data-fantasy-exclude]{color:#8d3440}
+
+.fantasy-excluded{margin:0 0 14px;padding:13px 14px;border:1px solid #e2c7ca;border-radius:15px;background:rgba(255,246,247,.82)}
+
+.fantasy-excluded>strong{display:block;margin-bottom:8px;color:#7f2935;font-size:.72rem;text-transform:uppercase}
+
+.fantasy-excluded>div{display:flex;flex-wrap:wrap;gap:7px}
+
+.fantasy-excluded button{display:flex;align-items:center;gap:5px;padding:7px 10px;border:1px solid #dcb9be;border-radius:999px;background:#fff;color:#64202a;font-weight:800;cursor:pointer}
+
+.fantasy-excluded button span{font-size:1rem;line-height:1}
+
+.fantasy-excluded button small{color:#8c5960;font-size:.58rem;text-transform:uppercase}
+
+/* Tabella Fantacalcio essenziale: 12 colonne */
+.fantasy-table{min-width:1740px}
+
+.fantasy-table th:nth-child(1){width:135px}
+
+.fantasy-table th:nth-child(2){width:280px}
+
+.fantasy-table th:nth-child(3){width:155px}
+
+.fantasy-table th:nth-child(4){width:90px}
+
+.fantasy-table th:nth-child(5),.fantasy-table th:nth-child(6){width:105px}
+
+.fantasy-table th:nth-child(7){width:145px}
+
+.fantasy-table th:nth-child(8){width:140px}
+
+.fantasy-table th:nth-child(9){width:95px}
+
+.fantasy-table th:nth-child(10),.fantasy-table th:nth-child(11){width:105px}
+
+.fantasy-table th:nth-child(12){width:125px}
+
+.goalkeeper-note a{color:#1459a6;font-weight:800}
+
+.fantasy-recommendation-actions button{display:grid;place-items:center;width:34px;height:34px;padding:0;font-size:1.1rem;line-height:1}
+
+.fantasy-row-actions .fantasy-squad-action:not(.is-selected){width:34px;height:34px;padding:0;font-size:1.1rem}

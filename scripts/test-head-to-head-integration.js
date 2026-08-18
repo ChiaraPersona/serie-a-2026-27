@@ -9,9 +9,12 @@ const read = relative => JSON.parse(fs.readFileSync(path.join(root, relative), "
 const history = read("data/generated/head-to-head/first-leg-2026-27.json");
 const historySummary = read("data/generated/head-to-head/first-leg-2026-27-summary.json");
 const predictions = read("data/normalized/predictions.json");
-const app = fs.readFileSync(path.join(root, "js/app.js"), "utf8");
+const app = fs.readdirSync(path.join(root, "js"), { recursive: true })
+  .filter(file => file.endsWith(".js"))
+  .map(file => fs.readFileSync(path.join(root, "js", file), "utf8"))
+  .join("\n");
 const page = fs.readFileSync(path.join(root, "lettura.html"), "utf8");
-const appRelease = app.match(/RELEASE="([^"]+)"/)?.[1];
+const appRelease = fs.readFileSync(path.join(root, "scripts/build-site.js"), "utf8").match(/const version = "([^"]+)"/)?.[1];
 
 assert.strictEqual(history.fixtures.length, 190, "Lo storico deve coprire le 190 partite di andata");
 assert.strictEqual(historySummary.fixtures.length, 190, "Il riepilogo H2H deve coprire le 190 partite di andata");

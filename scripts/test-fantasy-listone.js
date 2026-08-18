@@ -11,7 +11,10 @@ const probable = read("data/sources/fantacalcio-probable-lineups-md1-2026-27.jso
 const injuries = read("data/sources/fantacalcio-injuries-2026-27.json");
 const goalkeeperHierarchy = read("data/sources/fantasy-goalkeeper-hierarchy-2026-27.json");
 const generated = read("data/generated/fantacalcio-advice.json");
-const appSource = fs.readFileSync(path.join(root, "js/app.js"), "utf8");
+const appSource = fs.readdirSync(path.join(root, "js"), { recursive: true })
+  .filter(file => file.endsWith(".js"))
+  .map(file => fs.readFileSync(path.join(root, "js", file), "utf8"))
+  .join("\n");
 
 assert.equal(source.season, "2026/27");
 assert.equal(source.players.length, 505);

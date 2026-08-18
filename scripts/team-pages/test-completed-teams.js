@@ -39,7 +39,10 @@ for (const [teamId, expectedCount] of Object.entries(expectedCounts)) {
 }
 
 const interfaceSource = fs.readFileSync(path.join(root, "js/team-squads.js"), "utf8");
-const mainApp = fs.readFileSync(path.join(root, "js/app.js"), "utf8");
+const mainApp = fs.readdirSync(path.join(root, "js"), { recursive: true })
+  .filter(file => file.endsWith(".js"))
+  .map(file => fs.readFileSync(path.join(root, "js", file), "utf8"))
+  .join("\n");
 for (const teamId of Object.keys(expectedCounts)) {
   assert.ok(fs.existsSync(path.join(root, `statistiche-squadra/${teamId}.html`)), `${teamId}: pagina assente`);
 }

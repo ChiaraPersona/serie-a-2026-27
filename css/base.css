@@ -1,0 +1,88 @@
+/* base.css - modulo del sistema grafico condiviso. */
+:root{--bg:#07110f;--surface:#101b18;--surface2:#162521;--line:#284039;--text:#f4f7f5;--muted:#9db0a9;--accent:#27d17f;--gold:#f2c14e;--danger:#ff6b6b;--max:1180px;color-scheme:dark;font-family:Inter,Segoe UI,Arial,sans-serif}
+
+*{box-sizing:border-box}
+
+html{scroll-behavior:smooth}
+
+body{margin:0;background:radial-gradient(circle at 80% 0,#16392c 0,transparent 28rem),var(--bg);color:var(--text);line-height:1.55}
+
+a{color:inherit}
+
+h1{max-width:850px;margin:0;font-size:clamp(38px,6vw,76px);line-height:1.02;letter-spacing:-.045em}
+
+h2{margin:0 0 18px;font-size:clamp(25px,3vw,38px);letter-spacing:-.025em}
+
+h3{margin:0 0 9px}
+
+body{background:radial-gradient(circle at 82% -5%,rgba(35,91,180,.72) 0,transparent 31rem),radial-gradient(circle at 5% 55%,rgba(15,60,132,.38) 0,transparent 36rem),var(--bg)}
+
+html{scroll-padding-top:100px}
+
+body{background:radial-gradient(circle at 85% -8%,rgba(33,88,181,.62),transparent 34rem),radial-gradient(circle at -10% 52%,rgba(20,67,147,.32),transparent 34rem),linear-gradient(180deg,#03102d 0,var(--bg) 60%,#020819 100%);font-feature-settings:"tnum" 1}
+
+body::before{content:"";position:fixed;z-index:-1;inset:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:48px 48px;mask-image:linear-gradient(to bottom,black,transparent 70%)}
+
+button,a,select,input{outline-offset:3px}
+
+:focus-visible{outline:2px solid var(--gold)}
+
+body{background:radial-gradient(circle at 76% -12%,rgba(57,91,153,.3),transparent 34rem),radial-gradient(circle at 5% 48%,rgba(23,56,112,.18),transparent 40rem),#050812;letter-spacing:-.006em}
+
+body::before{display:none}
+
+h1,h2,h3,strong{letter-spacing:-.025em}
+
+h1{font-weight:720}
+
+h2{font-weight:690}
+
+body{background:radial-gradient(circle at 78% -10%,rgba(48,126,230,.52),transparent 34rem),radial-gradient(circle at -8% 48%,rgba(18,89,190,.32),transparent 40rem),linear-gradient(180deg,#06265b 0,#031a3d 48%,#02132f 100%)}
+
+body{
+  background:#e8e8e8;
+  color:var(--text);
+}
+
+body::before{
+  display:block;
+  background:
+    radial-gradient(circle at 80% -10%,rgba(31,100,184,.1),transparent 32rem),
+    radial-gradient(circle at 4% 42%,rgba(183,132,31,.07),transparent 34rem);
+  mask-image:none;
+}
+
+body{background:#e8e8e8;color:var(--glass-text)}
+
+h1,h2,h3,h4,strong{color:var(--glass-text)}
+
+h1,h2,h3,
+.hero-stat strong,
+.hero-season strong,
+.editorial-empty-mark{
+  font-family:var(--font-display);
+  font-weight:400!important;
+  font-style:normal;
+  letter-spacing:.025em!important;
+  word-spacing:.06em;
+}
+
+:root{
+  --background-page:var(--bg);
+  --background-surface:var(--surface);
+  --background-surface-strong:var(--surface2);
+  --color-text:var(--text);
+  --color-text-muted:var(--muted);
+  --color-border:var(--line);
+  --color-accent:var(--accent);
+  --space-1:4px;
+  --space-2:8px;
+  --space-3:12px;
+  --space-4:16px;
+  --space-5:24px;
+  --space-6:32px;
+  --space-7:48px;
+  --max-width:var(--max);
+  --transition-fast:.18s ease;
+  --transition-base:.28s cubic-bezier(.22,.8,.22,1);
+}

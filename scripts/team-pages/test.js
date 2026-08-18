@@ -6,8 +6,13 @@ const root = path.resolve(__dirname, "../..");
 const read = file => JSON.parse(fs.readFileSync(path.join(root, file), "utf8"));
 const index = read("data/teams/index.json");
 const playerLeaderboards = read("data/teams/player-leaderboards.json");
-const mainApp = fs.readFileSync(path.join(root, "js/app.js"), "utf8");
-const styles = fs.readFileSync(path.join(root, "css/styles.css"), "utf8");
+const mainApp = fs.readdirSync(path.join(root, "js"), { recursive: true })
+  .filter(file => file.endsWith(".js"))
+  .map(file => fs.readFileSync(path.join(root, "js", file), "utf8"))
+  .join("\n");
+const styles = ["styles", "base", "layout", "components", "home", "matches", "team", "players", "fantasy", "responsive"]
+  .map(name => fs.readFileSync(path.join(root, `css/${name}.css`), "utf8"))
+  .join("\n");
 const teamStatsShell = fs.readFileSync(path.join(root, "statistiche-squadre.html"), "utf8");
 const teamPageShell = fs.readFileSync(path.join(root, "statistiche-squadra", "inter.html"), "utf8");
 assert.strictEqual(index.teams.length, 20, "Sono richieste 20 squadre");
@@ -115,7 +120,7 @@ assert.ok(!homeRenderSource.includes("Apri il calendario"), "Il link Apri il cal
 assert.ok(!homeRenderSource.includes("Capolista") && !homeRenderSource.includes("leader="), "La Home non deve calcolare o mostrare la capolista dopo la rimozione del riepilogo");
 const homeStandingsSource = mainApp.slice(mainApp.indexOf("function homeStandings"), mainApp.indexOf("const dayNav"));
 assert.ok(!homeStandingsSource.includes("objectiveStatusSection(") && !homeStandingsSource.includes("Stato degli obiettivi"), "Lo stato degli obiettivi non deve essere renderizzato nella Home");
-assert.ok(mainApp.includes('if(page==="home")[teams,matches,previousStandings]=await Promise.all') && mainApp.includes('if(page==="team-stats")[teamDirectory,playerLeaderboards]=await Promise.all'), "I dataset devono essere caricati soltanto dalle pagine che li usano");
+assert.ok(mainApp.includes('const routes={home:"home",calendar:"matches",team:"matches","team-stats":"teams"') && mainApp.includes('[teams,matches,previousStandings]=await Promise.all') && mainApp.includes('[teamDirectory,playerLeaderboards]=await Promise.all'), "Router e pagine devono caricare soltanto i dataset necessari");
 assert.ok(mainApp.includes('requestedMatchId?"first-leg-2026-27.json":"first-leg-2026-27-summary.json"'), "L'indice Letture deve usare il riepilogo H2H leggero");
 const expectedNavigation = [
   ["index.html", "Home"], ["calendario.html", "Calendario"],

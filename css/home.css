@@ -1,0 +1,174 @@
+/* home.css - modulo del sistema grafico condiviso. */
+/* Classifiche: selettore stagione, punti prioritari e stemmi. */
+.standings-switch{display:flex;gap:10px;margin:24px 0 8px;padding:7px;border:1px solid var(--line);border-radius:14px;background:rgba(8,24,43,.82)}
+
+.standings-switch button{flex:1;padding:11px 16px;border:1px solid transparent;border-radius:9px;background:transparent;color:var(--muted);font-weight:800;cursor:pointer}
+
+.standings-switch button:hover,.standings-switch button.active{border-color:rgba(67,119,205,.55);background:rgba(23,79,165,.3);color:#fff}
+
+.standings-table{min-width:800px;table-layout:fixed}
+
+.standings-table th:first-child,.standings-table td:first-child{width:54px}
+
+.standings-table th:nth-child(2),.standings-table td:nth-child(2){text-align:left}
+
+.standings-table th:nth-child(n+3),.standings-table td:nth-child(n+3){width:72px;padding-right:12px;padding-left:12px;text-align:center}
+
+.standings-table th:nth-child(3),.standings-table td:nth-child(3){color:var(--gold)}
+
+/* Hero fotografica della Home. */
+body[data-page="home"] .hero{min-height:360px;border-color:rgba(255,255,255,.18);background:linear-gradient(90deg,rgba(3,10,25,.97) 0%,rgba(3,10,25,.82) 43%,rgba(3,10,25,.28) 72%,rgba(3,10,25,.12) 100%),url("../assets/images/home-hero.jpg") center/cover no-repeat;box-shadow:inset 0 0 80px rgba(0,0,0,.2)}
+
+.hero{position:relative;isolation:isolate;min-height:390px;align-items:center;overflow:hidden;padding:clamp(30px,5vw,58px);border-color:rgba(111,153,218,.42);border-radius:var(--radius-lg);background:linear-gradient(100deg,rgba(3,12,34,.97) 0,rgba(5,18,43,.88) 43%,rgba(8,29,72,.28) 72%),url("../assets/images/home-hero.jpg") center/cover;box-shadow:var(--shadow-lg)}
+
+.hero-season{justify-self:end;align-self:end;display:grid;min-width:190px;padding:22px;border:1px solid rgba(244,203,105,.32);border-radius:22px;background:rgba(2,11,34,.68);backdrop-filter:blur(12px)}
+
+.hero-season>span{color:var(--gold);font-size:11px;font-weight:900;letter-spacing:.14em;text-transform:uppercase}
+
+.hero-season strong{font-size:55px;line-height:1}
+
+.hero-season strong span{color:var(--gold)}
+
+.hero-season small{margin-top:8px;color:var(--muted)}
+
+.home-dashboard-grid{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(270px,.65fr);gap:18px}
+
+.home-next{padding:22px;border:1px solid var(--line);border-radius:22px;background:rgba(5,22,54,.72)}
+
+.home-next>h3{margin-bottom:16px;color:var(--muted);font-size:12px;letter-spacing:.1em;text-transform:uppercase}
+
+.home-rail{display:grid;gap:10px}
+
+.home-rail a{display:flex;flex-direction:column;justify-content:center;min-height:126px;padding:18px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(145deg,rgba(18,54,118,.62),rgba(5,22,54,.82));text-decoration:none;transition:.2s ease}
+
+.home-rail a:hover{border-color:var(--gold);transform:translateX(3px)}
+
+.home-rail span{color:var(--gold);font-size:10px;font-weight:900;letter-spacing:.1em;text-transform:uppercase}
+
+.home-rail strong{margin:4px 0;font-size:17px}
+
+.home-rail small{color:var(--muted)}
+
+.editorial-empty{display:grid;grid-template-columns:130px minmax(0,1fr) 250px;gap:30px;align-items:center;min-height:330px;padding:clamp(24px,5vw,54px);border:1px solid var(--line);border-radius:var(--radius-lg);background:radial-gradient(circle at 88% 20%,rgba(244,203,105,.13),transparent 22rem),linear-gradient(135deg,rgba(17,51,111,.72),rgba(4,17,43,.94));box-shadow:var(--shadow-lg)}
+
+.editorial-empty-mark{display:grid;place-items:center;width:112px;height:112px;border:1px solid rgba(244,203,105,.5);border-radius:32px;background:rgba(244,203,105,.08);color:var(--gold);font-family:Georgia,serif;font-size:68px}
+
+.editorial-empty h2{margin-bottom:10px}
+
+.editorial-empty p:not(.eyebrow){max-width:600px;color:var(--muted)}
+
+.editorial-empty ol{margin:0;padding:0;list-style:none}
+
+.editorial-empty li{display:flex;gap:14px;padding:12px 0;border-bottom:1px solid var(--line)}
+
+.editorial-empty li:last-child{border:0}
+
+.editorial-empty li strong{color:var(--gold);font-size:11px}
+
+.editorial-empty li span{font-weight:800}
+
+.standings-table tbody tr:nth-child(-n+4) td:first-child{box-shadow:inset 3px 0 #4e9cff}
+
+.standings-table tbody tr:nth-last-child(-n+3) td:first-child{box-shadow:inset 3px 0 #ff7c7c}
+
+.standings-table tbody tr{transition:background .16s ease}
+
+.standings-table tbody tr:hover td{background:rgba(29,79,164,.3)}
+
+.card,.home-rail a{border-radius:22px}
+
+.home-rail a:hover{border-color:rgba(255,255,255,.22);box-shadow:inset 0 1px rgba(255,255,255,.08),0 22px 56px rgba(0,0,0,.22);transform:translateY(-2px)}
+
+.home-rail a:hover{border-color:rgba(125,190,255,.5);box-shadow:inset 0 1px rgba(178,215,255,.12),0 24px 58px rgba(0,20,68,.3)}
+
+.hero-season{border-color:rgba(167,116,22,.24);background:rgba(255,255,255,.62)}
+
+.hero-season>span,.hero-season strong span,.eyebrow{color:#9a6912}
+
+.home-rail a:hover{
+  border-color:rgba(35,93,161,.2);
+  box-shadow:inset 0 1px #fff,0 22px 48px rgba(32,49,73,.13);
+}
+
+.home-rail a:hover{
+  border-color:rgba(40,58,59,.2);
+  background:linear-gradient(115deg,rgba(255,255,255,.62),transparent 40%),rgba(181,250,255,.24);
+  box-shadow:0 8px 4px #00000012,0 22px 28px #0000000e,inset 0 1px 4px #ffffff8a;
+}
+
+.home-next>h3{text-transform:none}
+
+.home-next>h3>span{text-transform:uppercase}
+
+/* Selettore classifica: palette chiara con stato attivo blu Serie A. */
+.standings-switch{
+  border-color:rgba(36,90,120,.16);
+  background:rgba(255,255,255,.58);
+  box-shadow:0 8px 24px rgba(40,58,59,.08),inset 0 1px 0 rgba(255,255,255,.82);
+}
+
+.standings-switch button{
+  color:#4d5f69;
+}
+
+.standings-switch button:hover{
+  border-color:rgba(31,100,184,.24);
+  background:rgba(31,100,184,.09);
+  color:#174f8f;
+}
+
+.standings-switch button.active{
+  border-color:#2f75c5;
+  background:linear-gradient(135deg,#2468b6,#174f91);
+  color:#fff;
+  box-shadow:0 5px 14px rgba(23,79,145,.22),inset 0 1px 0 rgba(255,255,255,.18);
+}
+
+/* Home: prossime partite più compatte, senza colonna Lettura. */
+.home-next{
+  padding:18px 20px;
+}
+
+.home-next>h3{
+  margin-bottom:12px;
+}
+
+/* Classifiche ordinabili: le colonne esistenti mantengono la stessa larghezza. */
+.standings-table{width:calc(100% + 288px);min-width:1088px}
+
+.standings-sort{display:block;width:100%;padding:0;border:0;background:transparent;color:inherit;font:inherit;font-weight:inherit;letter-spacing:inherit;text-align:inherit;text-transform:inherit;white-space:nowrap;cursor:pointer}
+
+.standings-sort:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:3px}
+
+.standings-table tbody tr:nth-child(-n+4) td:first-child,.standings-table tbody tr:nth-last-child(-n+3) td:first-child{box-shadow:none}
+
+/* Archivio 2025/26: cambio vista senza scorrimento e colonna ordinata ben riconoscibile. */
+.standings-scope-switch{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:20px 0 10px;padding:7px;border:1px solid rgba(36,90,120,.16);border-radius:14px;background:rgba(255,255,255,.58);box-shadow:0 8px 24px rgba(40,58,59,.08),inset 0 1px 0 rgba(255,255,255,.82)}
+
+.standings-scope-switch button{min-height:42px;padding:9px 12px;border:1px solid transparent;border-radius:9px;background:transparent;color:#4d5f69;font-weight:800;cursor:pointer}
+
+.standings-scope-switch button:hover{border-color:rgba(31,100,184,.24);background:rgba(31,100,184,.09);color:#174f8f}
+
+.standings-scope-switch button.active{border-color:#2f75c5;background:linear-gradient(135deg,#2468b6,#174f91);color:#fff;box-shadow:0 5px 14px rgba(23,79,145,.22),inset 0 1px 0 rgba(255,255,255,.18)}
+
+.standings-table th.standings-column-active{background:#174f91;color:#fff;box-shadow:inset 1px 0 rgba(255,255,255,.16),inset -1px 0 rgba(255,255,255,.16)}
+
+.standings-table td.standings-column-active{background:rgba(47,117,197,.13);color:#123f70;box-shadow:inset 1px 0 rgba(47,117,197,.12),inset -1px 0 rgba(47,117,197,.12)}
+
+.standings-table tbody tr:hover td.standings-column-active{background:rgba(47,117,197,.22)}
+
+.standings-table tbody tr.standing-zone-champion td:first-child{box-shadow:inset 3px 0 var(--gold)}
+
+.standings-table tbody tr.standing-zone-top td:first-child{box-shadow:inset 3px 0 #4e9cff}
+
+.standings-table tbody tr.standing-zone-europa td:first-child{box-shadow:inset 3px 0 #27d17f}
+
+.standings-table tbody tr.standing-zone-conference td:first-child{box-shadow:inset 3px 0 #f59e0b}
+
+.standings-table tbody tr.standing-zone-bottom td:first-child{box-shadow:inset 3px 0 #dc2626}
+
+/* Mantiene la resa finale della hero dopo la separazione dei moduli. */
+body[data-page="home"] .hero{
+  border:1px solid rgba(255,255,255,.42);
+  box-shadow:0 1px 0 rgba(255,255,255,.78),0 12px 22px rgba(31,39,52,.16),0 34px 64px rgba(31,39,52,.18),inset 0 0 0 1px rgba(2,8,20,.5),inset 0 16px 26px rgba(0,4,14,.42),inset 0 -12px 22px rgba(0,4,14,.3);
+}

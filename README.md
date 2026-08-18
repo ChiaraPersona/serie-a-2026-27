@@ -50,6 +50,6 @@ Ogni pronostico contiene probabilità 1X2, tre risultati esatti, fattore sorpres
 
 ## Flusso del sito
 
-`scripts/build-site.js` genera le shell HTML; `js/app.js` carica i JSON e costruisce le viste. Gli HTML generati non devono essere modificati manualmente.
+`scripts/build-site.js` genera le shell HTML; `js/app.js` Ã¨ un piccolo entry point ES module. Il bootstrap e il router vivono in `js/core/`, l'accesso ai JSON in `js/services/`, i componenti condivisi in `js/components/` e le viste in `js/pages/`. Il router importa soltanto il modulo richiesto dalla pagina corrente. Gli HTML generati non devono essere modificati manualmente.
 
 Le pagine complete di tutte le 20 squadre sono collegate da `statistiche-squadre.html`. Le rose correnti e i dati 2025/26 restano separati; i dati della Serie B sono mantenuti distinti per le neopromosse. I nominativi rilevati durante il mercato estivo possono essere marcati `da verificare`; i campi non pubblicati dalla fonte restano `null` e sono mostrati come `N/D`.
