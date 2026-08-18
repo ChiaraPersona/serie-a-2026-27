@@ -127,7 +127,7 @@ const payload = {
   season: "2026/27",
   provider: "Quotazioni Fantacalcio Stagione 2026 27",
   sourceFile: extracted?.sourceFile || existingPayload?.sourceFile || "Quotazioni_Fantacalcio_Stagione_2026_27.xlsx",
-  importedAt: existingPayload?.importedAt || "2026-08-08",
+  importedAt: extracted?.importedAt || existingPayload?.importedAt || new Date().toISOString().slice(0, 10),
   definitions: {
     currentQuotation: "Qt.A · quotazione Classic attuale",
     initialQuotation: "Qt.I · quotazione Classic iniziale",

@@ -12,14 +12,21 @@ const write = (relative, value) => {
 const slugAliases = { "hellas-verona": "verona" };
 const teams = read("data/normalized/teams.json");
 const teamDetails = read("data/sources/team-pages/team-details-2026-27.json");
-const probableLineupSource = teamDetails.sources.find(source => source.provider === "Calciomercato.com");
+const probableLineups = read("data/sources/fantacalcio-probable-lineups-md1-2026-27.json");
+const probableLineupByTeam = new Map(probableLineups.teams.map(team => [team.teamId, team]));
+const probableLineupSource = {
+  provider: probableLineups.provider,
+  scope: `Probabili formazioni della ${probableLineups.matchday}ª giornata`,
+  url: probableLineups.sourceUrl,
+  retrievedAt: String(probableLineups.importedAt).slice(0, 10)
+};
 const marketValuesFile = path.join(root, "data/sources/team-pages/transfermarkt-market-values-2026-27.json");
 const marketValues = fs.existsSync(marketValuesFile) ? JSON.parse(fs.readFileSync(marketValuesFile, "utf8")) : { players: [], retrievedAt: null };
 const marketValueByPlayer = new Map(marketValues.players.map(player => [`${player.teamId}:${player.playerId}`, player]));
 const playerDetailsFile = path.join(root, "data/sources/team-pages/transfermarkt-player-details-2026-27.json");
 const playerDetails = fs.existsSync(playerDetailsFile) ? JSON.parse(fs.readFileSync(playerDetailsFile, "utf8")) : { players: [], retrievedAt: null };
 const playerDetailsByPlayer = new Map(playerDetails.players.map(player => [`${player.teamId}:${player.playerId}`, player]));
-const today = ["2026-08-03", marketValues.retrievedAt, playerDetails.retrievedAt].filter(Boolean).sort().at(-1);
+const today = ["2026-08-03", marketValues.retrievedAt, playerDetails.retrievedAt, probableLineupSource.retrievedAt].filter(Boolean).sort().at(-1);
 const wikimediaPhotosFile = path.join(root, "data/sources/team-pages/wikimedia-player-photos.json");
 const wikimediaPhotos = fs.existsSync(wikimediaPhotosFile) ? JSON.parse(fs.readFileSync(wikimediaPhotosFile, "utf8")) : { entries: [], retrievedAt: null };
 const wikimediaPhotoByPlayer = new Map(wikimediaPhotos.entries.map(photo => [`${photo.teamId}:${photo.playerId}`, photo]));
@@ -95,8 +102,10 @@ function matchStats(teamId, competition) {
 
 function buildTeam(team) {
   const details = teamDetails.teams[team.id];
+  const lineup = probableLineupByTeam.get(team.id);
+  const starters = lineup?.players?.filter(player => player.lineupStatus === "starter") || [];
   if (!details?.city || !details?.stadium || !details?.coach || !details?.preferredFormation) throw new Error(`${team.name}: anagrafica 2026/27 incompleta`);
-  if (!details.probableLineup || !/^[1-9](?:-[1-9]){2,4}$/.test(details.probableLineup.formation) || details.probableLineup.players?.length !== 11) throw new Error(`${team.name}: probabile formazione incompleta`);
+  if (!lineup || !/^[1-9](?:-[1-9]){2,4}$/.test(lineup.formation) || starters.length !== 11) throw new Error(`${team.name}: probabile formazione Fantacalcio incompleta`);
   const previousCompetition = aRows.some(row => row.team === team.id) ? "serie-a" : "serie-b";
   const competitionName = previousCompetition === "serie-a" ? "Serie A" : "Serie B";
   const table = previousCompetition === "serie-a" ? aRows : serieBTable;
@@ -176,16 +185,18 @@ function buildTeam(team) {
     ...(generatedSquad?.rosterSource ? [generatedSquad.rosterSource] : []),
     ...(marketValues.retrievedAt ? [{ provider: "Transfermarkt", scope: `Valori di mercato individuali 2026/27 (${squad.filter(player => player.marketValue).length}/${squad.length})`, url: marketValues.sourceUrl, retrievedAt: marketValues.retrievedAt }] : []),
     ...(wikimediaPhotos.retrievedAt ? [{ provider: "Wikimedia Commons", scope: `Foto locali con attribuzione (${squad.filter(player => player.photoAttribution).length}/${squad.length})`, url: wikimediaPhotos.sourceUrl, retrievedAt: wikimediaPhotos.retrievedAt }] : []),
-    ...teamDetails.sources
+    ...teamDetails.sources.filter(source => source.provider !== "Calciomercato.com"),
+    probableLineupSource
   ];
   return {
     schemaVersion: 1, id: team.id, name: team.name, officialName: team.officialName, shortName: team.shortName,
     slug: team.slug, logo: `../${team.logo}`, monochromeLogo: `../assets/images/teams/monochrome/${team.id}-black.svg`, currentSeason: "2026/27", city: details.city, stadium: details.stadium, coach: details.coach, preferredFormation: details.preferredFormation,
     probableLineup: {
-      formation: details.probableLineup.formation,
-      players: details.probableLineup.players,
-      context: "Proiezione della prima giornata",
+      formation: lineup.formation,
+      players: starters.map(player => player.currentName || player.sourceName),
+      context: `Proiezione della ${probableLineups.matchday}ª giornata`,
       status: "probable",
+      updatedAt: lineup.updatedAt,
       source: probableLineupSource
     },
     previousSeason: { season: "2025/26", competition: competitionName, competitionId: previousCompetition, promoted: previousCompetition === "serie-b", position: row?.position ?? null, points: row?.points ?? null },

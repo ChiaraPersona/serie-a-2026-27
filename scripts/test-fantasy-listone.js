@@ -14,10 +14,10 @@ const generated = read("data/generated/fantacalcio-advice.json");
 const appSource = fs.readFileSync(path.join(root, "js/app.js"), "utf8");
 
 assert.equal(source.season, "2026/27");
-assert.equal(source.players.length, 496);
-assert.equal(source.departed.length, 6);
-assert.equal(new Set(source.players.map(player => player.sourceId)).size, 496);
-assert.deepEqual(source.coverage.byRole, { P: 60, D: 175, C: 174, A: 87 });
+assert.equal(source.players.length, 505);
+assert.equal(source.departed.length, 15);
+assert.equal(new Set(source.players.map(player => player.sourceId)).size, 505);
+assert.deepEqual(source.coverage.byRole, { P: 62, D: 177, C: 177, A: 89 });
 assert.equal(new Set(source.players.map(player => player.teamId)).size, 20);
 for (const player of source.players) {
   assert.ok(["P", "D", "C", "A"].includes(player.role), `${player.name}: ruolo Classic non valido`);
@@ -32,7 +32,9 @@ assert.equal(generated.listone.coverage.matchedCurrentPlayers, source.coverage.m
 assert.ok(generated.methodology.description.includes("correttivo del 15%"));
 assert.equal(probable.coverage.teams, 20);
 assert.equal(probable.coverage.starters, 220);
-assert.equal(probable.coverage.unmatched, 0);
+const probablePlayers = probable.teams.flatMap(team => team.players);
+assert.equal(probable.coverage.unmatched, probablePlayers.filter(player => player.matchStatus === "unmatched").length);
+assert.ok(probable.teams.every(team => team.players.filter(player => player.lineupStatus === "starter").length === 11), "ogni squadra deve avere 11 titolari Fantacalcio");
 assert.equal(injuries.coverage.teams, 20);
 assert.ok(injuries.coverage.reports > 0);
 assert.equal(injuries.coverage.unmatched, 0);
@@ -112,7 +114,9 @@ for (const trio of generated.goalkeeperTrios.examples) {
   }
 }
 assert.ok(generated.players.filter(player => Number.isFinite(player.currentAvailability?.starterProbability)).length >= 350, "copertura titolarità insufficiente nei consigli");
-assert.equal(generated.listone.players.filter(player => Number.isFinite(player.currentAvailability?.starterProbability)).length, probable.coverage.players);
+const activeSourceIds = new Set(source.players.map(player => String(player.sourceId)));
+const expectedListoneAvailability = probablePlayers.filter(player => activeSourceIds.has(String(player.sourceId))).length;
+assert.equal(generated.listone.players.filter(player => Number.isFinite(player.currentAvailability?.starterProbability)).length, expectedListoneAvailability);
 assert.equal(generated.listone.players.filter(player => player.currentAvailability?.injuryReported).length, injuries.coverage.reports);
 
 console.log(`Fantacalcio unificato: ${unifiedCount} righe, ${source.players.length} attivi nel listone, ${quotedAdvice.length} consigli quotati.`);

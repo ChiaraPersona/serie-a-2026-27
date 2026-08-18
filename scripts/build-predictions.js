@@ -226,7 +226,7 @@ const output = {
   sources: [
     { label: "Lega Serie A - programma prime cinque giornate", url: "https://www.legaseriea.it/serie-a/news/date-orari-e-programmazione-tv-delle-prime-cinque-giornate" },
     { label: "Sisal - quote Serie A", url: odds.sourceUrl },
-    { label: "Calciomercato.com - proiezione formazioni 20 squadre", url: teams.find(team => team.probableLineup?.source?.url)?.probableLineup.source.url },
+    { label: `${teams.find(team => team.probableLineup?.source)?.probableLineup.source.provider || "Fonte editoriale"} - probabili formazioni 20 squadre`, url: teams.find(team => team.probableLineup?.source?.url)?.probableLineup.source.url },
     { label: "ESPN - ultimi cinque scontri diretti", url: "data/generated/head-to-head/first-leg-2026-27.json" }
   ],
   predictions
