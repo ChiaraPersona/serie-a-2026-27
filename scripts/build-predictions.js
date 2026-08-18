@@ -189,6 +189,7 @@ const output = {
     surpriseFactor: "Apertura della gara, probabilita dell'esito sfavorito, divergenza mercato-dati e incompletezza prepartita. Non determina da solo il verdetto.",
     spatialModel: "Valuta separatamente sviluppo a sinistra, al centro e a destra e lo incrocia con le vulnerabilita avversarie.",
     goalModel: "Forze relative casa/trasferta e complessive, ultime otto gare corrette per avversario, xG Understat al 25% quando sono coperti entrambi i club, probabile XI, divisione di provenienza, matrice Poisson e correttivo H2H limitato al 5% per lato.",
+    scoreSelectionModel: "Il risultato principale e selezionato dentro l'esito 1X2 piu probabile; la moda assoluta della matrice resta separata quando appartiene a un esito diverso.",
     scoreModel: {
       type: "poisson",
       calibration: "none",
@@ -229,7 +230,12 @@ const output = {
         xgBlend25: multiSeasonBacktest.variants["xg-blend-25"].aggregate,
         decision: multiSeasonBacktest.decision
       } : null,
-      openingRounds: openingBacktest
+      openingRounds: openingBacktest,
+      uncertainty: multiSeasonBacktest ? {
+        variants: Object.keys(multiSeasonBacktest.decision.uncertaintyComparison || {}),
+        recommendation: multiSeasonBacktest.decision.uncertaintyRecommendation,
+        decision: "La miscela di lambda non viene adottata se non migliora simultaneamente log-loss 1X2 e score log-loss con bootstrap favorevole."
+      } : null
     } : null,
     volumeModel: {
       provider: volumeProfiles.source.provider,

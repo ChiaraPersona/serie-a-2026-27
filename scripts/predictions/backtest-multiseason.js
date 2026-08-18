@@ -111,6 +111,32 @@ function scoreMatrix(homeLambda, awayLambda, options = {}, maxGoals = 8) {
   return rows.map(row => ({ ...row, probability: row.probability / total }));
 }
 
+function uncertainScoreMatrix(homeLambda, awayLambda, sigma, options = {}, maxGoals = 8) {
+  const nodes = [
+    { z: -2, weight: 0.06136 },
+    { z: -1, weight: 0.24477 },
+    { z: 0, weight: 0.38774 },
+    { z: 1, weight: 0.24477 },
+    { z: 2, weight: 0.06136 }
+  ];
+  const combined = new Map();
+  for (const homeNode of nodes) for (const awayNode of nodes) {
+    const adjustedHome = homeLambda * Math.exp(sigma * homeNode.z - 0.5 * sigma ** 2);
+    const adjustedAway = awayLambda * Math.exp(sigma * awayNode.z - 0.5 * sigma ** 2);
+    const weight = homeNode.weight * awayNode.weight;
+    for (const row of scoreMatrix(adjustedHome, adjustedAway, options, maxGoals)) {
+      const key = `${row.home}-${row.away}`;
+      combined.set(key, (combined.get(key) || 0) + row.probability * weight);
+    }
+  }
+  const rows = [...combined.entries()].map(([key, probability]) => {
+    const [home, away] = key.split("-").map(Number);
+    return { home, away, probability };
+  });
+  const total = sum(rows.map(row => row.probability));
+  return rows.map(row => ({ ...row, probability: row.probability / total }));
+}
+
 function matchMetric(match, side, metric) {
   return metric === "xg" && Number.isFinite(match.xg?.[side]) ? match.xg[side] : match.score[side];
 }
@@ -284,13 +310,15 @@ function evaluateRows(samples, variant) {
     const day = sample.date.slice(0, 10);
     if (variant.includes("dixon-coles") && !rhoByDay.has(day)) rhoByDay.set(day, estimateRho(predictionSamples, `${day}T00:00:00Z`));
     const rhoEstimate = variant.includes("dixon-coles") ? rhoByDay.get(day) : { rho: 0, sample: 0 };
-    const xgWeight = variant === "xg-blend-25" ? 0.25 : variant === "xg-blend-50" ? 0.5 : variant === "xg-blend-75" ? 0.75 : variant === "xg-only" ? 1 : 0;
+    const xgWeight = variant.startsWith("xg-blend-25") ? 0.25 : variant === "xg-blend-50" ? 0.5 : variant === "xg-blend-75" ? 0.75 : variant === "xg-only" ? 1 : 0;
     const homeLambda = sample.homeLambda ** (1 - xgWeight) * sample.xgHomeLambda ** xgWeight;
     const awayLambda = sample.awayLambda ** (1 - xgWeight) * sample.xgAwayLambda ** xgWeight;
-    const matrix = scoreMatrix(homeLambda, awayLambda, {
+    const options = {
       calibration: variant.includes("empirical") ? sample.calibration : null,
       rho: rhoEstimate.rho
-    });
+    };
+    const sigma = variant.endsWith("mix-10") ? 0.1 : variant.endsWith("mix-15") ? 0.15 : variant.endsWith("mix-20") ? 0.2 : variant.endsWith("mix-25") ? 0.25 : 0;
+    const matrix = sigma ? uncertainScoreMatrix(homeLambda, awayLambda, sigma, options) : scoreMatrix(homeLambda, awayLambda, options);
     const probabilities = outcomeProbabilities(matrix);
     const outcome = sample.score.home > sample.score.away ? 0 : sample.score.home === sample.score.away ? 1 : 2;
     const ordered = [...matrix].sort((a, b) => b.probability - a.probability);
@@ -348,7 +376,8 @@ function bootstrapDifference(candidate, baseline, metric, iterations = 2000) {
 }
 
 const testSamples = predictionSamples.filter(sample => testSeasons.has(sample.season));
-const variants = ["poisson", "empirical", "dixon-coles", "empirical+dixon-coles", "xg-blend-25", "xg-blend-50", "xg-blend-75", "xg-only"];
+const uncertaintyVariants = ["xg-blend-25-mix-10", "xg-blend-25-mix-15", "xg-blend-25-mix-20", "xg-blend-25-mix-25"];
+const variants = ["poisson", "empirical", "dixon-coles", "empirical+dixon-coles", "xg-blend-25", "xg-blend-50", "xg-blend-75", "xg-only", ...uncertaintyVariants];
 const results = Object.fromEntries(variants.map(variant => [variant, evaluateRows(testSamples, variant)]));
 const current = results.empirical;
 const candidate = results["dixon-coles"];
@@ -419,6 +448,18 @@ const output = {
         oneXTwoLogLoss: bootstrapDifference(results[variant].rows, results.poisson.rows, "oneXTwoLogLoss"),
         scoreLogLoss: bootstrapDifference(results[variant].rows, results.poisson.rows, "scoreLogLoss")
       }
+    }])),
+    uncertaintyComparison: Object.fromEntries(uncertaintyVariants.map(variant => [variant, {
+      improvementVsFixedLambdaPct: {
+        oneXTwoLogLoss: improvement(results["xg-blend-25"].metrics.oneXTwoLogLoss, results[variant].metrics.oneXTwoLogLoss),
+        oneXTwoBrier: improvement(results["xg-blend-25"].metrics.oneXTwoBrier, results[variant].metrics.oneXTwoBrier),
+        scoreLogLoss: improvement(results["xg-blend-25"].metrics.scoreLogLoss, results[variant].metrics.scoreLogLoss),
+        goalBandBrier: improvement(results["xg-blend-25"].metrics.goalBandBrier, results[variant].metrics.goalBandBrier)
+      },
+      pairedBootstrap: {
+        oneXTwoLogLoss: bootstrapDifference(results[variant].rows, results["xg-blend-25"].rows, "oneXTwoLogLoss"),
+        scoreLogLoss: bootstrapDifference(results[variant].rows, results["xg-blend-25"].rows, "scoreLogLoss")
+      }
     }]))
   }
 };
@@ -438,5 +479,13 @@ const xgWins = xgCandidate.improvementVsPoissonPct.oneXTwoLogLoss >= 0
   && xgCandidate.improvementVsPoissonPct.scoreLogLoss > 0
   && xgCandidate.pairedBootstrap.scoreLogLoss.confidenceInterval95[0] > 0;
 output.decision.xgRecommendation = xgWins ? "adopt-xg-blend-25" : "keep-goals-only";
+const bestUncertainty = uncertaintyVariants
+  .map(variant => ({ variant, scoreLogLoss: results[variant].metrics.scoreLogLoss }))
+  .sort((a, b) => a.scoreLogLoss - b.scoreLogLoss)[0];
+const uncertaintyCandidate = output.decision.uncertaintyComparison[bestUncertainty.variant];
+const uncertaintyWins = uncertaintyCandidate.improvementVsFixedLambdaPct.oneXTwoLogLoss >= 0
+  && uncertaintyCandidate.improvementVsFixedLambdaPct.scoreLogLoss > 0
+  && uncertaintyCandidate.pairedBootstrap.scoreLogLoss.confidenceInterval95[0] > 0;
+output.decision.uncertaintyRecommendation = uncertaintyWins ? `adopt-${bestUncertainty.variant}` : "keep-fixed-lambda";
 fs.writeFileSync(outputPath, `${JSON.stringify(output, null, 2)}\n`);
 console.log(`OK backtest pluristagionale: ${testSamples.length} gare, decisione ${output.decision.recommendation}`);

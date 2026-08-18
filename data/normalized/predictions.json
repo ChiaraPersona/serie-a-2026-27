@@ -4,7 +4,7 @@
   "season": "2026-27",
   "generatedAt": "2026-08-14T13:18:37.572Z",
   "engine": {
-    "version": "4.6.0",
+    "version": "4.7.0",
     "principle": "Un'unica matrice dei punteggi indipendente dalle quote genera 1X2, gol e mercati collegati.",
     "weights": {
       "venueHistorical": 0.46,
@@ -17,6 +17,7 @@
     "surpriseFactor": "Apertura della gara, probabilita dell'esito sfavorito, divergenza mercato-dati e incompletezza prepartita. Non determina da solo il verdetto.",
     "spatialModel": "Valuta separatamente sviluppo a sinistra, al centro e a destra e lo incrocia con le vulnerabilita avversarie.",
     "goalModel": "Forze relative casa/trasferta e complessive, ultime otto gare corrette per avversario, xG Understat al 25% quando sono coperti entrambi i club, probabile XI, divisione di provenienza, matrice Poisson e correttivo H2H limitato al 5% per lato.",
+    "scoreSelectionModel": "Il risultato principale e selezionato dentro l'esito 1X2 piu probabile; la moda assoluta della matrice resta separata quando appartiene a un esito diverso.",
     "scoreModel": {
       "type": "poisson",
       "calibration": "none",
@@ -412,9 +413,108 @@
               }
             }
           },
+          "uncertaintyComparison": {
+            "xg-blend-25-mix-10": {
+              "improvementVsFixedLambdaPct": {
+                "oneXTwoLogLoss": -0.04,
+                "oneXTwoBrier": -0.05,
+                "scoreLogLoss": -0.04,
+                "goalBandBrier": -0.03
+              },
+              "pairedBootstrap": {
+                "oneXTwoLogLoss": {
+                  "meanImprovement": -0.0003,
+                  "confidenceInterval95": [
+                    -0.0005,
+                    -0.0002
+                  ]
+                },
+                "scoreLogLoss": {
+                  "meanImprovement": -0.0011,
+                  "confidenceInterval95": [
+                    -0.0018,
+                    -0.0004
+                  ]
+                }
+              }
+            },
+            "xg-blend-25-mix-15": {
+              "improvementVsFixedLambdaPct": {
+                "oneXTwoLogLoss": -0.08,
+                "oneXTwoBrier": -0.08,
+                "scoreLogLoss": -0.1,
+                "goalBandBrier": -0.08
+              },
+              "pairedBootstrap": {
+                "oneXTwoLogLoss": {
+                  "meanImprovement": -0.0008,
+                  "confidenceInterval95": [
+                    -0.001,
+                    -0.0005
+                  ]
+                },
+                "scoreLogLoss": {
+                  "meanImprovement": -0.0027,
+                  "confidenceInterval95": [
+                    -0.0042,
+                    -0.0011
+                  ]
+                }
+              }
+            },
+            "xg-blend-25-mix-20": {
+              "improvementVsFixedLambdaPct": {
+                "oneXTwoLogLoss": -0.14,
+                "oneXTwoBrier": -0.15,
+                "scoreLogLoss": -0.19,
+                "goalBandBrier": -0.16
+              },
+              "pairedBootstrap": {
+                "oneXTwoLogLoss": {
+                  "meanImprovement": -0.0014,
+                  "confidenceInterval95": [
+                    -0.0018,
+                    -0.0009
+                  ]
+                },
+                "scoreLogLoss": {
+                  "meanImprovement": -0.0051,
+                  "confidenceInterval95": [
+                    -0.0078,
+                    -0.0024
+                  ]
+                }
+              }
+            },
+            "xg-blend-25-mix-25": {
+              "improvementVsFixedLambdaPct": {
+                "oneXTwoLogLoss": -0.22,
+                "oneXTwoBrier": -0.22,
+                "scoreLogLoss": -0.32,
+                "goalBandBrier": -0.25
+              },
+              "pairedBootstrap": {
+                "oneXTwoLogLoss": {
+                  "meanImprovement": -0.0021,
+                  "confidenceInterval95": [
+                    -0.0028,
+                    -0.0014
+                  ]
+                },
+                "scoreLogLoss": {
+                  "meanImprovement": -0.0088,
+                  "confidenceInterval95": [
+                    -0.0128,
+                    -0.0047
+                  ]
+                }
+              }
+            }
+          },
           "recommendation": "keep-current",
           "calibrationRecommendation": "adopt-poisson",
-          "xgRecommendation": "adopt-xg-blend-25"
+          "xgRecommendation": "adopt-xg-blend-25",
+          "uncertaintyRecommendation": "keep-fixed-lambda"
         }
       },
       "openingRounds": {
@@ -791,6 +891,16 @@
           "firstRoundScoreLogLoss": 0.47
         },
         "recommendation": "adopt-regularized-carry-over"
+      },
+      "uncertainty": {
+        "variants": [
+          "xg-blend-25-mix-10",
+          "xg-blend-25-mix-15",
+          "xg-blend-25-mix-20",
+          "xg-blend-25-mix-25"
+        ],
+        "recommendation": "keep-fixed-lambda",
+        "decision": "La miscela di lambda non viene adottata se non migliora simultaneamente log-loss 1X2 e score log-loss con bootstrap favorevole."
       }
     },
     "volumeModel": {
@@ -875,7 +985,7 @@
       "matchId": "atalanta-sassuolo-2026-27-md-01",
       "generatedAt": "2026-08-14T13:18:37.572Z",
       "status": "preliminary",
-      "engineVersion": "4.6.0",
+      "engineVersion": "4.7.0",
       "probabilities": {
         "final": {
           "1": 52.3,
@@ -997,6 +1107,70 @@
           "rank": 3
         }
       ],
+      "scoreForecast": {
+        "primary": {
+          "score": "1-0",
+          "outcome": "1",
+          "label": "Risultato principale",
+          "probabilityPct": 11.5,
+          "conditionalProbabilityPct": 22.1,
+          "isAbsoluteMode": false
+        },
+        "modal": {
+          "score": "1-1",
+          "outcome": "X",
+          "label": "Moda assoluta",
+          "probabilityPct": 11.7,
+          "conditionalProbabilityPct": 47.6,
+          "isAbsoluteMode": true
+        },
+        "alternatives": [
+          {
+            "score": "1-1",
+            "outcome": "X",
+            "label": "Scenario alternativo",
+            "probabilityPct": 11.7,
+            "conditionalProbabilityPct": 47.6,
+            "isAbsoluteMode": true
+          },
+          {
+            "score": "0-1",
+            "outcome": "2",
+            "label": "Scenario sorpresa",
+            "probabilityPct": 7.1,
+            "conditionalProbabilityPct": 30.5,
+            "isAbsoluteMode": false
+          }
+        ],
+        "display": [
+          {
+            "score": "1-0",
+            "outcome": "1",
+            "label": "Risultato principale",
+            "probabilityPct": 11.5,
+            "conditionalProbabilityPct": 22.1,
+            "isAbsoluteMode": false
+          },
+          {
+            "score": "1-1",
+            "outcome": "X",
+            "label": "Moda assoluta",
+            "probabilityPct": 11.7,
+            "conditionalProbabilityPct": 47.6,
+            "isAbsoluteMode": true
+          },
+          {
+            "score": "0-1",
+            "outcome": "2",
+            "label": "Scenario sorpresa",
+            "probabilityPct": 7.1,
+            "conditionalProbabilityPct": 30.5,
+            "isAbsoluteMode": false
+          }
+        ],
+        "coherentWithVerdict": true,
+        "method": "Il risultato principale e il punteggio piu probabile condizionato all'esito 1X2 favorito; la moda assoluta resta distinta quando appartiene a un altro esito."
+      },
       "scoreProfile": {
         "bands": [
           {
@@ -2172,7 +2346,7 @@
       "matchId": "bologna-lazio-2026-27-md-01",
       "generatedAt": "2026-08-14T13:18:37.572Z",
       "status": "preliminary",
-      "engineVersion": "4.6.0",
+      "engineVersion": "4.7.0",
       "probabilities": {
         "final": {
           "1": 42.5,
@@ -2294,6 +2468,70 @@
           "rank": 3
         }
       ],
+      "scoreForecast": {
+        "primary": {
+          "score": "1-0",
+          "outcome": "1",
+          "label": "Risultato principale",
+          "probabilityPct": 13.4,
+          "conditionalProbabilityPct": 31.7,
+          "isAbsoluteMode": true
+        },
+        "modal": {
+          "score": "1-0",
+          "outcome": "1",
+          "label": "Moda assoluta",
+          "probabilityPct": 13.4,
+          "conditionalProbabilityPct": 31.7,
+          "isAbsoluteMode": true
+        },
+        "alternatives": [
+          {
+            "score": "0-1",
+            "outcome": "2",
+            "label": "Scenario alternativo",
+            "probabilityPct": 10.5,
+            "conditionalProbabilityPct": 36.4,
+            "isAbsoluteMode": false
+          },
+          {
+            "score": "1-1",
+            "outcome": "X",
+            "label": "Scenario sorpresa",
+            "probabilityPct": 13.2,
+            "conditionalProbabilityPct": 46.1,
+            "isAbsoluteMode": false
+          }
+        ],
+        "display": [
+          {
+            "score": "1-0",
+            "outcome": "1",
+            "label": "Risultato principale",
+            "probabilityPct": 13.4,
+            "conditionalProbabilityPct": 31.7,
+            "isAbsoluteMode": true
+          },
+          {
+            "score": "0-1",
+            "outcome": "2",
+            "label": "Scenario alternativo",
+            "probabilityPct": 10.5,
+            "conditionalProbabilityPct": 36.4,
+            "isAbsoluteMode": false
+          },
+          {
+            "score": "1-1",
+            "outcome": "X",
+            "label": "Scenario sorpresa",
+            "probabilityPct": 13.2,
+            "conditionalProbabilityPct": 46.1,
+            "isAbsoluteMode": false
+          }
+        ],
+        "coherentWithVerdict": true,
+        "method": "Il risultato principale e il punteggio piu probabile condizionato all'esito 1X2 favorito; la moda assoluta resta distinta quando appartiene a un altro esito."
+      },
       "scoreProfile": {
         "bands": [
           {
@@ -3403,7 +3641,7 @@
       "matchId": "frosinone-juventus-2026-27-md-01",
       "generatedAt": "2026-08-14T13:18:37.572Z",
       "status": "preliminary",
-      "engineVersion": "4.6.0",
+      "engineVersion": "4.7.0",
       "probabilities": {
         "final": {
           "1": 21.9,
@@ -3525,6 +3763,70 @@
           "rank": 3
         }
       ],
+      "scoreForecast": {
+        "primary": {
+          "score": "0-1",
+          "outcome": "2",
+          "label": "Risultato principale",
+          "probabilityPct": 11.9,
+          "conditionalProbabilityPct": 22.2,
+          "isAbsoluteMode": true
+        },
+        "modal": {
+          "score": "0-1",
+          "outcome": "2",
+          "label": "Moda assoluta",
+          "probabilityPct": 11.9,
+          "conditionalProbabilityPct": 22.2,
+          "isAbsoluteMode": true
+        },
+        "alternatives": [
+          {
+            "score": "1-1",
+            "outcome": "X",
+            "label": "Scenario alternativo",
+            "probabilityPct": 11.6,
+            "conditionalProbabilityPct": 47.5,
+            "isAbsoluteMode": false
+          },
+          {
+            "score": "1-0",
+            "outcome": "1",
+            "label": "Scenario sorpresa",
+            "probabilityPct": 6.9,
+            "conditionalProbabilityPct": 31.6,
+            "isAbsoluteMode": false
+          }
+        ],
+        "display": [
+          {
+            "score": "0-1",
+            "outcome": "2",
+            "label": "Risultato principale",
+            "probabilityPct": 11.9,
+            "conditionalProbabilityPct": 22.2,
+            "isAbsoluteMode": true
+          },
+          {
+            "score": "1-1",
+            "outcome": "X",
+            "label": "Scenario alternativo",
+            "probabilityPct": 11.6,
+            "conditionalProbabilityPct": 47.5,
+            "isAbsoluteMode": false
+          },
+          {
+            "score": "1-0",
+            "outcome": "1",
+            "label": "Scenario sorpresa",
+            "probabilityPct": 6.9,
+            "conditionalProbabilityPct": 31.6,
+            "isAbsoluteMode": false
+          }
+        ],
+        "coherentWithVerdict": true,
+        "method": "Il risultato principale e il punteggio piu probabile condizionato all'esito 1X2 favorito; la moda assoluta resta distinta quando appartiene a un altro esito."
+      },
       "scoreProfile": {
         "bands": [
           {
@@ -4710,7 +5012,7 @@
       "matchId": "genoa-napoli-2026-27-md-01",
       "generatedAt": "2026-08-14T13:18:37.572Z",
       "status": "preliminary",
-      "engineVersion": "4.6.0",
+      "engineVersion": "4.7.0",
       "probabilities": {
         "final": {
           "1": 22.8,
@@ -4832,6 +5134,70 @@
           "rank": 3
         }
       ],
+      "scoreForecast": {
+        "primary": {
+          "score": "0-1",
+          "outcome": "2",
+          "label": "Risultato principale",
+          "probabilityPct": 12.2,
+          "conditionalProbabilityPct": 23.3,
+          "isAbsoluteMode": true
+        },
+        "modal": {
+          "score": "0-1",
+          "outcome": "2",
+          "label": "Moda assoluta",
+          "probabilityPct": 12.2,
+          "conditionalProbabilityPct": 23.3,
+          "isAbsoluteMode": true
+        },
+        "alternatives": [
+          {
+            "score": "1-1",
+            "outcome": "X",
+            "label": "Scenario alternativo",
+            "probabilityPct": 11.8,
+            "conditionalProbabilityPct": 47.5,
+            "isAbsoluteMode": false
+          },
+          {
+            "score": "1-0",
+            "outcome": "1",
+            "label": "Scenario sorpresa",
+            "probabilityPct": 7.4,
+            "conditionalProbabilityPct": 32.3,
+            "isAbsoluteMode": false
+          }
+        ],
+        "display": [
+          {
+            "score": "0-1",
+            "outcome": "2",
+            "label": "Risultato principale",
+            "probabilityPct": 12.2,
+            "conditionalProbabilityPct": 23.3,
+            "isAbsoluteMode": true
+          },
+          {
+            "score": "1-1",
+            "outcome": "X",
+            "label": "Scenario alternativo",
+            "probabilityPct": 11.8,
+            "conditionalProbabilityPct": 47.5,
+            "isAbsoluteMode": false
+          },
+          {
+            "score": "1-0",
+            "outcome": "1",
+            "label": "Scenario sorpresa",
+            "probabilityPct": 7.4,
+            "conditionalProbabilityPct": 32.3,
+            "isAbsoluteMode": false
+          }
+        ],
+        "coherentWithVerdict": true,
+        "method": "Il risultato principale e il punteggio piu probabile condizionato all'esito 1X2 favorito; la moda assoluta resta distinta quando appartiene a un altro esito."
+      },
       "scoreProfile": {
         "bands": [
           {
@@ -5940,7 +6306,7 @@
       "matchId": "inter-monza-2026-27-md-01",
       "generatedAt": "2026-08-14T13:18:37.572Z",
       "status": "preliminary",
-      "engineVersion": "4.6.0",
+      "engineVersion": "4.7.0",
       "probabilities": {
         "final": {
           "1": 80.6,
@@ -6062,6 +6428,70 @@
           "rank": 3
         }
       ],
+      "scoreForecast": {
+        "primary": {
+          "score": "2-0",
+          "outcome": "1",
+          "label": "Risultato principale",
+          "probabilityPct": 10.3,
+          "conditionalProbabilityPct": 12.8,
+          "isAbsoluteMode": true
+        },
+        "modal": {
+          "score": "2-0",
+          "outcome": "1",
+          "label": "Moda assoluta",
+          "probabilityPct": 10.3,
+          "conditionalProbabilityPct": 12.8,
+          "isAbsoluteMode": true
+        },
+        "alternatives": [
+          {
+            "score": "1-1",
+            "outcome": "X",
+            "label": "Scenario alternativo",
+            "probabilityPct": 5.6,
+            "conditionalProbabilityPct": 45.5,
+            "isAbsoluteMode": false
+          },
+          {
+            "score": "1-2",
+            "outcome": "2",
+            "label": "Scenario sorpresa",
+            "probabilityPct": 2.2,
+            "conditionalProbabilityPct": 31.1,
+            "isAbsoluteMode": false
+          }
+        ],
+        "display": [
+          {
+            "score": "2-0",
+            "outcome": "1",
+            "label": "Risultato principale",
+            "probabilityPct": 10.3,
+            "conditionalProbabilityPct": 12.8,
+            "isAbsoluteMode": true
+          },
+          {
+            "score": "1-1",
+            "outcome": "X",
+            "label": "Scenario alternativo",
+            "probabilityPct": 5.6,
+            "conditionalProbabilityPct": 45.5,
+            "isAbsoluteMode": false
+          },
+          {
+            "score": "1-2",
+            "outcome": "2",
+            "label": "Scenario sorpresa",
+            "probabilityPct": 2.2,
+            "conditionalProbabilityPct": 31.1,
+            "isAbsoluteMode": false
+          }
+        ],
+        "coherentWithVerdict": true,
+        "method": "Il risultato principale e il punteggio piu probabile condizionato all'esito 1X2 favorito; la moda assoluta resta distinta quando appartiene a un altro esito."
+      },
       "scoreProfile": {
         "bands": [
           {
@@ -7294,7 +7724,7 @@
       "matchId": "parma-cagliari-2026-27-md-01",
       "generatedAt": "2026-08-14T13:18:37.572Z",
       "status": "preliminary",
-      "engineVersion": "4.6.0",
+      "engineVersion": "4.7.0",
       "probabilities": {
         "final": {
           "1": 38.7,
@@ -7416,6 +7846,70 @@
           "rank": 3
         }
       ],
+      "scoreForecast": {
+        "primary": {
+          "score": "1-0",
+          "outcome": "1",
+          "label": "Risultato principale",
+          "probabilityPct": 12.4,
+          "conditionalProbabilityPct": 32.1,
+          "isAbsoluteMode": false
+        },
+        "modal": {
+          "score": "1-1",
+          "outcome": "X",
+          "label": "Moda assoluta",
+          "probabilityPct": 13.3,
+          "conditionalProbabilityPct": 46.5,
+          "isAbsoluteMode": true
+        },
+        "alternatives": [
+          {
+            "score": "0-1",
+            "outcome": "2",
+            "label": "Scenario alternativo",
+            "probabilityPct": 11.2,
+            "conditionalProbabilityPct": 34.1,
+            "isAbsoluteMode": false
+          },
+          {
+            "score": "1-1",
+            "outcome": "X",
+            "label": "Scenario sorpresa",
+            "probabilityPct": 13.3,
+            "conditionalProbabilityPct": 46.5,
+            "isAbsoluteMode": true
+          }
+        ],
+        "display": [
+          {
+            "score": "1-0",
+            "outcome": "1",
+            "label": "Risultato principale",
+            "probabilityPct": 12.4,
+            "conditionalProbabilityPct": 32.1,
+            "isAbsoluteMode": false
+          },
+          {
+            "score": "1-1",
+            "outcome": "X",
+            "label": "Moda assoluta",
+            "probabilityPct": 13.3,
+            "conditionalProbabilityPct": 46.5,
+            "isAbsoluteMode": true
+          },
+          {
+            "score": "0-1",
+            "outcome": "2",
+            "label": "Scenario alternativo",
+            "probabilityPct": 11.2,
+            "conditionalProbabilityPct": 34.1,
+            "isAbsoluteMode": false
+          }
+        ],
+        "coherentWithVerdict": true,
+        "method": "Il risultato principale e il punteggio piu probabile condizionato all'esito 1X2 favorito; la moda assoluta resta distinta quando appartiene a un altro esito."
+      },
       "scoreProfile": {
         "bands": [
           {
@@ -8521,7 +9015,7 @@
       "matchId": "roma-fiorentina-2026-27-md-01",
       "generatedAt": "2026-08-14T13:18:37.572Z",
       "status": "preliminary",
-      "engineVersion": "4.6.0",
+      "engineVersion": "4.7.0",
       "probabilities": {
         "final": {
           "1": 64.4,
@@ -8643,6 +9137,70 @@
           "rank": 3
         }
       ],
+      "scoreForecast": {
+        "primary": {
+          "score": "1-0",
+          "outcome": "1",
+          "label": "Risultato principale",
+          "probabilityPct": 12.5,
+          "conditionalProbabilityPct": 19.4,
+          "isAbsoluteMode": true
+        },
+        "modal": {
+          "score": "1-0",
+          "outcome": "1",
+          "label": "Moda assoluta",
+          "probabilityPct": 12.5,
+          "conditionalProbabilityPct": 19.4,
+          "isAbsoluteMode": true
+        },
+        "alternatives": [
+          {
+            "score": "1-1",
+            "outcome": "X",
+            "label": "Scenario alternativo",
+            "probabilityPct": 10,
+            "conditionalProbabilityPct": 47.5,
+            "isAbsoluteMode": false
+          },
+          {
+            "score": "0-1",
+            "outcome": "2",
+            "label": "Scenario sorpresa",
+            "probabilityPct": 5.1,
+            "conditionalProbabilityPct": 35,
+            "isAbsoluteMode": false
+          }
+        ],
+        "display": [
+          {
+            "score": "1-0",
+            "outcome": "1",
+            "label": "Risultato principale",
+            "probabilityPct": 12.5,
+            "conditionalProbabilityPct": 19.4,
+            "isAbsoluteMode": true
+          },
+          {
+            "score": "1-1",
+            "outcome": "X",
+            "label": "Scenario alternativo",
+            "probabilityPct": 10,
+            "conditionalProbabilityPct": 47.5,
+            "isAbsoluteMode": false
+          },
+          {
+            "score": "0-1",
+            "outcome": "2",
+            "label": "Scenario sorpresa",
+            "probabilityPct": 5.1,
+            "conditionalProbabilityPct": 35,
+            "isAbsoluteMode": false
+          }
+        ],
+        "coherentWithVerdict": true,
+        "method": "Il risultato principale e il punteggio piu probabile condizionato all'esito 1X2 favorito; la moda assoluta resta distinta quando appartiene a un altro esito."
+      },
       "scoreProfile": {
         "bands": [
           {
@@ -9752,7 +10310,7 @@
       "matchId": "torino-milan-2026-27-md-01",
       "generatedAt": "2026-08-14T13:18:37.572Z",
       "status": "preliminary",
-      "engineVersion": "4.6.0",
+      "engineVersion": "4.7.0",
       "probabilities": {
         "final": {
           "1": 24.1,
@@ -9874,6 +10432,70 @@
           "rank": 3
         }
       ],
+      "scoreForecast": {
+        "primary": {
+          "score": "1-2",
+          "outcome": "2",
+          "label": "Risultato principale",
+          "probabilityPct": 9.8,
+          "conditionalProbabilityPct": 18.5,
+          "isAbsoluteMode": false
+        },
+        "modal": {
+          "score": "1-1",
+          "outcome": "X",
+          "label": "Moda assoluta",
+          "probabilityPct": 10.8,
+          "conditionalProbabilityPct": 46.8,
+          "isAbsoluteMode": true
+        },
+        "alternatives": [
+          {
+            "score": "2-1",
+            "outcome": "1",
+            "label": "Scenario alternativo",
+            "probabilityPct": 6.2,
+            "conditionalProbabilityPct": 25.7,
+            "isAbsoluteMode": false
+          },
+          {
+            "score": "1-1",
+            "outcome": "X",
+            "label": "Scenario sorpresa",
+            "probabilityPct": 10.8,
+            "conditionalProbabilityPct": 46.8,
+            "isAbsoluteMode": true
+          }
+        ],
+        "display": [
+          {
+            "score": "1-2",
+            "outcome": "2",
+            "label": "Risultato principale",
+            "probabilityPct": 9.8,
+            "conditionalProbabilityPct": 18.5,
+            "isAbsoluteMode": false
+          },
+          {
+            "score": "1-1",
+            "outcome": "X",
+            "label": "Moda assoluta",
+            "probabilityPct": 10.8,
+            "conditionalProbabilityPct": 46.8,
+            "isAbsoluteMode": true
+          },
+          {
+            "score": "2-1",
+            "outcome": "1",
+            "label": "Scenario alternativo",
+            "probabilityPct": 6.2,
+            "conditionalProbabilityPct": 25.7,
+            "isAbsoluteMode": false
+          }
+        ],
+        "coherentWithVerdict": true,
+        "method": "Il risultato principale e il punteggio piu probabile condizionato all'esito 1X2 favorito; la moda assoluta resta distinta quando appartiene a un altro esito."
+      },
       "scoreProfile": {
         "bands": [
           {
@@ -10983,7 +11605,7 @@
       "matchId": "udinese-como-2026-27-md-01",
       "generatedAt": "2026-08-14T13:18:37.572Z",
       "status": "preliminary",
-      "engineVersion": "4.6.0",
+      "engineVersion": "4.7.0",
       "probabilities": {
         "final": {
           "1": 25.2,
@@ -11105,6 +11727,70 @@
           "rank": 3
         }
       ],
+      "scoreForecast": {
+        "primary": {
+          "score": "0-1",
+          "outcome": "2",
+          "label": "Risultato principale",
+          "probabilityPct": 13.7,
+          "conditionalProbabilityPct": 28.7,
+          "isAbsoluteMode": true
+        },
+        "modal": {
+          "score": "0-1",
+          "outcome": "2",
+          "label": "Moda assoluta",
+          "probabilityPct": 13.7,
+          "conditionalProbabilityPct": 28.7,
+          "isAbsoluteMode": true
+        },
+        "alternatives": [
+          {
+            "score": "1-1",
+            "outcome": "X",
+            "label": "Scenario alternativo",
+            "probabilityPct": 12.7,
+            "conditionalProbabilityPct": 46.6,
+            "isAbsoluteMode": false
+          },
+          {
+            "score": "1-0",
+            "outcome": "1",
+            "label": "Scenario sorpresa",
+            "probabilityPct": 9.1,
+            "conditionalProbabilityPct": 36.3,
+            "isAbsoluteMode": false
+          }
+        ],
+        "display": [
+          {
+            "score": "0-1",
+            "outcome": "2",
+            "label": "Risultato principale",
+            "probabilityPct": 13.7,
+            "conditionalProbabilityPct": 28.7,
+            "isAbsoluteMode": true
+          },
+          {
+            "score": "1-1",
+            "outcome": "X",
+            "label": "Scenario alternativo",
+            "probabilityPct": 12.7,
+            "conditionalProbabilityPct": 46.6,
+            "isAbsoluteMode": false
+          },
+          {
+            "score": "1-0",
+            "outcome": "1",
+            "label": "Scenario sorpresa",
+            "probabilityPct": 9.1,
+            "conditionalProbabilityPct": 36.3,
+            "isAbsoluteMode": false
+          }
+        ],
+        "coherentWithVerdict": true,
+        "method": "Il risultato principale e il punteggio piu probabile condizionato all'esito 1X2 favorito; la moda assoluta resta distinta quando appartiene a un altro esito."
+      },
       "scoreProfile": {
         "bands": [
           {
@@ -12214,7 +12900,7 @@
       "matchId": "venezia-lecce-2026-27-md-01",
       "generatedAt": "2026-08-14T13:18:37.572Z",
       "status": "preliminary",
-      "engineVersion": "4.6.0",
+      "engineVersion": "4.7.0",
       "probabilities": {
         "final": {
           "1": 42.7,
@@ -12336,6 +13022,70 @@
           "rank": 3
         }
       ],
+      "scoreForecast": {
+        "primary": {
+          "score": "1-0",
+          "outcome": "1",
+          "label": "Risultato principale",
+          "probabilityPct": 12.6,
+          "conditionalProbabilityPct": 29.6,
+          "isAbsoluteMode": false
+        },
+        "modal": {
+          "score": "1-1",
+          "outcome": "X",
+          "label": "Moda assoluta",
+          "probabilityPct": 13,
+          "conditionalProbabilityPct": 46.8,
+          "isAbsoluteMode": true
+        },
+        "alternatives": [
+          {
+            "score": "0-1",
+            "outcome": "2",
+            "label": "Scenario alternativo",
+            "probabilityPct": 10,
+            "conditionalProbabilityPct": 34,
+            "isAbsoluteMode": false
+          },
+          {
+            "score": "1-1",
+            "outcome": "X",
+            "label": "Scenario sorpresa",
+            "probabilityPct": 13,
+            "conditionalProbabilityPct": 46.8,
+            "isAbsoluteMode": true
+          }
+        ],
+        "display": [
+          {
+            "score": "1-0",
+            "outcome": "1",
+            "label": "Risultato principale",
+            "probabilityPct": 12.6,
+            "conditionalProbabilityPct": 29.6,
+            "isAbsoluteMode": false
+          },
+          {
+            "score": "1-1",
+            "outcome": "X",
+            "label": "Moda assoluta",
+            "probabilityPct": 13,
+            "conditionalProbabilityPct": 46.8,
+            "isAbsoluteMode": true
+          },
+          {
+            "score": "0-1",
+            "outcome": "2",
+            "label": "Scenario alternativo",
+            "probabilityPct": 10,
+            "conditionalProbabilityPct": 34,
+            "isAbsoluteMode": false
+          }
+        ],
+        "coherentWithVerdict": true,
+        "method": "Il risultato principale e il punteggio piu probabile condizionato all'esito 1X2 favorito; la moda assoluta resta distinta quando appartiene a un altro esito."
+      },
       "scoreProfile": {
         "bands": [
           {

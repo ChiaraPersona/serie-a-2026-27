@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Pronostico partita Serie A",
   "type": "object",
-  "required": ["matchId", "engineVersion", "probabilities", "expectedGoals", "headToHead", "exactScores", "scoreProfile", "verdict", "confidence", "surprise", "matchProjection", "teamProjections", "likelyBooked", "mvpCandidate", "scenarios", "marketComparison", "recommendations", "combinations", "playerMarkets", "market", "dataQuality"],
+  "required": ["matchId", "engineVersion", "probabilities", "expectedGoals", "headToHead", "exactScores", "scoreForecast", "scoreProfile", "verdict", "confidence", "surprise", "matchProjection", "teamProjections", "likelyBooked", "mvpCandidate", "scenarios", "marketComparison", "recommendations", "combinations", "playerMarkets", "market", "dataQuality"],
   "properties": {
     "matchId": { "type": "string" },
     "engineVersion": { "type": "string" },
@@ -11,6 +11,7 @@
     "expectedGoals": { "type": "object" },
     "headToHead": { "type": "object" },
     "exactScores": { "type": "array", "minItems": 3, "maxItems": 3 },
+    "scoreForecast": { "type": "object" },
     "scoreProfile": { "type": "object" },
     "modelValidation": { "type": "object" },
     "verdict": { "type": "object" },

@@ -1,6 +1,6 @@
 "use strict";
 
-const ENGINE_VERSION = "4.6.0";
+const ENGINE_VERSION = "4.7.0";
 const OUTCOMES = ["1", "X", "2"];
 const WEIGHTS = Object.freeze({ venueHistorical: 0.46, overallHistorical: 0.25, recentForm: 0.16, tacticalMatchup: 0.07, probableLineup: 0.05, objectives: 0.01 });
 const MVP_WEIGHTS = Object.freeze({ resultScenario: 0.3, individualProduction: 0.2, historicalRating: 0.15, officialMvpHistory: 0.15, tacticalFit: 0.1, opponentHistory: 0.05, dataReliability: 0.05 });
@@ -356,6 +356,49 @@ function exactScores(matrix, expectedTotal) {
   }
   return selected
     .map((score, index) => ({ score: `${score.home}-${score.away}`, probabilityPct: round(score.probability * 100, 1), rank: index + 1 }));
+}
+
+function scoreForecast(matrix, final) {
+  const orderedScores = [...matrix].sort((a, b) => b.probability - a.probability || a.home + a.away - b.home - b.away);
+  const outcomeOf = score => score.home > score.away ? "1" : score.home === score.away ? "X" : "2";
+  const outcomeProbability = outcome => final[OUTCOMES.indexOf(outcome)];
+  const outcomeOrder = OUTCOMES.map((outcome, index) => ({ outcome, probability: final[index] })).sort((a, b) => b.probability - a.probability);
+  const bestFor = outcome => orderedScores.find(score => outcomeOf(score) === outcome);
+  const decorate = (score, label) => {
+    const outcome = outcomeOf(score);
+    return {
+      score: `${score.home}-${score.away}`,
+      outcome,
+      label,
+      probabilityPct: round(score.probability * 100, 1),
+      conditionalProbabilityPct: round(score.probability / outcomeProbability(outcome) * 100, 1),
+      isAbsoluteMode: score === orderedScores[0]
+    };
+  };
+  const primaryScore = bestFor(outcomeOrder[0].outcome);
+  const modalScore = orderedScores[0];
+  const primary = decorate(primaryScore, "Risultato principale");
+  const modal = decorate(modalScore, "Moda assoluta");
+  const alternatives = outcomeOrder.slice(1).map((item, index) => decorate(bestFor(item.outcome), index === 0 ? "Scenario alternativo" : "Scenario sorpresa"));
+  const display = [primary];
+  if (modal.score !== primary.score) display.push(modal);
+  for (const candidate of alternatives) {
+    if (display.some(item => item.score === candidate.score)) continue;
+    display.push(candidate);
+    if (display.length === 3) break;
+  }
+  for (const score of orderedScores) {
+    if (display.length === 3) break;
+    if (!display.some(item => item.score === `${score.home}-${score.away}`)) display.push(decorate(score, "Scenario alternativo"));
+  }
+  return {
+    primary,
+    modal,
+    alternatives,
+    display,
+    coherentWithVerdict: primary.outcome === outcomeOrder[0].outcome,
+    method: "Il risultato principale e il punteggio piu probabile condizionato all'esito 1X2 favorito; la moda assoluta resta distinta quando appartiene a un altro esito."
+  };
 }
 
 function scoreProfile(matrix, exact) {
@@ -914,6 +957,7 @@ function predictMatch(input) {
     basis: "Somma delle medie squadra; intervallo p20-p80 del totale con varianze indipendenti."
   };
   const exact = exactScores(matrix, expected.total);
+  const forecast = scoreForecast(matrix, final);
   return {
     matchId: input.match.id,
     generatedAt: input.generatedAt,
@@ -929,6 +973,7 @@ function predictMatch(input) {
     expectedGoals: expected,
     headToHead: expected.components.headToHead,
     exactScores: exact,
+    scoreForecast: forecast,
     scoreProfile: scoreProfile(matrix, exact),
     verdict: {
       outcome: orderedOutcomes[0].outcome,
