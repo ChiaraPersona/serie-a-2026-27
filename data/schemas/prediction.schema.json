@@ -18,7 +18,31 @@
     "surprise": { "type": "object" },
     "teamProjections": { "type": "array", "minItems": 2, "maxItems": 2 },
     "likelyBooked": { "type": "array", "minItems": 5, "maxItems": 5 },
-    "mvpCandidate": { "type": "object" },
+    "mvpCandidate": {
+      "type": "object",
+      "required": ["name", "teamId", "role", "score", "evidence", "confidence", "weights", "components", "mvpHistory", "selectionRule", "surpriseCandidate"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "teamId": { "type": "string", "minLength": 1 },
+        "role": { "type": "string", "minLength": 1 },
+        "score": { "type": "number", "minimum": 0, "maximum": 100 },
+        "evidence": { "type": "array", "minItems": 3, "items": { "type": "string" } },
+        "confidence": { "enum": ["alta", "moderata", "prudente"] },
+        "weights": { "type": "object" },
+        "components": { "type": "object" },
+        "mvpHistory": {
+          "type": "object",
+          "required": ["season", "provider", "award", "status", "awards", "recentAwards", "opponentAwards", "appearances", "starts", "minutes", "ratePerStartPct", "awardsPer1000Minutes", "sourceUrl"],
+          "properties": {
+            "status": { "enum": ["official", "N/D"] },
+            "awards": { "type": ["integer", "null"], "minimum": 0 },
+            "recentAwards": { "type": ["integer", "null"], "minimum": 0 },
+            "opponentAwards": { "type": ["integer", "null"], "minimum": 0 }
+          }
+        },
+        "surpriseCandidate": { "type": ["object", "null"] }
+      }
+    },
     "scenarios": { "type": "array", "minItems": 3, "maxItems": 3 },
     "marketComparison": { "type": "array", "minItems": 16 },
     "recommendations": { "type": "object" },

@@ -1,8 +1,9 @@
 "use strict";
 
-const ENGINE_VERSION = "4.4.0";
+const ENGINE_VERSION = "4.5.0";
 const OUTCOMES = ["1", "X", "2"];
 const WEIGHTS = Object.freeze({ venueHistorical: 0.46, overallHistorical: 0.25, recentForm: 0.16, tacticalMatchup: 0.07, probableLineup: 0.05, objectives: 0.01 });
+const MVP_WEIGHTS = Object.freeze({ resultScenario: 0.3, individualProduction: 0.2, historicalRating: 0.15, officialMvpHistory: 0.15, tacticalFit: 0.1, opponentHistory: 0.05, dataReliability: 0.05 });
 
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 const round = (value, digits = 1) => Number(value.toFixed(digits));
@@ -486,27 +487,112 @@ function teamProjection(team, profile, opponentProfile, squad, disciplineProfile
   };
 }
 
-function mvpCandidate(homeTeam, awayTeam, homeSquad, awaySquad, homeProfile, awayProfile, final, expected) {
+function previousSerieA(candidate) {
+  return (candidate.player?.previousSeason?.totalsByCompetition || []).some(row => cleanName(row.competition) === "serie a");
+}
+
+function rateFromTotals(totals, per90, key) {
+  if (Number.isFinite(per90[key])) return per90[key];
+  if (Number.isFinite(totals[key]) && totals.appearances > 0) return totals[key] / totals.appearances;
+  return null;
+}
+
+function officialMvpProfile(candidate, history, opponentTeamId, sourceUrl) {
+  const key = cleanName(candidate.player?.name || candidate.name);
+  const record = history?.get(key) || null;
+  const eligible = Boolean(record || previousSerieA(candidate));
+  const totals = candidate.player?.previousSeason?.totals || {};
+  if (!eligible) return { season: "2025-26", provider: "Lega Serie A", award: "Panini Player of the Match", status: "N/D", awards: null, recentAwards: null, opponentAwards: null, appearances: totals.appearances ?? null, starts: totals.starts ?? null, minutes: totals.minutes ?? null, ratePerStartPct: null, awardsPer1000Minutes: null, sourceUrl };
+  const awards = record?.awards || 0;
+  const starts = totals.starts || 0;
+  const appearances = totals.appearances || 0;
+  const minutes = totals.minutes || 0;
+  const opponentAwards = (record?.matches || []).filter(match => (match.homeTeamId === candidate.teamId && match.awayTeamId === opponentTeamId) || (match.awayTeamId === candidate.teamId && match.homeTeamId === opponentTeamId)).length;
+  return {
+    season: "2025-26",
+    provider: "Lega Serie A",
+    award: "Panini Player of the Match",
+    status: "official",
+    awards,
+    recentAwards: record?.recentAwards || 0,
+    opponentAwards,
+    appearances: appearances || null,
+    starts: starts || null,
+    minutes: minutes || null,
+    ratePerStartPct: starts ? round(awards / starts * 100, 1) : appearances ? round(awards / appearances * 100, 1) : null,
+    awardsPer1000Minutes: minutes ? round(awards / minutes * 1000, 2) : null,
+    sourceUrl
+  };
+}
+
+function mvpCandidate(homeTeam, awayTeam, homeSquad, awaySquad, homeProfile, awayProfile, final, expected, mvpHistory, fantasyHistory, mvpSourceUrl) {
   const candidates = [
-    ...lineupPlayers(homeTeam, homeSquad).map(candidate => ({ ...candidate, teamProbability: final[0], expectedGoals: expected.home, profile: homeProfile })),
-    ...lineupPlayers(awayTeam, awaySquad).map(candidate => ({ ...candidate, teamProbability: final[2], expectedGoals: expected.away, profile: awayProfile }))
-  ].filter(candidate => candidate.role !== "Portiere").map(candidate => {
+    ...lineupPlayers(homeTeam, homeSquad).map(candidate => ({ ...candidate, teamProbability: final[0], expectedGoals: expected.home, profile: homeProfile, opponentTeamId: awayTeam.id })),
+    ...lineupPlayers(awayTeam, awaySquad).map(candidate => ({ ...candidate, teamProbability: final[2], expectedGoals: expected.away, profile: awayProfile, opponentTeamId: homeTeam.id }))
+  ].map(candidate => {
     const per90 = candidate.player?.previousSeason?.totals?.per90 || {};
-    const minutes = candidate.player?.previousSeason?.totals?.minutes || 0;
+    const totals = candidate.player?.previousSeason?.totals || {};
+    const minutes = totals.minutes || 0;
+    const appearances = totals.appearances || 0;
     const normalized = cleanName(candidate.name);
     const leaderRating = candidate.profile?.leaders?.rating?.find(item => cleanName(item.player).endsWith(normalized) || normalized.endsWith(cleanName(item.player).split(" ").at(-1)))?.value || 0;
-    const production = (per90.goals ?? 0.08) * 5 + (per90.assists ?? 0.06) * 3 + (per90.shotsOnTarget ?? 0.35) * 0.8;
-    const roleBoost = candidate.role === "Attaccante" ? 0.75 : candidate.role === "Centrocampista" ? 0.4 : 0.12;
-    const score = production + roleBoost + candidate.teamProbability * 1.8 + candidate.expectedGoals * 0.45 + Math.max(0, leaderRating - 6.4) * 1.2 + clamp(minutes / 2200, 0, 1) * 0.25;
-    return { ...candidate, score, per90 };
+    const historyKey = cleanName(candidate.player?.name || candidate.name);
+    const fantasy = fantasyHistory?.get(historyKey)?.fantasyScoring || null;
+    const history = officialMvpProfile(candidate, mvpHistory, candidate.opponentTeamId, mvpSourceUrl);
+    const goals = rateFromTotals(totals, per90, "goals");
+    const assists = rateFromTotals(totals, per90, "assists");
+    const shotsOnTarget = rateFromTotals(totals, per90, "shotsOnTarget");
+    const productionScore = clamp((goals ?? 0.12) / 0.7 * 55 + (assists ?? 0.08) / 0.4 * 20 + (shotsOnTarget ?? 0.4) / 1.5 * 25, 0, 100);
+    const rating = fantasy?.averageRating ?? (leaderRating || null);
+    const ratingScore = rating == null ? 50 : clamp((rating - 5.7) / 1.1 * 100, 0, 100);
+    const mvpFrequency = history.ratePerStartPct ?? (history.appearances ? history.awards / history.appearances * 100 : null);
+    const mvpHistoryScore = history.status === "official" ? clamp(15 + (mvpFrequency || 0) / 20 * 60 + (history.recentAwards || 0) / 3 * 25, 15, 100) : 50;
+    const opponentScore = history.status === "official" ? clamp(20 + (history.opponentAwards || 0) * 32, 20, 100) : 50;
+    const roleFit = candidate.role === "Attaccante" ? 12 : candidate.role === "Centrocampista" ? 7 : candidate.role === "Portiere" ? 4 : 5;
+    const tacticalScore = clamp(38 + candidate.expectedGoals * 22 + roleFit + (candidate.role === "Portiere" ? (1 - candidate.teamProbability) * 12 : 0), 25, 95);
+    const dataReliability = clamp((candidate.player ? 35 : 10) + (minutes || appearances ? 25 : 5) + (rating != null ? 20 : 5) + (history.status === "official" ? 20 : 5), 0, 100);
+    const components = {
+      resultScenario: round(candidate.teamProbability * 100, 1),
+      individualProduction: round(productionScore, 1),
+      historicalRating: round(ratingScore, 1),
+      officialMvpHistory: round(mvpHistoryScore, 1),
+      tacticalFit: round(tacticalScore, 1),
+      opponentHistory: round(opponentScore, 1),
+      dataReliability: round(dataReliability, 1)
+    };
+    const score = sum(Object.entries(MVP_WEIGHTS).map(([key, weight]) => components[key] * weight));
+    return { ...candidate, score, per90, totals, goals, assists, shotsOnTarget, rating, history, components };
   }).sort((a, b) => b.score - a.score);
-  const best = candidates[0];
+
+  const favorite = final[0] >= final[2] ? { teamId: homeTeam.id, probability: final[0], opponentProbability: final[2] } : { teamId: awayTeam.id, probability: final[2], opponentProbability: final[0] };
+  const favoriteRule = favorite.probability >= 0.5 && favorite.probability - favorite.opponentProbability >= 0.15;
+  const best = favoriteRule ? candidates.find(candidate => candidate.teamId === favorite.teamId) || candidates[0] : candidates[0];
+  const overallBest = candidates[0];
+  const surprise = favoriteRule && overallBest.teamId !== best.teamId ? overallBest : null;
   const evidence = [];
   if (best.per90.goals != null) evidence.push(`${round(best.per90.goals, 2)} gol/90`);
+  else if (Number.isFinite(best.totals.goals) && best.totals.appearances) evidence.push(`${best.totals.goals} gol in ${best.totals.appearances} presenze`);
   if (best.per90.assists != null) evidence.push(`${round(best.per90.assists, 2)} assist/90`);
   if (best.per90.shotsOnTarget != null) evidence.push(`${round(best.per90.shotsOnTarget, 2)} tiri in porta/90`);
-  evidence.push(`produzione attesa squadra ${round(best.expectedGoals, 2)} gol`);
-  return { name: best.name, teamId: best.teamId, role: best.role, evidence, confidence: best.player ? "moderata" : "prudente" };
+  else if (Number.isFinite(best.totals.shotsOnTarget)) evidence.push(`${best.totals.shotsOnTarget} tiri in porta stagionali`);
+  evidence.push(best.history.status === "official"
+    ? `${best.history.awards} MVP ufficiali${best.history.ratePerStartPct != null ? ` · ${best.history.ratePerStartPct}% sulle titolarità` : ""}`
+    : "storico MVP Serie A: N/D");
+  if (best.history.recentAwards) evidence.push(`${best.history.recentAwards} MVP nelle ultime 10 giornate`);
+  evidence.push(`scenario squadra ${round(best.teamProbability * 100, 1)}% vittoria · ${round(best.expectedGoals, 2)} gol attesi`);
+  return {
+    name: best.name,
+    teamId: best.teamId,
+    role: best.role,
+    score: round(best.score, 1),
+    evidence,
+    confidence: best.components.dataReliability >= 75 ? "alta" : best.components.dataReliability >= 55 ? "moderata" : "prudente",
+    weights: MVP_WEIGHTS,
+    components: best.components,
+    mvpHistory: best.history,
+    selectionRule: favoriteRule ? "favorite-over-50-gap-15" : "scenario-weighted",
+    surpriseCandidate: surprise ? { name: surprise.name, teamId: surprise.teamId, role: surprise.role, score: round(surprise.score, 1), mvpHistory: surprise.history } : null
+  };
 }
 
 const scoreOutcome = score => score.home > score.away ? "1" : score.home === score.away ? "X" : "2";
@@ -781,7 +867,7 @@ function predictMatch(input) {
     surprise,
     teamProjections,
     likelyBooked: bookingCandidates(input.homeTeam, input.awayTeam, input.homeSquad, input.awaySquad, input.homeProfile, input.awayProfile),
-    mvpCandidate: mvpCandidate(input.homeTeam, input.awayTeam, input.homeSquad, input.awaySquad, input.homeProfile, input.awayProfile, final, expected),
+    mvpCandidate: mvpCandidate(input.homeTeam, input.awayTeam, input.homeSquad, input.awaySquad, input.homeProfile, input.awayProfile, final, expected, input.mvpHistory, input.fantasyHistory, input.mvpSourceUrl),
     scenarios: matchScenarios(input, final, expected),
     marketComparison: evaluatedMarkets.rows,
     recommendations: evaluatedMarkets.selections,
@@ -812,4 +898,4 @@ function predictMatch(input) {
   };
 }
 
-module.exports = { ENGINE_VERSION, OUTCOMES, WEIGHTS, attackChannels, findMainOneXTwo, marketProbabilities, predictMatch };
+module.exports = { ENGINE_VERSION, OUTCOMES, WEIGHTS, MVP_WEIGHTS, attackChannels, findMainOneXTwo, marketProbabilities, predictMatch };

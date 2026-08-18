@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Storico individuale Player of the Match Serie A",
+  "type": "object",
+  "required": ["schemaVersion", "competition", "season", "provider", "award", "sourceUrl", "apiUrl", "retrievedAt", "methodology", "coverage", "players", "events"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "competition": { "const": "serie-a" },
+    "season": { "const": "2025-26" },
+    "provider": { "const": "Lega Serie A" },
+    "award": { "const": "Panini Player of the Match" },
+    "sourceUrl": { "type": "string", "format": "uri" },
+    "apiUrl": { "type": "string", "format": "uri" },
+    "retrievedAt": { "type": "string" },
+    "coverage": {
+      "type": "object",
+      "required": ["awards", "uniquePlayers", "matchdays", "expectedLeagueMatches", "completionPct"],
+      "properties": {
+        "awards": { "type": "integer", "minimum": 1, "maximum": 380 },
+        "uniquePlayers": { "type": "integer", "minimum": 1 },
+        "matchdays": { "type": "array", "items": { "type": "integer", "minimum": 1, "maximum": 38 } },
+        "expectedLeagueMatches": { "const": 380 },
+        "completionPct": { "type": "number", "minimum": 0, "maximum": 100 }
+      }
+    },
+    "players": { "type": "array", "items": { "type": "object" } },
+    "events": { "type": "array", "items": { "type": "object" } }
+  }
+}

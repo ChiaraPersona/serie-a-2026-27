@@ -3,7 +3,7 @@
   if (!root) return;
 
   const base = document.body.dataset.depth === "team" ? "../" : "";
-  const release = "20260809-reading-detail-polish";
+  const release = "20260818-lineups-mirrored";
   const defaultPlayerPhoto = `${base}assets/images/players/player-placeholder.png`;
   const esc = value => String(value ?? "").replace(/[&<>\"]/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[char]));
   const contrastInk = color => {
@@ -92,7 +92,7 @@
     const units = [1, ...shape];
     let offset = 0;
     const rows = units.map((size, unitIndex) => {
-      const players = lineup.players.slice(offset, offset + size);
+      const players = lineup.players.slice(offset, offset + size).reverse();
       offset += size;
       return `<div class="probable-lineup-row probable-lineup-unit-${unitIndex}" style="--lineup-count:${size}">${players.map(lineupName => `<article class="probable-lineup-player"><strong>${esc(lineupName)}</strong></article>`).join("")}</div>`;
     }).reverse().join("");
