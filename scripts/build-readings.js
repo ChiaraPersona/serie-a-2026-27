@@ -59,6 +59,22 @@ for (const reading of readings) {
     };
     reading.updatedAt = String(injuries.importedAt).slice(0, 10);
   }
+  if (!reading.sections.referee.content) {
+    const match = matchById.get(reading.matchId);
+    const assignment = match.refereeAssignment;
+    if (assignment) {
+      reading.sections.referee = {
+        content: `Designazione ufficiale AIA: ${assignment.referee.name} dirigerÃ  la gara. Assistenti, IV ufficiale e sala VAR sono riportati senza attribuire alla designazione un effetto automatico sul pronostico.`,
+        signals: [
+          `Assistenti: ${assignment.assistants.join(" - ")}.`,
+          `IV ufficiale: ${assignment.fourthOfficial}.`,
+          `VAR: ${assignment.var}; AVAR: ${assignment.avar}.`
+        ],
+        sources: [{ label: "AIA-FIGC - designazioni 1Âª giornata", url: "https://www.aia-figc.it/news/serie-a-enilive-designazioni-1a-giornata-27569/" }]
+      };
+      reading.updatedAt = [reading.updatedAt, "2026-08-19"].sort().at(-1);
+    }
+  }
   if (!reading.sections.market.content) {
     const event = oddsByMatch.get(reading.matchId);
     const mainMarket = event?.markets.find(market => market.marketName === "1X2 ESITO FINALE" && market.status === "open");

@@ -189,7 +189,7 @@ const output = {
     surpriseFactor: "Apertura della gara, probabilita dell'esito sfavorito, divergenza mercato-dati e incompletezza prepartita. Non determina da solo il verdetto.",
     spatialModel: "Valuta separatamente sviluppo a sinistra, al centro e a destra e lo incrocia con le vulnerabilita avversarie.",
     goalModel: "Forze relative casa/trasferta e complessive, ultime otto gare corrette per avversario, xG Understat al 25% quando sono coperti entrambi i club, probabile XI, divisione di provenienza, matrice Poisson e correttivo H2H limitato al 5% per lato.",
-    scoreSelectionModel: "Il risultato principale e selezionato dentro l'esito 1X2 piu probabile; la moda assoluta della matrice resta separata quando appartiene a un esito diverso.",
+    scoreSelectionModel: "Il risultato principale e selezionato dentro l'esito 1X2 piu probabile; gli altri due sono i punteggi successivi piu probabili della matrice, senza imporre uno scenario sorpresa.",
     scoreModel: {
       type: "poisson",
       calibration: "none",

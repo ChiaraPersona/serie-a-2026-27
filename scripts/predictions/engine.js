@@ -1,6 +1,6 @@
 "use strict";
 
-const ENGINE_VERSION = "4.7.0";
+const ENGINE_VERSION = "4.7.1";
 const OUTCOMES = ["1", "X", "2"];
 const WEIGHTS = Object.freeze({ venueHistorical: 0.46, overallHistorical: 0.25, recentForm: 0.16, tacticalMatchup: 0.07, probableLineup: 0.05, objectives: 0.01 });
 const MVP_WEIGHTS = Object.freeze({ resultScenario: 0.3, individualProduction: 0.2, historicalRating: 0.15, officialMvpHistory: 0.15, tacticalFit: 0.1, opponentHistory: 0.05, dataReliability: 0.05 });
@@ -379,25 +379,20 @@ function scoreForecast(matrix, final) {
   const modalScore = orderedScores[0];
   const primary = decorate(primaryScore, "Risultato principale");
   const modal = decorate(modalScore, "Moda assoluta");
-  const alternatives = outcomeOrder.slice(1).map((item, index) => decorate(bestFor(item.outcome), index === 0 ? "Scenario alternativo" : "Scenario sorpresa"));
   const display = [primary];
   if (modal.score !== primary.score) display.push(modal);
-  for (const candidate of alternatives) {
-    if (display.some(item => item.score === candidate.score)) continue;
-    display.push(candidate);
-    if (display.length === 3) break;
-  }
   for (const score of orderedScores) {
     if (display.length === 3) break;
-    if (!display.some(item => item.score === `${score.home}-${score.away}`)) display.push(decorate(score, "Scenario alternativo"));
+    if (!display.some(item => item.score === `${score.home}-${score.away}`)) display.push(decorate(score, "Altro risultato probabile"));
   }
   return {
     primary,
     modal,
-    alternatives,
+    alternatives: display.slice(1),
     display,
     coherentWithVerdict: primary.outcome === outcomeOrder[0].outcome,
-    method: "Il risultato principale e il punteggio piu probabile condizionato all'esito 1X2 favorito; la moda assoluta resta distinta quando appartiene a un altro esito."
+    forcedOutcomeScenarios: false,
+    method: "Il risultato principale e il punteggio piu probabile condizionato all'esito 1X2 favorito; gli altri due sono i punteggi successivi piu probabili della matrice, senza forzare pareggio o sorpresa."
   };
 }
 

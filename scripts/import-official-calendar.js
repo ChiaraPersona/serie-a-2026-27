@@ -9,6 +9,7 @@ const calendarUrl = "https://images.legaseriea.it/image/private/fl_attachment/pr
 const scheduleUrl = "https://images.legaseriea.it/image/private/fl_attachment/prd/czailts3apyt3kuxjran.pdf";
 const clubIndexUrl = "https://www.legaseriea.it/team/index";
 const teamColorSource = JSON.parse(fs.readFileSync(path.join(root, "data/sources/team-pages/footylogos-club-colors.json"), "utf8"));
+const refereeAssignments = JSON.parse(fs.readFileSync(path.join(root, "data/sources/referee-assignments-2026-27.json"), "utf8"));
 
 const teamDefinitions = [
   ["atalanta","Atalanta","Atalanta Bergamasca Calcio"],["bologna","Bologna","Bologna Football Club 1909"],
@@ -109,6 +110,31 @@ for (const match of matches.filter(item => item.matchday <= 5)) {
   match.sources.push({...scheduleSource,note:match.dateStatus==="provisional"?"Programmazione modificabile in funzione del calendario UEFA.":"Data e orario ufficiali."});
 }
 
+const assignmentSource = {
+  sourceUrl: refereeAssignments.source.url,
+  sourceType: refereeAssignments.source.sourceType,
+  publishedAt: refereeAssignments.publishedAt,
+  retrievedAt: refereeAssignments.retrievedAt,
+  note: "Designazione ufficiale: arbitro, assistenti, IV ufficiale, VAR e AVAR."
+};
+const matchById = new Map(matches.map(match => [match.id, match]));
+for (const assignment of refereeAssignments.assignments) {
+  const match = matchById.get(assignment.matchId);
+  if (!match) throw new Error(`Partita non riconosciuta nelle designazioni AIA: ${assignment.matchId}`);
+  if (match.matchday !== refereeAssignments.matchday) throw new Error(`Giornata incoerente nelle designazioni AIA: ${assignment.matchId}`);
+  match.refereeAssignment = {
+    referee: assignment.referee,
+    assistants: assignment.assistants,
+    fourthOfficial: assignment.fourthOfficial,
+    var: assignment.var,
+    avar: assignment.avar
+  };
+  match.sources.push(assignmentSource);
+}
+if (refereeAssignments.assignments.length !== 10 || matches.filter(match => match.matchday === 1 && match.refereeAssignment).length !== 10) {
+  throw new Error("Le designazioni AIA della prima giornata devono coprire tutte le 10 gare");
+}
+
 fs.writeFileSync(path.join(output,"teams.json"),JSON.stringify(teams,null,2)+"\n");
 fs.writeFileSync(path.join(output,"matches.json"),JSON.stringify(matches,null,2)+"\n");
-console.log(`Importate ${teams.length} squadre e ${matches.length} partite; overlay C.U. 208: ${[...overlays.keys()].length} gare.`);
+console.log(`Importate ${teams.length} squadre e ${matches.length} partite; overlay C.U. 208: ${[...overlays.keys()].length} gare; designazioni AIA: ${refereeAssignments.assignments.length}.`);

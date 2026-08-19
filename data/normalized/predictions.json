@@ -4,7 +4,7 @@
   "season": "2026-27",
   "generatedAt": "2026-08-14T13:18:37.572Z",
   "engine": {
-    "version": "4.7.0",
+    "version": "4.7.1",
     "principle": "Un'unica matrice dei punteggi indipendente dalle quote genera 1X2, gol e mercati collegati.",
     "weights": {
       "venueHistorical": 0.46,
@@ -17,7 +17,7 @@
     "surpriseFactor": "Apertura della gara, probabilita dell'esito sfavorito, divergenza mercato-dati e incompletezza prepartita. Non determina da solo il verdetto.",
     "spatialModel": "Valuta separatamente sviluppo a sinistra, al centro e a destra e lo incrocia con le vulnerabilita avversarie.",
     "goalModel": "Forze relative casa/trasferta e complessive, ultime otto gare corrette per avversario, xG Understat al 25% quando sono coperti entrambi i club, probabile XI, divisione di provenienza, matrice Poisson e correttivo H2H limitato al 5% per lato.",
-    "scoreSelectionModel": "Il risultato principale e selezionato dentro l'esito 1X2 piu probabile; la moda assoluta della matrice resta separata quando appartiene a un esito diverso.",
+    "scoreSelectionModel": "Il risultato principale e selezionato dentro l'esito 1X2 piu probabile; gli altri due sono i punteggi successivi piu probabili della matrice, senza imporre uno scenario sorpresa.",
     "scoreModel": {
       "type": "poisson",
       "calibration": "none",
@@ -985,7 +985,7 @@
       "matchId": "atalanta-sassuolo-2026-27-md-01",
       "generatedAt": "2026-08-14T13:18:37.572Z",
       "status": "preliminary",
-      "engineVersion": "4.7.0",
+      "engineVersion": "4.7.1",
       "probabilities": {
         "final": {
           "1": 52.3,
@@ -1128,17 +1128,17 @@
           {
             "score": "1-1",
             "outcome": "X",
-            "label": "Scenario alternativo",
+            "label": "Moda assoluta",
             "probabilityPct": 11.7,
             "conditionalProbabilityPct": 47.6,
             "isAbsoluteMode": true
           },
           {
-            "score": "0-1",
-            "outcome": "2",
-            "label": "Scenario sorpresa",
-            "probabilityPct": 7.1,
-            "conditionalProbabilityPct": 30.5,
+            "score": "2-1",
+            "outcome": "1",
+            "label": "Altro risultato probabile",
+            "probabilityPct": 9.6,
+            "conditionalProbabilityPct": 18.4,
             "isAbsoluteMode": false
           }
         ],
@@ -1160,16 +1160,17 @@
             "isAbsoluteMode": true
           },
           {
-            "score": "0-1",
-            "outcome": "2",
-            "label": "Scenario sorpresa",
-            "probabilityPct": 7.1,
-            "conditionalProbabilityPct": 30.5,
+            "score": "2-1",
+            "outcome": "1",
+            "label": "Altro risultato probabile",
+            "probabilityPct": 9.6,
+            "conditionalProbabilityPct": 18.4,
             "isAbsoluteMode": false
           }
         ],
         "coherentWithVerdict": true,
-        "method": "Il risultato principale e il punteggio piu probabile condizionato all'esito 1X2 favorito; la moda assoluta resta distinta quando appartiene a un altro esito."
+        "forcedOutcomeScenarios": false,
+        "method": "Il risultato principale e il punteggio piu probabile condizionato all'esito 1X2 favorito; gli altri due sono i punteggi successivi piu probabili della matrice, senza forzare pareggio o sorpresa."
       },
       "scoreProfile": {
         "bands": [
@@ -1200,7 +1201,7 @@
         "label": "Prevalenza 1"
       },
       "confidence": {
-        "value": 79,
+        "value": 80,
         "level": "alta"
       },
       "surprise": {
@@ -2203,13 +2204,12 @@
         "role": "Confronto esterno: le quote non entrano nei gol attesi ne nelle probabilita del modello."
       },
       "dataQuality": {
-        "completenessPct": 82,
+        "completenessPct": 85,
         "crossCompetitionBaseline": false,
         "updatedAt": "2026-08-14",
         "probableLineups": "20/20 titolari proiettati; fonte editoriale da riconfermare",
         "missing": [
           "forma ufficiale 2026/27",
-          "designazione arbitrale",
           "meteo attendibile alla data della gara",
           "quote giocatore verificate"
         ]
@@ -2346,7 +2346,7 @@
       "matchId": "bologna-lazio-2026-27-md-01",
       "generatedAt": "2026-08-14T13:18:37.572Z",
       "status": "preliminary",
-      "engineVersion": "4.7.0",
+      "engineVersion": "4.7.1",
       "probabilities": {
         "final": {
           "1": 42.5,
@@ -2487,19 +2487,19 @@
         },
         "alternatives": [
           {
-            "score": "0-1",
-            "outcome": "2",
-            "label": "Scenario alternativo",
-            "probabilityPct": 10.5,
-            "conditionalProbabilityPct": 36.4,
+            "score": "1-1",
+            "outcome": "X",
+            "label": "Altro risultato probabile",
+            "probabilityPct": 13.2,
+            "conditionalProbabilityPct": 46.1,
             "isAbsoluteMode": false
           },
           {
-            "score": "1-1",
+            "score": "0-0",
             "outcome": "X",
-            "label": "Scenario sorpresa",
-            "probabilityPct": 13.2,
-            "conditionalProbabilityPct": 46.1,
+            "label": "Altro risultato probabile",
+            "probabilityPct": 10.8,
+            "conditionalProbabilityPct": 37.7,
             "isAbsoluteMode": false
           }
         ],
@@ -2513,24 +2513,25 @@
             "isAbsoluteMode": true
           },
           {
-            "score": "0-1",
-            "outcome": "2",
-            "label": "Scenario alternativo",
-            "probabilityPct": 10.5,
-            "conditionalProbabilityPct": 36.4,
+            "score": "1-1",
+            "outcome": "X",
+            "label": "Altro risultato probabile",
+            "probabilityPct": 13.2,
+            "conditionalProbabilityPct": 46.1,
             "isAbsoluteMode": false
           },
           {
-            "score": "1-1",
+            "score": "0-0",
             "outcome": "X",
-            "label": "Scenario sorpresa",
-            "probabilityPct": 13.2,
-            "conditionalProbabilityPct": 46.1,
+            "label": "Altro risultato probabile",
+            "probabilityPct": 10.8,
+            "conditionalProbabilityPct": 37.7,
             "isAbsoluteMode": false
           }
         ],
         "coherentWithVerdict": true,
-        "method": "Il risultato principale e il punteggio piu probabile condizionato all'esito 1X2 favorito; la moda assoluta resta distinta quando appartiene a un altro esito."
+        "forcedOutcomeScenarios": false,
+        "method": "Il risultato principale e il punteggio piu probabile condizionato all'esito 1X2 favorito; gli altri due sono i punteggi successivi piu probabili della matrice, senza forzare pareggio o sorpresa."
       },
       "scoreProfile": {
         "bands": [
@@ -2561,11 +2562,11 @@
         "label": "Equilibrio con lieve prevalenza 1"
       },
       "confidence": {
-        "value": 58,
+        "value": 59,
         "level": "moderata"
       },
       "surprise": {
-        "value": 60,
+        "value": 59,
         "level": "medio",
         "upsetOutcome": "2",
         "upsetProbabilityPct": 29,
@@ -3001,7 +3002,7 @@
           "expectedValuePct": -7.2,
           "conservativeExpectedValuePct": -12.4,
           "sensitivityWidthPct": 3.5,
-          "confidence": "Media",
+          "confidence": "Alta",
           "qualifies": false,
           "classification": "neutrale"
         },
@@ -3058,7 +3059,7 @@
           "expectedValuePct": -5,
           "conservativeExpectedValuePct": -7.5,
           "sensitivityWidthPct": 3.5,
-          "confidence": "Media",
+          "confidence": "Alta",
           "qualifies": false,
           "classification": "probabile ma senza valore"
         },
@@ -3286,7 +3287,7 @@
           "expectedValuePct": -12.2,
           "conservativeExpectedValuePct": -16.9,
           "sensitivityWidthPct": 7.2,
-          "confidence": "Media",
+          "confidence": "Alta",
           "qualifies": false,
           "classification": "probabile ma senza valore"
         },
@@ -3305,7 +3306,7 @@
           "expectedValuePct": 3.1,
           "conservativeExpectedValuePct": -9,
           "sensitivityWidthPct": 7.2,
-          "confidence": "Media",
+          "confidence": "Alta",
           "qualifies": false,
           "classification": "fragile"
         },
@@ -3324,7 +3325,7 @@
           "expectedValuePct": -11.3,
           "conservativeExpectedValuePct": -16.8,
           "sensitivityWidthPct": 7.4,
-          "confidence": "Media",
+          "confidence": "Alta",
           "qualifies": false,
           "classification": "neutrale"
         },
@@ -3343,7 +3344,7 @@
           "expectedValuePct": -4.3,
           "conservativeExpectedValuePct": -13.2,
           "sensitivityWidthPct": 7.4,
-          "confidence": "Media",
+          "confidence": "Alta",
           "qualifies": false,
           "classification": "neutrale"
         }
@@ -3386,7 +3387,7 @@
             "expectedValuePct": -5,
             "conservativeExpectedValuePct": -7.5,
             "sensitivityWidthPct": 3.5,
-            "confidence": "Media",
+            "confidence": "Alta",
             "qualifies": false,
             "classification": "probabile ma senza valore"
           },
@@ -3405,7 +3406,7 @@
             "expectedValuePct": -12.2,
             "conservativeExpectedValuePct": -16.9,
             "sensitivityWidthPct": 7.2,
-            "confidence": "Media",
+            "confidence": "Alta",
             "qualifies": false,
             "classification": "probabile ma senza valore"
           }
@@ -3471,7 +3472,7 @@
             "expectedValuePct": -7.2,
             "conservativeExpectedValuePct": -12.4,
             "sensitivityWidthPct": 3.5,
-            "confidence": "Media",
+            "confidence": "Alta",
             "qualifies": false,
             "classification": "neutrale"
           },
@@ -3498,13 +3499,12 @@
         "role": "Confronto esterno: le quote non entrano nei gol attesi ne nelle probabilita del modello."
       },
       "dataQuality": {
-        "completenessPct": 71,
+        "completenessPct": 75,
         "crossCompetitionBaseline": false,
         "updatedAt": "2026-08-14",
         "probableLineups": "20/20 titolari proiettati; fonte editoriale da riconfermare",
         "missing": [
           "forma ufficiale 2026/27",
-          "designazione arbitrale",
           "meteo attendibile alla data della gara",
           "quote giocatore verificate"
         ]
@@ -3641,7 +3641,7 @@
       "matchId": "frosinone-juventus-2026-27-md-01",
       "generatedAt": "2026-08-14T13:18:37.572Z",
       "status": "preliminary",
-      "engineVersion": "4.7.0",
+      "engineVersion": "4.7.1",
       "probabilities": {
         "final": {
           "1": 21.9,
@@ -3784,17 +3784,17 @@
           {
             "score": "1-1",
             "outcome": "X",
-            "label": "Scenario alternativo",
+            "label": "Altro risultato probabile",
             "probabilityPct": 11.6,
             "conditionalProbabilityPct": 47.5,
             "isAbsoluteMode": false
           },
           {
-            "score": "1-0",
-            "outcome": "1",
-            "label": "Scenario sorpresa",
-            "probabilityPct": 6.9,
-            "conditionalProbabilityPct": 31.6,
+            "score": "0-2",
+            "outcome": "2",
+            "label": "Altro risultato probabile",
+            "probabilityPct": 10,
+            "conditionalProbabilityPct": 18.5,
             "isAbsoluteMode": false
           }
         ],
@@ -3810,22 +3810,23 @@
           {
             "score": "1-1",
             "outcome": "X",
-            "label": "Scenario alternativo",
+            "label": "Altro risultato probabile",
             "probabilityPct": 11.6,
             "conditionalProbabilityPct": 47.5,
             "isAbsoluteMode": false
           },
           {
-            "score": "1-0",
-            "outcome": "1",
-            "label": "Scenario sorpresa",
-            "probabilityPct": 6.9,
-            "conditionalProbabilityPct": 31.6,
+            "score": "0-2",
+            "outcome": "2",
+            "label": "Altro risultato probabile",
+            "probabilityPct": 10,
+            "conditionalProbabilityPct": 18.5,
             "isAbsoluteMode": false
           }
         ],
         "coherentWithVerdict": true,
-        "method": "Il risultato principale e il punteggio piu probabile condizionato all'esito 1X2 favorito; la moda assoluta resta distinta quando appartiene a un altro esito."
+        "forcedOutcomeScenarios": false,
+        "method": "Il risultato principale e il punteggio piu probabile condizionato all'esito 1X2 favorito; gli altri due sono i punteggi successivi piu probabili della matrice, senza forzare pareggio o sorpresa."
       },
       "scoreProfile": {
         "bands": [
@@ -3856,11 +3857,11 @@
         "label": "Prevalenza 2"
       },
       "confidence": {
-        "value": 70,
-        "level": "moderata"
+        "value": 72,
+        "level": "alta"
       },
       "surprise": {
-        "value": 58,
+        "value": 57,
         "level": "medio",
         "upsetOutcome": "1",
         "upsetProbabilityPct": 21.9,
@@ -4869,13 +4870,12 @@
         "role": "Confronto esterno: le quote non entrano nei gol attesi ne nelle probabilita del modello."
       },
       "dataQuality": {
-        "completenessPct": 63,
+        "completenessPct": 67,
         "crossCompetitionBaseline": true,
         "updatedAt": "2026-08-14",
         "probableLineups": "20/20 titolari proiettati; fonte editoriale da riconfermare",
         "missing": [
           "forma ufficiale 2026/27",
-          "designazione arbitrale",
           "meteo attendibile alla data della gara",
           "quote giocatore verificate"
         ]
@@ -5012,7 +5012,7 @@
       "matchId": "genoa-napoli-2026-27-md-01",
       "generatedAt": "2026-08-14T13:18:37.572Z",
       "status": "preliminary",
-      "engineVersion": "4.7.0",
+      "engineVersion": "4.7.1",
       "probabilities": {
         "final": {
           "1": 22.8,
@@ -5155,17 +5155,17 @@
           {
             "score": "1-1",
             "outcome": "X",
-            "label": "Scenario alternativo",
+            "label": "Altro risultato probabile",
             "probabilityPct": 11.8,
             "conditionalProbabilityPct": 47.5,
             "isAbsoluteMode": false
           },
           {
-            "score": "1-0",
-            "outcome": "1",
-            "label": "Scenario sorpresa",
-            "probabilityPct": 7.4,
-            "conditionalProbabilityPct": 32.3,
+            "score": "0-2",
+            "outcome": "2",
+            "label": "Altro risultato probabile",
+            "probabilityPct": 9.8,
+            "conditionalProbabilityPct": 18.8,
             "isAbsoluteMode": false
           }
         ],
@@ -5181,22 +5181,23 @@
           {
             "score": "1-1",
             "outcome": "X",
-            "label": "Scenario alternativo",
+            "label": "Altro risultato probabile",
             "probabilityPct": 11.8,
             "conditionalProbabilityPct": 47.5,
             "isAbsoluteMode": false
           },
           {
-            "score": "1-0",
-            "outcome": "1",
-            "label": "Scenario sorpresa",
-            "probabilityPct": 7.4,
-            "conditionalProbabilityPct": 32.3,
+            "score": "0-2",
+            "outcome": "2",
+            "label": "Altro risultato probabile",
+            "probabilityPct": 9.8,
+            "conditionalProbabilityPct": 18.8,
             "isAbsoluteMode": false
           }
         ],
         "coherentWithVerdict": true,
-        "method": "Il risultato principale e il punteggio piu probabile condizionato all'esito 1X2 favorito; la moda assoluta resta distinta quando appartiene a un altro esito."
+        "forcedOutcomeScenarios": false,
+        "method": "Il risultato principale e il punteggio piu probabile condizionato all'esito 1X2 favorito; gli altri due sono i punteggi successivi piu probabili della matrice, senza forzare pareggio o sorpresa."
       },
       "scoreProfile": {
         "bands": [
@@ -5227,11 +5228,11 @@
         "label": "Prevalenza 2"
       },
       "confidence": {
-        "value": 76,
+        "value": 78,
         "level": "alta"
       },
       "surprise": {
-        "value": 47,
+        "value": 46,
         "level": "medio",
         "upsetOutcome": "1",
         "upsetProbabilityPct": 22.8,
@@ -5666,7 +5667,7 @@
           "expectedValuePct": -12.8,
           "conservativeExpectedValuePct": -18.9,
           "sensitivityWidthPct": 3.6,
-          "confidence": "Media",
+          "confidence": "Alta",
           "qualifies": false,
           "classification": "neutrale"
         },
@@ -5723,7 +5724,7 @@
           "expectedValuePct": -2.4,
           "conservativeExpectedValuePct": -4.8,
           "sensitivityWidthPct": 3.6,
-          "confidence": "Media",
+          "confidence": "Alta",
           "qualifies": false,
           "classification": "probabile ma senza valore"
         },
@@ -5951,7 +5952,7 @@
           "expectedValuePct": -3.8,
           "conservativeExpectedValuePct": -9.7,
           "sensitivityWidthPct": 7.4,
-          "confidence": "Media",
+          "confidence": "Alta",
           "qualifies": false,
           "classification": "neutrale"
         },
@@ -5970,7 +5971,7 @@
           "expectedValuePct": -14.7,
           "conservativeExpectedValuePct": -22.6,
           "sensitivityWidthPct": 7.4,
-          "confidence": "Media",
+          "confidence": "Alta",
           "qualifies": false,
           "classification": "neutrale"
         },
@@ -5989,7 +5990,7 @@
           "expectedValuePct": -5.6,
           "conservativeExpectedValuePct": -9.7,
           "sensitivityWidthPct": 6.5,
-          "confidence": "Media",
+          "confidence": "Alta",
           "qualifies": false,
           "classification": "probabile ma senza valore"
         },
@@ -6008,7 +6009,7 @@
           "expectedValuePct": -18,
           "conservativeExpectedValuePct": -30.2,
           "sensitivityWidthPct": 6.5,
-          "confidence": "Media",
+          "confidence": "Alta",
           "qualifies": false,
           "classification": "neutrale"
         }
@@ -6032,7 +6033,7 @@
             "expectedValuePct": -5.6,
             "conservativeExpectedValuePct": -9.7,
             "sensitivityWidthPct": 6.5,
-            "confidence": "Media",
+            "confidence": "Alta",
             "qualifies": false,
             "classification": "probabile ma senza valore"
           },
@@ -6070,7 +6071,7 @@
             "expectedValuePct": -2.4,
             "conservativeExpectedValuePct": -4.8,
             "sensitivityWidthPct": 3.6,
-            "confidence": "Media",
+            "confidence": "Alta",
             "qualifies": false,
             "classification": "probabile ma senza valore"
           }
@@ -6136,7 +6137,7 @@
             "expectedValuePct": -12.8,
             "conservativeExpectedValuePct": -18.9,
             "sensitivityWidthPct": 3.6,
-            "confidence": "Media",
+            "confidence": "Alta",
             "qualifies": false,
             "classification": "neutrale"
           },
@@ -6163,13 +6164,12 @@
         "role": "Confronto esterno: le quote non entrano nei gol attesi ne nelle probabilita del modello."
       },
       "dataQuality": {
-        "completenessPct": 71,
+        "completenessPct": 75,
         "crossCompetitionBaseline": false,
         "updatedAt": "2026-08-14",
         "probableLineups": "20/20 titolari proiettati; fonte editoriale da riconfermare",
         "missing": [
           "forma ufficiale 2026/27",
-          "designazione arbitrale",
           "meteo attendibile alla data della gara",
           "quote giocatore verificate"
         ]
@@ -6306,7 +6306,7 @@
       "matchId": "inter-monza-2026-27-md-01",
       "generatedAt": "2026-08-14T13:18:37.572Z",
       "status": "preliminary",
-      "engineVersion": "4.7.0",
+      "engineVersion": "4.7.1",
       "probabilities": {
         "final": {
           "1": 80.6,
@@ -6447,19 +6447,19 @@
         },
         "alternatives": [
           {
-            "score": "1-1",
-            "outcome": "X",
-            "label": "Scenario alternativo",
-            "probabilityPct": 5.6,
-            "conditionalProbabilityPct": 45.5,
+            "score": "3-0",
+            "outcome": "1",
+            "label": "Altro risultato probabile",
+            "probabilityPct": 10.2,
+            "conditionalProbabilityPct": 12.6,
             "isAbsoluteMode": false
           },
           {
-            "score": "1-2",
-            "outcome": "2",
-            "label": "Scenario sorpresa",
-            "probabilityPct": 2.2,
-            "conditionalProbabilityPct": 31.1,
+            "score": "2-1",
+            "outcome": "1",
+            "label": "Altro risultato probabile",
+            "probabilityPct": 8.3,
+            "conditionalProbabilityPct": 10.2,
             "isAbsoluteMode": false
           }
         ],
@@ -6473,24 +6473,25 @@
             "isAbsoluteMode": true
           },
           {
-            "score": "1-1",
-            "outcome": "X",
-            "label": "Scenario alternativo",
-            "probabilityPct": 5.6,
-            "conditionalProbabilityPct": 45.5,
+            "score": "3-0",
+            "outcome": "1",
+            "label": "Altro risultato probabile",
+            "probabilityPct": 10.2,
+            "conditionalProbabilityPct": 12.6,
             "isAbsoluteMode": false
           },
           {
-            "score": "1-2",
-            "outcome": "2",
-            "label": "Scenario sorpresa",
-            "probabilityPct": 2.2,
-            "conditionalProbabilityPct": 31.1,
+            "score": "2-1",
+            "outcome": "1",
+            "label": "Altro risultato probabile",
+            "probabilityPct": 8.3,
+            "conditionalProbabilityPct": 10.2,
             "isAbsoluteMode": false
           }
         ],
         "coherentWithVerdict": true,
-        "method": "Il risultato principale e il punteggio piu probabile condizionato all'esito 1X2 favorito; la moda assoluta resta distinta quando appartiene a un altro esito."
+        "forcedOutcomeScenarios": false,
+        "method": "Il risultato principale e il punteggio piu probabile condizionato all'esito 1X2 favorito; gli altri due sono i punteggi successivi piu probabili della matrice, senza forzare pareggio o sorpresa."
       },
       "scoreProfile": {
         "bands": [
@@ -6521,7 +6522,7 @@
         "label": "Prevalenza 1"
       },
       "confidence": {
-        "value": 79,
+        "value": 81,
         "level": "alta"
       },
       "surprise": {
@@ -7581,13 +7582,12 @@
         "role": "Confronto esterno: le quote non entrano nei gol attesi ne nelle probabilita del modello."
       },
       "dataQuality": {
-        "completenessPct": 63,
+        "completenessPct": 67,
         "crossCompetitionBaseline": true,
         "updatedAt": "2026-08-14",
         "probableLineups": "20/20 titolari proiettati; fonte editoriale da riconfermare",
         "missing": [
           "forma ufficiale 2026/27",
-          "designazione arbitrale",
           "meteo attendibile alla data della gara",
           "quote giocatore verificate"
         ]
@@ -7724,7 +7724,7 @@
       "matchId": "parma-cagliari-2026-27-md-01",
       "generatedAt": "2026-08-14T13:18:37.572Z",
       "status": "preliminary",
-      "engineVersion": "4.7.0",
+      "engineVersion": "4.7.1",
       "probabilities": {
         "final": {
           "1": 38.7,
@@ -7865,20 +7865,20 @@
         },
         "alternatives": [
           {
-            "score": "0-1",
-            "outcome": "2",
-            "label": "Scenario alternativo",
-            "probabilityPct": 11.2,
-            "conditionalProbabilityPct": 34.1,
-            "isAbsoluteMode": false
-          },
-          {
             "score": "1-1",
             "outcome": "X",
-            "label": "Scenario sorpresa",
+            "label": "Moda assoluta",
             "probabilityPct": 13.3,
             "conditionalProbabilityPct": 46.5,
             "isAbsoluteMode": true
+          },
+          {
+            "score": "0-1",
+            "outcome": "2",
+            "label": "Altro risultato probabile",
+            "probabilityPct": 11.2,
+            "conditionalProbabilityPct": 34.1,
+            "isAbsoluteMode": false
           }
         ],
         "display": [
@@ -7901,14 +7901,15 @@
           {
             "score": "0-1",
             "outcome": "2",
-            "label": "Scenario alternativo",
+            "label": "Altro risultato probabile",
             "probabilityPct": 11.2,
             "conditionalProbabilityPct": 34.1,
             "isAbsoluteMode": false
           }
         ],
         "coherentWithVerdict": true,
-        "method": "Il risultato principale e il punteggio piu probabile condizionato all'esito 1X2 favorito; la moda assoluta resta distinta quando appartiene a un altro esito."
+        "forcedOutcomeScenarios": false,
+        "method": "Il risultato principale e il punteggio piu probabile condizionato all'esito 1X2 favorito; gli altri due sono i punteggi successivi piu probabili della matrice, senza forzare pareggio o sorpresa."
       },
       "scoreProfile": {
         "bands": [
@@ -7939,7 +7940,7 @@
         "label": "Equilibrio con lieve prevalenza 1"
       },
       "confidence": {
-        "value": 46,
+        "value": 48,
         "level": "prudente"
       },
       "surprise": {
@@ -8375,7 +8376,7 @@
           "expectedValuePct": -11.3,
           "conservativeExpectedValuePct": -16.2,
           "sensitivityWidthPct": 3.5,
-          "confidence": "Media",
+          "confidence": "Alta",
           "qualifies": false,
           "classification": "neutrale"
         },
@@ -8432,7 +8433,7 @@
           "expectedValuePct": -2.9,
           "conservativeExpectedValuePct": -5.4,
           "sensitivityWidthPct": 3.5,
-          "confidence": "Media",
+          "confidence": "Alta",
           "qualifies": false,
           "classification": "probabile ma senza valore"
         },
@@ -8660,7 +8661,7 @@
           "expectedValuePct": -5.4,
           "conservativeExpectedValuePct": -10.6,
           "sensitivityWidthPct": 7.3,
-          "confidence": "Media",
+          "confidence": "Alta",
           "qualifies": false,
           "classification": "probabile ma senza valore"
         },
@@ -8679,7 +8680,7 @@
           "expectedValuePct": -14.8,
           "conservativeExpectedValuePct": -24.4,
           "sensitivityWidthPct": 7.3,
-          "confidence": "Media",
+          "confidence": "Alta",
           "qualifies": false,
           "classification": "neutrale"
         },
@@ -8698,7 +8699,7 @@
           "expectedValuePct": -9.3,
           "conservativeExpectedValuePct": -14.7,
           "sensitivityWidthPct": 7.4,
-          "confidence": "Media",
+          "confidence": "Alta",
           "qualifies": false,
           "classification": "probabile ma senza valore"
         },
@@ -8717,7 +8718,7 @@
           "expectedValuePct": -7.4,
           "conservativeExpectedValuePct": -16.8,
           "sensitivityWidthPct": 7.4,
-          "confidence": "Media",
+          "confidence": "Alta",
           "qualifies": false,
           "classification": "neutrale"
         }
@@ -8760,7 +8761,7 @@
             "expectedValuePct": -2.9,
             "conservativeExpectedValuePct": -5.4,
             "sensitivityWidthPct": 3.5,
-            "confidence": "Media",
+            "confidence": "Alta",
             "qualifies": false,
             "classification": "probabile ma senza valore"
           },
@@ -8779,7 +8780,7 @@
             "expectedValuePct": -5.4,
             "conservativeExpectedValuePct": -10.6,
             "sensitivityWidthPct": 7.3,
-            "confidence": "Media",
+            "confidence": "Alta",
             "qualifies": false,
             "classification": "probabile ma senza valore"
           }
@@ -8845,7 +8846,7 @@
             "expectedValuePct": -11.3,
             "conservativeExpectedValuePct": -16.2,
             "sensitivityWidthPct": 3.5,
-            "confidence": "Media",
+            "confidence": "Alta",
             "qualifies": false,
             "classification": "neutrale"
           },
@@ -8872,13 +8873,12 @@
         "role": "Confronto esterno: le quote non entrano nei gol attesi ne nelle probabilita del modello."
       },
       "dataQuality": {
-        "completenessPct": 71,
+        "completenessPct": 75,
         "crossCompetitionBaseline": false,
         "updatedAt": "2026-08-14",
         "probableLineups": "20/20 titolari proiettati; fonte editoriale da riconfermare",
         "missing": [
           "forma ufficiale 2026/27",
-          "designazione arbitrale",
           "meteo attendibile alla data della gara",
           "quote giocatore verificate"
         ]
@@ -9015,7 +9015,7 @@
       "matchId": "roma-fiorentina-2026-27-md-01",
       "generatedAt": "2026-08-14T13:18:37.572Z",
       "status": "preliminary",
-      "engineVersion": "4.7.0",
+      "engineVersion": "4.7.1",
       "probabilities": {
         "final": {
           "1": 64.4,
@@ -9156,19 +9156,19 @@
         },
         "alternatives": [
           {
-            "score": "1-1",
-            "outcome": "X",
-            "label": "Scenario alternativo",
-            "probabilityPct": 10,
-            "conditionalProbabilityPct": 47.5,
+            "score": "2-0",
+            "outcome": "1",
+            "label": "Altro risultato probabile",
+            "probabilityPct": 12.2,
+            "conditionalProbabilityPct": 18.9,
             "isAbsoluteMode": false
           },
           {
-            "score": "0-1",
-            "outcome": "2",
-            "label": "Scenario sorpresa",
-            "probabilityPct": 5.1,
-            "conditionalProbabilityPct": 35,
+            "score": "1-1",
+            "outcome": "X",
+            "label": "Altro risultato probabile",
+            "probabilityPct": 10,
+            "conditionalProbabilityPct": 47.5,
             "isAbsoluteMode": false
           }
         ],
@@ -9182,24 +9182,25 @@
             "isAbsoluteMode": true
           },
           {
-            "score": "1-1",
-            "outcome": "X",
-            "label": "Scenario alternativo",
-            "probabilityPct": 10,
-            "conditionalProbabilityPct": 47.5,
+            "score": "2-0",
+            "outcome": "1",
+            "label": "Altro risultato probabile",
+            "probabilityPct": 12.2,
+            "conditionalProbabilityPct": 18.9,
             "isAbsoluteMode": false
           },
           {
-            "score": "0-1",
-            "outcome": "2",
-            "label": "Scenario sorpresa",
-            "probabilityPct": 5.1,
-            "conditionalProbabilityPct": 35,
+            "score": "1-1",
+            "outcome": "X",
+            "label": "Altro risultato probabile",
+            "probabilityPct": 10,
+            "conditionalProbabilityPct": 47.5,
             "isAbsoluteMode": false
           }
         ],
         "coherentWithVerdict": true,
-        "method": "Il risultato principale e il punteggio piu probabile condizionato all'esito 1X2 favorito; la moda assoluta resta distinta quando appartiene a un altro esito."
+        "forcedOutcomeScenarios": false,
+        "method": "Il risultato principale e il punteggio piu probabile condizionato all'esito 1X2 favorito; gli altri due sono i punteggi successivi piu probabili della matrice, senza forzare pareggio o sorpresa."
       },
       "scoreProfile": {
         "bands": [
@@ -9230,11 +9231,11 @@
         "label": "Prevalenza 1"
       },
       "confidence": {
-        "value": 79,
+        "value": 81,
         "level": "alta"
       },
       "surprise": {
-        "value": 35,
+        "value": 34,
         "level": "basso",
         "upsetOutcome": "2",
         "upsetProbabilityPct": 14.6,
@@ -9670,7 +9671,7 @@
           "expectedValuePct": -15.9,
           "conservativeExpectedValuePct": -25.7,
           "sensitivityWidthPct": 4.8,
-          "confidence": "Media",
+          "confidence": "Alta",
           "qualifies": false,
           "classification": "neutrale"
         },
@@ -9689,7 +9690,7 @@
           "expectedValuePct": -12.4,
           "conservativeExpectedValuePct": -32.6,
           "sensitivityWidthPct": 7.4,
-          "confidence": "Media",
+          "confidence": "Alta",
           "qualifies": false,
           "classification": "neutrale"
         },
@@ -9708,7 +9709,7 @@
           "expectedValuePct": -6.1,
           "conservativeExpectedValuePct": -10.5,
           "sensitivityWidthPct": 7.4,
-          "confidence": "Media",
+          "confidence": "Alta",
           "qualifies": false,
           "classification": "probabile ma senza valore"
         },
@@ -9727,7 +9728,7 @@
           "expectedValuePct": -3.6,
           "conservativeExpectedValuePct": -6.5,
           "sensitivityWidthPct": 4.8,
-          "confidence": "Media",
+          "confidence": "Alta",
           "qualifies": false,
           "classification": "probabile ma senza valore"
         },
@@ -9955,7 +9956,7 @@
           "expectedValuePct": -5.7,
           "conservativeExpectedValuePct": -9,
           "sensitivityWidthPct": 5.6,
-          "confidence": "Media",
+          "confidence": "Alta",
           "qualifies": false,
           "classification": "probabile ma senza valore"
         },
@@ -9974,7 +9975,7 @@
           "expectedValuePct": -21.7,
           "conservativeExpectedValuePct": -35.5,
           "sensitivityWidthPct": 5.6,
-          "confidence": "Media",
+          "confidence": "Alta",
           "qualifies": false,
           "classification": "neutrale"
         },
@@ -9993,7 +9994,7 @@
           "expectedValuePct": -10.8,
           "conservativeExpectedValuePct": -16.9,
           "sensitivityWidthPct": 7.2,
-          "confidence": "Media",
+          "confidence": "Alta",
           "qualifies": false,
           "classification": "neutrale"
         },
@@ -10012,7 +10013,7 @@
           "expectedValuePct": -5.6,
           "conservativeExpectedValuePct": -12.9,
           "sensitivityWidthPct": 7.2,
-          "confidence": "Media",
+          "confidence": "Alta",
           "qualifies": false,
           "classification": "neutrale"
         }
@@ -10036,7 +10037,7 @@
             "expectedValuePct": -5.7,
             "conservativeExpectedValuePct": -9,
             "sensitivityWidthPct": 5.6,
-            "confidence": "Media",
+            "confidence": "Alta",
             "qualifies": false,
             "classification": "probabile ma senza valore"
           },
@@ -10055,7 +10056,7 @@
             "expectedValuePct": -6.1,
             "conservativeExpectedValuePct": -10.5,
             "sensitivityWidthPct": 7.4,
-            "confidence": "Media",
+            "confidence": "Alta",
             "qualifies": false,
             "classification": "probabile ma senza valore"
           },
@@ -10140,7 +10141,7 @@
             "expectedValuePct": -15.9,
             "conservativeExpectedValuePct": -25.7,
             "sensitivityWidthPct": 4.8,
-            "confidence": "Media",
+            "confidence": "Alta",
             "qualifies": false,
             "classification": "neutrale"
           },
@@ -10159,7 +10160,7 @@
             "expectedValuePct": -12.4,
             "conservativeExpectedValuePct": -32.6,
             "sensitivityWidthPct": 7.4,
-            "confidence": "Media",
+            "confidence": "Alta",
             "qualifies": false,
             "classification": "neutrale"
           }
@@ -10167,13 +10168,12 @@
         "role": "Confronto esterno: le quote non entrano nei gol attesi ne nelle probabilita del modello."
       },
       "dataQuality": {
-        "completenessPct": 71,
+        "completenessPct": 75,
         "crossCompetitionBaseline": false,
         "updatedAt": "2026-08-14",
         "probableLineups": "20/20 titolari proiettati; fonte editoriale da riconfermare",
         "missing": [
           "forma ufficiale 2026/27",
-          "designazione arbitrale",
           "meteo attendibile alla data della gara",
           "quote giocatore verificate"
         ]
@@ -10310,7 +10310,7 @@
       "matchId": "torino-milan-2026-27-md-01",
       "generatedAt": "2026-08-14T13:18:37.572Z",
       "status": "preliminary",
-      "engineVersion": "4.7.0",
+      "engineVersion": "4.7.1",
       "probabilities": {
         "final": {
           "1": 24.1,
@@ -10451,20 +10451,20 @@
         },
         "alternatives": [
           {
-            "score": "2-1",
-            "outcome": "1",
-            "label": "Scenario alternativo",
-            "probabilityPct": 6.2,
-            "conditionalProbabilityPct": 25.7,
-            "isAbsoluteMode": false
-          },
-          {
             "score": "1-1",
             "outcome": "X",
-            "label": "Scenario sorpresa",
+            "label": "Moda assoluta",
             "probabilityPct": 10.8,
             "conditionalProbabilityPct": 46.8,
             "isAbsoluteMode": true
+          },
+          {
+            "score": "0-1",
+            "outcome": "2",
+            "label": "Altro risultato probabile",
+            "probabilityPct": 9.4,
+            "conditionalProbabilityPct": 17.8,
+            "isAbsoluteMode": false
           }
         ],
         "display": [
@@ -10485,16 +10485,17 @@
             "isAbsoluteMode": true
           },
           {
-            "score": "2-1",
-            "outcome": "1",
-            "label": "Scenario alternativo",
-            "probabilityPct": 6.2,
-            "conditionalProbabilityPct": 25.7,
+            "score": "0-1",
+            "outcome": "2",
+            "label": "Altro risultato probabile",
+            "probabilityPct": 9.4,
+            "conditionalProbabilityPct": 17.8,
             "isAbsoluteMode": false
           }
         ],
         "coherentWithVerdict": true,
-        "method": "Il risultato principale e il punteggio piu probabile condizionato all'esito 1X2 favorito; la moda assoluta resta distinta quando appartiene a un altro esito."
+        "forcedOutcomeScenarios": false,
+        "method": "Il risultato principale e il punteggio piu probabile condizionato all'esito 1X2 favorito; gli altri due sono i punteggi successivi piu probabili della matrice, senza forzare pareggio o sorpresa."
       },
       "scoreProfile": {
         "bands": [
@@ -10525,7 +10526,7 @@
         "label": "Prevalenza 2"
       },
       "confidence": {
-        "value": 76,
+        "value": 78,
         "level": "alta"
       },
       "surprise": {
@@ -10965,7 +10966,7 @@
           "expectedValuePct": -13.5,
           "conservativeExpectedValuePct": -19.9,
           "sensitivityWidthPct": 3.3,
-          "confidence": "Media",
+          "confidence": "Alta",
           "qualifies": false,
           "classification": "neutrale"
         },
@@ -11022,7 +11023,7 @@
           "expectedValuePct": -3.8,
           "conservativeExpectedValuePct": -5.9,
           "sensitivityWidthPct": 3.3,
-          "confidence": "Media",
+          "confidence": "Alta",
           "qualifies": false,
           "classification": "probabile ma senza valore"
         },
@@ -11250,7 +11251,7 @@
           "expectedValuePct": 0.5,
           "conservativeExpectedValuePct": -5.2,
           "sensitivityWidthPct": 7.3,
-          "confidence": "Media",
+          "confidence": "Alta",
           "qualifies": false,
           "classification": "fragile"
         },
@@ -11269,7 +11270,7 @@
           "expectedValuePct": -24,
           "conservativeExpectedValuePct": -32.3,
           "sensitivityWidthPct": 7.3,
-          "confidence": "Media",
+          "confidence": "Alta",
           "qualifies": false,
           "classification": "neutrale"
         },
@@ -11288,7 +11289,7 @@
           "expectedValuePct": -5.5,
           "conservativeExpectedValuePct": -9.2,
           "sensitivityWidthPct": 5.9,
-          "confidence": "Media",
+          "confidence": "Alta",
           "qualifies": false,
           "classification": "probabile ma senza valore"
         },
@@ -11307,7 +11308,7 @@
           "expectedValuePct": -21.4,
           "conservativeExpectedValuePct": -34.4,
           "sensitivityWidthPct": 5.9,
-          "confidence": "Media",
+          "confidence": "Alta",
           "qualifies": false,
           "classification": "neutrale"
         }
@@ -11331,7 +11332,7 @@
             "expectedValuePct": -5.5,
             "conservativeExpectedValuePct": -9.2,
             "sensitivityWidthPct": 5.9,
-            "confidence": "Media",
+            "confidence": "Alta",
             "qualifies": false,
             "classification": "probabile ma senza valore"
           },
@@ -11369,7 +11370,7 @@
             "expectedValuePct": -3.8,
             "conservativeExpectedValuePct": -5.9,
             "sensitivityWidthPct": 3.3,
-            "confidence": "Media",
+            "confidence": "Alta",
             "qualifies": false,
             "classification": "probabile ma senza valore"
           }
@@ -11435,7 +11436,7 @@
             "expectedValuePct": -13.5,
             "conservativeExpectedValuePct": -19.9,
             "sensitivityWidthPct": 3.3,
-            "confidence": "Media",
+            "confidence": "Alta",
             "qualifies": false,
             "classification": "neutrale"
           },
@@ -11462,13 +11463,12 @@
         "role": "Confronto esterno: le quote non entrano nei gol attesi ne nelle probabilita del modello."
       },
       "dataQuality": {
-        "completenessPct": 71,
+        "completenessPct": 75,
         "crossCompetitionBaseline": false,
         "updatedAt": "2026-08-14",
         "probableLineups": "20/20 titolari proiettati; fonte editoriale da riconfermare",
         "missing": [
           "forma ufficiale 2026/27",
-          "designazione arbitrale",
           "meteo attendibile alla data della gara",
           "quote giocatore verificate"
         ]
@@ -11605,7 +11605,7 @@
       "matchId": "udinese-como-2026-27-md-01",
       "generatedAt": "2026-08-14T13:18:37.572Z",
       "status": "preliminary",
-      "engineVersion": "4.7.0",
+      "engineVersion": "4.7.1",
       "probabilities": {
         "final": {
           "1": 25.2,
@@ -11748,17 +11748,17 @@
           {
             "score": "1-1",
             "outcome": "X",
-            "label": "Scenario alternativo",
+            "label": "Altro risultato probabile",
             "probabilityPct": 12.7,
             "conditionalProbabilityPct": 46.6,
             "isAbsoluteMode": false
           },
           {
-            "score": "1-0",
-            "outcome": "1",
-            "label": "Scenario sorpresa",
-            "probabilityPct": 9.1,
-            "conditionalProbabilityPct": 36.3,
+            "score": "0-0",
+            "outcome": "X",
+            "label": "Altro risultato probabile",
+            "probabilityPct": 9.8,
+            "conditionalProbabilityPct": 36,
             "isAbsoluteMode": false
           }
         ],
@@ -11774,22 +11774,23 @@
           {
             "score": "1-1",
             "outcome": "X",
-            "label": "Scenario alternativo",
+            "label": "Altro risultato probabile",
             "probabilityPct": 12.7,
             "conditionalProbabilityPct": 46.6,
             "isAbsoluteMode": false
           },
           {
-            "score": "1-0",
-            "outcome": "1",
-            "label": "Scenario sorpresa",
-            "probabilityPct": 9.1,
-            "conditionalProbabilityPct": 36.3,
+            "score": "0-0",
+            "outcome": "X",
+            "label": "Altro risultato probabile",
+            "probabilityPct": 9.8,
+            "conditionalProbabilityPct": 36,
             "isAbsoluteMode": false
           }
         ],
         "coherentWithVerdict": true,
-        "method": "Il risultato principale e il punteggio piu probabile condizionato all'esito 1X2 favorito; la moda assoluta resta distinta quando appartiene a un altro esito."
+        "forcedOutcomeScenarios": false,
+        "method": "Il risultato principale e il punteggio piu probabile condizionato all'esito 1X2 favorito; gli altri due sono i punteggi successivi piu probabili della matrice, senza forzare pareggio o sorpresa."
       },
       "scoreProfile": {
         "bands": [
@@ -11820,7 +11821,7 @@
         "label": "Equilibrio con lieve prevalenza 2"
       },
       "confidence": {
-        "value": 68,
+        "value": 70,
         "level": "moderata"
       },
       "surprise": {
@@ -12260,7 +12261,7 @@
           "expectedValuePct": -4.5,
           "conservativeExpectedValuePct": -10.2,
           "sensitivityWidthPct": 3.5,
-          "confidence": "Media",
+          "confidence": "Alta",
           "qualifies": false,
           "classification": "neutrale"
         },
@@ -12317,7 +12318,7 @@
           "expectedValuePct": -5.5,
           "conservativeExpectedValuePct": -7.9,
           "sensitivityWidthPct": 3.5,
-          "confidence": "Media",
+          "confidence": "Alta",
           "qualifies": false,
           "classification": "probabile ma senza valore"
         },
@@ -12545,7 +12546,7 @@
           "expectedValuePct": -4.9,
           "conservativeExpectedValuePct": -11,
           "sensitivityWidthPct": 7.3,
-          "confidence": "Media",
+          "confidence": "Alta",
           "qualifies": false,
           "classification": "neutrale"
         },
@@ -12564,7 +12565,7 @@
           "expectedValuePct": -13.2,
           "conservativeExpectedValuePct": -20.9,
           "sensitivityWidthPct": 7.3,
-          "confidence": "Media",
+          "confidence": "Alta",
           "qualifies": false,
           "classification": "neutrale"
         },
@@ -12583,7 +12584,7 @@
           "expectedValuePct": -9.9,
           "conservativeExpectedValuePct": -14.3,
           "sensitivityWidthPct": 6.9,
-          "confidence": "Media",
+          "confidence": "Alta",
           "qualifies": false,
           "classification": "probabile ma senza valore"
         },
@@ -12602,7 +12603,7 @@
           "expectedValuePct": -2.9,
           "conservativeExpectedValuePct": -15.5,
           "sensitivityWidthPct": 6.9,
-          "confidence": "Media",
+          "confidence": "Alta",
           "qualifies": false,
           "classification": "neutrale"
         }
@@ -12645,7 +12646,7 @@
             "expectedValuePct": -9.9,
             "conservativeExpectedValuePct": -14.3,
             "sensitivityWidthPct": 6.9,
-            "confidence": "Media",
+            "confidence": "Alta",
             "qualifies": false,
             "classification": "probabile ma senza valore"
           },
@@ -12730,7 +12731,7 @@
             "expectedValuePct": -4.5,
             "conservativeExpectedValuePct": -10.2,
             "sensitivityWidthPct": 3.5,
-            "confidence": "Media",
+            "confidence": "Alta",
             "qualifies": false,
             "classification": "neutrale"
           },
@@ -12757,13 +12758,12 @@
         "role": "Confronto esterno: le quote non entrano nei gol attesi ne nelle probabilita del modello."
       },
       "dataQuality": {
-        "completenessPct": 71,
+        "completenessPct": 75,
         "crossCompetitionBaseline": false,
         "updatedAt": "2026-08-14",
         "probableLineups": "20/20 titolari proiettati; fonte editoriale da riconfermare",
         "missing": [
           "forma ufficiale 2026/27",
-          "designazione arbitrale",
           "meteo attendibile alla data della gara",
           "quote giocatore verificate"
         ]
@@ -12900,7 +12900,7 @@
       "matchId": "venezia-lecce-2026-27-md-01",
       "generatedAt": "2026-08-14T13:18:37.572Z",
       "status": "preliminary",
-      "engineVersion": "4.7.0",
+      "engineVersion": "4.7.1",
       "probabilities": {
         "final": {
           "1": 42.7,
@@ -13041,20 +13041,20 @@
         },
         "alternatives": [
           {
-            "score": "0-1",
-            "outcome": "2",
-            "label": "Scenario alternativo",
-            "probabilityPct": 10,
-            "conditionalProbabilityPct": 34,
-            "isAbsoluteMode": false
-          },
-          {
             "score": "1-1",
             "outcome": "X",
-            "label": "Scenario sorpresa",
+            "label": "Moda assoluta",
             "probabilityPct": 13,
             "conditionalProbabilityPct": 46.8,
             "isAbsoluteMode": true
+          },
+          {
+            "score": "0-1",
+            "outcome": "2",
+            "label": "Altro risultato probabile",
+            "probabilityPct": 10,
+            "conditionalProbabilityPct": 34,
+            "isAbsoluteMode": false
           }
         ],
         "display": [
@@ -13077,14 +13077,15 @@
           {
             "score": "0-1",
             "outcome": "2",
-            "label": "Scenario alternativo",
+            "label": "Altro risultato probabile",
             "probabilityPct": 10,
             "conditionalProbabilityPct": 34,
             "isAbsoluteMode": false
           }
         ],
         "coherentWithVerdict": true,
-        "method": "Il risultato principale e il punteggio piu probabile condizionato all'esito 1X2 favorito; la moda assoluta resta distinta quando appartiene a un altro esito."
+        "forcedOutcomeScenarios": false,
+        "method": "Il risultato principale e il punteggio piu probabile condizionato all'esito 1X2 favorito; gli altri due sono i punteggi successivi piu probabili della matrice, senza forzare pareggio o sorpresa."
       },
       "scoreProfile": {
         "bands": [
@@ -13115,11 +13116,11 @@
         "label": "Equilibrio con lieve prevalenza 1"
       },
       "confidence": {
-        "value": 53,
+        "value": 54,
         "level": "moderata"
       },
       "surprise": {
-        "value": 65,
+        "value": 64,
         "level": "medio",
         "upsetOutcome": "2",
         "upsetProbabilityPct": 29.5,
@@ -14011,13 +14012,12 @@
         "role": "Confronto esterno: le quote non entrano nei gol attesi ne nelle probabilita del modello."
       },
       "dataQuality": {
-        "completenessPct": 63,
+        "completenessPct": 67,
         "crossCompetitionBaseline": true,
         "updatedAt": "2026-08-14",
         "probableLineups": "20/20 titolari proiettati; fonte editoriale da riconfermare",
         "missing": [
           "forma ufficiale 2026/27",
-          "designazione arbitrale",
           "meteo attendibile alla data della gara",
           "quote giocatore verificate"
         ]
