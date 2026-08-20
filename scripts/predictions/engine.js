@@ -799,6 +799,7 @@ function evaluateComboMarketRows(oddsEvent, matrices, dataCompleteness) {
       rows.push({
         id: `combo:${quote.providerSelectionId}`,
         family: "combo",
+        pricingMarketKey: market.marketName,
         market: market.variantName || market.marketName,
         selection: quote.name,
         providerSelectionId: quote.providerSelectionId,
@@ -857,6 +858,7 @@ function evaluateScoreLineRows(oddsEvent, matrices, dataCompleteness) {
       rows.push({
         id: `score-line:${quote.providerSelectionId}`,
         family: "score-line",
+        pricingMarketKey: market.marketName,
         market: market.variantName || market.marketName,
         selection: quote.name,
         providerSelectionId: quote.providerSelectionId,
@@ -954,6 +956,7 @@ function evaluatePlayerPricingRows(oddsEvent, candidates, dataCompleteness) {
     rows.push({
       id: `player:${quote.providerSelectionId}`,
       family: "player",
+      pricingMarketKey: market.marketName,
       market: `${candidate.name} · ${metric.label} ${market.threshold}`,
       selection: "OVER",
       providerSelectionId: quote.providerSelectionId,
@@ -1035,10 +1038,18 @@ function marketEvaluation(oddsEvent, matrices, dataCompleteness, playerCandidate
   const comboRows = evaluateComboMarketRows(oddsEvent, matrices, dataCompleteness);
   const scoreLineRows = evaluateScoreLineRows(oddsEvent, matrices, dataCompleteness);
   const playerRows = evaluatePlayerPricingRows(oddsEvent, playerCandidates, dataCompleteness);
-  const pricingErrors = [...available, ...comboRows, ...scoreLineRows, ...playerRows]
+  const rankedPricingErrors = [...available, ...comboRows, ...scoreLineRows, ...playerRows]
     .filter(row => row.odds > 3.5 && row.edgePct >= 5 && row.expectedValuePct >= 15 && row.conservativeExpectedValuePct > 0)
-    .sort((a, b) => b.conservativeExpectedValuePct - a.conservativeExpectedValuePct || b.edgePct - a.edgePct)
-    .slice(0, 3);
+    .map(row => ({ ...row, pricingMarketKey: row.pricingMarketKey || row.family }))
+    .sort((a, b) => b.conservativeExpectedValuePct - a.conservativeExpectedValuePct || b.edgePct - a.edgePct);
+  const pricingErrors = [];
+  const usedPricingMarkets = new Set();
+  for (const row of rankedPricingErrors) {
+    if (usedPricingMarkets.has(row.pricingMarketKey)) continue;
+    usedPricingMarkets.add(row.pricingMarketKey);
+    pricingErrors.push(row);
+    if (pricingErrors.length === 3) break;
+  }
   const verifiedPlayerMarkets = (oddsEvent?.markets || []).filter(market => market.marketScope === "player" && openSelections(market).length);
   return {
     rows: available,

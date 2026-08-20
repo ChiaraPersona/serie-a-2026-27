@@ -71,6 +71,7 @@ for (const prediction of dataset.predictions) {
     assert([0, 3].includes(pricingErrors.length), `${prediction.matchId}: il riquadro deve mostrare tre errori robusti oppure N/D`);
     assert(pricingErrors.every(error => error.odds > 3.5), `${prediction.matchId}: errore di quota non superiore a 3.50`);
     assert(pricingErrors.every(error => error.edgePct >= 5 && error.expectedValuePct >= 15 && error.conservativeExpectedValuePct > 0), `${prediction.matchId}: errore di quota non robusto`);
+    assert.strictEqual(new Set(pricingErrors.map(error => error.pricingMarketKey)).size, pricingErrors.length, `${prediction.matchId}: gli errori di quota devono appartenere a mercati diversi`);
   }
   assert.strictEqual(prediction.teamProjections.length, 2, `${prediction.matchId}: proiezioni squadra incomplete`);
   assert(prediction.matchProjection?.shotsTotal && prediction.matchProjection?.shotsOnTarget && prediction.matchProjection?.corners, `${prediction.matchId}: totale volumi assente`);
