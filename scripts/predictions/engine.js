@@ -1,6 +1,6 @@
 "use strict";
 
-const ENGINE_VERSION = "4.9.0";
+const ENGINE_VERSION = "4.9.1";
 const OUTCOMES = ["1", "X", "2"];
 const WEIGHTS = Object.freeze({ venueHistorical: 0.46, overallHistorical: 0.25, recentForm: 0.16, tacticalMatchup: 0.07, probableLineup: 0.05, objectives: 0.01 });
 const MVP_WEIGHTS = Object.freeze({ resultScenario: 0.3, individualProduction: 0.2, historicalRating: 0.15, officialMvpHistory: 0.15, tacticalFit: 0.1, opponentHistory: 0.05, dataReliability: 0.05 });
@@ -944,9 +944,12 @@ function evaluatePlayerPricingRows(oddsEvent, candidates, dataCompleteness) {
     const quote = openSelections(market).find(selection => selection.name === "OVER" && selection.odds > 3.5);
     if (!quote) continue;
     const minimum = Math.floor(Number(market.threshold)) + 1;
-    // Il mercato include l'eventuale sostituto: il rate storico del titolare viene
-    // comunque ridotto al 90% e stressato fra 78% e 102% per evitare falsi value.
-    const lambdas = [rate * 0.9, rate * 0.78, rate * 1.02];
+    const averageMinutes = clamp(totals.minutes / totals.appearances, 30, 82);
+    const competitionFactor = candidate.player.previousCompetition === "Serie B" ? 0.82 : 1;
+    // Il per90 viene ricondotto al minutaggio realmente osservato. L'impatto
+    // dell'eventuale sostituto non viene inventato se manca uno storico di ruolo.
+    const centralLambda = rate * averageMinutes / 90 * competitionFactor;
+    const lambdas = [centralLambda, centralLambda * 0.85, centralLambda * 1.15];
     const probabilities = lambdas.map(lambda => poissonAtLeast(lambda, minimum));
     const probability = probabilities[0];
     const conservativeProbability = Math.min(...probabilities);
@@ -972,7 +975,7 @@ function evaluatePlayerPricingRows(oddsEvent, candidates, dataCompleteness) {
       confidence: dataCompleteness >= 0.72 && width <= 0.1 ? "Alta" : "Media",
       classification: "candidate-pricing-error",
       marketProbabilityBasis: "implied",
-      basis: `${round(rate, 2)}/90 nel 2025/26 · minimo ${totals.minutes} minuti · proiezione prudente al 90%`
+      basis: `${round(rate, 2)}/90 nel 2025/26 · ${round(averageMinutes, 1)} minuti medi${competitionFactor < 1 ? " · adattamento Serie B-Serie A" : ""}`
     });
   }
   return rows;

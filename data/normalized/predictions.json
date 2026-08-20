@@ -4,7 +4,7 @@
   "season": "2026-27",
   "generatedAt": "2026-08-20T16:23:02.167Z",
   "engine": {
-    "version": "4.9.0",
+    "version": "4.9.1",
     "principle": "Un'unica matrice dei punteggi indipendente dalle quote genera 1X2, gol e mercati collegati.",
     "weights": {
       "venueHistorical": 0.46,
@@ -989,7 +989,7 @@
       "matchId": "atalanta-sassuolo-2026-27-md-01",
       "generatedAt": "2026-08-20T16:23:02.167Z",
       "status": "preliminary",
-      "engineVersion": "4.9.0",
+      "engineVersion": "4.9.1",
       "probabilities": {
         "final": {
           "1": 52.6,
@@ -2358,7 +2358,7 @@
       "matchId": "bologna-lazio-2026-27-md-01",
       "generatedAt": "2026-08-20T16:23:02.167Z",
       "status": "preliminary",
-      "engineVersion": "4.9.0",
+      "engineVersion": "4.9.1",
       "probabilities": {
         "final": {
           "1": 42.2,
@@ -3653,7 +3653,7 @@
       "matchId": "frosinone-juventus-2026-27-md-01",
       "generatedAt": "2026-08-20T16:23:02.167Z",
       "status": "preliminary",
-      "engineVersion": "4.9.0",
+      "engineVersion": "4.9.1",
       "probabilities": {
         "final": {
           "1": 22.1,
@@ -5025,7 +5025,7 @@
       "matchId": "genoa-napoli-2026-27-md-01",
       "generatedAt": "2026-08-20T16:23:02.167Z",
       "status": "preliminary",
-      "engineVersion": "4.9.0",
+      "engineVersion": "4.9.1",
       "probabilities": {
         "final": {
           "1": 22.6,
@@ -6555,7 +6555,7 @@
       "matchId": "inter-monza-2026-27-md-01",
       "generatedAt": "2026-08-20T16:23:02.167Z",
       "status": "preliminary",
-      "engineVersion": "4.9.0",
+      "engineVersion": "4.9.1",
       "probabilities": {
         "final": {
           "1": 81.2,
@@ -7641,48 +7641,6 @@
         ],
         "pricingErrors": [
           {
-            "id": "player:5274145529",
-            "family": "player",
-            "pricingMarketKey": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
-            "market": "Andrea Colpani · Tiri totali 4.5",
-            "selection": "OVER",
-            "providerSelectionId": "5274145529",
-            "odds": 16,
-            "modelProbabilityPct": 20,
-            "conservativeProbabilityPct": 13.3,
-            "fairOdds": 5.01,
-            "marketNoMarginPct": 6.3,
-            "edgePct": 13.7,
-            "expectedValuePct": 219.3,
-            "conservativeExpectedValuePct": 113.5,
-            "sensitivityWidthPct": 14.1,
-            "confidence": "Media",
-            "classification": "candidate-pricing-error",
-            "marketProbabilityBasis": "implied",
-            "basis": "3.43/90 nel 2025/26 · minimo 1311 minuti · proiezione prudente al 90%"
-          },
-          {
-            "id": "player:5274146973",
-            "family": "player",
-            "pricingMarketKey": "U/O  TIRI IN PORTA GIOCATORE (DUO) INC PALI TRAVERSE INC TS",
-            "market": "Patrick Cutrone · Tiri in porta 1.5",
-            "selection": "OVER",
-            "providerSelectionId": "5274146973",
-            "odds": 9,
-            "modelProbabilityPct": 20.1,
-            "conservativeProbabilityPct": 16.2,
-            "fairOdds": 4.97,
-            "marketNoMarginPct": 11.1,
-            "edgePct": 9,
-            "expectedValuePct": 81.2,
-            "conservativeExpectedValuePct": 45.8,
-            "sensitivityWidthPct": 8,
-            "confidence": "Media",
-            "classification": "candidate-pricing-error",
-            "marketProbabilityBasis": "implied",
-            "basis": "0.92/90 nel 2025/26 · minimo 2046 minuti · proiezione prudente al 90%"
-          },
-          {
             "id": "combo:5181865902",
             "family": "combo",
             "pricingMarketKey": "COMBO: 1X2 + U/O + GG/NG",
@@ -7700,6 +7658,45 @@
             "sensitivityWidthPct": 10.5,
             "confidence": "Media",
             "classification": "candidate-pricing-error"
+          },
+          {
+            "id": "combo:5230727252",
+            "family": "combo",
+            "pricingMarketKey": "COMBO: GOAL/NOGOAL + U/O",
+            "market": "U/O 4.5 + GG/NG",
+            "selection": "GOAL + OVER",
+            "providerSelectionId": "5230727252",
+            "odds": 6.5,
+            "modelProbabilityPct": 24.3,
+            "conservativeProbabilityPct": 18.8,
+            "fairOdds": 4.12,
+            "marketNoMarginPct": 13.9,
+            "edgePct": 10.3,
+            "expectedValuePct": 57.7,
+            "conservativeExpectedValuePct": 22.4,
+            "sensitivityWidthPct": 11.1,
+            "confidence": "Media",
+            "classification": "candidate-pricing-error"
+          },
+          {
+            "id": "score-line:5181868628",
+            "family": "score-line",
+            "pricingMarketKey": "OSPITE: SOMMA GOAL",
+            "market": "SOMMA GOAL OSPITE",
+            "selection": "2",
+            "providerSelectionId": "5181868628",
+            "odds": 9.75,
+            "modelProbabilityPct": 14.2,
+            "conservativeProbabilityPct": 12.4,
+            "fairOdds": 7.06,
+            "marketNoMarginPct": 9,
+            "edgePct": 5.1,
+            "expectedValuePct": 38.1,
+            "conservativeExpectedValuePct": 21,
+            "sensitivityWidthPct": 3.4,
+            "confidence": "Media",
+            "classification": "candidate-pricing-error",
+            "marketProbabilityBasis": "no-margin"
           }
         ]
       },
@@ -8178,7 +8175,7 @@
       "matchId": "parma-cagliari-2026-27-md-01",
       "generatedAt": "2026-08-20T16:23:02.167Z",
       "status": "preliminary",
-      "engineVersion": "4.9.0",
+      "engineVersion": "4.9.1",
       "probabilities": {
         "final": {
           "1": 39,
@@ -9720,7 +9717,7 @@
       "matchId": "roma-fiorentina-2026-27-md-01",
       "generatedAt": "2026-08-20T16:23:02.167Z",
       "status": "preliminary",
-      "engineVersion": "4.9.0",
+      "engineVersion": "4.9.1",
       "probabilities": {
         "final": {
           "1": 64.1,
@@ -11015,7 +11012,7 @@
       "matchId": "torino-milan-2026-27-md-01",
       "generatedAt": "2026-08-20T16:23:02.167Z",
       "status": "preliminary",
-      "engineVersion": "4.9.0",
+      "engineVersion": "4.9.1",
       "probabilities": {
         "final": {
           "1": 24.4,
@@ -12308,7 +12305,7 @@
       "matchId": "udinese-como-2026-27-md-01",
       "generatedAt": "2026-08-20T16:23:02.167Z",
       "status": "preliminary",
-      "engineVersion": "4.9.0",
+      "engineVersion": "4.9.1",
       "probabilities": {
         "final": {
           "1": 24.4,
@@ -13850,7 +13847,7 @@
       "matchId": "venezia-lecce-2026-27-md-01",
       "generatedAt": "2026-08-20T16:23:02.167Z",
       "status": "preliminary",
-      "engineVersion": "4.9.0",
+      "engineVersion": "4.9.1",
       "probabilities": {
         "final": {
           "1": 42.1,
