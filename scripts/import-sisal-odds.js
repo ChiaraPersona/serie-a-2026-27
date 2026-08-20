@@ -14,6 +14,7 @@ function readArguments(argv) {
     if (argument === "--competition") options.competition = argv[++index];
     else if (argument === "--url") options.url = argv[++index];
     else if (argument === "--matchday") options.matchday = Number(argv[++index]);
+    else if (argument === "--limit") options.limit = Number(argv[++index]);
     else if (argument === "--wait-ms") options.waitMs = Number(argv[++index]);
     else if (argument === "--headed") options.headed = true;
     else if (argument === "--headless") options.headed = false;
@@ -36,9 +37,16 @@ function fixturePageUrls(competition, options) {
     match.competition === competition.canonicalCompetition &&
     (!competition.season || match.season === competition.season) &&
     match.matchday === matchday
+  ).sort((left, right) =>
+    String(left.date || "").localeCompare(String(right.date || "")) ||
+    String(left.kickoff || "").localeCompare(String(right.kickoff || "")) ||
+    left.id.localeCompare(right.id)
   );
   if (fixtures.length !== 10) throw new Error(`Calendario canonico incompleto per la giornata ${matchday}: ${fixtures.length}/10 gare.`);
-  return fixtures.map((match) => ({
+  if (options.limit !== undefined && (!Number.isInteger(options.limit) || options.limit < 1 || options.limit > fixtures.length)) {
+    throw new Error(`--limit deve essere un numero intero compreso tra 1 e ${fixtures.length}.`);
+  }
+  return fixtures.slice(0, options.limit || fixtures.length).map((match) => ({
     canonicalMatchId: match.id,
     url: competition.eventUrlTemplate
       .replace("{homeTeam}", encodeURIComponent(match.homeTeam))
@@ -50,10 +58,25 @@ function timestampForFile(date) {
   return date.toISOString().replace(/[:.]/g, "-");
 }
 
+function summarize(events) {
+  const matchEvents = events.filter((event) => event.eventType === "MATCH");
+  const markets = events.flatMap((event) => event.markets);
+  return {
+    events: events.length,
+    matchEvents: matchEvents.length,
+    antepostEvents: events.filter((event) => event.eventType === "ANTEPOST").length,
+    matchedEvents: matchEvents.filter((event) => event.canonicalMatchId).length,
+    unmatchedEvents: matchEvents.filter((event) => !event.canonicalMatchId).length,
+    markets: markets.length,
+    playerMarkets: markets.filter((market) => market.marketScope === "player").length,
+    selections: markets.reduce((sum, market) => sum + market.selections.length, 0),
+  };
+}
+
 async function main() {
   const options = readArguments(process.argv.slice(2));
   if (options.help) {
-    console.log("Uso: node scripts/import-sisal-odds.js [--competition serie-a] [--matchday 1] [--url URL] [--wait-ms 15000] [--headless] [--no-details]");
+    console.log("Uso: node scripts/import-sisal-odds.js [--competition serie-a] [--matchday 1] [--limit 4] [--url URL] [--wait-ms 15000] [--headless] [--no-details]");
     return;
   }
   const competition = sourceConfig.competitions[options.competition];
@@ -98,8 +121,31 @@ async function main() {
   const normalizedDirectory = path.join(root, "data", "normalized", "odds", "sisal");
   fs.mkdirSync(normalizedDirectory, { recursive: true });
   const normalizedFile = path.join(normalizedDirectory, `${options.competition}.json`);
-  fs.writeFileSync(normalizedFile, `${JSON.stringify(normalized, null, 2)}\n`);
-  console.log(`Sisal: ${artifact.responses.length} risposte API, ${normalized.summary.events} eventi, ${normalized.summary.markets} mercati, ${normalized.summary.selections} quote, ${normalized.summary.playerMarkets} mercati giocatore.`);
+  const incremental = directFixtureImport && pages.length < 10 && fs.existsSync(normalizedFile);
+  const updatedEvents = normalized.events.map((event) => ({ ...event, retrievedAt: normalized.retrievedAt, rawFile: relativeRawFile }));
+  let output = { ...normalized, events: updatedEvents };
+  if (incremental) {
+    const previous = JSON.parse(fs.readFileSync(normalizedFile, "utf8"));
+    const updatedIds = new Set(updatedEvents.map((event) => event.canonicalMatchId));
+    const retainedEvents = previous.events
+      .filter((event) => !updatedIds.has(event.canonicalMatchId))
+      .map((event) => ({
+        ...event,
+        retrievedAt: event.retrievedAt || previous.retrievedAt,
+        rawFile: event.rawFile || previous.rawFile,
+      }));
+    const events = [...updatedEvents, ...retainedEvents]
+      .sort((left, right) => String(left.startsAt).localeCompare(String(right.startsAt)) || left.name.localeCompare(right.name, "it"));
+    output = {
+      ...normalized,
+      sourceUrl: competition.url,
+      rawFiles: [...new Set(events.map((event) => event.rawFile).filter(Boolean))],
+      summary: summarize(events),
+      events,
+    };
+  }
+  fs.writeFileSync(normalizedFile, `${JSON.stringify(output, null, 2)}\n`);
+  console.log(`Sisal: ${artifact.responses.length} risposte API, ${updatedEvents.length} eventi aggiornati; dataset ${output.summary.events} eventi, ${output.summary.markets} mercati, ${output.summary.selections} quote, ${output.summary.playerMarkets} mercati giocatore.`);
   console.log(path.relative(root, outputFile));
   console.log(path.relative(root, normalizedFile));
 }

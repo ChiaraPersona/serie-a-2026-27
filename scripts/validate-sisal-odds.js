@@ -15,6 +15,9 @@ assert(dataset.sourceUrl?.startsWith("https://www.sisal.it/"), "URL sorgente Sis
 assert(dataset.rawFile?.endsWith(".json.gz"), "Riferimento raw Sisal non valido");
 const rawFile = path.join(root, dataset.rawFile);
 assert(fs.existsSync(rawFile), `Raw Sisal mancante: ${rawFile}`);
+for (const relativeRawFile of dataset.rawFiles || []) {
+  assert(fs.existsSync(path.join(root, relativeRawFile)), `Raw Sisal incrementale mancante: ${relativeRawFile}`);
+}
 const raw = JSON.parse(zlib.gunzipSync(fs.readFileSync(rawFile)).toString("utf8"));
 assert(raw.provider === "sisal" && Array.isArray(raw.responses), "Raw Sisal non valido");
 assert(raw.responses.every((response) => !Object.keys(response.headers || {}).some((name) => /cookie|authorization|token/i.test(name))), "Header sensibili presenti nel raw Sisal");
@@ -22,6 +25,7 @@ assert((raw.detailRequests || []).every((request) => request.status === 200), "R
 assert(Array.isArray(dataset.events), "Eventi Sisal mancanti");
 assert(dataset.summary.events === dataset.events.length, "Conteggio eventi Sisal incoerente");
 assert(new Set(dataset.events.map((event) => event.providerEventId)).size === dataset.events.length, "Eventi Sisal duplicati");
+assert(dataset.events.every((event) => /^\d{4}-\d{2}-\d{2}T/.test(event.retrievedAt || dataset.retrievedAt)), "Timestamp evento Sisal non valido");
 
 const markets = dataset.events.flatMap((event) => event.markets);
 const selections = markets.flatMap((market) => market.selections);

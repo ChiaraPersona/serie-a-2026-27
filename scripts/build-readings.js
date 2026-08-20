@@ -79,12 +79,13 @@ for (const reading of readings) {
     const event = oddsByMatch.get(reading.matchId);
     const mainMarket = event?.markets.find(market => market.marketName === "1X2 ESITO FINALE" && market.status === "open");
     if (mainMarket) {
+      const eventRetrievedAt = event.retrievedAt || odds.retrievedAt;
       reading.sections.market = {
-        content: `Snapshot quote 1X2 aggiornato al ${String(odds.retrievedAt).slice(0, 10)}; viene usato soltanto come confronto esterno e non come input del modello.`,
+        content: `Snapshot quote 1X2 aggiornato al ${String(eventRetrievedAt).slice(0, 10)}; viene usato soltanto come confronto esterno e non come input del modello.`,
         signals: mainMarket.selections.map(selection => `${selection.name}: ${selection.odds.toFixed(2)}`),
         sources: [{ label: odds.provider, url: odds.sourceUrl }]
       };
-      reading.updatedAt = [reading.updatedAt, String(odds.retrievedAt).slice(0, 10)].sort().at(-1);
+      reading.updatedAt = [reading.updatedAt, String(eventRetrievedAt).slice(0, 10)].sort().at(-1);
     }
   }
 }
