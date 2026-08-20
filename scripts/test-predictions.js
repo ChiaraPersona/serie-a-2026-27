@@ -56,6 +56,8 @@ for (const prediction of dataset.predictions) {
   assert.strictEqual(prediction.playerMarkets.status, configuredMyCombo ? "available" : "N/D", `${prediction.matchId}: disponibilita mercati giocatore incoerente con lo snapshot`);
   if (configuredMyCombo) {
     assert.deepStrictEqual(prediction.combinations.map(combo => combo.tier), ["Safe", "Balanced", "Aggressive"], `${prediction.matchId}: profili MyCombo incompleti`);
+    const portfolioSelectionIds = prediction.combinations.flatMap(combo => combo.legs.map(leg => leg.providerSelectionId));
+    assert.strictEqual(new Set(portfolioSelectionIds).size, portfolioSelectionIds.length, `${prediction.matchId}: le tre MyCombo devono usare proposte diverse`);
     for (const combo of prediction.combinations) {
       assert(combo.legs.length >= 5, `${prediction.matchId}/${combo.tier}: numero gambe insufficiente`);
       assert(combo.legs.every(leg => leg.odds > 1 && leg.odds < 1.8), `${prediction.matchId}/${combo.tier}: ogni quota deve essere inferiore a 1.80`);
@@ -65,6 +67,10 @@ for (const prediction of dataset.predictions) {
       const product = combo.legs.reduce((total, leg) => total * leg.odds, 1);
       assert(Math.abs(combo.odds - product) < 0.011, `${prediction.matchId}/${combo.tier}: moltiplicazione quote incoerente`);
     }
+    const pricingErrors = prediction.recommendations.pricingErrors;
+    assert([0, 3].includes(pricingErrors.length), `${prediction.matchId}: il riquadro deve mostrare tre errori robusti oppure N/D`);
+    assert(pricingErrors.every(error => error.odds > 3.5), `${prediction.matchId}: errore di quota non superiore a 3.50`);
+    assert(pricingErrors.every(error => error.edgePct >= 5 && error.expectedValuePct >= 15 && error.conservativeExpectedValuePct > 0), `${prediction.matchId}: errore di quota non robusto`);
   }
   assert.strictEqual(prediction.teamProjections.length, 2, `${prediction.matchId}: proiezioni squadra incomplete`);
   assert(prediction.matchProjection?.shotsTotal && prediction.matchProjection?.shotsOnTarget && prediction.matchProjection?.corners, `${prediction.matchId}: totale volumi assente`);
