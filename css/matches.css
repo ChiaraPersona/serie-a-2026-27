@@ -621,9 +621,19 @@ body[data-page="referees"] .referee-nav a:focus-visible{border-color:rgba(36,90,
 
 .prediction-scenario-grid dd{margin:3px 0 0;color:#43566b;font-size:10px;line-height:1.45}
 
-.prediction-combos{display:grid;gap:10px}
+.prediction-combos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:start;gap:10px}
 
-.prediction-combos article{display:grid;gap:5px;padding:14px;border:1px solid rgba(167,116,22,.22);border-radius:15px;background:rgba(255,247,228,.55)}
+.prediction-combo-menu{overflow:hidden;border:1px solid rgba(167,116,22,.22);border-radius:15px;background:rgba(255,247,228,.55)}
+
+.prediction-combo-menu summary{position:relative;display:grid;gap:5px;padding:14px 38px 14px 14px;cursor:pointer;list-style:none}
+
+.prediction-combo-menu summary::-webkit-details-marker{display:none}
+
+.prediction-combo-menu summary i{position:absolute;top:50%;right:15px;color:#8e6112;font-size:20px;font-style:normal;line-height:1;transform:translateY(-50%);transition:transform .2s ease}
+
+.prediction-combo-menu[open] summary i{transform:translateY(-50%) rotate(180deg)}
+
+.prediction-combo-content{display:grid;gap:7px;padding:0 14px 14px;border-top:1px solid rgba(167,116,22,.12)}
 
 .prediction-combos span{color:#8e6112;font-size:9px;font-weight:900;text-transform:uppercase}
 
