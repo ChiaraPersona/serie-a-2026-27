@@ -1,6 +1,6 @@
 "use strict";
 
-const ENGINE_VERSION = "4.7.1";
+const ENGINE_VERSION = "4.8.0";
 const OUTCOMES = ["1", "X", "2"];
 const WEIGHTS = Object.freeze({ venueHistorical: 0.46, overallHistorical: 0.25, recentForm: 0.16, tacticalMatchup: 0.07, probableLineup: 0.05, objectives: 0.01 });
 const MVP_WEIGHTS = Object.freeze({ resultScenario: 0.3, individualProduction: 0.2, historicalRating: 0.15, officialMvpHistory: 0.15, tacticalFit: 0.1, opponentHistory: 0.05, dataReliability: 0.05 });
@@ -837,11 +837,81 @@ function marketEvaluation(oddsEvent, matrices, dataCompleteness) {
     .sort((a, b) => b.modelProbabilityPct - a.modelProbabilityPct).slice(0, 3);
   const pricingErrors = available.filter(row => row.edgePct >= 8 && row.conservativeExpectedValuePct > 0)
     .sort((a, b) => b.edgePct - a.edgePct).slice(0, 3);
+  const verifiedPlayerMarkets = (oddsEvent?.markets || []).filter(market => market.marketScope === "player" && openSelections(market).length);
   return {
     rows: available,
     selections: { primary, secondary, avoid, pricingErrors },
-    playerMarkets: { status: "N/D", reason: "Nessuna quota giocatore verificata nello snapshot; titolarita e minutaggio restano proiezioni editoriali." }
+    playerMarkets: verifiedPlayerMarkets.length
+      ? {
+          status: "available",
+          markets: verifiedPlayerMarkets.length,
+          selections: verifiedPlayerMarkets.reduce((total, market) => total + openSelections(market).length, 0),
+          note: "Quote giocatore presenti nello snapshot Sisal; titolarita e minutaggio restano proiezioni editoriali e non viene attribuito un EV modellistico non verificato."
+        }
+      : { status: "N/D", reason: "Nessuna quota giocatore verificata nello snapshot; titolarita e minutaggio restano proiezioni editoriali." }
   };
+}
+
+function configuredComboPortfolio(oddsEvent, config) {
+  if (!config?.portfolios?.length) return null;
+  const constraints = config.constraints || {};
+  const maximum = constraints.maxLegOddsExclusive ?? 1.8;
+  const tolerance = constraints.targetTolerancePct ?? 20;
+  const selectionIndex = new Map();
+  for (const market of oddsEvent?.markets || []) {
+    for (const selection of market.selections || []) {
+      selectionIndex.set(String(selection.providerSelectionId), { market, selection });
+    }
+  }
+  return config.portfolios.map(portfolio => {
+    const targetOdds = constraints.targets?.[portfolio.tier];
+    if (!(targetOdds > 1)) throw new Error(`${oddsEvent.canonicalMatchId}/${portfolio.tier}: target MyCombo non valido`);
+    const overlapKeys = new Set();
+    const selectionIds = new Set();
+    const legs = portfolio.legs.map(leg => {
+      const resolved = selectionIndex.get(String(leg.providerSelectionId));
+      if (!resolved) throw new Error(`${oddsEvent.canonicalMatchId}/${portfolio.tier}: quota Sisal mancante ${leg.providerSelectionId}`);
+      const { market, selection } = resolved;
+      if (selection.status !== "open" || !(selection.odds > 1 && selection.odds < maximum)) {
+        throw new Error(`${oddsEvent.canonicalMatchId}/${portfolio.tier}: quota ${selection.odds} non inferiore a ${maximum}`);
+      }
+      if (!leg.overlapKey || overlapKeys.has(leg.overlapKey)) {
+        throw new Error(`${oddsEvent.canonicalMatchId}/${portfolio.tier}: esito sovrapponibile ${leg.overlapKey || "senza chiave"}`);
+      }
+      if (selectionIds.has(String(selection.providerSelectionId))) {
+        throw new Error(`${oddsEvent.canonicalMatchId}/${portfolio.tier}: selectionId duplicato ${selection.providerSelectionId}`);
+      }
+      overlapKeys.add(leg.overlapKey);
+      selectionIds.add(String(selection.providerSelectionId));
+      return {
+        label: leg.label,
+        market: market.marketName,
+        variant: market.variantName,
+        threshold: market.threshold,
+        selection: selection.name,
+        providerSelectionId: selection.providerSelectionId,
+        odds: selection.odds,
+        overlapKey: leg.overlapKey,
+        marketScope: market.marketScope
+      };
+    });
+    const odds = round(legs.reduce((product, leg) => product * leg.odds, 1), 2);
+    const distancePct = round(Math.abs(odds - targetOdds) / targetOdds * 100, 1);
+    if (distancePct > tolerance) {
+      throw new Error(`${oddsEvent.canonicalMatchId}/${portfolio.tier}: quota ${odds} oltre la tolleranza del ${tolerance}% dal target ${targetOdds}`);
+    }
+    return {
+      tier: portfolio.tier,
+      risk: portfolio.tier === "Safe" ? "relativo inferiore" : portfolio.tier === "Balanced" ? "medio" : "elevato",
+      targetOdds,
+      odds,
+      distancePct,
+      legs,
+      selection: legs.map(leg => leg.label).join(" + "),
+      logic: portfolio.logic,
+      probabilityStatus: "N/D: la quota combinata e il profilo di rischio non sono una probabilita congiunta indipendente."
+    };
+  });
 }
 
 function comboPredicate(selection, threshold) {
@@ -855,7 +925,9 @@ function comboPredicate(selection, threshold) {
   return predicates.length === 2 ? score => predicates.every(predicate => predicate(score)) : null;
 }
 
-function comboPortfolio(oddsEvent, matrices, dataCompleteness) {
+function comboPortfolio(oddsEvent, matrices, dataCompleteness, config) {
+  const configured = configuredComboPortfolio(oddsEvent, config);
+  if (configured) return configured;
   if (dataCompleteness < 0.58) return [];
   const candidates = [];
   for (const market of (oddsEvent?.markets || []).filter(item => ["COMBO: DC + U/O", "COMBO: 1X2 + U/O", "COMBO: DC + GOAL/NOGOAL"].includes(item.marketName))) {
@@ -984,7 +1056,7 @@ function predictMatch(input) {
     scenarios: matchScenarios(input, final, expected),
     marketComparison: evaluatedMarkets.rows,
     recommendations: evaluatedMarkets.selections,
-    combinations: comboPortfolio(input.oddsEvent, matrices, dataCompleteness),
+    combinations: comboPortfolio(input.oddsEvent, matrices, dataCompleteness, input.myComboConfig),
     playerMarkets: evaluatedMarkets.playerMarkets,
     market: {
       provider: "Sisal",
@@ -1005,7 +1077,7 @@ function predictMatch(input) {
         ...(input.reading?.sections?.availability?.content ? [] : ["indisponibili verificati"]),
         ...(input.reading?.sections?.referee?.content ? [] : ["designazione arbitrale"]),
         "meteo attendibile alla data della gara",
-        "quote giocatore verificate"
+        ...(evaluatedMarkets.playerMarkets.status === "available" ? [] : ["quote giocatore verificate"])
       ]
     }
   };

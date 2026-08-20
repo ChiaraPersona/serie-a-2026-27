@@ -52,7 +52,20 @@ for (const prediction of dataset.predictions) {
   assert(prediction.marketComparison.every(candidate => candidate.providerSelectionId && candidate.marketNoMarginPct !== null), `${prediction.matchId}: mercato senza quota disponibile o probabilita depurata`);
   assert(prediction.marketComparison.every(candidate => Math.abs(candidate.expectedValuePct - ((candidate.modelProbabilityPct / 100) * candidate.odds - 1) * 100) <= 1.5 || candidate.family === "draw-no-bet"), `${prediction.matchId}: valore atteso incoerente`);
   assert.strictEqual(prediction.scenarios.length, 3, `${prediction.matchId}: scenari incompleti`);
-  assert(prediction.playerMarkets.status === "N/D", `${prediction.matchId}: i mercati giocatore non verificati devono restare N/D`);
+  const configuredMyCombo = ["inter-monza-2026-27-md-01", "udinese-como-2026-27-md-01", "genoa-napoli-2026-27-md-01", "parma-cagliari-2026-27-md-01"].includes(prediction.matchId);
+  assert.strictEqual(prediction.playerMarkets.status, configuredMyCombo ? "available" : "N/D", `${prediction.matchId}: disponibilita mercati giocatore incoerente con lo snapshot`);
+  if (configuredMyCombo) {
+    assert.deepStrictEqual(prediction.combinations.map(combo => combo.tier), ["Safe", "Balanced", "Aggressive"], `${prediction.matchId}: profili MyCombo incompleti`);
+    for (const combo of prediction.combinations) {
+      assert(combo.legs.length >= 5, `${prediction.matchId}/${combo.tier}: numero gambe insufficiente`);
+      assert(combo.legs.every(leg => leg.odds > 1 && leg.odds < 1.8), `${prediction.matchId}/${combo.tier}: ogni quota deve essere inferiore a 1.80`);
+      assert.strictEqual(new Set(combo.legs.map(leg => leg.providerSelectionId)).size, combo.legs.length, `${prediction.matchId}/${combo.tier}: selectionId ripetuti`);
+      assert.strictEqual(new Set(combo.legs.map(leg => leg.overlapKey)).size, combo.legs.length, `${prediction.matchId}/${combo.tier}: esiti sovrapponibili`);
+      assert(Math.abs(combo.odds - combo.targetOdds) / combo.targetOdds <= 0.2, `${prediction.matchId}/${combo.tier}: quota combinata lontana dal target`);
+      const product = combo.legs.reduce((total, leg) => total * leg.odds, 1);
+      assert(Math.abs(combo.odds - product) < 0.011, `${prediction.matchId}/${combo.tier}: moltiplicazione quote incoerente`);
+    }
+  }
   assert.strictEqual(prediction.teamProjections.length, 2, `${prediction.matchId}: proiezioni squadra incomplete`);
   assert(prediction.matchProjection?.shotsTotal && prediction.matchProjection?.shotsOnTarget && prediction.matchProjection?.corners, `${prediction.matchId}: totale volumi assente`);
   for (const projection of prediction.teamProjections) {

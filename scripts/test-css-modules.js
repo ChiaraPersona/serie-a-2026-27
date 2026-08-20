@@ -9,7 +9,7 @@ const entry = fs.readFileSync(path.join(cssDir, "styles.css"), "utf8");
 
 assert.ok(Buffer.byteLength(entry) < 1024, "styles.css deve restare un entry point leggero");
 for (const name of modules) {
-  assert.ok(entry.includes(`@import url("./${name}.css");`), `Import CSS assente: ${name}.css`);
+  assert.ok(new RegExp(`@import url\\("\\./${name}\\.css(?:\\?v=[^"]+)?"\\);`).test(entry), `Import CSS assente: ${name}.css`);
   assert.ok(fs.statSync(path.join(cssDir, `${name}.css`)).size > 100, `Modulo CSS vuoto: ${name}.css`);
 }
 

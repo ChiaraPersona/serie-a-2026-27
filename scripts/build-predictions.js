@@ -20,6 +20,7 @@ const understatXg = read("data/normalized/understat-serie-a-xg.json");
 const mvpHistory = read("data/sources/player-mvp-history-2025-26.json");
 const fantasy = read("data/generated/fantacalcio-advice.json");
 const volumeProfiles = read("data/normalized/team-volume-profiles-2025-26.json");
+const myComboSource = read("data/sources/mycombo-serie-a-2026-27-md-01.json");
 const backtestPath = path.join(root, "data/generated/prediction-backtest-2025-26.json");
 const backtest = fs.existsSync(backtestPath) ? JSON.parse(fs.readFileSync(backtestPath, "utf8")) : null;
 const multiSeasonBacktestPath = path.join(root, "data/generated/prediction-backtest-multiseason.json");
@@ -134,6 +135,9 @@ const predictions = targetMatches.map(match => {
     oddsEvent: oddsByMatch.get(match.id),
     oddsRetrievedAt: oddsByMatch.get(match.id)?.retrievedAt || odds.retrievedAt,
     oddsSourceUrl: odds.sourceUrl,
+    myComboConfig: myComboSource.matches[match.id]
+      ? { constraints: myComboSource.constraints, portfolios: myComboSource.matches[match.id] }
+      : null,
     generatedAt
   });
   const validation = backtest?.headToHead?.outOfSample?.selected;
@@ -270,6 +274,7 @@ const output = {
   sources: [
     { label: "Lega Serie A - programma prime cinque giornate", url: "https://www.legaseriea.it/serie-a/news/date-orari-e-programmazione-tv-delle-prime-cinque-giornate" },
     { label: "Sisal - quote Serie A", url: odds.sourceUrl },
+    { label: "MyCombo editoriali - selezioni Sisal 20 agosto 2026", url: "data/sources/mycombo-serie-a-2026-27-md-01.json" },
     { label: `${teams.find(team => team.probableLineup?.source)?.probableLineup.source.provider || "Fonte editoriale"} - probabili formazioni 20 squadre`, url: teams.find(team => team.probableLineup?.source?.url)?.probableLineup.source.url },
     { label: "ESPN - ultimi cinque scontri diretti", url: "data/generated/head-to-head/first-leg-2026-27.json" },
     { label: `${volumeProfiles.source.provider} - tiri, tiri in porta e corner ${volumeProfiles.season}`, url: "data/normalized/team-volume-profiles-2025-26.json" },
