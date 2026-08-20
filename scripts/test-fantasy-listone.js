@@ -7,7 +7,7 @@ const read = file => JSON.parse(fs.readFileSync(path.join(root, file), "utf8"));
 const source = read("data/sources/fantacalcio-quotations-2026-27.json");
 const statsSource = read("data/sources/fantacalcio-stats-2025-26.json");
 const externalStatsSource = read("data/sources/fantasy-external-stats-2025-26.json");
-const probable = read("data/sources/fantacalcio-probable-lineups-md1-2026-27.json");
+const probable = read("data/sources/gazzetta-probable-lineups-md1-2026-27.json");
 const injuries = read("data/sources/fantacalcio-injuries-2026-27.json");
 const goalkeeperHierarchy = read("data/sources/fantasy-goalkeeper-hierarchy-2026-27.json");
 const generated = read("data/generated/fantacalcio-advice.json");
@@ -37,7 +37,9 @@ assert.equal(probable.coverage.teams, 20);
 assert.equal(probable.coverage.starters, 220);
 const probablePlayers = probable.teams.flatMap(team => team.players);
 assert.equal(probable.coverage.unmatched, probablePlayers.filter(player => player.matchStatus === "unmatched").length);
-assert.ok(probable.teams.every(team => team.players.filter(player => player.lineupStatus === "starter").length === 11), "ogni squadra deve avere 11 titolari Fantacalcio");
+assert.equal(probable.provider, "La Gazzetta dello Sport");
+assert.ok(probable.teams.every(team => team.players.filter(player => player.lineupStatus === "starter").length === 11), "ogni squadra deve avere 11 titolari Gazzetta");
+assert.ok(probablePlayers.every(player => player.probability === null), "Gazzetta non fornisce una percentuale individuale: il dato deve restare null");
 assert.equal(injuries.coverage.teams, 20);
 assert.ok(injuries.coverage.reports > 0);
 assert.equal(injuries.coverage.unmatched, 0);
@@ -95,6 +97,7 @@ assert.ok(!appSource.includes("<th>Ruolo Mantra</th>"), "la colonna ruolo Mantra
 assert.ok(!appSource.includes("<th>Qt. Mantra</th>"), "la colonna quotazione Mantra non deve essere renderizzata");
 assert.ok(!appSource.includes("<th>FVM Mantra</th>"), "la colonna FVM Mantra non deve essere renderizzata");
 assert.ok(appSource.includes("data.sources?.probableLineups?.url"), "fallback per copie dati senza fonti correnti mancante");
+assert.ok(appSource.includes('data.sources.probableLineups.provider||"fonte editoriale"'), "etichetta dinamica della fonte probabili mancante");
 assert.ok(appSource.includes("data-fantasy-exclude"), "comando per escludere un consigliato mancante");
 assert.ok(appSource.includes('title="Aggiungi alla rosa">+</button>'), "simbolo + per aggiungere mancante");
 assert.ok(appSource.includes('title="Non proporre">-</button>'), "simbolo - per escludere mancante");
@@ -116,10 +119,12 @@ for (const trio of generated.goalkeeperTrios.examples) {
     assert.deepEqual(hierarchy.primaryIds, [player.id], `${player.name}: non è il primo portiere indicato`);
   }
 }
-assert.ok(generated.players.filter(player => Number.isFinite(player.currentAvailability?.starterProbability)).length >= 350, "copertura titolarità insufficiente nei consigli");
+const generatedPlayerIds = new Set(generated.players.map(player => player.id));
+const expectedAdviceStarters = probablePlayers.filter(player => player.playerId && generatedPlayerIds.has(player.playerId)).length;
+assert.equal(generated.players.filter(player => player.currentAvailability?.lineupStatus === "starter").length, expectedAdviceStarters, "titolari Gazzetta eleggibili non propagati ai consigli");
 const activeSourceIds = new Set(source.players.map(player => String(player.sourceId)));
 const expectedListoneAvailability = probablePlayers.filter(player => activeSourceIds.has(String(player.sourceId))).length;
-assert.equal(generated.listone.players.filter(player => Number.isFinite(player.currentAvailability?.starterProbability)).length, expectedListoneAvailability);
+assert.equal(generated.listone.players.filter(player => player.currentAvailability?.lineupStatus === "starter").length, expectedListoneAvailability);
 assert.equal(generated.listone.players.filter(player => player.currentAvailability?.injuryReported).length, injuries.coverage.reports);
 
 console.log(`Fantacalcio unificato: ${unifiedCount} righe, ${source.players.length} attivi nel listone, ${quotedAdvice.length} consigli quotati.`);

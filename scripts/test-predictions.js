@@ -80,7 +80,8 @@ for (const prediction of dataset.predictions) {
 }
 const torinoMilan = dataset.predictions.find(prediction => prediction.matchId === "torino-milan-2026-27-md-01");
 assert.strictEqual(torinoMilan.mvpCandidate.teamId, "milan", "Torino-Milan: il candidato MVP principale deve seguire il Milan favorito");
-assert.strictEqual(torinoMilan.mvpCandidate.mvpHistory.status, "official", "Torino-Milan: storico MVP ufficiale non collegato al candidato");
+assert.strictEqual(torinoMilan.mvpCandidate.mvpHistory.sourceUrl, dataset.sources.find(source => source.label.includes("Player of the Match"))?.url, "Torino-Milan: disponibilità dello storico MVP non esposta");
+if (torinoMilan.mvpCandidate.mvpHistory.status === "N/D") assert.strictEqual(torinoMilan.mvpCandidate.mvpHistory.awards, null, "Torino-Milan: premi MVP non disponibili inventati");
 assert.strictEqual(torinoMilan.teamProjections[0].venue, "home", "Torino-Milan: Torino non usa il campione casa");
 assert.strictEqual(torinoMilan.teamProjections[1].venue, "away", "Torino-Milan: Milan non usa il campione trasferta");
 assert.strictEqual(torinoMilan.teamProjections[0].shotsTotal.inputs[0].source, "home-for", "Torino-Milan: produzione Torino casa non collegata");

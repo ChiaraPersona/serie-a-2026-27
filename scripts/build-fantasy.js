@@ -8,7 +8,7 @@ const matches = read("data/normalized/matches.json").filter(match => match.compe
 const teamFiles = teams.map(team => read(`data/teams/${team.id}.json`));
 const fantasyWorkbook = read("data/sources/fantacalcio-stats-2025-26.json");
 const fantasyQuotations = read("data/sources/fantacalcio-quotations-2026-27.json");
-const probableLineups = read("data/sources/fantacalcio-probable-lineups-md1-2026-27.json");
+const probableLineups = read("data/sources/gazzetta-probable-lineups-md1-2026-27.json");
 const fantasyInjuries = read("data/sources/fantacalcio-injuries-2026-27.json");
 const goalkeeperHierarchySource = read("data/sources/fantasy-goalkeeper-hierarchy-2026-27.json");
 const fantasyExternalStats = read("data/sources/fantasy-external-stats-2025-26.json");
@@ -20,7 +20,7 @@ const fantasyQuotationByPlayerId = new Map(fantasyQuotations.players.filter(play
 const probablePlayers = probableLineups.teams.flatMap(team => team.players);
 const injuryReports = fantasyInjuries.teams.flatMap(team => team.reports);
 const probableByPlayerId = new Map(probablePlayers.filter(player => player.playerId).map(player => [player.playerId, player]));
-const probableBySourceId = new Map(probablePlayers.map(player => [String(player.sourceId), player]));
+const probableBySourceId = new Map(probablePlayers.filter(player => player.sourceId !== null && player.sourceId !== undefined).map(player => [String(player.sourceId), player]));
 const injuryByPlayerId = new Map(injuryReports.filter(player => player.playerId).map(player => [player.playerId, player]));
 const injuryBySourceId = new Map(injuryReports.filter(player => player.sourceId).map(player => [String(player.sourceId), player]));
 
@@ -127,7 +127,7 @@ for (const team of teamFiles) {
     const rawScore = fantasyStat
       ? availability * .3 * (.82 + competitionCoefficient * .18) + eventIndex * .25 * competitionCoefficient + observedIndex * .3 * competitionCoefficient + teamCalendar[team.id].index * .15
       : availability * .4 * (.82 + competitionCoefficient * .18) + eventIndex * .45 * competitionCoefficient + teamCalendar[team.id].index * .15;
-    const currentScore = (probable ? rawScore * .92 + probable.probability * .08 : rawScore) - injuryPenalty(injury);
+    const currentScore = (probable && Number.isFinite(probable.probability) ? rawScore * .92 + probable.probability * .08 : rawScore) - injuryPenalty(injury);
     if (!fantasyStat && number(totals.appearances) === 0 && number(totals.minutes) === 0 && !goalkeeperPrimaryIds.has(player.id)) continue;
     candidates.push({
       id: player.id,

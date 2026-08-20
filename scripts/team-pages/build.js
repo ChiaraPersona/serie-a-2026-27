@@ -12,7 +12,7 @@ const write = (relative, value) => {
 const slugAliases = { "hellas-verona": "verona" };
 const teams = read("data/normalized/teams.json");
 const teamDetails = read("data/sources/team-pages/team-details-2026-27.json");
-const probableLineups = read("data/sources/fantacalcio-probable-lineups-md1-2026-27.json");
+const probableLineups = read("data/sources/gazzetta-probable-lineups-md1-2026-27.json");
 const probableLineupByTeam = new Map(probableLineups.teams.map(team => [team.teamId, team]));
 const probableLineupSource = {
   provider: probableLineups.provider,
@@ -105,7 +105,7 @@ function buildTeam(team) {
   const lineup = probableLineupByTeam.get(team.id);
   const starters = lineup?.players?.filter(player => player.lineupStatus === "starter") || [];
   if (!details?.city || !details?.stadium || !details?.coach || !details?.preferredFormation) throw new Error(`${team.name}: anagrafica 2026/27 incompleta`);
-  if (!lineup || !/^[1-9](?:-[1-9]){2,4}$/.test(lineup.formation) || starters.length !== 11) throw new Error(`${team.name}: probabile formazione Fantacalcio incompleta`);
+  if (!lineup || !/^[1-9](?:-[1-9]){2,4}$/.test(lineup.formation) || starters.length !== 11) throw new Error(`${team.name}: probabile formazione editoriale incompleta`);
   const previousCompetition = aRows.some(row => row.team === team.id) ? "serie-a" : "serie-b";
   const competitionName = previousCompetition === "serie-a" ? "Serie A" : "Serie B";
   const table = previousCompetition === "serie-a" ? aRows : serieBTable;

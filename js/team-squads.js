@@ -3,7 +3,7 @@
   if (!root) return;
 
   const base = document.body.dataset.depth === "team" ? "../" : "";
-  const release = "20260818-lineups-mirrored";
+  const release = "20260820-gazzetta-lineups";
   const defaultPlayerPhoto = `${base}assets/images/players/player-placeholder.png`;
   const esc = value => String(value ?? "").replace(/[&<>\"]/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[char]));
   const contrastInk = color => {
