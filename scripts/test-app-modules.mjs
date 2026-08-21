@@ -4,7 +4,7 @@ import path from "node:path";
 import { pathToFileURL } from "node:url";
 
 const root = process.cwd();
-const pageFiles = ["home", "matches", "teams", "readings", "referees", "fantasy", "cup"];
+const pageFiles = ["home", "matches", "teams", "readings", "referees", "fantasy", "betting", "cup"];
 
 for (const name of pageFiles) {
   const module = await import(pathToFileURL(path.join(root, "js", "pages", `${name}.js`)));

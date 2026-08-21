@@ -4,7 +4,7 @@ const assert = require("assert");
 
 const root = path.resolve(__dirname, "..");
 const cssDir = path.join(root, "css");
-const modules = ["base", "layout", "components", "home", "matches", "team", "players", "fantasy", "responsive"];
+const modules = ["base", "layout", "components", "home", "matches", "team", "players", "fantasy", "betting", "responsive"];
 const entry = fs.readFileSync(path.join(cssDir, "styles.css"), "utf8");
 
 assert.ok(Buffer.byteLength(entry) < 1024, "styles.css deve restare un entry point leggero");
