@@ -66,6 +66,60 @@ function poissonOverProbability(lambda, threshold) {
   return 1 - poissonRange(lambda, 0, Math.floor(threshold));
 }
 
+function normalCdf(value) {
+  const sign = value < 0 ? -1 : 1;
+  const x = Math.abs(value) / Math.sqrt(2);
+  const t = 1 / (1 + 0.3275911 * x);
+  const erf = sign * (1 - (((((1.061405429 * t - 1.453152027) * t) + 1.421413741) * t - 0.284496736) * t + 0.254829592) * t * Math.exp(-x * x));
+  return 0.5 * (1 + erf);
+}
+
+function overUnderProbability(metric, threshold, selection) {
+  const mean = Number(metric?.central);
+  const sd = Number(metric?.sd);
+  if (!Number.isFinite(mean) || !Number.isFinite(threshold)) return null;
+  const under = Number.isFinite(sd) && sd > 0
+    ? normalCdf((threshold - mean) / sd)
+    : poissonRange(mean, 0, Math.floor(threshold));
+  return selection === "OVER" ? 1 - under : selection === "UNDER" ? under : null;
+}
+
+function pathHitProbability(homeGoals, awayGoals, teamIndex, margin) {
+  const memo = new Map();
+  const visit = (homeUsed, awayUsed) => {
+    const lead = teamIndex === 0 ? homeUsed - awayUsed : awayUsed - homeUsed;
+    if (lead >= margin) return 1;
+    if (homeUsed === homeGoals && awayUsed === awayGoals) return 0;
+    const key = `${homeUsed}:${awayUsed}`;
+    if (memo.has(key)) return memo.get(key);
+    const homeRemaining = homeGoals - homeUsed;
+    const awayRemaining = awayGoals - awayUsed;
+    const totalRemaining = homeRemaining + awayRemaining;
+    const probability = (homeRemaining ? homeRemaining / totalRemaining * visit(homeUsed + 1, awayUsed) : 0)
+      + (awayRemaining ? awayRemaining / totalRemaining * visit(homeUsed, awayUsed + 1) : 0);
+    memo.set(key, probability);
+    return probability;
+  };
+  return visit(0, 0);
+}
+
+function winOrLeadProbability(prediction, teamIndex, margin) {
+  const homeLambda = Number(prediction.expectedGoals?.home);
+  const awayLambda = Number(prediction.expectedGoals?.away);
+  let probability = 0;
+  let coveredMass = 0;
+  for (let homeGoals = 0; homeGoals <= 10; homeGoals += 1) {
+    for (let awayGoals = 0; awayGoals <= 10; awayGoals += 1) {
+      const scoreProbability = poissonPoint(homeLambda, homeGoals) * poissonPoint(awayLambda, awayGoals);
+      const finalWin = teamIndex === 0 ? homeGoals > awayGoals : awayGoals > homeGoals;
+      const eventProbability = finalWin ? 1 : pathHitProbability(homeGoals, awayGoals, teamIndex, margin);
+      probability += scoreProbability * eventProbability;
+      coveredMass += scoreProbability;
+    }
+  }
+  return coveredMass > 0 ? probability / coveredMass : null;
+}
+
 function pickAnalysis(pick, market, prediction) {
   const score = String(prediction.scoreForecast?.primary?.score || "").split("-").map(Number);
   if (market.marketName === "MULTIGOAL CASA + MULTIGOAL OSPITE") {
@@ -98,12 +152,74 @@ function pickAnalysis(pick, market, prediction) {
       evidenceLabel: `Include il risultato previsto · ${predictedScore}`
     };
   }
+  if (market.marketName === "UNDER/OVER") {
+    const threshold = Number(market.threshold ?? market.variantName.match(/([0-9]+(?:\.[0-9]+)?)/)?.[1]);
+    const lambda = Number(prediction.expectedGoals?.home) + Number(prediction.expectedGoals?.away);
+    const under = poissonRange(lambda, 0, Math.floor(threshold));
+    const probability = pick.selection === "OVER" ? 1 - under : pick.selection === "UNDER" ? under : null;
+    const coherent = Number.isFinite(probability) && probability > 0;
+    return {
+      coherent,
+      modelProbabilityPct: coherent ? round(probability * 100, 2) : null,
+      evidenceLabel: `Totale xG ${String(round(lambda, 2)).replace(".", ",")} · soglia ${String(threshold).replace(".", ",")}`
+    };
+  }
+  if (market.marketName === "MULTIGOAL") {
+    const range = pick.selection.match(/^(\d+)-(\d+)$/)?.slice(1).map(Number);
+    const lambda = Number(prediction.expectedGoals?.home) + Number(prediction.expectedGoals?.away);
+    const probability = range ? poissonRange(lambda, range[0], range[1]) : null;
+    const predictedTotal = score[0] + score[1];
+    const coherent = Boolean(range) && predictedTotal >= range[0] && predictedTotal <= range[1] && Number.isFinite(probability);
+    return {
+      coherent,
+      modelProbabilityPct: coherent ? round(probability * 100, 2) : null,
+      evidenceLabel: `Totale previsto ${predictedTotal} · xG complessivi ${String(round(lambda, 2)).replace(".", ",")}`
+    };
+  }
+  if (market.marketName === "VINCE O QUASI (1UP/2UP)") {
+    const teamNumber = Number(market.variantName.match(/SQUADRA ([12])/i)?.[1]);
+    const margin = Number(market.variantName.match(/\(([12])UP\)/i)?.[1]);
+    const teamIndex = teamNumber - 1;
+    const yesProbability = winOrLeadProbability(prediction, teamIndex, margin);
+    const probability = pick.selection === "SI" ? yesProbability : pick.selection === "NO" ? 1 - yesProbability : null;
+    const coherent = [1, 2].includes(teamNumber) && [1, 2].includes(margin) && Number.isFinite(probability) && probability > 0
+      && (pick.selection === "NO" || prediction.verdict.outcome === String(teamNumber));
+    return {
+      coherent,
+      modelProbabilityPct: coherent ? round(probability * 100, 2) : null,
+      evidenceLabel: `Pronostico ${prediction.verdict.outcome} · vittoria o vantaggio di ${margin} gol`
+    };
+  }
   const outcomeSelections = new Set(["1", "X", "2", "1X", "X2", "12"]);
   if (outcomeSelections.has(pick.selection)) {
     return {
       coherent: [...pick.selection].includes(prediction.verdict.outcome),
       modelProbabilityPct: round(modelProbability(prediction, pick.selection), 1),
       evidenceLabel: `Pronostico ${prediction.verdict.outcome} · ${prediction.scoreForecast?.primary?.score || "N/D"}`
+    };
+  }
+  if (["ASSIST (DUO) INC TS", "GIOCATORE (DUO) SEGNA O FA ASSIST INC TS"].includes(market.marketName)) {
+    const context = playerContext(pick);
+    const totals = context?.player?.previousSeason?.totals;
+    const minutes = Number(totals?.minutes);
+    const goalsPer90 = Number(totals?.per90?.goals);
+    const assistsPer90 = Number(totals?.per90?.assists);
+    const venueStats = context?.team?.teamStats?.homeAway?.[context?.venue];
+    const historicalTeamRate = Number(venueStats?.goalsFor) / Number(venueStats?.played);
+    const expectedTeamGoals = Number(context && (context.teamPosition === 0 ? prediction.expectedGoals?.home : prediction.expectedGoals?.away));
+    const matchupFactor = clamp(expectedTeamGoals / historicalTeamRate, 0.65, 1.5);
+    const assistLambda = regularizedRate(assistsPer90, minutes, 0.18) * matchupFactor;
+    const goalLambda = regularizedRate(goalsPer90, minutes, 0.25) * matchupFactor;
+    const isGoalOrAssist = market.marketName === "GIOCATORE (DUO) SEGNA O FA ASSIST INC TS";
+    const lambda = assistLambda + (isGoalOrAssist ? goalLambda : 0);
+    const probability = 1 - Math.exp(-lambda);
+    const coherent = pick.selection === "SI" && context && score[context.teamPosition] > 0
+      && Number.isFinite(minutes) && minutes >= 700 && Number.isFinite(assistsPer90)
+      && (!isGoalOrAssist || Number.isFinite(goalsPer90)) && Number.isFinite(probability);
+    return {
+      coherent,
+      modelProbabilityPct: coherent ? round(probability * 100, 2) : null,
+      evidenceLabel: `Titolare previsto · ${String(round(goalsPer90, 2)).replace(".", ",")} gol/90 · ${String(round(assistsPer90, 2)).replace(".", ",")} assist/90 · λ ${String(round(lambda, 2)).replace(".", ",")}`
     };
   }
   if (market.marketName === "MARCATORE SI/NO (DUO) INC TS") {
@@ -155,26 +271,85 @@ function pickAnalysis(pick, market, prediction) {
     const coherent = pick.selection === "SI" && central.length === 2 && central.every(value => Number.isFinite(value) && value >= threshold);
     return { coherent, modelProbabilityPct: null, evidenceLabel: `Volumi centrali ${central.map(value => String(value).replace(".", ",")).join(" + ")}` };
   }
+  if (/^U\/O CORNER(?: SQUADRA X)?$/.test(market.marketName)) {
+    const teamMatch = market.variantName.match(/SQUADRA ([12])/);
+    const metric = teamMatch ? prediction.teamProjections?.[Number(teamMatch[1]) - 1]?.corners : prediction.matchProjection?.corners;
+    const threshold = Number(market.threshold ?? market.variantName.match(/U\/O ([0-9]+(?:\.[0-9]+)?)/)?.[1]);
+    const central = Number(metric?.central);
+    const probability = overUnderProbability(metric, threshold, pick.selection);
+    const coherent = Number.isFinite(probability) && probability > 0 && Number.isFinite(central)
+      && (pick.selection === "OVER" ? central > threshold : pick.selection === "UNDER" && central < threshold);
+    return {
+      coherent,
+      modelProbabilityPct: coherent ? round(probability * 100, 2) : null,
+      evidenceLabel: `Corner centrali ${String(central).replace(".", ",")} · deviazione ${String(round(Number(metric?.sd), 2)).replace(".", ",")}`
+    };
+  }
+  if (market.marketName === "U/O PARATE SQUADRA X") {
+    const teamNumber = Number(market.variantName.match(/SQUADRA ([12])/i)?.[1]);
+    const threshold = Number(market.variantName.match(/U\/O ([0-9]+(?:\.[0-9]+)?)/)?.[1]);
+    const opponentIndex = teamNumber === 1 ? 1 : 0;
+    const opponentShotsOnTarget = Number(prediction.teamProjections?.[opponentIndex]?.shotsOnTarget?.central);
+    const opponentGoals = Number(opponentIndex === 0 ? prediction.expectedGoals?.home : prediction.expectedGoals?.away);
+    const lambda = Math.max(0.25, opponentShotsOnTarget - opponentGoals);
+    const probability = pick.selection === "OVER" ? poissonOverProbability(lambda, threshold) : poissonRange(lambda, 0, Math.floor(threshold));
+    const coherent = [1, 2].includes(teamNumber) && Number.isFinite(probability) && probability > 0
+      && (pick.selection === "OVER" ? lambda > threshold : pick.selection === "UNDER" && lambda < threshold);
+    return {
+      coherent,
+      modelProbabilityPct: coherent ? round(probability * 100, 2) : null,
+      evidenceLabel: `Parate attese squadra ${teamNumber} · λ ${String(round(lambda, 2)).replace(".", ",")}`
+    };
+  }
+  if (/^U\/O PUNTI CARTELLINI(?: SQUADRA)?$/.test(market.marketName)) {
+    const teamMatch = market.variantName.match(/SQUADRA ([12])/);
+    const threshold = Number(market.variantName.match(/U\/O ([0-9]+(?:\.[0-9]+)?)/)?.[1]);
+    const lambda = teamMatch
+      ? Number(prediction.teamProjections?.[Number(teamMatch[1]) - 1]?.cards?.central)
+      : prediction.teamProjections.reduce((sum, team) => sum + Number(team.cards?.central || 0), 0);
+    const probability = pick.selection === "OVER" ? poissonOverProbability(lambda, threshold) : poissonRange(lambda, 0, Math.floor(threshold));
+    const coherent = Number.isFinite(probability) && probability > 0
+      && (pick.selection === "OVER" ? lambda > threshold : pick.selection === "UNDER" && lambda < threshold);
+    return {
+      coherent,
+      modelProbabilityPct: coherent ? round(probability * 100, 2) : null,
+      evidenceLabel: `Punti cartellini centrali ${String(round(lambda, 2)).replace(".", ",")} · modello Poisson`
+    };
+  }
   if (/TIRI TOTALI|TIRI IN PORTA/.test(market.marketName)) {
     const metricKey = /TIRI IN PORTA/.test(market.marketName) ? "shotsOnTarget" : "shotsTotal";
     const teamMatch = market.variantName.match(/^SQUADRA ([12]):/);
     const metric = teamMatch ? prediction.teamProjections?.[Number(teamMatch[1]) - 1]?.[metricKey] : prediction.matchProjection?.[metricKey];
     const threshold = Number(market.threshold);
     const central = Number(metric?.central);
-    const coherent = Number.isFinite(central) && Number.isFinite(threshold) && (pick.selection === "OVER" ? central > threshold : central < threshold);
-    return { coherent, modelProbabilityPct: null, evidenceLabel: `Volume centrale ${String(central).replace(".", ",")}` };
+    const probability = overUnderProbability(metric, threshold, pick.selection);
+    const coherent = Number.isFinite(probability) && probability > 0 && Number.isFinite(central) && Number.isFinite(threshold)
+      && (pick.selection === "OVER" ? central > threshold : pick.selection === "UNDER" && central < threshold);
+    return {
+      coherent,
+      modelProbabilityPct: coherent ? round(probability * 100, 2) : null,
+      evidenceLabel: `Volume centrale ${String(central).replace(".", ",")} · deviazione ${String(round(Number(metric?.sd), 2)).replace(".", ",")}`
+    };
   }
   throw new Error(`${pick.matchId}: mercato non validabile ${market.marketName}`);
 }
 
 function marketFamily(marketName) {
+  if (marketName === "VINCE O QUASI (1UP/2UP)") return "Vince o quasi";
   if (/1X2|DOPPIA CHANCE/.test(marketName)) return "Esito";
   if (/MULTIGOAL CASA \+ MULTIGOAL OSPITE/.test(marketName)) return "Multigol casa/ospite";
+  if (marketName === "MULTIGOAL") return "Multigol";
+  if (marketName === "UNDER/OVER") return "Under/Over";
   if (/^RISULTATO ESATTO MULTI ESITI/.test(marketName)) return "Risultato esatto multiesito";
   if (/^RISULTATO ESATTO 26 ESITI/.test(marketName)) return "Risultato esatto";
+  if (marketName === "GIOCATORE (DUO) SEGNA O FA ASSIST INC TS") return "Gol o assist giocatore";
+  if (marketName === "ASSIST (DUO) INC TS") return "Assist giocatore";
   if (/MARCATORE/.test(marketName)) return "Marcatori";
   if (/TIRI IN PORTA GIOCATORE/.test(marketName)) return "Tiri in porta giocatore";
   if (/TIRI TOTALI GIOCATORE/.test(marketName)) return "Tiri giocatore";
+  if (/CORNER/.test(marketName)) return "Corner";
+  if (/PARATE/.test(marketName)) return "Parate squadra";
+  if (/CARTELLINI/.test(marketName)) return "Cartellini";
   if (/TIRI IN PORTA/.test(marketName)) return "Tiri in porta";
   if (/TIRI TOTALI/.test(marketName)) return "Tiri totali";
   return marketName;
@@ -273,7 +448,7 @@ const output = {
   sourceUrl: odds.sourceUrl,
   oddsRetrievedAt: odds.retrievedAt,
   modelVersion: predictions.engine?.version || predictions.predictions[0]?.engineVersion || null,
-  methodology: "Le probabilità sono indipendenti dalle quote Sisal. Esiti, Multigol e risultati esatti derivano dal modello Poisson sugli xG. Per marcatori, tiri e tiri in porta il motore usa soltanto titolari previsti con almeno 700 minuti: regolarizza la frequenza storica per 90 minuti con un prior prudente, la adatta agli xG o ai volumi di squadra previsti e tratta il mercato duo come esposizione dell'intero ruolo nei 90 minuti. Le probabilità delle gambe, appartenenti a partite diverse, vengono moltiplicate per ottenere la probabilità congiunta; quota equa = 1/probabilità ed EV = probabilità × quota Sisal − 1. Nessuna quota entra nel pronostico. La dicitura sostituto incluso compare soltanto quando prevista dal mercato e non viene applicata ai falli.",
+  methodology: "Le probabilità sono indipendenti dalle quote Sisal. Esiti, Under/Over gol, Multigol e risultati esatti derivano dal modello Poisson sugli xG; Vince o quasi considera anche i possibili ordini dei gol e il raggiungimento del vantaggio richiesto. Corner, tiri totali e tiri in porta di squadra usano media e deviazione dei volumi previsti; parate e punti cartellini usano una distribuzione Poisson sui rispettivi valori centrali. Per marcatori, gol o assist, assist, tiri e tiri in porta giocatore il motore usa soltanto titolari previsti con almeno 700 minuti: regolarizza la frequenza storica per 90 minuti con un prior prudente, la adatta agli xG o ai volumi di squadra previsti e tratta il mercato duo come esposizione dell'intero ruolo nei 90 minuti. Le probabilità delle gambe, appartenenti a partite diverse, vengono moltiplicate per ottenere la probabilità congiunta; quota equa = 1/probabilità ed EV = probabilità × quota Sisal − 1. Nessuna quota entra nel pronostico. La dicitura sostituto incluso compare soltanto quando prevista dal mercato e non viene applicata ai falli.",
   slips
 };
 

@@ -37,7 +37,9 @@ for (const id of ["prisma", "quasar"]) {
   const playerSlip = data.slips.find(item => item.id === id);
   assert.strictEqual(playerSlip.type, "player-only", `${id}: tipo schedina errato`);
   assert(playerSlip.legs.every(leg => leg.marketScope === "player"), `${id}: contiene una selezione non riferita a un giocatore`);
-  assert(playerSlip.legs.every(leg => /MARCATORE|TIRI.*GIOCATORE/.test(leg.market)), `${id}: mercato giocatore non ammesso`);
+  assert(playerSlip.legs.every(leg => /MARCATORE|TIRI.*GIOCATORE|ASSIST/.test(leg.market)), `${id}: mercato giocatore non ammesso`);
+  assert(playerSlip.marketFamilies.includes("Gol o assist giocatore"), `${id}: manca il mercato gol o assist`);
+  assert(playerSlip.marketFamilies.includes("Assist giocatore"), `${id}: manca il mercato assist`);
 }
 const exactScore = data.slips.find(item => item.id === "quadrante");
 assert.strictEqual(exactScore.legs.length, 4, "Quadrante deve contenere quattro risultati esatti");
@@ -51,13 +53,19 @@ const allLegs = data.slips.flatMap(slip => slip.legs);
 assert(allLegs.some(leg => leg.marketFamily === "Marcatori"), "Mancano i mercati marcatori richiesti");
 assert(!allLegs.some(leg => /GOAL\/NOGOAL|SEGNA GOAL/.test(leg.market)), "Goal/No Goal o gol squadra non devono sostituire i marcatori");
 const shotLegs = allLegs.filter(leg => /TIRI/.test(leg.market));
-assert(shotLegs.length > 0, "Mancano i mercati tiri giocatore");
-assert(shotLegs.every(leg => /GIOCATORE/.test(leg.market)), "Tiri e tiri in porta devono riferirsi a un giocatore, non a squadra o partita");
-assert(shotLegs.every(leg => Boolean(leg.player)), "Ogni mercato tiri deve indicare il giocatore");
+const playerShotLegs = shotLegs.filter(leg => /GIOCATORE/.test(leg.market));
+const teamShotLegs = data.slips.slice(0, 3).flatMap(slip => slip.legs).filter(leg => /TIRI/.test(leg.market) && !/GIOCATORE/.test(leg.market));
+assert(playerShotLegs.length > 0 && playerShotLegs.every(leg => Boolean(leg.player)), "Ogni mercato tiri giocatore deve indicare il giocatore");
+assert(teamShotLegs.some(leg => leg.marketFamily === "Tiri totali"), "Mancano i tiri totali non riferiti ai giocatori");
+assert(teamShotLegs.some(leg => leg.marketFamily === "Tiri in porta"), "Mancano i tiri in porta non riferiti ai giocatori");
+const firstThreeFamilies = new Set(data.slips.slice(0, 3).flatMap(slip => slip.marketFamilies));
+for (const family of ["Vince o quasi", "Multigol", "Under/Over", "Corner", "Tiri totali", "Tiri in porta", "Parate squadra", "Cartellini"]) {
+  assert(firstThreeFamilies.has(family), `Manca il nuovo mercato ${family} nelle prime tre schedine`);
+}
 for (const leg of allLegs.filter(item => item.marketFamily === "Marcatori")) {
   assert.match(leg.label, /marcatore · sostituto incluso$/i, `${leg.matchId}: etichetta marcatore incompleta`);
 }
-for (const leg of allLegs.filter(item => item.marketFamily !== "Marcatori" && !/Tiri.*giocatore/.test(item.marketFamily))) {
+for (const leg of allLegs.filter(item => item.marketScope !== "player")) {
   assert(!/sostituto incluso/i.test(leg.label), `${leg.matchId}: sostituto incluso usato fuori dai marcatori`);
 }
 for (const id of ["prisma", "quasar"]) {
