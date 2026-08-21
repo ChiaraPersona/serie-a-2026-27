@@ -1,6 +1,6 @@
 "use strict";
 
-const ENGINE_VERSION = "4.9.1";
+const ENGINE_VERSION = "4.9.5";
 const OUTCOMES = ["1", "X", "2"];
 const WEIGHTS = Object.freeze({ venueHistorical: 0.46, overallHistorical: 0.25, recentForm: 0.16, tacticalMatchup: 0.07, probableLineup: 0.05, objectives: 0.01 });
 const MVP_WEIGHTS = Object.freeze({ resultScenario: 0.3, individualProduction: 0.2, historicalRating: 0.15, officialMvpHistory: 0.15, tacticalFit: 0.1, opponentHistory: 0.05, dataReliability: 0.05 });
@@ -739,7 +739,7 @@ function sensitivityMatrices(expected, centralMatrix, calibration) {
   ];
 }
 
-function evaluateMarketRow({ market, selection, family, label, predicate, matrices, marketProbability, dataCompleteness, pushPredicate = null }) {
+function evaluateMarketRow({ market, selection, family, label, predicate, matrices, marketProbability, dataCompleteness, pushPredicate = null, primaryScore = null }) {
   const quote = openSelections(market).find(item => item.name === selection);
   if (!quote) return null;
   const probabilities = matrices.map(matrix => matrixProbability(matrix, predicate));
@@ -760,6 +760,10 @@ function evaluateMarketRow({ market, selection, family, label, predicate, matric
   return {
     id: `${family}:${selection}:${market.threshold ?? "main"}`,
     family,
+    scenarioCompatible: primaryScore ? predicate(primaryScore) || Boolean(pushPredicate?.(primaryScore)) : null,
+    pricingThemeKey: family === "goals" ? `match-goals-${cleanName(selection)}`
+      : family === "btts" ? "both-teams-score"
+        : family === "team-goal" ? `${cleanName(label)}-goal` : family,
     market: label,
     selection,
     providerSelectionId: quote.providerSelectionId,
@@ -778,7 +782,7 @@ function evaluateMarketRow({ market, selection, family, label, predicate, matric
   };
 }
 
-function evaluateComboMarketRows(oddsEvent, matrices, dataCompleteness) {
+function evaluateComboMarketRows(oddsEvent, matrices, dataCompleteness, primaryScore) {
   const rows = [];
   const supported = new Set([
     "COMBO: DC + U/O", "COMBO: 1X2 + U/O", "COMBO: DC + GOAL/NOGOAL",
@@ -795,11 +799,16 @@ function evaluateComboMarketRows(oddsEvent, matrices, dataCompleteness) {
       const conservativeProbability = Math.min(...probabilities);
       const expectedValues = probabilities.map(value => value * quote.odds - 1);
       const width = Math.max(...probabilities) - Math.min(...probabilities);
-      const marketProbability = prices[quote.name] ?? null;
+      const overlappingDoubleChance = market.marketName === "COMBO: DC + U/O"
+        || market.marketName === "COMBO: DC + GOAL/NOGOAL"
+        || market.marketName === "COMBO: DC + MULTIGOAL";
+      const marketProbability = overlappingDoubleChance ? 1 / quote.odds : prices[quote.name] ?? null;
       rows.push({
         id: `combo:${quote.providerSelectionId}`,
         family: "combo",
+        scenarioCompatible: predicate(primaryScore),
         pricingMarketKey: market.marketName,
+        pricingThemeKey: comboPricingTheme(market, quote.name),
         market: market.variantName || market.marketName,
         selection: quote.name,
         providerSelectionId: quote.providerSelectionId,
@@ -813,14 +822,16 @@ function evaluateComboMarketRows(oddsEvent, matrices, dataCompleteness) {
         conservativeExpectedValuePct: round(Math.min(...expectedValues) * 100, 1),
         sensitivityWidthPct: round(width * 100, 1),
         confidence: dataCompleteness >= 0.72 && width <= 0.08 ? "Alta" : dataCompleteness >= 0.58 && width <= 0.14 ? "Media" : "Bassa",
-        classification: "candidate-pricing-error"
+        classification: "candidate-pricing-error",
+        marketProbabilityBasis: overlappingDoubleChance ? "implied" : "no-margin",
+        pricingEligible: !overlappingDoubleChance
       });
     }
   }
   return rows;
 }
 
-function evaluateScoreLineRows(oddsEvent, matrices, dataCompleteness) {
+function evaluateScoreLineRows(oddsEvent, matrices, dataCompleteness, primaryScore) {
   const rows = [];
   const supported = new Set(["SOMMA GOAL FINALE", "CASA: SOMMA GOAL", "OSPITE: SOMMA GOAL", "1X2 HANDICAP", "RISULTATO ESATTO 26 ESITI"]);
   for (const market of (oddsEvent?.markets || []).filter(item => supported.has(item.marketName))) {
@@ -836,9 +847,12 @@ function evaluateScoreLineRows(oddsEvent, matrices, dataCompleteness) {
           predicate = score => score.home === Number(exact[1]) && score.away === Number(exact[2]);
         }
       } else if (market.marketName === "1X2 HANDICAP") {
-        const handicap = Number(market.threshold);
+        const startingScore = String(market.variantName).match(/(?:DA|INIZIA DA)\s*(\d+)\s*-\s*(\d+)/i);
+        if (!startingScore) continue;
+        const startingHome = Number(startingScore[1]);
+        const startingAway = Number(startingScore[2]);
         predicate = score => {
-          const adjusted = score.home - (score.away + handicap);
+          const adjusted = score.home + startingHome - score.away - startingAway;
           return quote.name === "1" ? adjusted > 0 : quote.name === "X" ? adjusted === 0 : adjusted < 0;
         };
       } else {
@@ -858,7 +872,12 @@ function evaluateScoreLineRows(oddsEvent, matrices, dataCompleteness) {
       rows.push({
         id: `score-line:${quote.providerSelectionId}`,
         family: "score-line",
+        scenarioCompatible: predicate(primaryScore),
         pricingMarketKey: market.marketName,
+        pricingThemeKey: market.marketName === "CASA: SOMMA GOAL" ? "home-goals"
+          : market.marketName === "OSPITE: SOMMA GOAL" ? "away-goals"
+            : market.marketName === "SOMMA GOAL FINALE" ? (String(quote.name).startsWith(">") ? "match-goals-over" : "match-goals-exact")
+              : market.marketName === "1X2 HANDICAP" ? "handicap" : "exact-score",
         market: market.variantName || market.marketName,
         selection: quote.name,
         providerSelectionId: quote.providerSelectionId,
@@ -881,7 +900,10 @@ function evaluateScoreLineRows(oddsEvent, matrices, dataCompleteness) {
 }
 
 function pricingComboPredicate(market, selection) {
-  const basic = comboPredicate(selection, Number(market.threshold));
+  const explicitThreshold = market.threshold === null || market.threshold === undefined ? null : Number(market.threshold);
+  const variantThreshold = Number(String(market.variantName).match(/U\/O\s+(\d+(?:\.\d+)?)/i)?.[1]);
+  const threshold = Number.isFinite(explicitThreshold) ? explicitThreshold : variantThreshold;
+  const basic = comboPredicate(selection, threshold);
   if (basic) return basic;
   const compact = String(selection).replace(/\s+/g, "");
   if (["COMBO: 1X2 + MULTIGOAL 6 ESITI", "COMBO: DC + MULTIGOAL"].includes(market.marketName)) {
@@ -897,104 +919,43 @@ function pricingComboPredicate(market, selection) {
   if (market.marketName === "COMBO: 1X2 + U/O + GG/NG") {
     const parts = compact.split("+");
     if (parts.length !== 3) return null;
-    const predicates = [conditionForOutcome(parts[0]), conditionForBothTeamsScore(parts[1]), conditionForGoals(parts[2], Number(market.threshold))];
+    const predicates = [conditionForOutcome(parts[0]), conditionForBothTeamsScore(parts[1]), conditionForGoals(parts[2], threshold)];
     return score => predicates.every(predicate => predicate(score));
   }
   if (market.marketName === "COMBO: GOAL/NOGOAL + U/O") {
     const parts = compact.split("+");
     if (parts.length !== 2) return null;
-    const predicates = [conditionForBothTeamsScore(parts[0].replace("NO GOAL", "NOGOAL")), conditionForGoals(parts[1], Number(market.threshold))];
+    const predicates = [conditionForBothTeamsScore(parts[0].replace("NO GOAL", "NOGOAL")), conditionForGoals(parts[1], threshold)];
     return score => predicates.every(predicate => predicate(score));
   }
   return null;
 }
 
-function poissonAtLeast(lambda, minimum) {
-  let below = 0;
-  for (let value = 0; value < minimum; value += 1) below += poisson(value, lambda);
-  return clamp(1 - below, 0, 1);
+function comboPricingTheme(market, selection) {
+  const compact = String(selection).replace(/\s+/g, "").toUpperCase();
+  const direction = compact.includes("OVER") || /\+O$/.test(compact) ? "over"
+    : compact.includes("UNDER") || /\+U$/.test(compact) ? "under" : null;
+  if (direction) return `match-goals-${direction}`;
+  const includesBtts = compact.includes("GOAL") || compact.includes("NOGOAL");
+  if (compact.includes("MULTIGOAL") || compact.includes("ALTRO")) return "match-goal-range";
+  if (includesBtts) return "both-teams-score";
+  return market.marketName;
 }
 
-function playerMarketCandidate(market, candidates) {
-  const prefix = cleanName(market?.variantName).split(" u o ")[0];
-  if (!prefix) return null;
-  const matches = candidates.filter(candidate => {
-    const tokens = cleanName(candidate.player?.name || candidate.name).split(" ").filter(Boolean);
-    if (tokens.length < 2) return false;
-    return prefix === `${tokens.at(-1)} ${tokens[0][0]}`;
-  });
-  return matches.length === 1 ? matches[0] : null;
-}
-
-function evaluatePlayerPricingRows(oddsEvent, candidates, dataCompleteness) {
-  const supported = new Map([
-    ["U/O TIRI TOTALI GIOCATORE (DUO) INC TS", { key: "shots", label: "Tiri totali" }],
-    ["U/O  TIRI IN PORTA GIOCATORE (DUO) INC PALI TRAVERSE INC TS", { key: "shotsOnTarget", label: "Tiri in porta" }],
-    ["U/O FALLI COMMESSI GIOCATORE", { key: "foulsCommitted", label: "Falli commessi" }],
-    ["U/O FALLI SUBITI GIOCATORE", { key: "foulsWon", label: "Falli subiti" }]
-  ]);
-  const rows = [];
-  for (const market of oddsEvent?.markets || []) {
-    const metric = supported.get(market.marketName);
-    if (!metric || !Number.isFinite(Number(market.threshold))) continue;
-    const candidate = playerMarketCandidate(market, candidates);
-    const totals = candidate?.player?.previousSeason?.totals;
-    const rate = totals?.per90?.[metric.key];
-    if (!candidate || !Number.isFinite(rate) || rate <= 0 || (totals.minutes || 0) < 900) continue;
-    const quote = openSelections(market).find(selection => selection.name === "OVER" && selection.odds > 3.5);
-    if (!quote) continue;
-    const minimum = Math.floor(Number(market.threshold)) + 1;
-    const averageMinutes = clamp(totals.minutes / totals.appearances, 30, 82);
-    const competitionFactor = candidate.player.previousCompetition === "Serie B" ? 0.82 : 1;
-    // Il per90 viene ricondotto al minutaggio realmente osservato. L'impatto
-    // dell'eventuale sostituto non viene inventato se manca uno storico di ruolo.
-    const centralLambda = rate * averageMinutes / 90 * competitionFactor;
-    const lambdas = [centralLambda, centralLambda * 0.85, centralLambda * 1.15];
-    const probabilities = lambdas.map(lambda => poissonAtLeast(lambda, minimum));
-    const probability = probabilities[0];
-    const conservativeProbability = Math.min(...probabilities);
-    const marketProbability = 1 / quote.odds;
-    const expectedValues = probabilities.map(value => value * quote.odds - 1);
-    const width = Math.max(...probabilities) - Math.min(...probabilities);
-    rows.push({
-      id: `player:${quote.providerSelectionId}`,
-      family: "player",
-      pricingMarketKey: market.marketName,
-      market: `${candidate.name} · ${metric.label} ${market.threshold}`,
-      selection: "OVER",
-      providerSelectionId: quote.providerSelectionId,
-      odds: quote.odds,
-      modelProbabilityPct: round(probability * 100, 1),
-      conservativeProbabilityPct: round(conservativeProbability * 100, 1),
-      fairOdds: round(1 / probability, 2),
-      marketNoMarginPct: marketProbability == null ? null : round(marketProbability * 100, 1),
-      edgePct: marketProbability == null ? null : round((probability - marketProbability) * 100, 1),
-      expectedValuePct: round(expectedValues[0] * 100, 1),
-      conservativeExpectedValuePct: round(Math.min(...expectedValues) * 100, 1),
-      sensitivityWidthPct: round(width * 100, 1),
-      confidence: dataCompleteness >= 0.72 && width <= 0.1 ? "Alta" : "Media",
-      classification: "candidate-pricing-error",
-      marketProbabilityBasis: "implied",
-      basis: `${round(rate, 2)}/90 nel 2025/26 · ${round(averageMinutes, 1)} minuti medi${competitionFactor < 1 ? " · adattamento Serie B-Serie A" : ""}`
-    });
-  }
-  return rows;
-}
-
-function marketEvaluation(oddsEvent, matrices, dataCompleteness, playerCandidates = []) {
+function marketEvaluation(oddsEvent, matrices, dataCompleteness, primaryScore) {
   const rows = [];
   const main = findMainOneXTwo(oddsEvent);
   const mainNoMargin = noMarginMap(main);
   for (const outcome of OUTCOMES) rows.push(evaluateMarketRow({
     market: main, selection: outcome, family: "1x2", label: "1X2",
-    predicate: conditionForOutcome(outcome), matrices, marketProbability: mainNoMargin[outcome], dataCompleteness
+    predicate: conditionForOutcome(outcome), matrices, marketProbability: mainNoMargin[outcome], dataCompleteness, primaryScore
   }));
 
   const doubleChance = findMarket(oddsEvent, "DOPPIA CHANCE");
   for (const selection of ["1X", "12", "X2"]) rows.push(evaluateMarketRow({
     market: doubleChance, selection, family: "double-chance", label: "Doppia chance",
     predicate: conditionForDoubleChance(selection), matrices,
-    marketProbability: sum(selection.split("").map(outcome => mainNoMargin[outcome] || 0)), dataCompleteness
+    marketProbability: sum(selection.split("").map(outcome => mainNoMargin[outcome] || 0)), dataCompleteness, primaryScore
   }));
 
   const drawNoBet = findMarket(oddsEvent, "DRAW NO BET");
@@ -1002,7 +963,7 @@ function marketEvaluation(oddsEvent, matrices, dataCompleteness, playerCandidate
   for (const selection of ["1", "2"]) rows.push(evaluateMarketRow({
     market: drawNoBet, selection, family: "draw-no-bet", label: "Draw No Bet",
     predicate: conditionForOutcome(selection), pushPredicate: conditionForOutcome("X"), matrices,
-    marketProbability: drawNoBetNoMargin[selection], dataCompleteness
+    marketProbability: drawNoBetNoMargin[selection], dataCompleteness, primaryScore
   }));
 
   for (const threshold of [1.5, 2.5, 3.5]) {
@@ -1010,7 +971,7 @@ function marketEvaluation(oddsEvent, matrices, dataCompleteness, playerCandidate
     const prices = noMarginMap(market);
     for (const selection of ["UNDER", "OVER"]) rows.push(evaluateMarketRow({
       market, selection, family: "goals", label: `Under/Over ${threshold}`,
-      predicate: conditionForGoals(selection, threshold), matrices, marketProbability: prices[selection], dataCompleteness
+      predicate: conditionForGoals(selection, threshold), matrices, marketProbability: prices[selection], dataCompleteness, primaryScore
     }));
   }
 
@@ -1018,7 +979,7 @@ function marketEvaluation(oddsEvent, matrices, dataCompleteness, playerCandidate
   const bothTeamsScorePrices = noMarginMap(bothTeamsScore);
   for (const selection of ["GOAL", "NOGOAL"]) rows.push(evaluateMarketRow({
     market: bothTeamsScore, selection, family: "btts", label: "Goal/No Goal",
-    predicate: conditionForBothTeamsScore(selection), matrices, marketProbability: bothTeamsScorePrices[selection], dataCompleteness
+    predicate: conditionForBothTeamsScore(selection), matrices, marketProbability: bothTeamsScorePrices[selection], dataCompleteness, primaryScore
   }));
 
   for (const [marketName, side, label] of [["CASA: SEGNA GOAL", "home", "Casa segna"], ["OSPITE: SEGNA GOAL", "away", "Ospite segna"]]) {
@@ -1026,7 +987,7 @@ function marketEvaluation(oddsEvent, matrices, dataCompleteness, playerCandidate
     const prices = noMarginMap(market);
     for (const selection of ["SI", "NO"]) rows.push(evaluateMarketRow({
       market, selection, family: "team-goal", label,
-      predicate: conditionForTeamScore(side, selection), matrices, marketProbability: prices[selection], dataCompleteness
+      predicate: conditionForTeamScore(side, selection), matrices, marketProbability: prices[selection], dataCompleteness, primaryScore
     }));
   }
 
@@ -1038,18 +999,23 @@ function marketEvaluation(oddsEvent, matrices, dataCompleteness, playerCandidate
   const secondary = ranked.filter(row => !primaryIds.has(row.id)).slice(0, 3);
   const avoid = available.filter(row => row.classification === "probabile ma senza valore" || row.classification === "fragile")
     .sort((a, b) => b.modelProbabilityPct - a.modelProbabilityPct).slice(0, 3);
-  const comboRows = evaluateComboMarketRows(oddsEvent, matrices, dataCompleteness);
-  const scoreLineRows = evaluateScoreLineRows(oddsEvent, matrices, dataCompleteness);
-  const playerRows = evaluatePlayerPricingRows(oddsEvent, playerCandidates, dataCompleteness);
-  const rankedPricingErrors = [...available, ...comboRows, ...scoreLineRows, ...playerRows]
-    .filter(row => row.odds > 3.5 && row.edgePct >= 5 && row.expectedValuePct >= 15 && row.conservativeExpectedValuePct > 0)
-    .map(row => ({ ...row, pricingMarketKey: row.pricingMarketKey || row.family }))
+  const comboRows = evaluateComboMarketRows(oddsEvent, matrices, dataCompleteness, primaryScore);
+  const scoreLineRows = evaluateScoreLineRows(oddsEvent, matrices, dataCompleteness, primaryScore);
+  const rankedPricingErrors = [...available, ...comboRows, ...scoreLineRows]
+    .filter(row => dataCompleteness >= 0.72 && row.scenarioCompatible === true && row.pricingEligible !== false && row.odds > 3.5 && row.edgePct >= 5 && row.expectedValuePct >= 15 && row.conservativeExpectedValuePct > 0)
+    .map(row => ({
+      ...row,
+      pricingMarketKey: row.pricingMarketKey || row.family,
+      pricingThemeKey: row.pricingThemeKey || row.family
+    }))
     .sort((a, b) => b.conservativeExpectedValuePct - a.conservativeExpectedValuePct || b.edgePct - a.edgePct);
   const pricingErrors = [];
   const usedPricingMarkets = new Set();
+  const usedPricingThemes = new Set();
   for (const row of rankedPricingErrors) {
-    if (usedPricingMarkets.has(row.pricingMarketKey)) continue;
+    if (usedPricingMarkets.has(row.pricingMarketKey) || usedPricingThemes.has(row.pricingThemeKey)) continue;
     usedPricingMarkets.add(row.pricingMarketKey);
+    usedPricingThemes.add(row.pricingThemeKey);
     pricingErrors.push(row);
     if (pricingErrors.length === 3) break;
   }
@@ -1232,11 +1198,9 @@ function predictMatch(input) {
   const topTwo = new Set(orderedOutcomes.slice(0, 2).map(item => item.outcome));
   const doubleChance = topTwo.has("1") && topTwo.has("X") ? "1X" : topTwo.has("X") && topTwo.has("2") ? "X2" : "12";
   const matrices = sensitivityMatrices(expected, matrix, null);
-  const playerCandidates = [
-    ...lineupPlayers(input.homeTeam, input.homeSquad),
-    ...lineupPlayers(input.awayTeam, input.awaySquad)
-  ];
-  const evaluatedMarkets = marketEvaluation(input.oddsEvent, matrices, dataCompleteness, playerCandidates);
+  const forecast = scoreForecast(matrix, final);
+  const [primaryHome, primaryAway] = forecast.primary.score.split("-").map(Number);
+  const evaluatedMarkets = marketEvaluation(input.oddsEvent, matrices, dataCompleteness, { home: primaryHome, away: primaryAway });
   const valueCandidates = evaluatedMarkets.rows.filter(row => row.family === "1x2");
   const teamProjections = [
     teamProjection(input.homeTeam, input.homeProfile, input.awayProfile, input.homeSquad, input.homeDiscipline, input.homeVolume, input.awayVolume, "home", final[0], final[2], expected.home),
@@ -1249,7 +1213,6 @@ function predictMatch(input) {
     basis: "Somma delle medie squadra; intervallo p20-p80 del totale con varianze indipendenti."
   };
   const exact = exactScores(matrix, expected.total);
-  const forecast = scoreForecast(matrix, final);
   return {
     matchId: input.match.id,
     generatedAt: input.generatedAt,

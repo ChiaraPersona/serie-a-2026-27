@@ -6,8 +6,10 @@ const path = require("path");
 const root = path.resolve(__dirname, "..");
 const dataset = JSON.parse(fs.readFileSync(path.join(root, "data/normalized/predictions.json"), "utf8"));
 const mvpHistory = JSON.parse(fs.readFileSync(path.join(root, "data/sources/player-mvp-history-2025-26.json"), "utf8"));
+const myComboSource = JSON.parse(fs.readFileSync(path.join(root, "data/sources/mycombo-serie-a-2026-27-md-01.json"), "utf8"));
 
 assert.strictEqual(dataset.predictions.length, 10, "Il motore deve coprire le 10 gare con quote della prima giornata");
+assert.strictEqual(Object.keys(myComboSource.matches).length, 10, "Le MyCombo devono coprire tutte le 10 gare della prima giornata");
 assert(!Object.hasOwn(dataset.engine.weights, "market"), "Le quote non devono entrare nei pesi del modello");
 assert(Math.abs(Object.values(dataset.engine.weights).reduce((total, value) => total + value, 0) - 1) < 1e-9, "I pesi non sommano a 1");
 assert(dataset.engine.weights.venueHistorical + dataset.engine.weights.overallHistorical + dataset.engine.weights.recentForm >= 0.8, "I dati storici devono guidare le lambda");
@@ -51,9 +53,19 @@ for (const prediction of dataset.predictions) {
   assert(prediction.marketComparison.length >= 16, `${prediction.matchId}: confronto mercati incompleto`);
   assert(prediction.marketComparison.every(candidate => candidate.providerSelectionId && candidate.marketNoMarginPct !== null), `${prediction.matchId}: mercato senza quota disponibile o probabilita depurata`);
   assert(prediction.marketComparison.every(candidate => Math.abs(candidate.expectedValuePct - ((candidate.modelProbabilityPct / 100) * candidate.odds - 1) * 100) <= 1.5 || candidate.family === "draw-no-bet"), `${prediction.matchId}: valore atteso incoerente`);
+  const pricingErrors = prediction.recommendations.pricingErrors;
+  assert(pricingErrors.length <= 3, `${prediction.matchId}: troppi errori di quota esposti`);
+  assert(pricingErrors.every(error => error.odds > 3.5), `${prediction.matchId}: errore di quota non superiore a 3.50`);
+  assert(pricingErrors.every(error => error.edgePct >= 5 && error.expectedValuePct >= 15 && error.conservativeExpectedValuePct > 0), `${prediction.matchId}: errore di quota non robusto`);
+  assert(pricingErrors.every(error => error.family !== "player"), `${prediction.matchId}: mercato giocatore privo di frequenze partita-per-partita esposto come errore`);
+  assert(!pricingErrors.length || prediction.dataQuality.completenessPct >= 72, `${prediction.matchId}: errore di quota esposto con dati incompleti`);
+  assert(pricingErrors.every(error => error.pricingEligible !== false), `${prediction.matchId}: mercato a esiti sovrapposti esposto come errore`);
+  assert(pricingErrors.every(error => error.scenarioCompatible === true), `${prediction.matchId}: errore di quota incoerente con il risultato pronosticato`);
+  assert.strictEqual(new Set(pricingErrors.map(error => error.pricingMarketKey)).size, pricingErrors.length, `${prediction.matchId}: gli errori di quota devono appartenere a mercati diversi`);
+  assert.strictEqual(new Set(pricingErrors.map(error => error.pricingThemeKey)).size, pricingErrors.length, `${prediction.matchId}: errori di quota semanticamente sovrapposti`);
   assert.strictEqual(prediction.scenarios.length, 3, `${prediction.matchId}: scenari incompleti`);
-  const configuredMyCombo = ["inter-monza-2026-27-md-01", "udinese-como-2026-27-md-01", "genoa-napoli-2026-27-md-01", "parma-cagliari-2026-27-md-01"].includes(prediction.matchId);
-  assert.strictEqual(prediction.playerMarkets.status, configuredMyCombo ? "available" : "N/D", `${prediction.matchId}: disponibilita mercati giocatore incoerente con lo snapshot`);
+  const configuredMyCombo = Boolean(myComboSource.matches[prediction.matchId]);
+  assert.strictEqual(prediction.playerMarkets.status, "available", `${prediction.matchId}: disponibilita mercati giocatore incoerente con lo snapshot`);
   if (configuredMyCombo) {
     assert.deepStrictEqual(prediction.combinations.map(combo => combo.tier), ["Safe", "Balanced", "Aggressive"], `${prediction.matchId}: profili MyCombo incompleti`);
     const portfolioSelectionIds = prediction.combinations.flatMap(combo => combo.legs.map(leg => leg.providerSelectionId));
@@ -67,11 +79,6 @@ for (const prediction of dataset.predictions) {
       const product = combo.legs.reduce((total, leg) => total * leg.odds, 1);
       assert(Math.abs(combo.odds - product) < 0.011, `${prediction.matchId}/${combo.tier}: moltiplicazione quote incoerente`);
     }
-    const pricingErrors = prediction.recommendations.pricingErrors;
-    assert(pricingErrors.length <= 3, `${prediction.matchId}: troppi errori di quota esposti`);
-    assert(pricingErrors.every(error => error.odds > 3.5), `${prediction.matchId}: errore di quota non superiore a 3.50`);
-    assert(pricingErrors.every(error => error.edgePct >= 5 && error.expectedValuePct >= 15 && error.conservativeExpectedValuePct > 0), `${prediction.matchId}: errore di quota non robusto`);
-    assert.strictEqual(new Set(pricingErrors.map(error => error.pricingMarketKey)).size, pricingErrors.length, `${prediction.matchId}: gli errori di quota devono appartenere a mercati diversi`);
   }
   assert.strictEqual(prediction.teamProjections.length, 2, `${prediction.matchId}: proiezioni squadra incomplete`);
   assert(prediction.matchProjection?.shotsTotal && prediction.matchProjection?.shotsOnTarget && prediction.matchProjection?.corners, `${prediction.matchId}: totale volumi assente`);

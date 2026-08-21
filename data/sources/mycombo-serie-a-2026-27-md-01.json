@@ -1,7 +1,7 @@
 {
   "provider": "Sisal",
   "oddsSnapshot": "data/normalized/odds/sisal/serie-a.json",
-  "updatedAt": "2026-08-20",
+  "updatedAt": "2026-08-21",
   "constraints": {
     "maxLegOddsExclusive": 1.8,
     "targets": {
@@ -10,161 +10,1401 @@
       "Aggressive": 20
     },
     "targetTolerancePct": 20,
-    "overlapPolicy": "Una sola gamba per overlapKey nella stessa MyCombo; vietate soglie annidate o esiti equivalenti."
+    "overlapPolicy": "Una sola gamba per overlapKey nella stessa MyCombo; vietate soglie annidate o esiti equivalenti. Ogni portafoglio contiene almeno una selezione verificata contro il risultato principale del modello."
   },
   "matches": {
     "inter-monza-2026-27-md-01": [
       {
         "tier": "Safe",
-        "logic": "Protezione sul volume massimo, vantaggio Inter nei corner e contributo offensivo dei titolari proiettati.",
+        "logic": "Profilo safe costruito sulle quote Sisal del 2026-08-21: almeno una gamba segue il risultato principale 2-0 (1); le altre seguono i volumi centrali o i titolari proiettati senza introdurre un esito opposto.",
         "legs": [
-          { "providerSelectionId": "5163012191", "overlapKey": "result-final", "label": "Inter vincente" },
-          { "providerSelectionId": "5163014445", "overlapKey": "goals-total", "label": "Under 4,5 gol" },
-          { "providerSelectionId": "5163013187", "overlapKey": "corners-first-half-result", "label": "Inter più corner nel 1° tempo" },
-          { "providerSelectionId": "5274145809", "overlapKey": "player-65671-shots-total", "label": "Lautaro Martínez almeno 4 tiri totali, sostituto incluso" },
-          { "providerSelectionId": "5274146349", "overlapKey": "player-57393-shots-on-target", "label": "Çalhanoğlu almeno 1 tiro in porta, sostituto incluso" },
-          { "providerSelectionId": "5274146720", "overlapKey": "both-teams-shots-on-target", "label": "Entrambe almeno 2 tiri in porta" }
+          {
+            "providerSelectionId": "5275440601",
+            "overlapKey": "home-corners",
+            "label": "Inter almeno 4 corner"
+          },
+          {
+            "providerSelectionId": "5163013018",
+            "overlapKey": "match-shots-on-target",
+            "label": "Partita almeno 6 tiri in porta"
+          },
+          {
+            "providerSelectionId": "5163013090",
+            "overlapKey": "match-shots-total",
+            "label": "Partita almeno 22 tiri totali"
+          },
+          {
+            "providerSelectionId": "5274145973",
+            "overlapKey": "player-dimarco f-fouls-committed",
+            "label": "DIMARCO F. almeno 1 falli commessi, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5274147521",
+            "overlapKey": "away-shots-total",
+            "label": "Monza almeno 5 tiri totali"
+          },
+          {
+            "providerSelectionId": "5274146289",
+            "overlapKey": "player-barella n-fouls-committed",
+            "label": "BARELLA N. almeno 1 falli commessi, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5163014422",
+            "overlapKey": "model-goals",
+            "label": "Over 1,5 gol"
+          },
+          {
+            "providerSelectionId": "5274146720",
+            "overlapKey": "both-teams-shots-on-target",
+            "label": "Entrambe almeno 2 tiri in porta"
+          },
+          {
+            "providerSelectionId": "5275440700",
+            "overlapKey": "1x2 corner",
+            "label": "CALCI ANGOLO 1X2 T.R. · 1"
+          }
         ]
       },
       {
         "tier": "Balanced",
-        "logic": "Scenario di controllo Inter con almeno tre gol, alto volume di tiri e tre contributi individuali diversi dalla Safe.",
+        "logic": "Profilo balanced costruito sulle quote Sisal del 2026-08-21: almeno una gamba segue il risultato principale 2-0 (1); le altre seguono i volumi centrali o i titolari proiettati senza introdurre un esito opposto.",
         "legs": [
-          { "providerSelectionId": "5163014438", "overlapKey": "goals-total", "label": "Over 2,5 gol" },
-          { "providerSelectionId": "5163013054", "overlapKey": "shots-total-match", "label": "Over 28,5 tiri totali" },
-          { "providerSelectionId": "5274146637", "overlapKey": "player-54375-shots-on-target", "label": "Dimarco almeno 1 tiro in porta, sostituto incluso" },
-          { "providerSelectionId": "5274147381", "overlapKey": "player-54293-shots-total", "label": "Barella almeno 2 tiri totali, sostituto incluso" },
-          { "providerSelectionId": "5274146329", "overlapKey": "player-244671-shots-total", "label": "Bastoni almeno 1 tiro totale, sostituto incluso" }
+          {
+            "providerSelectionId": "5275440645",
+            "overlapKey": "match-corners",
+            "label": "Partita almeno 9 corner"
+          },
+          {
+            "providerSelectionId": "5163014458",
+            "overlapKey": "model-double-chance",
+            "label": "Nessun pareggio (12)"
+          },
+          {
+            "providerSelectionId": "5274147369",
+            "overlapKey": "away-shots-total",
+            "label": "Monza almeno 6 tiri totali"
+          },
+          {
+            "providerSelectionId": "5163013022",
+            "overlapKey": "match-shots-on-target",
+            "label": "Partita almeno 9 tiri in porta"
+          },
+          {
+            "providerSelectionId": "5275440612",
+            "overlapKey": "prima a x corner",
+            "label": "PRIMA A 5 CALCI D'ANGOLO · Inter"
+          },
+          {
+            "providerSelectionId": "5163013042",
+            "overlapKey": "match-shots-total",
+            "label": "Partita almeno 25 tiri totali"
+          },
+          {
+            "providerSelectionId": "5274146633",
+            "overlapKey": "player-martinez lautaro-shots-on-target",
+            "label": "MARTINEZ LAUTARO almeno 1 tiri in porta, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5274145929",
+            "overlapKey": "player-akanji m-fouls-committed",
+            "label": "AKANJI M. almeno 1 falli commessi, sostituto incluso"
+          }
         ]
       },
       {
         "tier": "Aggressive",
-        "logic": "Profilo alternativo: massimo quattro gol, volume nello specchio, corner e cinque titolari non usati nella Balanced.",
+        "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-08-21: almeno una gamba segue il risultato principale 2-0 (1); le altre seguono i volumi centrali o i titolari proiettati senza introdurre un esito opposto.",
         "legs": [
-          { "providerSelectionId": "5163014441", "overlapKey": "goals-total", "label": "Under 3,5 gol" },
-          { "providerSelectionId": "5163013022", "overlapKey": "shots-on-target-match", "label": "Over 8,5 tiri in porta" },
-          { "providerSelectionId": "5265601066", "overlapKey": "corners-half-final-result", "label": "Inter più corner nel 1° tempo e a fine gara" },
-          { "providerSelectionId": "5274146113", "overlapKey": "player-628912-shots-total", "label": "Pio Esposito almeno 4 tiri totali, sostituto incluso" },
-          { "providerSelectionId": "5274147709", "overlapKey": "player-54318-shots-total", "label": "Zieliński almeno 2 tiri totali, sostituto incluso" },
-          { "providerSelectionId": "5274147661", "overlapKey": "player-566138-shots-total", "label": "Diouf almeno 2 tiri totali, sostituto incluso" },
-          { "providerSelectionId": "5274145941", "overlapKey": "player-47439-shots-total", "label": "Akanji almeno 1 tiro totale, sostituto incluso" },
-          { "providerSelectionId": "5274148224", "overlapKey": "player-57393-shots-both-halves", "label": "Çalhanoğlu almeno 1 tiro in entrambi i tempi" }
+          {
+            "providerSelectionId": "5275440828",
+            "overlapKey": "squadra x almeno y corner in entrambi i tempi",
+            "label": "Monza ALMENO 1 CORNER IN ENTRAMBI I TEMPI · SI"
+          },
+          {
+            "providerSelectionId": "5163012191",
+            "overlapKey": "model-1x2",
+            "label": "Inter vincente"
+          },
+          {
+            "providerSelectionId": "5163013078",
+            "overlapKey": "match-shots-total",
+            "label": "Partita almeno 24 tiri totali"
+          },
+          {
+            "providerSelectionId": "5274146541",
+            "overlapKey": "away-shots-total",
+            "label": "Monza almeno 7 tiri totali"
+          },
+          {
+            "providerSelectionId": "5163013006",
+            "overlapKey": "match-shots-on-target",
+            "label": "Partita almeno 7 tiri in porta"
+          },
+          {
+            "providerSelectionId": "5275440663",
+            "overlapKey": "match-corners",
+            "label": "Partita almeno 8 corner"
+          },
+          {
+            "providerSelectionId": "5274145869",
+            "overlapKey": "player-varela g-fouls-committed",
+            "label": "VARELA G. almeno 1 falli commessi, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5275440511",
+            "overlapKey": "home-corners",
+            "label": "Inter almeno 5 corner"
+          },
+          {
+            "providerSelectionId": "5274146029",
+            "overlapKey": "player-foe ondoa m-shots-total",
+            "label": "FOE ONDOA M. almeno 1 tiri totali, sostituto incluso"
+          }
         ]
       }
     ],
     "udinese-como-2026-27-md-01": [
       {
         "tier": "Safe",
-        "logic": "Como protetto, gara entro quattro gol e volumi coerenti con le proiezioni di squadra e dei titolari offensivi.",
+        "logic": "Profilo safe costruito sulle quote Sisal del 2026-08-21: almeno una gamba segue il risultato principale 0-1 (2); le altre seguono i volumi centrali o i titolari proiettati senza introdurre un esito opposto.",
         "legs": [
-          { "providerSelectionId": "5163019427", "overlapKey": "result-final", "label": "Como o pareggio (X2)" },
-          { "providerSelectionId": "5163019409", "overlapKey": "goals-total", "label": "Under 3,5 gol" },
-          { "providerSelectionId": "5163018046", "overlapKey": "shots-total-match", "label": "Over 23,5 tiri totali" },
-          { "providerSelectionId": "5273345209", "overlapKey": "player-620536-shots-both-halves", "label": "Nico Paz almeno 1 tiro in entrambi i tempi" },
-          { "providerSelectionId": "5274194042", "overlapKey": "player-324103-shots-on-target", "label": "Douvikas almeno 1 tiro in porta, sostituto incluso" },
-          { "providerSelectionId": "5273343006", "overlapKey": "player-547147-shots-total", "label": "Baturina almeno 2 tiri totali, sostituto incluso" }
+          {
+            "providerSelectionId": "5163018006",
+            "overlapKey": "match-shots-total",
+            "label": "Partita almeno 20 tiri totali"
+          },
+          {
+            "providerSelectionId": "5273342962",
+            "overlapKey": "away-shots-on-target",
+            "label": "Como almeno 3 tiri in porta"
+          },
+          {
+            "providerSelectionId": "5273343330",
+            "overlapKey": "home-shots-total",
+            "label": "Udinese almeno 7 tiri totali"
+          },
+          {
+            "providerSelectionId": "5275448108",
+            "overlapKey": "both-teams-corners",
+            "label": "Entrambe almeno 3 corner"
+          },
+          {
+            "providerSelectionId": "5275448128",
+            "overlapKey": "entrambe almeno x corner in entrambi i tempi",
+            "label": "ENTRAMBE ALMENO 1 CORNER ENTRAMBI TEMPI · SI"
+          },
+          {
+            "providerSelectionId": "5275448025",
+            "overlapKey": "match-corners",
+            "label": "Partita almeno 6 corner"
+          },
+          {
+            "providerSelectionId": "5163019409",
+            "overlapKey": "model-goals",
+            "label": "Under 3,5 gol"
+          }
         ]
       },
       {
         "tier": "Balanced",
-        "logic": "Profilo diverso dalla Safe: fascia Under più selettiva, supremazia Como nei tiri e nei corner e volumi nello specchio.",
+        "logic": "Profilo balanced costruito sulle quote Sisal del 2026-08-21: almeno una gamba segue il risultato principale 0-1 (2); le altre seguono i volumi centrali o i titolari proiettati senza introdurre un esito opposto.",
         "legs": [
-          { "providerSelectionId": "5163019405", "overlapKey": "goals-total", "label": "Under 2,5 gol" },
-          { "providerSelectionId": "5273344521", "overlapKey": "both-teams-shots-on-target", "label": "Entrambe almeno 3 tiri in porta" },
-          { "providerSelectionId": "5163017953", "overlapKey": "shots-result-match", "label": "Como effettua più tiri totali" },
-          { "providerSelectionId": "5273344978", "overlapKey": "player-12419-shots-on-target", "label": "Keinan Davis almeno 1 tiro in porta, sostituto incluso" },
-          { "providerSelectionId": "5163018157", "overlapKey": "corners-first-half-result", "label": "Como più corner nel 1° tempo" }
+          {
+            "providerSelectionId": "5273344042",
+            "overlapKey": "match-shots-total",
+            "label": "Partita almeno 19 tiri totali"
+          },
+          {
+            "providerSelectionId": "5163017986",
+            "overlapKey": "match-shots-on-target",
+            "label": "Partita almeno 6 tiri in porta"
+          },
+          {
+            "providerSelectionId": "5273344286",
+            "overlapKey": "home-shots-total",
+            "label": "Udinese almeno 8 tiri totali"
+          },
+          {
+            "providerSelectionId": "5273344525",
+            "overlapKey": "both-teams-shots-on-target",
+            "label": "Entrambe almeno 2 tiri in porta"
+          },
+          {
+            "providerSelectionId": "5275448121",
+            "overlapKey": "match-corners",
+            "label": "Partita almeno 7 corner"
+          },
+          {
+            "providerSelectionId": "5184906908",
+            "overlapKey": "model-draw-no-bet",
+            "label": "Como Draw No Bet"
+          },
+          {
+            "providerSelectionId": "5273344938",
+            "overlapKey": "player-kempf m-fouls-committed",
+            "label": "KEMPF M. almeno 1 falli commessi, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5275448067",
+            "overlapKey": "away-corners",
+            "label": "Como almeno 3 corner"
+          },
+          {
+            "providerSelectionId": "5274136142",
+            "overlapKey": "player-alex valle-fouls-won",
+            "label": "ALEX VALLE almeno 1 falli subiti, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5274136578",
+            "overlapKey": "player-davis k-fouls-won",
+            "label": "DAVIS K. almeno 2 falli subiti, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5275448362",
+            "overlapKey": "squadra x almeno y corner in entrambi i tempi",
+            "label": "Udinese ALMENO 1 CORNER IN ENTRAMBI I TEMPI · SI"
+          }
         ]
       },
       {
         "tier": "Aggressive",
-        "logic": "Profilo ad alto volume distinto dagli altri due: esito senza pareggio, Over gol, soglie collettive e quattro giocatori differenti.",
+        "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-08-21: almeno una gamba segue il risultato principale 0-1 (2); le altre seguono i volumi centrali o i titolari proiettati senza introdurre un esito opposto.",
         "legs": [
-          { "providerSelectionId": "5163019426", "overlapKey": "result-final", "label": "Nessun pareggio (12)" },
-          { "providerSelectionId": "5163019390", "overlapKey": "goals-total", "label": "Over 1,5 gol" },
-          { "providerSelectionId": "5163018050", "overlapKey": "shots-total-match", "label": "Over 25,5 tiri totali" },
-          { "providerSelectionId": "5163017978", "overlapKey": "shots-on-target-match", "label": "Over 7,5 tiri in porta" },
-          { "providerSelectionId": "5273344550", "overlapKey": "player-620536-shots-total", "label": "Nico Paz almeno 4 tiri totali, sostituto incluso" },
-          { "providerSelectionId": "5273343086", "overlapKey": "player-797322-shots-total", "label": "Assane Diao almeno 2 tiri totali, sostituto incluso" },
-          { "providerSelectionId": "5273343226", "overlapKey": "player-297721-shots-total", "label": "Zaniolo almeno 2 tiri totali, sostituto incluso" },
-          { "providerSelectionId": "5273343658", "overlapKey": "player-68622-shots-total", "label": "Piotrowski almeno 2 tiri totali, sostituto incluso" }
+          {
+            "providerSelectionId": "5163017274",
+            "overlapKey": "model-btts",
+            "label": "Almeno una squadra non segna"
+          },
+          {
+            "providerSelectionId": "5273343902",
+            "overlapKey": "home-shots-total",
+            "label": "Udinese almeno 11 tiri totali"
+          },
+          {
+            "providerSelectionId": "5273344521",
+            "overlapKey": "both-teams-shots-on-target",
+            "label": "Entrambe almeno 3 tiri in porta"
+          },
+          {
+            "providerSelectionId": "5275448193",
+            "overlapKey": "match-corners",
+            "label": "Partita almeno 8 corner"
+          },
+          {
+            "providerSelectionId": "5273344174",
+            "overlapKey": "player-davis k-fouls-committed",
+            "label": "DAVIS K. almeno 2 falli commessi, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5163017978",
+            "overlapKey": "match-shots-on-target",
+            "label": "Partita almeno 8 tiri in porta"
+          },
+          {
+            "providerSelectionId": "5273345166",
+            "overlapKey": "player-nico paz-shots-on-target",
+            "label": "NICO PAZ almeno 1 tiri in porta, sostituto incluso"
+          }
         ]
       }
     ],
     "genoa-napoli-2026-27-md-01": [
       {
         "tier": "Safe",
-        "logic": "Napoli protetto, massimo quattro gol e volumi di tiro sostenuti da entrambe le probabili formazioni.",
+        "logic": "Profilo safe costruito sulle quote Sisal del 2026-08-21: almeno una gamba segue il risultato principale 0-1 (2); le altre seguono i volumi centrali o i titolari proiettati senza introdurre un esito opposto.",
         "legs": [
-          { "providerSelectionId": "5162979967", "overlapKey": "result-final", "label": "Napoli o pareggio (X2)" },
-          { "providerSelectionId": "5162979921", "overlapKey": "goals-total", "label": "Under 3,5 gol" },
-          { "providerSelectionId": "5162976010", "overlapKey": "shots-total-match", "label": "Over 23,5 tiri totali" },
-          { "providerSelectionId": "5273347670", "overlapKey": "player-538544-shots-on-target", "label": "Højlund almeno 1 tiro in porta, sostituto incluso" },
-          { "providerSelectionId": "5273348358", "overlapKey": "player-1068597-shots-total", "label": "Lorenzo Colombo almeno 2 tiri totali, sostituto incluso" },
-          { "providerSelectionId": "5273348710", "overlapKey": "player-55262-shots-total", "label": "Politano almeno 2 tiri totali, sostituto incluso" }
+          {
+            "providerSelectionId": "5273347006",
+            "overlapKey": "away-shots-total",
+            "label": "Napoli almeno 10 tiri totali"
+          },
+          {
+            "providerSelectionId": "5273347766",
+            "overlapKey": "away-shots-on-target",
+            "label": "Napoli almeno 3 tiri in porta"
+          },
+          {
+            "providerSelectionId": "5275444261",
+            "overlapKey": "match-corners",
+            "label": "Partita almeno 6 corner"
+          },
+          {
+            "providerSelectionId": "5275444078",
+            "overlapKey": "home-corners",
+            "label": "Genoa meno di 6 corner"
+          },
+          {
+            "providerSelectionId": "5275444160",
+            "overlapKey": "squadra x almeno y corner in entrambi i tempi",
+            "label": "Genoa ALMENO 1 CORNER IN ENTRAMBI I TEMPI · SI"
+          },
+          {
+            "providerSelectionId": "5273348157",
+            "overlapKey": "both-teams-shots-on-target",
+            "label": "Entrambe almeno 3 tiri in porta"
+          },
+          {
+            "providerSelectionId": "5184926275",
+            "overlapKey": "model-draw-no-bet",
+            "label": "Napoli Draw No Bet"
+          }
         ]
       },
       {
         "tier": "Balanced",
-        "logic": "Profilo diverso dalla Safe: Under più selettivo, Napoli avanti per tiri e corner e maggiore soglia per Højlund.",
+        "logic": "Profilo balanced costruito sulle quote Sisal del 2026-08-21: almeno una gamba segue il risultato principale 0-1 (2); le altre seguono i volumi centrali o i titolari proiettati senza introdurre un esito opposto.",
         "legs": [
-          { "providerSelectionId": "5162979910", "overlapKey": "goals-total", "label": "Under 2,5 gol" },
-          { "providerSelectionId": "5273348157", "overlapKey": "both-teams-shots-on-target", "label": "Entrambe almeno 3 tiri in porta" },
-          { "providerSelectionId": "5162975817", "overlapKey": "shots-result-match", "label": "Napoli effettua più tiri totali" },
-          { "providerSelectionId": "5162976345", "overlapKey": "corners-first-half-result", "label": "Napoli più corner nel 1° tempo" },
-          { "providerSelectionId": "5273348674", "overlapKey": "player-538544-shots-total", "label": "Højlund almeno 3 tiri totali, sostituto incluso" }
+          {
+            "providerSelectionId": "5275444071",
+            "overlapKey": "match-corners",
+            "label": "Partita almeno 7 corner"
+          },
+          {
+            "providerSelectionId": "5162975979",
+            "overlapKey": "match-shots-total",
+            "label": "Partita almeno 21 tiri totali"
+          },
+          {
+            "providerSelectionId": "5162975896",
+            "overlapKey": "match-shots-on-target",
+            "label": "Partita almeno 6 tiri in porta"
+          },
+          {
+            "providerSelectionId": "5273346638",
+            "overlapKey": "home-shots-total",
+            "label": "Genoa almeno 9 tiri totali"
+          },
+          {
+            "providerSelectionId": "5275444217",
+            "overlapKey": "home-corners",
+            "label": "Genoa almeno 3 corner"
+          },
+          {
+            "providerSelectionId": "5275444075",
+            "overlapKey": "away-corners",
+            "label": "Napoli almeno 3 corner"
+          },
+          {
+            "providerSelectionId": "5273346986",
+            "overlapKey": "away-shots-on-target",
+            "label": "Napoli almeno 4 tiri in porta"
+          },
+          {
+            "providerSelectionId": "5274225915",
+            "overlapKey": "player-alisson santos-fouls-won",
+            "label": "ALISSON SANTOS almeno 1 falli subiti, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5162979967",
+            "overlapKey": "model-double-chance",
+            "label": "Napoli o pareggio (X2)"
+          },
+          {
+            "providerSelectionId": "5275444156",
+            "overlapKey": "prima a x corner",
+            "label": "PRIMA A 3 CALCI D'ANGOLO · Napoli"
+          }
         ]
       },
       {
         "tier": "Aggressive",
-        "logic": "Profilo aperto e completamente differente: nessun pareggio, Over gol, soglie alte di volume e tre giocatori nuovi.",
+        "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-08-21: almeno una gamba segue il risultato principale 0-1 (2); le altre seguono i volumi centrali o i titolari proiettati senza introdurre un esito opposto.",
         "legs": [
-          { "providerSelectionId": "5162979966", "overlapKey": "result-final", "label": "Nessun pareggio (12)" },
-          { "providerSelectionId": "5162979857", "overlapKey": "goals-total", "label": "Over 1,5 gol" },
-          { "providerSelectionId": "5162976020", "overlapKey": "shots-total-match", "label": "Over 25,5 tiri totali" },
-          { "providerSelectionId": "5162975882", "overlapKey": "shots-on-target-match", "label": "Over 7,5 tiri in porta" },
-          { "providerSelectionId": "5273348806", "overlapKey": "player-244122-shots-total", "label": "McTominay almeno 3 tiri totali, sostituto incluso" },
-          { "providerSelectionId": "5273348446", "overlapKey": "player-490763-shots-total", "label": "Baldanzi almeno 2 tiri totali, sostituto incluso" },
-          { "providerSelectionId": "5273348670", "overlapKey": "player-809028-shots-total", "label": "Alisson Santos almeno 3 tiri totali, sostituto incluso" }
+          {
+            "providerSelectionId": "5275444164",
+            "overlapKey": "both-teams-corners",
+            "label": "Entrambe almeno 3 corner"
+          },
+          {
+            "providerSelectionId": "5275444384",
+            "overlapKey": "prima a x corner",
+            "label": "PRIMA A 4 CALCI D'ANGOLO · Napoli"
+          },
+          {
+            "providerSelectionId": "5273347558",
+            "overlapKey": "home-shots-on-target",
+            "label": "Genoa almeno 3 tiri in porta"
+          },
+          {
+            "providerSelectionId": "5275444129",
+            "overlapKey": "match-corners",
+            "label": "Partita almeno 8 corner"
+          },
+          {
+            "providerSelectionId": "5162979966",
+            "overlapKey": "model-double-chance",
+            "label": "Nessun pareggio (12)"
+          },
+          {
+            "providerSelectionId": "5273346334",
+            "overlapKey": "player-lobotka s-fouls-committed",
+            "label": "LOBOTKA S. almeno 1 falli commessi, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5275444118",
+            "overlapKey": "almeno x corner in entrambi i tempi",
+            "label": "ALMENO 3 CORNER IN ENTRAMBI I TEMPI · SI"
+          }
         ]
       }
     ],
     "parma-cagliari-2026-27-md-01": [
       {
         "tier": "Safe",
-        "logic": "Parma protetto, massimo quattro gol e volumi distribuiti tra partita e due titolari offensivi.",
+        "logic": "Profilo safe costruito sulle quote Sisal del 2026-08-21: almeno una gamba segue il risultato principale 1-0 (1); le altre seguono i volumi centrali o i titolari proiettati senza introdurre un esito opposto.",
         "legs": [
-          { "providerSelectionId": "5163011973", "overlapKey": "result-final", "label": "Parma o pareggio (1X)" },
-          { "providerSelectionId": "5163011957", "overlapKey": "goals-total", "label": "Under 3,5 gol" },
-          { "providerSelectionId": "5163010594", "overlapKey": "shots-total-match", "label": "Over 23,5 tiri totali" },
-          { "providerSelectionId": "5274275666", "overlapKey": "player-544929-shots-on-target", "label": "Frigan almeno 1 tiro in porta, sostituto incluso" },
-          { "providerSelectionId": "5273352058", "overlapKey": "player-447962-shots-total", "label": "Daniel Maldini almeno 2 tiri totali, sostituto incluso" }
+          {
+            "providerSelectionId": "5273349793",
+            "overlapKey": "both-teams-shots-on-target",
+            "label": "Entrambe almeno 3 tiri in porta"
+          },
+          {
+            "providerSelectionId": "5275275686",
+            "overlapKey": "entrambe almeno x corner in entrambi i tempi",
+            "label": "ENTRAMBE ALMENO 1 CORNER ENTRAMBI TEMPI · SI"
+          },
+          {
+            "providerSelectionId": "5163011957",
+            "overlapKey": "model-goals",
+            "label": "Under 3,5 gol"
+          },
+          {
+            "providerSelectionId": "5275275924",
+            "overlapKey": "home-corners",
+            "label": "Parma meno di 6 corner"
+          },
+          {
+            "providerSelectionId": "5273349750",
+            "overlapKey": "away-shots-total",
+            "label": "Cagliari almeno 9 tiri totali"
+          }
         ]
       },
       {
         "tier": "Balanced",
-        "logic": "Profilo diverso dalla Safe: Under più selettivo, Parma avanti nei tiri e tre titolari nuovi.",
+        "logic": "Profilo balanced costruito sulle quote Sisal del 2026-08-21: almeno una gamba segue il risultato principale 1-0 (1); le altre seguono i volumi centrali o i titolari proiettati senza introdurre un esito opposto.",
         "legs": [
-          { "providerSelectionId": "5163011953", "overlapKey": "goals-total", "label": "Under 2,5 gol" },
-          { "providerSelectionId": "5273349793", "overlapKey": "both-teams-shots-on-target", "label": "Entrambe almeno 3 tiri in porta" },
-          { "providerSelectionId": "5163010499", "overlapKey": "shots-result-match", "label": "Parma effettua più tiri totali" },
-          { "providerSelectionId": "5273352014", "overlapKey": "player-426544-shots-total", "label": "El Bilal Touré almeno 2 tiri totali, sostituto incluso" },
-          { "providerSelectionId": "5273351078", "overlapKey": "player-1057203-shots-total", "label": "Mendy almeno 2 tiri totali, sostituto incluso" },
-          { "providerSelectionId": "5273350998", "overlapKey": "player-372208-shots-total", "label": "Bernabé almeno 2 tiri totali, sostituto incluso" }
+          {
+            "providerSelectionId": "5163009822",
+            "overlapKey": "model-btts",
+            "label": "Almeno una squadra non segna"
+          },
+          {
+            "providerSelectionId": "5274275666",
+            "overlapKey": "player-frigan m-shots-on-target",
+            "label": "FRIGAN M. almeno 1 tiri in porta, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5275275788",
+            "overlapKey": "match-corners",
+            "label": "Partita meno di 10 corner"
+          },
+          {
+            "providerSelectionId": "5275275998",
+            "overlapKey": "both-teams-corners",
+            "label": "Entrambe almeno 3 corner"
+          },
+          {
+            "providerSelectionId": "5163010522",
+            "overlapKey": "match-shots-on-target",
+            "label": "Partita almeno 7 tiri in porta"
+          }
         ]
       },
       {
         "tier": "Aggressive",
-        "logic": "Profilo completamente alternativo: Cagliari protetto, Over gol, soglie alte di volume e tre giocatori non usati nelle altre MyCombo.",
+        "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-08-21: almeno una gamba segue il risultato principale 1-0 (1); le altre seguono i volumi centrali o i titolari proiettati senza introdurre un esito opposto.",
         "legs": [
-          { "providerSelectionId": "5163011975", "overlapKey": "result-final", "label": "Cagliari o pareggio (X2)" },
-          { "providerSelectionId": "5163011938", "overlapKey": "goals-total", "label": "Over 1,5 gol" },
-          { "providerSelectionId": "5163010598", "overlapKey": "shots-total-match", "label": "Over 25,5 tiri totali" },
-          { "providerSelectionId": "5163010522", "overlapKey": "shots-on-target-match", "label": "Over 6,5 tiri in porta" },
-          { "providerSelectionId": "5181867903", "overlapKey": "away-team-goal", "label": "Cagliari segna almeno un gol" },
-          { "providerSelectionId": "5273351618", "overlapKey": "player-12162-shots-total", "label": "Winks almeno 1 tiro totale, sostituto incluso" },
-          { "providerSelectionId": "5273350190", "overlapKey": "player-326854-shots-total", "label": "Valeri almeno 1 tiro totale, sostituto incluso" },
-          { "providerSelectionId": "5273349878", "overlapKey": "player-366142-shots-total", "label": "Del Prato almeno 1 tiro totale, sostituto incluso" }
+          {
+            "providerSelectionId": "5275461642",
+            "overlapKey": "player-special-event",
+            "label": "FAZZINI J. SEGNA ALMENO UN GOAL O REALIZZA ALMENO UN ASSIST O RICEVE ALMENO UN CARTELLINO INC. TS · sì"
+          },
+          {
+            "providerSelectionId": "5273351574",
+            "overlapKey": "player-maldini d-shots-on-target",
+            "label": "MALDINI D. almeno 1 tiri in porta, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5274275670",
+            "overlapKey": "player-toure el bilal-shots-on-target",
+            "label": "TOURE EL BILAL almeno 1 tiri in porta, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5273349494",
+            "overlapKey": "player-ordonez c-fouls-committed",
+            "label": "ORDONEZ C. almeno 2 falli commessi, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5273349850",
+            "overlapKey": "away-shots-total",
+            "label": "Cagliari almeno 10 tiri totali"
+          },
+          {
+            "providerSelectionId": "5181867619",
+            "overlapKey": "model-team-goal",
+            "label": "Parma segna almeno un gol"
+          },
+          {
+            "providerSelectionId": "5273351022",
+            "overlapKey": "home-shots-total",
+            "label": "Parma almeno 11 tiri totali"
+          }
+        ]
+      }
+    ],
+    "frosinone-juventus-2026-27-md-01": [
+      {
+        "tier": "Safe",
+        "logic": "Profilo safe costruito sulle quote Sisal del 2026-08-21: almeno una gamba segue il risultato principale 0-1 (2); le altre seguono i volumi centrali o i titolari proiettati senza introdurre un esito opposto.",
+        "legs": [
+          {
+            "providerSelectionId": "5275452162",
+            "overlapKey": "both-teams-corners",
+            "label": "Entrambe almeno 3 corner"
+          },
+          {
+            "providerSelectionId": "5163009490",
+            "overlapKey": "model-double-chance",
+            "label": "Nessun pareggio (12)"
+          },
+          {
+            "providerSelectionId": "5275151657",
+            "overlapKey": "home-shots-total",
+            "label": "Frosinone almeno 7 tiri totali"
+          },
+          {
+            "providerSelectionId": "5163008042",
+            "overlapKey": "match-shots-on-target",
+            "label": "Partita almeno 8 tiri in porta"
+          },
+          {
+            "providerSelectionId": "5163008106",
+            "overlapKey": "match-shots-total",
+            "label": "Partita almeno 23 tiri totali"
+          }
+        ]
+      },
+      {
+        "tier": "Balanced",
+        "logic": "Profilo balanced costruito sulle quote Sisal del 2026-08-21: almeno una gamba segue il risultato principale 0-1 (2); le altre seguono i volumi centrali o i titolari proiettati senza introdurre un esito opposto.",
+        "legs": [
+          {
+            "providerSelectionId": "5275151909",
+            "overlapKey": "player-bracaglia g-shots-total",
+            "label": "BRACAGLIA G. almeno 1 tiri totali, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5163009473",
+            "overlapKey": "model-goals",
+            "label": "Under 3,5 gol"
+          },
+          {
+            "providerSelectionId": "5275151953",
+            "overlapKey": "player-kalulu p-shots-total",
+            "label": "KALULU P. almeno 1 tiri totali, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5163008221",
+            "overlapKey": "1 tempo 1x2 corner",
+            "label": "1 TEMPO: 1X2 CORNER · 2"
+          },
+          {
+            "providerSelectionId": "5163008038",
+            "overlapKey": "match-shots-on-target",
+            "label": "Partita almeno 7 tiri in porta"
+          },
+          {
+            "providerSelectionId": "5275153429",
+            "overlapKey": "home-shots-total",
+            "label": "Frosinone almeno 6 tiri totali"
+          }
+        ]
+      },
+      {
+        "tier": "Aggressive",
+        "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-08-21: almeno una gamba segue il risultato principale 0-1 (2); le altre seguono i volumi centrali o i titolari proiettati senza introdurre un esito opposto.",
+        "legs": [
+          {
+            "providerSelectionId": "5275152041",
+            "overlapKey": "player-kelly lloyd-shots-total",
+            "label": "KELLY LLOYD almeno 1 tiri totali, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5275153201",
+            "overlapKey": "home-shots-total",
+            "label": "Frosinone almeno 8 tiri totali"
+          },
+          {
+            "providerSelectionId": "5163007225",
+            "overlapKey": "model-1x2",
+            "label": "Juventus vincente"
+          },
+          {
+            "providerSelectionId": "5275152233",
+            "overlapKey": "player-calo g-fouls-committed",
+            "label": "CALO G. almeno 1 falli commessi, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5163008110",
+            "overlapKey": "match-shots-total",
+            "label": "Partita almeno 24 tiri totali"
+          },
+          {
+            "providerSelectionId": "5275452488",
+            "overlapKey": "away-corners",
+            "label": "Juventus meno di 7 corner"
+          },
+          {
+            "providerSelectionId": "5275452421",
+            "overlapKey": "match-corners",
+            "label": "Partita meno di 12 corner"
+          },
+          {
+            "providerSelectionId": "5275152637",
+            "overlapKey": "player-bracaglia g-fouls-committed",
+            "label": "BRACAGLIA G. almeno 1 falli commessi, sostituto incluso"
+          }
+        ]
+      }
+    ],
+    "venezia-lecce-2026-27-md-01": [
+      {
+        "tier": "Safe",
+        "logic": "Profilo safe costruito sulle quote Sisal del 2026-08-21: almeno una gamba segue il risultato principale 1-0 (1); le altre seguono i volumi centrali o i titolari proiettati senza introdurre un esito opposto.",
+        "legs": [
+          {
+            "providerSelectionId": "5163016925",
+            "overlapKey": "model-goals",
+            "label": "Under 3,5 gol"
+          },
+          {
+            "providerSelectionId": "5275458994",
+            "overlapKey": "match-corners",
+            "label": "Partita meno di 13 corner"
+          },
+          {
+            "providerSelectionId": "5275433660",
+            "overlapKey": "home-shots-total",
+            "label": "Venezia almeno 10 tiri totali"
+          },
+          {
+            "providerSelectionId": "5275458814",
+            "overlapKey": "both-teams-corners",
+            "label": "Entrambe almeno 2 corner"
+          },
+          {
+            "providerSelectionId": "5275433176",
+            "overlapKey": "match-shots-on-target",
+            "label": "Partita almeno 5 tiri in porta"
+          },
+          {
+            "providerSelectionId": "5275458652",
+            "overlapKey": "away-corners",
+            "label": "Lecce meno di 7 corner"
+          },
+          {
+            "providerSelectionId": "5275432411",
+            "overlapKey": "both-teams-shots-on-target",
+            "label": "Entrambe almeno 2 tiri in porta"
+          },
+          {
+            "providerSelectionId": "5275458998",
+            "overlapKey": "squadra x almeno y corner in entrambi i tempi",
+            "label": "Venezia ALMENO 1 CORNER IN ENTRAMBI I TEMPI · SI"
+          },
+          {
+            "providerSelectionId": "5275458678",
+            "overlapKey": "prima a x corner",
+            "label": "PRIMA A 4 CALCI D'ANGOLO · Venezia"
+          },
+          {
+            "providerSelectionId": "5275458930",
+            "overlapKey": "home-corners",
+            "label": "Venezia meno di 8 corner"
+          }
+        ]
+      },
+      {
+        "tier": "Balanced",
+        "logic": "Profilo balanced costruito sulle quote Sisal del 2026-08-21: almeno una gamba segue il risultato principale 1-0 (1); le altre seguono i volumi centrali o i titolari proiettati senza introdurre un esito opposto.",
+        "legs": [
+          {
+            "providerSelectionId": "5275458830",
+            "overlapKey": "1x2 corner",
+            "label": "CALCI ANGOLO 1X2 T.R. · 1"
+          },
+          {
+            "providerSelectionId": "5275458848",
+            "overlapKey": "almeno x corner in entrambi i tempi",
+            "label": "ALMENO 3 CORNER IN ENTRAMBI I TEMPI · SI"
+          },
+          {
+            "providerSelectionId": "5275458759",
+            "overlapKey": "home-corners",
+            "label": "Venezia almeno 4 corner"
+          },
+          {
+            "providerSelectionId": "5275433228",
+            "overlapKey": "home-shots-on-target",
+            "label": "Venezia almeno 3 tiri in porta"
+          },
+          {
+            "providerSelectionId": "5163015671",
+            "overlapKey": "1 tempo 1x2 corner",
+            "label": "1 TEMPO: 1X2 CORNER · 1"
+          },
+          {
+            "providerSelectionId": "5275458886",
+            "overlapKey": "match-corners",
+            "label": "Partita meno di 12 corner"
+          },
+          {
+            "providerSelectionId": "5163016941",
+            "overlapKey": "model-double-chance",
+            "label": "Venezia o pareggio (1X)"
+          }
+        ]
+      },
+      {
+        "tier": "Aggressive",
+        "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-08-21: almeno una gamba segue il risultato principale 1-0 (1); le altre seguono i volumi centrali o i titolari proiettati senza introdurre un esito opposto.",
+        "legs": [
+          {
+            "providerSelectionId": "5275458649",
+            "overlapKey": "home-corners",
+            "label": "Venezia almeno 3 corner"
+          },
+          {
+            "providerSelectionId": "5163015522",
+            "overlapKey": "match-shots-total",
+            "label": "Partita almeno 20 tiri totali"
+          },
+          {
+            "providerSelectionId": "5275432772",
+            "overlapKey": "player-kike perez-fouls-committed",
+            "label": "KIKE PEREZ almeno 2 falli commessi, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5275458665",
+            "overlapKey": "match-corners",
+            "label": "Partita almeno 7 corner"
+          },
+          {
+            "providerSelectionId": "5275433112",
+            "overlapKey": "player-stulic n-fouls-committed",
+            "label": "STULIC N. almeno 2 falli commessi, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5275458706",
+            "overlapKey": "squadra x almeno y corner in entrambi i tempi",
+            "label": "Lecce ALMENO 1 CORNER IN ENTRAMBI I TEMPI · SI"
+          },
+          {
+            "providerSelectionId": "5275458914",
+            "overlapKey": "away-corners",
+            "label": "Lecce meno di 6 corner"
+          },
+          {
+            "providerSelectionId": "5275459010",
+            "overlapKey": "prima a x corner",
+            "label": "PRIMA A 2 CALCI D'ANGOLO · Venezia"
+          },
+          {
+            "providerSelectionId": "5275431716",
+            "overlapKey": "player-yeboah john-fouls-committed",
+            "label": "YEBOAH JOHN almeno 1 falli commessi, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5163016921",
+            "overlapKey": "model-goals",
+            "label": "Under 2,5 gol"
+          }
+        ]
+      }
+    ],
+    "atalanta-sassuolo-2026-27-md-01": [
+      {
+        "tier": "Safe",
+        "logic": "Profilo safe costruito sulle quote Sisal del 2026-08-21: almeno una gamba segue il risultato principale 1-0 (1); le altre seguono i volumi centrali o i titolari proiettati senza introdurre un esito opposto.",
+        "legs": [
+          {
+            "providerSelectionId": "5163005638",
+            "overlapKey": "match-shots-total",
+            "label": "Partita almeno 22 tiri totali"
+          },
+          {
+            "providerSelectionId": "5275458594",
+            "overlapKey": "home-corners",
+            "label": "Atalanta meno di 10 corner"
+          },
+          {
+            "providerSelectionId": "5163005566",
+            "overlapKey": "match-shots-on-target",
+            "label": "Partita almeno 6 tiri in porta"
+          },
+          {
+            "providerSelectionId": "5275350489",
+            "overlapKey": "home-shots-total",
+            "label": "Atalanta almeno 14 tiri totali"
+          },
+          {
+            "providerSelectionId": "5275458282",
+            "overlapKey": "match-corners",
+            "label": "Partita meno di 13 corner"
+          },
+          {
+            "providerSelectionId": "5275350201",
+            "overlapKey": "player-doig j-fouls-committed",
+            "label": "DOIG J. almeno 1 falli commessi, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5163007005",
+            "overlapKey": "model-double-chance",
+            "label": "Atalanta o pareggio (1X)"
+          },
+          {
+            "providerSelectionId": "5275458310",
+            "overlapKey": "squadra x almeno y corner in entrambi i tempi",
+            "label": "Atalanta ALMENO 1 CORNER IN ENTRAMBI I TEMPI · SI"
+          },
+          {
+            "providerSelectionId": "5275349477",
+            "overlapKey": "home-shots-on-target",
+            "label": "Atalanta almeno 5 tiri in porta"
+          },
+          {
+            "providerSelectionId": "5275458572",
+            "overlapKey": "both-teams-corners",
+            "label": "Entrambe almeno 3 corner"
+          }
+        ]
+      },
+      {
+        "tier": "Balanced",
+        "logic": "Profilo balanced costruito sulle quote Sisal del 2026-08-21: almeno una gamba segue il risultato principale 1-0 (1); le altre seguono i volumi centrali o i titolari proiettati senza introdurre un esito opposto.",
+        "legs": [
+          {
+            "providerSelectionId": "5275350617",
+            "overlapKey": "away-shots-total",
+            "label": "Sassuolo almeno 9 tiri totali"
+          },
+          {
+            "providerSelectionId": "5163006989",
+            "overlapKey": "model-goals",
+            "label": "Under 3,5 gol"
+          },
+          {
+            "providerSelectionId": "5275458637",
+            "overlapKey": "match-corners",
+            "label": "Partita almeno 8 corner"
+          },
+          {
+            "providerSelectionId": "5275458190",
+            "overlapKey": "entrambe almeno x corner in entrambi i tempi",
+            "label": "ENTRAMBE ALMENO 1 CORNER ENTRAMBI TEMPI · SI"
+          },
+          {
+            "providerSelectionId": "5275458018",
+            "overlapKey": "home-corners",
+            "label": "Atalanta meno di 8 corner"
+          },
+          {
+            "providerSelectionId": "5163005626",
+            "overlapKey": "match-shots-total",
+            "label": "Partita almeno 24 tiri totali"
+          },
+          {
+            "providerSelectionId": "5275350293",
+            "overlapKey": "home-shots-total",
+            "label": "Atalanta almeno 15 tiri totali"
+          }
+        ]
+      },
+      {
+        "tier": "Aggressive",
+        "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-08-21: almeno una gamba segue il risultato principale 1-0 (1); le altre seguono i volumi centrali o i titolari proiettati senza introdurre un esito opposto.",
+        "legs": [
+          {
+            "providerSelectionId": "5275349333",
+            "overlapKey": "player-lauriente a-shots-on-target",
+            "label": "LAURIENTE A. almeno 1 tiri in porta, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5163007006",
+            "overlapKey": "model-double-chance",
+            "label": "Nessun pareggio (12)"
+          },
+          {
+            "providerSelectionId": "5275349897",
+            "overlapKey": "player-krstovic n-shots-on-target",
+            "label": "KRSTOVIC N. almeno 2 tiri in porta, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5275351541",
+            "overlapKey": "away-shots-total",
+            "label": "Sassuolo almeno 8 tiri totali"
+          },
+          {
+            "providerSelectionId": "5163005622",
+            "overlapKey": "match-shots-total",
+            "label": "Partita almeno 23 tiri totali"
+          },
+          {
+            "providerSelectionId": "5163005558",
+            "overlapKey": "match-shots-on-target",
+            "label": "Partita almeno 8 tiri in porta"
+          },
+          {
+            "providerSelectionId": "5275458006",
+            "overlapKey": "home-corners",
+            "label": "Atalanta meno di 9 corner"
+          },
+          {
+            "providerSelectionId": "5163005735",
+            "overlapKey": "1 tempo 1x2 corner",
+            "label": "1 TEMPO: 1X2 CORNER · 1"
+          },
+          {
+            "providerSelectionId": "5275457996",
+            "overlapKey": "prima a x corner",
+            "label": "PRIMA A 2 CALCI D'ANGOLO · Atalanta"
+          },
+          {
+            "providerSelectionId": "5275457966",
+            "overlapKey": "match-corners",
+            "label": "Partita meno di 12 corner"
+          }
+        ]
+      }
+    ],
+    "torino-milan-2026-27-md-01": [
+      {
+        "tier": "Safe",
+        "logic": "Profilo safe costruito sulle quote Sisal del 2026-08-21: almeno una gamba segue il risultato principale 1-2 (2); le altre seguono i volumi centrali o i titolari proiettati senza introdurre un esito opposto.",
+        "legs": [
+          {
+            "providerSelectionId": "5181870463",
+            "overlapKey": "model-team-goal",
+            "label": "Milan segna almeno un gol"
+          },
+          {
+            "providerSelectionId": "5275375966",
+            "overlapKey": "match-shots-total",
+            "label": "Partita almeno 19 tiri totali"
+          },
+          {
+            "providerSelectionId": "5275375246",
+            "overlapKey": "home-shots-total",
+            "label": "Torino almeno 7 tiri totali"
+          },
+          {
+            "providerSelectionId": "5275458408",
+            "overlapKey": "home-corners",
+            "label": "Torino meno di 7 corner"
+          },
+          {
+            "providerSelectionId": "5275458446",
+            "overlapKey": "away-corners",
+            "label": "Milan meno di 8 corner"
+          },
+          {
+            "providerSelectionId": "5275375598",
+            "overlapKey": "away-shots-on-target",
+            "label": "Milan almeno 3 tiri in porta"
+          },
+          {
+            "providerSelectionId": "5275458272",
+            "overlapKey": "match-corners",
+            "label": "Partita meno di 11 corner"
+          },
+          {
+            "providerSelectionId": "5275374681",
+            "overlapKey": "both-teams-shots-on-target",
+            "label": "Entrambe almeno 3 tiri in porta"
+          },
+          {
+            "providerSelectionId": "5162982252",
+            "overlapKey": "match-shots-on-target",
+            "label": "Partita almeno 7 tiri in porta"
+          }
+        ]
+      },
+      {
+        "tier": "Balanced",
+        "logic": "Profilo balanced costruito sulle quote Sisal del 2026-08-21: almeno una gamba segue il risultato principale 1-2 (2); le altre seguono i volumi centrali o i titolari proiettati senza introdurre un esito opposto.",
+        "legs": [
+          {
+            "providerSelectionId": "5162982336",
+            "overlapKey": "match-shots-total",
+            "label": "Partita almeno 20 tiri totali"
+          },
+          {
+            "providerSelectionId": "5275374873",
+            "overlapKey": "both-teams-shots-on-target",
+            "label": "Entrambe almeno 2 tiri in porta"
+          },
+          {
+            "providerSelectionId": "5275373866",
+            "overlapKey": "home-shots-total",
+            "label": "Torino almeno 8 tiri totali"
+          },
+          {
+            "providerSelectionId": "5275458288",
+            "overlapKey": "match-corners",
+            "label": "Partita meno di 12 corner"
+          },
+          {
+            "providerSelectionId": "5162982270",
+            "overlapKey": "match-shots-on-target",
+            "label": "Partita almeno 6 tiri in porta"
+          },
+          {
+            "providerSelectionId": "5275391116",
+            "overlapKey": "player-comuzzo p-fouls-committed",
+            "label": "COMUZZO P. almeno 1 falli commessi, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5181870479",
+            "overlapKey": "model-team-goal",
+            "label": "Torino segna almeno un gol"
+          },
+          {
+            "providerSelectionId": "5275374698",
+            "overlapKey": "player-vlasic n-fouls-committed",
+            "label": "VLASIC N. almeno 1 falli commessi, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5275458042",
+            "overlapKey": "almeno x corner in entrambi i tempi",
+            "label": "ALMENO 3 CORNER IN ENTRAMBI I TEMPI · SI"
+          },
+          {
+            "providerSelectionId": "5275390880",
+            "overlapKey": "player-ramos goncalo-shots-on-target",
+            "label": "RAMOS GONCALO almeno 1 tiri in porta, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5275458255",
+            "overlapKey": "home-corners",
+            "label": "Torino almeno 3 corner"
+          }
+        ]
+      },
+      {
+        "tier": "Aggressive",
+        "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-08-21: almeno una gamba segue il risultato principale 1-2 (2); le altre seguono i volumi centrali o i titolari proiettati senza introdurre un esito opposto.",
+        "legs": [
+          {
+            "providerSelectionId": "5275374286",
+            "overlapKey": "home-shots-total",
+            "label": "Torino almeno 11 tiri totali"
+          },
+          {
+            "providerSelectionId": "5162983846",
+            "overlapKey": "model-goals",
+            "label": "Over 1,5 gol"
+          },
+          {
+            "providerSelectionId": "5162982448",
+            "overlapKey": "match-shots-total",
+            "label": "Partita almeno 22 tiri totali"
+          },
+          {
+            "providerSelectionId": "5275458091",
+            "overlapKey": "home-corners",
+            "label": "Torino almeno 4 corner"
+          },
+          {
+            "providerSelectionId": "5275458295",
+            "overlapKey": "match-corners",
+            "label": "Partita almeno 7 corner"
+          },
+          {
+            "providerSelectionId": "5275375994",
+            "overlapKey": "player-gineitis g-fouls-committed",
+            "label": "GINEITIS G. almeno 2 falli commessi, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5275374754",
+            "overlapKey": "player-pavlovic s-fouls-committed",
+            "label": "PAVLOVIC S. almeno 1 falli commessi, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5275391484",
+            "overlapKey": "player-ramos goncalo-fouls-committed",
+            "label": "RAMOS GONCALO almeno 1 falli commessi, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5275388683",
+            "overlapKey": "player-pavlovic s-fouls-won",
+            "label": "PAVLOVIC S. almeno 1 falli subiti, sostituto incluso"
+          }
+        ]
+      }
+    ],
+    "bologna-lazio-2026-27-md-01": [
+      {
+        "tier": "Safe",
+        "logic": "Profilo safe costruito sulle quote Sisal del 2026-08-21: almeno una gamba segue il risultato principale 1-0 (1); le altre seguono i volumi centrali o i titolari proiettati senza introdurre un esito opposto.",
+        "legs": [
+          {
+            "providerSelectionId": "5162979935",
+            "overlapKey": "model-goals",
+            "label": "Under 3,5 gol"
+          },
+          {
+            "providerSelectionId": "5275457722",
+            "overlapKey": "home-corners",
+            "label": "Bologna meno di 8 corner"
+          },
+          {
+            "providerSelectionId": "5275457657",
+            "overlapKey": "away-corners",
+            "label": "Lazio almeno 3 corner"
+          },
+          {
+            "providerSelectionId": "5275457773",
+            "overlapKey": "match-corners",
+            "label": "Partita almeno 6 corner"
+          },
+          {
+            "providerSelectionId": "5275457738",
+            "overlapKey": "1x2 corner",
+            "label": "CALCI ANGOLO 1X2 T.R. · 1"
+          },
+          {
+            "providerSelectionId": "5275457690",
+            "overlapKey": "entrambe almeno x corner in entrambi i tempi",
+            "label": "ENTRAMBE ALMENO 1 CORNER ENTRAMBI TEMPI · SI"
+          }
+        ]
+      },
+      {
+        "tier": "Balanced",
+        "logic": "Profilo balanced costruito sulle quote Sisal del 2026-08-21: almeno una gamba segue il risultato principale 1-0 (1); le altre seguono i volumi centrali o i titolari proiettati senza introdurre un esito opposto.",
+        "legs": [
+          {
+            "providerSelectionId": "5275457626",
+            "overlapKey": "prima a x corner",
+            "label": "PRIMA A 2 CALCI D'ANGOLO · Bologna"
+          },
+          {
+            "providerSelectionId": "5275457844",
+            "overlapKey": "both-teams-corners",
+            "label": "Entrambe almeno 3 corner"
+          },
+          {
+            "providerSelectionId": "5275457887",
+            "overlapKey": "match-corners",
+            "label": "Partita almeno 8 corner"
+          },
+          {
+            "providerSelectionId": "5181822147",
+            "overlapKey": "model-team-goal",
+            "label": "Bologna segna almeno un gol"
+          },
+          {
+            "providerSelectionId": "5162976500",
+            "overlapKey": "1 tempo 1x2 corner",
+            "label": "1 TEMPO: 1X2 CORNER · 1"
+          },
+          {
+            "providerSelectionId": "5275457585",
+            "overlapKey": "home-corners",
+            "label": "Bologna almeno 3 corner"
+          },
+          {
+            "providerSelectionId": "5275457560",
+            "overlapKey": "squadra x almeno y corner in entrambi i tempi",
+            "label": "Bologna ALMENO 1 CORNER IN ENTRAMBI I TEMPI · SI"
+          }
+        ]
+      },
+      {
+        "tier": "Aggressive",
+        "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-08-21: almeno una gamba segue il risultato principale 1-0 (1); le altre seguono i volumi centrali o i titolari proiettati senza introdurre un esito opposto.",
+        "legs": [
+          {
+            "providerSelectionId": "5275267860",
+            "overlapKey": "player-special-event",
+            "label": "BERNARDESCHI F. O ORSOLINI R. GOAL O PALO O LORO SOST. INC TS · sì"
+          },
+          {
+            "providerSelectionId": "5275457820",
+            "overlapKey": "almeno x corner in entrambi i tempi",
+            "label": "ALMENO 3 CORNER IN ENTRAMBI I TEMPI · SI"
+          },
+          {
+            "providerSelectionId": "5275457828",
+            "overlapKey": "away-corners",
+            "label": "Lazio meno di 5 corner"
+          },
+          {
+            "providerSelectionId": "5275457653",
+            "overlapKey": "home-corners",
+            "label": "Bologna almeno 4 corner"
+          },
+          {
+            "providerSelectionId": "5275457534",
+            "overlapKey": "squadra x almeno y corner in entrambi i tempi",
+            "label": "Lazio ALMENO 1 CORNER IN ENTRAMBI I TEMPI · SI"
+          },
+          {
+            "providerSelectionId": "5275457614",
+            "overlapKey": "both-teams-corners",
+            "label": "Entrambe almeno 2 corner"
+          },
+          {
+            "providerSelectionId": "5275457868",
+            "overlapKey": "prima a x corner",
+            "label": "PRIMA A 3 CALCI D'ANGOLO · Bologna"
+          },
+          {
+            "providerSelectionId": "5162979969",
+            "overlapKey": "model-double-chance",
+            "label": "Nessun pareggio (12)"
+          },
+          {
+            "providerSelectionId": "5275457673",
+            "overlapKey": "match-corners",
+            "label": "Partita almeno 7 corner"
+          }
+        ]
+      }
+    ],
+    "roma-fiorentina-2026-27-md-01": [
+      {
+        "tier": "Safe",
+        "logic": "Profilo safe costruito sulle quote Sisal del 2026-08-21: almeno una gamba segue il risultato principale 1-0 (1); le altre seguono i volumi centrali o i titolari proiettati senza introdurre un esito opposto.",
+        "legs": [
+          {
+            "providerSelectionId": "5275452344",
+            "overlapKey": "entrambe almeno x corner in entrambi i tempi",
+            "label": "ENTRAMBE ALMENO 1 CORNER ENTRAMBI TEMPI · SI"
+          },
+          {
+            "providerSelectionId": "5275452026",
+            "overlapKey": "squadra x almeno y corner in entrambi i tempi",
+            "label": "Fiorentina ALMENO 1 CORNER IN ENTRAMBI I TEMPI · SI"
+          },
+          {
+            "providerSelectionId": "5275452586",
+            "overlapKey": "prima a x corner",
+            "label": "PRIMA A 3 CALCI D'ANGOLO · Roma"
+          },
+          {
+            "providerSelectionId": "5275452462",
+            "overlapKey": "home-corners",
+            "label": "Roma meno di 9 corner"
+          },
+          {
+            "providerSelectionId": "5275452397",
+            "overlapKey": "away-corners",
+            "label": "Fiorentina meno di 5 corner"
+          },
+          {
+            "providerSelectionId": "5162982303",
+            "overlapKey": "model-double-chance",
+            "label": "Roma o pareggio (1X)"
+          }
+        ]
+      },
+      {
+        "tier": "Balanced",
+        "logic": "Profilo balanced costruito sulle quote Sisal del 2026-08-21: almeno una gamba segue il risultato principale 1-0 (1); le altre seguono i volumi centrali o i titolari proiettati senza introdurre un esito opposto.",
+        "legs": [
+          {
+            "providerSelectionId": "5275452084",
+            "overlapKey": "both-teams-corners",
+            "label": "Entrambe almeno 3 corner"
+          },
+          {
+            "providerSelectionId": "5275452440",
+            "overlapKey": "prima a x corner",
+            "label": "PRIMA A 5 CALCI D'ANGOLO · Roma"
+          },
+          {
+            "providerSelectionId": "5162979577",
+            "overlapKey": "1 tempo 1x2 corner",
+            "label": "1 TEMPO: 1X2 CORNER · 1"
+          },
+          {
+            "providerSelectionId": "5275452266",
+            "overlapKey": "squadra x almeno y corner in entrambi i tempi",
+            "label": "Roma ALMENO 2 CORNER IN ENTRAMBI I TEMPI · SI"
+          },
+          {
+            "providerSelectionId": "5275452580",
+            "overlapKey": "1x2 corner",
+            "label": "CALCI ANGOLO 1X2 T.R. · 1"
+          },
+          {
+            "providerSelectionId": "5275452332",
+            "overlapKey": "away-corners",
+            "label": "Fiorentina meno di 6 corner"
+          },
+          {
+            "providerSelectionId": "5181872304",
+            "overlapKey": "model-team-goal",
+            "label": "Roma segna almeno un gol"
+          },
+          {
+            "providerSelectionId": "5275452201",
+            "overlapKey": "home-corners",
+            "label": "Roma almeno 4 corner"
+          }
+        ]
+      },
+      {
+        "tier": "Aggressive",
+        "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-08-21: almeno una gamba segue il risultato principale 1-0 (1); le altre seguono i volumi centrali o i titolari proiettati senza introdurre un esito opposto.",
+        "legs": [
+          {
+            "providerSelectionId": "5275422209",
+            "overlapKey": "player-special-event",
+            "label": "CASTRO S. O GUDMUNDSSON A. GOAL O PALO O LORO SOST. INC TS · sì"
+          },
+          {
+            "providerSelectionId": "5275452411",
+            "overlapKey": "away-corners",
+            "label": "Fiorentina almeno 3 corner"
+          },
+          {
+            "providerSelectionId": "5275452007",
+            "overlapKey": "home-corners",
+            "label": "Roma almeno 5 corner"
+          },
+          {
+            "providerSelectionId": "5275452557",
+            "overlapKey": "match-corners",
+            "label": "Partita almeno 8 corner"
+          },
+          {
+            "providerSelectionId": "5275452352",
+            "overlapKey": "almeno x corner in entrambi i tempi",
+            "label": "ALMENO 3 CORNER IN ENTRAMBI I TEMPI · SI"
+          },
+          {
+            "providerSelectionId": "5162977483",
+            "overlapKey": "model-score-scenario",
+            "label": "DC + U/O 3.5 · 12 + UNDER"
+          },
+          {
+            "providerSelectionId": "5275452302",
+            "overlapKey": "prima a x corner",
+            "label": "PRIMA A 2 CALCI D'ANGOLO · Roma"
+          },
+          {
+            "providerSelectionId": "5275452190",
+            "overlapKey": "both-teams-corners",
+            "label": "Entrambe almeno 2 corner"
+          },
+          {
+            "providerSelectionId": "5275452118",
+            "overlapKey": "squadra x almeno y corner in entrambi i tempi",
+            "label": "Roma ALMENO 1 CORNER IN ENTRAMBI I TEMPI · SI"
+          }
         ]
       }
     ]
