@@ -11,9 +11,9 @@ for (const slip of data.slips.slice(0, 3)) {
   assert(!slip.legs.some(leg => leg.marketFamily === "Marcatori"), `${slip.id}: le prime tre schedine non devono contenere marcatori`);
   assert(slip.legs.some(leg => leg.marketFamily === "Esito"), `${slip.id}: manca un esito coperto`);
 }
-assert(data.slips[0].jointModelProbabilityPct > 20, "Scintilla non mantiene il profilo prudente");
-assert(data.slips[1].jointModelProbabilityPct > 5, "Bagliore non mantiene il profilo prudente");
-assert(data.slips[2].jointModelProbabilityPct > 0.9, "Supernova non mantiene il profilo prudente sulle dieci gare");
+assert(data.slips[0].combinedOdds >= 10, "Scintilla deve raggiungere quota 10");
+assert(data.slips[1].combinedOdds >= 20, "Bagliore deve raggiungere quota 20");
+assert(data.slips[2].combinedOdds >= 30, "Supernova deve raggiungere quota 30");
 for (const slip of data.slips) {
   assert(slip.combinedOdds > 1, `${slip.id}: quota totale non valida`);
   if (!["single-market-full-round", "exact-score", "exact-score-multi"].includes(slip.type)) assert(slip.marketFamilies.length >= 3, `${slip.id}: varietà mercati insufficiente`);
@@ -22,7 +22,8 @@ for (const slip of data.slips) {
   assert(Number.isFinite(slip.expectedValuePct), `${slip.id}: EV stimato non valido`);
   for (const leg of slip.legs) {
     assert.strictEqual(leg.coherent, true, `${slip.id}/${leg.matchId}: selezione incoerente con il pronostico`);
-    assert(leg.odds > 1, `${slip.id}/${leg.matchId}: quota non valida`);
+    assert(leg.odds >= 1.10, `${slip.id}/${leg.matchId}: quota inferiore a 1,10`);
+    assert.notStrictEqual(leg.selection, "12", `${slip.id}/${leg.matchId}: esito 12 non ammesso`);
     assert(leg.modelProbabilityPct > 0, `${slip.id}/${leg.matchId}: probabilità della selezione non calcolata`);
   }
 }
