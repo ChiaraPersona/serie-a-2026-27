@@ -13,6 +13,7 @@ const predictionByMatch = new Map(predictions.predictions.map(prediction => [pre
 const matchById = new Map(matches.map(match => [match.id, match]));
 const teamById = new Map(teamIndex.map(team => [team.id, read(`data/teams/${team.id}.json`)]));
 const round = (value, digits = 2) => Number(value.toFixed(digits));
+const clamp = (value, minimum, maximum) => Math.min(maximum, Math.max(minimum, value));
 const clean = value => String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
 
 function modelProbability(prediction, selection) {
@@ -42,6 +43,27 @@ function exactScoreProbability(prediction, score) {
   if (![homeGoals, awayGoals].every(Number.isFinite)) return 0;
   return poissonPoint(Number(prediction.expectedGoals?.home), homeGoals)
     * poissonPoint(Number(prediction.expectedGoals?.away), awayGoals);
+}
+
+function playerContext(pick) {
+  const match = matchById.get(pick.matchId);
+  for (const [teamPosition, teamId] of [match?.homeTeam, match?.awayTeam].entries()) {
+    const team = teamById.get(teamId);
+    const isProjected = (team?.probableLineup?.players || []).some(name => clean(name) === clean(pick.player));
+    const player = team?.squad?.find(item => clean(item.name) === clean(pick.player));
+    if (isProjected && player) return { team, teamPosition, player, venue: teamPosition === 0 ? "home" : "away" };
+  }
+  return null;
+}
+
+function regularizedRate(per90, minutes, priorRate) {
+  const exposure = minutes / 90;
+  const priorExposure = 8;
+  return (per90 * exposure + priorRate * priorExposure) / (exposure + priorExposure);
+}
+
+function poissonOverProbability(lambda, threshold) {
+  return 1 - poissonRange(lambda, 0, Math.floor(threshold));
 }
 
 function pickAnalysis(pick, market, prediction) {
@@ -86,30 +108,45 @@ function pickAnalysis(pick, market, prediction) {
   }
   if (market.marketName === "MARCATORE SI/NO (DUO) INC TS") {
     const teamIndex = pick.teamSide === "home" ? 0 : pick.teamSide === "away" ? 1 : -1;
-    const coherent = pick.selection === "SI" && teamIndex >= 0 && score[teamIndex] > 0 && Boolean(pick.player);
+    const context = playerContext(pick);
+    const per90 = Number(context?.player?.previousSeason?.totals?.per90?.goals);
+    const minutes = Number(context?.player?.previousSeason?.totals?.minutes);
+    const venueStats = context?.team?.teamStats?.homeAway?.[context?.venue];
+    const historicalTeamRate = Number(venueStats?.goalsFor) / Number(venueStats?.played);
+    const expectedTeamGoals = Number(context && (context.teamPosition === 0 ? prediction.expectedGoals?.home : prediction.expectedGoals?.away));
+    const matchupFactor = clamp(expectedTeamGoals / historicalTeamRate, 0.65, 1.5);
+    const lambda = regularizedRate(per90, minutes, 0.25) * matchupFactor;
+    const probability = 1 - Math.exp(-lambda);
+    const coherent = pick.selection === "SI" && teamIndex >= 0 && context?.teamPosition === teamIndex && score[teamIndex] > 0
+      && Number.isFinite(per90) && Number.isFinite(minutes) && minutes >= 700 && Number.isFinite(probability);
     const isModelMvp = prediction.mvpCandidate?.name === pick.player;
     return {
       coherent,
-      modelProbabilityPct: null,
-      evidenceLabel: isModelMvp ? `MVP previsto · ${pick.player}` : `Squadra prevista a segno · ${score.join("-")}`
+      modelProbabilityPct: coherent ? round(probability * 100, 2) : null,
+      evidenceLabel: `${isModelMvp ? "MVP previsto" : "Titolare previsto"} · ${String(round(per90, 2)).replace(".", ",")} gol/90 · λ ${String(round(lambda, 2)).replace(".", ",")}`
     };
   }
   if (/TIRI.*GIOCATORE/.test(market.marketName)) {
-    const match = matchById.get(pick.matchId);
-    const projectedPlayer = [match?.homeTeam, match?.awayTeam]
-      .map(teamId => teamById.get(teamId))
-      .find(team => (team?.probableLineup?.players || []).some(name => clean(name) === clean(pick.player)));
-    const player = projectedPlayer?.squad?.find(item => clean(item.name) === clean(pick.player));
+    const context = playerContext(pick);
     const metricKey = /TIRI IN PORTA/.test(market.marketName) ? "shotsOnTarget" : "shots";
+    const projectionKey = metricKey === "shotsOnTarget" ? "shotsOnTarget" : "shotsTotal";
     const metricLabel = metricKey === "shotsOnTarget" ? "tiri in porta" : "tiri";
-    const per90 = Number(player?.previousSeason?.totals?.per90?.[metricKey]);
-    const minutes = Number(player?.previousSeason?.totals?.minutes);
+    const per90 = Number(context?.player?.previousSeason?.totals?.per90?.[metricKey]);
+    const minutes = Number(context?.player?.previousSeason?.totals?.minutes);
     const threshold = Number(market.threshold);
-    const coherent = pick.selection === "OVER" && Number.isFinite(per90) && per90 > threshold && minutes >= 700;
+    const projection = context && prediction.teamProjections?.[context.teamPosition]?.[projectionKey];
+    const selfVolumeInput = projection?.inputs?.find(input => input.source === `${context?.venue}-for`)
+      || projection?.inputs?.find(input => input.source === (metricKey === "shotsOnTarget" ? "lineup-accuracy-prior" : "team-style-prior"));
+    const historicalTeamMean = Number(selfVolumeInput?.mean ?? projection?.central);
+    const matchupFactor = clamp(Number(projection?.central) / historicalTeamMean, 0.75, 1.25);
+    const lambda = regularizedRate(per90, minutes, metricKey === "shotsOnTarget" ? 0.7 : 2) * matchupFactor;
+    const probability = poissonOverProbability(lambda, threshold);
+    const coherent = pick.selection === "OVER" && Number.isFinite(per90) && Number.isFinite(threshold)
+      && minutes >= 700 && Number.isFinite(probability) && probability > 0;
     return {
       coherent,
-      modelProbabilityPct: null,
-      evidenceLabel: `Titolare previsto · ${String(round(per90, 2)).replace(".", ",")} ${metricLabel}/90 · ${minutes} min`
+      modelProbabilityPct: coherent ? round(probability * 100, 2) : null,
+      evidenceLabel: `Titolare previsto · ${String(round(per90, 2)).replace(".", ",")} ${metricLabel}/90 · λ ${String(round(lambda, 2)).replace(".", ",")}`
     };
   }
   if (market.marketName === "ENTRAMBE LE SQUADRE ALMENO X TIRI IN PORTA") {
@@ -211,7 +248,7 @@ const slips = source.slips.map((slip, index) => {
     description: slip.description,
     marketFamilies: families,
     combinedOdds: round(combinedOdds),
-    jointModelProbabilityPct: hasJointProbability ? round(jointProbability * 100) : null,
+    jointModelProbabilityPct: hasJointProbability ? round(jointProbability * 100, 6) : null,
     fairOdds: hasJointProbability ? round(1 / jointProbability) : null,
     expectedValuePct: hasJointProbability ? round((jointProbability * combinedOdds - 1) * 100, 1) : null,
     legs
@@ -236,7 +273,7 @@ const output = {
   sourceUrl: odds.sourceUrl,
   oddsRetrievedAt: odds.retrievedAt,
   modelVersion: predictions.engine?.version || predictions.predictions[0]?.engineVersion || null,
-  methodology: "Le prime tre schedine sono libere e differenziate; la quarta e la quinta accettano esclusivamente mercati individuali su marcatore, tiri o tiri in porta. Nessuna selezione Sisal viene ripetuta. Il motore valida gli esiti sul verdetto, i marcatori solo per squadre previste a segno e i tiri individuali su probabile formazione, minutaggio e frequenza storica per 90 minuti. La sesta schedina copre tutte le dieci gare con Multigol casa/ospite. Le ultime due usano rispettivamente quattro risultati esatti e sei risultati esatti multiesito; ogni scelta singola coincide con il risultato centrale e ogni gruppo multiesito lo contiene. Le probabilità derivano dal modello Poisson indipendente basato sugli xG, non dalle quote. La dicitura sostituto incluso compare soltanto quando fa parte del mercato Sisal selezionato e non viene applicata ai falli.",
+  methodology: "Le probabilità sono indipendenti dalle quote Sisal. Esiti, Multigol e risultati esatti derivano dal modello Poisson sugli xG. Per marcatori, tiri e tiri in porta il motore usa soltanto titolari previsti con almeno 700 minuti: regolarizza la frequenza storica per 90 minuti con un prior prudente, la adatta agli xG o ai volumi di squadra previsti e tratta il mercato duo come esposizione dell'intero ruolo nei 90 minuti. Le probabilità delle gambe, appartenenti a partite diverse, vengono moltiplicate per ottenere la probabilità congiunta; quota equa = 1/probabilità ed EV = probabilità × quota Sisal − 1. Nessuna quota entra nel pronostico. La dicitura sostituto incluso compare soltanto quando prevista dal mercato e non viene applicata ai falli.",
   slips
 };
 

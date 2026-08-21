@@ -10,10 +10,13 @@ assert.strictEqual(new Set(data.slips[2].legs.map(leg => leg.matchId)).size, 10,
 for (const slip of data.slips) {
   assert(slip.combinedOdds > 1, `${slip.id}: quota totale non valida`);
   if (!["single-market-full-round", "exact-score", "exact-score-multi"].includes(slip.type)) assert(slip.marketFamilies.length >= 3, `${slip.id}: varietà mercati insufficiente`);
-  if (slip.jointModelProbabilityPct !== null) assert(slip.jointModelProbabilityPct > 0, `${slip.id}: probabilità modello non valida`);
+  assert(slip.jointModelProbabilityPct > 0, `${slip.id}: probabilità modello non valida`);
+  assert(slip.fairOdds > 1, `${slip.id}: quota equa non valida`);
+  assert(Number.isFinite(slip.expectedValuePct), `${slip.id}: EV stimato non valido`);
   for (const leg of slip.legs) {
     assert.strictEqual(leg.coherent, true, `${slip.id}/${leg.matchId}: selezione incoerente con il pronostico`);
     assert(leg.odds > 1, `${slip.id}/${leg.matchId}: quota non valida`);
+    assert(leg.modelProbabilityPct > 0, `${slip.id}/${leg.matchId}: probabilità della selezione non calcolata`);
   }
 }
 const multigoal = data.slips.find(item => item.id === "costellazione");
@@ -53,7 +56,9 @@ for (const id of ["prisma", "quasar"]) {
   const slip = data.slips.find(item => item.id === id);
   assert.deepStrictEqual(new Set(slip.legs.map(leg => leg.matchId)).size, 8, `${id}: le otto gambe devono appartenere a partite diverse`);
   assert(slip.marketFamilies.length >= 3, `${id}: servono almeno tre famiglie di mercato`);
-  assert.strictEqual(slip.jointModelProbabilityPct, null, `${id}: la probabilità congiunta deve restare N/D`);
+  assert(slip.jointModelProbabilityPct > 0, `${id}: probabilità congiunta non ricalcolata`);
+  assert(slip.fairOdds > 1, `${id}: quota equa non ricalcolata`);
+  assert(Number.isFinite(slip.expectedValuePct), `${id}: EV non ricalcolato`);
 }
 const shell = fs.readFileSync(path.join(root, "schedina.html"), "utf8");
 assert.match(shell, /data-page="betting"/, "Shell Schedina non generata");
