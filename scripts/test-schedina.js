@@ -4,18 +4,24 @@ const assert = require("assert");
 
 const root = path.resolve(__dirname, "..");
 const data = JSON.parse(fs.readFileSync(path.join(root, "data/normalized/schedina.json"), "utf8"));
-assert.strictEqual(data.slips.length, 5, "La pagina deve contenere cinque schedine");
-assert.deepStrictEqual(data.slips.map(slip => slip.legs.length), [6, 6, 10, 8, 8], "Numero selezioni inatteso");
+assert.strictEqual(data.slips.length, 6, "La pagina deve contenere sei schedine");
+assert.deepStrictEqual(data.slips.map(slip => slip.legs.length), [6, 6, 10, 8, 8, 10], "Numero selezioni inatteso");
 assert.strictEqual(new Set(data.slips[2].legs.map(leg => leg.matchId)).size, 10, "Supernova deve coprire tutte le dieci partite");
 for (const slip of data.slips) {
   assert(slip.combinedOdds > 1, `${slip.id}: quota totale non valida`);
-  assert(slip.marketFamilies.length >= 3, `${slip.id}: varietà mercati insufficiente`);
+  if (slip.type !== "single-market-full-round") assert(slip.marketFamilies.length >= 3, `${slip.id}: varietà mercati insufficiente`);
   if (slip.jointModelProbabilityPct !== null) assert(slip.jointModelProbabilityPct > 0, `${slip.id}: probabilità modello non valida`);
   for (const leg of slip.legs) {
     assert.strictEqual(leg.coherent, true, `${slip.id}/${leg.matchId}: selezione incoerente con il pronostico`);
     assert(leg.odds > 1, `${slip.id}/${leg.matchId}: quota non valida`);
   }
 }
+const multigoal = data.slips.find(item => item.id === "costellazione");
+assert(multigoal, "Schedina Multigol casa/ospite mancante");
+assert.strictEqual(new Set(multigoal.legs.map(leg => leg.matchId)).size, 10, "La Multigol deve coprire tutte le dieci partite");
+assert.deepStrictEqual(multigoal.marketFamilies, ["Multigol casa/ospite"], "La Multigol deve usare il solo mercato casa/ospite");
+assert(multigoal.legs.every(leg => leg.market === "MULTIGOAL CASA + MULTIGOAL OSPITE"), "Mercato inatteso nella Multigol");
+assert(multigoal.jointModelProbabilityPct > 0 && multigoal.fairOdds > 1, "Metriche quantitative Multigol mancanti");
 const selectionIds = data.slips.flatMap(slip => slip.legs.map(leg => leg.providerSelectionId));
 assert.strictEqual(new Set(selectionIds).size, selectionIds.length, "Una selezione Sisal è ripetuta tra schedine diverse");
 const allLegs = data.slips.flatMap(slip => slip.legs);

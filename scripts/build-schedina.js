@@ -21,8 +21,31 @@ function modelProbability(prediction, selection) {
   return [...selection].reduce((sum, outcome) => sum + (final[outcome] || 0), 0);
 }
 
+function poissonRange(lambda, minimum, maximum) {
+  let probability = Math.exp(-lambda);
+  let total = minimum === 0 ? probability : 0;
+  for (let goals = 1; goals <= maximum; goals += 1) {
+    probability *= lambda / goals;
+    if (goals >= minimum) total += probability;
+  }
+  return total;
+}
+
 function pickAnalysis(pick, market, prediction) {
   const score = String(prediction.scoreForecast?.primary?.score || "").split("-").map(Number);
+  if (market.marketName === "MULTIGOAL CASA + MULTIGOAL OSPITE") {
+    const ranges = pick.selection.match(/^(\d+)-(\d+)\/(\d+)-(\d+)$/)?.slice(1).map(Number);
+    if (!ranges) return { coherent: false, modelProbabilityPct: null, evidenceLabel: "Intervalli non validi" };
+    const [homeMin, homeMax, awayMin, awayMax] = ranges;
+    const coherent = score[0] >= homeMin && score[0] <= homeMax && score[1] >= awayMin && score[1] <= awayMax;
+    const probability = poissonRange(Number(prediction.expectedGoals?.home), homeMin, homeMax)
+      * poissonRange(Number(prediction.expectedGoals?.away), awayMin, awayMax);
+    return {
+      coherent,
+      modelProbabilityPct: round(probability * 100, 2),
+      evidenceLabel: `Risultato previsto ${score.join("-")} · xG ${String(prediction.expectedGoals.home).replace(".", ",")}–${String(prediction.expectedGoals.away).replace(".", ",")}`
+    };
+  }
   const outcomeSelections = new Set(["1", "X", "2", "1X", "X2", "12"]);
   if (outcomeSelections.has(pick.selection)) {
     return {
@@ -79,6 +102,7 @@ function pickAnalysis(pick, market, prediction) {
 
 function marketFamily(marketName) {
   if (/1X2|DOPPIA CHANCE/.test(marketName)) return "Esito";
+  if (/MULTIGOAL CASA \+ MULTIGOAL OSPITE/.test(marketName)) return "Multigol casa/ospite";
   if (/MARCATORE/.test(marketName)) return "Marcatori";
   if (/TIRI IN PORTA GIOCATORE/.test(marketName)) return "Tiri in porta giocatore";
   if (/TIRI TOTALI GIOCATORE/.test(marketName)) return "Tiri giocatore";
@@ -128,12 +152,16 @@ function resolvePick(pick) {
 const slips = source.slips.map((slip, index) => {
   const legs = slip.picks.map(resolvePick);
   const families = [...new Set(legs.map(leg => leg.marketFamily))];
-  if (families.length < 3) throw new Error(`${slip.id}: servono almeno tre famiglie di mercato, trovate ${families.join(", ")}`);
+  if (slip.type !== "single-market-full-round" && families.length < 3) throw new Error(`${slip.id}: servono almeno tre famiglie di mercato, trovate ${families.join(", ")}`);
+  if (slip.type === "single-market-full-round" && (legs.length !== 10 || new Set(legs.map(leg => leg.matchId)).size !== 10)) {
+    throw new Error(`${slip.id}: la schedina monomercato deve coprire tutte le dieci partite`);
+  }
   const combinedOdds = legs.reduce((product, leg) => product * leg.odds, 1);
   const hasJointProbability = legs.every(leg => Number.isFinite(leg.modelProbabilityPct));
   const jointProbability = hasJointProbability ? legs.reduce((product, leg) => product * leg.modelProbabilityPct / 100, 1) : null;
   return {
     id: slip.id,
+    type: slip.type || "mixed-markets",
     number: index + 1,
     eyebrow: slip.eyebrow,
     name: slip.name,
@@ -165,7 +193,7 @@ const output = {
   sourceUrl: odds.sourceUrl,
   oddsRetrievedAt: odds.retrievedAt,
   modelVersion: predictions.engine?.version || predictions.predictions[0]?.engineVersion || null,
-  methodology: "Ogni schedina usa almeno tre famiglie di mercato e nessuna selezione Sisal viene ripetuta in un'altra proposta. Il motore valida gli esiti sul verdetto, i marcatori solo per squadre previste a segno e i tiri individuali su probabile formazione, minutaggio e frequenza storica per 90 minuti del giocatore. Tiri e tiri in porta non sono mai riferiti alla squadra o all'intera partita. La dicitura sostituto incluso compare soltanto quando fa parte del mercato Sisal selezionato; non viene applicata ai falli. Probabilità, quota equa ed EV restano a N/D quando manca una probabilità calibrata per una soglia. La quota Sisal non modifica il pronostico.",
+  methodology: "Le schedine miste usano almeno tre famiglie di mercato e nessuna selezione Sisal viene ripetuta in un'altra proposta. Il motore valida gli esiti sul verdetto, i marcatori solo per squadre previste a segno e i tiri individuali su probabile formazione, minutaggio e frequenza storica per 90 minuti del giocatore. Tiri e tiri in porta non sono mai riferiti alla squadra o all'intera partita. La schedina Multigol copre tutte le dieci gare: ogni coppia di intervalli contiene il risultato pronosticato e la probabilità deriva dal modello Poisson indipendente basato sugli xG, non dalle quote. La dicitura sostituto incluso compare soltanto quando fa parte del mercato Sisal selezionato; non viene applicata ai falli. Probabilità, quota equa ed EV restano a N/D quando manca una probabilità calibrata per una soglia. La quota Sisal non modifica il pronostico.",
   slips
 };
 
