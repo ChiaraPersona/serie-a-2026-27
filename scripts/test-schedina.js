@@ -4,12 +4,12 @@ const assert = require("assert");
 
 const root = path.resolve(__dirname, "..");
 const data = JSON.parse(fs.readFileSync(path.join(root, "data/normalized/schedina.json"), "utf8"));
-assert.strictEqual(data.slips.length, 6, "La pagina deve contenere sei schedine");
-assert.deepStrictEqual(data.slips.map(slip => slip.legs.length), [6, 6, 10, 8, 8, 10], "Numero selezioni inatteso");
+assert.strictEqual(data.slips.length, 8, "La pagina deve contenere otto schedine");
+assert.deepStrictEqual(data.slips.map(slip => slip.legs.length), [6, 6, 10, 8, 8, 10, 4, 6], "Numero selezioni inatteso");
 assert.strictEqual(new Set(data.slips[2].legs.map(leg => leg.matchId)).size, 10, "Supernova deve coprire tutte le dieci partite");
 for (const slip of data.slips) {
   assert(slip.combinedOdds > 1, `${slip.id}: quota totale non valida`);
-  if (slip.type !== "single-market-full-round") assert(slip.marketFamilies.length >= 3, `${slip.id}: varietà mercati insufficiente`);
+  if (!["single-market-full-round", "exact-score", "exact-score-multi"].includes(slip.type)) assert(slip.marketFamilies.length >= 3, `${slip.id}: varietà mercati insufficiente`);
   if (slip.jointModelProbabilityPct !== null) assert(slip.jointModelProbabilityPct > 0, `${slip.id}: probabilità modello non valida`);
   for (const leg of slip.legs) {
     assert.strictEqual(leg.coherent, true, `${slip.id}/${leg.matchId}: selezione incoerente con il pronostico`);
@@ -22,6 +22,18 @@ assert.strictEqual(new Set(multigoal.legs.map(leg => leg.matchId)).size, 10, "La
 assert.deepStrictEqual(multigoal.marketFamilies, ["Multigol casa/ospite"], "La Multigol deve usare il solo mercato casa/ospite");
 assert(multigoal.legs.every(leg => leg.market === "MULTIGOAL CASA + MULTIGOAL OSPITE"), "Mercato inatteso nella Multigol");
 assert(multigoal.jointModelProbabilityPct > 0 && multigoal.fairOdds > 1, "Metriche quantitative Multigol mancanti");
+for (const id of ["prisma", "quasar"]) {
+  const playerSlip = data.slips.find(item => item.id === id);
+  assert.strictEqual(playerSlip.type, "player-only", `${id}: tipo schedina errato`);
+  assert(playerSlip.legs.every(leg => leg.marketScope === "player"), `${id}: contiene una selezione non riferita a un giocatore`);
+  assert(playerSlip.legs.every(leg => /MARCATORE|TIRI.*GIOCATORE/.test(leg.market)), `${id}: mercato giocatore non ammesso`);
+}
+const exactScore = data.slips.find(item => item.id === "quadrante");
+assert.strictEqual(exactScore.legs.length, 4, "Quadrante deve contenere quattro risultati esatti");
+assert(exactScore.legs.every(leg => leg.selection === leg.predictedScore), "Un risultato esatto non coincide con lo scenario centrale");
+const exactMulti = data.slips.find(item => item.id === "ventaglio");
+assert.strictEqual(exactMulti.legs.length, 6, "Ventaglio deve contenere sei multiesiti");
+assert(exactMulti.legs.every(leg => leg.selection.split("/").map(item => item.trim()).includes(leg.predictedScore)), "Un multiesito non contiene il risultato previsto");
 const selectionIds = data.slips.flatMap(slip => slip.legs.map(leg => leg.providerSelectionId));
 assert.strictEqual(new Set(selectionIds).size, selectionIds.length, "Una selezione Sisal è ripetuta tra schedine diverse");
 const allLegs = data.slips.flatMap(slip => slip.legs);

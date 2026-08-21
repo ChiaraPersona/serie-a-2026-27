@@ -31,6 +31,19 @@ function poissonRange(lambda, minimum, maximum) {
   return total;
 }
 
+function poissonPoint(lambda, goals) {
+  let probability = Math.exp(-lambda);
+  for (let index = 1; index <= goals; index += 1) probability *= lambda / index;
+  return probability;
+}
+
+function exactScoreProbability(prediction, score) {
+  const [homeGoals, awayGoals] = score.split("-").map(Number);
+  if (![homeGoals, awayGoals].every(Number.isFinite)) return 0;
+  return poissonPoint(Number(prediction.expectedGoals?.home), homeGoals)
+    * poissonPoint(Number(prediction.expectedGoals?.away), awayGoals);
+}
+
 function pickAnalysis(pick, market, prediction) {
   const score = String(prediction.scoreForecast?.primary?.score || "").split("-").map(Number);
   if (market.marketName === "MULTIGOAL CASA + MULTIGOAL OSPITE") {
@@ -44,6 +57,23 @@ function pickAnalysis(pick, market, prediction) {
       coherent,
       modelProbabilityPct: round(probability * 100, 2),
       evidenceLabel: `Risultato previsto ${score.join("-")} · xG ${String(prediction.expectedGoals.home).replace(".", ",")}–${String(prediction.expectedGoals.away).replace(".", ",")}`
+    };
+  }
+  if (market.marketName === "RISULTATO ESATTO 26 ESITI") {
+    const predictedScore = score.join("-");
+    return {
+      coherent: pick.selection === predictedScore,
+      modelProbabilityPct: round(exactScoreProbability(prediction, pick.selection) * 100, 2),
+      evidenceLabel: `Risultato centrale del modello · ${predictedScore}`
+    };
+  }
+  if (/^RISULTATO ESATTO MULTI ESITI [1-5]$/.test(market.marketName)) {
+    const outcomes = pick.selection.split("/").map(item => item.trim()).filter(item => /^\d+-\d+$/.test(item));
+    const predictedScore = score.join("-");
+    return {
+      coherent: outcomes.includes(predictedScore),
+      modelProbabilityPct: round(outcomes.reduce((sum, outcome) => sum + exactScoreProbability(prediction, outcome), 0) * 100, 2),
+      evidenceLabel: `Include il risultato previsto · ${predictedScore}`
     };
   }
   const outcomeSelections = new Set(["1", "X", "2", "1X", "X2", "12"]);
@@ -103,6 +133,8 @@ function pickAnalysis(pick, market, prediction) {
 function marketFamily(marketName) {
   if (/1X2|DOPPIA CHANCE/.test(marketName)) return "Esito";
   if (/MULTIGOAL CASA \+ MULTIGOAL OSPITE/.test(marketName)) return "Multigol casa/ospite";
+  if (/^RISULTATO ESATTO MULTI ESITI/.test(marketName)) return "Risultato esatto multiesito";
+  if (/^RISULTATO ESATTO 26 ESITI/.test(marketName)) return "Risultato esatto";
   if (/MARCATORE/.test(marketName)) return "Marcatori";
   if (/TIRI IN PORTA GIOCATORE/.test(marketName)) return "Tiri in porta giocatore";
   if (/TIRI TOTALI GIOCATORE/.test(marketName)) return "Tiri giocatore";
@@ -135,6 +167,7 @@ function resolvePick(pick) {
     fixture: `${event.home.name} – ${event.away.name}`,
     startsAt: event.startsAt,
     market: market.marketName,
+    marketScope: market.marketScope || null,
     marketFamily: marketFamily(market.marketName),
     player: pick.player || null,
     selection: pick.selection,
@@ -152,9 +185,19 @@ function resolvePick(pick) {
 const slips = source.slips.map((slip, index) => {
   const legs = slip.picks.map(resolvePick);
   const families = [...new Set(legs.map(leg => leg.marketFamily))];
-  if (slip.type !== "single-market-full-round" && families.length < 3) throw new Error(`${slip.id}: servono almeno tre famiglie di mercato, trovate ${families.join(", ")}`);
+  const specializedTypes = new Set(["single-market-full-round", "exact-score", "exact-score-multi"]);
+  if (!specializedTypes.has(slip.type) && families.length < 3) throw new Error(`${slip.id}: servono almeno tre famiglie di mercato, trovate ${families.join(", ")}`);
+  if (slip.type === "player-only" && legs.some(leg => leg.marketScope !== "player")) {
+    throw new Error(`${slip.id}: tutte le selezioni devono essere mercati giocatore`);
+  }
   if (slip.type === "single-market-full-round" && (legs.length !== 10 || new Set(legs.map(leg => leg.matchId)).size !== 10)) {
     throw new Error(`${slip.id}: la schedina monomercato deve coprire tutte le dieci partite`);
+  }
+  if (slip.type === "exact-score" && (legs.length !== 4 || legs.some(leg => leg.market !== "RISULTATO ESATTO 26 ESITI"))) {
+    throw new Error(`${slip.id}: servono quattro risultati esatti singoli`);
+  }
+  if (slip.type === "exact-score-multi" && (legs.length !== 6 || legs.some(leg => !/^RISULTATO ESATTO MULTI ESITI/.test(leg.market)))) {
+    throw new Error(`${slip.id}: servono sei risultati esatti multiesito`);
   }
   const combinedOdds = legs.reduce((product, leg) => product * leg.odds, 1);
   const hasJointProbability = legs.every(leg => Number.isFinite(leg.modelProbabilityPct));
@@ -193,7 +236,7 @@ const output = {
   sourceUrl: odds.sourceUrl,
   oddsRetrievedAt: odds.retrievedAt,
   modelVersion: predictions.engine?.version || predictions.predictions[0]?.engineVersion || null,
-  methodology: "Le schedine miste usano almeno tre famiglie di mercato e nessuna selezione Sisal viene ripetuta in un'altra proposta. Il motore valida gli esiti sul verdetto, i marcatori solo per squadre previste a segno e i tiri individuali su probabile formazione, minutaggio e frequenza storica per 90 minuti del giocatore. Tiri e tiri in porta non sono mai riferiti alla squadra o all'intera partita. La schedina Multigol copre tutte le dieci gare: ogni coppia di intervalli contiene il risultato pronosticato e la probabilità deriva dal modello Poisson indipendente basato sugli xG, non dalle quote. La dicitura sostituto incluso compare soltanto quando fa parte del mercato Sisal selezionato; non viene applicata ai falli. Probabilità, quota equa ed EV restano a N/D quando manca una probabilità calibrata per una soglia. La quota Sisal non modifica il pronostico.",
+  methodology: "Le prime tre schedine sono libere e differenziate; la quarta e la quinta accettano esclusivamente mercati individuali su marcatore, tiri o tiri in porta. Nessuna selezione Sisal viene ripetuta. Il motore valida gli esiti sul verdetto, i marcatori solo per squadre previste a segno e i tiri individuali su probabile formazione, minutaggio e frequenza storica per 90 minuti. La sesta schedina copre tutte le dieci gare con Multigol casa/ospite. Le ultime due usano rispettivamente quattro risultati esatti e sei risultati esatti multiesito; ogni scelta singola coincide con il risultato centrale e ogni gruppo multiesito lo contiene. Le probabilità derivano dal modello Poisson indipendente basato sugli xG, non dalle quote. La dicitura sostituto incluso compare soltanto quando fa parte del mercato Sisal selezionato e non viene applicata ai falli.",
   slips
 };
 
