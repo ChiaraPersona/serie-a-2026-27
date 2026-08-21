@@ -53,16 +53,8 @@ for (const prediction of dataset.predictions) {
   assert(prediction.marketComparison.length >= 16, `${prediction.matchId}: confronto mercati incompleto`);
   assert(prediction.marketComparison.every(candidate => candidate.providerSelectionId && candidate.marketNoMarginPct !== null), `${prediction.matchId}: mercato senza quota disponibile o probabilita depurata`);
   assert(prediction.marketComparison.every(candidate => Math.abs(candidate.expectedValuePct - ((candidate.modelProbabilityPct / 100) * candidate.odds - 1) * 100) <= 1.5 || candidate.family === "draw-no-bet"), `${prediction.matchId}: valore atteso incoerente`);
-  const pricingErrors = prediction.recommendations.pricingErrors;
-  assert(pricingErrors.length <= 3, `${prediction.matchId}: troppi errori di quota esposti`);
-  assert(pricingErrors.every(error => error.odds > 3.5), `${prediction.matchId}: errore di quota non superiore a 3.50`);
-  assert(pricingErrors.every(error => error.edgePct >= 5 && error.expectedValuePct >= 15 && error.conservativeExpectedValuePct > 0), `${prediction.matchId}: errore di quota non robusto`);
-  assert(pricingErrors.every(error => error.family !== "player"), `${prediction.matchId}: mercato giocatore privo di frequenze partita-per-partita esposto come errore`);
-  assert(!pricingErrors.length || prediction.dataQuality.completenessPct >= 72, `${prediction.matchId}: errore di quota esposto con dati incompleti`);
-  assert(pricingErrors.every(error => error.pricingEligible !== false), `${prediction.matchId}: mercato a esiti sovrapposti esposto come errore`);
-  assert(pricingErrors.every(error => error.scenarioCompatible === true), `${prediction.matchId}: errore di quota incoerente con il risultato pronosticato`);
-  assert.strictEqual(new Set(pricingErrors.map(error => error.pricingMarketKey)).size, pricingErrors.length, `${prediction.matchId}: gli errori di quota devono appartenere a mercati diversi`);
-  assert.strictEqual(new Set(pricingErrors.map(error => error.pricingThemeKey)).size, pricingErrors.length, `${prediction.matchId}: errori di quota semanticamente sovrapposti`);
+  const removedRecommendationKey = ["pricing", "Errors"].join("");
+  assert(!Object.hasOwn(prediction.recommendations, removedRecommendationKey), `${prediction.matchId}: campo raccomandazioni rimosso ancora presente`);
   assert.strictEqual(prediction.scenarios.length, 3, `${prediction.matchId}: scenari incompleti`);
   const configuredMyCombo = Boolean(myComboSource.matches[prediction.matchId]);
   assert.strictEqual(prediction.playerMarkets.status, "available", `${prediction.matchId}: disponibilita mercati giocatore incoerente con lo snapshot`);

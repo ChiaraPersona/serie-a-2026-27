@@ -1,6 +1,6 @@
 "use strict";
 
-const ENGINE_VERSION = "4.9.5";
+const ENGINE_VERSION = "4.9.6";
 const OUTCOMES = ["1", "X", "2"];
 const WEIGHTS = Object.freeze({ venueHistorical: 0.46, overallHistorical: 0.25, recentForm: 0.16, tacticalMatchup: 0.07, probableLineup: 0.05, objectives: 0.01 });
 const MVP_WEIGHTS = Object.freeze({ resultScenario: 0.3, individualProduction: 0.2, historicalRating: 0.15, officialMvpHistory: 0.15, tacticalFit: 0.1, opponentHistory: 0.05, dataReliability: 0.05 });
@@ -761,9 +761,6 @@ function evaluateMarketRow({ market, selection, family, label, predicate, matric
     id: `${family}:${selection}:${market.threshold ?? "main"}`,
     family,
     scenarioCompatible: primaryScore ? predicate(primaryScore) || Boolean(pushPredicate?.(primaryScore)) : null,
-    pricingThemeKey: family === "goals" ? `match-goals-${cleanName(selection)}`
-      : family === "btts" ? "both-teams-score"
-        : family === "team-goal" ? `${cleanName(label)}-goal` : family,
     market: label,
     selection,
     providerSelectionId: quote.providerSelectionId,
@@ -780,166 +777,6 @@ function evaluateMarketRow({ market, selection, family, label, predicate, matric
     qualifies,
     classification: qualifies ? "value" : probability >= 0.65 && expectedValue <= 0 ? "probabile ma senza valore" : conservativeExpectedValue <= 0 && expectedValue > 0 ? "fragile" : "neutrale"
   };
-}
-
-function evaluateComboMarketRows(oddsEvent, matrices, dataCompleteness, primaryScore) {
-  const rows = [];
-  const supported = new Set([
-    "COMBO: DC + U/O", "COMBO: 1X2 + U/O", "COMBO: DC + GOAL/NOGOAL",
-    "COMBO: 1X2 + MULTIGOAL 6 ESITI", "COMBO: DC + MULTIGOAL",
-    "COMBO: 1X2 + U/O + GG/NG", "COMBO: GOAL/NOGOAL + U/O"
-  ]);
-  for (const market of (oddsEvent?.markets || []).filter(item => supported.has(item.marketName))) {
-    const prices = noMarginMap(market);
-    for (const quote of openSelections(market)) {
-      const predicate = pricingComboPredicate(market, quote.name);
-      if (!predicate) continue;
-      const probabilities = matrices.map(matrix => matrixProbability(matrix, predicate));
-      const probability = probabilities[0];
-      const conservativeProbability = Math.min(...probabilities);
-      const expectedValues = probabilities.map(value => value * quote.odds - 1);
-      const width = Math.max(...probabilities) - Math.min(...probabilities);
-      const overlappingDoubleChance = market.marketName === "COMBO: DC + U/O"
-        || market.marketName === "COMBO: DC + GOAL/NOGOAL"
-        || market.marketName === "COMBO: DC + MULTIGOAL";
-      const marketProbability = overlappingDoubleChance ? 1 / quote.odds : prices[quote.name] ?? null;
-      rows.push({
-        id: `combo:${quote.providerSelectionId}`,
-        family: "combo",
-        scenarioCompatible: predicate(primaryScore),
-        pricingMarketKey: market.marketName,
-        pricingThemeKey: comboPricingTheme(market, quote.name),
-        market: market.variantName || market.marketName,
-        selection: quote.name,
-        providerSelectionId: quote.providerSelectionId,
-        odds: quote.odds,
-        modelProbabilityPct: round(probability * 100, 1),
-        conservativeProbabilityPct: round(conservativeProbability * 100, 1),
-        fairOdds: round(1 / probability, 2),
-        marketNoMarginPct: marketProbability == null ? null : round(marketProbability * 100, 1),
-        edgePct: marketProbability == null ? null : round((probability - marketProbability) * 100, 1),
-        expectedValuePct: round(expectedValues[0] * 100, 1),
-        conservativeExpectedValuePct: round(Math.min(...expectedValues) * 100, 1),
-        sensitivityWidthPct: round(width * 100, 1),
-        confidence: dataCompleteness >= 0.72 && width <= 0.08 ? "Alta" : dataCompleteness >= 0.58 && width <= 0.14 ? "Media" : "Bassa",
-        classification: "candidate-pricing-error",
-        marketProbabilityBasis: overlappingDoubleChance ? "implied" : "no-margin",
-        pricingEligible: !overlappingDoubleChance
-      });
-    }
-  }
-  return rows;
-}
-
-function evaluateScoreLineRows(oddsEvent, matrices, dataCompleteness, primaryScore) {
-  const rows = [];
-  const supported = new Set(["SOMMA GOAL FINALE", "CASA: SOMMA GOAL", "OSPITE: SOMMA GOAL", "1X2 HANDICAP", "RISULTATO ESATTO 26 ESITI"]);
-  for (const market of (oddsEvent?.markets || []).filter(item => supported.has(item.marketName))) {
-    const prices = noMarginMap(market);
-    const exactScores = new Set(openSelections(market).map(item => item.name).filter(name => /^\d+-\d+$/.test(name)));
-    for (const quote of openSelections(market)) {
-      let predicate = null;
-      if (market.marketName === "RISULTATO ESATTO 26 ESITI") {
-        if (quote.name === "ALTRO") predicate = score => !exactScores.has(`${score.home}-${score.away}`);
-        else {
-          const exact = quote.name.match(/^(\d+)-(\d+)$/);
-          if (!exact) continue;
-          predicate = score => score.home === Number(exact[1]) && score.away === Number(exact[2]);
-        }
-      } else if (market.marketName === "1X2 HANDICAP") {
-        const startingScore = String(market.variantName).match(/(?:DA|INIZIA DA)\s*(\d+)\s*-\s*(\d+)/i);
-        if (!startingScore) continue;
-        const startingHome = Number(startingScore[1]);
-        const startingAway = Number(startingScore[2]);
-        predicate = score => {
-          const adjusted = score.home + startingHome - score.away - startingAway;
-          return quote.name === "1" ? adjusted > 0 : quote.name === "X" ? adjusted === 0 : adjusted < 0;
-        };
-      } else {
-        const side = market.marketName === "CASA: SOMMA GOAL" ? "home" : market.marketName === "OSPITE: SOMMA GOAL" ? "away" : null;
-        const value = Number(String(quote.name).replace(">", ""));
-        if (!Number.isFinite(value)) continue;
-        predicate = score => {
-          const goals = side ? score[side] : score.home + score.away;
-          return String(quote.name).startsWith(">") ? goals > value : goals === value;
-        };
-      }
-      const probabilities = matrices.map(matrix => matrixProbability(matrix, predicate));
-      const probability = probabilities[0];
-      const expectedValues = probabilities.map(value => value * quote.odds - 1);
-      const width = Math.max(...probabilities) - Math.min(...probabilities);
-      const marketProbability = prices[quote.name] ?? null;
-      rows.push({
-        id: `score-line:${quote.providerSelectionId}`,
-        family: "score-line",
-        scenarioCompatible: predicate(primaryScore),
-        pricingMarketKey: market.marketName,
-        pricingThemeKey: market.marketName === "CASA: SOMMA GOAL" ? "home-goals"
-          : market.marketName === "OSPITE: SOMMA GOAL" ? "away-goals"
-            : market.marketName === "SOMMA GOAL FINALE" ? (String(quote.name).startsWith(">") ? "match-goals-over" : "match-goals-exact")
-              : market.marketName === "1X2 HANDICAP" ? "handicap" : "exact-score",
-        market: market.variantName || market.marketName,
-        selection: quote.name,
-        providerSelectionId: quote.providerSelectionId,
-        odds: quote.odds,
-        modelProbabilityPct: round(probability * 100, 1),
-        conservativeProbabilityPct: round(Math.min(...probabilities) * 100, 1),
-        fairOdds: round(1 / probability, 2),
-        marketNoMarginPct: marketProbability == null ? null : round(marketProbability * 100, 1),
-        edgePct: marketProbability == null ? null : round((probability - marketProbability) * 100, 1),
-        expectedValuePct: round(expectedValues[0] * 100, 1),
-        conservativeExpectedValuePct: round(Math.min(...expectedValues) * 100, 1),
-        sensitivityWidthPct: round(width * 100, 1),
-        confidence: dataCompleteness >= 0.72 && width <= 0.08 ? "Alta" : "Media",
-        classification: "candidate-pricing-error",
-        marketProbabilityBasis: "no-margin"
-      });
-    }
-  }
-  return rows;
-}
-
-function pricingComboPredicate(market, selection) {
-  const explicitThreshold = market.threshold === null || market.threshold === undefined ? null : Number(market.threshold);
-  const variantThreshold = Number(String(market.variantName).match(/U\/O\s+(\d+(?:\.\d+)?)/i)?.[1]);
-  const threshold = Number.isFinite(explicitThreshold) ? explicitThreshold : variantThreshold;
-  const basic = comboPredicate(selection, threshold);
-  if (basic) return basic;
-  const compact = String(selection).replace(/\s+/g, "");
-  if (["COMBO: 1X2 + MULTIGOAL 6 ESITI", "COMBO: DC + MULTIGOAL"].includes(market.marketName)) {
-    const range = String(market.variantName).match(/MULTIGOAL\s+(\d+)\s*-\s*(\d+)/i);
-    const parts = compact.split("+");
-    if (!range || parts.length !== 2) return null;
-    const outcome = ["1", "X", "2"].includes(parts[0]) ? conditionForOutcome(parts[0]) : conditionForDoubleChance(parts[0]);
-    if (!outcome) return null;
-    const [minimum, maximum] = range.slice(1).map(Number);
-    const inRange = score => score.home + score.away >= minimum && score.home + score.away <= maximum;
-    return score => outcome(score) && (parts[1] === "MULTIGOAL" ? inRange(score) : !inRange(score));
-  }
-  if (market.marketName === "COMBO: 1X2 + U/O + GG/NG") {
-    const parts = compact.split("+");
-    if (parts.length !== 3) return null;
-    const predicates = [conditionForOutcome(parts[0]), conditionForBothTeamsScore(parts[1]), conditionForGoals(parts[2], threshold)];
-    return score => predicates.every(predicate => predicate(score));
-  }
-  if (market.marketName === "COMBO: GOAL/NOGOAL + U/O") {
-    const parts = compact.split("+");
-    if (parts.length !== 2) return null;
-    const predicates = [conditionForBothTeamsScore(parts[0].replace("NO GOAL", "NOGOAL")), conditionForGoals(parts[1], threshold)];
-    return score => predicates.every(predicate => predicate(score));
-  }
-  return null;
-}
-
-function comboPricingTheme(market, selection) {
-  const compact = String(selection).replace(/\s+/g, "").toUpperCase();
-  const direction = compact.includes("OVER") || /\+O$/.test(compact) ? "over"
-    : compact.includes("UNDER") || /\+U$/.test(compact) ? "under" : null;
-  if (direction) return `match-goals-${direction}`;
-  const includesBtts = compact.includes("GOAL") || compact.includes("NOGOAL");
-  if (compact.includes("MULTIGOAL") || compact.includes("ALTRO")) return "match-goal-range";
-  if (includesBtts) return "both-teams-score";
-  return market.marketName;
 }
 
 function marketEvaluation(oddsEvent, matrices, dataCompleteness, primaryScore) {
@@ -999,30 +836,10 @@ function marketEvaluation(oddsEvent, matrices, dataCompleteness, primaryScore) {
   const secondary = ranked.filter(row => !primaryIds.has(row.id)).slice(0, 3);
   const avoid = available.filter(row => row.classification === "probabile ma senza valore" || row.classification === "fragile")
     .sort((a, b) => b.modelProbabilityPct - a.modelProbabilityPct).slice(0, 3);
-  const comboRows = evaluateComboMarketRows(oddsEvent, matrices, dataCompleteness, primaryScore);
-  const scoreLineRows = evaluateScoreLineRows(oddsEvent, matrices, dataCompleteness, primaryScore);
-  const rankedPricingErrors = [...available, ...comboRows, ...scoreLineRows]
-    .filter(row => dataCompleteness >= 0.72 && row.scenarioCompatible === true && row.pricingEligible !== false && row.odds > 3.5 && row.edgePct >= 5 && row.expectedValuePct >= 15 && row.conservativeExpectedValuePct > 0)
-    .map(row => ({
-      ...row,
-      pricingMarketKey: row.pricingMarketKey || row.family,
-      pricingThemeKey: row.pricingThemeKey || row.family
-    }))
-    .sort((a, b) => b.conservativeExpectedValuePct - a.conservativeExpectedValuePct || b.edgePct - a.edgePct);
-  const pricingErrors = [];
-  const usedPricingMarkets = new Set();
-  const usedPricingThemes = new Set();
-  for (const row of rankedPricingErrors) {
-    if (usedPricingMarkets.has(row.pricingMarketKey) || usedPricingThemes.has(row.pricingThemeKey)) continue;
-    usedPricingMarkets.add(row.pricingMarketKey);
-    usedPricingThemes.add(row.pricingThemeKey);
-    pricingErrors.push(row);
-    if (pricingErrors.length === 3) break;
-  }
   const verifiedPlayerMarkets = (oddsEvent?.markets || []).filter(market => market.marketScope === "player" && openSelections(market).length);
   return {
     rows: available,
-    selections: { primary, secondary, avoid, pricingErrors },
+    selections: { primary, secondary, avoid },
     playerMarkets: verifiedPlayerMarkets.length
       ? {
           status: "available",

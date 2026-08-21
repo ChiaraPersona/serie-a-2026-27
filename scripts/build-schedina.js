@@ -26,14 +26,15 @@ function pickAnalysis(pick, market, prediction) {
       evidenceLabel: `Pronostico ${prediction.verdict.outcome} · ${prediction.scoreForecast?.primary?.score || "N/D"}`
     };
   }
-  if (market.marketName === "GOAL/NOGOAL") {
-    const expected = score[0] > 0 && score[1] > 0 ? "GOAL" : "NOGOAL";
-    return { coherent: pick.selection === expected, modelProbabilityPct: null, evidenceLabel: `Risultato previsto ${score.join("-")}` };
-  }
-  if (["CASA: SEGNA GOAL", "OSPITE: SEGNA GOAL"].includes(market.marketName)) {
-    const teamIndex = market.marketName.startsWith("CASA") ? 0 : 1;
-    const expected = score[teamIndex] > 0 ? "SI" : "NO";
-    return { coherent: pick.selection === expected, modelProbabilityPct: null, evidenceLabel: `Risultato previsto ${score.join("-")}` };
+  if (market.marketName === "MARCATORE SI/NO (DUO) INC TS") {
+    const teamIndex = pick.teamSide === "home" ? 0 : pick.teamSide === "away" ? 1 : -1;
+    const coherent = pick.selection === "SI" && teamIndex >= 0 && score[teamIndex] > 0 && Boolean(pick.player);
+    const isModelMvp = prediction.mvpCandidate?.name === pick.player;
+    return {
+      coherent,
+      modelProbabilityPct: null,
+      evidenceLabel: isModelMvp ? `MVP previsto · ${pick.player}` : `Squadra prevista a segno · ${score.join("-")}`
+    };
   }
   if (market.marketName === "ENTRAMBE LE SQUADRE ALMENO X TIRI IN PORTA") {
     const threshold = Number(market.variantName.match(/ALMENO ([0-9]+(?:\.[0-9]+)?)/)?.[1]);
@@ -55,7 +56,7 @@ function pickAnalysis(pick, market, prediction) {
 
 function marketFamily(marketName) {
   if (/1X2|DOPPIA CHANCE/.test(marketName)) return "Esito";
-  if (/GOAL/.test(marketName)) return "Gol";
+  if (/MARCATORE/.test(marketName)) return "Marcatori";
   if (/TIRI IN PORTA/.test(marketName)) return "Tiri in porta";
   if (/TIRI TOTALI/.test(marketName)) return "Tiri totali";
   return marketName;
@@ -138,7 +139,7 @@ const output = {
   sourceUrl: odds.sourceUrl,
   oddsRetrievedAt: odds.retrievedAt,
   modelVersion: predictions.engine?.version || predictions.predictions[0]?.engineVersion || null,
-  methodology: "Ogni schedina usa almeno tre famiglie di mercato e nessuna selezione Sisal viene ripetuta in un'altra proposta. Il motore valida esiti e gol sul risultato previsto, tiri e tiri in porta sui volumi centrali. Probabilità, quota equa ed EV restano a N/D quando manca una probabilità calibrata per una soglia. La quota Sisal non modifica il pronostico.",
+  methodology: "Ogni schedina usa almeno tre famiglie di mercato e nessuna selezione Sisal viene ripetuta in un'altra proposta. Il motore valida gli esiti sul verdetto, i marcatori solo per squadre previste a segno, tiri e tiri in porta sui volumi centrali. La dicitura sostituto incluso compare esclusivamente sui mercati marcatori Sisal che la prevedono. Probabilità, quota equa ed EV restano a N/D quando manca una probabilità calibrata per una soglia. La quota Sisal non modifica il pronostico.",
   slips
 };
 

@@ -18,12 +18,19 @@ for (const slip of data.slips) {
 }
 const selectionIds = data.slips.flatMap(slip => slip.legs.map(leg => leg.providerSelectionId));
 assert.strictEqual(new Set(selectionIds).size, selectionIds.length, "Una selezione Sisal è ripetuta tra schedine diverse");
+const allLegs = data.slips.flatMap(slip => slip.legs);
+assert(allLegs.some(leg => leg.marketFamily === "Marcatori"), "Mancano i mercati marcatori richiesti");
+assert(!allLegs.some(leg => /GOAL\/NOGOAL|SEGNA GOAL/.test(leg.market)), "Goal/No Goal o gol squadra non devono sostituire i marcatori");
+for (const leg of allLegs.filter(item => item.marketFamily === "Marcatori")) {
+  assert.match(leg.label, /marcatore · sostituto incluso$/i, `${leg.matchId}: etichetta marcatore incompleta`);
+}
+for (const leg of allLegs.filter(item => item.marketFamily !== "Marcatori")) {
+  assert(!/sostituto incluso/i.test(leg.label), `${leg.matchId}: sostituto incluso usato fuori dai marcatori`);
+}
 for (const id of ["prisma", "quasar"]) {
   const slip = data.slips.find(item => item.id === id);
   assert.deepStrictEqual(new Set(slip.legs.map(leg => leg.matchId)).size, 8, `${id}: le otto gambe devono appartenere a partite diverse`);
-  assert(slip.legs.some(leg => /GOAL/.test(leg.market)), `${id}: mercato gol assente`);
-  assert(slip.legs.some(leg => leg.market.includes("TIRI TOTALI")), `${id}: mercato tiri totali assente`);
-  assert(slip.legs.some(leg => leg.market.includes("TIRI IN PORTA")), `${id}: mercato tiri in porta assente`);
+  assert(slip.marketFamilies.length >= 3, `${id}: servono almeno tre famiglie di mercato`);
   assert.strictEqual(slip.jointModelProbabilityPct, null, `${id}: la probabilità congiunta deve restare N/D`);
 }
 const shell = fs.readFileSync(path.join(root, "schedina.html"), "utf8");
