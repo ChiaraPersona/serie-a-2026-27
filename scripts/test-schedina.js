@@ -7,6 +7,13 @@ const data = JSON.parse(fs.readFileSync(path.join(root, "data/normalized/schedin
 assert.strictEqual(data.slips.length, 8, "La pagina deve contenere otto schedine");
 assert.deepStrictEqual(data.slips.map(slip => slip.legs.length), [6, 6, 10, 8, 8, 10, 4, 6], "Numero selezioni inatteso");
 assert.strictEqual(new Set(data.slips[2].legs.map(leg => leg.matchId)).size, 10, "Supernova deve coprire tutte le dieci partite");
+for (const slip of data.slips.slice(0, 3)) {
+  assert(!slip.legs.some(leg => leg.marketFamily === "Marcatori"), `${slip.id}: le prime tre schedine non devono contenere marcatori`);
+  assert(slip.legs.some(leg => leg.marketFamily === "Esito"), `${slip.id}: manca un esito coperto`);
+}
+assert(data.slips[0].jointModelProbabilityPct > 20, "Scintilla non mantiene il profilo prudente");
+assert(data.slips[1].jointModelProbabilityPct > 5, "Bagliore non mantiene il profilo prudente");
+assert(data.slips[2].jointModelProbabilityPct > 0.9, "Supernova non mantiene il profilo prudente sulle dieci gare");
 for (const slip of data.slips) {
   assert(slip.combinedOdds > 1, `${slip.id}: quota totale non valida`);
   if (!["single-market-full-round", "exact-score", "exact-score-multi"].includes(slip.type)) assert(slip.marketFamilies.length >= 3, `${slip.id}: varietà mercati insufficiente`);
