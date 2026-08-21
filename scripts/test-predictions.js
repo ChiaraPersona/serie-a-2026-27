@@ -78,6 +78,7 @@ for (const prediction of dataset.predictions) {
       assert(Math.abs(combo.odds - combo.targetOdds) / combo.targetOdds <= 0.2, `${prediction.matchId}/${combo.tier}: quota combinata lontana dal target`);
       const product = combo.legs.reduce((total, leg) => total * leg.odds, 1);
       assert(Math.abs(combo.odds - product) < 0.011, `${prediction.matchId}/${combo.tier}: moltiplicazione quote incoerente`);
+      assert(!combo.legs.some(leg => /falli (?:commessi|subiti).*sostituto incluso/i.test(leg.label)), `${prediction.matchId}/${combo.tier}: i mercati falli non includono il sostituto`);
     }
   }
   assert.strictEqual(prediction.teamProjections.length, 2, `${prediction.matchId}: proiezioni squadra incomplete`);

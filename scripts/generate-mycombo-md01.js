@@ -231,10 +231,10 @@ function candidatePool(event, prediction, match) {
   }
 
   const playerMarkets = new Map([
-    ["U/O TIRI TOTALI GIOCATORE (DUO) INC TS", { metric: "tiri totali", maximum: 3.5, key: "shots-total" }],
-    ["U/O  TIRI IN PORTA GIOCATORE (DUO) INC PALI TRAVERSE INC TS", { metric: "tiri in porta", maximum: 1.5, key: "shots-on-target" }],
-    ["U/O FALLI COMMESSI GIOCATORE", { metric: "falli commessi", maximum: 1.5, key: "fouls-committed" }],
-    ["U/O FALLI SUBITI GIOCATORE", { metric: "falli subiti", maximum: 1.5, key: "fouls-won" }]
+    ["U/O TIRI TOTALI GIOCATORE (DUO) INC TS", { metric: "tiri totali", maximum: 3.5, key: "shots-total", substituteIncluded: true }],
+    ["U/O  TIRI IN PORTA GIOCATORE (DUO) INC PALI TRAVERSE INC TS", { metric: "tiri in porta", maximum: 1.5, key: "shots-on-target", substituteIncluded: true }],
+    ["U/O FALLI COMMESSI GIOCATORE", { metric: "falli commessi", maximum: 1.5, key: "fouls-committed", substituteIncluded: false }],
+    ["U/O FALLI SUBITI GIOCATORE", { metric: "falli subiti", maximum: 1.5, key: "fouls-won", substituteIncluded: false }]
   ]);
   for (const market of event.markets || []) {
     const kind = playerMarkets.get(market.marketName);
@@ -246,7 +246,7 @@ function candidatePool(event, prediction, match) {
     candidates.push({
       providerSelectionId: String(selection.providerSelectionId),
       overlapKey: `player-${clean(player)}-${kind.key}`,
-      label: `${player} almeno ${Math.floor(threshold) + 1} ${kind.metric}, sostituto incluso`,
+      label: `${player} almeno ${Math.floor(threshold) + 1} ${kind.metric}${kind.substituteIncluded ? ", sostituto incluso" : ""}`,
       odds: selection.odds,
       quality: 95 + selection.odds * 5,
       anchor: false
