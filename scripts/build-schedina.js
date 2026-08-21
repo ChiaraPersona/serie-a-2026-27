@@ -6,9 +6,14 @@ const read = relativePath => JSON.parse(fs.readFileSync(path.join(root, relative
 const source = read("data/sources/schedina-serie-a-2026-27-md-01.json");
 const odds = read("data/normalized/odds/sisal/serie-a.json");
 const predictions = read("data/normalized/predictions.json");
+const matches = read("data/normalized/matches.json");
+const teamIndex = read("data/teams/index.json").teams;
 const eventByMatch = new Map(odds.events.map(event => [event.canonicalMatchId, event]));
 const predictionByMatch = new Map(predictions.predictions.map(prediction => [prediction.matchId, prediction]));
+const matchById = new Map(matches.map(match => [match.id, match]));
+const teamById = new Map(teamIndex.map(team => [team.id, read(`data/teams/${team.id}.json`)]));
 const round = (value, digits = 2) => Number(value.toFixed(digits));
+const clean = value => String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
 
 function modelProbability(prediction, selection) {
   const final = prediction.probabilities?.final || {};
@@ -36,6 +41,24 @@ function pickAnalysis(pick, market, prediction) {
       evidenceLabel: isModelMvp ? `MVP previsto · ${pick.player}` : `Squadra prevista a segno · ${score.join("-")}`
     };
   }
+  if (/TIRI.*GIOCATORE/.test(market.marketName)) {
+    const match = matchById.get(pick.matchId);
+    const projectedPlayer = [match?.homeTeam, match?.awayTeam]
+      .map(teamId => teamById.get(teamId))
+      .find(team => (team?.probableLineup?.players || []).some(name => clean(name) === clean(pick.player)));
+    const player = projectedPlayer?.squad?.find(item => clean(item.name) === clean(pick.player));
+    const metricKey = /TIRI IN PORTA/.test(market.marketName) ? "shotsOnTarget" : "shots";
+    const metricLabel = metricKey === "shotsOnTarget" ? "tiri in porta" : "tiri";
+    const per90 = Number(player?.previousSeason?.totals?.per90?.[metricKey]);
+    const minutes = Number(player?.previousSeason?.totals?.minutes);
+    const threshold = Number(market.threshold);
+    const coherent = pick.selection === "OVER" && Number.isFinite(per90) && per90 > threshold && minutes >= 700;
+    return {
+      coherent,
+      modelProbabilityPct: null,
+      evidenceLabel: `Titolare previsto · ${String(round(per90, 2)).replace(".", ",")} ${metricLabel}/90 · ${minutes} min`
+    };
+  }
   if (market.marketName === "ENTRAMBE LE SQUADRE ALMENO X TIRI IN PORTA") {
     const threshold = Number(market.variantName.match(/ALMENO ([0-9]+(?:\.[0-9]+)?)/)?.[1]);
     const central = prediction.teamProjections?.map(team => Number(team.shotsOnTarget?.central)) || [];
@@ -57,6 +80,8 @@ function pickAnalysis(pick, market, prediction) {
 function marketFamily(marketName) {
   if (/1X2|DOPPIA CHANCE/.test(marketName)) return "Esito";
   if (/MARCATORE/.test(marketName)) return "Marcatori";
+  if (/TIRI IN PORTA GIOCATORE/.test(marketName)) return "Tiri in porta giocatore";
+  if (/TIRI TOTALI GIOCATORE/.test(marketName)) return "Tiri giocatore";
   if (/TIRI IN PORTA/.test(marketName)) return "Tiri in porta";
   if (/TIRI TOTALI/.test(marketName)) return "Tiri totali";
   return marketName;
@@ -87,6 +112,7 @@ function resolvePick(pick) {
     startsAt: event.startsAt,
     market: market.marketName,
     marketFamily: marketFamily(market.marketName),
+    player: pick.player || null,
     selection: pick.selection,
     label: pick.label || selectionLabel(event, pick.selection),
     odds: selection.odds,
@@ -139,7 +165,7 @@ const output = {
   sourceUrl: odds.sourceUrl,
   oddsRetrievedAt: odds.retrievedAt,
   modelVersion: predictions.engine?.version || predictions.predictions[0]?.engineVersion || null,
-  methodology: "Ogni schedina usa almeno tre famiglie di mercato e nessuna selezione Sisal viene ripetuta in un'altra proposta. Il motore valida gli esiti sul verdetto, i marcatori solo per squadre previste a segno, tiri e tiri in porta sui volumi centrali. La dicitura sostituto incluso compare esclusivamente sui mercati marcatori Sisal che la prevedono. Probabilità, quota equa ed EV restano a N/D quando manca una probabilità calibrata per una soglia. La quota Sisal non modifica il pronostico.",
+  methodology: "Ogni schedina usa almeno tre famiglie di mercato e nessuna selezione Sisal viene ripetuta in un'altra proposta. Il motore valida gli esiti sul verdetto, i marcatori solo per squadre previste a segno e i tiri individuali su probabile formazione, minutaggio e frequenza storica per 90 minuti del giocatore. Tiri e tiri in porta non sono mai riferiti alla squadra o all'intera partita. La dicitura sostituto incluso compare soltanto quando fa parte del mercato Sisal selezionato; non viene applicata ai falli. Probabilità, quota equa ed EV restano a N/D quando manca una probabilità calibrata per una soglia. La quota Sisal non modifica il pronostico.",
   slips
 };
 
