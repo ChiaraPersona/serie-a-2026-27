@@ -16,12 +16,17 @@ body[data-page="betting"] main>.hero .eyebrow{color:var(--betting-gold)}
 .betting-slip::before{content:"";position:absolute;right:-55px;top:-55px;width:145px;height:145px;border-radius:50%;background:radial-gradient(circle,rgba(98,239,255,.34),transparent 67%);filter:blur(2px)}
 .betting-slip--bagliore{margin-top:24px}
 .betting-slip--supernova{border-color:rgba(190,133,13,.3);background:radial-gradient(circle at 90% 7%,rgba(255,215,107,.2),transparent 13rem),linear-gradient(155deg,#fffdf7,#eef7ff)}
+.betting-slip--prisma,.betting-slip--quasar{margin-top:24px}
+.betting-slip--prisma{grid-column:1/2;border-color:rgba(91,96,214,.24);background:radial-gradient(circle at 91% 7%,rgba(159,139,255,.19),transparent 13rem),linear-gradient(155deg,#fdfcff,#eef8ff)}
+.betting-slip--quasar{grid-column:2/3;border-color:rgba(217,71,143,.22);background:radial-gradient(circle at 91% 7%,rgba(255,112,190,.18),transparent 13rem),linear-gradient(155deg,#fffafd,#eef8ff)}
 .betting-slip:hover{transform:translateY(-5px);box-shadow:inset 0 1px #fff,0 24px 48px rgba(26,61,102,.16)}
 .betting-slip>header{position:relative;display:flex;justify-content:space-between;gap:16px;align-items:flex-start}
 .betting-slip>header p{margin:0;color:#1b65bb;font-size:10px;font-weight:900;letter-spacing:.14em;text-transform:uppercase}
 .betting-slip h2{margin:3px 0 0;font-size:30px;letter-spacing:-.045em}
 .betting-slip-index{color:rgba(22,72,126,.14);font-family:"Anton",sans-serif;font-size:48px;line-height:.8}
 .betting-slip-copy{min-height:58px;margin:16px 0;color:var(--muted);font-size:13px;line-height:1.55}
+.betting-family-list{display:flex;flex-wrap:wrap;gap:5px;margin:-3px 0 14px}
+.betting-family-list span{padding:5px 8px;border:1px solid rgba(28,109,255,.12);border-radius:999px;background:rgba(255,255,255,.62);color:#17528e;font-size:9px;font-weight:850;letter-spacing:.04em;text-transform:uppercase}
 .betting-quote{display:grid;grid-template-columns:1fr auto;align-items:end;padding:17px 18px;border:1px solid rgba(255,255,255,.16);border-radius:19px;background:linear-gradient(135deg,#092448,#0e4f84);color:#fff;box-shadow:0 13px 28px rgba(10,46,91,.22)}
 .betting-quote span{align-self:start;color:#bfe4ff;font-size:10px;font-weight:850;letter-spacing:.12em;text-transform:uppercase}
 .betting-quote strong{grid-row:1/3;grid-column:2;font-size:39px;line-height:.9;letter-spacing:-.04em;text-shadow:0 0 17px rgba(98,239,255,.58)}
@@ -44,6 +49,6 @@ body[data-page="betting"] main>.hero .eyebrow{color:var(--betting-gold)}
 .betting-method a{color:#185da7;font-weight:800}
 @keyframes betting-hero-shine{to{transform:rotate(1turn)}}
 @keyframes betting-nav-shine{0%,60%,100%{transform:translateX(-130%)}78%{transform:translateX(130%)}}
-@media(max-width:1040px){.betting-slip-grid{grid-template-columns:1fr 1fr}.betting-slip--supernova{grid-column:1/-1}.betting-slip--bagliore{margin-top:0}}
-@media(max-width:680px){body[data-page="betting"] main>.hero{padding:30px 22px}body[data-page="betting"] main>.hero::after{right:2%;opacity:.23}.betting-intro,.betting-slip-grid{grid-template-columns:1fr}.betting-slip--supernova{grid-column:auto}.betting-stage{padding:20px 14px;border-radius:24px}.betting-slip{padding:18px;border-radius:22px}.betting-slip-copy{min-height:0}.betting-method{grid-template-columns:1fr}.betting-method strong{grid-row:auto}.betting-slip li{grid-template-columns:22px minmax(0,1fr) auto}.betting-slip li strong{white-space:normal}.betting-slip dl{grid-template-columns:1fr 1fr}.betting-slip dl>div:last-child{grid-column:1/-1}}
+@media(max-width:1040px){.betting-slip-grid{grid-template-columns:1fr 1fr}.betting-slip--supernova{grid-column:1/-1}.betting-slip--bagliore,.betting-slip--prisma,.betting-slip--quasar{margin-top:0}.betting-slip--prisma,.betting-slip--quasar{grid-column:auto}}
+@media(max-width:680px){body[data-page="betting"] main>.hero{padding:30px 22px}body[data-page="betting"] main>.hero::after{right:2%;opacity:.23}.betting-intro,.betting-slip-grid{grid-template-columns:1fr}.betting-slip--supernova{grid-column:auto}.betting-stage{padding:20px 14px;border-radius:24px}.betting-slip{padding:18px;border-radius:22px}.betting-slip-copy{min-height:0}.betting-family-list{margin-top:0}.betting-method{grid-template-columns:1fr}.betting-method strong{grid-row:auto}.betting-slip li{grid-template-columns:22px minmax(0,1fr) auto}.betting-slip li strong{white-space:normal}.betting-slip dl{grid-template-columns:1fr 1fr}.betting-slip dl>div:last-child{grid-column:1/-1}}
 @media(prefers-reduced-motion:reduce){body[data-page="betting"] main>.hero::before,.page-link[data-page-link="betting"]::after{animation:none}.betting-slip{transition:none}}

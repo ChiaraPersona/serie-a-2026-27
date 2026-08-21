@@ -3,53 +3,85 @@
   "competition": "serie-a",
   "season": "2026-27",
   "matchday": 1,
-  "title": "Tre schedine, tre intensità",
-  "description": "Le selezioni seguono i risultati pronosticati dal modello. Nei match più equilibrati la doppia chance protegge il segno previsto, senza introdurre esiti contrari per gonfiare la quota.",
+  "title": "Cinque schedine, cinque intensità",
+  "description": "Ogni schedina combina mercati differenti e non riutilizza la stessa selezione Sisal presente nelle altre. Esiti, gol e volumi restano coerenti con il pronostico del modello.",
   "slips": [
     {
       "id": "scintilla",
       "eyebrow": "Quota contenuta",
       "name": "Scintilla",
-      "description": "Sei scelte: tre favorite nette e tre doppie chance coerenti con il pronostico.",
+      "description": "Sei gare, cinque letture diverse: esito, gol squadra, No Goal, tiri e tiri in porta.",
       "picks": [
         { "matchId": "inter-monza-2026-27-md-01", "market": "1X2 ESITO FINALE", "selection": "1" },
-        { "matchId": "frosinone-juventus-2026-27-md-01", "market": "1X2 ESITO FINALE", "selection": "2" },
-        { "matchId": "roma-fiorentina-2026-27-md-01", "market": "1X2 ESITO FINALE", "selection": "1" },
-        { "matchId": "atalanta-sassuolo-2026-27-md-01", "market": "DOPPIA CHANCE", "selection": "1X" },
-        { "matchId": "genoa-napoli-2026-27-md-01", "market": "DOPPIA CHANCE", "selection": "X2" },
-        { "matchId": "torino-milan-2026-27-md-01", "market": "DOPPIA CHANCE", "selection": "X2" }
+        { "matchId": "frosinone-juventus-2026-27-md-01", "market": "OSPITE: SEGNA GOAL", "variant": "SEGNA GOAL SQUADRA OSPITE", "selection": "SI", "label": "Juventus segna almeno un gol" },
+        { "matchId": "roma-fiorentina-2026-27-md-01", "market": "GOAL/NOGOAL", "variant": "GOAL/NO GOAL", "selection": "NOGOAL", "label": "Almeno una squadra non segna" },
+        { "matchId": "atalanta-sassuolo-2026-27-md-01", "market": "U/O TIRI TOTALI", "variant": "U/O 23.5 TIRI TOTALI", "selection": "OVER", "label": "Partita: almeno 24 tiri totali" },
+        { "matchId": "genoa-napoli-2026-27-md-01", "market": "U/O TIRI IN PORTA SQUADRA X", "variant": "SQUADRA 2: U/O 3.5 TIRI IN PORTA", "selection": "OVER", "label": "Napoli: almeno 4 tiri in porta" },
+        { "matchId": "torino-milan-2026-27-md-01", "market": "OSPITE: SEGNA GOAL", "variant": "SEGNA GOAL SQUADRA OSPITE", "selection": "SI", "label": "Milan segna almeno un gol" }
       ]
     },
     {
       "id": "bagliore",
       "eyebrow": "Quota intermedia",
       "name": "Bagliore",
-      "description": "Sei segni 1X2 secchi sulle squadre con la prevalenza più leggibile.",
+      "description": "Sei partite lette attraverso reti e produzione offensiva, senza ripetere una scelta di Scintilla.",
       "picks": [
-        { "matchId": "inter-monza-2026-27-md-01", "market": "1X2 ESITO FINALE", "selection": "1" },
-        { "matchId": "frosinone-juventus-2026-27-md-01", "market": "1X2 ESITO FINALE", "selection": "2" },
-        { "matchId": "roma-fiorentina-2026-27-md-01", "market": "1X2 ESITO FINALE", "selection": "1" },
-        { "matchId": "atalanta-sassuolo-2026-27-md-01", "market": "1X2 ESITO FINALE", "selection": "1" },
-        { "matchId": "genoa-napoli-2026-27-md-01", "market": "1X2 ESITO FINALE", "selection": "2" },
-        { "matchId": "torino-milan-2026-27-md-01", "market": "1X2 ESITO FINALE", "selection": "2" }
+        { "matchId": "inter-monza-2026-27-md-01", "market": "U/O TIRI IN PORTA", "variant": "U/O 8.5 TIRI IN PORTA", "selection": "OVER", "label": "Partita: almeno 9 tiri in porta" },
+        { "matchId": "frosinone-juventus-2026-27-md-01", "market": "U/O TIRI TOTALI", "variant": "U/O 23.5 TIRI TOTALI", "selection": "OVER", "label": "Partita: almeno 24 tiri totali" },
+        { "matchId": "bologna-lazio-2026-27-md-01", "market": "CASA: SEGNA GOAL", "variant": "SEGNA GOAL SQUADRA CASA", "selection": "SI", "label": "Bologna segna almeno un gol" },
+        { "matchId": "parma-cagliari-2026-27-md-01", "market": "GOAL/NOGOAL", "variant": "GOAL/NO GOAL", "selection": "NOGOAL", "label": "Almeno una squadra non segna" },
+        { "matchId": "venezia-lecce-2026-27-md-01", "market": "U/O TIRI TOTALI", "variant": "U/O 19.5 TIRI TOTALI", "selection": "OVER", "label": "Partita: almeno 20 tiri totali" },
+        { "matchId": "udinese-como-2026-27-md-01", "market": "OSPITE: SEGNA GOAL", "variant": "SEGNA GOAL SQUADRA OSPITE", "selection": "SI", "label": "Como segna almeno un gol" }
       ]
     },
     {
       "id": "supernova",
       "eyebrow": "Tutta la 1ª giornata",
       "name": "Supernova",
-      "description": "Tutte le dieci partite: sette segni netti e tre doppie chance sui confronti più aperti.",
+      "description": "Tutte le dieci partite, distribuite tra gol, tiri e tiri in porta con una selezione differente dalle altre schedine.",
       "picks": [
-        { "matchId": "inter-monza-2026-27-md-01", "market": "1X2 ESITO FINALE", "selection": "1" },
-        { "matchId": "frosinone-juventus-2026-27-md-01", "market": "1X2 ESITO FINALE", "selection": "2" },
-        { "matchId": "roma-fiorentina-2026-27-md-01", "market": "1X2 ESITO FINALE", "selection": "1" },
-        { "matchId": "atalanta-sassuolo-2026-27-md-01", "market": "1X2 ESITO FINALE", "selection": "1" },
-        { "matchId": "genoa-napoli-2026-27-md-01", "market": "1X2 ESITO FINALE", "selection": "2" },
-        { "matchId": "torino-milan-2026-27-md-01", "market": "1X2 ESITO FINALE", "selection": "2" },
-        { "matchId": "udinese-como-2026-27-md-01", "market": "1X2 ESITO FINALE", "selection": "2" },
-        { "matchId": "parma-cagliari-2026-27-md-01", "market": "DOPPIA CHANCE", "selection": "1X" },
-        { "matchId": "venezia-lecce-2026-27-md-01", "market": "DOPPIA CHANCE", "selection": "1X" },
-        { "matchId": "bologna-lazio-2026-27-md-01", "market": "DOPPIA CHANCE", "selection": "1X" }
+        { "matchId": "inter-monza-2026-27-md-01", "market": "U/O TIRI TOTALI", "variant": "U/O 24.5 TIRI TOTALI", "selection": "OVER", "label": "Partita: almeno 25 tiri totali" },
+        { "matchId": "frosinone-juventus-2026-27-md-01", "market": "U/O TIRI IN PORTA", "variant": "U/O 7.5 TIRI IN PORTA", "selection": "OVER", "label": "Partita: almeno 8 tiri in porta" },
+        { "matchId": "roma-fiorentina-2026-27-md-01", "market": "CASA: SEGNA GOAL", "variant": "SEGNA GOAL SQUADRA CASA", "selection": "SI", "label": "Roma segna almeno un gol" },
+        { "matchId": "atalanta-sassuolo-2026-27-md-01", "market": "U/O TIRI IN PORTA SQUADRA X", "variant": "SQUADRA 1: U/O 4.5 TIRI IN PORTA", "selection": "OVER", "label": "Atalanta: almeno 5 tiri in porta" },
+        { "matchId": "genoa-napoli-2026-27-md-01", "market": "U/O TIRI TOTALI SQUADRA X", "variant": "SQUADRA 2: U/O 9.5 TIRI TOTALI", "selection": "OVER", "label": "Napoli: almeno 10 tiri totali" },
+        { "matchId": "torino-milan-2026-27-md-01", "market": "GOAL/NOGOAL", "variant": "GOAL/NO GOAL", "selection": "GOAL", "label": "Entrambe le squadre segnano" },
+        { "matchId": "udinese-como-2026-27-md-01", "market": "GOAL/NOGOAL", "variant": "GOAL/NO GOAL", "selection": "NOGOAL", "label": "Almeno una squadra non segna" },
+        { "matchId": "parma-cagliari-2026-27-md-01", "market": "CASA: SEGNA GOAL", "variant": "SEGNA GOAL SQUADRA CASA", "selection": "SI", "label": "Parma segna almeno un gol" },
+        { "matchId": "venezia-lecce-2026-27-md-01", "market": "GOAL/NOGOAL", "variant": "GOAL/NO GOAL", "selection": "NOGOAL", "label": "Almeno una squadra non segna" },
+        { "matchId": "bologna-lazio-2026-27-md-01", "market": "GOAL/NOGOAL", "variant": "GOAL/NO GOAL", "selection": "NOGOAL", "label": "Almeno una squadra non segna" }
+      ]
+    },
+    {
+      "id": "prisma",
+      "eyebrow": "Gol · tiri · tiri in porta",
+      "name": "Prisma",
+      "description": "Otto partite e tre famiglie di mercato, con soglie vicine ai volumi centrali del modello.",
+      "picks": [
+        { "matchId": "torino-milan-2026-27-md-01", "market": "U/O TIRI TOTALI", "variant": "U/O 21.5 TIRI TOTALI", "selection": "OVER", "label": "Partita: almeno 22 tiri totali" },
+        { "matchId": "parma-cagliari-2026-27-md-01", "market": "U/O TIRI IN PORTA", "variant": "U/O 6.5 TIRI IN PORTA", "selection": "OVER", "label": "Partita: almeno 7 tiri in porta" },
+        { "matchId": "atalanta-sassuolo-2026-27-md-01", "market": "GOAL/NOGOAL", "variant": "GOAL/NO GOAL", "selection": "NOGOAL", "label": "Almeno una squadra non segna" },
+        { "matchId": "inter-monza-2026-27-md-01", "market": "OSPITE: SEGNA GOAL", "variant": "SEGNA GOAL SQUADRA OSPITE", "selection": "NO", "label": "Monza non segna" },
+        { "matchId": "genoa-napoli-2026-27-md-01", "market": "U/O TIRI IN PORTA", "variant": "U/O 5.5 TIRI IN PORTA", "selection": "OVER", "label": "Partita: almeno 6 tiri in porta" },
+        { "matchId": "udinese-como-2026-27-md-01", "market": "U/O TIRI TOTALI", "variant": "U/O 19.5 TIRI TOTALI", "selection": "OVER", "label": "Partita: almeno 20 tiri totali" },
+        { "matchId": "venezia-lecce-2026-27-md-01", "market": "U/O TIRI IN PORTA SQUADRA X", "variant": "SQUADRA 1: U/O 2.5 TIRI IN PORTA", "selection": "OVER", "label": "Venezia: almeno 3 tiri in porta" },
+        { "matchId": "bologna-lazio-2026-27-md-01", "market": "1X2 ESITO FINALE", "selection": "1" }
+      ]
+    },
+    {
+      "id": "quasar",
+      "eyebrow": "Mix ad alta intensità",
+      "name": "Quasar",
+      "description": "Otto selezioni più spinte su reti e produzione offensiva, senza contraddire i risultati previsti.",
+      "picks": [
+        { "matchId": "atalanta-sassuolo-2026-27-md-01", "market": "U/O TIRI IN PORTA", "variant": "U/O 7.5 TIRI IN PORTA", "selection": "OVER", "label": "Partita: almeno 8 tiri in porta" },
+        { "matchId": "frosinone-juventus-2026-27-md-01", "market": "U/O TIRI TOTALI", "variant": "U/O 22.5 TIRI TOTALI", "selection": "OVER", "label": "Partita: almeno 23 tiri totali" },
+        { "matchId": "inter-monza-2026-27-md-01", "market": "U/O TIRI TOTALI SQUADRA X", "variant": "SQUADRA 2: U/O 6.5 TIRI TOTALI", "selection": "OVER", "label": "Monza: almeno 7 tiri totali" },
+        { "matchId": "parma-cagliari-2026-27-md-01", "market": "U/O TIRI TOTALI SQUADRA X", "variant": "SQUADRA 2: U/O 9.5 TIRI TOTALI", "selection": "OVER", "label": "Cagliari: almeno 10 tiri totali" },
+        { "matchId": "genoa-napoli-2026-27-md-01", "market": "ENTRAMBE LE SQUADRE ALMENO X TIRI IN PORTA", "variant": "ENTRAMBE LE SQUADRE ALMENO 3 TIRI IN PORTA", "selection": "SI", "label": "Entrambe: almeno 3 tiri in porta" },
+        { "matchId": "udinese-como-2026-27-md-01", "market": "U/O TIRI IN PORTA", "variant": "U/O 7.5 TIRI IN PORTA", "selection": "OVER", "label": "Partita: almeno 8 tiri in porta" },
+        { "matchId": "venezia-lecce-2026-27-md-01", "market": "U/O TIRI TOTALI SQUADRA X", "variant": "SQUADRA 1: U/O 9.5 TIRI TOTALI", "selection": "OVER", "label": "Venezia: almeno 10 tiri totali" },
+        { "matchId": "roma-fiorentina-2026-27-md-01", "market": "1X2 ESITO FINALE", "selection": "1" }
       ]
     }
   ]
