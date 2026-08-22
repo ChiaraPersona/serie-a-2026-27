@@ -106,7 +106,14 @@ const targetMatches = matches
   .filter(match => match.competition === "serie-a" && match.season === "2026-27" && oddsByMatch.has(match.id))
   .sort((a, b) => a.matchday - b.matchday || a.id.localeCompare(b.id));
 
+const teamForMatch = (team, match) => team?.probableLineup?.status === "official" && team.probableLineup.matchId !== match.id
+  ? { ...team, probableLineup: team.projectedLineup || null }
+  : team;
+
 const predictions = targetMatches.map(match => {
+  const homeTeam = teamForMatch(teamById.get(match.homeTeam), match);
+  const awayTeam = teamForMatch(teamById.get(match.awayTeam), match);
+  const predictionGeneratedAt = [generatedAt, homeTeam?.probableLineup?.source?.retrievedAt, awayTeam?.probableLineup?.source?.retrievedAt].filter(Boolean).sort().at(-1);
   const prediction = predictMatch({
     match,
     reading: readingByMatch.get(match.id),
@@ -126,8 +133,8 @@ const predictions = targetMatches.map(match => {
     homeObjective: objectiveByTeam.get(match.homeTeam),
     awayObjective: objectiveByTeam.get(match.awayTeam),
     headToHead: headToHeadByMatch.get(match.id),
-    homeTeam: teamById.get(match.homeTeam),
-    awayTeam: teamById.get(match.awayTeam),
+    homeTeam,
+    awayTeam,
     homeSquad: squadsByTeam.get(match.homeTeam),
     awaySquad: squadsByTeam.get(match.awayTeam),
     mvpHistory: mvpHistoryByPlayer,
@@ -140,7 +147,7 @@ const predictions = targetMatches.map(match => {
     myComboConfig: myComboSource.matches[match.id]
       ? { constraints: myComboSource.constraints, portfolios: myComboSource.matches[match.id] }
       : null,
-    generatedAt
+    generatedAt: predictionGeneratedAt
   });
   const validation = backtest?.headToHead?.outOfSample?.selected;
   const withoutHeadToHead = backtest?.headToHead?.outOfSample?.withoutHeadToHead;

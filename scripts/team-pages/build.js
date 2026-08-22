@@ -14,11 +14,20 @@ const teams = read("data/normalized/teams.json");
 const teamDetails = read("data/sources/team-pages/team-details-2026-27.json");
 const probableLineups = read("data/sources/probable-lineups-md1-2026-27.json");
 const probableLineupByTeam = new Map(probableLineups.teams.map(team => [team.teamId, team]));
+const officialLineupsFile = path.join(root, "data/sources/official-lineups-2026-27.json");
+const officialLineups = fs.existsSync(officialLineupsFile) ? JSON.parse(fs.readFileSync(officialLineupsFile, "utf8")) : { fixtures: [] };
+const officialLineupByTeam = new Map(officialLineups.fixtures.flatMap(fixture => fixture.teams.map(team => [team.teamId, { ...team, matchId: fixture.matchId, fixtureLabel: fixture.label || fixture.teams.map(item => item.team).join(" - "), matchday: fixture.matchday, date: fixture.date, kickoff: fixture.kickoff }])));
 const probableLineupSource = {
   provider: probableLineups.provider,
   scope: `Probabili formazioni della ${probableLineups.matchday}ª giornata`,
   url: probableLineups.sourceUrl,
   retrievedAt: String(probableLineups.importedAt).slice(0, 10)
+};
+const officialLineupSource = {
+  provider: officialLineups.provider || "Fonte ufficiale",
+  scope: "Formazioni ufficiali della 1ª giornata",
+  url: officialLineups.sourceUrl || null,
+  retrievedAt: officialLineups.retrievedAt || null
 };
 const marketValuesFile = path.join(root, "data/sources/team-pages/transfermarkt-market-values-2026-27.json");
 const marketValues = fs.existsSync(marketValuesFile) ? JSON.parse(fs.readFileSync(marketValuesFile, "utf8")) : { players: [], retrievedAt: null };
@@ -26,7 +35,7 @@ const marketValueByPlayer = new Map(marketValues.players.map(player => [`${playe
 const playerDetailsFile = path.join(root, "data/sources/team-pages/transfermarkt-player-details-2026-27.json");
 const playerDetails = fs.existsSync(playerDetailsFile) ? JSON.parse(fs.readFileSync(playerDetailsFile, "utf8")) : { players: [], retrievedAt: null };
 const playerDetailsByPlayer = new Map(playerDetails.players.map(player => [`${player.teamId}:${player.playerId}`, player]));
-const today = ["2026-08-03", marketValues.retrievedAt, playerDetails.retrievedAt, probableLineupSource.retrievedAt].filter(Boolean).sort().at(-1);
+const today = ["2026-08-03", marketValues.retrievedAt, playerDetails.retrievedAt, probableLineupSource.retrievedAt, officialLineupSource.retrievedAt].filter(Boolean).sort().at(-1);
 const wikimediaPhotosFile = path.join(root, "data/sources/team-pages/wikimedia-player-photos.json");
 const wikimediaPhotos = fs.existsSync(wikimediaPhotosFile) ? JSON.parse(fs.readFileSync(wikimediaPhotosFile, "utf8")) : { entries: [], retrievedAt: null };
 const wikimediaPhotoByPlayer = new Map(wikimediaPhotos.entries.map(photo => [`${photo.teamId}:${photo.playerId}`, photo]));
@@ -102,8 +111,12 @@ function matchStats(teamId, competition) {
 
 function buildTeam(team) {
   const details = teamDetails.teams[team.id];
-  const lineup = probableLineupByTeam.get(team.id);
-  const starters = lineup?.players?.filter(player => player.lineupStatus === "starter") || [];
+  const projectedLineup = probableLineupByTeam.get(team.id);
+  const projectedStarters = projectedLineup?.players?.filter(player => player.lineupStatus === "starter") || [];
+  const officialLineup = officialLineupByTeam.get(team.id);
+  const lineup = officialLineup || projectedLineup;
+  const starters = officialLineup ? officialLineup.players : projectedStarters;
+  const lineupSource = officialLineup ? { ...officialLineupSource, scope: `Formazioni ufficiali ${officialLineup.fixtureLabel}, ${officialLineup.matchday}ª giornata` } : probableLineupSource;
   if (!details?.city || !details?.stadium || !details?.coach || !details?.preferredFormation) throw new Error(`${team.name}: anagrafica 2026/27 incompleta`);
   if (!lineup || !/^[1-9](?:-[1-9]){2,4}$/.test(lineup.formation) || starters.length !== 11) throw new Error(`${team.name}: probabile formazione editoriale incompleta`);
   const previousCompetition = aRows.some(row => row.team === team.id) ? "serie-a" : "serie-b";
@@ -186,7 +199,7 @@ function buildTeam(team) {
     ...(marketValues.retrievedAt ? [{ provider: "Transfermarkt", scope: `Valori di mercato individuali 2026/27 (${squad.filter(player => player.marketValue).length}/${squad.length})`, url: marketValues.sourceUrl, retrievedAt: marketValues.retrievedAt }] : []),
     ...(wikimediaPhotos.retrievedAt ? [{ provider: "Wikimedia Commons", scope: `Foto locali con attribuzione (${squad.filter(player => player.photoAttribution).length}/${squad.length})`, url: wikimediaPhotos.sourceUrl, retrievedAt: wikimediaPhotos.retrievedAt }] : []),
     ...teamDetails.sources.filter(source => source.provider !== "Calciomercato.com"),
-    probableLineupSource
+    lineupSource
   ];
   return {
     schemaVersion: 1, id: team.id, name: team.name, officialName: team.officialName, shortName: team.shortName,
@@ -194,11 +207,22 @@ function buildTeam(team) {
     probableLineup: {
       formation: lineup.formation,
       players: starters.map(player => player.currentName || player.sourceName),
+      context: officialLineup ? `Formazione ufficiale della ${officialLineup.matchday}ª giornata · ${officialLineup.fixtureLabel}` : `Proiezione della ${probableLineups.matchday}ª giornata`,
+      status: officialLineup ? "official" : "probable",
+      matchId: officialLineup?.matchId || null,
+      fixtureLabel: officialLineup?.fixtureLabel || null,
+      shirtNumbers: officialLineup ? starters.map(player => player.shirtNumber) : null,
+      updatedAt: officialLineup ? officialLineupSource.retrievedAt : lineup.updatedAt,
+      source: lineupSource
+    },
+    ...(officialLineup ? { projectedLineup: {
+      formation: projectedLineup.formation,
+      players: projectedStarters.map(player => player.currentName || player.sourceName),
       context: `Proiezione della ${probableLineups.matchday}ª giornata`,
       status: "probable",
-      updatedAt: lineup.updatedAt,
+      updatedAt: projectedLineup.updatedAt,
       source: probableLineupSource
-    },
+    } } : {}),
     previousSeason: { season: "2025/26", competition: competitionName, competitionId: previousCompetition, promoted: previousCompetition === "serie-b", position: row?.position ?? null, points: row?.points ?? null },
     europeanCompetitions: [], lastUpdated: teamLastUpdated,
     teamStats: { season: "2025/26", competition: competitionName, source: "ESPN", lastUpdated: "2026-07-18", results, attack: nullObject(STAT_FIELDS.attack), defence: { ...nullObject(STAT_FIELDS.defence), goalsAgainstPerGame: rate(row?.goalsAgainst, played), cleanSheets: results.cleanSheets }, discipline, possession: nullObject(STAT_FIELDS.possession), homeAway: { home: matchData.home, away: matchData.away } },
@@ -212,7 +236,7 @@ function buildTeam(team) {
 const builtTeams = teams.map(buildTeam);
 const index = { schemaVersion: 1, season: "2026/27", previousSeason: "2025/26", generatedAt: today, teams: builtTeams.map(team => {
   const normalizedTeam = teams.find(item => item.id === team.id);
-  return { id: team.id, name: team.name, officialName: team.officialName, shortName: team.shortName, logo: team.logo, monochromeLogo: team.monochromeLogo, colors: normalizedTeam.colors, city: team.city, stadium: team.stadium, coach: team.coach, preferredFormation: team.preferredFormation, probableLineup: team.probableLineup, previousSeason: team.previousSeason, playerCount: team.squad.length, lastUpdated: team.lastUpdated };
+  return { id: team.id, name: team.name, officialName: team.officialName, shortName: team.shortName, logo: team.logo, monochromeLogo: team.monochromeLogo, colors: normalizedTeam.colors, city: team.city, stadium: team.stadium, coach: team.coach, preferredFormation: team.preferredFormation, probableLineup: team.probableLineup, ...(team.projectedLineup ? { projectedLineup: team.projectedLineup } : {}), previousSeason: team.previousSeason, playerCount: team.squad.length, lastUpdated: team.lastUpdated };
 }) };
 for (const team of builtTeams) write(`data/teams/${team.id}.json`, team);
 write("data/teams/index.json", index);
@@ -258,6 +282,6 @@ const rankings = Object.fromEntries(leaderboardMetrics.map(metric => {
   return [metric.id, { ...metric, availablePlayers: players.length, players: players.slice(0, 15).map(({ tieValue, ...player }) => player) }];
 }));
 write("data/teams/player-leaderboards.json", { schemaVersion: 1, currentSeason: "2026/27", statisticsSeason: "2025/26", generatedAt: today, rankings });
-write("data/schemas/team.schema.json", { $schema: "https://json-schema.org/draft/2020-12/schema", title: "Serie A team", type: "object", required: ["id", "currentSeason", "city", "stadium", "coach", "preferredFormation", "probableLineup", "previousSeason", "teamStats", "squad", "sources", "lastUpdated"], properties: { city: { type: "string", minLength: 1 }, stadium: { type: "string", minLength: 1 }, coach: { type: "string", minLength: 1 }, preferredFormation: { type: "string", pattern: "^[1-9](?:-[1-9]){2,4}$" }, probableLineup: { type: "object", required: ["formation", "players", "context", "status", "source"], properties: { formation: { type: "string", pattern: "^[1-9](?:-[1-9]){2,4}$" }, players: { type: "array", minItems: 11, maxItems: 11, items: { type: "string", minLength: 1 } }, status: { const: "probable" } } }, squad: { type: "array", items: { $ref: "player.schema.json" } } } });
+write("data/schemas/team.schema.json", { $schema: "https://json-schema.org/draft/2020-12/schema", title: "Serie A team", type: "object", required: ["id", "currentSeason", "city", "stadium", "coach", "preferredFormation", "probableLineup", "previousSeason", "teamStats", "squad", "sources", "lastUpdated"], properties: { city: { type: "string", minLength: 1 }, stadium: { type: "string", minLength: 1 }, coach: { type: "string", minLength: 1 }, preferredFormation: { type: "string", pattern: "^[1-9](?:-[1-9]){2,4}$" }, probableLineup: { type: "object", required: ["formation", "players", "context", "status", "source"], properties: { formation: { type: "string", pattern: "^[1-9](?:-[1-9]){2,4}$" }, players: { type: "array", minItems: 11, maxItems: 11, items: { type: "string", minLength: 1 } }, status: { enum: ["probable", "official"] } } }, squad: { type: "array", items: { $ref: "player.schema.json" } } } });
 write("data/schemas/player.schema.json", { $schema: "https://json-schema.org/draft/2020-12/schema", title: "Serie A player", type: "object", required: ["id", "name", "currentTeam", "currentSeason", "role", "detailedRole", "status", "marketValue", "previousSeason", "sources", "dataQuality"], properties: { detailedRole: { type: "string", minLength: 1 }, status: { enum: ["confermato", "nuovo acquisto", "prestito", "rientro dal prestito", "primavera", "da verificare"] }, marketValue: { anyOf: [{ type: "null" }, { type: "object", required: ["amountEur", "currency", "provider", "retrievedAt", "sourceUrl"] }] }, photoAttribution: { anyOf: [{ type: "null" }, { type: "object", required: ["provider", "pageUrl", "artist", "license"] }] }, previousSeason: { type: "object", required: ["season", "entries", "totals", "totalsByCompetition"] } } });
 console.log(`Generati dati per ${teams.length} club (${index.teams.filter(team => team.previousSeason.promoted).length} da Serie B).`);

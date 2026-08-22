@@ -1133,6 +1133,7 @@ function predictMatch(input) {
   const crossCompetition = input.homeProfile?.competition !== "Serie A" || input.awayProfile?.competition !== "Serie A";
   const completedSections = Object.values(input.reading?.sections || {}).filter(section => section?.content).length;
   const lineupsComplete = input.homeTeam?.probableLineup?.players?.length === 11 && input.awayTeam?.probableLineup?.players?.length === 11;
+  const lineupsOfficial = input.homeTeam?.probableLineup?.status === "official" && input.awayTeam?.probableLineup?.status === "official";
   const dataCompleteness = clamp(0.52 + completedSections * 0.035 + (lineupsComplete ? 0.12 : 0) - (crossCompetition ? 0.08 : 0), 0.45, 0.86);
   const surprise = surpriseFactor({ final, market: market.probabilities, historical: parts.historical, dataCompleteness, crossCompetition });
   const confidenceResult = confidence(final, surprise, dataCompleteness);
@@ -1201,7 +1202,7 @@ function predictMatch(input) {
       completenessPct: Math.round(dataCompleteness * 100),
       crossCompetitionBaseline: crossCompetition,
       updatedAt: String(input.generatedAt || "").slice(0, 10),
-      probableLineups: lineupsComplete ? "20/20 titolari proiettati; fonte editoriale da riconfermare" : "N/D",
+      probableLineups: lineupsOfficial ? "22/22 titolari ufficiali confermati" : lineupsComplete ? "20/20 titolari proiettati; fonte editoriale da riconfermare" : "N/D",
       missing: [
         "forma ufficiale 2026/27",
         ...(input.reading?.sections?.availability?.content ? [] : ["indisponibili verificati"]),
