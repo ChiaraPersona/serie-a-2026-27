@@ -10,6 +10,7 @@ const scheduleUrl = "https://images.legaseriea.it/image/private/fl_attachment/pr
 const clubIndexUrl = "https://www.legaseriea.it/team/index";
 const teamColorSource = JSON.parse(fs.readFileSync(path.join(root, "data/sources/team-pages/footylogos-club-colors.json"), "utf8"));
 const refereeAssignments = JSON.parse(fs.readFileSync(path.join(root, "data/sources/referee-assignments-2026-27.json"), "utf8"));
+const matchResults = JSON.parse(fs.readFileSync(path.join(root, "data/sources/match-results-2026-27.json"), "utf8"));
 
 const teamDefinitions = [
   ["atalanta","Atalanta","Atalanta Bergamasca Calcio"],["bologna","Bologna","Bologna Football Club 1909"],
@@ -135,6 +136,39 @@ if (refereeAssignments.assignments.length !== 10 || matches.filter(match => matc
   throw new Error("Le designazioni AIA della prima giornata devono coprire tutte le 10 gare");
 }
 
+if (matchResults.competition !== "serie-a" || matchResults.season !== "2026-27" || !Array.isArray(matchResults.matches)) {
+  throw new Error("Dataset risultati Serie A non valido");
+}
+for (const result of matchResults.matches) {
+  const match = matchById.get(result.matchId);
+  if (!match) throw new Error(`Partita non riconosciuta nei risultati: ${result.matchId}`);
+  if (result.status !== "finished" || !Number.isInteger(result.score?.home) || !Number.isInteger(result.score?.away)) {
+    throw new Error(`Risultato finale non valido: ${result.matchId}`);
+  }
+  const source = matchResults.sources.find(item => item.url === result.sourceUrl);
+  if (!source) throw new Error(`Fonte risultato non dichiarata: ${result.matchId}`);
+  Object.assign(match, {
+    status: result.status,
+    score: result.score,
+    halfTimeScore: result.halfTimeScore,
+    attendance: result.attendance,
+    weatherCelsius: result.weatherCelsius,
+    formations: result.formations,
+    scorers: result.scorers,
+    bookings: result.bookings,
+    substitutions: result.substitutions,
+    teamStats: result.teamStats,
+    playerStats: result.playerStats,
+    resultSource: source
+  });
+  match.sources.push({
+    sourceUrl: source.url,
+    sourceType: source.sourceType,
+    retrievedAt: source.retrievedAt,
+    note: "Risultato finale, eventi e statistiche di squadra e calciatori."
+  });
+}
+
 fs.writeFileSync(path.join(output,"teams.json"),JSON.stringify(teams,null,2)+"\n");
 fs.writeFileSync(path.join(output,"matches.json"),JSON.stringify(matches,null,2)+"\n");
-console.log(`Importate ${teams.length} squadre e ${matches.length} partite; overlay C.U. 208: ${[...overlays.keys()].length} gare; designazioni AIA: ${refereeAssignments.assignments.length}.`);
+console.log(`Importate ${teams.length} squadre e ${matches.length} partite; overlay C.U. 208: ${[...overlays.keys()].length} gare; designazioni AIA: ${refereeAssignments.assignments.length}; risultati: ${matchResults.matches.length}.`);

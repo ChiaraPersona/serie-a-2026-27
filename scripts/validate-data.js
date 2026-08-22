@@ -8,6 +8,7 @@ const fantasyWorkbook=JSON.parse(fs.readFileSync(path.join(root,"data/sources/fa
 const marketValues=JSON.parse(fs.readFileSync(path.join(root,"data/sources/team-pages/transfermarkt-market-values-2026-27.json"),"utf8"));
 const cup=JSON.parse(fs.readFileSync(path.join(dir,"coppa-italia-2026-27.json"),"utf8"));
 const teamColorSource=JSON.parse(fs.readFileSync(path.join(root,"data/sources/team-pages/footylogos-club-colors.json"),"utf8"));
+const matchResultsSource=JSON.parse(fs.readFileSync(path.join(root,"data/sources/match-results-2026-27.json"),"utf8"));
 function assert(condition,message){if(!condition)throw new Error(message)}
 
 assert(teams.length===20,`Squadre: ${teams.length}, attese 20`);
@@ -91,6 +92,10 @@ assert(new Set(league.map(m=>m.id)).size===380,"ID partita duplicati");
 const firstMatchdayAssignments=league.filter(match=>match.matchday===1&&match.refereeAssignment);
 assert(firstMatchdayAssignments.length===10,"Designazioni arbitrali: la prima giornata deve coprire 10 gare");
 assert(firstMatchdayAssignments.every(match=>match.refereeAssignment.referee?.name&&match.refereeAssignment.referee?.slug&&match.refereeAssignment.assistants?.length===2&&match.refereeAssignment.fourthOfficial&&match.refereeAssignment.var&&match.refereeAssignment.avar),"Designazione arbitrale incompleta");
+const finishedLeagueMatches=league.filter(match=>match.status==="finished");
+assert(finishedLeagueMatches.length===matchResultsSource.matches.length,"Risultati Serie A normalizzati non sincronizzati con la fonte");
+assert(finishedLeagueMatches.every(match=>Number.isInteger(match.score?.home)&&Number.isInteger(match.score?.away)&&match.scorers?.length&&Array.isArray(match.bookings)&&Array.isArray(match.substitutions)&&match.teamStats?.home&&match.teamStats?.away&&match.playerStats?.home?.length>=11&&match.playerStats?.away?.length>=11&&match.resultSource?.url),"Risultati Serie A privi di eventi, statistiche o fonte");
+assert(matchResultsSource.matches.every(result=>{const match=finishedLeagueMatches.find(item=>item.id===result.matchId);return match&&match.score.home===result.score.home&&match.score.away===result.score.away}),"Punteggi Serie A normalizzati non sincronizzati con la fonte");
 const readingModules=["context","form","availability","tactics","referee","market","synthesis"],matchIds=new Set(matches.map(match=>match.id));
 assert(new Set(readings.map(reading=>reading.id)).size===readings.length,"ID lettura duplicati");
 assert(new Set(readings.map(reading=>reading.matchId)).size===readings.length,"Piu letture collegate alla stessa partita");
