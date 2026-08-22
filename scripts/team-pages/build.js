@@ -16,7 +16,7 @@ const probableLineups = read("data/sources/probable-lineups-md1-2026-27.json");
 const probableLineupByTeam = new Map(probableLineups.teams.map(team => [team.teamId, team]));
 const officialLineupsFile = path.join(root, "data/sources/official-lineups-2026-27.json");
 const officialLineups = fs.existsSync(officialLineupsFile) ? JSON.parse(fs.readFileSync(officialLineupsFile, "utf8")) : { fixtures: [] };
-const officialLineupByTeam = new Map(officialLineups.fixtures.flatMap(fixture => fixture.teams.map(team => [team.teamId, { ...team, matchId: fixture.matchId, fixtureLabel: fixture.label || fixture.teams.map(item => item.team).join(" - "), matchday: fixture.matchday, date: fixture.date, kickoff: fixture.kickoff }])));
+const officialLineupByTeam = new Map(officialLineups.fixtures.flatMap(fixture => fixture.teams.map(team => [team.teamId, { ...team, matchId: fixture.matchId, fixtureLabel: fixture.label || fixture.teams.map(item => item.team).join(" - "), provider: fixture.provider || officialLineups.provider, sourceUrl: fixture.sourceUrl ?? officialLineups.sourceUrl, retrievedAt: fixture.retrievedAt || officialLineups.retrievedAt, matchday: fixture.matchday, date: fixture.date, kickoff: fixture.kickoff }])));
 const probableLineupSource = {
   provider: probableLineups.provider,
   scope: `Probabili formazioni della ${probableLineups.matchday}ª giornata`,
@@ -116,7 +116,7 @@ function buildTeam(team) {
   const officialLineup = officialLineupByTeam.get(team.id);
   const lineup = officialLineup || projectedLineup;
   const starters = officialLineup ? officialLineup.players : projectedStarters;
-  const lineupSource = officialLineup ? { ...officialLineupSource, scope: `Formazioni ufficiali ${officialLineup.fixtureLabel}, ${officialLineup.matchday}ª giornata` } : probableLineupSource;
+  const lineupSource = officialLineup ? { provider: officialLineup.provider || officialLineupSource.provider, scope: `Formazioni ufficiali ${officialLineup.fixtureLabel}, ${officialLineup.matchday}ª giornata`, url: officialLineup.sourceUrl || null, retrievedAt: officialLineup.retrievedAt || officialLineupSource.retrievedAt } : probableLineupSource;
   if (!details?.city || !details?.stadium || !details?.coach || !details?.preferredFormation) throw new Error(`${team.name}: anagrafica 2026/27 incompleta`);
   if (!lineup || !/^[1-9](?:-[1-9]){2,4}$/.test(lineup.formation) || starters.length !== 11) throw new Error(`${team.name}: probabile formazione editoriale incompleta`);
   const previousCompetition = aRows.some(row => row.team === team.id) ? "serie-a" : "serie-b";
@@ -212,7 +212,9 @@ function buildTeam(team) {
       matchId: officialLineup?.matchId || null,
       fixtureLabel: officialLineup?.fixtureLabel || null,
       shirtNumbers: officialLineup ? starters.map(player => player.shirtNumber) : null,
-      updatedAt: officialLineup ? officialLineupSource.retrievedAt : lineup.updatedAt,
+      substitutes: officialLineup?.substitutes?.map(player => player.currentName) || null,
+      coach: officialLineup?.coach || details.coach,
+      updatedAt: officialLineup ? lineupSource.retrievedAt : lineup.updatedAt,
       source: lineupSource
     },
     ...(officialLineup ? { projectedLineup: {

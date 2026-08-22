@@ -66,7 +66,7 @@ const teamInterface = fs.readFileSync(path.join(root, "js/team-squads.js"), "utf
 const readingLineupSource = mainApp.slice(mainApp.indexOf("function renderProbableLineups"), mainApp.indexOf("function renderReadingPilotEvidence"));
 assert.ok(teamInterface.includes("lineup.players.slice(offset, offset + size).reverse()"), "Le probabili formazioni delle pagine squadra devono essere specchiate orizzontalmente");
 assert.ok(readingLineupSource.includes("lineup.players.slice(offset,offset+size).reverse()"), "Le probabili formazioni delle Letture devono essere specchiate orizzontalmente");
-const officialFixtureByTeam = { inter: "inter-monza-2026-27-md-01", monza: "inter-monza-2026-27-md-01", udinese: "udinese-como-2026-27-md-01", como: "udinese-como-2026-27-md-01" };
+const officialFixtureByTeam = { inter: "inter-monza-2026-27-md-01", monza: "inter-monza-2026-27-md-01", udinese: "udinese-como-2026-27-md-01", como: "udinese-como-2026-27-md-01", parma: "parma-cagliari-2026-27-md-01", cagliari: "parma-cagliari-2026-27-md-01", genoa: "genoa-napoli-2026-27-md-01", napoli: "genoa-napoli-2026-27-md-01" };
 for (const [teamId, fixtureId] of Object.entries(officialFixtureByTeam)) {
   const lineup = index.teams.find(team => team.id === teamId).probableLineup;
   assert.strictEqual(lineup.status, "official", `${teamId}: formazione ufficiale non applicata`);
@@ -74,6 +74,9 @@ for (const [teamId, fixtureId] of Object.entries(officialFixtureByTeam)) {
   assert.strictEqual(lineup.players.length, 11, `${teamId}: XI ufficiale incompleto`);
   assert.strictEqual(lineup.shirtNumbers.length, 11, `${teamId}: numeri di maglia ufficiali incompleti`);
 }
+assert.strictEqual(index.teams.find(team => team.id === "genoa").probableLineup.substitutes.length, 13, "genoa: panchina ufficiale incompleta");
+assert.strictEqual(index.teams.find(team => team.id === "napoli").probableLineup.substitutes.length, 13, "napoli: panchina ufficiale incompleta");
+assert.ok(teamInterface.includes("probable-lineup-substitutes") && readingLineupSource.includes("reading-lineup-substitutes"), "Le panchine ufficiali non sono renderizzate nelle pagine squadra e Letture");
 assert.ok(teamInterface.includes('official ? "Formazione ufficiale" : "Probabile formazione"'), "Le pagine squadra non distinguono la formazione ufficiale");
 assert.ok(readingLineupSource.includes('officialLineups?"Formazioni ufficiali":"Probabili formazioni"'), "La Lettura non distingue le formazioni ufficiali");
 assert.ok(mainApp.includes("Storico MVP 2025/26") && mainApp.includes("prediction-mvp-history"), "Lo storico MVP individuale non è esposto nelle Letture");
