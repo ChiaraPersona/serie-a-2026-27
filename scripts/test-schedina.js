@@ -4,6 +4,17 @@ const assert = require("assert");
 
 const root = path.resolve(__dirname, "..");
 const data = JSON.parse(fs.readFileSync(path.join(root, "data/normalized/schedina.json"), "utf8"));
+const predictions = JSON.parse(fs.readFileSync(path.join(root, "data/normalized/predictions.json"), "utf8"));
+const poissonQuantile = (lambda, target) => {
+  let term = Math.exp(-lambda), cumulative = term;
+  if (cumulative >= target) return 0;
+  for (let goals = 1; goals <= 8; goals += 1) {
+    term *= lambda / goals;
+    cumulative += term;
+    if (cumulative >= target) return goals;
+  }
+  return 8;
+};
 assert.strictEqual(data.slips.length, 8, "La pagina deve contenere otto schedine");
 assert.deepStrictEqual(data.slips.map(slip => slip.legs.length), [3, 3, 6, 8, 8, 10, 4, 6], "Numero selezioni dopo il filtro prudenziale inatteso");
 assert.strictEqual(new Set(data.slips[2].legs.map(leg => leg.matchId)).size, 6, "Supernova deve conservare sei partite diverse dopo il filtro");
@@ -36,6 +47,18 @@ assert.strictEqual(new Set(multigoal.legs.map(leg => leg.matchId)).size, 10, "La
 assert.deepStrictEqual(multigoal.marketFamilies, ["Multigol casa/ospite"], "La Multigol deve usare il solo mercato casa/ospite");
 assert(multigoal.legs.every(leg => leg.market === "MULTIGOAL CASA + MULTIGOAL OSPITE"), "Mercato inatteso nella Multigol");
 assert(multigoal.jointModelProbabilityPct > 0 && multigoal.fairOdds > 1, "Metriche quantitative Multigol mancanti");
+assert.strictEqual(multigoal.selectionPolicy.type, "poisson-narrow", "Policy Multigol prudenziale non dichiarata");
+for (const leg of multigoal.legs) {
+  const ranges = leg.selection.match(/^(\d+)-(\d+)\/(\d+)-(\d+)$/)?.slice(1).map(Number);
+  const prediction = predictions.predictions.find(item => item.matchId === leg.matchId);
+  const central = prediction.scoreForecast.primary.score.split("-").map(Number);
+  assert(ranges && ranges[1] - ranges[0] <= 2 && ranges[3] - ranges[2] <= 2, `${leg.matchId}: intervallo Multigol troppo ampio`);
+  assert(central[0] >= ranges[0] && central[0] <= ranges[1] && central[1] >= ranges[2] && central[1] <= ranges[3], `${leg.matchId}: risultato centrale fuori dall'intervallo`);
+  assert(ranges[1] <= poissonQuantile(prediction.expectedGoals.home, 0.9) && ranges[3] <= poissonQuantile(prediction.expectedGoals.away, 0.9), `${leg.matchId}: coda estrema oltre il 90° percentile`);
+  assert(leg.modelProbabilityPct >= 55, `${leg.matchId}: copertura Multigol inferiore al 55%`);
+}
+const frosinoneJuventus = multigoal.legs.find(leg => leg.matchId === "frosinone-juventus-2026-27-md-01");
+assert.strictEqual(frosinoneJuventus.selection, "0-2/0-2", "Frosinone-Juventus: intervallo ancora troppo largo");
 for (const id of ["prisma", "quasar"]) {
   const playerSlip = data.slips.find(item => item.id === id);
   assert.strictEqual(playerSlip.type, "player-only", `${id}: tipo schedina errato`);

@@ -32,6 +32,50 @@ function poissonRange(lambda, minimum, maximum) {
   return total;
 }
 
+function poissonQuantile(lambda, target) {
+  let term = Math.exp(-lambda), cumulative = term;
+  if (cumulative >= target) return 0;
+  for (let goals = 1; goals <= 8; goals += 1) {
+    term *= lambda / goals;
+    cumulative += term;
+    if (cumulative >= target) return goals;
+  }
+  return 8;
+}
+
+function multigoalLabel(selection) {
+  const ranges = selection.match(/^(\d+)-(\d+)\/(\d+)-(\d+)$/)?.slice(1).map(Number);
+  if (!ranges) return selection;
+  return `Casa ${ranges[0]}–${ranges[1]} gol · Ospite ${ranges[2]}–${ranges[3]} gol`;
+}
+
+function resolveAutomaticMultigoal(pick, policy = {}) {
+  if (pick.selection !== "AUTO" || pick.market !== "MULTIGOAL CASA + MULTIGOAL OSPITE") return pick;
+  const event = eventByMatch.get(pick.matchId), prediction = predictionByMatch.get(pick.matchId);
+  const market = event?.markets.find(item => item.marketName === pick.market && (!pick.variant || item.variantName === pick.variant) && item.status === "open");
+  if (!market || !prediction) throw new Error(`${pick.matchId}: mercato Multigol automatico non disponibile`);
+  const central = String(prediction.scoreForecast?.primary?.score || "").split("-").map(Number);
+  const quantile = Number(policy.quantile ?? 0.9);
+  const maximumWidth = Number(policy.maxTeamRangeWidth ?? 2);
+  const minimumProbability = Number(policy.minModelProbability ?? 0.55);
+  const minimumOdds = Number(policy.minLegOdds ?? 1.1), maximumOdds = Number(policy.maxLegOdds ?? 1.8);
+  const upperBounds = [poissonQuantile(Number(prediction.expectedGoals.home), quantile), poissonQuantile(Number(prediction.expectedGoals.away), quantile)];
+  const candidates = (market.selections || []).filter(selection => selection.status === "open" && selection.odds >= minimumOdds && selection.odds <= maximumOdds).map(selection => {
+    const ranges = selection.name.match(/^(\d+)-(\d+)\/(\d+)-(\d+)$/)?.slice(1).map(Number);
+    if (!ranges) return null;
+    const [homeMin, homeMax, awayMin, awayMax] = ranges;
+    if (central[0] < homeMin || central[0] > homeMax || central[1] < awayMin || central[1] > awayMax) return null;
+    if (homeMax - homeMin > maximumWidth || awayMax - awayMin > maximumWidth) return null;
+    if (homeMax > upperBounds[0] || awayMax > upperBounds[1]) return null;
+    const probability = poissonRange(Number(prediction.expectedGoals.home), homeMin, homeMax)
+      * poissonRange(Number(prediction.expectedGoals.away), awayMin, awayMax);
+    if (probability < minimumProbability) return null;
+    return { selection, probability, expectedValue: probability * selection.odds - 1 };
+  }).filter(Boolean).sort((left, right) => right.expectedValue - left.expectedValue || right.probability - left.probability || right.selection.odds - left.selection.odds);
+  if (!candidates[0]) throw new Error(`${pick.matchId}: nessun intervallo Multigol rispetta la policy prudenziale`);
+  return { ...pick, selection: candidates[0].selection.name, label: multigoalLabel(candidates[0].selection.name) };
+}
+
 function poissonPoint(lambda, goals) {
   let probability = Math.exp(-lambda);
   for (let index = 1; index <= goals; index += 1) probability *= lambda / index;
@@ -401,7 +445,7 @@ function resolvePick(pick) {
 }
 
 const slips = source.slips.map((slip, index) => {
-  const resolvedLegs = slip.picks.map(resolvePick);
+  const resolvedLegs = slip.picks.map(pick => resolvePick(resolveAutomaticMultigoal(pick, slip.selectionPolicy)));
   const filterable = !slip.type || slip.type === "mixed-markets";
   const legs = filterable ? resolvedLegs.filter(leg => leg.expectedValuePct >= -10) : resolvedLegs;
   const excludedLegs = resolvedLegs.filter(leg => !legs.includes(leg));
@@ -436,6 +480,7 @@ const slips = source.slips.map((slip, index) => {
     eyebrow: slip.eyebrow,
     name: slip.name,
     description: slip.description,
+    selectionPolicy: slip.selectionPolicy || null,
     marketFamilies: families,
     combinedOdds: round(combinedOdds),
     jointModelProbabilityPct: hasJointProbability ? round(jointProbability * 100, 6) : null,
