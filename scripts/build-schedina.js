@@ -374,6 +374,9 @@ function resolvePick(pick) {
   if (!market || !selection) throw new Error(`${pick.matchId}: ${pick.market} ${pick.selection} non disponibile`);
   const analysis = pickAnalysis(pick, market, prediction);
   if (!analysis.coherent) throw new Error(`${pick.matchId}: ${pick.label || pick.selection} incoerente con il pronostico o i volumi del modello`);
+  const expectedValuePct = Number.isFinite(analysis.modelProbabilityPct)
+    ? round((analysis.modelProbabilityPct / 100 * selection.odds - 1) * 100, 1)
+    : null;
   return {
     matchId: pick.matchId,
     fixture: `${event.home.name} – ${event.away.name}`,
@@ -386,6 +389,9 @@ function resolvePick(pick) {
     label: pick.label || selectionLabel(event, pick.selection),
     odds: selection.odds,
     modelProbabilityPct: analysis.modelProbabilityPct,
+    fairOdds: Number.isFinite(analysis.modelProbabilityPct) && analysis.modelProbabilityPct > 0 ? round(100 / analysis.modelProbabilityPct) : null,
+    expectedValuePct,
+    reliability: market.marketScope === "player" ? "media" : /RISULTATO ESATTO/.test(market.marketName) ? "sperimentale" : "alta",
     evidenceLabel: analysis.evidenceLabel,
     coherent: analysis.coherent,
     predictedOutcome: prediction.verdict.outcome,
@@ -395,7 +401,11 @@ function resolvePick(pick) {
 }
 
 const slips = source.slips.map((slip, index) => {
-  const legs = slip.picks.map(resolvePick);
+  const resolvedLegs = slip.picks.map(resolvePick);
+  const filterable = !slip.type || slip.type === "mixed-markets";
+  const legs = filterable ? resolvedLegs.filter(leg => leg.expectedValuePct >= -10) : resolvedLegs;
+  const excludedLegs = resolvedLegs.filter(leg => !legs.includes(leg));
+  if (filterable && legs.length < 3) throw new Error(`${slip.id}: il filtro prudenziale lascia meno di tre selezioni`);
   const families = [...new Set(legs.map(leg => leg.marketFamily))];
   const specializedTypes = new Set(["single-market-full-round", "exact-score", "exact-score-multi"]);
   if (!specializedTypes.has(slip.type) && families.length < 3) throw new Error(`${slip.id}: servono almeno tre famiglie di mercato, trovate ${families.join(", ")}`);
@@ -414,6 +424,11 @@ const slips = source.slips.map((slip, index) => {
   const combinedOdds = legs.reduce((product, leg) => product * leg.odds, 1);
   const hasJointProbability = legs.every(leg => Number.isFinite(leg.modelProbabilityPct));
   const jointProbability = hasJointProbability ? legs.reduce((product, leg) => product * leg.modelProbabilityPct / 100, 1) : null;
+  const expectedValuePct = hasJointProbability ? round((jointProbability * combinedOdds - 1) * 100, 1) : null;
+  const weakestLeg = legs.filter(leg => Number.isFinite(leg.expectedValuePct)).sort((a, b) => a.expectedValuePct - b.expectedValuePct)[0] || null;
+  const qualityStatus = !hasJointProbability ? "nd"
+    : expectedValuePct >= 0 && legs.every(leg => leg.expectedValuePct >= -10) ? "qualificata"
+      : expectedValuePct >= -40 ? "editoriale" : "laboratorio";
   return {
     id: slip.id,
     type: slip.type || "mixed-markets",
@@ -425,7 +440,12 @@ const slips = source.slips.map((slip, index) => {
     combinedOdds: round(combinedOdds),
     jointModelProbabilityPct: hasJointProbability ? round(jointProbability * 100, 6) : null,
     fairOdds: hasJointProbability ? round(1 / jointProbability) : null,
-    expectedValuePct: hasJointProbability ? round((jointProbability * combinedOdds - 1) * 100, 1) : null,
+    expectedValuePct,
+    qualityStatus,
+    qualityLabel: qualityStatus === "qualificata" ? "Supera il filtro prudenziale" : qualityStatus === "editoriale" ? "Lettura editoriale" : qualityStatus === "laboratorio" ? "Laboratorio ad alto rischio" : "N/D",
+    excludedLegsCount: excludedLegs.length,
+    filterNote: excludedLegs.length ? `${excludedLegs.length} ${excludedLegs.length === 1 ? "gamba esclusa" : "gambe escluse"} perché sotto −10% di EV individuale.` : null,
+    weakestLeg: weakestLeg ? { fixture: weakestLeg.fixture, label: weakestLeg.label, expectedValuePct: weakestLeg.expectedValuePct } : null,
     legs
   };
 });
@@ -448,7 +468,7 @@ const output = {
   sourceUrl: odds.sourceUrl,
   oddsRetrievedAt: odds.retrievedAt,
   modelVersion: predictions.engine?.version || predictions.predictions[0]?.engineVersion || null,
-  methodology: "Le probabilità sono indipendenti dalle quote Sisal. Esiti, Under/Over gol, Multigol e risultati esatti derivano dal modello Poisson sugli xG; Vince o quasi considera anche i possibili ordini dei gol e il raggiungimento del vantaggio richiesto. Corner, tiri totali e tiri in porta di squadra usano media e deviazione dei volumi previsti; parate e punti cartellini usano una distribuzione Poisson sui rispettivi valori centrali. Per marcatori, gol o assist, assist, tiri e tiri in porta giocatore il motore usa soltanto titolari previsti con almeno 700 minuti: regolarizza la frequenza storica per 90 minuti con un prior prudente, la adatta agli xG o ai volumi di squadra previsti e tratta il mercato duo come esposizione dell'intero ruolo nei 90 minuti. Le probabilità delle gambe, appartenenti a partite diverse, vengono moltiplicate per ottenere la probabilità congiunta; quota equa = 1/probabilità ed EV = probabilità × quota Sisal − 1. Nessuna quota entra nel pronostico. La dicitura sostituto incluso compare soltanto quando prevista dal mercato e non viene applicata ai falli.",
+  methodology: "Le probabilità sono indipendenti dalle quote Sisal. Esiti, Under/Over gol, Multigol e risultati esatti derivano dal modello Poisson sugli xG; Vince o quasi considera anche i possibili ordini dei gol e il raggiungimento del vantaggio richiesto. Corner, tiri totali e tiri in porta di squadra usano media e deviazione dei volumi previsti; parate e punti cartellini usano una distribuzione Poisson sui rispettivi valori centrali. Per marcatori, gol o assist, assist, tiri e tiri in porta giocatore il motore usa soltanto titolari previsti con almeno 700 minuti: regolarizza la frequenza storica per 90 minuti con un prior prudente e la adatta agli xG o ai volumi di squadra previsti. Le probabilità delle gambe, appartenenti a partite diverse, vengono moltiplicate; quota equa = 1/probabilità ed EV = probabilità × quota Sisal − 1. Una schedina è qualificata soltanto con EV non negativo e nessuna gamba sotto −10% di EV individuale; le altre restano letture editoriali o di laboratorio. Nessuna quota entra nel pronostico.",
   slips
 };
 

@@ -5,26 +5,29 @@ const assert = require("assert");
 const root = path.resolve(__dirname, "..");
 const data = JSON.parse(fs.readFileSync(path.join(root, "data/normalized/schedina.json"), "utf8"));
 assert.strictEqual(data.slips.length, 8, "La pagina deve contenere otto schedine");
-assert.deepStrictEqual(data.slips.map(slip => slip.legs.length), [6, 6, 10, 8, 8, 10, 4, 6], "Numero selezioni inatteso");
-assert.strictEqual(new Set(data.slips[2].legs.map(leg => leg.matchId)).size, 10, "Supernova deve coprire tutte le dieci partite");
+assert.deepStrictEqual(data.slips.map(slip => slip.legs.length), [3, 3, 6, 8, 8, 10, 4, 6], "Numero selezioni dopo il filtro prudenziale inatteso");
+assert.strictEqual(new Set(data.slips[2].legs.map(leg => leg.matchId)).size, 6, "Supernova deve conservare sei partite diverse dopo il filtro");
 for (const slip of data.slips.slice(0, 3)) {
   assert(!slip.legs.some(leg => leg.marketFamily === "Marcatori"), `${slip.id}: le prime tre schedine non devono contenere marcatori`);
   assert(slip.legs.some(leg => leg.marketFamily === "Esito"), `${slip.id}: manca un esito coperto`);
 }
-assert(data.slips[0].combinedOdds >= 10, "Scintilla deve raggiungere quota 10");
-assert(data.slips[1].combinedOdds >= 20, "Bagliore deve raggiungere quota 20");
-assert(data.slips[2].combinedOdds >= 30, "Supernova deve raggiungere quota 30");
+assert.deepStrictEqual(data.slips.slice(0, 3).map(slip => slip.excludedLegsCount), [3, 3, 4], "Il filtro prudenziale non ha escluso le gambe attese");
+assert(data.slips.slice(0, 3).every(slip => slip.legs.every(leg => leg.expectedValuePct >= -10)), "Una schedina mista contiene ancora una gamba sotto −10% EV");
+assert(data.slips.slice(0, 2).every(slip => slip.qualityStatus === "qualificata" && slip.expectedValuePct >= 0), "Scintilla e Bagliore devono superare il filtro prudenziale");
 for (const slip of data.slips) {
   assert(slip.combinedOdds > 1, `${slip.id}: quota totale non valida`);
   if (!["single-market-full-round", "exact-score", "exact-score-multi"].includes(slip.type)) assert(slip.marketFamilies.length >= 3, `${slip.id}: varietà mercati insufficiente`);
   assert(slip.jointModelProbabilityPct > 0, `${slip.id}: probabilità modello non valida`);
   assert(slip.fairOdds > 1, `${slip.id}: quota equa non valida`);
   assert(Number.isFinite(slip.expectedValuePct), `${slip.id}: EV stimato non valido`);
+  assert(["qualificata", "editoriale", "laboratorio"].includes(slip.qualityStatus), `${slip.id}: classificazione prudenziale mancante`);
+  assert(slip.weakestLeg?.label && Number.isFinite(slip.weakestLeg.expectedValuePct), `${slip.id}: gamba più fragile non identificata`);
   for (const leg of slip.legs) {
     assert.strictEqual(leg.coherent, true, `${slip.id}/${leg.matchId}: selezione incoerente con il pronostico`);
     assert(leg.odds >= 1.10, `${slip.id}/${leg.matchId}: quota inferiore a 1,10`);
     assert.notStrictEqual(leg.selection, "12", `${slip.id}/${leg.matchId}: esito 12 non ammesso`);
     assert(leg.modelProbabilityPct > 0, `${slip.id}/${leg.matchId}: probabilità della selezione non calcolata`);
+    assert(leg.fairOdds > 1 && Number.isFinite(leg.expectedValuePct), `${slip.id}/${leg.matchId}: quota equa o EV individuale mancanti`);
   }
 }
 const multigoal = data.slips.find(item => item.id === "costellazione");
@@ -56,10 +59,9 @@ const shotLegs = allLegs.filter(leg => /TIRI/.test(leg.market));
 const playerShotLegs = shotLegs.filter(leg => /GIOCATORE/.test(leg.market));
 const teamShotLegs = data.slips.slice(0, 3).flatMap(slip => slip.legs).filter(leg => /TIRI/.test(leg.market) && !/GIOCATORE/.test(leg.market));
 assert(playerShotLegs.length > 0 && playerShotLegs.every(leg => Boolean(leg.player)), "Ogni mercato tiri giocatore deve indicare il giocatore");
-assert(teamShotLegs.some(leg => leg.marketFamily === "Tiri totali"), "Mancano i tiri totali non riferiti ai giocatori");
 assert(teamShotLegs.some(leg => leg.marketFamily === "Tiri in porta"), "Mancano i tiri in porta non riferiti ai giocatori");
 const firstThreeFamilies = new Set(data.slips.slice(0, 3).flatMap(slip => slip.marketFamilies));
-for (const family of ["Vince o quasi", "Multigol", "Under/Over", "Corner", "Tiri totali", "Tiri in porta", "Parate squadra", "Cartellini"]) {
+for (const family of ["Vince o quasi", "Under/Over", "Corner", "Tiri in porta", "Cartellini"]) {
   assert(firstThreeFamilies.has(family), `Manca il nuovo mercato ${family} nelle prime tre schedine`);
 }
 for (const leg of allLegs.filter(item => item.marketFamily === "Marcatori")) {

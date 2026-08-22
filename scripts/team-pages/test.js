@@ -132,7 +132,8 @@ assert.ok(mainApp.includes('requestedMatchId?"first-leg-2026-27.json":"first-leg
 const expectedNavigation = [
   ["index.html", "Home"], ["calendario.html", "Calendario"],
   ["statistiche-squadre.html", "Statistiche squadre"], ["lettura.html", "Lettura"],
-  ["coppa-italia.html", "Coppa Italia"], ["arbitri.html", "Arbitri"], ["fantacalcio.html", "Fantacalcio"]
+  ["coppa-italia.html", "Coppa Italia"], ["arbitri.html", "Arbitri"], ["fantacalcio.html", "Fantacalcio"],
+  ["schedina.html", "Schedina"]
 ];
 for (const file of fs.readdirSync(root).filter(file => file.endsWith(".html")).map(file => path.join(root, file))
   .concat(fs.readdirSync(path.join(root, "statistiche-squadra")).filter(file => file.endsWith(".html")).map(file => path.join(root, "statistiche-squadra", file)))) {

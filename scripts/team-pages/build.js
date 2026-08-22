@@ -12,7 +12,7 @@ const write = (relative, value) => {
 const slugAliases = { "hellas-verona": "verona" };
 const teams = read("data/normalized/teams.json");
 const teamDetails = read("data/sources/team-pages/team-details-2026-27.json");
-const probableLineups = read("data/sources/gazzetta-probable-lineups-md1-2026-27.json");
+const probableLineups = read("data/sources/probable-lineups-md1-2026-27.json");
 const probableLineupByTeam = new Map(probableLineups.teams.map(team => [team.teamId, team]));
 const probableLineupSource = {
   provider: probableLineups.provider,

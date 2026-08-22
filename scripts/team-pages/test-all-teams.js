@@ -40,9 +40,9 @@ for (const summary of index.teams) {
   assert.strictEqual(team.probableLineup.players.length, 11, `${summary.id}: la probabile formazione deve avere 11 calciatori`);
   assert.strictEqual(new Set(team.probableLineup.players).size, 11, `${summary.id}: nomi duplicati nella probabile formazione`);
   assert.strictEqual(team.probableLineup.status, "probable", `${summary.id}: stato della formazione non prudente`);
-  assert.strictEqual(team.probableLineup.source.provider, "Fantacalcio.it", `${summary.id}: fonte probabile formazione assente`);
+  assert.strictEqual(team.probableLineup.source.provider, "Sky Sport", `${summary.id}: fonte probabile formazione assente`);
   assert.ok(team.sources.some(source => source.scope.includes("Modulo preferito")), `${summary.id}: fonte modulo preferito assente`);
-  assert.ok(team.sources.some(source => source.provider === "Fantacalcio.it" && source.scope.includes("Probabili formazioni")), `${summary.id}: fonte probabile formazione non registrata`);
+  assert.ok(team.sources.some(source => source.provider === "Sky Sport" && source.scope.includes("Probabili formazioni")), `${summary.id}: fonte probabile formazione non registrata`);
   assert.ok(team.sources.some(source => source.provider === "Lega Serie A" && source.scope.includes("Allenatori")), `${summary.id}: fonte allenatore assente`);
   assert.ok(generated.players.length >= 20, `${summary.id}: rosa troppo corta`);
   assert.strictEqual(team.squad.length, generated.players.length, `${summary.id}: rosa non propagata`);

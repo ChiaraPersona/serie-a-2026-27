@@ -11,6 +11,11 @@ const matches = read("data/normalized/matches.json");
 const teams = read("data/teams/index.json").teams;
 
 const targets = { Safe: 5, Balanced: 10, Aggressive: 20 };
+const tierLimits = {
+  Safe: { minimum: 3, maximum: 6 },
+  Balanced: { minimum: 4, maximum: 7 },
+  Aggressive: { minimum: 5, maximum: 8 }
+};
 const teamById = new Map(teams.map(team => [team.id, team]));
 const matchById = new Map(matches.map(match => [match.id, match]));
 const predictionById = new Map(predictionData.predictions.map(prediction => [prediction.matchId, prediction]));
@@ -117,6 +122,7 @@ function candidatePool(event, prediction, match) {
   const candidates = [];
   for (const row of prediction.marketComparison || []) {
     if (!row.scenarioCompatible || row.modelProbabilityPct < 45 || row.odds < 1.08 || row.odds >= 1.8) continue;
+    if (!["1x2", "double-chance", "goals", "btts", "team-goal"].includes(row.family)) continue;
     const resolved = marketIndex.get(String(row.providerSelectionId));
     if (!resolved) continue;
     candidates.push({
@@ -125,7 +131,8 @@ function candidatePool(event, prediction, match) {
       label: commonLabel(row, match),
       odds: row.odds,
       quality: 130 + row.modelProbabilityPct,
-      anchor: true
+      anchor: true,
+      modelSupported: true
     });
   }
 
@@ -147,7 +154,8 @@ function candidatePool(event, prediction, match) {
         label: volumeLabel(market, selection, match),
         odds: selection.odds,
         quality: 105 + Math.min(20, Math.abs(projection.central - threshold) * 3),
-        anchor: false
+        anchor: false,
+        modelSupported: true
       });
     }
   }
@@ -156,7 +164,7 @@ function candidatePool(event, prediction, match) {
     for (const selection of market.selections || []) {
       if (selection.status !== "open" || selection.odds < 1.08 || selection.odds >= 1.8) continue;
       const candidate = scoreMarketCandidate(market, selection, prediction, match);
-      if (candidate) candidates.push(candidate);
+      if (candidate) candidates.push({ ...candidate, modelSupported: true });
     }
   }
 
@@ -175,7 +183,8 @@ function candidatePool(event, prediction, match) {
       label: `Entrambe almeno ${threshold} ${isShots ? "tiri in porta" : "corner"}`,
       odds: selection.odds,
       quality: 108 + selection.odds * 4,
-      anchor: false
+      anchor: false,
+      modelSupported: true
     });
   }
 
@@ -254,15 +263,17 @@ function candidatePool(event, prediction, match) {
   }
 
   return [...new Map(candidates.map(candidate => [candidate.providerSelectionId, candidate])).values()]
+    .filter(candidate => candidate.modelSupported && candidate.quality >= 105)
     .sort((left, right) => right.quality - left.quality || right.odds - left.odds);
 }
 
 function selectPortfolio(pool, usedIds, tier, matchId) {
   const target = targets[tier];
+  const limits = tierLimits[tier];
   const tierRank = { Safe: 0, Balanced: 1, Aggressive: 2 };
   const available = pool.filter(candidate => !usedIds.has(candidate.providerSelectionId) && tierRank[tier] >= tierRank[candidate.minimumTier || "Safe"]).slice(0, 120);
   let beam = [{ product: 1, legs: [], keys: new Set(), anchor: false, quality: 0 }];
-  for (let depth = 0; depth < 11; depth += 1) {
+  for (let depth = 0; depth < limits.maximum; depth += 1) {
     const expanded = [...beam];
     for (const state of beam) {
       for (const candidate of available) {
@@ -287,12 +298,15 @@ function selectPortfolio(pool, usedIds, tier, matchId) {
     }
     beam = [...buckets.values()].sort((a, b) => a.score - b.score).slice(0, 500).map(item => item.state);
   }
-  const eligible = beam.filter(state => state.anchor && state.legs.length >= 5 && Math.abs(state.product - target) / target <= 0.2);
+  const eligible = beam.filter(state => state.anchor
+    && state.legs.length >= limits.minimum
+    && state.legs.length <= limits.maximum
+    && Math.abs(state.product - target) / target <= 0.2);
   eligible.sort((left, right) => {
     const distance = Math.abs(left.product - target) - Math.abs(right.product - target);
     return distance || right.quality - left.quality || left.legs.length - right.legs.length;
   });
-  if (!eligible[0]) throw new Error(`${matchId}: nessuna MyCombo ${tier} entro tolleranza con ${available.length} selezioni disponibili`);
+  if (!eligible[0]) return null;
   eligible[0].legs.forEach(leg => usedIds.add(leg.providerSelectionId));
   return eligible[0];
 }
@@ -308,6 +322,7 @@ const output = {
   constraints: {
     maxLegOddsExclusive: 1.8,
     targets,
+    tierLimits,
     targetTolerancePct: 20,
     overlapPolicy: "Una sola gamba per overlapKey nella stessa MyCombo; vietate soglie annidate o esiti equivalenti. Ogni portafoglio contiene almeno una selezione verificata contro il risultato principale del modello."
   },
@@ -320,14 +335,20 @@ for (const event of odds.events) {
   if (!prediction || !match || match.matchday !== 1) continue;
   const pool = candidatePool(event, prediction, match);
   const usedIds = new Set();
-  const planned = new Map(["Safe", "Balanced", "Aggressive"].map(tier => {
+  const planned = new Map(["Aggressive", "Balanced", "Safe"].map(tier => {
     const portfolio = selectPortfolio(pool, usedIds, tier, event.canonicalMatchId);
+    if (!portfolio) return [tier, {
+      tier,
+      status: "N/D",
+      reason: `Nessuna combinazione raggiunge il target ${targets[tier]} rispettando qualita, unicita e limite di ${tierLimits[tier].maximum} gambe.`,
+      legs: []
+    }];
     return [tier, {
       tier,
       logic: `Profilo ${tier.toLowerCase()} costruito sulle quote Sisal del ${output.updatedAt}: almeno una gamba segue il risultato principale ${prediction.scoreForecast.primary.score} (${prediction.verdict.outcome}); le altre seguono i volumi centrali o i titolari proiettati senza introdurre un esito opposto.`,
       legs: portfolio.legs.map(({ providerSelectionId, overlapKey, label }) => ({ providerSelectionId, overlapKey, label }))
     }];
-  }));
+}));
   output.matches[event.canonicalMatchId] = ["Safe", "Balanced", "Aggressive"].map(tier => planned.get(tier));
 }
 

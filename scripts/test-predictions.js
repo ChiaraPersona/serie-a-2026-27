@@ -63,13 +63,21 @@ for (const prediction of dataset.predictions) {
     const portfolioSelectionIds = prediction.combinations.flatMap(combo => combo.legs.map(leg => leg.providerSelectionId));
     assert.strictEqual(new Set(portfolioSelectionIds).size, portfolioSelectionIds.length, `${prediction.matchId}: le tre MyCombo devono usare proposte diverse`);
     for (const combo of prediction.combinations) {
-      assert(combo.legs.length >= 5, `${prediction.matchId}/${combo.tier}: numero gambe insufficiente`);
+      const limits = myComboSource.constraints.tierLimits[combo.tier];
+      if (combo.qualityStatus === "nd") {
+        assert.strictEqual(combo.legs.length, 0, `${prediction.matchId}/${combo.tier}: un profilo N/D non deve occupare spazio con gambe`);
+        assert(combo.unavailableReason, `${prediction.matchId}/${combo.tier}: motivazione N/D assente`);
+        continue;
+      }
+      assert(combo.legs.length >= limits.minimum && combo.legs.length <= limits.maximum, `${prediction.matchId}/${combo.tier}: numero gambe fuori limite`);
       assert(combo.legs.every(leg => leg.odds > 1 && leg.odds < 1.8), `${prediction.matchId}/${combo.tier}: ogni quota deve essere inferiore a 1.80`);
       assert.strictEqual(new Set(combo.legs.map(leg => leg.providerSelectionId)).size, combo.legs.length, `${prediction.matchId}/${combo.tier}: selectionId ripetuti`);
       assert.strictEqual(new Set(combo.legs.map(leg => leg.overlapKey)).size, combo.legs.length, `${prediction.matchId}/${combo.tier}: esiti sovrapponibili`);
       assert(Math.abs(combo.odds - combo.targetOdds) / combo.targetOdds <= 0.2, `${prediction.matchId}/${combo.tier}: quota combinata lontana dal target`);
       const product = combo.legs.reduce((total, leg) => total * leg.odds, 1);
       assert(Math.abs(combo.odds - product) < 0.011, `${prediction.matchId}/${combo.tier}: moltiplicazione quote incoerente`);
+      assert(Number.isFinite(combo.prudentProbabilityPct) && Number.isFinite(combo.fairOdds) && Number.isFinite(combo.prudentExpectedValuePct), `${prediction.matchId}/${combo.tier}: metriche prudenziali mancanti`);
+      assert(combo.weakestLeg?.label, `${prediction.matchId}/${combo.tier}: gamba fragile non identificata`);
       assert(!combo.legs.some(leg => /falli (?:commessi|subiti).*sostituto incluso/i.test(leg.label)), `${prediction.matchId}/${combo.tier}: i mercati falli non includono il sostituto`);
     }
   }

@@ -1,6 +1,6 @@
 "use strict";
 
-const ENGINE_VERSION = "4.9.6";
+const ENGINE_VERSION = "4.10.0";
 const OUTCOMES = ["1", "X", "2"];
 const WEIGHTS = Object.freeze({ venueHistorical: 0.46, overallHistorical: 0.25, recentForm: 0.16, tacticalMatchup: 0.07, probableLineup: 0.05, objectives: 0.01 });
 const MVP_WEIGHTS = Object.freeze({ resultScenario: 0.3, individualProduction: 0.2, historicalRating: 0.15, officialMvpHistory: 0.15, tacticalFit: 0.1, opponentHistory: 0.05, dataReliability: 0.05 });
@@ -851,7 +851,107 @@ function marketEvaluation(oddsEvent, matrices, dataCompleteness, primaryScore) {
   };
 }
 
-function configuredComboPortfolio(oddsEvent, config) {
+function normalCdf(value) {
+  const sign = value < 0 ? -1 : 1;
+  const x = Math.abs(value) / Math.sqrt(2);
+  const t = 1 / (1 + 0.3275911 * x);
+  const erf = sign * (1 - (((((1.061405429 * t - 1.453152027) * t) + 1.421413741) * t - 0.284496736) * t + 0.254829592) * t * Math.exp(-x * x));
+  return 0.5 * (1 + erf);
+}
+
+function configuredScorePredicate(leg) {
+  const compact = String(leg.selection || "").replace(/\s+/g, "").toUpperCase();
+  if (leg.market === "1X2 ESITO FINALE") return conditionForOutcome(compact);
+  if (leg.market === "DOPPIA CHANCE") return conditionForDoubleChance(compact);
+  if (leg.market === "UNDER/OVER") return conditionForGoals(compact, Number(leg.threshold));
+  if (leg.market === "GOAL/NOGOAL") return conditionForBothTeamsScore(compact);
+  if (leg.market === "CASA: SEGNA GOAL") return conditionForTeamScore("home", compact);
+  if (leg.market === "OSPITE: SEGNA GOAL") return conditionForTeamScore("away", compact);
+  if (leg.market === "MULTIGOAL") {
+    const range = compact.match(/^(\d+)-(\d+)$/)?.slice(1).map(Number);
+    return range ? score => score.home + score.away >= range[0] && score.home + score.away <= range[1] : null;
+  }
+  if (leg.market === "MULTIGOAL SQUADRA X") {
+    const range = compact.match(/^(\d+)-(\d+)$/)?.slice(1).map(Number);
+    const side = /SQUADRA 1\b/.test(leg.variant) ? "home" : /SQUADRA 2\b/.test(leg.variant) ? "away" : null;
+    return range && side ? score => score[side] >= range[0] && score[side] <= range[1] : null;
+  }
+  if (leg.market === "U/O SQUADRA X") {
+    const side = /SQUADRA 1\b/.test(leg.variant) ? "home" : /SQUADRA 2\b/.test(leg.variant) ? "away" : null;
+    return side ? score => compact === "OVER" ? score[side] > Number(leg.threshold) : compact === "UNDER" ? score[side] < Number(leg.threshold) : false : null;
+  }
+  if (["COMBO: DC + U/O", "COMBO: 1X2 + U/O", "COMBO: DC + GOAL/NOGOAL"].includes(leg.market)) {
+    return comboPredicate(String(leg.selection), Number(leg.threshold));
+  }
+  if (leg.market === "COMBO: U/O CASA + U/O OSPITE") {
+    const thresholds = [...String(leg.variant).matchAll(/U\/O\s+(\d+(?:\.\d+)?)/gi)].map(match => Number(match[1]));
+    const parts = compact.split("+");
+    return thresholds.length === 2 && parts.length === 2 ? score => [score.home, score.away].every((goals, index) => parts[index] === "OVER" ? goals > thresholds[index] : parts[index] === "UNDER" ? goals < thresholds[index] : false) : null;
+  }
+  return null;
+}
+
+function configuredVolumeAssessment(leg, projections) {
+  const metricKey = leg.market.includes("TIRI IN PORTA") ? "shotsOnTarget"
+    : leg.market.includes("TIRI TOTALI") ? "shotsTotal"
+      : leg.market.includes("CORNER") ? "corners" : null;
+  if (!metricKey) return null;
+  if (["ENTRAMBE LE SQUADRE ALMENO X TIRI IN PORTA", "ENTRAMBE ALMENO X CORNER"].includes(leg.market)) {
+    const threshold = Number(String(leg.variant).match(/ALMENO\s+(\d+(?:\.\d+)?)/i)?.[1]);
+    if (!Number.isFinite(threshold) || leg.selection !== "SI") return null;
+    const probabilities = projections.teams.map(team => {
+      const metric = team?.[metricKey];
+      const mean = Number(metric?.central), sd = Number(metric?.sd);
+      return Number.isFinite(mean) && Number.isFinite(sd) && sd > 0 ? 1 - normalCdf((threshold - 0.5 - mean) / sd) : null;
+    });
+    if (probabilities.some(value => !Number.isFinite(value))) return null;
+    const probability = probabilities[0] * probabilities[1];
+    return { probability, prudentProbability: probability * 0.9, method: "volumi squadra" };
+  }
+  if (!/^U\/O (?:TIRI TOTALI|TIRI IN PORTA|CORNER)(?: SQUADRA X)?$/.test(leg.market)) return null;
+  const side = /SQUADRA 1\b/.test(leg.variant) ? 0 : /SQUADRA 2\b/.test(leg.variant) ? 1 : null;
+  const metric = side == null ? projections.match?.[metricKey] : projections.teams?.[side]?.[metricKey];
+  const mean = Number(metric?.central), sd = Number(metric?.sd), threshold = Number(leg.threshold);
+  if (![mean, sd, threshold].every(Number.isFinite) || sd <= 0) return null;
+  const under = normalCdf((threshold - mean) / sd);
+  const probability = leg.selection === "OVER" ? 1 - under : leg.selection === "UNDER" ? under : null;
+  return Number.isFinite(probability) ? { probability, prudentProbability: probability * 0.92, method: "volume previsto" } : null;
+}
+
+function assessConfiguredPortfolio(legs, matrices, dataCompleteness, projections) {
+  const assessed = legs.map(leg => {
+    const scorePredicate = configuredScorePredicate(leg);
+    if (scorePredicate) {
+      const probabilities = matrices.map(matrix => matrixProbability(matrix, scorePredicate));
+      return { leg, scorePredicate, probability: probabilities[0], prudentProbability: Math.min(...probabilities), method: "matrice punteggi" };
+    }
+    const volume = configuredVolumeAssessment(leg, projections);
+    return volume ? { leg, scorePredicate: null, ...volume } : null;
+  });
+  if (assessed.some(item => !item)) return null;
+  const scorePredicates = assessed.filter(item => item.scorePredicate).map(item => item.scorePredicate);
+  const volumeAssessments = assessed.filter(item => !item.scorePredicate);
+  const scoreProbabilities = scorePredicates.length
+    ? matrices.map(matrix => matrixProbability(matrix, score => scorePredicates.every(predicate => predicate(score))))
+    : matrices.map(() => 1);
+  const centralProbability = scoreProbabilities[0] * volumeAssessments.reduce((product, item) => product * item.probability, 1);
+  const dependencyHaircut = 0.95 ** Math.max(0, volumeAssessments.length - 1);
+  const completenessHaircut = clamp(0.9 + (dataCompleteness - 0.58) * 0.15, 0.88, 0.95);
+  const prudentProbability = Math.min(...scoreProbabilities)
+    * volumeAssessments.reduce((product, item) => product * item.prudentProbability, 1)
+    * dependencyHaircut * completenessHaircut;
+  const legMetrics = assessed.map(item => ({
+    providerSelectionId: item.leg.providerSelectionId,
+    probabilityPct: round(item.probability * 100, 1),
+    prudentProbabilityPct: round(item.prudentProbability * 100, 1),
+    fairOdds: round(1 / Math.max(0.0001, item.prudentProbability), 2),
+    expectedValuePct: round((item.prudentProbability * item.leg.odds - 1) * 100, 1),
+    method: item.method
+  }));
+  return { centralProbability, prudentProbability, legMetrics };
+}
+
+function configuredComboPortfolio(oddsEvent, config, matrices, dataCompleteness, projections) {
   if (!config?.portfolios?.length) return null;
   const constraints = config.constraints || {};
   const maximum = constraints.maxLegOddsExclusive ?? 1.8;
@@ -866,6 +966,18 @@ function configuredComboPortfolio(oddsEvent, config) {
   return config.portfolios.map(portfolio => {
     const targetOdds = constraints.targets?.[portfolio.tier];
     if (!(targetOdds > 1)) throw new Error(`${oddsEvent.canonicalMatchId}/${portfolio.tier}: target MyCombo non valido`);
+    if (portfolio.status === "N/D" || !portfolio.legs?.length) return {
+      tier: portfolio.tier,
+      risk: portfolio.tier === "Safe" ? "relativo inferiore" : portfolio.tier === "Balanced" ? "medio" : "elevato",
+      targetOdds,
+      odds: null,
+      legs: [],
+      selection: null,
+      logic: null,
+      qualityStatus: "nd",
+      probabilityStatus: "N/D",
+      unavailableReason: portfolio.reason || "Nessuna combinazione supera i vincoli prudenziali."
+    };
     const overlapKeys = new Set();
     const selectionIds = new Set();
     const legs = portfolio.legs.map(leg => {
@@ -904,16 +1016,29 @@ function configuredComboPortfolio(oddsEvent, config) {
     if (distancePct > tolerance) {
       throw new Error(`${oddsEvent.canonicalMatchId}/${portfolio.tier}: quota ${odds} oltre la tolleranza del ${tolerance}% dal target ${targetOdds}`);
     }
+    const assessment = assessConfiguredPortfolio(legs, matrices, dataCompleteness, projections);
+    const legMetrics = new Map((assessment?.legMetrics || []).map(item => [String(item.providerSelectionId), item]));
+    const enrichedLegs = legs.map(leg => ({ ...leg, ...(legMetrics.get(String(leg.providerSelectionId)) || {}) }));
+    const weakestLeg = enrichedLegs.filter(leg => Number.isFinite(leg.prudentProbabilityPct)).sort((a, b) => a.prudentProbabilityPct - b.prudentProbabilityPct)[0] || null;
+    const prudentProbabilityPct = assessment ? round(assessment.prudentProbability * 100, 2) : null;
+    const prudentExpectedValuePct = assessment ? round((assessment.prudentProbability * odds - 1) * 100, 1) : null;
     return {
       tier: portfolio.tier,
       risk: portfolio.tier === "Safe" ? "relativo inferiore" : portfolio.tier === "Balanced" ? "medio" : "elevato",
       targetOdds,
       odds,
       distancePct,
-      legs,
-      selection: legs.map(leg => leg.label).join(" + "),
+      legs: enrichedLegs,
+      selection: enrichedLegs.map(leg => leg.label).join(" + "),
       logic: portfolio.logic,
-      probabilityStatus: "N/D: la quota combinata e il profilo di rischio non sono una probabilita congiunta indipendente."
+      probabilityPct: assessment ? round(assessment.centralProbability * 100, 2) : null,
+      prudentProbabilityPct,
+      fairOdds: assessment ? round(1 / Math.max(0.0001, assessment.prudentProbability), 2) : null,
+      prudentExpectedValuePct,
+      qualityStatus: !assessment ? "nd" : prudentExpectedValuePct >= 0 ? "qualificata" : prudentExpectedValuePct >= -10 ? "da valutare" : "editoriale",
+      weakestLeg: weakestLeg ? { label: weakestLeg.label, prudentProbabilityPct: weakestLeg.prudentProbabilityPct } : null,
+      probabilityMethod: assessment ? "Stima prudenziale: congiunzione esatta dei mercati gol, volumi modellati e penalita per dipendenze residue." : null,
+      probabilityStatus: assessment ? null : "N/D · stima congiunta non supportata"
     };
   });
 }
@@ -929,8 +1054,8 @@ function comboPredicate(selection, threshold) {
   return predicates.length === 2 ? score => predicates.every(predicate => predicate(score)) : null;
 }
 
-function comboPortfolio(oddsEvent, matrices, dataCompleteness, config) {
-  const configured = configuredComboPortfolio(oddsEvent, config);
+function comboPortfolio(oddsEvent, matrices, dataCompleteness, config, projections) {
+  const configured = configuredComboPortfolio(oddsEvent, config, matrices, dataCompleteness, projections);
   if (configured) return configured;
   if (dataCompleteness < 0.58) return [];
   const candidates = [];
@@ -1061,7 +1186,7 @@ function predictMatch(input) {
     scenarios: matchScenarios(input, final, expected),
     marketComparison: evaluatedMarkets.rows,
     recommendations: evaluatedMarkets.selections,
-    combinations: comboPortfolio(input.oddsEvent, matrices, dataCompleteness, input.myComboConfig),
+    combinations: comboPortfolio(input.oddsEvent, matrices, dataCompleteness, input.myComboConfig, { teams: teamProjections, match: matchProjection }),
     playerMarkets: evaluatedMarkets.playerMarkets,
     market: {
       provider: "Sisal",
