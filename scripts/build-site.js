@@ -11,7 +11,7 @@ const footer = (depth = "") => `<footer class="site-footer"><div class="site-foo
 const fontLinks = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">';
 const withFonts = html => html.replace("</title>", `</title>${fontLinks}`);
 const version = "20260823-md1-postmatch-v10";
-const bettingVersion = "20260823-md1-results-v12";
+const bettingVersion = "20260823-md1-player-results-v13";
 const readingVersion = "20260823-reading-score-v11";
 const headToHeadPath = path.join(root, "data/generated/head-to-head/first-leg-2026-27.json");
 if (fs.existsSync(headToHeadPath)) {

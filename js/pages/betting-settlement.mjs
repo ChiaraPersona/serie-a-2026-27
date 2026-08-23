@@ -4,6 +4,7 @@ const normalized=value=>String(value??"").trim().toUpperCase().replaceAll("–",
 const resultStatus=won=>({status:won?"won":"lost",label:won?"Esatto":"Sbagliato"});
 const pending=()=>({status:"pending",label:""});
 const unavailable=()=>({status:"unavailable",label:""});
+const comparableName=value=>String(value??"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().trim();
 
 function totalStat(match,key){
   const home=match?.teamStats?.home?.[key],away=match?.teamStats?.away?.[key];
@@ -22,6 +23,29 @@ function settleThreshold(selection,actual,threshold){
   if(!finite(actual)||!threshold)return unavailable();
   if(selection==="UNDER")return resultStatus(Number(actual)<threshold.value);
   if(selection==="OVER")return resultStatus(threshold.inclusive?Number(actual)>=threshold.value:Number(actual)>threshold.value);
+  return unavailable();
+}
+
+function playerDuo(match,player){
+  const name=comparableName(player),all=[...(match?.playerStats?.home||[]),...(match?.playerStats?.away||[])];
+  const primary=all.find(item=>comparableName(item.player)===name);
+  if(!primary)return null;
+  const substitution=(match?.substitutions||[]).find(item=>comparableName(item.playerOut)===name);
+  const substitute=substitution?all.find(item=>comparableName(item.player)===comparableName(substitution.playerIn)):null;
+  return [primary,...(substitute?[substitute]:[])];
+}
+
+function settlePlayerThreshold(selection,players,key,threshold){
+  if(!players||!threshold)return unavailable();
+  const known=players.filter(item=>finite(item?.[key])).reduce((sum,item)=>sum+Number(item[key]),0),complete=players.every(item=>finite(item?.[key]));
+  if(selection==="OVER"){
+    const won=threshold.inclusive?known>=threshold.value:known>threshold.value;
+    return won?resultStatus(true):complete?resultStatus(false):unavailable();
+  }
+  if(selection==="UNDER"){
+    const alreadyLost=threshold.inclusive?known>=threshold.value:known>threshold.value;
+    return alreadyLost?resultStatus(false):complete?resultStatus(true):unavailable();
+  }
   return unavailable();
 }
 
@@ -46,9 +70,22 @@ export function settleLeg(leg,match){
   if(market.includes("1X2 ESITO FINALE"))return resultStatus(selection===outcome);
   if(market.includes("DOPPIA CHANCE"))return resultStatus(selection.includes(outcome));
 
-  // I mercati giocatore "Duo / sostituto incluso" richiedono la liquidazione
-  // ufficiale del bookmaker: il solo tabellino individuale non è sufficiente.
-  if(leg?.marketScope==="player"||market.includes("GIOCATORE")||market.includes("ASSIST")||market.includes("MARCATORE"))return unavailable();
+  if(leg?.marketScope==="player"||market.includes("GIOCATORE")||market.includes("ASSIST")||market.includes("MARCATORE")){
+    const players=playerDuo(match,leg?.player),goals=players?.reduce((sum,item)=>sum+(finite(item.goals)?Number(item.goals):0),0),assists=players?.reduce((sum,item)=>sum+(finite(item.assists)?Number(item.assists):0),0);
+    if(!players)return unavailable();
+    if(market.includes("SEGNA O FA ASSIST"))return resultStatus(selection==="SI"?goals+assists>0:goals+assists===0);
+    if(market.includes("ASSIST"))return resultStatus(selection==="SI"?assists>0:assists===0);
+    if(market.includes("MARCATORE"))return resultStatus(selection==="SI"?goals>0:goals===0);
+    const threshold=thresholdFromLabel(leg?.label);
+    if(market.includes("TIRI IN PORTA")){
+      const settlement=settlePlayerThreshold(selection,players,"shotsOnTarget",threshold);
+      if(settlement.status!=="unavailable")return settlement;
+      if(selection==="OVER"&&threshold?.inclusive&&goals>=threshold.value)return resultStatus(true);
+      return unavailable();
+    }
+    if(market.includes("TIRI TOTALI"))return settlePlayerThreshold(selection,players,"shots",threshold);
+    return unavailable();
+  }
   if(market.includes("PUNTI CARTELLINI")||market.includes("VINCE O QUASI"))return unavailable();
 
   const threshold=thresholdFromLabel(leg?.label);
