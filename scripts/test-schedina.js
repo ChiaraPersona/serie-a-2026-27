@@ -105,3 +105,18 @@ const shell = fs.readFileSync(path.join(root, "schedina.html"), "utf8");
 assert.match(shell, /data-page="betting"/, "Shell Schedina non generata");
 assert.match(shell, /fantacalcio\.html[^]*schedina\.html/, "Schedina non è accanto a Fantacalcio nella navigazione");
 console.log(`Schedina valida: ${data.slips.map(slip => `${slip.name} ${slip.combinedOdds.toFixed(2)}`).join(" · ")}`);
+
+(async()=>{
+  const {settleLeg}=await import("../js/pages/betting-settlement.mjs");
+  const matches=JSON.parse(fs.readFileSync(path.join(root,"data/normalized/matches.json"),"utf8"));
+  const byId=new Map(matches.map(match=>[match.id,match]));
+  const legsBySlip=new Map(data.slips.map(slip=>[slip.id,slip.legs]));
+  const status=(slipId,matchId)=>settleLeg(legsBySlip.get(slipId).find(leg=>leg.matchId===matchId),byId.get(matchId)).status;
+  assert.strictEqual(status("quadrante","frosinone-juventus-2026-27-md-01"),"won","Il risultato esatto 0-1 deve essere verde");
+  assert.strictEqual(status("quadrante","genoa-napoli-2026-27-md-01"),"lost","Il risultato esatto 0-1 deve essere rosso sullo 0-2");
+  assert.strictEqual(status("ventaglio","venezia-lecce-2026-27-md-01"),"lost","Il multiesito deve risultare perso sullo 0-2");
+  assert.strictEqual(status("costellazione","inter-monza-2026-27-md-01"),"won","Il Multigol Inter-Monza deve risultare centrato");
+  assert.strictEqual(status("supernova","bologna-lazio-2026-27-md-01"),"pending","Una partita non conclusa deve restare neutra");
+  assert.strictEqual(status("prisma","inter-monza-2026-27-md-01"),"unavailable","Un mercato giocatore Duo deve restare neutro senza liquidazione ufficiale");
+  console.log("Liquidazione visiva Schedina valida.");
+})().catch(error=>{console.error(error);process.exitCode=1;});

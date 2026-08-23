@@ -60,6 +60,7 @@ assert.ok(!mainApp.includes('id="global-player-stat"'), "La selezione Top 15 non
 assert.ok(!mainApp.includes("Riepilogo statistico") && !mainApp.includes("season-summary"), "Il riepilogo statistico non deve essere mostrato in Statistiche squadre");
 for (const contract of ["reading-fixture-preview", "Anteprima della lettura", "prediction.verdict.label", "likelyScore", "prediction.confidence.value", "Scenari di risultato", "scoreForecast.primary"]) assert.ok(mainApp.includes(contract), `Card Letture: anteprima ${contract} assente`);
 for (const contract of ["readingPostMatchReport", "Tabellino e statistiche", "Partite concluse", "reading-player-table", "match.playerStats", "Analisi prepartita archiviata"]) assert.ok(mainApp.includes(contract), `Letture post-partita: contratto ${contract} assente`);
+assert.ok(mainApp.includes("Risultato principale pronosticato") && mainApp.includes("prediction?.scoreForecast?.primary?.score"), "Le Letture concluse devono conservare il risultato principale pronosticato");
 for (const contract of [".reading-fixture-preview", ".reading-fixture-preview-text"]) assert.ok(styles.includes(contract), `Card Letture: stile ${contract} assente`);
 for (const contract of ['reading-fixture match fixture-card fixture-card-link', 'class="match-head"', 'class="matchday-chip"', 'class="match-date"', 'teamColorStyle']) assert.ok(mainApp.includes(contract), `Card Letture: struttura calendario ${contract} assente`);
 for (const removed of ['reading-fixture-footer', 'Pronostico preliminare · sorpresa', 'Precedenti ${history.coverage.available}/5']) assert.ok(!mainApp.includes(removed), `Card Letture: contenuto inferiore ${removed} ancora presente`);
@@ -77,6 +78,7 @@ for (const [teamId, fixtureId] of Object.entries(officialFixtureByTeam)) {
 }
 assert.strictEqual(index.teams.find(team => team.id === "genoa").probableLineup.substitutes.length, 13, "genoa: panchina ufficiale incompleta");
 assert.strictEqual(index.teams.find(team => team.id === "napoli").probableLineup.substitutes.length, 13, "napoli: panchina ufficiale incompleta");
+assert(index.teams.find(team => team.id === "torino").probableLineup.players.includes("Cesare Casadei") && !index.teams.find(team => team.id === "torino").probableLineup.players.includes("Alieu Njie"), "torino: correzione Casadei/Njie non applicata");
 assert.ok(teamInterface.includes("probable-lineup-substitutes") && readingLineupSource.includes("reading-lineup-substitutes"), "Le panchine ufficiali non sono renderizzate nelle pagine squadra e Letture");
 assert.ok(teamInterface.includes('official ? "Formazione ufficiale" : "Probabile formazione"'), "Le pagine squadra non distinguono la formazione ufficiale");
 assert.ok(readingLineupSource.includes('officialLineups?"Formazioni ufficiali":"Probabili formazioni"'), "La Lettura non distingue le formazioni ufficiali");
