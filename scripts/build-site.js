@@ -12,6 +12,7 @@ const fontLinks = '<link rel="preconnect" href="https://fonts.googleapis.com"><l
 const withFonts = html => html.replace("</title>", `</title>${fontLinks}`);
 const version = "20260823-md1-postmatch-v10";
 const bettingVersion = "20260823-md1-results-v12";
+const readingVersion = "20260823-reading-score-v11";
 const headToHeadPath = path.join(root, "data/generated/head-to-head/first-leg-2026-27.json");
 if (fs.existsSync(headToHeadPath)) {
   const headToHead = JSON.parse(fs.readFileSync(headToHeadPath, "utf8"));
@@ -29,7 +30,7 @@ for (const obsoletePage of ["classifica.html", "statistiche-squadra/index.html"]
   if (fs.existsSync(obsoletePath)) fs.unlinkSync(obsoletePath);
 }
 for (const [file,id,label] of pages) {
-  const pageVersion = id === "betting" ? bettingVersion : version;
+  const pageVersion = id === "betting" ? bettingVersion : id === "readings" ? readingVersion : version;
   const html = `<!doctype html>\n<html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Serie A e Coppa Italia 2026/27: ${label}"><title>${label} | Serie A 2026/27</title><link rel="stylesheet" href="css/styles.css?v=${pageVersion}"></head><body data-page="${id}"><header id="site-top" class="site-header"><a class="brand" href="index.html"><span class="brand-mark"><img src="assets/images/serie-a-logo-mark.png" alt=""></span><span><strong>Serie A 2026/27</strong><small>Campionato e Coppa Italia</small></span></a><button class="menu-button" type="button" aria-controls="site-nav" aria-expanded="false">Menu</button><nav id="site-nav" class="site-nav" aria-label="Navigazione principale">${navigation("", id)}</nav></header><main id="app" tabindex="-1"><section class="loading"><p class="eyebrow">Caricamento</p><h1>${label}</h1></section></main>${footer()}${id === "home" ? `<script src="scripts/standings.js?v=${pageVersion}"></script>` : ""}${id === "fantasy" ? `<script src="scripts/fantasy-squad.js?v=${pageVersion}"></script>` : ""}<script type="module" src="js/app.js?v=${pageVersion}"></script></body></html>`;
   fs.writeFileSync(path.join(root,file), withFonts(html));
 }
