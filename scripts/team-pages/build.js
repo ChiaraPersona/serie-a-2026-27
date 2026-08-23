@@ -214,6 +214,7 @@ function buildTeam(team) {
       shirtNumbers: officialLineup ? starters.map(player => player.shirtNumber) : null,
       substitutes: officialLineup?.substitutes?.map(player => player.currentName) || null,
       coach: officialLineup?.coach || details.coach,
+      ...(officialLineup?.coachConfirmation ? { coachConfirmation: officialLineup.coachConfirmation } : {}),
       updatedAt: officialLineup ? lineupSource.retrievedAt : lineup.updatedAt,
       source: lineupSource
     },
