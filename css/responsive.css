@@ -23,7 +23,7 @@
 
 @media(max-width:580px){.ranking-grid{grid-template-columns:1fr}.ranking-card li strong{float:none;display:block;margin-left:4px}}
 
-@media(max-width:580px){.standings-switch{flex-direction:column}.standing-team{min-width:130px}}
+@media(max-width:580px){.standings-switch{flex-direction:row}.standing-team{min-width:130px}}
 
 @media(max-width:760px){body[data-page="home"] .hero{min-height:460px;background-position:68% center}}
 
@@ -39,9 +39,9 @@
 
 @media(max-width:700px){.referee-nav{grid-template-columns:1fr}}
 
-@media(max-width:760px){.team-directory-grid,.split-grid{grid-template-columns:1fr}.team-directory-card{grid-template-columns:54px 1fr auto}.team-directory-card img{width:54px;height:54px}.team-detail-hero{align-items:flex-start}.team-detail-hero>img{width:76px;height:76px}.team-stat-grid,.split-grid .team-stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.squad-controls{grid-template-columns:1fr 1fr}.detail-section,.team-detail-hero,.subpage-header{padding-left:16px;padding-right:16px}}
+@media(max-width:760px){.team-directory-grid,.split-grid{grid-template-columns:1fr}.team-directory-card{grid-template-columns:54px 1fr auto}.team-directory-card img{width:54px;height:54px}.team-detail-hero{align-items:flex-start}.team-detail-hero>img{width:112px;height:112px}.team-stat-grid,.split-grid .team-stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.squad-controls{grid-template-columns:1fr 1fr}.detail-section,.team-detail-hero,.subpage-header{padding-left:16px;padding-right:16px}.team-page-navigation{align-items:stretch;flex-direction:column;gap:14px}.team-page-navigation>nav{display:grid;grid-template-columns:1fr 1fr;width:100%;margin-left:0}.team-page-navigation>nav a{min-width:0}}
 
-@media(max-width:430px){.team-stat-grid{grid-template-columns:1fr 1fr}.squad-controls{grid-template-columns:1fr}.team-detail-hero{display:block}.team-detail-hero>img{margin-bottom:12px}}
+@media(max-width:430px){.team-stat-grid{grid-template-columns:1fr 1fr}.squad-controls{grid-template-columns:1fr}.team-detail-hero{display:block}.team-detail-hero>img{width:128px;height:128px;margin-bottom:12px}.team-page-navigation>nav span{font-size:.55rem}.team-page-navigation>nav strong{font-size:.72rem}}
 
 @media(max-width:760px){.player-bio-grid,.player-stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.player-detail{width:calc(100% - 16px);max-height:96vh}.player-profile-head{align-items:flex-start}.player-portrait-wrap{width:92px;flex-basis:92px}.player-portrait{width:92px;height:92px;flex-basis:92px}.player-profile-head h2{font-size:1.45rem}.player-competition-heading{grid-template-columns:1fr}}
 
@@ -215,11 +215,11 @@
 
 @media(max-width:620px){.team-style-heading,.probable-lineup-heading{align-items:flex-start;flex-direction:column}.team-style-metrics,.team-style-leaders{grid-template-columns:1fr}.team-style-traits li{align-items:flex-start;flex-direction:column;gap:3px}.team-style-traits small{white-space:normal}.probable-lineup-pitch{min-height:440px;padding:22px 8px}.probable-lineup-row{gap:4px}.probable-lineup-row span{padding:7px 6px;font-size:.68rem}}
 
-@media(max-width:430px){.probable-lineup-heading>span{display:none}.probable-lineup-board{border-radius:22px}.probable-lineup-board-head{grid-template-columns:auto 1fr auto;gap:10px}.probable-lineup-board-head img{width:42px;height:42px}.probable-lineup-board-head h3{font-size:1.3rem}.probable-lineup-board-head>strong{padding:8px 10px;font-size:.82rem}.probable-lineup-board .probable-lineup-pitch{min-height:570px}.probable-lineup-player strong{max-width:68px;font-size:.58rem}}
+@media(max-width:430px){.probable-lineup-heading>span{display:none}.probable-lineup-board{border-radius:22px}.probable-lineup-board-head{grid-template-columns:auto 1fr auto;gap:10px}.probable-lineup-board-head img{width:42px;height:42px}.probable-lineup-board-head h3{font-size:1.3rem}.probable-lineup-board-head>strong{padding:8px 10px;font-size:.82rem}.probable-lineup-board .probable-lineup-pitch{min-height:390px}.probable-lineup-player strong{max-width:68px;font-size:.58rem}}
 
-@media(max-width:760px){.probable-lineup-board .probable-lineup-pitch{min-height:540px;padding:42px 7px}.probable-lineup-player strong{max-width:76px;font-size:clamp(.62rem,2.7vw,.75rem);line-height:1.08}}
+@media(max-width:760px){.probable-lineup-board .probable-lineup-pitch{min-height:420px;padding:24px 7px}.probable-lineup-player strong{max-width:76px;font-size:clamp(.62rem,2.7vw,.75rem);line-height:1.08}}
 
-@media(max-width:430px){.probable-lineup-board .probable-lineup-pitch{min-height:510px}.probable-lineup-player strong{max-width:68px;font-size:.64rem}}
+@media(max-width:430px){.probable-lineup-board .probable-lineup-pitch{min-height:390px}.probable-lineup-player strong{max-width:68px;font-size:.64rem}}
 
 @media(max-width:700px){.reading-lineup-grid{grid-template-columns:1fr}.reading-lineup-field{min-height:235px}.reading-lineup-row{width:min(calc(var(--reading-lineup-count) * 64px),100%)}.reading-lineup-row strong{max-width:64px;font-size:.61rem}}
 
@@ -247,7 +247,7 @@
 
 @media(min-width:901px){.home-standings .table-wrap{overflow-x:visible}.home-standings .standings-table{width:100%;min-width:0}}
 
-@media(max-width:430px){.standings-scope-switch{gap:5px;padding:5px}.standings-scope-switch button{min-height:40px;padding:8px 5px;font-size:12px}}
+@media(max-width:430px){.standings-scope-switch{gap:7px}.standings-scope-switch button{font-size:12px}}
 
 @media(max-width:760px){
   .global-player-leaders{margin-top:52px;padding:20px;border-radius:22px}

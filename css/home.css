@@ -114,29 +114,13 @@ body[data-page="home"] .hero{min-height:360px;border-color:rgba(255,255,255,.18)
 
 .home-next h3>span{text-transform:uppercase}
 
-/* Selettore classifica: palette chiara con stato attivo blu Serie A. */
+/* Selettori classifica compatti: link testuali separati da una barra. */
 .standings-switch{
-  border-color:rgba(36,90,120,.16);
-  background:rgba(255,255,255,.58);
-  box-shadow:0 8px 24px rgba(40,58,59,.08),inset 0 1px 0 rgba(255,255,255,.82);
+  justify-content:flex-start;
+  margin:18px 0 10px;
 }
 
-.standings-switch button{
-  color:#4d5f69;
-}
-
-.standings-switch button:hover{
-  border-color:rgba(31,100,184,.24);
-  background:rgba(31,100,184,.09);
-  color:#174f8f;
-}
-
-.standings-switch button.active{
-  border-color:#2f75c5;
-  background:linear-gradient(135deg,#2468b6,#174f91);
-  color:#fff;
-  box-shadow:0 5px 14px rgba(23,79,145,.22),inset 0 1px 0 rgba(255,255,255,.18);
-}
+.standings-switch-separator{color:rgba(77,95,105,.55);font-weight:700}
 
 /* Home: prossime partite più compatte, senza colonna Lettura. */
 .home-next{
@@ -157,13 +141,11 @@ body[data-page="home"] .hero{min-height:360px;border-color:rgba(255,255,255,.18)
 .standings-table tbody tr:nth-child(-n+4) td:first-child,.standings-table tbody tr:nth-last-child(-n+3) td:first-child{box-shadow:none}
 
 /* Archivio 2025/26: cambio vista senza scorrimento e colonna ordinata ben riconoscibile. */
-.standings-scope-switch{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:20px 0 10px;padding:7px;border:1px solid rgba(36,90,120,.16);border-radius:14px;background:rgba(255,255,255,.58);box-shadow:0 8px 24px rgba(40,58,59,.08),inset 0 1px 0 rgba(255,255,255,.82)}
+.standings-scope-switch{display:flex;align-items:center;justify-content:flex-start;gap:10px;margin:12px 0 10px}
 
-.standings-scope-switch button{min-height:42px;padding:9px 12px;border:1px solid transparent;border-radius:9px;background:transparent;color:#4d5f69;font-weight:800;cursor:pointer}
+.home-standings [data-standings-scope-panel]{margin-top:0}
 
-.standings-scope-switch button:hover{border-color:rgba(31,100,184,.24);background:rgba(31,100,184,.09);color:#174f8f}
-
-.standings-scope-switch button.active{border-color:#2f75c5;background:linear-gradient(135deg,#2468b6,#174f91);color:#fff;box-shadow:0 5px 14px rgba(23,79,145,.22),inset 0 1px 0 rgba(255,255,255,.18)}
+.home-standings [data-standings-scope-panel="general"]{padding-top:10px}
 
 .standings-table th.standings-column-active{background:#174f91;color:#fff;box-shadow:inset 1px 0 rgba(255,255,255,.16),inset -1px 0 rgba(255,255,255,.16)}
 

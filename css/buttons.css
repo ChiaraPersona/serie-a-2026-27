@@ -172,6 +172,49 @@
   color:var(--button-blue-strong);
 }
 
+.home-standings .standings-switch,
+.home-standings .standings-scope-switch{
+  padding:0;
+  border:0;
+  border-radius:0;
+  background:transparent;
+  box-shadow:none;
+}
+
+.home-standings .standings-switch button,
+.home-standings .standings-scope-switch button,
+.home-standings .standings-switch button.active,
+.home-standings .standings-scope-switch button.active{
+  flex:0 0 auto;
+  min-height:0;
+  padding:3px 0;
+  border:0;
+  border-radius:0;
+  background:transparent;
+  box-shadow:none;
+  color:#526266;
+  font-size:.86rem;
+}
+
+.home-standings .standings-switch button:hover,
+.home-standings .standings-scope-switch button:hover,
+.home-standings .standings-switch button.active,
+.home-standings .standings-scope-switch button.active{
+  border:0;
+  background:transparent;
+  box-shadow:none;
+  color:var(--button-blue-strong);
+  text-decoration:underline;
+  text-underline-offset:4px;
+  transform:none;
+}
+
+.home-standings .standings-switch button:focus-visible,
+.home-standings .standings-scope-switch button:focus-visible{
+  outline:2px solid rgba(167,116,22,.45);
+  outline-offset:3px;
+}
+
 .global-stat-button.active,
 .fantasy-main-toggle.active,
 .fantasy-main-action.is-main{
@@ -222,6 +265,7 @@ button:disabled{
   .button,.menu-button,.home-matchday-button,.standings-switch button,.standings-scope-switch button,.fantasy-strategy-tabs button,.referee-season-nav a,.team-calendar-actions a{min-height:42px}
   .standings-switch{flex-direction:row}
   .team-calendar-actions a{flex:1}
+  .home-standings .standings-switch button,.home-standings .standings-scope-switch button{min-height:0;padding:5px 0}
 }
 
 @media(prefers-reduced-motion:reduce){

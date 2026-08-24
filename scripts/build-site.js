@@ -12,9 +12,9 @@ const footer = (depth = "") => `<footer class="site-footer"><div class="site-foo
 const fontLinks = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">';
 const withFonts = html => html.replace("</title>", `</title>${fontLinks}`);
 const version = "20260824-central-sources-page-v1";
-const homeVersion = "20260824-home-readings-card-v1";
+const homeVersion = "20260824-home-standings-links-v1";
 const calendarVersion = "20260824-calendar-final-score-v1";
-const teamVersion = "20260824-team-leaders-2026-27-v4-central-sources-page";
+const teamVersion = "20260824-team-page-compact-v1";
 const leaderboardVersion = "20260824-player-leaderboards-by-season-v18-player-minutes-modern-buttons-v3";
 const bettingVersion = "20260824-schedina-archive-v4-modern-buttons-v3";
 const readingVersion = "20260824-reading-result-summary-v13-modern-buttons-v3";

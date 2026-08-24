@@ -115,6 +115,8 @@ assert.ok(mainApp.includes("Storico MVP 2025/26") && mainApp.includes("predictio
 assert.ok(mainApp.includes("Totale partita") && mainApp.includes("prediction-match-volume") && mainApp.includes("percentili p20–p80"), "I totali volume casa/trasferta non sono esposti nelle Letture");
 assert.ok(!mainApp.includes("giornata di riferimento") && !teamInterface.includes("Data da definire · riferimento"), "Le date non definite non devono mostrare una data di riferimento");
 assert.ok(teamInterface.includes("Stato degli obiettivi") && teamInterface.includes("calculateObjectiveMetrics"), "Lo stato degli obiettivi non è integrato nelle pagine squadra");
+assert.ok(teamInterface.includes("teamNavigation(team, teams)") && teamInterface.includes("Squadra precedente") && teamInterface.includes("Squadra successiva"), "La pagina squadra deve offrire la navigazione precedente/successiva");
+assert.ok(!teamInterface.includes("Aggiornato automaticamente") && !teamInterface.includes('class="updated"'), "La pagina squadra non deve mostrare diciture di aggiornamento automatico o la data nel hero");
 assert.ok(teamInterface.includes("personalCalendar") && teamInterface.includes("Calendario di ${esc(team.name)}"), "Il calendario personale non è integrato nelle pagine squadra");
 assert.ok(teamInterface.includes('id="team-calendar-select"') && teamInterface.includes('id="team-calendar-selection"') && teamInterface.includes("teamFixtureRow") && !teamInterface.includes("team-calendar-list"), "Il calendario personale deve usare un menu a tendina e mostrare una sola partita");
 assert.ok(teamInterface.includes('assets/images/teams/monochrome/${esc(team.id)}-black.svg'), "Il calendario personale deve usare i loghi vettoriali neri preparati");
@@ -155,6 +157,8 @@ assert.ok(mainApp.includes('if(page==="home")') && mainApp.includes('data-standi
 assert.ok(!mainApp.includes('class="season-overview"'), "Il riepilogo Squadre/Partite/Capolista/Copertura non deve essere mostrato nella Home");
 for (const marker of ['label:"R+"', 'label:"R-"', 'label:"C+"', 'label:"C-"', "configureStandingsTables()", "data-sortable-standings"]) assert.ok(mainApp.includes(marker), `Classifica dinamica: manca ${marker}`);
 for (const scope of ['id:"general"', 'id:"home"', 'id:"away"', "data-standings-scope-tab", "data-standings-scope-panel", "activateScope"]) assert.ok(mainApp.includes(scope), `Selettore rendimento 2025/26: manca ${scope}`);
+assert.ok(mainApp.includes('id:"general",label:"Generale",eyebrow:"",title:"",description:""'), "La classifica generale corrente non deve mostrare il blocco introduttivo ridondante");
+assert.ok(mainApp.includes('class="standings-switch-separator"') && styles.includes("standings-switch-separator"), "I selettori classifica devono essere link testuali separati da una barra");
 assert.ok(mainApp.includes("standings-column-active") && styles.includes("standings-column-active") && mainApp.includes('aria-pressed="false"'), "La colonna ordinata deve essere evidenziata visivamente e annunciata ai lettori di schermo");
 assert.ok(!mainApp.includes("Esito della stagione") && !mainApp.includes("Verdetti 2025/26") && !mainApp.includes("verdictsPanel"), "Il blocco Verdetti 2025/26 deve essere rimosso dalla Home");
 for (const tooltip of ["Rigori assegnati a favore", "Rigori subiti contro", "Cartellini assegnati agli avversari", "Cartellini ricevuti dalla squadra"]) assert.ok(mainApp.includes(tooltip), `Tooltip classifica mancante: ${tooltip}`);
@@ -166,7 +170,7 @@ assert.deepStrictEqual([disciplineHome.penaltiesFor, disciplineHome.penaltiesAga
 const unavailableDiscipline = calculateStandings([{ id: "a" }, { id: "b" }], [{ id: "a-b", competition: "serie-a", status: "finished", homeTeam: "a", awayTeam: "b", score: { home: 0, away: 0 } }]).find(row => row.team === "a");
 assert.deepStrictEqual([unavailableDiscipline.penaltiesFor, unavailableDiscipline.penaltiesAgainst, unavailableDiscipline.cardsFor, unavailableDiscipline.cardsAgainst], [null, null, null, null], "I dati disciplinari assenti devono restare N/D");
 const homeRenderSource = mainApp.slice(mainApp.indexOf('if(page==="home"){'), mainApp.indexOf('if(page==="calendar")'));
-assert.ok(homeRenderSource.includes("homeStandings(standings,previousStandings,teams,standingsTeams)"), "Le classifiche devono essere presenti nella Home");
+assert.ok(homeRenderSource.includes("homeStandings(standings,currentHomeRows,currentAwayRows,previousStandings,teams,standingsTeams)"), "Le classifiche devono essere presenti nella Home");
 assert.ok(!homeRenderSource.includes("Esplora il progetto") && !homeRenderSource.includes("feature-grid"), "Esplora il progetto deve essere rimosso dalla Home");
 assert.ok(!homeRenderSource.includes("Apri il calendario"), "Il link Apri il calendario deve essere rimosso dalla Home");
 assert.ok(!homeRenderSource.includes("Capolista") && !homeRenderSource.includes("leader="), "La Home non deve calcolare o mostrare la capolista dopo la rimozione del riepilogo");
