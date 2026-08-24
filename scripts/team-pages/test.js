@@ -56,7 +56,7 @@ for (const [periodId, period] of Object.entries(playerLeaderboards.periods)) for
 }
 assert.strictEqual(playerLeaderboards.periods["2026/27"].rankings.foulsCommitted.availablePlayers, 255, "I falli 2026/27 verificati devono coprire tutti i partecipanti");
 assert.strictEqual(playerLeaderboards.periods["2026/27"].rankings.foulsWon.availablePlayers, 255, "I falli subiti 2026/27 verificati devono coprire tutti i partecipanti");
-assert.strictEqual(playerLeaderboards.periods.total.rankings.foulsWon.availablePlayers, 207, "Il totale falli deve includere soltanto i calciatori coperti in entrambe le stagioni");
+assert.strictEqual(playerLeaderboards.periods.total.rankings.foulsWon.availablePlayers, 208, "Il totale falli deve includere soltanto i calciatori coperti in entrambe le stagioni");
 assert.ok(playerLeaderboards.periods["2026/27"].rankings.shots.availablePlayers < 255, "La copertura parziale dei tiri 2026/27 deve restare esplicita");
 for (const contract of ["loadPlayerLeaderboards", "globalPlayerLeaderboards", "globalPlayerLeaderboardTable", "Top 15 calciatori per statistica", "data-player-period", "data-player-stat", "Totale 2025/26 + 2026/27", "serie-b-marker", "aria-pressed", "per90Value", "stessa riga"]) assert.ok(mainApp.includes(contract), `Top 15 globale: contratto ${contract} assente`);
 for (const contract of [".global-player-leaders", ".global-player-table", ".global-leader-player", ".global-leader-value", ".global-leader-rate", ".global-stat-button", ".serie-b-marker", ".global-col-player", ".global-col-rate"]) assert.ok(styles.includes(contract), `Top 15 globale: stile ${contract} assente`);
@@ -117,6 +117,8 @@ assert.ok(!mainApp.includes("giornata di riferimento") && !teamInterface.include
 assert.ok(teamInterface.includes("Stato degli obiettivi") && teamInterface.includes("calculateObjectiveMetrics"), "Lo stato degli obiettivi non è integrato nelle pagine squadra");
 assert.ok(teamInterface.includes("teamNavigation(team, teams)") && teamInterface.includes("Squadra precedente") && teamInterface.includes("Squadra successiva"), "La pagina squadra deve offrire la navigazione precedente/successiva");
 assert.ok(!teamInterface.includes("Aggiornato automaticamente") && !teamInterface.includes('class="updated"'), "La pagina squadra non deve mostrare diciture di aggiornamento automatico o la data nel hero");
+assert.ok(!teamInterface.includes("Distinta confermata") && !teamInterface.includes("Profilo completo"), "I badge Distinta confermata e Profilo completo non devono essere mostrati");
+assert.ok(!teamInterface.includes('<div><p class="eyebrow">${esc(team.previousSeason.competition)} 2025/26'), "Il hero della squadra non deve mostrare la competizione 2025/26 sopra il nome");
 assert.ok(teamInterface.includes("personalCalendar") && teamInterface.includes("Calendario di ${esc(team.name)}"), "Il calendario personale non è integrato nelle pagine squadra");
 assert.ok(teamInterface.includes('id="team-calendar-select"') && teamInterface.includes('id="team-calendar-selection"') && teamInterface.includes("teamFixtureRow") && !teamInterface.includes("team-calendar-list"), "Il calendario personale deve usare un menu a tendina e mostrare una sola partita");
 assert.ok(teamInterface.includes('assets/images/teams/monochrome/${esc(team.id)}-black.svg'), "Il calendario personale deve usare i loghi vettoriali neri preparati");

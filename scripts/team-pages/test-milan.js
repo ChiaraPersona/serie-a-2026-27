@@ -12,16 +12,21 @@ const stylesSource = ["styles", "base", "layout", "components", "home", "matches
 const allowedStatuses = new Set(["confermato", "nuovo acquisto", "prestito", "rientro dal prestito", "primavera", "da verificare"]);
 const sortable = ["appearances", "minutes", "goals", "assists", "shots", "shotsOnTarget", "foulsCommitted", "yellowCards"];
 
-assert.strictEqual(generated.players.length, 27, "La rosa ufficiale Milan deve contenere 27 giocatori");
-assert.strictEqual(team.squad.length, 27, "La pagina Milan deve ricevere 27 giocatori");
-assert.strictEqual(new Set(generated.players.map(player => player.id)).size, 27, "ID giocatore duplicati");
-assert.strictEqual(new Set(generated.players.map(player => player.name.toLocaleLowerCase("it"))).size, 27, "Nomi giocatore duplicati");
+assert.strictEqual(generated.players.length, 29, "La rosa ufficiale Milan deve contenere 29 giocatori");
+assert.strictEqual(team.squad.length, 29, "La pagina Milan deve ricevere 29 giocatori");
+assert.strictEqual(new Set(generated.players.map(player => player.id)).size, 29, "ID giocatore duplicati");
+assert.strictEqual(new Set(generated.players.map(player => player.name.toLocaleLowerCase("it"))).size, 29, "Nomi giocatore duplicati");
 assert.ok(generated.players.some(player => player.status === "nuovo acquisto"));
 assert.ok(generated.players.some(player => player.status === "rientro dal prestito"));
 const diawara = generated.players.find(player => player.id === "sankhoun-diawara");
 assert.ok(diawara, "Sankhoun Diawara assente dalla rosa Milan");
 assert.strictEqual(diawara.status, "nuovo acquisto");
 assert.ok(diawara.sources.some(source => source.provider === "Sky Sport / AC Milan"), "Fonte trasferimento Diawara assente");
+const chukwueze = generated.players.find(player => player.id === "samuel-chukwueze");
+assert.ok(chukwueze, "Samuel Chukwueze assente dalla rosa Milan");
+assert.strictEqual(chukwueze.providerIds.espn, "228298", "Samuel Chukwueze: ID ESPN errato");
+assert.ok(chukwueze.previousSeason.entries.length, "Samuel Chukwueze: statistiche 2025/26 assenti");
+assert.ok(fs.existsSync(path.join(root, "data/players/milan/samuel-chukwueze.json")), "Samuel Chukwueze: JSON individuale assente");
 
 for (const player of generated.players) {
   assert.ok(allowedStatuses.has(player.status), `${player.name}: stato non ammesso`);
@@ -63,8 +68,9 @@ for (const player of generated.players) {
 const entryKeys = generated.players.flatMap(player => player.previousSeason.entries.map(entry => `${player.id}|${entry.team}|${entry.competition}`));
 assert.strictEqual(new Set(entryKeys).size, entryKeys.length, "Blocchi squadra/competizione duplicati");
 assert.ok(generated.players.filter(player => player.previousSeason.entries.length).length >= 20, "Copertura statistica insufficiente");
-assert.strictEqual(generated.players.filter(player => player.dataQuality.status === "complete").length, 24);
-assert.deepStrictEqual(generated.players.filter(player => player.dataQuality.status === "partial").map(player => player.name).sort(), ["Gonçalo Ramos", "Lorenzo Torriani"]);
+assert.strictEqual(generated.players.filter(player => player.dataQuality.status === "complete").length, 27);
+assert.deepStrictEqual(generated.players.filter(player => player.dataQuality.status === "partial").map(player => player.name).sort(), []);
+assert.deepStrictEqual(generated.players.filter(player => player.dataQuality.status === "unavailable").map(player => player.name).sort(), ["Ilja Pantelin", "Sankhoun Diawara"]);
 assert.deepStrictEqual(generated.players.filter(player => player.dataQuality.uncertainAssociation).map(player => player.name), []);
 assert.strictEqual(generated.players.find(player => player.name === "David Odogu").dataQuality.associationMethod, "nome+squadra+numero-maglia");
 for (const contract of ["Tiri totali", "Tiri nello specchio", "Falli commessi", "Falli subiti", "goalsPer90", "assistsPer90", "shotsPer90", "shotsOnTargetPer90", "cardsPer90", "foulsCommittedPer90", "foulsWonPer90", "squad-table-wrap", "squadLeaderboards", "Top 3 per statistica", "leader-player", "player-detail", "searchKey", "da verificare", "roleOrder", "compareByRole", "<option value=\"role\">Ruolo</option>"]) assert.ok(interfaceSource.includes(contract), `Interfaccia: contratto ${contract} assente`);
