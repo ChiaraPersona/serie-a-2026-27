@@ -14,7 +14,7 @@ const withFonts = html => html.replace("</title>", `</title>${fontLinks}`);
 const version = "20260824-central-sources-page-v1";
 const homeVersion = "20260824-home-standings-links-v1";
 const calendarVersion = "20260824-calendar-final-score-v1";
-const teamVersion = "20260824-team-page-portrait-v6-rodrigo-mora";
+const teamVersion = "20260824-team-table-columns-v1";
 const leaderboardVersion = "20260824-player-leaderboards-by-season-v18-player-minutes-modern-buttons-v3";
 const bettingVersion = "20260824-schedina-archive-v4-modern-buttons-v3";
 const readingVersion = "20260824-reading-matchup-logos-referee-profile-score-dedup-v6-rodrigo-mora";

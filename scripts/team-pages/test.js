@@ -84,6 +84,10 @@ for (const contract of [".reading-fixture-preview", ".reading-fixture-preview-te
 for (const contract of ['reading-fixture match fixture-card fixture-card-link', 'class="match-head"', 'class="matchday-chip"', 'class="match-date"', 'teamColorStyle']) assert.ok(mainApp.includes(contract), `Card Letture: struttura calendario ${contract} assente`);
 for (const removed of ['reading-fixture-footer', 'Pronostico preliminare · sorpresa', 'Precedenti ${history.coverage.available}/5']) assert.ok(!mainApp.includes(removed), `Card Letture: contenuto inferiore ${removed} ancora presente`);
 const teamInterface = fs.readFileSync(path.join(root, "js/team-squads.js"), "utf8");
+const squadTableSource = teamInterface.slice(teamInterface.indexOf("function squadTable"), teamInterface.indexOf("function entryDetail"));
+for (const removedColumn of ["Stato", "Squadra 2025/26", "Competizione", "squad-col-status", "squad-col-team", "squad-col-competition"]) assert.ok(!squadTableSource.includes(removedColumn), `Tabella calciatori: colonna rimossa ancora presente: ${removedColumn}`);
+for (const retainedColumn of ["Valore mercato", "PG", "Min", "squad-col-market", "squad-col-played", "squad-col-minutes"]) assert.ok(squadTableSource.includes(retainedColumn), `Tabella calciatori: colonna richiesta assente: ${retainedColumn}`);
+assert.ok(styles.includes(".squad-table{width:1621px;min-width:1621px;table-layout:fixed}"), "Tabella calciatori: larghezza non riallineata alle colonne rimaste");
 for (const removedCopy of ["Copertura statistica" + " individuale", "Le schede separano squadra" + " e competizione 2025/26"]) assert.ok(!teamInterface.includes(removedCopy), `Pagine squadra: testo rimosso ancora presente: ${removedCopy}`);
 const teamPageSource = teamInterface.slice(teamInterface.indexOf("function teamPage"), teamInterface.indexOf("async function init"));
 assert.ok(!teamPageSource.includes('<h2>Fonti</h2>') && !teamPageSource.includes("team.sources.map"), "Le fonti non devono comparire in fondo alle pagine squadra");
