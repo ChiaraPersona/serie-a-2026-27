@@ -14,10 +14,10 @@ const withFonts = html => html.replace("</title>", `</title>${fontLinks}`);
 const version = "20260824-central-sources-page-v1";
 const homeVersion = "20260824-home-standings-links-v1";
 const calendarVersion = "20260824-calendar-final-score-v1";
-const teamVersion = "20260824-team-page-portrait-v5-roma-fiorentina-xi";
+const teamVersion = "20260824-team-page-portrait-v6-rodrigo-mora";
 const leaderboardVersion = "20260824-player-leaderboards-by-season-v18-player-minutes-modern-buttons-v3";
 const bettingVersion = "20260824-schedina-archive-v4-modern-buttons-v3";
-const readingVersion = "20260824-reading-matchup-logos-referee-profile-score-dedup-v5-roma-fiorentina-xi";
+const readingVersion = "20260824-reading-matchup-logos-referee-profile-score-dedup-v6-rodrigo-mora";
 const headToHeadPath = path.join(root, "data/generated/head-to-head/first-leg-2026-27.json");
 if (fs.existsSync(headToHeadPath)) {
   const headToHead = JSON.parse(fs.readFileSync(headToHeadPath, "utf8"));

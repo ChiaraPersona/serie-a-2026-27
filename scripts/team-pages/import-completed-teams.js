@@ -291,7 +291,8 @@ async function buildTeam(teamId, teamConfig, entries, detailedRoles) {
   }
   const squad = seeds.map(seed => {
     let playerEntries = entries.filter(entry => entry.playerId === seed.id).sort((left, right) => (right.appearances ?? 0) - (left.appearances ?? 0));
-    if (!playerEntries.length && externalByPlayer.has(seed.id)) playerEntries = externalByPlayer.get(seed.id);
+    const usesExternalStats = !playerEntries.length && externalByPlayer.has(seed.id);
+    if (usesExternalStats) playerEntries = externalByPlayer.get(seed.id);
     const completeness = playerEntries.length ? (playerEntries.some(entry => entry.minutes != null) ? "complete" : "partial") : "unavailable";
     const photoUrl = seed.espnId ? `https://a.espncdn.com/i/headshots/soccer/players/full/${seed.espnId}.png` : null;
     const inferredRole = seed.espnId ? detailedRoles.get(seed.espnId) : null;
@@ -314,7 +315,7 @@ async function buildTeam(teamId, teamConfig, entries, detailedRoles) {
       ],
       dataQuality: {
         status: completeness, uncertainAssociation: false, associationMethod: seed.espnId ? "provider-id" : null,
-        note: `${playerEntries.length ? "Statistiche aggregate dai roster partita ESPN." : "Nessuna statistica 2025/26 verificata nel perimetro Serie A/Serie B ESPN; i valori restano N/D."}${inferredRole ? ` Ruolo tattico ricavato da ${inferredRole.starts} presenze da titolare 2025/26 (${inferredRole.occurrences} nel ruolo prevalente).` : " Ruolo specifico non assegnato senza evidenza tattica da titolare."}`
+        note: `${playerEntries.length ? (usesExternalStats ? "Statistiche 2025/26 importate dalla fonte esterna dichiarata." : "Statistiche aggregate dai roster partita ESPN.") : "Nessuna statistica 2025/26 verificata nel perimetro Serie A/Serie B ESPN; i valori restano N/D."}${inferredRole ? ` Ruolo tattico ricavato da ${inferredRole.starts} presenze da titolare 2025/26 (${inferredRole.occurrences} nel ruolo prevalente).` : " Ruolo specifico non assegnato senza evidenza tattica da titolare."}`
       }
     };
     write(`data/players/${teamId}/${player.id}.json`, player);
