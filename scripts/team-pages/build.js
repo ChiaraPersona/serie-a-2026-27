@@ -40,6 +40,8 @@ const wikimediaPhotosFile = path.join(root, "data/sources/team-pages/wikimedia-p
 const wikimediaPhotos = fs.existsSync(wikimediaPhotosFile) ? JSON.parse(fs.readFileSync(wikimediaPhotosFile, "utf8")) : { entries: [], retrievedAt: null };
 const wikimediaPhotoByPlayer = new Map(wikimediaPhotos.entries.map(photo => [`${photo.teamId}:${photo.playerId}`, photo]));
 const serieAStandings = read("data/normalized/standings-2025-26.json");
+const currentSeasonMatches = read("data/normalized/matches.json")
+  .filter(match => match.competition === "serie-a" && match.season === "2026-27" && match.status === "finished" && match.score);
 const currentIds = new Set(teams.map(team => team.id));
 const generatedSquads = new Map(teams.map(team => {
   const teamId = team.id;
@@ -109,6 +111,95 @@ function matchStats(teamId, competition) {
   return { selected, home: split(selected.filter(x => x.isHome)), away: split(selected.filter(x => !x.isHome)), sum };
 }
 
+function currentMatchStats(teamId) {
+  const selected = currentSeasonMatches.filter(match => match.homeTeam === teamId || match.awayTeam === teamId).map(match => {
+    const isHome = match.homeTeam === teamId;
+    return {
+      match,
+      own: isHome ? match.teamStats?.home : match.teamStats?.away,
+      opponent: isHome ? match.teamStats?.away : match.teamStats?.home,
+      isHome,
+      gf: isHome ? match.score.home : match.score.away,
+      ga: isHome ? match.score.away : match.score.home
+    };
+  });
+  const sum = (items, field, side = "own") => {
+    if (!items.length) return 0;
+    const values = items.map(item => item[side]?.[field]);
+    return values.every(value => value !== null && value !== undefined) ? values.reduce((total, value) => total + value, 0) : null;
+  };
+  const split = items => ({
+    played: items.length,
+    won: items.filter(item => item.gf > item.ga).length,
+    drawn: items.filter(item => item.gf === item.ga).length,
+    lost: items.filter(item => item.gf < item.ga).length,
+    goalsFor: items.reduce((total, item) => total + item.gf, 0),
+    goalsAgainst: items.reduce((total, item) => total + item.ga, 0),
+    yellowCards: sum(items, "yellowCards"),
+    corners: sum(items, "corners")
+  });
+  return { selected, home: split(selected.filter(item => item.isHome)), away: split(selected.filter(item => !item.isHome)), sum };
+}
+
+function seasonStats({ season, competition, source, lastUpdated, matchData, row = null }) {
+  const played = row?.played ?? matchData.selected.length;
+  const won = row?.won ?? matchData.selected.filter(item => item.gf > item.ga).length;
+  const drawn = row?.drawn ?? matchData.selected.filter(item => item.gf === item.ga).length;
+  const lost = row?.lost ?? matchData.selected.filter(item => item.gf < item.ga).length;
+  const points = row?.points ?? won * 3 + drawn;
+  const goalsFor = row?.goalsFor ?? matchData.selected.reduce((total, item) => total + item.gf, 0);
+  const goalsAgainst = row?.goalsAgainst ?? matchData.selected.reduce((total, item) => total + item.ga, 0);
+  const results = {
+    ...nullObject(STAT_FIELDS.results), ...(row || {}), played, won, drawn, lost, points, goalsFor, goalsAgainst,
+    goalDifference: goalsFor - goalsAgainst, pointsPerGame: rate(points, played), goalsPerGame: rate(goalsFor, played),
+    goalsAgainstPerGame: rate(goalsAgainst, played), cleanSheets: matchData.selected.filter(item => item.ga === 0).length,
+    failedToScore: matchData.selected.filter(item => item.gf === 0).length, winPercentage: percentage(won, played),
+    drawPercentage: percentage(drawn, played), lossPercentage: percentage(lost, played)
+  };
+  const fouls = matchData.sum(matchData.selected, "fouls");
+  const foulsWon = matchData.sum.length >= 3
+    ? matchData.sum(matchData.selected, "fouls", "opponent")
+    : matchData.selected.reduce((total, item) => total + (item.opponent.fouls ?? 0), 0);
+  const yellowCards = matchData.sum(matchData.selected, "yellowCards");
+  const secondYellowCards = matchData.sum(matchData.selected, "secondYellowCards");
+  const straightRedCards = matchData.sum(matchData.selected, "straightRedCards");
+  const penaltiesWon = matchData.sum(matchData.selected, "penaltiesFor");
+  const penaltiesConceded = matchData.sum(matchData.selected, "penaltiesAgainst");
+  const discipline = {
+    ...nullObject(STAT_FIELDS.discipline), foulsCommitted: fouls, foulsCommittedPerGame: rate(fouls, played),
+    foulsWon, foulsWonPerGame: rate(foulsWon, played), yellowCards, yellowCardsPerGame: rate(yellowCards, played),
+    secondYellowCards, straightRedCards, dismissals: secondYellowCards + straightRedCards, penaltiesConceded,
+    penaltiesWon, disciplineIndex: rate(yellowCards + secondYellowCards * 2 + straightRedCards * 3, played)
+  };
+  return {
+    season, competition, source, lastUpdated, results, attack: nullObject(STAT_FIELDS.attack),
+    defence: { ...nullObject(STAT_FIELDS.defence), goalsAgainstPerGame: rate(goalsAgainst, played), cleanSheets: results.cleanSheets },
+    discipline, possession: nullObject(STAT_FIELDS.possession), homeAway: { home: matchData.home, away: matchData.away }
+  };
+}
+
+const add = (left, right) => left == null || right == null ? null : left + right;
+function totalStats(previous, current) {
+  const results = Object.fromEntries(["played", "won", "drawn", "lost", "points", "goalsFor", "goalsAgainst", "cleanSheets", "failedToScore"]
+    .map(field => [field, add(previous.results[field], current.results[field])]));
+  results.goalDifference = add(previous.results.goalDifference, current.results.goalDifference);
+  results.pointsPerGame = rate(results.points, results.played);
+  results.goalsPerGame = rate(results.goalsFor, results.played);
+  results.goalsAgainstPerGame = rate(results.goalsAgainst, results.played);
+  results.winPercentage = percentage(results.won, results.played);
+  results.drawPercentage = percentage(results.drawn, results.played);
+  results.lossPercentage = percentage(results.lost, results.played);
+  const discipline = Object.fromEntries(["foulsCommitted", "foulsWon", "yellowCards", "secondYellowCards", "straightRedCards", "dismissals", "penaltiesConceded", "penaltiesWon"]
+    .map(field => [field, add(previous.discipline[field], current.discipline[field])]));
+  discipline.foulsCommittedPerGame = rate(discipline.foulsCommitted, results.played);
+  discipline.foulsWonPerGame = rate(discipline.foulsWon, results.played);
+  discipline.yellowCardsPerGame = rate(discipline.yellowCards, results.played);
+  discipline.disciplineIndex = rate(discipline.yellowCards + discipline.secondYellowCards * 2 + discipline.straightRedCards * 3, results.played);
+  const split = side => Object.fromEntries(["played", "won", "drawn", "lost", "goalsFor", "goalsAgainst", "yellowCards", "corners"]
+    .map(field => [field, add(previous.homeAway[side][field], current.homeAway[side][field])]));
+  return { season: "Totale", competition: previous.competition === current.competition ? current.competition : `${previous.competition} + ${current.competition}`, source: "Riepilogo calcolato", lastUpdated: current.lastUpdated, results, discipline, homeAway: { home: split("home"), away: split("away") } };
+}
+
 function buildTeam(team) {
   const details = teamDetails.teams[team.id];
   const projectedLineup = probableLineupByTeam.get(team.id);
@@ -124,33 +215,9 @@ function buildTeam(team) {
   const table = previousCompetition === "serie-a" ? aRows : serieBTable;
   const row = table.find(item => item.team === team.id) || null;
   const matchData = matchStats(team.id, previousCompetition);
-  const played = row?.played ?? matchData.selected.length;
-  const results = {
-    ...nullObject(STAT_FIELDS.results),
-    ...(row || {}),
-    pointsPerGame: rate(row?.points, played),
-    goalsPerGame: rate(row?.goalsFor, played),
-    goalsAgainstPerGame: rate(row?.goalsAgainst, played),
-    cleanSheets: matchData.selected.filter(item => item.ga === 0).length,
-    failedToScore: matchData.selected.filter(item => item.gf === 0).length,
-    winPercentage: percentage(row?.won, played),
-    drawPercentage: percentage(row?.drawn, played),
-    lossPercentage: percentage(row?.lost, played)
-  };
-  const fouls = matchData.sum(matchData.selected, "fouls");
-  const foulsWon = matchData.selected.reduce((total, item) => total + (item.opponent.fouls ?? 0), 0);
-  const yellow = matchData.sum(matchData.selected, "yellowCards");
-  const secondYellow = matchData.sum(matchData.selected, "secondYellowCards");
-  const straightRed = matchData.sum(matchData.selected, "straightRedCards");
-  const penaltiesFor = matchData.sum(matchData.selected, "penaltiesFor");
-  const penaltiesAgainst = matchData.sum(matchData.selected, "penaltiesAgainst");
-  const discipline = {
-    ...nullObject(STAT_FIELDS.discipline), foulsCommitted: fouls, foulsCommittedPerGame: rate(fouls, played),
-    foulsWon, foulsWonPerGame: rate(foulsWon, played),
-    yellowCards: yellow, yellowCardsPerGame: rate(yellow, played), secondYellowCards: secondYellow,
-    straightRedCards: straightRed, dismissals: secondYellow + straightRed, penaltiesConceded: penaltiesAgainst,
-    penaltiesWon: penaltiesFor, disciplineIndex: round((yellow + secondYellow * 2 + straightRed * 3) / (played || 1))
-  };
+  const previousStats = seasonStats({ season: "2025/26", competition: competitionName, source: "ESPN", lastUpdated: "2026-07-18", matchData, row });
+  const currentStats = seasonStats({ season: "2026/27", competition: "Serie A", source: "Risultati ufficiali e StatMuse", lastUpdated: "2026-08-24", matchData: currentMatchStats(team.id) });
+  const combinedStats = totalStats(previousStats, currentStats);
   const generatedSquad = generatedSquads.get(team.id);
   const squad = (generatedSquad?.players || []).map(player => {
     const market = marketValueByPlayer.get(`${team.id}:${player.id}`);
@@ -228,7 +295,7 @@ function buildTeam(team) {
     } } : {}),
     previousSeason: { season: "2025/26", competition: competitionName, competitionId: previousCompetition, promoted: previousCompetition === "serie-b", position: row?.position ?? null, points: row?.points ?? null },
     europeanCompetitions: [], lastUpdated: teamLastUpdated,
-    teamStats: { season: "2025/26", competition: competitionName, source: "ESPN", lastUpdated: "2026-07-18", results, attack: nullObject(STAT_FIELDS.attack), defence: { ...nullObject(STAT_FIELDS.defence), goalsAgainstPerGame: rate(row?.goalsAgainst, played), cleanSheets: results.cleanSheets }, discipline, possession: nullObject(STAT_FIELDS.possession), homeAway: { home: matchData.home, away: matchData.away } },
+    teamStats: { ...previousStats, seasons: { "2026/27": currentStats, "2025/26": previousStats }, total: combinedStats },
     squad, sources,
     availability: squad.length
       ? { squad: "available", playerStats: squad.every(player => player.dataQuality.status === "complete") ? "complete" : "partial", note: "Rosa 2026/27 e statistiche ESPN 2025/26 separate per squadra e competizione; i dati non esposti restano N/D." }
