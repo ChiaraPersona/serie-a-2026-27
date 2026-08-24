@@ -20,4 +20,7 @@ for (const name of ["scheduleLabel", "teamLogo", "matchCard", "homeMatchListItem
 
 const shell = fs.readFileSync(path.join(root, "index.html"), "utf8");
 assert.match(shell, /<script type="module" src="js\/app\.js\?v=[^"]+"><\/script>/, "entry point ES module non generato");
+const bettingPage = fs.readFileSync(path.join(root, "js", "pages", "betting.js"), "utf8");
+assert.match(bettingPage, /class="betting-archive-card"/, "Schedina: card archivio della giornata assente");
+assert.match(bettingPage, /id="betting-round-01-title">1ª giornata/, "Schedina: intestazione archivio prima giornata assente");
 console.log(`OK moduli applicazione: ${pageFiles.length} pagine e 4 componenti condivisi`);

@@ -13,7 +13,7 @@ const withFonts = html => html.replace("</title>", `</title>${fontLinks}`);
 const version = "20260824-modern-buttons-v3";
 const teamVersion = "20260824-team-leaders-2026-27-v1-modern-buttons-v3";
 const leaderboardVersion = "20260824-player-leaderboards-by-season-v18-player-minutes-modern-buttons-v3";
-const bettingVersion = "20260823-md1-player-results-v13-modern-buttons-v3";
+const bettingVersion = "20260824-schedina-archive-v2-modern-buttons-v3";
 const readingVersion = "20260824-reading-result-summary-v13-modern-buttons-v3";
 const headToHeadPath = path.join(root, "data/generated/head-to-head/first-leg-2026-27.json");
 if (fs.existsSync(headToHeadPath)) {
