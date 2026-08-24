@@ -10,10 +10,16 @@ const wikimediaPhotos = read("data/sources/team-pages/wikimedia-player-photos.js
 const wikimediaPhotoByPlayer = new Map(wikimediaPhotos.entries.map(entry => [`${entry.teamId}:${entry.playerId}`, entry]));
 const playerPlaceholder = "assets/images/players/player-placeholder.png";
 const expectedRosterAdditions = {
-  atalanta: ["paolo-vismara", "relja-obric", "federico-cassa"],
+  atalanta: ["paolo-vismara", "relja-obric", "federico-cassa", "eljif-elmas"],
+  cagliari: ["alieu-fadera"],
   fiorentina: ["gianmaria-fei", "alessandro-perrotti", "federico-croci", "brando-mazzeo"],
-  genoa: ["rendijs-mihelsons", "matteo-barbini", "lukas-klisys"],
-  torino: ["diego-mascardi", "gaetano-oristanio", "giovanni-simeone", "sandro-kulenovic"],
+  genoa: ["rendijs-mihelsons", "matteo-barbini", "lukas-klisys", "nicolo-tondi"],
+  inter: ["curtis-jones"],
+  lazio: ["cristian-bagordo", "jacopo-landi"],
+  monza: ["idrissa-toure"],
+  napoli: ["benoit-badiashile"],
+  sassuolo: ["fedde-leysen"],
+  torino: ["diego-mascardi", "gaetano-oristanio", "giovanni-simeone", "sandro-kulenovic", "nicolo-fortini"],
   udinese: ["rene-pirih"]
 };
 assert.ok(fs.existsSync(path.join(root, playerPlaceholder)), "Immagine fallback calciatore assente");

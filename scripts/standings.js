@@ -7,7 +7,9 @@ const standingsCardTotal = stats => {
   return values.every(value => value === null) ? null : values.reduce((total, value) => total + (value ?? 0), 0);
 };
 
-function calculateStandings(teams, matches) {
+function calculateStandings(teams, matches, scope = "general") {
+  if (!["general", "home", "away"].includes(scope)) throw new Error(`Ambito classifica non valido: ${scope}`);
+  const includeHome = scope !== "away", includeAway = scope !== "home";
   const rows = new Map(teams.map(team => [team.id, {
     team: team.id,
     played: 0,
@@ -40,12 +42,17 @@ function calculateStandings(teams, matches) {
     if (match.competition !== "serie-a" || match.status !== "finished" || !match.score) continue;
     const home = rows.get(match.homeTeam); const away = rows.get(match.awayTeam);
     if (!home || !away) throw new Error(`Squadra mancante per ${match.id}`);
-    home.played++; away.played++; home.goalsFor += match.score.home; home.goalsAgainst += match.score.away; away.goalsFor += match.score.away; away.goalsAgainst += match.score.home;
-    addDiscipline(home, standingsSideStats(match, "home"), standingsSideStats(match, "away"));
-    addDiscipline(away, standingsSideStats(match, "away"), standingsSideStats(match, "home"));
-    if (match.score.home > match.score.away) { home.won++; away.lost++; home.points += 3; }
-    else if (match.score.home < match.score.away) { away.won++; home.lost++; away.points += 3; }
-    else { home.drawn++; away.drawn++; home.points++; away.points++; }
+    if (includeHome) {
+      home.played++; home.goalsFor += match.score.home; home.goalsAgainst += match.score.away;
+      addDiscipline(home, standingsSideStats(match, "home"), standingsSideStats(match, "away"));
+    }
+    if (includeAway) {
+      away.played++; away.goalsFor += match.score.away; away.goalsAgainst += match.score.home;
+      addDiscipline(away, standingsSideStats(match, "away"), standingsSideStats(match, "home"));
+    }
+    if (match.score.home > match.score.away) { if (includeHome) { home.won++; home.points += 3; } if (includeAway) away.lost++; }
+    else if (match.score.home < match.score.away) { if (includeAway) { away.won++; away.points += 3; } if (includeHome) home.lost++; }
+    else { if (includeHome) { home.drawn++; home.points++; } if (includeAway) { away.drawn++; away.points++; } }
   }
   return [...rows.values()].map(row => {
     const completeValue = key => row.played === 0 ? 0 : row.disciplineCoverage[key] === row.played ? row[key] : null;
