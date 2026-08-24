@@ -14,7 +14,7 @@ const app = fs.readdirSync(path.join(root, "js"), { recursive: true })
   .map(file => fs.readFileSync(path.join(root, "js", file), "utf8"))
   .join("\n");
 const page = fs.readFileSync(path.join(root, "lettura.html"), "utf8");
-const appRelease = fs.readFileSync(path.join(root, "scripts/build-site.js"), "utf8").match(/const version = "([^"]+)"/)?.[1];
+const appRelease = fs.readFileSync(path.join(root, "scripts/build-site.js"), "utf8").match(/const readingVersion = "([^"]+)"/)?.[1];
 
 assert.strictEqual(history.fixtures.length, 190, "Lo storico deve coprire le 190 partite di andata");
 assert.strictEqual(historySummary.fixtures.length, 190, "Il riepilogo H2H deve coprire le 190 partite di andata");

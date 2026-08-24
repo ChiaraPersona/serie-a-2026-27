@@ -2,9 +2,10 @@
   "name": "serie-a-2026-27",
   "private": true,
   "scripts": {
-    "build": "node scripts/build-standings-2025-26-discipline.js && node scripts/team-pages/build.js && node scripts/build-team-style-profiles.js && node scripts/build-team-volume-profiles.js && node scripts/build-team-referee-profiles.js && node scripts/build-fantasy.js && node scripts/build-coppa-italia.js && node scripts/build-readings.js && node scripts/build-predictions.js && node scripts/build-schedina.js && node scripts/build-site.js",
+    "build": "node scripts/build-standings-2025-26-discipline.js && node scripts/team-pages/build.js && node scripts/build-team-style-profiles.js && node scripts/build-team-volume-profiles.js && node scripts/build-team-referee-profiles.js && node scripts/build-reading-referee-profiles.js && node scripts/build-fantasy.js && node scripts/build-coppa-italia.js && node scripts/build-readings.js && node scripts/build-predictions.js && node scripts/build-schedina.js && node scripts/build-site.js",
     "build:standings-archive": "node scripts/build-standings-2025-26-discipline.js && node scripts/build-site.js",
-    "build:readings": "node scripts/build-readings.js && node scripts/build-team-volume-profiles.js && node scripts/build-predictions.js && node scripts/build-site.js",
+    "build:readings": "node scripts/build-readings.js && node scripts/build-reading-referee-profiles.js && node scripts/build-team-volume-profiles.js && node scripts/build-predictions.js && node scripts/build-site.js",
+    "build:reading-referees": "node scripts/build-reading-referee-profiles.js && node scripts/build-site.js",
     "build:predictions": "node scripts/build-team-volume-profiles.js && node scripts/build-predictions.js && node scripts/build-schedina.js && node scripts/build-site.js",
     "build:schedina": "node scripts/build-schedina.js && node scripts/build-site.js",
     "build:cup": "node scripts/build-coppa-italia.js && node scripts/build-site.js",

@@ -454,6 +454,18 @@ body[data-page="referees"] .referee-nav a:focus-visible{border-color:rgba(36,90,
 .reading-referee-assignment dd{margin:5px 0 0;color:#263f46;font-size:13px;font-weight:850}
 
 .reading-referee-assignment>a{color:#194d70;font-weight:850}
+.reading-referee-stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:20px 0}
+.reading-referee-stats article{padding:14px;border:1px solid rgba(36,90,120,.13);border-radius:14px;background:rgba(255,255,255,.76)}
+.reading-referee-stats span,.reading-referee-stats small{display:block;color:var(--muted);font-size:11px;font-weight:750}
+.reading-referee-stats strong{display:block;margin:5px 0;color:#173f51;font-size:20px}
+.reading-referee-tendencies{margin-top:18px;padding:18px;border-radius:16px;background:rgba(20,72,96,.07)}
+.reading-referee-tendencies h3{margin:0 0 12px;color:#173f51;font-size:16px}
+.reading-referee-tendencies ul{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:0;padding:0;list-style:none}
+.reading-referee-tendencies li{display:grid;gap:4px;padding:12px 14px;border-radius:12px;background:rgba(255,255,255,.7)}
+.reading-referee-tendencies li span,.reading-referee-tendencies p,.reading-referee-method{color:var(--muted);font-size:12px;line-height:1.55}
+.reading-referee-tendencies p{margin:12px 0 0}
+.reading-referee-sources{display:flex;flex-wrap:wrap;gap:14px}
+.reading-referee-sources a{color:#194d70;font-weight:850}
 
 .reading-back{display:flex;justify-content:space-between;margin-bottom:18px}
 
@@ -722,18 +734,6 @@ body[data-page="referees"] .referee-nav a:focus-visible{border-color:rgba(36,90,
 .reading-fixture .reading-final-score,.match.fixture-card .fixture-score .reading-final-score{min-width:64px;height:auto;padding:0;border:0;border-radius:0;background:transparent;color:#173d68;font-family:"Anton",sans-serif;font-size:28px;font-weight:400;letter-spacing:.04em;text-align:center}
 
 .reading-post-match{overflow:hidden;padding:30px;border:1px solid rgba(25,131,78,.18);border-radius:28px;background:linear-gradient(145deg,rgba(249,255,252,.96),rgba(241,247,252,.82));box-shadow:0 18px 45px rgba(32,49,73,.09)}
-
-.reading-post-match-score{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:24px;margin-top:22px;padding:24px;border:1px solid rgba(36,90,120,.1);border-radius:22px;background:rgba(255,255,255,.66)}
-
-.reading-post-match-score>div{display:flex;align-items:center;gap:14px;font-size:18px}
-
-.reading-post-match-score>div:last-child{justify-content:flex-end;text-align:right}
-
-.reading-post-match-score img{width:58px;height:58px;object-fit:contain}
-
-.reading-post-match-score>b{display:flex;align-items:center;gap:14px;color:#173d68;font-family:"Anton",sans-serif;font-size:48px;font-weight:400}
-
-.reading-post-match-score>b span{color:var(--muted);font-family:inherit;font-size:28px}
 
 .reading-match-events-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:16px}
 
@@ -1062,14 +1062,14 @@ body[data-page="referees"] .referee-nav a:focus-visible{border-color:rgba(36,90,
 
 .reading-hero-summary .reading-final-verdict small{font-size:11px}
 
-/* Risultato concluso: tabellone compatto e tre informazioni allo stesso livello. */
+/* Risultato concluso: tabellone compatto e solo pronostico sotto la testata. */
 .reading-match-hero.is-finished{grid-template-columns:minmax(0,1.18fr) minmax(360px,.82fr);gap:28px}
 
 .reading-match-hero.is-finished .reading-matchup{padding:16px 18px;border:1px solid rgba(36,90,120,.1);border-radius:26px;background:linear-gradient(145deg,rgba(255,255,255,.7),rgba(239,247,248,.46));box-shadow:inset 0 1px rgba(255,255,255,.92),0 14px 34px rgba(32,49,73,.07)}
 
 .reading-match-hero.is-finished .reading-matchup>b{display:grid;place-items:center;min-width:104px;height:60px;padding:0 16px;border:1px solid rgba(13,55,92,.35);border-radius:18px;background:linear-gradient(135deg,#244f73,#163a5a);box-shadow:0 10px 22px rgba(19,55,82,.2),inset 0 1px rgba(255,255,255,.18);color:#fff;font-family:var(--font-display);font-size:34px;font-weight:400;letter-spacing:.06em}
 
-.reading-hero-summary.reading-result-summary{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;padding-top:18px}
+.reading-hero-summary.reading-result-summary{grid-template-columns:1fr;gap:12px;padding-top:18px}
 
 .reading-hero-summary.reading-result-summary>div{--summary-accent:#245a78;position:relative;justify-content:flex-start;min-height:126px;overflow:hidden;padding:19px 20px 17px;border:1px solid rgba(36,90,120,.1);border-radius:20px;background:linear-gradient(145deg,rgba(255,255,255,.8),rgba(235,246,248,.62));box-shadow:inset 0 1px rgba(255,255,255,.92),0 10px 24px rgba(32,49,73,.07)}
 
@@ -1084,14 +1084,6 @@ body[data-page="referees"] .referee-nav a:focus-visible{border-color:rgba(36,90,
 .reading-hero-summary.reading-result-summary strong{margin:10px 0 5px;color:#213b46;font-family:var(--font-display);font-size:30px;font-weight:400;line-height:1;letter-spacing:.025em}
 
 .reading-hero-summary.reading-result-summary small{margin-top:auto;color:#66778a;font-size:11px;line-height:1.4}
-
-.reading-hero-summary .reading-result-card{--summary-accent:#1c5e88;background:linear-gradient(145deg,rgba(224,246,250,.9),rgba(255,255,255,.72))}
-
-.reading-hero-summary .reading-result-card strong{font-size:38px;color:#173d5d}
-
-.reading-hero-summary .reading-coverage-card{--summary-accent:#28776e;background:linear-gradient(145deg,rgba(231,248,243,.86),rgba(255,255,255,.72))}
-
-.reading-hero-summary .reading-coverage-card strong{font-size:28px}
 
 .reading-hero-summary .reading-prediction-card{--summary-accent:#9a6b16;background:linear-gradient(145deg,rgba(255,246,220,.9),rgba(255,255,255,.74))}
 
