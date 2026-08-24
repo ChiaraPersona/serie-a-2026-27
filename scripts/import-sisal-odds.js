@@ -14,6 +14,7 @@ function readArguments(argv) {
     if (argument === "--competition") options.competition = argv[++index];
     else if (argument === "--url") options.url = argv[++index];
     else if (argument === "--matchday") options.matchday = Number(argv[++index]);
+    else if (argument === "--match-id") options.matchId = argv[++index];
     else if (argument === "--limit") options.limit = Number(argv[++index]);
     else if (argument === "--wait-ms") options.waitMs = Number(argv[++index]);
     else if (argument === "--headed") options.headed = true;
@@ -43,6 +44,17 @@ function fixturePageUrls(competition, options) {
     left.id.localeCompare(right.id)
   );
   if (fixtures.length !== 10) throw new Error(`Calendario canonico incompleto per la giornata ${matchday}: ${fixtures.length}/10 gare.`);
+  if (options.matchId) {
+    if (options.limit !== undefined) throw new Error("--match-id e --limit non possono essere usati insieme.");
+    const fixture = fixtures.find((match) => match.id === options.matchId);
+    if (!fixture) throw new Error(`Partita non trovata nella giornata ${matchday}: ${options.matchId}.`);
+    return [{
+      canonicalMatchId: fixture.id,
+      url: competition.eventUrlTemplate
+        .replace("{homeTeam}", encodeURIComponent(fixture.homeTeam))
+        .replace("{awayTeam}", encodeURIComponent(fixture.awayTeam)),
+    }];
+  }
   if (options.limit !== undefined && (!Number.isInteger(options.limit) || options.limit < 1 || options.limit > fixtures.length)) {
     throw new Error(`--limit deve essere un numero intero compreso tra 1 e ${fixtures.length}.`);
   }
@@ -76,7 +88,7 @@ function summarize(events) {
 async function main() {
   const options = readArguments(process.argv.slice(2));
   if (options.help) {
-    console.log("Uso: node scripts/import-sisal-odds.js [--competition serie-a] [--matchday 1] [--limit 4] [--url URL] [--wait-ms 15000] [--headless] [--no-details]");
+    console.log("Uso: node scripts/import-sisal-odds.js [--competition serie-a] [--matchday 1] [--match-id ID | --limit 4] [--url URL] [--wait-ms 15000] [--headless] [--no-details]");
     return;
   }
   const competition = sourceConfig.competitions[options.competition];
