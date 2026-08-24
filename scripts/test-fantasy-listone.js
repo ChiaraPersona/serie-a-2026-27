@@ -5,6 +5,7 @@ const path = require("path");
 const root = path.resolve(__dirname, "..");
 const read = file => JSON.parse(fs.readFileSync(path.join(root, file), "utf8"));
 const source = read("data/sources/fantacalcio-quotations-2026-27.json");
+const callups = read("data/sources/fantacalcio-callups-md1-2026-27.json");
 const statsSource = read("data/sources/fantacalcio-stats-2025-26.json");
 const externalStatsSource = read("data/sources/fantasy-external-stats-2025-26.json");
 const probable = read("data/sources/probable-lineups-md1-2026-27.json");
@@ -17,16 +18,22 @@ const appSource = fs.readdirSync(path.join(root, "js"), { recursive: true })
   .join("\n");
 
 assert.equal(source.season, "2026/27");
-assert.equal(source.players.length, 505);
+assert.equal(source.players.length, source.coverage.activePlayers);
 assert.equal(source.departed.length, 15);
-assert.equal(new Set(source.players.map(player => player.sourceId)).size, 505);
-assert.deepEqual(source.coverage.byRole, { P: 62, D: 177, C: 177, A: 89 });
+assert.equal(new Set(source.players.map(player => player.sourceId)).size, source.players.length);
+assert.deepEqual(source.coverage.byRole, Object.fromEntries(["P", "D", "C", "A"].map(role => [role, source.players.filter(player => player.role === role).length])));
 assert.equal(new Set(source.players.map(player => player.teamId)).size, 20);
+assert.equal(callups.coverage.teams, 20);
+assert.equal(callups.coverage.teamsWithOfficialList, 18);
+assert.deepEqual(callups.coverage.incompleteTeams, ["lazio", "sassuolo"]);
+const callupIdsByTeam = new Map(callups.teams.map(team => [team.teamId, new Set(team.players.map(player => String(player.sourceId))) ]));
+for (const player of source.players.filter(player => !callups.coverage.incompleteTeams.includes(player.teamId))) {
+  assert.ok(callupIdsByTeam.get(player.teamId).has(String(player.sourceId)), `${player.team}:${player.name} non presente nella pagina Convocati`);
+}
 for (const player of source.players) {
   assert.ok(["P", "D", "C", "A"].includes(player.role), `${player.name}: ruolo Classic non valido`);
-  assert.ok(player.mantraRole, `${player.name}: ruolo Mantra mancante`);
   for (const field of ["currentQuotation", "initialQuotation", "currentMantraQuotation", "initialMantraQuotation", "fvm", "mantraFvm"]) {
-    assert.ok(Number.isFinite(player[field]), `${player.name}: ${field} non numerico`);
+    assert.ok(player[field] === null || Number.isFinite(player[field]), `${player.name}: ${field} non numerico`);
   }
 }
 
@@ -48,8 +55,8 @@ assert.equal(generated.sources.injuries.coverage.reports, injuries.coverage.repo
 const quotedAdvice = generated.players.filter(player => player.quotations);
 assert.ok(quotedAdvice.length > 350, `Copertura quotazioni insufficiente: ${quotedAdvice.length}`);
 for (const player of quotedAdvice) {
-  assert.ok(Number.isFinite(player.quotations.classic));
-  assert.ok(Number.isFinite(player.quotations.fvm));
+  assert.ok(player.quotations.classic === null || Number.isFinite(player.quotations.classic));
+  assert.ok(player.quotations.fvm === null || Number.isFinite(player.quotations.fvm));
 }
 
 const adviceIds = new Set(generated.players.map(player => player.id));

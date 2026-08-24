@@ -8,6 +8,7 @@ const matches = read("data/normalized/matches.json").filter(match => match.compe
 const teamFiles = teams.map(team => read(`data/teams/${team.id}.json`));
 const fantasyWorkbook = read("data/sources/fantacalcio-stats-2025-26.json");
 const fantasyQuotations = read("data/sources/fantacalcio-quotations-2026-27.json");
+const fantasyCallups = read("data/sources/fantacalcio-callups-md1-2026-27.json");
 const probableLineups = read("data/sources/probable-lineups-md1-2026-27.json");
 const fantasyInjuries = read("data/sources/fantacalcio-injuries-2026-27.json");
 const goalkeeperHierarchySource = read("data/sources/fantasy-goalkeeper-hierarchy-2026-27.json");
@@ -23,6 +24,12 @@ const probableByPlayerId = new Map(probablePlayers.filter(player => player.playe
 const probableBySourceId = new Map(probablePlayers.filter(player => player.sourceId !== null && player.sourceId !== undefined).map(player => [String(player.sourceId), player]));
 const injuryByPlayerId = new Map(injuryReports.filter(player => player.playerId).map(player => [player.playerId, player]));
 const injuryBySourceId = new Map(injuryReports.filter(player => player.sourceId).map(player => [String(player.sourceId), player]));
+const callupPlayers = fantasyCallups.teams.flatMap(team => team.players);
+const callupBySourceId = new Map(callupPlayers.map(player => [String(player.sourceId), player]));
+const callupByPlayerId = new Map(fantasyQuotations.players
+  .filter(player => player.playerId && callupBySourceId.has(String(player.sourceId)))
+  .map(player => [player.playerId, callupBySourceId.get(String(player.sourceId)).status]));
+const activeFantasyPlayerIds = new Set(fantasyQuotations.players.filter(player => player.playerId).map(player => player.playerId));
 
 const roleCode = role => {
   if (role === "Portiere") return "P";
@@ -85,6 +92,7 @@ const goalkeeperPrimaryIds = new Set(goalkeeperHierarchySource.teams.flatMap(ent
 const candidates = [];
 for (const team of teamFiles) {
   for (const player of team.squad || []) {
+    if (!activeFantasyPlayerIds.has(player.id)) continue;
     const totals = player.previousSeason?.totals || {};
     const entries = player.previousSeason?.entries || [];
     const fantasyHistory = fantasyHistoryByPlayerId.get(player.id) || null;
@@ -175,6 +183,7 @@ for (const team of teamFiles) {
       calendar: { index: teamCalendar[team.id].index, label: teamCalendar[team.id].label },
       currentAvailability: {
         matchday: probableLineups.matchday,
+        callupStatus: callupByPlayerId.get(player.id) || null,
         starterProbability: probable?.probability ?? null,
         lineupStatus: probable?.lineupStatus ?? null,
         lineupUpdatedAt: probable ? probableLineups.teams.find(item => item.teamId === team.id)?.updatedAt ?? null : null,
@@ -346,6 +355,14 @@ const output = {
       matchedPlayers: fantasyQuotations.coverage.matchedCurrentPlayers,
       use: "Quotazioni Classic e Mantra, ruoli Mantra e FVM; FVM applicato come correttivo di ruolo al 15%."
     },
+    callups: {
+      provider: fantasyCallups.provider,
+      url: fantasyCallups.sourceUrl,
+      importedAt: fantasyCallups.importedAt,
+      matchday: fantasyCallups.matchday,
+      coverage: fantasyCallups.coverage,
+      use: fantasyCallups.interpretation
+    },
     probableLineups: {
       provider: probableLineups.provider,
       url: probableLineups.sourceUrl,
@@ -418,6 +435,7 @@ const output = {
     players: fantasyQuotations.players.map(player => {
       const probable = probableBySourceId.get(String(player.sourceId));
       const injury = injuryBySourceId.get(String(player.sourceId));
+      const callup = callupBySourceId.get(String(player.sourceId));
       const fantasyHistory = fantasyHistoryBySourceId.get(String(player.sourceId));
       const externalHistory = fantasyExternalByPlayerId.get(player.playerId) || null;
       return ({
@@ -436,7 +454,7 @@ const output = {
       initialMantraQuotation: player.initialMantraQuotation,
       mantraQuotationDifference: player.mantraQuotationDifference,
       fvm: player.fvm,
-      auctionValue1000: Math.max(1, Math.round(player.fvm / maxClassicFvm * 250)),
+      auctionValue1000: Number.isFinite(player.fvm) ? Math.max(1, Math.round(player.fvm / maxClassicFvm * 250)) : null,
       mantraFvm: player.mantraFvm,
       matchConfidence: player.matchConfidence,
       appearances: externalHistory?.totals?.appearances ?? null,
@@ -447,6 +465,7 @@ const output = {
       redCards: externalHistory?.totals?.redCards ?? null,
       currentAvailability: {
         matchday: probableLineups.matchday,
+        callupStatus: callup?.status ?? null,
         starterProbability: probable?.probability ?? null,
         lineupStatus: probable?.lineupStatus ?? null,
         lineupUpdatedAt: probable ? probableLineups.teams.find(item => item.teamId === player.teamId)?.updatedAt ?? null : null,

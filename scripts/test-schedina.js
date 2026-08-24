@@ -116,10 +116,11 @@ console.log(`Schedina valida: ${data.slips.map(slip => `${slip.name} ${slip.comb
   assert.strictEqual(status("quadrante","genoa-napoli-2026-27-md-01"),"lost","Il risultato esatto 0-1 deve essere rosso sullo 0-2");
   assert.strictEqual(status("ventaglio","venezia-lecce-2026-27-md-01"),"lost","Il multiesito deve risultare perso sullo 0-2");
   assert.strictEqual(status("costellazione","inter-monza-2026-27-md-01"),"won","Il Multigol Inter-Monza deve risultare centrato");
-  assert.strictEqual(status("supernova","bologna-lazio-2026-27-md-01"),"pending","Una partita non conclusa deve restare neutra");
+  assert.strictEqual(status("supernova","bologna-lazio-2026-27-md-01"),"lost","Bologna vincente deve risultare perso sullo 0-1");
+  assert.strictEqual(status("scintilla","roma-fiorentina-2026-27-md-01"),"won","Roma vince o va avanti di due gol deve risultare centrato sul 4-0");
   assert.strictEqual(status("quasar","inter-monza-2026-27-md-01"),"won","Pio Esposito gol o assist deve risultare centrato");
   assert.strictEqual(status("prisma","venezia-lecce-2026-27-md-01"),"won","John Yeboah almeno un tiro in porta deve risultare centrato");
-  assert.strictEqual(status("scintilla","genoa-napoli-2026-27-md-01"),"won","Alisson Santos almeno un tiro in porta deve risultare centrato");
+  assert.strictEqual(status("scintilla","genoa-napoli-2026-27-md-01"),"lost","Alisson Santos e il sostituto Noa Lang restano senza tiri in porta");
   assert.strictEqual(status("bagliore","venezia-lecce-2026-27-md-01"),"lost","John Yeboah almeno quattro tiri deve risultare perso");
   assert.strictEqual(status("prisma","torino-milan-2026-27-md-01"),"won","Loftus-Cheek almeno due tiri deve risultare centrato");
   assert.strictEqual(status("quasar","venezia-lecce-2026-27-md-01"),"won","Gianluca Busio almeno due tiri deve risultare centrato");
@@ -127,7 +128,8 @@ console.log(`Schedina valida: ${data.slips.map(slip => `${slip.name} ${slip.comb
   assert.strictEqual(status("quasar","genoa-napoli-2026-27-md-01"),"won","Politano o il sostituto Vergara assist deve risultare centrato");
   assert.strictEqual(status("quasar","parma-cagliari-2026-27-md-01"),"lost","Bernabé e il sostituto Almqvist restano sotto due tiri");
   const settlements=data.slips.flatMap(slip=>slip.legs.map(leg=>settleLeg(leg,byId.get(leg.matchId))));
-  assert.strictEqual(settlements.filter(item=>item.status==="won").length,27,"Numero esiti verdi inatteso");
-  assert.strictEqual(settlements.filter(item=>item.status==="lost").length,10,"Numero esiti rossi inatteso");
+  assert.strictEqual(settlements.filter(item=>item.status==="won").length,31,"Numero esiti verdi inatteso");
+  assert.strictEqual(settlements.filter(item=>item.status==="lost").length,16,"Numero esiti rossi inatteso");
+  assert.strictEqual(settlements.filter(item=>item.status==="unavailable").length,1,"Numero esiti non verificabili inatteso");
   console.log("Liquidazione visiva Schedina valida.");
 })().catch(error=>{console.error(error);process.exitCode=1;});

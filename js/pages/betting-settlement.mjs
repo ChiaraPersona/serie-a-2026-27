@@ -69,6 +69,14 @@ export function settleLeg(leg,match){
   const outcome=home>away?"1":home<away?"2":"X";
   if(market.includes("1X2 ESITO FINALE"))return resultStatus(selection===outcome);
   if(market.includes("DOPPIA CHANCE"))return resultStatus(selection.includes(outcome));
+  if(market.includes("VINCE O QUASI")){
+    const variant=normalized(leg?.variant),predictedOutcome=normalized(leg?.predictedOutcome);
+    const side=variant.includes("SQUADRA 1")||predictedOutcome==="1"?"home":variant.includes("SQUADRA 2")||predictedOutcome==="2"?"away":null;
+    if(!side||!["SI","NO"].includes(selection))return unavailable();
+    const finalWin=side==="home"?home>away:away>home;
+    if(finalWin)return resultStatus(selection==="SI");
+    return unavailable();
+  }
 
   if(leg?.marketScope==="player"||market.includes("GIOCATORE")||market.includes("ASSIST")||market.includes("MARCATORE")){
     const players=playerDuo(match,leg?.player),goals=players?.reduce((sum,item)=>sum+(finite(item.goals)?Number(item.goals):0),0),assists=players?.reduce((sum,item)=>sum+(finite(item.assists)?Number(item.assists):0),0);
@@ -86,7 +94,7 @@ export function settleLeg(leg,match){
     if(market.includes("TIRI TOTALI"))return settlePlayerThreshold(selection,players,"shots",threshold);
     return unavailable();
   }
-  if(market.includes("PUNTI CARTELLINI")||market.includes("VINCE O QUASI"))return unavailable();
+  if(market.includes("PUNTI CARTELLINI"))return unavailable();
 
   const threshold=thresholdFromLabel(leg?.label);
   if(market==="UNDER/OVER")return settleThreshold(selection,total,threshold);
