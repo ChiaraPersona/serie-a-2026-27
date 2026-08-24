@@ -11,6 +11,7 @@ const footer = (depth = "") => `<footer class="site-footer"><div class="site-foo
 const fontLinks = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">';
 const withFonts = html => html.replace("</title>", `</title>${fontLinks}`);
 const version = "20260824-home-matchday-navigation-v13";
+const teamVersion = "20260824-team-stats-by-season-v14";
 const bettingVersion = "20260823-md1-player-results-v13";
 const readingVersion = "20260824-reading-team-header-v12";
 const headToHeadPath = path.join(root, "data/generated/head-to-head/first-leg-2026-27.json");
@@ -36,7 +37,7 @@ for (const [file,id,label] of pages) {
 }
 const squadDir = path.join(root, "statistiche-squadra");
 fs.mkdirSync(squadDir, { recursive: true });
-const squadPage = (team = null) => {
+const squadPage = (team = null, version = teamVersion) => {
   const title = team ? `${team.name} | Rosa e statistiche` : "Rose e statistiche squadra";
   const depth = team ? "../" : "../";
   return `<!doctype html>\n<html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="${title} Â· Serie A 2026/27"><title>${title} | Serie A 2026/27</title><link rel="stylesheet" href="${depth}css/styles.css?v=${version}"></head><body data-page="team-stats" data-depth="team"${team ? ` data-team="${team.id}"` : ""}><header id="site-top" class="site-header"><a class="brand" href="${depth}index.html"><span class="brand-mark"><img src="${depth}assets/images/serie-a-logo-mark.png" alt=""></span><span><strong>Serie A 2026/27</strong><small>Campionato e Coppa Italia</small></span></a><button class="menu-button" type="button" aria-controls="site-nav" aria-expanded="false">Menu</button><nav id="site-nav" class="site-nav" aria-label="Navigazione principale">${navigation(depth, "team-stats")}</nav></header><main id="team-squad-app" tabindex="-1"><section class="loading"><p class="eyebrow">Caricamento</p><h1>${title}</h1></section></main>${footer(depth)}<script src="${depth}scripts/standings.js?v=${version}"></script><script src="${depth}scripts/objective-metrics.js?v=${version}"></script><script src="${depth}js/team-squads.js?v=${version}"></script><script>document.querySelector('.menu-button')?.addEventListener('click',e=>{const n=document.getElementById('site-nav'),open=e.currentTarget.getAttribute('aria-expanded')==='true';e.currentTarget.setAttribute('aria-expanded',String(!open));n.classList.toggle('open',!open)});</script></body></html>`;

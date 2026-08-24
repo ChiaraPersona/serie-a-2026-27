@@ -28,6 +28,11 @@ for (const summary of index.teams) {
   assert.ok(Array.isArray(team.sources) && team.sources.length);
   assert.ok(fs.existsSync(path.join(root, `statistiche-squadra/${team.id}.html`)));
   assert.strictEqual(team.teamStats.competition, team.previousSeason.competition);
+  assert.deepStrictEqual(Object.keys(team.teamStats.seasons), ["2026/27", "2025/26"], `${team.id}: statistiche stagionali non separate`);
+  assert.strictEqual(team.teamStats.seasons["2026/27"].competition, "Serie A");
+  assert.strictEqual(team.teamStats.seasons["2025/26"].competition, team.previousSeason.competition);
+  assert.strictEqual(team.teamStats.total.results.played, team.teamStats.seasons["2026/27"].results.played + team.teamStats.seasons["2025/26"].results.played, `${team.id}: totale partite incoerente`);
+  assert.strictEqual(team.teamStats.total.results.points, team.teamStats.seasons["2026/27"].results.points + team.teamStats.seasons["2025/26"].results.points, `${team.id}: totale punti incoerente`);
   for (const section of [team.teamStats.attack, team.teamStats.possession]) {
     assert.ok(Object.values(section).every(value => value === null), "Un campo non disponibile deve essere null");
   }
@@ -65,6 +70,8 @@ for (const contract of [".reading-fixture-preview", ".reading-fixture-preview-te
 for (const contract of ['reading-fixture match fixture-card fixture-card-link', 'class="match-head"', 'class="matchday-chip"', 'class="match-date"', 'teamColorStyle']) assert.ok(mainApp.includes(contract), `Card Letture: struttura calendario ${contract} assente`);
 for (const removed of ['reading-fixture-footer', 'Pronostico preliminare · sorpresa', 'Precedenti ${history.coverage.available}/5']) assert.ok(!mainApp.includes(removed), `Card Letture: contenuto inferiore ${removed} ancora presente`);
 const teamInterface = fs.readFileSync(path.join(root, "js/team-squads.js"), "utf8");
+for (const contract of ['data-team-season="${esc(stats.season)}"', "Statistiche ${esc(stats.season)}", "Totale 2025/26 + 2026/27", "teamSeasonStatsBlock", "teamTotalStatsBlock"]) assert.ok(teamInterface.includes(contract), `Statistiche squadra per stagione: manca ${contract}`);
+for (const contract of [".team-season-section", ".team-total-section", ".team-season-heading", ".team-season-empty"]) assert.ok(styles.includes(contract), `Statistiche squadra per stagione: stile ${contract} assente`);
 const readingLineupSource = mainApp.slice(mainApp.indexOf("function renderProbableLineups"), mainApp.indexOf("function renderReadingPilotEvidence"));
 assert.ok(teamInterface.includes("lineup.players.slice(offset, offset + size).reverse()"), "Le probabili formazioni delle pagine squadra devono essere specchiate orizzontalmente");
 assert.ok(readingLineupSource.includes("lineup.players.slice(offset,offset+size).reverse()"), "Le probabili formazioni delle Letture devono essere specchiate orizzontalmente");

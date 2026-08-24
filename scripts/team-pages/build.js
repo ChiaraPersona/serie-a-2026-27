@@ -1,6 +1,6 @@
 const fs = require("fs");
 const path = require("path");
-const { STAT_FIELDS, nullObject, rate, percentage, round } = require("./model");
+const { STAT_FIELDS, nullObject, rate, percentage } = require("./model");
 
 const root = path.resolve(__dirname, "../..");
 const read = relative => JSON.parse(fs.readFileSync(path.join(root, relative), "utf8"));
@@ -97,7 +97,7 @@ function matchStats(teamId, competition) {
     const isHome = homeId === teamId;
     selected.push({ match, own: isHome ? match.teamStats.home : match.teamStats.away, opponent: isHome ? match.teamStats.away : match.teamStats.home, isHome, gf: isHome ? match.score.home : match.score.away, ga: isHome ? match.score.away : match.score.home });
   }
-  const sum = (items, field) => items.reduce((total, item) => total + (item.own[field] ?? 0), 0);
+  const sum = (items, field, side = "own") => items.reduce((total, item) => total + (item[side]?.[field] ?? 0), 0);
   const split = items => ({
     played: items.length,
     won: items.filter(x => x.gf > x.ga).length,
@@ -157,9 +157,7 @@ function seasonStats({ season, competition, source, lastUpdated, matchData, row 
     drawPercentage: percentage(drawn, played), lossPercentage: percentage(lost, played)
   };
   const fouls = matchData.sum(matchData.selected, "fouls");
-  const foulsWon = matchData.sum.length >= 3
-    ? matchData.sum(matchData.selected, "fouls", "opponent")
-    : matchData.selected.reduce((total, item) => total + (item.opponent.fouls ?? 0), 0);
+  const foulsWon = matchData.sum(matchData.selected, "fouls", "opponent");
   const yellowCards = matchData.sum(matchData.selected, "yellowCards");
   const secondYellowCards = matchData.sum(matchData.selected, "secondYellowCards");
   const straightRedCards = matchData.sum(matchData.selected, "straightRedCards");
@@ -258,8 +256,9 @@ function buildTeam(team) {
       ]
     };
   });
-  const teamLastUpdated = [generatedSquad?.rosterSource?.retrievedAt, teamDetails.lastUpdated].filter(Boolean).sort().at(-1) || "2026-07-20";
+  const teamLastUpdated = [generatedSquad?.rosterSource?.retrievedAt, teamDetails.lastUpdated, "2026-08-24"].filter(Boolean).sort().at(-1) || "2026-07-20";
   const sources = [
+    { provider: "StatMuse", scope: "Serie A 2026/27 - risultati e statistiche delle partite concluse", url: "https://www.statmuse.com/fc/", retrievedAt: "2026-08-24" },
     { provider: "ESPN", scope: `${competitionName} 2025/26 - risultati e disciplina`, url: "https://www.espn.com/soccer/", retrievedAt: "2026-07-18" },
     { provider: previousCompetition === "serie-a" ? "Classifica fornita dall'utente" : "ESPN", scope: `${competitionName} 2025/26 - classifica calcolata dai risultati`, url: null, retrievedAt: "2026-07-18" },
     ...(generatedSquad?.rosterSource ? [generatedSquad.rosterSource] : []),
