@@ -10,9 +10,9 @@ const navigation = (depth = "", activeId = "") => navigationPages.map(([file, id
 const footer = (depth = "") => `<footer class="site-footer"><div class="site-footer-inner"><div class="site-footer-top"><div class="site-footer-intro"><a class="footer-brand" href="${depth}index.html"><span class="footer-brand-mark"><img src="${depth}assets/images/serie-a-logo-mark.png" alt=""></span><span><strong>Serie A 2026/27</strong><small>Campionato e Coppa Italia</small></span></a><p>Calendario, rose, statistiche e letture della stagione raccolti in un unico spazio.</p><span class="footer-season">Stagione 2026/27</span></div><nav class="footer-nav" aria-label="Navigazione nel footer"><div><strong>Campionato</strong><a href="${depth}index.html">Home</a><a href="${depth}calendario.html">Calendario</a><a href="${depth}statistiche-squadre.html">Statistiche squadre</a><a href="${depth}arbitri.html">Arbitri</a></div><div><strong>Approfondimenti</strong><a href="${depth}lettura.html">Lettura</a><a href="${depth}coppa-italia.html">Coppa Italia</a><a href="${depth}fantacalcio.html">Fantacalcio</a><a href="${depth}schedina.html">Schedina</a></div></nav></div><div class="site-footer-bottom"><p>Progetto statico indipendente <span aria-hidden="true">·</span> Fonti registrate in ogni dataset</p><a href="#site-top">Torna su <span aria-hidden="true">↑</span></a></div></div></footer>`;
 const fontLinks = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">';
 const withFonts = html => html.replace("</title>", `</title>${fontLinks}`);
-const version = "20260823-md1-postmatch-v10";
+const version = "20260824-home-results-v11";
 const bettingVersion = "20260823-md1-player-results-v13";
-const readingVersion = "20260823-reading-score-v11";
+const readingVersion = "20260824-reading-team-header-v12";
 const headToHeadPath = path.join(root, "data/generated/head-to-head/first-leg-2026-27.json");
 if (fs.existsSync(headToHeadPath)) {
   const headToHead = JSON.parse(fs.readFileSync(headToHeadPath, "utf8"));

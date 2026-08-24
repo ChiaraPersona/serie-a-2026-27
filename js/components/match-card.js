@@ -3,7 +3,7 @@ function scheduleLabel(m){
   if(!m.date)return "Data da definire";
   return `${dateOnly(m.date)} · ${m.kickoff||"orario da definire"}${m.dateStatus==="provisional"?" · programmazione provvisoria UEFA":""}`;
 }
-function teamLogo(team){return `<span class="team-with-logo"><span class="team-logo"><img src="${team.logo}" alt="Stemma ${esc(team.name)}" onerror="this.hidden=true;this.parentElement.classList.add('fallback')"><b>${esc(team.shortName.slice(0,2).toUpperCase())}</b></span><span class="team-name">${esc(team.name)}</span></span>`}
+function teamLogo(team,{showName=true}={}){return `<span class="team-with-logo"><span class="team-logo"><img src="${team.logo}" alt="Stemma ${esc(team.name)}" onerror="this.hidden=true;this.parentElement.classList.add('fallback')"><b>${esc(team.shortName.slice(0,2).toUpperCase())}</b></span>${showName?`<span class="team-name">${esc(team.name)}</span>`:""}</span>`}
 function matchCard(m,teams){
   const home=teams.find(x=>x.id===m.homeTeam),away=teams.find(x=>x.id===m.awayTeam),score=m.score?`${m.score.home} – ${m.score.away}`:"VS";
   const scoreContent=m.score?esc(score):"vs";
@@ -15,7 +15,8 @@ function matchCard(m,teams){
 }
 function homeMatchListItem(m,teams){
   const home=teams.find(team=>team.id===m.homeTeam),away=teams.find(team=>team.id===m.awayTeam);
-  return `<li class="home-match-row"><div class="home-match-meta"><time>${scheduleLabel(m)}</time></div><div class="home-match-teams">${teamLogo(home)}<b aria-hidden="true">–</b>${teamLogo(away)}</div></li>`
+  const finished=m.status==="finished"&&m.score,result=finished?`${m.score.home} – ${m.score.away}`:"–";
+  return `<li class="home-match-row${finished?" is-finished":""}"><div class="home-match-meta"><time>${scheduleLabel(m)}</time></div><div class="home-match-teams">${teamLogo(home)}<b class="home-match-score" aria-label="${finished?`Risultato ${m.score.home} a ${m.score.away}`:"Partita da giocare"}">${result}</b>${teamLogo(away)}</div></li>`
 }
   return {scheduleLabel,teamLogo,matchCard,homeMatchListItem};
 }
