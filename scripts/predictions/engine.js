@@ -275,6 +275,7 @@ function expectedGoals({ homeVenue, awayVenue, homeProfile, awayProfile, homeRec
     components: {
       home: { attackStrength: round(homeAttackStrength, 3), defenceWeakness: round(homeDefenceWeakness, 3), lineup: homeLineup },
       away: { attackStrength: round(awayAttackStrength, 3), defenceWeakness: round(awayDefenceWeakness, 3), lineup: awayLineup },
+      recentForm: { home: homeRecent, away: awayRecent },
       objectiveFactors: { home: round(objectiveFactors.home, 3), away: round(objectiveFactors.away, 3) },
       headToHead: headToHeadFactors,
       xg: {

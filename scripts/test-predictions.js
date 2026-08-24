@@ -132,6 +132,8 @@ assert.strictEqual(torinoMilan.teamProjections[0].shotsTotal.inputs[0].source, "
 assert.strictEqual(torinoMilan.teamProjections[1].shotsTotal.inputs[0].source, "away-for", "Torino-Milan: produzione Milan trasferta non collegata");
 assert(secondMatchdayPredictions.every(prediction => prediction.market.status === "unavailable"), "La seconda giornata non deve contenere quote Sisal non scaricate");
 assert(secondMatchdayPredictions.every(prediction => prediction.dataQuality.probableLineups.includes("proiettati")), "Le formazioni della prima giornata devono restare riferimenti, non XI ufficiali della seconda");
+assert(firstMatchdayPredictions.every(prediction => (prediction.expectedGoals.components.recentForm.home?.currentSeasonMatches ?? 0) === 0 && (prediction.expectedGoals.components.recentForm.away?.currentSeasonMatches ?? 0) === 0), "I pronostici archiviati della prima giornata non devono usare risultati futuri");
+assert(secondMatchdayPredictions.every(prediction => prediction.expectedGoals.components.recentForm.home.currentSeasonMatches === 1 && prediction.expectedGoals.components.recentForm.away.currentSeasonMatches === 1), "La seconda giornata deve usare una gara conclusa 2026/27 per squadra nella forma recente");
 const goalTotals = firstMatchdayPredictions.map(prediction => prediction.expectedGoals.total);
 assert(Math.max(...goalTotals) >= 3 && Math.min(...goalTotals) <= 2.4, "Il motore non deve imporre sempre lo stesso profilo di gol");
 const modalScores = firstMatchdayPredictions.map(prediction => prediction.exactScores[0].score);
