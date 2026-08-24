@@ -11,6 +11,54 @@ const clubIndexUrl = "https://www.legaseriea.it/team/index";
 const teamColorSource = JSON.parse(fs.readFileSync(path.join(root, "data/sources/team-pages/footylogos-club-colors.json"), "utf8"));
 const refereeAssignments = JSON.parse(fs.readFileSync(path.join(root, "data/sources/referee-assignments-2026-27.json"), "utf8"));
 const matchResults = JSON.parse(fs.readFileSync(path.join(root, "data/sources/match-results-2026-27.json"), "utf8"));
+const statmusePlayerStats = JSON.parse(fs.readFileSync(path.join(root, "data/sources/statmuse-player-stats-2026-27.json"), "utf8"));
+
+const normalizePlayerName = value => String(value || "")
+  .normalize("NFD")
+  .replace(/[\u0300-\u036f]/g, "")
+  .toLowerCase()
+  .replace(/[^a-z0-9]/g, "");
+const statmuseNameAliases = new Map(Object.entries({
+  francescoesposito: "pioesposito",
+  yannaurelbisseck: "yannbisseck",
+  vakounbayo: "bayoyoussouf",
+  nicolaspaz: "nicopaz",
+  kialonda: "kialondagaspar",
+  matteochichella: "matteocichella"
+}));
+const statmuseStatsByUrl = new Map(statmusePlayerStats.matches.map(entry => [entry[0], {
+  home: entry[2],
+  away: entry[4]
+}]));
+const allowedUnmatchedStatmusePlayers = new Set(["stefanosabelli"]);
+
+function mergeStatmusePlayerStats(result) {
+  const overlay = statmuseStatsByUrl.get(result.sourceUrl);
+  if (!overlay) throw new Error(`Statistiche calciatori StatMuse mancanti: ${result.matchId}`);
+  for (const side of ["home", "away"]) {
+    const players = result.playerStats?.[side];
+    if (!Array.isArray(players)) throw new Error(`Elenco calciatori non valido: ${result.matchId} ${side}`);
+    const playersByName = new Map(players.map(player => [normalizePlayerName(player.player), player]));
+    for (const [sourceName, shots, shotsOnTarget, foulsCommitted, foulsWon] of overlay[side]) {
+      const normalizedSourceName = normalizePlayerName(sourceName);
+      const targetName = statmuseNameAliases.get(normalizedSourceName) || normalizedSourceName;
+      const player = playersByName.get(targetName);
+      if (!player) {
+        if (allowedUnmatchedStatmusePlayers.has(normalizedSourceName)) continue;
+        throw new Error(`Calciatore StatMuse non riconosciuto: ${result.matchId} ${side} ${sourceName}`);
+      }
+      for (const [field, value] of Object.entries({ shots, shotsOnTarget, foulsCommitted, foulsWon })) {
+        if (value === null) continue;
+        if (!Number.isInteger(value) || value < 0) throw new Error(`Valore StatMuse non valido: ${result.matchId} ${sourceName} ${field}`);
+        if (player[field] !== null && player[field] !== undefined && player[field] !== value) {
+          throw new Error(`Conflitto StatMuse: ${result.matchId} ${sourceName} ${field} (${player[field]} != ${value})`);
+        }
+        player[field] = value;
+      }
+    }
+  }
+  return result.playerStats;
+}
 
 const teamDefinitions = [
   ["atalanta","Atalanta","Atalanta Bergamasca Calcio"],["bologna","Bologna","Bologna Football Club 1909"],
@@ -158,7 +206,7 @@ for (const result of matchResults.matches) {
     bookings: result.bookings,
     substitutions: result.substitutions,
     teamStats: result.teamStats,
-    playerStats: result.playerStats,
+    playerStats: mergeStatmusePlayerStats(result),
     resultSource: source
   });
   match.sources.push({
@@ -171,4 +219,4 @@ for (const result of matchResults.matches) {
 
 fs.writeFileSync(path.join(output,"teams.json"),JSON.stringify(teams,null,2)+"\n");
 fs.writeFileSync(path.join(output,"matches.json"),JSON.stringify(matches,null,2)+"\n");
-console.log(`Importate ${teams.length} squadre e ${matches.length} partite; overlay C.U. 208: ${[...overlays.keys()].length} gare; designazioni AIA: ${refereeAssignments.assignments.length}; risultati: ${matchResults.matches.length}.`);
+console.log(`Importate ${teams.length} squadre e ${matches.length} partite; overlay C.U. 208: ${[...overlays.keys()].length} gare; designazioni AIA: ${refereeAssignments.assignments.length}; risultati: ${matchResults.matches.length}; statistiche calciatori StatMuse: ${statmusePlayerStats.matches.length} gare.`);

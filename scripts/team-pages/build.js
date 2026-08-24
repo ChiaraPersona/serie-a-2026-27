@@ -1,6 +1,6 @@
 const fs = require("fs");
 const path = require("path");
-const { STAT_FIELDS, nullObject, rate, percentage } = require("./model");
+const { STAT_FIELDS, nullObject, per90, rate, percentage } = require("./model");
 
 const root = path.resolve(__dirname, "../..");
 const read = relative => JSON.parse(fs.readFileSync(path.join(root, relative), "utf8"));
@@ -355,8 +355,8 @@ const ensureCurrentPlayer = (teamId, matchPlayer) => {
     currentLeaderboardMap.set(key, {
       id: matchPlayer.playerId, name: squadPlayer?.name || matchPlayer.player, currentTeamId: teamId,
       currentTeam: team?.name || teamId, role: squadPlayer?.detailedRole || squadPlayer?.role || null,
-      appearances: 0, minutes: 0, sums: { goals: 0, assists: 0, shots: 0, shotsOnTarget: 0 },
-      coverage: { goals: 0, assists: 0, shots: 0, shotsOnTarget: 0 }, cards: 0
+      appearances: 0, minutes: 0, sums: { goals: 0, assists: 0, shots: 0, shotsOnTarget: 0, foulsCommitted: 0, foulsWon: 0 },
+      coverage: { goals: 0, assists: 0, shots: 0, shotsOnTarget: 0, foulsCommitted: 0, foulsWon: 0 }, cards: 0
     });
   }
   return currentLeaderboardMap.get(key);
@@ -369,7 +369,7 @@ for (const match of currentSeasonMatches) {
       const row = ensureCurrentPlayer(teamId, matchPlayer);
       row.appearances += 1;
       row.minutes += matchPlayer.minutes ?? 0;
-      for (const field of ["goals", "assists", "shots", "shotsOnTarget"]) {
+      for (const field of ["goals", "assists", "shots", "shotsOnTarget", "foulsCommitted", "foulsWon"]) {
         if (typeof matchPlayer[field] !== "number") continue;
         row.sums[field] += matchPlayer[field];
         row.coverage[field] += 1;
@@ -388,14 +388,14 @@ const currentLeaderboardRows = [...currentLeaderboardMap.values()].map(row => {
     shots: row.coverage.shots === row.appearances ? row.sums.shots : null,
     shotsOnTarget: row.coverage.shotsOnTarget === row.appearances ? row.sums.shotsOnTarget : null,
     cards: row.cards,
-    foulsCommitted: null,
-    foulsWon: null
+    foulsCommitted: row.coverage.foulsCommitted === row.appearances ? row.sums.foulsCommitted : null,
+    foulsWon: row.coverage.foulsWon === row.appearances ? row.sums.foulsWon : null
   };
   return {
     id: row.id, name: row.name, currentTeamId: row.currentTeamId, currentTeam: row.currentTeam,
     role: row.role, previousTeam: null, sameClub: false, competition: "Serie A",
     appearances: row.appearances, minutes: row.minutes, values,
-    per90: Object.fromEntries(leaderboardMetrics.map(metric => [metric.field, rate(values[metric.field], row.minutes)]))
+    per90: Object.fromEntries(leaderboardMetrics.map(metric => [metric.field, per90(values[metric.field], row.minutes)]))
   };
 });
 const currentLeaderboardByKey = new Map(currentLeaderboardRows.map(player => [`${player.currentTeamId}:${player.id}`, player]));
@@ -405,7 +405,7 @@ const totalLeaderboardRows = previousLeaderboardRows.map(previous => {
   const appearances = add(previous.appearances, current?.appearances ?? 0);
   const minutes = add(previous.minutes, current?.minutes ?? 0);
   const values = Object.fromEntries(leaderboardMetrics.map(metric => [metric.field, add(previous.values[metric.field], currentValues[metric.field])]));
-  return { ...previous, appearances, minutes, values, per90: Object.fromEntries(leaderboardMetrics.map(metric => [metric.field, rate(values[metric.field], minutes)])) };
+  return { ...previous, appearances, minutes, values, per90: Object.fromEntries(leaderboardMetrics.map(metric => [metric.field, per90(values[metric.field], minutes)])) };
 });
 function buildLeaderboardRankings(rows, requireAppearance = false) {
   return Object.fromEntries(leaderboardMetrics.map(metric => {

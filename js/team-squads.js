@@ -3,7 +3,7 @@
   if (!root) return;
 
   const base = document.body.dataset.depth === "team" ? "../" : "";
-  const release = "20260824-team-stats-dropdown-v1";
+  const release = "20260824-team-leaders-2026-27-v1";
   const defaultPlayerPhoto = `${base}assets/images/players/player-placeholder.png`;
   const esc = value => String(value ?? "").replace(/[&<>\"]/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[char]));
   const contrastInk = color => {
@@ -170,17 +170,101 @@
     { key: "foulsWon", label: "Falli subiti", per90: true }
   ];
 
-  function squadLeaderboards(players, teamName) {
+  const per90Rate = (total, minutes) => typeof total === "number" && typeof minutes === "number" && minutes > 0 ? Math.round((total * 90 / minutes) * 100) / 100 : null;
+
+  function previousSquadLeaderboardRows(players) {
+    return players.map(player => {
+      const entry = primaryEntry(player);
+      return {
+        player,
+        linked: true,
+        totals: Object.fromEntries(leaderboardStats.map(stat => [stat.key, leaderboardValue(entry, stat.key)])),
+        per90: entry.per90 || {}
+      };
+    });
+  }
+
+  function currentSquadLeaderboardRows(team, matches) {
+    const squadById = new Map(team.squad.map(player => [player.id, player]));
+    const rows = new Map();
+    const ensure = (playerId, playerName) => {
+      if (!rows.has(playerId)) {
+        rows.set(playerId, {
+          player: squadById.get(playerId) || { id: playerId, name: playerName },
+          appearances: 0,
+          minutes: 0,
+          minutesCoverage: 0,
+          sums: { goals: 0, assists: 0, shots: 0, shotsOnTarget: 0 },
+          coverage: { goals: 0, assists: 0, shots: 0, shotsOnTarget: 0 },
+          cards: 0
+        });
+      }
+      return rows.get(playerId);
+    };
+    const finishedMatches = teamFixtures(team, matches).filter(match => match.status === "finished" && match.score);
+    for (const match of finishedMatches) {
+      const side = match.homeTeam === team.id ? "home" : "away";
+      for (const matchPlayer of match.playerStats?.[side] || []) {
+        if (!matchPlayer.playerId) continue;
+        const row = ensure(matchPlayer.playerId, matchPlayer.player);
+        row.appearances += 1;
+        if (typeof matchPlayer.minutes === "number") {
+          row.minutes += matchPlayer.minutes;
+          row.minutesCoverage += 1;
+        }
+        for (const field of ["goals", "assists", "shots", "shotsOnTarget"]) {
+          if (typeof matchPlayer[field] !== "number") continue;
+          row.sums[field] += matchPlayer[field];
+          row.coverage[field] += 1;
+        }
+      }
+      for (const booking of match.bookings || []) {
+        if (booking.team !== team.id || !booking.playerId) continue;
+        ensure(booking.playerId, booking.player).cards += 1;
+      }
+    }
+    return [...rows.values()].map(row => {
+      const minutes = row.appearances > 0 && row.minutesCoverage === row.appearances ? row.minutes : null;
+      const totals = {
+        appearances: row.appearances || null,
+        minutes,
+        goals: row.appearances > 0 && row.coverage.goals === row.appearances ? row.sums.goals : null,
+        assists: row.appearances > 0 && row.coverage.assists === row.appearances ? row.sums.assists : null,
+        shots: row.appearances > 0 && row.coverage.shots === row.appearances ? row.sums.shots : null,
+        shotsOnTarget: row.appearances > 0 && row.coverage.shotsOnTarget === row.appearances ? row.sums.shotsOnTarget : null,
+        cards: row.cards,
+        foulsCommitted: null,
+        foulsWon: null
+      };
+      return {
+        player: row.player,
+        linked: squadById.has(row.player.id),
+        totals,
+        per90: Object.fromEntries(leaderboardStats.map(stat => [stat.key, per90Rate(totals[stat.key], minutes)]))
+      };
+    });
+  }
+
+  function squadLeaderboardSection(rows, teamName, season) {
     const cardsHtml = leaderboardStats.map(stat => {
-      const leaders = players.map(player => {
-        const entry = primaryEntry(player);
-        return { player, total: leaderboardValue(entry, stat.key), rate: entry.per90?.[stat.key] };
-      }).filter(item => item.total !== null && item.total !== undefined)
+      const leaders = rows.map(row => ({ player: row.player, linked: row.linked, total: row.totals[stat.key], rate: row.per90?.[stat.key] }))
+        .filter(item => item.total !== null && item.total !== undefined)
         .sort((left, right) => right.total - left.total || (right.rate ?? -1) - (left.rate ?? -1) || left.player.name.localeCompare(right.player.name, "it"))
         .slice(0, 3);
-      return `<article class="squad-leader-card"><header><h4>${esc(stat.label)}</h4><span>${stat.per90 ? "Totale · /90" : "Totale"}</span></header>${leaders.length ? `<ol>${leaders.map((item, index) => `<li><span class="leader-rank">${index + 1}</span><button class="leader-player" type="button" data-player-id="${esc(item.player.id)}">${esc(item.player.name)}</button><strong>${value(item.total)}${stat.per90 ? `<small>${value(item.rate)} /90</small>` : ""}</strong></li>`).join("")}</ol>` : `<p class="muted">Dati non disponibili</p>`}</article>`;
+      return `<article class="squad-leader-card"><header><h4>${esc(stat.label)}</h4><span>${stat.per90 ? "Totale · /90" : "Totale"}</span></header>${leaders.length ? `<ol>${leaders.map((item, index) => `<li><span class="leader-rank">${index + 1}</span>${item.linked ? `<button class="leader-player" type="button" data-player-id="${esc(item.player.id)}">${esc(item.player.name)}</button>` : `<span class="leader-player leader-player-unlinked">${esc(item.player.name)}<small>Scheda N/D</small></span>`}<strong>${value(item.total)}${stat.per90 ? `<small>${value(item.rate)} /90</small>` : ""}</strong></li>`).join("")}</ol>` : `<p class="muted">Dati non disponibili</p>`}</article>`;
     }).join("");
-    return `<section id="squad-leaders" class="squad-leaders" aria-labelledby="squad-leaders-title"><div class="squad-leaders-heading"><div><p class="eyebrow">Top 3 per statistica</p><h3 id="squad-leaders-title">I migliori di ${esc(teamName)} nel 2025/26</h3></div><p>Classifica basata sui valori totali. Dove previsto, accanto al totale è indicata anche la media ogni 90 minuti.</p></div><div class="squad-leader-grid">${cardsHtml}</div></section>`;
+    const current = season === "2026/27";
+    const description = current
+      ? "Classifica sulle partite concluse e sui soli campi giocatore disponibili. Le metriche non coperte restano N/D."
+      : "Classifica basata sui valori totali. Dove previsto, accanto al totale è indicata anche la media ogni 90 minuti.";
+    const titleId = `squad-leaders-title-${season.replace("/", "-")}`;
+    return `<details class="squad-leaders squad-leaders-period" aria-labelledby="${titleId}"><summary class="squad-leaders-summary"><span class="squad-leaders-heading"><span><span class="eyebrow">Top 3 per statistica</span><strong id="${titleId}">I migliori di ${esc(teamName)} nel ${season}</strong></span><span>${current ? "Stagione in corso" : "Archivio"}</span></span></summary><div class="squad-leaders-content"><p>${description}</p><div class="squad-leader-grid">${cardsHtml}</div></div></details>`;
+  }
+
+  function squadLeaderboards(team, matches) {
+    const currentRows = currentSquadLeaderboardRows(team, matches);
+    const previousRows = previousSquadLeaderboardRows(team.squad);
+    return `<div id="squad-leaderboards" class="squad-leaderboards">${squadLeaderboardSection(currentRows, team.name, "2026/27")}${squadLeaderboardSection(previousRows, team.name, "2025/26")}</div>`;
   }
 
   function squadTable(players) {
@@ -231,7 +315,7 @@
       return summary;
     }, {});
 
-    root.innerHTML = `${nav}<section class="team-detail-hero"><img src="${team.logo}" alt="Stemma ${esc(team.name)}"><div><p class="eyebrow">${esc(team.previousSeason.competition)} 2025/26${team.previousSeason.promoted ? " · neopromossa" : ""}</p><h1>${esc(team.officialName)}</h1><p>${esc(team.shortName)} · Città ${value(team.city)} · Stadio ${value(team.stadium)} · Allenatore ${value(team.coach)}</p><p class="updated">Aggiornato ${esc(team.lastUpdated)}</p></div></section>${team.previousSeason.promoted ? `<aside class="competition-warning"><strong>Statistiche di provenienza: Serie B 2025/26.</strong> Non sono confrontate direttamente con i valori grezzi di Serie A.</aside>` : ""}${statsSections}<section class="detail-section"><h2>Rosa 2026/27</h2><p class="roster-summary">${team.squad.length} calciatori · ${quality.complete || 0} schede complete · ${quality.partial || 0} parziali · ${quality.unavailable || 0} non disponibili. Seleziona un nome per il dettaglio.</p>${filters()}<div id="squad-results">${squadTable(team.squad)}</div>${squadLeaderboards(team.squad, team.name)}</section><section class="detail-section"><h2>Copertura statistica individuale</h2><p class="muted">Le schede separano squadra e competizione 2025/26, mantengono i campi non esposti come N/D e calcolano i valori per 90 minuti soltanto quando i minuti sono disponibili.</p></section><section class="detail-section"><h2>Fonti</h2><ul class="source-list">${team.sources.map(source => `<li><strong>${esc(source.provider)}</strong> · ${esc(source.scope)} · aggiornamento ${esc(source.retrievedAt)}${source.url ? ` · <a href="${esc(source.url)}" target="_blank" rel="noreferrer">fonte</a>` : ""}</li>`).join("")}</ul></section><dialog id="player-detail" class="player-detail"><div id="player-detail-content"></div></dialog>`;
+    root.innerHTML = `${nav}<section class="team-detail-hero"><img src="${team.logo}" alt="Stemma ${esc(team.name)}"><div><p class="eyebrow">${esc(team.previousSeason.competition)} 2025/26${team.previousSeason.promoted ? " · neopromossa" : ""}</p><h1>${esc(team.officialName)}</h1><p>${esc(team.shortName)} · Città ${value(team.city)} · Stadio ${value(team.stadium)} · Allenatore ${value(team.coach)}</p><p class="updated">Aggiornato ${esc(team.lastUpdated)}</p></div></section>${team.previousSeason.promoted ? `<aside class="competition-warning"><strong>Statistiche di provenienza: Serie B 2025/26.</strong> Non sono confrontate direttamente con i valori grezzi di Serie A.</aside>` : ""}${statsSections}<section class="detail-section"><h2>Rosa 2026/27</h2><p class="roster-summary">${team.squad.length} calciatori · ${quality.complete || 0} schede complete · ${quality.partial || 0} parziali · ${quality.unavailable || 0} non disponibili. Seleziona un nome per il dettaglio.</p>${filters()}<div id="squad-results">${squadTable(team.squad)}</div>${squadLeaderboards(team, matches)}</section><section class="detail-section"><h2>Copertura statistica individuale</h2><p class="muted">Le schede separano squadra e competizione 2025/26, mantengono i campi non esposti come N/D e calcolano i valori per 90 minuti soltanto quando i minuti sono disponibili.</p></section><section class="detail-section"><h2>Fonti</h2><ul class="source-list">${team.sources.map(source => `<li><strong>${esc(source.provider)}</strong> · ${esc(source.scope)} · aggiornamento ${esc(source.retrievedAt)}${source.url ? ` · <a href="${esc(source.url)}" target="_blank" rel="noreferrer">fonte</a>` : ""}</li>`).join("")}</ul></section><dialog id="player-detail" class="player-detail"><div id="player-detail-content"></div></dialog>`;
     root.querySelector(".team-detail-hero")?.insertAdjacentHTML("afterend", personalCalendar(team, teams, matches));
     root.querySelector(".team-detail-hero")?.insertAdjacentHTML("afterend", objectiveStatus(team, objectiveDataset, standings));
     root.querySelector(".team-objective-section")?.insertAdjacentHTML("afterend", probableLineupSection(team, teams.find(item => item.id === team.id)));
@@ -280,8 +364,8 @@
       const button = event.target.closest(".player-open");
       if (button) showPlayer(button.dataset.playerId);
     });
-    document.getElementById("squad-leaders").addEventListener("click", event => {
-      const button = event.target.closest(".leader-player");
+    document.getElementById("squad-leaderboards").addEventListener("click", event => {
+      const button = event.target.closest("button.leader-player");
       if (button) showPlayer(button.dataset.playerId);
     });
     dialog.addEventListener("click", event => {
