@@ -15,6 +15,7 @@ const styles = ["styles", "base", "layout", "components", "home", "matches", "te
   .join("\n");
 const teamStatsShell = fs.readFileSync(path.join(root, "statistiche-squadre.html"), "utf8");
 const teamPageShell = fs.readFileSync(path.join(root, "statistiche-squadra", "inter.html"), "utf8");
+const sourcesShell = fs.readFileSync(path.join(root, "fonti.html"), "utf8");
 assert.strictEqual(index.teams.length, 20, "Sono richieste 20 squadre");
 assert.strictEqual(new Set(index.teams.map(team => team.id)).size, 20, "ID squadra duplicati");
 for (const summary of index.teams) {
@@ -77,10 +78,21 @@ for (const contract of [".reading-fixture-preview", ".reading-fixture-preview-te
 for (const contract of ['reading-fixture match fixture-card fixture-card-link', 'class="match-head"', 'class="matchday-chip"', 'class="match-date"', 'teamColorStyle']) assert.ok(mainApp.includes(contract), `Card Letture: struttura calendario ${contract} assente`);
 for (const removed of ['reading-fixture-footer', 'Pronostico preliminare · sorpresa', 'Precedenti ${history.coverage.available}/5']) assert.ok(!mainApp.includes(removed), `Card Letture: contenuto inferiore ${removed} ancora presente`);
 const teamInterface = fs.readFileSync(path.join(root, "js/team-squads.js"), "utf8");
+for (const removedCopy of ["Copertura statistica" + " individuale", "Le schede separano squadra" + " e competizione 2025/26"]) assert.ok(!teamInterface.includes(removedCopy), `Pagine squadra: testo rimosso ancora presente: ${removedCopy}`);
+const teamPageSource = teamInterface.slice(teamInterface.indexOf("function teamPage"), teamInterface.indexOf("async function init"));
+assert.ok(!teamPageSource.includes('<h2>Fonti</h2>') && !teamPageSource.includes("team.sources.map"), "Le fonti non devono comparire in fondo alle pagine squadra");
+assert.strictEqual((sourcesShell.match(/data-source-team=/g) || []).length, 20, "La pagina Fonti deve raccogliere tutte le 20 squadre");
+assert.ok(sourcesShell.includes("Fonti registrate") && sourcesShell.includes("Apri la fonte"), "La pagina Fonti non espone i riferimenti registrati");
+assert.ok(teamPageShell.includes('../fonti.html">Fonti</a>') && sourcesShell.includes('href="fonti.html">Fonti</a>'), "Il footer deve collegare la pagina Fonti a ogni profondità");
 for (const contract of ['data-team-season="${esc(stats.season)}"', "Statistiche ${esc(stats.season)}", "Totale 2025/26 + 2026/27", "teamSeasonStatsBlock", "teamTotalStatsBlock", '<details class="detail-section team-season-section"', '<summary class="team-season-summary"', '<details class="detail-section team-total-section"']) assert.ok(teamInterface.includes(contract), `Statistiche squadra per stagione: manca ${contract}`);
 for (const contract of [".team-season-section", ".team-total-section", ".team-season-summary", ".team-season-content", ".team-season-empty"]) assert.ok(styles.includes(contract), `Statistiche squadra per stagione: stile ${contract} assente`);
 assert.ok(!teamInterface.includes('<details class="detail-section team-season-section" open') && !teamInterface.includes('<details class="detail-section team-total-section" open'), "I menu delle statistiche squadra devono partire chiusi");
 for (const contract of ["currentSquadLeaderboardRows", "previousSquadLeaderboardRows", "I migliori di ${esc(teamName)} nel ${season}", 'season === "2026/27"', 'id="squad-leaderboards"', "Dati non disponibili", "Scheda N/D", 'closest("button.leader-player")']) assert.ok(teamInterface.includes(contract), `Top 3 squadra per stagione: manca ${contract}`);
+const currentTeamLeadersSource = teamInterface.slice(teamInterface.indexOf("function currentSquadLeaderboardRows"), teamInterface.indexOf("function squadLeaderboardSection"));
+for (const field of ["foulsCommitted", "foulsWon"]) {
+  assert.ok(currentTeamLeadersSource.includes(`row.coverage.${field} === row.appearances`) && currentTeamLeadersSource.includes(`row.sums.${field}`), `Top 3 squadra 2026/27: ${field} non aggregato`);
+  assert.ok(!currentTeamLeadersSource.includes(`${field}: null`), `Top 3 squadra 2026/27: ${field} non deve essere forzato a N/D`);
+}
 for (const contract of [".squad-leaders-summary", ".squad-leaders-content", ".squad-leaders[open]"]) assert.ok(styles.includes(contract), `Top 3 squadra per stagione: stile ${contract} assente`);
 const readingLineupSource = mainApp.slice(mainApp.indexOf("function renderProbableLineups"), mainApp.indexOf("function renderReadingPilotEvidence"));
 assert.ok(teamInterface.includes("lineup.players.slice(offset, offset + size).reverse()"), "Le probabili formazioni delle pagine squadra devono essere specchiate orizzontalmente");

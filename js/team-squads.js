@@ -3,7 +3,7 @@
   if (!root) return;
 
   const base = document.body.dataset.depth === "team" ? "../" : "";
-  const release = "20260824-team-leaders-2026-27-v1";
+  const release = "20260824-team-leaders-2026-27-v4-central-sources-page";
   const defaultPlayerPhoto = `${base}assets/images/players/player-placeholder.png`;
   const esc = value => String(value ?? "").replace(/[&<>\"]/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[char]));
   const contrastInk = color => {
@@ -194,8 +194,8 @@
           appearances: 0,
           minutes: 0,
           minutesCoverage: 0,
-          sums: { goals: 0, assists: 0, shots: 0, shotsOnTarget: 0 },
-          coverage: { goals: 0, assists: 0, shots: 0, shotsOnTarget: 0 },
+          sums: { goals: 0, assists: 0, shots: 0, shotsOnTarget: 0, foulsCommitted: 0, foulsWon: 0 },
+          coverage: { goals: 0, assists: 0, shots: 0, shotsOnTarget: 0, foulsCommitted: 0, foulsWon: 0 },
           cards: 0
         });
       }
@@ -212,7 +212,7 @@
           row.minutes += matchPlayer.minutes;
           row.minutesCoverage += 1;
         }
-        for (const field of ["goals", "assists", "shots", "shotsOnTarget"]) {
+        for (const field of ["goals", "assists", "shots", "shotsOnTarget", "foulsCommitted", "foulsWon"]) {
           if (typeof matchPlayer[field] !== "number") continue;
           row.sums[field] += matchPlayer[field];
           row.coverage[field] += 1;
@@ -233,8 +233,8 @@
         shots: row.appearances > 0 && row.coverage.shots === row.appearances ? row.sums.shots : null,
         shotsOnTarget: row.appearances > 0 && row.coverage.shotsOnTarget === row.appearances ? row.sums.shotsOnTarget : null,
         cards: row.cards,
-        foulsCommitted: null,
-        foulsWon: null
+        foulsCommitted: row.appearances > 0 && row.coverage.foulsCommitted === row.appearances ? row.sums.foulsCommitted : null,
+        foulsWon: row.appearances > 0 && row.coverage.foulsWon === row.appearances ? row.sums.foulsWon : null
       };
       return {
         player: row.player,
@@ -315,7 +315,7 @@
       return summary;
     }, {});
 
-    root.innerHTML = `${nav}<section class="team-detail-hero"><img src="${team.logo}" alt="Stemma ${esc(team.name)}"><div><p class="eyebrow">${esc(team.previousSeason.competition)} 2025/26${team.previousSeason.promoted ? " · neopromossa" : ""}</p><h1>${esc(team.officialName)}</h1><p>${esc(team.shortName)} · Città ${value(team.city)} · Stadio ${value(team.stadium)} · Allenatore ${value(team.coach)}</p><p class="updated">Aggiornato ${esc(team.lastUpdated)}</p></div></section>${team.previousSeason.promoted ? `<aside class="competition-warning"><strong>Statistiche di provenienza: Serie B 2025/26.</strong> Non sono confrontate direttamente con i valori grezzi di Serie A.</aside>` : ""}${statsSections}<section class="detail-section"><h2>Rosa 2026/27</h2><p class="roster-summary">${team.squad.length} calciatori · ${quality.complete || 0} schede complete · ${quality.partial || 0} parziali · ${quality.unavailable || 0} non disponibili. Seleziona un nome per il dettaglio.</p>${filters()}<div id="squad-results">${squadTable(team.squad)}</div>${squadLeaderboards(team, matches)}</section><section class="detail-section"><h2>Copertura statistica individuale</h2><p class="muted">Le schede separano squadra e competizione 2025/26, mantengono i campi non esposti come N/D e calcolano i valori per 90 minuti soltanto quando i minuti sono disponibili.</p></section><section class="detail-section"><h2>Fonti</h2><ul class="source-list">${team.sources.map(source => `<li><strong>${esc(source.provider)}</strong> · ${esc(source.scope)} · aggiornamento ${esc(source.retrievedAt)}${source.url ? ` · <a href="${esc(source.url)}" target="_blank" rel="noreferrer">fonte</a>` : ""}</li>`).join("")}</ul></section><dialog id="player-detail" class="player-detail"><div id="player-detail-content"></div></dialog>`;
+    root.innerHTML = `${nav}<section class="team-detail-hero"><img src="${team.logo}" alt="Stemma ${esc(team.name)}"><div><p class="eyebrow">${esc(team.previousSeason.competition)} 2025/26${team.previousSeason.promoted ? " · neopromossa" : ""}</p><h1>${esc(team.officialName)}</h1><p>${esc(team.shortName)} · Città ${value(team.city)} · Stadio ${value(team.stadium)} · Allenatore ${value(team.coach)}</p><p class="updated">Aggiornato ${esc(team.lastUpdated)}</p></div></section>${team.previousSeason.promoted ? `<aside class="competition-warning"><strong>Statistiche di provenienza: Serie B 2025/26.</strong> Non sono confrontate direttamente con i valori grezzi di Serie A.</aside>` : ""}${statsSections}<section class="detail-section"><h2>Rosa 2026/27</h2><p class="roster-summary">${team.squad.length} calciatori · ${quality.complete || 0} schede complete · ${quality.partial || 0} parziali · ${quality.unavailable || 0} non disponibili. Seleziona un nome per il dettaglio.</p>${filters()}<div id="squad-results">${squadTable(team.squad)}</div>${squadLeaderboards(team, matches)}</section><dialog id="player-detail" class="player-detail"><div id="player-detail-content"></div></dialog>`;
     root.querySelector(".team-detail-hero")?.insertAdjacentHTML("afterend", personalCalendar(team, teams, matches));
     root.querySelector(".team-detail-hero")?.insertAdjacentHTML("afterend", objectiveStatus(team, objectiveDataset, standings));
     root.querySelector(".team-objective-section")?.insertAdjacentHTML("afterend", probableLineupSection(team, teams.find(item => item.id === team.id)));
