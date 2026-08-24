@@ -127,9 +127,10 @@ console.log(`Schedina valida: ${data.slips.map(slip => `${slip.name} ${slip.comb
   assert.strictEqual(status("prisma","atalanta-sassuolo-2026-27-md-01"),"won","Scamacca o il sostituto Krstovic deve risultare centrato");
   assert.strictEqual(status("quasar","genoa-napoli-2026-27-md-01"),"won","Politano o il sostituto Vergara assist deve risultare centrato");
   assert.strictEqual(status("quasar","parma-cagliari-2026-27-md-01"),"lost","Bernabé e il sostituto Almqvist restano sotto due tiri");
+  assert.strictEqual(status("supernova","parma-cagliari-2026-27-md-01"),"won","Due ammoniti devono rendere verde l'Under 5,5 punti cartellini");
   const settlements=data.slips.flatMap(slip=>slip.legs.map(leg=>settleLeg(leg,byId.get(leg.matchId))));
-  assert.strictEqual(settlements.filter(item=>item.status==="won").length,31,"Numero esiti verdi inatteso");
+  assert.strictEqual(settlements.filter(item=>item.status==="won").length,32,"Numero esiti verdi inatteso");
   assert.strictEqual(settlements.filter(item=>item.status==="lost").length,16,"Numero esiti rossi inatteso");
-  assert.strictEqual(settlements.filter(item=>item.status==="unavailable").length,1,"Numero esiti non verificabili inatteso");
+  assert.strictEqual(settlements.filter(item=>item.status==="unavailable").length,0,"Numero esiti non verificabili inatteso");
   console.log("Liquidazione visiva Schedina valida.");
 })().catch(error=>{console.error(error);process.exitCode=1;});

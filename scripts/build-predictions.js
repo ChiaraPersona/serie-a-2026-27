@@ -20,6 +20,7 @@ const understatXg = read("data/normalized/understat-serie-a-xg.json");
 const mvpHistory = read("data/sources/player-mvp-history-2025-26.json");
 const fantasy = read("data/generated/fantacalcio-advice.json");
 const volumeProfiles = read("data/normalized/team-volume-profiles-2025-26.json");
+const officialLineups = read("data/sources/official-lineups-2026-27.json");
 const myComboSource = process.env.SERIE_A_DISABLE_MYCOMBO === "1"
   ? { constraints: {}, matches: {} }
   : read("data/sources/mycombo-serie-a-2026-27-md-01.json");
@@ -29,7 +30,7 @@ const multiSeasonBacktestPath = path.join(root, "data/generated/prediction-backt
 const multiSeasonBacktest = fs.existsSync(multiSeasonBacktestPath) ? JSON.parse(fs.readFileSync(multiSeasonBacktestPath, "utf8")) : null;
 const openingBacktestPath = path.join(root, "data/generated/prediction-backtest-opening-rounds.json");
 const openingBacktest = fs.existsSync(openingBacktestPath) ? JSON.parse(fs.readFileSync(openingBacktestPath, "utf8")) : null;
-const generatedAt = odds.retrievedAt || new Date().toISOString();
+const generatedAt = new Date().toISOString();
 
 const byId = items => new Map(items.map(item => [item.teamId || item.team || item.matchId || item.canonicalMatchId, item]));
 const playerKey = value => String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9 ]/g, " ").replace(/\s+/g, " ").trim();
@@ -85,30 +86,65 @@ function xgProfile(teamId) {
 }
 const xgProfiles = new Map(teams.map(team => [team.id, xgProfile(team.id)]));
 
-function recentForm(teamId) {
-  const rows = historicalMatches.filter(match => match.homeTeam.slug === teamId || match.awayTeam.slug === teamId)
-    .sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 8);
+function recentForm(teamId, targetMatch) {
+  const currentSeason = matches
+    .filter(match => match.competition === "serie-a" && match.season === "2026-27" && match.status === "finished" && match.score && match.matchday < targetMatch.matchday && (match.homeTeam === teamId || match.awayTeam === teamId))
+    .sort((a, b) => b.matchday - a.matchday)
+    .map(match => ({
+      date: match.date,
+      atHome: match.homeTeam === teamId,
+      opponent: match.homeTeam === teamId ? match.awayTeam : match.homeTeam,
+      goalsFor: match.homeTeam === teamId ? match.score.home : match.score.away,
+      goalsAgainst: match.homeTeam === teamId ? match.score.away : match.score.home,
+      season: "2026-27"
+    }));
+  const historical = historicalMatches.filter(match => match.homeTeam.slug === teamId || match.awayTeam.slug === teamId)
+    .sort((a, b) => new Date(b.date) - new Date(a.date))
+    .map(match => {
+      const atHome = match.homeTeam.slug === teamId;
+      return {
+        date: match.date,
+        atHome,
+        opponent: atHome ? match.awayTeam.slug : match.homeTeam.slug,
+        goalsFor: atHome ? match.score.home : match.score.away,
+        goalsAgainst: atHome ? match.score.away : match.score.home,
+        season: "2025-26"
+      };
+    });
+  const rows = [...currentSeason, ...historical].slice(0, 8);
   if (!rows.length) return null;
   let weightTotal = 0, goalsFor = 0, goalsAgainst = 0;
   rows.forEach((match, index) => {
-    const atHome = match.homeTeam.slug === teamId;
-    const opponent = atHome ? match.awayTeam.slug : match.homeTeam.slug;
-    const opponentStrength = (standingsByTeam.get(opponent)?.points || meanStandingPoints) / meanStandingPoints;
+    const opponentStrength = (standingsByTeam.get(match.opponent)?.points || meanStandingPoints) / meanStandingPoints;
     const weight = 0.82 ** index;
     weightTotal += weight;
-    goalsFor += (atHome ? match.score.home : match.score.away) * (opponentStrength ** 0.25) * weight;
-    goalsAgainst += (atHome ? match.score.away : match.score.home) / (opponentStrength ** 0.25) * weight;
+    goalsFor += match.goalsFor * (opponentStrength ** 0.25) * weight;
+    goalsAgainst += match.goalsAgainst / (opponentStrength ** 0.25) * weight;
   });
-  return { matches: rows.length, goalsFor: goalsFor / weightTotal, goalsAgainst: goalsAgainst / weightTotal, decay: 0.82, opponentAdjusted: true };
+  return { matches: rows.length, goalsFor: goalsFor / weightTotal, goalsAgainst: goalsAgainst / weightTotal, decay: 0.82, opponentAdjusted: true, currentSeasonMatches: currentSeason.length };
 }
 
+const nextScheduledMatchday = matches
+  .filter(match => match.competition === "serie-a" && match.season === "2026-27" && match.status !== "finished")
+  .reduce((minimum, match) => Math.min(minimum, match.matchday), Infinity);
 const targetMatches = matches
-  .filter(match => match.competition === "serie-a" && match.season === "2026-27" && oddsByMatch.has(match.id))
+  .filter(match => match.competition === "serie-a" && match.season === "2026-27" && (oddsByMatch.has(match.id) || match.matchday === nextScheduledMatchday))
   .sort((a, b) => a.matchday - b.matchday || a.id.localeCompare(b.id));
 
-const teamForMatch = (team, match) => team?.probableLineup?.status === "official" && team.probableLineup.matchId !== match.id
-  ? { ...team, probableLineup: team.projectedLineup || null }
-  : team;
+const officialReferenceByTeam = new Map(officialLineups.fixtures
+  .flatMap(fixture => fixture.teams.map(lineup => [lineup.teamId, {
+    formation: lineup.formation,
+    players: lineup.players.map(player => player.currentName || player.sourceName),
+    context: `Riferimento dalla formazione ufficiale della ${fixture.matchday}ª giornata`,
+    status: "reference",
+    referenceMatchId: fixture.matchId,
+    updatedAt: fixture.date,
+    source: { provider: officialLineups.provider || "Distinta ufficiale", scope: `Formazione ufficiale ${fixture.label}`, retrievedAt: fixture.date }
+  }])));
+const teamForMatch = (team, match) => {
+  if (team?.probableLineup?.status !== "official" || team.probableLineup.matchId === match.id) return team;
+  return { ...team, probableLineup: officialReferenceByTeam.get(team.id) || team.projectedLineup || null };
+};
 
 const predictions = targetMatches.map(match => {
   const homeTeam = teamForMatch(teamById.get(match.homeTeam), match);
@@ -121,8 +157,8 @@ const predictions = targetMatches.map(match => {
     awayVenue: awayByTeam.get(match.awayTeam),
     homeProfile: styleByTeam.get(match.homeTeam),
     awayProfile: styleByTeam.get(match.awayTeam),
-    homeRecent: recentForm(match.homeTeam),
-    awayRecent: recentForm(match.awayTeam),
+    homeRecent: recentForm(match.homeTeam, match),
+    awayRecent: recentForm(match.awayTeam, match),
     homeXgProfile: xgProfiles.get(match.homeTeam),
     awayXgProfile: xgProfiles.get(match.awayTeam),
     xgLeagueSummary,
@@ -142,7 +178,7 @@ const predictions = targetMatches.map(match => {
     mvpSourceUrl: mvpHistory.sourceUrl,
     leagueSummary: standings.summary,
     oddsEvent: oddsByMatch.get(match.id),
-    oddsRetrievedAt: oddsByMatch.get(match.id)?.retrievedAt || odds.retrievedAt,
+    oddsRetrievedAt: oddsByMatch.get(match.id)?.retrievedAt || null,
     oddsSourceUrl: odds.sourceUrl,
     myComboConfig: myComboSource.matches[match.id]
       ? { constraints: myComboSource.constraints, portfolios: myComboSource.matches[match.id] }
@@ -278,7 +314,7 @@ const output = {
       },
       selectionRule: "La favorita con probabilita di vittoria >=50% e vantaggio >=15 punti fornisce il candidato principale; l'eventuale miglior punteggio avversario resta alternativa sorpresa."
     },
-    limitations: [`Quote Sisal datate per singolo evento; ultimo aggiornamento disponibile ${String(odds.retrievedAt).slice(0, 10)}.`, "Forma ufficiale 2026/27 non ancora disponibile: la forma recente usa le ultime otto gare 2025/26.", "Gli xG Understat 2025/26 coprono 17 squadre su 20; negli incontri con una neopromossa non coperta resta attivo il fallback sui gol.", "Le indisponibilita derivano dal monitor editoriale aggiornato e i casi da valutare non sono trasformati in assenze certe; arbitri e meteo saranno integrati soltanto quando verificati.", "Le probabili formazioni sono proiezioni editoriali e non distinte ufficiali.", "Il backtest pluristagionale non include probabili XI, indisponibili e tattica per assenza di snapshot storici.", "Il correttivo H2H e limitato al 5% per lato: il vantaggio fuori campione e positivo ma modesto, quindi non deve dominare il pronostico."]
+    limitations: [`Quote Sisal datate per singolo evento; ultimo aggiornamento disponibile ${String(odds.retrievedAt).slice(0, 10)}. Le gare senza snapshot vengono pronosticate senza confronto mercato.`, "La forma recente della seconda giornata include il risultato concluso della prima e completa il campione con le gare 2025/26, sempre con taglio temporale per giornata.", "Gli xG Understat 2025/26 coprono 17 squadre su 20; negli incontri con una neopromossa non coperta resta attivo il fallback sui gol.", "Le indisponibilita derivano dal monitor editoriale aggiornato e i casi da valutare non sono trasformati in assenze certe; arbitri e meteo saranno integrati soltanto quando verificati.", "Per la seconda giornata le formazioni ufficiali della prima sono usate soltanto come riferimento tecnico, non come distinte confermate.", "Il backtest pluristagionale non include probabili XI, indisponibili e tattica per assenza di snapshot storici.", "Il correttivo H2H e limitato al 5% per lato: il vantaggio fuori campione e positivo ma modesto, quindi non deve dominare il pronostico."]
   },
   sources: [
     { label: "Lega Serie A - programma prime cinque giornate", url: "https://www.legaseriea.it/serie-a/news/date-orari-e-programmazione-tv-delle-prime-cinque-giornate" },

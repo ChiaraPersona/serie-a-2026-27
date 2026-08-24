@@ -120,7 +120,8 @@ assert.strictEqual(index.teams.find(team => team.id === "napoli").probableLineup
 assert(index.teams.find(team => team.id === "torino").probableLineup.players.includes("Cesare Casadei") && !index.teams.find(team => team.id === "torino").probableLineup.players.includes("Alieu Njie"), "torino: correzione Casadei/Njie non applicata");
 assert.ok(teamInterface.includes("probable-lineup-substitutes") && readingLineupSource.includes("reading-lineup-substitutes"), "Le panchine ufficiali non sono renderizzate nelle pagine squadra e Letture");
 assert.ok(teamInterface.includes('official ? "Formazione ufficiale" : "Probabile formazione"'), "Le pagine squadra non distinguono la formazione ufficiale");
-assert.ok(readingLineupSource.includes('officialLineups?"Formazioni ufficiali":"Probabili formazioni"'), "La Lettura non distingue le formazioni ufficiali");
+assert.ok(readingLineupSource.includes('officialLineups?"Formazioni ufficiali":referenceLineups?"Formazioni di riferimento":"Probabili formazioni"'), "La Lettura non distingue formazioni ufficiali, di riferimento e probabili");
+assert.ok(mainApp.includes('<details class="reading-completed-matchday">') && mainApp.includes("Tabellini della giornata ${completed[0].matchday}"), "I tabellini conclusi non usano il menu a tendina per giornata");
 assert.ok(mainApp.includes("Storico MVP 2025/26") && mainApp.includes("prediction-mvp-history"), "Lo storico MVP individuale non è esposto nelle Letture");
 assert.ok(mainApp.includes("Totale partita") && mainApp.includes("prediction-match-volume") && mainApp.includes("percentili p20–p80"), "I totali volume casa/trasferta non sono esposti nelle Letture");
 assert.ok(!mainApp.includes("giornata di riferimento") && !teamInterface.includes("Data da definire · riferimento"), "Le date non definite non devono mostrare una data di riferimento");

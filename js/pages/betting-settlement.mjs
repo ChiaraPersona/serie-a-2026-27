@@ -94,6 +94,10 @@ export function settleLeg(leg,match){
     if(market.includes("TIRI TOTALI"))return settlePlayerThreshold(selection,players,"shots",threshold);
     return unavailable();
   }
+  if(market==="U/O PUNTI CARTELLINI"){
+    if(!Array.isArray(match?.bookings))return unavailable();
+    return settleThreshold(selection,match.bookings.length,thresholdFromLabel(leg?.label));
+  }
   if(market.includes("PUNTI CARTELLINI"))return unavailable();
 
   const threshold=thresholdFromLabel(leg?.label);

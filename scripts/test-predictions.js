@@ -11,7 +11,11 @@ const officialLineups = JSON.parse(fs.readFileSync(path.join(root, "data/sources
 const cleanName = value => String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]/g, "");
 const officialStartersByMatch = new Map(officialLineups.fixtures.map(fixture => [fixture.matchId, new Set(fixture.teams.flatMap(team => team.players.map(player => cleanName(player.currentName || player.sourceName))))]));
 
-assert.strictEqual(dataset.predictions.length, 10, "Il motore deve coprire le 10 gare con quote della prima giornata");
+assert.strictEqual(dataset.predictions.length, 20, "Il motore deve coprire la prima giornata e le 10 gare della seconda senza quote");
+const firstMatchdayPredictions = dataset.predictions.filter(prediction => prediction.matchId.endsWith("-md-01"));
+const secondMatchdayPredictions = dataset.predictions.filter(prediction => prediction.matchId.endsWith("-md-02"));
+assert.strictEqual(firstMatchdayPredictions.length, 10, "Devono restare disponibili i 10 pronostici archiviati della prima giornata");
+assert.strictEqual(secondMatchdayPredictions.length, 10, "Devono essere disponibili i 10 pronostici tecnici della seconda giornata");
 assert.strictEqual(Object.keys(myComboSource.matches).length, 10, "Le MyCombo devono coprire tutte le 10 gare della prima giornata");
 assert(!Object.hasOwn(dataset.engine.weights, "market"), "Le quote non devono entrare nei pesi del modello");
 assert(Math.abs(Object.values(dataset.engine.weights).reduce((total, value) => total + value, 0) - 1) < 1e-9, "I pesi non sommano a 1");
@@ -52,15 +56,22 @@ for (const prediction of dataset.predictions) {
   assert(["1", "X", "2"].includes(prediction.verdict.outcome), `${prediction.matchId}: verdetto non valido`);
   assert(prediction.surprise.value >= 0 && prediction.surprise.value <= 100, `${prediction.matchId}: fattore sorpresa fuori scala`);
   assert(prediction.confidence.value >= 0 && prediction.confidence.value <= 100, `${prediction.matchId}: confidenza fuori scala`);
-  assert(prediction.market.valueCandidates.every(candidate => candidate.fairOdds > 1 && candidate.odds > 1), `${prediction.matchId}: quote non valide`);
-  assert(prediction.marketComparison.length >= 16, `${prediction.matchId}: confronto mercati incompleto`);
-  assert(prediction.marketComparison.every(candidate => candidate.providerSelectionId && candidate.marketNoMarginPct !== null), `${prediction.matchId}: mercato senza quota disponibile o probabilita depurata`);
-  assert(prediction.marketComparison.every(candidate => Math.abs(candidate.expectedValuePct - ((candidate.modelProbabilityPct / 100) * candidate.odds - 1) * 100) <= 1.5 || candidate.family === "draw-no-bet"), `${prediction.matchId}: valore atteso incoerente`);
+  if (prediction.market.status === "available") {
+    assert(prediction.market.valueCandidates.every(candidate => candidate.fairOdds > 1 && candidate.odds > 1), `${prediction.matchId}: quote non valide`);
+    assert(prediction.marketComparison.length >= 16, `${prediction.matchId}: confronto mercati incompleto`);
+    assert(prediction.marketComparison.every(candidate => candidate.providerSelectionId && candidate.marketNoMarginPct !== null), `${prediction.matchId}: mercato senza quota disponibile o probabilita depurata`);
+    assert(prediction.marketComparison.every(candidate => Math.abs(candidate.expectedValuePct - ((candidate.modelProbabilityPct / 100) * candidate.odds - 1) * 100) <= 1.5 || candidate.family === "draw-no-bet"), `${prediction.matchId}: valore atteso incoerente`);
+  } else {
+    assert.strictEqual(prediction.probabilities.marketNoMargin, null, `${prediction.matchId}: probabilita di mercato inventate`);
+    assert.strictEqual(prediction.marketComparison.length, 0, `${prediction.matchId}: confronto mercato presente senza quote`);
+    assert.strictEqual(prediction.market.valueCandidates.length, 0, `${prediction.matchId}: value bet presente senza quote`);
+    assert(prediction.dataQuality.missing.includes("quote 1X2 verificate"), `${prediction.matchId}: assenza quote non dichiarata`);
+  }
   const removedRecommendationKey = ["pricing", "Errors"].join("");
   assert(!Object.hasOwn(prediction.recommendations, removedRecommendationKey), `${prediction.matchId}: campo raccomandazioni rimosso ancora presente`);
   assert.strictEqual(prediction.scenarios.length, 3, `${prediction.matchId}: scenari incompleti`);
   const configuredMyCombo = Boolean(myComboSource.matches[prediction.matchId]);
-  assert.strictEqual(prediction.playerMarkets.status, "available", `${prediction.matchId}: disponibilita mercati giocatore incoerente con lo snapshot`);
+  assert.strictEqual(prediction.playerMarkets.status, prediction.market.status === "available" ? "available" : "N/D", `${prediction.matchId}: disponibilita mercati giocatore incoerente con lo snapshot`);
   if (configuredMyCombo) {
     assert.deepStrictEqual(prediction.combinations.map(combo => combo.tier), ["Safe", "Balanced", "Aggressive"], `${prediction.matchId}: profili MyCombo incompleti`);
     const portfolioSelectionIds = prediction.combinations.flatMap(combo => combo.legs.map(leg => leg.providerSelectionId));
@@ -119,10 +130,13 @@ assert.strictEqual(torinoMilan.teamProjections[0].venue, "home", "Torino-Milan: 
 assert.strictEqual(torinoMilan.teamProjections[1].venue, "away", "Torino-Milan: Milan non usa il campione trasferta");
 assert.strictEqual(torinoMilan.teamProjections[0].shotsTotal.inputs[0].source, "home-for", "Torino-Milan: produzione Torino casa non collegata");
 assert.strictEqual(torinoMilan.teamProjections[1].shotsTotal.inputs[0].source, "away-for", "Torino-Milan: produzione Milan trasferta non collegata");
-const goalTotals = dataset.predictions.map(prediction => prediction.expectedGoals.total);
+assert(secondMatchdayPredictions.every(prediction => prediction.market.status === "unavailable"), "La seconda giornata non deve contenere quote Sisal non scaricate");
+assert(secondMatchdayPredictions.every(prediction => prediction.dataQuality.probableLineups.includes("proiettati")), "Le formazioni della prima giornata devono restare riferimenti, non XI ufficiali della seconda");
+const goalTotals = firstMatchdayPredictions.map(prediction => prediction.expectedGoals.total);
 assert(Math.max(...goalTotals) >= 3 && Math.min(...goalTotals) <= 2.4, "Il motore non deve imporre sempre lo stesso profilo di gol");
-const modalScores = dataset.predictions.map(prediction => prediction.exactScores[0].score);
+const modalScores = firstMatchdayPredictions.map(prediction => prediction.exactScores[0].score);
 assert(dataset.predictions.filter(prediction => prediction.expectedGoals.components.xg.status === "used").length >= 5, "Copertura xG insufficiente sulla prima giornata");
 assert(new Set(modalScores).size >= 4, "I punteggi modali devono variare fra le partite");
-assert(modalScores.filter(score => score === "1-1").length <= 4, "L'1-1 non deve dominare artificialmente la giornata");
+assert(modalScores.filter(score => score === "1-1").length <= 4, "L'1-1 non deve dominare artificialmente la prima giornata");
+assert(new Set(secondMatchdayPredictions.map(prediction => prediction.scoreForecast.primary.score)).size >= 4, "I risultati principali della seconda giornata devono variare fra le partite");
 console.log(`OK motore pronostici ${dataset.engine.version}: ${dataset.predictions.length} partite, dati mancanti dichiarati, fattore sorpresa validato`);

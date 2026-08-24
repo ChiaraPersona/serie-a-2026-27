@@ -1,6 +1,6 @@
 "use strict";
 
-const ENGINE_VERSION = "4.10.0";
+const ENGINE_VERSION = "4.11.0";
 const OUTCOMES = ["1", "X", "2"];
 const WEIGHTS = Object.freeze({ venueHistorical: 0.46, overallHistorical: 0.25, recentForm: 0.16, tacticalMatchup: 0.07, probableLineup: 0.05, objectives: 0.01 });
 const MVP_WEIGHTS = Object.freeze({ resultScenario: 0.3, individualProduction: 0.2, historicalRating: 0.15, officialMvpHistory: 0.15, tacticalFit: 0.1, opponentHistory: 0.05, dataReliability: 0.05 });
@@ -320,11 +320,13 @@ function objectiveProbabilities(homeObjective, awayObjective) {
 }
 
 function surpriseFactor({ final, market, historical, dataCompleteness, crossCompetition }) {
-  const favoriteIndex = market.indexOf(Math.max(...market));
+  const marketAvailable = Array.isArray(market) && market.length === OUTCOMES.length;
+  const marketReference = marketAvailable ? market : final;
+  const favoriteIndex = marketReference.indexOf(Math.max(...marketReference));
   const oppositeIndex = favoriteIndex === 0 ? 2 : favoriteIndex === 2 ? 0 : (final[0] < final[2] ? 0 : 2);
   const upsetProbability = final[oppositeIndex] + final[1] * 0.45;
   const ambiguity = clamp((1 - Math.max(...final) - 0.2) / 0.47, 0, 1);
-  const disagreement = clamp(Math.abs(historical[favoriteIndex] - market[favoriteIndex]) / 0.22, 0, 1);
+  const disagreement = marketAvailable ? clamp(Math.abs(historical[favoriteIndex] - marketReference[favoriteIndex]) / 0.22, 0, 1) : 0;
   const uncertainty = clamp((1 - dataCompleteness) + (crossCompetition ? 0.2 : 0), 0, 1);
   const value = Math.round(100 * (0.38 * clamp(upsetProbability / 0.5, 0, 1) + 0.27 * ambiguity + 0.2 * disagreement + 0.15 * uncertainty));
   return {
@@ -332,7 +334,9 @@ function surpriseFactor({ final, market, historical, dataCompleteness, crossComp
     level: value >= 67 ? "alto" : value >= 42 ? "medio" : "basso",
     upsetOutcome: OUTCOMES[oppositeIndex],
     upsetProbabilityPct: round(final[oppositeIndex] * 100, 1),
-    explanation: "Misura apertura della gara, probabilita dell'esito sfavorito, divergenza tra mercato e dati tecnici e incompletezza prepartita. Non seleziona automaticamente l'outsider."
+    explanation: marketAvailable
+      ? "Misura apertura della gara, probabilita dell'esito sfavorito, divergenza tra mercato e dati tecnici e incompletezza prepartita. Non seleziona automaticamente l'outsider."
+      : "Misura apertura della gara, probabilita dell'esito sfavorito e incompletezza prepartita. La componente di divergenza dal mercato resta disattivata finche non sono disponibili quote verificate."
   };
 }
 
@@ -1121,7 +1125,6 @@ function matchScenarios(input, final, expected) {
 
 function predictMatch(input) {
   const market = marketProbabilities(findMainOneXTwo(input.oddsEvent));
-  if (!market) throw new Error(`Mercato 1X2 principale assente: ${input.match.id}`);
   const expected = expectedGoals(input);
   const matrix = scoreMatrix(expected.home, expected.away, 7);
   const parts = {
@@ -1135,7 +1138,7 @@ function predictMatch(input) {
   const lineupsComplete = input.homeTeam?.probableLineup?.players?.length === 11 && input.awayTeam?.probableLineup?.players?.length === 11;
   const lineupsOfficial = input.homeTeam?.probableLineup?.status === "official" && input.awayTeam?.probableLineup?.status === "official";
   const dataCompleteness = clamp(0.52 + completedSections * 0.035 + (lineupsComplete ? 0.12 : 0) - (crossCompetition ? 0.08 : 0), 0.45, 0.86);
-  const surprise = surpriseFactor({ final, market: market.probabilities, historical: parts.historical, dataCompleteness, crossCompetition });
+  const surprise = surpriseFactor({ final, market: market?.probabilities, historical: parts.historical, dataCompleteness, crossCompetition });
   const confidenceResult = confidence(final, surprise, dataCompleteness);
   const orderedOutcomes = OUTCOMES.map((outcome, index) => ({ outcome, probability: final[index] })).sort((a, b) => b.probability - a.probability);
   const topTwo = new Set(orderedOutcomes.slice(0, 2).map(item => item.outcome));
@@ -1163,7 +1166,7 @@ function predictMatch(input) {
     engineVersion: ENGINE_VERSION,
     probabilities: {
       final: probabilityObject(final),
-      marketNoMargin: probabilityObject(market.probabilities),
+      marketNoMargin: market ? probabilityObject(market.probabilities) : null,
       historical: probabilityObject(parts.historical),
       tactical: probabilityObject(parts.tactical),
       objectives: probabilityObject(parts.objectives)
@@ -1190,13 +1193,16 @@ function predictMatch(input) {
     combinations: comboPortfolio(input.oddsEvent, matrices, dataCompleteness, input.myComboConfig, { teams: teamProjections, match: matchProjection }),
     playerMarkets: evaluatedMarkets.playerMarkets,
     market: {
-      provider: "Sisal",
-      sourceUrl: input.oddsSourceUrl,
-      retrievedAt: input.oddsRetrievedAt,
-      overroundPct: market.overroundPct,
-      selections: market.selections,
+      status: market ? "available" : "unavailable",
+      provider: market ? "Sisal" : null,
+      sourceUrl: market ? input.oddsSourceUrl : null,
+      retrievedAt: market ? input.oddsRetrievedAt : null,
+      overroundPct: market?.overroundPct ?? null,
+      selections: market?.selections ?? null,
       valueCandidates,
-      role: "Confronto esterno: le quote non entrano nei gol attesi ne nelle probabilita del modello."
+      role: market
+        ? "Confronto esterno: le quote non entrano nei gol attesi ne nelle probabilita del modello."
+        : "N/D: nessuna quota verificata disponibile; il pronostico usa soltanto il modello tecnico."
     },
     dataQuality: {
       completenessPct: Math.round(dataCompleteness * 100),
@@ -1208,6 +1214,7 @@ function predictMatch(input) {
         ...(input.reading?.sections?.availability?.content ? [] : ["indisponibili verificati"]),
         ...(input.reading?.sections?.referee?.content ? [] : ["designazione arbitrale"]),
         "meteo attendibile alla data della gara",
+        ...(market ? [] : ["quote 1X2 verificate"]),
         ...(evaluatedMarkets.playerMarkets.status === "available" ? [] : ["quote giocatore verificate"])
       ]
     }

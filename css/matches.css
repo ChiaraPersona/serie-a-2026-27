@@ -940,6 +940,20 @@ body[data-page="referees"] .referee-nav a:focus-visible{border-color:rgba(36,90,
 
 .reading-fixture{position:relative}
 
+.reading-completed-matchday{border:1px solid var(--glass-border);border-radius:20px;background:rgba(255,255,255,.58);overflow:hidden}
+
+.reading-completed-matchday>summary{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:17px 20px;cursor:pointer;list-style:none}
+
+.reading-completed-matchday>summary::-webkit-details-marker{display:none}
+
+.reading-completed-matchday>summary span{font-family:"Anton",sans-serif;font-size:20px}
+
+.reading-completed-matchday>summary small{color:var(--muted);font-size:10px}
+
+.reading-completed-matchday[open]>summary{border-bottom:1px solid rgba(36,90,120,.1)}
+
+.reading-completed-matchday>.reading-fixture-grid{padding:14px}
+
 .reading-h2h-matchdays{display:grid;gap:10px}
 
 .reading-h2h-matchday{border:1px solid var(--glass-border);border-radius:20px;background:rgba(255,255,255,.5);overflow:hidden}
