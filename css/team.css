@@ -244,25 +244,27 @@
 
 .team-flip-card:focus-visible{outline:2px solid var(--gold);outline-offset:4px}
 
-.detail-section:nth-of-type(2) .team-stat-grid{grid-template-columns:repeat(7,minmax(0,1fr));gap:7px}
-
-.detail-section:nth-of-type(3) .team-stat-grid{grid-template-columns:repeat(6,minmax(0,1fr));gap:7px}
-
-.detail-section:nth-of-type(4) .split-grid .team-stat-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
-
-.detail-section:nth-of-type(2) .team-stat-grid article,.detail-section:nth-of-type(3) .team-stat-grid article,.detail-section:nth-of-type(4) .team-stat-grid article{min-width:0;padding:9px 8px;border-radius:9px}
-
-.detail-section:nth-of-type(2) .team-stat-grid span,.detail-section:nth-of-type(3) .team-stat-grid span,.detail-section:nth-of-type(4) .team-stat-grid span{min-height:2.2em;font-size:.66rem;line-height:1.1}
-
-.detail-section:nth-of-type(2) .team-stat-grid strong,.detail-section:nth-of-type(3) .team-stat-grid strong,.detail-section:nth-of-type(4) .team-stat-grid strong{margin-top:3px;font-size:1rem}
-
 .team-season-section,.team-total-section{padding-top:20px;padding-bottom:20px}
 
-.team-season-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin-bottom:16px}
+.team-season-summary{position:relative;padding-right:44px;cursor:pointer;list-style:none}
 
-.team-season-heading h2{margin:2px 0 0}
+.team-season-summary::-webkit-details-marker{display:none}
+
+.team-season-summary::after{position:absolute;top:50%;right:4px;width:28px;height:28px;border:1px solid var(--line);border-radius:50%;color:var(--gold);font-size:1.05rem;line-height:26px;text-align:center;content:"⌄";transition:transform .2s ease;transform:translateY(-50%)}
+
+.team-season-section[open]>.team-season-summary::after,.team-total-section[open]>.team-season-summary::after{transform:translateY(-50%) rotate(180deg)}
+
+.team-season-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:18px}
+
+.team-season-heading>span:first-child{display:grid;gap:2px}
+
+.team-season-heading>span:first-child>strong{font-family:"Anton",sans-serif;font-size:1.65rem;font-weight:400;letter-spacing:.01em}
 
 .team-season-heading>span{padding:6px 10px;border:1px solid var(--line);border-radius:999px;color:var(--muted);font-size:.75rem;font-weight:700;white-space:nowrap}
+
+.team-season-heading>span:first-child{padding:0;border:0;border-radius:0;color:inherit;white-space:normal}
+
+.team-season-content{margin-top:16px;padding-top:16px;border-top:1px solid var(--line)}
 
 .team-season-group+.team-season-group{margin-top:18px;padding-top:18px;border-top:1px solid var(--line)}
 

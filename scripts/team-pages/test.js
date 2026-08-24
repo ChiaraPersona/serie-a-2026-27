@@ -41,18 +41,22 @@ assert.ok(mainApp.includes("data/teams/index.json") && mainApp.includes("team-di
 assert.ok(mainApp.includes("team.monochromeLogo||team.logo"), "Le card Statistiche squadre non usano il logo monocromatico nero");
 assert.ok(styles.includes("Statistiche squadre mobile: logo e riepilogo dentro un'unica card") && styles.includes("grid-template-columns:98px minmax(0,1fr)") && styles.includes(".team-flip-face{\n    position:relative"), "Su mobile ogni squadra deve usare una sola card visiva");
 const expectedLeaderboardMetrics = ["goals", "assists", "shots", "shotsOnTarget", "cards", "foulsCommitted", "foulsWon"];
-assert.deepStrictEqual(Object.keys(playerLeaderboards.rankings), expectedLeaderboardMetrics, "Le Top 15 non coprono tutte le statistiche giocatore");
-for (const [metric, ranking] of Object.entries(playerLeaderboards.rankings)) {
-  assert.strictEqual(ranking.players.length, 15, `${metric}: la classifica deve contenere 15 calciatori`);
-  assert.ok(ranking.availablePlayers >= 15, `${metric}: copertura insufficiente`);
+assert.strictEqual(playerLeaderboards.schemaVersion, 2);
+assert.deepStrictEqual(Object.keys(playerLeaderboards.periods), ["2026/27", "2025/26", "total"], "Le classifiche individuali non sono separate per periodo");
+for (const [periodId, period] of Object.entries(playerLeaderboards.periods)) for (const [metric, ranking] of Object.entries(period.rankings)) {
+  assert.deepStrictEqual(Object.keys(period.rankings), expectedLeaderboardMetrics, `${periodId}: le Top 15 non coprono tutte le statistiche giocatore`);
+  assert.strictEqual(ranking.players.length, Math.min(15, ranking.availablePlayers), `${periodId} ${metric}: dimensione classifica incoerente con la copertura`);
   assert.ok(ranking.players.every((player, index) => Number.isFinite(player.totalValue) && (!index || player.totalValue <= ranking.players[index - 1].totalValue)), `${metric}: valori non ordinati`);
   assert.ok(ranking.players.every(player => !ranking.hasPer90 || player.per90Value === null || Number.isFinite(player.per90Value)), `${metric}: media /90 non valida`);
-  assert.strictEqual(new Set(ranking.players.map(player => `${player.currentTeamId}|${player.id}`)).size, 15, `${metric}: calciatori duplicati`);
+  assert.strictEqual(new Set(ranking.players.map(player => `${player.currentTeamId}|${player.id}`)).size, ranking.players.length, `${metric}: calciatori duplicati`);
   assert.ok(ranking.players.every(player => index.teams.some(team => team.id === player.currentTeamId)), `${metric}: squadra 2026/27 non valida`);
   assert.ok(ranking.players.every(player => !["Internazionale", "AS Roma"].includes(player.previousTeam)), `${metric}: alias squadra non normalizzato`);
   assert.ok(ranking.players.every(player => !player.sameClub || player.previousTeam === player.currentTeam), `${metric}: duplicato fra squadra attuale e precedente non riconosciuto`);
 }
-for (const contract of ["loadPlayerLeaderboards", "globalPlayerLeaderboards", "globalPlayerLeaderboardTable", "Top 15 calciatori per statistica", "data-player-stat", "serie-b-marker", "aria-pressed", "per90Value", "stessa riga"]) assert.ok(mainApp.includes(contract), `Top 15 globale: contratto ${contract} assente`);
+assert.strictEqual(playerLeaderboards.periods["2026/27"].rankings.foulsCommitted.availablePlayers, 0, "I falli 2026/27 non devono essere inventati");
+assert.strictEqual(playerLeaderboards.periods.total.rankings.foulsWon.availablePlayers, 0, "Il totale falli deve restare indisponibile senza copertura 2026/27");
+assert.ok(playerLeaderboards.periods["2026/27"].rankings.shots.availablePlayers < 15, "La copertura parziale dei tiri 2026/27 deve restare esplicita");
+for (const contract of ["loadPlayerLeaderboards", "globalPlayerLeaderboards", "globalPlayerLeaderboardTable", "Top 15 calciatori per statistica", "data-player-period", "data-player-stat", "Totale 2025/26 + 2026/27", "serie-b-marker", "aria-pressed", "per90Value", "stessa riga"]) assert.ok(mainApp.includes(contract), `Top 15 globale: contratto ${contract} assente`);
 for (const contract of [".global-player-leaders", ".global-player-table", ".global-leader-player", ".global-leader-value", ".global-leader-rate", ".global-stat-button", ".serie-b-marker", ".global-col-player", ".global-col-rate"]) assert.ok(styles.includes(contract), `Top 15 globale: stile ${contract} assente`);
 const globalTableSource = mainApp.slice(mainApp.indexOf("function globalPlayerLeaderboardTable"), mainApp.indexOf("function globalPlayerLeaderboards"));
 assert.ok(!globalTableSource.includes("<th>Competizione</th>"), "La Top 15 non deve mostrare la colonna Competizione");
@@ -62,7 +66,7 @@ assert.ok(globalTableSource.includes("<colgroup>") && styles.includes("table-lay
 assert.ok(!mainApp.includes('data-player-stat="appearances"') && !mainApp.includes('data-player-stat="minutes"'), "Presenze e minuti non devono avere classifiche autonome");
 assert.ok(!mainApp.includes("classifiche disponibili"), "Il conteggio delle classifiche non deve comparire nel selettore compatto");
 assert.ok(!mainApp.includes('id="global-player-stat"'), "La selezione Top 15 non deve usare un menu a tendina");
-assert.ok(!mainApp.includes("Riepilogo statistico") && !mainApp.includes("season-summary"), "Il riepilogo statistico non deve essere mostrato in Statistiche squadre");
+assert.ok(!mainApp.includes("Riepilogo statistico") && !mainApp.includes('class="season-summary"'), "Il vecchio riepilogo statistico non deve essere mostrato in Statistiche squadre");
 for (const contract of ["reading-fixture-preview", "Anteprima della lettura", "prediction.verdict.label", "likelyScore", "prediction.confidence.value", "Scenari di risultato", "scoreForecast.primary"]) assert.ok(mainApp.includes(contract), `Card Letture: anteprima ${contract} assente`);
 for (const contract of ["readingPostMatchReport", "Tabellino e statistiche", "Partite concluse", "reading-player-table", "match.playerStats", "Analisi prepartita archiviata"]) assert.ok(mainApp.includes(contract), `Letture post-partita: contratto ${contract} assente`);
 assert.ok(mainApp.includes("Risultato principale pronosticato") && mainApp.includes("prediction?.scoreForecast?.primary?.score"), "Le Letture concluse devono conservare il risultato principale pronosticato");
@@ -70,8 +74,9 @@ for (const contract of [".reading-fixture-preview", ".reading-fixture-preview-te
 for (const contract of ['reading-fixture match fixture-card fixture-card-link', 'class="match-head"', 'class="matchday-chip"', 'class="match-date"', 'teamColorStyle']) assert.ok(mainApp.includes(contract), `Card Letture: struttura calendario ${contract} assente`);
 for (const removed of ['reading-fixture-footer', 'Pronostico preliminare · sorpresa', 'Precedenti ${history.coverage.available}/5']) assert.ok(!mainApp.includes(removed), `Card Letture: contenuto inferiore ${removed} ancora presente`);
 const teamInterface = fs.readFileSync(path.join(root, "js/team-squads.js"), "utf8");
-for (const contract of ['data-team-season="${esc(stats.season)}"', "Statistiche ${esc(stats.season)}", "Totale 2025/26 + 2026/27", "teamSeasonStatsBlock", "teamTotalStatsBlock"]) assert.ok(teamInterface.includes(contract), `Statistiche squadra per stagione: manca ${contract}`);
-for (const contract of [".team-season-section", ".team-total-section", ".team-season-heading", ".team-season-empty"]) assert.ok(styles.includes(contract), `Statistiche squadra per stagione: stile ${contract} assente`);
+for (const contract of ['data-team-season="${esc(stats.season)}"', "Statistiche ${esc(stats.season)}", "Totale 2025/26 + 2026/27", "teamSeasonStatsBlock", "teamTotalStatsBlock", '<details class="detail-section team-season-section"', '<summary class="team-season-summary"', '<details class="detail-section team-total-section"']) assert.ok(teamInterface.includes(contract), `Statistiche squadra per stagione: manca ${contract}`);
+for (const contract of [".team-season-section", ".team-total-section", ".team-season-summary", ".team-season-content", ".team-season-empty"]) assert.ok(styles.includes(contract), `Statistiche squadra per stagione: stile ${contract} assente`);
+assert.ok(!teamInterface.includes('<details class="detail-section team-season-section" open') && !teamInterface.includes('<details class="detail-section team-total-section" open'), "I menu delle statistiche squadra devono partire chiusi");
 const readingLineupSource = mainApp.slice(mainApp.indexOf("function renderProbableLineups"), mainApp.indexOf("function renderReadingPilotEvidence"));
 assert.ok(teamInterface.includes("lineup.players.slice(offset, offset + size).reverse()"), "Le probabili formazioni delle pagine squadra devono essere specchiate orizzontalmente");
 assert.ok(readingLineupSource.includes("lineup.players.slice(offset,offset+size).reverse()"), "Le probabili formazioni delle Letture devono essere specchiate orizzontalmente");

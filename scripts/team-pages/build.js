@@ -331,26 +331,109 @@ const leaderboardPlayers = builtTeams.flatMap(team => team.squad.map(player => {
   const entry = domesticEntry(player);
   return entry ? { team, player, entry } : null;
 }).filter(Boolean));
-const rankings = Object.fromEntries(leaderboardMetrics.map(metric => {
-  const players = leaderboardPlayers.map(({ team, player, entry }) => ({
+const previousLeaderboardRows = leaderboardPlayers.map(({ team, player, entry }) => ({
+  id: player.id,
+  name: player.name,
+  currentTeamId: team.id,
+  currentTeam: team.name,
+  role: player.detailedRole || player.role,
+  previousTeam: leaderboardTeamName(entry.team),
+  sameClub: leaderboardTeamName(entry.team) === team.name,
+  competition: entry.competition,
+  appearances: entry.appearances,
+  minutes: entry.minutes,
+  values: Object.fromEntries(leaderboardMetrics.map(metric => [metric.field, leaderboardTotal(entry, metric)])),
+  per90: Object.fromEntries(leaderboardMetrics.map(metric => [metric.field, entry.per90?.[metric.field] ?? null]))
+}));
+const currentLeaderboardMap = new Map();
+const currentTeamById = new Map(builtTeams.map(team => [team.id, team]));
+const ensureCurrentPlayer = (teamId, matchPlayer) => {
+  const key = `${teamId}:${matchPlayer.playerId}`;
+  if (!currentLeaderboardMap.has(key)) {
+    const team = currentTeamById.get(teamId);
+    const squadPlayer = team?.squad.find(player => player.id === matchPlayer.playerId);
+    currentLeaderboardMap.set(key, {
+      id: matchPlayer.playerId, name: squadPlayer?.name || matchPlayer.player, currentTeamId: teamId,
+      currentTeam: team?.name || teamId, role: squadPlayer?.detailedRole || squadPlayer?.role || null,
+      appearances: 0, minutes: 0, sums: { goals: 0, assists: 0, shots: 0, shotsOnTarget: 0 },
+      coverage: { goals: 0, assists: 0, shots: 0, shotsOnTarget: 0 }, cards: 0
+    });
+  }
+  return currentLeaderboardMap.get(key);
+};
+for (const match of currentSeasonMatches) {
+  for (const side of ["home", "away"]) {
+    const teamId = side === "home" ? match.homeTeam : match.awayTeam;
+    for (const matchPlayer of match.playerStats?.[side] || []) {
+      if (!matchPlayer.playerId) continue;
+      const row = ensureCurrentPlayer(teamId, matchPlayer);
+      row.appearances += 1;
+      row.minutes += matchPlayer.minutes ?? 0;
+      for (const field of ["goals", "assists", "shots", "shotsOnTarget"]) {
+        if (typeof matchPlayer[field] !== "number") continue;
+        row.sums[field] += matchPlayer[field];
+        row.coverage[field] += 1;
+      }
+    }
+  }
+  for (const booking of match.bookings || []) {
+    if (!booking.playerId) continue;
+    ensureCurrentPlayer(booking.team, booking).cards += 1;
+  }
+}
+const currentLeaderboardRows = [...currentLeaderboardMap.values()].map(row => {
+  const values = {
+    goals: row.coverage.goals === row.appearances ? row.sums.goals : null,
+    assists: row.coverage.assists === row.appearances ? row.sums.assists : null,
+    shots: row.coverage.shots === row.appearances ? row.sums.shots : null,
+    shotsOnTarget: row.coverage.shotsOnTarget === row.appearances ? row.sums.shotsOnTarget : null,
+    cards: row.cards,
+    foulsCommitted: null,
+    foulsWon: null
+  };
+  return {
+    id: row.id, name: row.name, currentTeamId: row.currentTeamId, currentTeam: row.currentTeam,
+    role: row.role, previousTeam: null, sameClub: false, competition: "Serie A",
+    appearances: row.appearances, minutes: row.minutes, values,
+    per90: Object.fromEntries(leaderboardMetrics.map(metric => [metric.field, rate(values[metric.field], row.minutes)]))
+  };
+});
+const currentLeaderboardByKey = new Map(currentLeaderboardRows.map(player => [`${player.currentTeamId}:${player.id}`, player]));
+const totalLeaderboardRows = previousLeaderboardRows.map(previous => {
+  const current = currentLeaderboardByKey.get(`${previous.currentTeamId}:${previous.id}`);
+  const currentValues = current?.values || { goals: 0, assists: 0, shots: 0, shotsOnTarget: 0, cards: 0, foulsCommitted: null, foulsWon: null };
+  const appearances = add(previous.appearances, current?.appearances ?? 0);
+  const minutes = add(previous.minutes, current?.minutes ?? 0);
+  const values = Object.fromEntries(leaderboardMetrics.map(metric => [metric.field, add(previous.values[metric.field], currentValues[metric.field])]));
+  return { ...previous, appearances, minutes, values, per90: Object.fromEntries(leaderboardMetrics.map(metric => [metric.field, rate(values[metric.field], minutes)])) };
+});
+function buildLeaderboardRankings(rows, requireAppearance = false) {
+  return Object.fromEntries(leaderboardMetrics.map(metric => {
+    const players = rows.map(player => ({
     id: player.id,
     name: player.name,
-    currentTeamId: team.id,
-    currentTeam: team.name,
-    role: player.detailedRole || player.role,
-    previousTeam: leaderboardTeamName(entry.team),
-    sameClub: leaderboardTeamName(entry.team) === team.name,
-    competition: entry.competition,
-    appearances: entry.appearances,
-    minutes: entry.minutes,
-    totalValue: leaderboardTotal(entry, metric),
-    per90Value: metric.hasPer90 ? entry.per90?.[metric.field] ?? null : null,
-    tieValue: entry.per90?.[metric.field] ?? entry.minutes
-  })).filter(player => typeof player.totalValue === "number" && Number.isFinite(player.totalValue))
+    currentTeamId: player.currentTeamId,
+    currentTeam: player.currentTeam,
+    role: player.role,
+    previousTeam: player.previousTeam,
+    sameClub: player.sameClub,
+    competition: player.competition,
+    appearances: player.appearances,
+    minutes: player.minutes,
+    totalValue: player.values[metric.field],
+    per90Value: metric.hasPer90 ? player.per90[metric.field] : null,
+    tieValue: player.per90[metric.field] ?? player.minutes
+  })).filter(player => (!requireAppearance || player.appearances > 0) && typeof player.totalValue === "number" && Number.isFinite(player.totalValue))
     .sort((left, right) => right.totalValue - left.totalValue || (right.tieValue ?? -1) - (left.tieValue ?? -1) || left.name.localeCompare(right.name, "it"));
-  return [metric.id, { ...metric, availablePlayers: players.length, players: players.slice(0, 15).map(({ tieValue, ...player }) => player) }];
-}));
-write("data/teams/player-leaderboards.json", { schemaVersion: 1, currentSeason: "2026/27", statisticsSeason: "2025/26", generatedAt: today, rankings });
+    return [metric.id, { ...metric, availablePlayers: players.length, players: players.slice(0, 15).map(({ tieValue, ...player }) => player) }];
+  }));
+}
+const periods = {
+  "2026/27": { id: "2026/27", label: "2026/27", rankings: buildLeaderboardRankings(currentLeaderboardRows, true) },
+  "2025/26": { id: "2025/26", label: "2025/26", rankings: buildLeaderboardRankings(previousLeaderboardRows) },
+  total: { id: "total", label: "Totale 2025/26 + 2026/27", rankings: buildLeaderboardRankings(totalLeaderboardRows) }
+};
+write("data/teams/player-leaderboards.json", { schemaVersion: 2, currentSeason: "2026/27", previousSeason: "2025/26", generatedAt: today, periods });
 write("data/schemas/team.schema.json", { $schema: "https://json-schema.org/draft/2020-12/schema", title: "Serie A team", type: "object", required: ["id", "currentSeason", "city", "stadium", "coach", "preferredFormation", "probableLineup", "previousSeason", "teamStats", "squad", "sources", "lastUpdated"], properties: { city: { type: "string", minLength: 1 }, stadium: { type: "string", minLength: 1 }, coach: { type: "string", minLength: 1 }, preferredFormation: { type: "string", pattern: "^[1-9](?:-[1-9]){2,4}$" }, probableLineup: { type: "object", required: ["formation", "players", "context", "status", "source"], properties: { formation: { type: "string", pattern: "^[1-9](?:-[1-9]){2,4}$" }, players: { type: "array", minItems: 11, maxItems: 11, items: { type: "string", minLength: 1 } }, status: { enum: ["probable", "official"] } } }, squad: { type: "array", items: { $ref: "player.schema.json" } } } });
 write("data/schemas/player.schema.json", { $schema: "https://json-schema.org/draft/2020-12/schema", title: "Serie A player", type: "object", required: ["id", "name", "currentTeam", "currentSeason", "role", "detailedRole", "status", "marketValue", "previousSeason", "sources", "dataQuality"], properties: { detailedRole: { type: "string", minLength: 1 }, status: { enum: ["confermato", "nuovo acquisto", "prestito", "rientro dal prestito", "primavera", "da verificare"] }, marketValue: { anyOf: [{ type: "null" }, { type: "object", required: ["amountEur", "currency", "provider", "retrievedAt", "sourceUrl"] }] }, photoAttribution: { anyOf: [{ type: "null" }, { type: "object", required: ["provider", "pageUrl", "artist", "license"] }] }, previousSeason: { type: "object", required: ["season", "entries", "totals", "totalsByCompetition"] } } });
 console.log(`Generati dati per ${teams.length} club (${index.teams.filter(team => team.previousSeason.promoted).length} da Serie B).`);
