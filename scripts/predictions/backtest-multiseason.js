@@ -11,6 +11,7 @@ const xgPath = path.join(root, "data", "normalized", "understat-serie-a-xg.json"
 const seasons = ["2019-20", "2020-21", "2021-22", "2022-23", "2023-24", "2024-25", "2025-26"];
 const testSeasons = new Set(["2022-23", "2023-24", "2024-25", "2025-26"]);
 const parameters = { venueWeight: 0.46, overallWeight: 0.25, recentWeight: 0.16, venueReliability: 0.7, overallReliability: 0.62, recentReliability: 0.48 };
+const opponentRatingExponents = [0.1, 0.2, 0.25, 0.35, 0.5, 0.75];
 const headToHeadConfiguration = { cap: 0.05, decay: 0.6, lowerDivisionWeight: 0.8, cupWeight: 0.72, tempoCap: 0.02 };
 const xgDataset = fs.existsSync(xgPath) ? JSON.parse(fs.readFileSync(xgPath, "utf8")) : { matches: [] };
 
@@ -179,18 +180,41 @@ function pointsBefore(history) {
   return table;
 }
 
-function recentRate(history, teamId, type, baseline, metric = "score") {
-  const table = pointsBefore(history);
-  const leaguePpg = sum([...table.values()].map(row => row.points)) / Math.max(1, sum([...table.values()].map(row => row.played)));
+function opponentRatings(history, baseline, metric = "score") {
+  const ids = new Set(history.flatMap(match => [match.homeTeam.id, match.awayTeam.id]));
+  return new Map([...ids].map(teamId => {
+    const rows = teamRows(history, teamId);
+    const goalsFor = sum(rows.map(match => match.homeTeam.id === teamId ? matchMetric(match, "home", metric) : matchMetric(match, "away", metric)));
+    const goalsAgainst = sum(rows.map(match => match.homeTeam.id === teamId ? matchMetric(match, "away", metric) : matchMetric(match, "home", metric)));
+    const priorMatches = 8;
+    return [teamId, {
+      attack: clamp(((goalsFor + baseline * priorMatches) / (rows.length + priorMatches)) / baseline, 0.72, 1.32),
+      defenceWeakness: clamp(((goalsAgainst + baseline * priorMatches) / (rows.length + priorMatches)) / baseline, 0.72, 1.32)
+    }];
+  }));
+}
+
+function recentRate(history, teamId, type, baseline, metric = "score", adjustment = null) {
+  const table = adjustment ? null : pointsBefore(history);
+  const leaguePpg = table ? sum([...table.values()].map(row => row.points)) / Math.max(1, sum([...table.values()].map(row => row.played))) : null;
+  const ratings = adjustment ? opponentRatings(history, baseline, metric) : null;
   const rows = teamRows(history, teamId).slice(-8).reverse();
   let weighted = 0, weights = 0;
   rows.forEach((match, index) => {
     const atHome = match.homeTeam.id === teamId;
     const opponent = atHome ? match.awayTeam.id : match.homeTeam.id;
-    const opponentRow = table.get(opponent);
-    const opponentPpg = opponentRow ? (opponentRow.points + 4.5) / (opponentRow.played + 3) : leaguePpg;
-    const opponentFactor = clamp((opponentPpg / Math.max(0.5, leaguePpg)) ** 0.2, 0.82, 1.18);
-    const goals = type === "for" ? (atHome ? matchMetric(match, "home", metric) : matchMetric(match, "away", metric)) * opponentFactor : (atHome ? matchMetric(match, "away", metric) : matchMetric(match, "home", metric)) / opponentFactor;
+    const raw = type === "for" ? (atHome ? matchMetric(match, "home", metric) : matchMetric(match, "away", metric)) : (atHome ? matchMetric(match, "away", metric) : matchMetric(match, "home", metric));
+    let goals;
+    if (adjustment) {
+      const rating = ratings.get(opponent) || { attack: 1, defenceWeakness: 1 };
+      const opponentFactor = type === "for" ? rating.defenceWeakness : rating.attack;
+      goals = raw / (opponentFactor ** adjustment.exponent);
+    } else {
+      const opponentRow = table.get(opponent);
+      const opponentPpg = opponentRow ? (opponentRow.points + 4.5) / (opponentRow.played + 3) : leaguePpg;
+      const opponentFactor = clamp((opponentPpg / Math.max(0.5, leaguePpg)) ** 0.2, 0.82, 1.18);
+      goals = type === "for" ? raw * opponentFactor : raw / opponentFactor;
+    }
     const weight = 0.82 ** index;
     weighted += goals * weight;
     weights += weight;
@@ -226,14 +250,14 @@ function headToHeadFactors(match, league) {
   return { home: clamp((1 + edge) * (1 + tempo), 0.95, 1.05), away: clamp((1 - edge) * (1 + tempo), 0.95, 1.05) };
 }
 
-function expectedGoals(history, match, metric = "score") {
+function expectedGoals(history, match, metric = "score", recentAdjustment = null) {
   const league = leagueRates(history, metric);
   const overall = (league.home + league.away) / 2;
   const strength = (rate, baseline, reliability) => 1 + (rate / baseline - 1) * reliability;
   const component = (teamId, venue, type, venueBaseline) => weightedGeometric([
     { value: strength(teamRate(history, teamId, venue, type, venueBaseline, 4, metric), venueBaseline, parameters.venueReliability), weight: parameters.venueWeight },
     { value: strength(teamRate(history, teamId, null, type, overall, 7, metric), overall, parameters.overallReliability), weight: parameters.overallWeight },
-    { value: strength(recentRate(history, teamId, type, overall, metric), overall, parameters.recentReliability), weight: parameters.recentWeight }
+    { value: strength(recentRate(history, teamId, type, overall, metric, recentAdjustment), overall, parameters.recentReliability), weight: parameters.recentWeight }
   ]);
   const homeAttack = component(match.homeTeam.id, "home", "for", league.home);
   const homeDefence = component(match.homeTeam.id, "home", "against", league.away);
@@ -286,7 +310,18 @@ for (const season of seasons) {
     if (homeMatches >= 8 && awayMatches >= 8) {
       const expected = expectedGoals(history, match);
       const xgExpected = expectedGoals(history, match, "xg");
-      predictionSamples.push({ ...match, homeLambda: expected.home, awayLambda: expected.away, xgHomeLambda: xgExpected.home, xgAwayLambda: xgExpected.away, calibration: scoreCalibration(history, leagueRates(history)) });
+      const opponentRatingLambdas = Object.fromEntries(opponentRatingExponents.map(exponent => {
+        const adjustment = { type: "separate-attack-defence", exponent };
+        const scoreExpected = expectedGoals(history, match, "score", adjustment);
+        const adjustedXgExpected = expectedGoals(history, match, "xg", adjustment);
+        return [String(exponent), {
+          home: scoreExpected.home,
+          away: scoreExpected.away,
+          xgHome: adjustedXgExpected.home,
+          xgAway: adjustedXgExpected.away
+        }];
+      }));
+      predictionSamples.push({ ...match, homeLambda: expected.home, awayLambda: expected.away, xgHomeLambda: xgExpected.home, xgAwayLambda: xgExpected.away, opponentRatingLambdas, calibration: scoreCalibration(history, leagueRates(history)) });
     }
     history.push(match);
   }
@@ -310,9 +345,15 @@ function evaluateRows(samples, variant) {
     const day = sample.date.slice(0, 10);
     if (variant.includes("dixon-coles") && !rhoByDay.has(day)) rhoByDay.set(day, estimateRho(predictionSamples, `${day}T00:00:00Z`));
     const rhoEstimate = variant.includes("dixon-coles") ? rhoByDay.get(day) : { rho: 0, sample: 0 };
-    const xgWeight = variant.startsWith("xg-blend-25") ? 0.25 : variant === "xg-blend-50" ? 0.5 : variant === "xg-blend-75" ? 0.75 : variant === "xg-only" ? 1 : 0;
-    const homeLambda = sample.homeLambda ** (1 - xgWeight) * sample.xgHomeLambda ** xgWeight;
-    const awayLambda = sample.awayLambda ** (1 - xgWeight) * sample.xgAwayLambda ** xgWeight;
+    const xgWeight = variant.includes("xg-blend-25") ? 0.25 : variant === "xg-blend-50" ? 0.5 : variant === "xg-blend-75" ? 0.75 : variant === "xg-only" ? 1 : 0;
+    const opponentMatch = variant.match(/^opponent-ratings-([0-9.]+)-/);
+    const opponentLambdas = opponentMatch ? sample.opponentRatingLambdas[opponentMatch[1]] : null;
+    const scoreHomeLambda = opponentLambdas?.home ?? sample.homeLambda;
+    const scoreAwayLambda = opponentLambdas?.away ?? sample.awayLambda;
+    const xgHomeLambda = opponentLambdas?.xgHome ?? sample.xgHomeLambda;
+    const xgAwayLambda = opponentLambdas?.xgAway ?? sample.xgAwayLambda;
+    const homeLambda = scoreHomeLambda ** (1 - xgWeight) * xgHomeLambda ** xgWeight;
+    const awayLambda = scoreAwayLambda ** (1 - xgWeight) * xgAwayLambda ** xgWeight;
     const options = {
       calibration: variant.includes("empirical") ? sample.calibration : null,
       rho: rhoEstimate.rho
@@ -376,8 +417,15 @@ function bootstrapDifference(candidate, baseline, metric, iterations = 2000) {
 }
 
 const testSamples = predictionSamples.filter(sample => testSeasons.has(sample.season));
+const selectionSamples = predictionSamples.filter(sample => !testSeasons.has(sample.season));
 const uncertaintyVariants = ["xg-blend-25-mix-10", "xg-blend-25-mix-15", "xg-blend-25-mix-20", "xg-blend-25-mix-25"];
-const variants = ["poisson", "empirical", "dixon-coles", "empirical+dixon-coles", "xg-blend-25", "xg-blend-50", "xg-blend-75", "xg-only", ...uncertaintyVariants];
+const opponentRatingVariants = opponentRatingExponents.map(exponent => `opponent-ratings-${exponent}-xg-blend-25`);
+const opponentRatingSelection = opponentRatingVariants.map(variant => {
+  const result = evaluateRows(selectionSamples, variant);
+  return { variant, metrics: result.metrics, selectionScore: result.metrics.oneXTwoLogLoss * 0.7 + result.metrics.goalBandBrier * 0.3 };
+}).sort((a, b) => a.selectionScore - b.selectionScore);
+const selectedOpponentRatingVariant = opponentRatingSelection[0].variant;
+const variants = ["poisson", "empirical", "dixon-coles", "empirical+dixon-coles", "xg-blend-25", "xg-blend-50", "xg-blend-75", "xg-only", ...uncertaintyVariants, ...opponentRatingVariants];
 const results = Object.fromEntries(variants.map(variant => [variant, evaluateRows(testSamples, variant)]));
 const current = results.empirical;
 const candidate = results["dixon-coles"];
@@ -460,7 +508,42 @@ const output = {
         oneXTwoLogLoss: bootstrapDifference(results[variant].rows, results["xg-blend-25"].rows, "oneXTwoLogLoss"),
         scoreLogLoss: bootstrapDifference(results[variant].rows, results["xg-blend-25"].rows, "scoreLogLoss")
       }
-    }]))
+    }])),
+    opponentRatingComparison: {
+      baseline: "xg-blend-25",
+      candidate: selectedOpponentRatingVariant,
+      configuration: {
+        type: "separate-attack-defence",
+        exponent: Number(selectedOpponentRatingVariant.match(/^opponent-ratings-([0-9.]+)-/)[1]),
+        priorMatches: 8,
+        recentMatches: 8,
+        recentDecay: 0.82
+      },
+      selection: {
+        seasons: seasons.filter(season => !testSeasons.has(season)),
+        matches: selectionSamples.length,
+        metric: "70% log-loss 1X2 + 30% Brier fasce gol",
+        selected: opponentRatingSelection[0]
+      },
+      outOfSample: {
+        seasons: [...testSeasons],
+        matches: testSamples.length,
+        baseline: results["xg-blend-25"].metrics,
+        candidate: results[selectedOpponentRatingVariant].metrics,
+        improvementVsBaselinePct: {
+          oneXTwoLogLoss: improvement(results["xg-blend-25"].metrics.oneXTwoLogLoss, results[selectedOpponentRatingVariant].metrics.oneXTwoLogLoss),
+          oneXTwoBrier: improvement(results["xg-blend-25"].metrics.oneXTwoBrier, results[selectedOpponentRatingVariant].metrics.oneXTwoBrier),
+          scoreLogLoss: improvement(results["xg-blend-25"].metrics.scoreLogLoss, results[selectedOpponentRatingVariant].metrics.scoreLogLoss),
+          goalBandBrier: improvement(results["xg-blend-25"].metrics.goalBandBrier, results[selectedOpponentRatingVariant].metrics.goalBandBrier)
+        },
+        pairedBootstrap: {
+          oneXTwoLogLoss: bootstrapDifference(results[selectedOpponentRatingVariant].rows, results["xg-blend-25"].rows, "oneXTwoLogLoss"),
+          oneXTwoBrier: bootstrapDifference(results[selectedOpponentRatingVariant].rows, results["xg-blend-25"].rows, "oneXTwoBrier"),
+          scoreLogLoss: bootstrapDifference(results[selectedOpponentRatingVariant].rows, results["xg-blend-25"].rows, "scoreLogLoss"),
+          goalBandBrier: bootstrapDifference(results[selectedOpponentRatingVariant].rows, results["xg-blend-25"].rows, "goalBandBrier")
+        }
+      }
+    }
   }
 };
 
@@ -487,5 +570,14 @@ const uncertaintyWins = uncertaintyCandidate.improvementVsFixedLambdaPct.oneXTwo
   && uncertaintyCandidate.improvementVsFixedLambdaPct.scoreLogLoss > 0
   && uncertaintyCandidate.pairedBootstrap.scoreLogLoss.confidenceInterval95[0] > 0;
 output.decision.uncertaintyRecommendation = uncertaintyWins ? `adopt-${bestUncertainty.variant}` : "keep-fixed-lambda";
+const opponentRating = output.decision.opponentRatingComparison.outOfSample;
+const opponentRatingWins = opponentRating.improvementVsBaselinePct.oneXTwoLogLoss > 0
+  && opponentRating.improvementVsBaselinePct.oneXTwoBrier >= 0
+  && opponentRating.improvementVsBaselinePct.scoreLogLoss > 0
+  && opponentRating.improvementVsBaselinePct.goalBandBrier >= 0
+  && opponentRating.candidate.exactTopThreeHitPct >= opponentRating.baseline.exactTopThreeHitPct
+  && opponentRating.pairedBootstrap.oneXTwoLogLoss.confidenceInterval95[0] >= 0
+  && opponentRating.pairedBootstrap.scoreLogLoss.confidenceInterval95[0] >= 0;
+output.decision.opponentRatingRecommendation = opponentRatingWins ? "adopt-separate-attack-defence" : "keep-points-ranking";
 fs.writeFileSync(outputPath, `${JSON.stringify(output, null, 2)}\n`);
 console.log(`OK backtest pluristagionale: ${testSamples.length} gare, decisione ${output.decision.recommendation}`);
