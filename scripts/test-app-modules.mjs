@@ -32,9 +32,10 @@ const homePage = fs.readFileSync(path.join(root, "js", "pages", "home.js"), "utf
 assert.match(homePage, /<a href="lettura\.html"><span>Letture<\/span><strong>Analisi e tabellini<\/strong>/, "Home: card Letture assente dalla colonna laterale");
 assert.doesNotMatch(homePage, /<a href="#classifiche"><span>Classifiche<\/span><strong>Situazione e archivio<\/strong>/, "Home: vecchia card Classifiche ancora presente");
 const bettingPage = fs.readFileSync(path.join(root, "js", "pages", "betting.js"), "utf8");
-assert.match(bettingPage, /<details class="betting-archive-card">/, "Schedina: card archivio cliccabile della giornata assente");
-assert.match(bettingPage, /<summary class="betting-archive-card-heading">/, "Schedina: comando di apertura della card archivio assente");
-assert.match(bettingPage, /id="betting-round-01-title">1ª giornata/, "Schedina: intestazione archivio prima giornata assente");
+assert.match(bettingPage, /<a class="betting-archive-card team-directory-card team-flip-card" href="schedina\.html\?giornata=1"/, "Schedina: card-link della prima giornata assente");
+assert.doesNotMatch(bettingPage, /<details class="betting-archive-card">|<summary class="betting-archive-card-heading">/, "Schedina: la card archivio non deve essere un menu a tendina");
+assert.match(bettingPage, /matchday==="1"/, "Schedina: vista dedicata alla lista della prima giornata assente");
+assert.match(bettingPage, /team-flip-inner/, "Schedina: effetto hover delle card Statistiche squadra non riutilizzato");
 const bettingCss = fs.readFileSync(path.join(root, "css", "betting.css"), "utf8");
-assert.match(bettingCss, /\.betting-archive-card\{flex:0 1 calc\(\(100% - 48px\)\/4\);height:300px/, "Schedina: la card chiusa deve avere le dimensioni delle card Statistiche squadre");
+assert.match(bettingCss, /\.betting-archive-list\{width:100%;max-width:1180px/, "Schedina: griglia archivio non allineata alle card Statistiche squadra");
 console.log(`OK moduli applicazione: ${pageFiles.length} pagine e 4 componenti condivisi`);
