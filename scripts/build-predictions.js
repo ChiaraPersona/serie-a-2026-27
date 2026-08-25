@@ -3,6 +3,7 @@
 const fs = require("fs");
 const path = require("path");
 const { ENGINE_VERSION, WEIGHTS, MVP_WEIGHTS, predictMatch } = require("./predictions/engine");
+const { DECISION_LAYER_VERSION, PROFILE_LIMITS, enrichPrediction } = require("./predictions/decision-layer");
 
 const root = path.resolve(__dirname, "..");
 const read = relative => JSON.parse(fs.readFileSync(path.join(root, relative), "utf8"));
@@ -231,7 +232,8 @@ const generatedPredictions = targetMatches.map(match => {
 });
 
 const archivedPredictionByMatch = new Map(predictionArchive.predictions.map(prediction => [prediction.matchId, prediction]));
-const predictions = previewMode ? generatedPredictions : generatedPredictions.map(prediction => archivedPredictionByMatch.get(prediction.matchId) || prediction);
+const basePredictions = previewMode ? generatedPredictions : generatedPredictions.map(prediction => archivedPredictionByMatch.get(prediction.matchId) || prediction);
+const predictions = basePredictions.map(enrichPrediction);
 
 const output = {
   schemaVersion: 1,
@@ -247,6 +249,14 @@ const output = {
     spatialModel: "Valuta separatamente sviluppo a sinistra, al centro e a destra e lo incrocia con le vulnerabilita avversarie.",
     goalModel: "Forze relative casa/trasferta e complessive, ultime otto gare corrette per avversario, xG Understat al 25% quando sono coperti entrambi i club, probabile XI, divisione di provenienza, matrice Poisson e correttivo H2H limitato al 5% per lato.",
     scoreSelectionModel: "Il risultato principale e selezionato dentro l'esito 1X2 piu probabile; gli altri due sono i punteggi successivi piu probabili della matrice, senza imporre uno scenario sorpresa.",
+    decisionLayer: {
+      version: DECISION_LAYER_VERSION,
+      order: "probabilita -> scenari -> correlazioni -> rischio portafoglio -> selezione -> verifica post-partita",
+      probabilityPolicy: "Gli scenari e il rischio non ricalibrano le probabilita e non entrano nei gol attesi.",
+      correlationMethod: "Dipendenza binaria fra mercati calcolata sulla matrice dei punteggi.",
+      profileLimits: PROFILE_LIMITS,
+      performanceDashboard: "data/generated/prediction-performance-dashboard.json"
+    },
     scoreModel: {
       type: "poisson",
       calibration: "none",

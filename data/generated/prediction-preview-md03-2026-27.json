@@ -5,7 +5,7 @@
   "mode": "exploratory-preview",
   "matchday": 3,
   "publicationStatus": "not-published",
-  "generatedAt": "2026-08-25T20:33:11.273Z",
+  "generatedAt": "2026-08-25T21:06:00.160Z",
   "engine": {
     "version": "4.11.0",
     "principle": "Un'unica matrice dei punteggi indipendente dalle quote genera 1X2, gol e mercati collegati.",
@@ -21,6 +21,33 @@
     "spatialModel": "Valuta separatamente sviluppo a sinistra, al centro e a destra e lo incrocia con le vulnerabilita avversarie.",
     "goalModel": "Forze relative casa/trasferta e complessive, ultime otto gare corrette per avversario, xG Understat al 25% quando sono coperti entrambi i club, probabile XI, divisione di provenienza, matrice Poisson e correttivo H2H limitato al 5% per lato.",
     "scoreSelectionModel": "Il risultato principale e selezionato dentro l'esito 1X2 piu probabile; gli altri due sono i punteggi successivi piu probabili della matrice, senza imporre uno scenario sorpresa.",
+    "decisionLayer": {
+      "version": "1.0.0",
+      "order": "probabilita -> scenari -> correlazioni -> rischio portafoglio -> selezione -> verifica post-partita",
+      "probabilityPolicy": "Gli scenari e il rischio non ricalibrano le probabilita e non entrano nei gol attesi.",
+      "correlationMethod": "Dipendenza binaria fra mercati calcolata sulla matrice dei punteggi.",
+      "profileLimits": {
+        "Safe": {
+          "maxAverageRisk": 42,
+          "maxEventRisk": 58,
+          "maxStrongDependencies": 1,
+          "minPrudentExpectedValuePct": 0
+        },
+        "Balanced": {
+          "maxAverageRisk": 56,
+          "maxEventRisk": 72,
+          "maxStrongDependencies": 2,
+          "minPrudentExpectedValuePct": 0
+        },
+        "Aggressive": {
+          "maxAverageRisk": 72,
+          "maxEventRisk": 88,
+          "maxStrongDependencies": 3,
+          "minPrudentExpectedValuePct": 0
+        }
+      },
+      "performanceDashboard": "data/generated/prediction-performance-dashboard.json"
+    },
     "scoreModel": {
       "type": "poisson",
       "calibration": "none",
@@ -1099,7 +1126,7 @@
   "predictions": [
     {
       "matchId": "bologna-sassuolo-2026-27-md-03",
-      "generatedAt": "2026-08-25T20:33:11.273Z",
+      "generatedAt": "2026-08-25T21:06:00.160Z",
       "status": "preliminary",
       "engineVersion": "4.11.0",
       "probabilities": {
@@ -1897,11 +1924,53 @@
           },
           "recommendation": "adopt-regularized-carry-over"
         }
+      },
+      "decisionSupport": {
+        "version": "1.0.0",
+        "principle": "Probabilita dal motore Poisson/xG; scenari, dipendenze e rischio sono un livello successivo e non modificano i gol attesi.",
+        "scenario": {
+          "favoriteOutcome": "1",
+          "scenarios": [
+            {
+              "id": "A",
+              "label": "Controllo della favorita",
+              "estimatedProbabilityPct": 32.3,
+              "compatibleMarketIds": [],
+              "incompatibleMarketIds": []
+            },
+            {
+              "id": "B",
+              "label": "Vittoria aperta della favorita",
+              "estimatedProbabilityPct": 11.5,
+              "compatibleMarketIds": [],
+              "incompatibleMarketIds": []
+            },
+            {
+              "id": "C",
+              "label": "Resistenza o sorpresa",
+              "estimatedProbabilityPct": 56.2,
+              "compatibleMarketIds": [],
+              "incompatibleMarketIds": []
+            }
+          ]
+        },
+        "correlationGraph": {
+          "method": "Dipendenza binaria calcolata sulla stessa matrice Poisson del pronostico; le quote restano escluse.",
+          "nodes": [],
+          "edges": [],
+          "summary": {
+            "positive": 0,
+            "negative": 0,
+            "redundant": 0,
+            "conflicting": 0
+          }
+        },
+        "portfolios": []
       }
     },
     {
       "matchId": "cagliari-lecce-2026-27-md-03",
-      "generatedAt": "2026-08-25T20:33:11.273Z",
+      "generatedAt": "2026-08-25T21:06:00.160Z",
       "status": "preliminary",
       "engineVersion": "4.11.0",
       "probabilities": {
@@ -2699,11 +2768,53 @@
           },
           "recommendation": "adopt-regularized-carry-over"
         }
+      },
+      "decisionSupport": {
+        "version": "1.0.0",
+        "principle": "Probabilita dal motore Poisson/xG; scenari, dipendenze e rischio sono un livello successivo e non modificano i gol attesi.",
+        "scenario": {
+          "favoriteOutcome": "1",
+          "scenarios": [
+            {
+              "id": "A",
+              "label": "Controllo della favorita",
+              "estimatedProbabilityPct": 33.3,
+              "compatibleMarketIds": [],
+              "incompatibleMarketIds": []
+            },
+            {
+              "id": "B",
+              "label": "Vittoria aperta della favorita",
+              "estimatedProbabilityPct": 10.5,
+              "compatibleMarketIds": [],
+              "incompatibleMarketIds": []
+            },
+            {
+              "id": "C",
+              "label": "Resistenza o sorpresa",
+              "estimatedProbabilityPct": 56.2,
+              "compatibleMarketIds": [],
+              "incompatibleMarketIds": []
+            }
+          ]
+        },
+        "correlationGraph": {
+          "method": "Dipendenza binaria calcolata sulla stessa matrice Poisson del pronostico; le quote restano escluse.",
+          "nodes": [],
+          "edges": [],
+          "summary": {
+            "positive": 0,
+            "negative": 0,
+            "redundant": 0,
+            "conflicting": 0
+          }
+        },
+        "portfolios": []
       }
     },
     {
       "matchId": "fiorentina-torino-2026-27-md-03",
-      "generatedAt": "2026-08-25T20:33:11.273Z",
+      "generatedAt": "2026-08-25T21:06:00.160Z",
       "status": "preliminary",
       "engineVersion": "4.11.0",
       "probabilities": {
@@ -3500,11 +3611,53 @@
           },
           "recommendation": "adopt-regularized-carry-over"
         }
+      },
+      "decisionSupport": {
+        "version": "1.0.0",
+        "principle": "Probabilita dal motore Poisson/xG; scenari, dipendenze e rischio sono un livello successivo e non modificano i gol attesi.",
+        "scenario": {
+          "favoriteOutcome": "1",
+          "scenarios": [
+            {
+              "id": "A",
+              "label": "Controllo della favorita",
+              "estimatedProbabilityPct": 30.8,
+              "compatibleMarketIds": [],
+              "incompatibleMarketIds": []
+            },
+            {
+              "id": "B",
+              "label": "Vittoria aperta della favorita",
+              "estimatedProbabilityPct": 14,
+              "compatibleMarketIds": [],
+              "incompatibleMarketIds": []
+            },
+            {
+              "id": "C",
+              "label": "Resistenza o sorpresa",
+              "estimatedProbabilityPct": 55.2,
+              "compatibleMarketIds": [],
+              "incompatibleMarketIds": []
+            }
+          ]
+        },
+        "correlationGraph": {
+          "method": "Dipendenza binaria calcolata sulla stessa matrice Poisson del pronostico; le quote restano escluse.",
+          "nodes": [],
+          "edges": [],
+          "summary": {
+            "positive": 0,
+            "negative": 0,
+            "redundant": 0,
+            "conflicting": 0
+          }
+        },
+        "portfolios": []
       }
     },
     {
       "matchId": "frosinone-venezia-2026-27-md-03",
-      "generatedAt": "2026-08-25T20:33:11.273Z",
+      "generatedAt": "2026-08-25T21:06:00.160Z",
       "status": "preliminary",
       "engineVersion": "4.11.0",
       "probabilities": {
@@ -4221,11 +4374,53 @@
           },
           "recommendation": "adopt-regularized-carry-over"
         }
+      },
+      "decisionSupport": {
+        "version": "1.0.0",
+        "principle": "Probabilita dal motore Poisson/xG; scenari, dipendenze e rischio sono un livello successivo e non modificano i gol attesi.",
+        "scenario": {
+          "favoriteOutcome": "1",
+          "scenarios": [
+            {
+              "id": "A",
+              "label": "Controllo della favorita",
+              "estimatedProbabilityPct": 35.6,
+              "compatibleMarketIds": [],
+              "incompatibleMarketIds": []
+            },
+            {
+              "id": "B",
+              "label": "Vittoria aperta della favorita",
+              "estimatedProbabilityPct": 8.7,
+              "compatibleMarketIds": [],
+              "incompatibleMarketIds": []
+            },
+            {
+              "id": "C",
+              "label": "Resistenza o sorpresa",
+              "estimatedProbabilityPct": 55.7,
+              "compatibleMarketIds": [],
+              "incompatibleMarketIds": []
+            }
+          ]
+        },
+        "correlationGraph": {
+          "method": "Dipendenza binaria calcolata sulla stessa matrice Poisson del pronostico; le quote restano escluse.",
+          "nodes": [],
+          "edges": [],
+          "summary": {
+            "positive": 0,
+            "negative": 0,
+            "redundant": 0,
+            "conflicting": 0
+          }
+        },
+        "portfolios": []
       }
     },
     {
       "matchId": "genoa-como-2026-27-md-03",
-      "generatedAt": "2026-08-25T20:33:11.273Z",
+      "generatedAt": "2026-08-25T21:06:00.160Z",
       "status": "preliminary",
       "engineVersion": "4.11.0",
       "probabilities": {
@@ -5023,11 +5218,53 @@
           },
           "recommendation": "adopt-regularized-carry-over"
         }
+      },
+      "decisionSupport": {
+        "version": "1.0.0",
+        "principle": "Probabilita dal motore Poisson/xG; scenari, dipendenze e rischio sono un livello successivo e non modificano i gol attesi.",
+        "scenario": {
+          "favoriteOutcome": "2",
+          "scenarios": [
+            {
+              "id": "A",
+              "label": "Controllo della favorita",
+              "estimatedProbabilityPct": 39.3,
+              "compatibleMarketIds": [],
+              "incompatibleMarketIds": []
+            },
+            {
+              "id": "B",
+              "label": "Vittoria aperta della favorita",
+              "estimatedProbabilityPct": 18.6,
+              "compatibleMarketIds": [],
+              "incompatibleMarketIds": []
+            },
+            {
+              "id": "C",
+              "label": "Resistenza o sorpresa",
+              "estimatedProbabilityPct": 42.1,
+              "compatibleMarketIds": [],
+              "incompatibleMarketIds": []
+            }
+          ]
+        },
+        "correlationGraph": {
+          "method": "Dipendenza binaria calcolata sulla stessa matrice Poisson del pronostico; le quote restano escluse.",
+          "nodes": [],
+          "edges": [],
+          "summary": {
+            "positive": 0,
+            "negative": 0,
+            "redundant": 0,
+            "conflicting": 0
+          }
+        },
+        "portfolios": []
       }
     },
     {
       "matchId": "inter-napoli-2026-27-md-03",
-      "generatedAt": "2026-08-25T20:33:11.273Z",
+      "generatedAt": "2026-08-25T21:06:00.160Z",
       "status": "preliminary",
       "engineVersion": "4.11.0",
       "probabilities": {
@@ -5825,11 +6062,53 @@
           },
           "recommendation": "adopt-regularized-carry-over"
         }
+      },
+      "decisionSupport": {
+        "version": "1.0.0",
+        "principle": "Probabilita dal motore Poisson/xG; scenari, dipendenze e rischio sono un livello successivo e non modificano i gol attesi.",
+        "scenario": {
+          "favoriteOutcome": "1",
+          "scenarios": [
+            {
+              "id": "A",
+              "label": "Controllo della favorita",
+              "estimatedProbabilityPct": 31.8,
+              "compatibleMarketIds": [],
+              "incompatibleMarketIds": []
+            },
+            {
+              "id": "B",
+              "label": "Vittoria aperta della favorita",
+              "estimatedProbabilityPct": 25,
+              "compatibleMarketIds": [],
+              "incompatibleMarketIds": []
+            },
+            {
+              "id": "C",
+              "label": "Resistenza o sorpresa",
+              "estimatedProbabilityPct": 43.2,
+              "compatibleMarketIds": [],
+              "incompatibleMarketIds": []
+            }
+          ]
+        },
+        "correlationGraph": {
+          "method": "Dipendenza binaria calcolata sulla stessa matrice Poisson del pronostico; le quote restano escluse.",
+          "nodes": [],
+          "edges": [],
+          "summary": {
+            "positive": 0,
+            "negative": 0,
+            "redundant": 0,
+            "conflicting": 0
+          }
+        },
+        "portfolios": []
       }
     },
     {
       "matchId": "juventus-milan-2026-27-md-03",
-      "generatedAt": "2026-08-25T20:33:11.273Z",
+      "generatedAt": "2026-08-25T21:06:00.160Z",
       "status": "preliminary",
       "engineVersion": "4.11.0",
       "probabilities": {
@@ -6626,11 +6905,53 @@
           },
           "recommendation": "adopt-regularized-carry-over"
         }
+      },
+      "decisionSupport": {
+        "version": "1.0.0",
+        "principle": "Probabilita dal motore Poisson/xG; scenari, dipendenze e rischio sono un livello successivo e non modificano i gol attesi.",
+        "scenario": {
+          "favoriteOutcome": "1",
+          "scenarios": [
+            {
+              "id": "A",
+              "label": "Controllo della favorita",
+              "estimatedProbabilityPct": 31.9,
+              "compatibleMarketIds": [],
+              "incompatibleMarketIds": []
+            },
+            {
+              "id": "B",
+              "label": "Vittoria aperta della favorita",
+              "estimatedProbabilityPct": 11.7,
+              "compatibleMarketIds": [],
+              "incompatibleMarketIds": []
+            },
+            {
+              "id": "C",
+              "label": "Resistenza o sorpresa",
+              "estimatedProbabilityPct": 56.4,
+              "compatibleMarketIds": [],
+              "incompatibleMarketIds": []
+            }
+          ]
+        },
+        "correlationGraph": {
+          "method": "Dipendenza binaria calcolata sulla stessa matrice Poisson del pronostico; le quote restano escluse.",
+          "nodes": [],
+          "edges": [],
+          "summary": {
+            "positive": 0,
+            "negative": 0,
+            "redundant": 0,
+            "conflicting": 0
+          }
+        },
+        "portfolios": []
       }
     },
     {
       "matchId": "parma-monza-2026-27-md-03",
-      "generatedAt": "2026-08-25T20:33:11.273Z",
+      "generatedAt": "2026-08-25T21:06:00.160Z",
       "status": "preliminary",
       "engineVersion": "4.11.0",
       "probabilities": {
@@ -7384,11 +7705,53 @@
           },
           "recommendation": "adopt-regularized-carry-over"
         }
+      },
+      "decisionSupport": {
+        "version": "1.0.0",
+        "principle": "Probabilita dal motore Poisson/xG; scenari, dipendenze e rischio sono un livello successivo e non modificano i gol attesi.",
+        "scenario": {
+          "favoriteOutcome": "1",
+          "scenarios": [
+            {
+              "id": "A",
+              "label": "Controllo della favorita",
+              "estimatedProbabilityPct": 36.6,
+              "compatibleMarketIds": [],
+              "incompatibleMarketIds": []
+            },
+            {
+              "id": "B",
+              "label": "Vittoria aperta della favorita",
+              "estimatedProbabilityPct": 12.3,
+              "compatibleMarketIds": [],
+              "incompatibleMarketIds": []
+            },
+            {
+              "id": "C",
+              "label": "Resistenza o sorpresa",
+              "estimatedProbabilityPct": 51.1,
+              "compatibleMarketIds": [],
+              "incompatibleMarketIds": []
+            }
+          ]
+        },
+        "correlationGraph": {
+          "method": "Dipendenza binaria calcolata sulla stessa matrice Poisson del pronostico; le quote restano escluse.",
+          "nodes": [],
+          "edges": [],
+          "summary": {
+            "positive": 0,
+            "negative": 0,
+            "redundant": 0,
+            "conflicting": 0
+          }
+        },
+        "portfolios": []
       }
     },
     {
       "matchId": "roma-atalanta-2026-27-md-03",
-      "generatedAt": "2026-08-25T20:33:11.273Z",
+      "generatedAt": "2026-08-25T21:06:00.160Z",
       "status": "preliminary",
       "engineVersion": "4.11.0",
       "probabilities": {
@@ -8186,11 +8549,53 @@
           },
           "recommendation": "adopt-regularized-carry-over"
         }
+      },
+      "decisionSupport": {
+        "version": "1.0.0",
+        "principle": "Probabilita dal motore Poisson/xG; scenari, dipendenze e rischio sono un livello successivo e non modificano i gol attesi.",
+        "scenario": {
+          "favoriteOutcome": "1",
+          "scenarios": [
+            {
+              "id": "A",
+              "label": "Controllo della favorita",
+              "estimatedProbabilityPct": 35.3,
+              "compatibleMarketIds": [],
+              "incompatibleMarketIds": []
+            },
+            {
+              "id": "B",
+              "label": "Vittoria aperta della favorita",
+              "estimatedProbabilityPct": 15.8,
+              "compatibleMarketIds": [],
+              "incompatibleMarketIds": []
+            },
+            {
+              "id": "C",
+              "label": "Resistenza o sorpresa",
+              "estimatedProbabilityPct": 48.9,
+              "compatibleMarketIds": [],
+              "incompatibleMarketIds": []
+            }
+          ]
+        },
+        "correlationGraph": {
+          "method": "Dipendenza binaria calcolata sulla stessa matrice Poisson del pronostico; le quote restano escluse.",
+          "nodes": [],
+          "edges": [],
+          "summary": {
+            "positive": 0,
+            "negative": 0,
+            "redundant": 0,
+            "conflicting": 0
+          }
+        },
+        "portfolios": []
       }
     },
     {
       "matchId": "udinese-lazio-2026-27-md-03",
-      "generatedAt": "2026-08-25T20:33:11.273Z",
+      "generatedAt": "2026-08-25T21:06:00.160Z",
       "status": "preliminary",
       "engineVersion": "4.11.0",
       "probabilities": {
@@ -8988,6 +9393,48 @@
           },
           "recommendation": "adopt-regularized-carry-over"
         }
+      },
+      "decisionSupport": {
+        "version": "1.0.0",
+        "principle": "Probabilita dal motore Poisson/xG; scenari, dipendenze e rischio sono un livello successivo e non modificano i gol attesi.",
+        "scenario": {
+          "favoriteOutcome": "1",
+          "scenarios": [
+            {
+              "id": "A",
+              "label": "Controllo della favorita",
+              "estimatedProbabilityPct": 33.7,
+              "compatibleMarketIds": [],
+              "incompatibleMarketIds": []
+            },
+            {
+              "id": "B",
+              "label": "Vittoria aperta della favorita",
+              "estimatedProbabilityPct": 8,
+              "compatibleMarketIds": [],
+              "incompatibleMarketIds": []
+            },
+            {
+              "id": "C",
+              "label": "Resistenza o sorpresa",
+              "estimatedProbabilityPct": 58.3,
+              "compatibleMarketIds": [],
+              "incompatibleMarketIds": []
+            }
+          ]
+        },
+        "correlationGraph": {
+          "method": "Dipendenza binaria calcolata sulla stessa matrice Poisson del pronostico; le quote restano escluse.",
+          "nodes": [],
+          "edges": [],
+          "summary": {
+            "positive": 0,
+            "negative": 0,
+            "redundant": 0,
+            "conflicting": 0
+          }
+        },
+        "portfolios": []
       }
     }
   ]

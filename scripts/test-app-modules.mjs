@@ -48,4 +48,7 @@ assert.match(bettingCss, /\.betting-archive-list\{width:100%;max-width:1180px/, 
 assert.match(bettingCss, /\.betting-archive-performance small,\.betting-archive-performance strong\{display:block;color:#000\}/, "Schedina: valori del retro senza contrasto nero leggibile");
 assert.doesNotMatch(bettingCss, /betting-archive-performance[^}]*var\(--betting-gold\)/, "Schedina: il giallo poco leggibile e ancora usato negli indicatori del retro");
 assert.match(bettingCss, /\.betting-slip-grid\{display:grid;grid-template-columns:repeat\(2,minmax\(0,1fr\)\)/, "Schedina: card desktop non organizzate su due colonne");
+const readingsPage = fs.readFileSync(path.join(root, "js", "pages", "readings.js"), "utf8");
+assert.match(readingsPage, /Livello decisionale/, "Letture: scenari quantitativi non esposti");
+assert.match(readingsPage, /prediction-combo-risk/, "Letture: controllo rischio MyCombo non esposto");
 console.log(`OK moduli applicazione: ${pageFiles.length} pagine e 4 componenti condivisi`);

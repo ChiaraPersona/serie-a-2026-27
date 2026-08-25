@@ -19,6 +19,7 @@ if (fs.existsSync(previewMd3Path)) {
   assert.strictEqual(previewMd3.publicationStatus, "not-published", "La MD3 esplorativa non deve risultare pubblicata");
   assert.strictEqual(previewMd3.matchday, 3, "Giornata anteprima errata");
   assert.strictEqual(previewMd3.predictions.length, 10, "L'anteprima MD3 deve contenere dieci partite");
+  assert(previewMd3.predictions.every(prediction => prediction.decisionSupport?.version === "1.0.0"), "L'anteprima MD3 deve usare il nuovo livello decisionale");
   assert(previewMd3.predictions.every(prediction => prediction.matchId.endsWith("-md-03")), "L'anteprima MD3 contiene altre giornate");
   assert(previewMd3.predictions.every(prediction => prediction.market.status === "unavailable" && prediction.probabilities.marketNoMargin === null), "L'anteprima MD3 non deve inventare quote");
 }
@@ -28,7 +29,7 @@ const firstMatchdayPredictions = dataset.predictions.filter(prediction => predic
 const secondMatchdayPredictions = dataset.predictions.filter(prediction => prediction.matchId.endsWith("-md-02"));
 assert.strictEqual(firstMatchdayPredictions.length, 10, "Devono restare disponibili i 10 pronostici archiviati della prima giornata");
 assert.strictEqual(secondMatchdayPredictions.length, 10, "Devono essere disponibili i 10 pronostici tecnici della seconda giornata");
-assert.deepStrictEqual(firstMatchdayPredictions, archivedMd1.predictions, "I pronostici conclusi MD1 devono restare identici allo snapshot pubblicato");
+assert.deepStrictEqual(firstMatchdayPredictions.map(({ decisionSupport, ...prediction }) => prediction), archivedMd1.predictions, "Il nucleo dei pronostici conclusi MD1 deve restare identico allo snapshot pubblicato");
 assert.strictEqual(Object.keys(myComboSource.matches).length, 10, "Le MyCombo devono coprire tutte le 10 gare della prima giornata");
 assert(!Object.hasOwn(dataset.engine.weights, "market"), "Le quote non devono entrare nei pesi del modello");
 assert(Math.abs(Object.values(dataset.engine.weights).reduce((total, value) => total + value, 0) - 1) < 1e-9, "I pesi non sommano a 1");
@@ -39,6 +40,8 @@ assert(mvpHistory.coverage.awards >= 370 && mvpHistory.coverage.completionPct >=
 assert.strictEqual(dataset.engine.mvpModel.officialHistory.provider, "Lega Serie A", "Lo storico MVP deve usare la fonte ufficiale");
 assert.strictEqual(dataset.engine.scoreModel.type, "poisson", "Il modello punteggi selezionato deve essere Poisson");
 assert.strictEqual(dataset.engine.scoreModel.calibration, "none", "La calibrazione empirica monostagionale deve restare disattivata");
+assert.strictEqual(dataset.engine.decisionLayer.version, "1.0.0", "Versione del livello decisionale assente");
+assert.deepStrictEqual(Object.keys(dataset.engine.decisionLayer.profileLimits), ["Safe", "Balanced", "Aggressive"], "Profili di rischio incompleti");
 assert.strictEqual(dataset.engine.validation.multiSeason.decision.calibrationRecommendation, "adopt-poisson", "La scelta del modello deve seguire il backtest pluristagionale");
 assert.strictEqual(dataset.engine.validation.multiSeason.decision.xgRecommendation, "adopt-xg-blend-25", "Il peso xG deve seguire il backtest pluristagionale");
 assert.strictEqual(dataset.engine.promotedTeamModel.attackFactor, 0.51, "Fattore offensivo neopromosse non validato");
@@ -83,6 +86,10 @@ for (const prediction of dataset.predictions) {
   const removedRecommendationKey = ["pricing", "Errors"].join("");
   assert(!Object.hasOwn(prediction.recommendations, removedRecommendationKey), `${prediction.matchId}: campo raccomandazioni rimosso ancora presente`);
   assert.strictEqual(prediction.scenarios.length, 3, `${prediction.matchId}: scenari incompleti`);
+  assert.strictEqual(prediction.decisionSupport?.version, dataset.engine.decisionLayer.version, `${prediction.matchId}: livello decisionale non allineato`);
+  assert.strictEqual(prediction.decisionSupport.scenario.scenarios.length, 3, `${prediction.matchId}: scenari quantitativi incompleti`);
+  assert(Math.abs(prediction.decisionSupport.scenario.scenarios.reduce((total, scenario) => total + scenario.estimatedProbabilityPct, 0) - 100) <= 0.2, `${prediction.matchId}: probabilita scenari non normalizzate`);
+  assert(prediction.decisionSupport.correlationGraph.summary && Array.isArray(prediction.decisionSupport.correlationGraph.edges), `${prediction.matchId}: grafo correlazioni assente`);
   const configuredMyCombo = Boolean(myComboSource.matches[prediction.matchId]);
   assert.strictEqual(prediction.playerMarkets.status, prediction.market.status === "available" ? "available" : "N/D", `${prediction.matchId}: disponibilita mercati giocatore incoerente con lo snapshot`);
   if (configuredMyCombo) {
@@ -90,6 +97,8 @@ for (const prediction of dataset.predictions) {
     const portfolioSelectionIds = prediction.combinations.flatMap(combo => combo.legs.map(leg => leg.providerSelectionId));
     assert.strictEqual(new Set(portfolioSelectionIds).size, portfolioSelectionIds.length, `${prediction.matchId}: le tre MyCombo devono usare proposte diverse`);
     for (const combo of prediction.combinations) {
+      const riskAssessment = prediction.decisionSupport.portfolios.find(portfolio => portfolio.tier === combo.tier);
+      assert(riskAssessment && typeof riskAssessment.allowed === "boolean", `${prediction.matchId}/${combo.tier}: controllo rischio assente`);
       const limits = myComboSource.constraints.tierLimits[combo.tier];
       if (combo.qualityStatus === "nd") {
         assert.strictEqual(combo.legs.length, 0, `${prediction.matchId}/${combo.tier}: un profilo N/D non deve occupare spazio con gambe`);
