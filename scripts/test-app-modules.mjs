@@ -38,10 +38,14 @@ assert.match(bettingPage, /matchday==="1"/, "Schedina: vista dedicata alla lista
 assert.match(bettingPage, /team-flip-inner/, "Schedina: effetto hover delle card Statistiche squadra non riutilizzato");
 assert.match(bettingPage, /<span class="betting-archive-number">1<\/span>/, "Schedina: il fronte deve mostrare soltanto il numero 1");
 assert.doesNotMatch(bettingPage, /<span class="betting-archive-number">1ª<\/span><small>Giornata<\/small>/, "Schedina: dicitura Giornata ancora presente sul fronte");
-assert.match(bettingPage, /Successo complessivo: <strong>\$\{pct\(archiveSuccessPct\)\}%<\/strong>/, "Schedina: percentuale complessiva di successo assente dal retro");
+assert.match(bettingPage, /<small>Successo<\/small><strong>\$\{pct\(archiveSuccessPct\)\}%<\/strong>/, "Schedina: percentuale complessiva di successo assente dal retro");
+assert.match(bettingPage, /<small>Guadagno<\/small><strong>\$\{archiveProfitPct>0\?"\+":""\}\$\{pct\(archiveProfitPct\)\}%<\/strong>/, "Schedina: percentuale di guadagno assente dal retro");
+assert.match(bettingPage, /archiveGrossReturn-archiveStake/, "Schedina: il guadagno non e calcolato sul rendimento netto di tutte le giocate");
 assert.match(bettingPage, /class="betting-slip-metrics"/, "Schedina: riepilogo numerico compatto assente");
 assert.doesNotMatch(bettingPage, /class="betting-slip-copy"|class="betting-family-list"|class="betting-quote"/, "Schedina: blocchi verticali ridondanti ancora presenti");
 const bettingCss = fs.readFileSync(path.join(root, "css", "betting.css"), "utf8");
 assert.match(bettingCss, /\.betting-archive-list\{width:100%;max-width:1180px/, "Schedina: griglia archivio non allineata alle card Statistiche squadra");
+assert.match(bettingCss, /\.betting-archive-performance small,\.betting-archive-performance strong\{display:block;color:#fff\}/, "Schedina: valori del retro senza contrasto bianco leggibile");
+assert.doesNotMatch(bettingCss, /betting-archive-performance[^}]*var\(--betting-gold\)/, "Schedina: il giallo poco leggibile e ancora usato negli indicatori del retro");
 assert.match(bettingCss, /\.betting-slip-grid\{display:grid;grid-template-columns:repeat\(2,minmax\(0,1fr\)\)/, "Schedina: card desktop non organizzate su due colonne");
 console.log(`OK moduli applicazione: ${pageFiles.length} pagine e 4 componenti condivisi`);
