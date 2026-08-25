@@ -194,21 +194,42 @@ function pointsBefore(history) {
   return table;
 }
 
-function recentRate(history, teamId, type, baseline) {
-  const table = pointsBefore(history);
-  const leaguePpg = sum([...table.values()].map(row => row.points)) / Math.max(1, sum([...table.values()].map(row => row.played)));
+function opponentRatings(history, baseline) {
+  const ids = new Set(history.flatMap(match => [match.homeTeam.slug, match.awayTeam.slug]));
+  return new Map([...ids].map(teamId => {
+    const rows = teamRows(history, teamId);
+    const goalsFor = sum(rows.map(match => match.homeTeam.slug === teamId ? match.score.home : match.score.away));
+    const goalsAgainst = sum(rows.map(match => match.homeTeam.slug === teamId ? match.score.away : match.score.home));
+    const priorMatches = 8;
+    return [teamId, {
+      attack: clamp(((goalsFor + baseline * priorMatches) / (rows.length + priorMatches)) / baseline, 0.72, 1.32),
+      defenceWeakness: clamp(((goalsAgainst + baseline * priorMatches) / (rows.length + priorMatches)) / baseline, 0.72, 1.32)
+    }];
+  }));
+}
+
+function recentRate(history, teamId, type, baseline, adjustment = null) {
+  const table = adjustment ? null : pointsBefore(history);
+  const leaguePpg = table ? sum([...table.values()].map(row => row.points)) / Math.max(1, sum([...table.values()].map(row => row.played))) : null;
+  const ratings = adjustment ? opponentRatings(history, baseline) : null;
   const rows = teamRows(history, teamId).slice(-8).reverse();
   if (!rows.length) return baseline;
   let weighted = 0, weights = 0;
   rows.forEach((match, index) => {
     const atHome = match.homeTeam.slug === teamId;
     const opponent = atHome ? match.awayTeam.slug : match.homeTeam.slug;
-    const opponentRow = table.get(opponent);
-    const opponentPpg = opponentRow ? (opponentRow.points + 4.5) / (opponentRow.played + 3) : leaguePpg;
-    const opponentFactor = clamp((opponentPpg / Math.max(0.5, leaguePpg)) ** 0.2, 0.82, 1.18);
-    const goals = type === "for"
-      ? (atHome ? match.score.home : match.score.away) * opponentFactor
-      : (atHome ? match.score.away : match.score.home) / opponentFactor;
+    const raw = type === "for" ? (atHome ? match.score.home : match.score.away) : (atHome ? match.score.away : match.score.home);
+    let goals;
+    if (adjustment) {
+      const rating = ratings.get(opponent) || { attack: 1, defenceWeakness: 1 };
+      const opponentFactor = type === "for" ? rating.defenceWeakness : rating.attack;
+      goals = raw / (opponentFactor ** adjustment.exponent);
+    } else {
+      const opponentRow = table.get(opponent);
+      const opponentPpg = opponentRow ? (opponentRow.points + 4.5) / (opponentRow.played + 3) : leaguePpg;
+      const opponentFactor = clamp((opponentPpg / Math.max(0.5, leaguePpg)) ** 0.2, 0.82, 1.18);
+      goals = type === "for" ? raw * opponentFactor : raw / opponentFactor;
+    }
     const weight = 0.82 ** index;
     weighted += goals * weight;
     weights += weight;
@@ -221,7 +242,7 @@ function weightedGeometric(items) {
   return Math.exp(sum(items.map(item => Math.log(clamp(item.value, 0.35, 2.4)) * item.weight)) / totalWeight);
 }
 
-function predict(history, match, parameters, baselineOnly = false, headToHeadConfiguration = null) {
+function predict(history, match, parameters, baselineOnly = false, headToHeadConfiguration = null, recentAdjustment = null) {
   const league = leagueRates(history);
   if (baselineOnly) {
     const rows = matrix(league.home, league.away);
@@ -233,22 +254,22 @@ function predict(history, match, parameters, baselineOnly = false, headToHeadCon
   const homeAttack = weightedGeometric([
     { value: strength(teamRate(history, homeId, "home", "for", league.home, 4), league.home, parameters.venueReliability), weight: parameters.venueWeight },
     { value: strength(teamRate(history, homeId, null, "for", overallBaseline, 7), overallBaseline, parameters.overallReliability), weight: parameters.overallWeight },
-    { value: strength(recentRate(history, homeId, "for", overallBaseline), overallBaseline, parameters.recentReliability), weight: parameters.recentWeight }
+    { value: strength(recentRate(history, homeId, "for", overallBaseline, recentAdjustment), overallBaseline, parameters.recentReliability), weight: parameters.recentWeight }
   ]);
   const homeDefence = weightedGeometric([
     { value: strength(teamRate(history, homeId, "home", "against", league.away, 4), league.away, parameters.venueReliability), weight: parameters.venueWeight },
     { value: strength(teamRate(history, homeId, null, "against", overallBaseline, 7), overallBaseline, parameters.overallReliability), weight: parameters.overallWeight },
-    { value: strength(recentRate(history, homeId, "against", overallBaseline), overallBaseline, parameters.recentReliability), weight: parameters.recentWeight }
+    { value: strength(recentRate(history, homeId, "against", overallBaseline, recentAdjustment), overallBaseline, parameters.recentReliability), weight: parameters.recentWeight }
   ]);
   const awayAttack = weightedGeometric([
     { value: strength(teamRate(history, awayId, "away", "for", league.away, 4), league.away, parameters.venueReliability), weight: parameters.venueWeight },
     { value: strength(teamRate(history, awayId, null, "for", overallBaseline, 7), overallBaseline, parameters.overallReliability), weight: parameters.overallWeight },
-    { value: strength(recentRate(history, awayId, "for", overallBaseline), overallBaseline, parameters.recentReliability), weight: parameters.recentWeight }
+    { value: strength(recentRate(history, awayId, "for", overallBaseline, recentAdjustment), overallBaseline, parameters.recentReliability), weight: parameters.recentWeight }
   ]);
   const awayDefence = weightedGeometric([
     { value: strength(teamRate(history, awayId, "away", "against", league.home, 4), league.home, parameters.venueReliability), weight: parameters.venueWeight },
     { value: strength(teamRate(history, awayId, null, "against", overallBaseline, 7), overallBaseline, parameters.overallReliability), weight: parameters.overallWeight },
-    { value: strength(recentRate(history, awayId, "against", overallBaseline), overallBaseline, parameters.recentReliability), weight: parameters.recentWeight }
+    { value: strength(recentRate(history, awayId, "against", overallBaseline, recentAdjustment), overallBaseline, parameters.recentReliability), weight: parameters.recentWeight }
   ]);
   const headToHead = headToHeadFactors(match, league, headToHeadConfiguration);
   const homeLambda = clamp(league.home * homeAttack * awayDefence * headToHead.home, 0.3, 3.5);
@@ -266,10 +287,10 @@ function goalBand(home, away) {
   return total <= 1 ? 0 : total <= 3 ? 1 : 2;
 }
 
-function evaluate(parameters, fromMatchday, toMatchday, baselineOnly = false, headToHeadConfiguration = null) {
+function evaluate(parameters, fromMatchday, toMatchday, baselineOnly = false, headToHeadConfiguration = null, recentAdjustment = null) {
   const rows = matches.filter(match => match.matchday >= fromMatchday && match.matchday <= toMatchday).map(match => {
     const history = matches.filter(previous => previous.matchday < match.matchday);
-    const prediction = predict(history, match, parameters, baselineOnly, headToHeadConfiguration);
+    const prediction = predict(history, match, parameters, baselineOnly, headToHeadConfiguration, recentAdjustment);
     const outcome = actualOutcome(match);
     const outcomeProbability = clamp(prediction.probabilities[outcome], 1e-8, 1);
     const actualScoreProbability = clamp(prediction.rows.find(row => row.home === match.score.home && row.away === match.score.away)?.probability || 1e-8, 1e-8, 1);
@@ -395,6 +416,17 @@ const rankedHeadToHead = headToHeadGrid.map(configuration => {
 }).sort((a, b) => a.selectionScore - b.selectionScore);
 const selectedHeadToHead = rankedHeadToHead[0];
 const headToHeadTest = evaluate(configuredCoreParameters, 20, 38, false, selectedHeadToHead.configuration);
+const opponentRatingGrid = [0.1, 0.2, 0.25, 0.35, 0.5, 0.75].map(exponent => {
+  const configuration = { type: "separate-attack-defence", exponent, priorMatches: 8 };
+  const result = evaluate(configuredCoreParameters, 9, 19, false, selectedHeadToHead.configuration, configuration);
+  return { configuration, metrics: result.metrics, selectionScore: result.metrics.oneXTwoLogLoss * 0.7 + result.metrics.goalBandBrier * 0.3 };
+}).sort((a, b) => a.selectionScore - b.selectionScore);
+const opponentRatingConfiguration = opponentRatingGrid[0].configuration;
+const opponentRatingTest = evaluate(configuredCoreParameters, 20, 38, false, selectedHeadToHead.configuration, opponentRatingConfiguration);
+const opponentRatingsWin = opponentRatingTest.metrics.oneXTwoLogLoss < headToHeadTest.metrics.oneXTwoLogLoss
+  && opponentRatingTest.metrics.scoreLogLoss < headToHeadTest.metrics.scoreLogLoss
+  && opponentRatingTest.metrics.exactTopThreeHitPct >= headToHeadTest.metrics.exactTopThreeHitPct
+  && opponentRatingTest.metrics.totalGoalsMae <= headToHeadTest.metrics.totalGoalsMae;
 const productionHeadToHeadConfiguration = { cap: 0.05, decay: 0.72, lowerDivisionWeight: 1, cupWeight: 1, oppositeVenueWeight: 1, tempoCap: 0.02 };
 const productionHeadToHeadTest = evaluate(configuredCoreParameters, 20, 38, false, productionHeadToHeadConfiguration);
 const improvementPct = (baselineValue, modelValue) => round((baselineValue - modelValue) / baselineValue * 100, 1);
@@ -479,6 +511,28 @@ const output = {
           goalBandBrier: improvementPct(configuredCore.metrics.goalBandBrier, productionHeadToHeadTest.metrics.goalBandBrier)
         }
       }
+    }
+  },
+  opponentRatings: {
+    status: opponentRatingsWin ? "adopt" : "rejected",
+    recommendation: opponentRatingsWin ? "adopt-separate-attack-defence" : "keep-points-ranking",
+    configuration: opponentRatingConfiguration,
+    candidateConfigurations: opponentRatingGrid.length,
+    selectionWindow: { fromMatchday: 9, toMatchday: 19, selected: opponentRatingGrid[0] },
+    leakageControl: "Per ogni gara i rating offensivi e difensivi e la forma corretta usano soltanto giornate precedenti.",
+    baseline: headToHeadTest.metrics,
+    candidate: opponentRatingTest.metrics,
+    improvementVsPointsRankingPct: {
+      oneXTwoLogLoss: improvementPct(headToHeadTest.metrics.oneXTwoLogLoss, opponentRatingTest.metrics.oneXTwoLogLoss),
+      oneXTwoBrier: improvementPct(headToHeadTest.metrics.oneXTwoBrier, opponentRatingTest.metrics.oneXTwoBrier),
+      scoreLogLoss: improvementPct(headToHeadTest.metrics.scoreLogLoss, opponentRatingTest.metrics.scoreLogLoss),
+      goalBandBrier: improvementPct(headToHeadTest.metrics.goalBandBrier, opponentRatingTest.metrics.goalBandBrier),
+      totalGoalsMae: improvementPct(headToHeadTest.metrics.totalGoalsMae, opponentRatingTest.metrics.totalGoalsMae)
+    },
+    pairedBootstrap: {
+      oneXTwoLogLoss: bootstrapDifference(opponentRatingTest.rows, headToHeadTest.rows, "oneXTwoLogLoss"),
+      oneXTwoBrier: bootstrapDifference(opponentRatingTest.rows, headToHeadTest.rows, "oneXTwoBrier"),
+      scoreLogLoss: bootstrapDifference(opponentRatingTest.rows, headToHeadTest.rows, "scoreLogLoss")
     }
   },
   caveats: [

@@ -36,6 +36,12 @@ assert.match(bettingPage, /<a class="betting-archive-card team-directory-card te
 assert.doesNotMatch(bettingPage, /<details class="betting-archive-card">|<summary class="betting-archive-card-heading">/, "Schedina: la card archivio non deve essere un menu a tendina");
 assert.match(bettingPage, /matchday==="1"/, "Schedina: vista dedicata alla lista della prima giornata assente");
 assert.match(bettingPage, /team-flip-inner/, "Schedina: effetto hover delle card Statistiche squadra non riutilizzato");
+assert.match(bettingPage, /<span class="betting-archive-number">1<\/span>/, "Schedina: il fronte deve mostrare soltanto il numero 1");
+assert.doesNotMatch(bettingPage, /<span class="betting-archive-number">1ª<\/span><small>Giornata<\/small>/, "Schedina: dicitura Giornata ancora presente sul fronte");
+assert.match(bettingPage, /Successo complessivo: <strong>\$\{pct\(archiveSuccessPct\)\}%<\/strong>/, "Schedina: percentuale complessiva di successo assente dal retro");
+assert.match(bettingPage, /class="betting-slip-metrics"/, "Schedina: riepilogo numerico compatto assente");
+assert.doesNotMatch(bettingPage, /class="betting-slip-copy"|class="betting-family-list"|class="betting-quote"/, "Schedina: blocchi verticali ridondanti ancora presenti");
 const bettingCss = fs.readFileSync(path.join(root, "css", "betting.css"), "utf8");
 assert.match(bettingCss, /\.betting-archive-list\{width:100%;max-width:1180px/, "Schedina: griglia archivio non allineata alle card Statistiche squadra");
+assert.match(bettingCss, /\.betting-slip-grid\{display:grid;grid-template-columns:repeat\(2,minmax\(0,1fr\)\)/, "Schedina: card desktop non organizzate su due colonne");
 console.log(`OK moduli applicazione: ${pageFiles.length} pagine e 4 componenti condivisi`);
