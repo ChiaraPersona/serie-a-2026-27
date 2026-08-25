@@ -13,8 +13,8 @@ const fontLinks = '<link rel="preconnect" href="https://fonts.googleapis.com"><l
 const withFonts = html => html.replace("</title>", `</title>${fontLinks}`);
 const version = "20260824-central-sources-page-v1";
 const homeVersion = "20260824-home-standings-links-v1";
-const calendarVersion = "20260824-calendar-final-score-v1";
-const teamVersion = "20260824-team-table-columns-v1";
+const calendarVersion = "20260825-calendar-accordion-v3";
+const teamVersion = "20260825-team-calendar-cards-v1";
 const leaderboardVersion = "20260824-player-leaderboards-by-season-v18-player-minutes-modern-buttons-v3";
 const bettingVersion = "20260824-schedina-archive-v5-card-settlement";
 const readingVersion = "20260824-readings-md2-no-odds-dropdown-v3";

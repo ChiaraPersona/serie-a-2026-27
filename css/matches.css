@@ -82,7 +82,7 @@
 .fixture-card-link:focus-visible{outline:3px solid var(--glass-blue);outline-offset:4px}
 
 /* Confronto visivo: stemmi grandi, club contrapposti e area eventi predisposta. */
-.match.fixture-card .fixture-teams{position:relative;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center;column-gap:82px;padding:24px 20px 20px}
+.match.fixture-card .fixture-teams{position:relative;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center;column-gap:82px;padding:24px 20px 10px}
 
 .match.fixture-card .fixture-score{position:absolute;left:50%;top:50%;display:grid;grid-template-columns:1fr;place-items:center;width:max-content;padding:0;transform:translate(-50%,-50%)}
 
@@ -102,7 +102,7 @@
 
 .match.fixture-card .match-events small{min-height:17px;overflow-wrap:anywhere;color:#cbd8ea;font-size:11px}
 
-.match.fixture-card .fixture-official{display:flex;align-items:center;justify-content:center;gap:7px;padding:10px 16px;border-top:1px solid rgba(88,126,181,.24);background:rgba(5,17,37,.3);font-size:11px}
+.match.fixture-card .fixture-official{display:flex;align-items:center;justify-content:center;gap:7px;margin:0;padding:10px 16px;border-top:1px solid rgba(88,126,181,.24);background:rgba(5,17,37,.3);font-size:11px}
 
 .match.fixture-card .fixture-official span{color:#8fa9cf;font-size:9px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
 
@@ -188,9 +188,25 @@
 
 .calendar-day[hidden],[data-calendar-teams][hidden]{display:none!important}
 
-.calendar-list{gap:88px}
+.calendar-list{gap:14px}
 
-.calendar-day{min-height:640px;padding-top:14px}
+.calendar-day{min-height:0;padding:0;border:1px solid rgba(40,58,59,.12);border-radius:22px;background:rgba(255,255,255,.34);box-shadow:0 12px 32px rgba(40,58,59,.07);overflow:hidden}
+
+.calendar-day>summary.calendar-day-head{align-items:center;margin:0;padding:16px 18px;border:0;cursor:pointer;list-style:none}
+
+.calendar-day>summary.calendar-day-head::-webkit-details-marker{display:none}
+
+.calendar-day>summary.calendar-day-head h2{white-space:nowrap}
+
+.calendar-day>summary.calendar-day-head::after{content:"⌄";display:grid;place-items:center;width:30px;height:30px;margin-left:4px;border:1px solid rgba(36,90,120,.16);border-radius:50%;color:var(--glass-blue);font-size:18px;line-height:1;transition:transform .2s ease}
+
+.calendar-day[open]>summary.calendar-day-head{border-bottom:1px solid rgba(40,58,59,.1)}
+
+.calendar-day[open]>summary.calendar-day-head::after{transform:rotate(180deg)}
+
+.calendar-day-state{margin-left:auto;color:var(--glass-muted);font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+
+.calendar-day>.day-matches{padding:14px}
 
 .day-matches>div{min-width:0}
 

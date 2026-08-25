@@ -144,7 +144,10 @@ assert.ok(matchCardSource.includes('m.status!=="scheduled"') && !matchCardSource
 assert.ok(!matchCardSource.includes('match-events') && !matchCardSource.includes('Marcatori') && !matchCardSource.includes('Ammoniti'), "Le card partita non devono mostrare riquadri evento prima dei dati reali");
 assert.ok(teamNavSource.includes('src="${esc(team.logo)}"') && !teamNavSource.includes("monochrome"), "La barra Calendario per squadra deve usare i loghi originali colorati");
 assert.ok(styles.includes('.team-nav-link img') && styles.includes('filter:drop-shadow('), "I loghi del selettore squadre devono avere un'ombreggiatura di contrasto");
-assert.ok(styles.includes('.calendar-list{gap:88px}') && styles.includes('.calendar-list{gap:56px}'), "Le giornate del calendario devono avere una separazione leggibile su desktop e mobile");
+assert.ok(calendarDaysSource.includes('<details class="calendar-day"') && calendarDaysSource.includes('match.status==="finished"') && calendarDaysSource.includes("day===activeDay?' open':''"), "Il calendario deve chiudere le giornate concluse e aprire la prima non conclusa");
+assert.ok(styles.includes('.calendar-list{gap:14px}') && styles.includes('.calendar-list{gap:10px}') && styles.includes('.calendar-day>summary.calendar-day-head'), "Le giornate a tendina devono essere compatte e responsive");
+const teamMatchdayStyle = styles.slice(styles.indexOf('.team-matchday .match{'), styles.indexOf('.team-matchday .match-head{'));
+assert.ok(!teamMatchdayStyle.includes('background:') && !teamMatchdayStyle.includes('border-color:') && !teamMatchdayStyle.includes('box-shadow:'), "Le card del calendario squadra devono conservare la stessa superficie chiara delle card globali");
 assert.ok(!calendarDaysSource.includes('dateOnly(') && !calendarDaysSource.includes('matchdayDate'), "L'intestazione della giornata non deve mostrare una data; le date restano nelle card");
 assert.ok(styles.includes('.match.fixture-card .matchday-chip{') && styles.includes('background:transparent;'), "Il testo Giornata X nelle card deve restare privo di riquadro");
 assert.ok(styles.includes('body[data-page="cup"] main>.hero+.cup-stage') && styles.includes('body[data-page="readings"] main>.hero+.section{margin-top:24px}'), "Coppa Italia e Lettura devono usare la spaziatura compatta delle altre pagine interne");
