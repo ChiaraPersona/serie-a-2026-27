@@ -33,6 +33,8 @@ const multiSeasonBacktest = fs.existsSync(multiSeasonBacktestPath) ? JSON.parse(
 const openingBacktestPath = path.join(root, "data/generated/prediction-backtest-opening-rounds.json");
 const openingBacktest = fs.existsSync(openingBacktestPath) ? JSON.parse(fs.readFileSync(openingBacktestPath, "utf8")) : null;
 const generatedAt = new Date().toISOString();
+const previewMatchday = Number(process.env.SERIE_A_PREDICTION_PREVIEW_MATCHDAY);
+const previewMode = Number.isInteger(previewMatchday) && previewMatchday > 0;
 
 const byId = items => new Map(items.map(item => [item.teamId || item.team || item.matchId || item.canonicalMatchId, item]));
 const playerKey = value => String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9 ]/g, " ").replace(/\s+/g, " ").trim();
@@ -130,7 +132,7 @@ const nextScheduledMatchday = matches
   .filter(match => match.competition === "serie-a" && match.season === "2026-27" && match.status !== "finished")
   .reduce((minimum, match) => Math.min(minimum, match.matchday), Infinity);
 const targetMatches = matches
-  .filter(match => match.competition === "serie-a" && match.season === "2026-27" && (oddsByMatch.has(match.id) || match.matchday === nextScheduledMatchday))
+  .filter(match => match.competition === "serie-a" && match.season === "2026-27" && (previewMode ? match.matchday === previewMatchday : oddsByMatch.has(match.id) || match.matchday === nextScheduledMatchday))
   .sort((a, b) => a.matchday - b.matchday || a.id.localeCompare(b.id));
 
 const officialReferenceByTeam = new Map(officialLineups.fixtures
@@ -229,12 +231,13 @@ const generatedPredictions = targetMatches.map(match => {
 });
 
 const archivedPredictionByMatch = new Map(predictionArchive.predictions.map(prediction => [prediction.matchId, prediction]));
-const predictions = generatedPredictions.map(prediction => archivedPredictionByMatch.get(prediction.matchId) || prediction);
+const predictions = previewMode ? generatedPredictions : generatedPredictions.map(prediction => archivedPredictionByMatch.get(prediction.matchId) || prediction);
 
 const output = {
   schemaVersion: 1,
   competition: "serie-a",
   season: "2026-27",
+  ...(previewMode ? { mode: "exploratory-preview", matchday: previewMatchday, publicationStatus: "not-published" } : {}),
   generatedAt,
   engine: {
     version: ENGINE_VERSION,
@@ -333,5 +336,8 @@ const output = {
   predictions
 };
 
-fs.writeFileSync(path.join(root, "data/normalized/predictions.json"), `${JSON.stringify(output, null, 2)}\n`);
-console.log(`OK pronostici preliminari: ${predictions.length} · motore ${ENGINE_VERSION}`);
+const outputPath = previewMode
+  ? path.join(root, "data/generated", `prediction-preview-md${String(previewMatchday).padStart(2, "0")}-2026-27.json`)
+  : path.join(root, "data/normalized/predictions.json");
+fs.writeFileSync(outputPath, `${JSON.stringify(output, null, 2)}\n`);
+console.log(`OK pronostici preliminari: ${predictions.length} · motore ${ENGINE_VERSION} · ${path.relative(root, outputPath)}`);

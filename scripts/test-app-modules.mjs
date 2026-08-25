@@ -45,7 +45,7 @@ assert.match(bettingPage, /class="betting-slip-metrics"/, "Schedina: riepilogo n
 assert.doesNotMatch(bettingPage, /class="betting-slip-copy"|class="betting-family-list"|class="betting-quote"/, "Schedina: blocchi verticali ridondanti ancora presenti");
 const bettingCss = fs.readFileSync(path.join(root, "css", "betting.css"), "utf8");
 assert.match(bettingCss, /\.betting-archive-list\{width:100%;max-width:1180px/, "Schedina: griglia archivio non allineata alle card Statistiche squadra");
-assert.match(bettingCss, /\.betting-archive-performance small,\.betting-archive-performance strong\{display:block;color:#fff\}/, "Schedina: valori del retro senza contrasto bianco leggibile");
+assert.match(bettingCss, /\.betting-archive-performance small,\.betting-archive-performance strong\{display:block;color:#000\}/, "Schedina: valori del retro senza contrasto nero leggibile");
 assert.doesNotMatch(bettingCss, /betting-archive-performance[^}]*var\(--betting-gold\)/, "Schedina: il giallo poco leggibile e ancora usato negli indicatori del retro");
 assert.match(bettingCss, /\.betting-slip-grid\{display:grid;grid-template-columns:repeat\(2,minmax\(0,1fr\)\)/, "Schedina: card desktop non organizzate su due colonne");
 console.log(`OK moduli applicazione: ${pageFiles.length} pagine e 4 componenti condivisi`);

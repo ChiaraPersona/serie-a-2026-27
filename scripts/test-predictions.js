@@ -9,8 +9,19 @@ const archivedMd1 = JSON.parse(fs.readFileSync(path.join(root, "data/sources/pre
 const mvpHistory = JSON.parse(fs.readFileSync(path.join(root, "data/sources/player-mvp-history-2025-26.json"), "utf8"));
 const myComboSource = JSON.parse(fs.readFileSync(path.join(root, "data/sources/mycombo-serie-a-2026-27-md-01.json"), "utf8"));
 const officialLineups = JSON.parse(fs.readFileSync(path.join(root, "data/sources/official-lineups-2026-27.json"), "utf8"));
+const previewMd3Path = path.join(root, "data/generated/prediction-preview-md03-2026-27.json");
 const cleanName = value => String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]/g, "");
 const officialStartersByMatch = new Map(officialLineups.fixtures.map(fixture => [fixture.matchId, new Set(fixture.teams.flatMap(team => team.players.map(player => cleanName(player.currentName || player.sourceName))))]));
+
+if (fs.existsSync(previewMd3Path)) {
+  const previewMd3 = JSON.parse(fs.readFileSync(previewMd3Path, "utf8"));
+  assert.strictEqual(previewMd3.mode, "exploratory-preview", "La MD3 deve restare un'anteprima esplorativa");
+  assert.strictEqual(previewMd3.publicationStatus, "not-published", "La MD3 esplorativa non deve risultare pubblicata");
+  assert.strictEqual(previewMd3.matchday, 3, "Giornata anteprima errata");
+  assert.strictEqual(previewMd3.predictions.length, 10, "L'anteprima MD3 deve contenere dieci partite");
+  assert(previewMd3.predictions.every(prediction => prediction.matchId.endsWith("-md-03")), "L'anteprima MD3 contiene altre giornate");
+  assert(previewMd3.predictions.every(prediction => prediction.market.status === "unavailable" && prediction.probabilities.marketNoMargin === null), "L'anteprima MD3 non deve inventare quote");
+}
 
 assert.strictEqual(dataset.predictions.length, 20, "Il motore deve coprire la prima giornata e le 10 gare della seconda senza quote");
 const firstMatchdayPredictions = dataset.predictions.filter(prediction => prediction.matchId.endsWith("-md-01"));
