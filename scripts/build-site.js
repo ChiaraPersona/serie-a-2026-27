@@ -14,10 +14,11 @@ const withFonts = html => html.replace("</title>", `</title>${fontLinks}`);
 const version = "20260824-central-sources-page-v1";
 const homeVersion = "20260824-home-standings-links-v1";
 const calendarVersion = "20260825-calendar-clean-headings-v1";
-const teamVersion = "20260825-team-whoscored-traits-v1";
+const teamVersion = "20260825-team-md2-fantacalcio-v1";
 const leaderboardVersion = "20260825-player-leaderboards-md1-final-v2";
 const bettingVersion = "20260825-schedina-team-card-v1";
-const readingVersion = "20260825-readings-compact-scores-mvp-v1";
+const readingVersion = "20260825-readings-md2-fantacalcio-v1";
+const fantasyVersion = "20260825-fantasy-md2-fantacalcio-v1";
 const headToHeadPath = path.join(root, "data/generated/head-to-head/first-leg-2026-27.json");
 if (fs.existsSync(headToHeadPath)) {
   const headToHead = JSON.parse(fs.readFileSync(headToHeadPath, "utf8"));
@@ -43,7 +44,7 @@ const sourcesPageContent = () => {
   return `<main id="app" tabindex="-1"><section class="hero sources-hero"><p class="eyebrow">Trasparenza dei dati</p><h1>Fonti</h1><p>Provider, ambiti e date di aggiornamento utilizzati per le rose e le statistiche delle 20 squadre.</p></section><section class="section sources-directory" aria-labelledby="sources-directory-title"><div class="section-heading"><div><p class="eyebrow">Squadra per squadra</p><h2 id="sources-directory-title">Fonti registrate</h2></div><p>Apri una squadra per consultare i riferimenti associati ai suoi dati.</p></div><div class="source-team-grid">${teamCards}</div></section></main>`;
 };
 for (const [file,id,label] of pages) {
-  const pageVersion = id === "home" ? homeVersion : id === "betting" ? bettingVersion : id === "readings" ? readingVersion : id === "team-stats" ? leaderboardVersion : id === "calendar" || id === "team" ? calendarVersion : version;
+  const pageVersion = id === "home" ? homeVersion : id === "betting" ? bettingVersion : id === "readings" ? readingVersion : id === "fantasy" ? fantasyVersion : id === "team-stats" ? leaderboardVersion : id === "calendar" || id === "team" ? calendarVersion : version;
   const main = id === "sources" ? sourcesPageContent() : `<main id="app" tabindex="-1"><section class="loading"><p class="eyebrow">Caricamento</p><h1>${label}</h1></section></main>`;
   const scripts = id === "sources" ? `<script>document.querySelector('.menu-button')?.addEventListener('click',e=>{const n=document.getElementById('site-nav'),open=e.currentTarget.getAttribute('aria-expanded')==='true';e.currentTarget.setAttribute('aria-expanded',String(!open));n.classList.toggle('open',!open)});</script>` : `${id === "home" ? `<script src="scripts/standings.js?v=${pageVersion}"></script>` : ""}${id === "fantasy" ? `<script src="scripts/fantasy-squad.js?v=${pageVersion}"></script>` : ""}<script type="module" src="js/app.js?v=${pageVersion}"></script>`;
   const html = `<!doctype html>\n<html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Serie A e Coppa Italia 2026/27: ${label}"><title>${label} | Serie A 2026/27</title><link rel="stylesheet" href="css/styles.css?v=${pageVersion}"></head><body data-page="${id}"><header id="site-top" class="site-header"><a class="brand" href="index.html"><span class="brand-mark"><img src="assets/images/serie-a-logo-mark.png" alt=""></span><span><strong>Serie A 2026/27</strong><small>Campionato e Coppa Italia</small></span></a><button class="menu-button" type="button" aria-controls="site-nav" aria-expanded="false">Menu</button><nav id="site-nav" class="site-nav" aria-label="Navigazione principale">${navigation("", id)}</nav></header>${main}${footer()}${scripts}</body></html>`;

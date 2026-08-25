@@ -21,6 +21,8 @@ const mvpHistory = read("data/sources/player-mvp-history-2025-26.json");
 const fantasy = read("data/generated/fantacalcio-advice.json");
 const volumeProfiles = read("data/normalized/team-volume-profiles-2025-26.json");
 const officialLineups = read("data/sources/official-lineups-2026-27.json");
+const predictionArchivePath = path.join(root, "data/sources/prediction-archive-md1-2026-27.json");
+const predictionArchive = fs.existsSync(predictionArchivePath) ? JSON.parse(fs.readFileSync(predictionArchivePath, "utf8")) : { predictions: [] };
 const myComboSource = process.env.SERIE_A_DISABLE_MYCOMBO === "1"
   ? { constraints: {}, matches: {} }
   : read("data/sources/mycombo-serie-a-2026-27-md-01.json");
@@ -143,10 +145,10 @@ const officialReferenceByTeam = new Map(officialLineups.fixtures
   }])));
 const teamForMatch = (team, match) => {
   if (team?.probableLineup?.status !== "official" || team.probableLineup.matchId === match.id) return team;
-  return { ...team, probableLineup: officialReferenceByTeam.get(team.id) || team.projectedLineup || null };
+  return { ...team, probableLineup: team.projectedLineup || officialReferenceByTeam.get(team.id) || null };
 };
 
-const predictions = targetMatches.map(match => {
+const generatedPredictions = targetMatches.map(match => {
   const homeTeam = teamForMatch(teamById.get(match.homeTeam), match);
   const awayTeam = teamForMatch(teamById.get(match.awayTeam), match);
   const predictionGeneratedAt = [generatedAt, homeTeam?.probableLineup?.source?.retrievedAt, awayTeam?.probableLineup?.source?.retrievedAt].filter(Boolean).sort().at(-1);
@@ -225,6 +227,9 @@ const predictions = targetMatches.map(match => {
     }
   } : prediction;
 });
+
+const archivedPredictionByMatch = new Map(predictionArchive.predictions.map(prediction => [prediction.matchId, prediction]));
+const predictions = generatedPredictions.map(prediction => archivedPredictionByMatch.get(prediction.matchId) || prediction);
 
 const output = {
   schemaVersion: 1,

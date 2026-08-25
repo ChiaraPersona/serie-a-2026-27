@@ -80,10 +80,10 @@ function parseProbableLineups(html, importedAt) {
     schemaVersion: 1,
     provider: "Fantacalcio.it",
     season: "2026/27",
-    matchday: 1,
+    matchday: 2,
     sourceUrl: probableUrl,
     importedAt,
-    interpretation: "Percentuale editoriale di probabilità di titolarità per la 1ª giornata; non è una formazione ufficiale.",
+    interpretation: "Percentuale editoriale di probabilità di titolarità per la 2ª giornata; non è una formazione ufficiale.",
     coverage: {
       teams: teamCards.length,
       players: allPlayers.length,
@@ -142,15 +142,11 @@ function parseInjuries(html, importedAt) {
 
 async function main() {
   const importedAt = new Date().toISOString();
-  const [probableHtml, injuriesHtml] = await Promise.all([fetchHtml(probableUrl), fetchHtml(injuriesUrl)]);
+  const probableHtml = await fetchHtml(probableUrl);
   const probable = parseProbableLineups(probableHtml, importedAt);
-  const injuries = parseInjuries(injuriesHtml, importedAt);
   if (probable.coverage.teams !== 20 || probable.coverage.starters !== 220) throw new Error(`Copertura probabili inattesa: ${JSON.stringify(probable.coverage)}`);
-  if (injuries.coverage.teams !== 20) throw new Error(`Copertura infortuni inattesa: ${JSON.stringify(injuries.coverage)}`);
-  fs.writeFileSync(path.join(root, "data/sources/fantacalcio-probable-lineups-md1-2026-27.json"), `${JSON.stringify(probable, null, 2)}\n`);
-  fs.writeFileSync(path.join(root, "data/sources/fantacalcio-injuries-2026-27.json"), `${JSON.stringify(injuries, null, 2)}\n`);
+  fs.writeFileSync(path.join(root, "data/sources/probable-lineups-md2-2026-27.json"), `${JSON.stringify(probable, null, 2)}\n`);
   console.log(`Probabili: ${probable.coverage.players} calciatori, ${probable.coverage.linkedPlayers} collegati alla rosa, ${probable.coverage.unmatched} non collegati.`);
-  console.log(`Infortuni: ${injuries.coverage.reports} segnalazioni, ${injuries.coverage.linkedPlayers} collegate alla rosa, ${injuries.coverage.unmatched} non collegate.`);
 }
 
 main().catch(error => {

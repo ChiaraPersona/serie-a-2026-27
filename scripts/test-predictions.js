@@ -5,6 +5,7 @@ const fs = require("fs");
 const path = require("path");
 const root = path.resolve(__dirname, "..");
 const dataset = JSON.parse(fs.readFileSync(path.join(root, "data/normalized/predictions.json"), "utf8"));
+const archivedMd1 = JSON.parse(fs.readFileSync(path.join(root, "data/sources/prediction-archive-md1-2026-27.json"), "utf8"));
 const mvpHistory = JSON.parse(fs.readFileSync(path.join(root, "data/sources/player-mvp-history-2025-26.json"), "utf8"));
 const myComboSource = JSON.parse(fs.readFileSync(path.join(root, "data/sources/mycombo-serie-a-2026-27-md-01.json"), "utf8"));
 const officialLineups = JSON.parse(fs.readFileSync(path.join(root, "data/sources/official-lineups-2026-27.json"), "utf8"));
@@ -16,6 +17,7 @@ const firstMatchdayPredictions = dataset.predictions.filter(prediction => predic
 const secondMatchdayPredictions = dataset.predictions.filter(prediction => prediction.matchId.endsWith("-md-02"));
 assert.strictEqual(firstMatchdayPredictions.length, 10, "Devono restare disponibili i 10 pronostici archiviati della prima giornata");
 assert.strictEqual(secondMatchdayPredictions.length, 10, "Devono essere disponibili i 10 pronostici tecnici della seconda giornata");
+assert.deepStrictEqual(firstMatchdayPredictions, archivedMd1.predictions, "I pronostici conclusi MD1 devono restare identici allo snapshot pubblicato");
 assert.strictEqual(Object.keys(myComboSource.matches).length, 10, "Le MyCombo devono coprire tutte le 10 gare della prima giornata");
 assert(!Object.hasOwn(dataset.engine.weights, "market"), "Le quote non devono entrare nei pesi del modello");
 assert(Math.abs(Object.values(dataset.engine.weights).reduce((total, value) => total + value, 0) - 1) < 1e-9, "I pesi non sommano a 1");

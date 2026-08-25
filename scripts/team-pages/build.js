@@ -12,7 +12,7 @@ const write = (relative, value) => {
 const slugAliases = { "hellas-verona": "verona" };
 const teams = read("data/normalized/teams.json");
 const teamDetails = read("data/sources/team-pages/team-details-2026-27.json");
-const probableLineups = read("data/sources/probable-lineups-md1-2026-27.json");
+const probableLineups = read("data/sources/probable-lineups-md2-2026-27.json");
 const probableLineupByTeam = new Map(probableLineups.teams.map(team => [team.teamId, team]));
 const officialLineupsFile = path.join(root, "data/sources/official-lineups-2026-27.json");
 const officialLineups = fs.existsSync(officialLineupsFile) ? JSON.parse(fs.readFileSync(officialLineupsFile, "utf8")) : { fixtures: [] };
@@ -266,7 +266,8 @@ function buildTeam(team) {
     ...(marketValues.retrievedAt ? [{ provider: "Transfermarkt", scope: `Valori di mercato individuali 2026/27 (${squad.filter(player => player.marketValue).length}/${squad.length})`, url: marketValues.sourceUrl, retrievedAt: marketValues.retrievedAt }] : []),
     ...(wikimediaPhotos.retrievedAt ? [{ provider: "Wikimedia Commons", scope: `Foto locali con attribuzione (${squad.filter(player => player.photoAttribution).length}/${squad.length})`, url: wikimediaPhotos.sourceUrl, retrievedAt: wikimediaPhotos.retrievedAt }] : []),
     ...teamDetails.sources.filter(source => source.provider !== "Calciomercato.com"),
-    lineupSource
+    lineupSource,
+    ...(officialLineup ? [probableLineupSource] : [])
   ];
   return {
     schemaVersion: 1, id: team.id, name: team.name, officialName: team.officialName, shortName: team.shortName,

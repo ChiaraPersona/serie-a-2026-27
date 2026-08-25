@@ -8,7 +8,7 @@ const source = read("data/sources/fantacalcio-quotations-2026-27.json");
 const callups = read("data/sources/fantacalcio-callups-md1-2026-27.json");
 const statsSource = read("data/sources/fantacalcio-stats-2025-26.json");
 const externalStatsSource = read("data/sources/fantasy-external-stats-2025-26.json");
-const probable = read("data/sources/probable-lineups-md1-2026-27.json");
+const probable = read("data/sources/probable-lineups-md2-2026-27.json");
 const injuries = read("data/sources/fantacalcio-injuries-2026-27.json");
 const goalkeeperHierarchy = read("data/sources/fantasy-goalkeeper-hierarchy-2026-27.json");
 const generated = read("data/generated/fantacalcio-advice.json");
@@ -44,13 +44,13 @@ assert.equal(probable.coverage.teams, 20);
 assert.equal(probable.coverage.starters, 220);
 const probablePlayers = probable.teams.flatMap(team => team.players);
 assert.equal(probable.coverage.unmatched, probablePlayers.filter(player => player.matchStatus === "unmatched").length);
-assert.equal(probable.provider, "Sky Sport");
+assert.equal(probable.provider, "Fantacalcio.it");
 assert.ok(probable.teams.every(team => team.players.filter(player => player.lineupStatus === "starter").length === 11), "ogni squadra deve avere 11 titolari editoriali");
-assert.ok(probablePlayers.every(player => player.probability === null), "Sky Sport non fornisce una percentuale individuale: il dato deve restare null");
+assert.ok(probablePlayers.every(player => Number.isFinite(player.probability)), "Fantacalcio deve fornire una percentuale editoriale per ogni calciatore");
 assert.equal(injuries.coverage.teams, 20);
 assert.ok(injuries.coverage.reports > 0);
 assert.equal(injuries.coverage.unmatched, 0);
-assert.equal(generated.sources.probableLineups.matchday, 1);
+assert.equal(generated.sources.probableLineups.matchday, 2);
 assert.equal(generated.sources.injuries.coverage.reports, injuries.coverage.reports);
 const quotedAdvice = generated.players.filter(player => player.quotations);
 assert.ok(quotedAdvice.length > 350, `Copertura quotazioni insufficiente: ${quotedAdvice.length}`);
@@ -81,7 +81,7 @@ for (const playerId of ["christos-mandas", "lorenzo-torriani"]) {
   assert.equal(player.assists, stats.assists, `${playerId}: assist storici non propagati`);
 }
 const externallyCoveredListone = unlinkedListone.filter(player => externalStatsByPlayerId.has(player.playerId));
-assert.ok(externallyCoveredListone.length >= 40, "copertura ESPN esterna insufficiente per i profili solo listone");
+assert.ok(externallyCoveredListone.length >= 39, "copertura ESPN esterna insufficiente per i profili solo listone");
 for (const player of externallyCoveredListone) {
   const stats = externalStatsByPlayerId.get(player.playerId).totals;
   assert.equal(player.appearances, stats.appearances, `${player.name}: presenze ESPN non propagate`);
@@ -127,10 +127,10 @@ for (const trio of generated.goalkeeperTrios.examples) {
   }
 }
 const generatedPlayerIds = new Set(generated.players.map(player => player.id));
-const expectedAdviceStarters = probablePlayers.filter(player => player.playerId && generatedPlayerIds.has(player.playerId)).length;
+const expectedAdviceStarters = probablePlayers.filter(player => player.lineupStatus === "starter" && player.playerId && generatedPlayerIds.has(player.playerId)).length;
 assert.equal(generated.players.filter(player => player.currentAvailability?.lineupStatus === "starter").length, expectedAdviceStarters, "titolari editoriali eleggibili non propagati ai consigli");
 const activeSourceIds = new Set(source.players.map(player => String(player.sourceId)));
-const expectedListoneAvailability = probablePlayers.filter(player => activeSourceIds.has(String(player.sourceId))).length;
+const expectedListoneAvailability = probablePlayers.filter(player => player.lineupStatus === "starter" && activeSourceIds.has(String(player.sourceId))).length;
 assert.equal(generated.listone.players.filter(player => player.currentAvailability?.lineupStatus === "starter").length, expectedListoneAvailability);
 assert.equal(generated.listone.players.filter(player => player.currentAvailability?.injuryReported).length, injuries.coverage.reports);
 

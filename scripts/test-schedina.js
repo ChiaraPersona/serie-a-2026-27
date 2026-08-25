@@ -4,7 +4,9 @@ const assert = require("assert");
 
 const root = path.resolve(__dirname, "..");
 const data = JSON.parse(fs.readFileSync(path.join(root, "data/normalized/schedina.json"), "utf8"));
+const archivedMd1 = JSON.parse(fs.readFileSync(path.join(root, "data/sources/schedina-archive-md1-2026-27.json"), "utf8"));
 const predictions = JSON.parse(fs.readFileSync(path.join(root, "data/normalized/predictions.json"), "utf8"));
+assert.deepStrictEqual(data, archivedMd1, "La schedina conclusa MD1 deve restare identica allo snapshot pubblicato");
 const poissonQuantile = (lambda, target) => {
   let term = Math.exp(-lambda), cumulative = term;
   if (cumulative >= target) return 0;

@@ -7,6 +7,14 @@ const source = read("data/sources/schedina-serie-a-2026-27-md-01.json");
 const odds = read("data/normalized/odds/sisal/serie-a.json");
 const predictions = read("data/normalized/predictions.json");
 const matches = read("data/normalized/matches.json");
+const archivePath = path.join(root, "data/sources/schedina-archive-md1-2026-27.json");
+const md1Matches = matches.filter(match => match.competition === "serie-a" && match.season === "2026-27" && match.matchday === 1);
+if (fs.existsSync(archivePath) && md1Matches.length === 10 && md1Matches.every(match => match.status === "finished" && match.score)) {
+  const archive = JSON.parse(fs.readFileSync(archivePath, "utf8"));
+  fs.writeFileSync(path.join(root, "data/normalized/schedina.json"), `${JSON.stringify(archive, null, 2)}\n`);
+  console.log("Schedina MD1 congelata: giornata conclusa, nessun ricalcolo retroattivo.");
+  process.exit(0);
+}
 const teamIndex = read("data/teams/index.json").teams;
 const eventByMatch = new Map(odds.events.map(event => [event.canonicalMatchId, event]));
 const predictionByMatch = new Map(predictions.predictions.map(prediction => [prediction.matchId, prediction]));
