@@ -8,6 +8,9 @@ const dataset = JSON.parse(fs.readFileSync(path.join(root, "data/normalized/pred
 const archivedMd1 = JSON.parse(fs.readFileSync(path.join(root, "data/sources/prediction-archive-md1-2026-27.json"), "utf8"));
 const mvpHistory = JSON.parse(fs.readFileSync(path.join(root, "data/sources/player-mvp-history-2025-26.json"), "utf8"));
 const myComboSource = JSON.parse(fs.readFileSync(path.join(root, "data/sources/mycombo-serie-a-2026-27-md-01.json"), "utf8"));
+const myComboMd2Path = path.join(root, "data/sources/mycombo-serie-a-2026-27-md-02.json");
+const myComboMd2Source = fs.existsSync(myComboMd2Path) ? JSON.parse(fs.readFileSync(myComboMd2Path, "utf8")) : { matches: {} };
+const allMyComboMatches = { ...myComboSource.matches, ...myComboMd2Source.matches };
 const officialLineups = JSON.parse(fs.readFileSync(path.join(root, "data/sources/official-lineups-2026-27.json"), "utf8"));
 const previewMd3Path = path.join(root, "data/generated/prediction-preview-md03-2026-27.json");
 const cleanName = value => String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]/g, "");
@@ -31,6 +34,7 @@ assert.strictEqual(firstMatchdayPredictions.length, 10, "Devono restare disponib
 assert.strictEqual(secondMatchdayPredictions.length, 10, "Devono essere disponibili i 10 pronostici tecnici della seconda giornata");
 assert.deepStrictEqual(firstMatchdayPredictions.map(({ decisionSupport, ...prediction }) => prediction), archivedMd1.predictions, "Il nucleo dei pronostici conclusi MD1 deve restare identico allo snapshot pubblicato");
 assert.strictEqual(Object.keys(myComboSource.matches).length, 10, "Le MyCombo devono coprire tutte le 10 gare della prima giornata");
+if (fs.existsSync(myComboMd2Path)) assert.strictEqual(Object.keys(myComboMd2Source.matches).length, 10, "Le MyCombo devono coprire tutte le 10 gare della seconda giornata");
 assert(!Object.hasOwn(dataset.engine.weights, "market"), "Le quote non devono entrare nei pesi del modello");
 assert(Math.abs(Object.values(dataset.engine.weights).reduce((total, value) => total + value, 0) - 1) < 1e-9, "I pesi non sommano a 1");
 assert(dataset.engine.weights.venueHistorical + dataset.engine.weights.overallHistorical + dataset.engine.weights.recentForm >= 0.8, "I dati storici devono guidare le lambda");
@@ -90,7 +94,7 @@ for (const prediction of dataset.predictions) {
   assert.strictEqual(prediction.decisionSupport.scenario.scenarios.length, 3, `${prediction.matchId}: scenari quantitativi incompleti`);
   assert(Math.abs(prediction.decisionSupport.scenario.scenarios.reduce((total, scenario) => total + scenario.estimatedProbabilityPct, 0) - 100) <= 0.2, `${prediction.matchId}: probabilita scenari non normalizzate`);
   assert(prediction.decisionSupport.correlationGraph.summary && Array.isArray(prediction.decisionSupport.correlationGraph.edges), `${prediction.matchId}: grafo correlazioni assente`);
-  const configuredMyCombo = Boolean(myComboSource.matches[prediction.matchId]);
+  const configuredMyCombo = Boolean(allMyComboMatches[prediction.matchId]);
   assert.strictEqual(prediction.playerMarkets.status, prediction.market.status === "available" ? "available" : "N/D", `${prediction.matchId}: disponibilita mercati giocatore incoerente con lo snapshot`);
   if (configuredMyCombo) {
     assert.deepStrictEqual(prediction.combinations.map(combo => combo.tier), ["Safe", "Balanced", "Aggressive"], `${prediction.matchId}: profili MyCombo incompleti`);
@@ -106,15 +110,17 @@ for (const prediction of dataset.predictions) {
         continue;
       }
       assert(combo.legs.length >= limits.minimum && combo.legs.length <= limits.maximum, `${prediction.matchId}/${combo.tier}: numero gambe fuori limite`);
-      assert(combo.legs.every(leg => leg.odds > 1 && leg.odds < 1.8), `${prediction.matchId}/${combo.tier}: ogni quota deve essere inferiore a 1.80`);
+      assert(combo.legs.every(leg => leg.odds >= (prediction.matchId.endsWith("-md-02") ? 1.1 : 1) && leg.odds < 1.8), `${prediction.matchId}/${combo.tier}: quota individuale fuori limite`);
       assert.strictEqual(new Set(combo.legs.map(leg => leg.providerSelectionId)).size, combo.legs.length, `${prediction.matchId}/${combo.tier}: selectionId ripetuti`);
       assert.strictEqual(new Set(combo.legs.map(leg => leg.overlapKey)).size, combo.legs.length, `${prediction.matchId}/${combo.tier}: esiti sovrapponibili`);
+      if (prediction.matchId.endsWith("-md-02")) assert(!combo.legs.some(leg => String(leg.selection).replace(/\s+/g, "").split("+").includes("12")), `${prediction.matchId}/${combo.tier}: selezione 12 vietata`);
       assert(Math.abs(combo.odds - combo.targetOdds) / combo.targetOdds <= 0.2, `${prediction.matchId}/${combo.tier}: quota combinata lontana dal target`);
       const product = combo.legs.reduce((total, leg) => total * leg.odds, 1);
       assert(Math.abs(combo.odds - product) < 0.011, `${prediction.matchId}/${combo.tier}: moltiplicazione quote incoerente`);
       assert(Number.isFinite(combo.prudentProbabilityPct) && Number.isFinite(combo.fairOdds) && Number.isFinite(combo.prudentExpectedValuePct), `${prediction.matchId}/${combo.tier}: metriche prudenziali mancanti`);
       assert(combo.weakestLeg?.label, `${prediction.matchId}/${combo.tier}: gamba fragile non identificata`);
       assert(!combo.legs.some(leg => /falli (?:commessi|subiti).*sostituto incluso/i.test(leg.label)), `${prediction.matchId}/${combo.tier}: i mercati falli non includono il sostituto`);
+      if (prediction.matchId.endsWith("-md-02")) assert(riskAssessment.allowed, `${prediction.matchId}/${combo.tier}: una nuova MyCombo fuori limite non deve essere pubblicata`);
     }
   }
   assert.strictEqual(prediction.teamProjections.length, 2, `${prediction.matchId}: proiezioni squadra incomplete`);
@@ -152,7 +158,8 @@ assert.strictEqual(torinoMilan.teamProjections[0].venue, "home", "Torino-Milan: 
 assert.strictEqual(torinoMilan.teamProjections[1].venue, "away", "Torino-Milan: Milan non usa il campione trasferta");
 assert.strictEqual(torinoMilan.teamProjections[0].shotsTotal.inputs[0].source, "home-for", "Torino-Milan: produzione Torino casa non collegata");
 assert.strictEqual(torinoMilan.teamProjections[1].shotsTotal.inputs[0].source, "away-for", "Torino-Milan: produzione Milan trasferta non collegata");
-assert(secondMatchdayPredictions.every(prediction => prediction.market.status === "unavailable"), "La seconda giornata non deve contenere quote Sisal non scaricate");
+assert(secondMatchdayPredictions.every(prediction => prediction.market.status === "available" && prediction.market.provider === "Sisal"), "La seconda giornata deve usare le quote Sisal importate");
+assert(secondMatchdayPredictions.every(prediction => !prediction.dataQuality.missing.includes("quote 1X2 verificate")), "Le quote Sisal della seconda giornata non devono risultare mancanti");
 assert(secondMatchdayPredictions.every(prediction => prediction.dataQuality.probableLineups.includes("proiettati")), "Le formazioni della prima giornata devono restare riferimenti, non XI ufficiali della seconda");
 assert(firstMatchdayPredictions.every(prediction => (prediction.expectedGoals.components.recentForm.home?.currentSeasonMatches ?? 0) === 0 && (prediction.expectedGoals.components.recentForm.away?.currentSeasonMatches ?? 0) === 0), "I pronostici archiviati della prima giornata non devono usare risultati futuri");
 assert(secondMatchdayPredictions.every(prediction => prediction.expectedGoals.components.recentForm.home.currentSeasonMatches === 1 && prediction.expectedGoals.components.recentForm.away.currentSeasonMatches === 1), "La seconda giornata deve usare una gara conclusa 2026/27 per squadra nella forma recente");

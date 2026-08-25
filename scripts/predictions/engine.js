@@ -959,6 +959,7 @@ function assessConfiguredPortfolio(legs, matrices, dataCompleteness, projections
 function configuredComboPortfolio(oddsEvent, config, matrices, dataCompleteness, projections) {
   if (!config?.portfolios?.length) return null;
   const constraints = config.constraints || {};
+  const minimum = constraints.minLegOddsInclusive ?? 1;
   const maximum = constraints.maxLegOddsExclusive ?? 1.8;
   const tolerance = constraints.targetTolerancePct ?? 20;
   const selectionIndex = new Map();
@@ -989,8 +990,8 @@ function configuredComboPortfolio(oddsEvent, config, matrices, dataCompleteness,
       const resolved = selectionIndex.get(String(leg.providerSelectionId));
       if (!resolved) throw new Error(`${oddsEvent.canonicalMatchId}/${portfolio.tier}: quota Sisal mancante ${leg.providerSelectionId}`);
       const { market, selection } = resolved;
-      if (selection.status !== "open" || !(selection.odds > 1 && selection.odds < maximum)) {
-        throw new Error(`${oddsEvent.canonicalMatchId}/${portfolio.tier}: quota ${selection.odds} non inferiore a ${maximum}`);
+      if (selection.status !== "open" || !(selection.odds >= minimum && selection.odds < maximum)) {
+        throw new Error(`${oddsEvent.canonicalMatchId}/${portfolio.tier}: quota ${selection.odds} fuori dall'intervallo [${minimum}, ${maximum})`);
       }
       if (!leg.overlapKey || overlapKeys.has(leg.overlapKey)) {
         throw new Error(`${oddsEvent.canonicalMatchId}/${portfolio.tier}: esito sovrapponibile ${leg.overlapKey || "senza chiave"}`);

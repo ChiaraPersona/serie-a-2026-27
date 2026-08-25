@@ -24,9 +24,16 @@ const volumeProfiles = read("data/normalized/team-volume-profiles-2025-26.json")
 const officialLineups = read("data/sources/official-lineups-2026-27.json");
 const predictionArchivePath = path.join(root, "data/sources/prediction-archive-md1-2026-27.json");
 const predictionArchive = fs.existsSync(predictionArchivePath) ? JSON.parse(fs.readFileSync(predictionArchivePath, "utf8")) : { predictions: [] };
-const myComboSource = process.env.SERIE_A_DISABLE_MYCOMBO === "1"
-  ? { constraints: {}, matches: {} }
-  : read("data/sources/mycombo-serie-a-2026-27-md-01.json");
+const myComboFiles = fs.readdirSync(path.join(root, "data/sources"))
+  .filter(filename => /^mycombo-serie-a-2026-27-md-\d{2}\.json$/.test(filename))
+  .sort();
+const myComboSources = process.env.SERIE_A_DISABLE_MYCOMBO === "1"
+  ? []
+  : myComboFiles.map(filename => ({ filename, ...read(`data/sources/${filename}`) }));
+const myComboSource = {
+  constraints: myComboSources.at(-1)?.constraints || {},
+  matches: Object.assign({}, ...myComboSources.map(source => source.matches || {}))
+};
 const backtestPath = path.join(root, "data/generated/prediction-backtest-2025-26.json");
 const backtest = fs.existsSync(backtestPath) ? JSON.parse(fs.readFileSync(backtestPath, "utf8")) : null;
 const multiSeasonBacktestPath = path.join(root, "data/generated/prediction-backtest-multiseason.json");
@@ -232,7 +239,14 @@ const generatedPredictions = targetMatches.map(match => {
 });
 
 const archivedPredictionByMatch = new Map(predictionArchive.predictions.map(prediction => [prediction.matchId, prediction]));
-const basePredictions = previewMode ? generatedPredictions : generatedPredictions.map(prediction => archivedPredictionByMatch.get(prediction.matchId) || prediction);
+const generatedCurrent = generatedPredictions.filter(prediction => !archivedPredictionByMatch.has(prediction.matchId));
+const basePredictions = previewMode
+  ? generatedPredictions
+  : [...predictionArchive.predictions, ...generatedCurrent].sort((left, right) => {
+      const leftMatch = matches.find(match => match.id === left.matchId);
+      const rightMatch = matches.find(match => match.id === right.matchId);
+      return (leftMatch?.matchday || 99) - (rightMatch?.matchday || 99) || left.matchId.localeCompare(right.matchId);
+    });
 const predictions = basePredictions.map(enrichPrediction);
 
 const output = {
@@ -337,7 +351,7 @@ const output = {
   sources: [
     { label: "Lega Serie A - programma prime cinque giornate", url: "https://www.legaseriea.it/serie-a/news/date-orari-e-programmazione-tv-delle-prime-cinque-giornate" },
     { label: "Sisal - quote Serie A", url: odds.sourceUrl },
-    { label: `MyCombo editoriali - selezioni Sisal ${String(odds.retrievedAt).slice(0, 10)}`, url: "data/sources/mycombo-serie-a-2026-27-md-01.json" },
+    ...myComboSources.map(source => ({ label: `MyCombo editoriali - ${source.filename} · selezioni Sisal ${source.updatedAt}`, url: `data/sources/${source.filename}` })),
     { label: `${teams.find(team => team.probableLineup?.source)?.probableLineup.source.provider || "Fonte editoriale"} - probabili formazioni 20 squadre`, url: teams.find(team => team.probableLineup?.source?.url)?.probableLineup.source.url },
     { label: "ESPN - ultimi cinque scontri diretti", url: "data/generated/head-to-head/first-leg-2026-27.json" },
     { label: `${volumeProfiles.source.provider} - tiri, tiri in porta e corner ${volumeProfiles.season}`, url: "data/normalized/team-volume-profiles-2025-26.json" },

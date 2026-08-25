@@ -1,0 +1,322 @@
+{
+  "provider": "Sisal",
+  "oddsSnapshot": "data/normalized/odds/sisal/serie-a.json",
+  "updatedAt": "2026-08-25",
+  "constraints": {
+    "minLegOddsInclusive": 1.1,
+    "maxLegOddsExclusive": 1.8,
+    "targets": {
+      "Safe": 5,
+      "Balanced": 10,
+      "Aggressive": 20
+    },
+    "tierLimits": {
+      "Safe": {
+        "minimum": 3,
+        "maximum": 6
+      },
+      "Balanced": {
+        "minimum": 4,
+        "maximum": 7
+      },
+      "Aggressive": {
+        "minimum": 5,
+        "maximum": 8
+      }
+    },
+    "targetTolerancePct": 20,
+    "overlapPolicy": "Una sola gamba per overlapKey nella stessa MyCombo; vietate soglie annidate, esiti equivalenti e selezione 12, anche dentro le combo. Ogni portafoglio contiene almeno una selezione verificata contro il risultato principale del modello."
+  },
+  "matches": {
+    "milan-venezia-2026-27-md-02": [
+      {
+        "tier": "Safe",
+        "status": "N/D",
+        "reason": "Nessuna combinazione raggiunge il target 5 rispettando qualita, unicita e limite di 6 gambe.",
+        "legs": []
+      },
+      {
+        "tier": "Balanced",
+        "logic": "Profilo balanced costruito sulle quote Sisal del 2026-08-25: almeno una gamba segue il risultato principale 1-0 (1); le altre seguono i volumi centrali o i titolari proiettati senza introdurre un esito opposto.",
+        "legs": [
+          {
+            "providerSelectionId": "5278945056",
+            "overlapKey": "model-team-goal",
+            "label": "Venezia non segna"
+          },
+          {
+            "providerSelectionId": "5278857053",
+            "overlapKey": "model-btts",
+            "label": "Almeno una squadra non segna"
+          },
+          {
+            "providerSelectionId": "5278860721",
+            "overlapKey": "model-goals",
+            "label": "Under 3,5 gol"
+          },
+          {
+            "providerSelectionId": "5278919986",
+            "overlapKey": "model-score-scenario",
+            "label": "MULTIGOAL Milan MULTIESITI · 1-2"
+          },
+          {
+            "providerSelectionId": "5278856859",
+            "overlapKey": "model-1x2",
+            "label": "Milan vincente"
+          }
+        ]
+      },
+      {
+        "tier": "Aggressive",
+        "status": "N/D",
+        "reason": "Nessuna combinazione raggiunge il target 20 rispettando qualita, unicita e limite di 8 gambe.",
+        "legs": []
+      }
+    ],
+    "fiorentina-frosinone-2026-27-md-02": [
+      {
+        "tier": "Safe",
+        "status": "N/D",
+        "reason": "Nessuna combinazione raggiunge il target 5 rispettando qualita, unicita e limite di 6 gambe.",
+        "legs": []
+      },
+      {
+        "tier": "Balanced",
+        "status": "N/D",
+        "reason": "Nessuna combinazione raggiunge il target 10 rispettando qualita, unicita e limite di 7 gambe.",
+        "legs": []
+      },
+      {
+        "tier": "Aggressive",
+        "status": "N/D",
+        "reason": "Nessuna combinazione raggiunge il target 20 rispettando qualita, unicita e limite di 8 gambe.",
+        "legs": []
+      }
+    ],
+    "monza-udinese-2026-27-md-02": [
+      {
+        "tier": "Safe",
+        "logic": "Profilo safe costruito sulle quote Sisal del 2026-08-25: almeno una gamba segue il risultato principale 1-2 (2); le altre seguono i volumi centrali o i titolari proiettati senza introdurre un esito opposto.",
+        "legs": [
+          {
+            "providerSelectionId": "5278943055",
+            "overlapKey": "model-score-scenario",
+            "label": "U/O 1.5 TEAM 1 + U/O 0.5 TEAM 2 · UNDER+OVER"
+          },
+          {
+            "providerSelectionId": "5278945035",
+            "overlapKey": "model-team-goal",
+            "label": "Monza segna almeno un gol"
+          },
+          {
+            "providerSelectionId": "5278888371",
+            "overlapKey": "model-double-chance",
+            "label": "Udinese o pareggio (X2)"
+          },
+          {
+            "providerSelectionId": "5278888312",
+            "overlapKey": "model-goals",
+            "label": "Over 1,5 gol"
+          }
+        ]
+      },
+      {
+        "tier": "Balanced",
+        "status": "N/D",
+        "reason": "Nessuna combinazione raggiunge il target 10 rispettando qualita, unicita e limite di 7 gambe.",
+        "legs": []
+      },
+      {
+        "tier": "Aggressive",
+        "status": "N/D",
+        "reason": "Nessuna combinazione raggiunge il target 20 rispettando qualita, unicita e limite di 8 gambe.",
+        "legs": []
+      }
+    ],
+    "sassuolo-torino-2026-27-md-02": [
+      {
+        "tier": "Safe",
+        "logic": "Profilo safe costruito sulle quote Sisal del 2026-08-25: almeno una gamba segue il risultato principale 2-1 (1); le altre seguono i volumi centrali o i titolari proiettati senza introdurre un esito opposto.",
+        "legs": [
+          {
+            "providerSelectionId": "5278882399",
+            "overlapKey": "model-btts",
+            "label": "Entrambe le squadre segnano"
+          },
+          {
+            "providerSelectionId": "5278889258",
+            "overlapKey": "model-goals",
+            "label": "Over 1,5 gol"
+          },
+          {
+            "providerSelectionId": "5278889293",
+            "overlapKey": "model-double-chance",
+            "label": "Sassuolo o pareggio (1X)"
+          },
+          {
+            "providerSelectionId": "5278954893",
+            "overlapKey": "model-score-scenario",
+            "label": "U/O 0.5 TEAM 1 + U/O 0.5 TEAM 2 · OVER+OVER"
+          }
+        ]
+      },
+      {
+        "tier": "Balanced",
+        "status": "N/D",
+        "reason": "Nessuna combinazione raggiunge il target 10 rispettando qualita, unicita e limite di 7 gambe.",
+        "legs": []
+      },
+      {
+        "tier": "Aggressive",
+        "status": "N/D",
+        "reason": "Nessuna combinazione raggiunge il target 20 rispettando qualita, unicita e limite di 8 gambe.",
+        "legs": []
+      }
+    ],
+    "juventus-parma-2026-27-md-02": [
+      {
+        "tier": "Safe",
+        "status": "N/D",
+        "reason": "Controllo rischio: Rischio medio 45.2 oltre il limite 42. 3 dipendenze forti oltre il limite 1.",
+        "legs": []
+      },
+      {
+        "tier": "Balanced",
+        "status": "N/D",
+        "reason": "Nessuna combinazione raggiunge il target 10 rispettando qualita, unicita e limite di 7 gambe.",
+        "legs": []
+      },
+      {
+        "tier": "Aggressive",
+        "status": "N/D",
+        "reason": "Nessuna combinazione raggiunge il target 20 rispettando qualita, unicita e limite di 8 gambe.",
+        "legs": []
+      }
+    ],
+    "napoli-como-2026-27-md-02": [
+      {
+        "tier": "Safe",
+        "status": "N/D",
+        "reason": "Controllo rischio: Rischio medio 43.9 oltre il limite 42.",
+        "legs": []
+      },
+      {
+        "tier": "Balanced",
+        "status": "N/D",
+        "reason": "Nessuna combinazione raggiunge il target 10 rispettando qualita, unicita e limite di 7 gambe.",
+        "legs": []
+      },
+      {
+        "tier": "Aggressive",
+        "status": "N/D",
+        "reason": "Nessuna combinazione raggiunge il target 20 rispettando qualita, unicita e limite di 8 gambe.",
+        "legs": []
+      }
+    ],
+    "cagliari-inter-2026-27-md-02": [
+      {
+        "tier": "Safe",
+        "status": "N/D",
+        "reason": "Nessuna combinazione raggiunge il target 5 rispettando qualita, unicita e limite di 6 gambe.",
+        "legs": []
+      },
+      {
+        "tier": "Balanced",
+        "status": "N/D",
+        "reason": "Nessuna combinazione raggiunge il target 10 rispettando qualita, unicita e limite di 7 gambe.",
+        "legs": []
+      },
+      {
+        "tier": "Aggressive",
+        "status": "N/D",
+        "reason": "Nessuna combinazione raggiunge il target 20 rispettando qualita, unicita e limite di 8 gambe.",
+        "legs": []
+      }
+    ],
+    "lazio-genoa-2026-27-md-02": [
+      {
+        "tier": "Safe",
+        "status": "N/D",
+        "reason": "Nessuna combinazione raggiunge il target 5 rispettando qualita, unicita e limite di 6 gambe.",
+        "legs": []
+      },
+      {
+        "tier": "Balanced",
+        "status": "N/D",
+        "reason": "Nessuna combinazione raggiunge il target 10 rispettando qualita, unicita e limite di 7 gambe.",
+        "legs": []
+      },
+      {
+        "tier": "Aggressive",
+        "status": "N/D",
+        "reason": "Nessuna combinazione raggiunge il target 20 rispettando qualita, unicita e limite di 8 gambe.",
+        "legs": []
+      }
+    ],
+    "lecce-roma-2026-27-md-02": [
+      {
+        "tier": "Safe",
+        "status": "N/D",
+        "reason": "Nessuna combinazione raggiunge il target 5 rispettando qualita, unicita e limite di 6 gambe.",
+        "legs": []
+      },
+      {
+        "tier": "Balanced",
+        "logic": "Profilo balanced costruito sulle quote Sisal del 2026-08-25: almeno una gamba segue il risultato principale 0-1 (2); le altre seguono i volumi centrali o i titolari proiettati senza introdurre un esito opposto.",
+        "legs": [
+          {
+            "providerSelectionId": "5278892081",
+            "overlapKey": "model-btts",
+            "label": "Almeno una squadra non segna"
+          },
+          {
+            "providerSelectionId": "5278894285",
+            "overlapKey": "model-score-scenario",
+            "label": "COMBO: DOPPIA CHANCE + GOAL/NOGOAL · X2 + NOGOAL"
+          },
+          {
+            "providerSelectionId": "5278891968",
+            "overlapKey": "model-1x2",
+            "label": "Roma vincente"
+          },
+          {
+            "providerSelectionId": "5278895074",
+            "overlapKey": "model-goals",
+            "label": "Under 2,5 gol"
+          },
+          {
+            "providerSelectionId": "5278953446",
+            "overlapKey": "model-team-goal",
+            "label": "Roma segna almeno un gol"
+          }
+        ]
+      },
+      {
+        "tier": "Aggressive",
+        "status": "N/D",
+        "reason": "Nessuna combinazione raggiunge il target 20 rispettando qualita, unicita e limite di 8 gambe.",
+        "legs": []
+      }
+    ],
+    "atalanta-bologna-2026-27-md-02": [
+      {
+        "tier": "Safe",
+        "status": "N/D",
+        "reason": "Nessuna combinazione raggiunge il target 5 rispettando qualita, unicita e limite di 6 gambe.",
+        "legs": []
+      },
+      {
+        "tier": "Balanced",
+        "status": "N/D",
+        "reason": "Nessuna combinazione raggiunge il target 10 rispettando qualita, unicita e limite di 7 gambe.",
+        "legs": []
+      },
+      {
+        "tier": "Aggressive",
+        "status": "N/D",
+        "reason": "Nessuna combinazione raggiunge il target 20 rispettando qualita, unicita e limite di 8 gambe.",
+        "legs": []
+      }
+    ]
+  }
+}

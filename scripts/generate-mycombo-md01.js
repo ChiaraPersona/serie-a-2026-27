@@ -9,6 +9,9 @@ const odds = read("data/normalized/odds/sisal/serie-a.json");
 const predictionData = read("data/normalized/predictions.json");
 const matches = read("data/normalized/matches.json");
 const teams = read("data/teams/index.json").teams;
+const requestedMatchdayIndex = process.argv.indexOf("--matchday");
+const matchday = requestedMatchdayIndex >= 0 ? Number(process.argv[requestedMatchdayIndex + 1]) : 1;
+if (!Number.isInteger(matchday) || matchday < 1 || matchday > 38) throw new Error("--matchday deve essere compreso tra 1 e 38.");
 
 const targets = { Safe: 5, Balanced: 10, Aggressive: 20 };
 const tierLimits = {
@@ -75,6 +78,7 @@ function scoreMarketCandidate(market, selection, prediction, match) {
   const total = homeGoals + awayGoals;
   const outcome = homeGoals > awayGoals ? "1" : homeGoals < awayGoals ? "2" : "X";
   const compact = String(selection.name).replace(/\s+/g, "").toUpperCase();
+  if (compact.split("+").includes("12")) return null;
   let compatible = false;
   if (market.marketName === "MULTIGOAL") {
     const range = compact.match(/^(\d+)-(\d+)$/);
@@ -121,7 +125,8 @@ function candidatePool(event, prediction, match) {
   for (const market of event.markets || []) for (const selection of market.selections || []) marketIndex.set(String(selection.providerSelectionId), { market, selection });
   const candidates = [];
   for (const row of prediction.marketComparison || []) {
-    if (!row.scenarioCompatible || row.modelProbabilityPct < 45 || row.odds < 1.08 || row.odds >= 1.8) continue;
+    if (row.selection === "12") continue;
+    if (!row.scenarioCompatible || row.modelProbabilityPct < 45 || row.odds < 1.1 || row.odds >= 1.8) continue;
     if (!["1x2", "double-chance", "goals", "btts", "team-goal"].includes(row.family)) continue;
     const resolved = marketIndex.get(String(row.providerSelectionId));
     if (!resolved) continue;
@@ -145,7 +150,7 @@ function candidatePool(event, prediction, match) {
     const side = /SQUADRA 1\b/.test(market.variantName) ? "home" : /SQUADRA 2\b/.test(market.variantName) ? "away" : "match";
     const metric = market.marketName.includes("TIRI IN PORTA") ? "shots-on-target" : market.marketName.includes("TIRI TOTALI") ? "shots-total" : "corners";
     for (const selection of market.selections || []) {
-      if (selection.status !== "open" || selection.odds < 1.08 || selection.odds >= 1.8 || !["OVER", "UNDER"].includes(selection.name)) continue;
+      if (selection.status !== "open" || selection.odds < 1.1 || selection.odds >= 1.8 || !["OVER", "UNDER"].includes(selection.name)) continue;
       const coherent = selection.name === "OVER" ? projection.central >= threshold + metricMargin : projection.central <= threshold - metricMargin;
       if (!coherent) continue;
       candidates.push({
@@ -162,7 +167,7 @@ function candidatePool(event, prediction, match) {
 
   for (const market of event.markets || []) {
     for (const selection of market.selections || []) {
-      if (selection.status !== "open" || selection.odds < 1.08 || selection.odds >= 1.8) continue;
+      if (selection.status !== "open" || selection.odds < 1.1 || selection.odds >= 1.8) continue;
       const candidate = scoreMarketCandidate(market, selection, prediction, match);
       if (candidate) candidates.push({ ...candidate, modelSupported: true });
     }
@@ -175,7 +180,7 @@ function candidatePool(event, prediction, match) {
     const threshold = Number(market.variantName.match(/ALMENO\s+(\d+(?:\.\d+)?)/i)?.[1]);
     const metric = isShots ? "shotsOnTarget" : "corners";
     if (!Number.isFinite(threshold) || prediction.teamProjections.some(team => team?.[metric]?.central < threshold + 0.4)) continue;
-    const selection = (market.selections || []).find(item => item.status === "open" && item.name === "SI" && item.odds >= 1.08 && item.odds < 1.8);
+    const selection = (market.selections || []).find(item => item.status === "open" && item.name === "SI" && item.odds >= 1.1 && item.odds < 1.8);
     if (!selection) continue;
     candidates.push({
       providerSelectionId: String(selection.providerSelectionId),
@@ -196,7 +201,7 @@ function candidatePool(event, prediction, match) {
     const supported = new Set(["PRIMA A X CORNER", "1X2 CORNER", "1 TEMPO: 1X2 CORNER", "SQUADRA X ALMENO Y CORNER IN ENTRAMBI I TEMPI", "ALMENO X CORNER IN ENTRAMBI I TEMPI", "ENTRAMBE ALMENO X CORNER IN ENTRAMBI I TEMPI"]);
     if (!supported.has(market.marketName)) continue;
     for (const selection of market.selections || []) {
-      if (selection.status !== "open" || selection.odds < 1.08 || selection.odds >= 1.8) continue;
+      if (selection.status !== "open" || selection.odds < 1.1 || selection.odds >= 1.8) continue;
       let coherent = false;
       let overlapKey = clean(market.marketName);
       if (["PRIMA A X CORNER", "1X2 CORNER", "1 TEMPO: 1X2 CORNER"].includes(market.marketName)) {
@@ -226,7 +231,7 @@ function candidatePool(event, prediction, match) {
 
   for (const market of event.markets || []) {
     if (!["X o Y GOL O PALO (DUO) INC TS", "GIOCATORE SEGNA O ASSIST O CARTELLINO INC TS"].includes(market.marketName) || !selectedPlayer(market.variantName, match)) continue;
-    const selection = (market.selections || []).find(item => item.status === "open" && item.name === "SI" && item.odds >= 1.08 && item.odds < 1.8);
+    const selection = (market.selections || []).find(item => item.status === "open" && item.name === "SI" && item.odds >= 1.1 && item.odds < 1.8);
     if (!selection) continue;
     candidates.push({
       providerSelectionId: String(selection.providerSelectionId),
@@ -249,7 +254,7 @@ function candidatePool(event, prediction, match) {
     const kind = playerMarkets.get(market.marketName);
     const threshold = Number(market.threshold);
     if (!kind || threshold > kind.maximum || !selectedPlayer(market.variantName, match)) continue;
-    const selection = (market.selections || []).find(item => item.status === "open" && item.name === "OVER" && item.odds >= 1.08 && item.odds < 1.8);
+    const selection = (market.selections || []).find(item => item.status === "open" && item.name === "OVER" && item.odds >= 1.1 && item.odds < 1.8);
     if (!selection) continue;
     const player = market.variantName.split(/ U\/O /i)[0].trim();
     candidates.push({
@@ -278,7 +283,6 @@ function selectPortfolio(pool, usedIds, tier, matchId) {
     for (const state of beam) {
       for (const candidate of available) {
         if (state.keys.has(candidate.overlapKey) || state.legs.some(leg => leg.providerSelectionId === candidate.providerSelectionId)) continue;
-        if (state.anchor && candidate.anchor) continue;
         const product = state.product * candidate.odds;
         if (product > target * 1.2) continue;
         expanded.push({
@@ -311,8 +315,10 @@ function selectPortfolio(pool, usedIds, tier, matchId) {
   return eligible[0];
 }
 
-if (String(predictionData.generatedAt) !== String(odds.retrievedAt)) {
-  throw new Error("I pronostici senza MyCombo devono essere rigenerati sullo stesso snapshot Sisal prima di creare i portafogli.");
+const targetPredictions = predictionData.predictions.filter(prediction => matchById.get(prediction.matchId)?.matchday === matchday);
+if (targetPredictions.length !== 10) throw new Error(`Pronostici giornata ${matchday} incompleti: ${targetPredictions.length}/10.`);
+if (targetPredictions.some(prediction => prediction.market?.status !== "available" || String(prediction.market.retrievedAt) !== String(odds.retrievedAt))) {
+  throw new Error(`I pronostici della giornata ${matchday} devono essere rigenerati sullo stesso snapshot Sisal prima di creare i portafogli.`);
 }
 
 const output = {
@@ -320,11 +326,12 @@ const output = {
   oddsSnapshot: "data/normalized/odds/sisal/serie-a.json",
   updatedAt: String(odds.retrievedAt).slice(0, 10),
   constraints: {
+    minLegOddsInclusive: 1.1,
     maxLegOddsExclusive: 1.8,
     targets,
     tierLimits,
     targetTolerancePct: 20,
-    overlapPolicy: "Una sola gamba per overlapKey nella stessa MyCombo; vietate soglie annidate o esiti equivalenti. Ogni portafoglio contiene almeno una selezione verificata contro il risultato principale del modello."
+    overlapPolicy: "Una sola gamba per overlapKey nella stessa MyCombo; vietate soglie annidate, esiti equivalenti e selezione 12, anche dentro le combo. Ogni portafoglio contiene almeno una selezione verificata contro il risultato principale del modello."
   },
   matches: {}
 };
@@ -332,8 +339,9 @@ const output = {
 for (const event of odds.events) {
   const prediction = predictionById.get(event.canonicalMatchId);
   const match = matchById.get(event.canonicalMatchId);
-  if (!prediction || !match || match.matchday !== 1) continue;
+  if (!prediction || !match || match.matchday !== matchday) continue;
   const pool = candidatePool(event, prediction, match);
+  console.log(`${event.canonicalMatchId}: ${pool.length} candidati modellati · ${pool.filter(candidate => candidate.anchor).length} ancore · ${new Set(pool.map(candidate => candidate.overlapKey)).size} gruppi`);
   const usedIds = new Set();
   const planned = new Map(["Aggressive", "Balanced", "Safe"].map(tier => {
     const portfolio = selectPortfolio(pool, usedIds, tier, event.canonicalMatchId);
@@ -353,5 +361,6 @@ for (const event of odds.events) {
 }
 
 if (Object.keys(output.matches).length !== 10) throw new Error(`Copertura MyCombo incompleta: ${Object.keys(output.matches).length}/10`);
-fs.writeFileSync(path.join(root, "data/sources/mycombo-serie-a-2026-27-md-01.json"), `${JSON.stringify(output, null, 2)}\n`);
-console.log(`OK MyCombo giornata 1: ${Object.keys(output.matches).length} partite · 30 portafogli · snapshot ${output.updatedAt}`);
+const outputFilename = `mycombo-serie-a-2026-27-md-${String(matchday).padStart(2, "0")}.json`;
+fs.writeFileSync(path.join(root, "data/sources", outputFilename), `${JSON.stringify(output, null, 2)}\n`);
+console.log(`OK MyCombo giornata ${matchday}: ${Object.keys(output.matches).length} partite · 30 portafogli · snapshot ${output.updatedAt}`);
