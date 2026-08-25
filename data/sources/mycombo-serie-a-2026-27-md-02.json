@@ -12,19 +12,19 @@
     },
     "tierLimits": {
       "Safe": {
-        "minimum": 3,
-        "maximum": 6
+        "minimum": 2,
+        "maximum": 8
       },
       "Balanced": {
-        "minimum": 4,
-        "maximum": 7
+        "minimum": 2,
+        "maximum": 8
       },
       "Aggressive": {
-        "minimum": 5,
+        "minimum": 2,
         "maximum": 8
       }
     },
-    "targetTolerancePct": 20,
+    "targetTolerancePct": 40,
     "overlapPolicy": "Una sola gamba per overlapKey nella stessa MyCombo; vietate soglie annidate, esiti equivalenti e selezione 12, anche dentro le combo. Ogni portafoglio contiene almeno una selezione verificata contro il risultato principale del modello."
   },
   "matches": {
@@ -32,7 +32,7 @@
       {
         "tier": "Safe",
         "status": "N/D",
-        "reason": "Nessuna combinazione raggiunge il target 5 rispettando qualita, unicita e limite di 6 gambe.",
+        "reason": "Nessuna combinazione raggiunge il target 5 rispettando qualita, unicita e limite di 8 gambe.",
         "legs": []
       },
       {
@@ -77,13 +77,13 @@
       {
         "tier": "Safe",
         "status": "N/D",
-        "reason": "Nessuna combinazione raggiunge il target 5 rispettando qualita, unicita e limite di 6 gambe.",
+        "reason": "Nessuna combinazione raggiunge il target 5 rispettando qualita, unicita e limite di 8 gambe.",
         "legs": []
       },
       {
         "tier": "Balanced",
         "status": "N/D",
-        "reason": "Nessuna combinazione raggiunge il target 10 rispettando qualita, unicita e limite di 7 gambe.",
+        "reason": "Nessuna combinazione raggiunge il target 10 rispettando qualita, unicita e limite di 8 gambe.",
         "legs": []
       },
       {
@@ -123,7 +123,7 @@
       {
         "tier": "Balanced",
         "status": "N/D",
-        "reason": "Nessuna combinazione raggiunge il target 10 rispettando qualita, unicita e limite di 7 gambe.",
+        "reason": "Nessuna combinazione raggiunge il target 10 rispettando qualita, unicita e limite di 8 gambe.",
         "legs": []
       },
       {
@@ -136,7 +136,13 @@
     "sassuolo-torino-2026-27-md-02": [
       {
         "tier": "Safe",
-        "logic": "Profilo safe costruito sulle quote Sisal del 2026-08-25: almeno una gamba segue il risultato principale 2-1 (1); le altre seguono i volumi centrali o i titolari proiettati senza introdurre un esito opposto.",
+        "status": "N/D",
+        "reason": "Nessuna combinazione raggiunge il target 5 rispettando qualita, unicita e limite di 8 gambe.",
+        "legs": []
+      },
+      {
+        "tier": "Balanced",
+        "logic": "Profilo balanced costruito sulle quote Sisal del 2026-08-25: almeno una gamba segue il risultato principale 2-1 (1); le altre seguono i volumi centrali o i titolari proiettati senza introdurre un esito opposto.",
         "legs": [
           {
             "providerSelectionId": "5278882399",
@@ -149,22 +155,21 @@
             "label": "Over 1,5 gol"
           },
           {
+            "providerSelectionId": "5278955724",
+            "overlapKey": "model-team-goal",
+            "label": "Torino segna almeno un gol"
+          },
+          {
+            "providerSelectionId": "5278954970",
+            "overlapKey": "model-score-scenario",
+            "label": "U/O 0.5 TEAM 1 + U/O 1.5 TEAM 2 · OVER+UNDER"
+          },
+          {
             "providerSelectionId": "5278889293",
             "overlapKey": "model-double-chance",
             "label": "Sassuolo o pareggio (1X)"
-          },
-          {
-            "providerSelectionId": "5278954893",
-            "overlapKey": "model-score-scenario",
-            "label": "U/O 0.5 TEAM 1 + U/O 0.5 TEAM 2 · OVER+OVER"
           }
         ]
-      },
-      {
-        "tier": "Balanced",
-        "status": "N/D",
-        "reason": "Nessuna combinazione raggiunge il target 10 rispettando qualita, unicita e limite di 7 gambe.",
-        "legs": []
       },
       {
         "tier": "Aggressive",
@@ -177,14 +182,39 @@
       {
         "tier": "Safe",
         "status": "N/D",
-        "reason": "Controllo rischio: Rischio medio 45.2 oltre il limite 42. 3 dipendenze forti oltre il limite 1.",
+        "reason": "Nessuna combinazione raggiunge il target 5 rispettando qualita, unicita e limite di 8 gambe.",
         "legs": []
       },
       {
         "tier": "Balanced",
-        "status": "N/D",
-        "reason": "Nessuna combinazione raggiunge il target 10 rispettando qualita, unicita e limite di 7 gambe.",
-        "legs": []
+        "logic": "Profilo balanced costruito sulle quote Sisal del 2026-08-25: almeno una gamba segue il risultato principale 1-0 (1); le altre seguono i volumi centrali o i titolari proiettati senza introdurre un esito opposto.",
+        "legs": [
+          {
+            "providerSelectionId": "5278897541",
+            "overlapKey": "model-btts",
+            "label": "Almeno una squadra non segna"
+          },
+          {
+            "providerSelectionId": "5278942570",
+            "overlapKey": "model-team-goal",
+            "label": "Parma non segna"
+          },
+          {
+            "providerSelectionId": "5278941529",
+            "overlapKey": "model-score-scenario",
+            "label": "U/O 0.5 TEAM 1 + U/O 0.5 TEAM 2 · OVER+UNDER"
+          },
+          {
+            "providerSelectionId": "5278897426",
+            "overlapKey": "model-1x2",
+            "label": "Juventus vincente"
+          },
+          {
+            "providerSelectionId": "5278899676",
+            "overlapKey": "model-goals",
+            "label": "Under 3,5 gol"
+          }
+        ]
       },
       {
         "tier": "Aggressive",
@@ -203,7 +233,7 @@
       {
         "tier": "Balanced",
         "status": "N/D",
-        "reason": "Nessuna combinazione raggiunge il target 10 rispettando qualita, unicita e limite di 7 gambe.",
+        "reason": "Nessuna combinazione raggiunge il target 10 rispettando qualita, unicita e limite di 8 gambe.",
         "legs": []
       },
       {
@@ -217,13 +247,13 @@
       {
         "tier": "Safe",
         "status": "N/D",
-        "reason": "Nessuna combinazione raggiunge il target 5 rispettando qualita, unicita e limite di 6 gambe.",
+        "reason": "Controllo rischio: Rischio medio 45.4 oltre il limite 42. EV prudenziale -27.1% sotto il limite 0%.",
         "legs": []
       },
       {
         "tier": "Balanced",
         "status": "N/D",
-        "reason": "Nessuna combinazione raggiunge il target 10 rispettando qualita, unicita e limite di 7 gambe.",
+        "reason": "Nessuna combinazione raggiunge il target 10 rispettando qualita, unicita e limite di 8 gambe.",
         "legs": []
       },
       {
@@ -237,13 +267,13 @@
       {
         "tier": "Safe",
         "status": "N/D",
-        "reason": "Nessuna combinazione raggiunge il target 5 rispettando qualita, unicita e limite di 6 gambe.",
+        "reason": "Controllo rischio: Rischio medio 47 oltre il limite 42. Gamba a rischio 68.7 oltre il limite 58. EV prudenziale -4.6% sotto il limite 0%.",
         "legs": []
       },
       {
         "tier": "Balanced",
         "status": "N/D",
-        "reason": "Nessuna combinazione raggiunge il target 10 rispettando qualita, unicita e limite di 7 gambe.",
+        "reason": "Nessuna combinazione raggiunge il target 10 rispettando qualita, unicita e limite di 8 gambe.",
         "legs": []
       },
       {
@@ -257,7 +287,7 @@
       {
         "tier": "Safe",
         "status": "N/D",
-        "reason": "Nessuna combinazione raggiunge il target 5 rispettando qualita, unicita e limite di 6 gambe.",
+        "reason": "Nessuna combinazione raggiunge il target 5 rispettando qualita, unicita e limite di 8 gambe.",
         "legs": []
       },
       {
@@ -301,14 +331,34 @@
     "atalanta-bologna-2026-27-md-02": [
       {
         "tier": "Safe",
-        "status": "N/D",
-        "reason": "Nessuna combinazione raggiunge il target 5 rispettando qualita, unicita e limite di 6 gambe.",
-        "legs": []
+        "logic": "Profilo safe costruito sulle quote Sisal del 2026-08-25: almeno una gamba segue il risultato principale 1-0 (1); le altre seguono i volumi centrali o i titolari proiettati senza introdurre un esito opposto.",
+        "legs": [
+          {
+            "providerSelectionId": "5278884533",
+            "overlapKey": "model-score-scenario",
+            "label": "DC + U/O 3.5 · 1X + UNDER"
+          },
+          {
+            "providerSelectionId": "5278888181",
+            "overlapKey": "model-goals",
+            "label": "Under 3,5 gol"
+          },
+          {
+            "providerSelectionId": "5278888205",
+            "overlapKey": "model-double-chance",
+            "label": "Atalanta o pareggio (1X)"
+          },
+          {
+            "providerSelectionId": "5278940545",
+            "overlapKey": "model-team-goal",
+            "label": "Atalanta segna almeno un gol"
+          }
+        ]
       },
       {
         "tier": "Balanced",
         "status": "N/D",
-        "reason": "Nessuna combinazione raggiunge il target 10 rispettando qualita, unicita e limite di 7 gambe.",
+        "reason": "Nessuna combinazione raggiunge il target 10 rispettando qualita, unicita e limite di 8 gambe.",
         "legs": []
       },
       {

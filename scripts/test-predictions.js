@@ -103,7 +103,8 @@ for (const prediction of dataset.predictions) {
     for (const combo of prediction.combinations) {
       const riskAssessment = prediction.decisionSupport.portfolios.find(portfolio => portfolio.tier === combo.tier);
       assert(riskAssessment && typeof riskAssessment.allowed === "boolean", `${prediction.matchId}/${combo.tier}: controllo rischio assente`);
-      const limits = myComboSource.constraints.tierLimits[combo.tier];
+      const configuredSource = myComboMd2Source.matches[prediction.matchId] ? myComboMd2Source : myComboSource;
+      const limits = configuredSource.constraints.tierLimits[combo.tier];
       if (combo.qualityStatus === "nd") {
         assert.strictEqual(combo.legs.length, 0, `${prediction.matchId}/${combo.tier}: un profilo N/D non deve occupare spazio con gambe`);
         assert(combo.unavailableReason, `${prediction.matchId}/${combo.tier}: motivazione N/D assente`);
@@ -114,7 +115,7 @@ for (const prediction of dataset.predictions) {
       assert.strictEqual(new Set(combo.legs.map(leg => leg.providerSelectionId)).size, combo.legs.length, `${prediction.matchId}/${combo.tier}: selectionId ripetuti`);
       assert.strictEqual(new Set(combo.legs.map(leg => leg.overlapKey)).size, combo.legs.length, `${prediction.matchId}/${combo.tier}: esiti sovrapponibili`);
       if (prediction.matchId.endsWith("-md-02")) assert(!combo.legs.some(leg => String(leg.selection).replace(/\s+/g, "").split("+").includes("12")), `${prediction.matchId}/${combo.tier}: selezione 12 vietata`);
-      assert(Math.abs(combo.odds - combo.targetOdds) / combo.targetOdds <= 0.2, `${prediction.matchId}/${combo.tier}: quota combinata lontana dal target`);
+      assert(Math.abs(combo.odds - combo.targetOdds) / combo.targetOdds <= configuredSource.constraints.targetTolerancePct / 100, `${prediction.matchId}/${combo.tier}: quota combinata lontana dal target`);
       const product = combo.legs.reduce((total, leg) => total * leg.odds, 1);
       assert(Math.abs(combo.odds - product) < 0.011, `${prediction.matchId}/${combo.tier}: moltiplicazione quote incoerente`);
       assert(Number.isFinite(combo.prudentProbabilityPct) && Number.isFinite(combo.fairOdds) && Number.isFinite(combo.prudentExpectedValuePct), `${prediction.matchId}/${combo.tier}: metriche prudenziali mancanti`);

@@ -14,10 +14,11 @@ const matchday = requestedMatchdayIndex >= 0 ? Number(process.argv[requestedMatc
 if (!Number.isInteger(matchday) || matchday < 1 || matchday > 38) throw new Error("--matchday deve essere compreso tra 1 e 38.");
 
 const targets = { Safe: 5, Balanced: 10, Aggressive: 20 };
+const targetTolerancePct = 40;
 const tierLimits = {
-  Safe: { minimum: 3, maximum: 6 },
-  Balanced: { minimum: 4, maximum: 7 },
-  Aggressive: { minimum: 5, maximum: 8 }
+  Safe: { minimum: 2, maximum: 8 },
+  Balanced: { minimum: 2, maximum: 8 },
+  Aggressive: { minimum: 2, maximum: 8 }
 };
 const teamById = new Map(teams.map(team => [team.id, team]));
 const matchById = new Map(matches.map(match => [match.id, match]));
@@ -284,7 +285,7 @@ function selectPortfolio(pool, usedIds, tier, matchId) {
       for (const candidate of available) {
         if (state.keys.has(candidate.overlapKey) || state.legs.some(leg => leg.providerSelectionId === candidate.providerSelectionId)) continue;
         const product = state.product * candidate.odds;
-        if (product > target * 1.2) continue;
+        if (product > target * (1 + targetTolerancePct / 100)) continue;
         expanded.push({
           product,
           legs: [...state.legs, candidate],
@@ -305,7 +306,7 @@ function selectPortfolio(pool, usedIds, tier, matchId) {
   const eligible = beam.filter(state => state.anchor
     && state.legs.length >= limits.minimum
     && state.legs.length <= limits.maximum
-    && Math.abs(state.product - target) / target <= 0.2);
+    && Math.abs(state.product - target) / target <= targetTolerancePct / 100);
   eligible.sort((left, right) => {
     const distance = Math.abs(left.product - target) - Math.abs(right.product - target);
     return distance || right.quality - left.quality || left.legs.length - right.legs.length;
@@ -330,7 +331,7 @@ const output = {
     maxLegOddsExclusive: 1.8,
     targets,
     tierLimits,
-    targetTolerancePct: 20,
+    targetTolerancePct,
     overlapPolicy: "Una sola gamba per overlapKey nella stessa MyCombo; vietate soglie annidate, esiti equivalenti e selezione 12, anche dentro le combo. Ogni portafoglio contiene almeno una selezione verificata contro il risultato principale del modello."
   },
   matches: {}

@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "competition": "serie-a",
   "season": "2026-27",
-  "generatedAt": "2026-08-25T21:18:15.362Z",
+  "generatedAt": "2026-08-25T21:22:13.828Z",
   "engine": {
     "version": "4.11.0",
     "principle": "Un'unica matrice dei punteggi indipendente dalle quote genera 1X2, gol e mercati collegati.",
@@ -28323,7 +28323,7 @@
     },
     {
       "matchId": "atalanta-bologna-2026-27-md-02",
-      "generatedAt": "2026-08-25T21:18:15.362Z",
+      "generatedAt": "2026-08-25T21:22:13.828Z",
       "status": "preliminary",
       "engineVersion": "4.11.0",
       "probabilities": {
@@ -29436,13 +29436,87 @@
           "tier": "Safe",
           "risk": "relativo inferiore",
           "targetOdds": 5,
-          "odds": null,
-          "legs": [],
-          "selection": null,
-          "logic": null,
-          "qualityStatus": "nd",
-          "probabilityStatus": "N/D",
-          "unavailableReason": "Nessuna combinazione raggiunge il target 5 rispettando qualita, unicita e limite di 6 gambe."
+          "odds": 3.12,
+          "distancePct": 37.6,
+          "legs": [
+            {
+              "label": "DC + U/O 3.5 · 1X + UNDER",
+              "market": "COMBO: DC + U/O",
+              "variant": "DC + U/O 3.5",
+              "threshold": "3.5",
+              "selection": "1X + UNDER",
+              "providerSelectionId": "5278884533",
+              "odds": 1.65,
+              "overlapKey": "model-score-scenario",
+              "marketScope": "match",
+              "probabilityPct": 52.5,
+              "prudentProbabilityPct": 48.2,
+              "fairOdds": 2.08,
+              "expectedValuePct": -20.5,
+              "method": "matrice punteggi"
+            },
+            {
+              "label": "Under 3,5 gol",
+              "market": "UNDER/OVER",
+              "variant": "U/O 3.5",
+              "threshold": "3.5",
+              "selection": "UNDER",
+              "providerSelectionId": "5278888181",
+              "odds": 1.36,
+              "overlapKey": "model-goals",
+              "marketScope": "match",
+              "probabilityPct": 74.5,
+              "prudentProbabilityPct": 68.9,
+              "fairOdds": 1.45,
+              "expectedValuePct": -6.4,
+              "method": "matrice punteggi"
+            },
+            {
+              "label": "Atalanta o pareggio (1X)",
+              "market": "DOPPIA CHANCE",
+              "variant": "DOPPIA CHANCE MULTIESITI",
+              "threshold": null,
+              "selection": "1X",
+              "providerSelectionId": "5278888205",
+              "odds": 1.22,
+              "overlapKey": "model-double-chance",
+              "marketScope": "match",
+              "probabilityPct": 71.1,
+              "prudentProbabilityPct": 65.4,
+              "fairOdds": 1.53,
+              "expectedValuePct": -20.2,
+              "method": "matrice punteggi"
+            },
+            {
+              "label": "Atalanta segna almeno un gol",
+              "market": "CASA: SEGNA GOAL",
+              "variant": "SEGNA GOAL SQUADRA CASA",
+              "threshold": null,
+              "selection": "SI",
+              "providerSelectionId": "5278940545",
+              "odds": 1.14,
+              "overlapKey": "model-team-goal",
+              "marketScope": "match",
+              "probabilityPct": 76.5,
+              "prudentProbabilityPct": 72.9,
+              "fairOdds": 1.37,
+              "expectedValuePct": -16.9,
+              "method": "matrice punteggi"
+            }
+          ],
+          "selection": "DC + U/O 3.5 · 1X + UNDER + Under 3,5 gol + Atalanta o pareggio (1X) + Atalanta segna almeno un gol",
+          "logic": "Profilo safe costruito sulle quote Sisal del 2026-08-25: almeno una gamba segue il risultato principale 1-0 (1); le altre seguono i volumi centrali o i titolari proiettati senza introdurre un esito opposto.",
+          "probabilityPct": 44.73,
+          "prudentProbabilityPct": 37.73,
+          "fairOdds": 2.65,
+          "prudentExpectedValuePct": 17.7,
+          "qualityStatus": "qualificata",
+          "weakestLeg": {
+            "label": "DC + U/O 3.5 · 1X + UNDER",
+            "prudentProbabilityPct": 48.2
+          },
+          "probabilityMethod": "Stima prudenziale: congiunzione esatta dei mercati gol, volumi modellati e penalita per dipendenze residue.",
+          "probabilityStatus": null
         },
         {
           "tier": "Balanced",
@@ -29454,7 +29528,7 @@
           "logic": null,
           "qualityStatus": "nd",
           "probabilityStatus": "N/D",
-          "unavailableReason": "Nessuna combinazione raggiunge il target 10 rispettando qualita, unicita e limite di 7 gambe."
+          "unavailableReason": "Nessuna combinazione raggiunge il target 10 rispettando qualita, unicita e limite di 8 gambe."
         },
         {
           "tier": "Aggressive",
@@ -30742,10 +30816,62 @@
         "portfolios": [
           {
             "tier": "Safe",
-            "status": "N/D",
-            "allowed": false,
-            "reasons": [
-              "Nessuna combinazione raggiunge il target 5 rispettando qualita, unicita e limite di 6 gambe."
+            "status": "allowed",
+            "allowed": true,
+            "riskScore": 36.1,
+            "riskLevel": "basso",
+            "averageRisk": 36.1,
+            "maxEventRisk": 51.8,
+            "strongDependencies": 0,
+            "contradictions": 0,
+            "limits": {
+              "maxAverageRisk": 42,
+              "maxEventRisk": 58,
+              "maxStrongDependencies": 1,
+              "minPrudentExpectedValuePct": 0
+            },
+            "reasons": [],
+            "events": [
+              {
+                "providerSelectionId": "5278884533",
+                "label": "DC + U/O 3.5 · 1X + UNDER",
+                "riskScore": 51.8,
+                "modeled": true
+              },
+              {
+                "providerSelectionId": "5278888181",
+                "label": "Under 3,5 gol",
+                "riskScore": 31.1,
+                "modeled": true
+              },
+              {
+                "providerSelectionId": "5278888205",
+                "label": "Atalanta o pareggio (1X)",
+                "riskScore": 34.6,
+                "modeled": true
+              },
+              {
+                "providerSelectionId": "5278940545",
+                "label": "Atalanta segna almeno un gol",
+                "riskScore": 27.1,
+                "modeled": true
+              }
+            ],
+            "dependencies": [
+              {
+                "first": "5278888181",
+                "second": "5278940545",
+                "type": "negative",
+                "correlation": -0.29,
+                "intersectionProbabilityPct": 51.6
+              },
+              {
+                "first": "5278888205",
+                "second": "5278940545",
+                "type": "positive",
+                "correlation": 0.465,
+                "intersectionProbabilityPct": 63.3
+              }
             ]
           },
           {
@@ -30753,7 +30879,7 @@
             "status": "N/D",
             "allowed": false,
             "reasons": [
-              "Nessuna combinazione raggiunge il target 10 rispettando qualita, unicita e limite di 7 gambe."
+              "Nessuna combinazione raggiunge il target 10 rispettando qualita, unicita e limite di 8 gambe."
             ]
           },
           {
@@ -30769,7 +30895,7 @@
     },
     {
       "matchId": "cagliari-inter-2026-27-md-02",
-      "generatedAt": "2026-08-25T21:18:15.362Z",
+      "generatedAt": "2026-08-25T21:22:13.828Z",
       "status": "preliminary",
       "engineVersion": "4.11.0",
       "probabilities": {
@@ -31971,7 +32097,7 @@
           "logic": null,
           "qualityStatus": "nd",
           "probabilityStatus": "N/D",
-          "unavailableReason": "Nessuna combinazione raggiunge il target 5 rispettando qualita, unicita e limite di 6 gambe."
+          "unavailableReason": "Controllo rischio: Rischio medio 45.4 oltre il limite 42. EV prudenziale -27.1% sotto il limite 0%."
         },
         {
           "tier": "Balanced",
@@ -31983,7 +32109,7 @@
           "logic": null,
           "qualityStatus": "nd",
           "probabilityStatus": "N/D",
-          "unavailableReason": "Nessuna combinazione raggiunge il target 10 rispettando qualita, unicita e limite di 7 gambe."
+          "unavailableReason": "Nessuna combinazione raggiunge il target 10 rispettando qualita, unicita e limite di 8 gambe."
         },
         {
           "tier": "Aggressive",
@@ -33249,7 +33375,7 @@
             "status": "N/D",
             "allowed": false,
             "reasons": [
-              "Nessuna combinazione raggiunge il target 5 rispettando qualita, unicita e limite di 6 gambe."
+              "Controllo rischio: Rischio medio 45.4 oltre il limite 42. EV prudenziale -27.1% sotto il limite 0%."
             ]
           },
           {
@@ -33257,7 +33383,7 @@
             "status": "N/D",
             "allowed": false,
             "reasons": [
-              "Nessuna combinazione raggiunge il target 10 rispettando qualita, unicita e limite di 7 gambe."
+              "Nessuna combinazione raggiunge il target 10 rispettando qualita, unicita e limite di 8 gambe."
             ]
           },
           {
@@ -33273,7 +33399,7 @@
     },
     {
       "matchId": "fiorentina-frosinone-2026-27-md-02",
-      "generatedAt": "2026-08-25T21:18:15.362Z",
+      "generatedAt": "2026-08-25T21:22:13.828Z",
       "status": "preliminary",
       "engineVersion": "4.11.0",
       "probabilities": {
@@ -34454,7 +34580,7 @@
           "logic": null,
           "qualityStatus": "nd",
           "probabilityStatus": "N/D",
-          "unavailableReason": "Nessuna combinazione raggiunge il target 5 rispettando qualita, unicita e limite di 6 gambe."
+          "unavailableReason": "Nessuna combinazione raggiunge il target 5 rispettando qualita, unicita e limite di 8 gambe."
         },
         {
           "tier": "Balanced",
@@ -34466,7 +34592,7 @@
           "logic": null,
           "qualityStatus": "nd",
           "probabilityStatus": "N/D",
-          "unavailableReason": "Nessuna combinazione raggiunge il target 10 rispettando qualita, unicita e limite di 7 gambe."
+          "unavailableReason": "Nessuna combinazione raggiunge il target 10 rispettando qualita, unicita e limite di 8 gambe."
         },
         {
           "tier": "Aggressive",
@@ -35759,7 +35885,7 @@
             "status": "N/D",
             "allowed": false,
             "reasons": [
-              "Nessuna combinazione raggiunge il target 5 rispettando qualita, unicita e limite di 6 gambe."
+              "Nessuna combinazione raggiunge il target 5 rispettando qualita, unicita e limite di 8 gambe."
             ]
           },
           {
@@ -35767,7 +35893,7 @@
             "status": "N/D",
             "allowed": false,
             "reasons": [
-              "Nessuna combinazione raggiunge il target 10 rispettando qualita, unicita e limite di 7 gambe."
+              "Nessuna combinazione raggiunge il target 10 rispettando qualita, unicita e limite di 8 gambe."
             ]
           },
           {
@@ -35783,7 +35909,7 @@
     },
     {
       "matchId": "juventus-parma-2026-27-md-02",
-      "generatedAt": "2026-08-25T21:18:15.362Z",
+      "generatedAt": "2026-08-25T21:22:13.828Z",
       "status": "preliminary",
       "engineVersion": "4.11.0",
       "probabilities": {
@@ -36984,19 +37110,109 @@
           "logic": null,
           "qualityStatus": "nd",
           "probabilityStatus": "N/D",
-          "unavailableReason": "Controllo rischio: Rischio medio 45.2 oltre il limite 42. 3 dipendenze forti oltre il limite 1."
+          "unavailableReason": "Nessuna combinazione raggiunge il target 5 rispettando qualita, unicita e limite di 8 gambe."
         },
         {
           "tier": "Balanced",
           "risk": "medio",
           "targetOdds": 10,
-          "odds": null,
-          "legs": [],
-          "selection": null,
-          "logic": null,
-          "qualityStatus": "nd",
-          "probabilityStatus": "N/D",
-          "unavailableReason": "Nessuna combinazione raggiunge il target 10 rispettando qualita, unicita e limite di 7 gambe."
+          "odds": 6.93,
+          "distancePct": 30.7,
+          "legs": [
+            {
+              "label": "Almeno una squadra non segna",
+              "market": "GOAL/NOGOAL",
+              "variant": "GOAL/NO GOAL",
+              "threshold": null,
+              "selection": "NOGOAL",
+              "providerSelectionId": "5278897541",
+              "odds": 1.57,
+              "overlapKey": "model-btts",
+              "marketScope": "match",
+              "probabilityPct": 58.7,
+              "prudentProbabilityPct": 54.4,
+              "fairOdds": 1.84,
+              "expectedValuePct": -14.5,
+              "method": "matrice punteggi"
+            },
+            {
+              "label": "Parma non segna",
+              "market": "OSPITE: SEGNA GOAL",
+              "variant": "SEGNA GOAL SQUADRA OSPITE",
+              "threshold": null,
+              "selection": "NO",
+              "providerSelectionId": "5278942570",
+              "odds": 1.52,
+              "overlapKey": "model-team-goal",
+              "marketScope": "match",
+              "probabilityPct": 49.2,
+              "prudentProbabilityPct": 45.8,
+              "fairOdds": 2.18,
+              "expectedValuePct": -30.4,
+              "method": "matrice punteggi"
+            },
+            {
+              "label": "U/O 0.5 TEAM 1 + U/O 0.5 TEAM 2 · OVER+UNDER",
+              "market": "COMBO: U/O CASA + U/O OSPITE",
+              "variant": "U/O 0.5 TEAM 1 + U/O 0.5 TEAM 2",
+              "threshold": null,
+              "selection": "OVER+UNDER",
+              "providerSelectionId": "5278941529",
+              "odds": 1.67,
+              "overlapKey": "model-score-scenario",
+              "marketScope": "match",
+              "probabilityPct": 39.9,
+              "prudentProbabilityPct": 35.6,
+              "fairOdds": 2.81,
+              "expectedValuePct": -40.5,
+              "method": "matrice punteggi"
+            },
+            {
+              "label": "Juventus vincente",
+              "market": "1X2 ESITO FINALE",
+              "variant": "ESITO FINALE 1X2",
+              "threshold": null,
+              "selection": "1",
+              "providerSelectionId": "5278897426",
+              "odds": 1.2,
+              "overlapKey": "model-1x2",
+              "marketScope": "match",
+              "probabilityPct": 60.4,
+              "prudentProbabilityPct": 54.4,
+              "fairOdds": 1.84,
+              "expectedValuePct": -34.7,
+              "method": "matrice punteggi"
+            },
+            {
+              "label": "Under 3,5 gol",
+              "market": "UNDER/OVER",
+              "variant": "U/O 3.5",
+              "threshold": "3.5",
+              "selection": "UNDER",
+              "providerSelectionId": "5278899676",
+              "odds": 1.45,
+              "overlapKey": "model-goals",
+              "marketScope": "match",
+              "probabilityPct": 78.3,
+              "prudentProbabilityPct": 73.3,
+              "fairOdds": 1.37,
+              "expectedValuePct": 6.2,
+              "method": "matrice punteggi"
+            }
+          ],
+          "selection": "Almeno una squadra non segna + Parma non segna + U/O 0.5 TEAM 1 + U/O 0.5 TEAM 2 · OVER+UNDER + Juventus vincente + Under 3,5 gol",
+          "logic": "Profilo balanced costruito sulle quote Sisal del 2026-08-25: almeno una gamba segue il risultato principale 1-0 (1); le altre seguono i volumi centrali o i titolari proiettati senza introdurre un esito opposto.",
+          "probabilityPct": 35.56,
+          "prudentProbabilityPct": 29.79,
+          "fairOdds": 3.36,
+          "prudentExpectedValuePct": 106.5,
+          "qualityStatus": "qualificata",
+          "weakestLeg": {
+            "label": "U/O 0.5 TEAM 1 + U/O 0.5 TEAM 2 · OVER+UNDER",
+            "prudentProbabilityPct": 35.6
+          },
+          "probabilityMethod": "Stima prudenziale: congiunzione esatta dei mercati gol, volumi modellati e penalita per dipendenze residue.",
+          "probabilityStatus": null
         },
         {
           "tier": "Aggressive",
@@ -38235,15 +38451,87 @@
             "status": "N/D",
             "allowed": false,
             "reasons": [
-              "Controllo rischio: Rischio medio 45.2 oltre il limite 42. 3 dipendenze forti oltre il limite 1."
+              "Nessuna combinazione raggiunge il target 5 rispettando qualita, unicita e limite di 8 gambe."
             ]
           },
           {
             "tier": "Balanced",
-            "status": "N/D",
-            "allowed": false,
-            "reasons": [
-              "Nessuna combinazione raggiunge il target 10 rispettando qualita, unicita e limite di 7 gambe."
+            "status": "allowed",
+            "allowed": true,
+            "riskScore": 53.3,
+            "riskLevel": "medio",
+            "averageRisk": 47.3,
+            "maxEventRisk": 64.4,
+            "strongDependencies": 1,
+            "contradictions": 0,
+            "limits": {
+              "maxAverageRisk": 56,
+              "maxEventRisk": 72,
+              "maxStrongDependencies": 2,
+              "minPrudentExpectedValuePct": 0
+            },
+            "reasons": [],
+            "events": [
+              {
+                "providerSelectionId": "5278897541",
+                "label": "Almeno una squadra non segna",
+                "riskScore": 45.6,
+                "modeled": true
+              },
+              {
+                "providerSelectionId": "5278942570",
+                "label": "Parma non segna",
+                "riskScore": 54.2,
+                "modeled": true
+              },
+              {
+                "providerSelectionId": "5278941529",
+                "label": "U/O 0.5 TEAM 1 + U/O 0.5 TEAM 2 · OVER+UNDER",
+                "riskScore": 64.4,
+                "modeled": true
+              },
+              {
+                "providerSelectionId": "5278897426",
+                "label": "Juventus vincente",
+                "riskScore": 45.6,
+                "modeled": true
+              },
+              {
+                "providerSelectionId": "5278899676",
+                "label": "Under 3,5 gol",
+                "riskScore": 26.7,
+                "modeled": true
+              }
+            ],
+            "dependencies": [
+              {
+                "first": "5278897541",
+                "second": "5278942570",
+                "type": "positive",
+                "correlation": 0.824,
+                "intersectionProbabilityPct": 49.2
+              },
+              {
+                "first": "5278897541",
+                "second": "5278899676",
+                "type": "positive",
+                "correlation": 0.408,
+                "intersectionProbabilityPct": 54.3
+              },
+              {
+                "first": "5278942570",
+                "second": "5278897426",
+                "type": "positive",
+                "correlation": 0.417,
+                "intersectionProbabilityPct": 39.9
+              },
+              {
+                "first": "5278942570",
+                "second": "5278899676",
+                "type": "positive",
+                "correlation": 0.306,
+                "intersectionProbabilityPct": 44.8
+              }
             ]
           },
           {
@@ -38259,7 +38547,7 @@
     },
     {
       "matchId": "lazio-genoa-2026-27-md-02",
-      "generatedAt": "2026-08-25T21:18:15.362Z",
+      "generatedAt": "2026-08-25T21:22:13.828Z",
       "status": "preliminary",
       "engineVersion": "4.11.0",
       "probabilities": {
@@ -39440,7 +39728,7 @@
           "logic": null,
           "qualityStatus": "nd",
           "probabilityStatus": "N/D",
-          "unavailableReason": "Nessuna combinazione raggiunge il target 5 rispettando qualita, unicita e limite di 6 gambe."
+          "unavailableReason": "Controllo rischio: Rischio medio 47 oltre il limite 42. Gamba a rischio 68.7 oltre il limite 58. EV prudenziale -4.6% sotto il limite 0%."
         },
         {
           "tier": "Balanced",
@@ -39452,7 +39740,7 @@
           "logic": null,
           "qualityStatus": "nd",
           "probabilityStatus": "N/D",
-          "unavailableReason": "Nessuna combinazione raggiunge il target 10 rispettando qualita, unicita e limite di 7 gambe."
+          "unavailableReason": "Nessuna combinazione raggiunge il target 10 rispettando qualita, unicita e limite di 8 gambe."
         },
         {
           "tier": "Aggressive",
@@ -40747,7 +41035,7 @@
             "status": "N/D",
             "allowed": false,
             "reasons": [
-              "Nessuna combinazione raggiunge il target 5 rispettando qualita, unicita e limite di 6 gambe."
+              "Controllo rischio: Rischio medio 47 oltre il limite 42. Gamba a rischio 68.7 oltre il limite 58. EV prudenziale -4.6% sotto il limite 0%."
             ]
           },
           {
@@ -40755,7 +41043,7 @@
             "status": "N/D",
             "allowed": false,
             "reasons": [
-              "Nessuna combinazione raggiunge il target 10 rispettando qualita, unicita e limite di 7 gambe."
+              "Nessuna combinazione raggiunge il target 10 rispettando qualita, unicita e limite di 8 gambe."
             ]
           },
           {
@@ -40771,7 +41059,7 @@
     },
     {
       "matchId": "lecce-roma-2026-27-md-02",
-      "generatedAt": "2026-08-25T21:18:15.362Z",
+      "generatedAt": "2026-08-25T21:22:13.828Z",
       "status": "preliminary",
       "engineVersion": "4.11.0",
       "probabilities": {
@@ -41912,7 +42200,7 @@
           "logic": null,
           "qualityStatus": "nd",
           "probabilityStatus": "N/D",
-          "unavailableReason": "Nessuna combinazione raggiunge il target 5 rispettando qualita, unicita e limite di 6 gambe."
+          "unavailableReason": "Nessuna combinazione raggiunge il target 5 rispettando qualita, unicita e limite di 8 gambe."
         },
         {
           "tier": "Balanced",
@@ -43351,7 +43639,7 @@
             "status": "N/D",
             "allowed": false,
             "reasons": [
-              "Nessuna combinazione raggiunge il target 5 rispettando qualita, unicita e limite di 6 gambe."
+              "Nessuna combinazione raggiunge il target 5 rispettando qualita, unicita e limite di 8 gambe."
             ]
           },
           {
@@ -43475,7 +43763,7 @@
     },
     {
       "matchId": "milan-venezia-2026-27-md-02",
-      "generatedAt": "2026-08-25T21:18:15.362Z",
+      "generatedAt": "2026-08-25T21:22:13.828Z",
       "status": "preliminary",
       "engineVersion": "4.11.0",
       "probabilities": {
@@ -44575,7 +44863,7 @@
           "logic": null,
           "qualityStatus": "nd",
           "probabilityStatus": "N/D",
-          "unavailableReason": "Nessuna combinazione raggiunge il target 5 rispettando qualita, unicita e limite di 6 gambe."
+          "unavailableReason": "Nessuna combinazione raggiunge il target 5 rispettando qualita, unicita e limite di 8 gambe."
         },
         {
           "tier": "Balanced",
@@ -45985,7 +46273,7 @@
             "status": "N/D",
             "allowed": false,
             "reasons": [
-              "Nessuna combinazione raggiunge il target 5 rispettando qualita, unicita e limite di 6 gambe."
+              "Nessuna combinazione raggiunge il target 5 rispettando qualita, unicita e limite di 8 gambe."
             ]
           },
           {
@@ -46088,7 +46376,7 @@
     },
     {
       "matchId": "monza-udinese-2026-27-md-02",
-      "generatedAt": "2026-08-25T21:18:15.362Z",
+      "generatedAt": "2026-08-25T21:22:13.828Z",
       "status": "preliminary",
       "engineVersion": "4.11.0",
       "probabilities": {
@@ -47356,7 +47644,7 @@
           "logic": null,
           "qualityStatus": "nd",
           "probabilityStatus": "N/D",
-          "unavailableReason": "Nessuna combinazione raggiunge il target 10 rispettando qualita, unicita e limite di 7 gambe."
+          "unavailableReason": "Nessuna combinazione raggiunge il target 10 rispettando qualita, unicita e limite di 8 gambe."
         },
         {
           "tier": "Aggressive",
@@ -48713,7 +49001,7 @@
             "status": "N/D",
             "allowed": false,
             "reasons": [
-              "Nessuna combinazione raggiunge il target 10 rispettando qualita, unicita e limite di 7 gambe."
+              "Nessuna combinazione raggiunge il target 10 rispettando qualita, unicita e limite di 8 gambe."
             ]
           },
           {
@@ -48729,7 +49017,7 @@
     },
     {
       "matchId": "napoli-como-2026-27-md-02",
-      "generatedAt": "2026-08-25T21:18:15.362Z",
+      "generatedAt": "2026-08-25T21:22:13.828Z",
       "status": "preliminary",
       "engineVersion": "4.11.0",
       "probabilities": {
@@ -49859,7 +50147,7 @@
           "logic": null,
           "qualityStatus": "nd",
           "probabilityStatus": "N/D",
-          "unavailableReason": "Nessuna combinazione raggiunge il target 10 rispettando qualita, unicita e limite di 7 gambe."
+          "unavailableReason": "Nessuna combinazione raggiunge il target 10 rispettando qualita, unicita e limite di 8 gambe."
         },
         {
           "tier": "Aggressive",
@@ -51160,7 +51448,7 @@
             "status": "N/D",
             "allowed": false,
             "reasons": [
-              "Nessuna combinazione raggiunge il target 10 rispettando qualita, unicita e limite di 7 gambe."
+              "Nessuna combinazione raggiunge il target 10 rispettando qualita, unicita e limite di 8 gambe."
             ]
           },
           {
@@ -51176,7 +51464,7 @@
     },
     {
       "matchId": "sassuolo-torino-2026-27-md-02",
-      "generatedAt": "2026-08-25T21:18:15.362Z",
+      "generatedAt": "2026-08-25T21:22:13.828Z",
       "status": "preliminary",
       "engineVersion": "4.11.0",
       "probabilities": {
@@ -52310,8 +52598,20 @@
           "tier": "Safe",
           "risk": "relativo inferiore",
           "targetOdds": 5,
-          "odds": 5,
-          "distancePct": 0,
+          "odds": null,
+          "legs": [],
+          "selection": null,
+          "logic": null,
+          "qualityStatus": "nd",
+          "probabilityStatus": "N/D",
+          "unavailableReason": "Nessuna combinazione raggiunge il target 5 rispettando qualita, unicita e limite di 8 gambe."
+        },
+        {
+          "tier": "Balanced",
+          "risk": "medio",
+          "targetOdds": 10,
+          "odds": 6.87,
+          "distancePct": 31.3,
           "legs": [
             {
               "label": "Entrambe le squadre segnano",
@@ -52346,6 +52646,38 @@
               "method": "matrice punteggi"
             },
             {
+              "label": "Torino segna almeno un gol",
+              "market": "OSPITE: SEGNA GOAL",
+              "variant": "SEGNA GOAL SQUADRA OSPITE",
+              "threshold": null,
+              "selection": "SI",
+              "providerSelectionId": "5278955724",
+              "odds": 1.35,
+              "overlapKey": "model-team-goal",
+              "marketScope": "match",
+              "probabilityPct": 73.6,
+              "prudentProbabilityPct": 69.8,
+              "fairOdds": 1.43,
+              "expectedValuePct": -5.8,
+              "method": "matrice punteggi"
+            },
+            {
+              "label": "U/O 0.5 TEAM 1 + U/O 1.5 TEAM 2 · OVER+UNDER",
+              "market": "COMBO: U/O CASA + U/O OSPITE",
+              "variant": "U/O 0.5 TEAM 1 + U/O 1.5 TEAM 2",
+              "threshold": null,
+              "selection": "OVER+UNDER",
+              "providerSelectionId": "5278954970",
+              "odds": 1.75,
+              "overlapKey": "model-score-scenario",
+              "marketScope": "match",
+              "probabilityPct": 49.8,
+              "prudentProbabilityPct": 44.1,
+              "fairOdds": 2.27,
+              "expectedValuePct": -22.8,
+              "method": "matrice punteggi"
+            },
+            {
               "label": "Sassuolo o pareggio (1X)",
               "market": "DOPPIA CHANCE",
               "variant": "DOPPIA CHANCE MULTIESITI",
@@ -52360,49 +52692,21 @@
               "fairOdds": 1.59,
               "expectedValuePct": -18.4,
               "method": "matrice punteggi"
-            },
-            {
-              "label": "U/O 0.5 TEAM 1 + U/O 0.5 TEAM 2 · OVER+OVER",
-              "market": "COMBO: U/O CASA + U/O OSPITE",
-              "variant": "U/O 0.5 TEAM 1 + U/O 0.5 TEAM 2",
-              "threshold": null,
-              "selection": "OVER+OVER",
-              "providerSelectionId": "5278954893",
-              "odds": 1.72,
-              "overlapKey": "model-score-scenario",
-              "marketScope": "match",
-              "probabilityPct": 59.4,
-              "prudentProbabilityPct": 54,
-              "fairOdds": 1.85,
-              "expectedValuePct": -7.2,
-              "method": "matrice punteggi"
             }
           ],
-          "selection": "Entrambe le squadre segnano + Over 1,5 gol + Sassuolo o pareggio (1X) + U/O 0.5 TEAM 1 + U/O 0.5 TEAM 2 · OVER+OVER",
-          "logic": "Profilo safe costruito sulle quote Sisal del 2026-08-25: almeno una gamba segue il risultato principale 2-1 (1); le altre seguono i volumi centrali o i titolari proiettati senza introdurre un esito opposto.",
-          "probabilityPct": 42.6,
-          "prudentProbabilityPct": 35.86,
-          "fairOdds": 2.79,
-          "prudentExpectedValuePct": 79.3,
+          "selection": "Entrambe le squadre segnano + Over 1,5 gol + Torino segna almeno un gol + U/O 0.5 TEAM 1 + U/O 1.5 TEAM 2 · OVER+UNDER + Sassuolo o pareggio (1X)",
+          "logic": "Profilo balanced costruito sulle quote Sisal del 2026-08-25: almeno una gamba segue il risultato principale 2-1 (1); le altre seguono i volumi centrali o i titolari proiettati senza introdurre un esito opposto.",
+          "probabilityPct": 28.42,
+          "prudentProbabilityPct": 23.96,
+          "fairOdds": 4.17,
+          "prudentExpectedValuePct": 64.6,
           "qualityStatus": "qualificata",
           "weakestLeg": {
-            "label": "Entrambe le squadre segnano",
-            "prudentProbabilityPct": 54
+            "label": "U/O 0.5 TEAM 1 + U/O 1.5 TEAM 2 · OVER+UNDER",
+            "prudentProbabilityPct": 44.1
           },
           "probabilityMethod": "Stima prudenziale: congiunzione esatta dei mercati gol, volumi modellati e penalita per dipendenze residue.",
           "probabilityStatus": null
-        },
-        {
-          "tier": "Balanced",
-          "risk": "medio",
-          "targetOdds": 10,
-          "odds": null,
-          "legs": [],
-          "selection": null,
-          "logic": null,
-          "qualityStatus": "nd",
-          "probabilityStatus": "N/D",
-          "unavailableReason": "Nessuna combinazione raggiunge il target 10 rispettando qualita, unicita e limite di 7 gambe."
         },
         {
           "tier": "Aggressive",
@@ -53694,18 +53998,26 @@
         "portfolios": [
           {
             "tier": "Safe",
+            "status": "N/D",
+            "allowed": false,
+            "reasons": [
+              "Nessuna combinazione raggiunge il target 5 rispettando qualita, unicita e limite di 8 gambe."
+            ]
+          },
+          {
+            "tier": "Balanced",
             "status": "allowed",
             "allowed": true,
-            "riskScore": 44.6,
-            "riskLevel": "basso",
-            "averageRisk": 38.6,
-            "maxEventRisk": 46,
-            "strongDependencies": 1,
+            "riskScore": 50.9,
+            "riskLevel": "medio",
+            "averageRisk": 38.9,
+            "maxEventRisk": 55.9,
+            "strongDependencies": 2,
             "contradictions": 0,
             "limits": {
-              "maxAverageRisk": 42,
-              "maxEventRisk": 58,
-              "maxStrongDependencies": 1,
+              "maxAverageRisk": 56,
+              "maxEventRisk": 72,
+              "maxStrongDependencies": 2,
               "minPrudentExpectedValuePct": 0
             },
             "reasons": [],
@@ -53723,15 +54035,21 @@
                 "modeled": true
               },
               {
-                "providerSelectionId": "5278889293",
-                "label": "Sassuolo o pareggio (1X)",
-                "riskScore": 37.2,
+                "providerSelectionId": "5278955724",
+                "label": "Torino segna almeno un gol",
+                "riskScore": 30.2,
                 "modeled": true
               },
               {
-                "providerSelectionId": "5278954893",
-                "label": "U/O 0.5 TEAM 1 + U/O 0.5 TEAM 2 · OVER+OVER",
-                "riskScore": 46,
+                "providerSelectionId": "5278954970",
+                "label": "U/O 0.5 TEAM 1 + U/O 1.5 TEAM 2 · OVER+UNDER",
+                "riskScore": 55.9,
+                "modeled": true
+              },
+              {
+                "providerSelectionId": "5278889293",
+                "label": "Sassuolo o pareggio (1X)",
+                "riskScore": 37.2,
                 "modeled": true
               }
             ],
@@ -53742,15 +54060,28 @@
                 "type": "positive",
                 "correlation": 0.609,
                 "intersectionProbabilityPct": 59.4
+              },
+              {
+                "first": "5278882399",
+                "second": "5278955724",
+                "type": "positive",
+                "correlation": 0.726,
+                "intersectionProbabilityPct": 59.4
+              },
+              {
+                "first": "5278889258",
+                "second": "5278955724",
+                "type": "positive",
+                "correlation": 0.458,
+                "intersectionProbabilityPct": 66.8
+              },
+              {
+                "first": "5278955724",
+                "second": "5278889293",
+                "type": "negative",
+                "correlation": -0.401,
+                "intersectionProbabilityPct": 42.6
               }
-            ]
-          },
-          {
-            "tier": "Balanced",
-            "status": "N/D",
-            "allowed": false,
-            "reasons": [
-              "Nessuna combinazione raggiunge il target 10 rispettando qualita, unicita e limite di 7 gambe."
             ]
           },
           {
