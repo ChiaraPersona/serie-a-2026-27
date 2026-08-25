@@ -5,7 +5,7 @@ const teamNav=(teams,selected="")=>`<nav class="team-nav" aria-label="Calendari 
 const calendarDays=(league,teams)=>{
   const matchdays=Array.from({length:38},(_,i)=>{const day=i+1,matches=league.filter(m=>m.matchday===day).sort(scheduleChronology);return {day,matches,finished:matches.length===10&&matches.every(match=>match.status==="finished")}});
   const activeDay=matchdays.find(matchday=>!matchday.finished)?.day||38;
-  return matchdays.map(({day,matches,finished})=>`<details class="calendar-day" id="giornata-${day}" data-calendar-day="${day}" name="serie-a-calendar"${day===activeDay?' open':''}><summary class="calendar-day-head"><div><p class="eyebrow">Serie A 2026/27</p><h2>Giornata ${day}</h2></div><span class="calendar-day-state">${finished?"Conclusa":day===activeDay?"In evidenza":"Da disputare"}</span></summary><div class="day-matches">${matches.map(m=>`<div data-calendar-teams="${m.homeTeam} ${m.awayTeam}">${matchCard(m,teams)}</div>`).join("")}</div></details>`).join("");
+  return matchdays.map(({day,matches})=>`<details class="calendar-day" id="giornata-${day}" data-calendar-day="${day}" name="serie-a-calendar"${day===activeDay?' open':''}><summary class="calendar-day-head"><div><p class="eyebrow">Serie A 2026/27</p><h2>Giornata ${day}</h2></div></summary><div class="day-matches">${matches.map(m=>`<div data-calendar-teams="${m.homeTeam} ${m.awayTeam}">${matchCard(m,teams)}</div>`).join("")}</div></details>`).join("");
 };
 function empty(text){return `<div class="empty">${text}</div>`}
   async function render(){

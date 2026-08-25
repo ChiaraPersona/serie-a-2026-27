@@ -195,6 +195,11 @@ for (const result of matchResults.matches) {
   }
   const source = matchResults.sources.find(item => item.url === result.sourceUrl);
   if (!source) throw new Error(`Fonte risultato non dichiarata: ${result.matchId}`);
+  const mvpSource = matchResults.sources.find(item => item.url === result.mvp?.sourceUrl && item.sourceType === "official-player-of-the-match");
+  const mvpSide = result.mvp?.team === match.homeTeam ? "home" : result.mvp?.team === match.awayTeam ? "away" : null;
+  if (!mvpSource || !mvpSide || !result.playerStats?.[mvpSide]?.some(player => player.playerId === result.mvp.playerId)) {
+    throw new Error(`MVP ufficiale non riconciliato con il tabellino: ${result.matchId}`);
+  }
   Object.assign(match, {
     status: result.status,
     score: result.score,
@@ -207,6 +212,7 @@ for (const result of matchResults.matches) {
     substitutions: result.substitutions,
     teamStats: result.teamStats,
     playerStats: mergeStatmusePlayerStats(result),
+    mvp: result.mvp || null,
     resultSource: source
   });
   match.sources.push({
@@ -214,6 +220,12 @@ for (const result of matchResults.matches) {
     sourceType: source.sourceType,
     retrievedAt: source.retrievedAt,
     note: "Risultato finale, eventi e statistiche di squadra e calciatori."
+  });
+  match.sources.push({
+    sourceUrl: mvpSource.url,
+    sourceType: mvpSource.sourceType,
+    retrievedAt: mvpSource.retrievedAt,
+    note: `Panini Player of the Match ufficiale: ${result.mvp.player}.`
   });
 }
 

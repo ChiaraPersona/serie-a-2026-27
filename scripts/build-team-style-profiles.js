@@ -62,6 +62,7 @@ const profiles = source.profiles.map(profile => {
   const notes = [];
   if (profile.competition === "Serie B") notes.push("Profilo storico 2025/26 della competizione di provenienza; non confrontare direttamente i valori grezzi con la Serie A.");
   if (appearances < 20) notes.push("Campione parziale esposto da WhoScored.");
+  if (profile.characteristicsSeason && profile.characteristicsSeason !== profile.season) notes.push(`Punti di forza, debolezze e stile aggiornati dalla pagina Serie A ${profile.characteristicsSeason}; campione iniziale da interpretare con cautela.`);
   if (!coverage.characteristics) notes.push("WhoScored non espone caratteristiche, stile e formazione nella pagina disponibile.");
 
   return {

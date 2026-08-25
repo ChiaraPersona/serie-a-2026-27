@@ -16,13 +16,13 @@ const poissonQuantile = (lambda, target) => {
   return 8;
 };
 assert.strictEqual(data.slips.length, 8, "La pagina deve contenere otto schedine");
-assert.deepStrictEqual(data.slips.map(slip => slip.legs.length), [3, 3, 6, 8, 8, 10, 4, 6], "Numero selezioni dopo il filtro prudenziale inatteso");
-assert.strictEqual(new Set(data.slips[2].legs.map(leg => leg.matchId)).size, 6, "Supernova deve conservare sei partite diverse dopo il filtro");
+assert.deepStrictEqual(data.slips.map(slip => slip.legs.length), [3, 3, 5, 8, 8, 10, 4, 6], "Numero selezioni dopo il filtro prudenziale inatteso");
+assert.strictEqual(new Set(data.slips[2].legs.map(leg => leg.matchId)).size, 5, "Supernova deve conservare cinque partite diverse dopo il filtro");
 for (const slip of data.slips.slice(0, 3)) {
   assert(!slip.legs.some(leg => leg.marketFamily === "Marcatori"), `${slip.id}: le prime tre schedine non devono contenere marcatori`);
   assert(slip.legs.some(leg => leg.marketFamily === "Esito"), `${slip.id}: manca un esito coperto`);
 }
-assert.deepStrictEqual(data.slips.slice(0, 3).map(slip => slip.excludedLegsCount), [3, 3, 4], "Il filtro prudenziale non ha escluso le gambe attese");
+assert.deepStrictEqual(data.slips.slice(0, 3).map(slip => slip.excludedLegsCount), [3, 3, 5], "Il filtro prudenziale non ha escluso le gambe attese");
 assert(data.slips.slice(0, 3).every(slip => slip.legs.every(leg => leg.expectedValuePct >= -10)), "Una schedina mista contiene ancora una gamba sotto −10% EV");
 assert(data.slips.slice(0, 2).every(slip => slip.qualityStatus === "qualificata" && slip.expectedValuePct >= 0), "Scintilla e Bagliore devono superare il filtro prudenziale");
 for (const slip of data.slips) {
@@ -130,7 +130,7 @@ console.log(`Schedina valida: ${data.slips.map(slip => `${slip.name} ${slip.comb
   assert.strictEqual(status("supernova","parma-cagliari-2026-27-md-01"),"won","Due ammoniti devono rendere verde l'Under 5,5 punti cartellini");
   const settlements=data.slips.flatMap(slip=>slip.legs.map(leg=>settleLeg(leg,byId.get(leg.matchId))));
   assert.strictEqual(settlements.filter(item=>item.status==="won").length,32,"Numero esiti verdi inatteso");
-  assert.strictEqual(settlements.filter(item=>item.status==="lost").length,16,"Numero esiti rossi inatteso");
+  assert.strictEqual(settlements.filter(item=>item.status==="lost").length,15,"Numero esiti rossi inatteso");
   assert.strictEqual(settlements.filter(item=>item.status==="unavailable").length,0,"Numero esiti non verificabili inatteso");
   console.log("Liquidazione visiva Schedina valida.");
 })().catch(error=>{console.error(error);process.exitCode=1;});

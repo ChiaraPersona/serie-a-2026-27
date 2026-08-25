@@ -13,11 +13,11 @@ const fontLinks = '<link rel="preconnect" href="https://fonts.googleapis.com"><l
 const withFonts = html => html.replace("</title>", `</title>${fontLinks}`);
 const version = "20260824-central-sources-page-v1";
 const homeVersion = "20260824-home-standings-links-v1";
-const calendarVersion = "20260825-calendar-accordion-v3";
-const teamVersion = "20260825-team-player-stats-md1-v1";
+const calendarVersion = "20260825-calendar-clean-headings-v1";
+const teamVersion = "20260825-team-whoscored-traits-v1";
 const leaderboardVersion = "20260825-player-leaderboards-md1-final-v2";
-const bettingVersion = "20260824-schedina-archive-v5-card-settlement";
-const readingVersion = "20260824-readings-md2-no-odds-dropdown-v3";
+const bettingVersion = "20260825-schedina-team-card-v1";
+const readingVersion = "20260825-readings-compact-scores-mvp-v1";
 const headToHeadPath = path.join(root, "data/generated/head-to-head/first-leg-2026-27.json");
 if (fs.existsSync(headToHeadPath)) {
   const headToHead = JSON.parse(fs.readFileSync(headToHeadPath, "utf8"));

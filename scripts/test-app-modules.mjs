@@ -35,4 +35,6 @@ const bettingPage = fs.readFileSync(path.join(root, "js", "pages", "betting.js")
 assert.match(bettingPage, /<details class="betting-archive-card">/, "Schedina: card archivio cliccabile della giornata assente");
 assert.match(bettingPage, /<summary class="betting-archive-card-heading">/, "Schedina: comando di apertura della card archivio assente");
 assert.match(bettingPage, /id="betting-round-01-title">1ª giornata/, "Schedina: intestazione archivio prima giornata assente");
+const bettingCss = fs.readFileSync(path.join(root, "css", "betting.css"), "utf8");
+assert.match(bettingCss, /\.betting-archive-card\{flex:0 1 calc\(\(100% - 48px\)\/4\);height:300px/, "Schedina: la card chiusa deve avere le dimensioni delle card Statistiche squadre");
 console.log(`OK moduli applicazione: ${pageFiles.length} pagine e 4 componenti condivisi`);

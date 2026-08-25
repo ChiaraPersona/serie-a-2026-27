@@ -76,10 +76,11 @@ for (const contract of ["readingPostMatchReport", "Tabellino e statistiche", "Pa
 const postMatchSource = mainApp.slice(mainApp.indexOf("function readingPostMatchReport"), mainApp.indexOf("function readingPrototypeDetail"));
 assert.ok(!postMatchSource.includes("reading-post-match-score"), "Il tabellino non deve ripetere il riquadro con risultato e squadre");
 for (const contract of ['["Tiri totali", "shots", ""]', '["Falli commessi", "fouls", ""]', '["Falli subiti", "fouls", "", true]', 'fromOpponent?"away":"home"', 'fromOpponent?"home":"away"']) assert.ok(postMatchSource.includes(contract), `Tabella statistiche reali: contratto ${contract} assente`);
-assert.ok(mainApp.includes("Risultato principale pronosticato") && mainApp.includes("prediction?.scoreForecast?.primary?.score"), "Le Letture concluse devono conservare il risultato principale pronosticato");
+assert.ok(mainApp.includes("3 risultati esatti possibili") && mainApp.includes("prediction?.scoreForecast?.display") && mainApp.includes('index===0?"Più atteso":"Alternativa"'), "Le Letture devono mostrare tre risultati esatti con uno più atteso");
 const readingHeroSource = mainApp.slice(mainApp.indexOf("function readingPrototypeDetail"), mainApp.indexOf("function renderProbableLineups"));
 assert.ok(readingHeroSource.includes('class="reading-matchup" aria-label=') && readingHeroSource.includes("teamLogo(home,{showName:false})") && readingHeroSource.includes("teamLogo(away,{showName:false})"), "La testata della Lettura non deve ripetere i nomi delle squadre accanto al risultato");
-assert.strictEqual((readingHeroSource.match(/reading-prediction-card/g)||[]).length, 1, "Ogni Lettura deve mostrare un solo risultato principale pronosticato sotto la testata");
+assert.ok(readingHeroSource.includes("reading-exact-scores") && readingHeroSource.includes("reading-hero-surprise") && readingHeroSource.includes("prediction.confidence.value"), "Risultati esatti, sorpresa e confidenza devono stare nel primo blocco");
+for (const removed of ["Risultato principale pronosticato", "Probabilità 1X2 e gol attesi", "Pronostico preliminare, non garanzia", "La scheda include ora le probabili formazioni indicate dalla fonte editoriale"]) assert.ok(!mainApp.includes(removed), `Letture: testo o blocco rimosso ancora presente: ${removed}`);
 for (const removed of ["reading-result-card", "reading-coverage-card", "Copertura post-partita", "Risultato finale"]) assert.ok(!readingHeroSource.includes(removed), `Riepilogo Lettura: contenuto rimosso ${removed} ancora presente`);
 for (const contract of [".reading-hero-summary.reading-result-summary", ".reading-match-hero.is-finished .reading-matchup>b"]) assert.ok(styles.includes(contract), `Riepilogo Lettura conclusa: stile ${contract} assente`);
 for (const contract of [".reading-fixture-preview", ".reading-fixture-preview-text"]) assert.ok(styles.includes(contract), `Card Letture: stile ${contract} assente`);
@@ -125,6 +126,7 @@ assert.ok(teamInterface.includes('official ? "Formazione ufficiale" : "Probabile
 assert.ok(readingLineupSource.includes('officialLineups?"Formazioni ufficiali":referenceLineups?"Formazioni di riferimento":"Probabili formazioni"'), "La Lettura non distingue formazioni ufficiali, di riferimento e probabili");
 assert.ok(mainApp.includes('<details class="reading-completed-matchday">') && mainApp.includes("Tabellini della giornata ${completed[0].matchday}"), "I tabellini conclusi non usano il menu a tendina per giornata");
 assert.ok(mainApp.includes("Storico MVP 2025/26") && mainApp.includes("prediction-mvp-history"), "Lo storico MVP individuale non è esposto nelle Letture");
+assert.ok(mainApp.includes("reading-official-mvp") && mainApp.includes("Panini Player of the Match") && mainApp.includes("match.mvp"), "L'MVP ufficiale della partita conclusa non è esposto nelle Letture");
 assert.ok(mainApp.includes("Totale partita") && mainApp.includes("prediction-match-volume") && mainApp.includes("percentili p20–p80"), "I totali volume casa/trasferta non sono esposti nelle Letture");
 assert.ok(!mainApp.includes("giornata di riferimento") && !teamInterface.includes("Data da definire · riferimento"), "Le date non definite non devono mostrare una data di riferimento");
 assert.ok(teamInterface.includes("Stato degli obiettivi") && teamInterface.includes("calculateObjectiveMetrics"), "Lo stato degli obiettivi non è integrato nelle pagine squadra");
@@ -148,6 +150,7 @@ assert.ok(teamNavSource.includes('src="${esc(team.logo)}"') && !teamNavSource.in
 assert.ok(styles.includes('.team-nav-link img') && styles.includes('filter:drop-shadow('), "I loghi del selettore squadre devono avere un'ombreggiatura di contrasto");
 assert.ok(calendarDaysSource.includes('<details class="calendar-day"') && calendarDaysSource.includes('match.status==="finished"') && calendarDaysSource.includes("day===activeDay?' open':''"), "Il calendario deve chiudere le giornate concluse e aprire la prima non conclusa");
 assert.ok(styles.includes('.calendar-list{gap:14px}') && styles.includes('.calendar-list{gap:10px}') && styles.includes('.calendar-day>summary.calendar-day-head'), "Le giornate a tendina devono essere compatte e responsive");
+assert.ok(!calendarDaysSource.includes("calendar-day-state") && !styles.includes('.calendar-day>summary.calendar-day-head::after'), "Il calendario non deve mostrare stati o frecce accanto alla giornata");
 const teamMatchdayStyle = styles.slice(styles.indexOf('.team-matchday .match{'), styles.indexOf('.team-matchday .match-head{'));
 assert.ok(!teamMatchdayStyle.includes('background:') && !teamMatchdayStyle.includes('border-color:') && !teamMatchdayStyle.includes('box-shadow:'), "Le card del calendario squadra devono conservare la stessa superficie chiara delle card globali");
 assert.ok(!calendarDaysSource.includes('dateOnly(') && !calendarDaysSource.includes('matchdayDate'), "L'intestazione della giornata non deve mostrare una data; le date restano nelle card");

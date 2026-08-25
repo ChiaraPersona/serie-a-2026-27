@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "season": "2025-26",
   "targetSeason": "2026-27",
-  "retrievedAt": "2026-08-03",
+  "retrievedAt": "2026-08-25",
   "provider": {
     "name": "WhoScored",
     "baseUrl": "https://it.whoscored.com",
@@ -1343,7 +1343,35 @@
         "goals": [],
         "rating": []
       },
-      "playingStyle": [],
+      "playingStyle": [
+        {
+          "category": "Offensivo",
+          "label": "Passaggi Lunghi",
+          "id": "passaggi-lunghi"
+        },
+        {
+          "category": "Offensivo",
+          "label": "Tentano spesso il cross",
+          "id": "tentano-spesso-il-cross"
+        },
+        {
+          "category": "Offensivo",
+          "label": "Giocano in ampiezza",
+          "id": "giocano-in-ampiezza"
+        },
+        {
+          "category": "Difensivo",
+          "label": "Poco Turnover",
+          "id": "poco-turnover"
+        },
+        {
+          "category": "Difensivo",
+          "label": "Gli avversari giocano aggressivi contro di loro",
+          "id": "gli-avversari-giocano-aggressivi-contro-di-loro"
+        }
+      ],
+      "characteristicsSeason": "2026-27",
+      "characteristicsRetrievedAt": "2026-08-25",
       "retrievedAt": "2026-08-03",
       "season": "2025-26",
       "source": {
@@ -1351,7 +1379,14 @@
         "url": "https://it.whoscored.com/Teams/2732/Show/italia-frosinone",
         "statisticsUrl": "https://it.whoscored.com/Teams/2732/Statistics/italia-frosinone"
       },
-      "strengths": [],
+      "strengths": [
+        {
+          "category": "Difensivo",
+          "label": "Duelli Aerei",
+          "level": "Molto Forte",
+          "id": "duelli-aerei"
+        }
+      ],
       "summary": {
         "aerialWonPerGame": null,
         "appearances": 38,
@@ -1365,12 +1400,31 @@
       },
       "teamId": "frosinone",
       "teamName": "Frosinone",
-      "weaknesses": [],
+      "weaknesses": [
+        {
+          "category": "Offensivo",
+          "label": "Finalizzare occasioni da gol",
+          "level": "Debole",
+          "id": "finalizzare-occasioni-da-gol"
+        },
+        {
+          "category": "Offensivo",
+          "label": "Evitare il fuorigioco",
+          "level": "Debole",
+          "id": "evitare-il-fuorigioco"
+        },
+        {
+          "category": "Offensivo",
+          "label": "Mantenere il possesso della palla",
+          "level": "Debole",
+          "id": "mantenere-il-possesso-della-palla"
+        }
+      ],
       "goalTypes": [],
       "coverage": {
         "summary": true,
-        "characteristics": false,
-        "playingStyle": false,
+        "characteristics": true,
+        "playingStyle": true,
         "formation": false,
         "goalTypes": false,
         "leaders": false
@@ -1384,7 +1438,7 @@
       "dataQuality": "statistical-only",
       "notes": [
         "Profilo storico 2025/26 della competizione di provenienza; non confrontare direttamente i valori grezzi con la Serie A.",
-        "WhoScored non espone caratteristiche, stile e formazione nella pagina disponibile."
+        "Punti di forza, debolezze e stile aggiornati dalla pagina Serie A 2026-27; campione iniziale da interpretare con cautela."
       ],
       "modelInputs": {
         "numeric": {
@@ -1398,9 +1452,21 @@
         },
         "categorical": {
           "formation": null,
-          "strengths": [],
-          "weaknesses": [],
-          "playingStyle": []
+          "strengths": [
+            "duelli-aerei"
+          ],
+          "weaknesses": [
+            "finalizzare-occasioni-da-gol",
+            "evitare-il-fuorigioco",
+            "mantenere-il-possesso-della-palla"
+          ],
+          "playingStyle": [
+            "passaggi-lunghi",
+            "tentano-spesso-il-cross",
+            "giocano-in-ampiezza",
+            "poco-turnover",
+            "gli-avversari-giocano-aggressivi-contro-di-loro"
+          ]
         }
       }
     },
@@ -3081,7 +3147,25 @@
         "goals": [],
         "rating": []
       },
-      "playingStyle": [],
+      "playingStyle": [
+        {
+          "category": "Offensivo",
+          "label": "Passaggi Lunghi",
+          "id": "passaggi-lunghi"
+        },
+        {
+          "category": "Difensivo",
+          "label": "Poco Turnover",
+          "id": "poco-turnover"
+        },
+        {
+          "category": "Difensivo",
+          "label": "Giocano nella loro metà campo",
+          "id": "giocano-nella-loro-meta-campo"
+        }
+      ],
+      "characteristicsSeason": "2026-27",
+      "characteristicsRetrievedAt": "2026-08-25",
       "retrievedAt": "2026-08-03",
       "season": "2025-26",
       "source": {
@@ -3089,7 +3173,26 @@
         "url": "https://it.whoscored.com/Teams/269/Show/italia-monza",
         "statisticsUrl": "https://it.whoscored.com/Teams/269/Statistics/italia-monza"
       },
-      "strengths": [],
+      "strengths": [
+        {
+          "category": "Offensivo",
+          "label": "Attaccare sulle fasce",
+          "level": "Molto Forte",
+          "id": "attaccare-sulle-fasce"
+        },
+        {
+          "category": "Offensivo",
+          "label": "Rimontare dopo uno svantaggio",
+          "level": "Molto Forte",
+          "id": "rimontare-dopo-uno-svantaggio"
+        },
+        {
+          "category": "Difensivo",
+          "label": "Rubare la palla agli avversari",
+          "level": "Forte",
+          "id": "rubare-la-palla-agli-avversari"
+        }
+      ],
       "summary": {
         "aerialWonPerGame": null,
         "appearances": 4,
@@ -3103,12 +3206,43 @@
       },
       "teamId": "monza",
       "teamName": "Monza",
-      "weaknesses": [],
+      "weaknesses": [
+        {
+          "category": "Offensivo",
+          "label": "Mantenere il possesso della palla",
+          "level": "Debole",
+          "id": "mantenere-il-possesso-della-palla"
+        },
+        {
+          "category": "Difensivo",
+          "label": "Difendersi da attacchi sulle fasce",
+          "level": "Debole",
+          "id": "difendersi-da-attacchi-sulle-fasce"
+        },
+        {
+          "category": "Difensivo",
+          "label": "Duelli Aerei",
+          "level": "Debole",
+          "id": "duelli-aerei"
+        },
+        {
+          "category": "Offensivo",
+          "label": "Evitare il fuorigioco",
+          "level": "Molto debole",
+          "id": "evitare-il-fuorigioco"
+        },
+        {
+          "category": "Difensivo",
+          "label": "Difendere contro giocatori di qualità",
+          "level": "Molto debole",
+          "id": "difendere-contro-giocatori-di-qualita"
+        }
+      ],
       "goalTypes": [],
       "coverage": {
         "summary": true,
-        "characteristics": false,
-        "playingStyle": false,
+        "characteristics": true,
+        "playingStyle": true,
         "formation": false,
         "goalTypes": false,
         "leaders": false
@@ -3123,7 +3257,7 @@
       "notes": [
         "Profilo storico 2025/26 della competizione di provenienza; non confrontare direttamente i valori grezzi con la Serie A.",
         "Campione parziale esposto da WhoScored.",
-        "WhoScored non espone caratteristiche, stile e formazione nella pagina disponibile."
+        "Punti di forza, debolezze e stile aggiornati dalla pagina Serie A 2026-27; campione iniziale da interpretare con cautela."
       ],
       "modelInputs": {
         "numeric": {
@@ -3137,9 +3271,23 @@
         },
         "categorical": {
           "formation": null,
-          "strengths": [],
-          "weaknesses": [],
-          "playingStyle": []
+          "strengths": [
+            "attaccare-sulle-fasce",
+            "rimontare-dopo-uno-svantaggio",
+            "rubare-la-palla-agli-avversari"
+          ],
+          "weaknesses": [
+            "mantenere-il-possesso-della-palla",
+            "difendersi-da-attacchi-sulle-fasce",
+            "duelli-aerei",
+            "evitare-il-fuorigioco",
+            "difendere-contro-giocatori-di-qualita"
+          ],
+          "playingStyle": [
+            "passaggi-lunghi",
+            "poco-turnover",
+            "giocano-nella-loro-meta-campo"
+          ]
         }
       }
     },
@@ -4720,7 +4868,50 @@
         "goals": [],
         "rating": []
       },
-      "playingStyle": [],
+      "playingStyle": [
+        {
+          "category": "Offensivo",
+          "label": "Giocano in ampiezza",
+          "id": "giocano-in-ampiezza"
+        },
+        {
+          "category": "Offensivo",
+          "label": "Possesso palla",
+          "id": "possesso-palla"
+        },
+        {
+          "category": "Offensivo",
+          "label": "Tentano spesso il cross",
+          "id": "tentano-spesso-il-cross"
+        },
+        {
+          "category": "Offensivo",
+          "label": "Tentano spesso passaggi filtranti",
+          "id": "tentano-spesso-passaggi-filtranti"
+        },
+        {
+          "category": "Offensivo",
+          "label": "Controllano la partita nella metà campo avversaria",
+          "id": "controllano-la-partita-nella-meta-campo-avversaria"
+        },
+        {
+          "category": "Difensivo",
+          "label": "Poco Aggressivi",
+          "id": "poco-aggressivi"
+        },
+        {
+          "category": "Difensivo",
+          "label": "Gli avversari giocano aggressivi contro di loro",
+          "id": "gli-avversari-giocano-aggressivi-contro-di-loro"
+        },
+        {
+          "category": "Difensivo",
+          "label": "Fanno turnover",
+          "id": "fanno-turnover"
+        }
+      ],
+      "characteristicsSeason": "2026-27",
+      "characteristicsRetrievedAt": "2026-08-25",
       "retrievedAt": "2026-08-03",
       "season": "2025-26",
       "source": {
@@ -4728,7 +4919,20 @@
         "url": "https://it.whoscored.com/Teams/85/Show/italia-venezia",
         "statisticsUrl": "https://it.whoscored.com/Teams/85/Statistics/italia-venezia"
       },
-      "strengths": [],
+      "strengths": [
+        {
+          "category": "Offensivo",
+          "label": "Creare occasioni con giocate individuali",
+          "level": "Forte",
+          "id": "creare-occasioni-con-giocate-individuali"
+        },
+        {
+          "category": "Difensivo",
+          "label": "Duelli Aerei",
+          "level": "Forte",
+          "id": "duelli-aerei"
+        }
+      ],
       "summary": {
         "aerialWonPerGame": null,
         "appearances": 38,
@@ -4742,12 +4946,31 @@
       },
       "teamId": "venezia",
       "teamName": "Venezia",
-      "weaknesses": [],
+      "weaknesses": [
+        {
+          "category": "Offensivo",
+          "label": "Finalizzare occasioni da gol",
+          "level": "Molto debole",
+          "id": "finalizzare-occasioni-da-gol"
+        },
+        {
+          "category": "Difensivo",
+          "label": "Evitare errori individuali",
+          "level": "Molto debole",
+          "id": "evitare-errori-individuali"
+        },
+        {
+          "category": "Difensivo",
+          "label": "Impedire agli avversari di creare occasioni",
+          "level": "Molto debole",
+          "id": "impedire-agli-avversari-di-creare-occasioni"
+        }
+      ],
       "goalTypes": [],
       "coverage": {
         "summary": true,
-        "characteristics": false,
-        "playingStyle": false,
+        "characteristics": true,
+        "playingStyle": true,
         "formation": false,
         "goalTypes": false,
         "leaders": false
@@ -4761,7 +4984,7 @@
       "dataQuality": "statistical-only",
       "notes": [
         "Profilo storico 2025/26 della competizione di provenienza; non confrontare direttamente i valori grezzi con la Serie A.",
-        "WhoScored non espone caratteristiche, stile e formazione nella pagina disponibile."
+        "Punti di forza, debolezze e stile aggiornati dalla pagina Serie A 2026-27; campione iniziale da interpretare con cautela."
       ],
       "modelInputs": {
         "numeric": {
@@ -4775,9 +4998,25 @@
         },
         "categorical": {
           "formation": null,
-          "strengths": [],
-          "weaknesses": [],
-          "playingStyle": []
+          "strengths": [
+            "creare-occasioni-con-giocate-individuali",
+            "duelli-aerei"
+          ],
+          "weaknesses": [
+            "finalizzare-occasioni-da-gol",
+            "evitare-errori-individuali",
+            "impedire-agli-avversari-di-creare-occasioni"
+          ],
+          "playingStyle": [
+            "giocano-in-ampiezza",
+            "possesso-palla",
+            "tentano-spesso-il-cross",
+            "tentano-spesso-passaggi-filtranti",
+            "controllano-la-partita-nella-meta-campo-avversaria",
+            "poco-aggressivi",
+            "gli-avversari-giocano-aggressivi-contro-di-loro",
+            "fanno-turnover"
+          ]
         }
       }
     }
