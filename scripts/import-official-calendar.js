@@ -159,29 +159,34 @@ for (const match of matches.filter(item => item.matchday <= 5)) {
   match.sources.push({...scheduleSource,note:match.dateStatus==="provisional"?"Programmazione modificabile in funzione del calendario UEFA.":"Data e orario ufficiali."});
 }
 
-const assignmentSource = {
-  sourceUrl: refereeAssignments.source.url,
-  sourceType: refereeAssignments.source.sourceType,
-  publishedAt: refereeAssignments.publishedAt,
-  retrievedAt: refereeAssignments.retrievedAt,
-  note: "Designazione ufficiale: arbitro, assistenti, IV ufficiale, VAR e AVAR."
-};
 const matchById = new Map(matches.map(match => [match.id, match]));
-for (const assignment of refereeAssignments.assignments) {
-  const match = matchById.get(assignment.matchId);
-  if (!match) throw new Error(`Partita non riconosciuta nelle designazioni AIA: ${assignment.matchId}`);
-  if (match.matchday !== refereeAssignments.matchday) throw new Error(`Giornata incoerente nelle designazioni AIA: ${assignment.matchId}`);
-  match.refereeAssignment = {
-    referee: assignment.referee,
-    assistants: assignment.assistants,
-    fourthOfficial: assignment.fourthOfficial,
-    var: assignment.var,
-    avar: assignment.avar
-  };
-  match.sources.push(assignmentSource);
+if (!Array.isArray(refereeAssignments.matchdays) || !refereeAssignments.matchdays.length) {
+  throw new Error("Dataset designazioni AIA privo di giornate");
 }
-if (refereeAssignments.assignments.length !== 10 || matches.filter(match => match.matchday === 1 && match.refereeAssignment).length !== 10) {
-  throw new Error("Le designazioni AIA della prima giornata devono coprire tutte le 10 gare");
+for (const matchdayAssignments of refereeAssignments.matchdays) {
+  const assignmentSource = {
+    sourceUrl: matchdayAssignments.source.url,
+    sourceType: matchdayAssignments.source.sourceType,
+    publishedAt: matchdayAssignments.publishedAt,
+    retrievedAt: matchdayAssignments.retrievedAt,
+    note: "Designazione ufficiale: arbitro, assistenti, IV ufficiale, VAR e AVAR."
+  };
+  for (const assignment of matchdayAssignments.assignments) {
+    const match = matchById.get(assignment.matchId);
+    if (!match) throw new Error(`Partita non riconosciuta nelle designazioni AIA: ${assignment.matchId}`);
+    if (match.matchday !== matchdayAssignments.matchday) throw new Error(`Giornata incoerente nelle designazioni AIA: ${assignment.matchId}`);
+    match.refereeAssignment = {
+      referee: assignment.referee,
+      assistants: assignment.assistants,
+      fourthOfficial: assignment.fourthOfficial,
+      var: assignment.var,
+      avar: assignment.avar
+    };
+    match.sources.push(assignmentSource);
+  }
+  if (matchdayAssignments.assignments.length !== 10 || matches.filter(match => match.matchday === matchdayAssignments.matchday && match.refereeAssignment).length !== 10) {
+    throw new Error(`Le designazioni AIA della giornata ${matchdayAssignments.matchday} devono coprire tutte le 10 gare`);
+  }
 }
 
 if (matchResults.competition !== "serie-a" || matchResults.season !== "2026-27" || !Array.isArray(matchResults.matches)) {
@@ -231,4 +236,4 @@ for (const result of matchResults.matches) {
 
 fs.writeFileSync(path.join(output,"teams.json"),JSON.stringify(teams,null,2)+"\n");
 fs.writeFileSync(path.join(output,"matches.json"),JSON.stringify(matches,null,2)+"\n");
-console.log(`Importate ${teams.length} squadre e ${matches.length} partite; overlay C.U. 208: ${[...overlays.keys()].length} gare; designazioni AIA: ${refereeAssignments.assignments.length}; risultati: ${matchResults.matches.length}; statistiche calciatori StatMuse: ${statmusePlayerStats.matches.length} gare.`);
+console.log(`Importate ${teams.length} squadre e ${matches.length} partite; overlay C.U. 208: ${[...overlays.keys()].length} gare; designazioni AIA: ${refereeAssignments.matchdays.reduce((total, item) => total + item.assignments.length, 0)}; risultati: ${matchResults.matches.length}; statistiche calciatori StatMuse: ${statmusePlayerStats.matches.length} gare.`);

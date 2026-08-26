@@ -70,9 +70,12 @@ for (const reading of readings) {
           `IV ufficiale: ${assignment.fourthOfficial}.`,
           `VAR: ${assignment.var}; AVAR: ${assignment.avar}.`
         ],
-        sources: [{ label: "AIA-FIGC - designazioni 1Âª giornata", url: "https://www.aia-figc.it/news/serie-a-enilive-designazioni-1a-giornata-27569/" }]
+        sources: [{
+          label: `AIA-FIGC - designazioni ${match.matchday}ª giornata`,
+          url: match.sources.find(source => source.sourceType === "aia-figc-designations")?.sourceUrl
+        }]
       };
-      reading.updatedAt = [reading.updatedAt, "2026-08-19"].sort().at(-1);
+      reading.updatedAt = [reading.updatedAt, match.sources.find(source => source.sourceType === "aia-figc-designations")?.publishedAt].filter(Boolean).sort().at(-1);
     }
   }
   if (!reading.sections.market.content) {

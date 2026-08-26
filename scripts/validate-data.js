@@ -9,6 +9,7 @@ const marketValues=JSON.parse(fs.readFileSync(path.join(root,"data/sources/team-
 const cup=JSON.parse(fs.readFileSync(path.join(dir,"coppa-italia-2026-27.json"),"utf8"));
 const teamColorSource=JSON.parse(fs.readFileSync(path.join(root,"data/sources/team-pages/footylogos-club-colors.json"),"utf8"));
 const matchResultsSource=JSON.parse(fs.readFileSync(path.join(root,"data/sources/match-results-2026-27.json"),"utf8"));
+const refereeAssignmentsSource=JSON.parse(fs.readFileSync(path.join(root,"data/sources/referee-assignments-2026-27.json"),"utf8"));
 const readingRefereeProfiles=JSON.parse(fs.readFileSync(path.join(root,"data/generated/reading-referee-profiles-2025-26.json"),"utf8"));
 function assert(condition,message){if(!condition)throw new Error(message)}
 
@@ -90,12 +91,13 @@ for(const team of teams){
 const league=matches.filter(m=>m.competition==="serie-a"&&m.season==="2026-27");
 assert(league.length===380,`Partite: ${league.length}, attese 380`);
 assert(new Set(league.map(m=>m.id)).size===380,"ID partita duplicati");
-const firstMatchdayAssignments=league.filter(match=>match.matchday===1&&match.refereeAssignment);
-assert(firstMatchdayAssignments.length===10,"Designazioni arbitrali: la prima giornata deve coprire 10 gare");
-assert(firstMatchdayAssignments.every(match=>match.refereeAssignment.referee?.name&&match.refereeAssignment.referee?.slug&&match.refereeAssignment.assistants?.length===2&&match.refereeAssignment.fourthOfficial&&match.refereeAssignment.var&&match.refereeAssignment.avar),"Designazione arbitrale incompleta");
+const assignedMatchdays=refereeAssignmentsSource.matchdays.map(item=>item.matchday);
+const officialAssignments=league.filter(match=>assignedMatchdays.includes(match.matchday)&&match.refereeAssignment);
+assert(assignedMatchdays.every(matchday=>officialAssignments.filter(match=>match.matchday===matchday).length===10),"Designazioni arbitrali: ogni giornata importata deve coprire 10 gare");
+assert(officialAssignments.every(match=>match.refereeAssignment.referee?.name&&match.refereeAssignment.referee?.slug&&match.refereeAssignment.assistants?.length===2&&match.refereeAssignment.fourthOfficial&&match.refereeAssignment.var&&match.refereeAssignment.avar),"Designazione arbitrale incompleta");
 const readingRefereeBySlug=new Map(readingRefereeProfiles.profiles.map(profile=>[profile.refereeSlug,profile]));
 assert(readingRefereeProfiles.season==="2025-26"&&readingRefereeProfiles.provider==="ESPN","Metadati profili arbitrali Letture non validi");
-assert(firstMatchdayAssignments.every(match=>{const profile=readingRefereeBySlug.get(match.refereeAssignment.referee.slug);return profile&&profile.matches>=5&&Number.isFinite(profile.perMatch.yellowCards)&&Number.isFinite(profile.perMatch.fouls)&&profile.tendencies.length>=2}),"Statistiche o tendenze mancanti per un arbitro ufficiale nelle Letture");
+assert(officialAssignments.every(match=>{const profile=readingRefereeBySlug.get(match.refereeAssignment.referee.slug);return profile&&profile.matches>=5&&Number.isFinite(profile.perMatch.yellowCards)&&Number.isFinite(profile.perMatch.fouls)&&profile.tendencies.length>=2}),"Statistiche o tendenze mancanti per un arbitro ufficiale nelle Letture");
 const finishedLeagueMatches=league.filter(match=>match.status==="finished");
 assert(finishedLeagueMatches.length===matchResultsSource.matches.length,"Risultati Serie A normalizzati non sincronizzati con la fonte");
 assert(finishedLeagueMatches.every(match=>Number.isInteger(match.score?.home)&&Number.isInteger(match.score?.away)&&match.scorers?.length&&Array.isArray(match.bookings)&&Array.isArray(match.substitutions)&&match.teamStats?.home&&match.teamStats?.away&&match.playerStats?.home?.length>=11&&match.playerStats?.away?.length>=11&&match.resultSource?.url),"Risultati Serie A privi di eventi, statistiche o fonte");
