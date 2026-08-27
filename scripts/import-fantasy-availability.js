@@ -25,12 +25,35 @@ const decode = value => String(value || "")
   .trim();
 const normalize = value => decode(value).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
 const teamIdByName = new Map(teams.map(team => [normalize(team.name), team.id]));
+const rosterByTeam = new Map(teams.map(team => {
+  const file = path.join(root, "data", "teams", `${team.id}.json`);
+  const roster = fs.existsSync(file) ? read(`data/teams/${team.id}.json`).squad || [] : [];
+  return [team.id, roster];
+}));
 const quotationBySourceId = new Map(quotations.players.map(player => [String(player.sourceId), player]));
 const quotationsByTeamAndName = new Map();
 for (const player of quotations.players) {
   const key = `${player.teamId}|${normalize(player.name)}`;
   if (!quotationsByTeamAndName.has(key)) quotationsByTeamAndName.set(key, []);
   quotationsByTeamAndName.get(key).push(player);
+}
+
+function matchRosterPlayer(teamId, sourceName) {
+  const source = normalize(sourceName);
+  const tokens = source.split(" ").filter(Boolean);
+  const abbreviated = tokens.length > 1 && tokens.at(-1).length <= 2;
+  const surname = abbreviated ? tokens.slice(0, -1).join(" ") : source;
+  const initial = abbreviated ? tokens.at(-1) : null;
+  const candidates = (rosterByTeam.get(teamId) || []).filter(player => {
+    const fullName = normalize(player.name);
+    const fullTokens = fullName.split(" ").filter(Boolean);
+    const lastName = fullTokens.at(-1) || "";
+    const firstNames = fullTokens.slice(0, -1).join(" ");
+    if (fullName === source) return true;
+    if (abbreviated) return lastName === surname && firstNames.startsWith(initial);
+    return lastName === surname || fullName.endsWith(` ${surname}`);
+  });
+  return candidates.length === 1 ? candidates[0] : null;
 }
 
 async function fetchHtml(url) {
@@ -63,14 +86,17 @@ function parseProbableLineups(html, importedAt) {
     const teamId = teamIdByName.get(normalize(team)) || null;
     const players = [...parsePlayerList(chunk, "starters"), ...parsePlayerList(chunk, "reserves")].map(player => {
       const quotation = quotationBySourceId.get(String(player.sourceId));
-      const linked = quotation && quotation.teamId === teamId;
+      const linkedQuotation = quotation && quotation.teamId === teamId ? quotation : null;
+      const rosterPlayer = matchRosterPlayer(teamId, player.sourceName);
+      const playerId = linkedQuotation?.playerId || rosterPlayer?.id || null;
       return {
         ...player,
         team,
         teamId,
-        playerId: linked ? quotation.playerId || null : null,
-        currentName: linked ? quotation.currentName || null : null,
-        matchStatus: linked ? (quotation.playerId ? "linked-player" : "linked-listone") : "unmatched"
+        playerId,
+        currentName: linkedQuotation?.currentName || rosterPlayer?.name || null,
+        matchStatus: playerId ? "linked-player" : linkedQuotation ? "linked-listone" : "unmatched",
+        associationMethod: linkedQuotation?.playerId ? "fantacalcio-source-id" : rosterPlayer ? "unique-team-roster-name" : linkedQuotation ? "listone-only" : null
       };
     });
     return { team, teamId, formation: formationMatch ? decode(formationMatch[1]) : null, updatedAt: updates[Math.floor(index / 2)] || null, players };

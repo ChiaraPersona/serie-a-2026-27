@@ -13,6 +13,7 @@ const predictionById = new Map(predictions.map(item => [item.matchId, item]));
 const matchById = new Map(matches.map(item => [item.id, item]));
 const eventById = new Map(odds.events.map(item => [item.canonicalMatchId, item]));
 const used = new Set();
+const usedMatches = new Set();
 const clean = value => String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
 const round = value => Math.round(value * 10) / 10;
 
@@ -80,7 +81,11 @@ function scoreCandidates() {
           : row.selection === "2" ? `${event.away.name} vincente`
             : row.selection === "1X" ? `${event.home.name} o pareggio`
               : row.selection === "X2" ? `${event.away.name} o pareggio` : "Pareggio";
-      candidates.push({ ...sourcePick(event, resolved.market, resolved.selection, label), ev: row.expectedValuePct });
+      candidates.push({
+        ...sourcePick(event, resolved.market, resolved.selection, label),
+        ev: row.expectedValuePct,
+        probability: Number(row.modelProbabilityPct) / 100
+      });
     }
   }
   return candidates;
@@ -117,7 +122,7 @@ function volumeCandidates() {
         const measure = market.marketName.includes("CORNER") ? "corner" : market.marketName.includes("TIRI IN PORTA") ? "tiri in porta" : "tiri totali";
         const amount = selection.name === "OVER" ? Math.floor(threshold) + 1 : `meno di ${String(threshold).replace(".", ",")}`;
         const label = `${teamName} ${selection.name === "OVER" ? "almeno " : ""}${amount} ${measure}`;
-        candidates.push({ ...sourcePick(event, market, selection, label), ev: round(ev) });
+        candidates.push({ ...sourcePick(event, market, selection, label), ev: round(ev), probability });
       }
     }
   }
@@ -257,16 +262,60 @@ function exactMultiSlip() {
 }
 
 const mixedPool = [...scoreCandidates(), ...volumeCandidates()];
-const playerPool = playerCandidates();
+
+function buildAccumulator({ id, name, eyebrow, description, minOdds, maxOdds }) {
+  const candidates = mixedPool
+    .filter(item => !used.has(item.selectionId) && !usedMatches.has(item.matchId) && item.ev >= -10 && item.odds >= 1.1 && item.odds <= 3.6 && Number.isFinite(item.probability))
+    .sort((a, b) => b.probability - a.probability || b.ev - a.ev || a.odds - b.odds);
+  let best = null;
+
+  function visit(start, chosen, matchIds, families, oddsProduct, probabilityProduct) {
+    if (chosen.length >= 4 && oddsProduct >= minOdds && oddsProduct <= maxOdds && families.size >= 3 && families.has("Esito")) {
+      if (!best || probabilityProduct > best.probabilityProduct || (probabilityProduct === best.probabilityProduct && oddsProduct < best.oddsProduct)) {
+        best = { chosen: chosen.slice(), oddsProduct, probabilityProduct };
+      }
+    }
+    if (chosen.length === 6 || oddsProduct > maxOdds) return;
+    for (let index = start; index < candidates.length; index += 1) {
+      const candidate = candidates[index];
+      if (matchIds.has(candidate.matchId)) continue;
+      const nextOdds = oddsProduct * candidate.odds;
+      if (nextOdds > maxOdds) continue;
+      chosen.push(candidate);
+      matchIds.add(candidate.matchId);
+      const nextFamilies = new Set(families).add(candidate.family);
+      visit(index + 1, chosen, matchIds, nextFamilies, nextOdds, probabilityProduct * candidate.probability);
+      matchIds.delete(candidate.matchId);
+      chosen.pop();
+    }
+  }
+
+  visit(0, [], new Set(), new Set(), 1, 1);
+  if (!best) throw new Error(`${name}: impossibile costruire una schedina tra quota ${minOdds} e ${maxOdds}.`);
+  for (const candidate of best.chosen) {
+    used.add(candidate.selectionId);
+    usedMatches.add(candidate.matchId);
+  }
+  return { id, eyebrow, name, description, picks: best.chosen.map(item => item.pick) };
+}
+
 const slips = [
-  takeMixed(mixedPool, "Scintilla II", "Quota contenuta", "Selezioni prudenti tra esiti, gol e volumi, senza riempimenti forzati.", ["Esito", "Under/Over", "Tiri totali", "Corner", "Tiri in porta"]),
-  takeMixed(mixedPool, "Bagliore II", "Quota intermedia", "Una lettura bilanciata della giornata con mercati diversi e selezioni Sisal non ripetute.", ["Esito", "Under/Over", "Corner", "Tiri in porta", "Tiri totali"]),
-  takeMixed(mixedPool, "Supernova II", "Tutta la 2ª giornata", "Selezione trasversale tra risultati e volumi: ogni gamba deve restare coerente con il modello.", ["Esito", "Under/Over", "Tiri in porta", "Tiri totali", "Corner"]),
-  takePlayers(playerPool, "Prisma II", "Tiri · assist · marcatori", "Otto mercati giocatore su otto gare, limitati ai titolari proiettati con storico sufficiente.", 0),
-  takePlayers(playerPool, "Quasar II", "Mix giocatori ad alta intensità", "Secondo portafoglio giocatori senza riutilizzare selezioni già presenti in Prisma II.", 1),
-  automaticMultigoalSlip(),
-  exactSlip(),
-  exactMultiSlip()
+  buildAccumulator({
+    id: "schedina-uno-md2",
+    name: "Schedina 1 · Rotta prudente",
+    eyebrow: "Multipla completa · quota obiettivo 10–20",
+    description: "Prima schedina autonoma della seconda giornata: gare diverse, almeno tre famiglie di mercato e soltanto scelte coerenti con pronostici e volumi del modello.",
+    minOdds: 10,
+    maxOdds: 20
+  }),
+  buildAccumulator({
+    id: "schedina-due-md2",
+    name: "Schedina 2 · Rotta alternativa",
+    eyebrow: "Multipla completa · quota obiettivo 20–35",
+    description: "Seconda schedina distinta, costruita su partite e selezioni Sisal non utilizzate dalla prima e con lo stesso filtro prudenziale applicato alla prima giornata.",
+    minOdds: 20,
+    maxOdds: 35
+  })
 ];
 
 const output = {
@@ -274,8 +323,8 @@ const output = {
   competition: "serie-a",
   season: "2026-27",
   matchday: 2,
-  title: "Otto schedine, otto letture · 2ª giornata",
-  description: "Lo stesso impianto della prima giornata: tre schedine miste, due dedicate ai giocatori, una Multigol casa/ospite, una sui risultati esatti e una multiesito. Le quote restano esterne al modello e ogni selezione è verificata sullo snapshot Sisal corrente.",
+  title: "Due schedine distinte · 2ª giornata",
+  description: "Due multiple complete, non un elenco di MyCombo per partita. Ogni schedina combina gare e mercati differenti secondo le regole della prima giornata: quota singola minima 1,10, nessun esito 12, coerenza con il modello, almeno tre famiglie di mercato e nessuna selezione Sisal duplicata.",
   slips
 };
 
