@@ -986,12 +986,17 @@ function configuredComboPortfolio(oddsEvent, config, matrices, dataCompleteness,
     };
     const overlapKeys = new Set();
     const selectionIds = new Set();
+    let unavailableReason = null;
     const legs = portfolio.legs.map(leg => {
       const resolved = selectionIndex.get(String(leg.providerSelectionId));
-      if (!resolved) throw new Error(`${oddsEvent.canonicalMatchId}/${portfolio.tier}: quota Sisal mancante ${leg.providerSelectionId}`);
+      if (!resolved) {
+        unavailableReason = `Quota Sisal non più disponibile nello snapshot aggiornato (${leg.providerSelectionId}).`;
+        return null;
+      }
       const { market, selection } = resolved;
       if (selection.status !== "open" || !(selection.odds >= minimum && selection.odds < maximum)) {
-        throw new Error(`${oddsEvent.canonicalMatchId}/${portfolio.tier}: quota ${selection.odds} fuori dall'intervallo [${minimum}, ${maximum})`);
+        unavailableReason = `Quota ${selection.odds} fuori dall'intervallo prudenziale [${minimum}, ${maximum}).`;
+        return null;
       }
       if (!leg.overlapKey || overlapKeys.has(leg.overlapKey)) {
         throw new Error(`${oddsEvent.canonicalMatchId}/${portfolio.tier}: esito sovrapponibile ${leg.overlapKey || "senza chiave"}`);
@@ -1004,7 +1009,6 @@ function configuredComboPortfolio(oddsEvent, config, matrices, dataCompleteness,
       }
       overlapKeys.add(leg.overlapKey);
       selectionIds.add(String(selection.providerSelectionId));
-      portfolioSelectionIds.add(String(selection.providerSelectionId));
       return {
         label: leg.label,
         market: market.marketName,
@@ -1017,11 +1021,35 @@ function configuredComboPortfolio(oddsEvent, config, matrices, dataCompleteness,
         marketScope: market.marketScope
       };
     });
+    if (unavailableReason) return {
+      tier: portfolio.tier,
+      risk: portfolio.tier === "Safe" ? "relativo inferiore" : portfolio.tier === "Balanced" ? "medio" : "elevato",
+      targetOdds,
+      odds: null,
+      legs: [],
+      selection: null,
+      logic: null,
+      qualityStatus: "nd",
+      probabilityStatus: "N/D",
+      unavailableReason
+    };
     const odds = round(legs.reduce((product, leg) => product * leg.odds, 1), 2);
     const distancePct = round(Math.abs(odds - targetOdds) / targetOdds * 100, 1);
     if (distancePct > tolerance) {
-      throw new Error(`${oddsEvent.canonicalMatchId}/${portfolio.tier}: quota ${odds} oltre la tolleranza del ${tolerance}% dal target ${targetOdds}`);
+      return {
+        tier: portfolio.tier,
+        risk: portfolio.tier === "Safe" ? "relativo inferiore" : portfolio.tier === "Balanced" ? "medio" : "elevato",
+        targetOdds,
+        odds: null,
+        legs: [],
+        selection: null,
+        logic: null,
+        qualityStatus: "nd",
+        probabilityStatus: "N/D",
+        unavailableReason: `Quota ${odds} oltre la tolleranza del ${tolerance}% dal target ${targetOdds}.`
+      };
     }
+    legs.forEach(leg => portfolioSelectionIds.add(String(leg.providerSelectionId)));
     const assessment = assessConfiguredPortfolio(legs, matrices, dataCompleteness, projections);
     const legMetrics = new Map((assessment?.legMetrics || []).map(item => [String(item.providerSelectionId), item]));
     const enrichedLegs = legs.map(leg => ({ ...leg, ...(legMetrics.get(String(leg.providerSelectionId)) || {}) }));

@@ -3,13 +3,17 @@ const path = require("path");
 
 const root = path.resolve(__dirname, "..");
 const read = relativePath => JSON.parse(fs.readFileSync(path.join(root, relativePath), "utf8"));
-const source = read("data/sources/schedina-serie-a-2026-27-md-01.json");
+const matchdayIndex = process.argv.indexOf("--matchday");
+const matchday = matchdayIndex >= 0 ? Number(process.argv[matchdayIndex + 1]) : 1;
+if (!Number.isInteger(matchday) || matchday < 1 || matchday > 38) throw new Error("--matchday deve essere compreso tra 1 e 38.");
+const matchdayCode = String(matchday).padStart(2, "0");
+const source = read(`data/sources/schedina-serie-a-2026-27-md-${matchdayCode}.json`);
 const odds = read("data/normalized/odds/sisal/serie-a.json");
 const predictions = read("data/normalized/predictions.json");
 const matches = read("data/normalized/matches.json");
 const archivePath = path.join(root, "data/sources/schedina-archive-md1-2026-27.json");
-const md1Matches = matches.filter(match => match.competition === "serie-a" && match.season === "2026-27" && match.matchday === 1);
-if (fs.existsSync(archivePath) && md1Matches.length === 10 && md1Matches.every(match => match.status === "finished" && match.score)) {
+const roundMatches = matches.filter(match => match.competition === "serie-a" && match.season === "2026-27" && match.matchday === matchday);
+if (matchday === 1 && fs.existsSync(archivePath) && roundMatches.length === 10 && roundMatches.every(match => match.status === "finished" && match.score)) {
   const archive = JSON.parse(fs.readFileSync(archivePath, "utf8"));
   fs.writeFileSync(path.join(root, "data/normalized/schedina.json"), `${JSON.stringify(archive, null, 2)}\n`);
   console.log("Schedina MD1 congelata: giornata conclusa, nessun ricalcolo retroattivo.");
@@ -525,5 +529,6 @@ const output = {
   slips
 };
 
-fs.writeFileSync(path.join(root, "data/normalized/schedina.json"), `${JSON.stringify(output, null, 2)}\n`);
-console.log(`Schedina MD1: ${slips.length} proposte, ${slips.reduce((sum, slip) => sum + slip.legs.length, 0)} selezioni validate.`);
+const outputFilename = matchday === 1 ? "schedina.json" : `schedina-md${matchdayCode}.json`;
+fs.writeFileSync(path.join(root, "data/normalized", outputFilename), `${JSON.stringify(output, null, 2)}\n`);
+console.log(`Schedina MD${matchdayCode}: ${slips.length} proposte, ${slips.reduce((sum, slip) => sum + slip.legs.length, 0)} selezioni validate.`);

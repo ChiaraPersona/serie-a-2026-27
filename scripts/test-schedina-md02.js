@@ -1,3 +1,5 @@
+"use strict";
+
 const fs = require("fs");
 const path = require("path");
 const assert = require("assert");
@@ -5,30 +7,52 @@ const assert = require("assert");
 const root = path.resolve(__dirname, "..");
 const read = relative => JSON.parse(fs.readFileSync(path.join(root, relative), "utf8"));
 const data = read("data/normalized/schedina-md02.json");
+const odds = read("data/normalized/odds/sisal/serie-a.json");
 const predictions = read("data/normalized/predictions.json").predictions;
-const predictionById = new Map(predictions.map(prediction => [prediction.matchId, prediction]));
+const predictionById = new Map(predictions.map(item => [item.matchId, item]));
 
 assert.strictEqual(data.matchday, 2, "La pagina deve riferirsi alla seconda giornata");
-assert.strictEqual(data.slips.length, 6, "Devono essere pubblicate soltanto le sei MyCombo qualificate");
-assert.deepStrictEqual(data.coverage, {fixtures:10,profilesEvaluated:30,qualifiedProfiles:6,unavailableProfiles:24}, "Copertura MD2 inattesa");
+assert.strictEqual(data.slips.length, 8, "La seconda giornata deve usare le otto tipologie della prima");
+assert.deepStrictEqual(data.slips.map(slip => slip.legs.length), [7, 7, 7, 8, 8, 10, 4, 6], "Numero selezioni MD2 inatteso");
+assert.strictEqual(data.oddsRetrievedAt, odds.retrievedAt, "Schedine e quote devono usare lo stesso snapshot Sisal");
 
+const allLegs = data.slips.flatMap(slip => slip.legs);
+assert.strictEqual(new Set(allLegs.map(leg => String(leg.providerSelectionId))).size, allLegs.length, "Una selezione Sisal è ripetuta tra schedine");
 for (const slip of data.slips) {
-  assert.strictEqual(slip.qualityStatus, "qualificata", `${slip.id}: profilo non qualificato pubblicato`);
-  assert(slip.legs.length >= 2 && slip.legs.length <= 8, `${slip.id}: numero di gambe fuori dai soli limiti tecnici`);
-  assert(slip.expectedValuePct >= 0, `${slip.id}: EV prudenziale negativo`);
-  assert.strictEqual(slip.risk.status, "allowed", `${slip.id}: portafoglio non ammesso`);
-  assert.strictEqual(slip.risk.contradictions, 0, `${slip.id}: contiene contraddizioni`);
-  assert.strictEqual(new Set(slip.legs.map(leg => leg.providerSelectionId)).size, slip.legs.length, `${slip.id}: selezioni duplicate`);
-  assert(slip.legs.every(leg => leg.odds >= 1.10), `${slip.id}: quota gamba sotto 1,10`);
-  assert(!slip.legs.some(leg => leg.market === "DOPPIA CHANCE" && leg.selection === "12"), `${slip.id}: doppia chance 12 esclusa dalla policy`);
-
-  const prediction = predictionById.get(slip.legs[0].matchId);
-  assert(prediction, `${slip.id}: pronostico di origine assente`);
-  const tier = slip.eyebrow.split("·").at(-1).trim();
-  const combo = prediction.combinations.find(candidate => candidate.tier === tier && candidate.qualityStatus === "qualificata");
-  assert(combo, `${slip.id}: MyCombo qualificata di origine assente`);
-  assert.strictEqual(slip.combinedOdds, combo.odds, `${slip.id}: quota diversa dalla MyCombo`);
-  assert.strictEqual(slip.jointModelProbabilityPct, combo.prudentProbabilityPct, `${slip.id}: probabilità prudenziale diversa dalla MyCombo`);
+  assert(slip.combinedOdds > 1 && slip.jointModelProbabilityPct > 0 && slip.fairOdds > 1, `${slip.id}: metriche quantitative incomplete`);
+  assert(Number.isFinite(slip.expectedValuePct), `${slip.id}: EV mancante`);
+  assert(["qualificata", "editoriale", "laboratorio"].includes(slip.qualityStatus), `${slip.id}: qualità non dichiarata`);
+  assert(slip.weakestLeg?.label && Number.isFinite(slip.weakestLeg.expectedValuePct), `${slip.id}: gamba fragile non identificata`);
+  for (const leg of slip.legs) {
+    assert.strictEqual(leg.coherent, true, `${slip.id}/${leg.matchId}: selezione incoerente`);
+    assert(leg.odds >= 1.10, `${slip.id}/${leg.matchId}: quota sotto 1,10`);
+    assert.notStrictEqual(leg.selection, "12", `${slip.id}/${leg.matchId}: selezione 12 vietata`);
+    assert(predictionById.has(leg.matchId), `${slip.id}/${leg.matchId}: pronostico assente`);
+  }
 }
 
-console.log("Schedina MD2: 6 MyCombo qualificate, gambe flessibili e 24 profili N/D verificati.");
+for (const slip of data.slips.slice(0, 3)) {
+  assert.strictEqual(slip.type, "mixed-markets", `${slip.id}: deve essere una schedina mista`);
+  assert(slip.marketFamilies.length >= 3, `${slip.id}: varietà mercati insufficiente`);
+  assert(slip.legs.every(leg => leg.expectedValuePct >= -10), `${slip.id}: gamba sotto il filtro prudenziale`);
+  assert(slip.marketFamilies.includes("Esito"), `${slip.id}: manca un esito coperto`);
+}
+
+for (const slip of data.slips.slice(3, 5)) {
+  assert.strictEqual(slip.type, "player-only", `${slip.id}: tipo giocatore errato`);
+  assert.strictEqual(slip.legs.length, 8, `${slip.id}: servono otto selezioni`);
+  assert.strictEqual(new Set(slip.legs.map(leg => leg.matchId)).size, 8, `${slip.id}: le selezioni devono appartenere a otto gare diverse`);
+  assert(slip.legs.every(leg => leg.marketScope === "player" && leg.player), `${slip.id}: mercato non riferito a un giocatore`);
+  for (const family of ["Assist giocatore", "Gol o assist giocatore", "Marcatori"]) assert(slip.marketFamilies.includes(family), `${slip.id}: manca ${family}`);
+}
+
+const multigoal = data.slips.find(slip => slip.type === "single-market-full-round");
+assert(multigoal && multigoal.legs.length === 10 && new Set(multigoal.legs.map(leg => leg.matchId)).size === 10, "Costellazione II deve coprire tutte le partite");
+assert(multigoal.legs.every(leg => leg.market === "MULTIGOAL CASA + MULTIGOAL OSPITE" && leg.modelProbabilityPct >= 55), "Policy Multigol prudenziale non rispettata");
+
+const exact = data.slips.find(slip => slip.type === "exact-score");
+assert(exact && exact.legs.length === 4 && exact.legs.every(leg => leg.selection === leg.predictedScore), "Quadrante II non coincide con gli scenari centrali");
+const multi = data.slips.find(slip => slip.type === "exact-score-multi");
+assert(multi && multi.legs.length === 6 && multi.legs.every(leg => leg.selection.split("/").map(item => item.trim()).includes(leg.predictedScore)), "Ventaglio II non include sempre lo scenario centrale");
+
+console.log(`Schedina MD2 valida: 8 proposte, ${allLegs.length} selezioni uniche, snapshot ${data.oddsRetrievedAt}.`);
