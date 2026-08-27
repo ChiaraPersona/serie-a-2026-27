@@ -13,7 +13,6 @@ const predictionById = new Map(predictions.map(item => [item.matchId, item]));
 const matchById = new Map(matches.map(item => [item.id, item]));
 const eventById = new Map(odds.events.map(item => [item.canonicalMatchId, item]));
 const used = new Set();
-const usedMatches = new Set();
 const clean = value => String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
 const round = value => Math.round(value * 10) / 10;
 
@@ -129,21 +128,41 @@ function volumeCandidates() {
   return candidates;
 }
 
-function takeMixed(pool, name, eyebrow, description, preferredFamilies) {
-  const chosen = [], matchIds = new Set();
-  const available = () => pool.filter(item => !used.has(item.selectionId) && !matchIds.has(item.matchId));
-  for (const family of preferredFamilies) {
-    const candidate = available().filter(item => item.family === family).sort((a, b) => b.ev - a.ev || a.odds - b.odds)[0];
-    if (!candidate) continue;
-    chosen.push(candidate); used.add(candidate.selectionId); matchIds.add(candidate.matchId);
+function takeMixed(pool, name, eyebrow, description, targetLegs, minFamilies, minOdds, maxOdds) {
+  const grouped = new Map();
+  for (const item of pool.filter(candidate => !used.has(candidate.selectionId) && candidate.ev >= -10 && Number.isFinite(candidate.probability))) {
+    const key = `${item.matchId}|${item.family}`;
+    if (!grouped.has(key)) grouped.set(key, []);
+    grouped.get(key).push(item);
   }
-  while (chosen.length < 7) {
-    const candidate = available().sort((a, b) => b.ev - a.ev || a.odds - b.odds)[0];
-    if (!candidate) break;
-    chosen.push(candidate); used.add(candidate.selectionId); matchIds.add(candidate.matchId);
+  const candidates = [...grouped.values()]
+    .flatMap(items => items.sort((a, b) => b.probability - a.probability || b.ev - a.ev || a.odds - b.odds).slice(0, 2))
+    .sort((a, b) => b.probability - a.probability || b.ev - a.ev || a.odds - b.odds);
+  let best = null;
+
+  function visit(start, chosen, matchIds, families, oddsProduct, probabilityProduct) {
+    if (chosen.length === targetLegs) {
+      if (oddsProduct < minOdds || oddsProduct > maxOdds || families.size < minFamilies || !families.has("Esito")) return;
+      if (!best || probabilityProduct > best.probability || (probabilityProduct === best.probability && oddsProduct < best.odds)) {
+        best = { chosen: chosen.slice(), probability: probabilityProduct, odds: oddsProduct };
+      }
+      return;
+    }
+    for (let index = start; index < candidates.length; index += 1) {
+      const candidate = candidates[index];
+      if (matchIds.has(candidate.matchId) || oddsProduct * candidate.odds > maxOdds) continue;
+      chosen.push(candidate);
+      matchIds.add(candidate.matchId);
+      visit(index + 1, chosen, matchIds, new Set(families).add(candidate.family), oddsProduct * candidate.odds, probabilityProduct * candidate.probability);
+      matchIds.delete(candidate.matchId);
+      chosen.pop();
+    }
   }
-  if (chosen.length < 5 || new Set(chosen.map(item => item.family)).size < 3) throw new Error(`${name}: candidati misti insufficienti.`);
-  return { id: clean(name).replace(/ /g, "-"), eyebrow, name, description, picks: chosen.map(item => item.pick) };
+
+  visit(0, [], new Set(), new Set(), 1, 1);
+  if (!best) throw new Error(`${name}: nessuna combinazione rispetta ${targetLegs} gambe, ${minFamilies} famiglie e quota ${minOdds}–${maxOdds}.`);
+  for (const candidate of best.chosen) used.add(candidate.selectionId);
+  return { id: clean(name).replace(/ /g, "-"), eyebrow, name, description, picks: best.chosen.map(item => item.pick) };
 }
 
 function projectedPlayer(variantName, match) {
@@ -262,60 +281,16 @@ function exactMultiSlip() {
 }
 
 const mixedPool = [...scoreCandidates(), ...volumeCandidates()];
-
-function buildAccumulator({ id, name, eyebrow, description, minOdds, maxOdds }) {
-  const candidates = mixedPool
-    .filter(item => !used.has(item.selectionId) && !usedMatches.has(item.matchId) && item.ev >= -10 && item.odds >= 1.1 && item.odds <= 3.6 && Number.isFinite(item.probability))
-    .sort((a, b) => b.probability - a.probability || b.ev - a.ev || a.odds - b.odds);
-  let best = null;
-
-  function visit(start, chosen, matchIds, families, oddsProduct, probabilityProduct) {
-    if (chosen.length >= 4 && oddsProduct >= minOdds && oddsProduct <= maxOdds && families.size >= 3 && families.has("Esito")) {
-      if (!best || probabilityProduct > best.probabilityProduct || (probabilityProduct === best.probabilityProduct && oddsProduct < best.oddsProduct)) {
-        best = { chosen: chosen.slice(), oddsProduct, probabilityProduct };
-      }
-    }
-    if (chosen.length === 6 || oddsProduct > maxOdds) return;
-    for (let index = start; index < candidates.length; index += 1) {
-      const candidate = candidates[index];
-      if (matchIds.has(candidate.matchId)) continue;
-      const nextOdds = oddsProduct * candidate.odds;
-      if (nextOdds > maxOdds) continue;
-      chosen.push(candidate);
-      matchIds.add(candidate.matchId);
-      const nextFamilies = new Set(families).add(candidate.family);
-      visit(index + 1, chosen, matchIds, nextFamilies, nextOdds, probabilityProduct * candidate.probability);
-      matchIds.delete(candidate.matchId);
-      chosen.pop();
-    }
-  }
-
-  visit(0, [], new Set(), new Set(), 1, 1);
-  if (!best) throw new Error(`${name}: impossibile costruire una schedina tra quota ${minOdds} e ${maxOdds}.`);
-  for (const candidate of best.chosen) {
-    used.add(candidate.selectionId);
-    usedMatches.add(candidate.matchId);
-  }
-  return { id, eyebrow, name, description, picks: best.chosen.map(item => item.pick) };
-}
-
+const playerPool = playerCandidates();
 const slips = [
-  buildAccumulator({
-    id: "schedina-uno-md2",
-    name: "Schedina 1 · Rotta prudente",
-    eyebrow: "Multipla completa · quota obiettivo 10–20",
-    description: "Prima schedina autonoma della seconda giornata: gare diverse, almeno tre famiglie di mercato e soltanto scelte coerenti con pronostici e volumi del modello.",
-    minOdds: 10,
-    maxOdds: 20
-  }),
-  buildAccumulator({
-    id: "schedina-due-md2",
-    name: "Schedina 2 · Rotta alternativa",
-    eyebrow: "Multipla completa · quota obiettivo 20–35",
-    description: "Seconda schedina distinta, costruita su partite e selezioni Sisal non utilizzate dalla prima e con lo stesso filtro prudenziale applicato alla prima giornata.",
-    minOdds: 20,
-    maxOdds: 35
-  })
+  takeMixed(mixedPool, "Scintilla II", "Quota contenuta", "Tre selezioni prudenti, tre famiglie di mercato e quota complessiva nella fascia della Scintilla della prima giornata.", 3, 3, 4, 6),
+  takeMixed(mixedPool, "Bagliore II", "Quota intermedia", "Tre mercati differenti, nessuna selezione Sisal ripetuta e una fascia quota coerente con Bagliore della prima giornata.", 3, 3, 6, 10),
+  takeMixed(mixedPool, "Supernova II", "Tutta la 2ª giornata", "Cinque gare e cinque famiglie di mercato, senza aggiunte forzate e con la fascia di rischio della Supernova della prima giornata.", 5, 5, 5, 10),
+  takePlayers(playerPool, "Prisma II", "Marcatori · tiri · tiri in porta", "Otto mercati giocatore su otto gare, limitati ai titolari proiettati con storico sufficiente.", 0),
+  takePlayers(playerPool, "Quasar II", "Mix ad alta intensità", "Secondo portafoglio di otto mercati giocatore senza riutilizzare selezioni già presenti in Prisma II.", 1),
+  automaticMultigoalSlip(),
+  exactSlip(),
+  exactMultiSlip()
 ];
 
 const output = {
@@ -323,8 +298,8 @@ const output = {
   competition: "serie-a",
   season: "2026-27",
   matchday: 2,
-  title: "Due schedine distinte · 2ª giornata",
-  description: "Due multiple complete, non un elenco di MyCombo per partita. Ogni schedina combina gare e mercati differenti secondo le regole della prima giornata: quota singola minima 1,10, nessun esito 12, coerenza con il modello, almeno tre famiglie di mercato e nessuna selezione Sisal duplicata.",
+  title: "Otto schedine, otto letture · 2ª giornata",
+  description: "La stessa scomposizione della prima giornata: tre schedine miste, due dedicate ai giocatori, una Multigol casa/ospite sull'intero turno, una sui risultati esatti e una multiesito. Non è un elenco di MyCombo per partita: ogni blocco è una schedina autonoma. Quote esterne al modello, quota minima 1,10, nessun esito 12 e nessuna selezione Sisal duplicata.",
   slips
 };
 
