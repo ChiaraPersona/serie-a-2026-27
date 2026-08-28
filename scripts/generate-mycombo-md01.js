@@ -78,7 +78,6 @@ function scoreMarketCandidate(market, selection, prediction, match) {
   const total = homeGoals + awayGoals;
   const outcome = homeGoals > awayGoals ? "1" : homeGoals < awayGoals ? "2" : "X";
   const compact = String(selection.name).replace(/\s+/g, "").toUpperCase();
-  if (compact.split("+").includes("12")) return null;
   let compatible = false;
   if (market.marketName === "MULTIGOAL") {
     const range = compact.match(/^(\d+)-(\d+)$/);
@@ -125,8 +124,7 @@ function candidatePool(event, prediction, match) {
   for (const market of event.markets || []) for (const selection of market.selections || []) marketIndex.set(String(selection.providerSelectionId), { market, selection });
   const candidates = [];
   for (const row of prediction.marketComparison || []) {
-    if (row.selection === "12") continue;
-    if (!row.scenarioCompatible || row.modelProbabilityPct < 45 || row.odds < 1.1 || row.odds >= 1.8) continue;
+    if (!row.scenarioCompatible || row.modelProbabilityPct < 45) continue;
     if (!["1x2", "double-chance", "goals", "btts", "team-goal"].includes(row.family)) continue;
     const resolved = marketIndex.get(String(row.providerSelectionId));
     if (!resolved) continue;
@@ -150,7 +148,7 @@ function candidatePool(event, prediction, match) {
     const side = /SQUADRA 1\b/.test(market.variantName) ? "home" : /SQUADRA 2\b/.test(market.variantName) ? "away" : "match";
     const metric = market.marketName.includes("TIRI IN PORTA") ? "shots-on-target" : market.marketName.includes("TIRI TOTALI") ? "shots-total" : "corners";
     for (const selection of market.selections || []) {
-      if (selection.status !== "open" || selection.odds < 1.1 || selection.odds >= 1.8 || !["OVER", "UNDER"].includes(selection.name)) continue;
+      if (selection.status !== "open" || !["OVER", "UNDER"].includes(selection.name)) continue;
       const coherent = selection.name === "OVER" ? projection.central >= threshold + metricMargin : projection.central <= threshold - metricMargin;
       if (!coherent) continue;
       candidates.push({
@@ -167,7 +165,7 @@ function candidatePool(event, prediction, match) {
 
   for (const market of event.markets || []) {
     for (const selection of market.selections || []) {
-      if (selection.status !== "open" || selection.odds < 1.1 || selection.odds >= 1.8) continue;
+      if (selection.status !== "open") continue;
       const candidate = scoreMarketCandidate(market, selection, prediction, match);
       if (candidate) candidates.push({ ...candidate, modelSupported: true });
     }
@@ -180,7 +178,7 @@ function candidatePool(event, prediction, match) {
     const threshold = Number(market.variantName.match(/ALMENO\s+(\d+(?:\.\d+)?)/i)?.[1]);
     const metric = isShots ? "shotsOnTarget" : "corners";
     if (!Number.isFinite(threshold) || prediction.teamProjections.some(team => team?.[metric]?.central < threshold + 0.4)) continue;
-    const selection = (market.selections || []).find(item => item.status === "open" && item.name === "SI" && item.odds >= 1.1 && item.odds < 1.8);
+    const selection = (market.selections || []).find(item => item.status === "open" && item.name === "SI");
     if (!selection) continue;
     candidates.push({
       providerSelectionId: String(selection.providerSelectionId),
@@ -201,7 +199,7 @@ function candidatePool(event, prediction, match) {
     const supported = new Set(["PRIMA A X CORNER", "1X2 CORNER", "1 TEMPO: 1X2 CORNER", "SQUADRA X ALMENO Y CORNER IN ENTRAMBI I TEMPI", "ALMENO X CORNER IN ENTRAMBI I TEMPI", "ENTRAMBE ALMENO X CORNER IN ENTRAMBI I TEMPI"]);
     if (!supported.has(market.marketName)) continue;
     for (const selection of market.selections || []) {
-      if (selection.status !== "open" || selection.odds < 1.1 || selection.odds >= 1.8) continue;
+      if (selection.status !== "open") continue;
       let coherent = false;
       let overlapKey = clean(market.marketName);
       if (["PRIMA A X CORNER", "1X2 CORNER", "1 TEMPO: 1X2 CORNER"].includes(market.marketName)) {
@@ -231,7 +229,7 @@ function candidatePool(event, prediction, match) {
 
   for (const market of event.markets || []) {
     if (!["X o Y GOL O PALO (DUO) INC TS", "GIOCATORE SEGNA O ASSIST O CARTELLINO INC TS"].includes(market.marketName) || !selectedPlayer(market.variantName, match)) continue;
-    const selection = (market.selections || []).find(item => item.status === "open" && item.name === "SI" && item.odds >= 1.1 && item.odds < 1.8);
+    const selection = (market.selections || []).find(item => item.status === "open" && item.name === "SI");
     if (!selection) continue;
     candidates.push({
       providerSelectionId: String(selection.providerSelectionId),
@@ -254,7 +252,7 @@ function candidatePool(event, prediction, match) {
     const kind = playerMarkets.get(market.marketName);
     const threshold = Number(market.threshold);
     if (!kind || threshold > kind.maximum || !selectedPlayer(market.variantName, match)) continue;
-    const selection = (market.selections || []).find(item => item.status === "open" && item.name === "OVER" && item.odds >= 1.1 && item.odds < 1.8);
+    const selection = (market.selections || []).find(item => item.status === "open" && item.name === "OVER");
     if (!selection) continue;
     const player = market.variantName.split(/ U\/O /i)[0].trim();
     candidates.push({
@@ -268,52 +266,46 @@ function candidatePool(event, prediction, match) {
   }
 
   return [...new Map(candidates.map(candidate => [candidate.providerSelectionId, candidate])).values()]
-    .filter(candidate => candidate.modelSupported && candidate.quality >= 105)
     .sort((left, right) => right.quality - left.quality || right.odds - left.odds);
 }
 
-function selectPortfolio(pool, usedIds, tier, matchId) {
+function selectPortfolio(pool, tier) {
   const reference = referenceOdds[tier];
   const limits = tierLimits[tier];
-  const tierRank = { Safe: 0, Balanced: 1, Aggressive: 2 };
-  const available = pool.filter(candidate => !usedIds.has(candidate.providerSelectionId) && tierRank[tier] >= tierRank[candidate.minimumTier || "Safe"]).slice(0, 120);
-  let beam = [{ product: 1, legs: [], keys: new Set(), anchor: false, quality: 0 }];
+  const available = pool.slice(0, 120);
+  let beam = [{ product: 1, legs: [], quality: 0 }];
   for (let depth = 0; depth < limits.maximum; depth += 1) {
     const expanded = [...beam];
     for (const state of beam) {
       for (const candidate of available) {
-        if (state.keys.has(candidate.overlapKey) || state.legs.some(leg => leg.providerSelectionId === candidate.providerSelectionId)) continue;
+        if (state.legs.some(leg => leg.providerSelectionId === candidate.providerSelectionId)) continue;
         const product = state.product * candidate.odds;
         expanded.push({
           product,
           legs: [...state.legs, candidate],
-          keys: new Set([...state.keys, candidate.overlapKey]),
-          anchor: state.anchor || candidate.anchor,
           quality: state.quality + candidate.quality
         });
       }
     }
     const buckets = new Map();
     for (const state of expanded) {
-      const key = `${state.legs.length}:${Math.round(Math.log(state.product) * 35)}:${state.anchor ? 1 : 0}`;
+      const key = `${state.legs.length}:${Math.round(Math.log(state.product) * 60)}`;
       const legDistance = Math.abs(state.legs.length - limits.preferred);
       const referenceDistance = Math.abs(Math.log(state.product / reference));
-      const score = legDistance * 1000 + referenceDistance * 5 - state.quality / Math.max(1, state.legs.length);
+      const score = referenceDistance * 1000 + legDistance * 10 - state.quality / Math.max(1, state.legs.length) / 100;
       if (!buckets.has(key) || score < buckets.get(key).score) buckets.set(key, { state, score });
     }
     beam = [...buckets.values()].sort((a, b) => a.score - b.score).slice(0, 500).map(item => item.state);
   }
-  const eligible = beam.filter(state => state.anchor
-    && state.legs.length >= limits.minimum
+  const eligible = beam.filter(state => state.legs.length >= limits.minimum
     && state.legs.length <= limits.maximum);
   eligible.sort((left, right) => {
+    const referenceDistance = Math.abs(Math.log(left.product / reference)) - Math.abs(Math.log(right.product / reference));
     const legDistance = Math.abs(left.legs.length - limits.preferred) - Math.abs(right.legs.length - limits.preferred);
     const quality = right.quality / right.legs.length - left.quality / left.legs.length;
-    const referenceDistance = Math.abs(Math.log(left.product / reference)) - Math.abs(Math.log(right.product / reference));
-    return legDistance || quality || referenceDistance || left.legs.length - right.legs.length;
+    return referenceDistance || legDistance || quality || left.legs.length - right.legs.length;
   });
   if (!eligible[0]) return null;
-  eligible[0].legs.forEach(leg => usedIds.add(leg.providerSelectionId));
   return eligible[0];
 }
 
@@ -328,12 +320,10 @@ const output = {
   oddsSnapshot: "data/normalized/odds/sisal/serie-a.json",
   updatedAt: String(odds.retrievedAt).slice(0, 10),
   constraints: {
-    minLegOddsInclusive: 1.1,
-    maxLegOddsExclusive: 1.8,
     referenceOdds,
     quotaPolicy: "orientativa",
     tierLimits,
-    overlapPolicy: "Una sola gamba per overlapKey nella stessa MyCombo; vietate soglie annidate, esiti equivalenti e selezione 12, anche dentro le combo. Ogni portafoglio contiene almeno una selezione verificata contro il risultato principale del modello."
+    eligibilityPolicy: "solo-intervalli-gambe"
   },
   matches: {}
 };
@@ -344,18 +334,17 @@ for (const event of odds.events) {
   if (!prediction || !match || match.matchday !== matchday) continue;
   const pool = candidatePool(event, prediction, match);
   console.log(`${event.canonicalMatchId}: ${pool.length} candidati modellati · ${pool.filter(candidate => candidate.anchor).length} ancore · ${new Set(pool.map(candidate => candidate.overlapKey)).size} gruppi`);
-  const usedIds = new Set();
   const planned = new Map(["Aggressive", "Balanced", "Safe"].map(tier => {
-    const portfolio = selectPortfolio(pool, usedIds, tier, event.canonicalMatchId);
+    const portfolio = selectPortfolio(pool, tier);
     if (!portfolio) return [tier, {
       tier,
       status: "N/D",
-      reason: `Candidati insufficienti per il profilo ${tier}: servono almeno ${tierLimits[tier].minimum} gambe uniche e modellate, senza sovrapposizioni.`,
+      reason: `Candidati insufficienti per il profilo ${tier}: servono almeno ${tierLimits[tier].minimum} selezioni disponibili.`,
       legs: []
     }];
     return [tier, {
       tier,
-      logic: `Profilo ${tier.toLowerCase()} costruito sulle quote Sisal del ${output.updatedAt}: almeno una gamba segue il risultato principale ${prediction.scoreForecast.primary.score} (${prediction.verdict.outcome}); le altre seguono i volumi centrali o i titolari proiettati senza introdurre un esito opposto.`,
+      logic: `Profilo ${tier.toLowerCase()} costruito sulle quote Sisal del ${output.updatedAt}: quota ${referenceOdds[tier]} usata come riferimento orientativo; l'unico vincolo rigido è l'intervallo di ${tierLimits[tier].minimum}-${tierLimits[tier].maximum} gambe.`,
       legs: portfolio.legs.map(({ providerSelectionId, overlapKey, label }) => ({ providerSelectionId, overlapKey, label }))
     }];
 }));

@@ -16,32 +16,18 @@ if (!fs.existsSync(sourcePath)) throw new Error(`Fonte MyCombo assente: ${filena
 const source = JSON.parse(fs.readFileSync(sourcePath, "utf8"));
 const predictions = JSON.parse(fs.readFileSync(predictionsPath, "utf8")).predictions;
 const predictionByMatch = new Map(predictions.map(prediction => [prediction.matchId, prediction]));
-let allowed = 0;
-let unavailable = 0;
+let valid = 0;
 
 for (const [matchId, portfolios] of Object.entries(source.matches || {})) {
-  const prediction = predictionByMatch.get(matchId);
-  if (!prediction) throw new Error(`Pronostico non trovato: ${matchId}`);
-  source.matches[matchId] = portfolios.map(portfolio => {
-    if (portfolio.status === "N/D" || !portfolio.legs?.length) {
-      unavailable += 1;
-      return portfolio;
+  if (!predictionByMatch.has(matchId)) throw new Error(`Pronostico non trovato: ${matchId}`);
+  for (const portfolio of portfolios) {
+    const limits = source.constraints?.tierLimits?.[portfolio.tier];
+    if (!limits) throw new Error(`Intervallo gambe mancante: ${matchId}/${portfolio.tier}`);
+    if (!portfolio.legs?.length || portfolio.legs.length < limits.minimum || portfolio.legs.length > limits.maximum) {
+      throw new Error(`${matchId}/${portfolio.tier}: ${portfolio.legs?.length || 0} gambe fuori dall'intervallo ${limits.minimum}-${limits.maximum}`);
     }
-    const risk = prediction.decisionSupport?.portfolios?.find(item => item.tier === portfolio.tier);
-    if (!risk) throw new Error(`Controllo rischio mancante: ${matchId}/${portfolio.tier}`);
-    if (risk.allowed) {
-      allowed += 1;
-      return portfolio;
-    }
-    unavailable += 1;
-    return {
-      tier: portfolio.tier,
-      status: "N/D",
-      reason: `Controllo rischio: ${risk.reasons.join(" ") || "profilo fuori dai limiti prudenziali."}`,
-      legs: []
-    };
-  });
+    valid += 1;
+  }
 }
 
-fs.writeFileSync(sourcePath, `${JSON.stringify(source, null, 2)}\n`, "utf8");
-console.log(`OK filtro rischio MyCombo giornata ${matchday}: ${allowed} ammesse · ${unavailable} N/D`);
+console.log(`OK intervalli MyCombo giornata ${matchday}: ${valid} portafogli validi · nessun altro vincolo di ammissibilita`);

@@ -3,8 +3,6 @@
   "oddsSnapshot": "data/normalized/odds/sisal/serie-a.json",
   "updatedAt": "2026-08-28",
   "constraints": {
-    "minLegOddsInclusive": 1.1,
-    "maxLegOddsExclusive": 1.8,
     "referenceOdds": {
       "Safe": 5,
       "Balanced": 10,
@@ -28,90 +26,334 @@
         "preferred": 5
       }
     },
-    "overlapPolicy": "Una sola gamba per overlapKey nella stessa MyCombo; vietate soglie annidate, esiti equivalenti e selezione 12, anche dentro le combo. Ogni portafoglio contiene almeno una selezione verificata contro il risultato principale del modello."
+    "eligibilityPolicy": "solo-intervalli-gambe"
   },
   "matches": {
     "milan-venezia-2026-27-md-02": [
       {
         "tier": "Safe",
-        "status": "N/D",
-        "reason": "Controllo rischio: Controllo rischio: EV prudenziale -38.4% sotto il limite 0%.",
-        "legs": []
+        "logic": "Profilo safe costruito sulle quote Sisal del 2026-08-28: quota 5 usata come riferimento orientativo; l'unico vincolo rigido è l'intervallo di 3-6 gambe.",
+        "legs": [
+          {
+            "providerSelectionId": "5278857053",
+            "overlapKey": "model-btts",
+            "label": "Almeno una squadra non segna"
+          },
+          {
+            "providerSelectionId": "5278946075",
+            "overlapKey": "model-score-scenario",
+            "label": "U/O 0.5 TEAM 1 + U/O 2.5 TEAM 2 · OVER+UNDER"
+          },
+          {
+            "providerSelectionId": "5278946210",
+            "overlapKey": "model-score-scenario",
+            "label": "U/O 1.5 TEAM 1 + U/O 3.5 TEAM 2 · UNDER+UNDER"
+          }
+        ]
       },
       {
         "tier": "Balanced",
-        "status": "N/D",
-        "reason": "Controllo rischio: Controllo rischio: EV prudenziale -44.2% sotto il limite 0%.",
-        "legs": []
+        "logic": "Profilo balanced costruito sulle quote Sisal del 2026-08-28: quota 10 usata come riferimento orientativo; l'unico vincolo rigido è l'intervallo di 4-7 gambe.",
+        "legs": [
+          {
+            "providerSelectionId": "5278943436",
+            "overlapKey": "model-score-scenario",
+            "label": "U/O 1.5 TEAM 1 + U/O 1.5 TEAM 2 · UNDER+UNDER"
+          },
+          {
+            "providerSelectionId": "5283451628",
+            "overlapKey": "away-shots-total",
+            "label": "Venezia almeno 6 tiri totali"
+          },
+          {
+            "providerSelectionId": "5278945222",
+            "overlapKey": "model-score-scenario",
+            "label": "U/O 2.5 TEAM 1 + U/O 3.5 TEAM 2 · UNDER+UNDER"
+          },
+          {
+            "providerSelectionId": "5278945056",
+            "overlapKey": "model-team-goal",
+            "label": "Venezia non segna"
+          }
+        ]
       },
       {
         "tier": "Aggressive",
-        "status": "N/D",
-        "reason": "Controllo rischio: Quota 1.05 fuori dall'intervallo prudenziale [1.1, 1.8).",
-        "legs": []
+        "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-08-28: quota 20 usata come riferimento orientativo; l'unico vincolo rigido è l'intervallo di 5-8 gambe.",
+        "legs": [
+          {
+            "providerSelectionId": "5278945056",
+            "overlapKey": "model-team-goal",
+            "label": "Venezia non segna"
+          },
+          {
+            "providerSelectionId": "5278857053",
+            "overlapKey": "model-btts",
+            "label": "Almeno una squadra non segna"
+          },
+          {
+            "providerSelectionId": "5278945222",
+            "overlapKey": "model-score-scenario",
+            "label": "U/O 2.5 TEAM 1 + U/O 3.5 TEAM 2 · UNDER+UNDER"
+          },
+          {
+            "providerSelectionId": "5278860738",
+            "overlapKey": "model-double-chance",
+            "label": "Nessun pareggio (12)"
+          },
+          {
+            "providerSelectionId": "5278858286",
+            "overlapKey": "match-shots-total",
+            "label": "Partita almeno 20 tiri totali"
+          },
+          {
+            "providerSelectionId": "5278864379",
+            "overlapKey": "model-score-scenario",
+            "label": "U/O 1.5 Venezia · UNDER"
+          },
+          {
+            "providerSelectionId": "5278864695",
+            "overlapKey": "model-score-scenario",
+            "label": "U/O 0.5 Venezia · UNDER"
+          }
+        ]
       }
     ],
     "fiorentina-frosinone-2026-27-md-02": [
       {
         "tier": "Safe",
-        "status": "N/D",
-        "reason": "Controllo rischio: Controllo rischio: EV prudenziale -33.6% sotto il limite 0%.",
-        "legs": []
+        "logic": "Profilo safe costruito sulle quote Sisal del 2026-08-28: quota 5 usata come riferimento orientativo; l'unico vincolo rigido è l'intervallo di 3-6 gambe.",
+        "legs": [
+          {
+            "providerSelectionId": "5278915142",
+            "overlapKey": "model-score-scenario",
+            "label": "MULTIGOAL MULTIESITI 16 ESITI · 1-3"
+          },
+          {
+            "providerSelectionId": "5278919441",
+            "overlapKey": "model-score-scenario",
+            "label": "U/O 3.5 TEAM 1 + U/O 3.5 TEAM 2 · UNDER+UNDER"
+          },
+          {
+            "providerSelectionId": "5278914993",
+            "overlapKey": "model-score-scenario",
+            "label": "MULTIGOAL Fiorentina MULTIESITI · 1-2"
+          },
+          {
+            "providerSelectionId": "5278861583",
+            "overlapKey": "model-goals",
+            "label": "Under 2,5 gol"
+          }
+        ]
       },
       {
         "tier": "Balanced",
-        "status": "N/D",
-        "reason": "Controllo rischio: Controllo rischio: EV prudenziale -35.2% sotto il limite 0%.",
-        "legs": []
+        "logic": "Profilo balanced costruito sulle quote Sisal del 2026-08-28: quota 10 usata come riferimento orientativo; l'unico vincolo rigido è l'intervallo di 4-7 gambe.",
+        "legs": [
+          {
+            "providerSelectionId": "5278861583",
+            "overlapKey": "model-goals",
+            "label": "Under 2,5 gol"
+          },
+          {
+            "providerSelectionId": "5278861604",
+            "overlapKey": "model-double-chance",
+            "label": "Nessun pareggio (12)"
+          },
+          {
+            "providerSelectionId": "5278857973",
+            "overlapKey": "model-score-scenario",
+            "label": "DC + U/O 4.5 · 12 + UNDER"
+          },
+          {
+            "providerSelectionId": "5278915143",
+            "overlapKey": "model-score-scenario",
+            "label": "MULTIGOAL MULTIESITI 16 ESITI · 1-4"
+          },
+          {
+            "providerSelectionId": "5287242656",
+            "overlapKey": "match-shots-total",
+            "label": "Partita almeno 19 tiri totali"
+          },
+          {
+            "providerSelectionId": "5278858956",
+            "overlapKey": "model-score-scenario",
+            "label": "COMBO: DOPPIA CHANCE + GOAL/NOGOAL · 1X + NOGOAL"
+          }
+        ]
       },
       {
         "tier": "Aggressive",
-        "status": "N/D",
-        "reason": "Controllo rischio: Controllo rischio: EV prudenziale -6.1% sotto il limite 0%.",
-        "legs": []
+        "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-08-28: quota 20 usata come riferimento orientativo; l'unico vincolo rigido è l'intervallo di 5-8 gambe.",
+        "legs": [
+          {
+            "providerSelectionId": "5278919061",
+            "overlapKey": "model-score-scenario",
+            "label": "U/O 2.5 TEAM 1 + U/O 0.5 TEAM 2 · UNDER+UNDER"
+          },
+          {
+            "providerSelectionId": "5278914210",
+            "overlapKey": "model-score-scenario",
+            "label": "U/O 1.5 Fiorentina · UNDER"
+          },
+          {
+            "providerSelectionId": "5287242656",
+            "overlapKey": "match-shots-total",
+            "label": "Partita almeno 19 tiri totali"
+          },
+          {
+            "providerSelectionId": "5287312537",
+            "overlapKey": "both-teams-corners",
+            "label": "Entrambe almeno 4 corner"
+          },
+          {
+            "providerSelectionId": "5278948779",
+            "overlapKey": "model-score-scenario",
+            "label": "U/O 2.5 TEAM 1 + U/O 3.5 TEAM 2 · UNDER+UNDER"
+          }
+        ]
       }
     ],
     "monza-udinese-2026-27-md-02": [
       {
         "tier": "Safe",
-        "status": "N/D",
-        "reason": "Controllo rischio: Controllo rischio: EV prudenziale -37% sotto il limite 0%.",
-        "legs": []
+        "logic": "Profilo safe costruito sulle quote Sisal del 2026-08-28: quota 5 usata come riferimento orientativo; l'unico vincolo rigido è l'intervallo di 3-6 gambe.",
+        "legs": [
+          {
+            "providerSelectionId": "5278884846",
+            "overlapKey": "match-shots-total",
+            "label": "Partita almeno 20 tiri totali"
+          },
+          {
+            "providerSelectionId": "5278945587",
+            "overlapKey": "model-team-goal",
+            "label": "Udinese segna almeno un gol"
+          },
+          {
+            "providerSelectionId": "5278883482",
+            "overlapKey": "model-score-scenario",
+            "label": "DC + U/O 3.5 · X2 + UNDER"
+          },
+          {
+            "providerSelectionId": "5278912113",
+            "overlapKey": "model-score-scenario",
+            "label": "MULTIGOAL MULTIESITI 16 ESITI · 1-6"
+          },
+          {
+            "providerSelectionId": "5278912114",
+            "overlapKey": "model-score-scenario",
+            "label": "MULTIGOAL MULTIESITI 16 ESITI · 2-3"
+          }
+        ]
       },
       {
         "tier": "Balanced",
-        "status": "N/D",
-        "reason": "Controllo rischio: Controllo rischio: EV prudenziale -56.7% sotto il limite 0%.",
-        "legs": []
+        "logic": "Profilo balanced costruito sulle quote Sisal del 2026-08-28: quota 10 usata come riferimento orientativo; l'unico vincolo rigido è l'intervallo di 4-7 gambe.",
+        "legs": [
+          {
+            "providerSelectionId": "5278911766",
+            "overlapKey": "model-score-scenario",
+            "label": "U/O 2.5 Monza · UNDER"
+          },
+          {
+            "providerSelectionId": "5278883529",
+            "overlapKey": "model-score-scenario",
+            "label": "DC + U/O 4.5 · X2 + UNDER"
+          },
+          {
+            "providerSelectionId": "5278912115",
+            "overlapKey": "model-score-scenario",
+            "label": "MULTIGOAL MULTIESITI 16 ESITI · 2-4"
+          },
+          {
+            "providerSelectionId": "5278883461",
+            "overlapKey": "model-score-scenario",
+            "label": "DC + U/O 4.5 · 12 + UNDER"
+          },
+          {
+            "providerSelectionId": "5278888351",
+            "overlapKey": "model-goals",
+            "label": "Under 3,5 gol"
+          },
+          {
+            "providerSelectionId": "5278912114",
+            "overlapKey": "model-score-scenario",
+            "label": "MULTIGOAL MULTIESITI 16 ESITI · 2-3"
+          },
+          {
+            "providerSelectionId": "5278945614",
+            "overlapKey": "model-score-scenario",
+            "label": "U/O 1.5 TEAM 1 + U/O 3.5 TEAM 2 · UNDER+UNDER"
+          }
+        ]
       },
       {
         "tier": "Aggressive",
-        "status": "N/D",
-        "reason": "Controllo rischio: Controllo rischio: EV prudenziale -26% sotto il limite 0%.",
-        "legs": []
+        "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-08-28: quota 20 usata come riferimento orientativo; l'unico vincolo rigido è l'intervallo di 5-8 gambe.",
+        "legs": [
+          {
+            "providerSelectionId": "5287347451",
+            "overlapKey": "player-mangas r-shots-on-target",
+            "label": "MANGAS R. almeno 2 tiri in porta, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5278911766",
+            "overlapKey": "model-score-scenario",
+            "label": "U/O 2.5 Monza · UNDER"
+          },
+          {
+            "providerSelectionId": "5278912058",
+            "overlapKey": "model-score-scenario",
+            "label": "U/O 1.5 Monza · UNDER"
+          },
+          {
+            "providerSelectionId": "5278883461",
+            "overlapKey": "model-score-scenario",
+            "label": "DC + U/O 4.5 · 12 + UNDER"
+          },
+          {
+            "providerSelectionId": "5278911870",
+            "overlapKey": "model-score-scenario",
+            "label": "U/O 2.5 Udinese · UNDER"
+          }
+        ]
       }
     ],
     "sassuolo-torino-2026-27-md-02": [
       {
         "tier": "Safe",
-        "status": "N/D",
-        "reason": "Controllo rischio: Controllo rischio: Gamba a rischio 60.4 oltre il limite 58. EV prudenziale -57.2% sotto il limite 0%.",
-        "legs": []
+        "logic": "Profilo safe costruito sulle quote Sisal del 2026-08-28: quota 5 usata come riferimento orientativo; l'unico vincolo rigido è l'intervallo di 3-6 gambe.",
+        "legs": [
+          {
+            "providerSelectionId": "5278956020",
+            "overlapKey": "model-score-scenario",
+            "label": "U/O 1.5 TEAM 1 + U/O 2.5 TEAM 2 · OVER+UNDER"
+          },
+          {
+            "providerSelectionId": "5278954970",
+            "overlapKey": "model-score-scenario",
+            "label": "U/O 0.5 TEAM 1 + U/O 1.5 TEAM 2 · OVER+UNDER"
+          },
+          {
+            "providerSelectionId": "5278908576",
+            "overlapKey": "model-score-scenario",
+            "label": "U/O 2.5 Sassuolo · UNDER"
+          }
+        ]
       },
       {
         "tier": "Balanced",
-        "status": "N/D",
-        "reason": "Controllo rischio: Controllo rischio: EV prudenziale -37.9% sotto il limite 0%.",
-        "legs": []
-      },
-      {
-        "tier": "Aggressive",
-        "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-08-28: almeno una gamba segue il risultato principale 2-1 (1); le altre seguono i volumi centrali o i titolari proiettati senza introdurre un esito opposto.",
+        "logic": "Profilo balanced costruito sulle quote Sisal del 2026-08-28: quota 10 usata come riferimento orientativo; l'unico vincolo rigido è l'intervallo di 4-7 gambe.",
         "legs": [
           {
-            "providerSelectionId": "5278955852",
-            "overlapKey": "model-team-goal",
-            "label": "Sassuolo segna almeno un gol"
+            "providerSelectionId": "5278955094",
+            "overlapKey": "model-score-scenario",
+            "label": "U/O 3.5 TEAM 1 + U/O 0.5 TEAM 2 · UNDER+OVER"
+          },
+          {
+            "providerSelectionId": "5283539774",
+            "overlapKey": "match-shots-total",
+            "label": "Partita almeno 16 tiri totali"
           },
           {
             "providerSelectionId": "5278889258",
@@ -119,19 +361,45 @@
             "label": "Over 1,5 gol"
           },
           {
-            "providerSelectionId": "5278889293",
-            "overlapKey": "model-double-chance",
-            "label": "Sassuolo o pareggio (1X)"
-          },
-          {
-            "providerSelectionId": "5278882399",
-            "overlapKey": "model-btts",
-            "label": "Entrambe le squadre segnano"
-          },
-          {
-            "providerSelectionId": "5278954970",
+            "providerSelectionId": "5278955476",
             "overlapKey": "model-score-scenario",
-            "label": "U/O 0.5 TEAM 1 + U/O 1.5 TEAM 2 · OVER+UNDER"
+            "label": "U/O 2.5 TEAM 1 + U/O 0.5 TEAM 2 · UNDER+OVER"
+          },
+          {
+            "providerSelectionId": "5278954705",
+            "overlapKey": "model-score-scenario",
+            "label": "U/O 1.5 TEAM 1 + U/O 0.5 TEAM 2 · OVER+OVER"
+          }
+        ]
+      },
+      {
+        "tier": "Aggressive",
+        "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-08-28: quota 20 usata come riferimento orientativo; l'unico vincolo rigido è l'intervallo di 5-8 gambe.",
+        "legs": [
+          {
+            "providerSelectionId": "5278882099",
+            "overlapKey": "model-score-scenario",
+            "label": "COMBO: DOPPIA CHANCE + GOAL/NOGOAL · 12 + GOAL"
+          },
+          {
+            "providerSelectionId": "5278883007",
+            "overlapKey": "model-score-scenario",
+            "label": "DC + U/O 3.5 · 12 + UNDER"
+          },
+          {
+            "providerSelectionId": "5278889258",
+            "overlapKey": "model-goals",
+            "label": "Over 1,5 gol"
+          },
+          {
+            "providerSelectionId": "5278882119",
+            "overlapKey": "model-1x2",
+            "label": "Sassuolo vincente"
+          },
+          {
+            "providerSelectionId": "5278883050",
+            "overlapKey": "model-score-scenario",
+            "label": "DC + U/O 4.5 · 12 + UNDER"
           }
         ]
       }
@@ -139,44 +407,84 @@
     "juventus-parma-2026-27-md-02": [
       {
         "tier": "Safe",
-        "status": "N/D",
-        "reason": "Controllo rischio: Controllo rischio: EV prudenziale -26.5% sotto il limite 0%.",
-        "legs": []
+        "logic": "Profilo safe costruito sulle quote Sisal del 2026-08-28: quota 5 usata come riferimento orientativo; l'unico vincolo rigido è l'intervallo di 3-6 gambe.",
+        "legs": [
+          {
+            "providerSelectionId": "5278902474",
+            "overlapKey": "model-score-scenario",
+            "label": "MULTIGOAL Juventus MULTIESITI · 1-3"
+          },
+          {
+            "providerSelectionId": "5278902718",
+            "overlapKey": "model-score-scenario",
+            "label": "MULTIGOAL MULTIESITI 16 ESITI · 1-5"
+          },
+          {
+            "providerSelectionId": "5278941464",
+            "overlapKey": "model-score-scenario",
+            "label": "U/O 2.5 TEAM 1 + U/O 2.5 TEAM 2 · UNDER+UNDER"
+          },
+          {
+            "providerSelectionId": "5278902473",
+            "overlapKey": "model-score-scenario",
+            "label": "MULTIGOAL Juventus MULTIESITI · 1-2"
+          }
+        ]
       },
       {
         "tier": "Balanced",
-        "status": "N/D",
-        "reason": "Controllo rischio: Controllo rischio: EV prudenziale -68.1% sotto il limite 0%.",
-        "legs": []
-      },
-      {
-        "tier": "Aggressive",
-        "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-08-28: almeno una gamba segue il risultato principale 1-0 (1); le altre seguono i volumi centrali o i titolari proiettati senza introdurre un esito opposto.",
+        "logic": "Profilo balanced costruito sulle quote Sisal del 2026-08-28: quota 10 usata come riferimento orientativo; l'unico vincolo rigido è l'intervallo di 4-7 gambe.",
         "legs": [
+          {
+            "providerSelectionId": "5278941212",
+            "overlapKey": "model-score-scenario",
+            "label": "U/O 2.5 TEAM 1 + U/O 1.5 TEAM 2 · UNDER+UNDER"
+          },
           {
             "providerSelectionId": "5278899676",
             "overlapKey": "model-goals",
             "label": "Under 3,5 gol"
           },
           {
-            "providerSelectionId": "5278897541",
-            "overlapKey": "model-btts",
-            "label": "Almeno una squadra non segna"
-          },
-          {
-            "providerSelectionId": "5278897426",
-            "overlapKey": "model-1x2",
-            "label": "Juventus vincente"
-          },
-          {
-            "providerSelectionId": "5278902416",
+            "providerSelectionId": "5278941464",
             "overlapKey": "model-score-scenario",
-            "label": "U/O 2.5 Juventus · UNDER"
+            "label": "U/O 2.5 TEAM 1 + U/O 2.5 TEAM 2 · UNDER+UNDER"
           },
           {
-            "providerSelectionId": "5278942570",
-            "overlapKey": "model-team-goal",
-            "label": "Parma non segna"
+            "providerSelectionId": "5278898122",
+            "overlapKey": "model-score-scenario",
+            "label": "DC + U/O 2.5 · 1X + UNDER"
+          }
+        ]
+      },
+      {
+        "tier": "Aggressive",
+        "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-08-28: quota 20 usata come riferimento orientativo; l'unico vincolo rigido è l'intervallo di 5-8 gambe.",
+        "legs": [
+          {
+            "providerSelectionId": "5278941212",
+            "overlapKey": "model-score-scenario",
+            "label": "U/O 2.5 TEAM 1 + U/O 1.5 TEAM 2 · UNDER+UNDER"
+          },
+          {
+            "providerSelectionId": "5278899676",
+            "overlapKey": "model-goals",
+            "label": "Under 3,5 gol"
+          },
+          {
+            "providerSelectionId": "5278941464",
+            "overlapKey": "model-score-scenario",
+            "label": "U/O 2.5 TEAM 1 + U/O 2.5 TEAM 2 · UNDER+UNDER"
+          },
+          {
+            "providerSelectionId": "5278902715",
+            "overlapKey": "model-score-scenario",
+            "label": "MULTIGOAL MULTIESITI 16 ESITI · 1-2"
+          },
+          {
+            "providerSelectionId": "5278941529",
+            "overlapKey": "model-score-scenario",
+            "label": "U/O 0.5 TEAM 1 + U/O 0.5 TEAM 2 · OVER+UNDER"
           }
         ]
       }
@@ -184,84 +492,297 @@
     "napoli-como-2026-27-md-02": [
       {
         "tier": "Safe",
-        "status": "N/D",
-        "reason": "Controllo rischio: Candidati insufficienti per il profilo Safe: servono almeno 3 gambe uniche e modellate, senza sovrapposizioni.",
-        "legs": []
+        "logic": "Profilo safe costruito sulle quote Sisal del 2026-08-28: quota 5 usata come riferimento orientativo; l'unico vincolo rigido è l'intervallo di 3-6 gambe.",
+        "legs": [
+          {
+            "providerSelectionId": "5278920508",
+            "overlapKey": "model-score-scenario",
+            "label": "MULTIGOAL Como MULTIESITI · 1-4"
+          },
+          {
+            "providerSelectionId": "5283543218",
+            "overlapKey": "away-shots-total",
+            "label": "Como almeno 8 tiri totali"
+          },
+          {
+            "providerSelectionId": "5278893926",
+            "overlapKey": "model-score-scenario",
+            "label": "DC + U/O 3.5 · 12 + UNDER"
+          },
+          {
+            "providerSelectionId": "5278949561",
+            "overlapKey": "model-score-scenario",
+            "label": "U/O 1.5 TEAM 1 + U/O 1.5 TEAM 2 · UNDER+UNDER"
+          }
+        ]
       },
       {
         "tier": "Balanced",
-        "status": "N/D",
-        "reason": "Controllo rischio: EV prudenziale -49.7% sotto il limite 0%.",
-        "legs": []
+        "logic": "Profilo balanced costruito sulle quote Sisal del 2026-08-28: quota 10 usata come riferimento orientativo; l'unico vincolo rigido è l'intervallo di 4-7 gambe.",
+        "legs": [
+          {
+            "providerSelectionId": "5278896744",
+            "overlapKey": "model-goals",
+            "label": "Under 3,5 gol"
+          },
+          {
+            "providerSelectionId": "5278919957",
+            "overlapKey": "model-score-scenario",
+            "label": "U/O 2.5 Como · UNDER"
+          },
+          {
+            "providerSelectionId": "5278949561",
+            "overlapKey": "model-score-scenario",
+            "label": "U/O 1.5 TEAM 1 + U/O 1.5 TEAM 2 · UNDER+UNDER"
+          },
+          {
+            "providerSelectionId": "5278893904",
+            "overlapKey": "model-score-scenario",
+            "label": "DC + U/O 1.5 · 12 + UNDER"
+          }
+        ]
       },
       {
         "tier": "Aggressive",
-        "status": "N/D",
-        "reason": "Controllo rischio: Candidati insufficienti per il profilo Aggressive: servono almeno 5 gambe uniche e modellate, senza sovrapposizioni.",
-        "legs": []
+        "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-08-28: quota 20 usata come riferimento orientativo; l'unico vincolo rigido è l'intervallo di 5-8 gambe.",
+        "legs": [
+          {
+            "providerSelectionId": "5278893940",
+            "overlapKey": "model-score-scenario",
+            "label": "DC + U/O 2.5 · 12 + UNDER"
+          },
+          {
+            "providerSelectionId": "5278896762",
+            "overlapKey": "model-double-chance",
+            "label": "Como o pareggio (X2)"
+          },
+          {
+            "providerSelectionId": "5278950315",
+            "overlapKey": "model-score-scenario",
+            "label": "U/O 1.5 TEAM 1 + U/O 3.5 TEAM 2 · UNDER+UNDER"
+          },
+          {
+            "providerSelectionId": "5278949265",
+            "overlapKey": "model-score-scenario",
+            "label": "U/O 3.5 TEAM 1 + U/O 2.5 TEAM 2 · UNDER+UNDER"
+          },
+          {
+            "providerSelectionId": "5278949764",
+            "overlapKey": "model-score-scenario",
+            "label": "U/O 2.5 TEAM 1 + U/O 0.5 TEAM 2 · UNDER+OVER"
+          },
+          {
+            "providerSelectionId": "5283540958",
+            "overlapKey": "away-shots-total",
+            "label": "Como almeno 7 tiri totali"
+          },
+          {
+            "providerSelectionId": "5278895393",
+            "overlapKey": "match-shots-total",
+            "label": "Partita almeno 22 tiri totali"
+          },
+          {
+            "providerSelectionId": "5278893952",
+            "overlapKey": "model-score-scenario",
+            "label": "DC + U/O 4.5 · 12 + UNDER"
+          }
+        ]
       }
     ],
     "cagliari-inter-2026-27-md-02": [
       {
         "tier": "Safe",
-        "status": "N/D",
-        "reason": "Controllo rischio: Candidati insufficienti per il profilo Safe: servono almeno 3 gambe uniche e modellate, senza sovrapposizioni.",
-        "legs": []
+        "logic": "Profilo safe costruito sulle quote Sisal del 2026-08-28: quota 5 usata come riferimento orientativo; l'unico vincolo rigido è l'intervallo di 3-6 gambe.",
+        "legs": [
+          {
+            "providerSelectionId": "5278922025",
+            "overlapKey": "model-score-scenario",
+            "label": "MULTIGOAL MULTIESITI 16 ESITI · 3-4"
+          },
+          {
+            "providerSelectionId": "5278900286",
+            "overlapKey": "model-score-scenario",
+            "label": "DC + U/O 3.5 · 12 + UNDER"
+          },
+          {
+            "providerSelectionId": "5278902141",
+            "overlapKey": "model-goals",
+            "label": "Over 1,5 gol"
+          }
+        ]
       },
       {
         "tier": "Balanced",
-        "status": "N/D",
-        "reason": "Controllo rischio: Quota 1.85 fuori dall'intervallo prudenziale [1.1, 1.8).",
-        "legs": []
+        "logic": "Profilo balanced costruito sulle quote Sisal del 2026-08-28: quota 10 usata come riferimento orientativo; l'unico vincolo rigido è l'intervallo di 4-7 gambe.",
+        "legs": [
+          {
+            "providerSelectionId": "5278900024",
+            "overlapKey": "model-btts",
+            "label": "Entrambe le squadre segnano"
+          },
+          {
+            "providerSelectionId": "5278922020",
+            "overlapKey": "model-score-scenario",
+            "label": "MULTIGOAL MULTIESITI 16 ESITI · 1-6"
+          },
+          {
+            "providerSelectionId": "5278921912",
+            "overlapKey": "model-score-scenario",
+            "label": "MULTIGOAL Inter MULTIESITI · 1-2"
+          },
+          {
+            "providerSelectionId": "5278922025",
+            "overlapKey": "model-score-scenario",
+            "label": "MULTIGOAL MULTIESITI 16 ESITI · 3-4"
+          },
+          {
+            "providerSelectionId": "5278917406",
+            "overlapKey": "model-score-scenario",
+            "label": "U/O 2.5 TEAM 1 + U/O 0.5 TEAM 2 · UNDER+OVER"
+          }
+        ]
       },
       {
         "tier": "Aggressive",
-        "status": "N/D",
-        "reason": "Controllo rischio: Candidati insufficienti per il profilo Aggressive: servono almeno 5 gambe uniche e modellate, senza sovrapposizioni.",
-        "legs": []
+        "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-08-28: quota 20 usata come riferimento orientativo; l'unico vincolo rigido è l'intervallo di 5-8 gambe.",
+        "legs": [
+          {
+            "providerSelectionId": "5278900024",
+            "overlapKey": "model-btts",
+            "label": "Entrambe le squadre segnano"
+          },
+          {
+            "providerSelectionId": "5278922026",
+            "overlapKey": "model-score-scenario",
+            "label": "MULTIGOAL MULTIESITI 16 ESITI · 3-5"
+          },
+          {
+            "providerSelectionId": "5283546310",
+            "overlapKey": "match-shots-total",
+            "label": "Partita almeno 18 tiri totali"
+          },
+          {
+            "providerSelectionId": "5278922025",
+            "overlapKey": "model-score-scenario",
+            "label": "MULTIGOAL MULTIESITI 16 ESITI · 3-4"
+          },
+          {
+            "providerSelectionId": "5278921912",
+            "overlapKey": "model-score-scenario",
+            "label": "MULTIGOAL Inter MULTIESITI · 1-2"
+          },
+          {
+            "providerSelectionId": "5278921927",
+            "overlapKey": "model-score-scenario",
+            "label": "U/O 3.5 Inter · UNDER"
+          }
+        ]
       }
     ],
     "lazio-genoa-2026-27-md-02": [
       {
         "tier": "Safe",
-        "status": "N/D",
-        "reason": "Controllo rischio: Candidati insufficienti per il profilo Safe: servono almeno 3 gambe uniche e modellate, senza sovrapposizioni.",
-        "legs": []
+        "logic": "Profilo safe costruito sulle quote Sisal del 2026-08-28: quota 5 usata come riferimento orientativo; l'unico vincolo rigido è l'intervallo di 3-6 gambe.",
+        "legs": [
+          {
+            "providerSelectionId": "5278922723",
+            "overlapKey": "model-score-scenario",
+            "label": "U/O 2.5 Lazio · UNDER"
+          },
+          {
+            "providerSelectionId": "5278864071",
+            "overlapKey": "model-goals",
+            "label": "Under 3,5 gol"
+          },
+          {
+            "providerSelectionId": "5283548337",
+            "overlapKey": "player-dia b-shots-on-target",
+            "label": "DIA B. almeno 2 tiri in porta, sostituto incluso"
+          }
+        ]
       },
       {
         "tier": "Balanced",
-        "status": "N/D",
-        "reason": "Controllo rischio: Controllo rischio: EV prudenziale -49.9% sotto il limite 0%.",
-        "legs": []
+        "logic": "Profilo balanced costruito sulle quote Sisal del 2026-08-28: quota 10 usata come riferimento orientativo; l'unico vincolo rigido è l'intervallo di 4-7 gambe.",
+        "legs": [
+          {
+            "providerSelectionId": "5288712737",
+            "overlapKey": "player-doekhi d-fouls-won",
+            "label": "DOEKHI D. almeno 2 falli subiti"
+          },
+          {
+            "providerSelectionId": "5278864071",
+            "overlapKey": "model-goals",
+            "label": "Under 3,5 gol"
+          },
+          {
+            "providerSelectionId": "5278922978",
+            "overlapKey": "model-score-scenario",
+            "label": "MULTIGOAL MULTIESITI 16 ESITI · 1-6"
+          },
+          {
+            "providerSelectionId": "5278864087",
+            "overlapKey": "model-double-chance",
+            "label": "Lazio o pareggio (1X)"
+          },
+          {
+            "providerSelectionId": "5278922977",
+            "overlapKey": "model-score-scenario",
+            "label": "MULTIGOAL MULTIESITI 16 ESITI · 1-5"
+          }
+        ]
       },
       {
         "tier": "Aggressive",
-        "status": "N/D",
-        "reason": "Controllo rischio: Candidati insufficienti per il profilo Aggressive: servono almeno 5 gambe uniche e modellate, senza sovrapposizioni.",
-        "legs": []
+        "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-08-28: quota 20 usata come riferimento orientativo; l'unico vincolo rigido è l'intervallo di 5-8 gambe.",
+        "legs": [
+          {
+            "providerSelectionId": "5278951701",
+            "overlapKey": "model-score-scenario",
+            "label": "U/O 2.5 TEAM 1 + U/O 0.5 TEAM 2 · UNDER+UNDER"
+          },
+          {
+            "providerSelectionId": "5278862197",
+            "overlapKey": "model-score-scenario",
+            "label": "DC + U/O 3.5 · 12 + UNDER"
+          },
+          {
+            "providerSelectionId": "5278862517",
+            "overlapKey": "model-score-scenario",
+            "label": "DC + U/O 2.5 · 1X + UNDER"
+          },
+          {
+            "providerSelectionId": "5278948069",
+            "overlapKey": "model-score-scenario",
+            "label": "U/O 2.5 TEAM 1 + U/O 1.5 TEAM 2 · UNDER+UNDER"
+          },
+          {
+            "providerSelectionId": "5278864071",
+            "overlapKey": "model-goals",
+            "label": "Under 3,5 gol"
+          },
+          {
+            "providerSelectionId": "5278922978",
+            "overlapKey": "model-score-scenario",
+            "label": "MULTIGOAL MULTIESITI 16 ESITI · 1-6"
+          },
+          {
+            "providerSelectionId": "5278953492",
+            "overlapKey": "model-score-scenario",
+            "label": "U/O 0.5 TEAM 1 + U/O 2.5 TEAM 2 · OVER+UNDER"
+          }
+        ]
       }
     ],
     "lecce-roma-2026-27-md-02": [
       {
         "tier": "Safe",
-        "status": "N/D",
-        "reason": "Controllo rischio: Controllo rischio: Rischio medio 51 oltre il limite 42. Gamba a rischio 58.1 oltre il limite 58.",
-        "legs": []
-      },
-      {
-        "tier": "Balanced",
-        "status": "N/D",
-        "reason": "Candidati insufficienti per il profilo Balanced: servono almeno 4 gambe uniche e modellate, senza sovrapposizioni.",
-        "legs": []
-      },
-      {
-        "tier": "Aggressive",
-        "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-08-28: almeno una gamba segue il risultato principale 0-1 (2); le altre seguono i volumi centrali o i titolari proiettati senza introdurre un esito opposto.",
+        "logic": "Profilo safe costruito sulle quote Sisal del 2026-08-28: quota 5 usata come riferimento orientativo; l'unico vincolo rigido è l'intervallo di 3-6 gambe.",
         "legs": [
           {
-            "providerSelectionId": "5278953446",
-            "overlapKey": "model-team-goal",
-            "label": "Roma segna almeno un gol"
+            "providerSelectionId": "5278892350",
+            "overlapKey": "model-score-scenario",
+            "label": "DC + U/O 2.5 · 12 + UNDER"
           },
           {
             "providerSelectionId": "5278895080",
@@ -269,9 +790,35 @@
             "label": "Under 3,5 gol"
           },
           {
-            "providerSelectionId": "5278891968",
-            "overlapKey": "model-1x2",
-            "label": "Roma vincente"
+            "providerSelectionId": "5278897329",
+            "overlapKey": "model-score-scenario",
+            "label": "MULTIGOAL Roma MULTIESITI · 1-2"
+          }
+        ]
+      },
+      {
+        "tier": "Balanced",
+        "logic": "Profilo balanced costruito sulle quote Sisal del 2026-08-28: quota 10 usata come riferimento orientativo; l'unico vincolo rigido è l'intervallo di 4-7 gambe.",
+        "legs": [
+          {
+            "providerSelectionId": "5278895104",
+            "overlapKey": "model-double-chance",
+            "label": "Roma o pareggio (X2)"
+          },
+          {
+            "providerSelectionId": "5278954443",
+            "overlapKey": "model-score-scenario",
+            "label": "U/O 2.5 TEAM 1 + U/O 3.5 TEAM 2 · UNDER+UNDER"
+          },
+          {
+            "providerSelectionId": "5278896974",
+            "overlapKey": "model-score-scenario",
+            "label": "U/O 3.5 Roma · UNDER"
+          },
+          {
+            "providerSelectionId": "5282850517",
+            "overlapKey": "player-special-event",
+            "label": "GEUBBELS W. O DYBALA P. GOAL O PALO O LORO SOST. INC TS · sì"
           },
           {
             "providerSelectionId": "5278892081",
@@ -279,9 +826,60 @@
             "label": "Almeno una squadra non segna"
           },
           {
-            "providerSelectionId": "5278894285",
+            "providerSelectionId": "5278951822",
             "overlapKey": "model-score-scenario",
-            "label": "COMBO: DOPPIA CHANCE + GOAL/NOGOAL · X2 + NOGOAL"
+            "label": "U/O 0.5 TEAM 1 + U/O 0.5 TEAM 2 · UNDER+OVER"
+          },
+          {
+            "providerSelectionId": "5278951652",
+            "overlapKey": "model-score-scenario",
+            "label": "U/O 2.5 TEAM 1 + U/O 2.5 TEAM 2 · UNDER+UNDER"
+          }
+        ]
+      },
+      {
+        "tier": "Aggressive",
+        "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-08-28: quota 20 usata come riferimento orientativo; l'unico vincolo rigido è l'intervallo di 5-8 gambe.",
+        "legs": [
+          {
+            "providerSelectionId": "5278891968",
+            "overlapKey": "model-1x2",
+            "label": "Roma vincente"
+          },
+          {
+            "providerSelectionId": "5278910021",
+            "overlapKey": "model-score-scenario",
+            "label": "MULTIGOAL MULTIESITI 16 ESITI · 1-4"
+          },
+          {
+            "providerSelectionId": "5278896974",
+            "overlapKey": "model-score-scenario",
+            "label": "U/O 3.5 Roma · UNDER"
+          },
+          {
+            "providerSelectionId": "5278951869",
+            "overlapKey": "model-score-scenario",
+            "label": "U/O 1.5 TEAM 1 + U/O 1.5 TEAM 2 · UNDER+UNDER"
+          },
+          {
+            "providerSelectionId": "5278892368",
+            "overlapKey": "model-score-scenario",
+            "label": "DC + U/O 3.5 · X2 + UNDER"
+          },
+          {
+            "providerSelectionId": "5278893138",
+            "overlapKey": "1 tempo 1x2 corner",
+            "label": "1 TEMPO: 1X2 CORNER · 2"
+          },
+          {
+            "providerSelectionId": "5278953931",
+            "overlapKey": "model-score-scenario",
+            "label": "U/O 0.5 TEAM 1 + U/O 3.5 TEAM 2 · UNDER+UNDER"
+          },
+          {
+            "providerSelectionId": "5278896931",
+            "overlapKey": "model-score-scenario",
+            "label": "U/O 0.5 Roma · OVER"
           }
         ]
       }
@@ -289,41 +887,91 @@
     "atalanta-bologna-2026-27-md-02": [
       {
         "tier": "Safe",
-        "status": "N/D",
-        "reason": "Candidati insufficienti per il profilo Safe: servono almeno 3 gambe uniche e modellate, senza sovrapposizioni.",
-        "legs": []
+        "logic": "Profilo safe costruito sulle quote Sisal del 2026-08-28: quota 5 usata come riferimento orientativo; l'unico vincolo rigido è l'intervallo di 3-6 gambe.",
+        "legs": [
+          {
+            "providerSelectionId": "5278939654",
+            "overlapKey": "model-score-scenario",
+            "label": "U/O 2.5 TEAM 1 + U/O 0.5 TEAM 2 · UNDER+UNDER"
+          },
+          {
+            "providerSelectionId": "5278888206",
+            "overlapKey": "model-double-chance",
+            "label": "Nessun pareggio (12)"
+          },
+          {
+            "providerSelectionId": "5278910694",
+            "overlapKey": "model-score-scenario",
+            "label": "MULTIGOAL Atalanta MULTIESITI · 1-3"
+          }
+        ]
       },
       {
         "tier": "Balanced",
-        "logic": "Profilo balanced costruito sulle quote Sisal del 2026-08-28: almeno una gamba segue il risultato principale 1-0 (1); le altre seguono i volumi centrali o i titolari proiettati senza introdurre un esito opposto.",
+        "logic": "Profilo balanced costruito sulle quote Sisal del 2026-08-28: quota 10 usata come riferimento orientativo; l'unico vincolo rigido è l'intervallo di 4-7 gambe.",
         "legs": [
           {
-            "providerSelectionId": "5278940545",
-            "overlapKey": "model-team-goal",
-            "label": "Atalanta segna almeno un gol"
-          },
-          {
-            "providerSelectionId": "5278888181",
-            "overlapKey": "model-goals",
-            "label": "Under 3,5 gol"
-          },
-          {
-            "providerSelectionId": "5278884533",
+            "providerSelectionId": "5278939941",
             "overlapKey": "model-score-scenario",
-            "label": "DC + U/O 3.5 · 1X + UNDER"
+            "label": "U/O 0.5 TEAM 1 + U/O 0.5 TEAM 2 · OVER+UNDER"
           },
           {
-            "providerSelectionId": "5278888205",
-            "overlapKey": "model-double-chance",
-            "label": "Atalanta o pareggio (1X)"
+            "providerSelectionId": "5288011684",
+            "overlapKey": "player-special-event",
+            "label": "GAETANO G. SEGNA ALMENO UN GOAL O REALIZZA ALMENO UN ASSIST O RICEVE ALMENO UN CARTELLINO INC. TS · sì"
+          },
+          {
+            "providerSelectionId": "5278884503",
+            "overlapKey": "model-score-scenario",
+            "label": "DC + U/O 4.5 · 1X + UNDER"
+          },
+          {
+            "providerSelectionId": "5278940682",
+            "overlapKey": "model-score-scenario",
+            "label": "U/O 2.5 TEAM 1 + U/O 3.5 TEAM 2 · UNDER+UNDER"
+          },
+          {
+            "providerSelectionId": "5278911272",
+            "overlapKey": "model-score-scenario",
+            "label": "MULTIGOAL MULTIESITI 16 ESITI · 1-5"
           }
         ]
       },
       {
         "tier": "Aggressive",
-        "status": "N/D",
-        "reason": "Candidati insufficienti per il profilo Aggressive: servono almeno 5 gambe uniche e modellate, senza sovrapposizioni.",
-        "legs": []
+        "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-08-28: quota 20 usata come riferimento orientativo; l'unico vincolo rigido è l'intervallo di 5-8 gambe.",
+        "legs": [
+          {
+            "providerSelectionId": "5278939654",
+            "overlapKey": "model-score-scenario",
+            "label": "U/O 2.5 TEAM 1 + U/O 0.5 TEAM 2 · UNDER+UNDER"
+          },
+          {
+            "providerSelectionId": "5278939780",
+            "overlapKey": "model-score-scenario",
+            "label": "U/O 3.5 TEAM 1 + U/O 3.5 TEAM 2 · UNDER+UNDER"
+          },
+          {
+            "providerSelectionId": "5278888205",
+            "overlapKey": "model-double-chance",
+            "label": "Atalanta o pareggio (1X)"
+          },
+          {
+            "providerSelectionId": "5278939753",
+            "overlapKey": "model-score-scenario",
+            "label": "U/O 0.5 TEAM 1 + U/O 1.5 TEAM 2 · OVER+UNDER"
+          },
+          {
+            "providerSelectionId": "5288011812",
+            "overlapKey": "player-special-event",
+            "label": "ODGAARD J. SEGNA ALMENO UN GOAL O REALIZZA ALMENO UN ASSIST O RICEVE ALMENO UN CARTELLINO INC. TS · sì"
+          },
+          {
+            "providerSelectionId": "5278911270",
+            "overlapKey": "model-score-scenario",
+            "label": "MULTIGOAL MULTIESITI 16 ESITI · 1-3"
+          }
+        ]
       }
     ]
   }

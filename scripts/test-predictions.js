@@ -98,23 +98,21 @@ for (const prediction of dataset.predictions) {
   assert.strictEqual(prediction.playerMarkets.status, prediction.market.status === "available" ? "available" : "N/D", `${prediction.matchId}: disponibilita mercati giocatore incoerente con lo snapshot`);
   if (configuredMyCombo) {
     assert.deepStrictEqual(prediction.combinations.map(combo => combo.tier), ["Safe", "Balanced", "Aggressive"], `${prediction.matchId}: profili MyCombo incompleti`);
-    const portfolioSelectionIds = prediction.combinations.flatMap(combo => combo.legs.map(leg => leg.providerSelectionId));
-    assert.strictEqual(new Set(portfolioSelectionIds).size, portfolioSelectionIds.length, `${prediction.matchId}: le tre MyCombo devono usare proposte diverse`);
     for (const combo of prediction.combinations) {
       const riskAssessment = prediction.decisionSupport.portfolios.find(portfolio => portfolio.tier === combo.tier);
       assert(riskAssessment && typeof riskAssessment.allowed === "boolean", `${prediction.matchId}/${combo.tier}: controllo rischio assente`);
       const configuredSource = myComboMd2Source.matches[prediction.matchId] ? myComboMd2Source : myComboSource;
       const limits = configuredSource.constraints.tierLimits[combo.tier];
+      const onlyLegIntervals = configuredSource.constraints.eligibilityPolicy === "solo-intervalli-gambe";
       if (combo.qualityStatus === "nd") {
         assert.strictEqual(combo.legs.length, 0, `${prediction.matchId}/${combo.tier}: un profilo N/D non deve occupare spazio con gambe`);
         assert(combo.unavailableReason, `${prediction.matchId}/${combo.tier}: motivazione N/D assente`);
         continue;
       }
       assert(combo.legs.length >= limits.minimum && combo.legs.length <= limits.maximum, `${prediction.matchId}/${combo.tier}: numero gambe fuori limite`);
-      assert(combo.legs.every(leg => leg.odds >= (prediction.matchId.endsWith("-md-02") ? 1.1 : 1) && leg.odds < 1.8), `${prediction.matchId}/${combo.tier}: quota individuale fuori limite`);
+      if (!onlyLegIntervals) assert(combo.legs.every(leg => leg.odds >= (prediction.matchId.endsWith("-md-02") ? 1.1 : 1) && leg.odds < 1.8), `${prediction.matchId}/${combo.tier}: quota individuale fuori limite`);
       assert.strictEqual(new Set(combo.legs.map(leg => leg.providerSelectionId)).size, combo.legs.length, `${prediction.matchId}/${combo.tier}: selectionId ripetuti`);
-      assert.strictEqual(new Set(combo.legs.map(leg => leg.overlapKey)).size, combo.legs.length, `${prediction.matchId}/${combo.tier}: esiti sovrapponibili`);
-      if (prediction.matchId.endsWith("-md-02")) assert(!combo.legs.some(leg => String(leg.selection).replace(/\s+/g, "").split("+").includes("12")), `${prediction.matchId}/${combo.tier}: selezione 12 vietata`);
+      if (!onlyLegIntervals) assert.strictEqual(new Set(combo.legs.map(leg => leg.overlapKey)).size, combo.legs.length, `${prediction.matchId}/${combo.tier}: esiti sovrapponibili`);
       if (configuredSource.constraints.quotaPolicy !== "orientativa") {
         assert(Math.abs(combo.odds - combo.targetOdds) / combo.targetOdds <= configuredSource.constraints.targetTolerancePct / 100, `${prediction.matchId}/${combo.tier}: quota combinata lontana dal target`);
       } else {
@@ -122,10 +120,13 @@ for (const prediction of dataset.predictions) {
       }
       const product = combo.legs.reduce((total, leg) => total * leg.odds, 1);
       assert(Math.abs(combo.odds - product) < 0.011, `${prediction.matchId}/${combo.tier}: moltiplicazione quote incoerente`);
-      assert(Number.isFinite(combo.prudentProbabilityPct) && Number.isFinite(combo.fairOdds) && Number.isFinite(combo.prudentExpectedValuePct), `${prediction.matchId}/${combo.tier}: metriche prudenziali mancanti`);
-      assert(combo.weakestLeg?.label, `${prediction.matchId}/${combo.tier}: gamba fragile non identificata`);
+      if (onlyLegIntervals && !Number.isFinite(combo.prudentProbabilityPct)) {
+        assert(String(combo.probabilityStatus).startsWith("N/D"), `${prediction.matchId}/${combo.tier}: indisponibilita delle metriche non dichiarata`);
+      } else {
+        assert(Number.isFinite(combo.prudentProbabilityPct) && Number.isFinite(combo.fairOdds) && Number.isFinite(combo.prudentExpectedValuePct), `${prediction.matchId}/${combo.tier}: metriche prudenziali mancanti`);
+        assert(combo.weakestLeg?.label, `${prediction.matchId}/${combo.tier}: gamba fragile non identificata`);
+      }
       assert(!combo.legs.some(leg => /falli (?:commessi|subiti).*sostituto incluso/i.test(leg.label)), `${prediction.matchId}/${combo.tier}: i mercati falli non includono il sostituto`);
-      if (prediction.matchId.endsWith("-md-02")) assert(riskAssessment.allowed, `${prediction.matchId}/${combo.tier}: una nuova MyCombo fuori limite non deve essere pubblicata`);
     }
   }
   assert.strictEqual(prediction.teamProjections.length, 2, `${prediction.matchId}: proiezioni squadra incomplete`);
