@@ -988,6 +988,7 @@ function configuredComboPortfolio(oddsEvent, config, matrices, dataCompleteness,
       unavailableReason: portfolio.reason || "Nessuna combinazione supera i vincoli prudenziali."
     };
     const overlapKeys = new Set();
+    const semanticKeys = new Set();
     const selectionIds = new Set();
     let unavailableReason = null;
     const legs = portfolio.legs.map(leg => {
@@ -1005,6 +1006,10 @@ function configuredComboPortfolio(oddsEvent, config, matrices, dataCompleteness,
       if (!leg.overlapKey || overlapKeys.has(leg.overlapKey)) {
         throw new Error(`${oddsEvent.canonicalMatchId}/${portfolio.tier}: esito sovrapponibile ${leg.overlapKey || "senza chiave"}`);
       }
+      const legSemanticKeys = Array.isArray(leg.semanticKeys) ? leg.semanticKeys : [];
+      if (constraints.semanticOverlapPolicy && legSemanticKeys.some(key => semanticKeys.has(key))) {
+        throw new Error(`${oddsEvent.canonicalMatchId}/${portfolio.tier}: scenario semantico ripetuto ${legSemanticKeys.find(key => semanticKeys.has(key))}`);
+      }
       if (selectionIds.has(String(selection.providerSelectionId))) {
         throw new Error(`${oddsEvent.canonicalMatchId}/${portfolio.tier}: selectionId duplicato ${selection.providerSelectionId}`);
       }
@@ -1012,6 +1017,7 @@ function configuredComboPortfolio(oddsEvent, config, matrices, dataCompleteness,
         throw new Error(`${oddsEvent.canonicalMatchId}/${portfolio.tier}: proposta gia usata in un'altra MyCombo ${selection.providerSelectionId}`);
       }
       overlapKeys.add(leg.overlapKey);
+      legSemanticKeys.forEach(key => semanticKeys.add(key));
       selectionIds.add(String(selection.providerSelectionId));
       return {
         label: leg.label,
@@ -1022,6 +1028,7 @@ function configuredComboPortfolio(oddsEvent, config, matrices, dataCompleteness,
         providerSelectionId: selection.providerSelectionId,
         odds: selection.odds,
         overlapKey: leg.overlapKey,
+        semanticKeys: legSemanticKeys,
         marketScope: market.marketScope
       };
     });

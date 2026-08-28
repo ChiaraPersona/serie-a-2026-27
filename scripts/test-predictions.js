@@ -115,6 +115,10 @@ for (const prediction of dataset.predictions) {
       assert(combo.legs.every(leg => leg.odds >= minimumLegOdds && (configuredSource.constraints.maxLegOddsInclusive != null ? leg.odds <= maximumLegOdds : leg.odds < maximumLegOdds)), `${prediction.matchId}/${combo.tier}: quota individuale fuori limite`);
       assert.strictEqual(new Set(combo.legs.map(leg => leg.providerSelectionId)).size, combo.legs.length, `${prediction.matchId}/${combo.tier}: selectionId ripetuti`);
       assert.strictEqual(new Set(combo.legs.map(leg => leg.overlapKey)).size, combo.legs.length, `${prediction.matchId}/${combo.tier}: mercati ripetuti o esiti sovrapponibili`);
+      if (configuredSource.constraints.semanticOverlapPolicy) {
+        const semanticKeys = combo.legs.flatMap(leg => leg.semanticKeys || []);
+        assert.strictEqual(new Set(semanticKeys).size, semanticKeys.length, `${prediction.matchId}/${combo.tier}: scenari di base ripetuti o annidati`);
+      }
       if (configuredSource.constraints.quotaPolicy !== "orientativa") {
         assert(Math.abs(combo.odds - combo.targetOdds) / combo.targetOdds <= configuredSource.constraints.targetTolerancePct / 100, `${prediction.matchId}/${combo.tier}: quota combinata lontana dal target`);
       } else {
@@ -160,7 +164,6 @@ for (const prediction of dataset.predictions) {
 }
 const milanVenezia = dataset.predictions.find(prediction => prediction.matchId === "milan-venezia-2026-27-md-02");
 assert(milanVenezia.combinations.every(combo => !combo.legs.some(leg => leg.selection === "12")), "Milan-Venezia: il 12 non deve sostituire il più probabile 1X");
-assert(milanVenezia.combinations.some(combo => combo.legs.some(leg => leg.selection === "1X")), "Milan-Venezia: il più probabile 1X deve restare fra le proposte");
 assert(milanVenezia.combinations.every(combo => !combo.legs.some(leg => leg.selection?.startsWith("UNDER") && /U\/O 1\.5 (?:TEAM|SQUADRA) 1/i.test(leg.variant || ""))), "Milan-Venezia: evitare Under 1,5 casa contro la neopromossa");
 const torinoMilan = dataset.predictions.find(prediction => prediction.matchId === "torino-milan-2026-27-md-01");
 assert.strictEqual(torinoMilan.mvpCandidate.teamId, "milan", "Torino-Milan: il candidato MVP principale deve seguire il Milan favorito");

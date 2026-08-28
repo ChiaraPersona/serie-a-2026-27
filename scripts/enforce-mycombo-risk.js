@@ -33,8 +33,10 @@ for (const [matchId, portfolios] of Object.entries(source.matches || {})) {
     const maximumOdds = source.constraints.maxLegOddsInclusive;
     if (combo.legs.some(leg => leg.odds < minimumOdds || leg.odds > maximumOdds)) throw new Error(`${matchId}/${portfolio.tier}: quota singola fuori dal range ${minimumOdds}-${maximumOdds}`);
     if (new Set(combo.legs.map(leg => leg.overlapKey)).size !== combo.legs.length) throw new Error(`${matchId}/${portfolio.tier}: famiglia di mercato ripetuta`);
+    const semanticKeys = combo.legs.flatMap(leg => leg.semanticKeys || []);
+    if (new Set(semanticKeys).size !== semanticKeys.length) throw new Error(`${matchId}/${portfolio.tier}: scenario di base ripetuto o annidato`);
     valid += 1;
   }
 }
 
-console.log(`OK MyCombo giornata ${matchday}: ${valid} portafogli · intervalli gambe, quote 1.10-1.85 e famiglie di mercato validate`);
+console.log(`OK MyCombo giornata ${matchday}: ${valid} portafogli · quote, famiglie e sovrapposizioni semantiche validate`);
