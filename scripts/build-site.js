@@ -17,7 +17,7 @@ const calendarVersion = "20260825-calendar-clean-headings-v1";
 const teamVersion = "20260827-team-md2-identities-v2";
 const leaderboardVersion = "20260825-player-leaderboards-md1-final-v2";
 const bettingVersion = "20260827-schedina-md2-md1-matrix-v6";
-const readingVersion = "20260828-mycombo-semantic-overlap-v6";
+const readingVersion = "20260828-mycombo-global-semantic-overlap-v7";
 const fantasyVersion = "20260827-fantasy-md2-identities-v2";
 const headToHeadPath = path.join(root, "data/generated/head-to-head/first-leg-2026-27.json");
 if (fs.existsSync(headToHeadPath)) {

@@ -92,19 +92,14 @@ function preferredDoubleChance(prediction) {
 }
 
 function scoreSemanticKeys(market) {
-  if (market.marketName === "MULTIGOAL") return ["goals-total"];
-  if (["MULTIGOAL SQUADRA X", "U/O SQUADRA X"].includes(market.marketName)) return [/SQUADRA 1\b|TEAM 1\b/i.test(market.variantName) ? "goals-home" : "goals-away"];
-  if (["COMBO: DC + U/O", "COMBO: 1X2 + U/O"].includes(market.marketName)) return ["result", "goals-total"];
-  if (market.marketName === "COMBO: DC + GOAL/NOGOAL") return ["result", "goals-home", "goals-away"];
-  if (market.marketName === "COMBO: U/O CASA + U/O OSPITE") return ["goals-home", "goals-away"];
+  if (["MULTIGOAL", "MULTIGOAL SQUADRA X", "U/O SQUADRA X", "COMBO: U/O CASA + U/O OSPITE"].includes(market.marketName)) return ["goals"];
+  if (["COMBO: DC + U/O", "COMBO: 1X2 + U/O", "COMBO: DC + GOAL/NOGOAL"].includes(market.marketName)) return ["result", "goals"];
   return [];
 }
 
 function comparisonSemanticKeys(row) {
   if (["1x2", "double-chance", "draw-no-bet"].includes(row.family)) return ["result"];
-  if (row.family === "goals") return ["goals-total"];
-  if (row.family === "btts") return ["goals-home", "goals-away"];
-  if (row.family === "team-goal") return [String(row.market).startsWith("Casa") ? "goals-home" : "goals-away"];
+  if (["goals", "btts", "team-goal"].includes(row.family)) return ["goals"];
   return [];
 }
 
@@ -198,7 +193,7 @@ function candidatePool(event, prediction, match) {
         overlapKey: `market-${clean(market.marketName)}`,
         label: volumeLabel(market, selection, match),
         odds: selection.odds,
-        semanticKeys: [`volume-${side}-${metric}`],
+        semanticKeys: [`volume-${metric}`],
         quality: 105 + Math.min(20, Math.abs(projection.central - threshold) * 3),
         anchor: false,
         modelSupported: true
@@ -229,7 +224,7 @@ function candidatePool(event, prediction, match) {
       overlapKey: `market-${clean(market.marketName)}`,
       label: `Entrambe almeno ${threshold} ${isShots ? "tiri in porta" : "corner"}`,
       odds: selection.odds,
-      semanticKeys: isShots ? ["volume-home-shots-on-target", "volume-away-shots-on-target"] : ["volume-home-corners", "volume-away-corners"],
+      semanticKeys: [isShots ? "volume-shots-on-target" : "volume-corners"],
       quality: 108 + selection.odds * 4,
       anchor: false,
       modelSupported: true
@@ -266,6 +261,7 @@ function candidatePool(event, prediction, match) {
         overlapKey,
         label: `${market.variantName} · ${selection.name}`.replace(/TEAM 1|SQUADRA 1/g, teamById.get(match.homeTeam)?.name || match.homeTeam).replace(/TEAM 2|SQUADRA 2/g, teamById.get(match.awayTeam)?.name || match.awayTeam),
         odds: selection.odds,
+        semanticKeys: ["volume-corners"],
         quality: 102 + selection.odds * 4,
         anchor: false
       });
@@ -305,6 +301,7 @@ function candidatePool(event, prediction, match) {
       overlapKey: `market-${clean(market.marketName)}`,
       label: `${player} almeno ${Math.floor(threshold) + 1} ${kind.metric}${kind.substituteIncluded ? ", sostituto incluso" : ""}`,
       odds: selection.odds,
+      semanticKeys: kind.key === "shots-total" ? ["volume-shots-total"] : kind.key === "shots-on-target" ? ["volume-shots-on-target"] : [],
       quality: 95 + selection.odds * 5,
       anchor: false
     });
@@ -374,7 +371,7 @@ const output = {
     minLegOddsInclusive: minimumLegOdds,
     maxLegOddsInclusive: maximumLegOdds,
     uniqueMarketFamilyWithinPortfolio: true,
-    semanticOverlapPolicy: "Una sola gamba per scenario di base: esito, totale gol, gol casa, gol ospite e volumi omologhi non possono essere ripetuti o annidati nella stessa MyCombo.",
+    semanticOverlapPolicy: "Una sola gamba per macro-scenario: gol, esito, corner, tiri totali e tiri in porta non possono essere ripetuti o annidati nella stessa MyCombo, anche cambiando squadra, soglia o formulazione.",
     allowCrossTierSelectionReuse: true,
     promotedOpponentCaution: true,
     riskPolicy: "informativa",
