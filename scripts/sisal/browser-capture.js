@@ -223,7 +223,7 @@ async function captureSisalPage({ pageUrl, pageUrls, waitMs = 15000, headed = tr
     let renderedOdds = 0;
     for (const url of urls) {
       activePageUrl = url;
-      await client.call("Page.navigate", { url });
+      await client.call("Page.navigate", { url }, Math.max(30000, waitMs + 15000));
       const pageOdds = await waitForRenderedOdds(client, waitMs);
       renderedOdds += pageOdds;
       await sleep(800);

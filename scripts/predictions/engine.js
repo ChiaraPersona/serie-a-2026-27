@@ -961,6 +961,7 @@ function configuredComboPortfolio(oddsEvent, config, matrices, dataCompleteness,
   const constraints = config.constraints || {};
   const minimum = constraints.minLegOddsInclusive ?? 1;
   const maximum = constraints.maxLegOddsExclusive ?? 1.8;
+  const flexibleQuota = constraints.quotaPolicy === "orientativa";
   const tolerance = constraints.targetTolerancePct ?? 20;
   const selectionIndex = new Map();
   for (const market of oddsEvent?.markets || []) {
@@ -970,7 +971,7 @@ function configuredComboPortfolio(oddsEvent, config, matrices, dataCompleteness,
   }
   const portfolioSelectionIds = new Set();
   return config.portfolios.map(portfolio => {
-    const targetOdds = constraints.targets?.[portfolio.tier];
+    const targetOdds = constraints.referenceOdds?.[portfolio.tier] ?? constraints.targets?.[portfolio.tier];
     if (!(targetOdds > 1)) throw new Error(`${oddsEvent.canonicalMatchId}/${portfolio.tier}: target MyCombo non valido`);
     if (portfolio.status === "N/D" || !portfolio.legs?.length) return {
       tier: portfolio.tier,
@@ -1035,7 +1036,7 @@ function configuredComboPortfolio(oddsEvent, config, matrices, dataCompleteness,
     };
     const odds = round(legs.reduce((product, leg) => product * leg.odds, 1), 2);
     const distancePct = round(Math.abs(odds - targetOdds) / targetOdds * 100, 1);
-    if (distancePct > tolerance) {
+    if (!flexibleQuota && distancePct > tolerance) {
       return {
         tier: portfolio.tier,
         risk: portfolio.tier === "Safe" ? "relativo inferiore" : portfolio.tier === "Balanced" ? "medio" : "elevato",
@@ -1060,6 +1061,7 @@ function configuredComboPortfolio(oddsEvent, config, matrices, dataCompleteness,
       tier: portfolio.tier,
       risk: portfolio.tier === "Safe" ? "relativo inferiore" : portfolio.tier === "Balanced" ? "medio" : "elevato",
       targetOdds,
+      quotaPolicy: flexibleQuota ? "orientativa" : "target",
       odds,
       distancePct,
       legs: enrichedLegs,

@@ -51,8 +51,8 @@ function fixturePageUrls(competition, options) {
     return [{
       canonicalMatchId: fixture.id,
       url: competition.eventUrlTemplate
-        .replace("{homeTeam}", encodeURIComponent(fixture.homeTeam))
-        .replace("{awayTeam}", encodeURIComponent(fixture.awayTeam)),
+        .replace("{homeTeam}", encodeURIComponent(String(fixture.homeTeam).toLowerCase()))
+        .replace("{awayTeam}", encodeURIComponent(String(fixture.awayTeam).toLowerCase())),
     }];
   }
   if (options.limit !== undefined && (!Number.isInteger(options.limit) || options.limit < 1 || options.limit > fixtures.length)) {
@@ -61,8 +61,8 @@ function fixturePageUrls(competition, options) {
   return fixtures.slice(0, options.limit || fixtures.length).map((match) => ({
     canonicalMatchId: match.id,
     url: competition.eventUrlTemplate
-      .replace("{homeTeam}", encodeURIComponent(match.homeTeam))
-      .replace("{awayTeam}", encodeURIComponent(match.awayTeam)),
+      .replace("{homeTeam}", encodeURIComponent(String(match.homeTeam).toLowerCase()))
+      .replace("{awayTeam}", encodeURIComponent(String(match.awayTeam).toLowerCase())),
   }));
 }
 

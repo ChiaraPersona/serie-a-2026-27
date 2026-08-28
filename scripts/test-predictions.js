@@ -115,7 +115,11 @@ for (const prediction of dataset.predictions) {
       assert.strictEqual(new Set(combo.legs.map(leg => leg.providerSelectionId)).size, combo.legs.length, `${prediction.matchId}/${combo.tier}: selectionId ripetuti`);
       assert.strictEqual(new Set(combo.legs.map(leg => leg.overlapKey)).size, combo.legs.length, `${prediction.matchId}/${combo.tier}: esiti sovrapponibili`);
       if (prediction.matchId.endsWith("-md-02")) assert(!combo.legs.some(leg => String(leg.selection).replace(/\s+/g, "").split("+").includes("12")), `${prediction.matchId}/${combo.tier}: selezione 12 vietata`);
-      assert(Math.abs(combo.odds - combo.targetOdds) / combo.targetOdds <= configuredSource.constraints.targetTolerancePct / 100, `${prediction.matchId}/${combo.tier}: quota combinata lontana dal target`);
+      if (configuredSource.constraints.quotaPolicy !== "orientativa") {
+        assert(Math.abs(combo.odds - combo.targetOdds) / combo.targetOdds <= configuredSource.constraints.targetTolerancePct / 100, `${prediction.matchId}/${combo.tier}: quota combinata lontana dal target`);
+      } else {
+        assert.strictEqual(combo.quotaPolicy, "orientativa", `${prediction.matchId}/${combo.tier}: riferimento quota non dichiarato come orientativo`);
+      }
       const product = combo.legs.reduce((total, leg) => total * leg.odds, 1);
       assert(Math.abs(combo.odds - product) < 0.011, `${prediction.matchId}/${combo.tier}: moltiplicazione quote incoerente`);
       assert(Number.isFinite(combo.prudentProbabilityPct) && Number.isFinite(combo.fairOdds) && Number.isFinite(combo.prudentExpectedValuePct), `${prediction.matchId}/${combo.tier}: metriche prudenziali mancanti`);

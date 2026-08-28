@@ -1,30 +1,33 @@
 {
   "provider": "Sisal",
   "oddsSnapshot": "data/normalized/odds/sisal/serie-a.json",
-  "updatedAt": "2026-08-27",
+  "updatedAt": "2026-08-28",
   "constraints": {
     "minLegOddsInclusive": 1.1,
     "maxLegOddsExclusive": 1.8,
-    "targets": {
+    "referenceOdds": {
       "Safe": 5,
       "Balanced": 10,
       "Aggressive": 20
     },
+    "quotaPolicy": "orientativa",
     "tierLimits": {
       "Safe": {
-        "minimum": 2,
-        "maximum": 8
+        "minimum": 3,
+        "maximum": 6,
+        "preferred": 3
       },
       "Balanced": {
-        "minimum": 2,
-        "maximum": 8
+        "minimum": 4,
+        "maximum": 7,
+        "preferred": 4
       },
       "Aggressive": {
-        "minimum": 2,
-        "maximum": 8
+        "minimum": 5,
+        "maximum": 8,
+        "preferred": 5
       }
     },
-    "targetTolerancePct": 40,
     "overlapPolicy": "Una sola gamba per overlapKey nella stessa MyCombo; vietate soglie annidate, esiti equivalenti e selezione 12, anche dentro le combo. Ogni portafoglio contiene almeno una selezione verificata contro il risultato principale del modello."
   },
   "matches": {
@@ -32,134 +35,59 @@
       {
         "tier": "Safe",
         "status": "N/D",
-        "reason": "Controllo rischio: EV prudenziale -15.4% sotto il limite 0%.",
+        "reason": "Controllo rischio: Controllo rischio: EV prudenziale -38.4% sotto il limite 0%.",
         "legs": []
       },
       {
         "tier": "Balanced",
         "status": "N/D",
-        "reason": "Controllo rischio: EV prudenziale -66.9% sotto il limite 0%.",
+        "reason": "Controllo rischio: Controllo rischio: EV prudenziale -44.2% sotto il limite 0%.",
         "legs": []
       },
       {
         "tier": "Aggressive",
-        "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-08-27: almeno una gamba segue il risultato principale 1-0 (1); le altre seguono i volumi centrali o i titolari proiettati senza introdurre un esito opposto.",
-        "legs": [
-          {
-            "providerSelectionId": "5278857053",
-            "overlapKey": "model-btts",
-            "label": "Almeno una squadra non segna"
-          },
-          {
-            "providerSelectionId": "5278860721",
-            "overlapKey": "model-goals",
-            "label": "Under 3,5 gol"
-          },
-          {
-            "providerSelectionId": "5278856859",
-            "overlapKey": "model-1x2",
-            "label": "Milan vincente"
-          },
-          {
-            "providerSelectionId": "5287312143",
-            "overlapKey": "both-teams-corners",
-            "label": "Entrambe almeno 3 corner"
-          },
-          {
-            "providerSelectionId": "5278943240",
-            "overlapKey": "model-score-scenario",
-            "label": "U/O 2.5 TEAM 1 + U/O 1.5 TEAM 2 · UNDER+UNDER"
-          },
-          {
-            "providerSelectionId": "5287312261",
-            "overlapKey": "home-corners",
-            "label": "Milan meno di 8 corner"
-          },
-          {
-            "providerSelectionId": "5283451608",
-            "overlapKey": "away-shots-total",
-            "label": "Venezia almeno 8 tiri totali"
-          }
-        ]
+        "status": "N/D",
+        "reason": "Controllo rischio: Quota 1.05 fuori dall'intervallo prudenziale [1.1, 1.8).",
+        "legs": []
       }
     ],
     "fiorentina-frosinone-2026-27-md-02": [
       {
         "tier": "Safe",
         "status": "N/D",
-        "reason": "Controllo rischio: EV prudenziale -66.9% sotto il limite 0%.",
+        "reason": "Controllo rischio: Controllo rischio: EV prudenziale -33.6% sotto il limite 0%.",
         "legs": []
       },
       {
         "tier": "Balanced",
         "status": "N/D",
-        "reason": "Controllo rischio: EV prudenziale -49.1% sotto il limite 0%.",
+        "reason": "Controllo rischio: Controllo rischio: EV prudenziale -35.2% sotto il limite 0%.",
         "legs": []
       },
       {
         "tier": "Aggressive",
-        "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-08-27: almeno una gamba segue il risultato principale 1-0 (1); le altre seguono i volumi centrali o i titolari proiettati senza introdurre un esito opposto.",
-        "legs": [
-          {
-            "providerSelectionId": "5287312636",
-            "overlapKey": "away-corners",
-            "label": "Frosinone almeno 4 corner"
-          },
-          {
-            "providerSelectionId": "5287242715",
-            "overlapKey": "both-teams-shots-on-target",
-            "label": "Entrambe almeno 3 tiri in porta"
-          },
-          {
-            "providerSelectionId": "5278861587",
-            "overlapKey": "model-goals",
-            "label": "Under 3,5 gol"
-          },
-          {
-            "providerSelectionId": "5278861603",
-            "overlapKey": "model-double-chance",
-            "label": "Fiorentina o pareggio (1X)"
-          },
-          {
-            "providerSelectionId": "5278919069",
-            "overlapKey": "model-score-scenario",
-            "label": "U/O 2.5 TEAM 1 + U/O 1.5 TEAM 2 · UNDER+UNDER"
-          },
-          {
-            "providerSelectionId": "5278948838",
-            "overlapKey": "model-team-goal",
-            "label": "Fiorentina segna almeno un gol"
-          },
-          {
-            "providerSelectionId": "5287242128",
-            "overlapKey": "away-shots-total",
-            "label": "Frosinone almeno 9 tiri totali"
-          },
-          {
-            "providerSelectionId": "5287312714",
-            "overlapKey": "match-corners",
-            "label": "Partita almeno 9 corner"
-          }
-        ]
+        "status": "N/D",
+        "reason": "Controllo rischio: Controllo rischio: EV prudenziale -6.1% sotto il limite 0%.",
+        "legs": []
       }
     ],
     "monza-udinese-2026-27-md-02": [
       {
         "tier": "Safe",
         "status": "N/D",
-        "reason": "Nessuna combinazione raggiunge il target 5 rispettando qualita, unicita e limite di 8 gambe.",
+        "reason": "Controllo rischio: Controllo rischio: EV prudenziale -37% sotto il limite 0%.",
         "legs": []
       },
       {
         "tier": "Balanced",
         "status": "N/D",
-        "reason": "Controllo rischio: EV prudenziale -60.3% sotto il limite 0%.",
+        "reason": "Controllo rischio: Controllo rischio: EV prudenziale -56.7% sotto il limite 0%.",
         "legs": []
       },
       {
         "tier": "Aggressive",
         "status": "N/D",
-        "reason": "Controllo rischio: EV prudenziale -35.5% sotto il limite 0%.",
+        "reason": "Controllo rischio: Controllo rischio: EV prudenziale -26% sotto il limite 0%.",
         "legs": []
       }
     ],
@@ -167,38 +95,63 @@
       {
         "tier": "Safe",
         "status": "N/D",
-        "reason": "Controllo rischio: Gamba a rischio 60.4 oltre il limite 58. EV prudenziale -80.8% sotto il limite 0%.",
+        "reason": "Controllo rischio: Controllo rischio: Gamba a rischio 60.4 oltre il limite 58. EV prudenziale -57.2% sotto il limite 0%.",
         "legs": []
       },
       {
         "tier": "Balanced",
         "status": "N/D",
-        "reason": "Controllo rischio: EV prudenziale -50.7% sotto il limite 0%.",
+        "reason": "Controllo rischio: Controllo rischio: EV prudenziale -37.9% sotto il limite 0%.",
         "legs": []
       },
       {
         "tier": "Aggressive",
-        "status": "N/D",
-        "reason": "Controllo rischio: EV prudenziale -62% sotto il limite 0%.",
-        "legs": []
+        "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-08-28: almeno una gamba segue il risultato principale 2-1 (1); le altre seguono i volumi centrali o i titolari proiettati senza introdurre un esito opposto.",
+        "legs": [
+          {
+            "providerSelectionId": "5278955852",
+            "overlapKey": "model-team-goal",
+            "label": "Sassuolo segna almeno un gol"
+          },
+          {
+            "providerSelectionId": "5278889258",
+            "overlapKey": "model-goals",
+            "label": "Over 1,5 gol"
+          },
+          {
+            "providerSelectionId": "5278889293",
+            "overlapKey": "model-double-chance",
+            "label": "Sassuolo o pareggio (1X)"
+          },
+          {
+            "providerSelectionId": "5278882399",
+            "overlapKey": "model-btts",
+            "label": "Entrambe le squadre segnano"
+          },
+          {
+            "providerSelectionId": "5278954970",
+            "overlapKey": "model-score-scenario",
+            "label": "U/O 0.5 TEAM 1 + U/O 1.5 TEAM 2 · OVER+UNDER"
+          }
+        ]
       }
     ],
     "juventus-parma-2026-27-md-02": [
       {
         "tier": "Safe",
         "status": "N/D",
-        "reason": "Controllo rischio: EV prudenziale -70.6% sotto il limite 0%.",
+        "reason": "Controllo rischio: Controllo rischio: EV prudenziale -26.5% sotto il limite 0%.",
         "legs": []
       },
       {
         "tier": "Balanced",
         "status": "N/D",
-        "reason": "Controllo rischio: EV prudenziale -79.5% sotto il limite 0%.",
+        "reason": "Controllo rischio: Controllo rischio: EV prudenziale -68.1% sotto il limite 0%.",
         "legs": []
       },
       {
         "tier": "Aggressive",
-        "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-08-27: almeno una gamba segue il risultato principale 1-0 (1); le altre seguono i volumi centrali o i titolari proiettati senza introdurre un esito opposto.",
+        "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-08-28: almeno una gamba segue il risultato principale 1-0 (1); le altre seguono i volumi centrali o i titolari proiettati senza introdurre un esito opposto.",
         "legs": [
           {
             "providerSelectionId": "5278899676",
@@ -206,39 +159,24 @@
             "label": "Under 3,5 gol"
           },
           {
-            "providerSelectionId": "5278897426",
-            "overlapKey": "model-1x2",
-            "label": "Juventus vincente"
-          },
-          {
-            "providerSelectionId": "5278941529",
-            "overlapKey": "model-score-scenario",
-            "label": "U/O 0.5 TEAM 1 + U/O 0.5 TEAM 2 · OVER+UNDER"
-          },
-          {
-            "providerSelectionId": "5278942570",
-            "overlapKey": "model-team-goal",
-            "label": "Parma non segna"
-          },
-          {
             "providerSelectionId": "5278897541",
             "overlapKey": "model-btts",
             "label": "Almeno una squadra non segna"
           },
           {
-            "providerSelectionId": "5283532289",
-            "overlapKey": "away-shots-total",
-            "label": "Parma almeno 6 tiri totali"
+            "providerSelectionId": "5278897426",
+            "overlapKey": "model-1x2",
+            "label": "Juventus vincente"
           },
           {
-            "providerSelectionId": "5283531312",
-            "overlapKey": "both-teams-shots-on-target",
-            "label": "Entrambe almeno 2 tiri in porta"
+            "providerSelectionId": "5278902416",
+            "overlapKey": "model-score-scenario",
+            "label": "U/O 2.5 Juventus · UNDER"
           },
           {
-            "providerSelectionId": "5287283181",
-            "overlapKey": "away-corners",
-            "label": "Parma almeno 3 corner"
+            "providerSelectionId": "5278942570",
+            "overlapKey": "model-team-goal",
+            "label": "Parma non segna"
           }
         ]
       }
@@ -247,19 +185,19 @@
       {
         "tier": "Safe",
         "status": "N/D",
-        "reason": "Controllo rischio: Rischio medio 43.9 oltre il limite 42.",
+        "reason": "Controllo rischio: Candidati insufficienti per il profilo Safe: servono almeno 3 gambe uniche e modellate, senza sovrapposizioni.",
         "legs": []
       },
       {
         "tier": "Balanced",
         "status": "N/D",
-        "reason": "Nessuna combinazione raggiunge il target 10 rispettando qualita, unicita e limite di 8 gambe.",
+        "reason": "Controllo rischio: EV prudenziale -49.7% sotto il limite 0%.",
         "legs": []
       },
       {
         "tier": "Aggressive",
         "status": "N/D",
-        "reason": "Nessuna combinazione raggiunge il target 20 rispettando qualita, unicita e limite di 8 gambe.",
+        "reason": "Controllo rischio: Candidati insufficienti per il profilo Aggressive: servono almeno 5 gambe uniche e modellate, senza sovrapposizioni.",
         "legs": []
       }
     ],
@@ -267,19 +205,19 @@
       {
         "tier": "Safe",
         "status": "N/D",
-        "reason": "Nessuna combinazione raggiunge il target 5 rispettando qualita, unicita e limite di 8 gambe.",
+        "reason": "Controllo rischio: Candidati insufficienti per il profilo Safe: servono almeno 3 gambe uniche e modellate, senza sovrapposizioni.",
         "legs": []
       },
       {
         "tier": "Balanced",
         "status": "N/D",
-        "reason": "Controllo rischio: EV prudenziale -48.3% sotto il limite 0%.",
+        "reason": "Controllo rischio: Quota 1.85 fuori dall'intervallo prudenziale [1.1, 1.8).",
         "legs": []
       },
       {
         "tier": "Aggressive",
         "status": "N/D",
-        "reason": "Nessuna combinazione raggiunge il target 20 rispettando qualita, unicita e limite di 8 gambe.",
+        "reason": "Controllo rischio: Candidati insufficienti per il profilo Aggressive: servono almeno 5 gambe uniche e modellate, senza sovrapposizioni.",
         "legs": []
       }
     ],
@@ -287,19 +225,19 @@
       {
         "tier": "Safe",
         "status": "N/D",
-        "reason": "Controllo rischio: Rischio medio 44.2 oltre il limite 42. EV prudenziale -32% sotto il limite 0%.",
+        "reason": "Controllo rischio: Candidati insufficienti per il profilo Safe: servono almeno 3 gambe uniche e modellate, senza sovrapposizioni.",
         "legs": []
       },
       {
         "tier": "Balanced",
         "status": "N/D",
-        "reason": "Nessuna combinazione raggiunge il target 10 rispettando qualita, unicita e limite di 8 gambe.",
+        "reason": "Controllo rischio: Controllo rischio: EV prudenziale -49.9% sotto il limite 0%.",
         "legs": []
       },
       {
         "tier": "Aggressive",
         "status": "N/D",
-        "reason": "Nessuna combinazione raggiunge il target 20 rispettando qualita, unicita e limite di 8 gambe.",
+        "reason": "Controllo rischio: Candidati insufficienti per il profilo Aggressive: servono almeno 5 gambe uniche e modellate, senza sovrapposizioni.",
         "legs": []
       }
     ],
@@ -307,33 +245,33 @@
       {
         "tier": "Safe",
         "status": "N/D",
-        "reason": "Nessuna combinazione raggiunge il target 5 rispettando qualita, unicita e limite di 8 gambe.",
+        "reason": "Controllo rischio: Controllo rischio: Rischio medio 51 oltre il limite 42. Gamba a rischio 58.1 oltre il limite 58.",
         "legs": []
       },
       {
         "tier": "Balanced",
         "status": "N/D",
-        "reason": "Nessuna combinazione raggiunge il target 10 rispettando qualita, unicita e limite di 8 gambe.",
+        "reason": "Candidati insufficienti per il profilo Balanced: servono almeno 4 gambe uniche e modellate, senza sovrapposizioni.",
         "legs": []
       },
       {
         "tier": "Aggressive",
-        "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-08-27: almeno una gamba segue il risultato principale 0-1 (2); le altre seguono i volumi centrali o i titolari proiettati senza introdurre un esito opposto.",
+        "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-08-28: almeno una gamba segue il risultato principale 0-1 (2); le altre seguono i volumi centrali o i titolari proiettati senza introdurre un esito opposto.",
         "legs": [
           {
-            "providerSelectionId": "5278953435",
+            "providerSelectionId": "5278953446",
             "overlapKey": "model-team-goal",
-            "label": "Lecce non segna"
+            "label": "Roma segna almeno un gol"
           },
           {
-            "providerSelectionId": "5278895074",
+            "providerSelectionId": "5278895080",
             "overlapKey": "model-goals",
-            "label": "Under 2,5 gol"
+            "label": "Under 3,5 gol"
           },
           {
-            "providerSelectionId": "5278894285",
-            "overlapKey": "model-score-scenario",
-            "label": "COMBO: DOPPIA CHANCE + GOAL/NOGOAL · X2 + NOGOAL"
+            "providerSelectionId": "5278891968",
+            "overlapKey": "model-1x2",
+            "label": "Roma vincente"
           },
           {
             "providerSelectionId": "5278892081",
@@ -341,9 +279,9 @@
             "label": "Almeno una squadra non segna"
           },
           {
-            "providerSelectionId": "5278891968",
-            "overlapKey": "model-1x2",
-            "label": "Roma vincente"
+            "providerSelectionId": "5278894285",
+            "overlapKey": "model-score-scenario",
+            "label": "COMBO: DOPPIA CHANCE + GOAL/NOGOAL · X2 + NOGOAL"
           }
         ]
       }
@@ -351,8 +289,24 @@
     "atalanta-bologna-2026-27-md-02": [
       {
         "tier": "Safe",
-        "logic": "Profilo safe costruito sulle quote Sisal del 2026-08-27: almeno una gamba segue il risultato principale 1-0 (1); le altre seguono i volumi centrali o i titolari proiettati senza introdurre un esito opposto.",
+        "status": "N/D",
+        "reason": "Candidati insufficienti per il profilo Safe: servono almeno 3 gambe uniche e modellate, senza sovrapposizioni.",
+        "legs": []
+      },
+      {
+        "tier": "Balanced",
+        "logic": "Profilo balanced costruito sulle quote Sisal del 2026-08-28: almeno una gamba segue il risultato principale 1-0 (1); le altre seguono i volumi centrali o i titolari proiettati senza introdurre un esito opposto.",
         "legs": [
+          {
+            "providerSelectionId": "5278940545",
+            "overlapKey": "model-team-goal",
+            "label": "Atalanta segna almeno un gol"
+          },
+          {
+            "providerSelectionId": "5278888181",
+            "overlapKey": "model-goals",
+            "label": "Under 3,5 gol"
+          },
           {
             "providerSelectionId": "5278884533",
             "overlapKey": "model-score-scenario",
@@ -362,29 +316,13 @@
             "providerSelectionId": "5278888205",
             "overlapKey": "model-double-chance",
             "label": "Atalanta o pareggio (1X)"
-          },
-          {
-            "providerSelectionId": "5278888181",
-            "overlapKey": "model-goals",
-            "label": "Under 3,5 gol"
-          },
-          {
-            "providerSelectionId": "5278940545",
-            "overlapKey": "model-team-goal",
-            "label": "Atalanta segna almeno un gol"
           }
         ]
       },
       {
-        "tier": "Balanced",
-        "status": "N/D",
-        "reason": "Nessuna combinazione raggiunge il target 10 rispettando qualita, unicita e limite di 8 gambe.",
-        "legs": []
-      },
-      {
         "tier": "Aggressive",
         "status": "N/D",
-        "reason": "Nessuna combinazione raggiunge il target 20 rispettando qualita, unicita e limite di 8 gambe.",
+        "reason": "Candidati insufficienti per il profilo Aggressive: servono almeno 5 gambe uniche e modellate, senza sovrapposizioni.",
         "legs": []
       }
     ]

@@ -13,12 +13,11 @@ const requestedMatchdayIndex = process.argv.indexOf("--matchday");
 const matchday = requestedMatchdayIndex >= 0 ? Number(process.argv[requestedMatchdayIndex + 1]) : 1;
 if (!Number.isInteger(matchday) || matchday < 1 || matchday > 38) throw new Error("--matchday deve essere compreso tra 1 e 38.");
 
-const targets = { Safe: 5, Balanced: 10, Aggressive: 20 };
-const targetTolerancePct = 40;
+const referenceOdds = { Safe: 5, Balanced: 10, Aggressive: 20 };
 const tierLimits = {
-  Safe: { minimum: 2, maximum: 8 },
-  Balanced: { minimum: 2, maximum: 8 },
-  Aggressive: { minimum: 2, maximum: 8 }
+  Safe: { minimum: 3, maximum: 6, preferred: 3 },
+  Balanced: { minimum: 4, maximum: 7, preferred: 4 },
+  Aggressive: { minimum: 5, maximum: 8, preferred: 5 }
 };
 const teamById = new Map(teams.map(team => [team.id, team]));
 const matchById = new Map(matches.map(match => [match.id, match]));
@@ -274,7 +273,7 @@ function candidatePool(event, prediction, match) {
 }
 
 function selectPortfolio(pool, usedIds, tier, matchId) {
-  const target = targets[tier];
+  const reference = referenceOdds[tier];
   const limits = tierLimits[tier];
   const tierRank = { Safe: 0, Balanced: 1, Aggressive: 2 };
   const available = pool.filter(candidate => !usedIds.has(candidate.providerSelectionId) && tierRank[tier] >= tierRank[candidate.minimumTier || "Safe"]).slice(0, 120);
@@ -285,7 +284,6 @@ function selectPortfolio(pool, usedIds, tier, matchId) {
       for (const candidate of available) {
         if (state.keys.has(candidate.overlapKey) || state.legs.some(leg => leg.providerSelectionId === candidate.providerSelectionId)) continue;
         const product = state.product * candidate.odds;
-        if (product > target * (1 + targetTolerancePct / 100)) continue;
         expanded.push({
           product,
           legs: [...state.legs, candidate],
@@ -298,18 +296,21 @@ function selectPortfolio(pool, usedIds, tier, matchId) {
     const buckets = new Map();
     for (const state of expanded) {
       const key = `${state.legs.length}:${Math.round(Math.log(state.product) * 35)}:${state.anchor ? 1 : 0}`;
-      const score = Math.abs(Math.log(state.product / target)) * 1000 - state.quality / Math.max(1, state.legs.length);
+      const legDistance = Math.abs(state.legs.length - limits.preferred);
+      const referenceDistance = Math.abs(Math.log(state.product / reference));
+      const score = legDistance * 1000 + referenceDistance * 5 - state.quality / Math.max(1, state.legs.length);
       if (!buckets.has(key) || score < buckets.get(key).score) buckets.set(key, { state, score });
     }
     beam = [...buckets.values()].sort((a, b) => a.score - b.score).slice(0, 500).map(item => item.state);
   }
   const eligible = beam.filter(state => state.anchor
     && state.legs.length >= limits.minimum
-    && state.legs.length <= limits.maximum
-    && Math.abs(state.product - target) / target <= targetTolerancePct / 100);
+    && state.legs.length <= limits.maximum);
   eligible.sort((left, right) => {
-    const distance = Math.abs(left.product - target) - Math.abs(right.product - target);
-    return distance || right.quality - left.quality || left.legs.length - right.legs.length;
+    const legDistance = Math.abs(left.legs.length - limits.preferred) - Math.abs(right.legs.length - limits.preferred);
+    const quality = right.quality / right.legs.length - left.quality / left.legs.length;
+    const referenceDistance = Math.abs(Math.log(left.product / reference)) - Math.abs(Math.log(right.product / reference));
+    return legDistance || quality || referenceDistance || left.legs.length - right.legs.length;
   });
   if (!eligible[0]) return null;
   eligible[0].legs.forEach(leg => usedIds.add(leg.providerSelectionId));
@@ -329,9 +330,9 @@ const output = {
   constraints: {
     minLegOddsInclusive: 1.1,
     maxLegOddsExclusive: 1.8,
-    targets,
+    referenceOdds,
+    quotaPolicy: "orientativa",
     tierLimits,
-    targetTolerancePct,
     overlapPolicy: "Una sola gamba per overlapKey nella stessa MyCombo; vietate soglie annidate, esiti equivalenti e selezione 12, anche dentro le combo. Ogni portafoglio contiene almeno una selezione verificata contro il risultato principale del modello."
   },
   matches: {}
@@ -349,7 +350,7 @@ for (const event of odds.events) {
     if (!portfolio) return [tier, {
       tier,
       status: "N/D",
-      reason: `Nessuna combinazione raggiunge il target ${targets[tier]} rispettando qualita, unicita e limite di ${tierLimits[tier].maximum} gambe.`,
+      reason: `Candidati insufficienti per il profilo ${tier}: servono almeno ${tierLimits[tier].minimum} gambe uniche e modellate, senza sovrapposizioni.`,
       legs: []
     }];
     return [tier, {
