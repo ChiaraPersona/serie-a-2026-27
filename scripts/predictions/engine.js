@@ -959,9 +959,10 @@ function assessConfiguredPortfolio(legs, matrices, dataCompleteness, projections
 function configuredComboPortfolio(oddsEvent, config, matrices, dataCompleteness, projections) {
   if (!config?.portfolios?.length) return null;
   const constraints = config.constraints || {};
-  const onlyLegIntervals = constraints.eligibilityPolicy === "solo-intervalli-gambe";
+  const informationalRisk = constraints.riskPolicy === "informativa";
   const minimum = constraints.minLegOddsInclusive ?? 1;
   const maximum = constraints.maxLegOddsExclusive ?? 1.8;
+  const maximumInclusive = constraints.maxLegOddsInclusive;
   const flexibleQuota = constraints.quotaPolicy === "orientativa";
   const tolerance = constraints.targetTolerancePct ?? 20;
   const selectionIndex = new Map();
@@ -996,17 +997,18 @@ function configuredComboPortfolio(oddsEvent, config, matrices, dataCompleteness,
         return null;
       }
       const { market, selection } = resolved;
-      if (selection.status !== "open" || (!onlyLegIntervals && !(selection.odds >= minimum && selection.odds < maximum))) {
-        unavailableReason = `Quota ${selection.odds} fuori dall'intervallo prudenziale [${minimum}, ${maximum}).`;
+      const oddsInRange = selection.odds >= minimum && (Number.isFinite(maximumInclusive) ? selection.odds <= maximumInclusive : selection.odds < maximum);
+      if (selection.status !== "open" || !oddsInRange) {
+        unavailableReason = `Quota ${selection.odds} fuori dall'intervallo ammesso ${minimum}-${Number.isFinite(maximumInclusive) ? maximumInclusive : maximum}.`;
         return null;
       }
-      if (!onlyLegIntervals && (!leg.overlapKey || overlapKeys.has(leg.overlapKey))) {
+      if (!leg.overlapKey || overlapKeys.has(leg.overlapKey)) {
         throw new Error(`${oddsEvent.canonicalMatchId}/${portfolio.tier}: esito sovrapponibile ${leg.overlapKey || "senza chiave"}`);
       }
       if (selectionIds.has(String(selection.providerSelectionId))) {
         throw new Error(`${oddsEvent.canonicalMatchId}/${portfolio.tier}: selectionId duplicato ${selection.providerSelectionId}`);
       }
-      if (!onlyLegIntervals && portfolioSelectionIds.has(String(selection.providerSelectionId))) {
+      if (!constraints.allowCrossTierSelectionReuse && portfolioSelectionIds.has(String(selection.providerSelectionId))) {
         throw new Error(`${oddsEvent.canonicalMatchId}/${portfolio.tier}: proposta gia usata in un'altra MyCombo ${selection.providerSelectionId}`);
       }
       overlapKeys.add(leg.overlapKey);
@@ -1064,6 +1066,7 @@ function configuredComboPortfolio(oddsEvent, config, matrices, dataCompleteness,
       targetOdds,
       quotaPolicy: flexibleQuota ? "orientativa" : "target",
       eligibilityPolicy: constraints.eligibilityPolicy || null,
+      riskPolicy: constraints.riskPolicy || null,
       odds,
       distancePct,
       legs: enrichedLegs,
@@ -1073,7 +1076,7 @@ function configuredComboPortfolio(oddsEvent, config, matrices, dataCompleteness,
       prudentProbabilityPct,
       fairOdds: assessment ? round(1 / Math.max(0.0001, assessment.prudentProbability), 2) : null,
       prudentExpectedValuePct,
-      qualityStatus: !assessment ? (onlyLegIntervals ? "editoriale" : "nd") : prudentExpectedValuePct >= 0 ? "qualificata" : prudentExpectedValuePct >= -10 ? "da valutare" : "editoriale",
+      qualityStatus: !assessment ? (informationalRisk ? "editoriale" : "nd") : prudentExpectedValuePct >= 0 ? "qualificata" : prudentExpectedValuePct >= -10 ? "da valutare" : "editoriale",
       weakestLeg: weakestLeg ? { label: weakestLeg.label, prudentProbabilityPct: weakestLeg.prudentProbabilityPct } : null,
       probabilityMethod: assessment ? "Stima prudenziale: congiunzione esatta dei mercati gol, volumi modellati e penalita per dipendenze residue." : null,
       probabilityStatus: assessment ? null : "N/D · stima congiunta non supportata"

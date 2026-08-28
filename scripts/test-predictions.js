@@ -103,16 +103,18 @@ for (const prediction of dataset.predictions) {
       assert(riskAssessment && typeof riskAssessment.allowed === "boolean", `${prediction.matchId}/${combo.tier}: controllo rischio assente`);
       const configuredSource = myComboMd2Source.matches[prediction.matchId] ? myComboMd2Source : myComboSource;
       const limits = configuredSource.constraints.tierLimits[combo.tier];
-      const onlyLegIntervals = configuredSource.constraints.eligibilityPolicy === "solo-intervalli-gambe";
+      const informationalRisk = configuredSource.constraints.riskPolicy === "informativa";
       if (combo.qualityStatus === "nd") {
         assert.strictEqual(combo.legs.length, 0, `${prediction.matchId}/${combo.tier}: un profilo N/D non deve occupare spazio con gambe`);
         assert(combo.unavailableReason, `${prediction.matchId}/${combo.tier}: motivazione N/D assente`);
         continue;
       }
       assert(combo.legs.length >= limits.minimum && combo.legs.length <= limits.maximum, `${prediction.matchId}/${combo.tier}: numero gambe fuori limite`);
-      if (!onlyLegIntervals) assert(combo.legs.every(leg => leg.odds >= (prediction.matchId.endsWith("-md-02") ? 1.1 : 1) && leg.odds < 1.8), `${prediction.matchId}/${combo.tier}: quota individuale fuori limite`);
+      const minimumLegOdds = configuredSource.constraints.minLegOddsInclusive ?? 1;
+      const maximumLegOdds = configuredSource.constraints.maxLegOddsInclusive ?? configuredSource.constraints.maxLegOddsExclusive ?? 1.8;
+      assert(combo.legs.every(leg => leg.odds >= minimumLegOdds && (configuredSource.constraints.maxLegOddsInclusive != null ? leg.odds <= maximumLegOdds : leg.odds < maximumLegOdds)), `${prediction.matchId}/${combo.tier}: quota individuale fuori limite`);
       assert.strictEqual(new Set(combo.legs.map(leg => leg.providerSelectionId)).size, combo.legs.length, `${prediction.matchId}/${combo.tier}: selectionId ripetuti`);
-      if (!onlyLegIntervals) assert.strictEqual(new Set(combo.legs.map(leg => leg.overlapKey)).size, combo.legs.length, `${prediction.matchId}/${combo.tier}: esiti sovrapponibili`);
+      assert.strictEqual(new Set(combo.legs.map(leg => leg.overlapKey)).size, combo.legs.length, `${prediction.matchId}/${combo.tier}: mercati ripetuti o esiti sovrapponibili`);
       if (configuredSource.constraints.quotaPolicy !== "orientativa") {
         assert(Math.abs(combo.odds - combo.targetOdds) / combo.targetOdds <= configuredSource.constraints.targetTolerancePct / 100, `${prediction.matchId}/${combo.tier}: quota combinata lontana dal target`);
       } else {
@@ -120,7 +122,7 @@ for (const prediction of dataset.predictions) {
       }
       const product = combo.legs.reduce((total, leg) => total * leg.odds, 1);
       assert(Math.abs(combo.odds - product) < 0.011, `${prediction.matchId}/${combo.tier}: moltiplicazione quote incoerente`);
-      if (onlyLegIntervals && !Number.isFinite(combo.prudentProbabilityPct)) {
+      if (informationalRisk && !Number.isFinite(combo.prudentProbabilityPct)) {
         assert(String(combo.probabilityStatus).startsWith("N/D"), `${prediction.matchId}/${combo.tier}: indisponibilita delle metriche non dichiarata`);
       } else {
         assert(Number.isFinite(combo.prudentProbabilityPct) && Number.isFinite(combo.fairOdds) && Number.isFinite(combo.prudentExpectedValuePct), `${prediction.matchId}/${combo.tier}: metriche prudenziali mancanti`);
@@ -156,6 +158,10 @@ for (const prediction of dataset.predictions) {
   const favorite = homeWin >= awayWin ? { teamId: prediction.teamProjections[0].teamId, probability: homeWin, opponent: awayWin } : { teamId: prediction.teamProjections[1].teamId, probability: awayWin, opponent: homeWin };
   if (favorite.probability >= 0.5 && favorite.probability - favorite.opponent >= 0.15) assert.strictEqual(prediction.mvpCandidate.teamId, favorite.teamId, `${prediction.matchId}: MVP incoerente con favorita netta`);
 }
+const milanVenezia = dataset.predictions.find(prediction => prediction.matchId === "milan-venezia-2026-27-md-02");
+assert(milanVenezia.combinations.every(combo => !combo.legs.some(leg => leg.selection === "12")), "Milan-Venezia: il 12 non deve sostituire il più probabile 1X");
+assert(milanVenezia.combinations.some(combo => combo.legs.some(leg => leg.selection === "1X")), "Milan-Venezia: il più probabile 1X deve restare fra le proposte");
+assert(milanVenezia.combinations.every(combo => !combo.legs.some(leg => leg.selection?.startsWith("UNDER") && /U\/O 1\.5 (?:TEAM|SQUADRA) 1/i.test(leg.variant || ""))), "Milan-Venezia: evitare Under 1,5 casa contro la neopromossa");
 const torinoMilan = dataset.predictions.find(prediction => prediction.matchId === "torino-milan-2026-27-md-01");
 assert.strictEqual(torinoMilan.mvpCandidate.teamId, "milan", "Torino-Milan: il candidato MVP principale deve seguire il Milan favorito");
 assert.strictEqual(torinoMilan.mvpCandidate.mvpHistory.sourceUrl, dataset.sources.find(source => source.label.includes("Player of the Match"))?.url, "Torino-Milan: disponibilità dello storico MVP non esposta");

@@ -19,15 +19,22 @@ const predictionByMatch = new Map(predictions.map(prediction => [prediction.matc
 let valid = 0;
 
 for (const [matchId, portfolios] of Object.entries(source.matches || {})) {
-  if (!predictionByMatch.has(matchId)) throw new Error(`Pronostico non trovato: ${matchId}`);
+  const prediction = predictionByMatch.get(matchId);
+  if (!prediction) throw new Error(`Pronostico non trovato: ${matchId}`);
   for (const portfolio of portfolios) {
     const limits = source.constraints?.tierLimits?.[portfolio.tier];
     if (!limits) throw new Error(`Intervallo gambe mancante: ${matchId}/${portfolio.tier}`);
     if (!portfolio.legs?.length || portfolio.legs.length < limits.minimum || portfolio.legs.length > limits.maximum) {
       throw new Error(`${matchId}/${portfolio.tier}: ${portfolio.legs?.length || 0} gambe fuori dall'intervallo ${limits.minimum}-${limits.maximum}`);
     }
+    const combo = prediction.combinations?.find(item => item.tier === portfolio.tier);
+    if (!combo?.legs?.length || combo.qualityStatus === "nd") throw new Error(`${matchId}/${portfolio.tier}: portafoglio non disponibile nel pronostico rigenerato`);
+    const minimumOdds = source.constraints.minLegOddsInclusive;
+    const maximumOdds = source.constraints.maxLegOddsInclusive;
+    if (combo.legs.some(leg => leg.odds < minimumOdds || leg.odds > maximumOdds)) throw new Error(`${matchId}/${portfolio.tier}: quota singola fuori dal range ${minimumOdds}-${maximumOdds}`);
+    if (new Set(combo.legs.map(leg => leg.overlapKey)).size !== combo.legs.length) throw new Error(`${matchId}/${portfolio.tier}: famiglia di mercato ripetuta`);
     valid += 1;
   }
 }
 
-console.log(`OK intervalli MyCombo giornata ${matchday}: ${valid} portafogli validi · nessun altro vincolo di ammissibilita`);
+console.log(`OK MyCombo giornata ${matchday}: ${valid} portafogli · intervalli gambe, quote 1.10-1.85 e famiglie di mercato validate`);
