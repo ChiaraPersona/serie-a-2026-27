@@ -5,6 +5,7 @@ const { calculateStandings } = require("../standings.js");
 const root = path.resolve(__dirname, "../..");
 const read = file => JSON.parse(fs.readFileSync(path.join(root, file), "utf8"));
 const index = read("data/teams/index.json");
+const officialLineups = read("data/sources/official-lineups-2026-27.json");
 const playerLeaderboards = read("data/teams/player-leaderboards.json");
 const mainApp = fs.readdirSync(path.join(root, "js"), { recursive: true })
   .filter(file => file.endsWith(".js"))
@@ -110,7 +111,7 @@ for (const contract of [".squad-leaders-summary", ".squad-leaders-content", ".sq
 const readingLineupSource = mainApp.slice(mainApp.indexOf("function renderProbableLineups"), mainApp.indexOf("function renderReadingPilotEvidence"));
 assert.ok(teamInterface.includes("lineup.players.slice(offset, offset + size).reverse()"), "Le probabili formazioni delle pagine squadra devono essere specchiate orizzontalmente");
 assert.ok(readingLineupSource.includes("lineup.players.slice(offset,offset+size).reverse()"), "Le probabili formazioni delle Letture devono essere specchiate orizzontalmente");
-const officialFixtureByTeam = { inter: "inter-monza-2026-27-md-01", monza: "inter-monza-2026-27-md-01", udinese: "udinese-como-2026-27-md-01", como: "udinese-como-2026-27-md-01", parma: "parma-cagliari-2026-27-md-01", cagliari: "parma-cagliari-2026-27-md-01", genoa: "genoa-napoli-2026-27-md-01", napoli: "genoa-napoli-2026-27-md-01", frosinone: "frosinone-juventus-2026-27-md-01", juventus: "frosinone-juventus-2026-27-md-01", venezia: "milan-venezia-2026-27-md-02", lecce: "venezia-lecce-2026-27-md-01", torino: "torino-milan-2026-27-md-01", milan: "milan-venezia-2026-27-md-02", atalanta: "atalanta-sassuolo-2026-27-md-01", sassuolo: "atalanta-sassuolo-2026-27-md-01", bologna: "bologna-lazio-2026-27-md-01", lazio: "bologna-lazio-2026-27-md-01", roma: "roma-fiorentina-2026-27-md-01", fiorentina: "roma-fiorentina-2026-27-md-01" };
+const officialFixtureByTeam = { inter: "inter-monza-2026-27-md-01", monza: "monza-udinese-2026-27-md-02", udinese: "monza-udinese-2026-27-md-02", como: "udinese-como-2026-27-md-01", parma: "parma-cagliari-2026-27-md-01", cagliari: "parma-cagliari-2026-27-md-01", genoa: "genoa-napoli-2026-27-md-01", napoli: "genoa-napoli-2026-27-md-01", frosinone: "fiorentina-frosinone-2026-27-md-02", juventus: "frosinone-juventus-2026-27-md-01", venezia: "milan-venezia-2026-27-md-02", lecce: "venezia-lecce-2026-27-md-01", torino: "sassuolo-torino-2026-27-md-02", milan: "milan-venezia-2026-27-md-02", atalanta: "atalanta-sassuolo-2026-27-md-01", sassuolo: "sassuolo-torino-2026-27-md-02", bologna: "bologna-lazio-2026-27-md-01", lazio: "bologna-lazio-2026-27-md-01", roma: "roma-fiorentina-2026-27-md-01", fiorentina: "fiorentina-frosinone-2026-27-md-02" };
 for (const [teamId, fixtureId] of Object.entries(officialFixtureByTeam)) {
   const lineup = index.teams.find(team => team.id === teamId).probableLineup;
   assert.strictEqual(lineup.status, "official", `${teamId}: formazione ufficiale non applicata`);
@@ -120,7 +121,8 @@ for (const [teamId, fixtureId] of Object.entries(officialFixtureByTeam)) {
 }
 assert.strictEqual(index.teams.find(team => team.id === "genoa").probableLineup.substitutes.length, 13, "genoa: panchina ufficiale incompleta");
 assert.strictEqual(index.teams.find(team => team.id === "napoli").probableLineup.substitutes.length, 13, "napoli: panchina ufficiale incompleta");
-assert(index.teams.find(team => team.id === "torino").probableLineup.players.includes("Cesare Casadei") && !index.teams.find(team => team.id === "torino").probableLineup.players.includes("Alieu Njie"), "torino: correzione Casadei/Njie non applicata");
+const torinoMilanSource = officialLineups.fixtures.find(fixture => fixture.matchId === "torino-milan-2026-27-md-01").teams.find(team => team.teamId === "torino");
+assert(torinoMilanSource.players.some(player => player.currentName === "Cesare Casadei") && !torinoMilanSource.players.some(player => player.currentName === "Alieu Njie"), "torino: correzione storica Casadei/Njie non preservata");
 assert.ok(teamInterface.includes("probable-lineup-substitutes") && readingLineupSource.includes("reading-lineup-substitutes"), "Le panchine ufficiali non sono renderizzate nelle pagine squadra e Letture");
 assert.ok(teamInterface.includes('official ? "Formazione ufficiale" : "Probabile formazione"'), "Le pagine squadra non distinguono la formazione ufficiale");
 assert.ok(readingLineupSource.includes('officialLineups?"Formazioni ufficiali":referenceLineups?"Formazioni di riferimento":"Probabili formazioni"'), "La Lettura non distingue formazioni ufficiali, di riferimento e probabili");

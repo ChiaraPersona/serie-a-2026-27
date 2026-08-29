@@ -163,6 +163,9 @@ for (const prediction of dataset.predictions) {
   if (favorite.probability >= 0.5 && favorite.probability - favorite.opponent >= 0.15) assert.strictEqual(prediction.mvpCandidate.teamId, favorite.teamId, `${prediction.matchId}: MVP incoerente con favorita netta`);
 }
 const milanVenezia = dataset.predictions.find(prediction => prediction.matchId === "milan-venezia-2026-27-md-02");
+const fiorentinaFrosinone = dataset.predictions.find(prediction => prediction.matchId === "fiorentina-frosinone-2026-27-md-02");
+const monzaUdinese = dataset.predictions.find(prediction => prediction.matchId === "monza-udinese-2026-27-md-02");
+const sassuoloTorino = dataset.predictions.find(prediction => prediction.matchId === "sassuolo-torino-2026-27-md-02");
 assert(milanVenezia.combinations.every(combo => !combo.legs.some(leg => leg.selection === "12")), "Milan-Venezia: il 12 non deve sostituire il più probabile 1X");
 assert(milanVenezia.combinations.every(combo => !combo.legs.some(leg => leg.selection?.startsWith("UNDER") && /U\/O 1\.5 (?:TEAM|SQUADRA) 1/i.test(leg.variant || ""))), "Milan-Venezia: evitare Under 1,5 casa contro la neopromossa");
 const torinoMilan = dataset.predictions.find(prediction => prediction.matchId === "torino-milan-2026-27-md-01");
@@ -176,7 +179,10 @@ assert.strictEqual(torinoMilan.teamProjections[1].shotsTotal.inputs[0].source, "
 assert(secondMatchdayPredictions.every(prediction => prediction.market.status === "available" && prediction.market.provider === "Sisal"), "La seconda giornata deve usare le quote Sisal importate");
 assert(secondMatchdayPredictions.every(prediction => !prediction.dataQuality.missing.includes("quote 1X2 verificate")), "Le quote Sisal della seconda giornata non devono risultare mancanti");
 assert.strictEqual(milanVenezia.dataQuality.probableLineups, "22/22 titolari ufficiali confermati", "Milan-Venezia deve usare gli XI ufficiali della seconda giornata");
-assert(secondMatchdayPredictions.filter(prediction => prediction.matchId !== milanVenezia.matchId).every(prediction => prediction.dataQuality.probableLineups.includes("proiettati")), "Le altre formazioni della seconda giornata devono restare proiezioni editoriali");
+assert.strictEqual(fiorentinaFrosinone.dataQuality.probableLineups, "22/22 titolari ufficiali confermati", "Fiorentina-Frosinone deve usare gli XI ufficiali della seconda giornata");
+assert.strictEqual(monzaUdinese.dataQuality.probableLineups, "22/22 titolari ufficiali confermati", "Monza-Udinese deve usare gli XI ufficiali della seconda giornata");
+assert.strictEqual(sassuoloTorino.dataQuality.probableLineups, "22/22 titolari ufficiali confermati", "Sassuolo-Torino deve usare gli XI ufficiali della seconda giornata");
+assert(secondMatchdayPredictions.filter(prediction => ![milanVenezia.matchId, fiorentinaFrosinone.matchId, monzaUdinese.matchId, sassuoloTorino.matchId].includes(prediction.matchId)).every(prediction => prediction.dataQuality.probableLineups.includes("proiettati")), "Le altre formazioni della seconda giornata devono restare proiezioni editoriali");
 assert(firstMatchdayPredictions.every(prediction => (prediction.expectedGoals.components.recentForm.home?.currentSeasonMatches ?? 0) === 0 && (prediction.expectedGoals.components.recentForm.away?.currentSeasonMatches ?? 0) === 0), "I pronostici archiviati della prima giornata non devono usare risultati futuri");
 assert(secondMatchdayPredictions.every(prediction => prediction.expectedGoals.components.recentForm.home.currentSeasonMatches === 1 && prediction.expectedGoals.components.recentForm.away.currentSeasonMatches === 1), "La seconda giornata deve usare una gara conclusa 2026/27 per squadra nella forma recente");
 const goalTotals = firstMatchdayPredictions.map(prediction => prediction.expectedGoals.total);

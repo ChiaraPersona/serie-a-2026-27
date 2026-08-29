@@ -17,7 +17,7 @@ const calendarVersion = "20260829-milan-venezia-result-v1";
 const teamVersion = "20260829-milan-moreira-chukwueze-stats-v1";
 const leaderboardVersion = "20260829-milan-moreira-chukwueze-stats-v1";
 const bettingVersion = "20260829-milan-venezia-settlement-v1";
-const readingVersion = "20260829-milan-venezia-result-v2";
+const readingVersion = "20260829-md2-official-lineups-v2";
 const fantasyVersion = "20260827-fantasy-md2-identities-v2";
 const headToHeadPath = path.join(root, "data/generated/head-to-head/first-leg-2026-27.json");
 if (fs.existsSync(headToHeadPath)) {
