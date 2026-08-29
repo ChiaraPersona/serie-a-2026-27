@@ -11,10 +11,22 @@ function totalStat(match,key){
   return finite(home)&&finite(away)?Number(home)+Number(away):null;
 }
 
+function teamStatFromLabel(leg,match,key){
+  const [homeLabel,awayLabel]=String(leg?.fixture??"").split(/\s*[–-]\s*/);
+  const label=comparableName(leg?.label);
+  if(homeLabel&&label.startsWith(comparableName(homeLabel)))return match?.teamStats?.home?.[key];
+  if(awayLabel&&label.startsWith(comparableName(awayLabel)))return match?.teamStats?.away?.[key];
+  return null;
+}
+
 function thresholdFromLabel(label){
   const text=normalized(label);
   const atLeast=text.match(/ALMENO\s+(\d+(?:\.\d+)?)/);
   if(atLeast)return {value:Number(atLeast[1]),inclusive:true};
+  const lessThan=text.match(/MENO DI\s+(\d+(?:\.\d+)?)/);
+  if(lessThan)return {value:Number(lessThan[1]),inclusive:false};
+  const moreThan=text.match(/PI[UÙ] DI\s+(\d+(?:\.\d+)?)/);
+  if(moreThan)return {value:Number(moreThan[1]),inclusive:false};
   const line=text.match(/(?:UNDER|OVER)\s+(\d+(?:\.\d+)?)/);
   return line?{value:Number(line[1]),inclusive:false}:null;
 }
@@ -101,6 +113,11 @@ export function settleLeg(leg,match){
   if(market.includes("PUNTI CARTELLINI"))return unavailable();
 
   const threshold=thresholdFromLabel(leg?.label);
+  if(market.includes("SQUADRA X")){
+    if(market.includes("TIRI IN PORTA"))return settleThreshold(selection,teamStatFromLabel(leg,match,"shotsOnTarget"),threshold);
+    if(market.includes("TIRI TOTALI"))return settleThreshold(selection,teamStatFromLabel(leg,match,"shots"),threshold);
+    if(market.includes("CORNER"))return settleThreshold(selection,teamStatFromLabel(leg,match,"corners"),threshold);
+  }
   if(market==="UNDER/OVER")return settleThreshold(selection,total,threshold);
   if(market.includes("TIRI IN PORTA"))return settleThreshold(selection,totalStat(match,"shotsOnTarget"),threshold);
   if(market.includes("TIRI TOTALI"))return settleThreshold(selection,totalStat(match,"shots"),threshold);

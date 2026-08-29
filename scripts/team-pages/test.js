@@ -54,9 +54,9 @@ for (const [periodId, period] of Object.entries(playerLeaderboards.periods)) for
   assert.ok(ranking.players.every(player => !["Internazionale", "AS Roma"].includes(player.previousTeam)), `${metric}: alias squadra non normalizzato`);
   assert.ok(ranking.players.every(player => !player.sameClub || player.previousTeam === player.currentTeam), `${metric}: duplicato fra squadra attuale e precedente non riconosciuto`);
 }
-assert.strictEqual(playerLeaderboards.periods["2026/27"].rankings.foulsCommitted.availablePlayers, 255, "I falli 2026/27 verificati devono coprire tutti i partecipanti");
-assert.strictEqual(playerLeaderboards.periods["2026/27"].rankings.foulsWon.availablePlayers, 255, "I falli subiti 2026/27 verificati devono coprire tutti i partecipanti");
-assert.strictEqual(playerLeaderboards.periods.total.rankings.foulsWon.availablePlayers, 208, "Il totale falli deve includere soltanto i calciatori coperti in entrambe le stagioni");
+assert.strictEqual(playerLeaderboards.periods["2026/27"].rankings.foulsCommitted.availablePlayers, 257, "I falli 2026/27 verificati devono coprire tutti i partecipanti");
+assert.strictEqual(playerLeaderboards.periods["2026/27"].rankings.foulsWon.availablePlayers, 257, "I falli subiti 2026/27 verificati devono coprire tutti i partecipanti");
+assert.strictEqual(playerLeaderboards.periods.total.rankings.foulsWon.availablePlayers, 210, "Il totale falli deve includere soltanto i calciatori coperti in entrambe le stagioni");
 const currentParticipants = playerLeaderboards.periods["2026/27"].rankings.goals.availablePlayers;
 assert.ok(playerLeaderboards.periods["2026/27"].rankings.shots.availablePlayers < currentParticipants && playerLeaderboards.periods["2026/27"].rankings.shotsOnTarget.availablePlayers < currentParticipants, "La copertura parziale dei tiri 2026/27 deve restare esplicita");
 for (const contract of ["loadPlayerLeaderboards", "globalPlayerLeaderboards", "globalPlayerLeaderboardTable", "Top 15 calciatori per statistica", "data-player-period", "data-player-stat", "Totale 2025/26 + 2026/27", "serie-b-marker", "aria-pressed", "per90Value", "stessa riga"]) assert.ok(mainApp.includes(contract), `Top 15 globale: contratto ${contract} assente`);
@@ -72,7 +72,7 @@ assert.ok(!mainApp.includes("classifiche disponibili"), "Il conteggio delle clas
 assert.ok(!mainApp.includes('id="global-player-stat"'), "La selezione Top 15 non deve usare un menu a tendina");
 assert.ok(!mainApp.includes("Riepilogo statistico") && !mainApp.includes('class="season-summary"'), "Il vecchio riepilogo statistico non deve essere mostrato in Statistiche squadre");
 for (const contract of ["reading-fixture-preview", "Anteprima della lettura", "prediction.verdict.label", "likelyScore", "prediction.confidence.value"]) assert.ok(mainApp.includes(contract), `Card Letture: anteprima ${contract} assente`);
-for (const contract of ["readingPostMatchReport", "Tabellino e statistiche", "Partite concluse", "reading-player-table", "match.playerStats", "Analisi prepartita archiviata"]) assert.ok(mainApp.includes(contract), `Letture post-partita: contratto ${contract} assente`);
+for (const contract of ["readingPostMatchReport", "Tabellino e statistiche", "Partite concluse", "reading-player-table", "match.playerStats", "item.ownGoal", "Analisi prepartita archiviata"]) assert.ok(mainApp.includes(contract), `Letture post-partita: contratto ${contract} assente`);
 const postMatchSource = mainApp.slice(mainApp.indexOf("function readingPostMatchReport"), mainApp.indexOf("function readingPrototypeDetail"));
 assert.ok(!postMatchSource.includes("reading-post-match-score"), "Il tabellino non deve ripetere il riquadro con risultato e squadre");
 for (const contract of ['["Tiri totali", "shots", ""]', '["Falli commessi", "fouls", ""]', '["Falli subiti", "fouls", "", true]', 'fromOpponent?"away":"home"', 'fromOpponent?"home":"away"']) assert.ok(postMatchSource.includes(contract), `Tabella statistiche reali: contratto ${contract} assente`);

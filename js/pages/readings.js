@@ -48,7 +48,7 @@ function readingPostMatchReport(match,home,away){
   if(match.status!=="finished"||!match.score)return"";
   const teamFor=id=>id===home.id?home:away;
   const eventList=(items,renderer,emptyLabel)=>items?.length?`<ol>${items.map(renderer).join("")}</ol>`:`<p class="reading-post-match-empty">${emptyLabel}</p>`;
-  const scorers=eventList(match.scorers,item=>`<li><span>${item.minute}'</span><div><strong>${esc(item.player)}</strong><small>${esc(teamFor(item.team).name)}${item.assist?` · assist ${esc(item.assist)}`:""}</small></div></li>`,"Nessun gol");
+  const scorers=eventList(match.scorers,item=>`<li><span>${item.minute}'</span><div><strong>${esc(item.player)}</strong><small>${esc(teamFor(item.team).name)}${item.ownGoal?" · autogol":""}${item.assist?` · assist ${esc(item.assist)}`:""}</small></div></li>`,"Nessun gol");
   const bookings=eventList(match.bookings,item=>`<li><span class="reading-booking-card" aria-label="Cartellino giallo"></span><div><strong>${esc(item.player)}</strong><small>${item.minute}' · ${esc(teamFor(item.team).name)}</small></div></li>`,"Nessun ammonito");
   const substitutions=eventList(match.substitutions,item=>`<li><span>${item.minute}'</span><div><strong>${esc(item.playerIn)} <small>entra</small></strong><small>${esc(teamFor(item.team).name)} · esce ${esc(item.playerOut)}</small></div></li>`,"Nessuna sostituzione registrata");
   const statRows=[

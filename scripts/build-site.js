@@ -12,12 +12,12 @@ const footer = (depth = "") => `<footer class="site-footer"><div class="site-foo
 const fontLinks = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">';
 const withFonts = html => html.replace("</title>", `</title>${fontLinks}`);
 const version = "20260824-central-sources-page-v1";
-const homeVersion = "20260824-home-standings-links-v1";
-const calendarVersion = "20260825-calendar-clean-headings-v1";
-const teamVersion = "20260827-team-md2-identities-v2";
-const leaderboardVersion = "20260825-player-leaderboards-md1-final-v2";
-const bettingVersion = "20260827-schedina-md2-md1-matrix-v6";
-const readingVersion = "20260828-official-lineups-md2-v8";
+const homeVersion = "20260829-milan-venezia-result-v1";
+const calendarVersion = "20260829-milan-venezia-result-v1";
+const teamVersion = "20260829-milan-venezia-result-v1";
+const leaderboardVersion = "20260829-milan-venezia-result-v1";
+const bettingVersion = "20260829-milan-venezia-settlement-v1";
+const readingVersion = "20260829-milan-venezia-result-v2";
 const fantasyVersion = "20260827-fantasy-md2-identities-v2";
 const headToHeadPath = path.join(root, "data/generated/head-to-head/first-leg-2026-27.json");
 if (fs.existsSync(headToHeadPath)) {

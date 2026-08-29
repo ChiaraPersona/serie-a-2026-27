@@ -60,3 +60,19 @@ const multi = data.slips.find(slip => slip.type === "exact-score-multi");
 assert(multi && multi.legs.length === 6 && multi.legs.every(leg => leg.selection.split("/").map(item => item.trim()).includes(leg.predictedScore)), "Ventaglio II non include sempre lo scenario centrale");
 
 console.log(`Schedina MD2 valida: stessa matrice MD1, 8 proposte e ${allLegs.length} selezioni uniche, snapshot ${data.oddsRetrievedAt}.`);
+
+(async()=>{
+  const { settleLeg } = await import("../js/pages/betting-settlement.mjs");
+  const matches = read("data/normalized/matches.json");
+  const match = matches.find(item => item.id === "milan-venezia-2026-27-md-02");
+  const legs = allLegs.filter(leg => leg.matchId === match.id);
+  const status = text => settleLeg(legs.find(leg => leg.label.includes(text)), match).status;
+  assert.strictEqual(status("Venezia almeno 4 tiri in porta"), "lost", "I 2 tiri in porta del Venezia non raggiungono la soglia di 4");
+  assert.strictEqual(status("Milan meno di 7,5 corner"), "won", "I 2 corner del Milan restano sotto 7,5");
+  assert.strictEqual(status("Gonçalo Ramos almeno 1 tiri in porta"), "won", "I 3 tiri in porta di Ramos superano la soglia");
+  assert.strictEqual(status("Gonçalo Ramos gol o assist"), "won", "Il gol di Ramos rende verde il mercato gol o assist");
+  assert.strictEqual(status("Casa 0–2 gol"), "won", "Il 2-0 rientra nel Multigol casa/ospite scelto");
+  assert.strictEqual(status("Risultato esatto 1–0"), "lost", "Il risultato esatto 1-0 deve essere rosso sul 2-0");
+  assert.strictEqual(status("Risultati 1–0 / 2–0 / 2–1"), "won", "Il multiesito include il 2-0 finale");
+  console.log("Liquidazione Milan-Venezia MD2 valida: 5 esiti verdi e 2 rossi.");
+})().catch(error=>{console.error(error);process.exitCode=1;});
