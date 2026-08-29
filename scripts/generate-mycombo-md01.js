@@ -12,6 +12,9 @@ const teams = read("data/teams/index.json").teams;
 const requestedMatchdayIndex = process.argv.indexOf("--matchday");
 const matchday = requestedMatchdayIndex >= 0 ? Number(process.argv[requestedMatchdayIndex + 1]) : 1;
 if (!Number.isInteger(matchday) || matchday < 1 || matchday > 38) throw new Error("--matchday deve essere compreso tra 1 e 38.");
+const outputFilename = `mycombo-serie-a-2026-27-md-${String(matchday).padStart(2, "0")}.json`;
+const outputPath = path.join(root, "data", "sources", outputFilename);
+const previousOutput = fs.existsSync(outputPath) ? JSON.parse(fs.readFileSync(outputPath, "utf8")) : null;
 
 const referenceOdds = { Safe: 5, Balanced: 10, Aggressive: 20 };
 const minimumLegOdds = 1.1;
@@ -356,7 +359,11 @@ function selectPortfolio(pool, tier) {
 
 const targetPredictions = predictionData.predictions.filter(prediction => matchById.get(prediction.matchId)?.matchday === matchday);
 if (targetPredictions.length !== 10) throw new Error(`Pronostici giornata ${matchday} incompleti: ${targetPredictions.length}/10.`);
-if (targetPredictions.some(prediction => prediction.market?.status !== "available" || String(prediction.market.retrievedAt) !== String(odds.retrievedAt))) {
+const oddsEventByMatchId = new Map(odds.events.map(event => [event.canonicalMatchId, event]));
+if (targetPredictions.some(prediction => {
+  const event = oddsEventByMatchId.get(prediction.matchId);
+  return !event || prediction.market?.status !== "available" || String(prediction.market.retrievedAt) !== String(event.retrievedAt);
+})) {
   throw new Error(`I pronostici della giornata ${matchday} devono essere rigenerati sullo stesso snapshot Sisal prima di creare i portafogli.`);
 }
 
@@ -384,6 +391,11 @@ for (const event of odds.events) {
   const prediction = predictionById.get(event.canonicalMatchId);
   const match = matchById.get(event.canonicalMatchId);
   if (!prediction || !match || match.matchday !== matchday) continue;
+  if (match.status === "finished" && previousOutput?.matches?.[event.canonicalMatchId]) {
+    output.matches[event.canonicalMatchId] = previousOutput.matches[event.canonicalMatchId];
+    console.log(`${event.canonicalMatchId}: portafogli storici congelati (partita conclusa)`);
+    continue;
+  }
   const pool = candidatePool(event, prediction, match);
   console.log(`${event.canonicalMatchId}: ${pool.length} candidati modellati · ${pool.filter(candidate => candidate.anchor).length} ancore · ${new Set(pool.map(candidate => candidate.overlapKey)).size} gruppi`);
   const planned = new Map(["Aggressive", "Balanced", "Safe"].map(tier => {
@@ -396,7 +408,7 @@ for (const event of odds.events) {
     }];
     return [tier, {
       tier,
-      logic: `Profilo ${tier.toLowerCase()} costruito sulle quote Sisal del ${output.updatedAt}: quota ${referenceOdds[tier]} orientativa, ${tierLimits[tier].minimum}-${tierLimits[tier].maximum} gambe, mercati distinti, nessuno scenario di base ripetuto o annidato e quote singole ${minimumLegOdds.toFixed(2)}-${maximumLegOdds.toFixed(2)}. Il rischio resta informativo.`,
+      logic: `Profilo ${tier.toLowerCase()} costruito sulle quote Sisal del ${String(event.retrievedAt).slice(0, 10)}: quota ${referenceOdds[tier]} orientativa, ${tierLimits[tier].minimum}-${tierLimits[tier].maximum} gambe, mercati distinti, nessuno scenario di base ripetuto o annidato e quote singole ${minimumLegOdds.toFixed(2)}-${maximumLegOdds.toFixed(2)}. Il rischio resta informativo.`,
       legs: portfolio.legs.map(({ providerSelectionId, overlapKey, semanticKeys, label }) => ({ providerSelectionId, overlapKey, semanticKeys, label }))
     }];
 }));
@@ -404,6 +416,5 @@ for (const event of odds.events) {
 }
 
 if (Object.keys(output.matches).length !== 10) throw new Error(`Copertura MyCombo incompleta: ${Object.keys(output.matches).length}/10`);
-const outputFilename = `mycombo-serie-a-2026-27-md-${String(matchday).padStart(2, "0")}.json`;
-fs.writeFileSync(path.join(root, "data/sources", outputFilename), `${JSON.stringify(output, null, 2)}\n`);
+fs.writeFileSync(outputPath, `${JSON.stringify(output, null, 2)}\n`);
 console.log(`OK MyCombo giornata ${matchday}: ${Object.keys(output.matches).length} partite · 30 portafogli · snapshot ${output.updatedAt}`);

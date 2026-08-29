@@ -256,8 +256,11 @@ async function main() {
   }
   const squad = [];
   for (const seed of source.players) {
-    let entries = local.filter(entry => entry.playerId === seed.id);
-    if (!entries.length && externalByPlayer.has(seed.id)) entries = externalByPlayer.get(seed.id);
+    const localEntriesForPlayer = local.filter(entry => entry.playerId === seed.id);
+    const localEntryKeys = new Set(localEntriesForPlayer.map(entry => `${normalize(entry.team)}|${normalize(entry.competition)}`));
+    const supplementalEntries = (externalByPlayer.get(seed.id) || [])
+      .filter(entry => !localEntryKeys.has(`${normalize(entry.team)}|${normalize(entry.competition)}`));
+    const entries = [...localEntriesForPlayer, ...supplementalEntries];
     const p = profiles[seed.id];
     const completeness = entries.length ? (entries.some(entry => entry.minutes != null) ? "complete" : "partial") : "unavailable";
     const espnId = seed.espnId || inferredIds[seed.id] || null;
@@ -281,7 +284,7 @@ async function main() {
         ...(seed.transferSource ? [seed.transferSource] : []),
         ...entries.map(entry => ({ provider: entry.source, scope: `${entry.team} - ${entry.competition} 2025/26`, url: entry.sourceUrl, retrievedAt: entry.lastUpdated }))
       ],
-      dataQuality: { status: completeness, uncertainAssociation, associationMethod, note: entries.length ? (entries.some(entry => entry.minutes == null) ? "Statistiche stagionali disponibili; minuti non esposti dalla fonte." : "Statistiche aggregate dai roster partita ESPN.") : "Nessuna statistica 2025/26 verificata nel perimetro dei provider disponibili." }
+      dataQuality: { status: completeness, uncertainAssociation, associationMethod, note: entries.length ? (entries.some(entry => entry.minutes == null) ? "Statistiche stagionali disponibili; minuti non esposti dalla fonte." : localEntriesForPlayer.length && supplementalEntries.length ? "Statistiche 2025/26 aggregate dai roster partita ESPN e integrate con i totali stagionali ESPN Core dichiarati per club e competizione." : supplementalEntries.length && entries.every(entry => entry.source === "ESPN Core") ? "Statistiche 2025/26 importate dai totali stagionali ESPN Core dichiarati per club e competizione." : "Statistiche aggregate dai roster partita ESPN.") : "Nessuna statistica 2025/26 verificata nel perimetro dei provider disponibili." }
     };
     write(`data/players/milan/${player.id}.json`, player);
     squad.push(player);
