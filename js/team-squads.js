@@ -3,7 +3,7 @@
   if (!root) return;
 
   const base = document.body.dataset.depth === "team" ? "../" : "";
-  const release = "20260830-european-workload-calendar-v2";
+  const release = "20260830-season-comparison-list-v2";
   const defaultPlayerPhoto = `${base}assets/images/players/player-placeholder.png`;
   const esc = value => String(value ?? "").replace(/[&<>\"]/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[char]));
   const contrastInk = color => {
@@ -35,13 +35,14 @@
     const values = [stats?.yellowCards, stats?.secondYellowCards, stats?.straightRedCards];
     return values.every(item => item === null || item === undefined) ? null : values.reduce((total, item) => total + (item ?? 0), 0);
   };
-  const metric = (player, key) => {
+  const metric = (player, key, statsByPlayer = null) => {
     if (key === "age") return player.age;
     if (key === "marketValue") return player.marketValue?.amountEur;
-    if (key === "cards") return cards(player.previousSeason?.totals);
+    const entry = statsByPlayer?.get(player.id) || player.previousSeason?.totals || {};
+    if (key === "cards") return entry.cards ?? cards(entry);
     const per90Fields = { goalsPer90: "goals", assistsPer90: "assists", shotsPer90: "shots", shotsOnTargetPer90: "shotsOnTarget", cardsPer90: "cards", foulsCommittedPer90: "foulsCommitted", foulsWonPer90: "foulsWon" };
-    if (per90Fields[key]) return player.previousSeason?.totals?.per90?.[per90Fields[key]];
-    return player.previousSeason?.totals?.[key];
+    if (per90Fields[key]) return entry.per90?.[per90Fields[key]];
+    return entry[key];
   };
   const roleOrder = { Portiere: 0, Difensore: 1, Centrocampista: 2, Attaccante: 3 };
   const roleAbbreviations = {
@@ -123,6 +124,7 @@
   };
 
   const statGrid = (object, keys, compact = false) => `<div class="${compact ? "player-stat-grid" : "team-stat-grid"}">${keys.map(key => `<article><span>${labels[key] || key}</span><strong>${key.endsWith("Percentage") || key === "passAccuracy" || key === "savePercentage" ? pct(object?.[key]) : value(object?.[key])}</strong></article>`).join("")}</div>`;
+  const teamSeasonList = (object, keys) => `<dl class="team-season-list">${keys.map(key => `<div><dt>${labels[key] || key}</dt><dd>${key.endsWith("Percentage") ? pct(object?.[key]) : value(object?.[key])}</dd></div>`).join("")}</dl>`;
   const teamNavigation = (team, teams) => {
     const currentIndex = teams.findIndex(item => item.id === team.id);
     const previous = teams[(currentIndex - 1 + teams.length) % teams.length];
@@ -193,7 +195,6 @@
   const filters = () => `<div class="squad-controls"><label>Ricerca<input id="player-search" type="search" placeholder="Nome calciatore"></label><label>Ruolo<select id="role-filter"><option value="">Tutti</option><option>Portiere</option><option>Difensore</option><option>Centrocampista</option><option>Attaccante</option></select></label><label>Stato<select id="status-filter"><option value="">Tutti</option><option>confermato</option><option>nuovo acquisto</option><option>prestito</option><option>rientro dal prestito</option><option>primavera</option><option>da verificare</option></select></label><label>Ordina<select id="player-sort"><option value="role">Ruolo</option><option value="marketValue">Valore di mercato</option><option value="appearances">Presenze</option><option value="minutes">Minuti</option><option value="goals">Gol totali</option><option value="goalsPer90">Gol / 90</option><option value="assists">Assist totali</option><option value="assistsPer90">Assist / 90</option><option value="shots">Tiri totali</option><option value="shotsPer90">Tiri totali / 90</option><option value="shotsOnTarget">Tiri nello specchio</option><option value="shotsOnTargetPer90">Tiri nello specchio / 90</option><option value="cards">Cartellini totali</option><option value="cardsPer90">Cartellini / 90</option><option value="foulsCommitted">Falli commessi totali</option><option value="foulsCommittedPer90">Falli commessi / 90</option><option value="foulsWon">Falli subiti totali</option><option value="foulsWonPer90">Falli subiti / 90</option><option value="age">Età</option></select></label></div>`;
 
   const seasonTotals = player => player.previousSeason?.totals || player.previousSeason?.entries?.[0] || {};
-  const leaderboardValue = (entry, key) => key === "cards" ? cards(entry) : entry?.[key];
   const leaderboardStats = [
     { key: "appearances", label: "Presenze" }, { key: "minutes", label: "Minuti" },
     { key: "goals", label: "Gol", per90: true }, { key: "assists", label: "Assist", per90: true },
@@ -203,18 +204,6 @@
   ];
 
   const per90Rate = (total, minutes) => typeof total === "number" && typeof minutes === "number" && minutes > 0 ? Math.round((total * 90 / minutes) * 100) / 100 : null;
-
-  function previousSquadLeaderboardRows(players) {
-    return players.map(player => {
-      const entry = seasonTotals(player);
-      return {
-        player,
-        linked: true,
-        totals: Object.fromEntries(leaderboardStats.map(stat => [stat.key, leaderboardValue(entry, stat.key)])),
-        per90: entry.per90 || {}
-      };
-    });
-  }
 
   function currentSquadLeaderboardRows(team, matches) {
     const squadById = new Map(team.squad.map(player => [player.id, player]));
@@ -277,6 +266,34 @@
     });
   }
 
+  function combinedSquadStats(team, matches) {
+    const currentByPlayer = new Map(currentSquadLeaderboardRows(team, matches).map(row => [row.player.id, row.totals]));
+    const addCovered = (previous, current, currentPlayed) => {
+      if (currentPlayed > 0 && (current === null || current === undefined)) return null;
+      const values = [previous, current].filter(value => typeof value === "number");
+      return values.length ? values.reduce((total, value) => total + value, 0) : null;
+    };
+    return new Map(team.squad.map(player => {
+      const previous = seasonTotals(player);
+      const current = currentByPlayer.get(player.id) || null;
+      const currentPlayed = current?.appearances || 0;
+      const minutes = addCovered(previous.minutes, current?.minutes, currentPlayed);
+      const totals = {
+        appearances: addCovered(previous.appearances, current?.appearances, 0),
+        minutes,
+        goals: addCovered(previous.goals, current?.goals, currentPlayed),
+        assists: addCovered(previous.assists, current?.assists, currentPlayed),
+        shots: addCovered(previous.shots, current?.shots, currentPlayed),
+        shotsOnTarget: addCovered(previous.shotsOnTarget, current?.shotsOnTarget, currentPlayed),
+        cards: addCovered(cards(previous), current?.cards, currentPlayed),
+        foulsCommitted: addCovered(previous.foulsCommitted, current?.foulsCommitted, currentPlayed),
+        foulsWon: addCovered(previous.foulsWon, current?.foulsWon, currentPlayed)
+      };
+      totals.per90 = Object.fromEntries(leaderboardStats.filter(stat => stat.per90).map(stat => [stat.key, per90Rate(totals[stat.key], minutes)]));
+      return [player.id, totals];
+    }));
+  }
+
   function squadLeaderboardSection(rows, teamName, season) {
     const cardsHtml = leaderboardStats.map(stat => {
       const leaders = rows.map(row => ({ player: row.player, linked: row.linked, total: row.totals[stat.key], rate: row.per90?.[stat.key] }))
@@ -285,27 +302,23 @@
         .slice(0, 3);
       return `<article class="squad-leader-card"><header><h4>${esc(stat.label)}</h4><span>${stat.per90 ? "Totale · /90" : "Totale"}</span></header>${leaders.length ? `<ol>${leaders.map((item, index) => `<li><span class="leader-rank">${index + 1}</span>${item.linked ? `<button class="leader-player" type="button" data-player-id="${esc(item.player.id)}">${esc(item.player.name)}</button>` : `<span class="leader-player leader-player-unlinked">${esc(item.player.name)}<small>Scheda N/D</small></span>`}<strong>${value(item.total)}${stat.per90 ? `<small>${value(item.rate)} /90</small>` : ""}</strong></li>`).join("")}</ol>` : `<p class="muted">Dati non disponibili</p>`}</article>`;
     }).join("");
-    const current = season === "2026/27";
-    const description = current
-      ? "Classifica sulle partite concluse e sui soli campi giocatore disponibili. Le metriche non coperte restano N/D."
-      : "Classifica basata sui valori totali. Dove previsto, accanto al totale è indicata anche la media ogni 90 minuti.";
+    const description = "Classifica sulle partite concluse e sui soli campi giocatore disponibili. Le metriche non coperte restano N/D.";
     const titleId = `squad-leaders-title-${season.replace("/", "-")}`;
-    return `<details class="squad-leaders squad-leaders-period" aria-labelledby="${titleId}"><summary class="squad-leaders-summary"><span class="squad-leaders-heading"><span><span class="eyebrow">Top 3 per statistica</span><strong id="${titleId}">I migliori di ${esc(teamName)} nel ${season}</strong></span><span>${current ? "Stagione in corso" : "Archivio"}</span></span></summary><div class="squad-leaders-content"><p>${description}</p><div class="squad-leader-grid">${cardsHtml}</div></div></details>`;
+    return `<section class="squad-leaders squad-leaders-period" aria-labelledby="${titleId}"><header class="squad-leaders-header"><span class="squad-leaders-heading"><span><span class="eyebrow">Top 3 per statistica</span><strong id="${titleId}">I migliori di ${esc(teamName)} nel ${season}</strong></span><span>Stagione in corso</span></span></header><div class="squad-leaders-content"><p>${description}</p><div class="squad-leader-grid">${cardsHtml}</div></div></section>`;
   }
 
   function squadLeaderboards(team, matches) {
     const currentRows = currentSquadLeaderboardRows(team, matches);
-    const previousRows = previousSquadLeaderboardRows(team.squad);
-    return `<div id="squad-leaderboards" class="squad-leaderboards">${squadLeaderboardSection(currentRows, team.name, "2026/27")}${squadLeaderboardSection(previousRows, team.name, "2025/26")}</div>`;
+    return `<div id="squad-leaderboards" class="squad-leaderboards">${squadLeaderboardSection(currentRows, team.name, "2026/27")}</div>`;
   }
 
-  function squadTable(players) {
+  function squadTable(players, statsByPlayer) {
     if (!players.length) return `<div class="data-warning"><strong>Nessun calciatore corrisponde ai filtri</strong><p>Modifica ricerca, ruolo o stato per visualizzare di nuovo la rosa.</p></div>`;
     const statColumns = Array.from({ length: 14 }, () => '<col class="squad-col-stat">').join("");
     return `<p class="squad-count" aria-live="polite">${players.length} calciator${players.length === 1 ? "e" : "i"}</p><div class="table-wrap squad-table-wrap" role="region" aria-label="Statistiche calciatori; scorri orizzontalmente e verticalmente" tabindex="0"><table class="squad-table"><colgroup><col class="squad-col-player"><col class="squad-col-role"><col class="squad-col-market"><col class="squad-col-played"><col class="squad-col-minutes">${statColumns}</colgroup><thead><tr><th rowspan="2">Calciatore</th><th rowspan="2">Ruolo</th><th rowspan="2">Valore mercato</th><th rowspan="2">PG</th><th rowspan="2">Min</th><th colspan="2">Gol</th><th colspan="2">Assist</th><th colspan="2">Tiri totali</th><th colspan="2">Tiri nello specchio</th><th colspan="2">Cartellini</th><th colspan="2">Falli commessi</th><th colspan="2">Falli subiti</th></tr><tr><th>Tot.</th><th>/90</th><th>Tot.</th><th>/90</th><th>Tot.</th><th>/90</th><th>Tot.</th><th>/90</th><th>Tot.</th><th>/90</th><th>Tot.</th><th>/90</th><th>Tot.</th><th>/90</th></tr></thead><tbody>${players.map(player => {
-      const entry = seasonTotals(player);
+      const entry = statsByPlayer.get(player.id) || seasonTotals(player);
       const avatar = `<img class="mini-avatar${player.photo ? "" : " is-fallback"}" src="${esc(player.photo || defaultPlayerPhoto)}" data-player-photo data-fallback="${esc(defaultPlayerPhoto)}" alt="" loading="lazy" decoding="async">`;
-      return `<tr data-player-id="${esc(player.id)}"><td><button class="player-open" type="button" data-player-id="${esc(player.id)}">${avatar}<span><strong>${esc(player.name)}</strong><small>${value(player.shirtNumber)} · ${value(player.nationality)}</small></span></button></td><td>${value(displayRole(player))}</td><td>${player.marketValue ? `<a class="market-value" href="${esc(player.marketValue.sourceUrl)}" target="_blank" rel="noreferrer">${value(player.marketValue.label)}</a>` : "N/D"}</td><td>${value(entry.appearances)}</td><td>${value(entry.minutes)}</td><td>${value(entry.goals)}</td><td>${value(entry.per90?.goals)}</td><td>${value(entry.assists)}</td><td>${value(entry.per90?.assists)}</td><td>${value(entry.shots)}</td><td>${value(entry.per90?.shots)}</td><td>${value(entry.shotsOnTarget)}</td><td>${value(entry.per90?.shotsOnTarget)}</td><td>${value(cards(entry))}</td><td>${value(entry.per90?.cards)}</td><td>${value(entry.foulsCommitted)}</td><td>${value(entry.per90?.foulsCommitted)}</td><td>${value(entry.foulsWon)}</td><td>${value(entry.per90?.foulsWon)}</td></tr>`;
+      return `<tr data-player-id="${esc(player.id)}"><td><button class="player-open" type="button" data-player-id="${esc(player.id)}">${avatar}<span><strong>${esc(player.name)}</strong><small>${value(player.shirtNumber)} · ${value(player.nationality)}</small></span></button></td><td>${value(displayRole(player))}</td><td>${player.marketValue ? `<a class="market-value" href="${esc(player.marketValue.sourceUrl)}" target="_blank" rel="noreferrer">${value(player.marketValue.label)}</a>` : "N/D"}</td><td>${value(entry.appearances)}</td><td>${value(entry.minutes)}</td><td>${value(entry.goals)}</td><td>${value(entry.per90?.goals)}</td><td>${value(entry.assists)}</td><td>${value(entry.per90?.assists)}</td><td>${value(entry.shots)}</td><td>${value(entry.per90?.shots)}</td><td>${value(entry.shotsOnTarget)}</td><td>${value(entry.per90?.shotsOnTarget)}</td><td>${value(entry.cards ?? cards(entry))}</td><td>${value(entry.per90?.cards)}</td><td>${value(entry.foulsCommitted)}</td><td>${value(entry.per90?.foulsCommitted)}</td><td>${value(entry.foulsWon)}</td><td>${value(entry.per90?.foulsWon)}</td></tr>`;
     }).join("")}</tbody></table></div>`;
   }
 
@@ -326,28 +339,27 @@
   }
   const marketValuePanel = player => `<div class="player-market-panel"><span>Valore di mercato</span><strong>${value(player.marketValue?.label)}</strong><small>${player.marketValue ? `${esc(player.marketValue.provider)} · aggiornato ${esc(player.marketValue.retrievedAt)}` : "Dato non disponibile"}</small></div>`;
 
-  function teamSeasonStatsBlock(stats) {
+  function teamSeasonStatsColumn(stats) {
     const noMatches = stats.results.played === 0 ? '<p class="team-season-empty">Nessuna partita conclusa: i totali sono a zero e le medie restano N/D.</p>' : "";
-    return `<details class="detail-section team-season-section" data-team-season="${esc(stats.season)}"><summary class="team-season-summary"><span class="team-season-heading"><span><span class="eyebrow">${esc(stats.competition)}</span><strong>Statistiche ${esc(stats.season)}</strong></span><span>${value(stats.results.played)} partite concluse</span></span></summary><div class="team-season-content">${noMatches}<div class="team-season-group"><h3>Risultati</h3>${statGrid(stats.results, ["played", "won", "drawn", "lost", "points", "pointsPerGame", "goalsFor", "goalsAgainst", "goalDifference", "cleanSheets", "failedToScore", "winPercentage", "drawPercentage", "lossPercentage"])}</div><div class="team-season-group"><h3>Disciplina</h3>${statGrid(stats.discipline, ["foulsCommitted", "foulsCommittedPerGame", "foulsWon", "foulsWonPerGame", "yellowCards", "yellowCardsPerGame", "secondYellowCards", "straightRedCards", "dismissals", "penaltiesConceded", "penaltiesWon", "disciplineIndex"])}</div><div class="team-season-group"><h3>Casa e trasferta</h3><div class="split-grid"><article><h4>Casa</h4>${statGrid(stats.homeAway.home, ["played", "won", "drawn", "lost", "goalsFor", "goalsAgainst", "yellowCards"])}</article><article><h4>Trasferta</h4>${statGrid(stats.homeAway.away, ["played", "won", "drawn", "lost", "goalsFor", "goalsAgainst", "yellowCards"])}</article></div></div></div></details>`;
+    return `<article class="team-season-column" data-team-season="${esc(stats.season)}"><header class="team-season-heading"><div><span class="eyebrow">${esc(stats.competition)}</span><h2>Statistiche ${esc(stats.season)}</h2></div><span>${value(stats.results.played)} partite concluse</span></header>${noMatches}<div class="team-season-group"><h3>Risultati</h3>${teamSeasonList(stats.results, ["played", "won", "drawn", "lost", "points", "pointsPerGame", "goalsFor", "goalsAgainst", "goalDifference", "cleanSheets", "failedToScore", "winPercentage", "drawPercentage", "lossPercentage"])}</div><div class="team-season-group"><h3>Disciplina</h3>${teamSeasonList(stats.discipline, ["foulsCommitted", "foulsCommittedPerGame", "foulsWon", "foulsWonPerGame", "yellowCards", "yellowCardsPerGame", "secondYellowCards", "straightRedCards", "dismissals", "penaltiesConceded", "penaltiesWon", "disciplineIndex"])}</div><div class="team-season-group"><h3>Casa e trasferta</h3><div class="team-season-splits"><section><h4>Casa</h4>${teamSeasonList(stats.homeAway.home, ["played", "won", "drawn", "lost", "goalsFor", "goalsAgainst", "yellowCards"])}</section><section><h4>Trasferta</h4>${teamSeasonList(stats.homeAway.away, ["played", "won", "drawn", "lost", "goalsFor", "goalsAgainst", "yellowCards"])}</section></div></div></article>`;
   }
 
-  function teamTotalStatsBlock(stats, promoted) {
-    const mixedCompetitionNote = promoted ? '<p class="team-season-empty">Il totale comprende Serie B 2025/26 e Serie A 2026/27: è un riepilogo numerico, non un confronto diretto di rendimento.</p>' : "";
-    return `<details class="detail-section team-total-section" data-team-season="total"><summary class="team-season-summary"><span class="team-season-heading"><span><span class="eyebrow">Riepilogo complessivo</span><strong>Totale 2025/26 + 2026/27</strong></span><span>${esc(stats.competition)}</span></span></summary><div class="team-season-content">${mixedCompetitionNote}<div class="team-season-group"><h3>Risultati complessivi</h3>${statGrid(stats.results, ["played", "won", "drawn", "lost", "points", "pointsPerGame", "goalsFor", "goalsAgainst", "goalDifference", "cleanSheets", "failedToScore", "winPercentage", "drawPercentage", "lossPercentage"])}</div><div class="team-season-group"><h3>Disciplina complessiva</h3>${statGrid(stats.discipline, ["foulsCommitted", "foulsCommittedPerGame", "foulsWon", "foulsWonPerGame", "yellowCards", "yellowCardsPerGame", "secondYellowCards", "straightRedCards", "dismissals", "penaltiesConceded", "penaltiesWon", "disciplineIndex"])}</div></div></details>`;
+  function teamSeasonComparison(currentStats, previousStats) {
+    return `<section class="detail-section team-season-comparison" aria-labelledby="team-season-comparison-title"><header class="team-season-comparison-heading"><span class="eyebrow">Confronto stagionale</span><h2 id="team-season-comparison-title">Statistiche squadra</h2></header><div class="team-season-columns">${currentStats ? teamSeasonStatsColumn(currentStats) : ""}${teamSeasonStatsColumn(previousStats)}</div></section>`;
   }
 
   function teamPage(team, objectiveDataset, standings, teams, matches, teamStyleProfiles, europeanFixtures) {
     const currentStats = team.teamStats.seasons?.["2026/27"];
     const previousStats = team.teamStats.seasons?.["2025/26"] || team.teamStats;
-    const combinedStats = team.teamStats.total;
-    const statsSections = `${currentStats ? teamSeasonStatsBlock(currentStats) : ""}${teamSeasonStatsBlock(previousStats)}${combinedStats ? teamTotalStatsBlock(combinedStats, team.previousSeason.promoted) : ""}`;
+    const combinedPlayerStats = combinedSquadStats(team, matches);
+    const statsSections = teamSeasonComparison(currentStats, previousStats);
     const quality = team.squad.reduce((summary, player) => {
       const key = player.dataQuality?.status || "unavailable";
       summary[key] = (summary[key] || 0) + 1;
       return summary;
     }, {});
 
-    root.innerHTML = `${teamNavigation(team, teams)}<section class="team-detail-hero"><img src="${team.logo}" alt="Stemma ${esc(team.name)}"><div><h1>${esc(team.officialName)}</h1><p>${esc(team.shortName)} · Città ${value(team.city)} · Stadio ${value(team.stadium)} · Allenatore ${value(team.coach)}</p></div></section>${team.previousSeason.promoted ? `<aside class="competition-warning"><strong>Statistiche di provenienza: Serie B 2025/26.</strong> Non sono confrontate direttamente con i valori grezzi di Serie A.</aside>` : ""}${statsSections}<section class="detail-section"><h2>Rosa 2026/27</h2><p class="roster-summary">${team.squad.length} calciatori · ${quality.complete || 0} schede complete · ${quality.partial || 0} parziali · ${quality.unavailable || 0} non disponibili. Seleziona un nome per il dettaglio.</p>${filters()}<div id="squad-results">${squadTable(team.squad)}</div>${squadLeaderboards(team, matches)}</section><dialog id="player-detail" class="player-detail"><div id="player-detail-content"></div></dialog>`;
+    root.innerHTML = `${teamNavigation(team, teams)}<section class="team-detail-hero"><img src="${team.logo}" alt="Stemma ${esc(team.name)}"><div><h1>${esc(team.officialName)}</h1><p>${esc(team.shortName)} · Città ${value(team.city)} · Stadio ${value(team.stadium)} · Allenatore ${value(team.coach)}</p></div></section>${team.previousSeason.promoted ? `<aside class="competition-warning"><strong>Statistiche di provenienza: Serie B 2025/26.</strong> Non sono confrontate direttamente con i valori grezzi di Serie A.</aside>` : ""}${statsSections}<section class="detail-section"><h2>Rosa 2026/27</h2><p class="roster-summary">${team.squad.length} calciatori · ${quality.complete || 0} schede complete · ${quality.partial || 0} parziali · ${quality.unavailable || 0} non disponibili. I dati della tabella sommano 2025/26 e 2026/27; seleziona un nome per il dettaglio.</p>${filters()}<div id="squad-results">${squadTable(team.squad, combinedPlayerStats)}</div>${squadLeaderboards(team, matches)}</section><dialog id="player-detail" class="player-detail"><div id="player-detail-content"></div></dialog>`;
     root.querySelector(".team-detail-hero")?.insertAdjacentHTML("afterend", personalCalendar(team, teams, matches, europeanFixtures));
     root.querySelector(".team-detail-hero")?.insertAdjacentHTML("afterend", objectiveStatus(team, objectiveDataset, standings));
     root.querySelector(".team-objective-section")?.insertAdjacentHTML("afterend", probableLineupSection(team, teams.find(item => item.id === team.id)));
@@ -382,13 +394,13 @@
         .filter(player => (!query || searchKey(player.name).includes(query)) && (!role || player.role === role) && (!status || player.status === status))
         .sort((left, right) => {
           if (sort === "role") return compareByRole(left, right);
-          const leftValue = metric(left, sort);
-          const rightValue = metric(right, sort);
+          const leftValue = metric(left, sort, combinedPlayerStats);
+          const rightValue = metric(right, sort, combinedPlayerStats);
           if (leftValue === null || leftValue === undefined) return rightValue === null || rightValue === undefined ? left.name.localeCompare(right.name, "it") : 1;
           if (rightValue === null || rightValue === undefined) return -1;
           return rightValue - leftValue || left.name.localeCompare(right.name, "it");
         });
-      document.getElementById("squad-results").innerHTML = squadTable(selected);
+      document.getElementById("squad-results").innerHTML = squadTable(selected, combinedPlayerStats);
     };
 
     root.querySelectorAll(".squad-controls input, .squad-controls select").forEach(control => control.addEventListener("input", apply));
