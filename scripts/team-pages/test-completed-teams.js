@@ -4,7 +4,7 @@ const assert = require("assert");
 
 const root = path.resolve(__dirname, "../..");
 const read = relative => JSON.parse(fs.readFileSync(path.join(root, relative), "utf8"));
-const expectedCounts = { inter: 34, juventus: 38, napoli: 32 };
+const expectedCounts = { inter: 33, juventus: 37, napoli: 31 };
 const allowedStatuses = new Set(["confermato", "nuovo acquisto", "prestito", "rientro dal prestito", "primavera", "da verificare"]);
 
 for (const [teamId, expectedCount] of Object.entries(expectedCounts)) {
@@ -36,6 +36,11 @@ for (const [teamId, expectedCount] of Object.entries(expectedCounts)) {
       assert.strictEqual(entry.per90.cards, expectedCards, `${player.name}: cartellini/90 errato`);
     }
   }
+}
+
+const juventus = read("data/generated/team-pages/juventus-squad.json");
+for (const playerId of ["mattia-perin", "michele-di-gregorio"]) {
+  assert.ok(!juventus.players.some(player => player.id === playerId), `juventus: uscita non applicata (${playerId})`);
 }
 
 const interfaceSource = fs.readFileSync(path.join(root, "js/team-squads.js"), "utf8");

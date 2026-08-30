@@ -102,6 +102,41 @@ const verifiedProfiles = {
     transfermarktId: "1204163", name: "Andréa Le Borgne", teamId: "como", transfermarktClubId: "1047", club: "Como 1907",
     marketValueEur: 2_500_000, marketValueLabel: "2,50 mln €", marketValueUpdatedAt: null,
     profileUrl: "https://www.transfermarkt.it/andrea-le-borgne/profil/spieler/1204163"
+  },
+  "juventus:arthur": {
+    transfermarktId: "362842", name: "Arthur Melo", teamId: "juventus", transfermarktClubId: "506", club: "Juventus FC",
+    marketValueEur: 4_000_000, marketValueLabel: "4,00 mln €", marketValueUpdatedAt: null,
+    profileUrl: "https://www.transfermarkt.it/arthur-melo/profil/spieler/362842"
+  },
+  "napoli:nosa-obaretin": {
+    transfermarktId: "704456", name: "Nosa Edward Obaretin", teamId: "napoli", transfermarktClubId: "6195", club: "SSC Napoli",
+    marketValueEur: 1_500_000, marketValueLabel: "1,50 mln €", marketValueUpdatedAt: null,
+    profileUrl: "https://www.transfermarkt.it/nosa-edward-obaretin/profil/spieler/704456"
+  },
+  "torino:marcus-holmgren-pedersen": {
+    transfermarktId: "583404", name: "Marcus Pedersen", teamId: "torino", transfermarktClubId: "416", club: "Torino FC",
+    marketValueEur: 3_500_000, marketValueLabel: "3,50 mln €", marketValueUpdatedAt: null,
+    profileUrl: "https://www.transfermarkt.it/marcus-pedersen/profil/spieler/583404"
+  },
+  "udinese:abdoulaye-camara": {
+    transfermarktId: "1210116", name: "Abdoulaye Camara", teamId: "udinese", transfermarktClubId: "410", club: "Udinese Calcio",
+    marketValueEur: 1_500_000, marketValueLabel: "1,50 mln €", marketValueUpdatedAt: null,
+    profileUrl: "https://www.transfermarkt.it/abdoulaye-camara/profil/spieler/1210116"
+  },
+  "sassuolo:luca-moro": {
+    transfermarktId: "600936", name: "Luca Moro", teamId: "sassuolo", transfermarktClubId: "6574", club: "US Sassuolo",
+    marketValueEur: 1_800_000, marketValueLabel: "1,80 mln €", marketValueUpdatedAt: null,
+    profileUrl: "https://www.transfermarkt.it/luca-moro/profil/spieler/600936"
+  },
+  "venezia:antonio-casas": {
+    transfermarktId: "537767", name: "Antonio Casas", teamId: "venezia", transfermarktClubId: "607", club: "Venezia FC",
+    marketValueEur: 650_000, marketValueLabel: "650 mila €", marketValueUpdatedAt: null,
+    profileUrl: "https://www.transfermarkt.it/antonio-casas/profil/spieler/537767"
+  },
+  "atalanta:francesco-rossi": {
+    transfermarktId: "126634", name: "Francesco Rossi", teamId: "atalanta", transfermarktClubId: "800", club: "Atalanta",
+    marketValueEur: 100_000, marketValueLabel: "100 mila €", marketValueUpdatedAt: null,
+    profileUrl: "https://www.transfermarkt.it/francesco-rossi/profil/spieler/126634"
   }
 };
 const verifiedProfileIds = {

@@ -7,6 +7,7 @@ const read = file => JSON.parse(fs.readFileSync(path.join(root, file), "utf8"));
 const index = read("data/teams/index.json");
 const officialLineups = read("data/sources/official-lineups-2026-27.json");
 const playerLeaderboards = read("data/teams/player-leaderboards.json");
+const europeanCalendar = read("data/normalized/european-fixtures-2026-27.json");
 const mainApp = fs.readdirSync(path.join(root, "js"), { recursive: true })
   .filter(file => file.endsWith(".js"))
   .map(file => fs.readFileSync(path.join(root, "js", file), "utf8"))
@@ -57,7 +58,7 @@ for (const [periodId, period] of Object.entries(playerLeaderboards.periods)) for
 }
 assert.strictEqual(playerLeaderboards.periods["2026/27"].rankings.foulsCommitted.availablePlayers, 285, "I falli 2026/27 verificati devono coprire tutti i partecipanti");
 assert.strictEqual(playerLeaderboards.periods["2026/27"].rankings.foulsWon.availablePlayers, 285, "I falli subiti 2026/27 verificati devono coprire tutti i partecipanti");
-assert.strictEqual(playerLeaderboards.periods.total.rankings.foulsWon.availablePlayers, 226, "Il totale falli deve includere soltanto i calciatori coperti in entrambe le stagioni");
+assert.strictEqual(playerLeaderboards.periods.total.rankings.foulsWon.availablePlayers, 224, "Il totale falli deve includere soltanto i calciatori coperti in entrambe le stagioni");
 const currentParticipants = playerLeaderboards.periods["2026/27"].rankings.goals.availablePlayers;
 assert.ok(playerLeaderboards.periods["2026/27"].rankings.shots.availablePlayers < currentParticipants && playerLeaderboards.periods["2026/27"].rankings.shotsOnTarget.availablePlayers < currentParticipants, "La copertura parziale dei tiri 2026/27 deve restare esplicita");
 for (const contract of ["loadPlayerLeaderboards", "globalPlayerLeaderboards", "globalPlayerLeaderboardTable", "Top 15 calciatori per statistica", "data-player-period", "data-player-stat", "Totale 2025/26 + 2026/27", "serie-b-marker", "aria-pressed", "per90Value", "stessa riga"]) assert.ok(mainApp.includes(contract), `Top 15 globale: contratto ${contract} assente`);
@@ -139,7 +140,7 @@ assert.ok(!teamInterface.includes("Distinta confermata") && !teamInterface.inclu
 assert.ok(!teamInterface.includes('<div><p class="eyebrow">${esc(team.previousSeason.competition)} 2025/26'), "Il hero della squadra non deve mostrare la competizione 2025/26 sopra il nome");
 assert.ok(teamInterface.includes("personalCalendar") && teamInterface.includes("Calendario di ${esc(team.name)}"), "Il calendario personale non è integrato nelle pagine squadra");
 assert.ok(teamInterface.includes('id="team-calendar-select"') && teamInterface.includes('id="team-calendar-selection"') && teamInterface.includes("teamFixtureRow") && !teamInterface.includes("team-calendar-list"), "Il calendario personale deve usare un menu a tendina e mostrare una sola partita");
-assert.ok(teamInterface.includes('assets/images/teams/monochrome/${esc(team.id)}-black.svg'), "Il calendario personale deve usare i loghi vettoriali neri preparati");
+assert.ok(teamInterface.includes('assets/images/teams/monochrome/${esc(teamId)}-black.svg'), "Il calendario personale deve usare i loghi vettoriali neri preparati");
 const teamNavSource = mainApp.slice(mainApp.indexOf('const teamNav='), mainApp.indexOf('const calendarDays='));
 const calendarDaysSource = mainApp.slice(mainApp.indexOf('const calendarDays='), mainApp.indexOf('function empty'));
 const matchCardSource = mainApp.slice(mainApp.indexOf('function matchCard'), mainApp.indexOf('function homeMatchListItem'));
@@ -165,6 +166,13 @@ assert.ok(cupCardSource.includes('cup-team-events')&&!cupCardSource.includes('cu
 assert.ok(styles.includes('.cup-match-card>header .cup-result')&&styles.includes('background:transparent;color:#9a5a08;font-size:16px'), "Il risultato Coppa Italia deve essere evidente e privo di riquadro o sfondo");
 assert.ok(styles.includes('.cup-match-card.is-finished .cup-team-slot{height:120px')&&styles.includes('.cup-match-card.is-finished .cup-team-slot{height:200px'), "Le righe squadra delle partite concluse devono avere altezza uniforme su desktop e mobile");
 const currentMatches = read("data/normalized/matches.json").filter(match => match.competition === "serie-a" && match.season === "2026-27");
+assert.strictEqual(europeanCalendar.fixtures.length, 54, "Il calendario europeo deve contenere 54 gare");
+assert.ok(europeanCalendar.fixtures.every(match => match.workloadOnly === true && match.predictionEligible === false), "Le gare europee devono restare solo carico calendario e fuori dai pronostici");
+for (const [teamId, expected] of Object.entries({ inter: 8, napoli: 8, roma: 8, como: 8, milan: 8, juventus: 8, atalanta: 6 })) assert.strictEqual(europeanCalendar.fixtures.filter(match => match.teamId === teamId).length, expected, `${teamId}: sono richiesti ${expected} impegni UEFA`);
+assert.ok(teamInterface.includes('load("data/normalized/european-fixtures-2026-27.json")') && teamInterface.includes('calendarType: "europe"'), "Il calendario personale non integra gli impegni europei");
+for (const marker of ["Solo carico calendario · nessun pronostico", "Fatica: a", "38 giornate di Serie A", "gare UEFA"]) assert.ok(teamInterface.includes(marker), `Calendario europeo: manca ${marker}`);
+const predictionIds = new Set(read("data/normalized/predictions.json").predictions.map(prediction => prediction.matchId));
+assert.ok(europeanCalendar.fixtures.every(match => !predictionIds.has(match.id)), "Una gara europea è entrata nei pronostici");
 for (const summary of index.teams) {
   const fixtures = currentMatches.filter(match => match.homeTeam === summary.id || match.awayTeam === summary.id);
   assert.strictEqual(fixtures.length, 38, `${summary.id}: il calendario personale deve contenere 38 partite`);

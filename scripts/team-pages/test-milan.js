@@ -12,10 +12,13 @@ const stylesSource = ["styles", "base", "layout", "components", "home", "matches
 const allowedStatuses = new Set(["confermato", "nuovo acquisto", "prestito", "rientro dal prestito", "primavera", "da verificare"]);
 const sortable = ["appearances", "minutes", "goals", "assists", "shots", "shotsOnTarget", "foulsCommitted", "yellowCards"];
 
-assert.strictEqual(generated.players.length, 30, "La rosa ufficiale Milan deve contenere 30 giocatori");
-assert.strictEqual(team.squad.length, 30, "La pagina Milan deve ricevere 30 giocatori");
-assert.strictEqual(new Set(generated.players.map(player => player.id)).size, 30, "ID giocatore duplicati");
-assert.strictEqual(new Set(generated.players.map(player => player.name.toLocaleLowerCase("it"))).size, 30, "Nomi giocatore duplicati");
+assert.strictEqual(generated.players.length, 27, "La rosa ufficiale Milan deve contenere 27 giocatori");
+assert.strictEqual(team.squad.length, 27, "La pagina Milan deve ricevere 27 giocatori");
+assert.strictEqual(new Set(generated.players.map(player => player.id)).size, 27, "ID giocatore duplicati");
+assert.strictEqual(new Set(generated.players.map(player => player.name.toLocaleLowerCase("it"))).size, 27, "Nomi giocatore duplicati");
+assert.ok(!generated.players.some(player => player.id === "samuele-ricci"), "Samuele Ricci deve essere rimosso dopo il trasferimento al Como");
+assert.ok(!generated.players.some(player => player.id === "rafael-leao"), "Rafael Leão deve essere rimosso dopo il trasferimento al Galatasaray");
+assert.ok(!generated.players.some(player => player.id === "santiago-gimenez"), "Santiago Gimenez deve essere rimosso dopo il trasferimento al Porto");
 assert.ok(generated.players.some(player => player.status === "nuovo acquisto"));
 assert.ok(generated.players.some(player => player.status === "rientro dal prestito"));
 const diawara = generated.players.find(player => player.id === "sankhoun-diawara");
@@ -72,7 +75,7 @@ for (const player of generated.players) {
 const entryKeys = generated.players.flatMap(player => player.previousSeason.entries.map(entry => `${player.id}|${entry.team}|${entry.competition}`));
 assert.strictEqual(new Set(entryKeys).size, entryKeys.length, "Blocchi squadra/competizione duplicati");
 assert.ok(generated.players.filter(player => player.previousSeason.entries.length).length >= 20, "Copertura statistica insufficiente");
-assert.strictEqual(generated.players.filter(player => player.dataQuality.status === "complete").length, 28);
+assert.strictEqual(generated.players.filter(player => player.dataQuality.status === "complete").length, 25);
 assert.deepStrictEqual(generated.players.filter(player => player.dataQuality.status === "partial").map(player => player.name).sort(), []);
 assert.deepStrictEqual(generated.players.filter(player => player.dataQuality.status === "unavailable").map(player => player.name).sort(), ["Ilja Pantelin", "Sankhoun Diawara"]);
 assert.deepStrictEqual(generated.players.filter(player => player.dataQuality.uncertainAssociation).map(player => player.name), []);

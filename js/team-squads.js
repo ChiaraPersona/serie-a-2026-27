@@ -3,7 +3,7 @@
   if (!root) return;
 
   const base = document.body.dataset.depth === "team" ? "../" : "";
-  const release = "20260829-milan-moreira-chukwueze-stats-v1";
+  const release = "20260830-european-workload-calendar-v2";
   const defaultPlayerPhoto = `${base}assets/images/players/player-placeholder.png`;
   const esc = value => String(value ?? "").replace(/[&<>\"]/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[char]));
   const contrastInk = color => {
@@ -135,25 +135,53 @@
     return `${dateOnly(match.date)} · ${match.kickoff || "orario da definire"}${match.dateStatus === "provisional" ? " · programmazione provvisoria UEFA" : ""}`;
   };
 
-  const calendarTeam = (team, currentTeamId) => `<span class="team-calendar-club${team.id === currentTeamId ? " is-current" : ""}"><img src="${base}assets/images/teams/monochrome/${esc(team.id)}-black.svg" alt="" loading="lazy"><span>${esc(team.name)}</span></span>`;
+  const calendarTeam = (name, teamId, currentTeamId) => `<span class="team-calendar-club${teamId === currentTeamId ? " is-current" : ""}">${teamId ? `<img src="${base}assets/images/teams/monochrome/${esc(teamId)}-black.svg" alt="" loading="lazy">` : `<i class="team-calendar-opponent-mark" aria-hidden="true">${esc(initials(name))}</i>`}<span>${esc(name)}</span></span>`;
 
   function teamFixtureRow(match, teams, currentTeamId) {
-    const home = teams.find(team => team.id === match.homeTeam);
-    const away = teams.find(team => team.id === match.awayTeam);
+    const european = match.calendarType === "europe";
+    const home = european ? { id: match.homeTeam.toLocaleLowerCase("it") === currentTeamId ? currentTeamId : null, name: match.homeTeam } : teams.find(team => team.id === match.homeTeam);
+    const away = european ? { id: match.awayTeam.toLocaleLowerCase("it") === currentTeamId ? currentTeamId : null, name: match.awayTeam } : teams.find(team => team.id === match.awayTeam);
     if (!home || !away) return "";
-    const opponentId = match.homeTeam === currentTeamId ? match.awayTeam : match.homeTeam;
-    const venue = match.homeTeam === currentTeamId ? "Casa" : "Trasferta";
+    const opponentId = european ? null : match.homeTeam === currentTeamId ? match.awayTeam : match.homeTeam;
+    const venue = home.id === currentTeamId ? "Casa" : "Trasferta";
     const score = match.score ? `${match.score.home} – ${match.score.away}` : "VS";
-    return `<article class="team-calendar-row"><div class="team-calendar-round"><strong>${match.matchday}</strong><span>Giornata</span></div><div class="team-calendar-when"><strong>${scheduleLabel(match)}</strong><span class="status ${esc(match.status)}">${esc(matchStatusLabels[match.status] || match.status)}</span></div><span class="status venue-status">${venue}</span><div class="team-calendar-match">${calendarTeam(home, currentTeamId)}<strong class="team-calendar-score">${esc(score)}</strong>${calendarTeam(away, currentTeamId)}</div><div class="team-calendar-actions"><a href="${base}lettura.html?match=${esc(match.id)}">Lettura</a><a href="${base}statistiche-squadra/${esc(opponentId)}.html">Avversaria</a></div></article>`;
+    const workload = european
+      ? '<span class="team-calendar-workload">Solo carico calendario · nessun pronostico</span>'
+      : match.previousCompetitionLabel && match.daysSincePrevious <= 4
+        ? `<span class="team-calendar-fatigue">Fatica: a ${match.daysSincePrevious} giorni da ${esc(match.previousCompetitionLabel)}</span>`
+        : "";
+    const actions = european
+      ? '<span class="team-calendar-no-prediction">Impegno UEFA</span>'
+      : `<a href="${base}lettura.html?match=${esc(match.id)}">Lettura</a><a href="${base}statistiche-squadra/${esc(opponentId)}.html">Avversaria</a>`;
+    return `<article class="team-calendar-row${european ? " is-european" : ""}${workload && !european ? " has-fatigue" : ""}"><div class="team-calendar-round"><strong>${european ? "UEFA" : match.matchday}</strong><span>${european ? esc(match.competitionLabel) : "Giornata"}</span></div><div class="team-calendar-when"><strong>${scheduleLabel(match)}</strong><span class="status ${esc(match.status)}">${esc(matchStatusLabels[match.status] || match.status)}</span>${workload}</div><span class="status venue-status">${venue}</span><div class="team-calendar-match">${calendarTeam(home.name, home.id, currentTeamId)}<strong class="team-calendar-score">${esc(score)}</strong>${calendarTeam(away.name, away.id, currentTeamId)}</div><div class="team-calendar-actions">${actions}</div></article>`;
   }
 
-  const teamFixtures = (team, matches) => matches
-    .filter(match => match.competition === "serie-a" && match.season === "2026-27" && (match.homeTeam === team.id || match.awayTeam === team.id))
-    .sort((left, right) => left.matchday - right.matchday);
+  const teamFixtures = (team, matches, europeanFixtures = []) => {
+    const league = matches
+      .filter(match => match.competition === "serie-a" && match.season === "2026-27" && (match.homeTeam === team.id || match.awayTeam === team.id))
+      .map(match => ({ ...match, calendarType: "league", competitionLabel: "Serie A" }));
+    const european = europeanFixtures
+      .filter(match => match.teamId === team.id)
+      .map(match => ({ ...match, calendarType: "europe" }));
+    const fixtures = [...league, ...european].sort((left, right) => {
+      if (left.date && right.date) return `${left.date}T${left.kickoff || "23:59"}`.localeCompare(`${right.date}T${right.kickoff || "23:59"}`) || left.id.localeCompare(right.id);
+      if (left.date) return -1;
+      if (right.date) return 1;
+      return (left.matchday || 99) - (right.matchday || 99);
+    });
+    let previous = null;
+    return fixtures.map(match => {
+      const daysSincePrevious = previous?.date && match.date ? Math.round((new Date(`${match.date}T12:00:00`) - new Date(`${previous.date}T12:00:00`)) / 86400000) : null;
+      const enriched = { ...match, daysSincePrevious, previousCompetitionLabel: previous?.competitionLabel || null };
+      if (match.date) previous = match;
+      return enriched;
+    });
+  };
 
-  function personalCalendar(team, teams, matches) {
-    const fixtures = teamFixtures(team, matches);
-    return `<section class="detail-section team-personal-calendar" aria-labelledby="team-calendar-heading"><header class="team-schedule-head"><div><p class="eyebrow">Serie A 2026/27</p><h2 id="team-calendar-heading">Calendario di ${esc(team.name)}</h2><p class="muted">${fixtures.length} giornate disponibili nel menu.</p></div><a class="button" href="${base}calendario.html">Calendario completo</a></header><div class="team-calendar-picker"><label for="team-calendar-select"><span>Scegli la giornata</span><select id="team-calendar-select">${fixtures.map(match => `<option value="${esc(match.id)}">Giornata ${match.matchday} · ${scheduleLabel(match)}</option>`).join("")}</select></label><div id="team-calendar-selection" aria-live="polite">${fixtures[0] ? teamFixtureRow(fixtures[0], teams, team.id) : '<p class="muted">Calendario non disponibile.</p>'}</div></div></section>`;
+  function personalCalendar(team, teams, matches, europeanFixtures) {
+    const fixtures = teamFixtures(team, matches, europeanFixtures);
+    const europeanCount = fixtures.filter(match => match.calendarType === "europe").length;
+    return `<section class="detail-section team-personal-calendar" aria-labelledby="team-calendar-heading"><header class="team-schedule-head"><div><p class="eyebrow">Tutti gli impegni 2026/27</p><h2 id="team-calendar-heading">Calendario di ${esc(team.name)}</h2><p class="muted">38 giornate di Serie A${europeanCount ? ` + ${europeanCount} gare UEFA` : ""}. Le gare europee indicano il carico aggiuntivo e non vengono pronosticate.</p></div><a class="button" href="${base}calendario.html">Calendario Serie A</a></header><div class="team-calendar-picker"><label for="team-calendar-select"><span>Scegli la partita</span><select id="team-calendar-select">${fixtures.map(match => `<option value="${esc(match.id)}">${match.calendarType === "europe" ? `${esc(match.competitionLabel)} · ${esc(match.homeTeam)}-${esc(match.awayTeam)}` : `Giornata ${match.matchday}`} · ${scheduleLabel(match)}</option>`).join("")}</select></label><div id="team-calendar-selection" aria-live="polite">${fixtures[0] ? teamFixtureRow(fixtures[0], teams, team.id) : '<p class="muted">Calendario non disponibile.</p>'}</div></div></section>`;
   }
 
   async function load(path) {
@@ -308,7 +336,7 @@
     return `<details class="detail-section team-total-section" data-team-season="total"><summary class="team-season-summary"><span class="team-season-heading"><span><span class="eyebrow">Riepilogo complessivo</span><strong>Totale 2025/26 + 2026/27</strong></span><span>${esc(stats.competition)}</span></span></summary><div class="team-season-content">${mixedCompetitionNote}<div class="team-season-group"><h3>Risultati complessivi</h3>${statGrid(stats.results, ["played", "won", "drawn", "lost", "points", "pointsPerGame", "goalsFor", "goalsAgainst", "goalDifference", "cleanSheets", "failedToScore", "winPercentage", "drawPercentage", "lossPercentage"])}</div><div class="team-season-group"><h3>Disciplina complessiva</h3>${statGrid(stats.discipline, ["foulsCommitted", "foulsCommittedPerGame", "foulsWon", "foulsWonPerGame", "yellowCards", "yellowCardsPerGame", "secondYellowCards", "straightRedCards", "dismissals", "penaltiesConceded", "penaltiesWon", "disciplineIndex"])}</div></div></details>`;
   }
 
-  function teamPage(team, objectiveDataset, standings, teams, matches, teamStyleProfiles) {
+  function teamPage(team, objectiveDataset, standings, teams, matches, teamStyleProfiles, europeanFixtures) {
     const currentStats = team.teamStats.seasons?.["2026/27"];
     const previousStats = team.teamStats.seasons?.["2025/26"] || team.teamStats;
     const combinedStats = team.teamStats.total;
@@ -320,14 +348,14 @@
     }, {});
 
     root.innerHTML = `${teamNavigation(team, teams)}<section class="team-detail-hero"><img src="${team.logo}" alt="Stemma ${esc(team.name)}"><div><h1>${esc(team.officialName)}</h1><p>${esc(team.shortName)} · Città ${value(team.city)} · Stadio ${value(team.stadium)} · Allenatore ${value(team.coach)}</p></div></section>${team.previousSeason.promoted ? `<aside class="competition-warning"><strong>Statistiche di provenienza: Serie B 2025/26.</strong> Non sono confrontate direttamente con i valori grezzi di Serie A.</aside>` : ""}${statsSections}<section class="detail-section"><h2>Rosa 2026/27</h2><p class="roster-summary">${team.squad.length} calciatori · ${quality.complete || 0} schede complete · ${quality.partial || 0} parziali · ${quality.unavailable || 0} non disponibili. Seleziona un nome per il dettaglio.</p>${filters()}<div id="squad-results">${squadTable(team.squad)}</div>${squadLeaderboards(team, matches)}</section><dialog id="player-detail" class="player-detail"><div id="player-detail-content"></div></dialog>`;
-    root.querySelector(".team-detail-hero")?.insertAdjacentHTML("afterend", personalCalendar(team, teams, matches));
+    root.querySelector(".team-detail-hero")?.insertAdjacentHTML("afterend", personalCalendar(team, teams, matches, europeanFixtures));
     root.querySelector(".team-detail-hero")?.insertAdjacentHTML("afterend", objectiveStatus(team, objectiveDataset, standings));
     root.querySelector(".team-objective-section")?.insertAdjacentHTML("afterend", probableLineupSection(team, teams.find(item => item.id === team.id)));
     root.querySelector(".team-probable-lineup")?.insertAdjacentHTML("afterend", tacticalProfileSection(team, teamStyleProfiles));
     root.querySelector(".team-detail-hero div")?.insertAdjacentHTML("beforeend", `<p><strong>Modulo preferito:</strong> ${value(team.preferredFormation)}</p>`);
     const calendarSelect = document.getElementById("team-calendar-select");
     calendarSelect?.addEventListener("change", () => {
-      const selectedMatch = teamFixtures(team, matches).find(match => match.id === calendarSelect.value);
+      const selectedMatch = teamFixtures(team, matches, europeanFixtures).find(match => match.id === calendarSelect.value);
       document.getElementById("team-calendar-selection").innerHTML = selectedMatch ? teamFixtureRow(selectedMatch, teams, team.id) : '<p class="muted">Partita non disponibile.</p>';
     });
 
@@ -382,14 +410,15 @@
     try {
       const teamId = document.body.dataset.team;
       if (!teamId) throw new Error("Squadra non specificata");
-      const [team, objectiveDataset, teams, matches, teamStyleProfiles] = await Promise.all([
+      const [team, objectiveDataset, teams, matches, teamStyleProfiles, europeanCalendar] = await Promise.all([
         load(`data/teams/${teamId}.json`),
         load("data/team-objectives.json"),
         load("data/normalized/teams.json"),
         load("data/normalized/matches.json"),
-        load("data/normalized/team-style-profiles.json")
+        load("data/normalized/team-style-profiles.json"),
+        load("data/normalized/european-fixtures-2026-27.json")
       ]);
-      teamPage(team, objectiveDataset, calculateStandings(teams, matches), teams, matches, teamStyleProfiles);
+      teamPage(team, objectiveDataset, calculateStandings(teams, matches), teams, matches, teamStyleProfiles, europeanCalendar.fixtures || []);
     } catch (error) {
       root.innerHTML = `<div class="data-warning"><strong>Errore di caricamento</strong><p>${esc(error.message)}. Apri il sito tramite server locale, non con file://.</p></div>`;
     }
