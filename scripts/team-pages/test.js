@@ -60,7 +60,7 @@ for (const [periodId, period] of Object.entries(playerLeaderboards.periods)) for
 }
 assert.strictEqual(playerLeaderboards.periods["2026/27"].rankings.foulsCommitted.availablePlayers, 285, "I falli 2026/27 verificati devono coprire tutti i partecipanti");
 assert.strictEqual(playerLeaderboards.periods["2026/27"].rankings.foulsWon.availablePlayers, 285, "I falli subiti 2026/27 verificati devono coprire tutti i partecipanti");
-assert.strictEqual(playerLeaderboards.periods.total.rankings.foulsWon.availablePlayers, 224, "Il totale falli deve includere soltanto i calciatori coperti in entrambe le stagioni");
+assert.strictEqual(playerLeaderboards.periods.total.rankings.foulsWon.availablePlayers, 231, "Il totale falli deve includere soltanto i calciatori coperti in entrambe le stagioni");
 const currentParticipants = playerLeaderboards.periods["2026/27"].rankings.goals.availablePlayers;
 assert.ok(playerLeaderboards.periods["2026/27"].rankings.shots.availablePlayers < currentParticipants && playerLeaderboards.periods["2026/27"].rankings.shotsOnTarget.availablePlayers < currentParticipants, "La copertura parziale dei tiri 2026/27 deve restare esplicita");
 for (const contract of ["loadPlayerLeaderboards", "globalPlayerLeaderboards", "globalPlayerLeaderboardTable", "Top 15 calciatori per statistica", "data-player-period", "data-player-stat", "serie-b-marker", "aria-pressed", "per90Value", "stessa riga"]) assert.ok(mainApp.includes(contract), `Top 15 globale: contratto ${contract} assente`);
@@ -85,6 +85,8 @@ assert.ok(mainApp.includes("3 risultati esatti possibili") && mainApp.includes("
 const readingHeroSource = mainApp.slice(mainApp.indexOf("function readingPrototypeDetail"), mainApp.indexOf("function renderProbableLineups"));
 assert.ok(readingHeroSource.includes('class="reading-matchup" aria-label=') && readingHeroSource.includes("teamLogo(home,{showName:false})") && readingHeroSource.includes("teamLogo(away,{showName:false})"), "La testata della Lettura non deve ripetere i nomi delle squadre accanto al risultato");
 assert.ok(readingHeroSource.includes("reading-exact-scores") && readingHeroSource.includes("reading-hero-surprise") && readingHeroSource.includes("prediction.confidence.value"), "Risultati esatti, sorpresa e confidenza devono stare nel primo blocco");
+for (const removed of ["Dati mancanti", "Verdetto preliminare", "Pronostico archiviato", "reading-verdict-prototype"]) assert.ok(!readingHeroSource.includes(removed), `Dettaglio Lettura: blocco rimosso ancora presente: ${removed}`);
+for (const removed of [".reading-picks", ".reading-verdict-prototype"]) assert.ok(!styles.includes(removed), `Dettaglio Lettura: stile obsoleto ancora presente: ${removed}`);
 for (const removed of ["Risultato principale pronosticato", "Probabilità 1X2 e gol attesi", "Pronostico preliminare, non garanzia", "La scheda include ora le probabili formazioni indicate dalla fonte editoriale"]) assert.ok(!mainApp.includes(removed), `Letture: testo o blocco rimosso ancora presente: ${removed}`);
 for (const removed of ["reading-result-card", "reading-coverage-card", "Copertura post-partita", "Risultato finale"]) assert.ok(!readingHeroSource.includes(removed), `Riepilogo Lettura: contenuto rimosso ${removed} ancora presente`);
 for (const contract of [".reading-hero-summary.reading-result-summary", ".reading-match-hero.is-finished .reading-matchup>b"]) assert.ok(styles.includes(contract), `Riepilogo Lettura conclusa: stile ${contract} assente`);
@@ -92,6 +94,7 @@ for (const contract of [".reading-fixture-preview", ".reading-fixture-preview-te
 for (const contract of ['reading-fixture match fixture-card fixture-card-link', 'class="match-head"', 'class="matchday-chip"', 'class="match-date"', 'teamColorStyle']) assert.ok(mainApp.includes(contract), `Card Letture: struttura calendario ${contract} assente`);
 for (const removed of ['reading-fixture-footer', 'Pronostico preliminare · sorpresa', 'Precedenti ${history.coverage.available}/5']) assert.ok(!mainApp.includes(removed), `Card Letture: contenuto inferiore ${removed} ancora presente`);
 const teamInterface = fs.readFileSync(path.join(root, "js/team-squads.js"), "utf8");
+assert.ok(!teamInterface.includes("Leader statistici"), "Il blocco storico Leader statistici deve essere rimosso dalle pagine squadra");
 const squadTableSource = teamInterface.slice(teamInterface.indexOf("function squadTable"), teamInterface.indexOf("function entryDetail"));
 for (const removedColumn of ["Stato", "Squadra 2025/26", "Competizione", "squad-col-status", "squad-col-team", "squad-col-competition"]) assert.ok(!squadTableSource.includes(removedColumn), `Tabella calciatori: colonna rimossa ancora presente: ${removedColumn}`);
 for (const retainedColumn of ["Valore mercato", "PG", "Min", "squad-col-market", "squad-col-played", "squad-col-minutes"]) assert.ok(squadTableSource.includes(retainedColumn), `Tabella calciatori: colonna richiesta assente: ${retainedColumn}`);
