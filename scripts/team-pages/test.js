@@ -18,6 +18,8 @@ const styles = ["styles", "base", "layout", "components", "home", "matches", "te
 const teamStatsShell = fs.readFileSync(path.join(root, "statistiche-squadre.html"), "utf8");
 const teamPageShell = fs.readFileSync(path.join(root, "statistiche-squadra", "inter.html"), "utf8");
 const sourcesShell = fs.readFileSync(path.join(root, "fonti.html"), "utf8");
+const readingsInterface = fs.readFileSync(path.join(root, "js/pages/readings.js"), "utf8");
+const tacticalProfiles = read("data/normalized/team-style-profiles.json");
 assert.strictEqual(index.teams.length, 20, "Sono richieste 20 squadre");
 assert.strictEqual(new Set(index.teams.map(team => team.id)).size, 20, "ID squadra duplicati");
 for (const summary of index.teams) {
@@ -103,6 +105,15 @@ assert.ok(sourcesShell.includes("Fonti registrate") && sourcesShell.includes("Ap
 assert.ok(teamPageShell.includes('../fonti.html">Fonti</a>') && sourcesShell.includes('href="fonti.html">Fonti</a>'), "Il footer deve collegare la pagina Fonti a ogni profondità");
 for (const contract of ['data-team-season="${esc(stats.season)}"', "Statistiche ${esc(stats.season)}", "teamSeasonStatsColumn", "teamSeasonComparison", "teamSeasonList", '<section class="detail-section team-season-comparison"', 'class="team-season-columns"']) assert.ok(teamInterface.includes(contract), `Confronto statistiche squadra: manca ${contract}`);
 for (const contract of [".team-season-comparison", ".team-season-columns", ".team-season-column", ".team-season-list", ".team-season-splits", ".team-season-empty"]) assert.ok(styles.includes(contract), `Confronto statistiche squadra: stile ${contract} assente`);
+for (const contract of ["teamAttackChannels", "Direzioni d'attacco", "team-attack-channel-bars", "Canale prevalente:"]) assert.ok(teamInterface.includes(contract), `Direzioni d'attacco nelle statistiche squadra: manca ${contract}`);
+for (const contract of [".team-attack-channels", ".team-attack-channel-bars"]) assert.ok(styles.includes(contract), `Direzioni d'attacco nelle statistiche squadra: stile ${contract} assente`);
+assert.ok(!readingsInterface.includes('class="prediction-channels"') && !readingsInterface.includes("Direzioni d'attacco"), "Le direzioni d'attacco non devono comparire nelle Letture partita");
+assert.strictEqual(tacticalProfiles.profiles.filter(profile => profile.attackChannels).length, 20, "Le direzioni d'attacco devono coprire tutte le 20 squadre");
+for (const profile of tacticalProfiles.profiles) {
+  const channels = profile.attackChannels;
+  assert.ok(["left", "central", "right"].includes(channels.dominant), `Canale prevalente non valido: ${profile.teamId}`);
+  assert.ok(Math.abs(channels.left + channels.central + channels.right - 100) <= .2, `Percentuali direzioni non valide: ${profile.teamId}`);
+}
 for (const removedContract of ["teamTotalStatsBlock", "team.teamStats.total", "Totale 2025/26 + 2026/27", "Riepilogo complessivo", '<details class="detail-section team-season-section"', '<summary class="team-season-summary"']) assert.ok(!teamInterface.includes(removedContract), `Confronto statistiche squadra: contenuto rimosso ancora presente: ${removedContract}`);
 for (const contract of ["currentSquadLeaderboardRows", "I migliori di ${esc(teamName)} nel ${season}", 'id="squad-leaderboards"', "Dati non disponibili", "Scheda N/D", 'closest("button.leader-player")']) assert.ok(teamInterface.includes(contract), `Top 3 squadra 2026/27: manca ${contract}`);
 const squadLeaderboardsSource = teamInterface.slice(teamInterface.indexOf("function squadLeaderboards"), teamInterface.indexOf("function squadTable"));

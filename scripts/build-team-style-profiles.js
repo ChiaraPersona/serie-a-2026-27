@@ -19,6 +19,20 @@ const signalId = value => String(value || "")
   .replace(/[^a-z0-9]+/g, "-")
   .replace(/(^-|-$)/g, "");
 const withIds = items => items.map(item => ({ ...item, id: signalId(item.label) }));
+const attackChannels = profile => {
+  const ids = new Set([...(profile.playingStyle || []), ...(profile.strengths || [])].map(item => item.id));
+  const scores = { left: 1, central: 1, right: 1 };
+  if (ids.has("attaccano-dalla-sinistra")) scores.left += 3;
+  if (ids.has("attaccano-dalla-destra")) scores.right += 3;
+  if (ids.has("attaccano-al-centro")) scores.central += 3;
+  if (ids.has("giocano-in-ampiezza") || ids.has("attaccare-sulle-fasce")) { scores.left += 1.25; scores.right += 1.25; }
+  if (ids.has("tentano-spesso-il-cross")) { scores.left += .8; scores.right += .8; }
+  if (ids.has("tentano-spesso-passaggi-filtranti") || ids.has("creare-occasioni-tramite-passaggi-filtranti")) scores.central += 1.2;
+  const total = Object.values(scores).reduce((sum, score) => sum + score, 0);
+  const percentages = Object.fromEntries(Object.entries(scores).map(([key, score]) => [key, round(score / total * 100, 1)]));
+  const dominant = Object.entries(percentages).sort((left, right) => right[1] - left[1])[0][0];
+  return { ...percentages, dominant };
+};
 
 assert(source.schemaVersion === 1, "Versione dataset stili non valida");
 assert(source.season === "2025-26" && source.targetSeason === "2026-27", "Stagioni profili tattici non valide");
@@ -65,11 +79,16 @@ const profiles = source.profiles.map(profile => {
   if (profile.characteristicsSeason && profile.characteristicsSeason !== profile.season) notes.push(`Punti di forza, debolezze e stile aggiornati dalla pagina Serie A ${profile.characteristicsSeason}; campione iniziale da interpretare con cautela.`);
   if (!coverage.characteristics) notes.push("WhoScored non espone caratteristiche, stile e formazione nella pagina disponibile.");
 
+  const strengths = withIds(profile.strengths || []);
+  const weaknesses = withIds(profile.weaknesses || []);
+  const playingStyle = withIds(profile.playingStyle || []);
+
   return {
     ...profile,
-    strengths: withIds(profile.strengths || []),
-    weaknesses: withIds(profile.weaknesses || []),
-    playingStyle: withIds(profile.playingStyle || []),
+    strengths,
+    weaknesses,
+    playingStyle,
+    attackChannels: attackChannels({ strengths, playingStyle }),
     goalTypes,
     coverage,
     dataQuality,

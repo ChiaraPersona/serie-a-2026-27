@@ -3,7 +3,7 @@
   if (!root) return;
 
   const base = document.body.dataset.depth === "team" ? "../" : "";
-  const release = "20260830-season-comparison-list-v2";
+  const release = "20260830-team-attack-channels-v1";
   const defaultPlayerPhoto = `${base}assets/images/players/player-placeholder.png`;
   const esc = value => String(value ?? "").replace(/[&<>\"]/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[char]));
   const contrastInk = color => {
@@ -344,15 +344,23 @@
     return `<article class="team-season-column" data-team-season="${esc(stats.season)}"><header class="team-season-heading"><div><span class="eyebrow">${esc(stats.competition)}</span><h2>Statistiche ${esc(stats.season)}</h2></div><span>${value(stats.results.played)} partite concluse</span></header>${noMatches}<div class="team-season-group"><h3>Risultati</h3>${teamSeasonList(stats.results, ["played", "won", "drawn", "lost", "points", "pointsPerGame", "goalsFor", "goalsAgainst", "goalDifference", "cleanSheets", "failedToScore", "winPercentage", "drawPercentage", "lossPercentage"])}</div><div class="team-season-group"><h3>Disciplina</h3>${teamSeasonList(stats.discipline, ["foulsCommitted", "foulsCommittedPerGame", "foulsWon", "foulsWonPerGame", "yellowCards", "yellowCardsPerGame", "secondYellowCards", "straightRedCards", "dismissals", "penaltiesConceded", "penaltiesWon", "disciplineIndex"])}</div><div class="team-season-group"><h3>Casa e trasferta</h3><div class="team-season-splits"><section><h4>Casa</h4>${teamSeasonList(stats.homeAway.home, ["played", "won", "drawn", "lost", "goalsFor", "goalsAgainst", "yellowCards"])}</section><section><h4>Trasferta</h4>${teamSeasonList(stats.homeAway.away, ["played", "won", "drawn", "lost", "goalsFor", "goalsAgainst", "yellowCards"])}</section></div></div></article>`;
   }
 
-  function teamSeasonComparison(currentStats, previousStats) {
-    return `<section class="detail-section team-season-comparison" aria-labelledby="team-season-comparison-title"><header class="team-season-comparison-heading"><span class="eyebrow">Confronto stagionale</span><h2 id="team-season-comparison-title">Statistiche squadra</h2></header><div class="team-season-columns">${currentStats ? teamSeasonStatsColumn(currentStats) : ""}${teamSeasonStatsColumn(previousStats)}</div></section>`;
+  const attackChannelLabel = channel => channel === "left" ? "Fascia sinistra" : channel === "right" ? "Fascia destra" : "Zona centrale";
+  function teamAttackChannels(profile) {
+    const channels = profile?.attackChannels;
+    if (!channels) return "";
+    return `<section class="team-attack-channels" aria-labelledby="team-attack-channels-title"><h3 id="team-attack-channels-title">Direzioni d'attacco</h3><div class="team-attack-channel-bars">${[["left", "Sinistra"], ["central", "Centro"], ["right", "Destra"]].map(([key, label]) => `<div><span>${label}</span><i aria-hidden="true"><b style="width:${channels[key]}%"></b></i><strong>${channels[key]}%</strong></div>`).join("")}</div><p>Canale prevalente: <strong>${attackChannelLabel(channels.dominant)}</strong></p></section>`;
+  }
+
+  function teamSeasonComparison(currentStats, previousStats, tacticalProfile) {
+    return `<section class="detail-section team-season-comparison" aria-labelledby="team-season-comparison-title"><header class="team-season-comparison-heading"><span class="eyebrow">Confronto stagionale</span><h2 id="team-season-comparison-title">Statistiche squadra</h2></header>${teamAttackChannels(tacticalProfile)}<div class="team-season-columns">${currentStats ? teamSeasonStatsColumn(currentStats) : ""}${teamSeasonStatsColumn(previousStats)}</div></section>`;
   }
 
   function teamPage(team, objectiveDataset, standings, teams, matches, teamStyleProfiles, europeanFixtures) {
     const currentStats = team.teamStats.seasons?.["2026/27"];
     const previousStats = team.teamStats.seasons?.["2025/26"] || team.teamStats;
     const combinedPlayerStats = combinedSquadStats(team, matches);
-    const statsSections = teamSeasonComparison(currentStats, previousStats);
+    const tacticalProfile = teamStyleProfiles?.profiles?.find(profile => profile.teamId === team.id);
+    const statsSections = teamSeasonComparison(currentStats, previousStats, tacticalProfile);
     const quality = team.squad.reduce((summary, player) => {
       const key = player.dataQuality?.status || "unavailable";
       summary[key] = (summary[key] || 0) + 1;
