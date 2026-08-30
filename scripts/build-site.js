@@ -14,7 +14,7 @@ const withFonts = html => html.replace("</title>", `</title>${fontLinks}`);
 const version = "20260824-central-sources-page-v1";
 const homeVersion = "20260830-md2-results-v1";
 const calendarVersion = "20260830-md2-results-v1";
-const teamVersion = "20260830-remove-style-leaders-v7";
+const teamVersion = "20260830-open-season-stat-groups-v1";
 const leaderboardVersion = "20260830-md2-results-v1";
 const bettingVersion = "20260830-md2-results-void-player-v1";
 const readingVersion = "20260830-remove-missing-verdict-v1";
