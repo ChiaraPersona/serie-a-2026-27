@@ -111,6 +111,8 @@
 
 .team-detail-hero>img{width:156px;height:156px}
 
+.team-detail-hero>div{flex:1;min-width:0}
+
 .team-detail-hero h1{margin:.25rem 0}
 
 .team-stat-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
@@ -242,13 +244,17 @@
 
 .team-flip-card:focus-visible{outline:2px solid var(--gold);outline-offset:4px}
 
-.team-page-jumps{display:flex;gap:8px;max-width:1132px;margin:0 auto 12px;padding:0 24px;overflow-x:auto;scrollbar-width:none}
+.team-page-jumps{display:flex;gap:8px;width:100%;margin:18px 0 0;padding:0;overflow-x:auto;scrollbar-width:none}
 
 .team-page-jumps::-webkit-scrollbar{display:none}
 
 .team-page-jumps a{flex:0 0 auto;padding:8px 12px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.5);color:var(--muted);font-size:.72rem;font-weight:800;text-decoration:none}
 
 .team-page-jumps a:hover{border-color:var(--line-strong);color:var(--text)}
+
+.team-page-jumps a.team-calendar-link{border-color:#17366f;background:#17366f;color:#fff;box-shadow:0 8px 18px rgba(23,54,111,.16)}
+
+.team-page-jumps a.team-calendar-link:hover{border-color:#0e2a69;background:#0e2a69;color:#fff}
 
 .team-season-comparison{padding-top:20px;padding-bottom:20px;scroll-margin-top:90px}
 
@@ -653,7 +659,7 @@
 
 .team-style-metrics strong{font-size:1.05rem}
 
-.team-style-trait-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.team-style-trait-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);align-items:start;gap:10px}
 
 .team-style-traits,.team-style-lower>article{padding:20px;border:1px solid rgba(14,42,105,.1);border-radius:20px;background:#fff}
 
@@ -666,6 +672,18 @@
 .team-style-traits li:last-child,.team-style-leaders li:last-child{padding-bottom:0;border-bottom:0}
 
 .team-style-traits small{color:#7a6740;font-weight:700;white-space:nowrap}
+
+.team-style-traits{padding:14px;border-radius:16px}
+
+.team-style-traits:last-child{grid-column:1/-1}
+
+.team-style-traits h3{margin-bottom:9px;font-size:.82rem;line-height:1.25}
+
+.team-style-traits li{gap:8px;padding-bottom:7px;font-size:.75rem;line-height:1.35}
+
+.team-style-traits small{font-size:.63rem;letter-spacing:.02em}
+
+.team-style-traits:last-child ul{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:16px}
 
 .team-style-lower{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:16px}
 
