@@ -258,9 +258,16 @@ async function main() {
   for (const seed of source.players) {
     const localEntriesForPlayer = local.filter(entry => entry.playerId === seed.id);
     const localEntryKeys = new Set(localEntriesForPlayer.map(entry => `${normalize(entry.team)}|${normalize(entry.competition)}`));
-    const supplementalEntries = (externalByPlayer.get(seed.id) || [])
-      .filter(entry => !localEntryKeys.has(`${normalize(entry.team)}|${normalize(entry.competition)}`));
-    const entries = [...localEntriesForPlayer, ...supplementalEntries];
+    const externalEntriesForPlayer = externalByPlayer.get(seed.id) || [];
+    const authoritativeExternalKeys = new Set(externalEntriesForPlayer
+      .filter(entry => entry.source === "ESPN Core" && entry.minutes != null)
+      .map(entry => `${normalize(entry.team)}|${normalize(entry.competition)}`));
+    const supplementalEntries = externalEntriesForPlayer
+      .filter(entry => authoritativeExternalKeys.has(`${normalize(entry.team)}|${normalize(entry.competition)}`) || !localEntryKeys.has(`${normalize(entry.team)}|${normalize(entry.competition)}`));
+    const entries = [
+      ...localEntriesForPlayer.filter(entry => !authoritativeExternalKeys.has(`${normalize(entry.team)}|${normalize(entry.competition)}`)),
+      ...supplementalEntries
+    ];
     const p = profiles[seed.id];
     const completeness = entries.length ? (entries.some(entry => entry.minutes != null) ? "complete" : "partial") : "unavailable";
     const espnId = seed.espnId || inferredIds[seed.id] || null;
@@ -275,9 +282,10 @@ async function main() {
       detailedRoleSource: rolesByPlayer.has(seed.id) ? "ESPN - posizioni da titolare 2025/26" : "Configurazione rosa",
       detailedRoleEvidence: rolesByPlayer.has(seed.id) ? { starts: rolesByPlayer.get(seed.id).reduce((total, item) => total + item.occurrences, 0), roles: rolesByPlayer.get(seed.id) } : null,
       dateOfBirth: p.dateOfBirth || seed.dateOfBirth || null, age: ageAt(p.dateOfBirth || seed.dateOfBirth), nationality: seed.nationality,
-      heightCm: p.heightCm ?? seed.heightCm ?? null, weightKg: p.weightKg ?? seed.weightKg ?? null, preferredFoot: p.preferredFoot || seed.preferredFoot || null, birthplace: p.birthplace ?? null, atMilanSince: p.atMilanSince ?? null,
-      photo: photo || p.remoteImage || remotePhotoSource, remotePhotoSource, arrivalDate: seed.arrivalDate || null, status: seed.status,
-      previousTeam: entries[0]?.team || seed.previousTeam || null, previousCompetition: entries[0]?.competition || seed.previousCompetition || null,
+      heightCm: p.heightCm ?? seed.heightCm ?? null, weightKg: p.weightKg ?? seed.weightKg ?? null, preferredFoot: p.preferredFoot || seed.preferredFoot || null, birthplace: p.birthplace ?? seed.birthplace ?? null, atMilanSince: p.atMilanSince ?? seed.atMilanSince ?? null,
+      photo: photo || seed.photo || p.remoteImage || remotePhotoSource, remotePhotoSource, arrivalDate: seed.arrivalDate || null, status: seed.status,
+      previousTeam: entries.length > 1 && seed.previousTeam ? seed.previousTeam : entries[0]?.team || seed.previousTeam || null,
+      previousCompetition: entries.length > 1 && seed.previousCompetition ? seed.previousCompetition : entries[0]?.competition || seed.previousCompetition || null,
       previousSeason: { season: "2025/26", entries, totals: totals(entries), totalsByCompetition: entries.map(entry => ({ competition: entry.competition, team: entry.team, ...totals([entry]) })) },
       sources: [
         { provider: "AC Milan", scope: "Rosa e anagrafica", url: p.sourceUrl, retrievedAt: "2026-07-20" },

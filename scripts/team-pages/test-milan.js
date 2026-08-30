@@ -12,10 +12,10 @@ const stylesSource = ["styles", "base", "layout", "components", "home", "matches
 const allowedStatuses = new Set(["confermato", "nuovo acquisto", "prestito", "rientro dal prestito", "primavera", "da verificare"]);
 const sortable = ["appearances", "minutes", "goals", "assists", "shots", "shotsOnTarget", "foulsCommitted", "yellowCards"];
 
-assert.strictEqual(generated.players.length, 27, "La rosa ufficiale Milan deve contenere 27 giocatori");
-assert.strictEqual(team.squad.length, 27, "La pagina Milan deve ricevere 27 giocatori");
-assert.strictEqual(new Set(generated.players.map(player => player.id)).size, 27, "ID giocatore duplicati");
-assert.strictEqual(new Set(generated.players.map(player => player.name.toLocaleLowerCase("it"))).size, 27, "Nomi giocatore duplicati");
+assert.strictEqual(generated.players.length, 28, "La rosa ufficiale Milan deve contenere 28 giocatori");
+assert.strictEqual(team.squad.length, 28, "La pagina Milan deve ricevere 28 giocatori");
+assert.strictEqual(new Set(generated.players.map(player => player.id)).size, 28, "ID giocatore duplicati");
+assert.strictEqual(new Set(generated.players.map(player => player.name.toLocaleLowerCase("it"))).size, 28, "Nomi giocatore duplicati");
 assert.ok(!generated.players.some(player => player.id === "samuele-ricci"), "Samuele Ricci deve essere rimosso dopo il trasferimento al Como");
 assert.ok(!generated.players.some(player => player.id === "rafael-leao"), "Rafael Leão deve essere rimosso dopo il trasferimento al Galatasaray");
 assert.ok(!generated.players.some(player => player.id === "santiago-gimenez"), "Santiago Gimenez deve essere rimosso dopo il trasferimento al Porto");
@@ -31,6 +31,14 @@ assert.strictEqual(chukwueze.providerIds.espn, "228298", "Samuel Chukwueze: ID E
 assert.deepStrictEqual(chukwueze.previousSeason.entries.map(entry => `${entry.team}|${entry.competition}`).sort(), ["Fulham|Premier League", "Milan|Serie A"], "Samuel Chukwueze: blocchi 2025/26 incompleti");
 assert.deepStrictEqual({ appearances: chukwueze.previousSeason.totals.appearances, minutes: chukwueze.previousSeason.totals.minutes, goals: chukwueze.previousSeason.totals.goals, assists: chukwueze.previousSeason.totals.assists }, { appearances: 24, minutes: 1100, goals: 3, assists: 4 }, "Samuel Chukwueze: totali 2025/26 errati");
 assert.ok(fs.existsSync(path.join(root, "data/players/milan/samuel-chukwueze.json")), "Samuel Chukwueze: JSON individuale assente");
+const musah = generated.players.find(player => player.id === "yunus-musah");
+assert.ok(musah, "Yunus Musah assente dalla rosa Milan");
+assert.strictEqual(musah.providerIds.espn, "307527", "Yunus Musah: ID ESPN errato");
+assert.strictEqual(musah.status, "rientro dal prestito", "Yunus Musah: stato rosa errato");
+assert.strictEqual(musah.previousTeam, "Atalanta", "Yunus Musah: club precedente errato");
+assert.deepStrictEqual(musah.previousSeason.entries.map(entry => `${entry.team}|${entry.competition}`).sort(), ["Atalanta|Serie A", "Milan|Serie A"], "Yunus Musah: blocchi 2025/26 incompleti");
+assert.deepStrictEqual({ appearances: musah.previousSeason.totals.appearances, minutes: musah.previousSeason.totals.minutes, goals: musah.previousSeason.totals.goals, assists: musah.previousSeason.totals.assists }, { appearances: 21, minutes: 741, goals: 1, assists: 0 }, "Yunus Musah: totali 2025/26 errati");
+assert.ok(fs.existsSync(path.join(root, "data/players/milan/yunus-musah.json")), "Yunus Musah: JSON individuale assente");
 const moreira = generated.players.find(player => player.id === "diego-moreira");
 assert.ok(moreira, "Diego Moreira assente dalla rosa Milan");
 assert.deepStrictEqual({ team: moreira.previousSeason.entries[0]?.team, appearances: moreira.previousSeason.totals.appearances, minutes: moreira.previousSeason.totals.minutes, goals: moreira.previousSeason.totals.goals, assists: moreira.previousSeason.totals.assists }, { team: "Strasburgo", appearances: 27, minutes: 2041, goals: 4, assists: 6 }, "Diego Moreira: statistiche 2025/26 errate");
@@ -75,7 +83,7 @@ for (const player of generated.players) {
 const entryKeys = generated.players.flatMap(player => player.previousSeason.entries.map(entry => `${player.id}|${entry.team}|${entry.competition}`));
 assert.strictEqual(new Set(entryKeys).size, entryKeys.length, "Blocchi squadra/competizione duplicati");
 assert.ok(generated.players.filter(player => player.previousSeason.entries.length).length >= 20, "Copertura statistica insufficiente");
-assert.strictEqual(generated.players.filter(player => player.dataQuality.status === "complete").length, 25);
+assert.strictEqual(generated.players.filter(player => player.dataQuality.status === "complete").length, 26);
 assert.deepStrictEqual(generated.players.filter(player => player.dataQuality.status === "partial").map(player => player.name).sort(), []);
 assert.deepStrictEqual(generated.players.filter(player => player.dataQuality.status === "unavailable").map(player => player.name).sort(), ["Ilja Pantelin", "Sankhoun Diawara"]);
 assert.deepStrictEqual(generated.players.filter(player => player.dataQuality.uncertainAssociation).map(player => player.name), []);

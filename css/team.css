@@ -242,11 +242,19 @@
 
 .team-flip-card:focus-visible{outline:2px solid var(--gold);outline-offset:4px}
 
-.team-season-comparison{padding-top:20px;padding-bottom:20px}
+.team-page-jumps{display:flex;gap:8px;max-width:1132px;margin:0 auto 12px;padding:0 24px;overflow-x:auto;scrollbar-width:thin}
 
-.team-season-comparison-heading{margin-bottom:22px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+.team-page-jumps a{flex:0 0 auto;padding:8px 12px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.5);color:var(--muted);font-size:.72rem;font-weight:800;text-decoration:none}
+
+.team-page-jumps a:hover{border-color:var(--line-strong);color:var(--text)}
+
+.team-season-comparison{padding-top:20px;padding-bottom:20px;scroll-margin-top:90px}
+
+.team-season-comparison-heading{margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--line)}
 
 .team-season-comparison-heading h2{margin:3px 0 0;font-size:clamp(1.45rem,2.6vw,2rem)}
+
+.team-season-comparison-heading p{margin:6px 0 0;color:var(--muted);font-size:.82rem}
 
 .team-attack-channels{margin-bottom:26px;padding:18px 20px;border:1px solid var(--line);border-radius:18px;background:color-mix(in srgb,var(--panel) 88%,transparent)}
 
@@ -268,19 +276,27 @@
 
 .team-attack-channels p strong{color:#7a6740}
 
-.team-season-columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:32px}
+.team-season-columns{display:grid;gap:12px}
 
-.team-season-column+.team-season-column{padding-left:32px;border-left:1px solid var(--line)}
+.team-season-column{overflow:hidden;border:1px solid var(--line);border-radius:18px;background:color-mix(in srgb,var(--panel) 82%,transparent)}
 
-.team-season-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin-bottom:18px}
+.team-season-heading{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:15px 18px;cursor:pointer;list-style:none}
+
+.team-season-heading::-webkit-details-marker{display:none}
+
+.team-season-heading::after{content:"+";display:grid;place-items:center;flex:0 0 28px;width:28px;height:28px;border:1px solid var(--line);border-radius:50%;color:var(--muted);font-size:1rem;font-weight:700}
+
+.team-season-column[open]>.team-season-heading::after{content:"−"}
 
 .team-season-heading>div{display:grid;gap:2px}
 
 .team-season-heading h2{margin:0;font-family:"Anton",sans-serif;font-size:1.65rem;font-weight:400;letter-spacing:.01em}
 
-.team-season-heading>span{color:var(--muted);font-size:.75rem;font-weight:700;white-space:nowrap}
+.team-season-heading>span{margin-left:auto;color:var(--muted);font-size:.75rem;font-weight:700;white-space:nowrap}
 
-.team-season-group+.team-season-group{margin-top:18px;padding-top:18px;border-top:1px solid var(--line)}
+.team-season-content{display:grid;grid-template-columns:1.15fr 1fr 1fr;gap:24px;padding:4px 18px 18px;border-top:1px solid var(--line)}
+
+.team-season-group{min-width:0;padding-top:16px}
 
 .team-season-group>h3{margin-bottom:10px;color:var(--gold);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase}
 
@@ -296,7 +312,7 @@
 
 .team-season-splits h4{margin-bottom:6px;color:var(--text);font-size:.75rem;letter-spacing:.06em;text-transform:uppercase}
 
-.team-season-empty{margin:-4px 0 16px;padding:10px 12px;border-left:3px solid var(--gold);border-radius:0 10px 10px 0;background:rgba(243,201,105,.08);color:var(--muted);font-size:.82rem}
+.team-season-empty{grid-column:1/-1;margin:12px 0 0;padding:10px 12px;border-left:3px solid var(--gold);border-radius:0 10px 10px 0;background:rgba(243,201,105,.08);color:var(--muted);font-size:.82rem}
 
 .match.fixture-card .fixture-team{border-color:rgba(255,255,255,.08);background:rgba(255,255,255,.035)}
 
@@ -500,11 +516,17 @@
 .match.fixture-card .team-name{color:#28383b}
 
 /* Stato obiettivi nella pagina della singola squadra */
-.team-objective-section{margin-top:42px}
+.team-objective-section{margin-top:18px;padding-top:20px;padding-bottom:20px;scroll-margin-top:90px}
 
 .team-objective-section .objective-section-head{align-items:center}
 
-.team-objective-section .objective-card,.team-objective-section .objective-method{max-width:920px}
+.team-objective-section .objective-card{max-width:none}
+
+.team-method-details{margin-top:10px;color:var(--muted);font-size:.78rem}
+
+.team-method-details summary{width:max-content;max-width:100%;cursor:pointer;font-weight:800}
+
+.team-method-details p{max-width:850px;margin:8px 0 0;line-height:1.5}
 
 .team-objective-team{color:#fff;font-weight:800}
 
@@ -597,7 +619,11 @@
 .reading-evidence-card .team-logo{width:46px;height:46px}
 
 /* Profili tattici storici WhoScored */
-.team-style-section{display:grid;gap:24px}
+.team-analysis-grid{display:grid;grid-template-columns:minmax(0,1.06fr) minmax(0,.94fr);gap:24px;max-width:1180px;margin:0 auto;padding:24px}
+
+.team-analysis-grid>.detail-section{min-width:0;margin:0;padding:0}
+
+.team-style-section{align-content:start;display:grid;gap:18px;scroll-margin-top:90px}
 
 .team-style-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:20px}
 
@@ -609,9 +635,9 @@
 
 .team-style-quality.quality-statistical-only{background:#f3f3f3;color:#555}
 
-.team-style-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.team-style-metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 
-.team-style-metrics>div{padding:16px;border:1px solid rgba(14,42,105,.1);border-radius:16px;background:#f8faff}
+.team-style-metrics>div{padding:13px;border:1px solid rgba(14,42,105,.1);border-radius:14px;background:#f8faff}
 
 .team-style-metrics span,.team-style-metrics strong{display:block}
 
@@ -649,7 +675,21 @@
 
 .team-style-section .objective-method a{font-weight:800}
 
-.team-probable-lineup{display:grid;gap:20px}
+.team-style-details,.squad-table-disclosure{overflow:hidden;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.42)}
+
+.team-style-details>summary,.squad-table-disclosure>summary{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:14px 16px;cursor:pointer;list-style:none;font-size:.82rem;font-weight:850}
+
+.team-style-details>summary::-webkit-details-marker,.squad-table-disclosure>summary::-webkit-details-marker{display:none}
+
+.team-style-details>summary::after,.squad-table-disclosure>summary::after{content:"+";font-size:1.1rem}
+
+.team-style-details[open]>summary::after,.squad-table-disclosure[open]>summary::after{content:"−"}
+
+.team-style-details-content{display:grid;gap:16px;padding:0 14px 14px;border-top:1px solid var(--line)}
+
+.team-style-details-content>.team-style-trait-grid{margin-top:14px}
+
+.team-probable-lineup{align-content:start;display:grid;gap:20px;scroll-margin-top:90px}
 
 .probable-lineup-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:20px}
 
@@ -695,6 +735,28 @@
 .probable-lineup-board footer a{color:#fff;font-weight:800;white-space:nowrap}
 
 .probable-lineup-board-head>strong{color:var(--lineup-head-ink,#fff)}
+
+.team-roster-section{scroll-margin-top:90px}
+
+.team-roster-heading{display:flex;align-items:end;justify-content:space-between;gap:18px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+
+.team-roster-heading h2{margin:3px 0 0}
+
+.team-roster-heading>span{padding:6px 10px;border:1px solid var(--line);border-radius:999px;color:var(--muted);font-size:.72rem;font-weight:800}
+
+.team-roster-section .squad-leaders{margin-top:22px;padding-top:0;border-top:0}
+
+.squad-table-disclosure{margin-top:22px}
+
+.squad-table-disclosure>summary>span:first-child{display:grid;gap:3px}
+
+.squad-table-disclosure>summary small{color:var(--muted);font-weight:600}
+
+.squad-table-disclosure>summary>span:last-child{margin-left:auto;color:var(--muted);font-size:.72rem;text-transform:uppercase}
+
+.squad-table-disclosure-content{padding:16px;border-top:1px solid var(--line)}
+
+.squad-table-disclosure-content .roster-summary{margin-top:0}
 
 .reading-tactical-card>.team-with-logo{font-size:19px;font-weight:850}
 

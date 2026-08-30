@@ -14,10 +14,10 @@ const withFonts = html => html.replace("</title>", `</title>${fontLinks}`);
 const version = "20260824-central-sources-page-v1";
 const homeVersion = "20260830-md2-results-v1";
 const calendarVersion = "20260830-md2-results-v1";
-const teamVersion = "20260830-team-attack-channels-v1";
+const teamVersion = "20260830-team-page-layout-v1";
 const leaderboardVersion = "20260830-md2-results-v1";
 const bettingVersion = "20260830-md2-results-void-player-v1";
-const readingVersion = "20260830-team-attack-channels-v1";
+const readingVersion = "20260830-previous-match-reports-v1";
 const fantasyVersion = "20260827-fantasy-md2-identities-v2";
 const headToHeadPath = path.join(root, "data/generated/head-to-head/first-leg-2026-27.json");
 if (fs.existsSync(headToHeadPath)) {

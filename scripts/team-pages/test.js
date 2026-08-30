@@ -146,12 +146,16 @@ assert.ok(teamInterface.includes("probable-lineup-substitutes") && readingLineup
 assert.ok(teamInterface.includes('official ? "Formazione ufficiale" : "Probabile formazione"'), "Le pagine squadra non distinguono la formazione ufficiale");
 assert.ok(readingLineupSource.includes('officialLineups?"Formazioni ufficiali":referenceLineups?"Formazioni di riferimento":"Probabili formazioni"'), "La Lettura non distingue formazioni ufficiali, di riferimento e probabili");
 assert.ok(readingLineupSource.includes('`Distinte ufficiali della giornata ${match.matchday}`'), "La Lettura non associa le distinte ufficiali alla giornata corretta");
-assert.ok(mainApp.includes('<details class="reading-completed-matchday">') && mainApp.includes("Tabellini della giornata ${completed[0].matchday}"), "I tabellini conclusi non usano il menu a tendina per giornata");
+assert.ok(mainApp.includes('<details class="reading-completed-matchday">') && mainApp.includes("Tabellini delle partite precedenti"), "I tabellini conclusi non usano il menu a tendina dedicato alle partite precedenti");
 assert.ok(mainApp.includes("Storico MVP 2025/26") && mainApp.includes("prediction-mvp-history"), "Lo storico MVP individuale non è esposto nelle Letture");
 assert.ok(mainApp.includes("reading-official-mvp") && mainApp.includes("Panini Player of the Match") && mainApp.includes("match.mvp"), "L'MVP ufficiale della partita conclusa non è esposto nelle Letture");
 assert.ok(mainApp.includes("Totale partita") && mainApp.includes("prediction-match-volume") && mainApp.includes("percentili p20–p80"), "I totali volume casa/trasferta non sono esposti nelle Letture");
 assert.ok(!mainApp.includes("giornata di riferimento") && !teamInterface.includes("Data da definire · riferimento"), "Le date non definite non devono mostrare una data di riferimento");
-assert.ok(teamInterface.includes("Stato degli obiettivi") && teamInterface.includes("calculateObjectiveMetrics"), "Lo stato degli obiettivi non è integrato nelle pagine squadra");
+assert.ok(teamInterface.includes("La stagione in sintesi") && teamInterface.includes("calculateObjectiveMetrics"), "La sintesi degli obiettivi non è integrata nelle pagine squadra");
+for (const contract of ["team-page-jumps", "team-analysis-grid", "team-roster-section", "squad-table-disclosure", "team-style-details", "team-method-details"]) assert.ok(teamInterface.includes(contract), `Gerarchia compatta pagina squadra: manca ${contract}`);
+assert.ok(teamPageSource.includes("${objectiveSection}${statsSections}${calendarSection}") && teamPageSource.includes("${lineupSection}${styleSection}"), "L'ordine della pagina squadra deve essere sintesi, statistiche, calendario, formazione e stile");
+assert.ok(teamPageSource.indexOf("${squadLeaderboards(team, matches)}") < teamPageSource.indexOf("${filters()}"), "I leader devono precedere filtri e tabella completa");
+for (const contract of [".team-page-jumps", ".team-analysis-grid", ".squad-table-disclosure", ".team-style-details", ".team-season-content"]) assert.ok(styles.includes(contract), `Gerarchia compatta pagina squadra: stile ${contract} assente`);
 assert.ok(teamInterface.includes("teamNavigation(team, teams)") && teamInterface.includes("Squadra precedente") && teamInterface.includes("Squadra successiva"), "La pagina squadra deve offrire la navigazione precedente/successiva");
 assert.ok(!teamInterface.includes("Aggiornato automaticamente") && !teamInterface.includes('class="updated"'), "La pagina squadra non deve mostrare diciture di aggiornamento automatico o la data nel hero");
 assert.ok(!teamInterface.includes("Distinta confermata") && !teamInterface.includes("Profilo completo"), "I badge Distinta confermata e Profilo completo non devono essere mostrati");

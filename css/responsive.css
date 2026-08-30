@@ -99,13 +99,15 @@
 
 @media(hover:none){.team-flip-card{height:auto;perspective:none}.team-flip-inner{display:grid;height:auto;transform:none!important}.team-flip-face{position:relative;backface-visibility:visible;-webkit-backface-visibility:visible}.team-flip-front{min-height:220px;border-radius:18px 18px 0 0}.team-flip-back{min-height:220px;border-top:0;border-radius:0 0 18px 18px;transform:none}}
 
-@media(max-width:980px){.team-season-columns{gap:22px}.team-season-column+.team-season-column{padding-left:22px}.team-season-splits{grid-template-columns:1fr;gap:18px}}
+@media(max-width:980px){.team-season-content{grid-template-columns:repeat(2,minmax(0,1fr))}.team-season-content .team-season-group:last-child{grid-column:1/-1}.team-analysis-grid{grid-template-columns:1fr;gap:34px}.team-analysis-grid .probable-lineup-board{max-width:640px}.team-style-metrics{grid-template-columns:repeat(4,minmax(0,1fr))}}
 
-@media(max-width:700px){.team-season-columns{grid-template-columns:1fr;gap:28px}.team-season-column+.team-season-column{padding-top:28px;padding-left:0;border-top:1px solid var(--line);border-left:0}.team-season-heading{align-items:flex-start;flex-direction:column;gap:5px}.team-season-splits{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){.team-season-content{grid-template-columns:1fr}.team-season-content .team-season-group:last-child{grid-column:auto}.team-season-heading{align-items:flex-start;flex-wrap:wrap;gap:5px}.team-season-heading>span{margin-left:0}.team-season-heading::after{margin-left:auto}.team-season-splits{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
 @media(max-width:700px){.team-attack-channel-bars{grid-template-columns:1fr;gap:10px}}
 
 @media(max-width:430px){.team-season-splits{grid-template-columns:1fr}}
+
+@media(max-width:760px){.team-page-jumps{padding:0 16px}.team-analysis-grid{padding:20px 16px}.team-roster-heading{align-items:flex-start}.squad-table-disclosure>summary{align-items:flex-start}.squad-table-disclosure>summary>span:last-child{display:none}.squad-table-disclosure-content{padding:12px}}
 
 @media(prefers-reduced-motion:no-preference){.card,.home-rail a,.match.fixture-card,.team-flip-inner{transition-duration:.42s;transition-timing-function:cubic-bezier(.22,.8,.22,1)}}
 
@@ -213,9 +215,9 @@
 
 @media(max-width:650px){.reading-pilot-card{padding:20px}.reading-pilot-card header{align-items:flex-start;flex-direction:column;gap:7px}.reading-pilot-card ul{grid-template-columns:1fr}}
 
-@media(max-width:900px){.team-style-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.team-style-trait-grid,.team-style-lower{grid-template-columns:1fr}.team-style-leaders{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:900px){.team-style-trait-grid,.team-style-lower{grid-template-columns:1fr}.team-style-leaders{grid-template-columns:repeat(3,minmax(0,1fr))}}
 
-@media(max-width:620px){.team-style-heading,.probable-lineup-heading{align-items:flex-start;flex-direction:column}.team-style-metrics,.team-style-leaders{grid-template-columns:1fr}.team-style-traits li{align-items:flex-start;flex-direction:column;gap:3px}.team-style-traits small{white-space:normal}.probable-lineup-pitch{min-height:440px;padding:22px 8px}.probable-lineup-row{gap:4px}.probable-lineup-row span{padding:7px 6px;font-size:.68rem}}
+@media(max-width:620px){.team-style-heading,.probable-lineup-heading{align-items:flex-start;flex-direction:column}.team-style-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.team-style-leaders{grid-template-columns:1fr}.team-style-traits li{align-items:flex-start;flex-direction:column;gap:3px}.team-style-traits small{white-space:normal}.probable-lineup-pitch{min-height:440px;padding:22px 8px}.probable-lineup-row{gap:4px}.probable-lineup-row span{padding:7px 6px;font-size:.68rem}}
 
 @media(max-width:430px){.probable-lineup-heading>span{display:none}.probable-lineup-board{border-radius:22px}.probable-lineup-board-head{grid-template-columns:auto 1fr auto;gap:10px}.probable-lineup-board-head img{width:42px;height:42px}.probable-lineup-board-head h3{font-size:1.3rem}.probable-lineup-board-head>strong{padding:8px 10px;font-size:.82rem}.probable-lineup-board .probable-lineup-pitch{min-height:390px}.probable-lineup-player strong{max-width:68px;font-size:.58rem}}
 
