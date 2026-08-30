@@ -75,4 +75,8 @@ console.log(`Schedina MD2 valida: stessa matrice MD1, 8 proposte e ${allLegs.len
   assert.strictEqual(status("Risultato esatto 1–0"), "lost", "Il risultato esatto 1-0 deve essere rosso sul 2-0");
   assert.strictEqual(status("Risultati 1–0 / 2–0 / 2–1"), "won", "Il multiesito include il 2-0 finale");
   console.log("Liquidazione Milan-Venezia MD2 valida: 5 esiti verdi e 2 rossi.");
+
+  const juventusParma = matches.find(item => item.id === "juventus-parma-2026-27-md-02");
+  const mckennie = allLegs.find(leg => leg.matchId === juventusParma.id && leg.player === "Weston McKennie");
+  assert.strictEqual(settleLeg(mckennie, juventusParma).status, "void", "McKennie non impiegato: quota annullata");
 })().catch(error=>{console.error(error);process.exitCode=1;});

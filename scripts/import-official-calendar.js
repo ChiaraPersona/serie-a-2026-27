@@ -215,6 +215,7 @@ for (const result of matchResults.matches) {
     scorers: result.scorers,
     bookings: result.bookings,
     substitutions: result.substitutions,
+    didNotPlay: result.didNotPlay || { home: [], away: [] },
     teamStats: result.teamStats,
     playerStats: mergeStatmusePlayerStats(result),
     mvp: result.mvp || null,

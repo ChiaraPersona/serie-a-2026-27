@@ -35,6 +35,7 @@ body[data-page="betting"] main>.hero .eyebrow{color:var(--betting-gold)}
 .betting-result-legend>span{padding:6px 10px;font-size:10px;text-transform:uppercase}
 .betting-result-legend--won{border-color:rgba(22,135,84,.25)!important;background:rgba(24,174,105,.11);color:#087144}
 .betting-result-legend--lost{border-color:rgba(201,50,58,.24)!important;background:rgba(224,66,73,.1);color:#a7212a}
+.betting-result-legend--void{border-color:rgba(28,109,255,.26)!important;background:rgba(28,109,255,.11);color:#1257a6}
 .betting-result-legend small{color:var(--muted);font-size:10px}
 .betting-slip-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;align-items:start}
 .betting-slip-grid-qualified{grid-template-columns:repeat(2,minmax(0,1fr));max-width:none}
@@ -74,11 +75,14 @@ body[data-page="betting"] main>.hero .eyebrow{color:var(--betting-gold)}
 .betting-slip li>b{padding:5px 7px;border-radius:8px;background:rgba(28,109,255,.08);color:#154e8c;font-size:12px}
 .betting-slip li.betting-leg--won{margin:2px 0;padding:6px 7px;border:1px solid rgba(22,135,84,.2);border-radius:10px;background:linear-gradient(90deg,rgba(24,174,105,.12),rgba(24,174,105,.035))}
 .betting-slip li.betting-leg--lost{margin:2px 0;padding:6px 7px;border:1px solid rgba(201,50,58,.2);border-radius:10px;background:linear-gradient(90deg,rgba(224,66,73,.11),rgba(224,66,73,.03))}
+.betting-slip li.betting-leg--void{margin:2px 0;padding:6px 7px;border:1px solid rgba(28,109,255,.24);border-radius:10px;background:linear-gradient(90deg,rgba(28,109,255,.13),rgba(28,109,255,.035))}
 .betting-leg-result{justify-self:start;margin-top:4px;padding:3px 7px;font-size:9px;letter-spacing:.03em;text-transform:uppercase}
 .betting-leg--won .betting-leg-result{border-color:rgba(22,135,84,.25);background:#e5f7ed;color:#087144}
 .betting-leg--lost .betting-leg-result{border-color:rgba(201,50,58,.24);background:#fdebed;color:#a7212a}
+.betting-leg--void .betting-leg-result{border-color:rgba(28,109,255,.26);background:#e8f1ff;color:#1257a6}
 .betting-leg--won li>b,.betting-leg--won>b{background:rgba(24,174,105,.12);color:#087144}
 .betting-leg--lost li>b,.betting-leg--lost>b{background:rgba(224,66,73,.11);color:#a7212a}
+.betting-leg--void li>b,.betting-leg--void>b{background:rgba(28,109,255,.13);color:#1257a6}
 .betting-slip-metrics{display:grid;grid-template-columns:1.25fr repeat(3,1fr);gap:1px;margin-top:10px;overflow:hidden;border:1px solid rgba(22,72,126,.1);border-radius:12px;background:rgba(22,72,126,.08)}
 .betting-slip-metrics>div{display:flex;justify-content:center;flex-direction:column;min-height:55px;padding:7px 11px;background:rgba(255,255,255,.72);text-align:center}
 .betting-slip-metrics span{color:var(--muted);font-size:8px;font-weight:850;letter-spacing:.06em;text-transform:uppercase}

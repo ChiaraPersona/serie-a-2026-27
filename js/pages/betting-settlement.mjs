@@ -4,6 +4,7 @@ const normalized=value=>String(value??"").trim().toUpperCase().replaceAll("–",
 const resultStatus=won=>({status:won?"won":"lost",label:won?"Esatto":"Sbagliato"});
 const pending=()=>({status:"pending",label:""});
 const unavailable=()=>({status:"unavailable",label:""});
+const voided=()=>({status:"void",label:"Annullata"});
 const comparableName=value=>String(value??"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().trim();
 
 function totalStat(match,key){
@@ -45,6 +46,11 @@ function playerDuo(match,player){
   const substitution=(match?.substitutions||[]).find(item=>comparableName(item.playerOut)===name);
   const substitute=substitution?all.find(item=>comparableName(item.player)===comparableName(substitution.playerIn)):null;
   return [primary,...(substitute?[substitute]:[])];
+}
+
+function playerDidNotPlay(match,player){
+  const name=comparableName(player);
+  return ["home","away"].some(side=>(match?.didNotPlay?.[side]||[]).some(item=>comparableName(item?.player??item)===name));
 }
 
 function settlePlayerThreshold(selection,players,key,threshold){
@@ -92,6 +98,7 @@ export function settleLeg(leg,match){
 
   if(leg?.marketScope==="player"||market.includes("GIOCATORE")||market.includes("ASSIST")||market.includes("MARCATORE")){
     const players=playerDuo(match,leg?.player),goals=players?.reduce((sum,item)=>sum+(finite(item.goals)?Number(item.goals):0),0),assists=players?.reduce((sum,item)=>sum+(finite(item.assists)?Number(item.assists):0),0);
+    if(!players&&playerDidNotPlay(match,leg?.player))return voided();
     if(!players)return unavailable();
     if(market.includes("SEGNA O FA ASSIST"))return resultStatus(selection==="SI"?goals+assists>0:goals+assists===0);
     if(market.includes("ASSIST"))return resultStatus(selection==="SI"?assists>0:assists===0);

@@ -10,8 +10,9 @@ export function createPage(deps){
   function slipCard(slip,matchById){
     const legs=slip.legs.map((leg,index)=>{
       const settlement=settleLeg(leg,matchById.get(leg.matchId));
-      const settled=settlement.status==="won"||settlement.status==="lost";
-      const badge=settled?`<span class="betting-leg-result" aria-label="Esito ${esc(settlement.label.toLowerCase())}"><span aria-hidden="true">${settlement.status==="won"?"✓":"×"}</span> ${esc(settlement.label)}</span>`:"";
+      const settled=["won","lost","void"].includes(settlement.status);
+      const symbol=settlement.status==="won"?"✓":settlement.status==="lost"?"×":"—";
+      const badge=settled?`<span class="betting-leg-result" aria-label="Esito ${esc(settlement.label.toLowerCase())}"><span aria-hidden="true">${symbol}</span> ${esc(settlement.label)}</span>`:"";
       return `<li${settled?` class="betting-leg--${settlement.status}" data-settlement="${settlement.status}"`:""}><span class="betting-leg-number">${String(index+1).padStart(2,"0")}</span><div><strong>${esc(leg.fixture)}</strong><span>${esc(leg.label)} <small>· ${esc(leg.evidenceLabel)}</small></span>${badge}</div><b>${odds(leg.odds)}</b></li>`;
     }).join("");
     const families=slip.marketFamilies.map(esc).join(" · ");
@@ -22,7 +23,7 @@ export function createPage(deps){
   function roundContent(data,matchById,{showLegend=false}={}){
     const qualified=data.slips.filter(slip=>slip.qualityStatus==="qualificata"),others=data.slips.filter(slip=>slip.qualityStatus!=="qualificata");
     const selected=qualified.length?`<div class="betting-slip-grid betting-slip-grid-qualified">${qualified.map(slip=>slipCard(slip,matchById)).join("")}</div>`:`<div class="betting-nd-compact"><strong>Nessuna schedina qualificata</strong><span>Il controllo prudenziale non forza proposte: restano disponibili le letture editoriali e di laboratorio.</span></div>`;
-    const legend=showLegend?`<div class="betting-result-legend" aria-label="Legenda esiti"><span class="betting-result-legend--won"><b aria-hidden="true">✓</b> Esatto</span><span class="betting-result-legend--lost"><b aria-hidden="true">×</b> Sbagliato</span><small>Le selezioni non ancora concluse o non liquidabili dai dati ufficiali restano neutre.</small></div>`:"";
+    const legend=showLegend?`<div class="betting-result-legend" aria-label="Legenda esiti"><span class="betting-result-legend--won"><b aria-hidden="true">✓</b> Esatto</span><span class="betting-result-legend--lost"><b aria-hidden="true">×</b> Sbagliato</span><span class="betting-result-legend--void"><b aria-hidden="true">—</b> Annullata</span><small>Se il calciatore non entra, la quota è annullata e la puntata viene restituita.</small></div>`:"";
     const coverage=data.coverage?`<p class="betting-coverage"><strong>${data.coverage.qualifiedProfiles} proposte qualificate</strong> su ${data.coverage.profilesEvaluated} profili valutati · ${data.coverage.unavailableProfiles} profili N/D.</p>`:"";
     return `<div class="betting-stage"><header class="betting-intro"><div><p class="eyebrow">Controllo prudenziale</p><h3>Selezionate dal modello</h3></div><p>${esc(data.selectionRule||"Entrano qui soltanto schedine con EV non negativo e nessuna gamba sotto −10% di EV individuale.")}</p></header>${coverage}${legend}${selected}${others.length?`<header class="betting-section-heading"><div><p class="eyebrow">Letture editoriali e laboratorio</p><h3>Scenari non qualificati</h3></div><p>Restano visibili per confronto, con rischio ed EV dichiarati.</p></header><div class="betting-slip-grid">${others.map(slip=>slipCard(slip,matchById)).join("")}</div>`:""}<footer class="betting-method"><strong>Come leggere i numeri</strong><p>${esc(data.methodology)}</p><p>Quote ${esc(data.provider)} aggiornate al ${esc(dateOnly(data.oddsRetrievedAt))}. <a href="${esc(data.sourceUrl)}" target="_blank" rel="noreferrer">Fonte quote</a>. Gioca responsabilmente: pagina editoriale, nessun esito è certo.</p></footer></div>`;
   }
@@ -30,17 +31,20 @@ export function createPage(deps){
   function archiveStats(data,matchById){
     const archiveLegResults=data.slips.flatMap(slip=>slip.legs.map(leg=>({leg,settlement:settleLeg(leg,matchById.get(leg.matchId))})));
     const archiveWins=archiveLegResults.filter(({settlement})=>settlement.status==="won").length;
-    const archiveStake=archiveLegResults.length;
-    const archiveGrossReturn=archiveLegResults.reduce((total,{leg,settlement})=>settlement.status==="won"?total+Number(leg.odds):total,0);
-    const archiveSuccessPct=archiveStake?archiveWins/archiveStake*100:0;
+    const archiveLosses=archiveLegResults.filter(({settlement})=>settlement.status==="lost").length;
+    const archiveVoids=archiveLegResults.filter(({settlement})=>settlement.status==="void").length;
+    const archiveStake=archiveWins+archiveLosses+archiveVoids;
+    const archiveGrossReturn=archiveLegResults.reduce((total,{leg,settlement})=>settlement.status==="won"?total+Number(leg.odds):settlement.status==="void"?total+1:total,0);
+    const archiveDecided=archiveWins+archiveLosses;
+    const archiveSuccessPct=archiveDecided?archiveWins/archiveDecided*100:0;
     const archiveProfitPct=archiveStake?(archiveGrossReturn-archiveStake)/archiveStake*100:0;
-    return {archiveWins,archiveStake,archiveSuccessPct,archiveProfitPct};
+    return {archiveWins,archiveVoids,archiveStake,archiveSuccessPct,archiveProfitPct};
   }
 
   function archiveCard(data,number,matchById){
     const finished=data.slips.some(slip=>slip.legs.some(leg=>["won","lost"].includes(settleLeg(leg,matchById.get(leg.matchId)).status)));
     const stats=archiveStats(data,matchById);
-    const detail=finished?`<span class="betting-archive-performance"><span><small>Successo</small><strong>${pct(stats.archiveSuccessPct)}%</strong></span><span><small>Guadagno</small><strong>${stats.archiveProfitPct>0?"+":""}${pct(stats.archiveProfitPct)}%</strong></span></span><span>${stats.archiveWins} giocate esatte su ${stats.archiveStake}</span>`:`<span class="betting-archive-performance"><span><small>Proposte</small><strong>${data.slips.length}</strong></span><span><small>Selezioni</small><strong>${data.slips.reduce((sum,slip)=>sum+slip.legs.length,0)}</strong></span></span><span>Quote aggiornate al ${esc(dateOnly(data.oddsRetrievedAt))}</span>`;
+    const detail=finished?`<span class="betting-archive-performance"><span><small>Successo</small><strong>${pct(stats.archiveSuccessPct)}%</strong></span><span><small>Guadagno</small><strong>${stats.archiveProfitPct>0?"+":""}${pct(stats.archiveProfitPct)}%</strong></span></span><span>${stats.archiveWins} esatte su ${stats.archiveStake}${stats.archiveVoids?` · ${stats.archiveVoids} annullate`:""}</span>`:`<span class="betting-archive-performance"><span><small>Proposte</small><strong>${data.slips.length}</strong></span><span><small>Selezioni</small><strong>${data.slips.reduce((sum,slip)=>sum+slip.legs.length,0)}</strong></span></span><span>Quote aggiornate al ${esc(dateOnly(data.oddsRetrievedAt))}</span>`;
     return `<a class="betting-archive-card team-directory-card team-flip-card" href="schedina.html?giornata=${number}" aria-label="Apri le schedine della ${number===1?"prima":"seconda"} giornata" style="--team-primary:${number===1?"#123e85":"#9b1c31"};--team-secondary:#06152b"><span class="team-flip-inner"><span class="team-flip-face team-flip-front betting-archive-card-front"><span class="betting-archive-number">${number}</span></span><span class="team-flip-face team-flip-back betting-archive-card-back"><strong>${number}ª giornata</strong><span>Serie A · 2026/27</span><span>${data.slips.length} schedine</span>${detail}<b>Apri la lista delle schedine</b></span></span></a>`;
   }
 
