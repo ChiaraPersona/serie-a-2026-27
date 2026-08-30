@@ -110,7 +110,7 @@ for (const contract of ['data-team-season="${esc(stats.season)}"', "Statistiche 
 for (const contract of [".team-season-comparison", ".team-season-columns", ".team-season-column", ".team-season-list", ".team-season-splits", ".team-season-empty"]) assert.ok(styles.includes(contract), `Confronto statistiche squadra: stile ${contract} assente`);
 for (const contract of ["teamAttackChannels", "Direzioni d'attacco", "team-attack-channel-bars", "Canale prevalente:"]) assert.ok(teamInterface.includes(contract), `Direzioni d'attacco nelle statistiche squadra: manca ${contract}`);
 for (const contract of [".team-attack-channels", ".team-attack-channel-bars"]) assert.ok(styles.includes(contract), `Direzioni d'attacco nelle statistiche squadra: stile ${contract} assente`);
-assert.ok(!readingsInterface.includes('class="prediction-channels"') && !readingsInterface.includes("Direzioni d'attacco"), "Le direzioni d'attacco non devono comparire nelle Letture partita");
+for (const contract of ['class="prediction-channels"', "Lati d'attacco", "Canale prevalente:", 'style="width:${channels[key]}%"']) assert.ok(readingsInterface.includes(contract), `Lati d'attacco nelle Letture: manca ${contract}`);
 assert.strictEqual(tacticalProfiles.profiles.filter(profile => profile.attackChannels).length, 20, "Le direzioni d'attacco devono coprire tutte le 20 squadre");
 for (const profile of tacticalProfiles.profiles) {
   const channels = profile.attackChannels;
