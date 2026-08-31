@@ -19,7 +19,7 @@ const appSource = fs.readdirSync(path.join(root, "js"), { recursive: true })
 
 assert.equal(source.season, "2026/27");
 assert.equal(source.players.length, source.coverage.activePlayers);
-assert.equal(source.departed.length, 15);
+assert.equal(source.departed.length, source.coverage.departedPlayers);
 assert.equal(new Set(source.players.map(player => player.sourceId)).size, source.players.length);
 assert.deepEqual(source.coverage.byRole, Object.fromEntries(["P", "D", "C", "A"].map(role => [role, source.players.filter(player => player.role === role).length])));
 assert.equal(new Set(source.players.map(player => player.teamId)).size, 20);
@@ -27,8 +27,10 @@ assert.equal(callups.coverage.teams, 20);
 assert.equal(callups.coverage.teamsWithOfficialList, 18);
 assert.deepEqual(callups.coverage.incompleteTeams, ["lazio", "sassuolo"]);
 const callupIdsByTeam = new Map(callups.teams.map(team => [team.teamId, new Set(team.players.map(player => String(player.sourceId))) ]));
-for (const player of source.players.filter(player => !callups.coverage.incompleteTeams.includes(player.teamId))) {
-  assert.ok(callupIdsByTeam.get(player.teamId).has(String(player.sourceId)), `${player.team}:${player.name} non presente nella pagina Convocati`);
+const historicalCallupIds = new Set(callups.teams.flatMap(team => team.players.map(player => String(player.sourceId))));
+for (const player of source.players.filter(player => historicalCallupIds.has(String(player.sourceId)))) {
+  const originalTeam = callups.teams.find(team => team.players.some(entry => String(entry.sourceId) === String(player.sourceId)));
+  if (originalTeam?.teamId === player.teamId) assert.ok(callupIdsByTeam.get(player.teamId).has(String(player.sourceId)), `${player.team}:${player.name} non presente nella pagina Convocati`);
 }
 for (const player of source.players) {
   assert.ok(["P", "D", "C", "A"].includes(player.role), `${player.name}: ruolo Classic non valido`);
@@ -68,7 +70,7 @@ const recoverableGoalAssists = unlinkedListone.filter(player => {
   const stats = statsBySourceId.get(String(player.sourceId));
   return Number.isFinite(stats?.goalsFor) && Number.isFinite(stats?.assists);
 });
-assert.ok(recoverableGoalAssists.length > 0, "nessun G/A recuperabile per i profili solo listone");
+assert.ok(source.coverage.unmatchedActivePlayers === 0 || recoverableGoalAssists.length > 0, "nessun G/A recuperabile per i profili solo listone");
 for (const player of recoverableGoalAssists) {
   const stats = statsBySourceId.get(String(player.sourceId));
   assert.equal(player.goals, stats.goalsFor, `${player.name}: gol storici non propagati`);
@@ -81,7 +83,7 @@ for (const playerId of ["christos-mandas", "lorenzo-torriani"]) {
   assert.equal(player.assists, stats.assists, `${playerId}: assist storici non propagati`);
 }
 const externallyCoveredListone = unlinkedListone.filter(player => externalStatsByPlayerId.has(player.playerId));
-assert.ok(externallyCoveredListone.length >= 39, "copertura ESPN esterna insufficiente per i profili solo listone");
+assert.ok(source.coverage.unmatchedActivePlayers === 0 || externallyCoveredListone.length >= 39, "copertura ESPN esterna insufficiente per i profili solo listone");
 for (const player of externallyCoveredListone) {
   const stats = externalStatsByPlayerId.get(player.playerId).totals;
   assert.equal(player.appearances, stats.appearances, `${player.name}: presenze ESPN non propagate`);

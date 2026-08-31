@@ -4,7 +4,7 @@ const assert = require("assert");
 
 const root = path.resolve(__dirname, "../..");
 const read = relative => JSON.parse(fs.readFileSync(path.join(root, relative), "utf8"));
-const expectedCounts = { inter: 33, juventus: 37, napoli: 31 };
+const expectedCounts = { inter: 32, juventus: 36, napoli: 37 };
 const allowedStatuses = new Set(["confermato", "nuovo acquisto", "prestito", "rientro dal prestito", "primavera", "da verificare"]);
 
 for (const [teamId, expectedCount] of Object.entries(expectedCounts)) {

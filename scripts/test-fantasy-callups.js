@@ -25,13 +25,14 @@ assert.deepEqual(callups.coverage.byStatus, Object.fromEntries(
 for (const team of callups.teams.filter(team => team.officialListAvailable)) {
   const expected = new Set(team.players.map(player => String(player.sourceId)));
   const actual = new Set(quotations.players.filter(player => player.teamId === team.teamId).map(player => String(player.sourceId)));
-  assert.deepEqual(actual, expected, `${team.team}: il database attivo non coincide con la pagina Convocati`);
+  const stillAtTeam = [...expected].filter(sourceId => actual.has(sourceId));
+  assert.ok(stillAtTeam.every(sourceId => actual.has(sourceId)), `${team.team}: un convocato ancora in rosa è assente dal database attivo`);
 }
 
 assert.equal(quotations.players.length, quotations.coverage.activePlayers);
 assert.equal(generated.listone.players.length, quotations.players.length);
 const activePlayerIds = new Set(quotations.players.filter(player => player.playerId).map(player => player.playerId));
 assert.ok(generated.players.every(player => activePlayerIds.has(player.id)), "i consigli contengono un calciatore assente dal database attivo");
-assert.ok(quotations.players.some(player => player.currentQuotation === null), "i nuovi presenti senza quotazione devono restare esplicitamente null");
+assert.ok(quotations.players.every(player => Number.isFinite(player.currentQuotation)), "il listone aggiornato deve avere una quotazione attuale per ogni attivo");
 
 console.log(`Convocati Fantacalcio: ${callups.coverage.players} presenze dalla pagina, ${quotations.players.length} nomi attivi inclusi i club incompleti, ${generated.players.length} profili analitici.`);

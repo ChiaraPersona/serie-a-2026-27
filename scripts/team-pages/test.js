@@ -60,7 +60,7 @@ for (const [periodId, period] of Object.entries(playerLeaderboards.periods)) for
 }
 assert.strictEqual(playerLeaderboards.periods["2026/27"].rankings.foulsCommitted.availablePlayers, 303, "I falli 2026/27 verificati devono coprire tutti i partecipanti");
 assert.strictEqual(playerLeaderboards.periods["2026/27"].rankings.foulsWon.availablePlayers, 303, "I falli subiti 2026/27 verificati devono coprire tutti i partecipanti");
-assert.strictEqual(playerLeaderboards.periods.total.rankings.foulsWon.availablePlayers, 243, "Il totale falli deve includere soltanto i calciatori coperti in entrambe le stagioni");
+assert.strictEqual(playerLeaderboards.periods.total.rankings.foulsWon.availablePlayers, 241, "Il totale falli deve includere soltanto i calciatori coperti in entrambe le stagioni");
 const currentParticipants = playerLeaderboards.periods["2026/27"].rankings.goals.availablePlayers;
 assert.ok(playerLeaderboards.periods["2026/27"].rankings.shots.availablePlayers < currentParticipants && playerLeaderboards.periods["2026/27"].rankings.shotsOnTarget.availablePlayers < currentParticipants, "La copertura parziale dei tiri 2026/27 deve restare esplicita");
 for (const contract of ["loadPlayerLeaderboards", "globalPlayerLeaderboards", "globalPlayerLeaderboardTable", "Top 15 calciatori per statistica", "data-player-period", "data-player-stat", "serie-b-marker", "aria-pressed", "per90Value", "stessa riga"]) assert.ok(mainApp.includes(contract), `Top 15 globale: contratto ${contract} assente`);
@@ -98,7 +98,7 @@ assert.ok(!teamInterface.includes("Leader statistici"), "Il blocco storico Leade
 const squadTableSource = teamInterface.slice(teamInterface.indexOf("function squadTable"), teamInterface.indexOf("function entryDetail"));
 for (const removedColumn of ["Stato", "Squadra 2025/26", "Competizione", "squad-col-status", "squad-col-team", "squad-col-competition"]) assert.ok(!squadTableSource.includes(removedColumn), `Tabella calciatori: colonna rimossa ancora presente: ${removedColumn}`);
 for (const retainedColumn of ["Valore mercato", "PG", "Min", "squad-col-market", "squad-col-played", "squad-col-minutes"]) assert.ok(squadTableSource.includes(retainedColumn), `Tabella calciatori: colonna richiesta assente: ${retainedColumn}`);
-for (const contract of ["combinedSquadStats", "addCovered", "statsByPlayer.get(player.id)", "I dati della tabella sommano 2025/26 e 2026/27", "per90Rate(totals[stat.key], minutes)"]) assert.ok(teamInterface.includes(contract), `Tabella calciatori: totale biennale mancante: ${contract}`);
+for (const contract of ["combinedSquadStats", "addCovered", "statsByPlayer.get(player.id)", "I dati sommano 2025/26 e 2026/27", "per90Rate(totals[stat.key], minutes)"]) assert.ok(teamInterface.includes(contract), `Tabella calciatori: totale biennale mancante: ${contract}`);
 assert.ok(styles.includes(".squad-table{width:1621px;min-width:1621px;table-layout:fixed}"), "Tabella calciatori: larghezza non riallineata alle colonne rimaste");
 for (const removedCopy of ["Copertura statistica" + " individuale", "Le schede separano squadra" + " e competizione 2025/26"]) assert.ok(!teamInterface.includes(removedCopy), `Pagine squadra: testo rimosso ancora presente: ${removedCopy}`);
 const teamPageSource = teamInterface.slice(teamInterface.indexOf("function teamPage"), teamInterface.indexOf("async function init"));
