@@ -133,7 +133,7 @@ for (const removedContract of [".squad-leaders-summary", ".squad-leaders[open]"]
 const readingLineupSource = mainApp.slice(mainApp.indexOf("function renderProbableLineups"), mainApp.indexOf("function renderReadingPilotEvidence"));
 assert.ok(teamInterface.includes("lineup.players.slice(offset, offset + size).reverse()"), "Le probabili formazioni delle pagine squadra devono essere specchiate orizzontalmente");
 assert.ok(readingLineupSource.includes("lineup.players.slice(offset,offset+size).reverse()"), "Le probabili formazioni delle Letture devono essere specchiate orizzontalmente");
-const officialFixtureByTeam = { inter: "cagliari-inter-2026-27-md-02", monza: "monza-udinese-2026-27-md-02", udinese: "monza-udinese-2026-27-md-02", como: "udinese-como-2026-27-md-01", parma: "parma-cagliari-2026-27-md-01", cagliari: "cagliari-inter-2026-27-md-02", genoa: "lazio-genoa-2026-27-md-02", napoli: "genoa-napoli-2026-27-md-01", frosinone: "fiorentina-frosinone-2026-27-md-02", juventus: "frosinone-juventus-2026-27-md-01", venezia: "milan-venezia-2026-27-md-02", lecce: "venezia-lecce-2026-27-md-01", torino: "sassuolo-torino-2026-27-md-02", milan: "milan-venezia-2026-27-md-02", atalanta: "atalanta-sassuolo-2026-27-md-01", sassuolo: "sassuolo-torino-2026-27-md-02", bologna: "bologna-lazio-2026-27-md-01", lazio: "lazio-genoa-2026-27-md-02", roma: "roma-fiorentina-2026-27-md-01", fiorentina: "fiorentina-frosinone-2026-27-md-02" };
+const officialFixtureByTeam = { inter: "cagliari-inter-2026-27-md-02", monza: "monza-udinese-2026-27-md-02", udinese: "monza-udinese-2026-27-md-02", como: "napoli-como-2026-27-md-02", parma: "parma-cagliari-2026-27-md-01", cagliari: "cagliari-inter-2026-27-md-02", genoa: "lazio-genoa-2026-27-md-02", napoli: "napoli-como-2026-27-md-02", frosinone: "fiorentina-frosinone-2026-27-md-02", juventus: "frosinone-juventus-2026-27-md-01", venezia: "milan-venezia-2026-27-md-02", lecce: "lecce-roma-2026-27-md-02", torino: "sassuolo-torino-2026-27-md-02", milan: "milan-venezia-2026-27-md-02", atalanta: "atalanta-sassuolo-2026-27-md-01", sassuolo: "sassuolo-torino-2026-27-md-02", bologna: "bologna-lazio-2026-27-md-01", lazio: "lazio-genoa-2026-27-md-02", roma: "lecce-roma-2026-27-md-02", fiorentina: "fiorentina-frosinone-2026-27-md-02" };
 for (const [teamId, fixtureId] of Object.entries(officialFixtureByTeam)) {
   const lineup = index.teams.find(team => team.id === teamId).probableLineup;
   assert.strictEqual(lineup.status, "official", `${teamId}: formazione ufficiale non applicata`);
@@ -141,8 +141,9 @@ for (const [teamId, fixtureId] of Object.entries(officialFixtureByTeam)) {
   assert.strictEqual(lineup.players.length, 11, `${teamId}: XI ufficiale incompleto`);
   assert.strictEqual(lineup.shirtNumbers.length, 11, `${teamId}: numeri di maglia ufficiali incompleti`);
 }
-assert.strictEqual(index.teams.find(team => team.id === "genoa").probableLineup.substitutes.length, 13, "genoa: panchina ufficiale incompleta");
-assert.strictEqual(index.teams.find(team => team.id === "napoli").probableLineup.substitutes.length, 13, "napoli: panchina ufficiale incompleta");
+const genoaNapoliOfficial = officialLineups.fixtures.find(fixture => fixture.matchId === "genoa-napoli-2026-27-md-01");
+assert.strictEqual(genoaNapoliOfficial.teams.find(team => team.teamId === "genoa").substitutes.length, 13, "genoa: panchina ufficiale incompleta");
+assert.strictEqual(genoaNapoliOfficial.teams.find(team => team.teamId === "napoli").substitutes.length, 13, "napoli: panchina ufficiale incompleta");
 const torinoMilanSource = officialLineups.fixtures.find(fixture => fixture.matchId === "torino-milan-2026-27-md-01").teams.find(team => team.teamId === "torino");
 assert(torinoMilanSource.players.some(player => player.currentName === "Cesare Casadei") && !torinoMilanSource.players.some(player => player.currentName === "Alieu Njie"), "torino: correzione storica Casadei/Njie non preservata");
 assert.ok(teamInterface.includes("probable-lineup-substitutes") && readingLineupSource.includes("reading-lineup-substitutes"), "Le panchine ufficiali non sono renderizzate nelle pagine squadra e Letture");

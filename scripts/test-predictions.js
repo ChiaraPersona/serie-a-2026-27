@@ -169,6 +169,7 @@ const sassuoloTorino = dataset.predictions.find(prediction => prediction.matchId
 const napoliComo = dataset.predictions.find(prediction => prediction.matchId === "napoli-como-2026-27-md-02");
 const cagliariInter = dataset.predictions.find(prediction => prediction.matchId === "cagliari-inter-2026-27-md-02");
 const lazioGenoa = dataset.predictions.find(prediction => prediction.matchId === "lazio-genoa-2026-27-md-02");
+const lecceRoma = dataset.predictions.find(prediction => prediction.matchId === "lecce-roma-2026-27-md-02");
 assert(milanVenezia.combinations.every(combo => !combo.legs.some(leg => leg.selection === "12")), "Milan-Venezia: il 12 non deve sostituire il più probabile 1X");
 assert(milanVenezia.combinations.every(combo => !combo.legs.some(leg => leg.selection?.startsWith("UNDER") && /U\/O 1\.5 (?:TEAM|SQUADRA) 1/i.test(leg.variant || ""))), "Milan-Venezia: evitare Under 1,5 casa contro la neopromossa");
 const torinoMilan = dataset.predictions.find(prediction => prediction.matchId === "torino-milan-2026-27-md-01");
@@ -188,7 +189,8 @@ assert.strictEqual(sassuoloTorino.dataQuality.probableLineups, "22/22 titolari u
 assert.strictEqual(napoliComo.dataQuality.probableLineups, "22/22 titolari ufficiali confermati", "Napoli-Como deve usare gli XI ufficiali della seconda giornata");
 assert.strictEqual(cagliariInter.dataQuality.probableLineups, "22/22 titolari ufficiali confermati", "Cagliari-Inter deve usare gli XI ufficiali della seconda giornata");
 assert.strictEqual(lazioGenoa.dataQuality.probableLineups, "22/22 titolari ufficiali confermati", "Lazio-Genoa deve usare gli XI ufficiali della seconda giornata");
-assert(secondMatchdayPredictions.filter(prediction => ![milanVenezia.matchId, fiorentinaFrosinone.matchId, monzaUdinese.matchId, sassuoloTorino.matchId, napoliComo.matchId, cagliariInter.matchId, lazioGenoa.matchId].includes(prediction.matchId)).every(prediction => prediction.dataQuality.probableLineups.includes("proiettati")), "Le altre formazioni della seconda giornata devono restare proiezioni editoriali");
+assert.strictEqual(lecceRoma.dataQuality.probableLineups, "22/22 titolari ufficiali confermati", "Lecce-Roma deve usare gli XI ufficiali della seconda giornata");
+assert(secondMatchdayPredictions.filter(prediction => ![milanVenezia.matchId, fiorentinaFrosinone.matchId, monzaUdinese.matchId, sassuoloTorino.matchId, napoliComo.matchId, cagliariInter.matchId, lazioGenoa.matchId, lecceRoma.matchId].includes(prediction.matchId)).every(prediction => prediction.dataQuality.probableLineups.includes("proiettati")), "Le altre formazioni della seconda giornata devono restare proiezioni editoriali");
 assert(firstMatchdayPredictions.every(prediction => (prediction.expectedGoals.components.recentForm.home?.currentSeasonMatches ?? 0) === 0 && (prediction.expectedGoals.components.recentForm.away?.currentSeasonMatches ?? 0) === 0), "I pronostici archiviati della prima giornata non devono usare risultati futuri");
 assert(secondMatchdayPredictions.every(prediction => prediction.expectedGoals.components.recentForm.home.currentSeasonMatches === 1 && prediction.expectedGoals.components.recentForm.away.currentSeasonMatches === 1), "La seconda giornata deve usare una gara conclusa 2026/27 per squadra nella forma recente");
 const goalTotals = firstMatchdayPredictions.map(prediction => prediction.expectedGoals.total);
