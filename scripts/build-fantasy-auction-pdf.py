@@ -1,5 +1,6 @@
 import json
 from datetime import datetime
+from itertools import combinations
 from pathlib import Path
 
 from reportlab.lib import colors
@@ -31,6 +32,12 @@ ROLE_CONFIG = {
     "C": {"label": "Centrocampisti", "slots": 8, "target": 235, "range": "220-250", "factor": 1.00},
     "A": {"label": "Attaccanti", "slots": 6, "target": 535, "range": "505-580", "factor": 1.00},
 }
+HISTORICAL_RANK = {
+    "juventus": 1, "inter": 2, "milan": 3, "roma": 4, "fiorentina": 5,
+    "napoli": 6, "lazio": 7, "torino": 8, "bologna": 9, "atalanta": 11,
+    "genoa": 12, "udinese": 13, "cagliari": 14, "parma": 15, "lecce": 26,
+    "como": 29, "sassuolo": 30, "venezia": 43, "monza": 56, "frosinone": 61,
+}
 
 
 def read(relative_path):
@@ -40,6 +47,18 @@ def read(relative_path):
 
 def finite(value):
     return isinstance(value, (int, float)) and not isinstance(value, bool)
+
+
+def first_finite(*values):
+    return next((value for value in values if finite(value)), None)
+
+
+def clamp(value, minimum, maximum):
+    return max(minimum, min(maximum, value))
+
+
+def round1(value):
+    return round(value, 1)
 
 
 def shown(value, decimals=0):
@@ -91,24 +110,25 @@ def p(text, style=BODY):
     return Paragraph(str(text), style)
 
 
-def availability_label(player):
-    current = player.get("currentAvailability") or {}
-    if current.get("injuryReported"):
-        return "Infortunato"
-    callup = current.get("callupStatus")
-    if callup == "suspended":
-        return "Squalificato"
-    if callup == "injured":
-        return "Indisponibile"
-    lineup = current.get("lineupStatus")
-    probability = current.get("starterProbability")
-    if lineup == "starter":
-        return f"Titolare {shown(probability)}%" if finite(probability) else "Titolare"
-    if lineup == "reserve":
-        return f"Riserva {shown(probability)}%" if finite(probability) else "Riserva"
-    if callup == "called-up":
-        return "Convocato"
-    return "N/D"
+def usage_label(minutes, current):
+    if not finite(minutes):
+        label = "N/D"
+    elif minutes >= 2700:
+        label = f"Perno - {shown(minutes)}'"
+    elif minutes >= 1800:
+        label = f"Titolare - {shown(minutes)}'"
+    elif minutes >= 900:
+        label = f"Rotazione - {shown(minutes)}'"
+    elif minutes > 0:
+        label = f"Marginale - {shown(minutes)}'"
+    else:
+        label = "0' nel 25/26"
+    current = current or {}
+    if current.get("injuryReported") or current.get("callupStatus") == "injured":
+        return f"{label} | indisponibile ora"
+    if current.get("callupStatus") == "suspended":
+        return f"{label} | squalificato"
+    return label
 
 
 def custom_cap(player):
@@ -132,9 +152,91 @@ def tier_for(player):
     return "Occasione"
 
 
+def historical_indexes():
+    fantasy_stats = read("data/sources/fantacalcio-stats-2025-26.json")
+    external_stats = read("data/sources/fantasy-external-stats-2025-26.json")
+    teams = read("data/normalized/teams.json")
+    roster_by_id = {}
+    team_files = {}
+    for team in teams:
+        team_file = read(f"data/teams/{team['id']}.json")
+        team_files[team["id"]] = team_file
+        for player in team_file.get("squad", []):
+            roster_by_id[player["id"]] = player
+    return {
+        "fantasy": {str(player["sourceId"]): player for player in fantasy_stats["players"]},
+        "external": {player["playerId"]: player for player in external_stats["players"]},
+        "roster": roster_by_id,
+        "teams": teams,
+        "teamFiles": team_files,
+    }
+
+
+def historical_record(quote, player, indexes):
+    player_id = quote.get("playerId")
+    fantasy = indexes["fantasy"].get(str(quote.get("sourceId")))
+    external = indexes["external"].get(player_id, {})
+    roster = indexes["roster"].get(player_id, {})
+    roster_totals = (roster.get("previousSeason") or {}).get("totals") or {}
+    external_entries = sorted(
+        external.get("entries", []),
+        key=lambda entry: entry.get("appearances") or 0,
+        reverse=True,
+    )
+    external_best = external_entries[0] if external_entries else {}
+    fantasy_appearances = fantasy.get("appearancesWithVote") if fantasy else None
+    roster_appearances = roster_totals.get("appearances")
+    external_appearances = external_best.get("appearances")
+
+    if finite(fantasy_appearances) and fantasy_appearances > 0:
+        matching_external = next(
+            (entry for entry in external_entries if entry.get("appearances") == fantasy_appearances),
+            {},
+        )
+        minutes = first_finite(
+            roster_totals.get("minutes") if roster_appearances == fantasy_appearances else None,
+            matching_external.get("minutes"),
+        )
+        goals = fantasy.get("goalsFor")
+        assists = fantasy.get("assists")
+        yellow = fantasy.get("yellowCards")
+        red = fantasy.get("redCards")
+    elif finite(roster_appearances) and roster_appearances > 0:
+        minutes = roster_totals.get("minutes")
+        goals = roster_totals.get("goals")
+        assists = roster_totals.get("assists")
+        yellow = roster_totals.get("yellowCards")
+        reds = [roster_totals.get("straightRedCards"), roster_totals.get("secondYellowCards")]
+        red = sum(value for value in reds if finite(value)) if any(finite(value) for value in reds) else None
+    elif finite(external_appearances) and external_appearances > 0:
+        minutes = external_best.get("minutes")
+        goals = external_best.get("goals")
+        assists = external_best.get("assists")
+        yellow = external_best.get("yellowCards")
+        red = external_best.get("redCards")
+    elif fantasy:
+        minutes = 0 if fantasy_appearances == 0 else None
+        goals = fantasy.get("goalsFor")
+        assists = fantasy.get("assists")
+        yellow = fantasy.get("yellowCards")
+        red = fantasy.get("redCards")
+    else:
+        minutes = goals = assists = yellow = red = None
+
+    market = player.get("marketValueLabel") or (roster.get("marketValue") or {}).get("label")
+    return {
+        "minutes2526": minutes,
+        "goalsAssists2526": f"{shown(goals)} / {shown(assists)}",
+        "cards2526": f"{shown(yellow)} / {shown(red)}",
+        "marketValue": market or "N/D",
+        "usageLabel": usage_label(minutes, player.get("currentAvailability")),
+    }
+
+
 def load_rows():
     advice = read("data/generated/fantacalcio-advice.json")
     quotations = read("data/sources/fantacalcio-quotations-2026-27.json")
+    indexes = historical_indexes()
     advice_by_id = {player["id"]: player for player in advice["players"]}
     rows = []
     for quote in quotations["players"]:
@@ -152,10 +254,11 @@ def load_rows():
             "currentAvailability": None,
         }
         player["quote"] = quote
+        player["teamId"] = player.get("teamId") or quote.get("teamId")
         player["customCap"] = custom_cap(player)
-        player["availabilityLabel"] = availability_label(player)
+        player.update(historical_record(quote, player, indexes))
         rows.append(player)
-    return advice, quotations, rows
+    return advice, quotations, rows, indexes
 
 
 def page_footer(canvas, document):
@@ -235,7 +338,7 @@ def budget_table():
 
 
 def shortlist_table(role, role_rows):
-    headers = ["Fascia", "Calciatore", "Squadra", "Qt.", "FVM", "Stelle", "Indice", "Tetto", "Stato", "Pagato"]
+    headers = ["Fascia", "Calciatore", "Squadra", "Qt.", "FVM", "Tetto", "G / A", "CG / CR", "Val. mercato", "Stato da minuti 25/26"]
     data = [[p(x, WHITE_HEAD) for x in headers]]
     for player in role_rows:
         quote = player["quote"]
@@ -246,13 +349,13 @@ def shortlist_table(role, role_rows):
             p(player["team"], TINY),
             p(shown(quote.get("currentQuotation")), CENTER),
             p(shown(quote.get("fvm")), CENTER),
-            p(f"{shown(player.get('stars'))}/5" if finite(player.get("stars")) else "N/D", CENTER),
-            p(shown(player.get("score"), 1), CENTER),
             p(f"{shown(player['customCap'])} cr", CENTER),
-            p(player["availabilityLabel"], TINY),
-            p("________", CENTER),
+            p(player["goalsAssists2526"], CENTER),
+            p(player["cards2526"], CENTER),
+            p(player["marketValue"], TINY),
+            p(player["usageLabel"], TINY),
         ])
-    widths = [23 * mm, 47 * mm, 28 * mm, 13 * mm, 15 * mm, 16 * mm, 17 * mm, 19 * mm, 50 * mm, 25 * mm]
+    widths = [20 * mm, 42 * mm, 24 * mm, 11 * mm, 13 * mm, 17 * mm, 15 * mm, 16 * mm, 25 * mm, 78 * mm]
     table = Table(data, colWidths=widths, repeatRows=1)
     commands = [
         ("BACKGROUND", (0, 0), (-1, 0), NAVY),
@@ -262,40 +365,45 @@ def shortlist_table(role, role_rows):
         ("RIGHTPADDING", (0, 0), (-1, -1), 4),
         ("TOPPADDING", (0, 0), (-1, -1), 4.4),
         ("BOTTOMPADDING", (0, 0), (-1, -1), 4.4),
-        ("BACKGROUND", (7, 1), (7, -1), PALE_GOLD),
+        ("BACKGROUND", (5, 1), (5, -1), PALE_GOLD),
     ]
     for row_index in range(1, len(data)):
         if row_index % 2 == 0:
-            commands.append(("BACKGROUND", (0, row_index), (6, row_index), PALE))
-            commands.append(("BACKGROUND", (8, row_index), (-1, row_index), PALE))
+            commands.append(("BACKGROUND", (0, row_index), (4, row_index), PALE))
+            commands.append(("BACKGROUND", (6, row_index), (-1, row_index), PALE))
     table.setStyle(TableStyle(commands))
     return table
 
 
+def rest_sort_key(player):
+    cap = player.get("customCap")
+    fvm = player["quote"].get("fvm")
+    if finite(cap):
+        return (0, -cap, player["team"].casefold(), player["name"].casefold())
+    return (1, -(fvm if finite(fvm) else -1), player["team"].casefold(), player["name"].casefold())
+
+
 def appendix_table(role, role_rows):
-    headers = ["", "Calciatore", "Squadra", "Qt.", "+/-", "FVM", "Stelle", "Indice", "Tetto", "Stato", "Pagato", "Fanta-allenatore"]
+    headers = ["Calciatore", "Squadra", "Qt.", "+/-", "FVM", "Tetto", "G / A", "CG / CR", "Val. mercato", "Stato da minuti 25/26"]
     data = [[p(x, WHITE_HEAD) for x in headers]]
-    for player in sorted(role_rows, key=lambda item: item["name"].casefold()):
+    for player in sorted(role_rows, key=rest_sort_key):
         quote = player["quote"]
         difference = quote.get("quotationDifference")
         difference_text = f"{difference:+d}" if isinstance(difference, int) else "N/D"
-        stars = f"{shown(player.get('stars'))}/5" if finite(player.get("stars")) else "N/D"
         cap = f"{shown(player['customCap'])} cr" if finite(player["customCap"]) else "N/D"
         data.append([
-            p("[ ]", CENTER),
             p(player["name"], TINY_BOLD),
             p(player["team"], TINY),
             p(shown(quote.get("currentQuotation")), CENTER),
             p(difference_text, CENTER),
             p(shown(quote.get("fvm")), CENTER),
-            p(stars, CENTER),
-            p(shown(player.get("score"), 1), CENTER),
             p(cap, CENTER),
-            p(player["availabilityLabel"], TINY),
-            p("_______", CENTER),
-            p("________________", CENTER),
+            p(player["goalsAssists2526"], CENTER),
+            p(player["cards2526"], CENTER),
+            p(player["marketValue"], TINY),
+            p(player["usageLabel"], TINY),
         ])
-    widths = [9 * mm, 45 * mm, 25 * mm, 12 * mm, 12 * mm, 14 * mm, 15 * mm, 16 * mm, 18 * mm, 38 * mm, 21 * mm, 36 * mm]
+    widths = [42 * mm, 25 * mm, 11 * mm, 11 * mm, 13 * mm, 17 * mm, 15 * mm, 16 * mm, 26 * mm, 84 * mm]
     table = Table(data, colWidths=widths, repeatRows=1, hAlign="LEFT")
     commands = [
         ("BACKGROUND", (0, 0), (-1, 0), NAVY),
@@ -305,41 +413,152 @@ def appendix_table(role, role_rows):
         ("RIGHTPADDING", (0, 0), (-1, -1), 3),
         ("TOPPADDING", (0, 0), (-1, -1), 1.2),
         ("BOTTOMPADDING", (0, 0), (-1, -1), 1.2),
-        ("BACKGROUND", (8, 1), (8, -1), PALE_GOLD),
+        ("BACKGROUND", (5, 1), (5, -1), PALE_GOLD),
     ]
     for row_index in range(1, len(data)):
         if row_index % 2 == 0:
-            commands.append(("BACKGROUND", (0, row_index), (7, row_index), PALE))
-            commands.append(("BACKGROUND", (9, row_index), (-1, row_index), PALE))
+            commands.append(("BACKGROUND", (0, row_index), (4, row_index), PALE))
+            commands.append(("BACKGROUND", (6, row_index), (-1, row_index), PALE))
     table.setStyle(TableStyle(commands))
     return table
 
 
-def goalkeeper_trios(advice):
-    examples = ((advice.get("goalkeeperTrios") or {}).get("examples") or [])[:3]
-    data = [[p(x, WHITE_HEAD) for x in ["Soluzione", "Portieri", "Costo guida", "Copertura", "Favorevoli", "Difficili"]]]
-    for index, example in enumerate(examples, 1):
-        names = " + ".join(player["name"] for player in example.get("players", []))
-        adjusted_cost = round((example.get("cost500") or 0) * 2 * ROLE_CONFIG["P"]["factor"])
+def team_calendars(indexes):
+    matches = [
+        match for match in read("data/normalized/matches.json")
+        if match.get("competition") == "serie-a" and match.get("season") == "2026-27"
+    ]
+    strengths = {}
+    for team in indexes["teams"]:
+        team_file = indexes["teamFiles"][team["id"]]
+        previous = team_file.get("previousSeason") or {}
+        position = previous.get("position") or 3
+        played_serie_a = previous.get("competition") == "Serie A" and previous.get("position")
+        recent = clamp(104.5 - position * 4.5, 15, 100) if played_serie_a else clamp(38 - position * 3, 22, 35)
+        history = clamp(102 - HISTORICAL_RANK.get(team["id"], 61) * 1.55, 8, 100)
+        strengths[team["id"]] = round1(recent * 0.82 + history * 0.18)
+
+    calendars = {}
+    for team in indexes["teams"]:
+        team_id = team["id"]
+        fixtures = sorted(
+            (match for match in matches if match.get("homeTeam") == team_id or match.get("awayTeam") == team_id),
+            key=lambda match: match.get("matchday") or 0,
+        )
+        calendars[team_id] = []
+        for match in fixtures:
+            home = match.get("homeTeam") == team_id
+            opponent = match.get("awayTeam") if home else match.get("homeTeam")
+            ease = round1(clamp(100 - strengths[opponent] + (7 if home else -7), 8, 92))
+            calendars[team_id].append({"ease": ease, "opponent": opponent})
+    return calendars
+
+
+def goalkeeper_rotation_rows(rows, indexes):
+    hierarchy = read("data/sources/fantasy-goalkeeper-hierarchy-2026-27.json")
+    row_by_id = {row.get("id"): row for row in rows if row.get("id")}
+    team_names = {team["id"]: team["name"] for team in indexes["teams"]}
+    calendars = team_calendars(indexes)
+    safe_partners = []
+    for entry in hierarchy["teams"]:
+        if not entry.get("trioEligible") or len(entry.get("primaryIds", [])) != 1:
+            continue
+        player = row_by_id.get(entry["primaryIds"][0])
+        if player:
+            safe_partners.append(player)
+
+    output = []
+    for entry in sorted(hierarchy["teams"], key=lambda item: team_names[item["teamId"]].casefold()):
+        primary_rows = [row_by_id[player_id] for player_id in entry.get("primaryIds", []) if player_id in row_by_id]
+        hierarchy_label = entry["label"]
+        if not primary_rows:
+            team_goalkeepers = [
+                row for row in rows
+                if row.get("role") == "P" and row.get("teamId") == entry["teamId"]
+            ]
+            if not team_goalkeepers:
+                continue
+            primary_rows = [sorted(
+                team_goalkeepers,
+                key=lambda row: (-(row["quote"].get("fvm") or 0), -(row.get("customCap") or 0), row["name"]),
+            )[0]]
+            hierarchy_label = "Riferimento dal listone aggiornato; gerarchia da verificare"
+        anchor = sorted(
+            primary_rows,
+            key=lambda row: (-(row.get("customCap") or 0), -(row.get("score") or 0), row["name"]),
+        )[0]
+        options = []
+        partner_pool = [player for player in safe_partners if player["teamId"] != entry["teamId"]]
+        for first, second in combinations(partner_pool, 2):
+            if first["teamId"] == second["teamId"]:
+                continue
+            trio = [anchor, first, second]
+            weekly_ease = [
+                max(calendars[player["teamId"]][index]["ease"] for player in trio)
+                for index in range(38)
+            ]
+            rotation_index = round1(sum(weekly_ease) / 38)
+            favorable = sum(value >= 65 for value in weekly_ease)
+            covered = sum(value >= 48 for value in weekly_ease)
+            difficult = 38 - covered
+            quality = round1(sum(player.get("score") or 0 for player in trio) / 3)
+            cost_values = [player.get("customCap") for player in trio]
+            cost = sum(cost_values) if all(finite(value) for value in cost_values) else None
+            options.append({
+                "partners": [first, second],
+                "score": round1(rotation_index * 0.62 + quality * 0.38),
+                "cost": cost,
+                "covered": covered,
+                "favorable": favorable,
+                "difficult": difficult,
+            })
+        affordable = [option for option in options if finite(option["cost"]) and option["cost"] <= 95]
+        ranked = affordable or options
+        best = sorted(
+            ranked,
+            key=lambda option: (-option["score"], -option["covered"], option["cost"] if finite(option["cost"]) else 9999),
+        )[0]
+        output.append({
+            "team": team_names[entry["teamId"]],
+            "primary": " / ".join(row["name"] for row in primary_rows),
+            "partners": " + ".join(player["name"] for player in best["partners"]),
+            "cost": best["cost"],
+            "covered": best["covered"],
+            "favorable": best["favorable"],
+            "difficult": best["difficult"],
+            "hierarchy": hierarchy_label,
+        })
+    return output
+
+
+def goalkeeper_rotation_table(rotations):
+    headers = ["Squadra", "Portiere/i di riferimento", "Coppia per la rotazione", "Tetto gruppo", "Copertura", "Fav.", "Diff.", "Gerarchia"]
+    data = [[p(value, WHITE_HEAD) for value in headers]]
+    for rotation in rotations:
         data.append([
-            p(f"Rotazione {index}", TINY_BOLD),
-            p(names, TINY),
-            p(f"circa {adjusted_cost} cr", CENTER),
-            p(f"{example.get('coveredDays', 'N/D')}/38", CENTER),
-            p(example.get("favorableDays", "N/D"), CENTER),
-            p(example.get("difficultDays", "N/D"), CENTER),
+            p(rotation["team"], TINY_BOLD),
+            p(rotation["primary"], TINY_BOLD),
+            p(rotation["partners"], TINY),
+            p(f"{shown(rotation['cost'])} cr" if finite(rotation["cost"]) else "N/D", CENTER),
+            p(f"{rotation['covered']}/38", CENTER),
+            p(rotation["favorable"], CENTER),
+            p(rotation["difficult"], CENTER),
+            p(rotation["hierarchy"], TINY),
         ])
-    table = Table(data, colWidths=[28 * mm, 123 * mm, 33 * mm, 27 * mm, 25 * mm, 25 * mm])
-    table.setStyle(TableStyle([
+    table = Table(data, colWidths=[26 * mm, 45 * mm, 58 * mm, 25 * mm, 22 * mm, 15 * mm, 15 * mm, 55 * mm], repeatRows=1)
+    commands = [
         ("BACKGROUND", (0, 0), (-1, 0), NAVY),
-        ("GRID", (0, 0), (-1, -1), 0.4, LINE),
+        ("GRID", (0, 0), (-1, -1), 0.35, LINE),
         ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
-        ("LEFTPADDING", (0, 0), (-1, -1), 5),
-        ("RIGHTPADDING", (0, 0), (-1, -1), 5),
-        ("TOPPADDING", (0, 0), (-1, -1), 5),
-        ("BOTTOMPADDING", (0, 0), (-1, -1), 5),
-        ("BACKGROUND", (0, 2), (-1, 2), PALE),
-    ]))
+        ("LEFTPADDING", (0, 0), (-1, -1), 4),
+        ("RIGHTPADDING", (0, 0), (-1, -1), 4),
+        ("TOPPADDING", (0, 0), (-1, -1), 4),
+        ("BOTTOMPADDING", (0, 0), (-1, -1), 4),
+    ]
+    for row_index in range(1, len(data)):
+        if row_index % 2 == 0:
+            commands.append(("BACKGROUND", (0, row_index), (-1, row_index), PALE))
+    table.setStyle(TableStyle(commands))
     return table
 
 
@@ -359,7 +578,7 @@ def cover_story(advice, quotations, rows):
         Spacer(1, 5 * mm),
         header_block("Guida personalizzata", "Asta Fantacalcio Classic", f"{active_count} nomi nel listone<br/>{analysed_count} profili analizzati"),
         Spacer(1, 6 * mm),
-        p("Una guida operativa per decidere in fretta: budget per ruolo, shortlist ordinate per tetto d'asta e listone completo con spazio per segnare acquisti e prezzi.", ParagraphStyle("Intro", parent=BODY, fontSize=11, leading=15, textColor=INK)),
+        p("Una guida operativa da consultare a PC: budget per ruolo, shortlist ordinate per tetto, rotazioni per ogni gerarchia dei portieri e dati storici 2025/26.", ParagraphStyle("Intro", parent=BODY, fontSize=11, leading=15, textColor=INK)),
         Spacer(1, 7 * mm),
         cards,
         Spacer(1, 8 * mm),
@@ -374,7 +593,7 @@ def cover_story(advice, quotations, rows):
     ]
 
 
-def strategy_story(advice):
+def strategy_story(rotations):
     rules = [
         [p("1", ParagraphStyle("RuleN1", parent=BODY_BOLD, fontSize=15, textColor=TEAL, alignment=TA_CENTER)), p("Portieri: scegli una strada", BODY_BOLD), p("Top affidabile con riserve coerenti oppure rotazione da 3 squadre. Con il +1 clean sheet evita tre scommesse senza gerarchia.", BODY)],
         [p("2", ParagraphStyle("RuleN2", parent=BODY_BOLD, fontSize=15, textColor=TEAL, alignment=TA_CENTER)), p("Difesa: niente sovrapprezzo da modificatore", BODY_BOLD), p("Compra titolarita e bonus. Un solo premium se il prezzo resta sotto tetto; completa a costo controllato.", BODY)],
@@ -398,19 +617,30 @@ def strategy_story(advice):
         Spacer(1, 4 * mm),
         rule_table,
         Spacer(1, 5 * mm),
-        p("Rotazioni portieri suggerite", H2),
-        goalkeeper_trios(advice),
-        Spacer(1, 4 * mm),
         p("Disciplina durante i rilanci", H2),
-        p("Segna subito prezzo e proprietario nell'appendice. Dopo ogni acquisto ricalcola il residuo del ruolo. Supera il tetto solo se hai risparmiato davvero altrove e il giocatore cambia la struttura della rosa; non recuperare un obiettivo perso rilanciando sul nome successivo."),
+        p("Dopo ogni acquisto ricalcola il residuo del ruolo. Supera il tetto solo se hai risparmiato davvero altrove e il giocatore cambia la struttura della rosa; non recuperare un obiettivo perso rilanciando sul nome successivo."),
         Spacer(1, 3 * mm),
         p("Nota: shortlist e tetti sono una guida euristica costruita sui dati disponibili, non una previsione certa di rendimento o prezzo finale.", SMALL),
+        PageBreak(),
+        header_block("Portieri", "Una rotazione per ogni gerarchia", f"{len(rotations)} squadre<br/>calendario su 38 giornate"),
+        Spacer(1, 3 * mm),
+        p("Per ogni squadra la coppia proposta completa il portiere di riferimento. Nei ballottaggi sono mantenuti tutti i candidati indicati dalla fonte: non vengono trasformati in titolari certi."),
+        Spacer(1, 3 * mm),
+        goalkeeper_rotation_table(rotations),
+        Spacer(1, 3 * mm),
+        p("Tetto gruppo = somma dei tetti dei tre portieri; Copertura = giornate in cui almeno uno ha un incrocio non difficile. Le coppie di supporto usano gerarchie chiare e squadre diverse.", SMALL),
     ]
 
 
 def build_pdf():
-    advice, quotations, rows = load_rows()
+    advice, quotations, rows, indexes = load_rows()
     by_role = {role: [row for row in rows if row["role"] == role] for role in ROLE_CONFIG}
+    rotations = goalkeeper_rotation_rows(rows, indexes)
+    shortlists = {}
+    for role in ROLE_CONFIG:
+        candidates = [row for row in by_role[role] if finite(row["customCap"])]
+        candidates.sort(key=lambda row: (-row["customCap"], row["team"].casefold(), row["name"].casefold()))
+        shortlists[role] = candidates[:20]
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     document = SimpleDocTemplate(
         str(OUTPUT),
@@ -426,31 +656,35 @@ def build_pdf():
     story = []
     story.extend(cover_story(advice, quotations, rows))
     story.append(PageBreak())
-    story.extend(strategy_story(advice))
+    story.extend(strategy_story(rotations))
 
     for role, cfg in ROLE_CONFIG.items():
-        candidates = [row for row in by_role[role] if finite(row["customCap"])]
-        candidates.sort(key=lambda row: (-row["customCap"], -(row.get("score") or 0), row["name"]))
-        shortlist = candidates[:20]
+        shortlist = shortlists[role]
         story.append(PageBreak())
         story.append(header_block("Shortlist", cfg["label"], f"Budget guida {cfg['target']} crediti<br/>Intervallo {cfg['range']}"))
         story.append(Spacer(1, 3 * mm))
         story.append(shortlist_table(role, shortlist))
         story.append(Spacer(1, 3 * mm))
-        story.append(p("Ordine per tetto personalizzato, poi indice del modello. La fascia descrive il profilo di spesa, non garantisce titolarita o rendimento.", SMALL))
+        story.append(p("Ordine per tetto personalizzato; a parita di tetto viene prima la squadra in ordine alfabetico. Stato e minuti si riferiscono al 2025/26 e non alle sole prime due giornate attuali.", SMALL))
 
     story.append(PageBreak())
-    story.append(p(f"Appendice - Listone completo ({len(rows)} calciatori)", H1))
-    story.append(p("Ordine alfabetico per ruolo. Usa [ ] per i giocatori chiamati, Pagato per il prezzo finale e Fanta-allenatore per il proprietario. N/D indica dati insufficienti: il valore non viene inventato.", SMALL))
-    story.append(Spacer(1, 2 * mm))
+    shortlist_ids = {role: {row["quote"]["sourceId"] for row in role_rows} for role, role_rows in shortlists.items()}
+    other_by_role = {
+        role: [row for row in by_role[role] if row["quote"]["sourceId"] not in shortlist_ids[role]]
+        for role in ROLE_CONFIG
+    }
+    other_count = sum(len(role_rows) for role_rows in other_by_role.values())
 
     for index, (role, cfg) in enumerate(ROLE_CONFIG.items()):
         if index:
             story.append(PageBreak())
-        story.append(p(f"{cfg['label']} - {len(by_role[role])} nomi", H1))
-        story.append(appendix_table(role, by_role[role]))
+        story.append(p(f"Altri {cfg['label'].lower()} - {len(other_by_role[role])} nomi fuori shortlist", H1))
+        if index == 0:
+            story.append(p(f"Appendice complessiva: {other_count} calciatori. Prima i profili con tetto disponibile, in ordine decrescente; a parita di tetto decide la squadra. I tetti N/D seguono per FVM. G/A e CG/CR sono del 2025/26.", SMALL))
+            story.append(Spacer(1, 1 * mm))
+        story.append(appendix_table(role, other_by_role[role]))
         story.append(Spacer(1, 2 * mm))
-        story.append(p("Qt. = quotazione Classic; +/- = variazione dalla quotazione iniziale; FVM = valore Fantacalcio; Tetto = arresto personalizzato per questa asta.", SMALL))
+        story.append(p("Qt. = quotazione Classic; +/- = variazione dalla quotazione iniziale; FVM = valore Fantacalcio; G/A = gol/assist 25/26; CG/CR = gialli/rossi 25/26; Stato = fascia d'impiego ricavata dai minuti 25/26.", SMALL))
 
     document.build(story, onFirstPage=page_footer, onLaterPages=page_footer)
     print(json.dumps({
@@ -458,6 +692,8 @@ def build_pdf():
         "players": len(rows),
         "analysed": sum(finite(row.get("score")) for row in rows),
         "roles": {role: len(items) for role, items in by_role.items()},
+        "rotations": len(rotations),
+        "otherPlayers": other_count,
     }, ensure_ascii=False))
 
 
