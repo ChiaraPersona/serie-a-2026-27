@@ -19,7 +19,7 @@ const leaderboardVersion = "20260830-md2-results-v1";
 const bettingVersion = "20260901-md3-schedina-v1";
 const readingVersion = "20260902-coppa-two-readings-v1";
 const cupVersion = "20260902-coppa-disclosures-v3";
-const championsVersion = "20260902-champions-context-v11";
+const championsVersion = "20260902-champions-h2h-2020-v13";
 const fantasyVersion = "20260831-atalanta-bologna-lineups-v1";
 const headToHeadPath = path.join(root, "data/generated/head-to-head/first-leg-2026-27.json");
 if (fs.existsSync(headToHeadPath)) {

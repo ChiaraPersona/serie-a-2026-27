@@ -2,6 +2,7 @@ export function createPage(deps){
   const {esc,load}=deps;
   const dayLabel=value=>new Intl.DateTimeFormat("it-IT",{weekday:"long",day:"numeric",month:"long",year:"numeric",timeZone:"Europe/Rome"}).format(new Date(`${value}T12:00:00+01:00`));
   const matchdayLabel=number=>`${number}ª giornata`;
+  const shortDate=value=>new Intl.DateTimeFormat("it-IT",{day:"2-digit",month:"2-digit",year:"numeric",timeZone:"Europe/Rome"}).format(new Date(`${value}T12:00:00Z`));
 
   const scoreLabel=profile=>profile?.europeanStrengthIndex==null?"N/D":profile.europeanStrengthIndex.toFixed(1);
   const ppgLabel=value=>value==null?"N/D":value.toFixed(2);
@@ -17,19 +18,28 @@ export function createPage(deps){
     ? "Aggiornamento dopo l’ultima gara domestica"
     : fixture.matchday===1?"Contesto N/D":"Contesto da aggiornare vicino alla gara";
 
-  function fixtureCard(fixture,profiles,histories,predictions,contexts){
+  function headToHeadBlock(fixture,h2h){
+    if(!h2h?.meetings)return `<p class="champions-h2h-empty">H2H UEFA dal 2020/21: N/D</p>`;
+    const summary=`${h2h.meetings} ${h2h.meetings===1?"precedente":"precedenti"} · ${fixture.homeTeam} ${h2h.homeWins}V · ${h2h.draws}N · ${fixture.awayTeam} ${h2h.awayWins}V`;
+    const rows=h2h.recentMatches.map(match=>`<li><time datetime="${esc(match.date)}">${esc(shortDate(match.date))}</time><span>${esc(match.homeTeam)} <strong>${match.score90.home}-${match.score90.away}</strong> ${esc(match.awayTeam)}</span><small>${esc(match.competition.replace("UEFA ",""))}</small></li>`).join("");
+    return `<details class="champions-h2h"><summary>${esc(summary)}</summary><ul>${rows}</ul></details>`;
+  }
+
+  function fixtureCard(fixture,profiles,histories,predictions,contexts,headToHeads){
     const homeProfile=profiles.get(fixture.homeTeam),awayProfile=profiles.get(fixture.awayTeam);
     const homeHistory=histories.get(fixture.homeTeam),awayHistory=histories.get(fixture.awayTeam);
     const prediction=predictions.get(fixture.id);
     const context=contexts.get(fixture.id);
+    const h2h=headToHeads.get(fixture.id);
     return `<article class="champions-fixture" data-team-home="${esc(fixture.homeTeam)}" data-team-away="${esc(fixture.awayTeam)}" data-context-status="${esc(context?.contextStatus||"unknown")}">
       <header><span>${matchdayLabel(fixture.matchday)}</span><time datetime="${esc(`${fixture.date}T${fixture.kickoff}`)}">${esc(fixture.kickoff)}</time></header>
       <div class="champions-fixture-teams"><div><strong>${esc(fixture.homeTeam)}</strong><small>Forza ${scoreLabel(homeProfile)} · Casa ${ppgLabel(homeHistory?.home?.pointsPerMatch)}</small></div><span aria-hidden="true">—</span><div><strong>${esc(fixture.awayTeam)}</strong><small>Forza ${scoreLabel(awayProfile)} · Trasf. ${ppgLabel(awayHistory?.away?.pointsPerMatch)}</small></div></div>
+      ${headToHeadBlock(fixture,h2h)}
       <footer><span>${esc(technicalEdge(fixture,profiles))}</span><div class="champions-probability"><b title="Confidenza storica ${esc(prediction?.confidenceLabel||"N/D")}">${esc(probabilityLabel(prediction,context))}</b><small>${esc(contextStatusLabel(fixture,context))}</small></div></footer>
     </article>`;
   }
 
-  function fixtureGroups(fixtures,profiles,histories,predictions,contexts){
+  function fixtureGroups(fixtures,profiles,histories,predictions,contexts,headToHeads){
     if(!fixtures.length)return `<div class="champions-empty"><strong>Nessuna partita</strong><p>Modifica i filtri per visualizzare un altro gruppo di gare.</p></div>`;
     const groups=new Map();
     for(const fixture of fixtures){
@@ -39,7 +49,7 @@ export function createPage(deps){
     }
     return [...groups.entries()].map(([key,items])=>{
       const [matchday,date]=key.split("|");
-      return `<section class="champions-fixture-day"><header><div><p>${matchdayLabel(Number(matchday))}</p><h3>${esc(dayLabel(date))}</h3></div><span>${items.length} ${items.length===1?"partita":"partite"}</span></header><div class="champions-fixture-grid">${items.map(fixture=>fixtureCard(fixture,profiles,histories,predictions,contexts)).join("")}</div></section>`;
+      return `<section class="champions-fixture-day"><header><div><p>${matchdayLabel(Number(matchday))}</p><h3>${esc(dayLabel(date))}</h3></div><span>${items.length} ${items.length===1?"partita":"partite"}</span></header><div class="champions-fixture-grid">${items.map(fixture=>fixtureCard(fixture,profiles,histories,predictions,contexts,headToHeads)).join("")}</div></section>`;
     }).join("");
   }
 
@@ -54,7 +64,7 @@ export function createPage(deps){
   }
 
   function contextAudit(context){
-    return `<details class="champions-strength-panel champions-context-panel" open><summary><span><small>Contesto prepartita</small><strong>Forma e carico: aggiornamento finale pendente</strong></span><span>${context.summary.pendingTeams}/36 squadre in attesa</span></summary><div class="champions-model-body"><p>Prima dell’inizio della Champions ogni squadra disputerà ancora una partita. Per evitare una fotografia già vecchia, forma recente e giorni di riposo verranno chiusi soltanto dopo queste gare.</p><div class="champions-model-metrics champions-context-metrics"><div><small>Squadre in attesa</small><strong>${context.summary.pendingTeams}</strong><span>su ${context.summary.teams}</span></div><div><small>Gare residue</small><strong>${context.summary.remainingMatchesPerPendingTeam}</strong><span>per squadra</span></div><div><small>Correzioni applicate</small><strong>${context.summary.adjustedFixtures}</strong><span>nessun dato parziale</span></div><div><small>Limite futuro</small><strong>±${context.updatePolicy.maximumProbabilityShiftPctPoints}</strong><span>punti percentuali</span></div></div><p class="champions-model-note">Saranno acquisiti risultati recenti, sede, giorni di riposo e congestione. I valori mancanti resteranno N/D; la motivazione sarà aggiunta soltanto quando esisterà un contesto di classifica significativo.</p></div></details>`;
+    return `<details class="champions-strength-panel champions-context-panel" open><summary><span><small>Contesto prepartita</small><strong>Forma e carico: aggiornamento finale pendente</strong></span><span>${context.summary.pendingTeams}/36 squadre in attesa</span></summary><div class="champions-model-body"><p>Prima dell’inizio della Champions ogni squadra disputerà ancora una partita. Per evitare una fotografia già vecchia, forma recente e giorni di riposo verranno chiusi soltanto dopo queste gare.</p><div class="champions-model-metrics champions-context-metrics"><div><small>Squadre in attesa</small><strong>${context.summary.pendingTeams}</strong><span>su ${context.summary.teams}</span></div><div><small>Gare residue</small><strong>${context.summary.remainingMatchesPerPendingTeam}</strong><span>per squadra</span></div><div><small>Correzioni applicate</small><strong>${context.summary.adjustedFixtures}</strong><span>nessun dato parziale</span></div><div><small>Limite futuro</small><strong>±${context.updatePolicy.maximumProbabilityShiftPctPoints}</strong><span>punti percentuali</span></div></div><p class="champions-model-note">Saranno acquisiti risultati recenti, sede, giorni di riposo e congestione. Gli H2H UEFA dal 2020/21 sono già visibili nelle card, con un massimo di quattro confronti, ma restano descrittivi: non modificano le percentuali. I valori mancanti resteranno N/D.</p></div></details>`;
   }
 
   function historyDirectory(history){
@@ -64,11 +74,12 @@ export function createPage(deps){
   }
 
   async function render(){
-    const [data,strength,history,model,context]=await Promise.all([load("champions-league-2026-27.json"),load("champions-team-strength-2026-27.json"),load("uefa-team-history-2026-27.json"),load("champions-1x2-2026-27.json"),load("champions-pre-match-context-2026-27.json")]);
+    const [data,strength,history,model,context,h2h]=await Promise.all([load("champions-league-2026-27.json"),load("champions-team-strength-2026-27.json"),load("uefa-team-history-2026-27.json"),load("champions-1x2-2026-27.json"),load("champions-pre-match-context-2026-27.json"),load("champions-head-to-head-2026-27.json")]);
     const profiles=new Map(strength.teams.map(profile=>[profile.team,profile]));
     const histories=new Map(history.teams.map(profile=>[profile.team,profile]));
     const predictions=new Map(model.fixtures.map(prediction=>[prediction.fixtureId,prediction]));
     const contexts=new Map(context.fixtures.map(item=>[item.fixtureId,item]));
+    const headToHeads=new Map(h2h.fixtures.map(item=>[item.fixtureId,item]));
     const teamOptions=data.teams.map(team=>`<option value="${esc(team)}">${esc(team)}</option>`).join("");
     document.querySelector("#app").innerHTML=`
       <section class="champions-hero" aria-labelledby="champions-title">
@@ -101,7 +112,7 @@ export function createPage(deps){
     const applyFilters=()=>{
       const matchday=matchdaySelect.value,team=teamSelect.value;
       const filtered=data.fixtures.filter(fixture=>(matchday==="all"||fixture.matchday===Number(matchday))&&(team==="all"||fixture.homeTeam===team||fixture.awayTeam===team));
-      results.innerHTML=fixtureGroups(filtered,profiles,histories,predictions,contexts);
+      results.innerHTML=fixtureGroups(filtered,profiles,histories,predictions,contexts,headToHeads);
       const context=[matchday==="all"?"tutte le giornate":matchdayLabel(Number(matchday)),team==="all"?"tutte le squadre":team];
       resultsLabel.innerHTML=`<strong>${filtered.length}</strong> ${filtered.length===1?"partita":"partite"} · ${esc(context.join(" · "))}`;
     };

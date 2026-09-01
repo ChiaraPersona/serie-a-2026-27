@@ -69,10 +69,13 @@ assert.match(championsPage, /champions-team-strength-2026-27\.json/, "Champions:
 assert.match(championsPage, /uefa-team-history-2026-27\.json/, "Champions: storico europeo pluriennale non caricato");
 assert.match(championsPage, /champions-1x2-2026-27\.json/, "Champions: probabilita 1X2 validate non caricate");
 assert.match(championsPage, /champions-pre-match-context-2026-27\.json/, "Champions: contesto prepartita non caricato");
+assert.match(championsPage, /champions-head-to-head-2026-27\.json/, "Champions: scontri diretti recenti non caricati");
 assert.match(championsPage, /Modello 1\/X\/2 sperimentale/, "Champions: natura sperimentale delle probabilita non dichiarata");
 assert.match(championsPage, /model\.warning/, "Champions: limiti correnti del modello non dichiarati");
 assert.match(championsPage, /Base · /, "Champions: probabilita storiche non dichiarate come base");
 assert.match(championsPage, /Aggiornamento dopo l’ultima gara domestica/, "Champions: ultimo aggiornamento domestico pendente non dichiarato");
+assert.match(championsPage, /H2H UEFA dal 2020\/21: N\/D/, "Champions: assenza di precedenti dal 2020 non dichiarata N\/D");
+assert.match(championsPage, /h2h\.recentMatches\.map/, "Champions: dettaglio degli ultimi scontri diretti non esposto");
 assert.match(championsPage, /1 \$\{prediction\.displayPercentages\.home\.toFixed\(1\)\}% · X/, "Champions: percentuali 1X2 non esposte nelle gare");
 assert.match(championsPage, /Indice di forza europeo/, "Champions: graduatoria sintetica non presente");
 assert.match(championsPage, /Rendimento europeo 2023\/24–2025\/26/, "Champions: rendimento europeo non esposto");
