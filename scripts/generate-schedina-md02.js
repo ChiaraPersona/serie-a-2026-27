@@ -5,9 +5,20 @@ const path = require("path");
 
 const root = path.resolve(__dirname, "..");
 const read = relative => JSON.parse(fs.readFileSync(path.join(root, relative), "utf8"));
+const matchdayIndex = process.argv.indexOf("--matchday");
+const matchday = matchdayIndex >= 0 ? Number(process.argv[matchdayIndex + 1]) : 2;
+if (!Number.isInteger(matchday) || matchday < 2 || matchday > 38) throw new Error("--matchday deve essere compreso tra 2 e 38.");
+const matchdayCode = String(matchday).padStart(2, "0");
+const roman = value => {
+  const symbols = [[10, "X"], [9, "IX"], [5, "V"], [4, "IV"], [1, "I"]];
+  let number = value, output = "";
+  for (const [amount, symbol] of symbols) while (number >= amount) { output += symbol; number -= amount; }
+  return output;
+};
+const suffix = roman(matchday);
 const odds = read("data/normalized/odds/sisal/serie-a.json");
-const predictions = read("data/normalized/predictions.json").predictions.filter(item => item.matchId.endsWith("-md-02"));
-const matches = read("data/normalized/matches.json").filter(item => item.matchday === 2 && item.competition === "serie-a");
+const predictions = read("data/normalized/predictions.json").predictions.filter(item => item.matchId.endsWith(`-md-${matchdayCode}`));
+const matches = read("data/normalized/matches.json").filter(item => item.matchday === matchday && item.competition === "serie-a");
 const teams = new Map(read("data/teams/index.json").teams.map(team => [team.id, read(`data/teams/${team.id}.json`)]));
 const predictionById = new Map(predictions.map(item => [item.matchId, item]));
 const matchById = new Map(matches.map(item => [item.id, item]));
@@ -17,9 +28,9 @@ const clean = value => String(value || "").normalize("NFD").replace(/[\u0300-\u0
 const round = value => Math.round(value * 10) / 10;
 
 if (matches.length !== 10 || predictions.length !== 10 || odds.events.length !== 10) {
-  throw new Error(`Copertura MD2 incompleta: ${matches.length} partite, ${predictions.length} pronostici, ${odds.events.length} eventi Sisal.`);
+  throw new Error(`Copertura MD${matchdayCode} incompleta: ${matches.length} partite, ${predictions.length} pronostici, ${odds.events.length} eventi Sisal.`);
 }
-if (predictions.some(item => String(item.market?.retrievedAt) !== String(odds.retrievedAt))) {
+if (predictions.some(item => String(item.market?.retrievedAt) !== String(eventById.get(item.matchId)?.retrievedAt))) {
   throw new Error("Pronostici e quote Sisal non appartengono allo stesso snapshot.");
 }
 
@@ -33,7 +44,10 @@ function normalCdf(value) {
 
 function marketFamily(name) {
   if (/1X2|DOPPIA CHANCE/.test(name)) return "Esito";
+  if (name === "DRAW NO BET") return "Draw No Bet";
   if (name === "UNDER/OVER") return "Under/Over";
+  if (name === "GOAL/NOGOAL") return "Goal/No Goal";
+  if (/^(CASA|OSPITE): SEGNA GOAL$/.test(name)) return "Gol squadra";
   if (/CORNER/.test(name)) return "Corner";
   if (/PUNTI CARTELLINI/.test(name)) return "Cartellini";
   if (/PARATE/.test(name)) return "Parate squadra";
@@ -71,11 +85,14 @@ function scoreCandidates() {
     const index = new Map(event.markets.flatMap(market => market.selections.map(selection => [String(selection.providerSelectionId), { market, selection }])));
     for (const row of prediction.marketComparison || []) {
       if (!row.scenarioCompatible || row.selection === "12" || row.expectedValuePct < -10 || row.odds < 1.1) continue;
-      if (!["1x2", "double-chance", "goals"].includes(row.family)) continue;
+      if (!["1x2", "double-chance", "draw-no-bet", "goals", "btts", "team-goal"].includes(row.family)) continue;
       const resolved = index.get(String(row.providerSelectionId));
-      if (!resolved || !["1X2 ESITO FINALE", "DOPPIA CHANCE", "UNDER/OVER"].includes(resolved.market.marketName)) continue;
+      if (!resolved || !["1X2 ESITO FINALE", "DOPPIA CHANCE", "DRAW NO BET", "UNDER/OVER", "GOAL/NOGOAL", "CASA: SEGNA GOAL", "OSPITE: SEGNA GOAL"].includes(resolved.market.marketName)) continue;
       const label = row.family === "goals"
         ? `${row.selection === "OVER" ? "Over" : "Under"} ${String(resolved.market.threshold).replace(".", ",")} gol`
+        : row.family === "btts" ? (row.selection === "GOAL" ? "Entrambe le squadre segnano" : "Almeno una squadra non segna")
+        : row.family === "team-goal" ? `${resolved.market.marketName.startsWith("CASA") ? event.home.name : event.away.name} ${row.selection === "SI" ? "segna almeno un gol" : "non segna"}`
+        : row.family === "draw-no-bet" ? `${row.selection === "1" ? event.home.name : event.away.name} Draw No Bet`
         : row.selection === "1" ? `${event.home.name} vincente`
           : row.selection === "2" ? `${event.away.name} vincente`
             : row.selection === "1X" ? `${event.home.name} o pareggio`
@@ -227,6 +244,18 @@ function playerCandidates() {
 }
 
 function takePlayers(pool, name, eyebrow, description, offset) {
+  if (new Set(pool.map(item => item.matchId)).size < 8 || new Set(pool.map(item => item.family)).size < 3) {
+    return {
+      id: clean(name).replace(/ /g, "-"),
+      type: "player-only",
+      eyebrow,
+      name,
+      description,
+      status: "N/D",
+      reason: "Mercati giocatore insufficienti nello snapshot Sisal: non vengono forzate selezioni su allenatori o calciatori non coperti dal modello.",
+      picks: []
+    };
+  }
   const chosen = [], matchIds = new Set();
   const families = ["Assist giocatore", "Gol o assist giocatore", "Marcatori", "Tiri in porta giocatore", "Tiri giocatore"];
   for (const family of families) {
@@ -246,12 +275,12 @@ function takePlayers(pool, name, eyebrow, description, offset) {
 
 function automaticMultigoalSlip() {
   return {
-    id: "costellazione-md2",
+    id: `costellazione-md${matchday}`,
     type: "single-market-full-round",
     selectionPolicy: { type: "poisson-narrow", quantile: 0.9, maxTeamRangeWidth: 2, minModelProbability: 0.55, minLegOdds: 1.1, maxLegOdds: 1.8 },
     eyebrow: "10 partite · Multigol casa/ospite",
-    name: "Costellazione II",
-    description: "Tutta la seconda giornata con intervalli casa/ospite stretti, scelti dal modello senza allargare le code per inseguire la quota.",
+    name: `Costellazione ${suffix}`,
+    description: `Tutta la ${matchday}ª giornata con intervalli casa/ospite stretti, scelti dal modello senza allargare le code per inseguire la quota.`,
     picks: matches.map(match => ({ matchId: match.id, market: "MULTIGOAL CASA + MULTIGOAL OSPITE", variant: "MULTIGOAL CASA + MULTIGOAL OSPITE MULTIESITI 91 ESITI", selection: "AUTO" }))
   };
 }
@@ -259,7 +288,7 @@ function automaticMultigoalSlip() {
 function exactSlip() {
   const ranked = predictions.slice().sort((a, b) => b.confidence.value - a.confidence.value).slice(0, 4);
   return {
-    id: "quadrante-md2", type: "exact-score", eyebrow: "4 partite · Risultato esatto", name: "Quadrante II",
+    id: `quadrante-md${matchday}`, type: "exact-score", eyebrow: "4 partite · Risultato esatto", name: `Quadrante ${suffix}`,
     description: "Quattro risultati esatti sulle gare con maggiore robustezza relativa dello scenario centrale.",
     picks: ranked.map(prediction => ({ matchId: prediction.matchId, market: "RISULTATO ESATTO 26 ESITI", variant: "RISULTATO ESATTO 26 ESITI", selection: prediction.scoreForecast.primary.score, label: `Risultato esatto ${prediction.scoreForecast.primary.score.replace("-", "–")}` }))
   };
@@ -276,18 +305,19 @@ function exactMultiSlip() {
     picks.push({ matchId: prediction.matchId, market: candidate.market.marketName, variant: candidate.market.variantName, selection: candidate.selection.name, label: `Risultati ${candidate.selection.name.replace(/-/g, "–")}` });
     if (picks.length === 6) break;
   }
-  if (picks.length !== 6) throw new Error("Ventaglio II: copertura multiesito insufficiente.");
-  return { id: "ventaglio-md2", type: "exact-score-multi", eyebrow: "6 partite · Risultato esatto multiesito", name: "Ventaglio II", description: "Sei gruppi di risultati vicini che includono sempre lo scenario centrale del modello.", picks };
+  if (picks.length !== 6) throw new Error(`Ventaglio ${suffix}: copertura multiesito insufficiente.`);
+  return { id: `ventaglio-md${matchday}`, type: "exact-score-multi", eyebrow: "6 partite · Risultato esatto multiesito", name: `Ventaglio ${suffix}`, description: "Sei gruppi di risultati vicini che includono sempre lo scenario centrale del modello.", picks };
 }
 
 const mixedPool = [...scoreCandidates(), ...volumeCandidates()];
 const playerPool = playerCandidates();
+console.log(`Candidati Schedina MD${matchdayCode}: ${mixedPool.length} misti · ${playerPool.length} giocatore · ${new Set(playerPool.map(item => item.matchId)).size} gare con giocatori`);
 const slips = [
-  takeMixed(mixedPool, "Scintilla II", "Quota contenuta", "Tre selezioni prudenti, tre famiglie di mercato e quota complessiva nella fascia della Scintilla della prima giornata.", 3, 3, 4, 6),
-  takeMixed(mixedPool, "Bagliore II", "Quota intermedia", "Tre mercati differenti, nessuna selezione Sisal ripetuta e una fascia quota coerente con Bagliore della prima giornata.", 3, 3, 6, 10),
-  takeMixed(mixedPool, "Supernova II", "Tutta la 2ª giornata", "Cinque gare e cinque famiglie di mercato, senza aggiunte forzate e con la fascia di rischio della Supernova della prima giornata.", 5, 5, 5, 10),
-  takePlayers(playerPool, "Prisma II", "Marcatori · tiri · tiri in porta", "Otto mercati giocatore su otto gare, limitati ai titolari proiettati con storico sufficiente.", 0),
-  takePlayers(playerPool, "Quasar II", "Mix ad alta intensità", "Secondo portafoglio di otto mercati giocatore senza riutilizzare selezioni già presenti in Prisma II.", 1),
+  takeMixed(mixedPool, `Scintilla ${suffix}`, "Quota contenuta", "Tre selezioni prudenti, tre famiglie di mercato e quota complessiva nella fascia della Scintilla della prima giornata.", 3, 3, 4, 6),
+  takeMixed(mixedPool, `Bagliore ${suffix}`, "Quota intermedia", "Tre mercati differenti, nessuna selezione Sisal ripetuta e una fascia quota coerente con Bagliore della prima giornata.", 3, 3, 6, 10),
+  takeMixed(mixedPool, `Supernova ${suffix}`, `Tutta la ${matchday}ª giornata`, "Cinque gare e cinque famiglie di mercato, senza aggiunte forzate e con la fascia di rischio della Supernova della prima giornata.", 5, 5, 5, 10),
+  takePlayers(playerPool, `Prisma ${suffix}`, "Marcatori · tiri · tiri in porta", "Otto mercati giocatore su otto gare, limitati ai titolari proiettati con storico sufficiente.", 0),
+  takePlayers(playerPool, `Quasar ${suffix}`, "Mix ad alta intensità", `Secondo portafoglio di otto mercati giocatore senza riutilizzare selezioni già presenti in Prisma ${suffix}.`, 1),
   automaticMultigoalSlip(),
   exactSlip(),
   exactMultiSlip()
@@ -297,12 +327,12 @@ const output = {
   schemaVersion: 1,
   competition: "serie-a",
   season: "2026-27",
-  matchday: 2,
-  title: "Otto schedine, otto letture · 2ª giornata",
+  matchday,
+  title: `Otto schedine, otto letture · ${matchday}ª giornata`,
   description: "La stessa scomposizione della prima giornata: tre schedine miste, due dedicate ai giocatori, una Multigol casa/ospite sull'intero turno, una sui risultati esatti e una multiesito. Non è un elenco di MyCombo per partita: ogni blocco è una schedina autonoma. Quote esterne al modello, quota minima 1,10, nessun esito 12 e nessuna selezione Sisal duplicata.",
   slips
 };
 
-const destination = path.join(root, "data/sources/schedina-serie-a-2026-27-md-02.json");
+const destination = path.join(root, "data/sources", `schedina-serie-a-2026-27-md-${matchdayCode}.json`);
 fs.writeFileSync(destination, `${JSON.stringify(output, null, 2)}\n`);
-console.log(`OK fonte Schedina MD2: ${slips.length} proposte · ${slips.reduce((sum, slip) => sum + slip.picks.length, 0)} selezioni · snapshot ${odds.retrievedAt}`);
+console.log(`OK fonte Schedina MD${matchdayCode}: ${slips.length} proposte · ${slips.reduce((sum, slip) => sum + slip.picks.length, 0)} selezioni · snapshot ${odds.retrievedAt}`);

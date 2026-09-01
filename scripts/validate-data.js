@@ -7,6 +7,7 @@ const fantasy=JSON.parse(fs.readFileSync(path.join(root,"data/generated/fantacal
 const fantasyWorkbook=JSON.parse(fs.readFileSync(path.join(root,"data/sources/fantacalcio-stats-2025-26.json"),"utf8"));
 const marketValues=JSON.parse(fs.readFileSync(path.join(root,"data/sources/team-pages/transfermarkt-market-values-2026-27.json"),"utf8"));
 const cup=JSON.parse(fs.readFileSync(path.join(dir,"coppa-italia-2026-27.json"),"utf8"));
+const cupOpponents=JSON.parse(fs.readFileSync(path.join(dir,"coppa-opponents-2026-27.json"),"utf8"));
 const teamColorSource=JSON.parse(fs.readFileSync(path.join(root,"data/sources/team-pages/footylogos-club-colors.json"),"utf8"));
 const matchResultsSource=JSON.parse(fs.readFileSync(path.join(root,"data/sources/match-results-2026-27.json"),"utf8"));
 const refereeAssignmentsSource=JSON.parse(fs.readFileSync(path.join(root,"data/sources/referee-assignments-2026-27.json"),"utf8"));
@@ -102,11 +103,11 @@ const finishedLeagueMatches=league.filter(match=>match.status==="finished");
 assert(finishedLeagueMatches.length===matchResultsSource.matches.length,"Risultati Serie A normalizzati non sincronizzati con la fonte");
 assert(finishedLeagueMatches.every(match=>Number.isInteger(match.score?.home)&&Number.isInteger(match.score?.away)&&match.scorers?.length&&Array.isArray(match.bookings)&&Array.isArray(match.substitutions)&&match.teamStats?.home&&match.teamStats?.away&&match.playerStats?.home?.length>=11&&match.playerStats?.away?.length>=11&&match.resultSource?.url),"Risultati Serie A privi di eventi, statistiche o fonte");
 assert(matchResultsSource.matches.every(result=>{const match=finishedLeagueMatches.find(item=>item.id===result.matchId);return match&&match.score.home===result.score.home&&match.score.away===result.score.away}),"Punteggi Serie A normalizzati non sincronizzati con la fonte");
-const readingModules=["context","form","availability","tactics","referee","market","synthesis"],matchIds=new Set(matches.map(match=>match.id));
+const readingModules=["context","form","availability","tactics","referee","market","synthesis"],matchIds=new Set(matches.map(match=>match.id)),readingMatchIds=new Set([...matchIds,...cup.matches.map(match=>match.id)]);
 assert(new Set(readings.map(reading=>reading.id)).size===readings.length,"ID lettura duplicati");
 assert(new Set(readings.map(reading=>reading.matchId)).size===readings.length,"Piu letture collegate alla stessa partita");
 for(const reading of readings){
-  assert(matchIds.has(reading.matchId),`Partita lettura non trovata: ${reading.matchId}`);
+  assert(readingMatchIds.has(reading.matchId),`Partita lettura non trovata: ${reading.matchId}`);
   assert(["draft","published","archived"].includes(reading.status),`Stato lettura non valido: ${reading.id}`);
   assert(/^\d{4}-\d{2}-\d{2}$/.test(reading.updatedAt),`Data lettura non valida: ${reading.id}`);
   assert(reading.sections&&readingModules.every(moduleId=>reading.sections[moduleId]),`Sette sezioni lettura incomplete: ${reading.id}`);
@@ -129,6 +130,9 @@ assert(cup.source?.url==="https://www.legaseriea.it/coppa-italia/calendario-risu
 assert(cup.matches.length===43&&new Set(cup.matches.map(match=>match.id)).size===43,"Incontri o percorsi Coppa Italia incompleti");
 assert(JSON.stringify(cup.counts)===JSON.stringify({preliminary:4,"round-32":16,"round-16":8,"round-of-16":8,quarter:4,semifinal:2,final:1}),"Conteggi turni Coppa Italia incoerenti");
 assert(cup.matches.every(match=>match.competition==="coppa-italia"&&match.season==="2026-27"&&["scheduled","finished"].includes(match.status)&&match.scheduleLabel&&match.sources?.length),"Metadati Coppa Italia incompleti");
+assert(cupOpponents.season==="2026-27"&&cupOpponents.teams.length===1&&cupOpponents.teams[0].id==="cremonese","Profilo avversario Cremonese non valido");
+assert(cupOpponents.teams[0].roster.length===30&&cupOpponents.teams[0].roster.every(player=>player.name&&player.role&&Number.isInteger(player.shirtNumber)&&player.providerPlayerId===null),"Rosa ufficiale Cremonese incompleta o abbinata senza verifica");
+assert(["r16-4","r16-3","r16-6","r16-7"].every(matchId=>{const reading=readings.find(item=>item.matchId===matchId);return reading?.status==="published"&&readingModules.filter(moduleId=>reading.sections[moduleId].content).length===6&&reading.sections.market.content===null}),"Le prime quattro Letture di Coppa devono avere sei sezioni verificate e quote N/D");
 const cupPreliminary=cup.matches.filter(match=>match.stage==="preliminary");
 assert(cupPreliminary.every(match=>match.status==="finished"&&Number.isInteger(match.score?.home)&&Number.isInteger(match.score?.away)&&match.winner&&match.scorers?.length&&Array.isArray(match.bookings)&&match.resultSource?.url),"Risultati preliminari Coppa Italia incompleti");
 assert(cup.matches.find(match=>match.id==="pre-1")?.shootout?.away===4,"Esito ai rigori Vicenza-Catania non valido");

@@ -41,25 +41,28 @@ export function createPage(deps){
     return {archiveWins,archiveVoids,archiveStake,archiveSuccessPct,archiveProfitPct};
   }
 
+  const ordinalWord=number=>number===1?"prima":number===2?"seconda":"terza";
   function archiveCard(data,number,matchById){
     const finished=data.slips.some(slip=>slip.legs.some(leg=>["won","lost"].includes(settleLeg(leg,matchById.get(leg.matchId)).status)));
     const stats=archiveStats(data,matchById);
     const detail=finished?`<span class="betting-archive-performance"><span><small>Successo</small><strong>${pct(stats.archiveSuccessPct)}%</strong></span><span><small>Guadagno</small><strong>${stats.archiveProfitPct>0?"+":""}${pct(stats.archiveProfitPct)}%</strong></span></span><span>${stats.archiveWins} esatte su ${stats.archiveStake}${stats.archiveVoids?` · ${stats.archiveVoids} annullate`:""}</span>`:`<span class="betting-archive-performance"><span><small>Proposte</small><strong>${data.slips.length}</strong></span><span><small>Selezioni</small><strong>${data.slips.reduce((sum,slip)=>sum+slip.legs.length,0)}</strong></span></span><span>Quote aggiornate al ${esc(dateOnly(data.oddsRetrievedAt))}</span>`;
-    return `<a class="betting-archive-card team-directory-card team-flip-card" href="schedina.html?giornata=${number}" aria-label="Apri le schedine della ${number===1?"prima":"seconda"} giornata" style="--team-primary:${number===1?"#123e85":"#9b1c31"};--team-secondary:#06152b"><span class="team-flip-inner"><span class="team-flip-face team-flip-front betting-archive-card-front"><span class="betting-archive-number">${number}</span></span><span class="team-flip-face team-flip-back betting-archive-card-back"><strong>${number}ª giornata</strong><span>Serie A · 2026/27</span><span>${data.slips.length} schedine</span>${detail}<b>Apri la lista delle schedine</b></span></span></a>`;
+    const colors={1:"#123e85",2:"#9b1c31",3:"#0f766e"};
+    return `<a class="betting-archive-card team-directory-card team-flip-card" href="schedina.html?giornata=${number}" aria-label="Apri le schedine della ${ordinalWord(number)} giornata" style="--team-primary:${colors[number]};--team-secondary:#06152b"><span class="team-flip-inner"><span class="team-flip-face team-flip-front betting-archive-card-front"><span class="betting-archive-number">${number}</span></span><span class="team-flip-face team-flip-back betting-archive-card-back"><strong>${number}ª giornata</strong><span>Serie A · 2026/27</span><span>${data.slips.length} schedine</span>${detail}<b>Apri la lista delle schedine</b></span></span></a>`;
   }
 
   async function render(){
-    const [md1,md2,matches]=await Promise.all([load("schedina.json"),load("schedina-md02.json"),load("matches.json")]);
+    const [md1,md2,md3,matches]=await Promise.all([load("schedina.json"),load("schedina-md02.json"),load("schedina-md03.json"),load("matches.json")]);
+    const rounds={1:md1,2:md2,3:md3};
     const matchById=new Map((Array.isArray(matches)?matches:matches.matches||[]).map(match=>[match.id,match]));
     const matchday=new URLSearchParams(location.search).get("giornata");
-    if(matchday==="1"||matchday==="2"){
-      const number=Number(matchday),data=number===1?md1:md2;
-      const ordinal=number===1?"1ª":"2ª";
-      const description=`Tutte le schedine della ${number===1?"prima":"seconda"} giornata, con quote, probabilità, quota equa ed EV consultabili.`;
+    if(rounds[matchday]){
+      const number=Number(matchday),data=rounds[number];
+      const ordinal=`${number}ª`;
+      const description=`Tutte le schedine della ${ordinalWord(number)} giornata, con quote, probabilità, quota equa ed EV consultabili.`;
       document.querySelector("#app").innerHTML=hero(`Archivio · ${ordinal} giornata`,"Schedine",description)+`<nav class="betting-round-back" aria-label="Navigazione archivio schedine"><a href="schedina.html">← Tutte le giornate</a></nav><section class="betting-round-page" aria-labelledby="betting-round-${String(number).padStart(2,"0")}-title"><header class="betting-round-heading"><p class="eyebrow">Serie A · 2026/27</p><h2 id="betting-round-${String(number).padStart(2,"0")}-title">${ordinal} giornata</h2></header>${roundContent(data,matchById,{showLegend:number===1})}</section>`;
       return;
     }
-    document.querySelector("#app").innerHTML=hero("Archivio · Stagione 2026/27","Schedina","Le schedine restano raccolte giornata per giornata, con quote, valutazioni ed esiti sempre consultabili.")+`<section class="betting-archive" aria-labelledby="betting-archive-title"><header class="betting-archive-intro"><div><p class="eyebrow">Archivio schedine</p><h2 id="betting-archive-title">Giornate</h2></div><p>Seleziona una giornata per consultare tutte le schedine archiviate.</p></header><div class="betting-archive-list team-directory-grid team-flip-grid">${archiveCard(md1,1,matchById)}${archiveCard(md2,2,matchById)}</div></section>`;
+    document.querySelector("#app").innerHTML=hero("Archivio · Stagione 2026/27","Schedina","Le schedine restano raccolte giornata per giornata, con quote, valutazioni ed esiti sempre consultabili.")+`<section class="betting-archive" aria-labelledby="betting-archive-title"><header class="betting-archive-intro"><div><p class="eyebrow">Archivio schedine</p><h2 id="betting-archive-title">Giornate</h2></div><p>Seleziona una giornata per consultare tutte le schedine archiviate.</p></header><div class="betting-archive-list team-directory-grid team-flip-grid">${archiveCard(md1,1,matchById)}${archiveCard(md2,2,matchById)}${archiveCard(md3,3,matchById)}</div></section>`;
   }
   return {render};
 }

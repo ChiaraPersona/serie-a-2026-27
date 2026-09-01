@@ -5,12 +5,26 @@ const root = path.resolve(__dirname, "..");
 const sourceDir = path.join(root, "data", "sources", "readings");
 const outputFile = path.join(root, "data", "normalized", "readings.json");
 const matches = JSON.parse(fs.readFileSync(path.join(root, "data", "normalized", "matches.json"), "utf8"));
+const cup = JSON.parse(fs.readFileSync(path.join(root, "data", "normalized", "coppa-italia-2026-27.json"), "utf8"));
+const cupOpponents = JSON.parse(fs.readFileSync(path.join(root, "data", "sources", "coppa-opponents-2026-27.json"), "utf8"));
+const cupOpponentsOutputFile = path.join(root, "data", "normalized", "coppa-opponents-2026-27.json");
 const teams = JSON.parse(fs.readFileSync(path.join(root, "data", "teams", "index.json"), "utf8")).teams;
 const injuries = JSON.parse(fs.readFileSync(path.join(root, "data", "sources", "fantacalcio-injuries-2026-27.json"), "utf8"));
 const odds = JSON.parse(fs.readFileSync(path.join(root, "data", "normalized", "odds", "sisal", "serie-a.json"), "utf8"));
-const matchIds = new Set(matches.map(match => match.id));
-const matchById = new Map(matches.map(match => [match.id, match]));
-const teamNameById = new Map(teams.map(team => [team.id, team.name]));
+const allTeams = [...teams, ...cupOpponents.teams];
+const teamIdByName = new Map(allTeams.flatMap(team => [team.name, team.shortName, team.officialName].filter(Boolean).map(name => [name, team.id])));
+const cupMatches = cup.matches.filter(match => match.stage === "round-16").map(match => ({
+  ...match,
+  homeTeam: teamIdByName.get(match.home),
+  awayTeam: teamIdByName.get(match.away),
+  matchday: "Sedicesimi",
+  matchdayDate: match.date,
+  timezone: "Europe/Rome"
+}));
+const readingMatches = [...matches, ...cupMatches];
+const matchIds = new Set(readingMatches.map(match => match.id));
+const matchById = new Map(readingMatches.map(match => [match.id, match]));
+const teamNameById = new Map(allTeams.map(team => [team.id, team.name]));
 const injuriesByTeam = new Map(injuries.teams.map(team => [team.teamId, team.reports || []]));
 const oddsByMatch = new Map(odds.events.map(event => [event.canonicalMatchId, event]));
 const moduleIds = ["context", "form", "availability", "tactics", "referee", "market", "synthesis"];
@@ -96,5 +110,15 @@ for (const reading of readings) {
 if (new Set(readings.map(reading => reading.id)).size !== readings.length) throw new Error("ID lettura duplicati");
 if (new Set(readings.map(reading => reading.matchId)).size !== readings.length) throw new Error("Piu letture collegate alla stessa partita");
 
+for (const team of cupOpponents.teams) {
+  if (!team.id || !team.name || !team.coach || !team.preferredFormation || !Array.isArray(team.roster) || !team.roster.length) {
+    throw new Error(`Profilo avversario Coppa non completo: ${team.id || "senza ID"}`);
+  }
+  if (new Set(team.roster.map(player => player.shirtNumber)).size !== team.roster.length) {
+    throw new Error(`Numeri di maglia duplicati nel profilo di ${team.name}`);
+  }
+}
+
 fs.writeFileSync(outputFile, `${JSON.stringify(readings, null, 2)}\n`);
+fs.writeFileSync(cupOpponentsOutputFile, `${JSON.stringify(cupOpponents, null, 2)}\n`);
 console.log(`OK letture generate: ${readings.length}`);

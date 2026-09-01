@@ -457,6 +457,28 @@ function resolvePick(pick) {
 }
 
 const slips = source.slips.map((slip, index) => {
+  if (slip.status === "N/D") {
+    return {
+      id: slip.id,
+      type: slip.type || "mixed-markets",
+      number: index + 1,
+      eyebrow: slip.eyebrow,
+      name: slip.name,
+      description: slip.description,
+      selectionPolicy: slip.selectionPolicy || null,
+      marketFamilies: [],
+      combinedOdds: null,
+      jointModelProbabilityPct: null,
+      fairOdds: null,
+      expectedValuePct: null,
+      qualityStatus: "nd",
+      qualityLabel: "N/D",
+      excludedLegsCount: 0,
+      filterNote: slip.reason || "Dati insufficienti per una proposta prudenziale.",
+      weakestLeg: null,
+      legs: []
+    };
+  }
   const resolvedLegs = slip.picks.map(pick => resolvePick(resolveAutomaticMultigoal(pick, slip.selectionPolicy)));
   const filterable = !slip.type || slip.type === "mixed-markets";
   const legs = filterable ? resolvedLegs.filter(leg => leg.expectedValuePct >= -10) : resolvedLegs;

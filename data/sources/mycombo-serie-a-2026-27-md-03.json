@@ -1,0 +1,360 @@
+{
+  "provider": "Sisal",
+  "oddsSnapshot": "data/normalized/odds/sisal/serie-a.json",
+  "updatedAt": "2026-09-01",
+  "constraints": {
+    "referenceOdds": {
+      "Safe": 5,
+      "Balanced": 10,
+      "Aggressive": 20
+    },
+    "quotaPolicy": "orientativa",
+    "tierLimits": {
+      "Safe": {
+        "minimum": 3,
+        "maximum": 6,
+        "preferred": 3
+      },
+      "Balanced": {
+        "minimum": 4,
+        "maximum": 7,
+        "preferred": 4
+      },
+      "Aggressive": {
+        "minimum": 5,
+        "maximum": 8,
+        "preferred": 5
+      }
+    },
+    "minLegOddsInclusive": 1.1,
+    "maxLegOddsInclusive": 1.85,
+    "uniqueMarketFamilyWithinPortfolio": true,
+    "semanticOverlapPolicy": "Una sola gamba per macro-scenario: gol, esito, corner, tiri totali e tiri in porta non possono essere ripetuti o annidati nella stessa MyCombo, anche cambiando squadra, soglia o formulazione.",
+    "allowCrossTierSelectionReuse": true,
+    "promotedOpponentCaution": true,
+    "riskPolicy": "informativa",
+    "eligibilityPolicy": "validita-tecnica-e-intervalli"
+  },
+  "matches": {
+    "genoa-como-2026-27-md-03": [
+      {
+        "tier": "Safe",
+        "status": "N/D",
+        "reason": "Candidati insufficienti per il profilo Safe: servono almeno 3 mercati distinti con quota tra 1.10 e 1.85.",
+        "legs": []
+      },
+      {
+        "tier": "Balanced",
+        "status": "N/D",
+        "reason": "Candidati insufficienti per il profilo Balanced: servono almeno 4 mercati distinti con quota tra 1.10 e 1.85.",
+        "legs": []
+      },
+      {
+        "tier": "Aggressive",
+        "status": "N/D",
+        "reason": "Candidati insufficienti per il profilo Aggressive: servono almeno 5 mercati distinti con quota tra 1.10 e 1.85.",
+        "legs": []
+      }
+    ],
+    "fiorentina-torino-2026-27-md-03": [
+      {
+        "tier": "Safe",
+        "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-01: quota 5 orientativa, 3-6 gambe, mercati distinti, nessuno scenario di base ripetuto o annidato e quote singole 1.10-1.85. Il rischio resta informativo.",
+        "legs": [
+          {
+            "providerSelectionId": "5291861914",
+            "overlapKey": "market-goal nogoal",
+            "semanticKeys": [
+              "goals"
+            ],
+            "label": "Almeno una squadra non segna"
+          },
+          {
+            "providerSelectionId": "5291863218",
+            "overlapKey": "market-1 tempo 1x2 corner",
+            "semanticKeys": [
+              "volume-corners"
+            ],
+            "label": "1 TEMPO: 1X2 CORNER · 1"
+          },
+          {
+            "providerSelectionId": "5291864489",
+            "overlapKey": "market-doppia chance",
+            "semanticKeys": [
+              "result"
+            ],
+            "label": "Nessun pareggio (12)"
+          }
+        ]
+      },
+      {
+        "tier": "Balanced",
+        "status": "N/D",
+        "reason": "Candidati insufficienti per il profilo Balanced: servono almeno 4 mercati distinti con quota tra 1.10 e 1.85.",
+        "legs": []
+      },
+      {
+        "tier": "Aggressive",
+        "status": "N/D",
+        "reason": "Candidati insufficienti per il profilo Aggressive: servono almeno 5 mercati distinti con quota tra 1.10 e 1.85.",
+        "legs": []
+      }
+    ],
+    "inter-napoli-2026-27-md-03": [
+      {
+        "tier": "Safe",
+        "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-01: quota 5 orientativa, 3-6 gambe, mercati distinti, nessuno scenario di base ripetuto o annidato e quote singole 1.10-1.85. Il rischio resta informativo.",
+        "legs": [
+          {
+            "providerSelectionId": "5291832869",
+            "overlapKey": "market-1 tempo 1x2 corner",
+            "semanticKeys": [
+              "volume-corners"
+            ],
+            "label": "1 TEMPO: 1X2 CORNER · 1"
+          },
+          {
+            "providerSelectionId": "5291943082",
+            "overlapKey": "market-combo u o casa u o ospite",
+            "semanticKeys": [
+              "goals"
+            ],
+            "label": "U/O 1.5 Inter + U/O 3.5 Napoli · OVER+UNDER"
+          },
+          {
+            "providerSelectionId": "5291830901",
+            "overlapKey": "market-1x2 esito finale",
+            "semanticKeys": [
+              "result"
+            ],
+            "label": "Inter vincente"
+          }
+        ]
+      },
+      {
+        "tier": "Balanced",
+        "status": "N/D",
+        "reason": "Candidati insufficienti per il profilo Balanced: servono almeno 4 mercati distinti con quota tra 1.10 e 1.85.",
+        "legs": []
+      },
+      {
+        "tier": "Aggressive",
+        "status": "N/D",
+        "reason": "Candidati insufficienti per il profilo Aggressive: servono almeno 5 mercati distinti con quota tra 1.10 e 1.85.",
+        "legs": []
+      }
+    ],
+    "roma-atalanta-2026-27-md-03": [
+      {
+        "tier": "Safe",
+        "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-01: quota 5 orientativa, 3-6 gambe, mercati distinti, nessuno scenario di base ripetuto o annidato e quote singole 1.10-1.85. Il rischio resta informativo.",
+        "legs": [
+          {
+            "providerSelectionId": "5291860778",
+            "overlapKey": "market-under over",
+            "semanticKeys": [
+              "goals"
+            ],
+            "label": "Under 2,5 gol"
+          },
+          {
+            "providerSelectionId": "5291839611",
+            "overlapKey": "market-1x2 esito finale",
+            "semanticKeys": [
+              "result"
+            ],
+            "label": "Roma vincente"
+          },
+          {
+            "providerSelectionId": "5291858348",
+            "overlapKey": "market-1 tempo 1x2 corner",
+            "semanticKeys": [
+              "volume-corners"
+            ],
+            "label": "1 TEMPO: 1X2 CORNER · 1"
+          }
+        ]
+      },
+      {
+        "tier": "Balanced",
+        "status": "N/D",
+        "reason": "Candidati insufficienti per il profilo Balanced: servono almeno 4 mercati distinti con quota tra 1.10 e 1.85.",
+        "legs": []
+      },
+      {
+        "tier": "Aggressive",
+        "status": "N/D",
+        "reason": "Candidati insufficienti per il profilo Aggressive: servono almeno 5 mercati distinti con quota tra 1.10 e 1.85.",
+        "legs": []
+      }
+    ],
+    "frosinone-venezia-2026-27-md-03": [
+      {
+        "tier": "Safe",
+        "status": "N/D",
+        "reason": "Candidati insufficienti per il profilo Safe: servono almeno 3 mercati distinti con quota tra 1.10 e 1.85.",
+        "legs": []
+      },
+      {
+        "tier": "Balanced",
+        "status": "N/D",
+        "reason": "Candidati insufficienti per il profilo Balanced: servono almeno 4 mercati distinti con quota tra 1.10 e 1.85.",
+        "legs": []
+      },
+      {
+        "tier": "Aggressive",
+        "status": "N/D",
+        "reason": "Candidati insufficienti per il profilo Aggressive: servono almeno 5 mercati distinti con quota tra 1.10 e 1.85.",
+        "legs": []
+      }
+    ],
+    "parma-monza-2026-27-md-03": [
+      {
+        "tier": "Safe",
+        "status": "N/D",
+        "reason": "Candidati insufficienti per il profilo Safe: servono almeno 3 mercati distinti con quota tra 1.10 e 1.85.",
+        "legs": []
+      },
+      {
+        "tier": "Balanced",
+        "status": "N/D",
+        "reason": "Candidati insufficienti per il profilo Balanced: servono almeno 4 mercati distinti con quota tra 1.10 e 1.85.",
+        "legs": []
+      },
+      {
+        "tier": "Aggressive",
+        "status": "N/D",
+        "reason": "Candidati insufficienti per il profilo Aggressive: servono almeno 5 mercati distinti con quota tra 1.10 e 1.85.",
+        "legs": []
+      }
+    ],
+    "bologna-sassuolo-2026-27-md-03": [
+      {
+        "tier": "Safe",
+        "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-01: quota 5 orientativa, 3-6 gambe, mercati distinti, nessuno scenario di base ripetuto o annidato e quote singole 1.10-1.85. Il rischio resta informativo.",
+        "legs": [
+          {
+            "providerSelectionId": "5291937873",
+            "overlapKey": "market-combo u o casa u o ospite",
+            "semanticKeys": [
+              "goals"
+            ],
+            "label": "U/O 1.5 Bologna + U/O 2.5 Sassuolo · UNDER+UNDER"
+          },
+          {
+            "providerSelectionId": "5291827516",
+            "overlapKey": "market-1 tempo 1x2 corner",
+            "semanticKeys": [
+              "volume-corners"
+            ],
+            "label": "1 TEMPO: 1X2 CORNER · 1"
+          },
+          {
+            "providerSelectionId": "5291830653",
+            "overlapKey": "market-doppia chance",
+            "semanticKeys": [
+              "result"
+            ],
+            "label": "Nessun pareggio (12)"
+          }
+        ]
+      },
+      {
+        "tier": "Balanced",
+        "status": "N/D",
+        "reason": "Candidati insufficienti per il profilo Balanced: servono almeno 4 mercati distinti con quota tra 1.10 e 1.85.",
+        "legs": []
+      },
+      {
+        "tier": "Aggressive",
+        "status": "N/D",
+        "reason": "Candidati insufficienti per il profilo Aggressive: servono almeno 5 mercati distinti con quota tra 1.10 e 1.85.",
+        "legs": []
+      }
+    ],
+    "juventus-milan-2026-27-md-03": [
+      {
+        "tier": "Safe",
+        "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-01: quota 5 orientativa, 3-6 gambe, mercati distinti, nessuno scenario di base ripetuto o annidato e quote singole 1.10-1.85. Il rischio resta informativo.",
+        "legs": [
+          {
+            "providerSelectionId": "5291834933",
+            "overlapKey": "market-under over",
+            "semanticKeys": [
+              "goals"
+            ],
+            "label": "Under 2,5 gol"
+          },
+          {
+            "providerSelectionId": "5291834990",
+            "overlapKey": "market-doppia chance",
+            "semanticKeys": [
+              "result"
+            ],
+            "label": "Nessun pareggio (12)"
+          },
+          {
+            "providerSelectionId": "5291832307",
+            "overlapKey": "market-1 tempo 1x2 corner",
+            "semanticKeys": [
+              "volume-corners"
+            ],
+            "label": "1 TEMPO: 1X2 CORNER · 1"
+          }
+        ]
+      },
+      {
+        "tier": "Balanced",
+        "status": "N/D",
+        "reason": "Candidati insufficienti per il profilo Balanced: servono almeno 4 mercati distinti con quota tra 1.10 e 1.85.",
+        "legs": []
+      },
+      {
+        "tier": "Aggressive",
+        "status": "N/D",
+        "reason": "Candidati insufficienti per il profilo Aggressive: servono almeno 5 mercati distinti con quota tra 1.10 e 1.85.",
+        "legs": []
+      }
+    ],
+    "cagliari-lecce-2026-27-md-03": [
+      {
+        "tier": "Safe",
+        "status": "N/D",
+        "reason": "Candidati insufficienti per il profilo Safe: servono almeno 3 mercati distinti con quota tra 1.10 e 1.85.",
+        "legs": []
+      },
+      {
+        "tier": "Balanced",
+        "status": "N/D",
+        "reason": "Candidati insufficienti per il profilo Balanced: servono almeno 4 mercati distinti con quota tra 1.10 e 1.85.",
+        "legs": []
+      },
+      {
+        "tier": "Aggressive",
+        "status": "N/D",
+        "reason": "Candidati insufficienti per il profilo Aggressive: servono almeno 5 mercati distinti con quota tra 1.10 e 1.85.",
+        "legs": []
+      }
+    ],
+    "udinese-lazio-2026-27-md-03": [
+      {
+        "tier": "Safe",
+        "status": "N/D",
+        "reason": "Candidati insufficienti per il profilo Safe: servono almeno 3 mercati distinti con quota tra 1.10 e 1.85.",
+        "legs": []
+      },
+      {
+        "tier": "Balanced",
+        "status": "N/D",
+        "reason": "Candidati insufficienti per il profilo Balanced: servono almeno 4 mercati distinti con quota tra 1.10 e 1.85.",
+        "legs": []
+      },
+      {
+        "tier": "Aggressive",
+        "status": "N/D",
+        "reason": "Candidati insufficienti per il profilo Aggressive: servono almeno 5 mercati distinti con quota tra 1.10 e 1.85.",
+        "legs": []
+      }
+    ]
+  }
+}

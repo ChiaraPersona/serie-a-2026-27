@@ -16,8 +16,8 @@ const homeVersion = "20260830-md2-results-v1";
 const calendarVersion = "20260830-md2-results-v1";
 const teamVersion = "20260831-atalanta-bologna-lineups-v1";
 const leaderboardVersion = "20260830-md2-results-v1";
-const bettingVersion = "20260830-md2-results-void-player-v1";
-const readingVersion = "20260831-atalanta-bologna-lineups-v1";
+const bettingVersion = "20260901-md3-schedina-v1";
+const readingVersion = "20260901-md3-coppa-readings-v2";
 const fantasyVersion = "20260831-atalanta-bologna-lineups-v1";
 const headToHeadPath = path.join(root, "data/generated/head-to-head/first-leg-2026-27.json");
 if (fs.existsSync(headToHeadPath)) {

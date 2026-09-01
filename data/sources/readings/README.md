@@ -1,6 +1,8 @@
 # Letture
 
-Ogni lettura vive in un file JSON separato. Copiare `_template.json`, rinominare il file con l'ID della partita e compilare `matchId` usando l'identificatore presente in `data/normalized/matches.json`.
+Ogni lettura vive in un file JSON separato. Copiare `_template.json`, rinominare il file con l'ID della partita e compilare `matchId` usando l'identificatore presente in `data/normalized/matches.json` oppure, per la Coppa Italia, in `data/normalized/coppa-italia-2026-27.json`.
+
+Gli avversari di Coppa esterni alle 20 squadre di Serie A sono descritti in `data/sources/coppa-opponents-2026-27.json`: restano fuori da classifica e statistiche del campionato, ma possono avere rosa, tecnico, forma e metadati completi per le Letture.
 
 Le sette sezioni restano sempre presenti. Un contenuto non ancora verificato deve rimanere `null`: nell'interfaccia verra mostrato come `N/D`. Ogni fonte di sezione usa la forma `{ "label": "...", "url": "..." }`.
 

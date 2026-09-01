@@ -22,8 +22,12 @@ const mvpHistory = read("data/sources/player-mvp-history-2025-26.json");
 const fantasy = read("data/generated/fantacalcio-advice.json");
 const volumeProfiles = read("data/normalized/team-volume-profiles-2025-26.json");
 const officialLineups = read("data/sources/official-lineups-2026-27.json");
-const predictionArchivePath = path.join(root, "data/sources/prediction-archive-md1-2026-27.json");
-const predictionArchive = fs.existsSync(predictionArchivePath) ? JSON.parse(fs.readFileSync(predictionArchivePath, "utf8")) : { predictions: [] };
+const predictionArchiveFiles = fs.readdirSync(path.join(root, "data", "sources"))
+  .filter(filename => /^prediction-archive-md\d{1,2}-2026-27\.json$/.test(filename))
+  .sort();
+const predictionArchive = {
+  predictions: predictionArchiveFiles.flatMap(filename => read(`data/sources/${filename}`).predictions || [])
+};
 const myComboFiles = fs.readdirSync(path.join(root, "data/sources"))
   .filter(filename => /^mycombo-serie-a-2026-27-md-\d{2}\.json$/.test(filename))
   .sort();
