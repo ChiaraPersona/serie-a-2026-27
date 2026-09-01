@@ -1,4 +1,4 @@
-const routes={home:"home",calendar:"matches",team:"matches","team-stats":"teams",readings:"readings",referees:"referees",fantasy:"fantasy",betting:"betting",cup:"cup"};
+const routes={home:"home",calendar:"matches",team:"matches","team-stats":"teams",readings:"readings",referees:"referees",fantasy:"fantasy",betting:"betting",cup:"cup",champions:"champions"};
 export async function loadPage(page,release){
   const moduleName=routes[page];
   if(!moduleName)throw new Error(`Pagina non supportata: ${page}`);

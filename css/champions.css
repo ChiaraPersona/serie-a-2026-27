@@ -1,0 +1,78 @@
+body[data-page="champions"]{
+  --champions-blue:#041a57;
+  --champions-blue-bright:#0d55cb;
+  --champions-sky:#71b8ff;
+  min-height:100vh;
+  background:
+    radial-gradient(circle at 82% 12%,rgba(43,133,255,.42),transparent 28rem),
+    radial-gradient(circle at 8% 58%,rgba(21,72,190,.44),transparent 34rem),
+    linear-gradient(155deg,#06143f 0%,#052b78 48%,#03143f 100%);
+  color:#f7faff;
+}
+
+body[data-page="champions"]::before{
+  display:block;
+  background-image:radial-gradient(rgba(255,255,255,.28) 1px,transparent 1px);
+  background-size:42px 42px;
+  opacity:.2;
+}
+
+body[data-page="champions"] .site-header{--glass-text:#eaf4ff;--glass-color:#0a399b5e;border-color:rgba(147,200,255,.24)}
+body[data-page="champions"] .brand strong,
+body[data-page="champions"] .brand small,
+body[data-page="champions"] .page-link{color:#eaf4ff}
+body[data-page="champions"] .menu-button{color:#fff}
+body[data-page="champions"] main{padding-top:38px}
+
+.champions-hero{
+  position:relative;
+  isolation:isolate;
+  min-height:560px;
+  padding:clamp(34px,6vw,72px);
+  overflow:hidden;
+  border:1px solid rgba(151,205,255,.34);
+  border-radius:38px;
+  background:linear-gradient(120deg,rgba(2,13,54,.94),rgba(7,57,148,.72));
+  box-shadow:0 34px 90px rgba(0,6,36,.42),inset 0 1px rgba(255,255,255,.18);
+}
+
+.champions-hero::before{
+  position:absolute;
+  z-index:-1;
+  inset:0;
+  background:radial-gradient(circle at 78% 46%,rgba(86,171,255,.32),transparent 23rem),linear-gradient(110deg,transparent 58%,rgba(255,255,255,.07));
+  content:"";
+}
+
+.champions-status{display:inline-flex;align-items:center;gap:9px;margin-bottom:62px;padding:8px 13px;border:1px solid rgba(144,206,255,.38);border-radius:999px;background:rgba(3,22,68,.58);color:#fff;font-size:11px;font-weight:850;letter-spacing:.12em;text-transform:uppercase;backdrop-filter:blur(10px)}
+.champions-status span{width:7px;height:7px;border-radius:50%;background:#71b8ff;box-shadow:0 0 0 5px rgba(113,184,255,.14),0 0 18px #71b8ff}
+.champions-hero .eyebrow{color:#91c9ff}
+.champions-hero h1{max-width:780px;color:#fff;font-size:clamp(54px,7.2vw,94px);line-height:.94;text-shadow:0 10px 40px rgba(0,5,34,.34)}
+.champions-hero .lead{max-width:690px;margin:26px 0 0;color:#c9ddf7;font-size:clamp(16px,1.6vw,20px)}
+
+.champions-orbit{position:absolute;right:clamp(-80px,2vw,30px);bottom:-120px;display:grid;width:390px;height:390px;place-items:center;border:1px solid rgba(159,214,255,.22);border-radius:50%;box-shadow:0 0 0 54px rgba(106,181,255,.045),0 0 0 108px rgba(106,181,255,.025)}
+.champions-orbit span{display:grid;width:126px;height:126px;place-items:center;border:1px solid rgba(190,225,255,.45);border-radius:50%;background:rgba(9,69,169,.68);color:#fff;font-size:58px;box-shadow:0 0 54px rgba(88,170,255,.5)}
+
+.champions-preview{margin-top:34px;padding:32px;border:1px solid rgba(137,194,255,.24);border-radius:30px;background:rgba(3,23,70,.55);box-shadow:0 24px 70px rgba(0,7,39,.25);backdrop-filter:blur(18px)}
+.champions-preview header{max-width:720px}
+.champions-preview .eyebrow{color:#8fc7ff}
+.champions-preview h2,.champions-preview h3{color:#fff}
+.champions-preview-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:26px}
+.champions-preview-grid article{min-height:190px;padding:24px;border:1px solid rgba(141,199,255,.2);border-radius:22px;background:linear-gradient(145deg,rgba(21,77,164,.58),rgba(4,28,85,.7))}
+.champions-preview-grid article>span{color:#7cbcff;font-size:11px;font-weight:900;letter-spacing:.14em}
+.champions-preview-grid h3{margin-top:34px;font-size:24px}
+.champions-preview-grid p{margin-bottom:0;color:#b8cdea}
+
+body[data-page="champions"] .site-footer{margin-top:0}
+
+@media(max-width:760px){
+  body[data-page="champions"] main{width:min(100% - 20px,var(--max));padding-top:28px}
+  .champions-hero{min-height:600px;padding:30px 22px;border-radius:26px}
+  .champions-status{margin-bottom:50px}
+  .champions-hero h1{font-size:clamp(48px,14vw,68px)}
+  .champions-orbit{right:-160px;bottom:-130px;width:330px;height:330px}
+  .champions-preview{padding:24px 18px;border-radius:24px}
+  .champions-preview-grid{grid-template-columns:1fr}
+  .champions-preview-grid article{min-height:150px}
+  .champions-preview-grid h3{margin-top:22px}
+}

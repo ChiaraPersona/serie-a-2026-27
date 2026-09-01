@@ -29,13 +29,16 @@ if (fs.existsSync(previewMd3Path)) {
   assert(previewMd3.predictions.every(prediction => prediction.market.status === "unavailable" && prediction.probabilities.marketNoMargin === null), "L'anteprima MD3 non deve inventare quote");
 }
 
-assert.strictEqual(dataset.predictions.length, 30, "Il motore deve coprire le prime tre giornate");
+assert.strictEqual(dataset.predictions.length, 33, "Il motore deve coprire le prime tre giornate e le tre gare di Coppa");
 const firstMatchdayPredictions = dataset.predictions.filter(prediction => prediction.matchId.endsWith("-md-01"));
 const secondMatchdayPredictions = dataset.predictions.filter(prediction => prediction.matchId.endsWith("-md-02"));
 const thirdMatchdayPredictions = dataset.predictions.filter(prediction => prediction.matchId.endsWith("-md-03"));
+const cupPredictions = dataset.predictions.filter(prediction => ["r16-3", "r16-6", "r16-7"].includes(prediction.matchId));
 assert.strictEqual(firstMatchdayPredictions.length, 10, "Devono restare disponibili i 10 pronostici archiviati della prima giornata");
 assert.strictEqual(secondMatchdayPredictions.length, 10, "Devono essere disponibili i 10 pronostici tecnici della seconda giornata");
 assert.strictEqual(thirdMatchdayPredictions.length, 10, "Devono essere disponibili i 10 pronostici tecnici della terza giornata");
+assert.strictEqual(cupPredictions.length, 3, "Devono essere disponibili i tre pronostici tecnici dei Sedicesimi di Coppa");
+assert(cupPredictions.every(prediction => prediction.market.status === "unavailable" && prediction.combinations.length === 0), "Le gare di Coppa senza quote devono conservare mercati e MyCombo N/D");
 assert.deepStrictEqual(firstMatchdayPredictions.map(({ decisionSupport, ...prediction }) => prediction), archivedMd1.predictions, "Il nucleo dei pronostici conclusi MD1 deve restare identico allo snapshot pubblicato");
 assert.strictEqual(Object.keys(myComboSource.matches).length, 10, "Le MyCombo devono coprire tutte le 10 gare della prima giornata");
 if (fs.existsSync(myComboMd2Path)) assert.strictEqual(Object.keys(myComboMd2Source.matches).length, 10, "Le MyCombo devono coprire tutte le 10 gare della seconda giornata");

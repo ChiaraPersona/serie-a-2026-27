@@ -8,6 +8,7 @@ const { DECISION_LAYER_VERSION, PROFILE_LIMITS, enrichPrediction } = require("./
 const root = path.resolve(__dirname, "..");
 const read = relative => JSON.parse(fs.readFileSync(path.join(root, relative), "utf8"));
 const matches = read("data/normalized/matches.json");
+const cup = read("data/normalized/coppa-italia-2026-27.json");
 const readings = read("data/normalized/readings.json");
 const standings = read("data/normalized/standings-2025-26.json");
 const styles = read("data/normalized/team-style-profiles.json");
@@ -56,9 +57,12 @@ const disciplineByTeam = byId(discipline.profiles);
 const objectiveByTeam = byId(objectives.teams);
 const oddsByMatch = byId(odds.events);
 const headToHeadByMatch = new Map(headToHead.fixtures.map(fixture => [fixture.fixtureId, fixture]));
+const pairKey = (homeTeam, awayTeam) => [homeTeam, awayTeam].sort().join("|");
+const headToHeadByPair = new Map(headToHead.fixtures.map(fixture => [pairKey(fixture.homeTeamId, fixture.awayTeamId), fixture]));
 const homeByTeam = byId(standings.homeRows);
 const awayByTeam = byId(standings.awayRows);
 const teamById = new Map(teams.map(team => [team.id, team]));
+const teamIdByName = new Map(teams.flatMap(team => [team.name, team.shortName, team.officialName].filter(Boolean).map(name => [name, team.id])));
 const squadsByTeam = new Map(teams.map(team => [team.id, read(`data/generated/team-pages/${team.id}-squad.json`)]));
 const mvpHistoryByPlayer = new Map(mvpHistory.players.map(player => [player.normalizedName, player]));
 const fantasyHistoryByPlayer = new Map(fantasy.players.map(player => [playerKey(player.name), player]));
@@ -143,9 +147,23 @@ function recentForm(teamId, targetMatch) {
 const nextScheduledMatchday = matches
   .filter(match => match.competition === "serie-a" && match.season === "2026-27" && match.status !== "finished")
   .reduce((minimum, match) => Math.min(minimum, match.matchday), Infinity);
-const targetMatches = matches
+const leagueTargetMatches = matches
   .filter(match => match.competition === "serie-a" && match.season === "2026-27" && (previewMode ? match.matchday === previewMatchday : oddsByMatch.has(match.id) || match.matchday === nextScheduledMatchday))
   .sort((a, b) => a.matchday - b.matchday || a.id.localeCompare(b.id));
+const cupPredictionIds = new Set(["r16-3", "r16-6", "r16-7"]);
+const cupTargetMatches = previewMode ? [] : cup.matches.filter(match => cupPredictionIds.has(match.id)).map(match => ({
+  ...match,
+  homeTeam: teamIdByName.get(match.home),
+  awayTeam: teamIdByName.get(match.away),
+  matchday: 3,
+  predictionStage: "round-16"
+}));
+const targetMatches = [...leagueTargetMatches, ...cupTargetMatches];
+const predictionMatches = [...matches, ...cupTargetMatches];
+const existingPredictionsPath = path.join(root, "data/normalized/predictions.json");
+const existingPredictionByMatch = fs.existsSync(existingPredictionsPath)
+  ? new Map(JSON.parse(fs.readFileSync(existingPredictionsPath, "utf8")).predictions.map(prediction => [prediction.matchId, prediction]))
+  : new Map();
 
 const officialReferenceByTeam = new Map(officialLineups.fixtures
   .flatMap(fixture => fixture.teams.map(lineup => [lineup.teamId, {
@@ -165,7 +183,7 @@ const teamForMatch = (team, match) => {
 const generatedPredictions = targetMatches.map(match => {
   const homeTeam = teamForMatch(teamById.get(match.homeTeam), match);
   const awayTeam = teamForMatch(teamById.get(match.awayTeam), match);
-  const predictionGeneratedAt = [generatedAt, homeTeam?.probableLineup?.source?.retrievedAt, awayTeam?.probableLineup?.source?.retrievedAt].filter(Boolean).sort().at(-1);
+  const predictionGeneratedAt = existingPredictionByMatch.get(match.id)?.generatedAt || [generatedAt, homeTeam?.probableLineup?.source?.retrievedAt, awayTeam?.probableLineup?.source?.retrievedAt].filter(Boolean).sort().at(-1);
   const prediction = predictMatch({
     match,
     reading: readingByMatch.get(match.id),
@@ -184,7 +202,7 @@ const generatedPredictions = targetMatches.map(match => {
     awayVolume: volumeByTeam.get(match.awayTeam),
     homeObjective: objectiveByTeam.get(match.homeTeam),
     awayObjective: objectiveByTeam.get(match.awayTeam),
-    headToHead: headToHeadByMatch.get(match.id),
+    headToHead: headToHeadByMatch.get(match.id) || headToHeadByPair.get(pairKey(match.homeTeam, match.awayTeam)),
     homeTeam,
     awayTeam,
     homeSquad: squadsByTeam.get(match.homeTeam),
@@ -247,8 +265,8 @@ const generatedCurrent = generatedPredictions.filter(prediction => !archivedPred
 const basePredictions = previewMode
   ? generatedPredictions
   : [...predictionArchive.predictions, ...generatedCurrent].sort((left, right) => {
-      const leftMatch = matches.find(match => match.id === left.matchId);
-      const rightMatch = matches.find(match => match.id === right.matchId);
+      const leftMatch = predictionMatches.find(match => match.id === left.matchId);
+      const rightMatch = predictionMatches.find(match => match.id === right.matchId);
       return (leftMatch?.matchday || 99) - (rightMatch?.matchday || 99) || left.matchId.localeCompare(right.matchId);
     });
 const predictions = basePredictions.map(enrichPrediction);
@@ -256,6 +274,7 @@ const predictions = basePredictions.map(enrichPrediction);
 const output = {
   schemaVersion: 1,
   competition: "serie-a",
+  competitions: previewMode ? ["serie-a"] : ["serie-a", "coppa-italia"],
   season: "2026-27",
   ...(previewMode ? { mode: "exploratory-preview", matchday: previewMatchday, publicationStatus: "not-published" } : {}),
   generatedAt,
