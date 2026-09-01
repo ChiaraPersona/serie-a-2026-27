@@ -5,7 +5,7 @@ export function createPage(){
         <div class="champions-status"><span aria-hidden="true"></span>In preparazione</div>
         <p class="eyebrow">UEFA Champions League 2026/27</p>
         <h1 id="champions-title">La notte d’Europa<br>comincia qui.</h1>
-        <p class="lead">Stiamo costruendo il nuovo spazio dedicato alla Champions League: calendario, squadre italiane e letture delle partite arriveranno progressivamente.</p>
+        <p class="lead">Stiamo costruendo uno spazio completo dedicato alla Champions League: seguiremo tutte le partite, dall’inizio della competizione fino alla finale.</p>
         <div class="champions-orbit" aria-hidden="true"><span>★</span></div>
       </section>
       <section class="champions-preview" aria-labelledby="champions-preview-title">
@@ -14,9 +14,9 @@ export function createPage(){
           <h2 id="champions-preview-title">Cosa troverai in questa pagina</h2>
         </header>
         <div class="champions-preview-grid">
-          <article><span>01</span><h3>Calendario</h3><p>Date, orari e risultati del percorso europeo.</p></article>
-          <article><span>02</span><h3>Squadre italiane</h3><p>Un accesso diretto alle gare dei club di Serie A.</p></article>
-          <article><span>03</span><h3>Letture</h3><p>Analisi prepartita separate dai dati del campionato.</p></article>
+          <article><span>01</span><h3>Calendario completo</h3><p>Date, orari e risultati di tutte le partite della competizione.</p></article>
+          <article><span>02</span><h3>Tutte le squadre</h3><p>Ogni club e ogni incrocio, senza limitare la copertura alle italiane.</p></article>
+          <article><span>03</span><h3>Letture partita per partita</h3><p>Analisi prepartita dedicate a ogni gara e separate dai dati del campionato.</p></article>
         </div>
       </section>`;
   }
