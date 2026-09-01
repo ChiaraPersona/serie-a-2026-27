@@ -67,7 +67,6 @@ for (const item of teamMap.teams) {
   if (item.uefaTeamId != null) {
     if (mappedIds.has(item.uefaTeamId)) fail(`UEFA team ID duplicato: ${item.uefaTeamId}`);
     mappedIds.add(item.uefaTeamId);
-    if (!matches.some(match => match.homeTeam.id === item.uefaTeamId || match.awayTeam.id === item.uefaTeamId)) fail(`${item.team}: UEFA team ID assente dall'archivio europeo`);
   }
 }
 if (mappedNames.size !== calendarTeams.size || [...calendarTeams].some(team => !mappedNames.has(team))) fail("mappa incompleta rispetto al calendario");

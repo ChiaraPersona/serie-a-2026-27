@@ -1,0 +1,893 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-09-02",
+  "status": "eligible-for-current-fixture-prototype",
+  "trainingMatches": 1469,
+  "historyThrough": "2026-05-30",
+  "parameters": {
+    "homeAdvantage": 80,
+    "kFactor": 40,
+    "drawBase": 0.22,
+    "drawScale": 600,
+    "seasonRetention": 1,
+    "competitionWeightProfile": "flat",
+    "competitionUpdateWeights": {
+      "ucl": 1,
+      "uel": 1,
+      "uecl": 1
+    }
+  },
+  "probabilityGate": {
+    "passed": true,
+    "rule": "Il modello deve migliorare log-loss e Brier sull'intero holdout e sulle gare Champions, rispettare ECE <= 0,04 complessivo e <= 0,06 Champions, e avere intervalli bootstrap complessivi al 95% sopra zero.",
+    "status": "eligible-for-current-fixture-prototype"
+  },
+  "holdoutSummary": {
+    "baseline": {
+      "matches": 531,
+      "logLoss": 1.02367,
+      "brier": 0.61717,
+      "accuracyPct": 49.91,
+      "calibrationError": 0.01057,
+      "calibration": [
+        {
+          "bin": "20-30%",
+          "count": 531,
+          "meanProbability": 0.2004,
+          "observedRate": 0.1846
+        },
+        {
+          "bin": "30-40%",
+          "count": 531,
+          "meanProbability": 0.306,
+          "observedRate": 0.3164
+        },
+        {
+          "bin": "40-50%",
+          "count": 531,
+          "meanProbability": 0.4936,
+          "observedRate": 0.4991
+        }
+      ]
+    },
+    "model": {
+      "matches": 531,
+      "logLoss": 0.97566,
+      "brier": 0.58086,
+      "accuracyPct": 53.86,
+      "calibrationError": 0.02454,
+      "calibration": [
+        {
+          "bin": "0-10%",
+          "count": 2,
+          "meanProbability": 0.0777,
+          "observedRate": 0
+        },
+        {
+          "bin": "10-20%",
+          "count": 412,
+          "meanProbability": 0.1738,
+          "observedRate": 0.1481
+        },
+        {
+          "bin": "20-30%",
+          "count": 369,
+          "meanProbability": 0.235,
+          "observedRate": 0.2575
+        },
+        {
+          "bin": "30-40%",
+          "count": 298,
+          "meanProbability": 0.3483,
+          "observedRate": 0.3188
+        },
+        {
+          "bin": "40-50%",
+          "count": 234,
+          "meanProbability": 0.4499,
+          "observedRate": 0.4573
+        },
+        {
+          "bin": "50-60%",
+          "count": 173,
+          "meanProbability": 0.5426,
+          "observedRate": 0.5549
+        },
+        {
+          "bin": "60-70%",
+          "count": 84,
+          "meanProbability": 0.6435,
+          "observedRate": 0.7143
+        },
+        {
+          "bin": "70-80%",
+          "count": 20,
+          "meanProbability": 0.7374,
+          "observedRate": 0.8
+        },
+        {
+          "bin": "80-90%",
+          "count": 1,
+          "meanProbability": 0.8095,
+          "observedRate": 1
+        }
+      ]
+    },
+    "championsBaseline": {
+      "matches": 189,
+      "logLoss": 1.02251,
+      "brier": 0.61683,
+      "accuracyPct": 49.74,
+      "calibrationError": 0.0137,
+      "calibration": [
+        {
+          "bin": "20-30%",
+          "count": 189,
+          "meanProbability": 0.2004,
+          "observedRate": 0.1799
+        },
+        {
+          "bin": "30-40%",
+          "count": 189,
+          "meanProbability": 0.306,
+          "observedRate": 0.3228
+        },
+        {
+          "bin": "40-50%",
+          "count": 189,
+          "meanProbability": 0.4936,
+          "observedRate": 0.4974
+        }
+      ]
+    },
+    "championsModel": {
+      "matches": 189,
+      "logLoss": 0.94918,
+      "brier": 0.56156,
+      "accuracyPct": 59.26,
+      "calibrationError": 0.04688,
+      "calibration": [
+        {
+          "bin": "0-10%",
+          "count": 1,
+          "meanProbability": 0.0705,
+          "observedRate": 0
+        },
+        {
+          "bin": "10-20%",
+          "count": 162,
+          "meanProbability": 0.1714,
+          "observedRate": 0.1481
+        },
+        {
+          "bin": "20-30%",
+          "count": 121,
+          "meanProbability": 0.235,
+          "observedRate": 0.2397
+        },
+        {
+          "bin": "30-40%",
+          "count": 97,
+          "meanProbability": 0.3448,
+          "observedRate": 0.2474
+        },
+        {
+          "bin": "40-50%",
+          "count": 82,
+          "meanProbability": 0.45,
+          "observedRate": 0.5366
+        },
+        {
+          "bin": "50-60%",
+          "count": 58,
+          "meanProbability": 0.5448,
+          "observedRate": 0.6207
+        },
+        {
+          "bin": "60-70%",
+          "count": 34,
+          "meanProbability": 0.6449,
+          "observedRate": 0.6471
+        },
+        {
+          "bin": "70-80%",
+          "count": 11,
+          "meanProbability": 0.7318,
+          "observedRate": 0.8182
+        },
+        {
+          "bin": "80-90%",
+          "count": 1,
+          "meanProbability": 0.8095,
+          "observedRate": 1
+        }
+      ]
+    },
+    "improvements": {
+      "overallLogLoss": 0.04801,
+      "overallBrier": 0.03631,
+      "uclLogLoss": 0.07333,
+      "uclBrier": 0.05527
+    },
+    "bootstrap": {
+      "overall": {
+        "matches": 531,
+        "iterations": 4000,
+        "logLoss": {
+          "lower95": 0.0272,
+          "median": 0.0478,
+          "upper95": 0.0688
+        },
+        "brier": {
+          "lower95": 0.02043,
+          "median": 0.0362,
+          "upper95": 0.05225
+        }
+      },
+      "ucl": {
+        "matches": 189,
+        "iterations": 4000,
+        "logLoss": {
+          "lower95": 0.03725,
+          "median": 0.07378,
+          "upper95": 0.11169
+        },
+        "brier": {
+          "lower95": 0.02767,
+          "median": 0.05561,
+          "upper95": 0.08473
+        }
+      }
+    }
+  },
+  "ratings": [
+    {
+      "teamId": "52280",
+      "rating": 1777.32
+    },
+    {
+      "teamId": "52747",
+      "rating": 1759.8
+    },
+    {
+      "teamId": "50037",
+      "rating": 1758.69
+    },
+    {
+      "teamId": "52683",
+      "rating": 1735.64
+    },
+    {
+      "teamId": "50080",
+      "rating": 1684.55
+    },
+    {
+      "teamId": "1652",
+      "rating": 1674.97
+    },
+    {
+      "teamId": "50051",
+      "rating": 1669.17
+    },
+    {
+      "teamId": "52914",
+      "rating": 1648.08
+    },
+    {
+      "teamId": "7889",
+      "rating": 1644.46
+    },
+    {
+      "teamId": "50124",
+      "rating": 1637.92
+    },
+    {
+      "teamId": "5312",
+      "rating": 1626.57
+    },
+    {
+      "teamId": "50137",
+      "rating": 1610.5
+    },
+    {
+      "teamId": "52682",
+      "rating": 1609.43
+    },
+    {
+      "teamId": "50109",
+      "rating": 1608.02
+    },
+    {
+      "teamId": "52817",
+      "rating": 1605.55
+    },
+    {
+      "teamId": "50138",
+      "rating": 1605.1
+    },
+    {
+      "teamId": "52973",
+      "rating": 1604.5
+    },
+    {
+      "teamId": "52758",
+      "rating": 1594.25
+    },
+    {
+      "teamId": "59880",
+      "rating": 1592.66
+    },
+    {
+      "teamId": "52916",
+      "rating": 1588.32
+    },
+    {
+      "teamId": "64388",
+      "rating": 1587.58
+    },
+    {
+      "teamId": "50149",
+      "rating": 1577.22
+    },
+    {
+      "teamId": "2610",
+      "rating": 1577.21
+    },
+    {
+      "teamId": "52919",
+      "rating": 1575.58
+    },
+    {
+      "teamId": "52681",
+      "rating": 1574.39
+    },
+    {
+      "teamId": "70853",
+      "rating": 1571.82
+    },
+    {
+      "teamId": "50064",
+      "rating": 1571.27
+    },
+    {
+      "teamId": "52816",
+      "rating": 1568.54
+    },
+    {
+      "teamId": "74070",
+      "rating": 1565.7
+    },
+    {
+      "teamId": "59333",
+      "rating": 1565.15
+    },
+    {
+      "teamId": "50139",
+      "rating": 1564.98
+    },
+    {
+      "teamId": "52336",
+      "rating": 1559.8
+    },
+    {
+      "teamId": "2601105",
+      "rating": 1559.76
+    },
+    {
+      "teamId": "52265",
+      "rating": 1559.47
+    },
+    {
+      "teamId": "64227",
+      "rating": 1557.8
+    },
+    {
+      "teamId": "75795",
+      "rating": 1556.27
+    },
+    {
+      "teamId": "53358",
+      "rating": 1555.49
+    },
+    {
+      "teamId": "61582",
+      "rating": 1553.96
+    },
+    {
+      "teamId": "52692",
+      "rating": 1553.57
+    },
+    {
+      "teamId": "50043",
+      "rating": 1550.73
+    },
+    {
+      "teamId": "59857",
+      "rating": 1549.28
+    },
+    {
+      "teamId": "50123",
+      "rating": 1548.09
+    },
+    {
+      "teamId": "59324",
+      "rating": 1547.71
+    },
+    {
+      "teamId": "2600277",
+      "rating": 1546.19
+    },
+    {
+      "teamId": "54191",
+      "rating": 1543.51
+    },
+    {
+      "teamId": "52969",
+      "rating": 1542.84
+    },
+    {
+      "teamId": "50097",
+      "rating": 1542.8
+    },
+    {
+      "teamId": "59030",
+      "rating": 1542.17
+    },
+    {
+      "teamId": "53060",
+      "rating": 1541.4
+    },
+    {
+      "teamId": "53043",
+      "rating": 1539.44
+    },
+    {
+      "teamId": "52356",
+      "rating": 1536.87
+    },
+    {
+      "teamId": "52884",
+      "rating": 1536
+    },
+    {
+      "teamId": "50125",
+      "rating": 1534.63
+    },
+    {
+      "teamId": "52298",
+      "rating": 1533.77
+    },
+    {
+      "teamId": "55031",
+      "rating": 1532.01
+    },
+    {
+      "teamId": "52327",
+      "rating": 1528.52
+    },
+    {
+      "teamId": "75797",
+      "rating": 1527.66
+    },
+    {
+      "teamId": "50058",
+      "rating": 1527.18
+    },
+    {
+      "teamId": "52809",
+      "rating": 1524.08
+    },
+    {
+      "teamId": "2609532",
+      "rating": 1522.14
+    },
+    {
+      "teamId": "50129",
+      "rating": 1520.34
+    },
+    {
+      "teamId": "50023",
+      "rating": 1517.34
+    },
+    {
+      "teamId": "79940",
+      "rating": 1516.42
+    },
+    {
+      "teamId": "50084",
+      "rating": 1516.39
+    },
+    {
+      "teamId": "50104",
+      "rating": 1515.62
+    },
+    {
+      "teamId": "50062",
+      "rating": 1514.53
+    },
+    {
+      "teamId": "50118",
+      "rating": 1513.82
+    },
+    {
+      "teamId": "52934",
+      "rating": 1511.51
+    },
+    {
+      "teamId": "4608",
+      "rating": 1511
+    },
+    {
+      "teamId": "50142",
+      "rating": 1508.07
+    },
+    {
+      "teamId": "4251",
+      "rating": 1507.56
+    },
+    {
+      "teamId": "2603791",
+      "rating": 1507.53
+    },
+    {
+      "teamId": "8538",
+      "rating": 1506.86
+    },
+    {
+      "teamId": "50074",
+      "rating": 1506.46
+    },
+    {
+      "teamId": "50164",
+      "rating": 1506.01
+    },
+    {
+      "teamId": "64125",
+      "rating": 1505.41
+    },
+    {
+      "teamId": "52818",
+      "rating": 1505.39
+    },
+    {
+      "teamId": "50008",
+      "rating": 1503.86
+    },
+    {
+      "teamId": "52748",
+      "rating": 1503.46
+    },
+    {
+      "teamId": "50067",
+      "rating": 1501.91
+    },
+    {
+      "teamId": "52277",
+      "rating": 1500.8
+    },
+    {
+      "teamId": "52707",
+      "rating": 1496.11
+    },
+    {
+      "teamId": "60566",
+      "rating": 1493.68
+    },
+    {
+      "teamId": "52697",
+      "rating": 1492
+    },
+    {
+      "teamId": "52905",
+      "rating": 1491.8
+    },
+    {
+      "teamId": "2600431",
+      "rating": 1485.96
+    },
+    {
+      "teamId": "50050",
+      "rating": 1485.85
+    },
+    {
+      "teamId": "2600288",
+      "rating": 1485.43
+    },
+    {
+      "teamId": "59045",
+      "rating": 1483.49
+    },
+    {
+      "teamId": "50146",
+      "rating": 1483.01
+    },
+    {
+      "teamId": "52344",
+      "rating": 1482.17
+    },
+    {
+      "teamId": "2601306",
+      "rating": 1481.22
+    },
+    {
+      "teamId": "65130",
+      "rating": 1480.51
+    },
+    {
+      "teamId": "50107",
+      "rating": 1477.9
+    },
+    {
+      "teamId": "2605572",
+      "rating": 1477.76
+    },
+    {
+      "teamId": "2606501",
+      "rating": 1477.57
+    },
+    {
+      "teamId": "50120",
+      "rating": 1475.21
+    },
+    {
+      "teamId": "50130",
+      "rating": 1472.92
+    },
+    {
+      "teamId": "53081",
+      "rating": 1472.32
+    },
+    {
+      "teamId": "50147",
+      "rating": 1468.52
+    },
+    {
+      "teamId": "50136",
+      "rating": 1468.46
+    },
+    {
+      "teamId": "88134",
+      "rating": 1468.01
+    },
+    {
+      "teamId": "51151",
+      "rating": 1467.23
+    },
+    {
+      "teamId": "50072",
+      "rating": 1462.91
+    },
+    {
+      "teamId": "52381",
+      "rating": 1461.92
+    },
+    {
+      "teamId": "2608290",
+      "rating": 1457.78
+    },
+    {
+      "teamId": "50065",
+      "rating": 1457.34
+    },
+    {
+      "teamId": "52350",
+      "rating": 1457.02
+    },
+    {
+      "teamId": "50069",
+      "rating": 1455.17
+    },
+    {
+      "teamId": "52709",
+      "rating": 1451.8
+    },
+    {
+      "teamId": "2609987",
+      "rating": 1450.36
+    },
+    {
+      "teamId": "50033",
+      "rating": 1448.72
+    },
+    {
+      "teamId": "69529",
+      "rating": 1447.34
+    },
+    {
+      "teamId": "2603104",
+      "rating": 1446.78
+    },
+    {
+      "teamId": "2609552",
+      "rating": 1445.68
+    },
+    {
+      "teamId": "50042",
+      "rating": 1445.14
+    },
+    {
+      "teamId": "52770",
+      "rating": 1444.76
+    },
+    {
+      "teamId": "57475",
+      "rating": 1444.51
+    },
+    {
+      "teamId": "75807",
+      "rating": 1443.28
+    },
+    {
+      "teamId": "64207",
+      "rating": 1443.07
+    },
+    {
+      "teamId": "50077",
+      "rating": 1442.06
+    },
+    {
+      "teamId": "50121",
+      "rating": 1440.99
+    },
+    {
+      "teamId": "50113",
+      "rating": 1435.03
+    },
+    {
+      "teamId": "59856",
+      "rating": 1434.09
+    },
+    {
+      "teamId": "77977",
+      "rating": 1432.43
+    },
+    {
+      "teamId": "50157",
+      "rating": 1432.3
+    },
+    {
+      "teamId": "85009",
+      "rating": 1430.05
+    },
+    {
+      "teamId": "2607112",
+      "rating": 1429.76
+    },
+    {
+      "teamId": "2609104",
+      "rating": 1429.13
+    },
+    {
+      "teamId": "50060",
+      "rating": 1429.03
+    },
+    {
+      "teamId": "52749",
+      "rating": 1428.73
+    },
+    {
+      "teamId": "70691",
+      "rating": 1428.16
+    },
+    {
+      "teamId": "2603790",
+      "rating": 1426.96
+    },
+    {
+      "teamId": "2600605",
+      "rating": 1426.79
+    },
+    {
+      "teamId": "52714",
+      "rating": 1425.4
+    },
+    {
+      "teamId": "53020",
+      "rating": 1424.37
+    },
+    {
+      "teamId": "60457",
+      "rating": 1423.54
+    },
+    {
+      "teamId": "50161",
+      "rating": 1421.53
+    },
+    {
+      "teamId": "73390",
+      "rating": 1416.18
+    },
+    {
+      "teamId": "50122",
+      "rating": 1414.59
+    },
+    {
+      "teamId": "52904",
+      "rating": 1413.51
+    },
+    {
+      "teamId": "69606",
+      "rating": 1411.75
+    },
+    {
+      "teamId": "52723",
+      "rating": 1410.4
+    },
+    {
+      "teamId": "50143",
+      "rating": 1410.05
+    },
+    {
+      "teamId": "52498",
+      "rating": 1401.12
+    },
+    {
+      "teamId": "2602798",
+      "rating": 1400.69
+    },
+    {
+      "teamId": "79970",
+      "rating": 1398.12
+    },
+    {
+      "teamId": "63405",
+      "rating": 1395.42
+    },
+    {
+      "teamId": "60570",
+      "rating": 1394.04
+    },
+    {
+      "teamId": "50111",
+      "rating": 1393.75
+    },
+    {
+      "teamId": "52323",
+      "rating": 1387.75
+    },
+    {
+      "teamId": "71235",
+      "rating": 1386.79
+    },
+    {
+      "teamId": "60609",
+      "rating": 1385.44
+    },
+    {
+      "teamId": "2610140",
+      "rating": 1384.83
+    },
+    {
+      "teamId": "50052",
+      "rating": 1383.42
+    },
+    {
+      "teamId": "57477",
+      "rating": 1374.18
+    },
+    {
+      "teamId": "69621",
+      "rating": 1356.43
+    },
+    {
+      "teamId": "50030",
+      "rating": 1354.02
+    },
+    {
+      "teamId": "50031",
+      "rating": 1346.99
+    },
+    {
+      "teamId": "52797",
+      "rating": 1346.78
+    },
+    {
+      "teamId": "52355",
+      "rating": 1344.19
+    },
+    {
+      "teamId": "50152",
+      "rating": 1330.13
+    }
+  ]
+}

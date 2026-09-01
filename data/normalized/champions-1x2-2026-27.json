@@ -1,0 +1,4289 @@
+{
+  "schemaVersion": 1,
+  "season": "2026-27",
+  "generatedAt": "2026-09-02",
+  "status": "experimental-backtested",
+  "modelVersion": "uefa-elo-1x2-1.0.0",
+  "warning": "Percentuali sperimentali basate solo su storico europeo, sede e recenza implicita nel rating. Motivazione, assenze e forma domestica non sono ancora incluse.",
+  "methodology": {
+    "trainingMatches": 1469,
+    "historyThrough": "2026-05-30",
+    "parameters": {
+      "homeAdvantage": 80,
+      "kFactor": 40,
+      "drawBase": 0.22,
+      "drawScale": 600,
+      "seasonRetention": 1,
+      "competitionWeightProfile": "flat",
+      "competitionUpdateWeights": {
+        "ucl": 1,
+        "uel": 1,
+        "uecl": 1
+      }
+    },
+    "newTeamPrior": 1500,
+    "probabilityGate": {
+      "passed": true,
+      "rule": "Il modello deve migliorare log-loss e Brier sull'intero holdout e sulle gare Champions, rispettare ECE <= 0,04 complessivo e <= 0,06 Champions, e avere intervalli bootstrap complessivi al 95% sopra zero.",
+      "status": "eligible-for-current-fixture-prototype"
+    }
+  },
+  "validation": {
+    "baseline": {
+      "matches": 531,
+      "logLoss": 1.02367,
+      "brier": 0.61717,
+      "accuracyPct": 49.91,
+      "calibrationError": 0.01057,
+      "calibration": [
+        {
+          "bin": "20-30%",
+          "count": 531,
+          "meanProbability": 0.2004,
+          "observedRate": 0.1846
+        },
+        {
+          "bin": "30-40%",
+          "count": 531,
+          "meanProbability": 0.306,
+          "observedRate": 0.3164
+        },
+        {
+          "bin": "40-50%",
+          "count": 531,
+          "meanProbability": 0.4936,
+          "observedRate": 0.4991
+        }
+      ]
+    },
+    "model": {
+      "matches": 531,
+      "logLoss": 0.97566,
+      "brier": 0.58086,
+      "accuracyPct": 53.86,
+      "calibrationError": 0.02454,
+      "calibration": [
+        {
+          "bin": "0-10%",
+          "count": 2,
+          "meanProbability": 0.0777,
+          "observedRate": 0
+        },
+        {
+          "bin": "10-20%",
+          "count": 412,
+          "meanProbability": 0.1738,
+          "observedRate": 0.1481
+        },
+        {
+          "bin": "20-30%",
+          "count": 369,
+          "meanProbability": 0.235,
+          "observedRate": 0.2575
+        },
+        {
+          "bin": "30-40%",
+          "count": 298,
+          "meanProbability": 0.3483,
+          "observedRate": 0.3188
+        },
+        {
+          "bin": "40-50%",
+          "count": 234,
+          "meanProbability": 0.4499,
+          "observedRate": 0.4573
+        },
+        {
+          "bin": "50-60%",
+          "count": 173,
+          "meanProbability": 0.5426,
+          "observedRate": 0.5549
+        },
+        {
+          "bin": "60-70%",
+          "count": 84,
+          "meanProbability": 0.6435,
+          "observedRate": 0.7143
+        },
+        {
+          "bin": "70-80%",
+          "count": 20,
+          "meanProbability": 0.7374,
+          "observedRate": 0.8
+        },
+        {
+          "bin": "80-90%",
+          "count": 1,
+          "meanProbability": 0.8095,
+          "observedRate": 1
+        }
+      ]
+    },
+    "championsBaseline": {
+      "matches": 189,
+      "logLoss": 1.02251,
+      "brier": 0.61683,
+      "accuracyPct": 49.74,
+      "calibrationError": 0.0137,
+      "calibration": [
+        {
+          "bin": "20-30%",
+          "count": 189,
+          "meanProbability": 0.2004,
+          "observedRate": 0.1799
+        },
+        {
+          "bin": "30-40%",
+          "count": 189,
+          "meanProbability": 0.306,
+          "observedRate": 0.3228
+        },
+        {
+          "bin": "40-50%",
+          "count": 189,
+          "meanProbability": 0.4936,
+          "observedRate": 0.4974
+        }
+      ]
+    },
+    "championsModel": {
+      "matches": 189,
+      "logLoss": 0.94918,
+      "brier": 0.56156,
+      "accuracyPct": 59.26,
+      "calibrationError": 0.04688,
+      "calibration": [
+        {
+          "bin": "0-10%",
+          "count": 1,
+          "meanProbability": 0.0705,
+          "observedRate": 0
+        },
+        {
+          "bin": "10-20%",
+          "count": 162,
+          "meanProbability": 0.1714,
+          "observedRate": 0.1481
+        },
+        {
+          "bin": "20-30%",
+          "count": 121,
+          "meanProbability": 0.235,
+          "observedRate": 0.2397
+        },
+        {
+          "bin": "30-40%",
+          "count": 97,
+          "meanProbability": 0.3448,
+          "observedRate": 0.2474
+        },
+        {
+          "bin": "40-50%",
+          "count": 82,
+          "meanProbability": 0.45,
+          "observedRate": 0.5366
+        },
+        {
+          "bin": "50-60%",
+          "count": 58,
+          "meanProbability": 0.5448,
+          "observedRate": 0.6207
+        },
+        {
+          "bin": "60-70%",
+          "count": 34,
+          "meanProbability": 0.6449,
+          "observedRate": 0.6471
+        },
+        {
+          "bin": "70-80%",
+          "count": 11,
+          "meanProbability": 0.7318,
+          "observedRate": 0.8182
+        },
+        {
+          "bin": "80-90%",
+          "count": 1,
+          "meanProbability": 0.8095,
+          "observedRate": 1
+        }
+      ]
+    },
+    "improvements": {
+      "overallLogLoss": 0.04801,
+      "overallBrier": 0.03631,
+      "uclLogLoss": 0.07333,
+      "uclBrier": 0.05527
+    },
+    "bootstrap": {
+      "overall": {
+        "matches": 531,
+        "iterations": 4000,
+        "logLoss": {
+          "lower95": 0.0272,
+          "median": 0.0478,
+          "upper95": 0.0688
+        },
+        "brier": {
+          "lower95": 0.02043,
+          "median": 0.0362,
+          "upper95": 0.05225
+        }
+      },
+      "ucl": {
+        "matches": 189,
+        "iterations": 4000,
+        "logLoss": {
+          "lower95": 0.03725,
+          "median": 0.07378,
+          "upper95": 0.11169
+        },
+        "brier": {
+          "lower95": 0.02767,
+          "median": 0.05561,
+          "upper95": 0.08473
+        }
+      }
+    }
+  },
+  "summary": {
+    "fixtures": 144,
+    "highConfidence": 47,
+    "mediumConfidence": 39,
+    "lowConfidence": 58
+  },
+  "fixtures": [
+    {
+      "fixtureId": "ucl-2026-27-md01-01",
+      "homeTeam": "AEK Athens",
+      "awayTeam": "LASK",
+      "homeTeamId": "50129",
+      "awayTeamId": "63405",
+      "ratings": {
+        "home": 1520.34,
+        "away": 1395.42,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 204.92
+      },
+      "probabilities": {
+        "home": 0.6453,
+        "draw": 0.1563,
+        "away": 0.1984
+      },
+      "displayPercentages": {
+        "home": 64.5,
+        "draw": 15.6,
+        "away": 19.9
+      },
+      "favorite": "1",
+      "confidence": "high",
+      "confidenceLabel": "alta",
+      "edgePct": 44.7,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-02",
+      "homeTeam": "Club Brugge",
+      "awayTeam": "Aston Villa",
+      "homeTeamId": "50043",
+      "awayTeamId": "52683",
+      "ratings": {
+        "home": 1550.73,
+        "away": 1735.64,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": -104.91
+      },
+      "probabilities": {
+        "home": 0.2882,
+        "draw": 0.1847,
+        "away": 0.5271
+      },
+      "displayPercentages": {
+        "home": 28.8,
+        "draw": 18.5,
+        "away": 52.7
+      },
+      "favorite": "2",
+      "confidence": "medium",
+      "confidenceLabel": "media",
+      "edgePct": 23.9,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-03",
+      "homeTeam": "Borussia Dortmund",
+      "awayTeam": "Villarreal",
+      "homeTeamId": "52758",
+      "awayTeamId": "70691",
+      "ratings": {
+        "home": 1594.25,
+        "away": 1428.16,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 246.09
+      },
+      "probabilities": {
+        "home": 0.6873,
+        "draw": 0.146,
+        "away": 0.1667
+      },
+      "displayPercentages": {
+        "home": 68.7,
+        "draw": 14.6,
+        "away": 16.7
+      },
+      "favorite": "1",
+      "confidence": "high",
+      "confidenceLabel": "alta",
+      "edgePct": 52.1,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-04",
+      "homeTeam": "Porto",
+      "awayTeam": "Manchester City",
+      "homeTeamId": "50064",
+      "awayTeamId": "52919",
+      "ratings": {
+        "home": 1571.27,
+        "away": 1575.58,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 75.69
+      },
+      "probabilities": {
+        "home": 0.4895,
+        "draw": 0.1939,
+        "away": 0.3166
+      },
+      "displayPercentages": {
+        "home": 48.9,
+        "draw": 19.4,
+        "away": 31.7
+      },
+      "favorite": "1",
+      "confidence": "low",
+      "confidenceLabel": "bassa",
+      "edgePct": 17.3,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-05",
+      "homeTeam": "Lille",
+      "awayTeam": "Real Betis",
+      "homeTeamId": "75797",
+      "awayTeamId": "52265",
+      "ratings": {
+        "home": 1527.66,
+        "away": 1559.47,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 48.19
+      },
+      "probabilities": {
+        "home": 0.4534,
+        "draw": 0.203,
+        "away": 0.3436
+      },
+      "displayPercentages": {
+        "home": 45.3,
+        "draw": 20.3,
+        "away": 34.4
+      },
+      "favorite": "1",
+      "confidence": "low",
+      "confidenceLabel": "bassa",
+      "edgePct": 11,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-06",
+      "homeTeam": "Real Madrid",
+      "awayTeam": "Inter",
+      "homeTeamId": "50051",
+      "awayTeamId": "50138",
+      "ratings": {
+        "home": 1669.17,
+        "away": 1605.1,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 144.07
+      },
+      "probabilities": {
+        "home": 0.5757,
+        "draw": 0.173,
+        "away": 0.2512
+      },
+      "displayPercentages": {
+        "home": 57.6,
+        "draw": 17.3,
+        "away": 25.1
+      },
+      "favorite": "1",
+      "confidence": "medium",
+      "confidenceLabel": "media",
+      "edgePct": 32.5,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-07",
+      "homeTeam": "Barcelona",
+      "awayTeam": "Feyenoord",
+      "homeTeamId": "50080",
+      "awayTeamId": "52749",
+      "ratings": {
+        "home": 1684.55,
+        "away": 1428.73,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 335.82
+      },
+      "probabilities": {
+        "home": 0.7638,
+        "draw": 0.1257,
+        "away": 0.1105
+      },
+      "displayPercentages": {
+        "home": 76.4,
+        "draw": 12.6,
+        "away": 11
+      },
+      "favorite": "1",
+      "confidence": "high",
+      "confidenceLabel": "alta",
+      "edgePct": 63.8,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-08",
+      "homeTeam": "Stuttgart",
+      "awayTeam": "Viking",
+      "homeTeamId": "50107",
+      "awayTeamId": "52319",
+      "ratings": {
+        "home": 1477.9,
+        "away": 1500,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 57.9
+      },
+      "probabilities": {
+        "home": 0.4662,
+        "draw": 0.1998,
+        "away": 0.334
+      },
+      "displayPercentages": {
+        "home": 46.6,
+        "draw": 20,
+        "away": 33.4
+      },
+      "favorite": "1",
+      "confidence": "low",
+      "confidenceLabel": "bassa",
+      "edgePct": 13.2,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-09",
+      "homeTeam": "Liverpool",
+      "awayTeam": "Atlético de Madrid",
+      "homeTeamId": "7889",
+      "awayTeamId": "50124",
+      "ratings": {
+        "home": 1644.46,
+        "away": 1637.92,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 86.54
+      },
+      "probabilities": {
+        "home": 0.5036,
+        "draw": 0.1905,
+        "away": 0.306
+      },
+      "displayPercentages": {
+        "home": 50.4,
+        "draw": 19,
+        "away": 30.6
+      },
+      "favorite": "1",
+      "confidence": "medium",
+      "confidenceLabel": "media",
+      "edgePct": 19.8,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-10",
+      "homeTeam": "Paris Saint-Germain",
+      "awayTeam": "Slovan Bratislava",
+      "homeTeamId": "52747",
+      "awayTeamId": "52797",
+      "ratings": {
+        "home": 1759.8,
+        "away": 1346.78,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 493.02
+      },
+      "probabilities": {
+        "home": 0.8313,
+        "draw": 0.12,
+        "away": 0.0487
+      },
+      "displayPercentages": {
+        "home": 83.1,
+        "draw": 12,
+        "away": 4.9
+      },
+      "favorite": "1",
+      "confidence": "high",
+      "confidenceLabel": "alta",
+      "edgePct": 71.1,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-11",
+      "homeTeam": "Sporting CP",
+      "awayTeam": "Galatasaray",
+      "homeTeamId": "50149",
+      "awayTeamId": "50067",
+      "ratings": {
+        "home": 1577.22,
+        "away": 1501.91,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 155.31
+      },
+      "probabilities": {
+        "home": 0.5892,
+        "draw": 0.1698,
+        "away": 0.241
+      },
+      "displayPercentages": {
+        "home": 58.9,
+        "draw": 17,
+        "away": 24.1
+      },
+      "favorite": "1",
+      "confidence": "medium",
+      "confidenceLabel": "media",
+      "edgePct": 34.8,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-12",
+      "homeTeam": "Napoli",
+      "awayTeam": "Arsenal",
+      "homeTeamId": "50136",
+      "awayTeamId": "52280",
+      "ratings": {
+        "home": 1468.46,
+        "away": 1777.32,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": -228.86
+      },
+      "probabilities": {
+        "home": 0.1795,
+        "draw": 0.1502,
+        "away": 0.6703
+      },
+      "displayPercentages": {
+        "home": 18,
+        "draw": 15,
+        "away": 67
+      },
+      "favorite": "2",
+      "confidence": "high",
+      "confidenceLabel": "alta",
+      "edgePct": 49.1,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-13",
+      "homeTeam": "Fenerbahçe",
+      "awayTeam": "Roma",
+      "homeTeamId": "52692",
+      "awayTeamId": "50137",
+      "ratings": {
+        "home": 1553.57,
+        "away": 1610.5,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 23.07
+      },
+      "probabilities": {
+        "home": 0.4203,
+        "draw": 0.2117,
+        "away": 0.368
+      },
+      "displayPercentages": {
+        "home": 42,
+        "draw": 21.2,
+        "away": 36.8
+      },
+      "favorite": "1",
+      "confidence": "low",
+      "confidenceLabel": "bassa",
+      "edgePct": 5.2,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-14",
+      "homeTeam": "PSV Eindhoven",
+      "awayTeam": "Shakhtar Donetsk",
+      "homeTeamId": "50062",
+      "awayTeamId": "52707",
+      "ratings": {
+        "home": 1514.53,
+        "away": 1496.11,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 98.42
+      },
+      "probabilities": {
+        "home": 0.5188,
+        "draw": 0.1867,
+        "away": 0.2944
+      },
+      "displayPercentages": {
+        "home": 51.9,
+        "draw": 18.7,
+        "away": 29.4
+      },
+      "favorite": "1",
+      "confidence": "medium",
+      "confidenceLabel": "media",
+      "edgePct": 22.4,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-15",
+      "homeTeam": "Como",
+      "awayTeam": "Leipzig",
+      "homeTeamId": "79946",
+      "awayTeamId": "2603790",
+      "ratings": {
+        "home": 1500,
+        "away": 1426.96,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 153.04
+      },
+      "probabilities": {
+        "home": 0.5865,
+        "draw": 0.1705,
+        "away": 0.243
+      },
+      "displayPercentages": {
+        "home": 58.6,
+        "draw": 17,
+        "away": 24.4
+      },
+      "favorite": "1",
+      "confidence": "medium",
+      "confidenceLabel": "media",
+      "edgePct": 34.3,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-16",
+      "homeTeam": "Bayern München",
+      "awayTeam": "Bodø/Glimt",
+      "homeTeamId": "50037",
+      "awayTeamId": "59333",
+      "ratings": {
+        "home": 1758.69,
+        "away": 1565.15,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 273.54
+      },
+      "probabilities": {
+        "home": 0.7129,
+        "draw": 0.1395,
+        "away": 0.1476
+      },
+      "displayPercentages": {
+        "home": 71.3,
+        "draw": 13.9,
+        "away": 14.8
+      },
+      "favorite": "1",
+      "confidence": "high",
+      "confidenceLabel": "alta",
+      "edgePct": 56.5,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-17",
+      "homeTeam": "Manchester United",
+      "awayTeam": "Sabah",
+      "homeTeamId": "52682",
+      "awayTeamId": "2609356",
+      "ratings": {
+        "home": 1609.43,
+        "away": 1500,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 189.43
+      },
+      "probabilities": {
+        "home": 0.6284,
+        "draw": 0.1604,
+        "away": 0.2112
+      },
+      "displayPercentages": {
+        "home": 62.8,
+        "draw": 16,
+        "away": 21.2
+      },
+      "favorite": "1",
+      "confidence": "high",
+      "confidenceLabel": "alta",
+      "edgePct": 41.7,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-18",
+      "homeTeam": "Slavia Praha",
+      "awayTeam": "Lens",
+      "homeTeamId": "52498",
+      "awayTeamId": "52277",
+      "ratings": {
+        "home": 1401.12,
+        "away": 1500.8,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": -19.68
+      },
+      "probabilities": {
+        "home": 0.3713,
+        "draw": 0.2129,
+        "away": 0.4158
+      },
+      "displayPercentages": {
+        "home": 37.1,
+        "draw": 21.3,
+        "away": 41.6
+      },
+      "favorite": "2",
+      "confidence": "low",
+      "confidenceLabel": "bassa",
+      "edgePct": 4.5,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-01",
+      "homeTeam": "Lens",
+      "awayTeam": "Sporting CP",
+      "homeTeamId": "52277",
+      "awayTeamId": "50149",
+      "ratings": {
+        "home": 1500.8,
+        "away": 1577.22,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 3.58
+      },
+      "probabilities": {
+        "home": 0.3947,
+        "draw": 0.2187,
+        "away": 0.3866
+      },
+      "displayPercentages": {
+        "home": 39.5,
+        "draw": 21.9,
+        "away": 38.6
+      },
+      "favorite": "1",
+      "confidence": "low",
+      "confidenceLabel": "bassa",
+      "edgePct": 0.8,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-02",
+      "homeTeam": "Sabah",
+      "awayTeam": "Slavia Praha",
+      "homeTeamId": "2609356",
+      "awayTeamId": "52498",
+      "ratings": {
+        "home": 1500,
+        "away": 1401.12,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 178.88
+      },
+      "probabilities": {
+        "home": 0.6165,
+        "draw": 0.1633,
+        "away": 0.2202
+      },
+      "displayPercentages": {
+        "home": 61.7,
+        "draw": 16.3,
+        "away": 22
+      },
+      "favorite": "1",
+      "confidence": "high",
+      "confidenceLabel": "alta",
+      "edgePct": 39.6,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-03",
+      "homeTeam": "Arsenal",
+      "awayTeam": "Lille",
+      "homeTeamId": "52280",
+      "awayTeamId": "75797",
+      "ratings": {
+        "home": 1777.32,
+        "away": 1527.66,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 329.66
+      },
+      "probabilities": {
+        "home": 0.7592,
+        "draw": 0.127,
+        "away": 0.1138
+      },
+      "displayPercentages": {
+        "home": 75.9,
+        "draw": 12.7,
+        "away": 11.4
+      },
+      "favorite": "1",
+      "confidence": "high",
+      "confidenceLabel": "alta",
+      "edgePct": 63.2,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-04",
+      "homeTeam": "Atlético de Madrid",
+      "awayTeam": "Manchester United",
+      "homeTeamId": "50124",
+      "awayTeamId": "52682",
+      "ratings": {
+        "home": 1637.92,
+        "away": 1609.43,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 108.49
+      },
+      "probabilities": {
+        "home": 0.5317,
+        "draw": 0.1836,
+        "away": 0.2847
+      },
+      "displayPercentages": {
+        "home": 53.2,
+        "draw": 18.4,
+        "away": 28.4
+      },
+      "favorite": "1",
+      "confidence": "medium",
+      "confidenceLabel": "media",
+      "edgePct": 24.7,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-05",
+      "homeTeam": "Inter",
+      "awayTeam": "Club Brugge",
+      "homeTeamId": "50138",
+      "awayTeamId": "50043",
+      "ratings": {
+        "home": 1605.1,
+        "away": 1550.73,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 134.37
+      },
+      "probabilities": {
+        "home": 0.5639,
+        "draw": 0.1759,
+        "away": 0.2602
+      },
+      "displayPercentages": {
+        "home": 56.4,
+        "draw": 17.6,
+        "away": 26
+      },
+      "favorite": "1",
+      "confidence": "medium",
+      "confidenceLabel": "media",
+      "edgePct": 30.4,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-06",
+      "homeTeam": "Galatasaray",
+      "awayTeam": "Barcelona",
+      "homeTeamId": "50067",
+      "awayTeamId": "50080",
+      "ratings": {
+        "home": 1501.91,
+        "away": 1684.55,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": -102.64
+      },
+      "probabilities": {
+        "home": 0.2904,
+        "draw": 0.1854,
+        "away": 0.5242
+      },
+      "displayPercentages": {
+        "home": 29,
+        "draw": 18.5,
+        "away": 52.5
+      },
+      "favorite": "2",
+      "confidence": "medium",
+      "confidenceLabel": "media",
+      "edgePct": 23.4,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-07",
+      "homeTeam": "Leipzig",
+      "awayTeam": "PSV Eindhoven",
+      "homeTeamId": "2603790",
+      "awayTeamId": "50062",
+      "ratings": {
+        "home": 1426.96,
+        "away": 1514.53,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": -7.57
+      },
+      "probabilities": {
+        "home": 0.3829,
+        "draw": 0.2172,
+        "away": 0.3999
+      },
+      "displayPercentages": {
+        "home": 38.3,
+        "draw": 21.7,
+        "away": 40
+      },
+      "favorite": "2",
+      "confidence": "low",
+      "confidenceLabel": "bassa",
+      "edgePct": 1.7,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-08",
+      "homeTeam": "Viking",
+      "awayTeam": "Bayern München",
+      "homeTeamId": "52319",
+      "awayTeamId": "50037",
+      "ratings": {
+        "home": 1500,
+        "away": 1758.69,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": -178.69
+      },
+      "probabilities": {
+        "home": 0.2203,
+        "draw": 0.1633,
+        "away": 0.6163
+      },
+      "displayPercentages": {
+        "home": 22,
+        "draw": 16.3,
+        "away": 61.7
+      },
+      "favorite": "2",
+      "confidence": "high",
+      "confidenceLabel": "alta",
+      "edgePct": 39.6,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-09",
+      "homeTeam": "Villarreal",
+      "awayTeam": "Napoli",
+      "homeTeamId": "70691",
+      "awayTeamId": "50136",
+      "ratings": {
+        "home": 1428.16,
+        "away": 1468.46,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 39.7
+      },
+      "probabilities": {
+        "home": 0.4422,
+        "draw": 0.2059,
+        "away": 0.3519
+      },
+      "displayPercentages": {
+        "home": 44.2,
+        "draw": 20.6,
+        "away": 35.2
+      },
+      "favorite": "1",
+      "confidence": "low",
+      "confidenceLabel": "bassa",
+      "edgePct": 9,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-10",
+      "homeTeam": "Feyenoord",
+      "awayTeam": "Como",
+      "homeTeamId": "52749",
+      "awayTeamId": "79946",
+      "ratings": {
+        "home": 1428.73,
+        "away": 1500,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 8.73
+      },
+      "probabilities": {
+        "home": 0.4014,
+        "draw": 0.2168,
+        "away": 0.3818
+      },
+      "displayPercentages": {
+        "home": 40.1,
+        "draw": 21.7,
+        "away": 38.2
+      },
+      "favorite": "1",
+      "confidence": "low",
+      "confidenceLabel": "bassa",
+      "edgePct": 2,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-11",
+      "homeTeam": "LASK",
+      "awayTeam": "Liverpool",
+      "homeTeamId": "63405",
+      "awayTeamId": "7889",
+      "ratings": {
+        "home": 1395.42,
+        "away": 1644.46,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": -169.04
+      },
+      "probabilities": {
+        "home": 0.2287,
+        "draw": 0.166,
+        "away": 0.6053
+      },
+      "displayPercentages": {
+        "home": 22.9,
+        "draw": 16.6,
+        "away": 60.5
+      },
+      "favorite": "2",
+      "confidence": "high",
+      "confidenceLabel": "alta",
+      "edgePct": 37.7,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-12",
+      "homeTeam": "Roma",
+      "awayTeam": "Real Madrid",
+      "homeTeamId": "50137",
+      "awayTeamId": "50051",
+      "ratings": {
+        "home": 1610.5,
+        "away": 1669.17,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 21.33
+      },
+      "probabilities": {
+        "home": 0.418,
+        "draw": 0.2123,
+        "away": 0.3697
+      },
+      "displayPercentages": {
+        "home": 41.8,
+        "draw": 21.2,
+        "away": 37
+      },
+      "favorite": "1",
+      "confidence": "low",
+      "confidenceLabel": "bassa",
+      "edgePct": 4.8,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-13",
+      "homeTeam": "Aston Villa",
+      "awayTeam": "Fenerbahçe",
+      "homeTeamId": "52683",
+      "awayTeamId": "52692",
+      "ratings": {
+        "home": 1735.64,
+        "away": 1553.57,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 262.07
+      },
+      "probabilities": {
+        "home": 0.7025,
+        "draw": 0.1421,
+        "away": 0.1554
+      },
+      "displayPercentages": {
+        "home": 70.2,
+        "draw": 14.2,
+        "away": 15.6
+      },
+      "favorite": "1",
+      "confidence": "high",
+      "confidenceLabel": "alta",
+      "edgePct": 54.7,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-14",
+      "homeTeam": "Shakhtar Donetsk",
+      "awayTeam": "AEK Athens",
+      "homeTeamId": "52707",
+      "awayTeamId": "50129",
+      "ratings": {
+        "home": 1496.11,
+        "away": 1520.34,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 55.77
+      },
+      "probabilities": {
+        "home": 0.4634,
+        "draw": 0.2005,
+        "away": 0.3361
+      },
+      "displayPercentages": {
+        "home": 46.3,
+        "draw": 20,
+        "away": 33.7
+      },
+      "favorite": "1",
+      "confidence": "low",
+      "confidenceLabel": "bassa",
+      "edgePct": 12.7,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-15",
+      "homeTeam": "Bodø/Glimt",
+      "awayTeam": "Borussia Dortmund",
+      "homeTeamId": "59333",
+      "awayTeamId": "52758",
+      "ratings": {
+        "home": 1565.15,
+        "away": 1594.25,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 50.9
+      },
+      "probabilities": {
+        "home": 0.457,
+        "draw": 0.2021,
+        "away": 0.3409
+      },
+      "displayPercentages": {
+        "home": 45.7,
+        "draw": 20.2,
+        "away": 34.1
+      },
+      "favorite": "1",
+      "confidence": "low",
+      "confidenceLabel": "bassa",
+      "edgePct": 11.6,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-16",
+      "homeTeam": "Manchester City",
+      "awayTeam": "Paris Saint-Germain",
+      "homeTeamId": "52919",
+      "awayTeamId": "52747",
+      "ratings": {
+        "home": 1575.58,
+        "away": 1759.8,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": -104.22
+      },
+      "probabilities": {
+        "home": 0.2888,
+        "draw": 0.1849,
+        "away": 0.5262
+      },
+      "displayPercentages": {
+        "home": 28.9,
+        "draw": 18.5,
+        "away": 52.6
+      },
+      "favorite": "2",
+      "confidence": "medium",
+      "confidenceLabel": "media",
+      "edgePct": 23.7,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-17",
+      "homeTeam": "Real Betis",
+      "awayTeam": "Porto",
+      "homeTeamId": "52265",
+      "awayTeamId": "50064",
+      "ratings": {
+        "home": 1559.47,
+        "away": 1571.27,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 68.2
+      },
+      "probabilities": {
+        "home": 0.4797,
+        "draw": 0.1964,
+        "away": 0.3239
+      },
+      "displayPercentages": {
+        "home": 48,
+        "draw": 19.6,
+        "away": 32.4
+      },
+      "favorite": "1",
+      "confidence": "low",
+      "confidenceLabel": "bassa",
+      "edgePct": 15.6,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-18",
+      "homeTeam": "Slovan Bratislava",
+      "awayTeam": "Stuttgart",
+      "homeTeamId": "52797",
+      "awayTeamId": "50107",
+      "ratings": {
+        "home": 1346.78,
+        "away": 1477.9,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": -51.12
+      },
+      "probabilities": {
+        "home": 0.3407,
+        "draw": 0.202,
+        "away": 0.4573
+      },
+      "displayPercentages": {
+        "home": 34.1,
+        "draw": 20.2,
+        "away": 45.7
+      },
+      "favorite": "2",
+      "confidence": "low",
+      "confidenceLabel": "bassa",
+      "edgePct": 11.7,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-01",
+      "homeTeam": "Fenerbahçe",
+      "awayTeam": "Slavia Praha",
+      "homeTeamId": "52692",
+      "awayTeamId": "52498",
+      "ratings": {
+        "home": 1553.57,
+        "away": 1401.12,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 232.45
+      },
+      "probabilities": {
+        "home": 0.6739,
+        "draw": 0.1493,
+        "away": 0.1768
+      },
+      "displayPercentages": {
+        "home": 67.4,
+        "draw": 14.9,
+        "away": 17.7
+      },
+      "favorite": "1",
+      "confidence": "high",
+      "confidenceLabel": "alta",
+      "edgePct": 49.7,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-02",
+      "homeTeam": "Sabah",
+      "awayTeam": "Borussia Dortmund",
+      "homeTeamId": "2609356",
+      "awayTeamId": "52758",
+      "ratings": {
+        "home": 1500,
+        "away": 1594.25,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": -14.25
+      },
+      "probabilities": {
+        "home": 0.3765,
+        "draw": 0.2148,
+        "away": 0.4087
+      },
+      "displayPercentages": {
+        "home": 37.6,
+        "draw": 21.5,
+        "away": 40.9
+      },
+      "favorite": "2",
+      "confidence": "low",
+      "confidenceLabel": "bassa",
+      "edgePct": 3.2,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-03",
+      "homeTeam": "Roma",
+      "awayTeam": "Slovan Bratislava",
+      "homeTeamId": "50137",
+      "awayTeamId": "52797",
+      "ratings": {
+        "home": 1610.5,
+        "away": 1346.78,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 343.72
+      },
+      "probabilities": {
+        "home": 0.7695,
+        "draw": 0.1241,
+        "away": 0.1064
+      },
+      "displayPercentages": {
+        "home": 77,
+        "draw": 12.4,
+        "away": 10.6
+      },
+      "favorite": "1",
+      "confidence": "high",
+      "confidenceLabel": "alta",
+      "edgePct": 64.5,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-04",
+      "homeTeam": "Porto",
+      "awayTeam": "PSV Eindhoven",
+      "homeTeamId": "50064",
+      "awayTeamId": "50062",
+      "ratings": {
+        "home": 1571.27,
+        "away": 1514.53,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 136.74
+      },
+      "probabilities": {
+        "home": 0.5668,
+        "draw": 0.1752,
+        "away": 0.258
+      },
+      "displayPercentages": {
+        "home": 56.7,
+        "draw": 17.5,
+        "away": 25.8
+      },
+      "favorite": "1",
+      "confidence": "medium",
+      "confidenceLabel": "media",
+      "edgePct": 30.9,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-05",
+      "homeTeam": "Liverpool",
+      "awayTeam": "Villarreal",
+      "homeTeamId": "7889",
+      "awayTeamId": "70691",
+      "ratings": {
+        "home": 1644.46,
+        "away": 1428.16,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 296.3
+      },
+      "probabilities": {
+        "home": 0.7326,
+        "draw": 0.1343,
+        "away": 0.1331
+      },
+      "displayPercentages": {
+        "home": 73.3,
+        "draw": 13.4,
+        "away": 13.3
+      },
+      "favorite": "1",
+      "confidence": "high",
+      "confidenceLabel": "alta",
+      "edgePct": 59.8,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-06",
+      "homeTeam": "Manchester City",
+      "awayTeam": "AEK Athens",
+      "homeTeamId": "52919",
+      "awayTeamId": "50129",
+      "ratings": {
+        "home": 1575.58,
+        "away": 1520.34,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 135.24
+      },
+      "probabilities": {
+        "home": 0.565,
+        "draw": 0.1756,
+        "away": 0.2594
+      },
+      "displayPercentages": {
+        "home": 56.5,
+        "draw": 17.6,
+        "away": 25.9
+      },
+      "favorite": "1",
+      "confidence": "medium",
+      "confidenceLabel": "media",
+      "edgePct": 30.6,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-07",
+      "homeTeam": "Paris Saint-Germain",
+      "awayTeam": "Barcelona",
+      "homeTeamId": "52747",
+      "awayTeamId": "50080",
+      "ratings": {
+        "home": 1759.8,
+        "away": 1684.55,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 155.25
+      },
+      "probabilities": {
+        "home": 0.5891,
+        "draw": 0.1698,
+        "away": 0.241
+      },
+      "displayPercentages": {
+        "home": 58.9,
+        "draw": 17,
+        "away": 24.1
+      },
+      "favorite": "1",
+      "confidence": "medium",
+      "confidenceLabel": "media",
+      "edgePct": 34.8,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-08",
+      "homeTeam": "Napoli",
+      "awayTeam": "Bodø/Glimt",
+      "homeTeamId": "50136",
+      "awayTeamId": "59333",
+      "ratings": {
+        "home": 1468.46,
+        "away": 1565.15,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": -16.69
+      },
+      "probabilities": {
+        "home": 0.3742,
+        "draw": 0.214,
+        "away": 0.4119
+      },
+      "displayPercentages": {
+        "home": 37.4,
+        "draw": 21.4,
+        "away": 41.2
+      },
+      "favorite": "2",
+      "confidence": "low",
+      "confidenceLabel": "bassa",
+      "edgePct": 3.8,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-09",
+      "homeTeam": "Stuttgart",
+      "awayTeam": "Atlético de Madrid",
+      "homeTeamId": "50107",
+      "awayTeamId": "50124",
+      "ratings": {
+        "home": 1477.9,
+        "away": 1637.92,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": -80.02
+      },
+      "probabilities": {
+        "home": 0.3124,
+        "draw": 0.1925,
+        "away": 0.4951
+      },
+      "displayPercentages": {
+        "home": 31.2,
+        "draw": 19.3,
+        "away": 49.5
+      },
+      "favorite": "2",
+      "confidence": "low",
+      "confidenceLabel": "bassa",
+      "edgePct": 18.3,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-10",
+      "homeTeam": "Como",
+      "awayTeam": "Manchester United",
+      "homeTeamId": "79946",
+      "awayTeamId": "52682",
+      "ratings": {
+        "home": 1500,
+        "away": 1609.43,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": -29.43
+      },
+      "probabilities": {
+        "home": 0.3619,
+        "draw": 0.2095,
+        "away": 0.4287
+      },
+      "displayPercentages": {
+        "home": 36.2,
+        "draw": 20.9,
+        "away": 42.9
+      },
+      "favorite": "2",
+      "confidence": "low",
+      "confidenceLabel": "bassa",
+      "edgePct": 6.7,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-11",
+      "homeTeam": "Lille",
+      "awayTeam": "Galatasaray",
+      "homeTeamId": "75797",
+      "awayTeamId": "50067",
+      "ratings": {
+        "home": 1527.66,
+        "away": 1501.91,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 105.75
+      },
+      "probabilities": {
+        "home": 0.5282,
+        "draw": 0.1844,
+        "away": 0.2874
+      },
+      "displayPercentages": {
+        "home": 52.8,
+        "draw": 18.4,
+        "away": 28.8
+      },
+      "favorite": "1",
+      "confidence": "medium",
+      "confidenceLabel": "media",
+      "edgePct": 24.1,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-12",
+      "homeTeam": "Aston Villa",
+      "awayTeam": "Viking",
+      "homeTeamId": "52683",
+      "awayTeamId": "52319",
+      "ratings": {
+        "home": 1735.64,
+        "away": 1500,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 315.64
+      },
+      "probabilities": {
+        "home": 0.7484,
+        "draw": 0.13,
+        "away": 0.1216
+      },
+      "displayPercentages": {
+        "home": 74.8,
+        "draw": 13,
+        "away": 12.2
+      },
+      "favorite": "1",
+      "confidence": "high",
+      "confidenceLabel": "alta",
+      "edgePct": 61.8,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-13",
+      "homeTeam": "Club Brugge",
+      "awayTeam": "Lens",
+      "homeTeamId": "50043",
+      "awayTeamId": "52277",
+      "ratings": {
+        "home": 1550.73,
+        "away": 1500.8,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 129.93
+      },
+      "probabilities": {
+        "home": 0.5585,
+        "draw": 0.1772,
+        "away": 0.2644
+      },
+      "displayPercentages": {
+        "home": 55.8,
+        "draw": 17.7,
+        "away": 26.5
+      },
+      "favorite": "1",
+      "confidence": "medium",
+      "confidenceLabel": "media",
+      "edgePct": 29.4,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-14",
+      "homeTeam": "Bayern München",
+      "awayTeam": "Arsenal",
+      "homeTeamId": "50037",
+      "awayTeamId": "52280",
+      "ratings": {
+        "home": 1758.69,
+        "away": 1777.32,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 61.37
+      },
+      "probabilities": {
+        "home": 0.4707,
+        "draw": 0.1986,
+        "away": 0.3306
+      },
+      "displayPercentages": {
+        "home": 47.1,
+        "draw": 19.9,
+        "away": 33
+      },
+      "favorite": "1",
+      "confidence": "low",
+      "confidenceLabel": "bassa",
+      "edgePct": 14,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-15",
+      "homeTeam": "Inter",
+      "awayTeam": "Shakhtar Donetsk",
+      "homeTeamId": "50138",
+      "awayTeamId": "52707",
+      "ratings": {
+        "home": 1605.1,
+        "away": 1496.11,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 188.99
+      },
+      "probabilities": {
+        "home": 0.6279,
+        "draw": 0.1606,
+        "away": 0.2115
+      },
+      "displayPercentages": {
+        "home": 62.8,
+        "draw": 16.1,
+        "away": 21.1
+      },
+      "favorite": "1",
+      "confidence": "high",
+      "confidenceLabel": "alta",
+      "edgePct": 41.6,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-16",
+      "homeTeam": "Real Madrid",
+      "awayTeam": "Leipzig",
+      "homeTeamId": "50051",
+      "awayTeamId": "2603790",
+      "ratings": {
+        "home": 1669.17,
+        "away": 1426.96,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 322.21
+      },
+      "probabilities": {
+        "home": 0.7535,
+        "draw": 0.1286,
+        "away": 0.1179
+      },
+      "displayPercentages": {
+        "home": 75.4,
+        "draw": 12.9,
+        "away": 11.7
+      },
+      "favorite": "1",
+      "confidence": "high",
+      "confidenceLabel": "alta",
+      "edgePct": 62.5,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-17",
+      "homeTeam": "Real Betis",
+      "awayTeam": "Feyenoord",
+      "homeTeamId": "52265",
+      "awayTeamId": "52749",
+      "ratings": {
+        "home": 1559.47,
+        "away": 1428.73,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 210.74
+      },
+      "probabilities": {
+        "home": 0.6515,
+        "draw": 0.1548,
+        "away": 0.1937
+      },
+      "displayPercentages": {
+        "home": 65.1,
+        "draw": 15.5,
+        "away": 19.4
+      },
+      "favorite": "1",
+      "confidence": "high",
+      "confidenceLabel": "alta",
+      "edgePct": 45.8,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-18",
+      "homeTeam": "Sporting CP",
+      "awayTeam": "LASK",
+      "homeTeamId": "50149",
+      "awayTeamId": "63405",
+      "ratings": {
+        "home": 1577.22,
+        "away": 1395.42,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 261.8
+      },
+      "probabilities": {
+        "home": 0.7022,
+        "draw": 0.1422,
+        "away": 0.1556
+      },
+      "displayPercentages": {
+        "home": 70.2,
+        "draw": 14.2,
+        "away": 15.6
+      },
+      "favorite": "1",
+      "confidence": "high",
+      "confidenceLabel": "alta",
+      "edgePct": 54.7,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-01",
+      "homeTeam": "Shakhtar Donetsk",
+      "awayTeam": "Sporting CP",
+      "homeTeamId": "52707",
+      "awayTeamId": "50149",
+      "ratings": {
+        "home": 1496.11,
+        "away": 1577.22,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": -1.11
+      },
+      "probabilities": {
+        "home": 0.389,
+        "draw": 0.2196,
+        "away": 0.3914
+      },
+      "displayPercentages": {
+        "home": 38.9,
+        "draw": 22,
+        "away": 39.1
+      },
+      "favorite": "2",
+      "confidence": "low",
+      "confidenceLabel": "bassa",
+      "edgePct": 0.2,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-02",
+      "homeTeam": "Galatasaray",
+      "awayTeam": "Stuttgart",
+      "homeTeamId": "50067",
+      "awayTeamId": "50107",
+      "ratings": {
+        "home": 1501.91,
+        "away": 1477.9,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 104.01
+      },
+      "probabilities": {
+        "home": 0.526,
+        "draw": 0.185,
+        "away": 0.289
+      },
+      "displayPercentages": {
+        "home": 52.6,
+        "draw": 18.5,
+        "away": 28.9
+      },
+      "favorite": "1",
+      "confidence": "medium",
+      "confidenceLabel": "media",
+      "edgePct": 23.7,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-03",
+      "homeTeam": "Atlético de Madrid",
+      "awayTeam": "Bayern München",
+      "homeTeamId": "50124",
+      "awayTeamId": "50037",
+      "ratings": {
+        "home": 1637.92,
+        "away": 1758.69,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": -40.77
+      },
+      "probabilities": {
+        "home": 0.3508,
+        "draw": 0.2055,
+        "away": 0.4436
+      },
+      "displayPercentages": {
+        "home": 35.1,
+        "draw": 20.6,
+        "away": 44.3
+      },
+      "favorite": "2",
+      "confidence": "low",
+      "confidenceLabel": "bassa",
+      "edgePct": 9.3,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-04",
+      "homeTeam": "Barcelona",
+      "awayTeam": "Aston Villa",
+      "homeTeamId": "50080",
+      "awayTeamId": "52683",
+      "ratings": {
+        "home": 1684.55,
+        "away": 1735.64,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 28.91
+      },
+      "probabilities": {
+        "home": 0.428,
+        "draw": 0.2097,
+        "away": 0.3624
+      },
+      "displayPercentages": {
+        "home": 42.8,
+        "draw": 21,
+        "away": 36.2
+      },
+      "favorite": "1",
+      "confidence": "low",
+      "confidenceLabel": "bassa",
+      "edgePct": 6.6,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-05",
+      "homeTeam": "Feyenoord",
+      "awayTeam": "Inter",
+      "homeTeamId": "52749",
+      "awayTeamId": "50138",
+      "ratings": {
+        "home": 1428.73,
+        "away": 1605.1,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": -96.37
+      },
+      "probabilities": {
+        "home": 0.2964,
+        "draw": 0.1874,
+        "away": 0.5162
+      },
+      "displayPercentages": {
+        "home": 29.6,
+        "draw": 18.7,
+        "away": 51.7
+      },
+      "favorite": "2",
+      "confidence": "medium",
+      "confidenceLabel": "media",
+      "edgePct": 22,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-06",
+      "homeTeam": "Bodø/Glimt",
+      "awayTeam": "Lille",
+      "homeTeamId": "59333",
+      "awayTeamId": "75797",
+      "ratings": {
+        "home": 1565.15,
+        "away": 1527.66,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 117.49
+      },
+      "probabilities": {
+        "home": 0.543,
+        "draw": 0.1809,
+        "away": 0.2761
+      },
+      "displayPercentages": {
+        "home": 54.3,
+        "draw": 18.1,
+        "away": 27.6
+      },
+      "favorite": "1",
+      "confidence": "medium",
+      "confidenceLabel": "media",
+      "edgePct": 26.7,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-07",
+      "homeTeam": "LASK",
+      "awayTeam": "Slovan Bratislava",
+      "homeTeamId": "63405",
+      "awayTeamId": "52797",
+      "ratings": {
+        "home": 1395.42,
+        "away": 1346.78,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 128.64
+      },
+      "probabilities": {
+        "home": 0.5569,
+        "draw": 0.1775,
+        "away": 0.2656
+      },
+      "displayPercentages": {
+        "home": 55.7,
+        "draw": 17.8,
+        "away": 26.5
+      },
+      "favorite": "1",
+      "confidence": "medium",
+      "confidenceLabel": "media",
+      "edgePct": 29.1,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-08",
+      "homeTeam": "Manchester United",
+      "awayTeam": "Roma",
+      "homeTeamId": "52682",
+      "awayTeamId": "50137",
+      "ratings": {
+        "home": 1609.43,
+        "away": 1610.5,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 78.93
+      },
+      "probabilities": {
+        "home": 0.4937,
+        "draw": 0.1929,
+        "away": 0.3134
+      },
+      "displayPercentages": {
+        "home": 49.4,
+        "draw": 19.3,
+        "away": 31.3
+      },
+      "favorite": "1",
+      "confidence": "low",
+      "confidenceLabel": "bassa",
+      "edgePct": 18,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-09",
+      "homeTeam": "Villarreal",
+      "awayTeam": "Paris Saint-Germain",
+      "homeTeamId": "70691",
+      "awayTeamId": "52747",
+      "ratings": {
+        "home": 1428.16,
+        "away": 1759.8,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": -251.64
+      },
+      "probabilities": {
+        "home": 0.1627,
+        "draw": 0.1446,
+        "away": 0.6927
+      },
+      "displayPercentages": {
+        "home": 16.3,
+        "draw": 14.5,
+        "away": 69.2
+      },
+      "favorite": "2",
+      "confidence": "high",
+      "confidenceLabel": "alta",
+      "edgePct": 53,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-10",
+      "homeTeam": "AEK Athens",
+      "awayTeam": "Real Madrid",
+      "homeTeamId": "50129",
+      "awayTeamId": "50051",
+      "ratings": {
+        "home": 1520.34,
+        "away": 1669.17,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": -68.83
+      },
+      "probabilities": {
+        "home": 0.3233,
+        "draw": 0.1962,
+        "away": 0.4805
+      },
+      "displayPercentages": {
+        "home": 32.3,
+        "draw": 19.6,
+        "away": 48.1
+      },
+      "favorite": "2",
+      "confidence": "low",
+      "confidenceLabel": "bassa",
+      "edgePct": 15.7,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-11",
+      "homeTeam": "Fenerbahçe",
+      "awayTeam": "Liverpool",
+      "homeTeamId": "52692",
+      "awayTeamId": "7889",
+      "ratings": {
+        "home": 1553.57,
+        "away": 1644.46,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": -10.89
+      },
+      "probabilities": {
+        "home": 0.3797,
+        "draw": 0.216,
+        "away": 0.4043
+      },
+      "displayPercentages": {
+        "home": 38,
+        "draw": 21.6,
+        "away": 40.4
+      },
+      "favorite": "2",
+      "confidence": "low",
+      "confidenceLabel": "bassa",
+      "edgePct": 2.5,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-12",
+      "homeTeam": "Borussia Dortmund",
+      "awayTeam": "Real Betis",
+      "homeTeamId": "52758",
+      "awayTeamId": "52265",
+      "ratings": {
+        "home": 1594.25,
+        "away": 1559.47,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 114.78
+      },
+      "probabilities": {
+        "home": 0.5396,
+        "draw": 0.1817,
+        "away": 0.2787
+      },
+      "displayPercentages": {
+        "home": 54,
+        "draw": 18.2,
+        "away": 27.8
+      },
+      "favorite": "1",
+      "confidence": "medium",
+      "confidenceLabel": "media",
+      "edgePct": 26.1,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-13",
+      "homeTeam": "Porto",
+      "awayTeam": "Napoli",
+      "homeTeamId": "50064",
+      "awayTeamId": "50136",
+      "ratings": {
+        "home": 1571.27,
+        "away": 1468.46,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 182.81
+      },
+      "probabilities": {
+        "home": 0.621,
+        "draw": 0.1622,
+        "away": 0.2168
+      },
+      "displayPercentages": {
+        "home": 62.1,
+        "draw": 16.2,
+        "away": 21.7
+      },
+      "favorite": "1",
+      "confidence": "high",
+      "confidenceLabel": "alta",
+      "edgePct": 40.4,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-14",
+      "homeTeam": "PSV Eindhoven",
+      "awayTeam": "Club Brugge",
+      "homeTeamId": "50062",
+      "awayTeamId": "50043",
+      "ratings": {
+        "home": 1514.53,
+        "away": 1550.73,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 43.8
+      },
+      "probabilities": {
+        "home": 0.4476,
+        "draw": 0.2045,
+        "away": 0.3479
+      },
+      "displayPercentages": {
+        "home": 44.8,
+        "draw": 20.5,
+        "away": 34.7
+      },
+      "favorite": "1",
+      "confidence": "low",
+      "confidenceLabel": "bassa",
+      "edgePct": 10,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-15",
+      "homeTeam": "Leipzig",
+      "awayTeam": "Manchester City",
+      "homeTeamId": "2603790",
+      "awayTeamId": "52919",
+      "ratings": {
+        "home": 1426.96,
+        "away": 1575.58,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": -68.62
+      },
+      "probabilities": {
+        "home": 0.3235,
+        "draw": 0.1962,
+        "away": 0.4802
+      },
+      "displayPercentages": {
+        "home": 32.4,
+        "draw": 19.6,
+        "away": 48
+      },
+      "favorite": "2",
+      "confidence": "low",
+      "confidenceLabel": "bassa",
+      "edgePct": 15.7,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-16",
+      "homeTeam": "Lens",
+      "awayTeam": "Como",
+      "homeTeamId": "52277",
+      "awayTeamId": "79946",
+      "ratings": {
+        "home": 1500.8,
+        "away": 1500,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 80.8
+      },
+      "probabilities": {
+        "home": 0.4961,
+        "draw": 0.1923,
+        "away": 0.3116
+      },
+      "displayPercentages": {
+        "home": 49.6,
+        "draw": 19.2,
+        "away": 31.2
+      },
+      "favorite": "1",
+      "confidence": "low",
+      "confidenceLabel": "bassa",
+      "edgePct": 18.5,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-17",
+      "homeTeam": "Slavia Praha",
+      "awayTeam": "Arsenal",
+      "homeTeamId": "52498",
+      "awayTeamId": "52280",
+      "ratings": {
+        "home": 1401.12,
+        "away": 1777.32,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": -296.2
+      },
+      "probabilities": {
+        "home": 0.1332,
+        "draw": 0.1343,
+        "away": 0.7326
+      },
+      "displayPercentages": {
+        "home": 13.3,
+        "draw": 13.4,
+        "away": 73.3
+      },
+      "favorite": "2",
+      "confidence": "high",
+      "confidenceLabel": "alta",
+      "edgePct": 59.8,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md04-18",
+      "homeTeam": "Viking",
+      "awayTeam": "Sabah",
+      "homeTeamId": "52319",
+      "awayTeamId": "2609356",
+      "ratings": {
+        "home": 1500,
+        "away": 1500,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 80
+      },
+      "probabilities": {
+        "home": 0.4951,
+        "draw": 0.1925,
+        "away": 0.3124
+      },
+      "displayPercentages": {
+        "home": 49.5,
+        "draw": 19.3,
+        "away": 31.2
+      },
+      "favorite": "1",
+      "confidence": "low",
+      "confidenceLabel": "bassa",
+      "edgePct": 18.3,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md05-01",
+      "homeTeam": "Bodø/Glimt",
+      "awayTeam": "LASK",
+      "homeTeamId": "59333",
+      "awayTeamId": "63405",
+      "ratings": {
+        "home": 1565.15,
+        "away": 1395.42,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 249.73
+      },
+      "probabilities": {
+        "home": 0.6908,
+        "draw": 0.1451,
+        "away": 0.1641
+      },
+      "displayPercentages": {
+        "home": 69.1,
+        "draw": 14.5,
+        "away": 16.4
+      },
+      "favorite": "1",
+      "confidence": "high",
+      "confidenceLabel": "alta",
+      "edgePct": 52.7,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md05-02",
+      "homeTeam": "Galatasaray",
+      "awayTeam": "Aston Villa",
+      "homeTeamId": "50067",
+      "awayTeamId": "52683",
+      "ratings": {
+        "home": 1501.91,
+        "away": 1735.64,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": -153.73
+      },
+      "probabilities": {
+        "home": 0.2424,
+        "draw": 0.1703,
+        "away": 0.5873
+      },
+      "displayPercentages": {
+        "home": 24.2,
+        "draw": 17,
+        "away": 58.8
+      },
+      "favorite": "2",
+      "confidence": "medium",
+      "confidenceLabel": "media",
+      "edgePct": 34.5,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md05-03",
+      "homeTeam": "Arsenal",
+      "awayTeam": "Borussia Dortmund",
+      "homeTeamId": "52280",
+      "awayTeamId": "52758",
+      "ratings": {
+        "home": 1777.32,
+        "away": 1594.25,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 263.07
+      },
+      "probabilities": {
+        "home": 0.7034,
+        "draw": 0.1419,
+        "away": 0.1547
+      },
+      "displayPercentages": {
+        "home": 70.3,
+        "draw": 14.2,
+        "away": 15.5
+      },
+      "favorite": "1",
+      "confidence": "high",
+      "confidenceLabel": "alta",
+      "edgePct": 54.9,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md05-04",
+      "homeTeam": "Como",
+      "awayTeam": "AEK Athens",
+      "homeTeamId": "79946",
+      "awayTeamId": "50129",
+      "ratings": {
+        "home": 1500,
+        "away": 1520.34,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 59.66
+      },
+      "probabilities": {
+        "home": 0.4685,
+        "draw": 0.1992,
+        "away": 0.3323
+      },
+      "displayPercentages": {
+        "home": 46.9,
+        "draw": 19.9,
+        "away": 33.2
+      },
+      "favorite": "1",
+      "confidence": "low",
+      "confidenceLabel": "bassa",
+      "edgePct": 13.6,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md05-05",
+      "homeTeam": "Feyenoord",
+      "awayTeam": "Porto",
+      "homeTeamId": "52749",
+      "awayTeamId": "50064",
+      "ratings": {
+        "home": 1428.73,
+        "away": 1571.27,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": -62.54
+      },
+      "probabilities": {
+        "home": 0.3295,
+        "draw": 0.1982,
+        "away": 0.4723
+      },
+      "displayPercentages": {
+        "home": 32.9,
+        "draw": 19.8,
+        "away": 47.3
+      },
+      "favorite": "2",
+      "confidence": "low",
+      "confidenceLabel": "bassa",
+      "edgePct": 14.3,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md05-06",
+      "homeTeam": "Manchester City",
+      "awayTeam": "Napoli",
+      "homeTeamId": "52919",
+      "awayTeamId": "50136",
+      "ratings": {
+        "home": 1575.58,
+        "away": 1468.46,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 187.12
+      },
+      "probabilities": {
+        "home": 0.6258,
+        "draw": 0.1611,
+        "away": 0.2131
+      },
+      "displayPercentages": {
+        "home": 62.6,
+        "draw": 16.1,
+        "away": 21.3
+      },
+      "favorite": "1",
+      "confidence": "high",
+      "confidenceLabel": "alta",
+      "edgePct": 41.3,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md05-07",
+      "homeTeam": "Leipzig",
+      "awayTeam": "Lens",
+      "homeTeamId": "2603790",
+      "awayTeamId": "52277",
+      "ratings": {
+        "home": 1426.96,
+        "away": 1500.8,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 6.16
+      },
+      "probabilities": {
+        "home": 0.3981,
+        "draw": 0.2178,
+        "away": 0.3842
+      },
+      "displayPercentages": {
+        "home": 39.8,
+        "draw": 21.8,
+        "away": 38.4
+      },
+      "favorite": "1",
+      "confidence": "low",
+      "confidenceLabel": "bassa",
+      "edgePct": 1.4,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md05-08",
+      "homeTeam": "Real Madrid",
+      "awayTeam": "PSV Eindhoven",
+      "homeTeamId": "50051",
+      "awayTeamId": "50062",
+      "ratings": {
+        "home": 1669.17,
+        "away": 1514.53,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 234.64
+      },
+      "probabilities": {
+        "home": 0.6761,
+        "draw": 0.1488,
+        "away": 0.1751
+      },
+      "displayPercentages": {
+        "home": 67.6,
+        "draw": 14.9,
+        "away": 17.5
+      },
+      "favorite": "1",
+      "confidence": "high",
+      "confidenceLabel": "alta",
+      "edgePct": 50.1,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md05-09",
+      "homeTeam": "Slovan Bratislava",
+      "awayTeam": "Real Betis",
+      "homeTeamId": "52797",
+      "awayTeamId": "52265",
+      "ratings": {
+        "home": 1346.78,
+        "away": 1559.47,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": -132.69
+      },
+      "probabilities": {
+        "home": 0.2618,
+        "draw": 0.1764,
+        "away": 0.5619
+      },
+      "displayPercentages": {
+        "home": 26.2,
+        "draw": 17.6,
+        "away": 56.2
+      },
+      "favorite": "2",
+      "confidence": "medium",
+      "confidenceLabel": "media",
+      "edgePct": 30,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md05-10",
+      "homeTeam": "Sabah",
+      "awayTeam": "Barcelona",
+      "homeTeamId": "2609356",
+      "awayTeamId": "50080",
+      "ratings": {
+        "home": 1500,
+        "away": 1684.55,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": -104.55
+      },
+      "probabilities": {
+        "home": 0.2885,
+        "draw": 0.1848,
+        "away": 0.5267
+      },
+      "displayPercentages": {
+        "home": 28.9,
+        "draw": 18.5,
+        "away": 52.6
+      },
+      "favorite": "2",
+      "confidence": "medium",
+      "confidenceLabel": "media",
+      "edgePct": 23.8,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md05-11",
+      "homeTeam": "Slavia Praha",
+      "awayTeam": "Villarreal",
+      "homeTeamId": "52498",
+      "awayTeamId": "70691",
+      "ratings": {
+        "home": 1401.12,
+        "away": 1428.16,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 52.96
+      },
+      "probabilities": {
+        "home": 0.4597,
+        "draw": 0.2014,
+        "away": 0.3389
+      },
+      "displayPercentages": {
+        "home": 46,
+        "draw": 20.1,
+        "away": 33.9
+      },
+      "favorite": "1",
+      "confidence": "low",
+      "confidenceLabel": "bassa",
+      "edgePct": 12.1,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md05-12",
+      "homeTeam": "Atlético de Madrid",
+      "awayTeam": "Viking",
+      "homeTeamId": "50124",
+      "awayTeamId": "52319",
+      "ratings": {
+        "home": 1637.92,
+        "away": 1500,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 217.92
+      },
+      "probabilities": {
+        "home": 0.659,
+        "draw": 0.153,
+        "away": 0.188
+      },
+      "displayPercentages": {
+        "home": 65.9,
+        "draw": 15.3,
+        "away": 18.8
+      },
+      "favorite": "1",
+      "confidence": "high",
+      "confidenceLabel": "alta",
+      "edgePct": 47.1,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md05-13",
+      "homeTeam": "Club Brugge",
+      "awayTeam": "Liverpool",
+      "homeTeamId": "50043",
+      "awayTeamId": "7889",
+      "ratings": {
+        "home": 1550.73,
+        "away": 1644.46,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": -13.73
+      },
+      "probabilities": {
+        "home": 0.377,
+        "draw": 0.215,
+        "away": 0.408
+      },
+      "displayPercentages": {
+        "home": 37.7,
+        "draw": 21.5,
+        "away": 40.8
+      },
+      "favorite": "2",
+      "confidence": "low",
+      "confidenceLabel": "bassa",
+      "edgePct": 3.1,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md05-14",
+      "homeTeam": "Inter",
+      "awayTeam": "Stuttgart",
+      "homeTeamId": "50138",
+      "awayTeamId": "50107",
+      "ratings": {
+        "home": 1605.1,
+        "away": 1477.9,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 207.2
+      },
+      "probabilities": {
+        "home": 0.6477,
+        "draw": 0.1558,
+        "away": 0.1965
+      },
+      "displayPercentages": {
+        "home": 64.8,
+        "draw": 15.6,
+        "away": 19.6
+      },
+      "favorite": "1",
+      "confidence": "high",
+      "confidenceLabel": "alta",
+      "edgePct": 45.1,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md05-15",
+      "homeTeam": "Shakhtar Donetsk",
+      "awayTeam": "Fenerbahçe",
+      "homeTeamId": "52707",
+      "awayTeamId": "52692",
+      "ratings": {
+        "home": 1496.11,
+        "away": 1553.57,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 22.54
+      },
+      "probabilities": {
+        "home": 0.4196,
+        "draw": 0.2119,
+        "away": 0.3685
+      },
+      "displayPercentages": {
+        "home": 42,
+        "draw": 21.2,
+        "away": 36.8
+      },
+      "favorite": "1",
+      "confidence": "low",
+      "confidenceLabel": "bassa",
+      "edgePct": 5.1,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md05-16",
+      "homeTeam": "Lille",
+      "awayTeam": "Bayern München",
+      "homeTeamId": "75797",
+      "awayTeamId": "50037",
+      "ratings": {
+        "home": 1527.66,
+        "away": 1758.69,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": -151.03
+      },
+      "probabilities": {
+        "home": 0.2449,
+        "draw": 0.171,
+        "away": 0.5841
+      },
+      "displayPercentages": {
+        "home": 24.5,
+        "draw": 17.1,
+        "away": 58.4
+      },
+      "favorite": "2",
+      "confidence": "medium",
+      "confidenceLabel": "media",
+      "edgePct": 33.9,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md05-17",
+      "homeTeam": "Paris Saint-Germain",
+      "awayTeam": "Roma",
+      "homeTeamId": "52747",
+      "awayTeamId": "50137",
+      "ratings": {
+        "home": 1759.8,
+        "away": 1610.5,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 229.3
+      },
+      "probabilities": {
+        "home": 0.6707,
+        "draw": 0.1501,
+        "away": 0.1792
+      },
+      "displayPercentages": {
+        "home": 67.1,
+        "draw": 15,
+        "away": 17.9
+      },
+      "favorite": "1",
+      "confidence": "high",
+      "confidenceLabel": "alta",
+      "edgePct": 49.2,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md05-18",
+      "homeTeam": "Sporting CP",
+      "awayTeam": "Manchester United",
+      "homeTeamId": "50149",
+      "awayTeamId": "52682",
+      "ratings": {
+        "home": 1577.22,
+        "away": 1609.43,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 47.79
+      },
+      "probabilities": {
+        "home": 0.4529,
+        "draw": 0.2032,
+        "away": 0.344
+      },
+      "displayPercentages": {
+        "home": 45.3,
+        "draw": 20.3,
+        "away": 34.4
+      },
+      "favorite": "1",
+      "confidence": "low",
+      "confidenceLabel": "bassa",
+      "edgePct": 10.9,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md06-01",
+      "homeTeam": "Viking",
+      "awayTeam": "Feyenoord",
+      "homeTeamId": "52319",
+      "awayTeamId": "52749",
+      "ratings": {
+        "home": 1500,
+        "away": 1428.73,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 151.27
+      },
+      "probabilities": {
+        "home": 0.5844,
+        "draw": 0.171,
+        "away": 0.2446
+      },
+      "displayPercentages": {
+        "home": 58.4,
+        "draw": 17.1,
+        "away": 24.5
+      },
+      "favorite": "1",
+      "confidence": "medium",
+      "confidenceLabel": "media",
+      "edgePct": 34,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md06-02",
+      "homeTeam": "Villarreal",
+      "awayTeam": "Sabah",
+      "homeTeamId": "70691",
+      "awayTeamId": "2609356",
+      "ratings": {
+        "home": 1428.16,
+        "away": 1500,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 8.16
+      },
+      "probabilities": {
+        "home": 0.4007,
+        "draw": 0.217,
+        "away": 0.3823
+      },
+      "displayPercentages": {
+        "home": 40.1,
+        "draw": 21.7,
+        "away": 38.2
+      },
+      "favorite": "1",
+      "confidence": "low",
+      "confidenceLabel": "bassa",
+      "edgePct": 1.8,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md06-03",
+      "homeTeam": "AEK Athens",
+      "awayTeam": "Galatasaray",
+      "homeTeamId": "50129",
+      "awayTeamId": "50067",
+      "ratings": {
+        "home": 1520.34,
+        "away": 1501.91,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 98.43
+      },
+      "probabilities": {
+        "home": 0.5189,
+        "draw": 0.1867,
+        "away": 0.2944
+      },
+      "displayPercentages": {
+        "home": 51.9,
+        "draw": 18.7,
+        "away": 29.4
+      },
+      "favorite": "1",
+      "confidence": "medium",
+      "confidenceLabel": "media",
+      "edgePct": 22.4,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md06-04",
+      "homeTeam": "Roma",
+      "awayTeam": "Sporting CP",
+      "homeTeamId": "50137",
+      "awayTeamId": "50149",
+      "ratings": {
+        "home": 1610.5,
+        "away": 1577.22,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 113.28
+      },
+      "probabilities": {
+        "home": 0.5377,
+        "draw": 0.1821,
+        "away": 0.2801
+      },
+      "displayPercentages": {
+        "home": 53.8,
+        "draw": 18.2,
+        "away": 28
+      },
+      "favorite": "1",
+      "confidence": "medium",
+      "confidenceLabel": "media",
+      "edgePct": 25.8,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md06-05",
+      "homeTeam": "Aston Villa",
+      "awayTeam": "Paris Saint-Germain",
+      "homeTeamId": "52683",
+      "awayTeamId": "52747",
+      "ratings": {
+        "home": 1735.64,
+        "away": 1759.8,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 55.84
+      },
+      "probabilities": {
+        "home": 0.4635,
+        "draw": 0.2004,
+        "away": 0.3361
+      },
+      "displayPercentages": {
+        "home": 46.3,
+        "draw": 20,
+        "away": 33.7
+      },
+      "favorite": "1",
+      "confidence": "low",
+      "confidenceLabel": "bassa",
+      "edgePct": 12.7,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md06-06",
+      "homeTeam": "Barcelona",
+      "awayTeam": "Manchester City",
+      "homeTeamId": "50080",
+      "awayTeamId": "52919",
+      "ratings": {
+        "home": 1684.55,
+        "away": 1575.58,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 188.97
+      },
+      "probabilities": {
+        "home": 0.6279,
+        "draw": 0.1606,
+        "away": 0.2116
+      },
+      "displayPercentages": {
+        "home": 62.8,
+        "draw": 16.1,
+        "away": 21.1
+      },
+      "favorite": "1",
+      "confidence": "high",
+      "confidenceLabel": "alta",
+      "edgePct": 41.6,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md06-07",
+      "homeTeam": "Bayern München",
+      "awayTeam": "Slavia Praha",
+      "homeTeamId": "50037",
+      "awayTeamId": "52498",
+      "ratings": {
+        "home": 1758.69,
+        "away": 1401.12,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 437.57
+      },
+      "probabilities": {
+        "home": 0.8144,
+        "draw": 0.12,
+        "away": 0.0656
+      },
+      "displayPercentages": {
+        "home": 81.4,
+        "draw": 12,
+        "away": 6.6
+      },
+      "favorite": "1",
+      "confidence": "high",
+      "confidenceLabel": "alta",
+      "edgePct": 69.4,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md06-08",
+      "homeTeam": "Manchester United",
+      "awayTeam": "Leipzig",
+      "homeTeamId": "52682",
+      "awayTeamId": "2603790",
+      "ratings": {
+        "home": 1609.43,
+        "away": 1426.96,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 262.47
+      },
+      "probabilities": {
+        "home": 0.7028,
+        "draw": 0.142,
+        "away": 0.1551
+      },
+      "displayPercentages": {
+        "home": 70.3,
+        "draw": 14.2,
+        "away": 15.5
+      },
+      "favorite": "1",
+      "confidence": "high",
+      "confidenceLabel": "alta",
+      "edgePct": 54.8,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md06-09",
+      "homeTeam": "Napoli",
+      "awayTeam": "Club Brugge",
+      "homeTeamId": "50136",
+      "awayTeamId": "50043",
+      "ratings": {
+        "home": 1468.46,
+        "away": 1550.73,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": -2.27
+      },
+      "probabilities": {
+        "home": 0.3879,
+        "draw": 0.2192,
+        "away": 0.393
+      },
+      "displayPercentages": {
+        "home": 38.8,
+        "draw": 21.9,
+        "away": 39.3
+      },
+      "favorite": "2",
+      "confidence": "low",
+      "confidenceLabel": "bassa",
+      "edgePct": 0.5,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md06-10",
+      "homeTeam": "Real Betis",
+      "awayTeam": "Como",
+      "homeTeamId": "52265",
+      "awayTeamId": "79946",
+      "ratings": {
+        "home": 1559.47,
+        "away": 1500,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 139.47
+      },
+      "probabilities": {
+        "home": 0.5702,
+        "draw": 0.1744,
+        "away": 0.2555
+      },
+      "displayPercentages": {
+        "home": 57,
+        "draw": 17.4,
+        "away": 25.6
+      },
+      "favorite": "1",
+      "confidence": "medium",
+      "confidenceLabel": "media",
+      "edgePct": 31.5,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md06-11",
+      "homeTeam": "Slovan Bratislava",
+      "awayTeam": "Shakhtar Donetsk",
+      "homeTeamId": "52797",
+      "awayTeamId": "52707",
+      "ratings": {
+        "home": 1346.78,
+        "away": 1496.11,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": -69.33
+      },
+      "probabilities": {
+        "home": 0.3228,
+        "draw": 0.196,
+        "away": 0.4812
+      },
+      "displayPercentages": {
+        "home": 32.3,
+        "draw": 19.6,
+        "away": 48.1
+      },
+      "favorite": "2",
+      "confidence": "low",
+      "confidenceLabel": "bassa",
+      "edgePct": 15.8,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md06-12",
+      "homeTeam": "Arsenal",
+      "awayTeam": "Real Madrid",
+      "homeTeamId": "52280",
+      "awayTeamId": "50051",
+      "ratings": {
+        "home": 1777.32,
+        "away": 1669.17,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 188.15
+      },
+      "probabilities": {
+        "home": 0.627,
+        "draw": 0.1608,
+        "away": 0.2123
+      },
+      "displayPercentages": {
+        "home": 62.7,
+        "draw": 16.1,
+        "away": 21.2
+      },
+      "favorite": "1",
+      "confidence": "high",
+      "confidenceLabel": "alta",
+      "edgePct": 41.5,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md06-13",
+      "homeTeam": "Borussia Dortmund",
+      "awayTeam": "Inter",
+      "homeTeamId": "52758",
+      "awayTeamId": "50138",
+      "ratings": {
+        "home": 1594.25,
+        "away": 1605.1,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 69.15
+      },
+      "probabilities": {
+        "home": 0.4809,
+        "draw": 0.1961,
+        "away": 0.323
+      },
+      "displayPercentages": {
+        "home": 48.1,
+        "draw": 19.6,
+        "away": 32.3
+      },
+      "favorite": "1",
+      "confidence": "low",
+      "confidenceLabel": "bassa",
+      "edgePct": 15.8,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md06-14",
+      "homeTeam": "LASK",
+      "awayTeam": "Fenerbahçe",
+      "homeTeamId": "63405",
+      "awayTeamId": "52692",
+      "ratings": {
+        "home": 1395.42,
+        "away": 1553.57,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": -78.15
+      },
+      "probabilities": {
+        "home": 0.3142,
+        "draw": 0.1931,
+        "away": 0.4927
+      },
+      "displayPercentages": {
+        "home": 31.4,
+        "draw": 19.3,
+        "away": 49.3
+      },
+      "favorite": "2",
+      "confidence": "low",
+      "confidenceLabel": "bassa",
+      "edgePct": 17.8,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md06-15",
+      "homeTeam": "Liverpool",
+      "awayTeam": "Porto",
+      "homeTeamId": "7889",
+      "awayTeamId": "50064",
+      "ratings": {
+        "home": 1644.46,
+        "away": 1571.27,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 153.19
+      },
+      "probabilities": {
+        "home": 0.5867,
+        "draw": 0.1704,
+        "away": 0.2429
+      },
+      "displayPercentages": {
+        "home": 58.7,
+        "draw": 17,
+        "away": 24.3
+      },
+      "favorite": "1",
+      "confidence": "medium",
+      "confidenceLabel": "media",
+      "edgePct": 34.4,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md06-16",
+      "homeTeam": "PSV Eindhoven",
+      "awayTeam": "Atlético de Madrid",
+      "homeTeamId": "50062",
+      "awayTeamId": "50124",
+      "ratings": {
+        "home": 1514.53,
+        "away": 1637.92,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": -43.39
+      },
+      "probabilities": {
+        "home": 0.3483,
+        "draw": 0.2047,
+        "away": 0.4471
+      },
+      "displayPercentages": {
+        "home": 34.8,
+        "draw": 20.5,
+        "away": 44.7
+      },
+      "favorite": "2",
+      "confidence": "low",
+      "confidenceLabel": "bassa",
+      "edgePct": 9.9,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md06-17",
+      "homeTeam": "Lens",
+      "awayTeam": "Bodø/Glimt",
+      "homeTeamId": "52277",
+      "awayTeamId": "59333",
+      "ratings": {
+        "home": 1500.8,
+        "away": 1565.15,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 15.65
+      },
+      "probabilities": {
+        "home": 0.4105,
+        "draw": 0.2143,
+        "away": 0.3751
+      },
+      "displayPercentages": {
+        "home": 41.1,
+        "draw": 21.4,
+        "away": 37.5
+      },
+      "favorite": "1",
+      "confidence": "low",
+      "confidenceLabel": "bassa",
+      "edgePct": 3.5,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md06-18",
+      "homeTeam": "Stuttgart",
+      "awayTeam": "Lille",
+      "homeTeamId": "50107",
+      "awayTeamId": "75797",
+      "ratings": {
+        "home": 1477.9,
+        "away": 1527.66,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 30.24
+      },
+      "probabilities": {
+        "home": 0.4297,
+        "draw": 0.2092,
+        "away": 0.3611
+      },
+      "displayPercentages": {
+        "home": 43,
+        "draw": 20.9,
+        "away": 36.1
+      },
+      "favorite": "1",
+      "confidence": "low",
+      "confidenceLabel": "bassa",
+      "edgePct": 6.9,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md07-01",
+      "homeTeam": "Bodø/Glimt",
+      "awayTeam": "Atlético de Madrid",
+      "homeTeamId": "59333",
+      "awayTeamId": "50124",
+      "ratings": {
+        "home": 1565.15,
+        "away": 1637.92,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 7.23
+      },
+      "probabilities": {
+        "home": 0.3995,
+        "draw": 0.2174,
+        "away": 0.3832
+      },
+      "displayPercentages": {
+        "home": 39.9,
+        "draw": 21.7,
+        "away": 38.4
+      },
+      "favorite": "1",
+      "confidence": "low",
+      "confidenceLabel": "bassa",
+      "edgePct": 1.6,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md07-02",
+      "homeTeam": "Galatasaray",
+      "awayTeam": "Feyenoord",
+      "homeTeamId": "50067",
+      "awayTeamId": "52749",
+      "ratings": {
+        "home": 1501.91,
+        "away": 1428.73,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 153.18
+      },
+      "probabilities": {
+        "home": 0.5867,
+        "draw": 0.1704,
+        "away": 0.2429
+      },
+      "displayPercentages": {
+        "home": 58.7,
+        "draw": 17,
+        "away": 24.3
+      },
+      "favorite": "1",
+      "confidence": "medium",
+      "confidenceLabel": "media",
+      "edgePct": 34.4,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md07-03",
+      "homeTeam": "AEK Athens",
+      "awayTeam": "Roma",
+      "homeTeamId": "50129",
+      "awayTeamId": "50137",
+      "ratings": {
+        "home": 1520.34,
+        "away": 1610.5,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": -10.16
+      },
+      "probabilities": {
+        "home": 0.3804,
+        "draw": 0.2163,
+        "away": 0.4033
+      },
+      "displayPercentages": {
+        "home": 38,
+        "draw": 21.6,
+        "away": 40.4
+      },
+      "favorite": "2",
+      "confidence": "low",
+      "confidenceLabel": "bassa",
+      "edgePct": 2.3,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md07-04",
+      "homeTeam": "Aston Villa",
+      "awayTeam": "Borussia Dortmund",
+      "homeTeamId": "52683",
+      "awayTeamId": "52758",
+      "ratings": {
+        "home": 1735.64,
+        "away": 1594.25,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 221.39
+      },
+      "probabilities": {
+        "home": 0.6626,
+        "draw": 0.1521,
+        "away": 0.1853
+      },
+      "displayPercentages": {
+        "home": 66.3,
+        "draw": 15.2,
+        "away": 18.5
+      },
+      "favorite": "1",
+      "confidence": "high",
+      "confidenceLabel": "alta",
+      "edgePct": 47.7,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md07-05",
+      "homeTeam": "Inter",
+      "awayTeam": "Liverpool",
+      "homeTeamId": "50138",
+      "awayTeamId": "7889",
+      "ratings": {
+        "home": 1605.1,
+        "away": 1644.46,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 40.64
+      },
+      "probabilities": {
+        "home": 0.4435,
+        "draw": 0.2056,
+        "away": 0.351
+      },
+      "displayPercentages": {
+        "home": 44.3,
+        "draw": 20.6,
+        "away": 35.1
+      },
+      "favorite": "1",
+      "confidence": "low",
+      "confidenceLabel": "bassa",
+      "edgePct": 9.3,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md07-06",
+      "homeTeam": "Porto",
+      "awayTeam": "Slavia Praha",
+      "homeTeamId": "50064",
+      "awayTeamId": "52498",
+      "ratings": {
+        "home": 1571.27,
+        "away": 1401.12,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 250.15
+      },
+      "probabilities": {
+        "home": 0.6912,
+        "draw": 0.145,
+        "away": 0.1638
+      },
+      "displayPercentages": {
+        "home": 69.1,
+        "draw": 14.5,
+        "away": 16.4
+      },
+      "favorite": "1",
+      "confidence": "high",
+      "confidenceLabel": "alta",
+      "edgePct": 52.7,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md07-07",
+      "homeTeam": "Lille",
+      "awayTeam": "Slovan Bratislava",
+      "homeTeamId": "75797",
+      "awayTeamId": "52797",
+      "ratings": {
+        "home": 1527.66,
+        "away": 1346.78,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 260.88
+      },
+      "probabilities": {
+        "home": 0.7014,
+        "draw": 0.1424,
+        "away": 0.1562
+      },
+      "displayPercentages": {
+        "home": 70.1,
+        "draw": 14.2,
+        "away": 15.7
+      },
+      "favorite": "1",
+      "confidence": "high",
+      "confidenceLabel": "alta",
+      "edgePct": 54.5,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md07-08",
+      "homeTeam": "Real Madrid",
+      "awayTeam": "LASK",
+      "homeTeamId": "50051",
+      "awayTeamId": "63405",
+      "ratings": {
+        "home": 1669.17,
+        "away": 1395.42,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 353.75
+      },
+      "probabilities": {
+        "home": 0.7766,
+        "draw": 0.122,
+        "away": 0.1014
+      },
+      "displayPercentages": {
+        "home": 77.7,
+        "draw": 12.2,
+        "away": 10.1
+      },
+      "favorite": "1",
+      "confidence": "high",
+      "confidenceLabel": "alta",
+      "edgePct": 65.5,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md07-09",
+      "homeTeam": "Stuttgart",
+      "awayTeam": "Club Brugge",
+      "homeTeamId": "50107",
+      "awayTeamId": "50043",
+      "ratings": {
+        "home": 1477.9,
+        "away": 1550.73,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 7.17
+      },
+      "probabilities": {
+        "home": 0.3994,
+        "draw": 0.2174,
+        "away": 0.3832
+      },
+      "displayPercentages": {
+        "home": 39.9,
+        "draw": 21.7,
+        "away": 38.4
+      },
+      "favorite": "1",
+      "confidence": "low",
+      "confidenceLabel": "bassa",
+      "edgePct": 1.6,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md07-10",
+      "homeTeam": "Fenerbahçe",
+      "awayTeam": "Villarreal",
+      "homeTeamId": "52692",
+      "awayTeamId": "70691",
+      "ratings": {
+        "home": 1553.57,
+        "away": 1428.16,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 205.41
+      },
+      "probabilities": {
+        "home": 0.6458,
+        "draw": 0.1562,
+        "away": 0.198
+      },
+      "displayPercentages": {
+        "home": 64.6,
+        "draw": 15.6,
+        "away": 19.8
+      },
+      "favorite": "1",
+      "confidence": "high",
+      "confidenceLabel": "alta",
+      "edgePct": 44.8,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md07-11",
+      "homeTeam": "Sabah",
+      "awayTeam": "Napoli",
+      "homeTeamId": "2609356",
+      "awayTeamId": "50136",
+      "ratings": {
+        "home": 1500,
+        "away": 1468.46,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 111.54
+      },
+      "probabilities": {
+        "home": 0.5355,
+        "draw": 0.1827,
+        "away": 0.2818
+      },
+      "displayPercentages": {
+        "home": 53.6,
+        "draw": 18.3,
+        "away": 28.1
+      },
+      "favorite": "1",
+      "confidence": "medium",
+      "confidenceLabel": "media",
+      "edgePct": 25.4,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md07-12",
+      "homeTeam": "Como",
+      "awayTeam": "Paris Saint-Germain",
+      "homeTeamId": "79946",
+      "awayTeamId": "52747",
+      "ratings": {
+        "home": 1500,
+        "away": 1759.8,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": -179.8
+      },
+      "probabilities": {
+        "home": 0.2194,
+        "draw": 0.163,
+        "away": 0.6176
+      },
+      "displayPercentages": {
+        "home": 21.9,
+        "draw": 16.3,
+        "away": 61.8
+      },
+      "favorite": "2",
+      "confidence": "high",
+      "confidenceLabel": "alta",
+      "edgePct": 39.8,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md07-13",
+      "homeTeam": "Manchester United",
+      "awayTeam": "Bayern München",
+      "homeTeamId": "52682",
+      "awayTeamId": "50037",
+      "ratings": {
+        "home": 1609.43,
+        "away": 1758.69,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": -69.26
+      },
+      "probabilities": {
+        "home": 0.3229,
+        "draw": 0.196,
+        "away": 0.4811
+      },
+      "displayPercentages": {
+        "home": 32.3,
+        "draw": 19.6,
+        "away": 48.1
+      },
+      "favorite": "2",
+      "confidence": "low",
+      "confidenceLabel": "bassa",
+      "edgePct": 15.8,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md07-14",
+      "homeTeam": "Leipzig",
+      "awayTeam": "Shakhtar Donetsk",
+      "homeTeamId": "2603790",
+      "awayTeamId": "52707",
+      "ratings": {
+        "home": 1426.96,
+        "away": 1496.11,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 10.85
+      },
+      "probabilities": {
+        "home": 0.4042,
+        "draw": 0.2161,
+        "away": 0.3797
+      },
+      "displayPercentages": {
+        "home": 40.4,
+        "draw": 21.6,
+        "away": 38
+      },
+      "favorite": "1",
+      "confidence": "low",
+      "confidenceLabel": "bassa",
+      "edgePct": 2.4,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md07-15",
+      "homeTeam": "Lens",
+      "awayTeam": "Manchester City",
+      "homeTeamId": "52277",
+      "awayTeamId": "52919",
+      "ratings": {
+        "home": 1500.8,
+        "away": 1575.58,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 5.22
+      },
+      "probabilities": {
+        "home": 0.3968,
+        "draw": 0.2181,
+        "away": 0.3851
+      },
+      "displayPercentages": {
+        "home": 39.7,
+        "draw": 21.8,
+        "away": 38.5
+      },
+      "favorite": "1",
+      "confidence": "low",
+      "confidenceLabel": "bassa",
+      "edgePct": 1.2,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md07-16",
+      "homeTeam": "Real Betis",
+      "awayTeam": "Arsenal",
+      "homeTeamId": "52265",
+      "awayTeamId": "52280",
+      "ratings": {
+        "home": 1559.47,
+        "away": 1777.32,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": -137.85
+      },
+      "probabilities": {
+        "home": 0.257,
+        "draw": 0.1748,
+        "away": 0.5682
+      },
+      "displayPercentages": {
+        "home": 25.7,
+        "draw": 17.5,
+        "away": 56.8
+      },
+      "favorite": "2",
+      "confidence": "medium",
+      "confidenceLabel": "media",
+      "edgePct": 31.1,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md07-17",
+      "homeTeam": "Sporting CP",
+      "awayTeam": "Barcelona",
+      "homeTeamId": "50149",
+      "awayTeamId": "50080",
+      "ratings": {
+        "home": 1577.22,
+        "away": 1684.55,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": -27.33
+      },
+      "probabilities": {
+        "home": 0.3639,
+        "draw": 0.2102,
+        "away": 0.4259
+      },
+      "displayPercentages": {
+        "home": 36.4,
+        "draw": 21,
+        "away": 42.6
+      },
+      "favorite": "2",
+      "confidence": "low",
+      "confidenceLabel": "bassa",
+      "edgePct": 6.2,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md07-18",
+      "homeTeam": "Viking",
+      "awayTeam": "PSV Eindhoven",
+      "homeTeamId": "52319",
+      "awayTeamId": "50062",
+      "ratings": {
+        "home": 1500,
+        "away": 1514.53,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 65.47
+      },
+      "probabilities": {
+        "home": 0.4761,
+        "draw": 0.1973,
+        "away": 0.3266
+      },
+      "displayPercentages": {
+        "home": 47.6,
+        "draw": 19.7,
+        "away": 32.7
+      },
+      "favorite": "1",
+      "confidence": "low",
+      "confidenceLabel": "bassa",
+      "edgePct": 15,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md08-01",
+      "homeTeam": "Arsenal",
+      "awayTeam": "Sabah",
+      "homeTeamId": "52280",
+      "awayTeamId": "2609356",
+      "ratings": {
+        "home": 1777.32,
+        "away": 1500,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 357.32
+      },
+      "probabilities": {
+        "home": 0.7791,
+        "draw": 0.1213,
+        "away": 0.0996
+      },
+      "displayPercentages": {
+        "home": 77.9,
+        "draw": 12.1,
+        "away": 10
+      },
+      "favorite": "1",
+      "confidence": "high",
+      "confidenceLabel": "alta",
+      "edgePct": 65.8,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md08-02",
+      "homeTeam": "Roma",
+      "awayTeam": "Lille",
+      "homeTeamId": "50137",
+      "awayTeamId": "75797",
+      "ratings": {
+        "home": 1610.5,
+        "away": 1527.66,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 162.84
+      },
+      "probabilities": {
+        "home": 0.5981,
+        "draw": 0.1677,
+        "away": 0.2342
+      },
+      "displayPercentages": {
+        "home": 59.8,
+        "draw": 16.8,
+        "away": 23.4
+      },
+      "favorite": "1",
+      "confidence": "medium",
+      "confidenceLabel": "media",
+      "edgePct": 36.4,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md08-03",
+      "homeTeam": "Atlético de Madrid",
+      "awayTeam": "Fenerbahçe",
+      "homeTeamId": "50124",
+      "awayTeamId": "52692",
+      "ratings": {
+        "home": 1637.92,
+        "away": 1553.57,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 164.35
+      },
+      "probabilities": {
+        "home": 0.5998,
+        "draw": 0.1673,
+        "away": 0.2329
+      },
+      "displayPercentages": {
+        "home": 60,
+        "draw": 16.7,
+        "away": 23.3
+      },
+      "favorite": "1",
+      "confidence": "medium",
+      "confidenceLabel": "media",
+      "edgePct": 36.7,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md08-04",
+      "homeTeam": "Borussia Dortmund",
+      "awayTeam": "AEK Athens",
+      "homeTeamId": "52758",
+      "awayTeamId": "50129",
+      "ratings": {
+        "home": 1594.25,
+        "away": 1520.34,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 153.91
+      },
+      "probabilities": {
+        "home": 0.5875,
+        "draw": 0.1702,
+        "away": 0.2422
+      },
+      "displayPercentages": {
+        "home": 58.8,
+        "draw": 17,
+        "away": 24.2
+      },
+      "favorite": "1",
+      "confidence": "medium",
+      "confidenceLabel": "media",
+      "edgePct": 34.5,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md08-05",
+      "homeTeam": "Club Brugge",
+      "awayTeam": "Bodø/Glimt",
+      "homeTeamId": "50043",
+      "awayTeamId": "59333",
+      "ratings": {
+        "home": 1550.73,
+        "away": 1565.15,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 65.58
+      },
+      "probabilities": {
+        "home": 0.4763,
+        "draw": 0.1972,
+        "away": 0.3265
+      },
+      "displayPercentages": {
+        "home": 47.6,
+        "draw": 19.7,
+        "away": 32.7
+      },
+      "favorite": "1",
+      "confidence": "low",
+      "confidenceLabel": "bassa",
+      "edgePct": 15,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md08-06",
+      "homeTeam": "Bayern München",
+      "awayTeam": "Real Betis",
+      "homeTeamId": "50037",
+      "awayTeamId": "52265",
+      "ratings": {
+        "home": 1758.69,
+        "away": 1559.47,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 279.22
+      },
+      "probabilities": {
+        "home": 0.718,
+        "draw": 0.1381,
+        "away": 0.1439
+      },
+      "displayPercentages": {
+        "home": 71.8,
+        "draw": 13.8,
+        "away": 14.4
+      },
+      "favorite": "1",
+      "confidence": "high",
+      "confidenceLabel": "alta",
+      "edgePct": 57.4,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md08-07",
+      "homeTeam": "Barcelona",
+      "awayTeam": "Como",
+      "homeTeamId": "50080",
+      "awayTeamId": "79946",
+      "ratings": {
+        "home": 1684.55,
+        "away": 1500,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 264.55
+      },
+      "probabilities": {
+        "home": 0.7047,
+        "draw": 0.1416,
+        "away": 0.1537
+      },
+      "displayPercentages": {
+        "home": 70.5,
+        "draw": 14.2,
+        "away": 15.3
+      },
+      "favorite": "1",
+      "confidence": "high",
+      "confidenceLabel": "alta",
+      "edgePct": 55.1,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md08-08",
+      "homeTeam": "Shakhtar Donetsk",
+      "awayTeam": "Real Madrid",
+      "homeTeamId": "52707",
+      "awayTeamId": "50051",
+      "ratings": {
+        "home": 1496.11,
+        "away": 1669.17,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": -93.06
+      },
+      "probabilities": {
+        "home": 0.2996,
+        "draw": 0.1884,
+        "away": 0.512
+      },
+      "displayPercentages": {
+        "home": 30,
+        "draw": 18.8,
+        "away": 51.2
+      },
+      "favorite": "2",
+      "confidence": "medium",
+      "confidenceLabel": "media",
+      "edgePct": 21.2,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md08-09",
+      "homeTeam": "Feyenoord",
+      "awayTeam": "Leipzig",
+      "homeTeamId": "52749",
+      "awayTeamId": "2603790",
+      "ratings": {
+        "home": 1428.73,
+        "away": 1426.96,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 81.77
+      },
+      "probabilities": {
+        "home": 0.4974,
+        "draw": 0.192,
+        "away": 0.3106
+      },
+      "displayPercentages": {
+        "home": 49.7,
+        "draw": 19.2,
+        "away": 31.1
+      },
+      "favorite": "1",
+      "confidence": "low",
+      "confidenceLabel": "bassa",
+      "edgePct": 18.7,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md08-10",
+      "homeTeam": "LASK",
+      "awayTeam": "Porto",
+      "homeTeamId": "63405",
+      "awayTeamId": "50064",
+      "ratings": {
+        "home": 1395.42,
+        "away": 1571.27,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": -95.85
+      },
+      "probabilities": {
+        "home": 0.2969,
+        "draw": 0.1875,
+        "away": 0.5156
+      },
+      "displayPercentages": {
+        "home": 29.7,
+        "draw": 18.8,
+        "away": 51.5
+      },
+      "favorite": "2",
+      "confidence": "medium",
+      "confidenceLabel": "media",
+      "edgePct": 21.9,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md08-11",
+      "homeTeam": "Liverpool",
+      "awayTeam": "Lens",
+      "homeTeamId": "7889",
+      "awayTeamId": "52277",
+      "ratings": {
+        "home": 1644.46,
+        "away": 1500.8,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 223.66
+      },
+      "probabilities": {
+        "home": 0.665,
+        "draw": 0.1515,
+        "away": 0.1835
+      },
+      "displayPercentages": {
+        "home": 66.5,
+        "draw": 15.2,
+        "away": 18.3
+      },
+      "favorite": "1",
+      "confidence": "high",
+      "confidenceLabel": "alta",
+      "edgePct": 48.1,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md08-12",
+      "homeTeam": "Manchester City",
+      "awayTeam": "Sporting CP",
+      "homeTeamId": "52919",
+      "awayTeamId": "50149",
+      "ratings": {
+        "home": 1575.58,
+        "away": 1577.22,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 78.36
+      },
+      "probabilities": {
+        "home": 0.493,
+        "draw": 0.1931,
+        "away": 0.314
+      },
+      "displayPercentages": {
+        "home": 49.3,
+        "draw": 19.3,
+        "away": 31.4
+      },
+      "favorite": "1",
+      "confidence": "low",
+      "confidenceLabel": "bassa",
+      "edgePct": 17.9,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md08-13",
+      "homeTeam": "Paris Saint-Germain",
+      "awayTeam": "Galatasaray",
+      "homeTeamId": "52747",
+      "awayTeamId": "50067",
+      "ratings": {
+        "home": 1759.8,
+        "away": 1501.91,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 337.89
+      },
+      "probabilities": {
+        "home": 0.7653,
+        "draw": 0.1253,
+        "away": 0.1094
+      },
+      "displayPercentages": {
+        "home": 76.5,
+        "draw": 12.5,
+        "away": 11
+      },
+      "favorite": "1",
+      "confidence": "high",
+      "confidenceLabel": "alta",
+      "edgePct": 64,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md08-14",
+      "homeTeam": "PSV Eindhoven",
+      "awayTeam": "Stuttgart",
+      "homeTeamId": "50062",
+      "awayTeamId": "50107",
+      "ratings": {
+        "home": 1514.53,
+        "away": 1477.9,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 116.63
+      },
+      "probabilities": {
+        "home": 0.5419,
+        "draw": 0.1811,
+        "away": 0.2769
+      },
+      "displayPercentages": {
+        "home": 54.2,
+        "draw": 18.1,
+        "away": 27.7
+      },
+      "favorite": "1",
+      "confidence": "medium",
+      "confidenceLabel": "media",
+      "edgePct": 26.5,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md08-15",
+      "homeTeam": "Slavia Praha",
+      "awayTeam": "Aston Villa",
+      "homeTeamId": "52498",
+      "awayTeamId": "52683",
+      "ratings": {
+        "home": 1401.12,
+        "away": 1735.64,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": -254.52
+      },
+      "probabilities": {
+        "home": 0.1607,
+        "draw": 0.1439,
+        "away": 0.6954
+      },
+      "displayPercentages": {
+        "home": 16.1,
+        "draw": 14.4,
+        "away": 69.5
+      },
+      "favorite": "2",
+      "confidence": "high",
+      "confidenceLabel": "alta",
+      "edgePct": 53.5,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md08-16",
+      "homeTeam": "Napoli",
+      "awayTeam": "Viking",
+      "homeTeamId": "50136",
+      "awayTeamId": "52319",
+      "ratings": {
+        "home": 1468.46,
+        "away": 1500,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": 48.46
+      },
+      "probabilities": {
+        "home": 0.4538,
+        "draw": 0.2029,
+        "away": 0.3433
+      },
+      "displayPercentages": {
+        "home": 45.4,
+        "draw": 20.3,
+        "away": 34.3
+      },
+      "favorite": "1",
+      "confidence": "low",
+      "confidenceLabel": "bassa",
+      "edgePct": 11,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md08-17",
+      "homeTeam": "Villarreal",
+      "awayTeam": "Manchester United",
+      "homeTeamId": "70691",
+      "awayTeamId": "52682",
+      "ratings": {
+        "home": 1428.16,
+        "away": 1609.43,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": -101.27
+      },
+      "probabilities": {
+        "home": 0.2917,
+        "draw": 0.1858,
+        "away": 0.5225
+      },
+      "displayPercentages": {
+        "home": 29.2,
+        "draw": 18.6,
+        "away": 52.2
+      },
+      "favorite": "2",
+      "confidence": "medium",
+      "confidenceLabel": "media",
+      "edgePct": 23.1,
+      "status": "experimental"
+    },
+    {
+      "fixtureId": "ucl-2026-27-md08-18",
+      "homeTeam": "Slovan Bratislava",
+      "awayTeam": "Inter",
+      "homeTeamId": "52797",
+      "awayTeamId": "50138",
+      "ratings": {
+        "home": 1346.78,
+        "away": 1605.1,
+        "homeAdvantage": 80,
+        "gapAfterHomeAdvantage": -178.32
+      },
+      "probabilities": {
+        "home": 0.2207,
+        "draw": 0.1634,
+        "away": 0.6159
+      },
+      "displayPercentages": {
+        "home": 22.1,
+        "draw": 16.3,
+        "away": 61.6
+      },
+      "favorite": "2",
+      "confidence": "high",
+      "confidenceLabel": "alta",
+      "edgePct": 39.5,
+      "status": "experimental"
+    }
+  ]
+}

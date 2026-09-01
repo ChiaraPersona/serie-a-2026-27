@@ -1,0 +1,1160 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-09-02",
+  "method": "Nested chronological walk-forward Elo 1X2",
+  "selection": {
+    "train": "2023-24",
+    "validation": "2024-25",
+    "candidates": 2304,
+    "objective": "minimum validation log-loss"
+  },
+  "holdoutProtocol": {
+    "train": "2023-24 + 2024-25",
+    "test": "2025-26",
+    "frozenParameters": true
+  },
+  "selectedParameters": {
+    "homeAdvantage": 80,
+    "kFactor": 40,
+    "drawBase": 0.22,
+    "drawScale": 600,
+    "seasonRetention": 1,
+    "competitionWeightProfile": "flat",
+    "competitionUpdateWeights": {
+      "ucl": 1,
+      "uel": 1,
+      "uecl": 1
+    }
+  },
+  "validation": {
+    "baseline": {
+      "probabilities": {
+        "home": 0.48157,
+        "draw": 0.21376,
+        "away": 0.30467
+      },
+      "overall": {
+        "matches": 531,
+        "logLoss": 1.02573,
+        "brier": 0.61777,
+        "accuracyPct": 50.28,
+        "calibrationError": 0.0157,
+        "calibration": [
+          {
+            "bin": "20-30%",
+            "count": 531,
+            "meanProbability": 0.2138,
+            "observedRate": 0.1902
+          },
+          {
+            "bin": "30-40%",
+            "count": 531,
+            "meanProbability": 0.3047,
+            "observedRate": 0.307
+          },
+          {
+            "bin": "40-50%",
+            "count": 531,
+            "meanProbability": 0.4816,
+            "observedRate": 0.5028
+          }
+        ]
+      },
+      "byCompetition": {
+        "ucl": {
+          "matches": 189,
+          "logLoss": 1.00661,
+          "brier": 0.60735,
+          "accuracyPct": 50.79,
+          "calibrationError": 0.04723,
+          "calibration": [
+            {
+              "bin": "20-30%",
+              "count": 189,
+              "meanProbability": 0.2138,
+              "observedRate": 0.1429
+            },
+            {
+              "bin": "30-40%",
+              "count": 189,
+              "meanProbability": 0.3047,
+              "observedRate": 0.3492
+            },
+            {
+              "bin": "40-50%",
+              "count": 189,
+              "meanProbability": 0.4816,
+              "observedRate": 0.5079
+            }
+          ]
+        },
+        "uel": {
+          "matches": 189,
+          "logLoss": 1.04333,
+          "brier": 0.62745,
+          "accuracyPct": 49.74,
+          "calibrationError": 0.02323,
+          "calibration": [
+            {
+              "bin": "20-30%",
+              "count": 189,
+              "meanProbability": 0.2138,
+              "observedRate": 0.2328
+            },
+            {
+              "bin": "30-40%",
+              "count": 189,
+              "meanProbability": 0.3047,
+              "observedRate": 0.2698
+            },
+            {
+              "bin": "40-50%",
+              "count": 189,
+              "meanProbability": 0.4816,
+              "observedRate": 0.4974
+            }
+          ]
+        },
+        "uecl": {
+          "matches": 153,
+          "logLoss": 1.0276,
+          "brier": 0.61868,
+          "accuracyPct": 50.33,
+          "calibrationError": 0.01447,
+          "calibration": [
+            {
+              "bin": "20-30%",
+              "count": 153,
+              "meanProbability": 0.2138,
+              "observedRate": 0.1961
+            },
+            {
+              "bin": "30-40%",
+              "count": 153,
+              "meanProbability": 0.3047,
+              "observedRate": 0.3007
+            },
+            {
+              "bin": "40-50%",
+              "count": 153,
+              "meanProbability": 0.4816,
+              "observedRate": 0.5033
+            }
+          ]
+        }
+      }
+    },
+    "model": {
+      "overall": {
+        "matches": 531,
+        "logLoss": 0.99503,
+        "brier": 0.59461,
+        "accuracyPct": 53.86,
+        "calibrationError": 0.02708,
+        "calibration": [
+          {
+            "bin": "10-20%",
+            "count": 395,
+            "meanProbability": 0.1795,
+            "observedRate": 0.1873
+          },
+          {
+            "bin": "20-30%",
+            "count": 358,
+            "meanProbability": 0.2369,
+            "observedRate": 0.1927
+          },
+          {
+            "bin": "30-40%",
+            "count": 327,
+            "meanProbability": 0.3454,
+            "observedRate": 0.3394
+          },
+          {
+            "bin": "40-50%",
+            "count": 263,
+            "meanProbability": 0.4532,
+            "observedRate": 0.4829
+          },
+          {
+            "bin": "50-60%",
+            "count": 182,
+            "meanProbability": 0.5428,
+            "observedRate": 0.5879
+          },
+          {
+            "bin": "60-70%",
+            "count": 59,
+            "meanProbability": 0.6405,
+            "observedRate": 0.5763
+          },
+          {
+            "bin": "70-80%",
+            "count": 9,
+            "meanProbability": 0.727,
+            "observedRate": 1
+          }
+        ]
+      },
+      "byCompetition": {
+        "ucl": {
+          "matches": 189,
+          "logLoss": 0.93326,
+          "brier": 0.55287,
+          "accuracyPct": 61.38,
+          "calibrationError": 0.05788,
+          "calibration": [
+            {
+              "bin": "10-20%",
+              "count": 152,
+              "meanProbability": 0.1736,
+              "observedRate": 0.1711
+            },
+            {
+              "bin": "20-30%",
+              "count": 131,
+              "meanProbability": 0.2362,
+              "observedRate": 0.1374
+            },
+            {
+              "bin": "30-40%",
+              "count": 100,
+              "meanProbability": 0.3508,
+              "observedRate": 0.32
+            },
+            {
+              "bin": "40-50%",
+              "count": 85,
+              "meanProbability": 0.4462,
+              "observedRate": 0.6
+            },
+            {
+              "bin": "50-60%",
+              "count": 59,
+              "meanProbability": 0.5458,
+              "observedRate": 0.5593
+            },
+            {
+              "bin": "60-70%",
+              "count": 33,
+              "meanProbability": 0.6469,
+              "observedRate": 0.6667
+            },
+            {
+              "bin": "70-80%",
+              "count": 7,
+              "meanProbability": 0.7298,
+              "observedRate": 1
+            }
+          ]
+        },
+        "uel": {
+          "matches": 189,
+          "logLoss": 1.04322,
+          "brier": 0.62631,
+          "accuracyPct": 48.15,
+          "calibrationError": 0.04473,
+          "calibration": [
+            {
+              "bin": "10-20%",
+              "count": 134,
+              "meanProbability": 0.1841,
+              "observedRate": 0.2239
+            },
+            {
+              "bin": "20-30%",
+              "count": 125,
+              "meanProbability": 0.2369,
+              "observedRate": 0.224
+            },
+            {
+              "bin": "30-40%",
+              "count": 126,
+              "meanProbability": 0.3436,
+              "observedRate": 0.3413
+            },
+            {
+              "bin": "40-50%",
+              "count": 102,
+              "meanProbability": 0.4568,
+              "observedRate": 0.402
+            },
+            {
+              "bin": "50-60%",
+              "count": 66,
+              "meanProbability": 0.5445,
+              "observedRate": 0.6515
+            },
+            {
+              "bin": "60-70%",
+              "count": 13,
+              "meanProbability": 0.6292,
+              "observedRate": 0.2308
+            },
+            {
+              "bin": "70-80%",
+              "count": 1,
+              "meanProbability": 0.705,
+              "observedRate": 1
+            }
+          ]
+        },
+        "uecl": {
+          "matches": 153,
+          "logLoss": 1.0118,
+          "brier": 0.60703,
+          "accuracyPct": 51.63,
+          "calibrationError": 0.01353,
+          "calibration": [
+            {
+              "bin": "10-20%",
+              "count": 109,
+              "meanProbability": 0.182,
+              "observedRate": 0.1651
+            },
+            {
+              "bin": "20-30%",
+              "count": 102,
+              "meanProbability": 0.2379,
+              "observedRate": 0.2255
+            },
+            {
+              "bin": "30-40%",
+              "count": 101,
+              "meanProbability": 0.3423,
+              "observedRate": 0.3564
+            },
+            {
+              "bin": "40-50%",
+              "count": 76,
+              "meanProbability": 0.4563,
+              "observedRate": 0.4605
+            },
+            {
+              "bin": "50-60%",
+              "count": 57,
+              "meanProbability": 0.5377,
+              "observedRate": 0.5439
+            },
+            {
+              "bin": "60-70%",
+              "count": 13,
+              "meanProbability": 0.6357,
+              "observedRate": 0.6923
+            },
+            {
+              "bin": "70-80%",
+              "count": 1,
+              "meanProbability": 0.7295,
+              "observedRate": 1
+            }
+          ]
+        }
+      },
+      "byConfidence": {
+        "balanced": {
+          "matches": 281,
+          "logLoss": 1.03529,
+          "brier": 0.62582,
+          "accuracyPct": 48.4,
+          "calibrationError": 0.01921,
+          "calibration": [
+            {
+              "bin": "10-20%",
+              "count": 111,
+              "meanProbability": 0.1955,
+              "observedRate": 0.1982
+            },
+            {
+              "bin": "20-30%",
+              "count": 170,
+              "meanProbability": 0.2099,
+              "observedRate": 0.1824
+            },
+            {
+              "bin": "30-40%",
+              "count": 299,
+              "meanProbability": 0.3492,
+              "observedRate": 0.3378
+            },
+            {
+              "bin": "40-50%",
+              "count": 263,
+              "meanProbability": 0.4532,
+              "observedRate": 0.4829
+            }
+          ]
+        },
+        "moderate": {
+          "matches": 182,
+          "logLoss": 0.96273,
+          "brier": 0.57062,
+          "accuracyPct": 58.79,
+          "calibrationError": 0.03549,
+          "calibration": [
+            {
+              "bin": "10-20%",
+              "count": 182,
+              "meanProbability": 0.181,
+              "observedRate": 0.1758
+            },
+            {
+              "bin": "20-30%",
+              "count": 154,
+              "meanProbability": 0.2711,
+              "observedRate": 0.2143
+            },
+            {
+              "bin": "30-40%",
+              "count": 28,
+              "meanProbability": 0.3044,
+              "observedRate": 0.3571
+            },
+            {
+              "bin": "50-60%",
+              "count": 182,
+              "meanProbability": 0.5428,
+              "observedRate": 0.5879
+            }
+          ]
+        },
+        "strong": {
+          "matches": 68,
+          "logLoss": 0.91511,
+          "brier": 0.52984,
+          "accuracyPct": 63.24,
+          "calibrationError": 0.06056,
+          "calibration": [
+            {
+              "bin": "10-20%",
+              "count": 102,
+              "meanProbability": 0.1596,
+              "observedRate": 0.1961
+            },
+            {
+              "bin": "20-30%",
+              "count": 34,
+              "meanProbability": 0.2173,
+              "observedRate": 0.1471
+            },
+            {
+              "bin": "60-70%",
+              "count": 59,
+              "meanProbability": 0.6405,
+              "observedRate": 0.5763
+            },
+            {
+              "bin": "70-80%",
+              "count": 9,
+              "meanProbability": 0.727,
+              "observedRate": 1
+            }
+          ]
+        }
+      }
+    }
+  },
+  "holdout": {
+    "baseline": {
+      "probabilities": {
+        "home": 0.4936,
+        "draw": 0.20043,
+        "away": 0.30597
+      },
+      "overall": {
+        "matches": 531,
+        "logLoss": 1.02367,
+        "brier": 0.61717,
+        "accuracyPct": 49.91,
+        "calibrationError": 0.01057,
+        "calibration": [
+          {
+            "bin": "20-30%",
+            "count": 531,
+            "meanProbability": 0.2004,
+            "observedRate": 0.1846
+          },
+          {
+            "bin": "30-40%",
+            "count": 531,
+            "meanProbability": 0.306,
+            "observedRate": 0.3164
+          },
+          {
+            "bin": "40-50%",
+            "count": 531,
+            "meanProbability": 0.4936,
+            "observedRate": 0.4991
+          }
+        ]
+      },
+      "byCompetition": {
+        "ucl": {
+          "matches": 189,
+          "logLoss": 1.02251,
+          "brier": 0.61683,
+          "accuracyPct": 49.74,
+          "calibrationError": 0.0137,
+          "calibration": [
+            {
+              "bin": "20-30%",
+              "count": 189,
+              "meanProbability": 0.2004,
+              "observedRate": 0.1799
+            },
+            {
+              "bin": "30-40%",
+              "count": 189,
+              "meanProbability": 0.306,
+              "observedRate": 0.3228
+            },
+            {
+              "bin": "40-50%",
+              "count": 189,
+              "meanProbability": 0.4936,
+              "observedRate": 0.4974
+            }
+          ]
+        },
+        "uel": {
+          "matches": 189,
+          "logLoss": 1.01551,
+          "brier": 0.61261,
+          "accuracyPct": 50.26,
+          "calibrationError": 0.0207,
+          "calibration": [
+            {
+              "bin": "20-30%",
+              "count": 189,
+              "meanProbability": 0.2004,
+              "observedRate": 0.1693
+            },
+            {
+              "bin": "30-40%",
+              "count": 189,
+              "meanProbability": 0.306,
+              "observedRate": 0.328
+            },
+            {
+              "bin": "40-50%",
+              "count": 189,
+              "meanProbability": 0.4936,
+              "observedRate": 0.5026
+            }
+          ]
+        },
+        "uecl": {
+          "matches": 153,
+          "logLoss": 1.03519,
+          "brier": 0.62323,
+          "accuracyPct": 49.67,
+          "calibrationError": 0.00793,
+          "calibration": [
+            {
+              "bin": "20-30%",
+              "count": 153,
+              "meanProbability": 0.2004,
+              "observedRate": 0.2092
+            },
+            {
+              "bin": "30-40%",
+              "count": 153,
+              "meanProbability": 0.306,
+              "observedRate": 0.2941
+            },
+            {
+              "bin": "40-50%",
+              "count": 153,
+              "meanProbability": 0.4936,
+              "observedRate": 0.4967
+            }
+          ]
+        }
+      }
+    },
+    "model": {
+      "overall": {
+        "matches": 531,
+        "logLoss": 0.97566,
+        "brier": 0.58086,
+        "accuracyPct": 53.86,
+        "calibrationError": 0.02454,
+        "calibration": [
+          {
+            "bin": "0-10%",
+            "count": 2,
+            "meanProbability": 0.0777,
+            "observedRate": 0
+          },
+          {
+            "bin": "10-20%",
+            "count": 412,
+            "meanProbability": 0.1738,
+            "observedRate": 0.1481
+          },
+          {
+            "bin": "20-30%",
+            "count": 369,
+            "meanProbability": 0.235,
+            "observedRate": 0.2575
+          },
+          {
+            "bin": "30-40%",
+            "count": 298,
+            "meanProbability": 0.3483,
+            "observedRate": 0.3188
+          },
+          {
+            "bin": "40-50%",
+            "count": 234,
+            "meanProbability": 0.4499,
+            "observedRate": 0.4573
+          },
+          {
+            "bin": "50-60%",
+            "count": 173,
+            "meanProbability": 0.5426,
+            "observedRate": 0.5549
+          },
+          {
+            "bin": "60-70%",
+            "count": 84,
+            "meanProbability": 0.6435,
+            "observedRate": 0.7143
+          },
+          {
+            "bin": "70-80%",
+            "count": 20,
+            "meanProbability": 0.7374,
+            "observedRate": 0.8
+          },
+          {
+            "bin": "80-90%",
+            "count": 1,
+            "meanProbability": 0.8095,
+            "observedRate": 1
+          }
+        ]
+      },
+      "byCompetition": {
+        "ucl": {
+          "matches": 189,
+          "logLoss": 0.94918,
+          "brier": 0.56156,
+          "accuracyPct": 59.26,
+          "calibrationError": 0.04688,
+          "calibration": [
+            {
+              "bin": "0-10%",
+              "count": 1,
+              "meanProbability": 0.0705,
+              "observedRate": 0
+            },
+            {
+              "bin": "10-20%",
+              "count": 162,
+              "meanProbability": 0.1714,
+              "observedRate": 0.1481
+            },
+            {
+              "bin": "20-30%",
+              "count": 121,
+              "meanProbability": 0.235,
+              "observedRate": 0.2397
+            },
+            {
+              "bin": "30-40%",
+              "count": 97,
+              "meanProbability": 0.3448,
+              "observedRate": 0.2474
+            },
+            {
+              "bin": "40-50%",
+              "count": 82,
+              "meanProbability": 0.45,
+              "observedRate": 0.5366
+            },
+            {
+              "bin": "50-60%",
+              "count": 58,
+              "meanProbability": 0.5448,
+              "observedRate": 0.6207
+            },
+            {
+              "bin": "60-70%",
+              "count": 34,
+              "meanProbability": 0.6449,
+              "observedRate": 0.6471
+            },
+            {
+              "bin": "70-80%",
+              "count": 11,
+              "meanProbability": 0.7318,
+              "observedRate": 0.8182
+            },
+            {
+              "bin": "80-90%",
+              "count": 1,
+              "meanProbability": 0.8095,
+              "observedRate": 1
+            }
+          ]
+        },
+        "uel": {
+          "matches": 189,
+          "logLoss": 0.95453,
+          "brier": 0.56638,
+          "accuracyPct": 52.91,
+          "calibrationError": 0.05376,
+          "calibration": [
+            {
+              "bin": "0-10%",
+              "count": 1,
+              "meanProbability": 0.0849,
+              "observedRate": 0
+            },
+            {
+              "bin": "10-20%",
+              "count": 144,
+              "meanProbability": 0.1721,
+              "observedRate": 0.1042
+            },
+            {
+              "bin": "20-30%",
+              "count": 134,
+              "meanProbability": 0.2329,
+              "observedRate": 0.2836
+            },
+            {
+              "bin": "30-40%",
+              "count": 109,
+              "meanProbability": 0.3527,
+              "observedRate": 0.367
+            },
+            {
+              "bin": "40-50%",
+              "count": 77,
+              "meanProbability": 0.4446,
+              "observedRate": 0.4026
+            },
+            {
+              "bin": "50-60%",
+              "count": 58,
+              "meanProbability": 0.5369,
+              "observedRate": 0.5
+            },
+            {
+              "bin": "60-70%",
+              "count": 37,
+              "meanProbability": 0.644,
+              "observedRate": 0.8108
+            },
+            {
+              "bin": "70-80%",
+              "count": 7,
+              "meanProbability": 0.7543,
+              "observedRate": 0.8571
+            }
+          ]
+        },
+        "uecl": {
+          "matches": 153,
+          "logLoss": 1.03446,
+          "brier": 0.62258,
+          "accuracyPct": 48.37,
+          "calibrationError": 0.0168,
+          "calibration": [
+            {
+              "bin": "10-20%",
+              "count": 106,
+              "meanProbability": 0.1796,
+              "observedRate": 0.2075
+            },
+            {
+              "bin": "20-30%",
+              "count": 114,
+              "meanProbability": 0.2377,
+              "observedRate": 0.2456
+            },
+            {
+              "bin": "30-40%",
+              "count": 92,
+              "meanProbability": 0.3466,
+              "observedRate": 0.337
+            },
+            {
+              "bin": "40-50%",
+              "count": 75,
+              "meanProbability": 0.4551,
+              "observedRate": 0.4267
+            },
+            {
+              "bin": "50-60%",
+              "count": 57,
+              "meanProbability": 0.5461,
+              "observedRate": 0.5439
+            },
+            {
+              "bin": "60-70%",
+              "count": 13,
+              "meanProbability": 0.6382,
+              "observedRate": 0.6154
+            },
+            {
+              "bin": "70-80%",
+              "count": 2,
+              "meanProbability": 0.7089,
+              "observedRate": 0.5
+            }
+          ]
+        }
+      },
+      "byConfidence": {
+        "balanced": {
+          "matches": 253,
+          "logLoss": 1.06573,
+          "brier": 0.64432,
+          "accuracyPct": 44.66,
+          "calibrationError": 0.02324,
+          "calibration": [
+            {
+              "bin": "10-20%",
+              "count": 78,
+              "meanProbability": 0.1954,
+              "observedRate": 0.2179
+            },
+            {
+              "bin": "20-30%",
+              "count": 175,
+              "meanProbability": 0.2095,
+              "observedRate": 0.24
+            },
+            {
+              "bin": "30-40%",
+              "count": 272,
+              "meanProbability": 0.3523,
+              "observedRate": 0.3199
+            },
+            {
+              "bin": "40-50%",
+              "count": 234,
+              "meanProbability": 0.4499,
+              "observedRate": 0.4573
+            }
+          ]
+        },
+        "moderate": {
+          "matches": 173,
+          "logLoss": 0.97697,
+          "brier": 0.58383,
+          "accuracyPct": 55.49,
+          "calibrationError": 0.01276,
+          "calibration": [
+            {
+              "bin": "10-20%",
+              "count": 173,
+              "meanProbability": 0.181,
+              "observedRate": 0.1618
+            },
+            {
+              "bin": "20-30%",
+              "count": 147,
+              "meanProbability": 0.2713,
+              "observedRate": 0.2789
+            },
+            {
+              "bin": "30-40%",
+              "count": 26,
+              "meanProbability": 0.3056,
+              "observedRate": 0.3077
+            },
+            {
+              "bin": "50-60%",
+              "count": 173,
+              "meanProbability": 0.5426,
+              "observedRate": 0.5549
+            }
+          ]
+        },
+        "strong": {
+          "matches": 105,
+          "logLoss": 0.75646,
+          "brier": 0.42307,
+          "accuracyPct": 73.33,
+          "calibrationError": 0.05834,
+          "calibration": [
+            {
+              "bin": "0-10%",
+              "count": 2,
+              "meanProbability": 0.0777,
+              "observedRate": 0
+            },
+            {
+              "bin": "10-20%",
+              "count": 161,
+              "meanProbability": 0.1555,
+              "observedRate": 0.0994
+            },
+            {
+              "bin": "20-30%",
+              "count": 47,
+              "meanProbability": 0.217,
+              "observedRate": 0.2553
+            },
+            {
+              "bin": "60-70%",
+              "count": 84,
+              "meanProbability": 0.6435,
+              "observedRate": 0.7143
+            },
+            {
+              "bin": "70-80%",
+              "count": 20,
+              "meanProbability": 0.7374,
+              "observedRate": 0.8
+            },
+            {
+              "bin": "80-90%",
+              "count": 1,
+              "meanProbability": 0.8095,
+              "observedRate": 1
+            }
+          ]
+        }
+      }
+    },
+    "improvements": {
+      "overallLogLoss": 0.04801,
+      "overallBrier": 0.03631,
+      "uclLogLoss": 0.07333,
+      "uclBrier": 0.05527
+    },
+    "bootstrap": {
+      "overall": {
+        "matches": 531,
+        "iterations": 4000,
+        "logLoss": {
+          "lower95": 0.0272,
+          "median": 0.0478,
+          "upper95": 0.0688
+        },
+        "brier": {
+          "lower95": 0.02043,
+          "median": 0.0362,
+          "upper95": 0.05225
+        }
+      },
+      "ucl": {
+        "matches": 189,
+        "iterations": 4000,
+        "logLoss": {
+          "lower95": 0.03725,
+          "median": 0.07378,
+          "upper95": 0.11169
+        },
+        "brier": {
+          "lower95": 0.02767,
+          "median": 0.05561,
+          "upper95": 0.08473
+        }
+      }
+    }
+  },
+  "probabilityGate": {
+    "passed": true,
+    "rule": "Il modello deve migliorare log-loss e Brier sull'intero holdout e sulle gare Champions, rispettare ECE <= 0,04 complessivo e <= 0,06 Champions, e avere intervalli bootstrap complessivi al 95% sopra zero.",
+    "status": "eligible-for-current-fixture-prototype"
+  },
+  "topCandidates": [
+    {
+      "params": {
+        "homeAdvantage": 80,
+        "kFactor": 40,
+        "drawBase": 0.22,
+        "drawScale": 600,
+        "seasonRetention": 1,
+        "competitionWeightProfile": "flat",
+        "competitionUpdateWeights": {
+          "ucl": 1,
+          "uel": 1,
+          "uecl": 1
+        }
+      },
+      "logLoss": 0.99503,
+      "brier": 0.59461,
+      "calibrationError": 0.02708,
+      "uclLogLoss": 0.93326
+    },
+    {
+      "params": {
+        "homeAdvantage": 80,
+        "kFactor": 40,
+        "drawBase": 0.22,
+        "drawScale": 600,
+        "seasonRetention": 1,
+        "competitionWeightProfile": "mild",
+        "competitionUpdateWeights": {
+          "ucl": 1,
+          "uel": 0.86,
+          "uecl": 0.72
+        }
+      },
+      "logLoss": 0.99554,
+      "brier": 0.59493,
+      "calibrationError": 0.02875,
+      "uclLogLoss": 0.93514
+    },
+    {
+      "params": {
+        "homeAdvantage": 80,
+        "kFactor": 40,
+        "drawBase": 0.22,
+        "drawScale": 600,
+        "seasonRetention": 0.9,
+        "competitionWeightProfile": "flat",
+        "competitionUpdateWeights": {
+          "ucl": 1,
+          "uel": 1,
+          "uecl": 1
+        }
+      },
+      "logLoss": 0.99557,
+      "brier": 0.59493,
+      "calibrationError": 0.03082,
+      "uclLogLoss": 0.936
+    },
+    {
+      "params": {
+        "homeAdvantage": 100,
+        "kFactor": 40,
+        "drawBase": 0.22,
+        "drawScale": 600,
+        "seasonRetention": 1,
+        "competitionWeightProfile": "flat",
+        "competitionUpdateWeights": {
+          "ucl": 1,
+          "uel": 1,
+          "uecl": 1
+        }
+      },
+      "logLoss": 0.99576,
+      "brier": 0.59536,
+      "calibrationError": 0.02891,
+      "uclLogLoss": 0.93611
+    },
+    {
+      "params": {
+        "homeAdvantage": 80,
+        "kFactor": 40,
+        "drawBase": 0.22,
+        "drawScale": 600,
+        "seasonRetention": 1,
+        "competitionWeightProfile": "provisional",
+        "competitionUpdateWeights": {
+          "ucl": 1,
+          "uel": 0.78,
+          "uecl": 0.62
+        }
+      },
+      "logLoss": 0.99626,
+      "brier": 0.5954,
+      "calibrationError": 0.03082,
+      "uclLogLoss": 0.93621
+    },
+    {
+      "params": {
+        "homeAdvantage": 80,
+        "kFactor": 40,
+        "drawBase": 0.22,
+        "drawScale": 600,
+        "seasonRetention": 0.9,
+        "competitionWeightProfile": "mild",
+        "competitionUpdateWeights": {
+          "ucl": 1,
+          "uel": 0.86,
+          "uecl": 0.72
+        }
+      },
+      "logLoss": 0.99627,
+      "brier": 0.59539,
+      "calibrationError": 0.02946,
+      "uclLogLoss": 0.93789
+    },
+    {
+      "params": {
+        "homeAdvantage": 80,
+        "kFactor": 40,
+        "drawBase": 0.22,
+        "drawScale": 600,
+        "seasonRetention": 0.8,
+        "competitionWeightProfile": "flat",
+        "competitionUpdateWeights": {
+          "ucl": 1,
+          "uel": 1,
+          "uecl": 1
+        }
+      },
+      "logLoss": 0.99628,
+      "brier": 0.59539,
+      "calibrationError": 0.02821,
+      "uclLogLoss": 0.9389
+    },
+    {
+      "params": {
+        "homeAdvantage": 100,
+        "kFactor": 40,
+        "drawBase": 0.22,
+        "drawScale": 600,
+        "seasonRetention": 0.9,
+        "competitionWeightProfile": "flat",
+        "competitionUpdateWeights": {
+          "ucl": 1,
+          "uel": 1,
+          "uecl": 1
+        }
+      },
+      "logLoss": 0.99632,
+      "brier": 0.59569,
+      "calibrationError": 0.02942,
+      "uclLogLoss": 0.93867
+    },
+    {
+      "params": {
+        "homeAdvantage": 100,
+        "kFactor": 40,
+        "drawBase": 0.22,
+        "drawScale": 600,
+        "seasonRetention": 1,
+        "competitionWeightProfile": "mild",
+        "competitionUpdateWeights": {
+          "ucl": 1,
+          "uel": 0.86,
+          "uecl": 0.72
+        }
+      },
+      "logLoss": 0.9966,
+      "brier": 0.59588,
+      "calibrationError": 0.02668,
+      "uclLogLoss": 0.93811
+    },
+    {
+      "params": {
+        "homeAdvantage": 100,
+        "kFactor": 40,
+        "drawBase": 0.22,
+        "drawScale": 600,
+        "seasonRetention": 0.8,
+        "competitionWeightProfile": "flat",
+        "competitionUpdateWeights": {
+          "ucl": 1,
+          "uel": 1,
+          "uecl": 1
+        }
+      },
+      "logLoss": 0.99702,
+      "brier": 0.59614,
+      "calibrationError": 0.02551,
+      "uclLogLoss": 0.94139
+    }
+  ]
+}

@@ -62,7 +62,10 @@ assert.match(championsPage, /completo di tutte le partite/, "Champions: copertur
 assert.doesNotMatch(championsPage, /Squadre italiane/, "Champions: copertura ancora presentata come limitata alle italiane");
 assert.match(championsPage, /champions-team-strength-2026-27\.json/, "Champions: profili di forza non caricati");
 assert.match(championsPage, /uefa-team-history-2026-27\.json/, "Champions: storico europeo pluriennale non caricato");
-assert.match(championsPage, /1\/X\/2 N\/D/, "Champions: probabilita non validate non dichiarate N\/D");
+assert.match(championsPage, /champions-1x2-2026-27\.json/, "Champions: probabilita 1X2 validate non caricate");
+assert.match(championsPage, /Modello 1\/X\/2 sperimentale/, "Champions: natura sperimentale delle probabilita non dichiarata");
+assert.match(championsPage, /model\.warning/, "Champions: limiti correnti del modello non dichiarati");
+assert.match(championsPage, /1 \$\{prediction\.displayPercentages\.home\.toFixed\(1\)\}% · X/, "Champions: percentuali 1X2 non esposte nelle gare");
 assert.match(championsPage, /Indice di forza europeo/, "Champions: graduatoria sintetica non presente");
 assert.match(championsPage, /Rendimento europeo 2023\/24–2025\/26/, "Champions: rendimento europeo non esposto");
 assert.match(championsPage, /UCL 1,00 · UEL 0,78 · UECL 0,62/, "Champions: pesi provvisori delle competizioni non dichiarati");
