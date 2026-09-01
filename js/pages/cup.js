@@ -10,7 +10,7 @@ function cupTeamSlot(match,team="Da definire"){
 const cupRoundConfig=[
   {id:"preliminary",step:"01",label:"Turno preliminare",window:"8–9 agosto 2026"},
   {id:"round-32",step:"02",label:"Trentaduesimi",window:"14–17 agosto 2026"},
-  {id:"round-16",step:"03",label:"Sedicesimi",window:"2–15 settembre 2026"},
+  {id:"round-16",step:"03",label:"Sedicesimi",window:"1–15 settembre 2026"},
   {id:"round-of-16",step:"04",label:"Ottavi di finale",window:"2 dicembre 2026 – 13 gennaio 2027"},
   {id:"quarter",step:"05",label:"Quarti di finale",window:"3–10 febbraio 2027"},
   {id:"semifinal",step:"06",label:"Semifinali",window:"3–24 marzo 2027"},
