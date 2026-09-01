@@ -90,6 +90,8 @@ body[data-page="champions"] main{padding-top:38px}
 .champions-model-metrics strong{color:#fff;font-family:var(--font-display);font-size:25px;font-weight:400}
 .champions-model-metrics span{color:#a9c3e6;font-size:9px;font-weight:700}
 .champions-model-note{color:#91aaca!important;font-size:11px!important}
+.champions-context-panel{border-color:rgba(80,211,255,.44);background:linear-gradient(135deg,rgba(4,74,145,.82),rgba(2,28,78,.88))}
+.champions-context-metrics{grid-template-columns:repeat(4,minmax(0,1fr))}
 
 .champions-calendar{margin-top:34px;padding:32px;border:1px solid rgba(137,194,255,.24);border-radius:30px;background:rgba(3,23,70,.62);box-shadow:0 24px 70px rgba(0,7,39,.25);backdrop-filter:blur(18px)}
 .champions-calendar h2,.champions-calendar h3{color:#fff}
@@ -127,7 +129,9 @@ body[data-page="champions"] main{padding-top:38px}
 .champions-fixture-teams small{color:#82c0ff;font-size:8px;font-weight:850;letter-spacing:.06em;text-transform:uppercase}
 .champions-fixture-teams span{color:#6caef3}
 .champions-fixture>footer{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 13px;border-top:1px solid rgba(145,201,255,.1);color:#849fc3;font-size:8px;font-weight:850;letter-spacing:.05em;text-transform:uppercase}
-.champions-fixture>footer b{flex:none;color:#d9edff;font-size:8px}
+.champions-probability{display:grid;flex:none;gap:3px;text-align:right}
+.champions-fixture>footer b{color:#e7f5ff;font-size:8px}
+.champions-probability small{max-width:210px;color:#76cfff;font-size:7px;font-weight:900;letter-spacing:.05em;text-transform:uppercase}
 .champions-empty{padding:50px 24px;border:1px dashed rgba(145,201,255,.28);border-radius:20px;text-align:center}
 .champions-empty strong{color:#fff;font-size:22px}
 .champions-empty p{margin-bottom:0;color:#a9c3e6}
@@ -150,6 +154,7 @@ body[data-page="champions"] .site-footer{margin-top:0}
   .champions-model-body{padding:16px 18px 20px}
   .champions-model-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}
   .champions-model-metrics>div:first-child{grid-column:1/-1}
+  .champions-context-metrics>div:first-child{grid-column:auto}
   .champions-calendar{padding:24px 18px;border-radius:24px}
   .champions-calendar-heading{align-items:flex-start;flex-direction:column}
   .champions-controls{grid-template-columns:1fr}
@@ -158,5 +163,7 @@ body[data-page="champions"] .site-footer{margin-top:0}
   .champions-fixture-grid{grid-template-columns:1fr}
   .champions-fixture-day>header h3{font-size:19px}
   .champions-fixture>footer{align-items:flex-start;flex-direction:column;gap:6px}
-  .champions-fixture>footer b{font-size:9px;letter-spacing:.04em}
+  .champions-probability{text-align:left}
+  .champions-fixture>footer b{font-size:10px;letter-spacing:.03em}
+  .champions-probability small{font-size:8px;line-height:1.35}
 }

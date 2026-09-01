@@ -24,7 +24,8 @@ function cupMatchCard(match,index,round){
 }
 function cupRound(round,data){
   const matches=data.matches.filter(match=>match.stage===round.id).sort((a,b)=>scheduleChronology(a,b)||(a.branch??0)-(b.branch??0));
-  return `<section class="cup-round cup-round--${round.id}" id="coppa-${round.id}" data-stage="${round.id}"><header class="cup-round-heading"><span>${round.step}</span><div><p>${round.window}</p><h3>${round.label}</h3></div><small>${matches.length} ${matches.length===1?"incrocio":"incroci"}</small></header><div class="cup-match-grid">${matches.map((match,index)=>cupMatchCard(match,index,round)).join("")}</div></section>`;
+  const collapsible=["preliminary","round-32"].includes(round.id),heading=`<${collapsible?"summary":"header"} class="cup-round-heading"><span>${round.step}</span><div><p>${round.window}</p><h3>${round.label}</h3></div><small>${matches.length} ${matches.length===1?"incrocio":"incroci"}</small></${collapsible?"summary":"header"}>`,cards=`<div class="cup-match-grid">${matches.map((match,index)=>cupMatchCard(match,index,round)).join("")}</div>`;
+  return collapsible?`<details class="cup-round cup-round--${round.id} cup-round-disclosure" id="coppa-${round.id}" data-stage="${round.id}">${heading}${cards}</details>`:`<section class="cup-round cup-round--${round.id}" id="coppa-${round.id}" data-stage="${round.id}">${heading}${cards}</section>`;
 }
 function cupBracket(data){
   const visibleMatches=data.matches.filter(match=>cupRoundConfig.some(round=>round.id===match.stage));
@@ -37,6 +38,8 @@ function cupBracket(data){
     let html="";
   if(page==="cup")html=hero("Eliminazione diretta","Coppa Italia","Dai preliminari dell’8 agosto alla finale del 19 maggio: date, orari e percorsi della coppa in un tabellone distinto dal campionato.")+cupBracket(cupBracketData);
     document.querySelector("#app").innerHTML=html;
+    document.querySelectorAll(".cup-round-nav a").forEach(link=>link.addEventListener("click",()=>{const target=document.querySelector(link.getAttribute("href"));if(target?.matches("details.cup-round-disclosure"))target.open=true}));
+    const hashTarget=location.hash?document.querySelector(location.hash):null;if(hashTarget?.matches("details.cup-round-disclosure"))hashTarget.open=true;
   }
   return {render};
 }

@@ -150,7 +150,7 @@ const nextScheduledMatchday = matches
 const leagueTargetMatches = matches
   .filter(match => match.competition === "serie-a" && match.season === "2026-27" && (previewMode ? match.matchday === previewMatchday : oddsByMatch.has(match.id) || match.matchday === nextScheduledMatchday))
   .sort((a, b) => a.matchday - b.matchday || a.id.localeCompare(b.id));
-const cupPredictionIds = new Set(["r16-3", "r16-6", "r16-7"]);
+const cupPredictionIds = new Set(["r16-6", "r16-7"]);
 const cupTargetMatches = previewMode ? [] : cup.matches.filter(match => cupPredictionIds.has(match.id)).map(match => ({
   ...match,
   homeTeam: teamIdByName.get(match.home),

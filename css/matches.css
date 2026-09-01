@@ -1182,6 +1182,18 @@ body[data-page="cup"] .cup-badge{flex:none;color:#805b16}
 
 .cup-round-heading>small{padding:6px 9px;border-radius:999px;background:rgba(36,90,120,.07);color:#526b80;font-size:10px;font-weight:850}
 
+.cup-round-disclosure>.cup-round-heading{cursor:pointer;list-style:none}
+
+.cup-round-disclosure>.cup-round-heading::-webkit-details-marker{display:none}
+
+.cup-round-disclosure:not([open])>.cup-round-heading{margin-bottom:0}
+
+.cup-round-disclosure>.cup-round-heading>small::after{display:inline-block;width:7px;height:7px;margin-left:8px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;content:"";transform:translateY(-2px) rotate(45deg);transition:transform .18s ease}
+
+.cup-round-disclosure[open]>.cup-round-heading>small::after{transform:translateY(2px) rotate(225deg)}
+
+.cup-round-disclosure>.cup-round-heading:focus-visible{outline:2px solid var(--gold);outline-offset:7px;border-radius:12px}
+
 .cup-match-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-left:58px}
 
 .cup-match-card{overflow:hidden;border:1px solid rgba(36,90,120,.16);border-radius:16px;background:rgba(255,255,255,.86);box-shadow:0 10px 24px rgba(32,49,73,.055);transition:border-color .18s ease,box-shadow .18s ease,transform .18s ease}
