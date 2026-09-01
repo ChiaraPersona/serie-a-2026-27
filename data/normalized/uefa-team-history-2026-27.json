@@ -1,0 +1,5366 @@
+{
+  "schemaVersion": 1,
+  "season": "2026-27",
+  "historySeasons": [
+    "2023-24",
+    "2024-25",
+    "2025-26"
+  ],
+  "generatedAt": "2026-09-01",
+  "status": "descriptive-no-probabilities",
+  "source": {
+    "provider": "UEFA match feed",
+    "competitionCatalogUrl": "https://comp.uefa.com/v2/competitions?offset=0&limit=500",
+    "pages": [
+      {
+        "competition": "Champions League",
+        "season": "2023-24",
+        "url": "https://www.uefa.com/uefachampionsleague/history/seasons/2024/matches/"
+      },
+      {
+        "competition": "Champions League",
+        "season": "2024-25",
+        "url": "https://www.uefa.com/uefachampionsleague/history/seasons/2025/matches/"
+      },
+      {
+        "competition": "Champions League",
+        "season": "2025-26",
+        "url": "https://www.uefa.com/uefachampionsleague/history/seasons/2026/matches/"
+      },
+      {
+        "competition": "UEFA Europa League",
+        "season": "2023-24",
+        "url": "https://www.uefa.com/uefaeuropaleague/history/seasons/2024/matches/"
+      },
+      {
+        "competition": "UEFA Europa League",
+        "season": "2024-25",
+        "url": "https://www.uefa.com/uefaeuropaleague/history/seasons/2025/matches/"
+      },
+      {
+        "competition": "UEFA Europa League",
+        "season": "2025-26",
+        "url": "https://www.uefa.com/uefaeuropaleague/history/seasons/2026/matches/"
+      },
+      {
+        "competition": "UEFA Conference League",
+        "season": "2023-24",
+        "url": "https://www.uefa.com/uefaconferenceleague/history/seasons/2024/matches/"
+      },
+      {
+        "competition": "UEFA Conference League",
+        "season": "2024-25",
+        "url": "https://www.uefa.com/uefaconferenceleague/history/seasons/2025/matches/"
+      },
+      {
+        "competition": "UEFA Conference League",
+        "season": "2025-26",
+        "url": "https://www.uefa.com/uefaconferenceleague/history/seasons/2026/matches/"
+      }
+    ]
+  },
+  "methodology": {
+    "resultBasis": "Tempi regolamentari",
+    "recencyWeights": {
+      "2023-24": 0.6,
+      "2024-25": 0.8,
+      "2025-26": 1
+    },
+    "competitionWeights": {
+      "ucl": 1,
+      "uel": 0.78,
+      "uecl": 0.62
+    },
+    "levelAdjustedMetric": "Punti per gara moltiplicati per il peso della competizione; pesi provvisori, da validare nel backtest.",
+    "opponentContext": "Media dei punti per partita ottenuti dagli avversari nella stessa competizione e stagione.",
+    "warning": "Indicatori descrittivi: non sono probabilità e non modificano ancora l'indice di forza europeo."
+  },
+  "summary": {
+    "teams": 36,
+    "historicalMatches": 1469,
+    "byCompetition": {
+      "ucl": 503,
+      "uecl": 447,
+      "uel": 519
+    },
+    "sufficient": 31,
+    "limited": 2,
+    "unavailable": 3
+  },
+  "teams": [
+    {
+      "team": "Arsenal",
+      "uefaTeamId": "52280",
+      "coverage": "sufficient",
+      "seasonsPlayed": 3,
+      "competitionsPlayed": [
+        "UCL"
+      ],
+      "overall": {
+        "matches": 39,
+        "wins": 25,
+        "draws": 8,
+        "losses": 6,
+        "goalsFor": 80,
+        "goalsAgainst": 25,
+        "pointsPerMatch": 2.13,
+        "goalsForPerMatch": 2.05,
+        "goalsAgainstPerMatch": 0.64,
+        "goalDifferencePerMatch": 1.41
+      },
+      "home": {
+        "matches": 19,
+        "wins": 15,
+        "draws": 3,
+        "losses": 1,
+        "goalsFor": 44,
+        "goalsAgainst": 8,
+        "pointsPerMatch": 2.53,
+        "goalsForPerMatch": 2.32,
+        "goalsAgainstPerMatch": 0.42,
+        "goalDifferencePerMatch": 1.89
+      },
+      "away": {
+        "matches": 20,
+        "wins": 10,
+        "draws": 5,
+        "losses": 5,
+        "goalsFor": 36,
+        "goalsAgainst": 17,
+        "pointsPerMatch": 1.75,
+        "goalsForPerMatch": 1.8,
+        "goalsAgainstPerMatch": 0.85,
+        "goalDifferencePerMatch": 0.95
+      },
+      "recent10": {
+        "matches": 10,
+        "wins": 6,
+        "draws": 4,
+        "losses": 0,
+        "goalsFor": 16,
+        "goalsAgainst": 6,
+        "pointsPerMatch": 2.2,
+        "goalsForPerMatch": 1.6,
+        "goalsAgainstPerMatch": 0.6,
+        "goalDifferencePerMatch": 1
+      },
+      "recencyWeightedPointsPerMatch": 2.19,
+      "levelAdjustedPointsPerMatch": 2.19,
+      "averageOpponentPointsPerMatch": 1.42,
+      "progression": {
+        "label": "in crescita",
+        "deltaAdjustedPointsPerMatch": 0.77
+      },
+      "byCompetition": {
+        "ucl": {
+          "matches": 39,
+          "wins": 25,
+          "draws": 8,
+          "losses": 6,
+          "goalsFor": 80,
+          "goalsAgainst": 25,
+          "pointsPerMatch": 2.13,
+          "goalsForPerMatch": 2.05,
+          "goalsAgainstPerMatch": 0.64,
+          "goalDifferencePerMatch": 1.41
+        },
+        "uel": {
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null
+        },
+        "uecl": {
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null
+        }
+      },
+      "bySeason": [
+        {
+          "season": "2023-24",
+          "matches": 10,
+          "wins": 5,
+          "draws": 2,
+          "losses": 3,
+          "goalsFor": 19,
+          "goalsAgainst": 8,
+          "pointsPerMatch": 1.7,
+          "goalsForPerMatch": 1.9,
+          "goalsAgainstPerMatch": 0.8,
+          "goalDifferencePerMatch": 1.1,
+          "levelAdjustedPointsPerMatch": 1.7
+        },
+        {
+          "season": "2024-25",
+          "matches": 14,
+          "wins": 9,
+          "draws": 2,
+          "losses": 3,
+          "goalsFor": 31,
+          "goalsAgainst": 10,
+          "pointsPerMatch": 2.07,
+          "goalsForPerMatch": 2.21,
+          "goalsAgainstPerMatch": 0.71,
+          "goalDifferencePerMatch": 1.5,
+          "levelAdjustedPointsPerMatch": 2.07
+        },
+        {
+          "season": "2025-26",
+          "matches": 15,
+          "wins": 11,
+          "draws": 4,
+          "losses": 0,
+          "goalsFor": 30,
+          "goalsAgainst": 7,
+          "pointsPerMatch": 2.47,
+          "goalsForPerMatch": 2,
+          "goalsAgainstPerMatch": 0.47,
+          "goalDifferencePerMatch": 1.53,
+          "levelAdjustedPointsPerMatch": 2.47
+        }
+      ]
+    },
+    {
+      "team": "Bayern München",
+      "uefaTeamId": "50037",
+      "coverage": "sufficient",
+      "seasonsPlayed": 3,
+      "competitionsPlayed": [
+        "UCL"
+      ],
+      "overall": {
+        "matches": 40,
+        "wins": 26,
+        "draws": 6,
+        "losses": 8,
+        "goalsFor": 95,
+        "goalsAgainst": 51,
+        "pointsPerMatch": 2.1,
+        "goalsForPerMatch": 2.38,
+        "goalsAgainstPerMatch": 1.27,
+        "goalDifferencePerMatch": 1.1
+      },
+      "home": {
+        "matches": 20,
+        "wins": 15,
+        "draws": 4,
+        "losses": 1,
+        "goalsFor": 52,
+        "goalsAgainst": 19,
+        "pointsPerMatch": 2.45,
+        "goalsForPerMatch": 2.6,
+        "goalsAgainstPerMatch": 0.95,
+        "goalDifferencePerMatch": 1.65
+      },
+      "away": {
+        "matches": 20,
+        "wins": 11,
+        "draws": 2,
+        "losses": 7,
+        "goalsFor": 43,
+        "goalsAgainst": 32,
+        "pointsPerMatch": 1.75,
+        "goalsForPerMatch": 2.15,
+        "goalsAgainstPerMatch": 1.6,
+        "goalDifferencePerMatch": 0.55
+      },
+      "recent10": {
+        "matches": 10,
+        "wins": 7,
+        "draws": 1,
+        "losses": 2,
+        "goalsFor": 29,
+        "goalsAgainst": 17,
+        "pointsPerMatch": 2.2,
+        "goalsForPerMatch": 2.9,
+        "goalsAgainstPerMatch": 1.7,
+        "goalDifferencePerMatch": 1.2
+      },
+      "recencyWeightedPointsPerMatch": 2.14,
+      "levelAdjustedPointsPerMatch": 2.14,
+      "averageOpponentPointsPerMatch": 1.51,
+      "progression": {
+        "label": "in crescita",
+        "deltaAdjustedPointsPerMatch": 0.43
+      },
+      "byCompetition": {
+        "ucl": {
+          "matches": 40,
+          "wins": 26,
+          "draws": 6,
+          "losses": 8,
+          "goalsFor": 95,
+          "goalsAgainst": 51,
+          "pointsPerMatch": 2.1,
+          "goalsForPerMatch": 2.38,
+          "goalsAgainstPerMatch": 1.27,
+          "goalDifferencePerMatch": 1.1
+        },
+        "uel": {
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null
+        },
+        "uecl": {
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null
+        }
+      },
+      "bySeason": [
+        {
+          "season": "2023-24",
+          "matches": 12,
+          "wins": 7,
+          "draws": 3,
+          "losses": 2,
+          "goalsFor": 21,
+          "goalsAgainst": 13,
+          "pointsPerMatch": 2,
+          "goalsForPerMatch": 1.75,
+          "goalsAgainstPerMatch": 1.08,
+          "goalDifferencePerMatch": 0.67,
+          "levelAdjustedPointsPerMatch": 2
+        },
+        {
+          "season": "2024-25",
+          "matches": 14,
+          "wins": 8,
+          "draws": 2,
+          "losses": 4,
+          "goalsFor": 31,
+          "goalsAgainst": 18,
+          "pointsPerMatch": 1.86,
+          "goalsForPerMatch": 2.21,
+          "goalsAgainstPerMatch": 1.29,
+          "goalDifferencePerMatch": 0.93,
+          "levelAdjustedPointsPerMatch": 1.86
+        },
+        {
+          "season": "2025-26",
+          "matches": 14,
+          "wins": 11,
+          "draws": 1,
+          "losses": 2,
+          "goalsFor": 43,
+          "goalsAgainst": 20,
+          "pointsPerMatch": 2.43,
+          "goalsForPerMatch": 3.07,
+          "goalsAgainstPerMatch": 1.43,
+          "goalDifferencePerMatch": 1.64,
+          "levelAdjustedPointsPerMatch": 2.43
+        }
+      ]
+    },
+    {
+      "team": "Barcelona",
+      "uefaTeamId": "50080",
+      "coverage": "sufficient",
+      "seasonsPlayed": 3,
+      "competitionsPlayed": [
+        "UCL"
+      ],
+      "overall": {
+        "matches": 36,
+        "wins": 22,
+        "draws": 6,
+        "losses": 8,
+        "goalsFor": 95,
+        "goalsAgainst": 57,
+        "pointsPerMatch": 2,
+        "goalsForPerMatch": 2.64,
+        "goalsAgainstPerMatch": 1.58,
+        "goalDifferencePerMatch": 1.06
+      },
+      "home": {
+        "matches": 18,
+        "wins": 13,
+        "draws": 2,
+        "losses": 3,
+        "goalsFor": 57,
+        "goalsAgainst": 23,
+        "pointsPerMatch": 2.28,
+        "goalsForPerMatch": 3.17,
+        "goalsAgainstPerMatch": 1.28,
+        "goalDifferencePerMatch": 1.89
+      },
+      "away": {
+        "matches": 18,
+        "wins": 9,
+        "draws": 4,
+        "losses": 5,
+        "goalsFor": 38,
+        "goalsAgainst": 34,
+        "pointsPerMatch": 1.72,
+        "goalsForPerMatch": 2.11,
+        "goalsAgainstPerMatch": 1.89,
+        "goalDifferencePerMatch": 0.22
+      },
+      "recent10": {
+        "matches": 10,
+        "wins": 6,
+        "draws": 2,
+        "losses": 2,
+        "goalsFor": 29,
+        "goalsAgainst": 17,
+        "pointsPerMatch": 2,
+        "goalsForPerMatch": 2.9,
+        "goalsAgainstPerMatch": 1.7,
+        "goalDifferencePerMatch": 1.2
+      },
+      "recencyWeightedPointsPerMatch": 2,
+      "levelAdjustedPointsPerMatch": 2,
+      "averageOpponentPointsPerMatch": 1.39,
+      "progression": {
+        "label": "stabile",
+        "deltaAdjustedPointsPerMatch": 0.02
+      },
+      "byCompetition": {
+        "ucl": {
+          "matches": 36,
+          "wins": 22,
+          "draws": 6,
+          "losses": 8,
+          "goalsFor": 95,
+          "goalsAgainst": 57,
+          "pointsPerMatch": 2,
+          "goalsForPerMatch": 2.64,
+          "goalsAgainstPerMatch": 1.58,
+          "goalDifferencePerMatch": 1.06
+        },
+        "uel": {
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null
+        },
+        "uecl": {
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null
+        }
+      },
+      "bySeason": [
+        {
+          "season": "2023-24",
+          "matches": 10,
+          "wins": 6,
+          "draws": 1,
+          "losses": 3,
+          "goalsFor": 20,
+          "goalsAgainst": 14,
+          "pointsPerMatch": 1.9,
+          "goalsForPerMatch": 2,
+          "goalsAgainstPerMatch": 1.4,
+          "goalDifferencePerMatch": 0.6,
+          "levelAdjustedPointsPerMatch": 1.9
+        },
+        {
+          "season": "2024-25",
+          "matches": 14,
+          "wins": 9,
+          "draws": 3,
+          "losses": 2,
+          "goalsFor": 43,
+          "goalsAgainst": 23,
+          "pointsPerMatch": 2.14,
+          "goalsForPerMatch": 3.07,
+          "goalsAgainstPerMatch": 1.64,
+          "goalDifferencePerMatch": 1.43,
+          "levelAdjustedPointsPerMatch": 2.14
+        },
+        {
+          "season": "2025-26",
+          "matches": 12,
+          "wins": 7,
+          "draws": 2,
+          "losses": 3,
+          "goalsFor": 32,
+          "goalsAgainst": 20,
+          "pointsPerMatch": 1.92,
+          "goalsForPerMatch": 2.67,
+          "goalsAgainstPerMatch": 1.67,
+          "goalDifferencePerMatch": 1,
+          "levelAdjustedPointsPerMatch": 1.92
+        }
+      ]
+    },
+    {
+      "team": "Real Madrid",
+      "uefaTeamId": "50051",
+      "coverage": "sufficient",
+      "seasonsPlayed": 3,
+      "competitionsPlayed": [
+        "UCL"
+      ],
+      "overall": {
+        "matches": 41,
+        "wins": 26,
+        "draws": 4,
+        "losses": 11,
+        "goalsFor": 90,
+        "goalsAgainst": 57,
+        "pointsPerMatch": 2,
+        "goalsForPerMatch": 2.2,
+        "goalsAgainstPerMatch": 1.39,
+        "goalDifferencePerMatch": 0.8
+      },
+      "home": {
+        "matches": 20,
+        "wins": 14,
+        "draws": 2,
+        "losses": 4,
+        "goalsFor": 50,
+        "goalsAgainst": 25,
+        "pointsPerMatch": 2.2,
+        "goalsForPerMatch": 2.5,
+        "goalsAgainstPerMatch": 1.25,
+        "goalDifferencePerMatch": 1.25
+      },
+      "away": {
+        "matches": 21,
+        "wins": 12,
+        "draws": 2,
+        "losses": 7,
+        "goalsFor": 40,
+        "goalsAgainst": 32,
+        "pointsPerMatch": 1.81,
+        "goalsForPerMatch": 1.9,
+        "goalsAgainstPerMatch": 1.52,
+        "goalDifferencePerMatch": 0.38
+      },
+      "recent10": {
+        "matches": 10,
+        "wins": 6,
+        "draws": 0,
+        "losses": 4,
+        "goalsFor": 25,
+        "goalsAgainst": 18,
+        "pointsPerMatch": 1.8,
+        "goalsForPerMatch": 2.5,
+        "goalsAgainstPerMatch": 1.8,
+        "goalDifferencePerMatch": 0.7
+      },
+      "recencyWeightedPointsPerMatch": 1.96,
+      "levelAdjustedPointsPerMatch": 1.96,
+      "averageOpponentPointsPerMatch": 1.48,
+      "progression": {
+        "label": "in calo",
+        "deltaAdjustedPointsPerMatch": -0.45
+      },
+      "byCompetition": {
+        "ucl": {
+          "matches": 41,
+          "wins": 26,
+          "draws": 4,
+          "losses": 11,
+          "goalsFor": 90,
+          "goalsAgainst": 57,
+          "pointsPerMatch": 2,
+          "goalsForPerMatch": 2.2,
+          "goalsAgainstPerMatch": 1.39,
+          "goalDifferencePerMatch": 0.8
+        },
+        "uel": {
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null
+        },
+        "uecl": {
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null
+        }
+      },
+      "bySeason": [
+        {
+          "season": "2023-24",
+          "matches": 13,
+          "wins": 9,
+          "draws": 4,
+          "losses": 0,
+          "goalsFor": 28,
+          "goalsAgainst": 15,
+          "pointsPerMatch": 2.38,
+          "goalsForPerMatch": 2.15,
+          "goalsAgainstPerMatch": 1.15,
+          "goalDifferencePerMatch": 1,
+          "levelAdjustedPointsPerMatch": 2.38
+        },
+        {
+          "season": "2024-25",
+          "matches": 14,
+          "wins": 8,
+          "draws": 0,
+          "losses": 6,
+          "goalsFor": 29,
+          "goalsAgainst": 22,
+          "pointsPerMatch": 1.71,
+          "goalsForPerMatch": 2.07,
+          "goalsAgainstPerMatch": 1.57,
+          "goalDifferencePerMatch": 0.5,
+          "levelAdjustedPointsPerMatch": 1.71
+        },
+        {
+          "season": "2025-26",
+          "matches": 14,
+          "wins": 9,
+          "draws": 0,
+          "losses": 5,
+          "goalsFor": 33,
+          "goalsAgainst": 20,
+          "pointsPerMatch": 1.93,
+          "goalsForPerMatch": 2.36,
+          "goalsAgainstPerMatch": 1.43,
+          "goalDifferencePerMatch": 0.93,
+          "levelAdjustedPointsPerMatch": 1.93
+        }
+      ]
+    },
+    {
+      "team": "Liverpool",
+      "uefaTeamId": "7889",
+      "coverage": "sufficient",
+      "seasonsPlayed": 3,
+      "competitionsPlayed": [
+        "UCL",
+        "UEL"
+      ],
+      "overall": {
+        "matches": 32,
+        "wins": 22,
+        "draws": 0,
+        "losses": 10,
+        "goalsFor": 71,
+        "goalsAgainst": 31,
+        "pointsPerMatch": 2.06,
+        "goalsForPerMatch": 2.22,
+        "goalsAgainstPerMatch": 0.97,
+        "goalDifferencePerMatch": 1.25
+      },
+      "home": {
+        "matches": 16,
+        "wins": 12,
+        "draws": 0,
+        "losses": 4,
+        "goalsFor": 42,
+        "goalsAgainst": 15,
+        "pointsPerMatch": 2.25,
+        "goalsForPerMatch": 2.63,
+        "goalsAgainstPerMatch": 0.94,
+        "goalDifferencePerMatch": 1.69
+      },
+      "away": {
+        "matches": 16,
+        "wins": 10,
+        "draws": 0,
+        "losses": 6,
+        "goalsFor": 29,
+        "goalsAgainst": 16,
+        "pointsPerMatch": 1.88,
+        "goalsForPerMatch": 1.81,
+        "goalsAgainstPerMatch": 1,
+        "goalDifferencePerMatch": 0.81
+      },
+      "recent10": {
+        "matches": 10,
+        "wins": 6,
+        "draws": 0,
+        "losses": 4,
+        "goalsFor": 21,
+        "goalsAgainst": 10,
+        "pointsPerMatch": 1.8,
+        "goalsForPerMatch": 2.1,
+        "goalsAgainstPerMatch": 1,
+        "goalDifferencePerMatch": 1.1
+      },
+      "recencyWeightedPointsPerMatch": 2.03,
+      "levelAdjustedPointsPerMatch": 1.92,
+      "averageOpponentPointsPerMatch": 1.37,
+      "progression": {
+        "label": "stabile",
+        "deltaAdjustedPointsPerMatch": 0.11
+      },
+      "byCompetition": {
+        "ucl": {
+          "matches": 22,
+          "wins": 15,
+          "draws": 0,
+          "losses": 7,
+          "goalsFor": 42,
+          "goalsAgainst": 19,
+          "pointsPerMatch": 2.05,
+          "goalsForPerMatch": 1.91,
+          "goalsAgainstPerMatch": 0.86,
+          "goalDifferencePerMatch": 1.05
+        },
+        "uel": {
+          "matches": 10,
+          "wins": 7,
+          "draws": 0,
+          "losses": 3,
+          "goalsFor": 29,
+          "goalsAgainst": 12,
+          "pointsPerMatch": 2.1,
+          "goalsForPerMatch": 2.9,
+          "goalsAgainstPerMatch": 1.2,
+          "goalDifferencePerMatch": 1.7
+        },
+        "uecl": {
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null
+        }
+      },
+      "bySeason": [
+        {
+          "season": "2023-24",
+          "matches": 10,
+          "wins": 7,
+          "draws": 0,
+          "losses": 3,
+          "goalsFor": 29,
+          "goalsAgainst": 12,
+          "pointsPerMatch": 2.1,
+          "goalsForPerMatch": 2.9,
+          "goalsAgainstPerMatch": 1.2,
+          "goalDifferencePerMatch": 1.7,
+          "levelAdjustedPointsPerMatch": 1.64
+        },
+        {
+          "season": "2024-25",
+          "matches": 10,
+          "wins": 8,
+          "draws": 0,
+          "losses": 2,
+          "goalsFor": 18,
+          "goalsAgainst": 6,
+          "pointsPerMatch": 2.4,
+          "goalsForPerMatch": 1.8,
+          "goalsAgainstPerMatch": 0.6,
+          "goalDifferencePerMatch": 1.2,
+          "levelAdjustedPointsPerMatch": 2.4
+        },
+        {
+          "season": "2025-26",
+          "matches": 12,
+          "wins": 7,
+          "draws": 0,
+          "losses": 5,
+          "goalsFor": 24,
+          "goalsAgainst": 13,
+          "pointsPerMatch": 1.75,
+          "goalsForPerMatch": 2,
+          "goalsAgainstPerMatch": 1.08,
+          "goalDifferencePerMatch": 0.92,
+          "levelAdjustedPointsPerMatch": 1.75
+        }
+      ]
+    },
+    {
+      "team": "Paris Saint-Germain",
+      "uefaTeamId": "52747",
+      "coverage": "sufficient",
+      "seasonsPlayed": 3,
+      "competitionsPlayed": [
+        "UCL"
+      ],
+      "overall": {
+        "matches": 46,
+        "wins": 26,
+        "draws": 8,
+        "losses": 12,
+        "goalsFor": 102,
+        "goalsAgainst": 53,
+        "pointsPerMatch": 1.87,
+        "goalsForPerMatch": 2.22,
+        "goalsAgainstPerMatch": 1.15,
+        "goalDifferencePerMatch": 1.07
+      },
+      "home": {
+        "matches": 24,
+        "wins": 14,
+        "draws": 5,
+        "losses": 5,
+        "goalsFor": 60,
+        "goalsAgainst": 28,
+        "pointsPerMatch": 1.96,
+        "goalsForPerMatch": 2.5,
+        "goalsAgainstPerMatch": 1.17,
+        "goalDifferencePerMatch": 1.33
+      },
+      "away": {
+        "matches": 22,
+        "wins": 12,
+        "draws": 3,
+        "losses": 7,
+        "goalsFor": 42,
+        "goalsAgainst": 25,
+        "pointsPerMatch": 1.77,
+        "goalsForPerMatch": 1.91,
+        "goalsAgainstPerMatch": 1.14,
+        "goalDifferencePerMatch": 0.77
+      },
+      "recent10": {
+        "matches": 10,
+        "wins": 6,
+        "draws": 4,
+        "losses": 0,
+        "goalsFor": 25,
+        "goalsAgainst": 13,
+        "pointsPerMatch": 2.2,
+        "goalsForPerMatch": 2.5,
+        "goalsAgainstPerMatch": 1.3,
+        "goalDifferencePerMatch": 1.2
+      },
+      "recencyWeightedPointsPerMatch": 1.92,
+      "levelAdjustedPointsPerMatch": 1.92,
+      "averageOpponentPointsPerMatch": 1.67,
+      "progression": {
+        "label": "in crescita",
+        "deltaAdjustedPointsPerMatch": 0.64
+      },
+      "byCompetition": {
+        "ucl": {
+          "matches": 46,
+          "wins": 26,
+          "draws": 8,
+          "losses": 12,
+          "goalsFor": 102,
+          "goalsAgainst": 53,
+          "pointsPerMatch": 1.87,
+          "goalsForPerMatch": 2.22,
+          "goalsAgainstPerMatch": 1.15,
+          "goalDifferencePerMatch": 1.07
+        },
+        "uel": {
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null
+        },
+        "uecl": {
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null
+        }
+      },
+      "bySeason": [
+        {
+          "season": "2023-24",
+          "matches": 12,
+          "wins": 5,
+          "draws": 2,
+          "losses": 5,
+          "goalsFor": 19,
+          "goalsAgainst": 15,
+          "pointsPerMatch": 1.42,
+          "goalsForPerMatch": 1.58,
+          "goalsAgainstPerMatch": 1.25,
+          "goalDifferencePerMatch": 0.33,
+          "levelAdjustedPointsPerMatch": 1.42
+        },
+        {
+          "season": "2024-25",
+          "matches": 17,
+          "wins": 11,
+          "draws": 1,
+          "losses": 5,
+          "goalsFor": 38,
+          "goalsAgainst": 15,
+          "pointsPerMatch": 2,
+          "goalsForPerMatch": 2.24,
+          "goalsAgainstPerMatch": 0.88,
+          "goalDifferencePerMatch": 1.35,
+          "levelAdjustedPointsPerMatch": 2
+        },
+        {
+          "season": "2025-26",
+          "matches": 17,
+          "wins": 10,
+          "draws": 5,
+          "losses": 2,
+          "goalsFor": 45,
+          "goalsAgainst": 23,
+          "pointsPerMatch": 2.06,
+          "goalsForPerMatch": 2.65,
+          "goalsAgainstPerMatch": 1.35,
+          "goalDifferencePerMatch": 1.29,
+          "levelAdjustedPointsPerMatch": 2.06
+        }
+      ]
+    },
+    {
+      "team": "Aston Villa",
+      "uefaTeamId": "52683",
+      "coverage": "sufficient",
+      "seasonsPlayed": 3,
+      "competitionsPlayed": [
+        "UCL",
+        "UEL",
+        "UECL"
+      ],
+      "overall": {
+        "matches": 39,
+        "wins": 27,
+        "draws": 3,
+        "losses": 9,
+        "goalsFor": 75,
+        "goalsAgainst": 36,
+        "pointsPerMatch": 2.15,
+        "goalsForPerMatch": 1.92,
+        "goalsAgainstPerMatch": 0.92,
+        "goalDifferencePerMatch": 1
+      },
+      "home": {
+        "matches": 19,
+        "wins": 17,
+        "draws": 1,
+        "losses": 1,
+        "goalsFor": 44,
+        "goalsAgainst": 14,
+        "pointsPerMatch": 2.74,
+        "goalsForPerMatch": 2.32,
+        "goalsAgainstPerMatch": 0.74,
+        "goalDifferencePerMatch": 1.58
+      },
+      "away": {
+        "matches": 20,
+        "wins": 10,
+        "draws": 2,
+        "losses": 8,
+        "goalsFor": 31,
+        "goalsAgainst": 22,
+        "pointsPerMatch": 1.6,
+        "goalsForPerMatch": 1.55,
+        "goalsAgainstPerMatch": 1.1,
+        "goalDifferencePerMatch": 0.45
+      },
+      "recent10": {
+        "matches": 10,
+        "wins": 9,
+        "draws": 0,
+        "losses": 1,
+        "goalsFor": 23,
+        "goalsAgainst": 5,
+        "pointsPerMatch": 2.7,
+        "goalsForPerMatch": 2.3,
+        "goalsAgainstPerMatch": 0.5,
+        "goalDifferencePerMatch": 1.8
+      },
+      "recencyWeightedPointsPerMatch": 2.23,
+      "levelAdjustedPointsPerMatch": 1.82,
+      "averageOpponentPointsPerMatch": 1.29,
+      "progression": {
+        "label": "in crescita",
+        "deltaAdjustedPointsPerMatch": 1
+      },
+      "byCompetition": {
+        "ucl": {
+          "matches": 12,
+          "wins": 8,
+          "draws": 1,
+          "losses": 3,
+          "goalsFor": 23,
+          "goalsAgainst": 12,
+          "pointsPerMatch": 2.08,
+          "goalsForPerMatch": 1.92,
+          "goalsAgainstPerMatch": 1,
+          "goalDifferencePerMatch": 0.92
+        },
+        "uel": {
+          "matches": 15,
+          "wins": 13,
+          "draws": 0,
+          "losses": 2,
+          "goalsFor": 31,
+          "goalsAgainst": 8,
+          "pointsPerMatch": 2.6,
+          "goalsForPerMatch": 2.07,
+          "goalsAgainstPerMatch": 0.53,
+          "goalDifferencePerMatch": 1.53
+        },
+        "uecl": {
+          "matches": 12,
+          "wins": 6,
+          "draws": 2,
+          "losses": 4,
+          "goalsFor": 21,
+          "goalsAgainst": 16,
+          "pointsPerMatch": 1.67,
+          "goalsForPerMatch": 1.75,
+          "goalsAgainstPerMatch": 1.33,
+          "goalDifferencePerMatch": 0.42
+        }
+      },
+      "bySeason": [
+        {
+          "season": "2023-24",
+          "matches": 12,
+          "wins": 6,
+          "draws": 2,
+          "losses": 4,
+          "goalsFor": 21,
+          "goalsAgainst": 16,
+          "pointsPerMatch": 1.67,
+          "goalsForPerMatch": 1.75,
+          "goalsAgainstPerMatch": 1.33,
+          "goalDifferencePerMatch": 0.42,
+          "levelAdjustedPointsPerMatch": 1.03
+        },
+        {
+          "season": "2024-25",
+          "matches": 12,
+          "wins": 8,
+          "draws": 1,
+          "losses": 3,
+          "goalsFor": 23,
+          "goalsAgainst": 12,
+          "pointsPerMatch": 2.08,
+          "goalsForPerMatch": 1.92,
+          "goalsAgainstPerMatch": 1,
+          "goalDifferencePerMatch": 0.92,
+          "levelAdjustedPointsPerMatch": 2.08
+        },
+        {
+          "season": "2025-26",
+          "matches": 15,
+          "wins": 13,
+          "draws": 0,
+          "losses": 2,
+          "goalsFor": 31,
+          "goalsAgainst": 8,
+          "pointsPerMatch": 2.6,
+          "goalsForPerMatch": 2.07,
+          "goalsAgainstPerMatch": 0.53,
+          "goalDifferencePerMatch": 1.53,
+          "levelAdjustedPointsPerMatch": 2.03
+        }
+      ]
+    },
+    {
+      "team": "Inter",
+      "uefaTeamId": "50138",
+      "coverage": "sufficient",
+      "seasonsPlayed": 3,
+      "competitionsPlayed": [
+        "UCL"
+      ],
+      "overall": {
+        "matches": 33,
+        "wins": 18,
+        "draws": 7,
+        "losses": 8,
+        "goalsFor": 52,
+        "goalsAgainst": 35,
+        "pointsPerMatch": 1.85,
+        "goalsForPerMatch": 1.58,
+        "goalsAgainstPerMatch": 1.06,
+        "goalDifferencePerMatch": 0.52
+      },
+      "home": {
+        "matches": 16,
+        "wins": 10,
+        "draws": 3,
+        "losses": 3,
+        "goalsFor": 27,
+        "goalsAgainst": 14,
+        "pointsPerMatch": 2.06,
+        "goalsForPerMatch": 1.69,
+        "goalsAgainstPerMatch": 0.88,
+        "goalDifferencePerMatch": 0.81
+      },
+      "away": {
+        "matches": 17,
+        "wins": 8,
+        "draws": 4,
+        "losses": 5,
+        "goalsFor": 25,
+        "goalsAgainst": 21,
+        "pointsPerMatch": 1.65,
+        "goalsForPerMatch": 1.47,
+        "goalsAgainstPerMatch": 1.24,
+        "goalDifferencePerMatch": 0.24
+      },
+      "recent10": {
+        "matches": 10,
+        "wins": 5,
+        "draws": 0,
+        "losses": 5,
+        "goalsFor": 17,
+        "goalsAgainst": 12,
+        "pointsPerMatch": 1.5,
+        "goalsForPerMatch": 1.7,
+        "goalsAgainstPerMatch": 1.2,
+        "goalDifferencePerMatch": 0.5
+      },
+      "recencyWeightedPointsPerMatch": 1.82,
+      "levelAdjustedPointsPerMatch": 1.82,
+      "averageOpponentPointsPerMatch": 1.3,
+      "progression": {
+        "label": "in calo",
+        "deltaAdjustedPointsPerMatch": -0.38
+      },
+      "byCompetition": {
+        "ucl": {
+          "matches": 33,
+          "wins": 18,
+          "draws": 7,
+          "losses": 8,
+          "goalsFor": 52,
+          "goalsAgainst": 35,
+          "pointsPerMatch": 1.85,
+          "goalsForPerMatch": 1.58,
+          "goalsAgainstPerMatch": 1.06,
+          "goalDifferencePerMatch": 0.52
+        },
+        "uel": {
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null
+        },
+        "uecl": {
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null
+        }
+      },
+      "bySeason": [
+        {
+          "season": "2023-24",
+          "matches": 8,
+          "wins": 4,
+          "draws": 3,
+          "losses": 1,
+          "goalsFor": 10,
+          "goalsAgainst": 7,
+          "pointsPerMatch": 1.88,
+          "goalsForPerMatch": 1.25,
+          "goalsAgainstPerMatch": 0.88,
+          "goalDifferencePerMatch": 0.38,
+          "levelAdjustedPointsPerMatch": 1.88
+        },
+        {
+          "season": "2024-25",
+          "matches": 15,
+          "wins": 9,
+          "draws": 4,
+          "losses": 2,
+          "goalsFor": 25,
+          "goalsAgainst": 16,
+          "pointsPerMatch": 2.07,
+          "goalsForPerMatch": 1.67,
+          "goalsAgainstPerMatch": 1.07,
+          "goalDifferencePerMatch": 0.6,
+          "levelAdjustedPointsPerMatch": 2.07
+        },
+        {
+          "season": "2025-26",
+          "matches": 10,
+          "wins": 5,
+          "draws": 0,
+          "losses": 5,
+          "goalsFor": 17,
+          "goalsAgainst": 12,
+          "pointsPerMatch": 1.5,
+          "goalsForPerMatch": 1.7,
+          "goalsAgainstPerMatch": 1.2,
+          "goalDifferencePerMatch": 0.5,
+          "levelAdjustedPointsPerMatch": 1.5
+        }
+      ]
+    },
+    {
+      "team": "Atlético de Madrid",
+      "uefaTeamId": "50124",
+      "coverage": "sufficient",
+      "seasonsPlayed": 3,
+      "competitionsPlayed": [
+        "UCL"
+      ],
+      "overall": {
+        "matches": 36,
+        "wins": 20,
+        "draws": 5,
+        "losses": 11,
+        "goalsFor": 80,
+        "goalsAgainst": 55,
+        "pointsPerMatch": 1.81,
+        "goalsForPerMatch": 2.22,
+        "goalsAgainstPerMatch": 1.53,
+        "goalDifferencePerMatch": 0.69
+      },
+      "home": {
+        "matches": 18,
+        "wins": 14,
+        "draws": 1,
+        "losses": 3,
+        "goalsFor": 46,
+        "goalsAgainst": 21,
+        "pointsPerMatch": 2.39,
+        "goalsForPerMatch": 2.56,
+        "goalsAgainstPerMatch": 1.17,
+        "goalDifferencePerMatch": 1.39
+      },
+      "away": {
+        "matches": 18,
+        "wins": 6,
+        "draws": 4,
+        "losses": 8,
+        "goalsFor": 34,
+        "goalsAgainst": 34,
+        "pointsPerMatch": 1.22,
+        "goalsForPerMatch": 1.89,
+        "goalsAgainstPerMatch": 1.89,
+        "goalDifferencePerMatch": 0
+      },
+      "recent10": {
+        "matches": 10,
+        "wins": 3,
+        "draws": 3,
+        "losses": 4,
+        "goalsFor": 20,
+        "goalsAgainst": 16,
+        "pointsPerMatch": 1.2,
+        "goalsForPerMatch": 2,
+        "goalsAgainstPerMatch": 1.6,
+        "goalDifferencePerMatch": 0.4
+      },
+      "recencyWeightedPointsPerMatch": 1.76,
+      "levelAdjustedPointsPerMatch": 1.76,
+      "averageOpponentPointsPerMatch": 1.43,
+      "progression": {
+        "label": "in calo",
+        "deltaAdjustedPointsPerMatch": -0.5
+      },
+      "byCompetition": {
+        "ucl": {
+          "matches": 36,
+          "wins": 20,
+          "draws": 5,
+          "losses": 11,
+          "goalsFor": 80,
+          "goalsAgainst": 55,
+          "pointsPerMatch": 1.81,
+          "goalsForPerMatch": 2.22,
+          "goalsAgainstPerMatch": 1.53,
+          "goalDifferencePerMatch": 0.69
+        },
+        "uel": {
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null
+        },
+        "uecl": {
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null
+        }
+      },
+      "bySeason": [
+        {
+          "season": "2023-24",
+          "matches": 10,
+          "wins": 6,
+          "draws": 2,
+          "losses": 2,
+          "goalsFor": 23,
+          "goalsAgainst": 13,
+          "pointsPerMatch": 2,
+          "goalsForPerMatch": 2.3,
+          "goalsAgainstPerMatch": 1.3,
+          "goalDifferencePerMatch": 1,
+          "levelAdjustedPointsPerMatch": 2
+        },
+        {
+          "season": "2024-25",
+          "matches": 10,
+          "wins": 7,
+          "draws": 0,
+          "losses": 3,
+          "goalsFor": 22,
+          "goalsAgainst": 14,
+          "pointsPerMatch": 2.1,
+          "goalsForPerMatch": 2.2,
+          "goalsAgainstPerMatch": 1.4,
+          "goalDifferencePerMatch": 0.8,
+          "levelAdjustedPointsPerMatch": 2.1
+        },
+        {
+          "season": "2025-26",
+          "matches": 16,
+          "wins": 7,
+          "draws": 3,
+          "losses": 6,
+          "goalsFor": 35,
+          "goalsAgainst": 28,
+          "pointsPerMatch": 1.5,
+          "goalsForPerMatch": 2.19,
+          "goalsAgainstPerMatch": 1.75,
+          "goalDifferencePerMatch": 0.44,
+          "levelAdjustedPointsPerMatch": 1.5
+        }
+      ]
+    },
+    {
+      "team": "Borussia Dortmund",
+      "uefaTeamId": "52758",
+      "coverage": "sufficient",
+      "seasonsPlayed": 3,
+      "competitionsPlayed": [
+        "UCL"
+      ],
+      "overall": {
+        "matches": 37,
+        "wins": 19,
+        "draws": 7,
+        "losses": 11,
+        "goalsFor": 70,
+        "goalsAgainst": 51,
+        "pointsPerMatch": 1.73,
+        "goalsForPerMatch": 1.89,
+        "goalsAgainstPerMatch": 1.38,
+        "goalDifferencePerMatch": 0.51
+      },
+      "home": {
+        "matches": 19,
+        "wins": 11,
+        "draws": 5,
+        "losses": 3,
+        "goalsFor": 39,
+        "goalsAgainst": 17,
+        "pointsPerMatch": 2,
+        "goalsForPerMatch": 2.05,
+        "goalsAgainstPerMatch": 0.89,
+        "goalDifferencePerMatch": 1.16
+      },
+      "away": {
+        "matches": 18,
+        "wins": 8,
+        "draws": 2,
+        "losses": 8,
+        "goalsFor": 31,
+        "goalsAgainst": 34,
+        "pointsPerMatch": 1.44,
+        "goalsForPerMatch": 1.72,
+        "goalsAgainstPerMatch": 1.89,
+        "goalDifferencePerMatch": -0.17
+      },
+      "recent10": {
+        "matches": 10,
+        "wins": 4,
+        "draws": 2,
+        "losses": 4,
+        "goalsFor": 22,
+        "goalsAgainst": 21,
+        "pointsPerMatch": 1.4,
+        "goalsForPerMatch": 2.2,
+        "goalsAgainstPerMatch": 2.1,
+        "goalDifferencePerMatch": 0.1
+      },
+      "recencyWeightedPointsPerMatch": 1.7,
+      "levelAdjustedPointsPerMatch": 1.7,
+      "averageOpponentPointsPerMatch": 1.41,
+      "progression": {
+        "label": "in calo",
+        "deltaAdjustedPointsPerMatch": -0.45
+      },
+      "byCompetition": {
+        "ucl": {
+          "matches": 37,
+          "wins": 19,
+          "draws": 7,
+          "losses": 11,
+          "goalsFor": 70,
+          "goalsAgainst": 51,
+          "pointsPerMatch": 1.73,
+          "goalsForPerMatch": 1.89,
+          "goalsAgainstPerMatch": 1.38,
+          "goalDifferencePerMatch": 0.51
+        },
+        "uel": {
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null
+        },
+        "uecl": {
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null
+        }
+      },
+      "bySeason": [
+        {
+          "season": "2023-24",
+          "matches": 13,
+          "wins": 7,
+          "draws": 3,
+          "losses": 3,
+          "goalsFor": 17,
+          "goalsAgainst": 11,
+          "pointsPerMatch": 1.85,
+          "goalsForPerMatch": 1.31,
+          "goalsAgainstPerMatch": 0.85,
+          "goalDifferencePerMatch": 0.46,
+          "levelAdjustedPointsPerMatch": 1.85
+        },
+        {
+          "season": "2024-25",
+          "matches": 14,
+          "wins": 8,
+          "draws": 2,
+          "losses": 4,
+          "goalsFor": 31,
+          "goalsAgainst": 19,
+          "pointsPerMatch": 1.86,
+          "goalsForPerMatch": 2.21,
+          "goalsAgainstPerMatch": 1.36,
+          "goalDifferencePerMatch": 0.86,
+          "levelAdjustedPointsPerMatch": 1.86
+        },
+        {
+          "season": "2025-26",
+          "matches": 10,
+          "wins": 4,
+          "draws": 2,
+          "losses": 4,
+          "goalsFor": 22,
+          "goalsAgainst": 21,
+          "pointsPerMatch": 1.4,
+          "goalsForPerMatch": 2.2,
+          "goalsAgainstPerMatch": 2.1,
+          "goalDifferencePerMatch": 0.1,
+          "levelAdjustedPointsPerMatch": 1.4
+        }
+      ]
+    },
+    {
+      "team": "Manchester City",
+      "uefaTeamId": "52919",
+      "coverage": "sufficient",
+      "seasonsPlayed": 3,
+      "competitionsPlayed": [
+        "UCL"
+      ],
+      "overall": {
+        "matches": 30,
+        "wins": 16,
+        "draws": 5,
+        "losses": 9,
+        "goalsFor": 65,
+        "goalsAgainst": 47,
+        "pointsPerMatch": 1.77,
+        "goalsForPerMatch": 2.17,
+        "goalsAgainstPerMatch": 1.57,
+        "goalDifferencePerMatch": 0.6
+      },
+      "home": {
+        "matches": 15,
+        "wins": 9,
+        "draws": 3,
+        "losses": 3,
+        "goalsFor": 35,
+        "goalsAgainst": 17,
+        "pointsPerMatch": 2,
+        "goalsForPerMatch": 2.33,
+        "goalsAgainstPerMatch": 1.13,
+        "goalDifferencePerMatch": 1.2
+      },
+      "away": {
+        "matches": 15,
+        "wins": 7,
+        "draws": 2,
+        "losses": 6,
+        "goalsFor": 30,
+        "goalsAgainst": 30,
+        "pointsPerMatch": 1.53,
+        "goalsForPerMatch": 2,
+        "goalsAgainstPerMatch": 2,
+        "goalDifferencePerMatch": 0
+      },
+      "recent10": {
+        "matches": 10,
+        "wins": 5,
+        "draws": 1,
+        "losses": 4,
+        "goalsFor": 16,
+        "goalsAgainst": 14,
+        "pointsPerMatch": 1.6,
+        "goalsForPerMatch": 1.6,
+        "goalsAgainstPerMatch": 1.4,
+        "goalDifferencePerMatch": 0.2
+      },
+      "recencyWeightedPointsPerMatch": 1.68,
+      "levelAdjustedPointsPerMatch": 1.68,
+      "averageOpponentPointsPerMatch": 1.3,
+      "progression": {
+        "label": "in calo",
+        "deltaAdjustedPointsPerMatch": -1
+      },
+      "byCompetition": {
+        "ucl": {
+          "matches": 30,
+          "wins": 16,
+          "draws": 5,
+          "losses": 9,
+          "goalsFor": 65,
+          "goalsAgainst": 47,
+          "pointsPerMatch": 1.77,
+          "goalsForPerMatch": 2.17,
+          "goalsAgainstPerMatch": 1.57,
+          "goalDifferencePerMatch": 0.6
+        },
+        "uel": {
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null
+        },
+        "uecl": {
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null
+        }
+      },
+      "bySeason": [
+        {
+          "season": "2023-24",
+          "matches": 10,
+          "wins": 8,
+          "draws": 2,
+          "losses": 0,
+          "goalsFor": 28,
+          "goalsAgainst": 13,
+          "pointsPerMatch": 2.6,
+          "goalsForPerMatch": 2.8,
+          "goalsAgainstPerMatch": 1.3,
+          "goalDifferencePerMatch": 1.5,
+          "levelAdjustedPointsPerMatch": 2.6
+        },
+        {
+          "season": "2024-25",
+          "matches": 10,
+          "wins": 3,
+          "draws": 2,
+          "losses": 5,
+          "goalsFor": 21,
+          "goalsAgainst": 20,
+          "pointsPerMatch": 1.1,
+          "goalsForPerMatch": 2.1,
+          "goalsAgainstPerMatch": 2,
+          "goalDifferencePerMatch": 0.1,
+          "levelAdjustedPointsPerMatch": 1.1
+        },
+        {
+          "season": "2025-26",
+          "matches": 10,
+          "wins": 5,
+          "draws": 1,
+          "losses": 4,
+          "goalsFor": 16,
+          "goalsAgainst": 14,
+          "pointsPerMatch": 1.6,
+          "goalsForPerMatch": 1.6,
+          "goalsAgainstPerMatch": 1.4,
+          "goalDifferencePerMatch": 0.2,
+          "levelAdjustedPointsPerMatch": 1.6
+        }
+      ]
+    },
+    {
+      "team": "Sporting CP",
+      "uefaTeamId": "50149",
+      "coverage": "sufficient",
+      "seasonsPlayed": 3,
+      "competitionsPlayed": [
+        "UCL",
+        "UEL"
+      ],
+      "overall": {
+        "matches": 32,
+        "wins": 13,
+        "draws": 9,
+        "losses": 10,
+        "goalsFor": 49,
+        "goalsAgainst": 41,
+        "pointsPerMatch": 1.5,
+        "goalsForPerMatch": 1.53,
+        "goalsAgainstPerMatch": 1.28,
+        "goalDifferencePerMatch": 0.25
+      },
+      "home": {
+        "matches": 16,
+        "wins": 9,
+        "draws": 3,
+        "losses": 4,
+        "goalsFor": 30,
+        "goalsAgainst": 19,
+        "pointsPerMatch": 1.88,
+        "goalsForPerMatch": 1.88,
+        "goalsAgainstPerMatch": 1.19,
+        "goalDifferencePerMatch": 0.69
+      },
+      "away": {
+        "matches": 16,
+        "wins": 4,
+        "draws": 6,
+        "losses": 6,
+        "goalsFor": 19,
+        "goalsAgainst": 22,
+        "pointsPerMatch": 1.13,
+        "goalsForPerMatch": 1.19,
+        "goalsAgainstPerMatch": 1.38,
+        "goalDifferencePerMatch": -0.19
+      },
+      "recent10": {
+        "matches": 10,
+        "wins": 5,
+        "draws": 2,
+        "losses": 3,
+        "goalsFor": 15,
+        "goalsAgainst": 12,
+        "pointsPerMatch": 1.7,
+        "goalsForPerMatch": 1.5,
+        "goalsAgainstPerMatch": 1.2,
+        "goalDifferencePerMatch": 0.3
+      },
+      "recencyWeightedPointsPerMatch": 1.51,
+      "levelAdjustedPointsPerMatch": 1.43,
+      "averageOpponentPointsPerMatch": 1.38,
+      "progression": {
+        "label": "in crescita",
+        "deltaAdjustedPointsPerMatch": 0.42
+      },
+      "byCompetition": {
+        "ucl": {
+          "matches": 22,
+          "wins": 9,
+          "draws": 5,
+          "losses": 8,
+          "goalsFor": 33,
+          "goalsAgainst": 30,
+          "pointsPerMatch": 1.45,
+          "goalsForPerMatch": 1.5,
+          "goalsAgainstPerMatch": 1.36,
+          "goalDifferencePerMatch": 0.14
+        },
+        "uel": {
+          "matches": 10,
+          "wins": 4,
+          "draws": 4,
+          "losses": 2,
+          "goalsFor": 16,
+          "goalsAgainst": 11,
+          "pointsPerMatch": 1.6,
+          "goalsForPerMatch": 1.6,
+          "goalsAgainstPerMatch": 1.1,
+          "goalDifferencePerMatch": 0.5
+        },
+        "uecl": {
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null
+        }
+      },
+      "bySeason": [
+        {
+          "season": "2023-24",
+          "matches": 10,
+          "wins": 4,
+          "draws": 4,
+          "losses": 2,
+          "goalsFor": 16,
+          "goalsAgainst": 11,
+          "pointsPerMatch": 1.6,
+          "goalsForPerMatch": 1.6,
+          "goalsAgainstPerMatch": 1.1,
+          "goalDifferencePerMatch": 0.5,
+          "levelAdjustedPointsPerMatch": 1.25
+        },
+        {
+          "season": "2024-25",
+          "matches": 10,
+          "wins": 3,
+          "draws": 3,
+          "losses": 4,
+          "goalsFor": 13,
+          "goalsAgainst": 15,
+          "pointsPerMatch": 1.2,
+          "goalsForPerMatch": 1.3,
+          "goalsAgainstPerMatch": 1.5,
+          "goalDifferencePerMatch": -0.2,
+          "levelAdjustedPointsPerMatch": 1.2
+        },
+        {
+          "season": "2025-26",
+          "matches": 12,
+          "wins": 6,
+          "draws": 2,
+          "losses": 4,
+          "goalsFor": 20,
+          "goalsAgainst": 15,
+          "pointsPerMatch": 1.67,
+          "goalsForPerMatch": 1.67,
+          "goalsAgainstPerMatch": 1.25,
+          "goalDifferencePerMatch": 0.42,
+          "levelAdjustedPointsPerMatch": 1.67
+        }
+      ]
+    },
+    {
+      "team": "Porto",
+      "uefaTeamId": "50064",
+      "coverage": "sufficient",
+      "seasonsPlayed": 3,
+      "competitionsPlayed": [
+        "UCL",
+        "UEL"
+      ],
+      "overall": {
+        "matches": 30,
+        "wins": 15,
+        "draws": 6,
+        "losses": 9,
+        "goalsFor": 50,
+        "goalsAgainst": 34,
+        "pointsPerMatch": 1.7,
+        "goalsForPerMatch": 1.67,
+        "goalsAgainstPerMatch": 1.13,
+        "goalDifferencePerMatch": 0.53
+      },
+      "home": {
+        "matches": 15,
+        "wins": 10,
+        "draws": 3,
+        "losses": 2,
+        "goalsFor": 29,
+        "goalsAgainst": 13,
+        "pointsPerMatch": 2.2,
+        "goalsForPerMatch": 1.93,
+        "goalsAgainstPerMatch": 0.87,
+        "goalDifferencePerMatch": 1.07
+      },
+      "away": {
+        "matches": 15,
+        "wins": 5,
+        "draws": 3,
+        "losses": 7,
+        "goalsFor": 21,
+        "goalsAgainst": 21,
+        "pointsPerMatch": 1.2,
+        "goalsForPerMatch": 1.4,
+        "goalsAgainstPerMatch": 1.4,
+        "goalDifferencePerMatch": 0
+      },
+      "recent10": {
+        "matches": 10,
+        "wins": 5,
+        "draws": 3,
+        "losses": 2,
+        "goalsFor": 15,
+        "goalsAgainst": 9,
+        "pointsPerMatch": 1.8,
+        "goalsForPerMatch": 1.5,
+        "goalsAgainstPerMatch": 0.9,
+        "goalDifferencePerMatch": 0.6
+      },
+      "recencyWeightedPointsPerMatch": 1.72,
+      "levelAdjustedPointsPerMatch": 1.42,
+      "averageOpponentPointsPerMatch": 1.32,
+      "progression": {
+        "label": "in calo",
+        "deltaAdjustedPointsPerMatch": -0.32
+      },
+      "byCompetition": {
+        "ucl": {
+          "matches": 8,
+          "wins": 5,
+          "draws": 0,
+          "losses": 3,
+          "goalsFor": 16,
+          "goalsAgainst": 9,
+          "pointsPerMatch": 1.88,
+          "goalsForPerMatch": 2,
+          "goalsAgainstPerMatch": 1.13,
+          "goalDifferencePerMatch": 0.88
+        },
+        "uel": {
+          "matches": 22,
+          "wins": 10,
+          "draws": 6,
+          "losses": 6,
+          "goalsFor": 34,
+          "goalsAgainst": 25,
+          "pointsPerMatch": 1.64,
+          "goalsForPerMatch": 1.55,
+          "goalsAgainstPerMatch": 1.14,
+          "goalDifferencePerMatch": 0.41
+        },
+        "uecl": {
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null
+        }
+      },
+      "bySeason": [
+        {
+          "season": "2023-24",
+          "matches": 8,
+          "wins": 5,
+          "draws": 0,
+          "losses": 3,
+          "goalsFor": 16,
+          "goalsAgainst": 9,
+          "pointsPerMatch": 1.88,
+          "goalsForPerMatch": 2,
+          "goalsAgainstPerMatch": 1.13,
+          "goalDifferencePerMatch": 0.88,
+          "levelAdjustedPointsPerMatch": 1.88
+        },
+        {
+          "season": "2024-25",
+          "matches": 10,
+          "wins": 3,
+          "draws": 3,
+          "losses": 4,
+          "goalsFor": 16,
+          "goalsAgainst": 15,
+          "pointsPerMatch": 1.2,
+          "goalsForPerMatch": 1.6,
+          "goalsAgainstPerMatch": 1.5,
+          "goalDifferencePerMatch": 0.1,
+          "levelAdjustedPointsPerMatch": 0.94
+        },
+        {
+          "season": "2025-26",
+          "matches": 12,
+          "wins": 7,
+          "draws": 3,
+          "losses": 2,
+          "goalsFor": 18,
+          "goalsAgainst": 10,
+          "pointsPerMatch": 2,
+          "goalsForPerMatch": 1.5,
+          "goalsAgainstPerMatch": 0.83,
+          "goalDifferencePerMatch": 0.67,
+          "levelAdjustedPointsPerMatch": 1.56
+        }
+      ]
+    },
+    {
+      "team": "Manchester United",
+      "uefaTeamId": "52682",
+      "coverage": "sufficient",
+      "seasonsPlayed": 2,
+      "competitionsPlayed": [
+        "UCL",
+        "UEL"
+      ],
+      "overall": {
+        "matches": 21,
+        "wins": 9,
+        "draws": 7,
+        "losses": 5,
+        "goalsFor": 44,
+        "goalsAgainst": 32,
+        "pointsPerMatch": 1.62,
+        "goalsForPerMatch": 2.1,
+        "goalsAgainstPerMatch": 1.52,
+        "goalDifferencePerMatch": 0.57
+      },
+      "home": {
+        "matches": 10,
+        "wins": 6,
+        "draws": 2,
+        "losses": 2,
+        "goalsFor": 21,
+        "goalsAgainst": 12,
+        "pointsPerMatch": 2,
+        "goalsForPerMatch": 2.1,
+        "goalsAgainstPerMatch": 1.2,
+        "goalDifferencePerMatch": 0.9
+      },
+      "away": {
+        "matches": 11,
+        "wins": 3,
+        "draws": 5,
+        "losses": 3,
+        "goalsFor": 23,
+        "goalsAgainst": 20,
+        "pointsPerMatch": 1.27,
+        "goalsForPerMatch": 2.09,
+        "goalsAgainstPerMatch": 1.82,
+        "goalDifferencePerMatch": 0.27
+      },
+      "recent10": {
+        "matches": 10,
+        "wins": 6,
+        "draws": 3,
+        "losses": 1,
+        "goalsFor": 22,
+        "goalsAgainst": 10,
+        "pointsPerMatch": 2.1,
+        "goalsForPerMatch": 2.2,
+        "goalsAgainstPerMatch": 1,
+        "goalDifferencePerMatch": 1.2
+      },
+      "recencyWeightedPointsPerMatch": 1.69,
+      "levelAdjustedPointsPerMatch": 1.35,
+      "averageOpponentPointsPerMatch": 1.5,
+      "progression": {
+        "label": "in crescita",
+        "deltaAdjustedPointsPerMatch": 0.89
+      },
+      "byCompetition": {
+        "ucl": {
+          "matches": 6,
+          "wins": 1,
+          "draws": 1,
+          "losses": 4,
+          "goalsFor": 12,
+          "goalsAgainst": 15,
+          "pointsPerMatch": 0.67,
+          "goalsForPerMatch": 2,
+          "goalsAgainstPerMatch": 2.5,
+          "goalDifferencePerMatch": -0.5
+        },
+        "uel": {
+          "matches": 15,
+          "wins": 8,
+          "draws": 6,
+          "losses": 1,
+          "goalsFor": 32,
+          "goalsAgainst": 17,
+          "pointsPerMatch": 2,
+          "goalsForPerMatch": 2.13,
+          "goalsAgainstPerMatch": 1.13,
+          "goalDifferencePerMatch": 1
+        },
+        "uecl": {
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null
+        }
+      },
+      "bySeason": [
+        {
+          "season": "2023-24",
+          "matches": 6,
+          "wins": 1,
+          "draws": 1,
+          "losses": 4,
+          "goalsFor": 12,
+          "goalsAgainst": 15,
+          "pointsPerMatch": 0.67,
+          "goalsForPerMatch": 2,
+          "goalsAgainstPerMatch": 2.5,
+          "goalDifferencePerMatch": -0.5,
+          "levelAdjustedPointsPerMatch": 0.67
+        },
+        {
+          "season": "2024-25",
+          "matches": 15,
+          "wins": 8,
+          "draws": 6,
+          "losses": 1,
+          "goalsFor": 32,
+          "goalsAgainst": 17,
+          "pointsPerMatch": 2,
+          "goalsForPerMatch": 2.13,
+          "goalsAgainstPerMatch": 1.13,
+          "goalDifferencePerMatch": 1,
+          "levelAdjustedPointsPerMatch": 1.56
+        },
+        {
+          "season": "2025-26",
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null,
+          "levelAdjustedPointsPerMatch": null
+        }
+      ]
+    },
+    {
+      "team": "Roma",
+      "uefaTeamId": "50137",
+      "coverage": "sufficient",
+      "seasonsPlayed": 3,
+      "competitionsPlayed": [
+        "UEL"
+      ],
+      "overall": {
+        "matches": 36,
+        "wins": 17,
+        "draws": 11,
+        "losses": 8,
+        "goalsFor": 57,
+        "goalsAgainst": 35,
+        "pointsPerMatch": 1.72,
+        "goalsForPerMatch": 1.58,
+        "goalsAgainstPerMatch": 0.97,
+        "goalDifferencePerMatch": 0.61
+      },
+      "home": {
+        "matches": 18,
+        "wins": 12,
+        "draws": 3,
+        "losses": 3,
+        "goalsFor": 36,
+        "goalsAgainst": 15,
+        "pointsPerMatch": 2.17,
+        "goalsForPerMatch": 2,
+        "goalsAgainstPerMatch": 0.83,
+        "goalDifferencePerMatch": 1.17
+      },
+      "away": {
+        "matches": 18,
+        "wins": 5,
+        "draws": 8,
+        "losses": 5,
+        "goalsFor": 21,
+        "goalsAgainst": 20,
+        "pointsPerMatch": 1.28,
+        "goalsForPerMatch": 1.17,
+        "goalsAgainstPerMatch": 1.11,
+        "goalDifferencePerMatch": 0.06
+      },
+      "recent10": {
+        "matches": 10,
+        "wins": 5,
+        "draws": 3,
+        "losses": 2,
+        "goalsFor": 17,
+        "goalsAgainst": 10,
+        "pointsPerMatch": 1.8,
+        "goalsForPerMatch": 1.7,
+        "goalsAgainstPerMatch": 1,
+        "goalDifferencePerMatch": 0.7
+      },
+      "recencyWeightedPointsPerMatch": 1.72,
+      "levelAdjustedPointsPerMatch": 1.34,
+      "averageOpponentPointsPerMatch": 1.41,
+      "progression": {
+        "label": "stabile",
+        "deltaAdjustedPointsPerMatch": 0.01
+      },
+      "byCompetition": {
+        "ucl": {
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null
+        },
+        "uel": {
+          "matches": 36,
+          "wins": 17,
+          "draws": 11,
+          "losses": 8,
+          "goalsFor": 57,
+          "goalsAgainst": 35,
+          "pointsPerMatch": 1.72,
+          "goalsForPerMatch": 1.58,
+          "goalsAgainstPerMatch": 0.97,
+          "goalDifferencePerMatch": 0.61
+        },
+        "uecl": {
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null
+        }
+      },
+      "bySeason": [
+        {
+          "season": "2023-24",
+          "matches": 14,
+          "wins": 7,
+          "draws": 4,
+          "losses": 3,
+          "goalsFor": 23,
+          "goalsAgainst": 12,
+          "pointsPerMatch": 1.79,
+          "goalsForPerMatch": 1.64,
+          "goalsAgainstPerMatch": 0.86,
+          "goalDifferencePerMatch": 0.79,
+          "levelAdjustedPointsPerMatch": 1.39
+        },
+        {
+          "season": "2024-25",
+          "matches": 12,
+          "wins": 5,
+          "draws": 4,
+          "losses": 3,
+          "goalsFor": 17,
+          "goalsAgainst": 13,
+          "pointsPerMatch": 1.58,
+          "goalsForPerMatch": 1.42,
+          "goalsAgainstPerMatch": 1.08,
+          "goalDifferencePerMatch": 0.33,
+          "levelAdjustedPointsPerMatch": 1.23
+        },
+        {
+          "season": "2025-26",
+          "matches": 10,
+          "wins": 5,
+          "draws": 3,
+          "losses": 2,
+          "goalsFor": 17,
+          "goalsAgainst": 10,
+          "pointsPerMatch": 1.8,
+          "goalsForPerMatch": 1.7,
+          "goalsAgainstPerMatch": 1,
+          "goalDifferencePerMatch": 0.7,
+          "levelAdjustedPointsPerMatch": 1.4
+        }
+      ]
+    },
+    {
+      "team": "Club Brugge",
+      "uefaTeamId": "50043",
+      "coverage": "sufficient",
+      "seasonsPlayed": 3,
+      "competitionsPlayed": [
+        "UCL",
+        "UECL"
+      ],
+      "overall": {
+        "matches": 34,
+        "wins": 16,
+        "draws": 6,
+        "losses": 12,
+        "goalsFor": 57,
+        "goalsAgainst": 52,
+        "pointsPerMatch": 1.59,
+        "goalsForPerMatch": 1.68,
+        "goalsAgainstPerMatch": 1.53,
+        "goalDifferencePerMatch": 0.15
+      },
+      "home": {
+        "matches": 17,
+        "wins": 9,
+        "draws": 5,
+        "losses": 3,
+        "goalsFor": 30,
+        "goalsAgainst": 21,
+        "pointsPerMatch": 1.88,
+        "goalsForPerMatch": 1.76,
+        "goalsAgainstPerMatch": 1.24,
+        "goalDifferencePerMatch": 0.53
+      },
+      "away": {
+        "matches": 17,
+        "wins": 7,
+        "draws": 1,
+        "losses": 9,
+        "goalsFor": 27,
+        "goalsAgainst": 31,
+        "pointsPerMatch": 1.29,
+        "goalsForPerMatch": 1.59,
+        "goalsAgainstPerMatch": 1.82,
+        "goalDifferencePerMatch": -0.24
+      },
+      "recent10": {
+        "matches": 10,
+        "wins": 3,
+        "draws": 2,
+        "losses": 5,
+        "goalsFor": 19,
+        "goalsAgainst": 24,
+        "pointsPerMatch": 1.1,
+        "goalsForPerMatch": 1.9,
+        "goalsAgainstPerMatch": 2.4,
+        "goalDifferencePerMatch": -0.5
+      },
+      "recencyWeightedPointsPerMatch": 1.5,
+      "levelAdjustedPointsPerMatch": 1.28,
+      "averageOpponentPointsPerMatch": 1.51,
+      "progression": {
+        "label": "stabile",
+        "deltaAdjustedPointsPerMatch": -0.24
+      },
+      "byCompetition": {
+        "ucl": {
+          "matches": 22,
+          "wins": 8,
+          "draws": 4,
+          "losses": 10,
+          "goalsFor": 32,
+          "goalsAgainst": 43,
+          "pointsPerMatch": 1.27,
+          "goalsForPerMatch": 1.45,
+          "goalsAgainstPerMatch": 1.95,
+          "goalDifferencePerMatch": -0.5
+        },
+        "uel": {
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null
+        },
+        "uecl": {
+          "matches": 12,
+          "wins": 8,
+          "draws": 2,
+          "losses": 2,
+          "goalsFor": 25,
+          "goalsAgainst": 9,
+          "pointsPerMatch": 2.17,
+          "goalsForPerMatch": 2.08,
+          "goalsAgainstPerMatch": 0.75,
+          "goalDifferencePerMatch": 1.33
+        }
+      },
+      "bySeason": [
+        {
+          "season": "2023-24",
+          "matches": 12,
+          "wins": 8,
+          "draws": 2,
+          "losses": 2,
+          "goalsFor": 25,
+          "goalsAgainst": 9,
+          "pointsPerMatch": 2.17,
+          "goalsForPerMatch": 2.08,
+          "goalsAgainstPerMatch": 0.75,
+          "goalDifferencePerMatch": 1.33,
+          "levelAdjustedPointsPerMatch": 1.34
+        },
+        {
+          "season": "2024-25",
+          "matches": 12,
+          "wins": 5,
+          "draws": 2,
+          "losses": 5,
+          "goalsFor": 13,
+          "goalsAgainst": 19,
+          "pointsPerMatch": 1.42,
+          "goalsForPerMatch": 1.08,
+          "goalsAgainstPerMatch": 1.58,
+          "goalDifferencePerMatch": -0.5,
+          "levelAdjustedPointsPerMatch": 1.42
+        },
+        {
+          "season": "2025-26",
+          "matches": 10,
+          "wins": 3,
+          "draws": 2,
+          "losses": 5,
+          "goalsFor": 19,
+          "goalsAgainst": 24,
+          "pointsPerMatch": 1.1,
+          "goalsForPerMatch": 1.9,
+          "goalsAgainstPerMatch": 2.4,
+          "goalDifferencePerMatch": -0.5,
+          "levelAdjustedPointsPerMatch": 1.1
+        }
+      ]
+    },
+    {
+      "team": "Lille",
+      "uefaTeamId": "75797",
+      "coverage": "sufficient",
+      "seasonsPlayed": 3,
+      "competitionsPlayed": [
+        "UCL",
+        "UEL",
+        "UECL"
+      ],
+      "overall": {
+        "matches": 32,
+        "wins": 16,
+        "draws": 5,
+        "losses": 11,
+        "goalsFor": 49,
+        "goalsAgainst": 32,
+        "pointsPerMatch": 1.66,
+        "goalsForPerMatch": 1.53,
+        "goalsAgainstPerMatch": 1,
+        "goalDifferencePerMatch": 0.53
+      },
+      "home": {
+        "matches": 16,
+        "wins": 10,
+        "draws": 2,
+        "losses": 4,
+        "goalsFor": 32,
+        "goalsAgainst": 16,
+        "pointsPerMatch": 2,
+        "goalsForPerMatch": 2,
+        "goalsAgainstPerMatch": 1,
+        "goalDifferencePerMatch": 1
+      },
+      "away": {
+        "matches": 16,
+        "wins": 6,
+        "draws": 3,
+        "losses": 7,
+        "goalsFor": 17,
+        "goalsAgainst": 16,
+        "pointsPerMatch": 1.31,
+        "goalsForPerMatch": 1.06,
+        "goalsAgainstPerMatch": 1,
+        "goalDifferencePerMatch": 0.06
+      },
+      "recent10": {
+        "matches": 10,
+        "wins": 3,
+        "draws": 0,
+        "losses": 7,
+        "goalsFor": 10,
+        "goalsAgainst": 12,
+        "pointsPerMatch": 0.9,
+        "goalsForPerMatch": 1,
+        "goalsAgainstPerMatch": 1.2,
+        "goalDifferencePerMatch": -0.2
+      },
+      "recencyWeightedPointsPerMatch": 1.58,
+      "levelAdjustedPointsPerMatch": 1.27,
+      "averageOpponentPointsPerMatch": 1.51,
+      "progression": {
+        "label": "in calo",
+        "deltaAdjustedPointsPerMatch": -0.32
+      },
+      "byCompetition": {
+        "ucl": {
+          "matches": 10,
+          "wins": 5,
+          "draws": 2,
+          "losses": 3,
+          "goalsFor": 19,
+          "goalsAgainst": 13,
+          "pointsPerMatch": 1.7,
+          "goalsForPerMatch": 1.9,
+          "goalsAgainstPerMatch": 1.3,
+          "goalDifferencePerMatch": 0.6
+        },
+        "uel": {
+          "matches": 12,
+          "wins": 5,
+          "draws": 0,
+          "losses": 7,
+          "goalsFor": 13,
+          "goalsAgainst": 13,
+          "pointsPerMatch": 1.25,
+          "goalsForPerMatch": 1.08,
+          "goalsAgainstPerMatch": 1.08,
+          "goalDifferencePerMatch": 0
+        },
+        "uecl": {
+          "matches": 10,
+          "wins": 6,
+          "draws": 3,
+          "losses": 1,
+          "goalsFor": 17,
+          "goalsAgainst": 6,
+          "pointsPerMatch": 2.1,
+          "goalsForPerMatch": 1.7,
+          "goalsAgainstPerMatch": 0.6,
+          "goalDifferencePerMatch": 1.1
+        }
+      },
+      "bySeason": [
+        {
+          "season": "2023-24",
+          "matches": 10,
+          "wins": 6,
+          "draws": 3,
+          "losses": 1,
+          "goalsFor": 17,
+          "goalsAgainst": 6,
+          "pointsPerMatch": 2.1,
+          "goalsForPerMatch": 1.7,
+          "goalsAgainstPerMatch": 0.6,
+          "goalDifferencePerMatch": 1.1,
+          "levelAdjustedPointsPerMatch": 1.3
+        },
+        {
+          "season": "2024-25",
+          "matches": 10,
+          "wins": 5,
+          "draws": 2,
+          "losses": 3,
+          "goalsFor": 19,
+          "goalsAgainst": 13,
+          "pointsPerMatch": 1.7,
+          "goalsForPerMatch": 1.9,
+          "goalsAgainstPerMatch": 1.3,
+          "goalDifferencePerMatch": 0.6,
+          "levelAdjustedPointsPerMatch": 1.7
+        },
+        {
+          "season": "2025-26",
+          "matches": 12,
+          "wins": 5,
+          "draws": 0,
+          "losses": 7,
+          "goalsFor": 13,
+          "goalsAgainst": 13,
+          "pointsPerMatch": 1.25,
+          "goalsForPerMatch": 1.08,
+          "goalsAgainstPerMatch": 1.08,
+          "goalDifferencePerMatch": 0,
+          "levelAdjustedPointsPerMatch": 0.98
+        }
+      ]
+    },
+    {
+      "team": "PSV Eindhoven",
+      "uefaTeamId": "50062",
+      "coverage": "sufficient",
+      "seasonsPlayed": 3,
+      "competitionsPlayed": [
+        "UCL"
+      ],
+      "overall": {
+        "matches": 28,
+        "wins": 9,
+        "draws": 9,
+        "losses": 10,
+        "goalsFor": 47,
+        "goalsAgainst": 53,
+        "pointsPerMatch": 1.29,
+        "goalsForPerMatch": 1.68,
+        "goalsAgainstPerMatch": 1.89,
+        "goalDifferencePerMatch": -0.21
+      },
+      "home": {
+        "matches": 14,
+        "wins": 6,
+        "draws": 4,
+        "losses": 4,
+        "goalsFor": 29,
+        "goalsAgainst": 27,
+        "pointsPerMatch": 1.57,
+        "goalsForPerMatch": 2.07,
+        "goalsAgainstPerMatch": 1.93,
+        "goalDifferencePerMatch": 0.14
+      },
+      "away": {
+        "matches": 14,
+        "wins": 3,
+        "draws": 5,
+        "losses": 6,
+        "goalsFor": 18,
+        "goalsAgainst": 26,
+        "pointsPerMatch": 1,
+        "goalsForPerMatch": 1.29,
+        "goalsAgainstPerMatch": 1.86,
+        "goalDifferencePerMatch": -0.57
+      },
+      "recent10": {
+        "matches": 10,
+        "wins": 2,
+        "draws": 3,
+        "losses": 5,
+        "goalsFor": 19,
+        "goalsAgainst": 25,
+        "pointsPerMatch": 0.9,
+        "goalsForPerMatch": 1.9,
+        "goalsAgainstPerMatch": 2.5,
+        "goalDifferencePerMatch": -0.6
+      },
+      "recencyWeightedPointsPerMatch": 1.27,
+      "levelAdjustedPointsPerMatch": 1.27,
+      "averageOpponentPointsPerMatch": 1.43,
+      "progression": {
+        "label": "in calo",
+        "deltaAdjustedPointsPerMatch": -0.25
+      },
+      "byCompetition": {
+        "ucl": {
+          "matches": 28,
+          "wins": 9,
+          "draws": 9,
+          "losses": 10,
+          "goalsFor": 47,
+          "goalsAgainst": 53,
+          "pointsPerMatch": 1.29,
+          "goalsForPerMatch": 1.68,
+          "goalsAgainstPerMatch": 1.89,
+          "goalDifferencePerMatch": -0.21
+        },
+        "uel": {
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null
+        },
+        "uecl": {
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null
+        }
+      },
+      "bySeason": [
+        {
+          "season": "2023-24",
+          "matches": 8,
+          "wins": 2,
+          "draws": 4,
+          "losses": 2,
+          "goalsFor": 9,
+          "goalsAgainst": 13,
+          "pointsPerMatch": 1.25,
+          "goalsForPerMatch": 1.13,
+          "goalsAgainstPerMatch": 1.63,
+          "goalDifferencePerMatch": -0.5,
+          "levelAdjustedPointsPerMatch": 1.25
+        },
+        {
+          "season": "2024-25",
+          "matches": 12,
+          "wins": 5,
+          "draws": 3,
+          "losses": 4,
+          "goalsFor": 22,
+          "goalsAgainst": 24,
+          "pointsPerMatch": 1.5,
+          "goalsForPerMatch": 1.83,
+          "goalsAgainstPerMatch": 2,
+          "goalDifferencePerMatch": -0.17,
+          "levelAdjustedPointsPerMatch": 1.5
+        },
+        {
+          "season": "2025-26",
+          "matches": 8,
+          "wins": 2,
+          "draws": 2,
+          "losses": 4,
+          "goalsFor": 16,
+          "goalsAgainst": 16,
+          "pointsPerMatch": 1,
+          "goalsForPerMatch": 2,
+          "goalsAgainstPerMatch": 2,
+          "goalDifferencePerMatch": 0,
+          "levelAdjustedPointsPerMatch": 1
+        }
+      ]
+    },
+    {
+      "team": "Bodø/Glimt",
+      "uefaTeamId": "59333",
+      "coverage": "sufficient",
+      "seasonsPlayed": 3,
+      "competitionsPlayed": [
+        "UCL",
+        "UEL",
+        "UECL"
+      ],
+      "overall": {
+        "matches": 36,
+        "wins": 15,
+        "draws": 8,
+        "losses": 13,
+        "goalsFor": 61,
+        "goalsAgainst": 55,
+        "pointsPerMatch": 1.47,
+        "goalsForPerMatch": 1.69,
+        "goalsAgainstPerMatch": 1.53,
+        "goalDifferencePerMatch": 0.17
+      },
+      "home": {
+        "matches": 18,
+        "wins": 11,
+        "draws": 2,
+        "losses": 5,
+        "goalsFor": 39,
+        "goalsAgainst": 23,
+        "pointsPerMatch": 1.94,
+        "goalsForPerMatch": 2.17,
+        "goalsAgainstPerMatch": 1.28,
+        "goalDifferencePerMatch": 0.89
+      },
+      "away": {
+        "matches": 18,
+        "wins": 4,
+        "draws": 6,
+        "losses": 8,
+        "goalsFor": 22,
+        "goalsAgainst": 32,
+        "pointsPerMatch": 1,
+        "goalsForPerMatch": 1.22,
+        "goalsAgainstPerMatch": 1.78,
+        "goalDifferencePerMatch": -0.56
+      },
+      "recent10": {
+        "matches": 10,
+        "wins": 5,
+        "draws": 1,
+        "losses": 4,
+        "goalsFor": 18,
+        "goalsAgainst": 16,
+        "pointsPerMatch": 1.6,
+        "goalsForPerMatch": 1.8,
+        "goalsAgainstPerMatch": 1.6,
+        "goalDifferencePerMatch": 0.2
+      },
+      "recencyWeightedPointsPerMatch": 1.47,
+      "levelAdjustedPointsPerMatch": 1.24,
+      "averageOpponentPointsPerMatch": 1.37,
+      "progression": {
+        "label": "in crescita",
+        "deltaAdjustedPointsPerMatch": 0.57
+      },
+      "byCompetition": {
+        "ucl": {
+          "matches": 12,
+          "wins": 5,
+          "draws": 3,
+          "losses": 4,
+          "goalsFor": 22,
+          "goalsAgainst": 20,
+          "pointsPerMatch": 1.5,
+          "goalsForPerMatch": 1.83,
+          "goalsAgainstPerMatch": 1.67,
+          "goalDifferencePerMatch": 0.17
+        },
+        "uel": {
+          "matches": 16,
+          "wins": 7,
+          "draws": 2,
+          "losses": 7,
+          "goalsFor": 25,
+          "goalsAgainst": 24,
+          "pointsPerMatch": 1.44,
+          "goalsForPerMatch": 1.56,
+          "goalsAgainstPerMatch": 1.5,
+          "goalDifferencePerMatch": 0.06
+        },
+        "uecl": {
+          "matches": 8,
+          "wins": 3,
+          "draws": 3,
+          "losses": 2,
+          "goalsFor": 14,
+          "goalsAgainst": 11,
+          "pointsPerMatch": 1.5,
+          "goalsForPerMatch": 1.75,
+          "goalsAgainstPerMatch": 1.38,
+          "goalDifferencePerMatch": 0.38
+        }
+      },
+      "bySeason": [
+        {
+          "season": "2023-24",
+          "matches": 8,
+          "wins": 3,
+          "draws": 3,
+          "losses": 2,
+          "goalsFor": 14,
+          "goalsAgainst": 11,
+          "pointsPerMatch": 1.5,
+          "goalsForPerMatch": 1.75,
+          "goalsAgainstPerMatch": 1.38,
+          "goalDifferencePerMatch": 0.38,
+          "levelAdjustedPointsPerMatch": 0.93
+        },
+        {
+          "season": "2024-25",
+          "matches": 16,
+          "wins": 7,
+          "draws": 2,
+          "losses": 7,
+          "goalsFor": 25,
+          "goalsAgainst": 24,
+          "pointsPerMatch": 1.44,
+          "goalsForPerMatch": 1.56,
+          "goalsAgainstPerMatch": 1.5,
+          "goalDifferencePerMatch": 0.06,
+          "levelAdjustedPointsPerMatch": 1.12
+        },
+        {
+          "season": "2025-26",
+          "matches": 12,
+          "wins": 5,
+          "draws": 3,
+          "losses": 4,
+          "goalsFor": 22,
+          "goalsAgainst": 20,
+          "pointsPerMatch": 1.5,
+          "goalsForPerMatch": 1.83,
+          "goalsAgainstPerMatch": 1.67,
+          "goalDifferencePerMatch": 0.17,
+          "levelAdjustedPointsPerMatch": 1.5
+        }
+      ]
+    },
+    {
+      "team": "Lens",
+      "uefaTeamId": "52277",
+      "coverage": "limited",
+      "seasonsPlayed": 1,
+      "competitionsPlayed": [
+        "UCL",
+        "UEL"
+      ],
+      "overall": {
+        "matches": 8,
+        "wins": 2,
+        "draws": 4,
+        "losses": 2,
+        "goalsFor": 8,
+        "goalsAgainst": 13,
+        "pointsPerMatch": 1.25,
+        "goalsForPerMatch": 1,
+        "goalsAgainstPerMatch": 1.63,
+        "goalDifferencePerMatch": -0.62
+      },
+      "home": {
+        "matches": 4,
+        "wins": 2,
+        "draws": 2,
+        "losses": 0,
+        "goalsFor": 5,
+        "goalsAgainst": 3,
+        "pointsPerMatch": 2,
+        "goalsForPerMatch": 1.25,
+        "goalsAgainstPerMatch": 0.75,
+        "goalDifferencePerMatch": 0.5
+      },
+      "away": {
+        "matches": 4,
+        "wins": 0,
+        "draws": 2,
+        "losses": 2,
+        "goalsFor": 3,
+        "goalsAgainst": 10,
+        "pointsPerMatch": 0.5,
+        "goalsForPerMatch": 0.75,
+        "goalsAgainstPerMatch": 2.5,
+        "goalDifferencePerMatch": -1.75
+      },
+      "recent10": {
+        "matches": 8,
+        "wins": 2,
+        "draws": 4,
+        "losses": 2,
+        "goalsFor": 8,
+        "goalsAgainst": 13,
+        "pointsPerMatch": 1.25,
+        "goalsForPerMatch": 1,
+        "goalsAgainstPerMatch": 1.63,
+        "goalDifferencePerMatch": -0.62
+      },
+      "recencyWeightedPointsPerMatch": 1.25,
+      "levelAdjustedPointsPerMatch": 1.2,
+      "averageOpponentPointsPerMatch": 1.25,
+      "progression": {
+        "label": "N/D",
+        "deltaAdjustedPointsPerMatch": null
+      },
+      "byCompetition": {
+        "ucl": {
+          "matches": 6,
+          "wins": 2,
+          "draws": 2,
+          "losses": 2,
+          "goalsFor": 6,
+          "goalsAgainst": 11,
+          "pointsPerMatch": 1.33,
+          "goalsForPerMatch": 1,
+          "goalsAgainstPerMatch": 1.83,
+          "goalDifferencePerMatch": -0.83
+        },
+        "uel": {
+          "matches": 2,
+          "wins": 0,
+          "draws": 2,
+          "losses": 0,
+          "goalsFor": 2,
+          "goalsAgainst": 2,
+          "pointsPerMatch": 1,
+          "goalsForPerMatch": 1,
+          "goalsAgainstPerMatch": 1,
+          "goalDifferencePerMatch": 0
+        },
+        "uecl": {
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null
+        }
+      },
+      "bySeason": [
+        {
+          "season": "2023-24",
+          "matches": 8,
+          "wins": 2,
+          "draws": 4,
+          "losses": 2,
+          "goalsFor": 8,
+          "goalsAgainst": 13,
+          "pointsPerMatch": 1.25,
+          "goalsForPerMatch": 1,
+          "goalsAgainstPerMatch": 1.63,
+          "goalDifferencePerMatch": -0.62,
+          "levelAdjustedPointsPerMatch": 1.19
+        },
+        {
+          "season": "2024-25",
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null,
+          "levelAdjustedPointsPerMatch": null
+        },
+        {
+          "season": "2025-26",
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null,
+          "levelAdjustedPointsPerMatch": null
+        }
+      ]
+    },
+    {
+      "team": "Stuttgart",
+      "uefaTeamId": "50107",
+      "coverage": "sufficient",
+      "seasonsPlayed": 2,
+      "competitionsPlayed": [
+        "UCL",
+        "UEL"
+      ],
+      "overall": {
+        "matches": 20,
+        "wins": 9,
+        "draws": 1,
+        "losses": 10,
+        "goalsFor": 33,
+        "goalsAgainst": 32,
+        "pointsPerMatch": 1.4,
+        "goalsForPerMatch": 1.65,
+        "goalsAgainstPerMatch": 1.6,
+        "goalDifferencePerMatch": 0.05
+      },
+      "home": {
+        "matches": 10,
+        "wins": 5,
+        "draws": 1,
+        "losses": 4,
+        "goalsFor": 19,
+        "goalsAgainst": 15,
+        "pointsPerMatch": 1.6,
+        "goalsForPerMatch": 1.9,
+        "goalsAgainstPerMatch": 1.5,
+        "goalDifferencePerMatch": 0.4
+      },
+      "away": {
+        "matches": 10,
+        "wins": 4,
+        "draws": 0,
+        "losses": 6,
+        "goalsFor": 14,
+        "goalsAgainst": 17,
+        "pointsPerMatch": 1.2,
+        "goalsForPerMatch": 1.4,
+        "goalsAgainstPerMatch": 1.7,
+        "goalDifferencePerMatch": -0.3
+      },
+      "recent10": {
+        "matches": 10,
+        "wins": 5,
+        "draws": 0,
+        "losses": 5,
+        "goalsFor": 18,
+        "goalsAgainst": 12,
+        "pointsPerMatch": 1.5,
+        "goalsForPerMatch": 1.8,
+        "goalsAgainstPerMatch": 1.2,
+        "goalDifferencePerMatch": 0.6
+      },
+      "recencyWeightedPointsPerMatch": 1.41,
+      "levelAdjustedPointsPerMatch": 1.2,
+      "averageOpponentPointsPerMatch": 1.17,
+      "progression": {
+        "label": "stabile",
+        "deltaAdjustedPointsPerMatch": -0.08
+      },
+      "byCompetition": {
+        "ucl": {
+          "matches": 8,
+          "wins": 3,
+          "draws": 1,
+          "losses": 4,
+          "goalsFor": 13,
+          "goalsAgainst": 17,
+          "pointsPerMatch": 1.25,
+          "goalsForPerMatch": 1.63,
+          "goalsAgainstPerMatch": 2.13,
+          "goalDifferencePerMatch": -0.5
+        },
+        "uel": {
+          "matches": 12,
+          "wins": 6,
+          "draws": 0,
+          "losses": 6,
+          "goalsFor": 20,
+          "goalsAgainst": 15,
+          "pointsPerMatch": 1.5,
+          "goalsForPerMatch": 1.67,
+          "goalsAgainstPerMatch": 1.25,
+          "goalDifferencePerMatch": 0.42
+        },
+        "uecl": {
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null
+        }
+      },
+      "bySeason": [
+        {
+          "season": "2023-24",
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null,
+          "levelAdjustedPointsPerMatch": null
+        },
+        {
+          "season": "2024-25",
+          "matches": 8,
+          "wins": 3,
+          "draws": 1,
+          "losses": 4,
+          "goalsFor": 13,
+          "goalsAgainst": 17,
+          "pointsPerMatch": 1.25,
+          "goalsForPerMatch": 1.63,
+          "goalsAgainstPerMatch": 2.13,
+          "goalDifferencePerMatch": -0.5,
+          "levelAdjustedPointsPerMatch": 1.25
+        },
+        {
+          "season": "2025-26",
+          "matches": 12,
+          "wins": 6,
+          "draws": 0,
+          "losses": 6,
+          "goalsFor": 20,
+          "goalsAgainst": 15,
+          "pointsPerMatch": 1.5,
+          "goalsForPerMatch": 1.67,
+          "goalsAgainstPerMatch": 1.25,
+          "goalDifferencePerMatch": 0.42,
+          "levelAdjustedPointsPerMatch": 1.17
+        }
+      ]
+    },
+    {
+      "team": "Galatasaray",
+      "uefaTeamId": "50067",
+      "coverage": "sufficient",
+      "seasonsPlayed": 3,
+      "competitionsPlayed": [
+        "UCL",
+        "UEL"
+      ],
+      "overall": {
+        "matches": 30,
+        "wins": 10,
+        "draws": 8,
+        "losses": 12,
+        "goalsFor": 51,
+        "goalsAgainst": 61,
+        "pointsPerMatch": 1.27,
+        "goalsForPerMatch": 1.7,
+        "goalsAgainstPerMatch": 2.03,
+        "goalDifferencePerMatch": -0.33
+      },
+      "home": {
+        "matches": 15,
+        "wins": 8,
+        "draws": 5,
+        "losses": 2,
+        "goalsFor": 35,
+        "goalsAgainst": 26,
+        "pointsPerMatch": 1.93,
+        "goalsForPerMatch": 2.33,
+        "goalsAgainstPerMatch": 1.73,
+        "goalDifferencePerMatch": 0.6
+      },
+      "away": {
+        "matches": 15,
+        "wins": 2,
+        "draws": 3,
+        "losses": 10,
+        "goalsFor": 16,
+        "goalsAgainst": 35,
+        "pointsPerMatch": 0.6,
+        "goalsForPerMatch": 1.07,
+        "goalsAgainstPerMatch": 2.33,
+        "goalDifferencePerMatch": -1.27
+      },
+      "recent10": {
+        "matches": 10,
+        "wins": 4,
+        "draws": 1,
+        "losses": 5,
+        "goalsFor": 13,
+        "goalsAgainst": 15,
+        "pointsPerMatch": 1.3,
+        "goalsForPerMatch": 1.3,
+        "goalsAgainstPerMatch": 1.5,
+        "goalDifferencePerMatch": -0.2
+      },
+      "recencyWeightedPointsPerMatch": 1.29,
+      "levelAdjustedPointsPerMatch": 1.17,
+      "averageOpponentPointsPerMatch": 1.28,
+      "progression": {
+        "label": "in crescita",
+        "deltaAdjustedPointsPerMatch": 0.41
+      },
+      "byCompetition": {
+        "ucl": {
+          "matches": 18,
+          "wins": 6,
+          "draws": 3,
+          "losses": 9,
+          "goalsFor": 25,
+          "goalsAgainst": 33,
+          "pointsPerMatch": 1.17,
+          "goalsForPerMatch": 1.39,
+          "goalsAgainstPerMatch": 1.83,
+          "goalDifferencePerMatch": -0.44
+        },
+        "uel": {
+          "matches": 12,
+          "wins": 4,
+          "draws": 5,
+          "losses": 3,
+          "goalsFor": 26,
+          "goalsAgainst": 28,
+          "pointsPerMatch": 1.42,
+          "goalsForPerMatch": 2.17,
+          "goalsAgainstPerMatch": 2.33,
+          "goalDifferencePerMatch": -0.17
+        },
+        "uecl": {
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null
+        }
+      },
+      "bySeason": [
+        {
+          "season": "2023-24",
+          "matches": 8,
+          "wins": 2,
+          "draws": 2,
+          "losses": 4,
+          "goalsFor": 14,
+          "goalsAgainst": 19,
+          "pointsPerMatch": 1,
+          "goalsForPerMatch": 1.75,
+          "goalsAgainstPerMatch": 2.38,
+          "goalDifferencePerMatch": -0.62,
+          "levelAdjustedPointsPerMatch": 0.92
+        },
+        {
+          "season": "2024-25",
+          "matches": 10,
+          "wins": 3,
+          "draws": 5,
+          "losses": 2,
+          "goalsFor": 22,
+          "goalsAgainst": 22,
+          "pointsPerMatch": 1.4,
+          "goalsForPerMatch": 2.2,
+          "goalsAgainstPerMatch": 2.2,
+          "goalDifferencePerMatch": 0,
+          "levelAdjustedPointsPerMatch": 1.09
+        },
+        {
+          "season": "2025-26",
+          "matches": 12,
+          "wins": 5,
+          "draws": 1,
+          "losses": 6,
+          "goalsFor": 15,
+          "goalsAgainst": 20,
+          "pointsPerMatch": 1.33,
+          "goalsForPerMatch": 1.25,
+          "goalsAgainstPerMatch": 1.67,
+          "goalDifferencePerMatch": -0.42,
+          "levelAdjustedPointsPerMatch": 1.33
+        }
+      ]
+    },
+    {
+      "team": "Napoli",
+      "uefaTeamId": "50136",
+      "coverage": "sufficient",
+      "seasonsPlayed": 2,
+      "competitionsPlayed": [
+        "UCL"
+      ],
+      "overall": {
+        "matches": 16,
+        "wins": 5,
+        "draws": 4,
+        "losses": 7,
+        "goalsFor": 21,
+        "goalsAgainst": 28,
+        "pointsPerMatch": 1.19,
+        "goalsForPerMatch": 1.31,
+        "goalsAgainstPerMatch": 1.75,
+        "goalDifferencePerMatch": -0.44
+      },
+      "home": {
+        "matches": 8,
+        "wins": 3,
+        "draws": 3,
+        "losses": 2,
+        "goalsFor": 12,
+        "goalsAgainst": 9,
+        "pointsPerMatch": 1.5,
+        "goalsForPerMatch": 1.5,
+        "goalsAgainstPerMatch": 1.13,
+        "goalDifferencePerMatch": 0.38
+      },
+      "away": {
+        "matches": 8,
+        "wins": 2,
+        "draws": 1,
+        "losses": 5,
+        "goalsFor": 9,
+        "goalsAgainst": 19,
+        "pointsPerMatch": 0.88,
+        "goalsForPerMatch": 1.13,
+        "goalsAgainstPerMatch": 2.38,
+        "goalDifferencePerMatch": -1.25
+      },
+      "recent10": {
+        "matches": 10,
+        "wins": 2,
+        "draws": 3,
+        "losses": 5,
+        "goalsFor": 11,
+        "goalsAgainst": 19,
+        "pointsPerMatch": 0.9,
+        "goalsForPerMatch": 1.1,
+        "goalsAgainstPerMatch": 1.9,
+        "goalDifferencePerMatch": -0.8
+      },
+      "recencyWeightedPointsPerMatch": 1.14,
+      "levelAdjustedPointsPerMatch": 1.14,
+      "averageOpponentPointsPerMatch": 1.24,
+      "progression": {
+        "label": "in calo",
+        "deltaAdjustedPointsPerMatch": -0.38
+      },
+      "byCompetition": {
+        "ucl": {
+          "matches": 16,
+          "wins": 5,
+          "draws": 4,
+          "losses": 7,
+          "goalsFor": 21,
+          "goalsAgainst": 28,
+          "pointsPerMatch": 1.19,
+          "goalsForPerMatch": 1.31,
+          "goalsAgainstPerMatch": 1.75,
+          "goalDifferencePerMatch": -0.44
+        },
+        "uel": {
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null
+        },
+        "uecl": {
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null
+        }
+      },
+      "bySeason": [
+        {
+          "season": "2023-24",
+          "matches": 8,
+          "wins": 3,
+          "draws": 2,
+          "losses": 3,
+          "goalsFor": 12,
+          "goalsAgainst": 13,
+          "pointsPerMatch": 1.38,
+          "goalsForPerMatch": 1.5,
+          "goalsAgainstPerMatch": 1.63,
+          "goalDifferencePerMatch": -0.12,
+          "levelAdjustedPointsPerMatch": 1.38
+        },
+        {
+          "season": "2024-25",
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null,
+          "levelAdjustedPointsPerMatch": null
+        },
+        {
+          "season": "2025-26",
+          "matches": 8,
+          "wins": 2,
+          "draws": 2,
+          "losses": 4,
+          "goalsFor": 9,
+          "goalsAgainst": 15,
+          "pointsPerMatch": 1,
+          "goalsForPerMatch": 1.13,
+          "goalsAgainstPerMatch": 1.88,
+          "goalDifferencePerMatch": -0.75,
+          "levelAdjustedPointsPerMatch": 1
+        }
+      ]
+    },
+    {
+      "team": "Real Betis",
+      "uefaTeamId": "52265",
+      "coverage": "sufficient",
+      "seasonsPlayed": 3,
+      "competitionsPlayed": [
+        "UEL",
+        "UECL"
+      ],
+      "overall": {
+        "matches": 35,
+        "wins": 16,
+        "draws": 7,
+        "losses": 12,
+        "goalsFor": 52,
+        "goalsAgainst": 38,
+        "pointsPerMatch": 1.57,
+        "goalsForPerMatch": 1.49,
+        "goalsAgainstPerMatch": 1.09,
+        "goalDifferencePerMatch": 0.4
+      },
+      "home": {
+        "matches": 18,
+        "wins": 10,
+        "draws": 3,
+        "losses": 5,
+        "goalsFor": 33,
+        "goalsAgainst": 24,
+        "pointsPerMatch": 1.83,
+        "goalsForPerMatch": 1.83,
+        "goalsAgainstPerMatch": 1.33,
+        "goalDifferencePerMatch": 0.5
+      },
+      "away": {
+        "matches": 17,
+        "wins": 6,
+        "draws": 4,
+        "losses": 7,
+        "goalsFor": 19,
+        "goalsAgainst": 14,
+        "pointsPerMatch": 1.29,
+        "goalsForPerMatch": 1.12,
+        "goalsAgainstPerMatch": 0.82,
+        "goalDifferencePerMatch": 0.29
+      },
+      "recent10": {
+        "matches": 10,
+        "wins": 5,
+        "draws": 2,
+        "losses": 3,
+        "goalsFor": 16,
+        "goalsAgainst": 11,
+        "pointsPerMatch": 1.7,
+        "goalsForPerMatch": 1.6,
+        "goalsAgainstPerMatch": 1.1,
+        "goalDifferencePerMatch": 0.5
+      },
+      "recencyWeightedPointsPerMatch": 1.6,
+      "levelAdjustedPointsPerMatch": 1.14,
+      "averageOpponentPointsPerMatch": 1.43,
+      "progression": {
+        "label": "in crescita",
+        "deltaAdjustedPointsPerMatch": 0.41
+      },
+      "byCompetition": {
+        "ucl": {
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null
+        },
+        "uel": {
+          "matches": 18,
+          "wins": 9,
+          "draws": 3,
+          "losses": 6,
+          "goalsFor": 29,
+          "goalsAgainst": 20,
+          "pointsPerMatch": 1.67,
+          "goalsForPerMatch": 1.61,
+          "goalsAgainstPerMatch": 1.11,
+          "goalDifferencePerMatch": 0.5
+        },
+        "uecl": {
+          "matches": 17,
+          "wins": 7,
+          "draws": 4,
+          "losses": 6,
+          "goalsFor": 23,
+          "goalsAgainst": 18,
+          "pointsPerMatch": 1.47,
+          "goalsForPerMatch": 1.35,
+          "goalsAgainstPerMatch": 1.06,
+          "goalDifferencePerMatch": 0.29
+        }
+      },
+      "bySeason": [
+        {
+          "season": "2023-24",
+          "matches": 8,
+          "wins": 3,
+          "draws": 1,
+          "losses": 4,
+          "goalsFor": 10,
+          "goalsAgainst": 9,
+          "pointsPerMatch": 1.25,
+          "goalsForPerMatch": 1.25,
+          "goalsAgainstPerMatch": 1.13,
+          "goalDifferencePerMatch": 0.13,
+          "levelAdjustedPointsPerMatch": 0.96
+        },
+        {
+          "season": "2024-25",
+          "matches": 15,
+          "wins": 7,
+          "draws": 3,
+          "losses": 5,
+          "goalsFor": 22,
+          "goalsAgainst": 16,
+          "pointsPerMatch": 1.6,
+          "goalsForPerMatch": 1.47,
+          "goalsAgainstPerMatch": 1.07,
+          "goalDifferencePerMatch": 0.4,
+          "levelAdjustedPointsPerMatch": 0.99
+        },
+        {
+          "season": "2025-26",
+          "matches": 12,
+          "wins": 6,
+          "draws": 3,
+          "losses": 3,
+          "goalsFor": 20,
+          "goalsAgainst": 13,
+          "pointsPerMatch": 1.75,
+          "goalsForPerMatch": 1.67,
+          "goalsAgainstPerMatch": 1.08,
+          "goalDifferencePerMatch": 0.58,
+          "levelAdjustedPointsPerMatch": 1.37
+        }
+      ]
+    },
+    {
+      "team": "Fenerbahçe",
+      "uefaTeamId": "52692",
+      "coverage": "sufficient",
+      "seasonsPlayed": 3,
+      "competitionsPlayed": [
+        "UEL",
+        "UECL"
+      ],
+      "overall": {
+        "matches": 32,
+        "wins": 14,
+        "draws": 8,
+        "losses": 10,
+        "goalsFor": 48,
+        "goalsAgainst": 42,
+        "pointsPerMatch": 1.56,
+        "goalsForPerMatch": 1.5,
+        "goalsAgainstPerMatch": 1.31,
+        "goalDifferencePerMatch": 0.19
+      },
+      "home": {
+        "matches": 16,
+        "wins": 8,
+        "draws": 3,
+        "losses": 5,
+        "goalsFor": 22,
+        "goalsAgainst": 16,
+        "pointsPerMatch": 1.69,
+        "goalsForPerMatch": 1.38,
+        "goalsAgainstPerMatch": 1,
+        "goalDifferencePerMatch": 0.38
+      },
+      "away": {
+        "matches": 16,
+        "wins": 6,
+        "draws": 5,
+        "losses": 5,
+        "goalsFor": 26,
+        "goalsAgainst": 26,
+        "pointsPerMatch": 1.44,
+        "goalsForPerMatch": 1.63,
+        "goalsAgainstPerMatch": 1.63,
+        "goalDifferencePerMatch": 0
+      },
+      "recent10": {
+        "matches": 10,
+        "wins": 4,
+        "draws": 3,
+        "losses": 3,
+        "goalsFor": 12,
+        "goalsAgainst": 11,
+        "pointsPerMatch": 1.5,
+        "goalsForPerMatch": 1.2,
+        "goalsAgainstPerMatch": 1.1,
+        "goalDifferencePerMatch": 0.1
+      },
+      "recencyWeightedPointsPerMatch": 1.54,
+      "levelAdjustedPointsPerMatch": 1.13,
+      "averageOpponentPointsPerMatch": 1.46,
+      "progression": {
+        "label": "stabile",
+        "deltaAdjustedPointsPerMatch": 0.05
+      },
+      "byCompetition": {
+        "ucl": {
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null
+        },
+        "uel": {
+          "matches": 22,
+          "wins": 8,
+          "draws": 8,
+          "losses": 6,
+          "goalsFor": 29,
+          "goalsAgainst": 27,
+          "pointsPerMatch": 1.45,
+          "goalsForPerMatch": 1.32,
+          "goalsAgainstPerMatch": 1.23,
+          "goalDifferencePerMatch": 0.09
+        },
+        "uecl": {
+          "matches": 10,
+          "wins": 6,
+          "draws": 0,
+          "losses": 4,
+          "goalsFor": 19,
+          "goalsAgainst": 15,
+          "pointsPerMatch": 1.8,
+          "goalsForPerMatch": 1.9,
+          "goalsAgainstPerMatch": 1.5,
+          "goalDifferencePerMatch": 0.4
+        }
+      },
+      "bySeason": [
+        {
+          "season": "2023-24",
+          "matches": 10,
+          "wins": 6,
+          "draws": 0,
+          "losses": 4,
+          "goalsFor": 19,
+          "goalsAgainst": 15,
+          "pointsPerMatch": 1.8,
+          "goalsForPerMatch": 1.9,
+          "goalsAgainstPerMatch": 1.5,
+          "goalDifferencePerMatch": 0.4,
+          "levelAdjustedPointsPerMatch": 1.12
+        },
+        {
+          "season": "2024-25",
+          "matches": 12,
+          "wins": 4,
+          "draws": 5,
+          "losses": 3,
+          "goalsFor": 17,
+          "goalsAgainst": 16,
+          "pointsPerMatch": 1.42,
+          "goalsForPerMatch": 1.42,
+          "goalsAgainstPerMatch": 1.33,
+          "goalDifferencePerMatch": 0.08,
+          "levelAdjustedPointsPerMatch": 1.11
+        },
+        {
+          "season": "2025-26",
+          "matches": 10,
+          "wins": 4,
+          "draws": 3,
+          "losses": 3,
+          "goalsFor": 12,
+          "goalsAgainst": 11,
+          "pointsPerMatch": 1.5,
+          "goalsForPerMatch": 1.2,
+          "goalsAgainstPerMatch": 1.1,
+          "goalDifferencePerMatch": 0.1,
+          "levelAdjustedPointsPerMatch": 1.17
+        }
+      ]
+    },
+    {
+      "team": "Shakhtar Donetsk",
+      "uefaTeamId": "52707",
+      "coverage": "sufficient",
+      "seasonsPlayed": 3,
+      "competitionsPlayed": [
+        "UCL",
+        "UEL",
+        "UECL"
+      ],
+      "overall": {
+        "matches": 28,
+        "wins": 11,
+        "draws": 4,
+        "losses": 13,
+        "goalsFor": 42,
+        "goalsAgainst": 48,
+        "pointsPerMatch": 1.32,
+        "goalsForPerMatch": 1.5,
+        "goalsAgainstPerMatch": 1.71,
+        "goalDifferencePerMatch": -0.21
+      },
+      "home": {
+        "matches": 14,
+        "wins": 6,
+        "draws": 2,
+        "losses": 6,
+        "goalsFor": 18,
+        "goalsAgainst": 21,
+        "pointsPerMatch": 1.43,
+        "goalsForPerMatch": 1.29,
+        "goalsAgainstPerMatch": 1.5,
+        "goalDifferencePerMatch": -0.21
+      },
+      "away": {
+        "matches": 14,
+        "wins": 5,
+        "draws": 2,
+        "losses": 7,
+        "goalsFor": 24,
+        "goalsAgainst": 27,
+        "pointsPerMatch": 1.21,
+        "goalsForPerMatch": 1.71,
+        "goalsAgainstPerMatch": 1.93,
+        "goalDifferencePerMatch": -0.21
+      },
+      "recent10": {
+        "matches": 10,
+        "wins": 5,
+        "draws": 2,
+        "losses": 3,
+        "goalsFor": 17,
+        "goalsAgainst": 11,
+        "pointsPerMatch": 1.7,
+        "goalsForPerMatch": 1.7,
+        "goalsAgainstPerMatch": 1.1,
+        "goalDifferencePerMatch": 0.6
+      },
+      "recencyWeightedPointsPerMatch": 1.36,
+      "levelAdjustedPointsPerMatch": 1.03,
+      "averageOpponentPointsPerMatch": 1.37,
+      "progression": {
+        "label": "stabile",
+        "deltaAdjustedPointsPerMatch": -0.19
+      },
+      "byCompetition": {
+        "ucl": {
+          "matches": 14,
+          "wins": 5,
+          "draws": 1,
+          "losses": 8,
+          "goalsFor": 18,
+          "goalsAgainst": 28,
+          "pointsPerMatch": 1.14,
+          "goalsForPerMatch": 1.29,
+          "goalsAgainstPerMatch": 2,
+          "goalDifferencePerMatch": -0.71
+        },
+        "uel": {
+          "matches": 2,
+          "wins": 0,
+          "draws": 1,
+          "losses": 1,
+          "goalsFor": 3,
+          "goalsAgainst": 5,
+          "pointsPerMatch": 0.5,
+          "goalsForPerMatch": 1.5,
+          "goalsAgainstPerMatch": 2.5,
+          "goalDifferencePerMatch": -1
+        },
+        "uecl": {
+          "matches": 12,
+          "wins": 6,
+          "draws": 2,
+          "losses": 4,
+          "goalsFor": 21,
+          "goalsAgainst": 15,
+          "pointsPerMatch": 1.67,
+          "goalsForPerMatch": 1.75,
+          "goalsAgainstPerMatch": 1.25,
+          "goalDifferencePerMatch": 0.5
+        }
+      },
+      "bySeason": [
+        {
+          "season": "2023-24",
+          "matches": 8,
+          "wins": 3,
+          "draws": 1,
+          "losses": 4,
+          "goalsFor": 13,
+          "goalsAgainst": 17,
+          "pointsPerMatch": 1.25,
+          "goalsForPerMatch": 1.63,
+          "goalsAgainstPerMatch": 2.13,
+          "goalDifferencePerMatch": -0.5,
+          "levelAdjustedPointsPerMatch": 1.22
+        },
+        {
+          "season": "2024-25",
+          "matches": 8,
+          "wins": 2,
+          "draws": 1,
+          "losses": 5,
+          "goalsFor": 8,
+          "goalsAgainst": 16,
+          "pointsPerMatch": 0.88,
+          "goalsForPerMatch": 1,
+          "goalsAgainstPerMatch": 2,
+          "goalDifferencePerMatch": -1,
+          "levelAdjustedPointsPerMatch": 0.88
+        },
+        {
+          "season": "2025-26",
+          "matches": 12,
+          "wins": 6,
+          "draws": 2,
+          "losses": 4,
+          "goalsFor": 21,
+          "goalsAgainst": 15,
+          "pointsPerMatch": 1.67,
+          "goalsForPerMatch": 1.75,
+          "goalsAgainstPerMatch": 1.25,
+          "goalDifferencePerMatch": 0.5,
+          "levelAdjustedPointsPerMatch": 1.03
+        }
+      ]
+    },
+    {
+      "team": "Feyenoord",
+      "uefaTeamId": "52749",
+      "coverage": "sufficient",
+      "seasonsPlayed": 3,
+      "competitionsPlayed": [
+        "UCL",
+        "UEL"
+      ],
+      "overall": {
+        "matches": 28,
+        "wins": 9,
+        "draws": 4,
+        "losses": 15,
+        "goalsFor": 43,
+        "goalsAgainst": 53,
+        "pointsPerMatch": 1.11,
+        "goalsForPerMatch": 1.54,
+        "goalsAgainstPerMatch": 1.89,
+        "goalDifferencePerMatch": -0.36
+      },
+      "home": {
+        "matches": 14,
+        "wins": 7,
+        "draws": 1,
+        "losses": 6,
+        "goalsFor": 23,
+        "goalsAgainst": 22,
+        "pointsPerMatch": 1.57,
+        "goalsForPerMatch": 1.64,
+        "goalsAgainstPerMatch": 1.57,
+        "goalDifferencePerMatch": 0.07
+      },
+      "away": {
+        "matches": 14,
+        "wins": 2,
+        "draws": 3,
+        "losses": 9,
+        "goalsFor": 20,
+        "goalsAgainst": 31,
+        "pointsPerMatch": 0.64,
+        "goalsForPerMatch": 1.43,
+        "goalsAgainstPerMatch": 2.21,
+        "goalDifferencePerMatch": -0.79
+      },
+      "recent10": {
+        "matches": 10,
+        "wins": 2,
+        "draws": 0,
+        "losses": 8,
+        "goalsFor": 12,
+        "goalsAgainst": 19,
+        "pointsPerMatch": 0.6,
+        "goalsForPerMatch": 1.2,
+        "goalsAgainstPerMatch": 1.9,
+        "goalDifferencePerMatch": -0.7
+      },
+      "recencyWeightedPointsPerMatch": 1.09,
+      "levelAdjustedPointsPerMatch": 1.02,
+      "averageOpponentPointsPerMatch": 1.46,
+      "progression": {
+        "label": "in calo",
+        "deltaAdjustedPointsPerMatch": -0.36
+      },
+      "byCompetition": {
+        "ucl": {
+          "matches": 18,
+          "wins": 7,
+          "draws": 2,
+          "losses": 9,
+          "goalsFor": 30,
+          "goalsAgainst": 36,
+          "pointsPerMatch": 1.28,
+          "goalsForPerMatch": 1.67,
+          "goalsAgainstPerMatch": 2,
+          "goalDifferencePerMatch": -0.33
+        },
+        "uel": {
+          "matches": 10,
+          "wins": 2,
+          "draws": 2,
+          "losses": 6,
+          "goalsFor": 13,
+          "goalsAgainst": 17,
+          "pointsPerMatch": 0.8,
+          "goalsForPerMatch": 1.3,
+          "goalsAgainstPerMatch": 1.7,
+          "goalDifferencePerMatch": -0.4
+        },
+        "uecl": {
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null
+        }
+      },
+      "bySeason": [
+        {
+          "season": "2023-24",
+          "matches": 8,
+          "wins": 2,
+          "draws": 2,
+          "losses": 4,
+          "goalsFor": 11,
+          "goalsAgainst": 12,
+          "pointsPerMatch": 1,
+          "goalsForPerMatch": 1.38,
+          "goalsAgainstPerMatch": 1.5,
+          "goalDifferencePerMatch": -0.12,
+          "levelAdjustedPointsPerMatch": 0.95
+        },
+        {
+          "season": "2024-25",
+          "matches": 12,
+          "wins": 5,
+          "draws": 2,
+          "losses": 5,
+          "goalsFor": 21,
+          "goalsAgainst": 26,
+          "pointsPerMatch": 1.42,
+          "goalsForPerMatch": 1.75,
+          "goalsAgainstPerMatch": 2.17,
+          "goalDifferencePerMatch": -0.42,
+          "levelAdjustedPointsPerMatch": 1.42
+        },
+        {
+          "season": "2025-26",
+          "matches": 8,
+          "wins": 2,
+          "draws": 0,
+          "losses": 6,
+          "goalsFor": 11,
+          "goalsAgainst": 15,
+          "pointsPerMatch": 0.75,
+          "goalsForPerMatch": 1.38,
+          "goalsAgainstPerMatch": 1.88,
+          "goalDifferencePerMatch": -0.5,
+          "levelAdjustedPointsPerMatch": 0.59
+        }
+      ]
+    },
+    {
+      "team": "AEK Athens",
+      "uefaTeamId": "50129",
+      "coverage": "sufficient",
+      "seasonsPlayed": 2,
+      "competitionsPlayed": [
+        "UEL",
+        "UECL"
+      ],
+      "overall": {
+        "matches": 16,
+        "wins": 7,
+        "draws": 2,
+        "losses": 7,
+        "goalsFor": 27,
+        "goalsAgainst": 25,
+        "pointsPerMatch": 1.44,
+        "goalsForPerMatch": 1.69,
+        "goalsAgainstPerMatch": 1.56,
+        "goalDifferencePerMatch": 0.13
+      },
+      "home": {
+        "matches": 8,
+        "wins": 3,
+        "draws": 2,
+        "losses": 3,
+        "goalsFor": 14,
+        "goalsAgainst": 10,
+        "pointsPerMatch": 1.38,
+        "goalsForPerMatch": 1.75,
+        "goalsAgainstPerMatch": 1.25,
+        "goalDifferencePerMatch": 0.5
+      },
+      "away": {
+        "matches": 8,
+        "wins": 4,
+        "draws": 0,
+        "losses": 4,
+        "goalsFor": 13,
+        "goalsAgainst": 15,
+        "pointsPerMatch": 1.5,
+        "goalsForPerMatch": 1.63,
+        "goalsAgainstPerMatch": 1.88,
+        "goalDifferencePerMatch": -0.25
+      },
+      "recent10": {
+        "matches": 10,
+        "wins": 6,
+        "draws": 1,
+        "losses": 3,
+        "goalsFor": 21,
+        "goalsAgainst": 13,
+        "pointsPerMatch": 1.9,
+        "goalsForPerMatch": 2.1,
+        "goalsAgainstPerMatch": 1.3,
+        "goalDifferencePerMatch": 0.8
+      },
+      "recencyWeightedPointsPerMatch": 1.57,
+      "levelAdjustedPointsPerMatch": 1,
+      "averageOpponentPointsPerMatch": 1.51,
+      "progression": {
+        "label": "in crescita",
+        "deltaAdjustedPointsPerMatch": 0.66
+      },
+      "byCompetition": {
+        "ucl": {
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null
+        },
+        "uel": {
+          "matches": 6,
+          "wins": 1,
+          "draws": 1,
+          "losses": 4,
+          "goalsFor": 6,
+          "goalsAgainst": 12,
+          "pointsPerMatch": 0.67,
+          "goalsForPerMatch": 1,
+          "goalsAgainstPerMatch": 2,
+          "goalDifferencePerMatch": -1
+        },
+        "uecl": {
+          "matches": 10,
+          "wins": 6,
+          "draws": 1,
+          "losses": 3,
+          "goalsFor": 21,
+          "goalsAgainst": 13,
+          "pointsPerMatch": 1.9,
+          "goalsForPerMatch": 2.1,
+          "goalsAgainstPerMatch": 1.3,
+          "goalDifferencePerMatch": 0.8
+        }
+      },
+      "bySeason": [
+        {
+          "season": "2023-24",
+          "matches": 6,
+          "wins": 1,
+          "draws": 1,
+          "losses": 4,
+          "goalsFor": 6,
+          "goalsAgainst": 12,
+          "pointsPerMatch": 0.67,
+          "goalsForPerMatch": 1,
+          "goalsAgainstPerMatch": 2,
+          "goalDifferencePerMatch": -1,
+          "levelAdjustedPointsPerMatch": 0.52
+        },
+        {
+          "season": "2024-25",
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null,
+          "levelAdjustedPointsPerMatch": null
+        },
+        {
+          "season": "2025-26",
+          "matches": 10,
+          "wins": 6,
+          "draws": 1,
+          "losses": 3,
+          "goalsFor": 21,
+          "goalsAgainst": 13,
+          "pointsPerMatch": 1.9,
+          "goalsForPerMatch": 2.1,
+          "goalsAgainstPerMatch": 1.3,
+          "goalDifferencePerMatch": 0.8,
+          "levelAdjustedPointsPerMatch": 1.18
+        }
+      ]
+    },
+    {
+      "team": "Leipzig",
+      "uefaTeamId": "2603790",
+      "coverage": "sufficient",
+      "seasonsPlayed": 2,
+      "competitionsPlayed": [
+        "UCL"
+      ],
+      "overall": {
+        "matches": 16,
+        "wins": 5,
+        "draws": 1,
+        "losses": 10,
+        "goalsFor": 22,
+        "goalsAgainst": 27,
+        "pointsPerMatch": 1,
+        "goalsForPerMatch": 1.38,
+        "goalsAgainstPerMatch": 1.69,
+        "goalDifferencePerMatch": -0.31
+      },
+      "home": {
+        "matches": 8,
+        "wins": 3,
+        "draws": 0,
+        "losses": 5,
+        "goalsFor": 12,
+        "goalsAgainst": 14,
+        "pointsPerMatch": 1.13,
+        "goalsForPerMatch": 1.5,
+        "goalsAgainstPerMatch": 1.75,
+        "goalDifferencePerMatch": -0.25
+      },
+      "away": {
+        "matches": 8,
+        "wins": 2,
+        "draws": 1,
+        "losses": 5,
+        "goalsFor": 10,
+        "goalsAgainst": 13,
+        "pointsPerMatch": 0.88,
+        "goalsForPerMatch": 1.25,
+        "goalsAgainstPerMatch": 1.63,
+        "goalDifferencePerMatch": -0.37
+      },
+      "recent10": {
+        "matches": 10,
+        "wins": 1,
+        "draws": 1,
+        "losses": 8,
+        "goalsFor": 9,
+        "goalsAgainst": 17,
+        "pointsPerMatch": 0.4,
+        "goalsForPerMatch": 0.9,
+        "goalsAgainstPerMatch": 1.7,
+        "goalDifferencePerMatch": -0.8
+      },
+      "recencyWeightedPointsPerMatch": 0.91,
+      "levelAdjustedPointsPerMatch": 0.91,
+      "averageOpponentPointsPerMatch": 1.56,
+      "progression": {
+        "label": "in calo",
+        "deltaAdjustedPointsPerMatch": -1.25
+      },
+      "byCompetition": {
+        "ucl": {
+          "matches": 16,
+          "wins": 5,
+          "draws": 1,
+          "losses": 10,
+          "goalsFor": 22,
+          "goalsAgainst": 27,
+          "pointsPerMatch": 1,
+          "goalsForPerMatch": 1.38,
+          "goalsAgainstPerMatch": 1.69,
+          "goalDifferencePerMatch": -0.31
+        },
+        "uel": {
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null
+        },
+        "uecl": {
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null
+        }
+      },
+      "bySeason": [
+        {
+          "season": "2023-24",
+          "matches": 8,
+          "wins": 4,
+          "draws": 1,
+          "losses": 3,
+          "goalsFor": 14,
+          "goalsAgainst": 12,
+          "pointsPerMatch": 1.63,
+          "goalsForPerMatch": 1.75,
+          "goalsAgainstPerMatch": 1.5,
+          "goalDifferencePerMatch": 0.25,
+          "levelAdjustedPointsPerMatch": 1.63
+        },
+        {
+          "season": "2024-25",
+          "matches": 8,
+          "wins": 1,
+          "draws": 0,
+          "losses": 7,
+          "goalsFor": 8,
+          "goalsAgainst": 15,
+          "pointsPerMatch": 0.38,
+          "goalsForPerMatch": 1,
+          "goalsAgainstPerMatch": 1.88,
+          "goalDifferencePerMatch": -0.87,
+          "levelAdjustedPointsPerMatch": 0.38
+        },
+        {
+          "season": "2025-26",
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null,
+          "levelAdjustedPointsPerMatch": null
+        }
+      ]
+    },
+    {
+      "team": "Slavia Praha",
+      "uefaTeamId": "52498",
+      "coverage": "sufficient",
+      "seasonsPlayed": 3,
+      "competitionsPlayed": [
+        "UCL",
+        "UEL"
+      ],
+      "overall": {
+        "matches": 24,
+        "wins": 6,
+        "draws": 5,
+        "losses": 13,
+        "goalsFor": 32,
+        "goalsAgainst": 41,
+        "pointsPerMatch": 0.96,
+        "goalsForPerMatch": 1.33,
+        "goalsAgainstPerMatch": 1.71,
+        "goalDifferencePerMatch": -0.37
+      },
+      "home": {
+        "matches": 12,
+        "wins": 3,
+        "draws": 4,
+        "losses": 5,
+        "goalsFor": 22,
+        "goalsAgainst": 19,
+        "pointsPerMatch": 1.08,
+        "goalsForPerMatch": 1.83,
+        "goalsAgainstPerMatch": 1.58,
+        "goalDifferencePerMatch": 0.25
+      },
+      "away": {
+        "matches": 12,
+        "wins": 3,
+        "draws": 1,
+        "losses": 8,
+        "goalsFor": 10,
+        "goalsAgainst": 22,
+        "pointsPerMatch": 0.83,
+        "goalsForPerMatch": 0.83,
+        "goalsAgainstPerMatch": 1.83,
+        "goalDifferencePerMatch": -1
+      },
+      "recent10": {
+        "matches": 10,
+        "wins": 0,
+        "draws": 4,
+        "losses": 6,
+        "goalsFor": 7,
+        "goalsAgainst": 23,
+        "pointsPerMatch": 0.4,
+        "goalsForPerMatch": 0.7,
+        "goalsAgainstPerMatch": 2.3,
+        "goalDifferencePerMatch": -1.6
+      },
+      "recencyWeightedPointsPerMatch": 0.83,
+      "levelAdjustedPointsPerMatch": 0.68,
+      "averageOpponentPointsPerMatch": 1.32,
+      "progression": {
+        "label": "in calo",
+        "deltaAdjustedPointsPerMatch": -1.08
+      },
+      "byCompetition": {
+        "ucl": {
+          "matches": 8,
+          "wins": 0,
+          "draws": 3,
+          "losses": 5,
+          "goalsFor": 5,
+          "goalsAgainst": 19,
+          "pointsPerMatch": 0.38,
+          "goalsForPerMatch": 0.63,
+          "goalsAgainstPerMatch": 2.38,
+          "goalDifferencePerMatch": -1.75
+        },
+        "uel": {
+          "matches": 16,
+          "wins": 6,
+          "draws": 2,
+          "losses": 8,
+          "goalsFor": 27,
+          "goalsAgainst": 22,
+          "pointsPerMatch": 1.25,
+          "goalsForPerMatch": 1.69,
+          "goalsAgainstPerMatch": 1.38,
+          "goalDifferencePerMatch": 0.31
+        },
+        "uecl": {
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null
+        }
+      },
+      "bySeason": [
+        {
+          "season": "2023-24",
+          "matches": 8,
+          "wins": 5,
+          "draws": 0,
+          "losses": 3,
+          "goalsFor": 20,
+          "goalsAgainst": 11,
+          "pointsPerMatch": 1.88,
+          "goalsForPerMatch": 2.5,
+          "goalsAgainstPerMatch": 1.38,
+          "goalDifferencePerMatch": 1.13,
+          "levelAdjustedPointsPerMatch": 1.46
+        },
+        {
+          "season": "2024-25",
+          "matches": 8,
+          "wins": 1,
+          "draws": 2,
+          "losses": 5,
+          "goalsFor": 7,
+          "goalsAgainst": 11,
+          "pointsPerMatch": 0.63,
+          "goalsForPerMatch": 0.88,
+          "goalsAgainstPerMatch": 1.38,
+          "goalDifferencePerMatch": -0.5,
+          "levelAdjustedPointsPerMatch": 0.49
+        },
+        {
+          "season": "2025-26",
+          "matches": 8,
+          "wins": 0,
+          "draws": 3,
+          "losses": 5,
+          "goalsFor": 5,
+          "goalsAgainst": 19,
+          "pointsPerMatch": 0.38,
+          "goalsForPerMatch": 0.63,
+          "goalsAgainstPerMatch": 2.38,
+          "goalDifferencePerMatch": -1.75,
+          "levelAdjustedPointsPerMatch": 0.38
+        }
+      ]
+    },
+    {
+      "team": "Villarreal",
+      "uefaTeamId": "70691",
+      "coverage": "sufficient",
+      "seasonsPlayed": 2,
+      "competitionsPlayed": [
+        "UCL",
+        "UEL"
+      ],
+      "overall": {
+        "matches": 16,
+        "wins": 5,
+        "draws": 2,
+        "losses": 9,
+        "goalsFor": 17,
+        "goalsAgainst": 30,
+        "pointsPerMatch": 1.06,
+        "goalsForPerMatch": 1.06,
+        "goalsAgainstPerMatch": 1.88,
+        "goalDifferencePerMatch": -0.81
+      },
+      "home": {
+        "matches": 8,
+        "wins": 3,
+        "draws": 2,
+        "losses": 3,
+        "goalsFor": 12,
+        "goalsAgainst": 12,
+        "pointsPerMatch": 1.38,
+        "goalsForPerMatch": 1.5,
+        "goalsAgainstPerMatch": 1.5,
+        "goalDifferencePerMatch": 0
+      },
+      "away": {
+        "matches": 8,
+        "wins": 2,
+        "draws": 0,
+        "losses": 6,
+        "goalsFor": 5,
+        "goalsAgainst": 18,
+        "pointsPerMatch": 0.75,
+        "goalsForPerMatch": 0.63,
+        "goalsAgainstPerMatch": 2.25,
+        "goalDifferencePerMatch": -1.62
+      },
+      "recent10": {
+        "matches": 10,
+        "wins": 1,
+        "draws": 1,
+        "losses": 8,
+        "goalsFor": 8,
+        "goalsAgainst": 23,
+        "pointsPerMatch": 0.4,
+        "goalsForPerMatch": 0.8,
+        "goalsAgainstPerMatch": 2.3,
+        "goalDifferencePerMatch": -1.5
+      },
+      "recencyWeightedPointsPerMatch": 0.83,
+      "levelAdjustedPointsPerMatch": 0.66,
+      "averageOpponentPointsPerMatch": 1.3,
+      "progression": {
+        "label": "in calo",
+        "deltaAdjustedPointsPerMatch": -1.43
+      },
+      "byCompetition": {
+        "ucl": {
+          "matches": 8,
+          "wins": 0,
+          "draws": 1,
+          "losses": 7,
+          "goalsFor": 5,
+          "goalsAgainst": 18,
+          "pointsPerMatch": 0.13,
+          "goalsForPerMatch": 0.63,
+          "goalsAgainstPerMatch": 2.25,
+          "goalDifferencePerMatch": -1.62
+        },
+        "uel": {
+          "matches": 8,
+          "wins": 5,
+          "draws": 1,
+          "losses": 2,
+          "goalsFor": 12,
+          "goalsAgainst": 12,
+          "pointsPerMatch": 2,
+          "goalsForPerMatch": 1.5,
+          "goalsAgainstPerMatch": 1.5,
+          "goalDifferencePerMatch": 0
+        },
+        "uecl": {
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null
+        }
+      },
+      "bySeason": [
+        {
+          "season": "2023-24",
+          "matches": 8,
+          "wins": 5,
+          "draws": 1,
+          "losses": 2,
+          "goalsFor": 12,
+          "goalsAgainst": 12,
+          "pointsPerMatch": 2,
+          "goalsForPerMatch": 1.5,
+          "goalsAgainstPerMatch": 1.5,
+          "goalDifferencePerMatch": 0,
+          "levelAdjustedPointsPerMatch": 1.56
+        },
+        {
+          "season": "2024-25",
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null,
+          "levelAdjustedPointsPerMatch": null
+        },
+        {
+          "season": "2025-26",
+          "matches": 8,
+          "wins": 0,
+          "draws": 1,
+          "losses": 7,
+          "goalsFor": 5,
+          "goalsAgainst": 18,
+          "pointsPerMatch": 0.13,
+          "goalsForPerMatch": 0.63,
+          "goalsAgainstPerMatch": 2.25,
+          "goalDifferencePerMatch": -1.62,
+          "levelAdjustedPointsPerMatch": 0.13
+        }
+      ]
+    },
+    {
+      "team": "Slovan Bratislava",
+      "uefaTeamId": "52797",
+      "coverage": "sufficient",
+      "seasonsPlayed": 3,
+      "competitionsPlayed": [
+        "UCL",
+        "UECL"
+      ],
+      "overall": {
+        "matches": 22,
+        "wins": 5,
+        "draws": 1,
+        "losses": 16,
+        "goalsFor": 21,
+        "goalsAgainst": 48,
+        "pointsPerMatch": 0.73,
+        "goalsForPerMatch": 0.95,
+        "goalsAgainstPerMatch": 2.18,
+        "goalDifferencePerMatch": -1.23
+      },
+      "home": {
+        "matches": 11,
+        "wins": 3,
+        "draws": 1,
+        "losses": 7,
+        "goalsFor": 12,
+        "goalsAgainst": 22,
+        "pointsPerMatch": 0.91,
+        "goalsForPerMatch": 1.09,
+        "goalsAgainstPerMatch": 2,
+        "goalDifferencePerMatch": -0.91
+      },
+      "away": {
+        "matches": 11,
+        "wins": 2,
+        "draws": 0,
+        "losses": 9,
+        "goalsFor": 9,
+        "goalsAgainst": 26,
+        "pointsPerMatch": 0.55,
+        "goalsForPerMatch": 0.82,
+        "goalsAgainstPerMatch": 2.36,
+        "goalDifferencePerMatch": -1.55
+      },
+      "recent10": {
+        "matches": 10,
+        "wins": 2,
+        "draws": 0,
+        "losses": 8,
+        "goalsFor": 10,
+        "goalsAgainst": 21,
+        "pointsPerMatch": 0.6,
+        "goalsForPerMatch": 1,
+        "goalsAgainstPerMatch": 2.1,
+        "goalDifferencePerMatch": -1.1
+      },
+      "recencyWeightedPointsPerMatch": 0.7,
+      "levelAdjustedPointsPerMatch": 0.43,
+      "averageOpponentPointsPerMatch": 1.35,
+      "progression": {
+        "label": "stabile",
+        "deltaAdjustedPointsPerMatch": -0.15
+      },
+      "byCompetition": {
+        "ucl": {
+          "matches": 8,
+          "wins": 0,
+          "draws": 0,
+          "losses": 8,
+          "goalsFor": 7,
+          "goalsAgainst": 27,
+          "pointsPerMatch": 0,
+          "goalsForPerMatch": 0.88,
+          "goalsAgainstPerMatch": 3.38,
+          "goalDifferencePerMatch": -2.5
+        },
+        "uel": {
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null
+        },
+        "uecl": {
+          "matches": 14,
+          "wins": 5,
+          "draws": 1,
+          "losses": 8,
+          "goalsFor": 14,
+          "goalsAgainst": 21,
+          "pointsPerMatch": 1.14,
+          "goalsForPerMatch": 1,
+          "goalsAgainstPerMatch": 1.5,
+          "goalDifferencePerMatch": -0.5
+        }
+      },
+      "bySeason": [
+        {
+          "season": "2023-24",
+          "matches": 8,
+          "wins": 3,
+          "draws": 1,
+          "losses": 4,
+          "goalsFor": 9,
+          "goalsAgainst": 12,
+          "pointsPerMatch": 1.25,
+          "goalsForPerMatch": 1.13,
+          "goalsAgainstPerMatch": 1.5,
+          "goalDifferencePerMatch": -0.37,
+          "levelAdjustedPointsPerMatch": 0.77
+        },
+        {
+          "season": "2024-25",
+          "matches": 8,
+          "wins": 0,
+          "draws": 0,
+          "losses": 8,
+          "goalsFor": 7,
+          "goalsAgainst": 27,
+          "pointsPerMatch": 0,
+          "goalsForPerMatch": 0.88,
+          "goalsAgainstPerMatch": 3.38,
+          "goalDifferencePerMatch": -2.5,
+          "levelAdjustedPointsPerMatch": 0
+        },
+        {
+          "season": "2025-26",
+          "matches": 6,
+          "wins": 2,
+          "draws": 0,
+          "losses": 4,
+          "goalsFor": 5,
+          "goalsAgainst": 9,
+          "pointsPerMatch": 1,
+          "goalsForPerMatch": 0.83,
+          "goalsAgainstPerMatch": 1.5,
+          "goalDifferencePerMatch": -0.67,
+          "levelAdjustedPointsPerMatch": 0.62
+        }
+      ]
+    },
+    {
+      "team": "LASK",
+      "uefaTeamId": "63405",
+      "coverage": "limited",
+      "seasonsPlayed": 2,
+      "competitionsPlayed": [
+        "UEL",
+        "UECL"
+      ],
+      "overall": {
+        "matches": 12,
+        "wins": 1,
+        "draws": 3,
+        "losses": 8,
+        "goalsFor": 10,
+        "goalsAgainst": 26,
+        "pointsPerMatch": 0.5,
+        "goalsForPerMatch": 0.83,
+        "goalsAgainstPerMatch": 2.17,
+        "goalDifferencePerMatch": -1.33
+      },
+      "home": {
+        "matches": 6,
+        "wins": 1,
+        "draws": 3,
+        "losses": 2,
+        "goalsFor": 8,
+        "goalsAgainst": 8,
+        "pointsPerMatch": 1,
+        "goalsForPerMatch": 1.33,
+        "goalsAgainstPerMatch": 1.33,
+        "goalDifferencePerMatch": 0
+      },
+      "away": {
+        "matches": 6,
+        "wins": 0,
+        "draws": 0,
+        "losses": 6,
+        "goalsFor": 2,
+        "goalsAgainst": 18,
+        "pointsPerMatch": 0,
+        "goalsForPerMatch": 0.33,
+        "goalsAgainstPerMatch": 3,
+        "goalDifferencePerMatch": -2.67
+      },
+      "recent10": {
+        "matches": 10,
+        "wins": 1,
+        "draws": 3,
+        "losses": 6,
+        "goalsFor": 9,
+        "goalsAgainst": 22,
+        "pointsPerMatch": 0.6,
+        "goalsForPerMatch": 0.9,
+        "goalsAgainstPerMatch": 2.2,
+        "goalDifferencePerMatch": -1.3
+      },
+      "recencyWeightedPointsPerMatch": 0.5,
+      "levelAdjustedPointsPerMatch": 0.34,
+      "averageOpponentPointsPerMatch": 1.61,
+      "progression": {
+        "label": "stabile",
+        "deltaAdjustedPointsPerMatch": -0.08
+      },
+      "byCompetition": {
+        "ucl": {
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null
+        },
+        "uel": {
+          "matches": 6,
+          "wins": 1,
+          "draws": 0,
+          "losses": 5,
+          "goalsFor": 6,
+          "goalsAgainst": 12,
+          "pointsPerMatch": 0.5,
+          "goalsForPerMatch": 1,
+          "goalsAgainstPerMatch": 2,
+          "goalDifferencePerMatch": -1
+        },
+        "uecl": {
+          "matches": 6,
+          "wins": 0,
+          "draws": 3,
+          "losses": 3,
+          "goalsFor": 4,
+          "goalsAgainst": 14,
+          "pointsPerMatch": 0.5,
+          "goalsForPerMatch": 0.67,
+          "goalsAgainstPerMatch": 2.33,
+          "goalDifferencePerMatch": -1.67
+        }
+      },
+      "bySeason": [
+        {
+          "season": "2023-24",
+          "matches": 6,
+          "wins": 1,
+          "draws": 0,
+          "losses": 5,
+          "goalsFor": 6,
+          "goalsAgainst": 12,
+          "pointsPerMatch": 0.5,
+          "goalsForPerMatch": 1,
+          "goalsAgainstPerMatch": 2,
+          "goalDifferencePerMatch": -1,
+          "levelAdjustedPointsPerMatch": 0.39
+        },
+        {
+          "season": "2024-25",
+          "matches": 6,
+          "wins": 0,
+          "draws": 3,
+          "losses": 3,
+          "goalsFor": 4,
+          "goalsAgainst": 14,
+          "pointsPerMatch": 0.5,
+          "goalsForPerMatch": 0.67,
+          "goalsAgainstPerMatch": 2.33,
+          "goalDifferencePerMatch": -1.67,
+          "levelAdjustedPointsPerMatch": 0.31
+        },
+        {
+          "season": "2025-26",
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null,
+          "levelAdjustedPointsPerMatch": null
+        }
+      ]
+    },
+    {
+      "team": "Como",
+      "uefaTeamId": null,
+      "coverage": "unavailable",
+      "seasonsPlayed": 0,
+      "competitionsPlayed": [],
+      "overall": {
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "goalsFor": 0,
+        "goalsAgainst": 0,
+        "pointsPerMatch": null,
+        "goalsForPerMatch": null,
+        "goalsAgainstPerMatch": null,
+        "goalDifferencePerMatch": null
+      },
+      "home": {
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "goalsFor": 0,
+        "goalsAgainst": 0,
+        "pointsPerMatch": null,
+        "goalsForPerMatch": null,
+        "goalsAgainstPerMatch": null,
+        "goalDifferencePerMatch": null
+      },
+      "away": {
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "goalsFor": 0,
+        "goalsAgainst": 0,
+        "pointsPerMatch": null,
+        "goalsForPerMatch": null,
+        "goalsAgainstPerMatch": null,
+        "goalDifferencePerMatch": null
+      },
+      "recent10": {
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "goalsFor": 0,
+        "goalsAgainst": 0,
+        "pointsPerMatch": null,
+        "goalsForPerMatch": null,
+        "goalsAgainstPerMatch": null,
+        "goalDifferencePerMatch": null
+      },
+      "recencyWeightedPointsPerMatch": null,
+      "levelAdjustedPointsPerMatch": null,
+      "averageOpponentPointsPerMatch": null,
+      "progression": {
+        "label": "N/D",
+        "deltaAdjustedPointsPerMatch": null
+      },
+      "byCompetition": {
+        "ucl": {
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null
+        },
+        "uel": {
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null
+        },
+        "uecl": {
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null
+        }
+      },
+      "bySeason": [
+        {
+          "season": "2023-24",
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null,
+          "levelAdjustedPointsPerMatch": null
+        },
+        {
+          "season": "2024-25",
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null,
+          "levelAdjustedPointsPerMatch": null
+        },
+        {
+          "season": "2025-26",
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null,
+          "levelAdjustedPointsPerMatch": null
+        }
+      ]
+    },
+    {
+      "team": "Sabah",
+      "uefaTeamId": null,
+      "coverage": "unavailable",
+      "seasonsPlayed": 0,
+      "competitionsPlayed": [],
+      "overall": {
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "goalsFor": 0,
+        "goalsAgainst": 0,
+        "pointsPerMatch": null,
+        "goalsForPerMatch": null,
+        "goalsAgainstPerMatch": null,
+        "goalDifferencePerMatch": null
+      },
+      "home": {
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "goalsFor": 0,
+        "goalsAgainst": 0,
+        "pointsPerMatch": null,
+        "goalsForPerMatch": null,
+        "goalsAgainstPerMatch": null,
+        "goalDifferencePerMatch": null
+      },
+      "away": {
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "goalsFor": 0,
+        "goalsAgainst": 0,
+        "pointsPerMatch": null,
+        "goalsForPerMatch": null,
+        "goalsAgainstPerMatch": null,
+        "goalDifferencePerMatch": null
+      },
+      "recent10": {
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "goalsFor": 0,
+        "goalsAgainst": 0,
+        "pointsPerMatch": null,
+        "goalsForPerMatch": null,
+        "goalsAgainstPerMatch": null,
+        "goalDifferencePerMatch": null
+      },
+      "recencyWeightedPointsPerMatch": null,
+      "levelAdjustedPointsPerMatch": null,
+      "averageOpponentPointsPerMatch": null,
+      "progression": {
+        "label": "N/D",
+        "deltaAdjustedPointsPerMatch": null
+      },
+      "byCompetition": {
+        "ucl": {
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null
+        },
+        "uel": {
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null
+        },
+        "uecl": {
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null
+        }
+      },
+      "bySeason": [
+        {
+          "season": "2023-24",
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null,
+          "levelAdjustedPointsPerMatch": null
+        },
+        {
+          "season": "2024-25",
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null,
+          "levelAdjustedPointsPerMatch": null
+        },
+        {
+          "season": "2025-26",
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null,
+          "levelAdjustedPointsPerMatch": null
+        }
+      ]
+    },
+    {
+      "team": "Viking",
+      "uefaTeamId": null,
+      "coverage": "unavailable",
+      "seasonsPlayed": 0,
+      "competitionsPlayed": [],
+      "overall": {
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "goalsFor": 0,
+        "goalsAgainst": 0,
+        "pointsPerMatch": null,
+        "goalsForPerMatch": null,
+        "goalsAgainstPerMatch": null,
+        "goalDifferencePerMatch": null
+      },
+      "home": {
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "goalsFor": 0,
+        "goalsAgainst": 0,
+        "pointsPerMatch": null,
+        "goalsForPerMatch": null,
+        "goalsAgainstPerMatch": null,
+        "goalDifferencePerMatch": null
+      },
+      "away": {
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "goalsFor": 0,
+        "goalsAgainst": 0,
+        "pointsPerMatch": null,
+        "goalsForPerMatch": null,
+        "goalsAgainstPerMatch": null,
+        "goalDifferencePerMatch": null
+      },
+      "recent10": {
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "goalsFor": 0,
+        "goalsAgainst": 0,
+        "pointsPerMatch": null,
+        "goalsForPerMatch": null,
+        "goalsAgainstPerMatch": null,
+        "goalDifferencePerMatch": null
+      },
+      "recencyWeightedPointsPerMatch": null,
+      "levelAdjustedPointsPerMatch": null,
+      "averageOpponentPointsPerMatch": null,
+      "progression": {
+        "label": "N/D",
+        "deltaAdjustedPointsPerMatch": null
+      },
+      "byCompetition": {
+        "ucl": {
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null
+        },
+        "uel": {
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null
+        },
+        "uecl": {
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null
+        }
+      },
+      "bySeason": [
+        {
+          "season": "2023-24",
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null,
+          "levelAdjustedPointsPerMatch": null
+        },
+        {
+          "season": "2024-25",
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null,
+          "levelAdjustedPointsPerMatch": null
+        },
+        {
+          "season": "2025-26",
+          "matches": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 0,
+          "goalsFor": 0,
+          "goalsAgainst": 0,
+          "pointsPerMatch": null,
+          "goalsForPerMatch": null,
+          "goalsAgainstPerMatch": null,
+          "goalDifferencePerMatch": null,
+          "levelAdjustedPointsPerMatch": null
+        }
+      ]
+    }
+  ]
+}
