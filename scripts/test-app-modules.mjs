@@ -58,6 +58,6 @@ const readingsPage = fs.readFileSync(path.join(root, "js", "pages", "readings.js
 assert.match(readingsPage, /Livello decisionale/, "Letture: scenari quantitativi non esposti");
 assert.match(readingsPage, /prediction-combo-risk/, "Letture: controllo rischio MyCombo non esposto");
 const championsPage = fs.readFileSync(path.join(root, "js", "pages", "champions.js"), "utf8");
-assert.match(championsPage, /seguiremo tutte le partite/, "Champions: copertura completa delle partite non dichiarata");
+assert.match(championsPage, /completo di tutte le partite/, "Champions: copertura completa delle partite non dichiarata");
 assert.doesNotMatch(championsPage, /Squadre italiane/, "Champions: copertura ancora presentata come limitata alle italiane");
 console.log(`OK moduli applicazione: ${pageFiles.length} pagine e 4 componenti condivisi`);
