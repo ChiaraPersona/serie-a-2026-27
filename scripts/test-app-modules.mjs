@@ -60,4 +60,7 @@ assert.match(readingsPage, /prediction-combo-risk/, "Letture: controllo rischio 
 const championsPage = fs.readFileSync(path.join(root, "js", "pages", "champions.js"), "utf8");
 assert.match(championsPage, /completo di tutte le partite/, "Champions: copertura completa delle partite non dichiarata");
 assert.doesNotMatch(championsPage, /Squadre italiane/, "Champions: copertura ancora presentata come limitata alle italiane");
+assert.match(championsPage, /champions-team-strength-2026-27\.json/, "Champions: profili di forza non caricati");
+assert.match(championsPage, /1\/X\/2 N\/D/, "Champions: probabilita non validate non dichiarate N\/D");
+assert.match(championsPage, /Indice di forza europeo/, "Champions: graduatoria sintetica non presente");
 console.log(`OK moduli applicazione: ${pageFiles.length} pagine e 4 componenti condivisi`);

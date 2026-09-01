@@ -57,6 +57,26 @@ body[data-page="champions"] main{padding-top:38px}
 .champions-orbit{position:absolute;right:clamp(-80px,2vw,30px);bottom:-120px;display:grid;width:390px;height:390px;place-items:center;border:1px solid rgba(159,214,255,.22);border-radius:50%;box-shadow:0 0 0 54px rgba(106,181,255,.045),0 0 0 108px rgba(106,181,255,.025)}
 .champions-orbit span{display:grid;width:126px;height:126px;place-items:center;border:1px solid rgba(190,225,255,.45);border-radius:50%;background:rgba(9,69,169,.68);color:#fff;font-size:58px;box-shadow:0 0 54px rgba(88,170,255,.5)}
 
+.champions-strength-panel{margin-top:34px;overflow:hidden;border:1px solid rgba(137,194,255,.24);border-radius:24px;background:rgba(3,23,70,.62);box-shadow:0 20px 60px rgba(0,7,39,.2)}
+.champions-strength-panel>summary{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:22px 26px;cursor:pointer;list-style:none}
+.champions-strength-panel>summary::-webkit-details-marker{display:none}
+.champions-strength-panel>summary>span:first-child{display:grid}
+.champions-strength-panel>summary small{color:#82c0ff;font-size:9px;font-weight:900;letter-spacing:.12em;text-transform:uppercase}
+.champions-strength-panel>summary strong{margin-top:2px;color:#fff;font-size:24px}
+.champions-strength-panel>summary>span:last-child{color:#a9c3e6;font-size:11px;font-weight:800}
+.champions-strength-panel>summary::after{content:"+";display:grid;width:30px;height:30px;flex:0 0 30px;place-items:center;border:1px solid rgba(145,201,255,.22);border-radius:50%;color:#fff}
+.champions-strength-panel[open]>summary::after{content:"−"}
+.champions-strength-intro{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:18px 26px;border-top:1px solid rgba(145,201,255,.12);background:rgba(2,16,54,.46)}
+.champions-strength-intro p{max-width:800px;margin:0;color:#a9c3e6;font-size:13px}
+.champions-strength-intro a{flex:none;color:#91c9ff;font-size:11px;font-weight:850;text-decoration:none}
+.champions-strength-table-wrap{overflow-x:auto}
+.champions-strength-table{width:100%;min-width:850px;border-collapse:collapse}
+.champions-strength-table th,.champions-strength-table td{padding:11px 14px;border-top:1px solid rgba(145,201,255,.1);color:#b7cae5;font-size:11px;text-align:left}
+.champions-strength-table thead th{color:#82c0ff;font-size:9px;letter-spacing:.09em;text-transform:uppercase}
+.champions-strength-table tbody th{color:#fff;font-size:12px}
+.champions-strength-table tbody th small{display:block;margin-top:2px;color:#718fb8;font-size:8px}
+.champions-strength-table td:nth-child(5) strong{color:#fff;font-size:16px}
+
 .champions-calendar{margin-top:34px;padding:32px;border:1px solid rgba(137,194,255,.24);border-radius:30px;background:rgba(3,23,70,.62);box-shadow:0 24px 70px rgba(0,7,39,.25);backdrop-filter:blur(18px)}
 .champions-calendar h2,.champions-calendar h3{color:#fff}
 .champions-calendar .eyebrow{color:#8fc7ff}
@@ -87,10 +107,13 @@ body[data-page="champions"] main{padding-top:38px}
 .champions-fixture>header{display:flex;align-items:center;justify-content:space-between;padding:9px 13px;border-bottom:1px solid rgba(145,201,255,.12);color:#82c0ff;font-size:9px;font-weight:900;letter-spacing:.09em;text-transform:uppercase}
 .champions-fixture>header time{color:#fff;font-size:12px;letter-spacing:0}
 .champions-fixture-teams{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:9px;min-height:76px;padding:14px}
+.champions-fixture-teams>div{display:grid;gap:5px}
+.champions-fixture-teams>div:last-child{text-align:right}
 .champions-fixture-teams strong{color:#fff;font-size:14px;line-height:1.25}
-.champions-fixture-teams strong:last-child{text-align:right}
+.champions-fixture-teams small{color:#82c0ff;font-size:8px;font-weight:850;letter-spacing:.06em;text-transform:uppercase}
 .champions-fixture-teams span{color:#6caef3}
-.champions-fixture>footer{padding:8px 13px;border-top:1px solid rgba(145,201,255,.1);color:#849fc3;font-size:8px;font-weight:850;letter-spacing:.1em;text-transform:uppercase}
+.champions-fixture>footer{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 13px;border-top:1px solid rgba(145,201,255,.1);color:#849fc3;font-size:8px;font-weight:850;letter-spacing:.05em;text-transform:uppercase}
+.champions-fixture>footer b{flex:none;color:#a8cfff;font-size:8px}
 .champions-empty{padding:50px 24px;border:1px dashed rgba(145,201,255,.28);border-radius:20px;text-align:center}
 .champions-empty strong{color:#fff;font-size:22px}
 .champions-empty p{margin-bottom:0;color:#a9c3e6}
@@ -106,6 +129,9 @@ body[data-page="champions"] .site-footer{margin-top:0}
   .champions-hero-stats div{text-align:left}
   .champions-hero-stats strong{font-size:28px}
   .champions-orbit{right:-160px;bottom:-130px;width:330px;height:330px}
+  .champions-strength-panel>summary{align-items:flex-start;padding:19px 18px}
+  .champions-strength-panel>summary>span:last-child{display:none}
+  .champions-strength-intro{align-items:flex-start;flex-direction:column;padding:16px 18px}
   .champions-calendar{padding:24px 18px;border-radius:24px}
   .champions-calendar-heading{align-items:flex-start;flex-direction:column}
   .champions-controls{grid-template-columns:1fr}

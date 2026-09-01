@@ -3,15 +3,25 @@ export function createPage(deps){
   const dayLabel=value=>new Intl.DateTimeFormat("it-IT",{weekday:"long",day:"numeric",month:"long",year:"numeric",timeZone:"Europe/Rome"}).format(new Date(`${value}T12:00:00+01:00`));
   const matchdayLabel=number=>`${number}ª giornata`;
 
-  function fixtureCard(fixture){
+  const scoreLabel=profile=>profile?.europeanStrengthIndex==null?"N/D":profile.europeanStrengthIndex.toFixed(1);
+  const technicalEdge=(fixture,profiles)=>{
+    const home=profiles.get(fixture.homeTeam),away=profiles.get(fixture.awayTeam);
+    if(home?.europeanStrengthIndex==null||away?.europeanStrengthIndex==null)return "Confronto europeo N/D";
+    const gap=home.europeanStrengthIndex-away.europeanStrengthIndex;
+    if(Math.abs(gap)<4)return "Equilibrio nella forza europea";
+    return `Prevalenza europea: ${gap>0?fixture.homeTeam:fixture.awayTeam}`;
+  };
+
+  function fixtureCard(fixture,profiles){
+    const homeProfile=profiles.get(fixture.homeTeam),awayProfile=profiles.get(fixture.awayTeam);
     return `<article class="champions-fixture" data-team-home="${esc(fixture.homeTeam)}" data-team-away="${esc(fixture.awayTeam)}">
       <header><span>${matchdayLabel(fixture.matchday)}</span><time datetime="${esc(`${fixture.date}T${fixture.kickoff}`)}">${esc(fixture.kickoff)}</time></header>
-      <div class="champions-fixture-teams"><strong>${esc(fixture.homeTeam)}</strong><span aria-hidden="true">—</span><strong>${esc(fixture.awayTeam)}</strong></div>
-      <footer>Fase campionato</footer>
+      <div class="champions-fixture-teams"><div><strong>${esc(fixture.homeTeam)}</strong><small>Forza ${scoreLabel(homeProfile)}</small></div><span aria-hidden="true">—</span><div><strong>${esc(fixture.awayTeam)}</strong><small>Forza ${scoreLabel(awayProfile)}</small></div></div>
+      <footer><span>${esc(technicalEdge(fixture,profiles))}</span><b>1/X/2 N/D</b></footer>
     </article>`;
   }
 
-  function fixtureGroups(fixtures){
+  function fixtureGroups(fixtures,profiles){
     if(!fixtures.length)return `<div class="champions-empty"><strong>Nessuna partita</strong><p>Modifica i filtri per visualizzare un altro gruppo di gare.</p></div>`;
     const groups=new Map();
     for(const fixture of fixtures){
@@ -21,12 +31,18 @@ export function createPage(deps){
     }
     return [...groups.entries()].map(([key,items])=>{
       const [matchday,date]=key.split("|");
-      return `<section class="champions-fixture-day"><header><div><p>${matchdayLabel(Number(matchday))}</p><h3>${esc(dayLabel(date))}</h3></div><span>${items.length} ${items.length===1?"partita":"partite"}</span></header><div class="champions-fixture-grid">${items.map(fixtureCard).join("")}</div></section>`;
+      return `<section class="champions-fixture-day"><header><div><p>${matchdayLabel(Number(matchday))}</p><h3>${esc(dayLabel(date))}</h3></div><span>${items.length} ${items.length===1?"partita":"partite"}</span></header><div class="champions-fixture-grid">${items.map(fixture=>fixtureCard(fixture,profiles)).join("")}</div></section>`;
     }).join("");
   }
 
+  function strengthDirectory(strength){
+    const rows=strength.teams.map((profile,index)=>`<tr><td>${index+1}</td><th scope="row">${esc(profile.team)}<small>${esc(profile.association)}</small></th><td>${profile.uefaRank==null?"N/D":`#${profile.uefaRank}`}</td><td>${esc(profile.lastSeason)}</td><td><strong>${scoreLabel(profile)}</strong></td><td>${profile.dataCoveragePct}%</td></tr>`).join("");
+    return `<details class="champions-strength-panel"><summary><span><small>Modello preliminare</small><strong>Indice di forza europeo</strong></span><span>${strength.summary.completeProfiles}/36 profili completi</span></summary><div class="champions-strength-intro"><p>Confronto sintetico tra ranking UEFA quinquennale e percorso europeo 2025/26. I dati mancanti non valgono zero e le probabilità restano disattivate fino al backtest.</p><a href="${esc(strength.source.url)}" target="_blank" rel="noreferrer">Profili UEFA ↗</a></div><div class="champions-strength-table-wrap"><table class="champions-strength-table"><thead><tr><th>Pos.</th><th>Squadra</th><th>Ranking UEFA</th><th>Ultima stagione europea</th><th>Forza</th><th>Copertura</th></tr></thead><tbody>${rows}</tbody></table></div></details>`;
+  }
+
   async function render(){
-    const data=await load("champions-league-2026-27.json");
+    const [data,strength]=await Promise.all([load("champions-league-2026-27.json"),load("champions-team-strength-2026-27.json")]);
+    const profiles=new Map(strength.teams.map(profile=>[profile.team,profile]));
     const teamOptions=data.teams.map(team=>`<option value="${esc(team)}">${esc(team)}</option>`).join("");
     document.querySelector("#app").innerHTML=`
       <section class="champions-hero" aria-labelledby="champions-title">
@@ -37,6 +53,7 @@ export function createPage(deps){
         <div class="champions-hero-stats" aria-label="Riepilogo calendario"><div><strong>${data.summary.fixtures}</strong><span>partite</span></div><div><strong>${data.summary.teams}</strong><span>squadre</span></div><div><strong>${data.summary.matchdays}</strong><span>giornate</span></div></div>
         <div class="champions-orbit" aria-hidden="true"><span>★</span></div>
       </section>
+      ${strengthDirectory(strength)}
       <section class="champions-calendar" aria-labelledby="champions-calendar-title">
         <header class="champions-calendar-heading"><div><p class="eyebrow">Fase campionato</p><h2 id="champions-calendar-title">Calendario ufficiale</h2><p>Scegli una giornata o una squadra. Con “Tutte le giornate” puoi consultare l’intero programma delle 144 gare.</p></div><a href="${esc(data.source.url)}" target="_blank" rel="noreferrer">Fonte UEFA ↗</a></header>
         <div class="champions-controls">
@@ -55,7 +72,7 @@ export function createPage(deps){
     const applyFilters=()=>{
       const matchday=matchdaySelect.value,team=teamSelect.value;
       const filtered=data.fixtures.filter(fixture=>(matchday==="all"||fixture.matchday===Number(matchday))&&(team==="all"||fixture.homeTeam===team||fixture.awayTeam===team));
-      results.innerHTML=fixtureGroups(filtered);
+      results.innerHTML=fixtureGroups(filtered,profiles);
       const context=[matchday==="all"?"tutte le giornate":matchdayLabel(Number(matchday)),team==="all"?"tutte le squadre":team];
       resultsLabel.innerHTML=`<strong>${filtered.length}</strong> ${filtered.length===1?"partita":"partite"} · ${esc(context.join(" · "))}`;
     };
