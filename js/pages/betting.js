@@ -8,6 +8,7 @@ export function createPage(deps){
   const metric=(value,formatter,suffix="")=>Number.isFinite(value)?`${formatter(value)}${suffix}`:"N/D";
 
   function slipCard(slip,matchById){
+    if(slip.qualityStatus==="nd"&&!slip.legs.length)return `<article class="betting-nd-compact"><strong>${esc(slip.name)} · N/D</strong><span>${esc(slip.filterNote||"Dati insufficienti per una proposta prudenziale.")}</span></article>`;
     const legs=slip.legs.map((leg,index)=>{
       const settlement=settleLeg(leg,matchById.get(leg.matchId));
       const settled=["won","lost","void"].includes(settlement.status);

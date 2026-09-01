@@ -7,16 +7,22 @@ const matchdayIndex = process.argv.indexOf("--matchday");
 const matchday = matchdayIndex >= 0 ? Number(process.argv[matchdayIndex + 1]) : 1;
 if (!Number.isInteger(matchday) || matchday < 1 || matchday > 38) throw new Error("--matchday deve essere compreso tra 1 e 38.");
 const matchdayCode = String(matchday).padStart(2, "0");
+const outputFilename = matchday === 1 ? "schedina.json" : `schedina-md${matchdayCode}.json`;
+const outputPath = path.join(root, "data", "normalized", outputFilename);
 const source = read(`data/sources/schedina-serie-a-2026-27-md-${matchdayCode}.json`);
 const odds = read("data/normalized/odds/sisal/serie-a.json");
 const predictions = read("data/normalized/predictions.json");
 const matches = read("data/normalized/matches.json");
 const archivePath = path.join(root, "data/sources/schedina-archive-md1-2026-27.json");
 const roundMatches = matches.filter(match => match.competition === "serie-a" && match.season === "2026-27" && match.matchday === matchday);
-if (matchday === 1 && fs.existsSync(archivePath) && roundMatches.length === 10 && roundMatches.every(match => match.status === "finished" && match.score)) {
-  const archive = JSON.parse(fs.readFileSync(archivePath, "utf8"));
-  fs.writeFileSync(path.join(root, "data/normalized/schedina.json"), `${JSON.stringify(archive, null, 2)}\n`);
-  console.log("Schedina MD1 congelata: giornata conclusa, nessun ricalcolo retroattivo.");
+if (roundMatches.length === 10 && roundMatches.every(match => match.status === "finished" && match.score)) {
+  if (matchday === 1 && fs.existsSync(archivePath)) {
+    const archive = JSON.parse(fs.readFileSync(archivePath, "utf8"));
+    fs.writeFileSync(outputPath, `${JSON.stringify(archive, null, 2)}\n`);
+  } else if (!fs.existsSync(outputPath)) {
+    throw new Error(`Schedina MD${matchdayCode} conclusa ma archivio normalizzato assente.`);
+  }
+  console.log(`Schedina MD${matchdayCode} congelata: giornata conclusa, nessun ricalcolo retroattivo.`);
   process.exit(0);
 }
 const teamIndex = read("data/teams/index.json").teams;
@@ -176,7 +182,7 @@ function winOrLeadProbability(prediction, teamIndex, margin) {
   return coveredMass > 0 ? probability / coveredMass : null;
 }
 
-function pickAnalysis(pick, market, prediction) {
+function pickAnalysis(pick, market, prediction, selection) {
   const score = String(prediction.scoreForecast?.primary?.score || "").split("-").map(Number);
   if (market.marketName === "MULTIGOAL CASA + MULTIGOAL OSPITE") {
     const ranges = pick.selection.match(/^(\d+)-(\d+)\/(\d+)-(\d+)$/)?.slice(1).map(Number);
@@ -244,6 +250,15 @@ function pickAnalysis(pick, market, prediction) {
       coherent,
       modelProbabilityPct: coherent ? round(probability * 100, 2) : null,
       evidenceLabel: `Pronostico ${prediction.verdict.outcome} · vittoria o vantaggio di ${margin} gol`
+    };
+  }
+  if (["DRAW NO BET", "GOAL/NOGOAL", "CASA: SEGNA GOAL", "OSPITE: SEGNA GOAL"].includes(market.marketName)) {
+    const comparison = (prediction.marketComparison || []).find(row => String(row.providerSelectionId) === String(selection.providerSelectionId));
+    const coherent = Boolean(comparison?.scenarioCompatible) && Number.isFinite(Number(comparison?.modelProbabilityPct));
+    return {
+      coherent,
+      modelProbabilityPct: coherent ? round(Number(comparison.modelProbabilityPct), 2) : null,
+      evidenceLabel: coherent ? `Scenario ${prediction.scoreForecast?.primary?.score || "N/D"} · probabilità modello ${String(round(Number(comparison.modelProbabilityPct), 1)).replace(".", ",")}%` : "Scenario non coerente"
     };
   }
   const outcomeSelections = new Set(["1", "X", "2", "1X", "X2", "12"]);
@@ -428,7 +443,7 @@ function resolvePick(pick) {
   const market = event.markets.find(item => item.marketName === pick.market && (!pick.variant || item.variantName === pick.variant) && item.status === "open");
   const selection = market?.selections.find(item => item.name === pick.selection && item.status === "open");
   if (!market || !selection) throw new Error(`${pick.matchId}: ${pick.market} ${pick.selection} non disponibile`);
-  const analysis = pickAnalysis(pick, market, prediction);
+  const analysis = pickAnalysis(pick, market, prediction, selection);
   if (!analysis.coherent) throw new Error(`${pick.matchId}: ${pick.label || pick.selection} incoerente con il pronostico o i volumi del modello`);
   const expectedValuePct = Number.isFinite(analysis.modelProbabilityPct)
     ? round((analysis.modelProbabilityPct / 100 * selection.odds - 1) * 100, 1)
@@ -551,6 +566,5 @@ const output = {
   slips
 };
 
-const outputFilename = matchday === 1 ? "schedina.json" : `schedina-md${matchdayCode}.json`;
-fs.writeFileSync(path.join(root, "data/normalized", outputFilename), `${JSON.stringify(output, null, 2)}\n`);
+fs.writeFileSync(outputPath, `${JSON.stringify(output, null, 2)}\n`);
 console.log(`Schedina MD${matchdayCode}: ${slips.length} proposte, ${slips.reduce((sum, slip) => sum + slip.legs.length, 0)} selezioni validate.`);

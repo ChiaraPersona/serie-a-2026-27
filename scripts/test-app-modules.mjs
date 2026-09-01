@@ -35,10 +35,12 @@ const bettingPage = fs.readFileSync(path.join(root, "js", "pages", "betting.js")
   assert.match(bettingPage, /href="schedina\.html\?giornata=\$\{number\}"/, "Schedina: card-link parametrica delle giornate assente");
   assert.match(bettingPage, /archiveCard\(md1,1,matchById\)/, "Schedina: card della prima giornata assente dall'archivio");
   assert.match(bettingPage, /load\("schedina-md02\.json"\)/, "Schedina: dati della seconda giornata non caricati");
-  assert.match(bettingPage, /matchday==="1"\|\|matchday==="2"/, "Schedina: vista dedicata alla seconda giornata assente");
+  assert.match(bettingPage, /load\("schedina-md03\.json"\)/, "Schedina: dati della terza giornata non caricati");
+  assert.match(bettingPage, /const rounds=\{1:md1,2:md2,3:md3\}/, "Schedina: viste dedicate alle prime tre giornate assenti");
   assert.match(bettingPage, /archiveCard\(md2,2,matchById\)/, "Schedina: card della seconda giornata assente dall'archivio");
+  assert.match(bettingPage, /archiveCard\(md3,3,matchById\)/, "Schedina: card della terza giornata assente dall'archivio");
 assert.doesNotMatch(bettingPage, /<details class="betting-archive-card">|<summary class="betting-archive-card-heading">/, "Schedina: la card archivio non deve essere un menu a tendina");
-  assert.match(bettingPage, /matchday==="1"/, "Schedina: vista dedicata alla lista della prima giornata assente");
+  assert.match(bettingPage, /if\(rounds\[matchday\]\)/, "Schedina: vista dedicata alla lista della giornata assente");
 assert.match(bettingPage, /team-flip-inner/, "Schedina: effetto hover delle card Statistiche squadra non riutilizzato");
   assert.match(bettingPage, /<span class="betting-archive-number">\$\{number\}<\/span>/, "Schedina: il fronte deve mostrare soltanto il numero della giornata");
 assert.doesNotMatch(bettingPage, /<span class="betting-archive-number">1ª<\/span><small>Giornata<\/small>/, "Schedina: dicitura Giornata ancora presente sul fronte");

@@ -17,6 +17,7 @@ const source = JSON.parse(fs.readFileSync(sourcePath, "utf8"));
 const predictions = JSON.parse(fs.readFileSync(predictionsPath, "utf8")).predictions;
 const predictionByMatch = new Map(predictions.map(prediction => [prediction.matchId, prediction]));
 let valid = 0;
+let unavailable = 0;
 
 for (const [matchId, portfolios] of Object.entries(source.matches || {})) {
   const prediction = predictionByMatch.get(matchId);
@@ -24,10 +25,16 @@ for (const [matchId, portfolios] of Object.entries(source.matches || {})) {
   for (const portfolio of portfolios) {
     const limits = source.constraints?.tierLimits?.[portfolio.tier];
     if (!limits) throw new Error(`Intervallo gambe mancante: ${matchId}/${portfolio.tier}`);
+    const combo = prediction.combinations?.find(item => item.tier === portfolio.tier);
+    if (portfolio.status === "N/D") {
+      if (portfolio.legs?.length || !portfolio.reason) throw new Error(`${matchId}/${portfolio.tier}: profilo N/D non valido`);
+      if (!combo || combo.qualityStatus !== "nd" || combo.legs?.length || !combo.unavailableReason) throw new Error(`${matchId}/${portfolio.tier}: N/D non propagato nel pronostico`);
+      unavailable += 1;
+      continue;
+    }
     if (!portfolio.legs?.length || portfolio.legs.length < limits.minimum || portfolio.legs.length > limits.maximum) {
       throw new Error(`${matchId}/${portfolio.tier}: ${portfolio.legs?.length || 0} gambe fuori dall'intervallo ${limits.minimum}-${limits.maximum}`);
     }
-    const combo = prediction.combinations?.find(item => item.tier === portfolio.tier);
     if (!combo?.legs?.length || combo.qualityStatus === "nd") throw new Error(`${matchId}/${portfolio.tier}: portafoglio non disponibile nel pronostico rigenerato`);
     const minimumOdds = source.constraints.minLegOddsInclusive;
     const maximumOdds = source.constraints.maxLegOddsInclusive;
@@ -39,4 +46,4 @@ for (const [matchId, portfolios] of Object.entries(source.matches || {})) {
   }
 }
 
-console.log(`OK MyCombo giornata ${matchday}: ${valid} portafogli · quote, famiglie e sovrapposizioni semantiche validate`);
+console.log(`OK MyCombo giornata ${matchday}: ${valid} portafogli validati · ${unavailable} N/D motivati`);

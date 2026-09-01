@@ -7,14 +7,13 @@ const assert = require("assert");
 const root = path.resolve(__dirname, "..");
 const read = relative => JSON.parse(fs.readFileSync(path.join(root, relative), "utf8"));
 const data = read("data/normalized/schedina-md02.json");
-const odds = read("data/normalized/odds/sisal/serie-a.json");
 const predictions = read("data/normalized/predictions.json").predictions;
 const predictionById = new Map(predictions.map(item => [item.matchId, item]));
 
 assert.strictEqual(data.matchday, 2, "La pagina deve riferirsi alla seconda giornata");
 assert.strictEqual(data.slips.length, 8, "La seconda giornata deve replicare le otto tipologie della prima");
 assert.deepStrictEqual(data.slips.map(slip => slip.legs.length), [3, 3, 5, 8, 8, 10, 4, 6], "La scomposizione MD2 deve coincidere con la MD1");
-assert.strictEqual(data.oddsRetrievedAt, odds.retrievedAt, "Schedine e quote devono usare lo stesso snapshot Sisal");
+assert(Number.isFinite(Date.parse(data.oddsRetrievedAt)), "La Schedina MD2 deve conservare il timestamp dello snapshot storico Sisal");
 
 const allLegs = data.slips.flatMap(slip => slip.legs);
 assert.strictEqual(new Set(allLegs.map(leg => String(leg.providerSelectionId))).size, allLegs.length, "Una selezione Sisal è ripetuta tra schedine");

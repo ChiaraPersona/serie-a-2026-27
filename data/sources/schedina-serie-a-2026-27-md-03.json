@@ -1,0 +1,296 @@
+{
+  "schemaVersion": 1,
+  "competition": "serie-a",
+  "season": "2026-27",
+  "matchday": 3,
+  "title": "Otto schedine, otto letture · 3ª giornata",
+  "description": "La stessa scomposizione della prima giornata: tre schedine miste, due dedicate ai giocatori, una Multigol casa/ospite sull'intero turno, una sui risultati esatti e una multiesito. Non è un elenco di MyCombo per partita: ogni blocco è una schedina autonoma. Quote esterne al modello, quota minima 1,10, nessun esito 12 e nessuna selezione Sisal duplicata.",
+  "slips": [
+    {
+      "id": "scintilla-iii",
+      "eyebrow": "Quota contenuta",
+      "name": "Scintilla III",
+      "description": "Tre selezioni prudenti, tre famiglie di mercato e quota complessiva nella fascia della Scintilla della prima giornata.",
+      "picks": [
+        {
+          "matchId": "inter-napoli-2026-27-md-03",
+          "market": "UNDER/OVER",
+          "variant": "U/O 1.5",
+          "selection": "OVER",
+          "label": "Over 1,5 gol"
+        },
+        {
+          "matchId": "genoa-como-2026-27-md-03",
+          "market": "OSPITE: SEGNA GOAL",
+          "variant": "SEGNA GOAL SQUADRA OSPITE",
+          "selection": "SI",
+          "label": "Como segna almeno un gol"
+        },
+        {
+          "matchId": "frosinone-venezia-2026-27-md-03",
+          "market": "1X2 ESITO FINALE",
+          "variant": "ESITO FINALE 1X2",
+          "selection": "1",
+          "label": "Frosinone vincente"
+        }
+      ]
+    },
+    {
+      "id": "bagliore-iii",
+      "eyebrow": "Quota intermedia",
+      "name": "Bagliore III",
+      "description": "Tre mercati differenti, nessuna selezione Sisal ripetuta e una fascia quota coerente con Bagliore della prima giornata.",
+      "picks": [
+        {
+          "matchId": "frosinone-venezia-2026-27-md-03",
+          "market": "DRAW NO BET",
+          "variant": "DRAW NO BET",
+          "selection": "1",
+          "label": "Frosinone Draw No Bet"
+        },
+        {
+          "matchId": "inter-napoli-2026-27-md-03",
+          "market": "UNDER/OVER",
+          "variant": "U/O 2.5",
+          "selection": "OVER",
+          "label": "Over 2,5 gol"
+        },
+        {
+          "matchId": "genoa-como-2026-27-md-03",
+          "market": "1X2 ESITO FINALE",
+          "variant": "ESITO FINALE 1X2",
+          "selection": "2",
+          "label": "Como vincente"
+        }
+      ]
+    },
+    {
+      "id": "supernova-iii",
+      "eyebrow": "Tutta la 3ª giornata",
+      "name": "Supernova III",
+      "description": "Cinque gare e cinque famiglie di mercato, senza aggiunte forzate e con la fascia di rischio della Supernova della prima giornata.",
+      "picks": [
+        {
+          "matchId": "udinese-lazio-2026-27-md-03",
+          "market": "UNDER/OVER",
+          "variant": "U/O 3.5",
+          "selection": "UNDER",
+          "label": "Under 3,5 gol"
+        },
+        {
+          "matchId": "frosinone-venezia-2026-27-md-03",
+          "market": "DOPPIA CHANCE",
+          "variant": "DOPPIA CHANCE MULTIESITI",
+          "selection": "1X",
+          "label": "Frosinone o pareggio"
+        },
+        {
+          "matchId": "fiorentina-torino-2026-27-md-03",
+          "market": "CASA: SEGNA GOAL",
+          "variant": "SEGNA GOAL SQUADRA CASA",
+          "selection": "SI",
+          "label": "Fiorentina segna almeno un gol"
+        },
+        {
+          "matchId": "genoa-como-2026-27-md-03",
+          "market": "DRAW NO BET",
+          "variant": "DRAW NO BET",
+          "selection": "2",
+          "label": "Como Draw No Bet"
+        },
+        {
+          "matchId": "inter-napoli-2026-27-md-03",
+          "market": "GOAL/NOGOAL",
+          "variant": "GOAL/NO GOAL",
+          "selection": "GOAL",
+          "label": "Entrambe le squadre segnano"
+        }
+      ]
+    },
+    {
+      "id": "prisma-iii",
+      "type": "player-only",
+      "eyebrow": "Marcatori · tiri · tiri in porta",
+      "name": "Prisma III",
+      "description": "Otto mercati giocatore su otto gare, limitati ai titolari proiettati con storico sufficiente.",
+      "status": "N/D",
+      "reason": "Mercati giocatore insufficienti nello snapshot Sisal: non vengono forzate selezioni su allenatori o calciatori non coperti dal modello.",
+      "picks": []
+    },
+    {
+      "id": "quasar-iii",
+      "type": "player-only",
+      "eyebrow": "Mix ad alta intensità",
+      "name": "Quasar III",
+      "description": "Secondo portafoglio di otto mercati giocatore senza riutilizzare selezioni già presenti in Prisma III.",
+      "status": "N/D",
+      "reason": "Mercati giocatore insufficienti nello snapshot Sisal: non vengono forzate selezioni su allenatori o calciatori non coperti dal modello.",
+      "picks": []
+    },
+    {
+      "id": "costellazione-md3",
+      "type": "single-market-full-round",
+      "selectionPolicy": {
+        "type": "poisson-narrow",
+        "quantile": 0.9,
+        "maxTeamRangeWidth": 2,
+        "minModelProbability": 0.55,
+        "minLegOdds": 1.1,
+        "maxLegOdds": 1.8
+      },
+      "eyebrow": "10 partite · Multigol casa/ospite",
+      "name": "Costellazione III",
+      "description": "Tutta la 3ª giornata con intervalli casa/ospite stretti, scelti dal modello senza allargare le code per inseguire la quota.",
+      "picks": [
+        {
+          "matchId": "bologna-sassuolo-2026-27-md-03",
+          "market": "MULTIGOAL CASA + MULTIGOAL OSPITE",
+          "variant": "MULTIGOAL CASA + MULTIGOAL OSPITE MULTIESITI 91 ESITI",
+          "selection": "AUTO"
+        },
+        {
+          "matchId": "cagliari-lecce-2026-27-md-03",
+          "market": "MULTIGOAL CASA + MULTIGOAL OSPITE",
+          "variant": "MULTIGOAL CASA + MULTIGOAL OSPITE MULTIESITI 91 ESITI",
+          "selection": "AUTO"
+        },
+        {
+          "matchId": "fiorentina-torino-2026-27-md-03",
+          "market": "MULTIGOAL CASA + MULTIGOAL OSPITE",
+          "variant": "MULTIGOAL CASA + MULTIGOAL OSPITE MULTIESITI 91 ESITI",
+          "selection": "AUTO"
+        },
+        {
+          "matchId": "frosinone-venezia-2026-27-md-03",
+          "market": "MULTIGOAL CASA + MULTIGOAL OSPITE",
+          "variant": "MULTIGOAL CASA + MULTIGOAL OSPITE MULTIESITI 91 ESITI",
+          "selection": "AUTO"
+        },
+        {
+          "matchId": "genoa-como-2026-27-md-03",
+          "market": "MULTIGOAL CASA + MULTIGOAL OSPITE",
+          "variant": "MULTIGOAL CASA + MULTIGOAL OSPITE MULTIESITI 91 ESITI",
+          "selection": "AUTO"
+        },
+        {
+          "matchId": "inter-napoli-2026-27-md-03",
+          "market": "MULTIGOAL CASA + MULTIGOAL OSPITE",
+          "variant": "MULTIGOAL CASA + MULTIGOAL OSPITE MULTIESITI 91 ESITI",
+          "selection": "AUTO"
+        },
+        {
+          "matchId": "juventus-milan-2026-27-md-03",
+          "market": "MULTIGOAL CASA + MULTIGOAL OSPITE",
+          "variant": "MULTIGOAL CASA + MULTIGOAL OSPITE MULTIESITI 91 ESITI",
+          "selection": "AUTO"
+        },
+        {
+          "matchId": "parma-monza-2026-27-md-03",
+          "market": "MULTIGOAL CASA + MULTIGOAL OSPITE",
+          "variant": "MULTIGOAL CASA + MULTIGOAL OSPITE MULTIESITI 91 ESITI",
+          "selection": "AUTO"
+        },
+        {
+          "matchId": "roma-atalanta-2026-27-md-03",
+          "market": "MULTIGOAL CASA + MULTIGOAL OSPITE",
+          "variant": "MULTIGOAL CASA + MULTIGOAL OSPITE MULTIESITI 91 ESITI",
+          "selection": "AUTO"
+        },
+        {
+          "matchId": "udinese-lazio-2026-27-md-03",
+          "market": "MULTIGOAL CASA + MULTIGOAL OSPITE",
+          "variant": "MULTIGOAL CASA + MULTIGOAL OSPITE MULTIESITI 91 ESITI",
+          "selection": "AUTO"
+        }
+      ]
+    },
+    {
+      "id": "quadrante-md3",
+      "type": "exact-score",
+      "eyebrow": "4 partite · Risultato esatto",
+      "name": "Quadrante III",
+      "description": "Quattro risultati esatti sulle gare con maggiore robustezza relativa dello scenario centrale.",
+      "picks": [
+        {
+          "matchId": "inter-napoli-2026-27-md-03",
+          "market": "RISULTATO ESATTO 26 ESITI",
+          "variant": "RISULTATO ESATTO 26 ESITI",
+          "selection": "2-1",
+          "label": "Risultato esatto 2–1"
+        },
+        {
+          "matchId": "genoa-como-2026-27-md-03",
+          "market": "RISULTATO ESATTO 26 ESITI",
+          "variant": "RISULTATO ESATTO 26 ESITI",
+          "selection": "0-1",
+          "label": "Risultato esatto 0–1"
+        },
+        {
+          "matchId": "roma-atalanta-2026-27-md-03",
+          "market": "RISULTATO ESATTO 26 ESITI",
+          "variant": "RISULTATO ESATTO 26 ESITI",
+          "selection": "1-0",
+          "label": "Risultato esatto 1–0"
+        },
+        {
+          "matchId": "frosinone-venezia-2026-27-md-03",
+          "market": "RISULTATO ESATTO 26 ESITI",
+          "variant": "RISULTATO ESATTO 26 ESITI",
+          "selection": "1-0",
+          "label": "Risultato esatto 1–0"
+        }
+      ]
+    },
+    {
+      "id": "ventaglio-md3",
+      "type": "exact-score-multi",
+      "eyebrow": "6 partite · Risultato esatto multiesito",
+      "name": "Ventaglio III",
+      "description": "Sei gruppi di risultati vicini che includono sempre lo scenario centrale del modello.",
+      "picks": [
+        {
+          "matchId": "inter-napoli-2026-27-md-03",
+          "market": "RISULTATO ESATTO MULTI ESITI 1",
+          "variant": "RISULTATO ESATTO MULTI ESITI (1)",
+          "selection": "1-0 / 2-0 / 2-1",
+          "label": "Risultati 1–0 / 2–0 / 2–1"
+        },
+        {
+          "matchId": "genoa-como-2026-27-md-03",
+          "market": "RISULTATO ESATTO MULTI ESITI 4",
+          "variant": "RISULTATO ESATTO MULTI ESITI 4",
+          "selection": "0-0 / 1-1 / 0-1 / 1-0",
+          "label": "Risultati 0–0 / 1–1 / 0–1 / 1–0"
+        },
+        {
+          "matchId": "roma-atalanta-2026-27-md-03",
+          "market": "RISULTATO ESATTO MULTI ESITI 4",
+          "variant": "RISULTATO ESATTO MULTI ESITI 4",
+          "selection": "0-0 / 1-1 / 0-1 / 1-0",
+          "label": "Risultati 0–0 / 1–1 / 0–1 / 1–0"
+        },
+        {
+          "matchId": "frosinone-venezia-2026-27-md-03",
+          "market": "RISULTATO ESATTO MULTI ESITI 4",
+          "variant": "RISULTATO ESATTO MULTI ESITI 4",
+          "selection": "0-0 / 1-1 / 0-1 / 1-0",
+          "label": "Risultati 0–0 / 1–1 / 0–1 / 1–0"
+        },
+        {
+          "matchId": "cagliari-lecce-2026-27-md-03",
+          "market": "RISULTATO ESATTO MULTI ESITI 4",
+          "variant": "RISULTATO ESATTO MULTI ESITI 4",
+          "selection": "0-0 / 1-1 / 0-1 / 1-0",
+          "label": "Risultati 0–0 / 1–1 / 0–1 / 1–0"
+        },
+        {
+          "matchId": "parma-monza-2026-27-md-03",
+          "market": "RISULTATO ESATTO MULTI ESITI 4",
+          "variant": "RISULTATO ESATTO MULTI ESITI 4",
+          "selection": "0-0 / 1-1 / 0-1 / 1-0",
+          "label": "Risultati 0–0 / 1–1 / 0–1 / 1–0"
+        }
+      ]
+    }
+  ]
+}
