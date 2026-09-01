@@ -61,6 +61,9 @@ const championsPage = fs.readFileSync(path.join(root, "js", "pages", "champions.
 assert.match(championsPage, /completo di tutte le partite/, "Champions: copertura completa delle partite non dichiarata");
 assert.doesNotMatch(championsPage, /Squadre italiane/, "Champions: copertura ancora presentata come limitata alle italiane");
 assert.match(championsPage, /champions-team-strength-2026-27\.json/, "Champions: profili di forza non caricati");
+assert.match(championsPage, /champions-team-history-2026-27\.json/, "Champions: storico pluriennale non caricato");
 assert.match(championsPage, /1\/X\/2 N\/D/, "Champions: probabilita non validate non dichiarate N\/D");
 assert.match(championsPage, /Indice di forza europeo/, "Champions: graduatoria sintetica non presente");
+assert.match(championsPage, /Rendimento 2023\/24–2025\/26/, "Champions: rendimento storico non esposto");
+assert.match(championsPage, /Casa \$\{ppgLabel\(homeHistory\?\.home\?\.pointsPerMatch\)\}/, "Champions: rendimento casalingo non esposto nelle gare");
 console.log(`OK moduli applicazione: ${pageFiles.length} pagine e 4 componenti condivisi`);
