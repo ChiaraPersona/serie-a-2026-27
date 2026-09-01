@@ -28,7 +28,7 @@ const matches = source.matches.map(match => ({
   status: match.status || "scheduled",
   dateStatus: match.date ? "confirmed" : "stage-window",
   scheduleLabel: scheduleLabel(match),
-  sources: [source.source, match.resultSource].filter(Boolean)
+  sources: [source.source, match.resultSource, match.refereeSource].filter(Boolean)
 }));
 
 const counts = Object.fromEntries(source.stages.map(stage => [
