@@ -8,7 +8,6 @@ const { DECISION_LAYER_VERSION, PROFILE_LIMITS, enrichPrediction } = require("./
 const root = path.resolve(__dirname, "..");
 const read = relative => JSON.parse(fs.readFileSync(path.join(root, relative), "utf8"));
 const matches = read("data/normalized/matches.json");
-const cup = read("data/normalized/coppa-italia-2026-27.json");
 const readings = read("data/normalized/readings.json");
 const standings = read("data/normalized/standings-2025-26.json");
 const styles = read("data/normalized/team-style-profiles.json");
@@ -62,7 +61,6 @@ const headToHeadByPair = new Map(headToHead.fixtures.map(fixture => [pairKey(fix
 const homeByTeam = byId(standings.homeRows);
 const awayByTeam = byId(standings.awayRows);
 const teamById = new Map(teams.map(team => [team.id, team]));
-const teamIdByName = new Map(teams.flatMap(team => [team.name, team.shortName, team.officialName].filter(Boolean).map(name => [name, team.id])));
 const squadsByTeam = new Map(teams.map(team => [team.id, read(`data/generated/team-pages/${team.id}-squad.json`)]));
 const mvpHistoryByPlayer = new Map(mvpHistory.players.map(player => [player.normalizedName, player]));
 const fantasyHistoryByPlayer = new Map(fantasy.players.map(player => [playerKey(player.name), player]));
@@ -150,16 +148,8 @@ const nextScheduledMatchday = matches
 const leagueTargetMatches = matches
   .filter(match => match.competition === "serie-a" && match.season === "2026-27" && (previewMode ? match.matchday === previewMatchday : oddsByMatch.has(match.id) || match.matchday === nextScheduledMatchday))
   .sort((a, b) => a.matchday - b.matchday || a.id.localeCompare(b.id));
-const cupPredictionIds = new Set(["r16-6", "r16-7"]);
-const cupTargetMatches = previewMode ? [] : cup.matches.filter(match => cupPredictionIds.has(match.id)).map(match => ({
-  ...match,
-  homeTeam: teamIdByName.get(match.home),
-  awayTeam: teamIdByName.get(match.away),
-  matchday: 3,
-  predictionStage: "round-16"
-}));
-const targetMatches = [...leagueTargetMatches, ...cupTargetMatches];
-const predictionMatches = [...matches, ...cupTargetMatches];
+const targetMatches = leagueTargetMatches;
+const predictionMatches = matches;
 const existingPredictionsPath = path.join(root, "data/normalized/predictions.json");
 const existingPredictionByMatch = fs.existsSync(existingPredictionsPath)
   ? new Map(JSON.parse(fs.readFileSync(existingPredictionsPath, "utf8")).predictions.map(prediction => [prediction.matchId, prediction]))
@@ -274,7 +264,7 @@ const predictions = basePredictions.map(enrichPrediction);
 const output = {
   schemaVersion: 1,
   competition: "serie-a",
-  competitions: previewMode ? ["serie-a"] : ["serie-a", "coppa-italia"],
+  competitions: ["serie-a"],
   season: "2026-27",
   ...(previewMode ? { mode: "exploratory-preview", matchday: previewMatchday, publicationStatus: "not-published" } : {}),
   generatedAt,

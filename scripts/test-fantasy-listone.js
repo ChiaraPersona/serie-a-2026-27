@@ -134,6 +134,9 @@ assert.equal(generated.players.filter(player => player.currentAvailability?.line
 const activeSourceIds = new Set(source.players.map(player => String(player.sourceId)));
 const expectedListoneAvailability = probablePlayers.filter(player => player.lineupStatus === "starter" && activeSourceIds.has(String(player.sourceId))).length;
 assert.equal(generated.listone.players.filter(player => player.currentAvailability?.lineupStatus === "starter").length, expectedListoneAvailability);
-assert.equal(generated.listone.players.filter(player => player.currentAvailability?.injuryReported).length, injuries.coverage.reports);
+const activeInjuryReports = injuries.teams
+  .flatMap(team => team.reports)
+  .filter(report => activeSourceIds.has(String(report.sourceId))).length;
+assert.equal(generated.listone.players.filter(player => player.currentAvailability?.injuryReported).length, activeInjuryReports);
 
 console.log(`Fantacalcio unificato: ${unifiedCount} righe, ${source.players.length} attivi nel listone, ${quotedAdvice.length} consigli quotati.`);
