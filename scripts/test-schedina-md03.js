@@ -14,13 +14,15 @@ const eventById = new Map(odds.events.map(item => [item.canonicalMatchId, item])
 
 assert.strictEqual(data.matchday, 3, "La pagina deve riferirsi alla terza giornata");
 assert.strictEqual(data.slips.length, 8, "La terza giornata deve conservare le otto tipologie");
-assert.deepStrictEqual(data.slips.map(slip => slip.legs.length), [3, 3, 5, 0, 0, 10, 4, 6], "Matrice MD3 inattesa");
+assert.deepStrictEqual(data.slips.map(slip => slip.legs.length), [3, 3, 5, 8, 8, 10, 4, 6], "Matrice MD3 inattesa");
 assert.strictEqual(data.oddsRetrievedAt, odds.retrievedAt, "Schedine e quote devono usare lo stesso dataset Sisal");
 assert.strictEqual(odds.events.length, 10, "Lo snapshot Sisal deve coprire tutte le partite");
 
 const unavailable = data.slips.filter(slip => slip.qualityStatus === "nd");
-assert.strictEqual(unavailable.length, 2, "Solo le due schedine giocatore devono restare N/D");
-assert(unavailable.every(slip => slip.type === "player-only" && slip.legs.length === 0 && /Mercati giocatore insufficienti/.test(slip.filterNote)), "Gli N/D devono spiegare l'assenza dei mercati giocatore");
+assert.strictEqual(unavailable.length, 0, "Lo snapshot Sisal aggiornato copre anche le due schedine giocatore");
+const playerOnly = data.slips.filter(slip => slip.type === "player-only");
+assert.deepStrictEqual(playerOnly.map(slip => slip.legs.length), [8, 8], "Le due schedine giocatore devono avere otto selezioni");
+assert(playerOnly.every(slip => slip.marketFamilies.length >= 3), "Le schedine giocatore devono mantenere varietà di mercato");
 
 const allLegs = data.slips.flatMap(slip => slip.legs);
 assert.strictEqual(new Set(allLegs.map(leg => String(leg.providerSelectionId))).size, allLegs.length, "Una selezione Sisal è ripetuta tra schedine");
@@ -50,4 +52,4 @@ assert(exact && exact.legs.length === 4 && exact.legs.every(leg => leg.selection
 const multi = data.slips.find(slip => slip.type === "exact-score-multi");
 assert(multi && multi.legs.length === 6 && multi.legs.every(leg => leg.selection.split("/").map(item => item.trim()).includes(leg.predictedScore)), "Ventaglio III incoerente");
 
-console.log(`Schedina MD03 valida: 8 proposte, ${allLegs.length} selezioni uniche e 2 profili giocatore N/D.`);
+console.log(`Schedina MD03 valida: 8 proposte, ${allLegs.length} selezioni uniche e 2 profili giocatore coperti.`);

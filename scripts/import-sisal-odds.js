@@ -101,11 +101,23 @@ async function main() {
 
   const retrievedAt = new Date();
   const directFixtureImport = pages.some((page) => page.canonicalMatchId);
+  const normalizedDirectory = path.join(root, "data", "normalized", "odds", "sisal");
+  const normalizedFile = path.join(normalizedDirectory, `${options.competition}.json`);
+  const previous = fs.existsSync(normalizedFile)
+    ? JSON.parse(fs.readFileSync(normalizedFile, "utf8"))
+    : null;
+  const previousRegulatorIds = new Map((previous?.events || [])
+    .filter((event) => event.canonicalMatchId && event.regulatorEventId)
+    .map((event) => [event.canonicalMatchId, String(event.regulatorEventId)]));
+  const detailRegulatorEventIds = pages
+    .map((page) => previousRegulatorIds.get(page.canonicalMatchId))
+    .filter(Boolean);
   const capture = await captureSisalPage({
     pageUrls,
     waitMs: options.waitMs,
     headed: options.headed,
     includeDetails: directFixtureImport ? false : options.details,
+    detailRegulatorEventIds,
   });
   const failedPages = capture.pages.filter((page) => page.url?.startsWith("chrome-error://") || page.renderedOdds === 0);
   if (capture.responses.length === 0) {
@@ -130,14 +142,11 @@ async function main() {
   fs.writeFileSync(outputFile, zlib.gzipSync(`${JSON.stringify(artifact)}\n`, { level: 9 }));
   const relativeRawFile = path.relative(root, outputFile).replace(/\\/g, "/");
   const normalized = normalizeSisalCapture({ capture: artifact, competitionKey: options.competition, competition: competition || {}, rawFile: relativeRawFile, root });
-  const normalizedDirectory = path.join(root, "data", "normalized", "odds", "sisal");
   fs.mkdirSync(normalizedDirectory, { recursive: true });
-  const normalizedFile = path.join(normalizedDirectory, `${options.competition}.json`);
   const incremental = directFixtureImport && pages.length < 10 && fs.existsSync(normalizedFile);
   const updatedEvents = normalized.events.map((event) => ({ ...event, retrievedAt: normalized.retrievedAt, rawFile: relativeRawFile }));
   let output = { ...normalized, events: updatedEvents };
   if (incremental) {
-    const previous = JSON.parse(fs.readFileSync(normalizedFile, "utf8"));
     const updatedIds = new Set(updatedEvents.map((event) => event.canonicalMatchId));
     const retainedEvents = previous.events
       .filter((event) => !updatedIds.has(event.canonicalMatchId))

@@ -137,7 +137,7 @@ async function settleBodyJobs(bodyJobs, maxWaitMs = 5000) {
   }
 }
 
-async function captureSisalPage({ pageUrl, pageUrls, waitMs = 15000, headed = true, includeDetails = true }) {
+async function captureSisalPage({ pageUrl, pageUrls, waitMs = 15000, headed = true, includeDetails = true, detailRegulatorEventIds = [] }) {
   const urls = pageUrls || [pageUrl];
   if (!urls.length || urls.some((url) => !url)) throw new Error("Nessuna URL Sisal valida da acquisire.");
   const browserPath = findBrowserExecutable();
@@ -238,10 +238,13 @@ async function captureSisalPage({ pageUrl, pageUrls, waitMs = 15000, headed = tr
 
     const detailRequests = [];
     const manifest = bodies.find((response) => Array.isArray(response.payload?.avvenimentoFeList));
-    if (includeDetails && manifest) {
-      const regulatorEventIds = [...new Set(manifest.payload.avvenimentoFeList
+    const manifestEventIds = includeDetails && manifest
+      ? manifest.payload.avvenimentoFeList
         .map((event) => event.regulatorEventId || `${event.codicePalinsesto}-${event.codiceAvvenimento}`)
-        .filter(Boolean))];
+        .filter(Boolean)
+      : [];
+    const regulatorEventIds = [...new Set([...detailRegulatorEventIds, ...manifestEventIds].map(String).filter(Boolean))];
+    if (regulatorEventIds.length) {
       if (regulatorEventIds.length > 40) throw new Error(`Troppi eventi Sisal da dettagliare: ${regulatorEventIds.length}`);
       for (const regulatorEventId of regulatorEventIds) {
         const detailUrl = `https://betting.sisal.it/api/lettura-palinsesto-sport/palinsesto/prematch/v1/eventDetail/${regulatorEventId}?offerId=0&metaTplEnabled=true`;
