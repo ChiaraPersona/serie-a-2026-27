@@ -7,6 +7,7 @@ const zlib = require("zlib");
 const root = path.resolve(__dirname, "..", "..");
 const scoreboardsRoot = path.join(root, "data", "raw", "head-to-head", "espn", "scoreboards");
 const outputPath = path.join(root, "data", "generated", "prediction-backtest-opening-rounds.json");
+const xgPath = path.join(root, "data", "normalized", "understat-serie-a-xg.json");
 const testSeasons = ["2013-14", "2014-15", "2015-16", "2016-17", "2017-18", "2018-19", "2019-20", "2020-21", "2021-22", "2022-23", "2023-24", "2024-25", "2025-26"];
 const trainingSeasons = new Set(testSeasons.slice(0, -3));
 const validationSeasons = new Set(["2023-24", "2024-25", "2025-26"]);
@@ -17,6 +18,27 @@ const mean = values => values.length ? sum(values) / values.length : null;
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 const round = (value, digits = 4) => Number(value.toFixed(digits));
 const priorSeason = season => `${Number(season.slice(0, 4)) - 1}-${String(Number(season.slice(0, 4))).slice(-2)}`;
+const normalizeTeamName = value => ({
+  "ac milan": "milan", "as roma": "roma", inter: "internazionale", "parma calcio 1913": "parma", verona: "hellas verona"
+}[String(value).toLowerCase()] || String(value).toLowerCase());
+const xgDataset = fs.existsSync(xgPath) ? JSON.parse(fs.readFileSync(xgPath, "utf8")) : { matches: [] };
+const xgBySeason = new Map();
+for (const match of xgDataset.matches) {
+  if (!xgBySeason.has(match.season)) xgBySeason.set(match.season, []);
+  xgBySeason.get(match.season).push(match);
+}
+
+function xgForMatch(match) {
+  const candidates = (xgBySeason.get(match.season) || []).filter(candidate =>
+    normalizeTeamName(candidate.homeTeam.name) === normalizeTeamName(match.homeTeam.name)
+    && normalizeTeamName(candidate.awayTeam.name) === normalizeTeamName(match.awayTeam.name));
+  if (!candidates.length) return null;
+  const matchTime = new Date(match.date).getTime();
+  const selected = candidates.sort((left, right) => Math.abs(new Date(left.date).getTime() - matchTime) - Math.abs(new Date(right.date).getTime() - matchTime))[0];
+  return Math.abs(new Date(selected.date).getTime() - matchTime) <= 172800000 ? selected.xg : null;
+}
+
+const competitorStats = competitor => Object.fromEntries((competitor?.statistics || []).map(stat => [stat.name, Number(stat.displayValue)]));
 
 function readMatches(season, competition) {
   const file = path.join(scoreboardsRoot, season, `${competition}.json.gz`);
@@ -25,12 +47,14 @@ function readMatches(season, competition) {
   return (payload.payload?.events || []).filter(event => event.status?.type?.completed).map(event => {
     const competitors = event.competitions?.[0]?.competitors || [];
     const home = competitors.find(row => row.homeAway === "home"), away = competitors.find(row => row.homeAway === "away");
-    return {
+    const match = {
       id: String(event.id), season, date: event.date,
       homeTeam: { id: String(home?.team?.id || ""), name: home?.team?.displayName || "N/D" },
       awayTeam: { id: String(away?.team?.id || ""), name: away?.team?.displayName || "N/D" },
-      score: { home: Number(home?.score), away: Number(away?.score) }
+      score: { home: Number(home?.score), away: Number(away?.score) },
+      teamStats: { home: competitorStats(home), away: competitorStats(away) }
     };
+    return { ...match, xg: competition === "ita.1" ? xgForMatch(match) : null };
   }).filter(match => match.homeTeam.id && match.awayTeam.id && Number.isFinite(match.score.home) && Number.isFinite(match.score.away))
     .sort((a, b) => new Date(a.date) - new Date(b.date) || a.id.localeCompare(b.id));
 }
@@ -73,6 +97,64 @@ function teamStrength(profileMatches, teamId, venue, type, venueBaseline, overal
   ]);
 }
 
+function processProfile(history, teamId, type, league) {
+  const rows = teamMatches(history, teamId).slice(-2);
+  if (!rows.length) return null;
+  const observations = rows.map(match => {
+    const atHome = match.homeTeam.id === teamId;
+    const ownSide = atHome ? "home" : "away", opponentSide = atHome ? "away" : "home";
+    const side = type === "for" ? ownSide : opponentSide;
+    return {
+      goals: match.score[side],
+      xg: Number(match.xg?.[side]),
+      shotsOnTarget: Number(match.teamStats?.[side]?.shotsOnTarget),
+      shots: Number(match.teamStats?.[side]?.totalShots)
+    };
+  });
+  const metricRate = metric => mean(observations.map(row => row[metric]).filter(Number.isFinite));
+  const components = [
+    { key: "xg", value: metricRate("xg"), baseline: league.xg, weight: 0.7 },
+    { key: "shotsOnTarget", value: metricRate("shotsOnTarget"), baseline: league.shotsOnTarget, weight: 0.2 },
+    { key: "shots", value: metricRate("shots"), baseline: league.shots, weight: 0.1 }
+  ].filter(component => Number.isFinite(component.value) && component.baseline > 0);
+  if (!components.length) return null;
+  const weightTotal = sum(components.map(component => component.weight));
+  const ratio = Math.exp(sum(components.map(component => Math.log(clamp(component.value / component.baseline, 0.35, 2.4)) * component.weight)) / weightTotal);
+  return {
+    matches: rows.length,
+    ratio,
+    ratios: Object.fromEntries(components.map(component => [component.key, clamp(component.value / component.baseline, 0.35, 2.4)])),
+    goals: metricRate("goals"),
+    xg: metricRate("xg"),
+    shotsOnTarget: metricRate("shotsOnTarget"),
+    shots: metricRate("shots")
+  };
+}
+
+function processLeague(previousMatches) {
+  const teamRows = previousMatches.flatMap(match => ["home", "away"].map(side => ({
+    xg: Number(match.xg?.[side]),
+    shotsOnTarget: Number(match.teamStats?.[side]?.shotsOnTarget),
+    shots: Number(match.teamStats?.[side]?.totalShots)
+  })));
+  return {
+    xg: mean(teamRows.map(row => row.xg).filter(Number.isFinite)),
+    shotsOnTarget: mean(teamRows.map(row => row.shotsOnTarget).filter(Number.isFinite)),
+    shots: mean(teamRows.map(row => row.shots).filter(Number.isFinite))
+  };
+}
+
+function processFactor(profile, strength, mode = "combined") {
+  if (!profile || !(strength > 0)) return 1;
+  const reliability = profile.matches / (profile.matches + 6);
+  const ratio = mode === "xg-only" ? profile.ratios?.xg
+    : mode === "xg-sot" && profile.ratios?.xg && profile.ratios?.shotsOnTarget
+      ? profile.ratios.xg ** 0.78 * profile.ratios.shotsOnTarget ** 0.22
+      : profile.ratio;
+  if (!Number.isFinite(ratio)) return 1;
+  return clamp(1 + (ratio - 1) * reliability * strength, 0.85, 1.15);
+}
+
 function lambdas(sample, configuration) {
   const league = leagueRates(sample.previousA);
   const overall = (league.home + league.away) / 2;
@@ -83,7 +165,12 @@ function lambdas(sample, configuration) {
   const homeDefence = teamStrength(homeRows, sample.match.homeTeam.id, "home", "against", league.away, overall, homePromoted, configuration);
   const awayAttack = teamStrength(awayRows, sample.match.awayTeam.id, "away", "for", league.away, overall, awayPromoted, configuration);
   const awayDefence = teamStrength(awayRows, sample.match.awayTeam.id, "away", "against", league.home, overall, awayPromoted, configuration);
-  return { home: clamp(league.home * homeAttack * awayDefence, 0.3, 3.5), away: clamp(league.away * awayAttack * homeDefence, 0.25, 3.3) };
+  let home = league.home * homeAttack * awayDefence;
+  let away = league.away * awayAttack * homeDefence;
+  const { homeAttack: homeAttackProcess, homeDefence: homeDefenceProcess, awayAttack: awayAttackProcess, awayDefence: awayDefenceProcess } = sample.processProfiles;
+  home *= processFactor(homeAttackProcess, configuration.processStrength, configuration.processMode) * processFactor(awayDefenceProcess, configuration.processStrength, configuration.processMode);
+  away *= processFactor(awayAttackProcess, configuration.processStrength, configuration.processMode) * processFactor(homeDefenceProcess, configuration.processStrength, configuration.processMode);
+  return { home: clamp(home, 0.3, 3.5), away: clamp(away, 0.25, 3.3) };
 }
 
 function poisson(goals, lambda) {
@@ -155,7 +242,20 @@ for (const season of testSeasons) {
     const homeIndex = appearances.get(match.homeTeam.id) || 0, awayIndex = appearances.get(match.awayTeam.id) || 0;
     const homeDivision = previousATeams.has(match.homeTeam.id) ? "Serie A" : previousBTeams.has(match.homeTeam.id) ? "Serie B" : null;
     const awayDivision = previousATeams.has(match.awayTeam.id) ? "Serie A" : previousBTeams.has(match.awayTeam.id) ? "Serie B" : null;
-    if (homeIndex < 3 && awayIndex < 3 && homeDivision && awayDivision) samples.push({ match, previousA, previousB, homeDivision, awayDivision, openingIndex: Math.max(homeIndex, awayIndex) + 1 });
+    if (homeIndex < 3 && awayIndex < 3 && homeDivision && awayDivision) {
+      const currentHistory = current.filter(row => new Date(row.date) < new Date(match.date));
+      const process = processLeague(previousA);
+      samples.push({
+        match, previousA, previousB, currentHistory, homeDivision, awayDivision,
+        openingIndex: Math.max(homeIndex, awayIndex) + 1,
+        processProfiles: {
+          homeAttack: processProfile(currentHistory, match.homeTeam.id, "for", process),
+          homeDefence: processProfile(currentHistory, match.homeTeam.id, "against", process),
+          awayAttack: processProfile(currentHistory, match.awayTeam.id, "for", process),
+          awayDefence: processProfile(currentHistory, match.awayTeam.id, "against", process)
+        }
+      });
+    }
     appearances.set(match.homeTeam.id, homeIndex + 1);
     appearances.set(match.awayTeam.id, awayIndex + 1);
   }
@@ -185,6 +285,15 @@ const firstRoundRegularized = { rows: regularized.rows.filter(row => row.opening
 firstRoundCurrent.metrics = metrics(firstRoundCurrent.rows);
 firstRoundSelected.metrics = metrics(firstRoundSelected.rows);
 firstRoundRegularized.metrics = metrics(firstRoundRegularized.rows);
+const processCandidates = ["xg-only", "xg-sot", "combined"].flatMap(processMode => [0.1, 0.25, 0.5, 0.75, 1].map(processStrength => {
+  const configuration = { ...regularizedConfiguration, processStrength, processMode };
+  const result = evaluate(training, configuration);
+  return { configuration, score: result.metrics.oneXTwoLogLoss + result.metrics.scoreLogLoss, metrics: result.metrics };
+})).sort((left, right) => left.score - right.score);
+const processConfiguration = processCandidates[0].configuration;
+const processRegression = evaluate(validation, processConfiguration);
+const firstRoundProcess = { rows: processRegression.rows.filter(row => row.openingIndex === 1) };
+firstRoundProcess.metrics = metrics(firstRoundProcess.rows);
 const improvement = (baseline, candidate) => round((baseline - candidate) / baseline * 100, 2);
 const output = {
   schemaVersion: 1,
@@ -193,7 +302,7 @@ const output = {
     type: "opening-rounds-walk-forward",
     trainingSeasons: [...trainingSeasons],
     validationSeasons: [...validationSeasons],
-    scope: "Prime tre presenze stagionali per squadra, usando esclusivamente la stagione precedente; Serie B inclusa per le neopromosse.",
+    scope: "Prime tre presenze stagionali per squadra: prior dalla stagione precedente e correttivo corrente su xG, tiri in porta e tiri, ristretto per il campione disponibile; Serie B inclusa per le neopromosse.",
     selection: "Griglia scelta sulle stagioni di training e valutata senza riottimizzazione sulle tre stagioni successive."
   },
   samples: { training: training.length, validation: validation.length, firstRoundValidation: firstRoundSelected.rows.length },
@@ -201,6 +310,24 @@ const output = {
   trainingShortlist: candidates.slice(0, 12),
   selected: { configuration: selectedConfiguration, training: candidates[0].metrics, validation: selected.metrics, firstRound: firstRoundSelected.metrics },
   regularized: { configuration: regularizedConfiguration, validation: regularized.metrics, firstRound: firstRoundRegularized.metrics },
+  processRegression: {
+    configuration: processConfiguration,
+    trainingShortlist: processCandidates,
+    validation: processRegression.metrics,
+    firstRound: firstRoundProcess.metrics,
+    improvementVsRegularizedPct: {
+      oneXTwoLogLoss: improvement(regularized.metrics.oneXTwoLogLoss, processRegression.metrics.oneXTwoLogLoss),
+      oneXTwoBrier: improvement(regularized.metrics.oneXTwoBrier, processRegression.metrics.oneXTwoBrier),
+      scoreLogLoss: improvement(regularized.metrics.scoreLogLoss, processRegression.metrics.scoreLogLoss),
+      firstRoundOneXTwoLogLoss: improvement(firstRoundRegularized.metrics.oneXTwoLogLoss, firstRoundProcess.metrics.oneXTwoLogLoss),
+      firstRoundScoreLogLoss: improvement(firstRoundRegularized.metrics.scoreLogLoss, firstRoundProcess.metrics.scoreLogLoss)
+    },
+    pairedBootstrap: {
+      oneXTwoLogLoss: bootstrap(processRegression.rows, regularized.rows, "oneXTwoLogLoss"),
+      oneXTwoBrier: bootstrap(processRegression.rows, regularized.rows, "oneXTwoBrier"),
+      scoreLogLoss: bootstrap(processRegression.rows, regularized.rows, "scoreLogLoss")
+    }
+  },
   improvementVsCurrentPct: {
     oneXTwoLogLoss: improvement(current.metrics.oneXTwoLogLoss, selected.metrics.oneXTwoLogLoss),
     oneXTwoBrier: improvement(current.metrics.oneXTwoBrier, selected.metrics.oneXTwoBrier),
@@ -222,7 +349,13 @@ output.regularizedImprovementVsCurrentPct = {
   firstRoundOneXTwoLogLoss: improvement(firstRoundCurrent.metrics.oneXTwoLogLoss, firstRoundRegularized.metrics.oneXTwoLogLoss),
   firstRoundScoreLogLoss: improvement(firstRoundCurrent.metrics.scoreLogLoss, firstRoundRegularized.metrics.scoreLogLoss)
 };
-const adopt = output.regularizedImprovementVsCurrentPct.oneXTwoLogLoss > 0 && output.regularizedImprovementVsCurrentPct.scoreLogLoss > 0;
-output.recommendation = adopt ? "adopt-regularized-carry-over" : "keep-current-carry-over";
+const carryOverAdopt = output.regularizedImprovementVsCurrentPct.oneXTwoLogLoss > 0 && output.regularizedImprovementVsCurrentPct.scoreLogLoss > 0;
+output.recommendation = carryOverAdopt ? "adopt-regularized-carry-over" : "keep-current-carry-over";
+const processDecision = output.processRegression;
+const processAdopt = processDecision.improvementVsRegularizedPct.oneXTwoLogLoss > 0
+  && processDecision.improvementVsRegularizedPct.oneXTwoBrier >= 0
+  && processDecision.improvementVsRegularizedPct.scoreLogLoss > 0
+  && processDecision.pairedBootstrap.scoreLogLoss.confidenceInterval95[0] >= 0;
+output.processRegression.recommendation = processAdopt ? "adopt-process-regression" : "keep-process-regression-disabled";
 fs.writeFileSync(outputPath, `${JSON.stringify(output, null, 2)}\n`);
 console.log(`OK opening rounds: ${validation.length} gare validation, ${output.recommendation}`);

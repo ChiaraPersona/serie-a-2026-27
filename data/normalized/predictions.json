@@ -5,7 +5,7 @@
     "serie-a"
   ],
   "season": "2026-27",
-  "generatedAt": "2026-09-04T13:59:21.572Z",
+  "generatedAt": "2026-09-04T15:11:44.670Z",
   "engine": {
     "version": "4.11.0",
     "principle": "Un'unica matrice dei punteggi indipendente dalle quote genera 1X2, gol e mercati collegati.",
@@ -658,7 +658,7 @@
       },
       "openingRounds": {
         "schemaVersion": 1,
-        "generatedAt": "2026-08-04T15:15:00.090Z",
+        "generatedAt": "2026-09-04T15:10:31.491Z",
         "methodology": {
           "type": "opening-rounds-walk-forward",
           "trainingSeasons": [
@@ -678,7 +678,7 @@
             "2024-25",
             "2025-26"
           ],
-          "scope": "Prime tre presenze stagionali per squadra, usando esclusivamente la stagione precedente; Serie B inclusa per le neopromosse.",
+          "scope": "Prime tre presenze stagionali per squadra: prior dalla stagione precedente e correttivo corrente su xG, tiri in porta e tiri, ristretto per il campione disponibile; Serie B inclusa per le neopromosse.",
           "selection": "Griglia scelta sulle stagioni di training e valutata senza riottimizzazione sulle tre stagioni successive."
         },
         "samples": {
@@ -984,6 +984,351 @@
             "scoreLogLoss": 2.8445,
             "exactTopThreeHitPct": 36.7
           }
+        },
+        "processRegression": {
+          "configuration": {
+            "promotedAttack": 0.51,
+            "promotedDefence": 1.29,
+            "carryStrength": 1,
+            "processStrength": 1,
+            "processMode": "combined"
+          },
+          "trainingShortlist": [
+            {
+              "configuration": {
+                "promotedAttack": 0.51,
+                "promotedDefence": 1.29,
+                "carryStrength": 1,
+                "processStrength": 1,
+                "processMode": "combined"
+              },
+              "score": 3.9718,
+              "metrics": {
+                "matches": 296,
+                "promotedMatches": 82,
+                "oneXTwoLogLoss": 0.9467,
+                "oneXTwoBrier": 0.557,
+                "oneXTwoAccuracyPct": 59.5,
+                "scoreLogLoss": 3.0251,
+                "exactTopThreeHitPct": 31.8
+              }
+            },
+            {
+              "configuration": {
+                "promotedAttack": 0.51,
+                "promotedDefence": 1.29,
+                "carryStrength": 1,
+                "processStrength": 1,
+                "processMode": "xg-sot"
+              },
+              "score": 3.9722999999999997,
+              "metrics": {
+                "matches": 296,
+                "promotedMatches": 82,
+                "oneXTwoLogLoss": 0.9469,
+                "oneXTwoBrier": 0.5571,
+                "oneXTwoAccuracyPct": 59.5,
+                "scoreLogLoss": 3.0254,
+                "exactTopThreeHitPct": 31.8
+              }
+            },
+            {
+              "configuration": {
+                "promotedAttack": 0.51,
+                "promotedDefence": 1.29,
+                "carryStrength": 1,
+                "processStrength": 0.75,
+                "processMode": "combined"
+              },
+              "score": 3.973,
+              "metrics": {
+                "matches": 296,
+                "promotedMatches": 82,
+                "oneXTwoLogLoss": 0.9484,
+                "oneXTwoBrier": 0.5582,
+                "oneXTwoAccuracyPct": 59.8,
+                "scoreLogLoss": 3.0246,
+                "exactTopThreeHitPct": 31.8
+              }
+            },
+            {
+              "configuration": {
+                "promotedAttack": 0.51,
+                "promotedDefence": 1.29,
+                "carryStrength": 1,
+                "processStrength": 0.75,
+                "processMode": "xg-sot"
+              },
+              "score": 3.9734,
+              "metrics": {
+                "matches": 296,
+                "promotedMatches": 82,
+                "oneXTwoLogLoss": 0.9486,
+                "oneXTwoBrier": 0.5583,
+                "oneXTwoAccuracyPct": 59.8,
+                "scoreLogLoss": 3.0248,
+                "exactTopThreeHitPct": 31.8
+              }
+            },
+            {
+              "configuration": {
+                "promotedAttack": 0.51,
+                "promotedDefence": 1.29,
+                "carryStrength": 1,
+                "processStrength": 0.5,
+                "processMode": "combined"
+              },
+              "score": 3.9764,
+              "metrics": {
+                "matches": 296,
+                "promotedMatches": 82,
+                "oneXTwoLogLoss": 0.951,
+                "oneXTwoBrier": 0.56,
+                "oneXTwoAccuracyPct": 60.1,
+                "scoreLogLoss": 3.0254,
+                "exactTopThreeHitPct": 32.1
+              }
+            },
+            {
+              "configuration": {
+                "promotedAttack": 0.51,
+                "promotedDefence": 1.29,
+                "carryStrength": 1,
+                "processStrength": 0.5,
+                "processMode": "xg-sot"
+              },
+              "score": 3.9766,
+              "metrics": {
+                "matches": 296,
+                "promotedMatches": 82,
+                "oneXTwoLogLoss": 0.9511,
+                "oneXTwoBrier": 0.56,
+                "oneXTwoAccuracyPct": 60.1,
+                "scoreLogLoss": 3.0255,
+                "exactTopThreeHitPct": 32.1
+              }
+            },
+            {
+              "configuration": {
+                "promotedAttack": 0.51,
+                "promotedDefence": 1.29,
+                "carryStrength": 1,
+                "processStrength": 0.25,
+                "processMode": "xg-sot"
+              },
+              "score": 3.9819,
+              "metrics": {
+                "matches": 296,
+                "promotedMatches": 82,
+                "oneXTwoLogLoss": 0.9545,
+                "oneXTwoBrier": 0.5625,
+                "oneXTwoAccuracyPct": 60.1,
+                "scoreLogLoss": 3.0274,
+                "exactTopThreeHitPct": 31.4
+              }
+            },
+            {
+              "configuration": {
+                "promotedAttack": 0.51,
+                "promotedDefence": 1.29,
+                "carryStrength": 1,
+                "processStrength": 0.25,
+                "processMode": "combined"
+              },
+              "score": 3.9819,
+              "metrics": {
+                "matches": 296,
+                "promotedMatches": 82,
+                "oneXTwoLogLoss": 0.9545,
+                "oneXTwoBrier": 0.5625,
+                "oneXTwoAccuracyPct": 60.1,
+                "scoreLogLoss": 3.0274,
+                "exactTopThreeHitPct": 31.4
+              }
+            },
+            {
+              "configuration": {
+                "promotedAttack": 0.51,
+                "promotedDefence": 1.29,
+                "carryStrength": 1,
+                "processStrength": 1,
+                "processMode": "xg-only"
+              },
+              "score": 3.9840999999999998,
+              "metrics": {
+                "matches": 296,
+                "promotedMatches": 82,
+                "oneXTwoLogLoss": 0.9549,
+                "oneXTwoBrier": 0.5629,
+                "oneXTwoAccuracyPct": 60.1,
+                "scoreLogLoss": 3.0292,
+                "exactTopThreeHitPct": 30.7
+              }
+            },
+            {
+              "configuration": {
+                "promotedAttack": 0.51,
+                "promotedDefence": 1.29,
+                "carryStrength": 1,
+                "processStrength": 0.75,
+                "processMode": "xg-only"
+              },
+              "score": 3.9845,
+              "metrics": {
+                "matches": 296,
+                "promotedMatches": 82,
+                "oneXTwoLogLoss": 0.9554,
+                "oneXTwoBrier": 0.5633,
+                "oneXTwoAccuracyPct": 60.1,
+                "scoreLogLoss": 3.0291,
+                "exactTopThreeHitPct": 30.4
+              }
+            },
+            {
+              "configuration": {
+                "promotedAttack": 0.51,
+                "promotedDefence": 1.29,
+                "carryStrength": 1,
+                "processStrength": 0.5,
+                "processMode": "xg-only"
+              },
+              "score": 3.9856,
+              "metrics": {
+                "matches": 296,
+                "promotedMatches": 82,
+                "oneXTwoLogLoss": 0.9562,
+                "oneXTwoBrier": 0.5638,
+                "oneXTwoAccuracyPct": 59.8,
+                "scoreLogLoss": 3.0294,
+                "exactTopThreeHitPct": 31.1
+              }
+            },
+            {
+              "configuration": {
+                "promotedAttack": 0.51,
+                "promotedDefence": 1.29,
+                "carryStrength": 1,
+                "processStrength": 0.1,
+                "processMode": "xg-sot"
+              },
+              "score": 3.9863999999999997,
+              "metrics": {
+                "matches": 296,
+                "promotedMatches": 82,
+                "oneXTwoLogLoss": 0.957,
+                "oneXTwoBrier": 0.5643,
+                "oneXTwoAccuracyPct": 59.1,
+                "scoreLogLoss": 3.0294,
+                "exactTopThreeHitPct": 30.4
+              }
+            },
+            {
+              "configuration": {
+                "promotedAttack": 0.51,
+                "promotedDefence": 1.29,
+                "carryStrength": 1,
+                "processStrength": 0.1,
+                "processMode": "combined"
+              },
+              "score": 3.9863999999999997,
+              "metrics": {
+                "matches": 296,
+                "promotedMatches": 82,
+                "oneXTwoLogLoss": 0.957,
+                "oneXTwoBrier": 0.5643,
+                "oneXTwoAccuracyPct": 59.1,
+                "scoreLogLoss": 3.0294,
+                "exactTopThreeHitPct": 30.4
+              }
+            },
+            {
+              "configuration": {
+                "promotedAttack": 0.51,
+                "promotedDefence": 1.29,
+                "carryStrength": 1,
+                "processStrength": 0.25,
+                "processMode": "xg-only"
+              },
+              "score": 3.9873000000000003,
+              "metrics": {
+                "matches": 296,
+                "promotedMatches": 82,
+                "oneXTwoLogLoss": 0.9574,
+                "oneXTwoBrier": 0.5646,
+                "oneXTwoAccuracyPct": 59.5,
+                "scoreLogLoss": 3.0299,
+                "exactTopThreeHitPct": 30.7
+              }
+            },
+            {
+              "configuration": {
+                "promotedAttack": 0.51,
+                "promotedDefence": 1.29,
+                "carryStrength": 1,
+                "processStrength": 0.1,
+                "processMode": "xg-only"
+              },
+              "score": 3.9887,
+              "metrics": {
+                "matches": 296,
+                "promotedMatches": 82,
+                "oneXTwoLogLoss": 0.9582,
+                "oneXTwoBrier": 0.5652,
+                "oneXTwoAccuracyPct": 59.1,
+                "scoreLogLoss": 3.0305,
+                "exactTopThreeHitPct": 30.7
+              }
+            }
+          ],
+          "validation": {
+            "matches": 90,
+            "promotedMatches": 26,
+            "oneXTwoLogLoss": 1.0766,
+            "oneXTwoBrier": 0.6515,
+            "oneXTwoAccuracyPct": 44.4,
+            "scoreLogLoss": 2.764,
+            "exactTopThreeHitPct": 36.7
+          },
+          "firstRound": {
+            "matches": 30,
+            "promotedMatches": 9,
+            "oneXTwoLogLoss": 1.0795,
+            "oneXTwoBrier": 0.6546,
+            "oneXTwoAccuracyPct": 36.7,
+            "scoreLogLoss": 2.8445,
+            "exactTopThreeHitPct": 36.7
+          },
+          "improvementVsRegularizedPct": {
+            "oneXTwoLogLoss": -1.83,
+            "oneXTwoBrier": -2.04,
+            "scoreLogLoss": -0.8,
+            "firstRoundOneXTwoLogLoss": 0,
+            "firstRoundScoreLogLoss": 0
+          },
+          "pairedBootstrap": {
+            "oneXTwoLogLoss": {
+              "meanImprovement": -0.0194,
+              "confidenceInterval95": [
+                -0.0413,
+                0.0009
+              ]
+            },
+            "oneXTwoBrier": {
+              "meanImprovement": -0.0131,
+              "confidenceInterval95": [
+                -0.028,
+                0.001
+              ]
+            },
+            "scoreLogLoss": {
+              "meanImprovement": -0.0222,
+              "confidenceInterval95": [
+                -0.0481,
+                0.0027
+              ]
+            }
+          },
+          "recommendation": "keep-process-regression-disabled"
         },
         "improvementVsCurrentPct": {
           "oneXTwoLogLoss": 0.76,
