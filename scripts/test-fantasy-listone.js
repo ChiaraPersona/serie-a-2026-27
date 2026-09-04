@@ -12,6 +12,7 @@ const probable = read("data/sources/probable-lineups-md3-2026-27.json");
 const injuries = read("data/sources/fantacalcio-injuries-2026-27.json");
 const goalkeeperHierarchy = read("data/sources/fantasy-goalkeeper-hierarchy-2026-27.json");
 const generated = read("data/generated/fantacalcio-advice.json");
+const teamPagePlayers = read("data/normalized/teams.json").flatMap(team => read(`data/generated/team-pages/${team.id}-squad.json`).players);
 const appSource = fs.readdirSync(path.join(root, "js"), { recursive: true })
   .filter(file => file.endsWith(".js"))
   .map(file => fs.readFileSync(path.join(root, "js", file), "utf8"))
@@ -41,6 +42,8 @@ for (const player of source.players) {
 
 assert.equal(generated.listone.players.length, source.players.length);
 assert.equal(generated.listone.coverage.matchedCurrentPlayers, source.coverage.matchedCurrentPlayers);
+assert.equal(teamPagePlayers.length, source.players.length, "le schede squadra devono coprire tutto il listone ufficiale");
+assert.ok(teamPagePlayers.every(player => player.dataQuality?.status === "complete"), "ogni calciatore del listone deve avere statistiche 2025/26 complete");
 assert.ok(generated.methodology.description.includes("correttivo del 15%"));
 assert.equal(probable.coverage.teams, 20);
 assert.equal(probable.coverage.starters, 220);

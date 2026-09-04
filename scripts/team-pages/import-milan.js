@@ -15,6 +15,8 @@ const readCompressedText = file => file.endsWith(".gz") ? zlib.gunzipSync(fs.rea
 const readRawJson = file => JSON.parse(readCompressedText(file));
 const source = read("data/sources/milan/roster-2026-27.json");
 const external = read("data/sources/milan/espn-external-stats-2025-26.json");
+const sharedExternal = read("data/sources/team-pages/espn-external-stats-2025-26.json");
+const fantasyExternal = read("data/sources/fantasy-external-stats-2025-26.json");
 const refresh = process.argv.includes("--refresh");
 const refreshEspn = process.argv.includes("--refresh") || process.argv.includes("--refresh-espn");
 const profileCache = path.join(root, "data/raw/team-pages/milan/official-profiles");
@@ -53,6 +55,34 @@ const tacticalRole = (positionName, formation) => {
   if (positionName === "Center Left Forward" || positionName === "Center Right Forward") return String(formation || "").endsWith("-1") ? "Trequartista" : "Seconda punta";
   return tacticalRoleNames[positionName] || null;
 };
+const competitionNames = {
+  "eng.1": "Premier League", "eng.2": "Championship", "esp.1": "LaLiga", "fra.1": "Ligue 1",
+  "ger.1": "Bundesliga", "ger.2": "2. Bundesliga", "ita.1": "Serie A", "ita.2": "Serie B",
+  "ned.1": "Eredivisie", "por.1": "Liga Portugal", "sco.1": "Scottish Premiership", "tur.1": "Süper Lig"
+};
+
+function fantasyExternalEntry(record, entry) {
+  const appearances = num(entry.appearances), minutes = num(entry.minutes), isGoalkeeper = record.role === "P";
+  const saves = isGoalkeeper ? num(entry.saves) : null, shotsFaced = isGoalkeeper ? num(entry.shotsFaced) : null;
+  return playerEntry({
+    playerId: record.playerId, providerPlayerId: String(record.providerPlayerId), team: entry.team || "N/D",
+    competition: entry.competition || competitionNames[entry.league] || entry.league, competitionType: "domestic-league",
+    appearances, starts: num(entry.starts), substituteAppearances: num(entry.substituteAppearances), minutes,
+    minutesPerAppearance: minutes !== null && appearances ? round(minutes / appearances) : null,
+    completeMatches: null, substitutedOff: num(entry.substitutedOff), goals: num(entry.goals), assists: num(entry.assists),
+    shots: num(entry.shots), shotsOnTarget: num(entry.shotsOnTarget), penaltiesTaken: num(entry.penaltiesTaken),
+    penaltiesScored: num(entry.penaltiesScored), offsides: num(entry.offsides), keyPasses: num(entry.keyPasses),
+    passAccuracy: num(entry.passAccuracy), crosses: num(entry.crosses), foulsCommitted: num(entry.foulsCommitted),
+    foulsWon: num(entry.foulsWon), yellowCards: num(entry.yellowCards), secondYellowCards: null,
+    straightRedCards: num(entry.redCards), tackles: num(entry.tackles), interceptions: num(entry.interceptions), clearances: num(entry.clearances),
+    goalsConceded: isGoalkeeper ? num(entry.goalsConceded) : null, cleanSheets: isGoalkeeper ? num(entry.cleanSheets) : null,
+    saves, savePercentage: saves !== null && shotsFaced ? round(saves * 100 / shotsFaced, 1) : null,
+    penaltiesFaced: isGoalkeeper ? num(entry.penaltiesFaced) : null, penaltiesSaved: isGoalkeeper ? num(entry.penaltiesSaved) : null,
+    source: "ESPN Core", sourceUrl: entry.sourceUrl || record.sourceUrl,
+    lastUpdated: String(record.retrievedAt || fantasyExternal.generatedAt).slice(0, 10),
+    fieldSources: { employment: "ESPN Core", attack: "ESPN Core", discipline: "ESPN Core", goalkeeping: "ESPN Core" }
+  });
+}
 
 async function profile(player) {
   const url = `https://www.acmilan.com/en/teams/men-first-team/players/${player.profileSlug}`;
@@ -250,8 +280,13 @@ async function main() {
   const linkedPlayers = source.players.map(player => ({ ...player, espnId: player.espnId || inferredIds[player.id] || null }));
   const { entries: local, rolesByPlayer } = localEntries(linkedPlayers);
   const externalByPlayer = new Map();
-  for (const entry of external.entries) {
-    if (!externalByPlayer.has(entry.playerId)) externalByPlayer.set(entry.playerId, []);
+  for (const record of fantasyExternal.players) externalByPlayer.set(record.playerId, record.entries.map(entry => fantasyExternalEntry(record, entry)));
+  const manualExternalPlayers = new Set();
+  for (const entry of [...sharedExternal.entries, ...external.entries]) {
+    if (!manualExternalPlayers.has(entry.playerId)) {
+      externalByPlayer.set(entry.playerId, []);
+      manualExternalPlayers.add(entry.playerId);
+    }
     externalByPlayer.get(entry.playerId).push(playerEntry(entry));
   }
   const squad = [];
@@ -292,7 +327,7 @@ async function main() {
         ...(seed.transferSource ? [seed.transferSource] : []),
         ...entries.map(entry => ({ provider: entry.source, scope: `${entry.team} - ${entry.competition} 2025/26`, url: entry.sourceUrl, retrievedAt: entry.lastUpdated }))
       ],
-      dataQuality: { status: completeness, uncertainAssociation, associationMethod, note: entries.length ? (entries.some(entry => entry.minutes == null) ? "Statistiche stagionali disponibili; minuti non esposti dalla fonte." : localEntriesForPlayer.length && supplementalEntries.length ? "Statistiche 2025/26 aggregate dai roster partita ESPN e integrate con i totali stagionali ESPN Core dichiarati per club e competizione." : supplementalEntries.length && entries.every(entry => entry.source === "ESPN Core") ? "Statistiche 2025/26 importate dai totali stagionali ESPN Core dichiarati per club e competizione." : "Statistiche aggregate dai roster partita ESPN.") : "Nessuna statistica 2025/26 verificata nel perimetro dei provider disponibili." }
+      dataQuality: { status: completeness, uncertainAssociation, associationMethod, note: entries.length ? (entries.some(entry => entry.minutes == null) ? "Statistiche stagionali disponibili; minuti non esposti dalla fonte." : localEntriesForPlayer.length && supplementalEntries.length ? "Statistiche 2025/26 aggregate dai roster partita ESPN e integrate con i totali stagionali esterni dichiarati per club e competizione." : supplementalEntries.length ? "Statistiche 2025/26 importate dalla fonte esterna dichiarata." : "Statistiche aggregate dai roster partita ESPN.") : "Nessuna statistica 2025/26 verificata nel perimetro dei provider disponibili." }
     };
     write(`data/players/milan/${player.id}.json`, player);
     squad.push(player);

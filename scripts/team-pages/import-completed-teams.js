@@ -9,6 +9,9 @@ const generatedAt = "2026-07-22";
 const configFiles = ["completed-teams-2026-27.json", "remaining-teams-2026-27.json"];
 const config = { teams: Object.assign({}, ...configFiles.map(file => JSON.parse(fs.readFileSync(path.join(root, "data/sources/team-pages", file), "utf8")).teams)) };
 const externalStats = JSON.parse(fs.readFileSync(path.join(root, "data/sources/team-pages/espn-external-stats-2025-26.json"), "utf8"));
+const fantasyExternalStats = JSON.parse(fs.readFileSync(path.join(root, "data/sources/fantasy-external-stats-2025-26.json"), "utf8"));
+const fantasyHistoricalStats = JSON.parse(fs.readFileSync(path.join(root, "data/sources/fantacalcio-stats-2025-26.json"), "utf8"));
+const providerIdOverrides = JSON.parse(fs.readFileSync(path.join(root, "data/sources/fantasy-provider-id-overrides-2026-27.json"), "utf8")).players;
 const fantasyRoster = JSON.parse(fs.readFileSync(path.join(root, "data/sources/fantacalcio-quotations-2026-27.json"), "utf8"));
 const selectedArg = process.argv.find(argument => argument.startsWith("--teams="));
 const selectedTeams = selectedArg ? selectedArg.slice(8).split(",").map(value => value.trim()).filter(Boolean) : Object.keys(config.teams);
@@ -73,6 +76,90 @@ const tacticalRoleNames = {
   "Right Forward": "Ala destra",
   Forward: "Centravanti"
 };
+const competitionNames = {
+  "arg.1": "Liga Profesional Argentina", "bel.1": "Jupiler Pro League", "bra.1": "Brasileirão",
+  "den.1": "Superliga danese", "eng.1": "Premier League", "eng.2": "Championship", "esp.1": "LaLiga",
+  "fra.1": "Ligue 1", "ger.1": "Bundesliga", "ger.2": "2. Bundesliga", "ita.1": "Serie A", "ita.2": "Serie B",
+  "ned.1": "Eredivisie", "nor.1": "Eliteserien", "por.1": "Liga Portugal", "sco.1": "Scottish Premiership",
+  "sui.1": "Super League svizzera", "tur.1": "Süper Lig"
+};
+
+function fantasyExternalEntry(record, entry) {
+  const appearances = num(entry.appearances);
+  const minutes = num(entry.minutes);
+  const isGoalkeeper = record.role === "P";
+  const saves = isGoalkeeper ? num(entry.saves) : null;
+  const shotsFaced = isGoalkeeper ? num(entry.shotsFaced) : null;
+  return playerEntry({
+    playerId: record.playerId,
+    providerPlayerId: String(record.providerPlayerId),
+    team: entry.team || "N/D",
+    competition: entry.competition || competitionNames[entry.league] || entry.league,
+    competitionType: "domestic-league",
+    appearances,
+    starts: num(entry.starts),
+    substituteAppearances: num(entry.substituteAppearances),
+    minutes,
+    minutesPerAppearance: minutes !== null && appearances ? round(minutes / appearances) : null,
+    completeMatches: null,
+    substitutedOff: num(entry.substitutedOff),
+    goals: num(entry.goals),
+    assists: num(entry.assists),
+    shots: num(entry.shots),
+    shotsOnTarget: num(entry.shotsOnTarget),
+    penaltiesTaken: num(entry.penaltiesTaken),
+    penaltiesScored: num(entry.penaltiesScored),
+    offsides: num(entry.offsides),
+    keyPasses: num(entry.keyPasses),
+    passAccuracy: num(entry.passAccuracy),
+    crosses: num(entry.crosses),
+    foulsCommitted: num(entry.foulsCommitted),
+    foulsWon: num(entry.foulsWon),
+    yellowCards: num(entry.yellowCards),
+    secondYellowCards: null,
+    straightRedCards: num(entry.redCards),
+    tackles: num(entry.tackles),
+    interceptions: num(entry.interceptions),
+    clearances: num(entry.clearances),
+    goalsConceded: isGoalkeeper ? num(entry.goalsConceded) : null,
+    cleanSheets: isGoalkeeper ? num(entry.cleanSheets) : null,
+    saves,
+    savePercentage: saves !== null && shotsFaced ? round(saves * 100 / shotsFaced, 1) : null,
+    penaltiesFaced: isGoalkeeper ? num(entry.penaltiesFaced) : null,
+    penaltiesSaved: isGoalkeeper ? num(entry.penaltiesSaved) : null,
+    source: "ESPN Core",
+    sourceUrl: entry.sourceUrl || record.sourceUrl,
+    lastUpdated: String(record.retrievedAt || fantasyExternalStats.generatedAt || generatedAt).slice(0, 10),
+    fieldSources: { employment: "ESPN Core", attack: "ESPN Core", discipline: "ESPN Core", goalkeeping: "ESPN Core" }
+  });
+}
+
+function fantacalcioHistoricalEntry(stat, seed) {
+  return playerEntry({
+    playerId: seed.id,
+    providerPlayerId: String(stat.sourceId),
+    team: stat.team,
+    competition: "Serie A",
+    competitionType: "domestic-league",
+    appearances: num(stat.appearancesWithVote),
+    starts: null,
+    substituteAppearances: null,
+    minutes: null,
+    goals: num(stat.goalsFor),
+    assists: num(stat.assists),
+    penaltiesTaken: num(stat.penaltiesTaken),
+    penaltiesScored: num(stat.penaltiesScored),
+    yellowCards: num(stat.yellowCards),
+    secondYellowCards: null,
+    straightRedCards: num(stat.redCards),
+    goalsConceded: seed.role === "Portiere" ? num(stat.goalsAgainst) : null,
+    penaltiesSaved: seed.role === "Portiere" ? num(stat.penaltiesSaved) : null,
+    source: "Fantacalcio",
+    sourceUrl: "https://www.fantacalcio.it/serie-a/statistiche",
+    lastUpdated: fantasyHistoricalStats.importedAt,
+    fieldSources: { employment: "Fantacalcio", attack: "Fantacalcio", discipline: "Fantacalcio", goalkeeping: "Fantacalcio" }
+  });
+}
 
 function tacticalRole(positionName, formation) {
   if (positionName === "Center Left Forward" || positionName === "Center Right Forward") {
@@ -285,12 +372,13 @@ function rosterPlayers(teamId, teamConfig) {
   const byId = new Map(players.map(player => [player.id, player]));
   return officialPlayers.map(source => {
     const existing = source.playerId ? byId.get(source.playerId) : null;
-    if (existing) return { ...existing, fantacalcioSourceId: source.sourceId, fantacalcioName: source.name };
+    const overriddenEspnId = providerIdOverrides[source.playerId]?.espn || null;
+    if (existing) return { ...existing, espnId: existing.espnId || overriddenEspnId, fantacalcioSourceId: source.sourceId, fantacalcioName: source.name };
     const role = fantasyRoleNames[source.role] || null;
     return {
       id: slug(source.name),
       name: source.name,
-      espnId: null,
+      espnId: overriddenEspnId,
       role,
       detailedRole: role,
       nationality: null,
@@ -329,15 +417,38 @@ function removeOrphanPlayerFiles(teamId, players) {
 
 async function buildTeam(teamId, teamConfig, entries, detailedRoles) {
   const seeds = rosterPlayers(teamId, teamConfig);
+  const historicalByPlayerId = new Map(fantasyHistoricalStats.players.filter(stat => stat.playerId).map(stat => [stat.playerId, stat]));
+  const historicalByName = new Map();
+  for (const stat of fantasyHistoricalStats.players) {
+    const key = normalize(stat.name);
+    if (!historicalByName.has(key)) historicalByName.set(key, []);
+    historicalByName.get(key).push(stat);
+  }
   const externalByPlayer = new Map();
+  for (const record of fantasyExternalStats.players) {
+    externalByPlayer.set(record.playerId, record.entries.map(entry => fantasyExternalEntry(record, entry)));
+  }
+  const manualExternalPlayers = new Set();
   for (const entry of externalStats.entries) {
-    if (!externalByPlayer.has(entry.playerId)) externalByPlayer.set(entry.playerId, []);
+    if (!manualExternalPlayers.has(entry.playerId)) {
+      externalByPlayer.set(entry.playerId, []);
+      manualExternalPlayers.add(entry.playerId);
+    }
     externalByPlayer.get(entry.playerId).push(playerEntry(entry));
   }
   const squad = seeds.map(seed => {
     let playerEntries = entries.filter(entry => entry.playerId === seed.id).sort((left, right) => (right.appearances ?? 0) - (left.appearances ?? 0));
-    const usesExternalStats = !playerEntries.length && externalByPlayer.has(seed.id);
+    let usesExternalStats = !playerEntries.length && externalByPlayer.has(seed.id);
     if (usesExternalStats) playerEntries = externalByPlayer.get(seed.id);
+    if (!playerEntries.length) {
+      const byId = historicalByPlayerId.get(seed.id);
+      const exactNameMatches = historicalByName.get(normalize(seed.fantacalcioName || seed.name)) || [];
+      const historical = byId || (exactNameMatches.length === 1 ? exactNameMatches[0] : null);
+      if (historical) {
+        playerEntries = [fantacalcioHistoricalEntry(historical, seed)];
+        usesExternalStats = true;
+      }
+    }
     const completeness = playerEntries.length ? (playerEntries.some(entry => entry.minutes != null) ? "complete" : "partial") : "unavailable";
     const photoUrl = seed.espnId ? `https://a.espncdn.com/i/headshots/soccer/players/full/${seed.espnId}.png` : null;
     const inferredRole = seed.espnId ? detailedRoles.get(seed.espnId) : null;
