@@ -9,8 +9,13 @@ const read = relative => JSON.parse(fs.readFileSync(path.join(root, relative), "
 const data = read("data/normalized/schedina-md03.json");
 const odds = read("data/normalized/odds/sisal/serie-a.json");
 const predictions = read("data/normalized/predictions.json").predictions;
+const matches = read("data/normalized/matches.json");
+const probableLineups = read("data/sources/probable-lineups-md3-2026-27.json");
 const predictionById = new Map(predictions.map(item => [item.matchId, item]));
 const eventById = new Map(odds.events.map(item => [item.canonicalMatchId, item]));
+const matchById = new Map(matches.map(item => [item.id, item]));
+const lineupByTeamId = new Map(probableLineups.teams.map(item => [item.teamId, item]));
+const clean = value => String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
 
 assert.strictEqual(data.matchday, 3, "La pagina deve riferirsi alla terza giornata");
 assert.strictEqual(data.slips.length, 8, "La terza giornata deve conservare le otto tipologie");
@@ -23,6 +28,13 @@ assert.strictEqual(unavailable.length, 0, "Lo snapshot Sisal aggiornato copre an
 const playerOnly = data.slips.filter(slip => slip.type === "player-only");
 assert.deepStrictEqual(playerOnly.map(slip => slip.legs.length), [8, 8], "Le due schedine giocatore devono avere otto selezioni");
 assert(playerOnly.every(slip => slip.marketFamilies.length >= 3), "Le schedine giocatore devono mantenere varietà di mercato");
+for (const leg of playerOnly.flatMap(slip => slip.legs)) {
+  const match = matchById.get(leg.matchId);
+  const starterNames = [match?.homeTeam, match?.awayTeam].flatMap(teamId => (lineupByTeamId.get(teamId)?.players || [])
+    .filter(player => player.lineupStatus === "starter")
+    .map(player => clean(player.currentName)));
+  assert(starterNames.includes(clean(leg.player)), `${leg.matchId}: ${leg.player} non è nell'XI probabile MD3`);
+}
 
 const allLegs = data.slips.flatMap(slip => slip.legs);
 assert.strictEqual(new Set(allLegs.map(leg => String(leg.providerSelectionId))).size, allLegs.length, "Una selezione Sisal è ripetuta tra schedine");
@@ -39,6 +51,10 @@ for (const slip of data.slips.slice(0, 3)) {
   assert(slip.marketFamilies.length >= 3, `${slip.id}: varietà mercati insufficiente`);
   assert(slip.legs.every(leg => leg.expectedValuePct >= -10), `${slip.id}: gamba sotto il filtro prudenziale`);
 }
+const firstThreeOutcomeExposure = data.slips.slice(0, 3).flatMap(slip => slip.legs)
+  .filter(leg => ["Esito", "DRAW NO BET"].includes(leg.marketFamily))
+  .reduce((counts, leg) => counts.set(leg.matchId, (counts.get(leg.matchId) || 0) + 1), new Map());
+assert([...firstThreeOutcomeExposure.values()].every(count => count <= 1), "Le prime tre schedine non devono dipendere tutte dallo stesso esito partita");
 assert(data.slips[0].combinedOdds >= 4 && data.slips[0].combinedOdds <= 6, "Scintilla III fuori fascia");
 assert(data.slips[1].combinedOdds >= 6 && data.slips[1].combinedOdds <= 10, "Bagliore III fuori fascia");
 assert(data.slips[2].combinedOdds >= 5 && data.slips[2].combinedOdds <= 10, "Supernova III fuori fascia");

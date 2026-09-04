@@ -107,11 +107,18 @@ function exactScoreProbability(prediction, score) {
     * poissonPoint(Number(prediction.expectedGoals?.away), awayGoals);
 }
 
+function lineupForMatch(team, matchId) {
+  if (!team) return null;
+  if (team.probableLineup?.status !== "official" || team.probableLineup?.matchId === matchId) return team.probableLineup;
+  return team.projectedLineup || null;
+}
+
 function playerContext(pick) {
   const match = matchById.get(pick.matchId);
   for (const [teamPosition, teamId] of [match?.homeTeam, match?.awayTeam].entries()) {
     const team = teamById.get(teamId);
-    const isProjected = (team?.probableLineup?.players || []).some(name => clean(name) === clean(pick.player));
+    const lineup = lineupForMatch(team, pick.matchId);
+    const isProjected = (lineup?.players || []).some(name => clean(name) === clean(pick.player));
     const player = team?.squad?.find(item => clean(item.name) === clean(pick.player));
     if (isProjected && player) return { team, teamPosition, player, venue: teamPosition === 0 ? "home" : "away" };
   }
