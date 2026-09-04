@@ -9,6 +9,7 @@ const generatedAt = "2026-07-22";
 const configFiles = ["completed-teams-2026-27.json", "remaining-teams-2026-27.json"];
 const config = { teams: Object.assign({}, ...configFiles.map(file => JSON.parse(fs.readFileSync(path.join(root, "data/sources/team-pages", file), "utf8")).teams)) };
 const externalStats = JSON.parse(fs.readFileSync(path.join(root, "data/sources/team-pages/espn-external-stats-2025-26.json"), "utf8"));
+const fantasyRoster = JSON.parse(fs.readFileSync(path.join(root, "data/sources/fantacalcio-quotations-2026-27.json"), "utf8"));
 const selectedArg = process.argv.find(argument => argument.startsWith("--teams="));
 const selectedTeams = selectedArg ? selectedArg.slice(8).split(",").map(value => value.trim()).filter(Boolean) : Object.keys(config.teams);
 const refreshRosters = process.argv.includes("--refresh") || process.argv.includes("--refresh-rosters");
@@ -48,6 +49,7 @@ const countryNames = {
   Switzerland: "Svizzera", Turkey: "Turchia", Uruguay: "Uruguay", USA: "Stati Uniti"
 };
 const roleNames = { Goalkeeper: "Portiere", Defender: "Difensore", Midfielder: "Centrocampista", Forward: "Attaccante" };
+const fantasyRoleNames = { P: "Portiere", D: "Difensore", C: "Centrocampista", A: "Attaccante" };
 const tacticalRoleNames = {
   Goalkeeper: "Portiere",
   "Center Defender": "Difensore centrale",
@@ -279,7 +281,50 @@ function rosterPlayers(teamId, teamConfig) {
     if (players.some(player => supplemental.espnId && player.espnId === String(supplemental.espnId))) continue;
     players.push({ id: slug(supplemental.name), shirtNumber: null, heightCm: null, weightKg: null, ...supplemental, espnId: supplemental.espnId ? String(supplemental.espnId) : null });
   }
-  return players;
+  const officialPlayers = fantasyRoster.players.filter(player => player.teamId === teamId && player.status === "active");
+  const byId = new Map(players.map(player => [player.id, player]));
+  return officialPlayers.map(source => {
+    const existing = source.playerId ? byId.get(source.playerId) : null;
+    if (existing) return { ...existing, fantacalcioSourceId: source.sourceId, fantacalcioName: source.name };
+    const role = fantasyRoleNames[source.role] || null;
+    return {
+      id: slug(source.name),
+      name: source.name,
+      espnId: null,
+      role,
+      detailedRole: role,
+      nationality: null,
+      dateOfBirth: null,
+      shirtNumber: null,
+      heightCm: null,
+      weightKg: null,
+      status: "confermato",
+      fantacalcioSourceId: source.sourceId,
+      fantacalcioName: source.name
+    };
+  });
+}
+
+function fantacalcioRosterSource(teamId) {
+  return {
+    provider: "Fantacalcio",
+    scope: "Rosa Serie A 2026/27 corrente; inclusi infortunati e indisponibili",
+    url: `https://www.fantacalcio.it/serie-a/squadre/${teamId}`,
+    retrievedAt: fantasyRoster.rosterSource?.retrievedAt || fantasyRoster.importedAt || null
+  };
+}
+
+function removeOrphanPlayerFiles(teamId, players) {
+  const directory = path.join(root, "data/players", teamId);
+  if (!fs.existsSync(directory)) return 0;
+  const keep = new Set(players.map(player => `${player.id}.json`));
+  let removed = 0;
+  for (const name of fs.readdirSync(directory)) {
+    if (!name.endsWith(".json") || keep.has(name)) continue;
+    fs.unlinkSync(path.join(directory, name));
+    removed++;
+  }
+  return removed;
 }
 
 async function buildTeam(teamId, teamConfig, entries, detailedRoles) {
@@ -298,7 +343,7 @@ async function buildTeam(teamId, teamConfig, entries, detailedRoles) {
     const inferredRole = seed.espnId ? detailedRoles.get(seed.espnId) : null;
     const configuredDetailedRole = seed.detailedRole && seed.detailedRole !== seed.role ? seed.detailedRole : null;
     const player = {
-      schemaVersion: 1, id: seed.id, name: seed.name, providerIds: { espn: seed.espnId }, currentTeam: teamConfig.name, currentSeason: "2026/27",
+      schemaVersion: 1, id: seed.id, name: seed.name, providerIds: { espn: seed.espnId, fantacalcio: seed.fantacalcioSourceId || null }, currentTeam: teamConfig.name, currentSeason: "2026/27",
       shirtNumber: seed.shirtNumber ?? null, role: seed.role, detailedRole: inferredRole?.role || configuredDetailedRole || seed.role,
       detailedRoles: inferredRole?.roles?.map(item => item.role) || [configuredDetailedRole || seed.role],
       detailedRoleSource: inferredRole ? "ESPN - posizione da titolare 2025/26" : configuredDetailedRole ? "Configurazione rosa" : "ESPN - ruolo rosa generico",
@@ -309,6 +354,7 @@ async function buildTeam(teamId, teamConfig, entries, detailedRoles) {
       previousTeam: playerEntries[0]?.team || null, previousCompetition: playerEntries[0]?.competition || null,
       previousSeason: { season: "2025/26", entries: playerEntries, totals: totals(playerEntries), totalsByCompetition: playerEntries.map(entry => ({ competition: entry.competition, team: entry.team, ...totals([entry]) })) },
       sources: [
+        fantacalcioRosterSource(teamId),
         { ...teamConfig.source },
         ...(seed.transferSource ? [seed.transferSource] : []),
         ...playerEntries.map(entry => ({ provider: entry.source, scope: `${entry.team} - ${entry.competition} 2025/26`, url: entry.sourceUrl, retrievedAt: entry.lastUpdated }))
@@ -323,9 +369,10 @@ async function buildTeam(teamId, teamConfig, entries, detailedRoles) {
   });
   write(`data/generated/team-pages/${teamId}-squad.json`, {
     schemaVersion: 1, team: teamConfig.name, season: "2026/27", previousSeason: "2025/26", generatedAt: new Date().toISOString(),
-    coach: teamConfig.coach || null, rosterSource: teamConfig.source, players: squad
+    coach: teamConfig.coach || null, rosterSource: fantacalcioRosterSource(teamId), players: squad
   });
-  console.log(`${teamConfig.name}: ${squad.length} giocatori; complete=${squad.filter(player => player.dataQuality.status === "complete").length}; partial=${squad.filter(player => player.dataQuality.status === "partial").length}; unavailable=${squad.filter(player => player.dataQuality.status === "unavailable").length}`);
+  const removedOrphans = removeOrphanPlayerFiles(teamId, squad);
+  console.log(`${teamConfig.name}: ${squad.length} giocatori; complete=${squad.filter(player => player.dataQuality.status === "complete").length}; partial=${squad.filter(player => player.dataQuality.status === "partial").length}; unavailable=${squad.filter(player => player.dataQuality.status === "unavailable").length}; rimossi=${removedOrphans}`);
   return squad;
 }
 

@@ -4,6 +4,7 @@ const read=name=>JSON.parse(fs.readFileSync(path.join(dir,name),"utf8"));
 const teams=read("teams.json"), matches=read("matches.json"), readings=read("readings.json"), predictions=read("predictions.json"), referees=read("referees.json"), refereeHistory=read("referee-stats-2025-26.json"), previousStandings=read("standings-2025-26.json"), teamStyleProfiles=read("team-style-profiles.json"), objectives=JSON.parse(fs.readFileSync(path.join(root,"data/team-objectives.json"),"utf8")), teamIds=new Set(teams.map(t=>t.id));
 const {calculateObjectiveMetrics}=require("./objective-metrics.js");
 const fantasy=JSON.parse(fs.readFileSync(path.join(root,"data/generated/fantacalcio-advice.json"),"utf8"));
+const fantasyQuotations=JSON.parse(fs.readFileSync(path.join(root,"data/sources/fantacalcio-quotations-2026-27.json"),"utf8"));
 const fantasyWorkbook=JSON.parse(fs.readFileSync(path.join(root,"data/sources/fantacalcio-stats-2025-26.json"),"utf8"));
 const marketValues=JSON.parse(fs.readFileSync(path.join(root,"data/sources/team-pages/transfermarkt-market-values-2026-27.json"),"utf8"));
 const cup=JSON.parse(fs.readFileSync(path.join(dir,"coppa-italia-2026-27.json"),"utf8"));
@@ -15,6 +16,12 @@ const readingRefereeProfiles=JSON.parse(fs.readFileSync(path.join(root,"data/gen
 function assert(condition,message){if(!condition)throw new Error(message)}
 
 assert(teams.length===20,`Squadre: ${teams.length}, attese 20`);
+const officialRosterKeys=new Set(fantasyQuotations.players.map(player=>`${player.teamId}:${player.playerId}`));
+const teamRosterPlayers=teams.flatMap(team=>JSON.parse(fs.readFileSync(path.join(root,`data/teams/${team.id}.json`),"utf8")).squad.map(player=>({teamId:team.id,id:player.id})));
+const playerProfileKeys=teams.flatMap(team=>fs.readdirSync(path.join(root,"data/players",team.id)).filter(name=>name.endsWith(".json")).map(name=>`${team.id}:${name.slice(0,-5)}`));
+assert(fantasyQuotations.players.length===fantasyQuotations.coverage.activePlayers&&fantasyQuotations.players.length>500&&fantasyQuotations.players.every(player=>player.status==="active"&&player.playerId),"Rosa Fantacalcio ufficiale incompleta o non collegata");
+assert(teamRosterPlayers.length===officialRosterKeys.size&&teamRosterPlayers.every(player=>officialRosterKeys.has(`${player.teamId}:${player.id}`)),"Le rose squadra contengono profili estranei a Fantacalcio");
+assert(playerProfileKeys.length===officialRosterKeys.size&&playerProfileKeys.every(key=>officialRosterKeys.has(key)),"Le schede giocatore contengono profili estranei a Fantacalcio");
 assert(teamColorSource.provider==="FootyLogos","Provider colori club non valido");
 assert(teamColorSource.competitionUrl==="https://www.footylogos.com/team-color-codes/serie-a","URL raccolta colori club non valido");
 assert(Object.keys(teamColorSource.teams).length===20,"La fonte colori deve coprire 20 squadre");

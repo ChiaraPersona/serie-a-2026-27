@@ -14,13 +14,13 @@ const withFonts = html => html.replace("</title>", `</title>${fontLinks}`);
 const version = "20260901-coppa-round16-calendar-v1";
 const homeVersion = "20260830-md2-results-v1";
 const calendarVersion = "20260830-md2-results-v1";
-const teamVersion = "20260901-torino-monza-lineups-v1";
+const teamVersion = "20260904-fantacalcio-md3-lineups-v1";
 const leaderboardVersion = "20260830-md2-results-v1";
-const bettingVersion = "20260901-md3-schedina-v1";
+const bettingVersion = "20260904-fantacalcio-md3-lineups-v1";
 const readingVersion = "20260903-remove-coppa-readings-v1";
 const cupVersion = "20260903-coppa-results-v1";
 const championsVersion = "20260902-champions-h2h-2020-v13";
-const fantasyVersion = "20260831-atalanta-bologna-lineups-v1";
+const fantasyVersion = "20260904-fantacalcio-md3-lineups-v1";
 const headToHeadPath = path.join(root, "data/generated/head-to-head/first-leg-2026-27.json");
 if (fs.existsSync(headToHeadPath)) {
   const headToHead = JSON.parse(fs.readFileSync(headToHeadPath, "utf8"));

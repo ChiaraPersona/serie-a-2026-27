@@ -12,7 +12,8 @@ const write = (relative, value) => {
 const slugAliases = { "hellas-verona": "verona" };
 const teams = read("data/normalized/teams.json");
 const teamDetails = read("data/sources/team-pages/team-details-2026-27.json");
-const probableLineups = read("data/sources/probable-lineups-md2-2026-27.json");
+const fantasyRoster = read("data/sources/fantacalcio-quotations-2026-27.json");
+const probableLineups = read("data/sources/probable-lineups-md3-2026-27.json");
 const probableLineupByTeam = new Map(probableLineups.teams.map(team => [team.teamId, team]));
 const officialLineupsFile = path.join(root, "data/sources/official-lineups-2026-27.json");
 const officialLineups = fs.existsSync(officialLineupsFile) ? JSON.parse(fs.readFileSync(officialLineupsFile, "utf8")) : { fixtures: [] };
@@ -44,11 +45,37 @@ const currentSeasonMatches = read("data/normalized/matches.json")
   .filter(match => match.competition === "serie-a" && match.season === "2026-27" && match.status === "finished" && match.score);
 const leaderboardGeneratedAt = [today, ...currentSeasonMatches.map(match => match.resultSource?.retrievedAt)].filter(Boolean).sort().at(-1);
 const currentIds = new Set(teams.map(team => team.id));
+const fantasyRosterSource = teamId => ({
+  provider: "Fantacalcio",
+  scope: "Rosa Serie A 2026/27 corrente; inclusi infortunati e indisponibili",
+  url: `https://www.fantacalcio.it/serie-a/squadre/${teamId}`,
+  retrievedAt: fantasyRoster.rosterSource?.retrievedAt || fantasyRoster.importedAt || null
+});
+const officializeSquad = (teamId, payload) => {
+  if (!payload) return null;
+  const byId = new Map((payload.players || []).map(player => [player.id, player]));
+  const official = fantasyRoster.players.filter(player => player.teamId === teamId && player.status === "active");
+  const missing = official.filter(player => !player.playerId || !byId.has(player.playerId));
+  if (missing.length) throw new Error(`${teamId}: profili Fantacalcio mancanti: ${missing.map(player => player.name).join(", ")}`);
+  return { ...payload, rosterSource: fantasyRosterSource(teamId), players: official.map(player => byId.get(player.playerId)) };
+};
 const generatedSquads = new Map(teams.map(team => {
   const teamId = team.id;
   const file = path.join(root, `data/generated/team-pages/${teamId}-squad.json`);
-  return [teamId, fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, "utf8")) : null];
+  const payload = fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, "utf8")) : null;
+  return [teamId, officializeSquad(teamId, payload)];
 }));
+
+for (const [teamId, payload] of generatedSquads) {
+  if (!payload) continue;
+  write(`data/generated/team-pages/${teamId}-squad.json`, payload);
+  const directory = path.join(root, "data/players", teamId);
+  if (!fs.existsSync(directory)) continue;
+  const keep = new Set(payload.players.map(player => `${player.id}.json`));
+  for (const name of fs.readdirSync(directory)) {
+    if (name.endsWith(".json") && !keep.has(name)) fs.unlinkSync(path.join(directory, name));
+  }
+}
 const ageAt = birthDate => {
   if (!birthDate) return null;
   const born = new Date(`${birthDate}T00:00:00Z`);

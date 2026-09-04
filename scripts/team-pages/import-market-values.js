@@ -27,6 +27,58 @@ const clubs = [
   ["monza", "ac-monza", 2919], ["frosinone", "frosinone-calcio", 8970]
 ];
 const verifiedProfiles = {
+  "atalanta:ederson": {
+    transfermarktId: "607854",
+    name: "Éderson",
+    teamId: "atalanta",
+    transfermarktClubId: "800",
+    club: "Atalanta",
+    marketValueEur: 45_000_000,
+    marketValueLabel: "45,00 mln €",
+    marketValueUpdatedAt: "2026-05-29",
+    profileUrl: "https://www.transfermarkt.it/ederson/profil/spieler/607854",
+    currentTeamSourceUrl: "https://www.fantacalcio.it/serie-a/squadre/atalanta",
+    currentTeamVerifiedAt: "2026-09-04"
+  },
+  "torino:nicolo-fortini": {
+    transfermarktId: "984964",
+    name: "Niccolò Fortini",
+    teamId: "torino",
+    transfermarktClubId: "430",
+    club: "ACF Fiorentina",
+    marketValueEur: 10_000_000,
+    marketValueLabel: "10,00 mln €",
+    marketValueUpdatedAt: "2026-05-29",
+    profileUrl: "https://www.transfermarkt.it/niccolo-fortini/profil/spieler/984964",
+    currentTeamSourceUrl: "https://www.fantacalcio.it/serie-a/squadre/torino",
+    currentTeamVerifiedAt: "2026-09-04"
+  },
+  "juventus:nicolas-gonzalez": {
+    transfermarktId: "486031",
+    name: "Nico González",
+    teamId: "juventus",
+    transfermarktClubId: "506",
+    club: "Juventus FC",
+    marketValueEur: 22_000_000,
+    marketValueLabel: "22,00 mln €",
+    marketValueUpdatedAt: "2026-06-05",
+    profileUrl: "https://www.transfermarkt.it/nico-gonzalez/profil/spieler/486031",
+    currentTeamSourceUrl: "https://www.fantacalcio.it/serie-a/squadre/juventus",
+    currentTeamVerifiedAt: "2026-09-04"
+  },
+  "napoli:giovane": {
+    transfermarktId: "1005165",
+    name: "Giovane",
+    teamId: "napoli",
+    transfermarktClubId: "6195",
+    club: "SSC Napoli",
+    marketValueEur: 12_000_000,
+    marketValueLabel: "12,00 mln €",
+    marketValueUpdatedAt: "2026-05-29",
+    profileUrl: "https://www.transfermarkt.it/giovane/profil/spieler/1005165",
+    currentTeamSourceUrl: "https://www.fantacalcio.it/serie-a/squadre/napoli",
+    currentTeamVerifiedAt: "2026-09-04"
+  },
   "juventus:kenan-yildiz": {
     transfermarktId: "845654",
     name: "Kenan Yıldız",

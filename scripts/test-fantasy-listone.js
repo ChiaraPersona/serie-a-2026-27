@@ -8,7 +8,7 @@ const source = read("data/sources/fantacalcio-quotations-2026-27.json");
 const callups = read("data/sources/fantacalcio-callups-md1-2026-27.json");
 const statsSource = read("data/sources/fantacalcio-stats-2025-26.json");
 const externalStatsSource = read("data/sources/fantasy-external-stats-2025-26.json");
-const probable = read("data/sources/probable-lineups-md2-2026-27.json");
+const probable = read("data/sources/probable-lineups-md3-2026-27.json");
 const injuries = read("data/sources/fantacalcio-injuries-2026-27.json");
 const goalkeeperHierarchy = read("data/sources/fantasy-goalkeeper-hierarchy-2026-27.json");
 const generated = read("data/generated/fantacalcio-advice.json");
@@ -52,7 +52,7 @@ assert.ok(probablePlayers.every(player => Number.isFinite(player.probability)), 
 assert.equal(injuries.coverage.teams, 20);
 assert.ok(injuries.coverage.reports > 0);
 assert.equal(injuries.coverage.unmatched, 0);
-assert.equal(generated.sources.probableLineups.matchday, 2);
+assert.equal(generated.sources.probableLineups.matchday, 3);
 assert.equal(generated.sources.injuries.coverage.reports, injuries.coverage.reports);
 const quotedAdvice = generated.players.filter(player => player.quotations);
 assert.ok(quotedAdvice.length > 350, `Copertura quotazioni insufficiente: ${quotedAdvice.length}`);

@@ -3,7 +3,7 @@
   if (!root) return;
 
   const base = document.body.dataset.depth === "team" ? "../" : "";
-  const release = "20260830-lazio-genoa-lineups-v1";
+  const release = "20260904-fantacalcio-md3-lineups-v1";
   const defaultPlayerPhoto = `${base}assets/images/players/player-placeholder.png`;
   const esc = value => String(value ?? "").replace(/[&<>\"]/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[char]));
   const contrastInk = color => {
@@ -77,7 +77,7 @@
   };
 
   const probableLineupSection = (team, teamSummary) => {
-    const lineup = team.probableLineup;
+    const lineup = team.projectedLineup || team.probableLineup;
     if (!lineup?.players?.length) return "";
     const shape = lineup.formation.split("-").map(Number);
     const units = [1, ...shape];
@@ -92,7 +92,7 @@
     const sourceLink = lineup.source?.url ? `<a href="${esc(lineup.source.url)}" target="_blank" rel="noreferrer">${esc(lineup.source.provider || "Fonte")}</a>` : esc(lineup.source?.provider || "Fonte non disponibile");
     const title = official ? "Formazione ufficiale" : "Probabile formazione";
     const substitutes = official && lineup.substitutes?.length ? `<p class="probable-lineup-substitutes"><strong>A disposizione:</strong> ${lineup.substitutes.map(esc).join(", ")}</p>` : "";
-    return `<section class="detail-section team-probable-lineup" aria-labelledby="probable-lineup-heading" style="--lineup-primary:${esc(primary)};--lineup-secondary:${esc(secondary)};--lineup-head-ink:${contrastInk(secondary)}"><header class="probable-lineup-heading"><div><p class="eyebrow">Serie A 2026/27 · ${official ? "1ª giornata" : "proiezione prima giornata"}</p><h2 id="probable-lineup-heading">${title}</h2></div>${official ? "" : "<span>Visualizzazione sperimentale</span>"}</header><div class="probable-lineup-board"><header class="probable-lineup-board-head"><img src="${esc(team.logo)}" alt=""><div><small>${official ? "XI ufficiale" : "Probabile XI"}</small><h3>${esc(team.name)}</h3></div><strong>${esc(lineup.formation)}</strong></header><div class="probable-lineup-pitch" aria-label="${title} ${esc(team.name)} con modulo ${esc(lineup.formation)}"><span class="pitch-centre-line" aria-hidden="true"></span><span class="pitch-centre-circle" aria-hidden="true"></span><span class="pitch-box pitch-box-top" aria-hidden="true"></span><span class="pitch-box pitch-box-bottom" aria-hidden="true"></span>${rows}</div><footer><div><p>${official ? `Formazione ufficiale ${esc(lineup.fixtureLabel||team.name)}` : "Proiezione editoriale, non distinta ufficiale"}</p>${substitutes}</div>${sourceLink}</footer></div></section>`;
+    return `<section class="detail-section team-probable-lineup" aria-labelledby="probable-lineup-heading" style="--lineup-primary:${esc(primary)};--lineup-secondary:${esc(secondary)};--lineup-head-ink:${contrastInk(secondary)}"><header class="probable-lineup-heading"><div><p class="eyebrow">Serie A 2026/27 · ${esc(lineup.context || (official ? "formazione ufficiale" : "proiezione editoriale"))}</p><h2 id="probable-lineup-heading">${title}</h2></div>${official ? "" : "<span>Visualizzazione sperimentale</span>"}</header><div class="probable-lineup-board"><header class="probable-lineup-board-head"><img src="${esc(team.logo)}" alt=""><div><small>${official ? "XI ufficiale" : "Probabile XI"}</small><h3>${esc(team.name)}</h3></div><strong>${esc(lineup.formation)}</strong></header><div class="probable-lineup-pitch" aria-label="${title} ${esc(team.name)} con modulo ${esc(lineup.formation)}"><span class="pitch-centre-line" aria-hidden="true"></span><span class="pitch-centre-circle" aria-hidden="true"></span><span class="pitch-box pitch-box-top" aria-hidden="true"></span><span class="pitch-box pitch-box-bottom" aria-hidden="true"></span>${rows}</div><footer><div><p>${official ? `Formazione ufficiale ${esc(lineup.fixtureLabel||team.name)}` : "Proiezione editoriale, non distinta ufficiale"}</p>${substitutes}</div>${sourceLink}</footer></div></section>`;
   };
 
   const labels = {

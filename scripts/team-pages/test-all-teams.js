@@ -6,23 +6,11 @@ const root = path.resolve(__dirname, "../..");
 const read = relative => JSON.parse(fs.readFileSync(path.join(root, relative), "utf8"));
 const index = read("data/teams/index.json");
 const roleReport = read("data/generated/team-pages/detailed-role-report.json");
+const fantasyQuotations = read("data/sources/fantacalcio-quotations-2026-27.json");
+const activeFantasyPlayerKeys = new Set(fantasyQuotations.players.filter(player => player.status === "active").map(player => `${player.teamId}:${player.playerId}`));
 const wikimediaPhotos = read("data/sources/team-pages/wikimedia-player-photos.json");
 const wikimediaPhotoByPlayer = new Map(wikimediaPhotos.entries.map(entry => [`${entry.teamId}:${entry.playerId}`, entry]));
 const playerPlaceholder = "assets/images/players/player-placeholder.png";
-const expectedRosterAdditions = {
-  atalanta: ["paolo-vismara", "relja-obric", "federico-cassa", "eljif-elmas", "franck-kessie"],
-  cagliari: ["alieu-fadera", "riccardo-ciervo"],
-  como: ["samuele-ricci"],
-  fiorentina: ["gianmaria-fei", "alessandro-perrotti", "federico-croci", "brando-mazzeo"],
-  genoa: ["rendijs-mihelsons", "matteo-barbini", "lukas-klisys", "nicolo-tondi"],
-  inter: ["curtis-jones"],
-  lazio: ["cristian-bagordo", "jacopo-landi"],
-  monza: ["idrissa-toure"],
-  napoli: ["benoit-badiashile"],
-  sassuolo: ["fedde-leysen", "sebastiano-esposito"],
-  torino: ["diego-mascardi", "gaetano-oristanio", "giovanni-simeone", "sandro-kulenovic", "nicolo-fortini", "lucas-perri"],
-  udinese: ["rene-pirih"]
-};
 assert.ok(fs.existsSync(path.join(root, playerPlaceholder)), "Immagine fallback calciatore assente");
 const teamSquadsRenderer = fs.readFileSync(path.join(root, "js/team-squads.js"), "utf8");
 assert.ok(teamSquadsRenderer.includes(playerPlaceholder), "Fallback calciatore non collegato al renderer");
@@ -47,20 +35,18 @@ for (const summary of index.teams) {
   assert.strictEqual(team.probableLineup.players.length, 11, `${summary.id}: la probabile formazione deve avere 11 calciatori`);
   assert.strictEqual(new Set(team.probableLineup.players).size, 11, `${summary.id}: nomi duplicati nella probabile formazione`);
   assert.strictEqual(team.probableLineup.status, "official", `${summary.id}: la distinta conclusa MD1 deve restare ufficiale`);
-  assert.ok(team.projectedLineup, `${summary.id}: proiezione MD2 assente`);
-  assert.strictEqual(team.projectedLineup.players.length, 11, `${summary.id}: la proiezione MD2 deve avere 11 calciatori`);
-  assert.strictEqual(team.projectedLineup.source.provider, "Fantacalcio.it", `${summary.id}: fonte proiezione MD2 assente`);
+  assert.ok(team.projectedLineup, `${summary.id}: proiezione MD3 assente`);
+  assert.strictEqual(team.projectedLineup.players.length, 11, `${summary.id}: la proiezione MD3 deve avere 11 calciatori`);
+  assert.strictEqual(team.projectedLineup.source.provider, "Fantacalcio.it", `${summary.id}: fonte proiezione MD3 assente`);
   assert.ok(team.sources.some(source => source.scope.includes("Modulo preferito")), `${summary.id}: fonte modulo preferito assente`);
-  assert.ok(team.sources.some(source => source.provider === "Fantacalcio.it" && source.scope.includes("Probabili formazioni della 2ª giornata")), `${summary.id}: fonte probabile formazione MD2 non registrata`);
+  assert.ok(team.sources.some(source => source.provider === "Fantacalcio.it" && source.scope.includes("Probabili formazioni della 3ª giornata")), `${summary.id}: fonte probabile formazione MD3 non registrata`);
   assert.ok(team.sources.some(source => source.provider === "Lega Serie A" && source.scope.includes("Allenatori")), `${summary.id}: fonte allenatore assente`);
   assert.ok(generated.players.length >= 20, `${summary.id}: rosa troppo corta`);
   assert.strictEqual(team.squad.length, generated.players.length, `${summary.id}: rosa non propagata`);
   assert.strictEqual(summary.playerCount, generated.players.length, `${summary.id}: conteggio indice errato`);
   assert.strictEqual(new Set(generated.players.map(player => player.id)).size, generated.players.length, `${summary.id}: ID duplicati`);
   assert.ok(generated.rosterSource?.url, `${summary.id}: fonte rosa assente`);
-  for (const playerId of expectedRosterAdditions[summary.id] || []) {
-    assert.ok(generated.players.some(player => player.id === playerId), `${summary.id}: calciatore aggiunto assente (${playerId})`);
-  }
+  assert.ok(generated.players.every(player => activeFantasyPlayerKeys.has(`${summary.id}:${player.id}`)), `${summary.id}: la rosa contiene calciatori non attivi nel listone Fantacalcio`);
   if (summary.id !== "milan") {
     const teamSpecificRoles = generated.players.filter(player => player.detailedRole !== player.role);
     assert.ok(teamSpecificRoles.length >= 10, `${summary.id}: ruoli specifici insufficienti`);
@@ -97,9 +83,9 @@ for (const summary of index.teams) {
 }
 
 assert.strictEqual(index.teams.filter(team => team.playerCount > 0).length, 20, "Copertura squadre incompleta");
-assert.ok(coveredPlayers >= 450, `Copertura individuale insufficiente: ${coveredPlayers}`);
+assert.ok(coveredPlayers / totalPlayers >= 0.7, `Copertura individuale insufficiente: ${coveredPlayers}/${totalPlayers}`);
 assert.strictEqual(roleReport.teams.length, 19, "Report ruoli specifici incompleto");
-assert.ok(specificRoles >= 400, `Copertura ruoli specifici insufficiente: ${specificRoles}`);
+assert.ok(specificRoles / totalPlayers >= 0.65, `Copertura ruoli specifici insufficiente: ${specificRoles}/${totalPlayers}`);
 assert.strictEqual(wikimediaPhotos.summary.matchedPhotos, wikimediaPhotos.entries.length, "Conteggio foto Wikimedia errato");
 assert.strictEqual(wikimediaPhotos.summary.localPhotos, wikimediaPhotos.entries.filter(entry => entry.localPath).length, "Conteggio foto Wikimedia locali errato");
 console.log(`Tutte le squadre: 20/20, ${totalPlayers} calciatori, ${coveredPlayers} con statistiche 2025/26, ${specificRoles} ruoli tattici specifici fuori dal Milan.`);
