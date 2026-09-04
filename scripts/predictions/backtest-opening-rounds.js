@@ -123,7 +123,10 @@ function processProfile(history, teamId, type, league) {
   return {
     matches: rows.length,
     ratio,
-    ratios: Object.fromEntries(components.map(component => [component.key, clamp(component.value / component.baseline, 0.35, 2.4)])),
+    ratios: {
+      ...Object.fromEntries(components.map(component => [component.key, clamp(component.value / component.baseline, 0.35, 2.4)])),
+      goals: league.goals > 0 ? clamp(metricRate("goals") / league.goals, 0.35, 2.4) : null
+    },
     goals: metricRate("goals"),
     xg: metricRate("xg"),
     shotsOnTarget: metricRate("shotsOnTarget"),
@@ -133,11 +136,13 @@ function processProfile(history, teamId, type, league) {
 
 function processLeague(previousMatches) {
   const teamRows = previousMatches.flatMap(match => ["home", "away"].map(side => ({
+    goals: Number(match.score?.[side]),
     xg: Number(match.xg?.[side]),
     shotsOnTarget: Number(match.teamStats?.[side]?.shotsOnTarget),
     shots: Number(match.teamStats?.[side]?.totalShots)
   })));
   return {
+    goals: mean(teamRows.map(row => row.goals).filter(Number.isFinite)),
     xg: mean(teamRows.map(row => row.xg).filter(Number.isFinite)),
     shotsOnTarget: mean(teamRows.map(row => row.shotsOnTarget).filter(Number.isFinite)),
     shots: mean(teamRows.map(row => row.shots).filter(Number.isFinite))
@@ -155,6 +160,23 @@ function processFactor(profile, strength, mode = "combined") {
   return clamp(1 + (ratio - 1) * reliability * strength, 0.85, 1.15);
 }
 
+function recentReplacementFactor(profile, processShare = 0) {
+  if (!profile || profile.matches < 2) return 1;
+  const goalRatio = profile.ratios?.goals;
+  const processRatio = Number.isFinite(profile.ratios?.xg)
+    ? profile.ratios.xg
+    : profile.ratios?.shotsOnTarget;
+  if (!Number.isFinite(goalRatio)) return 1;
+  const usableProcessShare = Number.isFinite(processRatio) ? clamp(processShare, 0, 1) : 0;
+  const blendedRatio = Math.exp(
+    Math.log(goalRatio) * (1 - usableProcessShare)
+    + Math.log(processRatio || goalRatio) * usableProcessShare
+  );
+  const reliability = profile.matches / (profile.matches + 6);
+  const recentLambdaShare = weights.recent / sum(Object.values(weights));
+  return clamp(1 + (blendedRatio - 1) * reliability * recentLambdaShare, 0.97, 1.03);
+}
+
 function lambdas(sample, configuration) {
   const league = leagueRates(sample.previousA);
   const overall = (league.home + league.away) / 2;
@@ -168,8 +190,13 @@ function lambdas(sample, configuration) {
   let home = league.home * homeAttack * awayDefence;
   let away = league.away * awayAttack * homeDefence;
   const { homeAttack: homeAttackProcess, homeDefence: homeDefenceProcess, awayAttack: awayAttackProcess, awayDefence: awayDefenceProcess } = sample.processProfiles;
-  home *= processFactor(homeAttackProcess, configuration.processStrength, configuration.processMode) * processFactor(awayDefenceProcess, configuration.processStrength, configuration.processMode);
-  away *= processFactor(awayAttackProcess, configuration.processStrength, configuration.processMode) * processFactor(homeDefenceProcess, configuration.processStrength, configuration.processMode);
+  if (configuration.processStrategy === "recent-replacement") {
+    home *= recentReplacementFactor(homeAttackProcess, configuration.processShare) * recentReplacementFactor(awayDefenceProcess, configuration.processShare);
+    away *= recentReplacementFactor(awayAttackProcess, configuration.processShare) * recentReplacementFactor(homeDefenceProcess, configuration.processShare);
+  } else {
+    home *= processFactor(homeAttackProcess, configuration.processStrength, configuration.processMode) * processFactor(awayDefenceProcess, configuration.processStrength, configuration.processMode);
+    away *= processFactor(awayAttackProcess, configuration.processStrength, configuration.processMode) * processFactor(homeDefenceProcess, configuration.processStrength, configuration.processMode);
+  }
   return { home: clamp(home, 0.3, 3.5), away: clamp(away, 0.25, 3.3) };
 }
 
@@ -294,6 +321,20 @@ const processConfiguration = processCandidates[0].configuration;
 const processRegression = evaluate(validation, processConfiguration);
 const firstRoundProcess = { rows: processRegression.rows.filter(row => row.openingIndex === 1) };
 firstRoundProcess.metrics = metrics(firstRoundProcess.rows);
+const recentGoalsConfiguration = { ...regularizedConfiguration, processStrategy: "recent-replacement", processShare: 0 };
+const recentGoalsTraining = evaluate(training, recentGoalsConfiguration);
+const recentGoals = evaluate(validation, recentGoalsConfiguration);
+const replacementCandidates = [0.25, 0.5, 0.75, 1].map(processShare => {
+  const configuration = { ...regularizedConfiguration, processStrategy: "recent-replacement", processShare };
+  const result = evaluate(training, configuration);
+  return { configuration, score: result.metrics.oneXTwoLogLoss + result.metrics.scoreLogLoss, metrics: result.metrics };
+}).sort((left, right) => left.score - right.score);
+const replacementConfiguration = replacementCandidates[0].configuration;
+const processReplacement = evaluate(validation, replacementConfiguration);
+const firstRoundRecentGoals = { rows: recentGoals.rows.filter(row => row.openingIndex === 1) };
+const firstRoundReplacement = { rows: processReplacement.rows.filter(row => row.openingIndex === 1) };
+firstRoundRecentGoals.metrics = metrics(firstRoundRecentGoals.rows);
+firstRoundReplacement.metrics = metrics(firstRoundReplacement.rows);
 const improvement = (baseline, candidate) => round((baseline - candidate) / baseline * 100, 2);
 const output = {
   schemaVersion: 1,
@@ -328,6 +369,44 @@ const output = {
       scoreLogLoss: bootstrap(processRegression.rows, regularized.rows, "scoreLogLoss")
     }
   },
+  processReplacement: {
+    design: {
+      comparator: "recent-goals-only",
+      processSignal: "xG, con tiri in porta solo come fallback",
+      minimumCurrentSeasonMatches: 2,
+      reliability: "n / (n + 6)",
+      recentLambdaShare: round(weights.recent / sum(Object.values(weights))),
+      maximumLambdaImpactPerComponent: 0.03,
+      limitation: "Lo storico usato non separa npxG, rigori ed espulsioni: queste correzioni non vengono attivate senza una validazione dedicata."
+    },
+    goalsBaseline: {
+      configuration: recentGoalsConfiguration,
+      training: recentGoalsTraining.metrics,
+      validation: recentGoals.metrics,
+      firstRound: firstRoundRecentGoals.metrics
+    },
+    configuration: replacementConfiguration,
+    trainingShortlist: replacementCandidates,
+    validation: processReplacement.metrics,
+    firstRound: firstRoundReplacement.metrics,
+    improvementVsGoalsBaselinePct: {
+      oneXTwoLogLoss: improvement(recentGoals.metrics.oneXTwoLogLoss, processReplacement.metrics.oneXTwoLogLoss),
+      oneXTwoBrier: improvement(recentGoals.metrics.oneXTwoBrier, processReplacement.metrics.oneXTwoBrier),
+      scoreLogLoss: improvement(recentGoals.metrics.scoreLogLoss, processReplacement.metrics.scoreLogLoss),
+      firstRoundOneXTwoLogLoss: improvement(firstRoundRecentGoals.metrics.oneXTwoLogLoss, firstRoundReplacement.metrics.oneXTwoLogLoss),
+      firstRoundScoreLogLoss: improvement(firstRoundRecentGoals.metrics.scoreLogLoss, firstRoundReplacement.metrics.scoreLogLoss)
+    },
+    improvementVsRegularizedPct: {
+      oneXTwoLogLoss: improvement(regularized.metrics.oneXTwoLogLoss, processReplacement.metrics.oneXTwoLogLoss),
+      oneXTwoBrier: improvement(regularized.metrics.oneXTwoBrier, processReplacement.metrics.oneXTwoBrier),
+      scoreLogLoss: improvement(regularized.metrics.scoreLogLoss, processReplacement.metrics.scoreLogLoss)
+    },
+    pairedBootstrap: {
+      oneXTwoLogLoss: bootstrap(processReplacement.rows, recentGoals.rows, "oneXTwoLogLoss"),
+      oneXTwoBrier: bootstrap(processReplacement.rows, recentGoals.rows, "oneXTwoBrier"),
+      scoreLogLoss: bootstrap(processReplacement.rows, recentGoals.rows, "scoreLogLoss")
+    }
+  },
   improvementVsCurrentPct: {
     oneXTwoLogLoss: improvement(current.metrics.oneXTwoLogLoss, selected.metrics.oneXTwoLogLoss),
     oneXTwoBrier: improvement(current.metrics.oneXTwoBrier, selected.metrics.oneXTwoBrier),
@@ -357,5 +436,12 @@ const processAdopt = processDecision.improvementVsRegularizedPct.oneXTwoLogLoss 
   && processDecision.improvementVsRegularizedPct.scoreLogLoss > 0
   && processDecision.pairedBootstrap.scoreLogLoss.confidenceInterval95[0] >= 0;
 output.processRegression.recommendation = processAdopt ? "adopt-process-regression" : "keep-process-regression-disabled";
+const replacementDecision = output.processReplacement;
+const replacementAdopt = replacementDecision.improvementVsGoalsBaselinePct.oneXTwoLogLoss > 0
+  && replacementDecision.improvementVsGoalsBaselinePct.oneXTwoBrier >= 0
+  && replacementDecision.improvementVsGoalsBaselinePct.scoreLogLoss > 0
+  && replacementDecision.validation.exactTopThreeHitPct >= replacementDecision.goalsBaseline.validation.exactTopThreeHitPct
+  && replacementDecision.pairedBootstrap.scoreLogLoss.confidenceInterval95[0] >= 0;
+output.processReplacement.recommendation = replacementAdopt ? "adopt-process-replacement" : "keep-process-replacement-disabled";
 fs.writeFileSync(outputPath, `${JSON.stringify(output, null, 2)}\n`);
 console.log(`OK opening rounds: ${validation.length} gare validation, ${output.recommendation}`);

@@ -5,7 +5,7 @@
     "serie-a"
   ],
   "season": "2026-27",
-  "generatedAt": "2026-09-04T15:11:44.670Z",
+  "generatedAt": "2026-09-04T17:16:11.692Z",
   "engine": {
     "version": "4.11.0",
     "principle": "Un'unica matrice dei punteggi indipendente dalle quote genera 1X2, gol e mercati collegati.",
@@ -658,7 +658,7 @@
       },
       "openingRounds": {
         "schemaVersion": 1,
-        "generatedAt": "2026-09-04T15:10:31.491Z",
+        "generatedAt": "2026-09-04T17:15:52.621Z",
         "methodology": {
           "type": "opening-rounds-walk-forward",
           "trainingSeasons": [
@@ -1329,6 +1329,192 @@
             }
           },
           "recommendation": "keep-process-regression-disabled"
+        },
+        "processReplacement": {
+          "design": {
+            "comparator": "recent-goals-only",
+            "processSignal": "xG, con tiri in porta solo come fallback",
+            "minimumCurrentSeasonMatches": 2,
+            "reliability": "n / (n + 6)",
+            "recentLambdaShare": 0.1839,
+            "maximumLambdaImpactPerComponent": 0.03,
+            "limitation": "Lo storico usato non separa npxG, rigori ed espulsioni: queste correzioni non vengono attivate senza una validazione dedicata."
+          },
+          "goalsBaseline": {
+            "configuration": {
+              "promotedAttack": 0.51,
+              "promotedDefence": 1.29,
+              "carryStrength": 1,
+              "processStrategy": "recent-replacement",
+              "processShare": 0
+            },
+            "training": {
+              "matches": 296,
+              "promotedMatches": 82,
+              "oneXTwoLogLoss": 0.9583,
+              "oneXTwoBrier": 0.5652,
+              "oneXTwoAccuracyPct": 59.8,
+              "scoreLogLoss": 3.0321,
+              "exactTopThreeHitPct": 30.1
+            },
+            "validation": {
+              "matches": 90,
+              "promotedMatches": 26,
+              "oneXTwoLogLoss": 1.0575,
+              "oneXTwoBrier": 0.6385,
+              "oneXTwoAccuracyPct": 45.6,
+              "scoreLogLoss": 2.7426,
+              "exactTopThreeHitPct": 37.8
+            },
+            "firstRound": {
+              "matches": 30,
+              "promotedMatches": 9,
+              "oneXTwoLogLoss": 1.0795,
+              "oneXTwoBrier": 0.6546,
+              "oneXTwoAccuracyPct": 36.7,
+              "scoreLogLoss": 2.8445,
+              "exactTopThreeHitPct": 36.7
+            }
+          },
+          "configuration": {
+            "promotedAttack": 0.51,
+            "promotedDefence": 1.29,
+            "carryStrength": 1,
+            "processStrategy": "recent-replacement",
+            "processShare": 1
+          },
+          "trainingShortlist": [
+            {
+              "configuration": {
+                "promotedAttack": 0.51,
+                "promotedDefence": 1.29,
+                "carryStrength": 1,
+                "processStrategy": "recent-replacement",
+                "processShare": 1
+              },
+              "score": 3.9863999999999997,
+              "metrics": {
+                "matches": 296,
+                "promotedMatches": 82,
+                "oneXTwoLogLoss": 0.9572,
+                "oneXTwoBrier": 0.5644,
+                "oneXTwoAccuracyPct": 59.8,
+                "scoreLogLoss": 3.0292,
+                "exactTopThreeHitPct": 30.1
+              }
+            },
+            {
+              "configuration": {
+                "promotedAttack": 0.51,
+                "promotedDefence": 1.29,
+                "carryStrength": 1,
+                "processStrategy": "recent-replacement",
+                "processShare": 0.75
+              },
+              "score": 3.9876,
+              "metrics": {
+                "matches": 296,
+                "promotedMatches": 82,
+                "oneXTwoLogLoss": 0.9575,
+                "oneXTwoBrier": 0.5647,
+                "oneXTwoAccuracyPct": 59.8,
+                "scoreLogLoss": 3.0301,
+                "exactTopThreeHitPct": 30.4
+              }
+            },
+            {
+              "configuration": {
+                "promotedAttack": 0.51,
+                "promotedDefence": 1.29,
+                "carryStrength": 1,
+                "processStrategy": "recent-replacement",
+                "processShare": 0.5
+              },
+              "score": 3.9887,
+              "metrics": {
+                "matches": 296,
+                "promotedMatches": 82,
+                "oneXTwoLogLoss": 0.9579,
+                "oneXTwoBrier": 0.5649,
+                "oneXTwoAccuracyPct": 59.8,
+                "scoreLogLoss": 3.0308,
+                "exactTopThreeHitPct": 30.4
+              }
+            },
+            {
+              "configuration": {
+                "promotedAttack": 0.51,
+                "promotedDefence": 1.29,
+                "carryStrength": 1,
+                "processStrategy": "recent-replacement",
+                "processShare": 0.25
+              },
+              "score": 3.9897,
+              "metrics": {
+                "matches": 296,
+                "promotedMatches": 82,
+                "oneXTwoLogLoss": 0.9582,
+                "oneXTwoBrier": 0.5651,
+                "oneXTwoAccuracyPct": 59.8,
+                "scoreLogLoss": 3.0315,
+                "exactTopThreeHitPct": 30.1
+              }
+            }
+          ],
+          "validation": {
+            "matches": 90,
+            "promotedMatches": 26,
+            "oneXTwoLogLoss": 1.0579,
+            "oneXTwoBrier": 0.6388,
+            "oneXTwoAccuracyPct": 45.6,
+            "scoreLogLoss": 2.7415,
+            "exactTopThreeHitPct": 37.8
+          },
+          "firstRound": {
+            "matches": 30,
+            "promotedMatches": 9,
+            "oneXTwoLogLoss": 1.0795,
+            "oneXTwoBrier": 0.6546,
+            "oneXTwoAccuracyPct": 36.7,
+            "scoreLogLoss": 2.8445,
+            "exactTopThreeHitPct": 36.7
+          },
+          "improvementVsGoalsBaselinePct": {
+            "oneXTwoLogLoss": -0.04,
+            "oneXTwoBrier": -0.05,
+            "scoreLogLoss": 0.04,
+            "firstRoundOneXTwoLogLoss": 0,
+            "firstRoundScoreLogLoss": 0
+          },
+          "improvementVsRegularizedPct": {
+            "oneXTwoLogLoss": -0.06,
+            "oneXTwoBrier": -0.05,
+            "scoreLogLoss": 0.02
+          },
+          "pairedBootstrap": {
+            "oneXTwoLogLoss": {
+              "meanImprovement": -0.0003,
+              "confidenceInterval95": [
+                -0.0041,
+                0.0031
+              ]
+            },
+            "oneXTwoBrier": {
+              "meanImprovement": -0.0003,
+              "confidenceInterval95": [
+                -0.0031,
+                0.0022
+              ]
+            },
+            "scoreLogLoss": {
+              "meanImprovement": 0.0012,
+              "confidenceInterval95": [
+                -0.0034,
+                0.0058
+              ]
+            }
+          },
+          "recommendation": "keep-process-replacement-disabled"
         },
         "improvementVsCurrentPct": {
           "oneXTwoLogLoss": 0.76,

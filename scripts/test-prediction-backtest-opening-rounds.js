@@ -17,4 +17,11 @@ assert.strictEqual(report.processRegression.recommendation, "keep-process-regres
 assert(["xg-only", "xg-sot", "combined"].includes(report.processRegression.configuration.processMode), "Modalità di processo non tracciata");
 assert(report.processRegression.trainingShortlist.length === 15, "Griglia del correttivo di processo incompleta");
 assert(report.processRegression.improvementVsRegularizedPct.scoreLogLoss <= 0, "La decisione deve riflettere il peggioramento fuori campione");
+assert.strictEqual(report.processReplacement.recommendation, "keep-process-replacement-disabled", "La sostituzione non validata non deve entrare nel modello");
+assert.strictEqual(report.processReplacement.design.minimumCurrentSeasonMatches, 2, "Il segnale non deve essere applicato prima di due gare");
+assert.strictEqual(report.processReplacement.design.processSignal, "xG, con tiri in porta solo come fallback", "Gerarchia del segnale di processo inattesa");
+assert.strictEqual(report.processReplacement.design.maximumLambdaImpactPerComponent, 0.03, "Limite del correttivo inatteso");
+assert(report.processReplacement.trainingShortlist.length === 4, "Griglia della sostituzione recente incompleta");
+assert(report.processReplacement.improvementVsGoalsBaselinePct.oneXTwoLogLoss <= 0, "La decisione deve riflettere il mancato miglioramento 1X2");
+assert(report.processReplacement.pairedBootstrap.scoreLogLoss.confidenceInterval95[0] < 0, "L'incertezza fuori campione deve impedire l'attivazione");
 console.log(`OK opening rounds: ${report.samples.training} training, ${report.samples.validation} validation, carry-over regolarizzato`);
