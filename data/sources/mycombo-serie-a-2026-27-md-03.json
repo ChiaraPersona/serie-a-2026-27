@@ -182,12 +182,18 @@
         "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-04: quota 5 orientativa, 3-6 gambe, mercati distinti, nessuno scenario di base ripetuto o annidato e quote singole 1.10-1.85. Il rischio resta informativo.",
         "legs": [
           {
-            "providerSelectionId": "5299605431",
-            "overlapKey": "market-entrambe le squadre almeno x tiri in porta",
+            "providerSelectionId": "5300555789",
+            "overlapKey": "market-squadra x almeno y corner in entrambi i tempi",
             "semanticKeys": [
-              "volume-shots-on-target"
+              "volume-corners"
             ],
-            "label": "Entrambe almeno 3 tiri in porta"
+            "label": "Fiorentina ALMENO 2 CORNER IN ENTRAMBI I TEMPI · SI"
+          },
+          {
+            "providerSelectionId": "5299729975",
+            "overlapKey": "market-u o falli subiti giocatore",
+            "semanticKeys": [],
+            "label": "JOAO MARIO almeno 2 falli subiti"
           },
           {
             "providerSelectionId": "5291864489",
@@ -198,20 +204,20 @@
             "label": "Nessun pareggio (12)"
           },
           {
-            "providerSelectionId": "5299607686",
-            "overlapKey": "market-u o tiri totali giocatore duo inc ts",
-            "semanticKeys": [
-              "volume-shots-total"
-            ],
-            "label": "ORISTANIO G. almeno 2 tiri totali, sostituto incluso"
-          },
-          {
             "providerSelectionId": "5291916735",
             "overlapKey": "market-combo u o casa u o ospite",
             "semanticKeys": [
               "goals"
             ],
             "label": "U/O 2.5 Fiorentina + U/O 2.5 Torino · UNDER+UNDER"
+          },
+          {
+            "providerSelectionId": "5299605136",
+            "overlapKey": "market-u o tiri totali squadra x",
+            "semanticKeys": [
+              "volume-shots-total"
+            ],
+            "label": "Torino almeno 8 tiri totali"
           }
         ]
       },
@@ -228,16 +234,26 @@
             "label": "Almeno una squadra non segna"
           },
           {
-            "providerSelectionId": "5299605852",
-            "overlapKey": "market-u o falli commessi giocatore",
-            "semanticKeys": [],
-            "label": "ISMAJLI A. almeno 2 falli commessi"
+            "providerSelectionId": "5299605431",
+            "overlapKey": "market-entrambe le squadre almeno x tiri in porta",
+            "semanticKeys": [
+              "volume-shots-on-target"
+            ],
+            "label": "Entrambe almeno 3 tiri in porta"
           },
           {
-            "providerSelectionId": "5299729995",
+            "providerSelectionId": "5299729975",
             "overlapKey": "market-u o falli subiti giocatore",
             "semanticKeys": [],
-            "label": "GINEITIS G. almeno 2 falli subiti"
+            "label": "JOAO MARIO almeno 2 falli subiti"
+          },
+          {
+            "providerSelectionId": "5300555853",
+            "overlapKey": "market-entrambe almeno x corner",
+            "semanticKeys": [
+              "volume-corners"
+            ],
+            "label": "Entrambe almeno 3 corner"
           },
           {
             "providerSelectionId": "5291863105",
@@ -246,22 +262,6 @@
               "volume-shots-total"
             ],
             "label": "Partita almeno 23 tiri totali"
-          },
-          {
-            "providerSelectionId": "5299605655",
-            "overlapKey": "market-entrambe le squadre almeno x tiri in porta",
-            "semanticKeys": [
-              "volume-shots-on-target"
-            ],
-            "label": "Entrambe almeno 2 tiri in porta"
-          },
-          {
-            "providerSelectionId": "5300555636",
-            "overlapKey": "market-u o corner squadra x",
-            "semanticKeys": [
-              "volume-corners"
-            ],
-            "label": "Fiorentina almeno 3 corner"
           }
         ]
       },
@@ -270,48 +270,56 @@
         "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-09-04: quota 20 orientativa, 5-8 gambe, mercati distinti, nessuno scenario di base ripetuto o annidato e quote singole 1.10-1.85. Il rischio resta informativo.",
         "legs": [
           {
-            "providerSelectionId": "5299607398",
-            "overlapKey": "market-u o falli commessi giocatore",
-            "semanticKeys": [],
-            "label": "COMUZZO P. almeno 2 falli commessi"
-          },
-          {
-            "providerSelectionId": "5299729995",
-            "overlapKey": "market-u o falli subiti giocatore",
-            "semanticKeys": [],
-            "label": "GINEITIS G. almeno 2 falli subiti"
-          },
-          {
-            "providerSelectionId": "5291918043",
-            "overlapKey": "market-combo u o casa u o ospite",
-            "semanticKeys": [
-              "goals"
-            ],
-            "label": "U/O 1.5 Fiorentina + U/O 2.5 Torino · UNDER+UNDER"
-          },
-          {
-            "providerSelectionId": "5299606556",
-            "overlapKey": "market-u o tiri totali squadra x",
+            "providerSelectionId": "5291863073",
+            "overlapKey": "market-u o tiri totali",
             "semanticKeys": [
               "volume-shots-total"
             ],
-            "label": "Torino almeno 11 tiri totali"
+            "label": "Partita almeno 25 tiri totali"
           },
           {
-            "providerSelectionId": "5299605960",
-            "overlapKey": "market-u o tiri in porta squadra x",
+            "providerSelectionId": "5299729975",
+            "overlapKey": "market-u o falli subiti giocatore",
+            "semanticKeys": [],
+            "label": "JOAO MARIO almeno 2 falli subiti"
+          },
+          {
+            "providerSelectionId": "5291861914",
+            "overlapKey": "market-goal nogoal",
             "semanticKeys": [
-              "volume-shots-on-target"
+              "goals"
             ],
-            "label": "Fiorentina almeno 4 tiri in porta"
+            "label": "Almeno una squadra non segna"
           },
           {
-            "providerSelectionId": "5300555617",
+            "providerSelectionId": "5300555789",
             "overlapKey": "market-squadra x almeno y corner in entrambi i tempi",
             "semanticKeys": [
               "volume-corners"
             ],
-            "label": "Torino ALMENO 1 CORNER IN ENTRAMBI I TEMPI · SI"
+            "label": "Fiorentina ALMENO 2 CORNER IN ENTRAMBI I TEMPI · SI"
+          },
+          {
+            "providerSelectionId": "5291864489",
+            "overlapKey": "market-doppia chance",
+            "semanticKeys": [
+              "result"
+            ],
+            "label": "Nessun pareggio (12)"
+          },
+          {
+            "providerSelectionId": "5299606096",
+            "overlapKey": "market-u o falli commessi giocatore",
+            "semanticKeys": [],
+            "label": "JOAO MARIO almeno 1 falli commessi"
+          },
+          {
+            "providerSelectionId": "5299605764",
+            "overlapKey": "market-u o tiri in porta squadra x",
+            "semanticKeys": [
+              "volume-shots-on-target"
+            ],
+            "label": "Torino almeno 3 tiri in porta"
           }
         ]
       }
