@@ -87,6 +87,15 @@ export function settleLeg(leg,match){
   const outcome=home>away?"1":home<away?"2":"X";
   if(market.includes("1X2 ESITO FINALE"))return resultStatus(selection===outcome);
   if(market.includes("DOPPIA CHANCE"))return resultStatus(selection.includes(outcome));
+  if(market==="GOAL/NOGOAL"){
+    if(!["GOAL","NOGOAL"].includes(selection))return unavailable();
+    return resultStatus(selection==="GOAL"?home>0&&away>0:home===0||away===0);
+  }
+  if(market==="CASA: SEGNA GOAL"||market==="OSPITE: SEGNA GOAL"){
+    if(!["SI","NO"].includes(selection))return unavailable();
+    const scored=market.startsWith("CASA")?home>0:away>0;
+    return resultStatus(selection==="SI"?scored:!scored);
+  }
   if(market.includes("VINCE O QUASI")){
     const variant=normalized(leg?.variant),predictedOutcome=normalized(leg?.predictedOutcome);
     const side=variant.includes("SQUADRA 1")||predictedOutcome==="1"?"home":variant.includes("SQUADRA 2")||predictedOutcome==="2"?"away":null;

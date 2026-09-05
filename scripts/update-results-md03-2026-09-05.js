@@ -30,6 +30,16 @@ const games = [
     home: { slug: "fiorentina", abbr: "FIO" },
     away: { slug: "torino", abbr: "TOR" },
     mvp: null
+  },
+  {
+    matchId: "inter-napoli-2026-27-md-03",
+    file: "inter-napoli-statmuse.html",
+    url: "https://www.statmuse.com/fc/match/9-5-2026-int-vs-nap-112098",
+    officialUrl: "https://www.inter.it/en/match_center/5371",
+    home: { slug: "inter", abbr: "INT" },
+    away: { slug: "napoli", abbr: "NAP" },
+    mvp: null,
+    assistOverrides: [{ player: "Lautaro Martínez", minute: 90, assist: "Manuel Akanji" }]
   }
 ];
 
@@ -44,7 +54,9 @@ const formationNames = {
 const canonicalNames = new Map([
   ["Nicolás Paz", "Nico Paz"],
   ["Leo Østigård", "Leo Østigard"],
-  ["Ché Adams", "Ché Adams"]
+  ["Yann Aurel Bisseck", "Yann Bisseck"],
+  ["Francesco Esposito", "Pio Esposito"],
+  ["André-Frank Zambo Anguissa", "Frank Anguissa"]
 ]);
 const canonicalName = value => canonicalNames.get(value) || value;
 const slug = value => String(value).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
@@ -139,6 +151,12 @@ for (const config of games) {
   const scorers = events.filter(event => event.type === "goal").map(event => ({
     team: teamById.get(event.teamId), playerId: playerId(event.playerId), player: playerName(event.playerId), minute: eventMinute(event), assistPlayerId: event.assistPlayerId ? playerId(event.assistPlayerId) : null, assist: event.assistPlayerId ? playerName(event.assistPlayerId) : null
   }));
+  for (const override of config.assistOverrides || []) {
+    const scorer = scorers.find(item => item.player === override.player && item.minute === override.minute);
+    if (!scorer) throw new Error(`Assist non riconciliato: ${config.matchId}`);
+    scorer.assist = override.assist;
+    scorer.assistPlayerId = slug(override.assist);
+  }
   const bookings = events.filter(event => event.type === "booking").map(event => ({
     team: teamById.get(event.teamId), playerId: playerId(event.playerId), player: playerName(event.playerId), minute: eventMinute(event), card: event.bookingType === "yellowCard" ? "yellow" : event.bookingType
   }));
@@ -183,4 +201,4 @@ for (const config of games) {
 playerStats.updatedAt = retrievedAt;
 fs.writeFileSync(resultsPath, `${JSON.stringify(results, null, 2)}\n`);
 fs.writeFileSync(playerStatsPath, `${JSON.stringify(playerStats)}\n`);
-console.log("Aggiornati i primi 2 risultati finali della 3a giornata 2026/27.");
+console.log("Aggiornati i primi 3 risultati finali della 3a giornata 2026/27.");

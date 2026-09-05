@@ -12,12 +12,12 @@ const footer = (depth = "") => `<footer class="site-footer"><div class="site-foo
 const fontLinks = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">';
 const withFonts = html => html.replace("</title>", `</title>${fontLinks}`);
 const version = "20260901-coppa-round16-calendar-v1";
-const homeVersion = "20260905-md3-results-partial-v1";
-const calendarVersion = "20260905-md3-results-partial-v1";
-const teamVersion = "20260905-md3-results-partial-v1";
-const leaderboardVersion = "20260905-md3-results-partial-v1";
-const bettingVersion = "20260905-md3-results-partial-v1";
-const readingVersion = "20260905-md3-results-partial-v1";
+const homeVersion = "20260905-md3-results-partial-v2";
+const calendarVersion = "20260905-md3-results-partial-v2";
+const teamVersion = "20260905-md3-results-partial-v2";
+const leaderboardVersion = "20260905-md3-results-partial-v2";
+const bettingVersion = "20260905-md3-results-partial-v2";
+const readingVersion = "20260905-md3-results-partial-v2";
 const cupVersion = "20260903-coppa-results-v1";
 const championsVersion = "20260902-champions-h2h-2020-v13";
 const fantasyVersion = "20260904-fantacalcio-md3-lineups-v1";
