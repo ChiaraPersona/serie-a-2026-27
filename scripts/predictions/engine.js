@@ -452,27 +452,35 @@ function playerSide(candidate) {
   return "central";
 }
 
-function bookingCandidates(homeTeam, awayTeam, homeSquad, awaySquad, homeProfile, awayProfile) {
+function bookingCandidates(homeTeam, awayTeam, homeSquad, awaySquad, homeProfile, awayProfile, homeCurrentDiscipline, awayCurrentDiscipline) {
   const rows = [
-    ...lineupPlayers(homeTeam, homeSquad).map(candidate => ({ ...candidate, opponentProfile: awayProfile })),
-    ...lineupPlayers(awayTeam, awaySquad).map(candidate => ({ ...candidate, opponentProfile: homeProfile }))
+    ...lineupPlayers(homeTeam, homeSquad).map(candidate => ({ ...candidate, opponentProfile: awayProfile, currentDiscipline: homeCurrentDiscipline })),
+    ...lineupPlayers(awayTeam, awaySquad).map(candidate => ({ ...candidate, opponentProfile: homeProfile, currentDiscipline: awayCurrentDiscipline }))
   ].filter(candidate => candidate.role !== "Portiere").map(candidate => {
     const per90 = candidate.player?.previousSeason?.totals?.per90 || {};
     const minutes = candidate.player?.previousSeason?.totals?.minutes || 0;
+    const current = candidate.currentDiscipline?.[candidate.player?.id] || candidate.currentDiscipline?.[cleanName(candidate.name)] || null;
+    const currentWeight = current?.minutes ? current.appearances / (current.appearances + 6) : 0;
+    const historicalCards = per90.cards ?? per90.yellowCards ?? 0.12;
+    const historicalFouls = per90.foulsCommitted ?? 1.05;
+    const currentFouls = current?.minutes ? current.foulsCommitted * 90 / current.minutes : historicalFouls;
+    const estimatedCards = historicalCards;
+    const estimatedFouls = historicalFouls * (1 - currentWeight) + currentFouls * currentWeight;
     const side = playerSide(candidate);
     const opponentChannels = attackChannels(candidate.opponentProfile);
     const facedChannel = side === "right" ? opponentChannels.left : side === "left" ? opponentChannels.right : opponentChannels.central;
     const roleBase = candidate.role === "Difensore" ? 1.15 : candidate.role === "Centrocampista" ? 0.95 : 0.48;
-    const observed = (per90.cards ?? per90.yellowCards ?? 0.12) * 3.6 + (per90.foulsCommitted ?? 1.05) * 0.42;
+    const observed = estimatedCards * 3.6 + estimatedFouls * 0.42;
     const reliability = minutes ? clamp(minutes / 1800, 0.35, 1) : 0.3;
     const duelLoad = facedChannel / 100 * 1.15 + (candidate.opponentProfile?.playingStyle || []).some(item => item.id === "aggressivi") * 0.14;
     const raw = roleBase + observed * (0.55 + reliability * 0.45) + duelLoad;
     const riskScore = Math.round(clamp(raw * 19, 12, 88));
     const evidence = [];
-    if (per90.cards != null) evidence.push(`${round(per90.cards, 2)} cartellini/90`);
-    if (per90.foulsCommitted != null) evidence.push(`${round(per90.foulsCommitted, 2)} falli/90`);
+    if (per90.cards != null) evidence.push(`${round(estimatedCards, 2)} cartellini/90${current?.minutes ? " stimati" : ""}`);
+    if (per90.foulsCommitted != null) evidence.push(`${round(estimatedFouls, 2)} falli/90${current?.minutes ? " stimati" : ""}`);
+    if (current?.minutes) evidence.push(`2026/27: ${round(currentFouls, 2)} falli/90 in ${current.appearances} ${current.appearances === 1 ? "presenza" : "presenze"}`);
     evidence.push(`duelli sul canale ${side === "left" ? "sinistro" : side === "right" ? "destro" : "centrale"}`);
-    return { name: candidate.name, teamId: candidate.teamId, role: candidate.role, riskScore, evidence, dataStatus: candidate.player ? "verified-history" : "role-baseline" };
+    return { name: candidate.name, teamId: candidate.teamId, role: candidate.role, riskScore, evidence, dataStatus: current?.minutes ? "verified-history-current" : candidate.player ? "verified-history" : "role-baseline" };
   }).sort((a, b) => b.riskScore - a.riskScore || a.name.localeCompare(b.name, "it"));
 
   const selected = rows.slice(0, 5);
@@ -1229,7 +1237,7 @@ function predictMatch(input) {
     surprise,
     matchProjection,
     teamProjections,
-    likelyBooked: bookingCandidates(input.homeTeam, input.awayTeam, input.homeSquad, input.awaySquad, input.homeProfile, input.awayProfile),
+    likelyBooked: bookingCandidates(input.homeTeam, input.awayTeam, input.homeSquad, input.awaySquad, input.homeProfile, input.awayProfile, input.homeCurrentDiscipline, input.awayCurrentDiscipline),
     mvpCandidate: mvpCandidate(input.homeTeam, input.awayTeam, input.homeSquad, input.awaySquad, input.homeProfile, input.awayProfile, final, expected, input.mvpHistory, input.fantasyHistory, input.mvpSourceUrl),
     scenarios: matchScenarios(input, final, expected),
     marketComparison: evaluatedMarkets.rows,

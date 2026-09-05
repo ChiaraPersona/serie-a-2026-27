@@ -64,6 +64,7 @@ const teamById = new Map(teams.map(team => [team.id, team]));
 const squadsByTeam = new Map(teams.map(team => [team.id, read(`data/generated/team-pages/${team.id}-squad.json`)]));
 const mvpHistoryByPlayer = new Map(mvpHistory.players.map(player => [player.normalizedName, player]));
 const fantasyHistoryByPlayer = new Map(fantasy.players.map(player => [playerKey(player.name), player]));
+const verifiedCurrentPlayerDisciplineTeams = new Set(["roma"]);
 const volumeByTeam = byId(volumeProfiles.profiles);
 const standingsByTeam = new Map(standings.rows.map(row => [row.team, row]));
 const meanStandingPoints = standings.rows.reduce((total, row) => total + row.points, 0) / standings.rows.length;
@@ -142,6 +143,32 @@ function recentForm(teamId, targetMatch) {
   return { matches: rows.length, goalsFor: goalsFor / weightTotal, goalsAgainst: goalsAgainst / weightTotal, decay: 0.82, opponentAdjusted: true, currentSeasonMatches: currentSeason.length };
 }
 
+function currentPlayerDiscipline(teamId, targetMatch) {
+  if (!verifiedCurrentPlayerDisciplineTeams.has(teamId)) return {};
+  const rows = matches.filter(match =>
+    match.competition === "serie-a" &&
+    match.season === "2026-27" &&
+    match.status === "finished" &&
+    match.matchday < targetMatch.matchday &&
+    (match.homeTeam === teamId || match.awayTeam === teamId)
+  );
+  const aggregate = {};
+  for (const match of rows) {
+    const side = match.homeTeam === teamId ? "home" : "away";
+    for (const player of match.playerStats?.[side] || []) {
+      if (!(player.minutes > 0) || player.foulsCommitted == null) continue;
+      const key = player.playerId || playerKey(player.player);
+      const current = aggregate[key] || { appearances: 0, minutes: 0, foulsCommitted: 0 };
+      current.appearances += 1;
+      current.minutes += player.minutes;
+      current.foulsCommitted += player.foulsCommitted;
+      aggregate[key] = current;
+      aggregate[playerKey(player.player)] = current;
+    }
+  }
+  return aggregate;
+}
+
 const nextScheduledMatchday = matches
   .filter(match => match.competition === "serie-a" && match.season === "2026-27" && match.status !== "finished")
   .reduce((minimum, match) => Math.min(minimum, match.matchday), Infinity);
@@ -197,6 +224,8 @@ const generatedPredictions = targetMatches.map(match => {
     awayTeam,
     homeSquad: squadsByTeam.get(match.homeTeam),
     awaySquad: squadsByTeam.get(match.awayTeam),
+    homeCurrentDiscipline: currentPlayerDiscipline(match.homeTeam, match),
+    awayCurrentDiscipline: currentPlayerDiscipline(match.awayTeam, match),
     mvpHistory: mvpHistoryByPlayer,
     fantasyHistory: fantasyHistoryByPlayer,
     mvpSourceUrl: mvpHistory.sourceUrl,

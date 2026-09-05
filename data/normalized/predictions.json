@@ -5,7 +5,7 @@
     "serie-a"
   ],
   "season": "2026-27",
-  "generatedAt": "2026-09-05T18:02:04.028Z",
+  "generatedAt": "2026-09-05T18:39:52.850Z",
   "engine": {
     "version": "4.11.0",
     "principle": "Un'unica matrice dei punteggi indipendente dalle quote genera 1X2, gol e mercati collegati.",
@@ -79764,13 +79764,14 @@
           "name": "Hermoso",
           "teamId": "roma",
           "role": "Difensore",
-          "riskScore": 66,
+          "riskScore": 65,
           "evidence": [
-            "0.39 cartellini/90",
-            "1.72 falli/90",
+            "0.39 cartellini/90 stimati",
+            "1.58 falli/90 stimati",
+            "2026/27: 1.15 falli/90 in 2 presenze",
             "duelli sul canale sinistro"
           ],
-          "dataStatus": "verified-history",
+          "dataStatus": "verified-history-current",
           "rank": 1,
           "possibleFirstBooked": true
         },
@@ -79778,13 +79779,14 @@
           "name": "Mancini",
           "teamId": "roma",
           "role": "Difensore",
-          "riskScore": 60,
+          "riskScore": 59,
           "evidence": [
-            "0.26 cartellini/90",
-            "2.08 falli/90",
+            "0.26 cartellini/90 stimati",
+            "1.94 falli/90 stimati",
+            "2026/27: 1.5 falli/90 in 2 presenze",
             "duelli sul canale destro"
           ],
-          "dataStatus": "verified-history",
+          "dataStatus": "verified-history-current",
           "rank": 2,
           "possibleFirstBooked": false
         },
@@ -79808,11 +79810,12 @@
           "role": "Difensore",
           "riskScore": 53,
           "evidence": [
-            "0.25 cartellini/90",
-            "1.29 falli/90",
+            "0.25 cartellini/90 stimati",
+            "1.27 falli/90 stimati",
+            "2026/27: 1.21 falli/90 in 2 presenze",
             "duelli sul canale sinistro"
           ],
-          "dataStatus": "verified-history",
+          "dataStatus": "verified-history-current",
           "rank": 4,
           "possibleFirstBooked": false
         },
@@ -80380,8 +80383,8 @@
           "quotaPolicy": "orientativa",
           "eligibilityPolicy": "validita-tecnica-e-intervalli",
           "riskPolicy": "informativa",
-          "odds": 5,
-          "distancePct": 0,
+          "odds": 4.6,
+          "distancePct": 8,
           "legs": [
             {
               "label": "Roma vincente",
@@ -80412,15 +80415,17 @@
               "marketScope": "match"
             },
             {
-              "label": "MALEN D. O DE KETELAERE C. GOAL O PALO O LORO SOST. INC TS · sì",
-              "market": "X o Y GOL O PALO (DUO) INC TS",
-              "variant": "MALEN D. O DE KETELAERE C. GOAL O PALO O LORO SOST. INC TS",
-              "threshold": null,
+              "label": "Mancini: cartellino o almeno 2 falli, sostituto incluso",
+              "market": "GIOCATORE QUASI CARTELLINO",
+              "variant": "MANCINI G. RICEVE ALMENO UN CARTELLINO O COMMETTE ALMENO 2 FALLI INCL. T.S.",
+              "threshold": "2",
               "selection": "SI",
-              "providerSelectionId": "5296309971",
-              "odds": 1.5,
-              "overlapKey": "market-x o y gol o palo duo inc ts",
-              "semanticKeys": [],
+              "providerSelectionId": "5300522211",
+              "odds": 1.38,
+              "overlapKey": "market-giocatore quasi cartellino",
+              "semanticKeys": [
+                "discipline-mancini"
+              ],
               "marketScope": "player"
             },
             {
@@ -80438,8 +80443,8 @@
               "marketScope": "match"
             }
           ],
-          "selection": "Roma vincente + 1 TEMPO: 1X2 CORNER · 1 + MALEN D. O DE KETELAERE C. GOAL O PALO O LORO SOST. INC TS · sì + Partita almeno 6 tiri in porta",
-          "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-04: quota 5 orientativa, 3-6 gambe, mercati distinti, nessuno scenario di base ripetuto o annidato e quote singole 1.10-1.85. Il rischio resta informativo.",
+          "selection": "Roma vincente + 1 TEMPO: 1X2 CORNER · 1 + Mancini: cartellino o almeno 2 falli, sostituto incluso + Partita almeno 6 tiri in porta",
+          "logic": "Profilo safe aggiornato con i falli verificati della Roma nelle prime due giornate: Mancini ha commesso 3 falli in 180 minuti. Quota 5 orientativa, mercati distinti e rischio informativo.",
           "probabilityPct": null,
           "prudentProbabilityPct": null,
           "fairOdds": null,
@@ -80456,23 +80461,9 @@
           "quotaPolicy": "orientativa",
           "eligibilityPolicy": "validita-tecnica-e-intervalli",
           "riskPolicy": "informativa",
-          "odds": 10,
-          "distancePct": 0,
+          "odds": 8.11,
+          "distancePct": 18.9,
           "legs": [
-            {
-              "label": "PRIMA A 5 CALCI D'ANGOLO · Roma",
-              "market": "PRIMA A X CORNER",
-              "variant": "PRIMA A 5 CALCI D'ANGOLO",
-              "threshold": null,
-              "selection": "TEAM 1",
-              "providerSelectionId": "5301157961",
-              "odds": 1.85,
-              "overlapKey": "market-prima a x corner",
-              "semanticKeys": [
-                "volume-corners"
-              ],
-              "marketScope": "match"
-            },
             {
               "label": "Atalanta almeno 11 tiri totali",
               "market": "U/O TIRI TOTALI SQUADRA X",
@@ -80514,15 +80505,17 @@
               "marketScope": "match"
             },
             {
-              "label": "DE KETELAERE C. almeno 1 falli commessi",
-              "market": "U/O FALLI COMMESSI GIOCATORE",
-              "variant": "DE KETELAERE C. U/O 0.5 FALLI COMMESSI",
-              "threshold": "0.5",
-              "selection": "OVER",
-              "providerSelectionId": "5299804626",
-              "odds": 1.2,
-              "overlapKey": "market-u o falli commessi giocatore",
-              "semanticKeys": [],
+              "label": "Hermoso o Mancini ammonito, sostituti inclusi",
+              "market": "X o Y CARTELLINO (DUO) INC TS",
+              "variant": "HERMOSO M. O MANCINI G. CARTELLINO O LORO SOST. INC TS",
+              "threshold": null,
+              "selection": "SI",
+              "providerSelectionId": "5296310099",
+              "odds": 1.8,
+              "overlapKey": "market-x o y cartellino duo inc ts",
+              "semanticKeys": [
+                "discipline-hermoso-mancini"
+              ],
               "marketScope": "player"
             },
             {
@@ -80540,8 +80533,8 @@
               "marketScope": "match"
             }
           ],
-          "selection": "PRIMA A 5 CALCI D'ANGOLO · Roma + Atalanta almeno 11 tiri totali + DE KETELAERE C. almeno 2 falli subiti + Under 3,5 gol + DE KETELAERE C. almeno 1 falli commessi + Roma almeno 3 tiri in porta",
-          "logic": "Profilo balanced costruito sulle quote Sisal del 2026-09-04: quota 10 orientativa, 4-7 gambe, mercati distinti, nessuno scenario di base ripetuto o annidato e quote singole 1.10-1.85. Il rischio resta informativo.",
+          "selection": "Atalanta almeno 11 tiri totali + DE KETELAERE C. almeno 2 falli subiti + Under 3,5 gol + Hermoso o Mancini ammonito, sostituti inclusi + Roma almeno 3 tiri in porta",
+          "logic": "Profilo balanced aggiornato con i falli verificati della Roma e il ranking ammoniti ricalcolato: Hermoso e Mancini sono i primi due candidati. Quota 10 orientativa e rischio informativo.",
           "probabilityPct": null,
           "prudentProbabilityPct": null,
           "fairOdds": null,
@@ -80558,8 +80551,8 @@
           "quotaPolicy": "orientativa",
           "eligibilityPolicy": "validita-tecnica-e-intervalli",
           "riskPolicy": "informativa",
-          "odds": 20,
-          "distancePct": 0,
+          "odds": 18.28,
+          "distancePct": 8.6,
           "legs": [
             {
               "label": "Under 2,5 gol",
@@ -80618,15 +80611,17 @@
               "marketScope": "match"
             },
             {
-              "label": "DE KETELAERE C. almeno 2 falli subiti",
-              "market": "U/O FALLI SUBITI GIOCATORE",
-              "variant": "DE KETELAERE C. U/O 1.5 FALLI SUBITI",
-              "threshold": "1.5",
-              "selection": "OVER",
-              "providerSelectionId": "5299901619",
-              "odds": 1.75,
-              "overlapKey": "market-u o falli subiti giocatore",
-              "semanticKeys": [],
+              "label": "Hermoso: cartellino o almeno 2 falli, sostituto incluso",
+              "market": "GIOCATORE QUASI CARTELLINO",
+              "variant": "HERMOSO M. RICEVE ALMENO UN CARTELLINO O COMMETTE ALMENO 2 FALLI INCL. T.S.",
+              "threshold": "2",
+              "selection": "SI",
+              "providerSelectionId": "5300522123",
+              "odds": 1.6,
+              "overlapKey": "market-giocatore quasi cartellino",
+              "semanticKeys": [
+                "discipline-hermoso"
+              ],
               "marketScope": "player"
             },
             {
@@ -80644,8 +80639,8 @@
               "marketScope": "match"
             }
           ],
-          "selection": "Under 2,5 gol + Partita almeno 8 tiri in porta + Atalanta almeno 11 tiri totali + Roma vincente + DE KETELAERE C. almeno 2 falli subiti + Roma almeno 4 corner",
-          "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-09-04: quota 20 orientativa, 5-8 gambe, mercati distinti, nessuno scenario di base ripetuto o annidato e quote singole 1.10-1.85. Il rischio resta informativo.",
+          "selection": "Under 2,5 gol + Partita almeno 8 tiri in porta + Atalanta almeno 11 tiri totali + Roma vincente + Hermoso: cartellino o almeno 2 falli, sostituto incluso + Roma almeno 4 corner",
+          "logic": "Profilo aggressive aggiornato con i falli verificati della Roma: Hermoso resta il primo possibile ammonito dopo il correttivo prudente sul campione 2026/27. Quota 20 orientativa e rischio elevato.",
           "probabilityPct": null,
           "prudentProbabilityPct": null,
           "fairOdds": null,
@@ -81967,8 +81962,8 @@
                 "modeled": false
               },
               {
-                "providerSelectionId": "5296309971",
-                "label": "MALEN D. O DE KETELAERE C. GOAL O PALO O LORO SOST. INC TS · sì",
+                "providerSelectionId": "5300522211",
+                "label": "Mancini: cartellino o almeno 2 falli, sostituto incluso",
                 "riskScore": 82,
                 "modeled": false
               },
@@ -81985,9 +81980,9 @@
             "tier": "Balanced",
             "status": "outside-limits",
             "allowed": false,
-            "riskScore": 79.2,
+            "riskScore": 78.6,
             "riskLevel": "alto",
-            "averageRisk": 79.2,
+            "averageRisk": 78.6,
             "maxEventRisk": 82,
             "strongDependencies": 0,
             "contradictions": 0,
@@ -81998,17 +81993,11 @@
               "minPrudentExpectedValuePct": 0
             },
             "reasons": [
-              "Rischio medio 79.2 oltre il limite 56.",
+              "Rischio medio 78.6 oltre il limite 56.",
               "Gamba a rischio 82 oltre il limite 72.",
               "EV prudenziale non disponibile."
             ],
             "events": [
-              {
-                "providerSelectionId": "5301157961",
-                "label": "PRIMA A 5 CALCI D'ANGOLO · Roma",
-                "riskScore": 82,
-                "modeled": false
-              },
               {
                 "providerSelectionId": "5299804654",
                 "label": "Atalanta almeno 11 tiri totali",
@@ -82028,8 +82017,8 @@
                 "modeled": false
               },
               {
-                "providerSelectionId": "5299804626",
-                "label": "DE KETELAERE C. almeno 1 falli commessi",
+                "providerSelectionId": "5296310099",
+                "label": "Hermoso o Mancini ammonito, sostituti inclusi",
                 "riskScore": 82,
                 "modeled": false
               },
@@ -82088,8 +82077,8 @@
                 "modeled": false
               },
               {
-                "providerSelectionId": "5299901619",
-                "label": "DE KETELAERE C. almeno 2 falli subiti",
+                "providerSelectionId": "5300522123",
+                "label": "Hermoso: cartellino o almeno 2 falli, sostituto incluso",
                 "riskScore": 82,
                 "modeled": false
               },
