@@ -87,6 +87,20 @@ export function createPage(deps){
     return `<section class="champions-pilot" aria-labelledby="champions-pilot-title"><header><div><p class="eyebrow">Prima giornata · laboratorio</p><h2 id="champions-pilot-title">Primi pronostici quantitativi</h2><p>${esc(pilot.warning)} Gli intervalli accanto ai volumi sono stime p20–p80.</p></div><span>${pilot.coverage.completeSourceMatches} referti completi<br>${pilot.coverage.oddsMatched}/4 quote collegate</span></header><div class="champions-pilot-validation"><p><strong>Test cronologico 2026/27</strong><span>Solo dati disponibili prima di ogni gara · ${backtest.metrics.totalShots.samples} osservazioni squadra</span></p>${validation}</div><div class="champions-pilot-grid">${cards}</div><p class="champions-pilot-note">Le quote 1X2 e gol servono solo al confronto e non modificano il modello. Sisal non espone ancora, per queste quattro gare, le linee richieste su tiri di squadra, tiri in porta, corner e cartellini. I cartellini indicano il numero di gialli, non i punti cartellini.</p></section>`;
   }
 
+  function registeredSquadsDirectory(squads){
+    const positionOrder=["goalkeeper","defender","midfielder","forward","unknown"];
+    const cards=squads.teams.map(team=>{
+      const groups=positionOrder.map(position=>{
+        const players=team.players.filter(player=>(player.position||"unknown")===position);
+        if(!players.length)return "";
+        return `<section class="champions-squad-group"><h4>${esc(squads.positionLegend[position])}<span>${players.length}</span></h4><ul>${players.map(player=>`<li><b>${player.number}</b><span>${esc(player.name)}</span>${player.registrationList==="B"?'<em title="Marcato come Lista B dalla fonte ufficiale">Lista B</em>':""}</li>`).join("")}</ul></section>`;
+      }).join("");
+      const sources=team.sources.map(source=>`<a href="${esc(source.url)}" target="_blank" rel="noreferrer">${esc(source.provider)} ↗</a>`).join("");
+      return `<details class="champions-squad-card" data-squad-team="${esc(team.team)}"><summary><span><small>${team.counts.total} registrati${team.counts.listB?` · ${team.counts.listB} Lista B`:""}</small><strong>${esc(team.team)}</strong></span><span>${team.sourceNote?'Verifica fonte aperta':'Fonte ufficiale'}</span></summary><div class="champions-squad-card-body"><div class="champions-squad-meta"><p>Allenatore: <strong>${esc(team.coach||"N/D")}</strong></p><span>${sources}</span></div>${team.sourceNote?`<p class="champions-squad-alert"><strong>Discrepanza segnalata.</strong> ${esc(team.sourceNote)}</p>`:""}<div class="champions-squad-groups">${groups}</div></div></details>`;
+    }).join("");
+    return `<section class="champions-squads" aria-labelledby="champions-squads-title"><header><div><p class="eyebrow">Pilot · 8 squadre</p><h2 id="champions-squads-title">Rose registrate UEFA</h2><p>${esc(squads.statusNote)}</p></div><span><strong>${squads.summary.players}</strong> giocatori<br>snapshot ${esc(shortDate(squads.snapshotDate))}</span></header><div class="champions-squad-notice"><strong>Attenzione alla lettura:</strong> “registrato” non significa convocato, disponibile o titolare per la prossima gara. Questi dati non modificano ancora i pronostici.</div><div class="champions-squad-grid">${cards}</div><p class="champions-squad-footnote">La sigla Lista B compare solo quando è esplicitamente marcata dalla fonte UEFA; in assenza del marcatore il campo resta non classificato, senza dedurre automaticamente Lista A.</p></section>`;
+  }
+
   function historyDirectory(history){
     const rows=history.teams.map(profile=>`<tr><th scope="row">${esc(profile.team)}<small>${profile.overall.matches} gare · ${profile.seasonsPlayed} ${profile.seasonsPlayed===1?"stagione":"stagioni"}${profile.competitionsPlayed.length?` · ${esc(profile.competitionsPlayed.join("/"))}`:""}</small></th><td><strong>${ppgLabel(profile.overall.pointsPerMatch)}</strong></td><td>${ppgLabel(profile.levelAdjustedPointsPerMatch)}</td><td>${ppgLabel(profile.home.pointsPerMatch)}</td><td>${ppgLabel(profile.away.pointsPerMatch)}</td><td>${ppgLabel(profile.recent10.pointsPerMatch)}</td><td>${ppgLabel(profile.averageOpponentPointsPerMatch)}</td><td>${esc(profile.progression.label)}</td><td>${profile.coverage==="sufficient"?"Sufficiente":profile.coverage==="limited"?"Limitata":"N/D"}</td></tr>`).join("");
     const sourceLinks=["Champions League","UEFA Europa League","UEFA Conference League"].map(competition=>history.source.pages.find(item=>item.competition===competition&&item.season==="2025-26")).filter(Boolean).map(item=>`<a href="${esc(item.url)}" target="_blank" rel="noreferrer">${esc(item.competition.replace("UEFA ",""))} ↗</a>`).join("");
@@ -94,7 +108,7 @@ export function createPage(deps){
   }
 
   async function render(){
-    const [data,strength,history,model,context,h2h,pilot,backtest]=await Promise.all([load("champions-league-2026-27.json"),load("champions-team-strength-2026-27.json"),load("uefa-team-history-2026-27.json"),load("champions-1x2-2026-27.json"),load("champions-pre-match-context-2026-27.json"),load("champions-head-to-head-2026-27.json"),load("champions-pilot-predictions-2026-27.json"),load("champions-pilot-volume-backtest.json")]);
+    const [data,strength,history,model,context,h2h,pilot,backtest,squads]=await Promise.all([load("champions-league-2026-27.json"),load("champions-team-strength-2026-27.json"),load("uefa-team-history-2026-27.json"),load("champions-1x2-2026-27.json"),load("champions-pre-match-context-2026-27.json"),load("champions-head-to-head-2026-27.json"),load("champions-pilot-predictions-2026-27.json"),load("champions-pilot-volume-backtest.json"),load("champions-registered-squads-2026-27.json")]);
     const profiles=new Map(strength.teams.map(profile=>[profile.team,profile]));
     const histories=new Map(history.teams.map(profile=>[profile.team,profile]));
     const predictions=new Map(model.fixtures.map(prediction=>[prediction.fixtureId,prediction]));
@@ -112,6 +126,7 @@ export function createPage(deps){
       </section>
       ${contextAudit(context)}
       ${pilotForecasts(pilot,backtest)}
+      ${registeredSquadsDirectory(squads)}
       ${modelAudit(model)}
       ${strengthDirectory(strength)}
       ${historyDirectory(history)}

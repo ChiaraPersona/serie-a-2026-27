@@ -19,6 +19,7 @@ const teamStatsShell = fs.readFileSync(path.join(root, "statistiche-squadre.html
 const teamPageShell = fs.readFileSync(path.join(root, "statistiche-squadra", "inter.html"), "utf8");
 const sourcesShell = fs.readFileSync(path.join(root, "fonti.html"), "utf8");
 const readingsInterface = fs.readFileSync(path.join(root, "js/pages/readings.js"), "utf8");
+const matchesInterface = fs.readFileSync(path.join(root, "js/pages/matches.js"), "utf8");
 const tacticalProfiles = read("data/normalized/team-style-profiles.json");
 assert.strictEqual(index.teams.length, 20, "Sono richieste 20 squadre");
 assert.strictEqual(new Set(index.teams.map(team => team.id)).size, 20, "ID squadra duplicati");
@@ -216,8 +217,9 @@ const currentMatches = read("data/normalized/matches.json").filter(match => matc
 assert.strictEqual(europeanCalendar.fixtures.length, 54, "Il calendario europeo deve contenere 54 gare");
 assert.ok(europeanCalendar.fixtures.every(match => match.workloadOnly === true && match.predictionEligible === false), "Le gare europee devono restare solo carico calendario e fuori dai pronostici");
 for (const [teamId, expected] of Object.entries({ inter: 8, napoli: 8, roma: 8, como: 8, milan: 8, juventus: 8, atalanta: 6 })) assert.strictEqual(europeanCalendar.fixtures.filter(match => match.teamId === teamId).length, expected, `${teamId}: sono richiesti ${expected} impegni UEFA`);
-assert.ok(teamInterface.includes('load("data/normalized/european-fixtures-2026-27.json")') && teamInterface.includes('calendarType: "europe"'), "Il calendario personale non integra gli impegni europei");
-for (const marker of ["Solo carico calendario · nessun pronostico", "Fatica: a", "38 giornate di Serie A", "gare UEFA"]) assert.ok(teamInterface.includes(marker), `Calendario europeo: manca ${marker}`);
+assert.ok(matchesInterface.includes('load("european-fixtures-2026-27.json")') && matchesInterface.includes('calendarType:"europe"'), "Il calendario personale non integra gli impegni europei");
+assert.ok(matchesInterface.includes('load("coppa-italia-2026-27.json")') && matchesInterface.includes('calendarType:"cup"'), "Il calendario personale non integra gli impegni di Coppa Italia");
+for (const marker of ["Solo carico calendario · nessun pronostico", "Fatica: a", "38 giornate di Serie A", "gare UEFA", "gare di Coppa Italia", "Tutti gli appuntamenti"]) assert.ok(matchesInterface.includes(marker), `Calendario personale: manca ${marker}`);
 const predictionIds = new Set(read("data/normalized/predictions.json").predictions.map(prediction => prediction.matchId));
 assert.ok(europeanCalendar.fixtures.every(match => !predictionIds.has(match.id)), "Una gara europea è entrata nei pronostici");
 for (const summary of index.teams) {
