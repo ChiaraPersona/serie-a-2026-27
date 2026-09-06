@@ -11,12 +11,15 @@ assert.strictEqual(data.summary.teams, 8);
 assert(data.summary.players > 150);
 for (const team of data.teams) {
   assert(team.players.length > 20, `${team.team}: rosa incompleta`);
-  assert.strictEqual(new Set(team.players.map(player => player.number)).size, team.players.length, `${team.team}: numeri duplicati`);
+  assert(team.id);
+  assert.strictEqual(team.registration.status, "registered");
+  assert.strictEqual(team.availability.status, null);
   assert(team.sources.every(source => ["UEFA", "AS Roma"].includes(source.provider)), `${team.team}: fonte non ufficiale`);
   for (const player of team.players) {
     assert.strictEqual(player.registered, true);
-    assert.strictEqual(player.availability, null);
-    assert.strictEqual(player.matchCallup, null);
+    assert.strictEqual(player.availability.status, null);
+    assert.strictEqual(player.matchCallup.status, null);
+    assert(!Object.hasOwn(player, "number"));
     assert([null, "B"].includes(player.registrationList));
   }
 }

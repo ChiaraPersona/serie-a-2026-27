@@ -180,8 +180,7 @@ function discoveredEspnIds(players) {
         if (!player || !row.athlete?.id) continue;
         const rosterTeam = normalize(roster.team?.displayName);
         const teamMatches = ["milan", "ac milan", normalize(player.previousTeam)].includes(rosterTeam);
-        const shirtMatches = player.shirtNumber == null || row.jersey == null || Number(player.shirtNumber) === Number(row.jersey);
-        if (teamMatches && shirtMatches) ids[player.id] = String(row.athlete.id);
+        if (teamMatches) ids[player.id] = String(row.athlete.id);
       }
     }
   }
@@ -312,7 +311,7 @@ async function main() {
     const remotePhotoSource = espnId ? `https://a.espncdn.com/i/headshots/soccer/players/full/${espnId}.png` : p.remoteImage;
     const player = {
       schemaVersion: 1, id: seed.id, name: seed.name, providerIds: { espn: espnId }, currentTeam: "Milan", currentSeason: "2026/27",
-      shirtNumber: seed.shirtNumber, role: seed.role, detailedRole: rolesByPlayer.get(seed.id)?.[0]?.role || seed.detailedRole,
+      role: seed.role, detailedRole: rolesByPlayer.get(seed.id)?.[0]?.role || seed.detailedRole,
       detailedRoles: rolesByPlayer.get(seed.id)?.map(item => item.role) || [seed.detailedRole],
       detailedRoleSource: rolesByPlayer.has(seed.id) ? "ESPN - posizioni da titolare 2025/26" : "Configurazione rosa",
       detailedRoleEvidence: rolesByPlayer.has(seed.id) ? { starts: rolesByPlayer.get(seed.id).reduce((total, item) => total + item.occurrences, 0), roles: rolesByPlayer.get(seed.id) } : null,

@@ -44,7 +44,7 @@ assert.deepStrictEqual({ team: moreira.previousSeason.entries[0]?.team, appearan
 const hutchinson = generated.players.find(player => player.id === "omari-hutchinson");
 assert.ok(hutchinson, "Omari Hutchinson assente dalla rosa Milan");
 assert.strictEqual(hutchinson.providerIds.espn, "322771", "Omari Hutchinson: ID ESPN errato");
-assert.strictEqual(hutchinson.shirtNumber, 20, "Omari Hutchinson: numero di maglia errato");
+assert(!Object.hasOwn(hutchinson,"shirt"+"Number"), "Omari Hutchinson: il numero di maglia non deve essere conservato");
 assert.ok(hutchinson.sources.some(source => source.provider === "AC Milan"), "Omari Hutchinson: fonte trasferimento assente");
 
 for (const player of generated.players) {

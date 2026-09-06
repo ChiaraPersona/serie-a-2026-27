@@ -341,7 +341,7 @@ function rosterPlayers(teamId, teamConfig) {
     const base = {
       id: slug(athlete.fullName || athlete.displayName), name: athlete.fullName || athlete.displayName, espnId, role,
       detailedRole: roleNames[athlete.position?.name] || athlete.position?.displayName || role,
-      nationality: athleteCountry(athlete), dateOfBirth: birth, shirtNumber: num(athlete.jersey),
+      nationality: athleteCountry(athlete), dateOfBirth: birth,
       heightCm: athlete.height ? Math.round(Number(athlete.height) * 2.54) : null,
       weightKg: athlete.weight ? Math.round(Number(athlete.weight) * 0.453592) : null,
       status: teamConfig.statusOverrides?.[espnId] || (teamConfig.confirmedEspnIds || []).includes(espnId) ? (teamConfig.statusOverrides?.[espnId] || "confermato") : teamConfig.defaultStatus
@@ -358,7 +358,6 @@ function rosterPlayers(teamId, teamConfig) {
       detailedRole: supplemental.detailedRole || base.detailedRole,
       nationality: supplemental.nationality || base.nationality,
       dateOfBirth: supplemental.dateOfBirth || base.dateOfBirth,
-      shirtNumber: supplemental.shirtNumber ?? base.shirtNumber,
       heightCm: supplemental.heightCm ?? base.heightCm,
       weightKg: supplemental.weightKg ?? base.weightKg,
       status: supplemental.status || base.status
@@ -366,7 +365,7 @@ function rosterPlayers(teamId, teamConfig) {
   });
   for (const supplemental of teamConfig.supplementalPlayers || []) {
     if (players.some(player => supplemental.espnId && player.espnId === String(supplemental.espnId))) continue;
-    players.push({ id: slug(supplemental.name), shirtNumber: null, heightCm: null, weightKg: null, ...supplemental, espnId: supplemental.espnId ? String(supplemental.espnId) : null });
+    players.push({ id: slug(supplemental.name), heightCm: null, weightKg: null, ...supplemental, espnId: supplemental.espnId ? String(supplemental.espnId) : null });
   }
   const officialPlayers = fantasyRoster.players.filter(player => player.teamId === teamId && player.status === "active");
   const byId = new Map(players.map(player => [player.id, player]));
@@ -383,7 +382,6 @@ function rosterPlayers(teamId, teamConfig) {
       detailedRole: role,
       nationality: null,
       dateOfBirth: null,
-      shirtNumber: null,
       heightCm: null,
       weightKg: null,
       status: "confermato",
@@ -455,7 +453,7 @@ async function buildTeam(teamId, teamConfig, entries, detailedRoles) {
     const configuredDetailedRole = seed.detailedRole && seed.detailedRole !== seed.role ? seed.detailedRole : null;
     const player = {
       schemaVersion: 1, id: seed.id, name: seed.name, providerIds: { espn: seed.espnId, fantacalcio: seed.fantacalcioSourceId || null }, currentTeam: teamConfig.name, currentSeason: "2026/27",
-      shirtNumber: seed.shirtNumber ?? null, role: seed.role, detailedRole: inferredRole?.role || configuredDetailedRole || seed.role,
+      role: seed.role, detailedRole: inferredRole?.role || configuredDetailedRole || seed.role,
       detailedRoles: inferredRole?.roles?.map(item => item.role) || [configuredDetailedRole || seed.role],
       detailedRoleSource: inferredRole ? "ESPN - posizione da titolare 2025/26" : configuredDetailedRole ? "Configurazione rosa" : "ESPN - ruolo rosa generico",
       detailedRoleEvidence: inferredRole ? { starts: inferredRole.starts, occurrences: inferredRole.occurrences, confidence: inferredRole.confidence, roles: inferredRole.roles } : null,

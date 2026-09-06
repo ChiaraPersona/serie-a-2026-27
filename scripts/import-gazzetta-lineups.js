@@ -33,7 +33,7 @@ const rosterByTeamId = new Map(teams.map(team => {
   return [team.id, players];
 }));
 
-function linkPlayer(teamId, sourceName, shirtNumber, positionIndex) {
+function linkPlayer(teamId, sourceName, positionIndex) {
   const roster = rosterByTeamId.get(teamId) || [];
   const source = normalize(sourceName);
   const sourceTokens = source.split(" ").filter(Boolean);
@@ -46,10 +46,6 @@ function linkPlayer(teamId, sourceName, shirtNumber, positionIndex) {
       const initialAndSurname = sourceTokens.length === 2 && sourceTokens[0].length === 1 && tokens[0]?.startsWith(sourceTokens[0]) && tokens.at(-1) === sourceTokens[1];
       return sourceTokens.every(token => tokens.includes(token)) || compactName.includes(compactSource) || initialAndSurname;
     });
-  }
-  if (candidates.length > 1 && Number.isFinite(shirtNumber)) {
-    const numbered = candidates.filter(player => Number(player.shirtNumber) === shirtNumber);
-    if (numbered.length === 1) candidates = numbered;
   }
   if (candidates.length > 1 && positionIndex === 0) {
     const goalkeepers = candidates.filter(player => player.role === "Portiere");
@@ -64,17 +60,15 @@ function linkPlayer(teamId, sourceName, shirtNumber, positionIndex) {
 function parsePlayers(block, team, teamId) {
   return [...block.matchAll(/<li class="lineup-team__player">([\s\S]*?)<\/li>/g)].map((match, positionIndex) => {
     const sourceName = decode(match[1].match(/<span class="lineup-team__name">([\s\S]*?)<\/span>/)?.[1] || "");
-    const shirtNumber = Number(decode(match[1].match(/<span class="lineup-team__number">([\s\S]*?)<\/span>/)?.[1] || ""));
     return {
       sourceId: null,
       sourceName,
       sourceRole: null,
-      shirtNumber: Number.isFinite(shirtNumber) ? shirtNumber : null,
       probability: null,
       lineupStatus: "starter",
       team,
       teamId,
-      ...linkPlayer(teamId, sourceName, shirtNumber, positionIndex)
+      ...linkPlayer(teamId, sourceName, positionIndex)
     };
   });
 }

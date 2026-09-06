@@ -143,7 +143,7 @@ for (const [teamId, fixtureId] of Object.entries(officialFixtureByTeam)) {
   assert.strictEqual(lineup.status, "official", `${teamId}: formazione ufficiale non applicata`);
   assert.strictEqual(lineup.matchId, fixtureId, `${teamId}: formazione ufficiale associata alla gara errata`);
   assert.strictEqual(lineup.players.length, 11, `${teamId}: XI ufficiale incompleto`);
-  assert.strictEqual(lineup.shirtNumbers.length, 11, `${teamId}: numeri di maglia ufficiali incompleti`);
+  assert(!Object.hasOwn(lineup,"shirt"+"Numbers"), `${teamId}: i numeri di maglia non devono essere conservati`);
 }
 const atalantaBolognaOfficial = officialLineups.fixtures.find(fixture => fixture.matchId === "atalanta-bologna-2026-27-md-02");
 assert.ok(atalantaBolognaOfficial, "Atalanta-Bologna: distinta ufficiale assente");

@@ -51,8 +51,7 @@ function playerView(player) {
   return {
     espnId: player.espnId || null,
     name: player.name,
-    role: player.role || null,
-    shirtNumber: player.shirtNumber ?? null
+    role: player.role || null
   };
 }
 
@@ -62,8 +61,7 @@ function currentPlayers(teamId) {
   return JSON.parse(fs.readFileSync(file, "utf8")).players.map(player => ({
     espnId: player.providerIds?.espn ? String(player.providerIds.espn) : null,
     name: player.name,
-    role: player.role,
-    shirtNumber: player.shirtNumber
+    role: player.role
   }));
 }
 
@@ -81,10 +79,7 @@ async function livePlayers(teamId) {
     players: (payload.athletes || []).map(athlete => ({
       espnId: athlete.id ? String(athlete.id) : null,
       name: athlete.fullName || athlete.displayName,
-      role: athlete.position?.displayName || athlete.position?.name || null,
-      shirtNumber: athlete.jersey !== undefined && athlete.jersey !== null
-        ? Number(athlete.jersey)
-        : null
+      role: athlete.position?.displayName || athlete.position?.name || null
     }))
   };
 }

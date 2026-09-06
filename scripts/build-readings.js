@@ -114,9 +114,6 @@ for (const team of cupOpponents.teams) {
   if (!team.id || !team.name || !team.coach || !team.preferredFormation || !Array.isArray(team.roster) || !team.roster.length) {
     throw new Error(`Profilo avversario Coppa non completo: ${team.id || "senza ID"}`);
   }
-  if (new Set(team.roster.map(player => player.shirtNumber)).size !== team.roster.length) {
-    throw new Error(`Numeri di maglia duplicati nel profilo di ${team.name}`);
-  }
 }
 
 fs.writeFileSync(outputFile, `${JSON.stringify(readings, null, 2)}\n`);

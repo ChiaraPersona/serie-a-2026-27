@@ -109,12 +109,21 @@ export function createPage(deps){
       const groups=positionOrder.map(position=>{
         const players=team.players.filter(player=>(player.position||"unknown")===position);
         if(!players.length)return "";
-        return `<section class="champions-squad-group"><h4>${esc(squads.positionLegend[position])}<span>${players.length}</span></h4><ul>${players.map(player=>`<li><b>${player.number}</b><span>${esc(player.name)}</span>${player.registrationList==="B"?'<em title="Marcato come Lista B dalla fonte ufficiale">Lista B</em>':""}</li>`).join("")}</ul></section>`;
+        return `<section class="champions-squad-group"><h4>${esc(squads.positionLegend[position])}<span>${players.length}</span></h4><ul>${players.map(player=>`<li><span>${esc(player.name)}</span>${player.registrationList==="B"?'<em title="Marcato come Lista B dalla fonte ufficiale">Lista B</em>':""}</li>`).join("")}</ul></section>`;
       }).join("");
       const sources=team.sources.map(source=>`<a href="${esc(source.url)}" target="_blank" rel="noreferrer">${esc(source.provider)} ↗</a>`).join("");
-      return `<details class="champions-squad-card" data-squad-team="${esc(team.team)}"><summary><span><small>${team.counts.total} registrati${team.counts.listB?` · ${team.counts.listB} Lista B`:""}</small><strong>${esc(team.team)}</strong></span><span>${team.sourceNote?'Verifica fonte aperta':'Fonte ufficiale'}</span></summary><div class="champions-squad-card-body"><div class="champions-squad-meta"><p>Allenatore: <strong>${esc(team.coach||"N/D")}</strong></p><span>${sources}</span></div>${team.sourceNote?`<p class="champions-squad-alert"><strong>Discrepanza segnalata.</strong> ${esc(team.sourceNote)}</p>`:""}<div class="champions-squad-groups">${groups}</div></div></details>`;
+      return `<details class="champions-squad-card" data-squad-team="${esc(team.team)}"><summary><span><small>${team.counts.total} registrati${team.counts.listB?` · ${team.counts.listB} Lista B`:""}</small><strong>${esc(team.team)}</strong></span><span>${team.sourceNote?'Verifica fonte aperta':'Fonte ufficiale'}</span></summary><div class="champions-squad-card-body"><div class="champions-squad-meta"><p>Allenatore: <strong>${esc(team.coach||"N/D")}</strong></p><span>${sources}</span></div><a class="champions-team-open" href="champions-league.html?team=${esc(team.id)}">Apri scheda squadra <b aria-hidden="true">→</b></a>${team.sourceNote?`<p class="champions-squad-alert"><strong>Discrepanza segnalata.</strong> ${esc(team.sourceNote)}</p>`:""}<div class="champions-squad-groups">${groups}</div></div></details>`;
     }).join("");
     return `<section class="champions-squads${detail?" champions-squads-detail":""}" aria-labelledby="champions-squads-title"><header><div><p class="eyebrow">${detail?"Contesto della partita":"Pilot · 8 squadre"}</p><h2 id="champions-squads-title">Rose registrate UEFA</h2><p>${esc(squads.statusNote)}</p></div><span><strong>${squads.summary.players}</strong> giocatori<br>snapshot ${esc(shortDate(squads.snapshotDate))}</span></header><div class="champions-squad-notice"><strong>Attenzione alla lettura:</strong> “registrato” non significa convocato, disponibile o titolare per la prossima gara. Questi dati non modificano ancora i pronostici.</div><div class="champions-squad-grid">${cards}</div><p class="champions-squad-footnote">La sigla Lista B compare solo quando è esplicitamente marcata dalla fonte UEFA; in assenza del marcatore il campo resta non classificato, senza dedurre automaticamente Lista A.</p></section>`;
+  }
+
+  function championsTeamDetail(team,strength,history,pilot,squads){
+    const roleLabel=position=>({goalkeeper:"Portiere",defender:"Difensore",midfielder:"Centrocampista",forward:"Attaccante"}[position]||"N/D");
+    const fixture=pilot.fixtures.find(item=>item.homeTeam===team.team||item.awayTeam===team.team);
+    const playerRows=team.players.map(player=>`<tr><th scope="row">${esc(player.name)}${player.registrationList==="B"?"<em>Lista B</em>":""}</th><td>${esc(roleLabel(player.position))}</td><td>Registrato</td><td>${esc(player.availability.status||"N/D")}</td><td>${esc(player.matchCallup.status||"N/D")}</td><td>${player.statistics.appearances??"N/D"}</td><td>${player.statistics.minutes??"N/D"}</td></tr>`).join("");
+    const strengthValue=strength?.europeanStrengthIndex==null?"N/D":strength.europeanStrengthIndex.toFixed(1);
+    const historyValue=history?.overall?.pointsPerMatch==null?"N/D":history.overall.pointsPerMatch.toFixed(2);
+    return `<nav class="champions-reading-back"><a href="champions-league.html">← Champions League</a><span>Scheda squadra</span></nav><section class="champions-team-hero"><div><p class="eyebrow">UEFA Champions League 2026/27</p><h1>${esc(team.team)}</h1><p>Allenatore: ${esc(team.coach||"N/D")}</p></div><div><small>Rosa registrata</small><strong>${team.counts.total}</strong><span>${team.counts.listB} Lista B</span></div></section><section class="champions-team-status" aria-label="Stato dati squadra"><article><small>Registrazione UEFA</small><strong>Integrata</strong><span>${esc(shortDate(team.registration.updatedAt))}</span></article><article><small>Disponibilità</small><strong>N/D</strong><span>Nessuna deduzione</span></article><article><small>Probabile formazione</small><strong>N/D</strong><span>Fonte non integrata</span></article><article><small>Convocati gara</small><strong>N/D</strong><span>Non pubblicati nel dataset</span></article><article><small>Distinta ufficiale</small><strong>N/D</strong><span>Da aggiornare a ridosso della gara</span></article></section><section class="champions-team-overview"><article><small>Indice europeo</small><strong>${strengthValue}</strong><span>${strength?.dataCoveragePct??"N/D"}% copertura</span></article><article><small>Punti/gara europei</small><strong>${historyValue}</strong><span>${history?.overall?.matches??"N/D"} gare storiche</span></article><article><small>Prossima lettura</small><strong>${fixture?`${esc(fixture.homeTeam)} – ${esc(fixture.awayTeam)}`:"N/D"}</strong>${fixture?`<a href="champions-league.html?match=${esc(fixture.fixtureId)}">Apri lettura →</a>`:"<span>Nessuna lettura pilot</span>"}</article></section>${registeredSquadsDirectory({...squads,teams:[team],summary:{...squads.summary,teams:1,players:team.counts.total}},{detail:true})}<section class="champions-team-players"><header><div><p class="eyebrow">Profili iniziali</p><h2>Giocatori</h2></div><p>La struttura è pronta per statistiche, disponibilità e convocazioni. I campi non ancora verificati restano N/D.</p></header><div class="champions-strength-table-wrap"><table><thead><tr><th>Giocatore</th><th>Ruolo</th><th>UEFA</th><th>Disponibilità</th><th>Convocazione</th><th>Presenze</th><th>Minuti</th></tr></thead><tbody>${playerRows}</tbody></table></div></section>`;
   }
 
   function historyDirectory(history){
@@ -125,14 +134,20 @@ export function createPage(deps){
 
   async function render(){
     const requestedMatchId=new URLSearchParams(location.search).get("match");
+    const requestedTeamId=new URLSearchParams(location.search).get("team");
     const [data,strength,history,model,context,h2h,pilot,backtest,squads]=await Promise.all([load("champions-league-2026-27.json"),load("champions-team-strength-2026-27.json"),load("uefa-team-history-2026-27.json"),load("champions-1x2-2026-27.json"),load("champions-pre-match-context-2026-27.json"),load("champions-head-to-head-2026-27.json"),load("champions-pilot-predictions-2026-27.json"),load("champions-pilot-volume-backtest.json"),load("champions-registered-squads-2026-27.json")]);
+    const profiles=new Map(strength.teams.map(profile=>[profile.team,profile]));
+    const histories=new Map(history.teams.map(profile=>[profile.team,profile]));
     const requestedFixture=requestedMatchId?pilot.fixtures.find(fixture=>fixture.fixtureId===requestedMatchId):null;
     if(requestedFixture){
       document.querySelector("#app").innerHTML=pilotReadingDetail(requestedFixture,pilot,backtest,squads);
       return;
     }
-    const profiles=new Map(strength.teams.map(profile=>[profile.team,profile]));
-    const histories=new Map(history.teams.map(profile=>[profile.team,profile]));
+    const requestedTeam=requestedTeamId?squads.teams.find(team=>team.id===requestedTeamId):null;
+    if(requestedTeam){
+      document.querySelector("#app").innerHTML=championsTeamDetail(requestedTeam,profiles.get(requestedTeam.team),histories.get(requestedTeam.team),pilot,squads);
+      return;
+    }
     const predictions=new Map(model.fixtures.map(prediction=>[prediction.fixtureId,prediction]));
     const contexts=new Map(context.fixtures.map(item=>[item.fixtureId,item]));
     const headToHeads=new Map(h2h.fixtures.map(item=>[item.fixtureId,item]));

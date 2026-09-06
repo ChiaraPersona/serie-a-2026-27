@@ -49,7 +49,6 @@ const milanComotto = {
   nationality: "Italia",
   profileSlug: "christian-comotto",
   espnId: "403807",
-  shirtNumber: 28,
   status: "confermato",
   previousTeam: "Spezia",
   previousCompetition: "Serie B",
@@ -112,7 +111,7 @@ addMove({
 });
 addMove({
   to: "lazio",
-  player: { name: "Josip Šutalo", espnId: "305552", role: "Difensore", detailedRole: "Difensore centrale", nationality: "Croazia", arrivalDate: "2026-08-22", shirtNumber: 37 },
+  player: { name: "Josip Šutalo", espnId: "305552", role: "Difensore", detailedRole: "Difensore centrale", nationality: "Croazia", arrivalDate: "2026-08-22" },
   source: transferSource("SS Lazio", "Trasferimento temporaneo dall'Ajax con opzione di acquisto", "https://www.sslazio.it/it/news/comunicati/josip-sutalo-in-biancoceleste-a-titolo-temporaneo")
 });
 addMove({
@@ -128,7 +127,6 @@ addPlayer(remaining.teams.genoa, {
   detailedRole: "Centravanti",
   nationality: "Slovacchia",
   dateOfBirth: "2007-09-14",
-  shirtNumber: 80,
   status: "promosso dal vivaio",
   transferSource: transferSource("Genoa CFC", "Tesserato dal 2025 e aggregato alla prima squadra", "https://genoacfc.it/2025/08/05/adam-zulevic-e-un-nuovo-giocatore-del-genoa/")
 });

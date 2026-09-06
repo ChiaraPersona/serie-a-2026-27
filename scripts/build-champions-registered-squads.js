@@ -6,26 +6,26 @@ const sourcePath = path.join(root, "data/sources/champions-registered-squads-202
 const outputPath = path.join(root, "data/normalized/champions-registered-squads-2026-27.json");
 const source = JSON.parse(fs.readFileSync(sourcePath, "utf8"));
 const validPositions = new Set(["goalkeeper", "defender", "midfielder", "forward", null]);
+const slug = value => value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 
 const teams = source.teams.map(team => {
-  const seenNumbers = new Set();
   const players = team.players.map(entry => {
-    if (!Array.isArray(entry) || entry.length !== 4) throw new Error(`${team.team}: formato giocatore non valido`);
-    const [number, name, position, registrationList] = entry;
-    if (!Number.isInteger(number) || number < 1 || number > 99) throw new Error(`${team.team}: numero non valido per ${name}`);
-    if (seenNumbers.has(number)) throw new Error(`${team.team}: numero duplicato ${number}`);
+    if (!Array.isArray(entry) || entry.length !== 3) throw new Error(`${team.team}: formato giocatore non valido`);
+    const [name, position, registrationList] = entry;
     if (!name || typeof name !== "string") throw new Error(`${team.team}: nome giocatore mancante`);
     if (!validPositions.has(position)) throw new Error(`${team.team}: ruolo non valido per ${name}`);
     if (![null, "B"].includes(registrationList)) throw new Error(`${team.team}: lista non valida per ${name}`);
-    seenNumbers.add(number);
     return {
-      number,
+      id: slug(name),
       name,
       position,
       registrationList,
       registered: true,
-      availability: null,
-      matchCallup: null
+      availability: { status: null, injury: null, suspension: null, updatedAt: null, source: null },
+      probableLineup: { status: null, updatedAt: null, source: null },
+      matchCallup: { status: null, fixtureId: null, updatedAt: null, source: null },
+      officialLineup: { status: null, fixtureId: null, updatedAt: null, source: null },
+      statistics: { season: "2026-27", competition: "UEFA Champions League", appearances: null, starts: null, minutes: null, goals: null, assists: null, shots: null, shotsOnTarget: null, yellowCards: null, redCards: null }
     };
   });
   const counts = players.reduce((result, player) => {
@@ -34,7 +34,17 @@ const teams = source.teams.map(team => {
     if (player.registrationList === "B") result.listB += 1;
     return result;
   }, { total: 0, goalkeeper: 0, defender: 0, midfielder: 0, forward: 0, unknown: 0, listB: 0 });
-  return { ...team, players, counts };
+  return {
+    id: slug(team.team),
+    ...team,
+    registration: { status: "registered", scope: "league-phase", updatedAt: source.snapshotDate },
+    availability: { status: null, updatedAt: null, source: null },
+    probableLineup: { status: null, fixtureId: null, updatedAt: null, source: null },
+    matchCallup: { status: null, fixtureId: null, updatedAt: null, source: null },
+    officialLineup: { status: null, fixtureId: null, updatedAt: null, source: null },
+    players,
+    counts
+  };
 });
 
 const output = {

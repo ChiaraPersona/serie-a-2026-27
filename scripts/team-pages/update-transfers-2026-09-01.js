@@ -83,7 +83,6 @@ addMove({
     detailedRole: "Ala / seconda punta",
     nationality: "Svizzera",
     dateOfBirth: "1999-08-05",
-    shirtNumber: 99,
     arrivalDate: "2026-08-31"
   },
   transferSource: source("Lega Serie A / US Lecce", "Trasferimento definitivo dallo Young Boys al Lecce")
@@ -165,7 +164,6 @@ const hutchinson = {
   nationality: "Inghilterra",
   profileSlug: "omari-hutchinson",
   espnId: "322771",
-  shirtNumber: 20,
   dateOfBirth: "2003-10-29",
   status: "nuovo acquisto",
   previousTeam: "Nottingham Forest",

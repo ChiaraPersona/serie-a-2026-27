@@ -29,7 +29,6 @@ function main() {
         sourceId: null,
         sourceName,
         sourceRole: null,
-        shirtNumber: null,
         probability: null,
         lineupStatus: "starter",
         team: team.team,
