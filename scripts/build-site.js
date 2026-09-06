@@ -12,15 +12,15 @@ const footer = (depth = "") => `<footer class="site-footer"><div class="site-foo
 const fontLinks = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">';
 const withFonts = html => html.replace("</title>", `</title>${fontLinks}`);
 const version = "20260901-coppa-round16-calendar-v1";
-const homeVersion = "20260905-md3-results-partial-v2";
-const calendarVersion = "20260905-md3-results-partial-v2";
-const teamVersion = "20260905-roma-fouls-v2";
-const leaderboardVersion = "20260905-md3-results-partial-v2";
-const bettingVersion = "20260905-md3-results-partial-v2";
-const readingVersion = "20260905-roma-atalanta-discipline-v1";
+const homeVersion = "20260906-roma-atalanta-result-v2";
+const calendarVersion = "20260906-roma-atalanta-result-v2";
+const teamVersion = "20260906-roma-atalanta-result-v2";
+const leaderboardVersion = "20260906-roma-atalanta-result-v2";
+const bettingVersion = "20260906-roma-atalanta-result-v2";
+const readingVersion = "20260906-roma-atalanta-result-v3";
 const cupVersion = "20260903-coppa-results-v1";
 const championsVersion = "20260902-champions-h2h-2020-v13";
-const fantasyVersion = "20260904-fantacalcio-md3-lineups-v1";
+const fantasyVersion = "20260906-roma-atalanta-result-v2";
 const headToHeadPath = path.join(root, "data/generated/head-to-head/first-leg-2026-27.json");
 if (fs.existsSync(headToHeadPath)) {
   const headToHead = JSON.parse(fs.readFileSync(headToHeadPath, "utf8"));

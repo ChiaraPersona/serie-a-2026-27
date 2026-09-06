@@ -58,9 +58,11 @@ for (const [periodId, period] of Object.entries(playerLeaderboards.periods)) for
   assert.ok(ranking.players.every(player => !["Internazionale", "AS Roma"].includes(player.previousTeam)), `${metric}: alias squadra non normalizzato`);
   assert.ok(ranking.players.every(player => !player.sameClub || player.previousTeam === player.currentTeam), `${metric}: duplicato fra squadra attuale e precedente non riconosciuto`);
 }
-assert.strictEqual(playerLeaderboards.periods["2026/27"].rankings.foulsCommitted.availablePlayers, 303, "I falli 2026/27 verificati devono coprire tutti i partecipanti");
-assert.strictEqual(playerLeaderboards.periods["2026/27"].rankings.foulsWon.availablePlayers, 303, "I falli subiti 2026/27 verificati devono coprire tutti i partecipanti");
-assert.strictEqual(playerLeaderboards.periods.total.rankings.foulsWon.availablePlayers, 241, "Il totale falli deve includere soltanto i calciatori coperti in entrambe le stagioni");
+const currentFoulParticipants = playerLeaderboards.periods["2026/27"].rankings.foulsCommitted.availablePlayers;
+assert.ok(currentFoulParticipants >= 303, "La copertura dei falli 2026/27 non deve regredire rispetto al campione verificato");
+assert.strictEqual(playerLeaderboards.periods["2026/27"].rankings.foulsWon.availablePlayers, currentFoulParticipants, "Falli commessi e subiti 2026/27 devono avere la stessa copertura");
+const totalFoulParticipants = playerLeaderboards.periods.total.rankings.foulsWon.availablePlayers;
+assert.ok(totalFoulParticipants >= 241 && totalFoulParticipants <= currentFoulParticipants, "Il totale falli deve includere soltanto i calciatori coperti in entrambe le stagioni");
 const currentParticipants = playerLeaderboards.periods["2026/27"].rankings.goals.availablePlayers;
 assert.ok(playerLeaderboards.periods["2026/27"].rankings.shots.availablePlayers < currentParticipants && playerLeaderboards.periods["2026/27"].rankings.shotsOnTarget.availablePlayers < currentParticipants, "La copertura parziale dei tiri 2026/27 deve restare esplicita");
 for (const contract of ["loadPlayerLeaderboards", "globalPlayerLeaderboards", "globalPlayerLeaderboardTable", "Top 15 calciatori per statistica", "data-player-period", "data-player-stat", "serie-b-marker", "aria-pressed", "per90Value", "stessa riga"]) assert.ok(mainApp.includes(contract), `Top 15 globale: contratto ${contract} assente`);
@@ -133,7 +135,7 @@ for (const removedContract of [".squad-leaders-summary", ".squad-leaders[open]"]
 const readingLineupSource = mainApp.slice(mainApp.indexOf("function renderProbableLineups"), mainApp.indexOf("function renderReadingPilotEvidence"));
 assert.ok(teamInterface.includes("lineup.players.slice(offset, offset + size).reverse()"), "Le probabili formazioni delle pagine squadra devono essere specchiate orizzontalmente");
 assert.ok(readingLineupSource.includes("lineup.players.slice(offset,offset+size).reverse()"), "Le probabili formazioni delle Letture devono essere specchiate orizzontalmente");
-const officialFixtureByTeam = { inter: "cagliari-inter-2026-27-md-02", monza: "monza-udinese-2026-27-md-02", udinese: "monza-udinese-2026-27-md-02", como: "napoli-como-2026-27-md-02", parma: "parma-cagliari-2026-27-md-01", cagliari: "cagliari-inter-2026-27-md-02", genoa: "lazio-genoa-2026-27-md-02", napoli: "napoli-como-2026-27-md-02", frosinone: "fiorentina-frosinone-2026-27-md-02", juventus: "frosinone-juventus-2026-27-md-01", venezia: "milan-venezia-2026-27-md-02", lecce: "lecce-roma-2026-27-md-02", torino: "sassuolo-torino-2026-27-md-02", milan: "milan-venezia-2026-27-md-02", atalanta: "atalanta-bologna-2026-27-md-02", sassuolo: "sassuolo-torino-2026-27-md-02", bologna: "atalanta-bologna-2026-27-md-02", lazio: "lazio-genoa-2026-27-md-02", roma: "lecce-roma-2026-27-md-02", fiorentina: "fiorentina-frosinone-2026-27-md-02" };
+const officialFixtureByTeam = Object.fromEntries(officialLineups.fixtures.flatMap(fixture => fixture.teams.map(team => [team.teamId, fixture.matchId])));
 for (const [teamId, fixtureId] of Object.entries(officialFixtureByTeam)) {
   const lineup = index.teams.find(team => team.id === teamId).probableLineup;
   assert.strictEqual(lineup.status, "official", `${teamId}: formazione ufficiale non applicata`);
@@ -161,7 +163,7 @@ assert(torinoMilanSource.players.some(player => player.currentName === "Cesare C
 assert.ok(teamInterface.includes("probable-lineup-substitutes") && readingLineupSource.includes("reading-lineup-substitutes"), "Le panchine ufficiali non sono renderizzate nelle pagine squadra e Letture");
 assert.ok(teamInterface.includes('official ? "Formazione ufficiale" : "Probabile formazione"'), "Le pagine squadra non distinguono la formazione ufficiale");
 assert.ok(readingLineupSource.includes('officialLineups?"Formazioni ufficiali":referenceLineups?"Formazioni di riferimento":"Probabili formazioni"'), "La Lettura non distingue formazioni ufficiali, di riferimento e probabili");
-assert.ok(readingLineupSource.includes('`Distinte ufficiali della giornata ${match.matchday}`'), "La Lettura non associa le distinte ufficiali alla giornata corretta");
+assert.ok(readingLineupSource.includes('"Distinte ufficiali della giornata "+match.matchday'), "La Lettura non associa le distinte ufficiali alla giornata corretta");
 assert.ok(mainApp.includes('<details class="reading-completed-matchday">') && mainApp.includes("Tabellini delle partite precedenti"), "I tabellini conclusi non usano il menu a tendina dedicato alle partite precedenti");
 assert.ok(mainApp.includes("Storico MVP 2025/26") && mainApp.includes("prediction-mvp-history"), "Lo storico MVP individuale non è esposto nelle Letture");
 assert.ok(mainApp.includes("reading-official-mvp") && mainApp.includes("Panini Player of the Match") && mainApp.includes("match.mvp"), "L'MVP ufficiale della partita conclusa non è esposto nelle Letture");

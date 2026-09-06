@@ -9,7 +9,7 @@ const resultsPath = path.join(root, "data/sources/match-results-2026-27.json");
 const playerStatsPath = path.join(root, "data/sources/statmuse-player-stats-2026-27.json");
 const results = JSON.parse(fs.readFileSync(resultsPath, "utf8"));
 const playerStats = JSON.parse(fs.readFileSync(playerStatsPath, "utf8"));
-const retrievedAt = "2026-09-05";
+const retrievedAt = "2026-09-06";
 const mvpUrl = "https://www.legaseriea.it/serie-a/awards/player-of-the-match";
 
 const games = [
@@ -40,6 +40,20 @@ const games = [
     away: { slug: "napoli", abbr: "NAP" },
     mvp: null,
     assistOverrides: [{ player: "Lautaro Martínez", minute: 90, assist: "Manuel Akanji" }]
+  },
+  {
+    matchId: "roma-atalanta-2026-27-md-03",
+    file: "roma-atalanta-statmuse.html",
+    url: "https://www.statmuse.com/fc/match/9-6-2026-rom-vs-ata-112100",
+    officialUrl: "https://www.legaseriea.it/serie-a/news/roma-atalanta-2026-2027-2-1-cronaca-risultato-gol",
+    home: { slug: "roma", abbr: "ROM" },
+    away: { slug: "atalanta", abbr: "ATA" },
+    mvp: null,
+    minuteOverrides: [
+      { type: "goal", player: "Mario Hermoso", minute: 90 },
+      { type: "goal", player: "Matìas Soulé", minute: "90+3" },
+      { type: "booking", player: "Gianluca Gaetano", minute: "90+7" }
+    ]
   }
 ];
 
@@ -160,6 +174,12 @@ for (const config of games) {
   const bookings = events.filter(event => event.type === "booking").map(event => ({
     team: teamById.get(event.teamId), playerId: playerId(event.playerId), player: playerName(event.playerId), minute: eventMinute(event), card: event.bookingType === "yellowCard" ? "yellow" : event.bookingType
   }));
+  for (const override of config.minuteOverrides || []) {
+    const collection = override.type === "goal" ? scorers : bookings;
+    const item = collection.find(event => event.player === override.player);
+    if (!item) throw new Error(`Minuto non riconciliato: ${config.matchId} ${override.player}`);
+    item.minute = override.minute;
+  }
   const homePlayers = appearedPlayers(rootData, game.homeTeam);
   const awayPlayers = appearedPlayers(rootData, game.awayTeam);
   const halfScore = team => team.lineScore.periods.find(period => period.period === "firstHalf")?.score ?? null;
@@ -201,4 +221,4 @@ for (const config of games) {
 playerStats.updatedAt = retrievedAt;
 fs.writeFileSync(resultsPath, `${JSON.stringify(results, null, 2)}\n`);
 fs.writeFileSync(playerStatsPath, `${JSON.stringify(playerStats)}\n`);
-console.log("Aggiornati i primi 3 risultati finali della 3a giornata 2026/27.");
+console.log("Aggiornati i primi 4 risultati finali della 3a giornata 2026/27.");

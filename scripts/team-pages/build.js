@@ -44,6 +44,7 @@ const serieAStandings = read("data/normalized/standings-2025-26.json");
 const currentSeasonMatches = read("data/normalized/matches.json")
   .filter(match => match.competition === "serie-a" && match.season === "2026-27" && match.status === "finished" && match.score);
 const leaderboardGeneratedAt = [today, ...currentSeasonMatches.map(match => match.resultSource?.retrievedAt)].filter(Boolean).sort().at(-1);
+const currentSeasonUpdatedAt = currentSeasonMatches.map(match => match.resultSource?.retrievedAt).filter(Boolean).sort().at(-1) || "2026-08-24";
 const currentIds = new Set(teams.map(team => team.id));
 const fantasyRosterSource = teamId => ({
   provider: "Fantacalcio",
@@ -242,7 +243,7 @@ function buildTeam(team) {
   const row = table.find(item => item.team === team.id) || null;
   const matchData = matchStats(team.id, previousCompetition);
   const previousStats = seasonStats({ season: "2025/26", competition: competitionName, source: "ESPN", lastUpdated: "2026-07-18", matchData, row });
-  const currentStats = seasonStats({ season: "2026/27", competition: "Serie A", source: "Risultati ufficiali e StatMuse", lastUpdated: "2026-08-24", matchData: currentMatchStats(team.id) });
+  const currentStats = seasonStats({ season: "2026/27", competition: "Serie A", source: "Risultati ufficiali e StatMuse", lastUpdated: currentSeasonUpdatedAt, matchData: currentMatchStats(team.id) });
   const combinedStats = totalStats(previousStats, currentStats);
   const generatedSquad = generatedSquads.get(team.id);
   const squad = (generatedSquad?.players || []).map(player => {
@@ -284,9 +285,9 @@ function buildTeam(team) {
       ]
     };
   });
-  const teamLastUpdated = [generatedSquad?.rosterSource?.retrievedAt, teamDetails.lastUpdated, "2026-08-24"].filter(Boolean).sort().at(-1) || "2026-07-20";
+  const teamLastUpdated = [generatedSquad?.rosterSource?.retrievedAt, teamDetails.lastUpdated, currentSeasonUpdatedAt].filter(Boolean).sort().at(-1) || "2026-07-20";
   const sources = [
-    { provider: "StatMuse", scope: "Serie A 2026/27 - risultati e statistiche delle partite concluse", url: "https://www.statmuse.com/fc/", retrievedAt: "2026-08-24" },
+    { provider: "StatMuse", scope: "Serie A 2026/27 - risultati e statistiche delle partite concluse", url: "https://www.statmuse.com/fc/", retrievedAt: currentSeasonUpdatedAt },
     { provider: "ESPN", scope: `${competitionName} 2025/26 - risultati e disciplina`, url: "https://www.espn.com/soccer/", retrievedAt: "2026-07-18" },
     { provider: previousCompetition === "serie-a" ? "Classifica fornita dall'utente" : "ESPN", scope: `${competitionName} 2025/26 - classifica calcolata dai risultati`, url: null, retrievedAt: "2026-07-18" },
     ...(generatedSquad?.rosterSource ? [generatedSquad.rosterSource] : []),

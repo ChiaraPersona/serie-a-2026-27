@@ -9,7 +9,8 @@ const byId = new Map(matches.map(match => [match.id, match]));
 const expected = new Map([
   ["genoa-como-2026-27-md-03", { score: [1, 4], half: [1, 3], mvp: "Assane Diao" }],
   ["fiorentina-torino-2026-27-md-03", { score: [1, 2], half: [0, 0], mvp: null }],
-  ["inter-napoli-2026-27-md-03", { score: [3, 2], half: [0, 0], mvp: null }]
+  ["inter-napoli-2026-27-md-03", { score: [3, 2], half: [0, 0], mvp: null }],
+  ["roma-atalanta-2026-27-md-03", { score: [2, 1], half: [0, 0], mvp: null }]
 ]);
 
 for (const [matchId, wanted] of expected) {
@@ -23,6 +24,27 @@ for (const [matchId, wanted] of expected) {
   assert.equal(match.playerStats.away.length, 16, `${matchId}: statistiche ospite incomplete`);
 }
 
+const romaAtalanta = byId.get("roma-atalanta-2026-27-md-03");
+assert.deepEqual(romaAtalanta.scorers.map(item => [item.player, item.minute, item.assist]), [
+  ["Éderson", 47, null],
+  ["Mario Hermoso", 90, "Matìas Soulé"],
+  ["Matìas Soulé", "90+3", "Paulo Dybala"]
+], "Marcatori Roma-Atalanta non riconciliati con il referto ufficiale");
+assert.deepEqual(romaAtalanta.bookings.map(item => [item.player, item.minute, item.card]), [
+  ["Raoul Bellanova", 84, "yellow"],
+  ["Gianluca Gaetano", "90+7", "redCard"]
+], "Provvedimenti disciplinari Roma-Atalanta errati");
+assert.deepEqual([
+  romaAtalanta.teamStats.home.shots,
+  romaAtalanta.teamStats.away.shots,
+  romaAtalanta.teamStats.home.shotsOnTarget,
+  romaAtalanta.teamStats.away.shotsOnTarget,
+  romaAtalanta.teamStats.home.corners,
+  romaAtalanta.teamStats.away.corners,
+  romaAtalanta.teamStats.home.fouls,
+  romaAtalanta.teamStats.away.fouls
+], [39, 6, 10, 2, 14, 1, 9, 10], "Statistiche di squadra Roma-Atalanta errate");
+
 const settled = schedina.slips.flatMap(slip => slip.legs.map(leg => ({
   matchId: leg.matchId,
   ...settleLeg(leg, byId.get(leg.matchId))
@@ -32,5 +54,5 @@ const totals = settled.reduce((out, item) => {
   return out;
 }, {});
 
-assert.deepEqual(totals, { won: 15, lost: 5 }, "Liquidazione parziale MD3 inattesa");
-console.log("Risultati MD3 validi: Genoa-Como 1-4, Fiorentina-Torino 1-2, Inter-Napoli 3-2; Schedina 15 esatte e 5 sbagliate.");
+assert.deepEqual(totals, { won: 18, lost: 8 }, "Liquidazione parziale MD3 inattesa");
+console.log("Risultati MD3 validi: Genoa-Como 1-4, Fiorentina-Torino 1-2, Inter-Napoli 3-2, Roma-Atalanta 2-1; liquidazione verificata.");
