@@ -20,7 +20,8 @@ const clean = value => String(value || "").normalize("NFD").replace(/[\u0300-\u0
 assert.strictEqual(data.matchday, 3, "La pagina deve riferirsi alla terza giornata");
 assert.strictEqual(data.slips.length, 8, "La terza giornata deve conservare le otto tipologie");
 assert.deepStrictEqual(data.slips.map(slip => slip.legs.length), [3, 3, 5, 8, 8, 10, 4, 6], "Matrice MD3 inattesa");
-assert.strictEqual(data.oddsRetrievedAt, odds.retrievedAt, "Schedine e quote devono usare lo stesso dataset Sisal");
+assert.strictEqual(data.oddsRetrievedAt, "2026-09-04T11:27:17.482Z", "Le quote della Schedina MD3 devono restare congelate allo snapshot originario");
+assert.notStrictEqual(data.oddsRetrievedAt, odds.retrievedAt, "Il refresh delle quote prepartita non deve modificare retroattivamente la Schedina MD3");
 assert.strictEqual(odds.events.length, 10, "Lo snapshot Sisal deve coprire tutte le partite");
 
 const unavailable = data.slips.filter(slip => slip.qualityStatus === "nd");

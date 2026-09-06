@@ -1,7 +1,7 @@
 {
   "provider": "Sisal",
   "oddsSnapshot": "data/normalized/odds/sisal/serie-a.json",
-  "updatedAt": "2026-09-04",
+  "updatedAt": "2026-09-06",
   "constraints": {
     "referenceOdds": {
       "Safe": 5,
@@ -613,48 +613,315 @@
     "frosinone-venezia-2026-27-md-03": [
       {
         "tier": "Safe",
-        "status": "N/D",
-        "reason": "Candidati insufficienti per il profilo Safe: servono almeno 3 mercati distinti con quota tra 1.10 e 1.85.",
-        "legs": []
+        "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-06: quota 5 orientativa, 3-6 gambe, mercati distinti, nessuno scenario di base ripetuto o annidato e quote singole 1.10-1.85. Il rischio resta informativo.",
+        "legs": [
+          {
+            "providerSelectionId": "5302586941",
+            "overlapKey": "market-u o falli commessi giocatore",
+            "semanticKeys": [],
+            "label": "BRACAGLIA G. almeno 2 falli commessi"
+          },
+          {
+            "providerSelectionId": "5302589200",
+            "overlapKey": "market-giocatore segna o assist o cartellino inc ts",
+            "semanticKeys": [],
+            "label": "BASIC T. SEGNA ALMENO UN GOAL O REALIZZA ALMENO UN ASSIST O RICEVE ALMENO UN CARTELLINO INC. TS · sì"
+          },
+          {
+            "providerSelectionId": "5302623056",
+            "overlapKey": "market-u o falli subiti giocatore",
+            "semanticKeys": [],
+            "label": "CALVANI G. almeno 1 falli subiti"
+          },
+          {
+            "providerSelectionId": "5291810137",
+            "overlapKey": "market-multigoal",
+            "semanticKeys": [
+              "goals"
+            ],
+            "label": "MULTIGOAL MULTIESITI 16 ESITI · 1-5"
+          }
+        ]
       },
       {
         "tier": "Balanced",
-        "status": "N/D",
-        "reason": "Candidati insufficienti per il profilo Balanced: servono almeno 4 mercati distinti con quota tra 1.10 e 1.85.",
-        "legs": []
+        "logic": "Profilo balanced costruito sulle quote Sisal del 2026-09-06: quota 10 orientativa, 4-7 gambe, mercati distinti, nessuno scenario di base ripetuto o annidato e quote singole 1.10-1.85. Il rischio resta informativo.",
+        "legs": [
+          {
+            "providerSelectionId": "5302640451",
+            "overlapKey": "market-u o tiri in porta giocatore duo inc pali traverse inc ts",
+            "semanticKeys": [
+              "volume-shots-on-target"
+            ],
+            "label": "BUSIO G. almeno 1 tiri in porta, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5302589200",
+            "overlapKey": "market-giocatore segna o assist o cartellino inc ts",
+            "semanticKeys": [],
+            "label": "BASIC T. SEGNA ALMENO UN GOAL O REALIZZA ALMENO UN ASSIST O RICEVE ALMENO UN CARTELLINO INC. TS · sì"
+          },
+          {
+            "providerSelectionId": "5291810135",
+            "overlapKey": "market-multigoal",
+            "semanticKeys": [
+              "goals"
+            ],
+            "label": "MULTIGOAL MULTIESITI 16 ESITI · 1-3"
+          },
+          {
+            "providerSelectionId": "5302644865",
+            "overlapKey": "market-u o corner",
+            "semanticKeys": [
+              "volume-corners"
+            ],
+            "label": "Partita almeno 10 corner"
+          }
+        ]
       },
       {
         "tier": "Aggressive",
-        "status": "N/D",
-        "reason": "Candidati insufficienti per il profilo Aggressive: servono almeno 5 mercati distinti con quota tra 1.10 e 1.85.",
-        "legs": []
+        "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-09-06: quota 20 orientativa, 5-8 gambe, mercati distinti, nessuno scenario di base ripetuto o annidato e quote singole 1.10-1.85. Il rischio resta informativo.",
+        "legs": [
+          {
+            "providerSelectionId": "5302587899",
+            "overlapKey": "market-u o falli commessi giocatore",
+            "semanticKeys": [],
+            "label": "FINI S. almeno 2 falli commessi"
+          },
+          {
+            "providerSelectionId": "5302589304",
+            "overlapKey": "market-giocatore segna o assist o cartellino inc ts",
+            "semanticKeys": [],
+            "label": "HAPS R. SEGNA ALMENO UN GOAL O REALIZZA ALMENO UN ASSIST O RICEVE ALMENO UN CARTELLINO INC. TS · sì"
+          },
+          {
+            "providerSelectionId": "5302624536",
+            "overlapKey": "market-u o falli subiti giocatore",
+            "semanticKeys": [],
+            "label": "BASIC T. almeno 2 falli subiti"
+          },
+          {
+            "providerSelectionId": "5291808015",
+            "overlapKey": "market-combo dc u o",
+            "semanticKeys": [
+              "result",
+              "goals"
+            ],
+            "label": "DC + U/O 4.5 · 1X + UNDER"
+          },
+          {
+            "providerSelectionId": "5302644925",
+            "overlapKey": "market-u o corner squadra x",
+            "semanticKeys": [
+              "volume-corners"
+            ],
+            "label": "Venezia almeno 5 corner"
+          },
+          {
+            "providerSelectionId": "5302584682",
+            "overlapKey": "market-u o tiri totali giocatore duo inc ts",
+            "semanticKeys": [
+              "volume-shots-total"
+            ],
+            "label": "CALO G. almeno 1 tiri totali, sostituto incluso"
+          }
+        ]
       }
     ],
     "parma-monza-2026-27-md-03": [
       {
         "tier": "Safe",
-        "status": "N/D",
-        "reason": "Candidati insufficienti per il profilo Safe: servono almeno 3 mercati distinti con quota tra 1.10 e 1.85.",
-        "legs": []
+        "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-06: quota 5 orientativa, 3-6 gambe, mercati distinti, nessuno scenario di base ripetuto o annidato e quote singole 1.10-1.85. Il rischio resta informativo.",
+        "legs": [
+          {
+            "providerSelectionId": "5302669682",
+            "overlapKey": "market-u o tiri in porta giocatore duo inc pali traverse inc ts",
+            "semanticKeys": [
+              "volume-shots-on-target"
+            ],
+            "label": "FORSON O. almeno 1 tiri in porta, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5302636644",
+            "overlapKey": "market-u o tiri totali giocatore duo inc ts",
+            "semanticKeys": [
+              "volume-shots-total"
+            ],
+            "label": "BERNABE A. almeno 2 tiri totali, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5291860792",
+            "overlapKey": "market-doppia chance",
+            "semanticKeys": [
+              "result"
+            ],
+            "label": "Parma o pareggio (1X)"
+          },
+          {
+            "providerSelectionId": "5302625841",
+            "overlapKey": "market-u o corner squadra x",
+            "semanticKeys": [
+              "volume-corners"
+            ],
+            "label": "Monza meno di 6 corner"
+          }
+        ]
       },
       {
         "tier": "Balanced",
-        "status": "N/D",
-        "reason": "Candidati insufficienti per il profilo Balanced: servono almeno 4 mercati distinti con quota tra 1.10 e 1.85.",
-        "legs": []
+        "logic": "Profilo balanced costruito sulle quote Sisal del 2026-09-06: quota 10 orientativa, 4-7 gambe, mercati distinti, nessuno scenario di base ripetuto o annidato e quote singole 1.10-1.85. Il rischio resta informativo.",
+        "legs": [
+          {
+            "providerSelectionId": "5302669462",
+            "overlapKey": "market-u o tiri in porta giocatore duo inc pali traverse inc ts",
+            "semanticKeys": [
+              "volume-shots-on-target"
+            ],
+            "label": "MOTA D. almeno 1 tiri in porta, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5302643337",
+            "overlapKey": "market-u o falli commessi giocatore",
+            "semanticKeys": [],
+            "label": "LUCCHESI L. almeno 2 falli commessi"
+          },
+          {
+            "providerSelectionId": "5302636744",
+            "overlapKey": "market-u o tiri totali giocatore duo inc ts",
+            "semanticKeys": [
+              "volume-shots-total"
+            ],
+            "label": "FOLORUNSHO M. almeno 2 tiri totali, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5291860792",
+            "overlapKey": "market-doppia chance",
+            "semanticKeys": [
+              "result"
+            ],
+            "label": "Parma o pareggio (1X)"
+          },
+          {
+            "providerSelectionId": "5291954583",
+            "overlapKey": "market-combo u o casa u o ospite",
+            "semanticKeys": [
+              "goals"
+            ],
+            "label": "U/O 2.5 Parma + U/O 2.5 Monza · UNDER+UNDER"
+          },
+          {
+            "providerSelectionId": "5302625795",
+            "overlapKey": "market-u o corner squadra x",
+            "semanticKeys": [
+              "volume-corners"
+            ],
+            "label": "Monza meno di 7 corner"
+          }
+        ]
       },
       {
         "tier": "Aggressive",
-        "status": "N/D",
-        "reason": "Candidati insufficienti per il profilo Aggressive: servono almeno 5 mercati distinti con quota tra 1.10 e 1.85.",
-        "legs": []
+        "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-09-06: quota 20 orientativa, 5-8 gambe, mercati distinti, nessuno scenario di base ripetuto o annidato e quote singole 1.10-1.85. Il rischio resta informativo.",
+        "legs": [
+          {
+            "providerSelectionId": "5302643249",
+            "overlapKey": "market-u o falli commessi giocatore",
+            "semanticKeys": [],
+            "label": "KEITA MANDELA almeno 2 falli commessi"
+          },
+          {
+            "providerSelectionId": "5302626077",
+            "overlapKey": "market-entrambe almeno x corner",
+            "semanticKeys": [
+              "volume-corners"
+            ],
+            "label": "Entrambe almeno 3 corner"
+          },
+          {
+            "providerSelectionId": "5302673298",
+            "overlapKey": "market-u o falli subiti giocatore",
+            "semanticKeys": [],
+            "label": "KOUADIO E. almeno 1 falli subiti"
+          },
+          {
+            "providerSelectionId": "5302669682",
+            "overlapKey": "market-u o tiri in porta giocatore duo inc pali traverse inc ts",
+            "semanticKeys": [
+              "volume-shots-on-target"
+            ],
+            "label": "FORSON O. almeno 1 tiri in porta, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5291860758",
+            "overlapKey": "market-under over",
+            "semanticKeys": [
+              "goals"
+            ],
+            "label": "Under 2,5 gol"
+          },
+          {
+            "providerSelectionId": "5291860792",
+            "overlapKey": "market-doppia chance",
+            "semanticKeys": [
+              "result"
+            ],
+            "label": "Parma o pareggio (1X)"
+          }
+        ]
       }
     ],
     "bologna-sassuolo-2026-27-md-03": [
       {
         "tier": "Safe",
-        "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-04: quota 5 orientativa, 3-6 gambe, mercati distinti, nessuno scenario di base ripetuto o annidato e quote singole 1.10-1.85. Il rischio resta informativo.",
+        "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-06: quota 5 orientativa, 3-6 gambe, mercati distinti, nessuno scenario di base ripetuto o annidato e quote singole 1.10-1.85. Il rischio resta informativo.",
         "legs": [
+          {
+            "providerSelectionId": "5302508032",
+            "overlapKey": "market-u o falli commessi giocatore",
+            "semanticKeys": [],
+            "label": "CAMBIAGHI N. almeno 2 falli commessi"
+          },
+          {
+            "providerSelectionId": "5291937834",
+            "overlapKey": "market-combo u o casa u o ospite",
+            "semanticKeys": [
+              "goals"
+            ],
+            "label": "U/O 0.5 Bologna + U/O 2.5 Sassuolo · OVER+UNDER"
+          },
+          {
+            "providerSelectionId": "5302566457",
+            "overlapKey": "market-u o falli subiti giocatore",
+            "semanticKeys": [],
+            "label": "VOLPATO C. almeno 2 falli subiti"
+          },
+          {
+            "providerSelectionId": "5291827348",
+            "overlapKey": "market-u o tiri totali",
+            "semanticKeys": [
+              "volume-shots-total"
+            ],
+            "label": "Partita almeno 22 tiri totali"
+          }
+        ]
+      },
+      {
+        "tier": "Balanced",
+        "logic": "Profilo balanced costruito sulle quote Sisal del 2026-09-06: quota 10 orientativa, 4-7 gambe, mercati distinti, nessuno scenario di base ripetuto o annidato e quote singole 1.10-1.85. Il rischio resta informativo.",
+        "legs": [
+          {
+            "providerSelectionId": "5302507780",
+            "overlapKey": "market-u o falli commessi giocatore",
+            "semanticKeys": [],
+            "label": "FERGUSON LEWIS almeno 2 falli commessi"
+          },
+          {
+            "providerSelectionId": "5302566457",
+            "overlapKey": "market-u o falli subiti giocatore",
+            "semanticKeys": [],
+            "label": "VOLPATO C. almeno 2 falli subiti"
+          },
           {
             "providerSelectionId": "5302506403",
             "overlapKey": "market-entrambe le squadre almeno x tiri in porta",
@@ -672,120 +939,62 @@
             "label": "Nessun pareggio (12)"
           },
           {
-            "providerSelectionId": "5302508016",
-            "overlapKey": "market-u o falli commessi giocatore",
-            "semanticKeys": [],
-            "label": "BAKOLA D. almeno 2 falli commessi"
-          },
-          {
-            "providerSelectionId": "5291827348",
-            "overlapKey": "market-u o tiri totali",
-            "semanticKeys": [
-              "volume-shots-total"
-            ],
-            "label": "Partita almeno 22 tiri totali"
-          }
-        ]
-      },
-      {
-        "tier": "Balanced",
-        "logic": "Profilo balanced costruito sulle quote Sisal del 2026-09-04: quota 10 orientativa, 4-7 gambe, mercati distinti, nessuno scenario di base ripetuto o annidato e quote singole 1.10-1.85. Il rischio resta informativo.",
-        "legs": [
-          {
-            "providerSelectionId": "5302506403",
-            "overlapKey": "market-entrambe le squadre almeno x tiri in porta",
-            "semanticKeys": [
-              "volume-shots-on-target"
-            ],
-            "label": "Entrambe almeno 3 tiri in porta"
-          },
-          {
-            "providerSelectionId": "5302498897",
-            "overlapKey": "market-giocatore segna o assist o cartellino inc ts",
-            "semanticKeys": [],
-            "label": "LAURIENTE A. SEGNA ALMENO UN GOAL O REALIZZA ALMENO UN ASSIST O RICEVE ALMENO UN CARTELLINO INC. TS · sì"
-          },
-          {
-            "providerSelectionId": "5291827516",
-            "overlapKey": "market-1 tempo 1x2 corner",
+            "providerSelectionId": "5302626225",
+            "overlapKey": "market-prima a x corner",
             "semanticKeys": [
               "volume-corners"
             ],
-            "label": "1 TEMPO: 1X2 CORNER · 1"
-          },
-          {
-            "providerSelectionId": "5291826841",
-            "overlapKey": "market-combo dc u o",
-            "semanticKeys": [
-              "result",
-              "goals"
-            ],
-            "label": "DC + U/O 4.5 · 12 + UNDER"
-          },
-          {
-            "providerSelectionId": "5302506300",
-            "overlapKey": "market-u o tiri totali giocatore duo inc ts",
-            "semanticKeys": [
-              "volume-shots-total"
-            ],
-            "label": "PICCOLI R. almeno 3 tiri totali, sostituto incluso"
+            "label": "PRIMA A 2 CALCI D'ANGOLO · Bologna"
           }
         ]
       },
       {
         "tier": "Aggressive",
-        "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-09-04: quota 20 orientativa, 5-8 gambe, mercati distinti, nessuno scenario di base ripetuto o annidato e quote singole 1.10-1.85. Il rischio resta informativo.",
+        "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-09-06: quota 20 orientativa, 5-8 gambe, mercati distinti, nessuno scenario di base ripetuto o annidato e quote singole 1.10-1.85. Il rischio resta informativo.",
         "legs": [
           {
-            "providerSelectionId": "5302508016",
-            "overlapKey": "market-u o falli commessi giocatore",
-            "semanticKeys": [],
-            "label": "BAKOLA D. almeno 2 falli commessi"
-          },
-          {
-            "providerSelectionId": "5302506403",
-            "overlapKey": "market-entrambe le squadre almeno x tiri in porta",
+            "providerSelectionId": "5291878616",
+            "overlapKey": "market-u o squadra x",
             "semanticKeys": [
-              "volume-shots-on-target"
-            ],
-            "label": "Entrambe almeno 3 tiri in porta"
-          },
-          {
-            "providerSelectionId": "5302498957",
-            "overlapKey": "market-giocatore segna o assist o cartellino inc ts",
-            "semanticKeys": [],
-            "label": "PICCOLI R. SEGNA ALMENO UN GOAL O REALIZZA ALMENO UN ASSIST O RICEVE ALMENO UN CARTELLINO INC. TS · sì"
-          },
-          {
-            "providerSelectionId": "5291826825",
-            "overlapKey": "market-combo dc u o",
-            "semanticKeys": [
-              "result",
               "goals"
             ],
-            "label": "DC + U/O 3.5 · 12 + UNDER"
+            "label": "U/O 1.5 Bologna · UNDER"
           },
           {
-            "providerSelectionId": "5291827516",
-            "overlapKey": "market-1 tempo 1x2 corner",
-            "semanticKeys": [
-              "volume-corners"
-            ],
-            "label": "1 TEMPO: 1X2 CORNER · 1"
+            "providerSelectionId": "5302498410",
+            "overlapKey": "market-u o falli commessi giocatore",
+            "semanticKeys": [],
+            "label": "LAURIENTE A. almeno 2 falli commessi"
           },
           {
-            "providerSelectionId": "5302506000",
-            "overlapKey": "market-u o tiri totali squadra x",
+            "providerSelectionId": "5302566457",
+            "overlapKey": "market-u o falli subiti giocatore",
+            "semanticKeys": [],
+            "label": "VOLPATO C. almeno 2 falli subiti"
+          },
+          {
+            "providerSelectionId": "5302506208",
+            "overlapKey": "market-u o tiri totali giocatore duo inc ts",
             "semanticKeys": [
               "volume-shots-total"
             ],
-            "label": "Sassuolo almeno 7 tiri totali"
+            "label": "ODGAARD J. almeno 3 tiri totali, sostituto incluso"
           },
           {
-            "providerSelectionId": "5302566289",
-            "overlapKey": "market-u o falli subiti giocatore",
-            "semanticKeys": [],
-            "label": "ADZIC V. almeno 1 falli subiti"
+            "providerSelectionId": "5291827264",
+            "overlapKey": "market-u o tiri in porta",
+            "semanticKeys": [
+              "volume-shots-on-target"
+            ],
+            "label": "Partita almeno 7 tiri in porta"
+          },
+          {
+            "providerSelectionId": "5302626397",
+            "overlapKey": "market-squadra x almeno y corner in entrambi i tempi",
+            "semanticKeys": [
+              "volume-corners"
+            ],
+            "label": "Sassuolo ALMENO 1 CORNER IN ENTRAMBI I TEMPI · SI"
           }
         ]
       }
@@ -793,51 +1002,53 @@
     "juventus-milan-2026-27-md-03": [
       {
         "tier": "Safe",
-        "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-04: quota 5 orientativa, 3-6 gambe, mercati distinti, nessuno scenario di base ripetuto o annidato e quote singole 1.10-1.85. Il rischio resta informativo.",
+        "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-06: quota 5 orientativa, 3-6 gambe, mercati distinti, nessuno scenario di base ripetuto o annidato e quote singole 1.10-1.85. Il rischio resta informativo.",
         "legs": [
           {
-            "providerSelectionId": "5300870747",
-            "overlapKey": "market-u o falli commessi giocatore",
-            "semanticKeys": [],
-            "label": "KELLY LLOYD almeno 2 falli commessi"
-          },
-          {
-            "providerSelectionId": "5291832307",
-            "overlapKey": "market-1 tempo 1x2 corner",
-            "semanticKeys": [
-              "volume-corners"
-            ],
-            "label": "1 TEMPO: 1X2 CORNER · 1"
-          },
-          {
-            "providerSelectionId": "5300870851",
+            "providerSelectionId": "5300871091",
             "overlapKey": "market-u o tiri in porta giocatore duo inc pali traverse inc ts",
             "semanticKeys": [
               "volume-shots-on-target"
             ],
-            "label": "CONCEICAO F. almeno 1 tiri in porta, sostituto incluso"
+            "label": "CISSE A. almeno 1 tiri in porta, sostituto incluso"
           },
           {
-            "providerSelectionId": "5291832140",
-            "overlapKey": "market-u o tiri totali",
+            "providerSelectionId": "5300872015",
+            "overlapKey": "market-u o tiri totali giocatore duo inc ts",
             "semanticKeys": [
               "volume-shots-total"
             ],
-            "label": "Partita almeno 23 tiri totali"
+            "label": "PAVLOVIC S. almeno 1 tiri totali, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5302626898",
+            "overlapKey": "market-u o corner",
+            "semanticKeys": [
+              "volume-corners"
+            ],
+            "label": "Partita almeno 8 corner"
+          },
+          {
+            "providerSelectionId": "5291861428",
+            "overlapKey": "market-u o squadra x",
+            "semanticKeys": [
+              "goals"
+            ],
+            "label": "U/O 2.5 Juventus · UNDER"
           }
         ]
       },
       {
         "tier": "Balanced",
-        "logic": "Profilo balanced costruito sulle quote Sisal del 2026-09-04: quota 10 orientativa, 4-7 gambe, mercati distinti, nessuno scenario di base ripetuto o annidato e quote singole 1.10-1.85. Il rischio resta informativo.",
+        "logic": "Profilo balanced costruito sulle quote Sisal del 2026-09-06: quota 10 orientativa, 4-7 gambe, mercati distinti, nessuno scenario di base ripetuto o annidato e quote singole 1.10-1.85. Il rischio resta informativo.",
         "legs": [
           {
-            "providerSelectionId": "5291832100",
-            "overlapKey": "market-u o tiri totali",
+            "providerSelectionId": "5300871091",
+            "overlapKey": "market-u o tiri in porta giocatore duo inc pali traverse inc ts",
             "semanticKeys": [
-              "volume-shots-total"
+              "volume-shots-on-target"
             ],
-            "label": "Partita almeno 27 tiri totali"
+            "label": "CISSE A. almeno 1 tiri in porta, sostituto incluso"
           },
           {
             "providerSelectionId": "5300871055",
@@ -855,24 +1066,32 @@
             "label": "DC + U/O 3.5 · 12 + UNDER"
           },
           {
-            "providerSelectionId": "5300910137",
+            "providerSelectionId": "5300910589",
             "overlapKey": "market-u o falli subiti giocatore",
             "semanticKeys": [],
-            "label": "CONCEICAO F. almeno 2 falli subiti"
+            "label": "CHUKWUEZE S. almeno 1 falli subiti"
           },
           {
-            "providerSelectionId": "5300870439",
-            "overlapKey": "market-u o tiri in porta squadra x",
+            "providerSelectionId": "5291832164",
+            "overlapKey": "market-u o tiri totali",
             "semanticKeys": [
-              "volume-shots-on-target"
+              "volume-shots-total"
             ],
-            "label": "Juventus almeno 3 tiri in porta"
+            "label": "Partita almeno 22 tiri totali"
+          },
+          {
+            "providerSelectionId": "5302627002",
+            "overlapKey": "market-u o corner squadra x",
+            "semanticKeys": [
+              "volume-corners"
+            ],
+            "label": "Juventus almeno 3 corner"
           }
         ]
       },
       {
         "tier": "Aggressive",
-        "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-09-04: quota 20 orientativa, 5-8 gambe, mercati distinti, nessuno scenario di base ripetuto o annidato e quote singole 1.10-1.85. Il rischio resta informativo.",
+        "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-09-06: quota 20 orientativa, 5-8 gambe, mercati distinti, nessuno scenario di base ripetuto o annidato e quote singole 1.10-1.85. Il rischio resta informativo.",
         "legs": [
           {
             "providerSelectionId": "5300871091",
@@ -889,14 +1108,6 @@
             "label": "CONCEICAO F. almeno 2 falli commessi"
           },
           {
-            "providerSelectionId": "5291832307",
-            "overlapKey": "market-1 tempo 1x2 corner",
-            "semanticKeys": [
-              "volume-corners"
-            ],
-            "label": "1 TEMPO: 1X2 CORNER · 1"
-          },
-          {
             "providerSelectionId": "5291834933",
             "overlapKey": "market-under over",
             "semanticKeys": [
@@ -905,10 +1116,18 @@
             "label": "Under 2,5 gol"
           },
           {
-            "providerSelectionId": "5300910137",
+            "providerSelectionId": "5300907059",
             "overlapKey": "market-u o falli subiti giocatore",
             "semanticKeys": [],
-            "label": "CONCEICAO F. almeno 2 falli subiti"
+            "label": "BARTESAGHI D. almeno 1 falli subiti"
+          },
+          {
+            "providerSelectionId": "5302627167",
+            "overlapKey": "market-entrambe almeno x corner in entrambi i tempi",
+            "semanticKeys": [
+              "volume-corners"
+            ],
+            "label": "ENTRAMBE ALMENO 1 CORNER ENTRAMBI TEMPI · SI"
           },
           {
             "providerSelectionId": "5300868400",
@@ -924,27 +1143,180 @@
     "cagliari-lecce-2026-27-md-03": [
       {
         "tier": "Safe",
-        "status": "N/D",
-        "reason": "Candidati insufficienti per il profilo Safe: servono almeno 3 mercati distinti con quota tra 1.10 e 1.85.",
-        "legs": []
+        "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-06: quota 5 orientativa, 3-6 gambe, mercati distinti, nessuno scenario di base ripetuto o annidato e quote singole 1.10-1.85. Il rischio resta informativo.",
+        "legs": [
+          {
+            "providerSelectionId": "5303179949",
+            "overlapKey": "market-u o falli commessi giocatore",
+            "semanticKeys": [],
+            "label": "MENDY P. almeno 2 falli commessi"
+          },
+          {
+            "providerSelectionId": "5303232763",
+            "overlapKey": "market-u o falli subiti giocatore",
+            "semanticKeys": [],
+            "label": "GORTER O. almeno 1 falli subiti"
+          },
+          {
+            "providerSelectionId": "5291835692",
+            "overlapKey": "market-goal nogoal",
+            "semanticKeys": [
+              "goals"
+            ],
+            "label": "Almeno una squadra non segna"
+          },
+          {
+            "providerSelectionId": "5303227383",
+            "overlapKey": "market-u o tiri totali squadra x",
+            "semanticKeys": [
+              "volume-shots-total"
+            ],
+            "label": "Lecce almeno 9 tiri totali"
+          }
+        ]
       },
       {
         "tier": "Balanced",
-        "status": "N/D",
-        "reason": "Candidati insufficienti per il profilo Balanced: servono almeno 4 mercati distinti con quota tra 1.10 e 1.85.",
-        "legs": []
+        "logic": "Profilo balanced costruito sulle quote Sisal del 2026-09-06: quota 10 orientativa, 4-7 gambe, mercati distinti, nessuno scenario di base ripetuto o annidato e quote singole 1.10-1.85. Il rischio resta informativo.",
+        "legs": [
+          {
+            "providerSelectionId": "5303227542",
+            "overlapKey": "market-entrambe le squadre almeno x tiri in porta",
+            "semanticKeys": [
+              "volume-shots-on-target"
+            ],
+            "label": "Entrambe almeno 3 tiri in porta"
+          },
+          {
+            "providerSelectionId": "5303226971",
+            "overlapKey": "market-u o falli commessi giocatore",
+            "semanticKeys": [],
+            "label": "GEUBBELS W. almeno 2 falli commessi"
+          },
+          {
+            "providerSelectionId": "5303232795",
+            "overlapKey": "market-u o falli subiti giocatore",
+            "semanticKeys": [],
+            "label": "NDABA C. almeno 1 falli subiti"
+          },
+          {
+            "providerSelectionId": "5291937904",
+            "overlapKey": "market-combo u o casa u o ospite",
+            "semanticKeys": [
+              "goals"
+            ],
+            "label": "U/O 0.5 Cagliari + U/O 2.5 Lecce · OVER+UNDER"
+          },
+          {
+            "providerSelectionId": "5302627536",
+            "overlapKey": "market-u o corner",
+            "semanticKeys": [
+              "volume-corners"
+            ],
+            "label": "Partita almeno 7 corner"
+          },
+          {
+            "providerSelectionId": "5303228323",
+            "overlapKey": "market-u o tiri totali squadra x",
+            "semanticKeys": [
+              "volume-shots-total"
+            ],
+            "label": "Lecce almeno 7 tiri totali"
+          }
+        ]
       },
       {
         "tier": "Aggressive",
-        "status": "N/D",
-        "reason": "Candidati insufficienti per il profilo Aggressive: servono almeno 5 mercati distinti con quota tra 1.10 e 1.85.",
-        "legs": []
+        "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-09-06: quota 20 orientativa, 5-8 gambe, mercati distinti, nessuno scenario di base ripetuto o annidato e quote singole 1.10-1.85. Il rischio resta informativo.",
+        "legs": [
+          {
+            "providerSelectionId": "5302627398",
+            "overlapKey": "market-u o corner",
+            "semanticKeys": [
+              "volume-corners"
+            ],
+            "label": "Partita almeno 9 corner"
+          },
+          {
+            "providerSelectionId": "5303232951",
+            "overlapKey": "market-u o falli subiti giocatore",
+            "semanticKeys": [],
+            "label": "DEIOLA A. almeno 1 falli subiti"
+          },
+          {
+            "providerSelectionId": "5303179949",
+            "overlapKey": "market-u o falli commessi giocatore",
+            "semanticKeys": [],
+            "label": "MENDY P. almeno 2 falli commessi"
+          },
+          {
+            "providerSelectionId": "5303179913",
+            "overlapKey": "market-u o tiri totali giocatore duo inc ts",
+            "semanticKeys": [
+              "volume-shots-total"
+            ],
+            "label": "MALDINI D. almeno 3 tiri totali, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5291882083",
+            "overlapKey": "market-multigoal",
+            "semanticKeys": [
+              "goals"
+            ],
+            "label": "MULTIGOAL MULTIESITI 16 ESITI · 1-2"
+          },
+          {
+            "providerSelectionId": "5303180849",
+            "overlapKey": "market-u o tiri in porta giocatore duo inc pali traverse inc ts",
+            "semanticKeys": [
+              "volume-shots-on-target"
+            ],
+            "label": "MENDY P. almeno 1 tiri in porta, sostituto incluso"
+          }
+        ]
       }
     ],
     "udinese-lazio-2026-27-md-03": [
       {
         "tier": "Safe",
-        "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-04: quota 5 orientativa, 3-6 gambe, mercati distinti, nessuno scenario di base ripetuto o annidato e quote singole 1.10-1.85. Il rischio resta informativo.",
+        "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-06: quota 5 orientativa, 3-6 gambe, mercati distinti, nessuno scenario di base ripetuto o annidato e quote singole 1.10-1.85. Il rischio resta informativo.",
+        "legs": [
+          {
+            "providerSelectionId": "5303223419",
+            "overlapKey": "market-u o falli commessi giocatore",
+            "semanticKeys": [],
+            "label": "EBOSSE E. almeno 2 falli commessi"
+          },
+          {
+            "providerSelectionId": "5291828133",
+            "overlapKey": "market-combo dc u o",
+            "semanticKeys": [
+              "result",
+              "goals"
+            ],
+            "label": "DC + U/O 3.5 · 12 + UNDER"
+          },
+          {
+            "providerSelectionId": "5291828896",
+            "overlapKey": "market-u o tiri totali",
+            "semanticKeys": [
+              "volume-shots-total"
+            ],
+            "label": "Partita almeno 23 tiri totali"
+          },
+          {
+            "providerSelectionId": "5291828806",
+            "overlapKey": "market-u o tiri in porta",
+            "semanticKeys": [
+              "volume-shots-on-target"
+            ],
+            "label": "Partita almeno 6 tiri in porta"
+          }
+        ]
+      },
+      {
+        "tier": "Balanced",
+        "logic": "Profilo balanced costruito sulle quote Sisal del 2026-09-06: quota 10 orientativa, 4-7 gambe, mercati distinti, nessuno scenario di base ripetuto o annidato e quote singole 1.10-1.85. Il rischio resta informativo.",
         "legs": [
           {
             "providerSelectionId": "5291827733",
@@ -955,32 +1327,92 @@
             "label": "Almeno una squadra non segna"
           },
           {
-            "providerSelectionId": "5291836876",
-            "overlapKey": "market-doppia chance",
-            "semanticKeys": [
-              "result"
-            ],
-            "label": "Nessun pareggio (12)"
+            "providerSelectionId": "5303223335",
+            "overlapKey": "market-u o falli commessi giocatore",
+            "semanticKeys": [],
+            "label": "FLORIANI MUSSOLINI R. almeno 2 falli commessi"
           },
           {
-            "providerSelectionId": "5298483058",
-            "overlapKey": "market-x o y gol o palo duo inc ts",
+            "providerSelectionId": "5303241005",
+            "overlapKey": "market-u o falli subiti giocatore",
             "semanticKeys": [],
-            "label": "DAVIS K. O PINAMONTI A. GOAL O PALO O LORO SOST. INC TS · sì"
+            "label": "DOEKHI D. almeno 1 falli subiti"
+          },
+          {
+            "providerSelectionId": "5302627725",
+            "overlapKey": "market-u o corner squadra x",
+            "semanticKeys": [
+              "volume-corners"
+            ],
+            "label": "Lazio meno di 6 corner"
+          },
+          {
+            "providerSelectionId": "5291828868",
+            "overlapKey": "market-u o tiri totali",
+            "semanticKeys": [
+              "volume-shots-total"
+            ],
+            "label": "Partita almeno 21 tiri totali"
+          },
+          {
+            "providerSelectionId": "5303236105",
+            "overlapKey": "market-u o tiri in porta",
+            "semanticKeys": [
+              "volume-shots-on-target"
+            ],
+            "label": "Partita almeno 5 tiri in porta"
           }
         ]
       },
       {
-        "tier": "Balanced",
-        "status": "N/D",
-        "reason": "Candidati insufficienti per il profilo Balanced: servono almeno 4 mercati distinti con quota tra 1.10 e 1.85.",
-        "legs": []
-      },
-      {
         "tier": "Aggressive",
-        "status": "N/D",
-        "reason": "Candidati insufficienti per il profilo Aggressive: servono almeno 5 mercati distinti con quota tra 1.10 e 1.85.",
-        "legs": []
+        "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-09-06: quota 20 orientativa, 5-8 gambe, mercati distinti, nessuno scenario di base ripetuto o annidato e quote singole 1.10-1.85. Il rischio resta informativo.",
+        "legs": [
+          {
+            "providerSelectionId": "5303223335",
+            "overlapKey": "market-u o falli commessi giocatore",
+            "semanticKeys": [],
+            "label": "FLORIANI MUSSOLINI R. almeno 2 falli commessi"
+          },
+          {
+            "providerSelectionId": "5303235957",
+            "overlapKey": "market-u o tiri totali giocatore duo inc ts",
+            "semanticKeys": [
+              "volume-shots-total"
+            ],
+            "label": "DAVIS K. almeno 3 tiri totali, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5303237240",
+            "overlapKey": "market-entrambe le squadre almeno x tiri in porta",
+            "semanticKeys": [
+              "volume-shots-on-target"
+            ],
+            "label": "Entrambe almeno 3 tiri in porta"
+          },
+          {
+            "providerSelectionId": "5291836855",
+            "overlapKey": "market-under over",
+            "semanticKeys": [
+              "goals"
+            ],
+            "label": "Under 2,5 gol"
+          },
+          {
+            "providerSelectionId": "5303241225",
+            "overlapKey": "market-u o falli subiti giocatore",
+            "semanticKeys": [],
+            "label": "CANCELLIERI M. almeno 2 falli subiti"
+          },
+          {
+            "providerSelectionId": "5302627839",
+            "overlapKey": "market-prima a x corner",
+            "semanticKeys": [
+              "volume-corners"
+            ],
+            "label": "PRIMA A 2 CALCI D'ANGOLO · Udinese"
+          }
+        ]
       }
     ]
   }
