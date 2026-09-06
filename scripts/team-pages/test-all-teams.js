@@ -15,6 +15,7 @@ assert.ok(fs.existsSync(path.join(root, playerPlaceholder)), "Immagine fallback 
 const teamSquadsRenderer = fs.readFileSync(path.join(root, "js/team-squads.js"), "utf8");
 assert.ok(teamSquadsRenderer.includes(playerPlaceholder), "Fallback calciatore non collegato al renderer");
 assert.ok(!teamSquadsRenderer.includes("<figcaption>Foto:"), "Il testo della fonte foto non deve essere mostrato");
+assert.ok(teamSquadsRenderer.includes("const lineup = team.probableLineup || team.projectedLineup;"), "La formazione ufficiale deve avere precedenza sulla proiezione editoriale");
 let totalPlayers = 0;
 let coveredPlayers = 0;
 let specificRoles = 0;

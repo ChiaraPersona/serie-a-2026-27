@@ -3,7 +3,7 @@
   if (!root) return;
 
   const base = document.body.dataset.depth === "team" ? "../" : "";
-  const release = "20260906-roma-atalanta-result-v2";
+  const release = "20260906-juventus-milan-official-v1";
   const defaultPlayerPhoto = `${base}assets/images/players/player-placeholder.png`;
   const esc = value => String(value ?? "").replace(/[&<>\"]/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[char]));
   const contrastInk = color => {
@@ -77,7 +77,7 @@
   };
 
   const probableLineupSection = (team, teamSummary) => {
-    const lineup = team.projectedLineup || team.probableLineup;
+    const lineup = team.probableLineup || team.projectedLineup;
     if (!lineup?.players?.length) return "";
     const shape = lineup.formation.split("-").map(Number);
     const units = [1, ...shape];

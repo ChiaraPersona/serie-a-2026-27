@@ -14,7 +14,7 @@ const withFonts = html => html.replace("</title>", `</title>${fontLinks}`);
 const version = "20260901-coppa-round16-calendar-v1";
 const homeVersion = "20260906-roma-atalanta-result-v2";
 const calendarVersion = "20260906-roma-atalanta-result-v2";
-const teamVersion = "20260906-roma-atalanta-result-v2";
+const teamVersion = "20260906-juventus-milan-official-v1";
 const leaderboardVersion = "20260906-roma-atalanta-result-v2";
 const bettingVersion = "20260906-roma-atalanta-result-v2";
 const readingVersion = "20260906-roma-atalanta-result-v3";
