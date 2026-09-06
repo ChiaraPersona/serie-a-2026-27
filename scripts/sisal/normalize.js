@@ -38,7 +38,8 @@ function matchCanonicalEvent(event, competition, root, teamLookup) {
   if (!homeTeamId || !awayTeamId) {
     return { canonicalMatchId: null, homeTeamId, awayTeamId, matchStatus: "team-unmatched" };
   }
-  const matches = JSON.parse(fs.readFileSync(path.join(root, competition.matchSource), "utf8"));
+  const matchDataset = JSON.parse(fs.readFileSync(path.join(root, competition.matchSource), "utf8"));
+  const matches = Array.isArray(matchDataset) ? matchDataset : matchDataset.fixtures || [];
   const candidates = matches.filter((match) =>
     match.competition === competition.canonicalCompetition &&
     (!competition.season || match.season === competition.season) &&

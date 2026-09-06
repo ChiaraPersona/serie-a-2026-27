@@ -64,7 +64,26 @@ export function createPage(deps){
   }
 
   function contextAudit(context){
-    return `<details class="champions-strength-panel champions-context-panel" open><summary><span><small>Contesto prepartita</small><strong>Forma e carico: aggiornamento finale pendente</strong></span><span>${context.summary.pendingTeams}/36 squadre in attesa</span></summary><div class="champions-model-body"><p>Prima dell’inizio della Champions ogni squadra disputerà ancora una partita. Per evitare una fotografia già vecchia, forma recente e giorni di riposo verranno chiusi soltanto dopo queste gare.</p><div class="champions-model-metrics champions-context-metrics"><div><small>Squadre in attesa</small><strong>${context.summary.pendingTeams}</strong><span>su ${context.summary.teams}</span></div><div><small>Gare residue</small><strong>${context.summary.remainingMatchesPerPendingTeam}</strong><span>per squadra</span></div><div><small>Correzioni applicate</small><strong>${context.summary.adjustedFixtures}</strong><span>nessun dato parziale</span></div><div><small>Limite futuro</small><strong>±${context.updatePolicy.maximumProbabilityShiftPctPoints}</strong><span>punti percentuali</span></div></div><p class="champions-model-note">Saranno acquisiti risultati recenti, sede, giorni di riposo e congestione. Gli H2H UEFA dal 2020/21 sono già visibili nelle card, con un massimo di quattro confronti, ma restano descrittivi: non modificano le percentuali. I valori mancanti resteranno N/D.</p></div></details>`;
+    return `<details class="champions-strength-panel champions-context-panel"><summary><span><small>Contesto generale · snapshot 2 settembre</small><strong>Forma e carico delle 36 squadre da aggiornare</strong></span><span>${context.summary.pendingTeams}/36 stati ancora pendenti</span></summary><div class="champions-model-body"><p>Questo riepilogo generale è fermo al 2 settembre e non viene presentato come attuale. Il pilot delle quattro italiane qui sotto usa invece referti aggiornati al 6 settembre; l’estensione alle altre 28 squadre resta pendente.</p><div class="champions-model-metrics champions-context-metrics"><div><small>Stati da aggiornare</small><strong>${context.summary.pendingTeams}</strong><span>su ${context.summary.teams}</span></div><div><small>Snapshot</small><strong>02/09</strong><span>non corrente</span></div><div><small>Correzioni applicate</small><strong>${context.summary.adjustedFixtures}</strong><span>nessun dato parziale</span></div><div><small>Limite futuro</small><strong>±${context.updatePolicy.maximumProbabilityShiftPctPoints}</strong><span>punti percentuali</span></div></div><p class="champions-model-note">Gli H2H UEFA dal 2020/21 restano descrittivi e non modificano le percentuali. I valori mancanti rimangono N/D.</p></div></details>`;
+  }
+
+  const metricValue=metric=>metric?`${metric.central.toFixed(1)} · ${metric.min.toFixed(1)}–${metric.max.toFixed(1)}`:"N/D";
+  const probabilityRows=rows=>rows.map(row=>`<span><b>O ${row.threshold.toFixed(1)}</b>${row.overPct.toFixed(1)}%<small>${row.market?`Sisal ${row.market.overOdds.toFixed(2)} · `:""}U ${row.underPct.toFixed(1)}%</small></span>`).join("");
+
+  function pilotForecasts(pilot){
+    const cards=pilot.fixtures.map(fixture=>{
+      const teams=fixture.teamProjections.map(team=>`<div class="champions-pilot-team"><h4>${esc(team.team)}</h4><dl><div><dt>Tiri totali</dt><dd>${esc(metricValue(team.shotsTotal))}</dd></div><div><dt>Tiri in porta</dt><dd>${esc(metricValue(team.shotsOnTarget))}</dd></div><div><dt>Corner</dt><dd>${esc(metricValue(team.corners))}</dd></div><div><dt>Cartellini</dt><dd>${esc(metricValue(team.cards))}</dd></div></dl></div>`).join("");
+      const scores=fixture.exactScores.map(score=>`${score.score} (${score.probabilityPct.toFixed(1)}%)`).join(" · ");
+      const resultOdds=fixture.market.result1x2.map(row=>`${row.selection} ${row.odds.toFixed(2)}`).join(" · ");
+      return `<article class="champions-pilot-card">
+        <header><div><small>${esc(shortDate(fixture.date))} · ${esc(fixture.kickoff)}</small><h3>${esc(fixture.homeTeam)} <span>–</span> ${esc(fixture.awayTeam)}</h3></div><div class="champions-pilot-result"><b>1 ${fixture.probabilities.home.toFixed(1)}% · X ${fixture.probabilities.draw.toFixed(1)}% · 2 ${fixture.probabilities.away.toFixed(1)}%</b><small>Sisal ${esc(resultOdds)}</small></div></header>
+        <div class="champions-pilot-score"><div><small>Gol attesi</small><strong>${fixture.expectedGoals.home.toFixed(2)} – ${fixture.expectedGoals.away.toFixed(2)}</strong></div><p>${esc(scores)}</p></div>
+        <div class="champions-pilot-teams">${teams}</div>
+        <div class="champions-pilot-markets"><div><h4>Over/Under gol</h4><div>${probabilityRows(fixture.goals)}</div></div><div><h4>Over cartellini</h4><div>${probabilityRows(fixture.cards.lines)}</div><small>${esc(fixture.cards.refereeStatus)}</small></div></div>
+        <footer>Campioni squadra: ${fixture.dataQuality.teamSamples.join(" / ")} gare · quote volume, arbitro e probabili XI ancora N/D</footer>
+      </article>`;
+    }).join("");
+    return `<section class="champions-pilot" aria-labelledby="champions-pilot-title"><header><div><p class="eyebrow">Prima giornata · laboratorio</p><h2 id="champions-pilot-title">Primi pronostici quantitativi</h2><p>${esc(pilot.warning)} Gli intervalli accanto ai volumi sono stime p20–p80.</p></div><span>${pilot.coverage.completeSourceMatches} referti completi<br>${pilot.coverage.oddsMatched}/4 quote collegate</span></header><div class="champions-pilot-grid">${cards}</div><p class="champions-pilot-note">Le quote 1X2 e gol servono solo al confronto e non modificano il modello. Sisal non espone ancora, per queste quattro gare, le linee richieste su tiri di squadra, tiri in porta, corner e cartellini. I cartellini indicano il numero di gialli, non i punti cartellini.</p></section>`;
   }
 
   function historyDirectory(history){
@@ -74,7 +93,7 @@ export function createPage(deps){
   }
 
   async function render(){
-    const [data,strength,history,model,context,h2h]=await Promise.all([load("champions-league-2026-27.json"),load("champions-team-strength-2026-27.json"),load("uefa-team-history-2026-27.json"),load("champions-1x2-2026-27.json"),load("champions-pre-match-context-2026-27.json"),load("champions-head-to-head-2026-27.json")]);
+    const [data,strength,history,model,context,h2h,pilot]=await Promise.all([load("champions-league-2026-27.json"),load("champions-team-strength-2026-27.json"),load("uefa-team-history-2026-27.json"),load("champions-1x2-2026-27.json"),load("champions-pre-match-context-2026-27.json"),load("champions-head-to-head-2026-27.json"),load("champions-pilot-predictions-2026-27.json")]);
     const profiles=new Map(strength.teams.map(profile=>[profile.team,profile]));
     const histories=new Map(history.teams.map(profile=>[profile.team,profile]));
     const predictions=new Map(model.fixtures.map(prediction=>[prediction.fixtureId,prediction]));
@@ -91,6 +110,7 @@ export function createPage(deps){
         <div class="champions-orbit" aria-hidden="true"><span>★</span></div>
       </section>
       ${contextAudit(context)}
+      ${pilotForecasts(pilot)}
       ${modelAudit(model)}
       ${strengthDirectory(strength)}
       ${historyDirectory(history)}
