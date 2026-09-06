@@ -10,7 +10,10 @@ const expected = new Map([
   ["genoa-como-2026-27-md-03", { score: [1, 4], half: [1, 3], mvp: "Assane Diao" }],
   ["fiorentina-torino-2026-27-md-03", { score: [1, 2], half: [0, 0], mvp: null }],
   ["inter-napoli-2026-27-md-03", { score: [3, 2], half: [0, 0], mvp: null }],
-  ["roma-atalanta-2026-27-md-03", { score: [2, 1], half: [0, 0], mvp: null }]
+  ["roma-atalanta-2026-27-md-03", { score: [2, 1], half: [0, 0], mvp: null }],
+  ["frosinone-venezia-2026-27-md-03", { score: [3, 2], half: [2, 0], mvp: null }],
+  ["parma-monza-2026-27-md-03", { score: [1, 1], half: [0, 1], mvp: null }],
+  ["bologna-sassuolo-2026-27-md-03", { score: [2, 2], half: [0, 1], mvp: null }]
 ]);
 
 for (const [matchId, wanted] of expected) {
@@ -45,6 +48,29 @@ assert.deepEqual([
   romaAtalanta.teamStats.away.fouls
 ], [39, 6, 10, 2, 14, 1, 9, 10], "Statistiche di squadra Roma-Atalanta errate");
 
+const frosinoneVenezia = byId.get("frosinone-venezia-2026-27-md-03");
+assert.deepEqual(frosinoneVenezia.scorers.map(item => [item.player, item.minute, item.assist]), [
+  ["Antonio Raimondo", 21, "Anthony Oyono"],
+  ["Antonio Raimondo", 39, "Patrizio Masini"],
+  ["John Yeboah", 67, "Gianluca Busio"],
+  ["Richie Sagrado", 74, "Antoine Hainaut"],
+  ["Giorgi Kvernadze", 83, "Anthony Oyono"]
+], "Marcatori Frosinone-Venezia non riconciliati con la cronaca ufficiale");
+
+const parmaMonza = byId.get("parma-monza-2026-27-md-03");
+assert.deepEqual(parmaMonza.scorers.map(item => [item.player, item.minute]), [
+  ["Jay Robinson", 38],
+  ["Simone Lontani", 60]
+], "Marcatori Parma-Monza non riconciliati con la cronaca ufficiale");
+
+const bolognaSassuolo = byId.get("bologna-sassuolo-2026-27-md-03");
+assert.deepEqual(bolognaSassuolo.scorers.map(item => [item.player, item.minute]), [
+  ["Josh Doig", 19],
+  ["Roberto Piccoli", 50],
+  ["Vasilije Adžić", 56],
+  ["Artem Dovbyk", "90+1"]
+], "Marcatori Bologna-Sassuolo errati");
+
 const settled = schedina.slips.flatMap(slip => slip.legs.map(leg => ({
   matchId: leg.matchId,
   ...settleLeg(leg, byId.get(leg.matchId))
@@ -54,5 +80,5 @@ const totals = settled.reduce((out, item) => {
   return out;
 }, {});
 
-assert.deepEqual(totals, { won: 18, lost: 8 }, "Liquidazione parziale MD3 inattesa");
-console.log("Risultati MD3 validi: Genoa-Como 1-4, Fiorentina-Torino 1-2, Inter-Napoli 3-2, Roma-Atalanta 2-1; liquidazione verificata.");
+assert.deepEqual(totals, { won: 26, lost: 12 }, "Liquidazione parziale MD3 inattesa");
+console.log("Risultati MD3 validi: 7 gare concluse e liquidazione parziale verificata.");

@@ -981,11 +981,14 @@ function configuredComboPortfolio(oddsEvent, config, matrices, dataCompleteness,
   }
   const portfolioSelectionIds = new Set();
   return config.portfolios.map(portfolio => {
-    const targetOdds = constraints.referenceOdds?.[portfolio.tier] ?? constraints.targets?.[portfolio.tier];
+    const targetOdds = portfolio.targetOdds ?? constraints.referenceOdds?.[portfolio.tier] ?? constraints.targets?.[portfolio.tier];
+    const scenario = portfolio.scenario || null;
+    const risk = portfolio.risk || (portfolio.tier === "Safe" ? "relativo inferiore" : portfolio.tier === "Balanced" ? "medio" : "elevato");
     if (!(targetOdds > 1)) throw new Error(`${oddsEvent.canonicalMatchId}/${portfolio.tier}: target MyCombo non valido`);
     if (portfolio.status === "N/D" || !portfolio.legs?.length) return {
       tier: portfolio.tier,
-      risk: portfolio.tier === "Safe" ? "relativo inferiore" : portfolio.tier === "Balanced" ? "medio" : "elevato",
+      scenario,
+      risk,
       targetOdds,
       odds: null,
       legs: [],
@@ -1042,7 +1045,8 @@ function configuredComboPortfolio(oddsEvent, config, matrices, dataCompleteness,
     });
     if (unavailableReason) return {
       tier: portfolio.tier,
-      risk: portfolio.tier === "Safe" ? "relativo inferiore" : portfolio.tier === "Balanced" ? "medio" : "elevato",
+      scenario,
+      risk,
       targetOdds,
       odds: null,
       legs: [],
@@ -1057,7 +1061,8 @@ function configuredComboPortfolio(oddsEvent, config, matrices, dataCompleteness,
     if (!flexibleQuota && distancePct > tolerance) {
       return {
         tier: portfolio.tier,
-        risk: portfolio.tier === "Safe" ? "relativo inferiore" : portfolio.tier === "Balanced" ? "medio" : "elevato",
+        scenario,
+        risk,
         targetOdds,
         odds: null,
         legs: [],
@@ -1077,7 +1082,8 @@ function configuredComboPortfolio(oddsEvent, config, matrices, dataCompleteness,
     const prudentExpectedValuePct = assessment ? round((assessment.prudentProbability * odds - 1) * 100, 1) : null;
     return {
       tier: portfolio.tier,
-      risk: portfolio.tier === "Safe" ? "relativo inferiore" : portfolio.tier === "Balanced" ? "medio" : "elevato",
+      scenario,
+      risk,
       targetOdds,
       quotaPolicy: flexibleQuota ? "orientativa" : "target",
       eligibilityPolicy: constraints.eligibilityPolicy || null,

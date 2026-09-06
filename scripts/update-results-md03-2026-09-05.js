@@ -54,6 +54,39 @@ const games = [
       { type: "goal", player: "Matìas Soulé", minute: "90+3" },
       { type: "booking", player: "Gianluca Gaetano", minute: "90+7" }
     ]
+  },
+  {
+    matchId: "frosinone-venezia-2026-27-md-03",
+    file: "frosinone-venezia-statmuse.html",
+    url: "https://www.statmuse.com/fc/match/9-6-2026-fro-vs-ven-112106",
+    officialUrl: "https://www.legaseriea.it/serie-a/news/frosinone-venezia-2026-2027-3-2-cronaca-risultato-gol",
+    home: { slug: "frosinone", abbr: "FRO" },
+    away: { slug: "venezia", abbr: "VEN" },
+    mvp: null,
+    assistOverrides: [{ player: "Giorgi Kvernadze", minute: 83, assist: "Anthony Oyono" }],
+    minuteOverrides: [{ type: "goal", player: "John Yeboah", minute: 67 }]
+  },
+  {
+    matchId: "parma-monza-2026-27-md-03",
+    file: "parma-monza-statmuse.html",
+    url: "https://www.statmuse.com/fc/match/9-6-2026-par-vs-mon-112101",
+    officialUrl: "https://www.legaseriea.it/serie-a/news/parma-monza-2026-2027-1-1-cronaca-risultato-gol",
+    home: { slug: "parma", abbr: "PAR" },
+    away: { slug: "monza", abbr: "MON" },
+    mvp: null
+  },
+  {
+    matchId: "bologna-sassuolo-2026-27-md-03",
+    file: "bologna-sassuolo-statmuse.html",
+    url: "https://www.statmuse.com/fc/match/9-6-2026-bol-vs-sas-112104",
+    officialUrl: "https://www.legaseriea.it/serie-a/match/e9c3a062798b4974badf0c9f4c6b8680/bologna-vs-sassuolo",
+    home: { slug: "bologna", abbr: "BOL" },
+    away: { slug: "sassuolo", abbr: "SAS" },
+    mvp: null,
+    minuteOverrides: [
+      { type: "goal", player: "Artem Dovbyk", minute: "90+1" },
+      { type: "booking", player: "Artem Dovbyk", minute: "90+1" }
+    ]
   }
 ];
 
@@ -70,7 +103,8 @@ const canonicalNames = new Map([
   ["Leo Østigård", "Leo Østigard"],
   ["Yann Aurel Bisseck", "Yann Bisseck"],
   ["Francesco Esposito", "Pio Esposito"],
-  ["André-Frank Zambo Anguissa", "Frank Anguissa"]
+  ["André-Frank Zambo Anguissa", "Frank Anguissa"],
+  ["Matteo Chichella", "Matteo Cichella"]
 ]);
 const canonicalName = value => canonicalNames.get(value) || value;
 const slug = value => String(value).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
@@ -221,4 +255,4 @@ for (const config of games) {
 playerStats.updatedAt = retrievedAt;
 fs.writeFileSync(resultsPath, `${JSON.stringify(results, null, 2)}\n`);
 fs.writeFileSync(playerStatsPath, `${JSON.stringify(playerStats)}\n`);
-console.log("Aggiornati i primi 4 risultati finali della 3a giornata 2026/27.");
+console.log("Aggiornati i primi 7 risultati finali della 3a giornata 2026/27.");

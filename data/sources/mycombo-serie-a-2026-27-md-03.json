@@ -12,7 +12,7 @@
     "tierLimits": {
       "Safe": {
         "minimum": 3,
-        "maximum": 6,
+        "maximum": 7,
         "preferred": 3
       },
       "Balanced": {
@@ -1027,133 +1027,154 @@
     "juventus-milan-2026-27-md-03": [
       {
         "tier": "Safe",
-        "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-06: quota 5 orientativa, 3-6 gambe, mercati distinti, nessuno scenario di base ripetuto o annidato e quote singole 1.10-1.85. Il rischio resta informativo.",
+        "scenario": "Partita equilibrata",
+        "targetOdds": 30,
+        "risk": "elevato",
+        "logic": "Scenario equilibrato e aperto: nessuna favorita netta, entrambe a segno e produzione distribuita fra corner, tiri, falli e parate. Quota complessiva orientativa circa 30; rischio elevato.",
         "legs": [
           {
-            "providerSelectionId": "5298470420",
-            "overlapKey": "market-x o y gol o palo duo inc ts",
-            "semanticKeys": [],
-            "label": "CONCEICAO F. O WOLTEMADE N. GOAL O PALO O LORO SOST. INC TS · sì"
-          },
-          {
-            "providerSelectionId": "5291832046",
-            "overlapKey": "market-u o tiri in porta",
-            "semanticKeys": [
-              "volume-shots-on-target"
-            ],
-            "label": "Partita almeno 8 tiri in porta"
-          },
-          {
             "providerSelectionId": "5291834990",
-            "overlapKey": "market-doppia chance",
-            "semanticKeys": [
-              "result"
-            ],
+            "overlapKey": "market-doppia-chance",
+            "semanticKeys": ["result-no-draw"],
             "label": "Nessun pareggio (12)"
           },
           {
-            "providerSelectionId": "5291832140",
-            "overlapKey": "market-u o tiri totali",
-            "semanticKeys": [
-              "volume-shots-total"
-            ],
-            "label": "Partita almeno 23 tiri totali"
+            "providerSelectionId": "5291830723",
+            "overlapKey": "market-goal-nogoal",
+            "semanticKeys": ["goals-both-teams"],
+            "label": "Entrambe le squadre segnano"
+          },
+          {
+            "providerSelectionId": "5302627167",
+            "overlapKey": "market-entrambe-corner-entrambi-tempi",
+            "semanticKeys": ["volume-corners-both-halves"],
+            "label": "Entrambe almeno 1 corner in entrambi i tempi"
+          },
+          {
+            "providerSelectionId": "5300871966",
+            "overlapKey": "market-entrambe-almeno-x-tiri-in-porta",
+            "semanticKeys": ["volume-shots-on-target-both"],
+            "label": "Entrambe almeno 3 tiri in porta"
+          },
+          {
+            "providerSelectionId": "5300870555",
+            "overlapKey": "market-u-o-falli-commessi-giocatore",
+            "semanticKeys": ["discipline-locatelli"],
+            "label": "Locatelli almeno 2 falli commessi"
+          },
+          {
+            "providerSelectionId": "5300906555",
+            "overlapKey": "market-u-o-parate-squadra",
+            "semanticKeys": ["saves-milan"],
+            "label": "Milan almeno 3 parate"
+          },
+          {
+            "providerSelectionId": "5300865734",
+            "overlapKey": "market-u-o-tiri-totali-giocatore",
+            "semanticKeys": ["player-shots-moreira"],
+            "label": "Moreira almeno 2 tiri totali, sostituto incluso"
           }
         ]
       },
       {
         "tier": "Balanced",
-        "logic": "Profilo balanced costruito sulle quote Sisal del 2026-09-06: quota 10 orientativa, 4-7 gambe, mercati distinti, nessuno scenario di base ripetuto o annidato e quote singole 1.10-1.85. Il rischio resta informativo.",
+        "scenario": "Maggiore Juventus",
+        "targetOdds": 30,
+        "risk": "elevato",
+        "logic": "Scenario di maggiore Juventus: bianconeri vincenti in almeno una finestra della gara, avanti per volume di corner e tiri, con coinvolgimento dei titolari offensivi. Quota complessiva orientativa circa 30; rischio elevato.",
         "legs": [
           {
-            "providerSelectionId": "5298470420",
-            "overlapKey": "market-x o y gol o palo duo inc ts",
-            "semanticKeys": [],
-            "label": "CONCEICAO F. O WOLTEMADE N. GOAL O PALO O LORO SOST. INC TS · sì"
+            "providerSelectionId": "5292061026",
+            "overlapKey": "market-squadra-vince-almeno-un-tempo",
+            "semanticKeys": ["result-juventus-wins-half"],
+            "label": "Juventus vince almeno un tempo"
           },
           {
-            "providerSelectionId": "5291832152",
-            "overlapKey": "market-u o tiri totali",
-            "semanticKeys": [
-              "volume-shots-total"
-            ],
-            "label": "Partita almeno 26 tiri totali"
+            "providerSelectionId": "5302627150",
+            "overlapKey": "market-u-o-corner-squadra",
+            "semanticKeys": ["volume-corners-juventus"],
+            "label": "Juventus almeno 5 corner"
           },
           {
-            "providerSelectionId": "5301258195",
-            "overlapKey": "market-giocatore segna o assist o cartellino inc ts",
-            "semanticKeys": [],
-            "label": "CONCEICAO F. SEGNA ALMENO UN GOAL O REALIZZA ALMENO UN ASSIST O RICEVE ALMENO UN CARTELLINO INC. TS · sì"
+            "providerSelectionId": "5300868948",
+            "overlapKey": "market-u-o-tiri-in-porta-squadra",
+            "semanticKeys": ["volume-shots-on-target-juventus"],
+            "label": "Juventus almeno 5 tiri in porta"
           },
           {
-            "providerSelectionId": "5302626849",
-            "overlapKey": "market-u o corner squadra x",
-            "semanticKeys": [
-              "volume-corners"
-            ],
-            "label": "Milan meno di 5 corner"
+            "providerSelectionId": "5300871031",
+            "overlapKey": "market-u-o-tiri-in-porta-giocatore",
+            "semanticKeys": ["player-shot-on-target-alajbegovic"],
+            "label": "Alajbegović almeno 1 tiro in porta, sostituto incluso"
           },
           {
-            "providerSelectionId": "5292061718",
-            "overlapKey": "market-combo u o casa u o ospite",
-            "semanticKeys": [
-              "goals"
-            ],
-            "label": "U/O 0.5 Juventus + U/O 2.5 Milan · OVER+UNDER"
+            "providerSelectionId": "5300870807",
+            "overlapKey": "market-u-o-falli-commessi-giocatore",
+            "semanticKeys": ["discipline-estupinan"],
+            "label": "Estupiñán almeno 2 falli commessi"
+          },
+          {
+            "providerSelectionId": "5300868308",
+            "overlapKey": "market-u-o-tiri-totali-giocatore",
+            "semanticKeys": ["player-shots-kolo-muani"],
+            "label": "Kolo Muani almeno 3 tiri totali, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5291861339",
+            "overlapKey": "market-multigoal-squadra",
+            "semanticKeys": ["team-goal-juventus"],
+            "label": "Juventus da 1 a 2 gol"
           }
         ]
       },
       {
         "tier": "Aggressive",
-        "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-09-06: quota 20 orientativa, 5-8 gambe, mercati distinti, nessuno scenario di base ripetuto o annidato e quote singole 1.10-1.85. Il rischio resta informativo.",
+        "scenario": "Maggiore Milan",
+        "targetOdds": 30,
+        "risk": "elevato",
+        "logic": "Scenario di maggiore Milan: rossoneri protetti dal pareggio e capaci di produrre corner, tiri e almeno un gol, con Ramos e Moreira coinvolti. Quota complessiva orientativa circa 30; rischio elevato.",
         "legs": [
           {
-            "providerSelectionId": "5300871055",
-            "overlapKey": "market-u o falli commessi giocatore",
-            "semanticKeys": [],
-            "label": "CONCEICAO F. almeno 2 falli commessi"
+            "providerSelectionId": "5291834991",
+            "overlapKey": "market-doppia-chance",
+            "semanticKeys": ["result-milan-x2"],
+            "label": "Milan o pareggio (X2)"
           },
           {
-            "providerSelectionId": "5301258195",
-            "overlapKey": "market-giocatore segna o assist o cartellino inc ts",
-            "semanticKeys": [],
-            "label": "CONCEICAO F. SEGNA ALMENO UN GOAL O REALIZZA ALMENO UN ASSIST O RICEVE ALMENO UN CARTELLINO INC. TS · sì"
+            "providerSelectionId": "5302627154",
+            "overlapKey": "market-u-o-corner-squadra",
+            "semanticKeys": ["volume-corners-milan"],
+            "label": "Milan almeno 4 corner"
           },
           {
-            "providerSelectionId": "5298470460",
-            "overlapKey": "market-x o y gol o palo duo inc ts",
-            "semanticKeys": [],
-            "label": "WOLTEMADE N. O RAMOS GONCALO GOAL O PALO O LORO SOST. INC TS · sì"
+            "providerSelectionId": "5300870539",
+            "overlapKey": "market-u-o-tiri-totali-squadra",
+            "semanticKeys": ["volume-shots-total-milan"],
+            "label": "Milan almeno 11 tiri totali"
           },
           {
-            "providerSelectionId": "5300910137",
-            "overlapKey": "market-u o falli subiti giocatore",
-            "semanticKeys": [],
-            "label": "CONCEICAO F. almeno 2 falli subiti"
+            "providerSelectionId": "5300871071",
+            "overlapKey": "market-u-o-tiri-in-porta-giocatore",
+            "semanticKeys": ["player-shot-on-target-ramos"],
+            "label": "Gonçalo Ramos almeno 1 tiro in porta, sostituto incluso"
           },
           {
-            "providerSelectionId": "5302627013",
-            "overlapKey": "market-entrambe almeno x corner",
-            "semanticKeys": [
-              "volume-corners"
-            ],
-            "label": "Entrambe almeno 3 corner"
+            "providerSelectionId": "5300868936",
+            "overlapKey": "market-u-o-falli-commessi-giocatore",
+            "semanticKeys": ["discipline-gila"],
+            "label": "Gila almeno 1 fallo commesso"
           },
           {
-            "providerSelectionId": "5291832164",
-            "overlapKey": "market-u o tiri totali",
-            "semanticKeys": [
-              "volume-shots-total"
-            ],
-            "label": "Partita almeno 22 tiri totali"
+            "providerSelectionId": "5300865734",
+            "overlapKey": "market-u-o-tiri-totali-giocatore",
+            "semanticKeys": ["player-shots-moreira"],
+            "label": "Moreira almeno 2 tiri totali, sostituto incluso"
           },
           {
-            "providerSelectionId": "5292061281",
-            "overlapKey": "market-combo u o casa u o ospite",
-            "semanticKeys": [
-              "goals"
-            ],
-            "label": "U/O 2.5 Juventus + U/O 3.5 Milan · UNDER+UNDER"
+            "providerSelectionId": "5292061724",
+            "overlapKey": "market-ospite-segna-goal",
+            "semanticKeys": ["team-goal-milan"],
+            "label": "Milan segna almeno un gol"
           }
         ]
       }
