@@ -70,24 +70,40 @@ export function createPage(deps){
   const metricValue=metric=>metric?`${metric.central.toFixed(1)} · ${metric.min.toFixed(1)}–${metric.max.toFixed(1)}`:"N/D";
   const probabilityRows=rows=>rows.map(row=>`<span><b>O ${row.threshold.toFixed(1)}</b>${row.overPct.toFixed(1)}%<small>${row.market?`Sisal ${row.market.overOdds.toFixed(2)} · `:""}U ${row.underPct.toFixed(1)}%</small></span>`).join("");
 
+  const resultSelection=fixture=>[
+    ["1",fixture.probabilities.home,fixture.homeTeam],
+    ["X",fixture.probabilities.draw,"Pareggio"],
+    ["2",fixture.probabilities.away,fixture.awayTeam]
+  ].sort((a,b)=>b[1]-a[1])[0];
+
   function pilotForecasts(pilot,backtest){
     const cards=pilot.fixtures.map(fixture=>{
-      const teams=fixture.teamProjections.map(team=>`<div class="champions-pilot-team"><h4>${esc(team.team)}</h4><dl><div><dt>Tiri totali</dt><dd>${esc(metricValue(team.shotsTotal))}</dd></div><div><dt>Tiri in porta</dt><dd>${esc(metricValue(team.shotsOnTarget))}</dd></div><div><dt>Corner</dt><dd>${esc(metricValue(team.corners))}</dd></div><div><dt>Cartellini</dt><dd>${esc(metricValue(team.cards))}</dd></div></dl></div>`).join("");
-      const scores=fixture.exactScores.map(score=>`${score.score} (${score.probabilityPct.toFixed(1)}%)`).join(" · ");
-      const resultOdds=fixture.market.result1x2.map(row=>`${row.selection} ${row.odds.toFixed(2)}`).join(" · ");
-      return `<article class="champions-pilot-card">
-        <header><div><small>${esc(shortDate(fixture.date))} · ${esc(fixture.kickoff)}</small><h3>${esc(fixture.homeTeam)} <span>–</span> ${esc(fixture.awayTeam)}</h3></div><div class="champions-pilot-result"><b>1 ${fixture.probabilities.home.toFixed(1)}% · X ${fixture.probabilities.draw.toFixed(1)}% · 2 ${fixture.probabilities.away.toFixed(1)}%</b><small>Sisal ${esc(resultOdds)}</small></div></header>
-        <div class="champions-pilot-score"><div><small>Gol attesi</small><strong>${fixture.expectedGoals.home.toFixed(2)} – ${fixture.expectedGoals.away.toFixed(2)}</strong></div><p>${esc(scores)}</p></div>
-        <div class="champions-pilot-teams">${teams}</div>
-        <div class="champions-pilot-markets"><div><h4>Over/Under gol</h4><div>${probabilityRows(fixture.goals)}</div></div><div><h4>Over cartellini</h4><div>${probabilityRows(fixture.cards.lines)}</div><small>${esc(fixture.cards.refereeStatus)}</small></div></div>
-        <footer>Campioni squadra: ${fixture.dataQuality.teamSamples.join(" / ")} gare · quote volume, arbitro e probabili XI ancora N/D</footer>
-      </article>`;
+      const selection=resultSelection(fixture),over25=fixture.goals.find(row=>row.threshold===2.5),over35Cards=fixture.cards.lines.find(row=>row.threshold===3.5);
+      return `<a class="champions-pilot-card champions-reading-link" href="champions-league.html?match=${esc(fixture.fixtureId)}" aria-label="Apri la lettura di ${esc(fixture.homeTeam)} - ${esc(fixture.awayTeam)}">
+        <header><div><small>${esc(shortDate(fixture.date))} · ${esc(fixture.kickoff)}</small><h3>${esc(fixture.homeTeam)} <span>–</span> ${esc(fixture.awayTeam)}</h3></div><div class="champions-pilot-result"><b>1 ${fixture.probabilities.home.toFixed(1)}% · X ${fixture.probabilities.draw.toFixed(1)}% · 2 ${fixture.probabilities.away.toFixed(1)}%</b><small>Prepartita</small></div></header>
+        <div class="champions-reading-preview"><span><small>Esito più probabile</small><strong>${esc(selection[0])} · ${esc(selection[2])}</strong></span><span><small>Risultato</small><strong>${esc(fixture.exactScores[0]?.score||"N/D")}</strong></span><span><small>Over 2.5</small><strong>${over25?`${over25.overPct.toFixed(1)}%`:"N/D"}</strong></span><span><small>Over 3.5 cartellini</small><strong>${over35Cards?`${over35Cards.overPct.toFixed(1)}%`:"N/D"}</strong></span></div>
+        <footer><span>Apri la lettura completa</span><b aria-hidden="true">→</b></footer>
+      </a>`;
     }).join("");
     const validation=[["Tiri",backtest.metrics.totalShots],["Tiri in porta",backtest.metrics.shotsOnTarget],["Corner",backtest.metrics.wonCorners],["Gialli",backtest.metrics.yellowCards]].map(([label,result])=>`<div><small>${label}</small><strong>MAE ${result.mae.toFixed(2)}</strong><span>${result.maeImprovementPct>0?"+":""}${result.maeImprovementPct.toFixed(1)}% vs media campionato</span></div>`).join("");
-    return `<section class="champions-pilot" aria-labelledby="champions-pilot-title"><header><div><p class="eyebrow">Prima giornata · laboratorio</p><h2 id="champions-pilot-title">Primi pronostici quantitativi</h2><p>${esc(pilot.warning)} Gli intervalli accanto ai volumi sono stime p20–p80.</p></div><span>${pilot.coverage.completeSourceMatches} referti completi<br>${pilot.coverage.oddsMatched}/4 quote collegate</span></header><div class="champions-pilot-validation"><p><strong>Test cronologico 2026/27</strong><span>Solo dati disponibili prima di ogni gara · ${backtest.metrics.totalShots.samples} osservazioni squadra</span></p>${validation}</div><div class="champions-pilot-grid">${cards}</div><p class="champions-pilot-note">Le quote 1X2 e gol servono solo al confronto e non modificano il modello. Sisal non espone ancora, per queste quattro gare, le linee richieste su tiri di squadra, tiri in porta, corner e cartellini. I cartellini indicano il numero di gialli, non i punti cartellini.</p></section>`;
+    return `<section class="champions-pilot" aria-labelledby="champions-pilot-title"><header><div><p class="eyebrow">Prima giornata · letture</p><h2 id="champions-pilot-title">Analisi delle italiane</h2><p>Apri una partita per consultare 1X2, gol attesi, tiri, tiri in porta, corner e cartellini in una lettura dedicata.</p></div><span>${pilot.coverage.completeSourceMatches} referti completi<br>${pilot.coverage.oddsMatched}/4 quote collegate</span></header><div class="champions-pilot-validation"><p><strong>Test cronologico 2026/27</strong><span>Solo dati disponibili prima di ogni gara · ${backtest.metrics.totalShots.samples} osservazioni squadra</span></p>${validation}</div><div class="champions-pilot-grid">${cards}</div><p class="champions-pilot-note">Le anteprime mostrano il segnale centrale del modello. Quote, limiti del campione e intervalli completi sono riportati dentro ogni lettura.</p></section>`;
   }
 
-  function registeredSquadsDirectory(squads){
+  function pilotReadingDetail(fixture,pilot,backtest,squads){
+    const teams=fixture.teamProjections.map(team=>`<div class="champions-pilot-team"><h4>${esc(team.team)}</h4><dl><div><dt>Tiri totali</dt><dd>${esc(metricValue(team.shotsTotal))}</dd></div><div><dt>Tiri in porta</dt><dd>${esc(metricValue(team.shotsOnTarget))}</dd></div><div><dt>Corner</dt><dd>${esc(metricValue(team.corners))}</dd></div><div><dt>Cartellini</dt><dd>${esc(metricValue(team.cards))}</dd></div></dl></div>`).join("");
+    const scores=fixture.exactScores.map(score=>`${score.score} (${score.probabilityPct.toFixed(1)}%)`).join(" · ");
+    const resultOdds=fixture.market.result1x2.map(row=>`${row.selection} ${row.odds.toFixed(2)}`).join(" · ");
+    const relatedTeams=squads.teams.filter(team=>team.team===fixture.homeTeam||team.team===fixture.awayTeam);
+    const relatedSquads={...squads,teams:relatedTeams,summary:{...squads.summary,teams:relatedTeams.length,players:relatedTeams.reduce((sum,team)=>sum+team.counts.total,0)}};
+    return `<nav class="champions-reading-back"><a href="champions-league.html">← Tutte le letture Champions</a><span>1ª giornata</span></nav>
+      <section class="champions-reading-hero" aria-labelledby="champions-reading-title"><div><p class="eyebrow">UEFA Champions League · prepartita</p><h1 id="champions-reading-title">${esc(fixture.homeTeam)} <span>–</span> ${esc(fixture.awayTeam)}</h1><p>${esc(dayLabel(fixture.date))} · ${esc(fixture.kickoff)}</p></div><div class="champions-reading-hero-result"><small>Probabilità 1X2</small><strong>1 ${fixture.probabilities.home.toFixed(1)}%</strong><strong>X ${fixture.probabilities.draw.toFixed(1)}%</strong><strong>2 ${fixture.probabilities.away.toFixed(1)}%</strong></div></section>
+      <aside class="champions-reading-warning"><strong>Lettura sperimentale.</strong> ${esc(pilot.warning)}</aside>
+      <section class="champions-reading-analysis" aria-label="Lettura quantitativa della partita"><article class="champions-pilot-card champions-pilot-card-detail"><header><div><small>Scenario centrale</small><h3>Pronostico quantitativo</h3></div><div class="champions-pilot-result"><b>1 ${fixture.probabilities.home.toFixed(1)}% · X ${fixture.probabilities.draw.toFixed(1)}% · 2 ${fixture.probabilities.away.toFixed(1)}%</b><small>Sisal ${esc(resultOdds)}</small></div></header><div class="champions-pilot-score"><div><small>Gol attesi</small><strong>${fixture.expectedGoals.home.toFixed(2)} – ${fixture.expectedGoals.away.toFixed(2)}</strong></div><p>${esc(scores)}</p></div><div class="champions-pilot-teams">${teams}</div><div class="champions-pilot-markets"><div><h4>Over/Under gol</h4><div>${probabilityRows(fixture.goals)}</div></div><div><h4>Over cartellini</h4><div>${probabilityRows(fixture.cards.lines)}</div><small>${esc(fixture.cards.refereeStatus)}</small></div></div><footer>Campioni squadra: ${fixture.dataQuality.teamSamples.join(" / ")} gare · quote volume, arbitro e probabili XI ancora N/D</footer></article></section>
+      <section class="champions-reading-method"><div><small>Validazione tiri</small><strong>MAE ${backtest.metrics.totalShots.mae.toFixed(2)}</strong></div><div><small>Tiri in porta</small><strong>MAE ${backtest.metrics.shotsOnTarget.mae.toFixed(2)}</strong></div><div><small>Corner</small><strong>MAE ${backtest.metrics.wonCorners.mae.toFixed(2)}</strong></div><div><small>Gialli</small><strong>MAE ${backtest.metrics.yellowCards.mae.toFixed(2)}</strong></div></section>
+      ${registeredSquadsDirectory(relatedSquads,{detail:true})}`;
+  }
+
+  function registeredSquadsDirectory(squads,{detail=false}={}){
     const positionOrder=["goalkeeper","defender","midfielder","forward","unknown"];
     const cards=squads.teams.map(team=>{
       const groups=positionOrder.map(position=>{
@@ -98,7 +114,7 @@ export function createPage(deps){
       const sources=team.sources.map(source=>`<a href="${esc(source.url)}" target="_blank" rel="noreferrer">${esc(source.provider)} ↗</a>`).join("");
       return `<details class="champions-squad-card" data-squad-team="${esc(team.team)}"><summary><span><small>${team.counts.total} registrati${team.counts.listB?` · ${team.counts.listB} Lista B`:""}</small><strong>${esc(team.team)}</strong></span><span>${team.sourceNote?'Verifica fonte aperta':'Fonte ufficiale'}</span></summary><div class="champions-squad-card-body"><div class="champions-squad-meta"><p>Allenatore: <strong>${esc(team.coach||"N/D")}</strong></p><span>${sources}</span></div>${team.sourceNote?`<p class="champions-squad-alert"><strong>Discrepanza segnalata.</strong> ${esc(team.sourceNote)}</p>`:""}<div class="champions-squad-groups">${groups}</div></div></details>`;
     }).join("");
-    return `<section class="champions-squads" aria-labelledby="champions-squads-title"><header><div><p class="eyebrow">Pilot · 8 squadre</p><h2 id="champions-squads-title">Rose registrate UEFA</h2><p>${esc(squads.statusNote)}</p></div><span><strong>${squads.summary.players}</strong> giocatori<br>snapshot ${esc(shortDate(squads.snapshotDate))}</span></header><div class="champions-squad-notice"><strong>Attenzione alla lettura:</strong> “registrato” non significa convocato, disponibile o titolare per la prossima gara. Questi dati non modificano ancora i pronostici.</div><div class="champions-squad-grid">${cards}</div><p class="champions-squad-footnote">La sigla Lista B compare solo quando è esplicitamente marcata dalla fonte UEFA; in assenza del marcatore il campo resta non classificato, senza dedurre automaticamente Lista A.</p></section>`;
+    return `<section class="champions-squads${detail?" champions-squads-detail":""}" aria-labelledby="champions-squads-title"><header><div><p class="eyebrow">${detail?"Contesto della partita":"Pilot · 8 squadre"}</p><h2 id="champions-squads-title">Rose registrate UEFA</h2><p>${esc(squads.statusNote)}</p></div><span><strong>${squads.summary.players}</strong> giocatori<br>snapshot ${esc(shortDate(squads.snapshotDate))}</span></header><div class="champions-squad-notice"><strong>Attenzione alla lettura:</strong> “registrato” non significa convocato, disponibile o titolare per la prossima gara. Questi dati non modificano ancora i pronostici.</div><div class="champions-squad-grid">${cards}</div><p class="champions-squad-footnote">La sigla Lista B compare solo quando è esplicitamente marcata dalla fonte UEFA; in assenza del marcatore il campo resta non classificato, senza dedurre automaticamente Lista A.</p></section>`;
   }
 
   function historyDirectory(history){
@@ -108,7 +124,13 @@ export function createPage(deps){
   }
 
   async function render(){
+    const requestedMatchId=new URLSearchParams(location.search).get("match");
     const [data,strength,history,model,context,h2h,pilot,backtest,squads]=await Promise.all([load("champions-league-2026-27.json"),load("champions-team-strength-2026-27.json"),load("uefa-team-history-2026-27.json"),load("champions-1x2-2026-27.json"),load("champions-pre-match-context-2026-27.json"),load("champions-head-to-head-2026-27.json"),load("champions-pilot-predictions-2026-27.json"),load("champions-pilot-volume-backtest.json"),load("champions-registered-squads-2026-27.json")]);
+    const requestedFixture=requestedMatchId?pilot.fixtures.find(fixture=>fixture.fixtureId===requestedMatchId):null;
+    if(requestedFixture){
+      document.querySelector("#app").innerHTML=pilotReadingDetail(requestedFixture,pilot,backtest,squads);
+      return;
+    }
     const profiles=new Map(strength.teams.map(profile=>[profile.team,profile]));
     const histories=new Map(history.teams.map(profile=>[profile.team,profile]));
     const predictions=new Map(model.fixtures.map(prediction=>[prediction.fixtureId,prediction]));

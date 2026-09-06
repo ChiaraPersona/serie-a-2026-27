@@ -6,6 +6,7 @@ const path = require("path");
 
 const root = path.resolve(__dirname, "..");
 const data = JSON.parse(fs.readFileSync(path.join(root, "data/normalized/champions-pilot-predictions-2026-27.json"), "utf8"));
+const pageSource = fs.readFileSync(path.join(root, "js/pages/champions.js"), "utf8");
 assert.strictEqual(data.status, "experimental-pilot-partial-odds");
 assert.strictEqual(data.fixtures.length, 4);
 assert.strictEqual(data.coverage.teams, 8);
@@ -37,4 +38,7 @@ for (const fixture of data.fixtures) {
     assert.deepStrictEqual(Object.keys(team.lines), ["shotsTotal", "shotsOnTarget", "corners"]);
   }
 }
+assert(pageSource.includes('href="champions-league.html?match=${esc(fixture.fixtureId)}"'), "Le schede Champions devono essere link diretti alle letture");
+assert(pageSource.includes('new URLSearchParams(location.search).get("match")'), "La pagina Champions deve gestire la lettura selezionata");
+assert(pageSource.includes("pilotReadingDetail(requestedFixture,pilot,backtest,squads)"), "Dettaglio lettura Champions non collegato");
 console.log(`OK pronostici pilot Champions: ${data.fixtures.length} gare · sei famiglie mercato · dati mancanti espliciti`);
