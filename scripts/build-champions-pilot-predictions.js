@@ -32,6 +32,32 @@ function summarize(values) {
   return { matches: clean.length, mean: round(mean, 3), sd: round(Math.sqrt(variance), 3), p20: round(quantile(clean, 0.2), 3), median: round(quantile(clean, 0.5), 3), p80: round(quantile(clean, 0.8), 3) };
 }
 
+function sourceSideRows() {
+  return source.matches.flatMap(match => [
+    { league: match.league, venue: "home", for: { goals: match.home.score, ...match.home.statistics }, against: { goals: match.away.score, ...match.away.statistics } },
+    { league: match.league, venue: "away", for: { goals: match.away.score, ...match.away.statistics }, against: { goals: match.home.score, ...match.home.statistics } }
+  ]);
+}
+
+const allSourceSides = sourceSideRows();
+function leagueBaseline(league, venue) {
+  const rows = allSourceSides.filter(row => row.league === league && (venue === "overall" || row.venue === venue));
+  return Object.fromEntries(metrics.map(metric => [metric, {
+    for: summarize(rows.map(row => row.for[metric])),
+    against: summarize(rows.map(row => row.against[metric]))
+  }]));
+}
+
+const leagueBaselines = source.teams.reduce((output, team) => {
+  if (!output[team.league]) output[team.league] = {
+    league: team.league,
+    leagueName: team.leagueName,
+    matches: source.matches.filter(match => match.league === team.league).length,
+    venues: { overall: leagueBaseline(team.league, "overall"), home: leagueBaseline(team.league, "home"), away: leagueBaseline(team.league, "away") }
+  };
+  return output;
+}, {});
+
 function teamRows(team) {
   const rows = [];
   for (const match of source.matches) {
@@ -67,7 +93,7 @@ function profile(team) {
     });
     return [metric, { matches: recentRows.length, decay: 0.82, for: { ...summarize(recentRows.map(row => row.for[metric])), weightedMean: round(produced / totalWeight, 3) }, against: { ...summarize(recentRows.map(row => row.against[metric])), weightedMean: round(conceded / totalWeight, 3) } }];
   }));
-  return { teamId: team.id, team: team.name, league: team.leagueName, matches: rows.length, currentSeasonMatches: rows.filter(row => row.season === "2026-27").length, venues: { overall: venue("overall"), home: venue("home"), away: venue("away") }, recent };
+  return { teamId: team.id, team: team.name, league: team.leagueName, leagueCode: team.league, matches: rows.length, currentSeasonMatches: rows.filter(row => row.season === "2026-27").length, venues: { overall: venue("overall"), home: venue("home"), away: venue("away") }, recent };
 }
 
 const profiles = source.teams.map(profile);
@@ -75,15 +101,24 @@ const profileById = new Map(profiles.map(item => [item.teamId, item]));
 
 function blendMetric(team, opponent, venue, metric, floor = 0) {
   const opposite = venue === "home" ? "away" : "home";
+  const ownBaseline = leagueBaselines[team.leagueCode].venues[venue][metric].for.mean;
+  const opponentBaseline = leagueBaselines[opponent.leagueCode].venues[opposite][metric].against.mean;
+  const recentBaseline = leagueBaselines[team.leagueCode].venues.overall[metric].for.mean;
+  const targetBaseline = (ownBaseline + opponentBaseline) / 2;
+  const reliability = team.currentSeasonMatches / (team.currentSeasonMatches + 6);
+  const recentWeight = 0.2 * reliability;
+  const unusedRecentWeight = 0.2 - recentWeight;
+  const ownWeight = 0.45 + unusedRecentWeight * 0.5625;
+  const opponentWeight = 0.35 + unusedRecentWeight * 0.4375;
   const inputs = [
-    { label: `${team.team} ${venue === "home" ? "in casa" : "in trasferta"}`, value: team.venues[venue][metric].for.mean, sd: team.venues[venue][metric].for.sd, weight: 0.45 },
-    { label: `${opponent.team} concede ${opposite === "home" ? "in casa" : "in trasferta"}`, value: opponent.venues[opposite][metric].against.mean, sd: opponent.venues[opposite][metric].against.sd, weight: 0.35 },
-    { label: `ultime ${team.recent[metric].matches} ${team.team}`, value: team.recent[metric].for.weightedMean, sd: team.recent[metric].for.sd, weight: 0.2 }
+    { label: `${team.team} ${venue === "home" ? "in casa" : "in trasferta"}`, value: team.venues[venue][metric].for.mean / ownBaseline * targetBaseline, sd: team.venues[venue][metric].for.sd / ownBaseline * targetBaseline, weight: ownWeight },
+    { label: `${opponent.team} concede ${opposite === "home" ? "in casa" : "in trasferta"}`, value: opponent.venues[opposite][metric].against.mean / opponentBaseline * targetBaseline, sd: opponent.venues[opposite][metric].against.sd / opponentBaseline * targetBaseline, weight: opponentWeight },
+    { label: `ultime ${team.recent[metric].matches} ${team.team}`, value: team.recent[metric].for.weightedMean / recentBaseline * targetBaseline, sd: team.recent[metric].for.sd / recentBaseline * targetBaseline, weight: recentWeight }
   ].filter(item => Number.isFinite(item.value));
   const weight = inputs.reduce((sum, input) => sum + input.weight, 0);
   const central = inputs.reduce((sum, input) => sum + input.value * input.weight, 0) / weight;
   const sd = Math.max(0.45, inputs.reduce((sum, input) => sum + (input.sd || 0) * input.weight, 0) / weight);
-  return { central: round(Math.max(floor, central)), sd: round(sd), min: round(Math.max(floor, central - 0.84 * sd), 1), max: round(central + 0.84 * sd, 1), interval: "p20-p80-approx", inputs: inputs.map(input => ({ label: input.label, value: input.value, weightPct: Math.round(input.weight / weight * 100) })) };
+  return { central: round(Math.max(floor, central)), sd: round(sd), min: round(Math.max(floor, central - 0.84 * sd), 1), max: round(central + 0.84 * sd, 1), interval: "p20-p80-approx", normalization: { method: "relative-to-domestic-league", targetBaseline: round(targetBaseline, 3), currentSeasonReliabilityPct: round(reliability * 100, 1) }, inputs: inputs.map(input => ({ label: input.label, value: round(input.value, 3), weightPct: round(input.weight / weight * 100, 1) })) };
 }
 
 function poisson(k, lambda) {
@@ -218,15 +253,16 @@ const output = {
   generatedAt: [source.retrievedAt, odds.retrievedAt].filter(Boolean).sort().at(-1),
   status: "experimental-pilot-partial-odds",
   scope: "Prima giornata, sole gare delle quattro squadre italiane",
-  warning: "Stime preliminari indipendenti dalle quote. Le quote Sisal sono mostrate solo come confronto esterno; volumi e cartellini usano dati domestici ESPN. Assenze, probabili formazioni e arbitri non sono ancora integrati.",
+  warning: "Stime preliminari indipendenti dalle quote. Volumi e cartellini usano baseline normalizzate dei cinque campionati domestici e pesi recenti legati all'affidabilità del campione. Assenze, probabili formazioni e arbitri non sono ancora integrati.",
   methodology: {
     result: "Modello UEFA Elo 1X2 già validato cronologicamente.",
     goals: "Poisson: totale iniziale dai gol prodotti/concessi per sede e forma recente; lambda adattate alle probabilità 1X2 senza usare quote.",
-    volumes: "45% produzione della squadra per sede, 35% volume concesso dall'avversaria nella sede opposta, 20% ultime otto; intervallo p20-p80 approssimato dalla dispersione osservata.",
+    volumes: "Produzione per sede e volume concesso sono normalizzati rispetto alle baseline complete dei cinque campionati. Il peso recente massimo del 20% è ridotto in base all'affidabilità delle gare 2026/27; intervallo p20-p80 approssimato dalla dispersione osservata.",
     cards: "Cartellini gialli di squadra con lo stesso blending; distribuzione negativa binomiale quando la varianza supera la media, altrimenti Poisson. Nessun correttivo arbitrale.",
     thresholdPolicy: "Le probabilità sulle soglie sono diagnostiche e non costituiscono selezioni di valore finché non sono disponibili quote aggiornate."
   },
-  coverage: { fixtures: fixtures.length, teams: profiles.length, sourceMatches: source.summary.matches, completeSourceMatches: source.summary.completeMatches, oddsMatched: fixtures.filter(item => item.market.provider).length, resultOdds: fixtures.filter(item => item.market.result1x2.every(row => row.odds)).length, goalOdds: fixtures.filter(item => item.goals.every(row => row.market)).length, requestedVolumeOdds: fixtures.filter(item => item.market.requestedVolumeMarketsAvailable).length, referees: 0, probableLineups: 0 },
+  coverage: { fixtures: fixtures.length, teams: profiles.length, sourceMatches: source.summary.matches, completeSourceMatches: source.summary.completeMatches, leagueBaselineMatches: Object.fromEntries(Object.values(leagueBaselines).map(item => [item.league, item.matches])), oddsMatched: fixtures.filter(item => item.market.provider).length, resultOdds: fixtures.filter(item => item.market.result1x2.every(row => row.odds)).length, goalOdds: fixtures.filter(item => item.goals.every(row => row.market)).length, requestedVolumeOdds: fixtures.filter(item => item.market.requestedVolumeMarketsAvailable).length, referees: 0, probableLineups: 0 },
+  leagueBaselines,
   profiles,
   fixtures
 };

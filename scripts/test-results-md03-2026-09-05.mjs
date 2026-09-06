@@ -13,7 +13,8 @@ const expected = new Map([
   ["roma-atalanta-2026-27-md-03", { score: [2, 1], half: [0, 0], mvp: null }],
   ["frosinone-venezia-2026-27-md-03", { score: [3, 2], half: [2, 0], mvp: null }],
   ["parma-monza-2026-27-md-03", { score: [1, 1], half: [0, 1], mvp: null }],
-  ["bologna-sassuolo-2026-27-md-03", { score: [2, 2], half: [0, 1], mvp: null }]
+  ["bologna-sassuolo-2026-27-md-03", { score: [2, 2], half: [0, 1], mvp: null }],
+  ["juventus-milan-2026-27-md-03", { score: [1, 1], half: [0, 0], mvp: null }]
 ]);
 
 for (const [matchId, wanted] of expected) {
@@ -71,6 +72,28 @@ assert.deepEqual(bolognaSassuolo.scorers.map(item => [item.player, item.minute])
   ["Artem Dovbyk", "90+1"]
 ], "Marcatori Bologna-Sassuolo errati");
 
+const juventusMilan = byId.get("juventus-milan-2026-27-md-03");
+assert.deepEqual(juventusMilan.scorers.map(item => [item.player, item.minute, item.assist]), [
+  ["Alphadjo Cissè", 68, "Samuel Chukwueze"],
+  ["Federico Gatti", "90+2", "Teun Koopmeiners"]
+], "Marcatori Juventus-Milan non riconciliati con il referto");
+assert.deepEqual(juventusMilan.bookings.map(item => [item.player, item.minute, item.card]), [
+  ["Pervis Estupiñán", 79, "yellow"],
+  ["Koni De Winter", "90+2", "yellow"],
+  ["Federico Gatti", "90+6", "yellow"],
+  ["Alphadjo Cissè", "90+6", "yellow"]
+], "Ammonizioni Juventus-Milan errate");
+assert.deepEqual([
+  juventusMilan.teamStats.home.shots,
+  juventusMilan.teamStats.away.shots,
+  juventusMilan.teamStats.home.shotsOnTarget,
+  juventusMilan.teamStats.away.shotsOnTarget,
+  juventusMilan.teamStats.home.corners,
+  juventusMilan.teamStats.away.corners,
+  juventusMilan.teamStats.home.fouls,
+  juventusMilan.teamStats.away.fouls
+], [14, 3, 5, 1, 7, 1, 10, 11], "Statistiche di squadra Juventus-Milan errate");
+
 const settled = schedina.slips.flatMap(slip => slip.legs.map(leg => ({
   matchId: leg.matchId,
   ...settleLeg(leg, byId.get(leg.matchId))
@@ -80,5 +103,5 @@ const totals = settled.reduce((out, item) => {
   return out;
 }, {});
 
-assert.deepEqual(totals, { won: 26, lost: 12 }, "Liquidazione parziale MD3 inattesa");
-console.log("Risultati MD3 validi: 7 gare concluse e liquidazione parziale verificata.");
+assert.deepEqual(totals, { won: 27, lost: 14 }, "Liquidazione parziale MD3 inattesa");
+console.log("Risultati MD3 validi: 8 gare concluse e liquidazione parziale verificata.");

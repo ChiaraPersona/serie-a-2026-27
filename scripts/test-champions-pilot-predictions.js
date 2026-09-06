@@ -9,7 +9,8 @@ const data = JSON.parse(fs.readFileSync(path.join(root, "data/normalized/champio
 assert.strictEqual(data.status, "experimental-pilot-partial-odds");
 assert.strictEqual(data.fixtures.length, 4);
 assert.strictEqual(data.coverage.teams, 8);
-assert(data.coverage.completeSourceMatches >= 300);
+assert(data.coverage.completeSourceMatches >= 1800);
+assert.strictEqual(Object.keys(data.coverage.leagueBaselineMatches).length, 5);
 assert.strictEqual(data.coverage.oddsMatched, 4);
 assert.strictEqual(data.coverage.resultOdds, 4);
 assert.strictEqual(data.coverage.goalOdds, 4);
@@ -29,6 +30,8 @@ for (const fixture of data.fixtures) {
   for (const team of fixture.teamProjections) {
     for (const metric of [team.shotsTotal, team.shotsOnTarget, team.corners, team.cards]) {
       assert(Number.isFinite(metric.central) && metric.min <= metric.central && metric.central <= metric.max, `${fixture.fixtureId}/${team.team}: volume non valido`);
+      assert.strictEqual(metric.normalization.method, "relative-to-domestic-league", `${fixture.fixtureId}/${team.team}: normalizzazione campionato assente`);
+      assert(metric.normalization.currentSeasonReliabilityPct > 0 && metric.normalization.currentSeasonReliabilityPct < 50, `${fixture.fixtureId}/${team.team}: affidabilità nuova stagione non prudente`);
     }
     assert(team.shotsOnTarget.central <= team.shotsTotal.central, `${fixture.fixtureId}/${team.team}: tiri in porta oltre tiri totali`);
     assert.deepStrictEqual(Object.keys(team.lines), ["shotsTotal", "shotsOnTarget", "corners"]);

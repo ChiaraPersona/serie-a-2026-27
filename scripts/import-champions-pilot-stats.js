@@ -58,7 +58,6 @@ async function cached(url, file) {
 
 const competition = event => event.competitions?.[0];
 const competitors = event => competition(event)?.competitors || [];
-const teamIdSet = new Set(teams.map(team => team.espnTeamId));
 const isFinished = event => ["STATUS_FINAL", "STATUS_FULL_TIME", "STATUS_FINAL_AET", "STATUS_FINAL_PEN"].includes(event.status?.type?.name);
 const number = value => {
   const parsed = Number(String(value ?? "").replace(",", "."));
@@ -88,8 +87,6 @@ async function main() {
       scoreboards.push({ season: season.id, league, retrievedAt: raw.retrievedAt, url, events: raw.payload.events?.length || 0 });
       for (const event of raw.payload.events || []) {
         if (!isFinished(event)) continue;
-        const ids = competitors(event).map(item => String(item.team?.id || ""));
-        if (!ids.some(id => teamIdSet.has(id))) continue;
         jobs.push({ season: season.id, league, event });
       }
     }
@@ -133,7 +130,7 @@ async function main() {
   });
   const output = {
     schemaVersion: 1,
-    scope: "Champions League 2026/27 pilot sulle quattro italiane della prima giornata",
+    scope: "Champions League 2026/27 pilot sulle quattro italiane della prima giornata, con baseline complete dei cinque campionati domestici",
     retrievedAt: [...matches.map(match => match.source.retrievedAt)].sort().at(-1) || null,
     cutoffDate: "2026-09-06",
     teams,

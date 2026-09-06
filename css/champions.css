@@ -100,6 +100,14 @@ body[data-page="champions"] main{padding-top:38px}
 .champions-pilot h2{margin:0;color:#fff}
 .champions-pilot>header p:last-child{margin:8px 0 0;color:#bad8ef;font-size:13px}
 .champions-pilot>header>span{flex:none;color:#83dfff;font-size:10px;font-weight:850;line-height:1.55;text-align:right;text-transform:uppercase}
+.champions-pilot-validation{display:grid;grid-template-columns:1.35fr repeat(4,minmax(0,1fr));gap:8px;margin:0 0 18px;padding:10px;border:1px solid rgba(126,218,255,.18);border-radius:16px;background:rgba(1,18,58,.42)}
+.champions-pilot-validation>p,.champions-pilot-validation>div{display:grid;align-content:center;gap:2px;margin:0;padding:8px 10px}
+.champions-pilot-validation>p strong{color:#fff;font-size:11px}
+.champions-pilot-validation>p span{color:#85a8c7;font-size:8px}
+.champions-pilot-validation>div{border-left:1px solid rgba(126,218,255,.13)}
+.champions-pilot-validation small{color:#7fdcff;font-size:7px;font-weight:900;text-transform:uppercase}
+.champions-pilot-validation strong{color:#eaf8ff;font-size:10px}
+.champions-pilot-validation>div span{color:#86b8d9;font-size:7px}
 .champions-pilot-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
 .champions-pilot-card{overflow:hidden;border:1px solid rgba(139,211,255,.22);border-radius:20px;background:rgba(1,15,52,.56)}
 .champions-pilot-card>header{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 18px;border-bottom:1px solid rgba(139,211,255,.15)}
@@ -205,6 +213,9 @@ body[data-page="champions"] .site-footer{margin-top:0}
   .champions-pilot{padding:22px 16px;border-radius:24px}
   .champions-pilot>header{align-items:flex-start;flex-direction:column;gap:10px}
   .champions-pilot>header>span{text-align:left}
+  .champions-pilot-validation{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .champions-pilot-validation>p{grid-column:1/-1}
+  .champions-pilot-validation>div{border-top:1px solid rgba(126,218,255,.13);border-left:0}
   .champions-pilot-grid{grid-template-columns:1fr}
   .champions-pilot-card>header{align-items:flex-start;flex-direction:column;gap:7px}
   .champions-pilot-result{text-align:left}

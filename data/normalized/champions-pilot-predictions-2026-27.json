@@ -2,22 +2,29 @@
   "schemaVersion": 1,
   "competition": "champions-league",
   "season": "2026-27",
-  "generatedAt": "2026-09-06T17:01:19.159Z",
+  "generatedAt": "2026-09-06T21:35:20.310Z",
   "status": "experimental-pilot-partial-odds",
   "scope": "Prima giornata, sole gare delle quattro squadre italiane",
-  "warning": "Stime preliminari indipendenti dalle quote. Le quote Sisal sono mostrate solo come confronto esterno; volumi e cartellini usano dati domestici ESPN. Assenze, probabili formazioni e arbitri non sono ancora integrati.",
+  "warning": "Stime preliminari indipendenti dalle quote. Volumi e cartellini usano baseline normalizzate dei cinque campionati domestici e pesi recenti legati all'affidabilità del campione. Assenze, probabili formazioni e arbitri non sono ancora integrati.",
   "methodology": {
     "result": "Modello UEFA Elo 1X2 già validato cronologicamente.",
     "goals": "Poisson: totale iniziale dai gol prodotti/concessi per sede e forma recente; lambda adattate alle probabilità 1X2 senza usare quote.",
-    "volumes": "45% produzione della squadra per sede, 35% volume concesso dall'avversaria nella sede opposta, 20% ultime otto; intervallo p20-p80 approssimato dalla dispersione osservata.",
+    "volumes": "Produzione per sede e volume concesso sono normalizzati rispetto alle baseline complete dei cinque campionati. Il peso recente massimo del 20% è ridotto in base all'affidabilità delle gare 2026/27; intervallo p20-p80 approssimato dalla dispersione osservata.",
     "cards": "Cartellini gialli di squadra con lo stesso blending; distribuzione negativa binomiale quando la varianza supera la media, altrimenti Poisson. Nessun correttivo arbitrale.",
     "thresholdPolicy": "Le probabilità sulle soglie sono diagnostiche e non costituiscono selezioni di valore finché non sono disponibili quote aggiornate."
   },
   "coverage": {
     "fixtures": 4,
     "teams": 8,
-    "sourceMatches": 306,
-    "completeSourceMatches": 306,
+    "sourceMatches": 1892,
+    "completeSourceMatches": 1892,
+    "leagueBaselineMatches": {
+      "esp.1": 416,
+      "ita.1": 406,
+      "eng.1": 409,
+      "tur.1": 338,
+      "ger.1": 323
+    },
     "oddsMatched": 4,
     "resultOdds": 4,
     "goalOdds": 4,
@@ -25,11 +32,1699 @@
     "referees": 0,
     "probableLineups": 0
   },
+  "leagueBaselines": {
+    "esp.1": {
+      "league": "esp.1",
+      "leagueName": "LaLiga",
+      "matches": 416,
+      "venues": {
+        "overall": {
+          "goals": {
+            "for": {
+              "matches": 832,
+              "mean": 1.359,
+              "sd": 1.139,
+              "p20": 0,
+              "median": 1,
+              "p80": 2
+            },
+            "against": {
+              "matches": 832,
+              "mean": 1.359,
+              "sd": 1.139,
+              "p20": 0,
+              "median": 1,
+              "p80": 2
+            }
+          },
+          "totalShots": {
+            "for": {
+              "matches": 832,
+              "mean": 12.507,
+              "sd": 5.387,
+              "p20": 8,
+              "median": 12,
+              "p80": 17
+            },
+            "against": {
+              "matches": 832,
+              "mean": 12.507,
+              "sd": 5.387,
+              "p20": 8,
+              "median": 12,
+              "p80": 17
+            }
+          },
+          "shotsOnTarget": {
+            "for": {
+              "matches": 832,
+              "mean": 4.362,
+              "sd": 2.429,
+              "p20": 2,
+              "median": 4,
+              "p80": 6
+            },
+            "against": {
+              "matches": 832,
+              "mean": 4.362,
+              "sd": 2.429,
+              "p20": 2,
+              "median": 4,
+              "p80": 6
+            }
+          },
+          "wonCorners": {
+            "for": {
+              "matches": 832,
+              "mean": 4.888,
+              "sd": 2.864,
+              "p20": 2,
+              "median": 5,
+              "p80": 7
+            },
+            "against": {
+              "matches": 832,
+              "mean": 4.888,
+              "sd": 2.864,
+              "p20": 2,
+              "median": 5,
+              "p80": 7
+            }
+          },
+          "foulsCommitted": {
+            "for": {
+              "matches": 832,
+              "mean": 12.572,
+              "sd": 4,
+              "p20": 9,
+              "median": 12,
+              "p80": 16
+            },
+            "against": {
+              "matches": 832,
+              "mean": 12.572,
+              "sd": 4,
+              "p20": 9,
+              "median": 12,
+              "p80": 16
+            }
+          },
+          "yellowCards": {
+            "for": {
+              "matches": 832,
+              "mean": 2.123,
+              "sd": 1.387,
+              "p20": 1,
+              "median": 2,
+              "p80": 3
+            },
+            "against": {
+              "matches": 832,
+              "mean": 2.123,
+              "sd": 1.387,
+              "p20": 1,
+              "median": 2,
+              "p80": 3
+            }
+          }
+        },
+        "home": {
+          "goals": {
+            "for": {
+              "matches": 416,
+              "mean": 1.587,
+              "sd": 1.212,
+              "p20": 1,
+              "median": 1,
+              "p80": 3
+            },
+            "against": {
+              "matches": 416,
+              "mean": 1.132,
+              "sd": 1.012,
+              "p20": 0,
+              "median": 1,
+              "p80": 2
+            }
+          },
+          "totalShots": {
+            "for": {
+              "matches": 416,
+              "mean": 13.892,
+              "sd": 5.335,
+              "p20": 9,
+              "median": 14,
+              "p80": 18
+            },
+            "against": {
+              "matches": 416,
+              "mean": 11.123,
+              "sd": 5.073,
+              "p20": 7,
+              "median": 10,
+              "p80": 15
+            }
+          },
+          "shotsOnTarget": {
+            "for": {
+              "matches": 416,
+              "mean": 4.938,
+              "sd": 2.451,
+              "p20": 3,
+              "median": 5,
+              "p80": 7
+            },
+            "against": {
+              "matches": 416,
+              "mean": 3.786,
+              "sd": 2.266,
+              "p20": 2,
+              "median": 4,
+              "p80": 6
+            }
+          },
+          "wonCorners": {
+            "for": {
+              "matches": 416,
+              "mean": 5.476,
+              "sd": 3.041,
+              "p20": 3,
+              "median": 5,
+              "p80": 8
+            },
+            "against": {
+              "matches": 416,
+              "mean": 4.3,
+              "sd": 2.544,
+              "p20": 2,
+              "median": 4,
+              "p80": 6
+            }
+          },
+          "foulsCommitted": {
+            "for": {
+              "matches": 416,
+              "mean": 12.401,
+              "sd": 3.83,
+              "p20": 9,
+              "median": 12,
+              "p80": 16
+            },
+            "against": {
+              "matches": 416,
+              "mean": 12.743,
+              "sd": 4.155,
+              "p20": 9,
+              "median": 13,
+              "p80": 16
+            }
+          },
+          "yellowCards": {
+            "for": {
+              "matches": 416,
+              "mean": 1.969,
+              "sd": 1.283,
+              "p20": 1,
+              "median": 2,
+              "p80": 3
+            },
+            "against": {
+              "matches": 416,
+              "mean": 2.276,
+              "sd": 1.469,
+              "p20": 1,
+              "median": 2,
+              "p80": 3
+            }
+          }
+        },
+        "away": {
+          "goals": {
+            "for": {
+              "matches": 416,
+              "mean": 1.132,
+              "sd": 1.012,
+              "p20": 0,
+              "median": 1,
+              "p80": 2
+            },
+            "against": {
+              "matches": 416,
+              "mean": 1.587,
+              "sd": 1.212,
+              "p20": 1,
+              "median": 1,
+              "p80": 3
+            }
+          },
+          "totalShots": {
+            "for": {
+              "matches": 416,
+              "mean": 11.123,
+              "sd": 5.073,
+              "p20": 7,
+              "median": 10,
+              "p80": 15
+            },
+            "against": {
+              "matches": 416,
+              "mean": 13.892,
+              "sd": 5.335,
+              "p20": 9,
+              "median": 14,
+              "p80": 18
+            }
+          },
+          "shotsOnTarget": {
+            "for": {
+              "matches": 416,
+              "mean": 3.786,
+              "sd": 2.266,
+              "p20": 2,
+              "median": 4,
+              "p80": 6
+            },
+            "against": {
+              "matches": 416,
+              "mean": 4.938,
+              "sd": 2.451,
+              "p20": 3,
+              "median": 5,
+              "p80": 7
+            }
+          },
+          "wonCorners": {
+            "for": {
+              "matches": 416,
+              "mean": 4.3,
+              "sd": 2.544,
+              "p20": 2,
+              "median": 4,
+              "p80": 6
+            },
+            "against": {
+              "matches": 416,
+              "mean": 5.476,
+              "sd": 3.041,
+              "p20": 3,
+              "median": 5,
+              "p80": 8
+            }
+          },
+          "foulsCommitted": {
+            "for": {
+              "matches": 416,
+              "mean": 12.743,
+              "sd": 4.155,
+              "p20": 9,
+              "median": 13,
+              "p80": 16
+            },
+            "against": {
+              "matches": 416,
+              "mean": 12.401,
+              "sd": 3.83,
+              "p20": 9,
+              "median": 12,
+              "p80": 16
+            }
+          },
+          "yellowCards": {
+            "for": {
+              "matches": 416,
+              "mean": 2.276,
+              "sd": 1.469,
+              "p20": 1,
+              "median": 2,
+              "p80": 3
+            },
+            "against": {
+              "matches": 416,
+              "mean": 1.969,
+              "sd": 1.283,
+              "p20": 1,
+              "median": 2,
+              "p80": 3
+            }
+          }
+        }
+      }
+    },
+    "ita.1": {
+      "league": "ita.1",
+      "leagueName": "Serie A",
+      "matches": 406,
+      "venues": {
+        "overall": {
+          "goals": {
+            "for": {
+              "matches": 812,
+              "mean": 1.224,
+              "sd": 1.137,
+              "p20": 0,
+              "median": 1,
+              "p80": 2
+            },
+            "against": {
+              "matches": 812,
+              "mean": 1.224,
+              "sd": 1.137,
+              "p20": 0,
+              "median": 1,
+              "p80": 2
+            }
+          },
+          "totalShots": {
+            "for": {
+              "matches": 812,
+              "mean": 12.463,
+              "sd": 5.384,
+              "p20": 8,
+              "median": 12,
+              "p80": 16
+            },
+            "against": {
+              "matches": 812,
+              "mean": 12.463,
+              "sd": 5.384,
+              "p20": 8,
+              "median": 12,
+              "p80": 16
+            }
+          },
+          "shotsOnTarget": {
+            "for": {
+              "matches": 812,
+              "mean": 4.069,
+              "sd": 2.314,
+              "p20": 2,
+              "median": 4,
+              "p80": 6
+            },
+            "against": {
+              "matches": 812,
+              "mean": 4.069,
+              "sd": 2.314,
+              "p20": 2,
+              "median": 4,
+              "p80": 6
+            }
+          },
+          "wonCorners": {
+            "for": {
+              "matches": 812,
+              "mean": 4.429,
+              "sd": 2.734,
+              "p20": 2,
+              "median": 4,
+              "p80": 7
+            },
+            "against": {
+              "matches": 812,
+              "mean": 4.429,
+              "sd": 2.734,
+              "p20": 2,
+              "median": 4,
+              "p80": 7
+            }
+          },
+          "foulsCommitted": {
+            "for": {
+              "matches": 812,
+              "mean": 12.596,
+              "sd": 4.098,
+              "p20": 9,
+              "median": 13,
+              "p80": 16
+            },
+            "against": {
+              "matches": 812,
+              "mean": 12.596,
+              "sd": 4.098,
+              "p20": 9,
+              "median": 13,
+              "p80": 16
+            }
+          },
+          "yellowCards": {
+            "for": {
+              "matches": 812,
+              "mean": 1.781,
+              "sd": 1.214,
+              "p20": 1,
+              "median": 2,
+              "p80": 3
+            },
+            "against": {
+              "matches": 812,
+              "mean": 1.781,
+              "sd": 1.214,
+              "p20": 1,
+              "median": 2,
+              "p80": 3
+            }
+          }
+        },
+        "home": {
+          "goals": {
+            "for": {
+              "matches": 406,
+              "mean": 1.278,
+              "sd": 1.211,
+              "p20": 0,
+              "median": 1,
+              "p80": 2
+            },
+            "against": {
+              "matches": 406,
+              "mean": 1.17,
+              "sd": 1.054,
+              "p20": 0,
+              "median": 1,
+              "p80": 2
+            }
+          },
+          "totalShots": {
+            "for": {
+              "matches": 406,
+              "mean": 13.754,
+              "sd": 5.679,
+              "p20": 9,
+              "median": 13,
+              "p80": 18
+            },
+            "against": {
+              "matches": 406,
+              "mean": 11.172,
+              "sd": 4.733,
+              "p20": 7,
+              "median": 11,
+              "p80": 15
+            }
+          },
+          "shotsOnTarget": {
+            "for": {
+              "matches": 406,
+              "mean": 4.431,
+              "sd": 2.467,
+              "p20": 2,
+              "median": 4,
+              "p80": 7
+            },
+            "against": {
+              "matches": 406,
+              "mean": 3.707,
+              "sd": 2.087,
+              "p20": 2,
+              "median": 3,
+              "p80": 5
+            }
+          },
+          "wonCorners": {
+            "for": {
+              "matches": 406,
+              "mean": 4.966,
+              "sd": 2.873,
+              "p20": 2,
+              "median": 4.5,
+              "p80": 7
+            },
+            "against": {
+              "matches": 406,
+              "mean": 3.892,
+              "sd": 2.474,
+              "p20": 2,
+              "median": 4,
+              "p80": 6
+            }
+          },
+          "foulsCommitted": {
+            "for": {
+              "matches": 406,
+              "mean": 12.35,
+              "sd": 3.815,
+              "p20": 9,
+              "median": 12,
+              "p80": 16
+            },
+            "against": {
+              "matches": 406,
+              "mean": 12.842,
+              "sd": 4.349,
+              "p20": 9,
+              "median": 13,
+              "p80": 16
+            }
+          },
+          "yellowCards": {
+            "for": {
+              "matches": 406,
+              "mean": 1.677,
+              "sd": 1.158,
+              "p20": 1,
+              "median": 2,
+              "p80": 3
+            },
+            "against": {
+              "matches": 406,
+              "mean": 1.884,
+              "sd": 1.259,
+              "p20": 1,
+              "median": 2,
+              "p80": 3
+            }
+          }
+        },
+        "away": {
+          "goals": {
+            "for": {
+              "matches": 406,
+              "mean": 1.17,
+              "sd": 1.054,
+              "p20": 0,
+              "median": 1,
+              "p80": 2
+            },
+            "against": {
+              "matches": 406,
+              "mean": 1.278,
+              "sd": 1.211,
+              "p20": 0,
+              "median": 1,
+              "p80": 2
+            }
+          },
+          "totalShots": {
+            "for": {
+              "matches": 406,
+              "mean": 11.172,
+              "sd": 4.733,
+              "p20": 7,
+              "median": 11,
+              "p80": 15
+            },
+            "against": {
+              "matches": 406,
+              "mean": 13.754,
+              "sd": 5.679,
+              "p20": 9,
+              "median": 13,
+              "p80": 18
+            }
+          },
+          "shotsOnTarget": {
+            "for": {
+              "matches": 406,
+              "mean": 3.707,
+              "sd": 2.087,
+              "p20": 2,
+              "median": 3,
+              "p80": 5
+            },
+            "against": {
+              "matches": 406,
+              "mean": 4.431,
+              "sd": 2.467,
+              "p20": 2,
+              "median": 4,
+              "p80": 7
+            }
+          },
+          "wonCorners": {
+            "for": {
+              "matches": 406,
+              "mean": 3.892,
+              "sd": 2.474,
+              "p20": 2,
+              "median": 4,
+              "p80": 6
+            },
+            "against": {
+              "matches": 406,
+              "mean": 4.966,
+              "sd": 2.873,
+              "p20": 2,
+              "median": 4.5,
+              "p80": 7
+            }
+          },
+          "foulsCommitted": {
+            "for": {
+              "matches": 406,
+              "mean": 12.842,
+              "sd": 4.349,
+              "p20": 9,
+              "median": 13,
+              "p80": 16
+            },
+            "against": {
+              "matches": 406,
+              "mean": 12.35,
+              "sd": 3.815,
+              "p20": 9,
+              "median": 12,
+              "p80": 16
+            }
+          },
+          "yellowCards": {
+            "for": {
+              "matches": 406,
+              "mean": 1.884,
+              "sd": 1.259,
+              "p20": 1,
+              "median": 2,
+              "p80": 3
+            },
+            "against": {
+              "matches": 406,
+              "mean": 1.677,
+              "sd": 1.158,
+              "p20": 1,
+              "median": 2,
+              "p80": 3
+            }
+          }
+        }
+      }
+    },
+    "eng.1": {
+      "league": "eng.1",
+      "leagueName": "Premier League",
+      "matches": 409,
+      "venues": {
+        "overall": {
+          "goals": {
+            "for": {
+              "matches": 818,
+              "mean": 1.378,
+              "sd": 1.143,
+              "p20": 0,
+              "median": 1,
+              "p80": 2
+            },
+            "against": {
+              "matches": 818,
+              "mean": 1.378,
+              "sd": 1.143,
+              "p20": 0,
+              "median": 1,
+              "p80": 2
+            }
+          },
+          "totalShots": {
+            "for": {
+              "matches": 818,
+              "mean": 12.589,
+              "sd": 5.003,
+              "p20": 8,
+              "median": 12,
+              "p80": 16
+            },
+            "against": {
+              "matches": 818,
+              "mean": 12.589,
+              "sd": 5.003,
+              "p20": 8,
+              "median": 12,
+              "p80": 16
+            }
+          },
+          "shotsOnTarget": {
+            "for": {
+              "matches": 818,
+              "mean": 4.188,
+              "sd": 2.203,
+              "p20": 2,
+              "median": 4,
+              "p80": 6
+            },
+            "against": {
+              "matches": 818,
+              "mean": 4.188,
+              "sd": 2.203,
+              "p20": 2,
+              "median": 4,
+              "p80": 6
+            }
+          },
+          "wonCorners": {
+            "for": {
+              "matches": 818,
+              "mean": 4.963,
+              "sd": 2.734,
+              "p20": 3,
+              "median": 5,
+              "p80": 7
+            },
+            "against": {
+              "matches": 818,
+              "mean": 4.963,
+              "sd": 2.734,
+              "p20": 3,
+              "median": 5,
+              "p80": 7
+            }
+          },
+          "foulsCommitted": {
+            "for": {
+              "matches": 818,
+              "mean": 10.875,
+              "sd": 3.363,
+              "p20": 8,
+              "median": 11,
+              "p80": 14
+            },
+            "against": {
+              "matches": 818,
+              "mean": 10.875,
+              "sd": 3.363,
+              "p20": 8,
+              "median": 11,
+              "p80": 14
+            }
+          },
+          "yellowCards": {
+            "for": {
+              "matches": 818,
+              "mean": 1.875,
+              "sd": 1.282,
+              "p20": 1,
+              "median": 2,
+              "p80": 3
+            },
+            "against": {
+              "matches": 818,
+              "mean": 1.875,
+              "sd": 1.282,
+              "p20": 1,
+              "median": 2,
+              "p80": 3
+            }
+          }
+        },
+        "home": {
+          "goals": {
+            "for": {
+              "matches": 409,
+              "mean": 1.531,
+              "sd": 1.178,
+              "p20": 0,
+              "median": 1,
+              "p80": 3
+            },
+            "against": {
+              "matches": 409,
+              "mean": 1.225,
+              "sd": 1.085,
+              "p20": 0,
+              "median": 1,
+              "p80": 2
+            }
+          },
+          "totalShots": {
+            "for": {
+              "matches": 409,
+              "mean": 13.927,
+              "sd": 5.008,
+              "p20": 10,
+              "median": 14,
+              "p80": 18
+            },
+            "against": {
+              "matches": 409,
+              "mean": 11.252,
+              "sd": 4.627,
+              "p20": 7,
+              "median": 11,
+              "p80": 15
+            }
+          },
+          "shotsOnTarget": {
+            "for": {
+              "matches": 409,
+              "mean": 4.499,
+              "sd": 2.238,
+              "p20": 3,
+              "median": 4,
+              "p80": 6
+            },
+            "against": {
+              "matches": 409,
+              "mean": 3.878,
+              "sd": 2.123,
+              "p20": 2,
+              "median": 4,
+              "p80": 6
+            }
+          },
+          "wonCorners": {
+            "for": {
+              "matches": 409,
+              "mean": 5.35,
+              "sd": 2.705,
+              "p20": 3,
+              "median": 5,
+              "p80": 8
+            },
+            "against": {
+              "matches": 409,
+              "mean": 4.577,
+              "sd": 2.707,
+              "p20": 2,
+              "median": 4,
+              "p80": 6
+            }
+          },
+          "foulsCommitted": {
+            "for": {
+              "matches": 409,
+              "mean": 10.707,
+              "sd": 3.328,
+              "p20": 8,
+              "median": 11,
+              "p80": 13
+            },
+            "against": {
+              "matches": 409,
+              "mean": 11.044,
+              "sd": 3.39,
+              "p20": 8,
+              "median": 11,
+              "p80": 14
+            }
+          },
+          "yellowCards": {
+            "for": {
+              "matches": 409,
+              "mean": 1.665,
+              "sd": 1.23,
+              "p20": 1,
+              "median": 2,
+              "p80": 3
+            },
+            "against": {
+              "matches": 409,
+              "mean": 2.086,
+              "sd": 1.299,
+              "p20": 1,
+              "median": 2,
+              "p80": 3
+            }
+          }
+        },
+        "away": {
+          "goals": {
+            "for": {
+              "matches": 409,
+              "mean": 1.225,
+              "sd": 1.085,
+              "p20": 0,
+              "median": 1,
+              "p80": 2
+            },
+            "against": {
+              "matches": 409,
+              "mean": 1.531,
+              "sd": 1.178,
+              "p20": 0,
+              "median": 1,
+              "p80": 3
+            }
+          },
+          "totalShots": {
+            "for": {
+              "matches": 409,
+              "mean": 11.252,
+              "sd": 4.627,
+              "p20": 7,
+              "median": 11,
+              "p80": 15
+            },
+            "against": {
+              "matches": 409,
+              "mean": 13.927,
+              "sd": 5.008,
+              "p20": 10,
+              "median": 14,
+              "p80": 18
+            }
+          },
+          "shotsOnTarget": {
+            "for": {
+              "matches": 409,
+              "mean": 3.878,
+              "sd": 2.123,
+              "p20": 2,
+              "median": 4,
+              "p80": 6
+            },
+            "against": {
+              "matches": 409,
+              "mean": 4.499,
+              "sd": 2.238,
+              "p20": 3,
+              "median": 4,
+              "p80": 6
+            }
+          },
+          "wonCorners": {
+            "for": {
+              "matches": 409,
+              "mean": 4.577,
+              "sd": 2.707,
+              "p20": 2,
+              "median": 4,
+              "p80": 6
+            },
+            "against": {
+              "matches": 409,
+              "mean": 5.35,
+              "sd": 2.705,
+              "p20": 3,
+              "median": 5,
+              "p80": 8
+            }
+          },
+          "foulsCommitted": {
+            "for": {
+              "matches": 409,
+              "mean": 11.044,
+              "sd": 3.39,
+              "p20": 8,
+              "median": 11,
+              "p80": 14
+            },
+            "against": {
+              "matches": 409,
+              "mean": 10.707,
+              "sd": 3.328,
+              "p20": 8,
+              "median": 11,
+              "p80": 13
+            }
+          },
+          "yellowCards": {
+            "for": {
+              "matches": 409,
+              "mean": 2.086,
+              "sd": 1.299,
+              "p20": 1,
+              "median": 2,
+              "p80": 3
+            },
+            "against": {
+              "matches": 409,
+              "mean": 1.665,
+              "sd": 1.23,
+              "p20": 1,
+              "median": 2,
+              "p80": 3
+            }
+          }
+        }
+      }
+    },
+    "tur.1": {
+      "league": "tur.1",
+      "leagueName": "Süper Lig",
+      "matches": 338,
+      "venues": {
+        "overall": {
+          "goals": {
+            "for": {
+              "matches": 676,
+              "mean": 1.337,
+              "sd": 1.155,
+              "p20": 0,
+              "median": 1,
+              "p80": 2
+            },
+            "against": {
+              "matches": 676,
+              "mean": 1.337,
+              "sd": 1.155,
+              "p20": 0,
+              "median": 1,
+              "p80": 2
+            }
+          },
+          "totalShots": {
+            "for": {
+              "matches": 676,
+              "mean": 12.698,
+              "sd": 5.604,
+              "p20": 8,
+              "median": 12,
+              "p80": 17
+            },
+            "against": {
+              "matches": 676,
+              "mean": 12.698,
+              "sd": 5.604,
+              "p20": 8,
+              "median": 12,
+              "p80": 17
+            }
+          },
+          "shotsOnTarget": {
+            "for": {
+              "matches": 676,
+              "mean": 4.209,
+              "sd": 2.572,
+              "p20": 2,
+              "median": 4,
+              "p80": 6
+            },
+            "against": {
+              "matches": 676,
+              "mean": 4.209,
+              "sd": 2.572,
+              "p20": 2,
+              "median": 4,
+              "p80": 6
+            }
+          },
+          "wonCorners": {
+            "for": {
+              "matches": 676,
+              "mean": 4.63,
+              "sd": 2.808,
+              "p20": 2,
+              "median": 4,
+              "p80": 7
+            },
+            "against": {
+              "matches": 676,
+              "mean": 4.63,
+              "sd": 2.808,
+              "p20": 2,
+              "median": 4,
+              "p80": 7
+            }
+          },
+          "foulsCommitted": {
+            "for": {
+              "matches": 676,
+              "mean": 13.32,
+              "sd": 4.365,
+              "p20": 10,
+              "median": 13,
+              "p80": 17
+            },
+            "against": {
+              "matches": 676,
+              "mean": 13.32,
+              "sd": 4.365,
+              "p20": 10,
+              "median": 13,
+              "p80": 17
+            }
+          },
+          "yellowCards": {
+            "for": {
+              "matches": 676,
+              "mean": 2.194,
+              "sd": 1.46,
+              "p20": 1,
+              "median": 2,
+              "p80": 3
+            },
+            "against": {
+              "matches": 676,
+              "mean": 2.194,
+              "sd": 1.46,
+              "p20": 1,
+              "median": 2,
+              "p80": 3
+            }
+          }
+        },
+        "home": {
+          "goals": {
+            "for": {
+              "matches": 338,
+              "mean": 1.456,
+              "sd": 1.182,
+              "p20": 0,
+              "median": 1,
+              "p80": 2
+            },
+            "against": {
+              "matches": 338,
+              "mean": 1.219,
+              "sd": 1.114,
+              "p20": 0,
+              "median": 1,
+              "p80": 2
+            }
+          },
+          "totalShots": {
+            "for": {
+              "matches": 338,
+              "mean": 14.107,
+              "sd": 5.782,
+              "p20": 10,
+              "median": 13,
+              "p80": 18
+            },
+            "against": {
+              "matches": 338,
+              "mean": 11.29,
+              "sd": 5.042,
+              "p20": 7,
+              "median": 11,
+              "p80": 15
+            }
+          },
+          "shotsOnTarget": {
+            "for": {
+              "matches": 338,
+              "mean": 4.686,
+              "sd": 2.585,
+              "p20": 2.4,
+              "median": 4,
+              "p80": 7
+            },
+            "against": {
+              "matches": 338,
+              "mean": 3.731,
+              "sd": 2.469,
+              "p20": 2,
+              "median": 3,
+              "p80": 5
+            }
+          },
+          "wonCorners": {
+            "for": {
+              "matches": 338,
+              "mean": 5.074,
+              "sd": 2.937,
+              "p20": 3,
+              "median": 5,
+              "p80": 8
+            },
+            "against": {
+              "matches": 338,
+              "mean": 4.186,
+              "sd": 2.599,
+              "p20": 2,
+              "median": 4,
+              "p80": 6
+            }
+          },
+          "foulsCommitted": {
+            "for": {
+              "matches": 338,
+              "mean": 13.269,
+              "sd": 4.412,
+              "p20": 10,
+              "median": 13,
+              "p80": 17
+            },
+            "against": {
+              "matches": 338,
+              "mean": 13.37,
+              "sd": 4.318,
+              "p20": 10,
+              "median": 14,
+              "p80": 17
+            }
+          },
+          "yellowCards": {
+            "for": {
+              "matches": 338,
+              "mean": 2.068,
+              "sd": 1.347,
+              "p20": 1,
+              "median": 2,
+              "p80": 3
+            },
+            "against": {
+              "matches": 338,
+              "mean": 2.32,
+              "sd": 1.555,
+              "p20": 1,
+              "median": 2,
+              "p80": 3
+            }
+          }
+        },
+        "away": {
+          "goals": {
+            "for": {
+              "matches": 338,
+              "mean": 1.219,
+              "sd": 1.114,
+              "p20": 0,
+              "median": 1,
+              "p80": 2
+            },
+            "against": {
+              "matches": 338,
+              "mean": 1.456,
+              "sd": 1.182,
+              "p20": 0,
+              "median": 1,
+              "p80": 2
+            }
+          },
+          "totalShots": {
+            "for": {
+              "matches": 338,
+              "mean": 11.29,
+              "sd": 5.042,
+              "p20": 7,
+              "median": 11,
+              "p80": 15
+            },
+            "against": {
+              "matches": 338,
+              "mean": 14.107,
+              "sd": 5.782,
+              "p20": 10,
+              "median": 13,
+              "p80": 18
+            }
+          },
+          "shotsOnTarget": {
+            "for": {
+              "matches": 338,
+              "mean": 3.731,
+              "sd": 2.469,
+              "p20": 2,
+              "median": 3,
+              "p80": 5
+            },
+            "against": {
+              "matches": 338,
+              "mean": 4.686,
+              "sd": 2.585,
+              "p20": 2.4,
+              "median": 4,
+              "p80": 7
+            }
+          },
+          "wonCorners": {
+            "for": {
+              "matches": 338,
+              "mean": 4.186,
+              "sd": 2.599,
+              "p20": 2,
+              "median": 4,
+              "p80": 6
+            },
+            "against": {
+              "matches": 338,
+              "mean": 5.074,
+              "sd": 2.937,
+              "p20": 3,
+              "median": 5,
+              "p80": 8
+            }
+          },
+          "foulsCommitted": {
+            "for": {
+              "matches": 338,
+              "mean": 13.37,
+              "sd": 4.318,
+              "p20": 10,
+              "median": 14,
+              "p80": 17
+            },
+            "against": {
+              "matches": 338,
+              "mean": 13.269,
+              "sd": 4.412,
+              "p20": 10,
+              "median": 13,
+              "p80": 17
+            }
+          },
+          "yellowCards": {
+            "for": {
+              "matches": 338,
+              "mean": 2.32,
+              "sd": 1.555,
+              "p20": 1,
+              "median": 2,
+              "p80": 3
+            },
+            "against": {
+              "matches": 338,
+              "mean": 2.068,
+              "sd": 1.347,
+              "p20": 1,
+              "median": 2,
+              "p80": 3
+            }
+          }
+        }
+      }
+    },
+    "ger.1": {
+      "league": "ger.1",
+      "leagueName": "Bundesliga",
+      "matches": 323,
+      "venues": {
+        "overall": {
+          "goals": {
+            "for": {
+              "matches": 646,
+              "mean": 1.635,
+              "sd": 1.358,
+              "p20": 0,
+              "median": 1,
+              "p80": 3
+            },
+            "against": {
+              "matches": 646,
+              "mean": 1.635,
+              "sd": 1.358,
+              "p20": 0,
+              "median": 1,
+              "p80": 3
+            }
+          },
+          "totalShots": {
+            "for": {
+              "matches": 646,
+              "mean": 13.378,
+              "sd": 5.208,
+              "p20": 9,
+              "median": 13,
+              "p80": 18
+            },
+            "against": {
+              "matches": 646,
+              "mean": 13.378,
+              "sd": 5.208,
+              "p20": 9,
+              "median": 13,
+              "p80": 18
+            }
+          },
+          "shotsOnTarget": {
+            "for": {
+              "matches": 646,
+              "mean": 4.808,
+              "sd": 2.626,
+              "p20": 3,
+              "median": 4,
+              "p80": 7
+            },
+            "against": {
+              "matches": 646,
+              "mean": 4.808,
+              "sd": 2.626,
+              "p20": 3,
+              "median": 4,
+              "p80": 7
+            }
+          },
+          "wonCorners": {
+            "for": {
+              "matches": 646,
+              "mean": 4.929,
+              "sd": 2.882,
+              "p20": 2,
+              "median": 5,
+              "p80": 7
+            },
+            "against": {
+              "matches": 646,
+              "mean": 4.929,
+              "sd": 2.882,
+              "p20": 2,
+              "median": 5,
+              "p80": 7
+            }
+          },
+          "foulsCommitted": {
+            "for": {
+              "matches": 646,
+              "mean": 10.495,
+              "sd": 3.572,
+              "p20": 7,
+              "median": 10,
+              "p80": 13
+            },
+            "against": {
+              "matches": 646,
+              "mean": 10.495,
+              "sd": 3.572,
+              "p20": 7,
+              "median": 10,
+              "p80": 13
+            }
+          },
+          "yellowCards": {
+            "for": {
+              "matches": 646,
+              "mean": 1.82,
+              "sd": 1.32,
+              "p20": 1,
+              "median": 2,
+              "p80": 3
+            },
+            "against": {
+              "matches": 646,
+              "mean": 1.82,
+              "sd": 1.32,
+              "p20": 1,
+              "median": 2,
+              "p80": 3
+            }
+          }
+        },
+        "home": {
+          "goals": {
+            "for": {
+              "matches": 323,
+              "mean": 1.814,
+              "sd": 1.413,
+              "p20": 1,
+              "median": 2,
+              "p80": 3
+            },
+            "against": {
+              "matches": 323,
+              "mean": 1.455,
+              "sd": 1.276,
+              "p20": 0,
+              "median": 1,
+              "p80": 3
+            }
+          },
+          "totalShots": {
+            "for": {
+              "matches": 323,
+              "mean": 14.824,
+              "sd": 5.459,
+              "p20": 10,
+              "median": 14,
+              "p80": 19
+            },
+            "against": {
+              "matches": 323,
+              "mean": 11.932,
+              "sd": 4.502,
+              "p20": 8,
+              "median": 11,
+              "p80": 16
+            }
+          },
+          "shotsOnTarget": {
+            "for": {
+              "matches": 323,
+              "mean": 5.427,
+              "sd": 2.713,
+              "p20": 3,
+              "median": 5,
+              "p80": 8
+            },
+            "against": {
+              "matches": 323,
+              "mean": 4.189,
+              "sd": 2.38,
+              "p20": 2,
+              "median": 4,
+              "p80": 6
+            }
+          },
+          "wonCorners": {
+            "for": {
+              "matches": 323,
+              "mean": 5.591,
+              "sd": 3.115,
+              "p20": 3,
+              "median": 5,
+              "p80": 8
+            },
+            "against": {
+              "matches": 323,
+              "mean": 4.266,
+              "sd": 2.455,
+              "p20": 2,
+              "median": 4,
+              "p80": 6
+            }
+          },
+          "foulsCommitted": {
+            "for": {
+              "matches": 323,
+              "mean": 10.396,
+              "sd": 3.472,
+              "p20": 7,
+              "median": 10,
+              "p80": 13
+            },
+            "against": {
+              "matches": 323,
+              "mean": 10.594,
+              "sd": 3.667,
+              "p20": 7,
+              "median": 10,
+              "p80": 13
+            }
+          },
+          "yellowCards": {
+            "for": {
+              "matches": 323,
+              "mean": 1.74,
+              "sd": 1.319,
+              "p20": 1,
+              "median": 2,
+              "p80": 3
+            },
+            "against": {
+              "matches": 323,
+              "mean": 1.901,
+              "sd": 1.315,
+              "p20": 1,
+              "median": 2,
+              "p80": 3
+            }
+          }
+        },
+        "away": {
+          "goals": {
+            "for": {
+              "matches": 323,
+              "mean": 1.455,
+              "sd": 1.276,
+              "p20": 0,
+              "median": 1,
+              "p80": 3
+            },
+            "against": {
+              "matches": 323,
+              "mean": 1.814,
+              "sd": 1.413,
+              "p20": 1,
+              "median": 2,
+              "p80": 3
+            }
+          },
+          "totalShots": {
+            "for": {
+              "matches": 323,
+              "mean": 11.932,
+              "sd": 4.502,
+              "p20": 8,
+              "median": 11,
+              "p80": 16
+            },
+            "against": {
+              "matches": 323,
+              "mean": 14.824,
+              "sd": 5.459,
+              "p20": 10,
+              "median": 14,
+              "p80": 19
+            }
+          },
+          "shotsOnTarget": {
+            "for": {
+              "matches": 323,
+              "mean": 4.189,
+              "sd": 2.38,
+              "p20": 2,
+              "median": 4,
+              "p80": 6
+            },
+            "against": {
+              "matches": 323,
+              "mean": 5.427,
+              "sd": 2.713,
+              "p20": 3,
+              "median": 5,
+              "p80": 8
+            }
+          },
+          "wonCorners": {
+            "for": {
+              "matches": 323,
+              "mean": 4.266,
+              "sd": 2.455,
+              "p20": 2,
+              "median": 4,
+              "p80": 6
+            },
+            "against": {
+              "matches": 323,
+              "mean": 5.591,
+              "sd": 3.115,
+              "p20": 3,
+              "median": 5,
+              "p80": 8
+            }
+          },
+          "foulsCommitted": {
+            "for": {
+              "matches": 323,
+              "mean": 10.594,
+              "sd": 3.667,
+              "p20": 7,
+              "median": 10,
+              "p80": 13
+            },
+            "against": {
+              "matches": 323,
+              "mean": 10.396,
+              "sd": 3.472,
+              "p20": 7,
+              "median": 10,
+              "p80": 13
+            }
+          },
+          "yellowCards": {
+            "for": {
+              "matches": 323,
+              "mean": 1.901,
+              "sd": 1.315,
+              "p20": 1,
+              "median": 2,
+              "p80": 3
+            },
+            "against": {
+              "matches": 323,
+              "mean": 1.74,
+              "sd": 1.319,
+              "p20": 1,
+              "median": 2,
+              "p80": 3
+            }
+          }
+        }
+      }
+    }
+  },
   "profiles": [
     {
       "teamId": "real-madrid",
       "team": "Real Madrid",
       "league": "LaLiga",
+      "leagueCode": "esp.1",
       "matches": 42,
       "currentSeasonMatches": 4,
       "venues": {
@@ -503,6 +2198,7 @@
       "teamId": "inter",
       "team": "Inter",
       "league": "Serie A",
+      "leagueCode": "ita.1",
       "matches": 41,
       "currentSeasonMatches": 3,
       "venues": {
@@ -976,6 +2672,7 @@
       "teamId": "napoli",
       "team": "Napoli",
       "league": "Serie A",
+      "leagueCode": "ita.1",
       "matches": 41,
       "currentSeasonMatches": 3,
       "venues": {
@@ -1449,6 +3146,7 @@
       "teamId": "arsenal",
       "team": "Arsenal",
       "league": "Premier League",
+      "leagueCode": "eng.1",
       "matches": 40,
       "currentSeasonMatches": 2,
       "venues": {
@@ -1922,6 +3620,7 @@
       "teamId": "fenerbahce",
       "team": "Fenerbahçe",
       "league": "Süper Lig",
+      "leagueCode": "tur.1",
       "matches": 38,
       "currentSeasonMatches": 4,
       "venues": {
@@ -2395,6 +4094,7 @@
       "teamId": "roma",
       "team": "Roma",
       "league": "Serie A",
+      "leagueCode": "ita.1",
       "matches": 41,
       "currentSeasonMatches": 3,
       "venues": {
@@ -2868,6 +4568,7 @@
       "teamId": "como",
       "team": "Como",
       "league": "Serie A",
+      "leagueCode": "ita.1",
       "matches": 41,
       "currentSeasonMatches": 3,
       "venues": {
@@ -3341,6 +5042,7 @@
       "teamId": "leipzig",
       "team": "Leipzig",
       "league": "Bundesliga",
+      "leagueCode": "ger.1",
       "matches": 36,
       "currentSeasonMatches": 2,
       "venues": {
@@ -3827,64 +5529,64 @@
       "favorite": "1",
       "confidence": "medium",
       "expectedGoals": {
-        "home": 2.25,
-        "away": 1.4,
-        "total": 3.65,
-        "domesticTotalPrior": 3.58,
+        "home": 2.1,
+        "away": 1.27,
+        "total": 3.37,
+        "domesticTotalPrior": 3.32,
         "method": "lambda Poisson adattate alle probabilità 1X2 UEFA con prior gol domestico"
       },
       "exactScores": [
         {
           "score": "2-1",
-          "probabilityPct": 9.2
+          "probabilityPct": 9.6
         },
         {
           "score": "1-1",
-          "probabilityPct": 8.2
+          "probabilityPct": 9.2
         },
         {
-          "score": "3-1",
-          "probabilityPct": 6.9
+          "score": "2-0",
+          "probabilityPct": 7.5
         }
       ],
       "goals": [
         {
           "threshold": 1.5,
-          "overPct": 87.9,
-          "underPct": 12.1,
+          "overPct": 85,
+          "underPct": 15,
           "market": {
             "overOdds": 1.14,
             "underOdds": 4.75,
             "overNoMarginPct": 80.6,
             "underNoMarginPct": 19.4,
-            "overEdgePct": 7.3,
-            "underEdgePct": -7.3
+            "overEdgePct": 4.4,
+            "underEdgePct": -4.4
           }
         },
         {
           "threshold": 2.5,
-          "overPct": 70.6,
-          "underPct": 29.4,
+          "overPct": 65.5,
+          "underPct": 34.5,
           "market": {
             "overOdds": 1.52,
             "underOdds": 2.4,
             "overNoMarginPct": 61.2,
             "underNoMarginPct": 38.8,
-            "overEdgePct": 9.4,
-            "underEdgePct": -9.4
+            "overEdgePct": 4.3,
+            "underEdgePct": -4.3
           }
         },
         {
           "threshold": 3.5,
-          "overPct": 49.5,
-          "underPct": 50.5,
+          "overPct": 43.6,
+          "underPct": 56.4,
           "market": {
             "overOdds": 2.2,
             "underOdds": 1.57,
             "overNoMarginPct": 41.6,
             "underNoMarginPct": 58.4,
-            "overEdgePct": 7.9,
-            "underEdgePct": -7.9
+            "overEdgePct": 2,
+            "underEdgePct": -2
           }
         }
       ],
@@ -3893,124 +5595,149 @@
           "teamId": "real-madrid",
           "team": "Real Madrid",
           "venue": "home",
-          "expectedGoals": 2.25,
+          "expectedGoals": 2.1,
           "shotsTotal": {
-            "central": 15.48,
-            "sd": 4.34,
-            "min": 11.8,
-            "max": 19.1,
+            "central": 15.25,
+            "sd": 4.36,
+            "min": 11.6,
+            "max": 18.9,
             "interval": "p20-p80-approx",
+            "normalization": {
+              "method": "relative-to-domestic-league",
+              "targetBaseline": 13.823,
+              "currentSeasonReliabilityPct": 40
+            },
             "inputs": [
               {
                 "label": "Real Madrid in casa",
-                "value": 19.048,
-                "weightPct": 45
+                "value": 18.953,
+                "weightPct": 51.8
               },
               {
                 "label": "Inter concede in trasferta",
-                "value": 9.55,
-                "weightPct": 35
+                "value": 9.598,
+                "weightPct": 40.3
               },
               {
                 "label": "ultime 8 Real Madrid",
-                "value": 17.807,
-                "weightPct": 20
+                "value": 19.681,
+                "weightPct": 8
               }
             ]
           },
           "shotsOnTarget": {
-            "central": 5.91,
-            "sd": 2.28,
-            "min": 4,
-            "max": 7.8,
+            "central": 5.58,
+            "sd": 2.14,
+            "min": 3.8,
+            "max": 7.4,
             "interval": "p20-p80-approx",
+            "normalization": {
+              "method": "relative-to-domestic-league",
+              "targetBaseline": 4.684,
+              "currentSeasonReliabilityPct": 40
+            },
             "inputs": [
               {
                 "label": "Real Madrid in casa",
-                "value": 7.857,
-                "weightPct": 45
+                "value": 7.454,
+                "weightPct": 51.8
               },
               {
                 "label": "Inter concede in trasferta",
-                "value": 2.55,
-                "weightPct": 35
+                "value": 2.696,
+                "weightPct": 40.3
               },
               {
                 "label": "ultime 8 Real Madrid",
-                "value": 7.406,
-                "weightPct": 20
+                "value": 7.954,
+                "weightPct": 8
               }
             ]
           },
           "corners": {
-            "central": 5.4,
-            "sd": 2.38,
-            "min": 3.4,
-            "max": 7.4,
+            "central": 5.12,
+            "sd": 2.32,
+            "min": 3.2,
+            "max": 7.1,
             "interval": "p20-p80-approx",
+            "normalization": {
+              "method": "relative-to-domestic-league",
+              "targetBaseline": 5.221,
+              "currentSeasonReliabilityPct": 40
+            },
             "inputs": [
               {
                 "label": "Real Madrid in casa",
-                "value": 6.524,
-                "weightPct": 45
+                "value": 6.22,
+                "weightPct": 51.8
               },
               {
                 "label": "Inter concede in trasferta",
-                "value": 3.1,
-                "weightPct": 35
+                "value": 3.259,
+                "weightPct": 40.3
               },
               {
                 "label": "ultime 8 Real Madrid",
-                "value": 6.874,
-                "weightPct": 20
+                "value": 7.342,
+                "weightPct": 8
               }
             ]
           },
           "fouls": {
-            "central": 10.3,
-            "sd": 3.32,
-            "min": 7.5,
-            "max": 13.1,
+            "central": 10.47,
+            "sd": 3.44,
+            "min": 7.6,
+            "max": 13.4,
             "interval": "p20-p80-approx",
+            "normalization": {
+              "method": "relative-to-domestic-league",
+              "targetBaseline": 12.375,
+              "currentSeasonReliabilityPct": 40
+            },
             "inputs": [
               {
                 "label": "Real Madrid in casa",
-                "value": 9.524,
-                "weightPct": 45
+                "value": 9.504,
+                "weightPct": 51.8
               },
               {
                 "label": "Inter concede in trasferta",
-                "value": 12,
-                "weightPct": 35
+                "value": 12.025,
+                "weightPct": 40.3
               },
               {
                 "label": "ultime 8 Real Madrid",
-                "value": 9.058,
-                "weightPct": 20
+                "value": 8.916,
+                "weightPct": 8
               }
             ]
           },
           "cards": {
-            "central": 1.83,
-            "sd": 1.25,
+            "central": 1.79,
+            "sd": 1.17,
             "min": 0.8,
-            "max": 2.9,
+            "max": 2.8,
             "interval": "p20-p80-approx",
+            "normalization": {
+              "method": "relative-to-domestic-league",
+              "targetBaseline": 1.823,
+              "currentSeasonReliabilityPct": 40
+            },
             "inputs": [
               {
                 "label": "Real Madrid in casa",
-                "value": 1.857,
-                "weightPct": 45
+                "value": 1.719,
+                "weightPct": 51.8
               },
               {
                 "label": "Inter concede in trasferta",
-                "value": 1.75,
-                "weightPct": 35
+                "value": 1.902,
+                "weightPct": 40.3
               },
               {
                 "label": "ultime 8 Real Madrid",
-                "value": 1.916,
-                "weightPct": 20
+                "value": 1.645,
+                "weightPct": 8
               }
             ]
           },
@@ -4018,77 +5745,77 @@
             "shotsTotal": [
               {
                 "threshold": 8.5,
-                "overPct": 95.8,
-                "underPct": 4.2
+                "overPct": 95.1,
+                "underPct": 4.9
               },
               {
                 "threshold": 10.5,
-                "overPct": 88,
-                "underPct": 12
+                "overPct": 86.6,
+                "underPct": 13.4
               },
               {
                 "threshold": 12.5,
-                "overPct": 74.5,
-                "underPct": 25.5
+                "overPct": 72.5,
+                "underPct": 27.5
               },
               {
                 "threshold": 14.5,
-                "overPct": 56.9,
-                "underPct": 43.1
+                "overPct": 54.6,
+                "underPct": 45.4
               },
               {
                 "threshold": 16.5,
-                "overPct": 38.7,
-                "underPct": 61.3
+                "overPct": 36.7,
+                "underPct": 63.3
               }
             ],
             "shotsOnTarget": [
               {
                 "threshold": 2.5,
-                "overPct": 93.4,
-                "underPct": 6.6
+                "overPct": 91.6,
+                "underPct": 8.4
               },
               {
                 "threshold": 3.5,
-                "overPct": 84.1,
-                "underPct": 15.9
+                "overPct": 80.7,
+                "underPct": 19.3
               },
               {
                 "threshold": 4.5,
-                "overPct": 70.3,
-                "underPct": 29.7
+                "overPct": 65.5,
+                "underPct": 34.5
               },
               {
                 "threshold": 5.5,
-                "overPct": 54,
-                "underPct": 46
+                "overPct": 48.5,
+                "underPct": 51.5
               },
               {
                 "threshold": 6.5,
-                "overPct": 37.9,
-                "underPct": 62.1
+                "overPct": 32.7,
+                "underPct": 67.3
               }
             ],
             "corners": [
               {
                 "threshold": 3.5,
-                "overPct": 78,
-                "underPct": 22
+                "overPct": 74.4,
+                "underPct": 25.6
               },
               {
                 "threshold": 4.5,
-                "overPct": 62.1,
-                "underPct": 37.9
+                "overPct": 57.6,
+                "underPct": 42.4
               },
               {
                 "threshold": 5.5,
-                "overPct": 45.2,
-                "underPct": 54.8
+                "overPct": 40.5,
+                "underPct": 59.5
               },
               {
                 "threshold": 6.5,
-                "overPct": 30.1,
-                "underPct": 69.9
+                "overPct": 25.9,
+                "underPct": 74.1
               }
             ]
           }
@@ -4097,124 +5824,149 @@
           "teamId": "inter",
           "team": "Inter",
           "venue": "away",
-          "expectedGoals": 1.4,
+          "expectedGoals": 1.27,
           "shotsTotal": {
-            "central": 15.21,
-            "sd": 5.34,
-            "min": 10.7,
-            "max": 19.7,
+            "central": 14.23,
+            "sd": 4.95,
+            "min": 10.1,
+            "max": 18.4,
             "interval": "p20-p80-approx",
+            "normalization": {
+              "method": "relative-to-domestic-league",
+              "targetBaseline": 11.148,
+              "currentSeasonReliabilityPct": 33.3
+            },
             "inputs": [
               {
                 "label": "Inter in trasferta",
-                "value": 16.75,
-                "weightPct": 45
+                "value": 16.713,
+                "weightPct": 52.5
               },
               {
                 "label": "Real Madrid concede in casa",
-                "value": 10.381,
-                "weightPct": 35
+                "value": 10.404,
+                "weightPct": 40.8
               },
               {
                 "label": "ultime 8 Inter",
-                "value": 20.191,
-                "weightPct": 20
+                "value": 18.06,
+                "weightPct": 6.7
               }
             ]
           },
           "shotsOnTarget": {
-            "central": 4.65,
-            "sd": 1.93,
-            "min": 3,
-            "max": 6.3,
+            "central": 4.38,
+            "sd": 2.06,
+            "min": 2.6,
+            "max": 6.1,
             "interval": "p20-p80-approx",
+            "normalization": {
+              "method": "relative-to-domestic-league",
+              "targetBaseline": 3.747,
+              "currentSeasonReliabilityPct": 33.3
+            },
             "inputs": [
               {
                 "label": "Inter in trasferta",
-                "value": 5.3,
-                "weightPct": 45
+                "value": 5.356,
+                "weightPct": 52.5
               },
               {
                 "label": "Real Madrid concede in casa",
-                "value": 2.952,
-                "weightPct": 35
+                "value": 2.921,
+                "weightPct": 40.8
               },
               {
                 "label": "ultime 8 Inter",
-                "value": 6.152,
-                "weightPct": 20
+                "value": 5.664,
+                "weightPct": 6.7
               }
             ]
           },
           "corners": {
-            "central": 4.85,
-            "sd": 2.5,
-            "min": 2.7,
-            "max": 7,
+            "central": 4.65,
+            "sd": 2.38,
+            "min": 2.6,
+            "max": 6.6,
             "interval": "p20-p80-approx",
+            "normalization": {
+              "method": "relative-to-domestic-league",
+              "targetBaseline": 4.096,
+              "currentSeasonReliabilityPct": 33.3
+            },
             "inputs": [
               {
                 "label": "Inter in trasferta",
-                "value": 5.35,
-                "weightPct": 45
+                "value": 5.63,
+                "weightPct": 52.5
               },
               {
                 "label": "Real Madrid concede in casa",
-                "value": 3.333,
-                "weightPct": 35
+                "value": 3.175,
+                "weightPct": 40.8
               },
               {
                 "label": "ultime 8 Inter",
-                "value": 6.372,
-                "weightPct": 20
+                "value": 5.893,
+                "weightPct": 6.7
               }
             ]
           },
           "fouls": {
-            "central": 11.93,
-            "sd": 4.57,
-            "min": 8.1,
-            "max": 15.8,
+            "central": 12.64,
+            "sd": 4.88,
+            "min": 8.5,
+            "max": 16.7,
             "interval": "p20-p80-approx",
+            "normalization": {
+              "method": "relative-to-domestic-league",
+              "targetBaseline": 12.793,
+              "currentSeasonReliabilityPct": 33.3
+            },
             "inputs": [
               {
                 "label": "Inter in trasferta",
-                "value": 12.65,
-                "weightPct": 45
+                "value": 12.601,
+                "weightPct": 52.5
               },
               {
                 "label": "Real Madrid concede in casa",
-                "value": 13.429,
-                "weightPct": 35
+                "value": 13.481,
+                "weightPct": 40.8
               },
               {
                 "label": "ultime 8 Inter",
-                "value": 7.68,
-                "weightPct": 20
+                "value": 7.8,
+                "weightPct": 6.7
               }
             ]
           },
           "cards": {
-            "central": 1.76,
-            "sd": 1.35,
+            "central": 1.9,
+            "sd": 1.5,
             "min": 0.6,
-            "max": 2.9,
+            "max": 3.2,
             "interval": "p20-p80-approx",
+            "normalization": {
+              "method": "relative-to-domestic-league",
+              "targetBaseline": 2.08,
+              "currentSeasonReliabilityPct": 33.3
+            },
             "inputs": [
               {
                 "label": "Inter in trasferta",
-                "value": 1.95,
-                "weightPct": 45
+                "value": 2.153,
+                "weightPct": 52.5
               },
               {
                 "label": "Real Madrid concede in casa",
-                "value": 1.81,
-                "weightPct": 35
+                "value": 1.654,
+                "weightPct": 40.8
               },
               {
                 "label": "ultime 8 Inter",
-                "value": 1.231,
-                "weightPct": 20
+                "value": 1.438,
+                "weightPct": 6.7
               }
             ]
           },
@@ -4222,100 +5974,100 @@
             "shotsTotal": [
               {
                 "threshold": 8.5,
-                "overPct": 91,
-                "underPct": 9
+                "overPct": 88.6,
+                "underPct": 11.4
               },
               {
                 "threshold": 10.5,
-                "overPct": 80.8,
-                "underPct": 19.2
+                "overPct": 76.5,
+                "underPct": 23.5
               },
               {
                 "threshold": 12.5,
-                "overPct": 67.1,
-                "underPct": 32.9
+                "overPct": 60.9,
+                "underPct": 39.1
               },
               {
                 "threshold": 14.5,
-                "overPct": 51.9,
-                "underPct": 48.1
+                "overPct": 44.6,
+                "underPct": 55.4
               },
               {
                 "threshold": 16.5,
-                "overPct": 37.4,
-                "underPct": 62.6
+                "overPct": 30,
+                "underPct": 70
               }
             ],
             "shotsOnTarget": [
               {
                 "threshold": 2.5,
-                "overPct": 84.3,
-                "underPct": 15.7
+                "overPct": 81.2,
+                "underPct": 18.8
               },
               {
                 "threshold": 3.5,
-                "overPct": 68.2,
-                "underPct": 31.8
+                "overPct": 63.7,
+                "underPct": 36.3
               },
               {
                 "threshold": 4.5,
-                "overPct": 49.6,
-                "underPct": 50.4
+                "overPct": 44.5,
+                "underPct": 55.5
               },
               {
                 "threshold": 5.5,
-                "overPct": 32.3,
-                "underPct": 67.7
+                "overPct": 27.7,
+                "underPct": 72.3
               },
               {
                 "threshold": 6.5,
-                "overPct": 18.9,
-                "underPct": 81.1
+                "overPct": 15.4,
+                "underPct": 84.6
               }
             ],
             "corners": [
               {
                 "threshold": 3.5,
-                "overPct": 67.8,
-                "underPct": 32.2
+                "overPct": 65.6,
+                "underPct": 34.4
               },
               {
                 "threshold": 4.5,
-                "overPct": 51.3,
-                "underPct": 48.7
+                "overPct": 48.4,
+                "underPct": 51.6
               },
               {
                 "threshold": 5.5,
-                "overPct": 36,
-                "underPct": 64
+                "overPct": 32.8,
+                "underPct": 67.2
               },
               {
                 "threshold": 6.5,
-                "overPct": 23.5,
-                "underPct": 76.5
+                "overPct": 20.5,
+                "underPct": 79.5
               }
             ]
           }
         }
       ],
       "cards": {
-        "central": 3.59,
-        "sd": 1.84,
+        "central": 3.69,
+        "sd": 1.9,
         "lines": [
           {
             "threshold": 3.5,
-            "overPct": 48.3,
-            "underPct": 51.7
+            "overPct": 50.4,
+            "underPct": 49.6
           },
           {
             "threshold": 4.5,
-            "overPct": 29.2,
-            "underPct": 70.8
+            "overPct": 31.1,
+            "underPct": 68.9
           },
           {
             "threshold": 5.5,
-            "overPct": 15.5,
-            "underPct": 84.5
+            "overPct": 16.8,
+            "underPct": 83.2
           }
         ],
         "refereeAdjustment": null,
@@ -4379,20 +6131,20 @@
       "favorite": "2",
       "confidence": "high",
       "expectedGoals": {
-        "home": 0.85,
-        "away": 2.07,
-        "total": 2.92,
-        "domesticTotalPrior": 2.79,
+        "home": 0.83,
+        "away": 2.05,
+        "total": 2.87,
+        "domesticTotalPrior": 2.73,
         "method": "lambda Poisson adattate alle probabilità 1X2 UEFA con prior gol domestico"
       },
       "exactScores": [
         {
           "score": "0-2",
-          "probabilityPct": 11.6
+          "probabilityPct": 11.9
         },
         {
           "score": "0-1",
-          "probabilityPct": 11.1
+          "probabilityPct": 11.6
         },
         {
           "score": "1-2",
@@ -4402,41 +6154,41 @@
       "goals": [
         {
           "threshold": 1.5,
-          "overPct": 78.9,
-          "underPct": 21.1,
+          "overPct": 78.1,
+          "underPct": 21.9,
           "market": {
             "overOdds": 1.27,
             "underOdds": 3.25,
             "overNoMarginPct": 71.9,
             "underNoMarginPct": 28.1,
-            "overEdgePct": 7,
-            "underEdgePct": -7
+            "overEdgePct": 6.2,
+            "underEdgePct": -6.2
           }
         },
         {
           "threshold": 2.5,
-          "overPct": 56,
-          "underPct": 44,
+          "overPct": 54.8,
+          "underPct": 45.2,
           "market": {
             "overOdds": 1.85,
             "underOdds": 1.85,
             "overNoMarginPct": 50,
             "underNoMarginPct": 50,
-            "overEdgePct": 6,
-            "underEdgePct": -6
+            "overEdgePct": 4.8,
+            "underEdgePct": -4.8
           }
         },
         {
           "threshold": 3.5,
-          "overPct": 33.6,
-          "underPct": 66.4,
+          "overPct": 32.5,
+          "underPct": 67.5,
           "market": {
             "overOdds": 3.1,
             "underOdds": 1.3,
             "overNoMarginPct": 29.5,
             "underNoMarginPct": 70.5,
-            "overEdgePct": 4.1,
-            "underEdgePct": -4.1
+            "overEdgePct": 3,
+            "underEdgePct": -3
           }
         }
       ],
@@ -4445,124 +6197,149 @@
           "teamId": "napoli",
           "team": "Napoli",
           "venue": "home",
-          "expectedGoals": 0.85,
+          "expectedGoals": 0.83,
           "shotsTotal": {
-            "central": 12.23,
-            "sd": 4.4,
-            "min": 8.5,
-            "max": 15.9,
+            "central": 12.07,
+            "sd": 4.39,
+            "min": 8.4,
+            "max": 15.8,
             "interval": "p20-p80-approx",
+            "normalization": {
+              "method": "relative-to-domestic-league",
+              "targetBaseline": 13.84,
+              "currentSeasonReliabilityPct": 33.3
+            },
             "inputs": [
               {
                 "label": "Napoli in casa",
-                "value": 13.8,
-                "weightPct": 45
+                "value": 13.887,
+                "weightPct": 52.5
               },
               {
                 "label": "Arsenal concede in trasferta",
-                "value": 9.25,
-                "weightPct": 35
+                "value": 9.193,
+                "weightPct": 40.8
               },
               {
                 "label": "ultime 8 Napoli",
-                "value": 13.913,
-                "weightPct": 20
+                "value": 15.451,
+                "weightPct": 6.7
               }
             ]
           },
           "shotsOnTarget": {
-            "central": 4.18,
-            "sd": 2.17,
-            "min": 2.4,
-            "max": 6,
+            "central": 4.12,
+            "sd": 2.14,
+            "min": 2.3,
+            "max": 5.9,
             "interval": "p20-p80-approx",
+            "normalization": {
+              "method": "relative-to-domestic-league",
+              "targetBaseline": 4.465,
+              "currentSeasonReliabilityPct": 33.3
+            },
             "inputs": [
               {
                 "label": "Napoli in casa",
-                "value": 5.05,
-                "weightPct": 45
+                "value": 5.089,
+                "weightPct": 52.5
               },
               {
                 "label": "Arsenal concede in trasferta",
-                "value": 2.7,
-                "weightPct": 35
+                "value": 2.68,
+                "weightPct": 40.8
               },
               {
                 "label": "ultime 8 Napoli",
-                "value": 4.819,
-                "weightPct": 20
+                "value": 5.288,
+                "weightPct": 6.7
               }
             ]
           },
           "corners": {
-            "central": 4.91,
-            "sd": 2.53,
-            "min": 2.8,
-            "max": 7,
+            "central": 5.11,
+            "sd": 2.68,
+            "min": 2.9,
+            "max": 7.4,
             "interval": "p20-p80-approx",
+            "normalization": {
+              "method": "relative-to-domestic-league",
+              "targetBaseline": 5.158,
+              "currentSeasonReliabilityPct": 33.3
+            },
             "inputs": [
               {
                 "label": "Napoli in casa",
-                "value": 6.05,
-                "weightPct": 45
+                "value": 6.284,
+                "weightPct": 52.5
               },
               {
                 "label": "Arsenal concede in trasferta",
-                "value": 3.75,
-                "weightPct": 35
+                "value": 3.615,
+                "weightPct": 40.8
               },
               {
                 "label": "ultime 8 Napoli",
-                "value": 4.37,
-                "weightPct": 20
+                "value": 5.089,
+                "weightPct": 6.7
               }
             ]
           },
           "fouls": {
-            "central": 10.12,
-            "sd": 3.5,
-            "min": 7.2,
-            "max": 13.1,
+            "central": 10.45,
+            "sd": 3.69,
+            "min": 7.3,
+            "max": 13.5,
             "interval": "p20-p80-approx",
+            "normalization": {
+              "method": "relative-to-domestic-league",
+              "targetBaseline": 11.529,
+              "currentSeasonReliabilityPct": 33.3
+            },
             "inputs": [
               {
                 "label": "Napoli in casa",
-                "value": 10.95,
-                "weightPct": 45
+                "value": 10.222,
+                "weightPct": 52.5
               },
               {
                 "label": "Arsenal concede in trasferta",
-                "value": 10.5,
-                "weightPct": 35
+                "value": 11.306,
+                "weightPct": 40.8
               },
               {
                 "label": "ultime 8 Napoli",
-                "value": 7.584,
-                "weightPct": 20
+                "value": 6.941,
+                "weightPct": 6.7
               }
             ]
           },
           "cards": {
-            "central": 1.31,
-            "sd": 0.89,
+            "central": 1.33,
+            "sd": 0.92,
             "min": 0.6,
             "max": 2.1,
             "interval": "p20-p80-approx",
+            "normalization": {
+              "method": "relative-to-domestic-league",
+              "targetBaseline": 1.671,
+              "currentSeasonReliabilityPct": 33.3
+            },
             "inputs": [
               {
                 "label": "Napoli in casa",
-                "value": 1,
-                "weightPct": 45
+                "value": 0.996,
+                "weightPct": 52.5
               },
               {
                 "label": "Arsenal concede in trasferta",
-                "value": 1.8,
-                "weightPct": 35
+                "value": 1.806,
+                "weightPct": 40.8
               },
               {
                 "label": "ultime 8 Napoli",
-                "value": 1.147,
-                "weightPct": 20
+                "value": 1.076,
+                "weightPct": 6.7
               }
             ]
           },
@@ -4570,77 +6347,77 @@
             "shotsTotal": [
               {
                 "threshold": 8.5,
-                "overPct": 79.7,
-                "underPct": 20.3
+                "overPct": 78.5,
+                "underPct": 21.5
               },
               {
                 "threshold": 10.5,
-                "overPct": 62.7,
-                "underPct": 37.3
+                "overPct": 61.2,
+                "underPct": 38.8
               },
               {
                 "threshold": 12.5,
-                "overPct": 44.3,
-                "underPct": 55.7
+                "overPct": 42.8,
+                "underPct": 57.2
               },
               {
                 "threshold": 14.5,
-                "overPct": 28.2,
-                "underPct": 71.8
+                "overPct": 27,
+                "underPct": 73
               },
               {
                 "threshold": 16.5,
-                "overPct": 16.3,
-                "underPct": 83.7
+                "overPct": 15.5,
+                "underPct": 84.5
               }
             ],
             "shotsOnTarget": [
               {
                 "threshold": 2.5,
-                "overPct": 77,
-                "underPct": 23
+                "overPct": 76.3,
+                "underPct": 23.7
               },
               {
                 "threshold": 3.5,
-                "overPct": 58.8,
-                "underPct": 41.2
+                "overPct": 57.8,
+                "underPct": 42.2
               },
               {
                 "threshold": 4.5,
-                "overPct": 40.4,
-                "underPct": 59.6
+                "overPct": 39.3,
+                "underPct": 60.7
               },
               {
                 "threshold": 5.5,
-                "overPct": 25.1,
-                "underPct": 74.9
+                "overPct": 24.1,
+                "underPct": 75.9
               },
               {
                 "threshold": 6.5,
-                "overPct": 14.2,
-                "underPct": 85.8
+                "overPct": 13.4,
+                "underPct": 86.6
               }
             ],
             "corners": [
               {
                 "threshold": 3.5,
-                "overPct": 68.5,
-                "underPct": 31.5
+                "overPct": 70.1,
+                "underPct": 29.9
               },
               {
                 "threshold": 4.5,
-                "overPct": 52.2,
-                "underPct": 47.8
+                "overPct": 54.7,
+                "underPct": 45.3
               },
               {
                 "threshold": 5.5,
-                "overPct": 36.9,
-                "underPct": 63.1
+                "overPct": 39.9,
+                "underPct": 60.1
               },
               {
                 "threshold": 6.5,
-                "overPct": 24.3,
-                "underPct": 75.7
+                "overPct": 27.3,
+                "underPct": 72.7
               }
             ]
           }
@@ -4649,124 +6426,149 @@
           "teamId": "arsenal",
           "team": "Arsenal",
           "venue": "away",
-          "expectedGoals": 2.07,
+          "expectedGoals": 2.05,
           "shotsTotal": {
-            "central": 12.45,
-            "sd": 4.32,
-            "min": 8.8,
-            "max": 16.1,
+            "central": 12.12,
+            "sd": 4.31,
+            "min": 8.5,
+            "max": 15.7,
             "interval": "p20-p80-approx",
+            "normalization": {
+              "method": "relative-to-domestic-league",
+              "targetBaseline": 11.212,
+              "currentSeasonReliabilityPct": 25
+            },
             "inputs": [
               {
                 "label": "Arsenal in trasferta",
-                "value": 12.75,
-                "weightPct": 45
+                "value": 12.705,
+                "weightPct": 53.4
               },
               {
                 "label": "Napoli concede in casa",
-                "value": 11.3,
-                "weightPct": 35
+                "value": 11.34,
+                "weightPct": 41.6
               },
               {
                 "label": "ultime 8 Arsenal",
-                "value": 13.811,
-                "weightPct": 20
+                "value": 12.3,
+                "weightPct": 5
               }
             ]
           },
           "shotsOnTarget": {
-            "central": 4.18,
-            "sd": 2.17,
-            "min": 2.4,
-            "max": 6,
+            "central": 4.05,
+            "sd": 2.14,
+            "min": 2.2,
+            "max": 5.8,
             "interval": "p20-p80-approx",
+            "normalization": {
+              "method": "relative-to-domestic-league",
+              "targetBaseline": 3.792,
+              "currentSeasonReliabilityPct": 25
+            },
             "inputs": [
               {
                 "label": "Arsenal in trasferta",
-                "value": 4.7,
-                "weightPct": 45
+                "value": 4.596,
+                "weightPct": 53.4
               },
               {
                 "label": "Napoli concede in casa",
-                "value": 3.25,
-                "weightPct": 35
+                "value": 3.325,
+                "weightPct": 41.6
               },
               {
                 "label": "ultime 8 Arsenal",
-                "value": 4.613,
-                "weightPct": 20
+                "value": 4.177,
+                "weightPct": 5
               }
             ]
           },
           "corners": {
-            "central": 4.35,
-            "sd": 2.45,
-            "min": 2.3,
-            "max": 6.4,
+            "central": 4.14,
+            "sd": 2.52,
+            "min": 2,
+            "max": 6.2,
             "interval": "p20-p80-approx",
+            "normalization": {
+              "method": "relative-to-domestic-league",
+              "targetBaseline": 4.234,
+              "currentSeasonReliabilityPct": 25
+            },
             "inputs": [
               {
                 "label": "Arsenal in trasferta",
-                "value": 5.4,
-                "weightPct": 45
+                "value": 4.996,
+                "weightPct": 53.4
               },
               {
                 "label": "Napoli concede in casa",
-                "value": 2.8,
-                "weightPct": 35
+                "value": 3.046,
+                "weightPct": 41.6
               },
               {
                 "label": "ultime 8 Arsenal",
-                "value": 4.694,
-                "weightPct": 20
+                "value": 4.005,
+                "weightPct": 5
               }
             ]
           },
           "fouls": {
-            "central": 10.66,
-            "sd": 3.21,
-            "min": 8,
-            "max": 13.4,
+            "central": 11.07,
+            "sd": 3.39,
+            "min": 8.2,
+            "max": 13.9,
             "interval": "p20-p80-approx",
+            "normalization": {
+              "method": "relative-to-domestic-league",
+              "targetBaseline": 11.943,
+              "currentSeasonReliabilityPct": 25
+            },
             "inputs": [
               {
                 "label": "Arsenal in trasferta",
-                "value": 10.35,
-                "weightPct": 45
+                "value": 11.193,
+                "weightPct": 53.4
               },
               {
                 "label": "Napoli concede in casa",
-                "value": 11.85,
-                "weightPct": 35
+                "value": 11.02,
+                "weightPct": 41.6
               },
               {
                 "label": "ultime 8 Arsenal",
-                "value": 9.297,
-                "weightPct": 20
+                "value": 10.21,
+                "weightPct": 5
               }
             ]
           },
           "cards": {
-            "central": 1.69,
-            "sd": 1.25,
-            "min": 0.6,
-            "max": 2.7,
+            "central": 1.75,
+            "sd": 1.27,
+            "min": 0.7,
+            "max": 2.8,
             "interval": "p20-p80-approx",
+            "normalization": {
+              "method": "relative-to-domestic-league",
+              "targetBaseline": 1.985,
+              "currentSeasonReliabilityPct": 25
+            },
             "inputs": [
               {
                 "label": "Arsenal in trasferta",
-                "value": 1.75,
-                "weightPct": 45
+                "value": 1.665,
+                "weightPct": 53.4
               },
               {
                 "label": "Napoli concede in casa",
-                "value": 1.8,
-                "weightPct": 35
+                "value": 1.896,
+                "weightPct": 41.6
               },
               {
                 "label": "ultime 8 Arsenal",
-                "value": 1.348,
-                "weightPct": 20
+                "value": 1.427,
+                "weightPct": 5
               }
             ]
           },
@@ -4774,100 +6576,100 @@
             "shotsTotal": [
               {
                 "threshold": 8.5,
-                "overPct": 81.8,
-                "underPct": 18.2
+                "overPct": 79.4,
+                "underPct": 20.6
               },
               {
                 "threshold": 10.5,
-                "overPct": 65.1,
-                "underPct": 34.9
+                "overPct": 62,
+                "underPct": 38
               },
               {
                 "threshold": 12.5,
-                "overPct": 46.4,
-                "underPct": 53.6
+                "overPct": 43.3,
+                "underPct": 56.7
               },
               {
                 "threshold": 14.5,
-                "overPct": 29.6,
-                "underPct": 70.4
+                "overPct": 27.1,
+                "underPct": 72.9
               },
               {
                 "threshold": 16.5,
-                "overPct": 17,
-                "underPct": 83
+                "overPct": 15.3,
+                "underPct": 84.7
               }
             ],
             "shotsOnTarget": [
               {
                 "threshold": 2.5,
-                "overPct": 77,
-                "underPct": 23
+                "overPct": 75.1,
+                "underPct": 24.9
               },
               {
                 "threshold": 3.5,
-                "overPct": 58.8,
-                "underPct": 41.2
+                "overPct": 56.4,
+                "underPct": 43.6
               },
               {
                 "threshold": 4.5,
-                "overPct": 40.4,
-                "underPct": 59.6
+                "overPct": 38,
+                "underPct": 62
               },
               {
                 "threshold": 5.5,
-                "overPct": 25.1,
-                "underPct": 74.9
+                "overPct": 23.1,
+                "underPct": 76.9
               },
               {
                 "threshold": 6.5,
-                "overPct": 14.2,
-                "underPct": 85.8
+                "overPct": 12.8,
+                "underPct": 87.2
               }
             ],
             "corners": [
               {
                 "threshold": 3.5,
-                "overPct": 59.4,
-                "underPct": 40.6
+                "overPct": 54.8,
+                "underPct": 45.2
               },
               {
                 "threshold": 4.5,
-                "overPct": 42.8,
-                "underPct": 57.2
+                "overPct": 39,
+                "underPct": 61
               },
               {
                 "threshold": 5.5,
-                "overPct": 28.6,
-                "underPct": 71.4
+                "overPct": 26.1,
+                "underPct": 73.9
               },
               {
                 "threshold": 6.5,
-                "overPct": 18,
-                "underPct": 82
+                "overPct": 16.6,
+                "underPct": 83.4
               }
             ]
           }
         }
       ],
       "cards": {
-        "central": 3,
-        "sd": 1.53,
+        "central": 3.08,
+        "sd": 1.57,
         "lines": [
           {
             "threshold": 3.5,
-            "overPct": 35.3,
-            "underPct": 64.7
+            "overPct": 37.1,
+            "underPct": 62.9
           },
           {
             "threshold": 4.5,
-            "overPct": 18.5,
-            "underPct": 81.5
+            "overPct": 19.8,
+            "underPct": 80.2
           },
           {
             "threshold": 5.5,
-            "overPct": 8.4,
-            "underPct": 91.6
+            "overPct": 9.2,
+            "underPct": 90.8
           }
         ],
         "refereeAdjustment": null,
@@ -4931,64 +6733,64 @@
       "favorite": "1",
       "confidence": "low",
       "expectedGoals": {
-        "home": 1.82,
-        "away": 1.7,
-        "total": 3.52,
-        "domesticTotalPrior": 3.53,
+        "home": 1.7,
+        "away": 1.57,
+        "total": 3.27,
+        "domesticTotalPrior": 3.25,
         "method": "lambda Poisson adattate alle probabilità 1X2 UEFA con prior gol domestico"
       },
       "exactScores": [
         {
           "score": "1-1",
-          "probabilityPct": 9.1
+          "probabilityPct": 10.1
         },
         {
           "score": "2-1",
-          "probabilityPct": 8.3
+          "probabilityPct": 8.6
         },
         {
           "score": "1-2",
-          "probabilityPct": 7.8
+          "probabilityPct": 8
         }
       ],
       "goals": [
         {
           "threshold": 1.5,
-          "overPct": 86.7,
-          "underPct": 13.3,
+          "overPct": 83.8,
+          "underPct": 16.2,
           "market": {
             "overOdds": 1.22,
             "underOdds": 3.6,
             "overNoMarginPct": 74.7,
             "underNoMarginPct": 25.3,
-            "overEdgePct": 12,
-            "underEdgePct": -12
+            "overEdgePct": 9.1,
+            "underEdgePct": -9.1
           }
         },
         {
           "threshold": 2.5,
-          "overPct": 68.4,
-          "underPct": 31.6,
+          "overPct": 63.6,
+          "underPct": 36.4,
           "market": {
             "overOdds": 1.8,
             "underOdds": 1.9,
             "overNoMarginPct": 51.4,
             "underNoMarginPct": 48.6,
-            "overEdgePct": 17,
-            "underEdgePct": -17
+            "overEdgePct": 12.2,
+            "underEdgePct": -12.2
           }
         },
         {
           "threshold": 3.5,
-          "overPct": 46.9,
-          "underPct": 53.1,
+          "overPct": 41.4,
+          "underPct": 58.6,
           "market": {
             "overOdds": 2.9,
             "underOdds": 1.36,
             "overNoMarginPct": 31.9,
             "underNoMarginPct": 68.1,
-            "overEdgePct": 15,
-            "underEdgePct": -15
+            "overEdgePct": 9.5,
+            "underEdgePct": -9.5
           }
         }
       ],
@@ -4997,124 +6799,149 @@
           "teamId": "fenerbahce",
           "team": "Fenerbahçe",
           "venue": "home",
-          "expectedGoals": 1.82,
+          "expectedGoals": 1.7,
           "shotsTotal": {
-            "central": 15.28,
-            "sd": 5.76,
-            "min": 10.4,
-            "max": 20.1,
+            "central": 15.39,
+            "sd": 5.37,
+            "min": 10.9,
+            "max": 19.9,
             "interval": "p20-p80-approx",
+            "normalization": {
+              "method": "relative-to-domestic-league",
+              "targetBaseline": 13.93,
+              "currentSeasonReliabilityPct": 40
+            },
             "inputs": [
               {
                 "label": "Fenerbahçe in casa",
-                "value": 18.632,
-                "weightPct": 45
+                "value": 18.399,
+                "weightPct": 51.8
               },
               {
                 "label": "Roma concede in trasferta",
-                "value": 11.2,
-                "weightPct": 35
+                "value": 11.344,
+                "weightPct": 40.3
               },
               {
                 "label": "ultime 8 Fenerbahçe",
-                "value": 14.862,
-                "weightPct": 20
+                "value": 16.305,
+                "weightPct": 8
               }
             ]
           },
           "shotsOnTarget": {
-            "central": 5.84,
-            "sd": 2.86,
-            "min": 3.4,
-            "max": 8.2,
+            "central": 5.76,
+            "sd": 2.71,
+            "min": 3.5,
+            "max": 8,
             "interval": "p20-p80-approx",
+            "normalization": {
+              "method": "relative-to-domestic-league",
+              "targetBaseline": 4.559,
+              "currentSeasonReliabilityPct": 40
+            },
             "inputs": [
               {
                 "label": "Fenerbahçe in casa",
-                "value": 6.737,
-                "weightPct": 45
+                "value": 6.554,
+                "weightPct": 51.8
               },
               {
                 "label": "Roma concede in trasferta",
-                "value": 4.4,
-                "weightPct": 35
+                "value": 4.527,
+                "weightPct": 40.3
               },
               {
                 "label": "ultime 8 Fenerbahçe",
-                "value": 6.354,
-                "weightPct": 20
+                "value": 6.882,
+                "weightPct": 8
               }
             ]
           },
           "corners": {
-            "central": 5.69,
-            "sd": 2.53,
-            "min": 3.6,
-            "max": 7.8,
+            "central": 5.75,
+            "sd": 2.38,
+            "min": 3.8,
+            "max": 7.7,
             "interval": "p20-p80-approx",
+            "normalization": {
+              "method": "relative-to-domestic-league",
+              "targetBaseline": 5.02,
+              "currentSeasonReliabilityPct": 40
+            },
             "inputs": [
               {
                 "label": "Fenerbahçe in casa",
-                "value": 7.105,
-                "weightPct": 45
+                "value": 7.029,
+                "weightPct": 51.8
               },
               {
                 "label": "Roma concede in trasferta",
-                "value": 4.05,
-                "weightPct": 35
+                "value": 4.094,
+                "weightPct": 40.3
               },
               {
                 "label": "ultime 8 Fenerbahçe",
-                "value": 5.37,
-                "weightPct": 20
+                "value": 5.822,
+                "weightPct": 8
               }
             ]
           },
           "fouls": {
-            "central": 11.67,
-            "sd": 3.62,
-            "min": 8.6,
-            "max": 14.7,
+            "central": 11.98,
+            "sd": 3.4,
+            "min": 9.1,
+            "max": 14.8,
             "interval": "p20-p80-approx",
+            "normalization": {
+              "method": "relative-to-domestic-league",
+              "targetBaseline": 12.809,
+              "currentSeasonReliabilityPct": 40
+            },
             "inputs": [
               {
                 "label": "Fenerbahçe in casa",
-                "value": 11.053,
-                "weightPct": 45
+                "value": 10.67,
+                "weightPct": 51.8
               },
               {
                 "label": "Roma concede in trasferta",
-                "value": 13.75,
-                "weightPct": 35
+                "value": 14.262,
+                "weightPct": 40.3
               },
               {
                 "label": "ultime 8 Fenerbahçe",
-                "value": 9.395,
-                "weightPct": 20
+                "value": 9.035,
+                "weightPct": 8
               }
             ]
           },
           "cards": {
-            "central": 2.09,
-            "sd": 1.3,
+            "central": 2,
+            "sd": 1.22,
             "min": 1,
-            "max": 3.2,
+            "max": 3,
             "interval": "p20-p80-approx",
+            "normalization": {
+              "method": "relative-to-domestic-league",
+              "targetBaseline": 1.873,
+              "currentSeasonReliabilityPct": 40
+            },
             "inputs": [
               {
                 "label": "Fenerbahçe in casa",
-                "value": 2.316,
-                "weightPct": 45
+                "value": 2.097,
+                "weightPct": 51.8
               },
               {
                 "label": "Roma concede in trasferta",
-                "value": 1.7,
-                "weightPct": 35
+                "value": 1.898,
+                "weightPct": 40.3
               },
               {
                 "label": "ultime 8 Fenerbahçe",
-                "value": 2.258,
-                "weightPct": 20
+                "value": 1.927,
+                "weightPct": 8
               }
             ]
           },
@@ -5122,77 +6949,77 @@
             "shotsTotal": [
               {
                 "threshold": 8.5,
-                "overPct": 89.4,
-                "underPct": 10.6
+                "overPct": 91.5,
+                "underPct": 8.5
               },
               {
                 "threshold": 10.5,
-                "overPct": 79,
-                "underPct": 21
+                "overPct": 81.7,
+                "underPct": 18.3
               },
               {
                 "threshold": 12.5,
-                "overPct": 65.9,
-                "underPct": 34.1
+                "overPct": 68.4,
+                "underPct": 31.6
               },
               {
                 "threshold": 14.5,
-                "overPct": 51.6,
-                "underPct": 48.4
+                "overPct": 53.3,
+                "underPct": 46.7
               },
               {
                 "threshold": 16.5,
-                "overPct": 38,
-                "underPct": 62
+                "overPct": 38.7,
+                "underPct": 61.3
               }
             ],
             "shotsOnTarget": [
               {
                 "threshold": 2.5,
-                "overPct": 89.4,
-                "underPct": 10.6
+                "overPct": 90,
+                "underPct": 10
               },
               {
                 "threshold": 3.5,
-                "overPct": 78.5,
-                "underPct": 21.5
+                "overPct": 79.1,
+                "underPct": 20.9
               },
               {
                 "threshold": 4.5,
-                "overPct": 65,
-                "underPct": 35
+                "overPct": 65.1,
+                "underPct": 34.9
               },
               {
                 "threshold": 5.5,
-                "overPct": 50.5,
-                "underPct": 49.5
+                "overPct": 50,
+                "underPct": 50
               },
               {
                 "threshold": 6.5,
-                "overPct": 37,
-                "underPct": 63
+                "overPct": 35.9,
+                "underPct": 64.1
               }
             ],
             "corners": [
               {
                 "threshold": 3.5,
-                "overPct": 80.2,
-                "underPct": 19.8
+                "overPct": 82.5,
+                "underPct": 17.5
               },
               {
                 "threshold": 4.5,
-                "overPct": 65.7,
-                "underPct": 34.3
+                "overPct": 68,
+                "underPct": 32
               },
               {
                 "threshold": 5.5,
-                "overPct": 49.7,
-                "underPct": 50.3
+                "overPct": 51.3,
+                "underPct": 48.7
               },
               {
                 "threshold": 6.5,
-                "overPct": 34.7,
-                "underPct": 65.3
+                "overPct": 35.4,
+                "underPct": 64.6
               }
             ]
           }
@@ -5201,124 +7028,149 @@
           "teamId": "roma",
           "team": "Roma",
           "venue": "away",
-          "expectedGoals": 1.7,
+          "expectedGoals": 1.57,
           "shotsTotal": {
-            "central": 12.48,
-            "sd": 5.48,
-            "min": 7.9,
-            "max": 17.1,
+            "central": 10.96,
+            "sd": 4.89,
+            "min": 6.9,
+            "max": 15.1,
             "interval": "p20-p80-approx",
+            "normalization": {
+              "method": "relative-to-domestic-league",
+              "targetBaseline": 11.231,
+              "currentSeasonReliabilityPct": 33.3
+            },
             "inputs": [
               {
                 "label": "Roma in trasferta",
-                "value": 11.35,
-                "weightPct": 45
+                "value": 11.41,
+                "weightPct": 52.5
               },
               {
                 "label": "Fenerbahçe concede in casa",
-                "value": 9.158,
-                "weightPct": 35
+                "value": 9.11,
+                "weightPct": 40.8
               },
               {
                 "label": "ultime 8 Roma",
-                "value": 20.816,
-                "weightPct": 20
+                "value": 18.758,
+                "weightPct": 6.7
               }
             ]
           },
           "shotsOnTarget": {
-            "central": 4.63,
-            "sd": 2.06,
-            "min": 2.9,
-            "max": 6.4,
+            "central": 4.07,
+            "sd": 2.04,
+            "min": 2.4,
+            "max": 5.8,
             "interval": "p20-p80-approx",
+            "normalization": {
+              "method": "relative-to-domestic-league",
+              "targetBaseline": 3.719,
+              "currentSeasonReliabilityPct": 33.3
+            },
             "inputs": [
               {
                 "label": "Roma in trasferta",
-                "value": 4.35,
-                "weightPct": 45
+                "value": 4.364,
+                "weightPct": 52.5
               },
               {
                 "label": "Fenerbahçe concede in casa",
-                "value": 3.211,
-                "weightPct": 35
+                "value": 3.201,
+                "weightPct": 40.8
               },
               {
                 "label": "ultime 8 Roma",
-                "value": 7.734,
-                "weightPct": 20
+                "value": 7.069,
+                "weightPct": 6.7
               }
             ]
           },
           "corners": {
-            "central": 4.41,
-            "sd": 2.78,
-            "min": 2.1,
-            "max": 6.7,
+            "central": 4.05,
+            "sd": 2.58,
+            "min": 1.9,
+            "max": 6.2,
             "interval": "p20-p80-approx",
+            "normalization": {
+              "method": "relative-to-domestic-league",
+              "targetBaseline": 4.039,
+              "currentSeasonReliabilityPct": 33.3
+            },
             "inputs": [
               {
                 "label": "Roma in trasferta",
-                "value": 4.5,
-                "weightPct": 45
+                "value": 4.67,
+                "weightPct": 52.5
               },
               {
                 "label": "Fenerbahçe concede in casa",
-                "value": 3.053,
-                "weightPct": 35
+                "value": 2.946,
+                "weightPct": 40.8
               },
               {
                 "label": "ultime 8 Roma",
-                "value": 6.583,
-                "weightPct": 20
+                "value": 6.003,
+                "weightPct": 6.7
               }
             ]
           },
           "fouls": {
-            "central": 13.6,
-            "sd": 4.68,
-            "min": 9.7,
-            "max": 17.5,
+            "central": 14.11,
+            "sd": 4.94,
+            "min": 10,
+            "max": 18.3,
             "interval": "p20-p80-approx",
+            "normalization": {
+              "method": "relative-to-domestic-league",
+              "targetBaseline": 13.106,
+              "currentSeasonReliabilityPct": 33.3
+            },
             "inputs": [
               {
                 "label": "Roma in trasferta",
-                "value": 14.45,
-                "weightPct": 45
+                "value": 14.747,
+                "weightPct": 52.5
               },
               {
                 "label": "Fenerbahçe concede in casa",
-                "value": 14,
-                "weightPct": 35
+                "value": 13.724,
+                "weightPct": 40.8
               },
               {
                 "label": "ultime 8 Roma",
-                "value": 10.983,
-                "weightPct": 20
+                "value": 11.428,
+                "weightPct": 6.7
               }
             ]
           },
           "cards": {
-            "central": 2.27,
-            "sd": 1.34,
-            "min": 1.1,
-            "max": 3.4,
+            "central": 2.46,
+            "sd": 1.42,
+            "min": 1.3,
+            "max": 3.6,
             "interval": "p20-p80-approx",
+            "normalization": {
+              "method": "relative-to-domestic-league",
+              "targetBaseline": 2.102,
+              "currentSeasonReliabilityPct": 33.3
+            },
             "inputs": [
               {
                 "label": "Roma in trasferta",
-                "value": 1.85,
-                "weightPct": 45
+                "value": 2.064,
+                "weightPct": 52.5
               },
               {
                 "label": "Fenerbahçe concede in casa",
-                "value": 3.474,
-                "weightPct": 35
+                "value": 3.148,
+                "weightPct": 40.8
               },
               {
                 "label": "ultime 8 Roma",
-                "value": 1.126,
-                "weightPct": 20
+                "value": 1.329,
+                "weightPct": 6.7
               }
             ]
           },
@@ -5326,100 +7178,100 @@
             "shotsTotal": [
               {
                 "threshold": 8.5,
-                "overPct": 75.1,
-                "underPct": 24.9
+                "overPct": 66.2,
+                "underPct": 33.8
               },
               {
                 "threshold": 10.5,
-                "overPct": 60.2,
-                "underPct": 39.8
+                "overPct": 49.2,
+                "underPct": 50.8
               },
               {
                 "threshold": 12.5,
-                "overPct": 45.2,
-                "underPct": 54.8
+                "overPct": 33.8,
+                "underPct": 66.2
               },
               {
                 "threshold": 14.5,
-                "overPct": 31.9,
-                "underPct": 68.1
+                "overPct": 21.6,
+                "underPct": 78.4
               },
               {
                 "threshold": 16.5,
-                "overPct": 21.4,
-                "underPct": 78.6
+                "overPct": 13,
+                "underPct": 87
               }
             ],
             "shotsOnTarget": [
               {
                 "threshold": 2.5,
-                "overPct": 84.1,
-                "underPct": 15.9
+                "overPct": 76.9,
+                "underPct": 23.1
               },
               {
                 "threshold": 3.5,
-                "overPct": 67.9,
-                "underPct": 32.1
+                "overPct": 57.8,
+                "underPct": 42.2
               },
               {
                 "threshold": 4.5,
-                "overPct": 49.2,
-                "underPct": 50.8
+                "overPct": 38.5,
+                "underPct": 61.5
               },
               {
                 "threshold": 5.5,
-                "overPct": 31.9,
-                "underPct": 68.1
+                "overPct": 22.8,
+                "underPct": 77.2
               },
               {
                 "threshold": 6.5,
-                "overPct": 18.6,
-                "underPct": 81.4
+                "overPct": 12,
+                "underPct": 88
               }
             ],
             "corners": [
               {
                 "threshold": 3.5,
-                "overPct": 57.5,
-                "underPct": 42.5
+                "overPct": 52.7,
+                "underPct": 47.3
               },
               {
                 "threshold": 4.5,
-                "overPct": 42.7,
-                "underPct": 57.3
+                "overPct": 37.5,
+                "underPct": 62.5
               },
               {
                 "threshold": 5.5,
-                "overPct": 30.1,
-                "underPct": 69.9
+                "overPct": 25.2,
+                "underPct": 74.8
               },
               {
                 "threshold": 6.5,
-                "overPct": 20.4,
-                "underPct": 79.6
+                "overPct": 16.2,
+                "underPct": 83.8
               }
             ]
           }
         }
       ],
       "cards": {
-        "central": 4.36,
+        "central": 4.46,
         "sd": 1.87,
         "lines": [
           {
             "threshold": 3.5,
-            "overPct": 63.4,
-            "underPct": 36.6
+            "overPct": 65.1,
+            "underPct": 34.9
           },
           {
             "threshold": 4.5,
-            "overPct": 44.1,
-            "underPct": 55.9
+            "overPct": 46,
+            "underPct": 54
           },
           {
             "threshold": 5.5,
-            "overPct": 27.3,
-            "underPct": 72.7
+            "overPct": 29,
+            "underPct": 71
           }
         ],
         "refereeAdjustment": null,
@@ -5483,10 +7335,10 @@
       "favorite": "1",
       "confidence": "medium",
       "expectedGoals": {
-        "home": 2.07,
-        "away": 1.2,
-        "total": 3.27,
-        "domesticTotalPrior": 3.17,
+        "home": 2.02,
+        "away": 1.17,
+        "total": 3.2,
+        "domesticTotalPrior": 3.1,
         "method": "lambda Poisson adattate alle probabilità 1X2 UEFA con prior gol domestico"
       },
       "exactScores": [
@@ -5496,51 +7348,51 @@
         },
         {
           "score": "1-1",
-          "probabilityPct": 9.4
+          "probabilityPct": 9.7
         },
         {
           "score": "2-0",
-          "probabilityPct": 8.1
+          "probabilityPct": 8.4
         }
       ],
       "goals": [
         {
           "threshold": 1.5,
-          "overPct": 83.8,
-          "underPct": 16.2,
+          "overPct": 82.9,
+          "underPct": 17.1,
           "market": {
             "overOdds": 1.16,
             "underOdds": 4.25,
             "overNoMarginPct": 78.6,
             "underNoMarginPct": 21.4,
-            "overEdgePct": 5.2,
-            "underEdgePct": -5.2
+            "overEdgePct": 4.3,
+            "underEdgePct": -4.3
           }
         },
         {
           "threshold": 2.5,
-          "overPct": 63.6,
-          "underPct": 36.4,
+          "overPct": 62,
+          "underPct": 38,
           "market": {
             "overOdds": 1.6,
             "underOdds": 2.2,
             "overNoMarginPct": 57.9,
             "underNoMarginPct": 42.1,
-            "overEdgePct": 5.7,
-            "underEdgePct": -5.7
+            "overEdgePct": 4.1,
+            "underEdgePct": -4.1
           }
         },
         {
           "threshold": 3.5,
-          "overPct": 41.4,
-          "underPct": 58.6,
+          "overPct": 39.7,
+          "underPct": 60.3,
           "market": {
             "overOdds": 2.4,
             "underOdds": 1.48,
             "overNoMarginPct": 38.1,
             "underNoMarginPct": 61.9,
-            "overEdgePct": 3.3,
-            "underEdgePct": -3.3
+            "overEdgePct": 1.6,
+            "underEdgePct": -1.6
           }
         }
       ],
@@ -5549,124 +7401,149 @@
           "teamId": "como",
           "team": "Como",
           "venue": "home",
-          "expectedGoals": 2.07,
+          "expectedGoals": 2.02,
           "shotsTotal": {
-            "central": 15.71,
-            "sd": 4.69,
-            "min": 11.8,
-            "max": 19.7,
+            "central": 15.63,
+            "sd": 4.73,
+            "min": 11.7,
+            "max": 19.6,
             "interval": "p20-p80-approx",
+            "normalization": {
+              "method": "relative-to-domestic-league",
+              "targetBaseline": 14.289,
+              "currentSeasonReliabilityPct": 33.3
+            },
             "inputs": [
               {
                 "label": "Como in casa",
-                "value": 16.737,
-                "weightPct": 45
+                "value": 17.388,
+                "weightPct": 52.5
               },
               {
                 "label": "Leipzig concede in trasferta",
-                "value": 13,
-                "weightPct": 35
+                "value": 12.531,
+                "weightPct": 40.8
               },
               {
                 "label": "ultime 8 Como",
-                "value": 18.162,
-                "weightPct": 20
+                "value": 20.823,
+                "weightPct": 6.7
               }
             ]
           },
           "shotsOnTarget": {
-            "central": 5.56,
-            "sd": 2.26,
+            "central": 5.74,
+            "sd": 2.39,
             "min": 3.7,
-            "max": 7.5,
+            "max": 7.8,
             "interval": "p20-p80-approx",
+            "normalization": {
+              "method": "relative-to-domestic-league",
+              "targetBaseline": 4.929,
+              "currentSeasonReliabilityPct": 33.3
+            },
             "inputs": [
               {
                 "label": "Como in casa",
-                "value": 6.316,
-                "weightPct": 45
+                "value": 7.026,
+                "weightPct": 52.5
               },
               {
                 "label": "Leipzig concede in trasferta",
-                "value": 4.167,
-                "weightPct": 35
+                "value": 3.785,
+                "weightPct": 40.8
               },
               {
                 "label": "ultime 8 Como",
-                "value": 6.319,
-                "weightPct": 20
+                "value": 7.655,
+                "weightPct": 6.7
               }
             ]
           },
           "corners": {
-            "central": 5.06,
-            "sd": 2.89,
+            "central": 4.95,
+            "sd": 2.84,
             "min": 2.6,
-            "max": 7.5,
+            "max": 7.3,
             "interval": "p20-p80-approx",
+            "normalization": {
+              "method": "relative-to-domestic-league",
+              "targetBaseline": 5.279,
+              "currentSeasonReliabilityPct": 33.3
+            },
             "inputs": [
               {
                 "label": "Como in casa",
-                "value": 5.105,
-                "weightPct": 45
+                "value": 5.426,
+                "weightPct": 52.5
               },
               {
                 "label": "Leipzig concede in trasferta",
-                "value": 4.056,
-                "weightPct": 35
+                "value": 3.829,
+                "weightPct": 40.8
               },
               {
                 "label": "ultime 8 Como",
-                "value": 6.721,
-                "weightPct": 20
+                "value": 8.01,
+                "weightPct": 6.7
               }
             ]
           },
           "fouls": {
-            "central": 10.88,
-            "sd": 3.28,
-            "min": 8.1,
+            "central": 10.9,
+            "sd": 3.25,
+            "min": 8.2,
             "max": 13.6,
             "interval": "p20-p80-approx",
+            "normalization": {
+              "method": "relative-to-domestic-league",
+              "targetBaseline": 11.373,
+              "currentSeasonReliabilityPct": 33.3
+            },
             "inputs": [
               {
                 "label": "Como in casa",
-                "value": 12.526,
-                "weightPct": 45
+                "value": 11.535,
+                "weightPct": 52.5
               },
               {
                 "label": "Leipzig concede in trasferta",
-                "value": 9.556,
-                "weightPct": 35
+                "value": 10.454,
+                "weightPct": 40.8
               },
               {
                 "label": "ultime 8 Como",
-                "value": 9.482,
-                "weightPct": 20
+                "value": 8.561,
+                "weightPct": 6.7
               }
             ]
           },
           "cards": {
-            "central": 1.53,
-            "sd": 1.11,
-            "min": 0.6,
-            "max": 2.5,
+            "central": 1.63,
+            "sd": 1.14,
+            "min": 0.7,
+            "max": 2.6,
             "interval": "p20-p80-approx",
+            "normalization": {
+              "method": "relative-to-domestic-league",
+              "targetBaseline": 1.708,
+              "currentSeasonReliabilityPct": 33.3
+            },
             "inputs": [
               {
                 "label": "Como in casa",
-                "value": 1.842,
-                "weightPct": 45
+                "value": 1.877,
+                "weightPct": 52.5
               },
               {
                 "label": "Leipzig concede in trasferta",
-                "value": 1.444,
-                "weightPct": 35
+                "value": 1.418,
+                "weightPct": 40.8
               },
               {
                 "label": "ultime 8 Como",
-                "value": 1.002,
-                "weightPct": 20
+                "value": 0.961,
+                "weightPct": 6.7
               }
             ]
           },
@@ -5674,77 +7551,77 @@
             "shotsTotal": [
               {
                 "threshold": 8.5,
-                "overPct": 95.2,
-                "underPct": 4.8
+                "overPct": 94.8,
+                "underPct": 5.2
               },
               {
                 "threshold": 10.5,
-                "overPct": 87.2,
-                "underPct": 12.8
+                "overPct": 86.6,
+                "underPct": 13.4
               },
               {
                 "threshold": 12.5,
-                "overPct": 74.3,
-                "underPct": 25.7
+                "overPct": 73.4,
+                "underPct": 26.6
               },
               {
                 "threshold": 14.5,
-                "overPct": 57.8,
-                "underPct": 42.2
+                "overPct": 57,
+                "underPct": 43
               },
               {
                 "threshold": 16.5,
-                "overPct": 40.9,
-                "underPct": 59.1
+                "overPct": 40.2,
+                "underPct": 59.8
               }
             ],
             "shotsOnTarget": [
               {
                 "threshold": 2.5,
-                "overPct": 91.5,
-                "underPct": 8.5
+                "overPct": 92.5,
+                "underPct": 7.5
               },
               {
                 "threshold": 3.5,
-                "overPct": 80.5,
-                "underPct": 19.5
+                "overPct": 82.4,
+                "underPct": 17.6
               },
               {
                 "threshold": 4.5,
-                "overPct": 65.2,
-                "underPct": 34.8
+                "overPct": 67.9,
+                "underPct": 32.1
               },
               {
                 "threshold": 5.5,
-                "overPct": 48.1,
-                "underPct": 51.9
+                "overPct": 51.2,
+                "underPct": 48.8
               },
               {
                 "threshold": 6.5,
-                "overPct": 32.3,
-                "underPct": 67.7
+                "overPct": 35.2,
+                "underPct": 64.8
               }
             ],
             "corners": [
               {
                 "threshold": 3.5,
-                "overPct": 67.2,
-                "underPct": 32.8
+                "overPct": 65.9,
+                "underPct": 34.1
               },
               {
                 "threshold": 4.5,
-                "overPct": 52.5,
-                "underPct": 47.5
+                "overPct": 51,
+                "underPct": 49
               },
               {
                 "threshold": 5.5,
-                "overPct": 38.9,
-                "underPct": 61.1
+                "overPct": 37.4,
+                "underPct": 62.6
               },
               {
                 "threshold": 6.5,
-                "overPct": 27.4,
-                "underPct": 72.6
+                "overPct": 26,
+                "underPct": 74
               }
             ]
           }
@@ -5753,124 +7630,149 @@
           "teamId": "leipzig",
           "team": "Leipzig",
           "venue": "away",
-          "expectedGoals": 1.2,
+          "expectedGoals": 1.17,
           "shotsTotal": {
-            "central": 12.8,
-            "sd": 3.89,
-            "min": 9.5,
-            "max": 16.1,
+            "central": 11.47,
+            "sd": 3.77,
+            "min": 8.3,
+            "max": 14.6,
             "interval": "p20-p80-approx",
+            "normalization": {
+              "method": "relative-to-domestic-league",
+              "targetBaseline": 11.552,
+              "currentSeasonReliabilityPct": 25
+            },
             "inputs": [
               {
                 "label": "Leipzig in trasferta",
-                "value": 14.556,
-                "weightPct": 45
+                "value": 14.092,
+                "weightPct": 53.4
               },
               {
                 "label": "Como concede in casa",
-                "value": 7.316,
-                "weightPct": 35
+                "value": 7.565,
+                "weightPct": 41.6
               },
               {
                 "label": "ultime 8 Leipzig",
-                "value": 18.458,
-                "weightPct": 20
+                "value": 15.939,
+                "weightPct": 5
               }
             ]
           },
           "shotsOnTarget": {
-            "central": 4.49,
-            "sd": 2.12,
-            "min": 2.7,
-            "max": 6.3,
+            "central": 3.84,
+            "sd": 2.01,
+            "min": 2.1,
+            "max": 5.5,
             "interval": "p20-p80-approx",
+            "normalization": {
+              "method": "relative-to-domestic-league",
+              "targetBaseline": 3.948,
+              "currentSeasonReliabilityPct": 25
+            },
             "inputs": [
               {
                 "label": "Leipzig in trasferta",
-                "value": 4.667,
-                "weightPct": 45
+                "value": 4.398,
+                "weightPct": 53.4
               },
               {
                 "label": "Como concede in casa",
-                "value": 2.684,
-                "weightPct": 35
+                "value": 2.858,
+                "weightPct": 41.6
               },
               {
                 "label": "ultime 8 Leipzig",
-                "value": 7.229,
-                "weightPct": 20
+                "value": 5.936,
+                "weightPct": 5
               }
             ]
           },
           "corners": {
-            "central": 4.04,
-            "sd": 2.5,
-            "min": 1.9,
-            "max": 6.1,
+            "central": 3.6,
+            "sd": 2.33,
+            "min": 1.6,
+            "max": 5.6,
             "interval": "p20-p80-approx",
+            "normalization": {
+              "method": "relative-to-domestic-league",
+              "targetBaseline": 4.079,
+              "currentSeasonReliabilityPct": 25
+            },
             "inputs": [
               {
                 "label": "Leipzig in trasferta",
-                "value": 4.833,
-                "weightPct": 45
+                "value": 4.621,
+                "weightPct": 53.4
               },
               {
                 "label": "Como concede in casa",
-                "value": 2.053,
-                "weightPct": 35
+                "value": 2.152,
+                "weightPct": 41.6
               },
               {
                 "label": "ultime 8 Leipzig",
-                "value": 5.74,
-                "weightPct": 20
+                "value": 4.75,
+                "weightPct": 5
               }
             ]
           },
           "fouls": {
-            "central": 10.7,
-            "sd": 3.37,
-            "min": 7.9,
-            "max": 13.5,
+            "central": 11.36,
+            "sd": 3.61,
+            "min": 8.3,
+            "max": 14.4,
             "interval": "p20-p80-approx",
+            "normalization": {
+              "method": "relative-to-domestic-league",
+              "targetBaseline": 11.718,
+              "currentSeasonReliabilityPct": 25
+            },
             "inputs": [
               {
                 "label": "Leipzig in trasferta",
-                "value": 10.278,
-                "weightPct": 45
+                "value": 11.368,
+                "weightPct": 53.4
               },
               {
                 "label": "Como concede in casa",
-                "value": 12.737,
-                "weightPct": 35
+                "value": 11.622,
+                "weightPct": 41.6
               },
               {
                 "label": "ultime 8 Leipzig",
-                "value": 8.074,
-                "weightPct": 20
+                "value": 9.015,
+                "weightPct": 5
               }
             ]
           },
           "cards": {
-            "central": 1.72,
-            "sd": 1.32,
-            "min": 0.6,
-            "max": 2.8,
+            "central": 1.8,
+            "sd": 1.34,
+            "min": 0.7,
+            "max": 2.9,
             "interval": "p20-p80-approx",
+            "normalization": {
+              "method": "relative-to-domestic-league",
+              "targetBaseline": 1.893,
+              "currentSeasonReliabilityPct": 25
+            },
             "inputs": [
               {
                 "label": "Leipzig in trasferta",
-                "value": 1.611,
-                "weightPct": 45
+                "value": 1.604,
+                "weightPct": 53.4
               },
               {
                 "label": "Como concede in casa",
-                "value": 2.105,
-                "weightPct": 35
+                "value": 2.114,
+                "weightPct": 41.6
               },
               {
                 "label": "ultime 8 Leipzig",
-                "value": 1.272,
-                "weightPct": 20
+                "value": 1.323,
+                "weightPct": 5
               }
             ]
           },
@@ -5878,100 +7780,100 @@
             "shotsTotal": [
               {
                 "threshold": 8.5,
-                "overPct": 87,
-                "underPct": 13
+                "overPct": 77.8,
+                "underPct": 22.2
               },
               {
                 "threshold": 10.5,
-                "overPct": 71,
-                "underPct": 29
+                "overPct": 57.7,
+                "underPct": 42.3
               },
               {
                 "threshold": 12.5,
-                "overPct": 50.7,
-                "underPct": 49.3
+                "overPct": 36.9,
+                "underPct": 63.1
               },
               {
                 "threshold": 14.5,
-                "overPct": 31.4,
-                "underPct": 68.6
+                "overPct": 20.3,
+                "underPct": 79.7
               },
               {
                 "threshold": 16.5,
-                "overPct": 16.8,
-                "underPct": 83.2
+                "overPct": 9.7,
+                "underPct": 90.3
               }
             ],
             "shotsOnTarget": [
               {
                 "threshold": 2.5,
-                "overPct": 82.5,
-                "underPct": 17.5
+                "overPct": 73,
+                "underPct": 27
               },
               {
                 "threshold": 3.5,
-                "overPct": 65.6,
-                "underPct": 34.4
+                "overPct": 53,
+                "underPct": 47
               },
               {
                 "threshold": 4.5,
-                "overPct": 46.6,
-                "underPct": 53.4
+                "overPct": 34.1,
+                "underPct": 65.9
               },
               {
                 "threshold": 5.5,
-                "overPct": 29.5,
-                "underPct": 70.5
+                "overPct": 19.5,
+                "underPct": 80.5
               },
               {
                 "threshold": 6.5,
-                "overPct": 16.8,
-                "underPct": 83.2
+                "overPct": 10,
+                "underPct": 90
               }
             ],
             "corners": [
               {
                 "threshold": 3.5,
-                "overPct": 53.1,
-                "underPct": 46.9
+                "overPct": 45.8,
+                "underPct": 54.2
               },
               {
                 "threshold": 4.5,
-                "overPct": 37.4,
-                "underPct": 62.6
+                "overPct": 30.5,
+                "underPct": 69.5
               },
               {
                 "threshold": 5.5,
-                "overPct": 24.8,
-                "underPct": 75.2
+                "overPct": 19,
+                "underPct": 81
               },
               {
                 "threshold": 6.5,
-                "overPct": 15.6,
-                "underPct": 84.4
+                "overPct": 11.3,
+                "underPct": 88.7
               }
             ]
           }
         }
       ],
       "cards": {
-        "central": 3.25,
-        "sd": 1.72,
+        "central": 3.43,
+        "sd": 1.76,
         "lines": [
           {
             "threshold": 3.5,
-            "overPct": 40.9,
-            "underPct": 59.1
+            "overPct": 44.8,
+            "underPct": 55.2
           },
           {
             "threshold": 4.5,
-            "overPct": 22.8,
-            "underPct": 77.2
+            "overPct": 26.1,
+            "underPct": 73.9
           },
           {
             "threshold": 5.5,
-            "overPct": 11.1,
-            "underPct": 88.9
+            "overPct": 13.3,
+            "underPct": 86.7
           }
         ],
         "refereeAdjustment": null,

@@ -64,7 +64,8 @@ assert.strictEqual(playerLeaderboards.periods["2026/27"].rankings.foulsWon.avail
 const totalFoulParticipants = playerLeaderboards.periods.total.rankings.foulsWon.availablePlayers;
 assert.ok(totalFoulParticipants >= 241 && totalFoulParticipants <= currentFoulParticipants, "Il totale falli deve includere soltanto i calciatori coperti in entrambe le stagioni");
 const currentParticipants = playerLeaderboards.periods["2026/27"].rankings.goals.availablePlayers;
-assert.ok(playerLeaderboards.periods["2026/27"].rankings.shots.availablePlayers < currentParticipants && playerLeaderboards.periods["2026/27"].rankings.shotsOnTarget.availablePlayers < currentParticipants, "La copertura parziale dei tiri 2026/27 deve restare esplicita");
+assert.strictEqual(playerLeaderboards.periods["2026/27"].rankings.shots.availablePlayers, currentParticipants, "La copertura dei tiri 2026/27 deve restare allineata alle gare concluse importate");
+assert.strictEqual(playerLeaderboards.periods["2026/27"].rankings.shotsOnTarget.availablePlayers, currentParticipants, "La copertura dei tiri nello specchio 2026/27 deve restare allineata alle gare concluse importate");
 for (const contract of ["loadPlayerLeaderboards", "globalPlayerLeaderboards", "globalPlayerLeaderboardTable", "Top 15 calciatori per statistica", "data-player-period", "data-player-stat", "serie-b-marker", "aria-pressed", "per90Value", "stessa riga"]) assert.ok(mainApp.includes(contract), `Top 15 globale: contratto ${contract} assente`);
 assert.strictEqual(playerLeaderboards.periods.total.label, "Totale 2025/26 + 2026/27", "La Top 15 globale deve conservare il periodo totale combinato");
 assert.ok(mainApp.includes("Copertura dati 2026/27: ${coverage}") && mainApp.includes("ranking.availablePlayers"), "La Top 15 deve mostrare una copertura dinamica per ogni statistica");

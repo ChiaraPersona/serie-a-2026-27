@@ -87,6 +87,21 @@ const games = [
       { type: "goal", player: "Artem Dovbyk", minute: "90+1" },
       { type: "booking", player: "Artem Dovbyk", minute: "90+1" }
     ]
+  },
+  {
+    matchId: "juventus-milan-2026-27-md-03",
+    file: "juventus-milan-statmuse.html",
+    url: "https://www.statmuse.com/fc/match/9-6-2026-juv-vs-mil-112097",
+    officialUrl: "https://www.legaseriea.it/serie-a/match/7c4d8a215bdb45d9bf8b6f48fe82fbaa/juventus-vs-milan",
+    home: { slug: "juventus", abbr: "JUV" },
+    away: { slug: "milan", abbr: "MIL" },
+    mvp: null,
+    minuteOverrides: [
+      { type: "goal", player: "Federico Gatti", minute: "90+2" },
+      { type: "booking", player: "Koni De Winter", minute: "90+2" },
+      { type: "booking", player: "Federico Gatti", minute: "90+6" },
+      { type: "booking", player: "Alphadjo Cissè", minute: "90+6" }
+    ]
   }
 ];
 
@@ -255,4 +270,4 @@ for (const config of games) {
 playerStats.updatedAt = retrievedAt;
 fs.writeFileSync(resultsPath, `${JSON.stringify(results, null, 2)}\n`);
 fs.writeFileSync(playerStatsPath, `${JSON.stringify(playerStats)}\n`);
-console.log("Aggiornati i primi 7 risultati finali della 3a giornata 2026/27.");
+console.log("Aggiornati i primi 8 risultati finali della 3a giornata 2026/27.");
