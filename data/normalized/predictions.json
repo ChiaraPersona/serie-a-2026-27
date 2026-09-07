@@ -5,7 +5,7 @@
     "serie-a"
   ],
   "season": "2026-27",
-  "generatedAt": "2026-09-07T15:39:33.371Z",
+  "generatedAt": "2026-09-07T18:19:23.952Z",
   "engine": {
     "version": "4.11.0",
     "principle": "Un'unica matrice dei punteggi indipendente dalle quote genera 1X2, gol e mercati collegati.",
@@ -83533,8 +83533,8 @@
             "attackStrength": 0.906,
             "defenceWeakness": 0.973,
             "lineup": {
-              "attack": 1.009,
-              "defenceWeakness": 0.979,
+              "attack": 1.004,
+              "defenceWeakness": 0.983,
               "resolved": 11,
               "status": "usable"
             }
@@ -83593,8 +83593,8 @@
           "xg": {
             "weight": 0.25,
             "status": "used",
-            "homeRaw": 1.445,
-            "awayRaw": 1.142,
+            "homeRaw": 1.438,
+            "awayRaw": 1.147,
             "source": "Understat 2025-26"
           }
         }
@@ -83751,10 +83751,10 @@
         },
         "shotsOnTarget": {
           "min": 5,
-          "central": 8.3,
+          "central": 8.2,
           "max": 11,
           "interval": "p20-p80-independent",
-          "sd": 3.13,
+          "sd": 3.07,
           "sampleSize": 46,
           "dataStatus": "venue-history"
         },
@@ -83810,10 +83810,10 @@
           },
           "shotsOnTarget": {
             "min": 2,
-            "central": 4.7,
+            "central": 4.6,
             "max": 7,
             "interval": "p20-p80",
-            "sd": 2.23,
+            "sd": 2.14,
             "sampleSize": 46,
             "dataStatus": "venue-history",
             "inputs": [
@@ -83991,7 +83991,7 @@
       ],
       "likelyBooked": [
         {
-          "name": "Reda Belahyane",
+          "name": "Belahyane",
           "teamId": "lazio",
           "role": "Centrocampista",
           "riskScore": 56,
@@ -84005,21 +84005,7 @@
           "possibleFirstBooked": true
         },
         {
-          "name": "Christian Kabasele",
-          "teamId": "udinese",
-          "role": "Difensore",
-          "riskScore": 54,
-          "evidence": [
-            "0.24 cartellini/90",
-            "1.3 falli/90",
-            "duelli sul canale centrale"
-          ],
-          "dataStatus": "verified-history",
-          "rank": 2,
-          "possibleFirstBooked": false
-        },
-        {
-          "name": "Nuno Tavares",
+          "name": "Tavares",
           "teamId": "lazio",
           "role": "Difensore",
           "riskScore": 54,
@@ -84029,11 +84015,25 @@
             "duelli sul canale sinistro"
           ],
           "dataStatus": "verified-history",
+          "rank": 2,
+          "possibleFirstBooked": false
+        },
+        {
+          "name": "Ebosse",
+          "teamId": "udinese",
+          "role": "Difensore",
+          "riskScore": 53,
+          "evidence": [
+            "0.27 cartellini/90",
+            "1.42 falli/90",
+            "duelli sul canale sinistro"
+          ],
+          "dataStatus": "verified-history",
           "rank": 3,
           "possibleFirstBooked": false
         },
         {
-          "name": "James Abankwah",
+          "name": "Abankwah",
           "teamId": "udinese",
           "role": "Difensore",
           "riskScore": 52,
@@ -84047,7 +84047,7 @@
           "possibleFirstBooked": false
         },
         {
-          "name": "Mattia Zaccagni",
+          "name": "Zaccagni",
           "teamId": "lazio",
           "role": "Centrocampista",
           "riskScore": 52,
@@ -84062,7 +84062,7 @@
         }
       ],
       "mvpCandidate": {
-        "name": "Keinan Davis",
+        "name": "Davis",
         "teamId": "udinese",
         "role": "Attaccante",
         "score": 58.1,
@@ -84656,31 +84656,61 @@
           "distancePct": 0,
           "legs": [
             {
-              "label": "EBOSSE E. almeno 2 falli commessi",
-              "market": "U/O FALLI COMMESSI GIOCATORE",
-              "variant": "EBOSSE E. U/O 1.5 FALLI COMMESSI",
-              "threshold": "1.5",
-              "selection": "OVER",
-              "providerSelectionId": "5303223419",
-              "odds": 1.8,
-              "overlapKey": "market-u o falli commessi giocatore",
-              "semanticKeys": [],
-              "marketScope": "player"
-            },
-            {
-              "label": "DC + U/O 3.5 · 12 + UNDER",
-              "market": "COMBO: DC + U/O",
-              "variant": "DC + U/O 3.5",
-              "threshold": "3.5",
-              "selection": "12 + UNDER",
-              "providerSelectionId": "5291828133",
-              "odds": 1.65,
-              "overlapKey": "market-combo dc u o",
+              "label": "Almeno una squadra non segna",
+              "market": "GOAL/NOGOAL",
+              "variant": "GOAL/NO GOAL",
+              "threshold": null,
+              "selection": "NOGOAL",
+              "providerSelectionId": "5291827733",
+              "odds": 1.85,
+              "overlapKey": "market-goal nogoal",
               "semanticKeys": [
-                "result",
                 "goals"
               ],
-              "marketScope": "match"
+              "marketScope": "match",
+              "probabilityPct": 57,
+              "prudentProbabilityPct": 52.3,
+              "fairOdds": 1.91,
+              "expectedValuePct": -3.2,
+              "method": "matrice punteggi"
+            },
+            {
+              "label": "Partita almeno 7 tiri in porta",
+              "market": "U/O TIRI IN PORTA",
+              "variant": "U/O 6.5 TIRI IN PORTA",
+              "threshold": "6.5",
+              "selection": "OVER",
+              "providerSelectionId": "5291828794",
+              "odds": 1.44,
+              "overlapKey": "market-u o tiri in porta",
+              "semanticKeys": [
+                "volume-shots-on-target"
+              ],
+              "marketScope": "match",
+              "probabilityPct": 71,
+              "prudentProbabilityPct": 65.3,
+              "fairOdds": 1.53,
+              "expectedValuePct": -5.9,
+              "method": "volume previsto"
+            },
+            {
+              "label": "Nessun pareggio (12)",
+              "market": "DOPPIA CHANCE",
+              "variant": "DOPPIA CHANCE MULTIESITI",
+              "threshold": null,
+              "selection": "12",
+              "providerSelectionId": "5291836876",
+              "odds": 1.36,
+              "overlapKey": "market-doppia chance",
+              "semanticKeys": [
+                "result"
+              ],
+              "marketScope": "match",
+              "probabilityPct": 70.7,
+              "prudentProbabilityPct": 68.7,
+              "fairOdds": 1.46,
+              "expectedValuePct": -6.5,
+              "method": "matrice punteggi"
             },
             {
               "label": "Partita almeno 23 tiri totali",
@@ -84694,33 +84724,27 @@
               "semanticKeys": [
                 "volume-shots-total"
               ],
-              "marketScope": "match"
-            },
-            {
-              "label": "Partita almeno 6 tiri in porta",
-              "market": "U/O TIRI IN PORTA",
-              "variant": "U/O 5.5 TIRI IN PORTA",
-              "threshold": "5.5",
-              "selection": "OVER",
-              "providerSelectionId": "5291828806",
-              "odds": 1.22,
-              "overlapKey": "market-u o tiri in porta",
-              "semanticKeys": [
-                "volume-shots-on-target"
-              ],
-              "marketScope": "match"
+              "marketScope": "match",
+              "probabilityPct": 63.6,
+              "prudentProbabilityPct": 58.5,
+              "fairOdds": 1.71,
+              "expectedValuePct": -19.3,
+              "method": "volume previsto"
             }
           ],
-          "selection": "EBOSSE E. almeno 2 falli commessi + DC + U/O 3.5 · 12 + UNDER + Partita almeno 23 tiri totali + Partita almeno 6 tiri in porta",
+          "selection": "Almeno una squadra non segna + Partita almeno 7 tiri in porta + Nessun pareggio (12) + Partita almeno 23 tiri totali",
           "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-06: quota 5 orientativa, 3-6 gambe, mercati distinti, nessuno scenario di base ripetuto o annidato e quote singole 1.10-1.85. Il rischio resta informativo.",
-          "probabilityPct": null,
-          "prudentProbabilityPct": null,
-          "fairOdds": null,
-          "prudentExpectedValuePct": null,
+          "probabilityPct": 20.46,
+          "prudentProbabilityPct": 14.4,
+          "fairOdds": 6.94,
+          "prudentExpectedValuePct": -28,
           "qualityStatus": "editoriale",
-          "weakestLeg": null,
-          "probabilityMethod": null,
-          "probabilityStatus": "N/D · stima congiunta non supportata"
+          "weakestLeg": {
+            "label": "Almeno una squadra non segna",
+            "prudentProbabilityPct": 52.3
+          },
+          "probabilityMethod": "Stima prudenziale: congiunzione esatta dei mercati gol, volumi modellati e penalita per dipendenze residue.",
+          "probabilityStatus": null
         },
         {
           "tier": "Balanced",
@@ -84734,143 +84758,42 @@
           "distancePct": 0,
           "legs": [
             {
-              "label": "Almeno una squadra non segna",
-              "market": "GOAL/NOGOAL",
-              "variant": "GOAL/NO GOAL",
+              "label": "PRIMA A 3 CALCI D'ANGOLO · Udinese",
+              "market": "PRIMA A X CORNER",
+              "variant": "PRIMA A 3 CALCI D'ANGOLO",
               "threshold": null,
-              "selection": "NOGOAL",
-              "providerSelectionId": "5291827733",
+              "selection": "TEAM 1",
+              "providerSelectionId": "5302627989",
               "odds": 1.85,
-              "overlapKey": "market-goal nogoal",
-              "semanticKeys": [
-                "goals"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "FLORIANI MUSSOLINI R. almeno 2 falli commessi",
-              "market": "U/O FALLI COMMESSI GIOCATORE",
-              "variant": "FLORIANI MUSSOLINI R. U/O 1.5 FALLI COMMESSI",
-              "threshold": "1.5",
-              "selection": "OVER",
-              "providerSelectionId": "5303223335",
-              "odds": 1.75,
-              "overlapKey": "market-u o falli commessi giocatore",
-              "semanticKeys": [],
-              "marketScope": "player"
-            },
-            {
-              "label": "DOEKHI D. almeno 1 falli subiti",
-              "market": "U/O FALLI SUBITI GIOCATORE",
-              "variant": "DOEKHI D. U/O 0.5 FALLI SUBITI",
-              "threshold": "0.5",
-              "selection": "OVER",
-              "providerSelectionId": "5303241005",
-              "odds": 1.8,
-              "overlapKey": "market-u o falli subiti giocatore",
-              "semanticKeys": [],
-              "marketScope": "player"
-            },
-            {
-              "label": "Lazio meno di 6 corner",
-              "market": "U/O CORNER SQUADRA X",
-              "variant": "U/O 5.5 CORNER SQUADRA 2",
-              "threshold": "5.5",
-              "selection": "UNDER",
-              "providerSelectionId": "5302627725",
-              "odds": 1.3,
-              "overlapKey": "market-u o corner squadra x",
+              "overlapKey": "market-prima a x corner",
               "semanticKeys": [
                 "volume-corners"
               ],
               "marketScope": "match"
             },
             {
-              "label": "Partita almeno 21 tiri totali",
-              "market": "U/O TIRI TOTALI",
-              "variant": "U/O 20.5 TIRI TOTALI",
-              "threshold": "20.5",
-              "selection": "OVER",
-              "providerSelectionId": "5291828868",
-              "odds": 1.2,
-              "overlapKey": "market-u o tiri totali",
-              "semanticKeys": [
-                "volume-shots-total"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "Partita almeno 5 tiri in porta",
-              "market": "U/O TIRI IN PORTA",
-              "variant": "U/O 4.5 TIRI IN PORTA",
-              "threshold": "4.5",
-              "selection": "OVER",
-              "providerSelectionId": "5303236105",
-              "odds": 1.1,
-              "overlapKey": "market-u o tiri in porta",
-              "semanticKeys": [
-                "volume-shots-on-target"
-              ],
-              "marketScope": "match"
-            }
-          ],
-          "selection": "Almeno una squadra non segna + FLORIANI MUSSOLINI R. almeno 2 falli commessi + DOEKHI D. almeno 1 falli subiti + Lazio meno di 6 corner + Partita almeno 21 tiri totali + Partita almeno 5 tiri in porta",
-          "logic": "Profilo balanced costruito sulle quote Sisal del 2026-09-06: quota 10 orientativa, 4-7 gambe, mercati distinti, nessuno scenario di base ripetuto o annidato e quote singole 1.10-1.85. Il rischio resta informativo.",
-          "probabilityPct": null,
-          "prudentProbabilityPct": null,
-          "fairOdds": null,
-          "prudentExpectedValuePct": null,
-          "qualityStatus": "editoriale",
-          "weakestLeg": null,
-          "probabilityMethod": null,
-          "probabilityStatus": "N/D · stima congiunta non supportata"
-        },
-        {
-          "tier": "Aggressive",
-          "scenario": null,
-          "risk": "elevato",
-          "targetOdds": 20,
-          "quotaPolicy": "orientativa",
-          "eligibilityPolicy": "validita-tecnica-e-intervalli",
-          "riskPolicy": "informativa",
-          "odds": 20,
-          "distancePct": 0,
-          "legs": [
-            {
-              "label": "FLORIANI MUSSOLINI R. almeno 2 falli commessi",
-              "market": "U/O FALLI COMMESSI GIOCATORE",
-              "variant": "FLORIANI MUSSOLINI R. U/O 1.5 FALLI COMMESSI",
-              "threshold": "1.5",
-              "selection": "OVER",
-              "providerSelectionId": "5303223335",
-              "odds": 1.75,
-              "overlapKey": "market-u o falli commessi giocatore",
-              "semanticKeys": [],
-              "marketScope": "player"
-            },
-            {
-              "label": "DAVIS K. almeno 3 tiri totali, sostituto incluso",
-              "market": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
-              "variant": "DAVIS K. U/O 2.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
-              "threshold": "2.5",
-              "selection": "OVER",
-              "providerSelectionId": "5303235957",
-              "odds": 1.75,
-              "overlapKey": "market-u o tiri totali giocatore duo inc ts",
-              "semanticKeys": [
-                "volume-shots-total"
-              ],
-              "marketScope": "player"
-            },
-            {
-              "label": "Entrambe almeno 3 tiri in porta",
-              "market": "ENTRAMBE LE SQUADRE ALMENO X TIRI IN PORTA",
-              "variant": "ENTRAMBE LE SQUADRE ALMENO 3 TIRI IN PORTA",
+              "label": "Nessun pareggio (12)",
+              "market": "DOPPIA CHANCE",
+              "variant": "DOPPIA CHANCE MULTIESITI",
               "threshold": null,
-              "selection": "SI",
-              "providerSelectionId": "5303237240",
-              "odds": 1.62,
-              "overlapKey": "market-entrambe le squadre almeno x tiri in porta",
+              "selection": "12",
+              "providerSelectionId": "5291836876",
+              "odds": 1.36,
+              "overlapKey": "market-doppia chance",
+              "semanticKeys": [
+                "result"
+              ],
+              "marketScope": "match"
+            },
+            {
+              "label": "Udinese almeno 4 tiri in porta",
+              "market": "U/O TIRI IN PORTA SQUADRA X",
+              "variant": "SQUADRA 1: U/O 3.5 TIRI IN PORTA",
+              "threshold": "3.5",
+              "selection": "OVER",
+              "providerSelectionId": "5303235865",
+              "odds": 1.8,
+              "overlapKey": "market-u o tiri in porta squadra x",
               "semanticKeys": [
                 "volume-shots-on-target"
               ],
@@ -84891,33 +84814,114 @@
               "marketScope": "match"
             },
             {
-              "label": "CANCELLIERI M. almeno 2 falli subiti",
-              "market": "U/O FALLI SUBITI GIOCATORE",
-              "variant": "CANCELLIERI M. U/O 1.5 FALLI SUBITI",
-              "threshold": "1.5",
+              "label": "Partita almeno 23 tiri totali",
+              "market": "U/O TIRI TOTALI",
+              "variant": "U/O 22.5 TIRI TOTALI",
+              "threshold": "22.5",
               "selection": "OVER",
-              "providerSelectionId": "5303241225",
-              "odds": 1.4,
-              "overlapKey": "market-u o falli subiti giocatore",
-              "semanticKeys": [],
-              "marketScope": "player"
+              "providerSelectionId": "5291828896",
+              "odds": 1.38,
+              "overlapKey": "market-u o tiri totali",
+              "semanticKeys": [
+                "volume-shots-total"
+              ],
+              "marketScope": "match"
+            }
+          ],
+          "selection": "PRIMA A 3 CALCI D'ANGOLO · Udinese + Nessun pareggio (12) + Udinese almeno 4 tiri in porta + Under 2,5 gol + Partita almeno 23 tiri totali",
+          "logic": "Profilo balanced costruito sulle quote Sisal del 2026-09-06: quota 10 orientativa, 4-7 gambe, mercati distinti, nessuno scenario di base ripetuto o annidato e quote singole 1.10-1.85. Il rischio resta informativo.",
+          "probabilityPct": null,
+          "prudentProbabilityPct": null,
+          "fairOdds": null,
+          "prudentExpectedValuePct": null,
+          "qualityStatus": "editoriale",
+          "weakestLeg": null,
+          "probabilityMethod": null,
+          "probabilityStatus": "N/D · stima congiunta non supportata"
+        },
+        {
+          "tier": "Aggressive",
+          "scenario": null,
+          "risk": "elevato",
+          "targetOdds": 20,
+          "quotaPolicy": "orientativa",
+          "eligibilityPolicy": "validita-tecnica-e-intervalli",
+          "riskPolicy": "informativa",
+          "odds": 13.15,
+          "distancePct": 34.3,
+          "legs": [
+            {
+              "label": "Almeno una squadra non segna",
+              "market": "GOAL/NOGOAL",
+              "variant": "GOAL/NO GOAL",
+              "threshold": null,
+              "selection": "NOGOAL",
+              "providerSelectionId": "5291827733",
+              "odds": 1.85,
+              "overlapKey": "market-goal nogoal",
+              "semanticKeys": [
+                "goals"
+              ],
+              "marketScope": "match"
             },
             {
-              "label": "PRIMA A 2 CALCI D'ANGOLO · Udinese",
+              "label": "PRIMA A 3 CALCI D'ANGOLO · Udinese",
               "market": "PRIMA A X CORNER",
-              "variant": "PRIMA A 2 CALCI D'ANGOLO",
+              "variant": "PRIMA A 3 CALCI D'ANGOLO",
               "threshold": null,
               "selection": "TEAM 1",
-              "providerSelectionId": "5302627839",
-              "odds": 1.8,
+              "providerSelectionId": "5302627989",
+              "odds": 1.85,
               "overlapKey": "market-prima a x corner",
               "semanticKeys": [
                 "volume-corners"
               ],
               "marketScope": "match"
+            },
+            {
+              "label": "Udinese almeno 4 tiri in porta",
+              "market": "U/O TIRI IN PORTA SQUADRA X",
+              "variant": "SQUADRA 1: U/O 3.5 TIRI IN PORTA",
+              "threshold": "3.5",
+              "selection": "OVER",
+              "providerSelectionId": "5303235865",
+              "odds": 1.8,
+              "overlapKey": "market-u o tiri in porta squadra x",
+              "semanticKeys": [
+                "volume-shots-on-target"
+              ],
+              "marketScope": "match"
+            },
+            {
+              "label": "Nessun pareggio (12)",
+              "market": "DOPPIA CHANCE",
+              "variant": "DOPPIA CHANCE MULTIESITI",
+              "threshold": null,
+              "selection": "12",
+              "providerSelectionId": "5291836876",
+              "odds": 1.36,
+              "overlapKey": "market-doppia chance",
+              "semanticKeys": [
+                "result"
+              ],
+              "marketScope": "match"
+            },
+            {
+              "label": "Udinese almeno 12 tiri totali",
+              "market": "U/O TIRI TOTALI SQUADRA X",
+              "variant": "SQUADRA 1: U/O 11.5 TIRI TOTALI",
+              "threshold": "11.5",
+              "selection": "OVER",
+              "providerSelectionId": "5303236777",
+              "odds": 1.57,
+              "overlapKey": "market-u o tiri totali squadra x",
+              "semanticKeys": [
+                "volume-shots-total"
+              ],
+              "marketScope": "match"
             }
           ],
-          "selection": "FLORIANI MUSSOLINI R. almeno 2 falli commessi + DAVIS K. almeno 3 tiri totali, sostituto incluso + Entrambe almeno 3 tiri in porta + Under 2,5 gol + CANCELLIERI M. almeno 2 falli subiti + PRIMA A 2 CALCI D'ANGOLO · Udinese",
+          "selection": "Almeno una squadra non segna + PRIMA A 3 CALCI D'ANGOLO · Udinese + Udinese almeno 4 tiri in porta + Nessun pareggio (12) + Udinese almeno 12 tiri totali",
           "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-09-06: quota 20 orientativa, 5-8 gambe, mercati distinti, nessuno scenario di base ripetuto o annidato e quote singole 1.10-1.85. Il rischio resta informativo.",
           "probabilityPct": null,
           "prudentProbabilityPct": null,
@@ -85023,7 +85027,7 @@
         "completenessPct": 75,
         "crossCompetitionBaseline": false,
         "updatedAt": "2026-09-01",
-        "probableLineups": "20/20 titolari proiettati; fonte editoriale da riconfermare",
+        "probableLineups": "22/22 titolari ufficiali confermati",
         "missing": [
           "forma ufficiale 2026/27",
           "meteo attendibile alla data della gara"
@@ -86203,10 +86207,10 @@
             "tier": "Safe",
             "status": "outside-limits",
             "allowed": false,
-            "riskScore": 82,
-            "riskLevel": "alto",
-            "averageRisk": 82,
-            "maxEventRisk": 82,
+            "riskScore": 38.8,
+            "riskLevel": "basso",
+            "averageRisk": 38.8,
+            "maxEventRisk": 47.7,
             "strongDependencies": 0,
             "contradictions": 0,
             "limits": {
@@ -86216,34 +86220,32 @@
               "minPrudentExpectedValuePct": 0
             },
             "reasons": [
-              "Rischio medio 82 oltre il limite 42.",
-              "Gamba a rischio 82 oltre il limite 58.",
-              "EV prudenziale non disponibile."
+              "EV prudenziale -28% sotto il limite 0%."
             ],
             "events": [
               {
-                "providerSelectionId": "5303223419",
-                "label": "EBOSSE E. almeno 2 falli commessi",
-                "riskScore": 82,
-                "modeled": false
+                "providerSelectionId": "5291827733",
+                "label": "Almeno una squadra non segna",
+                "riskScore": 47.7,
+                "modeled": true
               },
               {
-                "providerSelectionId": "5291828133",
-                "label": "DC + U/O 3.5 · 12 + UNDER",
-                "riskScore": 82,
-                "modeled": false
+                "providerSelectionId": "5291828794",
+                "label": "Partita almeno 7 tiri in porta",
+                "riskScore": 34.7,
+                "modeled": true
+              },
+              {
+                "providerSelectionId": "5291836876",
+                "label": "Nessun pareggio (12)",
+                "riskScore": 31.3,
+                "modeled": true
               },
               {
                 "providerSelectionId": "5291828896",
                 "label": "Partita almeno 23 tiri totali",
-                "riskScore": 82,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5291828806",
-                "label": "Partita almeno 6 tiri in porta",
-                "riskScore": 82,
-                "modeled": false
+                "riskScore": 41.5,
+                "modeled": true
               }
             ],
             "dependencies": []
@@ -86252,9 +86254,9 @@
             "tier": "Balanced",
             "status": "outside-limits",
             "allowed": false,
-            "riskScore": 79.2,
+            "riskScore": 75.2,
             "riskLevel": "alto",
-            "averageRisk": 79.2,
+            "averageRisk": 75.2,
             "maxEventRisk": 82,
             "strongDependencies": 0,
             "contradictions": 0,
@@ -86265,86 +86267,26 @@
               "minPrudentExpectedValuePct": 0
             },
             "reasons": [
-              "Rischio medio 79.2 oltre il limite 56.",
+              "Rischio medio 75.2 oltre il limite 56.",
               "Gamba a rischio 82 oltre il limite 72.",
               "EV prudenziale non disponibile."
             ],
             "events": [
               {
-                "providerSelectionId": "5291827733",
-                "label": "Almeno una squadra non segna",
+                "providerSelectionId": "5302627989",
+                "label": "PRIMA A 3 CALCI D'ANGOLO · Udinese",
+                "riskScore": 82,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5291836876",
+                "label": "Nessun pareggio (12)",
                 "riskScore": 65,
                 "modeled": false
               },
               {
-                "providerSelectionId": "5303223335",
-                "label": "FLORIANI MUSSOLINI R. almeno 2 falli commessi",
-                "riskScore": 82,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5303241005",
-                "label": "DOEKHI D. almeno 1 falli subiti",
-                "riskScore": 82,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5302627725",
-                "label": "Lazio meno di 6 corner",
-                "riskScore": 82,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5291828868",
-                "label": "Partita almeno 21 tiri totali",
-                "riskScore": 82,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5303236105",
-                "label": "Partita almeno 5 tiri in porta",
-                "riskScore": 82,
-                "modeled": false
-              }
-            ],
-            "dependencies": []
-          },
-          {
-            "tier": "Aggressive",
-            "status": "outside-limits",
-            "allowed": false,
-            "riskScore": 79.2,
-            "riskLevel": "alto",
-            "averageRisk": 79.2,
-            "maxEventRisk": 82,
-            "strongDependencies": 0,
-            "contradictions": 0,
-            "limits": {
-              "maxAverageRisk": 72,
-              "maxEventRisk": 88,
-              "maxStrongDependencies": 3,
-              "minPrudentExpectedValuePct": 0
-            },
-            "reasons": [
-              "Rischio medio 79.2 oltre il limite 72.",
-              "EV prudenziale non disponibile."
-            ],
-            "events": [
-              {
-                "providerSelectionId": "5303223335",
-                "label": "FLORIANI MUSSOLINI R. almeno 2 falli commessi",
-                "riskScore": 82,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5303235957",
-                "label": "DAVIS K. almeno 3 tiri totali, sostituto incluso",
-                "riskScore": 82,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5303237240",
-                "label": "Entrambe almeno 3 tiri in porta",
+                "providerSelectionId": "5303235865",
+                "label": "Udinese almeno 4 tiri in porta",
                 "riskScore": 82,
                 "modeled": false
               },
@@ -86355,14 +86297,70 @@
                 "modeled": false
               },
               {
-                "providerSelectionId": "5303241225",
-                "label": "CANCELLIERI M. almeno 2 falli subiti",
+                "providerSelectionId": "5291828896",
+                "label": "Partita almeno 23 tiri totali",
+                "riskScore": 82,
+                "modeled": false
+              }
+            ],
+            "dependencies": [
+              {
+                "first": "5291836876",
+                "second": "5291836855",
+                "type": "negative",
+                "correlation": -0.289,
+                "intersectionProbabilityPct": 38.6
+              }
+            ]
+          },
+          {
+            "tier": "Aggressive",
+            "status": "outside-limits",
+            "allowed": false,
+            "riskScore": 75.2,
+            "riskLevel": "alto",
+            "averageRisk": 75.2,
+            "maxEventRisk": 82,
+            "strongDependencies": 0,
+            "contradictions": 0,
+            "limits": {
+              "maxAverageRisk": 72,
+              "maxEventRisk": 88,
+              "maxStrongDependencies": 3,
+              "minPrudentExpectedValuePct": 0
+            },
+            "reasons": [
+              "Rischio medio 75.2 oltre il limite 72.",
+              "EV prudenziale non disponibile."
+            ],
+            "events": [
+              {
+                "providerSelectionId": "5291827733",
+                "label": "Almeno una squadra non segna",
+                "riskScore": 65,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5302627989",
+                "label": "PRIMA A 3 CALCI D'ANGOLO · Udinese",
                 "riskScore": 82,
                 "modeled": false
               },
               {
-                "providerSelectionId": "5302627839",
-                "label": "PRIMA A 2 CALCI D'ANGOLO · Udinese",
+                "providerSelectionId": "5303235865",
+                "label": "Udinese almeno 4 tiri in porta",
+                "riskScore": 82,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5291836876",
+                "label": "Nessun pareggio (12)",
+                "riskScore": 65,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5303236777",
+                "label": "Udinese almeno 12 tiri totali",
                 "riskScore": 82,
                 "modeled": false
               }
