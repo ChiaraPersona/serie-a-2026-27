@@ -17,10 +17,10 @@ const homeVersion = "20260907-udinese-lazio-official-v1";
 const calendarVersion = "20260906-personal-calendar-all-competitions-v1";
 const teamVersion = "20260907-udinese-lazio-official-v1";
 const leaderboardVersion = "20260906-md3-eight-results-v1";
-const bettingVersion = "20260907-udinese-lazio-official-v1";
+const bettingVersion = "20260908-champions-schedina-v3";
 const readingVersion = "20260907-udinese-lazio-official-v1";
 const cupVersion = "20260903-coppa-results-v1";
-const championsVersion = "20260907-champions-surprise-factor-v4";
+const championsVersion = "20260907-champions-player-markets-v1";
 const fantasyVersion = "20260907-udinese-lazio-official-v1";
 const headToHeadPath = path.join(root, "data/generated/head-to-head/first-leg-2026-27.json");
 if (fs.existsSync(headToHeadPath)) {

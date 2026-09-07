@@ -51,11 +51,28 @@ export function createPage(deps){
     return `<a class="betting-archive-card team-directory-card team-flip-card" href="schedina.html?giornata=${number}" aria-label="Apri le schedine della ${ordinalWord(number)} giornata" style="--team-primary:${colors[number]};--team-secondary:#06152b"><span class="team-flip-inner"><span class="team-flip-face team-flip-front betting-archive-card-front"><span class="betting-archive-number">${number}</span></span><span class="team-flip-face team-flip-back betting-archive-card-back"><strong>${number}ª giornata</strong><span>Serie A · 2026/27</span><span>${data.slips.length} schedine</span>${detail}<b>Apri la lista delle schedine</b></span></span></a>`;
   }
 
+  function championsArchiveCard(data){
+    return `<a class="betting-archive-card betting-archive-card--champions team-directory-card team-flip-card" href="schedina.html?competizione=champions" aria-label="Apri la schedina Champions League" style="--team-primary:#0756c9;--team-secondary:#02183f"><span class="team-flip-inner"><span class="team-flip-face team-flip-front betting-archive-card-front betting-champions-front" style="background:radial-gradient(circle at 70% 18%,rgba(80,196,255,.5),transparent 42%),linear-gradient(145deg,#0966e8,#031b4b)!important;color:#fff"><span class="betting-archive-number">CL</span><small>UEFA</small></span><span class="team-flip-face team-flip-back betting-archive-card-back"><strong>Champions League</strong><span>1ª giornata · 2026/27</span><span>${data.slips.length} poker ammoniti</span><span class="betting-archive-performance"><span><small>Selezioni</small><strong>${data.summary.legs}</strong></span><span><small>Partite</small><strong>${data.summary.distinctFixtures}</strong></span></span><span>Quote aggiornate al ${esc(dateOnly(data.oddsRetrievedAt))}</span><b>Apri la schedina Champions</b></span></span></a>`;
+  }
+
+  function championsSlipCard(slip){
+    return `<article class="betting-slip betting-slip--champions"><header><div><p>${esc(slip.eyebrow)}</p><h2>${esc(slip.name)}</h2><small>${esc(slip.description)}</small></div><span class="betting-quality">Indice modello</span></header><div class="betting-slip-metrics betting-champions-metrics"><div class="betting-slip-total"><span>Quota totale</span><strong>${odds(slip.combinedOdds)}</strong><small>solo riferimento</small></div><div><span>Composizione</span><strong>4 ammoniti</strong></div><div><span>Copertura</span><strong>4 partite</strong></div></div><ol>${slip.legs.map((leg,index)=>`<li><span class="betting-leg-number">${String(index+1).padStart(2,"0")}</span><div><strong>${esc(leg.fixture)}</strong><span>${esc(leg.label)} <small>· indice ${leg.riskScore}/100</small></span></div><b>${odds(leg.odds)}</b></li>`).join("")}</ol></article>`;
+  }
+
+  function championsContent(data){
+    return `<div class="betting-stage betting-champions-stage"><header class="betting-intro"><div><p class="eyebrow">Champions League · 1ª giornata</p><h3>Due poker di ammoniti</h3></div><p>Otto giocatori differenti, scelti in otto partite differenti. Nessun risultato esatto, fisso o multiesito.</p></header><p class="betting-coverage"><strong>${data.summary.distinctPlayers} giocatori e ${data.summary.distinctFixtures} gare senza ripetizioni.</strong> Le quote non orientano la selezione: vengono associate soltanto dopo l'ordinamento disciplinare.</p><div class="betting-slip-grid betting-slip-grid-qualified">${data.slips.map(championsSlipCard).join("")}</div><footer class="betting-method"><strong>Criterio Champions</strong><p>${esc(data.selectionRule)}</p><p>Quote ${esc(data.provider)} aggiornate al ${esc(dateOnly(data.oddsRetrievedAt))}. Esclusi risultati esatti, quasi ammonito e gli altri mercati tecnicamente non compatibili. Gioca responsabilmente.</p></footer></div>`;
+  }
+
   async function render(){
-    const [md1,md2,md3,matches]=await Promise.all([load("schedina.json"),load("schedina-md02.json"),load("schedina-md03.json"),load("matches.json")]);
+    const [champions,md1,md2,md3,matches]=await Promise.all([load("schedina-champions-md01.json"),load("schedina.json"),load("schedina-md02.json"),load("schedina-md03.json"),load("matches.json")]);
     const rounds={1:md1,2:md2,3:md3};
     const matchById=new Map((Array.isArray(matches)?matches:matches.matches||[]).map(match=>[match.id,match]));
     const matchday=new URLSearchParams(location.search).get("giornata");
+    const competition=new URLSearchParams(location.search).get("competizione");
+    if(competition==="champions"){
+      document.querySelector("#app").innerHTML=hero("UEFA Champions League · 2026/27","Schedina Champions","Due poker di probabili ammoniti costruiti dal modello e quotati successivamente con il listino Sisal.")+`<nav class="betting-round-back" aria-label="Navigazione archivio schedine"><a href="schedina.html">← Tutte le schedine</a></nav><section class="betting-round-page betting-round-page--champions"><header class="betting-round-heading"><p class="eyebrow">Champions League · 2026/27</p><h2>1ª giornata</h2></header>${championsContent(champions)}</section>`;
+      return;
+    }
     if(rounds[matchday]){
       const number=Number(matchday),data=rounds[number];
       const ordinal=`${number}ª`;
@@ -63,7 +80,7 @@ export function createPage(deps){
       document.querySelector("#app").innerHTML=hero(`Archivio · ${ordinal} giornata`,"Schedine",description)+`<nav class="betting-round-back" aria-label="Navigazione archivio schedine"><a href="schedina.html">← Tutte le giornate</a></nav><section class="betting-round-page" aria-labelledby="betting-round-${String(number).padStart(2,"0")}-title"><header class="betting-round-heading"><p class="eyebrow">Serie A · 2026/27</p><h2 id="betting-round-${String(number).padStart(2,"0")}-title">${ordinal} giornata</h2></header>${roundContent(data,matchById,{showLegend:number===1})}</section>`;
       return;
     }
-    document.querySelector("#app").innerHTML=hero("Archivio · Stagione 2026/27","Schedina","Le schedine restano raccolte giornata per giornata, con quote, valutazioni ed esiti sempre consultabili.")+`<section class="betting-archive" aria-labelledby="betting-archive-title"><header class="betting-archive-intro"><div><p class="eyebrow">Archivio schedine</p><h2 id="betting-archive-title">Giornate</h2></div><p>Seleziona una giornata per consultare tutte le schedine archiviate.</p></header><div class="betting-archive-list team-directory-grid team-flip-grid">${archiveCard(md1,1,matchById)}${archiveCard(md2,2,matchById)}${archiveCard(md3,3,matchById)}</div></section>`;
+    document.querySelector("#app").innerHTML=hero("Archivio · Stagione 2026/27","Schedina","Le schedine restano raccolte giornata per giornata, con quote, valutazioni ed esiti sempre consultabili.")+`<section class="betting-archive" aria-labelledby="betting-archive-title"><header class="betting-archive-intro"><div><p class="eyebrow">Archivio schedine</p><h2 id="betting-archive-title">Competizioni e giornate</h2></div><p>La prima card blu raccoglie la Champions; seguono le giornate di Serie A.</p></header><div class="betting-archive-list team-directory-grid team-flip-grid">${championsArchiveCard(champions)}${archiveCard(md1,1,matchById)}${archiveCard(md2,2,matchById)}${archiveCard(md3,3,matchById)}</div></section>`;
   }
   return {render};
 }
