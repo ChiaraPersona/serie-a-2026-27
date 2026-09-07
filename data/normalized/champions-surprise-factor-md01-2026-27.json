@@ -1,0 +1,2567 @@
+{
+  "schemaVersion": 1,
+  "competition": "UEFA Champions League",
+  "season": "2026-27",
+  "matchday": 1,
+  "generatedAt": "2026-09-07T16:30:38.337Z",
+  "status": "experimental-explainable",
+  "warning": "Il dato misura la vulnerabilità della favorita, non la probabilità di vittoria dell'underdog. Le assenze restano neutrali finché non sono disponibili stati verificati e abbassano la confidence.",
+  "methodology": {
+    "formula": {
+      "market": 0.5,
+      "form": 0.15,
+      "venue": 0.1,
+      "absences": 0.1,
+      "tactical": 0.1,
+      "motivation": 0.05
+    },
+    "market": "Quote Sisal 1X2 più recenti convertite in probabilità implicite e normalizzate senza margine; fallback UEFA Elo documentato.",
+    "form": "Ultime cinque gare ESPN con punti e saldo gol; le ultime dieci forniscono un correttivo di contesto.",
+    "venue": "Saldo gol casa/trasferta nel campione ESPN, con bonus prudente se l'underdog gioca in casa.",
+    "absences": "Impatto basato su ruolo, minuti, status titolare e contributo solo per indisponibilità verificate; fallback neutro se gli stati non esistono.",
+    "tactical": "Incrocio tra punti di forza, vulnerabilità e stile WhoScored; fallback quantitativo sulla pressione di tiri recente quando il profilo qualitativo non è disponibile.",
+    "motivation": "Differenza relativa di Motivation Index e Rotation Risk già presenti nel progetto.",
+    "neutralFallback": 50,
+    "confidence": "Media pesata della copertura delle sei componenti; i fallback e i dati mancanti la riducono."
+  },
+  "bands": [
+    {
+      "min": 0,
+      "max": 20,
+      "label": "molto basso"
+    },
+    {
+      "min": 21,
+      "max": 40,
+      "label": "basso"
+    },
+    {
+      "min": 41,
+      "max": 55,
+      "label": "medio"
+    },
+    {
+      "min": 56,
+      "max": 70,
+      "label": "alto"
+    },
+    {
+      "min": 71,
+      "max": 85,
+      "label": "molto alto"
+    },
+    {
+      "min": 86,
+      "max": 100,
+      "label": "estremo"
+    }
+  ],
+  "summary": {
+    "fixtures": 18,
+    "marketFromOdds": 18,
+    "marketFallbacks": 0,
+    "verifiedAbsenceFixtures": 0,
+    "qualitativeTacticalFixtures": 0,
+    "statisticalTacticalFallbacks": 17,
+    "lowConfidence": 1
+  },
+  "fixtures": [
+    {
+      "fixtureId": "ucl-2026-27-md01-01",
+      "homeTeam": "AEK Athens",
+      "awayTeam": "LASK",
+      "surpriseFactor": 54,
+      "surpriseLevel": "medio",
+      "favorite": "AEK Athens",
+      "underdog": "LASK",
+      "components": {
+        "market": 47,
+        "form": 86,
+        "venue": 35,
+        "absences": 50,
+        "tactical": 61,
+        "motivation": 50
+      },
+      "componentDetails": {
+        "market": {
+          "value": 47,
+          "status": "latest-sisal-1x2-no-margin",
+          "confidence": 1,
+          "evidence": {
+            "provider": "Sisal",
+            "retrievedAt": "2026-09-06T17:01:19.159Z",
+            "odds": {
+              "1": 1.8,
+              "2": 4.25,
+              "X": 3.75
+            },
+            "normalizedProbabilities": {
+              "home": 52.5,
+              "draw": 25.2,
+              "away": 22.2
+            },
+            "favoriteWinProbabilityPct": 52.5
+          }
+        },
+        "form": {
+          "value": 86,
+          "status": "espn-last5-with-last10-context",
+          "confidence": 1,
+          "evidence": {
+            "favorite": {
+              "last5": {
+                "matches": 5,
+                "pointsPerMatch": 1.4,
+                "goalDifferencePerMatch": 0.2
+              },
+              "last10": {
+                "matches": 10,
+                "pointsPerMatch": 1.6,
+                "goalDifferencePerMatch": 0.5
+              }
+            },
+            "underdog": {
+              "last5": {
+                "matches": 5,
+                "pointsPerMatch": 3,
+                "goalDifferencePerMatch": 2.6
+              },
+              "last10": {
+                "matches": 10,
+                "pointsPerMatch": 2.8,
+                "goalDifferencePerMatch": 2.3
+              }
+            }
+          }
+        },
+        "venue": {
+          "value": 35,
+          "status": "espn-home-away-goal-balance",
+          "confidence": 1,
+          "evidence": {
+            "favorite": {
+              "team": "AEK Athens",
+              "venue": "home",
+              "matches": 9,
+              "goalsFor": 2.333,
+              "goalsAgainst": 0.889,
+              "balance": 1.4440000000000002
+            },
+            "underdog": {
+              "team": "LASK",
+              "venue": "away",
+              "matches": 18,
+              "goalsFor": 1.833,
+              "goalsAgainst": 1.333,
+              "balance": 0.5
+            }
+          }
+        },
+        "absences": {
+          "value": 50,
+          "status": "fallback-neutral-no-verified-availability",
+          "confidence": 0,
+          "evidence": {
+            "favorite": [],
+            "underdog": []
+          }
+        },
+        "tactical": {
+          "value": 61,
+          "status": "statistical-shot-pressure-fallback",
+          "confidence": 0.5,
+          "evidence": {
+            "favoriteRecentShotsConceded": 11.85,
+            "underdogRecentShotsCreated": 19.671,
+            "pressureDelta": 3.7,
+            "qualitativeProfilesAvailable": false
+          }
+        },
+        "motivation": {
+          "value": 50,
+          "status": "motivation-index-relative",
+          "confidence": 0.59,
+          "evidence": {
+            "favorite": {
+              "score": 69,
+              "rotationRisk": 16
+            },
+            "underdog": {
+              "score": 71,
+              "rotationRisk": 20
+            }
+          }
+        }
+      },
+      "confidence": {
+        "value": 0.83,
+        "label": "alta",
+        "missingOrFallbackComponents": [
+          "absences",
+          "tactical"
+        ]
+      },
+      "reasons": [
+        "LASK nelle ultime 5: 3 punti/gara; AEK Athens: 1.4",
+        "Quote normalizzate: AEK Athens non vince nel 47% degli scenari 1X2",
+        "Pressione recente dell'underdog: 19.7 tiri creati; favorita ne concede 11.8"
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-02",
+      "homeTeam": "Club Brugge",
+      "awayTeam": "Aston Villa",
+      "surpriseFactor": 63,
+      "surpriseLevel": "alto",
+      "favorite": "Aston Villa",
+      "underdog": "Club Brugge",
+      "components": {
+        "market": 62,
+        "form": 78,
+        "venue": 74,
+        "absences": 50,
+        "tactical": 54,
+        "motivation": 48
+      },
+      "componentDetails": {
+        "market": {
+          "value": 62,
+          "status": "latest-sisal-1x2-no-margin",
+          "confidence": 1,
+          "evidence": {
+            "provider": "Sisal",
+            "retrievedAt": "2026-09-06T17:01:19.159Z",
+            "odds": {
+              "1": 2.7,
+              "2": 2.5,
+              "X": 3.6
+            },
+            "normalizedProbabilities": {
+              "home": 35.3,
+              "draw": 26.5,
+              "away": 38.2
+            },
+            "favoriteWinProbabilityPct": 38.2
+          }
+        },
+        "form": {
+          "value": 78,
+          "status": "espn-last5-with-last10-context",
+          "confidence": 1,
+          "evidence": {
+            "favorite": {
+              "last5": {
+                "matches": 5,
+                "pointsPerMatch": 1.4,
+                "goalDifferencePerMatch": -0.2
+              },
+              "last10": {
+                "matches": 10,
+                "pointsPerMatch": 1.4,
+                "goalDifferencePerMatch": 0.3
+              }
+            },
+            "underdog": {
+              "last5": {
+                "matches": 5,
+                "pointsPerMatch": 2.4,
+                "goalDifferencePerMatch": 2.2
+              },
+              "last10": {
+                "matches": 10,
+                "pointsPerMatch": 2.5,
+                "goalDifferencePerMatch": 2.2
+              }
+            }
+          }
+        },
+        "venue": {
+          "value": 74,
+          "status": "espn-home-away-goal-balance",
+          "confidence": 1,
+          "evidence": {
+            "favorite": {
+              "team": "Aston Villa",
+              "venue": "away",
+              "matches": 29,
+              "goalsFor": 1.276,
+              "goalsAgainst": 1.241,
+              "balance": 0.03499999999999992
+            },
+            "underdog": {
+              "team": "Club Brugge",
+              "venue": "home",
+              "matches": 27,
+              "goalsFor": 2.704,
+              "goalsAgainst": 1.185,
+              "balance": 1.5190000000000001
+            }
+          }
+        },
+        "absences": {
+          "value": 50,
+          "status": "fallback-neutral-no-verified-availability",
+          "confidence": 0,
+          "evidence": {
+            "favorite": [],
+            "underdog": []
+          }
+        },
+        "tactical": {
+          "value": 54,
+          "status": "statistical-shot-pressure-fallback",
+          "confidence": 0.5,
+          "evidence": {
+            "favoriteRecentShotsConceded": 12.156,
+            "underdogRecentShotsCreated": 18.096,
+            "pressureDelta": 1.35,
+            "qualitativeProfilesAvailable": false
+          }
+        },
+        "motivation": {
+          "value": 48,
+          "status": "motivation-index-relative",
+          "confidence": 0.7,
+          "evidence": {
+            "favorite": {
+              "score": 68,
+              "rotationRisk": 16
+            },
+            "underdog": {
+              "score": 66,
+              "rotationRisk": 16
+            }
+          }
+        }
+      },
+      "confidence": {
+        "value": 0.84,
+        "label": "alta",
+        "missingOrFallbackComponents": [
+          "absences",
+          "tactical"
+        ]
+      },
+      "reasons": [
+        "Quote normalizzate: Aston Villa non vince nel 62% degli scenari 1X2",
+        "Club Brugge nelle ultime 5: 2.4 punti/gara; Aston Villa: 1.4",
+        "Rendimento casalingo dell'underdog: saldo gol +1.52; favorita +0.03"
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-03",
+      "homeTeam": "Borussia Dortmund",
+      "awayTeam": "Villarreal",
+      "surpriseFactor": 42,
+      "surpriseLevel": "medio",
+      "favorite": "Borussia Dortmund",
+      "underdog": "Villarreal",
+      "components": {
+        "market": 46,
+        "form": 26,
+        "venue": 23,
+        "absences": 50,
+        "tactical": 55,
+        "motivation": 40
+      },
+      "componentDetails": {
+        "market": {
+          "value": 46,
+          "status": "latest-sisal-1x2-no-margin",
+          "confidence": 1,
+          "evidence": {
+            "provider": "Sisal",
+            "retrievedAt": "2026-09-06T17:01:19.159Z",
+            "odds": {
+              "1": 1.75,
+              "2": 4,
+              "X": 4.25
+            },
+            "normalizedProbabilities": {
+              "home": 54.1,
+              "draw": 22.3,
+              "away": 23.7
+            },
+            "favoriteWinProbabilityPct": 54.1
+          }
+        },
+        "form": {
+          "value": 26,
+          "status": "espn-last5-with-last10-context",
+          "confidence": 1,
+          "evidence": {
+            "favorite": {
+              "last5": {
+                "matches": 5,
+                "pointsPerMatch": 2.4,
+                "goalDifferencePerMatch": 1
+              },
+              "last10": {
+                "matches": 10,
+                "pointsPerMatch": 2.1,
+                "goalDifferencePerMatch": 1
+              }
+            },
+            "underdog": {
+              "last5": {
+                "matches": 5,
+                "pointsPerMatch": 1,
+                "goalDifferencePerMatch": 0.4
+              },
+              "last10": {
+                "matches": 10,
+                "pointsPerMatch": 1.2,
+                "goalDifferencePerMatch": 0.4
+              }
+            }
+          }
+        },
+        "venue": {
+          "value": 23,
+          "status": "espn-home-away-goal-balance",
+          "confidence": 1,
+          "evidence": {
+            "favorite": {
+              "team": "Borussia Dortmund",
+              "venue": "home",
+              "matches": 23,
+              "goalsFor": 2.348,
+              "goalsAgainst": 0.913,
+              "balance": 1.4349999999999998
+            },
+            "underdog": {
+              "team": "Villarreal",
+              "venue": "away",
+              "matches": 26,
+              "goalsFor": 1.077,
+              "goalsAgainst": 1.577,
+              "balance": -0.5
+            }
+          }
+        },
+        "absences": {
+          "value": 50,
+          "status": "fallback-neutral-no-verified-availability",
+          "confidence": 0,
+          "evidence": {
+            "favorite": [],
+            "underdog": []
+          }
+        },
+        "tactical": {
+          "value": 55,
+          "status": "statistical-shot-pressure-fallback",
+          "confidence": 0.5,
+          "evidence": {
+            "favoriteRecentShotsConceded": 11.378,
+            "underdogRecentShotsCreated": 14.008,
+            "pressureDelta": 1.82,
+            "qualitativeProfilesAvailable": false
+          }
+        },
+        "motivation": {
+          "value": 40,
+          "status": "motivation-index-relative",
+          "confidence": 0.7,
+          "evidence": {
+            "favorite": {
+              "score": 70,
+              "rotationRisk": 16
+            },
+            "underdog": {
+              "score": 62,
+              "rotationRisk": 16
+            }
+          }
+        }
+      },
+      "confidence": {
+        "value": 0.84,
+        "label": "alta",
+        "missingOrFallbackComponents": [
+          "absences",
+          "tactical"
+        ]
+      },
+      "reasons": [
+        "Quote normalizzate: Borussia Dortmund non vince nel 46% degli scenari 1X2",
+        "Villarreal nelle ultime 5: 1 punti/gara; Borussia Dortmund: 2.4"
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-04",
+      "homeTeam": "Porto",
+      "awayTeam": "Manchester City",
+      "surpriseFactor": 53,
+      "surpriseLevel": "medio",
+      "favorite": "Manchester City",
+      "underdog": "Porto",
+      "components": {
+        "market": 45,
+        "form": 70,
+        "venue": 69,
+        "absences": 50,
+        "tactical": 53,
+        "motivation": 51
+      },
+      "componentDetails": {
+        "market": {
+          "value": 45,
+          "status": "latest-sisal-1x2-no-margin",
+          "confidence": 1,
+          "evidence": {
+            "provider": "Sisal",
+            "retrievedAt": "2026-09-06T17:01:19.159Z",
+            "odds": {
+              "1": 4.5,
+              "2": 1.7,
+              "X": 4
+            },
+            "normalizedProbabilities": {
+              "home": 21,
+              "draw": 23.6,
+              "away": 55.5
+            },
+            "favoriteWinProbabilityPct": 55.5
+          }
+        },
+        "form": {
+          "value": 70,
+          "status": "espn-last5-with-last10-context",
+          "confidence": 1,
+          "evidence": {
+            "favorite": {
+              "last5": {
+                "matches": 5,
+                "pointsPerMatch": 2,
+                "goalDifferencePerMatch": 0.8
+              },
+              "last10": {
+                "matches": 10,
+                "pointsPerMatch": 2.3,
+                "goalDifferencePerMatch": 1.2
+              }
+            },
+            "underdog": {
+              "last5": {
+                "matches": 5,
+                "pointsPerMatch": 3,
+                "goalDifferencePerMatch": 2
+              },
+              "last10": {
+                "matches": 10,
+                "pointsPerMatch": 2.7,
+                "goalDifferencePerMatch": 1.3
+              }
+            }
+          }
+        },
+        "venue": {
+          "value": 69,
+          "status": "espn-home-away-goal-balance",
+          "confidence": 1,
+          "evidence": {
+            "favorite": {
+              "team": "Manchester City",
+              "venue": "away",
+              "matches": 25,
+              "goalsFor": 1.72,
+              "goalsAgainst": 1.24,
+              "balance": 0.48
+            },
+            "underdog": {
+              "team": "Porto",
+              "venue": "home",
+              "matches": 26,
+              "goalsFor": 2,
+              "goalsAgainst": 0.423,
+              "balance": 1.577
+            }
+          }
+        },
+        "absences": {
+          "value": 50,
+          "status": "fallback-neutral-no-verified-availability",
+          "confidence": 0,
+          "evidence": {
+            "favorite": [],
+            "underdog": []
+          }
+        },
+        "tactical": {
+          "value": 53,
+          "status": "statistical-shot-pressure-fallback",
+          "confidence": 0.5,
+          "evidence": {
+            "favoriteRecentShotsConceded": 9.233,
+            "underdogRecentShotsCreated": 15.683,
+            "pressureDelta": 0.88,
+            "qualitativeProfilesAvailable": false
+          }
+        },
+        "motivation": {
+          "value": 51,
+          "status": "motivation-index-relative",
+          "confidence": 0.7,
+          "evidence": {
+            "favorite": {
+              "score": 72,
+              "rotationRisk": 16
+            },
+            "underdog": {
+              "score": 73,
+              "rotationRisk": 16
+            }
+          }
+        }
+      },
+      "confidence": {
+        "value": 0.84,
+        "label": "alta",
+        "missingOrFallbackComponents": [
+          "absences",
+          "tactical"
+        ]
+      },
+      "reasons": [
+        "Quote normalizzate: Manchester City non vince nel 45% degli scenari 1X2",
+        "Porto nelle ultime 5: 3 punti/gara; Manchester City: 2",
+        "Rendimento casalingo dell'underdog: saldo gol +1.58; favorita +0.48"
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-05",
+      "homeTeam": "Lille",
+      "awayTeam": "Real Betis",
+      "surpriseFactor": 55,
+      "surpriseLevel": "medio",
+      "favorite": "Lille",
+      "underdog": "Real Betis",
+      "components": {
+        "market": 57,
+        "form": 54,
+        "venue": 39,
+        "absences": 50,
+        "tactical": 65,
+        "motivation": 68
+      },
+      "componentDetails": {
+        "market": {
+          "value": 57,
+          "status": "latest-sisal-1x2-no-margin",
+          "confidence": 1,
+          "evidence": {
+            "provider": "Sisal",
+            "retrievedAt": "2026-09-06T17:01:19.159Z",
+            "odds": {
+              "1": 2.2,
+              "2": 3.2,
+              "X": 3.5
+            },
+            "normalizedProbabilities": {
+              "home": 43.2,
+              "draw": 27.1,
+              "away": 29.7
+            },
+            "favoriteWinProbabilityPct": 43.2
+          }
+        },
+        "form": {
+          "value": 54,
+          "status": "espn-last5-with-last10-context",
+          "confidence": 1,
+          "evidence": {
+            "favorite": {
+              "last5": {
+                "matches": 5,
+                "pointsPerMatch": 2,
+                "goalDifferencePerMatch": 0.4
+              },
+              "last10": {
+                "matches": 10,
+                "pointsPerMatch": 2.1,
+                "goalDifferencePerMatch": 1
+              }
+            },
+            "underdog": {
+              "last5": {
+                "matches": 5,
+                "pointsPerMatch": 2.4,
+                "goalDifferencePerMatch": 0.2
+              },
+              "last10": {
+                "matches": 10,
+                "pointsPerMatch": 2,
+                "goalDifferencePerMatch": 0.3
+              }
+            }
+          }
+        },
+        "venue": {
+          "value": 39,
+          "status": "espn-home-away-goal-balance",
+          "confidence": 1,
+          "evidence": {
+            "favorite": {
+              "team": "Lille",
+              "venue": "home",
+              "matches": 24,
+              "goalsFor": 1.5,
+              "goalsAgainst": 1.083,
+              "balance": 0.41700000000000004
+            },
+            "underdog": {
+              "team": "Real Betis",
+              "venue": "away",
+              "matches": 27,
+              "goalsFor": 1.259,
+              "goalsAgainst": 1.444,
+              "balance": -0.18500000000000005
+            }
+          }
+        },
+        "absences": {
+          "value": 50,
+          "status": "fallback-neutral-no-verified-availability",
+          "confidence": 0,
+          "evidence": {
+            "favorite": [],
+            "underdog": []
+          }
+        },
+        "tactical": {
+          "value": 65,
+          "status": "statistical-shot-pressure-fallback",
+          "confidence": 0.5,
+          "evidence": {
+            "favoriteRecentShotsConceded": 14.332,
+            "underdogRecentShotsCreated": 14.921,
+            "pressureDelta": 5.09,
+            "qualitativeProfilesAvailable": false
+          }
+        },
+        "motivation": {
+          "value": 68,
+          "status": "motivation-index-relative",
+          "confidence": 0.68,
+          "evidence": {
+            "favorite": {
+              "score": 64,
+              "rotationRisk": 16
+            },
+            "underdog": {
+              "score": 79,
+              "rotationRisk": 16
+            }
+          }
+        }
+      },
+      "confidence": {
+        "value": 0.83,
+        "label": "alta",
+        "missingOrFallbackComponents": [
+          "absences",
+          "tactical"
+        ]
+      },
+      "reasons": [
+        "Quote normalizzate: Lille non vince nel 57% degli scenari 1X2",
+        "Motivazione: Real Betis 79/100, Lille 64/100",
+        "Pressione recente dell'underdog: 14.9 tiri creati; favorita ne concede 14.3"
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-06",
+      "homeTeam": "Real Madrid",
+      "awayTeam": "Inter",
+      "surpriseFactor": 44,
+      "surpriseLevel": "medio",
+      "favorite": "Real Madrid",
+      "underdog": "Inter",
+      "components": {
+        "market": 42,
+        "form": 44,
+        "venue": 39,
+        "absences": 50,
+        "tactical": 53,
+        "motivation": 46
+      },
+      "componentDetails": {
+        "market": {
+          "value": 42,
+          "status": "latest-sisal-1x2-no-margin",
+          "confidence": 1,
+          "evidence": {
+            "provider": "Sisal",
+            "retrievedAt": "2026-09-06T17:01:19.159Z",
+            "odds": {
+              "1": 1.62,
+              "2": 5,
+              "X": 4
+            },
+            "normalizedProbabilities": {
+              "home": 57.8,
+              "draw": 23.4,
+              "away": 18.7
+            },
+            "favoriteWinProbabilityPct": 57.8
+          }
+        },
+        "form": {
+          "value": 44,
+          "status": "espn-last5-with-last10-context",
+          "confidence": 1,
+          "evidence": {
+            "favorite": {
+              "last5": {
+                "matches": 5,
+                "pointsPerMatch": 2.4,
+                "goalDifferencePerMatch": 1.8
+              },
+              "last10": {
+                "matches": 10,
+                "pointsPerMatch": 2.2,
+                "goalDifferencePerMatch": 1.2
+              }
+            },
+            "underdog": {
+              "last5": {
+                "matches": 5,
+                "pointsPerMatch": 2.2,
+                "goalDifferencePerMatch": 1
+              },
+              "last10": {
+                "matches": 10,
+                "pointsPerMatch": 2.4,
+                "goalDifferencePerMatch": 1.4
+              }
+            }
+          }
+        },
+        "venue": {
+          "value": 39,
+          "status": "espn-home-away-goal-balance",
+          "confidence": 1,
+          "evidence": {
+            "favorite": {
+              "team": "Real Madrid",
+              "venue": "home",
+              "matches": 28,
+              "goalsFor": 2.464,
+              "goalsAgainst": 0.857,
+              "balance": 1.607
+            },
+            "underdog": {
+              "team": "Inter",
+              "venue": "away",
+              "matches": 25,
+              "goalsFor": 2,
+              "goalsAgainst": 0.96,
+              "balance": 1.04
+            }
+          }
+        },
+        "absences": {
+          "value": 50,
+          "status": "fallback-neutral-no-verified-availability",
+          "confidence": 0,
+          "evidence": {
+            "favorite": [],
+            "underdog": []
+          }
+        },
+        "tactical": {
+          "value": 53,
+          "status": "statistical-shot-pressure-fallback",
+          "confidence": 0.5,
+          "evidence": {
+            "favoriteRecentShotsConceded": 10.555,
+            "underdogRecentShotsCreated": 20.191,
+            "pressureDelta": 1.04,
+            "qualitativeProfilesAvailable": false
+          }
+        },
+        "motivation": {
+          "value": 46,
+          "status": "motivation-index-relative",
+          "confidence": 0.7,
+          "evidence": {
+            "favorite": {
+              "score": 78,
+              "rotationRisk": 16
+            },
+            "underdog": {
+              "score": 75,
+              "rotationRisk": 16
+            }
+          }
+        }
+      },
+      "confidence": {
+        "value": 0.84,
+        "label": "alta",
+        "missingOrFallbackComponents": [
+          "absences",
+          "tactical"
+        ]
+      },
+      "reasons": [
+        "Quote normalizzate: Real Madrid non vince nel 42% degli scenari 1X2"
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-07",
+      "homeTeam": "Barcelona",
+      "awayTeam": "Feyenoord",
+      "surpriseFactor": 28,
+      "surpriseLevel": "basso",
+      "favorite": "Barcelona",
+      "underdog": "Feyenoord",
+      "components": {
+        "market": 14,
+        "form": 40,
+        "venue": 23,
+        "absences": 50,
+        "tactical": 56,
+        "motivation": 34
+      },
+      "componentDetails": {
+        "market": {
+          "value": 14,
+          "status": "latest-sisal-1x2-no-margin",
+          "confidence": 1,
+          "evidence": {
+            "provider": "Sisal",
+            "retrievedAt": "2026-09-06T17:01:19.159Z",
+            "odds": {
+              "1": 1.11,
+              "2": 20,
+              "X": 11
+            },
+            "normalizedProbabilities": {
+              "home": 86.5,
+              "draw": 8.7,
+              "away": 4.8
+            },
+            "favoriteWinProbabilityPct": 86.5
+          }
+        },
+        "form": {
+          "value": 40,
+          "status": "espn-last5-with-last10-context",
+          "confidence": 1,
+          "evidence": {
+            "favorite": {
+              "last5": {
+                "matches": 5,
+                "pointsPerMatch": 2.4,
+                "goalDifferencePerMatch": 2.6
+              },
+              "last10": {
+                "matches": 10,
+                "pointsPerMatch": 2.4,
+                "goalDifferencePerMatch": 1.9
+              }
+            },
+            "underdog": {
+              "last5": {
+                "matches": 5,
+                "pointsPerMatch": 2.2,
+                "goalDifferencePerMatch": 1.2
+              },
+              "last10": {
+                "matches": 10,
+                "pointsPerMatch": 2.2,
+                "goalDifferencePerMatch": 1.1
+              }
+            }
+          }
+        },
+        "venue": {
+          "value": 23,
+          "status": "espn-home-away-goal-balance",
+          "confidence": 1,
+          "evidence": {
+            "favorite": {
+              "team": "Barcelona",
+              "venue": "home",
+              "matches": 27,
+              "goalsFor": 3.111,
+              "goalsAgainst": 0.778,
+              "balance": 2.333
+            },
+            "underdog": {
+              "team": "Feyenoord",
+              "venue": "away",
+              "matches": 24,
+              "goalsFor": 1.833,
+              "goalsAgainst": 1.375,
+              "balance": 0.45799999999999996
+            }
+          }
+        },
+        "absences": {
+          "value": 50,
+          "status": "fallback-neutral-no-verified-availability",
+          "confidence": 0,
+          "evidence": {
+            "favorite": [],
+            "underdog": []
+          }
+        },
+        "tactical": {
+          "value": 56,
+          "status": "statistical-shot-pressure-fallback",
+          "confidence": 0.5,
+          "evidence": {
+            "favoriteRecentShotsConceded": 7.954,
+            "underdogRecentShotsCreated": 19.964,
+            "pressureDelta": 1.9,
+            "qualitativeProfilesAvailable": false
+          }
+        },
+        "motivation": {
+          "value": 34,
+          "status": "motivation-index-relative",
+          "confidence": 0.7,
+          "evidence": {
+            "favorite": {
+              "score": 77,
+              "rotationRisk": 16
+            },
+            "underdog": {
+              "score": 64,
+              "rotationRisk": 16
+            }
+          }
+        }
+      },
+      "confidence": {
+        "value": 0.84,
+        "label": "alta",
+        "missingOrFallbackComponents": [
+          "absences",
+          "tactical"
+        ]
+      },
+      "reasons": [
+        "Quote normalizzate: Barcelona non vince nel 14% degli scenari 1X2",
+        "Feyenoord nelle ultime 5: 2.2 punti/gara; Barcelona: 2.4"
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-08",
+      "homeTeam": "Stuttgart",
+      "awayTeam": "Viking",
+      "surpriseFactor": 38,
+      "surpriseLevel": "basso",
+      "favorite": "Stuttgart",
+      "underdog": "Viking",
+      "components": {
+        "market": 22,
+        "form": 60,
+        "venue": 42,
+        "absences": 50,
+        "tactical": 64,
+        "motivation": 50
+      },
+      "componentDetails": {
+        "market": {
+          "value": 22,
+          "status": "latest-sisal-1x2-no-margin",
+          "confidence": 1,
+          "evidence": {
+            "provider": "Sisal",
+            "retrievedAt": "2026-09-06T17:01:19.159Z",
+            "odds": {
+              "1": 1.22,
+              "2": 11,
+              "X": 7
+            },
+            "normalizedProbabilities": {
+              "home": 77.8,
+              "draw": 13.6,
+              "away": 8.6
+            },
+            "favoriteWinProbabilityPct": 77.8
+          }
+        },
+        "form": {
+          "value": 60,
+          "status": "espn-last5-with-last10-context",
+          "confidence": 1,
+          "evidence": {
+            "favorite": {
+              "last5": {
+                "matches": 5,
+                "pointsPerMatch": 1.6,
+                "goalDifferencePerMatch": 0.2
+              },
+              "last10": {
+                "matches": 10,
+                "pointsPerMatch": 1.5,
+                "goalDifferencePerMatch": 0.4
+              }
+            },
+            "underdog": {
+              "last5": {
+                "matches": 5,
+                "pointsPerMatch": 2,
+                "goalDifferencePerMatch": 0.8
+              },
+              "last10": {
+                "matches": 10,
+                "pointsPerMatch": 2.2,
+                "goalDifferencePerMatch": 0.9
+              }
+            }
+          }
+        },
+        "venue": {
+          "value": 42,
+          "status": "espn-home-away-goal-balance",
+          "confidence": 1,
+          "evidence": {
+            "favorite": {
+              "team": "Stuttgart",
+              "venue": "home",
+              "matches": 24,
+              "goalsFor": 1.917,
+              "goalsAgainst": 1,
+              "balance": 0.917
+            },
+            "underdog": {
+              "team": "Viking",
+              "venue": "away",
+              "matches": 19,
+              "goalsFor": 1.737,
+              "goalsAgainst": 1.158,
+              "balance": 0.5790000000000002
+            }
+          }
+        },
+        "absences": {
+          "value": 50,
+          "status": "fallback-neutral-no-verified-availability",
+          "confidence": 0,
+          "evidence": {
+            "favorite": [],
+            "underdog": []
+          }
+        },
+        "tactical": {
+          "value": 64,
+          "status": "statistical-shot-pressure-fallback",
+          "confidence": 0.5,
+          "evidence": {
+            "favoriteRecentShotsConceded": 16.59,
+            "underdogRecentShotsCreated": 15.159,
+            "pressureDelta": 4.58,
+            "qualitativeProfilesAvailable": false
+          }
+        },
+        "motivation": {
+          "value": 50,
+          "status": "motivation-index-relative",
+          "confidence": 0.59,
+          "evidence": {
+            "favorite": {
+              "score": 70,
+              "rotationRisk": 16
+            },
+            "underdog": {
+              "score": 72,
+              "rotationRisk": 20
+            }
+          }
+        }
+      },
+      "confidence": {
+        "value": 0.83,
+        "label": "alta",
+        "missingOrFallbackComponents": [
+          "absences",
+          "tactical"
+        ]
+      },
+      "reasons": [
+        "Quote normalizzate: Stuttgart non vince nel 22% degli scenari 1X2",
+        "Pressione recente dell'underdog: 15.2 tiri creati; favorita ne concede 16.6",
+        "Viking nelle ultime 5: 2 punti/gara; Stuttgart: 1.6"
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-09",
+      "homeTeam": "Liverpool",
+      "awayTeam": "Atlético de Madrid",
+      "surpriseFactor": 46,
+      "surpriseLevel": "medio",
+      "favorite": "Liverpool",
+      "underdog": "Atlético de Madrid",
+      "components": {
+        "market": 44,
+        "form": 51,
+        "venue": 33,
+        "absences": 50,
+        "tactical": 57,
+        "motivation": 43
+      },
+      "componentDetails": {
+        "market": {
+          "value": 44,
+          "status": "latest-sisal-1x2-no-margin",
+          "confidence": 1,
+          "evidence": {
+            "provider": "Sisal",
+            "retrievedAt": "2026-09-06T17:01:19.159Z",
+            "odds": {
+              "1": 1.7,
+              "2": 4.75,
+              "X": 4
+            },
+            "normalizedProbabilities": {
+              "home": 56.1,
+              "draw": 23.8,
+              "away": 20.1
+            },
+            "favoriteWinProbabilityPct": 56.1
+          }
+        },
+        "form": {
+          "value": 51,
+          "status": "espn-last5-with-last10-context",
+          "confidence": 1,
+          "evidence": {
+            "favorite": {
+              "last5": {
+                "matches": 5,
+                "pointsPerMatch": 1.2,
+                "goalDifferencePerMatch": 0
+              },
+              "last10": {
+                "matches": 10,
+                "pointsPerMatch": 1.3,
+                "goalDifferencePerMatch": 0
+              }
+            },
+            "underdog": {
+              "last5": {
+                "matches": 5,
+                "pointsPerMatch": 1.4,
+                "goalDifferencePerMatch": -0.6
+              },
+              "last10": {
+                "matches": 10,
+                "pointsPerMatch": 1.6,
+                "goalDifferencePerMatch": -0.1
+              }
+            }
+          }
+        },
+        "venue": {
+          "value": 33,
+          "status": "espn-home-away-goal-balance",
+          "confidence": 1,
+          "evidence": {
+            "favorite": {
+              "team": "Liverpool",
+              "venue": "home",
+              "matches": 26,
+              "goalsFor": 1.962,
+              "goalsAgainst": 1.154,
+              "balance": 0.808
+            },
+            "underdog": {
+              "team": "Atlético de Madrid",
+              "venue": "away",
+              "matches": 29,
+              "goalsFor": 1.345,
+              "goalsAgainst": 1.655,
+              "balance": -0.31000000000000005
+            }
+          }
+        },
+        "absences": {
+          "value": 50,
+          "status": "fallback-neutral-no-verified-availability",
+          "confidence": 0,
+          "evidence": {
+            "favorite": [],
+            "underdog": []
+          }
+        },
+        "tactical": {
+          "value": 57,
+          "status": "statistical-shot-pressure-fallback",
+          "confidence": 0.5,
+          "evidence": {
+            "favoriteRecentShotsConceded": 12.707,
+            "underdogRecentShotsCreated": 14.2,
+            "pressureDelta": 2.17,
+            "qualitativeProfilesAvailable": false
+          }
+        },
+        "motivation": {
+          "value": 43,
+          "status": "motivation-index-relative",
+          "confidence": 0.7,
+          "evidence": {
+            "favorite": {
+              "score": 78,
+              "rotationRisk": 16
+            },
+            "underdog": {
+              "score": 72,
+              "rotationRisk": 16
+            }
+          }
+        }
+      },
+      "confidence": {
+        "value": 0.84,
+        "label": "alta",
+        "missingOrFallbackComponents": [
+          "absences",
+          "tactical"
+        ]
+      },
+      "reasons": [
+        "Quote normalizzate: Liverpool non vince nel 44% degli scenari 1X2",
+        "Pressione recente dell'underdog: 14.2 tiri creati; favorita ne concede 12.7"
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-10",
+      "homeTeam": "Paris Saint-Germain",
+      "awayTeam": "Slovan Bratislava",
+      "surpriseFactor": 26,
+      "surpriseLevel": "basso",
+      "favorite": "Paris Saint-Germain",
+      "underdog": "Slovan Bratislava",
+      "components": {
+        "market": 8,
+        "form": 56,
+        "venue": 9,
+        "absences": 50,
+        "tactical": 52,
+        "motivation": 44
+      },
+      "componentDetails": {
+        "market": {
+          "value": 8,
+          "status": "latest-sisal-1x2-no-margin",
+          "confidence": 1,
+          "evidence": {
+            "provider": "Sisal",
+            "retrievedAt": "2026-09-06T17:01:19.159Z",
+            "odds": {
+              "1": 1.05,
+              "2": 25,
+              "X": 22
+            },
+            "normalizedProbabilities": {
+              "home": 91.8,
+              "draw": 4.4,
+              "away": 3.9
+            },
+            "favoriteWinProbabilityPct": 91.8
+          }
+        },
+        "form": {
+          "value": 56,
+          "status": "espn-last5-with-last10-context",
+          "confidence": 1,
+          "evidence": {
+            "favorite": {
+              "last5": {
+                "matches": 5,
+                "pointsPerMatch": 0.6,
+                "goalDifferencePerMatch": -0.4
+              },
+              "last10": {
+                "matches": 10,
+                "pointsPerMatch": 1.4,
+                "goalDifferencePerMatch": 0.2
+              }
+            },
+            "underdog": {
+              "last5": {
+                "matches": 5,
+                "pointsPerMatch": 1.2,
+                "goalDifferencePerMatch": -0.6
+              },
+              "last10": {
+                "matches": 6,
+                "pointsPerMatch": 1,
+                "goalDifferencePerMatch": -0.67
+              }
+            }
+          }
+        },
+        "venue": {
+          "value": 9,
+          "status": "espn-home-away-goal-balance",
+          "confidence": 0.38,
+          "evidence": {
+            "favorite": {
+              "team": "Paris Saint-Germain",
+              "venue": "home",
+              "matches": 27,
+              "goalsFor": 2.519,
+              "goalsAgainst": 1.074,
+              "balance": 1.445
+            },
+            "underdog": {
+              "team": "Slovan Bratislava",
+              "venue": "away",
+              "matches": 3,
+              "goalsFor": 0.333,
+              "goalsAgainst": 2,
+              "balance": -1.667
+            }
+          }
+        },
+        "absences": {
+          "value": 50,
+          "status": "fallback-neutral-no-verified-availability",
+          "confidence": 0,
+          "evidence": {
+            "favorite": [],
+            "underdog": []
+          }
+        },
+        "tactical": {
+          "value": 52,
+          "status": "statistical-shot-pressure-fallback",
+          "confidence": 0.5,
+          "evidence": {
+            "favoriteRecentShotsConceded": 9.875,
+            "underdogRecentShotsCreated": 11.117,
+            "pressureDelta": 0.77,
+            "qualitativeProfilesAvailable": false
+          }
+        },
+        "motivation": {
+          "value": 44,
+          "status": "motivation-index-relative",
+          "confidence": 0.7,
+          "evidence": {
+            "favorite": {
+              "score": 75,
+              "rotationRisk": 28
+            },
+            "underdog": {
+              "score": 64,
+              "rotationRisk": 16
+            }
+          }
+        }
+      },
+      "confidence": {
+        "value": 0.77,
+        "label": "media",
+        "missingOrFallbackComponents": [
+          "absences",
+          "tactical"
+        ]
+      },
+      "reasons": [
+        "Quote normalizzate: Paris Saint-Germain non vince nel 8% degli scenari 1X2"
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-11",
+      "homeTeam": "Sporting CP",
+      "awayTeam": "Galatasaray",
+      "surpriseFactor": 39,
+      "surpriseLevel": "basso",
+      "favorite": "Sporting CP",
+      "underdog": "Galatasaray",
+      "components": {
+        "market": 50,
+        "form": 16,
+        "venue": 2,
+        "absences": 50,
+        "tactical": 41,
+        "motivation": 45
+      },
+      "componentDetails": {
+        "market": {
+          "value": 50,
+          "status": "latest-sisal-1x2-no-margin",
+          "confidence": 1,
+          "evidence": {
+            "provider": "Sisal",
+            "retrievedAt": "2026-09-06T17:01:19.159Z",
+            "odds": {
+              "1": 1.85,
+              "2": 3.75,
+              "X": 3.75
+            },
+            "normalizedProbabilities": {
+              "home": 50.3,
+              "draw": 24.8,
+              "away": 24.8
+            },
+            "favoriteWinProbabilityPct": 50.3
+          }
+        },
+        "form": {
+          "value": 16,
+          "status": "espn-last5-with-last10-context",
+          "confidence": 1,
+          "evidence": {
+            "favorite": {
+              "last5": {
+                "matches": 5,
+                "pointsPerMatch": 2.6,
+                "goalDifferencePerMatch": 1.8
+              },
+              "last10": {
+                "matches": 10,
+                "pointsPerMatch": 2.4,
+                "goalDifferencePerMatch": 1.9
+              }
+            },
+            "underdog": {
+              "last5": {
+                "matches": 5,
+                "pointsPerMatch": 1.2,
+                "goalDifferencePerMatch": -0.6
+              },
+              "last10": {
+                "matches": 10,
+                "pointsPerMatch": 1.3,
+                "goalDifferencePerMatch": 0
+              }
+            }
+          }
+        },
+        "venue": {
+          "value": 2,
+          "status": "espn-home-away-goal-balance",
+          "confidence": 0.75,
+          "evidence": {
+            "favorite": {
+              "team": "Sporting CP",
+              "venue": "home",
+              "matches": 26,
+              "goalsFor": 2.885,
+              "goalsAgainst": 0.692,
+              "balance": 2.1929999999999996
+            },
+            "underdog": {
+              "team": "Galatasaray",
+              "venue": "away",
+              "matches": 6,
+              "goalsFor": 1,
+              "goalsAgainst": 2.5,
+              "balance": -1.5
+            }
+          }
+        },
+        "absences": {
+          "value": 50,
+          "status": "fallback-neutral-no-verified-availability",
+          "confidence": 0,
+          "evidence": {
+            "favorite": [],
+            "underdog": []
+          }
+        },
+        "tactical": {
+          "value": 41,
+          "status": "statistical-shot-pressure-fallback",
+          "confidence": 0.5,
+          "evidence": {
+            "favoriteRecentShotsConceded": 8.128,
+            "underdogRecentShotsCreated": 11.603,
+            "pressureDelta": -3.03,
+            "qualitativeProfilesAvailable": false
+          }
+        },
+        "motivation": {
+          "value": 45,
+          "status": "motivation-index-relative",
+          "confidence": 0.7,
+          "evidence": {
+            "favorite": {
+              "score": 70,
+              "rotationRisk": 16
+            },
+            "underdog": {
+              "score": 66,
+              "rotationRisk": 16
+            }
+          }
+        }
+      },
+      "confidence": {
+        "value": 0.81,
+        "label": "alta",
+        "missingOrFallbackComponents": [
+          "absences",
+          "tactical"
+        ]
+      },
+      "reasons": [
+        "Galatasaray nelle ultime 5: 1.2 punti/gara; Sporting CP: 2.6",
+        "Quote normalizzate: Sporting CP non vince nel 50% degli scenari 1X2"
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-12",
+      "homeTeam": "Napoli",
+      "awayTeam": "Arsenal",
+      "surpriseFactor": 47,
+      "surpriseLevel": "medio",
+      "favorite": "Arsenal",
+      "underdog": "Napoli",
+      "components": {
+        "market": 48,
+        "form": 34,
+        "venue": 53,
+        "absences": 50,
+        "tactical": 53,
+        "motivation": 51
+      },
+      "componentDetails": {
+        "market": {
+          "value": 48,
+          "status": "latest-sisal-1x2-no-margin",
+          "confidence": 1,
+          "evidence": {
+            "provider": "Sisal",
+            "retrievedAt": "2026-09-06T17:01:19.159Z",
+            "odds": {
+              "1": 4.25,
+              "2": 1.8,
+              "X": 3.6
+            },
+            "normalizedProbabilities": {
+              "home": 22,
+              "draw": 26,
+              "away": 52
+            },
+            "favoriteWinProbabilityPct": 52
+          }
+        },
+        "form": {
+          "value": 34,
+          "status": "espn-last5-with-last10-context",
+          "confidence": 1,
+          "evidence": {
+            "favorite": {
+              "last5": {
+                "matches": 5,
+                "pointsPerMatch": 2.6,
+                "goalDifferencePerMatch": 1.2
+              },
+              "last10": {
+                "matches": 10,
+                "pointsPerMatch": 2.6,
+                "goalDifferencePerMatch": 1.2
+              }
+            },
+            "underdog": {
+              "last5": {
+                "matches": 5,
+                "pointsPerMatch": 1.8,
+                "goalDifferencePerMatch": 0.8
+              },
+              "last10": {
+                "matches": 10,
+                "pointsPerMatch": 1.4,
+                "goalDifferencePerMatch": 0.5
+              }
+            }
+          }
+        },
+        "venue": {
+          "value": 53,
+          "status": "espn-home-away-goal-balance",
+          "confidence": 1,
+          "evidence": {
+            "favorite": {
+              "team": "Arsenal",
+              "venue": "away",
+              "matches": 28,
+              "goalsFor": 1.643,
+              "goalsAgainst": 0.714,
+              "balance": 0.929
+            },
+            "underdog": {
+              "team": "Napoli",
+              "venue": "home",
+              "matches": 24,
+              "goalsFor": 1.667,
+              "goalsAgainst": 1,
+              "balance": 0.667
+            }
+          }
+        },
+        "absences": {
+          "value": 50,
+          "status": "fallback-neutral-no-verified-availability",
+          "confidence": 0,
+          "evidence": {
+            "favorite": [],
+            "underdog": []
+          }
+        },
+        "tactical": {
+          "value": 53,
+          "status": "statistical-shot-pressure-fallback",
+          "confidence": 0.5,
+          "evidence": {
+            "favoriteRecentShotsConceded": 8.968,
+            "underdogRecentShotsCreated": 13.913,
+            "pressureDelta": 0.84,
+            "qualitativeProfilesAvailable": false
+          }
+        },
+        "motivation": {
+          "value": 51,
+          "status": "motivation-index-relative",
+          "confidence": 0.7,
+          "evidence": {
+            "favorite": {
+              "score": 71,
+              "rotationRisk": 16
+            },
+            "underdog": {
+              "score": 72,
+              "rotationRisk": 16
+            }
+          }
+        }
+      },
+      "confidence": {
+        "value": 0.84,
+        "label": "alta",
+        "missingOrFallbackComponents": [
+          "absences",
+          "tactical"
+        ]
+      },
+      "reasons": [
+        "Quote normalizzate: Arsenal non vince nel 48% degli scenari 1X2",
+        "Napoli nelle ultime 5: 1.8 punti/gara; Arsenal: 2.6"
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-13",
+      "homeTeam": "Fenerbahçe",
+      "awayTeam": "Roma",
+      "surpriseFactor": 47,
+      "surpriseLevel": "medio",
+      "favorite": "Roma",
+      "underdog": "Fenerbahçe",
+      "components": {
+        "market": 57,
+        "form": 13,
+        "venue": 44,
+        "absences": 50,
+        "tactical": 41,
+        "motivation": 61
+      },
+      "componentDetails": {
+        "market": {
+          "value": 57,
+          "status": "latest-sisal-1x2-no-margin",
+          "confidence": 1,
+          "evidence": {
+            "provider": "Sisal",
+            "retrievedAt": "2026-09-06T17:01:19.159Z",
+            "odds": {
+              "1": 3.25,
+              "2": 2.2,
+              "X": 3.4
+            },
+            "normalizedProbabilities": {
+              "home": 29.1,
+              "draw": 27.8,
+              "away": 43
+            },
+            "favoriteWinProbabilityPct": 43
+          }
+        },
+        "form": {
+          "value": 13,
+          "status": "espn-last5-with-last10-context",
+          "confidence": 1,
+          "evidence": {
+            "favorite": {
+              "last5": {
+                "matches": 5,
+                "pointsPerMatch": 3,
+                "goalDifferencePerMatch": 2.6
+              },
+              "last10": {
+                "matches": 10,
+                "pointsPerMatch": 2.8,
+                "goalDifferencePerMatch": 2.3
+              }
+            },
+            "underdog": {
+              "last5": {
+                "matches": 5,
+                "pointsPerMatch": 1.4,
+                "goalDifferencePerMatch": 0.2
+              },
+              "last10": {
+                "matches": 10,
+                "pointsPerMatch": 1.5,
+                "goalDifferencePerMatch": 0.1
+              }
+            }
+          }
+        },
+        "venue": {
+          "value": 44,
+          "status": "espn-home-away-goal-balance",
+          "confidence": 0.63,
+          "evidence": {
+            "favorite": {
+              "team": "Roma",
+              "venue": "away",
+              "matches": 25,
+              "goalsFor": 1.56,
+              "goalsAgainst": 0.96,
+              "balance": 0.6000000000000001
+            },
+            "underdog": {
+              "team": "Fenerbahçe",
+              "venue": "home",
+              "matches": 5,
+              "goalsFor": 0.8,
+              "goalsAgainst": 1.2,
+              "balance": -0.3999999999999999
+            }
+          }
+        },
+        "absences": {
+          "value": 50,
+          "status": "fallback-neutral-no-verified-availability",
+          "confidence": 0,
+          "evidence": {
+            "favorite": [],
+            "underdog": []
+          }
+        },
+        "tactical": {
+          "value": 41,
+          "status": "statistical-shot-pressure-fallback",
+          "confidence": 0.5,
+          "evidence": {
+            "favoriteRecentShotsConceded": 7.399,
+            "underdogRecentShotsCreated": 13.209,
+            "pressureDelta": -2.98,
+            "qualitativeProfilesAvailable": false
+          }
+        },
+        "motivation": {
+          "value": 61,
+          "status": "motivation-index-relative",
+          "confidence": 0.7,
+          "evidence": {
+            "favorite": {
+              "score": 67,
+              "rotationRisk": 16
+            },
+            "underdog": {
+              "score": 76,
+              "rotationRisk": 16
+            }
+          }
+        }
+      },
+      "confidence": {
+        "value": 0.8,
+        "label": "alta",
+        "missingOrFallbackComponents": [
+          "absences",
+          "tactical"
+        ]
+      },
+      "reasons": [
+        "Fenerbahçe nelle ultime 5: 1.4 punti/gara; Roma: 3",
+        "Quote normalizzate: Roma non vince nel 57% degli scenari 1X2",
+        "Motivazione: Fenerbahçe 76/100, Roma 67/100"
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-14",
+      "homeTeam": "PSV Eindhoven",
+      "awayTeam": "Shakhtar Donetsk",
+      "surpriseFactor": 33,
+      "surpriseLevel": "basso",
+      "favorite": "PSV Eindhoven",
+      "underdog": "Shakhtar Donetsk",
+      "components": {
+        "market": 32,
+        "form": 11,
+        "venue": 38,
+        "absences": 50,
+        "tactical": 41,
+        "motivation": 50
+      },
+      "componentDetails": {
+        "market": {
+          "value": 32,
+          "status": "latest-sisal-1x2-no-margin",
+          "confidence": 1,
+          "evidence": {
+            "provider": "Sisal",
+            "retrievedAt": "2026-09-06T17:01:19.159Z",
+            "odds": {
+              "1": 1.4,
+              "2": 7,
+              "X": 5
+            },
+            "normalizedProbabilities": {
+              "home": 67.6,
+              "draw": 18.9,
+              "away": 13.5
+            },
+            "favoriteWinProbabilityPct": 67.6
+          }
+        },
+        "form": {
+          "value": 11,
+          "status": "espn-last5-with-last10-context",
+          "confidence": 1,
+          "evidence": {
+            "favorite": {
+              "last5": {
+                "matches": 5,
+                "pointsPerMatch": 2.6,
+                "goalDifferencePerMatch": 2.4
+              },
+              "last10": {
+                "matches": 10,
+                "pointsPerMatch": 2.6,
+                "goalDifferencePerMatch": 2.6
+              }
+            },
+            "underdog": {
+              "last5": {
+                "matches": 5,
+                "pointsPerMatch": 0.8,
+                "goalDifferencePerMatch": -0.2
+              },
+              "last10": {
+                "matches": 10,
+                "pointsPerMatch": 1.7,
+                "goalDifferencePerMatch": 0.6
+              }
+            }
+          }
+        },
+        "venue": {
+          "value": 38,
+          "status": "espn-home-away-goal-balance",
+          "confidence": 0.88,
+          "evidence": {
+            "favorite": {
+              "team": "PSV Eindhoven",
+              "venue": "home",
+              "matches": 23,
+              "goalsFor": 3.261,
+              "goalsAgainst": 1.696,
+              "balance": 1.5650000000000002
+            },
+            "underdog": {
+              "team": "Shakhtar Donetsk",
+              "venue": "away",
+              "matches": 7,
+              "goalsFor": 2.143,
+              "goalsAgainst": 1.286,
+              "balance": 0.8569999999999998
+            }
+          }
+        },
+        "absences": {
+          "value": 50,
+          "status": "fallback-neutral-no-verified-availability",
+          "confidence": 0,
+          "evidence": {
+            "favorite": [],
+            "underdog": []
+          }
+        },
+        "tactical": {
+          "value": 41,
+          "status": "statistical-shot-pressure-fallback",
+          "confidence": 0.5,
+          "evidence": {
+            "favoriteRecentShotsConceded": 9.991,
+            "underdogRecentShotsCreated": 14.441,
+            "pressureDelta": -3.01,
+            "qualitativeProfilesAvailable": false
+          }
+        },
+        "motivation": {
+          "value": 50,
+          "status": "motivation-index-relative",
+          "confidence": 0.7,
+          "evidence": {
+            "favorite": {
+              "score": 65,
+              "rotationRisk": 16
+            },
+            "underdog": {
+              "score": 65,
+              "rotationRisk": 16
+            }
+          }
+        }
+      },
+      "confidence": {
+        "value": 0.82,
+        "label": "alta",
+        "missingOrFallbackComponents": [
+          "absences",
+          "tactical"
+        ]
+      },
+      "reasons": [
+        "Shakhtar Donetsk nelle ultime 5: 0.8 punti/gara; PSV Eindhoven: 2.6",
+        "Quote normalizzate: PSV Eindhoven non vince nel 32% degli scenari 1X2"
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-15",
+      "homeTeam": "Como",
+      "awayTeam": "Leipzig",
+      "surpriseFactor": 43,
+      "surpriseLevel": "medio",
+      "favorite": "Como",
+      "underdog": "Leipzig",
+      "components": {
+        "market": 50,
+        "form": 20,
+        "venue": 31,
+        "absences": 50,
+        "tactical": 60,
+        "motivation": 26
+      },
+      "componentDetails": {
+        "market": {
+          "value": 50,
+          "status": "latest-sisal-1x2-no-margin",
+          "confidence": 1,
+          "evidence": {
+            "provider": "Sisal",
+            "retrievedAt": "2026-09-06T17:01:19.159Z",
+            "odds": {
+              "1": 1.9,
+              "2": 3.75,
+              "X": 3.75
+            },
+            "normalizedProbabilities": {
+              "home": 49.7,
+              "draw": 25.2,
+              "away": 25.2
+            },
+            "favoriteWinProbabilityPct": 49.7
+          }
+        },
+        "form": {
+          "value": 20,
+          "status": "espn-last5-with-last10-context",
+          "confidence": 1,
+          "evidence": {
+            "favorite": {
+              "last5": {
+                "matches": 5,
+                "pointsPerMatch": 2.6,
+                "goalDifferencePerMatch": 1.6
+              },
+              "last10": {
+                "matches": 10,
+                "pointsPerMatch": 2,
+                "goalDifferencePerMatch": 0.9
+              }
+            },
+            "underdog": {
+              "last5": {
+                "matches": 5,
+                "pointsPerMatch": 1.2,
+                "goalDifferencePerMatch": -0.8
+              },
+              "last10": {
+                "matches": 10,
+                "pointsPerMatch": 2.1,
+                "goalDifferencePerMatch": 0.7
+              }
+            }
+          }
+        },
+        "venue": {
+          "value": 31,
+          "status": "espn-home-away-goal-balance",
+          "confidence": 1,
+          "evidence": {
+            "favorite": {
+              "team": "Como",
+              "venue": "home",
+              "matches": 19,
+              "goalsFor": 1.842,
+              "goalsAgainst": 0.789,
+              "balance": 1.053
+            },
+            "underdog": {
+              "team": "Leipzig",
+              "venue": "away",
+              "matches": 18,
+              "goalsFor": 1.5,
+              "goalsAgainst": 1.667,
+              "balance": -0.16700000000000004
+            }
+          }
+        },
+        "absences": {
+          "value": 50,
+          "status": "fallback-neutral-no-verified-availability",
+          "confidence": 0,
+          "evidence": {
+            "favorite": [],
+            "underdog": []
+          }
+        },
+        "tactical": {
+          "value": 60,
+          "status": "statistical-shot-pressure-fallback",
+          "confidence": 0.5,
+          "evidence": {
+            "favoriteRecentShotsConceded": 10.42,
+            "underdogRecentShotsCreated": 18.458,
+            "pressureDelta": 3.42,
+            "qualitativeProfilesAvailable": false
+          }
+        },
+        "motivation": {
+          "value": 26,
+          "status": "motivation-index-relative",
+          "confidence": 0.53,
+          "evidence": {
+            "favorite": {
+              "score": 80,
+              "rotationRisk": 20
+            },
+            "underdog": {
+              "score": 60,
+              "rotationRisk": 20
+            }
+          }
+        }
+      },
+      "confidence": {
+        "value": 0.83,
+        "label": "alta",
+        "missingOrFallbackComponents": [
+          "absences",
+          "tactical"
+        ]
+      },
+      "reasons": [
+        "Leipzig nelle ultime 5: 1.2 punti/gara; Como: 2.6",
+        "Quote normalizzate: Como non vince nel 50% degli scenari 1X2",
+        "Pressione recente dell'underdog: 18.5 tiri creati; favorita ne concede 10.4"
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-16",
+      "homeTeam": "Bayern München",
+      "awayTeam": "Bodø/Glimt",
+      "surpriseFactor": 32,
+      "surpriseLevel": "basso",
+      "favorite": "Bayern München",
+      "underdog": "Bodø/Glimt",
+      "components": {
+        "market": 15,
+        "form": 67,
+        "venue": 22,
+        "absences": 50,
+        "tactical": 53,
+        "motivation": 39
+      },
+      "componentDetails": {
+        "market": {
+          "value": 15,
+          "status": "latest-sisal-1x2-no-margin",
+          "confidence": 1,
+          "evidence": {
+            "provider": "Sisal",
+            "retrievedAt": "2026-09-06T17:01:19.159Z",
+            "odds": {
+              "1": 1.13,
+              "2": 18,
+              "X": 10
+            },
+            "normalizedProbabilities": {
+              "home": 85.1,
+              "draw": 9.6,
+              "away": 5.3
+            },
+            "favoriteWinProbabilityPct": 85.1
+          }
+        },
+        "form": {
+          "value": 67,
+          "status": "espn-last5-with-last10-context",
+          "confidence": 1,
+          "evidence": {
+            "favorite": {
+              "last5": {
+                "matches": 5,
+                "pointsPerMatch": 2.2,
+                "goalDifferencePerMatch": 1.8
+              },
+              "last10": {
+                "matches": 10,
+                "pointsPerMatch": 2.1,
+                "goalDifferencePerMatch": 1.2
+              }
+            },
+            "underdog": {
+              "last5": {
+                "matches": 5,
+                "pointsPerMatch": 3,
+                "goalDifferencePerMatch": 2.6
+              },
+              "last10": {
+                "matches": 10,
+                "pointsPerMatch": 2.8,
+                "goalDifferencePerMatch": 2.1
+              }
+            }
+          }
+        },
+        "venue": {
+          "value": 22,
+          "status": "espn-home-away-goal-balance",
+          "confidence": 1,
+          "evidence": {
+            "favorite": {
+              "team": "Bayern München",
+              "venue": "home",
+              "matches": 25,
+              "goalsFor": 3.76,
+              "goalsAgainst": 1.08,
+              "balance": 2.6799999999999997
+            },
+            "underdog": {
+              "team": "Bodø/Glimt",
+              "venue": "away",
+              "matches": 26,
+              "goalsFor": 2.115,
+              "goalsAgainst": 1.423,
+              "balance": 0.6920000000000002
+            }
+          }
+        },
+        "absences": {
+          "value": 50,
+          "status": "fallback-neutral-no-verified-availability",
+          "confidence": 0,
+          "evidence": {
+            "favorite": [],
+            "underdog": []
+          }
+        },
+        "tactical": {
+          "value": 53,
+          "status": "statistical-shot-pressure-fallback",
+          "confidence": 0.5,
+          "evidence": {
+            "favoriteRecentShotsConceded": 10.986,
+            "underdogRecentShotsCreated": 17.671,
+            "pressureDelta": 1.04,
+            "qualitativeProfilesAvailable": false
+          }
+        },
+        "motivation": {
+          "value": 39,
+          "status": "motivation-index-relative",
+          "confidence": 0.7,
+          "evidence": {
+            "favorite": {
+              "score": 77,
+              "rotationRisk": 16
+            },
+            "underdog": {
+              "score": 68,
+              "rotationRisk": 16
+            }
+          }
+        }
+      },
+      "confidence": {
+        "value": 0.84,
+        "label": "alta",
+        "missingOrFallbackComponents": [
+          "absences",
+          "tactical"
+        ]
+      },
+      "reasons": [
+        "Quote normalizzate: Bayern München non vince nel 15% degli scenari 1X2",
+        "Bodø/Glimt nelle ultime 5: 3 punti/gara; Bayern München: 2.2"
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-17",
+      "homeTeam": "Manchester United",
+      "awayTeam": "Sabah",
+      "surpriseFactor": 32,
+      "surpriseLevel": "basso",
+      "favorite": "Manchester United",
+      "underdog": "Sabah",
+      "components": {
+        "market": 15,
+        "form": 50,
+        "venue": 50,
+        "absences": 50,
+        "tactical": 50,
+        "motivation": 45
+      },
+      "componentDetails": {
+        "market": {
+          "value": 15,
+          "status": "latest-sisal-1x2-no-margin",
+          "confidence": 1,
+          "evidence": {
+            "provider": "Sisal",
+            "retrievedAt": "2026-09-06T17:01:19.159Z",
+            "odds": {
+              "1": 1.13,
+              "2": 20,
+              "X": 9
+            },
+            "normalizedProbabilities": {
+              "home": 84.6,
+              "draw": 10.6,
+              "away": 4.8
+            },
+            "favoriteWinProbabilityPct": 84.6
+          }
+        },
+        "form": {
+          "value": 50,
+          "status": "fallback-neutral-insufficient-sample",
+          "confidence": 0,
+          "evidence": {
+            "favorite": {
+              "matches": 5,
+              "pointsPerMatch": 2,
+              "goalDifferencePerMatch": 1
+            },
+            "underdog": null
+          }
+        },
+        "venue": {
+          "value": 50,
+          "status": "fallback-neutral-insufficient-venue-sample",
+          "confidence": 0,
+          "evidence": {
+            "favorite": {
+              "matches": 20,
+              "goalsFor": 2.2,
+              "goalsAgainst": 1.3,
+              "balance": 0.9000000000000001
+            },
+            "underdog": null
+          }
+        },
+        "absences": {
+          "value": 50,
+          "status": "fallback-neutral-no-verified-availability",
+          "confidence": 0,
+          "evidence": {
+            "favorite": [],
+            "underdog": []
+          }
+        },
+        "tactical": {
+          "value": 50,
+          "status": "fallback-neutral-no-comparable-matchup",
+          "confidence": 0,
+          "evidence": {
+            "matches": []
+          }
+        },
+        "motivation": {
+          "value": 45,
+          "status": "motivation-index-relative",
+          "confidence": 0.54,
+          "evidence": {
+            "favorite": {
+              "score": 78,
+              "rotationRisk": 20
+            },
+            "underdog": {
+              "score": 74,
+              "rotationRisk": 20
+            }
+          }
+        }
+      },
+      "confidence": {
+        "value": 0.53,
+        "label": "bassa",
+        "missingOrFallbackComponents": [
+          "form",
+          "venue",
+          "absences",
+          "tactical"
+        ]
+      },
+      "reasons": [
+        "Quote normalizzate: Manchester United non vince nel 15% degli scenari 1X2"
+      ]
+    },
+    {
+      "fixtureId": "ucl-2026-27-md01-18",
+      "homeTeam": "Slavia Praha",
+      "awayTeam": "Lens",
+      "surpriseFactor": 63,
+      "surpriseLevel": "alto",
+      "favorite": "Slavia Praha",
+      "underdog": "Lens",
+      "components": {
+        "market": 64,
+        "form": 80,
+        "venue": 66,
+        "absences": 50,
+        "tactical": 52,
+        "motivation": 49
+      },
+      "componentDetails": {
+        "market": {
+          "value": 64,
+          "status": "latest-sisal-1x2-no-margin",
+          "confidence": 1,
+          "evidence": {
+            "provider": "Sisal",
+            "retrievedAt": "2026-09-06T17:01:19.159Z",
+            "odds": {
+              "1": 2.6,
+              "2": 2.6,
+              "X": 3.4
+            },
+            "normalizedProbabilities": {
+              "home": 36.2,
+              "draw": 27.7,
+              "away": 36.2
+            },
+            "favoriteWinProbabilityPct": 36.2
+          }
+        },
+        "form": {
+          "value": 80,
+          "status": "espn-last5-with-last10-context",
+          "confidence": 1,
+          "evidence": {
+            "favorite": {
+              "last5": {
+                "matches": 5,
+                "pointsPerMatch": 0.2,
+                "goalDifferencePerMatch": -2.2
+              },
+              "last10": {
+                "matches": 8,
+                "pointsPerMatch": 0.38,
+                "goalDifferencePerMatch": -1.75
+              }
+            },
+            "underdog": {
+              "last5": {
+                "matches": 5,
+                "pointsPerMatch": 1.2,
+                "goalDifferencePerMatch": 0.6
+              },
+              "last10": {
+                "matches": 10,
+                "pointsPerMatch": 1.4,
+                "goalDifferencePerMatch": 0.2
+              }
+            }
+          }
+        },
+        "venue": {
+          "value": 66,
+          "status": "espn-home-away-goal-balance",
+          "confidence": 0.5,
+          "evidence": {
+            "favorite": {
+              "team": "Slavia Praha",
+              "venue": "home",
+              "matches": 4,
+              "goalsFor": 1,
+              "goalsAgainst": 2.25,
+              "balance": -1.25
+            },
+            "underdog": {
+              "team": "Lens",
+              "venue": "away",
+              "matches": 18,
+              "goalsFor": 1.778,
+              "goalsAgainst": 1.333,
+              "balance": 0.44500000000000006
+            }
+          }
+        },
+        "absences": {
+          "value": 50,
+          "status": "fallback-neutral-no-verified-availability",
+          "confidence": 0,
+          "evidence": {
+            "favorite": [],
+            "underdog": []
+          }
+        },
+        "tactical": {
+          "value": 52,
+          "status": "statistical-shot-pressure-fallback",
+          "confidence": 0.5,
+          "evidence": {
+            "favoriteRecentShotsConceded": 16.83,
+            "underdogRecentShotsCreated": 16.814,
+            "pressureDelta": 0.67,
+            "qualitativeProfilesAvailable": false
+          }
+        },
+        "motivation": {
+          "value": 49,
+          "status": "motivation-index-relative",
+          "confidence": 0.61,
+          "evidence": {
+            "favorite": {
+              "score": 66,
+              "rotationRisk": 16
+            },
+            "underdog": {
+              "score": 67,
+              "rotationRisk": 20
+            }
+          }
+        }
+      },
+      "confidence": {
+        "value": 0.78,
+        "label": "media",
+        "missingOrFallbackComponents": [
+          "absences",
+          "tactical"
+        ]
+      },
+      "reasons": [
+        "Quote normalizzate: Slavia Praha non vince nel 64% degli scenari 1X2",
+        "Lens nelle ultime 5: 1.2 punti/gara; Slavia Praha: 0.2",
+        "Rendimento esterno dell'underdog: saldo gol +0.45; favorita -1.25"
+      ]
+    }
+  ]
+}
