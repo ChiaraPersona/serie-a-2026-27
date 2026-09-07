@@ -70,7 +70,9 @@ assert(pageSource.includes('href="champions-league.html?match=${esc(fixture.fixt
 assert(pageSource.includes('new URLSearchParams(location.search).get("match")'), "La pagina Champions deve gestire la lettura selezionata");
 assert(pageSource.includes("pilotReadingDetail(requestedFixture,pilot,backtest,squads,branding,h2h,motivationByFixture.get(requestedMatchId),styleProfiles)"), "Dettaglio lettura Champions non collegato");
 assert(pageSource.includes("Baseline tattica delle squadre"), "Baseline tattica non collegata alle Letture Champions");
-assert(pageSource.includes("attackChannelsPanel(styleByTeam.get(team.teamId))"), "Direzioni d'attacco non collegate ai volumi squadra Champions");
+assert(pageSource.includes('load("champions-attack-channels-2025-26.json")'), "Dataset delle fasce d'attacco non collegato alle schede Champions");
+assert(pageSource.includes("champions-team-attack"), "Fasce d'attacco non collegate alle statistiche squadra Champions");
+assert(!pageSource.includes("attackChannelsPanel(styleByTeam.get(team.teamId))"), "Le fasce d'attacco non devono comparire nei volumi delle Letture");
 assert(pageSource.includes("Fascia gol probabile"), "La lettura deve distinguere la fascia gol dal risultato esatto");
 assert(pageSource.includes("fixture.verdict.outcome"), "La lettura deve usare la selezione ricalcolata, comprese 1X e X2");
 assert(pageSource.includes("I gol attesi sono la media di tutti gli scenari"), "La lettura deve spiegare la differenza tra media gol e risultato esatto");
