@@ -48,5 +48,5 @@ for (const fixture of data.fixtures) {
 }
 assert(pageSource.includes('href="champions-league.html?match=${esc(fixture.fixtureId)}"'), "Le schede Champions devono essere link diretti alle letture");
 assert(pageSource.includes('new URLSearchParams(location.search).get("match")'), "La pagina Champions deve gestire la lettura selezionata");
-assert(pageSource.includes("pilotReadingDetail(requestedFixture,pilot,backtest,squads,branding,h2h)"), "Dettaglio lettura Champions non collegato");
+assert(pageSource.includes("pilotReadingDetail(requestedFixture,pilot,backtest,squads,branding,h2h,motivationByFixture.get(requestedMatchId))"), "Dettaglio lettura Champions non collegato");
 console.log(`OK pronostici pilot Champions: ${data.fixtures.length} gare · sei famiglie mercato · dati mancanti espliciti`);

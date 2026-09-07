@@ -55,7 +55,7 @@ assert.match(bettingCss, /\.betting-archive-performance small,\.betting-archive-
 assert.doesNotMatch(bettingCss, /betting-archive-performance[^}]*var\(--betting-gold\)/, "Schedina: il giallo poco leggibile e ancora usato negli indicatori del retro");
 assert.match(bettingCss, /\.betting-slip-grid\{display:grid;grid-template-columns:repeat\(2,minmax\(0,1fr\)\)/, "Schedina: card desktop non organizzate su due colonne");
 const readingsPage = fs.readFileSync(path.join(root, "js", "pages", "readings.js"), "utf8");
-assert.match(readingsPage, /Livello decisionale/, "Letture: scenari quantitativi non esposti");
+assert.doesNotMatch(readingsPage, /Scenari e dipendenze|prediction-decision-panel/, "Letture: sezione Scenari e dipendenze ancora esposta");
 assert.match(readingsPage, /prediction-combo-risk/, "Letture: controllo rischio MyCombo non esposto");
 const cupPage = fs.readFileSync(path.join(root, "js", "pages", "cup.js"), "utf8");
 assert.match(cupPage, /\["preliminary","round-32"\]\.includes\(round\.id\)/, "Coppa: preliminare e trentaduesimi non sono configurati come tendine");
@@ -64,6 +64,8 @@ assert.match(cupPage, /target\.open=true/, "Coppa: i link di navigazione non apr
 assert.match(fs.readFileSync(path.join(root, "css", "matches.css"), "utf8"), /\.cup-round-disclosure:not\(\[open\]\)>\.cup-round-heading\{margin-bottom:0\}/, "Coppa: stile chiuso delle tendine assente");
 const championsPage = fs.readFileSync(path.join(root, "js", "pages", "champions.js"), "utf8");
 const championsCss = fs.readFileSync(path.join(root, "css", "champions.css"), "utf8");
+const championsFixtureCard = championsPage.slice(championsPage.indexOf("function fixtureCard"), championsPage.indexOf("function fixtureGroups"));
+assert.doesNotMatch(championsPage, /Scenari e dipendenze|prediction-decision-panel/, "Champions: sezione Scenari e dipendenze ancora esposta");
 assert.match(championsPage, /completo di tutte le partite/, "Champions: copertura completa delle partite non dichiarata");
 assert.doesNotMatch(championsPage, /Squadre italiane/, "Champions: copertura ancora presentata come limitata alle italiane");
 assert.match(championsPage, /champions-team-strength-2026-27\.json/, "Champions: profili di forza non caricati");
@@ -87,13 +89,15 @@ assert.match(championsPage, /UCL 1,00 · UEL 0,78 · UECL 0,62/, "Champions: pes
 assert.doesNotMatch(championsPage, /champions-team-card-meta/, "Champions: forza e rendimento non devono apparire nelle card");
 assert.match(championsPage, /data\.teamBranding\.map/, "Champions: branding locale delle 36 squadre non caricato");
 assert.match(championsPage, /class="team-logo"/, "Champions: stemmi assenti dalle card");
-assert.match(championsPage, /reading-fixture match fixture-card champions-fixture/, "Champions: calendario non allineato alle card Letture");
+assert.match(championsPage, /reading-fixture match fixture-card(?: champions-fixture|\$\{motivation)/, "Champions: calendario non allineato alle card Letture");
 assert.match(championsPage, /reading-fixture match fixture-card fixture-card-link champions-fixture champions-pilot-card/, "Champions: letture non integrate nelle card del calendario");
 assert.match(championsPage, /reading-fixture-preview/, "Champions: anteprima compatta della lettura assente");
 assert.doesNotMatch(championsPage, /Analisi delle italiane/, "Champions: sezione separata delle italiane ancora presente");
 assert.match(championsPage, /pilotByFixture=new Map\(pilot\.fixtures\.map/, "Champions: pronostici delle italiane non collegati al calendario");
-assert.match(championsPage, /Designazioni arbitrali/, "Champions: designazioni arbitrali della prima giornata non renderizzate");
+assert.doesNotMatch(championsPage, /Designazioni arbitrali/, "Champions: designazioni arbitrali ancora presenti nella Home");
+assert.doesNotMatch(championsPage, /champions-referee-summary|refereeFooter/, "Champions: arbitro ancora mostrato nelle card del calendario");
+assert.doesNotMatch(championsFixtureCard, /referee|Arbitro/, "Champions: riferimenti arbitrali ancora presenti nel renderer delle card");
 assert.match(championsPage, /refereeAssignment/, "Champions: dati arbitro non collegati alle gare");
-assert.match(championsPage, /Partite da monitorare/, "Champions: watchlist disciplinare non renderizzata");
+assert.doesNotMatch(championsPage, /Partite da monitorare/, "Champions: watchlist disciplinare ancora presente nella Home");
 assert.match(championsCss, /\.champions-pilot-card\.match\.fixture-card \.team-name,\.champions-fixture\.match\.fixture-card \.team-name\{color:#fff\}/, "Champions: nomi squadra non bianchi nelle card");
 console.log(`OK moduli applicazione: ${pageFiles.length} pagine e 4 componenti condivisi`);

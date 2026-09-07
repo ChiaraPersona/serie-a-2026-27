@@ -3,7 +3,12 @@
   "season": "2026-27",
   "generatedAt": "2026-09-02",
   "source": {
-    "provider": "UEFA match feed",
+    "provider": "UEFA match feed e referti verificati",
+    "details": {
+      "path": "data/sources/champions-head-to-head-details-2026-27.json",
+      "retrievedAt": "2026-09-07",
+      "pairs": 1
+    },
     "pages": [
       {
         "competition": "UEFA Champions League",
@@ -107,14 +112,28 @@
       "2025-26"
     ],
     "maximumMeetingsPerFixture": 4,
+    "detailedPairExceptions": [
+      {
+        "teams": [
+          "Real Madrid",
+          "Inter"
+        ],
+        "maximumMeetings": 5,
+        "seasons": [
+          "2021-22",
+          "2020-21",
+          "1998-99"
+        ]
+      }
+    ],
     "regulationTimeOnly": true,
-    "note": "Sono inclusi soltanto i confronti UEFA dal 2020/21 al 2025/26. Per ogni accoppiamento vengono mostrati al massimo i quattro piu recenti."
+    "note": "L'archivio generale copre i confronti UEFA dal 2020/21 al 2025/26. Le coppie verificate nel dettaglio possono estendere la finestra e mostrare fino a cinque precedenti, mantenendo fonti per marcatori e ammoniti."
   },
   "summary": {
     "fixtures": 144,
     "fixturesWithRecentMeetings": 42,
     "fixturesWithoutRecentMeetings": 102,
-    "recentMeetingsUsed": 95
+    "recentMeetingsUsed": 96
   },
   "fixtures": [
     {
@@ -286,16 +305,16 @@
       "fixtureId": "ucl-2026-27-md01-06",
       "homeTeam": "Real Madrid",
       "awayTeam": "Inter",
-      "window": "2020-21–2025-26",
-      "maximumMeetings": 4,
+      "window": "1998-99–2021-22",
+      "maximumMeetings": 5,
       "coverage": "available",
-      "meetings": 4,
+      "meetings": 5,
       "homeWins": 4,
       "draws": 0,
-      "awayWins": 0,
+      "awayWins": 1,
       "goals": {
-        "home": 8,
-        "away": 2
+        "home": 9,
+        "away": 5
       },
       "latestMeetingDate": "2021-12-07",
       "recentMatches": [
@@ -309,7 +328,46 @@
           "score90": {
             "home": 2,
             "away": 0
-          }
+          },
+          "goals": [
+            {
+              "player": "Toni Kroos",
+              "team": "Real Madrid",
+              "minute": "17"
+            },
+            {
+              "player": "Marco Asensio",
+              "team": "Real Madrid",
+              "minute": "79"
+            }
+          ],
+          "bookings": [
+            {
+              "player": "Danilo D'Ambrosio",
+              "team": "Inter",
+              "minute": "54"
+            },
+            {
+              "player": "Éder Militão",
+              "team": "Real Madrid",
+              "minute": "64"
+            },
+            {
+              "player": "Alessandro Bastoni",
+              "team": "Inter",
+              "minute": "74"
+            }
+          ],
+          "sources": [
+            {
+              "provider": "UEFA",
+              "url": "https://www.uefa.com/newsfiles/UCL/2022/2032726_FR.pdf"
+            },
+            {
+              "provider": "Inter",
+              "url": "https://www.inter.it/it/notizie/2021-12-07-real-madrid-inter-champions-league-cronaca-live-diretta-match-report"
+            }
+          ]
         },
         {
           "id": "2032670",
@@ -321,7 +379,36 @@
           "score90": {
             "home": 0,
             "away": 1
-          }
+          },
+          "goals": [
+            {
+              "player": "Rodrygo",
+              "team": "Real Madrid",
+              "minute": "89"
+            }
+          ],
+          "bookings": [
+            {
+              "player": "Lautaro Martínez",
+              "team": "Inter",
+              "minute": "45+1"
+            },
+            {
+              "player": "David Alaba",
+              "team": "Real Madrid",
+              "minute": "60"
+            }
+          ],
+          "sources": [
+            {
+              "provider": "Inter",
+              "url": "https://www.inter.it/it/notizie/2021-09-15-inter-real-madrid-champions-league-cronaca-live-diretta-match-report"
+            },
+            {
+              "provider": "UEFA",
+              "url": "https://www.uefa.com/newsfiles/UCL/2022/2032670_FR.pdf"
+            }
+          ]
         },
         {
           "id": "2029425",
@@ -333,7 +420,49 @@
           "score90": {
             "home": 0,
             "away": 2
-          }
+          },
+          "goals": [
+            {
+              "player": "Eden Hazard",
+              "team": "Real Madrid",
+              "minute": "7",
+              "penalty": true
+            },
+            {
+              "player": "Achraf Hakimi",
+              "team": "Real Madrid",
+              "minute": "59",
+              "ownGoal": true
+            }
+          ],
+          "bookings": [
+            {
+              "player": "Roberto Gagliardini",
+              "team": "Inter",
+              "minute": null
+            },
+            {
+              "player": "Arturo Vidal",
+              "team": "Inter",
+              "minute": "33",
+              "note": "doppia ammonizione ed espulsione"
+            },
+            {
+              "player": "Stefano Sensi",
+              "team": "Inter",
+              "minute": null
+            }
+          ],
+          "sources": [
+            {
+              "provider": "UEFA",
+              "url": "https://www.uefa.com/newsfiles/UCL/2021/2029425_FR.pdf"
+            },
+            {
+              "provider": "Inter",
+              "url": "https://www.inter.it/it/notizie/2020-11-25-inter-real-madrid-0-2-hazard-rodrygo-champions-league"
+            }
+          ]
         },
         {
           "id": "2029417",
@@ -345,7 +474,157 @@
           "score90": {
             "home": 3,
             "away": 2
-          }
+          },
+          "goals": [
+            {
+              "player": "Karim Benzema",
+              "team": "Real Madrid",
+              "minute": "25"
+            },
+            {
+              "player": "Sergio Ramos",
+              "team": "Real Madrid",
+              "minute": "33"
+            },
+            {
+              "player": "Lautaro Martínez",
+              "team": "Inter",
+              "minute": "35"
+            },
+            {
+              "player": "Ivan Perišić",
+              "team": "Inter",
+              "minute": "68"
+            },
+            {
+              "player": "Rodrygo",
+              "team": "Real Madrid",
+              "minute": "80"
+            }
+          ],
+          "bookings": [
+            {
+              "player": "Arturo Vidal",
+              "team": "Inter",
+              "minute": "44"
+            },
+            {
+              "player": "Ferland Mendy",
+              "team": "Real Madrid",
+              "minute": "48"
+            },
+            {
+              "player": "Marcelo Brozović",
+              "team": "Inter",
+              "minute": "51"
+            },
+            {
+              "player": "Federico Valverde",
+              "team": "Real Madrid",
+              "minute": "62"
+            },
+            {
+              "player": "Nicolò Barella",
+              "team": "Inter",
+              "minute": "72"
+            },
+            {
+              "player": "Casemiro",
+              "team": "Real Madrid",
+              "minute": "85"
+            },
+            {
+              "player": "Thibaut Courtois",
+              "team": "Real Madrid",
+              "minute": "90+3"
+            }
+          ],
+          "sources": [
+            {
+              "provider": "UEFA",
+              "url": "https://www.uefa.com/newsfiles/UCL/2021/2029417_FR.pdf"
+            },
+            {
+              "provider": "RTVE",
+              "url": "https://www.rtve.es/deportes/20201103/real-madrid-gana-inter-milan-champions/2052352.shtml"
+            }
+          ]
+        },
+        {
+          "id": "55764",
+          "season": "1998-99",
+          "date": "1998-11-25",
+          "competition": "UEFA Champions League",
+          "homeTeam": "Inter",
+          "awayTeam": "Real Madrid",
+          "score90": {
+            "home": 3,
+            "away": 1
+          },
+          "goals": [
+            {
+              "player": "Iván Zamorano",
+              "team": "Inter",
+              "minute": "50"
+            },
+            {
+              "player": "Clarence Seedorf",
+              "team": "Real Madrid",
+              "minute": "59"
+            },
+            {
+              "player": "Roberto Baggio",
+              "team": "Inter",
+              "minute": "85"
+            },
+            {
+              "player": "Roberto Baggio",
+              "team": "Inter",
+              "minute": "92"
+            }
+          ],
+          "bookings": [
+            {
+              "player": "Manuel Sanchís",
+              "team": "Real Madrid",
+              "minute": null
+            },
+            {
+              "player": "Predrag Mijatović",
+              "team": "Real Madrid",
+              "minute": null
+            },
+            {
+              "player": "Clarence Seedorf",
+              "team": "Real Madrid",
+              "minute": null
+            },
+            {
+              "player": "Benoît Cauet",
+              "team": "Inter",
+              "minute": null
+            },
+            {
+              "player": "Bodo Illgner",
+              "team": "Real Madrid",
+              "minute": null
+            },
+            {
+              "player": "Roberto Baggio",
+              "team": "Inter",
+              "minute": null
+            }
+          ],
+          "sources": [
+            {
+              "provider": "Inter",
+              "url": "https://www.inter.it/it/notizie/2020-11-19-inter-real-madrid-3-1-1998-baggio"
+            },
+            {
+              "provider": "UEFA",
+              "url": "https://www.uefa.com/uefachampionsleague/match/55764--inter-vs-real-madrid/"
+            }
+          ]
         }
       ]
     },

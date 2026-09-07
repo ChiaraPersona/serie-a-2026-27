@@ -17,13 +17,25 @@ assert(app.innerHTML.includes("Inter"));
 assert(app.innerHTML.includes("Tiri totali"));
 assert(app.innerHTML.includes("Michael Oliver"));
 assert(app.innerHTML.includes("Gialli / gara"));
+for(const unavailableRole of ["Assistenti","IV ufficiale","VAR","AVAR"]){
+  assert(!app.innerHTML.includes(`<dt>${unavailableRole}</dt>`),`Ruolo arbitrale non disponibile ancora visibile: ${unavailableRole}`);
+}
 assert(!app.innerHTML.includes("Over/Under"));
 assert(!app.innerHTML.includes("Rose registrate UEFA"));
-for(const contract of ["reading-match-hero","reading-result-summary","prediction-decision-panel","reading-h2h-section","reading-referee-assignment","reading-info-grid","prediction-volume-section","prediction-match-volume","prediction-players-grid","prediction-booked-panel","prediction-mvp","reading-panel-grid","MyCombo"]){
+assert(!app.innerHTML.includes("Scenari e dipendenze"));
+assert(!app.innerHTML.includes("prediction-decision-panel"));
+for(const contract of ["reading-match-hero","reading-result-summary","reading-h2h-section","reading-referee-assignment","reading-info-grid","prediction-volume-section","prediction-match-volume","prediction-players-grid","prediction-booked-panel","prediction-mvp","reading-panel-grid","MyCombo"]){
   assert(app.innerHTML.includes(contract),`Struttura Lettura Serie A mancante: ${contract}`);
 }
-assert(app.innerHTML.includes("Ultimi 4 scontri diretti disponibili"));
-const readingOrder=["prediction-decision-panel","reading-h2h-section","reading-referee-assignment","reading-info-grid","prediction-volume-section","reading-panel-grid"].map(contract=>app.innerHTML.indexOf(contract));
+assert(app.innerHTML.includes("Ultimi 5 scontri diretti disponibili"));
+assert.equal((app.innerHTML.match(/class="reading-h2h-match"/g)||[]).length,5);
+for(const historicalEvent of ["Toni Kroos","Rodrygo","Achraf Hakimi","Karim Benzema","Roberto Baggio","Manuel Sanchís","Stefano Sensi"]){
+  assert(app.innerHTML.includes(historicalEvent),`Evento storico Champions mancante: ${historicalEvent}`);
+}
+assert(app.innerHTML.includes("autogol"));
+assert(app.innerHTML.includes("rigore"));
+assert(app.innerHTML.includes("minuto N/D"));
+const readingOrder=["reading-h2h-section","reading-referee-assignment","reading-info-grid","prediction-volume-section","reading-panel-grid"].map(contract=>app.innerHTML.indexOf(contract));
 assert(readingOrder.every((position,index)=>position>=0&&(index===0||position>readingOrder[index-1])),"Ordine delle sezioni non allineato alla Lettura Serie A");
 assert(!app.innerHTML.includes("champions-calendar"));
 globalThis.location.search="?team=inter";

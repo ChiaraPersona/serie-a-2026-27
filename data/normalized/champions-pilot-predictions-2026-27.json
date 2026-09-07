@@ -26,7 +26,7 @@
     "result": "Modello UEFA Elo 1X2 già validato cronologicamente.",
     "goals": "Poisson: totale iniziale dai gol prodotti/concessi per sede e forma recente; lambda adattate alle probabilità 1X2 senza usare quote.",
     "volumes": "Produzione per sede e volume concesso sono normalizzati rispetto alle baseline complete dei cinque campionati. Il peso recente massimo del 20% è ridotto in base all'affidabilità delle gare 2026/27; intervallo p20-p80 approssimato dalla dispersione osservata.",
-    "cards": "Cartellini gialli di squadra con lo stesso blending; distribuzione negativa binomiale quando la varianza supera la media, altrimenti Poisson. Nessun correttivo arbitrale.",
+    "cards": "Cartellini gialli di squadra con lo stesso blending; il correttore motivazionale disciplinare è esposto per audit ma resta disattivato finché non è calibrato con stile e arbitro.",
     "thresholdPolicy": "Le probabilità sulle soglie sono diagnostiche e non costituiscono selezioni di valore finché non sono disponibili quote aggiornate."
   },
   "coverage": {
@@ -5538,9 +5538,223 @@
       "awayTeam": "Inter",
       "status": "preliminary-no-odds",
       "probabilities": {
-        "home": 57.6,
+        "home": 57.7,
         "draw": 17.3,
-        "away": 25.1
+        "away": 25
+      },
+      "motivation": {
+        "matchId": "ucl-2026-27-md01-06",
+        "matchday": 1,
+        "date": "2026-09-08",
+        "kickoff": "21:00",
+        "home": {
+          "team": "Real Madrid",
+          "motivation": {
+            "score": 72,
+            "level": "high",
+            "qualificationImportance": 37,
+            "qualificationImportanceRaw": 67,
+            "matchdayFactor": 0.55,
+            "seasonalObjective": 99,
+            "opponentPrestige": 86,
+            "historicalEvent": 100,
+            "psychologicalMomentum": 69,
+            "psychologicalMomentumEvidence": {
+              "status": "european-recent10-proxy",
+              "matches": 10,
+              "domesticFormStatus": "awaiting-final-domestic-match"
+            },
+            "pressure": 98,
+            "narrativeFactor": 24,
+            "homeFactor": 83,
+            "urgency": 56,
+            "rotationRisk": 16,
+            "confidence": 0.7,
+            "contextAdjustment": {
+              "value": 0,
+              "reason": null
+            },
+            "reasons": [
+              "strong_ucl_ambition",
+              "title_contender",
+              "home_pressure"
+            ],
+            "sourceContext": [],
+            "debug": {
+              "weights": {
+                "qualificationImportance": 0.3,
+                "seasonalObjective": 0.2,
+                "opponentPrestige": 0.1,
+                "historicalEvent": 0.1,
+                "psychologicalMomentum": 0.1,
+                "pressure": 0.1,
+                "narrativeFactor": 0.05,
+                "homeFactor": 0.05
+              },
+              "weightedScore": 71.55,
+              "formula": {
+                "qualificationImportance": {
+                  "value": 37,
+                  "weight": 0.3,
+                  "contribution": 11.1
+                },
+                "seasonalObjective": {
+                  "value": 99,
+                  "weight": 0.2,
+                  "contribution": 19.8
+                },
+                "opponentPrestige": {
+                  "value": 86,
+                  "weight": 0.1,
+                  "contribution": 8.6
+                },
+                "historicalEvent": {
+                  "value": 100,
+                  "weight": 0.1,
+                  "contribution": 10
+                },
+                "psychologicalMomentum": {
+                  "value": 69,
+                  "weight": 0.1,
+                  "contribution": 6.9
+                },
+                "pressure": {
+                  "value": 98,
+                  "weight": 0.1,
+                  "contribution": 9.8
+                },
+                "narrativeFactor": {
+                  "value": 24,
+                  "weight": 0.05,
+                  "contribution": 1.2
+                },
+                "homeFactor": {
+                  "value": 83,
+                  "weight": 0.05,
+                  "contribution": 4.15
+                }
+              }
+            },
+            "modelAdjustments": {
+              "motivationStrengthAdjustment": 0.003,
+              "rotationStrengthAdjustment": -0.0096,
+              "rotationWeight": 0.06,
+              "netStrengthAdjustment": -0.0066,
+              "maximumMotivationAdjustment": 0.04,
+              "disciplinaryMotivationAdjustment": {
+                "score": 62,
+                "refereeStrictness": 37,
+                "status": "diagnostic-only",
+                "applied": false
+              }
+            }
+          }
+        },
+        "away": {
+          "team": "Inter",
+          "motivation": {
+            "score": 68,
+            "level": "high",
+            "qualificationImportance": 36,
+            "qualificationImportanceRaw": 66,
+            "matchdayFactor": 0.55,
+            "seasonalObjective": 95,
+            "opponentPrestige": 94,
+            "historicalEvent": 96,
+            "psychologicalMomentum": 63,
+            "psychologicalMomentumEvidence": {
+              "status": "european-recent10-proxy",
+              "matches": 10,
+              "domesticFormStatus": "awaiting-final-domestic-match"
+            },
+            "pressure": 93,
+            "narrativeFactor": 52,
+            "homeFactor": 18,
+            "urgency": 55,
+            "rotationRisk": 16,
+            "confidence": 0.7,
+            "contextAdjustment": {
+              "value": 0,
+              "reason": null
+            },
+            "reasons": [
+              "elite_opponent",
+              "big_match",
+              "strong_ucl_ambition",
+              "title_contender"
+            ],
+            "sourceContext": [],
+            "debug": {
+              "weights": {
+                "qualificationImportance": 0.3,
+                "seasonalObjective": 0.2,
+                "opponentPrestige": 0.1,
+                "historicalEvent": 0.1,
+                "psychologicalMomentum": 0.1,
+                "pressure": 0.1,
+                "narrativeFactor": 0.05,
+                "homeFactor": 0.05
+              },
+              "weightedScore": 67.9,
+              "formula": {
+                "qualificationImportance": {
+                  "value": 36,
+                  "weight": 0.3,
+                  "contribution": 10.8
+                },
+                "seasonalObjective": {
+                  "value": 95,
+                  "weight": 0.2,
+                  "contribution": 19
+                },
+                "opponentPrestige": {
+                  "value": 94,
+                  "weight": 0.1,
+                  "contribution": 9.4
+                },
+                "historicalEvent": {
+                  "value": 96,
+                  "weight": 0.1,
+                  "contribution": 9.6
+                },
+                "psychologicalMomentum": {
+                  "value": 63,
+                  "weight": 0.1,
+                  "contribution": 6.3
+                },
+                "pressure": {
+                  "value": 93,
+                  "weight": 0.1,
+                  "contribution": 9.3
+                },
+                "narrativeFactor": {
+                  "value": 52,
+                  "weight": 0.05,
+                  "contribution": 2.6
+                },
+                "homeFactor": {
+                  "value": 18,
+                  "weight": 0.05,
+                  "contribution": 0.9
+                }
+              }
+            },
+            "modelAdjustments": {
+              "motivationStrengthAdjustment": -0.003,
+              "rotationStrengthAdjustment": -0.0093,
+              "rotationWeight": 0.058,
+              "netStrengthAdjustment": -0.0123,
+              "maximumMotivationAdjustment": 0.04,
+              "disciplinaryMotivationAdjustment": {
+                "score": 66,
+                "refereeStrictness": 37,
+                "status": "diagnostic-only",
+                "applied": false
+              }
+            }
+          }
+        },
+        "updatedAt": "2026-09-07"
       },
       "favorite": "1",
       "confidence": "medium",
@@ -6144,7 +6358,22 @@
           }
         ],
         "refereeAdjustment": null,
-        "refereeStatus": "N/D · designazione non integrata"
+        "refereeStatus": "N/D · designazione non integrata",
+        "disciplinaryMotivationAdjustment": {
+          "home": {
+            "score": 62,
+            "refereeStrictness": 37,
+            "status": "diagnostic-only",
+            "applied": false
+          },
+          "away": {
+            "score": 66,
+            "refereeStrictness": 37,
+            "status": "diagnostic-only",
+            "applied": false
+          },
+          "applied": false
+        }
       },
       "market": {
         "provider": "Sisal",
@@ -6152,10 +6381,10 @@
         "result1x2": [
           {
             "selection": "1",
-            "modelPct": 57.6,
+            "modelPct": 57.7,
             "odds": 1.62,
             "noMarginPct": 57.8,
-            "edgePct": -0.2
+            "edgePct": -0.1
           },
           {
             "selection": "X",
@@ -6166,10 +6395,10 @@
           },
           {
             "selection": "2",
-            "modelPct": 25.1,
+            "modelPct": 25,
             "odds": 5,
             "noMarginPct": 18.7,
-            "edgePct": 6.4
+            "edgePct": 6.3
           }
         ],
         "requestedVolumeMarketsAvailable": false
@@ -6200,6 +6429,220 @@
         "home": 18,
         "draw": 15,
         "away": 67
+      },
+      "motivation": {
+        "matchId": "ucl-2026-27-md01-12",
+        "matchday": 1,
+        "date": "2026-09-09",
+        "kickoff": "21:00",
+        "home": {
+          "team": "Napoli",
+          "motivation": {
+            "score": 65,
+            "level": "high",
+            "qualificationImportance": 35,
+            "qualificationImportanceRaw": 64,
+            "matchdayFactor": 0.55,
+            "seasonalObjective": 86,
+            "opponentPrestige": 90,
+            "historicalEvent": 86,
+            "psychologicalMomentum": 45,
+            "psychologicalMomentumEvidence": {
+              "status": "european-recent10-proxy",
+              "matches": 10,
+              "domesticFormStatus": "awaiting-final-domestic-match"
+            },
+            "pressure": 87,
+            "narrativeFactor": 52,
+            "homeFactor": 80,
+            "urgency": 55,
+            "rotationRisk": 16,
+            "confidence": 0.7,
+            "contextAdjustment": {
+              "value": 0,
+              "reason": null
+            },
+            "reasons": [
+              "elite_opponent",
+              "big_match",
+              "underdog_opportunity",
+              "home_pressure"
+            ],
+            "sourceContext": [],
+            "debug": {
+              "weights": {
+                "qualificationImportance": 0.3,
+                "seasonalObjective": 0.2,
+                "opponentPrestige": 0.1,
+                "historicalEvent": 0.1,
+                "psychologicalMomentum": 0.1,
+                "pressure": 0.1,
+                "narrativeFactor": 0.05,
+                "homeFactor": 0.05
+              },
+              "weightedScore": 65.1,
+              "formula": {
+                "qualificationImportance": {
+                  "value": 35,
+                  "weight": 0.3,
+                  "contribution": 10.5
+                },
+                "seasonalObjective": {
+                  "value": 86,
+                  "weight": 0.2,
+                  "contribution": 17.2
+                },
+                "opponentPrestige": {
+                  "value": 90,
+                  "weight": 0.1,
+                  "contribution": 9
+                },
+                "historicalEvent": {
+                  "value": 86,
+                  "weight": 0.1,
+                  "contribution": 8.6
+                },
+                "psychologicalMomentum": {
+                  "value": 45,
+                  "weight": 0.1,
+                  "contribution": 4.5
+                },
+                "pressure": {
+                  "value": 87,
+                  "weight": 0.1,
+                  "contribution": 8.7
+                },
+                "narrativeFactor": {
+                  "value": 52,
+                  "weight": 0.05,
+                  "contribution": 2.6
+                },
+                "homeFactor": {
+                  "value": 80,
+                  "weight": 0.05,
+                  "contribution": 4
+                }
+              }
+            },
+            "modelAdjustments": {
+              "motivationStrengthAdjustment": -0.0075,
+              "rotationStrengthAdjustment": -0.0088,
+              "rotationWeight": 0.055,
+              "netStrengthAdjustment": -0.0163,
+              "maximumMotivationAdjustment": 0.04,
+              "disciplinaryMotivationAdjustment": {
+                "score": 64,
+                "refereeStrictness": 35,
+                "status": "diagnostic-only",
+                "applied": false
+              }
+            }
+          }
+        },
+        "away": {
+          "team": "Arsenal",
+          "motivation": {
+            "score": 64,
+            "level": "high",
+            "qualificationImportance": 39,
+            "qualificationImportanceRaw": 71,
+            "matchdayFactor": 0.55,
+            "seasonalObjective": 95,
+            "opponentPrestige": 59,
+            "historicalEvent": 87,
+            "psychologicalMomentum": 78,
+            "psychologicalMomentumEvidence": {
+              "status": "european-recent10-proxy",
+              "matches": 10,
+              "domesticFormStatus": "awaiting-final-domestic-match"
+            },
+            "pressure": 91,
+            "narrativeFactor": 24,
+            "homeFactor": 18,
+            "urgency": 59,
+            "rotationRisk": 16,
+            "confidence": 0.7,
+            "contextAdjustment": {
+              "value": 0,
+              "reason": null
+            },
+            "reasons": [
+              "strong_ucl_ambition",
+              "title_contender",
+              "excellent_recent_form"
+            ],
+            "sourceContext": [],
+            "debug": {
+              "weights": {
+                "qualificationImportance": 0.3,
+                "seasonalObjective": 0.2,
+                "opponentPrestige": 0.1,
+                "historicalEvent": 0.1,
+                "psychologicalMomentum": 0.1,
+                "pressure": 0.1,
+                "narrativeFactor": 0.05,
+                "homeFactor": 0.05
+              },
+              "weightedScore": 64.3,
+              "formula": {
+                "qualificationImportance": {
+                  "value": 39,
+                  "weight": 0.3,
+                  "contribution": 11.7
+                },
+                "seasonalObjective": {
+                  "value": 95,
+                  "weight": 0.2,
+                  "contribution": 19
+                },
+                "opponentPrestige": {
+                  "value": 59,
+                  "weight": 0.1,
+                  "contribution": 5.9
+                },
+                "historicalEvent": {
+                  "value": 87,
+                  "weight": 0.1,
+                  "contribution": 8.7
+                },
+                "psychologicalMomentum": {
+                  "value": 78,
+                  "weight": 0.1,
+                  "contribution": 7.8
+                },
+                "pressure": {
+                  "value": 91,
+                  "weight": 0.1,
+                  "contribution": 9.1
+                },
+                "narrativeFactor": {
+                  "value": 24,
+                  "weight": 0.05,
+                  "contribution": 1.2
+                },
+                "homeFactor": {
+                  "value": 18,
+                  "weight": 0.05,
+                  "contribution": 0.9
+                }
+              }
+            },
+            "modelAdjustments": {
+              "motivationStrengthAdjustment": -0.009,
+              "rotationStrengthAdjustment": -0.0093,
+              "rotationWeight": 0.058,
+              "netStrengthAdjustment": -0.0183,
+              "maximumMotivationAdjustment": 0.04,
+              "disciplinaryMotivationAdjustment": {
+                "score": 61,
+                "refereeStrictness": 35,
+                "status": "diagnostic-only",
+                "applied": false
+              }
+            }
+          }
+        },
+        "updatedAt": "2026-09-07"
       },
       "favorite": "2",
       "confidence": "high",
@@ -6803,7 +7246,22 @@
           }
         ],
         "refereeAdjustment": null,
-        "refereeStatus": "N/D · designazione non integrata"
+        "refereeStatus": "N/D · designazione non integrata",
+        "disciplinaryMotivationAdjustment": {
+          "home": {
+            "score": 64,
+            "refereeStrictness": 35,
+            "status": "diagnostic-only",
+            "applied": false
+          },
+          "away": {
+            "score": 61,
+            "refereeStrictness": 35,
+            "status": "diagnostic-only",
+            "applied": false
+          },
+          "applied": false
+        }
       },
       "market": {
         "provider": "Sisal",
@@ -6856,23 +7314,232 @@
       "awayTeam": "Roma",
       "status": "preliminary-no-odds",
       "probabilities": {
-        "home": 42,
+        "home": 42.2,
         "draw": 21.2,
-        "away": 36.8
+        "away": 36.6
+      },
+      "motivation": {
+        "matchId": "ucl-2026-27-md01-13",
+        "matchday": 1,
+        "date": "2026-09-10",
+        "kickoff": "18:45",
+        "home": {
+          "team": "Fenerbahçe",
+          "motivation": {
+            "score": 67,
+            "level": "high",
+            "qualificationImportance": 35,
+            "qualificationImportanceRaw": 63,
+            "matchdayFactor": 0.55,
+            "seasonalObjective": 75,
+            "opponentPrestige": 76,
+            "historicalEvent": 96,
+            "psychologicalMomentum": 61,
+            "psychologicalMomentumEvidence": {
+              "status": "european-recent10-proxy",
+              "matches": 10,
+              "domesticFormStatus": "awaiting-final-domestic-match"
+            },
+            "pressure": 85,
+            "narrativeFactor": 62,
+            "homeFactor": 81,
+            "urgency": 55,
+            "rotationRisk": 16,
+            "confidence": 0.7,
+            "contextAdjustment": {
+              "value": 3,
+              "reason": "return_to_champions_after_absence"
+            },
+            "reasons": [
+              "return_to_champions",
+              "underdog_opportunity",
+              "home_pressure"
+            ],
+            "sourceContext": [],
+            "debug": {
+              "weights": {
+                "qualificationImportance": 0.3,
+                "seasonalObjective": 0.2,
+                "opponentPrestige": 0.1,
+                "historicalEvent": 0.1,
+                "psychologicalMomentum": 0.1,
+                "pressure": 0.1,
+                "narrativeFactor": 0.05,
+                "homeFactor": 0.05
+              },
+              "weightedScore": 64.45,
+              "formula": {
+                "qualificationImportance": {
+                  "value": 35,
+                  "weight": 0.3,
+                  "contribution": 10.5
+                },
+                "seasonalObjective": {
+                  "value": 75,
+                  "weight": 0.2,
+                  "contribution": 15
+                },
+                "opponentPrestige": {
+                  "value": 76,
+                  "weight": 0.1,
+                  "contribution": 7.6
+                },
+                "historicalEvent": {
+                  "value": 96,
+                  "weight": 0.1,
+                  "contribution": 9.6
+                },
+                "psychologicalMomentum": {
+                  "value": 61,
+                  "weight": 0.1,
+                  "contribution": 6.1
+                },
+                "pressure": {
+                  "value": 85,
+                  "weight": 0.1,
+                  "contribution": 8.5
+                },
+                "narrativeFactor": {
+                  "value": 62,
+                  "weight": 0.05,
+                  "contribution": 3.1
+                },
+                "homeFactor": {
+                  "value": 81,
+                  "weight": 0.05,
+                  "contribution": 4.05
+                }
+              }
+            },
+            "modelAdjustments": {
+              "motivationStrengthAdjustment": -0.0045,
+              "rotationStrengthAdjustment": -0.0083,
+              "rotationWeight": 0.052,
+              "netStrengthAdjustment": -0.0128,
+              "maximumMotivationAdjustment": 0.04,
+              "disciplinaryMotivationAdjustment": {
+                "score": 66,
+                "refereeStrictness": null,
+                "status": "diagnostic-only",
+                "applied": false
+              }
+            }
+          }
+        },
+        "away": {
+          "team": "Roma",
+          "motivation": {
+            "score": 60,
+            "level": "high",
+            "qualificationImportance": 38,
+            "qualificationImportanceRaw": 69,
+            "matchdayFactor": 0.55,
+            "seasonalObjective": 86,
+            "opponentPrestige": 54,
+            "historicalEvent": 88,
+            "psychologicalMomentum": 69,
+            "psychologicalMomentumEvidence": {
+              "status": "european-recent10-proxy",
+              "matches": 10,
+              "domesticFormStatus": "awaiting-final-domestic-match"
+            },
+            "pressure": 84,
+            "narrativeFactor": 24,
+            "homeFactor": 18,
+            "urgency": 55,
+            "rotationRisk": 16,
+            "confidence": 0.7,
+            "contextAdjustment": {
+              "value": 0,
+              "reason": null
+            },
+            "reasons": [],
+            "sourceContext": [],
+            "debug": {
+              "weights": {
+                "qualificationImportance": 0.3,
+                "seasonalObjective": 0.2,
+                "opponentPrestige": 0.1,
+                "historicalEvent": 0.1,
+                "psychologicalMomentum": 0.1,
+                "pressure": 0.1,
+                "narrativeFactor": 0.05,
+                "homeFactor": 0.05
+              },
+              "weightedScore": 60.2,
+              "formula": {
+                "qualificationImportance": {
+                  "value": 38,
+                  "weight": 0.3,
+                  "contribution": 11.4
+                },
+                "seasonalObjective": {
+                  "value": 86,
+                  "weight": 0.2,
+                  "contribution": 17.2
+                },
+                "opponentPrestige": {
+                  "value": 54,
+                  "weight": 0.1,
+                  "contribution": 5.4
+                },
+                "historicalEvent": {
+                  "value": 88,
+                  "weight": 0.1,
+                  "contribution": 8.8
+                },
+                "psychologicalMomentum": {
+                  "value": 69,
+                  "weight": 0.1,
+                  "contribution": 6.9
+                },
+                "pressure": {
+                  "value": 84,
+                  "weight": 0.1,
+                  "contribution": 8.4
+                },
+                "narrativeFactor": {
+                  "value": 24,
+                  "weight": 0.05,
+                  "contribution": 1.2
+                },
+                "homeFactor": {
+                  "value": 18,
+                  "weight": 0.05,
+                  "contribution": 0.9
+                }
+              }
+            },
+            "modelAdjustments": {
+              "motivationStrengthAdjustment": -0.015,
+              "rotationStrengthAdjustment": -0.0088,
+              "rotationWeight": 0.055,
+              "netStrengthAdjustment": -0.0238,
+              "maximumMotivationAdjustment": 0.04,
+              "disciplinaryMotivationAdjustment": {
+                "score": 58,
+                "refereeStrictness": null,
+                "status": "diagnostic-only",
+                "applied": false
+              }
+            }
+          }
+        },
+        "updatedAt": "2026-09-07"
       },
       "favorite": "1",
       "confidence": "low",
       "expectedGoals": {
-        "home": 1.7,
+        "home": 1.72,
         "away": 1.57,
-        "total": 3.27,
+        "total": 3.3,
         "domesticTotalPrior": 3.25,
         "method": "lambda Poisson adattate alle probabilità 1X2 UEFA con prior gol domestico"
       },
       "exactScores": [
         {
           "score": "1-1",
-          "probabilityPct": 10.1
+          "probabilityPct": 10
         },
         {
           "score": "2-1",
@@ -6880,18 +7547,18 @@
         },
         {
           "score": "1-2",
-          "probabilityPct": 8
+          "probabilityPct": 7.9
         }
       ],
       "scoreForecast": {
         "primary": {
           "score": "1-1",
-          "probabilityPct": 10.1
+          "probabilityPct": 10
         },
         "display": [
           {
             "score": "1-1",
-            "probabilityPct": 10.1
+            "probabilityPct": 10
           },
           {
             "score": "2-1",
@@ -6899,7 +7566,7 @@
           },
           {
             "score": "1-2",
-            "probabilityPct": 8
+            "probabilityPct": 7.9
           }
         ]
       },
@@ -6915,41 +7582,41 @@
       "goals": [
         {
           "threshold": 1.5,
-          "overPct": 83.8,
-          "underPct": 16.2,
+          "overPct": 84.1,
+          "underPct": 15.9,
           "market": {
             "overOdds": 1.22,
             "underOdds": 3.6,
             "overNoMarginPct": 74.7,
             "underNoMarginPct": 25.3,
-            "overEdgePct": 9.1,
-            "underEdgePct": -9.1
+            "overEdgePct": 9.4,
+            "underEdgePct": -9.4
           }
         },
         {
           "threshold": 2.5,
-          "overPct": 63.6,
-          "underPct": 36.4,
+          "overPct": 64.1,
+          "underPct": 35.9,
           "market": {
             "overOdds": 1.8,
             "underOdds": 1.9,
             "overNoMarginPct": 51.4,
             "underNoMarginPct": 48.6,
-            "overEdgePct": 12.2,
-            "underEdgePct": -12.2
+            "overEdgePct": 12.7,
+            "underEdgePct": -12.7
           }
         },
         {
           "threshold": 3.5,
-          "overPct": 41.4,
-          "underPct": 58.6,
+          "overPct": 42,
+          "underPct": 58,
           "market": {
             "overOdds": 2.9,
             "underOdds": 1.36,
             "overNoMarginPct": 31.9,
             "underNoMarginPct": 68.1,
-            "overEdgePct": 9.5,
-            "underEdgePct": -9.5
+            "overEdgePct": 10.1,
+            "underEdgePct": -10.1
           }
         }
       ],
@@ -6958,7 +7625,7 @@
           "teamId": "fenerbahce",
           "team": "Fenerbahçe",
           "venue": "home",
-          "expectedGoals": 1.7,
+          "expectedGoals": 1.72,
           "shotsTotal": {
             "central": 15.39,
             "sd": 5.37,
@@ -7462,7 +8129,22 @@
           }
         ],
         "refereeAdjustment": null,
-        "refereeStatus": "N/D · designazione non integrata"
+        "refereeStatus": "N/D · designazione non integrata",
+        "disciplinaryMotivationAdjustment": {
+          "home": {
+            "score": 66,
+            "refereeStrictness": null,
+            "status": "diagnostic-only",
+            "applied": false
+          },
+          "away": {
+            "score": 58,
+            "refereeStrictness": null,
+            "status": "diagnostic-only",
+            "applied": false
+          },
+          "applied": false
+        }
       },
       "market": {
         "provider": "Sisal",
@@ -7470,10 +8152,10 @@
         "result1x2": [
           {
             "selection": "1",
-            "modelPct": 42,
+            "modelPct": 42.2,
             "odds": 3.25,
             "noMarginPct": 29.1,
-            "edgePct": 12.9
+            "edgePct": 13.1
           },
           {
             "selection": "X",
@@ -7484,10 +8166,10 @@
           },
           {
             "selection": "2",
-            "modelPct": 36.8,
+            "modelPct": 36.6,
             "odds": 2.2,
             "noMarginPct": 43,
-            "edgePct": -6.2
+            "edgePct": -6.4
           }
         ],
         "requestedVolumeMarketsAvailable": false
@@ -7515,15 +8197,223 @@
       "awayTeam": "Leipzig",
       "status": "preliminary-no-odds",
       "probabilities": {
-        "home": 58.6,
+        "home": 59.1,
         "draw": 17,
-        "away": 24.4
+        "away": 23.9
+      },
+      "motivation": {
+        "matchId": "ucl-2026-27-md01-15",
+        "matchday": 1,
+        "date": "2026-09-10",
+        "kickoff": "21:00",
+        "home": {
+          "team": "Como",
+          "motivation": {
+            "score": 70,
+            "level": "high",
+            "qualificationImportance": 35,
+            "qualificationImportanceRaw": 63,
+            "matchdayFactor": 0.55,
+            "seasonalObjective": 75,
+            "opponentPrestige": 55,
+            "historicalEvent": 100,
+            "psychologicalMomentum": 50,
+            "psychologicalMomentumEvidence": {
+              "status": "fallback-neutral",
+              "matches": 0,
+              "domesticFormStatus": "awaiting-final-domestic-match"
+            },
+            "pressure": 76,
+            "narrativeFactor": 82,
+            "homeFactor": 83,
+            "urgency": 52,
+            "rotationRisk": 20,
+            "confidence": 0.45,
+            "contextAdjustment": {
+              "value": 8,
+              "reason": "first_champions_league_match_in_club_history"
+            },
+            "reasons": [
+              "champions_debut",
+              "historic_match"
+            ],
+            "sourceContext": [],
+            "debug": {
+              "weights": {
+                "qualificationImportance": 0.3,
+                "seasonalObjective": 0.2,
+                "opponentPrestige": 0.1,
+                "historicalEvent": 0.1,
+                "psychologicalMomentum": 0.1,
+                "pressure": 0.1,
+                "narrativeFactor": 0.05,
+                "homeFactor": 0.05
+              },
+              "weightedScore": 61.85,
+              "formula": {
+                "qualificationImportance": {
+                  "value": 35,
+                  "weight": 0.3,
+                  "contribution": 10.5
+                },
+                "seasonalObjective": {
+                  "value": 75,
+                  "weight": 0.2,
+                  "contribution": 15
+                },
+                "opponentPrestige": {
+                  "value": 55,
+                  "weight": 0.1,
+                  "contribution": 5.5
+                },
+                "historicalEvent": {
+                  "value": 100,
+                  "weight": 0.1,
+                  "contribution": 10
+                },
+                "psychologicalMomentum": {
+                  "value": 50,
+                  "weight": 0.1,
+                  "contribution": 5
+                },
+                "pressure": {
+                  "value": 76,
+                  "weight": 0.1,
+                  "contribution": 7.6
+                },
+                "narrativeFactor": {
+                  "value": 82,
+                  "weight": 0.05,
+                  "contribution": 4.1
+                },
+                "homeFactor": {
+                  "value": 83,
+                  "weight": 0.05,
+                  "contribution": 4.15
+                }
+              }
+            },
+            "modelAdjustments": {
+              "motivationStrengthAdjustment": 0,
+              "rotationStrengthAdjustment": -0.0106,
+              "rotationWeight": 0.053,
+              "netStrengthAdjustment": -0.0106,
+              "maximumMotivationAdjustment": 0.04,
+              "disciplinaryMotivationAdjustment": {
+                "score": 66,
+                "refereeStrictness": null,
+                "status": "diagnostic-only",
+                "applied": false
+              }
+            }
+          }
+        },
+        "away": {
+          "team": "Leipzig",
+          "motivation": {
+            "score": 54,
+            "level": "medium",
+            "qualificationImportance": 35,
+            "qualificationImportanceRaw": 64,
+            "matchdayFactor": 0.55,
+            "seasonalObjective": 81,
+            "opponentPrestige": 50,
+            "historicalEvent": 80,
+            "psychologicalMomentum": 37,
+            "psychologicalMomentumEvidence": {
+              "status": "european-recent10-proxy",
+              "matches": 10,
+              "domesticFormStatus": "awaiting-final-domestic-match"
+            },
+            "pressure": 80,
+            "narrativeFactor": 24,
+            "homeFactor": 18,
+            "urgency": 55,
+            "rotationRisk": 20,
+            "confidence": 0.6,
+            "contextAdjustment": {
+              "value": 0,
+              "reason": null
+            },
+            "reasons": [],
+            "sourceContext": [],
+            "debug": {
+              "weights": {
+                "qualificationImportance": 0.3,
+                "seasonalObjective": 0.2,
+                "opponentPrestige": 0.1,
+                "historicalEvent": 0.1,
+                "psychologicalMomentum": 0.1,
+                "pressure": 0.1,
+                "narrativeFactor": 0.05,
+                "homeFactor": 0.05
+              },
+              "weightedScore": 53.5,
+              "formula": {
+                "qualificationImportance": {
+                  "value": 35,
+                  "weight": 0.3,
+                  "contribution": 10.5
+                },
+                "seasonalObjective": {
+                  "value": 81,
+                  "weight": 0.2,
+                  "contribution": 16.2
+                },
+                "opponentPrestige": {
+                  "value": 50,
+                  "weight": 0.1,
+                  "contribution": 5
+                },
+                "historicalEvent": {
+                  "value": 80,
+                  "weight": 0.1,
+                  "contribution": 8
+                },
+                "psychologicalMomentum": {
+                  "value": 37,
+                  "weight": 0.1,
+                  "contribution": 3.7
+                },
+                "pressure": {
+                  "value": 80,
+                  "weight": 0.1,
+                  "contribution": 8
+                },
+                "narrativeFactor": {
+                  "value": 24,
+                  "weight": 0.05,
+                  "contribution": 1.2
+                },
+                "homeFactor": {
+                  "value": 18,
+                  "weight": 0.05,
+                  "contribution": 0.9
+                }
+              }
+            },
+            "modelAdjustments": {
+              "motivationStrengthAdjustment": -0.024,
+              "rotationStrengthAdjustment": -0.0108,
+              "rotationWeight": 0.054,
+              "netStrengthAdjustment": -0.0348,
+              "maximumMotivationAdjustment": 0.04,
+              "disciplinaryMotivationAdjustment": {
+                "score": 57,
+                "refereeStrictness": null,
+                "status": "diagnostic-only",
+                "applied": false
+              }
+            }
+          }
+        },
+        "updatedAt": "2026-09-07"
       },
       "favorite": "1",
       "confidence": "medium",
       "expectedGoals": {
-        "home": 2.02,
-        "away": 1.17,
+        "home": 2.05,
+        "away": 1.15,
         "total": 3.2,
         "domesticTotalPrior": 3.1,
         "method": "lambda Poisson adattate alle probabilità 1X2 UEFA con prior gol domestico"
@@ -7531,34 +8421,34 @@
       "exactScores": [
         {
           "score": "2-1",
-          "probabilityPct": 9.8
+          "probabilityPct": 9.9
         },
         {
           "score": "1-1",
-          "probabilityPct": 9.7
+          "probabilityPct": 9.6
         },
         {
           "score": "2-0",
-          "probabilityPct": 8.4
+          "probabilityPct": 8.6
         }
       ],
       "scoreForecast": {
         "primary": {
           "score": "2-1",
-          "probabilityPct": 9.8
+          "probabilityPct": 9.9
         },
         "display": [
           {
             "score": "2-1",
-            "probabilityPct": 9.8
+            "probabilityPct": 9.9
           },
           {
             "score": "1-1",
-            "probabilityPct": 9.7
+            "probabilityPct": 9.6
           },
           {
             "score": "2-0",
-            "probabilityPct": 8.4
+            "probabilityPct": 8.6
           }
         ]
       },
@@ -7617,7 +8507,7 @@
           "teamId": "como",
           "team": "Como",
           "venue": "home",
-          "expectedGoals": 2.02,
+          "expectedGoals": 2.05,
           "shotsTotal": {
             "central": 15.63,
             "sd": 4.73,
@@ -7846,7 +8736,7 @@
           "teamId": "leipzig",
           "team": "Leipzig",
           "venue": "away",
-          "expectedGoals": 1.17,
+          "expectedGoals": 1.15,
           "shotsTotal": {
             "central": 11.47,
             "sd": 3.77,
@@ -8121,7 +9011,22 @@
           }
         ],
         "refereeAdjustment": null,
-        "refereeStatus": "N/D · designazione non integrata"
+        "refereeStatus": "N/D · designazione non integrata",
+        "disciplinaryMotivationAdjustment": {
+          "home": {
+            "score": 66,
+            "refereeStrictness": null,
+            "status": "diagnostic-only",
+            "applied": false
+          },
+          "away": {
+            "score": 57,
+            "refereeStrictness": null,
+            "status": "diagnostic-only",
+            "applied": false
+          },
+          "applied": false
+        }
       },
       "market": {
         "provider": "Sisal",
@@ -8129,10 +9034,10 @@
         "result1x2": [
           {
             "selection": "1",
-            "modelPct": 58.6,
+            "modelPct": 59.1,
             "odds": 1.9,
             "noMarginPct": 49.7,
-            "edgePct": 8.9
+            "edgePct": 9.4
           },
           {
             "selection": "X",
@@ -8143,10 +9048,10 @@
           },
           {
             "selection": "2",
-            "modelPct": 24.4,
+            "modelPct": 23.9,
             "odds": 3.75,
             "noMarginPct": 25.2,
-            "edgePct": -0.8
+            "edgePct": -1.3
           }
         ],
         "requestedVolumeMarketsAvailable": false

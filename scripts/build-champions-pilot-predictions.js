@@ -8,6 +8,7 @@ const read = relative => JSON.parse(fs.readFileSync(path.join(root, relative), "
 const source = read("data/sources/champions-pilot-match-stats-2025-27.json");
 const calendar = read("data/normalized/champions-league-2026-27.json");
 const resultModel = read("data/normalized/champions-1x2-2026-27.json");
+const motivation = read("data/normalized/champions-motivation-md01-2026-27.json");
 const odds = read("data/normalized/odds/sisal/champions-league.json");
 const outputPath = path.join(root, "data/normalized/champions-pilot-predictions-2026-27.json");
 const pilotTeams = new Set(source.teams.map(team => team.id));
@@ -185,6 +186,7 @@ function goalLines(matrix) {
 
 const pilotFixtures = calendar.fixtures.filter(fixture => fixture.matchday === 1 && nameToId.has(fixture.homeTeam) && nameToId.has(fixture.awayTeam));
 const resultByFixture = new Map(resultModel.fixtures.map(item => [item.fixtureId, item]));
+const motivationByFixture = new Map(motivation.fixtures.map(item => [item.matchId, item]));
 const oddsByFixture = new Map(odds.events.filter(item => item.canonicalMatchId).map(item => [item.canonicalMatchId, item]));
 const selectionOdds = market => Object.fromEntries((market?.selections || []).filter(item => item.status === "open").map(item => [item.name, item.odds]));
 function normalizedMarket(market) {
@@ -196,6 +198,7 @@ const fixtures = pilotFixtures.map(fixture => {
   const home = profileById.get(nameToId.get(fixture.homeTeam));
   const away = profileById.get(nameToId.get(fixture.awayTeam));
   const result = resultByFixture.get(fixture.id);
+  const fixtureMotivation = motivationByFixture.get(fixture.id) || null;
   const oddsEvent = oddsByFixture.get(fixture.id) || null;
   const resultMarket = oddsEvent?.markets.find(market => market.marketName === "1X2 ESITO FINALE") || null;
   const resultPrices = normalizedMarket(resultMarket);
@@ -227,6 +230,7 @@ const fixtures = pilotFixtures.map(fixture => {
     awayTeam: fixture.awayTeam,
     status: "preliminary-no-odds",
     probabilities: result.displayPercentages,
+    motivation: fixtureMotivation,
     favorite: result.favorite,
     confidence: result.confidence,
     expectedGoals: { home: round(fitted.home), away: round(fitted.away), total: round(fitted.home + fitted.away), domesticTotalPrior: round(totalPrior), method: "lambda Poisson adattate alle probabilità 1X2 UEFA con prior gol domestico" },
@@ -245,7 +249,7 @@ const fixtures = pilotFixtures.map(fixture => {
     mvpCandidate: null,
     combinations: [],
     decisionSupport: { status: "unavailable", scenarios: [], correlationGraph: null },
-    cards: { ...matchCards, lines: overLines(matchCards, [3.5, 4.5, 5.5]), refereeAdjustment: null, refereeStatus: "N/D · designazione non integrata" },
+    cards: { ...matchCards, lines: overLines(matchCards, [3.5, 4.5, 5.5]), refereeAdjustment: null, refereeStatus: "N/D · designazione non integrata", disciplinaryMotivationAdjustment: fixtureMotivation ? { home: fixtureMotivation.home.motivation.modelAdjustments.disciplinaryMotivationAdjustment, away: fixtureMotivation.away.motivation.modelAdjustments.disciplinaryMotivationAdjustment, applied: false } : null },
     market: {
       provider: oddsEvent ? "Sisal" : null,
       retrievedAt: oddsEvent ? odds.retrievedAt : null,
@@ -279,7 +283,7 @@ const output = {
     result: "Modello UEFA Elo 1X2 già validato cronologicamente.",
     goals: "Poisson: totale iniziale dai gol prodotti/concessi per sede e forma recente; lambda adattate alle probabilità 1X2 senza usare quote.",
     volumes: "Produzione per sede e volume concesso sono normalizzati rispetto alle baseline complete dei cinque campionati. Il peso recente massimo del 20% è ridotto in base all'affidabilità delle gare 2026/27; intervallo p20-p80 approssimato dalla dispersione osservata.",
-    cards: "Cartellini gialli di squadra con lo stesso blending; distribuzione negativa binomiale quando la varianza supera la media, altrimenti Poisson. Nessun correttivo arbitrale.",
+    cards: "Cartellini gialli di squadra con lo stesso blending; il correttore motivazionale disciplinare è esposto per audit ma resta disattivato finché non è calibrato con stile e arbitro.",
     thresholdPolicy: "Le probabilità sulle soglie sono diagnostiche e non costituiscono selezioni di valore finché non sono disponibili quote aggiornate."
   },
   coverage: { fixtures: fixtures.length, teams: profiles.length, sourceMatches: source.summary.matches, completeSourceMatches: source.summary.completeMatches, leagueBaselineMatches: Object.fromEntries(Object.values(leagueBaselines).map(item => [item.league, item.matches])), oddsMatched: fixtures.filter(item => item.market.provider).length, resultOdds: fixtures.filter(item => item.market.result1x2.every(row => row.odds)).length, goalOdds: fixtures.filter(item => item.goals.every(row => row.market)).length, requestedVolumeOdds: fixtures.filter(item => item.market.requestedVolumeMarketsAvailable).length, referees: 0, probableLineups: 0 },

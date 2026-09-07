@@ -3,8 +3,8 @@
   "season": "2026-27",
   "generatedAt": "2026-09-02",
   "status": "experimental-backtested",
-  "modelVersion": "uefa-elo-1x2-1.0.0",
-  "warning": "Percentuali sperimentali basate solo su storico europeo, sede e recenza implicita nel rating. Motivazione, assenze e forma domestica non sono ancora incluse.",
+  "modelVersion": "uefa-elo-1x2-1.1.0-motivation",
+  "warning": "Percentuali sperimentali: il rating europeo resta la base; per la MD1 Motivation Index e Rotation Risk correggono solo la forza relativa entro limiti prudenziali. Forma domestica finale, assenze e formazioni restano incomplete.",
   "methodology": {
     "trainingMatches": 1469,
     "historyThrough": "2026-05-30",
@@ -26,6 +26,11 @@
       "passed": true,
       "rule": "Il modello deve migliorare log-loss e Brier sull'intero holdout e sulle gare Champions, rispettare ECE <= 0,04 complessivo e <= 0,06 Champions, e avere intervalli bootstrap complessivi al 95% sopra zero.",
       "status": "eligible-for-current-fixture-prototype"
+    },
+    "motivation": {
+      "availableFixtures": 18,
+      "formula": "clamp((motivation - 70) * 0.0015, -0.04, 0.04)",
+      "rotationFormula": "-(rotationRisk / 100) * rotationWeight"
     }
   },
   "validation": {
@@ -250,7 +255,8 @@
     "fixtures": 144,
     "highConfidence": 47,
     "mediumConfidence": 39,
-    "lowConfidence": 58
+    "lowConfidence": 58,
+    "motivationAdjustedFixtures": 18
   },
   "fixtures": [
     {
@@ -266,19 +272,42 @@
         "gapAfterHomeAdvantage": 204.92
       },
       "probabilities": {
+        "home": 0.6455,
+        "draw": 0.1563,
+        "away": 0.1981
+      },
+      "baseProbabilities": {
         "home": 0.6453,
         "draw": 0.1563,
         "away": 0.1984
       },
       "displayPercentages": {
-        "home": 64.5,
+        "home": 64.6,
         "draw": 15.6,
-        "away": 19.9
+        "away": 19.8
       },
       "favorite": "1",
       "confidence": "high",
       "confidenceLabel": "alta",
       "edgePct": 44.7,
+      "motivationAdjustment": {
+        "status": "applied-to-relative-strength",
+        "home": {
+          "motivation": 60,
+          "rotationRisk": 16,
+          "netStrengthAdjustment": -0.0228
+        },
+        "away": {
+          "motivation": 60,
+          "rotationRisk": 20,
+          "netStrengthAdjustment": -0.0244
+        },
+        "probabilityDeltaPctPoints": {
+          "home": 0.02,
+          "draw": 0,
+          "away": -0.02
+        }
+      },
       "status": "experimental"
     },
     {
@@ -294,19 +323,42 @@
         "gapAfterHomeAdvantage": -104.91
       },
       "probabilities": {
+        "home": 0.2874,
+        "draw": 0.1847,
+        "away": 0.5279
+      },
+      "baseProbabilities": {
         "home": 0.2882,
         "draw": 0.1847,
         "away": 0.5271
       },
       "displayPercentages": {
-        "home": 28.8,
+        "home": 28.7,
         "draw": 18.5,
-        "away": 52.7
+        "away": 52.8
       },
       "favorite": "2",
       "confidence": "medium",
       "confidenceLabel": "media",
-      "edgePct": 23.9,
+      "edgePct": 24.1,
+      "motivationAdjustment": {
+        "status": "applied-to-relative-strength",
+        "home": {
+          "motivation": 59,
+          "rotationRisk": 16,
+          "netStrengthAdjustment": -0.0248
+        },
+        "away": {
+          "motivation": 62,
+          "rotationRisk": 16,
+          "netStrengthAdjustment": -0.0206
+        },
+        "probabilityDeltaPctPoints": {
+          "home": -0.08,
+          "draw": 0,
+          "away": 0.08
+        }
+      },
       "status": "experimental"
     },
     {
@@ -322,19 +374,42 @@
         "gapAfterHomeAdvantage": 246.09
       },
       "probabilities": {
+        "home": 0.6887,
+        "draw": 0.146,
+        "away": 0.1653
+      },
+      "baseProbabilities": {
         "home": 0.6873,
         "draw": 0.146,
         "away": 0.1667
       },
       "displayPercentages": {
-        "home": 68.7,
+        "home": 68.9,
         "draw": 14.6,
-        "away": 16.7
+        "away": 16.5
       },
       "favorite": "1",
       "confidence": "high",
       "confidenceLabel": "alta",
-      "edgePct": 52.1,
+      "edgePct": 52.3,
+      "motivationAdjustment": {
+        "status": "applied-to-relative-strength",
+        "home": {
+          "motivation": 63,
+          "rotationRisk": 16,
+          "netStrengthAdjustment": -0.0195
+        },
+        "away": {
+          "motivation": 56,
+          "rotationRisk": 16,
+          "netStrengthAdjustment": -0.0295
+        },
+        "probabilityDeltaPctPoints": {
+          "home": 0.14,
+          "draw": 0,
+          "away": -0.14
+        }
+      },
       "status": "experimental"
     },
     {
@@ -350,19 +425,42 @@
         "gapAfterHomeAdvantage": 75.69
       },
       "probabilities": {
+        "home": 0.4899,
+        "draw": 0.1939,
+        "away": 0.3161
+      },
+      "baseProbabilities": {
         "home": 0.4895,
         "draw": 0.1939,
         "away": 0.3166
       },
       "displayPercentages": {
-        "home": 48.9,
+        "home": 49,
         "draw": 19.4,
-        "away": 31.7
+        "away": 31.6
       },
       "favorite": "1",
       "confidence": "low",
       "confidenceLabel": "bassa",
-      "edgePct": 17.3,
+      "edgePct": 17.4,
+      "motivationAdjustment": {
+        "status": "applied-to-relative-strength",
+        "home": {
+          "motivation": 66,
+          "rotationRisk": 16,
+          "netStrengthAdjustment": -0.0146
+        },
+        "away": {
+          "motivation": 65,
+          "rotationRisk": 16,
+          "netStrengthAdjustment": -0.0169
+        },
+        "probabilityDeltaPctPoints": {
+          "home": 0.04,
+          "draw": 0,
+          "away": -0.04
+        }
+      },
       "status": "experimental"
     },
     {
@@ -378,19 +476,42 @@
         "gapAfterHomeAdvantage": 48.19
       },
       "probabilities": {
+        "home": 0.4501,
+        "draw": 0.203,
+        "away": 0.3468
+      },
+      "baseProbabilities": {
         "home": 0.4534,
         "draw": 0.203,
         "away": 0.3436
       },
       "displayPercentages": {
-        "home": 45.3,
+        "home": 45,
         "draw": 20.3,
-        "away": 34.4
+        "away": 34.7
       },
       "favorite": "1",
       "confidence": "low",
       "confidenceLabel": "bassa",
-      "edgePct": 11,
+      "edgePct": 10.3,
+      "motivationAdjustment": {
+        "status": "applied-to-relative-strength",
+        "home": {
+          "motivation": 57,
+          "rotationRisk": 16,
+          "netStrengthAdjustment": -0.0277
+        },
+        "away": {
+          "motivation": 68,
+          "rotationRisk": 16,
+          "netStrengthAdjustment": -0.0113
+        },
+        "probabilityDeltaPctPoints": {
+          "home": -0.33,
+          "draw": 0,
+          "away": 0.33
+        }
+      },
       "status": "experimental"
     },
     {
@@ -406,19 +527,42 @@
         "gapAfterHomeAdvantage": 144.07
       },
       "probabilities": {
+        "home": 0.5767,
+        "draw": 0.173,
+        "away": 0.2502
+      },
+      "baseProbabilities": {
         "home": 0.5757,
         "draw": 0.173,
         "away": 0.2512
       },
       "displayPercentages": {
-        "home": 57.6,
+        "home": 57.7,
         "draw": 17.3,
-        "away": 25.1
+        "away": 25
       },
       "favorite": "1",
       "confidence": "medium",
       "confidenceLabel": "media",
-      "edgePct": 32.5,
+      "edgePct": 32.7,
+      "motivationAdjustment": {
+        "status": "applied-to-relative-strength",
+        "home": {
+          "motivation": 72,
+          "rotationRisk": 16,
+          "netStrengthAdjustment": -0.0066
+        },
+        "away": {
+          "motivation": 68,
+          "rotationRisk": 16,
+          "netStrengthAdjustment": -0.0123
+        },
+        "probabilityDeltaPctPoints": {
+          "home": 0.1,
+          "draw": 0,
+          "away": -0.1
+        }
+      },
       "status": "experimental"
     },
     {
@@ -434,19 +578,42 @@
         "gapAfterHomeAdvantage": 335.82
       },
       "probabilities": {
+        "home": 0.7656,
+        "draw": 0.1257,
+        "away": 0.1087
+      },
+      "baseProbabilities": {
         "home": 0.7638,
         "draw": 0.1257,
         "away": 0.1105
       },
       "displayPercentages": {
-        "home": 76.4,
+        "home": 76.6,
         "draw": 12.6,
-        "away": 11
+        "away": 10.8
       },
       "favorite": "1",
       "confidence": "high",
       "confidenceLabel": "alta",
-      "edgePct": 63.8,
+      "edgePct": 64,
+      "motivationAdjustment": {
+        "status": "applied-to-relative-strength",
+        "home": {
+          "motivation": 70,
+          "rotationRisk": 16,
+          "netStrengthAdjustment": -0.0094
+        },
+        "away": {
+          "motivation": 57,
+          "rotationRisk": 16,
+          "netStrengthAdjustment": -0.028
+        },
+        "probabilityDeltaPctPoints": {
+          "home": 0.18,
+          "draw": 0,
+          "away": -0.18
+        }
+      },
       "status": "experimental"
     },
     {
@@ -462,19 +629,42 @@
         "gapAfterHomeAdvantage": 57.9
       },
       "probabilities": {
+        "home": 0.4667,
+        "draw": 0.1998,
+        "away": 0.3336
+      },
+      "baseProbabilities": {
         "home": 0.4662,
         "draw": 0.1998,
         "away": 0.334
       },
       "displayPercentages": {
-        "home": 46.6,
+        "home": 46.7,
         "draw": 20,
-        "away": 33.4
+        "away": 33.3
       },
       "favorite": "1",
       "confidence": "low",
       "confidenceLabel": "bassa",
-      "edgePct": 13.2,
+      "edgePct": 13.3,
+      "motivationAdjustment": {
+        "status": "applied-to-relative-strength",
+        "home": {
+          "motivation": 61,
+          "rotationRisk": 16,
+          "netStrengthAdjustment": -0.0217
+        },
+        "away": {
+          "motivation": 60,
+          "rotationRisk": 20,
+          "netStrengthAdjustment": -0.0242
+        },
+        "probabilityDeltaPctPoints": {
+          "home": 0.05,
+          "draw": 0,
+          "away": -0.05
+        }
+      },
       "status": "experimental"
     },
     {
@@ -490,19 +680,42 @@
         "gapAfterHomeAdvantage": 86.54
       },
       "probabilities": {
+        "home": 0.5049,
+        "draw": 0.1905,
+        "away": 0.3046
+      },
+      "baseProbabilities": {
         "home": 0.5036,
         "draw": 0.1905,
         "away": 0.306
       },
       "displayPercentages": {
-        "home": 50.4,
+        "home": 50.5,
         "draw": 19,
-        "away": 30.6
+        "away": 30.5
       },
       "favorite": "1",
       "confidence": "medium",
       "confidenceLabel": "media",
-      "edgePct": 19.8,
+      "edgePct": 20,
+      "motivationAdjustment": {
+        "status": "applied-to-relative-strength",
+        "home": {
+          "motivation": 71,
+          "rotationRisk": 16,
+          "netStrengthAdjustment": -0.0079
+        },
+        "away": {
+          "motivation": 66,
+          "rotationRisk": 16,
+          "netStrengthAdjustment": -0.015
+        },
+        "probabilityDeltaPctPoints": {
+          "home": 0.14,
+          "draw": 0,
+          "away": -0.14
+        }
+      },
       "status": "experimental"
     },
     {
@@ -518,19 +731,42 @@
         "gapAfterHomeAdvantage": 493.02
       },
       "probabilities": {
+        "home": 0.8318,
+        "draw": 0.12,
+        "away": 0.0482
+      },
+      "baseProbabilities": {
         "home": 0.8313,
         "draw": 0.12,
         "away": 0.0487
       },
       "displayPercentages": {
-        "home": 83.1,
+        "home": 83.2,
         "draw": 12,
-        "away": 4.9
+        "away": 4.8
       },
       "favorite": "1",
       "confidence": "high",
       "confidenceLabel": "alta",
-      "edgePct": 71.1,
+      "edgePct": 71.2,
+      "motivationAdjustment": {
+        "status": "applied-to-relative-strength",
+        "home": {
+          "motivation": 68,
+          "rotationRisk": 28,
+          "netStrengthAdjustment": -0.0198
+        },
+        "away": {
+          "motivation": 55,
+          "rotationRisk": 16,
+          "netStrengthAdjustment": -0.03
+        },
+        "probabilityDeltaPctPoints": {
+          "home": 0.05,
+          "draw": 0,
+          "away": -0.05
+        }
+      },
       "status": "experimental"
     },
     {
@@ -546,19 +782,42 @@
         "gapAfterHomeAdvantage": 155.31
       },
       "probabilities": {
+        "home": 0.5905,
+        "draw": 0.1698,
+        "away": 0.2397
+      },
+      "baseProbabilities": {
         "home": 0.5892,
         "draw": 0.1698,
         "away": 0.241
       },
       "displayPercentages": {
-        "home": 58.9,
+        "home": 59,
         "draw": 17,
-        "away": 24.1
+        "away": 24
       },
       "favorite": "1",
       "confidence": "medium",
       "confidenceLabel": "media",
-      "edgePct": 34.8,
+      "edgePct": 35.1,
+      "motivationAdjustment": {
+        "status": "applied-to-relative-strength",
+        "home": {
+          "motivation": 63,
+          "rotationRisk": 16,
+          "netStrengthAdjustment": -0.0193
+        },
+        "away": {
+          "motivation": 58,
+          "rotationRisk": 16,
+          "netStrengthAdjustment": -0.0265
+        },
+        "probabilityDeltaPctPoints": {
+          "home": 0.13,
+          "draw": 0,
+          "away": -0.13
+        }
+      },
       "status": "experimental"
     },
     {
@@ -574,6 +833,11 @@
         "gapAfterHomeAdvantage": -228.86
       },
       "probabilities": {
+        "home": 0.1798,
+        "draw": 0.1502,
+        "away": 0.67
+      },
+      "baseProbabilities": {
         "home": 0.1795,
         "draw": 0.1502,
         "away": 0.6703
@@ -586,7 +850,25 @@
       "favorite": "2",
       "confidence": "high",
       "confidenceLabel": "alta",
-      "edgePct": 49.1,
+      "edgePct": 49,
+      "motivationAdjustment": {
+        "status": "applied-to-relative-strength",
+        "home": {
+          "motivation": 65,
+          "rotationRisk": 16,
+          "netStrengthAdjustment": -0.0163
+        },
+        "away": {
+          "motivation": 64,
+          "rotationRisk": 16,
+          "netStrengthAdjustment": -0.0183
+        },
+        "probabilityDeltaPctPoints": {
+          "home": 0.03,
+          "draw": 0,
+          "away": -0.03
+        }
+      },
       "status": "experimental"
     },
     {
@@ -602,19 +884,42 @@
         "gapAfterHomeAdvantage": 23.07
       },
       "probabilities": {
+        "home": 0.4225,
+        "draw": 0.2117,
+        "away": 0.3658
+      },
+      "baseProbabilities": {
         "home": 0.4203,
         "draw": 0.2117,
         "away": 0.368
       },
       "displayPercentages": {
-        "home": 42,
+        "home": 42.2,
         "draw": 21.2,
-        "away": 36.8
+        "away": 36.6
       },
       "favorite": "1",
       "confidence": "low",
       "confidenceLabel": "bassa",
-      "edgePct": 5.2,
+      "edgePct": 5.7,
+      "motivationAdjustment": {
+        "status": "applied-to-relative-strength",
+        "home": {
+          "motivation": 67,
+          "rotationRisk": 16,
+          "netStrengthAdjustment": -0.0128
+        },
+        "away": {
+          "motivation": 60,
+          "rotationRisk": 16,
+          "netStrengthAdjustment": -0.0238
+        },
+        "probabilityDeltaPctPoints": {
+          "home": 0.22,
+          "draw": 0,
+          "away": -0.22
+        }
+      },
       "status": "experimental"
     },
     {
@@ -634,6 +939,11 @@
         "draw": 0.1867,
         "away": 0.2944
       },
+      "baseProbabilities": {
+        "home": 0.5188,
+        "draw": 0.1867,
+        "away": 0.2944
+      },
       "displayPercentages": {
         "home": 51.9,
         "draw": 18.7,
@@ -643,6 +953,24 @@
       "confidence": "medium",
       "confidenceLabel": "media",
       "edgePct": 22.4,
+      "motivationAdjustment": {
+        "status": "applied-to-relative-strength",
+        "home": {
+          "motivation": 58,
+          "rotationRisk": 16,
+          "netStrengthAdjustment": -0.0265
+        },
+        "away": {
+          "motivation": 58,
+          "rotationRisk": 16,
+          "netStrengthAdjustment": -0.0265
+        },
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -658,19 +986,42 @@
         "gapAfterHomeAdvantage": 153.04
       },
       "probabilities": {
+        "home": 0.5907,
+        "draw": 0.1705,
+        "away": 0.2388
+      },
+      "baseProbabilities": {
         "home": 0.5865,
         "draw": 0.1705,
         "away": 0.243
       },
       "displayPercentages": {
-        "home": 58.6,
+        "home": 59.1,
         "draw": 17,
-        "away": 24.4
+        "away": 23.9
       },
       "favorite": "1",
       "confidence": "medium",
       "confidenceLabel": "media",
-      "edgePct": 34.3,
+      "edgePct": 35.2,
+      "motivationAdjustment": {
+        "status": "applied-to-relative-strength",
+        "home": {
+          "motivation": 70,
+          "rotationRisk": 20,
+          "netStrengthAdjustment": -0.0106
+        },
+        "away": {
+          "motivation": 54,
+          "rotationRisk": 20,
+          "netStrengthAdjustment": -0.0348
+        },
+        "probabilityDeltaPctPoints": {
+          "home": 0.42,
+          "draw": 0,
+          "away": -0.42
+        }
+      },
       "status": "experimental"
     },
     {
@@ -686,19 +1037,42 @@
         "gapAfterHomeAdvantage": 273.54
       },
       "probabilities": {
+        "home": 0.7148,
+        "draw": 0.1395,
+        "away": 0.1458
+      },
+      "baseProbabilities": {
         "home": 0.7129,
         "draw": 0.1395,
         "away": 0.1476
       },
       "displayPercentages": {
-        "home": 71.3,
+        "home": 71.5,
         "draw": 13.9,
-        "away": 14.8
+        "away": 14.6
       },
       "favorite": "1",
       "confidence": "high",
       "confidenceLabel": "alta",
-      "edgePct": 56.5,
+      "edgePct": 56.9,
+      "motivationAdjustment": {
+        "status": "applied-to-relative-strength",
+        "home": {
+          "motivation": 71,
+          "rotationRisk": 16,
+          "netStrengthAdjustment": -0.0081
+        },
+        "away": {
+          "motivation": 60,
+          "rotationRisk": 16,
+          "netStrengthAdjustment": -0.023
+        },
+        "probabilityDeltaPctPoints": {
+          "home": 0.18,
+          "draw": 0,
+          "away": -0.18
+        }
+      },
       "status": "experimental"
     },
     {
@@ -714,19 +1088,42 @@
         "gapAfterHomeAdvantage": 189.43
       },
       "probabilities": {
+        "home": 0.63,
+        "draw": 0.1604,
+        "away": 0.2096
+      },
+      "baseProbabilities": {
         "home": 0.6284,
         "draw": 0.1604,
         "away": 0.2112
       },
       "displayPercentages": {
-        "home": 62.8,
+        "home": 63,
         "draw": 16,
-        "away": 21.2
+        "away": 21
       },
       "favorite": "1",
       "confidence": "high",
       "confidenceLabel": "alta",
-      "edgePct": 41.7,
+      "edgePct": 42,
+      "motivationAdjustment": {
+        "status": "applied-to-relative-strength",
+        "home": {
+          "motivation": 70,
+          "rotationRisk": 20,
+          "netStrengthAdjustment": -0.0112
+        },
+        "away": {
+          "motivation": 62,
+          "rotationRisk": 20,
+          "netStrengthAdjustment": -0.0212
+        },
+        "probabilityDeltaPctPoints": {
+          "home": 0.16,
+          "draw": 0,
+          "away": -0.16
+        }
+      },
       "status": "experimental"
     },
     {
@@ -746,6 +1143,11 @@
         "draw": 0.2129,
         "away": 0.4158
       },
+      "baseProbabilities": {
+        "home": 0.3713,
+        "draw": 0.2129,
+        "away": 0.4158
+      },
       "displayPercentages": {
         "home": 37.1,
         "draw": 21.3,
@@ -754,7 +1156,25 @@
       "favorite": "2",
       "confidence": "low",
       "confidenceLabel": "bassa",
-      "edgePct": 4.5,
+      "edgePct": 4.4,
+      "motivationAdjustment": {
+        "status": "applied-to-relative-strength",
+        "home": {
+          "motivation": 57,
+          "rotationRisk": 16,
+          "netStrengthAdjustment": -0.0275
+        },
+        "away": {
+          "motivation": 58,
+          "rotationRisk": 20,
+          "netStrengthAdjustment": -0.0278
+        },
+        "probabilityDeltaPctPoints": {
+          "home": 0.01,
+          "draw": 0,
+          "away": -0.01
+        }
+      },
       "status": "experimental"
     },
     {
@@ -774,6 +1194,11 @@
         "draw": 0.2187,
         "away": 0.3866
       },
+      "baseProbabilities": {
+        "home": 0.3947,
+        "draw": 0.2187,
+        "away": 0.3866
+      },
       "displayPercentages": {
         "home": 39.5,
         "draw": 21.9,
@@ -783,6 +1208,16 @@
       "confidence": "low",
       "confidenceLabel": "bassa",
       "edgePct": 0.8,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -802,6 +1237,11 @@
         "draw": 0.1633,
         "away": 0.2202
       },
+      "baseProbabilities": {
+        "home": 0.6165,
+        "draw": 0.1633,
+        "away": 0.2202
+      },
       "displayPercentages": {
         "home": 61.7,
         "draw": 16.3,
@@ -811,6 +1251,16 @@
       "confidence": "high",
       "confidenceLabel": "alta",
       "edgePct": 39.6,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -830,6 +1280,11 @@
         "draw": 0.127,
         "away": 0.1138
       },
+      "baseProbabilities": {
+        "home": 0.7592,
+        "draw": 0.127,
+        "away": 0.1138
+      },
       "displayPercentages": {
         "home": 75.9,
         "draw": 12.7,
@@ -839,6 +1294,16 @@
       "confidence": "high",
       "confidenceLabel": "alta",
       "edgePct": 63.2,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -858,6 +1323,11 @@
         "draw": 0.1836,
         "away": 0.2847
       },
+      "baseProbabilities": {
+        "home": 0.5317,
+        "draw": 0.1836,
+        "away": 0.2847
+      },
       "displayPercentages": {
         "home": 53.2,
         "draw": 18.4,
@@ -867,6 +1337,16 @@
       "confidence": "medium",
       "confidenceLabel": "media",
       "edgePct": 24.7,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -886,6 +1366,11 @@
         "draw": 0.1759,
         "away": 0.2602
       },
+      "baseProbabilities": {
+        "home": 0.5639,
+        "draw": 0.1759,
+        "away": 0.2602
+      },
       "displayPercentages": {
         "home": 56.4,
         "draw": 17.6,
@@ -895,6 +1380,16 @@
       "confidence": "medium",
       "confidenceLabel": "media",
       "edgePct": 30.4,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -914,6 +1409,11 @@
         "draw": 0.1854,
         "away": 0.5242
       },
+      "baseProbabilities": {
+        "home": 0.2904,
+        "draw": 0.1854,
+        "away": 0.5242
+      },
       "displayPercentages": {
         "home": 29,
         "draw": 18.5,
@@ -923,6 +1423,16 @@
       "confidence": "medium",
       "confidenceLabel": "media",
       "edgePct": 23.4,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -942,6 +1452,11 @@
         "draw": 0.2172,
         "away": 0.3999
       },
+      "baseProbabilities": {
+        "home": 0.3829,
+        "draw": 0.2172,
+        "away": 0.3999
+      },
       "displayPercentages": {
         "home": 38.3,
         "draw": 21.7,
@@ -951,6 +1466,16 @@
       "confidence": "low",
       "confidenceLabel": "bassa",
       "edgePct": 1.7,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -970,6 +1495,11 @@
         "draw": 0.1633,
         "away": 0.6163
       },
+      "baseProbabilities": {
+        "home": 0.2203,
+        "draw": 0.1633,
+        "away": 0.6163
+      },
       "displayPercentages": {
         "home": 22,
         "draw": 16.3,
@@ -979,6 +1509,16 @@
       "confidence": "high",
       "confidenceLabel": "alta",
       "edgePct": 39.6,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -998,6 +1538,11 @@
         "draw": 0.2059,
         "away": 0.3519
       },
+      "baseProbabilities": {
+        "home": 0.4422,
+        "draw": 0.2059,
+        "away": 0.3519
+      },
       "displayPercentages": {
         "home": 44.2,
         "draw": 20.6,
@@ -1007,6 +1552,16 @@
       "confidence": "low",
       "confidenceLabel": "bassa",
       "edgePct": 9,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -1026,6 +1581,11 @@
         "draw": 0.2168,
         "away": 0.3818
       },
+      "baseProbabilities": {
+        "home": 0.4014,
+        "draw": 0.2168,
+        "away": 0.3818
+      },
       "displayPercentages": {
         "home": 40.1,
         "draw": 21.7,
@@ -1035,6 +1595,16 @@
       "confidence": "low",
       "confidenceLabel": "bassa",
       "edgePct": 2,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -1054,6 +1624,11 @@
         "draw": 0.166,
         "away": 0.6053
       },
+      "baseProbabilities": {
+        "home": 0.2287,
+        "draw": 0.166,
+        "away": 0.6053
+      },
       "displayPercentages": {
         "home": 22.9,
         "draw": 16.6,
@@ -1063,6 +1638,16 @@
       "confidence": "high",
       "confidenceLabel": "alta",
       "edgePct": 37.7,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -1082,6 +1667,11 @@
         "draw": 0.2123,
         "away": 0.3697
       },
+      "baseProbabilities": {
+        "home": 0.418,
+        "draw": 0.2123,
+        "away": 0.3697
+      },
       "displayPercentages": {
         "home": 41.8,
         "draw": 21.2,
@@ -1091,6 +1681,16 @@
       "confidence": "low",
       "confidenceLabel": "bassa",
       "edgePct": 4.8,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -1110,6 +1710,11 @@
         "draw": 0.1421,
         "away": 0.1554
       },
+      "baseProbabilities": {
+        "home": 0.7025,
+        "draw": 0.1421,
+        "away": 0.1554
+      },
       "displayPercentages": {
         "home": 70.2,
         "draw": 14.2,
@@ -1119,6 +1724,16 @@
       "confidence": "high",
       "confidenceLabel": "alta",
       "edgePct": 54.7,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -1138,6 +1753,11 @@
         "draw": 0.2005,
         "away": 0.3361
       },
+      "baseProbabilities": {
+        "home": 0.4634,
+        "draw": 0.2005,
+        "away": 0.3361
+      },
       "displayPercentages": {
         "home": 46.3,
         "draw": 20,
@@ -1147,6 +1767,16 @@
       "confidence": "low",
       "confidenceLabel": "bassa",
       "edgePct": 12.7,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -1166,6 +1796,11 @@
         "draw": 0.2021,
         "away": 0.3409
       },
+      "baseProbabilities": {
+        "home": 0.457,
+        "draw": 0.2021,
+        "away": 0.3409
+      },
       "displayPercentages": {
         "home": 45.7,
         "draw": 20.2,
@@ -1175,6 +1810,16 @@
       "confidence": "low",
       "confidenceLabel": "bassa",
       "edgePct": 11.6,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -1194,6 +1839,11 @@
         "draw": 0.1849,
         "away": 0.5262
       },
+      "baseProbabilities": {
+        "home": 0.2888,
+        "draw": 0.1849,
+        "away": 0.5262
+      },
       "displayPercentages": {
         "home": 28.9,
         "draw": 18.5,
@@ -1203,6 +1853,16 @@
       "confidence": "medium",
       "confidenceLabel": "media",
       "edgePct": 23.7,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -1222,6 +1882,11 @@
         "draw": 0.1964,
         "away": 0.3239
       },
+      "baseProbabilities": {
+        "home": 0.4797,
+        "draw": 0.1964,
+        "away": 0.3239
+      },
       "displayPercentages": {
         "home": 48,
         "draw": 19.6,
@@ -1231,6 +1896,16 @@
       "confidence": "low",
       "confidenceLabel": "bassa",
       "edgePct": 15.6,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -1250,6 +1925,11 @@
         "draw": 0.202,
         "away": 0.4573
       },
+      "baseProbabilities": {
+        "home": 0.3407,
+        "draw": 0.202,
+        "away": 0.4573
+      },
       "displayPercentages": {
         "home": 34.1,
         "draw": 20.2,
@@ -1259,6 +1939,16 @@
       "confidence": "low",
       "confidenceLabel": "bassa",
       "edgePct": 11.7,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -1278,6 +1968,11 @@
         "draw": 0.1493,
         "away": 0.1768
       },
+      "baseProbabilities": {
+        "home": 0.6739,
+        "draw": 0.1493,
+        "away": 0.1768
+      },
       "displayPercentages": {
         "home": 67.4,
         "draw": 14.9,
@@ -1287,6 +1982,16 @@
       "confidence": "high",
       "confidenceLabel": "alta",
       "edgePct": 49.7,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -1306,6 +2011,11 @@
         "draw": 0.2148,
         "away": 0.4087
       },
+      "baseProbabilities": {
+        "home": 0.3765,
+        "draw": 0.2148,
+        "away": 0.4087
+      },
       "displayPercentages": {
         "home": 37.6,
         "draw": 21.5,
@@ -1315,6 +2025,16 @@
       "confidence": "low",
       "confidenceLabel": "bassa",
       "edgePct": 3.2,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -1334,6 +2054,11 @@
         "draw": 0.1241,
         "away": 0.1064
       },
+      "baseProbabilities": {
+        "home": 0.7695,
+        "draw": 0.1241,
+        "away": 0.1064
+      },
       "displayPercentages": {
         "home": 77,
         "draw": 12.4,
@@ -1343,6 +2068,16 @@
       "confidence": "high",
       "confidenceLabel": "alta",
       "edgePct": 64.5,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -1362,6 +2097,11 @@
         "draw": 0.1752,
         "away": 0.258
       },
+      "baseProbabilities": {
+        "home": 0.5668,
+        "draw": 0.1752,
+        "away": 0.258
+      },
       "displayPercentages": {
         "home": 56.7,
         "draw": 17.5,
@@ -1371,6 +2111,16 @@
       "confidence": "medium",
       "confidenceLabel": "media",
       "edgePct": 30.9,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -1390,6 +2140,11 @@
         "draw": 0.1343,
         "away": 0.1331
       },
+      "baseProbabilities": {
+        "home": 0.7326,
+        "draw": 0.1343,
+        "away": 0.1331
+      },
       "displayPercentages": {
         "home": 73.3,
         "draw": 13.4,
@@ -1399,6 +2154,16 @@
       "confidence": "high",
       "confidenceLabel": "alta",
       "edgePct": 59.8,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -1418,6 +2183,11 @@
         "draw": 0.1756,
         "away": 0.2594
       },
+      "baseProbabilities": {
+        "home": 0.565,
+        "draw": 0.1756,
+        "away": 0.2594
+      },
       "displayPercentages": {
         "home": 56.5,
         "draw": 17.6,
@@ -1427,6 +2197,16 @@
       "confidence": "medium",
       "confidenceLabel": "media",
       "edgePct": 30.6,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -1446,6 +2226,11 @@
         "draw": 0.1698,
         "away": 0.241
       },
+      "baseProbabilities": {
+        "home": 0.5891,
+        "draw": 0.1698,
+        "away": 0.241
+      },
       "displayPercentages": {
         "home": 58.9,
         "draw": 17,
@@ -1455,6 +2240,16 @@
       "confidence": "medium",
       "confidenceLabel": "media",
       "edgePct": 34.8,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -1474,6 +2269,11 @@
         "draw": 0.214,
         "away": 0.4119
       },
+      "baseProbabilities": {
+        "home": 0.3742,
+        "draw": 0.214,
+        "away": 0.4119
+      },
       "displayPercentages": {
         "home": 37.4,
         "draw": 21.4,
@@ -1483,6 +2283,16 @@
       "confidence": "low",
       "confidenceLabel": "bassa",
       "edgePct": 3.8,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -1502,6 +2312,11 @@
         "draw": 0.1925,
         "away": 0.4951
       },
+      "baseProbabilities": {
+        "home": 0.3124,
+        "draw": 0.1925,
+        "away": 0.4951
+      },
       "displayPercentages": {
         "home": 31.2,
         "draw": 19.3,
@@ -1511,6 +2326,16 @@
       "confidence": "low",
       "confidenceLabel": "bassa",
       "edgePct": 18.3,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -1530,6 +2355,11 @@
         "draw": 0.2095,
         "away": 0.4287
       },
+      "baseProbabilities": {
+        "home": 0.3619,
+        "draw": 0.2095,
+        "away": 0.4287
+      },
       "displayPercentages": {
         "home": 36.2,
         "draw": 20.9,
@@ -1539,6 +2369,16 @@
       "confidence": "low",
       "confidenceLabel": "bassa",
       "edgePct": 6.7,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -1558,6 +2398,11 @@
         "draw": 0.1844,
         "away": 0.2874
       },
+      "baseProbabilities": {
+        "home": 0.5282,
+        "draw": 0.1844,
+        "away": 0.2874
+      },
       "displayPercentages": {
         "home": 52.8,
         "draw": 18.4,
@@ -1567,6 +2412,16 @@
       "confidence": "medium",
       "confidenceLabel": "media",
       "edgePct": 24.1,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -1586,6 +2441,11 @@
         "draw": 0.13,
         "away": 0.1216
       },
+      "baseProbabilities": {
+        "home": 0.7484,
+        "draw": 0.13,
+        "away": 0.1216
+      },
       "displayPercentages": {
         "home": 74.8,
         "draw": 13,
@@ -1595,6 +2455,16 @@
       "confidence": "high",
       "confidenceLabel": "alta",
       "edgePct": 61.8,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -1614,6 +2484,11 @@
         "draw": 0.1772,
         "away": 0.2644
       },
+      "baseProbabilities": {
+        "home": 0.5585,
+        "draw": 0.1772,
+        "away": 0.2644
+      },
       "displayPercentages": {
         "home": 55.8,
         "draw": 17.7,
@@ -1623,6 +2498,16 @@
       "confidence": "medium",
       "confidenceLabel": "media",
       "edgePct": 29.4,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -1642,6 +2527,11 @@
         "draw": 0.1986,
         "away": 0.3306
       },
+      "baseProbabilities": {
+        "home": 0.4707,
+        "draw": 0.1986,
+        "away": 0.3306
+      },
       "displayPercentages": {
         "home": 47.1,
         "draw": 19.9,
@@ -1651,6 +2541,16 @@
       "confidence": "low",
       "confidenceLabel": "bassa",
       "edgePct": 14,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -1670,6 +2570,11 @@
         "draw": 0.1606,
         "away": 0.2115
       },
+      "baseProbabilities": {
+        "home": 0.6279,
+        "draw": 0.1606,
+        "away": 0.2115
+      },
       "displayPercentages": {
         "home": 62.8,
         "draw": 16.1,
@@ -1679,6 +2584,16 @@
       "confidence": "high",
       "confidenceLabel": "alta",
       "edgePct": 41.6,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -1698,6 +2613,11 @@
         "draw": 0.1286,
         "away": 0.1179
       },
+      "baseProbabilities": {
+        "home": 0.7535,
+        "draw": 0.1286,
+        "away": 0.1179
+      },
       "displayPercentages": {
         "home": 75.4,
         "draw": 12.9,
@@ -1707,6 +2627,16 @@
       "confidence": "high",
       "confidenceLabel": "alta",
       "edgePct": 62.5,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -1726,6 +2656,11 @@
         "draw": 0.1548,
         "away": 0.1937
       },
+      "baseProbabilities": {
+        "home": 0.6515,
+        "draw": 0.1548,
+        "away": 0.1937
+      },
       "displayPercentages": {
         "home": 65.1,
         "draw": 15.5,
@@ -1735,6 +2670,16 @@
       "confidence": "high",
       "confidenceLabel": "alta",
       "edgePct": 45.8,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -1754,6 +2699,11 @@
         "draw": 0.1422,
         "away": 0.1556
       },
+      "baseProbabilities": {
+        "home": 0.7022,
+        "draw": 0.1422,
+        "away": 0.1556
+      },
       "displayPercentages": {
         "home": 70.2,
         "draw": 14.2,
@@ -1763,6 +2713,16 @@
       "confidence": "high",
       "confidenceLabel": "alta",
       "edgePct": 54.7,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -1782,6 +2742,11 @@
         "draw": 0.2196,
         "away": 0.3914
       },
+      "baseProbabilities": {
+        "home": 0.389,
+        "draw": 0.2196,
+        "away": 0.3914
+      },
       "displayPercentages": {
         "home": 38.9,
         "draw": 22,
@@ -1791,6 +2756,16 @@
       "confidence": "low",
       "confidenceLabel": "bassa",
       "edgePct": 0.2,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -1810,6 +2785,11 @@
         "draw": 0.185,
         "away": 0.289
       },
+      "baseProbabilities": {
+        "home": 0.526,
+        "draw": 0.185,
+        "away": 0.289
+      },
       "displayPercentages": {
         "home": 52.6,
         "draw": 18.5,
@@ -1819,6 +2799,16 @@
       "confidence": "medium",
       "confidenceLabel": "media",
       "edgePct": 23.7,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -1838,6 +2828,11 @@
         "draw": 0.2055,
         "away": 0.4436
       },
+      "baseProbabilities": {
+        "home": 0.3508,
+        "draw": 0.2055,
+        "away": 0.4436
+      },
       "displayPercentages": {
         "home": 35.1,
         "draw": 20.6,
@@ -1847,6 +2842,16 @@
       "confidence": "low",
       "confidenceLabel": "bassa",
       "edgePct": 9.3,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -1866,6 +2871,11 @@
         "draw": 0.2097,
         "away": 0.3624
       },
+      "baseProbabilities": {
+        "home": 0.428,
+        "draw": 0.2097,
+        "away": 0.3624
+      },
       "displayPercentages": {
         "home": 42.8,
         "draw": 21,
@@ -1875,6 +2885,16 @@
       "confidence": "low",
       "confidenceLabel": "bassa",
       "edgePct": 6.6,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -1894,6 +2914,11 @@
         "draw": 0.1874,
         "away": 0.5162
       },
+      "baseProbabilities": {
+        "home": 0.2964,
+        "draw": 0.1874,
+        "away": 0.5162
+      },
       "displayPercentages": {
         "home": 29.6,
         "draw": 18.7,
@@ -1903,6 +2928,16 @@
       "confidence": "medium",
       "confidenceLabel": "media",
       "edgePct": 22,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -1922,6 +2957,11 @@
         "draw": 0.1809,
         "away": 0.2761
       },
+      "baseProbabilities": {
+        "home": 0.543,
+        "draw": 0.1809,
+        "away": 0.2761
+      },
       "displayPercentages": {
         "home": 54.3,
         "draw": 18.1,
@@ -1931,6 +2971,16 @@
       "confidence": "medium",
       "confidenceLabel": "media",
       "edgePct": 26.7,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -1950,6 +3000,11 @@
         "draw": 0.1775,
         "away": 0.2656
       },
+      "baseProbabilities": {
+        "home": 0.5569,
+        "draw": 0.1775,
+        "away": 0.2656
+      },
       "displayPercentages": {
         "home": 55.7,
         "draw": 17.8,
@@ -1959,6 +3014,16 @@
       "confidence": "medium",
       "confidenceLabel": "media",
       "edgePct": 29.1,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -1978,6 +3043,11 @@
         "draw": 0.1929,
         "away": 0.3134
       },
+      "baseProbabilities": {
+        "home": 0.4937,
+        "draw": 0.1929,
+        "away": 0.3134
+      },
       "displayPercentages": {
         "home": 49.4,
         "draw": 19.3,
@@ -1987,6 +3057,16 @@
       "confidence": "low",
       "confidenceLabel": "bassa",
       "edgePct": 18,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -2006,6 +3086,11 @@
         "draw": 0.1446,
         "away": 0.6927
       },
+      "baseProbabilities": {
+        "home": 0.1627,
+        "draw": 0.1446,
+        "away": 0.6927
+      },
       "displayPercentages": {
         "home": 16.3,
         "draw": 14.5,
@@ -2015,6 +3100,16 @@
       "confidence": "high",
       "confidenceLabel": "alta",
       "edgePct": 53,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -2034,6 +3129,11 @@
         "draw": 0.1962,
         "away": 0.4805
       },
+      "baseProbabilities": {
+        "home": 0.3233,
+        "draw": 0.1962,
+        "away": 0.4805
+      },
       "displayPercentages": {
         "home": 32.3,
         "draw": 19.6,
@@ -2043,6 +3143,16 @@
       "confidence": "low",
       "confidenceLabel": "bassa",
       "edgePct": 15.7,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -2062,6 +3172,11 @@
         "draw": 0.216,
         "away": 0.4043
       },
+      "baseProbabilities": {
+        "home": 0.3797,
+        "draw": 0.216,
+        "away": 0.4043
+      },
       "displayPercentages": {
         "home": 38,
         "draw": 21.6,
@@ -2071,6 +3186,16 @@
       "confidence": "low",
       "confidenceLabel": "bassa",
       "edgePct": 2.5,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -2090,6 +3215,11 @@
         "draw": 0.1817,
         "away": 0.2787
       },
+      "baseProbabilities": {
+        "home": 0.5396,
+        "draw": 0.1817,
+        "away": 0.2787
+      },
       "displayPercentages": {
         "home": 54,
         "draw": 18.2,
@@ -2099,6 +3229,16 @@
       "confidence": "medium",
       "confidenceLabel": "media",
       "edgePct": 26.1,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -2118,6 +3258,11 @@
         "draw": 0.1622,
         "away": 0.2168
       },
+      "baseProbabilities": {
+        "home": 0.621,
+        "draw": 0.1622,
+        "away": 0.2168
+      },
       "displayPercentages": {
         "home": 62.1,
         "draw": 16.2,
@@ -2127,6 +3272,16 @@
       "confidence": "high",
       "confidenceLabel": "alta",
       "edgePct": 40.4,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -2146,6 +3301,11 @@
         "draw": 0.2045,
         "away": 0.3479
       },
+      "baseProbabilities": {
+        "home": 0.4476,
+        "draw": 0.2045,
+        "away": 0.3479
+      },
       "displayPercentages": {
         "home": 44.8,
         "draw": 20.5,
@@ -2155,6 +3315,16 @@
       "confidence": "low",
       "confidenceLabel": "bassa",
       "edgePct": 10,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -2174,6 +3344,11 @@
         "draw": 0.1962,
         "away": 0.4802
       },
+      "baseProbabilities": {
+        "home": 0.3235,
+        "draw": 0.1962,
+        "away": 0.4802
+      },
       "displayPercentages": {
         "home": 32.4,
         "draw": 19.6,
@@ -2183,6 +3358,16 @@
       "confidence": "low",
       "confidenceLabel": "bassa",
       "edgePct": 15.7,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -2202,6 +3387,11 @@
         "draw": 0.1923,
         "away": 0.3116
       },
+      "baseProbabilities": {
+        "home": 0.4961,
+        "draw": 0.1923,
+        "away": 0.3116
+      },
       "displayPercentages": {
         "home": 49.6,
         "draw": 19.2,
@@ -2211,6 +3401,16 @@
       "confidence": "low",
       "confidenceLabel": "bassa",
       "edgePct": 18.5,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -2230,6 +3430,11 @@
         "draw": 0.1343,
         "away": 0.7326
       },
+      "baseProbabilities": {
+        "home": 0.1332,
+        "draw": 0.1343,
+        "away": 0.7326
+      },
       "displayPercentages": {
         "home": 13.3,
         "draw": 13.4,
@@ -2239,6 +3444,16 @@
       "confidence": "high",
       "confidenceLabel": "alta",
       "edgePct": 59.8,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -2258,6 +3473,11 @@
         "draw": 0.1925,
         "away": 0.3124
       },
+      "baseProbabilities": {
+        "home": 0.4951,
+        "draw": 0.1925,
+        "away": 0.3124
+      },
       "displayPercentages": {
         "home": 49.5,
         "draw": 19.3,
@@ -2267,6 +3487,16 @@
       "confidence": "low",
       "confidenceLabel": "bassa",
       "edgePct": 18.3,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -2286,6 +3516,11 @@
         "draw": 0.1451,
         "away": 0.1641
       },
+      "baseProbabilities": {
+        "home": 0.6908,
+        "draw": 0.1451,
+        "away": 0.1641
+      },
       "displayPercentages": {
         "home": 69.1,
         "draw": 14.5,
@@ -2295,6 +3530,16 @@
       "confidence": "high",
       "confidenceLabel": "alta",
       "edgePct": 52.7,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -2314,6 +3559,11 @@
         "draw": 0.1703,
         "away": 0.5873
       },
+      "baseProbabilities": {
+        "home": 0.2424,
+        "draw": 0.1703,
+        "away": 0.5873
+      },
       "displayPercentages": {
         "home": 24.2,
         "draw": 17,
@@ -2323,6 +3573,16 @@
       "confidence": "medium",
       "confidenceLabel": "media",
       "edgePct": 34.5,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -2342,6 +3602,11 @@
         "draw": 0.1419,
         "away": 0.1547
       },
+      "baseProbabilities": {
+        "home": 0.7034,
+        "draw": 0.1419,
+        "away": 0.1547
+      },
       "displayPercentages": {
         "home": 70.3,
         "draw": 14.2,
@@ -2351,6 +3616,16 @@
       "confidence": "high",
       "confidenceLabel": "alta",
       "edgePct": 54.9,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -2370,6 +3645,11 @@
         "draw": 0.1992,
         "away": 0.3323
       },
+      "baseProbabilities": {
+        "home": 0.4685,
+        "draw": 0.1992,
+        "away": 0.3323
+      },
       "displayPercentages": {
         "home": 46.9,
         "draw": 19.9,
@@ -2379,6 +3659,16 @@
       "confidence": "low",
       "confidenceLabel": "bassa",
       "edgePct": 13.6,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -2398,6 +3688,11 @@
         "draw": 0.1982,
         "away": 0.4723
       },
+      "baseProbabilities": {
+        "home": 0.3295,
+        "draw": 0.1982,
+        "away": 0.4723
+      },
       "displayPercentages": {
         "home": 32.9,
         "draw": 19.8,
@@ -2407,6 +3702,16 @@
       "confidence": "low",
       "confidenceLabel": "bassa",
       "edgePct": 14.3,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -2426,6 +3731,11 @@
         "draw": 0.1611,
         "away": 0.2131
       },
+      "baseProbabilities": {
+        "home": 0.6258,
+        "draw": 0.1611,
+        "away": 0.2131
+      },
       "displayPercentages": {
         "home": 62.6,
         "draw": 16.1,
@@ -2435,6 +3745,16 @@
       "confidence": "high",
       "confidenceLabel": "alta",
       "edgePct": 41.3,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -2454,6 +3774,11 @@
         "draw": 0.2178,
         "away": 0.3842
       },
+      "baseProbabilities": {
+        "home": 0.3981,
+        "draw": 0.2178,
+        "away": 0.3842
+      },
       "displayPercentages": {
         "home": 39.8,
         "draw": 21.8,
@@ -2463,6 +3788,16 @@
       "confidence": "low",
       "confidenceLabel": "bassa",
       "edgePct": 1.4,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -2482,6 +3817,11 @@
         "draw": 0.1488,
         "away": 0.1751
       },
+      "baseProbabilities": {
+        "home": 0.6761,
+        "draw": 0.1488,
+        "away": 0.1751
+      },
       "displayPercentages": {
         "home": 67.6,
         "draw": 14.9,
@@ -2491,6 +3831,16 @@
       "confidence": "high",
       "confidenceLabel": "alta",
       "edgePct": 50.1,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -2510,6 +3860,11 @@
         "draw": 0.1764,
         "away": 0.5619
       },
+      "baseProbabilities": {
+        "home": 0.2618,
+        "draw": 0.1764,
+        "away": 0.5619
+      },
       "displayPercentages": {
         "home": 26.2,
         "draw": 17.6,
@@ -2519,6 +3874,16 @@
       "confidence": "medium",
       "confidenceLabel": "media",
       "edgePct": 30,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -2538,6 +3903,11 @@
         "draw": 0.1848,
         "away": 0.5267
       },
+      "baseProbabilities": {
+        "home": 0.2885,
+        "draw": 0.1848,
+        "away": 0.5267
+      },
       "displayPercentages": {
         "home": 28.9,
         "draw": 18.5,
@@ -2547,6 +3917,16 @@
       "confidence": "medium",
       "confidenceLabel": "media",
       "edgePct": 23.8,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -2566,6 +3946,11 @@
         "draw": 0.2014,
         "away": 0.3389
       },
+      "baseProbabilities": {
+        "home": 0.4597,
+        "draw": 0.2014,
+        "away": 0.3389
+      },
       "displayPercentages": {
         "home": 46,
         "draw": 20.1,
@@ -2575,6 +3960,16 @@
       "confidence": "low",
       "confidenceLabel": "bassa",
       "edgePct": 12.1,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -2594,6 +3989,11 @@
         "draw": 0.153,
         "away": 0.188
       },
+      "baseProbabilities": {
+        "home": 0.659,
+        "draw": 0.153,
+        "away": 0.188
+      },
       "displayPercentages": {
         "home": 65.9,
         "draw": 15.3,
@@ -2603,6 +4003,16 @@
       "confidence": "high",
       "confidenceLabel": "alta",
       "edgePct": 47.1,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -2622,6 +4032,11 @@
         "draw": 0.215,
         "away": 0.408
       },
+      "baseProbabilities": {
+        "home": 0.377,
+        "draw": 0.215,
+        "away": 0.408
+      },
       "displayPercentages": {
         "home": 37.7,
         "draw": 21.5,
@@ -2631,6 +4046,16 @@
       "confidence": "low",
       "confidenceLabel": "bassa",
       "edgePct": 3.1,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -2650,6 +4075,11 @@
         "draw": 0.1558,
         "away": 0.1965
       },
+      "baseProbabilities": {
+        "home": 0.6477,
+        "draw": 0.1558,
+        "away": 0.1965
+      },
       "displayPercentages": {
         "home": 64.8,
         "draw": 15.6,
@@ -2659,6 +4089,16 @@
       "confidence": "high",
       "confidenceLabel": "alta",
       "edgePct": 45.1,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -2678,6 +4118,11 @@
         "draw": 0.2119,
         "away": 0.3685
       },
+      "baseProbabilities": {
+        "home": 0.4196,
+        "draw": 0.2119,
+        "away": 0.3685
+      },
       "displayPercentages": {
         "home": 42,
         "draw": 21.2,
@@ -2687,6 +4132,16 @@
       "confidence": "low",
       "confidenceLabel": "bassa",
       "edgePct": 5.1,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -2706,6 +4161,11 @@
         "draw": 0.171,
         "away": 0.5841
       },
+      "baseProbabilities": {
+        "home": 0.2449,
+        "draw": 0.171,
+        "away": 0.5841
+      },
       "displayPercentages": {
         "home": 24.5,
         "draw": 17.1,
@@ -2715,6 +4175,16 @@
       "confidence": "medium",
       "confidenceLabel": "media",
       "edgePct": 33.9,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -2734,6 +4204,11 @@
         "draw": 0.1501,
         "away": 0.1792
       },
+      "baseProbabilities": {
+        "home": 0.6707,
+        "draw": 0.1501,
+        "away": 0.1792
+      },
       "displayPercentages": {
         "home": 67.1,
         "draw": 15,
@@ -2743,6 +4218,16 @@
       "confidence": "high",
       "confidenceLabel": "alta",
       "edgePct": 49.2,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -2762,6 +4247,11 @@
         "draw": 0.2032,
         "away": 0.344
       },
+      "baseProbabilities": {
+        "home": 0.4529,
+        "draw": 0.2032,
+        "away": 0.344
+      },
       "displayPercentages": {
         "home": 45.3,
         "draw": 20.3,
@@ -2771,6 +4261,16 @@
       "confidence": "low",
       "confidenceLabel": "bassa",
       "edgePct": 10.9,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -2790,6 +4290,11 @@
         "draw": 0.171,
         "away": 0.2446
       },
+      "baseProbabilities": {
+        "home": 0.5844,
+        "draw": 0.171,
+        "away": 0.2446
+      },
       "displayPercentages": {
         "home": 58.4,
         "draw": 17.1,
@@ -2799,6 +4304,16 @@
       "confidence": "medium",
       "confidenceLabel": "media",
       "edgePct": 34,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -2818,6 +4333,11 @@
         "draw": 0.217,
         "away": 0.3823
       },
+      "baseProbabilities": {
+        "home": 0.4007,
+        "draw": 0.217,
+        "away": 0.3823
+      },
       "displayPercentages": {
         "home": 40.1,
         "draw": 21.7,
@@ -2827,6 +4347,16 @@
       "confidence": "low",
       "confidenceLabel": "bassa",
       "edgePct": 1.8,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -2846,6 +4376,11 @@
         "draw": 0.1867,
         "away": 0.2944
       },
+      "baseProbabilities": {
+        "home": 0.5189,
+        "draw": 0.1867,
+        "away": 0.2944
+      },
       "displayPercentages": {
         "home": 51.9,
         "draw": 18.7,
@@ -2855,6 +4390,16 @@
       "confidence": "medium",
       "confidenceLabel": "media",
       "edgePct": 22.4,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -2874,6 +4419,11 @@
         "draw": 0.1821,
         "away": 0.2801
       },
+      "baseProbabilities": {
+        "home": 0.5377,
+        "draw": 0.1821,
+        "away": 0.2801
+      },
       "displayPercentages": {
         "home": 53.8,
         "draw": 18.2,
@@ -2883,6 +4433,16 @@
       "confidence": "medium",
       "confidenceLabel": "media",
       "edgePct": 25.8,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -2902,6 +4462,11 @@
         "draw": 0.2004,
         "away": 0.3361
       },
+      "baseProbabilities": {
+        "home": 0.4635,
+        "draw": 0.2004,
+        "away": 0.3361
+      },
       "displayPercentages": {
         "home": 46.3,
         "draw": 20,
@@ -2911,6 +4476,16 @@
       "confidence": "low",
       "confidenceLabel": "bassa",
       "edgePct": 12.7,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -2930,6 +4505,11 @@
         "draw": 0.1606,
         "away": 0.2116
       },
+      "baseProbabilities": {
+        "home": 0.6279,
+        "draw": 0.1606,
+        "away": 0.2116
+      },
       "displayPercentages": {
         "home": 62.8,
         "draw": 16.1,
@@ -2939,6 +4519,16 @@
       "confidence": "high",
       "confidenceLabel": "alta",
       "edgePct": 41.6,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -2958,6 +4548,11 @@
         "draw": 0.12,
         "away": 0.0656
       },
+      "baseProbabilities": {
+        "home": 0.8144,
+        "draw": 0.12,
+        "away": 0.0656
+      },
       "displayPercentages": {
         "home": 81.4,
         "draw": 12,
@@ -2967,6 +4562,16 @@
       "confidence": "high",
       "confidenceLabel": "alta",
       "edgePct": 69.4,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -2986,6 +4591,11 @@
         "draw": 0.142,
         "away": 0.1551
       },
+      "baseProbabilities": {
+        "home": 0.7028,
+        "draw": 0.142,
+        "away": 0.1551
+      },
       "displayPercentages": {
         "home": 70.3,
         "draw": 14.2,
@@ -2995,6 +4605,16 @@
       "confidence": "high",
       "confidenceLabel": "alta",
       "edgePct": 54.8,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -3014,6 +4634,11 @@
         "draw": 0.2192,
         "away": 0.393
       },
+      "baseProbabilities": {
+        "home": 0.3879,
+        "draw": 0.2192,
+        "away": 0.393
+      },
       "displayPercentages": {
         "home": 38.8,
         "draw": 21.9,
@@ -3023,6 +4648,16 @@
       "confidence": "low",
       "confidenceLabel": "bassa",
       "edgePct": 0.5,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -3042,6 +4677,11 @@
         "draw": 0.1744,
         "away": 0.2555
       },
+      "baseProbabilities": {
+        "home": 0.5702,
+        "draw": 0.1744,
+        "away": 0.2555
+      },
       "displayPercentages": {
         "home": 57,
         "draw": 17.4,
@@ -3051,6 +4691,16 @@
       "confidence": "medium",
       "confidenceLabel": "media",
       "edgePct": 31.5,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -3070,6 +4720,11 @@
         "draw": 0.196,
         "away": 0.4812
       },
+      "baseProbabilities": {
+        "home": 0.3228,
+        "draw": 0.196,
+        "away": 0.4812
+      },
       "displayPercentages": {
         "home": 32.3,
         "draw": 19.6,
@@ -3079,6 +4734,16 @@
       "confidence": "low",
       "confidenceLabel": "bassa",
       "edgePct": 15.8,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -3098,6 +4763,11 @@
         "draw": 0.1608,
         "away": 0.2123
       },
+      "baseProbabilities": {
+        "home": 0.627,
+        "draw": 0.1608,
+        "away": 0.2123
+      },
       "displayPercentages": {
         "home": 62.7,
         "draw": 16.1,
@@ -3107,6 +4777,16 @@
       "confidence": "high",
       "confidenceLabel": "alta",
       "edgePct": 41.5,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -3126,6 +4806,11 @@
         "draw": 0.1961,
         "away": 0.323
       },
+      "baseProbabilities": {
+        "home": 0.4809,
+        "draw": 0.1961,
+        "away": 0.323
+      },
       "displayPercentages": {
         "home": 48.1,
         "draw": 19.6,
@@ -3135,6 +4820,16 @@
       "confidence": "low",
       "confidenceLabel": "bassa",
       "edgePct": 15.8,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -3154,6 +4849,11 @@
         "draw": 0.1931,
         "away": 0.4927
       },
+      "baseProbabilities": {
+        "home": 0.3142,
+        "draw": 0.1931,
+        "away": 0.4927
+      },
       "displayPercentages": {
         "home": 31.4,
         "draw": 19.3,
@@ -3163,6 +4863,16 @@
       "confidence": "low",
       "confidenceLabel": "bassa",
       "edgePct": 17.8,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -3182,6 +4892,11 @@
         "draw": 0.1704,
         "away": 0.2429
       },
+      "baseProbabilities": {
+        "home": 0.5867,
+        "draw": 0.1704,
+        "away": 0.2429
+      },
       "displayPercentages": {
         "home": 58.7,
         "draw": 17,
@@ -3191,6 +4906,16 @@
       "confidence": "medium",
       "confidenceLabel": "media",
       "edgePct": 34.4,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -3210,6 +4935,11 @@
         "draw": 0.2047,
         "away": 0.4471
       },
+      "baseProbabilities": {
+        "home": 0.3483,
+        "draw": 0.2047,
+        "away": 0.4471
+      },
       "displayPercentages": {
         "home": 34.8,
         "draw": 20.5,
@@ -3219,6 +4949,16 @@
       "confidence": "low",
       "confidenceLabel": "bassa",
       "edgePct": 9.9,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -3238,6 +4978,11 @@
         "draw": 0.2143,
         "away": 0.3751
       },
+      "baseProbabilities": {
+        "home": 0.4105,
+        "draw": 0.2143,
+        "away": 0.3751
+      },
       "displayPercentages": {
         "home": 41.1,
         "draw": 21.4,
@@ -3247,6 +4992,16 @@
       "confidence": "low",
       "confidenceLabel": "bassa",
       "edgePct": 3.5,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -3266,6 +5021,11 @@
         "draw": 0.2092,
         "away": 0.3611
       },
+      "baseProbabilities": {
+        "home": 0.4297,
+        "draw": 0.2092,
+        "away": 0.3611
+      },
       "displayPercentages": {
         "home": 43,
         "draw": 20.9,
@@ -3275,6 +5035,16 @@
       "confidence": "low",
       "confidenceLabel": "bassa",
       "edgePct": 6.9,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -3294,6 +5064,11 @@
         "draw": 0.2174,
         "away": 0.3832
       },
+      "baseProbabilities": {
+        "home": 0.3995,
+        "draw": 0.2174,
+        "away": 0.3832
+      },
       "displayPercentages": {
         "home": 39.9,
         "draw": 21.7,
@@ -3303,6 +5078,16 @@
       "confidence": "low",
       "confidenceLabel": "bassa",
       "edgePct": 1.6,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -3322,6 +5107,11 @@
         "draw": 0.1704,
         "away": 0.2429
       },
+      "baseProbabilities": {
+        "home": 0.5867,
+        "draw": 0.1704,
+        "away": 0.2429
+      },
       "displayPercentages": {
         "home": 58.7,
         "draw": 17,
@@ -3331,6 +5121,16 @@
       "confidence": "medium",
       "confidenceLabel": "media",
       "edgePct": 34.4,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -3350,6 +5150,11 @@
         "draw": 0.2163,
         "away": 0.4033
       },
+      "baseProbabilities": {
+        "home": 0.3804,
+        "draw": 0.2163,
+        "away": 0.4033
+      },
       "displayPercentages": {
         "home": 38,
         "draw": 21.6,
@@ -3359,6 +5164,16 @@
       "confidence": "low",
       "confidenceLabel": "bassa",
       "edgePct": 2.3,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -3378,6 +5193,11 @@
         "draw": 0.1521,
         "away": 0.1853
       },
+      "baseProbabilities": {
+        "home": 0.6626,
+        "draw": 0.1521,
+        "away": 0.1853
+      },
       "displayPercentages": {
         "home": 66.3,
         "draw": 15.2,
@@ -3387,6 +5207,16 @@
       "confidence": "high",
       "confidenceLabel": "alta",
       "edgePct": 47.7,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -3406,6 +5236,11 @@
         "draw": 0.2056,
         "away": 0.351
       },
+      "baseProbabilities": {
+        "home": 0.4435,
+        "draw": 0.2056,
+        "away": 0.351
+      },
       "displayPercentages": {
         "home": 44.3,
         "draw": 20.6,
@@ -3415,6 +5250,16 @@
       "confidence": "low",
       "confidenceLabel": "bassa",
       "edgePct": 9.3,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -3434,6 +5279,11 @@
         "draw": 0.145,
         "away": 0.1638
       },
+      "baseProbabilities": {
+        "home": 0.6912,
+        "draw": 0.145,
+        "away": 0.1638
+      },
       "displayPercentages": {
         "home": 69.1,
         "draw": 14.5,
@@ -3443,6 +5293,16 @@
       "confidence": "high",
       "confidenceLabel": "alta",
       "edgePct": 52.7,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -3462,6 +5322,11 @@
         "draw": 0.1424,
         "away": 0.1562
       },
+      "baseProbabilities": {
+        "home": 0.7014,
+        "draw": 0.1424,
+        "away": 0.1562
+      },
       "displayPercentages": {
         "home": 70.1,
         "draw": 14.2,
@@ -3471,6 +5336,16 @@
       "confidence": "high",
       "confidenceLabel": "alta",
       "edgePct": 54.5,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -3490,6 +5365,11 @@
         "draw": 0.122,
         "away": 0.1014
       },
+      "baseProbabilities": {
+        "home": 0.7766,
+        "draw": 0.122,
+        "away": 0.1014
+      },
       "displayPercentages": {
         "home": 77.7,
         "draw": 12.2,
@@ -3499,6 +5379,16 @@
       "confidence": "high",
       "confidenceLabel": "alta",
       "edgePct": 65.5,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -3518,6 +5408,11 @@
         "draw": 0.2174,
         "away": 0.3832
       },
+      "baseProbabilities": {
+        "home": 0.3994,
+        "draw": 0.2174,
+        "away": 0.3832
+      },
       "displayPercentages": {
         "home": 39.9,
         "draw": 21.7,
@@ -3527,6 +5422,16 @@
       "confidence": "low",
       "confidenceLabel": "bassa",
       "edgePct": 1.6,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -3546,6 +5451,11 @@
         "draw": 0.1562,
         "away": 0.198
       },
+      "baseProbabilities": {
+        "home": 0.6458,
+        "draw": 0.1562,
+        "away": 0.198
+      },
       "displayPercentages": {
         "home": 64.6,
         "draw": 15.6,
@@ -3555,6 +5465,16 @@
       "confidence": "high",
       "confidenceLabel": "alta",
       "edgePct": 44.8,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -3574,6 +5494,11 @@
         "draw": 0.1827,
         "away": 0.2818
       },
+      "baseProbabilities": {
+        "home": 0.5355,
+        "draw": 0.1827,
+        "away": 0.2818
+      },
       "displayPercentages": {
         "home": 53.6,
         "draw": 18.3,
@@ -3583,6 +5508,16 @@
       "confidence": "medium",
       "confidenceLabel": "media",
       "edgePct": 25.4,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -3602,6 +5537,11 @@
         "draw": 0.163,
         "away": 0.6176
       },
+      "baseProbabilities": {
+        "home": 0.2194,
+        "draw": 0.163,
+        "away": 0.6176
+      },
       "displayPercentages": {
         "home": 21.9,
         "draw": 16.3,
@@ -3611,6 +5551,16 @@
       "confidence": "high",
       "confidenceLabel": "alta",
       "edgePct": 39.8,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -3630,6 +5580,11 @@
         "draw": 0.196,
         "away": 0.4811
       },
+      "baseProbabilities": {
+        "home": 0.3229,
+        "draw": 0.196,
+        "away": 0.4811
+      },
       "displayPercentages": {
         "home": 32.3,
         "draw": 19.6,
@@ -3639,6 +5594,16 @@
       "confidence": "low",
       "confidenceLabel": "bassa",
       "edgePct": 15.8,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -3658,6 +5623,11 @@
         "draw": 0.2161,
         "away": 0.3797
       },
+      "baseProbabilities": {
+        "home": 0.4042,
+        "draw": 0.2161,
+        "away": 0.3797
+      },
       "displayPercentages": {
         "home": 40.4,
         "draw": 21.6,
@@ -3667,6 +5637,16 @@
       "confidence": "low",
       "confidenceLabel": "bassa",
       "edgePct": 2.4,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -3686,6 +5666,11 @@
         "draw": 0.2181,
         "away": 0.3851
       },
+      "baseProbabilities": {
+        "home": 0.3968,
+        "draw": 0.2181,
+        "away": 0.3851
+      },
       "displayPercentages": {
         "home": 39.7,
         "draw": 21.8,
@@ -3695,6 +5680,16 @@
       "confidence": "low",
       "confidenceLabel": "bassa",
       "edgePct": 1.2,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -3714,6 +5709,11 @@
         "draw": 0.1748,
         "away": 0.5682
       },
+      "baseProbabilities": {
+        "home": 0.257,
+        "draw": 0.1748,
+        "away": 0.5682
+      },
       "displayPercentages": {
         "home": 25.7,
         "draw": 17.5,
@@ -3723,6 +5723,16 @@
       "confidence": "medium",
       "confidenceLabel": "media",
       "edgePct": 31.1,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -3742,6 +5752,11 @@
         "draw": 0.2102,
         "away": 0.4259
       },
+      "baseProbabilities": {
+        "home": 0.3639,
+        "draw": 0.2102,
+        "away": 0.4259
+      },
       "displayPercentages": {
         "home": 36.4,
         "draw": 21,
@@ -3751,6 +5766,16 @@
       "confidence": "low",
       "confidenceLabel": "bassa",
       "edgePct": 6.2,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -3770,6 +5795,11 @@
         "draw": 0.1973,
         "away": 0.3266
       },
+      "baseProbabilities": {
+        "home": 0.4761,
+        "draw": 0.1973,
+        "away": 0.3266
+      },
       "displayPercentages": {
         "home": 47.6,
         "draw": 19.7,
@@ -3779,6 +5809,16 @@
       "confidence": "low",
       "confidenceLabel": "bassa",
       "edgePct": 15,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -3798,6 +5838,11 @@
         "draw": 0.1213,
         "away": 0.0996
       },
+      "baseProbabilities": {
+        "home": 0.7791,
+        "draw": 0.1213,
+        "away": 0.0996
+      },
       "displayPercentages": {
         "home": 77.9,
         "draw": 12.1,
@@ -3807,6 +5852,16 @@
       "confidence": "high",
       "confidenceLabel": "alta",
       "edgePct": 65.8,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -3826,6 +5881,11 @@
         "draw": 0.1677,
         "away": 0.2342
       },
+      "baseProbabilities": {
+        "home": 0.5981,
+        "draw": 0.1677,
+        "away": 0.2342
+      },
       "displayPercentages": {
         "home": 59.8,
         "draw": 16.8,
@@ -3835,6 +5895,16 @@
       "confidence": "medium",
       "confidenceLabel": "media",
       "edgePct": 36.4,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -3854,6 +5924,11 @@
         "draw": 0.1673,
         "away": 0.2329
       },
+      "baseProbabilities": {
+        "home": 0.5998,
+        "draw": 0.1673,
+        "away": 0.2329
+      },
       "displayPercentages": {
         "home": 60,
         "draw": 16.7,
@@ -3863,6 +5938,16 @@
       "confidence": "medium",
       "confidenceLabel": "media",
       "edgePct": 36.7,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -3882,6 +5967,11 @@
         "draw": 0.1702,
         "away": 0.2422
       },
+      "baseProbabilities": {
+        "home": 0.5875,
+        "draw": 0.1702,
+        "away": 0.2422
+      },
       "displayPercentages": {
         "home": 58.8,
         "draw": 17,
@@ -3891,6 +5981,16 @@
       "confidence": "medium",
       "confidenceLabel": "media",
       "edgePct": 34.5,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -3910,6 +6010,11 @@
         "draw": 0.1972,
         "away": 0.3265
       },
+      "baseProbabilities": {
+        "home": 0.4763,
+        "draw": 0.1972,
+        "away": 0.3265
+      },
       "displayPercentages": {
         "home": 47.6,
         "draw": 19.7,
@@ -3919,6 +6024,16 @@
       "confidence": "low",
       "confidenceLabel": "bassa",
       "edgePct": 15,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -3938,6 +6053,11 @@
         "draw": 0.1381,
         "away": 0.1439
       },
+      "baseProbabilities": {
+        "home": 0.718,
+        "draw": 0.1381,
+        "away": 0.1439
+      },
       "displayPercentages": {
         "home": 71.8,
         "draw": 13.8,
@@ -3947,6 +6067,16 @@
       "confidence": "high",
       "confidenceLabel": "alta",
       "edgePct": 57.4,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -3966,6 +6096,11 @@
         "draw": 0.1416,
         "away": 0.1537
       },
+      "baseProbabilities": {
+        "home": 0.7047,
+        "draw": 0.1416,
+        "away": 0.1537
+      },
       "displayPercentages": {
         "home": 70.5,
         "draw": 14.2,
@@ -3975,6 +6110,16 @@
       "confidence": "high",
       "confidenceLabel": "alta",
       "edgePct": 55.1,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -3994,6 +6139,11 @@
         "draw": 0.1884,
         "away": 0.512
       },
+      "baseProbabilities": {
+        "home": 0.2996,
+        "draw": 0.1884,
+        "away": 0.512
+      },
       "displayPercentages": {
         "home": 30,
         "draw": 18.8,
@@ -4003,6 +6153,16 @@
       "confidence": "medium",
       "confidenceLabel": "media",
       "edgePct": 21.2,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -4022,6 +6182,11 @@
         "draw": 0.192,
         "away": 0.3106
       },
+      "baseProbabilities": {
+        "home": 0.4974,
+        "draw": 0.192,
+        "away": 0.3106
+      },
       "displayPercentages": {
         "home": 49.7,
         "draw": 19.2,
@@ -4031,6 +6196,16 @@
       "confidence": "low",
       "confidenceLabel": "bassa",
       "edgePct": 18.7,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -4050,6 +6225,11 @@
         "draw": 0.1875,
         "away": 0.5156
       },
+      "baseProbabilities": {
+        "home": 0.2969,
+        "draw": 0.1875,
+        "away": 0.5156
+      },
       "displayPercentages": {
         "home": 29.7,
         "draw": 18.8,
@@ -4059,6 +6239,16 @@
       "confidence": "medium",
       "confidenceLabel": "media",
       "edgePct": 21.9,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -4078,6 +6268,11 @@
         "draw": 0.1515,
         "away": 0.1835
       },
+      "baseProbabilities": {
+        "home": 0.665,
+        "draw": 0.1515,
+        "away": 0.1835
+      },
       "displayPercentages": {
         "home": 66.5,
         "draw": 15.2,
@@ -4087,6 +6282,16 @@
       "confidence": "high",
       "confidenceLabel": "alta",
       "edgePct": 48.1,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -4106,6 +6311,11 @@
         "draw": 0.1931,
         "away": 0.314
       },
+      "baseProbabilities": {
+        "home": 0.493,
+        "draw": 0.1931,
+        "away": 0.314
+      },
       "displayPercentages": {
         "home": 49.3,
         "draw": 19.3,
@@ -4115,6 +6325,16 @@
       "confidence": "low",
       "confidenceLabel": "bassa",
       "edgePct": 17.9,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -4134,6 +6354,11 @@
         "draw": 0.1253,
         "away": 0.1094
       },
+      "baseProbabilities": {
+        "home": 0.7653,
+        "draw": 0.1253,
+        "away": 0.1094
+      },
       "displayPercentages": {
         "home": 76.5,
         "draw": 12.5,
@@ -4143,6 +6368,16 @@
       "confidence": "high",
       "confidenceLabel": "alta",
       "edgePct": 64,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -4162,6 +6397,11 @@
         "draw": 0.1811,
         "away": 0.2769
       },
+      "baseProbabilities": {
+        "home": 0.5419,
+        "draw": 0.1811,
+        "away": 0.2769
+      },
       "displayPercentages": {
         "home": 54.2,
         "draw": 18.1,
@@ -4171,6 +6411,16 @@
       "confidence": "medium",
       "confidenceLabel": "media",
       "edgePct": 26.5,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -4190,6 +6440,11 @@
         "draw": 0.1439,
         "away": 0.6954
       },
+      "baseProbabilities": {
+        "home": 0.1607,
+        "draw": 0.1439,
+        "away": 0.6954
+      },
       "displayPercentages": {
         "home": 16.1,
         "draw": 14.4,
@@ -4199,6 +6454,16 @@
       "confidence": "high",
       "confidenceLabel": "alta",
       "edgePct": 53.5,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -4218,6 +6483,11 @@
         "draw": 0.2029,
         "away": 0.3433
       },
+      "baseProbabilities": {
+        "home": 0.4538,
+        "draw": 0.2029,
+        "away": 0.3433
+      },
       "displayPercentages": {
         "home": 45.4,
         "draw": 20.3,
@@ -4227,6 +6497,16 @@
       "confidence": "low",
       "confidenceLabel": "bassa",
       "edgePct": 11,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -4246,6 +6526,11 @@
         "draw": 0.1858,
         "away": 0.5225
       },
+      "baseProbabilities": {
+        "home": 0.2917,
+        "draw": 0.1858,
+        "away": 0.5225
+      },
       "displayPercentages": {
         "home": 29.2,
         "draw": 18.6,
@@ -4255,6 +6540,16 @@
       "confidence": "medium",
       "confidenceLabel": "media",
       "edgePct": 23.1,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     },
     {
@@ -4274,6 +6569,11 @@
         "draw": 0.1634,
         "away": 0.6159
       },
+      "baseProbabilities": {
+        "home": 0.2207,
+        "draw": 0.1634,
+        "away": 0.6159
+      },
       "displayPercentages": {
         "home": 22.1,
         "draw": 16.3,
@@ -4283,6 +6583,16 @@
       "confidence": "high",
       "confidenceLabel": "alta",
       "edgePct": 39.5,
+      "motivationAdjustment": {
+        "status": "unavailable",
+        "home": null,
+        "away": null,
+        "probabilityDeltaPctPoints": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        }
+      },
       "status": "experimental"
     }
   ]
