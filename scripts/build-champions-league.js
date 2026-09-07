@@ -19,6 +19,9 @@ if (!Array.isArray(source.fixtures) || source.fixtures.length !== source.expecte
 
 if (refereeAssignmentsSource.schemaVersion !== 1 || refereeAssignmentsSource.season !== source.season || refereeAssignmentsSource.matchday !== 1) fail("fonte designazioni arbitrali non valida");
 if (!Array.isArray(refereeAssignmentsSource.assignments) || refereeAssignmentsSource.assignments.length !== 18) fail("attese 18 designazioni per la prima giornata");
+if (refereeAssignmentsSource.verification?.designationsProvider !== "UEFA" || refereeAssignmentsSource.verification?.status !== "confirmed") fail("conferma UEFA delle designazioni mancante");
+if (refereeAssignmentsSource.methodology?.modelUsage !== "informational-only") fail("uso prudenziale delle statistiche arbitrali non dichiarato");
+if (!Array.isArray(refereeAssignmentsSource.watchlist) || refereeAssignmentsSource.watchlist.length !== 5) fail("watchlist arbitrale incompleta");
 const refereeAssignments = new Map();
 const refereeMetrics = ["yellowCardsPerMatch", "redCardsPerMatch", "foulsPerMatch", "penaltiesPerMatch"];
 for (const assignment of refereeAssignmentsSource.assignments) {
@@ -37,6 +40,15 @@ for (const assignment of refereeAssignmentsSource.assignments) {
   }
   refereeAssignments.set(assignment.fixtureId, assignment);
 }
+if (new Set(refereeAssignmentsSource.watchlist.map(item => item.fixtureId)).size !== refereeAssignmentsSource.watchlist.length) fail("watchlist arbitrale con gare duplicate");
+if (refereeAssignmentsSource.watchlist.some(item => !item.reason || refereeAssignments.get(item.fixtureId)?.status !== "assigned")) fail("watchlist arbitrale con gara o motivazione non valida");
+const godinho = refereeAssignments.get("ucl-2026-27-md01-01")?.context;
+const kabakov = refereeAssignments.get("ucl-2026-27-md01-05")?.context;
+const massa = refereeAssignments.get("ucl-2026-27-md01-09")?.context;
+if (godinho?.alternateStatistics?.yellowCardsPerMatch !== 6.43) fail("copertura alternativa Godinho mancante");
+if (kabakov?.cardsSampleMatches !== 24 || kabakov?.foulsPredictionEligible !== false) fail("cautela sul dato falli di Kabakov mancante");
+if (massa?.alternateStatistics?.yellowCardsPerMatch !== 4.73 || massa?.alternateStatistics?.foulsPerMatch !== 27.64) fail("campione alternativo Massa mancante");
+const refereeWatchlist = new Map(refereeAssignmentsSource.watchlist.map(item => [item.fixtureId, item.reason]));
 
 const ids = new Set();
 const matchups = new Set();
@@ -63,6 +75,7 @@ const fixtures = source.fixtures.map((fixture, index) => {
   return {
     ...fixture,
     refereeAssignment: refereeAssignments.get(fixture.id) || null,
+    refereeAttention: refereeWatchlist.get(fixture.id) || null,
     competition: "champions-league",
     phase: "league",
     season: source.season,
@@ -112,6 +125,9 @@ fs.writeFileSync(outputPath, JSON.stringify({
   generatedAt: source.source.retrievedAt,
   source: source.source,
   refereeAssignmentsSource: refereeAssignmentsSource.source,
+  refereeVerification: refereeAssignmentsSource.verification,
+  refereeMethodology: refereeAssignmentsSource.methodology,
+  refereeWatchlist: refereeAssignmentsSource.watchlist,
   summary: { teams: teamList.length, matchdays: matchdays.size, fixtures: fixtures.length },
   teams: teamList,
   teamBranding,

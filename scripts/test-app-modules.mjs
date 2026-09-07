@@ -72,7 +72,7 @@ assert.match(championsPage, /champions-1x2-2026-27\.json/, "Champions: probabili
 assert.doesNotMatch(championsPage, /Forma e carico delle 36 squadre da aggiornare/, "Champions: vecchio pannello di aggiornamento ancora presente");
 assert.match(championsPage, /teamLogoDirectory\(data\.teamBranding,squads\)/, "Champions: directory visuale delle squadre assente");
 assert.match(championsPage, /champions-league\.html\?team=\$\{esc\(squadIds\.get\(team\.team\)\)\}/, "Champions: loghi non collegati alle schede squadra");
-assert.equal([...championsPage.matchAll(/registeredSquadsDirectory\(/g)].length, 3, "Champions: la directory completa delle rose non deve apparire nella pagina principale");
+assert.equal([...championsPage.matchAll(/registeredSquadsDirectory\(/g)].length, 2, "Champions: la directory completa delle rose non deve apparire nelle letture o nella pagina principale");
 assert.match(championsPage, /champions-head-to-head-2026-27\.json/, "Champions: scontri diretti recenti non caricati");
 assert.match(championsPage, /Modello 1\/X\/2 sperimentale/, "Champions: natura sperimentale delle probabilita non dichiarata");
 assert.match(championsPage, /model\.warning/, "Champions: limiti correnti del modello non dichiarati");
@@ -92,5 +92,8 @@ assert.match(championsPage, /reading-fixture match fixture-card fixture-card-lin
 assert.match(championsPage, /reading-fixture-preview/, "Champions: anteprima compatta della lettura assente");
 assert.doesNotMatch(championsPage, /Analisi delle italiane/, "Champions: sezione separata delle italiane ancora presente");
 assert.match(championsPage, /pilotByFixture=new Map\(pilot\.fixtures\.map/, "Champions: pronostici delle italiane non collegati al calendario");
+assert.match(championsPage, /Designazioni arbitrali/, "Champions: designazioni arbitrali della prima giornata non renderizzate");
+assert.match(championsPage, /refereeAssignment/, "Champions: dati arbitro non collegati alle gare");
+assert.match(championsPage, /Partite da monitorare/, "Champions: watchlist disciplinare non renderizzata");
 assert.match(championsCss, /\.champions-pilot-card\.match\.fixture-card \.team-name,\.champions-fixture\.match\.fixture-card \.team-name\{color:#fff\}/, "Champions: nomi squadra non bianchi nelle card");
 console.log(`OK moduli applicazione: ${pageFiles.length} pagine e 4 componenti condivisi`);

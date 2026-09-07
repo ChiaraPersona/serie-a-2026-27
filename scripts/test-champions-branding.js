@@ -14,6 +14,18 @@ assert.equal(calendar.teamBranding.length, 36);
 assert.equal(new Set(calendar.teamBranding.map(item => item.team)).size, 36);
 assert.equal(new Set(calendar.teamBranding.map(item => item.logo)).size, 36);
 assert.deepEqual(calendar.teamBranding.map(item => item.team).sort(), [...calendar.teams].sort());
+const firstMatchday = calendar.fixtures.filter(fixture => fixture.matchday === 1);
+assert.equal(firstMatchday.length, 18);
+assert.equal(firstMatchday.filter(fixture => fixture.refereeAssignment?.status === "assigned").length, 12);
+assert.equal(firstMatchday.filter(fixture => fixture.refereeAssignment?.status === "pending").length, 6);
+assert.equal(firstMatchday.find(fixture => fixture.id === "ucl-2026-27-md01-06").refereeAssignment.referee.name, "Michael Oliver");
+assert.equal(firstMatchday.find(fixture => fixture.id === "ucl-2026-27-md01-05").refereeAssignment.statistics.foulsPerMatch.display, "6,75†");
+assert.equal(firstMatchday.find(fixture => fixture.id === "ucl-2026-27-md01-10").refereeAssignment.statistics.penaltiesPerMatch.value, null);
+assert.equal(calendar.refereeVerification.designationsProvider, "UEFA");
+assert.equal(calendar.refereeMethodology.modelUsage, "informational-only");
+assert.equal(calendar.refereeWatchlist.length, 5);
+assert.equal(firstMatchday.filter(fixture => fixture.refereeAttention).length, 5);
+assert.equal(firstMatchday.find(fixture => fixture.id === "ucl-2026-27-md01-05").refereeAssignment.context.foulsPredictionEligible, false);
 assert.equal(squads.teams.length, 36);
 assert.deepEqual(calendar.teamBranding.map(item => item.team).sort(), squads.teams.map(item => item.team).sort(), "Ogni logo deve avere una scheda squadra associata");
 for (const team of calendar.teamBranding) {
@@ -24,4 +36,4 @@ for (const team of calendar.teamBranding) {
   assert(logo.length >= 100, `${team.team}: logo vuoto`);
 }
 
-console.log("OK branding Champions: 36 squadre · 36 ID UEFA · 36 PNG locali validi");
+console.log("OK Champions: 36 squadre · 36 ID UEFA · 36 PNG · 18 designazioni MD1");

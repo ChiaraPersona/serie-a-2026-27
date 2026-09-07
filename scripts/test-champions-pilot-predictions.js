@@ -18,6 +18,9 @@ assert.strictEqual(data.coverage.goalOdds, 4);
 assert.strictEqual(data.coverage.requestedVolumeOdds, 0);
 assert.strictEqual(data.coverage.referees, 0);
 assert.strictEqual(data.coverage.probableLineups, 0);
+assert.strictEqual(data.readingTemplate.id, "serie-a-reading-v1");
+assert.strictEqual(data.readingTemplate.graphics, "champions");
+assert.deepStrictEqual(data.readingTemplate.sections, ["summary", "decisionSupport", "headToHead", "referee", "teamContext", "projections", "discipline", "mvp", "myCombo"]);
 for (const fixture of data.fixtures) {
   assert.strictEqual(fixture.teamProjections.length, 2, `${fixture.fixtureId}: proiezioni squadra`);
   assert(Math.abs(fixture.probabilities.home + fixture.probabilities.draw + fixture.probabilities.away - 100) < 0.01, `${fixture.fixtureId}: 1X2 non normalizzato`);
@@ -28,6 +31,11 @@ for (const fixture of data.fixtures) {
   assert(fixture.goals.every(row => row.market && Number.isFinite(row.market.overOdds)), `${fixture.fixtureId}: confronto gol Sisal`);
   assert.strictEqual(fixture.market.requestedVolumeMarketsAvailable, false, `${fixture.fixtureId}: quote volumi non pubblicate da Sisal`);
   assert.strictEqual(fixture.exactScores.length, 3, `${fixture.fixtureId}: risultati esatti`);
+  assert.strictEqual(fixture.scoreForecast.display.length, 3, `${fixture.fixtureId}: configurazione risultati esatti`);
+  assert(fixture.matchProjection && ["shotsTotal", "shotsOnTarget", "corners"].every(metric => fixture.matchProjection[metric].min <= fixture.matchProjection[metric].central && fixture.matchProjection[metric].central <= fixture.matchProjection[metric].max), `${fixture.fixtureId}: volumi totali partita`);
+  assert.deepStrictEqual(fixture.likelyBooked, [], `${fixture.fixtureId}: ammoniti mancanti non espliciti`);
+  assert.strictEqual(fixture.mvpCandidate, null, `${fixture.fixtureId}: MVP non verificato deve restare N/D`);
+  assert.deepStrictEqual(fixture.combinations, [], `${fixture.fixtureId}: MyCombo non validate devono restare vuote`);
   for (const team of fixture.teamProjections) {
     for (const metric of [team.shotsTotal, team.shotsOnTarget, team.corners, team.cards]) {
       assert(Number.isFinite(metric.central) && metric.min <= metric.central && metric.central <= metric.max, `${fixture.fixtureId}/${team.team}: volume non valido`);
@@ -40,5 +48,5 @@ for (const fixture of data.fixtures) {
 }
 assert(pageSource.includes('href="champions-league.html?match=${esc(fixture.fixtureId)}"'), "Le schede Champions devono essere link diretti alle letture");
 assert(pageSource.includes('new URLSearchParams(location.search).get("match")'), "La pagina Champions deve gestire la lettura selezionata");
-assert(pageSource.includes("pilotReadingDetail(requestedFixture,pilot,backtest,squads)"), "Dettaglio lettura Champions non collegato");
+assert(pageSource.includes("pilotReadingDetail(requestedFixture,pilot,backtest,squads,branding,h2h)"), "Dettaglio lettura Champions non collegato");
 console.log(`OK pronostici pilot Champions: ${data.fixtures.length} gare · sei famiglie mercato · dati mancanti espliciti`);

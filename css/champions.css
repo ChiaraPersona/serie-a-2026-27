@@ -207,7 +207,7 @@ body[data-page="champions"] main{padding-top:38px}
 .champions-reading-warning p{color:#a7c9e6}
 .champions-reading-back a{padding:9px 13px;border:1px solid rgba(127,224,255,.22);border-radius:999px;background:rgba(8,58,145,.58);color:#dff6ff}
 .champions-reading-back span{color:#83bde9;font-size:9px;font-weight:900;text-transform:uppercase}
-.champions-reading-info,.champions-reading-volume,.champions-reading-market-grid,.champions-reading-validation{margin-top:18px;border-color:rgba(141,196,255,.22)!important;background:linear-gradient(145deg,rgba(4,38,99,.72),rgba(2,18,57,.82))!important;box-shadow:inset 0 1px rgba(255,255,255,.05),0 18px 48px rgba(0,8,37,.18)!important;color:#dbeefa}
+.champions-reading-info,.champions-reading-volume,.champions-reading-market-grid,.champions-reading-validation,.champions-reading-decision,.champions-reading-h2h,.champions-reading-referee,.champions-reading-combo{margin-top:18px;border-color:rgba(141,196,255,.22)!important;background:linear-gradient(145deg,rgba(4,38,99,.72),rgba(2,18,57,.82))!important;box-shadow:inset 0 1px rgba(255,255,255,.05),0 18px 48px rgba(0,8,37,.18)!important;color:#dbeefa}
 .champions-reading-info>.section-heading>div::before,.champions-reading-volume>.section-heading>div::before,.champions-reading-validation>.section-heading>div::before{background:linear-gradient(#7fdcff,#2475e8)}
 .champions-reading-info .round16-info-box,.champions-reading-evidence,.champions-reading-team-volume,.champions-reading-market-panel{border-color:rgba(132,199,255,.2)!important;background:linear-gradient(145deg,rgba(7,55,127,.84),rgba(2,24,69,.9))!important;box-shadow:inset 0 1px rgba(255,255,255,.06),0 14px 36px rgba(0,8,37,.16)!important}
 .champions-reading-info h2,.champions-reading-info h3,.champions-reading-volume h2,.champions-reading-volume h3,.champions-reading-market-panel h2,.champions-reading-validation h2{color:#fff}
@@ -227,6 +227,14 @@ body[data-page="champions"] main{padding-top:38px}
 .champions-reading-team-volume .prediction-volume-metrics span{color:#79b7df}
 .champions-reading-team-volume .prediction-volume-metrics strong{color:#fff;font-size:18px}
 .champions-reading-volume .objective-method{color:#8fb1cd}
+.champions-reading-decision h2,.champions-reading-h2h h2,.champions-reading-combo h2{color:#fff}
+.champions-reading-decision .section-heading>p,.champions-reading-h2h .section-heading>p{color:#91b3d0}
+.champions-reading-decision .reading-panel-empty,.champions-reading-h2h .reading-h2h-match,.champions-reading-combo .reading-data-panel{border-color:rgba(139,211,255,.16);background:rgba(1,17,55,.42)}
+.champions-reading-decision .reading-panel-empty p,.champions-reading-h2h .reading-h2h-empty,.champions-reading-combo .reading-panel-empty span{color:#9fc2df}
+.champions-reading-h2h .reading-h2h-match summary span,.champions-reading-h2h .reading-h2h-match summary strong,.champions-reading-h2h .reading-h2h-events h3{color:#eaf8ff}
+.champions-reading-h2h .reading-h2h-events{border-top-color:rgba(139,211,255,.14);background:rgba(1,17,55,.3)}
+.champions-reading-h2h .reading-h2h-match>a{color:#83dfff}
+.champions-reading-volume .prediction-booked-panel{border-color:rgba(139,211,255,.18);background:rgba(255,255,255,.92)}
 .champions-reading-market-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
 .champions-reading-market-panel{min-height:0}
 .champions-reading-market-panel>span{color:#7fdcff}
@@ -343,10 +351,50 @@ body[data-page="champions"] main{padding-top:38px}
 .champions-fixture>footer{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 13px;border-top:1px solid rgba(145,201,255,.1);color:#849fc3;font-size:8px;font-weight:850;letter-spacing:.05em;text-transform:uppercase}
 .champions-probability{display:grid;flex:none;gap:3px;text-align:right}
 .champions-fixture>footer b{color:#e7f5ff;font-size:8px}
+.champions-referee-summary b span,.champions-referee-name span{margin-left:4px}
 .champions-probability small{max-width:210px;color:#76cfff;font-size:7px;font-weight:900;letter-spacing:.05em;text-transform:uppercase}
 .champions-empty{padding:50px 24px;border:1px dashed rgba(145,201,255,.28);border-radius:20px;text-align:center}
 .champions-empty strong{color:#fff;font-size:22px}
 .champions-empty p{margin-bottom:0;color:#a9c3e6}
+.champions-referees{margin-top:34px;padding:30px;border:1px solid rgba(137,194,255,.24);border-radius:30px;background:rgba(3,23,70,.62);box-shadow:0 24px 70px rgba(0,7,39,.25)}
+.champions-referees>header{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:20px}
+.champions-referees>header h2{margin-bottom:7px;color:#fff}
+.champions-referees>header p:last-child{max-width:760px;margin:0;color:#b8cdea}
+.champions-referees>header>span{display:grid;min-width:92px;color:#fff;font-size:25px;font-weight:900;text-align:right}
+.champions-referees>header>span small{color:#82c0ff;font-size:8px;letter-spacing:.1em;text-transform:uppercase}
+.champions-referee-table-wrap{overflow-x:auto;border:1px solid rgba(145,201,255,.18);border-radius:17px}
+.champions-referees table{width:100%;min-width:850px;border-collapse:collapse;color:#dcecff;font-size:11px}
+.champions-referees th,.champions-referees td{padding:11px 13px;border-bottom:1px solid rgba(145,201,255,.12);text-align:left;white-space:nowrap}
+.champions-referees thead th{background:rgba(8,48,124,.9);color:#83c4ff;font-size:8px;letter-spacing:.08em;text-transform:uppercase}
+.champions-referees tbody th{background:transparent;color:#fff}
+.champions-referees tbody td strong{color:#dcecff}
+.champions-referees tbody tr:last-child>*{border-bottom:0}
+.champions-referees strong.is-highlighted,.champions-reading-referee strong.is-highlighted{color:#82dcff}
+.champions-referee-footnotes{display:grid;gap:8px;margin-top:14px}
+.champions-referee-footnotes p{margin:0;padding:11px 13px;border-left:2px solid rgba(112,203,255,.65);background:rgba(5,31,85,.46);color:#a9c3e6;font-size:10px;line-height:1.55}
+.champions-referee-footnotes b{color:#fff}
+.champions-referee-watchlist{margin-top:20px;padding-top:18px;border-top:1px solid rgba(145,201,255,.14)}
+.champions-referee-watchlist>header h3{margin:3px 0 12px;color:#fff;font-size:20px}
+.champions-referee-watchlist>div{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px}
+.champions-referee-watchlist article{padding:13px;border:1px solid rgba(134,201,255,.16);border-radius:14px;background:rgba(4,20,63,.5)}
+.champions-referee-watchlist article>span{display:block;min-height:26px;color:#83c4ff;font-size:8px;font-weight:850;letter-spacing:.04em;text-transform:uppercase}
+.champions-referee-watchlist article>strong{display:block;margin-top:8px;color:#fff;font-size:11px}
+.champions-referee-watchlist article>strong span{margin-left:3px}
+.champions-referee-watchlist article>p{margin:8px 0 0;color:#9db8da;font-size:9px;line-height:1.45}
+.champions-referee-note{margin:14px 0 0;color:#8ea9cc;font-size:10px;line-height:1.55}
+.champions-reading-referee.reading-referee-assignment{margin-top:22px;padding:24px;border:1px solid rgba(128,199,255,.23);border-radius:22px;background:rgba(5,32,91,.72)}
+.champions-reading-referee>header{display:flex;align-items:flex-end;justify-content:space-between;gap:20px}
+.champions-reading-referee>header h2{margin:0;color:#fff}
+.champions-reading-referee>header>p{color:#9db8da}
+.champions-reading-referee>dl>div{border-color:rgba(134,201,255,.14);background:rgba(4,20,63,.5)}
+.champions-reading-referee dt{color:#83c4ff}
+.champions-reading-referee dd{color:#fff}
+.champions-reading-referee>p{margin:14px 0 0;color:#9db8da;font-size:11px}
+.champions-reading-referee-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:18px}
+.champions-reading-referee-stats>article{display:grid;gap:5px;padding:13px;border:1px solid rgba(134,201,255,.14);border-radius:14px;background:rgba(4,20,63,.5)}
+.champions-reading-referee-stats span,.champions-reading-referee-stats small{color:#83c4ff;font-size:8px;font-weight:850;letter-spacing:.07em;text-transform:uppercase}
+.champions-reading-referee-stats strong{margin:0;color:#fff;font-size:20px}
+.champions-reading-referee .reading-referee-method{color:#9db8da}
 
 body[data-page="champions"] .site-footer{margin-top:0}
 
@@ -410,6 +458,12 @@ body[data-page="champions"] .site-footer{margin-top:0}
   .champions-squad-groups{grid-template-columns:1fr}
   .champions-squad-group li{font-size:9px}
   .champions-calendar{padding:24px 18px;border-radius:24px}
+  .champions-referees{padding:22px 16px;border-radius:24px}
+  .champions-referees>header,.champions-reading-referee>header{align-items:flex-start;flex-direction:column}
+  .champions-referees>header>span{text-align:left}
+  .champions-referee-watchlist>div{grid-template-columns:1fr}
+  .champions-referee-watchlist article>span{min-height:0}
+  .champions-reading-referee-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
   .champions-calendar-heading{align-items:flex-start;flex-direction:column}
   .champions-controls{grid-template-columns:1fr}
   .champions-controls button{width:100%}

@@ -210,6 +210,13 @@ const fixtures = pilotFixtures.map(fixture => {
   teamProjections.forEach(team => {
     team.lines = { shotsTotal: overLines(team.shotsTotal, [8.5, 10.5, 12.5, 14.5, 16.5]), shotsOnTarget: overLines(team.shotsOnTarget, [2.5, 3.5, 4.5, 5.5, 6.5]), corners: overLines(team.corners, [3.5, 4.5, 5.5, 6.5]) };
   });
+  const combinedMetric = metric => ({
+    central: round(teamProjections[0][metric].central + teamProjections[1][metric].central, 1),
+    min: round(teamProjections[0][metric].min + teamProjections[1][metric].min, 1),
+    max: round(teamProjections[0][metric].max + teamProjections[1][metric].max, 1),
+    interval: "p20-p80-independent"
+  });
+  const matchProjection = { shotsTotal: combinedMetric("shotsTotal"), shotsOnTarget: combinedMetric("shotsOnTarget"), corners: combinedMetric("corners") };
   const matchCards = { central: round(teamProjections[0].cards.central + teamProjections[1].cards.central), sd: round(Math.sqrt(teamProjections[0].cards.sd ** 2 + teamProjections[1].cards.sd ** 2)) };
   const exactScores = [...fitted.matrix].sort((a, b) => b.probability - a.probability).slice(0, 3).map(row => ({ score: `${row.home}-${row.away}`, probabilityPct: round(row.probability * 100, 1) }));
   return {
@@ -224,12 +231,20 @@ const fixtures = pilotFixtures.map(fixture => {
     confidence: result.confidence,
     expectedGoals: { home: round(fitted.home), away: round(fitted.away), total: round(fitted.home + fitted.away), domesticTotalPrior: round(totalPrior), method: "lambda Poisson adattate alle probabilità 1X2 UEFA con prior gol domestico" },
     exactScores,
+    scoreForecast: { primary: exactScores[0], display: exactScores },
+    verdict: { outcome: result.favorite, label: result.favorite === "1" ? fixture.homeTeam : result.favorite === "2" ? fixture.awayTeam : "Pareggio" },
+    surprise: { value: null, level: "N/D", status: "unavailable" },
     goals: goalLines(fitted.matrix).map(line => {
       const market = oddsEvent?.markets.find(item => item.marketName === "UNDER/OVER" && Number(item.threshold) === line.threshold);
       const prices = normalizedMarket(market);
       return { ...line, market: prices.OVER && prices.UNDER ? { overOdds: prices.OVER.odds, underOdds: prices.UNDER.odds, overNoMarginPct: prices.OVER.noMarginPct, underNoMarginPct: prices.UNDER.noMarginPct, overEdgePct: round(line.overPct - prices.OVER.noMarginPct, 1), underEdgePct: round(line.underPct - prices.UNDER.noMarginPct, 1) } : null };
     }),
     teamProjections,
+    matchProjection,
+    likelyBooked: [],
+    mvpCandidate: null,
+    combinations: [],
+    decisionSupport: { status: "unavailable", scenarios: [], correlationGraph: null },
     cards: { ...matchCards, lines: overLines(matchCards, [3.5, 4.5, 5.5]), refereeAdjustment: null, refereeStatus: "N/D · designazione non integrata" },
     market: {
       provider: oddsEvent ? "Sisal" : null,
@@ -254,6 +269,12 @@ const output = {
   status: "experimental-pilot-partial-odds",
   scope: "Prima giornata, sole gare delle quattro squadre italiane",
   warning: "Stime preliminari indipendenti dalle quote. Volumi e cartellini usano baseline normalizzate dei cinque campionati domestici e pesi recenti legati all'affidabilità del campione. Assenze, probabili formazioni e arbitri non sono ancora integrati.",
+  readingTemplate: {
+    id: "serie-a-reading-v1",
+    graphics: "champions",
+    unavailableValue: "N/D",
+    sections: ["summary", "decisionSupport", "headToHead", "referee", "teamContext", "projections", "discipline", "mvp", "myCombo"]
+  },
   methodology: {
     result: "Modello UEFA Elo 1X2 già validato cronologicamente.",
     goals: "Poisson: totale iniziale dai gol prodotti/concessi per sede e forma recente; lambda adattate alle probabilità 1X2 senza usare quote.",

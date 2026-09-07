@@ -6,8 +6,29 @@
   "source": {
     "provider": "Dati forniti dall'utente",
     "retrievedAt": "2026-09-07",
-    "note": "Designazioni e medie riportate come fornite. I simboli *, †, ‡ e ~ restano indicatori editoriali non interpretati."
+    "note": "Le 12 designazioni sono state confrontate con quelle pubblicate dalla UEFA il 7 settembre 2026. Le medie statistiche sono riportate come fornite e restano informative."
   },
+  "verification": {
+    "designationsProvider": "UEFA",
+    "publishedAt": "2026-09-07",
+    "status": "confirmed"
+  },
+  "methodology": {
+    "modelUsage": "informational-only",
+    "note": "Cartellini, falli e contesto della partita servono come segnali di attenzione; non modificano automaticamente le proiezioni.",
+    "cautions": [
+      "Godinho: coperture statistiche differenti producono medie differenti.",
+      "Kabakov: il dato falli disponibile è anomalo o incompleto e non è idoneo a pronostici sui falli.",
+      "Massa: il dataset internazionale è usato per uniformità; il campione più ampio con maggiore presenza di gare italiane restituisce un profilo più severo."
+    ]
+  },
+  "watchlist": [
+    { "fixtureId": "ucl-2026-27-md01-01", "reason": "Profilo da cartellino elevato anche considerando le diverse coperture statistiche." },
+    { "fixtureId": "ucl-2026-27-md01-03", "reason": "4,18 gialli, 0,36 rossi e 26,14 falli per gara nel campione 2025/26." },
+    { "fixtureId": "ucl-2026-27-md01-05", "reason": "Profilo cartellini elevato; il dato falli anomalo resta escluso dalle letture previsionali." },
+    { "fixtureId": "ucl-2026-27-md01-09", "reason": "Contesto Liverpool–Atlético e profilo disciplinare elevato, soprattutto nel campione domestico più ampio." },
+    { "fixtureId": "ucl-2026-27-md01-11", "reason": "Partita da monitorare combinando profilo disciplinare e contesto dell'incontro." }
+  ],
   "assignments": [
     {
       "fixtureId": "ucl-2026-27-md01-01",
@@ -18,6 +39,11 @@
         "redCardsPerMatch": { "value": 0.04, "display": "0,04*", "highlight": false },
         "foulsPerMatch": { "value": 17.13, "display": "17,13*", "highlight": false },
         "penaltiesPerMatch": { "value": 0.35, "display": "0,35*", "highlight": false }
+      },
+      "context": {
+        "primarySample": "Campione più ampio 2025/26",
+        "alternateStatistics": { "provider": "RefOdds", "yellowCardsPerMatch": 6.43 },
+        "note": "Le fonti hanno coperture diverse; entrambe indicano un profilo tra i più severi sui cartellini."
       }
     },
     {
@@ -62,6 +88,12 @@
         "redCardsPerMatch": { "value": 0.42, "display": "0,42", "highlight": true },
         "foulsPerMatch": { "value": 6.75, "display": "6,75†", "highlight": false },
         "penaltiesPerMatch": { "value": 0.29, "display": "0,29", "highlight": false }
+      },
+      "context": {
+        "cardsSampleMatches": 24,
+        "foulsDataQuality": "anomalous-incomplete",
+        "foulsPredictionEligible": false,
+        "note": "Le medie cartellini sono utilizzabili come indicazione storica; il dato falli non va usato per pronostici."
       }
     },
     {
@@ -106,6 +138,12 @@
         "redCardsPerMatch": { "value": 0.36, "display": "0,36‡", "highlight": true },
         "foulsPerMatch": { "value": 24.1, "display": "24,10‡", "highlight": false },
         "penaltiesPerMatch": { "value": 0.18, "display": "0,18‡", "highlight": false }
+      },
+      "context": {
+        "primaryProvider": "RefOdds",
+        "primaryScope": "Dataset internazionale scelto per uniformità",
+        "alternateStatistics": { "scope": "Campione più ampio con maggiore copertura delle competizioni italiane", "yellowCardsPerMatch": 4.73, "foulsPerMatch": 27.64 },
+        "note": "Il profilo domestico più ampio è sensibilmente più severo."
       }
     },
     {
