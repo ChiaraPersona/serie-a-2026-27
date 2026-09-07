@@ -5,8 +5,10 @@ const path = require("path");
 
 const root = path.resolve(__dirname, "..");
 const sourcePath = path.join(root, "data/sources/champions-league-2026-27.json");
+const brandingPath = path.join(root, "data/sources/champions-team-branding-2026-27.json");
 const outputPath = path.join(root, "data/normalized/champions-league-2026-27.json");
 const source = JSON.parse(fs.readFileSync(sourcePath, "utf8"));
+const branding = JSON.parse(fs.readFileSync(brandingPath, "utf8"));
 
 const fail = message => { throw new Error(`Champions League: ${message}`); };
 if (source.schemaVersion !== 1 || source.season !== "2026-27" || source.phase !== "league") fail("fonte non valida");
@@ -59,6 +61,25 @@ for (const [team, record] of teams) {
 }
 
 const teamList = [...teams.keys()].sort((a, b) => a.localeCompare(b, "it"));
+if (branding.schemaVersion !== 1 || branding.season !== source.season || !Array.isArray(branding.teams)) fail("branding squadre non valido");
+if (branding.teams.length !== teamList.length) fail(`attesi ${teamList.length} profili branding, trovati ${branding.teams.length}`);
+const teamBranding = branding.teams.map(item => {
+  if (!teamList.includes(item.team)) fail(`branding per squadra estranea: ${item.team}`);
+  if (!/^\d+$/.test(item.uefaTeamId) || !/^[a-z0-9-]+$/.test(item.slug)) fail(`${item.team}: ID UEFA o slug branding non valido`);
+  const logo = `assets/images/champions/${item.slug}.png`;
+  const absoluteLogo = path.join(root, logo);
+  if (!fs.existsSync(absoluteLogo) || fs.statSync(absoluteLogo).size < 100) fail(`${item.team}: logo locale mancante o vuoto`);
+  return {
+    team: item.team,
+    uefaTeamId: item.uefaTeamId,
+    slug: item.slug,
+    shortName: item.team.split(/\s+/).map(part => part[0]).join("").slice(0, 3).toUpperCase(),
+    logo,
+    sourceUrl: branding.source.urlTemplate.replace("{uefaTeamId}", item.uefaTeamId)
+  };
+}).sort((a, b) => a.team.localeCompare(b.team, "it"));
+if (new Set(teamBranding.map(item => item.team)).size !== teamList.length) fail("branding con squadre duplicate");
+if (teamList.some(team => !teamBranding.some(item => item.team === team))) fail("branding incompleto");
 fs.writeFileSync(outputPath, JSON.stringify({
   schemaVersion: 1,
   season: source.season,
@@ -68,6 +89,8 @@ fs.writeFileSync(outputPath, JSON.stringify({
   source: source.source,
   summary: { teams: teamList.length, matchdays: matchdays.size, fixtures: fixtures.length },
   teams: teamList,
+  teamBranding,
+  brandingSource: branding.source,
   fixtures
 }, null, 2));
 console.log(`OK Champions League: ${fixtures.length} gare · ${teamList.length} squadre · ${matchdays.size} giornate`);

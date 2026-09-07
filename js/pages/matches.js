@@ -1,15 +1,9 @@
 export function createPage(deps){
-  const {dateOnly,esc,hero,scheduleChronology,matchCard,load}=deps;
+  const {dateOnly,esc,hero,scheduleChronology,load}=deps;
   const competitionMarks={"champions-league":"UCL","europa-league":"UEL","conference-league":"UECL"};
   const statusLabels={scheduled:"Programmata",live:"In corso",finished:"Conclusa",postponed:"Rinviata"};
   const normalize=value=>String(value||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLocaleLowerCase("it").replace(/[^a-z0-9]+/g," ").trim();
-  const dayNav=()=>`<nav class="day-nav" aria-label="Selezione rapida giornata"><span>Vai alla giornata</span><div>${Array.from({length:38},(_,i)=>{const day=i+1;return `<a class="day-link" href="#giornata-${day}" aria-label="Giornata ${day}">${day}</a>`}).join("")}</div></nav>`;
   const teamNav=(teams,selected="")=>`<nav class="team-nav" aria-label="Calendari delle squadre"><span>Calendario per squadra</span><div>${teams.map(team=>`<a class="team-nav-link ${team.id===selected?'active':''}" data-team="${team.id}" href="squadra.html?team=${team.id}" aria-label="Calendario ${esc(team.name)}" title="${esc(team.name)}"><img src="${esc(team.logo)}" alt="" onerror="this.hidden=true;this.nextElementSibling.hidden=false"><b hidden>${esc(team.shortName.slice(0,2).toUpperCase())}</b></a>`).join("")}</div></nav>`;
-  const calendarDays=(league,teams)=>{
-    const matchdays=Array.from({length:38},(_,i)=>{const day=i+1,matches=league.filter(m=>m.matchday===day).sort(scheduleChronology);return {day,matches,finished:matches.length===10&&matches.every(match=>match.status==="finished")}});
-    const activeDay=matchdays.find(matchday=>!matchday.finished)?.day||38;
-    return matchdays.map(({day,matches})=>`<details class="calendar-day" id="giornata-${day}" data-calendar-day="${day}" name="serie-a-calendar"${day===activeDay?' open':''}><summary class="calendar-day-head"><div><p class="eyebrow">Serie A 2026/27</p><h2>Giornata ${day}</h2></div></summary><div class="day-matches">${matches.map(m=>`<div data-calendar-teams="${m.homeTeam} ${m.awayTeam}">${matchCard(m,teams)}</div>`).join("")}</div></details>`).join("");
-  };
   function empty(text){return `<div class="empty">${text}</div>`}
   const scheduleLabel=match=>match.date?`${dateOnly(match.date)} · ${match.kickoff||"orario da definire"}`:"Data da definire";
   const teamNameIndex=teams=>new Map(teams.flatMap(team=>[team.name,team.officialName,team.shortName,team.id].filter(Boolean).map(name=>[normalize(name),team.id])));
@@ -46,13 +40,12 @@ export function createPage(deps){
   const personalCalendar=(team,league,europe,cup,teams)=>{
     const european=europeanFixturesFor(team,europe),coppa=cupFixturesFor(team,cup,teams),fixtures=[...leagueFixturesFor(team,league,teams),...european,...coppa].sort((a,b)=>scheduleChronology(a,b)||a.id.localeCompare(b.id));
     const uefaLabel=european.length===1?"gara UEFA":"gare UEFA",cupLabel=coppa.length===1?"gara di Coppa Italia":"gare di Coppa Italia";
-    return {fixtures,html:`<section class="section team-schedule team-personal-calendar"><div class="team-schedule-head"><div><p class="eyebrow">Tutte le competizioni 2026/27</p><h2>Tutti gli appuntamenti</h2><p class="muted">38 giornate di Serie A · ${european.length} ${uefaLabel} · ${coppa.length} ${cupLabel}.</p></div><a class="button" href="calendario.html">Calendario Serie A</a></div><div class="team-calendar-list">${fixtures.map(match=>appointmentRow(match,team,teams,european)).join("")}</div></section>`};
+    return {fixtures,html:`<section class="section team-schedule team-personal-calendar"><div class="team-schedule-head"><div><p class="eyebrow">Tutte le competizioni 2026/27</p><h2>Tutti gli appuntamenti</h2><p class="muted">38 giornate di Serie A · ${european.length} ${uefaLabel} · ${coppa.length} ${cupLabel}.</p></div></div><div class="team-calendar-list">${fixtures.map(match=>appointmentRow(match,team,teams,european)).join("")}</div></section>`};
   };
   async function render(){
     const page=document.body.dataset.page,[teams,matches]=await Promise.all([load("teams.json"),load("matches.json")]);
     const league=matches.filter(m=>m.competition==="serie-a");
     let html="";
-    if(page==="calendar")html=hero("Serie A","Calendario 2026/27","Scegli una giornata o una squadra e consulta tutte le 380 partite.")+dayNav()+teamNav(teams)+`<div class="calendar-list">${calendarDays(league,teams)}</div>`;
     if(page==="team"){
       const [europe,cup]=await Promise.all([load("european-fixtures-2026-27.json"),load("coppa-italia-2026-27.json")]);
       const teamId=new URLSearchParams(location.search).get("team"),team=teams.find(t=>t.id===teamId)||teams[0],calendar=personalCalendar(team,league,europe,cup,teams);
@@ -60,11 +53,6 @@ export function createPage(deps){
       document.title=`${team.name} | Calendario 2026/27`;document.querySelector("#app").innerHTML=html;return;
     }
     document.querySelector("#app").innerHTML=html;
-    if(page==="calendar"){
-      const calendar=document.querySelector(".calendar-list"),days=[...calendar.querySelectorAll(".calendar-day")];
-      days.forEach(day=>day.addEventListener("toggle",()=>{if(day.open)days.forEach(other=>{if(other!==day)other.open=false})}));
-      document.querySelectorAll('.day-link[href^="#giornata-"]').forEach(link=>link.addEventListener("click",()=>{const target=document.querySelector(link.getAttribute("href"));if(target)target.open=true}));
-    }
   }
   return {render};
 }

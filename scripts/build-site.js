@@ -4,9 +4,9 @@ const root = path.resolve(__dirname, "..");
 const teams = JSON.parse(fs.readFileSync(path.join(root, "data/normalized/teams.json"), "utf8"));
 const esc = value => String(value ?? "").replace(/[&<>\"]/g, character => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[character]));
 const pages = [
-  ["index.html","home","Home"],["calendario.html","calendar","Calendario"],["squadra.html","team","Squadra"],["statistiche-squadre.html","team-stats","Statistiche squadre"],["lettura.html","readings","Lettura"],["coppa-italia.html","cup","Coppa Italia"],["champions-league.html","champions","Champions League"],["arbitri.html","referees","Arbitri"],["fantacalcio.html","fantasy","Fantacalcio"],["schedina.html","betting","Schedina"],["fonti.html","sources","Fonti"]
+  ["index.html","home","Home"],["squadra.html","team","Squadra"],["statistiche-squadre.html","team-stats","Statistiche squadre"],["lettura.html","readings","Lettura"],["coppa-italia.html","cup","Coppa Italia"],["champions-league.html","champions","Champions League"],["arbitri.html","referees","Arbitri"],["fantacalcio.html","fantasy","Fantacalcio"],["schedina.html","betting","Schedina"],["fonti.html","sources","Fonti"]
 ];
-const hiddenPageIds = new Set(["calendar", "fantasy"]);
+const hiddenPageIds = new Set(["fantasy"]);
 const navigationPages = pages.filter(([,id]) => !["team", "sources"].includes(id) && !hiddenPageIds.has(id));
 const navigation = (depth = "", activeId = "") => navigationPages.map(([file, id, label]) => `<a class="page-link${id === activeId ? " active" : ""}" data-page-link="${id}" href="${depth}${file}">${label}</a>`).join("");
 const footer = (depth = "") => `<footer class="site-footer"><div class="site-footer-inner"><div class="site-footer-top"><div class="site-footer-intro"><a class="footer-brand" href="${depth}index.html"><span class="footer-brand-mark"><img src="${depth}assets/images/serie-a-logo-mark.png" alt=""></span><span><strong>Serie A 2026/27</strong><small>Campionato e Coppa Italia</small></span></a><p>Calendario, rose, statistiche e letture della stagione raccolti in un unico spazio.</p><span class="footer-season">Stagione 2026/27</span></div><nav class="footer-nav" aria-label="Navigazione nel footer"><div><strong>Campionato</strong><a href="${depth}index.html">Home</a><a href="${depth}statistiche-squadre.html">Statistiche squadre</a><a href="${depth}arbitri.html">Arbitri</a></div><div><strong>Approfondimenti</strong><a href="${depth}lettura.html">Lettura</a><a href="${depth}coppa-italia.html">Coppa Italia</a><a href="${depth}champions-league.html">Champions League</a><a href="${depth}schedina.html">Schedina</a><a href="${depth}fonti.html">Fonti</a></div></nav></div><div class="site-footer-bottom"><p>Progetto statico indipendente <span aria-hidden="true">·</span> Fonti consultabili nella pagina dedicata</p><a href="#site-top">Torna su <span aria-hidden="true">↑</span></a></div></div></footer>`;
@@ -20,7 +20,7 @@ const leaderboardVersion = "20260906-md3-eight-results-v1";
 const bettingVersion = "20260906-md3-eight-results-v1";
 const readingVersion = "20260906-juventus-milan-final-md3-results-v1";
 const cupVersion = "20260903-coppa-results-v1";
-const championsVersion = "20260907-champions-readings-serie-a-v20";
+const championsVersion = "20260907-champions-team-logos-reading-cards-v1";
 const fantasyVersion = "20260906-md3-eight-results-v1";
 const headToHeadPath = path.join(root, "data/generated/head-to-head/first-leg-2026-27.json");
 if (fs.existsSync(headToHeadPath)) {
@@ -34,7 +34,7 @@ if (fs.existsSync(headToHeadPath)) {
   };
   fs.writeFileSync(path.join(root, "data/generated/head-to-head/first-leg-2026-27-summary.json"), JSON.stringify(summary, null, 2));
 }
-for (const obsoletePage of ["classifica.html", "statistiche-squadra/index.html"]) {
+for (const obsoletePage of ["calendario.html", "classifica.html", "statistiche-squadra/index.html"]) {
   const obsoletePath = path.join(root, obsoletePage);
   if (fs.existsSync(obsoletePath)) fs.unlinkSync(obsoletePath);
 }

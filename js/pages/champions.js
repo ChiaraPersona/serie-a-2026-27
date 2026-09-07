@@ -18,6 +18,12 @@ export function createPage(deps){
     ? "Aggiornamento dopo l’ultima gara domestica"
     : fixture.matchday===1?"Contesto N/D":"Contesto da aggiornare vicino alla gara";
 
+  const teamBadge=(teamName,branding,meta="")=>{
+    const team=branding.get(teamName);
+    const initials=team?.shortName||teamName.split(/\s+/).map(part=>part[0]).join("").slice(0,3).toUpperCase();
+    return `<span class="team-with-logo"><span class="team-logo"><img src="${esc(team?.logo||"")}" alt="Stemma ${esc(teamName)}" loading="lazy" onerror="this.hidden=true;this.parentElement.classList.add('fallback')"><b>${esc(initials)}</b></span><span class="team-name">${esc(teamName)}</span>${meta?`<small class="champions-team-card-meta">${esc(meta)}</small>`:""}</span>`;
+  };
+
   function headToHeadBlock(fixture,h2h){
     if(!h2h?.meetings)return `<p class="champions-h2h-empty">H2H UEFA dal 2020/21: N/D</p>`;
     const summary=`${h2h.meetings} ${h2h.meetings===1?"precedente":"precedenti"} · ${fixture.homeTeam} ${h2h.homeWins}V · ${h2h.draws}N · ${fixture.awayTeam} ${h2h.awayWins}V`;
@@ -25,21 +31,21 @@ export function createPage(deps){
     return `<details class="champions-h2h"><summary>${esc(summary)}</summary><ul>${rows}</ul></details>`;
   }
 
-  function fixtureCard(fixture,profiles,histories,predictions,contexts,headToHeads){
+  function fixtureCard(fixture,profiles,histories,predictions,contexts,headToHeads,branding){
     const homeProfile=profiles.get(fixture.homeTeam),awayProfile=profiles.get(fixture.awayTeam);
     const homeHistory=histories.get(fixture.homeTeam),awayHistory=histories.get(fixture.awayTeam);
     const prediction=predictions.get(fixture.id);
     const context=contexts.get(fixture.id);
     const h2h=headToHeads.get(fixture.id);
-    return `<article class="champions-fixture" data-team-home="${esc(fixture.homeTeam)}" data-team-away="${esc(fixture.awayTeam)}" data-context-status="${esc(context?.contextStatus||"unknown")}">
-      <header><span>${matchdayLabel(fixture.matchday)}</span><time datetime="${esc(`${fixture.date}T${fixture.kickoff}`)}">${esc(fixture.kickoff)}</time></header>
-      <div class="champions-fixture-teams"><div><strong>${esc(fixture.homeTeam)}</strong><small>Forza ${scoreLabel(homeProfile)} · Casa ${ppgLabel(homeHistory?.home?.pointsPerMatch)}</small></div><span aria-hidden="true">—</span><div><strong>${esc(fixture.awayTeam)}</strong><small>Forza ${scoreLabel(awayProfile)} · Trasf. ${ppgLabel(awayHistory?.away?.pointsPerMatch)}</small></div></div>
+    return `<article class="card match fixture-card champions-fixture" data-team-home="${esc(fixture.homeTeam)}" data-team-away="${esc(fixture.awayTeam)}" data-context-status="${esc(context?.contextStatus||"unknown")}" style="--home-color-1:#105ac5;--home-color-2:#052b78;--away-color-1:#1879d5;--away-color-2:#061a57">
+      <header class="match-head"><div class="match-badges"><span class="matchday-chip">${matchdayLabel(fixture.matchday)}</span></div><time class="match-date" datetime="${esc(`${fixture.date}T${fixture.kickoff}`)}">${esc(fixture.kickoff)}</time></header>
+      <div class="fixture-teams champions-fixture-teams"><div class="fixture-team fixture-team-home">${teamBadge(fixture.homeTeam,branding,`Forza ${scoreLabel(homeProfile)} · Casa ${ppgLabel(homeHistory?.home?.pointsPerMatch)}`)}</div><div class="fixture-score"><strong class="score score-versus">vs</strong></div><div class="fixture-team fixture-team-away">${teamBadge(fixture.awayTeam,branding,`Forza ${scoreLabel(awayProfile)} · Trasf. ${ppgLabel(awayHistory?.away?.pointsPerMatch)}`)}</div></div>
       ${headToHeadBlock(fixture,h2h)}
       <footer><span>${esc(technicalEdge(fixture,profiles))}</span><div class="champions-probability"><b title="Confidenza storica ${esc(prediction?.confidenceLabel||"N/D")}">${esc(probabilityLabel(prediction,context))}</b><small>${esc(contextStatusLabel(fixture,context))}</small></div></footer>
     </article>`;
   }
 
-  function fixtureGroups(fixtures,profiles,histories,predictions,contexts,headToHeads){
+  function fixtureGroups(fixtures,profiles,histories,predictions,contexts,headToHeads,branding){
     if(!fixtures.length)return `<div class="champions-empty"><strong>Nessuna partita</strong><p>Modifica i filtri per visualizzare un altro gruppo di gare.</p></div>`;
     const groups=new Map();
     for(const fixture of fixtures){
@@ -49,7 +55,7 @@ export function createPage(deps){
     }
     return [...groups.entries()].map(([key,items])=>{
       const [matchday,date]=key.split("|");
-      return `<section class="champions-fixture-day"><header><div><p>${matchdayLabel(Number(matchday))}</p><h3>${esc(dayLabel(date))}</h3></div><span>${items.length} ${items.length===1?"partita":"partite"}</span></header><div class="champions-fixture-grid">${items.map(fixture=>fixtureCard(fixture,profiles,histories,predictions,contexts,headToHeads)).join("")}</div></section>`;
+      return `<section class="champions-fixture-day"><header><div><p>${matchdayLabel(Number(matchday))}</p><h3>${esc(dayLabel(date))}</h3></div><span>${items.length} ${items.length===1?"partita":"partite"}</span></header><div class="champions-fixture-grid">${items.map(fixture=>fixtureCard(fixture,profiles,histories,predictions,contexts,headToHeads,branding)).join("")}</div></section>`;
     }).join("");
   }
 
@@ -76,11 +82,13 @@ export function createPage(deps){
     ["2",fixture.probabilities.away,fixture.awayTeam]
   ].sort((a,b)=>b[1]-a[1])[0];
 
-  function pilotForecasts(pilot,backtest){
+  function pilotForecasts(pilot,backtest,branding){
     const cards=pilot.fixtures.map(fixture=>{
       const selection=resultSelection(fixture),over25=fixture.goals.find(row=>row.threshold===2.5),over35Cards=fixture.cards.lines.find(row=>row.threshold===3.5);
-      return `<a class="champions-pilot-card champions-reading-link" href="champions-league.html?match=${esc(fixture.fixtureId)}" aria-label="Apri la lettura di ${esc(fixture.homeTeam)} - ${esc(fixture.awayTeam)}">
-        <header><div><small>${esc(shortDate(fixture.date))} · ${esc(fixture.kickoff)}</small><h3>${esc(fixture.homeTeam)} <span>–</span> ${esc(fixture.awayTeam)}</h3></div><div class="champions-pilot-result"><b>1 ${fixture.probabilities.home.toFixed(1)}% · X ${fixture.probabilities.draw.toFixed(1)}% · 2 ${fixture.probabilities.away.toFixed(1)}%</b><small>Prepartita</small></div></header>
+      return `<a class="card match fixture-card champions-pilot-card champions-reading-link" href="champions-league.html?match=${esc(fixture.fixtureId)}" aria-label="Apri la lettura di ${esc(fixture.homeTeam)} - ${esc(fixture.awayTeam)}" style="--home-color-1:#105ac5;--home-color-2:#052b78;--away-color-1:#1879d5;--away-color-2:#061a57">
+        <header class="match-head"><div class="match-badges"><span class="matchday-chip">1ª giornata</span><span class="status">Prepartita</span></div><div class="match-date">${esc(shortDate(fixture.date))} · ${esc(fixture.kickoff)}</div></header>
+        <div class="fixture-teams champions-pilot-fixture-teams"><div class="fixture-team fixture-team-home">${teamBadge(fixture.homeTeam,branding)}</div><div class="fixture-score"><strong class="score score-versus">vs</strong></div><div class="fixture-team fixture-team-away">${teamBadge(fixture.awayTeam,branding)}</div></div>
+        <div class="champions-pilot-result"><b>1 ${fixture.probabilities.home.toFixed(1)}% · X ${fixture.probabilities.draw.toFixed(1)}% · 2 ${fixture.probabilities.away.toFixed(1)}%</b><small>Probabilità del modello</small></div>
         <div class="champions-reading-preview"><span><small>Esito più probabile</small><strong>${esc(selection[0])} · ${esc(selection[2])}</strong></span><span><small>Risultato</small><strong>${esc(fixture.exactScores[0]?.score||"N/D")}</strong></span><span><small>Over 2.5</small><strong>${over25?`${over25.overPct.toFixed(1)}%`:"N/D"}</strong></span><span><small>Over 3.5 cartellini</small><strong>${over35Cards?`${over35Cards.overPct.toFixed(1)}%`:"N/D"}</strong></span></div>
         <footer><span>Apri la lettura completa</span><b aria-hidden="true">→</b></footer>
       </a>`;
@@ -156,6 +164,7 @@ export function createPage(deps){
     const predictions=new Map(model.fixtures.map(prediction=>[prediction.fixtureId,prediction]));
     const contexts=new Map(context.fixtures.map(item=>[item.fixtureId,item]));
     const headToHeads=new Map(h2h.fixtures.map(item=>[item.fixtureId,item]));
+    const branding=new Map(data.teamBranding.map(team=>[team.team,team]));
     const teamOptions=data.teams.map(team=>`<option value="${esc(team)}">${esc(team)}</option>`).join("");
     document.querySelector("#app").innerHTML=`
       <section class="champions-hero" aria-labelledby="champions-title">
@@ -167,7 +176,7 @@ export function createPage(deps){
         <div class="champions-orbit" aria-hidden="true"><span>★</span></div>
       </section>
       ${contextAudit(context)}
-      ${pilotForecasts(pilot,backtest)}
+      ${pilotForecasts(pilot,backtest,branding)}
       ${registeredSquadsDirectory(squads)}
       ${modelAudit(model)}
       ${strengthDirectory(strength)}
@@ -190,7 +199,7 @@ export function createPage(deps){
     const applyFilters=()=>{
       const matchday=matchdaySelect.value,team=teamSelect.value;
       const filtered=data.fixtures.filter(fixture=>(matchday==="all"||fixture.matchday===Number(matchday))&&(team==="all"||fixture.homeTeam===team||fixture.awayTeam===team));
-      results.innerHTML=fixtureGroups(filtered,profiles,histories,predictions,contexts,headToHeads);
+      results.innerHTML=fixtureGroups(filtered,profiles,histories,predictions,contexts,headToHeads,branding);
       const context=[matchday==="all"?"tutte le giornate":matchdayLabel(Number(matchday)),team==="all"?"tutte le squadre":team];
       resultsLabel.innerHTML=`<strong>${filtered.length}</strong> ${filtered.length===1?"partita":"partite"} · ${esc(context.join(" · "))}`;
     };

@@ -81,4 +81,7 @@ assert.match(championsPage, /Indice di forza europeo/, "Champions: graduatoria s
 assert.match(championsPage, /Rendimento europeo 2023\/24–2025\/26/, "Champions: rendimento europeo non esposto");
 assert.match(championsPage, /UCL 1,00 · UEL 0,78 · UECL 0,62/, "Champions: pesi provvisori delle competizioni non dichiarati");
 assert.match(championsPage, /Casa \$\{ppgLabel\(homeHistory\?\.home\?\.pointsPerMatch\)\}/, "Champions: rendimento casalingo non esposto nelle gare");
+assert.match(championsPage, /data\.teamBranding\.map/, "Champions: branding locale delle 36 squadre non caricato");
+assert.match(championsPage, /class="team-logo"/, "Champions: stemmi assenti dalle card");
+assert.match(championsPage, /card match fixture-card champions-fixture/, "Champions: calendario non allineato alle card Letture");
 console.log(`OK moduli applicazione: ${pageFiles.length} pagine e 4 componenti condivisi`);

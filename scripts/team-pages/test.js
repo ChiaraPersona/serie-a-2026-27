@@ -20,6 +20,7 @@ const teamPageShell = fs.readFileSync(path.join(root, "statistiche-squadra", "in
 const sourcesShell = fs.readFileSync(path.join(root, "fonti.html"), "utf8");
 const readingsInterface = fs.readFileSync(path.join(root, "js/pages/readings.js"), "utf8");
 const matchesInterface = fs.readFileSync(path.join(root, "js/pages/matches.js"), "utf8");
+const homeInterface = fs.readFileSync(path.join(root, "js/pages/home.js"), "utf8");
 const tacticalProfiles = read("data/normalized/team-style-profiles.json");
 assert.strictEqual(index.teams.length, 20, "Sono richieste 20 squadre");
 assert.strictEqual(new Set(index.teams.map(team => team.id)).size, 20, "ID squadra duplicati");
@@ -189,8 +190,7 @@ assert.ok(!teamInterface.includes('<div><p class="eyebrow">${esc(team.previousSe
 for (const removedCalendarContract of ["personalCalendar", "teamFixtureRow", "teamFixtures", "team-calendar-select", "team-calendar-selection", "european-fixtures-2026-27.json"]) assert.ok(!teamInterface.includes(removedCalendarContract), `Il calendario incorporato deve essere rimosso: ${removedCalendarContract}`);
 assert.ok(teamInterface.includes('class="team-calendar-link"') && teamInterface.includes('squadra.html?team=${esc(team.id)}') && teamInterface.includes("Calendario completo →"), "La pagina squadra deve collegare il calendario completo dedicato");
 assert.ok(styles.includes(".team-page-jumps a.team-calendar-link"), "Il pulsante del calendario completo non ha uno stile dedicato");
-const teamNavSource = mainApp.slice(mainApp.indexOf('const teamNav='), mainApp.indexOf('const calendarDays='));
-const calendarDaysSource = mainApp.slice(mainApp.indexOf('const calendarDays='), mainApp.indexOf('function empty'));
+const teamNavSource = matchesInterface.slice(matchesInterface.indexOf('const teamNav='), matchesInterface.indexOf('function empty'));
 const matchCardSource = mainApp.slice(mainApp.indexOf('function matchCard'), mainApp.indexOf('function homeMatchListItem'));
 assert.ok(matchCardSource.includes('class="card match fixture-card fixture-card-link"') && matchCardSource.includes('href="lettura.html?match=${esc(m.id)}"'), "L'intera card partita deve aprire direttamente la lettura");
 assert.ok(matchCardSource.includes('class="fixture-official"') && matchCardSource.includes('m.refereeAssignment?.referee?.name'), "La card deve mostrare l'arbitro quando la designazione AIA e disponibile");
@@ -200,12 +200,8 @@ assert.ok(matchCardSource.includes('m.status!=="scheduled"') && !matchCardSource
 assert.ok(!matchCardSource.includes('match-events') && !matchCardSource.includes('Marcatori') && !matchCardSource.includes('Ammoniti'), "Le card partita non devono mostrare riquadri evento prima dei dati reali");
 assert.ok(teamNavSource.includes('src="${esc(team.logo)}"') && !teamNavSource.includes("monochrome"), "La barra Calendario per squadra deve usare i loghi originali colorati");
 assert.ok(styles.includes('.team-nav-link img') && styles.includes('filter:drop-shadow('), "I loghi del selettore squadre devono avere un'ombreggiatura di contrasto");
-assert.ok(calendarDaysSource.includes('<details class="calendar-day"') && calendarDaysSource.includes('match.status==="finished"') && calendarDaysSource.includes("day===activeDay?' open':''"), "Il calendario deve chiudere le giornate concluse e aprire la prima non conclusa");
-assert.ok(styles.includes('.calendar-list{gap:14px}') && styles.includes('.calendar-list{gap:10px}') && styles.includes('.calendar-day>summary.calendar-day-head'), "Le giornate a tendina devono essere compatte e responsive");
-assert.ok(!calendarDaysSource.includes("calendar-day-state") && !styles.includes('.calendar-day>summary.calendar-day-head::after'), "Il calendario non deve mostrare stati o frecce accanto alla giornata");
 const teamMatchdayStyle = styles.slice(styles.indexOf('.team-matchday .match{'), styles.indexOf('.team-matchday .match-head{'));
 assert.ok(!teamMatchdayStyle.includes('background:') && !teamMatchdayStyle.includes('border-color:') && !teamMatchdayStyle.includes('box-shadow:'), "Le card del calendario squadra devono conservare la stessa superficie chiara delle card globali");
-assert.ok(!calendarDaysSource.includes('dateOnly(') && !calendarDaysSource.includes('matchdayDate'), "L'intestazione della giornata non deve mostrare una data; le date restano nelle card");
 assert.ok(styles.includes('.match.fixture-card .matchday-chip{') && styles.includes('background:transparent;'), "Il testo Giornata X nelle card deve restare privo di riquadro");
 assert.ok(styles.includes('body[data-page="cup"] main>.hero+.cup-stage') && styles.includes('body[data-page="readings"] main>.hero+.section{margin-top:24px}'), "Coppa Italia e Lettura devono usare la spaziatura compatta delle altre pagine interne");
 const cupCardSource = mainApp.slice(mainApp.indexOf('function cupTeamSlot'), mainApp.indexOf('function cupRound'));
@@ -231,10 +227,13 @@ assert.ok(teamPageShell.includes("scripts/standings.js") && teamPageShell.includ
 assert.ok(!teamInterface.includes("Copertura completa") && !mainApp.includes("Copertura completa") && !teamStatsShell.includes("Copertura completa"), "Il banner Copertura completa non deve essere mostrato");
 assert.ok(!fs.existsSync(path.join(root, "statistiche-giocatori.html")), "La pagina Statistiche giocatori deve essere rimossa");
 assert.ok(!fs.existsSync(path.join(root, "classifica.html")), "La pagina Classifica deve essere rimossa");
+assert.ok(!fs.existsSync(path.join(root, "calendario.html")), "La pagina Calendario globale deve essere rimossa");
 const generatedHtml = fs.readdirSync(root).filter(file => file.endsWith(".html")).map(file => fs.readFileSync(path.join(root, file), "utf8"))
   .concat(fs.readdirSync(path.join(root, "statistiche-squadra")).filter(file => file.endsWith(".html")).map(file => fs.readFileSync(path.join(root, "statistiche-squadra", file), "utf8"))).join("\n");
 assert.ok(!generatedHtml.includes("statistiche-giocatori"), "Un collegamento alla pagina rimossa è ancora presente");
 assert.ok(!generatedHtml.includes('href="classifica.html"') && !generatedHtml.includes('href="../classifica.html"'), "Un collegamento alla pagina Classifica rimossa è ancora presente");
+assert.ok(!generatedHtml.includes('href="calendario.html"') && !generatedHtml.includes('href="../calendario.html"'), "Un collegamento alla pagina Calendario rimossa è ancora presente");
+assert.ok(matchesInterface.includes('if(page==="team")') && matchesInterface.includes("personalCalendar(team,league,europe,cup,teams)") && !matchesInterface.includes('page==="calendar"'), "Devono restare soltanto i calendari personali delle squadre");
 assert.ok(mainApp.includes('if(page==="home")') && mainApp.includes('data-standings-tab="current"') && mainApp.includes('data-standings-tab="archive"'), "Le due classifiche devono essere renderizzate nella Home");
 assert.ok(!mainApp.includes('class="season-overview"'), "Il riepilogo Squadre/Partite/Capolista/Copertura non deve essere mostrato nella Home");
 for (const marker of ['label:"R+"', 'label:"R-"', 'label:"C+"', 'label:"C-"', "configureStandingsTables()", "data-sortable-standings"]) assert.ok(mainApp.includes(marker), `Classifica dinamica: manca ${marker}`);
@@ -251,14 +250,14 @@ const disciplineHome = disciplineStandings.find(row => row.team === "a");
 assert.deepStrictEqual([disciplineHome.penaltiesFor, disciplineHome.penaltiesAgainst, disciplineHome.cardsFor, disciplineHome.cardsAgainst], [1, 2, 5, 3], "Conteggio R+/R-/C+/C- errato");
 const unavailableDiscipline = calculateStandings([{ id: "a" }, { id: "b" }], [{ id: "a-b", competition: "serie-a", status: "finished", homeTeam: "a", awayTeam: "b", score: { home: 0, away: 0 } }]).find(row => row.team === "a");
 assert.deepStrictEqual([unavailableDiscipline.penaltiesFor, unavailableDiscipline.penaltiesAgainst, unavailableDiscipline.cardsFor, unavailableDiscipline.cardsAgainst], [null, null, null, null], "I dati disciplinari assenti devono restare N/D");
-const homeRenderSource = mainApp.slice(mainApp.indexOf('if(page==="home"){'), mainApp.indexOf('if(page==="calendar")'));
+const homeRenderSource = homeInterface.slice(homeInterface.indexOf('if(page==="home"){'), homeInterface.indexOf('document.querySelector("#app")'));
 assert.ok(homeRenderSource.includes("homeStandings(standings,currentHomeRows,currentAwayRows,previousStandings,teams,standingsTeams)"), "Le classifiche devono essere presenti nella Home");
 assert.ok(!homeRenderSource.includes("Esplora il progetto") && !homeRenderSource.includes("feature-grid"), "Esplora il progetto deve essere rimosso dalla Home");
 assert.ok(!homeRenderSource.includes("Apri il calendario"), "Il link Apri il calendario deve essere rimosso dalla Home");
 assert.ok(!homeRenderSource.includes("Capolista") && !homeRenderSource.includes("leader="), "La Home non deve calcolare o mostrare la capolista dopo la rimozione del riepilogo");
-const homeStandingsSource = mainApp.slice(mainApp.indexOf("function homeStandings"), mainApp.indexOf("const dayNav"));
+const homeStandingsSource = homeInterface.slice(homeInterface.indexOf("function homeStandings"), homeInterface.indexOf("async function render"));
 assert.ok(!homeStandingsSource.includes("objectiveStatusSection(") && !homeStandingsSource.includes("Stato degli obiettivi"), "Lo stato degli obiettivi non deve essere renderizzato nella Home");
-assert.ok(mainApp.includes('const routes={home:"home",calendar:"matches",team:"matches","team-stats":"teams"') && mainApp.includes('[teams,matches,previousStandings]=await Promise.all') && mainApp.includes('[teamDirectory,playerLeaderboards]=await Promise.all'), "Router e pagine devono caricare soltanto i dataset necessari");
+assert.ok(mainApp.includes('const routes={home:"home",team:"matches","team-stats":"teams"') && !mainApp.includes('calendar:"matches"') && mainApp.includes('[teams,matches,previousStandings]=await Promise.all') && mainApp.includes('[teamDirectory,playerLeaderboards]=await Promise.all'), "Router e pagine devono caricare soltanto i dataset necessari");
 assert.ok(mainApp.includes('requestedMatchId?"first-leg-2026-27.json":"first-leg-2026-27-summary.json"'), "L'indice Letture deve usare il riepilogo H2H leggero");
 const expectedNavigation = [
   ["index.html", "Home"], ["statistiche-squadre.html", "Statistiche squadre"], ["lettura.html", "Lettura"],
