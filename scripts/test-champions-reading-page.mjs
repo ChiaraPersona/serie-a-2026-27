@@ -18,8 +18,14 @@ assert(app.innerHTML.includes("Tiri totali"));
 assert(app.innerHTML.includes("Michael Oliver"));
 assert(app.innerHTML.includes("Gialli / gara"));
 assert(app.innerHTML.includes("Probabili formazioni"));
-assert(app.innerHTML.includes("Real Madrid · 4-2-3-1"));
-assert(app.innerHTML.includes("Inter · 3-5-2"));
+assert(app.innerHTML.includes("reading-lineup-grid"));
+assert.equal((app.innerHTML.match(/class="reading-lineup-card champions-reading-lineup-card"/g)||[]).length,2);
+assert.equal((app.innerHTML.match(/class="reading-lineup-field"/g)||[]).length,2);
+assert.equal((app.innerHTML.match(/class="reading-lineup-row"/g)||[]).length,9);
+assert(app.innerHTML.includes("<span>Real Madrid</span><strong>4-2-3-1</strong>"));
+assert(app.innerHTML.includes("<span>Inter</span><strong>3-5-2</strong>"));
+assert(app.innerHTML.includes('aria-label="Probabile formazione Real Madrid con modulo 4-2-3-1"'));
+assert(app.innerHTML.includes('aria-label="Probabile formazione Inter con modulo 3-5-2"'));
 assert(app.innerHTML.includes("Proiezione editoriale · non ufficiale"));
 assert(app.innerHTML.includes("Confidenza XI"));
 assert(app.innerHTML.includes("Molto alta"));
@@ -29,7 +35,9 @@ assert(app.innerHTML.includes("Alexander-Arnold"));
 assert(app.innerHTML.includes("Josep Martínez"));
 assert(app.innerHTML.includes("Carlos Augusto"));
 assert(app.innerHTML.includes("Dimarco è indicato in dubbio"));
-assert(app.innerHTML.indexOf("Courtois") < app.innerHTML.indexOf("Alexander-Arnold"));
+assert(app.innerHTML.includes('--reading-lineup-count:1"><strong>Mbappé</strong>'));
+assert(app.innerHTML.includes('--reading-lineup-count:1"><strong>Courtois</strong>'));
+assert(app.innerHTML.includes("--reading-lineup-count:1"));
 for(const unavailableRole of ["Assistenti","IV ufficiale","VAR","AVAR"]){
   assert(!app.innerHTML.includes(`<dt>${unavailableRole}</dt>`),`Ruolo arbitrale non disponibile ancora visibile: ${unavailableRole}`);
 }

@@ -75,16 +75,23 @@ export function createPage(deps){
     const coach=team=>squads.teams.find(item=>item.team===team)?.coach||"N/D";
     if(!probable)return `<article class="round16-info-box round16-formations"><span>1</span><p class="eyebrow">Proiezione editoriale</p><h2>Probabili formazioni</h2><div class="reading-panel-empty reading-panel-empty-compact"><strong>N/D</strong><span>Moduli e giocatori non disponibili.</span></div></article>`;
     const side=item=>{
-      const players=item.players?.length===11?`<p class="champions-probable-label">XI probabile · ordine fornito</p><ol class="champions-probable-xi">${item.players.map(player=>`<li>${esc(player)}</li>`).join("")}</ol>`:`<small>Giocatori: N/D</small>`;
+      if(item.players?.length!==11)return `<article class="reading-lineup-card champions-reading-lineup-card"><header><span>${esc(item.team)}</span><strong>${esc(item.formation)}</strong></header><div class="reading-panel-empty reading-panel-empty-compact"><strong>N/D</strong><span>Undici titolare non disponibile.</span></div><footer><span>Allenatore: ${esc(coach(item.team))}</span></footer></article>`;
+      const shape=item.formation.split("-").map(Number),units=[1,...shape];
+      let offset=0;
+      const rows=units.map(size=>{
+        const players=item.players.slice(offset,offset+size).reverse();
+        offset+=size;
+        return `<div class="reading-lineup-row" style="--reading-lineup-count:${size}">${players.map(player=>`<strong>${esc(player)}</strong>`).join("")}</div>`;
+      }).reverse().join("");
       const notes=(item.notes||[]).map(note=>`<p class="champions-probable-note">${esc(note)}</p>`).join("");
-      return `<div class="reading-base-shape"><strong>${esc(item.team)} · ${esc(item.formation)}</strong><p>Allenatore: ${esc(coach(item.team))}</p>${players}${notes}</div>`;
+      return `<article class="reading-lineup-card champions-reading-lineup-card" style="--reading-lineup-primary:#105ac5;--reading-lineup-secondary:#052b78;--reading-lineup-head-ink:#fff"><header><span>${esc(item.team)}</span><strong>${esc(item.formation)}</strong></header><div class="reading-lineup-field" aria-label="Probabile formazione ${esc(item.team)} con modulo ${esc(item.formation)}"><i class="reading-lineup-centre" aria-hidden="true"></i>${rows}</div><footer><span>Allenatore: ${esc(coach(item.team))}</span>${notes}</footer></article>`;
     };
     const complete=[probable.home,probable.away].every(item=>item.players?.length===11);
     const confidenceLabel=({"very-high":"Molto alta","medium-high":"Medio-alta",lower:"Più bassa"})[probable.lineupConfidence?.band]||"N/D";
     const uncertainTeams=(probable.lineupConfidence?.uncertainSides||[]).map(venue=>probable[venue]?.team).filter(Boolean);
     const uncertainty=uncertainTeams.length?`<em>XI da ricontrollare: ${uncertainTeams.map(esc).join(", ")}</em>`:"";
     const coverageNote=complete?"Moduli e undici editoriali disponibili; non sono distinte ufficiali.":"Sono disponibili soltanto i moduli; gli undici titolari non forniti restano N/D.";
-    return `<article class="round16-info-box round16-formations"><span>1</span><p class="eyebrow">Proiezione editoriale · non ufficiale</p><h2>Probabili formazioni</h2><div class="champions-lineup-confidence"><span>Confidenza XI</span><strong>${esc(confidenceLabel)}</strong>${uncertainty}</div>${side(probable.home)}${side(probable.away)}<p class="objective-method">Aggiornamento ${esc(shortDate(probable.updatedAt))}. ${coverageNote}</p></article>`;
+    return `<article class="round16-info-box round16-formations"><span>1</span><p class="eyebrow">Proiezione editoriale · non ufficiale</p><h2>Probabili formazioni</h2><div class="champions-lineup-confidence"><span>Confidenza XI</span><strong>${esc(confidenceLabel)}</strong>${uncertainty}</div><div class="reading-lineup-grid">${side(probable.home)}${side(probable.away)}</div><p class="objective-method">Aggiornamento ${esc(shortDate(probable.updatedAt))}. ${coverageNote}</p></article>`;
   }
 
   const motivationLevel=level=>({low:"LOW",medium:"MEDIUM",high:"HIGH",very_high:"VERY HIGH",extreme:"EXTREME"}[level]||"N/D");
