@@ -20,8 +20,13 @@ assert(app.innerHTML.includes("Gialli / gara"));
 assert(app.innerHTML.includes("Probabili formazioni"));
 assert(app.innerHTML.includes("Real Madrid · 4-2-3-1"));
 assert(app.innerHTML.includes("Inter · 3-5-2"));
-assert(app.innerHTML.includes("Giocatori: N/D"));
 assert(app.innerHTML.includes("Proiezione editoriale · non ufficiale"));
+assert(app.innerHTML.includes("Courtois"));
+assert(app.innerHTML.includes("Alexander-Arnold"));
+assert(app.innerHTML.includes("Josep Martínez"));
+assert(app.innerHTML.includes("Carlos Augusto"));
+assert(app.innerHTML.includes("Dimarco è indicato in dubbio"));
+assert(app.innerHTML.indexOf("Courtois") < app.innerHTML.indexOf("Alexander-Arnold"));
 for(const unavailableRole of ["Assistenti","IV ufficiale","VAR","AVAR"]){
   assert(!app.innerHTML.includes(`<dt>${unavailableRole}</dt>`),`Ruolo arbitrale non disponibile ancora visibile: ${unavailableRole}`);
 }

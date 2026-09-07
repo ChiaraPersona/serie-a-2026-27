@@ -74,8 +74,14 @@ export function createPage(deps){
     const probable=fixture.probableFormation;
     const coach=team=>squads.teams.find(item=>item.team===team)?.coach||"N/D";
     if(!probable)return `<article class="round16-info-box round16-formations"><span>1</span><p class="eyebrow">Proiezione editoriale</p><h2>Probabili formazioni</h2><div class="reading-panel-empty reading-panel-empty-compact"><strong>N/D</strong><span>Moduli e giocatori non disponibili.</span></div></article>`;
-    const side=item=>`<div class="reading-base-shape"><strong>${esc(item.team)} · ${esc(item.formation)}</strong><p>Allenatore: ${esc(coach(item.team))}</p><small>Giocatori: N/D</small></div>`;
-    return `<article class="round16-info-box round16-formations"><span>1</span><p class="eyebrow">Proiezione editoriale · non ufficiale</p><h2>Probabili formazioni</h2>${side(probable.home)}${side(probable.away)}<p class="objective-method">Moduli aggiornati al ${esc(shortDate(probable.updatedAt))}; gli undici titolari non sono stati forniti e restano N/D.</p></article>`;
+    const side=item=>{
+      const players=item.players?.length===11?`<p class="champions-probable-label">XI probabile · ordine fornito</p><ol class="champions-probable-xi">${item.players.map(player=>`<li>${esc(player)}</li>`).join("")}</ol>`:`<small>Giocatori: N/D</small>`;
+      const notes=(item.notes||[]).map(note=>`<p class="champions-probable-note">${esc(note)}</p>`).join("");
+      return `<div class="reading-base-shape"><strong>${esc(item.team)} · ${esc(item.formation)}</strong><p>Allenatore: ${esc(coach(item.team))}</p>${players}${notes}</div>`;
+    };
+    const complete=[probable.home,probable.away].every(item=>item.players?.length===11);
+    const coverageNote=complete?"Moduli e undici editoriali disponibili; non sono distinte ufficiali.":"Sono disponibili soltanto i moduli; gli undici titolari non forniti restano N/D.";
+    return `<article class="round16-info-box round16-formations"><span>1</span><p class="eyebrow">Proiezione editoriale · non ufficiale</p><h2>Probabili formazioni</h2>${side(probable.home)}${side(probable.away)}<p class="objective-method">Aggiornamento ${esc(shortDate(probable.updatedAt))}. ${coverageNote}</p></article>`;
   }
 
   const motivationLevel=level=>({low:"LOW",medium:"MEDIUM",high:"HIGH",very_high:"VERY HIGH",extreme:"EXTREME"}[level]||"N/D");

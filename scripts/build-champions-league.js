@@ -64,12 +64,22 @@ for (const item of probableFormationsSource.fixtures) {
   for (const formation of [item.homeFormation, item.awayFormation]) {
     if (!formationPattern.test(formation) || formation.split("-").reduce((sum, value) => sum + Number(value), 0) !== 10) fail(`${item.fixtureId}: modulo probabile non valido`);
   }
+  const normalizePlayers = (players, venue) => {
+    if (players == null) return null;
+    if (!Array.isArray(players) || players.length !== 11 || new Set(players).size !== 11 || players.some(name => typeof name !== "string" || !name.trim())) fail(`${item.fixtureId}: undici probabile ${venue} non valido`);
+    return players;
+  };
+  const normalizeNotes = (notes, venue) => {
+    if (notes == null) return [];
+    if (!Array.isArray(notes) || notes.some(note => typeof note !== "string" || !note.trim())) fail(`${item.fixtureId}: note ${venue} non valide`);
+    return notes;
+  };
   probableFormations.set(item.fixtureId, {
     status: probableFormationsSource.status,
     updatedAt: probableFormationsSource.updatedAt,
     source: probableFormationsSource.source,
-    home: { team: item.homeTeam, formation: item.homeFormation, players: null },
-    away: { team: item.awayTeam, formation: item.awayFormation, players: null }
+    home: { team: item.homeTeam, formation: item.homeFormation, players: normalizePlayers(item.homePlayers, "casa"), notes: normalizeNotes(item.homeNotes, "casa") },
+    away: { team: item.awayTeam, formation: item.awayFormation, players: normalizePlayers(item.awayPlayers, "trasferta"), notes: normalizeNotes(item.awayNotes, "trasferta") }
   });
 }
 

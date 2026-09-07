@@ -20,7 +20,12 @@ assert.equal(firstMatchday.filter(fixture => fixture.probableFormation?.status =
 assert.equal(firstMatchday.find(fixture => fixture.id === "ucl-2026-27-md01-01").probableFormation.home.formation, "4-4-2");
 assert.equal(firstMatchday.find(fixture => fixture.id === "ucl-2026-27-md01-06").probableFormation.away.formation, "3-5-2");
 assert.equal(firstMatchday.find(fixture => fixture.id === "ucl-2026-27-md01-18").probableFormation.away.formation, "3-4-2-1");
-assert(firstMatchday.every(fixture => fixture.probableFormation.home.players === null && fixture.probableFormation.away.players === null));
+assert.equal(firstMatchday.filter(fixture => fixture.probableFormation.home.players?.length === 11 && fixture.probableFormation.away.players?.length === 11).length, 6);
+assert.equal(firstMatchday.filter(fixture => fixture.probableFormation.home.players === null && fixture.probableFormation.away.players === null).length, 12);
+assert.deepEqual(firstMatchday.find(fixture => fixture.id === "ucl-2026-27-md01-01").probableFormation.home.players, ["Strakosha", "Rota", "Moukoudi", "Relvas", "Pilios", "Majer", "Marin", "Vitalis", "Gacinovic", "Jovic", "Varga"]);
+assert.match(firstMatchday.find(fixture => fixture.id === "ucl-2026-27-md01-01").probableFormation.home.notes[0], /Kairinen e Koïta/);
+assert.deepEqual(firstMatchday.find(fixture => fixture.id === "ucl-2026-27-md01-06").probableFormation.away.players, ["Josep Martínez", "Pavard", "Akanji", "Bastoni", "Luis Henrique", "Barella", "Çalhanoğlu", "Petar Sučić", "Carlos Augusto", "Lautaro Martínez", "Thuram"]);
+assert.match(firstMatchday.find(fixture => fixture.id === "ucl-2026-27-md01-06").probableFormation.away.notes[0], /Dimarco.*dubbio.*Carlos Augusto/);
 assert.equal(firstMatchday.filter(fixture => fixture.refereeAssignment?.status === "assigned").length, 12);
 assert.equal(firstMatchday.filter(fixture => fixture.refereeAssignment?.status === "pending").length, 6);
 assert.equal(firstMatchday.find(fixture => fixture.id === "ucl-2026-27-md01-06").refereeAssignment.referee.name, "Michael Oliver");

@@ -206,7 +206,7 @@ body[data-page="champions"] main{padding-top:38px}
 .champions-reading-warning strong{color:#83e0ff}
 .champions-reading-warning p{color:#a7c9e6}
 .champions-reading-back a{padding:9px 13px;border:1px solid rgba(127,224,255,.22);border-radius:999px;background:rgba(8,58,145,.58);color:#dff6ff}
-.champions-reading-back span{color:#83bde9;font-size:9px;font-weight:900;text-transform:uppercase}
+.champions-reading-back span{border-color:rgba(127,224,255,.18);background:rgba(8,58,145,.46);box-shadow:inset 0 1px rgba(255,255,255,.05);color:#b6dcf7;font-size:9px;font-weight:900;text-transform:uppercase}
 .champions-reading-info,.champions-reading-volume,.champions-reading-market-grid,.champions-reading-validation,.champions-reading-h2h,.champions-reading-referee,.champions-reading-combo{margin-top:18px;border-color:rgba(141,196,255,.22)!important;background:linear-gradient(145deg,rgba(4,38,99,.72),rgba(2,18,57,.82))!important;box-shadow:inset 0 1px rgba(255,255,255,.05),0 18px 48px rgba(0,8,37,.18)!important;color:#dbeefa}
 .champions-reading-info>.section-heading>div::before,.champions-reading-volume>.section-heading>div::before,.champions-reading-validation>.section-heading>div::before{background:linear-gradient(#7fdcff,#2475e8)}
 .champions-reading-info .round16-info-box,.champions-reading-evidence,.champions-reading-team-volume,.champions-reading-market-panel{border-color:rgba(132,199,255,.2)!important;background:linear-gradient(145deg,rgba(7,55,127,.84),rgba(2,24,69,.9))!important;box-shadow:inset 0 1px rgba(255,255,255,.06),0 14px 36px rgba(0,8,37,.16)!important}
@@ -215,6 +215,11 @@ body[data-page="champions"] main{padding-top:38px}
 .champions-reading-info .reading-base-shape{border-color:rgba(139,211,255,.14);background:rgba(1,17,55,.38)}
 .champions-reading-info .reading-base-shape strong{color:#eaf8ff}
 .champions-reading-info .reading-base-shape p,.champions-reading-evidence dt{color:#8fb1cd}
+.champions-probable-label{margin-top:12px!important;color:#cdeaff!important;font-size:.7rem!important;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.champions-probable-xi{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px 18px;margin:10px 0 0;padding:0;list-style-position:inside}
+.champions-probable-xi li{min-width:0;padding:7px 9px;border:1px solid rgba(139,211,255,.13);border-radius:9px;background:rgba(5,28,69,.52);color:#eaf8ff;font-size:.78rem;line-height:1.25}
+.champions-probable-note{margin-top:10px!important;padding:9px 11px;border-left:3px solid #f4b942;border-radius:0 9px 9px 0;background:rgba(244,185,66,.09);color:#f8e6b2!important;font-size:.75rem!important;line-height:1.45}
+@media(max-width:430px){.champions-probable-xi{grid-template-columns:1fr}.champions-probable-xi li{font-size:.76rem}}
 .champions-reading-evidence>div>span{color:#7fdcff;font-size:8px;font-weight:900;text-transform:uppercase}
 .champions-reading-evidence>div h3{margin:4px 0 0}
 .champions-reading-evidence dl>div{border-top-color:rgba(139,211,255,.12)}
@@ -229,12 +234,18 @@ body[data-page="champions"] main{padding-top:38px}
 .champions-reading-volume .objective-method{color:#8fb1cd}
 .champions-reading-h2h h2,.champions-reading-combo h2{color:#fff}
 .champions-reading-h2h .section-heading>p{color:#91b3d0}
-.champions-reading-h2h .reading-h2h-match,.champions-reading-combo .reading-data-panel{border-color:rgba(139,211,255,.16);background:rgba(1,17,55,.42)}
+.champions-reading-h2h .reading-h2h-match,.champions-reading-combo .reading-data-panel{border-color:rgba(139,211,255,.16)!important;background:linear-gradient(145deg,rgba(7,55,127,.68),rgba(1,17,55,.78))!important;box-shadow:inset 0 1px rgba(255,255,255,.05),0 12px 30px rgba(0,8,37,.14)!important}
 .champions-reading-h2h .reading-h2h-empty,.champions-reading-combo .reading-panel-empty span{color:#9fc2df}
 .champions-reading-h2h .reading-h2h-match summary span,.champions-reading-h2h .reading-h2h-match summary strong,.champions-reading-h2h .reading-h2h-events h3{color:#eaf8ff}
 .champions-reading-h2h .reading-h2h-events{border-top-color:rgba(139,211,255,.14);background:rgba(1,17,55,.3)}
+.champions-reading-h2h .reading-h2h-events section{background:rgba(3,31,82,.68)}
+.champions-reading-h2h .reading-h2h-events li{border-bottom-color:rgba(139,211,255,.11)}
+.champions-reading-h2h .reading-h2h-events li small{color:#9fc2df}
 .champions-reading-h2h .reading-h2h-match>a{color:#83dfff}
-.champions-reading-volume .prediction-booked-panel{border-color:rgba(139,211,255,.18);background:rgba(255,255,255,.92)}
+.champions-reading-volume .prediction-match-volume,.champions-reading-volume .prediction-booked-panel{border-color:rgba(139,211,255,.18)!important;background:linear-gradient(145deg,rgba(7,55,127,.76),rgba(2,24,69,.88))!important;box-shadow:inset 0 1px rgba(255,255,255,.05),0 14px 36px rgba(0,8,37,.16)!important}
+.champions-reading-volume .prediction-match-volume dl div{background:rgba(1,17,55,.48)}
+.champions-reading-volume .prediction-match-volume dt,.champions-reading-volume .prediction-match-volume small,.champions-reading-volume .prediction-booked-panel>header>p,.champions-reading-volume .prediction-booked-panel .reading-panel-empty p{color:#9fc2df}
+.champions-reading-volume .prediction-match-volume dd,.champions-reading-volume .prediction-booked-panel h2{color:#fff}
 .champions-reading-market-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
 .champions-reading-market-panel{min-height:0}
 .champions-reading-market-panel>span{color:#7fdcff}
@@ -399,7 +410,7 @@ body[data-page="champions"] main{padding-top:38px}
 body[data-page="champions"] .site-footer{margin-top:0}
 
 .champions-motivation-cta{position:absolute;left:48px;bottom:42px;z-index:2;padding:11px 15px;border:1px solid rgba(126,218,255,.34);border-radius:999px;background:rgba(4,48,128,.72);color:#eafbff;font-size:10px;font-weight:900;letter-spacing:.05em;text-decoration:none;text-transform:uppercase}
-.champions-motivation-card{margin-top:22px;padding:26px;border:1px solid rgba(128,218,255,.25);border-radius:24px;background:linear-gradient(145deg,rgba(4,42,105,.92),rgba(2,18,57,.96))}
+.champions-motivation-card{margin-top:22px;padding:26px;border:1px solid rgba(128,218,255,.25)!important;border-radius:24px;background:linear-gradient(145deg,rgba(4,42,105,.92),rgba(2,18,57,.96))!important;box-shadow:inset 0 1px rgba(255,255,255,.05),0 18px 48px rgba(0,8,37,.18)!important}
 .champions-motivation-card>header{display:flex;align-items:end;justify-content:space-between;gap:20px;margin-bottom:16px}.champions-motivation-card>header h2{margin:3px 0 0;color:#fff}.champions-motivation-card>header>p{margin:0;color:#97b5d3;font-size:10px}.champions-motivation-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 .champions-motivation-team{padding:18px;border:1px solid rgba(134,209,255,.17);border-radius:18px;background:rgba(2,20,61,.56)}.champions-motivation-team>header{display:flex;align-items:center;justify-content:space-between;gap:12px}.champions-motivation-team>header>strong{color:#fff;font-size:17px}.motivation-level{padding:5px 8px;border-radius:999px;background:#1d64c8;color:#fff;font-size:7px;font-weight:900;letter-spacing:.08em}.motivation-level.is-very_high,.motivation-level.is-extreme{background:#d36a24}.motivation-level.is-low{background:#6d7890}
 .champions-motivation-score{display:flex;align-items:end;gap:6px;margin:14px 0}.champions-motivation-score>b{color:#7fe5ff;font-size:48px;line-height:.9}.champions-motivation-score>span{display:grid;color:#7ca0c2;font-size:12px}.champions-motivation-score small{font-size:7px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}.champions-motivation-team dl{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;margin:0}.champions-motivation-team dl div{display:flex;justify-content:space-between;padding:8px 9px;border-radius:8px;background:rgba(19,71,138,.27)}.champions-motivation-team dt{color:#8db4d5;font-size:8px}.champions-motivation-team dd{margin:0;color:#fff;font-size:9px;font-weight:850}.champions-motivation-team ul{display:grid;gap:5px;margin:12px 0;padding-left:18px;color:#c8dfef;font-size:9px}.champions-motivation-team details{border-top:1px solid rgba(134,209,255,.13);padding-top:10px}.champions-motivation-team summary{color:#7fdcff;cursor:pointer;font-size:8px;font-weight:900;text-transform:uppercase}.champions-motivation-debug{display:grid;gap:4px;margin-top:9px}.champions-motivation-debug span{display:grid;grid-template-columns:1fr auto;color:#9ebbd3;font-size:8px}.champions-motivation-debug b{color:#dcefff}.champions-motivation-debug>strong{margin-top:4px;color:#7fe5ff;font-size:10px}.champions-motivation-note{margin:13px 0 0;color:#88a8c6;font-size:9px;line-height:1.5}
