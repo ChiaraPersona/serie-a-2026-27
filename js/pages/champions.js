@@ -40,8 +40,10 @@ export function createPage(deps){
     return `<details class="champions-strength-panel champions-model-panel" open><summary><span><small>Modello 1/X/2 sperimentale</small><strong>Probabilità validate sullo storico</strong></span><span>${model.fixtures.length} gare con percentuali</span></summary><div class="champions-model-body"><p>${esc(model.warning)}</p><div class="champions-model-metrics"><div><small>Test finale</small><strong>${overall.matches}</strong><span>gare 2025/26</span></div><div><small>Log-loss totale</small><strong>${overall.logLoss.toFixed(3)}</strong><span>baseline ${baseline.logLoss.toFixed(3)}</span></div><div><small>Log-loss UCL</small><strong>${ucl.logLoss.toFixed(3)}</strong><span>baseline ${uclBaseline.logLoss.toFixed(3)}</span></div><div><small>Accuratezza UCL</small><strong>${ucl.accuracyPct.toFixed(2)}%</strong><span>${ucl.matches} gare</span></div><div><small>Errore calibrazione UCL</small><strong>${(ucl.calibrationError*100).toFixed(2)}%</strong><span>soglia 6%</span></div></div><p class="champions-model-note">Il test è cronologico: parametri scelti sul 2024/25 e congelati sul 2025/26. Le percentuali non sono quote e non costituiscono certezza sul risultato.</p></div></details>`;
   }
 
-  function contextAudit(context){
-    return `<details class="champions-strength-panel champions-context-panel"><summary><span><small>Contesto generale · snapshot 2 settembre</small><strong>Forma e carico delle 36 squadre da aggiornare</strong></span><span>${context.summary.pendingTeams}/36 stati ancora pendenti</span></summary><div class="champions-model-body"><p>Questo riepilogo generale è fermo al 2 settembre e non viene presentato come attuale. Il pilot delle quattro italiane qui sotto usa invece referti aggiornati al 6 settembre; l’estensione alle altre 28 squadre resta pendente.</p><div class="champions-model-metrics champions-context-metrics"><div><small>Stati da aggiornare</small><strong>${context.summary.pendingTeams}</strong><span>su ${context.summary.teams}</span></div><div><small>Snapshot</small><strong>02/09</strong><span>non corrente</span></div><div><small>Correzioni applicate</small><strong>${context.summary.adjustedFixtures}</strong><span>nessun dato parziale</span></div><div><small>Limite futuro</small><strong>±${context.updatePolicy.maximumProbabilityShiftPctPoints}</strong><span>punti percentuali</span></div></div><p class="champions-model-note">Gli H2H UEFA dal 2020/21 restano descrittivi e non modificano le percentuali. I valori mancanti rimangono N/D.</p></div></details>`;
+  function teamLogoDirectory(teams,squads){
+    const squadIds=new Map(squads.teams.map(team=>[team.team,team.id]));
+    const logos=teams.map(team=>`<a href="champions-league.html?team=${esc(squadIds.get(team.team))}" aria-label="Apri la scheda Champions di ${esc(team.team)}" title="${esc(team.team)}"><img src="${esc(team.logo)}" alt="" loading="eager"></a>`).join("");
+    return `<nav id="champions-team-directory" class="champions-team-logo-directory" aria-label="Squadre della Champions League"><div class="champions-team-logo-scroll"><div class="champions-team-logo-grid">${logos}</div></div></nav>`;
   }
 
   const metricValue=metric=>metric?`${metric.central.toFixed(1)} · ${metric.min.toFixed(1)}–${metric.max.toFixed(1)}`:"N/D";
@@ -114,7 +116,7 @@ export function createPage(deps){
   async function render(){
     const requestedMatchId=new URLSearchParams(location.search).get("match");
     const requestedTeamId=new URLSearchParams(location.search).get("team");
-    const [data,strength,history,model,context,h2h,pilot,backtest,squads]=await Promise.all([load("champions-league-2026-27.json"),load("champions-team-strength-2026-27.json"),load("uefa-team-history-2026-27.json"),load("champions-1x2-2026-27.json"),load("champions-pre-match-context-2026-27.json"),load("champions-head-to-head-2026-27.json"),load("champions-pilot-predictions-2026-27.json"),load("champions-pilot-volume-backtest.json"),load("champions-registered-squads-2026-27.json")]);
+    const [data,strength,history,model,h2h,pilot,backtest,squads]=await Promise.all([load("champions-league-2026-27.json"),load("champions-team-strength-2026-27.json"),load("uefa-team-history-2026-27.json"),load("champions-1x2-2026-27.json"),load("champions-head-to-head-2026-27.json"),load("champions-pilot-predictions-2026-27.json"),load("champions-pilot-volume-backtest.json"),load("champions-registered-squads-2026-27.json")]);
     const profiles=new Map(strength.teams.map(profile=>[profile.team,profile]));
     const histories=new Map(history.teams.map(profile=>[profile.team,profile]));
     const requestedFixture=requestedMatchId?pilot.fixtures.find(fixture=>fixture.fixtureId===requestedMatchId):null;
@@ -138,9 +140,8 @@ export function createPage(deps){
         <div class="champions-hero-stats" aria-label="Riepilogo calendario"><div><strong>${data.summary.fixtures}</strong><span>partite</span></div><div><strong>${data.summary.teams}</strong><span>squadre</span></div><div><strong>${data.summary.matchdays}</strong><span>giornate</span></div></div>
         <div class="champions-orbit" aria-hidden="true"><span>★</span></div>
       </section>
-      ${contextAudit(context)}
+      ${teamLogoDirectory(data.teamBranding,squads)}
       ${pilotForecasts(pilot,backtest,branding)}
-      ${registeredSquadsDirectory(squads)}
       ${modelAudit(model)}
       ${strengthDirectory(strength)}
       ${historyDirectory(history)}

@@ -63,12 +63,16 @@ assert.match(cupPage, /<details class="cup-round cup-round--\$\{round\.id\} cup-
 assert.match(cupPage, /target\.open=true/, "Coppa: i link di navigazione non aprono la tendina richiesta");
 assert.match(fs.readFileSync(path.join(root, "css", "matches.css"), "utf8"), /\.cup-round-disclosure:not\(\[open\]\)>\.cup-round-heading\{margin-bottom:0\}/, "Coppa: stile chiuso delle tendine assente");
 const championsPage = fs.readFileSync(path.join(root, "js", "pages", "champions.js"), "utf8");
+const championsCss = fs.readFileSync(path.join(root, "css", "champions.css"), "utf8");
 assert.match(championsPage, /completo di tutte le partite/, "Champions: copertura completa delle partite non dichiarata");
 assert.doesNotMatch(championsPage, /Squadre italiane/, "Champions: copertura ancora presentata come limitata alle italiane");
 assert.match(championsPage, /champions-team-strength-2026-27\.json/, "Champions: profili di forza non caricati");
 assert.match(championsPage, /uefa-team-history-2026-27\.json/, "Champions: storico europeo pluriennale non caricato");
 assert.match(championsPage, /champions-1x2-2026-27\.json/, "Champions: probabilita 1X2 validate non caricate");
-assert.match(championsPage, /champions-pre-match-context-2026-27\.json/, "Champions: contesto prepartita non caricato");
+assert.doesNotMatch(championsPage, /Forma e carico delle 36 squadre da aggiornare/, "Champions: vecchio pannello di aggiornamento ancora presente");
+assert.match(championsPage, /teamLogoDirectory\(data\.teamBranding,squads\)/, "Champions: directory visuale delle squadre assente");
+assert.match(championsPage, /champions-league\.html\?team=\$\{esc\(squadIds\.get\(team\.team\)\)\}/, "Champions: loghi non collegati alle schede squadra");
+assert.equal([...championsPage.matchAll(/registeredSquadsDirectory\(/g)].length, 3, "Champions: la directory completa delle rose non deve apparire nella pagina principale");
 assert.match(championsPage, /champions-head-to-head-2026-27\.json/, "Champions: scontri diretti recenti non caricati");
 assert.match(championsPage, /Modello 1\/X\/2 sperimentale/, "Champions: natura sperimentale delle probabilita non dichiarata");
 assert.match(championsPage, /model\.warning/, "Champions: limiti correnti del modello non dichiarati");
@@ -83,4 +87,5 @@ assert.match(championsPage, /class="team-logo"/, "Champions: stemmi assenti dall
 assert.match(championsPage, /reading-fixture match fixture-card champions-fixture/, "Champions: calendario non allineato alle card Letture");
 assert.match(championsPage, /reading-fixture match fixture-card fixture-card-link champions-pilot-card/, "Champions: anteprime non allineate alle card Letture");
 assert.match(championsPage, /reading-fixture-preview/, "Champions: anteprima compatta della lettura assente");
+assert.match(championsCss, /\.champions-pilot-card\.match\.fixture-card \.team-name,\.champions-fixture\.match\.fixture-card \.team-name\{color:#fff\}/, "Champions: nomi squadra non bianchi nelle card");
 console.log(`OK moduli applicazione: ${pageFiles.length} pagine e 4 componenti condivisi`);
