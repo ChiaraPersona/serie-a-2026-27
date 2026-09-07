@@ -260,7 +260,7 @@ const fixtures = pilotFixtures.map(fixture => {
       }),
       requestedVolumeMarketsAvailable: Boolean(oddsEvent?.markets.some(item => /TIRI TOTALI|TIRI IN PORTA|U\/O CORNER|CARTELLINI/.test(item.marketName)))
     },
-    dataQuality: { teamSamples: [home.matches, away.matches], currentSeasonSamples: [home.currentSeasonMatches, away.currentSeasonMatches], odds: oddsEvent ? odds.retrievedAt : "N/D", lineups: fixture.probableFormation ? "moduli probabili disponibili · undici N/D" : "N/D", referee: "N/D", label: "pilot statistico" }
+    dataQuality: { teamSamples: [home.matches, away.matches], currentSeasonSamples: [home.currentSeasonMatches, away.currentSeasonMatches], odds: oddsEvent ? odds.retrievedAt : "N/D", lineups: fixture.probableFormation?.home.players?.length === 11 && fixture.probableFormation?.away.players?.length === 11 ? "undici editoriali disponibili · non applicati al modello" : fixture.probableFormation ? "moduli probabili disponibili · undici N/D" : "N/D", referee: "N/D", label: "pilot statistico" }
   };
 });
 
@@ -286,7 +286,7 @@ const output = {
     cards: "Cartellini gialli di squadra con lo stesso blending; il correttore motivazionale disciplinare è esposto per audit ma resta disattivato finché non è calibrato con stile e arbitro.",
     thresholdPolicy: "Le probabilità sulle soglie sono diagnostiche e non costituiscono selezioni di valore finché non sono disponibili quote aggiornate."
   },
-  coverage: { fixtures: fixtures.length, teams: profiles.length, sourceMatches: source.summary.matches, completeSourceMatches: source.summary.completeMatches, leagueBaselineMatches: Object.fromEntries(Object.values(leagueBaselines).map(item => [item.league, item.matches])), oddsMatched: fixtures.filter(item => item.market.provider).length, resultOdds: fixtures.filter(item => item.market.result1x2.every(row => row.odds)).length, goalOdds: fixtures.filter(item => item.goals.every(row => row.market)).length, requestedVolumeOdds: fixtures.filter(item => item.market.requestedVolumeMarketsAvailable).length, referees: 0, probableFormations: fixtures.filter(item => item.dataQuality.lineups !== "N/D").length, probableLineups: 0 },
+  coverage: { fixtures: fixtures.length, teams: profiles.length, sourceMatches: source.summary.matches, completeSourceMatches: source.summary.completeMatches, leagueBaselineMatches: Object.fromEntries(Object.values(leagueBaselines).map(item => [item.league, item.matches])), oddsMatched: fixtures.filter(item => item.market.provider).length, resultOdds: fixtures.filter(item => item.market.result1x2.every(row => row.odds)).length, goalOdds: fixtures.filter(item => item.goals.every(row => row.market)).length, requestedVolumeOdds: fixtures.filter(item => item.market.requestedVolumeMarketsAvailable).length, referees: 0, probableFormations: fixtures.filter(item => item.dataQuality.lineups !== "N/D").length, probableLineupsAvailable: fixtures.filter(item => item.dataQuality.lineups.startsWith("undici editoriali")).length, probableLineupsApplied: 0, probableLineups: 0 },
   leagueBaselines,
   profiles,
   fixtures

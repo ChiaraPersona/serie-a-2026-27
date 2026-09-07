@@ -55,12 +55,14 @@ const refereeWatchlist = new Map(refereeAssignmentsSource.watchlist.map(item => 
 if (probableFormationsSource.schemaVersion !== 1 || probableFormationsSource.season !== source.season || probableFormationsSource.matchday !== 1 || probableFormationsSource.status !== "editorial-probable") fail("fonte moduli probabili non valida");
 if (!Array.isArray(probableFormationsSource.fixtures) || probableFormationsSource.fixtures.length !== 18) fail("attesi 18 moduli probabili per la prima giornata");
 const formationPattern = /^(?:[1-5]-){2,3}[1-5]$/;
+const confidenceBands = new Set(["very-high", "medium-high", "lower"]);
 const probableFormations = new Map();
 for (const item of probableFormationsSource.fixtures) {
   const fixture = source.fixtures.find(candidate => candidate.id === item.fixtureId);
   if (!fixture || fixture.matchday !== 1) fail(`${item.fixtureId}: moduli probabili senza gara della prima giornata`);
   if (probableFormations.has(item.fixtureId)) fail(`${item.fixtureId}: moduli probabili duplicati`);
   if (fixture.homeTeam !== item.homeTeam || fixture.awayTeam !== item.awayTeam) fail(`${item.fixtureId}: squadre dei moduli probabili non coerenti con il calendario`);
+  if (!confidenceBands.has(item.confidenceBand) || !Array.isArray(item.uncertainSides) || item.uncertainSides.some(side => !["home", "away"].includes(side)) || new Set(item.uncertainSides).size !== item.uncertainSides.length) fail(`${item.fixtureId}: confidenza XI non valida`);
   for (const formation of [item.homeFormation, item.awayFormation]) {
     if (!formationPattern.test(formation) || formation.split("-").reduce((sum, value) => sum + Number(value), 0) !== 10) fail(`${item.fixtureId}: modulo probabile non valido`);
   }
@@ -78,6 +80,7 @@ for (const item of probableFormationsSource.fixtures) {
     status: probableFormationsSource.status,
     updatedAt: probableFormationsSource.updatedAt,
     source: probableFormationsSource.source,
+    lineupConfidence: { band: item.confidenceBand, uncertainSides: item.uncertainSides },
     home: { team: item.homeTeam, formation: item.homeFormation, players: normalizePlayers(item.homePlayers, "casa"), notes: normalizeNotes(item.homeNotes, "casa") },
     away: { team: item.awayTeam, formation: item.awayFormation, players: normalizePlayers(item.awayPlayers, "trasferta"), notes: normalizeNotes(item.awayNotes, "trasferta") }
   });

@@ -215,11 +215,15 @@ body[data-page="champions"] main{padding-top:38px}
 .champions-reading-info .reading-base-shape{border-color:rgba(139,211,255,.14);background:rgba(1,17,55,.38)}
 .champions-reading-info .reading-base-shape strong{color:#eaf8ff}
 .champions-reading-info .reading-base-shape p,.champions-reading-evidence dt{color:#8fb1cd}
+.champions-lineup-confidence{display:flex;align-items:center;flex-wrap:wrap;gap:7px 10px;margin:14px 0;padding:10px 12px;border:1px solid rgba(127,220,255,.18);border-radius:10px;background:rgba(3,31,82,.62)}
+.champions-lineup-confidence span{color:#8fb1cd;font-size:.7rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.champions-lineup-confidence strong{color:#eaf8ff;font-size:.82rem}
+.champions-lineup-confidence em{margin-left:auto;color:#f8e6b2;font-size:.7rem;font-style:normal;font-weight:800}
 .champions-probable-label{margin-top:12px!important;color:#cdeaff!important;font-size:.7rem!important;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
 .champions-probable-xi{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px 18px;margin:10px 0 0;padding:0;list-style-position:inside}
 .champions-probable-xi li{min-width:0;padding:7px 9px;border:1px solid rgba(139,211,255,.13);border-radius:9px;background:rgba(5,28,69,.52);color:#eaf8ff;font-size:.78rem;line-height:1.25}
 .champions-probable-note{margin-top:10px!important;padding:9px 11px;border-left:3px solid #f4b942;border-radius:0 9px 9px 0;background:rgba(244,185,66,.09);color:#f8e6b2!important;font-size:.75rem!important;line-height:1.45}
-@media(max-width:430px){.champions-probable-xi{grid-template-columns:1fr}.champions-probable-xi li{font-size:.76rem}}
+@media(max-width:430px){.champions-lineup-confidence{align-items:flex-start;flex-direction:column}.champions-lineup-confidence em{margin-left:0}.champions-probable-xi{grid-template-columns:1fr}.champions-probable-xi li{font-size:.76rem}}
 .champions-reading-evidence>div>span{color:#7fdcff;font-size:8px;font-weight:900;text-transform:uppercase}
 .champions-reading-evidence>div h3{margin:4px 0 0}
 .champions-reading-evidence dl>div{border-top-color:rgba(139,211,255,.12)}
@@ -407,6 +411,38 @@ body[data-page="champions"] main{padding-top:38px}
 .champions-reading-referee-stats strong{margin:0;color:#fff;font-size:20px}
 .champions-reading-referee .reading-referee-method{color:#9db8da}
 
+.champions-reading-match-hero>div:first-child>p:not(.eyebrow),
+.champions-reading-summary.reading-result-summary small,
+.champions-reading-warning p,
+.champions-reading-back span,
+.champions-reading-info .reading-base-shape p,
+.champions-reading-info .objective-method,
+.champions-reading-evidence dt,
+.champions-reading-volume .section-heading>p,
+.champions-reading-validation .section-heading>p,
+.champions-reading-team-volume .prediction-volume-metrics span,
+.champions-reading-volume .objective-method,
+.champions-reading-h2h .section-heading>p,
+.champions-reading-h2h .reading-h2h-empty,
+.champions-reading-h2h .reading-h2h-events li small,
+.champions-reading-combo .reading-panel-empty span,
+.champions-reading-volume .prediction-match-volume dt,
+.champions-reading-volume .prediction-match-volume small,
+.champions-reading-volume .prediction-booked-panel>header>p,
+.champions-reading-volume .prediction-booked-panel .reading-panel-empty p,
+.champions-reading-market-panel>p,
+.champions-reading-market-list article span,
+.champions-reading-market-list article small,
+.champions-reading-referee>header>p,
+.champions-reading-referee>p,
+.champions-reading-referee .reading-referee-method,
+.champions-motivation-card>header>p,
+.champions-motivation-score>span,
+.champions-motivation-team dt,
+.champions-motivation-team ul,
+.champions-motivation-debug span,
+.champions-motivation-note{color:#fff}
+
 body[data-page="champions"] .site-footer{margin-top:0}
 
 .champions-motivation-cta{position:absolute;left:48px;bottom:42px;z-index:2;padding:11px 15px;border:1px solid rgba(126,218,255,.34);border-radius:999px;background:rgba(4,48,128,.72);color:#eafbff;font-size:10px;font-weight:900;letter-spacing:.05em;text-decoration:none;text-transform:uppercase}
@@ -415,6 +451,27 @@ body[data-page="champions"] .site-footer{margin-top:0}
 .champions-motivation-team{padding:18px;border:1px solid rgba(134,209,255,.17);border-radius:18px;background:rgba(2,20,61,.56)}.champions-motivation-team>header{display:flex;align-items:center;justify-content:space-between;gap:12px}.champions-motivation-team>header>strong{color:#fff;font-size:17px}.motivation-level{padding:5px 8px;border-radius:999px;background:#1d64c8;color:#fff;font-size:7px;font-weight:900;letter-spacing:.08em}.motivation-level.is-very_high,.motivation-level.is-extreme{background:#d36a24}.motivation-level.is-low{background:#6d7890}
 .champions-motivation-score{display:flex;align-items:end;gap:6px;margin:14px 0}.champions-motivation-score>b{color:#7fe5ff;font-size:48px;line-height:.9}.champions-motivation-score>span{display:grid;color:#7ca0c2;font-size:12px}.champions-motivation-score small{font-size:7px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}.champions-motivation-team dl{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;margin:0}.champions-motivation-team dl div{display:flex;justify-content:space-between;padding:8px 9px;border-radius:8px;background:rgba(19,71,138,.27)}.champions-motivation-team dt{color:#8db4d5;font-size:8px}.champions-motivation-team dd{margin:0;color:#fff;font-size:9px;font-weight:850}.champions-motivation-team ul{display:grid;gap:5px;margin:12px 0;padding-left:18px;color:#c8dfef;font-size:9px}.champions-motivation-team details{border-top:1px solid rgba(134,209,255,.13);padding-top:10px}.champions-motivation-team summary{color:#7fdcff;cursor:pointer;font-size:8px;font-weight:900;text-transform:uppercase}.champions-motivation-debug{display:grid;gap:4px;margin-top:9px}.champions-motivation-debug span{display:grid;grid-template-columns:1fr auto;color:#9ebbd3;font-size:8px}.champions-motivation-debug b{color:#dcefff}.champions-motivation-debug>strong{margin-top:4px;color:#7fe5ff;font-size:10px}.champions-motivation-note{margin:13px 0 0;color:#88a8c6;font-size:9px;line-height:1.5}
 .champions-motivation-overview{margin:22px 0 48px;padding:32px;border:1px solid rgba(128,218,255,.24);border-radius:28px;background:linear-gradient(145deg,rgba(4,42,105,.9),rgba(2,18,57,.97))}.champions-motivation-overview>header h1{margin:4px 0;color:#fff;font-family:Anton,sans-serif;font-size:56px;font-weight:400;text-transform:uppercase}.champions-motivation-overview>header p:last-child{color:#a9c5df}.champions-motivation-overview-meta{display:flex;align-items:center;gap:8px;margin:24px 0 12px;color:#82cfff}.champions-motivation-overview-meta strong{color:#fff;font-size:28px}.champions-motivation-overview-meta a{margin-left:auto;color:#7fe5ff;font-size:9px;font-weight:900;text-decoration:none;text-transform:uppercase}.champions-motivation-table-wrap{overflow-x:auto;border:1px solid rgba(128,218,255,.17);border-radius:16px}.champions-motivation-overview table{width:100%;min-width:850px;border-collapse:collapse;color:#c8dcec;font-size:10px}.champions-motivation-overview th,.champions-motivation-overview td{padding:11px 12px;border-bottom:1px solid rgba(128,218,255,.1);text-align:left}.champions-motivation-overview thead{background:rgba(10,59,139,.75)}.champions-motivation-overview thead th{color:#86cfff;font-size:8px;text-transform:uppercase}.champions-motivation-overview thead button{padding:0;border:0;background:transparent;color:inherit;font:inherit;cursor:pointer;text-transform:inherit}.champions-motivation-overview tbody th{color:#fff}.champions-motivation-overview tbody tr:last-child>*{border-bottom:0}.champions-motivation-overview .team-logo{width:25px;height:25px}.champions-motivation-overview aside{margin-top:14px;padding:13px;border-left:3px solid #7fdcff;background:rgba(7,34,86,.48)}.champions-motivation-overview aside strong{color:#fff}.champions-motivation-overview aside p{margin:4px 0 0;color:#9db8d0;font-size:9px;line-height:1.5}
+
+body[data-page="champions"] .champions-reading-match-hero>div:first-child>p:not(.eyebrow),
+body[data-page="champions"] .champions-reading-summary.reading-result-summary small,
+body[data-page="champions"] .champions-reading-warning p,
+body[data-page="champions"] .champions-reading-back span,
+body[data-page="champions"] .champions-reading-info p:not(.eyebrow):not(.champions-probable-note),
+body[data-page="champions"] .champions-reading-info dt,
+body[data-page="champions"] .champions-reading-volume p:not(.eyebrow),
+body[data-page="champions"] .champions-reading-volume dt,
+body[data-page="champions"] .champions-reading-volume small,
+body[data-page="champions"] .champions-reading-team-volume .prediction-volume-metrics span,
+body[data-page="champions"] .champions-reading-h2h p:not(.eyebrow),
+body[data-page="champions"] .champions-reading-h2h .reading-h2h-events li strong,
+body[data-page="champions"] .champions-reading-h2h .reading-h2h-events li small,
+body[data-page="champions"] .champions-reading-combo .reading-panel-empty span,
+body[data-page="champions"] .champions-reading-referee p:not(.eyebrow),
+body[data-page="champions"] .champions-motivation-card p,
+body[data-page="champions"] .champions-motivation-card dt,
+body[data-page="champions"] .champions-motivation-card ul,
+body[data-page="champions"] .champions-motivation-score>span,
+body[data-page="champions"] .champions-motivation-debug span{color:#fff!important}
 
 @media(max-width:760px){
   body[data-page="champions"] main{width:min(100% - 20px,var(--max));padding-top:28px}
