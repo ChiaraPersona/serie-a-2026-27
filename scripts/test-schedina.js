@@ -105,7 +105,7 @@ for (const id of ["prisma", "quasar"]) {
 }
 const shell = fs.readFileSync(path.join(root, "schedina.html"), "utf8");
 assert.match(shell, /data-page="betting"/, "Shell Schedina non generata");
-assert.match(shell, /fantacalcio\.html[^]*schedina\.html/, "Schedina non è accanto a Fantacalcio nella navigazione");
+assert.doesNotMatch(shell, /href="fantacalcio\.html"/, "Fantacalcio deve restare nascosto dalla navigazione");
 console.log(`Schedina valida: ${data.slips.map(slip => `${slip.name} ${slip.combinedOdds.toFixed(2)}`).join(" · ")}`);
 
 (async()=>{

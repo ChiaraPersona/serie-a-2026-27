@@ -15,8 +15,11 @@ await createPage({esc,load}).render();
 assert(app.innerHTML.includes("Real Madrid"));
 assert(app.innerHTML.includes("Inter"));
 assert(app.innerHTML.includes("Tiri totali"));
-assert(app.innerHTML.includes("Over/Under gol"));
+assert(app.innerHTML.includes("Over/Under"));
 assert(app.innerHTML.includes("Rose registrate UEFA"));
+for(const contract of ["reading-match-hero","reading-result-summary","reading-info-grid","prediction-volume-section","reading-panel-grid","Validazione storica"]){
+  assert(app.innerHTML.includes(contract),`Struttura Lettura Serie A mancante: ${contract}`);
+}
 assert(!app.innerHTML.includes("champions-calendar"));
 globalThis.location.search="?team=inter";
 await createPage({esc,load}).render();

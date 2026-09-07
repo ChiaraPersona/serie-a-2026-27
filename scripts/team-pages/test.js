@@ -261,9 +261,8 @@ assert.ok(!homeStandingsSource.includes("objectiveStatusSection(") && !homeStand
 assert.ok(mainApp.includes('const routes={home:"home",calendar:"matches",team:"matches","team-stats":"teams"') && mainApp.includes('[teams,matches,previousStandings]=await Promise.all') && mainApp.includes('[teamDirectory,playerLeaderboards]=await Promise.all'), "Router e pagine devono caricare soltanto i dataset necessari");
 assert.ok(mainApp.includes('requestedMatchId?"first-leg-2026-27.json":"first-leg-2026-27-summary.json"'), "L'indice Letture deve usare il riepilogo H2H leggero");
 const expectedNavigation = [
-  ["index.html", "Home"], ["calendario.html", "Calendario"],
-  ["statistiche-squadre.html", "Statistiche squadre"], ["lettura.html", "Lettura"],
-  ["coppa-italia.html", "Coppa Italia"], ["arbitri.html", "Arbitri"], ["fantacalcio.html", "Fantacalcio"],
+  ["index.html", "Home"], ["statistiche-squadre.html", "Statistiche squadre"], ["lettura.html", "Lettura"],
+  ["coppa-italia.html", "Coppa Italia"], ["champions-league.html", "Champions League"], ["arbitri.html", "Arbitri"],
   ["schedina.html", "Schedina"]
 ];
 for (const file of fs.readdirSync(root).filter(file => file.endsWith(".html")).map(file => path.join(root, file))
