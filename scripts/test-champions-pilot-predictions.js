@@ -76,6 +76,9 @@ assert(pageSource.includes("fixture.verdict.outcome"), "La lettura deve usare la
 assert(pageSource.includes("I gol attesi sono la media di tutti gli scenari"), "La lettura deve spiegare la differenza tra media gol e risultato esatto");
 assert(pageSource.includes("Statistiche di squadra"), "Le schede delle 36 squadre devono esporre i volumi recuperati");
 assert(pageSource.includes("fallback UEFA"), "Le schede squadra devono dichiarare i fallback UEFA");
+assert(pageSource.includes("Stesso tracciato delle schede Serie A"), "Le schede squadra devono dichiarare il tracciato statistiche giocatori Serie A");
+assert(pageSource.includes("Falli subiti"), "La tabella giocatori deve esporre i campi statistici Serie A");
+assert(pageSource.includes("Le statistiche Champions 2026/27 restano separate"), "Le statistiche correnti e storiche non devono essere confuse");
 const projectionSection = pageSource.match(/<section class="section reading-projection-prototype prediction-volume-section champions-reading-volume"[^>]*>[\s\S]*?<\/section>/)?.[0] || "";
 assert(projectionSection.includes("${goalForecast}<section") && projectionSection.includes("${matchProjection}"), "Il pronostico quantitativo deve essere incluso prima dei volumi nella sezione proiezioni squadra");
 assert(projectionSection.includes("Storico distinto tra casa e trasferta."), "Le proiezioni Champions devono riprendere il testo introduttivo della Serie A");
