@@ -33,6 +33,14 @@ assert(app.innerHTML.includes('class="prediction-match-volume champions-combined
 assert(app.innerHTML.includes("Valori combinati"));
 assert(app.innerHTML.includes("Gol attesi medi"));
 assert(app.innerHTML.includes("Fascia gol probabile"));
+assert(app.innerHTML.includes("Fattore sorpresa"));
+assert(app.innerHTML.includes("champions-surprise-bar"));
+assert(app.innerHTML.includes('role="progressbar"'));
+assert(app.innerHTML.includes("Quote normalizzate:"));
+assert(app.innerHTML.includes("Mercato"));
+assert(app.innerHTML.includes("Casa/trasferta"));
+assert(app.innerHTML.includes("Dati mancanti o in fallback: Assenze, Matchup."));
+assert(!app.innerHTML.includes("Fattore sorpresa</span><strong>N/D"));
 assert(!app.innerHTML.includes('class="prediction-match-volume champions-goal-forecast"'));
 assert(app.innerHTML.includes('class="champions-reading-pending"'));
 assert(!app.innerHTML.includes("Motivazione, urgenza e pressione"));

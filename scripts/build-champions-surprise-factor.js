@@ -201,7 +201,7 @@ function motivationComponent(entry, favorite, underdog) {
 
 function concreteReasons({ market, form, venue, absences, tactical, motivation: motivationScore }, favorite, underdog) {
   const candidates = [{ priority: Math.abs(market.value - 50) + 20, text: `Quote normalizzate: ${favorite} non vince nel ${market.value}% degli scenari 1X2` }];
-  if (form.confidence > 0 && Math.abs(form.value - 50) >= 7) {
+  if (form.confidence > 0 && form.value >= 57) {
     const fav = form.evidence.favorite.last5, dog = form.evidence.underdog.last5;
     candidates.push({ priority: Math.abs(form.value - 50), text: `${underdog} nelle ultime 5: ${dog.pointsPerMatch} punti/gara; ${favorite}: ${fav.pointsPerMatch}` });
   }
@@ -244,7 +244,7 @@ const fixtures = calendar.fixtures.filter(item => item.matchday === 1).map(fixtu
     underdog,
     components: Object.fromEntries(Object.entries(components).map(([key, value]) => [key, value.value])),
     componentDetails: components,
-    confidence: { value: confidence, label: confidence >= 0.8 ? "alta" : confidence >= 0.6 ? "media" : "bassa", missingOrFallbackComponents: Object.entries(components).filter(([, value]) => value.status.includes("fallback") || value.confidence === 0).map(([key]) => key) },
+    confidence: { value: confidence, label: confidence >= 0.85 ? "alta" : confidence >= 0.6 ? "media" : "bassa", missingOrFallbackComponents: Object.entries(components).filter(([, value]) => value.status.includes("fallback") || value.confidence === 0).map(([key]) => key) },
     reasons: concreteReasons(components, favorite, underdog)
   };
 });

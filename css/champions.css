@@ -222,7 +222,7 @@ body[data-page="champions"] main{padding-top:38px}
 .champions-reading-lineup-card{border-color:rgba(139,211,255,.2);box-shadow:0 12px 28px rgba(0,8,37,.24)}
 .champions-reading-lineup-card>footer{color:#d7eaff}
 .champions-probable-note{margin:8px 0 0!important;padding:8px 9px;border-left:3px solid #f4b942;border-radius:0 8px 8px 0;background:rgba(244,185,66,.09);color:#f8e6b2!important;font-size:.68rem!important;line-height:1.4}
-@media(max-width:430px){.champions-lineup-confidence{align-items:flex-start;flex-direction:column}.champions-lineup-confidence em{margin-left:0}}
+@media(max-width:430px){.champions-lineup-confidence{align-items:flex-start;flex-direction:column}.champions-lineup-confidence em{margin-left:0}body[data-page="champions"] .champions-reading-summary.reading-result-summary{grid-template-columns:1fr}body[data-page="champions"] .champions-surprise-components{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .champions-reading-evidence>div>span{color:#7fdcff;font-size:8px;font-weight:900;text-transform:uppercase}
 .champions-reading-evidence>div h3{margin:4px 0 0}
 .champions-reading-evidence dl>div{border-top-color:rgba(139,211,255,.12)}
@@ -270,6 +270,19 @@ body[data-page="champions"] main{padding-top:38px}
 .champions-combined-volume{grid-template-columns:minmax(170px,.38fr) minmax(0,1.62fr)}
 .champions-combined-volume dl{grid-template-columns:repeat(5,minmax(0,1fr))}
 .champions-combined-volume .champions-goal-explainer{grid-column:1/-1;margin:0;color:#a8cce7;font-size:10px;line-height:1.55}
+.champions-surprise-factor{min-width:0}
+.champions-surprise-factor>span{display:flex;align-items:center;gap:6px}
+.champions-surprise-factor>span i{display:inline-grid;place-items:center;width:15px;height:15px;border:1px solid rgba(255,255,255,.42);border-radius:50%;font:700 10px/1 Inter,sans-serif;font-style:normal;color:#d8eeff;cursor:help}
+.champions-surprise-factor>small{text-transform:capitalize}
+.champions-surprise-bar{width:100%;height:7px;margin-top:8px;overflow:hidden;border-radius:999px;background:rgba(255,255,255,.13)}
+.champions-surprise-bar>b{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#48cae4,#f6c453,#ff6b6b);box-shadow:0 0 12px rgba(246,196,83,.3)}
+.champions-surprise-factor details{margin-top:9px;padding-top:8px;border-top:1px solid rgba(255,255,255,.13)}
+.champions-surprise-factor summary{cursor:pointer;color:#d8eeff;font-size:11px;font-weight:750}
+.champions-surprise-factor ul{display:grid;gap:5px;margin:8px 0 0;padding-left:16px;color:#d8eeff;font-size:10px;line-height:1.45}
+.champions-surprise-components{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;margin-top:8px}
+.champions-surprise-components span{display:flex;justify-content:space-between;gap:5px;padding:5px 6px;border-radius:6px;background:rgba(255,255,255,.07)}
+.champions-surprise-components small,.champions-surprise-components b{font-size:9px}
+.champions-surprise-factor details p{margin:7px 0 0;color:#a8cce7;font-size:9px;line-height:1.4}
 .champions-reading-market-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
 .champions-reading-market-panel{min-height:0}
 .champions-reading-market-panel>span{color:#7fdcff}
