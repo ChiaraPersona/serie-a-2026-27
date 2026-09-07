@@ -76,6 +76,9 @@ assert.equal([...championsPage.matchAll(/registeredSquadsDirectory\(/g)].length,
 assert.match(championsPage, /champions-head-to-head-2026-27\.json/, "Champions: scontri diretti recenti non caricati");
 assert.match(championsPage, /Modello 1\/X\/2 sperimentale/, "Champions: natura sperimentale delle probabilita non dichiarata");
 assert.match(championsPage, /model\.warning/, "Champions: limiti correnti del modello non dichiarati");
+assert.equal([...championsPage.matchAll(/modelAudit\(/g)].length, 1, "Champions: pannello modello ancora visibile nella pagina principale");
+assert.equal([...championsPage.matchAll(/strengthDirectory\(/g)].length, 1, "Champions: indice di forza ancora visibile nella pagina principale");
+assert.equal([...championsPage.matchAll(/historyDirectory\(/g)].length, 1, "Champions: rendimento europeo ancora visibile nella pagina principale");
 assert.doesNotMatch(championsPage, /champions-h2h/, "Champions: gli H2H non devono appesantire le card");
 assert.doesNotMatch(championsPage, /Probabilità del modello/, "Champions: le percentuali estese non devono appesantire le card");
 assert.match(championsPage, /Indice di forza europeo/, "Champions: graduatoria sintetica non presente");
@@ -85,7 +88,9 @@ assert.doesNotMatch(championsPage, /champions-team-card-meta/, "Champions: forza
 assert.match(championsPage, /data\.teamBranding\.map/, "Champions: branding locale delle 36 squadre non caricato");
 assert.match(championsPage, /class="team-logo"/, "Champions: stemmi assenti dalle card");
 assert.match(championsPage, /reading-fixture match fixture-card champions-fixture/, "Champions: calendario non allineato alle card Letture");
-assert.match(championsPage, /reading-fixture match fixture-card fixture-card-link champions-pilot-card/, "Champions: anteprime non allineate alle card Letture");
+assert.match(championsPage, /reading-fixture match fixture-card fixture-card-link champions-fixture champions-pilot-card/, "Champions: letture non integrate nelle card del calendario");
 assert.match(championsPage, /reading-fixture-preview/, "Champions: anteprima compatta della lettura assente");
+assert.doesNotMatch(championsPage, /Analisi delle italiane/, "Champions: sezione separata delle italiane ancora presente");
+assert.match(championsPage, /pilotByFixture=new Map\(pilot\.fixtures\.map/, "Champions: pronostici delle italiane non collegati al calendario");
 assert.match(championsCss, /\.champions-pilot-card\.match\.fixture-card \.team-name,\.champions-fixture\.match\.fixture-card \.team-name\{color:#fff\}/, "Champions: nomi squadra non bianchi nelle card");
 console.log(`OK moduli applicazione: ${pageFiles.length} pagine e 4 componenti condivisi`);

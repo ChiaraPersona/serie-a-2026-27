@@ -12,11 +12,17 @@ export function createPage(deps){
     return `<span class="team-with-logo"><span class="team-logo"><img src="${esc(team?.logo||"")}" alt="Stemma ${esc(teamName)}" loading="lazy" onerror="this.hidden=true;this.parentElement.classList.add('fallback')"><b>${esc(initials)}</b></span><span class="team-name">${esc(teamName)}</span></span>`;
   };
 
-  function fixtureCard(fixture,branding){
+  function fixtureCard(fixture,branding,pilotByFixture){
+    const analysis=pilotByFixture.get(fixture.id);
+    if(analysis){
+      const selection=resultSelection(analysis);
+      const confidence=analysis.confidence==="high"?"Alta":analysis.confidence==="medium"?"Media":analysis.confidence==="low"?"Bassa":"N/D";
+      return `<a class="reading-fixture match fixture-card fixture-card-link champions-fixture champions-pilot-card" href="champions-league.html?match=${esc(analysis.fixtureId)}" aria-label="Apri la lettura di ${esc(fixture.homeTeam)} - ${esc(fixture.awayTeam)}" data-team-home="${esc(fixture.homeTeam)}" data-team-away="${esc(fixture.awayTeam)}" style="--home-color-1:#105ac5;--home-color-2:#052b78;--away-color-1:#1879d5;--away-color-2:#061a57"><header class="match-head"><div class="match-badges"><span class="matchday-chip">Giornata ${fixture.matchday}</span></div><span class="match-date">${esc(shortDate(fixture.date))} · ${esc(fixture.kickoff)}</span></header><span class="reading-fixture-teams">${teamBadge(fixture.homeTeam,branding)}<b>VS</b>${teamBadge(fixture.awayTeam,branding)}</span><span class="reading-fixture-preview" aria-label="Anteprima della lettura"><span><small>Verdetto</small><strong>${esc(selection[0])} · ${esc(selection[2])}</strong></span><span><small>Risultato</small><strong>${esc(analysis.exactScores[0]?.score||"N/D")}</strong></span><span><small>Confidenza</small><strong>${confidence}</strong></span></span></a>`;
+    }
     return `<article class="reading-fixture match fixture-card champions-fixture" data-team-home="${esc(fixture.homeTeam)}" data-team-away="${esc(fixture.awayTeam)}" style="--home-color-1:#105ac5;--home-color-2:#052b78;--away-color-1:#1879d5;--away-color-2:#061a57"><header class="match-head"><div class="match-badges"><span class="matchday-chip">Giornata ${fixture.matchday}</span></div><time class="match-date" datetime="${esc(`${fixture.date}T${fixture.kickoff}`)}">${esc(shortDate(fixture.date))} · ${esc(fixture.kickoff)}</time></header><span class="reading-fixture-teams">${teamBadge(fixture.homeTeam,branding)}<b>VS</b>${teamBadge(fixture.awayTeam,branding)}</span></article>`;
   }
 
-  function fixtureGroups(fixtures,branding){
+  function fixtureGroups(fixtures,branding,pilotByFixture){
     if(!fixtures.length)return `<div class="champions-empty"><strong>Nessuna partita</strong><p>Modifica i filtri per visualizzare un altro gruppo di gare.</p></div>`;
     const groups=new Map();
     for(const fixture of fixtures){
@@ -26,7 +32,7 @@ export function createPage(deps){
     }
     return [...groups.entries()].map(([key,items])=>{
       const [matchday,date]=key.split("|");
-      return `<section class="champions-fixture-day"><header><div><p>${matchdayLabel(Number(matchday))}</p><h3>${esc(dayLabel(date))}</h3></div><span>${items.length} ${items.length===1?"partita":"partite"}</span></header><div class="champions-fixture-grid">${items.map(fixture=>fixtureCard(fixture,branding)).join("")}</div></section>`;
+      return `<section class="champions-fixture-day"><header><div><p>${matchdayLabel(Number(matchday))}</p><h3>${esc(dayLabel(date))}</h3></div><span>${items.length} ${items.length===1?"partita":"partite"}</span></header><div class="champions-fixture-grid">${items.map(fixture=>fixtureCard(fixture,branding,pilotByFixture)).join("")}</div></section>`;
     }).join("");
   }
 
@@ -54,16 +60,6 @@ export function createPage(deps){
     ["X",fixture.probabilities.draw,"Pareggio"],
     ["2",fixture.probabilities.away,fixture.awayTeam]
   ].sort((a,b)=>b[1]-a[1])[0];
-
-  function pilotForecasts(pilot,backtest,branding){
-    const cards=pilot.fixtures.map(fixture=>{
-      const selection=resultSelection(fixture);
-      const confidence=fixture.confidence==="high"?"Alta":fixture.confidence==="medium"?"Media":fixture.confidence==="low"?"Bassa":"N/D";
-      return `<a class="reading-fixture match fixture-card fixture-card-link champions-pilot-card" href="champions-league.html?match=${esc(fixture.fixtureId)}" aria-label="Apri la lettura di ${esc(fixture.homeTeam)} - ${esc(fixture.awayTeam)}" style="--home-color-1:#105ac5;--home-color-2:#052b78;--away-color-1:#1879d5;--away-color-2:#061a57"><header class="match-head"><div class="match-badges"><span class="matchday-chip">Giornata 1</span></div><span class="match-date">${esc(shortDate(fixture.date))} · ${esc(fixture.kickoff)}</span></header><span class="reading-fixture-teams">${teamBadge(fixture.homeTeam,branding)}<b>VS</b>${teamBadge(fixture.awayTeam,branding)}</span><span class="reading-fixture-preview" aria-label="Anteprima della lettura"><span><small>Verdetto</small><strong>${esc(selection[0])} · ${esc(selection[2])}</strong></span><span><small>Risultato</small><strong>${esc(fixture.exactScores[0]?.score||"N/D")}</strong></span><span><small>Confidenza</small><strong>${confidence}</strong></span></span></a>`;
-    }).join("");
-    const validation=[["Tiri",backtest.metrics.totalShots],["Tiri in porta",backtest.metrics.shotsOnTarget],["Corner",backtest.metrics.wonCorners],["Gialli",backtest.metrics.yellowCards]].map(([label,result])=>`<div><small>${label}</small><strong>MAE ${result.mae.toFixed(2)}</strong><span>${result.maeImprovementPct>0?"+":""}${result.maeImprovementPct.toFixed(1)}% vs media campionato</span></div>`).join("");
-    return `<section class="champions-pilot" aria-labelledby="champions-pilot-title"><header><div><p class="eyebrow">Prima giornata · letture</p><h2 id="champions-pilot-title">Analisi delle italiane</h2><p>Apri una partita per consultare 1X2, gol attesi, tiri, tiri in porta, corner e cartellini in una lettura dedicata.</p></div><span>${pilot.coverage.completeSourceMatches} referti completi<br>${pilot.coverage.oddsMatched}/4 quote collegate</span></header><div class="champions-pilot-validation"><p><strong>Test cronologico 2026/27</strong><span>Solo dati disponibili prima di ogni gara · ${backtest.metrics.totalShots.samples} osservazioni squadra</span></p>${validation}</div><div class="champions-pilot-grid">${cards}</div><p class="champions-pilot-note">Le anteprime mostrano il segnale centrale del modello. Quote, limiti del campione e intervalli completi sono riportati dentro ogni lettura.</p></section>`;
-  }
 
   function pilotReadingDetail(fixture,pilot,backtest,squads){
     const teamProjection=team=>`<article class="prediction-team-volume champions-reading-team-volume"><header><span>${team.venue==="home"?"Casa":"Trasferta"}</span><h3>${esc(team.team)}</h3></header><div class="prediction-volume-metrics"><div><span>Gol attesi</span><strong>${team.expectedGoals.toFixed(2)}</strong></div><div><span>Tiri totali</span><strong>${esc(metricValue(team.shotsTotal))}</strong></div><div><span>Tiri nello specchio</span><strong>${esc(metricValue(team.shotsOnTarget))}</strong></div><div><span>Corner</span><strong>${esc(metricValue(team.corners))}</strong></div><div><span>Falli</span><strong>${esc(metricValue(team.fouls))}</strong></div><div><span>Cartellini</span><strong>${esc(metricValue(team.cards))}</strong></div></div></article>`;
@@ -130,6 +126,7 @@ export function createPage(deps){
       return;
     }
     const branding=new Map(data.teamBranding.map(team=>[team.team,team]));
+    const pilotByFixture=new Map(pilot.fixtures.map(fixture=>[fixture.fixtureId,fixture]));
     const teamOptions=data.teams.map(team=>`<option value="${esc(team)}">${esc(team)}</option>`).join("");
     document.querySelector("#app").innerHTML=`
       <section class="champions-hero" aria-labelledby="champions-title">
@@ -141,12 +138,8 @@ export function createPage(deps){
         <div class="champions-orbit" aria-hidden="true"><span>★</span></div>
       </section>
       ${teamLogoDirectory(data.teamBranding,squads)}
-      ${pilotForecasts(pilot,backtest,branding)}
-      ${modelAudit(model)}
-      ${strengthDirectory(strength)}
-      ${historyDirectory(history)}
       <section class="champions-calendar" aria-labelledby="champions-calendar-title">
-        <header class="champions-calendar-heading"><div><p class="eyebrow">Fase campionato</p><h2 id="champions-calendar-title">Calendario ufficiale</h2><p>Scegli una giornata o una squadra. Con “Tutte le giornate” puoi consultare l’intero programma delle 144 gare.</p></div><a href="${esc(data.source.url)}" target="_blank" rel="noreferrer">Fonte UEFA ↗</a></header>
+        <header class="champions-calendar-heading"><div><p class="eyebrow">Fase campionato</p><h2 id="champions-calendar-title">Calendario ufficiale</h2><p>Le partite con una lettura disponibile sono apribili direttamente dal calendario. Con “Tutte le giornate” puoi consultare l’intero programma delle 144 gare.</p></div><a href="${esc(data.source.url)}" target="_blank" rel="noreferrer">Fonte UEFA ↗</a></header>
         <div class="champions-controls">
           <label><span>Giornata</span><select id="champions-matchday"><option value="all">Tutte le giornate</option>${Array.from({length:data.summary.matchdays},(_,index)=>`<option value="${index+1}"${index===0?" selected":""}>${matchdayLabel(index+1)}</option>`).join("")}</select></label>
           <label><span>Squadra</span><select id="champions-team"><option value="all">Tutte le squadre</option>${teamOptions}</select></label>
@@ -163,7 +156,7 @@ export function createPage(deps){
     const applyFilters=()=>{
       const matchday=matchdaySelect.value,team=teamSelect.value;
       const filtered=data.fixtures.filter(fixture=>(matchday==="all"||fixture.matchday===Number(matchday))&&(team==="all"||fixture.homeTeam===team||fixture.awayTeam===team));
-      results.innerHTML=fixtureGroups(filtered,branding);
+      results.innerHTML=fixtureGroups(filtered,branding,pilotByFixture);
       const context=[matchday==="all"?"tutte le giornate":matchdayLabel(Number(matchday)),team==="all"?"tutte le squadre":team];
       resultsLabel.innerHTML=`<strong>${filtered.length}</strong> ${filtered.length===1?"partita":"partite"} · ${esc(context.join(" · "))}`;
     };

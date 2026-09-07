@@ -6,14 +6,37 @@ const path = require("path");
 const root = path.resolve(__dirname, "..");
 const sourcePath = path.join(root, "data/sources/champions-league-2026-27.json");
 const brandingPath = path.join(root, "data/sources/champions-team-branding-2026-27.json");
+const refereeAssignmentsPath = path.join(root, "data/sources/champions-referee-assignments-2026-27.json");
 const outputPath = path.join(root, "data/normalized/champions-league-2026-27.json");
 const source = JSON.parse(fs.readFileSync(sourcePath, "utf8"));
 const branding = JSON.parse(fs.readFileSync(brandingPath, "utf8"));
+const refereeAssignmentsSource = JSON.parse(fs.readFileSync(refereeAssignmentsPath, "utf8"));
 
 const fail = message => { throw new Error(`Champions League: ${message}`); };
 if (source.schemaVersion !== 1 || source.season !== "2026-27" || source.phase !== "league") fail("fonte non valida");
 if (!source.source?.url?.startsWith("https://www.uefa.com/")) fail("fonte UEFA ufficiale mancante");
 if (!Array.isArray(source.fixtures) || source.fixtures.length !== source.expected?.fixtures) fail(`attese ${source.expected?.fixtures} gare, trovate ${source.fixtures?.length || 0}`);
+
+if (refereeAssignmentsSource.schemaVersion !== 1 || refereeAssignmentsSource.season !== source.season || refereeAssignmentsSource.matchday !== 1) fail("fonte designazioni arbitrali non valida");
+if (!Array.isArray(refereeAssignmentsSource.assignments) || refereeAssignmentsSource.assignments.length !== 18) fail("attese 18 designazioni per la prima giornata");
+const refereeAssignments = new Map();
+const refereeMetrics = ["yellowCardsPerMatch", "redCardsPerMatch", "foulsPerMatch", "penaltiesPerMatch"];
+for (const assignment of refereeAssignmentsSource.assignments) {
+  if (!assignment.fixtureId || refereeAssignments.has(assignment.fixtureId)) fail("designazione con ID mancante o duplicato");
+  if (!source.fixtures.some(fixture => fixture.id === assignment.fixtureId && fixture.matchday === 1)) fail(`${assignment.fixtureId}: designazione senza gara della prima giornata`);
+  if (!['assigned', 'pending'].includes(assignment.status)) fail(`${assignment.fixtureId}: stato designazione non valido`);
+  if (assignment.status === "pending") {
+    if (assignment.referee !== null || assignment.statistics !== null) fail(`${assignment.fixtureId}: designazione pendente con dati valorizzati`);
+  } else {
+    if (!assignment.referee?.name || !assignment.referee?.countryFlag) fail(`${assignment.fixtureId}: arbitro o nazionalità mancanti`);
+    if (!assignment.statistics || !refereeMetrics.every(metric => assignment.statistics[metric]?.display)) fail(`${assignment.fixtureId}: medie arbitrali incomplete`);
+    for (const metric of refereeMetrics) {
+      const value = assignment.statistics[metric].value;
+      if (value !== null && (!Number.isFinite(value) || value < 0)) fail(`${assignment.fixtureId}: ${metric} non valida`);
+    }
+  }
+  refereeAssignments.set(assignment.fixtureId, assignment);
+}
 
 const ids = new Set();
 const matchups = new Set();
@@ -39,6 +62,7 @@ const fixtures = source.fixtures.map((fixture, index) => {
   }
   return {
     ...fixture,
+    refereeAssignment: refereeAssignments.get(fixture.id) || null,
     competition: "champions-league",
     phase: "league",
     season: source.season,
@@ -87,6 +111,7 @@ fs.writeFileSync(outputPath, JSON.stringify({
   phase: source.phase,
   generatedAt: source.source.retrievedAt,
   source: source.source,
+  refereeAssignmentsSource: refereeAssignmentsSource.source,
   summary: { teams: teamList.length, matchdays: matchdays.size, fixtures: fixtures.length },
   teams: teamList,
   teamBranding,
