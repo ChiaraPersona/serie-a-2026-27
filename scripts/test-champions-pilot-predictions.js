@@ -69,8 +69,8 @@ assert(pageSource.includes("pilotReadingDetail(requestedFixture,pilot,backtest,s
 assert(pageSource.includes("Fascia gol probabile"), "La lettura deve distinguere la fascia gol dal risultato esatto");
 assert(pageSource.includes("fixture.verdict.outcome"), "La lettura deve usare la selezione ricalcolata, comprese 1X e X2");
 assert(pageSource.includes("I gol attesi sono la media di tutti gli scenari"), "La lettura deve spiegare la differenza tra media gol e risultato esatto");
-const projectionSection = pageSource.match(/<section class="section reading-projection-prototype prediction-volume-section champions-reading-volume">[\s\S]*?<\/section>/)?.[0] || "";
-assert(projectionSection.includes("${goalForecast}${matchProjection}"), "Il pronostico quantitativo deve essere incluso prima dei volumi nella sezione proiezioni squadra");
+const projectionSection = pageSource.match(/<section class="section reading-projection-prototype prediction-volume-section champions-reading-volume"[^>]*>[\s\S]*?<\/section>/)?.[0] || "";
+assert(projectionSection.includes("${goalForecast}<details") && projectionSection.includes("${matchProjection}"), "Il pronostico quantitativo deve essere incluso prima dei volumi nella sezione proiezioni squadra");
 assert(projectionSection.includes("Storico distinto tra casa e trasferta."), "Le proiezioni Champions devono riprendere il testo introduttivo della Serie A");
 assert(projectionSection.includes("Tiri e corner combinano produzione per sede, valori concessi dall'avversaria e ultime otto gare"), "Le proiezioni Champions devono riprendere lo stile metodologico della Serie A");
 console.log(`OK pronostici Champions MD1: ${data.fixtures.length} gare · risultato e gol completi · volumi mancanti espliciti`);

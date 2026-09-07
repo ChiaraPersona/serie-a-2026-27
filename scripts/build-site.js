@@ -20,7 +20,7 @@ const leaderboardVersion = "20260906-md3-eight-results-v1";
 const bettingVersion = "20260906-md3-eight-results-v1";
 const readingVersion = "20260907-reading-referee-card-v1";
 const cupVersion = "20260903-coppa-results-v1";
-const championsVersion = "20260907-champions-referee-card-draw-protection-v2";
+const championsVersion = "20260907-champions-reading-order-v1";
 const fantasyVersion = "20260906-md3-eight-results-v1";
 const headToHeadPath = path.join(root, "data/generated/head-to-head/first-leg-2026-27.json");
 if (fs.existsSync(headToHeadPath)) {
