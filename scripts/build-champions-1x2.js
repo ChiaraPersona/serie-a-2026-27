@@ -21,6 +21,22 @@ const displayPercentages = probability => {
   const away = Math.round((100 - home - draw) * 10) / 10;
   return { home, draw, away };
 };
+const recommendationFor = (probability, ordered) => {
+  const leader = ordered[0];
+  if (leader.label === "X") return { outcome: "X", outcomes: ["X"], probability: probability.draw, policy: "draw-is-most-probable" };
+  const needsDrawProtection = leader.value < 0.5 || leader.value - ordered[1].value < 0.1;
+  if (needsDrawProtection) {
+    const homeSide = leader.label === "1";
+    return {
+      outcome: homeSide ? "1X" : "X2",
+      outcomes: homeSide ? ["1", "X"] : ["X", "2"],
+      probability: homeSide ? probability.home + probability.draw : probability.draw + probability.away,
+      policy: leader.value < 0.5 ? "single-outcome-below-50" : "top-two-gap-below-10pp"
+    };
+  }
+  return { outcome: leader.label, outcomes: [leader.label], probability: leader.value, policy: "clear-single-outcome" };
+};
+const confidenceFor = probability => probability >= 0.7 ? "high" : probability >= 0.6 ? "medium" : "low";
 
 if (model.status !== "eligible-for-current-fixture-prototype" || !model.probabilityGate?.passed) fail("gate del backtest non superato");
 if (calendar.summary?.fixtures !== 144 || !Array.isArray(teamMap.teams) || teamMap.teams.length !== 36) fail("calendario o mappa squadre non validi");
@@ -50,7 +66,8 @@ const fixtures = calendar.fixtures.map(fixture => {
   const labels = ["1", "X", "2"];
   const ordered = values.map((value, index) => ({ value, label: labels[index] })).sort((a, b) => b.value - a.value);
   const top = ordered[0].value;
-  const confidence = top >= 0.6 ? "high" : top >= 0.5 ? "medium" : "low";
+  const recommendation = recommendationFor(probability, ordered);
+  const confidence = confidenceFor(recommendation.probability);
   return {
     fixtureId: fixture.id,
     homeTeam: fixture.homeTeam,
@@ -62,6 +79,7 @@ const fixtures = calendar.fixtures.map(fixture => {
     baseProbabilities: { home: round(baseProbability.home), draw: round(baseProbability.draw), away: round(baseProbability.away) },
     displayPercentages: displayPercentages(probability),
     favorite: ordered[0].label,
+    recommendation: { ...recommendation, probabilityPct: round(recommendation.probability * 100, 1) },
     confidence,
     confidenceLabel: confidence === "high" ? "alta" : confidence === "medium" ? "media" : "bassa",
     edgePct: round((ordered[0].value - ordered[1].value) * 100, 1),

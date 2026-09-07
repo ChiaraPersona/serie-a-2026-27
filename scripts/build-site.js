@@ -18,9 +18,9 @@ const calendarVersion = "20260906-personal-calendar-all-competitions-v1";
 const teamVersion = "20260907-remove-shirt-numbers-v1";
 const leaderboardVersion = "20260906-md3-eight-results-v1";
 const bettingVersion = "20260906-md3-eight-results-v1";
-const readingVersion = "20260906-juventus-milan-final-md3-results-v1";
+const readingVersion = "20260907-reading-referee-card-v1";
 const cupVersion = "20260903-coppa-results-v1";
-const championsVersion = "20260907-champions-md01-team-projections-v3";
+const championsVersion = "20260907-champions-referee-card-draw-protection-v2";
 const fantasyVersion = "20260906-md3-eight-results-v1";
 const headToHeadPath = path.join(root, "data/generated/head-to-head/first-leg-2026-27.json");
 if (fs.existsSync(headToHeadPath)) {

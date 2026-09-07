@@ -202,10 +202,11 @@ function goalBand(matrix) {
   return { min, max, probabilityPct: round(probabilityPct, 1), interval: "p20-p80" };
 }
 
-function scoreForecast(matrix, favorite, resultProbabilities) {
+function scoreForecast(matrix, selection, resultProbabilities) {
   const ordered = [...matrix].sort((a, b) => b.probability - a.probability || a.home + a.away - b.home - b.away);
   const outcomeOf = score => score.home > score.away ? "1" : score.home === score.away ? "X" : "2";
   const outcomeProbability = outcome => ({ "1": resultProbabilities.home, X: resultProbabilities.draw, "2": resultProbabilities.away })[outcome];
+  const selectionProbability = selection.outcomes.reduce((total, outcome) => total + outcomeProbability(outcome), 0);
   const decorate = (score, label) => {
     const outcome = outcomeOf(score);
     return {
@@ -213,13 +214,13 @@ function scoreForecast(matrix, favorite, resultProbabilities) {
       outcome,
       label,
       probabilityPct: round(score.probability * 100, 1),
-      conditionalProbabilityPct: round(score.probability / outcomeProbability(outcome) * 100, 1),
+      conditionalProbabilityPct: round(score.probability / (selection.outcomes.includes(outcome) ? selectionProbability : outcomeProbability(outcome)) * 100, 1),
       isAbsoluteMode: score === ordered[0]
     };
   };
-  const primaryScore = ordered.find(score => outcomeOf(score) === favorite);
+  const primaryScore = ordered.find(score => selection.outcomes.includes(outcomeOf(score)));
   const modalScore = ordered[0];
-  const primary = decorate(primaryScore, `Coerente col segno ${favorite}`);
+  const primary = decorate(primaryScore, `Coerente con ${selection.outcome}`);
   const modal = decorate(modalScore, "Moda assoluta");
   const display = [primary];
   if (modal.score !== primary.score) display.push(modal);
@@ -232,8 +233,8 @@ function scoreForecast(matrix, favorite, resultProbabilities) {
     modal,
     alternatives: display.slice(1),
     display,
-    coherentWithVerdict: primary.outcome === favorite,
-    method: "Il risultato principale è il punteggio più probabile condizionato al segno 1X2 favorito; la moda assoluta resta separata quando indica un esito diverso."
+    coherentWithVerdict: selection.outcomes.includes(primary.outcome),
+    method: "Il risultato principale è il punteggio più probabile compatibile con la selezione consigliata; nelle gare aperte la selezione include il pareggio tramite 1X o X2."
   };
 }
 
@@ -287,7 +288,8 @@ const fixtures = pilotFixtures.map(fixture => {
   });
   const matchProjection = detailedVolumesAvailable ? { shotsTotal: combinedMetric("shotsTotal"), shotsOnTarget: combinedMetric("shotsOnTarget"), corners: combinedMetric("corners") } : null;
   const matchCards = detailedVolumesAvailable ? { central: round(teamProjections[0].cards.central + teamProjections[1].cards.central), sd: round(Math.sqrt(teamProjections[0].cards.sd ** 2 + teamProjections[1].cards.sd ** 2)) } : null;
-  const scores = scoreForecast(fitted.matrix, result.favorite, result.probabilities);
+  const selection = result.recommendation || { outcome: result.favorite, outcomes: [result.favorite], probabilityPct: round(Math.max(...Object.values(result.probabilities)) * 100, 1) };
+  const scores = scoreForecast(fitted.matrix, selection, result.probabilities);
   const exactScores = scores.display;
   return {
     fixtureId: fixture.id,
@@ -304,7 +306,12 @@ const fixtures = pilotFixtures.map(fixture => {
     goalBand: goalBand(fitted.matrix),
     exactScores,
     scoreForecast: scores,
-    verdict: { outcome: result.favorite, label: result.favorite === "1" ? fixture.homeTeam : result.favorite === "2" ? fixture.awayTeam : "Pareggio" },
+    verdict: {
+      outcome: selection.outcome,
+      outcomes: selection.outcomes,
+      probabilityPct: selection.probabilityPct,
+      label: selection.outcome === "1" ? fixture.homeTeam : selection.outcome === "2" ? fixture.awayTeam : selection.outcome === "X" ? "Pareggio" : selection.outcome === "1X" ? `${fixture.homeTeam} o pareggio` : `Pareggio o ${fixture.awayTeam}`
+    },
     surprise: { value: null, level: "N/D", status: "unavailable" },
     goals: goalLines(fitted.matrix).map(line => {
       const market = oddsEvent?.markets.find(item => item.marketName === "UNDER/OVER" && Number(item.threshold) === line.threshold);

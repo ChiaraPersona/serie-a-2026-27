@@ -36,7 +36,7 @@ for (const fixture of data.fixtures) {
   assert.strictEqual(fixture.market.requestedVolumeMarketsAvailable, false, `${fixture.fixtureId}: quote volumi non pubblicate da Sisal`);
   assert.strictEqual(fixture.exactScores.length, 3, `${fixture.fixtureId}: risultati esatti`);
   assert.strictEqual(fixture.scoreForecast.display.length, 3, `${fixture.fixtureId}: configurazione risultati esatti`);
-  assert.strictEqual(fixture.scoreForecast.primary.outcome, fixture.favorite, `${fixture.fixtureId}: risultato principale incoerente con il segno`);
+  assert(fixture.verdict.outcomes.includes(fixture.scoreForecast.primary.outcome), `${fixture.fixtureId}: risultato principale incoerente con la selezione`);
   assert.strictEqual(fixture.scoreForecast.coherentWithVerdict, true, `${fixture.fixtureId}: flag di coerenza del risultato`);
   assert(fixture.scoreForecast.modal && fixture.scoreForecast.display.some(row => row.score === fixture.scoreForecast.modal.score), `${fixture.fixtureId}: moda assoluta non esposta`);
   assert.deepStrictEqual(fixture.likelyBooked, [], `${fixture.fixtureId}: ammoniti mancanti non espliciti`);
@@ -60,10 +60,14 @@ for (const fixture of data.fixtures) {
     assert(fixture.teamProjections.every(team => team.shotsTotal === null && team.shotsOnTarget === null && team.corners === null && team.cards === null), `${fixture.fixtureId}: volumi squadra inventati`);
   }
 }
+assert(data.fixtures.some(fixture => fixture.verdict.outcome === "1X"), "Manca una selezione prudenziale 1X");
+assert(data.fixtures.some(fixture => fixture.verdict.outcome === "X2"), "Manca una selezione prudenziale X2");
+assert(data.fixtures.filter(fixture => ["1X", "X2"].includes(fixture.verdict.outcome)).every(fixture => fixture.scoreForecast.primary.outcome === "X"), "Le doppie chance devono poter ripristinare il pareggio come risultato esatto principale");
 assert(pageSource.includes('href="champions-league.html?match=${esc(fixture.fixtureId)}"'), "Le schede Champions devono essere link diretti alle letture");
 assert(pageSource.includes('new URLSearchParams(location.search).get("match")'), "La pagina Champions deve gestire la lettura selezionata");
 assert(pageSource.includes("pilotReadingDetail(requestedFixture,pilot,backtest,squads,branding,h2h,motivationByFixture.get(requestedMatchId))"), "Dettaglio lettura Champions non collegato");
 assert(pageSource.includes("Fascia gol probabile"), "La lettura deve distinguere la fascia gol dal risultato esatto");
+assert(pageSource.includes("fixture.verdict.outcome"), "La lettura deve usare la selezione ricalcolata, comprese 1X e X2");
 assert(pageSource.includes("I gol attesi sono la media di tutti gli scenari"), "La lettura deve spiegare la differenza tra media gol e risultato esatto");
 const projectionSection = pageSource.match(/<section class="section reading-projection-prototype prediction-volume-section champions-reading-volume">[\s\S]*?<\/section>/)?.[0] || "";
 assert(projectionSection.includes("${goalForecast}${matchProjection}"), "Il pronostico quantitativo deve essere incluso prima dei volumi nella sezione proiezioni squadra");
