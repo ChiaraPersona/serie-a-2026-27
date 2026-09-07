@@ -65,12 +65,14 @@ assert(data.fixtures.some(fixture => fixture.verdict.outcome === "X2"), "Manca u
 assert(data.fixtures.filter(fixture => ["1X", "X2"].includes(fixture.verdict.outcome)).every(fixture => fixture.scoreForecast.primary.outcome === "X"), "Le doppie chance devono poter ripristinare il pareggio come risultato esatto principale");
 assert(pageSource.includes('href="champions-league.html?match=${esc(fixture.fixtureId)}"'), "Le schede Champions devono essere link diretti alle letture");
 assert(pageSource.includes('new URLSearchParams(location.search).get("match")'), "La pagina Champions deve gestire la lettura selezionata");
-assert(pageSource.includes("pilotReadingDetail(requestedFixture,pilot,backtest,squads,branding,h2h,motivationByFixture.get(requestedMatchId))"), "Dettaglio lettura Champions non collegato");
+assert(pageSource.includes("pilotReadingDetail(requestedFixture,pilot,backtest,squads,branding,h2h,motivationByFixture.get(requestedMatchId),styleProfiles)"), "Dettaglio lettura Champions non collegato");
+assert(pageSource.includes("Baseline tattica delle squadre"), "Baseline tattica non collegata alle Letture Champions");
+assert(pageSource.includes("attackChannelsPanel(styleByTeam.get(team.teamId))"), "Direzioni d'attacco non collegate ai volumi squadra Champions");
 assert(pageSource.includes("Fascia gol probabile"), "La lettura deve distinguere la fascia gol dal risultato esatto");
 assert(pageSource.includes("fixture.verdict.outcome"), "La lettura deve usare la selezione ricalcolata, comprese 1X e X2");
 assert(pageSource.includes("I gol attesi sono la media di tutti gli scenari"), "La lettura deve spiegare la differenza tra media gol e risultato esatto");
 const projectionSection = pageSource.match(/<section class="section reading-projection-prototype prediction-volume-section champions-reading-volume"[^>]*>[\s\S]*?<\/section>/)?.[0] || "";
-assert(projectionSection.includes("${goalForecast}<details") && projectionSection.includes("${matchProjection}"), "Il pronostico quantitativo deve essere incluso prima dei volumi nella sezione proiezioni squadra");
+assert(projectionSection.includes("${goalForecast}<section") && projectionSection.includes("${matchProjection}"), "Il pronostico quantitativo deve essere incluso prima dei volumi nella sezione proiezioni squadra");
 assert(projectionSection.includes("Storico distinto tra casa e trasferta."), "Le proiezioni Champions devono riprendere il testo introduttivo della Serie A");
 assert(projectionSection.includes("Tiri e corner combinano produzione per sede, valori concessi dall'avversaria e ultime otto gare"), "Le proiezioni Champions devono riprendere lo stile metodologico della Serie A");
 console.log(`OK pronostici Champions MD1: ${data.fixtures.length} gare · risultato e gol completi · volumi mancanti espliciti`);

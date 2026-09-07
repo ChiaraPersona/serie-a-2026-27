@@ -24,8 +24,15 @@ assert(app.innerHTML.includes('id="champions-forecast"'));
 assert(app.innerHTML.includes('id="champions-lineups"'));
 assert(app.innerHTML.includes('id="champions-context"'));
 assert(app.innerHTML.includes('id="champions-history"'));
-assert(app.innerHTML.includes('class="champions-reading-data-details"'));
+assert(app.innerHTML.includes('id="champions-tactics"'));
+assert(app.innerHTML.includes('id="champions-volumes"'));
 assert(app.innerHTML.includes('class="champions-reading-pending"'));
+assert(!app.innerHTML.includes("Motivazione, urgenza e pressione"));
+assert(app.innerHTML.includes("Baseline tattica delle squadre"));
+assert(app.innerHTML.includes("Lati d'attacco"));
+assert(app.innerHTML.includes("Canale prevalente: Fascia sinistra"));
+assert(app.innerHTML.includes("41.3%"));
+assert(app.innerHTML.includes("Baseline tattica WhoScored non integrata per questa squadra."));
 assert(app.innerHTML.includes("reading-lineup-grid"));
 assert.equal((app.innerHTML.match(/class="reading-lineup-card champions-reading-lineup-card"/g)||[]).length,2);
 assert.equal((app.innerHTML.match(/class="reading-lineup-field"/g)||[]).length,2);
@@ -55,7 +62,7 @@ assert(!app.innerHTML.includes("Over/Under"));
 assert(!app.innerHTML.includes("Rose registrate UEFA"));
 assert(!app.innerHTML.includes("Scenari e dipendenze"));
 assert(!app.innerHTML.includes("prediction-decision-panel"));
-for(const contract of ["reading-match-hero","reading-result-summary","reading-h2h-section","reading-referee-assignment","reading-info-grid","prediction-volume-section","prediction-match-volume","prediction-players-grid","prediction-booked-panel","prediction-mvp","reading-panel-grid","MyCombo"]){
+for(const contract of ["reading-match-hero","reading-result-summary","reading-h2h-section","reading-referee-assignment","reading-info-grid","reading-tactical-baseline","prediction-volume-section","prediction-match-volume","prediction-channels","prediction-players-grid","prediction-booked-panel","prediction-mvp","reading-panel-grid","MyCombo"]){
   assert(app.innerHTML.includes(contract),`Struttura Lettura Serie A mancante: ${contract}`);
 }
 assert(app.innerHTML.includes("Ultimi 5 scontri diretti disponibili"));
@@ -66,7 +73,7 @@ for(const historicalEvent of ["Toni Kroos","Rodrygo","Achraf Hakimi","Karim Benz
 assert(app.innerHTML.includes("autogol"));
 assert(app.innerHTML.includes("rigore"));
 assert(app.innerHTML.includes("minuto N/D"));
-const readingOrder=["prediction-volume-section","reading-info-grid","reading-referee-assignment","reading-h2h-section","reading-panel-grid"].map(contract=>app.innerHTML.indexOf(contract));
+const readingOrder=["prediction-volume-section","reading-info-grid","reading-tactical-baseline","reading-referee-assignment","reading-h2h-section","reading-panel-grid"].map(contract=>app.innerHTML.indexOf(contract));
 assert(readingOrder.every((position,index)=>position>=0&&(index===0||position>readingOrder[index-1])),"Ordine delle sezioni non allineato alla Lettura Serie A");
 assert(!app.innerHTML.includes("champions-calendar"));
 globalThis.location.search="?team=inter";
