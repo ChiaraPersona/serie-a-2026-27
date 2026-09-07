@@ -8,9 +8,9 @@ const model = JSON.parse(fs.readFileSync(path.join(root, "data/normalized/uefa-1
 const calendar = JSON.parse(fs.readFileSync(path.join(root, "data/normalized/champions-league-2026-27.json"), "utf8"));
 const teamMap = JSON.parse(fs.readFileSync(path.join(root, "data/sources/champions-team-history-map-2026-27.json"), "utf8"));
 const outputPath = path.join(root, "data/normalized/champions-1x2-2026-27.json");
-const motivationPath = path.join(root, "data/normalized/champions-motivation-md01-2026-27.json");
-const motivation = fs.existsSync(motivationPath) ? JSON.parse(fs.readFileSync(motivationPath, "utf8")) : null;
-const motivationByFixture = new Map((motivation?.fixtures || []).map(item => [item.matchId, item]));
+const motivationFiles = fs.readdirSync(path.join(root, "data/normalized")).filter(file => /^champions-motivation-md\d{2}-2026-27\.json$/.test(file)).sort();
+const motivationOutputs = motivationFiles.map(file => JSON.parse(fs.readFileSync(path.join(root, "data/normalized", file), "utf8")));
+const motivationByFixture = new Map(motivationOutputs.flatMap(output => output.fixtures || []).map(item => [item.matchId, item]));
 
 const fail = message => { throw new Error(`Pronostici Champions 1X2: ${message}`); };
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
@@ -88,7 +88,7 @@ fs.writeFileSync(outputPath, `${JSON.stringify({
     parameters: params,
     newTeamPrior: 1500,
     probabilityGate: model.probabilityGate,
-    motivation: { availableFixtures: motivationByFixture.size, formula: motivation?.methodology?.motivationStrengthFormula || null, rotationFormula: motivation?.methodology?.rotationFormula || null }
+    motivation: { availableFixtures: motivationByFixture.size, matchdays: motivationOutputs.map(output => output.matchday), formula: motivationOutputs[0]?.methodology?.motivationStrengthFormula || null, rotationFormula: motivationOutputs[0]?.methodology?.rotationFormula || null }
   },
   validation: model.holdoutSummary,
   summary: {

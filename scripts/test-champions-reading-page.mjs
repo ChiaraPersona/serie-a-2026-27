@@ -17,6 +17,11 @@ assert(app.innerHTML.includes("Inter"));
 assert(app.innerHTML.includes("Tiri totali"));
 assert(app.innerHTML.includes("Michael Oliver"));
 assert(app.innerHTML.includes("Gialli / gara"));
+assert(app.innerHTML.includes("Probabili formazioni"));
+assert(app.innerHTML.includes("Real Madrid · 4-2-3-1"));
+assert(app.innerHTML.includes("Inter · 3-5-2"));
+assert(app.innerHTML.includes("Giocatori: N/D"));
+assert(app.innerHTML.includes("Proiezione editoriale · non ufficiale"));
 for(const unavailableRole of ["Assistenti","IV ufficiale","VAR","AVAR"]){
   assert(!app.innerHTML.includes(`<dt>${unavailableRole}</dt>`),`Ruolo arbitrale non disponibile ancora visibile: ${unavailableRole}`);
 }

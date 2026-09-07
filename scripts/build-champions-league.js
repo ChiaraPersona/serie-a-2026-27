@@ -7,10 +7,12 @@ const root = path.resolve(__dirname, "..");
 const sourcePath = path.join(root, "data/sources/champions-league-2026-27.json");
 const brandingPath = path.join(root, "data/sources/champions-team-branding-2026-27.json");
 const refereeAssignmentsPath = path.join(root, "data/sources/champions-referee-assignments-2026-27.json");
+const probableFormationsPath = path.join(root, "data/sources/champions-probable-formations-md01-2026-27.json");
 const outputPath = path.join(root, "data/normalized/champions-league-2026-27.json");
 const source = JSON.parse(fs.readFileSync(sourcePath, "utf8"));
 const branding = JSON.parse(fs.readFileSync(brandingPath, "utf8"));
 const refereeAssignmentsSource = JSON.parse(fs.readFileSync(refereeAssignmentsPath, "utf8"));
+const probableFormationsSource = JSON.parse(fs.readFileSync(probableFormationsPath, "utf8"));
 
 const fail = message => { throw new Error(`Champions League: ${message}`); };
 if (source.schemaVersion !== 1 || source.season !== "2026-27" || source.phase !== "league") fail("fonte non valida");
@@ -50,6 +52,27 @@ if (kabakov?.cardsSampleMatches !== 24 || kabakov?.foulsPredictionEligible !== f
 if (massa?.alternateStatistics?.yellowCardsPerMatch !== 4.73 || massa?.alternateStatistics?.foulsPerMatch !== 27.64) fail("campione alternativo Massa mancante");
 const refereeWatchlist = new Map(refereeAssignmentsSource.watchlist.map(item => [item.fixtureId, item.reason]));
 
+if (probableFormationsSource.schemaVersion !== 1 || probableFormationsSource.season !== source.season || probableFormationsSource.matchday !== 1 || probableFormationsSource.status !== "editorial-probable") fail("fonte moduli probabili non valida");
+if (!Array.isArray(probableFormationsSource.fixtures) || probableFormationsSource.fixtures.length !== 18) fail("attesi 18 moduli probabili per la prima giornata");
+const formationPattern = /^(?:[1-5]-){2,3}[1-5]$/;
+const probableFormations = new Map();
+for (const item of probableFormationsSource.fixtures) {
+  const fixture = source.fixtures.find(candidate => candidate.id === item.fixtureId);
+  if (!fixture || fixture.matchday !== 1) fail(`${item.fixtureId}: moduli probabili senza gara della prima giornata`);
+  if (probableFormations.has(item.fixtureId)) fail(`${item.fixtureId}: moduli probabili duplicati`);
+  if (fixture.homeTeam !== item.homeTeam || fixture.awayTeam !== item.awayTeam) fail(`${item.fixtureId}: squadre dei moduli probabili non coerenti con il calendario`);
+  for (const formation of [item.homeFormation, item.awayFormation]) {
+    if (!formationPattern.test(formation) || formation.split("-").reduce((sum, value) => sum + Number(value), 0) !== 10) fail(`${item.fixtureId}: modulo probabile non valido`);
+  }
+  probableFormations.set(item.fixtureId, {
+    status: probableFormationsSource.status,
+    updatedAt: probableFormationsSource.updatedAt,
+    source: probableFormationsSource.source,
+    home: { team: item.homeTeam, formation: item.homeFormation, players: null },
+    away: { team: item.awayTeam, formation: item.awayFormation, players: null }
+  });
+}
+
 const ids = new Set();
 const matchups = new Set();
 const teams = new Map();
@@ -74,6 +97,7 @@ const fixtures = source.fixtures.map((fixture, index) => {
   }
   return {
     ...fixture,
+    probableFormation: probableFormations.get(fixture.id) || null,
     refereeAssignment: refereeAssignments.get(fixture.id) || null,
     refereeAttention: refereeWatchlist.get(fixture.id) || null,
     competition: "champions-league",
@@ -128,6 +152,7 @@ fs.writeFileSync(outputPath, JSON.stringify({
   refereeVerification: refereeAssignmentsSource.verification,
   refereeMethodology: refereeAssignmentsSource.methodology,
   refereeWatchlist: refereeAssignmentsSource.watchlist,
+  probableFormationsSource: probableFormationsSource.source,
   summary: { teams: teamList.length, matchdays: matchdays.size, fixtures: fixtures.length },
   teams: teamList,
   teamBranding,
