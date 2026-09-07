@@ -36,6 +36,9 @@ for (const fixture of data.fixtures) {
   assert.strictEqual(fixture.market.requestedVolumeMarketsAvailable, false, `${fixture.fixtureId}: quote volumi non pubblicate da Sisal`);
   assert.strictEqual(fixture.exactScores.length, 3, `${fixture.fixtureId}: risultati esatti`);
   assert.strictEqual(fixture.scoreForecast.display.length, 3, `${fixture.fixtureId}: configurazione risultati esatti`);
+  assert.strictEqual(fixture.scoreForecast.primary.outcome, fixture.favorite, `${fixture.fixtureId}: risultato principale incoerente con il segno`);
+  assert.strictEqual(fixture.scoreForecast.coherentWithVerdict, true, `${fixture.fixtureId}: flag di coerenza del risultato`);
+  assert(fixture.scoreForecast.modal && fixture.scoreForecast.display.some(row => row.score === fixture.scoreForecast.modal.score), `${fixture.fixtureId}: moda assoluta non esposta`);
   assert.deepStrictEqual(fixture.likelyBooked, [], `${fixture.fixtureId}: ammoniti mancanti non espliciti`);
   assert.strictEqual(fixture.mvpCandidate, null, `${fixture.fixtureId}: MVP non verificato deve restare N/D`);
   assert.deepStrictEqual(fixture.combinations, [], `${fixture.fixtureId}: MyCombo non validate devono restare vuote`);
@@ -61,4 +64,9 @@ assert(pageSource.includes('href="champions-league.html?match=${esc(fixture.fixt
 assert(pageSource.includes('new URLSearchParams(location.search).get("match")'), "La pagina Champions deve gestire la lettura selezionata");
 assert(pageSource.includes("pilotReadingDetail(requestedFixture,pilot,backtest,squads,branding,h2h,motivationByFixture.get(requestedMatchId))"), "Dettaglio lettura Champions non collegato");
 assert(pageSource.includes("Fascia gol probabile"), "La lettura deve distinguere la fascia gol dal risultato esatto");
+assert(pageSource.includes("I gol attesi sono la media di tutti gli scenari"), "La lettura deve spiegare la differenza tra media gol e risultato esatto");
+const projectionSection = pageSource.match(/<section class="section reading-projection-prototype prediction-volume-section champions-reading-volume">[\s\S]*?<\/section>/)?.[0] || "";
+assert(projectionSection.includes("${goalForecast}${matchProjection}"), "Il pronostico quantitativo deve essere incluso prima dei volumi nella sezione proiezioni squadra");
+assert(projectionSection.includes("Storico distinto tra casa e trasferta."), "Le proiezioni Champions devono riprendere il testo introduttivo della Serie A");
+assert(projectionSection.includes("Tiri e corner combinano produzione per sede, valori concessi dall'avversaria e ultime otto gare"), "Le proiezioni Champions devono riprendere lo stile metodologico della Serie A");
 console.log(`OK pronostici Champions MD1: ${data.fixtures.length} gare · risultato e gol completi · volumi mancanti espliciti`);

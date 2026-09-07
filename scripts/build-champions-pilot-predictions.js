@@ -202,6 +202,41 @@ function goalBand(matrix) {
   return { min, max, probabilityPct: round(probabilityPct, 1), interval: "p20-p80" };
 }
 
+function scoreForecast(matrix, favorite, resultProbabilities) {
+  const ordered = [...matrix].sort((a, b) => b.probability - a.probability || a.home + a.away - b.home - b.away);
+  const outcomeOf = score => score.home > score.away ? "1" : score.home === score.away ? "X" : "2";
+  const outcomeProbability = outcome => ({ "1": resultProbabilities.home, X: resultProbabilities.draw, "2": resultProbabilities.away })[outcome];
+  const decorate = (score, label) => {
+    const outcome = outcomeOf(score);
+    return {
+      score: `${score.home}-${score.away}`,
+      outcome,
+      label,
+      probabilityPct: round(score.probability * 100, 1),
+      conditionalProbabilityPct: round(score.probability / outcomeProbability(outcome) * 100, 1),
+      isAbsoluteMode: score === ordered[0]
+    };
+  };
+  const primaryScore = ordered.find(score => outcomeOf(score) === favorite);
+  const modalScore = ordered[0];
+  const primary = decorate(primaryScore, `Coerente col segno ${favorite}`);
+  const modal = decorate(modalScore, "Moda assoluta");
+  const display = [primary];
+  if (modal.score !== primary.score) display.push(modal);
+  for (const score of ordered) {
+    if (display.length === 3) break;
+    if (!display.some(item => item.score === `${score.home}-${score.away}`)) display.push(decorate(score, "Alternativa"));
+  }
+  return {
+    primary,
+    modal,
+    alternatives: display.slice(1),
+    display,
+    coherentWithVerdict: primary.outcome === favorite,
+    method: "Il risultato principale è il punteggio più probabile condizionato al segno 1X2 favorito; la moda assoluta resta separata quando indica un esito diverso."
+  };
+}
+
 const historicalOpeningFixtures = championsHistory.matches.filter(match =>
   match.status === "finished" &&
   match.matchday === 1 &&
@@ -252,7 +287,8 @@ const fixtures = pilotFixtures.map(fixture => {
   });
   const matchProjection = detailedVolumesAvailable ? { shotsTotal: combinedMetric("shotsTotal"), shotsOnTarget: combinedMetric("shotsOnTarget"), corners: combinedMetric("corners") } : null;
   const matchCards = detailedVolumesAvailable ? { central: round(teamProjections[0].cards.central + teamProjections[1].cards.central), sd: round(Math.sqrt(teamProjections[0].cards.sd ** 2 + teamProjections[1].cards.sd ** 2)) } : null;
-  const exactScores = [...fitted.matrix].sort((a, b) => b.probability - a.probability).slice(0, 3).map(row => ({ score: `${row.home}-${row.away}`, probabilityPct: round(row.probability * 100, 1) }));
+  const scores = scoreForecast(fitted.matrix, result.favorite, result.probabilities);
+  const exactScores = scores.display;
   return {
     fixtureId: fixture.id,
     date: fixture.date,
@@ -267,7 +303,7 @@ const fixtures = pilotFixtures.map(fixture => {
     expectedGoals: { home: round(fitted.home), away: round(fitted.away), total: round(fitted.home + fitted.away), domesticTotalPrior: detailedVolumesAvailable ? round(totalPrior) : null, championsOpeningTotalPrior: detailedVolumesAvailable ? null : round(historicalOpeningTotalPrior), method: detailedVolumesAvailable ? "lambda Poisson adattate alle probabilità 1X2 UEFA con prior gol domestico" : "lambda Poisson adattate alle probabilità 1X2 UEFA con prior storico della prima giornata Champions" },
     goalBand: goalBand(fitted.matrix),
     exactScores,
-    scoreForecast: { primary: exactScores[0], display: exactScores },
+    scoreForecast: scores,
     verdict: { outcome: result.favorite, label: result.favorite === "1" ? fixture.homeTeam : result.favorite === "2" ? fixture.awayTeam : "Pareggio" },
     surprise: { value: null, level: "N/D", status: "unavailable" },
     goals: goalLines(fitted.matrix).map(line => {
