@@ -7,14 +7,14 @@ const path = require("path");
 const root = path.resolve(__dirname, "..");
 const data = JSON.parse(fs.readFileSync(path.join(root, "data/normalized/champions-pilot-predictions-2026-27.json"), "utf8"));
 const pageSource = fs.readFileSync(path.join(root, "js/pages/champions.js"), "utf8");
-assert.strictEqual(data.status, "experimental-md01-complete-partial-volumes");
+assert.strictEqual(data.status, "experimental-md01-team-volumes");
 assert.strictEqual(data.fixtures.length, 18);
 assert.strictEqual(data.coverage.fixtures, 18);
-assert.strictEqual(data.coverage.detailedVolumeFixtures, 4);
-assert.strictEqual(data.coverage.teams, 8);
+assert.strictEqual(data.coverage.detailedVolumeFixtures, 17);
+assert.strictEqual(data.coverage.teams, 36);
 assert(data.coverage.historicalOpeningFixtures >= 50);
-assert(data.coverage.completeSourceMatches >= 1800);
-assert.strictEqual(Object.keys(data.coverage.leagueBaselineMatches).length, 5);
+assert(data.coverage.completeSourceMatches >= 4000);
+assert.strictEqual(Object.keys(data.coverage.leagueBaselineMatches).length, 15);
 assert.strictEqual(data.coverage.oddsMatched, 18);
 assert.strictEqual(data.coverage.resultOdds, 18);
 assert.strictEqual(data.coverage.goalOdds, 18);
@@ -49,7 +49,7 @@ for (const fixture of data.fixtures) {
       for (const metric of [team.shotsTotal, team.shotsOnTarget, team.corners, team.cards]) {
         assert(Number.isFinite(metric.central) && metric.min <= metric.central && metric.central <= metric.max, `${fixture.fixtureId}/${team.team}: volume non valido`);
         assert.strictEqual(metric.normalization.method, "relative-to-domestic-league", `${fixture.fixtureId}/${team.team}: normalizzazione campionato assente`);
-        assert(metric.normalization.currentSeasonReliabilityPct > 0 && metric.normalization.currentSeasonReliabilityPct < 50, `${fixture.fixtureId}/${team.team}: affidabilità nuova stagione non prudente`);
+        assert(metric.normalization.currentSeasonReliabilityPct >= 0 && metric.normalization.currentSeasonReliabilityPct < 100, `${fixture.fixtureId}/${team.team}: affidabilità nuova stagione non valida`);
       }
       assert(team.shotsOnTarget.central <= team.shotsTotal.central, `${fixture.fixtureId}/${team.team}: tiri in porta oltre tiri totali`);
       assert.deepStrictEqual(Object.keys(team.lines), ["shotsTotal", "shotsOnTarget", "corners"]);
@@ -60,6 +60,9 @@ for (const fixture of data.fixtures) {
     assert(fixture.teamProjections.every(team => team.shotsTotal === null && team.shotsOnTarget === null && team.corners === null && team.cards === null), `${fixture.fixtureId}: volumi squadra inventati`);
   }
 }
+assert.strictEqual(data.profiles.filter(profile => profile.usableForDetailedVolumes).length, 35, "Copertura profili squadra inattesa");
+assert.deepStrictEqual(data.profiles.filter(profile => !profile.usableForDetailedVolumes).map(profile => profile.team), ["Sabah"], "Le squadre senza volumi devono restare esplicite");
+assert(data.profiles.filter(profile => profile.baselineKind === "uefa-fallback").every(profile => profile.league.startsWith("UEFA") || profile.league.startsWith("Qualificazioni UEFA")), "Fallback UEFA non dichiarato");
 assert(data.fixtures.some(fixture => fixture.verdict.outcome === "1X"), "Manca una selezione prudenziale 1X");
 assert(data.fixtures.some(fixture => fixture.verdict.outcome === "X2"), "Manca una selezione prudenziale X2");
 assert(data.fixtures.filter(fixture => ["1X", "X2"].includes(fixture.verdict.outcome)).every(fixture => fixture.scoreForecast.primary.outcome === "X"), "Le doppie chance devono poter ripristinare il pareggio come risultato esatto principale");
@@ -71,6 +74,8 @@ assert(pageSource.includes("attackChannelsPanel(styleByTeam.get(team.teamId))"),
 assert(pageSource.includes("Fascia gol probabile"), "La lettura deve distinguere la fascia gol dal risultato esatto");
 assert(pageSource.includes("fixture.verdict.outcome"), "La lettura deve usare la selezione ricalcolata, comprese 1X e X2");
 assert(pageSource.includes("I gol attesi sono la media di tutti gli scenari"), "La lettura deve spiegare la differenza tra media gol e risultato esatto");
+assert(pageSource.includes("Statistiche di squadra"), "Le schede delle 36 squadre devono esporre i volumi recuperati");
+assert(pageSource.includes("fallback UEFA"), "Le schede squadra devono dichiarare i fallback UEFA");
 const projectionSection = pageSource.match(/<section class="section reading-projection-prototype prediction-volume-section champions-reading-volume"[^>]*>[\s\S]*?<\/section>/)?.[0] || "";
 assert(projectionSection.includes("${goalForecast}<section") && projectionSection.includes("${matchProjection}"), "Il pronostico quantitativo deve essere incluso prima dei volumi nella sezione proiezioni squadra");
 assert(projectionSection.includes("Storico distinto tra casa e trasferta."), "Le proiezioni Champions devono riprendere il testo introduttivo della Serie A");

@@ -63,6 +63,7 @@ const leagueBaselines = source.teams.reduce((output, team) => {
 function teamRows(team) {
   const rows = [];
   for (const match of source.matches) {
+    if (match.coverage !== "complete") continue;
     const side = match.home.providerTeamId === team.espnTeamId ? "home" : match.away.providerTeamId === team.espnTeamId ? "away" : null;
     if (!side) continue;
     const own = match[side], opponent = match[side === "home" ? "away" : "home"];
@@ -80,6 +81,8 @@ function teamRows(team) {
 
 function profile(team) {
   const rows = teamRows(team);
+  const homeMatches = rows.filter(row => row.venue === "home").length;
+  const awayMatches = rows.filter(row => row.venue === "away").length;
   const venue = key => {
     const selected = key === "overall" ? rows : rows.filter(row => row.venue === key);
     return Object.fromEntries(metrics.map(metric => [metric, { for: summarize(selected.map(row => row.for[metric])), against: summarize(selected.map(row => row.against[metric])) }]));
@@ -95,7 +98,11 @@ function profile(team) {
     });
     return [metric, { matches: recentRows.length, decay: 0.82, for: { ...summarize(recentRows.map(row => row.for[metric])), weightedMean: round(produced / totalWeight, 3) }, against: { ...summarize(recentRows.map(row => row.against[metric])), weightedMean: round(conceded / totalWeight, 3) } }];
   }));
-  return { teamId: team.id, team: team.name, league: team.leagueName, leagueCode: team.league, matches: rows.length, currentSeasonMatches: rows.filter(row => row.season === "2026-27").length, venues: { overall: venue("overall"), home: venue("home"), away: venue("away") }, recent };
+  const venues = { overall: venue("overall"), home: venue("home"), away: venue("away") };
+  const usableForDetailedVolumes = rows.length >= 6 && homeMatches >= 2 && awayMatches >= 2 && metrics.every(metric =>
+    [venues.overall, venues.home, venues.away].every(split => Number.isFinite(split[metric].for.mean) && Number.isFinite(split[metric].against.mean))
+  );
+  return { teamId: team.id, team: team.name, league: team.leagueName, leagueCode: team.league, baselineKind: team.baselineKind || "domestic", matches: rows.length, homeMatches, awayMatches, currentSeasonMatches: rows.filter(row => row.season === "2026-27").length, usableForDetailedVolumes, venues, recent };
 }
 
 const profiles = source.teams.map(profile);
@@ -261,7 +268,7 @@ function normalizedMarket(market) {
 const fixtures = pilotFixtures.map(fixture => {
   const home = profileById.get(nameToId.get(fixture.homeTeam)) || null;
   const away = profileById.get(nameToId.get(fixture.awayTeam)) || null;
-  const detailedVolumesAvailable = Boolean(home && away);
+  const detailedVolumesAvailable = Boolean(home?.usableForDetailedVolumes && away?.usableForDetailedVolumes);
   const result = resultByFixture.get(fixture.id);
   const fixtureMotivation = motivationByFixture.get(fixture.id) || null;
   const oddsEvent = oddsByFixture.get(fixture.id) || null;
@@ -345,9 +352,9 @@ const output = {
   competition: "champions-league",
   season: "2026-27",
   generatedAt: [source.retrievedAt, odds.retrievedAt].filter(Boolean).sort().at(-1),
-  status: "experimental-md01-complete-partial-volumes",
-  scope: "Prima giornata completa: 18 pronostici risultato e gol; volumi dettagliati sulle quattro gare con campioni domestici integrati",
-  warning: "Stime preliminari indipendenti dalle quote. Tutte le gare usano il modello UEFA Elo 1X2; quando mancano profili domestici omogenei, i gol adottano il prior storico della prima giornata Champions e tiri, corner, falli e cartellini restano N/D. Moduli probabili, assenze e arbitri non modificano le proiezioni.",
+  status: "experimental-md01-team-volumes",
+  scope: `Prima giornata completa: 18 pronostici risultato e gol; volumi dettagliati su ${fixtures.filter(item => item.dataQuality.detailedVolumesAvailable).length} gare con profili verificabili delle 36 partecipanti`,
+  warning: "Stime preliminari indipendenti dalle quote. Tutte le gare usano il modello UEFA Elo 1X2; i volumi usano la baseline domestica e, solo dove il provider non espone il campionato, un fallback UEFA dichiarato. Se il campione non supera i requisiti minimi, tiri, corner, falli e cartellini restano N/D. Moduli probabili, assenze e arbitri non modificano le proiezioni.",
   readingTemplate: {
     id: "serie-a-reading-v1",
     graphics: "champions",
@@ -357,7 +364,7 @@ const output = {
   methodology: {
     result: "Modello UEFA Elo 1X2 già validato cronologicamente.",
     goals: `Poisson: totale iniziale dai gol prodotti/concessi per sede e forma recente quando disponibili; altrimenti prior di ${round(historicalOpeningTotalPrior)} gol calcolato su ${historicalOpeningFixtures.length} gare di apertura Champions 2023/24-2025/26. Lambda adattate alle probabilità 1X2 senza usare quote.`,
-    volumes: "Produzione per sede e volume concesso sono normalizzati rispetto alle baseline complete dei cinque campionati. Il peso recente massimo del 20% è ridotto in base all'affidabilità delle gare 2026/27; intervallo p20-p80 approssimato dalla dispersione osservata.",
+    volumes: "Produzione per sede e volume concesso sono normalizzati rispetto alla baseline del campionato indicato nel profilo. I fallback UEFA sono marcati esplicitamente. Servono almeno sei gare complete, di cui due in casa e due in trasferta; il peso recente massimo del 20% è ridotto in base all'affidabilità delle gare 2026/27; intervallo p20-p80 approssimato dalla dispersione osservata.",
     cards: "Cartellini gialli di squadra con lo stesso blending; il correttore motivazionale disciplinare è esposto per audit ma resta disattivato finché non è calibrato con stile e arbitro.",
     thresholdPolicy: "Le probabilità sulle soglie sono diagnostiche e non costituiscono selezioni di valore finché non sono disponibili quote aggiornate."
   },
