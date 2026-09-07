@@ -7,6 +7,7 @@ const root = path.resolve(__dirname, "..");
 const read = relative => JSON.parse(fs.readFileSync(path.join(root, relative), "utf8"));
 const source = read("data/sources/champions-pilot-match-stats-2025-27.json");
 const calendar = read("data/normalized/champions-league-2026-27.json");
+const championsHistory = read("data/normalized/champions-history-2023-26.json");
 const resultModel = read("data/normalized/champions-1x2-2026-27.json");
 const motivation = read("data/normalized/champions-motivation-md01-2026-27.json");
 const odds = read("data/normalized/odds/sisal/champions-league.json");
@@ -184,7 +185,34 @@ function goalLines(matrix) {
   });
 }
 
-const pilotFixtures = calendar.fixtures.filter(fixture => fixture.matchday === 1 && nameToId.has(fixture.homeTeam) && nameToId.has(fixture.awayTeam));
+function goalBand(matrix) {
+  const totals = new Map();
+  for (const row of matrix) totals.set(row.home + row.away, (totals.get(row.home + row.away) || 0) + row.probability);
+  const ordered = [...totals.entries()].sort((a, b) => a[0] - b[0]);
+  const quantileTotal = probability => {
+    let cumulative = 0;
+    for (const [goals, chance] of ordered) {
+      cumulative += chance;
+      if (cumulative >= probability) return goals;
+    }
+    return ordered.at(-1)?.[0] ?? null;
+  };
+  const min = quantileTotal(0.2), max = quantileTotal(0.8);
+  const probabilityPct = ordered.filter(([goals]) => goals >= min && goals <= max).reduce((sum, [, chance]) => sum + chance, 0) * 100;
+  return { min, max, probabilityPct: round(probabilityPct, 1), interval: "p20-p80" };
+}
+
+const historicalOpeningFixtures = championsHistory.matches.filter(match =>
+  match.status === "finished" &&
+  match.matchday === 1 &&
+  ["Group stage", "League phase"].includes(match.roundName) &&
+  Number.isFinite(match.score90?.home) &&
+  Number.isFinite(match.score90?.away)
+);
+const historicalOpeningTotalPrior = historicalOpeningFixtures.reduce((sum, match) => sum + match.score90.home + match.score90.away, 0) / historicalOpeningFixtures.length;
+if (!Number.isFinite(historicalOpeningTotalPrior) || historicalOpeningFixtures.length < 50) throw new Error("Baseline gol Champions della prima giornata insufficiente");
+
+const pilotFixtures = calendar.fixtures.filter(fixture => fixture.matchday === 1);
 const resultByFixture = new Map(resultModel.fixtures.map(item => [item.fixtureId, item]));
 const motivationByFixture = new Map(motivation.fixtures.map(item => [item.matchId, item]));
 const oddsByFixture = new Map(odds.events.filter(item => item.canonicalMatchId).map(item => [item.canonicalMatchId, item]));
@@ -195,23 +223,26 @@ function normalizedMarket(market) {
   return Object.fromEntries(Object.entries(prices).map(([name, price]) => [name, { odds: price, noMarginPct: round(100 / price / total, 1) }]));
 }
 const fixtures = pilotFixtures.map(fixture => {
-  const home = profileById.get(nameToId.get(fixture.homeTeam));
-  const away = profileById.get(nameToId.get(fixture.awayTeam));
+  const home = profileById.get(nameToId.get(fixture.homeTeam)) || null;
+  const away = profileById.get(nameToId.get(fixture.awayTeam)) || null;
+  const detailedVolumesAvailable = Boolean(home && away);
   const result = resultByFixture.get(fixture.id);
   const fixtureMotivation = motivationByFixture.get(fixture.id) || null;
   const oddsEvent = oddsByFixture.get(fixture.id) || null;
   const resultMarket = oddsEvent?.markets.find(market => market.marketName === "1X2 ESITO FINALE") || null;
   const resultPrices = normalizedMarket(resultMarket);
-  const rawHomeGoals = blendMetric(home, away, "home", "goals", 0.2);
-  const rawAwayGoals = blendMetric(away, home, "away", "goals", 0.2);
-  const totalPrior = clamp(rawHomeGoals.central + rawAwayGoals.central, 1.6, 4.2);
+  const rawHomeGoals = detailedVolumesAvailable ? blendMetric(home, away, "home", "goals", 0.2) : null;
+  const rawAwayGoals = detailedVolumesAvailable ? blendMetric(away, home, "away", "goals", 0.2) : null;
+  const totalPrior = detailedVolumesAvailable
+    ? clamp(rawHomeGoals.central + rawAwayGoals.central, 1.6, 4.2)
+    : clamp(historicalOpeningTotalPrior, 1.6, 4.2);
   const fitted = fitGoals(totalPrior, result.probabilities);
   const teamProjections = [
-    { teamId: home.teamId, team: home.team, venue: "home", expectedGoals: round(fitted.home), shotsTotal: blendMetric(home, away, "home", "totalShots"), shotsOnTarget: blendMetric(home, away, "home", "shotsOnTarget"), corners: blendMetric(home, away, "home", "wonCorners"), fouls: blendMetric(home, away, "home", "foulsCommitted"), cards: blendMetric(home, away, "home", "yellowCards") },
-    { teamId: away.teamId, team: away.team, venue: "away", expectedGoals: round(fitted.away), shotsTotal: blendMetric(away, home, "away", "totalShots"), shotsOnTarget: blendMetric(away, home, "away", "shotsOnTarget"), corners: blendMetric(away, home, "away", "wonCorners"), fouls: blendMetric(away, home, "away", "foulsCommitted"), cards: blendMetric(away, home, "away", "yellowCards") }
+    { teamId: home?.teamId || null, team: fixture.homeTeam, venue: "home", expectedGoals: round(fitted.home), shotsTotal: detailedVolumesAvailable ? blendMetric(home, away, "home", "totalShots") : null, shotsOnTarget: detailedVolumesAvailable ? blendMetric(home, away, "home", "shotsOnTarget") : null, corners: detailedVolumesAvailable ? blendMetric(home, away, "home", "wonCorners") : null, fouls: detailedVolumesAvailable ? blendMetric(home, away, "home", "foulsCommitted") : null, cards: detailedVolumesAvailable ? blendMetric(home, away, "home", "yellowCards") : null },
+    { teamId: away?.teamId || null, team: fixture.awayTeam, venue: "away", expectedGoals: round(fitted.away), shotsTotal: detailedVolumesAvailable ? blendMetric(away, home, "away", "totalShots") : null, shotsOnTarget: detailedVolumesAvailable ? blendMetric(away, home, "away", "shotsOnTarget") : null, corners: detailedVolumesAvailable ? blendMetric(away, home, "away", "wonCorners") : null, fouls: detailedVolumesAvailable ? blendMetric(away, home, "away", "foulsCommitted") : null, cards: detailedVolumesAvailable ? blendMetric(away, home, "away", "yellowCards") : null }
   ];
   teamProjections.forEach(team => {
-    team.lines = { shotsTotal: overLines(team.shotsTotal, [8.5, 10.5, 12.5, 14.5, 16.5]), shotsOnTarget: overLines(team.shotsOnTarget, [2.5, 3.5, 4.5, 5.5, 6.5]), corners: overLines(team.corners, [3.5, 4.5, 5.5, 6.5]) };
+    team.lines = detailedVolumesAvailable ? { shotsTotal: overLines(team.shotsTotal, [8.5, 10.5, 12.5, 14.5, 16.5]), shotsOnTarget: overLines(team.shotsOnTarget, [2.5, 3.5, 4.5, 5.5, 6.5]), corners: overLines(team.corners, [3.5, 4.5, 5.5, 6.5]) } : { shotsTotal: [], shotsOnTarget: [], corners: [] };
   });
   const combinedMetric = metric => ({
     central: round(teamProjections[0][metric].central + teamProjections[1][metric].central, 1),
@@ -219,8 +250,8 @@ const fixtures = pilotFixtures.map(fixture => {
     max: round(teamProjections[0][metric].max + teamProjections[1][metric].max, 1),
     interval: "p20-p80-independent"
   });
-  const matchProjection = { shotsTotal: combinedMetric("shotsTotal"), shotsOnTarget: combinedMetric("shotsOnTarget"), corners: combinedMetric("corners") };
-  const matchCards = { central: round(teamProjections[0].cards.central + teamProjections[1].cards.central), sd: round(Math.sqrt(teamProjections[0].cards.sd ** 2 + teamProjections[1].cards.sd ** 2)) };
+  const matchProjection = detailedVolumesAvailable ? { shotsTotal: combinedMetric("shotsTotal"), shotsOnTarget: combinedMetric("shotsOnTarget"), corners: combinedMetric("corners") } : null;
+  const matchCards = detailedVolumesAvailable ? { central: round(teamProjections[0].cards.central + teamProjections[1].cards.central), sd: round(Math.sqrt(teamProjections[0].cards.sd ** 2 + teamProjections[1].cards.sd ** 2)) } : null;
   const exactScores = [...fitted.matrix].sort((a, b) => b.probability - a.probability).slice(0, 3).map(row => ({ score: `${row.home}-${row.away}`, probabilityPct: round(row.probability * 100, 1) }));
   return {
     fixtureId: fixture.id,
@@ -228,12 +259,13 @@ const fixtures = pilotFixtures.map(fixture => {
     kickoff: fixture.kickoff,
     homeTeam: fixture.homeTeam,
     awayTeam: fixture.awayTeam,
-    status: "preliminary-no-odds",
+    status: detailedVolumesAvailable ? "experimental-detailed" : "experimental-result-goals",
     probabilities: result.displayPercentages,
     motivation: fixtureMotivation,
     favorite: result.favorite,
     confidence: result.confidence,
-    expectedGoals: { home: round(fitted.home), away: round(fitted.away), total: round(fitted.home + fitted.away), domesticTotalPrior: round(totalPrior), method: "lambda Poisson adattate alle probabilità 1X2 UEFA con prior gol domestico" },
+    expectedGoals: { home: round(fitted.home), away: round(fitted.away), total: round(fitted.home + fitted.away), domesticTotalPrior: detailedVolumesAvailable ? round(totalPrior) : null, championsOpeningTotalPrior: detailedVolumesAvailable ? null : round(historicalOpeningTotalPrior), method: detailedVolumesAvailable ? "lambda Poisson adattate alle probabilità 1X2 UEFA con prior gol domestico" : "lambda Poisson adattate alle probabilità 1X2 UEFA con prior storico della prima giornata Champions" },
+    goalBand: goalBand(fitted.matrix),
     exactScores,
     scoreForecast: { primary: exactScores[0], display: exactScores },
     verdict: { outcome: result.favorite, label: result.favorite === "1" ? fixture.homeTeam : result.favorite === "2" ? fixture.awayTeam : "Pareggio" },
@@ -249,7 +281,7 @@ const fixtures = pilotFixtures.map(fixture => {
     mvpCandidate: null,
     combinations: [],
     decisionSupport: { status: "unavailable", scenarios: [], correlationGraph: null },
-    cards: { ...matchCards, lines: overLines(matchCards, [3.5, 4.5, 5.5]), refereeAdjustment: null, refereeStatus: "N/D · designazione non integrata", disciplinaryMotivationAdjustment: fixtureMotivation ? { home: fixtureMotivation.home.motivation.modelAdjustments.disciplinaryMotivationAdjustment, away: fixtureMotivation.away.motivation.modelAdjustments.disciplinaryMotivationAdjustment, applied: false } : null },
+    cards: matchCards ? { ...matchCards, lines: overLines(matchCards, [3.5, 4.5, 5.5]), refereeAdjustment: null, refereeStatus: "N/D · designazione non integrata", disciplinaryMotivationAdjustment: fixtureMotivation ? { home: fixtureMotivation.home.motivation.modelAdjustments.disciplinaryMotivationAdjustment, away: fixtureMotivation.away.motivation.modelAdjustments.disciplinaryMotivationAdjustment, applied: false } : null } : { central: null, sd: null, lines: [], refereeAdjustment: null, refereeStatus: "N/D · profili squadra non integrati", disciplinaryMotivationAdjustment: null },
     market: {
       provider: oddsEvent ? "Sisal" : null,
       retrievedAt: oddsEvent ? odds.retrievedAt : null,
@@ -260,19 +292,19 @@ const fixtures = pilotFixtures.map(fixture => {
       }),
       requestedVolumeMarketsAvailable: Boolean(oddsEvent?.markets.some(item => /TIRI TOTALI|TIRI IN PORTA|U\/O CORNER|CARTELLINI/.test(item.marketName)))
     },
-    dataQuality: { teamSamples: [home.matches, away.matches], currentSeasonSamples: [home.currentSeasonMatches, away.currentSeasonMatches], odds: oddsEvent ? odds.retrievedAt : "N/D", lineups: fixture.probableFormation?.home.players?.length === 11 && fixture.probableFormation?.away.players?.length === 11 ? "undici editoriali disponibili · non applicati al modello" : fixture.probableFormation ? "moduli probabili disponibili · undici N/D" : "N/D", referee: "N/D", label: "pilot statistico" }
+    dataQuality: { detailedVolumesAvailable, teamSamples: detailedVolumesAvailable ? [home.matches, away.matches] : ["N/D", "N/D"], currentSeasonSamples: detailedVolumesAvailable ? [home.currentSeasonMatches, away.currentSeasonMatches] : ["N/D", "N/D"], odds: oddsEvent ? odds.retrievedAt : "N/D", lineups: fixture.probableFormation?.home.players?.length === 11 && fixture.probableFormation?.away.players?.length === 11 ? "undici editoriali disponibili · non applicati al modello" : fixture.probableFormation ? "moduli probabili disponibili · undici N/D" : "N/D", referee: "N/D", label: detailedVolumesAvailable ? "pilot statistico completo" : "pronostico risultato e gol" }
   };
 });
 
-if (fixtures.length !== 4) throw new Error(`Pilot Champions incompleto: attese 4 gare, trovate ${fixtures.length}`);
+if (fixtures.length !== 18) throw new Error(`Prima giornata Champions incompleta: attese 18 gare, trovate ${fixtures.length}`);
 const output = {
   schemaVersion: 1,
   competition: "champions-league",
   season: "2026-27",
   generatedAt: [source.retrievedAt, odds.retrievedAt].filter(Boolean).sort().at(-1),
-  status: "experimental-pilot-partial-odds",
-  scope: "Prima giornata, sole gare delle quattro squadre italiane",
-  warning: "Stime preliminari indipendenti dalle quote. Volumi e cartellini usano baseline normalizzate dei cinque campionati domestici e pesi recenti legati all'affidabilità del campione. I moduli probabili sono esposti come contesto editoriale ma non modificano le proiezioni; undici titolari, assenze e arbitri non sono integrati nel modello.",
+  status: "experimental-md01-complete-partial-volumes",
+  scope: "Prima giornata completa: 18 pronostici risultato e gol; volumi dettagliati sulle quattro gare con campioni domestici integrati",
+  warning: "Stime preliminari indipendenti dalle quote. Tutte le gare usano il modello UEFA Elo 1X2; quando mancano profili domestici omogenei, i gol adottano il prior storico della prima giornata Champions e tiri, corner, falli e cartellini restano N/D. Moduli probabili, assenze e arbitri non modificano le proiezioni.",
   readingTemplate: {
     id: "serie-a-reading-v1",
     graphics: "champions",
@@ -281,15 +313,15 @@ const output = {
   },
   methodology: {
     result: "Modello UEFA Elo 1X2 già validato cronologicamente.",
-    goals: "Poisson: totale iniziale dai gol prodotti/concessi per sede e forma recente; lambda adattate alle probabilità 1X2 senza usare quote.",
+    goals: `Poisson: totale iniziale dai gol prodotti/concessi per sede e forma recente quando disponibili; altrimenti prior di ${round(historicalOpeningTotalPrior)} gol calcolato su ${historicalOpeningFixtures.length} gare di apertura Champions 2023/24-2025/26. Lambda adattate alle probabilità 1X2 senza usare quote.`,
     volumes: "Produzione per sede e volume concesso sono normalizzati rispetto alle baseline complete dei cinque campionati. Il peso recente massimo del 20% è ridotto in base all'affidabilità delle gare 2026/27; intervallo p20-p80 approssimato dalla dispersione osservata.",
     cards: "Cartellini gialli di squadra con lo stesso blending; il correttore motivazionale disciplinare è esposto per audit ma resta disattivato finché non è calibrato con stile e arbitro.",
     thresholdPolicy: "Le probabilità sulle soglie sono diagnostiche e non costituiscono selezioni di valore finché non sono disponibili quote aggiornate."
   },
-  coverage: { fixtures: fixtures.length, teams: profiles.length, sourceMatches: source.summary.matches, completeSourceMatches: source.summary.completeMatches, leagueBaselineMatches: Object.fromEntries(Object.values(leagueBaselines).map(item => [item.league, item.matches])), oddsMatched: fixtures.filter(item => item.market.provider).length, resultOdds: fixtures.filter(item => item.market.result1x2.every(row => row.odds)).length, goalOdds: fixtures.filter(item => item.goals.every(row => row.market)).length, requestedVolumeOdds: fixtures.filter(item => item.market.requestedVolumeMarketsAvailable).length, referees: 0, probableFormations: fixtures.filter(item => item.dataQuality.lineups !== "N/D").length, probableLineupsAvailable: fixtures.filter(item => item.dataQuality.lineups.startsWith("undici editoriali")).length, probableLineupsApplied: 0, probableLineups: 0 },
+  coverage: { fixtures: fixtures.length, detailedVolumeFixtures: fixtures.filter(item => item.dataQuality.detailedVolumesAvailable).length, teams: profiles.length, historicalOpeningFixtures: historicalOpeningFixtures.length, sourceMatches: source.summary.matches, completeSourceMatches: source.summary.completeMatches, leagueBaselineMatches: Object.fromEntries(Object.values(leagueBaselines).map(item => [item.league, item.matches])), oddsMatched: fixtures.filter(item => item.market.provider).length, resultOdds: fixtures.filter(item => item.market.result1x2.every(row => row.odds)).length, goalOdds: fixtures.filter(item => item.goals.every(row => row.market)).length, requestedVolumeOdds: fixtures.filter(item => item.market.requestedVolumeMarketsAvailable).length, referees: fixtures.filter(item => item.dataQuality.referee !== "N/D").length, probableFormations: fixtures.filter(item => item.dataQuality.lineups !== "N/D").length, probableLineupsAvailable: fixtures.filter(item => item.dataQuality.lineups.startsWith("undici editoriali")).length, probableLineupsApplied: 0, probableLineups: 0 },
   leagueBaselines,
   profiles,
   fixtures
 };
 fs.writeFileSync(outputPath, `${JSON.stringify(output, null, 2)}\n`);
-console.log(`OK pronostici pilot Champions: ${fixtures.length} gare · ${profiles.length} profili · ${source.summary.completeMatches} referti completi`);
+console.log(`OK pronostici Champions MD1: ${fixtures.length} gare · ${fixtures.filter(item => item.dataQuality.detailedVolumesAvailable).length} con volumi · prior storico ${round(historicalOpeningTotalPrior)} gol`);
