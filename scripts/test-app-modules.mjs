@@ -100,4 +100,7 @@ assert.doesNotMatch(championsFixtureCard, /referee|Arbitro/, "Champions: riferim
 assert.match(championsPage, /refereeAssignment/, "Champions: dati arbitro non collegati alle gare");
 assert.doesNotMatch(championsPage, /Partite da monitorare/, "Champions: watchlist disciplinare ancora presente nella Home");
 assert.match(championsCss, /\.champions-pilot-card\.match\.fixture-card \.team-name,\.champions-fixture\.match\.fixture-card \.team-name\{color:#fff\}/, "Champions: nomi squadra non bianchi nelle card");
+assert.doesNotMatch(championsCss, /background\s*:\s*(?:white|#fff(?:fff)?|rgba\(255\s*,\s*255\s*,\s*255)/i, "Champions: rilevato un fondino bianco, vietato nella pagina");
+assert.match(championsCss, /body\[data-page="champions"\] \.footer-brand-mark\{background:#71b8ff\}/, "Champions: il marchio nel footer non protegge la regola senza fondini bianchi");
+assert.match(championsCss, /\.champions-fixture\.match\.fixture-card\{[^}]*background:linear-gradient/, "Champions: le card calendario non sovrascrivono il fondino chiaro condiviso");
 console.log(`OK moduli applicazione: ${pageFiles.length} pagine e 4 componenti condivisi`);

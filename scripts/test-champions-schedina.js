@@ -1,18 +1,25 @@
-const fs = require("fs");
-const path = require("path");
-const assert = require("assert");
-const root = path.resolve(__dirname, "..");
-const data = JSON.parse(fs.readFileSync(path.join(root, "data/normalized/schedina-champions-md01.json"), "utf8"));
-
-assert.equal(data.slips.length, 2);
-assert.ok(data.exclusions.includes("risultati esatti"));
-const legs = data.slips.flatMap(slip => {
-  assert.equal(slip.legs.length, 4, `${slip.id}: non è un poker`);
-  assert.equal(new Set(slip.legs.map(leg => leg.matchId)).size, 4, `${slip.id}: partita ripetuta`);
-  return slip.legs;
-});
-assert.equal(new Set(legs.map(leg => leg.player)).size, 8, "giocatori ripetuti");
-assert.equal(new Set(legs.map(leg => leg.matchId)).size, 8, "partite ripetute tra i due poker");
-assert.ok(legs.every(leg => leg.marketCode === "28576" && leg.replacementIncluded && leg.odds > 1));
-assert.ok(legs.every(leg => !/RISULTATO ESATTO/i.test(`${leg.marketName} ${leg.variantName}`)));
+const fs=require("fs"),path=require("path"),assert=require("assert"),root=path.resolve(__dirname,"..");
+const data=JSON.parse(fs.readFileSync(path.join(root,"data/normalized/schedina-champions-md01.json"),"utf8"));
+assert.deepEqual(data.slips.map(slip=>slip.legs.length),[3,3,5,8,8,10,4,4]);
+assert.deepEqual(data.slips.map(slip=>slip.name),["Scintilla","Bagliore","Supernova","Prisma","Quasar","Costellazione","Poker ammoniti 1","Poker ammoniti 2"]);
+assert.deepEqual(data.slips.slice(0,6).map(slip=>slip.marketFamilies),[
+  ["Vince o quasi","Esito","Tiri in porta giocatore"],
+  ["Under/Over","Esito","Tiri giocatore"],
+  ["Tiri totali","Corner","Tiri in porta","Cartellini","Esito"],
+  ["Tiri giocatore","Tiri in porta giocatore","Gol o assist giocatore","Assist giocatore","Marcatore"],
+  ["Tiri giocatore","Tiri in porta giocatore","Gol o assist giocatore","Assist giocatore","Marcatore"],
+  ["Multigol casa/ospite"]
+]);
+assert.deepEqual(data.exclusions,["risultati esatti","risultati esatti multiesito"]);
+const legs=data.slips.flatMap(slip=>slip.legs);
+assert.equal(legs.length,45);
+assert.equal(new Set(legs.map(leg=>String(leg.providerSelectionId))).size,legs.length,"selezioni Sisal ripetute");
+assert.ok(legs.every(leg=>leg.odds>1&&Number.isFinite(leg.modelProbabilityPct)&&Number.isFinite(leg.expectedValuePct)));
+assert.ok(legs.every(leg=>!/RISULTATO ESATTO/i.test(`${leg.marketName} ${leg.variantName}`)),"presente un risultato esatto escluso");
+for(const slip of data.slips.slice(0,3))assert.equal(new Set(slip.legs.map(leg=>leg.matchId)).size,slip.legs.length,`${slip.name}: partita ripetuta`);
+for(const slip of data.slips.slice(3,5)){assert.ok(slip.legs.every(leg=>leg.marketScope==="player"));assert.equal(new Set(slip.legs.map(leg=>leg.matchId)).size,8,`${slip.name}: partita ripetuta`)}
+assert.ok(data.slips[5].legs.every(leg=>leg.marketCode==="30394"));
+const cards=data.slips.slice(6).flatMap(slip=>{assert.equal(new Set(slip.legs.map(leg=>leg.matchId)).size,4);return slip.legs});
+assert.equal(new Set(cards.map(leg=>leg.player)).size,8,"giocatori ripetuti nei poker");
+assert.ok(cards.every(leg=>leg.marketCode==="28576"&&leg.replacementIncluded));
 console.log("Schedina Champions: OK");

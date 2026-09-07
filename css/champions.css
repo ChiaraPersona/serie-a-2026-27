@@ -2,6 +2,9 @@ body[data-page="champions"]{
   --champions-blue:#041a57;
   --champions-blue-bright:#0d55cb;
   --champions-sky:#71b8ff;
+  /* Regola visiva: nella sezione Champions i fondini restano sempre blu, mai bianchi. */
+  --champions-surface:rgba(1,17,55,.56);
+  --champions-surface-hover:rgba(15,86,171,.44);
   min-height:100vh;
   background:
     radial-gradient(circle at 82% 12%,rgba(43,133,255,.42),transparent 28rem),
@@ -22,6 +25,8 @@ body[data-page="champions"] .brand strong,
 body[data-page="champions"] .brand small,
 body[data-page="champions"] .page-link{color:#eaf4ff}
 body[data-page="champions"] .menu-button{color:#fff}
+body[data-page="champions"] .page-link.active{background:rgba(15,86,171,.62);color:#fff}
+body[data-page="champions"] .footer-brand-mark{background:#71b8ff}
 body[data-page="champions"] main{padding-top:38px}
 
 .champions-hero{
@@ -93,8 +98,8 @@ body[data-page="champions"] main{padding-top:38px}
 .champions-team-logo-directory{margin-top:34px;padding:18px;border:1px solid rgba(100,220,255,.32);border-radius:24px;background:linear-gradient(135deg,rgba(4,74,145,.72),rgba(2,28,78,.84));box-shadow:0 20px 60px rgba(0,7,39,.2)}
 .champions-team-logo-scroll{overflow-x:auto;padding:2px 2px 7px;scrollbar-color:rgba(126,218,255,.42) transparent;scrollbar-width:thin}
 .champions-team-logo-grid{display:grid;grid-template-columns:repeat(12,minmax(48px,1fr));gap:8px;min-width:720px}
-.champions-team-logo-grid a{display:grid;min-width:0;aspect-ratio:1;place-items:center;border:1px solid rgba(145,201,255,.18);border-radius:16px;background:rgba(255,255,255,.07);transition:border-color .18s ease,background .18s ease,transform .18s ease}
-.champions-team-logo-grid a:hover,.champions-team-logo-grid a:focus-visible{border-color:rgba(127,224,255,.7);background:rgba(255,255,255,.14);outline:none;transform:translateY(-2px)}
+.champions-team-logo-grid a{display:grid;min-width:0;aspect-ratio:1;place-items:center;border:1px solid rgba(145,201,255,.18);border-radius:16px;background:var(--champions-surface);transition:border-color .18s ease,background .18s ease,transform .18s ease}
+.champions-team-logo-grid a:hover,.champions-team-logo-grid a:focus-visible{border-color:rgba(127,224,255,.7);background:var(--champions-surface-hover);outline:none;transform:translateY(-2px)}
 .champions-team-logo-grid img{display:block;width:58%;height:58%;object-fit:contain;filter:drop-shadow(0 7px 9px rgba(0,5,30,.34))}
 
 .champions-pilot{margin-top:34px;padding:30px;border:1px solid rgba(100,220,255,.4);border-radius:30px;background:linear-gradient(145deg,rgba(8,69,151,.88),rgba(2,20,63,.92));box-shadow:0 24px 70px rgba(0,7,39,.28)}
@@ -125,14 +130,14 @@ body[data-page="champions"] main{padding-top:38px}
 .champions-pilot-result b{color:#eaf8ff;font-size:10px}
 .champions-pilot-result small{color:#79bfe9;font-size:8px;font-weight:800}
 .champions-pilot-fixture-teams{min-height:166px}
-.champions-pilot-card .champions-pilot-result{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:10px 18px;border-top:1px solid rgba(34,67,76,.12);border-bottom:1px solid rgba(34,67,76,.12);background:rgba(255,255,255,.36);text-align:left}
-.champions-pilot-card .champions-pilot-result b{color:#273f48;font-size:10px}
-.champions-pilot-card .champions-pilot-result small{color:#3c6692;font-size:8px;font-weight:900;letter-spacing:.06em;text-transform:uppercase}
-.champions-pilot-card .champions-reading-preview{background:rgba(18,64,119,.1)}
-.champions-pilot-card .champions-reading-preview>span{background:rgba(255,255,255,.58)}
-.champions-pilot-card .champions-reading-preview small{color:#3c6692}
-.champions-pilot-card .champions-reading-preview strong{color:#28383b}
-.champions-pilot-card.champions-reading-link>footer{border-top-color:rgba(34,67,76,.14);background:rgba(255,255,255,.28);color:#174f79}
+.champions-pilot-card .champions-pilot-result{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:10px 18px;border-top:1px solid rgba(139,211,255,.12);border-bottom:1px solid rgba(139,211,255,.12);background:var(--champions-surface-hover);text-align:left}
+.champions-pilot-card .champions-pilot-result b{color:#eaf8ff;font-size:10px}
+.champions-pilot-card .champions-pilot-result small{color:#9bcff1;font-size:8px;font-weight:900;letter-spacing:.06em;text-transform:uppercase}
+.champions-pilot-card .champions-reading-preview{background:rgba(18,64,119,.28)}
+.champions-pilot-card .champions-reading-preview>span{background:var(--champions-surface)}
+.champions-pilot-card .champions-reading-preview small{color:#9bcff1}
+.champions-pilot-card .champions-reading-preview strong{color:#eaf8ff}
+.champions-pilot-card.champions-reading-link>footer{border-top-color:rgba(139,211,255,.12);background:rgba(8,58,145,.48);color:#9bdcff}
 .champions-pilot-score{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:13px 18px;background:rgba(15,86,171,.24)}
 .champions-pilot-score>div{display:grid}
 .champions-pilot-score small,.champions-pilot-markets>div>small{color:#83b6da;font-size:8px;font-weight:800;text-transform:uppercase}
@@ -274,13 +279,13 @@ body[data-page="champions"] main{padding-top:38px}
 .champions-surprise-factor>span{display:flex;align-items:center;gap:6px}
 .champions-surprise-factor>span i{display:inline-grid;place-items:center;width:15px;height:15px;border:1px solid rgba(255,255,255,.42);border-radius:50%;font:700 10px/1 Inter,sans-serif;font-style:normal;color:#d8eeff;cursor:help}
 .champions-surprise-factor>small{text-transform:capitalize}
-.champions-surprise-bar{width:100%;height:7px;margin-top:8px;overflow:hidden;border-radius:999px;background:rgba(255,255,255,.13)}
+.champions-surprise-bar{width:100%;height:7px;margin-top:8px;overflow:hidden;border-radius:999px;background:rgba(15,86,171,.34)}
 .champions-surprise-bar>b{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#48cae4,#f6c453,#ff6b6b);box-shadow:0 0 12px rgba(246,196,83,.3)}
 .champions-surprise-factor details{margin-top:9px;padding-top:8px;border-top:1px solid rgba(255,255,255,.13)}
 .champions-surprise-factor summary{cursor:pointer;color:#d8eeff;font-size:11px;font-weight:750}
 .champions-surprise-factor ul{display:grid;gap:5px;margin:8px 0 0;padding-left:16px;color:#d8eeff;font-size:10px;line-height:1.45}
 .champions-surprise-components{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;margin-top:8px}
-.champions-surprise-components span{display:flex;justify-content:space-between;gap:5px;padding:5px 6px;border-radius:6px;background:rgba(255,255,255,.07)}
+.champions-surprise-components span{display:flex;justify-content:space-between;gap:5px;padding:5px 6px;border-radius:6px;background:rgba(15,86,171,.24)}
 .champions-surprise-components small,.champions-surprise-components b{font-size:9px}
 .champions-surprise-factor details p{margin:7px 0 0;color:#a8cce7;font-size:9px;line-height:1.4}
 .champions-reading-market-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
@@ -391,7 +396,7 @@ body[data-page="champions"] main{padding-top:38px}
 .champions-controls{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto;gap:12px;align-items:end;margin-top:28px;padding:16px;border:1px solid rgba(139,198,255,.19);border-radius:20px;background:rgba(1,14,50,.5)}
 .champions-controls label{display:grid;gap:7px}
 .champions-controls label>span{color:#91c9ff;font-size:9px;font-weight:900;letter-spacing:.12em;text-transform:uppercase}
-.champions-controls select,.champions-controls button{width:100%;height:46px;padding:0 14px;border:1px solid rgba(151,205,255,.28);border-radius:13px;background:#082a72;color:#fff;font:inherit;font-size:13px;font-weight:750}
+.champions-controls select,.champions-controls button{width:100%;height:46px;padding:0 14px;border:1px solid rgba(151,205,255,.28);border-radius:13px;background:#082a72!important;color:#fff!important;font:inherit;font-size:13px;font-weight:750}
 .champions-controls select{color-scheme:dark}
 .champions-controls button{width:auto;cursor:pointer;background:#1761c8}
 .champions-controls button:hover{background:#2475e8}
@@ -405,8 +410,9 @@ body[data-page="champions"] main{padding-top:38px}
 .champions-fixture-day>header h3{margin:2px 0 0;font-size:22px;text-transform:capitalize}
 .champions-fixture-day>header>span{color:#91aaca;font-size:10px;font-weight:800;text-transform:uppercase}
 .champions-fixture-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
-.champions-fixture{overflow:hidden;border:1px solid rgba(144,201,255,.2);border-radius:17px;background:linear-gradient(145deg,rgba(16,67,153,.68),rgba(3,26,79,.82));box-shadow:inset 0 1px rgba(255,255,255,.07)}
+.champions-fixture.match.fixture-card{overflow:hidden;border:1px solid rgba(144,201,255,.2);border-radius:17px;background:linear-gradient(145deg,rgba(16,67,153,.68),rgba(3,26,79,.82));box-shadow:inset 0 1px rgba(255,255,255,.07)}
 .champions-fixture>header{display:flex;align-items:center;justify-content:space-between;padding:9px 13px;border-bottom:1px solid rgba(145,201,255,.12);color:#82c0ff;font-size:9px;font-weight:900;letter-spacing:.09em;text-transform:uppercase}
+.champions-fixture.match.fixture-card .match-head{background:rgba(3,31,82,.68);color:#dbeefa}
 .champions-fixture>header time{color:#fff;font-size:12px;letter-spacing:0}
 .champions-fixture-teams{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:9px;min-height:76px;padding:14px}
 .champions-fixture-teams>div{display:grid;gap:5px}
@@ -414,6 +420,10 @@ body[data-page="champions"] main{padding-top:38px}
 .champions-fixture-teams strong{color:#fff;font-size:14px;line-height:1.25}
 .champions-fixture-teams small{color:#82c0ff;font-size:8px;font-weight:850;letter-spacing:.06em;text-transform:uppercase}
 .champions-fixture-teams span{color:#6caef3}
+.champions-fixture .reading-fixture-teams>b{border-color:rgba(127,224,255,.24);background:#0d4a9d;color:#eaf8ff}
+.champions-fixture .reading-fixture-preview>span{background:var(--champions-surface);color:#dbeefa}
+.champions-fixture .reading-fixture-preview small{color:#9bcff1}
+.champions-fixture .reading-fixture-preview strong{color:#eaf8ff}
 .champions-h2h,.champions-h2h-empty{margin:0;padding:8px 13px;border-top:1px solid rgba(145,201,255,.1);background:rgba(1,17,55,.28);color:#8fc7ff;font-size:8px;font-weight:800}
 .champions-h2h summary{cursor:pointer;list-style-position:inside}
 .champions-h2h ul{display:grid;gap:6px;margin:9px 0 2px;padding:0;list-style:none}

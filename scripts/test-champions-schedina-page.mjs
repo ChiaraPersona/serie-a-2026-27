@@ -20,9 +20,11 @@ assert(app.innerHTML.includes("Champions League"));
 
 globalThis.location.search="?competizione=champions";
 await createPage({esc,load,hero,dateOnly}).render();
-assert(app.innerHTML.includes("Due poker di ammoniti"));
-assert.equal((app.innerHTML.match(/betting-slip--champions/g)||[]).length,2);
-assert.equal((app.innerHTML.match(/sostituto incluso/g)||[]).length,8);
-assert(app.innerHTML.includes("Nessun risultato esatto"));
+assert(app.innerHTML.includes("Otto schedine costruite dal modello"));
+assert.equal((app.innerHTML.match(/<article class="betting-slip betting-slip--champions /g)||[]).length,8);
+assert(app.innerHTML.includes("Scintilla"));
+assert(app.innerHTML.includes("Costellazione"));
+assert(app.innerHTML.includes("Poker ammoniti 2"));
+assert(app.innerHTML.includes("escluse soltanto le schedine a risultato esatto"));
 assert(!app.innerHTML.includes("RISULTATO ESATTO MULTI"));
 console.log("OK pagina Schedina Champions");

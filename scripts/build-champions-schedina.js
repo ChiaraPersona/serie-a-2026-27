@@ -1,73 +1,45 @@
-const fs = require("fs");
-const path = require("path");
-
-const root = path.resolve(__dirname, "..");
-const read = file => JSON.parse(fs.readFileSync(path.join(root, file), "utf8"));
-const write = (file, value) => fs.writeFileSync(path.join(root, file), `${JSON.stringify(value, null, 2)}\n`);
-const round = value => Number(Number(value).toFixed(2));
-
-const playerMarkets = read("data/normalized/champions-player-markets-md01-2026-27.json");
-const odds = read("data/normalized/odds/sisal/champions-league.json");
-
-const candidates = playerMarkets.fixtures.map(fixture => {
-  const best = fixture.likelyBooked.find(candidate => candidate.sisal?.odds > 1);
-  return best ? { fixture, candidate: best } : null;
-}).filter(Boolean).sort((a, b) => b.candidate.riskScore - a.candidate.riskScore || a.fixture.fixtureId.localeCompare(b.fixture.fixtureId));
-
-const selected = [];
-const usedPlayers = new Set();
-for (const row of candidates) {
-  const key = row.candidate.playerId;
-  if (usedPlayers.has(key)) continue;
-  selected.push(row);
-  usedPlayers.add(key);
-  if (selected.length === 8) break;
+const fs=require("fs"),path=require("path"),root=path.resolve(__dirname,"..");
+const read=f=>JSON.parse(fs.readFileSync(path.join(root,f),"utf8")),write=(f,v)=>fs.writeFileSync(path.join(root,f),`${JSON.stringify(v,null,2)}\n`);
+const round=(v,d=2)=>Number(Number(v).toFixed(d)),clean=v=>String(v||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim();
+function poissonRange(lambda,min,max){let t=Math.exp(-lambda),sum=min===0?t:0;for(let n=1;n<=max;n++){t*=lambda/n;if(n>=min)sum+=t}return sum}
+function poissonPoint(lambda,n){let p=Math.exp(-lambda);for(let i=1;i<=n;i++)p*=lambda/i;return p}
+function pathHit(homeGoals,awayGoals,team,margin){const memo=new Map();function visit(h,a){const lead=team===0?h-a:a-h;if(lead>=margin)return 1;if(h===homeGoals&&a===awayGoals)return 0;const key=`${h}:${a}`;if(memo.has(key))return memo.get(key);const hr=homeGoals-h,ar=awayGoals-a,total=hr+ar,p=(hr?hr/total*visit(h+1,a):0)+(ar?ar/total*visit(h,a+1):0);memo.set(key,p);return p}return visit(0,0)}
+function winOrLead(pred,team,margin){let p=0,mass=0;for(let h=0;h<=10;h++)for(let a=0;a<=10;a++){const cell=poissonPoint(pred.expectedGoals.home,h)*poissonPoint(pred.expectedGoals.away,a),win=team===0?h>a:a>h;p+=cell*(win?1:pathHit(h,a,team,margin));mass+=cell}return p/mass}
+function normalCdf(v){const s=v<0?-1:1,x=Math.abs(v)/Math.sqrt(2),t=1/(1+.3275911*x),erf=s*(1-(((((1.061405429*t-1.453152027)*t)+1.421413741)*t-.284496736)*t+.254829592)*t*Math.exp(-x*x));return .5*(1+erf)}
+const playerData=read("data/normalized/champions-player-markets-md01-2026-27.json"),predictionData=read("data/normalized/champions-pilot-predictions-2026-27.json"),oddsData=read("data/normalized/odds/sisal/champions-league.json");
+const eventById=new Map(oddsData.events.map(x=>[x.canonicalMatchId,x])),predictionById=new Map(predictionData.fixtures.map(x=>[x.fixtureId,x])),used=new Set();
+const openSelection=(market,name)=>market?.selections?.find(x=>x.status==="open"&&clean(x.name)===clean(name)&&x.odds>1)||null;
+function leg(fixture,market,selection,p,label,family,evidence,extra={}){return{matchId:fixture.fixtureId,fixture:`${fixture.homeTeam} – ${fixture.awayTeam}`,market:market.marketName,marketScope:market.marketScope||"match",marketFamily:family,selection:selection.name,label,odds:selection.odds,modelProbabilityPct:round(p*100),fairOdds:p?round(1/p):null,expectedValuePct:round((p*selection.odds-1)*100,1),evidenceLabel:evidence,providerMarketId:market.providerMarketId,providerSelectionId:selection.providerSelectionId,marketCode:String(market.marketCode),marketName:market.marketName,variantName:market.variantName,replacementIncluded:/INC TS|INCL\. T\.S|SOST/i.test(market.variantName||""),...extra}}
+function matchCandidates(fixture,code){
+ const event=eventById.get(fixture.fixtureId),pred=predictionById.get(fixture.fixtureId);if(!event||!pred)return[];const out=[];
+ for(const market of event.markets.filter(x=>String(x.marketCode)===code&&x.status==="open")){
+  if(code==="3"){const m=[...(pred.market?.result1x2||[])].sort((a,b)=>b.modelPct-a.modelPct)[0],s=openSelection(market,m?.selection);if(s)out.push(leg(fixture,market,s,m.modelPct/100,`Esito ${m.selection}`,"Esito",`UEFA Elo 1X2 · ${round(m.modelPct,1)}%`))}
+  if(code==="7989"){const th=Number(market.threshold??String(market.variantName).match(/([\d.]+)/)?.[1]),line=pred.goals?.find(x=>Number(x.threshold)===th);if(!line)continue;const side=line.overPct>=line.underPct?"OVER":"UNDER",p=Math.max(line.overPct,line.underPct)/100,s=openSelection(market,side);if(s)out.push(leg(fixture,market,s,p,`${side==="OVER"?"Over":"Under"} ${String(th).replace(".",",")} gol`,"Under/Over",`Poisson · totale xG ${round(pred.expectedGoals.total,2)}`))}
+  if(["15859","15481","975"].includes(code)){const cfg=code==="15859"?["shotsTotal","Tiri totali"]:code==="15481"?["shotsOnTarget","Tiri in porta"]:["corners","Corner"],m=pred.matchProjection?.[cfg[0]],th=Number(market.threshold??String(market.variantName).match(/([\d.]+)/)?.[1]);if(!m||!Number.isFinite(th))continue;const sd=Math.max(1,(Number(m.max)-Number(m.min))/1.68),under=normalCdf((th-Number(m.central))/sd),side=under>=.5?"UNDER":"OVER",p=side==="UNDER"?under:1-under,s=openSelection(market,side);if(s)out.push(leg(fixture,market,s,p,`${side==="OVER"?"Over":"Under"} ${String(th).replace(".",",")} ${cfg[1].toLowerCase()}`,cfg[1],`Media prevista ${round(m.central,1)}`))}
+  if(code==="31347"){const th=Number(market.threshold??String(market.variantName).match(/([\d.]+)/)?.[1]),line=pred.cards?.lines?.find(x=>Number(x.threshold)===th);if(!line)continue;const side=line.overPct>=line.underPct?"OVER":"UNDER",p=Math.max(line.overPct,line.underPct)/100,s=openSelection(market,side);if(s)out.push(leg(fixture,market,s,p,`${side==="OVER"?"Over":"Under"} ${String(th).replace(".",",")} punti cartellini`,"Cartellini",`Media prevista ${round(pred.cards.central,1)}`))}
+  if(code==="30510"){const team=Number(String(market.variantName).match(/SQUADRA ([12])/i)?.[1])-1,margin=Number(String(market.variantName).match(/\(([12])UP\)/i)?.[1]);if(![0,1].includes(team)||![1,2].includes(margin))continue;const p=winOrLead(pred,team,margin),s=openSelection(market,"SI");if(s)out.push(leg(fixture,market,s,p,`${team===0?fixture.homeTeam:fixture.awayTeam} vince o va avanti di ${margin} gol`,"Vince o quasi",`Poisson sul percorso del punteggio · ${round(p*100,1)}%`))}
+  if(code==="30394")for(const s of market.selections.filter(x=>x.status==="open"&&x.odds>1)){const r=String(s.name).match(/^(\d+)-(\d+)\/(\d+)-(\d+)$/)?.slice(1).map(Number),central=String(pred.scoreForecast?.primary?.score||"").split("-").map(Number);if(!r||r[1]-r[0]>2||r[3]-r[2]>2||central[0]<r[0]||central[0]>r[1]||central[1]<r[2]||central[1]>r[3])continue;const p=poissonRange(pred.expectedGoals.home,r[0],r[1])*poissonRange(pred.expectedGoals.away,r[2],r[3]);out.push(leg(fixture,market,s,p,`Casa ${r[0]}–${r[1]} gol · Ospite ${r[2]}–${r[3]} gol`,"Multigol casa/ospite",`xG ${round(pred.expectedGoals.home,2)}–${round(pred.expectedGoals.away,2)}`))}
+ }
+ return out;
 }
-
-if (selected.length < 8) throw new Error(`Servono otto ammoniti quotati in otto partite diverse; disponibili ${selected.length}.`);
-
-const slip = (rows, index) => {
-  const legs = rows.map(({ fixture, candidate }) => ({
-    matchId: fixture.fixtureId,
-    fixture: `${fixture.homeTeam} - ${fixture.awayTeam}`,
-    player: candidate.name,
-    team: candidate.team,
-    label: `${candidate.name} riceve un cartellino (sostituto incluso)`,
-    odds: candidate.sisal.odds,
-    riskScore: candidate.riskScore,
-    evidenceLabel: candidate.evidence.join(" · "),
-    marketCode: candidate.sisal.marketCode,
-    marketName: candidate.sisal.marketName,
-    variantName: candidate.sisal.variantName,
-    providerMarketId: candidate.sisal.providerMarketId,
-    providerSelectionId: candidate.sisal.providerSelectionId,
-    replacementIncluded: candidate.sisal.replacementIncluded
-  }));
-  return {
-    id: `champions-poker-ammoniti-${index}`,
-    eyebrow: "Champions League · Poker ammoniti",
-    name: `Poker ammoniti ${index}`,
-    description: "Quattro calciatori differenti, ciascuno scelto in una partita differente.",
-    combinedOdds: round(legs.reduce((total, leg) => total * leg.odds, 1)),
-    legs
-  };
-};
-
-const slips = [slip(selected.slice(0, 4), 1), slip(selected.slice(4, 8), 2)];
-const output = {
-  schemaVersion: 1,
-  competition: "UEFA Champions League",
-  season: "2026/27",
-  matchday: 1,
-  generatedAt: new Date().toISOString(),
-  provider: "Sisal",
-  oddsRetrievedAt: odds.retrievedAt,
-  sourceUrl: odds.sourceUrl,
-  selectionRule: "I candidati sono ordinati esclusivamente dall'indice disciplinare del modello; la quota Sisal viene associata dopo e resta un numero esterno.",
-  exclusions: ["risultati esatti", "risultati esatti multiesito", "quasi ammonito", "Draw No Bet", "confronti tiri giocatore", "prima a corner"],
-  summary: { slips: slips.length, legs: 8, distinctPlayers: 8, distinctFixtures: 8 },
-  slips
-};
-
-write("data/normalized/schedina-champions-md01.json", output);
-console.log(`Schedina Champions: ${output.summary.slips} poker, ${output.summary.distinctPlayers} giocatori, ${output.summary.distinctFixtures} partite.`);
+function playerCandidates(){const out=[];for(const fixture of playerData.fixtures){const event=eventById.get(fixture.fixtureId),players=[...fixture.shooters.totalShots,...fixture.shooters.shotsOnTarget].filter((x,i,a)=>a.findIndex(y=>y.playerId===x.playerId)===i);for(const p of players){
+ for(const [q,fam,lambda,th,label] of [[p.markets.shotsOver05,"Tiri giocatore",p.projectedShots,.5,`${p.name} over 0,5 tiri`],[p.markets.shotsOver15,"Tiri giocatore",p.projectedShots,1.5,`${p.name} over 1,5 tiri`],[p.markets.shotsOnTargetOver05,"Tiri in porta giocatore",p.projectedShotsOnTarget,.5,`${p.name} over 0,5 tiri in porta`]])if(q){const prob=1-poissonRange(lambda,0,Math.floor(th)),m={...q,marketScope:"player",selections:[{providerSelectionId:q.providerSelectionId,name:q.selection,odds:q.odds,status:"open"}]};out.push(leg(fixture,m,m.selections[0],prob,`${label} (sostituto incluso)`,fam,`Proiezione ${round(lambda,2)}`,{player:p.name,team:p.team}))}
+ const key=clean(p.lineupName||p.name).split(" ").filter(x=>x.length>=4).pop();for(const [code,fam,factor,label] of [["28545","Gol o assist giocatore",.42,"segna o fa assist"],["28547","Assist giocatore",.16,"fa assist"],["28231","Marcatore",.28,"segna"]]){if(!key)continue;const m=event?.markets.find(x=>String(x.marketCode)===code&&x.status==="open"&&clean(x.variantName).includes(key)),s=openSelection(m,"SI");if(!s)continue;const vol=code==="28547"?p.projectedShots:p.projectedShotsOnTarget,prob=1-Math.exp(-Math.max(.05,vol*factor));out.push(leg(fixture,m,s,prob,`${p.name} ${label} (sostituto incluso)`,fam,`Proiezione individuale da ${round(vol,2)} volumi`,{player:p.name,team:p.team}))}
+ }}return out}
+const players=playerCandidates();
+function take(candidates,count,{family,distinct=false,label="Schedina"}={}){const rows=[],fixtures=new Set();for(const x of candidates.filter(x=>!used.has(String(x.providerSelectionId))).sort((a,b)=>b.modelProbabilityPct-a.modelProbabilityPct||a.matchId.localeCompare(b.matchId))){if(family&&x.marketFamily!==family||distinct&&fixtures.has(x.matchId))continue;rows.push(x);fixtures.add(x.matchId);used.add(String(x.providerSelectionId));if(rows.length===count)break}if(rows.length<count)throw new Error(`${label}: richieste ${count} selezioni, disponibili ${rows.length}`);return rows}
+function one(code,excluded=new Set()){const all=playerData.fixtures.flatMap(f=>matchCandidates(f,code)).filter(x=>!excluded.has(x.matchId)&&!used.has(String(x.providerSelectionId))).sort((a,b)=>b.modelProbabilityPct-a.modelProbabilityPct||a.matchId.localeCompare(b.matchId));if(!all[0])throw new Error(`Mercato ${code} non disponibile`);used.add(String(all[0].providerSelectionId));return all[0]}
+function mixed(codes,families=[]){const rows=[],fixtures=new Set();for(const c of codes){const x=one(c,fixtures);rows.push(x);fixtures.add(x.matchId)}for(const f of families){const x=take(players.filter(y=>!fixtures.has(y.matchId)),1,{family:f,label:f})[0];rows.push(x);fixtures.add(x.matchId)}return rows}
+function slip(id,name,type,legs,description){const combined=legs.reduce((p,x)=>p*x.odds,1),joint=legs.reduce((p,x)=>p*x.modelProbabilityPct/100,1),ev=round((joint*combined-1)*100,1),weak=[...legs].sort((a,b)=>a.expectedValuePct-b.expectedValuePct)[0],quality=ev>=0&&legs.every(x=>x.expectedValuePct>=-10)?"qualificata":ev>=-40?"editoriale":"laboratorio";return{id,type,eyebrow:"Champions League · 1ª giornata",name,description,marketFamilies:[...new Set(legs.map(x=>x.marketFamily))],combinedOdds:round(combined),jointModelProbabilityPct:round(joint*100,6),fairOdds:round(1/joint),expectedValuePct:ev,qualityStatus:quality,qualityLabel:quality==="qualificata"?"Supera il filtro prudenziale":quality==="editoriale"?"Lettura editoriale":"Laboratorio ad alto rischio",weakestLeg:{fixture:weak.fixture,label:weak.label,expectedValuePct:weak.expectedValuePct},filterNote:null,legs}}
+const slips=[];
+slips.push(slip("champions-scintilla","Scintilla","mixed-markets",mixed(["30510","3"],["Tiri in porta giocatore"]),"Tre mercati differenti in tre partite differenti."));
+slips.push(slip("champions-bagliore","Bagliore","mixed-markets",mixed(["7989","3"],["Tiri giocatore"]),"Tre selezioni modellistiche con quote usate soltanto come riferimento."));
+slips.push(slip("champions-supernova","Supernova","mixed-markets",mixed(["15859","975","15481","31347","3"]),"Cinque famiglie di mercato e cinque partite differenti."));
+function playerSlip(id,name){const families=["Tiri giocatore","Tiri in porta giocatore","Gol o assist giocatore","Assist giocatore","Marcatore","Tiri giocatore","Tiri in porta giocatore","Gol o assist giocatore"],rows=[],fixtures=new Set();for(const f of families){const x=take(players.filter(y=>!fixtures.has(y.matchId)),1,{family:f,label:`${name}/${f}`})[0];rows.push(x);fixtures.add(x.matchId)}return slip(id,name,"player-only",rows,"Otto mercati giocatore, ciascuno riferito a una partita differente.")}
+slips.push(playerSlip("champions-prisma","Prisma"));slips.push(playerSlip("champions-quasar","Quasar"));
+const multigol=[];for(const f of playerData.fixtures){const x=matchCandidates(f,"30394").filter(y=>!used.has(String(y.providerSelectionId))).sort((a,b)=>b.modelProbabilityPct-a.modelProbabilityPct)[0];if(x){multigol.push(x);used.add(String(x.providerSelectionId))}if(multigol.length===10)break}slips.push(slip("champions-costellazione","Costellazione","single-market-full-round",multigol,"Dieci partite, un'unica famiglia: multigol casa/ospite."));
+const cards=playerData.fixtures.map(f=>{const c=f.likelyBooked.find(x=>x.sisal?.odds>1);if(!c)return null;const p=Math.min(.62,Math.max(.18,c.riskScore/150)),m={...c.sisal,marketScope:"player",selections:[{providerSelectionId:c.sisal.providerSelectionId,name:c.sisal.selection,odds:c.sisal.odds,status:"open"}]};return leg(f,m,m.selections[0],p,`${c.name} riceve un cartellino (sostituto incluso)`,"Ammoniti",c.evidence.join(" · "),{player:c.name,team:c.team,riskScore:c.riskScore})}).filter(Boolean);
+for(let i=1;i<=2;i++)slips.push(slip(`champions-poker-ammoniti-${i}`,`Poker ammoniti ${i}`,"player-cards",take(cards,4,{distinct:true,label:`Poker ammoniti ${i}`}),"Quattro calciatori differenti, ciascuno scelto in una partita differente."));
+const all=slips.flatMap(x=>x.legs);if(new Set(all.map(x=>String(x.providerSelectionId))).size!==all.length)throw new Error("Selezioni Sisal ripetute");if(all.some(x=>/RISULTATO ESATTO/i.test(`${x.marketName} ${x.variantName}`)))throw new Error("Mercato risultato esatto escluso entrato");
+const output={schemaVersion:2,competition:"UEFA Champions League",season:"2026/27",matchday:1,generatedAt:new Date().toISOString(),provider:"Sisal",oddsRetrievedAt:oddsData.retrievedAt,sourceUrl:oddsData.sourceUrl,methodology:"La probabilità di ogni gamba deriva dai pronostici UEFA Elo, dalle distribuzioni Poisson e dai volumi squadra/giocatore. Probabilità congiunta, quota equa ed EV seguono la stessa lettura delle schedine Serie A.",selectionRule:"Le selezioni sono ordinate esclusivamente dal modello; le quote Sisal vengono associate dopo e restano un numero esterno, senza orientare la scelta.",exclusions:["risultati esatti","risultati esatti multiesito"],summary:{slips:slips.length,legs:all.length,distinctPlayers:new Set(all.map(x=>x.player).filter(Boolean)).size,distinctFixtures:new Set(all.map(x=>x.matchId)).size,qualifiedProfiles:slips.filter(x=>x.qualityStatus==="qualificata").length,exactScoreProfilesExcluded:2},slips};
+write("data/normalized/schedina-champions-md01.json",output);console.log(`Schedina Champions: ${output.summary.slips} schedine, ${output.summary.legs} selezioni, esclusi solo i 2 profili risultato esatto.`);
