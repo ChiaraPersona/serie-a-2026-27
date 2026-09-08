@@ -83,7 +83,7 @@ export function createPage(deps){
 
   function probableFormationCard(fixture,squads,onlyTeam=null){
     const probable=fixture.probableFormation;
-    const coach=team=>squads.teams.find(item=>item.team===team)?.coach||"N/D";
+    const official=probable?.status==="official"; const coach=team=>[probable?.home,probable?.away].find(item=>item?.team===team)?.coach||squads.teams.find(item=>item.team===team)?.coach||"N/D";
     if(!probable)return `<article class="round16-info-box round16-formations champions-reading-lineups"><header class="champions-reading-block-heading"><div><p class="eyebrow">Proiezione editoriale</p><h2>Probabili formazioni</h2></div><p>Conferme e indisponibili restano espliciti.</p></header><div class="reading-panel-empty reading-panel-empty-compact"><strong>N/D</strong><span>Moduli e giocatori non disponibili.</span></div></article>`;
     const side=item=>{
       if(item.players?.length!==11)return `<article class="reading-lineup-card champions-reading-lineup-card"><header><span>${esc(item.team)}</span><strong>${esc(item.formation)}</strong></header><div class="reading-panel-empty reading-panel-empty-compact"><strong>N/D</strong><span>Undici titolare non disponibile.</span></div><footer><span>Allenatore: ${esc(coach(item.team))}</span></footer></article>`;
@@ -95,14 +95,14 @@ export function createPage(deps){
         return `<div class="reading-lineup-row" style="--reading-lineup-count:${size}">${players.map(player=>`<strong>${esc(player)}</strong>`).join("")}</div>`;
       }).reverse().join("");
       const notes=(item.notes||[]).map(note=>`<p class="champions-probable-note">${esc(note)}</p>`).join("");
-      return `<article class="reading-lineup-card champions-reading-lineup-card" style="--reading-lineup-primary:#105ac5;--reading-lineup-secondary:#052b78;--reading-lineup-head-ink:#fff"><header><span>${esc(item.team)}</span><strong>${esc(item.formation)}</strong></header><div class="reading-lineup-field" aria-label="Probabile formazione ${esc(item.team)} con modulo ${esc(item.formation)}"><i class="reading-lineup-centre" aria-hidden="true"></i>${rows}</div><footer><span>Allenatore: ${esc(coach(item.team))}</span>${notes}</footer></article>`;
+      return `<article class="reading-lineup-card champions-reading-lineup-card" style="--reading-lineup-primary:#105ac5;--reading-lineup-secondary:#052b78;--reading-lineup-head-ink:#fff"><header><span>${esc(item.team)}</span><strong>${esc(item.formation)}</strong></header><div class="reading-lineup-field" aria-label="${official?"Formazione ufficiale":"Probabile formazione"} ${esc(item.team)} con modulo ${esc(item.formation)}"><i class="reading-lineup-centre" aria-hidden="true"></i>${rows}</div><footer><span>Allenatore: ${esc(coach(item.team))}</span>${notes}${item.bench?`<p>Panchina: ${item.bench.map(esc).join(", ")}</p>`:""}</footer></article>`;
     };
     const complete=[probable.home,probable.away].every(item=>item.players?.length===11);
-    const confidenceLabel=({"very-high":"Molto alta","medium-high":"Medio-alta",lower:"Più bassa"})[probable.lineupConfidence?.band]||"N/D";
+    const confidenceLabel=official?"Ufficiali":({"very-high":"Molto alta","medium-high":"Medio-alta",lower:"Più bassa"})[probable.lineupConfidence?.band]||"N/D";
     const uncertainTeams=(probable.lineupConfidence?.uncertainSides||[]).map(venue=>probable[venue]?.team).filter(Boolean);
     const uncertainty=uncertainTeams.length?`<em>XI da ricontrollare: ${uncertainTeams.map(esc).join(", ")}</em>`:"";
-    const coverageNote=complete?"Moduli e undici editoriali disponibili; non sono distinte ufficiali.":"Sono disponibili soltanto i moduli; gli undici titolari non forniti restano N/D.";
-    return `<article class="round16-info-box round16-formations champions-reading-lineups"><header class="champions-reading-block-heading"><div><p class="eyebrow">Proiezione editoriale · non ufficiale</p><h2>Probabili formazioni</h2></div><p>Conferme e indisponibili restano espliciti.</p></header><div class="champions-lineup-confidence"><span>Confidenza XI</span><strong>${esc(confidenceLabel)}</strong>${uncertainty}</div><div class="reading-lineup-grid">${[probable.home,probable.away].filter(item=>!onlyTeam||item.team===onlyTeam).map(side).join("")}</div><p class="objective-method">Aggiornamento ${esc(shortDate(probable.updatedAt))}. ${coverageNote}</p></article>`;
+    const coverageNote=official?`Formazioni ufficiali · <a href="${esc(probable.source.url)}" target="_blank" rel="noreferrer">Diretta</a>`:complete?"Moduli e undici editoriali disponibili; non sono distinte ufficiali.":"Sono disponibili soltanto i moduli; gli undici titolari non forniti restano N/D.";
+    return `<article class="round16-info-box round16-formations champions-reading-lineups"><header class="champions-reading-block-heading"><div><p class="eyebrow">${official?"Confermate · Diretta":"Proiezione editoriale · non ufficiale"}</p><h2>${official?"Formazioni ufficiali":"Probabili formazioni"}</h2></div><p>Conferme e indisponibili restano espliciti.</p></header><div class="champions-lineup-confidence"><span>Confidenza XI</span><strong>${esc(confidenceLabel)}</strong>${uncertainty}</div><div class="reading-lineup-grid">${[probable.home,probable.away].filter(item=>!onlyTeam||item.team===onlyTeam).map(side).join("")}</div><p class="objective-method">Aggiornamento ${esc(shortDate(probable.updatedAt))}. ${coverageNote}</p></article>`;
   }
 
   function tacticalBaselinePanel(fixture,styleProfiles,volumeProfiles,branding){

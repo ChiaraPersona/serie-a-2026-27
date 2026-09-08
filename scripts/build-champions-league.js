@@ -87,6 +87,16 @@ for (const item of probableFormationsSource.fixtures) {
 }
 
 const ids = new Set();
+const officialSource = JSON.parse(fs.readFileSync(path.join(root, "data/sources/champions-official-formations-md01-2026-27.json"), "utf8"));
+for (const item of officialSource.fixtures) {
+  const editorial = probableFormations.get(item.fixtureId);
+  if (!editorial || item.status !== "official" || !item.source?.url) fail("formazione ufficiale non valida");
+  for (const side of ["home", "away"]) {
+    const team = item[side];
+    if (team.team !== editorial[side].team || team.players.length !== 11 || new Set(team.players).size !== 11 || !formationPattern.test(team.formation) || team.formation.split("-").reduce((a,b)=>a+Number(b),0)!==10) fail(`${item.fixtureId}: XI ufficiale non valido`);
+  }
+  probableFormations.set(item.fixtureId, { ...item, editorialProjection: editorial, lineupConfidence: { band: "very-high", uncertainSides: [] } });
+}
 const matchups = new Set();
 const teams = new Map();
 const matchdays = new Map();
