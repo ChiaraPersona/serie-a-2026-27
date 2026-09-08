@@ -761,3 +761,33 @@ body[data-page="champions"] .champions-team-detail .champions-strength-table-wra
 .champions-team-lineup{margin-block:24px}
 .champions-team-lineup .reading-lineup-grid{grid-template-columns:minmax(0,1fr)}
 body[data-page="champions"] .champions-team-detail .champions-fixture.match.fixture-card{background:radial-gradient(ellipse at 100% 0%,rgba(24,104,211,.38),transparent 65%),linear-gradient(135deg,#082f70,#041b46)}
+.champions-team-calendar{padding:20px 24px;border:1px solid #24518a;border-radius:20px;background:#051e50}
+.champions-team-calendar>header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+.champions-team-calendar h2{margin:0;font-size:26px}
+.champions-team-calendar header p{margin:4px 0 0;font-size:11px}
+.champions-team-calendar a{color:#fff;text-decoration:none}
+.champions-team-calendar header>a{font-size:11px;white-space:nowrap}
+.champions-calendar-list{list-style:none;margin:0;padding:0}
+.champions-calendar-list li+li{border-top:1px solid #204779}
+.champions-calendar-list li>a,.champions-calendar-list li>div{display:grid;grid-template-columns:28px 160px minmax(0,1fr) 64px 70px;align-items:center;gap:12px;padding:11px 0;font-size:12px}
+.champions-calendar-list li>a:hover,.champions-calendar-list li>a:focus-visible{background:#0a3470}
+.champions-calendar-round,.champions-calendar-venue,.champions-calendar-action{font-size:11px}
+.champions-calendar-action{text-align:right;color:#8edfff}
+body[data-page="champions"] .champions-team-detail .champions-team-volume{background:#041c50;border-color:#24518a}
+body[data-page="champions"] .champions-team-volume .champions-strength-table-wrap{background:#041c50;scrollbar-color:#1761b5 #041c50}
+body[data-page="champions"] .champions-team-volume :is(table,thead,tbody,tr,th,td){background:#041c50;color:#fff}
+body[data-page="champions"] .champions-team-detail .champions-team-volume thead th{background:#07347b}
+@media(max-width:600px){
+ .champions-team-calendar{padding:16px 14px}
+ .champions-calendar-list li>a,.champions-calendar-list li>div{grid-template-columns:22px minmax(0,1fr) 60px;gap:5px 8px;padding:10px 0}
+ .champions-calendar-date{grid-column:2;font-size:11px}
+ .champions-calendar-list strong{grid-column:2;grid-row:2;font-size:12px}
+ .champions-calendar-venue{grid-column:3;grid-row:1;text-align:right}
+ .champions-calendar-action{grid-column:3;grid-row:2}
+}
+body[data-page="champions"] .champions-team-detail .champions-team-volume :is(table,thead,tbody,tr,th,td){background:#041c50;color:#fff}
+body[data-page="champions"] .champions-team-detail .champions-team-volume thead th{background:#07347b}
+body[data-page="champions"] .champions-team-calendar :is(h2,strong){color:#fff}
+body[data-page="champions"] .champions-team-lineup .champions-reading-lineups{background:#041c50;border:1px solid #24518a;color:#fff}
+body[data-page="champions"] .champions-team-volume table{min-width:0;table-layout:fixed}
+@media(max-width:600px){body[data-page="champions"] .champions-team-volume :is(th,td){padding:9px 5px;overflow-wrap:anywhere}body[data-page="champions"] .champions-team-volume th:first-child{width:31%}}
