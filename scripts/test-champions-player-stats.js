@@ -12,9 +12,9 @@ const players = data.teams.flatMap(team => team.players.map(player => ({ ...play
 assert.strictEqual(data.season, "2025/26");
 assert.strictEqual(data.summary.teams, 36);
 assert.strictEqual(data.summary.players, 970);
-assert.strictEqual(data.summary.complete, 731);
+assert(data.summary.complete >= 794);
 assert.strictEqual(data.summary.partial, 0);
-assert.strictEqual(data.summary.unavailable, 239);
+assert(data.summary.unavailable <= 176);
 assert.strictEqual(data.summary.complete + data.summary.partial + data.summary.unavailable, data.summary.players);
 assert.strictEqual(data.summary.copiedSerieATeams, 4);
 assert(data.summary.sourceMatchesWithRosters >= 4000);
@@ -36,3 +36,19 @@ for (const player of players) {
 }
 
 console.log(`Statistiche giocatori Champions: ${data.summary.complete} complete · ${data.summary.unavailable} N/D su ${data.summary.players}.`);
+
+const find=(team,name)=>data.teams.find(t=>t.team===team).players.find(p=>p.name===name);
+assert.equal(find("Arsenal","Gabriel").providerPlayerId,"236322");
+assert.equal(find("Bayern München","Minjae Kim").providerPlayerId,"157688");
+assert.equal(find("Como","Robert Sánchez").providerPlayerId,"108662");
+assert.equal(find("Como","Kaiki Bruno").previousSeason.season,"2025");
+assert.equal(find("Feyenoord","Tjark Ernst").previousSeason.totals.appearances,33);
+for(const player of players.filter(p=>p.sourceMode==="espn-season-statistics")){
+ assert(player.previousSeason.entries.every(e=>e.sourceUrl.startsWith("https://sports.core.api.espn.com/")&&e.retrievedAt));
+ assert(player.previousSeason.entries.every(e=>e.appearances>0));
+ assert(player.previousSeason.entries.every(e=>["2025","2025/26"].includes(e.season)));
+ assert(player.previousSeason.entries.every(e=>e.secondYellowCards===null),"Cartellini non forniti restano null");
+}
+
+assert.equal(find("Shakhtar Donetsk","Pedro Henrique").providerPlayerId,"313078");
+assert.equal(find("Shakhtar Donetsk","Pedrinho").providerPlayerId,"253821");

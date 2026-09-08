@@ -34,6 +34,7 @@ function normalize(value) {
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase()
+    .replace(/ı/g, "i")
     .replace(/æ/g, "ae")
     .replace(/ø/g, "o")
     .replace(/đ/g, "d")
@@ -217,12 +218,31 @@ function copiedSerieAPlayer(teamId, player) {
   };
 }
 
+function seasonalHistory(player, providerPlayerId, source) {
+  if (!source?.entries?.length) return null;
+  const fields = {appearances:"appearances",starts:"starts",substituteAppearances:"subIns",minutes:"minutes",substitutedOff:"subOuts",goals:"totalGoals",assists:"goalAssists",shots:"totalShots",shotsOnTarget:"shotsOnTarget",penaltiesTaken:"penaltyKickShots",penaltiesScored:"penaltyKickGoals",offsides:"offsides",keyPasses:"shotAssists",crosses:"totalCrosses",foulsCommitted:"foulsCommitted",foulsWon:"foulsSuffered",yellowCards:"yellowCards",secondYellowCards:"secondYellowCards",straightRedCards:"redCards",tackles:"totalTackles",interceptions:"interceptions",clearances:"totalClearance",goalsConceded:"goalsConceded",cleanSheets:"cleanSheet",saves:"saves",penaltiesFaced:"penaltyKicksFaced",penaltiesSaved:"penaltyKicksSaved"};
+  const entries=source.entries.map(item=>playerEntry({
+    ...Object.fromEntries(Object.entries(fields).map(([field,key])=>[field,typeof item.stats[key]==="number"?item.stats[key]:null])),
+    playerId:player.id,providerPlayerId,team:"N/D",competition:item.competition,
+    competitionType:item.league.startsWith("uefa.")?"uefa-competition":"domestic-league",
+    season:item.seasonLabel||"2025/26",sourceUrl:item.sourceUrl,retrievedAt:item.retrievedAt,
+    sourceNote:"Totale stagionale ESPN per competizione; club storico non attribuito automaticamente."
+  }));
+  const aggregate=totals(entries);
+  return {...player,providerPlayerId,previousSeason:{season:entries.every(entry=>entry.season==="2025")?"2025":"2025/26",entries,totals:aggregate,totalsByCompetition:entries},sourceMode:"espn-season-statistics",dataQuality:["appearances","minutes","goals","assists","shots","shotsOnTarget","yellowCards","foulsCommitted","foulsWon"].every(field=>aggregate[field]!==null)?"complete":"partial"};
+}
+
 function main() {
   const teams = squadTeams();
   const configs = JSON.parse(fs.readFileSync(teamConfigPath, "utf8")).teams;
   const configByName = new Map(configs.map(team => [team.name, team]));
   const espn = collectEspnRows();
   const rosterIds = currentRosterIds();
+  const identity = read("data/sources/champions-player-history-aliases.json");
+  const aliases = identity.aliases;
+  const seasonalPath="data/sources/champions-player-season-history-2025-26.json";
+  const seasonal=fs.existsSync(path.join(root,seasonalPath))?read(seasonalPath):{players:[]};
+  const seasonalByPlayer=new Map(seasonal.players.map(player=>[`${player.team}|${player.playerId}`,player]));
   const outputTeams = teams.map(team => {
     const serieATeamId = serieATeams.get(team.team);
     const config = configByName.get(team.team);
@@ -230,16 +250,21 @@ function main() {
     const players = team.players.map(player => {
       if (serieATeamId) {
         const copied = copiedSerieAPlayer(serieATeamId, player);
-        return copied ? { ...player, ...copied, dataQuality: copied.previousSeason.entries.length ? "complete" : "unavailable" } : { ...player, providerPlayerId: null, previousSeason: null, sourceMode: "copied-serie-a", dataQuality: "unavailable", unmatchedReason: "Nessuna corrispondenza univoca nella rosa Serie A" };
+        if (copied && copied.previousSeason.entries.length) return { ...player, ...copied, dataQuality: "complete" };
       }
-      const nameKey = normalize(player.name);
+      const nameKey = normalize(aliases[`${team.team}|${player.name}`] || player.name);
       const rosterCandidates = [...(rosterIds.get(`${config.espnTeamId}|${nameKey}`) || [])];
       const teamCandidates = [...(espn.athletesByTeamAndName.get(`${config.espnTeamId}|${nameKey}`) || [])];
       const globalCandidates = [...(espn.athletesByNormalizedName.get(nameKey) || [])];
-      const candidates = rosterCandidates.length === 1 ? rosterCandidates : teamCandidates.length === 1 ? teamCandidates : globalCandidates.length === 1 ? globalCandidates : [];
+      const verifiedId=identity.providerIds?.[`${team.team}|${player.name}`]?.id;
+      const candidates = verifiedId ? [verifiedId] : rosterCandidates.length === 1 ? rosterCandidates : teamCandidates.length === 1 ? teamCandidates : globalCandidates.length === 1 ? globalCandidates : [];
       if (candidates.length !== 1) return { ...player, providerPlayerId: null, previousSeason: null, sourceMode: "espn-match-rosters", dataQuality: "unavailable", unmatchedReason: globalCandidates.length > 1 ? "Nome omonimo non associato automaticamente" : "Nome non trovato nei roster partita importati" };
       const providerPlayerId = candidates[0];
       const entries = aggregateEntries(providerPlayerId, player.position, espn.matchesByAthlete.get(providerPlayerId) || []).map(entry => ({ ...entry, playerId: player.id }));
+      if (!entries.length) {
+        const recovered=seasonalHistory(player,providerPlayerId,seasonalByPlayer.get(`${team.team}|${player.id}`));
+        if(recovered)return recovered;
+      }
       if (!entries.length) return { ...player, providerPlayerId, previousSeason: null, sourceMode: "espn-match-rosters", dataQuality: "unavailable", unmatchedReason: "Nessuna presenza 2025/26 nel campione importato" };
       const aggregate = totals(entries);
       return {
@@ -271,7 +296,7 @@ function main() {
     generatedAt: JSON.parse(fs.readFileSync(teamConfigPath, "utf8")).retrievedAt,
     source: {
       provider: "ESPN e dataset Serie A locale",
-      note: "Le quattro squadre di Serie A copiano i profili canonici del progetto; le altre usano i roster partita ESPN 2025/26. Le associazioni ambigue restano N/D."
+      note: "Le quattro squadre di Serie A copiano i profili canonici del progetto; i profili mancanti usano i roster partita e le statistiche stagionali ESPN 2025/26. Le associazioni ambigue restano N/D."
     },
     summary: {
       teams: outputTeams.length,
