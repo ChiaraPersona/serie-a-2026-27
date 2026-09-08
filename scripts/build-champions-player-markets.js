@@ -282,52 +282,75 @@ function candidateLegs(prediction, shooters, booked, event) {
     const cornerThreshold = Math.max(6.5, Math.floor(cornerCentral - 2) + 0.5);
     add("corners", `Over ${String(cornerThreshold).replace(".", ",")} corner`, 0.7, findSimpleMarket(event, "975", "OVER", market => Number(market.threshold) === cornerThreshold), "volume partita p20-p80");
   }
-  const topShot = shooters.totalShots.find(player => player.markets.shotsOver05);
-  if (topShot) add("player-shots", `${topShot.name} almeno 1 tiro`, 1 - Math.exp(-topShot.projectedShots), topShot.markets.shotsOver05, "volume giocatore regolarizzato");
-  const topSot = shooters.shotsOnTarget.find(player => player.markets.shotsOnTargetOver05);
-  if (topSot) add("player-sot", `${topSot.name} almeno 1 tiro in porta`, 1 - Math.exp(-topSot.projectedShotsOnTarget), topSot.markets.shotsOnTargetOver05, "volume giocatore regolarizzato");
+  for (const player of shooters.totalShots) {
+    add("player-shots", `${player.name} almeno 1 tiro`, poissonAtLeast(player.projectedShots, 1), player.markets.shotsOver05, "volume giocatore regolarizzato");
+    add("player-shots", `${player.name} almeno 2 tiri`, poissonAtLeast(player.projectedShots, 2), player.markets.shotsOver15, "volume giocatore regolarizzato");
+  }
+  for (const player of shooters.shotsOnTarget) add("player-sot", `${player.name} almeno 1 tiro in porta`, poissonAtLeast(player.projectedShotsOnTarget, 1), player.markets.shotsOnTargetOver05, "volume giocatore regolarizzato");
   const totalShots = prediction.matchProjection?.shotsTotal?.central;
   if (Number.isFinite(totalShots)) {
     const threshold = Math.max(17.5, Math.floor(totalShots - 4) + 0.5);
     add("match-shots", `Over ${String(threshold).replace(".", ",")} tiri totali`, 0.72, findSimpleMarket(event, "15859", "OVER", market => Number(market.threshold) === threshold), "volume partita p20-p80");
   }
-  return legs;
+  // Explore actual available lines, with probabilities derived from the projections.
+  for (const [code, family, central, unit] of [["7989", "total-goals", lambda, "gol"], ["975", "corners", cornerCentral, "corner"], ["15859", "match-shots", totalShots, "tiri totali"]]) {
+    if (!Number.isFinite(central)) continue;
+    for (const market of event?.markets || []) {
+      if (String(market.marketCode) !== code || market.status !== "open") continue;
+      const threshold = Number(market.threshold);
+      if (!Number.isFinite(threshold)) continue;
+      const over = poissonAtLeast(central, Math.floor(threshold)+1);
+      for (const [side, p] of [["OVER",over],["UNDER",1-over]]) {
+        if (p < .5) continue;
+        add(family, `${side === "OVER" ? "Over" : "Under"} ${String(threshold).replace(".",",")} ${unit}`, p, findSimpleMarket(event, code, side, m => Number(m.threshold) === threshold), "Poisson sulla media prevista");
+      }
+    }
+  }
+  return legs.filter((x,i,all) => all.findIndex(y => y.sisal.providerSelectionId === x.sisal.providerSelectionId) === i);
 }
 
 function buildCombinations(prediction, shooters, booked, event) {
   const candidates = candidateLegs(prediction, shooters, booked, event);
   const definitions = [
-    { tier: "Safe", scenario: "Prudente", risk: "basso", count: 3, targetOdds: 5, offset: 0 },
-    { tier: "Balanced", scenario: "Equilibrata", risk: "medio", count: 4, targetOdds: 10, offset: 1 },
-    { tier: "Aggressive", scenario: "Più selettiva", risk: "alto", count: 5, targetOdds: 20, offset: 2 }
+    { tier: "Safe", scenario: "Prudente", risk: "basso", minimumLegs: 3, maximumLegs: 6, targetOdds: 5 },
+    { tier: "Balanced", scenario: "Equilibrata", risk: "medio", minimumLegs: 3, maximumLegs: 6, targetOdds: 10 },
+    { tier: "Aggressive", scenario: "Più selettiva", risk: "alto", minimumLegs: 3, maximumLegs: 6, targetOdds: 20 }
   ];
-  const selectionUsage = new Map(), familyUsage = new Map();
-  return definitions.map((definition, definitionIndex) => {
-    const start = Math.min(definition.offset, Math.max(0, candidates.length - definition.count));
-    const selected = [];
-    const usedFamilies = new Set();
-    for (const candidate of [...candidates.slice(start), ...candidates.slice(0, start)].sort((a,b) => (selectionUsage.get(a.sisal.providerSelectionId)||0)-(selectionUsage.get(b.sisal.providerSelectionId)||0) || (familyUsage.get(a.family)||0)-(familyUsage.get(b.family)||0))) {
-      if (usedFamilies.has(candidate.macroFamily)) continue;
-      selected.push(candidate);
-      usedFamilies.add(candidate.macroFamily);
-      if (selected.length === definition.count) break;
+  const previous = new Set();
+  return definitions.map(definition => {
+    let best = null, fallback = null;
+    const signature = rows => rows.map(x => String(x.sisal.providerSelectionId)).sort().join("|");
+    const probability = rows => rows.reduce((p,x) => p*x.modelProbabilityPct/100,1)*Math.pow(.94,rows.length-1);
+    function visit(index, rows, families, odds) {
+      if (rows.length >= 3 && !previous.has(signature(rows))) {
+        const entry = { rows: [...rows], odds, probability: probability(rows) };
+        if (odds >= definition.targetOdds) {
+          if (!best || entry.probability > best.probability) best = entry;
+        } else if (!fallback || odds > fallback.odds) fallback = entry;
+      }
+      if (rows.length === 6) return;
+      for (let i=index;i<candidates.length;i++) {
+        const candidate=candidates[i];
+        if (families.has(candidate.macroFamily)) continue;
+        visit(i+1,[...rows,candidate],new Set([...families,candidate.macroFamily]),odds*candidate.sisal.odds);
+      }
     }
-    for (const candidate of selected) {
-      selectionUsage.set(candidate.sisal.providerSelectionId, (selectionUsage.get(candidate.sisal.providerSelectionId)||0)+1);
-      familyUsage.set(candidate.family, (familyUsage.get(candidate.family)||0)+1);
-    }
+    visit(0,[],new Set(),1);
+    const selected = (best || fallback)?.rows || [];
+    previous.add(signature(selected));
     const combinedOdds = selected.reduce((value, leg) => value * leg.sisal.odds, 1);
     const modelProbability = selected.reduce((value, leg) => value * leg.modelProbabilityPct / 100, 1) * Math.pow(0.94, Math.max(0, selected.length - 1));
     return {
       ...definition,
-      quotaPolicy: "orientativa",
+      quotaPolicy: "target-constrained",
+      targetReached: Boolean(best),
       minimumSelectionOdds: 1.10,
       odds: round(combinedOdds, 2),
       qualityStatus: selected.length >= 3 ? "editoriale" : "nd",
-      legs: selected.map(leg => ({ label: leg.label, odds: leg.sisal.odds, modelProbabilityPct: leg.modelProbabilityPct, marketCode: leg.sisal.marketCode, marketName: leg.sisal.marketName, variantName: leg.sisal.variantName, providerMarketId: leg.sisal.providerMarketId, providerSelectionId: leg.sisal.providerSelectionId, replacementIncluded: leg.sisal.replacementIncluded, source: leg.source })),
+      legs: selected.map(leg => ({ macroFamily: leg.macroFamily, label: leg.label, odds: leg.sisal.odds, modelProbabilityPct: leg.modelProbabilityPct, marketCode: leg.sisal.marketCode, marketName: leg.sisal.marketName, variantName: leg.sisal.variantName, providerMarketId: leg.sisal.providerMarketId, providerSelectionId: leg.sisal.providerSelectionId, replacementIncluded: leg.sisal.replacementIncluded, source: leg.source })),
       prudentProbabilityPct: selected.length ? round(modelProbability * 100, 2) : null,
       fairOdds: modelProbability ? round(1 / modelProbability, 2) : null,
-      probabilityMethod: "Selezioni ordinate dal modello; le quote Sisal vengono collegate soltanto dopo e non modificano la scelta.",
+      probabilityMethod: "Tra le combinazioni compatibili si massimizza la probabilità prudenziale raggiungendo il target di quota. Se non raggiungibile, viene mostrata la quota disponibile con target non raggiunto. Il prodotto delle quote è indicativo: la quota MyCombo effettiva richiede conferma Sisal.",
       unavailableReason: selected.length >= 3 ? null : "Meno di tre mercati Sisal compatibili con le proiezioni indipendenti."
     };
   });
@@ -368,7 +391,7 @@ const output = {
   matchday: 1,
   generatedAt: new Date().toISOString(),
   oddsRetrievedAt: odds.retrievedAt,
-  modelPolicy: "Pronostici, gerarchie e candidati sono calcolati prima dell'associazione alle quote. Le quote Sisal sono solo prezzi numerici esterni e non orientano la selezione.",
+  modelPolicy: "Pronostici, gerarchie e candidati sono calcolati prima dell'associazione alle quote. Le quote Sisal restano esterne alle probabilità e servono a verificare i target MyCombo 5/10/20.",
   methodology: {
     booked: "Stesso impianto Serie A: ruolo, cartellini e falli per 90 minuti regolarizzati, con graduatoria unica e presenza di entrambe le squadre.",
     mvp: "Stessi pesi Serie A su scenario risultato, produzione individuale, fit tattico e affidabilità; lo storico MVP Champions omogeneo resta N/D.",
@@ -388,3 +411,4 @@ const output = {
 
 write("data/normalized/champions-player-markets-md01-2026-27.json", output);
 console.log(`Champions player markets: ${output.summary.fixtures} gare, ${output.summary.completeLineups} XI completi, ${output.summary.usableMyCombos} MyCombo utilizzabili.`);
+

@@ -18,6 +18,10 @@ for (const fixture of data.fixtures) {
   for (const candidate of fixture.likelyBooked) assert.ok(lineupNames.includes(candidate.lineupName.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase()), `${fixture.fixtureId}: ammonito fuori XI ${candidate.name}`);
   const forbidden = /CARTELL|AMMONIT|DRAW NO BET|PRIMA A X CORNER|QUASI CARTELLINO|1X2 TIRI (TOTALI|IN PORTA) GIOCATORI/i;
   for (const combo of fixture.combinations) {
+    assert.equal(combo.targetReached, combo.legs.length >= 3 && combo.legs.reduce((p,x)=>p*x.odds,1) >= combo.targetOdds);
+    assert.ok(combo.legs.length <= 6);
+    assert.equal(new Set(combo.legs.map(x=>x.macroFamily)).size, combo.legs.length);
+    assert.ok(Math.abs(combo.odds-combo.legs.reduce((p,x)=>p*x.odds,1))<=.0051);
     const families = new Set();
     for (const leg of combo.legs) {
       assert.ok(leg.odds >= 1.10, "Quota inferiore a 1.10");

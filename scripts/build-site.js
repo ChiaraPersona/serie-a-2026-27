@@ -20,7 +20,7 @@ const leaderboardVersion = "20260908-results-calendar-v1";
 const bettingVersion = "20260908-champions-schedina-v7";
 const readingVersion = "20260908-results-calendar-v1";
 const cupVersion = "20260908-results-calendar-v1";
-const championsVersion = "20260908-champions-player-glass-v2";
+const championsVersion = "20260908-champions-team-calendar-v1";
 const fantasyVersion = "20260907-udinese-lazio-official-v1";
 const headToHeadPath = path.join(root, "data/generated/head-to-head/first-leg-2026-27.json");
 if (fs.existsSync(headToHeadPath)) {

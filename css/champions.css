@@ -748,3 +748,16 @@ body[data-page="champions"] .champions-fixture.match.fixture-card .matchday-chip
 body[data-page="champions"] .champions-fixture.match.fixture-card .match-date{color:#fff}
 
 .champions-reading-combo .prediction-combo-metrics>div{background:#071f4a;color:#fff}
+/* Personal club pages retain the Champions blue palette across shared components. */
+body[data-page="champions"] .champions-team-detail{min-width:0;color:#fff}
+body[data-page="champions"] .champions-team-detail :is(p,small,td,th,footer,.objective-method,.champions-team-status span,.champions-team-overview span,.champions-player-stats-note){color:#fff}
+body[data-page="champions"] .champions-team-detail :is(table,thead,tbody,tr,th,td){background:#062456}
+body[data-page="champions"] .champions-team-detail thead th{background:#093878}
+body[data-page="champions"] .champions-team-detail tbody tr:hover :is(th,td){background:#0b3974}
+body[data-page="champions"] .champions-team-detail :is(.reading-panel-empty,.champions-squad-notice,.champions-squad-alert,.champions-squad-group,.champions-squad-group li){background:#062456;color:#fff}
+body[data-page="champions"] .champions-team-detail .champions-strength-table-wrap{max-width:100%;overflow-x:auto}
+.champions-team-calendar{margin-block:24px}
+.champions-team-calendar .champions-fixture-grid{grid-template-columns:1fr}
+.champions-team-lineup{margin-block:24px}
+.champions-team-lineup .reading-lineup-grid{grid-template-columns:minmax(0,1fr)}
+body[data-page="champions"] .champions-team-detail .champions-fixture.match.fixture-card{background:radial-gradient(ellipse at 100% 0%,rgba(24,104,211,.38),transparent 65%),linear-gradient(135deg,#082f70,#041b46)}
