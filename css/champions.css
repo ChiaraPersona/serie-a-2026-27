@@ -731,3 +731,14 @@ body[data-page="champions"] .champions-motivation-debug span{color:#fff!importan
 }
 
 .champions-reading-combo .prediction-combo-card>strong{background:#071f4a;color:#fff}
+
+/* Club colours on a dark glass surface, with white fixture metadata. */
+body[data-page="champions"] .champions-fixture.match.fixture-card{
+ background:radial-gradient(ellipse at 0% 25%,color-mix(in srgb,var(--home-color-1) 48%,transparent),transparent 65%),radial-gradient(ellipse at 100% 75%,color-mix(in srgb,var(--away-color-1) 48%,transparent),transparent 65%),linear-gradient(115deg,color-mix(in srgb,var(--home-color-2) 16%,transparent),transparent 45%,color-mix(in srgb,var(--away-color-2) 16%,transparent)),#061630;
+ box-shadow:inset 0 1px 4px #ffffff38,0 14px 28px #00000030;
+ backdrop-filter:blur(22px) saturate(135%);
+ -webkit-backdrop-filter:blur(22px) saturate(135%);
+}
+body[data-page="champions"] .champions-fixture.match.fixture-card .match-head{background:rgba(1,12,32,.35)}
+body[data-page="champions"] .champions-fixture.match.fixture-card .matchday-chip,
+body[data-page="champions"] .champions-fixture.match.fixture-card .match-date{color:#fff}

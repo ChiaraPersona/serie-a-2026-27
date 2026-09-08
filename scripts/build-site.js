@@ -13,14 +13,14 @@ const footer = (depth = "") => `<footer class="site-footer"><div class="site-foo
 const fontLinks = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">';
 const withFonts = html => html.replace("</title>", `</title>${fontLinks}`);
 const version = "20260901-coppa-round16-calendar-v1";
-const homeVersion = "20260907-udinese-lazio-official-v1";
-const calendarVersion = "20260906-personal-calendar-all-competitions-v1";
-const teamVersion = "20260907-udinese-lazio-official-v1";
-const leaderboardVersion = "20260906-md3-eight-results-v1";
+const homeVersion = "20260908-results-calendar-v1";
+const calendarVersion = "20260908-results-calendar-v1";
+const teamVersion = "20260908-results-calendar-v1";
+const leaderboardVersion = "20260908-results-calendar-v1";
 const bettingVersion = "20260908-champions-schedina-v6";
-const readingVersion = "20260907-udinese-lazio-official-v1";
-const cupVersion = "20260903-coppa-results-v1";
-const championsVersion = "20260908-champions-combo-layout-v2";
+const readingVersion = "20260908-results-calendar-v1";
+const cupVersion = "20260908-results-calendar-v1";
+const championsVersion = "20260908-champions-club-glass-v1";
 const fantasyVersion = "20260907-udinese-lazio-official-v1";
 const headToHeadPath = path.join(root, "data/generated/head-to-head/first-leg-2026-27.json");
 if (fs.existsSync(headToHeadPath)) {

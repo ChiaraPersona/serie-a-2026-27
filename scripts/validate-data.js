@@ -108,7 +108,7 @@ assert(readingRefereeProfiles.season==="2025-26"&&readingRefereeProfiles.provide
 assert(officialAssignments.every(match=>{const profile=readingRefereeBySlug.get(match.refereeAssignment.referee.slug);return profile&&profile.matches>=5&&Number.isFinite(profile.perMatch.yellowCards)&&Number.isFinite(profile.perMatch.fouls)&&profile.tendencies.length>=2}),"Statistiche o tendenze mancanti per un arbitro ufficiale nelle Letture");
 const finishedLeagueMatches=league.filter(match=>match.status==="finished");
 assert(finishedLeagueMatches.length===matchResultsSource.matches.length,"Risultati Serie A normalizzati non sincronizzati con la fonte");
-assert(finishedLeagueMatches.every(match=>Number.isInteger(match.score?.home)&&Number.isInteger(match.score?.away)&&match.scorers?.length&&Array.isArray(match.bookings)&&Array.isArray(match.substitutions)&&match.teamStats?.home&&match.teamStats?.away&&match.playerStats?.home?.length>=11&&match.playerStats?.away?.length>=11&&match.resultSource?.url),"Risultati Serie A privi di eventi, statistiche o fonte");
+assert(finishedLeagueMatches.every(match=>Number.isInteger(match.score?.home)&&Number.isInteger(match.score?.away)&&Array.isArray(match.scorers)&&Array.isArray(match.bookings)&&Array.isArray(match.substitutions)&&match.teamStats?.home&&match.teamStats?.away&&((match.playerStats?.home?.length>=11&&match.playerStats?.away?.length>=11)||(match.resultCoverage?.playerStats==="unavailable"&&match.resultCoverage?.note&&match.playerStats?.home?.length===0&&match.playerStats?.away?.length===0))&&match.resultSource?.url),"Risultati Serie A privi di eventi, fonte o stato esplicito delle statistiche mancanti");
 assert(matchResultsSource.matches.every(result=>{const match=finishedLeagueMatches.find(item=>item.id===result.matchId);return match&&match.score.home===result.score.home&&match.score.away===result.score.away}),"Punteggi Serie A normalizzati non sincronizzati con la fonte");
 const readingModules=["context","form","availability","tactics","referee","market","synthesis"],matchIds=new Set(matches.map(match=>match.id)),readingMatchIds=new Set([...matchIds,...cup.matches.map(match=>match.id)]);
 assert(new Set(readings.map(reading=>reading.id)).size===readings.length,"ID lettura duplicati");
@@ -163,7 +163,8 @@ for(const match of league){
   assert(/^\d{4}-\d{2}-\d{2}$/.test(match.matchdayDate)&&(!match.date||/^\d{4}-\d{2}-\d{2}$/.test(match.date)),`Formato data non valido: ${match.id}`);
   assert(match.timezone==="Europe/Rome"&&Array.isArray(match.sources)&&match.sources.length,`Timezone/fonti mancanti: ${match.id}`);
   if(match.dateStatus==="confirmed")assert(match.date&&match.kickoff,`Data confermata incompleta: ${match.id}`);
-  if(match.matchday>5)assert(match.date===null&&match.kickoff===null&&match.dateStatus==="tbd",`Data inventata oltre la quinta giornata: ${match.id}`);
+  if(match.matchday>12)assert(match.date===null&&match.kickoff===null&&match.dateStatus==="tbd",`Data inventata oltre la dodicesima giornata: ${match.id}`);
+  if(match.matchday<=12)assert(match.date&&match.kickoff&&match.dateStatus==="confirmed",`Programmazione ufficiale mancante: ${match.id}`);
   const home=counters.get(match.homeTeam),away=counters.get(match.awayTeam);home.total++;home.home++;away.total++;away.away++;
   home.opponents.set(match.awayTeam,(home.opponents.get(match.awayTeam)||0)+1);away.opponents.set(match.homeTeam,(away.opponents.get(match.homeTeam)||0)+1);
 }
@@ -178,7 +179,10 @@ for(let a=0;a<teams.length;a++)for(let b=a+1;b<teams.length;b++){
 const firstFive=league.filter(m=>m.matchday<=5), provisional=firstFive.filter(m=>m.dateStatus==="provisional");
 assert(firstFive.length===50,"Prime cinque giornate incomplete");
 assert(firstFive.every(m=>m.dateStatus!=="tbd"),"Programmazione mancante nelle prime cinque giornate");
-assert(provisional.length===5,`Gare provvisorie: ${provisional.length}, attese 5`);
+assert(provisional.length===0,`Gare ancora provvisorie dopo il C.U. 20: ${provisional.length}`);
+const scheduleUpdates=JSON.parse(fs.readFileSync(path.join(root,"data/sources/serie-a-schedule-updates-2026-27.json"),"utf8"));
+assert(scheduleUpdates.matches.length===80&&new Set(scheduleUpdates.matches.map(m=>m.matchId)).size===80,"Aggiornamenti calendario incompleti o duplicati");
+for(const update of scheduleUpdates.matches){const match=league.find(m=>m.id===update.matchId);const source=scheduleUpdates.sources.find(s=>s.id===update.sourceId);assert(match&&source&&match.date===update.date&&match.kickoff===update.kickoff&&!match.scheduleAlternatives&&match.sources.some(s=>s.sourceUrl===source.sourceUrl),`Programmazione non sincronizzata con il comunicato: ${update.matchId}`);}
 assert(league.every(m=>!m.isDemo)&&teams.every(t=>!t.isDemo),"Dati demo ancora presenti");
 assert(previousStandings.season==="2025-26"&&previousStandings.status==="final","Metadati classifica 2025/26 non validi");
 const historicalDisciplineFields=["penaltiesFor","penaltiesAgainst","cardsFor","cardsAgainst"];

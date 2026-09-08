@@ -33,6 +33,7 @@ const statmuseStatsByUrl = new Map(statmusePlayerStats.matches.map(entry => [ent
 const allowedUnmatchedStatmusePlayers = new Set(["stefanosabelli"]);
 
 function mergeStatmusePlayerStats(result) {
+  if (result.coverage?.playerStats === "unavailable" && result.playerStats?.home?.length === 0 && result.playerStats?.away?.length === 0) return result.playerStats;
   const overlay = statmuseStatsByUrl.get(result.sourceUrl);
   if (!overlay) throw new Error(`Statistiche calciatori StatMuse mancanti: ${result.matchId}`);
   for (const side of ["home", "away"]) {
@@ -160,6 +161,18 @@ for (const match of matches.filter(item => item.matchday <= 5)) {
 }
 
 const matchById = new Map(matches.map(match => [match.id, match]));
+const scheduleUpdates = JSON.parse(fs.readFileSync(path.join(root, "data/sources/serie-a-schedule-updates-2026-27.json"), "utf8"));
+if (scheduleUpdates.season !== "2026-27" || scheduleUpdates.competition !== "serie-a") throw new Error("Stagione aggiornamenti calendario non valida");
+const updatedFixtureIds = new Set();
+for (const update of scheduleUpdates.matches) {
+  const match = matchById.get(update.matchId);
+  const source = scheduleUpdates.sources.find(item => item.id === update.sourceId);
+  if (!match || !source || updatedFixtureIds.has(update.matchId) || !/^2026-\d{2}-\d{2}$/.test(update.date) || !/^\d{2}:\d{2}$/.test(update.kickoff)) throw new Error(`Aggiornamento calendario non valido: ${update.matchId}`);
+  updatedFixtureIds.add(update.matchId);
+  Object.assign(match, {date:update.date, kickoff:update.kickoff, dateStatus:"confirmed"});
+  delete match.scheduleAlternatives;
+  match.sources.push({...source, note:"Programmazione ufficiale aggiornata; sostituisce le precedenti alternative."});
+}
 if (!Array.isArray(refereeAssignments.matchdays) || !refereeAssignments.matchdays.length) {
   throw new Error("Dataset designazioni AIA privo di giornate");
 }
@@ -221,6 +234,7 @@ for (const result of matchResults.matches) {
     teamStats: result.teamStats,
     playerStats: mergeStatmusePlayerStats(result),
     mvp: result.mvp || null,
+    ...(result.coverage ? {resultCoverage: result.coverage} : {}),
     resultSource: source
   });
   match.sources.push({

@@ -140,6 +140,7 @@ if (branding.teams.length !== teamList.length) fail(`attesi ${teamList.length} p
 const teamBranding = branding.teams.map(item => {
   if (!teamList.includes(item.team)) fail(`branding per squadra estranea: ${item.team}`);
   if (!/^\d+$/.test(item.uefaTeamId) || !/^[a-z0-9-]+$/.test(item.slug)) fail(`${item.team}: ID UEFA o slug branding non valido`);
+  if (!Array.isArray(item.colors) || item.colors.length !== 2 || item.colors.some(color => !/^#[0-9a-f]{6}$/i.test(color))) fail(`${item.team}: palette non valida`);
   const logo = `assets/images/champions/${item.slug}.png`;
   const absoluteLogo = path.join(root, logo);
   if (!fs.existsSync(absoluteLogo) || fs.statSync(absoluteLogo).size < 100) fail(`${item.team}: logo locale mancante o vuoto`);
@@ -147,6 +148,7 @@ const teamBranding = branding.teams.map(item => {
     team: item.team,
     uefaTeamId: item.uefaTeamId,
     slug: item.slug,
+    colors: item.colors,
     shortName: item.team.split(/\s+/).map(part => part[0]).join("").slice(0, 3).toUpperCase(),
     logo,
     sourceUrl: branding.source.urlTemplate.replace("{uefaTeamId}", item.uefaTeamId)
