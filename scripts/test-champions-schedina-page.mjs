@@ -20,11 +20,14 @@ assert(app.innerHTML.includes("Champions League"));
 
 globalThis.location.search="?competizione=champions";
 await createPage({esc,load,hero,dateOnly}).render();
-assert(app.innerHTML.includes("Otto schedine costruite dal modello"));
-assert.equal((app.innerHTML.match(/<article class="betting-slip betting-slip--champions /g)||[]).length,8);
-assert(app.innerHTML.includes("Tripla esiti e tiri in porta"));
+assert(app.innerHTML.includes("5 schedine costruite dal modello"));
+assert.equal((app.innerHTML.match(/<article class="betting-slip betting-slip--champions /g)||[]).length,5);
+assert(app.innerHTML.includes("Otto tiri e tiri in porta"));
+assert(app.innerHTML.includes("Otto gol e assist"));
+assert(!/Tripla esiti|Tripla gol|Cinquina mercati|Scenari non qualificati|betting-quality|betting-slip-grid-qualified/.test(app.innerHTML));
+assert.equal((app.innerHTML.match(/class="betting-slip-grid"/g)||[]).length,1);
 assert(app.innerHTML.includes("Multigol casa/ospite · 10 partite"));
 assert(app.innerHTML.includes("Poker ammoniti 2"));
-assert(app.innerHTML.includes("escluse soltanto le schedine a risultato esatto"));
+
 assert(!app.innerHTML.includes("RISULTATO ESATTO MULTI"));
 console.log("OK pagina Schedina Champions");
