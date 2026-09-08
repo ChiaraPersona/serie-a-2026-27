@@ -107,7 +107,7 @@ for(const historicalEvent of ["Toni Kroos","Rodrygo","Achraf Hakimi","Karim Benz
 assert(app.innerHTML.includes("autogol"));
 assert(app.innerHTML.includes("rigore"));
 assert(app.innerHTML.includes("minuto N/D"));
-const readingOrder=["prediction-volume-section","champions-shooters","prediction-players-grid","reading-panel-grid","reading-info-grid","reading-tactical-baseline","reading-referee-assignment","reading-h2h-section"].map(contract=>app.innerHTML.indexOf(contract));
+const readingOrder=["prediction-volume-section","champions-shooters","prediction-players-grid","reading-info-grid","reading-tactical-baseline","reading-referee-assignment","reading-h2h-section","champions-reading-combo"].map(contract=>app.innerHTML.indexOf(contract));
 assert(readingOrder.every((position,index)=>position>=0&&(index===0||position>readingOrder[index-1])),"Ordine delle sezioni non allineato alla Lettura Serie A");
 assert(!app.innerHTML.includes("champions-calendar"));
 globalThis.location.search="?match=ucl-2026-27-md01-01";

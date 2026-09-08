@@ -20,6 +20,7 @@ for (const fixture of data.fixtures) {
   for (const combo of fixture.combinations) {
     const families = new Set();
     for (const leg of combo.legs) {
+      assert.ok(leg.odds >= 1.10, "Quota inferiore a 1.10");
       assert.ok(!forbidden.test(`${leg.marketName} ${leg.variantName}`), `${fixture.fixtureId}: mercato vietato`);
       assert.ok(!families.has(leg.marketName === "UNDER/OVER" || leg.marketName === "GOAL/NOGOAL" || leg.marketName === "MULTIGOAL" ? "goals" : leg.marketName), `${fixture.fixtureId}: sovrapposizione semantica`);
       families.add(leg.marketName === "UNDER/OVER" || leg.marketName === "GOAL/NOGOAL" || leg.marketName === "MULTIGOAL" ? "goals" : leg.marketName);

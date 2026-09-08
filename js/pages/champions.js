@@ -187,12 +187,12 @@ export function createPage(deps){
       <section class="section reading-projection-prototype prediction-volume-section champions-reading-volume" id="champions-forecast"><header class="section-heading"><div><p class="eyebrow">Pronostico e dati di gara</p><h2>Scenario principale</h2></div><p>Distribuzione dei gol e volumi della partita.</p></header><section class="champions-reading-volume-block" id="champions-volumes">${matchProjection}<header class="section-heading"><div><p class="eyebrow">Proiezione per squadra</p><h2>Gol, tiri, specchio, corner, falli e cartellini</h2></div><p>Storico distinto tra casa e trasferta.</p></header><div class="prediction-volume-grid">${fixture.teamProjections.map(teamProjection).join("")}</div><p class="objective-method">Tiri e corner combinano produzione per sede, valori concessi dall'avversaria e ultime otto gare; le fasce sono percentili p20–p80, non margini fissi. La designazione arbitrale è verificata ma non viene applicata come moltiplicatore automatico dei cartellini. I dati mancanti restano N/D.</p></section></section>
       ${shootersPanel}
       <section class="section champions-player-predictions"><div class="prediction-players-grid">${bookedPanel}${mvpPanel}</div></section>
-      ${myCombo}
       <section class="section reading-info-grid champions-reading-info" id="champions-lineups">${probableFormationCard(fixture,squads)}</section>
       ${tacticalBaselinePanel(fixture,styleProfiles,pilot.profiles,branding)}
       ${matchAttackChannelsPanel(fixture,attackByTeam,branding)}
       <section class="champions-reading-context" id="champions-context" aria-labelledby="champions-context-title"><header class="champions-reading-section-heading"><div><p class="eyebrow">Contesto della gara</p><h2 id="champions-context-title">Motivazione e direzione arbitrale</h2></div><p>Indicatori di contesto separati dal pronostico quantitativo.</p></header><div class="champions-reading-context-grid">${motivationPanel(motivationEntry)}${refereeReadingPanel(fixture.refereeAssignment)}</div></section>
-      ${h2hPanel}`;
+      ${h2hPanel}
+      ${myCombo}`;
   }
 
   function registeredSquadsDirectory(squads,{detail=false}={}){

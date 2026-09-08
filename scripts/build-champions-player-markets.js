@@ -259,7 +259,7 @@ function candidateLegs(prediction, shooters, booked, event) {
   const btts = (1 - Math.exp(-prediction.expectedGoals.home)) * (1 - Math.exp(-prediction.expectedGoals.away));
   const legs = [];
   const macroFamily = family => ({ result: "result", "result-full": "result", goals: "goals", "total-goals": "goals", "goal-band": "goals", "team-goal": "goals", corners: "corners", "player-shots": "shots-total", "match-shots": "shots-total", "player-sot": "shots-on-target", "player-card": "cards" }[family] || family);
-  const add = (family, label, probability, sisal, source) => { if (sisal) legs.push({ family, macroFamily: macroFamily(family), label, modelProbabilityPct: round(probability * 100), sisal, source }); };
+  const add = (family, label, probability, sisal, source) => { if (sisal?.odds >= 1.10) legs.push({ family, macroFamily: macroFamily(family), label, modelProbabilityPct: round(probability * 100), sisal, source }); };
   add("result", `Doppia chance ${favoriteSelection}`, dcProbability / 100, findSimpleMarket(event, "28319", favoriteSelection), "modello UEFA Elo 1X2");
   const goalSelection = btts >= 0.52 ? "GOAL" : "NOGOAL";
   add("goals", goalSelection === "GOAL" ? "Entrambe segnano" : "Almeno una non segna", goalSelection === "GOAL" ? btts : 1 - btts, findSimpleMarket(event, "18", goalSelection), "Poisson sugli xG");
@@ -303,21 +303,27 @@ function buildCombinations(prediction, shooters, booked, event) {
     { tier: "Balanced", scenario: "Equilibrata", risk: "medio", count: 4, targetOdds: 10, offset: 1 },
     { tier: "Aggressive", scenario: "Più selettiva", risk: "alto", count: 5, targetOdds: 20, offset: 2 }
   ];
+  const selectionUsage = new Map(), familyUsage = new Map();
   return definitions.map((definition, definitionIndex) => {
     const start = Math.min(definition.offset, Math.max(0, candidates.length - definition.count));
     const selected = [];
     const usedFamilies = new Set();
-    for (const candidate of [...candidates.slice(start), ...candidates.slice(0, start)]) {
+    for (const candidate of [...candidates.slice(start), ...candidates.slice(0, start)].sort((a,b) => (selectionUsage.get(a.sisal.providerSelectionId)||0)-(selectionUsage.get(b.sisal.providerSelectionId)||0) || (familyUsage.get(a.family)||0)-(familyUsage.get(b.family)||0))) {
       if (usedFamilies.has(candidate.macroFamily)) continue;
       selected.push(candidate);
       usedFamilies.add(candidate.macroFamily);
       if (selected.length === definition.count) break;
+    }
+    for (const candidate of selected) {
+      selectionUsage.set(candidate.sisal.providerSelectionId, (selectionUsage.get(candidate.sisal.providerSelectionId)||0)+1);
+      familyUsage.set(candidate.family, (familyUsage.get(candidate.family)||0)+1);
     }
     const combinedOdds = selected.reduce((value, leg) => value * leg.sisal.odds, 1);
     const modelProbability = selected.reduce((value, leg) => value * leg.modelProbabilityPct / 100, 1) * Math.pow(0.94, Math.max(0, selected.length - 1));
     return {
       ...definition,
       quotaPolicy: "orientativa",
+      minimumSelectionOdds: 1.10,
       odds: round(combinedOdds, 2),
       qualityStatus: selected.length >= 3 ? "editoriale" : "nd",
       legs: selected.map(leg => ({ label: leg.label, odds: leg.sisal.odds, modelProbabilityPct: leg.modelProbabilityPct, marketCode: leg.sisal.marketCode, marketName: leg.sisal.marketName, variantName: leg.sisal.variantName, providerMarketId: leg.sisal.providerMarketId, providerSelectionId: leg.sisal.providerSelectionId, replacementIncluded: leg.sisal.replacementIncluded, source: leg.source })),

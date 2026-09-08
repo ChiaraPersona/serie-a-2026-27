@@ -3,7 +3,7 @@
   "competition": "UEFA Champions League",
   "season": "2026/27",
   "matchday": 1,
-  "generatedAt": "2026-09-07T21:26:40.478Z",
+  "generatedAt": "2026-09-08T08:12:36.566Z",
   "oddsRetrievedAt": "2026-09-07T21:04:05.546Z",
   "modelPolicy": "Pronostici, gerarchie e candidati sono calcolati prima dell'associazione alle quote. Le quote Sisal sono solo prezzi numerici esterni e non orientano la selezione.",
   "methodology": {
@@ -18,7 +18,7 @@
     "matchedOddsEvents": 18,
     "actualCardQuotes": 42,
     "actualShooterQuotes": 119,
-    "usableMyCombos": 48
+    "usableMyCombos": 42
   },
   "fixtures": [
     {
@@ -389,6 +389,7 @@
           "targetOdds": 5,
           "offset": 0,
           "quotaPolicy": "orientativa",
+          "minimumSelectionOdds": 1.1,
           "odds": 2.1,
           "qualityStatus": "editoriale",
           "legs": [
@@ -442,86 +443,10 @@
           "targetOdds": 10,
           "offset": 1,
           "quotaPolicy": "orientativa",
-          "odds": 4.94,
+          "minimumSelectionOdds": 1.1,
+          "odds": 19.67,
           "qualityStatus": "editoriale",
           "legs": [
-            {
-              "label": "Entrambe segnano",
-              "odds": 1.52,
-              "modelProbabilityPct": 61.6,
-              "marketCode": "18",
-              "marketName": "GOAL/NOGOAL",
-              "variantName": "GOAL/NO GOAL",
-              "providerMarketId": "806403317",
-              "providerSelectionId": "5292175598",
-              "replacementIncluded": false,
-              "source": "Poisson sugli xG"
-            },
-            {
-              "label": "Doppia chance 1X nel 1° tempo",
-              "odds": 1.15,
-              "modelProbabilityPct": 75.8,
-              "marketCode": "99987",
-              "marketName": "DOPPIA CHANCE TEMPO X",
-              "variantName": "DC TEMPO 1",
-              "providerMarketId": "9.048390790009999e+24",
-              "providerSelectionId": "5292177460",
-              "replacementIncluded": false,
-              "source": "scenario 1X2 ridotto al primo tempo"
-            },
-            {
-              "label": "Esito 1",
-              "odds": 1.8,
-              "modelProbabilityPct": 64.5,
-              "marketCode": "3",
-              "marketName": "1X2 ESITO FINALE",
-              "variantName": "ESITO FINALE 1X2",
-              "providerMarketId": "806403298",
-              "providerSelectionId": "5292175484",
-              "replacementIncluded": false,
-              "source": "modello UEFA Elo 1X2"
-            },
-            {
-              "label": "Over 8,5 corner",
-              "odds": 1.57,
-              "modelProbabilityPct": 70,
-              "marketCode": "975",
-              "marketName": "U/O CORNER",
-              "variantName": "U/O 8.5 CORNER",
-              "providerMarketId": "809436164",
-              "providerSelectionId": "5309467240",
-              "replacementIncluded": false,
-              "source": "volume partita p20-p80"
-            }
-          ],
-          "prudentProbabilityPct": 17.51,
-          "fairOdds": 5.71,
-          "probabilityMethod": "Selezioni ordinate dal modello; le quote Sisal vengono collegate soltanto dopo e non modificano la scelta.",
-          "unavailableReason": null
-        },
-        {
-          "tier": "Aggressive",
-          "scenario": "Più selettiva",
-          "risk": "alto",
-          "count": 5,
-          "targetOdds": 20,
-          "offset": 2,
-          "quotaPolicy": "orientativa",
-          "odds": 22.62,
-          "qualityStatus": "editoriale",
-          "legs": [
-            {
-              "label": "Doppia chance 1X nel 1° tempo",
-              "odds": 1.15,
-              "modelProbabilityPct": 75.8,
-              "marketCode": "99987",
-              "marketName": "DOPPIA CHANCE TEMPO X",
-              "variantName": "DC TEMPO 1",
-              "providerMarketId": "9.048390790009999e+24",
-              "providerSelectionId": "5292177460",
-              "replacementIncluded": false,
-              "source": "scenario 1X2 ridotto al primo tempo"
-            },
             {
               "label": "Over 1,5 gol",
               "odds": 1.16,
@@ -571,8 +496,86 @@
               "source": "indice disciplinare comparativo"
             }
           ],
-          "prudentProbabilityPct": 8.44,
-          "fairOdds": 11.84,
+          "prudentProbabilityPct": 11.85,
+          "fairOdds": 8.44,
+          "probabilityMethod": "Selezioni ordinate dal modello; le quote Sisal vengono collegate soltanto dopo e non modificano la scelta.",
+          "unavailableReason": null
+        },
+        {
+          "tier": "Aggressive",
+          "scenario": "Più selettiva",
+          "risk": "alto",
+          "count": 5,
+          "targetOdds": 20,
+          "offset": 2,
+          "quotaPolicy": "orientativa",
+          "minimumSelectionOdds": 1.1,
+          "odds": 23.79,
+          "qualityStatus": "editoriale",
+          "legs": [
+            {
+              "label": "Multigol 1–4",
+              "odds": 1.22,
+              "modelProbabilityPct": 70,
+              "marketCode": "30562",
+              "marketName": "MULTIGOAL",
+              "variantName": "MULTIGOAL MULTIESITI 16 ESITI",
+              "providerMarketId": "806411725",
+              "providerSelectionId": "5292192483",
+              "replacementIncluded": false,
+              "source": "Poisson sugli xG"
+            },
+            {
+              "label": "Doppia chance 1X nel 1° tempo",
+              "odds": 1.15,
+              "modelProbabilityPct": 75.8,
+              "marketCode": "99987",
+              "marketName": "DOPPIA CHANCE TEMPO X",
+              "variantName": "DC TEMPO 1",
+              "providerMarketId": "9.048390790009999e+24",
+              "providerSelectionId": "5292177460",
+              "replacementIncluded": false,
+              "source": "scenario 1X2 ridotto al primo tempo"
+            },
+            {
+              "label": "Esito 1",
+              "odds": 1.8,
+              "modelProbabilityPct": 64.5,
+              "marketCode": "3",
+              "marketName": "1X2 ESITO FINALE",
+              "variantName": "ESITO FINALE 1X2",
+              "providerMarketId": "806403298",
+              "providerSelectionId": "5292175484",
+              "replacementIncluded": false,
+              "source": "modello UEFA Elo 1X2"
+            },
+            {
+              "label": "Over 8,5 corner",
+              "odds": 1.57,
+              "modelProbabilityPct": 70,
+              "marketCode": "975",
+              "marketName": "U/O CORNER",
+              "variantName": "U/O 8.5 CORNER",
+              "providerMarketId": "809436164",
+              "providerSelectionId": "5309467240",
+              "replacementIncluded": false,
+              "source": "volume partita p20-p80"
+            },
+            {
+              "label": "Lovro Majer cartellino",
+              "odds": 6,
+              "modelProbabilityPct": 36.7,
+              "marketCode": "28576",
+              "marketName": "CARTELLINO SI/NO (DUO) INC TS",
+              "variantName": "MAJER LOVRO CARTELLINO O SUO SOST. INCL. GIOCAT. PANCHINA DOPO FISCHIO FINALE INCL.TS E RIGORI",
+              "providerMarketId": "809435765",
+              "providerSelectionId": "5309469989",
+              "replacementIncluded": true,
+              "source": "indice disciplinare comparativo"
+            }
+          ],
+          "prudentProbabilityPct": 6.86,
+          "fairOdds": 14.57,
           "probabilityMethod": "Selezioni ordinate dal modello; le quote Sisal vengono collegate soltanto dopo e non modificano la scelta.",
           "unavailableReason": null
         }
@@ -1180,6 +1183,7 @@
           "targetOdds": 5,
           "offset": 0,
           "quotaPolicy": "orientativa",
+          "minimumSelectionOdds": 1.1,
           "odds": 2.82,
           "qualityStatus": "editoriale",
           "legs": [
@@ -1233,86 +1237,10 @@
           "targetOdds": 10,
           "offset": 1,
           "quotaPolicy": "orientativa",
-          "odds": 7.88,
+          "minimumSelectionOdds": 1.1,
+          "odds": 5.35,
           "qualityStatus": "editoriale",
           "legs": [
-            {
-              "label": "Entrambe segnano",
-              "odds": 1.52,
-              "modelProbabilityPct": 65.8,
-              "marketCode": "18",
-              "marketName": "GOAL/NOGOAL",
-              "variantName": "GOAL/NO GOAL",
-              "providerMarketId": "806404846",
-              "providerSelectionId": "5292163834",
-              "replacementIncluded": false,
-              "source": "Poisson sugli xG"
-            },
-            {
-              "label": "Doppia chance X2 nel 1° tempo",
-              "odds": 1.28,
-              "modelProbabilityPct": 67.6,
-              "marketCode": "99987",
-              "marketName": "DOPPIA CHANCE TEMPO X",
-              "variantName": "DC TEMPO 1",
-              "providerMarketId": "9.048390760009998e+24",
-              "providerSelectionId": "5292167979",
-              "replacementIncluded": false,
-              "source": "scenario 1X2 ridotto al primo tempo"
-            },
-            {
-              "label": "Esito 2",
-              "odds": 2.5,
-              "modelProbabilityPct": 52.7,
-              "marketCode": "3",
-              "marketName": "1X2 ESITO FINALE",
-              "variantName": "ESITO FINALE 1X2",
-              "providerMarketId": "806404827",
-              "providerSelectionId": "5292162858",
-              "replacementIncluded": false,
-              "source": "modello UEFA Elo 1X2"
-            },
-            {
-              "label": "Over 8,5 corner",
-              "odds": 1.62,
-              "modelProbabilityPct": 70,
-              "marketCode": "975",
-              "marketName": "U/O CORNER",
-              "variantName": "U/O 8.5 CORNER",
-              "providerMarketId": "809425302",
-              "providerSelectionId": "5309370909",
-              "replacementIncluded": false,
-              "source": "volume partita p20-p80"
-            }
-          ],
-          "prudentProbabilityPct": 13.63,
-          "fairOdds": 7.34,
-          "probabilityMethod": "Selezioni ordinate dal modello; le quote Sisal vengono collegate soltanto dopo e non modificano la scelta.",
-          "unavailableReason": null
-        },
-        {
-          "tier": "Aggressive",
-          "scenario": "Più selettiva",
-          "risk": "alto",
-          "count": 5,
-          "targetOdds": 20,
-          "offset": 2,
-          "quotaPolicy": "orientativa",
-          "odds": 6.85,
-          "qualityStatus": "editoriale",
-          "legs": [
-            {
-              "label": "Doppia chance X2 nel 1° tempo",
-              "odds": 1.28,
-              "modelProbabilityPct": 67.6,
-              "marketCode": "99987",
-              "marketName": "DOPPIA CHANCE TEMPO X",
-              "variantName": "DC TEMPO 1",
-              "providerMarketId": "9.048390760009998e+24",
-              "providerSelectionId": "5292167979",
-              "replacementIncluded": false,
-              "source": "scenario 1X2 ridotto al primo tempo"
-            },
             {
               "label": "Over 1,5 gol",
               "odds": 1.18,
@@ -1362,8 +1290,86 @@
               "source": "volume giocatore regolarizzato"
             }
           ],
-          "prudentProbabilityPct": 15.44,
-          "fairOdds": 6.48,
+          "prudentProbabilityPct": 24.29,
+          "fairOdds": 4.12,
+          "probabilityMethod": "Selezioni ordinate dal modello; le quote Sisal vengono collegate soltanto dopo e non modificano la scelta.",
+          "unavailableReason": null
+        },
+        {
+          "tier": "Aggressive",
+          "scenario": "Più selettiva",
+          "risk": "alto",
+          "count": 5,
+          "targetOdds": 20,
+          "offset": 2,
+          "quotaPolicy": "orientativa",
+          "minimumSelectionOdds": 1.1,
+          "odds": 10.86,
+          "qualityStatus": "editoriale",
+          "legs": [
+            {
+              "label": "Multigol 1–4",
+              "odds": 1.22,
+              "modelProbabilityPct": 70.3,
+              "marketCode": "30562",
+              "marketName": "MULTIGOAL",
+              "variantName": "MULTIGOAL MULTIESITI 16 ESITI",
+              "providerMarketId": "806411891",
+              "providerSelectionId": "5292137680",
+              "replacementIncluded": false,
+              "source": "Poisson sugli xG"
+            },
+            {
+              "label": "Nicolo Tresoldi almeno 1 tiro in porta",
+              "odds": 1.44,
+              "modelProbabilityPct": 78.6,
+              "marketCode": "28506",
+              "marketName": "U/O  TIRI IN PORTA GIOCATORE (DUO) INC PALI TRAVERSE INC TS",
+              "variantName": "TRESOLDI N. U/O 0.5 SOMMA TIRI IN PORTA INC PALI E TRAVERSE E SUO SOST. INCL. T.S.",
+              "providerMarketId": "809415619",
+              "providerSelectionId": "5309319266",
+              "replacementIncluded": true,
+              "source": "volume giocatore regolarizzato"
+            },
+            {
+              "label": "Hugo Vetlesen cartellino",
+              "odds": 3.5,
+              "modelProbabilityPct": 36,
+              "marketCode": "28576",
+              "marketName": "CARTELLINO SI/NO (DUO) INC TS",
+              "variantName": "VETLESEN H. V. CARTELLINO O SUO SOST. INCL. GIOCAT. PANCHINA DOPO FISCHIO FINALE INCL.TS E RIGORI",
+              "providerMarketId": "809426038",
+              "providerSelectionId": "5309374858",
+              "replacementIncluded": true,
+              "source": "indice disciplinare comparativo"
+            },
+            {
+              "label": "Over 24,5 tiri totali",
+              "odds": 1.38,
+              "modelProbabilityPct": 72,
+              "marketCode": "15859",
+              "marketName": "U/O TIRI TOTALI",
+              "variantName": "U/O 24.5 TIRI TOTALI",
+              "providerMarketId": "806404988",
+              "providerSelectionId": "5292166793",
+              "replacementIncluded": false,
+              "source": "volume partita p20-p80"
+            },
+            {
+              "label": "Doppia chance X2 nel 1° tempo",
+              "odds": 1.28,
+              "modelProbabilityPct": 67.6,
+              "marketCode": "99987",
+              "marketName": "DOPPIA CHANCE TEMPO X",
+              "variantName": "DC TEMPO 1",
+              "providerMarketId": "9.048390760009998e+24",
+              "providerSelectionId": "5292167979",
+              "replacementIncluded": false,
+              "source": "scenario 1X2 ridotto al primo tempo"
+            }
+          ],
+          "prudentProbabilityPct": 7.56,
+          "fairOdds": 13.23,
           "probabilityMethod": "Selezioni ordinate dal modello; le quote Sisal vengono collegate soltanto dopo e non modificano la scelta.",
           "unavailableReason": null
         }
@@ -1980,6 +1986,7 @@
           "targetOdds": 5,
           "offset": 0,
           "quotaPolicy": "orientativa",
+          "minimumSelectionOdds": 1.1,
           "odds": 2.07,
           "qualityStatus": "editoriale",
           "legs": [
@@ -2033,86 +2040,10 @@
           "targetOdds": 10,
           "offset": 1,
           "quotaPolicy": "orientativa",
-          "odds": 4.06,
+          "minimumSelectionOdds": 1.1,
+          "odds": 3.11,
           "qualityStatus": "editoriale",
           "legs": [
-            {
-              "label": "Entrambe segnano",
-              "odds": 1.45,
-              "modelProbabilityPct": 53.2,
-              "marketCode": "18",
-              "marketName": "GOAL/NOGOAL",
-              "variantName": "GOAL/NO GOAL",
-              "providerMarketId": "806398838",
-              "providerSelectionId": "5292162925",
-              "replacementIncluded": false,
-              "source": "Poisson sugli xG"
-            },
-            {
-              "label": "Doppia chance 1X nel 1° tempo",
-              "odds": 1.17,
-              "modelProbabilityPct": 79,
-              "marketCode": "99987",
-              "marketName": "DOPPIA CHANCE TEMPO X",
-              "variantName": "DC TEMPO 1",
-              "providerMarketId": "9.048390740009999e+24",
-              "providerSelectionId": "5292167610",
-              "replacementIncluded": false,
-              "source": "scenario 1X2 ridotto al primo tempo"
-            },
-            {
-              "label": "Esito 1",
-              "odds": 1.8,
-              "modelProbabilityPct": 68.9,
-              "marketCode": "3",
-              "marketName": "1X2 ESITO FINALE",
-              "variantName": "ESITO FINALE 1X2",
-              "providerMarketId": "806398819",
-              "providerSelectionId": "5292162720",
-              "replacementIncluded": false,
-              "source": "modello UEFA Elo 1X2"
-            },
-            {
-              "label": "Over 7,5 corner",
-              "odds": 1.33,
-              "modelProbabilityPct": 70,
-              "marketCode": "975",
-              "marketName": "U/O CORNER",
-              "variantName": "U/O 7.5 CORNER",
-              "providerMarketId": "809423671",
-              "providerSelectionId": "5309362531",
-              "replacementIncluded": false,
-              "source": "volume partita p20-p80"
-            }
-          ],
-          "prudentProbabilityPct": 16.84,
-          "fairOdds": 5.94,
-          "probabilityMethod": "Selezioni ordinate dal modello; le quote Sisal vengono collegate soltanto dopo e non modificano la scelta.",
-          "unavailableReason": null
-        },
-        {
-          "tier": "Aggressive",
-          "scenario": "Più selettiva",
-          "risk": "alto",
-          "count": 5,
-          "targetOdds": 20,
-          "offset": 2,
-          "quotaPolicy": "orientativa",
-          "odds": 3.2,
-          "qualityStatus": "editoriale",
-          "legs": [
-            {
-              "label": "Doppia chance 1X nel 1° tempo",
-              "odds": 1.17,
-              "modelProbabilityPct": 79,
-              "marketCode": "99987",
-              "marketName": "DOPPIA CHANCE TEMPO X",
-              "variantName": "DC TEMPO 1",
-              "providerMarketId": "9.048390740009999e+24",
-              "providerSelectionId": "5292167610",
-              "replacementIncluded": false,
-              "source": "scenario 1X2 ridotto al primo tempo"
-            },
             {
               "label": "Over 1,5 gol",
               "odds": 1.12,
@@ -2150,20 +2081,98 @@
               "source": "volume partita p20-p80"
             },
             {
-              "label": "Georges Mikautadze almeno 1 tiro",
-              "odds": 1.02,
-              "modelProbabilityPct": 83.8,
-              "marketCode": "28507",
-              "marketName": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
-              "variantName": "MIKAUTADZE G. U/O 0.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
-              "providerMarketId": "809439876",
-              "providerSelectionId": "5309493774",
+              "label": "Serhou Guirassy almeno 1 tiro in porta",
+              "odds": 1.16,
+              "modelProbabilityPct": 77.2,
+              "marketCode": "28506",
+              "marketName": "U/O  TIRI IN PORTA GIOCATORE (DUO) INC PALI TRAVERSE INC TS",
+              "variantName": "GUIRASSY S. U/O 0.5 SOMMA TIRI IN PORTA INC PALI E TRAVERSE E SUO SOST. INCL. T.S.",
+              "providerMarketId": "809466125",
+              "providerSelectionId": "5309666122",
               "replacementIncluded": true,
               "source": "volume giocatore regolarizzato"
             }
           ],
-          "prudentProbabilityPct": 20.57,
-          "fairOdds": 4.86,
+          "prudentProbabilityPct": 25.51,
+          "fairOdds": 3.92,
+          "probabilityMethod": "Selezioni ordinate dal modello; le quote Sisal vengono collegate soltanto dopo e non modificano la scelta.",
+          "unavailableReason": null
+        },
+        {
+          "tier": "Aggressive",
+          "scenario": "Più selettiva",
+          "risk": "alto",
+          "count": 5,
+          "targetOdds": 20,
+          "offset": 2,
+          "quotaPolicy": "orientativa",
+          "minimumSelectionOdds": 1.1,
+          "odds": 10.24,
+          "qualityStatus": "editoriale",
+          "legs": [
+            {
+              "label": "Multigol 1–4",
+              "odds": 1.33,
+              "modelProbabilityPct": 74.4,
+              "marketCode": "30562",
+              "marketName": "MULTIGOAL",
+              "variantName": "MULTIGOAL MULTIESITI 16 ESITI",
+              "providerMarketId": "806410041",
+              "providerSelectionId": "5292223298",
+              "replacementIncluded": false,
+              "source": "Poisson sugli xG"
+            },
+            {
+              "label": "Santiago Mouriño cartellino",
+              "odds": 2.75,
+              "modelProbabilityPct": 46,
+              "marketCode": "28576",
+              "marketName": "CARTELLINO SI/NO (DUO) INC TS",
+              "variantName": "MOURINO S. CARTELLINO O SUO SOST. INCL. GIOCAT. PANCHINA DOPO FISCHIO FINALE INCL.TS E RIGORI",
+              "providerMarketId": "809423715",
+              "providerSelectionId": "5309362708",
+              "replacementIncluded": true,
+              "source": "indice disciplinare comparativo"
+            },
+            {
+              "label": "Doppia chance 1X nel 1° tempo",
+              "odds": 1.17,
+              "modelProbabilityPct": 79,
+              "marketCode": "99987",
+              "marketName": "DOPPIA CHANCE TEMPO X",
+              "variantName": "DC TEMPO 1",
+              "providerMarketId": "9.048390740009999e+24",
+              "providerSelectionId": "5292167610",
+              "replacementIncluded": false,
+              "source": "scenario 1X2 ridotto al primo tempo"
+            },
+            {
+              "label": "Esito 1",
+              "odds": 1.8,
+              "modelProbabilityPct": 68.9,
+              "marketCode": "3",
+              "marketName": "1X2 ESITO FINALE",
+              "variantName": "ESITO FINALE 1X2",
+              "providerMarketId": "806398819",
+              "providerSelectionId": "5292162720",
+              "replacementIncluded": false,
+              "source": "modello UEFA Elo 1X2"
+            },
+            {
+              "label": "Over 7,5 corner",
+              "odds": 1.33,
+              "modelProbabilityPct": 70,
+              "marketCode": "975",
+              "marketName": "U/O CORNER",
+              "variantName": "U/O 7.5 CORNER",
+              "providerMarketId": "809423671",
+              "providerSelectionId": "5309362531",
+              "replacementIncluded": false,
+              "source": "volume partita p20-p80"
+            }
+          ],
+          "prudentProbabilityPct": 10.18,
+          "fairOdds": 9.82,
           "probabilityMethod": "Selezioni ordinate dal modello; le quote Sisal vengono collegate soltanto dopo e non modificano la scelta.",
           "unavailableReason": null
         }
@@ -2789,6 +2798,7 @@
           "targetOdds": 5,
           "offset": 0,
           "quotaPolicy": "orientativa",
+          "minimumSelectionOdds": 1.1,
           "odds": 5.17,
           "qualityStatus": "editoriale",
           "legs": [
@@ -2842,86 +2852,10 @@
           "targetOdds": 10,
           "offset": 1,
           "quotaPolicy": "orientativa",
-          "odds": 17.96,
+          "minimumSelectionOdds": 1.1,
+          "odds": 12.9,
           "qualityStatus": "editoriale",
           "legs": [
-            {
-              "label": "Entrambe segnano",
-              "odds": 1.6,
-              "modelProbabilityPct": 59.7,
-              "marketCode": "18",
-              "marketName": "GOAL/NOGOAL",
-              "variantName": "GOAL/NO GOAL",
-              "providerMarketId": "806402229",
-              "providerSelectionId": "5292152263",
-              "replacementIncluded": false,
-              "source": "Poisson sugli xG"
-            },
-            {
-              "label": "Doppia chance 1X nel 1° tempo",
-              "odds": 1.54,
-              "modelProbabilityPct": 65,
-              "marketCode": "99987",
-              "marketName": "DOPPIA CHANCE TEMPO X",
-              "variantName": "DC TEMPO 1",
-              "providerMarketId": "9.048390730009999e+24",
-              "providerSelectionId": "5292164434",
-              "replacementIncluded": false,
-              "source": "scenario 1X2 ridotto al primo tempo"
-            },
-            {
-              "label": "Esito 1",
-              "odds": 4.5,
-              "modelProbabilityPct": 49,
-              "marketCode": "3",
-              "marketName": "1X2 ESITO FINALE",
-              "variantName": "ESITO FINALE 1X2",
-              "providerMarketId": "806402210",
-              "providerSelectionId": "5292152149",
-              "replacementIncluded": false,
-              "source": "modello UEFA Elo 1X2"
-            },
-            {
-              "label": "Over 8,5 corner",
-              "odds": 1.62,
-              "modelProbabilityPct": 70,
-              "marketCode": "975",
-              "marketName": "U/O CORNER",
-              "variantName": "U/O 8.5 CORNER",
-              "providerMarketId": "809435153",
-              "providerSelectionId": "5309462632",
-              "replacementIncluded": false,
-              "source": "volume partita p20-p80"
-            }
-          ],
-          "prudentProbabilityPct": 11.06,
-          "fairOdds": 9.05,
-          "probabilityMethod": "Selezioni ordinate dal modello; le quote Sisal vengono collegate soltanto dopo e non modificano la scelta.",
-          "unavailableReason": null
-        },
-        {
-          "tier": "Aggressive",
-          "scenario": "Più selettiva",
-          "risk": "alto",
-          "count": 5,
-          "targetOdds": 20,
-          "offset": 2,
-          "quotaPolicy": "orientativa",
-          "odds": 13.91,
-          "qualityStatus": "editoriale",
-          "legs": [
-            {
-              "label": "Doppia chance 1X nel 1° tempo",
-              "odds": 1.54,
-              "modelProbabilityPct": 65,
-              "marketCode": "99987",
-              "marketName": "DOPPIA CHANCE TEMPO X",
-              "variantName": "DC TEMPO 1",
-              "providerMarketId": "9.048390730009999e+24",
-              "providerSelectionId": "5292164434",
-              "replacementIncluded": false,
-              "source": "scenario 1X2 ridotto al primo tempo"
-            },
             {
               "label": "Over 1,5 gol",
               "odds": 1.18,
@@ -2959,20 +2893,98 @@
               "source": "volume partita p20-p80"
             },
             {
-              "label": "William Gomes almeno 1 tiro",
-              "odds": 1.05,
-              "modelProbabilityPct": 93,
-              "marketCode": "28507",
-              "marketName": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
-              "variantName": "Gomes, William U/O 0.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
-              "providerMarketId": "809508140",
-              "providerSelectionId": "5309862158",
+              "label": "André Silva almeno 1 tiro in porta",
+              "odds": 1.5,
+              "modelProbabilityPct": 69.9,
+              "marketCode": "28506",
+              "marketName": "U/O  TIRI IN PORTA GIOCATORE (DUO) INC PALI TRAVERSE INC TS",
+              "variantName": "ANDRE SILVA U/O 0.5 SOMMA TIRI IN PORTA INC PALI E TRAVERSE E SUO SOST. INCL. T.S.",
+              "providerMarketId": "809410841",
+              "providerSelectionId": "5309309471",
               "replacementIncluded": true,
               "source": "volume giocatore regolarizzato"
             }
           ],
-          "prudentProbabilityPct": 13.02,
-          "fairOdds": 7.68,
+          "prudentProbabilityPct": 16.01,
+          "fairOdds": 6.25,
+          "probabilityMethod": "Selezioni ordinate dal modello; le quote Sisal vengono collegate soltanto dopo e non modificano la scelta.",
+          "unavailableReason": null
+        },
+        {
+          "tier": "Aggressive",
+          "scenario": "Più selettiva",
+          "risk": "alto",
+          "count": 5,
+          "targetOdds": 20,
+          "offset": 2,
+          "quotaPolicy": "orientativa",
+          "minimumSelectionOdds": 1.1,
+          "odds": 31.05,
+          "qualityStatus": "editoriale",
+          "legs": [
+            {
+              "label": "Multigol 1–4",
+              "odds": 1.22,
+              "modelProbabilityPct": 76.3,
+              "marketCode": "30562",
+              "marketName": "MULTIGOAL",
+              "variantName": "MULTIGOAL MULTIESITI 16 ESITI",
+              "providerMarketId": "806411950",
+              "providerSelectionId": "5292138194",
+              "replacementIncluded": false,
+              "source": "Poisson sugli xG"
+            },
+            {
+              "label": "Alberto Costa cartellino",
+              "odds": 3.25,
+              "modelProbabilityPct": 44,
+              "marketCode": "28576",
+              "marketName": "CARTELLINO SI/NO (DUO) INC TS",
+              "variantName": "ALBERTO COSTA CARTELLINO O SUO SOST. INCL. GIOCAT. PANCHINA DOPO FISCHIO FINALE INCL.TS E RIGORI",
+              "providerMarketId": "809435130",
+              "providerSelectionId": "5309462537",
+              "replacementIncluded": true,
+              "source": "indice disciplinare comparativo"
+            },
+            {
+              "label": "Over 21,5 tiri totali",
+              "odds": 1.13,
+              "modelProbabilityPct": 72,
+              "marketCode": "15859",
+              "marketName": "U/O TIRI TOTALI",
+              "variantName": "U/O 21.5 TIRI TOTALI",
+              "providerMarketId": "806402383",
+              "providerSelectionId": "5292153048",
+              "replacementIncluded": false,
+              "source": "volume partita p20-p80"
+            },
+            {
+              "label": "Doppia chance 1X nel 1° tempo",
+              "odds": 1.54,
+              "modelProbabilityPct": 65,
+              "marketCode": "99987",
+              "marketName": "DOPPIA CHANCE TEMPO X",
+              "variantName": "DC TEMPO 1",
+              "providerMarketId": "9.048390730009999e+24",
+              "providerSelectionId": "5292164434",
+              "replacementIncluded": false,
+              "source": "scenario 1X2 ridotto al primo tempo"
+            },
+            {
+              "label": "Esito 1",
+              "odds": 4.5,
+              "modelProbabilityPct": 49,
+              "marketCode": "3",
+              "marketName": "1X2 ESITO FINALE",
+              "variantName": "ESITO FINALE 1X2",
+              "providerMarketId": "806402210",
+              "providerSelectionId": "5292152149",
+              "replacementIncluded": false,
+              "source": "modello UEFA Elo 1X2"
+            }
+          ],
+          "prudentProbabilityPct": 6.01,
+          "fairOdds": 16.64,
           "probabilityMethod": "Selezioni ordinate dal modello; le quote Sisal vengono collegate soltanto dopo e non modificano la scelta.",
           "unavailableReason": null
         }
@@ -3571,6 +3583,7 @@
           "targetOdds": 5,
           "offset": 0,
           "quotaPolicy": "orientativa",
+          "minimumSelectionOdds": 1.1,
           "odds": 2.55,
           "qualityStatus": "editoriale",
           "legs": [
@@ -3624,86 +3637,10 @@
           "targetOdds": 10,
           "offset": 1,
           "quotaPolicy": "orientativa",
-          "odds": 6.63,
+          "minimumSelectionOdds": 1.1,
+          "odds": 6.35,
           "qualityStatus": "editoriale",
           "legs": [
-            {
-              "label": "Entrambe segnano",
-              "odds": 1.6,
-              "modelProbabilityPct": 56.8,
-              "marketCode": "18",
-              "marketName": "GOAL/NOGOAL",
-              "variantName": "GOAL/NO GOAL",
-              "providerMarketId": "806405935",
-              "providerSelectionId": "5292179152",
-              "replacementIncluded": false,
-              "source": "Poisson sugli xG"
-            },
-            {
-              "label": "Doppia chance 1X nel 1° tempo",
-              "odds": 1.2,
-              "modelProbabilityPct": 62,
-              "marketCode": "99987",
-              "marketName": "DOPPIA CHANCE TEMPO X",
-              "variantName": "DC TEMPO 1",
-              "providerMarketId": "9.048390810009999e+24",
-              "providerSelectionId": "5292180392",
-              "replacementIncluded": false,
-              "source": "scenario 1X2 ridotto al primo tempo"
-            },
-            {
-              "label": "Esito 1",
-              "odds": 2.2,
-              "modelProbabilityPct": 44.9,
-              "marketCode": "3",
-              "marketName": "1X2 ESITO FINALE",
-              "variantName": "ESITO FINALE 1X2",
-              "providerMarketId": "806405916",
-              "providerSelectionId": "5292179038",
-              "replacementIncluded": false,
-              "source": "modello UEFA Elo 1X2"
-            },
-            {
-              "label": "Over 8,5 corner",
-              "odds": 1.57,
-              "modelProbabilityPct": 70,
-              "marketCode": "975",
-              "marketName": "U/O CORNER",
-              "variantName": "U/O 8.5 CORNER",
-              "providerMarketId": "809435606",
-              "providerSelectionId": "5309468096",
-              "replacementIncluded": false,
-              "source": "volume partita p20-p80"
-            }
-          ],
-          "prudentProbabilityPct": 9.19,
-          "fairOdds": 10.88,
-          "probabilityMethod": "Selezioni ordinate dal modello; le quote Sisal vengono collegate soltanto dopo e non modificano la scelta.",
-          "unavailableReason": null
-        },
-        {
-          "tier": "Aggressive",
-          "scenario": "Più selettiva",
-          "risk": "alto",
-          "count": 5,
-          "targetOdds": 20,
-          "offset": 2,
-          "quotaPolicy": "orientativa",
-          "odds": 5.28,
-          "qualityStatus": "editoriale",
-          "legs": [
-            {
-              "label": "Doppia chance 1X nel 1° tempo",
-              "odds": 1.2,
-              "modelProbabilityPct": 62,
-              "marketCode": "99987",
-              "marketName": "DOPPIA CHANCE TEMPO X",
-              "variantName": "DC TEMPO 1",
-              "providerMarketId": "9.048390810009999e+24",
-              "providerSelectionId": "5292180392",
-              "replacementIncluded": false,
-              "source": "scenario 1X2 ridotto al primo tempo"
-            },
             {
               "label": "Over 1,5 gol",
               "odds": 1.25,
@@ -3741,20 +3678,98 @@
               "source": "volume partita p20-p80"
             },
             {
-              "label": "Troy Parrott almeno 1 tiro",
-              "odds": 1.02,
-              "modelProbabilityPct": 93,
-              "marketCode": "28507",
-              "marketName": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
-              "variantName": "PARROTT T. U/O 0.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
-              "providerMarketId": "809470591",
-              "providerSelectionId": "5309690893",
+              "label": "Troy Parrott almeno 1 tiro in porta",
+              "odds": 1.47,
+              "modelProbabilityPct": 67.7,
+              "marketCode": "28506",
+              "marketName": "U/O  TIRI IN PORTA GIOCATORE (DUO) INC PALI TRAVERSE INC TS",
+              "variantName": "PARROTT T. U/O 0.5 SOMMA TIRI IN PORTA INC PALI E TRAVERSE E SUO SOST. INCL. T.S.",
+              "providerMarketId": "809567843",
+              "providerSelectionId": "5310231305",
               "replacementIncluded": true,
               "source": "volume giocatore regolarizzato"
             }
           ],
-          "prudentProbabilityPct": 10.92,
-          "fairOdds": 9.15,
+          "prudentProbabilityPct": 13.64,
+          "fairOdds": 7.33,
+          "probabilityMethod": "Selezioni ordinate dal modello; le quote Sisal vengono collegate soltanto dopo e non modificano la scelta.",
+          "unavailableReason": null
+        },
+        {
+          "tier": "Aggressive",
+          "scenario": "Più selettiva",
+          "risk": "alto",
+          "count": 5,
+          "targetOdds": 20,
+          "offset": 2,
+          "quotaPolicy": "orientativa",
+          "minimumSelectionOdds": 1.1,
+          "odds": 17.41,
+          "qualityStatus": "editoriale",
+          "legs": [
+            {
+              "label": "Multigol 1–4",
+              "odds": 1.2,
+              "modelProbabilityPct": 78.5,
+              "marketCode": "30562",
+              "marketName": "MULTIGOAL",
+              "variantName": "MULTIGOAL MULTIESITI 16 ESITI",
+              "providerMarketId": "806412045",
+              "providerSelectionId": "5292139392",
+              "replacementIncluded": false,
+              "source": "Poisson sugli xG"
+            },
+            {
+              "label": "Nathan Ngoy cartellino",
+              "odds": 3.5,
+              "modelProbabilityPct": 40.7,
+              "marketCode": "28576",
+              "marketName": "CARTELLINO SI/NO (DUO) INC TS",
+              "variantName": "NGOY N. CARTELLINO O SUO SOST. INCL. GIOCAT. PANCHINA DOPO FISCHIO FINALE INCL.TS E RIGORI",
+              "providerMarketId": "809425730",
+              "providerSelectionId": "5309372804",
+              "replacementIncluded": true,
+              "source": "indice disciplinare comparativo"
+            },
+            {
+              "label": "Doppia chance 1X nel 1° tempo",
+              "odds": 1.2,
+              "modelProbabilityPct": 62,
+              "marketCode": "99987",
+              "marketName": "DOPPIA CHANCE TEMPO X",
+              "variantName": "DC TEMPO 1",
+              "providerMarketId": "9.048390810009999e+24",
+              "providerSelectionId": "5292180392",
+              "replacementIncluded": false,
+              "source": "scenario 1X2 ridotto al primo tempo"
+            },
+            {
+              "label": "Esito 1",
+              "odds": 2.2,
+              "modelProbabilityPct": 44.9,
+              "marketCode": "3",
+              "marketName": "1X2 ESITO FINALE",
+              "variantName": "ESITO FINALE 1X2",
+              "providerMarketId": "806405916",
+              "providerSelectionId": "5292179038",
+              "replacementIncluded": false,
+              "source": "modello UEFA Elo 1X2"
+            },
+            {
+              "label": "Over 8,5 corner",
+              "odds": 1.57,
+              "modelProbabilityPct": 70,
+              "marketCode": "975",
+              "marketName": "U/O CORNER",
+              "variantName": "U/O 8.5 CORNER",
+              "providerMarketId": "809435606",
+              "providerSelectionId": "5309468096",
+              "replacementIncluded": false,
+              "source": "volume partita p20-p80"
+            }
+          ],
+          "prudentProbabilityPct": 4.86,
+          "fairOdds": 20.57,
           "probabilityMethod": "Selezioni ordinate dal modello; le quote Sisal vengono collegate soltanto dopo e non modificano la scelta.",
           "unavailableReason": null
         }
@@ -4353,6 +4368,7 @@
           "targetOdds": 5,
           "offset": 0,
           "quotaPolicy": "orientativa",
+          "minimumSelectionOdds": 1.1,
           "odds": 1.9,
           "qualityStatus": "editoriale",
           "legs": [
@@ -4406,86 +4422,10 @@
           "targetOdds": 10,
           "offset": 1,
           "quotaPolicy": "orientativa",
-          "odds": 3.77,
+          "minimumSelectionOdds": 1.1,
+          "odds": 8.22,
           "qualityStatus": "editoriale",
           "legs": [
-            {
-              "label": "Entrambe segnano",
-              "odds": 1.45,
-              "modelProbabilityPct": 63.1,
-              "marketCode": "18",
-              "marketName": "GOAL/NOGOAL",
-              "variantName": "GOAL/NO GOAL",
-              "providerMarketId": "806402773",
-              "providerSelectionId": "5292173114",
-              "replacementIncluded": false,
-              "source": "Poisson sugli xG"
-            },
-            {
-              "label": "Doppia chance 1X nel 1° tempo",
-              "odds": 1.13,
-              "modelProbabilityPct": 71,
-              "marketCode": "99987",
-              "marketName": "DOPPIA CHANCE TEMPO X",
-              "variantName": "DC TEMPO 1",
-              "providerMarketId": "9.048390770009999e+24",
-              "providerSelectionId": "5292174354",
-              "replacementIncluded": false,
-              "source": "scenario 1X2 ridotto al primo tempo"
-            },
-            {
-              "label": "Esito 1",
-              "odds": 1.62,
-              "modelProbabilityPct": 57.6,
-              "marketCode": "3",
-              "marketName": "1X2 ESITO FINALE",
-              "variantName": "ESITO FINALE 1X2",
-              "providerMarketId": "806402754",
-              "providerSelectionId": "5292172932",
-              "replacementIncluded": false,
-              "source": "modello UEFA Elo 1X2"
-            },
-            {
-              "label": "Over 8,5 corner",
-              "odds": 1.42,
-              "modelProbabilityPct": 70,
-              "marketCode": "975",
-              "marketName": "U/O CORNER",
-              "variantName": "U/O 8.5 CORNER",
-              "providerMarketId": "809433433",
-              "providerSelectionId": "5309462331",
-              "replacementIncluded": false,
-              "source": "volume partita p20-p80"
-            }
-          ],
-          "prudentProbabilityPct": 15,
-          "fairOdds": 6.67,
-          "probabilityMethod": "Selezioni ordinate dal modello; le quote Sisal vengono collegate soltanto dopo e non modificano la scelta.",
-          "unavailableReason": null
-        },
-        {
-          "tier": "Aggressive",
-          "scenario": "Più selettiva",
-          "risk": "alto",
-          "count": 5,
-          "targetOdds": 20,
-          "offset": 2,
-          "quotaPolicy": "orientativa",
-          "odds": 2.92,
-          "qualityStatus": "editoriale",
-          "legs": [
-            {
-              "label": "Doppia chance 1X nel 1° tempo",
-              "odds": 1.13,
-              "modelProbabilityPct": 71,
-              "marketCode": "99987",
-              "marketName": "DOPPIA CHANCE TEMPO X",
-              "variantName": "DC TEMPO 1",
-              "providerMarketId": "9.048390770009999e+24",
-              "providerSelectionId": "5292174354",
-              "replacementIncluded": false,
-              "source": "scenario 1X2 ridotto al primo tempo"
-            },
             {
               "label": "Over 1,5 gol",
               "odds": 1.1,
@@ -4523,20 +4463,98 @@
               "source": "volume partita p20-p80"
             },
             {
-              "label": "Marcus Thuram almeno 1 tiro",
-              "odds": 1.02,
-              "modelProbabilityPct": 94.6,
-              "marketCode": "28507",
-              "marketName": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
-              "variantName": "THURAM MARCUS U/O 0.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
-              "providerMarketId": "809417604",
-              "providerSelectionId": "5309336677",
+              "label": "Alessandro Bastoni cartellino",
+              "odds": 3.25,
+              "modelProbabilityPct": 39.3,
+              "marketCode": "28576",
+              "marketName": "CARTELLINO SI/NO (DUO) INC TS",
+              "variantName": "BASTONI A. CARTELLINO O SUO SOST. INCL. GIOCAT. PANCHINA DOPO FISCHIO FINALE INCL.TS E RIGORI",
+              "providerMarketId": "809433585",
+              "providerSelectionId": "5309464762",
               "replacementIncluded": true,
-              "source": "volume giocatore regolarizzato"
+              "source": "indice disciplinare comparativo"
             }
           ],
-          "prudentProbabilityPct": 17.97,
-          "fairOdds": 5.56,
+          "prudentProbabilityPct": 11.19,
+          "fairOdds": 8.94,
+          "probabilityMethod": "Selezioni ordinate dal modello; le quote Sisal vengono collegate soltanto dopo e non modificano la scelta.",
+          "unavailableReason": null
+        },
+        {
+          "tier": "Aggressive",
+          "scenario": "Più selettiva",
+          "risk": "alto",
+          "count": 5,
+          "targetOdds": 20,
+          "offset": 2,
+          "quotaPolicy": "orientativa",
+          "minimumSelectionOdds": 1.1,
+          "odds": 4.08,
+          "qualityStatus": "editoriale",
+          "legs": [
+            {
+              "label": "Multigol 1–4",
+              "odds": 1.33,
+              "modelProbabilityPct": 71.5,
+              "marketCode": "30562",
+              "marketName": "MULTIGOAL",
+              "variantName": "MULTIGOAL MULTIESITI 16 ESITI",
+              "providerMarketId": "806411816",
+              "providerSelectionId": "5292193543",
+              "replacementIncluded": false,
+              "source": "Poisson sugli xG"
+            },
+            {
+              "label": "Over 26,5 tiri totali",
+              "odds": 1.18,
+              "modelProbabilityPct": 72,
+              "marketCode": "15859",
+              "marketName": "U/O TIRI TOTALI",
+              "variantName": "U/O 26.5 TIRI TOTALI",
+              "providerMarketId": "806402917",
+              "providerSelectionId": "5292173859",
+              "replacementIncluded": false,
+              "source": "volume partita p20-p80"
+            },
+            {
+              "label": "Doppia chance 1X nel 1° tempo",
+              "odds": 1.13,
+              "modelProbabilityPct": 71,
+              "marketCode": "99987",
+              "marketName": "DOPPIA CHANCE TEMPO X",
+              "variantName": "DC TEMPO 1",
+              "providerMarketId": "9.048390770009999e+24",
+              "providerSelectionId": "5292174354",
+              "replacementIncluded": false,
+              "source": "scenario 1X2 ridotto al primo tempo"
+            },
+            {
+              "label": "Esito 1",
+              "odds": 1.62,
+              "modelProbabilityPct": 57.6,
+              "marketCode": "3",
+              "marketName": "1X2 ESITO FINALE",
+              "variantName": "ESITO FINALE 1X2",
+              "providerMarketId": "806402754",
+              "providerSelectionId": "5292172932",
+              "replacementIncluded": false,
+              "source": "modello UEFA Elo 1X2"
+            },
+            {
+              "label": "Over 8,5 corner",
+              "odds": 1.42,
+              "modelProbabilityPct": 70,
+              "marketCode": "975",
+              "marketName": "U/O CORNER",
+              "variantName": "U/O 8.5 CORNER",
+              "providerMarketId": "809433433",
+              "providerSelectionId": "5309462331",
+              "replacementIncluded": false,
+              "source": "volume partita p20-p80"
+            }
+          ],
+          "prudentProbabilityPct": 11.51,
+          "fairOdds": 8.69,
           "probabilityMethod": "Selezioni ordinate dal modello; le quote Sisal vengono collegate soltanto dopo e non modificano la scelta.",
           "unavailableReason": null
         }
@@ -5036,7 +5054,8 @@
           "targetOdds": 5,
           "offset": 0,
           "quotaPolicy": "orientativa",
-          "odds": 3.12,
+          "minimumSelectionOdds": 1.1,
+          "odds": 3.61,
           "qualityStatus": "editoriale",
           "legs": [
             {
@@ -5050,71 +5069,6 @@
               "providerSelectionId": "5292171072",
               "replacementIncluded": false,
               "source": "Poisson sugli xG"
-            },
-            {
-              "label": "Esito 1",
-              "odds": 1.08,
-              "modelProbabilityPct": 76.6,
-              "marketCode": "3",
-              "marketName": "1X2 ESITO FINALE",
-              "variantName": "ESITO FINALE 1X2",
-              "providerMarketId": "806405371",
-              "providerSelectionId": "5292170954",
-              "replacementIncluded": false,
-              "source": "modello UEFA Elo 1X2"
-            },
-            {
-              "label": "Over 8,5 corner",
-              "odds": 1.52,
-              "modelProbabilityPct": 70,
-              "marketCode": "975",
-              "marketName": "U/O CORNER",
-              "variantName": "U/O 8.5 CORNER",
-              "providerMarketId": "809436314",
-              "providerSelectionId": "5309467928",
-              "replacementIncluded": false,
-              "source": "volume partita p20-p80"
-            }
-          ],
-          "prudentProbabilityPct": 28.85,
-          "fairOdds": 3.47,
-          "probabilityMethod": "Selezioni ordinate dal modello; le quote Sisal vengono collegate soltanto dopo e non modificano la scelta.",
-          "unavailableReason": null
-        },
-        {
-          "tier": "Balanced",
-          "scenario": "Equilibrata",
-          "risk": "medio",
-          "count": 4,
-          "targetOdds": 10,
-          "offset": 1,
-          "quotaPolicy": "orientativa",
-          "odds": 2.09,
-          "qualityStatus": "editoriale",
-          "legs": [
-            {
-              "label": "Over 1,5 gol",
-              "odds": 1.02,
-              "modelProbabilityPct": 90.6,
-              "marketCode": "7989",
-              "marketName": "UNDER/OVER",
-              "variantName": "U/O 1.5",
-              "providerMarketId": "806405859",
-              "providerSelectionId": "5292178785",
-              "replacementIncluded": false,
-              "source": "Poisson sugli xG"
-            },
-            {
-              "label": "Esito 1",
-              "odds": 1.08,
-              "modelProbabilityPct": 76.6,
-              "marketCode": "3",
-              "marketName": "1X2 ESITO FINALE",
-              "variantName": "ESITO FINALE 1X2",
-              "providerMarketId": "806405371",
-              "providerSelectionId": "5292170954",
-              "replacementIncluded": false,
-              "source": "modello UEFA Elo 1X2"
             },
             {
               "label": "Over 8,5 corner",
@@ -5141,34 +5095,23 @@
               "source": "volume giocatore regolarizzato"
             }
           ],
-          "prudentProbabilityPct": 37.2,
-          "fairOdds": 2.69,
+          "prudentProbabilityPct": 34.73,
+          "fairOdds": 2.88,
           "probabilityMethod": "Selezioni ordinate dal modello; le quote Sisal vengono collegate soltanto dopo e non modificano la scelta.",
           "unavailableReason": null
         },
         {
-          "tier": "Aggressive",
-          "scenario": "Più selettiva",
-          "risk": "alto",
-          "count": 5,
-          "targetOdds": 20,
-          "offset": 2,
+          "tier": "Balanced",
+          "scenario": "Equilibrata",
+          "risk": "medio",
+          "count": 4,
+          "targetOdds": 10,
+          "offset": 1,
           "quotaPolicy": "orientativa",
-          "odds": 4.02,
+          "minimumSelectionOdds": 1.1,
+          "odds": 3.63,
           "qualityStatus": "editoriale",
           "legs": [
-            {
-              "label": "Esito 1",
-              "odds": 1.08,
-              "modelProbabilityPct": 76.6,
-              "marketCode": "3",
-              "marketName": "1X2 ESITO FINALE",
-              "variantName": "ESITO FINALE 1X2",
-              "providerMarketId": "806405371",
-              "providerSelectionId": "5292170954",
-              "replacementIncluded": false,
-              "source": "modello UEFA Elo 1X2"
-            },
             {
               "label": "Multigol 1–4",
               "odds": 1.75,
@@ -5182,6 +5125,30 @@
               "source": "Poisson sugli xG"
             },
             {
+              "label": "Lamine Yamal almeno 1 tiro in porta",
+              "odds": 1.12,
+              "modelProbabilityPct": 78.6,
+              "marketCode": "28506",
+              "marketName": "U/O  TIRI IN PORTA GIOCATORE (DUO) INC PALI TRAVERSE INC TS",
+              "variantName": "YAMAL L. U/O 0.5 SOMMA TIRI IN PORTA INC PALI E TRAVERSE E SUO SOST. INCL. T.S.",
+              "providerMarketId": "809564710",
+              "providerSelectionId": "5310217043",
+              "replacementIncluded": true,
+              "source": "volume giocatore regolarizzato"
+            },
+            {
+              "label": "Over 23,5 tiri totali",
+              "odds": 1.22,
+              "modelProbabilityPct": 72,
+              "marketCode": "15859",
+              "marketName": "U/O TIRI TOTALI",
+              "variantName": "U/O 23.5 TIRI TOTALI",
+              "providerMarketId": "806405541",
+              "providerSelectionId": "5292171845",
+              "replacementIncluded": false,
+              "source": "volume partita p20-p80"
+            },
+            {
               "label": "Over 8,5 corner",
               "odds": 1.52,
               "modelProbabilityPct": 70,
@@ -5192,6 +5159,36 @@
               "providerSelectionId": "5309467928",
               "replacementIncluded": false,
               "source": "volume partita p20-p80"
+            }
+          ],
+          "prudentProbabilityPct": 20.27,
+          "fairOdds": 4.93,
+          "probabilityMethod": "Selezioni ordinate dal modello; le quote Sisal vengono collegate soltanto dopo e non modificano la scelta.",
+          "unavailableReason": null
+        },
+        {
+          "tier": "Aggressive",
+          "scenario": "Più selettiva",
+          "risk": "alto",
+          "count": 5,
+          "targetOdds": 20,
+          "offset": 2,
+          "quotaPolicy": "orientativa",
+          "minimumSelectionOdds": 1.1,
+          "odds": 3.72,
+          "qualityStatus": "editoriale",
+          "legs": [
+            {
+              "label": "Multigol 1–4",
+              "odds": 1.75,
+              "modelProbabilityPct": 61.6,
+              "marketCode": "30562",
+              "marketName": "MULTIGOAL",
+              "variantName": "MULTIGOAL MULTIESITI 16 ESITI",
+              "providerMarketId": "806412097",
+              "providerSelectionId": "5292224970",
+              "replacementIncluded": false,
+              "source": "Poisson sugli xG"
             },
             {
               "label": "Nacho Ferri almeno 1 tiro",
@@ -5216,10 +5213,22 @@
               "providerSelectionId": "5310217043",
               "replacementIncluded": true,
               "source": "volume giocatore regolarizzato"
+            },
+            {
+              "label": "Over 8,5 corner",
+              "odds": 1.52,
+              "modelProbabilityPct": 70,
+              "marketCode": "975",
+              "marketName": "U/O CORNER",
+              "variantName": "U/O 8.5 CORNER",
+              "providerMarketId": "809436314",
+              "providerSelectionId": "5309467928",
+              "replacementIncluded": false,
+              "source": "volume partita p20-p80"
             }
           ],
-          "prudentProbabilityPct": 18.69,
-          "fairOdds": 5.35,
+          "prudentProbabilityPct": 25.95,
+          "fairOdds": 3.85,
           "probabilityMethod": "Selezioni ordinate dal modello; le quote Sisal vengono collegate soltanto dopo e non modificano la scelta.",
           "unavailableReason": null
         }
@@ -5593,21 +5602,10 @@
           "targetOdds": 5,
           "offset": 0,
           "quotaPolicy": "orientativa",
-          "odds": 1.73,
+          "minimumSelectionOdds": 1.1,
+          "odds": 3.31,
           "qualityStatus": "editoriale",
           "legs": [
-            {
-              "label": "Doppia chance 1X",
-              "odds": 1.04,
-              "modelProbabilityPct": 66.6,
-              "marketCode": "28319",
-              "marketName": "DOPPIA CHANCE",
-              "variantName": "DOPPIA CHANCE MULTIESITI",
-              "providerMarketId": "806398772",
-              "providerSelectionId": "5292162382",
-              "replacementIncluded": false,
-              "source": "modello UEFA Elo 1X2"
-            },
             {
               "label": "Entrambe segnano",
               "odds": 1.57,
@@ -5621,20 +5619,32 @@
               "source": "Poisson sugli xG"
             },
             {
-              "label": "Doppia chance 1X nel 1° tempo",
-              "odds": 1.06,
-              "modelProbabilityPct": 63.3,
-              "marketCode": "99987",
-              "marketName": "DOPPIA CHANCE TEMPO X",
-              "variantName": "DC TEMPO 1",
-              "providerMarketId": "9.048390720009998e+24",
-              "providerSelectionId": "5292161470",
+              "label": "Esito 1",
+              "odds": 1.24,
+              "modelProbabilityPct": 46.6,
+              "marketCode": "3",
+              "marketName": "1X2 ESITO FINALE",
+              "variantName": "ESITO FINALE 1X2",
+              "providerMarketId": "806398275",
+              "providerSelectionId": "5292160116",
               "replacementIncluded": false,
-              "source": "scenario 1X2 ridotto al primo tempo"
+              "source": "modello UEFA Elo 1X2"
+            },
+            {
+              "label": "Over 9,5 corner",
+              "odds": 1.7,
+              "modelProbabilityPct": 70,
+              "marketCode": "975",
+              "marketName": "U/O CORNER",
+              "variantName": "U/O 9.5 CORNER",
+              "providerMarketId": "809436390",
+              "providerSelectionId": "5309468857",
+              "replacementIncluded": false,
+              "source": "volume partita p20-p80"
             }
           ],
-          "prudentProbabilityPct": 23.36,
-          "fairOdds": 4.28,
+          "prudentProbabilityPct": 18.07,
+          "fairOdds": 5.53,
           "probabilityMethod": "Selezioni ordinate dal modello; le quote Sisal vengono collegate soltanto dopo e non modificano la scelta.",
           "unavailableReason": null
         },
@@ -5646,121 +5656,21 @@
           "targetOdds": 10,
           "offset": 1,
           "quotaPolicy": "orientativa",
-          "odds": 3.51,
+          "minimumSelectionOdds": 1.1,
+          "odds": 9.61,
           "qualityStatus": "editoriale",
           "legs": [
             {
-              "label": "Entrambe segnano",
-              "odds": 1.57,
-              "modelProbabilityPct": 62.7,
-              "marketCode": "18",
-              "marketName": "GOAL/NOGOAL",
-              "variantName": "GOAL/NO GOAL",
-              "providerMarketId": "806398294",
-              "providerSelectionId": "5292160230",
+              "label": "Multigol 1–4",
+              "odds": 1.52,
+              "modelProbabilityPct": 74.4,
+              "marketCode": "30562",
+              "marketName": "MULTIGOAL",
+              "variantName": "MULTIGOAL MULTIESITI 16 ESITI",
+              "providerMarketId": "806410147",
+              "providerSelectionId": "5292224426",
               "replacementIncluded": false,
               "source": "Poisson sugli xG"
-            },
-            {
-              "label": "Doppia chance 1X nel 1° tempo",
-              "odds": 1.06,
-              "modelProbabilityPct": 63.3,
-              "marketCode": "99987",
-              "marketName": "DOPPIA CHANCE TEMPO X",
-              "variantName": "DC TEMPO 1",
-              "providerMarketId": "9.048390720009998e+24",
-              "providerSelectionId": "5292161470",
-              "replacementIncluded": false,
-              "source": "scenario 1X2 ridotto al primo tempo"
-            },
-            {
-              "label": "Esito 1",
-              "odds": 1.24,
-              "modelProbabilityPct": 46.6,
-              "marketCode": "3",
-              "marketName": "1X2 ESITO FINALE",
-              "variantName": "ESITO FINALE 1X2",
-              "providerMarketId": "806398275",
-              "providerSelectionId": "5292160116",
-              "replacementIncluded": false,
-              "source": "modello UEFA Elo 1X2"
-            },
-            {
-              "label": "Over 9,5 corner",
-              "odds": 1.7,
-              "modelProbabilityPct": 70,
-              "marketCode": "975",
-              "marketName": "U/O CORNER",
-              "variantName": "U/O 9.5 CORNER",
-              "providerMarketId": "809436390",
-              "providerSelectionId": "5309468857",
-              "replacementIncluded": false,
-              "source": "volume partita p20-p80"
-            }
-          ],
-          "prudentProbabilityPct": 10.75,
-          "fairOdds": 9.3,
-          "probabilityMethod": "Selezioni ordinate dal modello; le quote Sisal vengono collegate soltanto dopo e non modificano la scelta.",
-          "unavailableReason": null
-        },
-        {
-          "tier": "Aggressive",
-          "scenario": "Più selettiva",
-          "risk": "alto",
-          "count": 5,
-          "targetOdds": 20,
-          "offset": 2,
-          "quotaPolicy": "orientativa",
-          "odds": 7.04,
-          "qualityStatus": "editoriale",
-          "legs": [
-            {
-              "label": "Doppia chance 1X nel 1° tempo",
-              "odds": 1.06,
-              "modelProbabilityPct": 63.3,
-              "marketCode": "99987",
-              "marketName": "DOPPIA CHANCE TEMPO X",
-              "variantName": "DC TEMPO 1",
-              "providerMarketId": "9.048390720009998e+24",
-              "providerSelectionId": "5292161470",
-              "replacementIncluded": false,
-              "source": "scenario 1X2 ridotto al primo tempo"
-            },
-            {
-              "label": "Over 1,5 gol",
-              "odds": 1.05,
-              "modelProbabilityPct": 82.5,
-              "marketCode": "7989",
-              "marketName": "UNDER/OVER",
-              "variantName": "U/O 1.5",
-              "providerMarketId": "806398763",
-              "providerSelectionId": "5292162347",
-              "replacementIncluded": false,
-              "source": "Poisson sugli xG"
-            },
-            {
-              "label": "Esito 1",
-              "odds": 1.24,
-              "modelProbabilityPct": 46.6,
-              "marketCode": "3",
-              "marketName": "1X2 ESITO FINALE",
-              "variantName": "ESITO FINALE 1X2",
-              "providerMarketId": "806398275",
-              "providerSelectionId": "5292160116",
-              "replacementIncluded": false,
-              "source": "modello UEFA Elo 1X2"
-            },
-            {
-              "label": "Over 9,5 corner",
-              "odds": 1.7,
-              "modelProbabilityPct": 70,
-              "marketCode": "975",
-              "marketName": "U/O CORNER",
-              "variantName": "U/O 9.5 CORNER",
-              "providerMarketId": "809436390",
-              "providerSelectionId": "5309468857",
-              "replacementIncluded": false,
-              "source": "volume partita p20-p80"
             },
             {
               "label": "Henrik Heggheim cartellino",
@@ -5773,10 +5683,100 @@
               "providerSelectionId": "5310495441",
               "replacementIncluded": true,
               "source": "indice disciplinare comparativo"
+            },
+            {
+              "label": "Esito 1",
+              "odds": 1.24,
+              "modelProbabilityPct": 46.6,
+              "marketCode": "3",
+              "marketName": "1X2 ESITO FINALE",
+              "variantName": "ESITO FINALE 1X2",
+              "providerMarketId": "806398275",
+              "providerSelectionId": "5292160116",
+              "replacementIncluded": false,
+              "source": "modello UEFA Elo 1X2"
+            },
+            {
+              "label": "Over 9,5 corner",
+              "odds": 1.7,
+              "modelProbabilityPct": 70,
+              "marketCode": "975",
+              "marketName": "U/O CORNER",
+              "variantName": "U/O 9.5 CORNER",
+              "providerMarketId": "809436390",
+              "providerSelectionId": "5309468857",
+              "replacementIncluded": false,
+              "source": "volume partita p20-p80"
             }
           ],
-          "prudentProbabilityPct": 5.68,
-          "fairOdds": 17.61,
+          "prudentProbabilityPct": 8.61,
+          "fairOdds": 11.62,
+          "probabilityMethod": "Selezioni ordinate dal modello; le quote Sisal vengono collegate soltanto dopo e non modificano la scelta.",
+          "unavailableReason": null
+        },
+        {
+          "tier": "Aggressive",
+          "scenario": "Più selettiva",
+          "risk": "alto",
+          "count": 5,
+          "targetOdds": 20,
+          "offset": 2,
+          "quotaPolicy": "orientativa",
+          "minimumSelectionOdds": 1.1,
+          "odds": 9.93,
+          "qualityStatus": "editoriale",
+          "legs": [
+            {
+              "label": "Entrambe segnano",
+              "odds": 1.57,
+              "modelProbabilityPct": 62.7,
+              "marketCode": "18",
+              "marketName": "GOAL/NOGOAL",
+              "variantName": "GOAL/NO GOAL",
+              "providerMarketId": "806398294",
+              "providerSelectionId": "5292160230",
+              "replacementIncluded": false,
+              "source": "Poisson sugli xG"
+            },
+            {
+              "label": "Henrik Heggheim cartellino",
+              "odds": 3,
+              "modelProbabilityPct": 42.7,
+              "marketCode": "28576",
+              "marketName": "CARTELLINO SI/NO (DUO) INC TS",
+              "variantName": "HEGGHEIM H. CARTELLINO O SUO SOST. INCL. GIOCAT. PANCHINA DOPO FISCHIO FINALE INCL.TS E RIGORI",
+              "providerMarketId": "809611397",
+              "providerSelectionId": "5310495441",
+              "replacementIncluded": true,
+              "source": "indice disciplinare comparativo"
+            },
+            {
+              "label": "Esito 1",
+              "odds": 1.24,
+              "modelProbabilityPct": 46.6,
+              "marketCode": "3",
+              "marketName": "1X2 ESITO FINALE",
+              "variantName": "ESITO FINALE 1X2",
+              "providerMarketId": "806398275",
+              "providerSelectionId": "5292160116",
+              "replacementIncluded": false,
+              "source": "modello UEFA Elo 1X2"
+            },
+            {
+              "label": "Over 9,5 corner",
+              "odds": 1.7,
+              "modelProbabilityPct": 70,
+              "marketCode": "975",
+              "marketName": "U/O CORNER",
+              "variantName": "U/O 9.5 CORNER",
+              "providerMarketId": "809436390",
+              "providerSelectionId": "5309468857",
+              "replacementIncluded": false,
+              "source": "volume partita p20-p80"
+            }
+          ],
+          "prudentProbabilityPct": 7.25,
+          "fairOdds": 13.79,
           "probabilityMethod": "Selezioni ordinate dal modello; le quote Sisal vengono collegate soltanto dopo e non modificano la scelta.",
           "unavailableReason": null
         }
@@ -6375,6 +6375,7 @@
           "targetOdds": 5,
           "offset": 0,
           "quotaPolicy": "orientativa",
+          "minimumSelectionOdds": 1.1,
           "odds": 2.15,
           "qualityStatus": "editoriale",
           "legs": [
@@ -6428,86 +6429,10 @@
           "targetOdds": 10,
           "offset": 1,
           "quotaPolicy": "orientativa",
-          "odds": 5.02,
+          "minimumSelectionOdds": 1.1,
+          "odds": 4.7,
           "qualityStatus": "editoriale",
           "legs": [
-            {
-              "label": "Entrambe segnano",
-              "odds": 1.6,
-              "modelProbabilityPct": 62.4,
-              "marketCode": "18",
-              "marketName": "GOAL/NOGOAL",
-              "variantName": "GOAL/NO GOAL",
-              "providerMarketId": "806400151",
-              "providerSelectionId": "5292129449",
-              "replacementIncluded": false,
-              "source": "Poisson sugli xG"
-            },
-            {
-              "label": "Doppia chance 1X nel 1° tempo",
-              "odds": 1.14,
-              "modelProbabilityPct": 66,
-              "marketCode": "99987",
-              "marketName": "DOPPIA CHANCE TEMPO X",
-              "variantName": "DC TEMPO 1",
-              "providerMarketId": "9.048390820009999e+24",
-              "providerSelectionId": "5292130689",
-              "replacementIncluded": false,
-              "source": "scenario 1X2 ridotto al primo tempo"
-            },
-            {
-              "label": "Esito 1",
-              "odds": 1.7,
-              "modelProbabilityPct": 50.5,
-              "marketCode": "3",
-              "marketName": "1X2 ESITO FINALE",
-              "variantName": "ESITO FINALE 1X2",
-              "providerMarketId": "806400132",
-              "providerSelectionId": "5292129335",
-              "replacementIncluded": false,
-              "source": "modello UEFA Elo 1X2"
-            },
-            {
-              "label": "Over 8,5 corner",
-              "odds": 1.62,
-              "modelProbabilityPct": 70,
-              "marketCode": "975",
-              "marketName": "U/O CORNER",
-              "variantName": "U/O 8.5 CORNER",
-              "providerMarketId": "809433815",
-              "providerSelectionId": "5309465699",
-              "replacementIncluded": false,
-              "source": "volume partita p20-p80"
-            }
-          ],
-          "prudentProbabilityPct": 12.09,
-          "fairOdds": 8.27,
-          "probabilityMethod": "Selezioni ordinate dal modello; le quote Sisal vengono collegate soltanto dopo e non modificano la scelta.",
-          "unavailableReason": null
-        },
-        {
-          "tier": "Aggressive",
-          "scenario": "Più selettiva",
-          "risk": "alto",
-          "count": 5,
-          "targetOdds": 20,
-          "offset": 2,
-          "quotaPolicy": "orientativa",
-          "odds": 3.82,
-          "qualityStatus": "editoriale",
-          "legs": [
-            {
-              "label": "Doppia chance 1X nel 1° tempo",
-              "odds": 1.14,
-              "modelProbabilityPct": 66,
-              "marketCode": "99987",
-              "marketName": "DOPPIA CHANCE TEMPO X",
-              "variantName": "DC TEMPO 1",
-              "providerMarketId": "9.048390820009999e+24",
-              "providerSelectionId": "5292130689",
-              "replacementIncluded": false,
-              "source": "scenario 1X2 ridotto al primo tempo"
-            },
             {
               "label": "Over 1,5 gol",
               "odds": 1.16,
@@ -6545,20 +6470,98 @@
               "source": "volume partita p20-p80"
             },
             {
-              "label": "Ademola Lookman almeno 1 tiro",
-              "odds": 1.05,
-              "modelProbabilityPct": 89.6,
-              "marketCode": "28507",
-              "marketName": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
-              "variantName": "LOOKMAN A. U/O 0.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
-              "providerMarketId": "809508888",
-              "providerSelectionId": "5309894960",
+              "label": "Bradley Barcola almeno 1 tiro in porta",
+              "odds": 1.47,
+              "modelProbabilityPct": 72.2,
+              "marketCode": "28506",
+              "marketName": "U/O  TIRI IN PORTA GIOCATORE (DUO) INC PALI TRAVERSE INC TS",
+              "variantName": "BARCOLA B. U/O 0.5 SOMMA TIRI IN PORTA INC PALI E TRAVERSE E SUO SOST. INCL. T.S.",
+              "providerMarketId": "809509146",
+              "providerSelectionId": "5309895992",
               "replacementIncluded": true,
               "source": "volume giocatore regolarizzato"
             }
           ],
-          "prudentProbabilityPct": 13.53,
-          "fairOdds": 7.39,
+          "prudentProbabilityPct": 17.57,
+          "fairOdds": 5.69,
+          "probabilityMethod": "Selezioni ordinate dal modello; le quote Sisal vengono collegate soltanto dopo e non modificano la scelta.",
+          "unavailableReason": null
+        },
+        {
+          "tier": "Aggressive",
+          "scenario": "Più selettiva",
+          "risk": "alto",
+          "count": 5,
+          "targetOdds": 20,
+          "offset": 2,
+          "quotaPolicy": "orientativa",
+          "minimumSelectionOdds": 1.1,
+          "odds": 8.45,
+          "qualityStatus": "editoriale",
+          "legs": [
+            {
+              "label": "Multigol 1–4",
+              "odds": 1.22,
+              "modelProbabilityPct": 74,
+              "marketCode": "30562",
+              "marketName": "MULTIGOAL",
+              "variantName": "MULTIGOAL MULTIESITI 16 ESITI",
+              "providerMarketId": "806412222",
+              "providerSelectionId": "5292226314",
+              "replacementIncluded": false,
+              "source": "Poisson sugli xG"
+            },
+            {
+              "label": "Morten Hjulmand cartellino",
+              "odds": 2.75,
+              "modelProbabilityPct": 38.7,
+              "marketCode": "28576",
+              "marketName": "CARTELLINO SI/NO (DUO) INC TS",
+              "variantName": "HJULMAND M. CARTELLINO O SUO SOST. INCL. GIOCAT. PANCHINA DOPO FISCHIO FINALE INCL.TS E RIGORI",
+              "providerMarketId": "809559997",
+              "providerSelectionId": "5310160917",
+              "replacementIncluded": true,
+              "source": "indice disciplinare comparativo"
+            },
+            {
+              "label": "Over 24,5 tiri totali",
+              "odds": 1.3,
+              "modelProbabilityPct": 72,
+              "marketCode": "15859",
+              "marketName": "U/O TIRI TOTALI",
+              "variantName": "U/O 24.5 TIRI TOTALI",
+              "providerMarketId": "806400293",
+              "providerSelectionId": "5292130186",
+              "replacementIncluded": false,
+              "source": "volume partita p20-p80"
+            },
+            {
+              "label": "Doppia chance 1X nel 1° tempo",
+              "odds": 1.14,
+              "modelProbabilityPct": 66,
+              "marketCode": "99987",
+              "marketName": "DOPPIA CHANCE TEMPO X",
+              "variantName": "DC TEMPO 1",
+              "providerMarketId": "9.048390820009999e+24",
+              "providerSelectionId": "5292130689",
+              "replacementIncluded": false,
+              "source": "scenario 1X2 ridotto al primo tempo"
+            },
+            {
+              "label": "Esito 1",
+              "odds": 1.7,
+              "modelProbabilityPct": 50.5,
+              "marketCode": "3",
+              "marketName": "1X2 ESITO FINALE",
+              "variantName": "ESITO FINALE 1X2",
+              "providerMarketId": "806400132",
+              "providerSelectionId": "5292129335",
+              "replacementIncluded": false,
+              "source": "modello UEFA Elo 1X2"
+            }
+          ],
+          "prudentProbabilityPct": 5.37,
+          "fairOdds": 18.64,
           "probabilityMethod": "Selezioni ordinate dal modello; le quote Sisal vengono collegate soltanto dopo e non modificano la scelta.",
           "unavailableReason": null
         }
@@ -7049,8 +7052,9 @@
           "targetOdds": 5,
           "offset": 0,
           "quotaPolicy": "orientativa",
-          "odds": 1.52,
-          "qualityStatus": "editoriale",
+          "minimumSelectionOdds": 1.1,
+          "odds": 1.45,
+          "qualityStatus": "nd",
           "legs": [
             {
               "label": "Almeno una non segna",
@@ -7063,36 +7067,12 @@
               "providerSelectionId": "5292176605",
               "replacementIncluded": false,
               "source": "Poisson sugli xG"
-            },
-            {
-              "label": "Esito 1",
-              "odds": 1.03,
-              "modelProbabilityPct": 83.2,
-              "marketCode": "3",
-              "marketName": "1X2 ESITO FINALE",
-              "variantName": "ESITO FINALE 1X2",
-              "providerMarketId": "806403842",
-              "providerSelectionId": "5292176360",
-              "replacementIncluded": false,
-              "source": "modello UEFA Elo 1X2"
-            },
-            {
-              "label": "Vitinha almeno 1 tiro",
-              "odds": 1.02,
-              "modelProbabilityPct": 86.5,
-              "marketCode": "28507",
-              "marketName": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
-              "variantName": "VITINHA U/O 0.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
-              "providerMarketId": "809588019",
-              "providerSelectionId": "5310350905",
-              "replacementIncluded": true,
-              "source": "volume giocatore regolarizzato"
             }
           ],
-          "prudentProbabilityPct": 44.39,
-          "fairOdds": 2.25,
+          "prudentProbabilityPct": 69.8,
+          "fairOdds": 1.43,
           "probabilityMethod": "Selezioni ordinate dal modello; le quote Sisal vengono collegate soltanto dopo e non modificano la scelta.",
-          "unavailableReason": null
+          "unavailableReason": "Meno di tre mercati Sisal compatibili con le proiezioni indipendenti."
         },
         {
           "tier": "Balanced",
@@ -7102,86 +7082,10 @@
           "targetOdds": 10,
           "offset": 1,
           "quotaPolicy": "orientativa",
-          "odds": 1.14,
-          "qualityStatus": "editoriale",
+          "minimumSelectionOdds": 1.1,
+          "odds": 1.65,
+          "qualityStatus": "nd",
           "legs": [
-            {
-              "label": "Over 1,5 gol",
-              "odds": 1.03,
-              "modelProbabilityPct": 78.1,
-              "marketCode": "7989",
-              "marketName": "UNDER/OVER",
-              "variantName": "U/O 1.5",
-              "providerMarketId": "806404330",
-              "providerSelectionId": "5292214052",
-              "replacementIncluded": false,
-              "source": "Poisson sugli xG"
-            },
-            {
-              "label": "Esito 1",
-              "odds": 1.03,
-              "modelProbabilityPct": 83.2,
-              "marketCode": "3",
-              "marketName": "1X2 ESITO FINALE",
-              "variantName": "ESITO FINALE 1X2",
-              "providerMarketId": "806403842",
-              "providerSelectionId": "5292176360",
-              "replacementIncluded": false,
-              "source": "modello UEFA Elo 1X2"
-            },
-            {
-              "label": "Vitinha almeno 1 tiro",
-              "odds": 1.02,
-              "modelProbabilityPct": 86.5,
-              "marketCode": "28507",
-              "marketName": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
-              "variantName": "VITINHA U/O 0.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
-              "providerMarketId": "809588019",
-              "providerSelectionId": "5310350905",
-              "replacementIncluded": true,
-              "source": "volume giocatore regolarizzato"
-            },
-            {
-              "label": "Khvicha Kvaratskhelia almeno 1 tiro in porta",
-              "odds": 1.05,
-              "modelProbabilityPct": 79.4,
-              "marketCode": "28506",
-              "marketName": "U/O  TIRI IN PORTA GIOCATORE (DUO) INC PALI TRAVERSE INC TS",
-              "variantName": "KVARATSKHELIA K. U/O 0.5 SOMMA TIRI IN PORTA INC PALI E TRAVERSE E SUO SOST. INCL. T.S.",
-              "providerMarketId": "809588064",
-              "providerSelectionId": "5310351085",
-              "replacementIncluded": true,
-              "source": "volume giocatore regolarizzato"
-            }
-          ],
-          "prudentProbabilityPct": 37.07,
-          "fairOdds": 2.7,
-          "probabilityMethod": "Selezioni ordinate dal modello; le quote Sisal vengono collegate soltanto dopo e non modificano la scelta.",
-          "unavailableReason": null
-        },
-        {
-          "tier": "Aggressive",
-          "scenario": "Più selettiva",
-          "risk": "alto",
-          "count": 5,
-          "targetOdds": 20,
-          "offset": 2,
-          "quotaPolicy": "orientativa",
-          "odds": 1.82,
-          "qualityStatus": "editoriale",
-          "legs": [
-            {
-              "label": "Esito 1",
-              "odds": 1.03,
-              "modelProbabilityPct": 83.2,
-              "marketCode": "3",
-              "marketName": "1X2 ESITO FINALE",
-              "variantName": "ESITO FINALE 1X2",
-              "providerMarketId": "806403842",
-              "providerSelectionId": "5292176360",
-              "replacementIncluded": false,
-              "source": "modello UEFA Elo 1X2"
-            },
             {
               "label": "Multigol 1–4",
               "odds": 1.65,
@@ -7193,36 +7097,42 @@
               "providerSelectionId": "5292195779",
               "replacementIncluded": false,
               "source": "Poisson sugli xG"
-            },
-            {
-              "label": "Vitinha almeno 1 tiro",
-              "odds": 1.02,
-              "modelProbabilityPct": 86.5,
-              "marketCode": "28507",
-              "marketName": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
-              "variantName": "VITINHA U/O 0.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
-              "providerMarketId": "809588019",
-              "providerSelectionId": "5310350905",
-              "replacementIncluded": true,
-              "source": "volume giocatore regolarizzato"
-            },
-            {
-              "label": "Khvicha Kvaratskhelia almeno 1 tiro in porta",
-              "odds": 1.05,
-              "modelProbabilityPct": 79.4,
-              "marketCode": "28506",
-              "marketName": "U/O  TIRI IN PORTA GIOCATORE (DUO) INC PALI TRAVERSE INC TS",
-              "variantName": "KVARATSKHELIA K. U/O 0.5 SOMMA TIRI IN PORTA INC PALI E TRAVERSE E SUO SOST. INCL. T.S.",
-              "providerMarketId": "809588064",
-              "providerSelectionId": "5310351085",
-              "replacementIncluded": true,
-              "source": "volume giocatore regolarizzato"
             }
           ],
-          "prudentProbabilityPct": 37.02,
-          "fairOdds": 2.7,
+          "prudentProbabilityPct": 78,
+          "fairOdds": 1.28,
           "probabilityMethod": "Selezioni ordinate dal modello; le quote Sisal vengono collegate soltanto dopo e non modificano la scelta.",
-          "unavailableReason": null
+          "unavailableReason": "Meno di tre mercati Sisal compatibili con le proiezioni indipendenti."
+        },
+        {
+          "tier": "Aggressive",
+          "scenario": "Più selettiva",
+          "risk": "alto",
+          "count": 5,
+          "targetOdds": 20,
+          "offset": 2,
+          "quotaPolicy": "orientativa",
+          "minimumSelectionOdds": 1.1,
+          "odds": 1.45,
+          "qualityStatus": "nd",
+          "legs": [
+            {
+              "label": "Almeno una non segna",
+              "odds": 1.45,
+              "modelProbabilityPct": 69.8,
+              "marketCode": "18",
+              "marketName": "GOAL/NOGOAL",
+              "variantName": "GOAL/NO GOAL",
+              "providerMarketId": "806403861",
+              "providerSelectionId": "5292176605",
+              "replacementIncluded": false,
+              "source": "Poisson sugli xG"
+            }
+          ],
+          "prudentProbabilityPct": 69.8,
+          "fairOdds": 1.43,
+          "probabilityMethod": "Selezioni ordinate dal modello; le quote Sisal vengono collegate soltanto dopo e non modificano la scelta.",
+          "unavailableReason": "Meno di tre mercati Sisal compatibili con le proiezioni indipendenti."
         }
       ],
       "coverage": {
@@ -7558,6 +7468,7 @@
           "targetOdds": 5,
           "offset": 0,
           "quotaPolicy": "orientativa",
+          "minimumSelectionOdds": 1.1,
           "odds": 2.23,
           "qualityStatus": "editoriale",
           "legs": [
@@ -7611,74 +7522,10 @@
           "targetOdds": 10,
           "offset": 1,
           "quotaPolicy": "orientativa",
-          "odds": 3.34,
-          "qualityStatus": "editoriale",
-          "legs": [
-            {
-              "label": "Entrambe segnano",
-              "odds": 1.6,
-              "modelProbabilityPct": 69.4,
-              "marketCode": "18",
-              "marketName": "GOAL/NOGOAL",
-              "variantName": "GOAL/NO GOAL",
-              "providerMarketId": "806406484",
-              "providerSelectionId": "5292181656",
-              "replacementIncluded": false,
-              "source": "Poisson sugli xG"
-            },
-            {
-              "label": "Doppia chance 1X nel 1° tempo",
-              "odds": 1.16,
-              "modelProbabilityPct": 72,
-              "marketCode": "99987",
-              "marketName": "DOPPIA CHANCE TEMPO X",
-              "variantName": "DC TEMPO 1",
-              "providerMarketId": "9.048390830009999e+24",
-              "providerSelectionId": "5292182896",
-              "replacementIncluded": false,
-              "source": "scenario 1X2 ridotto al primo tempo"
-            },
-            {
-              "label": "Esito 1",
-              "odds": 1.8,
-              "modelProbabilityPct": 59,
-              "marketCode": "3",
-              "marketName": "1X2 ESITO FINALE",
-              "variantName": "ESITO FINALE 1X2",
-              "providerMarketId": "806406465",
-              "providerSelectionId": "5292181542",
-              "replacementIncluded": false,
-              "source": "modello UEFA Elo 1X2"
-            }
-          ],
-          "prudentProbabilityPct": 26.05,
-          "fairOdds": 3.84,
-          "probabilityMethod": "Selezioni ordinate dal modello; le quote Sisal vengono collegate soltanto dopo e non modificano la scelta.",
-          "unavailableReason": null
-        },
-        {
-          "tier": "Aggressive",
-          "scenario": "Più selettiva",
-          "risk": "alto",
-          "count": 5,
-          "targetOdds": 20,
-          "offset": 2,
-          "quotaPolicy": "orientativa",
+          "minimumSelectionOdds": 1.1,
           "odds": 2.46,
           "qualityStatus": "editoriale",
           "legs": [
-            {
-              "label": "Doppia chance 1X nel 1° tempo",
-              "odds": 1.16,
-              "modelProbabilityPct": 72,
-              "marketCode": "99987",
-              "marketName": "DOPPIA CHANCE TEMPO X",
-              "variantName": "DC TEMPO 1",
-              "providerMarketId": "9.048390830009999e+24",
-              "providerSelectionId": "5292182896",
-              "replacementIncluded": false,
-              "source": "scenario 1X2 ridotto al primo tempo"
-            },
             {
               "label": "Over 1,5 gol",
               "odds": 1.18,
@@ -7702,10 +7549,76 @@
               "providerSelectionId": "5292181542",
               "replacementIncluded": false,
               "source": "modello UEFA Elo 1X2"
+            },
+            {
+              "label": "Doppia chance 1X nel 1° tempo",
+              "odds": 1.16,
+              "modelProbabilityPct": 72,
+              "marketCode": "99987",
+              "marketName": "DOPPIA CHANCE TEMPO X",
+              "variantName": "DC TEMPO 1",
+              "providerMarketId": "9.048390830009999e+24",
+              "providerSelectionId": "5292182896",
+              "replacementIncluded": false,
+              "source": "scenario 1X2 ridotto al primo tempo"
             }
           ],
           "prudentProbabilityPct": 33.56,
           "fairOdds": 2.98,
+          "probabilityMethod": "Selezioni ordinate dal modello; le quote Sisal vengono collegate soltanto dopo e non modificano la scelta.",
+          "unavailableReason": null
+        },
+        {
+          "tier": "Aggressive",
+          "scenario": "Più selettiva",
+          "risk": "alto",
+          "count": 5,
+          "targetOdds": 20,
+          "offset": 2,
+          "quotaPolicy": "orientativa",
+          "minimumSelectionOdds": 1.1,
+          "odds": 2.55,
+          "qualityStatus": "editoriale",
+          "legs": [
+            {
+              "label": "Multigol 1–4",
+              "odds": 1.22,
+              "modelProbabilityPct": 64.2,
+              "marketCode": "30562",
+              "marketName": "MULTIGOAL",
+              "variantName": "MULTIGOAL MULTIESITI 16 ESITI",
+              "providerMarketId": "806412372",
+              "providerSelectionId": "5292230311",
+              "replacementIncluded": false,
+              "source": "Poisson sugli xG"
+            },
+            {
+              "label": "Esito 1",
+              "odds": 1.8,
+              "modelProbabilityPct": 59,
+              "marketCode": "3",
+              "marketName": "1X2 ESITO FINALE",
+              "variantName": "ESITO FINALE 1X2",
+              "providerMarketId": "806406465",
+              "providerSelectionId": "5292181542",
+              "replacementIncluded": false,
+              "source": "modello UEFA Elo 1X2"
+            },
+            {
+              "label": "Doppia chance 1X nel 1° tempo",
+              "odds": 1.16,
+              "modelProbabilityPct": 72,
+              "marketCode": "99987",
+              "marketName": "DOPPIA CHANCE TEMPO X",
+              "variantName": "DC TEMPO 1",
+              "providerMarketId": "9.048390830009999e+24",
+              "providerSelectionId": "5292182896",
+              "replacementIncluded": false,
+              "source": "scenario 1X2 ridotto al primo tempo"
+            }
+          ],
+          "prudentProbabilityPct": 24.1,
+          "fairOdds": 4.15,
           "probabilityMethod": "Selezioni ordinate dal modello; le quote Sisal vengono collegate soltanto dopo e non modificano la scelta.",
           "unavailableReason": null
         }
@@ -8295,6 +8208,7 @@
           "targetOdds": 5,
           "offset": 0,
           "quotaPolicy": "orientativa",
+          "minimumSelectionOdds": 1.1,
           "odds": 2.53,
           "qualityStatus": "editoriale",
           "legs": [
@@ -8348,86 +8262,10 @@
           "targetOdds": 10,
           "offset": 1,
           "quotaPolicy": "orientativa",
-          "odds": 5.2,
+          "minimumSelectionOdds": 1.1,
+          "odds": 4.53,
           "qualityStatus": "editoriale",
           "legs": [
-            {
-              "label": "Almeno una non segna",
-              "odds": 1.95,
-              "modelProbabilityPct": 52.2,
-              "marketCode": "18",
-              "marketName": "GOAL/NOGOAL",
-              "variantName": "GOAL/NO GOAL",
-              "providerMarketId": "806399382",
-              "providerSelectionId": "5292163060",
-              "replacementIncluded": false,
-              "source": "Poisson sugli xG"
-            },
-            {
-              "label": "Doppia chance X2 nel 1° tempo",
-              "odds": 1.12,
-              "modelProbabilityPct": 77.6,
-              "marketCode": "99987",
-              "marketName": "DOPPIA CHANCE TEMPO X",
-              "variantName": "DC TEMPO 1",
-              "providerMarketId": "9.048390750009999e+24",
-              "providerSelectionId": "5292167459",
-              "replacementIncluded": false,
-              "source": "scenario 1X2 ridotto al primo tempo"
-            },
-            {
-              "label": "Esito 2",
-              "odds": 1.75,
-              "modelProbabilityPct": 67,
-              "marketCode": "3",
-              "marketName": "1X2 ESITO FINALE",
-              "variantName": "ESITO FINALE 1X2",
-              "providerMarketId": "806399363",
-              "providerSelectionId": "5292162714",
-              "replacementIncluded": false,
-              "source": "modello UEFA Elo 1X2"
-            },
-            {
-              "label": "Over 7,5 corner",
-              "odds": 1.36,
-              "modelProbabilityPct": 70,
-              "marketCode": "975",
-              "marketName": "U/O CORNER",
-              "variantName": "U/O 7.5 CORNER",
-              "providerMarketId": "809435408",
-              "providerSelectionId": "5309464056",
-              "replacementIncluded": false,
-              "source": "volume partita p20-p80"
-            }
-          ],
-          "prudentProbabilityPct": 15.78,
-          "fairOdds": 6.34,
-          "probabilityMethod": "Selezioni ordinate dal modello; le quote Sisal vengono collegate soltanto dopo e non modificano la scelta.",
-          "unavailableReason": null
-        },
-        {
-          "tier": "Aggressive",
-          "scenario": "Più selettiva",
-          "risk": "alto",
-          "count": 5,
-          "targetOdds": 20,
-          "offset": 2,
-          "quotaPolicy": "orientativa",
-          "odds": 3.45,
-          "qualityStatus": "editoriale",
-          "legs": [
-            {
-              "label": "Doppia chance X2 nel 1° tempo",
-              "odds": 1.12,
-              "modelProbabilityPct": 77.6,
-              "marketCode": "99987",
-              "marketName": "DOPPIA CHANCE TEMPO X",
-              "variantName": "DC TEMPO 1",
-              "providerMarketId": "9.048390750009999e+24",
-              "providerSelectionId": "5292167459",
-              "replacementIncluded": false,
-              "source": "scenario 1X2 ridotto al primo tempo"
-            },
             {
               "label": "Over 1,5 gol",
               "odds": 1.27,
@@ -8465,20 +8303,98 @@
               "source": "volume partita p20-p80"
             },
             {
-              "label": "Viktor Gyökeres almeno 1 tiro",
-              "odds": 1.02,
-              "modelProbabilityPct": 90.7,
-              "marketCode": "28507",
-              "marketName": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
-              "variantName": "GYOKERES V. U/O 0.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
-              "providerMarketId": "809532870",
-              "providerSelectionId": "5309981216",
+              "label": "Viktor Gyökeres almeno 1 tiro in porta",
+              "odds": 1.5,
+              "modelProbabilityPct": 61.7,
+              "marketCode": "28506",
+              "marketName": "U/O  TIRI IN PORTA GIOCATORE (DUO) INC PALI TRAVERSE INC TS",
+              "variantName": "GYOKERES V. U/O 0.5 SOMMA TIRI IN PORTA INC PALI E TRAVERSE E SUO SOST. INCL. T.S.",
+              "providerMarketId": "809535134",
+              "providerSelectionId": "5310046105",
               "replacementIncluded": true,
               "source": "volume giocatore regolarizzato"
             }
           ],
-          "prudentProbabilityPct": 19.9,
-          "fairOdds": 5.03,
+          "prudentProbabilityPct": 18.55,
+          "fairOdds": 5.39,
+          "probabilityMethod": "Selezioni ordinate dal modello; le quote Sisal vengono collegate soltanto dopo e non modificano la scelta.",
+          "unavailableReason": null
+        },
+        {
+          "tier": "Aggressive",
+          "scenario": "Più selettiva",
+          "risk": "alto",
+          "count": 5,
+          "targetOdds": 20,
+          "offset": 2,
+          "quotaPolicy": "orientativa",
+          "minimumSelectionOdds": 1.1,
+          "odds": 11.55,
+          "qualityStatus": "editoriale",
+          "legs": [
+            {
+              "label": "Multigol 1–4",
+              "odds": 1.18,
+              "modelProbabilityPct": 78.5,
+              "marketCode": "30562",
+              "marketName": "MULTIGOAL",
+              "variantName": "MULTIGOAL MULTIESITI 16 ESITI",
+              "providerMarketId": "806412420",
+              "providerSelectionId": "5292194705",
+              "replacementIncluded": false,
+              "source": "Poisson sugli xG"
+            },
+            {
+              "label": "Amir Rrahmani cartellino",
+              "odds": 4.5,
+              "modelProbabilityPct": 34,
+              "marketCode": "28576",
+              "marketName": "CARTELLINO SI/NO (DUO) INC TS",
+              "variantName": "RRAHMANI A. CARTELLINO O SUO SOST. INCL. GIOCAT. PANCHINA DOPO FISCHIO FINALE INCL.TS E RIGORI",
+              "providerMarketId": "809577794",
+              "providerSelectionId": "5310303899",
+              "replacementIncluded": true,
+              "source": "indice disciplinare comparativo"
+            },
+            {
+              "label": "Over 20,5 tiri totali",
+              "odds": 1.11,
+              "modelProbabilityPct": 72,
+              "marketCode": "15859",
+              "marketName": "U/O TIRI TOTALI",
+              "variantName": "U/O 20.5 TIRI TOTALI",
+              "providerMarketId": "806404449",
+              "providerSelectionId": "5292165458",
+              "replacementIncluded": false,
+              "source": "volume partita p20-p80"
+            },
+            {
+              "label": "Doppia chance X2 nel 1° tempo",
+              "odds": 1.12,
+              "modelProbabilityPct": 77.6,
+              "marketCode": "99987",
+              "marketName": "DOPPIA CHANCE TEMPO X",
+              "variantName": "DC TEMPO 1",
+              "providerMarketId": "9.048390750009999e+24",
+              "providerSelectionId": "5292167459",
+              "replacementIncluded": false,
+              "source": "scenario 1X2 ridotto al primo tempo"
+            },
+            {
+              "label": "Esito 2",
+              "odds": 1.75,
+              "modelProbabilityPct": 67,
+              "marketCode": "3",
+              "marketName": "1X2 ESITO FINALE",
+              "variantName": "ESITO FINALE 1X2",
+              "providerMarketId": "806399363",
+              "providerSelectionId": "5292162714",
+              "replacementIncluded": false,
+              "source": "modello UEFA Elo 1X2"
+            }
+          ],
+          "prudentProbabilityPct": 7.8,
+          "fairOdds": 12.82,
           "probabilityMethod": "Selezioni ordinate dal modello; le quote Sisal vengono collegate soltanto dopo e non modificano la scelta.",
           "unavailableReason": null
         }
@@ -8816,6 +8732,7 @@
           "targetOdds": 5,
           "offset": 0,
           "quotaPolicy": "orientativa",
+          "minimumSelectionOdds": 1.1,
           "odds": 3.58,
           "qualityStatus": "editoriale",
           "legs": [
@@ -8869,74 +8786,10 @@
           "targetOdds": 10,
           "offset": 1,
           "quotaPolicy": "orientativa",
-          "odds": 7.51,
-          "qualityStatus": "editoriale",
-          "legs": [
-            {
-              "label": "Entrambe segnano",
-              "odds": 1.6,
-              "modelProbabilityPct": 52.2,
-              "marketCode": "18",
-              "marketName": "GOAL/NOGOAL",
-              "variantName": "GOAL/NO GOAL",
-              "providerMarketId": "806414558",
-              "providerSelectionId": "5292206452",
-              "replacementIncluded": false,
-              "source": "Poisson sugli xG"
-            },
-            {
-              "label": "Doppia chance 1X nel 1° tempo",
-              "odds": 1.38,
-              "modelProbabilityPct": 60.3,
-              "marketCode": "99987",
-              "marketName": "DOPPIA CHANCE TEMPO X",
-              "variantName": "DC TEMPO 1",
-              "providerMarketId": "9.048391020009999e+24",
-              "providerSelectionId": "5292208466",
-              "replacementIncluded": false,
-              "source": "scenario 1X2 ridotto al primo tempo"
-            },
-            {
-              "label": "Esito 1",
-              "odds": 3.4,
-              "modelProbabilityPct": 42.3,
-              "marketCode": "3",
-              "marketName": "1X2 ESITO FINALE",
-              "variantName": "ESITO FINALE 1X2",
-              "providerMarketId": "806414539",
-              "providerSelectionId": "5292206338",
-              "replacementIncluded": false,
-              "source": "modello UEFA Elo 1X2"
-            }
-          ],
-          "prudentProbabilityPct": 11.76,
-          "fairOdds": 8.5,
-          "probabilityMethod": "Selezioni ordinate dal modello; le quote Sisal vengono collegate soltanto dopo e non modificano la scelta.",
-          "unavailableReason": null
-        },
-        {
-          "tier": "Aggressive",
-          "scenario": "Più selettiva",
-          "risk": "alto",
-          "count": 5,
-          "targetOdds": 20,
-          "offset": 2,
-          "quotaPolicy": "orientativa",
+          "minimumSelectionOdds": 1.1,
           "odds": 5.72,
           "qualityStatus": "editoriale",
           "legs": [
-            {
-              "label": "Doppia chance 1X nel 1° tempo",
-              "odds": 1.38,
-              "modelProbabilityPct": 60.3,
-              "marketCode": "99987",
-              "marketName": "DOPPIA CHANCE TEMPO X",
-              "variantName": "DC TEMPO 1",
-              "providerMarketId": "9.048391020009999e+24",
-              "providerSelectionId": "5292208466",
-              "replacementIncluded": false,
-              "source": "scenario 1X2 ridotto al primo tempo"
-            },
             {
               "label": "Over 1,5 gol",
               "odds": 1.22,
@@ -8960,10 +8813,76 @@
               "providerSelectionId": "5292206338",
               "replacementIncluded": false,
               "source": "modello UEFA Elo 1X2"
+            },
+            {
+              "label": "Doppia chance 1X nel 1° tempo",
+              "odds": 1.38,
+              "modelProbabilityPct": 60.3,
+              "marketCode": "99987",
+              "marketName": "DOPPIA CHANCE TEMPO X",
+              "variantName": "DC TEMPO 1",
+              "providerMarketId": "9.048391020009999e+24",
+              "providerSelectionId": "5292208466",
+              "replacementIncluded": false,
+              "source": "scenario 1X2 ridotto al primo tempo"
             }
           ],
           "prudentProbabilityPct": 16.39,
           "fairOdds": 6.1,
+          "probabilityMethod": "Selezioni ordinate dal modello; le quote Sisal vengono collegate soltanto dopo e non modificano la scelta.",
+          "unavailableReason": null
+        },
+        {
+          "tier": "Aggressive",
+          "scenario": "Più selettiva",
+          "risk": "alto",
+          "count": 5,
+          "targetOdds": 20,
+          "offset": 2,
+          "quotaPolicy": "orientativa",
+          "minimumSelectionOdds": 1.1,
+          "odds": 5.63,
+          "qualityStatus": "editoriale",
+          "legs": [
+            {
+              "label": "Multigol 1–4",
+              "odds": 1.2,
+              "modelProbabilityPct": 80.5,
+              "marketCode": "30562",
+              "marketName": "MULTIGOAL",
+              "variantName": "MULTIGOAL MULTIESITI 16 ESITI",
+              "providerMarketId": "806415852",
+              "providerSelectionId": "5292235395",
+              "replacementIncluded": false,
+              "source": "Poisson sugli xG"
+            },
+            {
+              "label": "Esito 1",
+              "odds": 3.4,
+              "modelProbabilityPct": 42.3,
+              "marketCode": "3",
+              "marketName": "1X2 ESITO FINALE",
+              "variantName": "ESITO FINALE 1X2",
+              "providerMarketId": "806414539",
+              "providerSelectionId": "5292206338",
+              "replacementIncluded": false,
+              "source": "modello UEFA Elo 1X2"
+            },
+            {
+              "label": "Doppia chance 1X nel 1° tempo",
+              "odds": 1.38,
+              "modelProbabilityPct": 60.3,
+              "marketCode": "99987",
+              "marketName": "DOPPIA CHANCE TEMPO X",
+              "variantName": "DC TEMPO 1",
+              "providerMarketId": "9.048391020009999e+24",
+              "providerSelectionId": "5292208466",
+              "replacementIncluded": false,
+              "source": "scenario 1X2 ridotto al primo tempo"
+            }
+          ],
+          "prudentProbabilityPct": 18.14,
+          "fairOdds": 5.51,
           "probabilityMethod": "Selezioni ordinate dal modello; le quote Sisal vengono collegate soltanto dopo e non modificano la scelta.",
           "unavailableReason": null
         }
@@ -9301,8 +9220,9 @@
           "targetOdds": 5,
           "offset": 0,
           "quotaPolicy": "orientativa",
-          "odds": 1.96,
-          "qualityStatus": "editoriale",
+          "minimumSelectionOdds": 1.1,
+          "odds": 1.81,
+          "qualityStatus": "nd",
           "legs": [
             {
               "label": "Doppia chance 1X",
@@ -9327,24 +9247,12 @@
               "providerSelectionId": "5292236124",
               "replacementIncluded": false,
               "source": "Poisson sugli xG"
-            },
-            {
-              "label": "Doppia chance 1X nel 1° tempo",
-              "odds": 1.08,
-              "modelProbabilityPct": 67,
-              "marketCode": "99987",
-              "marketName": "DOPPIA CHANCE TEMPO X",
-              "variantName": "DC TEMPO 1",
-              "providerMarketId": "9.048391040009998e+24",
-              "providerSelectionId": "5292237364",
-              "replacementIncluded": false,
-              "source": "scenario 1X2 ridotto al primo tempo"
             }
           ],
-          "prudentProbabilityPct": 31.72,
-          "fairOdds": 3.15,
+          "prudentProbabilityPct": 50.37,
+          "fairOdds": 1.99,
           "probabilityMethod": "Selezioni ordinate dal modello; le quote Sisal vengono collegate soltanto dopo e non modificano la scelta.",
-          "unavailableReason": null
+          "unavailableReason": "Meno di tre mercati Sisal compatibili con le proiezioni indipendenti."
         },
         {
           "tier": "Balanced",
@@ -9354,74 +9262,10 @@
           "targetOdds": 10,
           "offset": 1,
           "quotaPolicy": "orientativa",
-          "odds": 2.49,
-          "qualityStatus": "editoriale",
+          "minimumSelectionOdds": 1.1,
+          "odds": 1.57,
+          "qualityStatus": "nd",
           "legs": [
-            {
-              "label": "Entrambe segnano",
-              "odds": 1.65,
-              "modelProbabilityPct": 75.9,
-              "marketCode": "18",
-              "marketName": "GOAL/NOGOAL",
-              "variantName": "GOAL/NO GOAL",
-              "providerMarketId": "806415886",
-              "providerSelectionId": "5292236124",
-              "replacementIncluded": false,
-              "source": "Poisson sugli xG"
-            },
-            {
-              "label": "Doppia chance 1X nel 1° tempo",
-              "odds": 1.08,
-              "modelProbabilityPct": 67,
-              "marketCode": "99987",
-              "marketName": "DOPPIA CHANCE TEMPO X",
-              "variantName": "DC TEMPO 1",
-              "providerMarketId": "9.048391040009998e+24",
-              "providerSelectionId": "5292237364",
-              "replacementIncluded": false,
-              "source": "scenario 1X2 ridotto al primo tempo"
-            },
-            {
-              "label": "Esito 1",
-              "odds": 1.4,
-              "modelProbabilityPct": 51.9,
-              "marketCode": "3",
-              "marketName": "1X2 ESITO FINALE",
-              "variantName": "ESITO FINALE 1X2",
-              "providerMarketId": "806415867",
-              "providerSelectionId": "5292236010",
-              "replacementIncluded": false,
-              "source": "modello UEFA Elo 1X2"
-            }
-          ],
-          "prudentProbabilityPct": 23.32,
-          "fairOdds": 4.29,
-          "probabilityMethod": "Selezioni ordinate dal modello; le quote Sisal vengono collegate soltanto dopo e non modificano la scelta.",
-          "unavailableReason": null
-        },
-        {
-          "tier": "Aggressive",
-          "scenario": "Più selettiva",
-          "risk": "alto",
-          "count": 5,
-          "targetOdds": 20,
-          "offset": 2,
-          "quotaPolicy": "orientativa",
-          "odds": 1.69,
-          "qualityStatus": "editoriale",
-          "legs": [
-            {
-              "label": "Doppia chance 1X nel 1° tempo",
-              "odds": 1.08,
-              "modelProbabilityPct": 67,
-              "marketCode": "99987",
-              "marketName": "DOPPIA CHANCE TEMPO X",
-              "variantName": "DC TEMPO 1",
-              "providerMarketId": "9.048391040009998e+24",
-              "providerSelectionId": "5292237364",
-              "replacementIncluded": false,
-              "source": "scenario 1X2 ridotto al primo tempo"
-            },
             {
               "label": "Over 1,5 gol",
               "odds": 1.12,
@@ -9447,10 +9291,52 @@
               "source": "modello UEFA Elo 1X2"
             }
           ],
-          "prudentProbabilityPct": 28.33,
-          "fairOdds": 3.53,
+          "prudentProbabilityPct": 44.98,
+          "fairOdds": 2.22,
           "probabilityMethod": "Selezioni ordinate dal modello; le quote Sisal vengono collegate soltanto dopo e non modificano la scelta.",
-          "unavailableReason": null
+          "unavailableReason": "Meno di tre mercati Sisal compatibili con le proiezioni indipendenti."
+        },
+        {
+          "tier": "Aggressive",
+          "scenario": "Più selettiva",
+          "risk": "alto",
+          "count": 5,
+          "targetOdds": 20,
+          "offset": 2,
+          "quotaPolicy": "orientativa",
+          "minimumSelectionOdds": 1.1,
+          "odds": 1.46,
+          "qualityStatus": "nd",
+          "legs": [
+            {
+              "label": "Multigol 1–4",
+              "odds": 1.33,
+              "modelProbabilityPct": 57.5,
+              "marketCode": "30562",
+              "marketName": "MULTIGOAL",
+              "variantName": "MULTIGOAL MULTIESITI 16 ESITI",
+              "providerMarketId": "806410513",
+              "providerSelectionId": "5292242419",
+              "replacementIncluded": false,
+              "source": "Poisson sugli xG"
+            },
+            {
+              "label": "Doppia chance 1X",
+              "odds": 1.1,
+              "modelProbabilityPct": 70.6,
+              "marketCode": "28319",
+              "marketName": "DOPPIA CHANCE",
+              "variantName": "DOPPIA CHANCE MULTIESITI",
+              "providerMarketId": "806416364",
+              "providerSelectionId": "5292238280",
+              "replacementIncluded": false,
+              "source": "modello UEFA Elo 1X2"
+            }
+          ],
+          "prudentProbabilityPct": 38.16,
+          "fairOdds": 2.62,
+          "probabilityMethod": "Selezioni ordinate dal modello; le quote Sisal vengono collegate soltanto dopo e non modificano la scelta.",
+          "unavailableReason": "Meno di tre mercati Sisal compatibili con le proiezioni indipendenti."
         }
       ],
       "coverage": {
@@ -9786,6 +9672,7 @@
           "targetOdds": 5,
           "offset": 0,
           "quotaPolicy": "orientativa",
+          "minimumSelectionOdds": 1.1,
           "odds": 2.19,
           "qualityStatus": "editoriale",
           "legs": [
@@ -9839,74 +9726,10 @@
           "targetOdds": 10,
           "offset": 1,
           "quotaPolicy": "orientativa",
-          "odds": 3.32,
-          "qualityStatus": "editoriale",
-          "legs": [
-            {
-              "label": "Entrambe segnano",
-              "odds": 1.52,
-              "modelProbabilityPct": 59.5,
-              "marketCode": "18",
-              "marketName": "GOAL/NOGOAL",
-              "variantName": "GOAL/NO GOAL",
-              "providerMarketId": "806413932",
-              "providerSelectionId": "5292202914",
-              "replacementIncluded": false,
-              "source": "Poisson sugli xG"
-            },
-            {
-              "label": "Doppia chance 1X nel 1° tempo",
-              "odds": 1.18,
-              "modelProbabilityPct": 72.2,
-              "marketCode": "99987",
-              "marketName": "DOPPIA CHANCE TEMPO X",
-              "variantName": "DC TEMPO 1",
-              "providerMarketId": "9.048391010009999e+24",
-              "providerSelectionId": "5292204154",
-              "replacementIncluded": false,
-              "source": "scenario 1X2 ridotto al primo tempo"
-            },
-            {
-              "label": "Esito 1",
-              "odds": 1.85,
-              "modelProbabilityPct": 59.2,
-              "marketCode": "3",
-              "marketName": "1X2 ESITO FINALE",
-              "variantName": "ESITO FINALE 1X2",
-              "providerMarketId": "806413913",
-              "providerSelectionId": "5292202800",
-              "replacementIncluded": false,
-              "source": "modello UEFA Elo 1X2"
-            }
-          ],
-          "prudentProbabilityPct": 22.47,
-          "fairOdds": 4.45,
-          "probabilityMethod": "Selezioni ordinate dal modello; le quote Sisal vengono collegate soltanto dopo e non modificano la scelta.",
-          "unavailableReason": null
-        },
-        {
-          "tier": "Aggressive",
-          "scenario": "Più selettiva",
-          "risk": "alto",
-          "count": 5,
-          "targetOdds": 20,
-          "offset": 2,
-          "quotaPolicy": "orientativa",
+          "minimumSelectionOdds": 1.1,
           "odds": 2.53,
           "qualityStatus": "editoriale",
           "legs": [
-            {
-              "label": "Doppia chance 1X nel 1° tempo",
-              "odds": 1.18,
-              "modelProbabilityPct": 72.2,
-              "marketCode": "99987",
-              "marketName": "DOPPIA CHANCE TEMPO X",
-              "variantName": "DC TEMPO 1",
-              "providerMarketId": "9.048391010009999e+24",
-              "providerSelectionId": "5292204154",
-              "replacementIncluded": false,
-              "source": "scenario 1X2 ridotto al primo tempo"
-            },
             {
               "label": "Over 1,5 gol",
               "odds": 1.16,
@@ -9930,10 +9753,76 @@
               "providerSelectionId": "5292202800",
               "replacementIncluded": false,
               "source": "modello UEFA Elo 1X2"
+            },
+            {
+              "label": "Doppia chance 1X nel 1° tempo",
+              "odds": 1.18,
+              "modelProbabilityPct": 72.2,
+              "marketCode": "99987",
+              "marketName": "DOPPIA CHANCE TEMPO X",
+              "variantName": "DC TEMPO 1",
+              "providerMarketId": "9.048391010009999e+24",
+              "providerSelectionId": "5292204154",
+              "replacementIncluded": false,
+              "source": "scenario 1X2 ridotto al primo tempo"
             }
           ],
           "prudentProbabilityPct": 31.31,
           "fairOdds": 3.19,
+          "probabilityMethod": "Selezioni ordinate dal modello; le quote Sisal vengono collegate soltanto dopo e non modificano la scelta.",
+          "unavailableReason": null
+        },
+        {
+          "tier": "Aggressive",
+          "scenario": "Più selettiva",
+          "risk": "alto",
+          "count": 5,
+          "targetOdds": 20,
+          "offset": 2,
+          "quotaPolicy": "orientativa",
+          "minimumSelectionOdds": 1.1,
+          "odds": 2.77,
+          "qualityStatus": "editoriale",
+          "legs": [
+            {
+              "label": "Multigol 1–4",
+              "odds": 1.27,
+              "modelProbabilityPct": 74,
+              "marketCode": "30562",
+              "marketName": "MULTIGOAL",
+              "variantName": "MULTIGOAL MULTIESITI 16 ESITI",
+              "providerMarketId": "806415772",
+              "providerSelectionId": "5292234301",
+              "replacementIncluded": false,
+              "source": "Poisson sugli xG"
+            },
+            {
+              "label": "Esito 1",
+              "odds": 1.85,
+              "modelProbabilityPct": 59.2,
+              "marketCode": "3",
+              "marketName": "1X2 ESITO FINALE",
+              "variantName": "ESITO FINALE 1X2",
+              "providerMarketId": "806413913",
+              "providerSelectionId": "5292202800",
+              "replacementIncluded": false,
+              "source": "modello UEFA Elo 1X2"
+            },
+            {
+              "label": "Doppia chance 1X nel 1° tempo",
+              "odds": 1.18,
+              "modelProbabilityPct": 72.2,
+              "marketCode": "99987",
+              "marketName": "DOPPIA CHANCE TEMPO X",
+              "variantName": "DC TEMPO 1",
+              "providerMarketId": "9.048391010009999e+24",
+              "providerSelectionId": "5292204154",
+              "replacementIncluded": false,
+              "source": "scenario 1X2 ridotto al primo tempo"
+            }
+          ],
+          "prudentProbabilityPct": 27.95,
+          "fairOdds": 3.58,
           "probabilityMethod": "Selezioni ordinate dal modello; le quote Sisal vengono collegate soltanto dopo e non modificano la scelta.",
           "unavailableReason": null
         }
@@ -10271,6 +10160,7 @@
           "targetOdds": 5,
           "offset": 0,
           "quotaPolicy": "orientativa",
+          "minimumSelectionOdds": 1.1,
           "odds": 1.76,
           "qualityStatus": "nd",
           "legs": [
@@ -10312,18 +10202,19 @@
           "targetOdds": 10,
           "offset": 1,
           "quotaPolicy": "orientativa",
-          "odds": 1.76,
+          "minimumSelectionOdds": 1.1,
+          "odds": 2.04,
           "qualityStatus": "nd",
           "legs": [
             {
-              "label": "Entrambe segnano",
-              "odds": 1.6,
-              "modelProbabilityPct": 68,
-              "marketCode": "18",
-              "marketName": "GOAL/NOGOAL",
-              "variantName": "GOAL/NO GOAL",
-              "providerMarketId": "806412804",
-              "providerSelectionId": "5292197946",
+              "label": "Multigol 1–4",
+              "odds": 1.85,
+              "modelProbabilityPct": 57.5,
+              "marketCode": "30562",
+              "marketName": "MULTIGOAL",
+              "variantName": "MULTIGOAL MULTIESITI 16 ESITI",
+              "providerMarketId": "806414520",
+              "providerSelectionId": "5292205681",
               "replacementIncluded": false,
               "source": "Poisson sugli xG"
             },
@@ -10340,8 +10231,8 @@
               "source": "modello UEFA Elo 1X2"
             }
           ],
-          "prudentProbabilityPct": 45.64,
-          "fairOdds": 2.19,
+          "prudentProbabilityPct": 38.59,
+          "fairOdds": 2.59,
           "probabilityMethod": "Selezioni ordinate dal modello; le quote Sisal vengono collegate soltanto dopo e non modificano la scelta.",
           "unavailableReason": "Meno di tre mercati Sisal compatibili con le proiezioni indipendenti."
         },
@@ -10353,6 +10244,7 @@
           "targetOdds": 20,
           "offset": 2,
           "quotaPolicy": "orientativa",
+          "minimumSelectionOdds": 1.1,
           "odds": 1.76,
           "qualityStatus": "nd",
           "legs": [
@@ -10720,6 +10612,7 @@
           "targetOdds": 5,
           "offset": 0,
           "quotaPolicy": "orientativa",
+          "minimumSelectionOdds": 1.1,
           "odds": 2.13,
           "qualityStatus": "nd",
           "legs": [
@@ -10761,18 +10654,19 @@
           "targetOdds": 10,
           "offset": 1,
           "quotaPolicy": "orientativa",
-          "odds": 2.13,
+          "minimumSelectionOdds": 1.1,
+          "odds": 1.7,
           "qualityStatus": "nd",
           "legs": [
             {
-              "label": "Entrambe segnano",
-              "odds": 1.9,
-              "modelProbabilityPct": 60.9,
-              "marketCode": "18",
-              "marketName": "GOAL/NOGOAL",
-              "variantName": "GOAL/NO GOAL",
-              "providerMarketId": "806413388",
-              "providerSelectionId": "5292200430",
+              "label": "Multigol 1–4",
+              "odds": 1.52,
+              "modelProbabilityPct": 71.5,
+              "marketCode": "30562",
+              "marketName": "MULTIGOAL",
+              "variantName": "MULTIGOAL MULTIESITI 16 ESITI",
+              "providerMarketId": "806415690",
+              "providerSelectionId": "5292211719",
               "replacementIncluded": false,
               "source": "Poisson sugli xG"
             },
@@ -10789,8 +10683,8 @@
               "source": "modello UEFA Elo 1X2"
             }
           ],
-          "prudentProbabilityPct": 36.01,
-          "fairOdds": 2.78,
+          "prudentProbabilityPct": 42.28,
+          "fairOdds": 2.37,
           "probabilityMethod": "Selezioni ordinate dal modello; le quote Sisal vengono collegate soltanto dopo e non modificano la scelta.",
           "unavailableReason": "Meno di tre mercati Sisal compatibili con le proiezioni indipendenti."
         },
@@ -10802,6 +10696,7 @@
           "targetOdds": 20,
           "offset": 2,
           "quotaPolicy": "orientativa",
+          "minimumSelectionOdds": 1.1,
           "odds": 2.13,
           "qualityStatus": "nd",
           "legs": [
@@ -11169,6 +11064,7 @@
           "targetOdds": 5,
           "offset": 0,
           "quotaPolicy": "orientativa",
+          "minimumSelectionOdds": 1.1,
           "odds": 3.04,
           "qualityStatus": "editoriale",
           "legs": [
@@ -11222,74 +11118,10 @@
           "targetOdds": 10,
           "offset": 1,
           "quotaPolicy": "orientativa",
-          "odds": 5.76,
-          "qualityStatus": "editoriale",
-          "legs": [
-            {
-              "label": "Entrambe segnano",
-              "odds": 1.57,
-              "modelProbabilityPct": 63.6,
-              "marketCode": "18",
-              "marketName": "GOAL/NOGOAL",
-              "variantName": "GOAL/NO GOAL",
-              "providerMarketId": "806415102",
-              "providerSelectionId": "5292207444",
-              "replacementIncluded": false,
-              "source": "Poisson sugli xG"
-            },
-            {
-              "label": "Doppia chance X2 nel 1° tempo",
-              "odds": 1.31,
-              "modelProbabilityPct": 59.8,
-              "marketCode": "99987",
-              "marketName": "DOPPIA CHANCE TEMPO X",
-              "variantName": "DC TEMPO 1",
-              "providerMarketId": "9.048391030009999e+24",
-              "providerSelectionId": "5292209551",
-              "replacementIncluded": false,
-              "source": "scenario 1X2 ridotto al primo tempo"
-            },
-            {
-              "label": "Esito 2",
-              "odds": 2.8,
-              "modelProbabilityPct": 41.6,
-              "marketCode": "3",
-              "marketName": "1X2 ESITO FINALE",
-              "variantName": "ESITO FINALE 1X2",
-              "providerMarketId": "806415083",
-              "providerSelectionId": "5292207248",
-              "replacementIncluded": false,
-              "source": "modello UEFA Elo 1X2"
-            }
-          ],
-          "prudentProbabilityPct": 13.98,
-          "fairOdds": 7.15,
-          "probabilityMethod": "Selezioni ordinate dal modello; le quote Sisal vengono collegate soltanto dopo e non modificano la scelta.",
-          "unavailableReason": null
-        },
-        {
-          "tier": "Aggressive",
-          "scenario": "Più selettiva",
-          "risk": "alto",
-          "count": 5,
-          "targetOdds": 20,
-          "offset": 2,
-          "quotaPolicy": "orientativa",
+          "minimumSelectionOdds": 1.1,
           "odds": 4.4,
           "qualityStatus": "editoriale",
           "legs": [
-            {
-              "label": "Doppia chance X2 nel 1° tempo",
-              "odds": 1.31,
-              "modelProbabilityPct": 59.8,
-              "marketCode": "99987",
-              "marketName": "DOPPIA CHANCE TEMPO X",
-              "variantName": "DC TEMPO 1",
-              "providerMarketId": "9.048391030009999e+24",
-              "providerSelectionId": "5292209551",
-              "replacementIncluded": false,
-              "source": "scenario 1X2 ridotto al primo tempo"
-            },
             {
               "label": "Over 1,5 gol",
               "odds": 1.2,
@@ -11313,10 +11145,76 @@
               "providerSelectionId": "5292207248",
               "replacementIncluded": false,
               "source": "modello UEFA Elo 1X2"
+            },
+            {
+              "label": "Doppia chance X2 nel 1° tempo",
+              "odds": 1.31,
+              "modelProbabilityPct": 59.8,
+              "marketCode": "99987",
+              "marketName": "DOPPIA CHANCE TEMPO X",
+              "variantName": "DC TEMPO 1",
+              "providerMarketId": "9.048391030009999e+24",
+              "providerSelectionId": "5292209551",
+              "replacementIncluded": false,
+              "source": "scenario 1X2 ridotto al primo tempo"
             }
           ],
           "prudentProbabilityPct": 18.22,
           "fairOdds": 5.49,
+          "probabilityMethod": "Selezioni ordinate dal modello; le quote Sisal vengono collegate soltanto dopo e non modificano la scelta.",
+          "unavailableReason": null
+        },
+        {
+          "tier": "Aggressive",
+          "scenario": "Più selettiva",
+          "risk": "alto",
+          "count": 5,
+          "targetOdds": 20,
+          "offset": 2,
+          "quotaPolicy": "orientativa",
+          "minimumSelectionOdds": 1.1,
+          "odds": 4.4,
+          "qualityStatus": "editoriale",
+          "legs": [
+            {
+              "label": "Multigol 1–4",
+              "odds": 1.2,
+              "modelProbabilityPct": 74,
+              "marketCode": "30562",
+              "marketName": "MULTIGOAL",
+              "variantName": "MULTIGOAL MULTIESITI 16 ESITI",
+              "providerMarketId": "806418333",
+              "providerSelectionId": "5292231619",
+              "replacementIncluded": false,
+              "source": "Poisson sugli xG"
+            },
+            {
+              "label": "Esito 2",
+              "odds": 2.8,
+              "modelProbabilityPct": 41.6,
+              "marketCode": "3",
+              "marketName": "1X2 ESITO FINALE",
+              "variantName": "ESITO FINALE 1X2",
+              "providerMarketId": "806415083",
+              "providerSelectionId": "5292207248",
+              "replacementIncluded": false,
+              "source": "modello UEFA Elo 1X2"
+            },
+            {
+              "label": "Doppia chance X2 nel 1° tempo",
+              "odds": 1.31,
+              "modelProbabilityPct": 59.8,
+              "marketCode": "99987",
+              "marketName": "DOPPIA CHANCE TEMPO X",
+              "variantName": "DC TEMPO 1",
+              "providerMarketId": "9.048391030009999e+24",
+              "providerSelectionId": "5292209551",
+              "replacementIncluded": false,
+              "source": "scenario 1X2 ridotto al primo tempo"
+            }
+          ],
+          "prudentProbabilityPct": 16.27,
+          "fairOdds": 6.15,
           "probabilityMethod": "Selezioni ordinate dal modello; le quote Sisal vengono collegate soltanto dopo e non modificano la scelta.",
           "unavailableReason": null
         }
