@@ -62,7 +62,7 @@ export function createPage(deps){
   }
 
   function championsContent(data){
-    return `<div class="betting-stage betting-champions-stage"><header class="betting-intro"><div><p class="eyebrow">Champions League · 1ª giornata</p><h3>${data.slips.length} schedine costruite dal modello</h3></div><p>Tiri e tiri in porta, gol e assist, multigol casa/ospite e due poker ammoniti.</p></header><p class="betting-coverage">${data.summary.legs} selezioni complessive su ${data.summary.distinctFixtures} gare. Quota minima per selezione: 1.10.</p><div class="betting-slip-grid">${data.slips.map(championsSlipCard).join("")}</div><footer class="betting-method"><strong>Criterio Champions</strong><p>${esc(data.selectionRule)}</p><p>${esc(data.methodology)}</p><p>Quote ${esc(data.provider)} aggiornate al ${esc(dateOnly(data.oddsRetrievedAt))}. Gioca responsabilmente.</p></footer></div>`;
+    return `<div class="betting-stage betting-champions-stage"><header class="betting-intro"><div><p class="eyebrow">Champions League · 1ª giornata</p><h3>${data.slips.length} schedine costruite dal modello</h3></div><p>Tiri e tiri in porta, gol e assist, multigol casa/ospite due poker ammoniti e una mista del martedì sera.</p></header><p class="betting-coverage">${data.summary.legs} selezioni complessive su ${data.summary.distinctFixtures} gare. Quota minima per selezione: 1.10.</p><div class="betting-slip-grid">${data.slips.map(championsSlipCard).join("")}</div><footer class="betting-method"><strong>Criterio Champions</strong><p>${esc(data.selectionRule)}</p><p>${esc(data.methodology)}</p><p>Quote ${esc(data.provider)} aggiornate al ${esc(dateOnly(data.oddsRetrievedAt))}. Gioca responsabilmente.</p></footer></div>`;
   }
 
   async function render(){
@@ -72,7 +72,7 @@ export function createPage(deps){
     const matchday=new URLSearchParams(location.search).get("giornata");
     const competition=new URLSearchParams(location.search).get("competizione");
     if(competition==="champions"){
-      document.querySelector("#app").innerHTML=hero("UEFA Champions League · 2026/27","Schedine Champions","Due schedine dedicate ai calciatori, una multigol casa/ospite e due poker di probabili ammoniti.")+`<nav class="betting-round-back" aria-label="Navigazione archivio schedine"><a href="schedina.html">← Tutte le schedine</a></nav><section class="betting-round-page betting-round-page--champions"><header class="betting-round-heading"><p class="eyebrow">Champions League · 2026/27</p><h2>1ª giornata</h2></header>${championsContent(champions)}</section>`;
+      document.querySelector("#app").innerHTML=hero("UEFA Champions League · 2026/27","Schedine Champions","Due schedine dedicate ai calciatori, una multigol casa/ospite, due poker di probabili ammoniti e una mista per le gare del martedì sera.")+`<nav class="betting-round-back" aria-label="Navigazione archivio schedine"><a href="schedina.html">← Tutte le schedine</a></nav><section class="betting-round-page betting-round-page--champions"><header class="betting-round-heading"><p class="eyebrow">Champions League · 2026/27</p><h2>1ª giornata</h2></header>${championsContent(champions)}</section>`;
       return;
     }
     if(rounds[matchday]){

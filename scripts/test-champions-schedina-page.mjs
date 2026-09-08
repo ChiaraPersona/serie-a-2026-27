@@ -20,8 +20,8 @@ assert(app.innerHTML.includes("Champions League"));
 
 globalThis.location.search="?competizione=champions";
 await createPage({esc,load,hero,dateOnly}).render();
-assert(app.innerHTML.includes("5 schedine costruite dal modello"));
-assert.equal((app.innerHTML.match(/<article class="betting-slip betting-slip--champions /g)||[]).length,5);
+assert(app.innerHTML.includes("6 schedine costruite dal modello"));
+assert.equal((app.innerHTML.match(/<article class="betting-slip betting-slip--champions /g)||[]).length,6);
 assert(app.innerHTML.includes("Otto tiri e tiri in porta"));
 assert(app.innerHTML.includes("Otto gol e assist"));
 assert(!/Tripla esiti|Tripla gol|Cinquina mercati|Scenari non qualificati|betting-quality|betting-slip-grid-qualified/.test(app.innerHTML));

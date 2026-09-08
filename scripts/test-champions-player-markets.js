@@ -16,7 +16,7 @@ for (const fixture of data.fixtures) {
   const source = fixtureById.get(fixture.fixtureId);
   const lineupNames = [...source.probableFormation.home.players, ...source.probableFormation.away.players].map(value => String(value).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase());
   for (const candidate of fixture.likelyBooked) assert.ok(lineupNames.includes(candidate.lineupName.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase()), `${fixture.fixtureId}: ammonito fuori XI ${candidate.name}`);
-  const forbidden = /DRAW NO BET|PRIMA A X CORNER|QUASI CARTELLINO|1X2 TIRI (TOTALI|IN PORTA) GIOCATORI/i;
+  const forbidden = /CARTELL|AMMONIT|DRAW NO BET|PRIMA A X CORNER|QUASI CARTELLINO|1X2 TIRI (TOTALI|IN PORTA) GIOCATORI/i;
   for (const combo of fixture.combinations) {
     const families = new Set();
     for (const leg of combo.legs) {

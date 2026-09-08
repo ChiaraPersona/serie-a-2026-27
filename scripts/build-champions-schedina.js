@@ -36,6 +36,29 @@ slips.push(playerSlip("champions-bonus-giocatori","Otto gol e assist",["Assist g
 const multigol=[];for(const f of playerData.fixtures){const x=matchCandidates(f,"30394").filter(y=>!used.has(String(y.providerSelectionId))).sort((a,b)=>b.modelProbabilityPct-a.modelProbabilityPct)[0];if(x){multigol.push(x);used.add(String(x.providerSelectionId))}if(multigol.length===10)break}slips.push(slip("champions-costellazione","Multigol casa/ospite · 10 partite","single-market-full-round",multigol,"Dieci partite, un'unica famiglia: multigol casa/ospite."));
 const cards=playerData.fixtures.map(f=>{const c=f.likelyBooked.find(x=>x.sisal?.odds>=1.10);if(!c)return null;const p=Math.min(.62,Math.max(.18,c.riskScore/150)),m={...c.sisal,marketScope:"player",selections:[{providerSelectionId:c.sisal.providerSelectionId,name:c.sisal.selection,odds:c.sisal.odds,status:"open"}]};return leg(f,m,m.selections[0],p,`${c.name} riceve un cartellino (sostituto incluso)`,"Ammoniti",c.evidence.join(" · "),{player:c.name,team:c.team,riskScore:c.riskScore})}).filter(Boolean);
 for(let i=1;i<=2;i++)slips.push(slip(`champions-poker-ammoniti-${i}`,`Poker ammoniti ${i}`,"player-cards",take(cards,4,{distinct:true,label:`Poker ammoniti ${i}`}),"Quattro calciatori differenti, ciascuno scelto in una partita differente."));
+// Fixed editorial round: Tuesday evening in the canonical Europe/Rome calendar.
+const calendar=read("data/normalized/champions-league-2026-27.json");
+const eveningFixtures=calendar.fixtures.filter(f=>f.date==="2026-09-08"&&f.kickoff==="21:00");
+if(eveningFixtures.length!==4)throw new Error("Ricontrollare le quattro gare serali del martedì");
+const eveningPools=eveningFixtures.map(f=>{
+ const fixture=playerData.fixtures.find(x=>x.fixtureId===f.id);
+ if(!fixture)throw new Error(`Pronostico mancante: ${f.id}`);
+ const candidates=[...["3","7989","30394","975","15859","15481"].flatMap(code=>matchCandidates(fixture,code)),...players.filter(x=>x.matchId===f.id&&["Tiri giocatore","Tiri in porta giocatore"].includes(x.marketFamily)&&x.replacementIncluded)]
+ .filter(x=>x.odds>=1.10&&x.odds<=1.80&&!used.has(String(x.providerSelectionId)));
+ const byFamily=new Map();
+ for(const x of candidates.sort((a,b)=>b.modelProbabilityPct-a.modelProbabilityPct))if(!byFamily.has(x.marketFamily))byFamily.set(x.marketFamily,x);
+ if(!byFamily.size)throw new Error(`Nessuna selezione adeguata per ${f.homeTeam} - ${f.awayTeam}`);
+ return [...byFamily.values()];
+});
+let eveningBest=null,eveningScore=-Infinity;
+function chooseEvening(index,rows){
+ if(index===eveningPools.length){if(new Set(rows.map(x=>x.marketFamily)).size<3||rows.filter(x=>x.marketScope==="player").length>2)return;const score=rows.reduce((n,x)=>n+Math.log(x.modelProbabilityPct/100),0);if(score>eveningScore){eveningBest=[...rows];eveningScore=score}return}
+ for(const x of eveningPools[index])chooseEvening(index+1,[...rows,x]);
+}
+chooseEvening(0,[]);
+if(!eveningBest)throw new Error("Schedina serale non disponibile con i vincoli richiesti");
+for(const x of eveningBest)used.add(String(x.providerSelectionId));
+slips.push({...slip("champions-martedi-serali","Martedì Champions · Serali","evening-mixed",eveningBest,"Una selezione per ciascuna delle quattro gare delle 21:00 di martedì 8 settembre. Almeno tre famiglie di mercato, massimo due giocate sui tiri dei calciatori, senza cartellini."),date:"2026-09-08",kickoff:"21:00",timezone:"Europe/Rome",minimumSelectionOdds:1.10,maximumSelectionOdds:1.80});
 const all=slips.flatMap(x=>x.legs);if(new Set(all.map(x=>String(x.providerSelectionId))).size!==all.length)throw new Error("Selezioni Sisal ripetute");if(all.some(x=>/RISULTATO ESATTO/i.test(`${x.marketName} ${x.variantName}`)))throw new Error("Mercato risultato esatto escluso entrato");
 const output={schemaVersion:2,competition:"UEFA Champions League",season:"2026/27",matchday:1,generatedAt:new Date().toISOString(),provider:"Sisal",oddsRetrievedAt:oddsData.retrievedAt,sourceUrl:oddsData.sourceUrl,methodology:"La probabilità di ogni gamba deriva dai pronostici UEFA Elo, dalle distribuzioni Poisson e dai volumi squadra/giocatore. Probabilità congiunta, quota equa ed EV seguono la stessa lettura delle schedine Serie A.",minimumSelectionOdds:1.10,selectionRule:"Quota minima per selezione: 1.10. Le selezioni sono ordinate esclusivamente dal modello; le quote Sisal vengono associate dopo e restano un numero esterno, senza orientare la scelta.",exclusions:["risultati esatti","risultati esatti multiesito"],summary:{slips:slips.length,legs:all.length,distinctPlayers:new Set(all.map(x=>x.player).filter(Boolean)).size,distinctFixtures:new Set(all.map(x=>x.matchId)).size,qualifiedProfiles:slips.filter(x=>x.qualityStatus==="qualificata").length,exactScoreProfilesExcluded:2},slips};
 write("data/normalized/schedina-champions-md01.json",output);console.log(`Schedina Champions: ${output.summary.slips} schedine, ${output.summary.legs} selezioni.`);

@@ -601,7 +601,11 @@ body[data-page="champions"] .champions-motivation-debug span{color:#fff!importan
 .champions-reading-pending>.prediction-players-grid{padding:0 18px 18px;border-top:1px solid rgba(139,211,255,.12)}
 .champions-reading-pending>.champions-reading-combo{margin:0 18px 18px}
 .champions-reading-pending .reading-data-panel{min-height:0}
-.champions-player-predictions,.champions-shooters{margin-top:18px;padding:26px;border:1px solid rgba(141,196,255,.22);border-radius:28px;background:linear-gradient(145deg,rgba(4,38,99,.72),rgba(2,18,57,.82));box-shadow:inset 0 1px rgba(255,255,255,.05),0 18px 48px rgba(0,8,37,.18);color:#dbeefa}
+body[data-page="champions"] .champions-player-predictions,body[data-page="champions"] .champions-shooters{margin-top:18px;padding:26px;border:1px solid rgba(141,196,255,.22);border-radius:28px;background:linear-gradient(145deg,rgba(4,30,76,.78),rgba(1,12,38,.88));box-shadow:inset 0 1px rgba(255,255,255,.08),0 18px 48px rgba(0,8,37,.24);backdrop-filter:blur(22px) saturate(135%);-webkit-backdrop-filter:blur(22px) saturate(135%);color:#fff}
+.champions-player-predictions .prediction-booked-panel li{border-color:rgba(139,211,255,.16);background:rgba(1,12,38,.48)}
+.champions-player-predictions .prediction-booked-panel li.possible-first-booked{border-color:rgba(131,223,255,.42);background:linear-gradient(120deg,rgba(18,76,125,.52),rgba(1,17,55,.68))}
+.champions-player-predictions .prediction-booked-panel li>span{background:rgba(23,107,219,.62);color:#fff}
+.champions-player-predictions .prediction-booked-panel li>b{color:#83dfff}
 .champions-player-predictions .prediction-players-grid{margin:0}
 .champions-player-predictions .prediction-booked-panel,.champions-player-predictions .prediction-mvp{border-color:rgba(139,211,255,.16);background:rgba(1,17,55,.48);color:#dbeefa}
 .champions-player-predictions .prediction-booked-panel h2,.champions-player-predictions .prediction-booked-panel strong,.champions-player-predictions .prediction-mvp>strong{color:#fff}
@@ -680,7 +684,7 @@ body[data-page="champions"] .champions-motivation-debug span{color:#fff!importan
   .champions-reading-attack>div{grid-template-columns:1fr}
   .champions-reading-context{padding:20px 14px;border-radius:24px}
   .champions-reading-context-grid{grid-template-columns:1fr}
-  .champions-player-predictions,.champions-shooters{padding:20px 14px;border-radius:24px}
+  body[data-page="champions"] .champions-player-predictions,body[data-page="champions"] .champions-shooters{padding:20px 14px;border-radius:24px}
   .champions-shooters>div{grid-template-columns:1fr}
   .champions-shooters li strong{white-space:normal}
   .champions-reading-pending>summary{padding:14px}
@@ -742,3 +746,5 @@ body[data-page="champions"] .champions-fixture.match.fixture-card{
 body[data-page="champions"] .champions-fixture.match.fixture-card .match-head{background:rgba(1,12,32,.35)}
 body[data-page="champions"] .champions-fixture.match.fixture-card .matchday-chip,
 body[data-page="champions"] .champions-fixture.match.fixture-card .match-date{color:#fff}
+
+.champions-reading-combo .prediction-combo-metrics>div{background:#071f4a;color:#fff}

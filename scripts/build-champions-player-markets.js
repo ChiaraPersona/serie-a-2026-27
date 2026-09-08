@@ -286,8 +286,6 @@ function candidateLegs(prediction, shooters, booked, event) {
   if (topShot) add("player-shots", `${topShot.name} almeno 1 tiro`, 1 - Math.exp(-topShot.projectedShots), topShot.markets.shotsOver05, "volume giocatore regolarizzato");
   const topSot = shooters.shotsOnTarget.find(player => player.markets.shotsOnTargetOver05);
   if (topSot) add("player-sot", `${topSot.name} almeno 1 tiro in porta`, 1 - Math.exp(-topSot.projectedShotsOnTarget), topSot.markets.shotsOnTargetOver05, "volume giocatore regolarizzato");
-  const card = booked.find(player => player.sisal);
-  if (card) add("player-card", `${card.name} cartellino`, clamp(card.riskScore / 150, 0.12, 0.5), card.sisal, "indice disciplinare comparativo");
   const totalShots = prediction.matchProjection?.shotsTotal?.central;
   if (Number.isFinite(totalShots)) {
     const threshold = Math.max(17.5, Math.floor(totalShots - 4) + 0.5);
@@ -375,7 +373,7 @@ const output = {
     booked: "Stesso impianto Serie A: ruolo, cartellini e falli per 90 minuti regolarizzati, con graduatoria unica e presenza di entrambe le squadre.",
     mvp: "Stessi pesi Serie A su scenario risultato, produzione individuale, fit tattico e affidabilità; lo storico MVP Champions omogeneo resta N/D.",
     shooters: "Tiri e tiri in porta per 90 minuti regolarizzati per ruolo, scalati sui volumi previsti della squadra e limitati ai probabili titolari.",
-    myCombo: "Tre profili per partita costruiti con mercati compatibili e sostituto incluso quando previsto; niente DNB, confronti giocatore, prima a corner, X primo tempo/finale o quasi ammonito."
+    myCombo: "Tre profili per partita costruiti con mercati compatibili e sostituto incluso quando previsto; niente cartellini, DNB, confronti giocatore, prima a corner, X primo tempo/finale o quasi ammonito."
   },
   summary: {
     fixtures: fixtures.length,
