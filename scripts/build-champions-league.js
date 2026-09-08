@@ -93,7 +93,7 @@ for (const item of officialSource.fixtures) {
   if (!editorial || item.status !== "official" || !item.source?.url) fail("formazione ufficiale non valida");
   for (const side of ["home", "away"]) {
     const team = item[side];
-    if (team.team !== editorial[side].team || team.players.length !== 11 || new Set(team.players).size !== 11 || !formationPattern.test(team.formation) || team.formation.split("-").reduce((a,b)=>a+Number(b),0)!==10) fail(`${item.fixtureId}: XI ufficiale non valido`);
+    if (team.team !== editorial[side].team || team.players.length !== 11 || new Set(team.players).size !== 11 || (team.formation !== null && (!formationPattern.test(team.formation) || team.formation.split("-").reduce((a,b)=>a+Number(b),0)!==10))) fail(`${item.fixtureId}: XI ufficiale non valido`);
   }
   probableFormations.set(item.fixtureId, { ...item, editorialProjection: editorial, lineupConfidence: { band: "very-high", uncertainSides: [] } });
 }

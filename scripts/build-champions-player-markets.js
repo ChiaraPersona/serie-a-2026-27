@@ -65,6 +65,7 @@ function lineupCandidates(fixture, prediction) {
     const teamProjection = prediction.teamProjections.find(item => item.team === team);
     (formation?.players || []).forEach((name, index) => {
       const player = resolvePlayer(team, name);
+      if (!player?.position && formation?.formation === null) return; // Unknown shape cannot supply a positional prior from source order.
       const role = player?.position || inferRole(formation?.formation, index);
       const totals = player?.previousSeason?.totals || {};
       const per90 = totals.per90 || {};
@@ -373,7 +374,8 @@ const fixtures = predictions.fixtures.map(prediction => {
     shooters,
     combinations,
     coverage: {
-      lineupPlayers: players.length,
+      lineupPlayers: ["home", "away"].reduce((sum, side) => sum + (fixture.probableFormation?.[side]?.players?.length || 0), 0),
+      eligiblePlayerProjections: players.length,
       verifiedPlayerHistories: players.filter(player => player.dataStatus === "verified-history").length,
       limitedPlayerHistories: players.filter(player => player.dataStatus === "limited-history").length,
       roleBaselines: players.filter(player => player.dataStatus === "role-baseline").length,

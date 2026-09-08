@@ -8,7 +8,11 @@ const app = { innerHTML: '' };
 globalThis.document = { querySelector: () => app };
 for (const [id, names, excluded] of [
   ['ucl-2026-27-md01-01', ['Brignoli', 'Koita', 'Tornich'], /Gacinovic|Strakosha|Alemão/i],
-  ['ucl-2026-27-md01-02', ['Virgili', 'Maatsen', 'Hemmings'], /Diakhon|Ruggeri|Garnacho/i]
+  ['ucl-2026-27-md01-02', ['Virgili', 'Maatsen', 'Hemmings'], /Diakhon|Ruggeri|Garnacho/i],
+  ['ucl-2026-27-md01-03', ['Sabitzer', 'Veerman', 'Oluwaseyi'], /Bellingham|Nwaneri|Moleiro|Moreno|Pépé/i],
+  ['ucl-2026-27-md01-06', ['Dumfries', 'Diouf', 'Jones'], /Akanji|Luis Henrique|Sučić|Diomande/i],
+  ['ucl-2026-27-md01-04', ['Varela', 'Bouaddi'], /Anderson|Hwang/i],
+  ['ucl-2026-27-md01-05', ['Perrin', 'Ueda', 'Bellerin', 'Isco'], /Giroud|Sahraoui|Ortiz|\bRoca\b/i]
 ]) {
   const lineup = calendar.fixtures.find(f => f.id === id).probableFormation;
   assert.equal(lineup.status, 'official');
@@ -22,5 +26,5 @@ for (const [id, names, excluded] of [
   for (const name of names) assert(app.innerHTML.includes(name));
   assert(app.innerHTML.includes('Panchina:'));
 }
-assert.equal(calendar.fixtures[2].probableFormation.status, 'editorial-probable');
+assert.equal(calendar.fixtures[6].probableFormation.status, 'editorial-probable');
 console.log('OK ufficiali Champions: precedenza, panchine escluse, rendering, altre gare preservate');
