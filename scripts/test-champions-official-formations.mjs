@@ -7,6 +7,8 @@ const markets = await load('champions-player-markets-md01-2026-27.json');
 const app = { innerHTML: '' };
 globalThis.document = { querySelector: () => app };
 for (const [id, names, excluded] of [
+  ['ucl-2026-27-md01-07', ['Christensen', 'Nacho', 'Zechiel'], /Gabriel Jesus|Gordon|Steijn|Targhalline/i],
+  ['ucl-2026-27-md01-08', ['Bredlow', 'Promel', 'Moi'], /Karazor|Vagnoman|Botheim|Postema/i],
   ['ucl-2026-27-md01-01', ['Brignoli', 'Koita', 'Tornich'], /Gacinovic|Strakosha|Alemão/i],
   ['ucl-2026-27-md01-02', ['Virgili', 'Maatsen', 'Hemmings'], /Diakhon|Ruggeri|Garnacho/i],
   ['ucl-2026-27-md01-03', ['Sabitzer', 'Veerman', 'Oluwaseyi'], /Bellingham|Nwaneri|Moleiro|Moreno|Pépé/i],
@@ -26,5 +28,5 @@ for (const [id, names, excluded] of [
   for (const name of names) assert(app.innerHTML.includes(name));
   assert(app.innerHTML.includes('Panchina:'));
 }
-assert.equal(calendar.fixtures[6].probableFormation.status, 'editorial-probable');
+assert.equal(calendar.fixtures[8].probableFormation.status, 'editorial-probable');
 console.log('OK ufficiali Champions: precedenza, panchine escluse, rendering, altre gare preservate');
