@@ -3,7 +3,10 @@ const path = require("path");
 
 const root = path.resolve(__dirname, "..");
 const sourceUrl = "https://www.fantacalcio.it/probabili-formazioni-serie-a";
-const outputPath = path.join(root, "data/sources/probable-lineups-md3-2026-27.json");
+const matchdayArgIndex = process.argv.indexOf("--matchday");
+const requestedMatchday = matchdayArgIndex >= 0 ? Number(process.argv[matchdayArgIndex + 1]) : 4;
+if (!Number.isInteger(requestedMatchday) || requestedMatchday < 1 || requestedMatchday > 38) throw new Error("Giornata non valida");
+const outputPath = path.join(root, `data/sources/probable-lineups-md${requestedMatchday}-2026-27.json`);
 const quotationsPath = path.join(root, "data/sources/fantacalcio-quotations-2026-27.json");
 
 const decodeHtml = value => String(value)
@@ -53,7 +56,7 @@ async function main() {
 
   const matchdayMatch = html.match(/Giornata\s+(\d+)/i);
   const matchday = matchdayMatch ? Number(matchdayMatch[1]) : null;
-  if (matchday !== 3) throw new Error(`La pagina espone la giornata ${matchday ?? "N/D"}, attesa 3`);
+  if (matchday !== requestedMatchday) throw new Error(`La pagina espone la giornata ${matchday ?? "N/D"}, attesa ${requestedMatchday}`);
 
   const quotations = JSON.parse(fs.readFileSync(quotationsPath, "utf8"));
   const activePlayers = quotations.players.filter(player => player.status === "active");
@@ -120,7 +123,7 @@ async function main() {
     matchday,
     sourceUrl,
     importedAt: new Date().toISOString(),
-    interpretation: "Percentuale editoriale di probabilità di titolarità per la 3ª giornata; non è una formazione ufficiale.",
+    interpretation: `Percentuale editoriale di probabilità di titolarità per la ${matchday}ª giornata; non è una formazione ufficiale.`,
     rosterPolicy: "Sono inclusi soltanto i calciatori presenti nelle rose ufficiali Fantacalcio correnti; infortunati e indisponibili appartenenti alla rosa non vengono esclusi.",
     coverage: {
       teams: teams.length,
@@ -137,7 +140,7 @@ async function main() {
   };
 
   fs.writeFileSync(outputPath, `${JSON.stringify(dataset, null, 2)}\n`);
-  console.log(`Fantacalcio MD3: ${teams.length} squadre, ${dataset.coverage.starters} titolari, ${dataset.coverage.reserves} riserve, ${omittedNonRoster.length} esclusi perché fuori rosa.`);
+  console.log(`Fantacalcio MD${matchday}: ${teams.length} squadre, ${dataset.coverage.starters} titolari, ${dataset.coverage.reserves} riserve, ${omittedNonRoster.length} esclusi perché fuori rosa.`);
 }
 
 main().catch(error => {

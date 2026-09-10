@@ -13,7 +13,7 @@ const slugAliases = { "hellas-verona": "verona" };
 const teams = read("data/normalized/teams.json");
 const teamDetails = read("data/sources/team-pages/team-details-2026-27.json");
 const fantasyRoster = read("data/sources/fantacalcio-quotations-2026-27.json");
-const probableLineups = read("data/sources/probable-lineups-md3-2026-27.json");
+const probableLineups = read("data/sources/probable-lineups-md4-2026-27.json");
 const probableLineupByTeam = new Map(probableLineups.teams.map(team => [team.teamId, team]));
 const officialLineupsFile = path.join(root, "data/sources/official-lineups-2026-27.json");
 const officialLineups = fs.existsSync(officialLineupsFile) ? JSON.parse(fs.readFileSync(officialLineupsFile, "utf8")) : { fixtures: [] };
@@ -231,7 +231,8 @@ function buildTeam(team) {
   const details = teamDetails.teams[team.id];
   const projectedLineup = probableLineupByTeam.get(team.id);
   const projectedStarters = projectedLineup?.players?.filter(player => player.lineupStatus === "starter") || [];
-  const officialLineup = officialLineupByTeam.get(team.id);
+  const latestOfficial = officialLineupByTeam.get(team.id);
+  const officialLineup = latestOfficial?.matchday === probableLineups.matchday ? latestOfficial : null;
   const lineup = officialLineup || projectedLineup;
   const starters = officialLineup ? officialLineup.players : projectedStarters;
   const lineupSource = officialLineup ? { provider: officialLineup.provider || officialLineupSource.provider, scope: `Formazioni ufficiali ${officialLineup.fixtureLabel}, ${officialLineup.matchday}ª giornata`, url: officialLineup.sourceUrl || null, retrievedAt: officialLineup.retrievedAt || officialLineupSource.retrievedAt } : probableLineupSource;
