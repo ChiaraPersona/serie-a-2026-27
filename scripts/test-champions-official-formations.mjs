@@ -7,6 +7,7 @@ const markets = await load('champions-player-markets-md01-2026-27.json');
 const app = { innerHTML: '' };
 globalThis.document = { querySelector: () => app };
 for (const [id, names, excluded] of [
+  ['ucl-2026-27-md01-14', ['Kostic', 'Geertruida', 'Isaque Silva', 'Bosz P.', 'Turan A.'], /Flamingo|Mijnans|Newerton|Kryskiv|Gasiorowski/i],
   ['ucl-2026-27-md01-09', ['Jacquet', 'Ngumoha', 'Pubill'], /Gravenberch|Frimpong|Lookman|Hjulmand/i],
   ['ucl-2026-27-md01-10', ['Safonov', 'Zabarnyi', 'Pokorny'], /Kvaratskhelia|Marquinhos|Marcelli|Yirajang/i],
   ['ucl-2026-27-md01-11', ['Altimira', 'Zalazar', 'Batrakov'], /Ioannidis|Debast|Gundogan|Osimhen/i],

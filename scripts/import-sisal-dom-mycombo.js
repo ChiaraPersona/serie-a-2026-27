@@ -1,0 +1,43 @@
+const fs = require('node:fs');
+const assert = require('node:assert/strict');
+const path = require('node:path');
+const root = path.resolve(__dirname, '..');
+const sourceFile = process.argv[2];
+assert(sourceFile, 'Specificare lo snapshot DOM Sisal');
+const source = JSON.parse(fs.readFileSync(path.resolve(root, sourceFile), 'utf8'));
+if (source.groups) source.markets = source.groups.flatMap(group => group.rows.map(([code, variant, name, rows]) => [code, variant, group.name, name, name.match(/U\/O (\d+\.\d+)/)?.[1] || null, rows]));
+const output = path.join(root, 'data/normalized/odds/sisal/champions-league.json');
+const dataset = JSON.parse(fs.readFileSync(output, 'utf8'));
+const event = dataset.events.find(e => e.canonicalMatchId === source.fixtureId);
+assert(event && event.regulatorEventId === source.regulatorEventId, 'Evento DOM non coerente');
+assert(source.provider === 'sisal' && source.retrievalMethod === 'public-page-dom');
+assert(new Date(source.retrievedAt) >= new Date(event.retrievedAt), 'Snapshot DOM precedente alle quote salvate');
+const refreshedCodes = new Set(source.markets.map(m => m[0]));
+const oldTimestamp = event.retrievedAt || dataset.retrievedAt;
+const markets = source.markets.map(([marketCode, variantCode, marketName, variantName, threshold, rows]) => {
+  const old = event.markets.find(m => m.marketCode === marketCode && m.variantName.trim() === variantName);
+  const domMarketId = `dom:${source.regulatorEventId}:${marketCode}:${variantCode}`;
+  const selections = rows.filter(r => r[2] !== null).map(([code, name, odds]) => {
+    assert(Number.isFinite(odds) && odds >= 1);
+    const domId = `esito_${source.regulatorEventId.replace('-', '_')}_${marketCode}_${variantCode}_${code}`;
+    const previous = old?.selections.find(s => s.code === code && s.name === name);
+    return { providerSelectionId: previous?.providerSelectionId || domId, code, name, odds, oddsRaw: Math.round(odds * 100), status: 'open', domId };
+  });
+  assert(selections.length);
+  return { providerMarketId: old?.providerMarketId || domMarketId, marketCode, marketName, variantName, threshold, status: 'open', updatedAt: null, retrievedAt: source.retrievedAt, sourceFile, identifierSource: old ? 'existing-provider-id-and-dom' : 'dom-derived', marketScope: /GIOCATORE/.test(marketName) ? 'player' : 'match', providerPlayerIds: old?.providerPlayerIds || [], selections };
+});
+const replaced = m => {
+  if (!refreshedCodes.has(m.marketCode)) return false;
+  if (!source.playerRefresh || !source.playerRefresh.codes.includes(m.marketCode)) return true;
+  return Number(m.threshold) <= source.playerRefresh.maximumThreshold && source.playerRefresh.names.some(name => m.variantName.toUpperCase().includes(name));
+};
+event.markets = [...event.markets.filter(m => !replaced(m)).map(m => ({...m, retrievedAt: m.retrievedAt || oldTimestamp})), ...markets];
+event.retrievedAt = source.retrievedAt;
+event.domRefresh = { sourceFile, sourceUrl: source.sourceUrl, scope: source.scope, marketCodes: [...refreshedCodes], markets: markets.length, selections: markets.reduce((n,m) => n + m.selections.length, 0) };
+dataset.retrievedAt = source.retrievedAt;
+const all = dataset.events.flatMap(e => e.markets);
+dataset.summary.markets = all.length;
+dataset.summary.playerMarkets = all.filter(m => m.marketScope === 'player').length;
+dataset.summary.selections = all.reduce((n,m) => n + m.selections.length, 0);
+fs.writeFileSync(output, JSON.stringify(dataset, null, 2) + '\n');
+console.log(JSON.stringify(event.domRefresh));
