@@ -25,3 +25,5 @@ assert.equal(settle({marketCode:'7989',selection:'OVER',variantName:'U/O 1.5'},r
 assert.equal(settle({marketCode:'3',selection:'X'},report).status,'won');
 assert.equal(Object.values(settled.settlementSummary).reduce((a,b)=>a+b),52);
 console.log('OK: 18 risultati, 126 gare future, archivio di 52 giocate invariato, esiti e dati mancanti.');
+
+assert.deepEqual(settled.settlementSummary,{won:31,lost:21,pending:0});

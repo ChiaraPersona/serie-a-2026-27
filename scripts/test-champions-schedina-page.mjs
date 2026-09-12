@@ -17,6 +17,17 @@ await createPage({esc,load,hero,dateOnly}).render();
 assert(app.innerHTML.includes("betting-archive-card--champions"));
 assert(app.innerHTML.indexOf("betting-archive-card--champions")<app.innerHTML.indexOf("1ª giornata"));
 assert(app.innerHTML.includes("Champions League"));
+const championsCard=app.innerHTML.split('betting-archive-card--champions')[1].split('</a>')[0];
+const archived=await load("schedina-champions-md01.json");
+const decided=archived.slips.flatMap(s=>s.legs).filter(l=>["won","lost","void"].includes(l.settlement?.status));
+const wins=decided.filter(l=>l.settlement.status==="won");
+const returns=decided.reduce((sum,l)=>sum+(l.settlement.status==="won"?l.odds:l.settlement.status==="void"?1:0),0);
+const format=n=>n.toLocaleString("it-IT",{minimumFractionDigits:2,maximumFractionDigits:2});
+assert(championsCard.includes(`${wins.length} esatte su ${decided.length}`));
+assert(championsCard.includes(`${format((returns-decided.length)/decided.length*100)}%`));
+assert(!championsCard.includes('da verificare'));
+assert.equal(decided.length,52);
+assert(championsCard.includes('singole giocate da 1 € definite'));
 
 globalThis.location.search="?competizione=champions";
 await createPage({esc,load,hero,dateOnly}).render();

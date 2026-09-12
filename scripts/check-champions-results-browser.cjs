@@ -9,8 +9,9 @@ const server=http.createServer((req,res)=>{const p=path.resolve(root,'.'+decodeU
  try{
   const page=await browser.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));
   fs.mkdirSync(path.join(root,'output/champions-results'),{recursive:true});
-  for(const width of [1280,390])for(const [name,url] of [['calendar','champions-league.html'],['report','champions-league.html?match=ucl-2026-27-md01-06'],['slips','schedina.html?competizione=champions']]){
+  for(const width of [1280,390])for(const [name,url] of [['archive','schedina.html'],['calendar','champions-league.html'],['report','champions-league.html?match=ucl-2026-27-md01-06'],['slips','schedina.html?competizione=champions']]){
    await page.setViewportSize({width,height:900});await page.goto(`http://127.0.0.1:${server.address().port}/${url}`,{waitUntil:'networkidle'});
+   if(name==='archive'){await page.waitForSelector('.betting-archive-card--champions');assert.match(await page.locator('.betting-archive-card--champions').innerText(),/31 esatte su 52/)}
    if(name==='calendar'){
     await page.waitForSelector('#champions-fixtures .fixture-card');
     assert.equal(await page.locator('#champions-fixtures .fixture-card').count(),18);
