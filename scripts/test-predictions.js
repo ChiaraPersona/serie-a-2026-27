@@ -12,7 +12,9 @@ const myComboMd2Path = path.join(root, "data/sources/mycombo-serie-a-2026-27-md-
 const myComboMd2Source = fs.existsSync(myComboMd2Path) ? JSON.parse(fs.readFileSync(myComboMd2Path, "utf8")) : { matches: {} };
 const myComboMd3Path = path.join(root, "data/sources/mycombo-serie-a-2026-27-md-03.json");
 const myComboMd3Source = fs.existsSync(myComboMd3Path) ? JSON.parse(fs.readFileSync(myComboMd3Path, "utf8")) : { matches: {} };
-const allMyComboMatches = { ...myComboSource.matches, ...myComboMd2Source.matches, ...myComboMd3Source.matches };
+const myComboMd4Path = path.join(root, "data/sources/mycombo-serie-a-2026-27-md-04.json");
+const myComboMd4Source = fs.existsSync(myComboMd4Path) ? JSON.parse(fs.readFileSync(myComboMd4Path, "utf8")) : { matches: {} };
+const allMyComboMatches = { ...myComboSource.matches, ...myComboMd2Source.matches, ...myComboMd3Source.matches, ...myComboMd4Source.matches };
 const officialLineups = JSON.parse(fs.readFileSync(path.join(root, "data/sources/official-lineups-2026-27.json"), "utf8"));
 const previewMd3Path = path.join(root, "data/generated/prediction-preview-md03-2026-27.json");
 const cleanName = value => String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]/g, "");
@@ -29,19 +31,20 @@ if (fs.existsSync(previewMd3Path)) {
   assert(previewMd3.predictions.every(prediction => prediction.market.status === "unavailable" && prediction.probabilities.marketNoMargin === null), "L'anteprima MD3 non deve inventare quote");
 }
 
-assert.strictEqual(dataset.predictions.length, 30, "Il motore deve coprire le prime tre giornate di Serie A");
+assert.strictEqual(dataset.predictions.length, 30, "Il motore deve conservare due giornate archiviate e coprire la quarta giornata di Serie A");
 const firstMatchdayPredictions = dataset.predictions.filter(prediction => prediction.matchId.endsWith("-md-01"));
 const secondMatchdayPredictions = dataset.predictions.filter(prediction => prediction.matchId.endsWith("-md-02"));
-const thirdMatchdayPredictions = dataset.predictions.filter(prediction => prediction.matchId.endsWith("-md-03"));
+const fourthMatchdayPredictions = dataset.predictions.filter(prediction => prediction.matchId.endsWith("-md-04"));
 const cupPredictions = dataset.predictions.filter(prediction => prediction.matchId.startsWith("r16-"));
 assert.strictEqual(firstMatchdayPredictions.length, 10, "Devono restare disponibili i 10 pronostici archiviati della prima giornata");
 assert.strictEqual(secondMatchdayPredictions.length, 10, "Devono essere disponibili i 10 pronostici tecnici della seconda giornata");
-assert.strictEqual(thirdMatchdayPredictions.length, 10, "Devono essere disponibili i 10 pronostici tecnici della terza giornata");
+assert.strictEqual(fourthMatchdayPredictions.length, 10, "Devono essere disponibili i 10 pronostici tecnici della quarta giornata");
 assert.strictEqual(cupPredictions.length, 0, "I pronostici delle Letture di Coppa rimosse non devono essere rigenerati");
 assert.deepStrictEqual(firstMatchdayPredictions.map(({ decisionSupport, ...prediction }) => prediction), archivedMd1.predictions, "Il nucleo dei pronostici conclusi MD1 deve restare identico allo snapshot pubblicato");
 assert.strictEqual(Object.keys(myComboSource.matches).length, 10, "Le MyCombo devono coprire tutte le 10 gare della prima giornata");
 if (fs.existsSync(myComboMd2Path)) assert.strictEqual(Object.keys(myComboMd2Source.matches).length, 10, "Le MyCombo devono coprire tutte le 10 gare della seconda giornata");
 if (fs.existsSync(myComboMd3Path)) assert.strictEqual(Object.keys(myComboMd3Source.matches).length, 10, "Le MyCombo devono coprire tutte le 10 gare della terza giornata");
+if (fs.existsSync(myComboMd4Path)) assert.strictEqual(Object.keys(myComboMd4Source.matches).length, 9, "Le MyCombo MD4 devono coprire le nove gare ancora aperte");
 assert(!Object.hasOwn(dataset.engine.weights, "market"), "Le quote non devono entrare nei pesi del modello");
 assert(Math.abs(Object.values(dataset.engine.weights).reduce((total, value) => total + value, 0) - 1) < 1e-9, "I pesi non sommano a 1");
 assert(dataset.engine.weights.venueHistorical + dataset.engine.weights.overallHistorical + dataset.engine.weights.recentForm >= 0.8, "I dati storici devono guidare le lambda");
@@ -108,7 +111,7 @@ for (const prediction of dataset.predictions) {
     for (const combo of prediction.combinations) {
       const riskAssessment = prediction.decisionSupport.portfolios.find(portfolio => portfolio.tier === combo.tier);
       assert(riskAssessment && typeof riskAssessment.allowed === "boolean", `${prediction.matchId}/${combo.tier}: controllo rischio assente`);
-      const configuredSource = myComboMd3Source.matches[prediction.matchId] ? myComboMd3Source : myComboMd2Source.matches[prediction.matchId] ? myComboMd2Source : myComboSource;
+      const configuredSource = myComboMd4Source.matches[prediction.matchId] ? myComboMd4Source : myComboMd3Source.matches[prediction.matchId] ? myComboMd3Source : myComboMd2Source.matches[prediction.matchId] ? myComboMd2Source : myComboSource;
       const limits = configuredSource.constraints.tierLimits[combo.tier];
       const informationalRisk = configuredSource.constraints.riskPolicy === "informativa";
       if (combo.qualityStatus === "nd") {
@@ -198,8 +201,8 @@ assert.strictEqual(cagliariInter.dataQuality.probableLineups, "22/22 titolari uf
 assert.strictEqual(lazioGenoa.dataQuality.probableLineups, "22/22 titolari ufficiali confermati", "Lazio-Genoa deve usare gli XI ufficiali della seconda giornata");
 assert.strictEqual(lecceRoma.dataQuality.probableLineups, "22/22 titolari ufficiali confermati", "Lecce-Roma deve usare gli XI ufficiali della seconda giornata");
 assert(secondMatchdayPredictions.filter(prediction => !officialStartersByMatch.has(prediction.matchId)).every(prediction => prediction.dataQuality.probableLineups.includes("proiettati")), "Le altre formazioni della seconda giornata devono restare proiezioni editoriali");
-assert(thirdMatchdayPredictions.every(prediction => prediction.market.status === "available" && prediction.market.provider === "Sisal"), "La terza giornata deve usare le quote Sisal importate");
-assert(thirdMatchdayPredictions.every(prediction => prediction.expectedGoals.components.recentForm.home.currentSeasonMatches === 2 && prediction.expectedGoals.components.recentForm.away.currentSeasonMatches === 2), "La terza giornata deve usare due gare concluse 2026/27 per squadra nella forma recente");
+assert.strictEqual(fourthMatchdayPredictions.filter(prediction => prediction.market.status === "available" && prediction.market.provider === "Sisal").length, 9, "Le nove gare aperte della quarta giornata devono usare le quote Sisal importate");
+assert(fourthMatchdayPredictions.every(prediction => prediction.expectedGoals.components.recentForm.home.currentSeasonMatches >= 3 && prediction.expectedGoals.components.recentForm.away.currentSeasonMatches >= 3), "La quarta giornata deve usare almeno tre gare concluse 2026/27 per squadra nella forma recente");
 assert(firstMatchdayPredictions.every(prediction => (prediction.expectedGoals.components.recentForm.home?.currentSeasonMatches ?? 0) === 0 && (prediction.expectedGoals.components.recentForm.away?.currentSeasonMatches ?? 0) === 0), "I pronostici archiviati della prima giornata non devono usare risultati futuri");
 assert(secondMatchdayPredictions.every(prediction => prediction.expectedGoals.components.recentForm.home.currentSeasonMatches === 1 && prediction.expectedGoals.components.recentForm.away.currentSeasonMatches === 1), "La seconda giornata deve usare una gara conclusa 2026/27 per squadra nella forma recente");
 const goalTotals = firstMatchdayPredictions.map(prediction => prediction.expectedGoals.total);
