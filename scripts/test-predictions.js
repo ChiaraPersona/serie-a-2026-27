@@ -39,6 +39,7 @@ const cupPredictions = dataset.predictions.filter(prediction => prediction.match
 assert.strictEqual(firstMatchdayPredictions.length, 10, "Devono restare disponibili i 10 pronostici archiviati della prima giornata");
 assert.strictEqual(secondMatchdayPredictions.length, 10, "Devono essere disponibili i 10 pronostici tecnici della seconda giornata");
 assert.strictEqual(fourthMatchdayPredictions.length, 10, "Devono essere disponibili i 10 pronostici tecnici della quarta giornata");
+assert(fourthMatchdayPredictions.every(prediction => prediction.shooters?.totalShots?.length === 5 && prediction.shooters?.shotsOnTarget?.length === 5), "Tutte le dieci letture della quarta giornata devono avere cinque tiratori per tiri totali e tiri in porta");
 assert.strictEqual(cupPredictions.length, 0, "I pronostici delle Letture di Coppa rimosse non devono essere rigenerati");
 assert.deepStrictEqual(firstMatchdayPredictions.map(({ decisionSupport, ...prediction }) => prediction), archivedMd1.predictions, "Il nucleo dei pronostici conclusi MD1 deve restare identico allo snapshot pubblicato");
 assert.strictEqual(Object.keys(myComboSource.matches).length, 10, "Le MyCombo devono coprire tutte le 10 gare della prima giornata");
@@ -162,6 +163,7 @@ for (const prediction of dataset.predictions) {
   assert.strictEqual(new Set(prediction.likelyBooked.map(candidate => candidate.teamId)).size, 2, `${prediction.matchId}: la gerarchia ammoniti deve rappresentare entrambe le squadre`);
   const officialStarters = officialStartersByMatch.get(prediction.matchId);
   if (officialStarters) assert(prediction.likelyBooked.every(candidate => officialStarters.has(cleanName(candidate.name))), `${prediction.matchId}: probabile ammonito fuori dall'XI ufficiale`);
+  if (officialStarters && prediction.shooters) assert([...prediction.shooters.totalShots, ...prediction.shooters.shotsOnTarget].every(candidate => officialStarters.has(cleanName(candidate.lineupName))), `${prediction.matchId}: tiratore fuori dall'XI ufficiale`);
   assert(prediction.mvpCandidate?.name && prediction.mvpCandidate?.teamId, `${prediction.matchId}: candidato MVP assente`);
   assert(prediction.mvpCandidate.score >= 0 && prediction.mvpCandidate.score <= 100, `${prediction.matchId}: indice MVP non valido`);
   assert.deepStrictEqual(Object.keys(prediction.mvpCandidate.components), Object.keys(dataset.engine.mvpModel.weights), `${prediction.matchId}: componenti MVP incomplete`);

@@ -373,6 +373,7 @@ const output = {
       interval: "p20-p80 storico; per il totale varianze squadra trattate come indipendenti",
       fallback: "Profilo WhoScored, precisione della probabile formazione e stile offensivo quando manca lo storico Serie A della squadra."
     },
+    playerVolumeModel: "Tiri e tiri in porta dei titolari: frequenze per 90 minuti 2025/26 regolarizzate verso una prior di ruolo, poi scalate sul volume previsto della squadra; i falli/90 restano visibili come base disciplinare e i dati mancanti usano una baseline dichiarata.",
     playerModel: "Il candidato MVP combina scenario 1X2, produzione e pagelle storiche, compatibilita tattica e storico ufficiale Panini Player of the Match; con favorita oltre il 50% e divario di almeno 15 punti, il candidato principale proviene normalmente dalla favorita.",
     mvpModel: {
       weights: MVP_WEIGHTS,
