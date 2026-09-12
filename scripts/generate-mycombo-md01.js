@@ -357,9 +357,10 @@ function selectPortfolio(pool, tier) {
   return eligible[0];
 }
 
-const targetPredictions = predictionData.predictions.filter(prediction => matchById.get(prediction.matchId)?.matchday === matchday);
-if (targetPredictions.length !== 10) throw new Error(`Pronostici giornata ${matchday} incompleti: ${targetPredictions.length}/10.`);
 const oddsEventByMatchId = new Map(odds.events.map(event => [event.canonicalMatchId, event]));
+const eligibleMatches = matches.filter(match => match.matchday === matchday && match.status !== "finished");
+const targetPredictions = predictionData.predictions.filter(prediction => eligibleMatches.some(match => match.id === prediction.matchId));
+if (targetPredictions.length !== eligibleMatches.length) throw new Error(`Pronostici giornata ${matchday} incompleti: ${targetPredictions.length}/${eligibleMatches.length} gare ancora aperte.`);
 if (targetPredictions.some(prediction => {
   const event = oddsEventByMatchId.get(prediction.matchId);
   return !event || prediction.market?.status !== "available" || String(prediction.market.retrievedAt) !== String(event.retrievedAt);
@@ -415,6 +416,6 @@ for (const event of odds.events) {
   output.matches[event.canonicalMatchId] = ["Safe", "Balanced", "Aggressive"].map(tier => planned.get(tier));
 }
 
-if (Object.keys(output.matches).length !== 10) throw new Error(`Copertura MyCombo incompleta: ${Object.keys(output.matches).length}/10`);
+if (Object.keys(output.matches).length !== eligibleMatches.length) throw new Error(`Copertura MyCombo incompleta: ${Object.keys(output.matches).length}/${eligibleMatches.length}`);
 fs.writeFileSync(outputPath, `${JSON.stringify(output, null, 2)}\n`);
 console.log(`OK MyCombo giornata ${matchday}: ${Object.keys(output.matches).length} partite · 30 portafogli · snapshot ${output.updatedAt}`);

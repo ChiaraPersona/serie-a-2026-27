@@ -17,8 +17,9 @@ const roman = value => {
 };
 const suffix = roman(matchday);
 const odds = read("data/normalized/odds/sisal/serie-a.json");
-const predictions = read("data/normalized/predictions.json").predictions.filter(item => item.matchId.endsWith(`-md-${matchdayCode}`));
-const matches = read("data/normalized/matches.json").filter(item => item.matchday === matchday && item.competition === "serie-a");
+const roundMatches = read("data/normalized/matches.json").filter(item => item.matchday === matchday && item.competition === "serie-a");
+const matches = roundMatches.filter(item => item.status !== "finished");
+const predictions = read("data/normalized/predictions.json").predictions.filter(item => matches.some(match => match.id === item.matchId));
 const teams = new Map(read("data/teams/index.json").teams.map(team => [team.id, read(`data/teams/${team.id}.json`)]));
 const predictionById = new Map(predictions.map(item => [item.matchId, item]));
 const matchById = new Map(matches.map(item => [item.id, item]));
@@ -27,8 +28,8 @@ const used = new Set();
 const clean = value => String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
 const round = value => Math.round(value * 10) / 10;
 
-if (matches.length !== 10 || predictions.length !== 10 || odds.events.length !== 10) {
-  throw new Error(`Copertura MD${matchdayCode} incompleta: ${matches.length} partite, ${predictions.length} pronostici, ${odds.events.length} eventi Sisal.`);
+if (roundMatches.length !== 10 || predictions.length !== matches.length || odds.events.length !== matches.length) {
+  throw new Error(`Copertura MD${matchdayCode} incompleta: ${roundMatches.length} partite, ${matches.length} ancora aperte, ${predictions.length} pronostici, ${odds.events.length} eventi Sisal.`);
 }
 if (predictions.some(item => String(item.market?.retrievedAt) !== String(eventById.get(item.matchId)?.retrievedAt))) {
   throw new Error("Pronostici e quote Sisal non appartengono allo stesso snapshot.");
@@ -278,39 +279,56 @@ function automaticMultigoalSlip() {
     id: `costellazione-md${matchday}`,
     type: "single-market-full-round",
     selectionPolicy: { type: "poisson-narrow", quantile: 0.9, maxTeamRangeWidth: 2, minModelProbability: 0.55, minLegOdds: 1.1, maxLegOdds: 1.8 },
-    eyebrow: "10 partite · Multigol casa/ospite",
+    eyebrow: `${matches.length} partite · Multigol casa/ospite`,
     name: `Costellazione ${suffix}`,
     description: `Tutta la ${matchday}ª giornata con intervalli casa/ospite stretti, scelti dal modello senza allargare le code per inseguire la quota.`,
     picks: matches.map(match => ({ matchId: match.id, market: "MULTIGOAL CASA + MULTIGOAL OSPITE", variant: "MULTIGOAL CASA + MULTIGOAL OSPITE MULTIESITI 91 ESITI", selection: "AUTO" }))
   };
 }
 
-function exactSlip() {
-  const ranked = predictions.slice().sort((a, b) => b.confidence.value - a.confidence.value).slice(0, 4);
-  return {
-    id: `quadrante-md${matchday}`, type: "exact-score", eyebrow: "4 partite · Risultato esatto", name: `Quadrante ${suffix}`,
-    description: "Quattro risultati esatti sulle gare con maggiore robustezza relativa dello scenario centrale.",
-    picks: ranked.map(prediction => ({ matchId: prediction.matchId, market: "RISULTATO ESATTO 26 ESITI", variant: "RISULTATO ESATTO 26 ESITI", selection: prediction.scoreForecast.primary.score, label: `Risultato esatto ${prediction.scoreForecast.primary.score.replace("-", "–")}` }))
-  };
+function cardCandidates() {
+  const candidates = [];
+  for (const event of odds.events) {
+    const prediction = predictionById.get(event.canonicalMatchId);
+    const match = matchById.get(event.canonicalMatchId);
+    if (!prediction || !match) continue;
+    for (const booked of prediction.likelyBooked || []) {
+      const market = event.markets.find(item => item.marketName === "CARTELLINO SI/NO (DUO) INC TS" && clean(projectedPlayer(item.variantName, match)?.name) === clean(booked.name));
+      const selection = market?.selections.find(item => item.status === "open" && item.name === "SI" && item.odds >= 1.1);
+      if (!market || !selection) continue;
+      const probability = Math.min(0.62, Math.max(0.18, Number(booked.riskScore) / 150));
+      candidates.push({
+        ...sourcePick(event, market, selection, `${booked.name} riceve un cartellino · sostituto incluso`, { player: booked.name, riskScore: booked.riskScore }),
+        probability,
+        riskScore: booked.riskScore,
+        evidence: booked.evidence || []
+      });
+    }
+  }
+  return candidates;
 }
 
-function exactMultiSlip() {
-  const picks = [];
-  for (const prediction of predictions.slice().sort((a, b) => b.confidence.value - a.confidence.value)) {
-    const event = eventById.get(prediction.matchId), score = prediction.scoreForecast.primary.score;
-    const candidate = event.markets.flatMap(market => /^RISULTATO ESATTO MULTI ESITI [1-5]$/.test(market.marketName)
-      ? market.selections.filter(selection => selection.status === "open" && selection.name.split("/").map(item => item.trim()).includes(score)).map(selection => ({ market, selection })) : [])
-      .sort((a, b) => a.selection.odds - b.selection.odds)[0];
-    if (!candidate) continue;
-    picks.push({ matchId: prediction.matchId, market: candidate.market.marketName, variant: candidate.market.variantName, selection: candidate.selection.name, label: `Risultati ${candidate.selection.name.replace(/-/g, "–")}` });
-    if (picks.length === 6) break;
+function takeCards(pool, index) {
+  const chosen = [], matchIds = new Set();
+  for (const candidate of pool.filter(item => !used.has(item.selectionId)).sort((a, b) => b.riskScore - a.riskScore || a.odds - b.odds)) {
+    if (matchIds.has(candidate.matchId)) continue;
+    chosen.push(candidate); matchIds.add(candidate.matchId); used.add(candidate.selectionId);
+    if (chosen.length === 4) break;
   }
-  if (picks.length !== 6) throw new Error(`Ventaglio ${suffix}: copertura multiesito insufficiente.`);
-  return { id: `ventaglio-md${matchday}`, type: "exact-score-multi", eyebrow: "6 partite · Risultato esatto multiesito", name: `Ventaglio ${suffix}`, description: "Sei gruppi di risultati vicini che includono sempre lo scenario centrale del modello.", picks };
+  if (chosen.length !== 4) throw new Error(`Poker ammoniti ${index}: copertura insufficiente.`);
+  return {
+    id: `poker-ammoniti-${index}-md${matchday}`,
+    type: "player-cards",
+    eyebrow: "4 partite · Papabili ammoniti",
+    name: `Poker ammoniti ${index} · ${suffix}`,
+    description: "Quattro calciatori differenti, ciascuno scelto in una partita differente sulla base del rischio disciplinare e delle quote Sisal.",
+    picks: chosen.map(item => item.pick)
+  };
 }
 
 const mixedPool = [...scoreCandidates(), ...volumeCandidates()];
 const playerPool = playerCandidates();
+const cardsPool = cardCandidates();
 console.log(`Candidati Schedina MD${matchdayCode}: ${mixedPool.length} misti · ${playerPool.length} giocatore · ${new Set(playerPool.map(item => item.matchId)).size} gare con giocatori`);
 const slips = [
   takeMixed(mixedPool, `Scintilla ${suffix}`, "Quota contenuta", "Tre selezioni prudenti, tre famiglie di mercato e quota complessiva nella fascia della Scintilla della prima giornata.", 3, 3, 4, 6),
@@ -319,8 +337,8 @@ const slips = [
   takePlayers(playerPool, `Prisma ${suffix}`, "Marcatori · tiri · tiri in porta", "Otto mercati giocatore su otto gare, limitati ai titolari proiettati con storico sufficiente.", 0),
   takePlayers(playerPool, `Quasar ${suffix}`, "Mix ad alta intensità", `Secondo portafoglio di otto mercati giocatore senza riutilizzare selezioni già presenti in Prisma ${suffix}.`, 1),
   automaticMultigoalSlip(),
-  exactSlip(),
-  exactMultiSlip()
+  takeCards(cardsPool, 1),
+  takeCards(cardsPool, 2)
 ];
 
 const output = {
@@ -329,7 +347,7 @@ const output = {
   season: "2026-27",
   matchday,
   title: `Otto schedine, otto letture · ${matchday}ª giornata`,
-  description: "La stessa scomposizione della prima giornata: tre schedine miste, due dedicate ai giocatori, una Multigol casa/ospite sull'intero turno, una sui risultati esatti e una multiesito. Non è un elenco di MyCombo per partita: ogni blocco è una schedina autonoma. Quote esterne al modello, quota minima 1,10, nessun esito 12 e nessuna selezione Sisal duplicata.",
+  description: "Tre schedine miste, due dedicate ai giocatori, una Multigol casa/ospite e due poker di papabili ammoniti. Non è un elenco di MyCombo per partita: ogni blocco è una schedina autonoma. Quote esterne al modello, quota minima 1,10, nessun esito 12, nessun risultato esatto e nessuna selezione Sisal duplicata.",
   slips
 };
 

@@ -10,6 +10,13 @@ const refereeAssignmentsPath = path.join(root, "data/sources/champions-referee-a
 const probableFormationsPath = path.join(root, "data/sources/champions-probable-formations-md01-2026-27.json");
 const outputPath = path.join(root, "data/normalized/champions-league-2026-27.json");
 const source = JSON.parse(fs.readFileSync(sourcePath, "utf8"));
+const results = JSON.parse(fs.readFileSync(path.join(root, "data/sources/champions-results-md01-2026-27.json"), "utf8"));
+const resultById = new Map(results.fixtures.map(item => [item.fixtureId, item]));
+if (resultById.size !== results.fixtures.length) throw new Error("Risultati Champions duplicati");
+for (const result of results.fixtures) {
+  if (!source.fixtures.some(f => f.id === result.fixtureId && f.matchday === results.matchday) || result.status !== "finished" || ![result.score?.home, result.score?.away].every(n => Number.isInteger(n) && n >= 0) || !result.sourceUrl?.startsWith("https://")) throw new Error("Risultato Champions non valido");
+  for (const side of ["home", "away"]) if (result.scorers[side].length !== result.score[side]) throw new Error("Marcatori Champions incoerenti");
+}
 const branding = JSON.parse(fs.readFileSync(brandingPath, "utf8"));
 const refereeAssignmentsSource = JSON.parse(fs.readFileSync(refereeAssignmentsPath, "utf8"));
 const probableFormationsSource = JSON.parse(fs.readFileSync(probableFormationsPath, "utf8"));
@@ -127,8 +134,9 @@ const fixtures = source.fixtures.map((fixture, index) => {
     phase: "league",
     season: source.season,
     timezone: "Europe/Rome",
-    status: "scheduled",
-    score: null
+    status: resultById.get(fixture.id)?.status || "scheduled",
+    score: resultById.get(fixture.id)?.score || null,
+    matchReport: resultById.get(fixture.id) || null
   };
 }).sort((a, b) => a.matchday - b.matchday || `${a.date}T${a.kickoff}`.localeCompare(`${b.date}T${b.kickoff}`) || a.id.localeCompare(b.id));
 
@@ -171,14 +179,16 @@ fs.writeFileSync(outputPath, JSON.stringify({
   season: source.season,
   competition: source.competition,
   phase: source.phase,
-  generatedAt: source.source.retrievedAt,
+  generatedAt: results.verifiedAt,
+  resultsSource: results.source,
+  resultsCoverageNote: results.coverageNote,
   source: source.source,
   refereeAssignmentsSource: refereeAssignmentsSource.source,
   refereeVerification: refereeAssignmentsSource.verification,
   refereeMethodology: refereeAssignmentsSource.methodology,
   refereeWatchlist: refereeAssignmentsSource.watchlist,
   probableFormationsSource: probableFormationsSource.source,
-  summary: { teams: teamList.length, matchdays: matchdays.size, fixtures: fixtures.length },
+  summary: { teams: teamList.length, matchdays: matchdays.size, fixtures: fixtures.length, finished: resultById.size },
   teams: teamList,
   teamBranding,
   brandingSource: branding.source,

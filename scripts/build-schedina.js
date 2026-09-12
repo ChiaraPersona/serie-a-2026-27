@@ -10,6 +10,9 @@ const matchdayCode = String(matchday).padStart(2, "0");
 const outputFilename = matchday === 1 ? "schedina.json" : `schedina-md${matchdayCode}.json`;
 const outputPath = path.join(root, "data", "normalized", outputFilename);
 const source = read(`data/sources/schedina-serie-a-2026-27-md-${matchdayCode}.json`);
+if (matchday >= 4 && source.slips.some(slip => ["exact-score", "exact-score-multi"].includes(slip.type) || slip.picks?.some(pick => /^RISULTATO ESATTO/.test(pick.market)))) {
+  throw new Error(`Schedina MD${matchdayCode}: i risultati esatti sono vietati dalla quarta giornata in avanti.`);
+}
 const odds = read("data/normalized/odds/sisal/serie-a.json");
 const predictions = read("data/normalized/predictions.json");
 const matches = read("data/normalized/matches.json");
@@ -276,6 +279,17 @@ function pickAnalysis(pick, market, prediction, selection) {
       evidenceLabel: `Pronostico ${prediction.verdict.outcome} · ${prediction.scoreForecast?.primary?.score || "N/D"}`
     };
   }
+  if (market.marketName === "CARTELLINO SI/NO (DUO) INC TS") {
+    const context = playerContext(pick);
+    const candidate = (prediction.likelyBooked || []).find(item => clean(item.name) === clean(pick.player));
+    const probability = Math.min(0.62, Math.max(0.18, Number(candidate?.riskScore ?? pick.riskScore) / 150));
+    const coherent = pick.selection === "SI" && Boolean(context) && Number.isFinite(probability);
+    return {
+      coherent,
+      modelProbabilityPct: coherent ? round(probability * 100, 2) : null,
+      evidenceLabel: coherent ? `Titolare previsto · rischio disciplinare ${candidate?.riskScore ?? pick.riskScore}/100` : "Candidato ammonizione non coerente"
+    };
+  }
   if (["ASSIST (DUO) INC TS", "GIOCATORE (DUO) SEGNA O FA ASSIST INC TS"].includes(market.marketName)) {
     const context = playerContext(pick);
     const totals = context?.player?.previousSeason?.totals;
@@ -425,6 +439,7 @@ function marketFamily(marketName) {
   if (/MARCATORE/.test(marketName)) return "Marcatori";
   if (/TIRI IN PORTA GIOCATORE/.test(marketName)) return "Tiri in porta giocatore";
   if (/TIRI TOTALI GIOCATORE/.test(marketName)) return "Tiri giocatore";
+  if (marketName === "CARTELLINO SI/NO (DUO) INC TS") return "Ammoniti";
   if (/CORNER/.test(marketName)) return "Corner";
   if (/PARATE/.test(marketName)) return "Parate squadra";
   if (/CARTELLINI/.test(marketName)) return "Cartellini";
@@ -507,14 +522,16 @@ const slips = source.slips.map((slip, index) => {
   const excludedLegs = resolvedLegs.filter(leg => !legs.includes(leg));
   if (filterable && legs.length < 3) throw new Error(`${slip.id}: il filtro prudenziale lascia meno di tre selezioni`);
   const families = [...new Set(legs.map(leg => leg.marketFamily))];
-  const specializedTypes = new Set(["single-market-full-round", "exact-score", "exact-score-multi"]);
+  const specializedTypes = new Set(["single-market-full-round", "exact-score", "exact-score-multi", "player-cards"]);
   if (!specializedTypes.has(slip.type) && families.length < 3) throw new Error(`${slip.id}: servono almeno tre famiglie di mercato, trovate ${families.join(", ")}`);
   if (slip.type === "player-only" && legs.some(leg => leg.marketScope !== "player")) {
     throw new Error(`${slip.id}: tutte le selezioni devono essere mercati giocatore`);
   }
-  if (slip.type === "single-market-full-round" && (legs.length !== 10 || new Set(legs.map(leg => leg.matchId)).size !== 10)) {
-    throw new Error(`${slip.id}: la schedina monomercato deve coprire tutte le dieci partite`);
+  const expectedRoundLegs = roundMatches.filter(match => match.status !== "finished").length;
+  if (slip.type === "single-market-full-round" && (legs.length !== expectedRoundLegs || new Set(legs.map(leg => leg.matchId)).size !== expectedRoundLegs)) {
+    throw new Error(`${slip.id}: la schedina monomercato deve coprire tutte le ${expectedRoundLegs} partite ancora aperte`);
   }
+  if (slip.type === "player-cards" && (legs.length !== 4 || legs.some(leg => leg.marketFamily !== "Ammoniti" || leg.marketScope !== "player"))) throw new Error(`${slip.id}: servono quattro papabili ammoniti`);
   if (slip.type === "exact-score" && (legs.length !== 4 || legs.some(leg => leg.market !== "RISULTATO ESATTO 26 ESITI"))) {
     throw new Error(`${slip.id}: servono quattro risultati esatti singoli`);
   }

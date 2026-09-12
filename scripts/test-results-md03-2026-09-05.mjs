@@ -97,11 +97,11 @@ assert.deepEqual([
 const settled = schedina.slips.flatMap(slip => slip.legs.map(leg => ({
   matchId: leg.matchId,
   ...settleLeg(leg, byId.get(leg.matchId))
-}))).filter(item => expected.has(item.matchId));
+})));
 const totals = settled.reduce((out, item) => {
   out[item.status] = (out[item.status] || 0) + 1;
   return out;
 }, {});
 
-assert.deepEqual(totals, { won: 27, lost: 14 }, "Liquidazione parziale MD3 inattesa");
-console.log("Risultati MD3 validi: 8 gare concluse e liquidazione parziale verificata.");
+assert.deepEqual(totals, { won: 30, lost: 17 }, "Liquidazione finale MD3 inattesa");
+console.log("Risultati MD3 validi: 10 gare concluse e 47 selezioni liquidate.");

@@ -42,8 +42,12 @@ function settleThreshold(selection,actual,threshold){
 function playerDuo(match,player){
   const name=comparableName(player),all=[...(match?.playerStats?.home||[]),...(match?.playerStats?.away||[])];
   const primary=all.find(item=>comparableName(item.player)===name);
-  if(!primary)return null;
   const substitution=(match?.substitutions||[]).find(item=>comparableName(item.playerOut)===name);
+  if(!primary&&substitution){
+    const goalsFor=person=>(match?.scorers||[]).filter(item=>!item.ownGoal&&comparableName(item.player)===comparableName(person)).length;
+    return [{player,goals:goalsFor(player)}, {player:substitution.playerIn,goals:goalsFor(substitution.playerIn)}];
+  }
+  if(!primary)return null;
   const substitute=substitution?all.find(item=>comparableName(item.player)===comparableName(substitution.playerIn)):null;
   return [primary,...(substitute?[substitute]:[])];
 }

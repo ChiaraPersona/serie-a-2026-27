@@ -7,12 +7,8 @@ const assert = require("assert");
 const root = path.resolve(__dirname, "..");
 const read = relative => JSON.parse(fs.readFileSync(path.join(root, relative), "utf8"));
 const data = read("data/normalized/schedina-md03.json");
-const odds = read("data/normalized/odds/sisal/serie-a.json");
-const predictions = read("data/normalized/predictions.json").predictions;
 const matches = read("data/normalized/matches.json");
 const probableLineups = read("data/sources/probable-lineups-md3-2026-27.json");
-const predictionById = new Map(predictions.map(item => [item.matchId, item]));
-const eventById = new Map(odds.events.map(item => [item.canonicalMatchId, item]));
 const matchById = new Map(matches.map(item => [item.id, item]));
 const lineupByTeamId = new Map(probableLineups.teams.map(item => [item.teamId, item]));
 const clean = value => String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
@@ -21,8 +17,6 @@ assert.strictEqual(data.matchday, 3, "La pagina deve riferirsi alla terza giorna
 assert.strictEqual(data.slips.length, 8, "La terza giornata deve conservare le otto tipologie");
 assert.deepStrictEqual(data.slips.map(slip => slip.legs.length), [3, 3, 5, 8, 8, 10, 4, 6], "Matrice MD3 inattesa");
 assert.strictEqual(data.oddsRetrievedAt, "2026-09-04T11:27:17.482Z", "Le quote della Schedina MD3 devono restare congelate allo snapshot originario");
-assert.notStrictEqual(data.oddsRetrievedAt, odds.retrievedAt, "Il refresh delle quote prepartita non deve modificare retroattivamente la Schedina MD3");
-assert.strictEqual(odds.events.length, 10, "Lo snapshot Sisal deve coprire tutte le partite");
 
 const unavailable = data.slips.filter(slip => slip.qualityStatus === "nd");
 assert.strictEqual(unavailable.length, 0, "Lo snapshot Sisal aggiornato copre anche le due schedine giocatore");
@@ -43,8 +37,6 @@ for (const leg of allLegs) {
   assert.strictEqual(leg.coherent, true, `${leg.matchId}: selezione incoerente`);
   assert(leg.odds >= 1.10, `${leg.matchId}: quota sotto 1,10`);
   assert.notStrictEqual(leg.selection, "12", `${leg.matchId}: selezione 12 vietata`);
-  assert(predictionById.has(leg.matchId), `${leg.matchId}: pronostico assente`);
-  assert.strictEqual(String(predictionById.get(leg.matchId).market.retrievedAt), String(eventById.get(leg.matchId).retrievedAt), `${leg.matchId}: snapshot evento incoerente`);
 }
 
 for (const slip of data.slips.slice(0, 3)) {

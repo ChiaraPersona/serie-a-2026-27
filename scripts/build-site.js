@@ -17,10 +17,10 @@ const homeVersion = "20260908-results-calendar-v1";
 const calendarVersion = "20260908-results-calendar-v1";
 const teamVersion = "20260908-results-calendar-v1";
 const leaderboardVersion = "20260908-results-calendar-v1";
-const bettingVersion = "20260908-champions-schedina-recalculated-v8";
+const bettingVersion = "20260912-champions-results-v1";
 const readingVersion = "20260908-results-calendar-v1";
 const cupVersion = "20260908-results-calendar-v1";
-const championsVersion = "20260908-champions-official-v6";
+const championsVersion = "20260912-champions-results-v1";
 const fantasyVersion = "20260907-udinese-lazio-official-v1";
 const headToHeadPath = path.join(root, "data/generated/head-to-head/first-leg-2026-27.json");
 if (fs.existsSync(headToHeadPath)) {

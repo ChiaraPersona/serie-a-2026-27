@@ -36,7 +36,8 @@ const bettingPage = fs.readFileSync(path.join(root, "js", "pages", "betting.js")
   assert.match(bettingPage, /archiveCard\(md1,1,matchById\)/, "Schedina: card della prima giornata assente dall'archivio");
   assert.match(bettingPage, /load\("schedina-md02\.json"\)/, "Schedina: dati della seconda giornata non caricati");
   assert.match(bettingPage, /load\("schedina-md03\.json"\)/, "Schedina: dati della terza giornata non caricati");
-  assert.match(bettingPage, /const rounds=\{1:md1,2:md2,3:md3\}/, "Schedina: viste dedicate alle prime tre giornate assenti");
+  assert.match(bettingPage, /load\("schedina-md04\.json"\)/, "Schedina: dati della quarta giornata non caricati");
+  assert.match(bettingPage, /const rounds=\{1:md1,2:md2,3:md3,4:md4\}/, "Schedina: viste dedicate alle prime quattro giornate assenti");
   assert.match(bettingPage, /archiveCard\(md2,2,matchById\)/, "Schedina: card della seconda giornata assente dall'archivio");
   assert.match(bettingPage, /archiveCard\(md3,3,matchById\)/, "Schedina: card della terza giornata assente dall'archivio");
 assert.doesNotMatch(bettingPage, /<details class="betting-archive-card">|<summary class="betting-archive-card-heading">/, "Schedina: la card archivio non deve essere un menu a tendina");
