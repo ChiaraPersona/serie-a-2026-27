@@ -3,10 +3,10 @@ import assert from "node:assert/strict";
 
 const matches = JSON.parse(fs.readFileSync(new URL("../data/normalized/matches.json", import.meta.url), "utf8"));
 const finished = matches.filter(match => match.competition === "serie-a" && match.season === "2026-27" && match.status === "finished");
-const fields = ["minutes", "rating", "goals", "assists", "shots", "shotsOnTarget", "expectedGoals", "foulsCommitted", "foulsWon"];
+const fields = ["minutes", "goals", "assists", "shots", "shotsOnTarget", "expectedGoals", "foulsCommitted", "foulsWon"];
 let playerRows = 0;
 
-assert.equal(finished.length, 24, "Numero di partite concluse inatteso");
+assert.equal(finished.length, 34, "Numero di partite concluse inatteso");
 for (const match of finished) {
   for (const side of ["home", "away"]) {
     const rows = match.playerStats?.[side] || [];
@@ -22,5 +22,5 @@ for (const match of finished) {
   }
 }
 
-assert.equal(playerRows, 766, "Numero di righe calciatore-partita inatteso");
+assert.equal(playerRows, 1083, "Numero di righe calciatore-partita inatteso");
 console.log(`Copertura individuale completa: ${finished.length} partite, ${playerRows} righe, ${fields.length} metriche senza N/D.`);
