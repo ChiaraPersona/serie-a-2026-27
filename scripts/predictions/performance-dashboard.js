@@ -91,7 +91,7 @@ const output = {
   generatedAt: new Date().toISOString(),
   methodology: {
     scope: "Solo partite concluse con pronostico archiviato; nessun ricalcolo retroattivo.",
-    scoreMetrics: "Esito 1X2, scenario condizionato al segno, moda assoluta e copertura dei tre punteggi mostrati. Nessun punteggio singolo e trattato come pronostico centrale.",
+    scoreMetrics: "Esito 1X2, risultato principale, moda assoluta e copertura dei tre punteggi mostrati. Gli archivi conservano la regola usata al momento della pubblicazione; dalla versione 4.12.0 il principale arrotonda i gol attesi per squadra.",
     marketMetrics: "Settlement dei mercati determinabili dal risultato finale; mercati giocatore e volume senza dato finale restano indisponibili.",
     warning: "Il tasso di successo descrive il campione osservato e non dimostra da solo un vantaggio futuro."
   },

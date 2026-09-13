@@ -5,9 +5,9 @@
     "serie-a"
   ],
   "season": "2026-27",
-  "generatedAt": "2026-09-13T15:09:36.609Z",
+  "generatedAt": "2026-09-13T18:00:06.720Z",
   "engine": {
-    "version": "4.11.0",
+    "version": "4.12.0",
     "principle": "Un'unica matrice dei punteggi indipendente dalle quote genera 1X2, gol e mercati collegati.",
     "weights": {
       "venueHistorical": 0.46,
@@ -20,7 +20,7 @@
     "surpriseFactor": "Apertura della gara, probabilita dell'esito sfavorito, divergenza mercato-dati e incompletezza prepartita. Non determina da solo il verdetto.",
     "spatialModel": "Valuta separatamente sviluppo a sinistra, al centro e a destra e lo incrocia con le vulnerabilita avversarie.",
     "goalModel": "Forze relative casa/trasferta e complessive, ultime otto gare corrette per avversario, xG Understat al 25% quando sono coperti entrambi i club, probabile XI, divisione di provenienza, matrice Poisson e correttivo H2H limitato al 5% per lato.",
-    "scoreSelectionModel": "Il risultato principale e selezionato dentro l'esito 1X2 piu probabile; gli altri due sono i punteggi successivi piu probabili della matrice, senza imporre uno scenario sorpresa.",
+    "scoreSelectionModel": "Il risultato esatto centrale arrotonda separatamente i gol attesi delle due squadre; la moda assoluta e gli altri punteggi probabili restano alternative distinte.",
     "decisionLayer": {
       "version": "1.0.0",
       "order": "probabilita -> scenari -> correlazioni -> rischio portafoglio -> selezione -> verifica post-partita",
@@ -653,7 +653,29 @@
           "calibrationRecommendation": "adopt-poisson",
           "xgRecommendation": "adopt-xg-blend-25",
           "uncertaintyRecommendation": "keep-fixed-lambda",
-          "opponentRatingRecommendation": "keep-points-ranking"
+          "opponentRatingRecommendation": "keep-points-ranking",
+          "exactScoreSelection": {
+            "baseline": "conditional-mode",
+            "candidate": "rounded-expected-goals",
+            "sample": 1201,
+            "baselineMetrics": {
+              "exactHitPct": 13,
+              "goalMae": 1.8759,
+              "totalGoalMae": 1.6095,
+              "oneZeroPct": 59.6
+            },
+            "candidateMetrics": {
+              "exactHitPct": 12.6,
+              "goalMae": 1.6436,
+              "totalGoalMae": 1.2073,
+              "oneZeroPct": 0
+            },
+            "improvementVsBaselinePct": {
+              "goalMae": 12.38,
+              "totalGoalMae": 24.99
+            },
+            "recommendation": "adopt-rounded-expected-goals"
+          }
         }
       },
       "openingRounds": {
@@ -57576,7 +57598,7 @@
       "matchId": "atalanta-cagliari-2026-27-md-04",
       "generatedAt": "2026-09-10T20:52:11.382Z",
       "status": "preliminary",
-      "engineVersion": "4.11.0",
+      "engineVersion": "4.12.0",
       "probabilities": {
         "final": {
           "1": 55.5,
@@ -57718,12 +57740,12 @@
       ],
       "scoreForecast": {
         "primary": {
-          "score": "1-0",
+          "score": "2-1",
           "outcome": "1",
-          "label": "Scenario coerente con il segno 1X2",
-          "probabilityPct": 12.3,
-          "conditionalProbabilityPct": 22.1,
-          "isAbsoluteMode": true
+          "label": "Risultato esatto centrale",
+          "probabilityPct": 9.7,
+          "conditionalProbabilityPct": 17.5,
+          "isAbsoluteMode": false
         },
         "modal": {
           "score": "1-0",
@@ -57735,27 +57757,9 @@
         },
         "alternatives": [
           {
-            "score": "1-1",
-            "outcome": "X",
-            "label": "Altro risultato probabile",
-            "probabilityPct": 11.4,
-            "conditionalProbabilityPct": 47.5,
-            "isAbsoluteMode": false
-          },
-          {
-            "score": "2-0",
-            "outcome": "1",
-            "label": "Altro risultato probabile",
-            "probabilityPct": 10.4,
-            "conditionalProbabilityPct": 18.8,
-            "isAbsoluteMode": false
-          }
-        ],
-        "display": [
-          {
             "score": "1-0",
             "outcome": "1",
-            "label": "Scenario coerente con il segno 1X2",
+            "label": "Moda assoluta",
             "probabilityPct": 12.3,
             "conditionalProbabilityPct": 22.1,
             "isAbsoluteMode": true
@@ -57767,19 +57771,42 @@
             "probabilityPct": 11.4,
             "conditionalProbabilityPct": 47.5,
             "isAbsoluteMode": false
+          }
+        ],
+        "display": [
+          {
+            "score": "2-1",
+            "outcome": "1",
+            "label": "Risultato esatto centrale",
+            "probabilityPct": 9.7,
+            "conditionalProbabilityPct": 17.5,
+            "isAbsoluteMode": false
           },
           {
-            "score": "2-0",
+            "score": "1-0",
             "outcome": "1",
+            "label": "Moda assoluta",
+            "probabilityPct": 12.3,
+            "conditionalProbabilityPct": 22.1,
+            "isAbsoluteMode": true
+          },
+          {
+            "score": "1-1",
+            "outcome": "X",
             "label": "Altro risultato probabile",
-            "probabilityPct": 10.4,
-            "conditionalProbabilityPct": 18.8,
+            "probabilityPct": 11.4,
+            "conditionalProbabilityPct": 47.5,
             "isAbsoluteMode": false
           }
         ],
         "coherentWithVerdict": true,
         "forcedOutcomeScenarios": false,
-        "method": "Lo scenario coerente con il segno 1X2 e il punteggio piu probabile dentro quell'esito, ma non e la moda assoluta ne un pronostico esatto centrale. La sintesi pubblica privilegia la fascia gol e mostra i punteggi soltanto come scenari separati."
+        "selection": {
+          "type": "rounded-expected-goals",
+          "expectedHome": 1.7,
+          "expectedAway": 0.9
+        },
+        "method": "Il risultato esatto centrale arrotonda separatamente i gol attesi delle due squadre. La moda assoluta e mostrata a parte; il criterio centrale riduce la concentrazione artificiale sugli 1-0 nel confronto walk-forward pluristagionale."
       },
       "scoreProfile": {
         "bands": [
@@ -58712,7 +58739,7 @@
         {
           "id": "goals:UNDER:1.5",
           "family": "goals",
-          "scenarioCompatible": true,
+          "scenarioCompatible": false,
           "market": "Under/Over 1.5",
           "selection": "UNDER",
           "providerSelectionId": "5304647278",
@@ -58732,7 +58759,7 @@
         {
           "id": "goals:OVER:1.5",
           "family": "goals",
-          "scenarioCompatible": false,
+          "scenarioCompatible": true,
           "market": "Under/Over 1.5",
           "selection": "OVER",
           "providerSelectionId": "5304647279",
@@ -58752,7 +58779,7 @@
         {
           "id": "goals:UNDER:2.5",
           "family": "goals",
-          "scenarioCompatible": true,
+          "scenarioCompatible": false,
           "market": "Under/Over 2.5",
           "selection": "UNDER",
           "providerSelectionId": "5304647294",
@@ -58772,7 +58799,7 @@
         {
           "id": "goals:OVER:2.5",
           "family": "goals",
-          "scenarioCompatible": false,
+          "scenarioCompatible": true,
           "market": "Under/Over 2.5",
           "selection": "OVER",
           "providerSelectionId": "5304647295",
@@ -58832,7 +58859,7 @@
         {
           "id": "btts:GOAL:main",
           "family": "btts",
-          "scenarioCompatible": false,
+          "scenarioCompatible": true,
           "market": "Goal/No Goal",
           "selection": "GOAL",
           "providerSelectionId": "5304643376",
@@ -58852,7 +58879,7 @@
         {
           "id": "btts:NOGOAL:main",
           "family": "btts",
-          "scenarioCompatible": true,
+          "scenarioCompatible": false,
           "market": "Goal/No Goal",
           "selection": "NOGOAL",
           "providerSelectionId": "5304643377",
@@ -58912,7 +58939,7 @@
         {
           "id": "team-goal:SI:main",
           "family": "team-goal",
-          "scenarioCompatible": false,
+          "scenarioCompatible": true,
           "market": "Ospite segna",
           "selection": "SI",
           "providerSelectionId": "5304732149",
@@ -58932,7 +58959,7 @@
         {
           "id": "team-goal:NO:main",
           "family": "team-goal",
-          "scenarioCompatible": true,
+          "scenarioCompatible": false,
           "market": "Ospite segna",
           "selection": "NO",
           "providerSelectionId": "5304732150",
@@ -60739,7 +60766,7 @@
       "matchId": "como-parma-2026-27-md-04",
       "generatedAt": "2026-09-10T20:52:11.382Z",
       "status": "preliminary",
-      "engineVersion": "4.11.0",
+      "engineVersion": "4.12.0",
       "probabilities": {
         "final": {
           "1": 61.3,
@@ -60881,12 +60908,12 @@
       ],
       "scoreForecast": {
         "primary": {
-          "score": "1-0",
+          "score": "2-1",
           "outcome": "1",
-          "label": "Scenario coerente con il segno 1X2",
-          "probabilityPct": 16.4,
-          "conditionalProbabilityPct": 26.7,
-          "isAbsoluteMode": true
+          "label": "Risultato esatto centrale",
+          "probabilityPct": 8.9,
+          "conditionalProbabilityPct": 14.6,
+          "isAbsoluteMode": false
         },
         "modal": {
           "score": "1-0",
@@ -60898,27 +60925,9 @@
         },
         "alternatives": [
           {
-            "score": "2-0",
-            "outcome": "1",
-            "label": "Altro risultato probabile",
-            "probabilityPct": 13.5,
-            "conditionalProbabilityPct": 22,
-            "isAbsoluteMode": false
-          },
-          {
-            "score": "1-1",
-            "outcome": "X",
-            "label": "Altro risultato probabile",
-            "probabilityPct": 10.8,
-            "conditionalProbabilityPct": 44.9,
-            "isAbsoluteMode": false
-          }
-        ],
-        "display": [
-          {
             "score": "1-0",
             "outcome": "1",
-            "label": "Scenario coerente con il segno 1X2",
+            "label": "Moda assoluta",
             "probabilityPct": 16.4,
             "conditionalProbabilityPct": 26.7,
             "isAbsoluteMode": true
@@ -60930,19 +60939,42 @@
             "probabilityPct": 13.5,
             "conditionalProbabilityPct": 22,
             "isAbsoluteMode": false
+          }
+        ],
+        "display": [
+          {
+            "score": "2-1",
+            "outcome": "1",
+            "label": "Risultato esatto centrale",
+            "probabilityPct": 8.9,
+            "conditionalProbabilityPct": 14.6,
+            "isAbsoluteMode": false
           },
           {
-            "score": "1-1",
-            "outcome": "X",
+            "score": "1-0",
+            "outcome": "1",
+            "label": "Moda assoluta",
+            "probabilityPct": 16.4,
+            "conditionalProbabilityPct": 26.7,
+            "isAbsoluteMode": true
+          },
+          {
+            "score": "2-0",
+            "outcome": "1",
             "label": "Altro risultato probabile",
-            "probabilityPct": 10.8,
-            "conditionalProbabilityPct": 44.9,
+            "probabilityPct": 13.5,
+            "conditionalProbabilityPct": 22,
             "isAbsoluteMode": false
           }
         ],
         "coherentWithVerdict": true,
         "forcedOutcomeScenarios": false,
-        "method": "Lo scenario coerente con il segno 1X2 e il punteggio piu probabile dentro quell'esito, ma non e la moda assoluta ne un pronostico esatto centrale. La sintesi pubblica privilegia la fascia gol e mostra i punteggi soltanto come scenari separati."
+        "selection": {
+          "type": "rounded-expected-goals",
+          "expectedHome": 1.6,
+          "expectedAway": 0.7
+        },
+        "method": "Il risultato esatto centrale arrotonda separatamente i gol attesi delle due squadre. La moda assoluta e mostrata a parte; il criterio centrale riduce la concentrazione artificiale sugli 1-0 nel confronto walk-forward pluristagionale."
       },
       "scoreProfile": {
         "bands": [
@@ -61859,7 +61891,7 @@
         {
           "id": "goals:UNDER:1.5",
           "family": "goals",
-          "scenarioCompatible": true,
+          "scenarioCompatible": false,
           "market": "Under/Over 1.5",
           "selection": "UNDER",
           "providerSelectionId": "5304666667",
@@ -61879,7 +61911,7 @@
         {
           "id": "goals:OVER:1.5",
           "family": "goals",
-          "scenarioCompatible": false,
+          "scenarioCompatible": true,
           "market": "Under/Over 1.5",
           "selection": "OVER",
           "providerSelectionId": "5304666668",
@@ -61899,7 +61931,7 @@
         {
           "id": "goals:UNDER:2.5",
           "family": "goals",
-          "scenarioCompatible": true,
+          "scenarioCompatible": false,
           "market": "Under/Over 2.5",
           "selection": "UNDER",
           "providerSelectionId": "5304666683",
@@ -61919,7 +61951,7 @@
         {
           "id": "goals:OVER:2.5",
           "family": "goals",
-          "scenarioCompatible": false,
+          "scenarioCompatible": true,
           "market": "Under/Over 2.5",
           "selection": "OVER",
           "providerSelectionId": "5304666684",
@@ -61979,7 +62011,7 @@
         {
           "id": "btts:GOAL:main",
           "family": "btts",
-          "scenarioCompatible": false,
+          "scenarioCompatible": true,
           "market": "Goal/No Goal",
           "selection": "GOAL",
           "providerSelectionId": "5304664547",
@@ -61999,7 +62031,7 @@
         {
           "id": "btts:NOGOAL:main",
           "family": "btts",
-          "scenarioCompatible": true,
+          "scenarioCompatible": false,
           "market": "Goal/No Goal",
           "selection": "NOGOAL",
           "providerSelectionId": "5304664548",
@@ -62059,7 +62091,7 @@
         {
           "id": "team-goal:SI:main",
           "family": "team-goal",
-          "scenarioCompatible": false,
+          "scenarioCompatible": true,
           "market": "Ospite segna",
           "selection": "SI",
           "providerSelectionId": "5304731951",
@@ -62079,7 +62111,7 @@
         {
           "id": "team-goal:NO:main",
           "family": "team-goal",
-          "scenarioCompatible": true,
+          "scenarioCompatible": false,
           "market": "Ospite segna",
           "selection": "NO",
           "providerSelectionId": "5304731952",
@@ -62102,7 +62134,7 @@
           {
             "id": "goals:UNDER:2.5",
             "family": "goals",
-            "scenarioCompatible": true,
+            "scenarioCompatible": false,
             "market": "Under/Over 2.5",
             "selection": "UNDER",
             "providerSelectionId": "5304666683",
@@ -62405,21 +62437,21 @@
               "marketScope": "player"
             },
             {
-              "label": "Partita almeno 7 corner",
-              "market": "U/O CORNER",
-              "variant": "U/O 6.5 CORNER",
-              "threshold": "6.5",
-              "selection": "OVER",
-              "providerSelectionId": "5317887120",
+              "label": "MULTIGOAL MULTIESITI 16 ESITI · 2-5",
+              "market": "MULTIGOAL",
+              "variant": "MULTIGOAL MULTIESITI 16 ESITI",
+              "threshold": null,
+              "selection": "2-5",
+              "providerSelectionId": "5304667299",
               "odds": 1.3,
-              "overlapKey": "market-u o corner",
+              "overlapKey": "market-multigoal",
               "semanticKeys": [
-                "volume-corners"
+                "goals"
               ],
               "marketScope": "match"
             }
           ],
-          "selection": "DA CUNHA L. almeno 1 tiri in porta, sostituto incluso + FABBIAN G. almeno 2 falli commessi + Parma almeno 7 tiri totali + BATURINA M. O DIAO ASSANE GOAL O PALO O LORO SOST. INC TS · sì + Partita almeno 7 corner",
+          "selection": "DA CUNHA L. almeno 1 tiri in porta, sostituto incluso + FABBIAN G. almeno 2 falli commessi + Parma almeno 7 tiri totali + BATURINA M. O DIAO ASSANE GOAL O PALO O LORO SOST. INC TS · sì + MULTIGOAL MULTIESITI 16 ESITI · 2-5",
           "logic": "Profilo balanced costruito sulle quote Sisal del 2026-09-12: quota 10 orientativa, 4-7 gambe, mercati distinti, nessuno scenario di base ripetuto o annidato e quote singole 1.10-1.85. Il rischio resta informativo.",
           "probabilityPct": null,
           "prudentProbabilityPct": null,
@@ -62442,14 +62474,14 @@
           "distancePct": 0,
           "legs": [
             {
-              "label": "MULTIGOAL Como MULTIESITI · 1-2",
-              "market": "MULTIGOAL SQUADRA X",
-              "variant": "MULTIGOAL SQUADRA 1 MULTIESITI",
+              "label": "MULTIGOAL MULTIESITI 16 ESITI · 3-5",
+              "market": "MULTIGOAL",
+              "variant": "MULTIGOAL MULTIESITI 16 ESITI",
               "threshold": null,
-              "selection": "1-2",
-              "providerSelectionId": "5304667088",
+              "selection": "3-5",
+              "providerSelectionId": "5304667302",
               "odds": 1.85,
-              "overlapKey": "market-multigoal squadra x",
+              "overlapKey": "market-multigoal",
               "semanticKeys": [
                 "goals"
               ],
@@ -62522,7 +62554,7 @@
               "marketScope": "match"
             }
           ],
-          "selection": "MULTIGOAL Como MULTIESITI · 1-2 + BRITSCHGI S. almeno 2 falli commessi + DA CUNHA L. almeno 1 falli subiti + PRIMA A 6 CALCI D'ANGOLO · Como + VALERI E. almeno 1 tiri totali, sostituto incluso + Partita almeno 6 tiri in porta",
+          "selection": "MULTIGOAL MULTIESITI 16 ESITI · 3-5 + BRITSCHGI S. almeno 2 falli commessi + DA CUNHA L. almeno 1 falli subiti + PRIMA A 6 CALCI D'ANGOLO · Como + VALERI E. almeno 1 tiri totali, sostituto incluso + Partita almeno 6 tiri in porta",
           "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-09-12: quota 20 orientativa, 5-8 gambe, mercati distinti, nessuno scenario di base ripetuto o annidato e quote singole 1.10-1.85. Il rischio resta informativo.",
           "probabilityPct": null,
           "prudentProbabilityPct": null,
@@ -63877,9 +63909,9 @@
             "tier": "Balanced",
             "status": "outside-limits",
             "allowed": false,
-            "riskScore": 82,
+            "riskScore": 78.6,
             "riskLevel": "alto",
-            "averageRisk": 82,
+            "averageRisk": 78.6,
             "maxEventRisk": 82,
             "strongDependencies": 0,
             "contradictions": 0,
@@ -63890,7 +63922,7 @@
               "minPrudentExpectedValuePct": 0
             },
             "reasons": [
-              "Rischio medio 82 oltre il limite 56.",
+              "Rischio medio 78.6 oltre il limite 56.",
               "Gamba a rischio 82 oltre il limite 72.",
               "EV prudenziale non disponibile."
             ],
@@ -63920,9 +63952,9 @@
                 "modeled": false
               },
               {
-                "providerSelectionId": "5317887120",
-                "label": "Partita almeno 7 corner",
-                "riskScore": 82,
+                "providerSelectionId": "5304667299",
+                "label": "MULTIGOAL MULTIESITI 16 ESITI · 2-5",
+                "riskScore": 65,
                 "modeled": false
               }
             ],
@@ -63950,8 +63982,8 @@
             ],
             "events": [
               {
-                "providerSelectionId": "5304667088",
-                "label": "MULTIGOAL Como MULTIESITI · 1-2",
+                "providerSelectionId": "5304667302",
+                "label": "MULTIGOAL MULTIESITI 16 ESITI · 3-5",
                 "riskScore": 65,
                 "modeled": false
               },
@@ -63995,7 +64027,7 @@
       "matchId": "genoa-frosinone-2026-27-md-04",
       "generatedAt": "2026-09-10T20:52:11.382Z",
       "status": "preliminary",
-      "engineVersion": "4.11.0",
+      "engineVersion": "4.12.0",
       "probabilities": {
         "final": {
           "1": 28.3,
@@ -64137,11 +64169,11 @@
       ],
       "scoreForecast": {
         "primary": {
-          "score": "0-1",
+          "score": "1-2",
           "outcome": "2",
-          "label": "Scenario coerente con il segno 1X2",
-          "probabilityPct": 10.3,
-          "conditionalProbabilityPct": 22.1,
+          "label": "Risultato esatto centrale",
+          "probabilityPct": 9.3,
+          "conditionalProbabilityPct": 20,
           "isAbsoluteMode": false
         },
         "modal": {
@@ -64162,21 +64194,21 @@
             "isAbsoluteMode": true
           },
           {
-            "score": "1-2",
+            "score": "0-1",
             "outcome": "2",
             "label": "Altro risultato probabile",
-            "probabilityPct": 9.3,
-            "conditionalProbabilityPct": 20,
+            "probabilityPct": 10.3,
+            "conditionalProbabilityPct": 22.1,
             "isAbsoluteMode": false
           }
         ],
         "display": [
           {
-            "score": "0-1",
+            "score": "1-2",
             "outcome": "2",
-            "label": "Scenario coerente con il segno 1X2",
-            "probabilityPct": 10.3,
-            "conditionalProbabilityPct": 22.1,
+            "label": "Risultato esatto centrale",
+            "probabilityPct": 9.3,
+            "conditionalProbabilityPct": 20,
             "isAbsoluteMode": false
           },
           {
@@ -64188,17 +64220,22 @@
             "isAbsoluteMode": true
           },
           {
-            "score": "1-2",
+            "score": "0-1",
             "outcome": "2",
             "label": "Altro risultato probabile",
-            "probabilityPct": 9.3,
-            "conditionalProbabilityPct": 20,
+            "probabilityPct": 10.3,
+            "conditionalProbabilityPct": 22.1,
             "isAbsoluteMode": false
           }
         ],
         "coherentWithVerdict": true,
         "forcedOutcomeScenarios": false,
-        "method": "Lo scenario coerente con il segno 1X2 e il punteggio piu probabile dentro quell'esito, ma non e la moda assoluta ne un pronostico esatto centrale. La sintesi pubblica privilegia la fascia gol e mostra i punteggi soltanto come scenari separati."
+        "selection": {
+          "type": "rounded-expected-goals",
+          "expectedHome": 1.2,
+          "expectedAway": 1.6
+        },
+        "method": "Il risultato esatto centrale arrotonda separatamente i gol attesi delle due squadre. La moda assoluta e mostrata a parte; il criterio centrale riduce la concentrazione artificiale sugli 1-0 nel confronto walk-forward pluristagionale."
       },
       "scoreProfile": {
         "bands": [
@@ -65091,7 +65128,7 @@
         {
           "id": "goals:UNDER:1.5",
           "family": "goals",
-          "scenarioCompatible": true,
+          "scenarioCompatible": false,
           "market": "Under/Over 1.5",
           "selection": "UNDER",
           "providerSelectionId": "5304627000",
@@ -65111,7 +65148,7 @@
         {
           "id": "goals:OVER:1.5",
           "family": "goals",
-          "scenarioCompatible": false,
+          "scenarioCompatible": true,
           "market": "Under/Over 1.5",
           "selection": "OVER",
           "providerSelectionId": "5304627001",
@@ -65131,7 +65168,7 @@
         {
           "id": "goals:UNDER:2.5",
           "family": "goals",
-          "scenarioCompatible": true,
+          "scenarioCompatible": false,
           "market": "Under/Over 2.5",
           "selection": "UNDER",
           "providerSelectionId": "5304627016",
@@ -65151,7 +65188,7 @@
         {
           "id": "goals:OVER:2.5",
           "family": "goals",
-          "scenarioCompatible": false,
+          "scenarioCompatible": true,
           "market": "Under/Over 2.5",
           "selection": "OVER",
           "providerSelectionId": "5304627017",
@@ -65211,7 +65248,7 @@
         {
           "id": "btts:GOAL:main",
           "family": "btts",
-          "scenarioCompatible": false,
+          "scenarioCompatible": true,
           "market": "Goal/No Goal",
           "selection": "GOAL",
           "providerSelectionId": "5304624884",
@@ -65231,7 +65268,7 @@
         {
           "id": "btts:NOGOAL:main",
           "family": "btts",
-          "scenarioCompatible": true,
+          "scenarioCompatible": false,
           "market": "Goal/No Goal",
           "selection": "NOGOAL",
           "providerSelectionId": "5304624885",
@@ -65251,7 +65288,7 @@
         {
           "id": "team-goal:SI:main",
           "family": "team-goal",
-          "scenarioCompatible": false,
+          "scenarioCompatible": true,
           "market": "Casa segna",
           "selection": "SI",
           "providerSelectionId": "5304656898",
@@ -65271,7 +65308,7 @@
         {
           "id": "team-goal:NO:main",
           "family": "team-goal",
-          "scenarioCompatible": true,
+          "scenarioCompatible": false,
           "market": "Casa segna",
           "selection": "NO",
           "providerSelectionId": "5304656899",
@@ -65376,7 +65413,7 @@
           {
             "id": "team-goal:NO:main",
             "family": "team-goal",
-            "scenarioCompatible": true,
+            "scenarioCompatible": false,
             "market": "Casa segna",
             "selection": "NO",
             "providerSelectionId": "5304656899",
@@ -65418,7 +65455,7 @@
           {
             "id": "goals:OVER:1.5",
             "family": "goals",
-            "scenarioCompatible": false,
+            "scenarioCompatible": true,
             "market": "Under/Over 1.5",
             "selection": "OVER",
             "providerSelectionId": "5304627001",
@@ -67193,7 +67230,7 @@
       "matchId": "inter-udinese-2026-27-md-04",
       "generatedAt": "2026-09-10T20:52:11.382Z",
       "status": "preliminary",
-      "engineVersion": "4.11.0",
+      "engineVersion": "4.12.0",
       "probabilities": {
         "final": {
           "1": 67.9,
@@ -67337,7 +67374,7 @@
         "primary": {
           "score": "2-1",
           "outcome": "1",
-          "label": "Scenario coerente con il segno 1X2",
+          "label": "Risultato esatto centrale",
           "probabilityPct": 9.5,
           "conditionalProbabilityPct": 14,
           "isAbsoluteMode": true
@@ -67372,7 +67409,7 @@
           {
             "score": "2-1",
             "outcome": "1",
-            "label": "Scenario coerente con il segno 1X2",
+            "label": "Risultato esatto centrale",
             "probabilityPct": 9.5,
             "conditionalProbabilityPct": 14,
             "isAbsoluteMode": true
@@ -67396,7 +67433,12 @@
         ],
         "coherentWithVerdict": true,
         "forcedOutcomeScenarios": false,
-        "method": "Lo scenario coerente con il segno 1X2 e il punteggio piu probabile dentro quell'esito, ma non e la moda assoluta ne un pronostico esatto centrale. La sintesi pubblica privilegia la fascia gol e mostra i punteggi soltanto come scenari separati."
+        "selection": {
+          "type": "rounded-expected-goals",
+          "expectedHome": 2.4,
+          "expectedAway": 1.1
+        },
+        "method": "Il risultato esatto centrale arrotonda separatamente i gol attesi delle due squadre. La moda assoluta e mostrata a parte; il criterio centrale riduce la concentrazione artificiale sugli 1-0 nel confronto walk-forward pluristagionale."
       },
       "scoreProfile": {
         "bands": [
@@ -70159,7 +70201,7 @@
       "matchId": "lazio-milan-2026-27-md-04",
       "generatedAt": "2026-09-10T20:52:11.382Z",
       "status": "preliminary",
-      "engineVersion": "4.11.0",
+      "engineVersion": "4.12.0",
       "probabilities": {
         "final": {
           "1": 24.8,
@@ -70301,11 +70343,11 @@
       ],
       "scoreForecast": {
         "primary": {
-          "score": "0-1",
+          "score": "1-2",
           "outcome": "2",
-          "label": "Scenario coerente con il segno 1X2",
-          "probabilityPct": 11.8,
-          "conditionalProbabilityPct": 23.7,
+          "label": "Risultato esatto centrale",
+          "probabilityPct": 9.4,
+          "conditionalProbabilityPct": 18.9,
           "isAbsoluteMode": false
         },
         "modal": {
@@ -70326,21 +70368,21 @@
             "isAbsoluteMode": true
           },
           {
-            "score": "1-2",
+            "score": "0-1",
             "outcome": "2",
             "label": "Altro risultato probabile",
-            "probabilityPct": 9.4,
-            "conditionalProbabilityPct": 18.9,
+            "probabilityPct": 11.8,
+            "conditionalProbabilityPct": 23.7,
             "isAbsoluteMode": false
           }
         ],
         "display": [
           {
-            "score": "0-1",
+            "score": "1-2",
             "outcome": "2",
-            "label": "Scenario coerente con il segno 1X2",
-            "probabilityPct": 11.8,
-            "conditionalProbabilityPct": 23.7,
+            "label": "Risultato esatto centrale",
+            "probabilityPct": 9.4,
+            "conditionalProbabilityPct": 18.9,
             "isAbsoluteMode": false
           },
           {
@@ -70352,17 +70394,22 @@
             "isAbsoluteMode": true
           },
           {
-            "score": "1-2",
+            "score": "0-1",
             "outcome": "2",
             "label": "Altro risultato probabile",
-            "probabilityPct": 9.4,
-            "conditionalProbabilityPct": 18.9,
+            "probabilityPct": 11.8,
+            "conditionalProbabilityPct": 23.7,
             "isAbsoluteMode": false
           }
         ],
         "coherentWithVerdict": true,
         "forcedOutcomeScenarios": false,
-        "method": "Lo scenario coerente con il segno 1X2 e il punteggio piu probabile dentro quell'esito, ma non e la moda assoluta ne un pronostico esatto centrale. La sintesi pubblica privilegia la fascia gol e mostra i punteggi soltanto come scenari separati."
+        "selection": {
+          "type": "rounded-expected-goals",
+          "expectedHome": 1,
+          "expectedAway": 1.6
+        },
+        "method": "Il risultato esatto centrale arrotonda separatamente i gol attesi delle due squadre. La moda assoluta e mostrata a parte; il criterio centrale riduce la concentrazione artificiale sugli 1-0 nel confronto walk-forward pluristagionale."
       },
       "scoreProfile": {
         "bands": [
@@ -71311,7 +71358,7 @@
         {
           "id": "goals:UNDER:1.5",
           "family": "goals",
-          "scenarioCompatible": true,
+          "scenarioCompatible": false,
           "market": "Under/Over 1.5",
           "selection": "UNDER",
           "providerSelectionId": "5304641658",
@@ -71331,7 +71378,7 @@
         {
           "id": "goals:OVER:1.5",
           "family": "goals",
-          "scenarioCompatible": false,
+          "scenarioCompatible": true,
           "market": "Under/Over 1.5",
           "selection": "OVER",
           "providerSelectionId": "5304641659",
@@ -71351,7 +71398,7 @@
         {
           "id": "goals:UNDER:2.5",
           "family": "goals",
-          "scenarioCompatible": true,
+          "scenarioCompatible": false,
           "market": "Under/Over 2.5",
           "selection": "UNDER",
           "providerSelectionId": "5304641674",
@@ -71371,7 +71418,7 @@
         {
           "id": "goals:OVER:2.5",
           "family": "goals",
-          "scenarioCompatible": false,
+          "scenarioCompatible": true,
           "market": "Under/Over 2.5",
           "selection": "OVER",
           "providerSelectionId": "5304641675",
@@ -71431,7 +71478,7 @@
         {
           "id": "btts:GOAL:main",
           "family": "btts",
-          "scenarioCompatible": false,
+          "scenarioCompatible": true,
           "market": "Goal/No Goal",
           "selection": "GOAL",
           "providerSelectionId": "5304639488",
@@ -71451,7 +71498,7 @@
         {
           "id": "btts:NOGOAL:main",
           "family": "btts",
-          "scenarioCompatible": true,
+          "scenarioCompatible": false,
           "market": "Goal/No Goal",
           "selection": "NOGOAL",
           "providerSelectionId": "5304639489",
@@ -71471,7 +71518,7 @@
         {
           "id": "team-goal:SI:main",
           "family": "team-goal",
-          "scenarioCompatible": false,
+          "scenarioCompatible": true,
           "market": "Casa segna",
           "selection": "SI",
           "providerSelectionId": "5304651010",
@@ -71491,7 +71538,7 @@
         {
           "id": "team-goal:NO:main",
           "family": "team-goal",
-          "scenarioCompatible": true,
+          "scenarioCompatible": false,
           "market": "Casa segna",
           "selection": "NO",
           "providerSelectionId": "5304651011",
@@ -73351,7 +73398,7 @@
       "matchId": "lecce-monza-2026-27-md-04",
       "generatedAt": "2026-09-10T20:52:11.382Z",
       "status": "preliminary",
-      "engineVersion": "4.11.0",
+      "engineVersion": "4.12.0",
       "probabilities": {
         "final": {
           "1": 39.2,
@@ -73493,12 +73540,12 @@
       ],
       "scoreForecast": {
         "primary": {
-          "score": "1-0",
-          "outcome": "1",
-          "label": "Scenario coerente con il segno 1X2",
-          "probabilityPct": 11.8,
-          "conditionalProbabilityPct": 30.2,
-          "isAbsoluteMode": false
+          "score": "1-1",
+          "outcome": "X",
+          "label": "Risultato esatto centrale",
+          "probabilityPct": 13.1,
+          "conditionalProbabilityPct": 47,
+          "isAbsoluteMode": true
         },
         "modal": {
           "score": "1-1",
@@ -73510,12 +73557,12 @@
         },
         "alternatives": [
           {
-            "score": "1-1",
-            "outcome": "X",
-            "label": "Moda assoluta",
-            "probabilityPct": 13.1,
-            "conditionalProbabilityPct": 47,
-            "isAbsoluteMode": true
+            "score": "1-0",
+            "outcome": "1",
+            "label": "Altro risultato probabile",
+            "probabilityPct": 11.8,
+            "conditionalProbabilityPct": 30.2,
+            "isAbsoluteMode": false
           },
           {
             "score": "0-1",
@@ -73528,20 +73575,20 @@
         ],
         "display": [
           {
-            "score": "1-0",
-            "outcome": "1",
-            "label": "Scenario coerente con il segno 1X2",
-            "probabilityPct": 11.8,
-            "conditionalProbabilityPct": 30.2,
-            "isAbsoluteMode": false
-          },
-          {
             "score": "1-1",
             "outcome": "X",
-            "label": "Moda assoluta",
+            "label": "Risultato esatto centrale",
             "probabilityPct": 13.1,
             "conditionalProbabilityPct": 47,
             "isAbsoluteMode": true
+          },
+          {
+            "score": "1-0",
+            "outcome": "1",
+            "label": "Altro risultato probabile",
+            "probabilityPct": 11.8,
+            "conditionalProbabilityPct": 30.2,
+            "isAbsoluteMode": false
           },
           {
             "score": "0-1",
@@ -73552,9 +73599,14 @@
             "isAbsoluteMode": false
           }
         ],
-        "coherentWithVerdict": true,
+        "coherentWithVerdict": false,
         "forcedOutcomeScenarios": false,
-        "method": "Lo scenario coerente con il segno 1X2 e il punteggio piu probabile dentro quell'esito, ma non e la moda assoluta ne un pronostico esatto centrale. La sintesi pubblica privilegia la fascia gol e mostra i punteggi soltanto come scenari separati."
+        "selection": {
+          "type": "rounded-expected-goals",
+          "expectedHome": 1.2,
+          "expectedAway": 1.1
+        },
+        "method": "Il risultato esatto centrale arrotonda separatamente i gol attesi delle due squadre. La moda assoluta e mostrata a parte; il criterio centrale riduce la concentrazione artificiale sugli 1-0 nel confronto walk-forward pluristagionale."
       },
       "scoreProfile": {
         "bands": [
@@ -74287,7 +74339,7 @@
         {
           "id": "1x2:1:main",
           "family": "1x2",
-          "scenarioCompatible": true,
+          "scenarioCompatible": false,
           "market": "1X2",
           "selection": "1",
           "providerSelectionId": "5304612733",
@@ -74307,7 +74359,7 @@
         {
           "id": "1x2:X:main",
           "family": "1x2",
-          "scenarioCompatible": false,
+          "scenarioCompatible": true,
           "market": "1X2",
           "selection": "X",
           "providerSelectionId": "5304612734",
@@ -74367,7 +74419,7 @@
         {
           "id": "double-chance:12:main",
           "family": "double-chance",
-          "scenarioCompatible": true,
+          "scenarioCompatible": false,
           "market": "Doppia chance",
           "selection": "12",
           "providerSelectionId": "5304649471",
@@ -74387,7 +74439,7 @@
         {
           "id": "double-chance:X2:main",
           "family": "double-chance",
-          "scenarioCompatible": false,
+          "scenarioCompatible": true,
           "market": "Doppia chance",
           "selection": "X2",
           "providerSelectionId": "5304649472",
@@ -74427,7 +74479,7 @@
         {
           "id": "draw-no-bet:2:main",
           "family": "draw-no-bet",
-          "scenarioCompatible": false,
+          "scenarioCompatible": true,
           "market": "Draw No Bet",
           "selection": "2",
           "providerSelectionId": "5304654749",
@@ -74447,7 +74499,7 @@
         {
           "id": "goals:UNDER:1.5",
           "family": "goals",
-          "scenarioCompatible": true,
+          "scenarioCompatible": false,
           "market": "Under/Over 1.5",
           "selection": "UNDER",
           "providerSelectionId": "5304649434",
@@ -74467,7 +74519,7 @@
         {
           "id": "goals:OVER:1.5",
           "family": "goals",
-          "scenarioCompatible": false,
+          "scenarioCompatible": true,
           "market": "Under/Over 1.5",
           "selection": "OVER",
           "providerSelectionId": "5304649435",
@@ -74567,7 +74619,7 @@
         {
           "id": "btts:GOAL:main",
           "family": "btts",
-          "scenarioCompatible": false,
+          "scenarioCompatible": true,
           "market": "Goal/No Goal",
           "selection": "GOAL",
           "providerSelectionId": "5304612847",
@@ -74587,7 +74639,7 @@
         {
           "id": "btts:NOGOAL:main",
           "family": "btts",
-          "scenarioCompatible": true,
+          "scenarioCompatible": false,
           "market": "Goal/No Goal",
           "selection": "NOGOAL",
           "providerSelectionId": "5304612848",
@@ -74647,7 +74699,7 @@
         {
           "id": "team-goal:SI:main",
           "family": "team-goal",
-          "scenarioCompatible": false,
+          "scenarioCompatible": true,
           "market": "Ospite segna",
           "selection": "SI",
           "providerSelectionId": "5304735217",
@@ -74667,7 +74719,7 @@
         {
           "id": "team-goal:NO:main",
           "family": "team-goal",
-          "scenarioCompatible": true,
+          "scenarioCompatible": false,
           "market": "Ospite segna",
           "selection": "NO",
           "providerSelectionId": "5304735218",
@@ -74712,7 +74764,7 @@
           {
             "id": "double-chance:12:main",
             "family": "double-chance",
-            "scenarioCompatible": true,
+            "scenarioCompatible": false,
             "market": "Doppia chance",
             "selection": "12",
             "providerSelectionId": "5304649471",
@@ -74764,75 +74816,61 @@
           "distancePct": 0,
           "legs": [
             {
-              "label": "Under 2,5 gol",
-              "market": "UNDER/OVER",
-              "variant": "U/O 2.5",
-              "threshold": "2.5",
-              "selection": "UNDER",
-              "providerSelectionId": "5304649450",
-              "odds": 1.6,
-              "overlapKey": "market-under over",
+              "label": "TIAGO GABRIEL almeno 1 falli subiti",
+              "market": "U/O FALLI SUBITI GIOCATORE",
+              "variant": "TIAGO GABRIEL U/O 0.5 FALLI SUBITI",
+              "threshold": "0.5",
+              "selection": "OVER",
+              "providerSelectionId": "5317355694",
+              "odds": 1.4,
+              "overlapKey": "market-u o falli subiti giocatore",
+              "semanticKeys": [],
+              "marketScope": "player"
+            },
+            {
+              "label": "Partita almeno 20 tiri totali",
+              "market": "U/O TIRI TOTALI",
+              "variant": "U/O 19.5 TIRI TOTALI",
+              "threshold": "19.5",
+              "selection": "OVER",
+              "providerSelectionId": "5304648047",
+              "odds": 1.22,
+              "overlapKey": "market-u o tiri totali",
+              "semanticKeys": [
+                "volume-shots-total"
+              ],
+              "marketScope": "match"
+            },
+            {
+              "label": "U/O 0.5 Lecce + U/O 0.5 Monza · OVER+OVER",
+              "market": "COMBO: U/O CASA + U/O OSPITE",
+              "variant": "U/O 0.5 TEAM 1 + U/O 0.5 TEAM 2",
+              "threshold": null,
+              "selection": "OVER+OVER",
+              "providerSelectionId": "5304733738",
+              "odds": 1.83,
+              "overlapKey": "market-combo u o casa u o ospite",
               "semanticKeys": [
                 "goals"
               ],
               "marketScope": "match"
             },
             {
-              "label": "JOCELYN N DRI K. almeno 2 falli subiti",
-              "market": "U/O FALLI SUBITI GIOCATORE",
-              "variant": "JOCELYN N DRI K. U/O 1.5 FALLI SUBITI",
-              "threshold": "1.5",
-              "selection": "OVER",
-              "providerSelectionId": "5317354570",
-              "odds": 1.5,
-              "overlapKey": "market-u o falli subiti giocatore",
-              "semanticKeys": [],
-              "marketScope": "player"
-            },
-            {
-              "label": "Nessun pareggio (12)",
-              "market": "DOPPIA CHANCE",
-              "variant": "DOPPIA CHANCE MULTIESITI",
+              "label": "ALMENO 3 CORNER IN ENTRAMBI I TEMPI · SI",
+              "market": "ALMENO X CORNER IN ENTRAMBI I TEMPI",
+              "variant": "ALMENO 3 CORNER IN ENTRAMBI I TEMPI",
               "threshold": null,
-              "selection": "12",
-              "providerSelectionId": "5304649471",
-              "odds": 1.36,
-              "overlapKey": "market-doppia chance",
+              "selection": "SI",
+              "providerSelectionId": "5315194236",
+              "odds": 1.6,
+              "overlapKey": "market-almeno x corner in entrambi i tempi",
               "semanticKeys": [
-                "result"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "Partita almeno 6 tiri in porta",
-              "market": "U/O TIRI IN PORTA",
-              "variant": "U/O 5.5 TIRI IN PORTA",
-              "threshold": "5.5",
-              "selection": "OVER",
-              "providerSelectionId": "5304648027",
-              "odds": 1.38,
-              "overlapKey": "market-u o tiri in porta",
-              "semanticKeys": [
-                "volume-shots-on-target"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "Partita almeno 18 tiri totali",
-              "market": "U/O TIRI TOTALI",
-              "variant": "U/O 17.5 TIRI TOTALI",
-              "threshold": "17.5",
-              "selection": "OVER",
-              "providerSelectionId": "5317356596",
-              "odds": 1.11,
-              "overlapKey": "market-u o tiri totali",
-              "semanticKeys": [
-                "volume-shots-total"
+                "volume-corners"
               ],
               "marketScope": "match"
             }
           ],
-          "selection": "Under 2,5 gol + JOCELYN N DRI K. almeno 2 falli subiti + Nessun pareggio (12) + Partita almeno 6 tiri in porta + Partita almeno 18 tiri totali",
+          "selection": "TIAGO GABRIEL almeno 1 falli subiti + Partita almeno 20 tiri totali + U/O 0.5 Lecce + U/O 0.5 Monza · OVER+OVER + ALMENO 3 CORNER IN ENTRAMBI I TEMPI · SI",
           "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-12: quota 5 orientativa, 3-6 gambe, mercati distinti, nessuno scenario di base ripetuto o annidato e quote singole 1.10-1.85. Il rischio resta informativo.",
           "probabilityPct": null,
           "prudentProbabilityPct": null,
@@ -74954,23 +74992,9 @@
           "quotaPolicy": "orientativa",
           "eligibilityPolicy": "validita-tecnica-e-intervalli",
           "riskPolicy": "informativa",
-          "odds": 19.96,
-          "distancePct": 0.2,
+          "odds": 20.01,
+          "distancePct": 0.1,
           "legs": [
-            {
-              "label": "Almeno una squadra non segna",
-              "market": "GOAL/NOGOAL",
-              "variant": "GOAL/NO GOAL",
-              "threshold": null,
-              "selection": "NOGOAL",
-              "providerSelectionId": "5304612848",
-              "odds": 1.85,
-              "overlapKey": "market-goal nogoal",
-              "semanticKeys": [
-                "goals"
-              ],
-              "marketScope": "match"
-            },
             {
               "label": "ENTRAMBE ALMENO 1 CORNER ENTRAMBI TEMPI · SI",
               "market": "ENTRAMBE ALMENO X CORNER IN ENTRAMBI I TEMPI",
@@ -74984,32 +75008,6 @@
                 "volume-corners"
               ],
               "marketScope": "match"
-            },
-            {
-              "label": "Nessun pareggio (12)",
-              "market": "DOPPIA CHANCE",
-              "variant": "DOPPIA CHANCE MULTIESITI",
-              "threshold": null,
-              "selection": "12",
-              "providerSelectionId": "5304649471",
-              "odds": 1.36,
-              "overlapKey": "market-doppia chance",
-              "semanticKeys": [
-                "result"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "TIAGO GABRIEL almeno 1 falli commessi",
-              "market": "U/O FALLI COMMESSI GIOCATORE",
-              "variant": "TIAGO GABRIEL U/O 0.5 FALLI COMMESSI",
-              "threshold": "0.5",
-              "selection": "OVER",
-              "providerSelectionId": "5317346328",
-              "odds": 1.25,
-              "overlapKey": "market-u o falli commessi giocatore",
-              "semanticKeys": [],
-              "marketScope": "player"
             },
             {
               "label": "JOCELYN N DRI K. almeno 1 tiri in porta, sostituto incluso",
@@ -75026,18 +75024,32 @@
               "marketScope": "player"
             },
             {
-              "label": "JOCELYN N DRI K. almeno 2 tiri totali, sostituto incluso",
+              "label": "TIAGO GABRIEL almeno 1 tiri totali, sostituto incluso",
               "market": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
-              "variant": "JOCELYN N DRI K. U/O 1.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
-              "threshold": "1.5",
+              "variant": "TIAGO GABRIEL U/O 0.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+              "threshold": "0.5",
               "selection": "OVER",
-              "providerSelectionId": "5317357944",
-              "odds": 1.4,
+              "providerSelectionId": "5317357036",
+              "odds": 1.65,
               "overlapKey": "market-u o tiri totali giocatore duo inc ts",
               "semanticKeys": [
                 "volume-shots-total"
               ],
               "marketScope": "player"
+            },
+            {
+              "label": "Lecce o pareggio (1X)",
+              "market": "DOPPIA CHANCE",
+              "variant": "DOPPIA CHANCE MULTIESITI",
+              "threshold": null,
+              "selection": "1X",
+              "providerSelectionId": "5304649470",
+              "odds": 1.42,
+              "overlapKey": "market-doppia chance",
+              "semanticKeys": [
+                "result"
+              ],
+              "marketScope": "match"
             },
             {
               "label": "TIAGO GABRIEL almeno 1 falli subiti",
@@ -75050,9 +75062,35 @@
               "overlapKey": "market-u o falli subiti giocatore",
               "semanticKeys": [],
               "marketScope": "player"
+            },
+            {
+              "label": "JOCELYN N DRI K. almeno 1 falli commessi",
+              "market": "U/O FALLI COMMESSI GIOCATORE",
+              "variant": "JOCELYN N DRI K. U/O 0.5 FALLI COMMESSI",
+              "threshold": "0.5",
+              "selection": "OVER",
+              "providerSelectionId": "5317338321",
+              "odds": 1.2,
+              "overlapKey": "market-u o falli commessi giocatore",
+              "semanticKeys": [],
+              "marketScope": "player"
+            },
+            {
+              "label": "MULTIGOAL Monza MULTIESITI · 1-2",
+              "market": "MULTIGOAL SQUADRA X",
+              "variant": "MULTIGOAL SQUADRA 2 MULTIESITI",
+              "threshold": null,
+              "selection": "1-2",
+              "providerSelectionId": "5304655023",
+              "odds": 1.57,
+              "overlapKey": "market-multigoal squadra x",
+              "semanticKeys": [
+                "goals"
+              ],
+              "marketScope": "match"
             }
           ],
-          "selection": "Almeno una squadra non segna + ENTRAMBE ALMENO 1 CORNER ENTRAMBI TEMPI · SI + Nessun pareggio (12) + TIAGO GABRIEL almeno 1 falli commessi + JOCELYN N DRI K. almeno 1 tiri in porta, sostituto incluso + JOCELYN N DRI K. almeno 2 tiri totali, sostituto incluso + TIAGO GABRIEL almeno 1 falli subiti",
+          "selection": "ENTRAMBE ALMENO 1 CORNER ENTRAMBI TEMPI · SI + JOCELYN N DRI K. almeno 1 tiri in porta, sostituto incluso + TIAGO GABRIEL almeno 1 tiri totali, sostituto incluso + Lecce o pareggio (1X) + TIAGO GABRIEL almeno 1 falli subiti + JOCELYN N DRI K. almeno 1 falli commessi + MULTIGOAL Monza MULTIESITI · 1-2",
           "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-09-12: quota 20 orientativa, 5-8 gambe, mercati distinti, nessuno scenario di base ripetuto o annidato e quote singole 1.10-1.85. Il rischio resta informativo.",
           "probabilityPct": null,
           "prudentProbabilityPct": null,
@@ -75094,7 +75132,7 @@
           {
             "id": "1x2:1:main",
             "family": "1x2",
-            "scenarioCompatible": true,
+            "scenarioCompatible": false,
             "market": "1X2",
             "selection": "1",
             "providerSelectionId": "5304612733",
@@ -75114,7 +75152,7 @@
           {
             "id": "1x2:X:main",
             "family": "1x2",
-            "scenarioCompatible": false,
+            "scenarioCompatible": true,
             "market": "1X2",
             "selection": "X",
             "providerSelectionId": "5304612734",
@@ -76338,9 +76376,9 @@
             "tier": "Safe",
             "status": "outside-limits",
             "allowed": false,
-            "riskScore": 75.2,
+            "riskScore": 82,
             "riskLevel": "alto",
-            "averageRisk": 75.2,
+            "averageRisk": 82,
             "maxEventRisk": 82,
             "strongDependencies": 0,
             "contradictions": 0,
@@ -76351,51 +76389,37 @@
               "minPrudentExpectedValuePct": 0
             },
             "reasons": [
-              "Rischio medio 75.2 oltre il limite 42.",
+              "Rischio medio 82 oltre il limite 42.",
               "Gamba a rischio 82 oltre il limite 58.",
               "EV prudenziale non disponibile."
             ],
             "events": [
               {
-                "providerSelectionId": "5304649450",
-                "label": "Under 2,5 gol",
-                "riskScore": 65,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5317354570",
-                "label": "JOCELYN N DRI K. almeno 2 falli subiti",
+                "providerSelectionId": "5317355694",
+                "label": "TIAGO GABRIEL almeno 1 falli subiti",
                 "riskScore": 82,
                 "modeled": false
               },
               {
-                "providerSelectionId": "5304649471",
-                "label": "Nessun pareggio (12)",
-                "riskScore": 65,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5304648027",
-                "label": "Partita almeno 6 tiri in porta",
+                "providerSelectionId": "5304648047",
+                "label": "Partita almeno 20 tiri totali",
                 "riskScore": 82,
                 "modeled": false
               },
               {
-                "providerSelectionId": "5317356596",
-                "label": "Partita almeno 18 tiri totali",
+                "providerSelectionId": "5304733738",
+                "label": "U/O 0.5 Lecce + U/O 0.5 Monza · OVER+OVER",
+                "riskScore": 82,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5315194236",
+                "label": "ALMENO 3 CORNER IN ENTRAMBI I TEMPI · SI",
                 "riskScore": 82,
                 "modeled": false
               }
             ],
-            "dependencies": [
-              {
-                "first": "5304649450",
-                "second": "5304649471",
-                "type": "negative",
-                "correlation": -0.288,
-                "intersectionProbabilityPct": 35.6
-              }
-            ]
+            "dependencies": []
           },
           {
             "tier": "Balanced",
@@ -76480,26 +76504,8 @@
             ],
             "events": [
               {
-                "providerSelectionId": "5304612848",
-                "label": "Almeno una squadra non segna",
-                "riskScore": 65,
-                "modeled": false
-              },
-              {
                 "providerSelectionId": "5315194308",
                 "label": "ENTRAMBE ALMENO 1 CORNER ENTRAMBI TEMPI · SI",
-                "riskScore": 82,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5304649471",
-                "label": "Nessun pareggio (12)",
-                "riskScore": 65,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5317346328",
-                "label": "TIAGO GABRIEL almeno 1 falli commessi",
                 "riskScore": 82,
                 "modeled": false
               },
@@ -76510,15 +76516,33 @@
                 "modeled": false
               },
               {
-                "providerSelectionId": "5317357944",
-                "label": "JOCELYN N DRI K. almeno 2 tiri totali, sostituto incluso",
+                "providerSelectionId": "5317357036",
+                "label": "TIAGO GABRIEL almeno 1 tiri totali, sostituto incluso",
                 "riskScore": 82,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5304649470",
+                "label": "Lecce o pareggio (1X)",
+                "riskScore": 65,
                 "modeled": false
               },
               {
                 "providerSelectionId": "5317355694",
                 "label": "TIAGO GABRIEL almeno 1 falli subiti",
                 "riskScore": 82,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5317338321",
+                "label": "JOCELYN N DRI K. almeno 1 falli commessi",
+                "riskScore": 82,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5304655023",
+                "label": "MULTIGOAL Monza MULTIESITI · 1-2",
+                "riskScore": 65,
                 "modeled": false
               }
             ],
@@ -76531,7 +76555,7 @@
       "matchId": "napoli-bologna-2026-27-md-04",
       "generatedAt": "2026-09-10T20:52:11.382Z",
       "status": "preliminary",
-      "engineVersion": "4.11.0",
+      "engineVersion": "4.12.0",
       "probabilities": {
         "final": {
           "1": 45.3,
@@ -76673,11 +76697,11 @@
       ],
       "scoreForecast": {
         "primary": {
-          "score": "1-0",
+          "score": "2-1",
           "outcome": "1",
-          "label": "Scenario coerente con il segno 1X2",
-          "probabilityPct": 10.2,
-          "conditionalProbabilityPct": 22.5,
+          "label": "Risultato esatto centrale",
+          "probabilityPct": 9.2,
+          "conditionalProbabilityPct": 20.3,
           "isAbsoluteMode": false
         },
         "modal": {
@@ -76698,21 +76722,21 @@
             "isAbsoluteMode": true
           },
           {
-            "score": "2-1",
+            "score": "1-0",
             "outcome": "1",
             "label": "Altro risultato probabile",
-            "probabilityPct": 9.2,
-            "conditionalProbabilityPct": 20.3,
+            "probabilityPct": 10.2,
+            "conditionalProbabilityPct": 22.5,
             "isAbsoluteMode": false
           }
         ],
         "display": [
           {
-            "score": "1-0",
+            "score": "2-1",
             "outcome": "1",
-            "label": "Scenario coerente con il segno 1X2",
-            "probabilityPct": 10.2,
-            "conditionalProbabilityPct": 22.5,
+            "label": "Risultato esatto centrale",
+            "probabilityPct": 9.2,
+            "conditionalProbabilityPct": 20.3,
             "isAbsoluteMode": false
           },
           {
@@ -76724,17 +76748,22 @@
             "isAbsoluteMode": true
           },
           {
-            "score": "2-1",
+            "score": "1-0",
             "outcome": "1",
             "label": "Altro risultato probabile",
-            "probabilityPct": 9.2,
-            "conditionalProbabilityPct": 20.3,
+            "probabilityPct": 10.2,
+            "conditionalProbabilityPct": 22.5,
             "isAbsoluteMode": false
           }
         ],
         "coherentWithVerdict": true,
         "forcedOutcomeScenarios": false,
-        "method": "Lo scenario coerente con il segno 1X2 e il punteggio piu probabile dentro quell'esito, ma non e la moda assoluta ne un pronostico esatto centrale. La sintesi pubblica privilegia la fascia gol e mostra i punteggi soltanto come scenari separati."
+        "selection": {
+          "type": "rounded-expected-goals",
+          "expectedHome": 1.5,
+          "expectedAway": 1.2
+        },
+        "method": "Il risultato esatto centrale arrotonda separatamente i gol attesi delle due squadre. La moda assoluta e mostrata a parte; il criterio centrale riduce la concentrazione artificiale sugli 1-0 nel confronto walk-forward pluristagionale."
       },
       "scoreProfile": {
         "bands": [
@@ -77700,7 +77729,7 @@
         {
           "id": "goals:UNDER:1.5",
           "family": "goals",
-          "scenarioCompatible": true,
+          "scenarioCompatible": false,
           "market": "Under/Over 1.5",
           "selection": "UNDER",
           "providerSelectionId": "5304646490",
@@ -77720,7 +77749,7 @@
         {
           "id": "goals:OVER:1.5",
           "family": "goals",
-          "scenarioCompatible": false,
+          "scenarioCompatible": true,
           "market": "Under/Over 1.5",
           "selection": "OVER",
           "providerSelectionId": "5304646491",
@@ -77740,7 +77769,7 @@
         {
           "id": "goals:UNDER:2.5",
           "family": "goals",
-          "scenarioCompatible": true,
+          "scenarioCompatible": false,
           "market": "Under/Over 2.5",
           "selection": "UNDER",
           "providerSelectionId": "5304646510",
@@ -77760,7 +77789,7 @@
         {
           "id": "goals:OVER:2.5",
           "family": "goals",
-          "scenarioCompatible": false,
+          "scenarioCompatible": true,
           "market": "Under/Over 2.5",
           "selection": "OVER",
           "providerSelectionId": "5304646511",
@@ -77820,7 +77849,7 @@
         {
           "id": "btts:GOAL:main",
           "family": "btts",
-          "scenarioCompatible": false,
+          "scenarioCompatible": true,
           "market": "Goal/No Goal",
           "selection": "GOAL",
           "providerSelectionId": "5304642678",
@@ -77840,7 +77869,7 @@
         {
           "id": "btts:NOGOAL:main",
           "family": "btts",
-          "scenarioCompatible": true,
+          "scenarioCompatible": false,
           "market": "Goal/No Goal",
           "selection": "NOGOAL",
           "providerSelectionId": "5304642679",
@@ -77900,7 +77929,7 @@
         {
           "id": "team-goal:SI:main",
           "family": "team-goal",
-          "scenarioCompatible": false,
+          "scenarioCompatible": true,
           "market": "Ospite segna",
           "selection": "SI",
           "providerSelectionId": "5304743035",
@@ -77920,7 +77949,7 @@
         {
           "id": "team-goal:NO:main",
           "family": "team-goal",
-          "scenarioCompatible": true,
+          "scenarioCompatible": false,
           "market": "Ospite segna",
           "selection": "NO",
           "providerSelectionId": "5304743036",
@@ -77986,7 +78015,7 @@
           {
             "id": "goals:OVER:1.5",
             "family": "goals",
-            "scenarioCompatible": false,
+            "scenarioCompatible": true,
             "market": "Under/Over 1.5",
             "selection": "OVER",
             "providerSelectionId": "5304646491",
@@ -79771,12 +79800,12 @@
       "matchId": "sassuolo-juventus-2026-27-md-04",
       "generatedAt": "2026-09-10T20:52:11.382Z",
       "status": "preliminary",
-      "engineVersion": "4.11.0",
+      "engineVersion": "4.12.0",
       "probabilities": {
         "final": {
-          "1": 23.7,
-          "2": 52.1,
-          "X": 24.2
+          "1": 23.3,
+          "2": 52.6,
+          "X": 24.1
         },
         "marketNoMargin": {
           "1": 17.2,
@@ -79784,9 +79813,9 @@
           "X": 25.3
         },
         "historical": {
-          "1": 23.7,
-          "2": 52.1,
-          "X": 24.2
+          "1": 23.3,
+          "2": 52.6,
+          "X": 24.1
         },
         "tactical": {
           "1": 29.7,
@@ -79800,8 +79829,8 @@
         }
       },
       "expectedGoals": {
-        "home": 1.05,
-        "away": 1.68,
+        "home": 1.04,
+        "away": 1.69,
         "total": 2.73,
         "method": "Forze relative attacco/difesa, forma recente corretta per avversario, xG Understat al 25% quando coperti entrambi i club, matchup, probabili XI, obiettivi e correttivo H2H limitato; quote escluse.",
         "components": {
@@ -79809,7 +79838,7 @@
             "attackStrength": 1.023,
             "defenceWeakness": 1.115,
             "lineup": {
-              "attack": 0.996,
+              "attack": 0.986,
               "defenceWeakness": 0.992,
               "resolved": 11,
               "status": "usable"
@@ -79819,9 +79848,9 @@
             "attackStrength": 1.122,
             "defenceWeakness": 0.786,
             "lineup": {
-              "attack": 0.979,
+              "attack": 0.987,
               "defenceWeakness": 0.978,
-              "resolved": 11,
+              "resolved": 10,
               "status": "usable"
             }
           },
@@ -79869,8 +79898,8 @@
           "xg": {
             "weight": 0.25,
             "status": "used",
-            "homeRaw": 1.136,
-            "awayRaw": 1.927,
+            "homeRaw": 1.125,
+            "awayRaw": 1.942,
             "source": "Understat 2025-26"
           }
         }
@@ -79913,11 +79942,11 @@
       ],
       "scoreForecast": {
         "primary": {
-          "score": "0-1",
+          "score": "1-2",
           "outcome": "2",
-          "label": "Scenario coerente con il segno 1X2",
-          "probabilityPct": 11,
-          "conditionalProbabilityPct": 21,
+          "label": "Risultato esatto centrale",
+          "probabilityPct": 9.7,
+          "conditionalProbabilityPct": 18.4,
           "isAbsoluteMode": false
         },
         "modal": {
@@ -79938,21 +79967,21 @@
             "isAbsoluteMode": true
           },
           {
-            "score": "1-2",
+            "score": "0-1",
             "outcome": "2",
             "label": "Altro risultato probabile",
-            "probabilityPct": 9.7,
-            "conditionalProbabilityPct": 18.6,
+            "probabilityPct": 11,
+            "conditionalProbabilityPct": 21,
             "isAbsoluteMode": false
           }
         ],
         "display": [
           {
-            "score": "0-1",
+            "score": "1-2",
             "outcome": "2",
-            "label": "Scenario coerente con il segno 1X2",
-            "probabilityPct": 11,
-            "conditionalProbabilityPct": 21,
+            "label": "Risultato esatto centrale",
+            "probabilityPct": 9.7,
+            "conditionalProbabilityPct": 18.4,
             "isAbsoluteMode": false
           },
           {
@@ -79964,17 +79993,22 @@
             "isAbsoluteMode": true
           },
           {
-            "score": "1-2",
+            "score": "0-1",
             "outcome": "2",
             "label": "Altro risultato probabile",
-            "probabilityPct": 9.7,
-            "conditionalProbabilityPct": 18.6,
+            "probabilityPct": 11,
+            "conditionalProbabilityPct": 21,
             "isAbsoluteMode": false
           }
         ],
         "coherentWithVerdict": true,
         "forcedOutcomeScenarios": false,
-        "method": "Lo scenario coerente con il segno 1X2 e il punteggio piu probabile dentro quell'esito, ma non e la moda assoluta ne un pronostico esatto centrale. La sintesi pubblica privilegia la fascia gol e mostra i punteggi soltanto come scenari separati."
+        "selection": {
+          "type": "rounded-expected-goals",
+          "expectedHome": 1,
+          "expectedAway": 1.7
+        },
+        "method": "Il risultato esatto centrale arrotonda separatamente i gol attesi delle due squadre. La moda assoluta e mostrata a parte; il criterio centrale riduce la concentrazione artificiale sugli 1-0 nel confronto walk-forward pluristagionale."
       },
       "scoreProfile": {
         "bands": [
@@ -79996,7 +80030,7 @@
         ],
         "dominantBand": "balanced",
         "topThreeCoveragePct": 32.2,
-        "modalGapPct": 0.5,
+        "modalGapPct": 0.4,
         "interpretation": "Il primo punteggio e soltanto la moda della distribuzione, non un risultato centrale o certo."
       },
       "verdict": {
@@ -80009,16 +80043,16 @@
         "level": "alta"
       },
       "surprise": {
-        "value": 51,
+        "value": 50,
         "level": "medio",
         "upsetOutcome": "1",
-        "upsetProbabilityPct": 23.7,
+        "upsetProbabilityPct": 23.3,
         "explanation": "Misura apertura della gara, probabilita dell'esito sfavorito, divergenza tra mercato e dati tecnici e incompletezza prepartita. Non seleziona automaticamente l'outsider."
       },
       "matchProjection": {
         "shotsTotal": {
-          "min": 21,
-          "central": 26.7,
+          "min": 20,
+          "central": 26.6,
           "max": 33,
           "interval": "p20-p80-independent",
           "sd": 6.77,
@@ -80026,11 +80060,11 @@
           "dataStatus": "venue-history"
         },
         "shotsOnTarget": {
-          "min": 6,
-          "central": 8.8,
+          "min": 5,
+          "central": 8.5,
           "max": 12,
           "interval": "p20-p80-independent",
-          "sd": 3.18,
+          "sd": 3.05,
           "sampleSize": 46,
           "dataStatus": "venue-history"
         },
@@ -80039,7 +80073,7 @@
           "central": 9,
           "max": 13,
           "interval": "p20-p80-independent",
-          "sd": 4.19,
+          "sd": 4.18,
           "sampleSize": 46,
           "dataStatus": "venue-history"
         },
@@ -80086,10 +80120,10 @@
           },
           "shotsOnTarget": {
             "min": 1,
-            "central": 4.1,
+            "central": 3.8,
             "max": 6,
             "interval": "p20-p80",
-            "sd": 2.27,
+            "sd": 2.1,
             "sampleSize": 46,
             "dataStatus": "venue-history",
             "inputs": [
@@ -80152,7 +80186,7 @@
             "central": 2.2,
             "max": 4
           },
-          "expectedGoals": 1.05,
+          "expectedGoals": 1.04,
           "basis": "Volumi ESPN 2025/26 prodotti e concessi per sede (45% squadra, 35% avversaria), ultime otto gare con peso 20%, matchup, possesso e probabile XI. Intervallo p20-p80 osservato."
         },
         {
@@ -80166,10 +80200,10 @@
           },
           "shotsTotal": {
             "min": 10,
-            "central": 15.2,
+            "central": 15.1,
             "max": 19,
             "interval": "p20-p80",
-            "sd": 5.46,
+            "sd": 5.45,
             "sampleSize": 46,
             "dataStatus": "venue-history",
             "inputs": [
@@ -80198,7 +80232,7 @@
             "central": 4.7,
             "max": 7,
             "interval": "p20-p80",
-            "sd": 2.22,
+            "sd": 2.21,
             "sampleSize": 46,
             "dataStatus": "venue-history",
             "inputs": [
@@ -80227,7 +80261,7 @@
             "central": 5.1,
             "max": 7,
             "interval": "p20-p80",
-            "sd": 3.45,
+            "sd": 3.44,
             "sampleSize": 46,
             "dataStatus": "venue-history",
             "inputs": [
@@ -80261,22 +80295,58 @@
             "central": 1.3,
             "max": 3
           },
-          "expectedGoals": 1.68,
+          "expectedGoals": 1.69,
           "basis": "Volumi ESPN 2025/26 prodotti e concessi per sede (45% squadra, 35% avversaria), ultime otto gare con peso 20%, matchup, possesso e probabile XI. Intervallo p20-p80 osservato."
         }
       ],
       "shooters": {
         "totalShots": [
           {
+            "name": "Kerim Alajbegović",
+            "lineupName": "Alajbegovic",
+            "playerId": "kerim-alajbegovic",
+            "team": "Juventus",
+            "teamId": "juventus",
+            "venue": "away",
+            "role": "Attaccante",
+            "projectedShots": 3.76,
+            "projectedShotsOnTarget": 1.36,
+            "foulsCommittedPer90": 1.37,
+            "minutes": 1912,
+            "dataStatus": "verified-history",
+            "markets": {
+              "shotsOver05": {
+                "providerMarketId": "810825571",
+                "providerSelectionId": "5317169407",
+                "marketCode": "28507",
+                "selection": "OVER",
+                "threshold": 0.5,
+                "odds": 1.02,
+                "replacementIncluded": true
+              },
+              "shotsOnTargetOver05": {
+                "providerMarketId": "810825765",
+                "providerSelectionId": "5317170183",
+                "marketCode": "28506",
+                "selection": "OVER",
+                "threshold": 0.5,
+                "odds": 1.5,
+                "replacementIncluded": true
+              }
+            },
+            "rank": 1,
+            "marketKey": "shotsOver05"
+          },
+          {
             "name": "Francisco Conceição",
-            "lineupName": "Francisco Conceição",
+            "lineupName": "Conceicao",
             "playerId": "francisco-conceicao",
             "team": "Juventus",
             "teamId": "juventus",
             "venue": "away",
             "role": "Attaccante",
-            "projectedShots": 3.23,
-            "projectedShotsOnTarget": 1.01,
+            "projectedShots": 3.06,
+            "projectedShotsOnTarget": 0.95,
             "foulsCommittedPer90": 1.37,
             "minutes": 2098,
             "dataStatus": "verified-history",
@@ -80292,83 +80362,19 @@
                 "replacementIncluded": true
               }
             },
-            "rank": 1,
-            "marketKey": "shotsOver05"
-          },
-          {
-            "name": "Nicolás González",
-            "lineupName": "Nicolás González",
-            "playerId": "nicolas-gonzalez",
-            "team": "Juventus",
-            "teamId": "juventus",
-            "venue": "away",
-            "role": "Attaccante",
-            "projectedShots": 2.79,
-            "projectedShotsOnTarget": 0.9,
-            "foulsCommittedPer90": 0,
-            "minutes": 17,
-            "dataStatus": "limited-history",
-            "markets": {
-              "shotsOver05": null,
-              "shotsOnTargetOver05": {
-                "providerMarketId": "810825744",
-                "providerSelectionId": "5317170099",
-                "marketCode": "28506",
-                "selection": "OVER",
-                "threshold": 0.5,
-                "odds": 1.33,
-                "replacementIncluded": true
-              }
-            },
             "rank": 2,
             "marketKey": "shotsOver05"
           },
           {
-            "name": "Kieron Bowie",
-            "lineupName": "Kieron Bowie",
-            "playerId": "kieron-bowie",
-            "team": "Sassuolo",
-            "teamId": "sassuolo",
-            "venue": "home",
-            "role": "Attaccante",
-            "projectedShots": 2.2,
-            "projectedShotsOnTarget": 0.75,
-            "foulsCommittedPer90": 2.54,
-            "minutes": 1204,
-            "dataStatus": "verified-history",
-            "markets": {
-              "shotsOver05": {
-                "providerMarketId": "810825642",
-                "providerSelectionId": "5317169691",
-                "marketCode": "28507",
-                "selection": "OVER",
-                "threshold": 0.5,
-                "odds": 1.08,
-                "replacementIncluded": true
-              },
-              "shotsOnTargetOver05": {
-                "providerMarketId": "810825755",
-                "providerSelectionId": "5317170143",
-                "marketCode": "28506",
-                "selection": "OVER",
-                "threshold": 0.5,
-                "odds": 1.8,
-                "replacementIncluded": true
-              }
-            },
-            "rank": 3,
-            "marketKey": "shotsOver05"
-          },
-          {
             "name": "Armand Laurienté",
-            "lineupName": "Armand Laurienté",
+            "lineupName": "Laurienté",
             "playerId": "armand-lauriente",
             "team": "Sassuolo",
             "teamId": "sassuolo",
             "venue": "home",
             "role": "Attaccante",
-            "projectedShots": 2.19,
-            "projectedShotsOnTarget": 0.79,
+            "projectedShots": 2.36,
+            "projectedShotsOnTarget": 0.84,
             "foulsCommittedPer90": 1.45,
             "minutes": 2614,
             "dataStatus": "verified-history",
@@ -80392,39 +80398,75 @@
                 "replacementIncluded": true
               }
             },
+            "rank": 3,
+            "marketKey": "shotsOver05"
+          },
+          {
+            "name": "Sebastiano Esposito",
+            "lineupName": "Esposito",
+            "playerId": "sebastiano-esposito",
+            "team": "Sassuolo",
+            "teamId": "sassuolo",
+            "venue": "home",
+            "role": "Attaccante",
+            "projectedShots": 1.96,
+            "projectedShotsOnTarget": 0.58,
+            "foulsCommittedPer90": 1.5,
+            "minutes": 2700,
+            "dataStatus": "verified-history",
+            "markets": {
+              "shotsOver05": {
+                "providerMarketId": "810825601",
+                "providerSelectionId": "5317169527",
+                "marketCode": "28507",
+                "selection": "OVER",
+                "threshold": 0.5,
+                "odds": 1.05,
+                "replacementIncluded": true
+              },
+              "shotsOnTargetOver05": {
+                "providerMarketId": "810825752",
+                "providerSelectionId": "5317170131",
+                "marketCode": "28506",
+                "selection": "OVER",
+                "threshold": 0.5,
+                "odds": 1.65,
+                "replacementIncluded": true
+              }
+            },
             "rank": 4,
             "marketKey": "shotsOver05"
           },
           {
-            "name": "Woltemade",
-            "lineupName": "Woltemade",
-            "playerId": "woltemade",
-            "team": "Juventus",
-            "teamId": "juventus",
-            "venue": "away",
+            "name": "Domenico Berardi",
+            "lineupName": "Berardi",
+            "playerId": "domenico-berardi",
+            "team": "Sassuolo",
+            "teamId": "sassuolo",
+            "venue": "home",
             "role": "Attaccante",
-            "projectedShots": 1.92,
-            "projectedShotsOnTarget": 0.71,
-            "foulsCommittedPer90": 0.94,
-            "minutes": 2002,
+            "projectedShots": 1.91,
+            "projectedShotsOnTarget": 0.87,
+            "foulsCommittedPer90": 1.38,
+            "minutes": 2016,
             "dataStatus": "verified-history",
             "markets": {
               "shotsOver05": {
-                "providerMarketId": "810825539",
-                "providerSelectionId": "5317169279",
+                "providerMarketId": "810825516",
+                "providerSelectionId": "5317169187",
                 "marketCode": "28507",
                 "selection": "OVER",
                 "threshold": 0.5,
-                "odds": 1.02,
+                "odds": 1.08,
                 "replacementIncluded": true
               },
               "shotsOnTargetOver05": {
-                "providerMarketId": "810825739",
-                "providerSelectionId": "5317170079",
+                "providerMarketId": "810825729",
+                "providerSelectionId": "5317170037",
                 "marketCode": "28506",
                 "selection": "OVER",
                 "threshold": 0.5,
-                "odds": 1.4,
+                "odds": 1.75,
                 "replacementIncluded": true
               }
             },
@@ -80434,15 +80476,51 @@
         ],
         "shotsOnTarget": [
           {
+            "name": "Kerim Alajbegović",
+            "lineupName": "Alajbegovic",
+            "playerId": "kerim-alajbegovic",
+            "team": "Juventus",
+            "teamId": "juventus",
+            "venue": "away",
+            "role": "Attaccante",
+            "projectedShots": 3.76,
+            "projectedShotsOnTarget": 1.36,
+            "foulsCommittedPer90": 1.37,
+            "minutes": 1912,
+            "dataStatus": "verified-history",
+            "markets": {
+              "shotsOver05": {
+                "providerMarketId": "810825571",
+                "providerSelectionId": "5317169407",
+                "marketCode": "28507",
+                "selection": "OVER",
+                "threshold": 0.5,
+                "odds": 1.02,
+                "replacementIncluded": true
+              },
+              "shotsOnTargetOver05": {
+                "providerMarketId": "810825765",
+                "providerSelectionId": "5317170183",
+                "marketCode": "28506",
+                "selection": "OVER",
+                "threshold": 0.5,
+                "odds": 1.5,
+                "replacementIncluded": true
+              }
+            },
+            "rank": 1,
+            "marketKey": "shotsOnTargetOver05"
+          },
+          {
             "name": "Francisco Conceição",
-            "lineupName": "Francisco Conceição",
+            "lineupName": "Conceicao",
             "playerId": "francisco-conceicao",
             "team": "Juventus",
             "teamId": "juventus",
             "venue": "away",
             "role": "Attaccante",
-            "projectedShots": 3.23,
-            "projectedShotsOnTarget": 1.01,
+            "projectedShots": 3.06,
+            "projectedShotsOnTarget": 0.95,
             "foulsCommittedPer90": 1.37,
             "minutes": 2098,
             "dataStatus": "verified-history",
@@ -80458,47 +80536,19 @@
                 "replacementIncluded": true
               }
             },
-            "rank": 1,
-            "marketKey": "shotsOnTargetOver05"
-          },
-          {
-            "name": "Nicolás González",
-            "lineupName": "Nicolás González",
-            "playerId": "nicolas-gonzalez",
-            "team": "Juventus",
-            "teamId": "juventus",
-            "venue": "away",
-            "role": "Attaccante",
-            "projectedShots": 2.79,
-            "projectedShotsOnTarget": 0.9,
-            "foulsCommittedPer90": 0,
-            "minutes": 17,
-            "dataStatus": "limited-history",
-            "markets": {
-              "shotsOver05": null,
-              "shotsOnTargetOver05": {
-                "providerMarketId": "810825744",
-                "providerSelectionId": "5317170099",
-                "marketCode": "28506",
-                "selection": "OVER",
-                "threshold": 0.5,
-                "odds": 1.33,
-                "replacementIncluded": true
-              }
-            },
             "rank": 2,
             "marketKey": "shotsOnTargetOver05"
           },
           {
             "name": "Domenico Berardi",
-            "lineupName": "Domenico Berardi",
+            "lineupName": "Berardi",
             "playerId": "domenico-berardi",
             "team": "Sassuolo",
             "teamId": "sassuolo",
             "venue": "home",
             "role": "Attaccante",
-            "projectedShots": 1.78,
-            "projectedShotsOnTarget": 0.82,
+            "projectedShots": 1.91,
+            "projectedShotsOnTarget": 0.87,
             "foulsCommittedPer90": 1.38,
             "minutes": 2016,
             "dataStatus": "verified-history",
@@ -80527,14 +80577,14 @@
           },
           {
             "name": "Armand Laurienté",
-            "lineupName": "Armand Laurienté",
+            "lineupName": "Laurienté",
             "playerId": "armand-lauriente",
             "team": "Sassuolo",
             "teamId": "sassuolo",
             "venue": "home",
             "role": "Attaccante",
-            "projectedShots": 2.19,
-            "projectedShotsOnTarget": 0.79,
+            "projectedShots": 2.36,
+            "projectedShotsOnTarget": 0.84,
             "foulsCommittedPer90": 1.45,
             "minutes": 2614,
             "dataStatus": "verified-history",
@@ -80562,35 +80612,35 @@
             "marketKey": "shotsOnTargetOver05"
           },
           {
-            "name": "Kieron Bowie",
-            "lineupName": "Kieron Bowie",
-            "playerId": "kieron-bowie",
+            "name": "Sebastiano Esposito",
+            "lineupName": "Esposito",
+            "playerId": "sebastiano-esposito",
             "team": "Sassuolo",
             "teamId": "sassuolo",
             "venue": "home",
             "role": "Attaccante",
-            "projectedShots": 2.2,
-            "projectedShotsOnTarget": 0.75,
-            "foulsCommittedPer90": 2.54,
-            "minutes": 1204,
+            "projectedShots": 1.96,
+            "projectedShotsOnTarget": 0.58,
+            "foulsCommittedPer90": 1.5,
+            "minutes": 2700,
             "dataStatus": "verified-history",
             "markets": {
               "shotsOver05": {
-                "providerMarketId": "810825642",
-                "providerSelectionId": "5317169691",
+                "providerMarketId": "810825601",
+                "providerSelectionId": "5317169527",
                 "marketCode": "28507",
                 "selection": "OVER",
                 "threshold": 0.5,
-                "odds": 1.08,
+                "odds": 1.05,
                 "replacementIncluded": true
               },
               "shotsOnTargetOver05": {
-                "providerMarketId": "810825755",
-                "providerSelectionId": "5317170143",
+                "providerMarketId": "810825752",
+                "providerSelectionId": "5317170131",
                 "marketCode": "28506",
                 "selection": "OVER",
                 "threshold": 0.5,
-                "odds": 1.8,
+                "odds": 1.65,
                 "replacementIncluded": true
               }
             },
@@ -80601,7 +80651,21 @@
       },
       "likelyBooked": [
         {
-          "name": "Kristian Thorstvedt",
+          "name": "Lipani",
+          "teamId": "sassuolo",
+          "role": "Centrocampista",
+          "riskScore": 60,
+          "evidence": [
+            "0.26 cartellini/90",
+            "2.45 falli/90",
+            "duelli sul canale centrale"
+          ],
+          "dataStatus": "verified-history",
+          "rank": 1,
+          "possibleFirstBooked": true
+        },
+        {
+          "name": "Thorstvedt",
           "teamId": "sassuolo",
           "role": "Centrocampista",
           "riskScore": 56,
@@ -80611,11 +80675,11 @@
             "duelli sul canale destro"
           ],
           "dataStatus": "verified-history",
-          "rank": 1,
-          "possibleFirstBooked": true
+          "rank": 2,
+          "possibleFirstBooked": false
         },
         {
-          "name": "Nemanja Matic",
+          "name": "Matic",
           "teamId": "sassuolo",
           "role": "Centrocampista",
           "riskScore": 55,
@@ -80625,11 +80689,11 @@
             "duelli sul canale centrale"
           ],
           "dataStatus": "verified-history",
-          "rank": 2,
+          "rank": 3,
           "possibleFirstBooked": false
         },
         {
-          "name": "Teun Koopmeiners",
+          "name": "Koopmeiners",
           "teamId": "juventus",
           "role": "Centrocampista",
           "riskScore": 54,
@@ -80639,7 +80703,7 @@
             "duelli sul canale sinistro"
           ],
           "dataStatus": "verified-history",
-          "rank": 3,
+          "rank": 4,
           "possibleFirstBooked": false
         },
         {
@@ -80653,35 +80717,21 @@
             "duelli sul canale centrale"
           ],
           "dataStatus": "verified-history",
-          "rank": 4,
-          "possibleFirstBooked": false
-        },
-        {
-          "name": "Zeki Çelik",
-          "teamId": "juventus",
-          "role": "Difensore",
-          "riskScore": 53,
-          "evidence": [
-            "0.1 cartellini/90",
-            "1.14 falli/90",
-            "duelli sul canale destro"
-          ],
-          "dataStatus": "verified-history",
           "rank": 5,
           "possibleFirstBooked": false
         }
       ],
       "mvpCandidate": {
-        "name": "Woltemade",
+        "name": "Alajbegovic",
         "teamId": "juventus",
         "role": "Attaccante",
-        "score": 54.2,
+        "score": 58.8,
         "evidence": [
-          "0.36 gol/90",
-          "0.13 assist/90",
-          "0.58 tiri in porta/90",
+          "0.42 gol/90",
+          "0.14 assist/90",
+          "1.6 tiri in porta/90",
           "storico MVP Serie A: N/D",
-          "scenario squadra 52.1% vittoria · 1.68 gol attesi"
+          "scenario squadra 52.6% vittoria · 1.69 gol attesi"
         ],
         "confidence": "moderata",
         "weights": {
@@ -80694,11 +80744,11 @@
           "dataReliability": 0.05
         },
         "components": {
-          "resultScenario": 52.1,
-          "individualProduction": 44.5,
+          "resultScenario": 52.6,
+          "individualProduction": 66.7,
           "historicalRating": 50,
           "officialMvpHistory": 50,
-          "tacticalFit": 87,
+          "tacticalFit": 87.2,
           "opponentHistory": 50,
           "dataReliability": 70
         },
@@ -80710,9 +80760,9 @@
           "awards": null,
           "recentAwards": null,
           "opponentAwards": null,
-          "appearances": 34,
-          "starts": 25,
-          "minutes": 2002,
+          "appearances": 28,
+          "starts": 22,
+          "minutes": 1912,
           "ratePerStartPct": null,
           "awardsPer1000Minutes": null,
           "sourceUrl": "https://www.legaseriea.it/serie-a/awards/player-of-the-match"
@@ -80752,14 +80802,14 @@
           "selection": "1",
           "providerSelectionId": "5304662220",
           "odds": 5.5,
-          "modelProbabilityPct": 23.7,
-          "conservativeProbabilityPct": 18.9,
-          "fairOdds": 4.22,
+          "modelProbabilityPct": 23.3,
+          "conservativeProbabilityPct": 18.6,
+          "fairOdds": 4.29,
           "marketNoMarginPct": 17.2,
-          "edgePct": 6.4,
-          "expectedValuePct": 30.3,
-          "conservativeExpectedValuePct": 4.1,
-          "sensitivityWidthPct": 10.1,
+          "edgePct": 6.1,
+          "expectedValuePct": 28.1,
+          "conservativeExpectedValuePct": 2.2,
+          "sensitivityWidthPct": 10,
           "confidence": "Media",
           "qualifies": true,
           "classification": "value"
@@ -80772,14 +80822,14 @@
           "selection": "X",
           "providerSelectionId": "5304662221",
           "odds": 3.75,
-          "modelProbabilityPct": 24.2,
-          "conservativeProbabilityPct": 22.5,
-          "fairOdds": 4.13,
+          "modelProbabilityPct": 24.1,
+          "conservativeProbabilityPct": 22.4,
+          "fairOdds": 4.14,
           "marketNoMarginPct": 25.3,
-          "edgePct": -1.1,
-          "expectedValuePct": -9.2,
-          "conservativeExpectedValuePct": -15.6,
-          "sensitivityWidthPct": 3.4,
+          "edgePct": -1.2,
+          "expectedValuePct": -9.5,
+          "conservativeExpectedValuePct": -16.1,
+          "sensitivityWidthPct": 3.5,
           "confidence": "Alta",
           "qualifies": false,
           "classification": "neutrale"
@@ -80792,13 +80842,13 @@
           "selection": "2",
           "providerSelectionId": "5304662222",
           "odds": 1.65,
-          "modelProbabilityPct": 52.1,
-          "conservativeProbabilityPct": 45.5,
-          "fairOdds": 1.92,
+          "modelProbabilityPct": 52.6,
+          "conservativeProbabilityPct": 45.9,
+          "fairOdds": 1.9,
           "marketNoMarginPct": 57.5,
-          "edgePct": -5.4,
-          "expectedValuePct": -14.1,
-          "conservativeExpectedValuePct": -25,
+          "edgePct": -4.9,
+          "expectedValuePct": -13.3,
+          "conservativeExpectedValuePct": -24.2,
           "sensitivityWidthPct": 13.1,
           "confidence": "Media",
           "qualifies": false,
@@ -80812,13 +80862,13 @@
           "selection": "1X",
           "providerSelectionId": "5304672290",
           "odds": 2.2,
-          "modelProbabilityPct": 47.9,
-          "conservativeProbabilityPct": 41.4,
-          "fairOdds": 2.09,
+          "modelProbabilityPct": 47.4,
+          "conservativeProbabilityPct": 41,
+          "fairOdds": 2.11,
           "marketNoMarginPct": 42.5,
-          "edgePct": 5.4,
-          "expectedValuePct": 5.4,
-          "conservativeExpectedValuePct": -8.8,
+          "edgePct": 4.9,
+          "expectedValuePct": 4.3,
+          "conservativeExpectedValuePct": -9.9,
           "sensitivityWidthPct": 13.1,
           "confidence": "Media",
           "qualifies": false,
@@ -80832,14 +80882,14 @@
           "selection": "12",
           "providerSelectionId": "5304672291",
           "odds": 1.25,
-          "modelProbabilityPct": 75.8,
-          "conservativeProbabilityPct": 74,
+          "modelProbabilityPct": 75.9,
+          "conservativeProbabilityPct": 74.1,
           "fairOdds": 1.32,
           "marketNoMarginPct": 74.7,
-          "edgePct": 1.1,
-          "expectedValuePct": -5.3,
-          "conservativeExpectedValuePct": -7.4,
-          "sensitivityWidthPct": 3.4,
+          "edgePct": 1.2,
+          "expectedValuePct": -5.2,
+          "conservativeExpectedValuePct": -7.3,
+          "sensitivityWidthPct": 3.5,
           "confidence": "Alta",
           "qualifies": false,
           "classification": "probabile ma senza valore"
@@ -80852,14 +80902,14 @@
           "selection": "X2",
           "providerSelectionId": "5304672292",
           "odds": 1.15,
-          "modelProbabilityPct": 76.3,
-          "conservativeProbabilityPct": 71,
-          "fairOdds": 1.31,
+          "modelProbabilityPct": 76.7,
+          "conservativeProbabilityPct": 71.4,
+          "fairOdds": 1.3,
           "marketNoMarginPct": 82.8,
-          "edgePct": -6.4,
-          "expectedValuePct": -12.2,
-          "conservativeExpectedValuePct": -18.4,
-          "sensitivityWidthPct": 10.1,
+          "edgePct": -6.1,
+          "expectedValuePct": -11.8,
+          "conservativeExpectedValuePct": -17.9,
+          "sensitivityWidthPct": 10,
           "confidence": "Media",
           "qualifies": false,
           "classification": "probabile ma senza valore"
@@ -80872,14 +80922,14 @@
           "selection": "1",
           "providerSelectionId": "5304676268",
           "odds": 4,
-          "modelProbabilityPct": 31.3,
-          "conservativeProbabilityPct": 24.4,
-          "fairOdds": 3.2,
+          "modelProbabilityPct": 30.7,
+          "conservativeProbabilityPct": 24,
+          "fairOdds": 3.26,
           "marketNoMarginPct": 23.4,
-          "edgePct": 7.9,
-          "expectedValuePct": 19,
-          "conservativeExpectedValuePct": -1.8,
-          "sensitivityWidthPct": 14.5,
+          "edgePct": 7.3,
+          "expectedValuePct": 17.3,
+          "conservativeExpectedValuePct": -3.3,
+          "sensitivityWidthPct": 14.4,
           "confidence": "Bassa",
           "qualifies": false,
           "classification": "fragile"
@@ -80892,14 +80942,14 @@
           "selection": "2",
           "providerSelectionId": "5304676269",
           "odds": 1.22,
-          "modelProbabilityPct": 68.7,
-          "conservativeProbabilityPct": 61,
-          "fairOdds": 1.45,
+          "modelProbabilityPct": 69.3,
+          "conservativeProbabilityPct": 61.6,
+          "fairOdds": 1.44,
           "marketNoMarginPct": 76.6,
-          "edgePct": -7.9,
-          "expectedValuePct": -12.2,
-          "conservativeExpectedValuePct": -19,
-          "sensitivityWidthPct": 14.5,
+          "edgePct": -7.3,
+          "expectedValuePct": -11.7,
+          "conservativeExpectedValuePct": -18.5,
+          "sensitivityWidthPct": 14.4,
           "confidence": "Bassa",
           "qualifies": false,
           "classification": "probabile ma senza valore"
@@ -80907,7 +80957,7 @@
         {
           "id": "goals:UNDER:1.5",
           "family": "goals",
-          "scenarioCompatible": true,
+          "scenarioCompatible": false,
           "market": "Under/Over 1.5",
           "selection": "UNDER",
           "providerSelectionId": "5304672254",
@@ -80927,7 +80977,7 @@
         {
           "id": "goals:OVER:1.5",
           "family": "goals",
-          "scenarioCompatible": false,
+          "scenarioCompatible": true,
           "market": "Under/Over 1.5",
           "selection": "OVER",
           "providerSelectionId": "5304672255",
@@ -80947,7 +80997,7 @@
         {
           "id": "goals:UNDER:2.5",
           "family": "goals",
-          "scenarioCompatible": true,
+          "scenarioCompatible": false,
           "market": "Under/Over 2.5",
           "selection": "UNDER",
           "providerSelectionId": "5304672270",
@@ -80967,7 +81017,7 @@
         {
           "id": "goals:OVER:2.5",
           "family": "goals",
-          "scenarioCompatible": false,
+          "scenarioCompatible": true,
           "market": "Under/Over 2.5",
           "selection": "OVER",
           "providerSelectionId": "5304672271",
@@ -81027,18 +81077,18 @@
         {
           "id": "btts:GOAL:main",
           "family": "btts",
-          "scenarioCompatible": false,
+          "scenarioCompatible": true,
           "market": "Goal/No Goal",
           "selection": "GOAL",
           "providerSelectionId": "5304662334",
           "odds": 1.65,
-          "modelProbabilityPct": 52.9,
-          "conservativeProbabilityPct": 47.7,
-          "fairOdds": 1.89,
+          "modelProbabilityPct": 52.7,
+          "conservativeProbabilityPct": 47.5,
+          "fairOdds": 1.9,
           "marketNoMarginPct": 56,
-          "edgePct": -3.1,
-          "expectedValuePct": -12.7,
-          "conservativeExpectedValuePct": -21.4,
+          "edgePct": -3.3,
+          "expectedValuePct": -13,
+          "conservativeExpectedValuePct": -21.6,
           "sensitivityWidthPct": 10,
           "confidence": "Media",
           "qualifies": false,
@@ -81047,18 +81097,18 @@
         {
           "id": "btts:NOGOAL:main",
           "family": "btts",
-          "scenarioCompatible": true,
+          "scenarioCompatible": false,
           "market": "Goal/No Goal",
           "selection": "NOGOAL",
           "providerSelectionId": "5304662335",
           "odds": 2.1,
-          "modelProbabilityPct": 47.1,
-          "conservativeProbabilityPct": 42.3,
+          "modelProbabilityPct": 47.3,
+          "conservativeProbabilityPct": 42.5,
           "fairOdds": 2.12,
           "marketNoMarginPct": 44,
-          "edgePct": 3.1,
-          "expectedValuePct": -1.1,
-          "conservativeExpectedValuePct": -11.2,
+          "edgePct": 3.3,
+          "expectedValuePct": -0.7,
+          "conservativeExpectedValuePct": -10.8,
           "sensitivityWidthPct": 10,
           "confidence": "Media",
           "qualifies": false,
@@ -81067,38 +81117,38 @@
         {
           "id": "team-goal:SI:main",
           "family": "team-goal",
-          "scenarioCompatible": false,
+          "scenarioCompatible": true,
           "market": "Casa segna",
           "selection": "SI",
           "providerSelectionId": "5304744160",
           "odds": 1.45,
-          "modelProbabilityPct": 65,
-          "conservativeProbabilityPct": 61.1,
-          "fairOdds": 1.54,
+          "modelProbabilityPct": 64.7,
+          "conservativeProbabilityPct": 60.8,
+          "fairOdds": 1.55,
           "marketNoMarginPct": 63.3,
-          "edgePct": 1.7,
-          "expectedValuePct": -5.7,
-          "conservativeExpectedValuePct": -11.4,
+          "edgePct": 1.4,
+          "expectedValuePct": -6.3,
+          "conservativeExpectedValuePct": -11.9,
           "sensitivityWidthPct": 7.4,
           "confidence": "Alta",
           "qualifies": false,
-          "classification": "probabile ma senza valore"
+          "classification": "neutrale"
         },
         {
           "id": "team-goal:NO:main",
           "family": "team-goal",
-          "scenarioCompatible": true,
+          "scenarioCompatible": false,
           "market": "Casa segna",
           "selection": "NO",
           "providerSelectionId": "5304744161",
           "odds": 2.5,
-          "modelProbabilityPct": 35,
-          "conservativeProbabilityPct": 31.5,
-          "fairOdds": 2.86,
+          "modelProbabilityPct": 35.3,
+          "conservativeProbabilityPct": 31.9,
+          "fairOdds": 2.83,
           "marketNoMarginPct": 36.7,
-          "edgePct": -1.7,
-          "expectedValuePct": -12.5,
-          "conservativeExpectedValuePct": -21.2,
+          "edgePct": -1.4,
+          "expectedValuePct": -11.6,
+          "conservativeExpectedValuePct": -20.4,
           "sensitivityWidthPct": 7.4,
           "confidence": "Alta",
           "qualifies": false,
@@ -81112,13 +81162,13 @@
           "selection": "SI",
           "providerSelectionId": "5304744340",
           "odds": 1.08,
-          "modelProbabilityPct": 81.4,
-          "conservativeProbabilityPct": 77.9,
+          "modelProbabilityPct": 81.5,
+          "conservativeProbabilityPct": 78.1,
           "fairOdds": 1.23,
           "marketNoMarginPct": 84.7,
-          "edgePct": -3.4,
-          "expectedValuePct": -12.1,
-          "conservativeExpectedValuePct": -15.8,
+          "edgePct": -3.2,
+          "expectedValuePct": -11.9,
+          "conservativeExpectedValuePct": -15.6,
           "sensitivityWidthPct": 6.3,
           "confidence": "Alta",
           "qualifies": false,
@@ -81132,13 +81182,13 @@
           "selection": "NO",
           "providerSelectionId": "5304744341",
           "odds": 6,
-          "modelProbabilityPct": 18.6,
-          "conservativeProbabilityPct": 15.8,
-          "fairOdds": 5.36,
+          "modelProbabilityPct": 18.5,
+          "conservativeProbabilityPct": 15.6,
+          "fairOdds": 5.42,
           "marketNoMarginPct": 15.3,
-          "edgePct": 3.4,
-          "expectedValuePct": 11.9,
-          "conservativeExpectedValuePct": -5.4,
+          "edgePct": 3.2,
+          "expectedValuePct": 10.8,
+          "conservativeExpectedValuePct": -6.4,
           "sensitivityWidthPct": 6.3,
           "confidence": "Alta",
           "qualifies": false,
@@ -81156,14 +81206,14 @@
             "selection": "1",
             "providerSelectionId": "5304662220",
             "odds": 5.5,
-            "modelProbabilityPct": 23.7,
-            "conservativeProbabilityPct": 18.9,
-            "fairOdds": 4.22,
+            "modelProbabilityPct": 23.3,
+            "conservativeProbabilityPct": 18.6,
+            "fairOdds": 4.29,
             "marketNoMarginPct": 17.2,
-            "edgePct": 6.4,
-            "expectedValuePct": 30.3,
-            "conservativeExpectedValuePct": 4.1,
-            "sensitivityWidthPct": 10.1,
+            "edgePct": 6.1,
+            "expectedValuePct": 28.1,
+            "conservativeExpectedValuePct": 2.2,
+            "sensitivityWidthPct": 10,
             "confidence": "Media",
             "qualifies": true,
             "classification": "value"
@@ -81178,13 +81228,13 @@
             "selection": "SI",
             "providerSelectionId": "5304744340",
             "odds": 1.08,
-            "modelProbabilityPct": 81.4,
-            "conservativeProbabilityPct": 77.9,
+            "modelProbabilityPct": 81.5,
+            "conservativeProbabilityPct": 78.1,
             "fairOdds": 1.23,
             "marketNoMarginPct": 84.7,
-            "edgePct": -3.4,
-            "expectedValuePct": -12.1,
-            "conservativeExpectedValuePct": -15.8,
+            "edgePct": -3.2,
+            "expectedValuePct": -11.9,
+            "conservativeExpectedValuePct": -15.6,
             "sensitivityWidthPct": 6.3,
             "confidence": "Alta",
             "qualifies": false,
@@ -81198,14 +81248,14 @@
             "selection": "X2",
             "providerSelectionId": "5304672292",
             "odds": 1.15,
-            "modelProbabilityPct": 76.3,
-            "conservativeProbabilityPct": 71,
-            "fairOdds": 1.31,
+            "modelProbabilityPct": 76.7,
+            "conservativeProbabilityPct": 71.4,
+            "fairOdds": 1.3,
             "marketNoMarginPct": 82.8,
-            "edgePct": -6.4,
-            "expectedValuePct": -12.2,
-            "conservativeExpectedValuePct": -18.4,
-            "sensitivityWidthPct": 10.1,
+            "edgePct": -6.1,
+            "expectedValuePct": -11.8,
+            "conservativeExpectedValuePct": -17.9,
+            "sensitivityWidthPct": 10,
             "confidence": "Media",
             "qualifies": false,
             "classification": "probabile ma senza valore"
@@ -81218,14 +81268,14 @@
             "selection": "12",
             "providerSelectionId": "5304672291",
             "odds": 1.25,
-            "modelProbabilityPct": 75.8,
-            "conservativeProbabilityPct": 74,
+            "modelProbabilityPct": 75.9,
+            "conservativeProbabilityPct": 74.1,
             "fairOdds": 1.32,
             "marketNoMarginPct": 74.7,
-            "edgePct": 1.1,
-            "expectedValuePct": -5.3,
-            "conservativeExpectedValuePct": -7.4,
-            "sensitivityWidthPct": 3.4,
+            "edgePct": 1.2,
+            "expectedValuePct": -5.2,
+            "conservativeExpectedValuePct": -7.3,
+            "sensitivityWidthPct": 3.5,
             "confidence": "Alta",
             "qualifies": false,
             "classification": "probabile ma senza valore"
@@ -81245,63 +81295,61 @@
           "distancePct": 0,
           "legs": [
             {
-              "label": "BERARDI D. almeno 1 tiri in porta, sostituto incluso",
-              "market": "U/O  TIRI IN PORTA GIOCATORE (DUO) INC PALI TRAVERSE INC TS",
-              "variant": "BERARDI D. U/O 0.5 SOMMA TIRI IN PORTA INC PALI E TRAVERSE E SUO SOST. INCL. T.S.",
-              "threshold": "0.5",
+              "label": "Juventus vincente",
+              "market": "1X2 ESITO FINALE",
+              "variant": "ESITO FINALE 1X2",
+              "threshold": null,
+              "selection": "2",
+              "providerSelectionId": "5304662222",
+              "odds": 1.65,
+              "overlapKey": "market-1x2 esito finale",
+              "semanticKeys": [
+                "result"
+              ],
+              "marketScope": "match"
+            },
+            {
+              "label": "Sassuolo almeno 3 tiri in porta",
+              "market": "U/O TIRI IN PORTA SQUADRA X",
+              "variant": "SQUADRA 1: U/O 2.5 TIRI IN PORTA",
+              "threshold": "2.5",
               "selection": "OVER",
-              "providerSelectionId": "5317170037",
-              "odds": 1.75,
-              "overlapKey": "market-u o tiri in porta giocatore duo inc pali traverse inc ts",
+              "providerSelectionId": "5317170435",
+              "odds": 1.62,
+              "overlapKey": "market-u o tiri in porta squadra x",
               "semanticKeys": [
                 "volume-shots-on-target"
               ],
-              "marketScope": "player"
+              "marketScope": "match"
             },
             {
-              "label": "PRIMA A 5 CALCI D'ANGOLO · Juventus",
-              "market": "PRIMA A X CORNER",
-              "variant": "PRIMA A 5 CALCI D'ANGOLO",
+              "label": "Entrambe almeno 3 corner",
+              "market": "ENTRAMBE ALMENO X CORNER",
+              "variant": "ENTRAMBE ALMENO 3 CORNER",
               "threshold": null,
-              "selection": "TEAM 2",
-              "providerSelectionId": "5315194734",
-              "odds": 1.72,
-              "overlapKey": "market-prima a x corner",
+              "selection": "SI",
+              "providerSelectionId": "5315194638",
+              "odds": 1.67,
+              "overlapKey": "market-entrambe almeno x corner",
               "semanticKeys": [
                 "volume-corners"
               ],
               "marketScope": "match"
             },
             {
-              "label": "Partita almeno 25 tiri totali",
-              "market": "U/O TIRI TOTALI",
-              "variant": "U/O 24.5 TIRI TOTALI",
-              "threshold": "24.5",
+              "label": "GONZALEZ NICO almeno 1 falli commessi",
+              "market": "U/O FALLI COMMESSI GIOCATORE",
+              "variant": "GONZALEZ NICO U/O 0.5 FALLI COMMESSI",
+              "threshold": "0.5",
               "selection": "OVER",
-              "providerSelectionId": "5304663071",
-              "odds": 1.47,
-              "overlapKey": "market-u o tiri totali",
-              "semanticKeys": [
-                "volume-shots-total"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "U/O 2.5 Sassuolo + U/O 3.5 Juventus · UNDER+UNDER",
-              "market": "COMBO: U/O CASA + U/O OSPITE",
-              "variant": "U/O 2.5 TEAM 1 + U/O 3.5 TEAM 2",
-              "threshold": null,
-              "selection": "UNDER+UNDER",
-              "providerSelectionId": "5304744365",
-              "odds": 1.13,
-              "overlapKey": "market-combo u o casa u o ospite",
-              "semanticKeys": [
-                "goals"
-              ],
-              "marketScope": "match"
+              "providerSelectionId": "5317169315",
+              "odds": 1.12,
+              "overlapKey": "market-u o falli commessi giocatore",
+              "semanticKeys": [],
+              "marketScope": "player"
             }
           ],
-          "selection": "BERARDI D. almeno 1 tiri in porta, sostituto incluso + PRIMA A 5 CALCI D'ANGOLO · Juventus + Partita almeno 25 tiri totali + U/O 2.5 Sassuolo + U/O 3.5 Juventus · UNDER+UNDER",
+          "selection": "Juventus vincente + Sassuolo almeno 3 tiri in porta + Entrambe almeno 3 corner + GONZALEZ NICO almeno 1 falli commessi",
           "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-12: quota 5 orientativa, 3-6 gambe, mercati distinti, nessuno scenario di base ripetuto o annidato e quote singole 1.10-1.85. Il rischio resta informativo.",
           "probabilityPct": null,
           "prudentProbabilityPct": null,
@@ -81324,51 +81372,51 @@
           "distancePct": 0,
           "legs": [
             {
-              "label": "KOOPMEINERS T. almeno 1 tiri in porta, sostituto incluso",
-              "market": "U/O  TIRI IN PORTA GIOCATORE (DUO) INC PALI TRAVERSE INC TS",
-              "variant": "KOOPMEINERS T. U/O 0.5 SOMMA TIRI IN PORTA INC PALI E TRAVERSE E SUO SOST. INCL. T.S.",
-              "threshold": "0.5",
-              "selection": "OVER",
-              "providerSelectionId": "5317170187",
-              "odds": 1.8,
-              "overlapKey": "market-u o tiri in porta giocatore duo inc pali traverse inc ts",
-              "semanticKeys": [
-                "volume-shots-on-target"
-              ],
-              "marketScope": "player"
-            },
-            {
-              "label": "CONCEICAO F. almeno 2 falli commessi",
-              "market": "U/O FALLI COMMESSI GIOCATORE",
-              "variant": "CONCEICAO F. U/O 1.5 FALLI COMMESSI",
-              "threshold": "1.5",
-              "selection": "OVER",
-              "providerSelectionId": "5317169299",
-              "odds": 1.75,
-              "overlapKey": "market-u o falli commessi giocatore",
+              "label": "LUIZ DOUGLAS SEGNA ALMENO UN GOAL O REALIZZA ALMENO UN ASSIST O RICEVE ALMENO UN CARTELLINO INC. TS · sì",
+              "market": "GIOCATORE SEGNA O ASSIST O CARTELLINO INC TS",
+              "variant": "LUIZ DOUGLAS SEGNA ALMENO UN GOAL O REALIZZA ALMENO UN ASSIST O RICEVE ALMENO UN CARTELLINO INC. TS",
+              "threshold": null,
+              "selection": "SI",
+              "providerSelectionId": "5317161244",
+              "odds": 1.85,
+              "overlapKey": "market-giocatore segna o assist o cartellino inc ts",
               "semanticKeys": [],
               "marketScope": "player"
             },
             {
-              "label": "CONCEICAO F. almeno 2 falli subiti",
+              "label": "GONZALEZ NICO almeno 2 falli subiti",
               "market": "U/O FALLI SUBITI GIOCATORE",
-              "variant": "CONCEICAO F. U/O 1.5 FALLI SUBITI",
+              "variant": "GONZALEZ NICO U/O 1.5 FALLI SUBITI",
               "threshold": "1.5",
               "selection": "OVER",
-              "providerSelectionId": "5317230988",
-              "odds": 1.65,
+              "providerSelectionId": "5317230776",
+              "odds": 1.8,
               "overlapKey": "market-u o falli subiti giocatore",
               "semanticKeys": [],
               "marketScope": "player"
             },
             {
-              "label": "Partita almeno 8 corner",
-              "market": "U/O CORNER",
-              "variant": "U/O 7.5 CORNER",
-              "threshold": "7.5",
+              "label": "LUIZ DOUGLAS almeno 2 tiri totali, sostituto incluso",
+              "market": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+              "variant": "LUIZ DOUGLAS U/O 1.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+              "threshold": "1.5",
               "selection": "OVER",
-              "providerSelectionId": "5315194711",
-              "odds": 1.48,
+              "providerSelectionId": "5317171635",
+              "odds": 1.75,
+              "overlapKey": "market-u o tiri totali giocatore duo inc ts",
+              "semanticKeys": [
+                "volume-shots-total"
+              ],
+              "marketScope": "player"
+            },
+            {
+              "label": "Partita meno di 11 corner",
+              "market": "U/O CORNER",
+              "variant": "U/O 10.5 CORNER",
+              "threshold": "10.5",
+              "selection": "UNDER",
+              "providerSelectionId": "5315194936",
+              "odds": 1.3,
               "overlapKey": "market-u o corner",
               "semanticKeys": [
                 "volume-corners"
@@ -81376,22 +81424,21 @@
               "marketScope": "match"
             },
             {
-              "label": "DC + U/O 4.5 · X2 + UNDER",
-              "market": "COMBO: DC + U/O",
-              "variant": "DC + U/O 4.5",
-              "threshold": "4.5",
-              "selection": "X2 + UNDER",
-              "providerSelectionId": "5304662638",
-              "odds": 1.3,
-              "overlapKey": "market-combo dc u o",
+              "label": "U/O 3.5 Sassuolo + U/O 2.5 Juventus · UNDER+UNDER",
+              "market": "COMBO: U/O CASA + U/O OSPITE",
+              "variant": "U/O 3.5 TEAM 1 + U/O 2.5 TEAM 2",
+              "threshold": null,
+              "selection": "UNDER+UNDER",
+              "providerSelectionId": "5304725192",
+              "odds": 1.32,
+              "overlapKey": "market-combo u o casa u o ospite",
               "semanticKeys": [
-                "result",
                 "goals"
               ],
               "marketScope": "match"
             }
           ],
-          "selection": "KOOPMEINERS T. almeno 1 tiri in porta, sostituto incluso + CONCEICAO F. almeno 2 falli commessi + CONCEICAO F. almeno 2 falli subiti + Partita almeno 8 corner + DC + U/O 4.5 · X2 + UNDER",
+          "selection": "LUIZ DOUGLAS SEGNA ALMENO UN GOAL O REALIZZA ALMENO UN ASSIST O RICEVE ALMENO UN CARTELLINO INC. TS · sì + GONZALEZ NICO almeno 2 falli subiti + LUIZ DOUGLAS almeno 2 tiri totali, sostituto incluso + Partita meno di 11 corner + U/O 3.5 Sassuolo + U/O 2.5 Juventus · UNDER+UNDER",
           "logic": "Profilo balanced costruito sulle quote Sisal del 2026-09-12: quota 10 orientativa, 4-7 gambe, mercati distinti, nessuno scenario di base ripetuto o annidato e quote singole 1.10-1.85. Il rischio resta informativo.",
           "probabilityPct": null,
           "prudentProbabilityPct": null,
@@ -81414,18 +81461,58 @@
           "distancePct": 0,
           "legs": [
             {
-              "label": "KOOPMEINERS T. almeno 1 tiri in porta, sostituto incluso",
-              "market": "U/O  TIRI IN PORTA GIOCATORE (DUO) INC PALI TRAVERSE INC TS",
-              "variant": "KOOPMEINERS T. U/O 0.5 SOMMA TIRI IN PORTA INC PALI E TRAVERSE E SUO SOST. INCL. T.S.",
-              "threshold": "0.5",
-              "selection": "OVER",
-              "providerSelectionId": "5317170187",
+              "label": "LUIZ DOUGLAS SEGNA ALMENO UN GOAL O REALIZZA ALMENO UN ASSIST O RICEVE ALMENO UN CARTELLINO INC. TS · sì",
+              "market": "GIOCATORE SEGNA O ASSIST O CARTELLINO INC TS",
+              "variant": "LUIZ DOUGLAS SEGNA ALMENO UN GOAL O REALIZZA ALMENO UN ASSIST O RICEVE ALMENO UN CARTELLINO INC. TS",
+              "threshold": null,
+              "selection": "SI",
+              "providerSelectionId": "5317161244",
+              "odds": 1.85,
+              "overlapKey": "market-giocatore segna o assist o cartellino inc ts",
+              "semanticKeys": [],
+              "marketScope": "player"
+            },
+            {
+              "label": "MULTIGOAL MULTIESITI 16 ESITI · 3-6",
+              "market": "MULTIGOAL",
+              "variant": "MULTIGOAL MULTIESITI 16 ESITI",
+              "threshold": null,
+              "selection": "3-6",
+              "providerSelectionId": "5304676440",
               "odds": 1.8,
-              "overlapKey": "market-u o tiri in porta giocatore duo inc pali traverse inc ts",
+              "overlapKey": "market-multigoal",
+              "semanticKeys": [
+                "goals"
+              ],
+              "marketScope": "match"
+            },
+            {
+              "label": "Juventus ALMENO 2 CORNER IN ENTRAMBI I TEMPI · SI",
+              "market": "SQUADRA X ALMENO Y CORNER IN ENTRAMBI I TEMPI",
+              "variant": "SQUADRA 2 ALMENO 2 CORNER IN ENTRAMBI I TEMPI",
+              "threshold": "2",
+              "selection": "SI",
+              "providerSelectionId": "5315194940",
+              "odds": 1.8,
+              "overlapKey": "market-squadra x almeno y corner in entrambi i tempi",
+              "semanticKeys": [
+                "volume-corners"
+              ],
+              "marketScope": "match"
+            },
+            {
+              "label": "Entrambe almeno 3 tiri in porta",
+              "market": "ENTRAMBE LE SQUADRE ALMENO X TIRI IN PORTA",
+              "variant": "ENTRAMBE LE SQUADRE ALMENO 3 TIRI IN PORTA",
+              "threshold": null,
+              "selection": "SI",
+              "providerSelectionId": "5317171406",
+              "odds": 1.67,
+              "overlapKey": "market-entrambe le squadre almeno x tiri in porta",
               "semanticKeys": [
                 "volume-shots-on-target"
               ],
-              "marketScope": "player"
+              "marketScope": "match"
             },
             {
               "label": "GONZALEZ NICO almeno 2 falli subiti",
@@ -81440,61 +81527,21 @@
               "marketScope": "player"
             },
             {
-              "label": "CINQUEGRANO S. almeno 1 tiri totali, sostituto incluso",
-              "market": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
-              "variant": "CINQUEGRANO S. U/O 0.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
-              "threshold": "0.5",
+              "label": "Sassuolo almeno 7 tiri totali",
+              "market": "U/O TIRI TOTALI SQUADRA X",
+              "variant": "SQUADRA 1: U/O 6.5 TIRI TOTALI",
+              "threshold": "6.5",
               "selection": "OVER",
-              "providerSelectionId": "5317169255",
-              "odds": 1.8,
-              "overlapKey": "market-u o tiri totali giocatore duo inc ts",
+              "providerSelectionId": "5317170803",
+              "odds": 1.11,
+              "overlapKey": "market-u o tiri totali squadra x",
               "semanticKeys": [
                 "volume-shots-total"
-              ],
-              "marketScope": "player"
-            },
-            {
-              "label": "CONCEICAO F. almeno 2 falli commessi",
-              "market": "U/O FALLI COMMESSI GIOCATORE",
-              "variant": "CONCEICAO F. U/O 1.5 FALLI COMMESSI",
-              "threshold": "1.5",
-              "selection": "OVER",
-              "providerSelectionId": "5317169299",
-              "odds": 1.75,
-              "overlapKey": "market-u o falli commessi giocatore",
-              "semanticKeys": [],
-              "marketScope": "player"
-            },
-            {
-              "label": "Under 3,5 gol",
-              "market": "UNDER/OVER",
-              "variant": "U/O 3.5",
-              "threshold": "3.5",
-              "selection": "UNDER",
-              "providerSelectionId": "5304672274",
-              "odds": 1.42,
-              "overlapKey": "market-under over",
-              "semanticKeys": [
-                "goals"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "PRIMA A 3 CALCI D'ANGOLO · Juventus",
-              "market": "PRIMA A X CORNER",
-              "variant": "PRIMA A 3 CALCI D'ANGOLO",
-              "threshold": null,
-              "selection": "TEAM 2",
-              "providerSelectionId": "5315194932",
-              "odds": 1.38,
-              "overlapKey": "market-prima a x corner",
-              "semanticKeys": [
-                "volume-corners"
               ],
               "marketScope": "match"
             }
           ],
-          "selection": "KOOPMEINERS T. almeno 1 tiri in porta, sostituto incluso + GONZALEZ NICO almeno 2 falli subiti + CINQUEGRANO S. almeno 1 tiri totali, sostituto incluso + CONCEICAO F. almeno 2 falli commessi + Under 3,5 gol + PRIMA A 3 CALCI D'ANGOLO · Juventus",
+          "selection": "LUIZ DOUGLAS SEGNA ALMENO UN GOAL O REALIZZA ALMENO UN ASSIST O RICEVE ALMENO UN CARTELLINO INC. TS · sì + MULTIGOAL MULTIESITI 16 ESITI · 3-6 + Juventus ALMENO 2 CORNER IN ENTRAMBI I TEMPI · SI + Entrambe almeno 3 tiri in porta + GONZALEZ NICO almeno 2 falli subiti + Sassuolo almeno 7 tiri totali",
           "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-09-12: quota 20 orientativa, 5-8 gambe, mercati distinti, nessuno scenario di base ripetuto o annidato e quote singole 1.10-1.85. Il rischio resta informativo.",
           "probabilityPct": null,
           "prudentProbabilityPct": null,
@@ -81541,14 +81588,14 @@
             "selection": "1",
             "providerSelectionId": "5304662220",
             "odds": 5.5,
-            "modelProbabilityPct": 23.7,
-            "conservativeProbabilityPct": 18.9,
-            "fairOdds": 4.22,
+            "modelProbabilityPct": 23.3,
+            "conservativeProbabilityPct": 18.6,
+            "fairOdds": 4.29,
             "marketNoMarginPct": 17.2,
-            "edgePct": 6.4,
-            "expectedValuePct": 30.3,
-            "conservativeExpectedValuePct": 4.1,
-            "sensitivityWidthPct": 10.1,
+            "edgePct": 6.1,
+            "expectedValuePct": 28.1,
+            "conservativeExpectedValuePct": 2.2,
+            "sensitivityWidthPct": 10,
             "confidence": "Media",
             "qualifies": true,
             "classification": "value"
@@ -81561,14 +81608,14 @@
             "selection": "X",
             "providerSelectionId": "5304662221",
             "odds": 3.75,
-            "modelProbabilityPct": 24.2,
-            "conservativeProbabilityPct": 22.5,
-            "fairOdds": 4.13,
+            "modelProbabilityPct": 24.1,
+            "conservativeProbabilityPct": 22.4,
+            "fairOdds": 4.14,
             "marketNoMarginPct": 25.3,
-            "edgePct": -1.1,
-            "expectedValuePct": -9.2,
-            "conservativeExpectedValuePct": -15.6,
-            "sensitivityWidthPct": 3.4,
+            "edgePct": -1.2,
+            "expectedValuePct": -9.5,
+            "conservativeExpectedValuePct": -16.1,
+            "sensitivityWidthPct": 3.5,
             "confidence": "Alta",
             "qualifies": false,
             "classification": "neutrale"
@@ -81581,13 +81628,13 @@
             "selection": "2",
             "providerSelectionId": "5304662222",
             "odds": 1.65,
-            "modelProbabilityPct": 52.1,
-            "conservativeProbabilityPct": 45.5,
-            "fairOdds": 1.92,
+            "modelProbabilityPct": 52.6,
+            "conservativeProbabilityPct": 45.9,
+            "fairOdds": 1.9,
             "marketNoMarginPct": 57.5,
-            "edgePct": -5.4,
-            "expectedValuePct": -14.1,
-            "conservativeExpectedValuePct": -25,
+            "edgePct": -4.9,
+            "expectedValuePct": -13.3,
+            "conservativeExpectedValuePct": -24.2,
             "sensitivityWidthPct": 13.1,
             "confidence": "Media",
             "qualifies": false,
@@ -81600,7 +81647,7 @@
         "completenessPct": 75,
         "crossCompetitionBaseline": false,
         "updatedAt": "2026-09-10",
-        "probableLineups": "20/20 titolari proiettati; fonte editoriale da riconfermare",
+        "probableLineups": "22/22 titolari ufficiali confermati",
         "missing": [
           "forma ufficiale 2026/27",
           "meteo attendibile alla data della gara"
@@ -81742,7 +81789,7 @@
             {
               "id": "A",
               "label": "Controllo della favorita",
-              "estimatedProbabilityPct": 35,
+              "estimatedProbabilityPct": 35.3,
               "compatibleMarketIds": [
                 "1x2:2:main",
                 "double-chance:12:main",
@@ -81769,7 +81816,7 @@
             {
               "id": "B",
               "label": "Vittoria aperta della favorita",
-              "estimatedProbabilityPct": 17.1,
+              "estimatedProbabilityPct": 17.3,
               "compatibleMarketIds": [
                 "1x2:2:main",
                 "double-chance:12:main",
@@ -81798,7 +81845,7 @@
             {
               "id": "C",
               "label": "Resistenza o sorpresa",
-              "estimatedProbabilityPct": 47.9,
+              "estimatedProbabilityPct": 47.4,
               "compatibleMarketIds": [
                 "1x2:1:main",
                 "1x2:X:main",
@@ -81829,49 +81876,49 @@
               "id": "1x2:1:main",
               "market": "1X2",
               "selection": "1",
-              "probabilityPct": 23.7
+              "probabilityPct": 23.3
             },
             {
               "id": "1x2:X:main",
               "market": "1X2",
               "selection": "X",
-              "probabilityPct": 24.2
+              "probabilityPct": 24.1
             },
             {
               "id": "1x2:2:main",
               "market": "1X2",
               "selection": "2",
-              "probabilityPct": 52.1
+              "probabilityPct": 52.6
             },
             {
               "id": "double-chance:1X:main",
               "market": "Doppia chance",
               "selection": "1X",
-              "probabilityPct": 47.9
+              "probabilityPct": 47.4
             },
             {
               "id": "double-chance:12:main",
               "market": "Doppia chance",
               "selection": "12",
-              "probabilityPct": 75.8
+              "probabilityPct": 75.9
             },
             {
               "id": "double-chance:X2:main",
               "market": "Doppia chance",
               "selection": "X2",
-              "probabilityPct": 76.3
+              "probabilityPct": 76.7
             },
             {
               "id": "draw-no-bet:1:main",
               "market": "Draw No Bet",
               "selection": "1",
-              "probabilityPct": 31.3
+              "probabilityPct": 30.7
             },
             {
               "id": "draw-no-bet:2:main",
               "market": "Draw No Bet",
               "selection": "2",
-              "probabilityPct": 68.7
+              "probabilityPct": 69.3
             },
             {
               "id": "goals:UNDER:1.5",
@@ -81913,37 +81960,37 @@
               "id": "btts:GOAL:main",
               "market": "Goal/No Goal",
               "selection": "GOAL",
-              "probabilityPct": 52.9
+              "probabilityPct": 52.7
             },
             {
               "id": "btts:NOGOAL:main",
               "market": "Goal/No Goal",
               "selection": "NOGOAL",
-              "probabilityPct": 47.1
+              "probabilityPct": 47.3
             },
             {
               "id": "team-goal:SI:main",
               "market": "Casa segna",
               "selection": "SI",
-              "probabilityPct": 65
+              "probabilityPct": 64.7
             },
             {
               "id": "team-goal:NO:main",
               "market": "Casa segna",
               "selection": "NO",
-              "probabilityPct": 35
+              "probabilityPct": 35.3
             },
             {
               "id": "team-goal:SI:main",
               "market": "Ospite segna",
               "selection": "SI",
-              "probabilityPct": 81.4
+              "probabilityPct": 81.5
             },
             {
               "id": "team-goal:NO:main",
               "market": "Ospite segna",
               "selection": "NO",
-              "probabilityPct": 18.6
+              "probabilityPct": 18.5
             }
           ],
           "edges": [
@@ -81951,29 +81998,29 @@
               "from": "1x2:1:main",
               "to": "1x2:X:main",
               "type": "conflicting",
-              "correlation": -0.315,
+              "correlation": -0.311,
               "intersectionProbabilityPct": 0
             },
             {
               "from": "1x2:1:main",
               "to": "1x2:2:main",
               "type": "conflicting",
-              "correlation": -0.581,
+              "correlation": -0.58,
               "intersectionProbabilityPct": 0
             },
             {
               "from": "1x2:1:main",
               "to": "double-chance:1X:main",
               "type": "positive",
-              "correlation": 0.581,
-              "intersectionProbabilityPct": 23.7
+              "correlation": 0.58,
+              "intersectionProbabilityPct": 23.3
             },
             {
               "from": "1x2:1:main",
               "to": "double-chance:12:main",
               "type": "positive",
-              "correlation": 0.315,
-              "intersectionProbabilityPct": 23.7
+              "correlation": 0.311,
+              "intersectionProbabilityPct": 23.3
             },
             {
               "from": "1x2:1:main",
@@ -81986,8 +82033,8 @@
               "from": "1x2:1:main",
               "to": "draw-no-bet:1:main",
               "type": "positive",
-              "correlation": 0.581,
-              "intersectionProbabilityPct": 23.7
+              "correlation": 0.58,
+              "intersectionProbabilityPct": 23.3
             },
             {
               "from": "1x2:1:main",
@@ -82000,14 +82047,14 @@
               "from": "1x2:1:main",
               "to": "team-goal:SI:main",
               "type": "positive",
-              "correlation": 0.409,
-              "intersectionProbabilityPct": 23.7
+              "correlation": 0.408,
+              "intersectionProbabilityPct": 23.3
             },
             {
               "from": "1x2:1:main",
               "to": "team-goal:NO:main",
               "type": "conflicting",
-              "correlation": -0.409,
+              "correlation": -0.408,
               "intersectionProbabilityPct": 0
             },
             {
@@ -82015,28 +82062,28 @@
               "to": "team-goal:SI:main",
               "type": "negative",
               "correlation": -0.465,
-              "intersectionProbabilityPct": 11.6
+              "intersectionProbabilityPct": 11.4
             },
             {
               "from": "1x2:1:main",
               "to": "team-goal:NO:main",
               "type": "positive",
               "correlation": 0.465,
-              "intersectionProbabilityPct": 12.1
+              "intersectionProbabilityPct": 11.9
             },
             {
               "from": "1x2:X:main",
               "to": "1x2:2:main",
               "type": "conflicting",
-              "correlation": -0.59,
+              "correlation": -0.594,
               "intersectionProbabilityPct": 0
             },
             {
               "from": "1x2:X:main",
               "to": "double-chance:1X:main",
               "type": "positive",
-              "correlation": 0.59,
-              "intersectionProbabilityPct": 24.2
+              "correlation": 0.594,
+              "intersectionProbabilityPct": 24.1
             },
             {
               "from": "1x2:X:main",
@@ -82049,22 +82096,22 @@
               "from": "1x2:X:main",
               "to": "double-chance:X2:main",
               "type": "positive",
-              "correlation": 0.315,
-              "intersectionProbabilityPct": 24.2
+              "correlation": 0.311,
+              "intersectionProbabilityPct": 24.1
             },
             {
               "from": "1x2:X:main",
               "to": "draw-no-bet:1:main",
               "type": "positive",
-              "correlation": 0.59,
-              "intersectionProbabilityPct": 24.2
+              "correlation": 0.594,
+              "intersectionProbabilityPct": 24.1
             },
             {
               "from": "1x2:X:main",
               "to": "draw-no-bet:2:main",
               "type": "positive",
-              "correlation": 0.315,
-              "intersectionProbabilityPct": 24.2
+              "correlation": 0.311,
+              "intersectionProbabilityPct": 24.1
             },
             {
               "from": "1x2:X:main",
@@ -82078,7 +82125,7 @@
               "to": "goals:OVER:2.5",
               "type": "negative",
               "correlation": -0.292,
-              "intersectionProbabilityPct": 6.2
+              "intersectionProbabilityPct": 6.1
             },
             {
               "from": "1x2:2:main",
@@ -82091,15 +82138,15 @@
               "from": "1x2:2:main",
               "to": "double-chance:12:main",
               "type": "positive",
-              "correlation": 0.59,
-              "intersectionProbabilityPct": 52.1
+              "correlation": 0.594,
+              "intersectionProbabilityPct": 52.6
             },
             {
               "from": "1x2:2:main",
               "to": "double-chance:X2:main",
               "type": "positive",
-              "correlation": 0.581,
-              "intersectionProbabilityPct": 52.1
+              "correlation": 0.58,
+              "intersectionProbabilityPct": 52.6
             },
             {
               "from": "1x2:2:main",
@@ -82112,120 +82159,120 @@
               "from": "1x2:2:main",
               "to": "draw-no-bet:2:main",
               "type": "positive",
-              "correlation": 0.581,
-              "intersectionProbabilityPct": 52.1
+              "correlation": 0.58,
+              "intersectionProbabilityPct": 52.6
             },
             {
               "from": "1x2:2:main",
               "to": "team-goal:SI:main",
               "type": "negative",
-              "correlation": -0.43,
-              "intersectionProbabilityPct": 23.6
+              "correlation": -0.429,
+              "intersectionProbabilityPct": 23.7
             },
             {
               "from": "1x2:2:main",
               "to": "team-goal:NO:main",
               "type": "positive",
-              "correlation": 0.43,
-              "intersectionProbabilityPct": 28.5
+              "correlation": 0.429,
+              "intersectionProbabilityPct": 28.8
             },
             {
               "from": "1x2:2:main",
               "to": "team-goal:SI:main",
               "type": "positive",
-              "correlation": 0.499,
-              "intersectionProbabilityPct": 52.1
+              "correlation": 0.501,
+              "intersectionProbabilityPct": 52.6
             },
             {
               "from": "1x2:2:main",
               "to": "team-goal:NO:main",
               "type": "conflicting",
-              "correlation": -0.499,
+              "correlation": -0.501,
               "intersectionProbabilityPct": 0
             },
             {
               "from": "double-chance:1X:main",
               "to": "double-chance:12:main",
               "type": "negative",
-              "correlation": -0.59,
-              "intersectionProbabilityPct": 23.7
+              "correlation": -0.594,
+              "intersectionProbabilityPct": 23.3
             },
             {
               "from": "double-chance:1X:main",
               "to": "double-chance:X2:main",
               "type": "negative",
-              "correlation": -0.581,
-              "intersectionProbabilityPct": 24.2
+              "correlation": -0.58,
+              "intersectionProbabilityPct": 24.1
             },
             {
               "from": "double-chance:1X:main",
               "to": "draw-no-bet:1:main",
               "type": "redundant",
               "correlation": 1,
-              "intersectionProbabilityPct": 47.9
+              "intersectionProbabilityPct": 47.4
             },
             {
               "from": "double-chance:1X:main",
               "to": "draw-no-bet:2:main",
               "type": "negative",
-              "correlation": -0.581,
-              "intersectionProbabilityPct": 24.2
+              "correlation": -0.58,
+              "intersectionProbabilityPct": 24.1
             },
             {
               "from": "double-chance:1X:main",
               "to": "team-goal:SI:main",
               "type": "positive",
-              "correlation": 0.43,
-              "intersectionProbabilityPct": 41.4
+              "correlation": 0.429,
+              "intersectionProbabilityPct": 40.9
             },
             {
               "from": "double-chance:1X:main",
               "to": "team-goal:NO:main",
               "type": "negative",
-              "correlation": -0.43,
+              "correlation": -0.429,
               "intersectionProbabilityPct": 6.5
             },
             {
               "from": "double-chance:1X:main",
               "to": "team-goal:SI:main",
               "type": "negative",
-              "correlation": -0.499,
-              "intersectionProbabilityPct": 29.3
+              "correlation": -0.501,
+              "intersectionProbabilityPct": 29
             },
             {
               "from": "double-chance:1X:main",
               "to": "team-goal:NO:main",
               "type": "positive",
-              "correlation": 0.499,
-              "intersectionProbabilityPct": 18.6
+              "correlation": 0.501,
+              "intersectionProbabilityPct": 18.5
             },
             {
               "from": "double-chance:12:main",
               "to": "double-chance:X2:main",
               "type": "negative",
-              "correlation": -0.315,
-              "intersectionProbabilityPct": 52.1
+              "correlation": -0.311,
+              "intersectionProbabilityPct": 52.6
             },
             {
               "from": "double-chance:12:main",
               "to": "draw-no-bet:1:main",
               "type": "negative",
-              "correlation": -0.59,
-              "intersectionProbabilityPct": 23.7
+              "correlation": -0.594,
+              "intersectionProbabilityPct": 23.3
             },
             {
               "from": "double-chance:12:main",
               "to": "draw-no-bet:2:main",
               "type": "negative",
-              "correlation": -0.315,
-              "intersectionProbabilityPct": 52.1
+              "correlation": -0.311,
+              "intersectionProbabilityPct": 52.6
             },
             {
               "from": "double-chance:12:main",
               "to": "goals:UNDER:2.5",
               "type": "negative",
               "correlation": -0.292,
-              "intersectionProbabilityPct": 30.6
+              "intersectionProbabilityPct": 30.7
             },
             {
               "from": "double-chance:12:main",
@@ -82238,36 +82285,36 @@
               "from": "double-chance:X2:main",
               "to": "draw-no-bet:1:main",
               "type": "negative",
-              "correlation": -0.581,
-              "intersectionProbabilityPct": 24.2
+              "correlation": -0.58,
+              "intersectionProbabilityPct": 24.1
             },
             {
               "from": "double-chance:X2:main",
               "to": "draw-no-bet:2:main",
               "type": "redundant",
               "correlation": 1,
-              "intersectionProbabilityPct": 76.3
+              "intersectionProbabilityPct": 76.7
             },
             {
               "from": "double-chance:X2:main",
               "to": "team-goal:SI:main",
               "type": "negative",
-              "correlation": -0.409,
-              "intersectionProbabilityPct": 41.3
+              "correlation": -0.408,
+              "intersectionProbabilityPct": 41.4
             },
             {
               "from": "double-chance:X2:main",
               "to": "team-goal:NO:main",
               "type": "positive",
-              "correlation": 0.409,
-              "intersectionProbabilityPct": 35
+              "correlation": 0.408,
+              "intersectionProbabilityPct": 35.3
             },
             {
               "from": "double-chance:X2:main",
               "to": "team-goal:SI:main",
               "type": "positive",
               "correlation": 0.465,
-              "intersectionProbabilityPct": 69.8
+              "intersectionProbabilityPct": 70.2
             },
             {
               "from": "double-chance:X2:main",
@@ -82280,57 +82327,57 @@
               "from": "draw-no-bet:1:main",
               "to": "draw-no-bet:2:main",
               "type": "negative",
-              "correlation": -0.581,
-              "intersectionProbabilityPct": 24.2
+              "correlation": -0.58,
+              "intersectionProbabilityPct": 24.1
             },
             {
               "from": "draw-no-bet:1:main",
               "to": "team-goal:SI:main",
               "type": "positive",
-              "correlation": 0.43,
-              "intersectionProbabilityPct": 41.4
+              "correlation": 0.429,
+              "intersectionProbabilityPct": 40.9
             },
             {
               "from": "draw-no-bet:1:main",
               "to": "team-goal:NO:main",
               "type": "negative",
-              "correlation": -0.43,
+              "correlation": -0.429,
               "intersectionProbabilityPct": 6.5
             },
             {
               "from": "draw-no-bet:1:main",
               "to": "team-goal:SI:main",
               "type": "negative",
-              "correlation": -0.499,
-              "intersectionProbabilityPct": 29.3
+              "correlation": -0.501,
+              "intersectionProbabilityPct": 29
             },
             {
               "from": "draw-no-bet:1:main",
               "to": "team-goal:NO:main",
               "type": "positive",
-              "correlation": 0.499,
-              "intersectionProbabilityPct": 18.6
+              "correlation": 0.501,
+              "intersectionProbabilityPct": 18.5
             },
             {
               "from": "draw-no-bet:2:main",
               "to": "team-goal:SI:main",
               "type": "negative",
-              "correlation": -0.409,
-              "intersectionProbabilityPct": 41.3
+              "correlation": -0.408,
+              "intersectionProbabilityPct": 41.4
             },
             {
               "from": "draw-no-bet:2:main",
               "to": "team-goal:NO:main",
               "type": "positive",
-              "correlation": 0.409,
-              "intersectionProbabilityPct": 35
+              "correlation": 0.408,
+              "intersectionProbabilityPct": 35.3
             },
             {
               "from": "draw-no-bet:2:main",
               "to": "team-goal:SI:main",
               "type": "positive",
               "correlation": 0.465,
-              "intersectionProbabilityPct": 69.8
+              "intersectionProbabilityPct": 70.2
             },
             {
               "from": "draw-no-bet:2:main",
@@ -82378,43 +82425,43 @@
               "from": "goals:UNDER:1.5",
               "to": "btts:GOAL:main",
               "type": "conflicting",
-              "correlation": -0.601,
+              "correlation": -0.599,
               "intersectionProbabilityPct": 0
             },
             {
               "from": "goals:UNDER:1.5",
               "to": "btts:NOGOAL:main",
               "type": "positive",
-              "correlation": 0.601,
+              "correlation": 0.599,
               "intersectionProbabilityPct": 24.3
             },
             {
               "from": "goals:UNDER:1.5",
               "to": "team-goal:SI:main",
               "type": "negative",
-              "correlation": -0.438,
-              "intersectionProbabilityPct": 6.9
+              "correlation": -0.436,
+              "intersectionProbabilityPct": 6.8
             },
             {
               "from": "goals:UNDER:1.5",
               "to": "team-goal:NO:main",
               "type": "positive",
-              "correlation": 0.438,
-              "intersectionProbabilityPct": 17.5
+              "correlation": 0.436,
+              "intersectionProbabilityPct": 17.6
             },
             {
               "from": "goals:UNDER:1.5",
               "to": "team-goal:SI:main",
               "type": "negative",
-              "correlation": -0.529,
+              "correlation": -0.53,
               "intersectionProbabilityPct": 11
             },
             {
               "from": "goals:UNDER:1.5",
               "to": "team-goal:NO:main",
               "type": "positive",
-              "correlation": 0.529,
-              "intersectionProbabilityPct": 13.4
+              "correlation": 0.53,
+              "intersectionProbabilityPct": 13.3
             },
             {
               "from": "goals:OVER:1.5",
@@ -82448,43 +82495,43 @@
               "from": "goals:OVER:1.5",
               "to": "btts:GOAL:main",
               "type": "positive",
-              "correlation": 0.601,
-              "intersectionProbabilityPct": 52.9
+              "correlation": 0.599,
+              "intersectionProbabilityPct": 52.7
             },
             {
               "from": "goals:OVER:1.5",
               "to": "btts:NOGOAL:main",
               "type": "negative",
-              "correlation": -0.601,
-              "intersectionProbabilityPct": 22.8
+              "correlation": -0.599,
+              "intersectionProbabilityPct": 22.9
             },
             {
               "from": "goals:OVER:1.5",
               "to": "team-goal:SI:main",
               "type": "positive",
-              "correlation": 0.438,
-              "intersectionProbabilityPct": 58.2
+              "correlation": 0.436,
+              "intersectionProbabilityPct": 57.9
             },
             {
               "from": "goals:OVER:1.5",
               "to": "team-goal:NO:main",
               "type": "negative",
-              "correlation": -0.438,
-              "intersectionProbabilityPct": 17.5
+              "correlation": -0.436,
+              "intersectionProbabilityPct": 17.8
             },
             {
               "from": "goals:OVER:1.5",
               "to": "team-goal:SI:main",
               "type": "positive",
-              "correlation": 0.529,
-              "intersectionProbabilityPct": 70.4
+              "correlation": 0.53,
+              "intersectionProbabilityPct": 70.5
             },
             {
               "from": "goals:OVER:1.5",
               "to": "team-goal:NO:main",
               "type": "negative",
-              "correlation": -0.529,
-              "intersectionProbabilityPct": 5.3
+              "correlation": -0.53,
+              "intersectionProbabilityPct": 5.1
             },
             {
               "from": "goals:UNDER:2.5",
@@ -82511,43 +82558,43 @@
               "from": "goals:UNDER:2.5",
               "to": "btts:GOAL:main",
               "type": "negative",
-              "correlation": -0.57,
+              "correlation": -0.568,
               "intersectionProbabilityPct": 11.5
             },
             {
               "from": "goals:UNDER:2.5",
               "to": "btts:NOGOAL:main",
               "type": "positive",
-              "correlation": 0.57,
-              "intersectionProbabilityPct": 37.1
+              "correlation": 0.568,
+              "intersectionProbabilityPct": 37.2
             },
             {
               "from": "goals:UNDER:2.5",
               "to": "team-goal:SI:main",
               "type": "negative",
-              "correlation": -0.406,
-              "intersectionProbabilityPct": 22
+              "correlation": -0.405,
+              "intersectionProbabilityPct": 21.8
             },
             {
               "from": "goals:UNDER:2.5",
               "to": "team-goal:NO:main",
               "type": "positive",
-              "correlation": 0.406,
-              "intersectionProbabilityPct": 26.7
+              "correlation": 0.405,
+              "intersectionProbabilityPct": 26.9
             },
             {
               "from": "goals:UNDER:2.5",
               "to": "team-goal:SI:main",
               "type": "negative",
-              "correlation": -0.406,
-              "intersectionProbabilityPct": 31.7
+              "correlation": -0.405,
+              "intersectionProbabilityPct": 31.8
             },
             {
               "from": "goals:UNDER:2.5",
               "to": "team-goal:NO:main",
               "type": "positive",
-              "correlation": 0.406,
-              "intersectionProbabilityPct": 17
+              "correlation": 0.405,
+              "intersectionProbabilityPct": 16.8
             },
             {
               "from": "goals:OVER:2.5",
@@ -82567,43 +82614,43 @@
               "from": "goals:OVER:2.5",
               "to": "btts:GOAL:main",
               "type": "positive",
-              "correlation": 0.57,
-              "intersectionProbabilityPct": 41.4
+              "correlation": 0.568,
+              "intersectionProbabilityPct": 41.3
             },
             {
               "from": "goals:OVER:2.5",
               "to": "btts:NOGOAL:main",
               "type": "negative",
-              "correlation": -0.57,
-              "intersectionProbabilityPct": 10
+              "correlation": -0.568,
+              "intersectionProbabilityPct": 10.1
             },
             {
               "from": "goals:OVER:2.5",
               "to": "team-goal:SI:main",
               "type": "positive",
-              "correlation": 0.406,
-              "intersectionProbabilityPct": 43
+              "correlation": 0.405,
+              "intersectionProbabilityPct": 42.9
             },
             {
               "from": "goals:OVER:2.5",
               "to": "team-goal:NO:main",
               "type": "negative",
-              "correlation": -0.406,
-              "intersectionProbabilityPct": 8.3
+              "correlation": -0.405,
+              "intersectionProbabilityPct": 8.5
             },
             {
               "from": "goals:OVER:2.5",
               "to": "team-goal:SI:main",
               "type": "positive",
-              "correlation": 0.406,
+              "correlation": 0.405,
               "intersectionProbabilityPct": 49.7
             },
             {
               "from": "goals:OVER:2.5",
               "to": "team-goal:NO:main",
               "type": "negative",
-              "correlation": -0.406,
-              "intersectionProbabilityPct": 1.7
+              "correlation": -0.405,
+              "intersectionProbabilityPct": 1.6
             },
             {
               "from": "goals:UNDER:3.5",
@@ -82616,84 +82663,84 @@
               "from": "goals:UNDER:3.5",
               "to": "btts:GOAL:main",
               "type": "negative",
-              "correlation": -0.45,
-              "intersectionProbabilityPct": 27.2
+              "correlation": -0.449,
+              "intersectionProbabilityPct": 27.1
             },
             {
               "from": "goals:UNDER:3.5",
               "to": "btts:NOGOAL:main",
               "type": "positive",
-              "correlation": 0.45,
-              "intersectionProbabilityPct": 43.6
+              "correlation": 0.449,
+              "intersectionProbabilityPct": 43.7
             },
             {
               "from": "goals:UNDER:3.5",
               "to": "team-goal:SI:main",
               "type": "negative",
-              "correlation": -0.326,
-              "intersectionProbabilityPct": 38.9
+              "correlation": -0.327,
+              "intersectionProbabilityPct": 38.7
             },
             {
               "from": "goals:UNDER:3.5",
               "to": "team-goal:NO:main",
               "type": "positive",
-              "correlation": 0.326,
-              "intersectionProbabilityPct": 31.8
+              "correlation": 0.327,
+              "intersectionProbabilityPct": 32.1
             },
             {
               "from": "goals:UNDER:3.5",
               "to": "team-goal:SI:main",
               "type": "negative",
-              "correlation": -0.284,
-              "intersectionProbabilityPct": 52.5
+              "correlation": -0.283,
+              "intersectionProbabilityPct": 52.7
             },
             {
               "from": "goals:UNDER:3.5",
               "to": "team-goal:NO:main",
               "type": "positive",
-              "correlation": 0.284,
-              "intersectionProbabilityPct": 18.2
+              "correlation": 0.283,
+              "intersectionProbabilityPct": 18.1
             },
             {
               "from": "goals:OVER:3.5",
               "to": "btts:GOAL:main",
               "type": "positive",
-              "correlation": 0.45,
-              "intersectionProbabilityPct": 25.7
+              "correlation": 0.449,
+              "intersectionProbabilityPct": 25.6
             },
             {
               "from": "goals:OVER:3.5",
               "to": "btts:NOGOAL:main",
               "type": "negative",
-              "correlation": -0.45,
+              "correlation": -0.449,
               "intersectionProbabilityPct": 3.6
             },
             {
               "from": "goals:OVER:3.5",
               "to": "team-goal:SI:main",
               "type": "positive",
-              "correlation": 0.326,
-              "intersectionProbabilityPct": 26.1
+              "correlation": 0.327,
+              "intersectionProbabilityPct": 26
             },
             {
               "from": "goals:OVER:3.5",
               "to": "team-goal:NO:main",
               "type": "negative",
-              "correlation": -0.326,
-              "intersectionProbabilityPct": 3.1
+              "correlation": -0.327,
+              "intersectionProbabilityPct": 3.2
             },
             {
               "from": "goals:OVER:3.5",
               "to": "team-goal:SI:main",
               "type": "positive",
-              "correlation": 0.284,
+              "correlation": 0.283,
               "intersectionProbabilityPct": 28.8
             },
             {
               "from": "goals:OVER:3.5",
               "to": "team-goal:NO:main",
               "type": "conflicting",
-              "correlation": -0.284,
+              "correlation": -0.283,
               "intersectionProbabilityPct": 0.4
             },
             {
@@ -82707,57 +82754,57 @@
               "from": "btts:GOAL:main",
               "to": "team-goal:SI:main",
               "type": "positive",
-              "correlation": 0.777,
-              "intersectionProbabilityPct": 52.9
+              "correlation": 0.781,
+              "intersectionProbabilityPct": 52.7
             },
             {
               "from": "btts:GOAL:main",
               "to": "team-goal:NO:main",
               "type": "conflicting",
-              "correlation": -0.777,
+              "correlation": -0.781,
               "intersectionProbabilityPct": 0
             },
             {
               "from": "btts:GOAL:main",
               "to": "team-goal:SI:main",
               "type": "positive",
-              "correlation": 0.507,
-              "intersectionProbabilityPct": 52.9
+              "correlation": 0.502,
+              "intersectionProbabilityPct": 52.7
             },
             {
               "from": "btts:GOAL:main",
               "to": "team-goal:NO:main",
               "type": "conflicting",
-              "correlation": -0.507,
+              "correlation": -0.502,
               "intersectionProbabilityPct": 0
             },
             {
               "from": "btts:NOGOAL:main",
               "to": "team-goal:SI:main",
               "type": "negative",
-              "correlation": -0.777,
-              "intersectionProbabilityPct": 12.1
+              "correlation": -0.781,
+              "intersectionProbabilityPct": 11.9
             },
             {
               "from": "btts:NOGOAL:main",
               "to": "team-goal:NO:main",
               "type": "positive",
-              "correlation": 0.777,
-              "intersectionProbabilityPct": 35
+              "correlation": 0.781,
+              "intersectionProbabilityPct": 35.3
             },
             {
               "from": "btts:NOGOAL:main",
               "to": "team-goal:SI:main",
               "type": "negative",
-              "correlation": -0.507,
-              "intersectionProbabilityPct": 28.5
+              "correlation": -0.502,
+              "intersectionProbabilityPct": 28.8
             },
             {
               "from": "btts:NOGOAL:main",
               "to": "team-goal:NO:main",
               "type": "positive",
-              "correlation": 0.507,
-              "intersectionProbabilityPct": 18.6
+              "correlation": 0.502,
+              "intersectionProbabilityPct": 18.5
             },
             {
               "from": "team-goal:SI:main",
@@ -82786,9 +82833,9 @@
             "tier": "Safe",
             "status": "outside-limits",
             "allowed": false,
-            "riskScore": 82,
+            "riskScore": 77.8,
             "riskLevel": "alto",
-            "averageRisk": 82,
+            "averageRisk": 77.8,
             "maxEventRisk": 82,
             "strongDependencies": 0,
             "contradictions": 0,
@@ -82799,32 +82846,32 @@
               "minPrudentExpectedValuePct": 0
             },
             "reasons": [
-              "Rischio medio 82 oltre il limite 42.",
+              "Rischio medio 77.8 oltre il limite 42.",
               "Gamba a rischio 82 oltre il limite 58.",
               "EV prudenziale non disponibile."
             ],
             "events": [
               {
-                "providerSelectionId": "5317170037",
-                "label": "BERARDI D. almeno 1 tiri in porta, sostituto incluso",
+                "providerSelectionId": "5304662222",
+                "label": "Juventus vincente",
+                "riskScore": 65,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5317170435",
+                "label": "Sassuolo almeno 3 tiri in porta",
                 "riskScore": 82,
                 "modeled": false
               },
               {
-                "providerSelectionId": "5315194734",
-                "label": "PRIMA A 5 CALCI D'ANGOLO · Juventus",
+                "providerSelectionId": "5315194638",
+                "label": "Entrambe almeno 3 corner",
                 "riskScore": 82,
                 "modeled": false
               },
               {
-                "providerSelectionId": "5304663071",
-                "label": "Partita almeno 25 tiri totali",
-                "riskScore": 82,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5304744365",
-                "label": "U/O 2.5 Sassuolo + U/O 3.5 Juventus · UNDER+UNDER",
+                "providerSelectionId": "5317169315",
+                "label": "GONZALEZ NICO almeno 1 falli commessi",
                 "riskScore": 82,
                 "modeled": false
               }
@@ -82854,32 +82901,32 @@
             ],
             "events": [
               {
-                "providerSelectionId": "5317170187",
-                "label": "KOOPMEINERS T. almeno 1 tiri in porta, sostituto incluso",
+                "providerSelectionId": "5317161244",
+                "label": "LUIZ DOUGLAS SEGNA ALMENO UN GOAL O REALIZZA ALMENO UN ASSIST O RICEVE ALMENO UN CARTELLINO INC. TS · sì",
                 "riskScore": 82,
                 "modeled": false
               },
               {
-                "providerSelectionId": "5317169299",
-                "label": "CONCEICAO F. almeno 2 falli commessi",
+                "providerSelectionId": "5317230776",
+                "label": "GONZALEZ NICO almeno 2 falli subiti",
                 "riskScore": 82,
                 "modeled": false
               },
               {
-                "providerSelectionId": "5317230988",
-                "label": "CONCEICAO F. almeno 2 falli subiti",
+                "providerSelectionId": "5317171635",
+                "label": "LUIZ DOUGLAS almeno 2 tiri totali, sostituto incluso",
                 "riskScore": 82,
                 "modeled": false
               },
               {
-                "providerSelectionId": "5315194711",
-                "label": "Partita almeno 8 corner",
+                "providerSelectionId": "5315194936",
+                "label": "Partita meno di 11 corner",
                 "riskScore": 82,
                 "modeled": false
               },
               {
-                "providerSelectionId": "5304662638",
-                "label": "DC + U/O 4.5 · X2 + UNDER",
+                "providerSelectionId": "5304725192",
+                "label": "U/O 3.5 Sassuolo + U/O 2.5 Juventus · UNDER+UNDER",
                 "riskScore": 82,
                 "modeled": false
               }
@@ -82908,8 +82955,26 @@
             ],
             "events": [
               {
-                "providerSelectionId": "5317170187",
-                "label": "KOOPMEINERS T. almeno 1 tiri in porta, sostituto incluso",
+                "providerSelectionId": "5317161244",
+                "label": "LUIZ DOUGLAS SEGNA ALMENO UN GOAL O REALIZZA ALMENO UN ASSIST O RICEVE ALMENO UN CARTELLINO INC. TS · sì",
+                "riskScore": 82,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5304676440",
+                "label": "MULTIGOAL MULTIESITI 16 ESITI · 3-6",
+                "riskScore": 65,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5315194940",
+                "label": "Juventus ALMENO 2 CORNER IN ENTRAMBI I TEMPI · SI",
+                "riskScore": 82,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5317171406",
+                "label": "Entrambe almeno 3 tiri in porta",
                 "riskScore": 82,
                 "modeled": false
               },
@@ -82920,26 +82985,8 @@
                 "modeled": false
               },
               {
-                "providerSelectionId": "5317169255",
-                "label": "CINQUEGRANO S. almeno 1 tiri totali, sostituto incluso",
-                "riskScore": 82,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5317169299",
-                "label": "CONCEICAO F. almeno 2 falli commessi",
-                "riskScore": 82,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5304672274",
-                "label": "Under 3,5 gol",
-                "riskScore": 65,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5315194932",
-                "label": "PRIMA A 3 CALCI D'ANGOLO · Juventus",
+                "providerSelectionId": "5317170803",
+                "label": "Sassuolo almeno 7 tiri totali",
                 "riskScore": 82,
                 "modeled": false
               }
@@ -82953,7 +83000,7 @@
       "matchId": "torino-roma-2026-27-md-04",
       "generatedAt": "2026-09-10T20:52:11.382Z",
       "status": "preliminary",
-      "engineVersion": "4.11.0",
+      "engineVersion": "4.12.0",
       "probabilities": {
         "final": {
           "1": 23,
@@ -83097,7 +83144,7 @@
         "primary": {
           "score": "1-2",
           "outcome": "2",
-          "label": "Scenario coerente con il segno 1X2",
+          "label": "Risultato esatto centrale",
           "probabilityPct": 9.8,
           "conditionalProbabilityPct": 17.6,
           "isAbsoluteMode": false
@@ -83132,7 +83179,7 @@
           {
             "score": "1-2",
             "outcome": "2",
-            "label": "Scenario coerente con il segno 1X2",
+            "label": "Risultato esatto centrale",
             "probabilityPct": 9.8,
             "conditionalProbabilityPct": 17.6,
             "isAbsoluteMode": false
@@ -83156,7 +83203,12 @@
         ],
         "coherentWithVerdict": true,
         "forcedOutcomeScenarios": false,
-        "method": "Lo scenario coerente con il segno 1X2 e il punteggio piu probabile dentro quell'esito, ma non e la moda assoluta ne un pronostico esatto centrale. La sintesi pubblica privilegia la fascia gol e mostra i punteggi soltanto come scenari separati."
+        "selection": {
+          "type": "rounded-expected-goals",
+          "expectedHome": 1.2,
+          "expectedAway": 2
+        },
+        "method": "Il risultato esatto centrale arrotonda separatamente i gol attesi delle due squadre. La moda assoluta e mostrata a parte; il criterio centrale riduce la concentrazione artificiale sugli 1-0 nel confronto walk-forward pluristagionale."
       },
       "scoreProfile": {
         "bands": [
@@ -86132,7 +86184,7 @@
       "matchId": "venezia-fiorentina-2026-27-md-04",
       "generatedAt": "2026-09-10T20:52:11.382Z",
       "status": "preliminary",
-      "engineVersion": "4.11.0",
+      "engineVersion": "4.12.0",
       "probabilities": {
         "final": {
           "1": 36.8,
@@ -86270,12 +86322,12 @@
       ],
       "scoreForecast": {
         "primary": {
-          "score": "0-1",
-          "outcome": "2",
-          "label": "Scenario coerente con il segno 1X2",
-          "probabilityPct": 9.3,
-          "conditionalProbabilityPct": 24.9,
-          "isAbsoluteMode": false
+          "score": "1-1",
+          "outcome": "X",
+          "label": "Risultato esatto centrale",
+          "probabilityPct": 12.3,
+          "conditionalProbabilityPct": 47.5,
+          "isAbsoluteMode": true
         },
         "modal": {
           "score": "1-1",
@@ -86287,12 +86339,12 @@
         },
         "alternatives": [
           {
-            "score": "1-1",
-            "outcome": "X",
-            "label": "Moda assoluta",
-            "probabilityPct": 12.3,
-            "conditionalProbabilityPct": 47.5,
-            "isAbsoluteMode": true
+            "score": "0-1",
+            "outcome": "2",
+            "label": "Altro risultato probabile",
+            "probabilityPct": 9.3,
+            "conditionalProbabilityPct": 24.9,
+            "isAbsoluteMode": false
           },
           {
             "score": "1-0",
@@ -86305,20 +86357,20 @@
         ],
         "display": [
           {
-            "score": "0-1",
-            "outcome": "2",
-            "label": "Scenario coerente con il segno 1X2",
-            "probabilityPct": 9.3,
-            "conditionalProbabilityPct": 24.9,
-            "isAbsoluteMode": false
-          },
-          {
             "score": "1-1",
             "outcome": "X",
-            "label": "Moda assoluta",
+            "label": "Risultato esatto centrale",
             "probabilityPct": 12.3,
             "conditionalProbabilityPct": 47.5,
             "isAbsoluteMode": true
+          },
+          {
+            "score": "0-1",
+            "outcome": "2",
+            "label": "Altro risultato probabile",
+            "probabilityPct": 9.3,
+            "conditionalProbabilityPct": 24.9,
+            "isAbsoluteMode": false
           },
           {
             "score": "1-0",
@@ -86329,9 +86381,14 @@
             "isAbsoluteMode": false
           }
         ],
-        "coherentWithVerdict": true,
+        "coherentWithVerdict": false,
         "forcedOutcomeScenarios": false,
-        "method": "Lo scenario coerente con il segno 1X2 e il punteggio piu probabile dentro quell'esito, ma non e la moda assoluta ne un pronostico esatto centrale. La sintesi pubblica privilegia la fascia gol e mostra i punteggi soltanto come scenari separati."
+        "selection": {
+          "type": "rounded-expected-goals",
+          "expectedHome": 1.3,
+          "expectedAway": 1.3
+        },
+        "method": "Il risultato esatto centrale arrotonda separatamente i gol attesi delle due squadre. La moda assoluta e mostrata a parte; il criterio centrale riduce la concentrazione artificiale sugli 1-0 nel confronto walk-forward pluristagionale."
       },
       "scoreProfile": {
         "bands": [

@@ -24,4 +24,11 @@ assert(opponentRatings.selection.matches >= 800, "Campione di selezione ranking 
 assert.strictEqual(opponentRatings.outOfSample.matches, report.archive.outOfSamplePredictions, "Confronto ranking con copertura incompleta");
 assert(opponentRatings.outOfSample.pairedBootstrap.scoreLogLoss.confidenceInterval95.length === 2, "Bootstrap ranking pluristagionale assente");
 assert(report.decision.pairedBootstrap.oneXTwoLogLoss.confidenceInterval95.length === 2, "Bootstrap pluristagionale assente");
+const exactScoreSelection = report.decision.exactScoreSelection;
+assert.strictEqual(exactScoreSelection.recommendation, "adopt-rounded-expected-goals", "Il selettore esatto deve seguire il confronto pluristagionale");
+assert(exactScoreSelection.sample >= 1000, "Campione risultato esatto insufficiente");
+assert(exactScoreSelection.candidateMetrics.exactHitPct >= exactScoreSelection.baselineMetrics.exactHitPct - 0.5, "Perdita di centri esatti oltre la soglia");
+assert(exactScoreSelection.candidateMetrics.goalMae < exactScoreSelection.baselineMetrics.goalMae, "Errore sui gol non migliorato");
+assert(exactScoreSelection.candidateMetrics.totalGoalMae < exactScoreSelection.baselineMetrics.totalGoalMae, "Errore sul totale gol non migliorato");
+assert(exactScoreSelection.candidateMetrics.oneZeroPct < exactScoreSelection.baselineMetrics.oneZeroPct, "Concentrazione sugli 1-0 non ridotta");
 console.log(`OK backtest pluristagionale: ${report.archive.outOfSamplePredictions} gare, ${report.decision.recommendation}`);

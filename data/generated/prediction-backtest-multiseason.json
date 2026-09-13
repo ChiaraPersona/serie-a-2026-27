@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-25T20:24:01.657Z",
+  "generatedAt": "2026-09-13T15:32:45.558Z",
   "competition": "serie-a",
   "methodology": {
     "type": "multi-season-walk-forward",
@@ -23,6 +23,7 @@
     "leakageControl": "Lambda, xG, calibrazione empirica, H2H e rho usano esclusivamente eventi antecedenti alla partita stimata.",
     "xg": "Dati partita Understat; confronto tra Poisson sui gol, fusione geometrica 50% gol/50% xG e solo xG.",
     "dixonColes": "Correzione dei risultati 0-0, 0-1, 1-0 e 1-1; rho selezionato per ogni data su tre anni precedenti con emivita 365 giorni.",
+    "exactScoreSelection": "Confronto fuori campione tra moda condizionata al segno 1X2 e tre criteri centrali; errore assoluto sui gol e concentrazione sugli 1-0 affiancano il tasso di risultato esatto centrato.",
     "scope": "Nucleo statistico retrodatabile con correttivo H2H; probabili XI, indisponibili e tattica non sono inclusi per assenza di snapshot storici."
   },
   "archive": {
@@ -1662,6 +1663,28 @@
     "calibrationRecommendation": "adopt-poisson",
     "xgRecommendation": "adopt-xg-blend-25",
     "uncertaintyRecommendation": "keep-fixed-lambda",
-    "opponentRatingRecommendation": "keep-points-ranking"
+    "opponentRatingRecommendation": "keep-points-ranking",
+    "exactScoreSelection": {
+      "baseline": "conditional-mode",
+      "candidate": "rounded-expected-goals",
+      "sample": 1201,
+      "baselineMetrics": {
+        "exactHitPct": 13,
+        "goalMae": 1.8759,
+        "totalGoalMae": 1.6095,
+        "oneZeroPct": 59.6
+      },
+      "candidateMetrics": {
+        "exactHitPct": 12.6,
+        "goalMae": 1.6436,
+        "totalGoalMae": 1.2073,
+        "oneZeroPct": 0
+      },
+      "improvementVsBaselinePct": {
+        "goalMae": 12.38,
+        "totalGoalMae": 24.99
+      },
+      "recommendation": "adopt-rounded-expected-goals"
+    }
   }
 }

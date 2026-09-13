@@ -64,7 +64,8 @@ assert.strictEqual(dataset.engine.promotedTeamModel.defenceWeaknessFactor, 1.29,
 assert(dataset.predictions.every(prediction => prediction.dataQuality.missing.some(item => item.includes("meteo"))), "Il meteo non verificabile deve essere dichiarato N/D");
 assert(dataset.predictions.every(prediction => !prediction.dataQuality.missing.some(item => item.includes("indisponibili"))), "Il monitor indisponibili aggiornato deve raggiungere tutte le letture");
 for (const prediction of dataset.predictions) {
-  assert.strictEqual(prediction.engineVersion, dataset.engine.version, `${prediction.matchId}: deve usare la versione condivisa del motore`);
+  if (prediction.matchId.endsWith("-md-04")) assert.strictEqual(prediction.engineVersion, dataset.engine.version, `${prediction.matchId}: deve usare la versione corrente del motore`);
+  else assert.strictEqual(prediction.engineVersion, "4.11.0", `${prediction.matchId}: lo snapshot archiviato deve conservare la propria versione`);
   const probabilities = Object.values(prediction.probabilities.final);
   assert.strictEqual(Number(probabilities.reduce((total, value) => total + value, 0).toFixed(1)), 100, `${prediction.matchId}: probabilita 1X2 non esattamente normalizzate`);
   assert.deepStrictEqual(prediction.probabilities.final, prediction.probabilities.historical, `${prediction.matchId}: 1X2 e matrice punteggi devono condividere la stessa distribuzione`);
@@ -74,12 +75,13 @@ for (const prediction of dataset.predictions) {
   assert(prediction.headToHead.home >= 0.95 && prediction.headToHead.home <= 1.05 && prediction.headToHead.away >= 0.95 && prediction.headToHead.away <= 1.05, `${prediction.matchId}: correttivo H2H oltre il limite del 5%`);
   assert(prediction.exactScores.length === 3 && new Set(prediction.exactScores.map(item => item.score)).size === 3, `${prediction.matchId}: risultati esatti non validi`);
   assert(prediction.scoreForecast?.primary?.score && prediction.scoreForecast?.modal?.score && prediction.scoreForecast?.display?.length === 3, `${prediction.matchId}: gerarchia risultato assente`);
-  assert.strictEqual(prediction.scoreForecast.primary.outcome, prediction.verdict.outcome, `${prediction.matchId}: risultato principale incoerente con il verdetto`);
   if (prediction.matchId.endsWith("-md-04")) {
-    assert.strictEqual(prediction.scoreForecast.primary.label, "Scenario coerente con il segno 1X2", `${prediction.matchId}: lo scenario condizionato non deve essere presentato come risultato principale`);
-    assert.match(prediction.scoreForecast.method, /non e la moda assoluta ne un pronostico esatto centrale/, `${prediction.matchId}: limite del punteggio condizionato non dichiarato`);
+    assert.strictEqual(prediction.scoreForecast.primary.label, "Risultato esatto centrale", `${prediction.matchId}: risultato centrale non dichiarato`);
+    assert.strictEqual(prediction.scoreForecast.selection?.type, "rounded-expected-goals", `${prediction.matchId}: selettore del risultato centrale assente`);
+    assert.strictEqual(prediction.scoreForecast.primary.score, `${Math.round(prediction.expectedGoals.home)}-${Math.round(prediction.expectedGoals.away)}`, `${prediction.matchId}: risultato centrale non coerente con i gol attesi`);
+    assert.match(prediction.scoreForecast.method, /gol attesi delle due squadre/, `${prediction.matchId}: metodo del risultato centrale non dichiarato`);
   }
-  assert(prediction.scoreForecast.coherentWithVerdict, `${prediction.matchId}: coerenza risultato/verdetto non dichiarata`);
+  assert.strictEqual(prediction.scoreForecast.coherentWithVerdict, prediction.scoreForecast.primary.outcome === prediction.verdict.outcome, `${prediction.matchId}: indicatore di coerenza risultato/verdetto errato`);
   assert.strictEqual(prediction.scoreForecast.forcedOutcomeScenarios, false, `${prediction.matchId}: scenario sorpresa forzato`);
   assert(!prediction.scoreForecast.display.some(item => /sorpresa/i.test(item.label)), `${prediction.matchId}: etichetta sorpresa nei risultati esatti`);
   assert(prediction.scoreProfile.bands.length === 3 && Math.abs(prediction.scoreProfile.bands.reduce((total, band) => total + band.probabilityPct, 0) - 100) <= 0.2, `${prediction.matchId}: fasce gol non normalizzate`);
@@ -178,6 +180,7 @@ for (const prediction of dataset.predictions) {
   const favorite = homeWin >= awayWin ? { teamId: prediction.teamProjections[0].teamId, probability: homeWin, opponent: awayWin } : { teamId: prediction.teamProjections[1].teamId, probability: awayWin, opponent: homeWin };
   if (favorite.probability >= 0.5 && favorite.probability - favorite.opponent >= 0.15) assert.strictEqual(prediction.mvpCandidate.teamId, favorite.teamId, `${prediction.matchId}: MVP incoerente con favorita netta`);
 }
+assert.strictEqual(fourthMatchdayPredictions.filter(prediction => prediction.scoreForecast.primary.score === "1-0").length, 0, "La quarta giornata non deve ereditare la concentrazione artificiale sugli 1-0");
 const milanVenezia = dataset.predictions.find(prediction => prediction.matchId === "milan-venezia-2026-27-md-02");
 const fiorentinaFrosinone = dataset.predictions.find(prediction => prediction.matchId === "fiorentina-frosinone-2026-27-md-02");
 const monzaUdinese = dataset.predictions.find(prediction => prediction.matchId === "monza-udinese-2026-27-md-02");

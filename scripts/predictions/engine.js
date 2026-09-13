@@ -1,6 +1,6 @@
 "use strict";
 
-const ENGINE_VERSION = "4.11.0";
+const ENGINE_VERSION = "4.12.0";
 const OUTCOMES = ["1", "X", "2"];
 const WEIGHTS = Object.freeze({ venueHistorical: 0.46, overallHistorical: 0.25, recentForm: 0.16, tacticalMatchup: 0.07, probableLineup: 0.05, objectives: 0.01 });
 const MVP_WEIGHTS = Object.freeze({ resultScenario: 0.3, individualProduction: 0.2, historicalRating: 0.15, officialMvpHistory: 0.15, tacticalFit: 0.1, opponentHistory: 0.05, dataReliability: 0.05 });
@@ -368,7 +368,6 @@ function scoreForecast(matrix, final) {
   const outcomeOf = score => score.home > score.away ? "1" : score.home === score.away ? "X" : "2";
   const outcomeProbability = outcome => final[OUTCOMES.indexOf(outcome)];
   const outcomeOrder = OUTCOMES.map((outcome, index) => ({ outcome, probability: final[index] })).sort((a, b) => b.probability - a.probability);
-  const bestFor = outcome => orderedScores.find(score => outcomeOf(score) === outcome);
   const decorate = (score, label) => {
     const outcome = outcomeOf(score);
     return {
@@ -380,9 +379,11 @@ function scoreForecast(matrix, final) {
       isAbsoluteMode: score === orderedScores[0]
     };
   };
-  const primaryScore = bestFor(outcomeOrder[0].outcome);
+  const expectedHome = sum(matrix.map(score => score.home * score.probability));
+  const expectedAway = sum(matrix.map(score => score.away * score.probability));
+  const primaryScore = matrix.find(score => score.home === Math.round(expectedHome) && score.away === Math.round(expectedAway));
   const modalScore = orderedScores[0];
-  const primary = decorate(primaryScore, "Scenario coerente con il segno 1X2");
+  const primary = decorate(primaryScore, "Risultato esatto centrale");
   const modal = decorate(modalScore, "Moda assoluta");
   const display = [primary];
   if (modal.score !== primary.score) display.push(modal);
@@ -397,7 +398,12 @@ function scoreForecast(matrix, final) {
     display,
     coherentWithVerdict: primary.outcome === outcomeOrder[0].outcome,
     forcedOutcomeScenarios: false,
-    method: "Lo scenario coerente con il segno 1X2 e il punteggio piu probabile dentro quell'esito, ma non e la moda assoluta ne un pronostico esatto centrale. La sintesi pubblica privilegia la fascia gol e mostra i punteggi soltanto come scenari separati."
+    selection: {
+      type: "rounded-expected-goals",
+      expectedHome: round(expectedHome),
+      expectedAway: round(expectedAway)
+    },
+    method: "Il risultato esatto centrale arrotonda separatamente i gol attesi delle due squadre. La moda assoluta e mostrata a parte; il criterio centrale riduce la concentrazione artificiale sugli 1-0 nel confronto walk-forward pluristagionale."
   };
 }
 

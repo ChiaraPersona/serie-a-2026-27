@@ -339,6 +339,37 @@ function goalBand(home, away) {
   return home + away <= 1 ? 0 : home + away <= 3 ? 1 : 2;
 }
 
+function exactScoreDiagnostics(matrix, probabilities, homeLambda, awayLambda, actual) {
+  const outcomeOf = score => score.home > score.away ? 0 : score.home === score.away ? 1 : 2;
+  const predictedOutcome = probabilities.indexOf(Math.max(...probabilities));
+  const ordered = [...matrix].sort((a, b) => b.probability - a.probability);
+  const conditionalMode = ordered.find(score => outcomeOf(score) === predictedOutcome);
+  const roundedMean = matrix.find(score => score.home === Math.round(homeLambda) && score.away === Math.round(awayLambda));
+  const outcomeCentral = matrix.filter(score => outcomeOf(score) === predictedOutcome).sort((a, b) =>
+    ((a.home - homeLambda) ** 2 + (a.away - awayLambda) ** 2)
+    - ((b.home - homeLambda) ** 2 + (b.away - awayLambda) ** 2)
+    || b.probability - a.probability
+  )[0];
+  const targetTotal = Math.round(homeLambda + awayLambda);
+  const totalCentral = matrix.filter(score => outcomeOf(score) === predictedOutcome).sort((a, b) =>
+    Math.abs(a.home + a.away - targetTotal) - Math.abs(b.home + b.away - targetTotal)
+    || ((a.home - homeLambda) ** 2 + (a.away - awayLambda) ** 2) - ((b.home - homeLambda) ** 2 + (b.away - awayLambda) ** 2)
+    || b.probability - a.probability
+  )[0];
+  const evaluate = score => ({
+    hit: Number(score.home === actual.home && score.away === actual.away),
+    goalError: Math.abs(score.home - actual.home) + Math.abs(score.away - actual.away),
+    totalError: Math.abs(score.home + score.away - actual.home - actual.away),
+    oneZero: Number(score.home === 1 && score.away === 0)
+  });
+  return {
+    conditionalMode: evaluate(conditionalMode),
+    roundedMean: evaluate(roundedMean),
+    outcomeCentral: evaluate(outcomeCentral),
+    totalCentral: evaluate(totalCentral)
+  };
+}
+
 function evaluateRows(samples, variant) {
   const rhoByDay = new Map();
   const rows = samples.map(sample => {
@@ -367,6 +398,7 @@ function evaluateRows(samples, variant) {
     const bandProbabilities = [0, 0, 0];
     matrix.forEach(score => { bandProbabilities[goalBand(score.home, score.away)] += score.probability; });
     const actualBand = goalBand(sample.score.home, sample.score.away);
+    const exactSelections = exactScoreDiagnostics(matrix, probabilities, homeLambda, awayLambda, sample.score);
     return {
       season: sample.season,
       oneXTwoLogLoss: -Math.log(clamp(probabilities[outcome], 1e-10, 1)),
@@ -377,11 +409,21 @@ function evaluateRows(samples, variant) {
       topThreeHit: Number(ordered.slice(0, 3).some(score => score.home === sample.score.home && score.away === sample.score.away)),
       goalBandBrier: sum(bandProbabilities.map((probability, index) => (probability - Number(index === actualBand)) ** 2)),
       goalBandHit: Number(bandProbabilities.indexOf(Math.max(...bandProbabilities)) === actualBand),
+      exactSelections,
       rho: rhoEstimate.rho,
       rhoSample: rhoEstimate.sample
     };
   });
   return { metrics: metrics(rows), rows };
+}
+
+function exactScoreSelectionMetrics(rows) {
+  return Object.fromEntries(["conditionalMode", "roundedMean", "outcomeCentral", "totalCentral"].map(policy => [policy, {
+    exactHitPct: round(mean(rows.map(row => row.exactSelections[policy].hit)) * 100, 1),
+    goalMae: round(mean(rows.map(row => row.exactSelections[policy].goalError))),
+    totalGoalMae: round(mean(rows.map(row => row.exactSelections[policy].totalError))),
+    oneZeroPct: round(mean(rows.map(row => row.exactSelections[policy].oneZero)) * 100, 1)
+  }]));
 }
 
 function metrics(rows) {
@@ -442,6 +484,7 @@ const output = {
     leakageControl: "Lambda, xG, calibrazione empirica, H2H e rho usano esclusivamente eventi antecedenti alla partita stimata.",
     xg: "Dati partita Understat; confronto tra Poisson sui gol, fusione geometrica 50% gol/50% xG e solo xG.",
     dixonColes: "Correzione dei risultati 0-0, 0-1, 1-0 e 1-1; rho selezionato per ogni data su tre anni precedenti con emivita 365 giorni.",
+    exactScoreSelection: "Confronto fuori campione tra moda condizionata al segno 1X2 e tre criteri centrali; errore assoluto sui gol e concentrazione sugli 1-0 affiancano il tasso di risultato esatto centrato.",
     scope: "Nucleo statistico retrodatabile con correttivo H2H; probabili XI, indisponibili e tattica non sono inclusi per assenza di snapshot storici."
   },
   archive: {
@@ -579,5 +622,24 @@ const opponentRatingWins = opponentRating.improvementVsBaselinePct.oneXTwoLogLos
   && opponentRating.pairedBootstrap.oneXTwoLogLoss.confidenceInterval95[0] >= 0
   && opponentRating.pairedBootstrap.scoreLogLoss.confidenceInterval95[0] >= 0;
 output.decision.opponentRatingRecommendation = opponentRatingWins ? "adopt-separate-attack-defence" : "keep-points-ranking";
+const exactScoreMetrics = exactScoreSelectionMetrics(results["xg-blend-25"].rows);
+const exactScoreBaseline = exactScoreMetrics.conditionalMode;
+const exactScoreCandidate = exactScoreMetrics.roundedMean;
+const roundedMeanWins = exactScoreCandidate.exactHitPct >= exactScoreBaseline.exactHitPct - 0.5
+  && exactScoreCandidate.goalMae < exactScoreBaseline.goalMae
+  && exactScoreCandidate.totalGoalMae < exactScoreBaseline.totalGoalMae
+  && exactScoreCandidate.oneZeroPct < exactScoreBaseline.oneZeroPct;
+output.decision.exactScoreSelection = {
+  baseline: "conditional-mode",
+  candidate: "rounded-expected-goals",
+  sample: results["xg-blend-25"].metrics.matches,
+  baselineMetrics: exactScoreBaseline,
+  candidateMetrics: exactScoreCandidate,
+  improvementVsBaselinePct: {
+    goalMae: improvement(exactScoreBaseline.goalMae, exactScoreCandidate.goalMae),
+    totalGoalMae: improvement(exactScoreBaseline.totalGoalMae, exactScoreCandidate.totalGoalMae)
+  },
+  recommendation: roundedMeanWins ? "adopt-rounded-expected-goals" : "keep-conditional-mode"
+};
 fs.writeFileSync(outputPath, `${JSON.stringify(output, null, 2)}\n`);
 console.log(`OK backtest pluristagionale: ${testSamples.length} gare, decisione ${output.decision.recommendation}`);
