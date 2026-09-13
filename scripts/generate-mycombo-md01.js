@@ -416,6 +416,15 @@ for (const event of odds.events) {
   output.matches[event.canonicalMatchId] = ["Safe", "Balanced", "Aggressive"].map(tier => planned.get(tier));
 }
 
-if (Object.keys(output.matches).length !== eligibleMatches.length) throw new Error(`Copertura MyCombo incompleta: ${Object.keys(output.matches).length}/${eligibleMatches.length}`);
+const missingEligibleMatches = eligibleMatches.filter(match => !output.matches[match.id]);
+const invalidRetainedMatches = Object.keys(output.matches).filter(matchId => {
+  const match = matchById.get(matchId);
+  return !match
+    || match.matchday !== matchday
+    || (match.status === "finished" && !previousOutput?.matches?.[matchId]);
+});
+if (missingEligibleMatches.length || invalidRetainedMatches.length) {
+  throw new Error(`Copertura MyCombo incompleta: aperte mancanti ${missingEligibleMatches.length}, storiche non valide ${invalidRetainedMatches.length}`);
+}
 fs.writeFileSync(outputPath, `${JSON.stringify(output, null, 2)}\n`);
 console.log(`OK MyCombo giornata ${matchday}: ${Object.keys(output.matches).length} partite · 30 portafogli · snapshot ${output.updatedAt}`);
