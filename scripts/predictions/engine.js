@@ -382,7 +382,7 @@ function scoreForecast(matrix, final) {
   };
   const primaryScore = bestFor(outcomeOrder[0].outcome);
   const modalScore = orderedScores[0];
-  const primary = decorate(primaryScore, "Risultato principale");
+  const primary = decorate(primaryScore, "Scenario coerente con il segno 1X2");
   const modal = decorate(modalScore, "Moda assoluta");
   const display = [primary];
   if (modal.score !== primary.score) display.push(modal);
@@ -397,7 +397,7 @@ function scoreForecast(matrix, final) {
     display,
     coherentWithVerdict: primary.outcome === outcomeOrder[0].outcome,
     forcedOutcomeScenarios: false,
-    method: "Il risultato principale e il punteggio piu probabile condizionato all'esito 1X2 favorito; gli altri due sono i punteggi successivi piu probabili della matrice, senza forzare pareggio o sorpresa."
+    method: "Lo scenario coerente con il segno 1X2 e il punteggio piu probabile dentro quell'esito, ma non e la moda assoluta ne un pronostico esatto centrale. La sintesi pubblica privilegia la fascia gol e mostra i punteggi soltanto come scenari separati."
   };
 }
 

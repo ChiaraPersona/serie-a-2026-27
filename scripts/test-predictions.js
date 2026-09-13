@@ -75,6 +75,10 @@ for (const prediction of dataset.predictions) {
   assert(prediction.exactScores.length === 3 && new Set(prediction.exactScores.map(item => item.score)).size === 3, `${prediction.matchId}: risultati esatti non validi`);
   assert(prediction.scoreForecast?.primary?.score && prediction.scoreForecast?.modal?.score && prediction.scoreForecast?.display?.length === 3, `${prediction.matchId}: gerarchia risultato assente`);
   assert.strictEqual(prediction.scoreForecast.primary.outcome, prediction.verdict.outcome, `${prediction.matchId}: risultato principale incoerente con il verdetto`);
+  if (prediction.matchId.endsWith("-md-04")) {
+    assert.strictEqual(prediction.scoreForecast.primary.label, "Scenario coerente con il segno 1X2", `${prediction.matchId}: lo scenario condizionato non deve essere presentato come risultato principale`);
+    assert.match(prediction.scoreForecast.method, /non e la moda assoluta ne un pronostico esatto centrale/, `${prediction.matchId}: limite del punteggio condizionato non dichiarato`);
+  }
   assert(prediction.scoreForecast.coherentWithVerdict, `${prediction.matchId}: coerenza risultato/verdetto non dichiarata`);
   assert.strictEqual(prediction.scoreForecast.forcedOutcomeScenarios, false, `${prediction.matchId}: scenario sorpresa forzato`);
   assert(!prediction.scoreForecast.display.some(item => /sorpresa/i.test(item.label)), `${prediction.matchId}: etichetta sorpresa nei risultati esatti`);
