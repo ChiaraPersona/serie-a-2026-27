@@ -871,18 +871,12 @@
         "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-12: quota 5 orientativa, 3-6 gambe, mercati distinti, nessuno scenario di base ripetuto o annidato e quote singole 1.10-1.85. Il rischio resta informativo.",
         "legs": [
           {
-            "providerSelectionId": "5315338518",
-            "overlapKey": "market-x o y gol o palo duo inc ts",
-            "semanticKeys": [],
-            "label": "NICO PAZ O TOURE E. GOAL O PALO O LORO SOST. INC TS · sì"
-          },
-          {
-            "providerSelectionId": "5317896835",
+            "providerSelectionId": "5317896831",
             "overlapKey": "market-u o tiri in porta giocatore duo inc pali traverse inc ts",
             "semanticKeys": [
               "volume-shots-on-target"
             ],
-            "label": "DIAO ASSANE almeno 1 tiri in porta, sostituto incluso"
+            "label": "DA CUNHA L. almeno 1 tiri in porta, sostituto incluso"
           },
           {
             "providerSelectionId": "5317899151",
@@ -891,12 +885,20 @@
             "label": "DIEGO CARLOS almeno 2 falli commessi"
           },
           {
-            "providerSelectionId": "5304667090",
-            "overlapKey": "market-multigoal squadra x",
+            "providerSelectionId": "5304666687",
+            "overlapKey": "market-under over",
             "semanticKeys": [
               "goals"
             ],
-            "label": "MULTIGOAL Como MULTIESITI · 1-4"
+            "label": "Under 3,5 gol"
+          },
+          {
+            "providerSelectionId": "5304665336",
+            "overlapKey": "market-u o tiri totali",
+            "semanticKeys": [
+              "volume-shots-total"
+            ],
+            "label": "Partita almeno 22 tiri totali"
           }
         ]
       },
@@ -904,6 +906,12 @@
         "tier": "Balanced",
         "logic": "Profilo balanced costruito sulle quote Sisal del 2026-09-12: quota 10 orientativa, 4-7 gambe, mercati distinti, nessuno scenario di base ripetuto o annidato e quote singole 1.10-1.85. Il rischio resta informativo.",
         "legs": [
+          {
+            "providerSelectionId": "5317937389",
+            "overlapKey": "market-u o falli subiti giocatore",
+            "semanticKeys": [],
+            "label": "DA CUNHA L. almeno 1 falli subiti"
+          },
           {
             "providerSelectionId": "5317896831",
             "overlapKey": "market-u o tiri in porta giocatore duo inc pali traverse inc ts",
@@ -913,32 +921,26 @@
             "label": "DA CUNHA L. almeno 1 tiri in porta, sostituto incluso"
           },
           {
-            "providerSelectionId": "5317895867",
+            "providerSelectionId": "5317899151",
             "overlapKey": "market-u o falli commessi giocatore",
             "semanticKeys": [],
-            "label": "FABBIAN G. almeno 2 falli commessi"
+            "label": "DIEGO CARLOS almeno 2 falli commessi"
           },
           {
-            "providerSelectionId": "5317897711",
-            "overlapKey": "market-u o tiri totali squadra x",
-            "semanticKeys": [
-              "volume-shots-total"
-            ],
-            "label": "Parma almeno 7 tiri totali"
-          },
-          {
-            "providerSelectionId": "5315338514",
-            "overlapKey": "market-x o y gol o palo duo inc ts",
-            "semanticKeys": [],
-            "label": "BATURINA M. O DIAO ASSANE GOAL O PALO O LORO SOST. INC TS · sì"
-          },
-          {
-            "providerSelectionId": "5304667299",
-            "overlapKey": "market-multigoal",
+            "providerSelectionId": "5304666687",
+            "overlapKey": "market-under over",
             "semanticKeys": [
               "goals"
             ],
-            "label": "MULTIGOAL MULTIESITI 16 ESITI · 2-5"
+            "label": "Under 3,5 gol"
+          },
+          {
+            "providerSelectionId": "5317887120",
+            "overlapKey": "market-u o corner",
+            "semanticKeys": [
+              "volume-corners"
+            ],
+            "label": "Partita almeno 7 corner"
           }
         ]
       },
@@ -947,48 +949,56 @@
         "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-09-12: quota 20 orientativa, 5-8 gambe, mercati distinti, nessuno scenario di base ripetuto o annidato e quote singole 1.10-1.85. Il rischio resta informativo.",
         "legs": [
           {
-            "providerSelectionId": "5304667302",
-            "overlapKey": "market-multigoal",
-            "semanticKeys": [
-              "goals"
-            ],
-            "label": "MULTIGOAL MULTIESITI 16 ESITI · 3-5"
-          },
-          {
-            "providerSelectionId": "5317896051",
-            "overlapKey": "market-u o falli commessi giocatore",
-            "semanticKeys": [],
-            "label": "BRITSCHGI S. almeno 2 falli commessi"
-          },
-          {
             "providerSelectionId": "5317937389",
             "overlapKey": "market-u o falli subiti giocatore",
             "semanticKeys": [],
             "label": "DA CUNHA L. almeno 1 falli subiti"
           },
           {
-            "providerSelectionId": "5317886997",
-            "overlapKey": "market-prima a x corner",
+            "providerSelectionId": "5317851030",
+            "overlapKey": "market-giocatore segna o assist o cartellino inc ts",
+            "semanticKeys": [],
+            "label": "DA CUNHA L. SEGNA ALMENO UN GOAL O REALIZZA ALMENO UN ASSIST O RICEVE ALMENO UN CARTELLINO INC. TS · sì"
+          },
+          {
+            "providerSelectionId": "5317896831",
+            "overlapKey": "market-u o tiri in porta giocatore duo inc pali traverse inc ts",
+            "semanticKeys": [
+              "volume-shots-on-target"
+            ],
+            "label": "DA CUNHA L. almeno 1 tiri in porta, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5317887120",
+            "overlapKey": "market-u o corner",
             "semanticKeys": [
               "volume-corners"
             ],
-            "label": "PRIMA A 6 CALCI D'ANGOLO · Como"
+            "label": "Partita almeno 7 corner"
           },
           {
-            "providerSelectionId": "5317897835",
+            "providerSelectionId": "5304667293",
+            "overlapKey": "market-multigoal",
+            "semanticKeys": [
+              "goals"
+            ],
+            "label": "MULTIGOAL MULTIESITI 16 ESITI · 1-3"
+          },
+          {
+            "providerSelectionId": "5304664433",
+            "overlapKey": "market-1x2 esito finale",
+            "semanticKeys": [
+              "result"
+            ],
+            "label": "Como vincente"
+          },
+          {
+            "providerSelectionId": "5317898251",
             "overlapKey": "market-u o tiri totali giocatore duo inc ts",
             "semanticKeys": [
               "volume-shots-total"
             ],
-            "label": "VALERI E. almeno 1 tiri totali, sostituto incluso"
-          },
-          {
-            "providerSelectionId": "5304665264",
-            "overlapKey": "market-u o tiri in porta",
-            "semanticKeys": [
-              "volume-shots-on-target"
-            ],
-            "label": "Partita almeno 6 tiri in porta"
+            "label": "DA CUNHA L. almeno 2 tiri totali, sostituto incluso"
           }
         ]
       }
@@ -999,27 +1009,36 @@
         "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-12: quota 5 orientativa, 3-6 gambe, mercati distinti, nessuno scenario di base ripetuto o annidato e quote singole 1.10-1.85. Il rischio resta informativo.",
         "legs": [
           {
-            "providerSelectionId": "5304657498",
-            "overlapKey": "market-combo dc u o",
+            "providerSelectionId": "5304659369",
+            "overlapKey": "market-under over",
             "semanticKeys": [
-              "result",
               "goals"
             ],
-            "label": "DC + U/O 3.5 · 12 + UNDER"
+            "label": "Over 2,5 gol"
           },
           {
-            "providerSelectionId": "5317852725",
-            "overlapKey": "market-u o tiri totali squadra x",
+            "providerSelectionId": "5304658009",
+            "overlapKey": "market-u o tiri totali",
             "semanticKeys": [
               "volume-shots-total"
             ],
-            "label": "Torino almeno 10 tiri totali"
+            "label": "Partita almeno 24 tiri totali"
           },
           {
-            "providerSelectionId": "5317871155",
-            "overlapKey": "market-u o falli subiti giocatore",
-            "semanticKeys": [],
-            "label": "COMERT E. almeno 1 falli subiti"
+            "providerSelectionId": "5304659389",
+            "overlapKey": "market-doppia chance",
+            "semanticKeys": [
+              "result"
+            ],
+            "label": "Nessun pareggio (12)"
+          },
+          {
+            "providerSelectionId": "5317873768",
+            "overlapKey": "market-entrambe almeno x corner",
+            "semanticKeys": [
+              "volume-corners"
+            ],
+            "label": "Entrambe almeno 3 corner"
           }
         ]
       },
@@ -1028,25 +1047,51 @@
         "logic": "Profilo balanced costruito sulle quote Sisal del 2026-09-12: quota 10 orientativa, 4-7 gambe, mercati distinti, nessuno scenario di base ripetuto o annidato e quote singole 1.10-1.85. Il rischio resta informativo.",
         "legs": [
           {
-            "providerSelectionId": "5317854797",
-            "overlapKey": "market-u o falli commessi giocatore",
-            "semanticKeys": [],
-            "label": "PISILLI N. almeno 2 falli commessi"
+            "providerSelectionId": "5317854072",
+            "overlapKey": "market-entrambe le squadre almeno x tiri in porta",
+            "semanticKeys": [
+              "volume-shots-on-target"
+            ],
+            "label": "Entrambe almeno 3 tiri in porta"
           },
           {
-            "providerSelectionId": "5317871295",
-            "overlapKey": "market-u o falli subiti giocatore",
-            "semanticKeys": [],
-            "label": "MANCINI G. almeno 1 falli subiti"
+            "providerSelectionId": "5304657124",
+            "overlapKey": "market-1x2 esito finale",
+            "semanticKeys": [
+              "result"
+            ],
+            "label": "Roma vincente"
           },
           {
-            "providerSelectionId": "5317873914",
-            "overlapKey": "market-prima a x corner",
+            "providerSelectionId": "5317873768",
+            "overlapKey": "market-entrambe almeno x corner",
             "semanticKeys": [
               "volume-corners"
             ],
-            "label": "PRIMA A 4 CALCI D'ANGOLO · Roma"
+            "label": "Entrambe almeno 3 corner"
           },
+          {
+            "providerSelectionId": "5304659369",
+            "overlapKey": "market-under over",
+            "semanticKeys": [
+              "goals"
+            ],
+            "label": "Over 2,5 gol"
+          },
+          {
+            "providerSelectionId": "5317854021",
+            "overlapKey": "market-u o tiri totali squadra x",
+            "semanticKeys": [
+              "volume-shots-total"
+            ],
+            "label": "Torino almeno 8 tiri totali"
+          }
+        ]
+      },
+      {
+        "tier": "Aggressive",
+        "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-09-12: quota 20 orientativa, 5-8 gambe, mercati distinti, nessuno scenario di base ripetuto o annidato e quote singole 1.10-1.85. Il rischio resta informativo.",
+        "legs": [
           {
             "providerSelectionId": "5304673820",
             "overlapKey": "market-multigoal",
@@ -1056,38 +1101,28 @@
             "label": "MULTIGOAL MULTIESITI 16 ESITI · 3-6"
           },
           {
-            "providerSelectionId": "5304658021",
-            "overlapKey": "market-u o tiri totali",
+            "providerSelectionId": "5317873768",
+            "overlapKey": "market-entrambe almeno x corner",
             "semanticKeys": [
-              "volume-shots-total"
+              "volume-corners"
             ],
-            "label": "Partita almeno 22 tiri totali"
+            "label": "Entrambe almeno 3 corner"
           },
           {
-            "providerSelectionId": "5304657949",
-            "overlapKey": "market-u o tiri in porta",
+            "providerSelectionId": "5317854072",
+            "overlapKey": "market-entrambe le squadre almeno x tiri in porta",
             "semanticKeys": [
               "volume-shots-on-target"
             ],
-            "label": "Partita almeno 6 tiri in porta"
-          }
-        ]
-      },
-      {
-        "tier": "Aggressive",
-        "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-09-12: quota 20 orientativa, 5-8 gambe, mercati distinti, nessuno scenario di base ripetuto o annidato e quote singole 1.10-1.85. Il rischio resta informativo.",
-        "legs": [
-          {
-            "providerSelectionId": "5317854797",
-            "overlapKey": "market-u o falli commessi giocatore",
-            "semanticKeys": [],
-            "label": "PISILLI N. almeno 2 falli commessi"
+            "label": "Entrambe almeno 3 tiri in porta"
           },
           {
-            "providerSelectionId": "5317871339",
-            "overlapKey": "market-u o falli subiti giocatore",
-            "semanticKeys": [],
-            "label": "VLASIC N. almeno 2 falli subiti"
+            "providerSelectionId": "5304657124",
+            "overlapKey": "market-1x2 esito finale",
+            "semanticKeys": [
+              "result"
+            ],
+            "label": "Roma vincente"
           },
           {
             "providerSelectionId": "5317852725",
@@ -1096,30 +1131,6 @@
               "volume-shots-total"
             ],
             "label": "Torino almeno 10 tiri totali"
-          },
-          {
-            "providerSelectionId": "5304657941",
-            "overlapKey": "market-u o tiri in porta",
-            "semanticKeys": [
-              "volume-shots-on-target"
-            ],
-            "label": "Partita almeno 8 tiri in porta"
-          },
-          {
-            "providerSelectionId": "5304738243",
-            "overlapKey": "market-combo u o casa u o ospite",
-            "semanticKeys": [
-              "goals"
-            ],
-            "label": "U/O 1.5 Torino + U/O 0.5 Roma · UNDER+OVER"
-          },
-          {
-            "providerSelectionId": "5317873768",
-            "overlapKey": "market-entrambe almeno x corner",
-            "semanticKeys": [
-              "volume-corners"
-            ],
-            "label": "Entrambe almeno 3 corner"
           }
         ]
       }
