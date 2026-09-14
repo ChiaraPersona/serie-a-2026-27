@@ -116,6 +116,12 @@ export function settleLeg(leg,match){
     const players=playerDuo(match,leg?.player),goals=players?.reduce((sum,item)=>sum+(finite(item.goals)?Number(item.goals):0),0),assists=players?.reduce((sum,item)=>sum+(finite(item.assists)?Number(item.assists):0),0);
     if(!players&&playerDidNotPlay(match,leg?.player))return voided();
     if(!players)return unavailable();
+    if(market.includes("CARTELLINO")||leg?.marketFamily==="Ammoniti"){
+      if(!Array.isArray(match?.bookings)||!["SI","NO"].includes(selection))return unavailable();
+      const names=new Set(players.map(item=>comparableName(item.player)));
+      const booked=match.bookings.some(item=>names.has(comparableName(item.player)));
+      return resultStatus(selection==="SI"?booked:!booked);
+    }
     if(market.includes("SEGNA O FA ASSIST"))return resultStatus(selection==="SI"?goals+assists>0:goals+assists===0);
     if(market.includes("ASSIST"))return resultStatus(selection==="SI"?assists>0:assists===0);
     if(market.includes("MARCATORE"))return resultStatus(selection==="SI"?goals>0:goals===0);

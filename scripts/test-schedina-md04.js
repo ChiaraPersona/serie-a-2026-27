@@ -7,12 +7,11 @@ const root = path.resolve(__dirname, "..");
 const read = file => JSON.parse(fs.readFileSync(path.join(root, file), "utf8"));
 const data = read("data/normalized/schedina-md04.json");
 const matches = read("data/normalized/matches.json");
-const openRound = matches.filter(match => match.competition === "serie-a" && match.matchday === 4 && match.status !== "finished");
 const legs = data.slips.flatMap(slip => slip.legs);
 
 assert.equal(data.matchday, 4);
 assert.equal(data.slips.length, 8);
-assert.deepEqual(data.slips.map(slip => slip.legs.length), [3, 3, 5, 8, 8, openRound.length, 4, 4]);
+assert.deepEqual(data.slips.map(slip => slip.legs.length), [3, 3, 5, 8, 8, 9, 4, 4]);
 assert.equal(data.oddsRetrievedAt, "2026-09-12T12:26:23.806Z");
 assert(!data.slips.some(slip => ["exact-score", "exact-score-multi"].includes(slip.type)));
 assert(!legs.some(leg => /^RISULTATO ESATTO/.test(leg.market)));
@@ -26,4 +25,16 @@ for (const slip of cardSlips) {
   assert(slip.legs.every(leg => leg.marketFamily === "Ammoniti" && leg.marketScope === "player"));
 }
 assert(!legs.some(leg => leg.matchId === "venezia-fiorentina-2026-27-md-04"));
-console.log(`Schedina MD04 valida: ${data.slips.length} proposte, ${legs.length} selezioni, due poker ammoniti.`);
+(async()=>{
+  const { settleLeg } = await import("../js/pages/betting-settlement.mjs");
+  const finishedYesterday = new Set([
+    "lecce-monza-2026-27-md-04",
+    "napoli-bologna-2026-27-md-04",
+    "sassuolo-juventus-2026-27-md-04"
+  ]);
+  const matchById = new Map(matches.map(match => [match.id, match]));
+  const settlements = legs.filter(leg => finishedYesterday.has(leg.matchId)).map(leg => settleLeg(leg, matchById.get(leg.matchId)).status);
+  assert.equal(settlements.length, 10);
+  assert(settlements.every(status => ["won", "lost", "void"].includes(status)), "Le selezioni delle gare del 13 settembre devono essere liquidate");
+  console.log(`Schedina MD04 valida: ${data.slips.length} proposte, ${legs.length} selezioni, ${settlements.length} liquidate sulle gare del 13 settembre.`);
+})().catch(error=>{console.error(error);process.exitCode=1});

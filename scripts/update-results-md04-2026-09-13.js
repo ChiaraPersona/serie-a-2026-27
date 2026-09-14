@@ -10,7 +10,7 @@ const resultsPath = path.join(root, "data/sources/match-results-2026-27.json");
 const overlaysPath = path.join(root, "data/sources/statmuse-player-stats-2026-27.json");
 const results = JSON.parse(fs.readFileSync(resultsPath, "utf8"));
 const overlays = JSON.parse(fs.readFileSync(overlaysPath, "utf8"));
-const retrievedAt = "2026-09-13";
+const retrievedAt = "2026-09-14";
 const scoreSourceUrl = "https://sport.sky.it/calcio/serie-a/calendario-risultati";
 
 const games = [
@@ -49,6 +49,24 @@ const games = [
     file: "statmuse-complete-9-12-2026-ata-vs-cag-112110.html",
     url: "https://www.statmuse.com/fc/match/9-12-2026-ata-vs-cag-112110",
     home: { slug: "atalanta", abbr: "ATA" }, away: { slug: "cagliari", abbr: "CAG" }
+  },
+  {
+    matchId: "lecce-monza-2026-27-md-04",
+    file: "statmuse-complete-9-13-2026-lec-vs-mon-112116.html",
+    url: "https://www.statmuse.com/fc/match/9-13-2026-lec-vs-mon-112116",
+    home: { slug: "lecce", abbr: "LEC" }, away: { slug: "monza", abbr: "MON" }
+  },
+  {
+    matchId: "napoli-bologna-2026-27-md-04",
+    file: "statmuse-complete-9-13-2026-nap-vs-bol-112107.html",
+    url: "https://www.statmuse.com/fc/match/9-13-2026-nap-vs-bol-112107",
+    home: { slug: "napoli", abbr: "NAP" }, away: { slug: "bologna", abbr: "BOL" }
+  },
+  {
+    matchId: "sassuolo-juventus-2026-27-md-04",
+    file: "statmuse-complete-9-13-2026-sas-vs-juv-112113.html",
+    url: "https://www.statmuse.com/fc/match/9-13-2026-sas-vs-juv-112113",
+    home: { slug: "sassuolo", abbr: "SAS" }, away: { slug: "juventus", abbr: "JUV" }
   }
 ];
 
@@ -186,4 +204,4 @@ results.retrievedAt = retrievedAt;
 overlays.updatedAt = retrievedAt;
 fs.writeFileSync(resultsPath, `${JSON.stringify(results, null, 2)}\n`);
 fs.writeFileSync(overlaysPath, `${JSON.stringify(overlays)}\n`);
-console.log(`Completati ${games.length} referti: 2 della 3a giornata e 4 della 4a giornata.`);
+console.log(`Completati ${games.length} referti: 2 della 3a giornata e 7 della 4a giornata.`);
