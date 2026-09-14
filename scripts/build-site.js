@@ -14,14 +14,14 @@ const fontLinks = '<link rel="preconnect" href="https://fonts.googleapis.com"><l
 const withFonts = html => html.replace("</title>", `</title>${fontLinks}`);
 const version = "20260901-coppa-round16-calendar-v1";
 const homeVersion = "20260914-results-md04-v1";
-const calendarVersion = "20260914-results-md04-v1";
-const teamVersion = "20260914-results-md04-v1";
+const calendarVersion = "20260914-inter-udinese-official-v1";
+const teamVersion = "20260914-inter-udinese-official-v1";
 const leaderboardVersion = "20260914-results-md04-v1";
 const bettingVersion = "20260914-results-md04-v1";
-const readingVersion = "20260914-results-md04-v1";
+const readingVersion = "20260914-inter-udinese-official-v1";
 const cupVersion = "20260908-results-calendar-v1";
 const championsVersion = "20260912-champions-results-v1";
-const fantasyVersion = "20260907-udinese-lazio-official-v1";
+const fantasyVersion = "20260914-inter-udinese-official-v1";
 const headToHeadPath = path.join(root, "data/generated/head-to-head/first-leg-2026-27.json");
 if (fs.existsSync(headToHeadPath)) {
   const headToHead = JSON.parse(fs.readFileSync(headToHeadPath, "utf8"));
