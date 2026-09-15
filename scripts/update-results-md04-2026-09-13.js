@@ -10,7 +10,7 @@ const resultsPath = path.join(root, "data/sources/match-results-2026-27.json");
 const overlaysPath = path.join(root, "data/sources/statmuse-player-stats-2026-27.json");
 const results = JSON.parse(fs.readFileSync(resultsPath, "utf8"));
 const overlays = JSON.parse(fs.readFileSync(overlaysPath, "utf8"));
-const retrievedAt = "2026-09-14";
+const retrievedAt = "2026-09-15";
 const scoreSourceUrl = "https://sport.sky.it/calcio/serie-a/calendario-risultati";
 
 const games = [
@@ -67,6 +67,24 @@ const games = [
     file: "statmuse-complete-9-13-2026-sas-vs-juv-112113.html",
     url: "https://www.statmuse.com/fc/match/9-13-2026-sas-vs-juv-112113",
     home: { slug: "sassuolo", abbr: "SAS" }, away: { slug: "juventus", abbr: "JUV" }
+  },
+  {
+    matchId: "como-parma-2026-27-md-04",
+    file: "statmuse-complete-9-14-2026-com-vs-par-112115.html",
+    url: "https://www.statmuse.com/fc/match/9-14-2026-com-vs-par-112115",
+    home: { slug: "como", abbr: "COM" }, away: { slug: "parma", abbr: "PAR" }
+  },
+  {
+    matchId: "torino-roma-2026-27-md-04",
+    file: "statmuse-complete-9-14-2026-tor-vs-rom-112111.html",
+    url: "https://www.statmuse.com/fc/match/9-14-2026-tor-vs-rom-112111",
+    home: { slug: "torino", abbr: "TOR" }, away: { slug: "roma", abbr: "ROM" }
+  },
+  {
+    matchId: "inter-udinese-2026-27-md-04",
+    file: "statmuse-complete-9-14-2026-int-vs-udi-112108.html",
+    url: "https://www.statmuse.com/fc/match/9-14-2026-int-vs-udi-112108",
+    home: { slug: "inter", abbr: "INT" }, away: { slug: "udinese", abbr: "UDI" }
   }
 ];
 
@@ -144,6 +162,14 @@ function appearedPlayers(rootData, team, resolvePlayer) {
   });
 }
 
+function didNotPlayPlayers(rootData, team, resolvePlayer, appeared) {
+  const appearedIds = new Set(appeared.map(player => player.playerId));
+  return team.players.filter(player => !player.starter).map(player => {
+    const providerPlayer = rootData.players[String(player.playerId)];
+    return providerPlayer ? resolvePlayer(providerPlayer.longName) : null;
+  }).filter(player => player && !appearedIds.has(player.id)).map(player => ({ playerId: player.id, player: player.name }));
+}
+
 for (const config of games) {
   const rootData = parseStatmuseGame(path.join(root, "tmp", config.file));
   const game = rootData.gameData;
@@ -159,17 +185,27 @@ for (const config of games) {
     const playerOut = resolveEventPlayer(event.teamId, event.subbedOutPlayerId);
     return { team: slugByTeamId.get(event.teamId), minute: eventMinute(event), playerIn: playerIn.name, playerInId: playerIn.id, playerOut: playerOut.name, playerOutId: playerOut.id };
   });
-  const scorers = events.filter(event => event.type === "goal").map(event => {
+  const rawScorers = events.filter(event => event.type === "goal").map(event => {
     const player = resolveEventPlayer(event.teamId, event.playerId);
     const assist = resolveEventPlayer(event.teamId, event.assistPlayerId);
     return { team: slugByTeamId.get(event.teamId), playerId: player.id, player: player.name, minute: eventMinute(event), assistPlayerId: assist?.id || null, assist: assist?.name || null, ...(event.isOwnGoal ? { ownGoal: true } : {}) };
   });
+  const scorers = [...rawScorers.reduce((unique, scorer) => {
+    const key = `${scorer.team}|${scorer.playerId}|${scorer.minute}`;
+    const previous = unique.get(key);
+    unique.set(key, previous?.assist ? previous : scorer);
+    return unique;
+  }, new Map()).values()];
   const bookings = events.filter(event => event.type === "booking").map(event => {
     const player = resolveEventPlayer(event.teamId, event.playerId);
     return { team: slugByTeamId.get(event.teamId), playerId: player.id, player: player.name, minute: eventMinute(event), card: event.bookingType === "yellowCard" ? "yellow" : event.bookingType };
   });
   const homePlayers = appearedPlayers(rootData, game.homeTeam, homeResolve);
   const awayPlayers = appearedPlayers(rootData, game.awayTeam, awayResolve);
+  const didNotPlay = config.file.includes("9-14-2026") ? {
+    home: didNotPlayPlayers(rootData, game.homeTeam, homeResolve, homePlayers),
+    away: didNotPlayPlayers(rootData, game.awayTeam, awayResolve, awayPlayers)
+  } : { home: [], away: [] };
   const resultTeamStats = { home: teamStats(game.homeTeam), away: teamStats(game.awayTeam) };
   for (const [side, rows] of [["home", homePlayers], ["away", awayPlayers]]) {
     const sum = field => rows.reduce((total, row) => total + row[field], 0);
@@ -183,7 +219,7 @@ for (const config of games) {
     halfTimeScore: { home: halfScore(game.homeTeam), away: halfScore(game.awayTeam) }, attendance: null,
     weatherCelsius: game.weather?.temperatureFahrenheit == null ? null : Math.round((game.weather.temperatureFahrenheit - 32) * 5 / 9),
     formations: { home: formationNames[game.homeTeam.formation] || null, away: formationNames[game.awayTeam.formation] || null },
-    scorers, bookings, substitutions, didNotPlay: { home: [], away: [] }, teamStats: resultTeamStats,
+    scorers, bookings, substitutions, didNotPlay, teamStats: resultTeamStats,
     playerStats: { home: homePlayers, away: awayPlayers }, mvp: null, sourceUrl: config.url
   };
   for (const source of [
@@ -204,4 +240,4 @@ results.retrievedAt = retrievedAt;
 overlays.updatedAt = retrievedAt;
 fs.writeFileSync(resultsPath, `${JSON.stringify(results, null, 2)}\n`);
 fs.writeFileSync(overlaysPath, `${JSON.stringify(overlays)}\n`);
-console.log(`Completati ${games.length} referti: 2 della 3a giornata e 7 della 4a giornata.`);
+console.log(`Completati ${games.length} referti: 2 della 3a giornata e 10 della 4a giornata.`);

@@ -6,7 +6,7 @@ const finished = matches.filter(match => match.competition === "serie-a" && matc
 const fields = ["minutes", "goals", "assists", "shots", "shotsOnTarget", "expectedGoals", "foulsCommitted", "foulsWon"];
 let playerRows = 0;
 
-assert.equal(finished.length, 37, "Numero di partite concluse inatteso");
+assert.equal(finished.length, 40, "Numero di partite concluse inatteso");
 for (const match of finished) {
   for (const side of ["home", "away"]) {
     const rows = match.playerStats?.[side] || [];
@@ -22,5 +22,5 @@ for (const match of finished) {
   }
 }
 
-assert.equal(playerRows, 1178, "Numero di righe calciatore-partita inatteso");
+assert.equal(playerRows, 1274, "Numero di righe calciatore-partita inatteso");
 console.log(`Copertura individuale completa: ${finished.length} partite, ${playerRows} righe, ${fields.length} metriche senza N/D.`);

@@ -26,19 +26,24 @@ const server = http.createServer((request, response) => {
       await page.setViewportSize({ width, height: 900 });
 
       await page.goto(`http://127.0.0.1:${server.address().port}/index.html`, { waitUntil: "networkidle" });
+      await page.locator("[data-home-previous-matchday]").click();
       const home = await page.locator("main").innerText();
-      for (const result of [/Lecce[\s\S]{0,30}3 – 2[\s\S]{0,30}Monza/, /Napoli[\s\S]{0,30}1 – 0[\s\S]{0,30}Bologna/, /Sassuolo[\s\S]{0,30}3 – 2[\s\S]{0,30}Juventus/]) assert.match(home, result);
+      for (const result of [/Como[\s\S]{0,30}2 – 1[\s\S]{0,30}Parma/, /Torino[\s\S]{0,30}0 – 2[\s\S]{0,30}Roma/, /Inter[\s\S]{0,30}5 – 3[\s\S]{0,30}Udinese/]) assert.match(home, result);
       assert(!(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth)), `home ${width}: overflow`);
 
-      await page.goto(`http://127.0.0.1:${server.address().port}/lettura.html?match=sassuolo-juventus-2026-27-md-04`, { waitUntil: "networkidle" });
-      const reading = await page.locator("main").innerText();
-      assert.match(reading, /Sassuolo - Juventus[\s\S]*3 - 2[\s\S]*DATI REALI · PARTITA CONCLUSA/);
-      assert.match(reading, /Sebastiano Esposito[\s\S]*Edon Zhegrova[\s\S]*Vasilije Adzic/);
-      assert(!(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth)), `lettura ${width}: overflow`);
+      for (const [matchId, expected] of [
+        ["como-parma-2026-27-md-04", /Como - Parma[\s\S]*2 - 1[\s\S]*DATI REALI · PARTITA CONCLUSA/],
+        ["torino-roma-2026-27-md-04", /Torino - Roma[\s\S]*0 - 2[\s\S]*DATI REALI · PARTITA CONCLUSA/],
+        ["inter-udinese-2026-27-md-04", /Inter - Udinese[\s\S]*5 - 3[\s\S]*DATI REALI · PARTITA CONCLUSA/]
+      ]) {
+        await page.goto(`http://127.0.0.1:${server.address().port}/lettura.html?match=${matchId}`, { waitUntil: "networkidle" });
+        assert.match(await page.locator("main").innerText(), expected);
+        assert(!(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth)), `lettura ${matchId} ${width}: overflow`);
+      }
 
       await page.goto(`http://127.0.0.1:${server.address().port}/schedina.html?giornata=4`, { waitUntil: "networkidle" });
-      const targetRows = page.locator("li[data-settlement]").filter({ hasText: /Lecce – Monza|Napoli – Bologna|Sassuolo – Juventus/ });
-      assert.equal(await targetRows.count(), 10, `schedina ${width}: liquidazioni del 13 settembre`);
+      const targetRows = page.locator("li[data-settlement]");
+      assert.equal(await targetRows.count(), 44, `schedina ${width}: liquidazioni complete`);
       assert.equal(await targetRows.filter({ hasText: /DA VERIFICARE/ }).count(), 0, `schedina ${width}: esiti non liquidati`);
       assert(!(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth)), `schedina ${width}: overflow`);
       console.log(`OK risultati MD4 ${width}px`);
