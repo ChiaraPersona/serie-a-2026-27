@@ -86,6 +86,17 @@ async function main() {
     const players = parsedPlayers.flatMap(player => {
       const rosterPlayer = rosterBySourceId.get(player.sourceId);
       if (!rosterPlayer || rosterPlayer.teamId !== teamId) {
+        if (player.lineupStatus === "starter") {
+          return [{
+            ...player,
+            team,
+            teamId,
+            playerId: null,
+            currentName: null,
+            matchStatus: "unmatched",
+            associationMethod: "unmatched-source-player"
+          }];
+        }
         omittedNonRoster.push({ team, teamId, ...player });
         return [];
       }
@@ -132,7 +143,7 @@ async function main() {
       reserves: players.filter(player => player.lineupStatus === "reserve").length,
       linkedPlayers: players.filter(player => player.matchStatus === "linked-player").length,
       linkedListoneOnly: players.filter(player => player.matchStatus === "linked-listone").length,
-      unmatched: 0,
+      unmatched: players.filter(player => player.matchStatus === "unmatched").length,
       omittedNonRoster: omittedNonRoster.length
     },
     omittedNonRoster,

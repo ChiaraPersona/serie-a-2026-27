@@ -13,7 +13,7 @@ const slugAliases = { "hellas-verona": "verona" };
 const teams = read("data/normalized/teams.json");
 const teamDetails = read("data/sources/team-pages/team-details-2026-27.json");
 const fantasyRoster = read("data/sources/fantacalcio-quotations-2026-27.json");
-const probableLineups = read("data/sources/probable-lineups-md4-2026-27.json");
+const probableLineups = read("data/sources/probable-lineups-md5-2026-27.json");
 const probableLineupByTeam = new Map(probableLineups.teams.map(team => [team.teamId, team]));
 const officialLineupsFile = path.join(root, "data/sources/official-lineups-2026-27.json");
 const officialLineups = fs.existsSync(officialLineupsFile) ? JSON.parse(fs.readFileSync(officialLineupsFile, "utf8")) : { fixtures: [] };

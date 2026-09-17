@@ -192,7 +192,26 @@ const officialReferenceByTeam = new Map(officialLineups.fixtures
     updatedAt: fixture.date,
     source: { provider: officialLineups.provider || "Distinta ufficiale", scope: `Formazione ufficiale ${fixture.label}`, retrievedAt: fixture.date }
   }])));
+const officialLineupByMatchTeam = new Map(officialLineups.fixtures.flatMap(fixture => fixture.teams.map(lineup => [
+  `${fixture.matchId}:${lineup.teamId}`,
+  {
+    formation: lineup.formation,
+    players: lineup.players.map(player => player.currentName || player.sourceName),
+    context: `Formazione ufficiale della ${fixture.matchday}ª giornata`,
+    status: "official",
+    matchId: fixture.matchId,
+    updatedAt: fixture.retrievedAt || fixture.date,
+    source: {
+      provider: fixture.provider || officialLineups.provider || "Distinta ufficiale",
+      scope: `Formazione ufficiale ${fixture.label}`,
+      url: fixture.sourceUrl || officialLineups.sourceUrl || null,
+      retrievedAt: fixture.retrievedAt || fixture.date
+    }
+  }
+])));
 const teamForMatch = (team, match) => {
+  const fixtureOfficial = officialLineupByMatchTeam.get(`${match.id}:${team?.id}`);
+  if (fixtureOfficial) return { ...team, probableLineup: fixtureOfficial };
   if (team?.probableLineup?.status !== "official" || team.probableLineup.matchId === match.id) return team;
   return { ...team, probableLineup: team.projectedLineup || officialReferenceByTeam.get(team.id) || null };
 };

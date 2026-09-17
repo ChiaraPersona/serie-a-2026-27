@@ -75,7 +75,7 @@ assert.match(championsPage, /champions-1x2-2026-27\.json/, "Champions: probabili
 assert.doesNotMatch(championsPage, /Forma e carico delle 36 squadre da aggiornare/, "Champions: vecchio pannello di aggiornamento ancora presente");
 assert.match(championsPage, /teamLogoDirectory\(data\.teamBranding,squads\)/, "Champions: directory visuale delle squadre assente");
 assert.match(championsPage, /champions-league\.html\?team=\$\{esc\(squadIds\.get\(team\.team\)\)\}/, "Champions: loghi non collegati alle schede squadra");
-assert.equal([...championsPage.matchAll(/registeredSquadsDirectory\(/g)].length, 2, "Champions: la directory completa delle rose non deve apparire nelle letture o nella pagina principale");
+assert.equal([...championsPage.matchAll(/registeredSquadsDirectory\(/g)].length, 1, "Champions: la directory completa delle rose deve restare definita ma non apparire nelle letture, nella pagina principale o nelle schede squadra");
 assert.match(championsPage, /champions-head-to-head-2026-27\.json/, "Champions: scontri diretti recenti non caricati");
 assert.match(championsPage, /Modello 1\/X\/2 sperimentale/, "Champions: natura sperimentale delle probabilita non dichiarata");
 assert.match(championsPage, /model\.warning/, "Champions: limiti correnti del modello non dichiarati");
@@ -92,7 +92,7 @@ assert.match(championsPage, /data\.teamBranding\.map/, "Champions: branding loca
 assert.match(championsPage, /class="team-logo"/, "Champions: stemmi assenti dalle card");
 assert.match(championsPage, /reading-fixture match fixture-card(?: champions-fixture|\$\{motivation)/, "Champions: calendario non allineato alle card Letture");
 assert.match(championsPage, /reading-fixture match fixture-card fixture-card-link champions-fixture champions-pilot-card/, "Champions: letture non integrate nelle card del calendario");
-assert.match(championsPage, /reading-fixture-preview/, "Champions: anteprima compatta della lettura assente");
+assert.doesNotMatch(championsPage, /reading-fixture-preview/, "Champions: la vecchia anteprima interna non deve duplicare la card cliccabile");
 assert.doesNotMatch(championsPage, /Analisi delle italiane/, "Champions: sezione separata delle italiane ancora presente");
 assert.match(championsPage, /pilotByFixture=new Map\(pilot\.fixtures\.map/, "Champions: pronostici delle italiane non collegati al calendario");
 assert.doesNotMatch(championsPage, /Designazioni arbitrali/, "Champions: designazioni arbitrali ancora presenti nella Home");

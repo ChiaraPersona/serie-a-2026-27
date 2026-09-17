@@ -9,7 +9,7 @@ const teamFiles = teams.map(team => read(`data/teams/${team.id}.json`));
 const fantasyWorkbook = read("data/sources/fantacalcio-stats-2025-26.json");
 const fantasyQuotations = read("data/sources/fantacalcio-quotations-2026-27.json");
 const fantasyCallups = read("data/sources/fantacalcio-callups-md1-2026-27.json");
-const probableLineups = read("data/sources/probable-lineups-md4-2026-27.json");
+const probableLineups = read("data/sources/probable-lineups-md5-2026-27.json");
 const fantasyInjuries = read("data/sources/fantacalcio-injuries-2026-27.json");
 const goalkeeperHierarchySource = read("data/sources/fantasy-goalkeeper-hierarchy-2026-27.json");
 const fantasyExternalStats = read("data/sources/fantasy-external-stats-2025-26.json");
@@ -338,6 +338,7 @@ const output = {
       sourceFile: fantasyWorkbook.sourceFile,
       season: fantasyWorkbook.season,
       matchedPlayers: fantasyWorkbook.coverage.matchedCurrentPlayers,
+      matchedPlayersWithVote: candidates.filter(player => player.fantasyScoring.averageRating !== null).length,
       use: "PV, MV, FM, gol, assist, cartellini, rigori parati/sbagliati e autogol."
     },
     fantasyExternalStatistics: {

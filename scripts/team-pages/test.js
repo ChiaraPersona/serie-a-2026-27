@@ -6,6 +6,7 @@ const root = path.resolve(__dirname, "../..");
 const read = file => JSON.parse(fs.readFileSync(path.join(root, file), "utf8"));
 const index = read("data/teams/index.json");
 const officialLineups = read("data/sources/official-lineups-2026-27.json");
+const probableLineups = read("data/sources/probable-lineups-md5-2026-27.json");
 const playerLeaderboards = read("data/teams/player-leaderboards.json");
 const europeanCalendar = read("data/normalized/european-fixtures-2026-27.json");
 const mainApp = fs.readdirSync(path.join(root, "js"), { recursive: true })
@@ -139,13 +140,16 @@ for (const removedContract of [".squad-leaders-summary", ".squad-leaders[open]"]
 const readingLineupSource = mainApp.slice(mainApp.indexOf("function renderProbableLineups"), mainApp.indexOf("function renderReadingPilotEvidence"));
 assert.ok(teamInterface.includes("lineup.players.slice(offset, offset + size).reverse()"), "Le probabili formazioni delle pagine squadra devono essere specchiate orizzontalmente");
 assert.ok(readingLineupSource.includes("lineup.players.slice(offset,offset+size).reverse()"), "Le probabili formazioni delle Letture devono essere specchiate orizzontalmente");
-const officialFixtureByTeam = Object.fromEntries(officialLineups.fixtures.flatMap(fixture => fixture.teams.map(team => [team.teamId, fixture.matchId])));
-for (const [teamId, fixtureId] of Object.entries(officialFixtureByTeam)) {
-  const lineup = index.teams.find(team => team.id === teamId).probableLineup;
-  assert.strictEqual(lineup.status, "official", `${teamId}: formazione ufficiale non applicata`);
-  assert.strictEqual(lineup.matchId, fixtureId, `${teamId}: formazione ufficiale associata alla gara errata`);
-  assert.strictEqual(lineup.players.length, 11, `${teamId}: XI ufficiale incompleto`);
-  assert(!Object.hasOwn(lineup,"shirt"+"Numbers"), `${teamId}: i numeri di maglia non devono essere conservati`);
+const officialFixtureByTeam = new Map(officialLineups.fixtures
+  .filter(fixture => fixture.matchday === probableLineups.matchday)
+  .flatMap(fixture => fixture.teams.map(team => [team.teamId, fixture.matchId])));
+for (const team of index.teams) {
+  const lineup = team.probableLineup;
+  const fixtureId = officialFixtureByTeam.get(team.id) || null;
+  assert.strictEqual(lineup.status, fixtureId ? "official" : "probable", `${team.id}: stato formazione della giornata corrente errato`);
+  assert.strictEqual(lineup.matchId, fixtureId, `${team.id}: formazione associata alla gara errata`);
+  assert.strictEqual(lineup.players.length, 11, `${team.id}: XI della giornata corrente incompleto`);
+  assert(!Object.hasOwn(lineup,"shirt"+"Numbers"), `${team.id}: i numeri di maglia non devono essere conservati`);
 }
 const atalantaBolognaOfficial = officialLineups.fixtures.find(fixture => fixture.matchId === "atalanta-bologna-2026-27-md-02");
 assert.ok(atalantaBolognaOfficial, "Atalanta-Bologna: distinta ufficiale assente");

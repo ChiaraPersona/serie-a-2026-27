@@ -31,15 +31,17 @@ if (fs.existsSync(previewMd3Path)) {
   assert(previewMd3.predictions.every(prediction => prediction.market.status === "unavailable" && prediction.probabilities.marketNoMargin === null), "L'anteprima MD3 non deve inventare quote");
 }
 
-assert.strictEqual(dataset.predictions.length, 30, "Il motore deve conservare due giornate archiviate e coprire la quarta giornata di Serie A");
+assert.strictEqual(dataset.predictions.length, 39, "Il motore deve conservare le giornate precedenti e coprire la quinta giornata di Serie A");
 const firstMatchdayPredictions = dataset.predictions.filter(prediction => prediction.matchId.endsWith("-md-01"));
 const secondMatchdayPredictions = dataset.predictions.filter(prediction => prediction.matchId.endsWith("-md-02"));
 const fourthMatchdayPredictions = dataset.predictions.filter(prediction => prediction.matchId.endsWith("-md-04"));
+const fifthMatchdayPredictions = dataset.predictions.filter(prediction => prediction.matchId.endsWith("-md-05"));
 const cupPredictions = dataset.predictions.filter(prediction => prediction.matchId.startsWith("r16-"));
 assert.strictEqual(firstMatchdayPredictions.length, 10, "Devono restare disponibili i 10 pronostici archiviati della prima giornata");
 assert.strictEqual(secondMatchdayPredictions.length, 10, "Devono essere disponibili i 10 pronostici tecnici della seconda giornata");
-assert.strictEqual(fourthMatchdayPredictions.length, 10, "Devono essere disponibili i 10 pronostici tecnici della quarta giornata");
-assert(fourthMatchdayPredictions.every(prediction => prediction.shooters?.totalShots?.length === 5 && prediction.shooters?.shotsOnTarget?.length === 5), "Tutte le dieci letture della quarta giornata devono avere cinque tiratori per tiri totali e tiri in porta");
+assert.strictEqual(fourthMatchdayPredictions.length, 9, "Devono restare disponibili i 9 pronostici tecnici pre-partita della quarta giornata");
+assert.strictEqual(fifthMatchdayPredictions.length, 10, "Devono essere disponibili i 10 pronostici tecnici della quinta giornata");
+assert(fifthMatchdayPredictions.every(prediction => prediction.shooters?.totalShots?.length === 5 && prediction.shooters?.shotsOnTarget?.length === 5), "Tutte le dieci letture della quinta giornata devono avere cinque tiratori per tiri totali e tiri in porta");
 assert.strictEqual(cupPredictions.length, 0, "I pronostici delle Letture di Coppa rimosse non devono essere rigenerati");
 assert.deepStrictEqual(firstMatchdayPredictions.map(({ decisionSupport, ...prediction }) => prediction), archivedMd1.predictions, "Il nucleo dei pronostici conclusi MD1 deve restare identico allo snapshot pubblicato");
 assert.strictEqual(Object.keys(myComboSource.matches).length, 10, "Le MyCombo devono coprire tutte le 10 gare della prima giornata");
@@ -64,7 +66,7 @@ assert.strictEqual(dataset.engine.promotedTeamModel.defenceWeaknessFactor, 1.29,
 assert(dataset.predictions.every(prediction => prediction.dataQuality.missing.some(item => item.includes("meteo"))), "Il meteo non verificabile deve essere dichiarato N/D");
 assert(dataset.predictions.every(prediction => !prediction.dataQuality.missing.some(item => item.includes("indisponibili"))), "Il monitor indisponibili aggiornato deve raggiungere tutte le letture");
 for (const prediction of dataset.predictions) {
-  if (prediction.matchId.endsWith("-md-04")) assert.strictEqual(prediction.engineVersion, dataset.engine.version, `${prediction.matchId}: deve usare la versione corrente del motore`);
+  if (["-md-04", "-md-05"].some(suffix => prediction.matchId.endsWith(suffix))) assert.strictEqual(prediction.engineVersion, dataset.engine.version, `${prediction.matchId}: deve usare la versione corrente del motore`);
   else assert.strictEqual(prediction.engineVersion, "4.11.0", `${prediction.matchId}: lo snapshot archiviato deve conservare la propria versione`);
   const probabilities = Object.values(prediction.probabilities.final);
   assert.strictEqual(Number(probabilities.reduce((total, value) => total + value, 0).toFixed(1)), 100, `${prediction.matchId}: probabilita 1X2 non esattamente normalizzate`);
@@ -75,7 +77,7 @@ for (const prediction of dataset.predictions) {
   assert(prediction.headToHead.home >= 0.95 && prediction.headToHead.home <= 1.05 && prediction.headToHead.away >= 0.95 && prediction.headToHead.away <= 1.05, `${prediction.matchId}: correttivo H2H oltre il limite del 5%`);
   assert(prediction.exactScores.length === 3 && new Set(prediction.exactScores.map(item => item.score)).size === 3, `${prediction.matchId}: risultati esatti non validi`);
   assert(prediction.scoreForecast?.primary?.score && prediction.scoreForecast?.modal?.score && prediction.scoreForecast?.display?.length === 3, `${prediction.matchId}: gerarchia risultato assente`);
-  if (prediction.matchId.endsWith("-md-04")) {
+  if (["-md-04", "-md-05"].some(suffix => prediction.matchId.endsWith(suffix))) {
     assert.strictEqual(prediction.scoreForecast.primary.label, "Risultato esatto centrale", `${prediction.matchId}: risultato centrale non dichiarato`);
     assert.strictEqual(prediction.scoreForecast.selection?.type, "rounded-expected-goals", `${prediction.matchId}: selettore del risultato centrale assente`);
     assert.strictEqual(prediction.scoreForecast.primary.score, `${Math.round(prediction.expectedGoals.home)}-${Math.round(prediction.expectedGoals.away)}`, `${prediction.matchId}: risultato centrale non coerente con i gol attesi`);

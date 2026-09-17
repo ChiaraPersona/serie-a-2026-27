@@ -3,13 +3,13 @@ const fs = require("fs");
 const path = require("path");
 
 const root = path.resolve(__dirname, "..");
-const dataset = JSON.parse(fs.readFileSync(path.join(root, "data/sources/probable-lineups-md4-2026-27.json"), "utf8"));
+const dataset = JSON.parse(fs.readFileSync(path.join(root, "data/sources/probable-lineups-md5-2026-27.json"), "utf8"));
 const players = dataset.teams.flatMap(team => team.players);
 
 assert.equal(dataset.provider, "Fantacalcio.it");
 assert.equal(dataset.sourceUrl, "https://www.fantacalcio.it/probabili-formazioni-serie-a");
 assert.equal(dataset.season, "2026/27");
-assert.equal(dataset.matchday, 4);
+assert.equal(dataset.matchday, 5);
 assert.equal(dataset.teams.length, 20);
 assert.equal(new Set(dataset.teams.map(team => team.teamId)).size, 20);
 assert.ok(players.length >= 440);
@@ -19,6 +19,6 @@ assert.ok(players.every(player => ["starter", "reserve"].includes(player.lineupS
 assert.equal(dataset.coverage.linkedPlayers + dataset.coverage.linkedListoneOnly + dataset.coverage.unmatched, players.length);
 assert.equal(dataset.coverage.omittedNonRoster, dataset.omittedNonRoster.length);
 assert.ok(dataset.omittedNonRoster.every(player => !players.some(included => included.sourceId === player.sourceId)));
-assert.ok(players.every(player => player.matchStatus !== "unmatched"));
+assert.ok(players.filter(player => player.matchStatus === "unmatched").every(player => player.lineupStatus === "starter" && player.playerId === null));
 
-console.log(`Fantacalcio MD4: ${dataset.teams.length} squadre, ${dataset.coverage.starters} titolari, ${dataset.coverage.linkedPlayers} collegati.`);
+console.log(`Fantacalcio MD5: ${dataset.teams.length} squadre, ${dataset.coverage.starters} titolari, ${dataset.coverage.linkedPlayers} collegati, ${dataset.coverage.unmatched} non collegati.`);
