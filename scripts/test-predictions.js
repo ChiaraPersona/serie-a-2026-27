@@ -14,7 +14,9 @@ const myComboMd3Path = path.join(root, "data/sources/mycombo-serie-a-2026-27-md-
 const myComboMd3Source = fs.existsSync(myComboMd3Path) ? JSON.parse(fs.readFileSync(myComboMd3Path, "utf8")) : { matches: {} };
 const myComboMd4Path = path.join(root, "data/sources/mycombo-serie-a-2026-27-md-04.json");
 const myComboMd4Source = fs.existsSync(myComboMd4Path) ? JSON.parse(fs.readFileSync(myComboMd4Path, "utf8")) : { matches: {} };
-const allMyComboMatches = { ...myComboSource.matches, ...myComboMd2Source.matches, ...myComboMd3Source.matches, ...myComboMd4Source.matches };
+const myComboMd5Path = path.join(root, "data/sources/mycombo-serie-a-2026-27-md-05.json");
+const myComboMd5Source = fs.existsSync(myComboMd5Path) ? JSON.parse(fs.readFileSync(myComboMd5Path, "utf8")) : { matches: {} };
+const allMyComboMatches = { ...myComboSource.matches, ...myComboMd2Source.matches, ...myComboMd3Source.matches, ...myComboMd4Source.matches, ...myComboMd5Source.matches };
 const officialLineups = JSON.parse(fs.readFileSync(path.join(root, "data/sources/official-lineups-2026-27.json"), "utf8"));
 const previewMd3Path = path.join(root, "data/generated/prediction-preview-md03-2026-27.json");
 const cleanName = value => String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]/g, "");
@@ -48,6 +50,7 @@ assert.strictEqual(Object.keys(myComboSource.matches).length, 10, "Le MyCombo de
 if (fs.existsSync(myComboMd2Path)) assert.strictEqual(Object.keys(myComboMd2Source.matches).length, 10, "Le MyCombo devono coprire tutte le 10 gare della seconda giornata");
 if (fs.existsSync(myComboMd3Path)) assert.strictEqual(Object.keys(myComboMd3Source.matches).length, 10, "Le MyCombo devono coprire tutte le 10 gare della terza giornata");
 if (fs.existsSync(myComboMd4Path)) assert.strictEqual(Object.keys(myComboMd4Source.matches).length, 9, "Le MyCombo MD4 devono coprire le nove gare ancora aperte");
+if (fs.existsSync(myComboMd5Path)) assert.strictEqual(Object.keys(myComboMd5Source.matches).length, 10, "Le MyCombo MD5 devono coprire tutte le dieci gare");
 assert(!Object.hasOwn(dataset.engine.weights, "market"), "Le quote non devono entrare nei pesi del modello");
 assert(Math.abs(Object.values(dataset.engine.weights).reduce((total, value) => total + value, 0) - 1) < 1e-9, "I pesi non sommano a 1");
 assert(dataset.engine.weights.venueHistorical + dataset.engine.weights.overallHistorical + dataset.engine.weights.recentForm >= 0.8, "I dati storici devono guidare le lambda");
@@ -120,7 +123,7 @@ for (const prediction of dataset.predictions) {
     for (const combo of prediction.combinations) {
       const riskAssessment = prediction.decisionSupport.portfolios.find(portfolio => portfolio.tier === combo.tier);
       assert(riskAssessment && typeof riskAssessment.allowed === "boolean", `${prediction.matchId}/${combo.tier}: controllo rischio assente`);
-      const configuredSource = myComboMd4Source.matches[prediction.matchId] ? myComboMd4Source : myComboMd3Source.matches[prediction.matchId] ? myComboMd3Source : myComboMd2Source.matches[prediction.matchId] ? myComboMd2Source : myComboSource;
+      const configuredSource = myComboMd5Source.matches[prediction.matchId] ? myComboMd5Source : myComboMd4Source.matches[prediction.matchId] ? myComboMd4Source : myComboMd3Source.matches[prediction.matchId] ? myComboMd3Source : myComboMd2Source.matches[prediction.matchId] ? myComboMd2Source : myComboSource;
       const limits = configuredSource.constraints.tierLimits[combo.tier];
       const informationalRisk = configuredSource.constraints.riskPolicy === "informativa";
       if (combo.qualityStatus === "nd") {

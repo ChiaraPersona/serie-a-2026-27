@@ -17,10 +17,10 @@ const outputPath = path.join(root, "data", "sources", outputFilename);
 const previousOutput = fs.existsSync(outputPath) ? JSON.parse(fs.readFileSync(outputPath, "utf8")) : null;
 
 const referenceOdds = { Safe: 5, Balanced: 10, Aggressive: 20 };
-const minimumLegOdds = 1.1;
+const minimumLegOdds = matchday >= 5 ? 1.15 : 1.1;
 const maximumLegOdds = 1.85;
 const tierLimits = {
-  Safe: { minimum: 3, maximum: 6, preferred: 3 },
+  Safe: { minimum: matchday >= 5 ? 2 : 3, maximum: 6, preferred: 3 },
   Balanced: { minimum: 4, maximum: 7, preferred: 4 },
   Aggressive: { minimum: 5, maximum: 8, preferred: 5 }
 };
@@ -357,6 +357,26 @@ function selectPortfolio(pool, tier) {
   return eligible[0];
 }
 
+function fallbackPortfolio(pool, tier) {
+  const limits = tierLimits[tier];
+  const attempts = [];
+  for (let offset = 0; offset < Math.min(pool.length, 80); offset += 1) {
+    const ordered = [...pool.slice(offset), ...pool.slice(0, offset)];
+    const state = { product: 1, legs: [], overlapKeys: new Set(), semanticKeys: new Set(), quality: 0 };
+    for (const candidate of ordered) {
+      if (state.overlapKeys.has(candidate.overlapKey) || candidate.semanticKeys.some(key => state.semanticKeys.has(key))) continue;
+      state.legs.push(candidate);
+      state.product *= candidate.odds;
+      state.quality += candidate.quality;
+      state.overlapKeys.add(candidate.overlapKey);
+      candidate.semanticKeys.forEach(key => state.semanticKeys.add(key));
+      if (state.legs.length === limits.preferred) break;
+    }
+    if (state.legs.length >= limits.minimum) attempts.push(state);
+  }
+  return attempts.sort((left, right) => Math.abs(Math.log(left.product / referenceOdds[tier])) - Math.abs(Math.log(right.product / referenceOdds[tier])) || right.quality - left.quality)[0] || null;
+}
+
 const oddsEventByMatchId = new Map(odds.events.map(event => [event.canonicalMatchId, event]));
 const eligibleMatches = matches.filter(match => match.matchday === matchday && match.status !== "finished");
 const targetPredictions = predictionData.predictions.filter(prediction => eligibleMatches.some(match => match.id === prediction.matchId));
@@ -400,7 +420,7 @@ for (const event of odds.events) {
   const pool = candidatePool(event, prediction, match);
   console.log(`${event.canonicalMatchId}: ${pool.length} candidati modellati · ${pool.filter(candidate => candidate.anchor).length} ancore · ${new Set(pool.map(candidate => candidate.overlapKey)).size} gruppi`);
   const planned = new Map(["Aggressive", "Balanced", "Safe"].map(tier => {
-    const portfolio = selectPortfolio(pool, tier);
+    const portfolio = selectPortfolio(pool, tier) || fallbackPortfolio(pool, tier);
     if (!portfolio) return [tier, {
       tier,
       status: "N/D",

@@ -29,6 +29,12 @@ export function createPage(deps){
     return `<div class="betting-stage"><header class="betting-intro"><div><p class="eyebrow">Controllo prudenziale</p><h3>Selezionate dal modello</h3></div><p>${esc(data.selectionRule||"Entrano qui soltanto schedine con EV non negativo e nessuna gamba sotto −10% di EV individuale.")}</p></header>${coverage}${legend}${selected}${others.length?`<header class="betting-section-heading"><div><p class="eyebrow">Letture editoriali e laboratorio</p><h3>Scenari non qualificati</h3></div><p>Restano visibili per confronto, con rischio ed EV dichiarati.</p></header><div class="betting-slip-grid">${others.map(slip=>slipCard(slip,matchById)).join("")}</div>`:""}<footer class="betting-method"><strong>Come leggere i numeri</strong><p>${esc(data.methodology)}</p><p>Quote ${esc(data.provider)} aggiornate al ${esc(dateOnly(data.oddsRetrievedAt))}. <a href="${esc(data.sourceUrl)}" target="_blank" rel="noreferrer">Fonte quote</a>. Gioca responsabilmente: pagina editoriale, nessun esito è certo.</p></footer></div>`;
   }
 
+  function myComboRoundContent(predictions,matchById,teamById){
+    const entries=predictions.filter(prediction=>prediction.matchId.endsWith("-md-05")).map(prediction=>({prediction,combo:prediction.combinations?.find(item=>item.tier==="Safe"),match:matchById.get(prediction.matchId)})).filter(item=>item.match&&item.combo?.legs?.length);
+    const cards=entries.map(({prediction,combo,match})=>{const home=teamById.get(match.homeTeam)?.name||match.homeTeam,away=teamById.get(match.awayTeam)?.name||match.awayTeam;return `<article class="betting-slip betting-mycombo-card" data-match-id="${esc(match.id)}"><header><div><p>MyCombo · mercati differenti</p><h2>${esc(home)} - ${esc(away)}</h2><small>Quota minima per gamba 1,15</small></div></header><div class="betting-slip-metrics"><div class="betting-slip-total"><span>Quota totale</span><strong>${odds(combo.odds)}</strong><small>${combo.legs.length} mercati distinti</small></div><div><span>Profilo</span><strong>${esc(combo.tier)}</strong></div><div><span>Rischio</span><strong>${esc(combo.risk)}</strong></div></div><ol>${combo.legs.map((leg,index)=>`<li><span class="betting-leg-number">${String(index+1).padStart(2,"0")}</span><div><strong>${esc(leg.market)}</strong><span>${esc(leg.label)}</span></div><b>${odds(leg.odds)}</b></li>`).join("")}</ol><p class="betting-weakest">Nessuna famiglia o macro-scenario è ripetuta nella stessa combinazione.</p></article>`}).join("");
+    return `<section class="betting-mycombo-round" aria-labelledby="betting-mycombo-md05-title"><header class="betting-section-heading"><div><p class="eyebrow">Una per ogni partita</p><h3 id="betting-mycombo-md05-title">MyCombo · 5ª giornata</h3></div><p>Dieci combinazioni con mercati realmente differenti e nessuna quota singola inferiore a 1,15.</p></header><div class="betting-slip-grid">${cards}</div></section>`;
+  }
+
   function archiveStats(data,matchById,resolve=leg=>settleLeg(leg,matchById.get(leg.matchId))){
     const archiveLegResults=data.slips.flatMap(slip=>slip.legs.map(leg=>({leg,settlement:resolve(leg)})));
     const archiveWins=archiveLegResults.filter(({settlement})=>settlement.status==="won").length;
@@ -47,7 +53,7 @@ export function createPage(deps){
     const finished=data.slips.some(slip=>slip.legs.some(leg=>["won","lost"].includes(settleLeg(leg,matchById.get(leg.matchId)).status)));
     const stats=archiveStats(data,matchById);
     const detail=finished?`<span class="betting-archive-performance"><span><small>Successo</small><strong>${pct(stats.archiveSuccessPct)}%</strong></span><span><small>Guadagno</small><strong>${stats.archiveProfitPct>0?"+":""}${pct(stats.archiveProfitPct)}%</strong></span></span><span>${stats.archiveWins} esatte su ${stats.archiveStake}${stats.archiveVoids?` · ${stats.archiveVoids} annullate`:""}</span>`:`<span class="betting-archive-performance"><span><small>Proposte</small><strong>${data.slips.length}</strong></span><span><small>Selezioni</small><strong>${data.slips.reduce((sum,slip)=>sum+slip.legs.length,0)}</strong></span></span><span>Quote aggiornate al ${esc(dateOnly(data.oddsRetrievedAt))}</span>`;
-    const colors={1:"#123e85",2:"#9b1c31",3:"#0f766e"};
+    const colors={1:"#123e85",2:"#9b1c31",3:"#0f766e",4:"#7c3aed",5:"#b45309"};
     return `<a class="betting-archive-card team-directory-card team-flip-card" href="schedina.html?giornata=${number}" aria-label="Apri le schedine della ${ordinalWord(number)} giornata" style="--team-primary:${colors[number]};--team-secondary:#06152b"><span class="team-flip-inner"><span class="team-flip-face team-flip-front betting-archive-card-front"><span class="betting-archive-number">${number}</span></span><span class="team-flip-face team-flip-back betting-archive-card-back"><strong>${number}ª giornata</strong><span>Serie A · 2026/27</span><span>${data.slips.length} schedine</span>${detail}<b>Apri la lista delle schedine</b></span></span></a>`;
   }
 
@@ -69,9 +75,10 @@ export function createPage(deps){
   }
 
   async function render(){
-    const [champions,md1,md2,md3,md4,matches]=await Promise.all([load("schedina-champions-md01.json"),load("schedina.json"),load("schedina-md02.json"),load("schedina-md03.json"),load("schedina-md04.json"),load("matches.json")]);
-    const rounds={1:md1,2:md2,3:md3,4:md4};
+    const [champions,md1,md2,md3,md4,md5,matches,predictionData,teams]=await Promise.all([load("schedina-champions-md01.json"),load("schedina.json"),load("schedina-md02.json"),load("schedina-md03.json"),load("schedina-md04.json"),load("schedina-md05.json"),load("matches.json"),load("predictions.json"),load("teams.json")]);
+    const rounds={1:md1,2:md2,3:md3,4:md4,5:md5};
     const matchById=new Map((Array.isArray(matches)?matches:matches.matches||[]).map(match=>[match.id,match]));
+    const teamById=new Map((Array.isArray(teams)?teams:teams.teams||[]).map(team=>[team.id,team]));
     const matchday=new URLSearchParams(location.search).get("giornata");
     const competition=new URLSearchParams(location.search).get("competizione");
     if(competition==="champions"){
@@ -82,10 +89,11 @@ export function createPage(deps){
       const number=Number(matchday),data=rounds[number];
       const ordinal=`${number}ª`;
       const description=`Tutte le schedine della ${ordinalWord(number)} giornata, con quote, probabilità, quota equa ed EV consultabili.`;
-      document.querySelector("#app").innerHTML=hero(`Archivio · ${ordinal} giornata`,"Schedine",description)+`<nav class="betting-round-back" aria-label="Navigazione archivio schedine"><a href="schedina.html">← Tutte le giornate</a></nav><section class="betting-round-page" aria-labelledby="betting-round-${String(number).padStart(2,"0")}-title"><header class="betting-round-heading"><p class="eyebrow">Serie A · 2026/27</p><h2 id="betting-round-${String(number).padStart(2,"0")}-title">${ordinal} giornata</h2></header>${roundContent(data,matchById,{showLegend:number===1})}</section>`;
+      const myCombo=number===5?myComboRoundContent(predictionData.predictions||[],matchById,teamById):"";
+      document.querySelector("#app").innerHTML=hero(`Archivio · ${ordinal} giornata`,"Schedine",description)+`<nav class="betting-round-back" aria-label="Navigazione archivio schedine"><a href="schedina.html">← Tutte le giornate</a></nav><section class="betting-round-page" aria-labelledby="betting-round-${String(number).padStart(2,"0")}-title"><header class="betting-round-heading"><p class="eyebrow">Serie A · 2026/27</p><h2 id="betting-round-${String(number).padStart(2,"0")}-title">${ordinal} giornata</h2></header>${roundContent(data,matchById,{showLegend:number===1})}${myCombo}</section>`;
       return;
     }
-    document.querySelector("#app").innerHTML=hero("Archivio · Stagione 2026/27","Schedina","Le schedine restano raccolte giornata per giornata, con quote, valutazioni ed esiti sempre consultabili.")+`<section class="betting-archive" aria-labelledby="betting-archive-title"><header class="betting-archive-intro"><div><p class="eyebrow">Archivio schedine</p><h2 id="betting-archive-title">Competizioni e giornate</h2></div><p>La prima card blu raccoglie la Champions; seguono le giornate di Serie A.</p></header><div class="betting-archive-list team-directory-grid team-flip-grid">${championsArchiveCard(champions)}${archiveCard(md1,1,matchById)}${archiveCard(md2,2,matchById)}${archiveCard(md3,3,matchById)}${archiveCard(md4,4,matchById)}</div></section>`;
+    document.querySelector("#app").innerHTML=hero("Archivio · Stagione 2026/27","Schedina","Le schedine restano raccolte giornata per giornata, con quote, valutazioni ed esiti sempre consultabili.")+`<section class="betting-archive" aria-labelledby="betting-archive-title"><header class="betting-archive-intro"><div><p class="eyebrow">Archivio schedine</p><h2 id="betting-archive-title">Competizioni e giornate</h2></div><p>La prima card blu raccoglie la Champions; seguono le giornate di Serie A.</p></header><div class="betting-archive-list team-directory-grid team-flip-grid">${championsArchiveCard(champions)}${archiveCard(md1,1,matchById)}${archiveCard(md2,2,matchById)}${archiveCard(md3,3,matchById)}${archiveCard(md4,4,matchById)}${archiveCard(md5,5,matchById)}</div></section>`;
   }
   return {render};
 }

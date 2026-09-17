@@ -87,6 +87,9 @@ function scoreCandidates() {
     for (const row of prediction.marketComparison || []) {
       if (!row.scenarioCompatible || row.selection === "12" || row.expectedValuePct < -10 || row.odds < 1.1) continue;
       if (!["1x2", "double-chance", "draw-no-bet", "goals", "btts", "team-goal"].includes(row.family)) continue;
+      if (row.family === "1x2" && row.selection !== prediction.verdict.outcome) continue;
+      if (row.family === "double-chance" && !String(row.selection).includes(prediction.verdict.outcome)) continue;
+      if (row.family === "draw-no-bet" && prediction.verdict.outcome !== "X" && row.selection !== prediction.verdict.outcome) continue;
       const resolved = index.get(String(row.providerSelectionId));
       if (!resolved || !["1X2 ESITO FINALE", "DOPPIA CHANCE", "DRAW NO BET", "UNDER/OVER", "GOAL/NOGOAL", "CASA: SEGNA GOAL", "OSPITE: SEGNA GOAL"].includes(resolved.market.marketName)) continue;
       const label = row.family === "goals"

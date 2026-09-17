@@ -37,7 +37,8 @@ const bettingPage = fs.readFileSync(path.join(root, "js", "pages", "betting.js")
   assert.match(bettingPage, /load\("schedina-md02\.json"\)/, "Schedina: dati della seconda giornata non caricati");
   assert.match(bettingPage, /load\("schedina-md03\.json"\)/, "Schedina: dati della terza giornata non caricati");
   assert.match(bettingPage, /load\("schedina-md04\.json"\)/, "Schedina: dati della quarta giornata non caricati");
-  assert.match(bettingPage, /const rounds=\{1:md1,2:md2,3:md3,4:md4\}/, "Schedina: viste dedicate alle prime quattro giornate assenti");
+  assert.match(bettingPage, /load\("schedina-md05\.json"\)/, "Schedina: dati della quinta giornata non caricati");
+  assert.match(bettingPage, /const rounds=\{1:md1,2:md2,3:md3,4:md4,5:md5\}/, "Schedina: viste dedicate alle prime cinque giornate assenti");
   assert.match(bettingPage, /archiveCard\(md2,2,matchById\)/, "Schedina: card della seconda giornata assente dall'archivio");
   assert.match(bettingPage, /archiveCard\(md3,3,matchById\)/, "Schedina: card della terza giornata assente dall'archivio");
 assert.doesNotMatch(bettingPage, /<details class="betting-archive-card">|<summary class="betting-archive-card-heading">/, "Schedina: la card archivio non deve essere un menu a tendina");
@@ -57,7 +58,7 @@ assert.doesNotMatch(bettingCss, /betting-archive-performance[^}]*var\(--betting-
 assert.match(bettingCss, /\.betting-slip-grid\{display:grid;grid-template-columns:repeat\(2,minmax\(0,1fr\)\)/, "Schedina: card desktop non organizzate su due colonne");
 const readingsPage = fs.readFileSync(path.join(root, "js", "pages", "readings.js"), "utf8");
 assert.doesNotMatch(readingsPage, /Scenari e dipendenze|prediction-decision-panel/, "Letture: sezione Scenari e dipendenze ancora esposta");
-assert.match(readingsPage, /prediction-combo-risk/, "Letture: controllo rischio MyCombo non esposto");
+assert.doesNotMatch(readingsPage, /MyCombo|prediction-combo-risk|prediction-combos/, "Letture: le MyCombo devono essere rimosse");
 const cupPage = fs.readFileSync(path.join(root, "js", "pages", "cup.js"), "utf8");
 assert.match(cupPage, /\["preliminary","round-32"\]\.includes\(round\.id\)/, "Coppa: preliminare e trentaduesimi non sono configurati come tendine");
 assert.match(cupPage, /<details class="cup-round cup-round--\$\{round\.id\} cup-round-disclosure"/, "Coppa: disclosure nativa dei primi due turni assente");
