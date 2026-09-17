@@ -29,8 +29,8 @@ const server = http.createServer((request, response) => {
       await page.goto(`http://127.0.0.1:${server.address().port}/schedina.html?giornata=5`, { waitUntil: "networkidle" });
       const mainText = await page.locator("main").innerText();
       const comparableText = mainText.toLocaleLowerCase("it-IT");
-      assert.match(mainText, /MyCombo delle singole partite · 5ª giornata/);
-      assert(comparableText.indexOf("mycombo delle singole partite") < comparableText.indexOf("controllo prudenziale"), `schedina ${width}: le MyCombo devono essere in apertura`);
+      assert.match(mainText, /MyCombo da 10 eventi · 5ª giornata/);
+      assert(comparableText.indexOf("mycombo da 10 eventi") < comparableText.indexOf("controllo prudenziale"), `schedina ${width}: le MyCombo devono essere in apertura`);
       assert.doesNotMatch(mainText, /Scintilla|Bagliore|Supernova|Prisma|Quasar|Costellazione/i);
       const cards = page.locator(".betting-mycombo-card");
       assert.equal(await cards.count(), 10, `schedina ${width}: servono dieci MyCombo`);
@@ -38,6 +38,7 @@ const server = http.createServer((request, response) => {
         const card = cards.nth(index);
         const markets = await card.locator("ol li strong").allTextContents();
         const quotedOdds = (await card.locator("ol li b").allTextContents()).map(value => Number(value.replace(",", ".")));
+        assert.equal(markets.length, 10, `schedina ${width}: la MyCombo ${index + 1} deve avere dieci eventi`);
         assert.equal(new Set(markets).size, markets.length, `schedina ${width}: mercato ripetuto nella MyCombo ${index + 1}`);
         assert(quotedOdds.every(value => value >= 1.15), `schedina ${width}: quota sotto 1,15 nella MyCombo ${index + 1}`);
       }
