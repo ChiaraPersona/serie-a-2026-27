@@ -3,9 +3,9 @@
   "competition": "serie-a",
   "season": "2026-27",
   "matchday": 5,
-  "generatedAt": "2026-09-17T21:48:59.338Z",
+  "generatedAt": "2026-09-17T22:10:32.914Z",
   "title": "Otto schedine, otto letture · 5ª giornata",
-  "description": "Tre schedine miste, due dedicate ai giocatori, una Multigol casa/ospite e due poker di papabili ammoniti. Non è un elenco di MyCombo per partita: ogni blocco è una schedina autonoma. Quote esterne al modello, quota minima 1,10, nessun esito 12, nessun risultato esatto e nessuna selezione Sisal duplicata.",
+  "description": "Tre schedine miste, due dedicate ai giocatori, una Multigol casa/ospite e due poker di papabili ammoniti. Ogni blocco è una schedina autonoma; le MyCombo delle singole partite sono mostrate separatamente nella pagina della giornata. Quote esterne al modello, quota minima 1,10, nessun esito 12, nessun risultato esatto e nessuna selezione Sisal duplicata.",
   "provider": "sisal",
   "sourceUrl": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/serie-a?cluster=27&cde=1000001",
   "oddsRetrievedAt": "2026-09-17T21:31:43.252Z",
@@ -13,12 +13,12 @@
   "methodology": "Le probabilità sono indipendenti dalle quote Sisal. Esiti, Under/Over gol, Multigol e risultati esatti derivano dal modello Poisson sugli xG; Vince o quasi considera anche i possibili ordini dei gol e il raggiungimento del vantaggio richiesto. Corner, tiri totali e tiri in porta di squadra usano media e deviazione dei volumi previsti; parate e punti cartellini usano una distribuzione Poisson sui rispettivi valori centrali. Per marcatori, gol o assist, assist, tiri e tiri in porta giocatore il motore usa soltanto titolari previsti con almeno 700 minuti: regolarizza la frequenza storica per 90 minuti con un prior prudente e la adatta agli xG o ai volumi di squadra previsti. Le probabilità delle gambe, appartenenti a partite diverse, vengono moltiplicate; quota equa = 1/probabilità ed EV = probabilità × quota Sisal − 1. Una schedina è qualificata soltanto con EV non negativo e nessuna gamba sotto −10% di EV individuale; le altre restano letture editoriali o di laboratorio. Nessuna quota entra nel pronostico.",
   "slips": [
     {
-      "id": "scintilla-v",
+      "id": "tre-mercati-prudenti",
       "type": "mixed-markets",
       "number": 1,
       "eyebrow": "Quota contenuta",
-      "name": "Scintilla V",
-      "description": "Tre selezioni prudenti, tre famiglie di mercato e quota complessiva nella fascia della Scintilla della prima giornata.",
+      "name": "Tre mercati prudenti",
+      "description": "Tre selezioni prudenti appartenenti a tre famiglie di mercato differenti.",
       "selectionPolicy": null,
       "marketFamilies": [
         "Corner",
@@ -105,12 +105,12 @@
       ]
     },
     {
-      "id": "bagliore-v",
+      "id": "tre-mercati-a-quota-intermedia",
       "type": "mixed-markets",
       "number": 2,
       "eyebrow": "Quota intermedia",
-      "name": "Bagliore V",
-      "description": "Tre mercati differenti, nessuna selezione Sisal ripetuta e una fascia quota coerente con Bagliore della prima giornata.",
+      "name": "Tre mercati a quota intermedia",
+      "description": "Tre mercati differenti, nessuna selezione Sisal ripetuta e quota complessiva intermedia.",
       "selectionPolicy": null,
       "marketFamilies": [
         "Corner",
@@ -197,12 +197,12 @@
       ]
     },
     {
-      "id": "supernova-v",
+      "id": "cinque-mercati-cinque-partite",
       "type": "mixed-markets",
       "number": 3,
       "eyebrow": "Tutta la 5ª giornata",
-      "name": "Supernova V",
-      "description": "Cinque gare e cinque famiglie di mercato, senza aggiunte forzate e con la fascia di rischio della Supernova della prima giornata.",
+      "name": "Cinque mercati · cinque partite",
+      "description": "Cinque gare e cinque famiglie di mercato, senza aggiunte forzate.",
       "selectionPolicy": null,
       "marketFamilies": [
         "Corner",
@@ -333,11 +333,11 @@
       ]
     },
     {
-      "id": "prisma-v",
+      "id": "otto-gol-assist-e-tiri-gruppo-1",
       "type": "player-only",
       "number": 4,
-      "eyebrow": "Marcatori · tiri · tiri in porta",
-      "name": "Prisma V",
+      "eyebrow": "Marcatori · assist · tiri",
+      "name": "Otto gol, assist e tiri · gruppo 1",
       "description": "Otto mercati giocatore su otto gare, limitati ai titolari proiettati con storico sufficiente.",
       "selectionPolicy": null,
       "marketFamilies": [
@@ -532,12 +532,12 @@
       ]
     },
     {
-      "id": "quasar-v",
+      "id": "otto-gol-assist-e-tiri-gruppo-2",
       "type": "player-only",
       "number": 5,
-      "eyebrow": "Mix ad alta intensità",
-      "name": "Quasar V",
-      "description": "Secondo portafoglio di otto mercati giocatore senza riutilizzare selezioni già presenti in Prisma V.",
+      "eyebrow": "Marcatori · assist · tiri",
+      "name": "Otto gol, assist e tiri · gruppo 2",
+      "description": "Secondo gruppo di otto mercati giocatore, senza riutilizzare selezioni già presenti nel gruppo 1.",
       "selectionPolicy": null,
       "marketFamilies": [
         "Assist giocatore",
@@ -731,11 +731,11 @@
       ]
     },
     {
-      "id": "costellazione-md5",
+      "id": "multigol-casa-ospite-md5",
       "type": "single-market-full-round",
       "number": 6,
       "eyebrow": "10 partite · Multigol casa/ospite",
-      "name": "Costellazione V",
+      "name": "Multigol casa/ospite · 10 partite",
       "description": "Tutta la 5ª giornata con intervalli casa/ospite stretti, scelti dal modello senza allargare le code per inseguire la quota.",
       "selectionPolicy": {
         "type": "poisson-narrow",
@@ -979,7 +979,7 @@
       "type": "player-cards",
       "number": 7,
       "eyebrow": "4 partite · Papabili ammoniti",
-      "name": "Poker ammoniti 1 · V",
+      "name": "Poker ammoniti 1",
       "description": "Quattro calciatori differenti, ciascuno scelto in una partita differente sulla base del rischio disciplinare e delle quote Sisal.",
       "selectionPolicy": null,
       "marketFamilies": [
@@ -1090,7 +1090,7 @@
       "type": "player-cards",
       "number": 8,
       "eyebrow": "4 partite · Papabili ammoniti",
-      "name": "Poker ammoniti 2 · V",
+      "name": "Poker ammoniti 2",
       "description": "Quattro calciatori differenti, ciascuno scelto in una partita differente sulla base del rischio disciplinare e delle quote Sisal.",
       "selectionPolicy": null,
       "marketFamilies": [

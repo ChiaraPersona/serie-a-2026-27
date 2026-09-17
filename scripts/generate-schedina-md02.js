@@ -279,11 +279,11 @@ function takePlayers(pool, name, eyebrow, description, offset) {
 
 function automaticMultigoalSlip() {
   return {
-    id: `costellazione-md${matchday}`,
+    id: `multigol-casa-ospite-md${matchday}`,
     type: "single-market-full-round",
     selectionPolicy: { type: "poisson-narrow", quantile: 0.9, maxTeamRangeWidth: 2, minModelProbability: 0.55, minLegOdds: 1.1, maxLegOdds: 1.8 },
     eyebrow: `${matches.length} partite · Multigol casa/ospite`,
-    name: `Costellazione ${suffix}`,
+    name: `Multigol casa/ospite · ${matches.length} partite`,
     description: `Tutta la ${matchday}ª giornata con intervalli casa/ospite stretti, scelti dal modello senza allargare le code per inseguire la quota.`,
     picks: matches.map(match => ({ matchId: match.id, market: "MULTIGOAL CASA + MULTIGOAL OSPITE", variant: "MULTIGOAL CASA + MULTIGOAL OSPITE MULTIESITI 91 ESITI", selection: "AUTO" }))
   };
@@ -323,7 +323,7 @@ function takeCards(pool, index) {
     id: `poker-ammoniti-${index}-md${matchday}`,
     type: "player-cards",
     eyebrow: "4 partite · Papabili ammoniti",
-    name: `Poker ammoniti ${index} · ${suffix}`,
+    name: `Poker ammoniti ${index}`,
     description: "Quattro calciatori differenti, ciascuno scelto in una partita differente sulla base del rischio disciplinare e delle quote Sisal.",
     picks: chosen.map(item => item.pick)
   };
@@ -334,11 +334,11 @@ const playerPool = playerCandidates();
 const cardsPool = cardCandidates();
 console.log(`Candidati Schedina MD${matchdayCode}: ${mixedPool.length} misti · ${playerPool.length} giocatore · ${new Set(playerPool.map(item => item.matchId)).size} gare con giocatori`);
 const slips = [
-  takeMixed(mixedPool, `Scintilla ${suffix}`, "Quota contenuta", "Tre selezioni prudenti, tre famiglie di mercato e quota complessiva nella fascia della Scintilla della prima giornata.", 3, 3, 4, 6),
-  takeMixed(mixedPool, `Bagliore ${suffix}`, "Quota intermedia", "Tre mercati differenti, nessuna selezione Sisal ripetuta e una fascia quota coerente con Bagliore della prima giornata.", 3, 3, 6, 10),
-  takeMixed(mixedPool, `Supernova ${suffix}`, `Tutta la ${matchday}ª giornata`, "Cinque gare e cinque famiglie di mercato, senza aggiunte forzate e con la fascia di rischio della Supernova della prima giornata.", 5, 5, 5, 10),
-  takePlayers(playerPool, `Prisma ${suffix}`, "Marcatori · tiri · tiri in porta", "Otto mercati giocatore su otto gare, limitati ai titolari proiettati con storico sufficiente.", 0),
-  takePlayers(playerPool, `Quasar ${suffix}`, "Mix ad alta intensità", `Secondo portafoglio di otto mercati giocatore senza riutilizzare selezioni già presenti in Prisma ${suffix}.`, 1),
+  takeMixed(mixedPool, "Tre mercati prudenti", "Quota contenuta", "Tre selezioni prudenti appartenenti a tre famiglie di mercato differenti.", 3, 3, 4, 6),
+  takeMixed(mixedPool, "Tre mercati a quota intermedia", "Quota intermedia", "Tre mercati differenti, nessuna selezione Sisal ripetuta e quota complessiva intermedia.", 3, 3, 6, 10),
+  takeMixed(mixedPool, "Cinque mercati · cinque partite", `Tutta la ${matchday}ª giornata`, "Cinque gare e cinque famiglie di mercato, senza aggiunte forzate.", 5, 5, 5, 10),
+  takePlayers(playerPool, "Otto gol, assist e tiri · gruppo 1", "Marcatori · assist · tiri", "Otto mercati giocatore su otto gare, limitati ai titolari proiettati con storico sufficiente.", 0),
+  takePlayers(playerPool, "Otto gol, assist e tiri · gruppo 2", "Marcatori · assist · tiri", "Secondo gruppo di otto mercati giocatore, senza riutilizzare selezioni già presenti nel gruppo 1.", 1),
   automaticMultigoalSlip(),
   takeCards(cardsPool, 1),
   takeCards(cardsPool, 2)
@@ -350,7 +350,7 @@ const output = {
   season: "2026-27",
   matchday,
   title: `Otto schedine, otto letture · ${matchday}ª giornata`,
-  description: "Tre schedine miste, due dedicate ai giocatori, una Multigol casa/ospite e due poker di papabili ammoniti. Non è un elenco di MyCombo per partita: ogni blocco è una schedina autonoma. Quote esterne al modello, quota minima 1,10, nessun esito 12, nessun risultato esatto e nessuna selezione Sisal duplicata.",
+  description: "Tre schedine miste, due dedicate ai giocatori, una Multigol casa/ospite e due poker di papabili ammoniti. Ogni blocco è una schedina autonoma; le MyCombo delle singole partite sono mostrate separatamente nella pagina della giornata. Quote esterne al modello, quota minima 1,10, nessun esito 12, nessun risultato esatto e nessuna selezione Sisal duplicata.",
   slips
 };
 

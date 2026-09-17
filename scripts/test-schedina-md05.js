@@ -8,6 +8,7 @@ const read = file => JSON.parse(fs.readFileSync(path.join(root, file), "utf8"));
 const data = read("data/normalized/schedina-md05.json");
 const predictions = read("data/normalized/predictions.json").predictions.filter(item => item.matchId.endsWith("-md-05"));
 const source = read("data/sources/mycombo-serie-a-2026-27-md-05.json");
+const renderer = fs.readFileSync(path.join(root, "js/pages/betting.js"), "utf8");
 const legs = data.slips.flatMap(slip => slip.legs);
 
 assert.equal(data.matchday, 5);
@@ -19,6 +20,19 @@ assert(!data.slips.some(slip => ["exact-score", "exact-score-multi"].includes(sl
 assert(!legs.some(leg => /^RISULTATO ESATTO/.test(leg.market)));
 assert.equal(new Set(legs.map(leg => String(leg.providerSelectionId))).size, legs.length);
 assert(legs.every(leg => leg.odds >= 1.10 && leg.selection !== "12" && leg.coherent));
+assert(!data.slips.some(slip => /scintilla|bagliore|supernova|prisma|quasar|costellazione/i.test(`${slip.id} ${slip.name}`)), "Sono rimasti nomi di costellazioni nella Schedina MD05");
+assert.deepEqual(data.slips.map(slip => slip.name), [
+  "Tre mercati prudenti",
+  "Tre mercati a quota intermedia",
+  "Cinque mercati · cinque partite",
+  "Otto gol, assist e tiri · gruppo 1",
+  "Otto gol, assist e tiri · gruppo 2",
+  "Multigol casa/ospite · 10 partite",
+  "Poker ammoniti 1",
+  "Poker ammoniti 2"
+]);
+assert(renderer.includes("MyCombo delle singole partite · 5ª giornata"));
+assert(renderer.indexOf("${myCombo}${roundContent") > renderer.indexOf("const myCombo="), "Le MyCombo devono precedere le schedine nella pagina MD05");
 
 for (const prediction of predictions) {
   const combo = prediction.combinations.find(item => item.tier === "Safe");

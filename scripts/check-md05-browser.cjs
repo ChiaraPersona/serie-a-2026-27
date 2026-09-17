@@ -27,7 +27,11 @@ const server = http.createServer((request, response) => {
     for (const width of [1280, 390]) {
       await page.setViewportSize({ width, height: 900 });
       await page.goto(`http://127.0.0.1:${server.address().port}/schedina.html?giornata=5`, { waitUntil: "networkidle" });
-      assert.match(await page.locator("main").innerText(), /MyCombo · 5ª giornata/);
+      const mainText = await page.locator("main").innerText();
+      const comparableText = mainText.toLocaleLowerCase("it-IT");
+      assert.match(mainText, /MyCombo delle singole partite · 5ª giornata/);
+      assert(comparableText.indexOf("mycombo delle singole partite") < comparableText.indexOf("controllo prudenziale"), `schedina ${width}: le MyCombo devono essere in apertura`);
+      assert.doesNotMatch(mainText, /Scintilla|Bagliore|Supernova|Prisma|Quasar|Costellazione/i);
       const cards = page.locator(".betting-mycombo-card");
       assert.equal(await cards.count(), 10, `schedina ${width}: servono dieci MyCombo`);
       for (let index = 0; index < 10; index += 1) {
