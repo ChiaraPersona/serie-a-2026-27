@@ -5,7 +5,7 @@
     "serie-a"
   ],
   "season": "2026-27",
-  "generatedAt": "2026-09-17T22:22:09.687Z",
+  "generatedAt": "2026-09-18T18:07:52.610Z",
   "engine": {
     "version": "4.12.0",
     "principle": "Un'unica matrice dei punteggi indipendente dalle quote genera 1X2, gol e mercati collegati.",
@@ -87732,20 +87732,34 @@
           "quotaPolicy": "orientativa",
           "eligibilityPolicy": "validita-tecnica-e-intervalli",
           "riskPolicy": "informativa",
-          "odds": 8.06,
-          "distancePct": 61.2,
+          "odds": 10.21,
+          "distancePct": 104.2,
           "legs": [
             {
-              "label": "U/O 0.5 Bologna + U/O 3.5 Torino · OVER+UNDER",
-              "market": "COMBO: U/O CASA + U/O OSPITE",
-              "variant": "U/O 0.5 TEAM 1 + U/O 3.5 TEAM 2",
+              "label": "Bologna segna almeno un gol",
+              "market": "CASA: SEGNA GOAL",
+              "variant": "SEGNA GOAL SQUADRA CASA",
               "threshold": null,
-              "selection": "OVER+UNDER",
-              "providerSelectionId": "5319756777",
+              "selection": "SI",
+              "providerSelectionId": "5319756955",
               "odds": 1.16,
-              "overlapKey": "market-combo u o casa u o ospite",
+              "overlapKey": "market-casa segna goal",
               "semanticKeys": [
                 "goals"
+              ],
+              "marketScope": "match"
+            },
+            {
+              "label": "Nessun pareggio (12)",
+              "market": "DOPPIA CHANCE",
+              "variant": "DOPPIA CHANCE MULTIESITI",
+              "threshold": null,
+              "selection": "12",
+              "providerSelectionId": "5319746318",
+              "odds": 1.3,
+              "overlapKey": "market-doppia chance",
+              "semanticKeys": [
+                "result"
               ],
               "marketScope": "match"
             },
@@ -87760,20 +87774,6 @@
               "overlapKey": "market-doppia chance tempo x",
               "semanticKeys": [
                 "result-first-half"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "ARBITRO CONSULTA MONITOR VAR INCL. T.S. · NO",
-              "market": "ARBITRO CONSULTA MONITOR VAR INC TS",
-              "variant": "ARBITRO CONSULTA MONITOR VAR INCL. T.S.",
-              "threshold": null,
-              "selection": "NO",
-              "providerSelectionId": "5319681101",
-              "odds": 1.16,
-              "overlapKey": "market-arbitro consulta monitor var inc ts",
-              "semanticKeys": [
-                "var-review"
               ],
               "marketScope": "match"
             },
@@ -87802,20 +87802,6 @@
               "overlapKey": "market-2 tempo 1x2 handicap",
               "semanticKeys": [
                 "handicap-second-half"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "RIGORE SI/NO T.R. · NO",
-              "market": "RIGORE SI/NO",
-              "variant": "RIGORE SI/NO T.R.",
-              "threshold": null,
-              "selection": "NO",
-              "providerSelectionId": "5320713318",
-              "odds": 1.22,
-              "overlapKey": "market-rigore si no",
-              "semanticKeys": [
-                "penalty"
               ],
               "marketScope": "match"
             },
@@ -87874,9 +87860,23 @@
                 "volume-shots-total"
               ],
               "marketScope": "match"
+            },
+            {
+              "label": "TEMPO PRIMO GOAL · 1",
+              "market": "TEMPO PRIMO GOAL",
+              "variant": "TEMPO PRIMO GOAL",
+              "threshold": null,
+              "selection": "1",
+              "providerSelectionId": "5319754083",
+              "odds": 1.38,
+              "overlapKey": "market-tempo primo goal",
+              "semanticKeys": [
+                "first-goal-period"
+              ],
+              "marketScope": "match"
             }
           ],
-          "selection": "U/O 0.5 Bologna + U/O 3.5 Torino · OVER+UNDER + DC TEMPO 1 · 1X + ARBITRO CONSULTA MONITOR VAR INCL. T.S. · NO + 1T 1X2 HANDICAP: DA 1-0 · 1 + 2T 1X2 HANDICAP: DA 1-0 · 1 + RIGORE SI/NO T.R. · NO + 2 TEMPO: U/O 2 AH · UNDER + Entrambe almeno 3 corner + U/O 1.5 · OVER + Torino almeno 8 tiri totali",
+          "selection": "Bologna segna almeno un gol + Nessun pareggio (12) + DC TEMPO 1 · 1X + 1T 1X2 HANDICAP: DA 1-0 · 1 + 2T 1X2 HANDICAP: DA 1-0 · 1 + 2 TEMPO: U/O 2 AH · UNDER + Entrambe almeno 3 corner + U/O 1.5 · OVER + Torino almeno 8 tiri totali + TEMPO PRIMO GOAL · 1",
           "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-17: quota 5 orientativa, 10-10 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
           "probabilityPct": null,
           "prudentProbabilityPct": null,
@@ -89349,9 +89349,9 @@
             "tier": "Safe",
             "status": "outside-limits",
             "allowed": false,
-            "riskScore": 78.6,
+            "riskScore": 75.2,
             "riskLevel": "alto",
-            "averageRisk": 78.6,
+            "averageRisk": 75.2,
             "maxEventRisk": 82,
             "strongDependencies": 0,
             "contradictions": 0,
@@ -89362,27 +89362,27 @@
               "minPrudentExpectedValuePct": 0
             },
             "reasons": [
-              "Rischio medio 78.6 oltre il limite 42.",
+              "Rischio medio 75.2 oltre il limite 42.",
               "Gamba a rischio 82 oltre il limite 58.",
               "EV prudenziale non disponibile."
             ],
             "events": [
               {
-                "providerSelectionId": "5319756777",
-                "label": "U/O 0.5 Bologna + U/O 3.5 Torino · OVER+UNDER",
-                "riskScore": 82,
+                "providerSelectionId": "5319756955",
+                "label": "Bologna segna almeno un gol",
+                "riskScore": 65,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5319746318",
+                "label": "Nessun pareggio (12)",
+                "riskScore": 65,
                 "modeled": false
               },
               {
                 "providerSelectionId": "5319745397",
                 "label": "DC TEMPO 1 · 1X",
                 "riskScore": 65,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5319681101",
-                "label": "ARBITRO CONSULTA MONITOR VAR INCL. T.S. · NO",
-                "riskScore": 82,
                 "modeled": false
               },
               {
@@ -89394,12 +89394,6 @@
               {
                 "providerSelectionId": "5319754685",
                 "label": "2T 1X2 HANDICAP: DA 1-0 · 1",
-                "riskScore": 82,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5320713318",
-                "label": "RIGORE SI/NO T.R. · NO",
                 "riskScore": 82,
                 "modeled": false
               },
@@ -89426,9 +89420,37 @@
                 "label": "Torino almeno 8 tiri totali",
                 "riskScore": 82,
                 "modeled": false
+              },
+              {
+                "providerSelectionId": "5319754083",
+                "label": "TEMPO PRIMO GOAL · 1",
+                "riskScore": 82,
+                "modeled": false
               }
             ],
-            "dependencies": []
+            "dependencies": [
+              {
+                "first": "5319756955",
+                "second": "5319745397",
+                "type": "positive",
+                "correlation": 0.465,
+                "intersectionProbabilityPct": 68.4
+              },
+              {
+                "first": "5319756955",
+                "second": "5319746282",
+                "type": "positive",
+                "correlation": 0.526,
+                "intersectionProbabilityPct": 69.8
+              },
+              {
+                "first": "5319746318",
+                "second": "5319745397",
+                "type": "negative",
+                "correlation": -0.33,
+                "intersectionProbabilityPct": 50.4
+              }
+            ]
           },
           {
             "tier": "Balanced",
@@ -90969,8 +90991,8 @@
           "quotaPolicy": "orientativa",
           "eligibilityPolicy": "validita-tecnica-e-intervalli",
           "riskPolicy": "informativa",
-          "odds": 7.36,
-          "distancePct": 47.2,
+          "odds": 10.96,
+          "distancePct": 119.2,
           "legs": [
             {
               "label": "U/O 3.5 Fiorentina + U/O 2.5 Napoli · UNDER+UNDER",
@@ -91001,20 +91023,6 @@
               "marketScope": "match"
             },
             {
-              "label": "ARBITRO CONSULTA MONITOR VAR INCL. T.S. · NO",
-              "market": "ARBITRO CONSULTA MONITOR VAR INC TS",
-              "variant": "ARBITRO CONSULTA MONITOR VAR INCL. T.S.",
-              "threshold": null,
-              "selection": "NO",
-              "providerSelectionId": "5319690874",
-              "odds": 1.16,
-              "overlapKey": "market-arbitro consulta monitor var inc ts",
-              "semanticKeys": [
-                "var-review"
-              ],
-              "marketScope": "match"
-            },
-            {
               "label": "DC TEMPO 1 · X2",
               "market": "DOPPIA CHANCE TEMPO X",
               "variant": "DC TEMPO 1",
@@ -91025,20 +91033,6 @@
               "overlapKey": "market-doppia chance tempo x",
               "semanticKeys": [
                 "result-first-half"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "RIGORE SI/NO T.R. · NO",
-              "market": "RIGORE SI/NO",
-              "variant": "RIGORE SI/NO T.R.",
-              "threshold": null,
-              "selection": "NO",
-              "providerSelectionId": "5320722001",
-              "odds": 1.22,
-              "overlapKey": "market-rigore si no",
-              "semanticKeys": [
-                "penalty"
               ],
               "marketScope": "match"
             },
@@ -91111,9 +91105,37 @@
                 "first-goal-period"
               ],
               "marketScope": "match"
+            },
+            {
+              "label": "Napoli VINCE/VANTAGGIO (1UP) · SI",
+              "market": "VINCE O QUASI (1UP/2UP)",
+              "variant": "SQUADRA 2 VINCE/VANTAGGIO (1UP)",
+              "threshold": null,
+              "selection": "SI",
+              "providerSelectionId": "5326088521",
+              "odds": 1.55,
+              "overlapKey": "market-vince o quasi 1up 2up",
+              "semanticKeys": [
+                "win-or-lead"
+              ],
+              "marketScope": "match"
+            },
+            {
+              "label": "Entrambe almeno 3 tiri in porta",
+              "market": "ENTRAMBE LE SQUADRE ALMENO X TIRI IN PORTA",
+              "variant": "ENTRAMBE LE SQUADRE ALMENO 3 TIRI IN PORTA",
+              "threshold": null,
+              "selection": "SI",
+              "providerSelectionId": "5330284051",
+              "odds": 1.36,
+              "overlapKey": "market-entrambe le squadre almeno x tiri in porta",
+              "semanticKeys": [
+                "volume-shots-on-target"
+              ],
+              "marketScope": "match"
             }
           ],
-          "selection": "U/O 3.5 Fiorentina + U/O 2.5 Napoli · UNDER+UNDER + Napoli almeno 10 tiri totali + ARBITRO CONSULTA MONITOR VAR INCL. T.S. · NO + DC TEMPO 1 · X2 + RIGORE SI/NO T.R. · NO + 1T 1X2 HANDICAP: DA 0-1 · 2 + U/O 1.5 · OVER + 2 TEMPO: U/O 2 AH · UNDER + 2T 1X2 HANDICAP: DA 0-1 · 2 + TEMPO PRIMO GOAL · 1",
+          "selection": "U/O 3.5 Fiorentina + U/O 2.5 Napoli · UNDER+UNDER + Napoli almeno 10 tiri totali + DC TEMPO 1 · X2 + 1T 1X2 HANDICAP: DA 0-1 · 2 + U/O 1.5 · OVER + 2 TEMPO: U/O 2 AH · UNDER + 2T 1X2 HANDICAP: DA 0-1 · 2 + TEMPO PRIMO GOAL · 1 + Napoli VINCE/VANTAGGIO (1UP) · SI + Entrambe almeno 3 tiri in porta",
           "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-17: quota 5 orientativa, 10-10 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
           "probabilityPct": null,
           "prudentProbabilityPct": null,
@@ -92614,21 +92636,9 @@
                 "modeled": false
               },
               {
-                "providerSelectionId": "5319690874",
-                "label": "ARBITRO CONSULTA MONITOR VAR INCL. T.S. · NO",
-                "riskScore": 82,
-                "modeled": false
-              },
-              {
                 "providerSelectionId": "5319691350",
                 "label": "DC TEMPO 1 · X2",
                 "riskScore": 65,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5320722001",
-                "label": "RIGORE SI/NO T.R. · NO",
-                "riskScore": 82,
                 "modeled": false
               },
               {
@@ -92658,6 +92668,18 @@
               {
                 "providerSelectionId": "5319754821",
                 "label": "TEMPO PRIMO GOAL · 1",
+                "riskScore": 82,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5326088521",
+                "label": "Napoli VINCE/VANTAGGIO (1UP) · SI",
+                "riskScore": 82,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5330284051",
+                "label": "Entrambe almeno 3 tiri in porta",
                 "riskScore": 82,
                 "modeled": false
               }
@@ -94148,8 +94170,8 @@
           "quotaPolicy": "orientativa",
           "eligibilityPolicy": "validita-tecnica-e-intervalli",
           "riskPolicy": "informativa",
-          "odds": 6.79,
-          "distancePct": 35.8,
+          "odds": 10.01,
+          "distancePct": 100.2,
           "legs": [
             {
               "label": "U/O 3.5 Como · UNDER",
@@ -94162,20 +94184,6 @@
               "overlapKey": "market-u o squadra x",
               "semanticKeys": [
                 "goals"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "ARBITRO CONSULTA MONITOR VAR INCL. T.S. · NO",
-              "market": "ARBITRO CONSULTA MONITOR VAR INC TS",
-              "variant": "ARBITRO CONSULTA MONITOR VAR INCL. T.S.",
-              "threshold": null,
-              "selection": "NO",
-              "providerSelectionId": "5319689042",
-              "odds": 1.16,
-              "overlapKey": "market-arbitro consulta monitor var inc ts",
-              "semanticKeys": [
-                "var-review"
               ],
               "marketScope": "match"
             },
@@ -94236,20 +94244,6 @@
               "marketScope": "match"
             },
             {
-              "label": "RIGORE SI/NO T.R. · NO",
-              "market": "RIGORE SI/NO",
-              "variant": "RIGORE SI/NO T.R.",
-              "threshold": null,
-              "selection": "NO",
-              "providerSelectionId": "5320715342",
-              "odds": 1.21,
-              "overlapKey": "market-rigore si no",
-              "semanticKeys": [
-                "penalty"
-              ],
-              "marketScope": "match"
-            },
-            {
               "label": "U/O 4.5 · UNDER",
               "market": "UNDER/OVER",
               "variant": "U/O 4.5",
@@ -94290,9 +94284,37 @@
                 "result-first-half"
               ],
               "marketScope": "match"
+            },
+            {
+              "label": "1 TEMPO: 1X2 CORNER · 2",
+              "market": "1 TEMPO: 1X2 CORNER",
+              "variant": "1 TEMPO: 1X2 CORNER",
+              "threshold": null,
+              "selection": "2",
+              "providerSelectionId": "5319688366",
+              "odds": 1.38,
+              "overlapKey": "market-1 tempo 1x2 corner",
+              "semanticKeys": [
+                "corners-first-half"
+              ],
+              "marketScope": "match"
+            },
+            {
+              "label": "ESITO FINALE 1X2 · 2",
+              "market": "1X2 ESITO FINALE",
+              "variant": "ESITO FINALE 1X2",
+              "threshold": null,
+              "selection": "2",
+              "providerSelectionId": "5319678731",
+              "odds": 1.5,
+              "overlapKey": "market-1x2 esito finale",
+              "semanticKeys": [
+                "result-fulltime"
+              ],
+              "marketScope": "match"
             }
           ],
-          "selection": "U/O 3.5 Como · UNDER + ARBITRO CONSULTA MONITOR VAR INCL. T.S. · NO + 2 TEMPO: U/O 1 AH · OVER + TEMPO PRIMO GOAL · 1 + Como VINCE/VANTAGGIO (1UP) · SI + 2T 1X2 HANDICAP: DA 2-0 · 1 + RIGORE SI/NO T.R. · NO + U/O 4.5 · UNDER + TEMPO 1: U/O 1.5 Como · UNDER + DC TEMPO 2 · 12",
+          "selection": "U/O 3.5 Como · UNDER + 2 TEMPO: U/O 1 AH · OVER + TEMPO PRIMO GOAL · 1 + Como VINCE/VANTAGGIO (1UP) · SI + 2T 1X2 HANDICAP: DA 2-0 · 1 + U/O 4.5 · UNDER + TEMPO 1: U/O 1.5 Como · UNDER + DC TEMPO 2 · 12 + 1 TEMPO: 1X2 CORNER · 2 + ESITO FINALE 1X2 · 2",
           "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-17: quota 5 orientativa, 10-10 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
           "probabilityPct": null,
           "prudentProbabilityPct": null,
@@ -94451,20 +94473,6 @@
               "marketScope": "match"
             },
             {
-              "label": "MULTIGOAL MULTIESITI 16 ESITI · 2-4",
-              "market": "MULTIGOAL",
-              "variant": "MULTIGOAL MULTIESITI 16 ESITI",
-              "threshold": null,
-              "selection": "2-4",
-              "providerSelectionId": "5319702764",
-              "odds": 1.57,
-              "overlapKey": "market-multigoal",
-              "semanticKeys": [
-                "goals"
-              ],
-              "marketScope": "match"
-            },
-            {
               "label": "PRIMA SOSTITUZIONE NEL MATCH (4 ESITI) · TEMPO 2",
               "market": "PRIMA SOSTITUZIONE NEL MATCH",
               "variant": "PRIMA SOSTITUZIONE NEL MATCH (4 ESITI)",
@@ -94489,9 +94497,23 @@
               "overlapKey": "market-x o y gol o palo duo inc ts",
               "semanticKeys": [],
               "marketScope": "player"
+            },
+            {
+              "label": "MULTIGOAL MULTIESITI 16 ESITI · 2-4",
+              "market": "MULTIGOAL",
+              "variant": "MULTIGOAL MULTIESITI 16 ESITI",
+              "threshold": null,
+              "selection": "2-4",
+              "providerSelectionId": "5319702764",
+              "odds": 1.57,
+              "overlapKey": "market-multigoal",
+              "semanticKeys": [
+                "goals"
+              ],
+              "marketScope": "match"
             }
           ],
-          "selection": "PARI/DISPARI OSPITE · PARI + PARI/DISPARI · PARI + 1T 1X2 HANDICAP: DA 1-0 · 1 + MULTIGOAL MULTIESITI 16 ESITI · 2-4 + PRIMA SOSTITUZIONE NEL MATCH (4 ESITI) · TEMPO 2 + BATURINA M. O NICO PAZ GOAL O PALO O LORO SOST. INC TS · sì",
+          "selection": "PARI/DISPARI OSPITE · PARI + PARI/DISPARI · PARI + 1T 1X2 HANDICAP: DA 1-0 · 1 + PRIMA SOSTITUZIONE NEL MATCH (4 ESITI) · TEMPO 2 + BATURINA M. O NICO PAZ GOAL O PALO O LORO SOST. INC TS · sì + MULTIGOAL MULTIESITI 16 ESITI · 2-4",
           "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-09-17: quota 20 orientativa, 5-8 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
           "probabilityPct": null,
           "prudentProbabilityPct": null,
@@ -95779,11 +95801,11 @@
             "tier": "Safe",
             "status": "outside-limits",
             "allowed": false,
-            "riskScore": 78.6,
+            "riskScore": 82.9,
             "riskLevel": "alto",
-            "averageRisk": 78.6,
+            "averageRisk": 76.9,
             "maxEventRisk": 82,
-            "strongDependencies": 0,
+            "strongDependencies": 1,
             "contradictions": 0,
             "limits": {
               "maxAverageRisk": 42,
@@ -95792,7 +95814,7 @@
               "minPrudentExpectedValuePct": 0
             },
             "reasons": [
-              "Rischio medio 78.6 oltre il limite 42.",
+              "Rischio medio 76.9 oltre il limite 42.",
               "Gamba a rischio 82 oltre il limite 58.",
               "EV prudenziale non disponibile."
             ],
@@ -95800,12 +95822,6 @@
               {
                 "providerSelectionId": "5319702481",
                 "label": "U/O 3.5 Como · UNDER",
-                "riskScore": 82,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5319689042",
-                "label": "ARBITRO CONSULTA MONITOR VAR INCL. T.S. · NO",
                 "riskScore": 82,
                 "modeled": false
               },
@@ -95834,12 +95850,6 @@
                 "modeled": false
               },
               {
-                "providerSelectionId": "5320715342",
-                "label": "RIGORE SI/NO T.R. · NO",
-                "riskScore": 82,
-                "modeled": false
-              },
-              {
                 "providerSelectionId": "5319692819",
                 "label": "U/O 4.5 · UNDER",
                 "riskScore": 65,
@@ -95856,9 +95866,29 @@
                 "label": "DC TEMPO 2 · 12",
                 "riskScore": 65,
                 "modeled": false
+              },
+              {
+                "providerSelectionId": "5319688366",
+                "label": "1 TEMPO: 1X2 CORNER · 2",
+                "riskScore": 82,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5319678731",
+                "label": "ESITO FINALE 1X2 · 2",
+                "riskScore": 65,
+                "modeled": false
               }
             ],
-            "dependencies": []
+            "dependencies": [
+              {
+                "first": "5319689806",
+                "second": "5319678731",
+                "type": "positive",
+                "correlation": 0.575,
+                "intersectionProbabilityPct": 49.4
+              }
+            ]
           },
           {
             "tier": "Balanced",
@@ -95963,12 +95993,6 @@
                 "modeled": false
               },
               {
-                "providerSelectionId": "5319702764",
-                "label": "MULTIGOAL MULTIESITI 16 ESITI · 2-4",
-                "riskScore": 65,
-                "modeled": false
-              },
-              {
                 "providerSelectionId": "5323737329",
                 "label": "PRIMA SOSTITUZIONE NEL MATCH (4 ESITI) · TEMPO 2",
                 "riskScore": 82,
@@ -95978,6 +96002,12 @@
                 "providerSelectionId": "5328702143",
                 "label": "BATURINA M. O NICO PAZ GOAL O PALO O LORO SOST. INC TS · sì",
                 "riskScore": 82,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5319702764",
+                "label": "MULTIGOAL MULTIESITI 16 ESITI · 2-4",
+                "riskScore": 65,
                 "modeled": false
               }
             ],
@@ -97337,8 +97367,8 @@
           "quotaPolicy": "orientativa",
           "eligibilityPolicy": "validita-tecnica-e-intervalli",
           "riskPolicy": "informativa",
-          "odds": 11.02,
-          "distancePct": 120.4,
+          "odds": 18.29,
+          "distancePct": 265.8,
           "legs": [
             {
               "label": "MULTIGOAL Juventus MULTIESITI · 1-4",
@@ -97351,20 +97381,6 @@
               "overlapKey": "market-multigoal squadra x",
               "semanticKeys": [
                 "goals"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "ARBITRO CONSULTA MONITOR VAR INCL. T.S. · NO",
-              "market": "ARBITRO CONSULTA MONITOR VAR INC TS",
-              "variant": "ARBITRO CONSULTA MONITOR VAR INCL. T.S.",
-              "threshold": null,
-              "selection": "NO",
-              "providerSelectionId": "5319742599",
-              "odds": 1.16,
-              "overlapKey": "market-arbitro consulta monitor var inc ts",
-              "semanticKeys": [
-                "var-review"
               ],
               "marketScope": "match"
             },
@@ -97393,20 +97409,6 @@
               "overlapKey": "market-under over",
               "semanticKeys": [
                 "goals-fulltime"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "RIGORE SI/NO T.R. · NO",
-              "market": "RIGORE SI/NO",
-              "variant": "RIGORE SI/NO T.R.",
-              "threshold": null,
-              "selection": "NO",
-              "providerSelectionId": "5320722005",
-              "odds": 1.24,
-              "overlapKey": "market-rigore si no",
-              "semanticKeys": [
-                "penalty"
               ],
               "marketScope": "match"
             },
@@ -97479,9 +97481,37 @@
                 "corners-first-half"
               ],
               "marketScope": "match"
+            },
+            {
+              "label": "1T 1X2 HANDICAP: DA 0-1 · 2",
+              "market": "1 TEMPO: 1X2 HANDICAP",
+              "variant": "1T 1X2 HANDICAP: DA 0-1",
+              "threshold": "1",
+              "selection": "2",
+              "providerSelectionId": "5319708225",
+              "odds": 1.52,
+              "overlapKey": "market-1 tempo 1x2 handicap",
+              "semanticKeys": [
+                "handicap-first-half"
+              ],
+              "marketScope": "match"
+            },
+            {
+              "label": "PRIMA SOSTITUZIONE NEL MATCH (4 ESITI) · TEMPO 2",
+              "market": "PRIMA SOSTITUZIONE NEL MATCH",
+              "variant": "PRIMA SOSTITUZIONE NEL MATCH (4 ESITI)",
+              "threshold": null,
+              "selection": "TEMPO 2",
+              "providerSelectionId": "5323747202",
+              "odds": 1.57,
+              "overlapKey": "market-prima sostituzione nel match",
+              "semanticKeys": [
+                "first-substitution"
+              ],
+              "marketScope": "match"
             }
           ],
-          "selection": "MULTIGOAL Juventus MULTIESITI · 1-4 + ARBITRO CONSULTA MONITOR VAR INCL. T.S. · NO + TEMPO 1: U/O 1.5 Juventus · UNDER + U/O 1.5 · OVER + RIGORE SI/NO T.R. · NO + 2 TEMPO: U/O 2 AH · UNDER + TEMPO PRIMO GOAL · 1 + Juventus VINCE/VANTAGGIO (1UP) · SI + DC TEMPO 2 · 12 + 1 TEMPO: 1X2 CORNER · 1",
+          "selection": "MULTIGOAL Juventus MULTIESITI · 1-4 + TEMPO 1: U/O 1.5 Juventus · UNDER + U/O 1.5 · OVER + 2 TEMPO: U/O 2 AH · UNDER + TEMPO PRIMO GOAL · 1 + Juventus VINCE/VANTAGGIO (1UP) · SI + DC TEMPO 2 · 12 + 1 TEMPO: 1X2 CORNER · 1 + 1T 1X2 HANDICAP: DA 0-1 · 2 + PRIMA SOSTITUZIONE NEL MATCH (4 ESITI) · TEMPO 2",
           "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-17: quota 5 orientativa, 10-10 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
           "probabilityPct": null,
           "prudentProbabilityPct": null,
@@ -97504,17 +97534,44 @@
           "distancePct": 0,
           "legs": [
             {
-              "label": "DC + U/O 2.5 · 12 + OVER",
-              "market": "COMBO: DC + U/O",
-              "variant": "DC + U/O 2.5",
-              "threshold": "2.5",
-              "selection": "12 + OVER",
-              "providerSelectionId": "5319741809",
-              "odds": 1.85,
-              "overlapKey": "market-combo dc u o",
+              "label": "ESITO FINALE 1X2 · 1",
+              "market": "1X2 ESITO FINALE",
+              "variant": "ESITO FINALE 1X2",
+              "threshold": null,
+              "selection": "1",
+              "providerSelectionId": "5319741424",
+              "odds": 1.7,
+              "overlapKey": "market-1x2 esito finale",
               "semanticKeys": [
-                "result",
+                "result-fulltime"
+              ],
+              "marketScope": "match"
+            },
+            {
+              "label": "Entrambe le squadre segnano",
+              "market": "GOAL/NOGOAL",
+              "variant": "GOAL/NO GOAL",
+              "threshold": null,
+              "selection": "GOAL",
+              "providerSelectionId": "5319741538",
+              "odds": 1.65,
+              "overlapKey": "market-goal nogoal",
+              "semanticKeys": [
                 "goals"
+              ],
+              "marketScope": "match"
+            },
+            {
+              "label": "2T 1X2 HANDICAP: DA 0-1 · 2",
+              "market": "2 TEMPO: 1X2 HANDICAP",
+              "variant": "2T 1X2 HANDICAP: DA 0-1",
+              "threshold": "1",
+              "selection": "2",
+              "providerSelectionId": "5319709101",
+              "odds": 1.65,
+              "overlapKey": "market-2 tempo 1x2 handicap",
+              "semanticKeys": [
+                "handicap-second-half"
               ],
               "marketScope": "match"
             },
@@ -97533,47 +97590,21 @@
               "marketScope": "match"
             },
             {
-              "label": "1 TEMPO: 1X2 CORNER · 1",
-              "market": "1 TEMPO: 1X2 CORNER",
-              "variant": "1 TEMPO: 1X2 CORNER",
-              "threshold": null,
-              "selection": "1",
-              "providerSelectionId": "5319742420",
-              "odds": 1.45,
-              "overlapKey": "market-1 tempo 1x2 corner",
+              "label": "U/O 1.5 · OVER",
+              "market": "UNDER/OVER",
+              "variant": "U/O 1.5",
+              "threshold": "1.5",
+              "selection": "OVER",
+              "providerSelectionId": "5319743655",
+              "odds": 1.2,
+              "overlapKey": "market-under over",
               "semanticKeys": [
-                "corners-first-half"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "KOLO MUANI R. O SCAMACCA G. GOAL O PALO O LORO SOST. INC TS · sì",
-              "market": "X o Y GOL O PALO (DUO) INC TS",
-              "variant": "KOLO MUANI R. O SCAMACCA G. GOAL O PALO O LORO SOST. INC TS",
-              "threshold": null,
-              "selection": "SI",
-              "providerSelectionId": "5328702867",
-              "odds": 1.67,
-              "overlapKey": "market-x o y gol o palo duo inc ts",
-              "semanticKeys": [],
-              "marketScope": "player"
-            },
-            {
-              "label": "RIGORE SI/NO T.R. · NO",
-              "market": "RIGORE SI/NO",
-              "variant": "RIGORE SI/NO T.R.",
-              "threshold": null,
-              "selection": "NO",
-              "providerSelectionId": "5320722005",
-              "odds": 1.24,
-              "overlapKey": "market-rigore si no",
-              "semanticKeys": [
-                "penalty"
+                "goals-fulltime"
               ],
               "marketScope": "match"
             }
           ],
-          "selection": "DC + U/O 2.5 · 12 + OVER + PARI/DISPARI · PARI + 1 TEMPO: 1X2 CORNER · 1 + KOLO MUANI R. O SCAMACCA G. GOAL O PALO O LORO SOST. INC TS · sì + RIGORE SI/NO T.R. · NO",
+          "selection": "ESITO FINALE 1X2 · 1 + Entrambe le squadre segnano + 2T 1X2 HANDICAP: DA 0-1 · 2 + PARI/DISPARI · PARI + U/O 1.5 · OVER",
           "logic": "Profilo balanced costruito sulle quote Sisal del 2026-09-17: quota 10 orientativa, 4-7 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
           "probabilityPct": null,
           "prudentProbabilityPct": null,
@@ -98994,12 +99025,6 @@
                 "modeled": false
               },
               {
-                "providerSelectionId": "5319742599",
-                "label": "ARBITRO CONSULTA MONITOR VAR INCL. T.S. · NO",
-                "riskScore": 82,
-                "modeled": false
-              },
-              {
                 "providerSelectionId": "5319745156",
                 "label": "TEMPO 1: U/O 1.5 Juventus · UNDER",
                 "riskScore": 82,
@@ -99009,12 +99034,6 @@
                 "providerSelectionId": "5319743655",
                 "label": "U/O 1.5 · OVER",
                 "riskScore": 65,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5320722005",
-                "label": "RIGORE SI/NO T.R. · NO",
-                "riskScore": 82,
                 "modeled": false
               },
               {
@@ -99046,6 +99065,18 @@
                 "label": "1 TEMPO: 1X2 CORNER · 1",
                 "riskScore": 82,
                 "modeled": false
+              },
+              {
+                "providerSelectionId": "5319708225",
+                "label": "1T 1X2 HANDICAP: DA 0-1 · 2",
+                "riskScore": 82,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5323747202",
+                "label": "PRIMA SOSTITUZIONE NEL MATCH (4 ESITI) · TEMPO 2",
+                "riskScore": 82,
+                "modeled": false
               }
             ],
             "dependencies": [
@@ -99062,11 +99093,11 @@
             "tier": "Balanced",
             "status": "outside-limits",
             "allowed": false,
-            "riskScore": 82,
+            "riskScore": 77.8,
             "riskLevel": "alto",
-            "averageRisk": 82,
+            "averageRisk": 71.8,
             "maxEventRisk": 82,
-            "strongDependencies": 0,
+            "strongDependencies": 1,
             "contradictions": 0,
             "limits": {
               "maxAverageRisk": 56,
@@ -99075,14 +99106,26 @@
               "minPrudentExpectedValuePct": 0
             },
             "reasons": [
-              "Rischio medio 82 oltre il limite 56.",
+              "Rischio medio 71.8 oltre il limite 56.",
               "Gamba a rischio 82 oltre il limite 72.",
               "EV prudenziale non disponibile."
             ],
             "events": [
               {
-                "providerSelectionId": "5319741809",
-                "label": "DC + U/O 2.5 · 12 + OVER",
+                "providerSelectionId": "5319741424",
+                "label": "ESITO FINALE 1X2 · 1",
+                "riskScore": 65,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5319741538",
+                "label": "Entrambe le squadre segnano",
+                "riskScore": 65,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5319709101",
+                "label": "2T 1X2 HANDICAP: DA 0-1 · 2",
                 "riskScore": 82,
                 "modeled": false
               },
@@ -99093,25 +99136,21 @@
                 "modeled": false
               },
               {
-                "providerSelectionId": "5319742420",
-                "label": "1 TEMPO: 1X2 CORNER · 1",
-                "riskScore": 82,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5328702867",
-                "label": "KOLO MUANI R. O SCAMACCA G. GOAL O PALO O LORO SOST. INC TS · sì",
-                "riskScore": 82,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5320722005",
-                "label": "RIGORE SI/NO T.R. · NO",
-                "riskScore": 82,
+                "providerSelectionId": "5319743655",
+                "label": "U/O 1.5 · OVER",
+                "riskScore": 65,
                 "modeled": false
               }
             ],
-            "dependencies": []
+            "dependencies": [
+              {
+                "first": "5319741538",
+                "second": "5319743655",
+                "type": "positive",
+                "correlation": 0.607,
+                "intersectionProbabilityPct": 55.3
+              }
+            ]
           },
           {
             "tier": "Aggressive",
@@ -100588,8 +100627,8 @@
           "quotaPolicy": "orientativa",
           "eligibilityPolicy": "validita-tecnica-e-intervalli",
           "riskPolicy": "informativa",
-          "odds": 6.3,
-          "distancePct": 26,
+          "odds": 7.35,
+          "distancePct": 47,
           "legs": [
             {
               "label": "DC + U/O 1.5 · 1X + OVER",
@@ -100635,20 +100674,6 @@
               "marketScope": "match"
             },
             {
-              "label": "ARBITRO CONSULTA MONITOR VAR INCL. T.S. · NO",
-              "market": "ARBITRO CONSULTA MONITOR VAR INC TS",
-              "variant": "ARBITRO CONSULTA MONITOR VAR INCL. T.S.",
-              "threshold": null,
-              "selection": "NO",
-              "providerSelectionId": "5319690275",
-              "odds": 1.16,
-              "overlapKey": "market-arbitro consulta monitor var inc ts",
-              "semanticKeys": [
-                "var-review"
-              ],
-              "marketScope": "match"
-            },
-            {
               "label": "1T 1X2 HANDICAP: DA 0-2 · 2",
               "market": "1 TEMPO: 1X2 HANDICAP",
               "variant": "1T 1X2 HANDICAP: DA 0-2",
@@ -100673,20 +100698,6 @@
               "overlapKey": "market-vince o quasi 1up 2up",
               "semanticKeys": [
                 "win-or-lead"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "RIGORE SI/NO T.R. · NO",
-              "market": "RIGORE SI/NO",
-              "variant": "RIGORE SI/NO T.R.",
-              "threshold": null,
-              "selection": "NO",
-              "providerSelectionId": "5320722021",
-              "odds": 1.22,
-              "overlapKey": "market-rigore si no",
-              "semanticKeys": [
-                "penalty"
               ],
               "marketScope": "match"
             },
@@ -100731,9 +100742,37 @@
                 "team-goals-period"
               ],
               "marketScope": "match"
+            },
+            {
+              "label": "TEMPO PRIMO GOAL · 1",
+              "market": "TEMPO PRIMO GOAL",
+              "variant": "TEMPO PRIMO GOAL",
+              "threshold": null,
+              "selection": "1",
+              "providerSelectionId": "5319770789",
+              "odds": 1.28,
+              "overlapKey": "market-tempo primo goal",
+              "semanticKeys": [
+                "first-goal-period"
+              ],
+              "marketScope": "match"
+            },
+            {
+              "label": "1 TEMPO: 1X2 CORNER · 1",
+              "market": "1 TEMPO: 1X2 CORNER",
+              "variant": "1 TEMPO: 1X2 CORNER",
+              "threshold": null,
+              "selection": "1",
+              "providerSelectionId": "5319689879",
+              "odds": 1.29,
+              "overlapKey": "market-1 tempo 1x2 corner",
+              "semanticKeys": [
+                "corners-first-half"
+              ],
+              "marketScope": "match"
             }
           ],
-          "selection": "DC + U/O 1.5 · 1X + OVER + 1 TEMPO: U/O 2 AH · UNDER + U/O 4.5 · UNDER + ARBITRO CONSULTA MONITOR VAR INCL. T.S. · NO + 1T 1X2 HANDICAP: DA 0-2 · 2 + Lecce VINCE/VANTAGGIO (1UP) · NO + RIGORE SI/NO T.R. · NO + DC TEMPO 2 · 12 + ESITO FINALE 1X2 · 1 + TEMPO 1: U/O 0.5 Lecce · UNDER",
+          "selection": "DC + U/O 1.5 · 1X + OVER + 1 TEMPO: U/O 2 AH · UNDER + U/O 4.5 · UNDER + 1T 1X2 HANDICAP: DA 0-2 · 2 + Lecce VINCE/VANTAGGIO (1UP) · NO + DC TEMPO 2 · 12 + ESITO FINALE 1X2 · 1 + TEMPO 1: U/O 0.5 Lecce · UNDER + TEMPO PRIMO GOAL · 1 + 1 TEMPO: 1X2 CORNER · 1",
           "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-17: quota 5 orientativa, 10-10 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
           "probabilityPct": null,
           "prudentProbabilityPct": null,
@@ -102279,12 +102318,6 @@
                 "modeled": false
               },
               {
-                "providerSelectionId": "5319690275",
-                "label": "ARBITRO CONSULTA MONITOR VAR INCL. T.S. · NO",
-                "riskScore": 82,
-                "modeled": false
-              },
-              {
                 "providerSelectionId": "5319769791",
                 "label": "1T 1X2 HANDICAP: DA 0-2 · 2",
                 "riskScore": 82,
@@ -102293,12 +102326,6 @@
               {
                 "providerSelectionId": "5325271748",
                 "label": "Lecce VINCE/VANTAGGIO (1UP) · NO",
-                "riskScore": 82,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5320722021",
-                "label": "RIGORE SI/NO T.R. · NO",
                 "riskScore": 82,
                 "modeled": false
               },
@@ -102317,6 +102344,18 @@
               {
                 "providerSelectionId": "5319698929",
                 "label": "TEMPO 1: U/O 0.5 Lecce · UNDER",
+                "riskScore": 82,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5319770789",
+                "label": "TEMPO PRIMO GOAL · 1",
+                "riskScore": 82,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5319689879",
+                "label": "1 TEMPO: 1X2 CORNER · 1",
                 "riskScore": 82,
                 "modeled": false
               }
@@ -103825,8 +103864,8 @@
           "quotaPolicy": "orientativa",
           "eligibilityPolicy": "validita-tecnica-e-intervalli",
           "riskPolicy": "informativa",
-          "odds": 9.15,
-          "distancePct": 83,
+          "odds": 14.93,
+          "distancePct": 198.6,
           "legs": [
             {
               "label": "Sassuolo segna almeno un gol",
@@ -103857,20 +103896,6 @@
               "marketScope": "match"
             },
             {
-              "label": "ARBITRO CONSULTA MONITOR VAR INCL. T.S. · NO",
-              "market": "ARBITRO CONSULTA MONITOR VAR INC TS",
-              "variant": "ARBITRO CONSULTA MONITOR VAR INCL. T.S.",
-              "threshold": null,
-              "selection": "NO",
-              "providerSelectionId": "5319701140",
-              "odds": 1.16,
-              "overlapKey": "market-arbitro consulta monitor var inc ts",
-              "semanticKeys": [
-                "var-review"
-              ],
-              "marketScope": "match"
-            },
-            {
               "label": "U/O 1.5 · OVER",
               "market": "UNDER/OVER",
               "variant": "U/O 1.5",
@@ -103881,20 +103906,6 @@
               "overlapKey": "market-under over",
               "semanticKeys": [
                 "goals-fulltime"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "RIGORE SI/NO T.R. · NO",
-              "market": "RIGORE SI/NO",
-              "variant": "RIGORE SI/NO T.R.",
-              "threshold": null,
-              "selection": "NO",
-              "providerSelectionId": "5320713314",
-              "odds": 1.22,
-              "overlapKey": "market-rigore si no",
-              "semanticKeys": [
-                "penalty"
               ],
               "marketScope": "match"
             },
@@ -103967,9 +103978,37 @@
                 "first-goal-period"
               ],
               "marketScope": "match"
+            },
+            {
+              "label": "Entrambe almeno 3 corner",
+              "market": "ENTRAMBE ALMENO X CORNER",
+              "variant": "ENTRAMBE ALMENO 3 CORNER",
+              "threshold": null,
+              "selection": "SI",
+              "providerSelectionId": "5330750254",
+              "odds": 1.47,
+              "overlapKey": "market-entrambe almeno x corner",
+              "semanticKeys": [
+                "volume-corners"
+              ],
+              "marketScope": "match"
+            },
+            {
+              "label": "PRIMA SOSTITUZIONE NEL MATCH (4 ESITI) · TEMPO 2",
+              "market": "PRIMA SOSTITUZIONE NEL MATCH",
+              "variant": "PRIMA SOSTITUZIONE NEL MATCH (4 ESITI)",
+              "threshold": null,
+              "selection": "TEMPO 2",
+              "providerSelectionId": "5323746860",
+              "odds": 1.57,
+              "overlapKey": "market-prima sostituzione nel match",
+              "semanticKeys": [
+                "first-substitution"
+              ],
+              "marketScope": "match"
             }
           ],
-          "selection": "Sassuolo segna almeno un gol + Nessun pareggio (12) + ARBITRO CONSULTA MONITOR VAR INCL. T.S. · NO + U/O 1.5 · OVER + RIGORE SI/NO T.R. · NO + DC TEMPO 1 · X2 + 1T 1X2 HANDICAP: DA 0-1 · 2 + 2 TEMPO: U/O 2 AH · UNDER + 2T 1X2 HANDICAP: DA 0-1 · 2 + TEMPO PRIMO GOAL · 1",
+          "selection": "Sassuolo segna almeno un gol + Nessun pareggio (12) + U/O 1.5 · OVER + DC TEMPO 1 · X2 + 1T 1X2 HANDICAP: DA 0-1 · 2 + 2 TEMPO: U/O 2 AH · UNDER + 2T 1X2 HANDICAP: DA 0-1 · 2 + TEMPO PRIMO GOAL · 1 + Entrambe almeno 3 corner + PRIMA SOSTITUZIONE NEL MATCH (4 ESITI) · TEMPO 2",
           "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-17: quota 5 orientativa, 10-10 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
           "probabilityPct": null,
           "prudentProbabilityPct": null,
@@ -105471,21 +105510,9 @@
                 "modeled": false
               },
               {
-                "providerSelectionId": "5319701140",
-                "label": "ARBITRO CONSULTA MONITOR VAR INCL. T.S. · NO",
-                "riskScore": 82,
-                "modeled": false
-              },
-              {
                 "providerSelectionId": "5319702196",
                 "label": "U/O 1.5 · OVER",
                 "riskScore": 65,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5320713314",
-                "label": "RIGORE SI/NO T.R. · NO",
-                "riskScore": 82,
                 "modeled": false
               },
               {
@@ -105515,6 +105542,18 @@
               {
                 "providerSelectionId": "5319771807",
                 "label": "TEMPO PRIMO GOAL · 1",
+                "riskScore": 82,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5330750254",
+                "label": "Entrambe almeno 3 corner",
+                "riskScore": 82,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5323746860",
+                "label": "PRIMA SOSTITUZIONE NEL MATCH (4 ESITI) · TEMPO 2",
                 "riskScore": 82,
                 "modeled": false
               }
@@ -107006,8 +107045,8 @@
           "quotaPolicy": "orientativa",
           "eligibilityPolicy": "validita-tecnica-e-intervalli",
           "riskPolicy": "informativa",
-          "odds": 11.88,
-          "distancePct": 137.6,
+          "odds": 21.35,
+          "distancePct": 327,
           "legs": [
             {
               "label": "MULTIGOAL MULTIESITI 16 ESITI · 1-4",
@@ -107038,20 +107077,6 @@
               "marketScope": "match"
             },
             {
-              "label": "ARBITRO CONSULTA MONITOR VAR INCL. T.S. · NO",
-              "market": "ARBITRO CONSULTA MONITOR VAR INC TS",
-              "variant": "ARBITRO CONSULTA MONITOR VAR INCL. T.S.",
-              "threshold": null,
-              "selection": "NO",
-              "providerSelectionId": "5319683891",
-              "odds": 1.16,
-              "overlapKey": "market-arbitro consulta monitor var inc ts",
-              "semanticKeys": [
-                "var-review"
-              ],
-              "marketScope": "match"
-            },
-            {
               "label": "1T 1X2 HANDICAP: DA 0-1 · 2",
               "market": "1 TEMPO: 1X2 HANDICAP",
               "variant": "1T 1X2 HANDICAP: DA 0-1",
@@ -107076,20 +107101,6 @@
               "overlapKey": "market-doppia chance tempo x",
               "semanticKeys": [
                 "result-first-half"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "RIGORE SI/NO T.R. · NO",
-              "market": "RIGORE SI/NO",
-              "variant": "RIGORE SI/NO T.R.",
-              "threshold": null,
-              "selection": "NO",
-              "providerSelectionId": "5320715350",
-              "odds": 1.22,
-              "overlapKey": "market-rigore si no",
-              "semanticKeys": [
-                "penalty"
               ],
               "marketScope": "match"
             },
@@ -107148,9 +107159,37 @@
                 "asian-goals-period"
               ],
               "marketScope": "match"
+            },
+            {
+              "label": "PRIMA SOSTITUZIONE NEL MATCH (4 ESITI) · TEMPO 2",
+              "market": "PRIMA SOSTITUZIONE NEL MATCH",
+              "variant": "PRIMA SOSTITUZIONE NEL MATCH (4 ESITI)",
+              "threshold": null,
+              "selection": "TEMPO 2",
+              "providerSelectionId": "5323867487",
+              "odds": 1.57,
+              "overlapKey": "market-prima sostituzione nel match",
+              "semanticKeys": [
+                "first-substitution"
+              ],
+              "marketScope": "match"
+            },
+            {
+              "label": "PARI/DISPARI CASA · PARI",
+              "market": "CASA: PARI/DISPARI",
+              "variant": "PARI/DISPARI CASA",
+              "threshold": null,
+              "selection": "PARI",
+              "providerSelectionId": "5319682680",
+              "odds": 1.62,
+              "overlapKey": "market-casa pari dispari",
+              "semanticKeys": [
+                "home-goals-parity"
+              ],
+              "marketScope": "match"
             }
           ],
-          "selection": "MULTIGOAL MULTIESITI 16 ESITI · 1-4 + U/O 3.5 · UNDER + ARBITRO CONSULTA MONITOR VAR INCL. T.S. · NO + 1T 1X2 HANDICAP: DA 0-1 · 2 + DC TEMPO 1 · X2 + RIGORE SI/NO T.R. · NO + 2T 1X2 HANDICAP: DA 0-1 · 2 + TEMPO PRIMO GOAL · 1 + TEMPO 1: U/O 0.5 Parma · UNDER + 1 TEMPO: U/O 1 AH · UNDER",
+          "selection": "MULTIGOAL MULTIESITI 16 ESITI · 1-4 + U/O 3.5 · UNDER + 1T 1X2 HANDICAP: DA 0-1 · 2 + DC TEMPO 1 · X2 + 2T 1X2 HANDICAP: DA 0-1 · 2 + TEMPO PRIMO GOAL · 1 + TEMPO 1: U/O 0.5 Parma · UNDER + 1 TEMPO: U/O 1 AH · UNDER + PRIMA SOSTITUZIONE NEL MATCH (4 ESITI) · TEMPO 2 + PARI/DISPARI CASA · PARI",
           "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-17: quota 5 orientativa, 10-10 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
           "probabilityPct": null,
           "prudentProbabilityPct": null,
@@ -107266,16 +107305,16 @@
           "distancePct": 0,
           "legs": [
             {
-              "label": "PARI/DISPARI · PARI",
-              "market": "PARI/DISPARI",
-              "variant": "PARI/DISPARI",
+              "label": "PARI/DISPARI OSPITE · PARI",
+              "market": "OSPITE: PARI/DISPARI",
+              "variant": "PARI/DISPARI OSPITE",
               "threshold": null,
               "selection": "PARI",
-              "providerSelectionId": "5319711083",
-              "odds": 1.75,
-              "overlapKey": "market-pari dispari",
+              "providerSelectionId": "5319682684",
+              "odds": 1.67,
+              "overlapKey": "market-ospite pari dispari",
               "semanticKeys": [
-                "goals-parity"
+                "away-goals-parity"
               ],
               "marketScope": "match"
             },
@@ -107294,6 +107333,20 @@
               "marketScope": "match"
             },
             {
+              "label": "PARI/DISPARI CASA · PARI",
+              "market": "CASA: PARI/DISPARI",
+              "variant": "PARI/DISPARI CASA",
+              "threshold": null,
+              "selection": "PARI",
+              "providerSelectionId": "5319682680",
+              "odds": 1.62,
+              "overlapKey": "market-casa pari dispari",
+              "semanticKeys": [
+                "home-goals-parity"
+              ],
+              "marketScope": "match"
+            },
+            {
               "label": "Parma VINCE/VANTAGGIO (1UP) · NO",
               "market": "VINCE O QUASI (1UP/2UP)",
               "variant": "SQUADRA 1 VINCE/VANTAGGIO (1UP)",
@@ -107304,20 +107357,6 @@
               "overlapKey": "market-vince o quasi 1up 2up",
               "semanticKeys": [
                 "win-or-lead"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "TEMPO 1: U/O 0.5 Parma · UNDER",
-              "market": "U/O GOAL SQUADRA TEMPO",
-              "variant": "TEMPO 1: U/O 0.5 SQUADRA 1",
-              "threshold": "0.5",
-              "selection": "UNDER",
-              "providerSelectionId": "5319744042",
-              "odds": 1.52,
-              "overlapKey": "market-u o goal squadra tempo",
-              "semanticKeys": [
-                "team-goals-period"
               ],
               "marketScope": "match"
             },
@@ -107336,35 +107375,35 @@
               "marketScope": "match"
             },
             {
-              "label": "PRIMA SOSTITUZIONE NEL MATCH (4 ESITI) · TEMPO 2",
-              "market": "PRIMA SOSTITUZIONE NEL MATCH",
-              "variant": "PRIMA SOSTITUZIONE NEL MATCH (4 ESITI)",
+              "label": "Parma o pareggio (1X)",
+              "market": "DOPPIA CHANCE",
+              "variant": "DOPPIA CHANCE MULTIESITI",
               "threshold": null,
-              "selection": "TEMPO 2",
-              "providerSelectionId": "5323867487",
-              "odds": 1.57,
-              "overlapKey": "market-prima sostituzione nel match",
+              "selection": "1X",
+              "providerSelectionId": "5319684982",
+              "odds": 1.48,
+              "overlapKey": "market-doppia chance",
               "semanticKeys": [
-                "first-substitution"
+                "result"
               ],
               "marketScope": "match"
             },
             {
-              "label": "U/O 3.5 · UNDER",
-              "market": "UNDER/OVER",
-              "variant": "U/O 3.5",
-              "threshold": "3.5",
-              "selection": "UNDER",
-              "providerSelectionId": "5319684966",
-              "odds": 1.16,
-              "overlapKey": "market-under over",
+              "label": "DC TEMPO 1 · X2",
+              "market": "DOPPIA CHANCE TEMPO X",
+              "variant": "DC TEMPO 1",
+              "threshold": null,
+              "selection": "X2",
+              "providerSelectionId": "5319684075",
+              "odds": 1.21,
+              "overlapKey": "market-doppia chance tempo x",
               "semanticKeys": [
-                "goals-fulltime"
+                "result-first-half"
               ],
               "marketScope": "match"
             }
           ],
-          "selection": "PARI/DISPARI · PARI + MULTIGOAL MULTIESITI 16 ESITI · 2-4 + Parma VINCE/VANTAGGIO (1UP) · NO + TEMPO 1: U/O 0.5 Parma · UNDER + TEMPO PRIMO GOAL · 1 + PRIMA SOSTITUZIONE NEL MATCH (4 ESITI) · TEMPO 2 + U/O 3.5 · UNDER",
+          "selection": "PARI/DISPARI OSPITE · PARI + MULTIGOAL MULTIESITI 16 ESITI · 2-4 + PARI/DISPARI CASA · PARI + Parma VINCE/VANTAGGIO (1UP) · NO + TEMPO PRIMO GOAL · 1 + Parma o pareggio (1X) + DC TEMPO 1 · X2",
           "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-09-17: quota 20 orientativa, 5-8 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
           "probabilityPct": null,
           "prudentProbabilityPct": null,
@@ -108681,12 +108720,6 @@
                 "modeled": false
               },
               {
-                "providerSelectionId": "5319683891",
-                "label": "ARBITRO CONSULTA MONITOR VAR INCL. T.S. · NO",
-                "riskScore": 82,
-                "modeled": false
-              },
-              {
                 "providerSelectionId": "5319710421",
                 "label": "1T 1X2 HANDICAP: DA 0-1 · 2",
                 "riskScore": 82,
@@ -108696,12 +108729,6 @@
                 "providerSelectionId": "5319684075",
                 "label": "DC TEMPO 1 · X2",
                 "riskScore": 65,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5320715350",
-                "label": "RIGORE SI/NO T.R. · NO",
-                "riskScore": 82,
                 "modeled": false
               },
               {
@@ -108725,6 +108752,18 @@
               {
                 "providerSelectionId": "5319711611",
                 "label": "1 TEMPO: U/O 1 AH · UNDER",
+                "riskScore": 82,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5323867487",
+                "label": "PRIMA SOSTITUZIONE NEL MATCH (4 ESITI) · TEMPO 2",
+                "riskScore": 82,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5319682680",
+                "label": "PARI/DISPARI CASA · PARI",
                 "riskScore": 82,
                 "modeled": false
               }
@@ -108798,9 +108837,9 @@
             "tier": "Aggressive",
             "status": "outside-limits",
             "allowed": false,
-            "riskScore": 77.1,
+            "riskScore": 74.7,
             "riskLevel": "alto",
-            "averageRisk": 77.1,
+            "averageRisk": 74.7,
             "maxEventRisk": 82,
             "strongDependencies": 0,
             "contradictions": 0,
@@ -108811,13 +108850,13 @@
               "minPrudentExpectedValuePct": 0
             },
             "reasons": [
-              "Rischio medio 77.1 oltre il limite 72.",
+              "Rischio medio 74.7 oltre il limite 72.",
               "EV prudenziale non disponibile."
             ],
             "events": [
               {
-                "providerSelectionId": "5319711083",
-                "label": "PARI/DISPARI · PARI",
+                "providerSelectionId": "5319682684",
+                "label": "PARI/DISPARI OSPITE · PARI",
                 "riskScore": 82,
                 "modeled": false
               },
@@ -108828,14 +108867,14 @@
                 "modeled": false
               },
               {
-                "providerSelectionId": "5326120865",
-                "label": "Parma VINCE/VANTAGGIO (1UP) · NO",
+                "providerSelectionId": "5319682680",
+                "label": "PARI/DISPARI CASA · PARI",
                 "riskScore": 82,
                 "modeled": false
               },
               {
-                "providerSelectionId": "5319744042",
-                "label": "TEMPO 1: U/O 0.5 Parma · UNDER",
+                "providerSelectionId": "5326120865",
+                "label": "Parma VINCE/VANTAGGIO (1UP) · NO",
                 "riskScore": 82,
                 "modeled": false
               },
@@ -108846,19 +108885,27 @@
                 "modeled": false
               },
               {
-                "providerSelectionId": "5323867487",
-                "label": "PRIMA SOSTITUZIONE NEL MATCH (4 ESITI) · TEMPO 2",
-                "riskScore": 82,
+                "providerSelectionId": "5319684982",
+                "label": "Parma o pareggio (1X)",
+                "riskScore": 65,
                 "modeled": false
               },
               {
-                "providerSelectionId": "5319684966",
-                "label": "U/O 3.5 · UNDER",
+                "providerSelectionId": "5319684075",
+                "label": "DC TEMPO 1 · X2",
                 "riskScore": 65,
                 "modeled": false
               }
             ],
-            "dependencies": []
+            "dependencies": [
+              {
+                "first": "5319684982",
+                "second": "5319684075",
+                "type": "negative",
+                "correlation": -0.548,
+                "intersectionProbabilityPct": 29.1
+              }
+            ]
           }
         ]
       }
@@ -110310,20 +110357,34 @@
           "quotaPolicy": "orientativa",
           "eligibilityPolicy": "validita-tecnica-e-intervalli",
           "riskPolicy": "informativa",
-          "odds": 6.55,
-          "distancePct": 31,
+          "odds": 9.27,
+          "distancePct": 85.4,
           "legs": [
             {
-              "label": "U/O 2.5 Roma · UNDER",
-              "market": "U/O SQUADRA X",
-              "variant": "U/O 2.5 SQUADRA 1",
-              "threshold": "2.5",
-              "selection": "UNDER",
-              "providerSelectionId": "5319746665",
-              "odds": 1.15,
-              "overlapKey": "market-u o squadra x",
+              "label": "Inter segna almeno un gol",
+              "market": "OSPITE: SEGNA GOAL",
+              "variant": "SEGNA GOAL SQUADRA OSPITE",
+              "threshold": null,
+              "selection": "SI",
+              "providerSelectionId": "5319759861",
+              "odds": 1.17,
+              "overlapKey": "market-ospite segna goal",
               "semanticKeys": [
                 "goals"
+              ],
+              "marketScope": "match"
+            },
+            {
+              "label": "Roma o pareggio (1X)",
+              "market": "DOPPIA CHANCE",
+              "variant": "DOPPIA CHANCE MULTIESITI",
+              "threshold": null,
+              "selection": "1X",
+              "providerSelectionId": "5319741206",
+              "odds": 1.48,
+              "overlapKey": "market-doppia chance",
+              "semanticKeys": [
+                "result"
               ],
               "marketScope": "match"
             },
@@ -110384,34 +110445,6 @@
               "marketScope": "match"
             },
             {
-              "label": "ARBITRO CONSULTA MONITOR VAR INCL. T.S. · NO",
-              "market": "ARBITRO CONSULTA MONITOR VAR INC TS",
-              "variant": "ARBITRO CONSULTA MONITOR VAR INCL. T.S.",
-              "threshold": null,
-              "selection": "NO",
-              "providerSelectionId": "5319686375",
-              "odds": 1.16,
-              "overlapKey": "market-arbitro consulta monitor var inc ts",
-              "semanticKeys": [
-                "var-review"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "RIGORE SI/NO T.R. · NO",
-              "market": "RIGORE SI/NO",
-              "variant": "RIGORE SI/NO T.R.",
-              "threshold": null,
-              "selection": "NO",
-              "providerSelectionId": "5320722017",
-              "odds": 1.22,
-              "overlapKey": "market-rigore si no",
-              "semanticKeys": [
-                "penalty"
-              ],
-              "marketScope": "match"
-            },
-            {
               "label": "1T 1X2 HANDICAP: DA 0-1 · 2",
               "market": "1 TEMPO: 1X2 HANDICAP",
               "variant": "1T 1X2 HANDICAP: DA 0-1",
@@ -110452,9 +110485,23 @@
                 "result-first-half"
               ],
               "marketScope": "match"
+            },
+            {
+              "label": "2T 1X2 HANDICAP: DA 0-1 · 2",
+              "market": "2 TEMPO: 1X2 HANDICAP",
+              "variant": "2T 1X2 HANDICAP: DA 0-1",
+              "threshold": "1",
+              "selection": "2",
+              "providerSelectionId": "5319759911",
+              "odds": 1.33,
+              "overlapKey": "market-2 tempo 1x2 handicap",
+              "semanticKeys": [
+                "handicap-second-half"
+              ],
+              "marketScope": "match"
             }
           ],
-          "selection": "U/O 2.5 Roma · UNDER + Partita almeno 24 tiri totali + Partita almeno 7 tiri in porta + U/O 4.5 · UNDER + 1 TEMPO: U/O 2 AH · UNDER + ARBITRO CONSULTA MONITOR VAR INCL. T.S. · NO + RIGORE SI/NO T.R. · NO + 1T 1X2 HANDICAP: DA 0-1 · 2 + TEMPO PRIMO GOAL · 1 + DC TEMPO 1 · X2",
+          "selection": "Inter segna almeno un gol + Roma o pareggio (1X) + Partita almeno 24 tiri totali + Partita almeno 7 tiri in porta + U/O 4.5 · UNDER + 1 TEMPO: U/O 2 AH · UNDER + 1T 1X2 HANDICAP: DA 0-1 · 2 + TEMPO PRIMO GOAL · 1 + DC TEMPO 1 · X2 + 2T 1X2 HANDICAP: DA 0-1 · 2",
           "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-17: quota 5 orientativa, 10-10 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
           "probabilityPct": null,
           "prudentProbabilityPct": null,
@@ -111910,9 +111957,9 @@
             "tier": "Safe",
             "status": "outside-limits",
             "allowed": false,
-            "riskScore": 78.6,
+            "riskScore": 75.2,
             "riskLevel": "alto",
-            "averageRisk": 78.6,
+            "averageRisk": 75.2,
             "maxEventRisk": 82,
             "strongDependencies": 0,
             "contradictions": 0,
@@ -111923,15 +111970,21 @@
               "minPrudentExpectedValuePct": 0
             },
             "reasons": [
-              "Rischio medio 78.6 oltre il limite 42.",
+              "Rischio medio 75.2 oltre il limite 42.",
               "Gamba a rischio 82 oltre il limite 58.",
               "EV prudenziale non disponibile."
             ],
             "events": [
               {
-                "providerSelectionId": "5319746665",
-                "label": "U/O 2.5 Roma · UNDER",
-                "riskScore": 82,
+                "providerSelectionId": "5319759861",
+                "label": "Inter segna almeno un gol",
+                "riskScore": 65,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5319741206",
+                "label": "Roma o pareggio (1X)",
+                "riskScore": 65,
                 "modeled": false
               },
               {
@@ -111959,18 +112012,6 @@
                 "modeled": false
               },
               {
-                "providerSelectionId": "5319686375",
-                "label": "ARBITRO CONSULTA MONITOR VAR INCL. T.S. · NO",
-                "riskScore": 82,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5320722017",
-                "label": "RIGORE SI/NO T.R. · NO",
-                "riskScore": 82,
-                "modeled": false
-              },
-              {
                 "providerSelectionId": "5319758865",
                 "label": "1T 1X2 HANDICAP: DA 0-1 · 2",
                 "riskScore": 82,
@@ -111987,9 +112028,37 @@
                 "label": "DC TEMPO 1 · X2",
                 "riskScore": 65,
                 "modeled": false
+              },
+              {
+                "providerSelectionId": "5319759911",
+                "label": "2T 1X2 HANDICAP: DA 0-1 · 2",
+                "riskScore": 82,
+                "modeled": false
               }
             ],
-            "dependencies": []
+            "dependencies": [
+              {
+                "first": "5319759861",
+                "second": "5319741206",
+                "type": "negative",
+                "correlation": -0.407,
+                "intersectionProbabilityPct": 41
+              },
+              {
+                "first": "5319759861",
+                "second": "5319686559",
+                "type": "positive",
+                "correlation": 0.435,
+                "intersectionProbabilityPct": 56.3
+              },
+              {
+                "first": "5319741206",
+                "second": "5319686559",
+                "type": "negative",
+                "correlation": -0.613,
+                "intersectionProbabilityPct": 24
+              }
+            ]
           },
           {
             "tier": "Balanced",
@@ -113540,8 +113609,8 @@
           "quotaPolicy": "orientativa",
           "eligibilityPolicy": "validita-tecnica-e-intervalli",
           "riskPolicy": "informativa",
-          "odds": 6.95,
-          "distancePct": 39,
+          "odds": 11.3,
+          "distancePct": 126,
           "legs": [
             {
               "label": "Udinese segna almeno un gol",
@@ -113568,20 +113637,6 @@
               "overlapKey": "market-doppia chance",
               "semanticKeys": [
                 "result"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "ARBITRO CONSULTA MONITOR VAR INCL. T.S. · NO",
-              "market": "ARBITRO CONSULTA MONITOR VAR INC TS",
-              "variant": "ARBITRO CONSULTA MONITOR VAR INCL. T.S.",
-              "threshold": null,
-              "selection": "NO",
-              "providerSelectionId": "5319696064",
-              "odds": 1.16,
-              "overlapKey": "market-arbitro consulta monitor var inc ts",
-              "semanticKeys": [
-                "var-review"
               ],
               "marketScope": "match"
             },
@@ -113642,20 +113697,6 @@
               "marketScope": "match"
             },
             {
-              "label": "RIGORE SI/NO T.R. · NO",
-              "market": "RIGORE SI/NO",
-              "variant": "RIGORE SI/NO T.R.",
-              "threshold": null,
-              "selection": "NO",
-              "providerSelectionId": "5320713310",
-              "odds": 1.22,
-              "overlapKey": "market-rigore si no",
-              "semanticKeys": [
-                "penalty"
-              ],
-              "marketScope": "match"
-            },
-            {
               "label": "2T 1X2 HANDICAP: DA 1-0 · 1",
               "market": "2 TEMPO: 1X2 HANDICAP",
               "variant": "2T 1X2 HANDICAP: DA 1-0",
@@ -113682,9 +113723,37 @@
                 "volume-shots-total"
               ],
               "marketScope": "match"
+            },
+            {
+              "label": "Entrambe almeno 3 corner",
+              "market": "ENTRAMBE ALMENO X CORNER",
+              "variant": "ENTRAMBE ALMENO 3 CORNER",
+              "threshold": null,
+              "selection": "SI",
+              "providerSelectionId": "5330386191",
+              "odds": 1.62,
+              "overlapKey": "market-entrambe almeno x corner",
+              "semanticKeys": [
+                "volume-corners"
+              ],
+              "marketScope": "match"
+            },
+            {
+              "label": "TEMPO PRIMO GOAL · 1",
+              "market": "TEMPO PRIMO GOAL",
+              "variant": "TEMPO PRIMO GOAL",
+              "threshold": null,
+              "selection": "1",
+              "providerSelectionId": "5319720257",
+              "odds": 1.42,
+              "overlapKey": "market-tempo primo goal",
+              "semanticKeys": [
+                "first-goal-period"
+              ],
+              "marketScope": "match"
             }
           ],
-          "selection": "Udinese segna almeno un gol + Udinese o pareggio (1X) + ARBITRO CONSULTA MONITOR VAR INCL. T.S. · NO + 2 TEMPO: U/O 2 AH · UNDER + DC TEMPO 1 · 1X + 1T 1X2 HANDICAP: DA 1-0 · 1 + U/O 3.5 · UNDER + RIGORE SI/NO T.R. · NO + 2T 1X2 HANDICAP: DA 1-0 · 1 + Partita almeno 23 tiri totali",
+          "selection": "Udinese segna almeno un gol + Udinese o pareggio (1X) + 2 TEMPO: U/O 2 AH · UNDER + DC TEMPO 1 · 1X + 1T 1X2 HANDICAP: DA 1-0 · 1 + U/O 3.5 · UNDER + 2T 1X2 HANDICAP: DA 1-0 · 1 + Partita almeno 23 tiri totali + Entrambe almeno 3 corner + TEMPO PRIMO GOAL · 1",
           "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-17: quota 5 orientativa, 10-10 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
           "probabilityPct": null,
           "prudentProbabilityPct": null,
@@ -115185,12 +115254,6 @@
                 "modeled": false
               },
               {
-                "providerSelectionId": "5319696064",
-                "label": "ARBITRO CONSULTA MONITOR VAR INCL. T.S. · NO",
-                "riskScore": 82,
-                "modeled": false
-              },
-              {
                 "providerSelectionId": "5319722211",
                 "label": "2 TEMPO: U/O 2 AH · UNDER",
                 "riskScore": 82,
@@ -115215,12 +115278,6 @@
                 "modeled": false
               },
               {
-                "providerSelectionId": "5320713310",
-                "label": "RIGORE SI/NO T.R. · NO",
-                "riskScore": 82,
-                "modeled": false
-              },
-              {
                 "providerSelectionId": "5319720039",
                 "label": "2T 1X2 HANDICAP: DA 1-0 · 1",
                 "riskScore": 82,
@@ -115229,6 +115286,18 @@
               {
                 "providerSelectionId": "5319695582",
                 "label": "Partita almeno 23 tiri totali",
+                "riskScore": 82,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5330386191",
+                "label": "Entrambe almeno 3 corner",
+                "riskScore": 82,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5319720257",
+                "label": "TEMPO PRIMO GOAL · 1",
                 "riskScore": 82,
                 "modeled": false
               }
@@ -116816,18 +116885,32 @@
           "quotaPolicy": "orientativa",
           "eligibilityPolicy": "validita-tecnica-e-intervalli",
           "riskPolicy": "informativa",
-          "odds": 6.35,
-          "distancePct": 27,
+          "odds": 8.23,
+          "distancePct": 64.6,
           "legs": [
             {
-              "label": "U/O 3.5 Venezia + U/O 0.5 Lazio · UNDER+OVER",
-              "market": "COMBO: U/O CASA + U/O OSPITE",
-              "variant": "U/O 3.5 TEAM 1 + U/O 0.5 TEAM 2",
+              "label": "Lazio o pareggio (X2)",
+              "market": "DOPPIA CHANCE",
+              "variant": "DOPPIA CHANCE MULTIESITI",
               "threshold": null,
-              "selection": "UNDER+OVER",
-              "providerSelectionId": "5319720097",
-              "odds": 1.15,
-              "overlapKey": "market-combo u o casa u o ospite",
+              "selection": "X2",
+              "providerSelectionId": "5319698687",
+              "odds": 1.27,
+              "overlapKey": "market-doppia chance",
+              "semanticKeys": [
+                "result"
+              ],
+              "marketScope": "match"
+            },
+            {
+              "label": "Venezia segna almeno un gol",
+              "market": "CASA: SEGNA GOAL",
+              "variant": "SEGNA GOAL SQUADRA CASA",
+              "threshold": null,
+              "selection": "SI",
+              "providerSelectionId": "5319721751",
+              "odds": 1.32,
+              "overlapKey": "market-casa segna goal",
               "semanticKeys": [
                 "goals"
               ],
@@ -116858,20 +116941,6 @@
               "overlapKey": "market-u o goal squadra tempo",
               "semanticKeys": [
                 "team-goals-period"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "ARBITRO CONSULTA MONITOR VAR INCL. T.S. · NO",
-              "market": "ARBITRO CONSULTA MONITOR VAR INC TS",
-              "variant": "ARBITRO CONSULTA MONITOR VAR INCL. T.S.",
-              "threshold": null,
-              "selection": "NO",
-              "providerSelectionId": "5319696658",
-              "odds": 1.16,
-              "overlapKey": "market-arbitro consulta monitor var inc ts",
-              "semanticKeys": [
-                "var-review"
               ],
               "marketScope": "match"
             },
@@ -116932,20 +117001,6 @@
               "marketScope": "match"
             },
             {
-              "label": "RIGORE SI/NO T.R. · NO",
-              "market": "RIGORE SI/NO",
-              "variant": "RIGORE SI/NO T.R.",
-              "threshold": null,
-              "selection": "NO",
-              "providerSelectionId": "5320715346",
-              "odds": 1.28,
-              "overlapKey": "market-rigore si no",
-              "semanticKeys": [
-                "penalty"
-              ],
-              "marketScope": "match"
-            },
-            {
               "label": "2 TEMPO: U/O 2 AH · UNDER",
               "market": "U/O SOMMA GOAL TEMPO X ASIATICO",
               "variant": "2 TEMPO: U/O 2 AH",
@@ -116958,9 +117013,23 @@
                 "asian-goals-period"
               ],
               "marketScope": "match"
+            },
+            {
+              "label": "TEMPO PRIMO GOAL · 1",
+              "market": "TEMPO PRIMO GOAL",
+              "variant": "TEMPO PRIMO GOAL",
+              "threshold": null,
+              "selection": "1",
+              "providerSelectionId": "5319719875",
+              "odds": 1.32,
+              "overlapKey": "market-tempo primo goal",
+              "semanticKeys": [
+                "first-goal-period"
+              ],
+              "marketScope": "match"
             }
           ],
-          "selection": "U/O 3.5 Venezia + U/O 0.5 Lazio · UNDER+OVER + Venezia almeno 10 tiri totali + TEMPO 1: U/O 1.5 Lazio · UNDER + ARBITRO CONSULTA MONITOR VAR INCL. T.S. · NO + DC TEMPO 1 · X2 + 1T 1X2 HANDICAP: DA 0-1 · 2 + U/O 1.5 · OVER + 2T 1X2 HANDICAP: DA 0-1 · 2 + RIGORE SI/NO T.R. · NO + 2 TEMPO: U/O 2 AH · UNDER",
+          "selection": "Lazio o pareggio (X2) + Venezia segna almeno un gol + Venezia almeno 10 tiri totali + TEMPO 1: U/O 1.5 Lazio · UNDER + DC TEMPO 1 · X2 + 1T 1X2 HANDICAP: DA 0-1 · 2 + U/O 1.5 · OVER + 2T 1X2 HANDICAP: DA 0-1 · 2 + 2 TEMPO: U/O 2 AH · UNDER + TEMPO PRIMO GOAL · 1",
           "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-17: quota 5 orientativa, 10-10 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
           "probabilityPct": null,
           "prudentProbabilityPct": null,
@@ -118424,11 +118493,11 @@
             "tier": "Safe",
             "status": "outside-limits",
             "allowed": false,
-            "riskScore": 78.6,
+            "riskScore": 81.2,
             "riskLevel": "alto",
-            "averageRisk": 78.6,
+            "averageRisk": 75.2,
             "maxEventRisk": 82,
-            "strongDependencies": 0,
+            "strongDependencies": 1,
             "contradictions": 0,
             "limits": {
               "maxAverageRisk": 42,
@@ -118437,15 +118506,21 @@
               "minPrudentExpectedValuePct": 0
             },
             "reasons": [
-              "Rischio medio 78.6 oltre il limite 42.",
+              "Rischio medio 75.2 oltre il limite 42.",
               "Gamba a rischio 82 oltre il limite 58.",
               "EV prudenziale non disponibile."
             ],
             "events": [
               {
-                "providerSelectionId": "5319720097",
-                "label": "U/O 3.5 Venezia + U/O 0.5 Lazio · UNDER+OVER",
-                "riskScore": 82,
+                "providerSelectionId": "5319698687",
+                "label": "Lazio o pareggio (X2)",
+                "riskScore": 65,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5319721751",
+                "label": "Venezia segna almeno un gol",
+                "riskScore": 65,
                 "modeled": false
               },
               {
@@ -118457,12 +118532,6 @@
               {
                 "providerSelectionId": "5319703475",
                 "label": "TEMPO 1: U/O 1.5 Lazio · UNDER",
-                "riskScore": 82,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5319696658",
-                "label": "ARBITRO CONSULTA MONITOR VAR INCL. T.S. · NO",
                 "riskScore": 82,
                 "modeled": false
               },
@@ -118491,19 +118560,48 @@
                 "modeled": false
               },
               {
-                "providerSelectionId": "5320715346",
-                "label": "RIGORE SI/NO T.R. · NO",
-                "riskScore": 82,
-                "modeled": false
-              },
-              {
                 "providerSelectionId": "5319720847",
                 "label": "2 TEMPO: U/O 2 AH · UNDER",
                 "riskScore": 82,
                 "modeled": false
+              },
+              {
+                "providerSelectionId": "5319719875",
+                "label": "TEMPO PRIMO GOAL · 1",
+                "riskScore": 82,
+                "modeled": false
               }
             ],
-            "dependencies": []
+            "dependencies": [
+              {
+                "first": "5319698687",
+                "second": "5319721751",
+                "type": "negative",
+                "correlation": -0.464,
+                "intersectionProbabilityPct": 36.5
+              },
+              {
+                "first": "5319698687",
+                "second": "5319697052",
+                "type": "redundant",
+                "correlation": 1,
+                "intersectionProbabilityPct": 70.2
+              },
+              {
+                "first": "5319721751",
+                "second": "5319697052",
+                "type": "negative",
+                "correlation": -0.464,
+                "intersectionProbabilityPct": 36.5
+              },
+              {
+                "first": "5319721751",
+                "second": "5319698650",
+                "type": "positive",
+                "correlation": 0.478,
+                "intersectionProbabilityPct": 57.1
+              }
+            ]
           },
           {
             "tier": "Balanced",

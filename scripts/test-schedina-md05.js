@@ -17,6 +17,7 @@ assert.equal(legs.length, 45);
 assert.equal(Object.keys(source.matches).length, 10);
 assert.equal(source.constraints.minLegOddsInclusive, 1.15);
 assert.equal(source.constraints.displayedComboLegs, 10);
+assert.deepEqual(source.constraints.excludedMarketNames, ["ARBITRO CONSULTA MONITOR VAR INC TS", "RIGORE SI/NO"]);
 assert(!data.slips.some(slip => ["exact-score", "exact-score-multi"].includes(slip.type)));
 assert(!legs.some(leg => /^RISULTATO ESATTO/.test(leg.market)));
 assert.equal(new Set(legs.map(leg => String(leg.providerSelectionId))).size, legs.length);
@@ -39,6 +40,7 @@ for (const prediction of predictions) {
   const combo = prediction.combinations.find(item => item.tier === "Safe");
   assert.equal(combo?.legs.length, 10, `${prediction.matchId}: la MyCombo deve contenere esattamente 10 eventi`);
   assert(combo.legs.every(leg => leg.odds >= 1.15), `${prediction.matchId}: quota MyCombo sotto 1,15`);
+  assert(!combo.legs.some(leg => /MONITOR VAR|RIGORE SI\/NO/i.test(leg.market)), `${prediction.matchId}: mercato VAR o rigore vietato`);
   assert.equal(new Set(combo.legs.map(leg => leg.overlapKey)).size, combo.legs.length, `${prediction.matchId}: mercato ripetuto`);
   const semanticKeys = combo.legs.flatMap(leg => leg.semanticKeys || []);
   assert.equal(new Set(semanticKeys).size, semanticKeys.length, `${prediction.matchId}: macro-scenario ripetuto`);

@@ -32,6 +32,7 @@ const server = http.createServer((request, response) => {
       assert.match(mainText, /MyCombo da 10 eventi · 5ª giornata/);
       assert(comparableText.indexOf("mycombo da 10 eventi") < comparableText.indexOf("controllo prudenziale"), `schedina ${width}: le MyCombo devono essere in apertura`);
       assert.doesNotMatch(mainText, /Scintilla|Bagliore|Supernova|Prisma|Quasar|Costellazione/i);
+      assert.doesNotMatch(mainText, /ARBITRO CONSULTA MONITOR VAR|RIGORE SI\/NO/i);
       const cards = page.locator(".betting-mycombo-card");
       assert.equal(await cards.count(), 10, `schedina ${width}: servono dieci MyCombo`);
       for (let index = 0; index < 10; index += 1) {

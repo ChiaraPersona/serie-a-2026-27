@@ -19,6 +19,10 @@ const previousOutput = fs.existsSync(outputPath) ? JSON.parse(fs.readFileSync(ou
 const referenceOdds = { Safe: 5, Balanced: 10, Aggressive: 20 };
 const minimumLegOdds = matchday >= 5 ? 1.15 : 1.1;
 const maximumLegOdds = 1.85;
+const excludedMarketNames = new Set([
+  "ARBITRO CONSULTA MONITOR VAR INC TS",
+  "RIGORE SI/NO"
+]);
 const tierLimits = {
   Safe: matchday === 5 ? { minimum: 10, maximum: 10, preferred: 10 } : { minimum: 3, maximum: 6, preferred: 3 },
   Balanced: { minimum: 4, maximum: 7, preferred: 4 },
@@ -315,8 +319,6 @@ function candidatePool(event, prediction, match) {
       ["1X2 ESITO FINALE", "result-fulltime"],
       ["UNDER/OVER", "goals-fulltime"],
       ["1 TEMPO: 1X2 CORNER", "corners-first-half"],
-      ["ARBITRO CONSULTA MONITOR VAR INC TS", "var-review"],
-      ["RIGORE SI/NO", "penalty"],
       ["PRIMA SOSTITUZIONE NEL MATCH", "first-substitution"],
       ["PARI/DISPARI", "goals-parity"],
       ["TEMPO PRIMO GOAL", "first-goal-period"],
@@ -355,6 +357,10 @@ function candidatePool(event, prediction, match) {
   }
 
   return [...new Map(candidates.map(candidate => [candidate.providerSelectionId, { ...candidate, semanticKeys: candidate.semanticKeys || [] }])).values()]
+    .filter(candidate => {
+      const marketName = String(candidate.overlapKey || "").replace(/^market-/, "");
+      return ![...excludedMarketNames].some(name => clean(name) === marketName);
+    })
     .filter(candidate => candidate.odds >= minimumLegOdds && candidate.odds <= maximumLegOdds)
     .sort((left, right) => right.quality - left.quality || right.odds - left.odds);
 }
@@ -441,6 +447,7 @@ const output = {
     quotaPolicy: "orientativa",
     tierLimits,
     displayedComboLegs: matchday === 5 ? 10 : null,
+    excludedMarketNames: [...excludedMarketNames],
     minLegOddsInclusive: minimumLegOdds,
     maxLegOddsInclusive: maximumLegOdds,
     uniqueMarketFamilyWithinPortfolio: true,
