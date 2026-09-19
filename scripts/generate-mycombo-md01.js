@@ -37,7 +37,14 @@ const excludedMarketNames = new Set([
   "1 TEMPO: 1X2 CORNER",
   "TEMPO PRIMO GOAL",
   "DRAW NO BET",
-  "DRAW NO BET TEMPO X"
+  "DRAW NO BET TEMPO X",
+  "SQUADRA X VINCE ALMENO UN TEMPO",
+  "CASA: VINCE A 0",
+  "OSPITE: VINCE A 0",
+  "CASA: VINCE A 0 1T",
+  "OSPITE: VINCE A 0 1T",
+  "CASA: VINCE A 0 2T",
+  "OSPITE: VINCE A 0 2T"
 ]);
 const excludedMarketNameFragments = ["DUO", "MULTIGIOCAT"];
 const tierLimits = {
@@ -339,8 +346,8 @@ function candidatePool(event, prediction, match) {
 
   if (matchday === 5) {
     const distinctEventMarkets = new Map([
-      ["1X2 ESITO FINALE", "result-fulltime"],
-      ["UNDER/OVER", "goals-fulltime"],
+      ["1X2 ESITO FINALE", "result"],
+      ["UNDER/OVER", "goals"],
       ["1 TEMPO: 1X2 CORNER", "corners-first-half"],
       ["TEMPO PRIMO GOAL", "first-goal-period"],
       ["DOPPIA CHANCE TEMPO X", "result-first-half"],
@@ -353,13 +360,6 @@ function candidatePool(event, prediction, match) {
       ["1 TEMPO: ESITO 1X2", "result-first-half-1x2"],
       ["2 TEMPO: ESITO 1X2", "result-second-half-1x2"],
       ["GOAL/NOGOAL TEMPO X", "goals-period-btts"],
-      ["SQUADRA X VINCE ALMENO UN TEMPO", "result-team-wins-half"],
-      ["CASA: VINCE A 0", "result-home-win-to-nil"],
-      ["OSPITE: VINCE A 0", "result-away-win-to-nil"],
-      ["CASA: VINCE A 0 1T", "result-home-win-to-nil-first-half"],
-      ["OSPITE: VINCE A 0 1T", "result-away-win-to-nil-first-half"],
-      ["CASA: VINCE A 0 2T", "result-home-win-to-nil-second-half"],
-      ["OSPITE: VINCE A 0 2T", "result-away-win-to-nil-second-half"],
       ["1X2 NEI MINUTI X-Y", "result-opening-window"],
       ["SEGNA ULTIMO GOAL", "last-goal-team"],
       ["SEGNA GOAL TEMPO X", "scoring-team-period"]
@@ -485,11 +485,12 @@ const output = {
     displayedComboLegs: matchday === 5 ? 10 : null,
     excludedMarketNames: [...excludedMarketNames],
     excludedMarketNameFragments,
+    providerEligibilityPolicy: "Solo selezioni con providerSelectionId presenti nello snapshot Sisal e ammesse nella sezione MyCombo; le famiglie note come non selezionabili sono escluse prima della costruzione dei portafogli.",
     minLegOddsInclusive: minimumLegOdds,
     maxLegOddsInclusive: maximumLegOdds,
     uniqueMarketFamilyWithinPortfolio: true,
     semanticOverlapPolicy: matchday === 5
-      ? "Dieci mercati con denominazioni differenti: nessuna soglia della stessa famiglia viene ripetuta; esiti riferiti a tempi o eventi diversi mantengono chiavi semantiche distinte. Handicap e mercati asiatici esclusi."
+      ? "Una sola gamba per macro-scenario: Multigoal e Under/Over appartengono entrambi allo scenario gol e non possono convivere; nessuna variante correlata della stessa famiglia puo essere ripetuta. Handicap, mercati asiatici, vince a zero e squadra vince almeno un tempo sono esclusi."
       : "Una sola gamba per macro-scenario: gol, esito, corner, tiri totali e tiri in porta non possono essere ripetuti o annidati nella stessa MyCombo, anche cambiando squadra, soglia o formulazione.",
     allowCrossTierSelectionReuse: true,
     promotedOpponentCaution: true,
