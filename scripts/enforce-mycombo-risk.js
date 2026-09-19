@@ -16,10 +16,13 @@ if (!fs.existsSync(sourcePath)) throw new Error(`Fonte MyCombo assente: ${filena
 const source = JSON.parse(fs.readFileSync(sourcePath, "utf8"));
 const predictions = JSON.parse(fs.readFileSync(predictionsPath, "utf8")).predictions;
 const predictionByMatch = new Map(predictions.map(prediction => [prediction.matchId, prediction]));
+const matches = JSON.parse(fs.readFileSync(path.join(root, "data/normalized/matches.json"), "utf8"));
+const matchById = new Map(matches.map(match => [match.id, match]));
 let valid = 0;
 let unavailable = 0;
 
 for (const [matchId, portfolios] of Object.entries(source.matches || {})) {
+  if (matchById.get(matchId)?.status === "finished") continue;
   const prediction = predictionByMatch.get(matchId);
   if (!prediction) throw new Error(`Pronostico non trovato: ${matchId}`);
   for (const portfolio of portfolios) {

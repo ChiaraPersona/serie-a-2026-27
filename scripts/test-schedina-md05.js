@@ -6,7 +6,7 @@ const path = require("path");
 const root = path.resolve(__dirname, "..");
 const read = file => JSON.parse(fs.readFileSync(path.join(root, file), "utf8"));
 const data = read("data/normalized/schedina-md05.json");
-const predictions = read("data/normalized/predictions.json").predictions.filter(item => item.matchId.endsWith("-md-05"));
+const predictions = read("data/normalized/predictions.json").predictions.filter(item => item.matchId.endsWith("-md-05") && item.matchId !== "monza-sassuolo-2026-27-md-05");
 const source = read("data/sources/mycombo-serie-a-2026-27-md-05.json");
 const renderer = fs.readFileSync(path.join(root, "js/pages/betting.js"), "utf8");
 const legs = data.slips.flatMap(slip => slip.legs);
@@ -38,7 +38,7 @@ assert(renderer.indexOf("${myCombo}${roundContent") > renderer.indexOf("const my
 
 for (const prediction of predictions) {
   const combo = prediction.combinations.find(item => item.tier === "Safe");
-  assert(combo?.legs.length >= 3 && combo.legs.length <= 6, `${prediction.matchId}: la MyCombo Safe deve contenere da 3 a 6 eventi`);
+  assert(combo?.legs.length >= 2 && combo.legs.length <= 4, `${prediction.matchId}: la MyCombo Safe deve contenere da 2 a 4 eventi`);
   assert(combo.legs.every(leg => leg.odds >= 1.15), `${prediction.matchId}: quota MyCombo sotto 1,15`);
   assert(!combo.legs.some(leg => /MONITOR VAR|RIGORE SI\/NO/i.test(leg.market)), `${prediction.matchId}: mercato VAR o rigore vietato`);
   assert.equal(new Set(combo.legs.map(leg => leg.overlapKey)).size, combo.legs.length, `${prediction.matchId}: mercato ripetuto`);

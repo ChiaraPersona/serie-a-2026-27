@@ -24,7 +24,7 @@ const excludedMarketNames = new Set([
   "RIGORE SI/NO"
 ]);
 const tierLimits = {
-  Safe: { minimum: 3, maximum: 6, preferred: 3 },
+  Safe: { minimum: 2, maximum: 4, preferred: 2 },
   Balanced: { minimum: 4, maximum: 7, preferred: 4 },
   Aggressive: { minimum: 5, maximum: 8, preferred: 5 }
 };

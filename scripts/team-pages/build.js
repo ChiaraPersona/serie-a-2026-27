@@ -463,7 +463,15 @@ const periods = {
   "2025/26": { id: "2025/26", label: "2025/26", rankings: buildLeaderboardRankings(previousLeaderboardRows) },
   total: { id: "total", label: "Totale 2025/26 + 2026/27", rankings: buildLeaderboardRankings(totalLeaderboardRows) }
 };
-write("data/teams/player-leaderboards.json", { schemaVersion: 2, currentSeason: "2026/27", previousSeason: "2025/26", generatedAt: leaderboardGeneratedAt, periods });
+const comparator = {
+  metrics: leaderboardMetrics,
+  periods: {
+    "2026/27": currentLeaderboardRows.filter(player => player.appearances > 0),
+    "2025/26": previousLeaderboardRows,
+    total: totalLeaderboardRows
+  }
+};
+write("data/teams/player-leaderboards.json", { schemaVersion: 3, currentSeason: "2026/27", previousSeason: "2025/26", generatedAt: leaderboardGeneratedAt, periods, comparator });
 write("data/schemas/team.schema.json", { $schema: "https://json-schema.org/draft/2020-12/schema", title: "Serie A team", type: "object", required: ["id", "currentSeason", "city", "stadium", "coach", "preferredFormation", "probableLineup", "previousSeason", "teamStats", "squad", "sources", "lastUpdated"], properties: { city: { type: "string", minLength: 1 }, stadium: { type: "string", minLength: 1 }, coach: { type: "string", minLength: 1 }, preferredFormation: { type: "string", pattern: "^[1-9](?:-[1-9]){2,4}$" }, probableLineup: { type: "object", required: ["formation", "players", "context", "status", "source"], properties: { formation: { type: "string", pattern: "^[1-9](?:-[1-9]){2,4}$" }, players: { type: "array", minItems: 11, maxItems: 11, items: { type: "string", minLength: 1 } }, status: { enum: ["probable", "official"] } } }, squad: { type: "array", items: { $ref: "player.schema.json" } } } });
 write("data/schemas/player.schema.json", { $schema: "https://json-schema.org/draft/2020-12/schema", title: "Serie A player", type: "object", required: ["id", "name", "currentTeam", "currentSeason", "role", "detailedRole", "status", "marketValue", "previousSeason", "sources", "dataQuality"], properties: { detailedRole: { type: "string", minLength: 1 }, status: { enum: ["confermato", "nuovo acquisto", "prestito", "rientro dal prestito", "primavera", "da verificare"] }, marketValue: { anyOf: [{ type: "null" }, { type: "object", required: ["amountEur", "currency", "provider", "retrievedAt", "sourceUrl"] }] }, photoAttribution: { anyOf: [{ type: "null" }, { type: "object", required: ["provider", "pageUrl", "artist", "license"] }] }, previousSeason: { type: "object", required: ["season", "entries", "totals", "totalsByCompetition"] } } });
 console.log(`Generati dati per ${teams.length} club (${index.teams.filter(team => team.previousSeason.promoted).length} da Serie B).`);

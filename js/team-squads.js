@@ -3,7 +3,7 @@
   if (!root) return;
 
   const base = document.body.dataset.depth === "team" ? "../" : "";
-  const release = "20260915-results-md04-complete-v1";
+  const release = "20260919-player-comparator-v1";
   const defaultPlayerPhoto = `${base}assets/images/players/player-placeholder.png`;
   const esc = value => String(value ?? "").replace(/[&<>\"]/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[char]));
   const contrastInk = color => {
@@ -259,6 +259,19 @@
     }).join("")}</tbody></table></div>`;
   }
 
+  function squadComparator(team, statsByPlayer) {
+    const options = team.squad.map(player => `<option value="${esc(player.id)}">${esc(player.name)}</option>`).join("");
+    return `<section class="detail-section player-comparator team-player-comparator" id="comparatore-calciatori"><header><div><p class="eyebrow">Confronto nella rosa</p><h2>Comparatore calciatori</h2></div><p>Totali 2025/26 + 2026/27 e valori per 90 minuti.</p></header><div class="player-comparator-controls"><label>Calciatore A<select data-team-comparator="0">${options}</select></label><label>Calciatore B<select data-team-comparator="1">${options}</select></label></div><div class="player-comparator-result" data-team-comparator-result></div></section>`;
+  }
+
+  function squadComparatorResult(team, statsByPlayer, ids) {
+    const chosen = ids.map(id => team.squad.find(player => player.id === id)).filter(Boolean);
+    if (chosen.length < 2) return `<div class="data-warning"><strong>Seleziona due calciatori</strong></div>`;
+    const metrics = [["Gol","goals"],["Assist","assists"],["Tiri totali","shots"],["Tiri nello specchio","shotsOnTarget"],["Cartellini","cards"],["Falli commessi","foulsCommitted"],["Falli subiti","foulsWon"]];
+    const entry = player => statsByPlayer.get(player.id) || seasonTotals(player);
+    return `<div class="player-comparator-head">${chosen.map(player=>`<article><h3>${esc(player.name)}</h3><p>${esc(displayRole(player))}</p><strong>${value(entry(player).appearances)} PG · ${value(entry(player).minutes)} min</strong></article>`).join("")}</div><div class="table-wrap"><table><thead><tr><th>Statistica</th>${chosen.map(player=>`<th>${esc(player.name)}</th>`).join("")}</tr></thead><tbody>${metrics.map(([label,key])=>`<tr><th>${label}</th>${chosen.map(player=>{const stats=entry(player),total=key==="cards"?(stats.cards??cards(stats)):stats[key];return `<td><strong>${value(total)}</strong><small>${value(stats.per90?.[key])} /90</small></td>`}).join("")}</tr>`).join("")}</tbody></table></div>`;
+  }
+
   function entryDetail(player, entryIndex) {
     const entry = player.previousSeason?.entries?.[entryIndex] || player.previousSeason?.entries?.[0] || {};
     const attacking = ["goals", "assists", "shots", "shotsOnTarget", "penaltiesTaken", "penaltiesScored", "offsides", "keyPasses", "chancesCreated", "passAccuracy", "crosses"];
@@ -310,6 +323,11 @@
     const styleSection = tacticalProfileSection(team, teamStyleProfiles);
     const pageJumps = `<nav class="team-page-jumps" aria-label="Indice della pagina"><a href="#team-objective-heading">Sintesi</a><a href="#team-season-comparison-title">Statistiche</a><a class="team-calendar-link" href="${base}squadra.html?team=${esc(team.id)}">Calendario completo →</a><a href="#probable-lineup-heading">Formazione</a><a href="#team-style-heading">Stile</a><a href="#squad-roster-heading">Calciatori</a></nav>`;
     root.innerHTML = `${teamNavigation(team, teams)}<section class="team-detail-hero"><img src="${team.logo}" alt="Stemma ${esc(team.name)}"><div><h1>${esc(team.officialName)}</h1><p>${esc(team.shortName)} · Città ${value(team.city)} · Stadio ${value(team.stadium)} · Allenatore ${value(team.coach)}</p><p><strong>Modulo preferito:</strong> ${value(team.preferredFormation)}</p>${pageJumps}</div></section>${team.previousSeason.promoted ? `<aside class="competition-warning"><strong>Statistiche di provenienza: Serie B 2025/26.</strong> Non sono confrontate direttamente con i valori grezzi di Serie A.</aside>` : ""}${objectiveSection}${statsSections}<div class="team-analysis-grid">${lineupSection}${styleSection}</div><section class="detail-section team-roster-section" aria-labelledby="squad-roster-heading"><header class="team-roster-heading"><div><p class="eyebrow">Prestazioni individuali</p><h2 id="squad-roster-heading">Calciatori</h2></div><span>${team.squad.length} in rosa</span></header>${squadLeaderboards(team, matches)}<details class="squad-table-disclosure"><summary><span><strong>Rosa e statistiche complete</strong><small>${quality.complete || 0} schede complete · ${quality.partial || 0} parziali · ${quality.unavailable || 0} non disponibili</small></span><span>Apri la tabella</span></summary><div class="squad-table-disclosure-content"><p class="roster-summary">I dati sommano 2025/26 e 2026/27; seleziona un nome per il dettaglio.</p>${filters()}<div id="squad-results">${squadTable(team.squad, combinedPlayerStats)}</div></div></details></section><dialog id="player-detail" class="player-detail"><div id="player-detail-content"></div></dialog>`;
+    document.querySelector(".team-roster-section")?.insertAdjacentHTML("beforebegin", squadComparator(team, combinedPlayerStats));
+    const comparatorSelectors = [...document.querySelectorAll("[data-team-comparator]")];
+    const comparatorResult = document.querySelector("[data-team-comparator-result]");
+    comparatorSelectors.forEach((select, index) => { select.selectedIndex = Math.min(index, team.squad.length - 1); select.addEventListener("change", () => { comparatorResult.innerHTML = squadComparatorResult(team, combinedPlayerStats, comparatorSelectors.map(item => item.value)); }); });
+    comparatorResult.innerHTML = squadComparatorResult(team, combinedPlayerStats, comparatorSelectors.map(item => item.value));
     const dialog = document.getElementById("player-detail");
     const showPlayer = playerId => {
       const player = team.squad.find(item => item.id === playerId);

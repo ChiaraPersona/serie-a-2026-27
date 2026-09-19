@@ -49,7 +49,10 @@ assert.ok(mainApp.includes("data/teams/index.json") && mainApp.includes("team-di
 assert.ok(mainApp.includes("team.monochromeLogo||team.logo"), "Le card Statistiche squadre non usano il logo monocromatico nero");
 assert.ok(styles.includes("Statistiche squadre mobile: logo e riepilogo dentro un'unica card") && styles.includes("grid-template-columns:98px minmax(0,1fr)") && styles.includes(".team-flip-face{\n    position:relative"), "Su mobile ogni squadra deve usare una sola card visiva");
 const expectedLeaderboardMetrics = ["goals", "assists", "shots", "shotsOnTarget", "cards", "foulsCommitted", "foulsWon"];
-assert.strictEqual(playerLeaderboards.schemaVersion, 2);
+assert.strictEqual(playerLeaderboards.schemaVersion, 3);
+assert.deepStrictEqual(playerLeaderboards.comparator.metrics.map(metric => metric.id), expectedLeaderboardMetrics, "Il comparatore globale non copre tutte le metriche");
+assert.deepStrictEqual(Object.keys(playerLeaderboards.comparator.periods), ["2026/27", "2025/26", "total"], "Il comparatore globale non separa i periodi");
+assert.ok(mainApp.includes("Comparatore calciatori") && mainApp.includes("team-player-comparator"), "Comparatore calciatori mancante nella home o nelle pagine squadra");
 assert.deepStrictEqual(Object.keys(playerLeaderboards.periods), ["2026/27", "2025/26", "total"], "Le classifiche individuali non sono separate per periodo");
 for (const [periodId, period] of Object.entries(playerLeaderboards.periods)) for (const [metric, ranking] of Object.entries(period.rankings)) {
   assert.deepStrictEqual(Object.keys(period.rankings), expectedLeaderboardMetrics, `${periodId}: le Top 15 non coprono tutte le statistiche giocatore`);
@@ -271,10 +274,10 @@ assert.ok(mainApp.includes('const routes={home:"home",team:"matches","team-stats
 assert.ok(mainApp.includes('requestedMatchId?"first-leg-2026-27.json":"first-leg-2026-27-summary.json"'), "L'indice Letture deve usare il riepilogo H2H leggero");
 const expectedNavigation = [
   ["index.html", "Home"], ["statistiche-squadre.html", "Statistiche squadre"], ["lettura.html", "Lettura"],
-  ["coppa-italia.html", "Coppa Italia"], ["champions-league.html", "Champions League"], ["arbitri.html", "Arbitri"],
+  ["coppa-italia.html", "Coppa Italia"], ["champions-league.html", "Champions League"],
   ["schedina.html", "Schedina"]
 ];
-for (const file of fs.readdirSync(root).filter(file => file.endsWith(".html")).map(file => path.join(root, file))
+for (const file of fs.readdirSync(root).filter(file => file.endsWith(".html") && file !== "arbitri.html").map(file => path.join(root, file))
   .concat(fs.readdirSync(path.join(root, "statistiche-squadra")).filter(file => file.endsWith(".html")).map(file => path.join(root, "statistiche-squadra", file)))) {
   const html = fs.readFileSync(file, "utf8");
   const nav = html.match(/<nav id="site-nav"[^>]*>([\s\S]*?)<\/nav>/)?.[1];
