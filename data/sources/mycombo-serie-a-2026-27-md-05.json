@@ -31,11 +31,6 @@
       "ARBITRO CONSULTA MONITOR VAR INC TS",
       "RIGORE SI/NO"
     ],
-    "excludedMarketPatterns": [
-      "HANDICAP",
-      "AH",
-      "ASIATICO"
-    ],
     "minLegOddsInclusive": 1.15,
     "maxLegOddsInclusive": 1.85,
     "uniqueMarketFamilyWithinPortfolio": true,
@@ -49,23 +44,24 @@
     "monza-sassuolo-2026-27-md-05": [
       {
         "tier": "Safe",
-        "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-17: quota 5 orientativa, 2-4 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
+        "risk": "elevato · 10 eventi",
+        "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-17: quota 5 orientativa, 10-10 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
         "legs": [
           {
-            "providerSelectionId": "5330750364",
-            "overlapKey": "market-prima a x corner",
+            "providerSelectionId": "5330750183",
+            "overlapKey": "market-u o corner",
             "semanticKeys": [
               "volume-corners"
             ],
-            "label": "PRIMA A 2 CALCI D'ANGOLO · Monza"
+            "label": "Partita almeno 7 corner"
           },
           {
-            "providerSelectionId": "5319700784",
+            "providerSelectionId": "5319700780",
             "overlapKey": "market-u o tiri in porta",
             "semanticKeys": [
               "volume-shots-on-target"
             ],
-            "label": "Partita almeno 8 tiri in porta"
+            "label": "Partita almeno 7 tiri in porta"
           },
           {
             "providerSelectionId": "5328456058",
@@ -76,26 +72,18 @@
             "label": "CALETA CAR D. almeno 1 tiri totali, sostituto incluso"
           },
           {
-            "providerSelectionId": "5319771767",
-            "overlapKey": "market-casa segna goal",
+            "providerSelectionId": "5327305751",
+            "overlapKey": "market-u o falli commessi giocatore",
+            "semanticKeys": [],
+            "label": "CALETA CAR D. almeno 1 falli commessi"
+          },
+          {
+            "providerSelectionId": "5319771813",
+            "overlapKey": "market-ospite segna goal",
             "semanticKeys": [
               "goals"
             ],
-            "label": "Monza segna almeno un gol"
-          }
-        ]
-      },
-      {
-        "tier": "Balanced",
-        "logic": "Profilo balanced costruito sulle quote Sisal del 2026-09-17: quota 10 orientativa, 4-7 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
-        "legs": [
-          {
-            "providerSelectionId": "5328456058",
-            "overlapKey": "market-u o tiri totali giocatore duo inc ts",
-            "semanticKeys": [
-              "volume-shots-total"
-            ],
-            "label": "CALETA CAR D. almeno 1 tiri totali, sostituto incluso"
+            "label": "Sassuolo segna almeno un gol"
           },
           {
             "providerSelectionId": "5319702232",
@@ -106,28 +94,83 @@
             "label": "Nessun pareggio (12)"
           },
           {
-            "providerSelectionId": "5330750364",
+            "providerSelectionId": "5319702196",
+            "overlapKey": "market-under over",
+            "semanticKeys": [
+              "goals-fulltime"
+            ],
+            "label": "U/O 1.5 · OVER"
+          },
+          {
+            "providerSelectionId": "5319701324",
+            "overlapKey": "market-doppia chance tempo x",
+            "semanticKeys": [
+              "result-first-half"
+            ],
+            "label": "DC TEMPO 1 · X2"
+          },
+          {
+            "providerSelectionId": "5319709777",
+            "overlapKey": "market-pari dispari",
+            "semanticKeys": [
+              "goals-parity"
+            ],
+            "label": "PARI/DISPARI · PARI"
+          },
+          {
+            "providerSelectionId": "5323746860",
+            "overlapKey": "market-prima sostituzione nel match",
+            "semanticKeys": [
+              "first-substitution"
+            ],
+            "label": "PRIMA SOSTITUZIONE NEL MATCH (4 ESITI) · TEMPO 2"
+          }
+        ]
+      },
+      {
+        "tier": "Balanced",
+        "logic": "Profilo balanced costruito sulle quote Sisal del 2026-09-17: quota 10 orientativa, 4-7 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
+        "legs": [
+          {
+            "providerSelectionId": "5330750486",
             "overlapKey": "market-prima a x corner",
             "semanticKeys": [
               "volume-corners"
             ],
-            "label": "PRIMA A 2 CALCI D'ANGOLO · Monza"
+            "label": "PRIMA A 3 CALCI D'ANGOLO · Monza"
           },
           {
-            "providerSelectionId": "5328455958",
-            "overlapKey": "market-u o tiri in porta squadra x",
+            "providerSelectionId": "5319700357",
+            "overlapKey": "market-combo dc u o",
             "semanticKeys": [
-              "volume-shots-on-target"
-            ],
-            "label": "Monza almeno 4 tiri in porta"
-          },
-          {
-            "providerSelectionId": "5319702212",
-            "overlapKey": "market-under over",
-            "semanticKeys": [
+              "result",
               "goals"
             ],
-            "label": "Over 2,5 gol"
+            "label": "DC + U/O 4.5 · 12 + UNDER"
+          },
+          {
+            "providerSelectionId": "5319709777",
+            "overlapKey": "market-pari dispari",
+            "semanticKeys": [
+              "goals-parity"
+            ],
+            "label": "PARI/DISPARI · PARI"
+          },
+          {
+            "providerSelectionId": "5319747717",
+            "overlapKey": "market-u o goal squadra tempo",
+            "semanticKeys": [
+              "team-goals-period"
+            ],
+            "label": "TEMPO 1: U/O 0.5 Monza · UNDER"
+          },
+          {
+            "providerSelectionId": "5319702196",
+            "overlapKey": "market-under over",
+            "semanticKeys": [
+              "goals-fulltime"
+            ],
+            "label": "U/O 1.5 · OVER"
           }
         ]
       },
@@ -136,12 +179,13 @@
         "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-09-17: quota 20 orientativa, 5-8 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
         "legs": [
           {
-            "providerSelectionId": "5319771880",
-            "overlapKey": "market-combo u o casa u o ospite",
+            "providerSelectionId": "5319700341",
+            "overlapKey": "market-combo dc u o",
             "semanticKeys": [
+              "result",
               "goals"
             ],
-            "label": "U/O 1.5 Monza + U/O 2.5 Sassuolo · UNDER+UNDER"
+            "label": "DC + U/O 3.5 · 12 + UNDER"
           },
           {
             "providerSelectionId": "5330750486",
@@ -152,14 +196,6 @@
             "label": "PRIMA A 3 CALCI D'ANGOLO · Monza"
           },
           {
-            "providerSelectionId": "5328455958",
-            "overlapKey": "market-u o tiri in porta squadra x",
-            "semanticKeys": [
-              "volume-shots-on-target"
-            ],
-            "label": "Monza almeno 4 tiri in porta"
-          },
-          {
             "providerSelectionId": "5328456058",
             "overlapKey": "market-u o tiri totali giocatore duo inc ts",
             "semanticKeys": [
@@ -168,18 +204,28 @@
             "label": "CALETA CAR D. almeno 1 tiri totali, sostituto incluso"
           },
           {
-            "providerSelectionId": "5319702232",
-            "overlapKey": "market-doppia chance",
+            "providerSelectionId": "5319747717",
+            "overlapKey": "market-u o goal squadra tempo",
             "semanticKeys": [
-              "result"
+              "team-goals-period"
             ],
-            "label": "Nessun pareggio (12)"
+            "label": "TEMPO 1: U/O 0.5 Monza · UNDER"
           },
           {
-            "providerSelectionId": "5327305751",
-            "overlapKey": "market-u o falli commessi giocatore",
-            "semanticKeys": [],
-            "label": "CALETA CAR D. almeno 1 falli commessi"
+            "providerSelectionId": "5323746860",
+            "overlapKey": "market-prima sostituzione nel match",
+            "semanticKeys": [
+              "first-substitution"
+            ],
+            "label": "PRIMA SOSTITUZIONE NEL MATCH (4 ESITI) · TEMPO 2"
+          },
+          {
+            "providerSelectionId": "5328456369",
+            "overlapKey": "market-entrambe le squadre almeno x tiri in porta",
+            "semanticKeys": [
+              "volume-shots-on-target"
+            ],
+            "label": "Entrambe almeno 3 tiri in porta"
           }
         ]
       }

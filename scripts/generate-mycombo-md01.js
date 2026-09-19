@@ -23,7 +23,6 @@ const excludedMarketNames = new Set([
   "ARBITRO CONSULTA MONITOR VAR INC TS",
   "RIGORE SI/NO"
 ]);
-const excludedMarketPatterns = ["HANDICAP", "AH", "ASIATICO"];
 const tierLimits = {
   Safe: { minimum: 2, maximum: 4, preferred: 2 },
   Balanced: { minimum: 4, maximum: 7, preferred: 4 },
@@ -34,17 +33,6 @@ const matchById = new Map(matches.map(match => [match.id, match]));
 const predictionById = new Map(predictionData.predictions.map(prediction => [prediction.matchId, prediction]));
 const clean = value => String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
 const round = value => Math.round(value * 100) / 100;
-
-function isExcludedHandicap(value) {
-  const text = [value?.marketName, value?.variantName, value?.overlapKey, value?.label, ...(value?.semanticKeys || [])]
-    .filter(Boolean)
-    .join(" ");
-  return /\bHANDICAP\b|\bAH\b|\bASIATIC[OA]\b/i.test(text);
-}
-
-function containsExcludedHandicap(portfolios) {
-  return (portfolios || []).some(portfolio => (portfolio.legs || []).some(isExcludedHandicap));
-}
 
 function selectedPlayer(variantName, match) {
   const variant = clean(variantName);
@@ -327,7 +315,6 @@ function candidatePool(event, prediction, match) {
   }
 
   return [...new Map(candidates.map(candidate => [candidate.providerSelectionId, { ...candidate, semanticKeys: candidate.semanticKeys || [] }])).values()]
-    .filter(candidate => !isExcludedHandicap(candidate))
     .filter(candidate => {
       const marketName = String(candidate.overlapKey || "").replace(/^market-/, "");
       return ![...excludedMarketNames].some(name => clean(name) === marketName);
@@ -419,7 +406,6 @@ const output = {
     tierLimits,
     displayedComboLegs: null,
     excludedMarketNames: [...excludedMarketNames],
-    excludedMarketPatterns,
     minLegOddsInclusive: minimumLegOdds,
     maxLegOddsInclusive: maximumLegOdds,
     uniqueMarketFamilyWithinPortfolio: true,
@@ -436,13 +422,10 @@ for (const event of odds.events) {
   const prediction = predictionById.get(event.canonicalMatchId);
   const match = matchById.get(event.canonicalMatchId);
   if (!prediction || !match || match.matchday !== matchday) continue;
-  if (match.status === "finished" && previousOutput?.matches?.[event.canonicalMatchId] && !containsExcludedHandicap(previousOutput.matches[event.canonicalMatchId])) {
+  if (match.status === "finished" && previousOutput?.matches?.[event.canonicalMatchId]) {
     output.matches[event.canonicalMatchId] = previousOutput.matches[event.canonicalMatchId];
     console.log(`${event.canonicalMatchId}: portafogli storici congelati (partita conclusa)`);
     continue;
-  }
-  if (match.status === "finished" && containsExcludedHandicap(previousOutput?.matches?.[event.canonicalMatchId])) {
-    console.log(`${event.canonicalMatchId}: portafogli storici rigenerati per rimuovere handicap vietati`);
   }
   const pool = candidatePool(event, prediction, match);
   console.log(`${event.canonicalMatchId}: ${pool.length} candidati modellati · ${pool.filter(candidate => candidate.anchor).length} ancore · ${new Set(pool.map(candidate => candidate.overlapKey)).size} gruppi`);
