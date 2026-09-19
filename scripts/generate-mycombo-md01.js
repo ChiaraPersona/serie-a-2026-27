@@ -327,14 +327,18 @@ function candidatePool(event, prediction, match) {
       ["1X2 ESITO FINALE", "result-fulltime"],
       ["UNDER/OVER", "goals-fulltime"],
       ["1 TEMPO: 1X2 CORNER", "corners-first-half"],
-      ["PRIMA SOSTITUZIONE NEL MATCH", "first-substitution"],
-      ["PARI/DISPARI", "goals-parity"],
       ["TEMPO PRIMO GOAL", "first-goal-period"],
       ["DOPPIA CHANCE TEMPO X", "result-first-half"],
       ["U/O GOAL SQUADRA TEMPO", "team-goals-period"],
       ["VINCE O QUASI (1UP/2UP)", "win-or-lead"],
-      ["CASA: PARI/DISPARI", "home-goals-parity"],
-      ["OSPITE: PARI/DISPARI", "away-goals-parity"]
+      ["UNDER/OVER TEMPO X", "goals-period"],
+      ["CASA: SEGNA GOAL 2T", "home-goal-second-half"],
+      ["OSPITE: SEGNA GOAL 2T", "away-goal-second-half"],
+      ["SQUADRA X SEGNA NEI 2 TEMPI", "team-scores-both-halves"],
+      ["1 TEMPO: ESITO 1X2", "result-first-half-1x2"],
+      ["2 TEMPO: ESITO 1X2", "result-second-half-1x2"],
+      ["SEGNA ULTIMO GOAL", "last-goal-team"],
+      ["SEGNA GOAL TEMPO X", "scoring-team-period"]
     ]);
     const home = teamById.get(match.homeTeam)?.name || match.homeTeam;
     const away = teamById.get(match.awayTeam)?.name || match.awayTeam;
