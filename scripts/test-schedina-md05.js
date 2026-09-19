@@ -16,7 +16,7 @@ assert.equal(data.slips.length, 8);
 assert.equal(legs.length, 45);
 assert.equal(Object.keys(source.matches).length, 10);
 assert.equal(source.constraints.minLegOddsInclusive, 1.15);
-assert.equal(source.constraints.displayedComboLegs, 10);
+assert.equal(source.constraints.displayedComboLegs, null);
 assert.deepEqual(source.constraints.excludedMarketNames, ["ARBITRO CONSULTA MONITOR VAR INC TS", "RIGORE SI/NO"]);
 assert(!data.slips.some(slip => ["exact-score", "exact-score-multi"].includes(slip.type)));
 assert(!legs.some(leg => /^RISULTATO ESATTO/.test(leg.market)));
@@ -33,12 +33,12 @@ assert.deepEqual(data.slips.map(slip => slip.name), [
   "Poker ammoniti 1",
   "Poker ammoniti 2"
 ]);
-assert(renderer.includes("MyCombo da 10 eventi · 5ª giornata"));
+assert(renderer.includes("MyCombo compatibili · 5ª giornata"));
 assert(renderer.indexOf("${myCombo}${roundContent") > renderer.indexOf("const myCombo="), "Le MyCombo devono precedere le schedine nella pagina MD05");
 
 for (const prediction of predictions) {
   const combo = prediction.combinations.find(item => item.tier === "Safe");
-  assert.equal(combo?.legs.length, 10, `${prediction.matchId}: la MyCombo deve contenere esattamente 10 eventi`);
+  assert(combo?.legs.length >= 3 && combo.legs.length <= 6, `${prediction.matchId}: la MyCombo Safe deve contenere da 3 a 6 eventi`);
   assert(combo.legs.every(leg => leg.odds >= 1.15), `${prediction.matchId}: quota MyCombo sotto 1,15`);
   assert(!combo.legs.some(leg => /MONITOR VAR|RIGORE SI\/NO/i.test(leg.market)), `${prediction.matchId}: mercato VAR o rigore vietato`);
   assert.equal(new Set(combo.legs.map(leg => leg.overlapKey)).size, combo.legs.length, `${prediction.matchId}: mercato ripetuto`);

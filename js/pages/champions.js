@@ -191,7 +191,7 @@ export function createPage(deps){
 
   function pilotReadingDetail(fixture,pilot,backtest,squads,branding,h2h,motivationEntry,styleProfiles,attackByTeam,surpriseEntry,playerMarketEntry,playerMarketDataset){
     const scoreCards=fixture.scoreForecast.display.map((score,index)=>`<div class="${index===0?"is-central":""}"><strong>${esc(score.score)}</strong><small>${esc(score.label)} · ${score.probabilityPct.toFixed(1)}%</small></div>`).join("");
-    const confidence=fixture.confidence==="high"?"Alta":fixture.confidence==="medium"?"Media":fixture.confidence==="low"?"Bassa":"N/D";
+    const confidence=Number.isFinite(fixture.confidenceScore)?`${fixture.confidenceScore}/100`:"N/D";
     const combinedMetric=key=>{const values=fixture.teamProjections.map(team=>team[key]);return values.every(Boolean)?{central:values.reduce((sum,item)=>sum+item.central,0),min:values.reduce((sum,item)=>sum+item.min,0),max:values.reduce((sum,item)=>sum+item.max,0)}:null};
     const range=metric=>metric?`${metric.central.toFixed(1)} <small>${metric.min.toFixed(1)}–${metric.max.toFixed(1)}</small>`:"N/D";
     const matchProjectionData=fixture.matchProjection||{shotsTotal:combinedMetric("shotsTotal"),shotsOnTarget:combinedMetric("shotsOnTarget"),corners:combinedMetric("corners")};

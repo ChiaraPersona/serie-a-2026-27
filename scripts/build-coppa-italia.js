@@ -16,8 +16,8 @@ function shortDate(value) {
 function scheduleLabel(match) {
   const stage = stageById.get(match.stage);
   if (match.date) return `${shortDate(match.date)}${match.kickoff ? ` · ${match.kickoff}` : ""}${match.tv ? ` · ${match.tv}` : ""}`;
-  if (stage.legs) return stage.legs.map(leg => `${leg.label} ${shortDate(leg.date)}`).join(" · ");
-  if (stage.dateWindow?.length) return stage.dateWindow.map(shortDate).join(" · ");
+  if (stage.legs) return stage.legs.map(leg => `${leg.label} ${shortDate(leg.date)}${leg.kickoff ? ` · ${leg.kickoff}` : ""}`).join(" · ");
+  if (stage.dateWindow?.length) return `${stage.dateWindow.map(shortDate).join(" · ")}${stage.kickoff ? ` · ${stage.kickoff}` : ""}`;
   return "Data da definire";
 }
 

@@ -4,23 +4,23 @@ const root = path.resolve(__dirname, "..");
 const teams = JSON.parse(fs.readFileSync(path.join(root, "data/normalized/teams.json"), "utf8"));
 const esc = value => String(value ?? "").replace(/[&<>\"]/g, character => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[character]));
 const pages = [
-  ["index.html","home","Home"],["squadra.html","team","Squadra"],["statistiche-squadre.html","team-stats","Statistiche squadre"],["lettura.html","readings","Lettura"],["coppa-italia.html","cup","Coppa Italia"],["champions-league.html","champions","Champions League"],["arbitri.html","referees","Arbitri"],["fantacalcio.html","fantasy","Fantacalcio"],["schedina.html","betting","Schedina"],["fonti.html","sources","Fonti"]
+  ["index.html","home","Home"],["squadra.html","team","Squadra"],["statistiche-squadre.html","team-stats","Statistiche squadre"],["lettura.html","readings","Lettura"],["coppa-italia.html","cup","Coppa Italia"],["champions-league.html","champions","Champions League"],["fantacalcio.html","fantasy","Fantacalcio"],["schedina.html","betting","Schedina"],["fonti.html","sources","Fonti"]
 ];
 const hiddenPageIds = new Set(["fantasy"]);
 const navigationPages = pages.filter(([,id]) => !["team", "sources"].includes(id) && !hiddenPageIds.has(id));
 const navigation = (depth = "", activeId = "") => navigationPages.map(([file, id, label]) => `<a class="page-link${id === activeId ? " active" : ""}" data-page-link="${id}" href="${depth}${file}">${label}</a>`).join("");
-const footer = (depth = "") => `<footer class="site-footer"><div class="site-footer-inner"><div class="site-footer-top"><div class="site-footer-intro"><a class="footer-brand" href="${depth}index.html"><span class="footer-brand-mark"><img src="${depth}assets/images/serie-a-logo-mark.png" alt=""></span><span><strong>Serie A 2026/27</strong><small>Campionato e Coppa Italia</small></span></a><p>Calendario, rose, statistiche e letture della stagione raccolti in un unico spazio.</p><span class="footer-season">Stagione 2026/27</span></div><nav class="footer-nav" aria-label="Navigazione nel footer"><div><strong>Campionato</strong><a href="${depth}index.html">Home</a><a href="${depth}statistiche-squadre.html">Statistiche squadre</a><a href="${depth}arbitri.html">Arbitri</a></div><div><strong>Approfondimenti</strong><a href="${depth}lettura.html">Lettura</a><a href="${depth}coppa-italia.html">Coppa Italia</a><a href="${depth}champions-league.html">Champions League</a><a href="${depth}schedina.html">Schedina</a><a href="${depth}fonti.html">Fonti</a></div></nav></div><div class="site-footer-bottom"><p>Progetto statico indipendente <span aria-hidden="true">·</span> Fonti consultabili nella pagina dedicata</p><a href="#site-top">Torna su <span aria-hidden="true">↑</span></a></div></div></footer>`;
+const footer = (depth = "") => `<footer class="site-footer"><div class="site-footer-inner"><div class="site-footer-top"><div class="site-footer-intro"><a class="footer-brand" href="${depth}index.html"><span class="footer-brand-mark"><img src="${depth}assets/images/serie-a-logo-mark.png" alt=""></span><span><strong>Serie A 2026/27</strong><small>Campionato e Coppa Italia</small></span></a><p>Calendario, rose, statistiche e letture della stagione raccolti in un unico spazio.</p><span class="footer-season">Stagione 2026/27</span></div><nav class="footer-nav" aria-label="Navigazione nel footer"><div><strong>Campionato</strong><a href="${depth}index.html">Home</a><a href="${depth}statistiche-squadre.html">Statistiche squadre</a></div><div><strong>Approfondimenti</strong><a href="${depth}lettura.html">Lettura</a><a href="${depth}coppa-italia.html">Coppa Italia</a><a href="${depth}champions-league.html">Champions League</a><a href="${depth}schedina.html">Schedina</a><a href="${depth}fonti.html">Fonti</a></div></nav></div><div class="site-footer-bottom"><p>Progetto statico indipendente <span aria-hidden="true">·</span> Fonti consultabili nella pagina dedicata</p><a href="#site-top">Torna su <span aria-hidden="true">↑</span></a></div></div></footer>`;
 const fontLinks = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">';
 const withFonts = html => html.replace("</title>", `</title>${fontLinks}`);
 const version = "20260901-coppa-round16-calendar-v1";
 const homeVersion = "20260915-results-md04-complete-v1";
 const calendarVersion = "20260915-results-md04-complete-v1";
 const teamVersion = "20260915-results-md04-complete-v1";
-const leaderboardVersion = "20260915-results-md04-complete-v1";
-const bettingVersion = "20260918-md05-mycombo-no-var-penalty-v1";
-const readingVersion = "20260915-results-md04-complete-v1";
-const cupVersion = "20260908-results-calendar-v1";
-const championsVersion = "20260912-champions-results-v1";
+const leaderboardVersion = "20260919-player-comparator-v1";
+const bettingVersion = "20260919-mycombo-semantic-v1";
+const readingVersion = "20260919-reading-layout-v1";
+const cupVersion = "20260919-results-calendar-v1";
+const championsVersion = "20260919-motivation-layout-v1";
 const fantasyVersion = "20260915-results-md04-complete-v1";
 const headToHeadPath = path.join(root, "data/generated/head-to-head/first-leg-2026-27.json");
 if (fs.existsSync(headToHeadPath)) {

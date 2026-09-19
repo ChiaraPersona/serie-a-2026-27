@@ -309,6 +309,7 @@ const fixtures = pilotFixtures.map(fixture => {
     motivation: fixtureMotivation,
     favorite: result.favorite,
     confidence: result.confidence,
+    confidenceScore: selection.probabilityPct,
     expectedGoals: { home: round(fitted.home), away: round(fitted.away), total: round(fitted.home + fitted.away), domesticTotalPrior: detailedVolumesAvailable ? round(totalPrior) : null, championsOpeningTotalPrior: detailedVolumesAvailable ? null : round(historicalOpeningTotalPrior), method: detailedVolumesAvailable ? "lambda Poisson adattate alle probabilità 1X2 UEFA con prior gol domestico" : "lambda Poisson adattate alle probabilità 1X2 UEFA con prior storico della prima giornata Champions" },
     goalBand: goalBand(fitted.matrix),
     exactScores,

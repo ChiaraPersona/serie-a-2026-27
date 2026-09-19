@@ -1,27 +1,27 @@
 {
   "competition": "coppa-italia",
   "season": "2026-27",
-  "updatedAt": "2026-09-08",
+  "updatedAt": "2026-09-19",
   "source": {
-    "label": "Lega Serie A · Calendario e risultati Coppa Italia Frecciarossa 2026/2027",
-    "url": "https://www.legaseriea.it/coppa-italia/calendario-risultati",
-    "sourceType": "competition-official",
-    "retrievedAt": "2026-09-08"
+    "label": "Diretta.it · Coppa Italia 2026/2027, calendario e risultati",
+    "url": "https://www.diretta.it/calcio/italia/coppa-italia/calendario/",
+    "sourceType": "live-score-calendar",
+    "retrievedAt": "2026-09-19"
   },
   "calendarVerification": {
-    "checkedAt": "2026-09-08",
-    "url": "https://www.legaseriea.it/coppa-italia/calendario-risultati",
-    "note": "Genoa-Südtirol e Fiorentina-Pisa il 15 settembre alle 18:00 e 21:00. Date e orari delle singole gare degli ottavi ancora da comunicare.",
-    "resultsCalendarUrl": "https://www.repubblica.it/sport/dirette/calcio/coppa-italia-2026/"
+    "checkedAt": "2026-09-19",
+    "url": "https://www.diretta.it/calcio/italia/coppa-italia/calendario/",
+    "note": "Diretta.it mostra gli ottavi il 2 dicembre alle 18:00, i quarti il 3 febbraio alle 18:00, le semifinali il 3 e 21 marzo alle 18:00 e la finale il 19 maggio alle 21:00.",
+    "resultsCalendarUrl": "https://www.diretta.it/calcio/italia/coppa-italia/risultati/"
   },
   "stages": [
     {"id": "preliminary", "label": "Turno preliminare"},
     {"id": "round-32", "label": "Trentaduesimi di finale"},
     {"id": "round-16", "label": "Sedicesimi di finale", "dateWindow": ["2026-09-01", "2026-09-02", "2026-09-03", "2026-09-15"]},
-    {"id": "round-of-16", "label": "Ottavi di finale", "dateWindow": ["2026-12-02", "2026-12-16", "2027-01-13"]},
-    {"id": "quarter", "label": "Quarti di finale", "dateWindow": ["2027-02-03", "2027-02-10"]},
-    {"id": "semifinal", "label": "Semifinali", "legs": [{"label": "Andata", "date": "2027-03-03"}, {"label": "Ritorno", "date": "2027-03-24"}]},
-    {"id": "final", "label": "Finale", "dateWindow": ["2027-05-19"]}
+    {"id": "round-of-16", "label": "Ottavi di finale", "dateWindow": ["2026-12-02"], "kickoff": "18:00"},
+    {"id": "quarter", "label": "Quarti di finale", "dateWindow": ["2027-02-03"], "kickoff": "18:00"},
+    {"id": "semifinal", "label": "Semifinali", "legs": [{"label": "Andata", "date": "2027-03-03", "kickoff": "18:00"}, {"label": "Ritorno", "date": "2027-03-21", "kickoff": "18:00"}]},
+    {"id": "final", "label": "Finale", "dateWindow": ["2027-05-19"], "kickoff": "21:00"}
   ],
   "matches": [
     {
@@ -321,7 +321,7 @@
       "resultSource": {"label": "Sky Sport · Fiorentina-Benevento", "url": "https://sport.sky.it/calcio/coppa-italia/partite/2026/giornata-2/fiorentina-benevento/risultato-gol", "sourceType": "editorial-live-data", "retrievedAt": "2026-08-17"}
     },
 
-    {"id": "r16-1", "stage": "round-16", "branch": 1, "home": "Genoa", "away": "Südtirol", "date": "2026-09-15", "kickoff": "18:00"},
+    {"id": "r16-1", "stage": "round-16", "branch": 1, "home": "Genoa", "away": "Südtirol", "date": "2026-09-15", "kickoff": "18:00", "status": "finished", "score": {"home": 1, "away": 0}, "winner": "Genoa", "scorers": [], "bookings": [], "resultSource": {"label": "Diretta.it · Genoa-Südtirol 1-0", "url": "https://www.diretta.it/calcio/italia/coppa-italia/risultati/", "sourceType": "live-score-results", "retrievedAt": "2026-09-19"}},
     {
       "id": "r16-2",
       "stage": "round-16",
@@ -514,9 +514,9 @@
       "refereeAssignment": {"referee": {"name": "Matteo Marchetti", "slug": "matteo-marchetti"}, "assistants": ["Luciani", "El Filali"], "fourthOfficial": "Drigo", "var": "Cosso", "avar": "Ghersini"},
       "refereeSource": {"label": "Lega Serie A · Designazioni Sedicesimi", "sourceUrl": "https://www.legaseriea.it/coppa-italia/news/le-designazioni-arbitrali-dei-sedicesimi-x1576", "sourceType": "aia-figc-designations", "retrievedAt": "2026-09-01"}
     },
-    {"id": "r16-8", "stage": "round-16", "branch": 8, "home": "Fiorentina", "away": "Pisa", "date": "2026-09-15", "kickoff": "21:00"},
+    {"id": "r16-8", "stage": "round-16", "branch": 8, "home": "Fiorentina", "away": "Pisa", "date": "2026-09-15", "kickoff": "21:00", "status": "finished", "score": {"home": 3, "away": 0}, "winner": "Fiorentina", "scorers": [], "bookings": [], "resultSource": {"label": "Diretta.it · Fiorentina-Pisa 3-0", "url": "https://www.diretta.it/calcio/italia/coppa-italia/risultati/", "sourceType": "live-score-results", "retrievedAt": "2026-09-19"}},
 
-    {"id": "oct-1", "stage": "round-of-16", "branch": 1, "home": "Inter", "away": "Vincente percorso 1", "seed": 1},
+    {"id": "oct-1", "stage": "round-of-16", "branch": 1, "home": "Inter", "away": "Genoa", "seed": 1},
     {
       "id": "oct-2",
       "stage": "round-of-16",
@@ -537,7 +537,7 @@
     },
     {"id": "oct-6", "stage": "round-of-16", "branch": 6, "home": "Juventus", "away": "Sassuolo", "seed": 6},
     {"id": "oct-7", "stage": "round-of-16", "branch": 7, "home": "Atalanta", "away": "Udinese", "seed": 7},
-    {"id": "oct-8", "stage": "round-of-16", "branch": 8, "home": "Napoli", "away": "Vincente percorso 8", "seed": 8},
+    {"id": "oct-8", "stage": "round-of-16", "branch": 8, "home": "Napoli", "away": "Fiorentina", "seed": 8},
 
     {"id": "qf-1", "stage": "quarter", "branch": 1, "home": "Vincente percorso 1", "away": "Vincente percorso 2"},
     {"id": "qf-2", "stage": "quarter", "branch": 3, "home": "Vincente percorso 3", "away": "Vincente percorso 4"},
