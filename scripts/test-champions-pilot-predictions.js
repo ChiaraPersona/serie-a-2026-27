@@ -18,7 +18,7 @@ assert.strictEqual(Object.keys(data.coverage.leagueBaselineMatches).length, 15);
 assert.strictEqual(data.coverage.oddsMatched, 18);
 assert.strictEqual(data.coverage.resultOdds, 18);
 assert.strictEqual(data.coverage.goalOdds, 18);
-assert.strictEqual(data.coverage.requestedVolumeOdds, 11);
+assert.strictEqual(data.coverage.requestedVolumeOdds, 13);
 assert.strictEqual(data.coverage.referees, 0);
 assert.strictEqual(data.coverage.probableLineups, 0);
 assert.strictEqual(data.readingTemplate.id, "serie-a-reading-v1");
@@ -26,6 +26,7 @@ assert.strictEqual(data.readingTemplate.graphics, "champions");
 assert.deepStrictEqual(data.readingTemplate.sections, ["summary", "decisionSupport", "headToHead", "referee", "teamContext", "projections", "discipline", "mvp", "myCombo"]);
 for (const fixture of data.fixtures) {
   assert.strictEqual(fixture.teamProjections.length, 2, `${fixture.fixtureId}: proiezioni squadra`);
+  assert(Number.isFinite(fixture.confidenceScore) && fixture.confidenceScore >= 0 && fixture.confidenceScore <= 100, `${fixture.fixtureId}: confidenza numerica non valida`);
   assert(Math.abs(fixture.probabilities.home + fixture.probabilities.draw + fixture.probabilities.away - 100) < 0.01, `${fixture.fixtureId}: 1X2 non normalizzato`);
   assert.strictEqual(fixture.goals.length, 3, `${fixture.fixtureId}: soglie gol`);
   assert.strictEqual(fixture.goalBand.interval, "p20-p80", `${fixture.fixtureId}: fascia gol`);

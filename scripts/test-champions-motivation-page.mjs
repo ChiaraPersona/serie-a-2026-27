@@ -19,7 +19,7 @@ assert.equal((app.innerHTML.match(/<tr>/g)||[]).length,37);
 location.search="?match=ucl-2026-27-md01-01";
 location.pathname="/champions-league.html";
 await createPage({esc,load}).render();
-assert(app.innerHTML.includes("Motivazione, urgenza e pressione"));
+assert(app.innerHTML.includes("Motivation Index"));
 assert(app.innerHTML.includes("Come è calcolato"));
 assert(app.innerHTML.includes("QualificationImportance")||app.innerHTML.includes("qualificationImportance"));
 assert(app.innerHTML.includes("AEK Athens"));
