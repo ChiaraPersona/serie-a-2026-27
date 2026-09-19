@@ -22,6 +22,9 @@ let valid = 0;
 let unavailable = 0;
 
 for (const [matchId, portfolios] of Object.entries(source.matches || {})) {
+  if (portfolios.some(portfolio => (portfolio.legs || []).some(leg => /\bHANDICAP\b|\bAH\b|\bASIATIC[OA]\b/i.test(`${leg.overlapKey || ""} ${leg.label || ""} ${(leg.semanticKeys || []).join(" ")}`)))) {
+    throw new Error(`${matchId}: handicap vietato presente nelle MyCombo`);
+  }
   if (matchById.get(matchId)?.status === "finished") continue;
   const prediction = predictionByMatch.get(matchId);
   if (!prediction) throw new Error(`Pronostico non trovato: ${matchId}`);
@@ -39,6 +42,9 @@ for (const [matchId, portfolios] of Object.entries(source.matches || {})) {
       throw new Error(`${matchId}/${portfolio.tier}: ${portfolio.legs?.length || 0} gambe fuori dall'intervallo ${limits.minimum}-${limits.maximum}`);
     }
     if (!combo?.legs?.length || combo.qualityStatus === "nd") throw new Error(`${matchId}/${portfolio.tier}: portafoglio non disponibile nel pronostico rigenerato`);
+    if (combo.legs.some(leg => /\bHANDICAP\b|\bAH\b|\bASIATIC[OA]\b/i.test(`${leg.market || ""} ${leg.variant || ""} ${leg.overlapKey || ""} ${leg.label || ""} ${(leg.semanticKeys || []).join(" ")}`))) {
+      throw new Error(`${matchId}/${portfolio.tier}: handicap vietato nel pronostico rigenerato`);
+    }
     const minimumOdds = source.constraints.minLegOddsInclusive;
     const maximumOdds = source.constraints.maxLegOddsInclusive;
     if (combo.legs.some(leg => leg.odds < minimumOdds || leg.odds > maximumOdds)) throw new Error(`${matchId}/${portfolio.tier}: quota singola fuori dal range ${minimumOdds}-${maximumOdds}`);
