@@ -35,11 +35,13 @@ const excludedMarketNames = new Set([
   "1 TEMPO: SEGNA ULTIMO GOAL",
   "2 TEMPO: SEGNA ULTIMO GOAL",
   "1 TEMPO: 1X2 CORNER",
-  "TEMPO PRIMO GOAL"
+  "TEMPO PRIMO GOAL",
+  "DRAW NO BET",
+  "DRAW NO BET TEMPO X"
 ]);
 const excludedMarketNameFragments = ["DUO", "MULTIGIOCAT"];
 const tierLimits = {
-  Safe: matchday === 5 ? { minimum: 6, maximum: 10, preferred: 10 } : { minimum: 3, maximum: 6, preferred: 3 },
+  Safe: matchday === 5 ? { minimum: 10, maximum: 10, preferred: 10 } : { minimum: 3, maximum: 6, preferred: 3 },
   Balanced: { minimum: 4, maximum: 7, preferred: 4 },
   Aggressive: { minimum: 5, maximum: 8, preferred: 5 }
 };
@@ -350,6 +352,15 @@ function candidatePool(event, prediction, match) {
       ["SQUADRA X SEGNA NEI 2 TEMPI", "team-scores-both-halves"],
       ["1 TEMPO: ESITO 1X2", "result-first-half-1x2"],
       ["2 TEMPO: ESITO 1X2", "result-second-half-1x2"],
+      ["GOAL/NOGOAL TEMPO X", "goals-period-btts"],
+      ["SQUADRA X VINCE ALMENO UN TEMPO", "result-team-wins-half"],
+      ["CASA: VINCE A 0", "result-home-win-to-nil"],
+      ["OSPITE: VINCE A 0", "result-away-win-to-nil"],
+      ["CASA: VINCE A 0 1T", "result-home-win-to-nil-first-half"],
+      ["OSPITE: VINCE A 0 1T", "result-away-win-to-nil-first-half"],
+      ["CASA: VINCE A 0 2T", "result-home-win-to-nil-second-half"],
+      ["OSPITE: VINCE A 0 2T", "result-away-win-to-nil-second-half"],
+      ["1X2 NEI MINUTI X-Y", "result-opening-window"],
       ["SEGNA ULTIMO GOAL", "last-goal-team"],
       ["SEGNA GOAL TEMPO X", "scoring-team-period"]
     ]);
@@ -362,6 +373,10 @@ function candidatePool(event, prediction, match) {
         .map(selection => ({ market, selection })));
       const choice = choices.sort((left, right) => left.selection.odds - right.selection.odds || String(left.selection.providerSelectionId).localeCompare(String(right.selection.providerSelectionId)))[0];
       if (!choice) continue;
+      const period = /(?:TEMPO|\b)(?:\s*)2\b|2 TEMPO/i.test(choice.market.variantName) ? "second-half" : "first-half";
+      const resolvedSemanticKey = marketName.includes("TEMPO X")
+        ? semanticKey.replace("first-half", period).replace("period", period)
+        : semanticKey;
       const label = `${choice.market.variantName} · ${choice.selection.name}`
         .replace(/TEAM 1|SQUADRA 1/g, home)
         .replace(/TEAM 2|SQUADRA 2/g, away);
@@ -370,7 +385,7 @@ function candidatePool(event, prediction, match) {
         overlapKey: `market-${clean(choice.market.marketName)}`,
         label,
         odds: choice.selection.odds,
-        semanticKeys: [semanticKey],
+        semanticKeys: [resolvedSemanticKey],
         quality: 112 + (maximumLegOdds - choice.selection.odds) * 5,
         anchor: false,
         modelSupported: false

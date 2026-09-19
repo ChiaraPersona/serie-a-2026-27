@@ -35,13 +35,13 @@ const server = http.createServer((request, response) => {
       const cards = page.locator(".betting-mycombo-card");
       assert.equal(await cards.count(), 10, `schedina ${width}: servono dieci MyCombo`);
       const openCards = page.locator('.betting-mycombo-card:not([data-finished="true"])');
-      assert.doesNotMatch(await openCards.allInnerTexts().then(values => values.join("\n")), /ARBITRO CONSULTA MONITOR VAR|RIGORE SI\/NO|PRIMA SOSTITUZIONE|PARI\/DISPARI|HANDICAP|SEGNA GOAL 2 TEMPO|SEGNA NEI 2 TEMPI|U\/O GOAL SQUADRA TEMPO|SEGNA ULTIMO GOAL|1 TEMPO: 1X2 CORNER|TEMPO PRIMO GOAL|\bDUO\b|MULTIGIOCAT/i);
+      assert.doesNotMatch(await openCards.allInnerTexts().then(values => values.join("\n")), /ARBITRO CONSULTA MONITOR VAR|RIGORE SI\/NO|PRIMA SOSTITUZIONE|PARI\/DISPARI|HANDICAP|SEGNA GOAL 2 TEMPO|SEGNA NEI 2 TEMPI|U\/O GOAL SQUADRA TEMPO|SEGNA ULTIMO GOAL|1 TEMPO: 1X2 CORNER|TEMPO PRIMO GOAL|DRAW NO BET|\bDUO\b|MULTIGIOCAT/i);
       for (let index = 0; index < 10; index += 1) {
         const card = cards.nth(index);
         const markets = await card.locator("ol li strong").allTextContents();
         const quotedOdds = (await card.locator("ol li b").allTextContents()).map(value => Number(value.replace(",", ".")));
         const finished = await card.getAttribute("data-finished") === "true";
-        assert(finished ? markets.length === 10 : markets.length >= 6 && markets.length <= 10, `schedina ${width}: numero eventi non valido nella MyCombo ${index + 1}`);
+        assert.equal(markets.length, 10, `schedina ${width}: la MyCombo ${index + 1} deve contenere 10 eventi`);
         assert.equal(new Set(markets).size, markets.length, `schedina ${width}: mercato ripetuto nella MyCombo ${index + 1}`);
         assert(quotedOdds.every(value => value >= 1.15), `schedina ${width}: quota sotto 1,15 nella MyCombo ${index + 1}`);
       }

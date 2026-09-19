@@ -100,6 +100,18 @@ export function settleLeg(leg,match){
 
   const outcome=home>away?"1":home<away?"2":"X";
   if(market.includes("1X2 ESITO FINALE"))return resultStatus(selection===outcome);
+  if(market==="1 TEMPO: ESITO 1X2"||market==="2 TEMPO: ESITO 1X2"){
+    const period=periodScores(market);
+    if(!period)return unavailable();
+    const periodOutcome=period.home>period.away?"1":period.home<period.away?"2":"X";
+    return resultStatus(selection===periodOutcome);
+  }
+  if(market==="DRAW NO BET"||market==="DRAW NO BET TEMPO X"){
+    const score=market==="DRAW NO BET"?{home,away}:periodScores(leg?.variant);
+    if(!score||!["1","2"].includes(selection))return unavailable();
+    if(score.home===score.away)return voided();
+    return resultStatus(selection===(score.home>score.away?"1":"2"));
+  }
   if(market.includes("DOPPIA CHANCE")&&!market.includes("TEMPO"))return resultStatus(selection.includes(outcome));
   if(market==="GOAL/NOGOAL"){
     if(!["GOAL","NOGOAL"].includes(selection))return unavailable();
@@ -134,6 +146,39 @@ export function settleLeg(leg,match){
     const period=periodScores(`${market} ${leg?.variant||""}`);
     return period?settleThreshold(selection,period.home+period.away,thresholdFromLabel(leg?.label)):unavailable();
   }
+  if(market==="GOAL/NOGOAL TEMPO X"){
+    const period=periodScores(leg?.variant);
+    if(!period||!["GOAL","NOGOAL","NO GOL"].includes(selection))return unavailable();
+    const both=period.home>0&&period.away>0;
+    return resultStatus(selection==="GOAL"?both:!both);
+  }
+  if(market==="SQUADRA X VINCE ALMENO UN TEMPO"){
+    if(!halfTime||!["SI","NO"].includes(selection))return unavailable();
+    const descriptor=normalized(leg?.variant),side=descriptor.includes("SQUADRA 1")?"home":descriptor.includes("SQUADRA 2")?"away":null;
+    if(!side)return unavailable();
+    const other=side==="home"?"away":"home";
+    const wonHalf=halfTime[side]>halfTime[other]||(side==="home"?home-halfTime.home>away-halfTime.away:away-halfTime.away>home-halfTime.home);
+    return resultStatus(selection==="SI"?wonHalf:!wonHalf);
+  }
+  if(market.includes("VINCE A 0")){
+    if(!["SI","NO"].includes(selection))return unavailable();
+    const score=market.endsWith("1T")?halfTime:market.endsWith("2T")?periodScores("2 TEMPO"):{home,away};
+    if(!score)return unavailable();
+    const homeSide=market.startsWith("CASA"),wonToNil=homeSide?score.home>0&&score.away===0:score.away>0&&score.home===0;
+    return resultStatus(selection==="SI"?wonToNil:!wonToNil);
+  }
+  if(market==="1X2 NEI MINUTI X-Y"){
+    const endMinute=Number(normalized(leg?.variant).match(/(?:PRIMI|MINUTI)\s+(\d+)/)?.[1]);
+    if(!finite(endMinute)||!Array.isArray(match?.scorers)||match.scorers.length!==total)return unavailable();
+    let windowHome=0,windowAway=0;
+    for(const scorer of match.scorers.filter(item=>Number(item.minute)<=endMinute)){
+      if(comparableName(scorer.team)===comparableName(match.homeTeam))windowHome+=1;
+      else if(comparableName(scorer.team)===comparableName(match.awayTeam))windowAway+=1;
+      else return unavailable();
+    }
+    const windowOutcome=windowHome>windowAway?"1":windowHome<windowAway?"2":"X";
+    return resultStatus(selection===windowOutcome);
+  }
   if(market==="TEMPO PRIMO GOAL"){
     const firstGoal=[...(match?.scorers||[])].filter(item=>finite(item.minute)).sort((left,right)=>Number(left.minute)-Number(right.minute))[0];
     const actualPeriod=firstGoal?(Number(firstGoal.minute)<=45?"1":"2"):"X";
@@ -143,9 +188,17 @@ export function settleLeg(leg,match){
     const variant=normalized(leg?.variant),predictedOutcome=normalized(leg?.predictedOutcome);
     const side=variant.includes("SQUADRA 1")||predictedOutcome==="1"?"home":variant.includes("SQUADRA 2")||predictedOutcome==="2"?"away":null;
     if(!side||!["SI","NO"].includes(selection))return unavailable();
-    const finalWin=side==="home"?home>away:away>home;
-    if(finalWin)return resultStatus(selection==="SI");
-    return unavailable();
+    const requiredLead=Number(variant.match(/(\d+)UP/)?.[1]||1);
+    if(!Array.isArray(match?.scorers)||match.scorers.length!==total)return unavailable();
+    let runningHome=0,runningAway=0,reached=false;
+    for(const scorer of [...match.scorers].sort((left,right)=>Number(left.minute)-Number(right.minute))){
+      if(comparableName(scorer.team)===comparableName(match.homeTeam))runningHome+=1;
+      else if(comparableName(scorer.team)===comparableName(match.awayTeam))runningAway+=1;
+      else return unavailable();
+      const lead=side==="home"?runningHome-runningAway:runningAway-runningHome;
+      if(lead>=requiredLead)reached=true;
+    }
+    return resultStatus(selection==="SI"?reached:!reached);
   }
 
   if(leg?.marketScope==="player"||market.includes("GIOCATORE")||market.includes("ASSIST")||market.includes("MARCATORE")){
@@ -200,6 +253,19 @@ export function settleLeg(leg,match){
   if(market.includes("PUNTI CARTELLINI"))return unavailable();
 
   const threshold=thresholdFromLabel(leg?.label);
+  if(market==="U/O GOAL SQUADRA TEMPO"){
+    const period=periodScores(leg?.variant);
+    const descriptor=normalized(`${leg?.variant||""} ${leg?.label||""}`);
+    const side=descriptor.includes("SQUADRA 1")?"home":descriptor.includes("SQUADRA 2")?"away":null;
+    return period&&side?settleThreshold(selection,period[side],threshold):unavailable();
+  }
+  if(market==="ENTRAMBE ALMENO X CORNER"){
+    const minimum=Number(normalized(`${leg?.variant||""} ${leg?.label||""}`).match(/ALMENO\s+(\d+(?:\.\d+)?)/)?.[1]);
+    const homeCorners=match?.teamStats?.home?.corners,awayCorners=match?.teamStats?.away?.corners;
+    if(!finite(minimum)||!finite(homeCorners)||!finite(awayCorners)||!["SI","NO"].includes(selection))return unavailable();
+    const both=Number(homeCorners)>=minimum&&Number(awayCorners)>=minimum;
+    return resultStatus(selection==="SI"?both:!both);
+  }
   if(market.includes("SQUADRA X")){
     if(market.includes("TIRI IN PORTA"))return settleThreshold(selection,teamStatFromLabel(leg,match,"shotsOnTarget"),threshold);
     if(market.includes("TIRI TOTALI"))return settleThreshold(selection,teamStatFromLabel(leg,match,"shots"),threshold);

@@ -11,7 +11,7 @@
     "quotaPolicy": "orientativa",
     "tierLimits": {
       "Safe": {
-        "minimum": 6,
+        "minimum": 10,
         "maximum": 10,
         "preferred": 10
       },
@@ -43,7 +43,9 @@
       "1 TEMPO: SEGNA ULTIMO GOAL",
       "2 TEMPO: SEGNA ULTIMO GOAL",
       "1 TEMPO: 1X2 CORNER",
-      "TEMPO PRIMO GOAL"
+      "TEMPO PRIMO GOAL",
+      "DRAW NO BET",
+      "DRAW NO BET TEMPO X"
     ],
     "excludedMarketNameFragments": [
       "DUO",
@@ -867,43 +869,15 @@
       {
         "tier": "Safe",
         "risk": "elevato · 10 eventi",
-        "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-17: quota 5 orientativa, 6-10 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
+        "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-17: quota 5 orientativa, 10-10 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
         "legs": [
           {
-            "providerSelectionId": "5330743298",
-            "overlapKey": "market-u o corner squadra x",
-            "semanticKeys": [
-              "volume-corners"
-            ],
-            "label": "Lazio almeno 3 corner"
-          },
-          {
-            "providerSelectionId": "5329993037",
-            "overlapKey": "market-u o falli subiti giocatore",
-            "semanticKeys": [],
-            "label": "FLORIANI MUSSOLINI R. almeno 1 falli subiti"
-          },
-          {
-            "providerSelectionId": "5328836711",
-            "overlapKey": "market-u o falli commessi giocatore",
-            "semanticKeys": [],
-            "label": "JUAN JESUS almeno 2 falli commessi"
-          },
-          {
-            "providerSelectionId": "5319698669",
-            "overlapKey": "market-under over",
+            "providerSelectionId": "5319720097",
+            "overlapKey": "market-combo u o casa u o ospite",
             "semanticKeys": [
               "goals"
             ],
-            "label": "Under 3,5 gol"
-          },
-          {
-            "providerSelectionId": "5319698687",
-            "overlapKey": "market-doppia chance",
-            "semanticKeys": [
-              "result"
-            ],
-            "label": "Lazio o pareggio (X2)"
+            "label": "U/O 3.5 Venezia + U/O 0.5 Lazio · UNDER+OVER"
           },
           {
             "providerSelectionId": "5328897499",
@@ -922,12 +896,82 @@
             "label": "DC TEMPO 1 · X2"
           },
           {
+            "providerSelectionId": "5319698650",
+            "overlapKey": "market-under over",
+            "semanticKeys": [
+              "goals-fulltime"
+            ],
+            "label": "U/O 1.5 · OVER"
+          },
+          {
+            "providerSelectionId": "5319703510",
+            "overlapKey": "market-goal nogoal tempo x",
+            "semanticKeys": [
+              "goals-first-half-btts"
+            ],
+            "label": "1 TEMPO: GOL/NOGOL · NO GOL"
+          },
+          {
+            "providerSelectionId": "5319720392",
+            "overlapKey": "market-ospite vince a 0",
+            "semanticKeys": [
+              "result-away-win-to-nil"
+            ],
+            "label": "VINCENTE A 0 SQUADRA OSPITE · NO"
+          },
+          {
+            "providerSelectionId": "5324039442",
+            "overlapKey": "market-1x2 nei minuti x y",
+            "semanticKeys": [
+              "result-opening-window"
+            ],
+            "label": "1X2 NEI PRIMI 15 MIN · X"
+          },
+          {
             "providerSelectionId": "5319703702",
             "overlapKey": "market-under over tempo x",
             "semanticKeys": [
-              "goals-period"
+              "goals-first-half"
             ],
             "label": "1 TEMPO: U/O 0.5 · OVER"
+          },
+          {
+            "providerSelectionId": "5319720922",
+            "overlapKey": "market-ospite vince a 0 1t",
+            "semanticKeys": [
+              "result-away-win-to-nil-first-half"
+            ],
+            "label": "VINCE A 0 TEAM2 1T · NO"
+          },
+          {
+            "providerSelectionId": "5319720882",
+            "overlapKey": "market-ospite vince a 0 2t",
+            "semanticKeys": [
+              "result-away-win-to-nil-second-half"
+            ],
+            "label": "VINCE A 0 TEAM2 2T · NO"
+          }
+        ]
+      },
+      {
+        "tier": "Balanced",
+        "logic": "Profilo balanced costruito sulle quote Sisal del 2026-09-17: quota 10 orientativa, 4-7 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
+        "legs": [
+          {
+            "providerSelectionId": "5330743565",
+            "overlapKey": "market-entrambe almeno x corner in entrambi i tempi",
+            "semanticKeys": [
+              "volume-corners"
+            ],
+            "label": "ENTRAMBE ALMENO 1 CORNER ENTRAMBI TEMPI · SI"
+          },
+          {
+            "providerSelectionId": "5319720863",
+            "overlapKey": "market-squadra x vince almeno un tempo",
+            "semanticKeys": [
+              "result-team-wins-half"
+            ],
+            "label": "Lazio VINCE ALMENO UN TEMPO · SI"
           },
           {
             "providerSelectionId": "5324282014",
@@ -938,26 +982,44 @@
             "label": "Lazio VINCE/VANTAGGIO (1UP) · SI"
           },
           {
-            "providerSelectionId": "5328889669",
-            "overlapKey": "market-entrambe le squadre almeno x tiri in porta",
+            "providerSelectionId": "5329993037",
+            "overlapKey": "market-u o falli subiti giocatore",
+            "semanticKeys": [],
+            "label": "FLORIANI MUSSOLINI R. almeno 1 falli subiti"
+          },
+          {
+            "providerSelectionId": "5319721434",
+            "overlapKey": "market-combo u o casa u o ospite",
             "semanticKeys": [
-              "volume-shots-on-target"
+              "goals"
             ],
-            "label": "Entrambe almeno 3 tiri in porta"
+            "label": "U/O 1.5 Venezia + U/O 2.5 Lazio · UNDER+UNDER"
           }
         ]
       },
       {
-        "tier": "Balanced",
-        "logic": "Profilo balanced costruito sulle quote Sisal del 2026-09-17: quota 10 orientativa, 4-7 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
+        "tier": "Aggressive",
+        "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-09-17: quota 20 orientativa, 5-8 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
         "legs": [
           {
-            "providerSelectionId": "5319703799",
-            "overlapKey": "market-u o squadra x",
+            "providerSelectionId": "5319721494",
+            "overlapKey": "market-combo u o casa u o ospite",
             "semanticKeys": [
               "goals"
             ],
-            "label": "U/O 1.5 Lazio · UNDER"
+            "label": "U/O 3.5 Venezia + U/O 1.5 Lazio · UNDER+UNDER"
+          },
+          {
+            "providerSelectionId": "5328836711",
+            "overlapKey": "market-u o falli commessi giocatore",
+            "semanticKeys": [],
+            "label": "JUAN JESUS almeno 2 falli commessi"
+          },
+          {
+            "providerSelectionId": "5329993037",
+            "overlapKey": "market-u o falli subiti giocatore",
+            "semanticKeys": [],
+            "label": "FLORIANI MUSSOLINI R. almeno 1 falli subiti"
           },
           {
             "providerSelectionId": "5330743529",
@@ -968,44 +1030,12 @@
             "label": "Lazio meno di 5 corner"
           },
           {
-            "providerSelectionId": "5329993037",
-            "overlapKey": "market-u o falli subiti giocatore",
-            "semanticKeys": [],
-            "label": "FLORIANI MUSSOLINI R. almeno 1 falli subiti"
-          },
-          {
-            "providerSelectionId": "5319703702",
-            "overlapKey": "market-under over tempo x",
+            "providerSelectionId": "5324282014",
+            "overlapKey": "market-vince o quasi 1up 2up",
             "semanticKeys": [
-              "goals-period"
+              "win-or-lead"
             ],
-            "label": "1 TEMPO: U/O 0.5 · OVER"
-          },
-          {
-            "providerSelectionId": "5319698650",
-            "overlapKey": "market-under over",
-            "semanticKeys": [
-              "goals-fulltime"
-            ],
-            "label": "U/O 1.5 · OVER"
-          },
-          {
-            "providerSelectionId": "5328835843",
-            "overlapKey": "market-u o falli commessi giocatore",
-            "semanticKeys": [],
-            "label": "FLORIANI MUSSOLINI R. almeno 1 falli commessi"
-          }
-        ]
-      },
-      {
-        "tier": "Aggressive",
-        "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-09-17: quota 20 orientativa, 5-8 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
-        "legs": [
-          {
-            "providerSelectionId": "5329993037",
-            "overlapKey": "market-u o falli subiti giocatore",
-            "semanticKeys": [],
-            "label": "FLORIANI MUSSOLINI R. almeno 1 falli subiti"
+            "label": "Lazio VINCE/VANTAGGIO (1UP) · SI"
           },
           {
             "providerSelectionId": "5328897487",
@@ -1016,50 +1046,12 @@
             "label": "Venezia almeno 12 tiri totali"
           },
           {
-            "providerSelectionId": "5319703799",
-            "overlapKey": "market-u o squadra x",
+            "providerSelectionId": "5324039442",
+            "overlapKey": "market-1x2 nei minuti x y",
             "semanticKeys": [
-              "goals"
+              "result-opening-window"
             ],
-            "label": "U/O 1.5 Lazio · UNDER"
-          },
-          {
-            "providerSelectionId": "5330743452",
-            "overlapKey": "market-u o corner",
-            "semanticKeys": [
-              "volume-corners"
-            ],
-            "label": "Partita almeno 8 corner"
-          },
-          {
-            "providerSelectionId": "5319698650",
-            "overlapKey": "market-under over",
-            "semanticKeys": [
-              "goals-fulltime"
-            ],
-            "label": "U/O 1.5 · OVER"
-          },
-          {
-            "providerSelectionId": "5324282014",
-            "overlapKey": "market-vince o quasi 1up 2up",
-            "semanticKeys": [
-              "win-or-lead"
-            ],
-            "label": "Lazio VINCE/VANTAGGIO (1UP) · SI"
-          },
-          {
-            "providerSelectionId": "5328836711",
-            "overlapKey": "market-u o falli commessi giocatore",
-            "semanticKeys": [],
-            "label": "JUAN JESUS almeno 2 falli commessi"
-          },
-          {
-            "providerSelectionId": "5319698687",
-            "overlapKey": "market-doppia chance",
-            "semanticKeys": [
-              "result"
-            ],
-            "label": "Lazio o pareggio (X2)"
+            "label": "1X2 NEI PRIMI 15 MIN · X"
           }
         ]
       }
@@ -1068,35 +1060,15 @@
       {
         "tier": "Safe",
         "risk": "elevato · 10 eventi",
-        "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-17: quota 5 orientativa, 6-10 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
+        "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-17: quota 5 orientativa, 10-10 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
         "legs": [
           {
-            "providerSelectionId": "5330526765",
-            "overlapKey": "market-u o falli subiti giocatore",
-            "semanticKeys": [],
-            "label": "HOJLUND RASMUS almeno 1 falli subiti"
-          },
-          {
-            "providerSelectionId": "5330284528",
-            "overlapKey": "market-u o falli commessi giocatore",
-            "semanticKeys": [],
-            "label": "HOJLUND RASMUS almeno 1 falli commessi"
-          },
-          {
-            "providerSelectionId": "5319756899",
-            "overlapKey": "market-ospite segna goal",
+            "providerSelectionId": "5319754642",
+            "overlapKey": "market-combo u o casa u o ospite",
             "semanticKeys": [
               "goals"
             ],
-            "label": "Napoli segna almeno un gol"
-          },
-          {
-            "providerSelectionId": "5319693714",
-            "overlapKey": "market-doppia chance",
-            "semanticKeys": [
-              "result"
-            ],
-            "label": "Nessun pareggio (12)"
+            "label": "U/O 3.5 Fiorentina + U/O 2.5 Napoli · UNDER+UNDER"
           },
           {
             "providerSelectionId": "5330284520",
@@ -1105,6 +1077,38 @@
               "volume-shots-total"
             ],
             "label": "Napoli almeno 10 tiri totali"
+          },
+          {
+            "providerSelectionId": "5319756150",
+            "overlapKey": "market-casa vince a 0 1t",
+            "semanticKeys": [
+              "result-home-win-to-nil-first-half"
+            ],
+            "label": "VINCE A 0 TEAM1 1T · NO"
+          },
+          {
+            "providerSelectionId": "5319755859",
+            "overlapKey": "market-casa vince a 0 2t",
+            "semanticKeys": [
+              "result-home-win-to-nil-second-half"
+            ],
+            "label": "VINCE A 0 TEAM1 2T · NO"
+          },
+          {
+            "providerSelectionId": "5319704522",
+            "overlapKey": "market-goal nogoal tempo x",
+            "semanticKeys": [
+              "goals-first-half-btts"
+            ],
+            "label": "1 TEMPO: GOL/NOGOL · NO GOL"
+          },
+          {
+            "providerSelectionId": "5319754140",
+            "overlapKey": "market-ospite vince a 0",
+            "semanticKeys": [
+              "result-away-win-to-nil"
+            ],
+            "label": "VINCENTE A 0 SQUADRA OSPITE · NO"
           },
           {
             "providerSelectionId": "5319691350",
@@ -1123,28 +1127,20 @@
             "label": "U/O 1.5 · OVER"
           },
           {
-            "providerSelectionId": "5319704638",
-            "overlapKey": "market-under over tempo x",
+            "providerSelectionId": "5324040489",
+            "overlapKey": "market-1x2 nei minuti x y",
             "semanticKeys": [
-              "goals-period"
+              "result-opening-window"
             ],
-            "label": "1 TEMPO: U/O 0.5 · OVER"
+            "label": "1X2 NEI PRIMI 15 MIN · X"
           },
           {
-            "providerSelectionId": "5326088521",
-            "overlapKey": "market-vince o quasi 1up 2up",
+            "providerSelectionId": "5319756526",
+            "overlapKey": "market-ospite vince a 0 2t",
             "semanticKeys": [
-              "win-or-lead"
+              "result-away-win-to-nil-second-half"
             ],
-            "label": "Napoli VINCE/VANTAGGIO (1UP) · SI"
-          },
-          {
-            "providerSelectionId": "5330284051",
-            "overlapKey": "market-entrambe le squadre almeno x tiri in porta",
-            "semanticKeys": [
-              "volume-shots-on-target"
-            ],
-            "label": "Entrambe almeno 3 tiri in porta"
+            "label": "VINCE A 0 TEAM2 2T · NO"
           }
         ]
       },
@@ -1153,48 +1149,40 @@
         "logic": "Profilo balanced costruito sulle quote Sisal del 2026-09-17: quota 10 orientativa, 4-7 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
         "legs": [
           {
-            "providerSelectionId": "5330526189",
-            "overlapKey": "market-u o falli subiti giocatore",
-            "semanticKeys": [],
-            "label": "DRAGUSIN R. almeno 1 falli subiti"
-          },
-          {
             "providerSelectionId": "5330283700",
             "overlapKey": "market-u o falli commessi giocatore",
             "semanticKeys": [],
             "label": "NJIE A. almeno 2 falli commessi"
           },
           {
-            "providerSelectionId": "5326088521",
-            "overlapKey": "market-vince o quasi 1up 2up",
+            "providerSelectionId": "5319755603",
+            "overlapKey": "market-squadra x vince almeno un tempo",
             "semanticKeys": [
-              "win-or-lead"
+              "result-team-wins-half"
             ],
-            "label": "Napoli VINCE/VANTAGGIO (1UP) · SI"
+            "label": "Napoli VINCE ALMENO UN TEMPO · SI"
           },
           {
-            "providerSelectionId": "5319689714",
-            "overlapKey": "market-u o tiri in porta",
-            "semanticKeys": [
-              "volume-shots-on-target"
-            ],
-            "label": "Partita almeno 8 tiri in porta"
-          },
-          {
-            "providerSelectionId": "5319693714",
-            "overlapKey": "market-doppia chance",
-            "semanticKeys": [
-              "result"
-            ],
-            "label": "Nessun pareggio (12)"
-          },
-          {
-            "providerSelectionId": "5319755867",
+            "providerSelectionId": "5319756942",
             "overlapKey": "market-combo u o casa u o ospite",
             "semanticKeys": [
               "goals"
             ],
-            "label": "U/O 3.5 Fiorentina + U/O 0.5 Napoli · UNDER+OVER"
+            "label": "U/O 1.5 Fiorentina + U/O 2.5 Napoli · UNDER+UNDER"
+          },
+          {
+            "providerSelectionId": "5330526189",
+            "overlapKey": "market-u o falli subiti giocatore",
+            "semanticKeys": [],
+            "label": "DRAGUSIN R. almeno 1 falli subiti"
+          },
+          {
+            "providerSelectionId": "5319756130",
+            "overlapKey": "market-ospite vince a 0 1t",
+            "semanticKeys": [
+              "result-away-win-to-nil-first-half"
+            ],
+            "label": "VINCE A 0 TEAM2 1T · NO"
           }
         ]
       },
@@ -1203,18 +1191,35 @@
         "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-09-17: quota 20 orientativa, 5-8 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
         "legs": [
           {
-            "providerSelectionId": "5319693694",
-            "overlapKey": "market-under over",
+            "providerSelectionId": "5319688039",
+            "overlapKey": "market-combo dc u o",
             "semanticKeys": [
+              "result",
               "goals"
             ],
-            "label": "Over 2,5 gol"
+            "label": "DC + U/O 3.5 · 12 + UNDER"
           },
           {
-            "providerSelectionId": "5330526189",
-            "overlapKey": "market-u o falli subiti giocatore",
+            "providerSelectionId": "5319755603",
+            "overlapKey": "market-squadra x vince almeno un tempo",
+            "semanticKeys": [
+              "result-team-wins-half"
+            ],
+            "label": "Napoli VINCE ALMENO UN TEMPO · SI"
+          },
+          {
+            "providerSelectionId": "5330283700",
+            "overlapKey": "market-u o falli commessi giocatore",
             "semanticKeys": [],
-            "label": "DRAGUSIN R. almeno 1 falli subiti"
+            "label": "NJIE A. almeno 2 falli commessi"
+          },
+          {
+            "providerSelectionId": "5319704638",
+            "overlapKey": "market-under over tempo x",
+            "semanticKeys": [
+              "goals-first-half"
+            ],
+            "label": "1 TEMPO: U/O 0.5 · OVER"
           },
           {
             "providerSelectionId": "5326088521",
@@ -1225,42 +1230,18 @@
             "label": "Napoli VINCE/VANTAGGIO (1UP) · SI"
           },
           {
-            "providerSelectionId": "5319704638",
-            "overlapKey": "market-under over tempo x",
-            "semanticKeys": [
-              "goals-period"
-            ],
-            "label": "1 TEMPO: U/O 0.5 · OVER"
-          },
-          {
-            "providerSelectionId": "5319689714",
-            "overlapKey": "market-u o tiri in porta",
-            "semanticKeys": [
-              "volume-shots-on-target"
-            ],
-            "label": "Partita almeno 8 tiri in porta"
-          },
-          {
-            "providerSelectionId": "5319691350",
-            "overlapKey": "market-doppia chance tempo x",
-            "semanticKeys": [
-              "result-first-half"
-            ],
-            "label": "DC TEMPO 1 · X2"
-          },
-          {
-            "providerSelectionId": "5330284320",
-            "overlapKey": "market-u o falli commessi giocatore",
+            "providerSelectionId": "5330526773",
+            "overlapKey": "market-u o falli subiti giocatore",
             "semanticKeys": [],
-            "label": "FAGIOLI N. almeno 1 falli commessi"
+            "label": "DE BRUYNE K. almeno 1 falli subiti"
           },
           {
-            "providerSelectionId": "5330282624",
-            "overlapKey": "market-u o tiri totali squadra x",
+            "providerSelectionId": "5319756526",
+            "overlapKey": "market-ospite vince a 0 2t",
             "semanticKeys": [
-              "volume-shots-total"
+              "result-away-win-to-nil-second-half"
             ],
-            "label": "Napoli almeno 11 tiri totali"
+            "label": "VINCE A 0 TEAM2 2T · NO"
           }
         ]
       }
@@ -1268,16 +1249,24 @@
     "frosinone-como-2026-27-md-05": [
       {
         "tier": "Safe",
-        "risk": "elevato · 6 eventi",
-        "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-17: quota 5 orientativa, 6-10 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
+        "risk": "elevato · 10 eventi",
+        "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-17: quota 5 orientativa, 10-10 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
         "legs": [
           {
-            "providerSelectionId": "5319692846",
-            "overlapKey": "market-doppia chance",
+            "providerSelectionId": "5319702481",
+            "overlapKey": "market-u o squadra x",
             "semanticKeys": [
-              "result"
+              "goals"
             ],
-            "label": "Nessun pareggio (12)"
+            "label": "U/O 3.5 Como · UNDER"
+          },
+          {
+            "providerSelectionId": "5319702391",
+            "overlapKey": "market-under over tempo x",
+            "semanticKeys": [
+              "goals-second-half"
+            ],
+            "label": "1 TEMPO: U/O 2.5 · UNDER"
           },
           {
             "providerSelectionId": "5324110915",
@@ -1288,20 +1277,12 @@
             "label": "Como VINCE/VANTAGGIO (1UP) · SI"
           },
           {
-            "providerSelectionId": "5319702764",
-            "overlapKey": "market-multigoal",
+            "providerSelectionId": "5319768437",
+            "overlapKey": "market-squadra x vince almeno un tempo",
             "semanticKeys": [
-              "goals"
+              "result-team-wins-half"
             ],
-            "label": "MULTIGOAL MULTIESITI 16 ESITI · 2-4"
-          },
-          {
-            "providerSelectionId": "5319678731",
-            "overlapKey": "market-1x2 esito finale",
-            "semanticKeys": [
-              "result-fulltime"
-            ],
-            "label": "ESITO FINALE 1X2 · 2"
+            "label": "Como VINCE ALMENO UN TEMPO · SI"
           },
           {
             "providerSelectionId": "5319692819",
@@ -1312,12 +1293,44 @@
             "label": "U/O 4.5 · UNDER"
           },
           {
-            "providerSelectionId": "5319702391",
-            "overlapKey": "market-under over tempo x",
+            "providerSelectionId": "5319702860",
+            "overlapKey": "market-goal nogoal tempo x",
             "semanticKeys": [
-              "goals-period"
+              "goals-first-half-btts"
             ],
-            "label": "1 TEMPO: U/O 2.5 · UNDER"
+            "label": "1 TEMPO: GOL/NOGOL · NO GOL"
+          },
+          {
+            "providerSelectionId": "5319689806",
+            "overlapKey": "market-doppia chance tempo x",
+            "semanticKeys": [
+              "result-second-half"
+            ],
+            "label": "DC TEMPO 2 · 12"
+          },
+          {
+            "providerSelectionId": "5319768038",
+            "overlapKey": "market-ospite vince a 0",
+            "semanticKeys": [
+              "result-away-win-to-nil"
+            ],
+            "label": "VINCENTE A 0 SQUADRA OSPITE · NO"
+          },
+          {
+            "providerSelectionId": "5324067516",
+            "overlapKey": "market-1x2 nei minuti x y",
+            "semanticKeys": [
+              "result-opening-window"
+            ],
+            "label": "1X2 NEI PRIMI 15 MIN · X"
+          },
+          {
+            "providerSelectionId": "5319768770",
+            "overlapKey": "market-ospite vince a 0 2t",
+            "semanticKeys": [
+              "result-away-win-to-nil-second-half"
+            ],
+            "label": "VINCE A 0 TEAM2 2T · NO"
           }
         ]
       },
@@ -1325,6 +1338,68 @@
         "tier": "Balanced",
         "logic": "Profilo balanced costruito sulle quote Sisal del 2026-09-17: quota 10 orientativa, 4-7 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
         "legs": [
+          {
+            "providerSelectionId": "5319768211",
+            "overlapKey": "market-2 tempo esito 1x2",
+            "semanticKeys": [
+              "result-second-half-1x2"
+            ],
+            "label": "ESITO 1X2 2 TEMPO · 2"
+          },
+          {
+            "providerSelectionId": "5319692846",
+            "overlapKey": "market-doppia chance",
+            "semanticKeys": [
+              "result"
+            ],
+            "label": "Nessun pareggio (12)"
+          },
+          {
+            "providerSelectionId": "5319678731",
+            "overlapKey": "market-1x2 esito finale",
+            "semanticKeys": [
+              "result-fulltime"
+            ],
+            "label": "ESITO FINALE 1X2 · 2"
+          },
+          {
+            "providerSelectionId": "5319769124",
+            "overlapKey": "market-combo u o casa u o ospite",
+            "semanticKeys": [
+              "goals"
+            ],
+            "label": "U/O 1.5 Frosinone + U/O 3.5 Como · UNDER+UNDER"
+          },
+          {
+            "providerSelectionId": "5319768730",
+            "overlapKey": "market-ospite vince a 0 1t",
+            "semanticKeys": [
+              "result-away-win-to-nil-first-half"
+            ],
+            "label": "VINCE A 0 TEAM2 1T · NO"
+          },
+          {
+            "providerSelectionId": "5324067516",
+            "overlapKey": "market-1x2 nei minuti x y",
+            "semanticKeys": [
+              "result-opening-window"
+            ],
+            "label": "1X2 NEI PRIMI 15 MIN · X"
+          }
+        ]
+      },
+      {
+        "tier": "Aggressive",
+        "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-09-17: quota 20 orientativa, 5-8 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
+        "legs": [
+          {
+            "providerSelectionId": "5319768211",
+            "overlapKey": "market-2 tempo esito 1x2",
+            "semanticKeys": [
+              "result-second-half-1x2"
+            ],
+            "label": "ESITO 1X2 2 TEMPO · 2"
+          },
           {
             "providerSelectionId": "5319769181",
             "overlapKey": "market-combo u o casa u o ospite",
@@ -1334,36 +1409,36 @@
             "label": "U/O 0.5 Frosinone + U/O 3.5 Como · OVER+UNDER"
           },
           {
-            "providerSelectionId": "5319692846",
-            "overlapKey": "market-doppia chance",
-            "semanticKeys": [
-              "result"
-            ],
-            "label": "Nessun pareggio (12)"
-          },
-          {
-            "providerSelectionId": "5319702391",
-            "overlapKey": "market-under over tempo x",
-            "semanticKeys": [
-              "goals-period"
-            ],
-            "label": "1 TEMPO: U/O 2.5 · UNDER"
-          },
-          {
-            "providerSelectionId": "5319768211",
-            "overlapKey": "market-2 tempo esito 1x2",
-            "semanticKeys": [
-              "result-second-half-1x2"
-            ],
-            "label": "ESITO 1X2 2 TEMPO · 2"
-          },
-          {
             "providerSelectionId": "5319678731",
             "overlapKey": "market-1x2 esito finale",
             "semanticKeys": [
               "result-fulltime"
             ],
             "label": "ESITO FINALE 1X2 · 2"
+          },
+          {
+            "providerSelectionId": "5319768770",
+            "overlapKey": "market-ospite vince a 0 2t",
+            "semanticKeys": [
+              "result-away-win-to-nil-second-half"
+            ],
+            "label": "VINCE A 0 TEAM2 2T · NO"
+          },
+          {
+            "providerSelectionId": "5319768730",
+            "overlapKey": "market-ospite vince a 0 1t",
+            "semanticKeys": [
+              "result-away-win-to-nil-first-half"
+            ],
+            "label": "VINCE A 0 TEAM2 1T · NO"
+          },
+          {
+            "providerSelectionId": "5324067516",
+            "overlapKey": "market-1x2 nei minuti x y",
+            "semanticKeys": [
+              "result-opening-window"
+            ],
+            "label": "1X2 NEI PRIMI 15 MIN · X"
           },
           {
             "providerSelectionId": "5319692819",
@@ -1374,82 +1449,12 @@
             "label": "U/O 4.5 · UNDER"
           },
           {
-            "providerSelectionId": "5319689806",
-            "overlapKey": "market-doppia chance tempo x",
+            "providerSelectionId": "5319702860",
+            "overlapKey": "market-goal nogoal tempo x",
             "semanticKeys": [
-              "result-first-half"
+              "goals-first-half-btts"
             ],
-            "label": "DC TEMPO 2 · 12"
-          }
-        ]
-      },
-      {
-        "tier": "Aggressive",
-        "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-09-17: quota 20 orientativa, 5-8 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
-        "legs": [
-          {
-            "providerSelectionId": "5319768211",
-            "overlapKey": "market-2 tempo esito 1x2",
-            "semanticKeys": [
-              "result-second-half-1x2"
-            ],
-            "label": "ESITO 1X2 2 TEMPO · 2"
-          },
-          {
-            "providerSelectionId": "5319689806",
-            "overlapKey": "market-doppia chance tempo x",
-            "semanticKeys": [
-              "result-first-half"
-            ],
-            "label": "DC TEMPO 2 · 12"
-          },
-          {
-            "providerSelectionId": "5319702671",
-            "overlapKey": "market-multigoal squadra x",
-            "semanticKeys": [
-              "goals"
-            ],
-            "label": "MULTIGOAL Como MULTIESITI · 2-3"
-          },
-          {
-            "providerSelectionId": "5319692819",
-            "overlapKey": "market-under over",
-            "semanticKeys": [
-              "goals-fulltime"
-            ],
-            "label": "U/O 4.5 · UNDER"
-          },
-          {
-            "providerSelectionId": "5319692846",
-            "overlapKey": "market-doppia chance",
-            "semanticKeys": [
-              "result"
-            ],
-            "label": "Nessun pareggio (12)"
-          },
-          {
-            "providerSelectionId": "5324110915",
-            "overlapKey": "market-vince o quasi 1up 2up",
-            "semanticKeys": [
-              "win-or-lead"
-            ],
-            "label": "Como VINCE/VANTAGGIO (1UP) · SI"
-          },
-          {
-            "providerSelectionId": "5319678731",
-            "overlapKey": "market-1x2 esito finale",
-            "semanticKeys": [
-              "result-fulltime"
-            ],
-            "label": "ESITO FINALE 1X2 · 2"
-          },
-          {
-            "providerSelectionId": "5319702391",
-            "overlapKey": "market-under over tempo x",
-            "semanticKeys": [
-              "goals-period"
-            ],
-            "label": "1 TEMPO: U/O 2.5 · UNDER"
+            "label": "1 TEMPO: GOL/NOGOL · NO GOL"
           }
         ]
       }
@@ -1457,41 +1462,9 @@
     "parma-genoa-2026-27-md-05": [
       {
         "tier": "Safe",
-        "risk": "elevato · 6 eventi",
-        "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-17: quota 5 orientativa, 6-10 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
+        "risk": "elevato · 10 eventi",
+        "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-17: quota 5 orientativa, 10-10 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
         "legs": [
-          {
-            "providerSelectionId": "5326120865",
-            "overlapKey": "market-vince o quasi 1up 2up",
-            "semanticKeys": [
-              "win-or-lead"
-            ],
-            "label": "Parma VINCE/VANTAGGIO (1UP) · NO"
-          },
-          {
-            "providerSelectionId": "5319744280",
-            "overlapKey": "market-under over tempo x",
-            "semanticKeys": [
-              "goals-period"
-            ],
-            "label": "1 TEMPO: U/O 1.5 · UNDER"
-          },
-          {
-            "providerSelectionId": "5319684075",
-            "overlapKey": "market-doppia chance tempo x",
-            "semanticKeys": [
-              "result-first-half"
-            ],
-            "label": "DC TEMPO 1 · X2"
-          },
-          {
-            "providerSelectionId": "5319684982",
-            "overlapKey": "market-doppia chance",
-            "semanticKeys": [
-              "result"
-            ],
-            "label": "Parma o pareggio (1X)"
-          },
           {
             "providerSelectionId": "5319744215",
             "overlapKey": "market-multigoal",
@@ -1507,6 +1480,70 @@
               "goals-fulltime"
             ],
             "label": "U/O 3.5 · UNDER"
+          },
+          {
+            "providerSelectionId": "5319711208",
+            "overlapKey": "market-casa vince a 0 1t",
+            "semanticKeys": [
+              "result-home-win-to-nil-first-half"
+            ],
+            "label": "VINCE A 0 TEAM1 1T · NO"
+          },
+          {
+            "providerSelectionId": "5319711276",
+            "overlapKey": "market-casa vince a 0 2t",
+            "semanticKeys": [
+              "result-home-win-to-nil-second-half"
+            ],
+            "label": "VINCE A 0 TEAM1 2T · NO"
+          },
+          {
+            "providerSelectionId": "5319710330",
+            "overlapKey": "market-ospite vince a 0",
+            "semanticKeys": [
+              "result-away-win-to-nil"
+            ],
+            "label": "VINCENTE A 0 SQUADRA OSPITE · NO"
+          },
+          {
+            "providerSelectionId": "5319684075",
+            "overlapKey": "market-doppia chance tempo x",
+            "semanticKeys": [
+              "result-first-half"
+            ],
+            "label": "DC TEMPO 1 · X2"
+          },
+          {
+            "providerSelectionId": "5319710942",
+            "overlapKey": "market-ospite vince a 0 1t",
+            "semanticKeys": [
+              "result-away-win-to-nil-first-half"
+            ],
+            "label": "VINCE A 0 TEAM2 1T · NO"
+          },
+          {
+            "providerSelectionId": "5319711472",
+            "overlapKey": "market-ospite vince a 0 2t",
+            "semanticKeys": [
+              "result-away-win-to-nil-second-half"
+            ],
+            "label": "VINCE A 0 TEAM2 2T · NO"
+          },
+          {
+            "providerSelectionId": "5319744280",
+            "overlapKey": "market-under over tempo x",
+            "semanticKeys": [
+              "goals-first-half"
+            ],
+            "label": "1 TEMPO: U/O 1.5 · UNDER"
+          },
+          {
+            "providerSelectionId": "5319711288",
+            "overlapKey": "market-squadra x vince almeno un tempo",
+            "semanticKeys": [
+              "result-team-wins-half"
+            ],
+            "label": "Parma VINCE ALMENO UN TEMPO · NO"
           }
         ]
       },
@@ -1523,30 +1560,6 @@
             "label": "Parma VINCE/VANTAGGIO (1UP) · NO"
           },
           {
-            "providerSelectionId": "5319744280",
-            "overlapKey": "market-under over tempo x",
-            "semanticKeys": [
-              "goals-period"
-            ],
-            "label": "1 TEMPO: U/O 1.5 · UNDER"
-          },
-          {
-            "providerSelectionId": "5319684075",
-            "overlapKey": "market-doppia chance tempo x",
-            "semanticKeys": [
-              "result-first-half"
-            ],
-            "label": "DC TEMPO 1 · X2"
-          },
-          {
-            "providerSelectionId": "5319710383",
-            "overlapKey": "market-combo u o casa u o ospite",
-            "semanticKeys": [
-              "goals"
-            ],
-            "label": "U/O 1.5 Parma + U/O 0.5 Genoa · UNDER+OVER"
-          },
-          {
             "providerSelectionId": "5319684982",
             "overlapKey": "market-doppia chance",
             "semanticKeys": [
@@ -1555,12 +1568,44 @@
             "label": "Parma o pareggio (1X)"
           },
           {
-            "providerSelectionId": "5319684966",
-            "overlapKey": "market-under over",
+            "providerSelectionId": "5319711288",
+            "overlapKey": "market-squadra x vince almeno un tempo",
             "semanticKeys": [
-              "goals-fulltime"
+              "result-team-wins-half"
             ],
-            "label": "U/O 3.5 · UNDER"
+            "label": "Parma VINCE ALMENO UN TEMPO · NO"
+          },
+          {
+            "providerSelectionId": "5319744280",
+            "overlapKey": "market-under over tempo x",
+            "semanticKeys": [
+              "goals-first-half"
+            ],
+            "label": "1 TEMPO: U/O 1.5 · UNDER"
+          },
+          {
+            "providerSelectionId": "5319711208",
+            "overlapKey": "market-casa vince a 0 1t",
+            "semanticKeys": [
+              "result-home-win-to-nil-first-half"
+            ],
+            "label": "VINCE A 0 TEAM1 1T · NO"
+          },
+          {
+            "providerSelectionId": "5319744442",
+            "overlapKey": "market-multigoal squadra x",
+            "semanticKeys": [
+              "goals"
+            ],
+            "label": "MULTIGOAL Genoa MULTIESITI · 1-3"
+          },
+          {
+            "providerSelectionId": "5319710330",
+            "overlapKey": "market-ospite vince a 0",
+            "semanticKeys": [
+              "result-away-win-to-nil"
+            ],
+            "label": "VINCENTE A 0 SQUADRA OSPITE · NO"
           }
         ]
       },
@@ -1569,12 +1614,36 @@
         "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-09-17: quota 20 orientativa, 5-8 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
         "legs": [
           {
+            "providerSelectionId": "5319711288",
+            "overlapKey": "market-squadra x vince almeno un tempo",
+            "semanticKeys": [
+              "result-team-wins-half"
+            ],
+            "label": "Parma VINCE ALMENO UN TEMPO · NO"
+          },
+          {
+            "providerSelectionId": "5319711472",
+            "overlapKey": "market-ospite vince a 0 2t",
+            "semanticKeys": [
+              "result-away-win-to-nil-second-half"
+            ],
+            "label": "VINCE A 0 TEAM2 2T · NO"
+          },
+          {
             "providerSelectionId": "5319710383",
             "overlapKey": "market-combo u o casa u o ospite",
             "semanticKeys": [
               "goals"
             ],
             "label": "U/O 1.5 Parma + U/O 0.5 Genoa · UNDER+OVER"
+          },
+          {
+            "providerSelectionId": "5319744280",
+            "overlapKey": "market-under over tempo x",
+            "semanticKeys": [
+              "goals-first-half"
+            ],
+            "label": "1 TEMPO: U/O 1.5 · UNDER"
           },
           {
             "providerSelectionId": "5326120865",
@@ -1585,12 +1654,12 @@
             "label": "Parma VINCE/VANTAGGIO (1UP) · NO"
           },
           {
-            "providerSelectionId": "5319744280",
-            "overlapKey": "market-under over tempo x",
+            "providerSelectionId": "5319684075",
+            "overlapKey": "market-doppia chance tempo x",
             "semanticKeys": [
-              "goals-period"
+              "result-first-half"
             ],
-            "label": "1 TEMPO: U/O 1.5 · UNDER"
+            "label": "DC TEMPO 1 · X2"
           },
           {
             "providerSelectionId": "5319684982",
@@ -1601,20 +1670,12 @@
             "label": "Parma o pareggio (1X)"
           },
           {
-            "providerSelectionId": "5319684075",
-            "overlapKey": "market-doppia chance tempo x",
+            "providerSelectionId": "5319710942",
+            "overlapKey": "market-ospite vince a 0 1t",
             "semanticKeys": [
-              "result-first-half"
+              "result-away-win-to-nil-first-half"
             ],
-            "label": "DC TEMPO 1 · X2"
-          },
-          {
-            "providerSelectionId": "5319684966",
-            "overlapKey": "market-under over",
-            "semanticKeys": [
-              "goals-fulltime"
-            ],
-            "label": "U/O 3.5 · UNDER"
+            "label": "VINCE A 0 TEAM2 1T · NO"
           }
         ]
       }
@@ -1622,40 +1683,16 @@
     "juventus-atalanta-2026-27-md-05": [
       {
         "tier": "Safe",
-        "risk": "elevato · 6 eventi",
-        "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-17: quota 5 orientativa, 6-10 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
+        "risk": "elevato · 10 eventi",
+        "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-17: quota 5 orientativa, 10-10 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
         "legs": [
           {
-            "providerSelectionId": "5319708068",
-            "overlapKey": "market-combo u o casa u o ospite",
+            "providerSelectionId": "5319750715",
+            "overlapKey": "market-multigoal squadra x",
             "semanticKeys": [
               "goals"
             ],
-            "label": "U/O 2.5 Juventus + U/O 2.5 Atalanta · UNDER+UNDER"
-          },
-          {
-            "providerSelectionId": "5319745209",
-            "overlapKey": "market-under over tempo x",
-            "semanticKeys": [
-              "goals-period"
-            ],
-            "label": "1 TEMPO: U/O 0.5 · OVER"
-          },
-          {
-            "providerSelectionId": "5325113036",
-            "overlapKey": "market-vince o quasi 1up 2up",
-            "semanticKeys": [
-              "win-or-lead"
-            ],
-            "label": "Juventus VINCE/VANTAGGIO (1UP) · SI"
-          },
-          {
-            "providerSelectionId": "5319742795",
-            "overlapKey": "market-doppia chance tempo x",
-            "semanticKeys": [
-              "result-first-half"
-            ],
-            "label": "DC TEMPO 2 · 12"
+            "label": "MULTIGOAL Juventus MULTIESITI · 1-4"
           },
           {
             "providerSelectionId": "5319743655",
@@ -1666,12 +1703,68 @@
             "label": "U/O 1.5 · OVER"
           },
           {
-            "providerSelectionId": "5319743691",
-            "overlapKey": "market-doppia chance",
+            "providerSelectionId": "5319745263",
+            "overlapKey": "market-goal nogoal tempo x",
             "semanticKeys": [
-              "result"
+              "goals-first-half-btts"
             ],
-            "label": "Nessun pareggio (12)"
+            "label": "1 TEMPO: GOL/NOGOL · NO GOL"
+          },
+          {
+            "providerSelectionId": "5324078610",
+            "overlapKey": "market-1x2 nei minuti x y",
+            "semanticKeys": [
+              "result-opening-window"
+            ],
+            "label": "1X2 NEI PRIMI 15 MIN · X"
+          },
+          {
+            "providerSelectionId": "5319745209",
+            "overlapKey": "market-under over tempo x",
+            "semanticKeys": [
+              "goals-first-half"
+            ],
+            "label": "1 TEMPO: U/O 0.5 · OVER"
+          },
+          {
+            "providerSelectionId": "5319707998",
+            "overlapKey": "market-casa vince a 0",
+            "semanticKeys": [
+              "result-home-win-to-nil"
+            ],
+            "label": "VINCENTE A 0 SQUADRA CASA · NO"
+          },
+          {
+            "providerSelectionId": "5325113036",
+            "overlapKey": "market-vince o quasi 1up 2up",
+            "semanticKeys": [
+              "win-or-lead"
+            ],
+            "label": "Juventus VINCE/VANTAGGIO (1UP) · SI"
+          },
+          {
+            "providerSelectionId": "5319708505",
+            "overlapKey": "market-squadra x vince almeno un tempo",
+            "semanticKeys": [
+              "result-team-wins-half"
+            ],
+            "label": "Juventus VINCE ALMENO UN TEMPO · SI"
+          },
+          {
+            "providerSelectionId": "5319708906",
+            "overlapKey": "market-casa vince a 0 1t",
+            "semanticKeys": [
+              "result-home-win-to-nil-first-half"
+            ],
+            "label": "VINCE A 0 TEAM1 1T · NO"
+          },
+          {
+            "providerSelectionId": "5319709008",
+            "overlapKey": "market-casa vince a 0 2t",
+            "semanticKeys": [
+              "result-home-win-to-nil-second-half"
+            ],
+            "label": "VINCE A 0 TEAM1 2T · NO"
           }
         ]
       },
@@ -1696,12 +1789,20 @@
             "label": "U/O 3.5 Juventus + U/O 0.5 Atalanta · UNDER+OVER"
           },
           {
-            "providerSelectionId": "5319745209",
-            "overlapKey": "market-under over tempo x",
+            "providerSelectionId": "5319742795",
+            "overlapKey": "market-doppia chance tempo x",
             "semanticKeys": [
-              "goals-period"
+              "result-second-half"
             ],
-            "label": "1 TEMPO: U/O 0.5 · OVER"
+            "label": "DC TEMPO 2 · 12"
+          },
+          {
+            "providerSelectionId": "5319708906",
+            "overlapKey": "market-casa vince a 0 1t",
+            "semanticKeys": [
+              "result-home-win-to-nil-first-half"
+            ],
+            "label": "VINCE A 0 TEAM1 1T · NO"
           },
           {
             "providerSelectionId": "5325113036",
@@ -1712,28 +1813,12 @@
             "label": "Juventus VINCE/VANTAGGIO (1UP) · SI"
           },
           {
-            "providerSelectionId": "5319742795",
-            "overlapKey": "market-doppia chance tempo x",
+            "providerSelectionId": "5319709008",
+            "overlapKey": "market-casa vince a 0 2t",
             "semanticKeys": [
-              "result-first-half"
+              "result-home-win-to-nil-second-half"
             ],
-            "label": "DC TEMPO 2 · 12"
-          },
-          {
-            "providerSelectionId": "5319743655",
-            "overlapKey": "market-under over",
-            "semanticKeys": [
-              "goals-fulltime"
-            ],
-            "label": "U/O 1.5 · OVER"
-          },
-          {
-            "providerSelectionId": "5319743691",
-            "overlapKey": "market-doppia chance",
-            "semanticKeys": [
-              "result"
-            ],
-            "label": "Nessun pareggio (12)"
+            "label": "VINCE A 0 TEAM1 2T · NO"
           }
         ]
       },
@@ -1750,26 +1835,43 @@
             "label": "ESITO FINALE 1X2 · 1"
           },
           {
-            "providerSelectionId": "5325113036",
-            "overlapKey": "market-vince o quasi 1up 2up",
+            "providerSelectionId": "5319708906",
+            "overlapKey": "market-casa vince a 0 1t",
             "semanticKeys": [
-              "win-or-lead"
+              "result-home-win-to-nil-first-half"
             ],
-            "label": "Juventus VINCE/VANTAGGIO (1UP) · SI"
+            "label": "VINCE A 0 TEAM1 1T · NO"
           },
           {
-            "providerSelectionId": "5319750806",
-            "overlapKey": "market-multigoal",
+            "providerSelectionId": "5319709008",
+            "overlapKey": "market-casa vince a 0 2t",
             "semanticKeys": [
+              "result-home-win-to-nil-second-half"
+            ],
+            "label": "VINCE A 0 TEAM1 2T · NO"
+          },
+          {
+            "providerSelectionId": "5319708505",
+            "overlapKey": "market-squadra x vince almeno un tempo",
+            "semanticKeys": [
+              "result-team-wins-half"
+            ],
+            "label": "Juventus VINCE ALMENO UN TEMPO · SI"
+          },
+          {
+            "providerSelectionId": "5319741809",
+            "overlapKey": "market-combo dc u o",
+            "semanticKeys": [
+              "result",
               "goals"
             ],
-            "label": "MULTIGOAL MULTIESITI 16 ESITI · 3-6"
+            "label": "DC + U/O 2.5 · 12 + OVER"
           },
           {
             "providerSelectionId": "5319742795",
             "overlapKey": "market-doppia chance tempo x",
             "semanticKeys": [
-              "result-first-half"
+              "result-second-half"
             ],
             "label": "DC TEMPO 2 · 12"
           },
@@ -1777,25 +1879,17 @@
             "providerSelectionId": "5319745209",
             "overlapKey": "market-under over tempo x",
             "semanticKeys": [
-              "goals-period"
+              "goals-first-half"
             ],
             "label": "1 TEMPO: U/O 0.5 · OVER"
           },
           {
-            "providerSelectionId": "5319743691",
-            "overlapKey": "market-doppia chance",
+            "providerSelectionId": "5319707998",
+            "overlapKey": "market-casa vince a 0",
             "semanticKeys": [
-              "result"
+              "result-home-win-to-nil"
             ],
-            "label": "Nessun pareggio (12)"
-          },
-          {
-            "providerSelectionId": "5319743655",
-            "overlapKey": "market-under over",
-            "semanticKeys": [
-              "goals-fulltime"
-            ],
-            "label": "U/O 1.5 · OVER"
+            "label": "VINCENTE A 0 SQUADRA CASA · NO"
           }
         ]
       }
@@ -1803,30 +1897,39 @@
     "milan-lecce-2026-27-md-05": [
       {
         "tier": "Safe",
-        "risk": "elevato · 6 eventi",
-        "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-17: quota 5 orientativa, 6-10 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
+        "risk": "elevato · 10 eventi",
+        "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-17: quota 5 orientativa, 10-10 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
         "legs": [
           {
-            "providerSelectionId": "5319699220",
-            "overlapKey": "market-multigoal",
+            "providerSelectionId": "5319689312",
+            "overlapKey": "market-combo dc u o",
             "semanticKeys": [
+              "result",
               "goals"
             ],
-            "label": "MULTIGOAL MULTIESITI 16 ESITI · 2-4"
+            "label": "DC + U/O 1.5 · 1X + OVER"
           },
           {
-            "providerSelectionId": "5319770557",
-            "overlapKey": "market-2 tempo esito 1x2",
+            "providerSelectionId": "5319692997",
+            "overlapKey": "market-under over",
             "semanticKeys": [
-              "result-second-half-1x2"
+              "goals-fulltime"
             ],
-            "label": "ESITO 1X2 2 TEMPO · 1"
+            "label": "U/O 4.5 · UNDER"
+          },
+          {
+            "providerSelectionId": "5325271748",
+            "overlapKey": "market-vince o quasi 1up 2up",
+            "semanticKeys": [
+              "win-or-lead"
+            ],
+            "label": "Lecce VINCE/VANTAGGIO (1UP) · NO"
           },
           {
             "providerSelectionId": "5319690696",
             "overlapKey": "market-doppia chance tempo x",
             "semanticKeys": [
-              "result-first-half"
+              "result-second-half"
             ],
             "label": "DC TEMPO 2 · 12"
           },
@@ -1839,20 +1942,44 @@
             "label": "ESITO FINALE 1X2 · 1"
           },
           {
-            "providerSelectionId": "5325271748",
-            "overlapKey": "market-vince o quasi 1up 2up",
+            "providerSelectionId": "5319698890",
+            "overlapKey": "market-under over tempo x",
             "semanticKeys": [
-              "win-or-lead"
+              "goals-first-half"
             ],
-            "label": "Lecce VINCE/VANTAGGIO (1UP) · NO"
+            "label": "1 TEMPO: U/O 0.5 · OVER"
           },
           {
-            "providerSelectionId": "5319692997",
-            "overlapKey": "market-under over",
+            "providerSelectionId": "5324079170",
+            "overlapKey": "market-1x2 nei minuti x y",
             "semanticKeys": [
-              "goals-fulltime"
+              "result-opening-window"
             ],
-            "label": "U/O 4.5 · UNDER"
+            "label": "1X2 NEI PRIMI 15 MIN · X"
+          },
+          {
+            "providerSelectionId": "5319770557",
+            "overlapKey": "market-2 tempo esito 1x2",
+            "semanticKeys": [
+              "result-second-half-1x2"
+            ],
+            "label": "ESITO 1X2 2 TEMPO · 1"
+          },
+          {
+            "providerSelectionId": "5319699295",
+            "overlapKey": "market-1 tempo esito 1x2",
+            "semanticKeys": [
+              "result-first-half-1x2"
+            ],
+            "label": "ESITO 1 TEMPO 1X2 · 1"
+          },
+          {
+            "providerSelectionId": "5319770677",
+            "overlapKey": "market-casa vince a 0 2t",
+            "semanticKeys": [
+              "result-home-win-to-nil-second-half"
+            ],
+            "label": "VINCE A 0 TEAM1 2T · SI"
           }
         ]
       },
@@ -1861,52 +1988,20 @@
         "logic": "Profilo balanced costruito sulle quote Sisal del 2026-09-17: quota 10 orientativa, 4-7 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
         "legs": [
           {
-            "providerSelectionId": "5319769800",
-            "overlapKey": "market-combo u o casa u o ospite",
+            "providerSelectionId": "5319770356",
+            "overlapKey": "market-casa vince a 0",
+            "semanticKeys": [
+              "result-home-win-to-nil"
+            ],
+            "label": "VINCENTE A 0 SQUADRA CASA · NO"
+          },
+          {
+            "providerSelectionId": "5319699225",
+            "overlapKey": "market-multigoal",
             "semanticKeys": [
               "goals"
             ],
-            "label": "U/O 2.5 Milan + U/O 1.5 Lecce · UNDER+UNDER"
-          },
-          {
-            "providerSelectionId": "5319699295",
-            "overlapKey": "market-1 tempo esito 1x2",
-            "semanticKeys": [
-              "result-first-half-1x2"
-            ],
-            "label": "ESITO 1 TEMPO 1X2 · 1"
-          },
-          {
-            "providerSelectionId": "5319687418",
-            "overlapKey": "market-1x2 esito finale",
-            "semanticKeys": [
-              "result-fulltime"
-            ],
-            "label": "ESITO FINALE 1X2 · 1"
-          },
-          {
-            "providerSelectionId": "5325271748",
-            "overlapKey": "market-vince o quasi 1up 2up",
-            "semanticKeys": [
-              "win-or-lead"
-            ],
-            "label": "Lecce VINCE/VANTAGGIO (1UP) · NO"
-          },
-          {
-            "providerSelectionId": "5319690696",
-            "overlapKey": "market-doppia chance tempo x",
-            "semanticKeys": [
-              "result-first-half"
-            ],
-            "label": "DC TEMPO 2 · 12"
-          },
-          {
-            "providerSelectionId": "5319692997",
-            "overlapKey": "market-under over",
-            "semanticKeys": [
-              "goals-fulltime"
-            ],
-            "label": "U/O 4.5 · UNDER"
+            "label": "MULTIGOAL MULTIESITI 16 ESITI · 3-6"
           },
           {
             "providerSelectionId": "5319770557",
@@ -1915,6 +2010,22 @@
               "result-second-half-1x2"
             ],
             "label": "ESITO 1X2 2 TEMPO · 1"
+          },
+          {
+            "providerSelectionId": "5319770677",
+            "overlapKey": "market-casa vince a 0 2t",
+            "semanticKeys": [
+              "result-home-win-to-nil-second-half"
+            ],
+            "label": "VINCE A 0 TEAM1 2T · SI"
+          },
+          {
+            "providerSelectionId": "5319687418",
+            "overlapKey": "market-1x2 esito finale",
+            "semanticKeys": [
+              "result-fulltime"
+            ],
+            "label": "ESITO FINALE 1X2 · 1"
           }
         ]
       },
@@ -1923,44 +2034,20 @@
         "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-09-17: quota 20 orientativa, 5-8 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
         "legs": [
           {
-            "providerSelectionId": "5319699224",
-            "overlapKey": "market-multigoal",
+            "providerSelectionId": "5319770356",
+            "overlapKey": "market-casa vince a 0",
             "semanticKeys": [
-              "goals"
+              "result-home-win-to-nil"
             ],
-            "label": "MULTIGOAL MULTIESITI 16 ESITI · 3-5"
+            "label": "VINCENTE A 0 SQUADRA CASA · NO"
           },
           {
-            "providerSelectionId": "5319687418",
-            "overlapKey": "market-1x2 esito finale",
+            "providerSelectionId": "5319770677",
+            "overlapKey": "market-casa vince a 0 2t",
             "semanticKeys": [
-              "result-fulltime"
+              "result-home-win-to-nil-second-half"
             ],
-            "label": "ESITO FINALE 1X2 · 1"
-          },
-          {
-            "providerSelectionId": "5325271748",
-            "overlapKey": "market-vince o quasi 1up 2up",
-            "semanticKeys": [
-              "win-or-lead"
-            ],
-            "label": "Lecce VINCE/VANTAGGIO (1UP) · NO"
-          },
-          {
-            "providerSelectionId": "5319770557",
-            "overlapKey": "market-2 tempo esito 1x2",
-            "semanticKeys": [
-              "result-second-half-1x2"
-            ],
-            "label": "ESITO 1X2 2 TEMPO · 1"
-          },
-          {
-            "providerSelectionId": "5319698890",
-            "overlapKey": "market-under over tempo x",
-            "semanticKeys": [
-              "goals-period"
-            ],
-            "label": "1 TEMPO: U/O 0.5 · OVER"
+            "label": "VINCE A 0 TEAM1 2T · SI"
           },
           {
             "providerSelectionId": "5319699295",
@@ -1971,20 +2058,36 @@
             "label": "ESITO 1 TEMPO 1X2 · 1"
           },
           {
-            "providerSelectionId": "5319690696",
-            "overlapKey": "market-doppia chance tempo x",
+            "providerSelectionId": "5319770737",
+            "overlapKey": "market-casa vince a 0 1t",
             "semanticKeys": [
-              "result-first-half"
+              "result-home-win-to-nil-first-half"
             ],
-            "label": "DC TEMPO 2 · 12"
+            "label": "VINCE A 0 TEAM1 1T · SI"
           },
           {
-            "providerSelectionId": "5319692997",
-            "overlapKey": "market-under over",
+            "providerSelectionId": "5319770557",
+            "overlapKey": "market-2 tempo esito 1x2",
             "semanticKeys": [
-              "goals-fulltime"
+              "result-second-half-1x2"
             ],
-            "label": "U/O 4.5 · UNDER"
+            "label": "ESITO 1X2 2 TEMPO · 1"
+          },
+          {
+            "providerSelectionId": "5325271748",
+            "overlapKey": "market-vince o quasi 1up 2up",
+            "semanticKeys": [
+              "win-or-lead"
+            ],
+            "label": "Lecce VINCE/VANTAGGIO (1UP) · NO"
+          },
+          {
+            "providerSelectionId": "5319770204",
+            "overlapKey": "market-combo u o casa u o ospite",
+            "semanticKeys": [
+              "goals"
+            ],
+            "label": "U/O 3.5 Milan + U/O 2.5 Lecce · UNDER+UNDER"
           }
         ]
       }
