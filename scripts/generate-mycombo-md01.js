@@ -24,7 +24,7 @@ const excludedMarketNames = new Set([
   "RIGORE SI/NO"
 ]);
 const tierLimits = {
-  Safe: { minimum: 2, maximum: 4, preferred: 2 },
+  Safe: matchday === 5 ? { minimum: 10, maximum: 10, preferred: 10 } : { minimum: 3, maximum: 6, preferred: 3 },
   Balanced: { minimum: 4, maximum: 7, preferred: 4 },
   Aggressive: { minimum: 5, maximum: 8, preferred: 5 }
 };
@@ -314,6 +314,45 @@ function candidatePool(event, prediction, match) {
     });
   }
 
+  if (matchday === 5) {
+    const distinctEventMarkets = new Map([
+      ["1X2 ESITO FINALE", "result-fulltime"],
+      ["UNDER/OVER", "goals-fulltime"],
+      ["1 TEMPO: 1X2 CORNER", "corners-first-half"],
+      ["PRIMA SOSTITUZIONE NEL MATCH", "first-substitution"],
+      ["PARI/DISPARI", "goals-parity"],
+      ["TEMPO PRIMO GOAL", "first-goal-period"],
+      ["DOPPIA CHANCE TEMPO X", "result-first-half"],
+      ["U/O GOAL SQUADRA TEMPO", "team-goals-period"],
+      ["VINCE O QUASI (1UP/2UP)", "win-or-lead"],
+      ["CASA: PARI/DISPARI", "home-goals-parity"],
+      ["OSPITE: PARI/DISPARI", "away-goals-parity"]
+    ]);
+    const home = teamById.get(match.homeTeam)?.name || match.homeTeam;
+    const away = teamById.get(match.awayTeam)?.name || match.awayTeam;
+    for (const [marketName, semanticKey] of distinctEventMarkets) {
+      const markets = (event.markets || []).filter(market => market.marketName === marketName);
+      const choices = markets.flatMap(market => (market.selections || [])
+        .filter(selection => selection.status === "open" && selection.odds >= minimumLegOdds && selection.odds <= maximumLegOdds)
+        .map(selection => ({ market, selection })));
+      const choice = choices.sort((left, right) => left.selection.odds - right.selection.odds || String(left.selection.providerSelectionId).localeCompare(String(right.selection.providerSelectionId)))[0];
+      if (!choice) continue;
+      const label = `${choice.market.variantName} · ${choice.selection.name}`
+        .replace(/TEAM 1|SQUADRA 1/g, home)
+        .replace(/TEAM 2|SQUADRA 2/g, away);
+      candidates.push({
+        providerSelectionId: String(choice.selection.providerSelectionId),
+        overlapKey: `market-${clean(choice.market.marketName)}`,
+        label,
+        odds: choice.selection.odds,
+        semanticKeys: [semanticKey],
+        quality: 112 + (maximumLegOdds - choice.selection.odds) * 5,
+        anchor: false,
+        modelSupported: false
+      });
+    }
+  }
+
   return [...new Map(candidates.map(candidate => [candidate.providerSelectionId, { ...candidate, semanticKeys: candidate.semanticKeys || [] }])).values()]
     .filter(candidate => {
       const marketName = String(candidate.overlapKey || "").replace(/^market-/, "");
@@ -326,7 +365,7 @@ function candidatePool(event, prediction, match) {
 function selectPortfolio(pool, tier) {
   const reference = referenceOdds[tier];
   const limits = tierLimits[tier];
-  const available = pool.slice(0, 120);
+  const available = pool.slice(0, matchday === 5 ? 220 : 120);
   let beam = [{ product: 1, legs: [], overlapKeys: new Set(), semanticKeys: new Set(), quality: 0 }];
   for (let depth = 0; depth < limits.maximum; depth += 1) {
     const expanded = [...beam];
@@ -404,12 +443,14 @@ const output = {
     referenceOdds,
     quotaPolicy: "orientativa",
     tierLimits,
-    displayedComboLegs: null,
+    displayedComboLegs: matchday === 5 ? 10 : null,
     excludedMarketNames: [...excludedMarketNames],
     minLegOddsInclusive: minimumLegOdds,
     maxLegOddsInclusive: maximumLegOdds,
     uniqueMarketFamilyWithinPortfolio: true,
-    semanticOverlapPolicy: "Una sola gamba per macro-scenario: gol, esito, corner, tiri totali e tiri in porta non possono essere ripetuti o annidati nella stessa MyCombo, anche cambiando squadra, soglia o formulazione.",
+    semanticOverlapPolicy: matchday === 5
+      ? "Dieci mercati con denominazioni differenti: nessuna soglia della stessa famiglia viene ripetuta; esiti riferiti a tempi o eventi diversi mantengono chiavi semantiche distinte. Handicap e mercati asiatici esclusi."
+      : "Una sola gamba per macro-scenario: gol, esito, corner, tiri totali e tiri in porta non possono essere ripetuti o annidati nella stessa MyCombo, anche cambiando squadra, soglia o formulazione.",
     allowCrossTierSelectionReuse: true,
     promotedOpponentCaution: true,
     riskPolicy: "informativa",
@@ -439,7 +480,7 @@ for (const event of odds.events) {
     }];
     return [tier, {
       tier,
-      risk: undefined,
+      risk: matchday === 5 && tier === "Safe" ? "elevato · 10 eventi" : undefined,
       logic: `Profilo ${tier.toLowerCase()} costruito sulle quote Sisal del ${String(event.retrievedAt).slice(0, 10)}: quota ${referenceOdds[tier]} orientativa, ${tierLimits[tier].minimum}-${tierLimits[tier].maximum} gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole ${minimumLegOdds.toFixed(2)}-${maximumLegOdds.toFixed(2)}. Il rischio resta informativo.`,
       legs: portfolio.legs.map(({ providerSelectionId, overlapKey, semanticKeys, label }) => ({ providerSelectionId, overlapKey, semanticKeys, label }))
     }];
