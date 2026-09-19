@@ -49,8 +49,10 @@ assert.ok(mainApp.includes("data/teams/index.json") && mainApp.includes("team-di
 assert.ok(mainApp.includes("team.monochromeLogo||team.logo"), "Le card Statistiche squadre non usano il logo monocromatico nero");
 assert.ok(styles.includes("Statistiche squadre mobile: logo e riepilogo dentro un'unica card") && styles.includes("grid-template-columns:98px minmax(0,1fr)") && styles.includes(".team-flip-face{\n    position:relative"), "Su mobile ogni squadra deve usare una sola card visiva");
 const expectedLeaderboardMetrics = ["goals", "assists", "shots", "shotsOnTarget", "cards", "foulsCommitted", "foulsWon"];
+const expectedComparatorMetrics = ["minutes", ...expectedLeaderboardMetrics];
 assert.strictEqual(playerLeaderboards.schemaVersion, 3);
-assert.deepStrictEqual(playerLeaderboards.comparator.metrics.map(metric => metric.id), expectedLeaderboardMetrics, "Il comparatore globale non copre tutte le metriche");
+assert.deepStrictEqual(playerLeaderboards.comparator.metrics.map(metric => metric.id), expectedComparatorMetrics, "Il comparatore globale non copre tutte le metriche");
+assert.strictEqual(playerLeaderboards.comparator.metrics[0].hasPer90, false, "Il minutaggio del comparatore non deve esporre un valore /90");
 assert.deepStrictEqual(Object.keys(playerLeaderboards.comparator.periods), ["2026/27", "2025/26", "total"], "Il comparatore globale non separa i periodi");
 assert.ok(mainApp.includes("Comparatore calciatori") && mainApp.includes("team-player-comparator"), "Comparatore calciatori mancante nella home o nelle pagine squadra");
 assert.deepStrictEqual(Object.keys(playerLeaderboards.periods), ["2026/27", "2025/26", "total"], "Le classifiche individuali non sono separate per periodo");
@@ -225,10 +227,15 @@ assert.ok(styles.includes('.cup-match-card.is-finished .cup-team-slot{height:120
 const currentMatches = read("data/normalized/matches.json").filter(match => match.competition === "serie-a" && match.season === "2026-27");
 assert.strictEqual(europeanCalendar.fixtures.length, 54, "Il calendario europeo deve contenere 54 gare");
 assert.ok(europeanCalendar.fixtures.every(match => match.workloadOnly === true && match.predictionEligible === false), "Le gare europee devono restare solo carico calendario e fuori dai pronostici");
+const juventusNec = europeanCalendar.fixtures.find(match => match.id === "juventus-nec-nijmegen-2026-27-uel-01");
+assert.equal(juventusNec?.status, "finished", "Juventus-NEC deve risultare conclusa");
+assert.deepStrictEqual(juventusNec?.score, { home: 5, away: 0 }, "Juventus-NEC: risultato errato");
+assert.ok(juventusNec?.resultSource?.url, "Juventus-NEC: fonte risultato mancante");
 for (const [teamId, expected] of Object.entries({ inter: 8, napoli: 8, roma: 8, como: 8, milan: 8, juventus: 8, atalanta: 6 })) assert.strictEqual(europeanCalendar.fixtures.filter(match => match.teamId === teamId).length, expected, `${teamId}: sono richiesti ${expected} impegni UEFA`);
 assert.ok(matchesInterface.includes('load("european-fixtures-2026-27.json")') && matchesInterface.includes('calendarType:"europe"'), "Il calendario personale non integra gli impegni europei");
 assert.ok(matchesInterface.includes('load("coppa-italia-2026-27.json")') && matchesInterface.includes('calendarType:"cup"'), "Il calendario personale non integra gli impegni di Coppa Italia");
-for (const marker of ["Solo carico calendario · nessun pronostico", "Fatica: a", "38 giornate di Serie A", "gare UEFA", "gare di Coppa Italia", "Tutti gli appuntamenti"]) assert.ok(matchesInterface.includes(marker), `Calendario personale: manca ${marker}`);
+for (const marker of ["Solo carico calendario · nessun pronostico", "Fatica: a", "Rendimento sotto fatica:", "38 giornate di Serie A", "gare UEFA", "gare di Coppa Italia", "Tutti gli appuntamenti"]) assert.ok(matchesInterface.includes(marker), `Calendario personale: manca ${marker}`);
+assert.ok(readingsInterface.includes('match.resultCoverage?.bookings==="unavailable"?"Cartellini N/D"') && readingsInterface.includes('match.resultCoverage?.substitutions==="unavailable"?"Sostituzioni N/D"'), "I dati evento non disponibili devono restare esplicitamente N/D");
 const predictionIds = new Set(read("data/normalized/predictions.json").predictions.map(prediction => prediction.matchId));
 assert.ok(europeanCalendar.fixtures.every(match => !predictionIds.has(match.id)), "Una gara europea è entrata nei pronostici");
 for (const summary of index.teams) {

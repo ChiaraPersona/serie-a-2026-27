@@ -14,7 +14,8 @@ const legs = schedina.slips.flatMap(slip => slip.legs);
 const expectedResults = new Map([
   ["monza-sassuolo-2026-27-md-05", [2, 1]],
   ["bologna-torino-2026-27-md-05", [1, 1]],
-  ["udinese-cagliari-2026-27-md-05", [0, 1]]
+  ["udinese-cagliari-2026-27-md-05", [0, 1]],
+  ["roma-inter-2026-27-md-05", [2, 2]]
 ]);
 
 for (const [matchId, [home, away]] of expectedResults) {
@@ -39,4 +40,4 @@ assert.equal(settlement("Christian Kabasele riceve un cartellino · sostituto in
 assert.equal(settlement("Nikola Vlasic almeno 1 tiri · sostituto incluso").status, "unavailable");
 assert.equal(settlement("Keinan Davis almeno 1 tiri in porta · sostituto incluso").status, "unavailable");
 
-console.log("Risultati MD05 e liquidazione Schedina verificati per Monza-Sassuolo, Bologna-Torino e Udinese-Cagliari.");
+console.log("Risultati MD05 verificati per Monza-Sassuolo, Bologna-Torino, Udinese-Cagliari e Roma-Inter; liquidazione Schedina coperta sui mercati disponibili.");

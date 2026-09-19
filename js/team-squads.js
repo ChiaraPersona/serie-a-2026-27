@@ -3,7 +3,7 @@
   if (!root) return;
 
   const base = document.body.dataset.depth === "team" ? "../" : "";
-  const release = "20260919-player-comparator-v1";
+  const release = "20260919-player-comparator-search-v2";
   const defaultPlayerPhoto = `${base}assets/images/players/player-placeholder.png`;
   const esc = value => String(value ?? "").replace(/[&<>\"]/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[char]));
   const contrastInk = color => {
@@ -260,16 +260,16 @@
   }
 
   function squadComparator(team, statsByPlayer) {
-    const options = team.squad.map(player => `<option value="${esc(player.id)}">${esc(player.name)}</option>`).join("");
-    return `<section class="detail-section player-comparator team-player-comparator" id="comparatore-calciatori"><header><div><p class="eyebrow">Confronto nella rosa</p><h2>Comparatore calciatori</h2></div><p>Totali 2025/26 + 2026/27 e valori per 90 minuti.</p></header><div class="player-comparator-controls"><label>Calciatore A<select data-team-comparator="0">${options}</select></label><label>Calciatore B<select data-team-comparator="1">${options}</select></label></div><div class="player-comparator-result" data-team-comparator-result></div></section>`;
+    const playerSearch = (index, label) => `<label>${label}<span class="player-autocomplete"><input type="search" data-team-comparator="${index}" role="combobox" aria-autocomplete="list" aria-controls="team-comparator-${index}-suggestions" aria-expanded="false" autocomplete="off" placeholder="Scrivi il nome…"><span class="player-suggestions" id="team-comparator-${index}-suggestions" role="listbox" hidden></span></span><small class="player-comparator-control-hint">Scrivi liberamente e scegli un suggerimento</small></label>`;
+    return `<section class="detail-section player-comparator team-player-comparator" id="comparatore-calciatori"><header><div><p class="eyebrow">Confronto nella rosa</p><h2>Comparatore calciatori</h2></div><p>Totali 2025/26 + 2026/27 e valori per 90 minuti.</p></header><div class="player-comparator-controls">${playerSearch(0, "Calciatore A")}${playerSearch(1, "Calciatore B")}</div><div class="player-comparator-result" data-team-comparator-result aria-live="polite"></div></section>`;
   }
 
   function squadComparatorResult(team, statsByPlayer, ids) {
     const chosen = ids.map(id => team.squad.find(player => player.id === id)).filter(Boolean);
     if (chosen.length < 2) return `<div class="data-warning"><strong>Seleziona due calciatori</strong></div>`;
-    const metrics = [["Gol","goals"],["Assist","assists"],["Tiri totali","shots"],["Tiri nello specchio","shotsOnTarget"],["Cartellini","cards"],["Falli commessi","foulsCommitted"],["Falli subiti","foulsWon"]];
+    const metrics = [["Minuti giocati","minutes",false],["Gol","goals",true],["Assist","assists",true],["Tiri totali","shots",true],["Tiri nello specchio","shotsOnTarget",true],["Cartellini","cards",true],["Falli commessi","foulsCommitted",true],["Falli subiti","foulsWon",true]];
     const entry = player => statsByPlayer.get(player.id) || seasonTotals(player);
-    return `<div class="player-comparator-head">${chosen.map(player=>`<article><h3>${esc(player.name)}</h3><p>${esc(displayRole(player))}</p><strong>${value(entry(player).appearances)} PG · ${value(entry(player).minutes)} min</strong></article>`).join("")}</div><div class="table-wrap"><table><thead><tr><th>Statistica</th>${chosen.map(player=>`<th>${esc(player.name)}</th>`).join("")}</tr></thead><tbody>${metrics.map(([label,key])=>`<tr><th>${label}</th>${chosen.map(player=>{const stats=entry(player),total=key==="cards"?(stats.cards??cards(stats)):stats[key];return `<td><strong>${value(total)}</strong><small>${value(stats.per90?.[key])} /90</small></td>`}).join("")}</tr>`).join("")}</tbody></table></div>`;
+    return `<div class="player-comparator-head">${chosen.map(player=>`<article><h3>${esc(player.name)}</h3><p>${esc(displayRole(player))}</p><strong>${value(entry(player).appearances)} PG · ${value(entry(player).minutes)} min</strong></article>`).join("")}</div><div class="table-wrap"><table><thead><tr><th>Statistica</th>${chosen.map(player=>`<th>${esc(player.name)}</th>`).join("")}</tr></thead><tbody>${metrics.map(([label,key,hasPer90])=>`<tr><th>${label}</th>${chosen.map(player=>{const stats=entry(player),total=key==="cards"?(stats.cards??cards(stats)):stats[key];return `<td><strong>${value(total)}</strong>${hasPer90?`<small>${value(stats.per90?.[key])} /90</small>`:""}</td>`}).join("")}</tr>`).join("")}</tbody></table></div>`;
   }
 
   function entryDetail(player, entryIndex) {
@@ -326,8 +326,12 @@
     document.querySelector(".team-roster-section")?.insertAdjacentHTML("beforebegin", squadComparator(team, combinedPlayerStats));
     const comparatorSelectors = [...document.querySelectorAll("[data-team-comparator]")];
     const comparatorResult = document.querySelector("[data-team-comparator-result]");
-    comparatorSelectors.forEach((select, index) => { select.selectedIndex = Math.min(index, team.squad.length - 1); select.addEventListener("change", () => { comparatorResult.innerHTML = squadComparatorResult(team, combinedPlayerStats, comparatorSelectors.map(item => item.value)); }); });
-    comparatorResult.innerHTML = squadComparatorResult(team, combinedPlayerStats, comparatorSelectors.map(item => item.value));
+    const refreshComparator = () => { comparatorResult.innerHTML = squadComparatorResult(team, combinedPlayerStats, comparatorSelectors.map(item => item.dataset.playerKey || "")); };
+    const closeComparatorSuggestions = input => { const list = input.parentElement.querySelector(".player-suggestions"); list.hidden = true; list.innerHTML = ""; input.setAttribute("aria-expanded", "false"); input.removeAttribute("aria-activedescendant"); };
+    const chooseComparatorPlayer = (input, player) => { input.value = player.name; input.dataset.playerKey = player.id; closeComparatorSuggestions(input); refreshComparator(); };
+    const showComparatorSuggestions = input => { const query = searchKey(input.value.trim()), matches = team.squad.filter(player => !query || searchKey(player.name).includes(query)).slice(0, 8), list = input.parentElement.querySelector(".player-suggestions"), index = input.dataset.teamComparator; list.innerHTML = matches.length ? matches.map((player, position) => `<button type="button" role="option" id="team-comparator-${index}-option-${position}" data-player-key="${esc(player.id)}"><strong>${esc(player.name)}</strong><small>${esc(displayRole(player))}</small></button>`).join("") : '<span class="player-suggestions-empty">Nessun nome corrispondente</span>'; list.hidden = false; input.setAttribute("aria-expanded", "true"); };
+    comparatorSelectors.forEach((input, index) => { const player = team.squad[Math.min(index, team.squad.length - 1)], list = input.parentElement.querySelector(".player-suggestions"); if (player) { input.value = player.name; input.dataset.playerKey = player.id; } input.addEventListener("focus", () => showComparatorSuggestions(input)); input.addEventListener("input", () => { const exact = team.squad.filter(item => searchKey(item.name) === searchKey(input.value.trim())); input.dataset.playerKey = exact.length === 1 ? exact[0].id : ""; showComparatorSuggestions(input); refreshComparator(); }); input.addEventListener("keydown", event => { const options = [...list.querySelectorAll('[role="option"]')]; if (event.key === "Escape") { closeComparatorSuggestions(input); return; } if (!["ArrowDown", "ArrowUp", "Enter"].includes(event.key) || !options.length) return; event.preventDefault(); let active = options.findIndex(option => option.classList.contains("active")); if (event.key === "Enter" && active >= 0) { const selected = team.squad.find(item => item.id === options[active].dataset.playerKey); if (selected) chooseComparatorPlayer(input, selected); return; } active = event.key === "ArrowUp" ? (active <= 0 ? options.length - 1 : active - 1) : (active + 1) % options.length; options.forEach((option, optionIndex) => option.classList.toggle("active", optionIndex === active)); input.setAttribute("aria-activedescendant", options[active].id); }); list.addEventListener("pointerdown", event => { const option = event.target.closest("[data-player-key]"); if (!option) return; event.preventDefault(); const selected = team.squad.find(item => item.id === option.dataset.playerKey); if (selected) chooseComparatorPlayer(input, selected); }); input.addEventListener("blur", () => setTimeout(() => closeComparatorSuggestions(input), 100)); });
+    refreshComparator();
     const dialog = document.getElementById("player-detail");
     const showPlayer = playerId => {
       const player = team.squad.find(item => item.id === playerId);

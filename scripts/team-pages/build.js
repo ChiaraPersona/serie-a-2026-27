@@ -349,6 +349,10 @@ const leaderboardMetrics = [
   { id: "foulsCommitted", label: "Falli commessi", field: "foulsCommitted", hasPer90: true },
   { id: "foulsWon", label: "Falli subiti", field: "foulsWon", hasPer90: true }
 ];
+const comparatorMetrics = [
+  { id: "minutes", label: "Minuti giocati", field: "minutes", hasPer90: false },
+  ...leaderboardMetrics
+];
 const leaderboardTeamAliases = { Internazionale: "Inter", "AS Roma": "Roma" };
 const leaderboardTeamName = name => leaderboardTeamAliases[name] || name;
 const cardTotal = entry => {
@@ -464,7 +468,7 @@ const periods = {
   total: { id: "total", label: "Totale 2025/26 + 2026/27", rankings: buildLeaderboardRankings(totalLeaderboardRows) }
 };
 const comparator = {
-  metrics: leaderboardMetrics,
+  metrics: comparatorMetrics,
   periods: {
     "2026/27": currentLeaderboardRows.filter(player => player.appearances > 0),
     "2025/26": previousLeaderboardRows,

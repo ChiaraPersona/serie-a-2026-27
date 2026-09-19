@@ -13,6 +13,7 @@ const labels = {
   "europa-league": "Europa League",
   "conference-league": "Conference League"
 };
+const validStatuses = new Set(["scheduled", "finished"]);
 
 if (source.schemaVersion !== 1 || source.season !== "2026-27" || !Array.isArray(source.fixtures) || !source.expectedFixturesByTeam) throw new Error("Fonte impegni europei non valida");
 const expectedTotal = Object.values(source.expectedFixturesByTeam).reduce((total, count) => total + count, 0);
@@ -25,6 +26,10 @@ const fixtures = source.fixtures.map((fixture, index) => {
   if (!teams.has(fixture.teamId)) throw new Error(`${fixture.id}: squadra Serie A sconosciuta ${fixture.teamId}`);
   if (!labels[fixture.competition]) throw new Error(`${fixture.id}: competizione sconosciuta ${fixture.competition}`);
   if (!/^202[67]-\d{2}-\d{2}$/.test(fixture.date) || !/^\d{2}:\d{2}$/.test(fixture.kickoff)) throw new Error(`${fixture.id}: data o orario non valido`);
+  const status = fixture.status || "scheduled";
+  if (!validStatuses.has(status)) throw new Error(`${fixture.id}: stato europeo non valido`);
+  if (status === "finished" && (!Number.isInteger(fixture.score?.home) || !Number.isInteger(fixture.score?.away))) throw new Error(`${fixture.id}: risultato europeo finale non valido`);
+  if (status === "finished" && !fixture.resultSource?.url) throw new Error(`${fixture.id}: fonte del risultato europeo mancante`);
   const leaguePhaseMatchday = Number(fixture.id.match(/-(\d{2})$/)?.[1]);
   if (!Number.isInteger(leaguePhaseMatchday) || leaguePhaseMatchday < 1) throw new Error(`${fixture.id}: giornata europea non ricavabile`);
   const involved = [fixture.homeTeam, fixture.awayTeam].filter(name => String(name).toLocaleLowerCase("it") === fixture.teamId);
@@ -36,7 +41,9 @@ const fixtures = source.fixtures.map((fixture, index) => {
     season: source.season,
     competitionLabel: labels[fixture.competition],
     timezone: "Europe/Rome",
-    status: "scheduled",
+    status,
+    score: status === "finished" ? fixture.score : null,
+    resultSource: status === "finished" ? fixture.resultSource : null,
     workloadOnly: true,
     predictionEligible: false,
     source: source.source

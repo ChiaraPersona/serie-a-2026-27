@@ -18,10 +18,16 @@ export function createPage(deps){
   const europeanFixturesFor=(team,europe)=>europe.fixtures.filter(match=>match.teamId===team.id).map(match=>({...match,calendarType:"europe",homeName:match.homeTeam,awayName:match.awayTeam}));
   const leagueFixturesFor=(team,league,teams)=>league.filter(match=>match.homeTeam===team.id||match.awayTeam===team.id).map(match=>({...match,calendarType:"league",competitionLabel:"Serie A",homeName:teams.find(item=>item.id===match.homeTeam)?.name||match.homeTeam,awayName:teams.find(item=>item.id===match.awayTeam)?.name||match.awayTeam}));
   const dayDistance=(left,right)=>Math.round((Date.parse(right)-Date.parse(left))/86400000);
-  const workloadNote=(match,european)=>{
+  const fatiguePerformance=(match,team)=>{
+    if(match.status!=="finished"||!match.score)return"Rendimento sotto fatica: da valutare";
+    const home=match.homeTeam===team.id,goalsFor=home?match.score.home:match.score.away,goalsAgainst=home?match.score.away:match.score.home;
+    const outcome=goalsFor>goalsAgainst?"vittoria":goalsFor<goalsAgainst?"sconfitta":"pareggio";
+    return `Rendimento sotto fatica: ${outcome} ${goalsFor}-${goalsAgainst}`;
+  };
+  const workloadNote=(match,european,team)=>{
     if(match.calendarType!=="league"||!match.date)return"";
     const previous=european.filter(item=>item.date&&dayDistance(item.date,match.date)>=0&&dayDistance(item.date,match.date)<=4).sort((a,b)=>b.date.localeCompare(a.date))[0];
-    return previous?`Fatica: a ${dayDistance(previous.date,match.date)} giorn${dayDistance(previous.date,match.date)===1?"o":"i"} da ${previous.competitionLabel}`:"";
+    return previous?`Fatica: a ${dayDistance(previous.date,match.date)} giorn${dayDistance(previous.date,match.date)===1?"o":"i"} da ${previous.competitionLabel} · ${fatiguePerformance(match,team)}`:"";
   };
   const calendarClub=(name,teamId,teams,currentTeamId)=>{
     const club=teams.find(team=>team.id===teamId),current=teamId===currentTeamId;
@@ -30,7 +36,7 @@ export function createPage(deps){
   const appointmentRow=(match,team,teams,european)=>{
     const isLeague=match.calendarType==="league",isEurope=match.calendarType==="europe",isCup=match.calendarType==="cup";
     const ids=teamNameIndex(teams),homeId=ids.get(normalize(match.homeName))||null,awayId=ids.get(normalize(match.awayName))||null;
-    const venue=homeId===team.id?"Casa":"Trasferta",score=match.score?`${match.score.home} – ${match.score.away}`:"VS",fatigue=workloadNote(match,european);
+    const venue=homeId===team.id?"Casa":"Trasferta",score=match.score?`${match.score.home} – ${match.score.away}`:"VS",fatigue=workloadNote(match,european,team);
     const mark=isLeague?match.matchday:isCup?"COPPA":competitionMarks[match.competition];
     const round=isLeague?"Giornata":isCup?match.stageLabel:match.competitionLabel;
     const opponentId=homeId===team.id?awayId:homeId;
