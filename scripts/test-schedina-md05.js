@@ -6,7 +6,7 @@ const path = require("path");
 const root = path.resolve(__dirname, "..");
 const read = file => JSON.parse(fs.readFileSync(path.join(root, file), "utf8"));
 const data = read("data/normalized/schedina-md05.json");
-const predictions = read("data/normalized/predictions.json").predictions.filter(item => item.matchId.endsWith("-md-05") && item.matchId !== "monza-sassuolo-2026-27-md-05");
+const predictions = read("data/normalized/predictions.json").predictions.filter(item => item.matchId.endsWith("-md-05"));
 const source = read("data/sources/mycombo-serie-a-2026-27-md-05.json");
 const renderer = fs.readFileSync(path.join(root, "js/pages/betting.js"), "utf8");
 const legs = data.slips.flatMap(slip => slip.legs);
@@ -36,6 +36,7 @@ assert.deepEqual(data.slips.map(slip => slip.name), [
 assert(renderer.includes("MyCombo · 10 esiti selezionabili"));
 assert(renderer.includes("data-mycombo-pick"), "I dieci esiti MyCombo devono essere pulsanti selezionabili");
 assert(renderer.includes("bindMyComboInteractions"), "Interazione MyCombo assente");
+assert(!renderer.includes('item.match.status!=="finished"'), "Monza-Sassuolo deve restare visibile come snapshot pre-partita nella sezione MyCombo");
 assert(renderer.indexOf("${myCombo}${roundContent") > renderer.indexOf("const myCombo="), "Le MyCombo devono precedere le schedine nella pagina MD05");
 
 for (const prediction of predictions) {
