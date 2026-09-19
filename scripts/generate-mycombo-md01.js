@@ -2,6 +2,7 @@
 
 const fs = require("fs");
 const path = require("path");
+const { isSisalMyComboMarketName, sisalMyComboMarketNames } = require("./mycombo-market-policy");
 
 const root = path.resolve(__dirname, "..");
 const read = relative => JSON.parse(fs.readFileSync(path.join(root, relative), "utf8"));
@@ -30,7 +31,6 @@ const excludedMarketNames = new Set([
   "OSPITE: SEGNA GOAL 2T",
   "SEGNA GOAL TEMPO X",
   "SQUADRA X SEGNA NEI 2 TEMPI",
-  "U/O GOAL SQUADRA TEMPO",
   "SEGNA ULTIMO GOAL",
   "1 TEMPO: SEGNA ULTIMO GOAL",
   "2 TEMPO: SEGNA ULTIMO GOAL",
@@ -46,7 +46,7 @@ const excludedMarketNames = new Set([
   "CASA: VINCE A 0 2T",
   "OSPITE: VINCE A 0 2T"
 ]);
-const excludedMarketNameFragments = ["DUO", "MULTIGIOCAT"];
+const excludedMarketNameFragments = ["MULTIGIOCAT"];
 const tierLimits = {
   Safe: matchday === 5 ? { minimum: 10, maximum: 10, preferred: 10 } : { minimum: 3, maximum: 6, preferred: 3 },
   Balanced: { minimum: 4, maximum: 7, preferred: 4 },
@@ -190,7 +190,10 @@ function scoreMarketCandidate(market, selection, prediction, match) {
 
 function candidatePool(event, prediction, match) {
   const marketIndex = new Map();
-  for (const market of event.markets || []) for (const selection of market.selections || []) marketIndex.set(String(selection.providerSelectionId), { market, selection });
+  for (const market of event.markets || []) {
+    if (!isSisalMyComboMarketName(market.marketName)) continue;
+    for (const selection of market.selections || []) marketIndex.set(String(selection.providerSelectionId), { market, selection });
+  }
   const candidates = [];
   const bestDoubleChanceProbability = Math.max(0, ...(prediction.marketComparison || []).filter(row => row.family === "double-chance" && row.scenarioCompatible).map(row => row.modelProbabilityPct));
   for (const row of prediction.marketComparison || []) {
@@ -212,8 +215,9 @@ function candidatePool(event, prediction, match) {
     });
   }
 
-  const supportedVolumes = new Set(["U/O TIRI TOTALI", "U/O TIRI IN PORTA", "U/O CORNER", "U/O TIRI TOTALI SQUADRA X", "U/O TIRI IN PORTA SQUADRA X", "U/O CORNER SQUADRA X"]);
+  const supportedVolumes = new Set(["U/O TIRI IN PORTA", "U/O CORNER", "U/O TIRI IN PORTA SQUADRA X", "U/O CORNER SQUADRA X"]);
   for (const market of event.markets || []) {
+    if (!isSisalMyComboMarketName(market.marketName)) continue;
     const projection = projectedMetric(prediction, market);
     if (!supportedVolumes.has(market.marketName) || !projection || !Number.isFinite(Number(market.threshold))) continue;
     const threshold = Number(market.threshold);
@@ -239,6 +243,7 @@ function candidatePool(event, prediction, match) {
   }
 
   for (const market of event.markets || []) {
+    if (!isSisalMyComboMarketName(market.marketName)) continue;
     for (const selection of market.selections || []) {
       if (selection.status !== "open") continue;
       if (riskyHomeUnderAgainstPromoted(market, selection, prediction, match)) continue;
@@ -248,6 +253,7 @@ function candidatePool(event, prediction, match) {
   }
 
   for (const market of event.markets || []) {
+    if (!isSisalMyComboMarketName(market.marketName)) continue;
     const isShots = market.marketName === "ENTRAMBE LE SQUADRE ALMENO X TIRI IN PORTA";
     const isCorners = market.marketName === "ENTRAMBE ALMENO X CORNER";
     if (!isShots && !isCorners) continue;
@@ -273,13 +279,13 @@ function candidatePool(event, prediction, match) {
     const awayCorners = prediction.teamProjections?.[1]?.corners?.central;
     if (!Number.isFinite(homeCorners) || !Number.isFinite(awayCorners)) continue;
     const higherSide = homeCorners >= awayCorners ? "TEAM 1" : "TEAM 2";
-    const supported = new Set(["PRIMA A X CORNER", "1X2 CORNER", "1 TEMPO: 1X2 CORNER", "SQUADRA X ALMENO Y CORNER IN ENTRAMBI I TEMPI", "ALMENO X CORNER IN ENTRAMBI I TEMPI", "ENTRAMBE ALMENO X CORNER IN ENTRAMBI I TEMPI"]);
+    const supported = new Set(["1X2 CORNER", "SQUADRA X ALMENO Y CORNER IN ENTRAMBI I TEMPI", "ALMENO X CORNER IN ENTRAMBI I TEMPI", "ENTRAMBE ALMENO X CORNER IN ENTRAMBI I TEMPI"]);
     if (!supported.has(market.marketName)) continue;
     for (const selection of market.selections || []) {
       if (selection.status !== "open") continue;
       let coherent = false;
       let overlapKey = `market-${clean(market.marketName)}`;
-      if (["PRIMA A X CORNER", "1X2 CORNER", "1 TEMPO: 1X2 CORNER"].includes(market.marketName)) {
+      if (market.marketName === "1X2 CORNER") {
         const side = selection.name === "1" ? "TEAM 1" : selection.name === "2" ? "TEAM 2" : selection.name;
         coherent = Math.abs(homeCorners - awayCorners) >= 0.5 && side === higherSide;
       } else {
@@ -305,21 +311,6 @@ function candidatePool(event, prediction, match) {
     }
   }
 
-  for (const market of event.markets || []) {
-    if (!["X o Y GOL O PALO (DUO) INC TS", "GIOCATORE SEGNA O ASSIST O CARTELLINO INC TS"].includes(market.marketName) || !selectedPlayer(market.variantName, match)) continue;
-    const selection = (market.selections || []).find(item => item.status === "open" && item.name === "SI");
-    if (!selection) continue;
-    candidates.push({
-      providerSelectionId: String(selection.providerSelectionId),
-      overlapKey: `market-${clean(market.marketName)}`,
-      label: `${market.variantName} · sì`,
-      odds: selection.odds,
-      quality: 82 + selection.odds * 4,
-      anchor: false,
-      minimumTier: "Aggressive"
-    });
-  }
-
   const playerMarkets = new Map([
     ["U/O TIRI TOTALI GIOCATORE (DUO) INC TS", { metric: "tiri totali", maximum: 3.5, key: "shots-total", substituteIncluded: true }],
     ["U/O  TIRI IN PORTA GIOCATORE (DUO) INC PALI TRAVERSE INC TS", { metric: "tiri in porta", maximum: 1.5, key: "shots-on-target", substituteIncluded: true }],
@@ -327,6 +318,7 @@ function candidatePool(event, prediction, match) {
     ["U/O FALLI SUBITI GIOCATORE", { metric: "falli subiti", maximum: 1.5, key: "fouls-won", substituteIncluded: false }]
   ]);
   for (const market of event.markets || []) {
+    if (!isSisalMyComboMarketName(market.marketName)) continue;
     const kind = playerMarkets.get(market.marketName);
     const threshold = Number(market.threshold);
     if (!kind || threshold > kind.maximum || !selectedPlayer(market.variantName, match)) continue;
@@ -367,6 +359,7 @@ function candidatePool(event, prediction, match) {
     const home = teamById.get(match.homeTeam)?.name || match.homeTeam;
     const away = teamById.get(match.awayTeam)?.name || match.awayTeam;
     for (const [marketName, semanticKey] of distinctEventMarkets) {
+      if (!isSisalMyComboMarketName(marketName)) continue;
       const markets = (event.markets || []).filter(market => market.marketName === marketName);
       const choices = markets.flatMap(market => (market.selections || [])
         .filter(selection => selection.status === "open" && selection.odds >= minimumLegOdds && selection.odds <= maximumLegOdds)
@@ -485,6 +478,7 @@ const output = {
     displayedComboLegs: matchday === 5 ? 10 : null,
     excludedMarketNames: [...excludedMarketNames],
     excludedMarketNameFragments,
+    allowedMarketNames: [...sisalMyComboMarketNames].sort(),
     providerEligibilityPolicy: "Solo selezioni con providerSelectionId presenti nello snapshot Sisal e ammesse nella sezione MyCombo; le famiglie note come non selezionabili sono escluse prima della costruzione dei portafogli.",
     minLegOddsInclusive: minimumLegOdds,
     maxLegOddsInclusive: maximumLegOdds,

@@ -2,6 +2,7 @@
 
 const fs = require("fs");
 const path = require("path");
+const { isSisalMyComboMarketName } = require("./mycombo-market-policy");
 
 const root = path.resolve(__dirname, "..");
 const index = process.argv.indexOf("--matchday");
@@ -47,6 +48,7 @@ for (const [matchId, portfolios] of Object.entries(source.matches || {})) {
     }
     if (!combo?.legs?.length || combo.qualityStatus === "nd") throw new Error(`${matchId}/${portfolio.tier}: portafoglio non disponibile nel pronostico rigenerato`);
     if (portfolio.legs.some(isExcludedMarket) || combo.legs.some(isExcludedMarket)) throw new Error(`${matchId}/${portfolio.tier}: mercato vietato presente nella MyCombo aperta`);
+    if (combo.legs.some(leg => !isSisalMyComboMarketName(leg.market))) throw new Error(`${matchId}/${portfolio.tier}: mercato fuori dalla whitelist MyCombo Sisal`);
     const minimumOdds = source.constraints.minLegOddsInclusive;
     const maximumOdds = source.constraints.maxLegOddsInclusive;
     if (combo.legs.some(leg => leg.odds < minimumOdds || leg.odds > maximumOdds)) throw new Error(`${matchId}/${portfolio.tier}: quota singola fuori dal range ${minimumOdds}-${maximumOdds}`);

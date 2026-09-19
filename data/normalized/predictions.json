@@ -5,7 +5,7 @@
     "serie-a"
   ],
   "season": "2026-27",
-  "generatedAt": "2026-09-19T20:45:14.566Z",
+  "generatedAt": "2026-09-19T20:57:31.487Z",
   "engine": {
     "version": "4.12.0",
     "principle": "Un'unica matrice dei punteggi indipendente dalle quote genera 1X2, gol e mercati collegati.",
@@ -91105,161 +91105,15 @@
         {
           "tier": "Safe",
           "scenario": null,
-          "risk": "elevato · 10 eventi",
+          "risk": "relativo inferiore",
           "targetOdds": 5,
-          "quotaPolicy": "orientativa",
-          "eligibilityPolicy": "validita-tecnica-e-intervalli",
-          "riskPolicy": "informativa",
-          "odds": 10.7,
-          "distancePct": 114,
-          "legs": [
-            {
-              "label": "GILMOUR B. almeno 1 falli commessi",
-              "market": "U/O FALLI COMMESSI GIOCATORE",
-              "variant": "GILMOUR B. U/O 0.5 FALLI COMMESSI",
-              "threshold": "0.5",
-              "selection": "OVER",
-              "providerSelectionId": "5330284352",
-              "odds": 1.25,
-              "overlapKey": "market-u o falli commessi giocatore",
-              "semanticKeys": [],
-              "marketScope": "player"
-            },
-            {
-              "label": "HOJLUND RASMUS almeno 1 falli subiti",
-              "market": "U/O FALLI SUBITI GIOCATORE",
-              "variant": "HOJLUND RASMUS U/O 0.5 FALLI SUBITI",
-              "threshold": "0.5",
-              "selection": "OVER",
-              "providerSelectionId": "5330526765",
-              "odds": 1.25,
-              "overlapKey": "market-u o falli subiti giocatore",
-              "semanticKeys": [],
-              "marketScope": "player"
-            },
-            {
-              "label": "Napoli segna almeno un gol",
-              "market": "OSPITE: SEGNA GOAL",
-              "variant": "SEGNA GOAL SQUADRA OSPITE",
-              "threshold": null,
-              "selection": "SI",
-              "providerSelectionId": "5319756899",
-              "odds": 1.19,
-              "overlapKey": "market-ospite segna goal",
-              "semanticKeys": [
-                "goals"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "Nessun pareggio (12)",
-              "market": "DOPPIA CHANCE",
-              "variant": "DOPPIA CHANCE MULTIESITI",
-              "threshold": null,
-              "selection": "12",
-              "providerSelectionId": "5319693714",
-              "odds": 1.33,
-              "overlapKey": "market-doppia chance",
-              "semanticKeys": [
-                "result"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "Napoli almeno 10 tiri totali",
-              "market": "U/O TIRI TOTALI SQUADRA X",
-              "variant": "SQUADRA 2: U/O 9.5 TIRI TOTALI",
-              "threshold": "9.5",
-              "selection": "OVER",
-              "providerSelectionId": "5330284520",
-              "odds": 1.15,
-              "overlapKey": "market-u o tiri totali squadra x",
-              "semanticKeys": [
-                "volume-shots-total"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "1 TEMPO: GOL/NOGOL · NO GOL",
-              "market": "GOAL/NOGOAL TEMPO X",
-              "variant": "1 TEMPO: GOL/NOGOL",
-              "threshold": null,
-              "selection": "NO GOL",
-              "providerSelectionId": "5319704522",
-              "odds": 1.18,
-              "overlapKey": "market-goal nogoal tempo x",
-              "semanticKeys": [
-                "goals-first-half-btts"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "DC TEMPO 1 · X2",
-              "market": "DOPPIA CHANCE TEMPO X",
-              "variant": "DC TEMPO 1",
-              "threshold": null,
-              "selection": "X2",
-              "providerSelectionId": "5319691350",
-              "odds": 1.21,
-              "overlapKey": "market-doppia chance tempo x",
-              "semanticKeys": [
-                "result-first-half"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "1X2 NEI PRIMI 15 MIN · X",
-              "market": "1X2 NEI MINUTI X-Y",
-              "variant": "1X2 NEI PRIMI 15 MIN",
-              "threshold": null,
-              "selection": "X",
-              "providerSelectionId": "5324040489",
-              "odds": 1.25,
-              "overlapKey": "market-1x2 nei minuti x y",
-              "semanticKeys": [
-                "result-opening-window"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "1 TEMPO: U/O 0.5 · OVER",
-              "market": "UNDER/OVER TEMPO X",
-              "variant": "1 TEMPO: U/O 0.5",
-              "threshold": "0.5",
-              "selection": "OVER",
-              "providerSelectionId": "5319704638",
-              "odds": 1.36,
-              "overlapKey": "market-under over tempo x",
-              "semanticKeys": [
-                "goals-first-half"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "Napoli VINCE/VANTAGGIO (1UP) · SI",
-              "market": "VINCE O QUASI (1UP/2UP)",
-              "variant": "SQUADRA 2 VINCE/VANTAGGIO (1UP)",
-              "threshold": null,
-              "selection": "SI",
-              "providerSelectionId": "5326088521",
-              "odds": 1.55,
-              "overlapKey": "market-vince o quasi 1up 2up",
-              "semanticKeys": [
-                "win-or-lead"
-              ],
-              "marketScope": "match"
-            }
-          ],
-          "selection": "GILMOUR B. almeno 1 falli commessi + HOJLUND RASMUS almeno 1 falli subiti + Napoli segna almeno un gol + Nessun pareggio (12) + Napoli almeno 10 tiri totali + 1 TEMPO: GOL/NOGOL · NO GOL + DC TEMPO 1 · X2 + 1X2 NEI PRIMI 15 MIN · X + 1 TEMPO: U/O 0.5 · OVER + Napoli VINCE/VANTAGGIO (1UP) · SI",
-          "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-17: quota 5 orientativa, 10-10 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
-          "probabilityPct": null,
-          "prudentProbabilityPct": null,
-          "fairOdds": null,
-          "prudentExpectedValuePct": null,
-          "qualityStatus": "editoriale",
-          "weakestLeg": null,
-          "probabilityMethod": null,
-          "probabilityStatus": "N/D · stima congiunta non supportata"
+          "odds": null,
+          "legs": [],
+          "selection": null,
+          "logic": null,
+          "qualityStatus": "nd",
+          "probabilityStatus": "N/D",
+          "unavailableReason": "Candidati insufficienti per il profilo Safe: servono almeno 10 mercati distinti con quota tra 1.15 e 1.85."
         },
         {
           "tier": "Balanced",
@@ -91285,75 +91139,61 @@
               "marketScope": "player"
             },
             {
-              "label": "NJIE A. almeno 2 falli commessi",
-              "market": "U/O FALLI COMMESSI GIOCATORE",
-              "variant": "NJIE A. U/O 1.5 FALLI COMMESSI",
-              "threshold": "1.5",
+              "label": "DI LORENZO G. almeno 1 tiri totali, sostituto incluso",
+              "market": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+              "variant": "DI LORENZO G. U/O 0.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+              "threshold": "0.5",
               "selection": "OVER",
-              "providerSelectionId": "5330283700",
-              "odds": 1.65,
+              "providerSelectionId": "5330282856",
+              "odds": 1.75,
+              "overlapKey": "market-u o tiri totali giocatore duo inc ts",
+              "semanticKeys": [
+                "volume-shots-total"
+              ],
+              "marketScope": "player"
+            },
+            {
+              "label": "TEMPO 1: U/O 0.5 Fiorentina · UNDER",
+              "market": "U/O GOAL SQUADRA TEMPO",
+              "variant": "TEMPO 1: U/O 0.5 SQUADRA 1",
+              "threshold": "0.5",
+              "selection": "UNDER",
+              "providerSelectionId": "5319704745",
+              "odds": 1.6,
+              "overlapKey": "market-u o goal squadra tempo",
+              "semanticKeys": [
+                "team-goals-period"
+              ],
+              "marketScope": "match"
+            },
+            {
+              "label": "RANIERI L. almeno 1 falli commessi",
+              "market": "U/O FALLI COMMESSI GIOCATORE",
+              "variant": "RANIERI L. U/O 0.5 FALLI COMMESSI",
+              "threshold": "0.5",
+              "selection": "OVER",
+              "providerSelectionId": "5330284324",
+              "odds": 1.57,
               "overlapKey": "market-u o falli commessi giocatore",
               "semanticKeys": [],
               "marketScope": "player"
             },
             {
-              "label": "Napoli VINCE/VANTAGGIO (1UP) · SI",
-              "market": "VINCE O QUASI (1UP/2UP)",
-              "variant": "SQUADRA 2 VINCE/VANTAGGIO (1UP)",
+              "label": "MULTIGOAL Napoli MULTIESITI · 1-3",
+              "market": "MULTIGOAL SQUADRA X",
+              "variant": "MULTIGOAL SQUADRA 2 MULTIESITI",
               "threshold": null,
-              "selection": "SI",
-              "providerSelectionId": "5326088521",
-              "odds": 1.55,
-              "overlapKey": "market-vince o quasi 1up 2up",
-              "semanticKeys": [
-                "win-or-lead"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "Partita almeno 8 tiri in porta",
-              "market": "U/O TIRI IN PORTA",
-              "variant": "U/O 7.5 TIRI IN PORTA",
-              "threshold": "7.5",
-              "selection": "OVER",
-              "providerSelectionId": "5319689714",
-              "odds": 1.4,
-              "overlapKey": "market-u o tiri in porta",
-              "semanticKeys": [
-                "volume-shots-on-target"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "Nessun pareggio (12)",
-              "market": "DOPPIA CHANCE",
-              "variant": "DOPPIA CHANCE MULTIESITI",
-              "threshold": null,
-              "selection": "12",
-              "providerSelectionId": "5319693714",
-              "odds": 1.33,
-              "overlapKey": "market-doppia chance",
-              "semanticKeys": [
-                "result"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "U/O 3.5 Fiorentina + U/O 0.5 Napoli · UNDER+OVER",
-              "market": "COMBO: U/O CASA + U/O OSPITE",
-              "variant": "U/O 3.5 TEAM 1 + U/O 0.5 TEAM 2",
-              "threshold": null,
-              "selection": "UNDER+OVER",
-              "providerSelectionId": "5319755867",
-              "odds": 1.2,
-              "overlapKey": "market-combo u o casa u o ospite",
+              "selection": "1-3",
+              "providerSelectionId": "5319704663",
+              "odds": 1.3,
+              "overlapKey": "market-multigoal squadra x",
               "semanticKeys": [
                 "goals"
               ],
               "marketScope": "match"
             }
           ],
-          "selection": "DRAGUSIN R. almeno 1 falli subiti + NJIE A. almeno 2 falli commessi + Napoli VINCE/VANTAGGIO (1UP) · SI + Partita almeno 8 tiri in porta + Nessun pareggio (12) + U/O 3.5 Fiorentina + U/O 0.5 Napoli · UNDER+OVER",
+          "selection": "DRAGUSIN R. almeno 1 falli subiti + DI LORENZO G. almeno 1 tiri totali, sostituto incluso + TEMPO 1: U/O 0.5 Fiorentina · UNDER + RANIERI L. almeno 1 falli commessi + MULTIGOAL Napoli MULTIESITI · 1-3",
           "logic": "Profilo balanced costruito sulle quote Sisal del 2026-09-17: quota 10 orientativa, 4-7 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
           "probabilityPct": null,
           "prudentProbabilityPct": null,
@@ -91390,6 +91230,32 @@
               "marketScope": "match"
             },
             {
+              "label": "DRAGUSIN R. almeno 1 tiri totali, sostituto incluso",
+              "market": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+              "variant": "DRAGUSIN R. U/O 0.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+              "threshold": "0.5",
+              "selection": "OVER",
+              "providerSelectionId": "5330284726",
+              "odds": 1.8,
+              "overlapKey": "market-u o tiri totali giocatore duo inc ts",
+              "semanticKeys": [
+                "volume-shots-total"
+              ],
+              "marketScope": "player"
+            },
+            {
+              "label": "RANIERI L. almeno 1 falli commessi",
+              "market": "U/O FALLI COMMESSI GIOCATORE",
+              "variant": "RANIERI L. U/O 0.5 FALLI COMMESSI",
+              "threshold": "0.5",
+              "selection": "OVER",
+              "providerSelectionId": "5330284324",
+              "odds": 1.57,
+              "overlapKey": "market-u o falli commessi giocatore",
+              "semanticKeys": [],
+              "marketScope": "player"
+            },
+            {
               "label": "DRAGUSIN R. almeno 1 falli subiti",
               "market": "U/O FALLI SUBITI GIOCATORE",
               "variant": "DRAGUSIN R. U/O 0.5 FALLI SUBITI",
@@ -91400,20 +91266,6 @@
               "overlapKey": "market-u o falli subiti giocatore",
               "semanticKeys": [],
               "marketScope": "player"
-            },
-            {
-              "label": "Napoli VINCE/VANTAGGIO (1UP) · SI",
-              "market": "VINCE O QUASI (1UP/2UP)",
-              "variant": "SQUADRA 2 VINCE/VANTAGGIO (1UP)",
-              "threshold": null,
-              "selection": "SI",
-              "providerSelectionId": "5326088521",
-              "odds": 1.55,
-              "overlapKey": "market-vince o quasi 1up 2up",
-              "semanticKeys": [
-                "win-or-lead"
-              ],
-              "marketScope": "match"
             },
             {
               "label": "1 TEMPO: U/O 0.5 · OVER",
@@ -91430,6 +91282,20 @@
               "marketScope": "match"
             },
             {
+              "label": "1 TEMPO: GOL/NOGOL · NO GOL",
+              "market": "GOAL/NOGOAL TEMPO X",
+              "variant": "1 TEMPO: GOL/NOGOL",
+              "threshold": null,
+              "selection": "NO GOL",
+              "providerSelectionId": "5319704522",
+              "odds": 1.18,
+              "overlapKey": "market-goal nogoal tempo x",
+              "semanticKeys": [
+                "goals-first-half-btts"
+              ],
+              "marketScope": "match"
+            },
+            {
               "label": "Partita almeno 8 tiri in porta",
               "market": "U/O TIRI IN PORTA",
               "variant": "U/O 7.5 TIRI IN PORTA",
@@ -91442,49 +91308,9 @@
                 "volume-shots-on-target"
               ],
               "marketScope": "match"
-            },
-            {
-              "label": "DC TEMPO 1 · X2",
-              "market": "DOPPIA CHANCE TEMPO X",
-              "variant": "DC TEMPO 1",
-              "threshold": null,
-              "selection": "X2",
-              "providerSelectionId": "5319691350",
-              "odds": 1.21,
-              "overlapKey": "market-doppia chance tempo x",
-              "semanticKeys": [
-                "result-first-half"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "FAGIOLI N. almeno 1 falli commessi",
-              "market": "U/O FALLI COMMESSI GIOCATORE",
-              "variant": "FAGIOLI N. U/O 0.5 FALLI COMMESSI",
-              "threshold": "0.5",
-              "selection": "OVER",
-              "providerSelectionId": "5330284320",
-              "odds": 1.4,
-              "overlapKey": "market-u o falli commessi giocatore",
-              "semanticKeys": [],
-              "marketScope": "player"
-            },
-            {
-              "label": "Napoli almeno 11 tiri totali",
-              "market": "U/O TIRI TOTALI SQUADRA X",
-              "variant": "SQUADRA 2: U/O 10.5 TIRI TOTALI",
-              "threshold": "10.5",
-              "selection": "OVER",
-              "providerSelectionId": "5330282624",
-              "odds": 1.27,
-              "overlapKey": "market-u o tiri totali squadra x",
-              "semanticKeys": [
-                "volume-shots-total"
-              ],
-              "marketScope": "match"
             }
           ],
-          "selection": "Over 2,5 gol + DRAGUSIN R. almeno 1 falli subiti + Napoli VINCE/VANTAGGIO (1UP) · SI + 1 TEMPO: U/O 0.5 · OVER + Partita almeno 8 tiri in porta + DC TEMPO 1 · X2 + FAGIOLI N. almeno 1 falli commessi + Napoli almeno 11 tiri totali",
+          "selection": "Over 2,5 gol + DRAGUSIN R. almeno 1 tiri totali, sostituto incluso + RANIERI L. almeno 1 falli commessi + DRAGUSIN R. almeno 1 falli subiti + 1 TEMPO: U/O 0.5 · OVER + 1 TEMPO: GOL/NOGOL · NO GOL + Partita almeno 8 tiri in porta",
           "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-09-17: quota 20 orientativa, 5-8 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
           "probabilityPct": null,
           "prudentProbabilityPct": null,
@@ -92770,139 +92596,19 @@
         "portfolios": [
           {
             "tier": "Safe",
-            "status": "outside-limits",
+            "status": "N/D",
             "allowed": false,
-            "riskScore": 73.5,
-            "riskLevel": "alto",
-            "averageRisk": 73.5,
-            "maxEventRisk": 82,
-            "strongDependencies": 0,
-            "contradictions": 0,
-            "limits": {
-              "maxAverageRisk": 42,
-              "maxEventRisk": 58,
-              "maxStrongDependencies": 1,
-              "minPrudentExpectedValuePct": 0
-            },
             "reasons": [
-              "Rischio medio 73.5 oltre il limite 42.",
-              "Gamba a rischio 82 oltre il limite 58.",
-              "EV prudenziale non disponibile."
-            ],
-            "events": [
-              {
-                "providerSelectionId": "5330284352",
-                "label": "GILMOUR B. almeno 1 falli commessi",
-                "riskScore": 82,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5330526765",
-                "label": "HOJLUND RASMUS almeno 1 falli subiti",
-                "riskScore": 82,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5319756899",
-                "label": "Napoli segna almeno un gol",
-                "riskScore": 65,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5319693714",
-                "label": "Nessun pareggio (12)",
-                "riskScore": 65,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5330284520",
-                "label": "Napoli almeno 10 tiri totali",
-                "riskScore": 82,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5319704522",
-                "label": "1 TEMPO: GOL/NOGOL · NO GOL",
-                "riskScore": 65,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5319691350",
-                "label": "DC TEMPO 1 · X2",
-                "riskScore": 65,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5324040489",
-                "label": "1X2 NEI PRIMI 15 MIN · X",
-                "riskScore": 82,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5319704638",
-                "label": "1 TEMPO: U/O 0.5 · OVER",
-                "riskScore": 65,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5326088521",
-                "label": "Napoli VINCE/VANTAGGIO (1UP) · SI",
-                "riskScore": 82,
-                "modeled": false
-              }
-            ],
-            "dependencies": [
-              {
-                "first": "5319756899",
-                "second": "5319704522",
-                "type": "negative",
-                "correlation": -0.534,
-                "intersectionProbabilityPct": 27.5
-              },
-              {
-                "first": "5319756899",
-                "second": "5319691350",
-                "type": "positive",
-                "correlation": 0.467,
-                "intersectionProbabilityPct": 66.6
-              },
-              {
-                "first": "5319756899",
-                "second": "5319704638",
-                "type": "positive",
-                "correlation": 0.545,
-                "intersectionProbabilityPct": 78.6
-              },
-              {
-                "first": "5319693714",
-                "second": "5319691350",
-                "type": "negative",
-                "correlation": -0.346,
-                "intersectionProbabilityPct": 48.6
-              },
-              {
-                "first": "5319693714",
-                "second": "5319704638",
-                "type": "positive",
-                "correlation": 0.487,
-                "intersectionProbabilityPct": 74.5
-              },
-              {
-                "first": "5319704522",
-                "second": "5319704638",
-                "type": "negative",
-                "correlation": -0.291,
-                "intersectionProbabilityPct": 41.4
-              }
+              "Candidati insufficienti per il profilo Safe: servono almeno 10 mercati distinti con quota tra 1.15 e 1.85."
             ]
           },
           {
             "tier": "Balanced",
             "status": "outside-limits",
             "allowed": false,
-            "riskScore": 79.2,
+            "riskScore": 78.6,
             "riskLevel": "alto",
-            "averageRisk": 79.2,
+            "averageRisk": 78.6,
             "maxEventRisk": 82,
             "strongDependencies": 0,
             "contradictions": 0,
@@ -92913,7 +92619,7 @@
               "minPrudentExpectedValuePct": 0
             },
             "reasons": [
-              "Rischio medio 79.2 oltre il limite 56.",
+              "Rischio medio 78.6 oltre il limite 56.",
               "Gamba a rischio 82 oltre il limite 72.",
               "EV prudenziale non disponibile."
             ],
@@ -92925,33 +92631,27 @@
                 "modeled": false
               },
               {
-                "providerSelectionId": "5330283700",
-                "label": "NJIE A. almeno 2 falli commessi",
+                "providerSelectionId": "5330282856",
+                "label": "DI LORENZO G. almeno 1 tiri totali, sostituto incluso",
                 "riskScore": 82,
                 "modeled": false
               },
               {
-                "providerSelectionId": "5326088521",
-                "label": "Napoli VINCE/VANTAGGIO (1UP) · SI",
+                "providerSelectionId": "5319704745",
+                "label": "TEMPO 1: U/O 0.5 Fiorentina · UNDER",
                 "riskScore": 82,
                 "modeled": false
               },
               {
-                "providerSelectionId": "5319689714",
-                "label": "Partita almeno 8 tiri in porta",
+                "providerSelectionId": "5330284324",
+                "label": "RANIERI L. almeno 1 falli commessi",
                 "riskScore": 82,
                 "modeled": false
               },
               {
-                "providerSelectionId": "5319693714",
-                "label": "Nessun pareggio (12)",
+                "providerSelectionId": "5319704663",
+                "label": "MULTIGOAL Napoli MULTIESITI · 1-3",
                 "riskScore": 65,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5319755867",
-                "label": "U/O 3.5 Fiorentina + U/O 0.5 Napoli · UNDER+OVER",
-                "riskScore": 82,
                 "modeled": false
               }
             ],
@@ -92961,9 +92661,9 @@
             "tier": "Aggressive",
             "status": "outside-limits",
             "allowed": false,
-            "riskScore": 75.6,
+            "riskScore": 74.7,
             "riskLevel": "alto",
-            "averageRisk": 75.6,
+            "averageRisk": 74.7,
             "maxEventRisk": 82,
             "strongDependencies": 0,
             "contradictions": 0,
@@ -92974,7 +92674,7 @@
               "minPrudentExpectedValuePct": 0
             },
             "reasons": [
-              "Rischio medio 75.6 oltre il limite 72.",
+              "Rischio medio 74.7 oltre il limite 72.",
               "EV prudenziale non disponibile."
             ],
             "events": [
@@ -92985,14 +92685,20 @@
                 "modeled": false
               },
               {
-                "providerSelectionId": "5330526189",
-                "label": "DRAGUSIN R. almeno 1 falli subiti",
+                "providerSelectionId": "5330284726",
+                "label": "DRAGUSIN R. almeno 1 tiri totali, sostituto incluso",
                 "riskScore": 82,
                 "modeled": false
               },
               {
-                "providerSelectionId": "5326088521",
-                "label": "Napoli VINCE/VANTAGGIO (1UP) · SI",
+                "providerSelectionId": "5330284324",
+                "label": "RANIERI L. almeno 1 falli commessi",
+                "riskScore": 82,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5330526189",
+                "label": "DRAGUSIN R. almeno 1 falli subiti",
                 "riskScore": 82,
                 "modeled": false
               },
@@ -93003,26 +92709,14 @@
                 "modeled": false
               },
               {
-                "providerSelectionId": "5319689714",
-                "label": "Partita almeno 8 tiri in porta",
-                "riskScore": 82,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5319691350",
-                "label": "DC TEMPO 1 · X2",
+                "providerSelectionId": "5319704522",
+                "label": "1 TEMPO: GOL/NOGOL · NO GOL",
                 "riskScore": 65,
                 "modeled": false
               },
               {
-                "providerSelectionId": "5330284320",
-                "label": "FAGIOLI N. almeno 1 falli commessi",
-                "riskScore": 82,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5330282624",
-                "label": "Napoli almeno 11 tiri totali",
+                "providerSelectionId": "5319689714",
+                "label": "Partita almeno 8 tiri in porta",
                 "riskScore": 82,
                 "modeled": false
               }
@@ -93034,6 +92728,20 @@
                 "type": "positive",
                 "correlation": 0.273,
                 "intersectionProbabilityPct": 47.9
+              },
+              {
+                "first": "5319693694",
+                "second": "5319704522",
+                "type": "negative",
+                "correlation": -0.58,
+                "intersectionProbabilityPct": 9
+              },
+              {
+                "first": "5319704638",
+                "second": "5319704522",
+                "type": "negative",
+                "correlation": -0.291,
+                "intersectionProbabilityPct": 41.4
               }
             ]
           }
@@ -94425,158 +94133,9 @@
           "quotaPolicy": "orientativa",
           "eligibilityPolicy": "validita-tecnica-e-intervalli",
           "riskPolicy": "informativa",
-          "odds": 10,
-          "distancePct": 0,
+          "odds": 9.09,
+          "distancePct": 9.1,
           "legs": [
-            {
-              "label": "U/O 0.5 Frosinone + U/O 3.5 Como · OVER+UNDER",
-              "market": "COMBO: U/O CASA + U/O OSPITE",
-              "variant": "U/O 0.5 TEAM 1 + U/O 3.5 TEAM 2",
-              "threshold": null,
-              "selection": "OVER+UNDER",
-              "providerSelectionId": "5319769181",
-              "odds": 1.67,
-              "overlapKey": "market-combo u o casa u o ospite",
-              "semanticKeys": [
-                "goals"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "Como VINCE/VANTAGGIO (1UP) · SI",
-              "market": "VINCE O QUASI (1UP/2UP)",
-              "variant": "SQUADRA 2 VINCE/VANTAGGIO (1UP)",
-              "threshold": null,
-              "selection": "SI",
-              "providerSelectionId": "5324110915",
-              "odds": 1.2,
-              "overlapKey": "market-vince o quasi 1up 2up",
-              "semanticKeys": [
-                "win-or-lead"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "1 TEMPO: U/O 2.5 · UNDER",
-              "market": "UNDER/OVER TEMPO X",
-              "variant": "1 TEMPO: U/O 2.5",
-              "threshold": "2.5",
-              "selection": "UNDER",
-              "providerSelectionId": "5319702391",
-              "odds": 1.16,
-              "overlapKey": "market-under over tempo x",
-              "semanticKeys": [
-                "goals-second-half"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "ESITO 1X2 2 TEMPO · 2",
-              "market": "2 TEMPO: ESITO 1X2",
-              "variant": "ESITO 1X2 2 TEMPO",
-              "threshold": null,
-              "selection": "2",
-              "providerSelectionId": "5319768211",
-              "odds": 1.75,
-              "overlapKey": "market-2 tempo esito 1x2",
-              "semanticKeys": [
-                "result-second-half-1x2"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "ESITO FINALE 1X2 · 2",
-              "market": "1X2 ESITO FINALE",
-              "variant": "ESITO FINALE 1X2",
-              "threshold": null,
-              "selection": "2",
-              "providerSelectionId": "5319678731",
-              "odds": 1.5,
-              "overlapKey": "market-1x2 esito finale",
-              "semanticKeys": [
-                "result"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "1 TEMPO: GOL/NOGOL · NO GOL",
-              "market": "GOAL/NOGOAL TEMPO X",
-              "variant": "1 TEMPO: GOL/NOGOL",
-              "threshold": null,
-              "selection": "NO GOL",
-              "providerSelectionId": "5319702860",
-              "odds": 1.27,
-              "overlapKey": "market-goal nogoal tempo x",
-              "semanticKeys": [
-                "goals-first-half-btts"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "DC TEMPO 2 · 12",
-              "market": "DOPPIA CHANCE TEMPO X",
-              "variant": "DC TEMPO 2",
-              "threshold": null,
-              "selection": "12",
-              "providerSelectionId": "5319689806",
-              "odds": 1.29,
-              "overlapKey": "market-doppia chance tempo x",
-              "semanticKeys": [
-                "result-second-half"
-              ],
-              "marketScope": "match"
-            }
-          ],
-          "selection": "U/O 0.5 Frosinone + U/O 3.5 Como · OVER+UNDER + Como VINCE/VANTAGGIO (1UP) · SI + 1 TEMPO: U/O 2.5 · UNDER + ESITO 1X2 2 TEMPO · 2 + ESITO FINALE 1X2 · 2 + 1 TEMPO: GOL/NOGOL · NO GOL + DC TEMPO 2 · 12",
-          "logic": "Profilo balanced costruito sulle quote Sisal del 2026-09-17: quota 10 orientativa, 4-7 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
-          "probabilityPct": null,
-          "prudentProbabilityPct": null,
-          "fairOdds": null,
-          "prudentExpectedValuePct": null,
-          "qualityStatus": "editoriale",
-          "weakestLeg": null,
-          "probabilityMethod": null,
-          "probabilityStatus": "N/D · stima congiunta non supportata"
-        },
-        {
-          "tier": "Aggressive",
-          "scenario": null,
-          "risk": "elevato",
-          "targetOdds": 20,
-          "quotaPolicy": "orientativa",
-          "eligibilityPolicy": "validita-tecnica-e-intervalli",
-          "riskPolicy": "informativa",
-          "odds": 14.4,
-          "distancePct": 28,
-          "legs": [
-            {
-              "label": "ESITO 1X2 2 TEMPO · 2",
-              "market": "2 TEMPO: ESITO 1X2",
-              "variant": "ESITO 1X2 2 TEMPO",
-              "threshold": null,
-              "selection": "2",
-              "providerSelectionId": "5319768211",
-              "odds": 1.75,
-              "overlapKey": "market-2 tempo esito 1x2",
-              "semanticKeys": [
-                "result-second-half-1x2"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "DC TEMPO 2 · 12",
-              "market": "DOPPIA CHANCE TEMPO X",
-              "variant": "DC TEMPO 2",
-              "threshold": null,
-              "selection": "12",
-              "providerSelectionId": "5319689806",
-              "odds": 1.29,
-              "overlapKey": "market-doppia chance tempo x",
-              "semanticKeys": [
-                "result-second-half"
-              ],
-              "marketScope": "match"
-            },
             {
               "label": "MULTIGOAL Como MULTIESITI · 2-3",
               "market": "MULTIGOAL SQUADRA X",
@@ -94606,44 +94165,16 @@
               "marketScope": "match"
             },
             {
-              "label": "1X2 NEI PRIMI 15 MIN · X",
-              "market": "1X2 NEI MINUTI X-Y",
-              "variant": "1X2 NEI PRIMI 15 MIN",
+              "label": "ESITO 1X2 2 TEMPO · 2",
+              "market": "2 TEMPO: ESITO 1X2",
+              "variant": "ESITO 1X2 2 TEMPO",
               "threshold": null,
-              "selection": "X",
-              "providerSelectionId": "5324067516",
-              "odds": 1.3,
-              "overlapKey": "market-1x2 nei minuti x y",
+              "selection": "2",
+              "providerSelectionId": "5319768211",
+              "odds": 1.75,
+              "overlapKey": "market-2 tempo esito 1x2",
               "semanticKeys": [
-                "result-opening-window"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "1 TEMPO: GOL/NOGOL · NO GOL",
-              "market": "GOAL/NOGOAL TEMPO X",
-              "variant": "1 TEMPO: GOL/NOGOL",
-              "threshold": null,
-              "selection": "NO GOL",
-              "providerSelectionId": "5319702860",
-              "odds": 1.27,
-              "overlapKey": "market-goal nogoal tempo x",
-              "semanticKeys": [
-                "goals-first-half-btts"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "Como VINCE/VANTAGGIO (1UP) · SI",
-              "market": "VINCE O QUASI (1UP/2UP)",
-              "variant": "SQUADRA 2 VINCE/VANTAGGIO (1UP)",
-              "threshold": null,
-              "selection": "SI",
-              "providerSelectionId": "5324110915",
-              "odds": 1.2,
-              "overlapKey": "market-vince o quasi 1up 2up",
-              "semanticKeys": [
-                "win-or-lead"
+                "result-second-half-1x2"
               ],
               "marketScope": "match"
             },
@@ -94660,9 +94191,144 @@
                 "goals-second-half"
               ],
               "marketScope": "match"
+            },
+            {
+              "label": "TEMPO 1: U/O 1.5 Como · UNDER",
+              "market": "U/O GOAL SQUADRA TEMPO",
+              "variant": "TEMPO 1: U/O 1.5 SQUADRA 2",
+              "threshold": "1.5",
+              "selection": "UNDER",
+              "providerSelectionId": "5319702803",
+              "odds": 1.27,
+              "overlapKey": "market-u o goal squadra tempo",
+              "semanticKeys": [
+                "team-goals-period"
+              ],
+              "marketScope": "match"
+            },
+            {
+              "label": "1 TEMPO: GOL/NOGOL · NO GOL",
+              "market": "GOAL/NOGOAL TEMPO X",
+              "variant": "1 TEMPO: GOL/NOGOL",
+              "threshold": null,
+              "selection": "NO GOL",
+              "providerSelectionId": "5319702860",
+              "odds": 1.27,
+              "overlapKey": "market-goal nogoal tempo x",
+              "semanticKeys": [
+                "goals-first-half-btts"
+              ],
+              "marketScope": "match"
             }
           ],
-          "selection": "ESITO 1X2 2 TEMPO · 2 + DC TEMPO 2 · 12 + MULTIGOAL Como MULTIESITI · 2-3 + ESITO FINALE 1X2 · 2 + 1X2 NEI PRIMI 15 MIN · X + 1 TEMPO: GOL/NOGOL · NO GOL + Como VINCE/VANTAGGIO (1UP) · SI + 1 TEMPO: U/O 2.5 · UNDER",
+          "selection": "MULTIGOAL Como MULTIESITI · 2-3 + ESITO FINALE 1X2 · 2 + ESITO 1X2 2 TEMPO · 2 + 1 TEMPO: U/O 2.5 · UNDER + TEMPO 1: U/O 1.5 Como · UNDER + 1 TEMPO: GOL/NOGOL · NO GOL",
+          "logic": "Profilo balanced costruito sulle quote Sisal del 2026-09-17: quota 10 orientativa, 4-7 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
+          "probabilityPct": null,
+          "prudentProbabilityPct": null,
+          "fairOdds": null,
+          "prudentExpectedValuePct": null,
+          "qualityStatus": "editoriale",
+          "weakestLeg": null,
+          "probabilityMethod": null,
+          "probabilityStatus": "N/D · stima congiunta non supportata"
+        },
+        {
+          "tier": "Aggressive",
+          "scenario": null,
+          "risk": "elevato",
+          "targetOdds": 20,
+          "quotaPolicy": "orientativa",
+          "eligibilityPolicy": "validita-tecnica-e-intervalli",
+          "riskPolicy": "informativa",
+          "odds": 9.09,
+          "distancePct": 54.5,
+          "legs": [
+            {
+              "label": "MULTIGOAL Como MULTIESITI · 2-3",
+              "market": "MULTIGOAL SQUADRA X",
+              "variant": "MULTIGOAL SQUADRA 2 MULTIESITI",
+              "threshold": null,
+              "selection": "2-3",
+              "providerSelectionId": "5319702671",
+              "odds": 1.85,
+              "overlapKey": "market-multigoal squadra x",
+              "semanticKeys": [
+                "goals"
+              ],
+              "marketScope": "match"
+            },
+            {
+              "label": "TEMPO 1: U/O 1.5 Como · UNDER",
+              "market": "U/O GOAL SQUADRA TEMPO",
+              "variant": "TEMPO 1: U/O 1.5 SQUADRA 2",
+              "threshold": "1.5",
+              "selection": "UNDER",
+              "providerSelectionId": "5319702803",
+              "odds": 1.27,
+              "overlapKey": "market-u o goal squadra tempo",
+              "semanticKeys": [
+                "team-goals-period"
+              ],
+              "marketScope": "match"
+            },
+            {
+              "label": "ESITO 1X2 2 TEMPO · 2",
+              "market": "2 TEMPO: ESITO 1X2",
+              "variant": "ESITO 1X2 2 TEMPO",
+              "threshold": null,
+              "selection": "2",
+              "providerSelectionId": "5319768211",
+              "odds": 1.75,
+              "overlapKey": "market-2 tempo esito 1x2",
+              "semanticKeys": [
+                "result-second-half-1x2"
+              ],
+              "marketScope": "match"
+            },
+            {
+              "label": "ESITO FINALE 1X2 · 2",
+              "market": "1X2 ESITO FINALE",
+              "variant": "ESITO FINALE 1X2",
+              "threshold": null,
+              "selection": "2",
+              "providerSelectionId": "5319678731",
+              "odds": 1.5,
+              "overlapKey": "market-1x2 esito finale",
+              "semanticKeys": [
+                "result"
+              ],
+              "marketScope": "match"
+            },
+            {
+              "label": "1 TEMPO: U/O 2.5 · UNDER",
+              "market": "UNDER/OVER TEMPO X",
+              "variant": "1 TEMPO: U/O 2.5",
+              "threshold": "2.5",
+              "selection": "UNDER",
+              "providerSelectionId": "5319702391",
+              "odds": 1.16,
+              "overlapKey": "market-under over tempo x",
+              "semanticKeys": [
+                "goals-second-half"
+              ],
+              "marketScope": "match"
+            },
+            {
+              "label": "1 TEMPO: GOL/NOGOL · NO GOL",
+              "market": "GOAL/NOGOAL TEMPO X",
+              "variant": "1 TEMPO: GOL/NOGOL",
+              "threshold": null,
+              "selection": "NO GOL",
+              "providerSelectionId": "5319702860",
+              "odds": 1.27,
+              "overlapKey": "market-goal nogoal tempo x",
+              "semanticKeys": [
+                "goals-first-half-btts"
+              ],
+              "marketScope": "match"
+            }
+          ],
+          "selection": "MULTIGOAL Como MULTIESITI · 2-3 + TEMPO 1: U/O 1.5 Como · UNDER + ESITO 1X2 2 TEMPO · 2 + ESITO FINALE 1X2 · 2 + 1 TEMPO: U/O 2.5 · UNDER + 1 TEMPO: GOL/NOGOL · NO GOL",
           "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-09-17: quota 20 orientativa, 5-8 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
           "probabilityPct": null,
           "prudentProbabilityPct": null,
@@ -95958,11 +95624,11 @@
             "tier": "Balanced",
             "status": "outside-limits",
             "allowed": false,
-            "riskScore": 84.3,
+            "riskScore": 76.7,
             "riskLevel": "alto",
-            "averageRisk": 72.3,
+            "averageRisk": 70.7,
             "maxEventRisk": 82,
-            "strongDependencies": 2,
+            "strongDependencies": 1,
             "contradictions": 0,
             "limits": {
               "maxAverageRisk": 56,
@@ -95971,110 +95637,11 @@
               "minPrudentExpectedValuePct": 0
             },
             "reasons": [
-              "Rischio medio 72.3 oltre il limite 56.",
+              "Rischio medio 70.7 oltre il limite 56.",
               "Gamba a rischio 82 oltre il limite 72.",
               "EV prudenziale non disponibile."
             ],
             "events": [
-              {
-                "providerSelectionId": "5319769181",
-                "label": "U/O 0.5 Frosinone + U/O 3.5 Como · OVER+UNDER",
-                "riskScore": 82,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5324110915",
-                "label": "Como VINCE/VANTAGGIO (1UP) · SI",
-                "riskScore": 82,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5319702391",
-                "label": "1 TEMPO: U/O 2.5 · UNDER",
-                "riskScore": 65,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5319768211",
-                "label": "ESITO 1X2 2 TEMPO · 2",
-                "riskScore": 82,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5319678731",
-                "label": "ESITO FINALE 1X2 · 2",
-                "riskScore": 65,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5319702860",
-                "label": "1 TEMPO: GOL/NOGOL · NO GOL",
-                "riskScore": 65,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5319689806",
-                "label": "DC TEMPO 2 · 12",
-                "riskScore": 65,
-                "modeled": false
-              }
-            ],
-            "dependencies": [
-              {
-                "first": "5319702391",
-                "second": "5319702860",
-                "type": "positive",
-                "correlation": 0.578,
-                "intersectionProbabilityPct": 39.8
-              },
-              {
-                "first": "5319702391",
-                "second": "5319689806",
-                "type": "negative",
-                "correlation": -0.292,
-                "intersectionProbabilityPct": 32.4
-              },
-              {
-                "first": "5319678731",
-                "second": "5319689806",
-                "type": "positive",
-                "correlation": 0.575,
-                "intersectionProbabilityPct": 49.4
-              }
-            ]
-          },
-          {
-            "tier": "Aggressive",
-            "status": "outside-limits",
-            "allowed": false,
-            "riskScore": 83.4,
-            "riskLevel": "alto",
-            "averageRisk": 71.4,
-            "maxEventRisk": 82,
-            "strongDependencies": 2,
-            "contradictions": 0,
-            "limits": {
-              "maxAverageRisk": 72,
-              "maxEventRisk": 88,
-              "maxStrongDependencies": 3,
-              "minPrudentExpectedValuePct": 0
-            },
-            "reasons": [
-              "EV prudenziale non disponibile."
-            ],
-            "events": [
-              {
-                "providerSelectionId": "5319768211",
-                "label": "ESITO 1X2 2 TEMPO · 2",
-                "riskScore": 82,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5319689806",
-                "label": "DC TEMPO 2 · 12",
-                "riskScore": 65,
-                "modeled": false
-              },
               {
                 "providerSelectionId": "5319702671",
                 "label": "MULTIGOAL Como MULTIESITI · 2-3",
@@ -96088,20 +95655,8 @@
                 "modeled": false
               },
               {
-                "providerSelectionId": "5324067516",
-                "label": "1X2 NEI PRIMI 15 MIN · X",
-                "riskScore": 82,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5319702860",
-                "label": "1 TEMPO: GOL/NOGOL · NO GOL",
-                "riskScore": 65,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5324110915",
-                "label": "Como VINCE/VANTAGGIO (1UP) · SI",
+                "providerSelectionId": "5319768211",
+                "label": "ESITO 1X2 2 TEMPO · 2",
                 "riskScore": 82,
                 "modeled": false
               },
@@ -96110,23 +95665,21 @@
                 "label": "1 TEMPO: U/O 2.5 · UNDER",
                 "riskScore": 65,
                 "modeled": false
+              },
+              {
+                "providerSelectionId": "5319702803",
+                "label": "TEMPO 1: U/O 1.5 Como · UNDER",
+                "riskScore": 82,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5319702860",
+                "label": "1 TEMPO: GOL/NOGOL · NO GOL",
+                "riskScore": 65,
+                "modeled": false
               }
             ],
             "dependencies": [
-              {
-                "first": "5319689806",
-                "second": "5319678731",
-                "type": "positive",
-                "correlation": 0.575,
-                "intersectionProbabilityPct": 49.4
-              },
-              {
-                "first": "5319689806",
-                "second": "5319702391",
-                "type": "negative",
-                "correlation": -0.292,
-                "intersectionProbabilityPct": 32.4
-              },
               {
                 "first": "5319702671",
                 "second": "5319678731",
@@ -96142,8 +95695,89 @@
                 "intersectionProbabilityPct": 9
               },
               {
-                "first": "5319702860",
+                "first": "5319702391",
+                "second": "5319702860",
+                "type": "positive",
+                "correlation": 0.578,
+                "intersectionProbabilityPct": 39.8
+              }
+            ]
+          },
+          {
+            "tier": "Aggressive",
+            "status": "outside-limits",
+            "allowed": false,
+            "riskScore": 76.7,
+            "riskLevel": "alto",
+            "averageRisk": 70.7,
+            "maxEventRisk": 82,
+            "strongDependencies": 1,
+            "contradictions": 0,
+            "limits": {
+              "maxAverageRisk": 72,
+              "maxEventRisk": 88,
+              "maxStrongDependencies": 3,
+              "minPrudentExpectedValuePct": 0
+            },
+            "reasons": [
+              "EV prudenziale non disponibile."
+            ],
+            "events": [
+              {
+                "providerSelectionId": "5319702671",
+                "label": "MULTIGOAL Como MULTIESITI · 2-3",
+                "riskScore": 65,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5319702803",
+                "label": "TEMPO 1: U/O 1.5 Como · UNDER",
+                "riskScore": 82,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5319768211",
+                "label": "ESITO 1X2 2 TEMPO · 2",
+                "riskScore": 82,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5319678731",
+                "label": "ESITO FINALE 1X2 · 2",
+                "riskScore": 65,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5319702391",
+                "label": "1 TEMPO: U/O 2.5 · UNDER",
+                "riskScore": 65,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5319702860",
+                "label": "1 TEMPO: GOL/NOGOL · NO GOL",
+                "riskScore": 65,
+                "modeled": false
+              }
+            ],
+            "dependencies": [
+              {
+                "first": "5319702671",
+                "second": "5319678731",
+                "type": "positive",
+                "correlation": 0.467,
+                "intersectionProbabilityPct": 30.6
+              },
+              {
+                "first": "5319702671",
                 "second": "5319702391",
+                "type": "negative",
+                "correlation": -0.456,
+                "intersectionProbabilityPct": 9
+              },
+              {
+                "first": "5319702391",
+                "second": "5319702860",
                 "type": "positive",
                 "correlation": 0.578,
                 "intersectionProbabilityPct": 39.8
@@ -97517,9 +97151,23 @@
           "quotaPolicy": "orientativa",
           "eligibilityPolicy": "validita-tecnica-e-intervalli",
           "riskPolicy": "informativa",
-          "odds": 9.95,
-          "distancePct": 0.5,
+          "odds": 5.63,
+          "distancePct": 43.7,
           "legs": [
+            {
+              "label": "MULTIGOAL MULTIESITI 16 ESITI · 3-6",
+              "market": "MULTIGOAL",
+              "variant": "MULTIGOAL MULTIESITI 16 ESITI",
+              "threshold": null,
+              "selection": "3-6",
+              "providerSelectionId": "5319750806",
+              "odds": 1.8,
+              "overlapKey": "market-multigoal",
+              "semanticKeys": [
+                "goals"
+              ],
+              "marketScope": "match"
+            },
             {
               "label": "ESITO FINALE 1X2 · 1",
               "market": "1X2 ESITO FINALE",
@@ -97531,20 +97179,6 @@
               "overlapKey": "market-1x2 esito finale",
               "semanticKeys": [
                 "result"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "U/O 3.5 Juventus + U/O 0.5 Atalanta · UNDER+OVER",
-              "market": "COMBO: U/O CASA + U/O OSPITE",
-              "variant": "U/O 3.5 TEAM 1 + U/O 0.5 TEAM 2",
-              "threshold": null,
-              "selection": "UNDER+OVER",
-              "providerSelectionId": "5319708563",
-              "odds": 1.6,
-              "overlapKey": "market-combo u o casa u o ospite",
-              "semanticKeys": [
-                "goals"
               ],
               "marketScope": "match"
             },
@@ -97563,48 +97197,6 @@
               "marketScope": "match"
             },
             {
-              "label": "Juventus VINCE/VANTAGGIO (1UP) · SI",
-              "market": "VINCE O QUASI (1UP/2UP)",
-              "variant": "SQUADRA 1 VINCE/VANTAGGIO (1UP)",
-              "threshold": null,
-              "selection": "SI",
-              "providerSelectionId": "5325113036",
-              "odds": 1.33,
-              "overlapKey": "market-vince o quasi 1up 2up",
-              "semanticKeys": [
-                "win-or-lead"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "DC TEMPO 2 · 12",
-              "market": "DOPPIA CHANCE TEMPO X",
-              "variant": "DC TEMPO 2",
-              "threshold": null,
-              "selection": "12",
-              "providerSelectionId": "5319742795",
-              "odds": 1.41,
-              "overlapKey": "market-doppia chance tempo x",
-              "semanticKeys": [
-                "result-second-half"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "1X2 NEI PRIMI 15 MIN · X",
-              "market": "1X2 NEI MINUTI X-Y",
-              "variant": "1X2 NEI PRIMI 15 MIN",
-              "threshold": null,
-              "selection": "X",
-              "providerSelectionId": "5324078610",
-              "odds": 1.25,
-              "overlapKey": "market-1x2 nei minuti x y",
-              "semanticKeys": [
-                "result-opening-window"
-              ],
-              "marketScope": "match"
-            },
-            {
               "label": "1 TEMPO: GOL/NOGOL · NO GOL",
               "market": "GOAL/NOGOAL TEMPO X",
               "variant": "1 TEMPO: GOL/NOGOL",
@@ -97617,9 +97209,23 @@
                 "goals-first-half-btts"
               ],
               "marketScope": "match"
+            },
+            {
+              "label": "TEMPO 1: U/O 1.5 Juventus · UNDER",
+              "market": "U/O GOAL SQUADRA TEMPO",
+              "variant": "TEMPO 1: U/O 1.5 SQUADRA 1",
+              "threshold": "1.5",
+              "selection": "UNDER",
+              "providerSelectionId": "5319745156",
+              "odds": 1.18,
+              "overlapKey": "market-u o goal squadra tempo",
+              "semanticKeys": [
+                "team-goals-period"
+              ],
+              "marketScope": "match"
             }
           ],
-          "selection": "ESITO FINALE 1X2 · 1 + U/O 3.5 Juventus + U/O 0.5 Atalanta · UNDER+OVER + 1 TEMPO: U/O 0.5 · OVER + Juventus VINCE/VANTAGGIO (1UP) · SI + DC TEMPO 2 · 12 + 1X2 NEI PRIMI 15 MIN · X + 1 TEMPO: GOL/NOGOL · NO GOL",
+          "selection": "MULTIGOAL MULTIESITI 16 ESITI · 3-6 + ESITO FINALE 1X2 · 1 + 1 TEMPO: U/O 0.5 · OVER + 1 TEMPO: GOL/NOGOL · NO GOL + TEMPO 1: U/O 1.5 Juventus · UNDER",
           "logic": "Profilo balanced costruito sulle quote Sisal del 2026-09-17: quota 10 orientativa, 4-7 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
           "probabilityPct": null,
           "prudentProbabilityPct": null,
@@ -97638,37 +97244,9 @@
           "quotaPolicy": "orientativa",
           "eligibilityPolicy": "validita-tecnica-e-intervalli",
           "riskPolicy": "informativa",
-          "odds": 11.19,
-          "distancePct": 44,
+          "odds": 5.63,
+          "distancePct": 71.9,
           "legs": [
-            {
-              "label": "ESITO FINALE 1X2 · 1",
-              "market": "1X2 ESITO FINALE",
-              "variant": "ESITO FINALE 1X2",
-              "threshold": null,
-              "selection": "1",
-              "providerSelectionId": "5319741424",
-              "odds": 1.7,
-              "overlapKey": "market-1x2 esito finale",
-              "semanticKeys": [
-                "result"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "Juventus VINCE/VANTAGGIO (1UP) · SI",
-              "market": "VINCE O QUASI (1UP/2UP)",
-              "variant": "SQUADRA 1 VINCE/VANTAGGIO (1UP)",
-              "threshold": null,
-              "selection": "SI",
-              "providerSelectionId": "5325113036",
-              "odds": 1.33,
-              "overlapKey": "market-vince o quasi 1up 2up",
-              "semanticKeys": [
-                "win-or-lead"
-              ],
-              "marketScope": "match"
-            },
             {
               "label": "MULTIGOAL MULTIESITI 16 ESITI · 3-6",
               "market": "MULTIGOAL",
@@ -97684,16 +97262,16 @@
               "marketScope": "match"
             },
             {
-              "label": "DC TEMPO 2 · 12",
-              "market": "DOPPIA CHANCE TEMPO X",
-              "variant": "DC TEMPO 2",
+              "label": "ESITO FINALE 1X2 · 1",
+              "market": "1X2 ESITO FINALE",
+              "variant": "ESITO FINALE 1X2",
               "threshold": null,
-              "selection": "12",
-              "providerSelectionId": "5319742795",
-              "odds": 1.41,
-              "overlapKey": "market-doppia chance tempo x",
+              "selection": "1",
+              "providerSelectionId": "5319741424",
+              "odds": 1.7,
+              "overlapKey": "market-1x2 esito finale",
               "semanticKeys": [
-                "result-second-half"
+                "result"
               ],
               "marketScope": "match"
             },
@@ -97712,20 +97290,6 @@
               "marketScope": "match"
             },
             {
-              "label": "1X2 NEI PRIMI 15 MIN · X",
-              "market": "1X2 NEI MINUTI X-Y",
-              "variant": "1X2 NEI PRIMI 15 MIN",
-              "threshold": null,
-              "selection": "X",
-              "providerSelectionId": "5324078610",
-              "odds": 1.25,
-              "overlapKey": "market-1x2 nei minuti x y",
-              "semanticKeys": [
-                "result-opening-window"
-              ],
-              "marketScope": "match"
-            },
-            {
               "label": "1 TEMPO: GOL/NOGOL · NO GOL",
               "market": "GOAL/NOGOAL TEMPO X",
               "variant": "1 TEMPO: GOL/NOGOL",
@@ -97738,9 +97302,23 @@
                 "goals-first-half-btts"
               ],
               "marketScope": "match"
+            },
+            {
+              "label": "TEMPO 1: U/O 1.5 Juventus · UNDER",
+              "market": "U/O GOAL SQUADRA TEMPO",
+              "variant": "TEMPO 1: U/O 1.5 SQUADRA 1",
+              "threshold": "1.5",
+              "selection": "UNDER",
+              "providerSelectionId": "5319745156",
+              "odds": 1.18,
+              "overlapKey": "market-u o goal squadra tempo",
+              "semanticKeys": [
+                "team-goals-period"
+              ],
+              "marketScope": "match"
             }
           ],
-          "selection": "ESITO FINALE 1X2 · 1 + Juventus VINCE/VANTAGGIO (1UP) · SI + MULTIGOAL MULTIESITI 16 ESITI · 3-6 + DC TEMPO 2 · 12 + 1 TEMPO: U/O 0.5 · OVER + 1X2 NEI PRIMI 15 MIN · X + 1 TEMPO: GOL/NOGOL · NO GOL",
+          "selection": "MULTIGOAL MULTIESITI 16 ESITI · 3-6 + ESITO FINALE 1X2 · 1 + 1 TEMPO: U/O 0.5 · OVER + 1 TEMPO: GOL/NOGOL · NO GOL + TEMPO 1: U/O 1.5 Juventus · UNDER",
           "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-09-17: quota 20 orientativa, 5-8 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
           "probabilityPct": null,
           "prudentProbabilityPct": null,
@@ -99038,11 +98616,11 @@
             "tier": "Balanced",
             "status": "outside-limits",
             "allowed": false,
-            "riskScore": 78.3,
-            "riskLevel": "alto",
-            "averageRisk": 72.3,
+            "riskScore": 68.4,
+            "riskLevel": "medio",
+            "averageRisk": 68.4,
             "maxEventRisk": 82,
-            "strongDependencies": 1,
+            "strongDependencies": 0,
             "contradictions": 0,
             "limits": {
               "maxAverageRisk": 56,
@@ -99051,110 +98629,11 @@
               "minPrudentExpectedValuePct": 0
             },
             "reasons": [
-              "Rischio medio 72.3 oltre il limite 56.",
+              "Rischio medio 68.4 oltre il limite 56.",
               "Gamba a rischio 82 oltre il limite 72.",
               "EV prudenziale non disponibile."
             ],
             "events": [
-              {
-                "providerSelectionId": "5319741424",
-                "label": "ESITO FINALE 1X2 · 1",
-                "riskScore": 65,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5319708563",
-                "label": "U/O 3.5 Juventus + U/O 0.5 Atalanta · UNDER+OVER",
-                "riskScore": 82,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5319745209",
-                "label": "1 TEMPO: U/O 0.5 · OVER",
-                "riskScore": 65,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5325113036",
-                "label": "Juventus VINCE/VANTAGGIO (1UP) · SI",
-                "riskScore": 82,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5319742795",
-                "label": "DC TEMPO 2 · 12",
-                "riskScore": 65,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5324078610",
-                "label": "1X2 NEI PRIMI 15 MIN · X",
-                "riskScore": 82,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5319745263",
-                "label": "1 TEMPO: GOL/NOGOL · NO GOL",
-                "riskScore": 65,
-                "modeled": false
-              }
-            ],
-            "dependencies": [
-              {
-                "first": "5319741424",
-                "second": "5319742795",
-                "type": "positive",
-                "correlation": 0.559,
-                "intersectionProbabilityPct": 49.3
-              },
-              {
-                "first": "5319745209",
-                "second": "5319742795",
-                "type": "positive",
-                "correlation": 0.447,
-                "intersectionProbabilityPct": 75.7
-              },
-              {
-                "first": "5319745209",
-                "second": "5319745263",
-                "type": "negative",
-                "correlation": -0.282,
-                "intersectionProbabilityPct": 38.6
-              }
-            ]
-          },
-          {
-            "tier": "Aggressive",
-            "status": "outside-limits",
-            "allowed": false,
-            "riskScore": 75.9,
-            "riskLevel": "alto",
-            "averageRisk": 69.9,
-            "maxEventRisk": 82,
-            "strongDependencies": 1,
-            "contradictions": 0,
-            "limits": {
-              "maxAverageRisk": 72,
-              "maxEventRisk": 88,
-              "maxStrongDependencies": 3,
-              "minPrudentExpectedValuePct": 0
-            },
-            "reasons": [
-              "EV prudenziale non disponibile."
-            ],
-            "events": [
-              {
-                "providerSelectionId": "5319741424",
-                "label": "ESITO FINALE 1X2 · 1",
-                "riskScore": 65,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5325113036",
-                "label": "Juventus VINCE/VANTAGGIO (1UP) · SI",
-                "riskScore": 82,
-                "modeled": false
-              },
               {
                 "providerSelectionId": "5319750806",
                 "label": "MULTIGOAL MULTIESITI 16 ESITI · 3-6",
@@ -99162,8 +98641,8 @@
                 "modeled": false
               },
               {
-                "providerSelectionId": "5319742795",
-                "label": "DC TEMPO 2 · 12",
+                "providerSelectionId": "5319741424",
+                "label": "ESITO FINALE 1X2 · 1",
                 "riskScore": 65,
                 "modeled": false
               },
@@ -99174,33 +98653,19 @@
                 "modeled": false
               },
               {
-                "providerSelectionId": "5324078610",
-                "label": "1X2 NEI PRIMI 15 MIN · X",
-                "riskScore": 82,
-                "modeled": false
-              },
-              {
                 "providerSelectionId": "5319745263",
                 "label": "1 TEMPO: GOL/NOGOL · NO GOL",
                 "riskScore": 65,
                 "modeled": false
+              },
+              {
+                "providerSelectionId": "5319745156",
+                "label": "TEMPO 1: U/O 1.5 Juventus · UNDER",
+                "riskScore": 82,
+                "modeled": false
               }
             ],
             "dependencies": [
-              {
-                "first": "5319741424",
-                "second": "5319742795",
-                "type": "positive",
-                "correlation": 0.559,
-                "intersectionProbabilityPct": 49.3
-              },
-              {
-                "first": "5319750806",
-                "second": "5319742795",
-                "type": "positive",
-                "correlation": 0.266,
-                "intersectionProbabilityPct": 44.2
-              },
               {
                 "first": "5319750806",
                 "second": "5319745209",
@@ -99216,11 +98681,79 @@
                 "intersectionProbabilityPct": 9.4
               },
               {
-                "first": "5319742795",
+                "first": "5319745209",
+                "second": "5319745263",
+                "type": "negative",
+                "correlation": -0.282,
+                "intersectionProbabilityPct": 38.6
+              }
+            ]
+          },
+          {
+            "tier": "Aggressive",
+            "status": "outside-limits",
+            "allowed": false,
+            "riskScore": 68.4,
+            "riskLevel": "medio",
+            "averageRisk": 68.4,
+            "maxEventRisk": 82,
+            "strongDependencies": 0,
+            "contradictions": 0,
+            "limits": {
+              "maxAverageRisk": 72,
+              "maxEventRisk": 88,
+              "maxStrongDependencies": 3,
+              "minPrudentExpectedValuePct": 0
+            },
+            "reasons": [
+              "EV prudenziale non disponibile."
+            ],
+            "events": [
+              {
+                "providerSelectionId": "5319750806",
+                "label": "MULTIGOAL MULTIESITI 16 ESITI · 3-6",
+                "riskScore": 65,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5319741424",
+                "label": "ESITO FINALE 1X2 · 1",
+                "riskScore": 65,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5319745209",
+                "label": "1 TEMPO: U/O 0.5 · OVER",
+                "riskScore": 65,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5319745263",
+                "label": "1 TEMPO: GOL/NOGOL · NO GOL",
+                "riskScore": 65,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5319745156",
+                "label": "TEMPO 1: U/O 1.5 Juventus · UNDER",
+                "riskScore": 82,
+                "modeled": false
+              }
+            ],
+            "dependencies": [
+              {
+                "first": "5319750806",
                 "second": "5319745209",
                 "type": "positive",
-                "correlation": 0.447,
-                "intersectionProbabilityPct": 75.7
+                "correlation": 0.257,
+                "intersectionProbabilityPct": 50.8
+              },
+              {
+                "first": "5319750806",
+                "second": "5319745263",
+                "type": "negative",
+                "correlation": -0.536,
+                "intersectionProbabilityPct": 9.4
               },
               {
                 "first": "5319745209",
@@ -100659,129 +100192,8 @@
           "quotaPolicy": "orientativa",
           "eligibilityPolicy": "validita-tecnica-e-intervalli",
           "riskPolicy": "informativa",
-          "odds": 10,
-          "distancePct": 0,
-          "legs": [
-            {
-              "label": "ESITO FINALE 1X2 · 1",
-              "market": "1X2 ESITO FINALE",
-              "variant": "ESITO FINALE 1X2",
-              "threshold": null,
-              "selection": "1",
-              "providerSelectionId": "5319687418",
-              "odds": 1.27,
-              "overlapKey": "market-1x2 esito finale",
-              "semanticKeys": [
-                "result"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "1 TEMPO: U/O 0.5 · OVER",
-              "market": "UNDER/OVER TEMPO X",
-              "variant": "1 TEMPO: U/O 0.5",
-              "threshold": "0.5",
-              "selection": "OVER",
-              "providerSelectionId": "5319698890",
-              "odds": 1.27,
-              "overlapKey": "market-under over tempo x",
-              "semanticKeys": [
-                "goals-first-half"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "ESITO 1 TEMPO 1X2 · 1",
-              "market": "1 TEMPO: ESITO 1X2",
-              "variant": "ESITO 1 TEMPO 1X2",
-              "threshold": null,
-              "selection": "1",
-              "providerSelectionId": "5319699295",
-              "odds": 1.67,
-              "overlapKey": "market-1 tempo esito 1x2",
-              "semanticKeys": [
-                "result-first-half-1x2"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "U/O 2.5 Milan + U/O 2.5 Lecce · UNDER+UNDER",
-              "market": "COMBO: U/O CASA + U/O OSPITE",
-              "variant": "U/O 2.5 TEAM 1 + U/O 2.5 TEAM 2",
-              "threshold": null,
-              "selection": "UNDER+UNDER",
-              "providerSelectionId": "5319770066",
-              "odds": 1.62,
-              "overlapKey": "market-combo u o casa u o ospite",
-              "semanticKeys": [
-                "goals"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "ESITO 1X2 2 TEMPO · 1",
-              "market": "2 TEMPO: ESITO 1X2",
-              "variant": "ESITO 1X2 2 TEMPO",
-              "threshold": null,
-              "selection": "1",
-              "providerSelectionId": "5319770557",
-              "odds": 1.48,
-              "overlapKey": "market-2 tempo esito 1x2",
-              "semanticKeys": [
-                "result-second-half-1x2"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "Lecce VINCE/VANTAGGIO (1UP) · NO",
-              "market": "VINCE O QUASI (1UP/2UP)",
-              "variant": "SQUADRA 2 VINCE/VANTAGGIO (1UP)",
-              "threshold": null,
-              "selection": "NO",
-              "providerSelectionId": "5325271748",
-              "odds": 1.21,
-              "overlapKey": "market-vince o quasi 1up 2up",
-              "semanticKeys": [
-                "win-or-lead"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "1X2 NEI PRIMI 15 MIN · X",
-              "market": "1X2 NEI MINUTI X-Y",
-              "variant": "1X2 NEI PRIMI 15 MIN",
-              "threshold": null,
-              "selection": "X",
-              "providerSelectionId": "5324079170",
-              "odds": 1.28,
-              "overlapKey": "market-1x2 nei minuti x y",
-              "semanticKeys": [
-                "result-opening-window"
-              ],
-              "marketScope": "match"
-            }
-          ],
-          "selection": "ESITO FINALE 1X2 · 1 + 1 TEMPO: U/O 0.5 · OVER + ESITO 1 TEMPO 1X2 · 1 + U/O 2.5 Milan + U/O 2.5 Lecce · UNDER+UNDER + ESITO 1X2 2 TEMPO · 1 + Lecce VINCE/VANTAGGIO (1UP) · NO + 1X2 NEI PRIMI 15 MIN · X",
-          "logic": "Profilo balanced costruito sulle quote Sisal del 2026-09-17: quota 10 orientativa, 4-7 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
-          "probabilityPct": null,
-          "prudentProbabilityPct": null,
-          "fairOdds": null,
-          "prudentExpectedValuePct": null,
-          "qualityStatus": "editoriale",
-          "weakestLeg": null,
-          "probabilityMethod": null,
-          "probabilityStatus": "N/D · stima congiunta non supportata"
-        },
-        {
-          "tier": "Aggressive",
-          "scenario": null,
-          "risk": "elevato",
-          "targetOdds": 20,
-          "quotaPolicy": "orientativa",
-          "eligibilityPolicy": "validita-tecnica-e-intervalli",
-          "riskPolicy": "informativa",
-          "odds": 14.28,
-          "distancePct": 28.6,
+          "odds": 9.37,
+          "distancePct": 6.3,
           "legs": [
             {
               "label": "MULTIGOAL MULTIESITI 16 ESITI · 3-5",
@@ -100826,6 +100238,20 @@
               "marketScope": "match"
             },
             {
+              "label": "TEMPO 1: U/O 0.5 Lecce · UNDER",
+              "market": "U/O GOAL SQUADRA TEMPO",
+              "variant": "TEMPO 1: U/O 0.5 SQUADRA 2",
+              "threshold": "0.5",
+              "selection": "UNDER",
+              "providerSelectionId": "5319698929",
+              "odds": 1.27,
+              "overlapKey": "market-u o goal squadra tempo",
+              "semanticKeys": [
+                "team-goals-period"
+              ],
+              "marketScope": "match"
+            },
+            {
               "label": "1 TEMPO: U/O 0.5 · OVER",
               "market": "UNDER/OVER TEMPO X",
               "variant": "1 TEMPO: U/O 0.5",
@@ -100836,48 +100262,6 @@
               "overlapKey": "market-under over tempo x",
               "semanticKeys": [
                 "goals-first-half"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "DC TEMPO 2 · 12",
-              "market": "DOPPIA CHANCE TEMPO X",
-              "variant": "DC TEMPO 2",
-              "threshold": null,
-              "selection": "12",
-              "providerSelectionId": "5319690696",
-              "odds": 1.25,
-              "overlapKey": "market-doppia chance tempo x",
-              "semanticKeys": [
-                "result-second-half"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "1X2 NEI PRIMI 15 MIN · X",
-              "market": "1X2 NEI MINUTI X-Y",
-              "variant": "1X2 NEI PRIMI 15 MIN",
-              "threshold": null,
-              "selection": "X",
-              "providerSelectionId": "5324079170",
-              "odds": 1.28,
-              "overlapKey": "market-1x2 nei minuti x y",
-              "semanticKeys": [
-                "result-opening-window"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "Lecce VINCE/VANTAGGIO (1UP) · NO",
-              "market": "VINCE O QUASI (1UP/2UP)",
-              "variant": "SQUADRA 2 VINCE/VANTAGGIO (1UP)",
-              "threshold": null,
-              "selection": "NO",
-              "providerSelectionId": "5325271748",
-              "odds": 1.21,
-              "overlapKey": "market-vince o quasi 1up 2up",
-              "semanticKeys": [
-                "win-or-lead"
               ],
               "marketScope": "match"
             },
@@ -100896,7 +100280,114 @@
               "marketScope": "match"
             }
           ],
-          "selection": "MULTIGOAL MULTIESITI 16 ESITI · 3-5 + ESITO FINALE 1X2 · 1 + ESITO 1 TEMPO 1X2 · 1 + 1 TEMPO: U/O 0.5 · OVER + DC TEMPO 2 · 12 + 1X2 NEI PRIMI 15 MIN · X + Lecce VINCE/VANTAGGIO (1UP) · NO + ESITO 1X2 2 TEMPO · 1",
+          "selection": "MULTIGOAL MULTIESITI 16 ESITI · 3-5 + ESITO FINALE 1X2 · 1 + ESITO 1 TEMPO 1X2 · 1 + TEMPO 1: U/O 0.5 Lecce · UNDER + 1 TEMPO: U/O 0.5 · OVER + ESITO 1X2 2 TEMPO · 1",
+          "logic": "Profilo balanced costruito sulle quote Sisal del 2026-09-17: quota 10 orientativa, 4-7 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
+          "probabilityPct": null,
+          "prudentProbabilityPct": null,
+          "fairOdds": null,
+          "prudentExpectedValuePct": null,
+          "qualityStatus": "editoriale",
+          "weakestLeg": null,
+          "probabilityMethod": null,
+          "probabilityStatus": "N/D · stima congiunta non supportata"
+        },
+        {
+          "tier": "Aggressive",
+          "scenario": null,
+          "risk": "elevato",
+          "targetOdds": 20,
+          "quotaPolicy": "orientativa",
+          "eligibilityPolicy": "validita-tecnica-e-intervalli",
+          "riskPolicy": "informativa",
+          "odds": 9.37,
+          "distancePct": 53.2,
+          "legs": [
+            {
+              "label": "MULTIGOAL MULTIESITI 16 ESITI · 3-5",
+              "market": "MULTIGOAL",
+              "variant": "MULTIGOAL MULTIESITI 16 ESITI",
+              "threshold": null,
+              "selection": "3-5",
+              "providerSelectionId": "5319699224",
+              "odds": 1.85,
+              "overlapKey": "market-multigoal",
+              "semanticKeys": [
+                "goals"
+              ],
+              "marketScope": "match"
+            },
+            {
+              "label": "ESITO FINALE 1X2 · 1",
+              "market": "1X2 ESITO FINALE",
+              "variant": "ESITO FINALE 1X2",
+              "threshold": null,
+              "selection": "1",
+              "providerSelectionId": "5319687418",
+              "odds": 1.27,
+              "overlapKey": "market-1x2 esito finale",
+              "semanticKeys": [
+                "result"
+              ],
+              "marketScope": "match"
+            },
+            {
+              "label": "ESITO 1 TEMPO 1X2 · 1",
+              "market": "1 TEMPO: ESITO 1X2",
+              "variant": "ESITO 1 TEMPO 1X2",
+              "threshold": null,
+              "selection": "1",
+              "providerSelectionId": "5319699295",
+              "odds": 1.67,
+              "overlapKey": "market-1 tempo esito 1x2",
+              "semanticKeys": [
+                "result-first-half-1x2"
+              ],
+              "marketScope": "match"
+            },
+            {
+              "label": "TEMPO 1: U/O 0.5 Lecce · UNDER",
+              "market": "U/O GOAL SQUADRA TEMPO",
+              "variant": "TEMPO 1: U/O 0.5 SQUADRA 2",
+              "threshold": "0.5",
+              "selection": "UNDER",
+              "providerSelectionId": "5319698929",
+              "odds": 1.27,
+              "overlapKey": "market-u o goal squadra tempo",
+              "semanticKeys": [
+                "team-goals-period"
+              ],
+              "marketScope": "match"
+            },
+            {
+              "label": "1 TEMPO: U/O 0.5 · OVER",
+              "market": "UNDER/OVER TEMPO X",
+              "variant": "1 TEMPO: U/O 0.5",
+              "threshold": "0.5",
+              "selection": "OVER",
+              "providerSelectionId": "5319698890",
+              "odds": 1.27,
+              "overlapKey": "market-under over tempo x",
+              "semanticKeys": [
+                "goals-first-half"
+              ],
+              "marketScope": "match"
+            },
+            {
+              "label": "ESITO 1X2 2 TEMPO · 1",
+              "market": "2 TEMPO: ESITO 1X2",
+              "variant": "ESITO 1X2 2 TEMPO",
+              "threshold": null,
+              "selection": "1",
+              "providerSelectionId": "5319770557",
+              "odds": 1.48,
+              "overlapKey": "market-2 tempo esito 1x2",
+              "semanticKeys": [
+                "result-second-half-1x2"
+              ],
+              "marketScope": "match"
+            }
+          ],
+          "selection": "MULTIGOAL MULTIESITI 16 ESITI · 3-5 + ESITO FINALE 1X2 · 1 + ESITO 1 TEMPO 1X2 · 1 + TEMPO 1: U/O 0.5 Lecce · UNDER + 1 TEMPO: U/O 0.5 · OVER + ESITO 1X2 2 TEMPO · 1",
           "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-09-17: quota 20 orientativa, 5-8 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
           "probabilityPct": null,
           "prudentProbabilityPct": null,
@@ -102203,9 +101694,9 @@
             "tier": "Balanced",
             "status": "outside-limits",
             "allowed": false,
-            "riskScore": 77.1,
+            "riskScore": 73.5,
             "riskLevel": "alto",
-            "averageRisk": 77.1,
+            "averageRisk": 73.5,
             "maxEventRisk": 82,
             "strongDependencies": 0,
             "contradictions": 0,
@@ -102216,20 +101707,20 @@
               "minPrudentExpectedValuePct": 0
             },
             "reasons": [
-              "Rischio medio 77.1 oltre il limite 56.",
+              "Rischio medio 73.5 oltre il limite 56.",
               "Gamba a rischio 82 oltre il limite 72.",
               "EV prudenziale non disponibile."
             ],
             "events": [
               {
-                "providerSelectionId": "5319687418",
-                "label": "ESITO FINALE 1X2 · 1",
+                "providerSelectionId": "5319699224",
+                "label": "MULTIGOAL MULTIESITI 16 ESITI · 3-5",
                 "riskScore": 65,
                 "modeled": false
               },
               {
-                "providerSelectionId": "5319698890",
-                "label": "1 TEMPO: U/O 0.5 · OVER",
+                "providerSelectionId": "5319687418",
+                "label": "ESITO FINALE 1X2 · 1",
                 "riskScore": 65,
                 "modeled": false
               },
@@ -102240,26 +101731,20 @@
                 "modeled": false
               },
               {
-                "providerSelectionId": "5319770066",
-                "label": "U/O 2.5 Milan + U/O 2.5 Lecce · UNDER+UNDER",
+                "providerSelectionId": "5319698929",
+                "label": "TEMPO 1: U/O 0.5 Lecce · UNDER",
                 "riskScore": 82,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5319698890",
+                "label": "1 TEMPO: U/O 0.5 · OVER",
+                "riskScore": 65,
                 "modeled": false
               },
               {
                 "providerSelectionId": "5319770557",
                 "label": "ESITO 1X2 2 TEMPO · 1",
-                "riskScore": 82,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5325271748",
-                "label": "Lecce VINCE/VANTAGGIO (1UP) · NO",
-                "riskScore": 82,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5324079170",
-                "label": "1X2 NEI PRIMI 15 MIN · X",
                 "riskScore": 82,
                 "modeled": false
               }
@@ -102278,11 +101763,11 @@
             "tier": "Aggressive",
             "status": "outside-limits",
             "allowed": false,
-            "riskScore": 79.5,
+            "riskScore": 73.5,
             "riskLevel": "alto",
             "averageRisk": 73.5,
             "maxEventRisk": 82,
-            "strongDependencies": 1,
+            "strongDependencies": 0,
             "contradictions": 0,
             "limits": {
               "maxAverageRisk": 72,
@@ -102314,27 +101799,15 @@
                 "modeled": false
               },
               {
+                "providerSelectionId": "5319698929",
+                "label": "TEMPO 1: U/O 0.5 Lecce · UNDER",
+                "riskScore": 82,
+                "modeled": false
+              },
+              {
                 "providerSelectionId": "5319698890",
                 "label": "1 TEMPO: U/O 0.5 · OVER",
                 "riskScore": 65,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5319690696",
-                "label": "DC TEMPO 2 · 12",
-                "riskScore": 65,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5324079170",
-                "label": "1X2 NEI PRIMI 15 MIN · X",
-                "riskScore": 82,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5325271748",
-                "label": "Lecce VINCE/VANTAGGIO (1UP) · NO",
-                "riskScore": 82,
                 "modeled": false
               },
               {
@@ -102346,32 +101819,11 @@
             ],
             "dependencies": [
               {
-                "first": "5319699224",
-                "second": "5319690696",
-                "type": "positive",
-                "correlation": 0.286,
-                "intersectionProbabilityPct": 40
-              },
-              {
                 "first": "5319687418",
                 "second": "5319698890",
                 "type": "positive",
                 "correlation": 0.347,
                 "intersectionProbabilityPct": 61.1
-              },
-              {
-                "first": "5319687418",
-                "second": "5319690696",
-                "type": "positive",
-                "correlation": 0.675,
-                "intersectionProbabilityPct": 61.1
-              },
-              {
-                "first": "5319698890",
-                "second": "5319690696",
-                "type": "positive",
-                "correlation": 0.515,
-                "intersectionProbabilityPct": 77.5
               }
             ]
           }
@@ -106985,62 +106437,34 @@
           "quotaPolicy": "orientativa",
           "eligibilityPolicy": "validita-tecnica-e-intervalli",
           "riskPolicy": "informativa",
-          "odds": 7.16,
-          "distancePct": 28.4,
+          "odds": 5.14,
+          "distancePct": 48.6,
           "legs": [
             {
-              "label": "Parma VINCE/VANTAGGIO (1UP) · NO",
-              "market": "VINCE O QUASI (1UP/2UP)",
-              "variant": "SQUADRA 1 VINCE/VANTAGGIO (1UP)",
+              "label": "MULTIGOAL MULTIESITI 16 ESITI · 1-2",
+              "market": "MULTIGOAL",
+              "variant": "MULTIGOAL MULTIESITI 16 ESITI",
               "threshold": null,
-              "selection": "NO",
-              "providerSelectionId": "5326120865",
-              "odds": 1.72,
-              "overlapKey": "market-vince o quasi 1up 2up",
-              "semanticKeys": [
-                "win-or-lead"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "1 TEMPO: U/O 1.5 · UNDER",
-              "market": "UNDER/OVER TEMPO X",
-              "variant": "1 TEMPO: U/O 1.5",
-              "threshold": "1.5",
-              "selection": "UNDER",
-              "providerSelectionId": "5319744280",
-              "odds": 1.27,
-              "overlapKey": "market-under over tempo x",
-              "semanticKeys": [
-                "goals-first-half"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "DC TEMPO 1 · X2",
-              "market": "DOPPIA CHANCE TEMPO X",
-              "variant": "DC TEMPO 1",
-              "threshold": null,
-              "selection": "X2",
-              "providerSelectionId": "5319684075",
-              "odds": 1.21,
-              "overlapKey": "market-doppia chance tempo x",
-              "semanticKeys": [
-                "result-first-half"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "U/O 1.5 Parma + U/O 0.5 Genoa · UNDER+OVER",
-              "market": "COMBO: U/O CASA + U/O OSPITE",
-              "variant": "U/O 1.5 TEAM 1 + U/O 0.5 TEAM 2",
-              "threshold": null,
-              "selection": "UNDER+OVER",
-              "providerSelectionId": "5319710383",
-              "odds": 1.83,
-              "overlapKey": "market-combo u o casa u o ospite",
+              "selection": "1-2",
+              "providerSelectionId": "5319744213",
+              "odds": 1.8,
+              "overlapKey": "market-multigoal",
               "semanticKeys": [
                 "goals"
+              ],
+              "marketScope": "match"
+            },
+            {
+              "label": "TEMPO 1: U/O 0.5 Parma · UNDER",
+              "market": "U/O GOAL SQUADRA TEMPO",
+              "variant": "TEMPO 1: U/O 0.5 SQUADRA 1",
+              "threshold": "0.5",
+              "selection": "UNDER",
+              "providerSelectionId": "5319744042",
+              "odds": 1.52,
+              "overlapKey": "market-u o goal squadra tempo",
+              "semanticKeys": [
+                "team-goals-period"
               ],
               "marketScope": "match"
             },
@@ -107057,9 +106481,23 @@
                 "result"
               ],
               "marketScope": "match"
+            },
+            {
+              "label": "1 TEMPO: U/O 1.5 · UNDER",
+              "market": "UNDER/OVER TEMPO X",
+              "variant": "1 TEMPO: U/O 1.5",
+              "threshold": "1.5",
+              "selection": "UNDER",
+              "providerSelectionId": "5319744280",
+              "odds": 1.27,
+              "overlapKey": "market-under over tempo x",
+              "semanticKeys": [
+                "goals-first-half"
+              ],
+              "marketScope": "match"
             }
           ],
-          "selection": "Parma VINCE/VANTAGGIO (1UP) · NO + 1 TEMPO: U/O 1.5 · UNDER + DC TEMPO 1 · X2 + U/O 1.5 Parma + U/O 0.5 Genoa · UNDER+OVER + Parma o pareggio (1X)",
+          "selection": "MULTIGOAL MULTIESITI 16 ESITI · 1-2 + TEMPO 1: U/O 0.5 Parma · UNDER + Parma o pareggio (1X) + 1 TEMPO: U/O 1.5 · UNDER",
           "logic": "Profilo balanced costruito sulle quote Sisal del 2026-09-17: quota 10 orientativa, 4-7 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
           "probabilityPct": null,
           "prudentProbabilityPct": null,
@@ -107075,93 +106513,13 @@
           "scenario": null,
           "risk": "elevato",
           "targetOdds": 20,
-          "quotaPolicy": "orientativa",
-          "eligibilityPolicy": "validita-tecnica-e-intervalli",
-          "riskPolicy": "informativa",
-          "odds": 7.16,
-          "distancePct": 64.2,
-          "legs": [
-            {
-              "label": "U/O 1.5 Parma + U/O 0.5 Genoa · UNDER+OVER",
-              "market": "COMBO: U/O CASA + U/O OSPITE",
-              "variant": "U/O 1.5 TEAM 1 + U/O 0.5 TEAM 2",
-              "threshold": null,
-              "selection": "UNDER+OVER",
-              "providerSelectionId": "5319710383",
-              "odds": 1.83,
-              "overlapKey": "market-combo u o casa u o ospite",
-              "semanticKeys": [
-                "goals"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "Parma VINCE/VANTAGGIO (1UP) · NO",
-              "market": "VINCE O QUASI (1UP/2UP)",
-              "variant": "SQUADRA 1 VINCE/VANTAGGIO (1UP)",
-              "threshold": null,
-              "selection": "NO",
-              "providerSelectionId": "5326120865",
-              "odds": 1.72,
-              "overlapKey": "market-vince o quasi 1up 2up",
-              "semanticKeys": [
-                "win-or-lead"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "1 TEMPO: U/O 1.5 · UNDER",
-              "market": "UNDER/OVER TEMPO X",
-              "variant": "1 TEMPO: U/O 1.5",
-              "threshold": "1.5",
-              "selection": "UNDER",
-              "providerSelectionId": "5319744280",
-              "odds": 1.27,
-              "overlapKey": "market-under over tempo x",
-              "semanticKeys": [
-                "goals-first-half"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "Parma o pareggio (1X)",
-              "market": "DOPPIA CHANCE",
-              "variant": "DOPPIA CHANCE MULTIESITI",
-              "threshold": null,
-              "selection": "1X",
-              "providerSelectionId": "5319684982",
-              "odds": 1.48,
-              "overlapKey": "market-doppia chance",
-              "semanticKeys": [
-                "result"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "DC TEMPO 1 · X2",
-              "market": "DOPPIA CHANCE TEMPO X",
-              "variant": "DC TEMPO 1",
-              "threshold": null,
-              "selection": "X2",
-              "providerSelectionId": "5319684075",
-              "odds": 1.21,
-              "overlapKey": "market-doppia chance tempo x",
-              "semanticKeys": [
-                "result-first-half"
-              ],
-              "marketScope": "match"
-            }
-          ],
-          "selection": "U/O 1.5 Parma + U/O 0.5 Genoa · UNDER+OVER + Parma VINCE/VANTAGGIO (1UP) · NO + 1 TEMPO: U/O 1.5 · UNDER + Parma o pareggio (1X) + DC TEMPO 1 · X2",
-          "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-09-17: quota 20 orientativa, 5-8 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
-          "probabilityPct": null,
-          "prudentProbabilityPct": null,
-          "fairOdds": null,
-          "prudentExpectedValuePct": null,
-          "qualityStatus": "editoriale",
-          "weakestLeg": null,
-          "probabilityMethod": null,
-          "probabilityStatus": "N/D · stima congiunta non supportata"
+          "odds": null,
+          "legs": [],
+          "selection": null,
+          "logic": null,
+          "qualityStatus": "nd",
+          "probabilityStatus": "N/D",
+          "unavailableReason": "Candidati insufficienti per il profilo Aggressive: servono almeno 5 mercati distinti con quota tra 1.15 e 1.85."
         }
       ],
       "playerMarkets": {
@@ -108446,9 +107804,9 @@
             "tier": "Balanced",
             "status": "outside-limits",
             "allowed": false,
-            "riskScore": 71.8,
-            "riskLevel": "alto",
-            "averageRisk": 71.8,
+            "riskScore": 69.3,
+            "riskLevel": "medio",
+            "averageRisk": 69.3,
             "maxEventRisk": 82,
             "strongDependencies": 0,
             "contradictions": 0,
@@ -108459,32 +107817,20 @@
               "minPrudentExpectedValuePct": 0
             },
             "reasons": [
-              "Rischio medio 71.8 oltre il limite 56.",
+              "Rischio medio 69.3 oltre il limite 56.",
               "Gamba a rischio 82 oltre il limite 72.",
               "EV prudenziale non disponibile."
             ],
             "events": [
               {
-                "providerSelectionId": "5326120865",
-                "label": "Parma VINCE/VANTAGGIO (1UP) · NO",
-                "riskScore": 82,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5319744280",
-                "label": "1 TEMPO: U/O 1.5 · UNDER",
+                "providerSelectionId": "5319744213",
+                "label": "MULTIGOAL MULTIESITI 16 ESITI · 1-2",
                 "riskScore": 65,
                 "modeled": false
               },
               {
-                "providerSelectionId": "5319684075",
-                "label": "DC TEMPO 1 · X2",
-                "riskScore": 65,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5319710383",
-                "label": "U/O 1.5 Parma + U/O 0.5 Genoa · UNDER+OVER",
+                "providerSelectionId": "5319744042",
+                "label": "TEMPO 1: U/O 0.5 Parma · UNDER",
                 "riskScore": 82,
                 "modeled": false
               },
@@ -108493,77 +107839,30 @@
                 "label": "Parma o pareggio (1X)",
                 "riskScore": 65,
                 "modeled": false
+              },
+              {
+                "providerSelectionId": "5319744280",
+                "label": "1 TEMPO: U/O 1.5 · UNDER",
+                "riskScore": 65,
+                "modeled": false
               }
             ],
             "dependencies": [
               {
-                "first": "5319684075",
-                "second": "5319684982",
-                "type": "negative",
-                "correlation": -0.548,
-                "intersectionProbabilityPct": 29.1
+                "first": "5319744213",
+                "second": "5319744280",
+                "type": "positive",
+                "correlation": 0.26,
+                "intersectionProbabilityPct": 24.4
               }
             ]
           },
           {
             "tier": "Aggressive",
-            "status": "outside-limits",
+            "status": "N/D",
             "allowed": false,
-            "riskScore": 71.8,
-            "riskLevel": "alto",
-            "averageRisk": 71.8,
-            "maxEventRisk": 82,
-            "strongDependencies": 0,
-            "contradictions": 0,
-            "limits": {
-              "maxAverageRisk": 72,
-              "maxEventRisk": 88,
-              "maxStrongDependencies": 3,
-              "minPrudentExpectedValuePct": 0
-            },
             "reasons": [
-              "EV prudenziale non disponibile."
-            ],
-            "events": [
-              {
-                "providerSelectionId": "5319710383",
-                "label": "U/O 1.5 Parma + U/O 0.5 Genoa · UNDER+OVER",
-                "riskScore": 82,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5326120865",
-                "label": "Parma VINCE/VANTAGGIO (1UP) · NO",
-                "riskScore": 82,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5319744280",
-                "label": "1 TEMPO: U/O 1.5 · UNDER",
-                "riskScore": 65,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5319684982",
-                "label": "Parma o pareggio (1X)",
-                "riskScore": 65,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5319684075",
-                "label": "DC TEMPO 1 · X2",
-                "riskScore": 65,
-                "modeled": false
-              }
-            ],
-            "dependencies": [
-              {
-                "first": "5319684982",
-                "second": "5319684075",
-                "type": "negative",
-                "correlation": -0.548,
-                "intersectionProbabilityPct": 29.1
-              }
+              "Candidati insufficienti per il profilo Aggressive: servono almeno 5 mercati distinti con quota tra 1.15 e 1.85."
             ]
           }
         ]
@@ -116722,161 +116021,15 @@
         {
           "tier": "Safe",
           "scenario": null,
-          "risk": "elevato · 10 eventi",
+          "risk": "relativo inferiore",
           "targetOdds": 5,
-          "quotaPolicy": "orientativa",
-          "eligibilityPolicy": "validita-tecnica-e-intervalli",
-          "riskPolicy": "informativa",
-          "odds": 12.74,
-          "distancePct": 154.8,
-          "legs": [
-            {
-              "label": "Lazio almeno 3 corner",
-              "market": "U/O CORNER SQUADRA X",
-              "variant": "U/O 2.5 CORNER SQUADRA 2",
-              "threshold": "2.5",
-              "selection": "OVER",
-              "providerSelectionId": "5330743298",
-              "odds": 1.18,
-              "overlapKey": "market-u o corner squadra x",
-              "semanticKeys": [
-                "volume-corners"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "FLORIANI MUSSOLINI R. almeno 1 falli subiti",
-              "market": "U/O FALLI SUBITI GIOCATORE",
-              "variant": "FLORIANI MUSSOLINI R. U/O 0.5 FALLI SUBITI",
-              "threshold": "0.5",
-              "selection": "OVER",
-              "providerSelectionId": "5329993037",
-              "odds": 1.65,
-              "overlapKey": "market-u o falli subiti giocatore",
-              "semanticKeys": [],
-              "marketScope": "player"
-            },
-            {
-              "label": "JUAN JESUS almeno 2 falli commessi",
-              "market": "U/O FALLI COMMESSI GIOCATORE",
-              "variant": "JUAN JESUS U/O 1.5 FALLI COMMESSI",
-              "threshold": "1.5",
-              "selection": "OVER",
-              "providerSelectionId": "5328836711",
-              "odds": 1.33,
-              "overlapKey": "market-u o falli commessi giocatore",
-              "semanticKeys": [],
-              "marketScope": "player"
-            },
-            {
-              "label": "Under 3,5 gol",
-              "market": "UNDER/OVER",
-              "variant": "U/O 3.5",
-              "threshold": "3.5",
-              "selection": "UNDER",
-              "providerSelectionId": "5319698669",
-              "odds": 1.38,
-              "overlapKey": "market-under over",
-              "semanticKeys": [
-                "goals"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "Lazio o pareggio (X2)",
-              "market": "DOPPIA CHANCE",
-              "variant": "DOPPIA CHANCE MULTIESITI",
-              "threshold": null,
-              "selection": "X2",
-              "providerSelectionId": "5319698687",
-              "odds": 1.27,
-              "overlapKey": "market-doppia chance",
-              "semanticKeys": [
-                "result"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "Venezia almeno 10 tiri totali",
-              "market": "U/O TIRI TOTALI SQUADRA X",
-              "variant": "SQUADRA 1: U/O 9.5 TIRI TOTALI",
-              "threshold": "9.5",
-              "selection": "OVER",
-              "providerSelectionId": "5328897499",
-              "odds": 1.22,
-              "overlapKey": "market-u o tiri totali squadra x",
-              "semanticKeys": [
-                "volume-shots-total"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "DC TEMPO 1 · X2",
-              "market": "DOPPIA CHANCE TEMPO X",
-              "variant": "DC TEMPO 1",
-              "threshold": null,
-              "selection": "X2",
-              "providerSelectionId": "5319697052",
-              "odds": 1.18,
-              "overlapKey": "market-doppia chance tempo x",
-              "semanticKeys": [
-                "result-first-half"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "1 TEMPO: GOL/NOGOL · NO GOL",
-              "market": "GOAL/NOGOAL TEMPO X",
-              "variant": "1 TEMPO: GOL/NOGOL",
-              "threshold": null,
-              "selection": "NO GOL",
-              "providerSelectionId": "5319703510",
-              "odds": 1.2,
-              "overlapKey": "market-goal nogoal tempo x",
-              "semanticKeys": [
-                "goals-first-half-btts"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "1X2 NEI PRIMI 15 MIN · X",
-              "market": "1X2 NEI MINUTI X-Y",
-              "variant": "1X2 NEI PRIMI 15 MIN",
-              "threshold": null,
-              "selection": "X",
-              "providerSelectionId": "5324039442",
-              "odds": 1.25,
-              "overlapKey": "market-1x2 nei minuti x y",
-              "semanticKeys": [
-                "result-opening-window"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "1 TEMPO: U/O 0.5 · OVER",
-              "market": "UNDER/OVER TEMPO X",
-              "variant": "1 TEMPO: U/O 0.5",
-              "threshold": "0.5",
-              "selection": "OVER",
-              "providerSelectionId": "5319703702",
-              "odds": 1.3,
-              "overlapKey": "market-under over tempo x",
-              "semanticKeys": [
-                "goals-first-half"
-              ],
-              "marketScope": "match"
-            }
-          ],
-          "selection": "Lazio almeno 3 corner + FLORIANI MUSSOLINI R. almeno 1 falli subiti + JUAN JESUS almeno 2 falli commessi + Under 3,5 gol + Lazio o pareggio (X2) + Venezia almeno 10 tiri totali + DC TEMPO 1 · X2 + 1 TEMPO: GOL/NOGOL · NO GOL + 1X2 NEI PRIMI 15 MIN · X + 1 TEMPO: U/O 0.5 · OVER",
-          "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-17: quota 5 orientativa, 10-10 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
-          "probabilityPct": null,
-          "prudentProbabilityPct": null,
-          "fairOdds": null,
-          "prudentExpectedValuePct": null,
-          "qualityStatus": "editoriale",
-          "weakestLeg": null,
-          "probabilityMethod": null,
-          "probabilityStatus": "N/D · stima congiunta non supportata"
+          "odds": null,
+          "legs": [],
+          "selection": null,
+          "logic": null,
+          "qualityStatus": "nd",
+          "probabilityStatus": "N/D",
+          "unavailableReason": "Candidati insufficienti per il profilo Safe: servono almeno 10 mercati distinti con quota tra 1.15 e 1.85."
         },
         {
           "tier": "Balanced",
@@ -116900,6 +116053,34 @@
               "overlapKey": "market-u o squadra x",
               "semanticKeys": [
                 "goals"
+              ],
+              "marketScope": "match"
+            },
+            {
+              "label": "1 TEMPO: GOL/NOGOL · NO GOL",
+              "market": "GOAL/NOGOAL TEMPO X",
+              "variant": "1 TEMPO: GOL/NOGOL",
+              "threshold": null,
+              "selection": "NO GOL",
+              "providerSelectionId": "5319703510",
+              "odds": 1.2,
+              "overlapKey": "market-goal nogoal tempo x",
+              "semanticKeys": [
+                "goals-first-half-btts"
+              ],
+              "marketScope": "match"
+            },
+            {
+              "label": "1 TEMPO: U/O 0.5 · OVER",
+              "market": "UNDER/OVER TEMPO X",
+              "variant": "1 TEMPO: U/O 0.5",
+              "threshold": "0.5",
+              "selection": "OVER",
+              "providerSelectionId": "5319703702",
+              "odds": 1.3,
+              "overlapKey": "market-under over tempo x",
+              "semanticKeys": [
+                "goals-first-half"
               ],
               "marketScope": "match"
             },
@@ -116930,34 +116111,6 @@
               "marketScope": "player"
             },
             {
-              "label": "1 TEMPO: U/O 0.5 · OVER",
-              "market": "UNDER/OVER TEMPO X",
-              "variant": "1 TEMPO: U/O 0.5",
-              "threshold": "0.5",
-              "selection": "OVER",
-              "providerSelectionId": "5319703702",
-              "odds": 1.3,
-              "overlapKey": "market-under over tempo x",
-              "semanticKeys": [
-                "goals-first-half"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "1 TEMPO: GOL/NOGOL · NO GOL",
-              "market": "GOAL/NOGOAL TEMPO X",
-              "variant": "1 TEMPO: GOL/NOGOL",
-              "threshold": null,
-              "selection": "NO GOL",
-              "providerSelectionId": "5319703510",
-              "odds": 1.2,
-              "overlapKey": "market-goal nogoal tempo x",
-              "semanticKeys": [
-                "goals-first-half-btts"
-              ],
-              "marketScope": "match"
-            },
-            {
               "label": "FLORIANI MUSSOLINI R. almeno 1 falli commessi",
               "market": "U/O FALLI COMMESSI GIOCATORE",
               "variant": "FLORIANI MUSSOLINI R. U/O 0.5 FALLI COMMESSI",
@@ -116970,7 +116123,7 @@
               "marketScope": "player"
             }
           ],
-          "selection": "U/O 1.5 Lazio · UNDER + Lazio meno di 5 corner + FLORIANI MUSSOLINI R. almeno 1 falli subiti + 1 TEMPO: U/O 0.5 · OVER + 1 TEMPO: GOL/NOGOL · NO GOL + FLORIANI MUSSOLINI R. almeno 1 falli commessi",
+          "selection": "U/O 1.5 Lazio · UNDER + 1 TEMPO: GOL/NOGOL · NO GOL + 1 TEMPO: U/O 0.5 · OVER + Lazio meno di 5 corner + FLORIANI MUSSOLINI R. almeno 1 falli subiti + FLORIANI MUSSOLINI R. almeno 1 falli commessi",
           "logic": "Profilo balanced costruito sulle quote Sisal del 2026-09-17: quota 10 orientativa, 4-7 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
           "probabilityPct": null,
           "prudentProbabilityPct": null,
@@ -116989,35 +116142,9 @@
           "quotaPolicy": "orientativa",
           "eligibilityPolicy": "validita-tecnica-e-intervalli",
           "riskPolicy": "informativa",
-          "odds": 20,
-          "distancePct": 0,
+          "odds": 19.14,
+          "distancePct": 4.3,
           "legs": [
-            {
-              "label": "FLORIANI MUSSOLINI R. almeno 1 falli subiti",
-              "market": "U/O FALLI SUBITI GIOCATORE",
-              "variant": "FLORIANI MUSSOLINI R. U/O 0.5 FALLI SUBITI",
-              "threshold": "0.5",
-              "selection": "OVER",
-              "providerSelectionId": "5329993037",
-              "odds": 1.65,
-              "overlapKey": "market-u o falli subiti giocatore",
-              "semanticKeys": [],
-              "marketScope": "player"
-            },
-            {
-              "label": "Venezia almeno 12 tiri totali",
-              "market": "U/O TIRI TOTALI SQUADRA X",
-              "variant": "SQUADRA 1: U/O 11.5 TIRI TOTALI",
-              "threshold": "11.5",
-              "selection": "OVER",
-              "providerSelectionId": "5328897487",
-              "odds": 1.57,
-              "overlapKey": "market-u o tiri totali squadra x",
-              "semanticKeys": [
-                "volume-shots-total"
-              ],
-              "marketScope": "match"
-            },
             {
               "label": "U/O 1.5 Lazio · UNDER",
               "market": "U/O SQUADRA X",
@@ -117029,20 +116156,6 @@
               "overlapKey": "market-u o squadra x",
               "semanticKeys": [
                 "goals"
-              ],
-              "marketScope": "match"
-            },
-            {
-              "label": "Partita almeno 8 corner",
-              "market": "U/O CORNER",
-              "variant": "U/O 7.5 CORNER",
-              "threshold": "7.5",
-              "selection": "OVER",
-              "providerSelectionId": "5330743452",
-              "odds": 1.42,
-              "overlapKey": "market-u o corner",
-              "semanticKeys": [
-                "volume-corners"
               ],
               "marketScope": "match"
             },
@@ -117061,18 +116174,44 @@
               "marketScope": "match"
             },
             {
-              "label": "Lazio VINCE/VANTAGGIO (1UP) · SI",
-              "market": "VINCE O QUASI (1UP/2UP)",
-              "variant": "SQUADRA 2 VINCE/VANTAGGIO (1UP)",
-              "threshold": null,
-              "selection": "SI",
-              "providerSelectionId": "5324282014",
-              "odds": 1.45,
-              "overlapKey": "market-vince o quasi 1up 2up",
+              "label": "1 TEMPO: U/O 0.5 · OVER",
+              "market": "UNDER/OVER TEMPO X",
+              "variant": "1 TEMPO: U/O 0.5",
+              "threshold": "0.5",
+              "selection": "OVER",
+              "providerSelectionId": "5319703702",
+              "odds": 1.3,
+              "overlapKey": "market-under over tempo x",
               "semanticKeys": [
-                "win-or-lead"
+                "goals-first-half"
               ],
               "marketScope": "match"
+            },
+            {
+              "label": "Lazio meno di 5 corner",
+              "market": "U/O CORNER SQUADRA X",
+              "variant": "U/O 4.5 CORNER SQUADRA 2",
+              "threshold": "4.5",
+              "selection": "UNDER",
+              "providerSelectionId": "5330743529",
+              "odds": 1.75,
+              "overlapKey": "market-u o corner squadra x",
+              "semanticKeys": [
+                "volume-corners"
+              ],
+              "marketScope": "match"
+            },
+            {
+              "label": "FLORIANI MUSSOLINI R. almeno 1 falli subiti",
+              "market": "U/O FALLI SUBITI GIOCATORE",
+              "variant": "FLORIANI MUSSOLINI R. U/O 0.5 FALLI SUBITI",
+              "threshold": "0.5",
+              "selection": "OVER",
+              "providerSelectionId": "5329993037",
+              "odds": 1.65,
+              "overlapKey": "market-u o falli subiti giocatore",
+              "semanticKeys": [],
+              "marketScope": "player"
             },
             {
               "label": "JUAN JESUS almeno 2 falli commessi",
@@ -117085,6 +116224,20 @@
               "overlapKey": "market-u o falli commessi giocatore",
               "semanticKeys": [],
               "marketScope": "player"
+            },
+            {
+              "label": "Entrambe almeno 3 tiri in porta",
+              "market": "ENTRAMBE LE SQUADRE ALMENO X TIRI IN PORTA",
+              "variant": "ENTRAMBE LE SQUADRE ALMENO 3 TIRI IN PORTA",
+              "threshold": null,
+              "selection": "SI",
+              "providerSelectionId": "5328889669",
+              "odds": 1.36,
+              "overlapKey": "market-entrambe le squadre almeno x tiri in porta",
+              "semanticKeys": [
+                "volume-shots-on-target"
+              ],
+              "marketScope": "match"
             },
             {
               "label": "Lazio o pareggio (X2)",
@@ -117101,7 +116254,7 @@
               "marketScope": "match"
             }
           ],
-          "selection": "FLORIANI MUSSOLINI R. almeno 1 falli subiti + Venezia almeno 12 tiri totali + U/O 1.5 Lazio · UNDER + Partita almeno 8 corner + 1 TEMPO: GOL/NOGOL · NO GOL + Lazio VINCE/VANTAGGIO (1UP) · SI + JUAN JESUS almeno 2 falli commessi + Lazio o pareggio (X2)",
+          "selection": "U/O 1.5 Lazio · UNDER + 1 TEMPO: GOL/NOGOL · NO GOL + 1 TEMPO: U/O 0.5 · OVER + Lazio meno di 5 corner + FLORIANI MUSSOLINI R. almeno 1 falli subiti + JUAN JESUS almeno 2 falli commessi + Entrambe almeno 3 tiri in porta + Lazio o pareggio (X2)",
           "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-09-17: quota 20 orientativa, 5-8 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
           "probabilityPct": null,
           "prudentProbabilityPct": null,
@@ -118385,109 +117538,10 @@
         "portfolios": [
           {
             "tier": "Safe",
-            "status": "outside-limits",
+            "status": "N/D",
             "allowed": false,
-            "riskScore": 79.5,
-            "riskLevel": "alto",
-            "averageRisk": 73.5,
-            "maxEventRisk": 82,
-            "strongDependencies": 1,
-            "contradictions": 0,
-            "limits": {
-              "maxAverageRisk": 42,
-              "maxEventRisk": 58,
-              "maxStrongDependencies": 1,
-              "minPrudentExpectedValuePct": 0
-            },
             "reasons": [
-              "Rischio medio 73.5 oltre il limite 42.",
-              "Gamba a rischio 82 oltre il limite 58.",
-              "EV prudenziale non disponibile."
-            ],
-            "events": [
-              {
-                "providerSelectionId": "5330743298",
-                "label": "Lazio almeno 3 corner",
-                "riskScore": 82,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5329993037",
-                "label": "FLORIANI MUSSOLINI R. almeno 1 falli subiti",
-                "riskScore": 82,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5328836711",
-                "label": "JUAN JESUS almeno 2 falli commessi",
-                "riskScore": 82,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5319698669",
-                "label": "Under 3,5 gol",
-                "riskScore": 65,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5319698687",
-                "label": "Lazio o pareggio (X2)",
-                "riskScore": 65,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5328897499",
-                "label": "Venezia almeno 10 tiri totali",
-                "riskScore": 82,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5319697052",
-                "label": "DC TEMPO 1 · X2",
-                "riskScore": 65,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5319703510",
-                "label": "1 TEMPO: GOL/NOGOL · NO GOL",
-                "riskScore": 65,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5324039442",
-                "label": "1X2 NEI PRIMI 15 MIN · X",
-                "riskScore": 82,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5319703702",
-                "label": "1 TEMPO: U/O 0.5 · OVER",
-                "riskScore": 65,
-                "modeled": false
-              }
-            ],
-            "dependencies": [
-              {
-                "first": "5319698669",
-                "second": "5319703510",
-                "type": "positive",
-                "correlation": 0.447,
-                "intersectionProbabilityPct": 48.4
-              },
-              {
-                "first": "5319698687",
-                "second": "5319697052",
-                "type": "redundant",
-                "correlation": 1,
-                "intersectionProbabilityPct": 70.4
-              },
-              {
-                "first": "5319703510",
-                "second": "5319703702",
-                "type": "negative",
-                "correlation": -0.303,
-                "intersectionProbabilityPct": 42.1
-              }
+              "Candidati insufficienti per il profilo Safe: servono almeno 10 mercati distinti con quota tra 1.15 e 1.85."
             ]
           },
           {
@@ -118519,6 +117573,18 @@
                 "modeled": false
               },
               {
+                "providerSelectionId": "5319703510",
+                "label": "1 TEMPO: GOL/NOGOL · NO GOL",
+                "riskScore": 65,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5319703702",
+                "label": "1 TEMPO: U/O 0.5 · OVER",
+                "riskScore": 65,
+                "modeled": false
+              },
+              {
                 "providerSelectionId": "5330743529",
                 "label": "Lazio meno di 5 corner",
                 "riskScore": 82,
@@ -118531,18 +117597,6 @@
                 "modeled": false
               },
               {
-                "providerSelectionId": "5319703702",
-                "label": "1 TEMPO: U/O 0.5 · OVER",
-                "riskScore": 65,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5319703510",
-                "label": "1 TEMPO: GOL/NOGOL · NO GOL",
-                "riskScore": 65,
-                "modeled": false
-              },
-              {
                 "providerSelectionId": "5328835843",
                 "label": "FLORIANI MUSSOLINI R. almeno 1 falli commessi",
                 "riskScore": 82,
@@ -118551,8 +117605,8 @@
             ],
             "dependencies": [
               {
-                "first": "5319703702",
-                "second": "5319703510",
+                "first": "5319703510",
+                "second": "5319703702",
                 "type": "negative",
                 "correlation": -0.303,
                 "intersectionProbabilityPct": 42.1
@@ -118563,9 +117617,9 @@
             "tier": "Aggressive",
             "status": "outside-limits",
             "allowed": false,
-            "riskScore": 77.8,
+            "riskScore": 75.6,
             "riskLevel": "alto",
-            "averageRisk": 77.8,
+            "averageRisk": 75.6,
             "maxEventRisk": 82,
             "strongDependencies": 0,
             "contradictions": 0,
@@ -118576,31 +117630,13 @@
               "minPrudentExpectedValuePct": 0
             },
             "reasons": [
-              "Rischio medio 77.8 oltre il limite 72.",
+              "Rischio medio 75.6 oltre il limite 72.",
               "EV prudenziale non disponibile."
             ],
             "events": [
               {
-                "providerSelectionId": "5329993037",
-                "label": "FLORIANI MUSSOLINI R. almeno 1 falli subiti",
-                "riskScore": 82,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5328897487",
-                "label": "Venezia almeno 12 tiri totali",
-                "riskScore": 82,
-                "modeled": false
-              },
-              {
                 "providerSelectionId": "5319703799",
                 "label": "U/O 1.5 Lazio · UNDER",
-                "riskScore": 82,
-                "modeled": false
-              },
-              {
-                "providerSelectionId": "5330743452",
-                "label": "Partita almeno 8 corner",
                 "riskScore": 82,
                 "modeled": false
               },
@@ -118611,8 +117647,20 @@
                 "modeled": false
               },
               {
-                "providerSelectionId": "5324282014",
-                "label": "Lazio VINCE/VANTAGGIO (1UP) · SI",
+                "providerSelectionId": "5319703702",
+                "label": "1 TEMPO: U/O 0.5 · OVER",
+                "riskScore": 65,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5330743529",
+                "label": "Lazio meno di 5 corner",
+                "riskScore": 82,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5329993037",
+                "label": "FLORIANI MUSSOLINI R. almeno 1 falli subiti",
                 "riskScore": 82,
                 "modeled": false
               },
@@ -118623,13 +117671,27 @@
                 "modeled": false
               },
               {
+                "providerSelectionId": "5328889669",
+                "label": "Entrambe almeno 3 tiri in porta",
+                "riskScore": 82,
+                "modeled": false
+              },
+              {
                 "providerSelectionId": "5319698687",
                 "label": "Lazio o pareggio (X2)",
                 "riskScore": 65,
                 "modeled": false
               }
             ],
-            "dependencies": []
+            "dependencies": [
+              {
+                "first": "5319703510",
+                "second": "5319703702",
+                "type": "negative",
+                "correlation": -0.303,
+                "intersectionProbabilityPct": 42.1
+              }
+            ]
           }
         ]
       }

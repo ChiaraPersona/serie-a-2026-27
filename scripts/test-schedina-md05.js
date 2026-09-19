@@ -3,6 +3,7 @@
 const assert = require("assert");
 const fs = require("fs");
 const path = require("path");
+const { isSisalMyComboMarketName } = require("./mycombo-market-policy");
 const root = path.resolve(__dirname, "..");
 const read = file => JSON.parse(fs.readFileSync(path.join(root, file), "utf8"));
 const data = read("data/normalized/schedina-md05.json");
@@ -15,7 +16,7 @@ const legs = data.slips.flatMap(slip => slip.legs);
 const sourcePortfolios = Object.values(source.matches).flat();
 const sourceComboLegs = sourcePortfolios.flatMap(portfolio => portfolio.legs || []);
 const openComboLegs = Object.entries(source.matches).filter(([matchId]) => matchById.get(matchId)?.status !== "finished").flatMap(([,portfolios]) => portfolios.flatMap(portfolio => portfolio.legs || []));
-const forbiddenOpenMarket = leg => /market-(?:casa segna goal 2t|ospite segna goal 2t|segna goal tempo x|squadra x segna nei 2 tempi|squadra x vince almeno un tempo|u o goal squadra tempo|(?:casa|ospite) vince a 0(?: 1t| 2t)?|(?:1 tempo |2 tempo )?segna ultimo goal|1 tempo 1x2 corner|tempo primo goal|draw no bet(?: tempo x)?)$/.test(leg.overlapKey) || /\bduo\b|multigiocat/.test(leg.overlapKey);
+const forbiddenOpenMarket = leg => /market-(?:casa segna goal 2t|ospite segna goal 2t|segna goal tempo x|squadra x segna nei 2 tempi|squadra x vince almeno un tempo|(?:casa|ospite) vince a 0(?: 1t| 2t)?|(?:1 tempo |2 tempo )?segna ultimo goal|1 tempo 1x2 corner|tempo primo goal|draw no bet(?: tempo x)?)$/.test(leg.overlapKey) || /multigiocat/.test(leg.overlapKey);
 
 assert.equal(data.matchday, 5);
 assert.equal(data.slips.length, 8);
@@ -41,7 +42,6 @@ assert.deepEqual(source.constraints.excludedMarketNames, [
   "OSPITE: SEGNA GOAL 2T",
   "SEGNA GOAL TEMPO X",
   "SQUADRA X SEGNA NEI 2 TEMPI",
-  "U/O GOAL SQUADRA TEMPO",
   "SEGNA ULTIMO GOAL",
   "1 TEMPO: SEGNA ULTIMO GOAL",
   "2 TEMPO: SEGNA ULTIMO GOAL",
@@ -57,8 +57,25 @@ assert.deepEqual(source.constraints.excludedMarketNames, [
   "CASA: VINCE A 0 2T",
   "OSPITE: VINCE A 0 2T"
 ]);
-assert.deepEqual(source.constraints.excludedMarketNameFragments, ["DUO", "MULTIGIOCAT"]);
+assert.deepEqual(source.constraints.excludedMarketNameFragments, ["MULTIGIOCAT"]);
 assert.match(source.constraints.providerEligibilityPolicy, /sezione MyCombo/);
+for (const allowed of [
+  "DOPPIA CHANCE",
+  "U/O GOAL SQUADRA TEMPO",
+  "MARCATORE SI/NO (DUO) INC TS",
+  "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+  "U/O TIRI IN PORTA SQUADRA X",
+  "1X2 HANDICAP CORNER",
+  "ALMENO X GOAL E Y CORNER IN ENTRAMBI I TEMPI"
+]) assert(isSisalMyComboMarketName(allowed), `${allowed}: mercato Sisal MyCombo ammesso respinto`);
+for (const forbidden of [
+  "CASA: VINCE A 0",
+  "SQUADRA X VINCE ALMENO UN TEMPO",
+  "U/O TIRI TOTALI SQUADRA X",
+  "PRIMA A X CORNER",
+  "1X2 NEI MINUTI X-Y",
+  "GIOCATORE SEGNA O ASSIST O CARTELLINO INC TS"
+]) assert(!isSisalMyComboMarketName(forbidden), `${forbidden}: mercato extra-lista accettato`);
 assert.equal(openComboLegs.filter(forbiddenOpenMarket).length, 0, "Una MyCombo ancora aperta contiene un mercato vietato");
 assert(!data.slips.some(slip => ["exact-score", "exact-score-multi"].includes(slip.type)));
 assert(!legs.some(leg => /^RISULTATO ESATTO/.test(leg.market)));
@@ -94,6 +111,7 @@ for (const prediction of predictions) {
   assert(combo.legs.every(leg => leg.odds >= 1.15), `${prediction.matchId}: quota MyCombo sotto 1,15`);
   assert(!combo.legs.some(leg => /MONITOR VAR|RIGORE SI\/NO|PRIMA SOSTITUZIONE|PARI\/DISPARI/i.test(leg.market)), `${prediction.matchId}: mercato vietato presente`);
   assert(!combo.legs.some(leg => /HANDICAP|ASIATIC|\bAH\b/i.test(`${leg.market} ${leg.variant} ${leg.label}`)), `${prediction.matchId}: handicap o mercato asiatico vietato`);
+  if (!finished) assert(combo.legs.every(leg => isSisalMyComboMarketName(leg.market)), `${prediction.matchId}: mercato fuori dalla whitelist MyCombo Sisal`);
   assert.equal(new Set(combo.legs.map(leg => leg.overlapKey)).size, combo.legs.length, `${prediction.matchId}: mercato ripetuto`);
   const semanticKeys = combo.legs.flatMap(leg => leg.semanticKeys || []);
   assert.equal(new Set(semanticKeys).size, semanticKeys.length, `${prediction.matchId}: macro-scenario ripetuto`);
