@@ -28,6 +28,8 @@ function thresholdFromLabel(label){
   if(lessThan)return {value:Number(lessThan[1]),inclusive:false};
   const moreThan=text.match(/PI[UÙ] DI\s+(\d+(?:\.\d+)?)/);
   if(moreThan)return {value:Number(moreThan[1]),inclusive:false};
+  const genericLine=text.match(/U\/O\s+(\d+(?:\.\d+)?)/);
+  if(genericLine)return {value:Number(genericLine[1]),inclusive:false};
   const line=text.match(/(?:UNDER|OVER)\s+(\d+(?:\.\d+)?)/);
   return line?{value:Number(line[1]),inclusive:false}:null;
 }
@@ -76,6 +78,14 @@ export function settleLeg(leg,match){
 
   const home=Number(match.score.home),away=Number(match.score.away),total=home+away;
   const market=normalized(leg?.market),selection=normalized(leg?.selection),actualScore=`${home}-${away}`;
+  const halfTime=finite(match?.halfTimeScore?.home)&&finite(match?.halfTimeScore?.away)?{home:Number(match.halfTimeScore.home),away:Number(match.halfTimeScore.away)}:null;
+  const periodScores=text=>{
+    if(!halfTime)return null;
+    const value=normalized(text);
+    if(value.includes("TEMPO 1")||value.includes("1 TEMPO"))return halfTime;
+    if(value.includes("TEMPO 2")||value.includes("2 TEMPO"))return {home:home-halfTime.home,away:away-halfTime.away};
+    return null;
+  };
 
   if(market.includes("RISULTATO ESATTO")){
     const accepted=selection.split("/").map(item=>item.trim()).filter(Boolean);
@@ -90,7 +100,7 @@ export function settleLeg(leg,match){
 
   const outcome=home>away?"1":home<away?"2":"X";
   if(market.includes("1X2 ESITO FINALE"))return resultStatus(selection===outcome);
-  if(market.includes("DOPPIA CHANCE"))return resultStatus(selection.includes(outcome));
+  if(market.includes("DOPPIA CHANCE")&&!market.includes("TEMPO"))return resultStatus(selection.includes(outcome));
   if(market==="GOAL/NOGOAL"){
     if(!["GOAL","NOGOAL"].includes(selection))return unavailable();
     return resultStatus(selection==="GOAL"?home>0&&away>0:home===0||away===0);
@@ -99,6 +109,35 @@ export function settleLeg(leg,match){
     if(!["SI","NO"].includes(selection))return unavailable();
     const scored=market.startsWith("CASA")?home>0:away>0;
     return resultStatus(selection==="SI"?scored:!scored);
+  }
+  if(market.includes("SEGNA GOAL")&&(market.includes("CASA")||market.includes("OSPITE"))){
+    const period=periodScores(`${market} ${leg?.variant||""}`);
+    if(!period||!["SI","NO"].includes(selection))return unavailable();
+    const scored=market.includes("CASA")?period.home>0:period.away>0;
+    return resultStatus(selection==="SI"?scored:!scored);
+  }
+  if(market.includes("SEGNA NEI 2 TEMPI")){
+    if(!halfTime||!["SI","NO"].includes(selection))return unavailable();
+    const descriptor=normalized(`${leg?.variant||""} ${leg?.label||""}`);
+    const side=descriptor.includes("SQUADRA 1")?"home":descriptor.includes("SQUADRA 2")?"away":null;
+    if(!side)return unavailable();
+    const scoredBoth=halfTime[side]>0&&(side==="home"?home-halfTime.home:away-halfTime.away)>0;
+    return resultStatus(selection==="SI"?scoredBoth:!scoredBoth);
+  }
+  if(market.includes("DOPPIA CHANCE TEMPO")){
+    const period=periodScores(`${market} ${leg?.variant||""}`);
+    if(!period)return unavailable();
+    const periodOutcome=period.home>period.away?"1":period.home<period.away?"2":"X";
+    return resultStatus(selection.includes(periodOutcome));
+  }
+  if(market.includes("UNDER/OVER TEMPO")){
+    const period=periodScores(`${market} ${leg?.variant||""}`);
+    return period?settleThreshold(selection,period.home+period.away,thresholdFromLabel(leg?.label)):unavailable();
+  }
+  if(market==="TEMPO PRIMO GOAL"){
+    const firstGoal=[...(match?.scorers||[])].filter(item=>finite(item.minute)).sort((left,right)=>Number(left.minute)-Number(right.minute))[0];
+    const actualPeriod=firstGoal?(Number(firstGoal.minute)<=45?"1":"2"):"X";
+    return resultStatus(selection===actualPeriod);
   }
   if(market.includes("VINCE O QUASI")){
     const variant=normalized(leg?.variant),predictedOutcome=normalized(leg?.predictedOutcome);

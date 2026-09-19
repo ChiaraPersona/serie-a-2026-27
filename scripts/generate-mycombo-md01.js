@@ -25,10 +25,21 @@ const excludedMarketNames = new Set([
   "PRIMA SOSTITUZIONE NEL MATCH",
   "PARI/DISPARI",
   "CASA: PARI/DISPARI",
-  "OSPITE: PARI/DISPARI"
+  "OSPITE: PARI/DISPARI",
+  "CASA: SEGNA GOAL 2T",
+  "OSPITE: SEGNA GOAL 2T",
+  "SEGNA GOAL TEMPO X",
+  "SQUADRA X SEGNA NEI 2 TEMPI",
+  "U/O GOAL SQUADRA TEMPO",
+  "SEGNA ULTIMO GOAL",
+  "1 TEMPO: SEGNA ULTIMO GOAL",
+  "2 TEMPO: SEGNA ULTIMO GOAL",
+  "1 TEMPO: 1X2 CORNER",
+  "TEMPO PRIMO GOAL"
 ]);
+const excludedMarketNameFragments = ["DUO", "MULTIGIOCAT"];
 const tierLimits = {
-  Safe: matchday === 5 ? { minimum: 10, maximum: 10, preferred: 10 } : { minimum: 3, maximum: 6, preferred: 3 },
+  Safe: matchday === 5 ? { minimum: 6, maximum: 10, preferred: 10 } : { minimum: 3, maximum: 6, preferred: 3 },
   Balanced: { minimum: 4, maximum: 7, preferred: 4 },
   Aggressive: { minimum: 5, maximum: 8, preferred: 5 }
 };
@@ -37,10 +48,12 @@ const matchById = new Map(matches.map(match => [match.id, match]));
 const predictionById = new Map(predictionData.predictions.map(prediction => [prediction.matchId, prediction]));
 const clean = value => String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
 const round = value => Math.round(value * 100) / 100;
-const excludedMarketKeys = new Set([...excludedMarketNames].map(name => `market-${clean(name)}`));
-const portfolioUsesExcludedMarket = portfolios => (portfolios || []).some(portfolio =>
-  (portfolio.legs || []).some(leg => excludedMarketKeys.has(leg.overlapKey))
-);
+const excludedMarketKeys = new Set([...excludedMarketNames].map(clean));
+const excludedMarketFragments = excludedMarketNameFragments.map(clean);
+const isExcludedMarketName = value => {
+  const key = clean(String(value || "").replace(/^market-/, ""));
+  return excludedMarketKeys.has(key) || excludedMarketFragments.some(fragment => key.includes(fragment));
+};
 
 function selectedPlayer(variantName, match) {
   const variant = clean(variantName);
@@ -367,8 +380,7 @@ function candidatePool(event, prediction, match) {
 
   return [...new Map(candidates.map(candidate => [candidate.providerSelectionId, { ...candidate, semanticKeys: candidate.semanticKeys || [] }])).values()]
     .filter(candidate => {
-      const marketName = String(candidate.overlapKey || "").replace(/^market-/, "");
-      return ![...excludedMarketNames].some(name => clean(name) === marketName);
+      return !isExcludedMarketName(candidate.overlapKey);
     })
     .filter(candidate => candidate.odds >= minimumLegOdds && candidate.odds <= maximumLegOdds)
     .sort((left, right) => right.quality - left.quality || right.odds - left.odds);
@@ -457,6 +469,7 @@ const output = {
     tierLimits,
     displayedComboLegs: matchday === 5 ? 10 : null,
     excludedMarketNames: [...excludedMarketNames],
+    excludedMarketNameFragments,
     minLegOddsInclusive: minimumLegOdds,
     maxLegOddsInclusive: maximumLegOdds,
     uniqueMarketFamilyWithinPortfolio: true,
@@ -475,10 +488,11 @@ for (const event of odds.events) {
   const prediction = predictionById.get(event.canonicalMatchId);
   const match = matchById.get(event.canonicalMatchId);
   if (!prediction || !match || match.matchday !== matchday) continue;
-  if (match.status === "finished" && previousOutput?.matches?.[event.canonicalMatchId]
-    && !portfolioUsesExcludedMarket(previousOutput.matches[event.canonicalMatchId])) {
-    output.matches[event.canonicalMatchId] = previousOutput.matches[event.canonicalMatchId];
-    console.log(`${event.canonicalMatchId}: portafogli storici congelati (partita conclusa)`);
+  if (match.status === "finished") {
+    if (previousOutput?.matches?.[event.canonicalMatchId]) {
+      output.matches[event.canonicalMatchId] = previousOutput.matches[event.canonicalMatchId];
+      console.log(`${event.canonicalMatchId}: portafogli storici congelati (partita conclusa)`);
+    } else console.log(`${event.canonicalMatchId}: nessun portafoglio storico da creare (partita conclusa)`);
     continue;
   }
   const pool = candidatePool(event, prediction, match);
@@ -493,7 +507,7 @@ for (const event of odds.events) {
     }];
     return [tier, {
       tier,
-      risk: matchday === 5 && tier === "Safe" ? "elevato · 10 eventi" : undefined,
+      risk: matchday === 5 && tier === "Safe" ? `elevato · ${portfolio.legs.length} eventi` : undefined,
       logic: `Profilo ${tier.toLowerCase()} costruito sulle quote Sisal del ${String(event.retrievedAt).slice(0, 10)}: quota ${referenceOdds[tier]} orientativa, ${tierLimits[tier].minimum}-${tierLimits[tier].maximum} gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole ${minimumLegOdds.toFixed(2)}-${maximumLegOdds.toFixed(2)}. Il rischio resta informativo.`,
       legs: portfolio.legs.map(({ providerSelectionId, overlapKey, semanticKeys, label }) => ({ providerSelectionId, overlapKey, semanticKeys, label }))
     }];

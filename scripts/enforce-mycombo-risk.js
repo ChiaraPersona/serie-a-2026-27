@@ -18,6 +18,13 @@ const predictions = JSON.parse(fs.readFileSync(predictionsPath, "utf8")).predict
 const predictionByMatch = new Map(predictions.map(prediction => [prediction.matchId, prediction]));
 const matches = JSON.parse(fs.readFileSync(path.join(root, "data/normalized/matches.json"), "utf8"));
 const matchById = new Map(matches.map(match => [match.id, match]));
+const clean = value => String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+const excludedMarketKeys = new Set((source.constraints?.excludedMarketNames || []).map(clean));
+const excludedMarketFragments = (source.constraints?.excludedMarketNameFragments || []).map(clean);
+const isExcludedMarket = leg => {
+  const key = clean(String(leg?.overlapKey || "").replace(/^market-/, ""));
+  return excludedMarketKeys.has(key) || excludedMarketFragments.some(fragment => key.includes(fragment));
+};
 let valid = 0;
 let unavailable = 0;
 
@@ -39,6 +46,7 @@ for (const [matchId, portfolios] of Object.entries(source.matches || {})) {
       throw new Error(`${matchId}/${portfolio.tier}: ${portfolio.legs?.length || 0} gambe fuori dall'intervallo ${limits.minimum}-${limits.maximum}`);
     }
     if (!combo?.legs?.length || combo.qualityStatus === "nd") throw new Error(`${matchId}/${portfolio.tier}: portafoglio non disponibile nel pronostico rigenerato`);
+    if (portfolio.legs.some(isExcludedMarket) || combo.legs.some(isExcludedMarket)) throw new Error(`${matchId}/${portfolio.tier}: mercato vietato presente nella MyCombo aperta`);
     const minimumOdds = source.constraints.minLegOddsInclusive;
     const maximumOdds = source.constraints.maxLegOddsInclusive;
     if (combo.legs.some(leg => leg.odds < minimumOdds || leg.odds > maximumOdds)) throw new Error(`${matchId}/${portfolio.tier}: quota singola fuori dal range ${minimumOdds}-${maximumOdds}`);

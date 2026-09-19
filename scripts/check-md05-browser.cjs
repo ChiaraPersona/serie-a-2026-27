@@ -29,18 +29,19 @@ const server = http.createServer((request, response) => {
       await page.goto(`http://127.0.0.1:${server.address().port}/schedina.html?giornata=5`, { waitUntil: "networkidle" });
       const mainText = await page.locator("main").innerText();
       const comparableText = mainText.toLocaleLowerCase("it-IT");
-      assert.match(mainText, /MyCombo · 10 esiti selezionabili/);
-      assert(comparableText.indexOf("mycombo · 10 esiti selezionabili") < comparableText.indexOf("controllo prudenziale"), `schedina ${width}: le MyCombo devono essere in apertura`);
+      assert.match(mainText, /MyCombo · fino a 10 esiti per gara/);
+      assert(comparableText.indexOf("mycombo · fino a 10 esiti per gara") < comparableText.indexOf("controllo prudenziale"), `schedina ${width}: le MyCombo devono essere in apertura`);
       assert.doesNotMatch(mainText, /Scintilla|Bagliore|Supernova|Prisma|Quasar|Costellazione/i);
       const cards = page.locator(".betting-mycombo-card");
       assert.equal(await cards.count(), 10, `schedina ${width}: servono dieci MyCombo`);
-      assert.equal(await cards.locator("[data-mycombo-pick]").count(), 100, `schedina ${width}: servono cento esiti MyCombo cliccabili`);
-      assert.doesNotMatch(await cards.allInnerTexts().then(values => values.join("\n")), /ARBITRO CONSULTA MONITOR VAR|RIGORE SI\/NO|PRIMA SOSTITUZIONE|PARI\/DISPARI|HANDICAP/i);
+      const openCards = page.locator('.betting-mycombo-card:not([data-finished="true"])');
+      assert.doesNotMatch(await openCards.allInnerTexts().then(values => values.join("\n")), /ARBITRO CONSULTA MONITOR VAR|RIGORE SI\/NO|PRIMA SOSTITUZIONE|PARI\/DISPARI|HANDICAP|SEGNA GOAL 2 TEMPO|SEGNA NEI 2 TEMPI|U\/O GOAL SQUADRA TEMPO|SEGNA ULTIMO GOAL|1 TEMPO: 1X2 CORNER|TEMPO PRIMO GOAL|\bDUO\b|MULTIGIOCAT/i);
       for (let index = 0; index < 10; index += 1) {
         const card = cards.nth(index);
         const markets = await card.locator("ol li strong").allTextContents();
         const quotedOdds = (await card.locator("ol li b").allTextContents()).map(value => Number(value.replace(",", ".")));
-        assert.equal(markets.length, 10, `schedina ${width}: la MyCombo ${index + 1} deve avere dieci eventi`);
+        const finished = await card.getAttribute("data-finished") === "true";
+        assert(finished ? markets.length === 10 : markets.length >= 6 && markets.length <= 10, `schedina ${width}: numero eventi non valido nella MyCombo ${index + 1}`);
         assert.equal(new Set(markets).size, markets.length, `schedina ${width}: mercato ripetuto nella MyCombo ${index + 1}`);
         assert(quotedOdds.every(value => value >= 1.15), `schedina ${width}: quota sotto 1,15 nella MyCombo ${index + 1}`);
       }

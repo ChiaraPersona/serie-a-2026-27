@@ -8,17 +8,22 @@ const read = file => JSON.parse(fs.readFileSync(path.join(root, file), "utf8"));
 const data = read("data/normalized/schedina-md05.json");
 const predictions = read("data/normalized/predictions.json").predictions.filter(item => item.matchId.endsWith("-md-05"));
 const source = read("data/sources/mycombo-serie-a-2026-27-md-05.json");
+const matches = read("data/normalized/matches.json");
+const matchById = new Map(matches.map(match => [match.id, match]));
 const renderer = fs.readFileSync(path.join(root, "js/pages/betting.js"), "utf8");
 const legs = data.slips.flatMap(slip => slip.legs);
 const sourcePortfolios = Object.values(source.matches).flat();
 const sourceComboLegs = sourcePortfolios.flatMap(portfolio => portfolio.legs || []);
+const openComboLegs = Object.entries(source.matches).filter(([matchId]) => matchById.get(matchId)?.status !== "finished").flatMap(([,portfolios]) => portfolios.flatMap(portfolio => portfolio.legs || []));
+const forbiddenOpenMarket = leg => /market-(?:casa segna goal 2t|ospite segna goal 2t|segna goal tempo x|squadra x segna nei 2 tempi|u o goal squadra tempo|(?:1 tempo |2 tempo )?segna ultimo goal|1 tempo 1x2 corner|tempo primo goal)$/.test(leg.overlapKey) || /\bduo\b|multigiocat/.test(leg.overlapKey);
 
 assert.equal(data.matchday, 5);
 assert.equal(data.slips.length, 8);
 assert.equal(legs.length, 45);
 assert.equal(Object.keys(source.matches).length, 10);
 assert.equal(sourcePortfolios.filter(portfolio => portfolio.tier === "Safe").length, 10);
-assert(sourcePortfolios.filter(portfolio => portfolio.tier === "Safe").every(portfolio => portfolio.legs.length === 10));
+assert(Object.entries(source.matches).filter(([matchId]) => matchById.get(matchId)?.status === "finished").every(([,portfolios]) => portfolios.find(portfolio => portfolio.tier === "Safe").legs.length === 10), "Le MyCombo concluse devono conservare le 10 selezioni storiche");
+assert(Object.entries(source.matches).filter(([matchId]) => matchById.get(matchId)?.status !== "finished").every(([,portfolios]) => { const safe=portfolios.find(portfolio => portfolio.tier === "Safe"); return safe.status === "N/D" || (safe.legs.length >= 6 && safe.legs.length <= 10); }), "Le MyCombo aperte devono contenere da 6 a 10 mercati ammessi");
 assert(!sourceComboLegs.some(leg => /market-(?:prima sostituzione nel match|(?:casa |ospite )?pari dispari)$/.test(leg.overlapKey)), "La fonte MyCombo contiene ancora sostituzione o pari/dispari");
 assert.equal(source.constraints.minLegOddsInclusive, 1.15);
 assert.equal(source.constraints.displayedComboLegs, 10);
@@ -28,8 +33,20 @@ assert.deepEqual(source.constraints.excludedMarketNames, [
   "PRIMA SOSTITUZIONE NEL MATCH",
   "PARI/DISPARI",
   "CASA: PARI/DISPARI",
-  "OSPITE: PARI/DISPARI"
+  "OSPITE: PARI/DISPARI",
+  "CASA: SEGNA GOAL 2T",
+  "OSPITE: SEGNA GOAL 2T",
+  "SEGNA GOAL TEMPO X",
+  "SQUADRA X SEGNA NEI 2 TEMPI",
+  "U/O GOAL SQUADRA TEMPO",
+  "SEGNA ULTIMO GOAL",
+  "1 TEMPO: SEGNA ULTIMO GOAL",
+  "2 TEMPO: SEGNA ULTIMO GOAL",
+  "1 TEMPO: 1X2 CORNER",
+  "TEMPO PRIMO GOAL"
 ]);
+assert.deepEqual(source.constraints.excludedMarketNameFragments, ["DUO", "MULTIGIOCAT"]);
+assert.equal(openComboLegs.filter(forbiddenOpenMarket).length, 0, "Una MyCombo ancora aperta contiene un mercato vietato");
 assert(!data.slips.some(slip => ["exact-score", "exact-score-multi"].includes(slip.type)));
 assert(!legs.some(leg => /^RISULTATO ESATTO/.test(leg.market)));
 assert.equal(new Set(legs.map(leg => String(leg.providerSelectionId))).size, legs.length);
@@ -45,15 +62,17 @@ assert.deepEqual(data.slips.map(slip => slip.name), [
   "Poker ammoniti 1",
   "Poker ammoniti 2"
 ]);
-assert(renderer.includes("MyCombo · 10 esiti selezionabili"));
+assert(renderer.includes("MyCombo · fino a 10 esiti per gara"));
 assert(renderer.includes("data-mycombo-pick"), "I dieci esiti MyCombo devono essere pulsanti selezionabili");
 assert(renderer.includes("bindMyComboInteractions"), "Interazione MyCombo assente");
+assert(renderer.includes('data-finished="true"') && renderer.includes('verde = esito preso'), "Le MyCombo concluse devono mostrare gli esiti liquidati");
 assert(!renderer.includes('item.match.status!=="finished"'), "Monza-Sassuolo deve restare visibile come snapshot pre-partita nella sezione MyCombo");
 assert(renderer.indexOf("${myCombo}${roundContent") > renderer.indexOf("const myCombo="), "Le MyCombo devono precedere le schedine nella pagina MD05");
 
 for (const prediction of predictions) {
   const combo = prediction.combinations.find(item => item.tier === "Safe");
-  assert.equal(combo?.legs.length, 10, `${prediction.matchId}: la MyCombo deve contenere esattamente 10 eventi`);
+  const finished = matchById.get(prediction.matchId)?.status === "finished";
+  assert(finished ? combo?.legs.length === 10 : combo?.legs.length >= 6 && combo?.legs.length <= 10, `${prediction.matchId}: numero eventi MyCombo fuori dai limiti`);
   assert(combo.legs.every(leg => leg.odds >= 1.15), `${prediction.matchId}: quota MyCombo sotto 1,15`);
   assert(!combo.legs.some(leg => /MONITOR VAR|RIGORE SI\/NO|PRIMA SOSTITUZIONE|PARI\/DISPARI/i.test(leg.market)), `${prediction.matchId}: mercato vietato presente`);
   assert(!combo.legs.some(leg => /HANDICAP|ASIATIC|\bAH\b/i.test(`${leg.market} ${leg.variant} ${leg.label}`)), `${prediction.matchId}: handicap o mercato asiatico vietato`);

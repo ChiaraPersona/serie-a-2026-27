@@ -8,6 +8,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const read = file => JSON.parse(fs.readFileSync(path.join(root, file), "utf8"));
 const matches = read("data/normalized/matches.json");
 const schedina = read("data/normalized/schedina-md05.json");
+const predictions = read("data/normalized/predictions.json").predictions;
 const matchById = new Map(matches.map(match => [match.id, match]));
 const legs = schedina.slips.flatMap(slip => slip.legs);
 
@@ -39,5 +40,14 @@ assert.equal(settlement("Zé Pedro riceve un cartellino · sostituto incluso").s
 assert.equal(settlement("Christian Kabasele riceve un cartellino · sostituto incluso").status, "lost");
 assert.equal(settlement("Nikola Vlasic almeno 1 tiri · sostituto incluso").status, "unavailable");
 assert.equal(settlement("Keinan Davis almeno 1 tiri in porta · sostituto incluso").status, "unavailable");
+
+const romaMatch = matchById.get("roma-inter-2026-27-md-05");
+const romaCombo = predictions.find(prediction => prediction.matchId === romaMatch.id).combinations.find(combo => combo.tier === "Safe");
+const romaComboResults = new Map(romaCombo.legs.map(leg => [leg.label, settleLeg(leg, romaMatch).status]));
+for (const label of ["Inter segna almeno un gol", "Roma o pareggio (1X)", "U/O 4.5 · UNDER", "1 TEMPO: U/O 0.5 · OVER", "TEMPO PRIMO GOAL · 1", "Roma SEGNA NEI 2 TEMPI · NO", "SEGNA GOAL OSPITE 2 TEMPO · SI"]) assert.equal(romaComboResults.get(label), "won", `MyCombo Roma-Inter: ${label} deve essere verde`);
+assert.equal(romaComboResults.get("DC TEMPO 1 · X2"), "lost");
+assert.equal(romaComboResults.get("Partita almeno 24 tiri totali"), "unavailable");
+assert.equal(romaComboResults.get("Partita almeno 7 tiri in porta"), "unavailable");
+assert.deepEqual([...romaComboResults.values()].reduce((counts,status)=>(counts[status]=(counts[status]||0)+1,counts),{}), { won: 7, unavailable: 2, lost: 1 });
 
 console.log("Risultati MD05 verificati per Monza-Sassuolo, Bologna-Torino, Udinese-Cagliari e Roma-Inter; liquidazione Schedina coperta sui mercati disponibili.");
