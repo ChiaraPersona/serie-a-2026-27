@@ -29,8 +29,8 @@ const server = http.createServer((request, response) => {
       await page.goto(`http://127.0.0.1:${server.address().port}/schedina.html?giornata=5`, { waitUntil: "networkidle" });
       const mainText = await page.locator("main").innerText();
       const comparableText = mainText.toLocaleLowerCase("it-IT");
-      assert.match(mainText, /MyCombo da 10 eventi · 5ª giornata/);
-      assert(comparableText.indexOf("mycombo da 10 eventi") < comparableText.indexOf("controllo prudenziale"), `schedina ${width}: le MyCombo devono essere in apertura`);
+      assert.match(mainText, /MyCombo · 10 esiti selezionabili/);
+      assert(comparableText.indexOf("mycombo · 10 esiti selezionabili") < comparableText.indexOf("controllo prudenziale"), `schedina ${width}: le MyCombo devono essere in apertura`);
       assert.doesNotMatch(mainText, /Scintilla|Bagliore|Supernova|Prisma|Quasar|Costellazione/i);
       assert.doesNotMatch(mainText, /ARBITRO CONSULTA MONITOR VAR|RIGORE SI\/NO/i);
       const cards = page.locator(".betting-mycombo-card");
@@ -47,6 +47,11 @@ const server = http.createServer((request, response) => {
       await page.screenshot({ path: path.join(output, `schedina-${width}.png`), fullPage: true });
 
       await page.goto(`http://127.0.0.1:${server.address().port}/lettura.html?match=roma-inter-2026-27-md-05`, { waitUntil: "networkidle" });
+      const readingText = await page.locator("main").innerText();
+      assert.match(readingText, /Formazioni ufficiali/);
+      for (const expected of ["Svilar", "Mancini", "Belardi", "Hermoso", "Molina", "Cristante", "Koné", "Wesley", "Dybala", "Soulé", "Malen", "Martinez Jo.", "Bisseck", "Akanji", "Bastoni", "Diouf", "Barella", "Zielinski", "Jones", "Dimarco", "Martinez L.", "Thuram"]) {
+        assert(readingText.includes(expected), `lettura ${width}: titolare ufficiale assente (${expected})`);
+      }
       assert.equal(await page.getByText("MyCombo", { exact: true }).count(), 0, `lettura ${width}: MyCombo ancora visibile`);
       assert.equal(await page.locator(".prediction-combos,.prediction-combo-card").count(), 0, `lettura ${width}: componenti MyCombo ancora presenti`);
       assert(!(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth)), `lettura ${width}: overflow`);

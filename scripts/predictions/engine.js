@@ -425,14 +425,22 @@ function scoreProfile(matrix, exact) {
 }
 
 const cleanName = value => String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9 ]/g, " ").replace(/\s+/g, " ").trim();
+const PLAYER_NAME_ALIASES = Object.freeze({ belardi: "leonardo balerdi" });
 
 function resolvePlayer(lineupName, squad) {
-  const target = cleanName(lineupName);
+  const sourceTarget = cleanName(lineupName);
+  const target = PLAYER_NAME_ALIASES[sourceTarget] || sourceTarget;
   const targetTokens = target.split(" ");
   const candidates = (squad?.players || []).map(player => ({ player, normalized: cleanName(player.name) }));
   return candidates.find(candidate => candidate.normalized === target)?.player
     || candidates.find(candidate => candidate.normalized.endsWith(` ${target}`))?.player
     || candidates.find(candidate => targetTokens.every(token => candidate.normalized.split(" ").includes(token)))?.player
+    || candidates.find(candidate => {
+      if (targetTokens.length < 2) return false;
+      const candidateTokens = candidate.normalized.split(" ");
+      return targetTokens.every(token => candidateTokens.includes(token)
+        || (token.length <= 3 && candidateTokens.some(candidateToken => candidateToken.startsWith(token))));
+    })?.player
     || null;
 }
 

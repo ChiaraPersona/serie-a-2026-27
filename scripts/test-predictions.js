@@ -38,11 +38,17 @@ const firstMatchdayPredictions = dataset.predictions.filter(prediction => predic
 const secondMatchdayPredictions = dataset.predictions.filter(prediction => prediction.matchId.endsWith("-md-02"));
 const fourthMatchdayPredictions = dataset.predictions.filter(prediction => prediction.matchId.endsWith("-md-04"));
 const fifthMatchdayPredictions = dataset.predictions.filter(prediction => prediction.matchId.endsWith("-md-05"));
+const romaInterPrediction = fifthMatchdayPredictions.find(prediction => prediction.matchId === "roma-inter-2026-27-md-05");
 const cupPredictions = dataset.predictions.filter(prediction => prediction.matchId.startsWith("r16-"));
 assert.strictEqual(firstMatchdayPredictions.length, 10, "Devono restare disponibili i 10 pronostici archiviati della prima giornata");
 assert.strictEqual(secondMatchdayPredictions.length, 10, "Devono essere disponibili i 10 pronostici tecnici della seconda giornata");
 assert.strictEqual(fourthMatchdayPredictions.length, 9, "Devono restare disponibili i 9 pronostici tecnici pre-partita della quarta giornata");
 assert.strictEqual(fifthMatchdayPredictions.length, 10, "Devono essere disponibili i 10 pronostici tecnici della quinta giornata");
+assert.deepStrictEqual(
+  [romaInterPrediction.expectedGoals.components.home.lineup.resolved, romaInterPrediction.expectedGoals.components.away.lineup.resolved],
+  [11, 11],
+  "Roma-Inter deve risolvere tutti i titolari ufficiali, incluse le abbreviazioni dei due Martinez"
+);
 assert(fifthMatchdayPredictions.every(prediction => prediction.shooters?.totalShots?.length === 5 && prediction.shooters?.shotsOnTarget?.length === 5), "Tutte le dieci letture della quinta giornata devono avere cinque tiratori per tiri totali e tiri in porta");
 assert.strictEqual(cupPredictions.length, 0, "I pronostici delle Letture di Coppa rimosse non devono essere rigenerati");
 assert.deepStrictEqual(firstMatchdayPredictions.map(({ decisionSupport, ...prediction }) => prediction), archivedMd1.predictions, "Il nucleo dei pronostici conclusi MD1 deve restare identico allo snapshot pubblicato");

@@ -113,6 +113,25 @@ export function settleLeg(leg,match){
     // A verified goal by the named player settles a scorer bet even when
     // the provider has not supplied individual statistics yet.
     if(market.includes("MARCATORE")&&(match.scorers||[]).some(row=>comparableName(row.player)===comparableName(leg.player)&&!row.ownGoal))return resultStatus(selection==="SI");
+    if((market.includes("CARTELLINO")||leg?.marketFamily==="Ammoniti")&&match?.resultCoverage?.participation==="available"){
+      if(playerDidNotPlay(match,leg?.player))return voided();
+      const duo=new Set([comparableName(leg?.player)]);
+      const replacement=(match?.substitutions||[]).find(item=>comparableName(item.playerOut)===comparableName(leg?.player));
+      if(replacement?.playerIn)duo.add(comparableName(replacement.playerIn));
+      const booked=(match?.bookings||[]).some(item=>duo.has(comparableName(item.player)));
+      return resultStatus(selection==="SI"?booked:!booked);
+    }
+    if(match?.resultCoverage?.participation==="available"&&(market.includes("SEGNA O FA ASSIST")||market.includes("ASSIST")||market.includes("MARCATORE"))){
+      if(playerDidNotPlay(match,leg?.player))return voided();
+      const duo=new Set([comparableName(leg?.player)]);
+      const replacement=(match?.substitutions||[]).find(item=>comparableName(item.playerOut)===comparableName(leg?.player));
+      if(replacement?.playerIn)duo.add(comparableName(replacement.playerIn));
+      const goals=(match?.scorers||[]).filter(item=>!item.ownGoal&&duo.has(comparableName(item.player))).length;
+      const assists=(match?.scorers||[]).filter(item=>duo.has(comparableName(item.assist))).length;
+      if(market.includes("SEGNA O FA ASSIST"))return resultStatus(selection==="SI"?goals+assists>0:goals+assists===0);
+      if(market.includes("ASSIST"))return resultStatus(selection==="SI"?assists>0:assists===0);
+      return resultStatus(selection==="SI"?goals>0:goals===0);
+    }
     const players=playerDuo(match,leg?.player),goals=players?.reduce((sum,item)=>sum+(finite(item.goals)?Number(item.goals):0),0),assists=players?.reduce((sum,item)=>sum+(finite(item.assists)?Number(item.assists):0),0);
     if(!players&&playerDidNotPlay(match,leg?.player))return voided();
     if(!players)return unavailable();

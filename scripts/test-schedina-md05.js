@@ -10,14 +10,26 @@ const predictions = read("data/normalized/predictions.json").predictions.filter(
 const source = read("data/sources/mycombo-serie-a-2026-27-md-05.json");
 const renderer = fs.readFileSync(path.join(root, "js/pages/betting.js"), "utf8");
 const legs = data.slips.flatMap(slip => slip.legs);
+const sourcePortfolios = Object.values(source.matches).flat();
+const sourceComboLegs = sourcePortfolios.flatMap(portfolio => portfolio.legs || []);
 
 assert.equal(data.matchday, 5);
 assert.equal(data.slips.length, 8);
 assert.equal(legs.length, 45);
 assert.equal(Object.keys(source.matches).length, 10);
+assert.equal(sourcePortfolios.filter(portfolio => portfolio.tier === "Safe").length, 10);
+assert(sourcePortfolios.filter(portfolio => portfolio.tier === "Safe").every(portfolio => portfolio.legs.length === 10));
+assert(!sourceComboLegs.some(leg => /market-(?:prima sostituzione nel match|(?:casa |ospite )?pari dispari)$/.test(leg.overlapKey)), "La fonte MyCombo contiene ancora sostituzione o pari/dispari");
 assert.equal(source.constraints.minLegOddsInclusive, 1.15);
 assert.equal(source.constraints.displayedComboLegs, 10);
-assert.deepEqual(source.constraints.excludedMarketNames, ["ARBITRO CONSULTA MONITOR VAR INC TS", "RIGORE SI/NO"]);
+assert.deepEqual(source.constraints.excludedMarketNames, [
+  "ARBITRO CONSULTA MONITOR VAR INC TS",
+  "RIGORE SI/NO",
+  "PRIMA SOSTITUZIONE NEL MATCH",
+  "PARI/DISPARI",
+  "CASA: PARI/DISPARI",
+  "OSPITE: PARI/DISPARI"
+]);
 assert(!data.slips.some(slip => ["exact-score", "exact-score-multi"].includes(slip.type)));
 assert(!legs.some(leg => /^RISULTATO ESATTO/.test(leg.market)));
 assert.equal(new Set(legs.map(leg => String(leg.providerSelectionId))).size, legs.length);
@@ -43,7 +55,7 @@ for (const prediction of predictions) {
   const combo = prediction.combinations.find(item => item.tier === "Safe");
   assert.equal(combo?.legs.length, 10, `${prediction.matchId}: la MyCombo deve contenere esattamente 10 eventi`);
   assert(combo.legs.every(leg => leg.odds >= 1.15), `${prediction.matchId}: quota MyCombo sotto 1,15`);
-  assert(!combo.legs.some(leg => /MONITOR VAR|RIGORE SI\/NO/i.test(leg.market)), `${prediction.matchId}: mercato VAR o rigore vietato`);
+  assert(!combo.legs.some(leg => /MONITOR VAR|RIGORE SI\/NO|PRIMA SOSTITUZIONE|PARI\/DISPARI/i.test(leg.market)), `${prediction.matchId}: mercato vietato presente`);
   assert(!combo.legs.some(leg => /HANDICAP|ASIATIC|\bAH\b/i.test(`${leg.market} ${leg.variant} ${leg.label}`)), `${prediction.matchId}: handicap o mercato asiatico vietato`);
   assert.equal(new Set(combo.legs.map(leg => leg.overlapKey)).size, combo.legs.length, `${prediction.matchId}: mercato ripetuto`);
   const semanticKeys = combo.legs.flatMap(leg => leg.semanticKeys || []);

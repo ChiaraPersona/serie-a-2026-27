@@ -21,7 +21,11 @@ const minimumLegOdds = matchday >= 5 ? 1.15 : 1.1;
 const maximumLegOdds = 1.85;
 const excludedMarketNames = new Set([
   "ARBITRO CONSULTA MONITOR VAR INC TS",
-  "RIGORE SI/NO"
+  "RIGORE SI/NO",
+  "PRIMA SOSTITUZIONE NEL MATCH",
+  "PARI/DISPARI",
+  "CASA: PARI/DISPARI",
+  "OSPITE: PARI/DISPARI"
 ]);
 const tierLimits = {
   Safe: matchday === 5 ? { minimum: 10, maximum: 10, preferred: 10 } : { minimum: 3, maximum: 6, preferred: 3 },
@@ -33,6 +37,10 @@ const matchById = new Map(matches.map(match => [match.id, match]));
 const predictionById = new Map(predictionData.predictions.map(prediction => [prediction.matchId, prediction]));
 const clean = value => String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
 const round = value => Math.round(value * 100) / 100;
+const excludedMarketKeys = new Set([...excludedMarketNames].map(name => `market-${clean(name)}`));
+const portfolioUsesExcludedMarket = portfolios => (portfolios || []).some(portfolio =>
+  (portfolio.legs || []).some(leg => excludedMarketKeys.has(leg.overlapKey))
+);
 
 function selectedPlayer(variantName, match) {
   const variant = clean(variantName);
@@ -463,7 +471,8 @@ for (const event of odds.events) {
   const prediction = predictionById.get(event.canonicalMatchId);
   const match = matchById.get(event.canonicalMatchId);
   if (!prediction || !match || match.matchday !== matchday) continue;
-  if (match.status === "finished" && previousOutput?.matches?.[event.canonicalMatchId]) {
+  if (match.status === "finished" && previousOutput?.matches?.[event.canonicalMatchId]
+    && !portfolioUsesExcludedMarket(previousOutput.matches[event.canonicalMatchId])) {
     output.matches[event.canonicalMatchId] = previousOutput.matches[event.canonicalMatchId];
     console.log(`${event.canonicalMatchId}: portafogli storici congelati (partita conclusa)`);
     continue;

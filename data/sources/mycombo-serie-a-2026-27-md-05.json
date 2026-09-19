@@ -616,12 +616,38 @@
         "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-17: quota 5 orientativa, 10-10 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
         "legs": [
           {
-            "providerSelectionId": "5319759861",
-            "overlapKey": "market-ospite segna goal",
+            "providerSelectionId": "5327993212",
+            "overlapKey": "market-u o falli subiti giocatore",
+            "semanticKeys": [],
+            "label": "MARTINEZ LAUTARO almeno 1 falli subiti"
+          },
+          {
+            "providerSelectionId": "5327346552",
+            "overlapKey": "market-u o tiri totali giocatore duo inc ts",
+            "semanticKeys": [
+              "volume-shots-total"
+            ],
+            "label": "MARTINEZ LAUTARO almeno 2 tiri totali, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5326710085",
+            "overlapKey": "market-x o y gol o palo duo inc ts",
+            "semanticKeys": [],
+            "label": "RODRIGO MORA O MARTINEZ LAUTARO GOAL O PALO O LORO SOST. INC TS · sì"
+          },
+          {
+            "providerSelectionId": "5330761509",
+            "overlapKey": "market-giocatore segna o assist o cartellino inc ts",
+            "semanticKeys": [],
+            "label": "MARTINEZ LAUTARO SEGNA ALMENO UN GOAL O REALIZZA ALMENO UN ASSIST O RICEVE ALMENO UN CARTELLINO INC. TS · sì"
+          },
+          {
+            "providerSelectionId": "5319741171",
+            "overlapKey": "market-under over",
             "semanticKeys": [
               "goals"
             ],
-            "label": "Inter segna almeno un gol"
+            "label": "Over 1,5 gol"
           },
           {
             "providerSelectionId": "5319741206",
@@ -632,28 +658,12 @@
             "label": "Roma o pareggio (1X)"
           },
           {
-            "providerSelectionId": "5319686087",
-            "overlapKey": "market-u o tiri totali",
-            "semanticKeys": [
-              "volume-shots-total"
-            ],
-            "label": "Partita almeno 24 tiri totali"
-          },
-          {
             "providerSelectionId": "5319686015",
             "overlapKey": "market-u o tiri in porta",
             "semanticKeys": [
               "volume-shots-on-target"
             ],
             "label": "Partita almeno 7 tiri in porta"
-          },
-          {
-            "providerSelectionId": "5319741194",
-            "overlapKey": "market-under over",
-            "semanticKeys": [
-              "goals-fulltime"
-            ],
-            "label": "U/O 4.5 · UNDER"
           },
           {
             "providerSelectionId": "5319758833",
@@ -678,22 +688,6 @@
               "first-substitution"
             ],
             "label": "PRIMA SOSTITUZIONE NEL MATCH (4 ESITI) · TEMPO 2"
-          },
-          {
-            "providerSelectionId": "5323854517",
-            "overlapKey": "market-vince o quasi 1up 2up",
-            "semanticKeys": [
-              "win-or-lead"
-            ],
-            "label": "Inter VINCE/VANTAGGIO (1UP) · SI"
-          },
-          {
-            "providerSelectionId": "5319685164",
-            "overlapKey": "market-casa pari dispari",
-            "semanticKeys": [
-              "home-goals-parity"
-            ],
-            "label": "PARI/DISPARI CASA · PARI"
           }
         ]
       },
@@ -701,20 +695,6 @@
         "tier": "Balanced",
         "logic": "Profilo balanced costruito sulle quote Sisal del 2026-09-17: quota 10 orientativa, 4-7 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
         "legs": [
-          {
-            "providerSelectionId": "5319746730",
-            "overlapKey": "market-multigoal",
-            "semanticKeys": [
-              "goals"
-            ],
-            "label": "MULTIGOAL MULTIESITI 16 ESITI · 3-5"
-          },
-          {
-            "providerSelectionId": "5326708932",
-            "overlapKey": "market-x o y gol o palo duo inc ts",
-            "semanticKeys": [],
-            "label": "DYBALA P. O RODRIGO MORA GOAL O PALO O LORO SOST. INC TS · sì"
-          },
           {
             "providerSelectionId": "5319685168",
             "overlapKey": "market-ospite pari dispari",
@@ -724,32 +704,12 @@
             "label": "PARI/DISPARI OSPITE · PARI"
           },
           {
-            "providerSelectionId": "5319686031",
-            "overlapKey": "market-u o tiri in porta",
+            "providerSelectionId": "5319759655",
+            "overlapKey": "market-pari dispari",
             "semanticKeys": [
-              "volume-shots-on-target"
+              "goals-parity"
             ],
-            "label": "Partita almeno 9 tiri in porta"
-          }
-        ]
-      },
-      {
-        "tier": "Aggressive",
-        "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-09-17: quota 20 orientativa, 5-8 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
-        "legs": [
-          {
-            "providerSelectionId": "5319746730",
-            "overlapKey": "market-multigoal",
-            "semanticKeys": [
-              "goals"
-            ],
-            "label": "MULTIGOAL MULTIESITI 16 ESITI · 3-5"
-          },
-          {
-            "providerSelectionId": "5326708932",
-            "overlapKey": "market-x o y gol o palo duo inc ts",
-            "semanticKeys": [],
-            "label": "DYBALA P. O RODRIGO MORA GOAL O PALO O LORO SOST. INC TS · sì"
+            "label": "PARI/DISPARI · PARI"
           },
           {
             "providerSelectionId": "5319746775",
@@ -760,18 +720,72 @@
             "label": "TEMPO 1: U/O 0.5 Roma · UNDER"
           },
           {
-            "providerSelectionId": "5327345788",
-            "overlapKey": "market-u o tiri in porta giocatore duo inc pali traverse inc ts",
+            "providerSelectionId": "5319758858",
+            "overlapKey": "market-combo u o casa u o ospite",
+            "semanticKeys": [
+              "goals"
+            ],
+            "label": "U/O 0.5 Roma + U/O 0.5 Inter · OVER+OVER"
+          },
+          {
+            "providerSelectionId": "5327345548",
+            "overlapKey": "market-u o tiri totali squadra x",
+            "semanticKeys": [
+              "volume-shots-total"
+            ],
+            "label": "Inter almeno 11 tiri totali"
+          }
+        ]
+      },
+      {
+        "tier": "Aggressive",
+        "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-09-17: quota 20 orientativa, 5-8 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
+        "legs": [
+          {
+            "providerSelectionId": "5319685168",
+            "overlapKey": "market-ospite pari dispari",
+            "semanticKeys": [
+              "away-goals-parity"
+            ],
+            "label": "PARI/DISPARI OSPITE · PARI"
+          },
+          {
+            "providerSelectionId": "5319759655",
+            "overlapKey": "market-pari dispari",
+            "semanticKeys": [
+              "goals-parity"
+            ],
+            "label": "PARI/DISPARI · PARI"
+          },
+          {
+            "providerSelectionId": "5326710085",
+            "overlapKey": "market-x o y gol o palo duo inc ts",
+            "semanticKeys": [],
+            "label": "RODRIGO MORA O MARTINEZ LAUTARO GOAL O PALO O LORO SOST. INC TS · sì"
+          },
+          {
+            "providerSelectionId": "5319746731",
+            "overlapKey": "market-multigoal",
+            "semanticKeys": [
+              "goals"
+            ],
+            "label": "MULTIGOAL MULTIESITI 16 ESITI · 3-6"
+          },
+          {
+            "providerSelectionId": "5319686031",
+            "overlapKey": "market-u o tiri in porta",
             "semanticKeys": [
               "volume-shots-on-target"
             ],
-            "label": "MALEN D. almeno 2 tiri in porta, sostituto incluso"
+            "label": "Partita almeno 9 tiri in porta"
           },
           {
-            "providerSelectionId": "5327341936",
-            "overlapKey": "market-u o falli commessi giocatore",
-            "semanticKeys": [],
-            "label": "HERMOSO M. almeno 2 falli commessi"
+            "providerSelectionId": "5319686559",
+            "overlapKey": "market-doppia chance tempo x",
+            "semanticKeys": [
+              "result-first-half"
+            ],
+            "label": "DC TEMPO 1 · X2"
           }
         ]
       }
