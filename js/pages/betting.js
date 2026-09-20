@@ -118,9 +118,7 @@ export function createPage(deps){
       if(number===5)bindMyComboInteractions();
       return;
     }
-    const currentMyCombo=myComboRoundContent(predictionData.predictions||[],matchById,teamById);
-    document.querySelector("#app").innerHTML=hero("Archivio · Stagione 2026/27","Schedina","Le MyCombo della quinta giornata sono visibili direttamente qui; le schedine restano raccolte separatamente giornata per giornata.")+`${currentMyCombo}<section class="betting-archive" aria-labelledby="betting-archive-title"><header class="betting-archive-intro"><div><p class="eyebrow">Archivio schedine</p><h2 id="betting-archive-title">Competizioni e giornate</h2></div><p>La prima card blu raccoglie la Champions; seguono le giornate di Serie A.</p></header><div class="betting-archive-list team-directory-grid team-flip-grid">${championsArchiveCard(champions)}${archiveCard(md1,1,matchById)}${archiveCard(md2,2,matchById)}${archiveCard(md3,3,matchById)}${archiveCard(md4,4,matchById)}${archiveCard(md5,5,matchById)}</div></section>`;
-    bindMyComboInteractions();
+    document.querySelector("#app").innerHTML=hero("Archivio · Stagione 2026/27","Schedina","Le schedine sono raccolte separatamente giornata per giornata; le MyCombo della quinta giornata si trovano nella relativa pagina dedicata.")+`<section class="betting-archive" aria-labelledby="betting-archive-title"><header class="betting-archive-intro"><div><p class="eyebrow">Archivio schedine</p><h2 id="betting-archive-title">Competizioni e giornate</h2></div><p>La prima card blu raccoglie la Champions; seguono le giornate di Serie A.</p></header><div class="betting-archive-list team-directory-grid team-flip-grid">${championsArchiveCard(champions)}${archiveCard(md1,1,matchById)}${archiveCard(md2,2,matchById)}${archiveCard(md3,3,matchById)}${archiveCard(md4,4,matchById)}${archiveCard(md5,5,matchById)}</div></section>`;
   }
   return {render};
 }

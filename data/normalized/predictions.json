@@ -5,7 +5,7 @@
     "serie-a"
   ],
   "season": "2026-27",
-  "generatedAt": "2026-09-19T21:23:15.344Z",
+  "generatedAt": "2026-09-20T11:26:58.668Z",
   "engine": {
     "version": "4.12.0",
     "principle": "Un'unica matrice dei punteggi indipendente dalle quote genera 1X2, gol e mercati collegati.",
@@ -91105,15 +91105,79 @@
         {
           "tier": "Safe",
           "scenario": null,
-          "risk": "relativo inferiore",
+          "risk": "elevato · 4 eventi",
           "targetOdds": 5,
-          "odds": null,
-          "legs": [],
-          "selection": null,
-          "logic": null,
-          "qualityStatus": "nd",
-          "probabilityStatus": "N/D",
-          "unavailableReason": "Candidati insufficienti per il profilo Safe: servono almeno 10 mercati distinti con quota tra 1.15 e 1.85."
+          "quotaPolicy": "orientativa",
+          "eligibilityPolicy": "validita-tecnica-e-intervalli",
+          "riskPolicy": "informativa",
+          "odds": 5,
+          "distancePct": 0,
+          "legs": [
+            {
+              "label": "RANIERI L. almeno 1 falli commessi",
+              "market": "U/O FALLI COMMESSI GIOCATORE",
+              "variant": "RANIERI L. U/O 0.5 FALLI COMMESSI",
+              "threshold": "0.5",
+              "selection": "OVER",
+              "providerSelectionId": "5330284324",
+              "odds": 1.57,
+              "overlapKey": "market-u o falli commessi giocatore",
+              "semanticKeys": [],
+              "marketScope": "player"
+            },
+            {
+              "label": "Nessun pareggio (12)",
+              "market": "DOPPIA CHANCE",
+              "variant": "DOPPIA CHANCE MULTIESITI",
+              "threshold": null,
+              "selection": "12",
+              "providerSelectionId": "5319693714",
+              "odds": 1.33,
+              "overlapKey": "market-doppia chance",
+              "semanticKeys": [
+                "result"
+              ],
+              "marketScope": "match"
+            },
+            {
+              "label": "DE BRUYNE K. almeno 1 tiri in porta, sostituto incluso",
+              "market": "U/O  TIRI IN PORTA GIOCATORE (DUO) INC PALI TRAVERSE INC TS",
+              "variant": "DE BRUYNE K. U/O 0.5 SOMMA TIRI IN PORTA INC PALI E TRAVERSE E SUO SOST. INCL. T.S.",
+              "threshold": "0.5",
+              "selection": "OVER",
+              "providerSelectionId": "5330281960",
+              "odds": 1.8,
+              "overlapKey": "market-u o tiri in porta giocatore duo inc pali traverse inc ts",
+              "semanticKeys": [
+                "volume-shots-on-target"
+              ],
+              "marketScope": "player"
+            },
+            {
+              "label": "Under 3,5 gol",
+              "market": "UNDER/OVER",
+              "variant": "U/O 3.5",
+              "threshold": "3.5",
+              "selection": "UNDER",
+              "providerSelectionId": "5319693697",
+              "odds": 1.33,
+              "overlapKey": "market-under over",
+              "semanticKeys": [
+                "goals"
+              ],
+              "marketScope": "match"
+            }
+          ],
+          "selection": "RANIERI L. almeno 1 falli commessi + Nessun pareggio (12) + DE BRUYNE K. almeno 1 tiri in porta, sostituto incluso + Under 3,5 gol",
+          "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-17: quota 5 orientativa, 4-10 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
+          "probabilityPct": null,
+          "prudentProbabilityPct": null,
+          "fairOdds": null,
+          "prudentExpectedValuePct": null,
+          "qualityStatus": "editoriale",
+          "weakestLeg": null,
+          "probabilityMethod": null,
+          "probabilityStatus": "N/D · stima congiunta non supportata"
         },
         {
           "tier": "Balanced",
@@ -92596,11 +92660,52 @@
         "portfolios": [
           {
             "tier": "Safe",
-            "status": "N/D",
+            "status": "outside-limits",
             "allowed": false,
+            "riskScore": 73.5,
+            "riskLevel": "alto",
+            "averageRisk": 73.5,
+            "maxEventRisk": 82,
+            "strongDependencies": 0,
+            "contradictions": 0,
+            "limits": {
+              "maxAverageRisk": 42,
+              "maxEventRisk": 58,
+              "maxStrongDependencies": 1,
+              "minPrudentExpectedValuePct": 0
+            },
             "reasons": [
-              "Candidati insufficienti per il profilo Safe: servono almeno 10 mercati distinti con quota tra 1.15 e 1.85."
-            ]
+              "Rischio medio 73.5 oltre il limite 42.",
+              "Gamba a rischio 82 oltre il limite 58.",
+              "EV prudenziale non disponibile."
+            ],
+            "events": [
+              {
+                "providerSelectionId": "5330284324",
+                "label": "RANIERI L. almeno 1 falli commessi",
+                "riskScore": 82,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5319693714",
+                "label": "Nessun pareggio (12)",
+                "riskScore": 65,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5330281960",
+                "label": "DE BRUYNE K. almeno 1 tiri in porta, sostituto incluso",
+                "riskScore": 82,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5319693697",
+                "label": "Under 3,5 gol",
+                "riskScore": 65,
+                "modeled": false
+              }
+            ],
+            "dependencies": []
           },
           {
             "tier": "Balanced",
@@ -94115,15 +94220,95 @@
         {
           "tier": "Safe",
           "scenario": null,
-          "risk": "relativo inferiore",
+          "risk": "elevato · 5 eventi",
           "targetOdds": 5,
-          "odds": null,
-          "legs": [],
-          "selection": null,
-          "logic": null,
-          "qualityStatus": "nd",
-          "probabilityStatus": "N/D",
-          "unavailableReason": "Candidati insufficienti per il profilo Safe: servono almeno 10 mercati distinti con quota tra 1.15 e 1.85."
+          "quotaPolicy": "orientativa",
+          "eligibilityPolicy": "validita-tecnica-e-intervalli",
+          "riskPolicy": "informativa",
+          "odds": 5,
+          "distancePct": 0,
+          "legs": [
+            {
+              "label": "ESITO 1X2 2 TEMPO · 2",
+              "market": "2 TEMPO: ESITO 1X2",
+              "variant": "ESITO 1X2 2 TEMPO",
+              "threshold": null,
+              "selection": "2",
+              "providerSelectionId": "5319768211",
+              "odds": 1.75,
+              "overlapKey": "market-2 tempo esito 1x2",
+              "semanticKeys": [
+                "result-second-half-1x2"
+              ],
+              "marketScope": "match"
+            },
+            {
+              "label": "ESITO FINALE 1X2 · 2",
+              "market": "1X2 ESITO FINALE",
+              "variant": "ESITO FINALE 1X2",
+              "threshold": null,
+              "selection": "2",
+              "providerSelectionId": "5319678731",
+              "odds": 1.5,
+              "overlapKey": "market-1x2 esito finale",
+              "semanticKeys": [
+                "result"
+              ],
+              "marketScope": "match"
+            },
+            {
+              "label": "TEMPO 1: U/O 1.5 Como · UNDER",
+              "market": "U/O GOAL SQUADRA TEMPO",
+              "variant": "TEMPO 1: U/O 1.5 SQUADRA 2",
+              "threshold": "1.5",
+              "selection": "UNDER",
+              "providerSelectionId": "5319702803",
+              "odds": 1.27,
+              "overlapKey": "market-u o goal squadra tempo",
+              "semanticKeys": [
+                "team-goals-period"
+              ],
+              "marketScope": "match"
+            },
+            {
+              "label": "1 TEMPO: GOL/NOGOL · NO GOL",
+              "market": "GOAL/NOGOAL TEMPO X",
+              "variant": "1 TEMPO: GOL/NOGOL",
+              "threshold": null,
+              "selection": "NO GOL",
+              "providerSelectionId": "5319702860",
+              "odds": 1.27,
+              "overlapKey": "market-goal nogoal tempo x",
+              "semanticKeys": [
+                "goals-first-half-btts"
+              ],
+              "marketScope": "match"
+            },
+            {
+              "label": "MULTIGOAL MULTIESITI 16 ESITI · 2-6",
+              "market": "MULTIGOAL",
+              "variant": "MULTIGOAL MULTIESITI 16 ESITI",
+              "threshold": null,
+              "selection": "2-6",
+              "providerSelectionId": "5319702766",
+              "odds": 1.18,
+              "overlapKey": "market-multigoal",
+              "semanticKeys": [
+                "goals"
+              ],
+              "marketScope": "match"
+            }
+          ],
+          "selection": "ESITO 1X2 2 TEMPO · 2 + ESITO FINALE 1X2 · 2 + TEMPO 1: U/O 1.5 Como · UNDER + 1 TEMPO: GOL/NOGOL · NO GOL + MULTIGOAL MULTIESITI 16 ESITI · 2-6",
+          "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-17: quota 5 orientativa, 4-10 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
+          "probabilityPct": null,
+          "prudentProbabilityPct": null,
+          "fairOdds": null,
+          "prudentExpectedValuePct": null,
+          "qualityStatus": "editoriale",
+          "weakestLeg": null,
+          "probabilityMethod": null,
+          "probabilityStatus": "N/D · stima congiunta non supportata"
         },
         {
           "tier": "Balanced",
@@ -95614,10 +95799,65 @@
         "portfolios": [
           {
             "tier": "Safe",
-            "status": "N/D",
+            "status": "outside-limits",
             "allowed": false,
+            "riskScore": 71.8,
+            "riskLevel": "alto",
+            "averageRisk": 71.8,
+            "maxEventRisk": 82,
+            "strongDependencies": 0,
+            "contradictions": 0,
+            "limits": {
+              "maxAverageRisk": 42,
+              "maxEventRisk": 58,
+              "maxStrongDependencies": 1,
+              "minPrudentExpectedValuePct": 0
+            },
             "reasons": [
-              "Candidati insufficienti per il profilo Safe: servono almeno 10 mercati distinti con quota tra 1.15 e 1.85."
+              "Rischio medio 71.8 oltre il limite 42.",
+              "Gamba a rischio 82 oltre il limite 58.",
+              "EV prudenziale non disponibile."
+            ],
+            "events": [
+              {
+                "providerSelectionId": "5319768211",
+                "label": "ESITO 1X2 2 TEMPO · 2",
+                "riskScore": 82,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5319678731",
+                "label": "ESITO FINALE 1X2 · 2",
+                "riskScore": 65,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5319702803",
+                "label": "TEMPO 1: U/O 1.5 Como · UNDER",
+                "riskScore": 82,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5319702860",
+                "label": "1 TEMPO: GOL/NOGOL · NO GOL",
+                "riskScore": 65,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5319702766",
+                "label": "MULTIGOAL MULTIESITI 16 ESITI · 2-6",
+                "riskScore": 65,
+                "modeled": false
+              }
+            ],
+            "dependencies": [
+              {
+                "first": "5319702860",
+                "second": "5319702766",
+                "type": "negative",
+                "correlation": -0.57,
+                "intersectionProbabilityPct": 22.2
+              }
             ]
           },
           {
@@ -97133,15 +97373,95 @@
         {
           "tier": "Safe",
           "scenario": null,
-          "risk": "relativo inferiore",
+          "risk": "elevato · 5 eventi",
           "targetOdds": 5,
-          "odds": null,
-          "legs": [],
-          "selection": null,
-          "logic": null,
-          "qualityStatus": "nd",
-          "probabilityStatus": "N/D",
-          "unavailableReason": "Candidati insufficienti per il profilo Safe: servono almeno 10 mercati distinti con quota tra 1.15 e 1.85."
+          "quotaPolicy": "orientativa",
+          "eligibilityPolicy": "validita-tecnica-e-intervalli",
+          "riskPolicy": "informativa",
+          "odds": 5.01,
+          "distancePct": 0.2,
+          "legs": [
+            {
+              "label": "ESITO FINALE 1X2 · 1",
+              "market": "1X2 ESITO FINALE",
+              "variant": "ESITO FINALE 1X2",
+              "threshold": null,
+              "selection": "1",
+              "providerSelectionId": "5319741424",
+              "odds": 1.7,
+              "overlapKey": "market-1x2 esito finale",
+              "semanticKeys": [
+                "result"
+              ],
+              "marketScope": "match"
+            },
+            {
+              "label": "MULTIGOAL Juventus MULTIESITI · 1-2",
+              "market": "MULTIGOAL SQUADRA X",
+              "variant": "MULTIGOAL SQUADRA 1 MULTIESITI",
+              "threshold": null,
+              "selection": "1-2",
+              "providerSelectionId": "5319750713",
+              "odds": 1.6,
+              "overlapKey": "market-multigoal squadra x",
+              "semanticKeys": [
+                "goals"
+              ],
+              "marketScope": "match"
+            },
+            {
+              "label": "1 TEMPO: U/O 0.5 · OVER",
+              "market": "UNDER/OVER TEMPO X",
+              "variant": "1 TEMPO: U/O 0.5",
+              "threshold": "0.5",
+              "selection": "OVER",
+              "providerSelectionId": "5319745209",
+              "odds": 1.3,
+              "overlapKey": "market-under over tempo x",
+              "semanticKeys": [
+                "goals-first-half"
+              ],
+              "marketScope": "match"
+            },
+            {
+              "label": "TEMPO 1: U/O 1.5 Juventus · UNDER",
+              "market": "U/O GOAL SQUADRA TEMPO",
+              "variant": "TEMPO 1: U/O 1.5 SQUADRA 1",
+              "threshold": "1.5",
+              "selection": "UNDER",
+              "providerSelectionId": "5319745156",
+              "odds": 1.18,
+              "overlapKey": "market-u o goal squadra tempo",
+              "semanticKeys": [
+                "team-goals-period"
+              ],
+              "marketScope": "match"
+            },
+            {
+              "label": "1 TEMPO: GOL/NOGOL · NO GOL",
+              "market": "GOAL/NOGOAL TEMPO X",
+              "variant": "1 TEMPO: GOL/NOGOL",
+              "threshold": null,
+              "selection": "NO GOL",
+              "providerSelectionId": "5319745263",
+              "odds": 1.2,
+              "overlapKey": "market-goal nogoal tempo x",
+              "semanticKeys": [
+                "goals-first-half-btts"
+              ],
+              "marketScope": "match"
+            }
+          ],
+          "selection": "ESITO FINALE 1X2 · 1 + MULTIGOAL Juventus MULTIESITI · 1-2 + 1 TEMPO: U/O 0.5 · OVER + TEMPO 1: U/O 1.5 Juventus · UNDER + 1 TEMPO: GOL/NOGOL · NO GOL",
+          "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-17: quota 5 orientativa, 4-10 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
+          "probabilityPct": null,
+          "prudentProbabilityPct": null,
+          "fairOdds": null,
+          "prudentExpectedValuePct": null,
+          "qualityStatus": "editoriale",
+          "weakestLeg": null,
+          "probabilityMethod": null,
+          "probabilityStatus": "N/D · stima congiunta non supportata"
         },
         {
           "tier": "Balanced",
@@ -98606,10 +98926,79 @@
         "portfolios": [
           {
             "tier": "Safe",
-            "status": "N/D",
+            "status": "outside-limits",
             "allowed": false,
+            "riskScore": 68.4,
+            "riskLevel": "medio",
+            "averageRisk": 68.4,
+            "maxEventRisk": 82,
+            "strongDependencies": 0,
+            "contradictions": 0,
+            "limits": {
+              "maxAverageRisk": 42,
+              "maxEventRisk": 58,
+              "maxStrongDependencies": 1,
+              "minPrudentExpectedValuePct": 0
+            },
             "reasons": [
-              "Candidati insufficienti per il profilo Safe: servono almeno 10 mercati distinti con quota tra 1.15 e 1.85."
+              "Rischio medio 68.4 oltre il limite 42.",
+              "Gamba a rischio 82 oltre il limite 58.",
+              "EV prudenziale non disponibile."
+            ],
+            "events": [
+              {
+                "providerSelectionId": "5319741424",
+                "label": "ESITO FINALE 1X2 · 1",
+                "riskScore": 65,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5319750713",
+                "label": "MULTIGOAL Juventus MULTIESITI · 1-2",
+                "riskScore": 65,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5319745209",
+                "label": "1 TEMPO: U/O 0.5 · OVER",
+                "riskScore": 65,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5319745156",
+                "label": "TEMPO 1: U/O 1.5 Juventus · UNDER",
+                "riskScore": 82,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5319745263",
+                "label": "1 TEMPO: GOL/NOGOL · NO GOL",
+                "riskScore": 65,
+                "modeled": false
+              }
+            ],
+            "dependencies": [
+              {
+                "first": "5319750713",
+                "second": "5319745209",
+                "type": "positive",
+                "correlation": 0.296,
+                "intersectionProbabilityPct": 57.8
+              },
+              {
+                "first": "5319750713",
+                "second": "5319745263",
+                "type": "negative",
+                "correlation": -0.306,
+                "intersectionProbabilityPct": 18.3
+              },
+              {
+                "first": "5319745209",
+                "second": "5319745263",
+                "type": "negative",
+                "correlation": -0.282,
+                "intersectionProbabilityPct": 38.6
+              }
             ]
           },
           {
@@ -100174,15 +100563,81 @@
         {
           "tier": "Safe",
           "scenario": null,
-          "risk": "relativo inferiore",
+          "risk": "elevato · 4 eventi",
           "targetOdds": 5,
-          "odds": null,
-          "legs": [],
-          "selection": null,
-          "logic": null,
-          "qualityStatus": "nd",
-          "probabilityStatus": "N/D",
-          "unavailableReason": "Candidati insufficienti per il profilo Safe: servono almeno 10 mercati distinti con quota tra 1.15 e 1.85."
+          "quotaPolicy": "orientativa",
+          "eligibilityPolicy": "validita-tecnica-e-intervalli",
+          "riskPolicy": "informativa",
+          "odds": 4.98,
+          "distancePct": 0.4,
+          "legs": [
+            {
+              "label": "MULTIGOAL MULTIESITI 16 ESITI · 3-5",
+              "market": "MULTIGOAL",
+              "variant": "MULTIGOAL MULTIESITI 16 ESITI",
+              "threshold": null,
+              "selection": "3-5",
+              "providerSelectionId": "5319699224",
+              "odds": 1.85,
+              "overlapKey": "market-multigoal",
+              "semanticKeys": [
+                "goals"
+              ],
+              "marketScope": "match"
+            },
+            {
+              "label": "ESITO FINALE 1X2 · 1",
+              "market": "1X2 ESITO FINALE",
+              "variant": "ESITO FINALE 1X2",
+              "threshold": null,
+              "selection": "1",
+              "providerSelectionId": "5319687418",
+              "odds": 1.27,
+              "overlapKey": "market-1x2 esito finale",
+              "semanticKeys": [
+                "result"
+              ],
+              "marketScope": "match"
+            },
+            {
+              "label": "ESITO 1 TEMPO 1X2 · 1",
+              "market": "1 TEMPO: ESITO 1X2",
+              "variant": "ESITO 1 TEMPO 1X2",
+              "threshold": null,
+              "selection": "1",
+              "providerSelectionId": "5319699295",
+              "odds": 1.67,
+              "overlapKey": "market-1 tempo esito 1x2",
+              "semanticKeys": [
+                "result-first-half-1x2"
+              ],
+              "marketScope": "match"
+            },
+            {
+              "label": "TEMPO 1: U/O 0.5 Lecce · UNDER",
+              "market": "U/O GOAL SQUADRA TEMPO",
+              "variant": "TEMPO 1: U/O 0.5 SQUADRA 2",
+              "threshold": "0.5",
+              "selection": "UNDER",
+              "providerSelectionId": "5319698929",
+              "odds": 1.27,
+              "overlapKey": "market-u o goal squadra tempo",
+              "semanticKeys": [
+                "team-goals-period"
+              ],
+              "marketScope": "match"
+            }
+          ],
+          "selection": "MULTIGOAL MULTIESITI 16 ESITI · 3-5 + ESITO FINALE 1X2 · 1 + ESITO 1 TEMPO 1X2 · 1 + TEMPO 1: U/O 0.5 Lecce · UNDER",
+          "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-17: quota 5 orientativa, 4-10 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
+          "probabilityPct": null,
+          "prudentProbabilityPct": null,
+          "fairOdds": null,
+          "prudentExpectedValuePct": null,
+          "qualityStatus": "editoriale",
+          "weakestLeg": null,
+          "probabilityMethod": null,
+          "probabilityStatus": "N/D · stima congiunta non supportata"
         },
         {
           "tier": "Balanced",
@@ -101684,11 +102139,52 @@
         "portfolios": [
           {
             "tier": "Safe",
-            "status": "N/D",
+            "status": "outside-limits",
             "allowed": false,
+            "riskScore": 73.5,
+            "riskLevel": "alto",
+            "averageRisk": 73.5,
+            "maxEventRisk": 82,
+            "strongDependencies": 0,
+            "contradictions": 0,
+            "limits": {
+              "maxAverageRisk": 42,
+              "maxEventRisk": 58,
+              "maxStrongDependencies": 1,
+              "minPrudentExpectedValuePct": 0
+            },
             "reasons": [
-              "Candidati insufficienti per il profilo Safe: servono almeno 10 mercati distinti con quota tra 1.15 e 1.85."
-            ]
+              "Rischio medio 73.5 oltre il limite 42.",
+              "Gamba a rischio 82 oltre il limite 58.",
+              "EV prudenziale non disponibile."
+            ],
+            "events": [
+              {
+                "providerSelectionId": "5319699224",
+                "label": "MULTIGOAL MULTIESITI 16 ESITI · 3-5",
+                "riskScore": 65,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5319687418",
+                "label": "ESITO FINALE 1X2 · 1",
+                "riskScore": 65,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5319699295",
+                "label": "ESITO 1 TEMPO 1X2 · 1",
+                "riskScore": 82,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5319698929",
+                "label": "TEMPO 1: U/O 0.5 Lecce · UNDER",
+                "riskScore": 82,
+                "modeled": false
+              }
+            ],
+            "dependencies": []
           },
           {
             "tier": "Balanced",
@@ -106419,15 +106915,81 @@
         {
           "tier": "Safe",
           "scenario": null,
-          "risk": "relativo inferiore",
+          "risk": "elevato · 4 eventi",
           "targetOdds": 5,
-          "odds": null,
-          "legs": [],
-          "selection": null,
-          "logic": null,
-          "qualityStatus": "nd",
-          "probabilityStatus": "N/D",
-          "unavailableReason": "Candidati insufficienti per il profilo Safe: servono almeno 10 mercati distinti con quota tra 1.15 e 1.85."
+          "quotaPolicy": "orientativa",
+          "eligibilityPolicy": "validita-tecnica-e-intervalli",
+          "riskPolicy": "informativa",
+          "odds": 5.14,
+          "distancePct": 2.8,
+          "legs": [
+            {
+              "label": "MULTIGOAL MULTIESITI 16 ESITI · 1-2",
+              "market": "MULTIGOAL",
+              "variant": "MULTIGOAL MULTIESITI 16 ESITI",
+              "threshold": null,
+              "selection": "1-2",
+              "providerSelectionId": "5319744213",
+              "odds": 1.8,
+              "overlapKey": "market-multigoal",
+              "semanticKeys": [
+                "goals"
+              ],
+              "marketScope": "match"
+            },
+            {
+              "label": "TEMPO 1: U/O 0.5 Parma · UNDER",
+              "market": "U/O GOAL SQUADRA TEMPO",
+              "variant": "TEMPO 1: U/O 0.5 SQUADRA 1",
+              "threshold": "0.5",
+              "selection": "UNDER",
+              "providerSelectionId": "5319744042",
+              "odds": 1.52,
+              "overlapKey": "market-u o goal squadra tempo",
+              "semanticKeys": [
+                "team-goals-period"
+              ],
+              "marketScope": "match"
+            },
+            {
+              "label": "Parma o pareggio (1X)",
+              "market": "DOPPIA CHANCE",
+              "variant": "DOPPIA CHANCE MULTIESITI",
+              "threshold": null,
+              "selection": "1X",
+              "providerSelectionId": "5319684982",
+              "odds": 1.48,
+              "overlapKey": "market-doppia chance",
+              "semanticKeys": [
+                "result"
+              ],
+              "marketScope": "match"
+            },
+            {
+              "label": "1 TEMPO: U/O 1.5 · UNDER",
+              "market": "UNDER/OVER TEMPO X",
+              "variant": "1 TEMPO: U/O 1.5",
+              "threshold": "1.5",
+              "selection": "UNDER",
+              "providerSelectionId": "5319744280",
+              "odds": 1.27,
+              "overlapKey": "market-under over tempo x",
+              "semanticKeys": [
+                "goals-first-half"
+              ],
+              "marketScope": "match"
+            }
+          ],
+          "selection": "MULTIGOAL MULTIESITI 16 ESITI · 1-2 + TEMPO 1: U/O 0.5 Parma · UNDER + Parma o pareggio (1X) + 1 TEMPO: U/O 1.5 · UNDER",
+          "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-17: quota 5 orientativa, 4-10 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
+          "probabilityPct": null,
+          "prudentProbabilityPct": null,
+          "fairOdds": null,
+          "prudentExpectedValuePct": null,
+          "qualityStatus": "editoriale",
+          "weakestLeg": null,
+          "probabilityMethod": null,
+          "probabilityStatus": "N/D · stima congiunta non supportata"
         },
         {
           "tier": "Balanced",
@@ -107794,10 +108356,59 @@
         "portfolios": [
           {
             "tier": "Safe",
-            "status": "N/D",
+            "status": "outside-limits",
             "allowed": false,
+            "riskScore": 69.3,
+            "riskLevel": "medio",
+            "averageRisk": 69.3,
+            "maxEventRisk": 82,
+            "strongDependencies": 0,
+            "contradictions": 0,
+            "limits": {
+              "maxAverageRisk": 42,
+              "maxEventRisk": 58,
+              "maxStrongDependencies": 1,
+              "minPrudentExpectedValuePct": 0
+            },
             "reasons": [
-              "Candidati insufficienti per il profilo Safe: servono almeno 10 mercati distinti con quota tra 1.15 e 1.85."
+              "Rischio medio 69.3 oltre il limite 42.",
+              "Gamba a rischio 82 oltre il limite 58.",
+              "EV prudenziale non disponibile."
+            ],
+            "events": [
+              {
+                "providerSelectionId": "5319744213",
+                "label": "MULTIGOAL MULTIESITI 16 ESITI · 1-2",
+                "riskScore": 65,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5319744042",
+                "label": "TEMPO 1: U/O 0.5 Parma · UNDER",
+                "riskScore": 82,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5319684982",
+                "label": "Parma o pareggio (1X)",
+                "riskScore": 65,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5319744280",
+                "label": "1 TEMPO: U/O 1.5 · UNDER",
+                "riskScore": 65,
+                "modeled": false
+              }
+            ],
+            "dependencies": [
+              {
+                "first": "5319744213",
+                "second": "5319744280",
+                "type": "positive",
+                "correlation": 0.26,
+                "intersectionProbabilityPct": 24.4
+              }
             ]
           },
           {
@@ -116021,15 +116632,91 @@
         {
           "tier": "Safe",
           "scenario": null,
-          "risk": "relativo inferiore",
+          "risk": "elevato · 5 eventi",
           "targetOdds": 5,
-          "odds": null,
-          "legs": [],
-          "selection": null,
-          "logic": null,
-          "qualityStatus": "nd",
-          "probabilityStatus": "N/D",
-          "unavailableReason": "Candidati insufficienti per il profilo Safe: servono almeno 10 mercati distinti con quota tra 1.15 e 1.85."
+          "quotaPolicy": "orientativa",
+          "eligibilityPolicy": "validita-tecnica-e-intervalli",
+          "riskPolicy": "informativa",
+          "odds": 5,
+          "distancePct": 0,
+          "legs": [
+            {
+              "label": "FLORIANI MUSSOLINI R. almeno 1 falli subiti",
+              "market": "U/O FALLI SUBITI GIOCATORE",
+              "variant": "FLORIANI MUSSOLINI R. U/O 0.5 FALLI SUBITI",
+              "threshold": "0.5",
+              "selection": "OVER",
+              "providerSelectionId": "5329993037",
+              "odds": 1.65,
+              "overlapKey": "market-u o falli subiti giocatore",
+              "semanticKeys": [],
+              "marketScope": "player"
+            },
+            {
+              "label": "JUAN JESUS almeno 2 falli commessi",
+              "market": "U/O FALLI COMMESSI GIOCATORE",
+              "variant": "JUAN JESUS U/O 1.5 FALLI COMMESSI",
+              "threshold": "1.5",
+              "selection": "OVER",
+              "providerSelectionId": "5328836711",
+              "odds": 1.33,
+              "overlapKey": "market-u o falli commessi giocatore",
+              "semanticKeys": [],
+              "marketScope": "player"
+            },
+            {
+              "label": "Under 3,5 gol",
+              "market": "UNDER/OVER",
+              "variant": "U/O 3.5",
+              "threshold": "3.5",
+              "selection": "UNDER",
+              "providerSelectionId": "5319698669",
+              "odds": 1.38,
+              "overlapKey": "market-under over",
+              "semanticKeys": [
+                "goals"
+              ],
+              "marketScope": "match"
+            },
+            {
+              "label": "1 TEMPO: U/O 0.5 · OVER",
+              "market": "UNDER/OVER TEMPO X",
+              "variant": "1 TEMPO: U/O 0.5",
+              "threshold": "0.5",
+              "selection": "OVER",
+              "providerSelectionId": "5319703702",
+              "odds": 1.3,
+              "overlapKey": "market-under over tempo x",
+              "semanticKeys": [
+                "goals-first-half"
+              ],
+              "marketScope": "match"
+            },
+            {
+              "label": "Lazio o pareggio (X2)",
+              "market": "DOPPIA CHANCE",
+              "variant": "DOPPIA CHANCE MULTIESITI",
+              "threshold": null,
+              "selection": "X2",
+              "providerSelectionId": "5319698687",
+              "odds": 1.27,
+              "overlapKey": "market-doppia chance",
+              "semanticKeys": [
+                "result"
+              ],
+              "marketScope": "match"
+            }
+          ],
+          "selection": "FLORIANI MUSSOLINI R. almeno 1 falli subiti + JUAN JESUS almeno 2 falli commessi + Under 3,5 gol + 1 TEMPO: U/O 0.5 · OVER + Lazio o pareggio (X2)",
+          "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-17: quota 5 orientativa, 4-10 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
+          "probabilityPct": null,
+          "prudentProbabilityPct": null,
+          "fairOdds": null,
+          "prudentExpectedValuePct": null,
+          "qualityStatus": "editoriale",
+          "weakestLeg": null,
+          "probabilityMethod": null,
+          "probabilityStatus": "N/D · stima congiunta non supportata"
         },
         {
           "tier": "Balanced",
@@ -117538,11 +118225,58 @@
         "portfolios": [
           {
             "tier": "Safe",
-            "status": "N/D",
+            "status": "outside-limits",
             "allowed": false,
+            "riskScore": 71.8,
+            "riskLevel": "alto",
+            "averageRisk": 71.8,
+            "maxEventRisk": 82,
+            "strongDependencies": 0,
+            "contradictions": 0,
+            "limits": {
+              "maxAverageRisk": 42,
+              "maxEventRisk": 58,
+              "maxStrongDependencies": 1,
+              "minPrudentExpectedValuePct": 0
+            },
             "reasons": [
-              "Candidati insufficienti per il profilo Safe: servono almeno 10 mercati distinti con quota tra 1.15 e 1.85."
-            ]
+              "Rischio medio 71.8 oltre il limite 42.",
+              "Gamba a rischio 82 oltre il limite 58.",
+              "EV prudenziale non disponibile."
+            ],
+            "events": [
+              {
+                "providerSelectionId": "5329993037",
+                "label": "FLORIANI MUSSOLINI R. almeno 1 falli subiti",
+                "riskScore": 82,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5328836711",
+                "label": "JUAN JESUS almeno 2 falli commessi",
+                "riskScore": 82,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5319698669",
+                "label": "Under 3,5 gol",
+                "riskScore": 65,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5319703702",
+                "label": "1 TEMPO: U/O 0.5 · OVER",
+                "riskScore": 65,
+                "modeled": false
+              },
+              {
+                "providerSelectionId": "5319698687",
+                "label": "Lazio o pareggio (X2)",
+                "riskScore": 65,
+                "modeled": false
+              }
+            ],
+            "dependencies": []
           },
           {
             "tier": "Balanced",

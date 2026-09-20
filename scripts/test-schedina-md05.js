@@ -26,8 +26,8 @@ assert.equal(sourcePortfolios.filter(portfolio => portfolio.tier === "Safe").len
 assert(Object.entries(source.matches).filter(([matchId]) => matchById.get(matchId)?.status === "finished").every(([,portfolios]) => portfolios.find(portfolio => portfolio.tier === "Safe").legs.length === 10), "Le MyCombo concluse devono conservare le 10 selezioni storiche");
 assert(Object.entries(source.matches).filter(([matchId]) => matchById.get(matchId)?.status !== "finished").every(([,portfolios]) => {
   const safe = portfolios.find(portfolio => portfolio.tier === "Safe");
-  return safe.status === "N/D" ? safe.legs.length === 0 && Boolean(safe.reason) : safe.legs.length === 10;
-}), "Le MyCombo aperte devono contenere 10 mercati ammessi oppure un N/D motivato");
+  return safe.status !== "N/D" && safe.legs.length >= 4 && safe.legs.length <= 10;
+}), "Le MyCombo aperte devono contenere da 4 a 10 mercati ammessi");
 assert(!sourceComboLegs.some(leg => /market-(?:prima sostituzione nel match|(?:casa |ospite )?pari dispari)$/.test(leg.overlapKey)), "La fonte MyCombo contiene ancora sostituzione o pari/dispari");
 assert.equal(source.constraints.minLegOddsInclusive, 1.15);
 assert.equal(source.constraints.displayedComboLegs, 10);
@@ -102,12 +102,8 @@ assert(renderer.indexOf("${myCombo}${roundContent") > renderer.indexOf("const my
 for (const prediction of predictions) {
   const combo = prediction.combinations.find(item => item.tier === "Safe");
   const finished = matchById.get(prediction.matchId)?.status === "finished";
-  if (!finished && combo?.qualityStatus === "nd") {
-    assert.equal(combo.legs.length, 0, `${prediction.matchId}: un profilo N/D non deve contenere esiti`);
-    assert(combo.unavailableReason, `${prediction.matchId}: motivazione N/D assente`);
-    continue;
-  }
-  assert.equal(combo?.legs.length, 10, `${prediction.matchId}: la MyCombo Safe deve contenere 10 eventi`);
+  if (!finished) assert(combo?.legs.length >= 4 && combo.legs.length <= 10, `${prediction.matchId}: la MyCombo aperta deve contenere da 4 a 10 eventi`);
+  else assert.equal(combo?.legs.length, 10, `${prediction.matchId}: la MyCombo storica deve conservare 10 eventi`);
   assert(combo.legs.every(leg => leg.odds >= 1.15), `${prediction.matchId}: quota MyCombo sotto 1,15`);
   assert(!combo.legs.some(leg => /MONITOR VAR|RIGORE SI\/NO|PRIMA SOSTITUZIONE|PARI\/DISPARI/i.test(leg.market)), `${prediction.matchId}: mercato vietato presente`);
   assert(!combo.legs.some(leg => /HANDICAP|ASIATIC|\bAH\b/i.test(`${leg.market} ${leg.variant} ${leg.label}`)), `${prediction.matchId}: handicap o mercato asiatico vietato`);

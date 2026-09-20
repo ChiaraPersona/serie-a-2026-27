@@ -11,7 +11,7 @@
     "quotaPolicy": "orientativa",
     "tierLimits": {
       "Safe": {
-        "minimum": 10,
+        "minimum": 4,
         "maximum": 10,
         "preferred": 10
       },
@@ -917,9 +917,46 @@
     "venezia-lazio-2026-27-md-05": [
       {
         "tier": "Safe",
-        "status": "N/D",
-        "reason": "Candidati insufficienti per il profilo Safe: servono almeno 10 mercati distinti con quota tra 1.15 e 1.85.",
-        "legs": []
+        "risk": "elevato · 5 eventi",
+        "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-17: quota 5 orientativa, 4-10 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
+        "legs": [
+          {
+            "providerSelectionId": "5329993037",
+            "overlapKey": "market-u o falli subiti giocatore",
+            "semanticKeys": [],
+            "label": "FLORIANI MUSSOLINI R. almeno 1 falli subiti"
+          },
+          {
+            "providerSelectionId": "5328836711",
+            "overlapKey": "market-u o falli commessi giocatore",
+            "semanticKeys": [],
+            "label": "JUAN JESUS almeno 2 falli commessi"
+          },
+          {
+            "providerSelectionId": "5319698669",
+            "overlapKey": "market-under over",
+            "semanticKeys": [
+              "goals"
+            ],
+            "label": "Under 3,5 gol"
+          },
+          {
+            "providerSelectionId": "5319703702",
+            "overlapKey": "market-under over tempo x",
+            "semanticKeys": [
+              "goals-first-half"
+            ],
+            "label": "1 TEMPO: U/O 0.5 · OVER"
+          },
+          {
+            "providerSelectionId": "5319698687",
+            "overlapKey": "market-doppia chance",
+            "semanticKeys": [
+              "result"
+            ],
+            "label": "Lazio o pareggio (X2)"
+          }
+        ]
       },
       {
         "tier": "Balanced",
@@ -1041,9 +1078,40 @@
     "fiorentina-napoli-2026-27-md-05": [
       {
         "tier": "Safe",
-        "status": "N/D",
-        "reason": "Candidati insufficienti per il profilo Safe: servono almeno 10 mercati distinti con quota tra 1.15 e 1.85.",
-        "legs": []
+        "risk": "elevato · 4 eventi",
+        "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-17: quota 5 orientativa, 4-10 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
+        "legs": [
+          {
+            "providerSelectionId": "5330284324",
+            "overlapKey": "market-u o falli commessi giocatore",
+            "semanticKeys": [],
+            "label": "RANIERI L. almeno 1 falli commessi"
+          },
+          {
+            "providerSelectionId": "5319693714",
+            "overlapKey": "market-doppia chance",
+            "semanticKeys": [
+              "result"
+            ],
+            "label": "Nessun pareggio (12)"
+          },
+          {
+            "providerSelectionId": "5330281960",
+            "overlapKey": "market-u o tiri in porta giocatore duo inc pali traverse inc ts",
+            "semanticKeys": [
+              "volume-shots-on-target"
+            ],
+            "label": "DE BRUYNE K. almeno 1 tiri in porta, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5319693697",
+            "overlapKey": "market-under over",
+            "semanticKeys": [
+              "goals"
+            ],
+            "label": "Under 3,5 gol"
+          }
+        ]
       },
       {
         "tier": "Balanced",
@@ -1149,9 +1217,50 @@
     "frosinone-como-2026-27-md-05": [
       {
         "tier": "Safe",
-        "status": "N/D",
-        "reason": "Candidati insufficienti per il profilo Safe: servono almeno 10 mercati distinti con quota tra 1.15 e 1.85.",
-        "legs": []
+        "risk": "elevato · 5 eventi",
+        "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-17: quota 5 orientativa, 4-10 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
+        "legs": [
+          {
+            "providerSelectionId": "5319768211",
+            "overlapKey": "market-2 tempo esito 1x2",
+            "semanticKeys": [
+              "result-second-half-1x2"
+            ],
+            "label": "ESITO 1X2 2 TEMPO · 2"
+          },
+          {
+            "providerSelectionId": "5319678731",
+            "overlapKey": "market-1x2 esito finale",
+            "semanticKeys": [
+              "result"
+            ],
+            "label": "ESITO FINALE 1X2 · 2"
+          },
+          {
+            "providerSelectionId": "5319702803",
+            "overlapKey": "market-u o goal squadra tempo",
+            "semanticKeys": [
+              "team-goals-period"
+            ],
+            "label": "TEMPO 1: U/O 1.5 Como · UNDER"
+          },
+          {
+            "providerSelectionId": "5319702860",
+            "overlapKey": "market-goal nogoal tempo x",
+            "semanticKeys": [
+              "goals-first-half-btts"
+            ],
+            "label": "1 TEMPO: GOL/NOGOL · NO GOL"
+          },
+          {
+            "providerSelectionId": "5319702766",
+            "overlapKey": "market-multigoal",
+            "semanticKeys": [
+              "goals"
+            ],
+            "label": "MULTIGOAL MULTIESITI 16 ESITI · 2-6"
+          }
+        ]
       },
       {
         "tier": "Balanced",
@@ -1265,9 +1374,42 @@
     "parma-genoa-2026-27-md-05": [
       {
         "tier": "Safe",
-        "status": "N/D",
-        "reason": "Candidati insufficienti per il profilo Safe: servono almeno 10 mercati distinti con quota tra 1.15 e 1.85.",
-        "legs": []
+        "risk": "elevato · 4 eventi",
+        "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-17: quota 5 orientativa, 4-10 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
+        "legs": [
+          {
+            "providerSelectionId": "5319744213",
+            "overlapKey": "market-multigoal",
+            "semanticKeys": [
+              "goals"
+            ],
+            "label": "MULTIGOAL MULTIESITI 16 ESITI · 1-2"
+          },
+          {
+            "providerSelectionId": "5319744042",
+            "overlapKey": "market-u o goal squadra tempo",
+            "semanticKeys": [
+              "team-goals-period"
+            ],
+            "label": "TEMPO 1: U/O 0.5 Parma · UNDER"
+          },
+          {
+            "providerSelectionId": "5319684982",
+            "overlapKey": "market-doppia chance",
+            "semanticKeys": [
+              "result"
+            ],
+            "label": "Parma o pareggio (1X)"
+          },
+          {
+            "providerSelectionId": "5319744280",
+            "overlapKey": "market-under over tempo x",
+            "semanticKeys": [
+              "goals-first-half"
+            ],
+            "label": "1 TEMPO: U/O 1.5 · UNDER"
+          }
+        ]
       },
       {
         "tier": "Balanced",
@@ -1317,9 +1459,50 @@
     "juventus-atalanta-2026-27-md-05": [
       {
         "tier": "Safe",
-        "status": "N/D",
-        "reason": "Candidati insufficienti per il profilo Safe: servono almeno 10 mercati distinti con quota tra 1.15 e 1.85.",
-        "legs": []
+        "risk": "elevato · 5 eventi",
+        "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-17: quota 5 orientativa, 4-10 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
+        "legs": [
+          {
+            "providerSelectionId": "5319741424",
+            "overlapKey": "market-1x2 esito finale",
+            "semanticKeys": [
+              "result"
+            ],
+            "label": "ESITO FINALE 1X2 · 1"
+          },
+          {
+            "providerSelectionId": "5319750713",
+            "overlapKey": "market-multigoal squadra x",
+            "semanticKeys": [
+              "goals"
+            ],
+            "label": "MULTIGOAL Juventus MULTIESITI · 1-2"
+          },
+          {
+            "providerSelectionId": "5319745209",
+            "overlapKey": "market-under over tempo x",
+            "semanticKeys": [
+              "goals-first-half"
+            ],
+            "label": "1 TEMPO: U/O 0.5 · OVER"
+          },
+          {
+            "providerSelectionId": "5319745156",
+            "overlapKey": "market-u o goal squadra tempo",
+            "semanticKeys": [
+              "team-goals-period"
+            ],
+            "label": "TEMPO 1: U/O 1.5 Juventus · UNDER"
+          },
+          {
+            "providerSelectionId": "5319745263",
+            "overlapKey": "market-goal nogoal tempo x",
+            "semanticKeys": [
+              "goals-first-half-btts"
+            ],
+            "label": "1 TEMPO: GOL/NOGOL · NO GOL"
+          }
+        ]
       },
       {
         "tier": "Balanced",
@@ -1417,9 +1600,42 @@
     "milan-lecce-2026-27-md-05": [
       {
         "tier": "Safe",
-        "status": "N/D",
-        "reason": "Candidati insufficienti per il profilo Safe: servono almeno 10 mercati distinti con quota tra 1.15 e 1.85.",
-        "legs": []
+        "risk": "elevato · 4 eventi",
+        "logic": "Profilo safe costruito sulle quote Sisal del 2026-09-17: quota 5 orientativa, 4-10 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
+        "legs": [
+          {
+            "providerSelectionId": "5319699224",
+            "overlapKey": "market-multigoal",
+            "semanticKeys": [
+              "goals"
+            ],
+            "label": "MULTIGOAL MULTIESITI 16 ESITI · 3-5"
+          },
+          {
+            "providerSelectionId": "5319687418",
+            "overlapKey": "market-1x2 esito finale",
+            "semanticKeys": [
+              "result"
+            ],
+            "label": "ESITO FINALE 1X2 · 1"
+          },
+          {
+            "providerSelectionId": "5319699295",
+            "overlapKey": "market-1 tempo esito 1x2",
+            "semanticKeys": [
+              "result-first-half-1x2"
+            ],
+            "label": "ESITO 1 TEMPO 1X2 · 1"
+          },
+          {
+            "providerSelectionId": "5319698929",
+            "overlapKey": "market-u o goal squadra tempo",
+            "semanticKeys": [
+              "team-goals-period"
+            ],
+            "label": "TEMPO 1: U/O 0.5 Lecce · UNDER"
+          }
+        ]
       },
       {
         "tier": "Balanced",

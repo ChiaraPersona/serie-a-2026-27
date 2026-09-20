@@ -48,7 +48,7 @@ const excludedMarketNames = new Set([
 ]);
 const excludedMarketNameFragments = ["MULTIGIOCAT"];
 const tierLimits = {
-  Safe: matchday === 5 ? { minimum: 10, maximum: 10, preferred: 10 } : { minimum: 3, maximum: 6, preferred: 3 },
+  Safe: matchday === 5 ? { minimum: 4, maximum: 10, preferred: 10 } : { minimum: 3, maximum: 6, preferred: 3 },
   Balanced: { minimum: 4, maximum: 7, preferred: 4 },
   Aggressive: { minimum: 5, maximum: 8, preferred: 5 }
 };
