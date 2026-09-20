@@ -19,7 +19,7 @@ const previousOutput = fs.existsSync(outputPath) ? JSON.parse(fs.readFileSync(ou
 
 const referenceOdds = { Safe: 5, Balanced: 10, Aggressive: 20 };
 const minimumLegOdds = matchday >= 5 ? 1.15 : 1.1;
-const maximumLegOdds = 1.85;
+const maximumLegOdds = matchday === 5 ? 4 : 1.85;
 const excludedMarketNames = new Set([
   "ARBITRO CONSULTA MONITOR VAR INC TS",
   "RIGORE SI/NO",
@@ -48,7 +48,7 @@ const excludedMarketNames = new Set([
 ]);
 const excludedMarketNameFragments = ["MULTIGIOCAT"];
 const tierLimits = {
-  Safe: matchday === 5 ? { minimum: 4, maximum: 10, preferred: 10 } : { minimum: 3, maximum: 6, preferred: 3 },
+  Safe: matchday === 5 ? { minimum: 10, maximum: 10, preferred: 10 } : { minimum: 3, maximum: 6, preferred: 3 },
   Balanced: { minimum: 4, maximum: 7, preferred: 4 },
   Aggressive: { minimum: 5, maximum: 8, preferred: 5 }
 };
@@ -128,15 +128,29 @@ function preferredDoubleChance(prediction) {
     .sort((left, right) => right[1] - left[1])[0][0];
 }
 
+function teamScope(value) {
+  return /(?:SQUADRA|TEAM)\s*1\b/i.test(value) ? "home" : /(?:SQUADRA|TEAM)\s*2\b/i.test(value) ? "away" : "match";
+}
+
+function periodScope(value) {
+  return /(?:TEMPO\s*2\b|\b2\s*TEMPO)/i.test(value) ? "second-half" : /(?:TEMPO\s*1\b|\b1\s*TEMPO)/i.test(value) ? "first-half" : "fulltime";
+}
+
+function goalsSemanticKey(market) {
+  const descriptor = `${market.marketName} ${market.variantName || ""}`;
+  const kind = market.marketName.includes("GOAL/NOGOAL") ? "btts" : "goals";
+  return `${kind}-${periodScope(descriptor)}-${teamScope(descriptor)}`;
+}
+
 function scoreSemanticKeys(market) {
-  if (["MULTIGOAL", "MULTIGOAL SQUADRA X", "U/O SQUADRA X", "COMBO: U/O CASA + U/O OSPITE"].includes(market.marketName)) return ["goals"];
-  if (["COMBO: DC + U/O", "COMBO: 1X2 + U/O", "COMBO: DC + GOAL/NOGOAL"].includes(market.marketName)) return ["result", "goals"];
+  if (["MULTIGOAL", "MULTIGOAL SQUADRA X", "U/O SQUADRA X", "COMBO: U/O CASA + U/O OSPITE"].includes(market.marketName)) return [goalsSemanticKey(market)];
+  if (["COMBO: DC + U/O", "COMBO: 1X2 + U/O", "COMBO: DC + GOAL/NOGOAL"].includes(market.marketName)) return ["result-fulltime", goalsSemanticKey(market)];
   return [];
 }
 
-function comparisonSemanticKeys(row) {
-  if (["1x2", "double-chance", "draw-no-bet"].includes(row.family)) return ["result"];
-  if (["goals", "btts", "team-goal"].includes(row.family)) return ["goals"];
+function comparisonSemanticKeys(row, market) {
+  if (["1x2", "double-chance", "draw-no-bet"].includes(row.family)) return ["result-fulltime"];
+  if (["goals", "btts", "team-goal"].includes(row.family)) return [goalsSemanticKey(market)];
   return [];
 }
 
@@ -179,7 +193,7 @@ function scoreMarketCandidate(market, selection, prediction, match) {
   const away = teamById.get(match.awayTeam)?.name || match.awayTeam;
   return {
     providerSelectionId: String(selection.providerSelectionId),
-    overlapKey: `market-${clean(market.marketName)}`,
+    overlapKey: `scenario-${scoreSemanticKeys(market).join("-") || clean(market.marketName)}`,
     label: `${market.variantName} · ${selection.name}`.replace(/SQUADRA 1|TEAM 1/g, home).replace(/SQUADRA 2|TEAM 2/g, away),
     odds: selection.odds,
     semanticKeys: scoreSemanticKeys(market),
@@ -205,10 +219,10 @@ function candidatePool(event, prediction, match) {
     if (riskyHomeUnderAgainstPromoted(resolved.market, resolved.selection, prediction, match)) continue;
     candidates.push({
       providerSelectionId: String(row.providerSelectionId),
-      overlapKey: `market-${clean(resolved.market.marketName)}`,
+      overlapKey: `scenario-${comparisonSemanticKeys(row, resolved.market).join("-") || clean(resolved.market.marketName)}`,
       label: commonLabel(row, match),
       odds: row.odds,
-      semanticKeys: comparisonSemanticKeys(row),
+      semanticKeys: comparisonSemanticKeys(row, resolved.market),
       quality: 130 + row.modelProbabilityPct,
       anchor: true,
       modelSupported: true
@@ -312,10 +326,11 @@ function candidatePool(event, prediction, match) {
   }
 
   const playerMarkets = new Map([
-    ["U/O TIRI TOTALI GIOCATORE (DUO) INC TS", { metric: "tiri totali", maximum: 3.5, key: "shots-total", substituteIncluded: true }],
-    ["U/O  TIRI IN PORTA GIOCATORE (DUO) INC PALI TRAVERSE INC TS", { metric: "tiri in porta", maximum: 1.5, key: "shots-on-target", substituteIncluded: true }],
-    ["U/O FALLI COMMESSI GIOCATORE", { metric: "falli commessi", maximum: 1.5, key: "fouls-committed", substituteIncluded: false }],
-    ["U/O FALLI SUBITI GIOCATORE", { metric: "falli subiti", maximum: 1.5, key: "fouls-won", substituteIncluded: false }]
+    ["U/O TIRI TOTALI GIOCATORE (DUO) INC TS", { metric: "tiri totali", maximum: 3.5, key: "shots", substituteIncluded: true }],
+    ["U/O TIRI IN PORTA GIOCATORE (DUO) INC PALI TRAVERSE INC TS", { metric: "tiri in porta", maximum: 1.5, key: "shots", substituteIncluded: true }],
+    ["U/O  TIRI IN PORTA GIOCATORE (DUO) INC PALI TRAVERSE INC TS", { metric: "tiri in porta", maximum: 1.5, key: "shots", substituteIncluded: true }],
+    ["U/O FALLI COMMESSI GIOCATORE", { metric: "falli commessi", maximum: 1.5, key: "fouls", substituteIncluded: false }],
+    ["U/O FALLI SUBITI GIOCATORE", { metric: "falli subiti", maximum: 1.5, key: "fouls", substituteIncluded: false }]
   ]);
   for (const market of event.markets || []) {
     if (!isSisalMyComboMarketName(market.marketName)) continue;
@@ -325,14 +340,32 @@ function candidatePool(event, prediction, match) {
     const selection = (market.selections || []).find(item => item.status === "open" && item.name === "OVER");
     if (!selection) continue;
     const player = market.variantName.split(/ U\/O /i)[0].trim();
+    const playerKey = clean(player);
     candidates.push({
       providerSelectionId: String(selection.providerSelectionId),
-      overlapKey: `market-${clean(market.marketName)}`,
+      overlapKey: `player-${playerKey}-${clean(market.marketName)}`,
       label: `${player} almeno ${Math.floor(threshold) + 1} ${kind.metric}${kind.substituteIncluded ? ", sostituto incluso" : ""}`,
       odds: selection.odds,
-      semanticKeys: kind.key === "shots-total" ? ["volume-shots-total"] : kind.key === "shots-on-target" ? ["volume-shots-on-target"] : [],
+      semanticKeys: [`player-${playerKey}-${kind.key}`],
       quality: 95 + selection.odds * 5,
       anchor: false
+    });
+  }
+
+  for (const market of event.markets || []) {
+    if (market.marketName !== "MARCATORE SI/NO (DUO) INC TS" || !selectedPlayer(market.variantName, match)) continue;
+    const selection = (market.selections || []).find(item => item.status === "open" && item.name === "SI" && item.odds >= minimumLegOdds && item.odds <= maximumLegOdds);
+    if (!selection) continue;
+    const player = market.variantName.split(/\s+SEGNA\b/i)[0].trim();
+    candidates.push({
+      providerSelectionId: String(selection.providerSelectionId),
+      overlapKey: "market-marcatore-duo",
+      label: `${player} segna, sostituto incluso`,
+      odds: selection.odds,
+      semanticKeys: ["player-goal"],
+      quality: 88 + Math.max(0, 5 - selection.odds),
+      anchor: false,
+      modelSupported: true
     });
   }
 
@@ -367,15 +400,15 @@ function candidatePool(event, prediction, match) {
       const choice = choices.sort((left, right) => left.selection.odds - right.selection.odds || String(left.selection.providerSelectionId).localeCompare(String(right.selection.providerSelectionId)))[0];
       if (!choice) continue;
       const period = /(?:TEMPO|\b)(?:\s*)2\b|2 TEMPO/i.test(choice.market.variantName) ? "second-half" : "first-half";
-      const resolvedSemanticKey = marketName.includes("TEMPO X")
-        ? semanticKey.replace("first-half", period).replace("period", period)
-        : semanticKey;
+      const resolvedSemanticKey = marketName.includes("GOAL") || marketName.includes("MULTIGOAL") || marketName.includes("UNDER/OVER")
+        ? goalsSemanticKey(choice.market)
+        : marketName.includes("TEMPO X") ? semanticKey.replace("first-half", period).replace("period", period) : semanticKey;
       const label = `${choice.market.variantName} · ${choice.selection.name}`
         .replace(/TEAM 1|SQUADRA 1/g, home)
         .replace(/TEAM 2|SQUADRA 2/g, away);
       candidates.push({
         providerSelectionId: String(choice.selection.providerSelectionId),
-        overlapKey: `market-${clean(choice.market.marketName)}`,
+        overlapKey: `scenario-${resolvedSemanticKey}`,
         label,
         odds: choice.selection.odds,
         semanticKeys: [resolvedSemanticKey],
