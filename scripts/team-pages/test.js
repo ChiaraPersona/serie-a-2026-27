@@ -237,7 +237,7 @@ assert.ok(matchesInterface.includes('load("european-fixtures-2026-27.json")') &&
 assert.ok(matchesInterface.includes('load("coppa-italia-2026-27.json")') && matchesInterface.includes('calendarType:"cup"'), "Il calendario personale non integra gli impegni di Coppa Italia");
 for (const marker of ["Solo carico calendario · nessun pronostico", "Fatica: a", "Rendimento sotto fatica:", "38 giornate di Serie A", "gare UEFA", "gare di Coppa Italia", "Tutti gli appuntamenti"]) assert.ok(matchesInterface.includes(marker), `Calendario personale: manca ${marker}`);
 assert.ok(readingsInterface.includes('match.resultCoverage?.bookings==="unavailable"?"Cartellini N/D"') && readingsInterface.includes('match.resultCoverage?.substitutions==="unavailable"?"Sostituzioni N/D"'), "I dati evento non disponibili devono restare esplicitamente N/D");
-assert.ok(bettingInterface.includes('verde = esito preso') && bettingInterface.includes('betting-leg--${status}') && bettingInterface.includes('settleLeg(leg,match)'), "Le MyCombo concluse devono mostrare in verde gli esiti presi");
+assert.ok(bettingInterface.includes('verde = esito preso') && bettingInterface.includes('betting-leg--${status}') && bettingInterface.includes('combo.legs.map(leg=>settleLeg'), "Le MyCombo concluse devono mostrare in verde gli esiti presi");
 const predictionIds = new Set(read("data/normalized/predictions.json").predictions.map(prediction => prediction.matchId));
 assert.ok(europeanCalendar.fixtures.every(match => !predictionIds.has(match.id)), "Una gara europea è entrata nei pronostici");
 for (const summary of index.teams) {

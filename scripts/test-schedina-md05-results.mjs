@@ -53,9 +53,14 @@ assert.equal(romaComboResults.get("Partita almeno 24 tiri totali"), "won");
 assert.equal(romaComboResults.get("Partita almeno 7 tiri in porta"), "won");
 assert.deepEqual([...romaComboResults.values()].reduce((counts,status)=>(counts[status]=(counts[status]||0)+1,counts),{}), { won: 9, lost: 1 });
 
+const monzaMatch = matchById.get("monza-sassuolo-2026-27-md-05");
+const monzaCombo = predictions.find(prediction => prediction.matchId === monzaMatch.id).combinations.find(combo => combo.tier === "Safe");
+const caletaCarFouls = monzaCombo.legs.find(leg => leg.label.includes("CALETA CAR D.") && leg.market.includes("FALLI COMMESSI"));
+assert.equal(comboSettlement(caletaCarFouls, monzaMatch), "won", "MyCombo Monza-Sassuolo: il fallo commesso da Caleta-Car deve essere liquidato");
+
 const expectedComboSummaries = new Map([
   ["bologna-torino-2026-27-md-05", { won: 6, lost: 3, unavailable: 1 }],
-  ["monza-sassuolo-2026-27-md-05", { won: 8, unavailable: 1, lost: 1 }],
+  ["monza-sassuolo-2026-27-md-05", { won: 9, lost: 1 }],
   ["roma-inter-2026-27-md-05", { won: 9, lost: 1 }],
   ["udinese-cagliari-2026-27-md-05", { lost: 5, won: 5 }]
 ]);

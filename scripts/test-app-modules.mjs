@@ -38,6 +38,7 @@ const bettingPage = fs.readFileSync(path.join(root, "js", "pages", "betting.js")
   assert.match(bettingPage, /load\("schedina-md03\.json"\)/, "Schedina: dati della terza giornata non caricati");
   assert.match(bettingPage, /load\("schedina-md04\.json"\)/, "Schedina: dati della quarta giornata non caricati");
   assert.match(bettingPage, /load\("schedina-md05\.json"\)/, "Schedina: dati della quinta giornata non caricati");
+  assert.match(bettingPage, /currentMyCombo=myComboRoundContent/, "Schedina: MyCombo MD5 assenti dalla pagina principale");
   assert.match(bettingPage, /const rounds=\{1:md1,2:md2,3:md3,4:md4,5:md5\}/, "Schedina: viste dedicate alle prime cinque giornate assenti");
   assert.match(bettingPage, /archiveCard\(md2,2,matchById\)/, "Schedina: card della seconda giornata assente dall'archivio");
   assert.match(bettingPage, /archiveCard\(md3,3,matchById\)/, "Schedina: card della terza giornata assente dall'archivio");

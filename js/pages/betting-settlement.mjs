@@ -43,7 +43,13 @@ function settleThreshold(selection,actual,threshold){
 
 function playerDuo(match,player){
   const name=comparableName(player),all=[...(match?.playerStats?.home||[]),...(match?.playerStats?.away||[])];
-  const primary=all.find(item=>comparableName(item.player)===name);
+  const wantedTokens=name.replace(/[^a-z0-9]+/g," ").trim().split(/\s+/).filter(Boolean);
+  const fuzzy=all.filter(item=>{
+    const candidateTokens=comparableName(item.player).replace(/[^a-z0-9]+/g," ").trim().split(/\s+/).filter(Boolean);
+    const words=wantedTokens.filter(token=>token.length>1),initials=wantedTokens.filter(token=>token.length===1);
+    return words.length>0&&words.every(token=>candidateTokens.includes(token))&&initials.every(initial=>candidateTokens.some(token=>token.startsWith(initial)));
+  });
+  const primary=all.find(item=>comparableName(item.player)===name)||(fuzzy.length===1?fuzzy[0]:null);
   const substitution=(match?.substitutions||[]).find(item=>comparableName(item.playerOut)===name);
   if(!primary&&substitution){
     const goalsFor=person=>(match?.scorers||[]).filter(item=>!item.ownGoal&&comparableName(item.player)===comparableName(person)).length;
@@ -224,8 +230,9 @@ export function settleLeg(leg,match){
       if(market.includes("ASSIST"))return resultStatus(selection==="SI"?assists>0:assists===0);
       return resultStatus(selection==="SI"?goals>0:goals===0);
     }
-    const players=playerDuo(match,leg?.player),goals=players?.reduce((sum,item)=>sum+(finite(item.goals)?Number(item.goals):0),0),assists=players?.reduce((sum,item)=>sum+(finite(item.assists)?Number(item.assists):0),0);
-    if(!players&&playerDidNotPlay(match,leg?.player))return voided();
+    const playerName=leg?.player||String(leg?.variant||"").split(/\s+U\/O\b/i)[0]||String(leg?.label||"").split(/\s+almeno\b/i)[0];
+    const players=playerDuo(match,playerName),goals=players?.reduce((sum,item)=>sum+(finite(item.goals)?Number(item.goals):0),0),assists=players?.reduce((sum,item)=>sum+(finite(item.assists)?Number(item.assists):0),0);
+    if(!players&&playerDidNotPlay(match,playerName))return voided();
     if(!players)return unavailable();
     if(market.includes("CARTELLINO")||leg?.marketFamily==="Ammoniti"){
       if(!Array.isArray(match?.bookings)||!["SI","NO"].includes(selection))return unavailable();
@@ -244,6 +251,8 @@ export function settleLeg(leg,match){
       return unavailable();
     }
     if(market.includes("TIRI TOTALI"))return settlePlayerThreshold(selection,players,"shots",threshold);
+    if(market.includes("FALLI COMMESSI"))return settlePlayerThreshold(selection,players,"foulsCommitted",threshold);
+    if(market.includes("FALLI SUBITI"))return settlePlayerThreshold(selection,players,"foulsWon",threshold);
     return unavailable();
   }
   if(market==="U/O PUNTI CARTELLINI"){
