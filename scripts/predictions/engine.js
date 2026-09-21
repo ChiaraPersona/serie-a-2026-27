@@ -431,15 +431,21 @@ function resolvePlayer(lineupName, squad) {
   const sourceTarget = cleanName(lineupName);
   const target = PLAYER_NAME_ALIASES[sourceTarget] || sourceTarget;
   const targetTokens = target.split(" ");
-  const candidates = (squad?.players || []).map(player => ({ player, normalized: cleanName(player.name) }));
-  return candidates.find(candidate => candidate.normalized === target)?.player
-    || candidates.find(candidate => candidate.normalized.endsWith(` ${target}`))?.player
-    || candidates.find(candidate => targetTokens.every(token => candidate.normalized.split(" ").includes(token)))?.player
+  const candidates = (squad?.players || []).map(player => ({
+    player,
+    normalized: [player.name, ...(player.identityAliases || [])].map(cleanName)
+  }));
+  const names = candidate => candidate.normalized;
+  return candidates.find(candidate => names(candidate).includes(target))?.player
+    || candidates.find(candidate => names(candidate).some(name => name.endsWith(` ${target}`)))?.player
+    || candidates.find(candidate => names(candidate).some(name => targetTokens.every(token => name.split(" ").includes(token))))?.player
     || candidates.find(candidate => {
       if (targetTokens.length < 2) return false;
-      const candidateTokens = candidate.normalized.split(" ");
-      return targetTokens.every(token => candidateTokens.includes(token)
-        || (token.length <= 3 && candidateTokens.some(candidateToken => candidateToken.startsWith(token))));
+      return names(candidate).some(name => {
+        const candidateTokens = name.split(" ");
+        return targetTokens.every(token => candidateTokens.includes(token)
+          || (token.length <= 3 && candidateTokens.some(candidateToken => candidateToken.startsWith(token))));
+      });
     })?.player
     || null;
 }

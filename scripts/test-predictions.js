@@ -18,9 +18,14 @@ const myComboMd5Path = path.join(root, "data/sources/mycombo-serie-a-2026-27-md-
 const myComboMd5Source = fs.existsSync(myComboMd5Path) ? JSON.parse(fs.readFileSync(myComboMd5Path, "utf8")) : { matches: {} };
 const allMyComboMatches = { ...myComboSource.matches, ...myComboMd2Source.matches, ...myComboMd3Source.matches, ...myComboMd4Source.matches, ...myComboMd5Source.matches };
 const officialLineups = JSON.parse(fs.readFileSync(path.join(root, "data/sources/official-lineups-2026-27.json"), "utf8"));
+const identityAliases = JSON.parse(fs.readFileSync(path.join(root, "data/sources/player-identity-aliases-2026-27.json"), "utf8"));
 const previewMd3Path = path.join(root, "data/generated/prediction-preview-md03-2026-27.json");
 const cleanName = value => String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]/g, "");
-const officialStartersByMatch = new Map(officialLineups.fixtures.map(fixture => [fixture.matchId, new Set(fixture.teams.flatMap(team => team.players.map(player => cleanName(player.currentName || player.sourceName))))]));
+const identitiesById = new Map(identityAliases.players.map(player => [`${player.teamId}:${player.playerId}`, player]));
+const officialStartersByMatch = new Map(officialLineups.fixtures.map(fixture => [fixture.matchId, new Set(fixture.teams.flatMap(team => team.players.flatMap(player => {
+  const identity = identitiesById.get(`${team.teamId}:${player.playerId}`);
+  return [player.currentName, player.sourceName, identity?.canonicalName, ...(identity?.aliases || [])].filter(Boolean).map(cleanName);
+})))]));
 
 if (fs.existsSync(previewMd3Path)) {
   const previewMd3 = JSON.parse(fs.readFileSync(previewMd3Path, "utf8"));
@@ -33,17 +38,19 @@ if (fs.existsSync(previewMd3Path)) {
   assert(previewMd3.predictions.every(prediction => prediction.market.status === "unavailable" && prediction.probabilities.marketNoMargin === null), "L'anteprima MD3 non deve inventare quote");
 }
 
-assert.strictEqual(dataset.predictions.length, 39, "Il motore deve conservare le giornate precedenti e coprire la quinta giornata di Serie A");
+assert.strictEqual(dataset.predictions.length, 49, "Il motore deve conservare le giornate precedenti e coprire la quinta giornata di Serie A");
 const firstMatchdayPredictions = dataset.predictions.filter(prediction => prediction.matchId.endsWith("-md-01"));
 const secondMatchdayPredictions = dataset.predictions.filter(prediction => prediction.matchId.endsWith("-md-02"));
 const fourthMatchdayPredictions = dataset.predictions.filter(prediction => prediction.matchId.endsWith("-md-04"));
 const fifthMatchdayPredictions = dataset.predictions.filter(prediction => prediction.matchId.endsWith("-md-05"));
+const sixthMatchdayPredictions = dataset.predictions.filter(prediction => prediction.matchId.endsWith("-md-06"));
 const romaInterPrediction = fifthMatchdayPredictions.find(prediction => prediction.matchId === "roma-inter-2026-27-md-05");
 const cupPredictions = dataset.predictions.filter(prediction => prediction.matchId.startsWith("r16-"));
 assert.strictEqual(firstMatchdayPredictions.length, 10, "Devono restare disponibili i 10 pronostici archiviati della prima giornata");
 assert.strictEqual(secondMatchdayPredictions.length, 10, "Devono essere disponibili i 10 pronostici tecnici della seconda giornata");
 assert.strictEqual(fourthMatchdayPredictions.length, 9, "Devono restare disponibili i 9 pronostici tecnici pre-partita della quarta giornata");
 assert.strictEqual(fifthMatchdayPredictions.length, 10, "Devono essere disponibili i 10 pronostici tecnici della quinta giornata");
+assert.strictEqual(sixthMatchdayPredictions.length, 10, "Dopo la chiusura della quinta giornata devono essere disponibili i 10 pronostici preliminari della sesta");
 assert.deepStrictEqual(
   [romaInterPrediction.expectedGoals.components.home.lineup.resolved, romaInterPrediction.expectedGoals.components.away.lineup.resolved],
   [11, 11],
@@ -73,9 +80,9 @@ assert.strictEqual(dataset.engine.validation.multiSeason.decision.xgRecommendati
 assert.strictEqual(dataset.engine.promotedTeamModel.attackFactor, 0.51, "Fattore offensivo neopromosse non validato");
 assert.strictEqual(dataset.engine.promotedTeamModel.defenceWeaknessFactor, 1.29, "Fattore difensivo neopromosse non validato");
 assert(dataset.predictions.every(prediction => prediction.dataQuality.missing.some(item => item.includes("meteo"))), "Il meteo non verificabile deve essere dichiarato N/D");
-assert(dataset.predictions.every(prediction => !prediction.dataQuality.missing.some(item => item.includes("indisponibili"))), "Il monitor indisponibili aggiornato deve raggiungere tutte le letture");
+assert(dataset.predictions.filter(prediction => !prediction.matchId.endsWith("-md-06")).every(prediction => !prediction.dataQuality.missing.some(item => item.includes("indisponibili"))), "Il monitor indisponibili aggiornato deve raggiungere tutte le letture archiviate fino alla quinta giornata");
 for (const prediction of dataset.predictions) {
-  if (["-md-04", "-md-05"].some(suffix => prediction.matchId.endsWith(suffix))) assert.strictEqual(prediction.engineVersion, dataset.engine.version, `${prediction.matchId}: deve usare la versione corrente del motore`);
+  if (["-md-04", "-md-05", "-md-06"].some(suffix => prediction.matchId.endsWith(suffix))) assert.strictEqual(prediction.engineVersion, dataset.engine.version, `${prediction.matchId}: deve usare la versione corrente del motore`);
   else assert.strictEqual(prediction.engineVersion, "4.11.0", `${prediction.matchId}: lo snapshot archiviato deve conservare la propria versione`);
   const probabilities = Object.values(prediction.probabilities.final);
   assert.strictEqual(Number(probabilities.reduce((total, value) => total + value, 0).toFixed(1)), 100, `${prediction.matchId}: probabilita 1X2 non esattamente normalizzate`);

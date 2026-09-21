@@ -4,6 +4,7 @@ const fs = require("fs");
 const path = require("path");
 const { ENGINE_VERSION, WEIGHTS, MVP_WEIGHTS, predictMatch } = require("./predictions/engine");
 const { DECISION_LAYER_VERSION, PROFILE_LIMITS, enrichPrediction } = require("./predictions/decision-layer");
+const { loadPlayerIdentities } = require("./player-identity");
 
 const root = path.resolve(__dirname, "..");
 const read = relative => JSON.parse(fs.readFileSync(path.join(root, relative), "utf8"));
@@ -62,6 +63,14 @@ const homeByTeam = byId(standings.homeRows);
 const awayByTeam = byId(standings.awayRows);
 const teamById = new Map(teams.map(team => [team.id, team]));
 const squadsByTeam = new Map(teams.map(team => [team.id, read(`data/generated/team-pages/${team.id}-squad.json`)]));
+const identityRegistry = loadPlayerIdentities(root);
+for (const identity of identityRegistry.payload.players) {
+  const squad = squadsByTeam.get(identity.teamId);
+  if (!squad) continue;
+  const player = squad.players.find(entry => entry.id === identity.playerId);
+  if (player) player.identityAliases = identity.aliases;
+  else squad.players.push({ id: identity.playerId, name: identity.canonicalName, role: null, detailedRole: null, identityAliases: identity.aliases });
+}
 const mvpHistoryByPlayer = new Map(mvpHistory.players.map(player => [player.normalizedName, player]));
 const fantasyHistoryByPlayer = new Map(fantasy.players.map(player => [playerKey(player.name), player]));
 const verifiedCurrentPlayerDisciplineTeams = new Set(["roma"]);

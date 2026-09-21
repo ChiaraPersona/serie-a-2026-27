@@ -4,6 +4,7 @@ const fs = require("fs");
 const path = require("path");
 const assert = require("assert");
 const { parseStatmuseGame } = require("./parse-statmuse-game");
+const { loadPlayerIdentities } = require("./player-identity");
 
 const formationNames = {
   fourThreeThree: "4-3-3",
@@ -44,9 +45,12 @@ const eventMinute = event => event.clock.minute >= 90 ? 90 : event.clock.minute 
 
 function squadResolver(root, teamId) {
   const team = JSON.parse(fs.readFileSync(path.join(root, `data/teams/${teamId}.json`), "utf8"));
+  const identities = loadPlayerIdentities(root);
   const byName = new Map(team.squad.map(player => [normalize(player.name), player]));
   return name => {
     const canonical = canonicalName(name);
+    const verified = identities.resolve(teamId, canonical) || identities.resolve(teamId, name);
+    if (verified) return { id: verified.playerId, name: verified.canonicalName };
     const exact = byName.get(normalize(canonical));
     if (exact) return { id: exact.id, name: exact.name };
     const surname = normalize(canonical.split(/\s+/).at(-1));
