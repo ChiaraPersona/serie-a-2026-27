@@ -1,8 +1,12 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
+import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
 import { settleLeg } from "../js/pages/betting-settlement.mjs";
+
+const require = createRequire(import.meta.url);
+const { calculateStandings } = require("./standings.js");
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const read = file => JSON.parse(fs.readFileSync(path.join(root, file), "utf8"));
@@ -46,8 +50,9 @@ assert.equal(settlement("Rafik Belghali riceve un cartellino · sostituto inclus
 assert.equal(settlement("Arthur Theate riceve un cartellino · sostituto incluso").status, "lost");
 assert.equal(settlement("Zé Pedro riceve un cartellino · sostituto incluso").status, "lost");
 assert.equal(settlement("Christian Kabasele riceve un cartellino · sostituto incluso").status, "lost");
-assert.equal(settlement("Nikola Vlasic almeno 1 tiri · sostituto incluso").status, "unavailable");
-assert.equal(settlement("Keinan Davis almeno 1 tiri in porta · sostituto incluso").status, "unavailable");
+assert.equal(settlement("Nikola Vlasic almeno 1 tiri · sostituto incluso").status, "won");
+assert.equal(settlement("Keinan Davis almeno 1 tiri in porta · sostituto incluso").status, "won");
+assert.equal(settlement("Ridgeciano Haps riceve un cartellino · sostituto incluso").status, "void");
 
 const romaMatch = matchById.get("roma-inter-2026-27-md-05");
 const romaCombo = predictions.find(prediction => prediction.matchId === romaMatch.id).combinations.find(combo => combo.tier === "Safe");
@@ -87,6 +92,11 @@ assert.equal(milanSafe.qualityStatus, "nd");
 assert.equal(milanSafe.legs.length, 0);
 
 const schedinaSummary = legs.map(leg => settleLeg(leg, matchById.get(leg.matchId)).status).reduce((counts, status) => (counts[status] = (counts[status] || 0) + 1, counts), {});
-assert.deepEqual(schedinaSummary, { won: 21, lost: 18, void: 1, unavailable: 5 });
+assert.deepEqual(schedinaSummary, { won: 26, lost: 17, void: 2 });
 
-console.log("Risultati MD05 verificati per tutte le 10 partite; Schedina: 21 vinte, 18 perse, 1 annullata e 5 N/D.");
+const standings = calculateStandings(teams, matches);
+for (const row of standings) for (const field of ["penaltiesFor", "penaltiesAgainst", "cardsFor", "cardsAgainst"]) {
+  assert(Number.isFinite(row[field]), `${row.team}: ${field} non deve essere N/D dopo la chiusura MD5`);
+}
+
+console.log("Risultati MD05 verificati per tutte le 10 partite; Schedina: 26 vinte, 17 perse e 2 annullate; classifica senza N/D disciplinari.");

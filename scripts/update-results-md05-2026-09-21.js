@@ -12,6 +12,10 @@ const overlays = JSON.parse(fs.readFileSync(overlaysPath, "utf8"));
 const retrievedAt = "2026-09-21";
 
 const games = [
+  { matchId: "monza-sassuolo-2026-27-md-05", file: "statmuse-complete-9-18-2026-mon-vs-sas-112126.html", url: "https://www.statmuse.com/fc/match/9-18-2026-mon-vs-sas-112126", home: { slug: "monza", abbr: "MON" }, away: { slug: "sassuolo", abbr: "SAS" } },
+  { matchId: "bologna-torino-2026-27-md-05", file: "statmuse-complete-9-19-2026-bol-vs-tor-112123.html", url: "https://www.statmuse.com/fc/match/9-19-2026-bol-vs-tor-112123", home: { slug: "bologna", abbr: "BOL" }, away: { slug: "torino", abbr: "TOR" } },
+  { matchId: "udinese-cagliari-2026-27-md-05", file: "statmuse-complete-9-20-2026-udi-vs-cag-112122.html", url: "https://www.statmuse.com/fc/match/9-20-2026-udi-vs-cag-112122", home: { slug: "udinese", abbr: "UDI" }, away: { slug: "cagliari", abbr: "CAG" } },
+  { matchId: "roma-inter-2026-27-md-05", file: "statmuse-complete-9-19-2026-rom-vs-int-112119.html", url: "https://www.statmuse.com/fc/match/9-19-2026-rom-vs-int-112119", home: { slug: "roma", abbr: "ROM" }, away: { slug: "inter", abbr: "INT" } },
   { matchId: "venezia-lazio-2026-27-md-05", file: "statmuse-complete-9-20-2026-ven-vs-laz-112124.html", url: "https://www.statmuse.com/fc/match/9-20-2026-ven-vs-laz-112124", home: { slug: "venezia", abbr: "VEN" }, away: { slug: "lazio", abbr: "LAZ" } },
   { matchId: "fiorentina-napoli-2026-27-md-05", file: "statmuse-complete-9-20-2026-fio-vs-nap-112118.html", url: "https://www.statmuse.com/fc/match/9-20-2026-fio-vs-nap-112118", home: { slug: "fiorentina", abbr: "FIO" }, away: { slug: "napoli", abbr: "NAP" } },
   { matchId: "frosinone-como-2026-27-md-05", file: "statmuse-complete-9-20-2026-fro-vs-com-112125.html", url: "https://www.statmuse.com/fc/match/9-20-2026-fro-vs-com-112125", home: { slug: "frosinone", abbr: "FRO" }, away: { slug: "como", abbr: "COM" } },

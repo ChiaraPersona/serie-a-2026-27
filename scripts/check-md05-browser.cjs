@@ -49,6 +49,14 @@ const server = http.createServer((request, response) => {
       assert(!(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth)), `schedina ${width}: overflow`);
       await page.screenshot({ path: path.join(output, `schedina-${width}.png`), fullPage: true });
 
+      await page.goto(`http://127.0.0.1:${server.address().port}/index.html`, { waitUntil: "networkidle" });
+      const currentStandings = page.locator('[data-standings-panel="current"]');
+      assert.equal(await currentStandings.locator("table").count(), 3, `classifica ${width}: viste generale/casa/trasferta mancanti`);
+      assert.equal(await currentStandings.locator("tbody tr").count(), 60, `classifica ${width}: servono 20 squadre per ogni vista`);
+      assert.doesNotMatch(await currentStandings.innerText(), /\bN\/D\b/, `classifica ${width}: sono rimasti valori N/D`);
+      assert(!(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth)), `classifica ${width}: overflow`);
+      await page.locator("#classifiche").screenshot({ path: path.join(output, `classifica-${width}.png`) });
+
       await page.goto(`http://127.0.0.1:${server.address().port}/lettura.html?match=roma-inter-2026-27-md-05`, { waitUntil: "networkidle" });
       const readingText = await page.locator("main").innerText();
       assert.match(readingText, /Formazioni ufficiali/);

@@ -187,6 +187,14 @@ function importStatmuseResult({ root, config }) {
       didNotPlay,
       teamStats: resultTeamStats,
       playerStats: { home: homePlayers, away: awayPlayers },
+      coverage: {
+        teamStats: "complete",
+        playerStats: "complete",
+        participation: "available",
+        bookings: "complete",
+        substitutions: "complete",
+        note: "Referto StatMuse completo: statistiche di squadra e calciatori, impiego, cartellini e sostituzioni disponibili."
+      },
       mvp: null,
       sourceUrl: config.url
     },

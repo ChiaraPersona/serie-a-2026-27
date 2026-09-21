@@ -234,6 +234,8 @@ export function settleLeg(leg,match){
   }
 
   if(leg?.marketScope==="player"||market.includes("GIOCATORE")||market.includes("ASSIST")||market.includes("MARCATORE")){
+    const referencedPlayer=playerNameFromLeg(leg);
+    if(match?.resultCoverage?.participation==="available"&&!playerDuo(match,referencedPlayer))return voided();
     // A verified goal by the named player settles a scorer bet even when
     // the provider has not supplied individual statistics yet.
     if(market.includes("MARCATORE")&&(match.scorers||[]).some(row=>comparableName(row.player)===comparableName(leg.player)&&!row.ownGoal))return resultStatus(selection==="SI");
@@ -256,7 +258,7 @@ export function settleLeg(leg,match){
       if(market.includes("ASSIST"))return resultStatus(selection==="SI"?assists>0:assists===0);
       return resultStatus(selection==="SI"?goals>0:goals===0);
     }
-    const playerName=playerNameFromLeg(leg);
+    const playerName=referencedPlayer;
     const players=playerDuo(match,playerName),goals=players?.reduce((sum,item)=>sum+(finite(item.goals)?Number(item.goals):0),0),assists=players?.reduce((sum,item)=>sum+(finite(item.assists)?Number(item.assists):0),0);
     if(!players&&playerDidNotPlay(match,playerName))return voided();
     if(!players)return unavailable();
