@@ -23,7 +23,10 @@ assert.equal(data.slips.length, 8);
 assert.equal(legs.length, 45);
 assert.equal(Object.keys(source.matches).length, 10);
 assert.equal(sourcePortfolios.filter(portfolio => portfolio.tier === "Safe").length, 10);
-assert(Object.entries(source.matches).filter(([matchId]) => matchById.get(matchId)?.status === "finished").every(([,portfolios]) => portfolios.find(portfolio => portfolio.tier === "Safe").legs.length === 10), "Le MyCombo concluse devono conservare le 10 selezioni storiche");
+assert(Object.entries(source.matches).filter(([matchId]) => matchById.get(matchId)?.status === "finished").every(([,portfolios]) => {
+  const safe = portfolios.find(portfolio => portfolio.tier === "Safe");
+  return safe.status === "N/D" ? !safe.legs.length && Boolean(safe.reason) : safe.legs.length === 10;
+}), "Le MyCombo concluse devono conservare le 10 selezioni storiche oppure l'N/D originario motivato");
 assert(Object.entries(source.matches).filter(([matchId]) => matchById.get(matchId)?.status !== "finished").every(([,portfolios]) => {
   const safe = portfolios.find(portfolio => portfolio.tier === "Safe");
   return safe.status !== "N/D" && safe.legs.length === 10;
@@ -102,6 +105,11 @@ assert(renderer.indexOf("${myCombo}${roundContent") > renderer.indexOf("const my
 for (const prediction of predictions) {
   const combo = prediction.combinations.find(item => item.tier === "Safe");
   const finished = matchById.get(prediction.matchId)?.status === "finished";
+  if (combo?.qualityStatus === "nd") {
+    assert.equal(combo.legs.length, 0, `${prediction.matchId}: una MyCombo N/D non deve contenere eventi`);
+    assert(combo.unavailableReason, `${prediction.matchId}: motivazione N/D assente`);
+    continue;
+  }
   assert.equal(combo?.legs.length, 10, `${prediction.matchId}: ogni MyCombo deve contenere esattamente 10 eventi`);
   assert(combo.legs.every(leg => leg.odds >= 1.15), `${prediction.matchId}: quota MyCombo sotto 1,15`);
   assert(!combo.legs.some(leg => /MONITOR VAR|RIGORE SI\/NO|PRIMA SOSTITUZIONE|PARI\/DISPARI/i.test(leg.market)), `${prediction.matchId}: mercato vietato presente`);

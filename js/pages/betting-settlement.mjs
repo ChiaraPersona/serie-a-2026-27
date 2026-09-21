@@ -5,7 +5,7 @@ const resultStatus=won=>({status:won?"won":"lost",label:won?"Esatto":"Sbagliato"
 const pending=()=>({status:"pending",label:""});
 const unavailable=()=>({status:"unavailable",label:""});
 const voided=()=>({status:"void",label:"Annullata"});
-const comparableName=value=>String(value??"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().trim();
+const comparableName=value=>String(value??"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/\bfloriani mussolini\b/g,"floriani").trim();
 
 function totalStat(match,key){
   const home=match?.teamStats?.home?.[key],away=match?.teamStats?.away?.[key];
@@ -15,9 +15,29 @@ function totalStat(match,key){
 function teamStatFromLabel(leg,match,key){
   const [homeLabel,awayLabel]=String(leg?.fixture??"").split(/\s*[–-]\s*/);
   const label=comparableName(leg?.label);
-  if(homeLabel&&label.startsWith(comparableName(homeLabel)))return match?.teamStats?.home?.[key];
-  if(awayLabel&&label.startsWith(comparableName(awayLabel)))return match?.teamStats?.away?.[key];
+  if(homeLabel&&label.includes(comparableName(homeLabel)))return match?.teamStats?.home?.[key];
+  if(awayLabel&&label.includes(comparableName(awayLabel)))return match?.teamStats?.away?.[key];
   return null;
+}
+
+function teamScoreFromLabel(leg,match){
+  const [homeLabel,awayLabel]=String(leg?.fixture??"").split(/\s*[–-]\s*/);
+  const label=comparableName(`${leg?.variant||""} ${leg?.label||""}`);
+  if(homeLabel&&label.includes(comparableName(homeLabel)))return match?.score?.home;
+  if(awayLabel&&label.includes(comparableName(awayLabel)))return match?.score?.away;
+  return null;
+}
+
+function rangeFromLeg(leg){
+  const values=normalized(`${leg?.selection||""} ${leg?.label||""}`).match(/(?:^|\s)(\d+)-(\d+)(?:\s|$)/);
+  return values?{minimum:Number(values[1]),maximum:Number(values[2])}:null;
+}
+
+function playerNameFromLeg(leg){
+  if(leg?.player)return leg.player;
+  const label=String(leg?.label||"").split(/\s+(?:almeno|riceve|segna|fa assist)\b/i)[0].trim();
+  if(label)return label;
+  return String(leg?.variant||"").split(/\s+(?:U\/O|SEGNA|RICEVE|FA ASSIST)\b/i)[0].trim();
 }
 
 function thresholdFromLabel(label){
@@ -102,6 +122,12 @@ export function settleLeg(leg,match){
     const ranges=selection.match(/^(\d+)-(\d+)\/(\d+)-(\d+)$/)?.slice(1).map(Number);
     if(!ranges)return unavailable();
     return resultStatus(home>=ranges[0]&&home<=ranges[1]&&away>=ranges[2]&&away<=ranges[3]);
+  }
+  if(market==="MULTIGOAL"||market==="MULTIGOAL SQUADRA X"){
+    const range=rangeFromLeg(leg);
+    const actual=market==="MULTIGOAL"?total:teamScoreFromLabel(leg,match);
+    if(!range||!finite(actual))return unavailable();
+    return resultStatus(Number(actual)>=range.minimum&&Number(actual)<=range.maximum);
   }
 
   const outcome=home>away?"1":home<away?"2":"X";
@@ -230,7 +256,7 @@ export function settleLeg(leg,match){
       if(market.includes("ASSIST"))return resultStatus(selection==="SI"?assists>0:assists===0);
       return resultStatus(selection==="SI"?goals>0:goals===0);
     }
-    const playerName=leg?.player||String(leg?.variant||"").split(/\s+U\/O\b/i)[0]||String(leg?.label||"").split(/\s+almeno\b/i)[0];
+    const playerName=playerNameFromLeg(leg);
     const players=playerDuo(match,playerName),goals=players?.reduce((sum,item)=>sum+(finite(item.goals)?Number(item.goals):0),0),assists=players?.reduce((sum,item)=>sum+(finite(item.assists)?Number(item.assists):0),0);
     if(!players&&playerDidNotPlay(match,playerName))return voided();
     if(!players)return unavailable();
@@ -268,6 +294,7 @@ export function settleLeg(leg,match){
     const side=descriptor.includes("SQUADRA 1")?"home":descriptor.includes("SQUADRA 2")?"away":null;
     return period&&side?settleThreshold(selection,period[side],threshold):unavailable();
   }
+  if(market==="U/O SQUADRA X")return settleThreshold(selection,teamScoreFromLabel(leg,match),threshold);
   if(market==="ENTRAMBE ALMENO X CORNER"){
     const minimum=Number(normalized(`${leg?.variant||""} ${leg?.label||""}`).match(/ALMENO\s+(\d+(?:\.\d+)?)/)?.[1]);
     const homeCorners=match?.teamStats?.home?.corners,awayCorners=match?.teamStats?.away?.corners;

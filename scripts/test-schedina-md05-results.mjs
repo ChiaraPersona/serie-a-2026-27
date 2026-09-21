@@ -18,7 +18,13 @@ const expectedResults = new Map([
   ["monza-sassuolo-2026-27-md-05", [2, 1]],
   ["bologna-torino-2026-27-md-05", [1, 1]],
   ["udinese-cagliari-2026-27-md-05", [0, 1]],
-  ["roma-inter-2026-27-md-05", [2, 2]]
+  ["roma-inter-2026-27-md-05", [2, 2]],
+  ["venezia-lazio-2026-27-md-05", [0, 2]],
+  ["fiorentina-napoli-2026-27-md-05", [1, 1]],
+  ["frosinone-como-2026-27-md-05", [2, 0]],
+  ["juventus-atalanta-2026-27-md-05", [2, 0]],
+  ["milan-lecce-2026-27-md-05", [3, 0]],
+  ["parma-genoa-2026-27-md-05", [2, 1]]
 ]);
 
 for (const [matchId, [home, away]] of expectedResults) {
@@ -60,9 +66,14 @@ assert.equal(comboSettlement(caletaCarFouls, monzaMatch), "won", "MyCombo Monza-
 
 const expectedComboSummaries = new Map([
   ["bologna-torino-2026-27-md-05", { won: 6, lost: 3, unavailable: 1 }],
+  ["fiorentina-napoli-2026-27-md-05", { lost: 4, won: 6 }],
+  ["frosinone-como-2026-27-md-05", { won: 6, lost: 4 }],
+  ["juventus-atalanta-2026-27-md-05", { won: 9, lost: 1 }],
   ["monza-sassuolo-2026-27-md-05", { won: 9, lost: 1 }],
+  ["parma-genoa-2026-27-md-05", { won: 5, lost: 5 }],
   ["roma-inter-2026-27-md-05", { won: 9, lost: 1 }],
-  ["udinese-cagliari-2026-27-md-05", { lost: 5, won: 5 }]
+  ["udinese-cagliari-2026-27-md-05", { lost: 5, won: 5 }],
+  ["venezia-lazio-2026-27-md-05", { lost: 5, won: 5 }]
 ]);
 for (const [matchId, expected] of expectedComboSummaries) {
   const match = matchById.get(matchId);
@@ -71,4 +82,11 @@ for (const [matchId, expected] of expectedComboSummaries) {
   assert.deepEqual(summary, expected, `${matchId}: riepilogo MyCombo non coerente con i dati validati`);
 }
 
-console.log("Risultati MD05 verificati per Monza-Sassuolo, Bologna-Torino, Udinese-Cagliari e Roma-Inter; liquidazione Schedina coperta sui mercati disponibili.");
+const milanSafe = predictions.find(prediction => prediction.matchId === "milan-lecce-2026-27-md-05").combinations.find(item => item.tier === "Safe");
+assert.equal(milanSafe.qualityStatus, "nd");
+assert.equal(milanSafe.legs.length, 0);
+
+const schedinaSummary = legs.map(leg => settleLeg(leg, matchById.get(leg.matchId)).status).reduce((counts, status) => (counts[status] = (counts[status] || 0) + 1, counts), {});
+assert.deepEqual(schedinaSummary, { won: 21, lost: 18, void: 1, unavailable: 5 });
+
+console.log("Risultati MD05 verificati per tutte le 10 partite; Schedina: 21 vinte, 18 perse, 1 annullata e 5 N/D.");

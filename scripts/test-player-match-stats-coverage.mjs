@@ -7,7 +7,7 @@ const fields = ["minutes", "goals", "assists", "shots", "shotsOnTarget", "expect
 let playerRows = 0;
 let coveredMatches = 0;
 
-assert.equal(finished.length, 44, "Numero di partite concluse inatteso");
+assert.equal(finished.length, 50, "Numero di partite concluse inatteso");
 for (const match of finished) {
   if (match.resultCoverage?.playerStats === "unavailable") {
     assert.equal(match.playerStats?.home?.length, 0, `${match.id}: dati home N/D non vuoti`);
@@ -29,6 +29,6 @@ for (const match of finished) {
   }
 }
 
-assert.equal(coveredMatches, 42, "Numero di partite con copertura individuale inatteso");
-assert.equal(playerRows, 1338, "Numero di righe calciatore-partita inatteso");
+assert.equal(coveredMatches, 48, "Numero di partite con copertura individuale inatteso");
+assert.equal(playerRows, 1527, "Numero di righe calciatore-partita inatteso");
 console.log(`Copertura individuale completa: ${coveredMatches}/${finished.length} partite, ${playerRows} righe, ${fields.length} metriche senza N/D.`);
