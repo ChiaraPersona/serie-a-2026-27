@@ -32,7 +32,7 @@ const canonicalNames = new Map([
 ]);
 
 const canonicalName = value => canonicalNames.get(value) || value;
-const normalize = value => String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/ł/gi, "l").replace(/đ/gi, "d").toLowerCase().replace(/[^a-z0-9]+/g, "");
+const normalize = value => String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/ł/gi, "l").replace(/đ/gi, "d").replace(/[ıİ]/g, "i").toLowerCase().replace(/[^a-z0-9]+/g, "");
 const slug = value => String(value).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 const stat = (lookup, key, fallback = null) => lookup?.[key]?.value ?? fallback;
 const displayedStat = (lookup, key, fallback = null) => {

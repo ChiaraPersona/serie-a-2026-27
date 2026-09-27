@@ -32,6 +32,6 @@ assert(!legs.some(leg => leg.matchId === "venezia-fiorentina-2026-27-md-04"));
   assert.equal(settlements.length, 44);
   assert(settlements.every(status => ["won", "lost", "void"].includes(status)), "Tutte le selezioni della quarta giornata devono essere liquidate");
   const totals = settlements.reduce((result, status) => ({ ...result, [status]: (result[status] || 0) + 1 }), {});
-  assert.deepEqual(totals, { won: 21, lost: 21, void: 2 });
+  assert.deepEqual(totals, { won: 20, lost: 22, void: 2 });
   console.log(`Schedina MD04 valida: ${data.slips.length} proposte, ${legs.length} selezioni liquidate (${totals.won} vinte, ${totals.lost} perse, ${totals.void} annullate).`);
 })().catch(error=>{console.error(error);process.exitCode=1});

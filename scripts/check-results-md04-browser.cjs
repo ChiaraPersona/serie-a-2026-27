@@ -26,7 +26,10 @@ const server = http.createServer((request, response) => {
       await page.setViewportSize({ width, height: 900 });
 
       await page.goto(`http://127.0.0.1:${server.address().port}/index.html`, { waitUntil: "networkidle" });
-      await page.locator("[data-home-previous-matchday]").click();
+      const matchdayLabel = page.locator("[data-home-matchday-label]");
+      await matchdayLabel.waitFor();
+      while (Number(await matchdayLabel.textContent()) > 4) await page.locator("[data-home-previous-matchday]").click();
+      await page.waitForFunction(() => document.querySelector("[data-home-matchday-label]")?.textContent === "4");
       const home = await page.locator("main").innerText();
       for (const result of [/Como[\s\S]{0,30}2 – 1[\s\S]{0,30}Parma/, /Torino[\s\S]{0,30}0 – 2[\s\S]{0,30}Roma/, /Inter[\s\S]{0,30}5 – 3[\s\S]{0,30}Udinese/]) assert.match(home, result);
       assert(!(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth)), `home ${width}: overflow`);
