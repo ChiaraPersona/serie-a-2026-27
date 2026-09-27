@@ -215,8 +215,9 @@ for (const prediction of dataset.predictions) {
     }
     assert(prediction.likelyBooked.every(candidate => candidate.refereeFactor >= 0.9 && candidate.refereeFactor <= 1.1), `${prediction.matchId}: fattore arbitro fuori bound`);
     assert(prediction.likelyBooked.every(candidate => candidate.duelRisk >= 0.92 && candidate.duelRisk <= 1.12), `${prediction.matchId}: duel risk fuori bound`);
+    assert(prediction.likelyBooked.every(candidate => candidate.opponentDuelEnvironmentFactor >= 0.98 && candidate.opponentDuelEnvironmentFactor <= 1.03), `${prediction.matchId}: ambiente duello squadra fuori bound`);
     assert(prediction.likelyBooked.every(candidate => candidate.teamDisciplineFactor >= 0.95 && candidate.teamDisciplineFactor <= 1.05), `${prediction.matchId}: fattore disciplina squadra fuori bound`);
-    assert(prediction.likelyBooked.filter(candidate => candidate.teamId !== "atalanta").every(candidate => candidate.teamDisciplineFactor === 1), `${prediction.matchId}: il pilot disciplina Atalanta ha contaminato altre squadre`);
+    assert(prediction.likelyBooked.filter(candidate => !["atalanta", "bologna"].includes(candidate.teamId)).every(candidate => candidate.teamDisciplineFactor === 1), `${prediction.matchId}: i profili disciplina hanno contaminato altre squadre`);
     assert(prediction.likelyBooked.every(candidate => candidate.directOpponent || candidate.duelRisk === 1), `${prediction.matchId}: fallback duello incoerente`);
   }
   assert(prediction.mvpCandidate?.name && prediction.mvpCandidate?.teamId, `${prediction.matchId}: candidato MVP assente`);
@@ -232,6 +233,12 @@ for (const prediction of dataset.predictions) {
 const atalantaVeneziaProfile = dataset.predictions.find(prediction => prediction.matchId === "atalanta-venezia-2026-27-md-06");
 assert(atalantaVeneziaProfile?.shooters.allPlayers.some(candidate => candidate.teamId === "venezia" && candidate.teamProfileMatchupFactor > 1), "Atalanta: profilo posizionale non collegato agli avversari");
 assert(atalantaVeneziaProfile.shooters.allPlayers.filter(candidate => candidate.teamId === "atalanta").every(candidate => candidate.teamProfileMatchupFactor === 1), "Atalanta: auto-boost tattico non valido");
+const lecceBolognaProfile = dataset.predictions.find(prediction => prediction.matchId === "lecce-bologna-2026-27-md-06");
+assert(lecceBolognaProfile?.shooters.allPlayers.every(candidate => candidate.teamProfileMatchupFactor === 1), "Bologna: un segnale watch ha prodotto un boost ai tiratori");
+assert(lecceBolognaProfile.shooters.allPlayers.filter(candidate => candidate.teamId === "lecce").every(candidate => candidate.matchupEvidence.some(item => item.includes("watch") || item.includes("non attivo") || item.includes("non disponibile"))), "Bologna: evidenza watch/inactive non esposta ai tiratori avversari");
+assert(lecceBolognaProfile.likelyBooked.some(candidate => candidate.teamId === "bologna" && candidate.teamDisciplineFactor > 1), "Bologna: fattore disciplina regolarizzato non collegato ai giocatori");
+assert(lecceBolognaProfile.likelyBooked.filter(candidate => candidate.teamId === "lecce" && !candidate.directOpponent).every(candidate => candidate.opponentDuelEnvironmentFactor === 1), "Bologna: ambiente falli applicato senza duello diretto");
+assert(dataset.predictions.every(prediction => prediction.likelyBooked.every(candidate => candidate.opponentDuelEnvironmentFactor == null || candidate.opponentDuelEnvironmentFactor === 1 || candidate.directOpponent)), "Ambiente falli squadra applicato senza avversario diretto identificato");
 assert(dataset.predictions.filter(prediction => prediction.playerMarketModelVersion === 2 && !prediction.matchId.includes("atalanta")).every(prediction => prediction.shooters.allPlayers.every(candidate => candidate.teamProfileMatchupFactor === 1)), "Il pilot Atalanta ha contaminato altre squadre");
 assert.strictEqual(fourthMatchdayPredictions.filter(prediction => prediction.scoreForecast.primary.score === "1-0").length, 0, "La quarta giornata non deve ereditare la concentrazione artificiale sugli 1-0");
 const milanVenezia = dataset.predictions.find(prediction => prediction.matchId === "milan-venezia-2026-27-md-02");

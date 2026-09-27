@@ -5,23 +5,36 @@
   "generatedAt": "2026-09-27",
   "methodology": {
     "priorEquivalentMatches": 12,
+    "tacticalPriorEquivalentMatchesAfterCoachChange": 20,
     "upperWinsorQuantile": 0.8,
     "currentSeasonMaturityMatches": 10,
     "teamDisciplineSensitivity": 0.1,
+    "coachEraTacticalWeights": {
+      "closed": 0.35,
+      "active": 1
+    },
+    "watchActivationCriteria": {
+      "minimumEvidenceMatches": 4,
+      "minimumConfidence": "medium-low",
+      "requiresStableDirectionAcrossCoachEra": true,
+      "automaticActivation": false
+    },
     "rules": [
       "La baseline 2025/26 resta il prior e viene letta dai dataset normalizzati esistenti.",
       "Il campione corrente viene derivato dai referti 2026/27 conclusi; i mancanti restano null.",
       "Gli outlier restano nell'evidenza grezza ma la media robusta limita soltanto la coda superiore al percentile 80.",
       "La volatilita riduce la confidence e non aumenta la previsione centrale.",
-      "I modificatori posizionali riallocano il volume squadra senza modificarne il totale."
+      "I modificatori posizionali riallocano il volume squadra senza modificarne il totale.",
+      "I segnali watch non modificano il modello e richiedono revisione esplicita prima di diventare active."
     ]
   },
   "coverage": {
-    "teams": 1,
+    "teams": 2,
     "teamIds": [
-      "atalanta"
+      "atalanta",
+      "bologna"
     ],
-    "scope": "Atalanta pilot; le altre 19 squadre non sono compilate."
+    "scope": "Profili comparabili Atalanta e Bologna; le altre 18 squadre non sono compilate."
   },
   "profiles": [
     {
@@ -33,18 +46,97 @@
         "current": {
           "coach": "Maurizio Sarri",
           "preferredFormation": "4-3-3",
-          "status": "verified-current"
+          "status": "verified-current",
+          "repositoryTeamCoach": "Maurizio Sarri"
         },
         "historicalPrior": {
           "season": "2025-26",
           "formation": "3421",
           "formationAppearances": 34,
           "note": "Il profilo WhoScored 2025/26 e il 3-4-2-1 prevalente sono un prior storico, non una descrizione automatica dell'Atalanta 2026/27."
+        },
+        "currentSeasonRegimes": [
+          {
+            "id": "sarri",
+            "coach": "Maurizio Sarri",
+            "status": "active",
+            "formation": "4-3-3",
+            "matchIds": [
+              "atalanta-sassuolo-2026-27-md-01",
+              "atalanta-bologna-2026-27-md-02",
+              "roma-atalanta-2026-27-md-03",
+              "atalanta-cagliari-2026-27-md-04",
+              "juventus-atalanta-2026-27-md-05"
+            ],
+            "matches": 5,
+            "tacticalConfidence": "medium-low",
+            "tacticalWeightPerMatch": 1,
+            "volumeUse": "retained-for-structural-and-player-baselines",
+            "tacticalUse": "active-era-very-small-sample",
+            "shotsAllowedPerGame": 19.2,
+            "shotsOnTargetAllowedPerGame": 6.2,
+            "possessionPct": 48.4,
+            "insideBoxShotsAllowedPerMatch": 12.6
+          }
+        ],
+        "effectiveTacticalSampleSize": 5,
+        "activeEraTacticalShrinkage": {
+          "priorEquivalentMatches": 20,
+          "shotsAllowedPerGame": {
+            "value": 13.25,
+            "historicalWeight": 0.8,
+            "currentWeight": 0.2,
+            "priorEquivalentMatches": 20
+          },
+          "shotsOnTargetAllowedPerGame": {
+            "value": 4.44,
+            "historicalWeight": 0.8,
+            "currentWeight": 0.2,
+            "priorEquivalentMatches": 20
+          },
+          "possessionPct": {
+            "value": 53.6,
+            "historicalWeight": 0.8,
+            "currentWeight": 0.2,
+            "priorEquivalentMatches": 20
+          },
+          "modelStatus": "diagnostic-prior-not-a-new-baseline"
+        },
+        "regimeWeighting": {
+          "closedEraPerMatch": 0.35,
+          "activeEraPerMatch": 1,
+          "structuralStatisticsRetainAllMatchesAtFullWeight": true,
+          "tacticalStatisticsUseDownweightedClosedEra": true
         }
       },
       "historicalBaseline": {
         "season": "2025-26",
         "matches": 38,
+        "results": {
+          "played": 38,
+          "won": 15,
+          "drawn": 14,
+          "lost": 9,
+          "points": 59,
+          "pointsPerGame": 1.55,
+          "goalsFor": 51,
+          "goalsAgainst": 36,
+          "goalDifference": 15,
+          "cleanSheets": 13,
+          "failedToScore": 8,
+          "winPercentage": 39.5,
+          "drawPercentage": 36.8,
+          "lossPercentage": 23.7,
+          "position": 7,
+          "team": "atalanta",
+          "teamName": "Atalanta",
+          "penaltiesFor": 3,
+          "penaltiesAgainst": 4,
+          "cardsFor": 55,
+          "cardsAgainst": 60,
+          "goalsPerGame": 1.34,
+          "goalsAgainstPerGame": 0.95
+        },
         "shotsForPerGame": 14.789,
         "shotsAllowedPerGame": 11.763,
         "shotsOnTargetForPerGame": 4.605,
@@ -54,11 +146,36 @@
         "possessionPct": 54.9,
         "passAccuracyPct": 84.8,
         "goalsPerGame": 1.34,
+        "homeAwayShotDefense": {
+          "home": {
+            "shotsAllowedPerGame": 10.105,
+            "shotsOnTargetAllowedPerGame": 2.737
+          },
+          "away": {
+            "shotsAllowedPerGame": 13.421,
+            "shotsOnTargetAllowedPerGame": 5.263
+          },
+          "modelStatus": "historical-prior-referenced-by-existing-venue-model-not-assumed-current"
+        },
         "discipline": {
           "matches": 38,
           "foulsCommittedPerGame": 11.842,
           "foulsWonPerGame": 10.263,
-          "yellowCardsPerGame": 1.526
+          "yellowCardsPerGame": 1.526,
+          "totals": {
+            "foulsCommitted": 450,
+            "foulsCommittedPerGame": 11.84,
+            "foulsWon": 390,
+            "foulsWonPerGame": 10.26,
+            "yellowCards": 58,
+            "yellowCardsPerGame": 1.53,
+            "secondYellowCards": 1,
+            "straightRedCards": 1,
+            "dismissals": 2,
+            "penaltiesConceded": 4,
+            "penaltiesWon": 3,
+            "disciplineIndex": 1.66
+          }
         },
         "attackChannels": {
           "left": 16.7,
@@ -80,9 +197,28 @@
         },
         "shotsForPerGame": 11.8,
         "shotsOnTargetForPerGame": 3.4,
+        "shotOnTargetRate": 0.288,
         "cornersForPerGame": 2.8,
         "possessionPct": 48.4,
         "passAccuracyPct": 87.8
+      },
+      "attackProjectionContext": {
+        "shots": {
+          "historicalPerGame": 14.789,
+          "currentPerGame": 11.8,
+          "shrunkPerGame": 13.91
+        },
+        "shotsOnTarget": {
+          "historicalPerGame": 4.605,
+          "currentPerGame": 3.4,
+          "shrunkPerGame": 4.251
+        },
+        "shotOnTargetRate": {
+          "current": 0.288,
+          "historical": 0.311,
+          "modelStatus": "diagnostic-only-separate-shot-and-sot-projections"
+        },
+        "modelStatus": "existing-team-volume-engine-remains-authoritative"
       },
       "shotDefense": {
         "shotsAllowed": {
@@ -150,10 +286,11 @@
           "insideBox": 63,
           "outsideBox": 33,
           "insideBoxShare": 0.656,
+          "insideBoxShotsAllowedPerMatch": 12.6,
           "sampleSize": 5,
           "confidence": "medium",
           "sourceType": "derived",
-          "verificationStatus": "partially-verified",
+          "verificationStatus": "estimated-or-partially-verified",
           "evidence": [
             {
               "matchId": "atalanta-sassuolo-2026-27-md-01",
@@ -195,12 +332,112 @@
               "status": "derived-verified"
             }
           ]
+        },
+        "opponentShotRoleDistribution": {
+          "taxonomy": [
+            "CF",
+            "W",
+            "AM",
+            "CM",
+            "DM",
+            "FB",
+            "CB"
+          ],
+          "shotsByRole": {
+            "CF": 17,
+            "W": 13,
+            "AM": 35,
+            "CM": 18,
+            "DM": 0,
+            "FB": 5,
+            "CB": 8
+          },
+          "shareByRole": {
+            "CF": 0.1771,
+            "W": 0.1354,
+            "AM": 0.3646,
+            "CM": 0.1875,
+            "DM": 0,
+            "FB": 0.0521,
+            "CB": 0.0833
+          },
+          "mappedShots": 96,
+          "unmappedShots": 0,
+          "sampleSize": 5,
+          "sourceType": "derived-from-player-match-stats-and-roster-roles",
+          "confidence": "low",
+          "modelStatus": "evidence-only",
+          "roleConcentrationIndex": {
+            "method": "normalized-HHI",
+            "value": 0.0987,
+            "range": [
+              0,
+              1
+            ],
+            "interpretation": "0 = volume distribuito uniformemente; 1 = volume concentrato su un solo ruolo",
+            "modelWeight": 0
+          }
         }
       },
       "vulnerabilities": {
+        "signals": {
+          "totalShotVulnerability": {
+            "level": "elevated",
+            "status": "active",
+            "confidence": "medium-low",
+            "sampleSize": 5,
+            "season": "2026-27",
+            "modelEffect": "classification-only"
+          },
+          "sotVulnerability": {
+            "level": "elevated",
+            "status": "active",
+            "confidence": "medium-low",
+            "sampleSize": 5,
+            "season": "2026-27",
+            "modelEffect": "classification-only"
+          },
+          "boxPenetration": {
+            "level": "high",
+            "status": "active",
+            "confidence": "medium",
+            "sampleSize": 5,
+            "season": "2026-27",
+            "modelEffect": "classification-only"
+          },
+          "centralForwardShotAccess": {
+            "level": "possible",
+            "status": "active",
+            "confidence": "low",
+            "evidenceMatches": 5,
+            "sampleSize": 5,
+            "season": "2026-27",
+            "modelEffect": "active-through-positional-policy"
+          },
+          "secondLineShotAccess": {
+            "level": "elevated",
+            "status": "active",
+            "confidence": "medium-low",
+            "evidenceMatches": 5,
+            "sampleSize": 5,
+            "season": "2026-27",
+            "modelEffect": "active-through-positional-policy"
+          },
+          "territorialPressureSensitivity": {
+            "level": "elevated",
+            "status": "watch",
+            "confidence": "medium-low",
+            "evidenceMatches": 5,
+            "sampleSize": 5,
+            "season": "2026-27",
+            "modelEffect": "none"
+          }
+        },
         "boxPenetration": {
           "insideBoxShare": 0.656,
+          "insideBoxShotsAllowedPerMatch": 12.6,
           "level": "high",
+          "status": "active",
           "sampleSize": 5,
           "confidence": "medium",
           "sourceType": "derived",
@@ -208,6 +445,7 @@
         },
         "territorialPressure": {
           "level": "elevated",
+          "status": "watch",
           "sampleSize": 5,
           "confidence": "medium-low",
           "possessionVsShotsAllowedCorrelation": -0.775,
@@ -217,10 +455,11 @@
         },
         "secondLineShooters": {
           "level": "elevated",
+          "status": "active",
           "sampleSize": 5,
           "confidence": "medium-low",
           "modelStatus": "active-positional-allocation",
-          "note": "Segnale distribuito fra ali, trequartisti, centrocampisti e alcuni terzini; non equivale a debolezza definitiva contro un singolo ruolo."
+          "note": "Segnale distribuito fra ali, trequartisti e centrocampisti; non equivale a debolezza definitiva contro un singolo ruolo."
         },
         "positionalShotVulnerability": {
           "CF": {
@@ -228,6 +467,7 @@
             "confidence": "low",
             "maxBoostPct": 5,
             "minimumBaselineShots90": 1.5,
+            "status": "active",
             "active": true,
             "sampleSize": 5,
             "season": "2026-27",
@@ -242,6 +482,7 @@
             "confidence": "medium-low",
             "maxBoostPct": 8,
             "minimumBaselineShots90": 1,
+            "status": "active",
             "active": true,
             "sampleSize": 5,
             "season": "2026-27",
@@ -256,6 +497,7 @@
             "confidence": "medium-low",
             "maxBoostPct": 8,
             "minimumBaselineShots90": 1,
+            "status": "active",
             "active": true,
             "sampleSize": 5,
             "season": "2026-27",
@@ -270,6 +512,7 @@
             "confidence": "medium-low",
             "maxBoostPct": 6,
             "minimumBaselineShots90": 1.3,
+            "status": "active",
             "active": true,
             "sampleSize": 5,
             "season": "2026-27",
@@ -284,6 +527,7 @@
             "confidence": "low",
             "maxBoostPct": 3,
             "minimumBaselineShots90": 0.7,
+            "status": "active",
             "active": true,
             "sampleSize": 5,
             "season": "2026-27",
@@ -298,6 +542,7 @@
             "confidence": "low",
             "maxBoostPct": 0,
             "minimumBaselineShots90": null,
+            "status": "inactive",
             "active": false,
             "sampleSize": 5,
             "season": "2026-27",
@@ -328,9 +573,16 @@
         },
         "shrunk": {
           "foulsCommittedPerGame": 11.183,
+          "foulsWonPerGame": 10.186,
           "yellowCardsPerGame": 1.312,
           "foulShrinkage": {
             "value": 11.183,
+            "historicalWeight": 0.706,
+            "currentWeight": 0.294,
+            "priorEquivalentMatches": 12
+          },
+          "foulsWonShrinkage": {
+            "value": 10.186,
             "historicalWeight": 0.706,
             "currentWeight": 0.294,
             "priorEquivalentMatches": 12
@@ -343,7 +595,13 @@
           }
         },
         "modelFactor": 0.991,
-        "modelStatus": "available-for-card-context-with-shrinkage"
+        "modelStatus": "available-for-card-context-with-shrinkage",
+        "foulIntensity": {
+          "level": "unclassified",
+          "status": "inactive",
+          "confidence": "low",
+          "directDuelEnvironmentFactor": 1
+        }
       },
       "corners": {
         "historicalForPerGame": 5.684,
@@ -374,23 +632,37 @@
         "overall": "medium-low",
         "sampleSize": 5,
         "maturityWeight": 0.5,
-        "reason": "Cinque gare, cambio allenatore/modulo e forte dispersione dei volumi concessi."
+        "effectiveTacticalSampleSize": 5,
+        "reason": "Cinque gare e forte dispersione dei volumi concessi."
       },
       "modelPolicy": {
         "active": [
+          "totalShotVulnerability",
+          "sotVulnerability",
+          "boxPenetration",
+          "centralForwardShotAccess",
+          "secondLineShotAccess",
           "positional-shot-allocation"
         ],
-        "experimental": [
-          "box-penetration",
-          "territorial-pressure",
-          "corner-pressure-link"
+        "watch": [
+          "territorialPressureSensitivity"
         ],
+        "inactive": [
+          "role-CB"
+        ],
+        "watchActivationCriteria": {
+          "minimumEvidenceMatches": 4,
+          "minimumConfidence": "medium-low",
+          "requiresStableDirectionAcrossCoachEra": true,
+          "automaticActivation": false
+        },
         "inactiveForCentralTeamVolume": true
       },
       "dataQuality": {
         "status": "partial-current-season",
         "internalMatchStats": "verified",
-        "shotLocation": "partially-verified",
+        "missingStatisticPolicy": "null-never-zero",
+        "shotLocation": "estimated-or-partially-verified",
         "missing": [
           "field tilt",
           "tocchi in area strutturati per tutte le gare",
@@ -403,6 +675,683 @@
         "Volumi 2025/26 letti da data/normalized/team-volume-profiles-2025-26.json.",
         "Stile e modulo storico letti da data/normalized/team-style-profiles.json.",
         "Distribuzione posizionale preliminare ricostruita sui tiratori avversari delle prime cinque giornate."
+      ]
+    },
+    {
+      "teamId": "bologna",
+      "teamName": "Bologna",
+      "season": "2026-27",
+      "sampleSize": 5,
+      "tacticalContext": {
+        "current": {
+          "coach": "Raffaele Palladino",
+          "preferredFormation": "3-4-2-1 / 3-4-3",
+          "status": "verified-current",
+          "repositoryTeamCoach": "Domenico Tedesco"
+        },
+        "historicalPrior": {
+          "season": "2025-26",
+          "formation": "4231",
+          "formationAppearances": 27,
+          "note": "Il 4-2-3-1 e i canali offensivi 2025/26 sono un prior storico. Le prime quattro gare 2026/27 appartengono a Tedesco; Bologna-Torino e la sola gara Palladino disponibile."
+        },
+        "currentSeasonRegimes": [
+          {
+            "id": "tedesco",
+            "coach": "Domenico Tedesco",
+            "status": "closed",
+            "formation": "4-2-3-1",
+            "matchIds": [
+              "bologna-lazio-2026-27-md-01",
+              "atalanta-bologna-2026-27-md-02",
+              "bologna-sassuolo-2026-27-md-03",
+              "napoli-bologna-2026-27-md-04"
+            ],
+            "matches": 4,
+            "tacticalConfidence": "medium",
+            "tacticalWeightPerMatch": 0.35,
+            "volumeUse": "retained-for-structural-and-player-baselines",
+            "tacticalUse": "downweighted-after-coach-change",
+            "shotsAllowedPerGame": 11.5,
+            "shotsOnTargetAllowedPerGame": 3.5,
+            "possessionPct": 55.5,
+            "insideBoxShotsAllowedPerMatch": 7
+          },
+          {
+            "id": "palladino",
+            "coach": "Raffaele Palladino",
+            "status": "active",
+            "formation": "3-4-2-1 / 3-4-3",
+            "matchIds": [
+              "bologna-torino-2026-27-md-05"
+            ],
+            "matches": 1,
+            "tacticalConfidence": "very-low",
+            "tacticalWeightPerMatch": 1,
+            "volumeUse": "retained-for-structural-and-player-baselines",
+            "tacticalUse": "active-era-very-small-sample",
+            "shotsAllowedPerGame": 14,
+            "shotsOnTargetAllowedPerGame": 3,
+            "possessionPct": 40,
+            "insideBoxShotsAllowedPerMatch": 9
+          }
+        ],
+        "effectiveTacticalSampleSize": 2.4,
+        "activeEraTacticalShrinkage": {
+          "priorEquivalentMatches": 20,
+          "shotsAllowedPerGame": {
+            "value": 10.416,
+            "historicalWeight": 0.952,
+            "currentWeight": 0.048,
+            "priorEquivalentMatches": 20
+          },
+          "shotsOnTargetAllowedPerGame": {
+            "value": 3.677,
+            "historicalWeight": 0.952,
+            "currentWeight": 0.048,
+            "priorEquivalentMatches": 20
+          },
+          "possessionPct": {
+            "value": 54.286,
+            "historicalWeight": 0.952,
+            "currentWeight": 0.048,
+            "priorEquivalentMatches": 20
+          },
+          "modelStatus": "diagnostic-prior-not-a-new-baseline"
+        },
+        "regimeWeighting": {
+          "closedEraPerMatch": 0.35,
+          "activeEraPerMatch": 1,
+          "structuralStatisticsRetainAllMatchesAtFullWeight": true,
+          "tacticalStatisticsUseDownweightedClosedEra": true
+        }
+      },
+      "historicalBaseline": {
+        "season": "2025-26",
+        "matches": 38,
+        "results": {
+          "played": 38,
+          "won": 16,
+          "drawn": 8,
+          "lost": 14,
+          "points": 56,
+          "pointsPerGame": 1.47,
+          "goalsFor": 49,
+          "goalsAgainst": 46,
+          "goalDifference": 3,
+          "cleanSheets": 12,
+          "failedToScore": 11,
+          "winPercentage": 42.1,
+          "drawPercentage": 21.1,
+          "lossPercentage": 36.8,
+          "position": 8,
+          "team": "bologna",
+          "teamName": "Bologna",
+          "penaltiesFor": 7,
+          "penaltiesAgainst": 4,
+          "cardsFor": 75,
+          "cardsAgainst": 69,
+          "goalsPerGame": 1.29,
+          "goalsAgainstPerGame": 1.21
+        },
+        "shotsForPerGame": 12.895,
+        "shotsAllowedPerGame": 10.237,
+        "shotsOnTargetForPerGame": 3.816,
+        "shotsOnTargetAllowedPerGame": 3.711,
+        "cornersForPerGame": 4.474,
+        "cornersAllowedPerGame": 4.316,
+        "possessionPct": 55,
+        "passAccuracyPct": 83.1,
+        "goalsPerGame": 1.29,
+        "homeAwayShotDefense": {
+          "home": {
+            "shotsAllowedPerGame": 8.842,
+            "shotsOnTargetAllowedPerGame": 3.263
+          },
+          "away": {
+            "shotsAllowedPerGame": 11.632,
+            "shotsOnTargetAllowedPerGame": 4.158
+          },
+          "modelStatus": "historical-prior-referenced-by-existing-venue-model-not-assumed-current"
+        },
+        "discipline": {
+          "matches": 38,
+          "foulsCommittedPerGame": 13.184,
+          "foulsWonPerGame": 14.632,
+          "yellowCardsPerGame": 1.658,
+          "totals": {
+            "foulsCommitted": 501,
+            "foulsCommittedPerGame": 13.18,
+            "foulsWon": 556,
+            "foulsWonPerGame": 14.63,
+            "yellowCards": 63,
+            "yellowCardsPerGame": 1.66,
+            "secondYellowCards": 2,
+            "straightRedCards": 4,
+            "dismissals": 6,
+            "penaltiesConceded": 4,
+            "penaltiesWon": 7,
+            "disciplineIndex": 2.08
+          }
+        },
+        "attackChannels": {
+          "left": 61.8,
+          "central": 11.8,
+          "right": 26.5,
+          "dominant": "left"
+        },
+        "tacticalProfileStatus": "historical-prior"
+      },
+      "currentSeason": {
+        "matches": 5,
+        "record": {
+          "wins": 0,
+          "draws": 2,
+          "losses": 3,
+          "goalsFor": 3,
+          "goalsAgainst": 6,
+          "cleanSheets": 0
+        },
+        "shotsForPerGame": 13.4,
+        "shotsOnTargetForPerGame": 3.2,
+        "shotOnTargetRate": 0.239,
+        "cornersForPerGame": 4.2,
+        "possessionPct": 52.4,
+        "passAccuracyPct": 87
+      },
+      "attackProjectionContext": {
+        "shots": {
+          "historicalPerGame": 12.895,
+          "currentPerGame": 13.4,
+          "shrunkPerGame": 13.044
+        },
+        "shotsOnTarget": {
+          "historicalPerGame": 3.816,
+          "currentPerGame": 3.2,
+          "shrunkPerGame": 3.635
+        },
+        "shotOnTargetRate": {
+          "current": 0.239,
+          "historical": 0.296,
+          "modelStatus": "diagnostic-only-separate-shot-and-sot-projections"
+        },
+        "modelStatus": "existing-team-volume-engine-remains-authoritative"
+      },
+      "shotDefense": {
+        "shotsAllowed": {
+          "mean": 12,
+          "median": 14,
+          "variance": 12.4,
+          "standardDeviation": 3.521,
+          "min": 6,
+          "max": 15,
+          "sampleSize": 5,
+          "historicalMean": 10.237,
+          "robustCurrentMean": 12,
+          "robustMethod": "upper-winsor-p80",
+          "upperCap": 15,
+          "shrunkMean": 10.756,
+          "shrinkage": {
+            "value": 10.756,
+            "historicalWeight": 0.706,
+            "currentWeight": 0.294,
+            "priorEquivalentMatches": 12
+          },
+          "rawValues": [
+            10,
+            6,
+            15,
+            15,
+            14
+          ],
+          "outliers": []
+        },
+        "shotsOnTargetAllowed": {
+          "mean": 3.4,
+          "median": 3,
+          "variance": 1.84,
+          "standardDeviation": 1.356,
+          "min": 2,
+          "max": 6,
+          "sampleSize": 5,
+          "historicalMean": 3.711,
+          "robustCurrentMean": 2.92,
+          "robustMethod": "upper-winsor-p80",
+          "upperCap": 3.6,
+          "shrunkMean": 3.478,
+          "shrinkage": {
+            "value": 3.478,
+            "historicalWeight": 0.706,
+            "currentWeight": 0.294,
+            "priorEquivalentMatches": 12
+          },
+          "rawValues": [
+            3,
+            2,
+            6,
+            3,
+            3
+          ]
+        },
+        "shotLocation": {
+          "insideBox": 37,
+          "outsideBox": 23,
+          "insideBoxShare": 0.617,
+          "insideBoxShotsAllowedPerMatch": 7.4,
+          "sampleSize": 5,
+          "confidence": "low",
+          "sourceType": "derived",
+          "verificationStatus": "estimated-or-partially-verified",
+          "evidence": [
+            {
+              "matchId": "bologna-lazio-2026-27-md-01",
+              "insideBox": 6,
+              "outsideBox": 4,
+              "status": "estimated",
+              "sourceType": "derived"
+            },
+            {
+              "matchId": "atalanta-bologna-2026-27-md-02",
+              "insideBox": 4,
+              "outsideBox": 2,
+              "status": "estimated",
+              "sourceType": "derived"
+            },
+            {
+              "matchId": "bologna-sassuolo-2026-27-md-03",
+              "insideBox": 9,
+              "outsideBox": 6,
+              "status": "estimated",
+              "sourceType": "derived"
+            },
+            {
+              "matchId": "napoli-bologna-2026-27-md-04",
+              "insideBox": 9,
+              "outsideBox": 6,
+              "status": "estimated",
+              "sourceType": "estimated",
+              "note": "Il referto interno contiene 15 tiri Napoli; il valore fuori area e riallineato a 6 rispetto alla ricostruzione preliminare circa 14/9/5."
+            },
+            {
+              "matchId": "bologna-torino-2026-27-md-05",
+              "insideBox": 9,
+              "outsideBox": 5,
+              "status": "estimated",
+              "sourceType": "derived"
+            }
+          ]
+        },
+        "opponentShotRoleDistribution": {
+          "taxonomy": [
+            "CF",
+            "W",
+            "AM",
+            "CM",
+            "DM",
+            "FB",
+            "CB"
+          ],
+          "shotsByRole": {
+            "CF": 4,
+            "W": 13,
+            "AM": 19,
+            "CM": 12,
+            "DM": 1,
+            "FB": 5,
+            "CB": 6
+          },
+          "shareByRole": {
+            "CF": 0.0667,
+            "W": 0.2167,
+            "AM": 0.3167,
+            "CM": 0.2,
+            "DM": 0.0167,
+            "FB": 0.0833,
+            "CB": 0.1
+          },
+          "mappedShots": 60,
+          "unmappedShots": 0,
+          "sampleSize": 5,
+          "sourceType": "derived-from-player-match-stats-and-roster-roles",
+          "confidence": "low",
+          "modelStatus": "evidence-only",
+          "roleConcentrationIndex": {
+            "method": "normalized-HHI",
+            "value": 0.0771,
+            "range": [
+              0,
+              1
+            ],
+            "interpretation": "0 = volume distribuito uniformemente; 1 = volume concentrato su un solo ruolo",
+            "modelWeight": 0
+          }
+        }
+      },
+      "vulnerabilities": {
+        "signals": {
+          "totalShotVulnerability": {
+            "level": "normal",
+            "status": "active",
+            "confidence": "medium",
+            "sampleSize": 5,
+            "season": "2026-27",
+            "modelEffect": "classification-only"
+          },
+          "sotVulnerability": {
+            "level": "normal",
+            "status": "active",
+            "confidence": "medium",
+            "sampleSize": 5,
+            "season": "2026-27",
+            "modelEffect": "classification-only"
+          },
+          "boxPenetration": {
+            "level": "normal",
+            "status": "active",
+            "confidence": "medium",
+            "sampleSize": 5,
+            "season": "2026-27",
+            "modelEffect": "classification-only"
+          },
+          "centralForwardShotAccess": {
+            "level": "possible",
+            "status": "watch",
+            "coachEra": "palladino",
+            "confidence": "very-low",
+            "evidenceMatches": 1,
+            "sourceType": "derived",
+            "sampleSize": 5,
+            "season": "2026-27",
+            "modelEffect": "none"
+          },
+          "secondLineShotAccess": {
+            "level": "possible",
+            "status": "watch",
+            "confidence": "low",
+            "evidenceMatches": 5,
+            "sourceType": "derived",
+            "sampleSize": 5,
+            "season": "2026-27",
+            "modelEffect": "none"
+          },
+          "territorialPressureSensitivity": {
+            "level": "unconfirmed",
+            "status": "watch",
+            "confidence": "very-low",
+            "evidenceMatches": 1,
+            "sourceType": "derived",
+            "sampleSize": 5,
+            "season": "2026-27",
+            "modelEffect": "none"
+          }
+        },
+        "boxPenetration": {
+          "insideBoxShare": 0.617,
+          "insideBoxShotsAllowedPerMatch": 7.4,
+          "level": "normal",
+          "status": "active",
+          "sampleSize": 5,
+          "confidence": "medium",
+          "sourceType": "derived",
+          "modelStatus": "evidence-only"
+        },
+        "territorialPressure": {
+          "level": "unconfirmed",
+          "status": "watch",
+          "sampleSize": 5,
+          "confidence": "very-low",
+          "possessionVsShotsAllowedCorrelation": -0.506,
+          "fieldTilt": null,
+          "causalClaim": false,
+          "modelStatus": "experimental"
+        },
+        "secondLineShooters": {
+          "level": "possible",
+          "status": "watch",
+          "sampleSize": 5,
+          "confidence": "low",
+          "modelStatus": "watch-no-model-effect",
+          "note": "Segnale distribuito fra ali, trequartisti e centrocampisti; non equivale a debolezza definitiva contro un singolo ruolo."
+        },
+        "positionalShotVulnerability": {
+          "CF": {
+            "level": "possible",
+            "confidence": "very-low",
+            "maxBoostPct": 0,
+            "minimumBaselineShots90": 1.5,
+            "status": "watch",
+            "active": false,
+            "sampleSize": 5,
+            "season": "2026-27",
+            "sourceType": "derived-positional-evidence",
+            "confidenceWeight": 0.15,
+            "maturityWeight": 0.5,
+            "volatilityDiscount": 0.93,
+            "effectiveMaxBoostPct": 0
+          },
+          "W": {
+            "level": "normal",
+            "confidence": "low",
+            "maxBoostPct": 0,
+            "minimumBaselineShots90": 1,
+            "status": "watch",
+            "active": false,
+            "sampleSize": 5,
+            "season": "2026-27",
+            "sourceType": "derived-positional-evidence",
+            "confidenceWeight": 0.3,
+            "maturityWeight": 0.5,
+            "volatilityDiscount": 0.93,
+            "effectiveMaxBoostPct": 0
+          },
+          "AM": {
+            "level": "possible",
+            "confidence": "low",
+            "maxBoostPct": 0,
+            "minimumBaselineShots90": 1,
+            "status": "watch",
+            "active": false,
+            "sampleSize": 5,
+            "season": "2026-27",
+            "sourceType": "derived-positional-evidence",
+            "confidenceWeight": 0.3,
+            "maturityWeight": 0.5,
+            "volatilityDiscount": 0.93,
+            "effectiveMaxBoostPct": 0
+          },
+          "CM": {
+            "level": "possible",
+            "confidence": "low",
+            "maxBoostPct": 0,
+            "minimumBaselineShots90": 1.3,
+            "status": "watch",
+            "active": false,
+            "sampleSize": 5,
+            "season": "2026-27",
+            "sourceType": "derived-positional-evidence",
+            "confidenceWeight": 0.3,
+            "maturityWeight": 0.5,
+            "volatilityDiscount": 0.93,
+            "effectiveMaxBoostPct": 0
+          },
+          "DM": {
+            "level": "possible",
+            "confidence": "low",
+            "maxBoostPct": 0,
+            "minimumBaselineShots90": 0.8,
+            "status": "watch",
+            "active": false,
+            "sampleSize": 5,
+            "season": "2026-27",
+            "sourceType": "derived-positional-evidence",
+            "confidenceWeight": 0.3,
+            "maturityWeight": 0.5,
+            "volatilityDiscount": 0.93,
+            "effectiveMaxBoostPct": 0
+          },
+          "FB": {
+            "level": "normal",
+            "confidence": "low",
+            "maxBoostPct": 0,
+            "minimumBaselineShots90": 0.7,
+            "status": "inactive",
+            "active": false,
+            "sampleSize": 5,
+            "season": "2026-27",
+            "sourceType": "derived-positional-evidence",
+            "confidenceWeight": 0.3,
+            "maturityWeight": 0.5,
+            "volatilityDiscount": 0.93,
+            "effectiveMaxBoostPct": 0
+          },
+          "CB": {
+            "level": "normal",
+            "confidence": "low",
+            "maxBoostPct": 0,
+            "minimumBaselineShots90": null,
+            "status": "inactive",
+            "active": false,
+            "sampleSize": 5,
+            "season": "2026-27",
+            "sourceType": "derived-positional-evidence",
+            "confidenceWeight": 0.3,
+            "maturityWeight": 0.5,
+            "volatilityDiscount": 0.93,
+            "effectiveMaxBoostPct": 0
+          }
+        }
+      },
+      "discipline": {
+        "historical": {
+          "matches": 38,
+          "foulsCommittedPerGame": 13.184,
+          "foulsWonPerGame": 14.632,
+          "yellowCardsPerGame": 1.658
+        },
+        "current": {
+          "matches": 5,
+          "foulsCommitted": 73,
+          "foulsCommittedPerGame": 14.6,
+          "foulsWon": 64,
+          "foulsWonPerGame": 12.8,
+          "yellowCards": 8,
+          "yellowCardsPerGame": 1.6,
+          "straightRedCards": 0
+        },
+        "shrunk": {
+          "foulsCommittedPerGame": 13.6,
+          "foulsWonPerGame": 14.093,
+          "yellowCardsPerGame": 1.641,
+          "foulShrinkage": {
+            "value": 13.6,
+            "historicalWeight": 0.706,
+            "currentWeight": 0.294,
+            "priorEquivalentMatches": 12
+          },
+          "foulsWonShrinkage": {
+            "value": 14.093,
+            "historicalWeight": 0.706,
+            "currentWeight": 0.294,
+            "priorEquivalentMatches": 12
+          },
+          "yellowCardShrinkage": {
+            "value": 1.641,
+            "historicalWeight": 0.706,
+            "currentWeight": 0.294,
+            "priorEquivalentMatches": 12
+          }
+        },
+        "modelFactor": 1.001,
+        "modelStatus": "available-for-card-context-with-shrinkage",
+        "foulIntensity": {
+          "level": "high",
+          "status": "active",
+          "confidence": "medium-high",
+          "directDuelMaxImpactPct": 2,
+          "evidenceWeight": 0.782,
+          "directDuelEnvironmentFactor": 1.0141,
+          "application": "only-when-an-individual-direct-opponent-is-identified"
+        }
+      },
+      "corners": {
+        "historicalForPerGame": 4.474,
+        "currentForPerGame": 4.2,
+        "shrunkForPerGame": 4.393,
+        "historicalAllowedPerGame": 4.316,
+        "currentAllowed": {
+          "mean": 6,
+          "median": 6,
+          "variance": 8.4,
+          "standardDeviation": 2.898,
+          "min": 1,
+          "max": 10,
+          "sampleSize": 5
+        },
+        "territorialPressureLink": {
+          "status": "experimental",
+          "reason": "Cinque gare non consentono di stimare separatamente una relazione stabile."
+        }
+      },
+      "volatility": {
+        "shotsAllowed": "medium",
+        "shotsOnTargetAllowed": "high",
+        "effect": "confidence-and-uncertainty-only",
+        "changesCentralMean": false
+      },
+      "confidence": {
+        "overall": "low",
+        "sampleSize": 5,
+        "maturityWeight": 0.5,
+        "effectiveTacticalSampleSize": 2.4,
+        "reason": "Cinque gare divise fra due allenatori; la nuova era Palladino contiene una sola partita."
+      },
+      "modelPolicy": {
+        "active": [
+          "totalShotVulnerability",
+          "sotVulnerability",
+          "boxPenetration"
+        ],
+        "watch": [
+          "centralForwardShotAccess",
+          "secondLineShotAccess",
+          "territorialPressureSensitivity",
+          "role-CF",
+          "role-W",
+          "role-AM",
+          "role-CM",
+          "role-DM"
+        ],
+        "inactive": [
+          "role-FB",
+          "role-CB"
+        ],
+        "watchActivationCriteria": {
+          "minimumEvidenceMatches": 4,
+          "minimumConfidence": "medium-low",
+          "requiresStableDirectionAcrossCoachEra": true,
+          "automaticActivation": false
+        },
+        "inactiveForCentralTeamVolume": true
+      },
+      "dataQuality": {
+        "status": "partial-current-season",
+        "internalMatchStats": "verified",
+        "missingStatisticPolicy": "null-never-zero",
+        "shotLocation": "estimated-or-partially-verified",
+        "missing": [
+          "field tilt",
+          "tocchi in area strutturati per tutte le gare",
+          "zone tiro native nel dataset interno",
+          "ingressi in area individuali",
+          "coach prior Palladino affidabile e separabile dal contesto della squadra precedente"
+        ]
+      },
+      "evidence": [
+        "Cinque referti StatMuse 2026/27 presenti in data/normalized/matches.json: 60 tiri e 17 tiri in porta concessi.",
+        "Le prime quattro gare appartengono a Domenico Tedesco; Bologna-Torino e la prima gara di campionato con Raffaele Palladino.",
+        "Volumi 2025/26 e split casa/trasferta letti da data/normalized/team-volume-profiles-2025-26.json.",
+        "Risultati e disciplina 2025/26 letti da data/teams/bologna.json; stile storico da data/normalized/team-style-profiles.json.",
+        "Le zone di tiro sono stime derivate e non dati nativi del provider interno."
       ]
     }
   ]

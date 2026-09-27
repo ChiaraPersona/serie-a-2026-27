@@ -2,6 +2,32 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Profili matchup squadra Serie A",
   "type": "object",
+  "$defs": {
+    "signalStatus": { "type": "string", "enum": ["active", "watch", "inactive"] },
+    "confidence": { "type": "string", "enum": ["very-low", "low", "medium-low", "medium", "medium-high", "high"] },
+    "signal": {
+      "type": "object",
+      "required": ["level", "status", "confidence"],
+      "properties": {
+        "level": { "type": "string" },
+        "status": { "$ref": "#/$defs/signalStatus" },
+        "confidence": { "$ref": "#/$defs/confidence" },
+        "evidenceMatches": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "coachEra": {
+      "type": "object",
+      "required": ["id", "coach", "status", "matches", "tacticalConfidence", "tacticalWeightPerMatch"],
+      "properties": {
+        "id": { "type": "string" },
+        "coach": { "type": "string" },
+        "status": { "type": "string", "enum": ["active", "closed"] },
+        "matches": { "type": "integer", "minimum": 1 },
+        "tacticalConfidence": { "$ref": "#/$defs/confidence" },
+        "tacticalWeightPerMatch": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    }
+  },
   "required": ["schemaVersion", "competition", "season", "generatedAt", "methodology", "coverage", "profiles"],
   "properties": {
     "schemaVersion": { "const": 1 },
@@ -21,7 +47,59 @@
       "minItems": 1,
       "items": {
         "type": "object",
-        "required": ["teamId", "season", "sampleSize", "historicalBaseline", "currentSeason", "shotDefense", "vulnerabilities", "discipline", "corners", "volatility", "confidence", "dataQuality", "modelPolicy", "evidence"]
+        "required": ["teamId", "season", "sampleSize", "tacticalContext", "historicalBaseline", "currentSeason", "shotDefense", "vulnerabilities", "discipline", "corners", "volatility", "confidence", "dataQuality", "modelPolicy", "evidence"],
+        "properties": {
+          "tacticalContext": {
+            "type": "object",
+            "required": ["current", "historicalPrior", "currentSeasonRegimes", "effectiveTacticalSampleSize"],
+            "properties": {
+              "currentSeasonRegimes": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/coachEra" } },
+              "effectiveTacticalSampleSize": { "type": "number", "minimum": 0 }
+            }
+          },
+          "shotDefense": {
+            "type": "object",
+            "required": ["shotsAllowed", "shotsOnTargetAllowed", "shotLocation", "opponentShotRoleDistribution"],
+            "properties": {
+              "shotLocation": {
+                "type": "object",
+                "required": ["insideBox", "outsideBox", "insideBoxShare", "insideBoxShotsAllowedPerMatch", "sourceType"],
+                "properties": {
+                  "insideBoxShare": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+                  "insideBoxShotsAllowedPerMatch": { "type": ["number", "null"], "minimum": 0 }
+                }
+              },
+              "opponentShotRoleDistribution": {
+                "type": "object",
+                "required": ["taxonomy", "shotsByRole", "shareByRole", "roleConcentrationIndex", "modelStatus"]
+              }
+            }
+          },
+          "vulnerabilities": {
+            "type": "object",
+            "required": ["signals", "positionalShotVulnerability"],
+            "properties": {
+              "signals": { "type": "object", "additionalProperties": { "$ref": "#/$defs/signal" } },
+              "positionalShotVulnerability": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "object",
+                  "required": ["level", "status", "confidence", "active", "effectiveMaxBoostPct"],
+                  "properties": {
+                    "status": { "$ref": "#/$defs/signalStatus" },
+                    "confidence": { "$ref": "#/$defs/confidence" },
+                    "active": { "type": "boolean" },
+                    "effectiveMaxBoostPct": { "type": "number", "minimum": 0 }
+                  }
+                }
+              }
+            }
+          },
+          "modelPolicy": {
+            "type": "object",
+            "required": ["active", "watch", "inactive", "watchActivationCriteria", "inactiveForCentralTeamVolume"]
+          }
+        }
       }
     }
   }

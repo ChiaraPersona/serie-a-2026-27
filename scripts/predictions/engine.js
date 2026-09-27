@@ -586,6 +586,12 @@ function matchupRole(candidate) {
 function teamProfilePlayerModifier(candidate, baselineShots90, opponentTeamMatchupProfile) {
   const role = matchupRole(candidate);
   const policy = role ? opponentTeamMatchupProfile?.vulnerabilities?.positionalShotVulnerability?.[role] : null;
+  if (policy?.status === "watch") return {
+    factor: 1,
+    role,
+    confidence: policy.confidence || null,
+    evidence: [`profilo ${role} in watch: segnale osservato senza effetto sul modello`]
+  };
   if (policy && !policy.active) return {
     factor: 1,
     role,
@@ -830,8 +836,8 @@ function bookingCandidates(homeTeam, awayTeam, homeSquad, awaySquad, homeProfile
   const awayPlayers = lineupPlayers(awayTeam, awaySquad);
   const referee = refereeCardFactor(refereeProfile, refereeLeagueAverage);
   const rows = [
-    ...homePlayers.map(candidate => ({ ...candidate, opponentProfile: awayProfile, opponents: awayPlayers, currentDiscipline: homeCurrentDiscipline, teamMatchupProfile: homeTeamMatchupProfile })),
-    ...awayPlayers.map(candidate => ({ ...candidate, opponentProfile: homeProfile, opponents: homePlayers, currentDiscipline: awayCurrentDiscipline, teamMatchupProfile: awayTeamMatchupProfile }))
+    ...homePlayers.map(candidate => ({ ...candidate, opponentProfile: awayProfile, opponents: awayPlayers, currentDiscipline: homeCurrentDiscipline, teamMatchupProfile: homeTeamMatchupProfile, opponentTeamMatchupProfile: awayTeamMatchupProfile })),
+    ...awayPlayers.map(candidate => ({ ...candidate, opponentProfile: homeProfile, opponents: homePlayers, currentDiscipline: awayCurrentDiscipline, teamMatchupProfile: awayTeamMatchupProfile, opponentTeamMatchupProfile: homeTeamMatchupProfile }))
   ].filter(candidate => candidate.role !== "Portiere").map(candidate => {
     const per90 = candidate.player?.previousSeason?.totals?.per90 || {};
     const minutes = candidate.player?.previousSeason?.totals?.minutes || 0;
@@ -851,9 +857,10 @@ function bookingCandidates(homeTeam, awayTeam, homeSquad, awaySquad, homeProfile
     const channelLoad = facedChannel / 100 * 1.15 + (candidate.opponentProfile?.playingStyle || []).some(item => item.id === "aggressivi") * 0.14;
     const directOpponent = directDuel(candidate, candidate.opponents);
     const duelRisk = directOpponent ? round(clamp(1 + (directOpponent.foulsWonPer90 - 1.25) * 0.09, 0.92, 1.12), 3) : 1;
+    const opponentDuelEnvironmentFactor = directOpponent ? clamp(candidate.opponentTeamMatchupProfile?.discipline?.foulIntensity?.directDuelEnvironmentFactor ?? 1, 0.98, 1.03) : 1;
     const teamDisciplineFactor = clamp(candidate.teamMatchupProfile?.discipline?.modelFactor ?? 1, 0.95, 1.05);
     const historicalRaw = roleBase + observed * (0.55 + reliability * 0.45) + channelLoad;
-    const raw = historicalRaw * duelRisk * referee.factor * teamDisciplineFactor;
+    const raw = historicalRaw * duelRisk * opponentDuelEnvironmentFactor * referee.factor * teamDisciplineFactor;
     const riskScore = Math.round(clamp(raw * 19, 12, 88));
     const evidence = [];
     if (per90.cards != null) evidence.push(`${round(estimatedCards, 2)} cartellini/90${current?.minutes ? " stimati" : ""}`);
@@ -875,18 +882,20 @@ function bookingCandidates(homeTeam, awayTeam, homeSquad, awaySquad, homeProfile
         currentSeasonWeight: round(currentWeight, 3),
         attackChannelLoad: round(channelLoad, 3),
         duelRisk,
+        opponentDuelEnvironmentFactor: round(opponentDuelEnvironmentFactor, 3),
         refereeFactor: referee.factor,
         teamDisciplineFactor: round(teamDisciplineFactor, 3)
       },
       directOpponent: directOpponent?.name || null,
       opponentFoulsWonPer90: directOpponent?.foulsWonPer90 ?? null,
       duelRisk,
+      opponentDuelEnvironmentFactor: round(opponentDuelEnvironmentFactor, 3),
       duelEvidence,
       refereeFactor: referee.factor,
       refereeEvidence: referee.evidence,
       teamDisciplineFactor: round(teamDisciplineFactor, 3),
       teamDisciplineEvidence: candidate.teamMatchupProfile ? [`profilo squadra regolarizzato: ${candidate.teamMatchupProfile.discipline.shrunk.foulsCommittedPerGame} falli e ${candidate.teamMatchupProfile.discipline.shrunk.yellowCardsPerGame} gialli/gara`] : ["profilo squadra specifico N/D: fattore neutro"],
-      evidence: [...evidence, ...duelEvidence, ...referee.evidence, ...(candidate.teamMatchupProfile ? [`fattore disciplina squadra ${round(teamDisciplineFactor, 3)}`] : [])],
+      evidence: [...evidence, ...duelEvidence, ...(opponentDuelEnvironmentFactor !== 1 ? [`ambiente falli avversario applicato solo al duello diretto: ${round(opponentDuelEnvironmentFactor, 3)}`] : []), ...referee.evidence, ...(candidate.teamMatchupProfile ? [`fattore disciplina squadra ${round(teamDisciplineFactor, 3)}`] : [])],
       dataStatus: current?.foulsCommittedCoverage ? "verified-history-current" : playerDataStatus(candidate, minutes)
     };
   }).sort((a, b) => b.riskScore - a.riskScore || a.name.localeCompare(b.name, "it"));
