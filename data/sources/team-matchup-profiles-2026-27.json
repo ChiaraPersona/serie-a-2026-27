@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "competition": "serie-a",
+  "season": "2026-27",
+  "methodology": {
+    "priorEquivalentMatches": 12,
+    "upperWinsorQuantile": 0.8,
+    "currentSeasonMaturityMatches": 10,
+    "teamDisciplineSensitivity": 0.1,
+    "rules": [
+      "La baseline 2025/26 resta il prior e viene letta dai dataset normalizzati esistenti.",
+      "Il campione corrente viene derivato dai referti 2026/27 conclusi; i mancanti restano null.",
+      "Gli outlier restano nell'evidenza grezza ma la media robusta limita soltanto la coda superiore al percentile 80.",
+      "La volatilita riduce la confidence e non aumenta la previsione centrale.",
+      "I modificatori posizionali riallocano il volume squadra senza modificarne il totale."
+    ]
+  },
+  "profiles": [
+    {
+      "teamId": "atalanta",
+      "currentTacticalContext": {
+        "coach": "Maurizio Sarri",
+        "preferredFormation": "4-3-3",
+        "status": "verified-current",
+        "historicalPriorNote": "Il profilo WhoScored 2025/26 e il 3-4-2-1 prevalente sono un prior storico, non una descrizione automatica dell'Atalanta 2026/27."
+      },
+      "shotLocationEvidence": [
+        { "matchId": "atalanta-sassuolo-2026-27-md-01", "insideBox": 12, "outsideBox": 10, "status": "derived-verified" },
+        { "matchId": "atalanta-bologna-2026-27-md-02", "insideBox": 10, "outsideBox": 6, "status": "derived-verified" },
+        { "matchId": "roma-atalanta-2026-27-md-03", "insideBox": 28, "outsideBox": 11, "insideBoxRange": [27, 28], "outsideBoxRange": [11, 12], "status": "partial-estimate", "note": "Le fonti ricostruite divergono fra 27/12 e 28/11; il dataset interno non espone la zona del tiro." },
+        { "matchId": "atalanta-cagliari-2026-27-md-04", "insideBox": 3, "outsideBox": 2, "status": "derived-verified" },
+        { "matchId": "juventus-atalanta-2026-27-md-05", "insideBox": 10, "outsideBox": 4, "status": "derived-verified" }
+      ],
+      "positionalShotVulnerability": {
+        "CF": { "level": "normal-to-elevated", "confidence": "low", "maxBoostPct": 5, "minimumBaselineShots90": 1.5, "active": true },
+        "W": { "level": "elevated", "confidence": "medium-low", "maxBoostPct": 8, "minimumBaselineShots90": 1, "active": true },
+        "AM": { "level": "elevated", "confidence": "medium-low", "maxBoostPct": 8, "minimumBaselineShots90": 1, "active": true },
+        "CM": { "level": "elevated", "confidence": "medium-low", "maxBoostPct": 6, "minimumBaselineShots90": 1.3, "active": true },
+        "FB": { "level": "possible", "confidence": "low", "maxBoostPct": 3, "minimumBaselineShots90": 0.7, "active": true },
+        "CB": { "level": "unconfirmed", "confidence": "low", "maxBoostPct": 0, "minimumBaselineShots90": null, "active": false }
+      },
+      "evidence": [
+        "Cinque referti StatMuse 2026/27 presenti in data/normalized/matches.json.",
+        "Volumi 2025/26 letti da data/normalized/team-volume-profiles-2025-26.json.",
+        "Stile e modulo storico letti da data/normalized/team-style-profiles.json.",
+        "Distribuzione posizionale preliminare ricostruita sui tiratori avversari delle prime cinque giornate."
+      ]
+    }
+  ]
+}

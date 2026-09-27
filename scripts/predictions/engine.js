@@ -572,7 +572,49 @@ function opponentShotConcession(volumeProfile, venue) {
   return sample?.matches ? sample.mean : null;
 }
 
-function playerMatchup(candidate, teamProfile, opponentProfile, opponentVolumeProfile, venue) {
+function matchupRole(candidate) {
+  const detail = cleanName(candidate.detailedRole);
+  if (/centravanti|prima punta|punta centrale|attaccante centrale/.test(detail)) return "CF";
+  if (/seconda punta|trequartista/.test(detail)) return "AM";
+  if (/ala/.test(detail) || (candidate.role === "Attaccante" && /esterno/.test(detail))) return "W";
+  if (/terzino/.test(detail) || (candidate.role === "Difensore" && /esterno/.test(detail))) return "FB";
+  if (/difensore centrale|centrale difensivo/.test(detail)) return "CB";
+  if (candidate.role === "Centrocampista" && (!detail || /centrocampista|centrale|mediano|mezzala|interno/.test(detail))) return "CM";
+  return null;
+}
+
+function teamProfilePlayerModifier(candidate, baselineShots90, opponentTeamMatchupProfile) {
+  const role = matchupRole(candidate);
+  const policy = role ? opponentTeamMatchupProfile?.vulnerabilities?.positionalShotVulnerability?.[role] : null;
+  if (policy && !policy.active) return {
+    factor: 1,
+    role,
+    confidence: policy.confidence || null,
+    evidence: [`profilo ${role} sperimentale o non attivo`]
+  };
+  if (policy && !(baselineShots90 >= policy.minimumBaselineShots90)) return {
+    factor: 1,
+    role,
+    confidence: policy.confidence || null,
+    evidence: [`profilo ${role} non applicato: baseline ${round(baselineShots90, 2)} sotto soglia ${policy.minimumBaselineShots90}`]
+  };
+  if (!policy) return {
+    factor: 1,
+    role,
+    confidence: null,
+    evidence: ["profilo posizionale specifico non disponibile"]
+  };
+  const baselineEligibility = clamp(baselineShots90 / policy.minimumBaselineShots90, 0, 1);
+  const boostPct = policy.effectiveMaxBoostPct * baselineEligibility;
+  return {
+    factor: round(1 + boostPct / 100, 4),
+    role,
+    confidence: policy.confidence,
+    evidence: [`profilo ${role} vs ${opponentTeamMatchupProfile.teamName}: +${round(boostPct, 2)}%`, `confidence ${policy.confidence}, campione ${policy.sampleSize}, volatilita ${opponentTeamMatchupProfile.volatility.shotsAllowed}`]
+  };
+}
+
+function playerMatchup(candidate, teamProfile, opponentProfile, opponentVolumeProfile, venue, baselineShots90, opponentTeamMatchupProfile) {
   const side = playerSide(candidate);
   const channels = attackChannels(teamProfile);
   const channelShare = channels[side] / 100;
@@ -599,7 +641,17 @@ function playerMatchup(candidate, teamProfile, opponentProfile, opponentVolumePr
     factor *= volumeFactor;
     evidence.push(`${round(conceded, 1)} tiri concessi/gara nel campione di sede`);
   } else evidence.push("volume concesso N/D: componente neutra");
-  return { matchupFactor: round(clamp(factor, 0.82, 1.18), 3), matchupEvidence: evidence, side };
+  const genericMatchupFactor = round(clamp(factor, 0.82, 1.18), 3);
+  const teamSpecific = teamProfilePlayerModifier(candidate, baselineShots90, opponentTeamMatchupProfile);
+  return {
+    matchupFactor: round(clamp(genericMatchupFactor * teamSpecific.factor, 0.82, 1.18), 3),
+    genericMatchupFactor,
+    teamProfileMatchupFactor: teamSpecific.factor,
+    teamProfileRole: teamSpecific.role,
+    teamProfileConfidence: teamSpecific.confidence,
+    matchupEvidence: [...evidence, ...teamSpecific.evidence],
+    side
+  };
 }
 
 function reconcilePlayerVolumes(rows, key, teamCentral, capKey = null) {
@@ -617,7 +669,11 @@ function reconcilePlayerVolumes(rows, key, teamCentral, capKey = null) {
       for (const item of eligible) values[item.index] += missing * item.room / room;
     }
   }
-  rows.forEach((row, index) => { row[key] = round(values[index], 2); row.teamScaling = round(teamScaling, 3); });
+  rows.forEach((row, index) => {
+    row[key] = round(values[index], 2);
+    row[`${key}TeamScaling`] = round(teamScaling, 3);
+    if (key === "projectedShots") row.teamScaling = round(teamScaling, 3);
+  });
 }
 
 function playerDataStatus(candidate, minutes) {
@@ -627,11 +683,11 @@ function playerDataStatus(candidate, minutes) {
   return "limited-history";
 }
 
-function shooterCandidates(homeTeam, awayTeam, homeSquad, awaySquad, teamProjections, oddsEvent, homeProfile, awayProfile, homeVolume, awayVolume, homeCurrentPlayers, awayCurrentPlayers) {
+function shooterCandidates(homeTeam, awayTeam, homeSquad, awaySquad, teamProjections, oddsEvent, homeProfile, awayProfile, homeVolume, awayVolume, homeCurrentPlayers, awayCurrentPlayers, homeTeamMatchupProfile, awayTeamMatchupProfile) {
   const rows = [];
-  for (const [team, squad, venue, teamProfile, opponentProfile, opponentVolume, currentPlayers] of [
-    [homeTeam, homeSquad, "home", homeProfile, awayProfile, awayVolume, homeCurrentPlayers],
-    [awayTeam, awaySquad, "away", awayProfile, homeProfile, homeVolume, awayCurrentPlayers]
+  for (const [team, squad, venue, teamProfile, opponentProfile, opponentVolume, currentPlayers, opponentTeamMatchupProfile] of [
+    [homeTeam, homeSquad, "home", homeProfile, awayProfile, awayVolume, homeCurrentPlayers, awayTeamMatchupProfile],
+    [awayTeam, awaySquad, "away", awayProfile, homeProfile, homeVolume, awayCurrentPlayers, homeTeamMatchupProfile]
   ]) {
     const candidates = lineupPlayers(team, squad);
     const projection = teamProjections.find(item => item.teamId === team.id);
@@ -643,9 +699,9 @@ function shooterCandidates(homeTeam, awayTeam, homeSquad, awaySquad, teamProject
       const per90 = totals.per90 || {};
       const current = currentPlayers?.[candidate.player?.id] || currentPlayers?.[cleanName(candidate.name)] || null;
       const minutes = expectedMinutes(candidate, current);
-      const matchup = playerMatchup(candidate, teamProfile, opponentProfile, opponentVolume, venue);
       const shotBase = item.value;
       const sotBase = sotV1[index]?.value || 0;
+      const matchup = playerMatchup(candidate, teamProfile, opponentProfile, opponentVolume, venue, shotBase, opponentTeamMatchupProfile);
       return {
         name: candidate.player?.name || candidate.name,
         lineupName: candidate.name,
@@ -658,12 +714,18 @@ function shooterCandidates(homeTeam, awayTeam, homeSquad, awaySquad, teamProject
         side: matchup.side,
         projectedShotsV1: item.projection,
         projectedShotsOnTargetV1: sotV1[index]?.projection || 0,
+        projectedShotsV2Base: shotBase * matchup.genericMatchupFactor * minutes.minutesFactor,
+        projectedShotsOnTargetV2Base: sotBase * matchup.genericMatchupFactor * minutes.minutesFactor,
         projectedShots: shotBase * matchup.matchupFactor * minutes.minutesFactor,
         projectedShotsOnTarget: sotBase * matchup.matchupFactor * minutes.minutesFactor,
         baselineShots90: round(shotBase, 2),
         baselineShotsOnTarget90: round(sotBase, 2),
         matchupAdjustedShots90: round(shotBase * matchup.matchupFactor, 2),
         matchupFactor: matchup.matchupFactor,
+        genericMatchupFactor: matchup.genericMatchupFactor,
+        teamProfileMatchupFactor: matchup.teamProfileMatchupFactor,
+        teamProfileRole: matchup.teamProfileRole,
+        teamProfileConfidence: matchup.teamProfileConfidence,
         matchupEvidence: matchup.matchupEvidence,
         expectedMinutes: minutes.expectedMinutes,
         minutesFactor: minutes.minutesFactor,
@@ -679,6 +741,8 @@ function shooterCandidates(homeTeam, awayTeam, homeSquad, awaySquad, teamProject
         }
       };
     });
+    reconcilePlayerVolumes(teamRows, "projectedShotsV2Base", projection?.shotsTotal?.central);
+    reconcilePlayerVolumes(teamRows, "projectedShotsOnTargetV2Base", projection?.shotsOnTarget?.central, "projectedShotsV2Base");
     reconcilePlayerVolumes(teamRows, "projectedShots", projection?.shotsTotal?.central);
     reconcilePlayerVolumes(teamRows, "projectedShotsOnTarget", projection?.shotsOnTarget?.central, "projectedShots");
     for (const row of teamRows) {
@@ -761,13 +825,13 @@ function refereeCardFactor(profile, leagueAverage) {
   };
 }
 
-function bookingCandidates(homeTeam, awayTeam, homeSquad, awaySquad, homeProfile, awayProfile, homeCurrentDiscipline, awayCurrentDiscipline, refereeProfile, refereeLeagueAverage) {
+function bookingCandidates(homeTeam, awayTeam, homeSquad, awaySquad, homeProfile, awayProfile, homeCurrentDiscipline, awayCurrentDiscipline, refereeProfile, refereeLeagueAverage, homeTeamMatchupProfile, awayTeamMatchupProfile) {
   const homePlayers = lineupPlayers(homeTeam, homeSquad);
   const awayPlayers = lineupPlayers(awayTeam, awaySquad);
   const referee = refereeCardFactor(refereeProfile, refereeLeagueAverage);
   const rows = [
-    ...homePlayers.map(candidate => ({ ...candidate, opponentProfile: awayProfile, opponents: awayPlayers, currentDiscipline: homeCurrentDiscipline })),
-    ...awayPlayers.map(candidate => ({ ...candidate, opponentProfile: homeProfile, opponents: homePlayers, currentDiscipline: awayCurrentDiscipline }))
+    ...homePlayers.map(candidate => ({ ...candidate, opponentProfile: awayProfile, opponents: awayPlayers, currentDiscipline: homeCurrentDiscipline, teamMatchupProfile: homeTeamMatchupProfile })),
+    ...awayPlayers.map(candidate => ({ ...candidate, opponentProfile: homeProfile, opponents: homePlayers, currentDiscipline: awayCurrentDiscipline, teamMatchupProfile: awayTeamMatchupProfile }))
   ].filter(candidate => candidate.role !== "Portiere").map(candidate => {
     const per90 = candidate.player?.previousSeason?.totals?.per90 || {};
     const minutes = candidate.player?.previousSeason?.totals?.minutes || 0;
@@ -787,8 +851,9 @@ function bookingCandidates(homeTeam, awayTeam, homeSquad, awaySquad, homeProfile
     const channelLoad = facedChannel / 100 * 1.15 + (candidate.opponentProfile?.playingStyle || []).some(item => item.id === "aggressivi") * 0.14;
     const directOpponent = directDuel(candidate, candidate.opponents);
     const duelRisk = directOpponent ? round(clamp(1 + (directOpponent.foulsWonPer90 - 1.25) * 0.09, 0.92, 1.12), 3) : 1;
+    const teamDisciplineFactor = clamp(candidate.teamMatchupProfile?.discipline?.modelFactor ?? 1, 0.95, 1.05);
     const historicalRaw = roleBase + observed * (0.55 + reliability * 0.45) + channelLoad;
-    const raw = historicalRaw * duelRisk * referee.factor;
+    const raw = historicalRaw * duelRisk * referee.factor * teamDisciplineFactor;
     const riskScore = Math.round(clamp(raw * 19, 12, 88));
     const evidence = [];
     if (per90.cards != null) evidence.push(`${round(estimatedCards, 2)} cartellini/90${current?.minutes ? " stimati" : ""}`);
@@ -810,7 +875,8 @@ function bookingCandidates(homeTeam, awayTeam, homeSquad, awaySquad, homeProfile
         currentSeasonWeight: round(currentWeight, 3),
         attackChannelLoad: round(channelLoad, 3),
         duelRisk,
-        refereeFactor: referee.factor
+        refereeFactor: referee.factor,
+        teamDisciplineFactor: round(teamDisciplineFactor, 3)
       },
       directOpponent: directOpponent?.name || null,
       opponentFoulsWonPer90: directOpponent?.foulsWonPer90 ?? null,
@@ -818,7 +884,9 @@ function bookingCandidates(homeTeam, awayTeam, homeSquad, awaySquad, homeProfile
       duelEvidence,
       refereeFactor: referee.factor,
       refereeEvidence: referee.evidence,
-      evidence: [...evidence, ...duelEvidence, ...referee.evidence],
+      teamDisciplineFactor: round(teamDisciplineFactor, 3),
+      teamDisciplineEvidence: candidate.teamMatchupProfile ? [`profilo squadra regolarizzato: ${candidate.teamMatchupProfile.discipline.shrunk.foulsCommittedPerGame} falli e ${candidate.teamMatchupProfile.discipline.shrunk.yellowCardsPerGame} gialli/gara`] : ["profilo squadra specifico N/D: fattore neutro"],
+      evidence: [...evidence, ...duelEvidence, ...referee.evidence, ...(candidate.teamMatchupProfile ? [`fattore disciplina squadra ${round(teamDisciplineFactor, 3)}`] : [])],
       dataStatus: current?.foulsCommittedCoverage ? "verified-history-current" : playerDataStatus(candidate, minutes)
     };
   }).sort((a, b) => b.riskScore - a.riskScore || a.name.localeCompare(b.name, "it"));
@@ -1563,6 +1631,7 @@ function predictMatch(input) {
     status: "preliminary",
     engineVersion: ENGINE_VERSION,
     playerMarketModelVersion: PLAYER_MARKET_MODEL_VERSION,
+    teamMatchupProfileVersion: 1,
     probabilities: {
       final: probabilityObject(final),
       marketNoMargin: market ? probabilityObject(market.probabilities) : null,
@@ -1584,8 +1653,8 @@ function predictMatch(input) {
     surprise,
     matchProjection,
     teamProjections,
-    shooters: shooterCandidates(input.homeTeam, input.awayTeam, input.homeSquad, input.awaySquad, teamProjections, input.oddsEvent, input.homeProfile, input.awayProfile, input.homeVolume, input.awayVolume, input.homeCurrentPlayers, input.awayCurrentPlayers),
-    likelyBooked: bookingCandidates(input.homeTeam, input.awayTeam, input.homeSquad, input.awaySquad, input.homeProfile, input.awayProfile, input.homeCurrentDiscipline, input.awayCurrentDiscipline, input.refereeProfile, input.refereeLeagueAverage),
+    shooters: shooterCandidates(input.homeTeam, input.awayTeam, input.homeSquad, input.awaySquad, teamProjections, input.oddsEvent, input.homeProfile, input.awayProfile, input.homeVolume, input.awayVolume, input.homeCurrentPlayers, input.awayCurrentPlayers, input.homeTeamMatchupProfile, input.awayTeamMatchupProfile),
+    likelyBooked: bookingCandidates(input.homeTeam, input.awayTeam, input.homeSquad, input.awaySquad, input.homeProfile, input.awayProfile, input.homeCurrentDiscipline, input.awayCurrentDiscipline, input.refereeProfile, input.refereeLeagueAverage, input.homeTeamMatchupProfile, input.awayTeamMatchupProfile),
     mvpCandidate: mvpCandidate(input.homeTeam, input.awayTeam, input.homeSquad, input.awaySquad, input.homeProfile, input.awayProfile, final, expected, input.mvpHistory, input.fantasyHistory, input.mvpSourceUrl),
     scenarios: matchScenarios(input, final, expected),
     marketComparison: evaluatedMarkets.rows,

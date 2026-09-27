@@ -22,6 +22,7 @@ const understatXg = read("data/normalized/understat-serie-a-xg.json");
 const mvpHistory = read("data/sources/player-mvp-history-2025-26.json");
 const fantasy = read("data/generated/fantacalcio-advice.json");
 const volumeProfiles = read("data/normalized/team-volume-profiles-2025-26.json");
+const teamMatchupProfiles = read("data/normalized/team-matchup-profiles-2026-27.json");
 const refereeAggregates = read("data/generated/referee-stats/2025-26/aggregates.json");
 const officialLineups = read("data/sources/official-lineups-2026-27.json");
 const predictionArchiveFiles = fs.readdirSync(path.join(root, "data", "sources"))
@@ -75,6 +76,7 @@ for (const identity of identityRegistry.payload.players) {
 const mvpHistoryByPlayer = new Map(mvpHistory.players.map(player => [player.normalizedName, player]));
 const fantasyHistoryByPlayer = new Map(fantasy.players.map(player => [playerKey(player.name), player]));
 const volumeByTeam = byId(volumeProfiles.profiles);
+const teamMatchupByTeam = byId(teamMatchupProfiles.profiles);
 const refereeRows = refereeAggregates.referees.filter(row => row.competition === "serie-a" && row.stage === "regular-season");
 const refereeBySlug = new Map(refereeRows.map(row => [row.refereeSlug, row]));
 const refereeLeagueAverage = {
@@ -268,6 +270,8 @@ const generatedPredictions = targetMatches.map(match => {
     awayCurrentDiscipline: currentPlayerPerformance(match.awayTeam, match),
     homeCurrentPlayers: currentPlayerPerformance(match.homeTeam, match),
     awayCurrentPlayers: currentPlayerPerformance(match.awayTeam, match),
+    homeTeamMatchupProfile: teamMatchupByTeam.get(match.homeTeam) || null,
+    awayTeamMatchupProfile: teamMatchupByTeam.get(match.awayTeam) || null,
     refereeProfile: refereeBySlug.get(match.refereeAssignment?.referee?.slug) || null,
     refereeLeagueAverage,
     mvpHistory: mvpHistoryByPlayer,
@@ -344,6 +348,7 @@ const output = {
   engine: {
     version: ENGINE_VERSION,
     playerMarketModelVersion: PLAYER_MARKET_MODEL_VERSION,
+    teamMatchupProfileVersion: teamMatchupProfiles.schemaVersion,
     principle: "Un'unica matrice dei punteggi indipendente dalle quote genera 1X2, gol e mercati collegati.",
     weights: WEIGHTS,
     surpriseFactor: "Apertura della gara, probabilita dell'esito sfavorito, divergenza mercato-dati e incompletezza prepartita. Non determina da solo il verdetto.",

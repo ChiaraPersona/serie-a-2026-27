@@ -193,6 +193,7 @@ for (const prediction of dataset.predictions) {
     assert(prediction.shooters.outsiders.length >= 2, `${prediction.matchId}: ranking outsider insufficiente`);
     for (const candidate of prediction.shooters.allPlayers) {
       assert(candidate.matchupFactor >= 0.82 && candidate.matchupFactor <= 1.18, `${prediction.matchId}/${candidate.name}: matchup fuori bound`);
+      assert(candidate.teamProfileMatchupFactor >= 1 && candidate.teamProfileMatchupFactor <= 1.03, `${prediction.matchId}/${candidate.name}: profilo squadra troppo aggressivo`);
       assert(candidate.expectedMinutes >= 55 && candidate.expectedMinutes <= 90, `${prediction.matchId}/${candidate.name}: minuti attesi non validi`);
       assert(["low", "medium", "high"].includes(candidate.substitutionRisk), `${prediction.matchId}/${candidate.name}: rischio sostituzione non valido`);
       assert(candidate.projectedShotsOnTarget <= candidate.projectedShots + 0.001, `${prediction.matchId}/${candidate.name}: SOT sopra i tiri`);
@@ -201,6 +202,11 @@ for (const prediction of dataset.predictions) {
       assert(Object.values({ ...shots, ...sot }).every(value => value >= 0 && value <= 1), `${prediction.matchId}/${candidate.name}: probabilita fuori scala`);
       assert(shots.over05 >= shots.over15 && shots.over15 >= shots.over25, `${prediction.matchId}/${candidate.name}: soglie tiri non monotone`);
       assert(sot.over05 >= sot.over15, `${prediction.matchId}/${candidate.name}: soglie SOT non monotone`);
+      if (candidate.teamProfileMatchupFactor > 1) {
+        assert(candidate.teamId !== "atalanta", `${prediction.matchId}/${candidate.name}: Atalanta non deve applicare a se stessa la propria vulnerabilita`);
+        assert(candidate.baselineShots90 >= 0.7, `${prediction.matchId}/${candidate.name}: boost senza baseline sufficiente`);
+        assert(candidate.teamProfileConfidence, `${prediction.matchId}/${candidate.name}: boost senza confidence`);
+      }
     }
     for (const total of prediction.shooters.teamTotals) {
       const team = prediction.teamProjections.find(item => item.teamId === total.teamId);
@@ -209,6 +215,8 @@ for (const prediction of dataset.predictions) {
     }
     assert(prediction.likelyBooked.every(candidate => candidate.refereeFactor >= 0.9 && candidate.refereeFactor <= 1.1), `${prediction.matchId}: fattore arbitro fuori bound`);
     assert(prediction.likelyBooked.every(candidate => candidate.duelRisk >= 0.92 && candidate.duelRisk <= 1.12), `${prediction.matchId}: duel risk fuori bound`);
+    assert(prediction.likelyBooked.every(candidate => candidate.teamDisciplineFactor >= 0.95 && candidate.teamDisciplineFactor <= 1.05), `${prediction.matchId}: fattore disciplina squadra fuori bound`);
+    assert(prediction.likelyBooked.filter(candidate => candidate.teamId !== "atalanta").every(candidate => candidate.teamDisciplineFactor === 1), `${prediction.matchId}: il pilot disciplina Atalanta ha contaminato altre squadre`);
     assert(prediction.likelyBooked.every(candidate => candidate.directOpponent || candidate.duelRisk === 1), `${prediction.matchId}: fallback duello incoerente`);
   }
   assert(prediction.mvpCandidate?.name && prediction.mvpCandidate?.teamId, `${prediction.matchId}: candidato MVP assente`);
@@ -221,6 +229,10 @@ for (const prediction of dataset.predictions) {
   const favorite = homeWin >= awayWin ? { teamId: prediction.teamProjections[0].teamId, probability: homeWin, opponent: awayWin } : { teamId: prediction.teamProjections[1].teamId, probability: awayWin, opponent: homeWin };
   if (favorite.probability >= 0.5 && favorite.probability - favorite.opponent >= 0.15) assert.strictEqual(prediction.mvpCandidate.teamId, favorite.teamId, `${prediction.matchId}: MVP incoerente con favorita netta`);
 }
+const atalantaVeneziaProfile = dataset.predictions.find(prediction => prediction.matchId === "atalanta-venezia-2026-27-md-06");
+assert(atalantaVeneziaProfile?.shooters.allPlayers.some(candidate => candidate.teamId === "venezia" && candidate.teamProfileMatchupFactor > 1), "Atalanta: profilo posizionale non collegato agli avversari");
+assert(atalantaVeneziaProfile.shooters.allPlayers.filter(candidate => candidate.teamId === "atalanta").every(candidate => candidate.teamProfileMatchupFactor === 1), "Atalanta: auto-boost tattico non valido");
+assert(dataset.predictions.filter(prediction => prediction.playerMarketModelVersion === 2 && !prediction.matchId.includes("atalanta")).every(prediction => prediction.shooters.allPlayers.every(candidate => candidate.teamProfileMatchupFactor === 1)), "Il pilot Atalanta ha contaminato altre squadre");
 assert.strictEqual(fourthMatchdayPredictions.filter(prediction => prediction.scoreForecast.primary.score === "1-0").length, 0, "La quarta giornata non deve ereditare la concentrazione artificiale sugli 1-0");
 const milanVenezia = dataset.predictions.find(prediction => prediction.matchId === "milan-venezia-2026-27-md-02");
 const fiorentinaFrosinone = dataset.predictions.find(prediction => prediction.matchId === "fiorentina-frosinone-2026-27-md-02");
