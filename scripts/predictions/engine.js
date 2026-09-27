@@ -1,6 +1,7 @@
 "use strict";
 
 const ENGINE_VERSION = "4.12.0";
+const PLAYER_MARKET_MODEL_VERSION = 2;
 const OUTCOMES = ["1", "X", "2"];
 const WEIGHTS = Object.freeze({ venueHistorical: 0.46, overallHistorical: 0.25, recentForm: 0.16, tacticalMatchup: 0.07, probableLineup: 0.05, objectives: 0.01 });
 const MVP_WEIGHTS = Object.freeze({ resultScenario: 0.3, individualProduction: 0.2, historicalRating: 0.15, officialMvpHistory: 0.15, tacticalFit: 0.1, opponentHistory: 0.05, dataReliability: 0.05 });
@@ -92,6 +93,11 @@ function poisson(k, lambda) {
   let factorial = 1;
   for (let i = 2; i <= k; i += 1) factorial *= i;
   return Math.exp(-lambda) * (lambda ** k) / factorial;
+}
+
+function poissonAtLeast(lambda, threshold) {
+  if (!(lambda >= 0) || threshold < 1) return null;
+  return round(clamp(1 - sum(Array.from({ length: threshold }, (_, k) => poisson(k, lambda))), 0, 1), 4);
 }
 
 function scoreMatrix(homeGoals, awayGoals, maxGoals = 7, calibration = null) {
@@ -508,25 +514,139 @@ function scalePlayerVolume(candidates, key, teamCentral) {
     const prior = PLAYER_VOLUME_PRIORS[candidate.role] || PLAYER_VOLUME_PRIORS.Centrocampista;
     const reliability = clamp(minutes / (minutes + 900), 0, 0.82);
     const observed = Number.isFinite(per90[key]) ? per90[key] : prior[key];
-    return { candidate, minutes, value: (observed * reliability + prior[key] * (1 - reliability)) * 0.94 };
+    return { candidate, minutes, observed, reliability, value: (observed * reliability + prior[key] * (1 - reliability)) * 0.94 };
   });
   const total = sum(raw.map(item => item.value));
   const factor = total && Number.isFinite(teamCentral) ? clamp(teamCentral / total, 0.72, 1.35) : 1;
   return raw.map(item => ({ ...item, projection: round(item.value * factor, 2) }));
 }
 
-function shooterCandidates(homeTeam, awayTeam, homeSquad, awaySquad, teamProjections, oddsEvent) {
+const EXPECTED_MINUTES_PRIORS = Object.freeze({ Difensore: 79, Centrocampista: 76, Attaccante: 74, Portiere: 90 });
+
+function expectedMinutes(candidate, current = null) {
+  const totals = candidate.player?.previousSeason?.totals || {};
+  const prior = EXPECTED_MINUTES_PRIORS[candidate.role] || 76;
+  const appearances = Number(totals.appearances || 0);
+  const starts = Number(totals.starts || 0);
+  const substituteAppearances = Number(totals.substituteAppearances || 0);
+  const estimatedStarterMinutes = Number(totals.minutes || 0) - substituteAppearances * 22;
+  const historical = starts > 0 ? clamp(estimatedStarterMinutes / starts, 45, 90) : prior;
+  const historyWeight = clamp(appearances / (appearances + 12), 0, 0.76);
+  let estimate = prior * (1 - historyWeight) + historical * historyWeight;
+  if (current?.starterAppearances) {
+    const currentAverage = current.starterMinutes / current.starterAppearances;
+    const currentWeight = clamp(current.starterAppearances / (current.starterAppearances + 5), 0, 0.5);
+    estimate = estimate * (1 - currentWeight) + currentAverage * currentWeight;
+  }
+  estimate = round(clamp(estimate, 55, 90), 1);
+  const completionRate = starts ? Number(totals.completeMatches || 0) / starts : null;
+  const substitutedRate = starts ? Number(totals.substitutedOff || 0) / starts : null;
+  const substitutionRisk = estimate >= 82 && (substitutedRate == null || substitutedRate < 0.42)
+    ? "low"
+    : estimate < 70 || (substitutedRate != null && substitutedRate >= 0.68)
+      ? "high"
+      : "medium";
+  return {
+    expectedMinutes: estimate,
+    minutesFactor: round(estimate / 90, 3),
+    substitutionRisk,
+    likelyReplacement: null,
+    evidence: {
+      priorMinutes: prior,
+      appearances,
+      starts,
+      minutesPerAppearance: Number.isFinite(totals.minutesPerAppearance) ? totals.minutesPerAppearance : null,
+      completeMatches: Number.isFinite(totals.completeMatches) ? totals.completeMatches : null,
+      substitutedOff: Number.isFinite(totals.substitutedOff) ? totals.substitutedOff : null,
+      substituteAppearances,
+      completionRate: completionRate == null ? null : round(completionRate, 3),
+      substitutedRate: substitutedRate == null ? null : round(substitutedRate, 3),
+      currentStarterAppearances: current?.starterAppearances || 0
+    }
+  };
+}
+
+function opponentShotConcession(volumeProfile, venue) {
+  const opponentVenue = venue === "home" ? "away" : "home";
+  const sample = volumeProfile?.venues?.[opponentVenue]?.totalShots?.against;
+  return sample?.matches ? sample.mean : null;
+}
+
+function playerMatchup(candidate, teamProfile, opponentProfile, opponentVolumeProfile, venue) {
+  const side = playerSide(candidate);
+  const channels = attackChannels(teamProfile);
+  const channelShare = channels[side] / 100;
+  const weaknessIds = new Set((opponentProfile?.weaknesses || []).map(item => item.id));
+  const attackIds = new Set([...(teamProfile?.playingStyle || []), ...(teamProfile?.strengths || [])].map(item => item.id));
+  let factor = 1 + (channelShare - 1 / 3) * 0.18;
+  const evidence = [`canale ${side}: ${round(channelShare * 100, 1)}%`];
+  const wide = side !== "central";
+  if (wide && weaknessIds.has("difendersi-da-attacchi-sulle-fasce")) {
+    factor += 0.045;
+    evidence.push("vulnerabilita avversaria sulle fasce");
+  }
+  if (!wide && weaknessIds.has("difendersi-da-passaggi-filtranti")) {
+    factor += 0.04;
+    evidence.push("vulnerabilita avversaria centrale");
+  }
+  if (weaknessIds.has("difendersi-da-tiri-da-lontano") && attackIds.has("tentano-tiri-da-lontano") && candidate.role !== "Attaccante") {
+    factor += 0.035;
+    evidence.push("incrocio favorevole sui tiri da lontano");
+  }
+  const conceded = opponentShotConcession(opponentVolumeProfile, venue);
+  if (Number.isFinite(conceded)) {
+    const volumeFactor = clamp(1 + (conceded / 12.5 - 1) * 0.35, 0.94, 1.06);
+    factor *= volumeFactor;
+    evidence.push(`${round(conceded, 1)} tiri concessi/gara nel campione di sede`);
+  } else evidence.push("volume concesso N/D: componente neutra");
+  return { matchupFactor: round(clamp(factor, 0.82, 1.18), 3), matchupEvidence: evidence, side };
+}
+
+function reconcilePlayerVolumes(rows, key, teamCentral, capKey = null) {
+  const rawTotal = sum(rows.map(row => row[key]));
+  const teamScaling = rawTotal > 0 && Number.isFinite(teamCentral) ? teamCentral / rawTotal : 1;
+  let values = rows.map(row => Math.max(0, row[key] * teamScaling));
+  if (capKey) {
+    for (let iteration = 0; iteration < 4; iteration += 1) {
+      values = values.map((value, index) => Math.min(value, rows[index][capKey]));
+      const missing = teamCentral - sum(values);
+      if (missing <= 0.001) break;
+      const eligible = values.map((value, index) => ({ index, room: rows[index][capKey] - value })).filter(item => item.room > 0.001);
+      const room = sum(eligible.map(item => item.room));
+      if (!room) break;
+      for (const item of eligible) values[item.index] += missing * item.room / room;
+    }
+  }
+  rows.forEach((row, index) => { row[key] = round(values[index], 2); row.teamScaling = round(teamScaling, 3); });
+}
+
+function playerDataStatus(candidate, minutes) {
+  if (!candidate.player) return "role-baseline";
+  if (minutes >= 1800) return "strong-history";
+  if (minutes >= 700) return "verified-history";
+  return "limited-history";
+}
+
+function shooterCandidates(homeTeam, awayTeam, homeSquad, awaySquad, teamProjections, oddsEvent, homeProfile, awayProfile, homeVolume, awayVolume, homeCurrentPlayers, awayCurrentPlayers) {
   const rows = [];
-  for (const [team, squad, venue] of [[homeTeam, homeSquad, "home"], [awayTeam, awaySquad, "away"]]) {
+  for (const [team, squad, venue, teamProfile, opponentProfile, opponentVolume, currentPlayers] of [
+    [homeTeam, homeSquad, "home", homeProfile, awayProfile, awayVolume, homeCurrentPlayers],
+    [awayTeam, awaySquad, "away", awayProfile, homeProfile, homeVolume, awayCurrentPlayers]
+  ]) {
     const candidates = lineupPlayers(team, squad);
     const projection = teamProjections.find(item => item.teamId === team.id);
-    const shots = scalePlayerVolume(candidates, "shots", projection?.shotsTotal?.central);
-    const onTargetByName = new Map(scalePlayerVolume(candidates, "shotsOnTarget", projection?.shotsOnTarget?.central).map(item => [cleanName(item.candidate.name), item.projection]));
-    for (const item of shots) {
+    const shotsV1 = scalePlayerVolume(candidates, "shots", projection?.shotsTotal?.central);
+    const sotV1 = scalePlayerVolume(candidates, "shotsOnTarget", projection?.shotsOnTarget?.central);
+    const teamRows = shotsV1.map((item, index) => {
       const candidate = item.candidate;
       const totals = candidate.player?.previousSeason?.totals || {};
       const per90 = totals.per90 || {};
-      rows.push({
+      const current = currentPlayers?.[candidate.player?.id] || currentPlayers?.[cleanName(candidate.name)] || null;
+      const minutes = expectedMinutes(candidate, current);
+      const matchup = playerMatchup(candidate, teamProfile, opponentProfile, opponentVolume, venue);
+      const shotBase = item.value;
+      const sotBase = sotV1[index]?.value || 0;
+      return {
         name: candidate.player?.name || candidate.name,
         lineupName: candidate.name,
         playerId: candidate.player?.id || null,
@@ -534,17 +654,57 @@ function shooterCandidates(homeTeam, awayTeam, homeSquad, awaySquad, teamProject
         teamId: team.id,
         venue,
         role: candidate.role,
-        projectedShots: item.projection,
-        projectedShotsOnTarget: onTargetByName.get(cleanName(candidate.name)) || 0,
+        detailedRole: candidate.detailedRole,
+        side: matchup.side,
+        projectedShotsV1: item.projection,
+        projectedShotsOnTargetV1: sotV1[index]?.projection || 0,
+        projectedShots: shotBase * matchup.matchupFactor * minutes.minutesFactor,
+        projectedShotsOnTarget: sotBase * matchup.matchupFactor * minutes.minutesFactor,
+        baselineShots90: round(shotBase, 2),
+        baselineShotsOnTarget90: round(sotBase, 2),
+        matchupAdjustedShots90: round(shotBase * matchup.matchupFactor, 2),
+        matchupFactor: matchup.matchupFactor,
+        matchupEvidence: matchup.matchupEvidence,
+        expectedMinutes: minutes.expectedMinutes,
+        minutesFactor: minutes.minutesFactor,
+        substitutionRisk: minutes.substitutionRisk,
+        likelyReplacement: minutes.likelyReplacement,
+        expectedMinutesEvidence: minutes.evidence,
         foulsCommittedPer90: Number.isFinite(per90.foulsCommitted) ? round(per90.foulsCommitted, 2) : null,
         minutes: item.minutes,
-        dataStatus: candidate.player && item.minutes >= 700 ? "verified-history" : candidate.player ? "limited-history" : "role-baseline",
+        dataStatus: playerDataStatus(candidate, item.minutes),
         markets: {
           shotsOver05: playerMarketQuote(oddsEvent, candidate, "28507", 0.5),
           shotsOnTargetOver05: playerMarketQuote(oddsEvent, candidate, "28506", 0.5)
         }
-      });
+      };
+    });
+    reconcilePlayerVolumes(teamRows, "projectedShots", projection?.shotsTotal?.central);
+    reconcilePlayerVolumes(teamRows, "projectedShotsOnTarget", projection?.shotsOnTarget?.central, "projectedShots");
+    for (const row of teamRows) {
+      row.shotProbabilities = { over05: poissonAtLeast(row.projectedShots, 1), over15: poissonAtLeast(row.projectedShots, 2), over25: poissonAtLeast(row.projectedShots, 3) };
+      row.shotOnTargetProbabilities = { over05: poissonAtLeast(row.projectedShotsOnTarget, 1), over15: poissonAtLeast(row.projectedShotsOnTarget, 2) };
+      const boostPct = row.baselineShots90 ? round((row.matchupAdjustedShots90 / row.baselineShots90 - 1) * 100, 1) : 0;
+      const roleEligible = row.role === "Difensore" || row.role === "Centrocampista";
+      row.outsiderScore = roleEligible ? round(clamp(100 * (
+        0.24 * clamp(row.baselineShots90 / 1.5, 0, 1) +
+        0.24 * clamp((row.matchupFactor - 0.94) / 0.24, 0, 1) +
+        0.18 * clamp((row.expectedMinutes - 60) / 30, 0, 1) +
+        0.16 * clamp(boostPct / 18, 0, 1) +
+        0.12 * row.shotProbabilities.over15 +
+        0.06 * row.shotOnTargetProbabilities.over05
+      ), 0, 100), 1) : null;
+      row.outsiderEvidence = roleEligible ? {
+        baselineShots90: row.baselineShots90,
+        matchupAdjustedShots90: row.matchupAdjustedShots90,
+        matchupBoostPct: boostPct,
+        expectedMinutes: row.expectedMinutes,
+        shots1PlusProbability: row.shotProbabilities.over05,
+        shots2PlusProbability: row.shotProbabilities.over15,
+        shotsOnTarget1PlusProbability: row.shotOnTargetProbabilities.over05
+      } : null;
     }
+    rows.push(...teamRows);
   }
   const ranked = (key, marketKey) => [...rows]
     .sort((left, right) => right[key] - left[key] || left.name.localeCompare(right.name, "it"))
@@ -552,29 +712,70 @@ function shooterCandidates(homeTeam, awayTeam, homeSquad, awaySquad, teamProject
     .map((row, index) => ({ ...row, rank: index + 1, marketKey }));
   return {
     totalShots: ranked("projectedShots", "shotsOver05"),
-    shotsOnTarget: ranked("projectedShotsOnTarget", "shotsOnTargetOver05")
+    shotsOnTarget: ranked("projectedShotsOnTarget", "shotsOnTargetOver05"),
+    outsiders: rows.filter(row => row.outsiderScore != null && row.dataStatus !== "role-baseline").sort((a, b) => b.outsiderScore - a.outsiderScore || a.name.localeCompare(b.name, "it")).slice(0, 5).map((row, index) => ({ ...row, outsiderRank: index + 1 })),
+    allPlayers: rows,
+    teamTotals: [homeTeam.id, awayTeam.id].map(teamId => ({
+      teamId,
+      projectedShots: round(sum(rows.filter(row => row.teamId === teamId).map(row => row.projectedShots)), 2),
+      projectedShotsOnTarget: round(sum(rows.filter(row => row.teamId === teamId).map(row => row.projectedShotsOnTarget)), 2)
+    }))
   };
 }
 
 function playerSide(candidate) {
   const role = cleanName(candidate.detailedRole);
-  if (role.includes("destro")) return "right";
-  if (role.includes("sinistro")) return "left";
+  if (role.includes("destro") || role.includes("destra")) return "right";
+  if (role.includes("sinistro") || role.includes("sinistra")) return "left";
   return "central";
 }
 
-function bookingCandidates(homeTeam, awayTeam, homeSquad, awaySquad, homeProfile, awayProfile, homeCurrentDiscipline, awayCurrentDiscipline) {
+function directDuel(candidate, opponents) {
+  const side = playerSide(candidate);
+  if (side === "central" || !candidate.detailedRole || !["Difensore", "Centrocampista"].includes(candidate.role)) return null;
+  const facedSide = side === "right" ? "left" : "right";
+  const eligible = opponents.filter(opponent =>
+    opponent.detailedRole && playerSide(opponent) === facedSide && opponent.role !== "Portiere" &&
+    Number.isFinite(opponent.player?.previousSeason?.totals?.per90?.foulsWon)
+  ).sort((left, right) => right.player.previousSeason.totals.per90.foulsWon - left.player.previousSeason.totals.per90.foulsWon);
+  if (eligible.length !== 1) return null;
+  const opponent = eligible[0];
+  return { name: opponent.player?.name || opponent.name, foulsWonPer90: round(opponent.player.previousSeason.totals.per90.foulsWon, 2) };
+}
+
+function refereeCardFactor(profile, leagueAverage) {
+  if (!profile || !(profile.matches > 0) || !leagueAverage) return { factor: 1, evidence: ["arbitro N/D: fattore neutro"], reliability: 0 };
+  const reliability = profile.matches / (profile.matches + 12);
+  const cardRatio = profile.yellowCardsPerMatch / leagueAverage.yellowCardsPerMatch;
+  const foulRatio = profile.foulsPerMatch / leagueAverage.foulsPerMatch;
+  const blendedRatio = cardRatio * 0.7 + foulRatio * 0.3;
+  const factor = clamp(1 + (blendedRatio - 1) * 0.18 * reliability, 0.9, 1.1);
+  return {
+    factor: round(factor, 3),
+    reliability: round(reliability, 3),
+    evidence: [
+      `${round(profile.yellowCardsPerMatch, 2)} gialli/gara vs ${round(leagueAverage.yellowCardsPerMatch, 2)} media lega`,
+      `${round(profile.foulsPerMatch, 2)} falli/gara vs ${round(leagueAverage.foulsPerMatch, 2)} media lega`,
+      `${profile.matches} gare arbitrate; regressione verso la media ${round((1 - reliability) * 100, 1)}%`
+    ]
+  };
+}
+
+function bookingCandidates(homeTeam, awayTeam, homeSquad, awaySquad, homeProfile, awayProfile, homeCurrentDiscipline, awayCurrentDiscipline, refereeProfile, refereeLeagueAverage) {
+  const homePlayers = lineupPlayers(homeTeam, homeSquad);
+  const awayPlayers = lineupPlayers(awayTeam, awaySquad);
+  const referee = refereeCardFactor(refereeProfile, refereeLeagueAverage);
   const rows = [
-    ...lineupPlayers(homeTeam, homeSquad).map(candidate => ({ ...candidate, opponentProfile: awayProfile, currentDiscipline: homeCurrentDiscipline })),
-    ...lineupPlayers(awayTeam, awaySquad).map(candidate => ({ ...candidate, opponentProfile: homeProfile, currentDiscipline: awayCurrentDiscipline }))
+    ...homePlayers.map(candidate => ({ ...candidate, opponentProfile: awayProfile, opponents: awayPlayers, currentDiscipline: homeCurrentDiscipline })),
+    ...awayPlayers.map(candidate => ({ ...candidate, opponentProfile: homeProfile, opponents: homePlayers, currentDiscipline: awayCurrentDiscipline }))
   ].filter(candidate => candidate.role !== "Portiere").map(candidate => {
     const per90 = candidate.player?.previousSeason?.totals?.per90 || {};
     const minutes = candidate.player?.previousSeason?.totals?.minutes || 0;
     const current = candidate.currentDiscipline?.[candidate.player?.id] || candidate.currentDiscipline?.[cleanName(candidate.name)] || null;
-    const currentWeight = current?.minutes ? current.appearances / (current.appearances + 6) : 0;
+    const currentWeight = current?.foulsCommittedCoverage ? current.appearances / (current.appearances + 6) : 0;
     const historicalCards = per90.cards ?? per90.yellowCards ?? 0.12;
     const historicalFouls = per90.foulsCommitted ?? 1.05;
-    const currentFouls = current?.minutes ? current.foulsCommitted * 90 / current.minutes : historicalFouls;
+    const currentFouls = current?.foulsCommittedCoverage ? current.foulsCommitted * 90 / current.minutes : historicalFouls;
     const estimatedCards = historicalCards;
     const estimatedFouls = historicalFouls * (1 - currentWeight) + currentFouls * currentWeight;
     const side = playerSide(candidate);
@@ -583,15 +784,43 @@ function bookingCandidates(homeTeam, awayTeam, homeSquad, awaySquad, homeProfile
     const roleBase = candidate.role === "Difensore" ? 1.15 : candidate.role === "Centrocampista" ? 0.95 : 0.48;
     const observed = estimatedCards * 3.6 + estimatedFouls * 0.42;
     const reliability = minutes ? clamp(minutes / 1800, 0.35, 1) : 0.3;
-    const duelLoad = facedChannel / 100 * 1.15 + (candidate.opponentProfile?.playingStyle || []).some(item => item.id === "aggressivi") * 0.14;
-    const raw = roleBase + observed * (0.55 + reliability * 0.45) + duelLoad;
+    const channelLoad = facedChannel / 100 * 1.15 + (candidate.opponentProfile?.playingStyle || []).some(item => item.id === "aggressivi") * 0.14;
+    const directOpponent = directDuel(candidate, candidate.opponents);
+    const duelRisk = directOpponent ? round(clamp(1 + (directOpponent.foulsWonPer90 - 1.25) * 0.09, 0.92, 1.12), 3) : 1;
+    const historicalRaw = roleBase + observed * (0.55 + reliability * 0.45) + channelLoad;
+    const raw = historicalRaw * duelRisk * referee.factor;
     const riskScore = Math.round(clamp(raw * 19, 12, 88));
     const evidence = [];
     if (per90.cards != null) evidence.push(`${round(estimatedCards, 2)} cartellini/90${current?.minutes ? " stimati" : ""}`);
     if (per90.foulsCommitted != null) evidence.push(`${round(estimatedFouls, 2)} falli/90${current?.minutes ? " stimati" : ""}`);
-    if (current?.minutes) evidence.push(`2026/27: ${round(currentFouls, 2)} falli/90 in ${current.appearances} ${current.appearances === 1 ? "presenza" : "presenze"}`);
+    if (current?.foulsCommittedCoverage) evidence.push(`2026/27: ${round(currentFouls, 2)} falli/90 in ${current.appearances} ${current.appearances === 1 ? "presenza" : "presenze"}`);
     evidence.push(`duelli sul canale ${side === "left" ? "sinistro" : side === "right" ? "destro" : "centrale"}`);
-    return { name: candidate.name, teamId: candidate.teamId, role: candidate.role, riskScore, evidence, dataStatus: current?.minutes ? "verified-history-current" : candidate.player ? "verified-history" : "role-baseline" };
+    const duelEvidence = directOpponent
+      ? [`opposizione laterale ${candidate.name} - ${directOpponent.name}`, `${directOpponent.foulsWonPer90} falli subiti/90 dall'avversario diretto`]
+      : ["avversario diretto non identificabile con affidabilita: fallback al canale"];
+    return {
+      name: candidate.name,
+      teamId: candidate.teamId,
+      role: candidate.role,
+      riskScore,
+      riskComponents: {
+        roleBase: round(roleBase, 3),
+        historicalDiscipline: round(observed, 3),
+        historyReliability: round(reliability, 3),
+        currentSeasonWeight: round(currentWeight, 3),
+        attackChannelLoad: round(channelLoad, 3),
+        duelRisk,
+        refereeFactor: referee.factor
+      },
+      directOpponent: directOpponent?.name || null,
+      opponentFoulsWonPer90: directOpponent?.foulsWonPer90 ?? null,
+      duelRisk,
+      duelEvidence,
+      refereeFactor: referee.factor,
+      refereeEvidence: referee.evidence,
+      evidence: [...evidence, ...duelEvidence, ...referee.evidence],
+      dataStatus: current?.foulsCommittedCoverage ? "verified-history-current" : playerDataStatus(candidate, minutes)
+    };
   }).sort((a, b) => b.riskScore - a.riskScore || a.name.localeCompare(b.name, "it"));
 
   const selected = rows.slice(0, 5);
@@ -1333,6 +1562,7 @@ function predictMatch(input) {
     generatedAt: input.generatedAt,
     status: "preliminary",
     engineVersion: ENGINE_VERSION,
+    playerMarketModelVersion: PLAYER_MARKET_MODEL_VERSION,
     probabilities: {
       final: probabilityObject(final),
       marketNoMargin: market ? probabilityObject(market.probabilities) : null,
@@ -1354,8 +1584,8 @@ function predictMatch(input) {
     surprise,
     matchProjection,
     teamProjections,
-    shooters: shooterCandidates(input.homeTeam, input.awayTeam, input.homeSquad, input.awaySquad, teamProjections, input.oddsEvent),
-    likelyBooked: bookingCandidates(input.homeTeam, input.awayTeam, input.homeSquad, input.awaySquad, input.homeProfile, input.awayProfile, input.homeCurrentDiscipline, input.awayCurrentDiscipline),
+    shooters: shooterCandidates(input.homeTeam, input.awayTeam, input.homeSquad, input.awaySquad, teamProjections, input.oddsEvent, input.homeProfile, input.awayProfile, input.homeVolume, input.awayVolume, input.homeCurrentPlayers, input.awayCurrentPlayers),
+    likelyBooked: bookingCandidates(input.homeTeam, input.awayTeam, input.homeSquad, input.awaySquad, input.homeProfile, input.awayProfile, input.homeCurrentDiscipline, input.awayCurrentDiscipline, input.refereeProfile, input.refereeLeagueAverage),
     mvpCandidate: mvpCandidate(input.homeTeam, input.awayTeam, input.homeSquad, input.awaySquad, input.homeProfile, input.awayProfile, final, expected, input.mvpHistory, input.fantasyHistory, input.mvpSourceUrl),
     scenarios: matchScenarios(input, final, expected),
     marketComparison: evaluatedMarkets.rows,
@@ -1391,4 +1621,4 @@ function predictMatch(input) {
   };
 }
 
-module.exports = { ENGINE_VERSION, OUTCOMES, WEIGHTS, MVP_WEIGHTS, attackChannels, findMainOneXTwo, marketProbabilities, predictMatch };
+module.exports = { ENGINE_VERSION, PLAYER_MARKET_MODEL_VERSION, OUTCOMES, WEIGHTS, MVP_WEIGHTS, attackChannels, findMainOneXTwo, marketProbabilities, predictMatch };

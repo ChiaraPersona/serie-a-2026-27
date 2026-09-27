@@ -2,7 +2,7 @@
 
 const fs = require("fs");
 const path = require("path");
-const { ENGINE_VERSION, WEIGHTS, MVP_WEIGHTS, predictMatch } = require("./predictions/engine");
+const { ENGINE_VERSION, PLAYER_MARKET_MODEL_VERSION, WEIGHTS, MVP_WEIGHTS, predictMatch } = require("./predictions/engine");
 const { DECISION_LAYER_VERSION, PROFILE_LIMITS, enrichPrediction } = require("./predictions/decision-layer");
 const { loadPlayerIdentities } = require("./player-identity");
 
@@ -22,6 +22,7 @@ const understatXg = read("data/normalized/understat-serie-a-xg.json");
 const mvpHistory = read("data/sources/player-mvp-history-2025-26.json");
 const fantasy = read("data/generated/fantacalcio-advice.json");
 const volumeProfiles = read("data/normalized/team-volume-profiles-2025-26.json");
+const refereeAggregates = read("data/generated/referee-stats/2025-26/aggregates.json");
 const officialLineups = read("data/sources/official-lineups-2026-27.json");
 const predictionArchiveFiles = fs.readdirSync(path.join(root, "data", "sources"))
   .filter(filename => /^prediction-archive-md\d{1,2}-2026-27\.json$/.test(filename))
@@ -73,8 +74,13 @@ for (const identity of identityRegistry.payload.players) {
 }
 const mvpHistoryByPlayer = new Map(mvpHistory.players.map(player => [player.normalizedName, player]));
 const fantasyHistoryByPlayer = new Map(fantasy.players.map(player => [playerKey(player.name), player]));
-const verifiedCurrentPlayerDisciplineTeams = new Set(["roma"]);
 const volumeByTeam = byId(volumeProfiles.profiles);
+const refereeRows = refereeAggregates.referees.filter(row => row.competition === "serie-a" && row.stage === "regular-season");
+const refereeBySlug = new Map(refereeRows.map(row => [row.refereeSlug, row]));
+const refereeLeagueAverage = {
+  yellowCardsPerMatch: refereeRows.reduce((total, row) => total + row.yellowCards, 0) / refereeRows.reduce((total, row) => total + row.matches, 0),
+  foulsPerMatch: refereeRows.reduce((total, row) => total + row.fouls, 0) / refereeRows.reduce((total, row) => total + row.matches, 0)
+};
 const standingsByTeam = new Map(standings.rows.map(row => [row.team, row]));
 const meanStandingPoints = standings.rows.reduce((total, row) => total + row.points, 0) / standings.rows.length;
 const understatTeamIds = {
@@ -152,8 +158,7 @@ function recentForm(teamId, targetMatch) {
   return { matches: rows.length, goalsFor: goalsFor / weightTotal, goalsAgainst: goalsAgainst / weightTotal, decay: 0.82, opponentAdjusted: true, currentSeasonMatches: currentSeason.length };
 }
 
-function currentPlayerDiscipline(teamId, targetMatch) {
-  if (!verifiedCurrentPlayerDisciplineTeams.has(teamId)) return {};
+function currentPlayerPerformance(teamId, targetMatch) {
   const rows = matches.filter(match =>
     match.competition === "serie-a" &&
     match.season === "2026-27" &&
@@ -165,12 +170,19 @@ function currentPlayerDiscipline(teamId, targetMatch) {
   for (const match of rows) {
     const side = match.homeTeam === teamId ? "home" : "away";
     for (const player of match.playerStats?.[side] || []) {
-      if (!(player.minutes > 0) || player.foulsCommitted == null) continue;
+      if (!(player.minutes > 0)) continue;
       const key = player.playerId || playerKey(player.player);
-      const current = aggregate[key] || { appearances: 0, minutes: 0, foulsCommitted: 0 };
+      const current = aggregate[key] || { appearances: 0, minutes: 0, foulsCommitted: 0, foulsCommittedCoverage: 0, foulsWon: 0, foulsWonCoverage: 0, shots: 0, shotsCoverage: 0, shotsOnTarget: 0, shotsOnTargetCoverage: 0, starterAppearances: 0, starterMinutes: 0 };
       current.appearances += 1;
       current.minutes += player.minutes;
-      current.foulsCommitted += player.foulsCommitted;
+      if (player.foulsCommitted != null) { current.foulsCommitted += player.foulsCommitted; current.foulsCommittedCoverage += 1; }
+      if (player.foulsWon != null) { current.foulsWon += player.foulsWon; current.foulsWonCoverage += 1; }
+      if (player.shots != null) { current.shots += player.shots; current.shotsCoverage += 1; }
+      if (player.shotsOnTarget != null) { current.shotsOnTarget += player.shotsOnTarget; current.shotsOnTargetCoverage += 1; }
+      if (player.starter) {
+        current.starterAppearances += 1;
+        current.starterMinutes += player.minutes;
+      }
       aggregate[key] = current;
       aggregate[playerKey(player.player)] = current;
     }
@@ -252,8 +264,12 @@ const generatedPredictions = targetMatches.map(match => {
     awayTeam,
     homeSquad: squadsByTeam.get(match.homeTeam),
     awaySquad: squadsByTeam.get(match.awayTeam),
-    homeCurrentDiscipline: currentPlayerDiscipline(match.homeTeam, match),
-    awayCurrentDiscipline: currentPlayerDiscipline(match.awayTeam, match),
+    homeCurrentDiscipline: currentPlayerPerformance(match.homeTeam, match),
+    awayCurrentDiscipline: currentPlayerPerformance(match.awayTeam, match),
+    homeCurrentPlayers: currentPlayerPerformance(match.homeTeam, match),
+    awayCurrentPlayers: currentPlayerPerformance(match.awayTeam, match),
+    refereeProfile: refereeBySlug.get(match.refereeAssignment?.referee?.slug) || null,
+    refereeLeagueAverage,
     mvpHistory: mvpHistoryByPlayer,
     fantasyHistory: fantasyHistoryByPlayer,
     mvpSourceUrl: mvpHistory.sourceUrl,
@@ -327,10 +343,19 @@ const output = {
   generatedAt,
   engine: {
     version: ENGINE_VERSION,
+    playerMarketModelVersion: PLAYER_MARKET_MODEL_VERSION,
     principle: "Un'unica matrice dei punteggi indipendente dalle quote genera 1X2, gol e mercati collegati.",
     weights: WEIGHTS,
     surpriseFactor: "Apertura della gara, probabilita dell'esito sfavorito, divergenza mercato-dati e incompletezza prepartita. Non determina da solo il verdetto.",
     spatialModel: "Valuta separatamente sviluppo a sinistra, al centro e a destra e lo incrocia con le vulnerabilita avversarie.",
+    playerMarketModel: {
+      version: PLAYER_MARKET_MODEL_VERSION,
+      formula: "baseline individuale regolarizzata per ruolo x fattore matchup [0,82; 1,18] x minuti attesi/90 x scaling squadra riconciliato",
+      probabilities: "Poisson sulle proiezioni individuali V2; SOT deriva dallo storico SOT/90 e viene vincolato ai tiri dello stesso giocatore.",
+      expectedMinutes: "Media da titolare storica depurata con 22 minuti per presenza dalla panchina, prior di ruolo e massimo peso storico 76%; forma 2026/27 massimo 50%.",
+      cardRisk: "Disciplina storica e corrente, ruolo, carico canale, duello diretto quando identificabile e fattore arbitro regredito sulla media di lega.",
+      compatibility: "I campi projectedShotsV1 e projectedShotsOnTargetV1 conservano la stima precedente per confronto."
+    },
     goalModel: "Forze relative casa/trasferta e complessive, ultime otto gare corrette per avversario, xG Understat al 25% quando sono coperti entrambi i club, probabile XI, divisione di provenienza, matrice Poisson e correttivo H2H limitato al 5% per lato.",
     scoreSelectionModel: "Il risultato esatto centrale arrotonda separatamente i gol attesi delle due squadre; la moda assoluta e gli altri punteggi probabili restano alternative distinte.",
     decisionLayer: {

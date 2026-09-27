@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "scope": "Serie A 2026/27 MD05, soli titolari con statistiche StatMuse verificate",
+  "methodology": "Pilot retrospettivo separato dal backtest principale. Confronta le proiezioni V1 conservate nell'output con V2 contestuale; MAE/RMSE sui conteggi e Brier sulle soglie Poisson.",
+  "caveat": "Campione di una sola giornata: diagnostico, non sufficiente per promuovere o ricalibrare automaticamente V2.",
+  "matches": 10,
+  "observations": 186,
+  "v1": {
+    "observations": 186,
+    "shotsMae": 0.9425,
+    "shotsRmse": 1.2684,
+    "shotsOnTargetMae": 0.4201,
+    "shotsOnTargetRmse": 0.538,
+    "brier": {
+      "shots1Plus": 0.2039,
+      "shots2Plus": 0.1928,
+      "shots3Plus": 0.1044,
+      "shotsOnTarget1Plus": 0.1799,
+      "shotsOnTarget2Plus": 0.0346
+    }
+  },
+  "v2": {
+    "observations": 186,
+    "shotsMae": 0.9389,
+    "shotsRmse": 1.2567,
+    "shotsOnTargetMae": 0.4201,
+    "shotsOnTargetRmse": 0.5337,
+    "brier": {
+      "shots1Plus": 0.2058,
+      "shots2Plus": 0.1937,
+      "shots3Plus": 0.1028,
+      "shotsOnTarget1Plus": 0.1794,
+      "shotsOnTarget2Plus": 0.0337
+    }
+  }
+}

@@ -188,6 +188,29 @@ for (const prediction of dataset.predictions) {
   const officialStarters = officialStartersByMatch.get(prediction.matchId);
   if (officialStarters) assert(prediction.likelyBooked.every(candidate => officialStarters.has(cleanName(candidate.name))), `${prediction.matchId}: probabile ammonito fuori dall'XI ufficiale`);
   if (officialStarters && prediction.shooters) assert([...prediction.shooters.totalShots, ...prediction.shooters.shotsOnTarget].every(candidate => officialStarters.has(cleanName(candidate.lineupName))), `${prediction.matchId}: tiratore fuori dall'XI ufficiale`);
+  if (prediction.playerMarketModelVersion === 2) {
+    assert.strictEqual(prediction.shooters.allPlayers.length, 20, `${prediction.matchId}: V2 deve proiettare i dieci giocatori di movimento per squadra`);
+    assert(prediction.shooters.outsiders.length >= 2, `${prediction.matchId}: ranking outsider insufficiente`);
+    for (const candidate of prediction.shooters.allPlayers) {
+      assert(candidate.matchupFactor >= 0.82 && candidate.matchupFactor <= 1.18, `${prediction.matchId}/${candidate.name}: matchup fuori bound`);
+      assert(candidate.expectedMinutes >= 55 && candidate.expectedMinutes <= 90, `${prediction.matchId}/${candidate.name}: minuti attesi non validi`);
+      assert(["low", "medium", "high"].includes(candidate.substitutionRisk), `${prediction.matchId}/${candidate.name}: rischio sostituzione non valido`);
+      assert(candidate.projectedShotsOnTarget <= candidate.projectedShots + 0.001, `${prediction.matchId}/${candidate.name}: SOT sopra i tiri`);
+      const shots = candidate.shotProbabilities;
+      const sot = candidate.shotOnTargetProbabilities;
+      assert(Object.values({ ...shots, ...sot }).every(value => value >= 0 && value <= 1), `${prediction.matchId}/${candidate.name}: probabilita fuori scala`);
+      assert(shots.over05 >= shots.over15 && shots.over15 >= shots.over25, `${prediction.matchId}/${candidate.name}: soglie tiri non monotone`);
+      assert(sot.over05 >= sot.over15, `${prediction.matchId}/${candidate.name}: soglie SOT non monotone`);
+    }
+    for (const total of prediction.shooters.teamTotals) {
+      const team = prediction.teamProjections.find(item => item.teamId === total.teamId);
+      assert(Math.abs(total.projectedShots - team.shotsTotal.central) <= 0.11, `${prediction.matchId}/${total.teamId}: tiri giocatore non riconciliati`);
+      assert(Math.abs(total.projectedShotsOnTarget - team.shotsOnTarget.central) <= 0.11, `${prediction.matchId}/${total.teamId}: SOT giocatore non riconciliati`);
+    }
+    assert(prediction.likelyBooked.every(candidate => candidate.refereeFactor >= 0.9 && candidate.refereeFactor <= 1.1), `${prediction.matchId}: fattore arbitro fuori bound`);
+    assert(prediction.likelyBooked.every(candidate => candidate.duelRisk >= 0.92 && candidate.duelRisk <= 1.12), `${prediction.matchId}: duel risk fuori bound`);
+    assert(prediction.likelyBooked.every(candidate => candidate.directOpponent || candidate.duelRisk === 1), `${prediction.matchId}: fallback duello incoerente`);
+  }
   assert(prediction.mvpCandidate?.name && prediction.mvpCandidate?.teamId, `${prediction.matchId}: candidato MVP assente`);
   assert(prediction.mvpCandidate.score >= 0 && prediction.mvpCandidate.score <= 100, `${prediction.matchId}: indice MVP non valido`);
   assert.deepStrictEqual(Object.keys(prediction.mvpCandidate.components), Object.keys(dataset.engine.mvpModel.weights), `${prediction.matchId}: componenti MVP incomplete`);
