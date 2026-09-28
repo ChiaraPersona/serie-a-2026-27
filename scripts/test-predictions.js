@@ -3,6 +3,7 @@
 const assert = require("assert");
 const fs = require("fs");
 const path = require("path");
+const { opponentAbilityToExploit, teamProfilePlayerModifier, teamOffensiveAllocation, applyOpponentTeamVolumeInteraction, playerBaselineStability, expectedDefensiveExposureFactor } = require("./predictions/engine");
 const root = path.resolve(__dirname, "..");
 const dataset = JSON.parse(fs.readFileSync(path.join(root, "data/normalized/predictions.json"), "utf8"));
 const archivedMd1 = JSON.parse(fs.readFileSync(path.join(root, "data/sources/prediction-archive-md1-2026-27.json"), "utf8"));
@@ -82,7 +83,8 @@ assert.strictEqual(dataset.engine.promotedTeamModel.defenceWeaknessFactor, 1.29,
 assert(dataset.predictions.every(prediction => prediction.dataQuality.missing.some(item => item.includes("meteo"))), "Il meteo non verificabile deve essere dichiarato N/D");
 assert(dataset.predictions.filter(prediction => !prediction.matchId.endsWith("-md-06")).every(prediction => !prediction.dataQuality.missing.some(item => item.includes("indisponibili"))), "Il monitor indisponibili aggiornato deve raggiungere tutte le letture archiviate fino alla quinta giornata");
 for (const prediction of dataset.predictions) {
-  if (["-md-04", "-md-05", "-md-06"].some(suffix => prediction.matchId.endsWith(suffix))) assert.strictEqual(prediction.engineVersion, dataset.engine.version, `${prediction.matchId}: deve usare la versione corrente del motore`);
+  if (["-md-05", "-md-06"].some(suffix => prediction.matchId.endsWith(suffix))) assert.strictEqual(prediction.engineVersion, dataset.engine.version, `${prediction.matchId}: deve usare la versione corrente del motore`);
+  else if (prediction.matchId.endsWith("-md-04")) assert.strictEqual(prediction.engineVersion, "4.12.0", `${prediction.matchId}: lo snapshot MD4 deve conservare la propria versione`);
   else assert.strictEqual(prediction.engineVersion, "4.11.0", `${prediction.matchId}: lo snapshot archiviato deve conservare la propria versione`);
   const probabilities = Object.values(prediction.probabilities.final);
   assert.strictEqual(Number(probabilities.reduce((total, value) => total + value, 0).toFixed(1)), 100, `${prediction.matchId}: probabilita 1X2 non esattamente normalizzate`);
@@ -190,10 +192,15 @@ for (const prediction of dataset.predictions) {
   if (officialStarters && prediction.shooters) assert([...prediction.shooters.totalShots, ...prediction.shooters.shotsOnTarget].every(candidate => officialStarters.has(cleanName(candidate.lineupName))), `${prediction.matchId}: tiratore fuori dall'XI ufficiale`);
   if (prediction.playerMarketModelVersion === 2) {
     assert.strictEqual(prediction.shooters.allPlayers.length, 20, `${prediction.matchId}: V2 deve proiettare i dieci giocatori di movimento per squadra`);
-    assert(prediction.shooters.outsiders.length >= 2, `${prediction.matchId}: ranking outsider insufficiente`);
+    assert(prediction.shooters.outsiders.length <= 5, `${prediction.matchId}: ranking outsider oltre il limite espositivo`);
     for (const candidate of prediction.shooters.allPlayers) {
       assert(candidate.matchupFactor >= 0.82 && candidate.matchupFactor <= 1.18, `${prediction.matchId}/${candidate.name}: matchup fuori bound`);
-      assert(candidate.teamProfileMatchupFactor >= 1 && candidate.teamProfileMatchupFactor <= 1.03, `${prediction.matchId}/${candidate.name}: profilo squadra troppo aggressivo`);
+      assert(candidate.teamProfileMatchupFactor >= 1 && candidate.teamProfileMatchupFactor <= 1.04, `${prediction.matchId}/${candidate.name}: profilo squadra troppo aggressivo`);
+      assert(candidate.teamProfileShotsOnTargetMatchupFactor >= 1 && candidate.teamProfileShotsOnTargetMatchupFactor <= 1.04, `${prediction.matchId}/${candidate.name}: profilo SOT squadra troppo aggressivo`);
+      const allocationFactor = candidate.playerAllocationFactor ?? 1;
+      assert(allocationFactor >= 0.84 && allocationFactor <= 1.16, `${prediction.matchId}/${candidate.name}: allocation factor fuori bound`);
+      assert(candidate.shotsMatchupFactor >= 0.82 && candidate.shotsMatchupFactor <= 1.18, `${prediction.matchId}/${candidate.name}: matchup tiri fuori bound`);
+      assert(candidate.shotsOnTargetMatchupFactor >= 0.82 && candidate.shotsOnTargetMatchupFactor <= 1.18, `${prediction.matchId}/${candidate.name}: matchup SOT fuori bound`);
       assert(candidate.expectedMinutes >= 55 && candidate.expectedMinutes <= 90, `${prediction.matchId}/${candidate.name}: minuti attesi non validi`);
       assert(["low", "medium", "high"].includes(candidate.substitutionRisk), `${prediction.matchId}/${candidate.name}: rischio sostituzione non valido`);
       assert(candidate.projectedShotsOnTarget <= candidate.projectedShots + 0.001, `${prediction.matchId}/${candidate.name}: SOT sopra i tiri`);
@@ -217,7 +224,7 @@ for (const prediction of dataset.predictions) {
     assert(prediction.likelyBooked.every(candidate => candidate.duelRisk >= 0.92 && candidate.duelRisk <= 1.12), `${prediction.matchId}: duel risk fuori bound`);
     assert(prediction.likelyBooked.every(candidate => candidate.opponentDuelEnvironmentFactor >= 0.98 && candidate.opponentDuelEnvironmentFactor <= 1.03), `${prediction.matchId}: ambiente duello squadra fuori bound`);
     assert(prediction.likelyBooked.every(candidate => candidate.teamDisciplineFactor >= 0.95 && candidate.teamDisciplineFactor <= 1.05), `${prediction.matchId}: fattore disciplina squadra fuori bound`);
-    assert(prediction.likelyBooked.filter(candidate => !["atalanta", "bologna"].includes(candidate.teamId)).every(candidate => candidate.teamDisciplineFactor === 1), `${prediction.matchId}: i profili disciplina hanno contaminato altre squadre`);
+    assert(prediction.likelyBooked.filter(candidate => !["atalanta", "bologna", "cagliari", "como", "fiorentina", "roma"].includes(candidate.teamId)).every(candidate => candidate.teamDisciplineFactor === 1), `${prediction.matchId}: i profili disciplina hanno contaminato altre squadre`);
     assert(prediction.likelyBooked.every(candidate => candidate.directOpponent || candidate.duelRisk === 1), `${prediction.matchId}: fallback duello incoerente`);
   }
   assert(prediction.mvpCandidate?.name && prediction.mvpCandidate?.teamId, `${prediction.matchId}: candidato MVP assente`);
@@ -239,7 +246,165 @@ assert(lecceBolognaProfile.shooters.allPlayers.filter(candidate => candidate.tea
 assert(lecceBolognaProfile.likelyBooked.some(candidate => candidate.teamId === "bologna" && candidate.teamDisciplineFactor > 1), "Bologna: fattore disciplina regolarizzato non collegato ai giocatori");
 assert(lecceBolognaProfile.likelyBooked.filter(candidate => candidate.teamId === "lecce" && !candidate.directOpponent).every(candidate => candidate.opponentDuelEnvironmentFactor === 1), "Bologna: ambiente falli applicato senza duello diretto");
 assert(dataset.predictions.every(prediction => prediction.likelyBooked.every(candidate => candidate.opponentDuelEnvironmentFactor == null || candidate.opponentDuelEnvironmentFactor === 1 || candidate.directOpponent)), "Ambiente falli squadra applicato senza avversario diretto identificato");
-assert(dataset.predictions.filter(prediction => prediction.playerMarketModelVersion === 2 && !prediction.matchId.includes("atalanta")).every(prediction => prediction.shooters.allPlayers.every(candidate => candidate.teamProfileMatchupFactor === 1)), "Il pilot Atalanta ha contaminato altre squadre");
+assert(dataset.predictions.filter(prediction => prediction.playerMarketModelVersion === 2 && !prediction.matchId.includes("atalanta") && !prediction.matchId.includes("cagliari") && !prediction.matchId.includes("fiorentina")).every(prediction => prediction.shooters.allPlayers.every(candidate => candidate.teamProfileMatchupFactor === 1)), "I profili attivi hanno contaminato altre squadre");
+
+const cagliariJuventusProfile = dataset.predictions.find(prediction => prediction.matchId === "cagliari-juventus-2026-27-md-06");
+const juventusAgainstCagliari = cagliariJuventusProfile?.shooters.allPlayers.filter(candidate => candidate.teamId === "juventus") || [];
+const activeCagliariMatchupPlayers = juventusAgainstCagliari.filter(candidate => candidate.teamProfileShotsMatchupFactor > 1);
+assert(activeCagliariMatchupPlayers.length >= 2, "Cagliari: il matchup attivo non raggiunge tiratori con baseline credibile");
+assert(activeCagliariMatchupPlayers.every(candidate => candidate.teamProfileShotsMatchupFactor > candidate.teamProfileShotsOnTargetMatchupFactor), "Cagliari: il boost tiri deve superare quello SOT");
+assert(juventusAgainstCagliari.filter(candidate => candidate.teamProfileRole === "CB" || candidate.teamProfileRole === "FB").every(candidate => candidate.teamProfileMatchupFactor === 1), "Cagliari: un ruolo WATCH ha prodotto boost");
+assert(juventusAgainstCagliari.some(candidate => candidate.baselineShots90 < 1 && candidate.teamProfileMatchupFactor === 1), "Cagliari: manca il controllo sulla baseline bassa");
+assert(cagliariJuventusProfile.shooters.allPlayers.filter(candidate => candidate.teamId === "cagliari").every(candidate => candidate.teamProfileMatchupFactor === 1), "Cagliari: auto-boost tattico non valido");
+const juventusProjection = cagliariJuventusProfile.teamProjections.find(team => team.teamId === "juventus");
+assert(juventusProjection.opponentMatchupInteraction.shotsAdjustmentPct > juventusProjection.opponentMatchupInteraction.shotsOnTargetAdjustmentPct, "Cagliari: il volume squadra SOT segue automaticamente il boost tiri");
+assert(juventusProjection.opponentMatchupInteraction.shotsAdjustmentPct > 0 && juventusProjection.opponentMatchupInteraction.shotsOnTargetAdjustmentPct === 0, "Cagliari: ELEVATED tiri e NORMAL SOT devono produrre comportamenti opposti");
+assert.strictEqual(juventusProjection.opponentMatchupInteraction.method, "single-dampened-budget");
+
+const highExploit = opponentAbilityToExploit({ summary: { shotsPerGame: 16, possessionPct: 59, passSuccessPct: 89, aerialWonPerGame: 15 }, attackChannels: { left: 36, central: 28, right: 36 } }, { shotsTotal: { central: 17 }, corners: { central: 8 } });
+const lowExploit = opponentAbilityToExploit({ summary: { shotsPerGame: 9, possessionPct: 42, passSuccessPct: 78, aerialWonPerGame: 8 }, attackChannels: { left: 20, central: 60, right: 20 } }, { shotsTotal: { central: 9 }, corners: { central: 3 } });
+for (const feature of ["general", "territorial", "wide", "setPiece"]) assert(highExploit[feature] > lowExploit[feature], `Ability to exploit ${feature} non distingue gli scenari sintetici`);
+
+const cagliariMatchupProfile = require(path.join(root, "data/normalized/team-matchup-profiles-2026-27.json")).profiles.find(profile => profile.teamId === "cagliari");
+const lowBaselineCm = teamProfilePlayerModifier({ role: "Centrocampista", detailedRole: "centrocampista centrale" }, 0.4, 0.1, cagliariMatchupProfile, highExploit);
+const highBaselineCm = teamProfilePlayerModifier({ role: "Centrocampista", detailedRole: "centrocampista centrale" }, 2, 0.4, cagliariMatchupProfile, highExploit);
+assert.strictEqual(lowBaselineCm.shotFactor, 1, "Un CM senza propensione e stato creato dal matchup");
+assert(highBaselineCm.shotFactor > 1 && highBaselineCm.shotFactor > highBaselineCm.sotFactor, "Un CM con baseline credibile non distingue tiri e SOT");
+assert(highBaselineCm.shotFactor < 1.08 ** 4 && highBaselineCm.shotFactor <= 1.18, "Il budget non impedisce il double counting");
+const highBaselineCmLowAbility = teamProfilePlayerModifier({ role: "Centrocampista", detailedRole: "centrocampista centrale" }, 2, 0.4, cagliariMatchupProfile, lowExploit);
+assert(highBaselineCm.shotFactor > highBaselineCmLowAbility.shotFactor, "Ability to exploit non modula il matchup giocatore");
+const lowShotCb = teamProfilePlayerModifier({ role: "Difensore", detailedRole: "difensore centrale" }, 0.2, 0.02, cagliariMatchupProfile, highExploit);
+const setPieceCb = teamProfilePlayerModifier({ role: "Difensore", detailedRole: "difensore centrale" }, 0.9, 0.2, cagliariMatchupProfile, highExploit);
+assert.strictEqual(lowShotCb.shotFactor, 1);
+assert.strictEqual(setPieceCb.shotFactor, 1, "Il CB piazzato resta WATCH finche il campione non consente l'attivazione");
+
+const comoMatchupProfile = require(path.join(root, "data/normalized/team-matchup-profiles-2026-27.json")).profiles.find(profile => profile.teamId === "como");
+const comoRomaProfile = dataset.predictions.find(prediction => prediction.matchId === "como-roma-2026-27-md-06");
+const comoProjection = comoRomaProfile?.teamProjections.find(team => team.teamId === "como");
+const romaAgainstComoProjection = comoRomaProfile?.teamProjections.find(team => team.teamId === "roma");
+const comoPlayers = comoRomaProfile?.shooters.allPlayers.filter(player => player.teamId === "como") || [];
+assert(comoProjection.ownOffensiveInteraction.shotsAdjustmentPct > 0 && comoProjection.ownOffensiveInteraction.shotsAdjustmentPct <= 10, "Como: volume offensivo current non integrato prudentemente");
+assert(comoProjection.ownOffensiveInteraction.shotsOnTargetAdjustmentPct > 0 && comoProjection.ownOffensiveInteraction.shotsOnTargetAdjustmentPct <= 8, "Como: SOT adjustment fuori budget");
+assert(comoProjection.ownOffensiveInteraction.cornersAdjustmentPct > 0 && comoProjection.ownOffensiveInteraction.cornersAdjustmentPct <= 10, "Como: corner opportunity non integrata");
+assert(comoProjection.ownOffensiveInteraction.capDiagnostics.shots.capHit, "Como: saturazione cap tiri non diagnosticata");
+assert(dataset.diagnostics.capSaturation.teamProjections > 0 && dataset.diagnostics.capSaturation.hits.shots > 0, "Frequenza aggregata dei cap non disponibile");
+assert(Math.abs(comoPlayers.reduce((total, player) => total + player.projectedShotsV1, 0) - comoProjection.legacyVolumeProjection.shotsTotal.central) <= 0.11, "Como: V1 non conserva il volume legacy");
+assert(Math.abs(comoPlayers.reduce((total, player) => total + player.projectedShots, 0) - comoProjection.shotsTotal.central) <= 0.11, "Como: V2 non riconcilia il volume allocato");
+assert(comoPlayers.every(player => player.playerAllocationFactor >= 0.84 && player.playerAllocationFactor <= 1.16), "Como: allocation factor fuori clamp");
+const nicoPaz = comoPlayers.find(player => player.playerId === "nico-paz");
+const baturina = comoPlayers.find(player => player.playerId === "martin-baturina");
+const jacoboRamon = comoPlayers.find(player => player.playerId === "jacobo-ramon");
+const chalobah = comoPlayers.find(player => player.playerId === "trevoh-chalobah");
+const kaiki = comoPlayers.find(player => player.playerId === "kaiki");
+const romaPlayers = comoRomaProfile.shooters.allPlayers.filter(player => player.teamId === "roma");
+const cristante = romaPlayers.find(player => player.playerId === "bryan-cristante");
+const mancini = romaPlayers.find(player => player.playerId === "gianluca-mancini");
+assert.strictEqual(nicoPaz.allocationClass, "primary");
+assert.strictEqual(nicoPaz.outsiderScore, null, "Il primary shooter non deve essere etichettato outsider");
+assert.strictEqual(baturina.allocationClass, "secondary");
+assert(baturina.playerAllocationFactor > 1, "Como: secondary shooter con evidence non valorizzato");
+assert(jacoboRamon.playerAllocationFactor > chalobah.playerAllocationFactor, "Como: il CB con baseline piazzati superiore non beneficia piu del CB low-volume");
+assert(comoRomaProfile.shooters.allPlayers.filter(player => player.teamId === "roma").every(player => player.teamProfileMatchupFactor === 1), "Como: una vulnerabilita difensiva WATCH ha prodotto boost");
+assert(romaAgainstComoProjection.opponentMatchupInteraction.shotsAdjustmentPct > 0 && romaAgainstComoProjection.opponentMatchupInteraction.shotsOnTargetAdjustmentPct === 0, "Como: ELEVATED tiri e NORMAL SOT non sono indipendenti");
+assert.strictEqual(romaAgainstComoProjection.opponentMatchupInteraction.metricEvidence.shots.active, true, "Como: evidenza tiri ACTIVE non esposta");
+assert.strictEqual(romaAgainstComoProjection.opponentMatchupInteraction.metricEvidence.shotsOnTarget.active, false, "Como: SOT NORMAL non resta neutro");
+assert.strictEqual(comoRomaProfile.dataQuality.probableLineups, "22/22 titolari proiettati; fonte editoriale da riconfermare", "Como-Roma: conteggio XI dinamico errato");
+assert.deepStrictEqual(comoRomaProfile.dataQuality.outfieldPlayersModeled, { modeled: 20, expected: 20, complete: true }, "Como-Roma: conteggio giocatori di movimento errato");
+assert.strictEqual(kaiki.qualifiedOutsider, false, "Kaiki non deve superare i gate outsider con stabilita bassa e ruolo generico");
+assert(kaiki.outsiderExclusionReasons.includes("generic-detailed-role-with-low-stability"), "Kaiki: motivazione di esclusione outsider assente");
+assert.strictEqual(cristante.qualifiedOutsider, true, "Cristante deve poter qualificare sul mercato tiri");
+assert.strictEqual(cristante.qualifiedSotOutsider, false, "Cristante non deve qualificare automaticamente sul mercato SOT");
+assert.strictEqual(mancini.qualifiedOutsider, false, "Mancini non supera i gate qualitativi outsider");
+assert(!comoRomaProfile.shooters.outsiders.some(player => player.playerId === "kaiki"), "Kaiki resta nel ranking outsider nonostante il rigetto");
+assert(comoRomaProfile.shooters.outsiders.length < 5, "Como-Roma: il ranking outsider e ancora riempito forzatamente a cinque");
+assert(comoRomaProfile.shooters.outsiderDiagnostics.shots.rejected.some(player => player.playerId === "kaiki"), "Diagnostica outsider non espone il rigetto di Kaiki");
+assert.strictEqual(comoRomaProfile.shooters.teamTotals.find(team => team.teamId === "como").reconciliation.shots.allocationMode, "EXTRA_VOLUME", "Como: modalita reconciliation tiri errata");
+assert.strictEqual(comoRomaProfile.shooters.teamTotals.find(team => team.teamId === "roma").reconciliation.shots.allocationMode, "COMPRESSION", "Roma: modalita reconciliation tiri errata");
+assert(comoRomaProfile.likelyBooked.filter(player => player.teamId === "como").every(player => player.expectedDefensiveExposureFactor < 1 && player.expectedDefensiveExposureFactor > 0.97), "Como: esposizione difensiva non collegata prudentemente al card model");
+
+for (const status of ["watch", "inactive", "unknown"]) {
+  const neutralProfile = JSON.parse(JSON.stringify(comoMatchupProfile));
+  neutralProfile.vulnerabilities.signals.totalShotVulnerability.status = status;
+  const neutralInteraction = applyOpponentTeamVolumeInteraction(
+    { summary: { shotsPerGame: 15, possessionPct: 58, passSuccessPct: 86, aerialWonPerGame: 12 }, attackChannels: { left: 33, central: 34, right: 33 } },
+    neutralProfile,
+    { min: 11, central: 14, max: 18 },
+    { min: 3, central: 5, max: 7 },
+    { min: 3, central: 5, max: 7 }
+  );
+  assert.strictEqual(neutralInteraction.shotsAdjustmentPct, 0, `Como: segnale ${status} non neutro nel volume squadra`);
+}
+
+const syntheticBaselines = [3, 0.4, 2, 1.8, 1.6, 1.5, 1.4, 1.2, 1.1, 1];
+const syntheticIds = ["nico-paz", "luis-milla", "anastasios-douvikas", "martin-baturina", "assane-diao", "lucas-da-cunha", "yan-couto", "jacobo-ramon", "trevoh-chalobah", "maximo-perrone"];
+const syntheticRoles = ["AM", "CM", "CF", "AM", "AM", "CM", "FB", "CB", "CB", "CM"];
+const syntheticRows = syntheticBaselines.map((value, index) => ({ projectedShots: value, baselineShots90: value, playerId: syntheticIds[index], teamProfileRole: syntheticRoles[index] }));
+const syntheticAllocation = teamOffensiveAllocation(syntheticRows, "projectedShots", 23, comoMatchupProfile);
+assert.strictEqual(Number(syntheticAllocation.values.reduce((total, value) => total + value, 0).toFixed(6)), 23);
+assert.strictEqual(syntheticAllocation.extraVolume, 8, "L'allocation deve operare sul solo extra-volume rispetto alle baseline");
+assert(syntheticAllocation.values.every((value, index) => value >= syntheticBaselines[index]), "Un extra-volume positivo non deve riscrivere o ridurre le baseline individuali");
+assert(syntheticAllocation.values[0] - syntheticBaselines[0] > syntheticAllocation.values[1] - syntheticBaselines[1], "Il primary non assorbe piu extra-volume del giocatore da 0.4/90");
+assert(syntheticAllocation.values[1] < 0.6, "Il giocatore da 0.4/90 viene promosso artificialmente dal team volume");
+assert(syntheticAllocation.factors.every(factor => factor >= 0.84 && factor <= 1.16), "Il budget allocation sintetico supera il clamp");
+const setPieceRows = [
+  { projectedShots: 0.15, baselineShots90: 0.15, playerId: "cb-low", teamProfileRole: "CB" },
+  { projectedShots: 0.9, baselineShots90: 0.9, playerId: "cb-target", teamProfileRole: "CB" },
+  ...syntheticRows.slice(2)
+];
+const setPieceAllocation = teamOffensiveAllocation(setPieceRows, "projectedShots", 18, comoMatchupProfile);
+assert(setPieceAllocation.factors[1] > setPieceAllocation.factors[0], "Il CB target sui piazzati non beneficia piu del CB da 0.15/90");
+
+const stableBaseline = playerBaselineStability({ historicalBaseline: 1.4, historicalObserved: 1.4, historicalMinutes: 2100, current: { minutes: 321, shots: 5, shotsCoverage: 5 }, key: "shots" });
+const breakoutBaseline = playerBaselineStability({ historicalBaseline: 1.2, historicalObserved: 1.2, historicalMinutes: 2100, current: { minutes: 252, shots: 14, shotsCoverage: 5 }, key: "shots" });
+assert.strictEqual(stableBaseline.level, "high", "Baseline storico e current coerenti devono risultare stabili");
+assert(Math.abs(stableBaseline.value - 1.4) < 0.03, "La stabilizzazione altera una baseline coerente");
+assert.strictEqual(breakoutBaseline.level, "low", "Un breakout current molto distante non deve sembrare stabile");
+assert(breakoutBaseline.value > 1.2 && breakoutBaseline.value < 5, "Il breakout deve essere riconosciuto ma shrinkato, non azzerato o preso integralmente");
+assert(breakoutBaseline.currentSample.reliability < breakoutBaseline.historicalSample.reliability, "Affidabilita del campione e agreement storico-current non sono separati");
+
+const fiorentinaMatchupProfile = require(path.join(root, "data/normalized/team-matchup-profiles-2026-27.json")).profiles.find(profile => profile.teamId === "fiorentina");
+const fiorentinaLowSotCm = teamProfilePlayerModifier({ role: "Centrocampista", detailedRole: "centrocampista centrale" }, 2, 0.1, fiorentinaMatchupProfile, highExploit);
+const fiorentinaHighSotCm = teamProfilePlayerModifier({ role: "Centrocampista", detailedRole: "centrocampista centrale" }, 2, 0.75, fiorentinaMatchupProfile, highExploit);
+assert.strictEqual(fiorentinaLowSotCm.shotFactor, 1, "Fiorentina: la vulnerabilita SOT non deve diventare boost tiri");
+assert.strictEqual(fiorentinaLowSotCm.sotFactor, 1, "Fiorentina: un giocatore senza baseline SOT credibile non deve essere creato dal matchup");
+assert.strictEqual(fiorentinaHighSotCm.shotFactor, 1, "Fiorentina: pipeline tiri e SOT non sono separate");
+assert(fiorentinaHighSotCm.sotFactor > 1 && fiorentinaHighSotCm.sotFactor < 1.08, "Fiorentina: boost SOT attivo assente o fuori budget");
+assert(highBaselineCm.shotFactor > fiorentinaHighSotCm.shotFactor && fiorentinaHighSotCm.sotFactor > highBaselineCm.sotFactor, "Cagliari e Fiorentina non distinguono correttamente volume tiri e qualita SOT");
+
+const genoaFiorentinaProfile = dataset.predictions.find(prediction => prediction.matchId === "genoa-fiorentina-2026-27-md-06");
+const fiorentinaProjection = genoaFiorentinaProfile?.teamProjections.find(team => team.teamId === "fiorentina");
+const genoaProjection = genoaFiorentinaProfile?.teamProjections.find(team => team.teamId === "genoa");
+const fiorentinaPlayers = genoaFiorentinaProfile?.shooters.allPlayers.filter(player => player.teamId === "fiorentina") || [];
+const genoaPlayers = genoaFiorentinaProfile?.shooters.allPlayers.filter(player => player.teamId === "genoa") || [];
+assert(fiorentinaProjection.ownOffensiveInteraction.shotsAdjustmentPct > 0 && fiorentinaProjection.ownOffensiveInteraction.shotsAdjustmentPct <= 6, "Fiorentina: volume tiri current fuori budget");
+assert(fiorentinaProjection.ownOffensiveInteraction.shotsOnTargetAdjustmentPct > fiorentinaProjection.ownOffensiveInteraction.shotsAdjustmentPct && fiorentinaProjection.ownOffensiveInteraction.shotsOnTargetAdjustmentPct <= 8, "Fiorentina: budget tiri e SOT non distinti");
+assert.strictEqual(fiorentinaProjection.ownOffensiveInteraction.cornersAdjustmentPct, 0, "Fiorentina: i corner non devono ereditare il cap tiri senza segnale attivo");
+assert(Math.abs(fiorentinaPlayers.reduce((total, player) => total + player.projectedShotsV1, 0) - fiorentinaProjection.legacyVolumeProjection.shotsTotal.central) <= 0.11, "Fiorentina: V1 non conserva scalePlayerVolume");
+assert(Math.abs(fiorentinaPlayers.reduce((total, player) => total + player.projectedShots, 0) - fiorentinaProjection.shotsTotal.central) <= 0.11, "Fiorentina: V2 non riconcilia i tiri senza quote rigide di ruolo");
+assert(genoaProjection.opponentMatchupInteraction.shotsAdjustmentPct < genoaProjection.opponentMatchupInteraction.shotsOnTargetAdjustmentPct, "Fiorentina: la vulnerabilita SOT avversaria e stata trasformata in volume tiri");
+assert(genoaProjection.opponentMatchupInteraction.shotsAdjustmentPct === 0 && genoaProjection.opponentMatchupInteraction.shotsOnTargetAdjustmentPct > 0, "Fiorentina: NORMAL tiri ed ELEVATED SOT devono produrre comportamenti opposti");
+assert(genoaPlayers.some(player => player.teamProfileShotsOnTargetMatchupFactor > player.teamProfileShotsMatchupFactor), "Fiorentina: nessun tiratore avversario credibile riceve il segnale SOT");
+assert(genoaPlayers.filter(player => player.teamProfileRole === "CB").every(player => player.teamProfileShotsMatchupFactor === 1 && player.teamProfileShotsOnTargetMatchupFactor === 1), "Fiorentina: i centrali WATCH sono stati attivati");
+assert(genoaPlayers.filter(player => player.baselineShotsOnTarget90 < 0.2).every(player => player.teamProfileShotsOnTargetMatchupFactor === 1), "Fiorentina: il matchup crea SOT per baseline individuali troppo basse");
+const mastantuono = fiorentinaPlayers.find(player => player.playerId === "franco-mastantuono");
+const atta = fiorentinaPlayers.find(player => player.playerId === "arthur-atta");
+const ndour = fiorentinaPlayers.find(player => player.playerId === "cher-ndour");
+const alexJimenez = fiorentinaPlayers.find(player => player.playerId === "alex-jimenez");
+assert(mastantuono.stabilizedShots90 > mastantuono.baselineShots90 && mastantuono.stabilizedShots90 < mastantuono.playerBaselineStability.currentSample.per90, "Mastantuono: breakout current non stabilizzato correttamente");
+assert.strictEqual(mastantuono.allocationClass, "primary");
+assert.strictEqual(mastantuono.outsiderScore, null, "Mastantuono primary non deve diventare outsider");
+assert.strictEqual(ndour.playerBaselineStability.level, "high", "Ndour: storico e current coerenti non risultano stabili");
+assert(atta.outsiderScore > alexJimenez.outsiderScore && atta.sotOutsiderScore > alexJimenez.sotOutsiderScore, "Fiorentina: un difensore low-volume viene promosso sopra Atta");
+assert(genoaFiorentinaProfile.shooters.sotOutsiders.some(player => player.playerId === "arthur-atta"), "Fiorentina: ranking outsider SOT non espone Atta");
+
+const transitionStrong = opponentAbilityToExploit({ summary: { shotsPerGame: 18, possessionPct: 35, passSuccessPct: 75, aerialWonPerGame: 10 }, strengths: [{ id: "contropiede" }], attackChannels: { left: 20, central: 60, right: 20 } }, { shotsTotal: { central: 18 }, corners: { central: 3 } });
+const transitionWeak = opponentAbilityToExploit({ summary: { shotsPerGame: 9, possessionPct: 35, passSuccessPct: 75, aerialWonPerGame: 10 }, attackChannels: { left: 20, central: 60, right: 20 } }, { shotsTotal: { central: 9 }, corners: { central: 3 } });
+assert(transitionStrong.transition > transitionWeak.transition, "Basso possesso e transition efficiency vengono confusi");
+assert.strictEqual(romaAgainstComoProjection.opponentMatchupInteraction.method, "evidence-weighted-marginal-shot-sot-correction", "Como: policy di correzione marginale non applicata");
+const lowExposure = expectedDefensiveExposureFactor(65);
+const highExposure = expectedDefensiveExposureFactor(45);
+assert(highExposure > lowExposure, "Una maggiore esposizione difensiva non aumenta leggermente il rischio");
+assert(highExposure - lowExposure < 0.05, "Expected defensive exposure ha un impatto eccessivo");
 assert.strictEqual(fourthMatchdayPredictions.filter(prediction => prediction.scoreForecast.primary.score === "1-0").length, 0, "La quarta giornata non deve ereditare la concentrazione artificiale sugli 1-0");
 const milanVenezia = dataset.predictions.find(prediction => prediction.matchId === "milan-venezia-2026-27-md-02");
 const fiorentinaFrosinone = dataset.predictions.find(prediction => prediction.matchId === "fiorentina-frosinone-2026-27-md-02");

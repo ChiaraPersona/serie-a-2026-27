@@ -26,6 +26,27 @@
         "tacticalConfidence": { "$ref": "#/$defs/confidence" },
         "tacticalWeightPerMatch": { "type": "number", "minimum": 0, "maximum": 1 }
       }
+    },
+    "persistence": {
+      "type": "object",
+      "required": ["baseline", "elevatedThreshold", "matchesAboveBaseline", "shareAboveBaseline", "matchesAboveElevatedThreshold", "shareAboveElevatedThreshold", "longestRun", "level", "sampleSize"],
+      "properties": {
+        "shareAboveBaseline": { "type": "number", "minimum": 0, "maximum": 1 },
+        "shareAboveElevatedThreshold": { "type": "number", "minimum": 0, "maximum": 1 },
+        "level": { "type": "string", "enum": ["low", "medium", "high", "very-high"] }
+      }
+    },
+    "signalStability": {
+      "type": "object",
+      "required": ["score", "level", "direction", "historicalCurrentAgreement", "persistence", "historicalSampleReliability", "currentSampleReliability", "confidence", "formula"],
+      "properties": {
+        "score": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+        "level": { "type": "string", "enum": ["unknown", "low", "medium", "high", "very-high"] },
+        "direction": { "type": "string", "enum": ["neutral", "elevation", "suppression"] },
+        "historicalSampleReliability": { "type": "number", "minimum": 0, "maximum": 1 },
+        "currentSampleReliability": { "type": "number", "minimum": 0, "maximum": 1 },
+        "confidence": { "$ref": "#/$defs/confidence" }
+      }
     }
   },
   "required": ["schemaVersion", "competition", "season", "generatedAt", "methodology", "coverage", "profiles"],
@@ -47,7 +68,7 @@
       "minItems": 1,
       "items": {
         "type": "object",
-        "required": ["teamId", "season", "sampleSize", "tacticalContext", "historicalBaseline", "currentSeason", "shotDefense", "vulnerabilities", "discipline", "corners", "volatility", "confidence", "dataQuality", "modelPolicy", "evidence"],
+        "required": ["teamId", "season", "sampleSize", "tacticalContext", "historicalBaseline", "currentSeason", "offense", "shotDefense", "vulnerabilities", "discipline", "corners", "volatility", "confidence", "dataQuality", "modelPolicy", "evidence"],
         "properties": {
           "tacticalContext": {
             "type": "object",
@@ -59,19 +80,54 @@
           },
           "shotDefense": {
             "type": "object",
-            "required": ["shotsAllowed", "shotsOnTargetAllowed", "shotLocation", "opponentShotRoleDistribution"],
+            "required": ["shotsAllowed", "shotsOnTargetAllowed", "opponentShotOnTargetRate", "shotLocation", "opponentShotRoleDistribution", "shotsAllowedRoleDistribution", "sotAllowedRoleDistribution", "defensiveShotDistributionBreadth", "defensiveSotDistributionBreadth", "shotQualityProfile", "shotPermissionProfile", "defensiveMetricSignals", "generalShotSuppression", "generalSotSuppression"],
             "properties": {
+              "shotsAllowed": { "type": "object", "required": ["signalPersistence"], "properties": { "signalPersistence": { "$ref": "#/$defs/persistence" } } },
+              "shotsOnTargetAllowed": { "type": "object", "required": ["signalPersistence"], "properties": { "signalPersistence": { "$ref": "#/$defs/persistence" } } },
+              "opponentShotOnTargetRate": { "type": "object", "required": ["historical", "current", "shrunk", "modelStatus"] },
               "shotLocation": {
                 "type": "object",
                 "required": ["insideBox", "outsideBox", "insideBoxShare", "insideBoxShotsAllowedPerMatch", "sourceType"],
                 "properties": {
+                  "insideBox": { "type": ["number", "null"], "minimum": 0 },
+                  "outsideBox": { "type": ["number", "null"], "minimum": 0 },
                   "insideBoxShare": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
                   "insideBoxShotsAllowedPerMatch": { "type": ["number", "null"], "minimum": 0 }
                 }
               },
               "opponentShotRoleDistribution": {
                 "type": "object",
-                "required": ["taxonomy", "shotsByRole", "shareByRole", "roleConcentrationIndex", "modelStatus"]
+                "required": ["taxonomy", "shotsByRole", "shareByRole", "roleConcentrationIndex", "shotDistributionBreadth", "modelStatus"]
+              },
+              "defensiveMetricSignals": {
+                "type": "object",
+                "required": ["shotsAllowed", "shotsOnTargetAllowed"],
+                "properties": {
+                  "shotsAllowed": { "$ref": "#/$defs/signalStability" },
+                  "shotsOnTargetAllowed": { "$ref": "#/$defs/signalStability" }
+                }
+              },
+              "generalShotSuppression": { "type": "object", "required": ["level", "status", "confidence", "signalStability"] },
+              "generalSotSuppression": { "type": "object", "required": ["level", "status", "confidence", "signalStability"] }
+            }
+          },
+          "offense": {
+            "type": "object",
+            "required": ["signals", "teamShotVolume", "teamSotVolume", "shotsForRoleDistribution", "sotForRoleDistribution", "primaryShooterConcentration", "secondaryShooterBreadth", "shooterStructure", "playerShotAndSotTiers", "offensiveShotDistributionBreadth", "offensiveSotDistributionBreadth", "shotAccuracyVolatility", "possessionIndependentShotCreation", "offensiveShotQuality", "shotVolumeCeiling", "shotVolumeVolatility", "volumeExpansionBreadth", "cbSetPieceShotParticipation", "gameStateAdjustedVolume", "teamOffensiveAllocation", "teamSetPieceOpportunityVolume"],
+            "properties": {
+              "teamOffensiveAllocation": { "type": "object", "required": ["enabled", "method", "currentEvidenceWeight", "expansionBreadthWeight", "factorClamp"] },
+              "shooterStructure": { "type": "object", "required": ["type", "primaryCount", "primaryShare", "primaryPlayerIds", "confidence", "method", "playerTiers"] },
+              "playerShotAndSotTiers": { "type": "array" },
+              "cbSetPieceShotParticipation": { "type": "object", "required": ["setPieceOriginCoverage", "status", "confidence"] }
+            }
+          },
+          "discipline": {
+            "type": "object",
+            "required": ["historical", "current", "shrunk", "metricSignals"],
+            "properties": {
+              "metricSignals": {
+                "type": "object",
+                "required": ["foulsCommitted", "foulsWon", "yellowCards"]
               }
             }
           },
@@ -84,12 +140,13 @@
                 "type": "object",
                 "additionalProperties": {
                   "type": "object",
-                  "required": ["level", "status", "confidence", "active", "effectiveMaxBoostPct"],
+                  "required": ["level", "status", "confidence", "active", "effectiveMaxBoostPct", "effectiveMaxSotBoostPct"],
                   "properties": {
                     "status": { "$ref": "#/$defs/signalStatus" },
                     "confidence": { "$ref": "#/$defs/confidence" },
                     "active": { "type": "boolean" },
-                    "effectiveMaxBoostPct": { "type": "number", "minimum": 0 }
+                    "effectiveMaxBoostPct": { "type": "number", "minimum": 0 },
+                    "effectiveMaxSotBoostPct": { "type": "number", "minimum": 0 }
                   }
                 }
               }
@@ -97,8 +154,9 @@
           },
           "modelPolicy": {
             "type": "object",
-            "required": ["active", "watch", "inactive", "watchActivationCriteria", "inactiveForCentralTeamVolume"]
-          }
+            "required": ["active", "watch", "inactive", "watchActivationCriteria", "interactionPolicy", "offensiveAllocationPolicy", "inactiveForCentralTeamVolume"]
+          },
+          "resultsVsProcessDivergence": { "type": "object", "required": ["observedGoalsAgainstPerMatch", "expectedGoalsAgainstPerMatch", "divergenceScore", "modelStatus"] }
         }
       }
     }

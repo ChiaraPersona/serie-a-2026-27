@@ -337,6 +337,14 @@ const basePredictions = previewMode
       return (leftMatch?.matchday || 99) - (rightMatch?.matchday || 99) || left.matchId.localeCompare(right.matchId);
     });
 const predictions = basePredictions.map(enrichPrediction);
+const capSaturation = generatedPredictions.flatMap(prediction => prediction.teamProjections || []).reduce((summary, projection) => {
+  summary.teamProjections += 1;
+  for (const metric of ["shots", "shotsOnTarget", "corners"]) {
+    if (projection.ownOffensiveInteraction?.capDiagnostics?.[metric]?.capHit) summary.hits[metric] += 1;
+  }
+  return summary;
+}, { teamProjections: 0, hits: { shots: 0, shotsOnTarget: 0, corners: 0 } });
+capSaturation.frequencyPct = Object.fromEntries(Object.entries(capSaturation.hits).map(([metric, hits]) => [metric, capSaturation.teamProjections ? Math.round(hits / capSaturation.teamProjections * 1000) / 10 : 0]));
 
 const output = {
   schemaVersion: 1,
@@ -345,6 +353,12 @@ const output = {
   season: "2026-27",
   ...(previewMode ? { mode: "exploratory-preview", matchday: previewMatchday, publicationStatus: "not-published" } : {}),
   generatedAt,
+  diagnostics: {
+    capSaturation: {
+      scope: "current-generated-team-projections",
+      ...capSaturation
+    }
+  },
   engine: {
     version: ENGINE_VERSION,
     playerMarketModelVersion: PLAYER_MARKET_MODEL_VERSION,

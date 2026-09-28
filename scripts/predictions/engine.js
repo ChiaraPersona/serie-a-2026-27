@@ -1,6 +1,6 @@
 "use strict";
 
-const ENGINE_VERSION = "4.12.0";
+const ENGINE_VERSION = "4.13.0";
 const PLAYER_MARKET_MODEL_VERSION = 2;
 const OUTCOMES = ["1", "X", "2"];
 const WEIGHTS = Object.freeze({ venueHistorical: 0.46, overallHistorical: 0.25, recentForm: 0.16, tacticalMatchup: 0.07, probableLineup: 0.05, objectives: 0.01 });
@@ -521,6 +521,42 @@ function scalePlayerVolume(candidates, key, teamCentral) {
   return raw.map(item => ({ ...item, projection: round(item.value * factor, 2) }));
 }
 
+function playerBaselineStability({ historicalBaseline, historicalObserved, historicalMinutes, current, key, roleContinuity = true }) {
+  const coverageKey = `${key}Coverage`;
+  const currentMinutes = Number(current?.minutes || 0);
+  const currentValue = Number(current?.[key]);
+  const currentCoverage = Number(current?.[coverageKey] || 0);
+  const hasCurrent = currentMinutes > 0 && currentCoverage > 0 && Number.isFinite(currentValue);
+  const currentPer90 = hasCurrent ? currentValue * 90 / currentMinutes : null;
+  const historicalSampleReliability = clamp(Number(historicalMinutes || 0) / (Number(historicalMinutes || 0) + 900), 0, 0.82);
+  const currentSampleReliability = hasCurrent ? clamp(currentMinutes / (currentMinutes + 900), 0, 0.35) : 0;
+  if (!hasCurrent) return {
+    value: historicalBaseline, score: null, level: "unknown", historicalCurrentAgreement: null,
+    historicalSample: { minutes: historicalMinutes || 0, per90: round(historicalObserved), reliability: round(historicalSampleReliability) },
+    currentSample: { minutes: 0, per90: null, reliability: 0, coverage: 0 },
+    roleContinuity: roleContinuity ? "current-roster-role-consistent" : "unknown",
+    confidence: historicalSampleReliability >= 0.65 ? "medium" : "low",
+    evidence: ["campione current non disponibile: baseline storica/role prior preservata"],
+    method: "sample-reliability-separated-from-historical-current-agreement"
+  };
+  const denominator = Math.max(Math.abs(historicalObserved), Math.abs(currentPer90), key === "shotsOnTarget" ? 0.15 : 0.4);
+  const agreement = clamp(1 - Math.abs(currentPer90 - historicalObserved) / denominator, 0, 1);
+  const score = clamp(agreement * 0.85 + (roleContinuity ? 1 : 0.5) * 0.15, 0, 1);
+  const level = score >= 0.8 ? "high" : score >= 0.55 ? "medium" : "low";
+  const stabilityDampening = 0.55 + 0.45 * agreement;
+  const effectiveCurrentWeight = currentSampleReliability * stabilityDampening;
+  const value = historicalBaseline * (1 - effectiveCurrentWeight) + currentPer90 * effectiveCurrentWeight;
+  return {
+    value, score: round(score), level, historicalCurrentAgreement: round(agreement),
+    historicalSample: { minutes: historicalMinutes || 0, per90: round(historicalObserved), reliability: round(historicalSampleReliability) },
+    currentSample: { minutes: currentMinutes, per90: round(currentPer90), reliability: round(currentSampleReliability), coverage: currentCoverage },
+    roleContinuity: roleContinuity ? "current-roster-role-consistent" : "unknown",
+    confidence: currentMinutes >= 270 && historicalMinutes >= 900 ? "medium" : "medium-low",
+    evidence: [`storico ${round(historicalObserved)} /90 su ${historicalMinutes || 0} minuti`, `current ${round(currentPer90)} /90 su ${currentMinutes} minuti`, `peso current effettivo ${round(effectiveCurrentWeight * 100, 1)}% dopo agreement`],
+    method: "historical-baseline-plus-current-signal-weighted-by-sample-and-agreement-without-multiplicative-double-count"
+  };
+}
+
 const EXPECTED_MINUTES_PRIORS = Object.freeze({ Difensore: 79, Centrocampista: 76, Attaccante: 74, Portiere: 90 });
 
 function expectedMinutes(candidate, current = null) {
@@ -580,47 +616,90 @@ function matchupRole(candidate) {
   if (/terzino/.test(detail) || (candidate.role === "Difensore" && /esterno/.test(detail))) return "FB";
   if (/difensore centrale|centrale difensivo/.test(detail)) return "CB";
   if (candidate.role === "Centrocampista" && (!detail || /centrocampista|centrale|mediano|mezzala|interno/.test(detail))) return "CM";
+  if (candidate.role === "Difensore") return "CB";
+  if (candidate.role === "Centrocampista") return "CM";
+  if (candidate.role === "Attaccante") return "CF";
   return null;
 }
 
-function teamProfilePlayerModifier(candidate, baselineShots90, opponentTeamMatchupProfile) {
-  const role = matchupRole(candidate);
-  const policy = role ? opponentTeamMatchupProfile?.vulnerabilities?.positionalShotVulnerability?.[role] : null;
-  if (policy?.status === "watch") return {
-    factor: 1,
-    role,
-    confidence: policy.confidence || null,
-    evidence: [`profilo ${role} in watch: segnale osservato senza effetto sul modello`]
-  };
-  if (policy && !policy.active) return {
-    factor: 1,
-    role,
-    confidence: policy.confidence || null,
-    evidence: [`profilo ${role} sperimentale o non attivo`]
-  };
-  if (policy && !(baselineShots90 >= policy.minimumBaselineShots90)) return {
-    factor: 1,
-    role,
-    confidence: policy.confidence || null,
-    evidence: [`profilo ${role} non applicato: baseline ${round(baselineShots90, 2)} sotto soglia ${policy.minimumBaselineShots90}`]
-  };
-  if (!policy) return {
-    factor: 1,
-    role,
-    confidence: null,
-    evidence: ["profilo posizionale specifico non disponibile"]
-  };
-  const baselineEligibility = clamp(baselineShots90 / policy.minimumBaselineShots90, 0, 1);
-  const boostPct = policy.effectiveMaxBoostPct * baselineEligibility;
+function opponentAbilityToExploit(teamProfile, teamProjection = {}) {
+  const channels = attackChannels(teamProfile);
+  const shots = teamProjection?.shotsTotal?.central ?? teamProfile?.summary?.shotsPerGame ?? 10.5;
+  const corners = teamProjection?.corners?.central ?? 4;
+  const possession = teamProfile?.summary?.possessionPct ?? 50;
+  const passAccuracy = teamProfile?.summary?.passSuccessPct ?? 82;
+  const aerials = teamProfile?.summary?.aerialWonPerGame ?? 11;
+  const wideShare = (channels.left + channels.right) / 100;
+  const score = (value, low, high) => clamp((value - low) / (high - low), 0, 1);
+  const volume = score(shots, 9, 17);
+  const control = 0.55 * score(possession, 42, 60) + 0.45 * score(passAccuracy, 78, 90);
+  const cornerPressure = score(corners, 3, 8);
+  const wide = 0.45 * score(wideShare, 0.4, 0.75) + 0.3 * cornerPressure + 0.25 * volume;
+  const territorial = 0.45 * control + 0.4 * volume + 0.15 * cornerPressure;
+  const setPiece = 0.6 * cornerPressure + 0.4 * score(aerials, 8, 16);
+  const general = 0.6 * volume + 0.4 * control;
+  const shotsPer10PctPossession = possession > 0 ? shots / (possession / 10) : null;
+  const directStyle = (teamProfile?.playingStyle || []).some(item => item.id === "contropiede") || (teamProfile?.strengths || []).some(item => item.id === "contropiede") ? 1 : 0;
+  const transition = 0.75 * score(shotsPer10PctPossession, 1.5, 4.5) + 0.25 * directStyle;
   return {
-    factor: round(1 + boostPct / 100, 4),
-    role,
-    confidence: policy.confidence,
-    evidence: [`profilo ${role} vs ${opponentTeamMatchupProfile.teamName}: +${round(boostPct, 2)}%`, `confidence ${policy.confidence}, campione ${policy.sampleSize}, volatilita ${opponentTeamMatchupProfile.volatility.shotsAllowed}`]
+    general: round(general, 3),
+    territorial: round(territorial, 3),
+    wide: round(wide, 3),
+    setPiece: round(setPiece, 3),
+    transition: round(transition, 3),
+    inputs: { possessionPct: possession, passAccuracyPct: passAccuracy, projectedTeamShots: shots, projectedCorners: corners, wideAttackShare: round(wideShare), aerialWonPerGame: aerials, shotsPer10PctPossession: round(shotsPer10PctPossession), directStyle },
+    method: "feature-specific-0-to-1-strength-proxies"
   };
 }
 
-function playerMatchup(candidate, teamProfile, opponentProfile, opponentVolumeProfile, venue, baselineShots90, opponentTeamMatchupProfile) {
+function abilityForRole(role, ability) {
+  if (!ability) return 1;
+  if (role === "W" || role === "AM") return 0.35 * ability.general + 0.3 * ability.territorial + 0.35 * ability.wide;
+  if (role === "CM" || role === "DM") return 0.4 * ability.general + 0.45 * ability.territorial + 0.15 * ability.wide;
+  if (role === "FB") return 0.3 * ability.general + 0.35 * ability.territorial + 0.35 * ability.wide;
+  if (role === "CB") return 0.25 * ability.general + 0.15 * ability.territorial + 0.6 * ability.setPiece;
+  return 0.5 * ability.general + 0.35 * ability.territorial + 0.15 * ability.setPiece;
+}
+
+function teamProfilePlayerModifier(candidate, baselineShots90, baselineShotsOnTarget90, opponentTeamMatchupProfile, abilityToExploit) {
+  const role = matchupRole(candidate);
+  const policy = role ? opponentTeamMatchupProfile?.vulnerabilities?.positionalShotVulnerability?.[role] : null;
+  const neutral = (confidence, evidence) => ({ factor: 1, shotFactor: 1, sotFactor: 1, role, confidence, abilityToExploit: null, shotBoostPct: 0, sotBoostPct: 0, evidence });
+  if (policy?.status === "watch") return {
+    ...neutral(policy.confidence || null, [`profilo ${role} in watch: segnale osservato senza effetto sul modello`])
+  };
+  if (policy && !policy.active) return {
+    ...neutral(policy.confidence || null, [`profilo ${role} sperimentale o non attivo`])
+  };
+  if (policy && !(baselineShots90 >= policy.minimumBaselineShots90)) return {
+    ...neutral(policy.confidence || null, [`profilo ${role} non applicato: baseline ${round(baselineShots90, 2)} sotto soglia ${policy.minimumBaselineShots90}`])
+  };
+  if (!policy) return {
+    ...neutral(null, ["profilo posizionale specifico non disponibile"])
+  };
+  const baselineEligibility = clamp(baselineShots90 / policy.minimumBaselineShots90, 0, 1);
+  const interactionEnabled = Boolean(opponentTeamMatchupProfile?.modelPolicy?.interactionPolicy?.enabled);
+  const roleAbility = interactionEnabled ? clamp(abilityForRole(role, abilityToExploit), 0, 1) : 1;
+  const shotBoostPct = policy.effectiveMaxBoostPct * baselineEligibility * roleAbility;
+  const minimumBaselineSot90 = policy.minimumBaselineSot90 ?? 0;
+  const sotEligibility = baselineShotsOnTarget90 > 0
+    ? minimumBaselineSot90 > 0 ? (baselineShotsOnTarget90 >= minimumBaselineSot90 ? 1 : 0) : baselineEligibility
+    : 0;
+  const sotBoostPct = (policy.effectiveMaxSotBoostPct ?? policy.effectiveMaxBoostPct) * sotEligibility * roleAbility;
+  return {
+    factor: round(1 + shotBoostPct / 100, 4),
+    shotFactor: round(1 + shotBoostPct / 100, 4),
+    sotFactor: round(1 + sotBoostPct / 100, 4),
+    role,
+    confidence: policy.confidence,
+    abilityToExploit: interactionEnabled ? { ...abilityToExploit, roleScore: round(roleAbility, 3) } : null,
+    shotBoostPct: round(shotBoostPct, 2),
+    sotBoostPct: round(sotBoostPct, 2),
+    evidence: [`profilo ${role} vs ${opponentTeamMatchupProfile.teamName}: tiri +${round(shotBoostPct, 2)}%, SOT +${round(sotBoostPct, 2)}%`, `baseline SOT ${round(baselineShotsOnTarget90, 2)} /90; soglia ruolo ${minimumBaselineSot90 || "N/D"}`, ...(interactionEnabled ? [`ability to exploit ${round(roleAbility * 100, 1)}%; budget unico dampened`] : []), `confidence ${policy.confidence}, campione ${policy.sampleSize}, volatilita ${opponentTeamMatchupProfile.volatility.shotsAllowed}`]
+  };
+}
+
+function playerMatchup(candidate, teamProfile, opponentProfile, opponentVolumeProfile, venue, baselineShots90, baselineShotsOnTarget90, opponentTeamMatchupProfile, teamProjection) {
   const side = playerSide(candidate);
   const channels = attackChannels(teamProfile);
   const channelShare = channels[side] / 100;
@@ -648,22 +727,123 @@ function playerMatchup(candidate, teamProfile, opponentProfile, opponentVolumePr
     evidence.push(`${round(conceded, 1)} tiri concessi/gara nel campione di sede`);
   } else evidence.push("volume concesso N/D: componente neutra");
   const genericMatchupFactor = round(clamp(factor, 0.82, 1.18), 3);
-  const teamSpecific = teamProfilePlayerModifier(candidate, baselineShots90, opponentTeamMatchupProfile);
+  const abilityToExploit = opponentTeamMatchupProfile?.modelPolicy?.interactionPolicy?.enabled ? opponentAbilityToExploit(teamProfile, teamProjection) : null;
+  const teamSpecific = teamProfilePlayerModifier(candidate, baselineShots90, baselineShotsOnTarget90, opponentTeamMatchupProfile, abilityToExploit);
   return {
-    matchupFactor: round(clamp(genericMatchupFactor * teamSpecific.factor, 0.82, 1.18), 3),
+    matchupFactor: round(clamp(genericMatchupFactor * teamSpecific.shotFactor, 0.82, 1.18), 3),
+    shotsMatchupFactor: round(clamp(genericMatchupFactor * teamSpecific.shotFactor, 0.82, 1.18), 3),
+    shotsOnTargetMatchupFactor: round(clamp(genericMatchupFactor * teamSpecific.sotFactor, 0.82, 1.18), 3),
     genericMatchupFactor,
-    teamProfileMatchupFactor: teamSpecific.factor,
+    teamProfileMatchupFactor: teamSpecific.shotFactor,
+    teamProfileShotsMatchupFactor: teamSpecific.shotFactor,
+    teamProfileShotsOnTargetMatchupFactor: teamSpecific.sotFactor,
     teamProfileRole: teamSpecific.role,
     teamProfileConfidence: teamSpecific.confidence,
+    opponentAbilityToExploit: teamSpecific.abilityToExploit,
+    teamProfileShotBoostPct: teamSpecific.shotBoostPct,
+    teamProfileSotBoostPct: teamSpecific.sotBoostPct,
     matchupEvidence: [...evidence, ...teamSpecific.evidence],
     side
   };
 }
 
-function reconcilePlayerVolumes(rows, key, teamCentral, capKey = null) {
-  const rawTotal = sum(rows.map(row => row[key]));
+function teamOffensiveAllocation(rows, key, teamCentral, teamMatchupProfile) {
+  const baselineValues = rows.map(row => Math.max(0, row[key]));
+  const rawTotal = sum(baselineValues);
   const teamScaling = rawTotal > 0 && Number.isFinite(teamCentral) ? teamCentral / rawTotal : 1;
-  let values = rows.map(row => Math.max(0, row[key] * teamScaling));
+  const uniformValues = baselineValues.map(value => value * teamScaling);
+  const extraVolume = Math.max(0, Number.isFinite(teamCentral) ? teamCentral - rawTotal : 0);
+  const suppressedVolume = Math.max(0, Number.isFinite(teamCentral) ? rawTotal - teamCentral : 0);
+  const allocationMode = extraVolume > 0.000001 ? "EXTRA_VOLUME" : suppressedVolume > 0.000001 ? "COMPRESSION" : "NEUTRAL";
+  const allocation = teamMatchupProfile?.offense?.teamOffensiveAllocation;
+  const distribution = teamMatchupProfile?.offense?.shotsForRoleDistribution;
+  if (!allocation?.enabled || !distribution || !(rawTotal > 0) || !Number.isFinite(teamCentral)) return { values: uniformValues, rawTotal, teamScaling, extraVolume: round(extraVolume, 3), suppressedVolume: round(suppressedVolume, 3), allocationMode, factors: rows.map(() => 1), classifications: rows.map(() => "legacy-uniform"), evidence: rows.map(() => ["team offensive allocation non attiva"]) };
+  const isSot = key.toLowerCase().includes("ontarget");
+  const roleShares = isSot ? distribution.shotsOnTargetShareByRole : distribution.shareByRole;
+  const playerShareKey = isSot ? "shotsOnTargetShare" : "shotsShare";
+  const playerById = new Map((distribution.playerDistribution || []).map(player => [player.playerId, player]));
+  const baselineShares = rows.map(row => Math.max(0, row[key]) / rawTotal);
+  const lineupPlayerEvidence = rows.map(row => playerById.get(row.playerId)?.[playerShareKey] || 0);
+  const playerEvidenceWithPrior = lineupPlayerEvidence.map((value, index) => value + baselineShares[index] * 0.25);
+  const lineupPlayerEvidenceTotal = sum(playerEvidenceWithPrior);
+  const playerTargets = lineupPlayerEvidenceTotal > 0 ? playerEvidenceWithPrior.map(value => value / lineupPlayerEvidenceTotal) : baselineShares;
+  const roleRawTotals = new Map();
+  rows.forEach((row, index) => roleRawTotals.set(row.teamProfileRole, (roleRawTotals.get(row.teamProfileRole) || 0) + baselineShares[index]));
+  const roleTargets = rows.map((row, index) => {
+    const roleTotal = roleRawTotals.get(row.teamProfileRole) || 0;
+    const roleShare = roleShares?.[row.teamProfileRole];
+    return Number.isFinite(roleShare) && roleTotal > 0 ? roleShare * baselineShares[index] / roleTotal : baselineShares[index];
+  });
+  const roleTargetTotal = sum(roleTargets);
+  const normalizedRoleTargets = roleTargetTotal > 0 ? roleTargets.map(value => value / roleTargetTotal) : baselineShares;
+  const cornerStrength = clamp((teamMatchupProfile.offense?.teamSetPieceOpportunityVolume?.shrunkCornersPerGame || 4) / 8, 0, 1);
+  const setPieceScores = rows.map(row => {
+    const detail = cleanName(row.detailedRole);
+    const explicitCentreBack = row.teamProfileRole === "CB" && /difensore centrale|centrale difensivo/.test(detail);
+    const explicitFullback = row.teamProfileRole === "FB" && /terzino|esterno difensivo/.test(detail);
+    if (!explicitCentreBack && !explicitFullback) return 0;
+    const baseline = isSot ? row.baselineShotsOnTarget90 : row.baselineShots90;
+    const floor = isSot ? 0.05 : 0.15;
+    const range = isSot ? 0.35 : 0.75;
+    return clamp((baseline - floor) / range, 0, 1) * cornerStrength;
+  });
+  const setPieceTotal = sum(setPieceScores);
+  const setPieceTargets = setPieceTotal > 0 ? setPieceScores.map(value => value / setPieceTotal) : baselineShares;
+  const playerWeight = allocation.playerWeight ?? 0.6;
+  const roleWeight = allocation.roleWeight ?? 0.3;
+  const setPieceWeight = allocation.setPieceWeight ?? 0.1;
+  const weightTotal = playerWeight + roleWeight + setPieceWeight || 1;
+  const evidenceTargets = rows.map((row, index) => (playerTargets[index] * playerWeight + normalizedRoleTargets[index] * roleWeight + setPieceTargets[index] * setPieceWeight) / weightTotal);
+  const currentWeight = clamp(allocation.currentEvidenceWeight || 0, 0, 0.5);
+  const tierById = new Map((teamMatchupProfile.offense?.shooterStructure?.playerTiers || []).map(player => [player.playerId, player]));
+  const tierKey = isSot ? "sotTier" : "shotTier";
+  const tierWeights = { primary: 1, "co-primary": 0.9, secondary: 0.65, occasional: 0.25, "low-volume": 0.05 };
+  const classifications = rows.map(row => tierById.get(row.playerId)?.[tierKey]?.tier || ((playerById.get(row.playerId)?.[isSot ? "shotsOnTarget" : "shots"] || 0) > 0 ? "secondary" : "low-volume"));
+  const breadthScores = rows.map((row, index) => Math.sqrt(Math.max(baselineShares[index], 0)) * (tierWeights[classifications[index]] ?? 0.25));
+  const breadthTotal = sum(breadthScores);
+  const breadthTargets = breadthTotal > 0 ? breadthScores.map(value => value / breadthTotal) : baselineShares;
+  const breadthWeight = clamp(allocation.expansionBreadthWeight || 0, 0, 0.35);
+  const evidenceWithBreadth = evidenceTargets.map((target, index) => target * (1 - breadthWeight) + breadthTargets[index] * breadthWeight);
+  const targetShares = baselineShares.map((share, index) => share * (1 - currentWeight) + evidenceWithBreadth[index] * currentWeight);
+  const [minFactor, maxFactor] = allocation.factorClamp || [0.85, 1.15];
+  const stabilityScores = rows.map(row => clamp(row.playerBaselineStability?.score ?? row.playerBaselineStability?.currentWeight ?? 0.5, 0, 1));
+  const retentionWeights = classifications.map((classification, index) => (tierWeights[classification] ?? 0.25) * 0.6 + stabilityScores[index] * 0.4 + 0.35);
+  const removalScores = baselineValues.map((value, index) => value / Math.max(retentionWeights[index], 0.1));
+  const removalTotal = sum(removalScores);
+  let values = extraVolume > 0
+    ? baselineValues.map((value, index) => value + extraVolume * targetShares[index])
+    : suppressedVolume > 0 && removalTotal > 0
+      ? baselineValues.map((value, index) => Math.max(0, value - suppressedVolume * removalScores[index] / removalTotal))
+      : [...uniformValues];
+  values = values.map((value, index) => clamp(value, uniformValues[index] * minFactor, uniformValues[index] * maxFactor));
+  for (let iteration = 0; iteration < 6; iteration += 1) {
+    const residual = teamCentral - sum(values);
+    if (Math.abs(residual) <= 0.000001) break;
+    const rooms = values.map((value, index) => residual > 0
+      ? Math.max(0, uniformValues[index] * maxFactor - value)
+      : Math.max(0, value - uniformValues[index] * minFactor));
+    const totalRoom = sum(rooms);
+    if (!(totalRoom > 0)) break;
+    values = values.map((value, index) => value + Math.sign(residual) * Math.min(rooms[index], Math.abs(residual) * rooms[index] / totalRoom));
+  }
+  const factors = values.map((value, index) => uniformValues[index] > 0 ? value / uniformValues[index] : 1);
+  const evidence = rows.map((row, index) => [
+    `allocation ${classifications[index]}: fattore ${round(factors[index], 3)}`,
+    extraVolume > 0
+      ? `allocation applicata a ${round(extraVolume, 2)} tiri extra; baseline individuale preservata`
+      : `soppressione team di ${round(suppressedVolume, 2)} tiri prima della riallocazione; retention tier ${round(retentionWeights[index], 3)}`,
+    `current evidence weight ${round(currentWeight * 100, 1)}%`,
+    `ruolo ${row.teamProfileRole || "N/D"}; quota ruolo ${Number.isFinite(roleShares?.[row.teamProfileRole]) ? round(roleShares[row.teamProfileRole] * 100, 1) : "N/D"}%`,
+    ...(setPieceScores[index] > 0 ? [`opportunita piazzati: ${teamMatchupProfile.offense.teamSetPieceOpportunityVolume.shrunkCornersPerGame} corner/gara shrinkati`] : [])
+  ]);
+  return { values, rawTotal, teamScaling, extraVolume: round(extraVolume, 3), suppressedVolume: round(suppressedVolume, 3), allocationMode, factors, classifications, evidence, method: allocation.method, confidence: currentWeight >= 0.4 ? "medium" : "medium-low" };
+}
+
+function reconcilePlayerVolumes(rows, key, teamCentral, capKey = null, teamMatchupProfile = null) {
+  const result = teamOffensiveAllocation(rows, key, teamCentral, teamMatchupProfile);
+  const allocationActive = Boolean(teamMatchupProfile?.offense?.teamOffensiveAllocation?.enabled);
+  const teamScaling = result.teamScaling;
+  let values = result.values;
   if (capKey) {
     for (let iteration = 0; iteration < 4; iteration += 1) {
       values = values.map((value, index) => Math.min(value, rows[index][capKey]));
@@ -679,7 +859,65 @@ function reconcilePlayerVolumes(rows, key, teamCentral, capKey = null) {
     row[key] = round(values[index], 2);
     row[`${key}TeamScaling`] = round(teamScaling, 3);
     if (key === "projectedShots") row.teamScaling = round(teamScaling, 3);
+    if (key === "projectedShots" && allocationActive) {
+      row.playerAllocationFactor = round(result.factors[index], 3);
+      row.allocationClass = result.classifications[index];
+      row.allocationConfidence = result.confidence || null;
+      row.allocationEvidence = result.evidence[index];
+    }
+    if (key === "projectedShotsOnTarget" && allocationActive) row.playerSotAllocationFactor = round(result.factors[index], 3);
   });
+  return {
+    preReconciliation: round(result.rawTotal, 3),
+    teamTarget: round(teamCentral, 3),
+    postReconciliation: round(sum(rows.map(row => row[key])), 3),
+    extraVolume: result.extraVolume,
+    suppressedVolume: result.suppressedVolume,
+    allocationMode: result.allocationMode,
+    teamScaling: round(teamScaling, 4),
+    capKey
+  };
+}
+
+function outsiderQualification(row, market) {
+  const isSot = market === "shots-on-target";
+  const stability = isSot ? row.playerSotBaselineStability : row.playerBaselineStability;
+  const score = isSot ? row.sotOutsiderScore : row.outsiderScore;
+  const historicalReliability = clamp(stability?.historicalSample?.reliability || 0, 0, 1);
+  const currentReliability = clamp(stability?.currentSample?.reliability || 0, 0, 1);
+  const stabilityScore = clamp(stability?.score || 0, 0, 1);
+  const expectedMinutesReliability = clamp((row.expectedMinutes - 45) / 45, 0, 1);
+  const genericDetailedRole = !row.detailedRole || cleanName(row.detailedRole) === cleanName(row.role);
+  const roleSpecificity = genericDetailedRole ? 0 : 1;
+  const evidenceScore = 0.4 * stabilityScore + 0.25 * historicalReliability + 0.15 * currentReliability + 0.1 * expectedMinutesReliability + 0.1 * roleSpecificity;
+  const confidence = evidenceScore >= 0.74 ? "high" : evidenceScore >= 0.58 ? "medium" : "low";
+  const reasons = [];
+  if (historicalReliability === 0 && currentReliability < 0.25) reasons.push("missing-history-and-limited-current-sample");
+  if (evidenceScore < 0.58) reasons.push("insufficient-combined-evidence");
+  if (genericDetailedRole && stabilityScore < 0.7) reasons.push("generic-detailed-role-with-low-stability");
+  if (row.expectedMinutes < 65 && row.substitutionRisk === "high") reasons.push("limited-expected-minutes");
+  if (isSot) {
+    if (!(score >= 40)) reasons.push("sot-score-below-quality-floor");
+    if (!(row.shotOnTargetProbabilities.over05 >= 0.3)) reasons.push("sot-1plus-probability-below-floor");
+    if (!(row.shotOnTargetProbabilities.over15 >= 0.05)) reasons.push("sot-2plus-probability-below-floor");
+  } else {
+    if (!(score >= 45)) reasons.push("shot-score-below-quality-floor");
+    if (!(row.shotProbabilities.over05 >= 0.55)) reasons.push("shot-1plus-probability-below-floor");
+    if (!(row.shotProbabilities.over15 >= 0.2)) reasons.push("shot-2plus-probability-below-floor");
+  }
+  return {
+    qualified: reasons.length === 0,
+    confidence,
+    evidenceScore: round(evidenceScore, 3),
+    exclusionReasons: reasons,
+    evidence: {
+      historicalReliability: round(historicalReliability, 3),
+      currentReliability: round(currentReliability, 3),
+      baselineStability: round(stabilityScore, 3),
+      expectedMinutesReliability: round(expectedMinutesReliability, 3),
+      roleSpecificity
+    }
+  };
 }
 
 function playerDataStatus(candidate, minutes) {
@@ -691,23 +929,26 @@ function playerDataStatus(candidate, minutes) {
 
 function shooterCandidates(homeTeam, awayTeam, homeSquad, awaySquad, teamProjections, oddsEvent, homeProfile, awayProfile, homeVolume, awayVolume, homeCurrentPlayers, awayCurrentPlayers, homeTeamMatchupProfile, awayTeamMatchupProfile) {
   const rows = [];
-  for (const [team, squad, venue, teamProfile, opponentProfile, opponentVolume, currentPlayers, opponentTeamMatchupProfile] of [
-    [homeTeam, homeSquad, "home", homeProfile, awayProfile, awayVolume, homeCurrentPlayers, awayTeamMatchupProfile],
-    [awayTeam, awaySquad, "away", awayProfile, homeProfile, homeVolume, awayCurrentPlayers, homeTeamMatchupProfile]
+  const reconciliationByTeam = new Map();
+  for (const [team, squad, venue, teamProfile, opponentProfile, opponentVolume, currentPlayers, ownTeamMatchupProfile, opponentTeamMatchupProfile] of [
+    [homeTeam, homeSquad, "home", homeProfile, awayProfile, awayVolume, homeCurrentPlayers, homeTeamMatchupProfile, awayTeamMatchupProfile],
+    [awayTeam, awaySquad, "away", awayProfile, homeProfile, homeVolume, awayCurrentPlayers, awayTeamMatchupProfile, homeTeamMatchupProfile]
   ]) {
     const candidates = lineupPlayers(team, squad);
     const projection = teamProjections.find(item => item.teamId === team.id);
-    const shotsV1 = scalePlayerVolume(candidates, "shots", projection?.shotsTotal?.central);
-    const sotV1 = scalePlayerVolume(candidates, "shotsOnTarget", projection?.shotsOnTarget?.central);
+    const shotsV1 = scalePlayerVolume(candidates, "shots", projection?.legacyVolumeProjection?.shotsTotal?.central ?? projection?.shotsTotal?.central);
+    const sotV1 = scalePlayerVolume(candidates, "shotsOnTarget", projection?.legacyVolumeProjection?.shotsOnTarget?.central ?? projection?.shotsOnTarget?.central);
     const teamRows = shotsV1.map((item, index) => {
       const candidate = item.candidate;
       const totals = candidate.player?.previousSeason?.totals || {};
       const per90 = totals.per90 || {};
       const current = currentPlayers?.[candidate.player?.id] || currentPlayers?.[cleanName(candidate.name)] || null;
       const minutes = expectedMinutes(candidate, current);
-      const shotBase = item.value;
-      const sotBase = sotV1[index]?.value || 0;
-      const matchup = playerMatchup(candidate, teamProfile, opponentProfile, opponentVolume, venue, shotBase, opponentTeamMatchupProfile);
+      const shotStability = playerBaselineStability({ historicalBaseline: item.value, historicalObserved: item.observed, historicalMinutes: item.minutes, current, key: "shots" });
+      const sotStability = playerBaselineStability({ historicalBaseline: sotV1[index]?.value || 0, historicalObserved: sotV1[index]?.observed || 0, historicalMinutes: sotV1[index]?.minutes || 0, current, key: "shotsOnTarget" });
+      const shotBase = shotStability.value;
+      const sotBase = Math.min(shotBase, sotStability.value);
+      const matchup = playerMatchup(candidate, teamProfile, opponentProfile, opponentVolume, venue, shotBase, sotBase, opponentTeamMatchupProfile, projection);
       return {
         name: candidate.player?.name || candidate.name,
         lineupName: candidate.name,
@@ -722,16 +963,27 @@ function shooterCandidates(homeTeam, awayTeam, homeSquad, awaySquad, teamProject
         projectedShotsOnTargetV1: sotV1[index]?.projection || 0,
         projectedShotsV2Base: shotBase * matchup.genericMatchupFactor * minutes.minutesFactor,
         projectedShotsOnTargetV2Base: sotBase * matchup.genericMatchupFactor * minutes.minutesFactor,
-        projectedShots: shotBase * matchup.matchupFactor * minutes.minutesFactor,
-        projectedShotsOnTarget: sotBase * matchup.matchupFactor * minutes.minutesFactor,
-        baselineShots90: round(shotBase, 2),
-        baselineShotsOnTarget90: round(sotBase, 2),
+        projectedShots: shotBase * matchup.shotsMatchupFactor * minutes.minutesFactor,
+        projectedShotsOnTarget: sotBase * matchup.shotsOnTargetMatchupFactor * minutes.minutesFactor,
+        baselineShots90: round(item.value, 2),
+        baselineShotsOnTarget90: round(sotV1[index]?.value || 0, 2),
+        stabilizedShots90: round(shotBase, 2),
+        stabilizedShotsOnTarget90: round(sotBase, 2),
+        playerBaselineStability: shotStability,
+        playerSotBaselineStability: sotStability,
         matchupAdjustedShots90: round(shotBase * matchup.matchupFactor, 2),
         matchupFactor: matchup.matchupFactor,
+        shotsMatchupFactor: matchup.shotsMatchupFactor,
+        shotsOnTargetMatchupFactor: matchup.shotsOnTargetMatchupFactor,
         genericMatchupFactor: matchup.genericMatchupFactor,
         teamProfileMatchupFactor: matchup.teamProfileMatchupFactor,
+        teamProfileShotsMatchupFactor: matchup.teamProfileShotsMatchupFactor,
+        teamProfileShotsOnTargetMatchupFactor: matchup.teamProfileShotsOnTargetMatchupFactor,
         teamProfileRole: matchup.teamProfileRole,
         teamProfileConfidence: matchup.teamProfileConfidence,
+        opponentAbilityToExploit: matchup.opponentAbilityToExploit,
+        teamProfileShotBoostPct: matchup.teamProfileShotBoostPct,
+        teamProfileSotBoostPct: matchup.teamProfileSotBoostPct,
         matchupEvidence: matchup.matchupEvidence,
         expectedMinutes: minutes.expectedMinutes,
         minutesFactor: minutes.minutesFactor,
@@ -747,22 +999,33 @@ function shooterCandidates(homeTeam, awayTeam, homeSquad, awaySquad, teamProject
         }
       };
     });
-    reconcilePlayerVolumes(teamRows, "projectedShotsV2Base", projection?.shotsTotal?.central);
-    reconcilePlayerVolumes(teamRows, "projectedShotsOnTargetV2Base", projection?.shotsOnTarget?.central, "projectedShotsV2Base");
-    reconcilePlayerVolumes(teamRows, "projectedShots", projection?.shotsTotal?.central);
-    reconcilePlayerVolumes(teamRows, "projectedShotsOnTarget", projection?.shotsOnTarget?.central, "projectedShots");
+    reconcilePlayerVolumes(teamRows, "projectedShotsV2Base", projection?.shotsTotal?.central, null, ownTeamMatchupProfile);
+    reconcilePlayerVolumes(teamRows, "projectedShotsOnTargetV2Base", projection?.shotsOnTarget?.central, "projectedShotsV2Base", ownTeamMatchupProfile);
+    const shotsReconciliation = reconcilePlayerVolumes(teamRows, "projectedShots", projection?.shotsTotal?.central, null, ownTeamMatchupProfile);
+    const sotReconciliation = reconcilePlayerVolumes(teamRows, "projectedShotsOnTarget", projection?.shotsOnTarget?.central, "projectedShots", ownTeamMatchupProfile);
+    reconciliationByTeam.set(team.id, { shots: shotsReconciliation, shotsOnTarget: sotReconciliation });
     for (const row of teamRows) {
       row.shotProbabilities = { over05: poissonAtLeast(row.projectedShots, 1), over15: poissonAtLeast(row.projectedShots, 2), over25: poissonAtLeast(row.projectedShots, 3) };
       row.shotOnTargetProbabilities = { over05: poissonAtLeast(row.projectedShotsOnTarget, 1), over15: poissonAtLeast(row.projectedShotsOnTarget, 2) };
       const boostPct = row.baselineShots90 ? round((row.matchupAdjustedShots90 / row.baselineShots90 - 1) * 100, 1) : 0;
-      const roleEligible = row.role === "Difensore" || row.role === "Centrocampista";
+      const roleEligible = (row.role === "Difensore" || row.role === "Centrocampista") && row.allocationClass !== "primary";
       row.outsiderScore = roleEligible ? round(clamp(100 * (
-        0.24 * clamp(row.baselineShots90 / 1.5, 0, 1) +
-        0.24 * clamp((row.matchupFactor - 0.94) / 0.24, 0, 1) +
+        0.22 * clamp(row.baselineShots90 / 1.5, 0, 1) +
+        0.2 * clamp((row.matchupFactor - 0.94) / 0.24, 0, 1) +
+        0.17 * clamp((row.expectedMinutes - 60) / 30, 0, 1) +
+        0.13 * clamp(boostPct / 18, 0, 1) +
+        0.11 * row.shotProbabilities.over15 +
+        0.05 * row.shotOnTargetProbabilities.over05 +
+        0.08 * clamp(((row.playerAllocationFactor || 1) - 0.85) / 0.3, 0, 1) +
+        0.04 * (row.allocationClass === "secondary" ? clamp(ownTeamMatchupProfile?.offense?.secondaryShooterBreadth?.secondaryShooterShare || 0, 0, 1) : 0)
+      ), 0, 100), 1) : null;
+      row.sotOutsiderScore = roleEligible ? round(clamp(100 * (
+        0.32 * clamp(row.stabilizedShotsOnTarget90 / 0.75, 0, 1) +
+        0.18 * clamp((row.teamProfileShotsOnTargetMatchupFactor - 1) / 0.08, 0, 1) +
         0.18 * clamp((row.expectedMinutes - 60) / 30, 0, 1) +
-        0.16 * clamp(boostPct / 18, 0, 1) +
-        0.12 * row.shotProbabilities.over15 +
-        0.06 * row.shotOnTargetProbabilities.over05
+        0.17 * row.shotOnTargetProbabilities.over05 +
+        0.1 * row.shotOnTargetProbabilities.over15 +
+        0.05 * clamp(row.playerSotBaselineStability?.score || 0, 0, 1)
       ), 0, 100), 1) : null;
       row.outsiderEvidence = roleEligible ? {
         baselineShots90: row.baselineShots90,
@@ -771,8 +1034,41 @@ function shooterCandidates(homeTeam, awayTeam, homeSquad, awaySquad, teamProject
         expectedMinutes: row.expectedMinutes,
         shots1PlusProbability: row.shotProbabilities.over05,
         shots2PlusProbability: row.shotProbabilities.over15,
-        shotsOnTarget1PlusProbability: row.shotOnTargetProbabilities.over05
+        shotsOnTarget1PlusProbability: row.shotOnTargetProbabilities.over05,
+        shotsOnTarget2PlusProbability: row.shotOnTargetProbabilities.over15,
+        baselineShotsOnTarget90: row.baselineShotsOnTarget90,
+        stabilizedShotsOnTarget90: row.stabilizedShotsOnTarget90,
+        sotOutsiderScore: row.sotOutsiderScore,
+        playerBaselineStability: row.playerBaselineStability,
+        playerSotBaselineStability: row.playerSotBaselineStability,
+        opponentAbilityToExploit: row.opponentAbilityToExploit,
+        playerAllocationFactor: row.playerAllocationFactor,
+        allocationClass: row.allocationClass,
+        allocationConfidence: row.allocationConfidence,
+        allocationEvidence: row.allocationEvidence,
+        matchupEvidence: row.matchupEvidence
       } : null;
+      if (roleEligible) {
+        const shotQualification = outsiderQualification(row, "shots");
+        const sotQualification = outsiderQualification(row, "shots-on-target");
+        row.outsiderConfidence = shotQualification.confidence;
+        row.qualifiedOutsider = shotQualification.qualified;
+        row.outsiderExclusionReasons = shotQualification.exclusionReasons;
+        row.outsiderQualificationEvidence = shotQualification;
+        row.sotOutsiderConfidence = sotQualification.confidence;
+        row.qualifiedSotOutsider = sotQualification.qualified;
+        row.sotOutsiderExclusionReasons = sotQualification.exclusionReasons;
+        row.sotOutsiderQualificationEvidence = sotQualification;
+      } else {
+        row.outsiderConfidence = null;
+        row.qualifiedOutsider = false;
+        row.outsiderExclusionReasons = ["role-or-primary-not-eligible"];
+        row.outsiderQualificationEvidence = null;
+        row.sotOutsiderConfidence = null;
+        row.qualifiedSotOutsider = false;
+        row.sotOutsiderExclusionReasons = ["role-or-primary-not-eligible"];
+        row.sotOutsiderQualificationEvidence = null;
+      }
     }
     rows.push(...teamRows);
   }
@@ -783,12 +1079,25 @@ function shooterCandidates(homeTeam, awayTeam, homeSquad, awaySquad, teamProject
   return {
     totalShots: ranked("projectedShots", "shotsOver05"),
     shotsOnTarget: ranked("projectedShotsOnTarget", "shotsOnTargetOver05"),
-    outsiders: rows.filter(row => row.outsiderScore != null && row.dataStatus !== "role-baseline").sort((a, b) => b.outsiderScore - a.outsiderScore || a.name.localeCompare(b.name, "it")).slice(0, 5).map((row, index) => ({ ...row, outsiderRank: index + 1 })),
+    outsiders: rows.filter(row => row.qualifiedOutsider && row.dataStatus !== "role-baseline").sort((a, b) => b.outsiderScore - a.outsiderScore || a.name.localeCompare(b.name, "it")).slice(0, 5).map((row, index) => ({ ...row, outsiderRank: index + 1 })),
+    sotOutsiders: rows.filter(row => row.qualifiedSotOutsider && row.dataStatus !== "role-baseline").sort((a, b) => b.sotOutsiderScore - a.sotOutsiderScore || a.name.localeCompare(b.name, "it")).slice(0, 5).map((row, index) => ({ ...row, sotOutsiderRank: index + 1 })),
+    outsiderDiagnostics: {
+      eligibleCandidates: rows.filter(row => row.outsiderScore != null).length,
+      shots: {
+        qualified: rows.filter(row => row.qualifiedOutsider).map(row => row.playerId),
+        rejected: rows.filter(row => row.outsiderScore != null && !row.qualifiedOutsider).map(row => ({ ...(row.playerId ? { playerId: row.playerId } : {}), name: row.name, confidence: row.outsiderConfidence, reasons: row.outsiderExclusionReasons }))
+      },
+      shotsOnTarget: {
+        qualified: rows.filter(row => row.qualifiedSotOutsider).map(row => row.playerId),
+        rejected: rows.filter(row => row.sotOutsiderScore != null && !row.qualifiedSotOutsider).map(row => ({ ...(row.playerId ? { playerId: row.playerId } : {}), name: row.name, confidence: row.sotOutsiderConfidence, reasons: row.sotOutsiderExclusionReasons }))
+      }
+    },
     allPlayers: rows,
     teamTotals: [homeTeam.id, awayTeam.id].map(teamId => ({
       teamId,
       projectedShots: round(sum(rows.filter(row => row.teamId === teamId).map(row => row.projectedShots)), 2),
-      projectedShotsOnTarget: round(sum(rows.filter(row => row.teamId === teamId).map(row => row.projectedShotsOnTarget)), 2)
+      projectedShotsOnTarget: round(sum(rows.filter(row => row.teamId === teamId).map(row => row.projectedShotsOnTarget)), 2),
+      reconciliation: reconciliationByTeam.get(teamId)
     }))
   };
 }
@@ -831,6 +1140,14 @@ function refereeCardFactor(profile, leagueAverage) {
   };
 }
 
+function expectedDefensiveExposureFactor(expectedPossessionPct, maxImpactPct = 6, confidence = 1, reliability = 1) {
+  if (!Number.isFinite(expectedPossessionPct)) return 1;
+  const defensiveShare = 1 - expectedPossessionPct / 100;
+  const leagueRelative = defensiveShare / 0.5 - 1;
+  const rawFactor = clamp(1 + leagueRelative * maxImpactPct / 100 * confidence, 0.97, 1.03);
+  return round(1 + (rawFactor - 1) * reliability, 4);
+}
+
 function bookingCandidates(homeTeam, awayTeam, homeSquad, awaySquad, homeProfile, awayProfile, homeCurrentDiscipline, awayCurrentDiscipline, refereeProfile, refereeLeagueAverage, homeTeamMatchupProfile, awayTeamMatchupProfile) {
   const homePlayers = lineupPlayers(homeTeam, homeSquad);
   const awayPlayers = lineupPlayers(awayTeam, awaySquad);
@@ -859,8 +1176,11 @@ function bookingCandidates(homeTeam, awayTeam, homeSquad, awaySquad, homeProfile
     const duelRisk = directOpponent ? round(clamp(1 + (directOpponent.foulsWonPer90 - 1.25) * 0.09, 0.92, 1.12), 3) : 1;
     const opponentDuelEnvironmentFactor = directOpponent ? clamp(candidate.opponentTeamMatchupProfile?.discipline?.foulIntensity?.directDuelEnvironmentFactor ?? 1, 0.98, 1.03) : 1;
     const teamDisciplineFactor = clamp(candidate.teamMatchupProfile?.discipline?.modelFactor ?? 1, 0.95, 1.05);
+    const baseDefensiveExposureFactor = candidate.teamMatchupProfile?.discipline?.expectedDefensiveExposure?.factor ?? 1;
+    const defensiveExposureReliability = 1 - currentWeight * 0.5;
+    const defensiveExposureFactor = clamp(1 + (baseDefensiveExposureFactor - 1) * defensiveExposureReliability, 0.97, 1.03);
     const historicalRaw = roleBase + observed * (0.55 + reliability * 0.45) + channelLoad;
-    const raw = historicalRaw * duelRisk * opponentDuelEnvironmentFactor * referee.factor * teamDisciplineFactor;
+    const raw = historicalRaw * duelRisk * opponentDuelEnvironmentFactor * referee.factor * teamDisciplineFactor * defensiveExposureFactor;
     const riskScore = Math.round(clamp(raw * 19, 12, 88));
     const evidence = [];
     if (per90.cards != null) evidence.push(`${round(estimatedCards, 2)} cartellini/90${current?.minutes ? " stimati" : ""}`);
@@ -884,7 +1204,9 @@ function bookingCandidates(homeTeam, awayTeam, homeSquad, awaySquad, homeProfile
         duelRisk,
         opponentDuelEnvironmentFactor: round(opponentDuelEnvironmentFactor, 3),
         refereeFactor: referee.factor,
-        teamDisciplineFactor: round(teamDisciplineFactor, 3)
+        teamDisciplineFactor: round(teamDisciplineFactor, 3),
+        expectedDefensiveExposureFactor: round(defensiveExposureFactor, 4),
+        defensiveExposureReliability: round(defensiveExposureReliability, 3)
       },
       directOpponent: directOpponent?.name || null,
       opponentFoulsWonPer90: directOpponent?.foulsWonPer90 ?? null,
@@ -894,8 +1216,10 @@ function bookingCandidates(homeTeam, awayTeam, homeSquad, awaySquad, homeProfile
       refereeFactor: referee.factor,
       refereeEvidence: referee.evidence,
       teamDisciplineFactor: round(teamDisciplineFactor, 3),
+      expectedDefensiveExposureFactor: round(defensiveExposureFactor, 4),
+      defensiveExposureEvidence: candidate.teamMatchupProfile?.discipline?.expectedDefensiveExposure?.evidence || ["esposizione difensiva specifica N/D: fattore neutro"],
       teamDisciplineEvidence: candidate.teamMatchupProfile ? [`profilo squadra regolarizzato: ${candidate.teamMatchupProfile.discipline.shrunk.foulsCommittedPerGame} falli e ${candidate.teamMatchupProfile.discipline.shrunk.yellowCardsPerGame} gialli/gara`] : ["profilo squadra specifico N/D: fattore neutro"],
-      evidence: [...evidence, ...duelEvidence, ...(opponentDuelEnvironmentFactor !== 1 ? [`ambiente falli avversario applicato solo al duello diretto: ${round(opponentDuelEnvironmentFactor, 3)}`] : []), ...referee.evidence, ...(candidate.teamMatchupProfile ? [`fattore disciplina squadra ${round(teamDisciplineFactor, 3)}`] : [])],
+      evidence: [...evidence, ...duelEvidence, ...(opponentDuelEnvironmentFactor !== 1 ? [`ambiente falli avversario applicato solo al duello diretto: ${round(opponentDuelEnvironmentFactor, 3)}`] : []), ...referee.evidence, ...(candidate.teamMatchupProfile ? [`fattore disciplina squadra ${round(teamDisciplineFactor, 3)}`, `esposizione difensiva ${round(defensiveExposureFactor, 4)} con attenuazione anti-double-count`] : [])],
       dataStatus: current?.foulsCommittedCoverage ? "verified-history-current" : playerDataStatus(candidate, minutes)
     };
   }).sort((a, b) => b.riskScore - a.riskScore || a.name.localeCompare(b.name, "it"));
@@ -988,7 +1312,107 @@ function disciplineBaseline(profile, disciplineProfile) {
   return { fouls, yellowCards };
 }
 
-function teamProjection(team, profile, opponentProfile, squad, disciplineProfile, volumeProfile, opponentVolumeProfile, venue, outcomeProbability, opponentProbability, expectedGoal) {
+function applyOpponentTeamVolumeInteraction(profile, opponentTeamMatchupProfile, shotsTotal, shotsOnTarget, corners) {
+  const policy = opponentTeamMatchupProfile?.modelPolicy?.interactionPolicy;
+  if (!policy?.enabled) return { abilityToExploit: null, shotsAdjustmentPct: 0, shotsOnTargetAdjustmentPct: 0, metricEvidence: null, method: "inactive" };
+  const ability = opponentAbilityToExploit(profile, { shotsTotal, shotsOnTarget, corners });
+  const confidence = value => ({ high: 1, "medium-high": 0.9, medium: 0.75, "medium-low": 0.55, low: 0.3, "very-low": 0.15 }[value] || 0);
+  const maturity = opponentTeamMatchupProfile.confidence?.maturityWeight ?? 0;
+  const suppression = policy.direction === "suppression";
+  const shotsPersistence = suppression
+    ? opponentTeamMatchupProfile.shotDefense?.generalShotSuppression?.signalStability?.persistence?.shareInSignalDirection ?? 0
+    : opponentTeamMatchupProfile.shotDefense?.defensiveMetricSignals?.shotsAllowed?.persistence?.shareInSignalDirection ?? opponentTeamMatchupProfile.shotDefense?.shotsAllowed?.signalPersistence?.shareAboveBaseline ?? 0;
+  const sotPersistence = suppression
+    ? opponentTeamMatchupProfile.shotDefense?.generalSotSuppression?.signalStability?.persistence?.shareInSignalDirection ?? 0
+    : opponentTeamMatchupProfile.shotDefense?.defensiveMetricSignals?.shotsOnTargetAllowed?.persistence?.shareInSignalDirection ?? opponentTeamMatchupProfile.shotDefense?.shotsOnTargetAllowed?.signalPersistence?.shareAboveBaseline ?? 0;
+  const shotsConfidence = confidence(opponentTeamMatchupProfile.vulnerabilities?.signals?.totalShotVulnerability?.confidence);
+  const sotConfidence = confidence(opponentTeamMatchupProfile.vulnerabilities?.signals?.sotVulnerability?.confidence);
+  const exploitation = 0.55 * ability.general + 0.45 * ability.territorial;
+  const shotsStability = suppression
+    ? opponentTeamMatchupProfile.shotDefense?.generalShotSuppression?.signalStability?.score ?? 0
+    : opponentTeamMatchupProfile.shotDefense?.defensiveMetricSignals?.shotsAllowed?.score ?? 0;
+  const sotStability = suppression
+    ? opponentTeamMatchupProfile.shotDefense?.generalSotSuppression?.signalStability?.score ?? 0
+    : opponentTeamMatchupProfile.shotDefense?.defensiveMetricSignals?.shotsOnTargetAllowed?.score ?? 0;
+  const strengthResistance = 0.9 + 0.1 * exploitation;
+  const activeVulnerabilityMetric = (signal, metric, stability, persistence, confidenceWeight, maxPct) => {
+    const neutralLevels = new Set(["normal", "unconfirmed", "unknown", "not-proven", "none-proven", "suppressed"]);
+    const level = signal?.level || "unknown";
+    const active = signal?.status === "active" && !neutralLevels.has(level);
+    const historicalMean = metric?.historical?.mean ?? metric?.historicalMean ?? null;
+    const robustMean = metric?.robustCurrentMean ?? metric?.current?.robustMean ?? metric?.shrunk?.robustCurrentMean ?? null;
+    const deviation = active && Number.isFinite(historicalMean) && historicalMean > 0 && Number.isFinite(robustMean)
+      ? Math.max(0, robustMean / historicalMean - 1)
+      : 0;
+    const magnitude = deviation > 0 ? deviation / (deviation + 0.1) : 0;
+    const adjustmentPct = active
+      ? maxPct * confidenceWeight * maturity * stability * (0.75 + 0.25 * persistence) * exploitation * magnitude
+      : 0;
+    return {
+      active,
+      level,
+      status: signal?.status || "unknown",
+      historicalMean,
+      robustCurrentMean: robustMean,
+      positiveDeviationPct: round(deviation * 100, 2),
+      magnitudeWeight: round(magnitude, 4),
+      confidenceWeight: round(confidenceWeight, 4),
+      maturityWeight: round(maturity, 4),
+      stabilityWeight: round(stability, 4),
+      persistenceWeight: round(persistence, 4),
+      abilityToExploitWeight: round(exploitation, 4),
+      adjustmentPct
+    };
+  };
+  const shotsEvidence = activeVulnerabilityMetric(opponentTeamMatchupProfile.vulnerabilities?.signals?.totalShotVulnerability, opponentTeamMatchupProfile.shotDefense?.shotsAllowed, shotsStability, shotsPersistence, shotsConfidence, policy.teamShotMaxAdjustmentPct || 0);
+  const sotEvidence = activeVulnerabilityMetric(opponentTeamMatchupProfile.vulnerabilities?.signals?.sotVulnerability, opponentTeamMatchupProfile.shotDefense?.shotsOnTargetAllowed, sotStability, sotPersistence, sotConfidence, policy.teamSotMaxAdjustmentPct || 0);
+  const shotsAdjustmentPct = suppression
+    ? -policy.teamShotMaxAdjustmentPct * shotsConfidence * maturity * shotsStability * (0.75 + 0.25 * shotsPersistence) * strengthResistance
+    : shotsEvidence.adjustmentPct;
+  const shotsOnTargetAdjustmentPct = suppression
+    ? -policy.teamSotMaxAdjustmentPct * sotConfidence * maturity * sotStability * (0.75 + 0.25 * sotPersistence) * strengthResistance
+    : sotEvidence.adjustmentPct;
+  const scaleMetric = (metric, pct) => {
+    const factor = 1 + pct / 100;
+    const precision = suppression ? 1 : 2;
+    metric.min = round(metric.min * factor, precision);
+    metric.central = round(metric.central * factor, precision);
+    metric.max = round(metric.max * factor, precision);
+  };
+  scaleMetric(shotsTotal, shotsAdjustmentPct);
+  scaleMetric(shotsOnTarget, shotsOnTargetAdjustmentPct);
+  return { abilityToExploit: ability, direction: suppression ? "suppression" : "vulnerability", shotsAdjustmentPct: round(shotsAdjustmentPct, 2), shotsOnTargetAdjustmentPct: round(shotsOnTargetAdjustmentPct, 2), metricEvidence: { shots: { ...shotsEvidence, adjustmentPct: round(shotsAdjustmentPct, 2) }, shotsOnTarget: { ...sotEvidence, adjustmentPct: round(shotsOnTargetAdjustmentPct, 2) } }, signalStability: { shots: round(shotsStability, 4), shotsOnTarget: round(sotStability, 4) }, method: policy.method, doubleCountControl: "marginal opponent correction after own-volume estimate; each metric uses one evidence-weighted budget and is reconciled only through the existing player scaling" };
+}
+
+function applyOwnOffensiveVolumeProfile(ownTeamMatchupProfile, shotsTotal, shotsOnTarget, corners) {
+  const allocation = ownTeamMatchupProfile?.offense?.teamOffensiveAllocation;
+  const inactiveCapDiagnostics = { shots: { capHit: false }, shotsOnTarget: { capHit: false }, corners: { capHit: false } };
+  if (!allocation?.enabled) return { shotsAdjustmentPct: 0, shotsOnTargetAdjustmentPct: 0, cornersAdjustmentPct: 0, capDiagnostics: inactiveCapDiagnostics, method: "inactive" };
+  const desiredAdjustment = (metric, target, maxPct) => {
+    const uncappedPct = Number.isFinite(target) && metric.central > 0 ? (target / metric.central - 1) * 100 : 0;
+    const cappedPct = clamp(uncappedPct, -maxPct, maxPct);
+    return { uncappedPct, cappedPct, capHit: Math.abs(uncappedPct - cappedPct) > 1e-9, capPct: maxPct, capSide: uncappedPct > maxPct ? "upper" : uncappedPct < -maxPct ? "lower" : null };
+  };
+  const shotsCap = desiredAdjustment(shotsTotal, ownTeamMatchupProfile.offense.teamShotVolume?.shrunkPerGame, allocation.teamShotMaxAdjustmentPct || 0);
+  const sotCap = desiredAdjustment(shotsOnTarget, ownTeamMatchupProfile.offense.teamSotVolume?.shrunkPerGame, allocation.teamSotMaxAdjustmentPct || 0);
+  const cornersCap = desiredAdjustment(corners, ownTeamMatchupProfile.offense.teamSetPieceOpportunityVolume?.shrunkCornersPerGame, allocation.cornerMaxAdjustmentPct ?? allocation.teamShotMaxAdjustmentPct ?? 0);
+  const shotsAdjustmentPct = shotsCap.cappedPct;
+  const shotsOnTargetAdjustmentPct = sotCap.cappedPct;
+  const cornersAdjustmentPct = cornersCap.cappedPct;
+  const scaleMetric = (metric, pct) => {
+    const factor = 1 + pct / 100;
+    metric.min = round(metric.min * factor, 1);
+    metric.central = round(metric.central * factor, 1);
+    metric.max = round(metric.max * factor, 1);
+  };
+  scaleMetric(shotsTotal, shotsAdjustmentPct);
+  scaleMetric(shotsOnTarget, shotsOnTargetAdjustmentPct);
+  scaleMetric(corners, cornersAdjustmentPct);
+  const capDiagnostic = item => ({ uncappedAdjustmentPct: round(item.uncappedPct, 2), appliedAdjustmentPct: round(item.cappedPct, 2), capPct: item.capPct, capHit: item.capHit, capSide: item.capSide });
+  return { shotsAdjustmentPct: round(shotsAdjustmentPct, 2), shotsOnTargetAdjustmentPct: round(shotsOnTargetAdjustmentPct, 2), cornersAdjustmentPct: round(cornersAdjustmentPct, 2), capDiagnostics: { shots: capDiagnostic(shotsCap), shotsOnTarget: capDiagnostic(sotCap), corners: capDiagnostic(cornersCap) }, method: allocation.method, target: { shots: ownTeamMatchupProfile.offense.teamShotVolume?.shrunkPerGame, shotsOnTarget: ownTeamMatchupProfile.offense.teamSotVolume?.shrunkPerGame, corners: ownTeamMatchupProfile.offense.teamSetPieceOpportunityVolume?.shrunkCornersPerGame }, doubleCountControl: "one capped team-volume adjustment followed by one share-allocation budget" };
+}
+
+function teamProjection(team, profile, opponentProfile, squad, disciplineProfile, volumeProfile, opponentVolumeProfile, venue, outcomeProbability, opponentProbability, expectedGoal, opponentTeamMatchupProfile, ownTeamMatchupProfile) {
   const players = lineupPlayers(team, squad);
   const channels = attackChannels(profile);
   const matchup = matchupMultiplier(profile, opponentProfile);
@@ -1006,6 +1430,11 @@ function teamProjection(team, profile, opponentProfile, squad, disciplineProfile
   shotsOnTarget.central = Math.min(shotsOnTarget.central, shotsTotal.central);
   shotsOnTarget.max = Math.min(shotsOnTarget.max, shotsTotal.max);
   const corners = volumeMetric(profile, opponentProfile, volumeProfile, opponentVolumeProfile, venue, "wonCorners", cornerContext, volumePrior("wonCorners", profile, players, channels));
+  const legacyVolumeProjection = ownTeamMatchupProfile?.offense?.teamOffensiveAllocation?.enabled ? { shotsTotal: { ...shotsTotal }, shotsOnTarget: { ...shotsOnTarget }, corners: { ...corners } } : null;
+  const ownOffensiveInteraction = applyOwnOffensiveVolumeProfile(ownTeamMatchupProfile, shotsTotal, shotsOnTarget, corners);
+  const opponentMatchupInteraction = applyOpponentTeamVolumeInteraction(profile, opponentTeamMatchupProfile, shotsTotal, shotsOnTarget, corners);
+  shotsOnTarget.central = Math.min(shotsOnTarget.central, shotsTotal.central);
+  shotsOnTarget.max = Math.min(shotsOnTarget.max, shotsTotal.max);
   const discipline = disciplineBaseline(profile, disciplineProfile);
   return {
     teamId: team.id,
@@ -1014,6 +1443,9 @@ function teamProjection(team, profile, opponentProfile, squad, disciplineProfile
     shotsTotal,
     shotsOnTarget,
     corners,
+    legacyVolumeProjection,
+    ownOffensiveInteraction,
+    opponentMatchupInteraction,
     fouls: discipline.fouls == null ? null : rangeMetric(discipline.fouls, 2.4, 3),
     cards: discipline.yellowCards == null ? null : rangeMetric(discipline.yellowCards, 0.85, 0),
     expectedGoals: expectedGoal,
@@ -1624,8 +2056,8 @@ function predictMatch(input) {
   const evaluatedMarkets = marketEvaluation(input.oddsEvent, matrices, dataCompleteness, { home: primaryHome, away: primaryAway });
   const valueCandidates = evaluatedMarkets.rows.filter(row => row.family === "1x2");
   const teamProjections = [
-    teamProjection(input.homeTeam, input.homeProfile, input.awayProfile, input.homeSquad, input.homeDiscipline, input.homeVolume, input.awayVolume, "home", final[0], final[2], expected.home),
-    teamProjection(input.awayTeam, input.awayProfile, input.homeProfile, input.awaySquad, input.awayDiscipline, input.awayVolume, input.homeVolume, "away", final[2], final[0], expected.away)
+    teamProjection(input.homeTeam, input.homeProfile, input.awayProfile, input.homeSquad, input.homeDiscipline, input.homeVolume, input.awayVolume, "home", final[0], final[2], expected.home, input.awayTeamMatchupProfile, input.homeTeamMatchupProfile),
+    teamProjection(input.awayTeam, input.awayProfile, input.homeProfile, input.awaySquad, input.awayDiscipline, input.awayVolume, input.homeVolume, "away", final[2], final[0], expected.away, input.homeTeamMatchupProfile, input.awayTeamMatchupProfile)
   ];
   const matchProjection = {
     shotsTotal: combineVolumeMetric(teamProjections[0].shotsTotal, teamProjections[1].shotsTotal),
@@ -1634,6 +2066,12 @@ function predictMatch(input) {
     basis: "Somma delle medie squadra; intervallo p20-p80 del totale con varianze indipendenti."
   };
   const exact = exactScores(matrix, expected.total);
+  const shooters = shooterCandidates(input.homeTeam, input.awayTeam, input.homeSquad, input.awaySquad, teamProjections, input.oddsEvent, input.homeProfile, input.awayProfile, input.homeVolume, input.awayVolume, input.homeCurrentPlayers, input.awayCurrentPlayers, input.homeTeamMatchupProfile, input.awayTeamMatchupProfile);
+  const lineupCandidates = [...lineupPlayers(input.homeTeam, input.homeSquad), ...lineupPlayers(input.awayTeam, input.awaySquad)];
+  const lineupExpected = (input.homeTeam?.probableLineup?.players?.length || 0) + (input.awayTeam?.probableLineup?.players?.length || 0);
+  const lineupResolved = lineupCandidates.filter(candidate => candidate.player).length;
+  const outfieldExpected = lineupCandidates.filter(candidate => candidate.role !== "Portiere").length;
+  const outfieldModeled = shooters.allPlayers.length;
   return {
     matchId: input.match.id,
     generatedAt: input.generatedAt,
@@ -1662,7 +2100,7 @@ function predictMatch(input) {
     surprise,
     matchProjection,
     teamProjections,
-    shooters: shooterCandidates(input.homeTeam, input.awayTeam, input.homeSquad, input.awaySquad, teamProjections, input.oddsEvent, input.homeProfile, input.awayProfile, input.homeVolume, input.awayVolume, input.homeCurrentPlayers, input.awayCurrentPlayers, input.homeTeamMatchupProfile, input.awayTeamMatchupProfile),
+    shooters,
     likelyBooked: bookingCandidates(input.homeTeam, input.awayTeam, input.homeSquad, input.awaySquad, input.homeProfile, input.awayProfile, input.homeCurrentDiscipline, input.awayCurrentDiscipline, input.refereeProfile, input.refereeLeagueAverage, input.homeTeamMatchupProfile, input.awayTeamMatchupProfile),
     mvpCandidate: mvpCandidate(input.homeTeam, input.awayTeam, input.homeSquad, input.awaySquad, input.homeProfile, input.awayProfile, final, expected, input.mvpHistory, input.fantasyHistory, input.mvpSourceUrl),
     scenarios: matchScenarios(input, final, expected),
@@ -1686,7 +2124,11 @@ function predictMatch(input) {
       completenessPct: Math.round(dataCompleteness * 100),
       crossCompetitionBaseline: crossCompetition,
       updatedAt: String(input.generatedAt || "").slice(0, 10),
-      probableLineups: lineupsOfficial ? "22/22 titolari ufficiali confermati" : lineupsComplete ? "20/20 titolari proiettati; fonte editoriale da riconfermare" : "N/D",
+      probableLineups: lineupExpected > 0
+        ? `${lineupResolved}/${lineupExpected} titolari ${lineupsOfficial ? "ufficiali confermati" : "proiettati; fonte editoriale da riconfermare"}`
+        : "N/D",
+      lineupResolved: { resolved: lineupResolved, expected: lineupExpected, complete: lineupExpected > 0 && lineupResolved === lineupExpected },
+      outfieldPlayersModeled: { modeled: outfieldModeled, expected: outfieldExpected, complete: outfieldExpected > 0 && outfieldModeled === outfieldExpected },
       missing: [
         "forma ufficiale 2026/27",
         ...(input.reading?.sections?.availability?.content ? [] : ["indisponibili verificati"]),
@@ -1699,4 +2141,4 @@ function predictMatch(input) {
   };
 }
 
-module.exports = { ENGINE_VERSION, PLAYER_MARKET_MODEL_VERSION, OUTCOMES, WEIGHTS, MVP_WEIGHTS, attackChannels, findMainOneXTwo, marketProbabilities, predictMatch };
+module.exports = { ENGINE_VERSION, PLAYER_MARKET_MODEL_VERSION, OUTCOMES, WEIGHTS, MVP_WEIGHTS, attackChannels, findMainOneXTwo, marketProbabilities, opponentAbilityToExploit, teamProfilePlayerModifier, teamOffensiveAllocation, applyOpponentTeamVolumeInteraction, playerBaselineStability, expectedDefensiveExposureFactor, predictMatch };
