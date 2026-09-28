@@ -2,7 +2,7 @@
 
 const fs = require("fs");
 const path = require("path");
-const { ENGINE_VERSION, PLAYER_MARKET_MODEL_VERSION, WEIGHTS, MVP_WEIGHTS, predictMatch } = require("./predictions/engine");
+const { ENGINE_VERSION, PLAYER_MARKET_MODEL_VERSION, WEIGHTS, predictMatch } = require("./predictions/engine");
 const { DECISION_LAYER_VERSION, PROFILE_LIMITS, enrichPrediction } = require("./predictions/decision-layer");
 const { loadPlayerIdentities } = require("./player-identity");
 
@@ -19,8 +19,6 @@ const teams = read("data/teams/index.json").teams;
 const odds = read("data/normalized/odds/sisal/serie-a.json");
 const headToHead = read("data/generated/head-to-head/first-leg-2026-27.json");
 const understatXg = read("data/normalized/understat-serie-a-xg.json");
-const mvpHistory = read("data/sources/player-mvp-history-2025-26.json");
-const fantasy = read("data/generated/fantacalcio-advice.json");
 const volumeProfiles = read("data/normalized/team-volume-profiles-2025-26.json");
 const teamMatchupProfiles = read("data/normalized/team-matchup-profiles-2026-27.json");
 const refereeAggregates = read("data/generated/referee-stats/2025-26/aggregates.json");
@@ -73,8 +71,6 @@ for (const identity of identityRegistry.payload.players) {
   if (player) player.identityAliases = identity.aliases;
   else squad.players.push({ id: identity.playerId, name: identity.canonicalName, role: null, detailedRole: null, identityAliases: identity.aliases });
 }
-const mvpHistoryByPlayer = new Map(mvpHistory.players.map(player => [player.normalizedName, player]));
-const fantasyHistoryByPlayer = new Map(fantasy.players.map(player => [playerKey(player.name), player]));
 const volumeByTeam = byId(volumeProfiles.profiles);
 const teamMatchupByTeam = byId(teamMatchupProfiles.profiles);
 const refereeRows = refereeAggregates.referees.filter(row => row.competition === "serie-a" && row.stage === "regular-season");
@@ -274,9 +270,6 @@ const generatedPredictions = targetMatches.map(match => {
     awayTeamMatchupProfile: teamMatchupByTeam.get(match.awayTeam) || null,
     refereeProfile: refereeBySlug.get(match.refereeAssignment?.referee?.slug) || null,
     refereeLeagueAverage,
-    mvpHistory: mvpHistoryByPlayer,
-    fantasyHistory: fantasyHistoryByPlayer,
-    mvpSourceUrl: mvpHistory.sourceUrl,
     leagueSummary: standings.summary,
     oddsEvent: oddsByMatch.get(match.id),
     oddsRetrievedAt: oddsByMatch.get(match.id)?.retrievedAt || null,
@@ -327,11 +320,16 @@ const generatedPredictions = targetMatches.map(match => {
   } : prediction;
 });
 
-const archivedPredictionByMatch = new Map(predictionArchive.predictions.map(prediction => [prediction.matchId, prediction]));
+const withoutMvpCandidate = prediction => {
+  const { mvpCandidate, ...rest } = prediction;
+  return rest;
+};
+const archivedPredictions = predictionArchive.predictions.map(withoutMvpCandidate);
+const archivedPredictionByMatch = new Map(archivedPredictions.map(prediction => [prediction.matchId, prediction]));
 const generatedCurrent = generatedPredictions.filter(prediction => !archivedPredictionByMatch.has(prediction.matchId));
 const basePredictions = previewMode
   ? generatedPredictions
-  : [...predictionArchive.predictions, ...generatedCurrent].sort((left, right) => {
+  : [...archivedPredictions, ...generatedCurrent].sort((left, right) => {
       const leftMatch = predictionMatches.find(match => match.id === left.matchId);
       const rightMatch = predictionMatches.find(match => match.id === right.matchId);
       return (leftMatch?.matchday || 99) - (rightMatch?.matchday || 99) || left.matchId.localeCompare(right.matchId);
@@ -446,21 +444,6 @@ const output = {
       fallback: "Profilo WhoScored, precisione della probabile formazione e stile offensivo quando manca lo storico Serie A della squadra."
     },
     playerVolumeModel: "Tiri e tiri in porta dei titolari: frequenze per 90 minuti 2025/26 regolarizzate verso una prior di ruolo, poi scalate sul volume previsto della squadra; i falli/90 restano visibili come base disciplinare e i dati mancanti usano una baseline dichiarata.",
-    playerModel: "Il candidato MVP combina scenario 1X2, produzione e pagelle storiche, compatibilita tattica e storico ufficiale Panini Player of the Match; con favorita oltre il 50% e divario di almeno 15 punti, il candidato principale proviene normalmente dalla favorita.",
-    mvpModel: {
-      weights: MVP_WEIGHTS,
-      officialHistory: {
-        provider: mvpHistory.provider,
-        award: mvpHistory.award,
-        season: mvpHistory.season,
-        sourceUrl: mvpHistory.sourceUrl,
-        awards: mvpHistory.coverage.awards,
-        expectedLeagueMatches: mvpHistory.coverage.expectedLeagueMatches,
-        completionPct: mvpHistory.coverage.completionPct,
-        missingPolicy: "N/D per chi non dispone di uno storico Serie A comparabile; zero soltanto per chi ha giocato la Serie A 2025/26 senza vincere il premio."
-      },
-      selectionRule: "La favorita con probabilita di vittoria >=50% e vantaggio >=15 punti fornisce il candidato principale; l'eventuale miglior punteggio avversario resta alternativa sorpresa."
-    },
     limitations: [`Quote Sisal datate per singolo evento; ultimo aggiornamento disponibile ${String(odds.retrievedAt).slice(0, 10)}. Le gare senza snapshot vengono pronosticate senza confronto mercato.`, "La forma recente della seconda giornata include il risultato concluso della prima e completa il campione con le gare 2025/26, sempre con taglio temporale per giornata.", "Gli xG Understat 2025/26 coprono 17 squadre su 20; negli incontri con una neopromossa non coperta resta attivo il fallback sui gol.", "Le indisponibilita derivano dal monitor editoriale aggiornato e i casi da valutare non sono trasformati in assenze certe; arbitri e meteo saranno integrati soltanto quando verificati.", "Per la seconda giornata le formazioni ufficiali della prima sono usate soltanto come riferimento tecnico, non come distinte confermate.", "Il backtest pluristagionale non include probabili XI, indisponibili e tattica per assenza di snapshot storici.", "Il correttivo H2H e limitato al 5% per lato: il vantaggio fuori campione e positivo ma modesto, quindi non deve dominare il pronostico."]
   },
   sources: [
@@ -469,8 +452,7 @@ const output = {
     ...myComboSources.map(source => ({ label: `MyCombo editoriali - ${source.filename} · selezioni Sisal ${source.updatedAt}`, url: `data/sources/${source.filename}` })),
     { label: `${teams.find(team => team.probableLineup?.source)?.probableLineup.source.provider || "Fonte editoriale"} - probabili formazioni 20 squadre`, url: teams.find(team => team.probableLineup?.source?.url)?.probableLineup.source.url },
     { label: "ESPN - ultimi cinque scontri diretti", url: "data/generated/head-to-head/first-leg-2026-27.json" },
-    { label: `${volumeProfiles.source.provider} - tiri, tiri in porta e corner ${volumeProfiles.season}`, url: "data/normalized/team-volume-profiles-2025-26.json" },
-    { label: `${mvpHistory.provider} - ${mvpHistory.award} ${mvpHistory.season}`, url: mvpHistory.sourceUrl }
+    { label: `${volumeProfiles.source.provider} - tiri, tiri in porta e corner ${volumeProfiles.season}`, url: "data/normalized/team-volume-profiles-2025-26.json" }
   ],
   predictions
 };

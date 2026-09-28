@@ -41,7 +41,7 @@ for (const fixture of data.fixtures) {
   assert.strictEqual(fixture.scoreForecast.coherentWithVerdict, true, `${fixture.fixtureId}: flag di coerenza del risultato`);
   assert(fixture.scoreForecast.modal && fixture.scoreForecast.display.some(row => row.score === fixture.scoreForecast.modal.score), `${fixture.fixtureId}: moda assoluta non esposta`);
   assert.deepStrictEqual(fixture.likelyBooked, [], `${fixture.fixtureId}: ammoniti mancanti non espliciti`);
-  assert.strictEqual(fixture.mvpCandidate, null, `${fixture.fixtureId}: MVP non verificato deve restare N/D`);
+  assert.ok(!("mvpCandidate" in fixture), `${fixture.fixtureId}: il candidato MVP non deve essere generato`);
   assert.deepStrictEqual(fixture.combinations, [], `${fixture.fixtureId}: MyCombo non validate devono restare vuote`);
   if (fixture.dataQuality.detailedVolumesAvailable) {
     assert.strictEqual(fixture.cards.lines.length, 3, `${fixture.fixtureId}: soglie cartellini`);

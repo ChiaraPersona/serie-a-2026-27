@@ -215,39 +215,6 @@ function buildBooked(players, event) {
   return selected.sort((a, b) => b.riskScore - a.riskScore).map((candidate, index) => ({ ...candidate, rank: index + 1, possibleFirstBooked: index === 0 }));
 }
 
-function buildMvp(players, prediction) {
-  const rows = players.map(player => {
-    const teamProbability = player.venue === "home" ? prediction.probabilities.home : prediction.probabilities.away;
-    const expectedGoals = prediction.expectedGoals[player.venue];
-    const production = clamp(player.per90.goals / 0.7 * 48 + player.per90.assists / 0.4 * 20 + player.per90.shotsOnTarget / 1.5 * 32, 0, 100);
-    const roleFit = player.roleKey === "forward" ? 13 : player.roleKey === "midfielder" ? 8 : player.roleKey === "goalkeeper" ? 3 : 5;
-    const tactical = clamp(38 + expectedGoals * 22 + roleFit, 25, 95);
-    const reliability = clamp((player.dataStatus === "verified-history" ? 70 : player.dataStatus === "limited-history" ? 48 : 24) + Math.min(20, player.minutes / 120), 0, 100);
-    const components = { resultScenario: teamProbability, individualProduction: round(production), historicalRating: 50, officialMvpHistory: 50, tacticalFit: round(tactical), opponentHistory: 50, dataReliability: round(reliability) };
-    const score = components.resultScenario * 0.3 + components.individualProduction * 0.2 + components.historicalRating * 0.15 + components.officialMvpHistory * 0.15 + components.tacticalFit * 0.1 + components.opponentHistory * 0.05 + components.dataReliability * 0.05;
-    return { ...player, score, components, teamProbability, expectedGoals };
-  }).sort((a, b) => b.score - a.score);
-  const favoriteSide = prediction.probabilities.home >= prediction.probabilities.away ? "home" : "away";
-  const favoriteProbability = prediction.probabilities[favoriteSide];
-  const otherProbability = prediction.probabilities[favoriteSide === "home" ? "away" : "home"];
-  const favoriteRule = favoriteProbability >= 50 && favoriteProbability - otherProbability >= 15;
-  const best = favoriteRule ? rows.find(player => player.venue === favoriteSide) || rows[0] : rows[0];
-  const surprise = rows[0] !== best ? rows[0] : null;
-  return {
-    name: best.name,
-    team: best.team,
-    teamId: best.teamId,
-    role: best.role,
-    score: round(best.score),
-    confidence: best.components.dataReliability >= 70 ? "alta" : best.components.dataReliability >= 50 ? "moderata" : "prudente",
-    evidence: [`${round(best.per90.goals, 2)} gol/90`, `${round(best.per90.assists, 2)} assist/90`, `${round(best.per90.shotsOnTarget, 2)} tiri in porta/90`, `scenario squadra ${round(best.teamProbability)}% vittoria · ${best.expectedGoals.toFixed(2)} gol attesi`],
-    components: best.components,
-    mvpHistory: { season: "2025-26", provider: "Champions/competizioni domestiche", status: "N/D", awards: null, note: "Nessuno storico MVP Champions omogeneo integrato" },
-    selectionRule: favoriteRule ? "favorite-over-50-gap-15" : "scenario-weighted",
-    surpriseCandidate: surprise ? { name: surprise.name, team: surprise.team, teamId: surprise.teamId, role: surprise.role, score: round(surprise.score) } : null
-  };
-}
-
 function findSimpleMarket(event, marketCode, selectionName, variantTest = () => true) {
   return marketSelection(event, market => market.marketCode === marketCode && variantTest(market), selectionName);
 }
@@ -363,14 +330,12 @@ const fixtures = predictions.fixtures.map(prediction => {
   const players = lineupCandidates(fixture, prediction);
   const shooters = buildShooterRows(players, prediction, event);
   const likelyBooked = buildBooked(players, event);
-  const mvpCandidate = buildMvp(players, prediction);
   const combinations = buildCombinations(prediction, shooters, likelyBooked, event);
   return {
     fixtureId: prediction.fixtureId,
     homeTeam: prediction.homeTeam,
     awayTeam: prediction.awayTeam,
     likelyBooked,
-    mvpCandidate,
     shooters,
     combinations,
     coverage: {
@@ -396,7 +361,6 @@ const output = {
   modelPolicy: "Pronostici, gerarchie e candidati sono calcolati prima dell'associazione alle quote. Le quote Sisal restano esterne alle probabilità e servono a verificare i target MyCombo 5/10/20.",
   methodology: {
     booked: "Stesso impianto Serie A: ruolo, cartellini e falli per 90 minuti regolarizzati, con graduatoria unica e presenza di entrambe le squadre.",
-    mvp: "Stessi pesi Serie A su scenario risultato, produzione individuale, fit tattico e affidabilità; lo storico MVP Champions omogeneo resta N/D.",
     shooters: "Tiri e tiri in porta per 90 minuti regolarizzati per ruolo, scalati sui volumi previsti della squadra e limitati ai probabili titolari.",
     myCombo: "Tre profili per partita costruiti con mercati compatibili e sostituto incluso quando previsto; niente cartellini, DNB, confronti giocatore, prima a corner, X primo tempo/finale o quasi ammonito."
   },

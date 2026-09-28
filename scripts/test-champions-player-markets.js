@@ -10,7 +10,7 @@ assert.equal(data.fixtures.length, 18);
 for (const fixture of data.fixtures) {
   assert.equal(fixture.coverage.lineupPlayers, 22, `${fixture.fixtureId}: XI incompleti`);
   assert.equal(fixture.likelyBooked.length, 5, `${fixture.fixtureId}: ammoniti`);
-  assert.ok(fixture.mvpCandidate?.name, `${fixture.fixtureId}: MVP`);
+  assert.ok(!("mvpCandidate" in fixture), `${fixture.fixtureId}: il candidato MVP non deve essere generato`);
   assert.equal(fixture.shooters.totalShots.length, 5, `${fixture.fixtureId}: tiratori totali`);
   assert.equal(fixture.shooters.shotsOnTarget.length, 5, `${fixture.fixtureId}: tiratori in porta`);
   const source = fixtureById.get(fixture.fixtureId);

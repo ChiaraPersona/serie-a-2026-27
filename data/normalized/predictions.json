@@ -5,7 +5,7 @@
     "serie-a"
   ],
   "season": "2026-27",
-  "generatedAt": "2026-09-28T00:21:13.091Z",
+  "generatedAt": "2026-09-28T10:32:12.982Z",
   "diagnostics": {
     "capSaturation": {
       "scope": "current-generated-team-projections",
@@ -1640,29 +1640,6 @@
       "fallback": "Profilo WhoScored, precisione della probabile formazione e stile offensivo quando manca lo storico Serie A della squadra."
     },
     "playerVolumeModel": "Tiri e tiri in porta dei titolari: frequenze per 90 minuti 2025/26 regolarizzate verso una prior di ruolo, poi scalate sul volume previsto della squadra; i falli/90 restano visibili come base disciplinare e i dati mancanti usano una baseline dichiarata.",
-    "playerModel": "Il candidato MVP combina scenario 1X2, produzione e pagelle storiche, compatibilita tattica e storico ufficiale Panini Player of the Match; con favorita oltre il 50% e divario di almeno 15 punti, il candidato principale proviene normalmente dalla favorita.",
-    "mvpModel": {
-      "weights": {
-        "resultScenario": 0.3,
-        "individualProduction": 0.2,
-        "historicalRating": 0.15,
-        "officialMvpHistory": 0.15,
-        "tacticalFit": 0.1,
-        "opponentHistory": 0.05,
-        "dataReliability": 0.05
-      },
-      "officialHistory": {
-        "provider": "Lega Serie A",
-        "award": "Panini Player of the Match",
-        "season": "2025-26",
-        "sourceUrl": "https://www.legaseriea.it/serie-a/awards/player-of-the-match",
-        "awards": 377,
-        "expectedLeagueMatches": 380,
-        "completionPct": 99.2,
-        "missingPolicy": "N/D per chi non dispone di uno storico Serie A comparabile; zero soltanto per chi ha giocato la Serie A 2025/26 senza vincere il premio."
-      },
-      "selectionRule": "La favorita con probabilita di vittoria >=50% e vantaggio >=15 punti fornisce il candidato principale; l'eventuale miglior punteggio avversario resta alternativa sorpresa."
-    },
     "limitations": [
       "Quote Sisal datate per singolo evento; ultimo aggiornamento disponibile 2026-09-17. Le gare senza snapshot vengono pronosticate senza confronto mercato.",
       "La forma recente della seconda giornata include il risultato concluso della prima e completa il campione con le gare 2025/26, sempre con taglio temporale per giornata.",
@@ -1713,10 +1690,6 @@
     {
       "label": "ESPN - tiri, tiri in porta e corner 2025-26",
       "url": "data/normalized/team-volume-profiles-2025-26.json"
-    },
-    {
-      "label": "Lega Serie A - Panini Player of the Match 2025-26",
-      "url": "https://www.legaseriea.it/serie-a/awards/player-of-the-match"
     }
   ],
   "predictions": [
@@ -2290,55 +2263,6 @@
           "possibleFirstBooked": false
         }
       ],
-      "mvpCandidate": {
-        "name": "Gianluca Scamacca",
-        "teamId": "atalanta",
-        "role": "Attaccante",
-        "score": 64.3,
-        "evidence": [
-          "0.68 gol/90",
-          "0.07 assist/90",
-          "1.5 tiri in porta/90",
-          "3 MVP ufficiali · 18.8% sulle titolarità",
-          "scenario squadra 53.1% vittoria · 1.69 gol attesi"
-        ],
-        "confidence": "alta",
-        "weights": {
-          "resultScenario": 0.3,
-          "individualProduction": 0.2,
-          "historicalRating": 0.15,
-          "officialMvpHistory": 0.15,
-          "tacticalFit": 0.1,
-          "opponentHistory": 0.05,
-          "dataReliability": 0.05
-        },
-        "components": {
-          "resultScenario": 53.1,
-          "individualProduction": 81.9,
-          "historicalRating": 43.6,
-          "officialMvpHistory": 71.4,
-          "tacticalFit": 87.2,
-          "opponentHistory": 20,
-          "dataReliability": 100
-        },
-        "mvpHistory": {
-          "season": "2025-26",
-          "provider": "Lega Serie A",
-          "award": "Panini Player of the Match",
-          "status": "official",
-          "awards": 3,
-          "recentAwards": 0,
-          "opponentAwards": 0,
-          "appearances": 24,
-          "starts": 16,
-          "minutes": 1319,
-          "ratePerStartPct": 18.8,
-          "awardsPer1000Minutes": 2.27,
-          "sourceUrl": "https://www.legaseriea.it/serie-a/awards/player-of-the-match"
-        },
-        "selectionRule": "favorite-over-50-gap-15",
-        "surpriseCandidate": null
-      },
       "scenarios": [
         {
           "id": "A",
@@ -5319,56 +5243,6 @@
           "possibleFirstBooked": false
         }
       ],
-      "mvpCandidate": {
-        "name": "Riccardo Orsolini",
-        "teamId": "bologna",
-        "role": "Attaccante",
-        "score": 54.9,
-        "evidence": [
-          "0.43 gol/90",
-          "0.04 assist/90",
-          "1.32 tiri in porta/90",
-          "5 MVP ufficiali · 19.2% sulle titolarità",
-          "1 MVP nelle ultime 10 giornate",
-          "scenario squadra 41.9% vittoria · 1.24 gol attesi"
-        ],
-        "confidence": "alta",
-        "weights": {
-          "resultScenario": 0.3,
-          "individualProduction": 0.2,
-          "historicalRating": 0.15,
-          "officialMvpHistory": 0.15,
-          "tacticalFit": 0.1,
-          "opponentHistory": 0.05,
-          "dataReliability": 0.05
-        },
-        "components": {
-          "resultScenario": 41.9,
-          "individualProduction": 57.8,
-          "historicalRating": 32.7,
-          "officialMvpHistory": 80.9,
-          "tacticalFit": 77.3,
-          "opponentHistory": 20,
-          "dataReliability": 100
-        },
-        "mvpHistory": {
-          "season": "2025-26",
-          "provider": "Lega Serie A",
-          "award": "Panini Player of the Match",
-          "status": "official",
-          "awards": 5,
-          "recentAwards": 1,
-          "opponentAwards": 0,
-          "appearances": 35,
-          "starts": 26,
-          "minutes": 2117,
-          "ratePerStartPct": 19.2,
-          "awardsPer1000Minutes": 2.36,
-          "sourceUrl": "https://www.legaseriea.it/serie-a/awards/player-of-the-match"
-        },
-        "selectionRule": "scenario-weighted",
-        "surpriseCandidate": null
-      },
       "scenarios": [
         {
           "id": "A",
@@ -7718,56 +7592,6 @@
           "possibleFirstBooked": false
         }
       ],
-      "mvpCandidate": {
-        "name": "Kenan Yildiz",
-        "teamId": "juventus",
-        "role": "Attaccante",
-        "score": 61.6,
-        "evidence": [
-          "0.32 gol/90",
-          "0.19 assist/90",
-          "1.27 tiri in porta/90",
-          "5 MVP ufficiali · 15.2% sulle titolarità",
-          "1 MVP nelle ultime 10 giornate",
-          "scenario squadra 53.5% vittoria · 1.66 gol attesi"
-        ],
-        "confidence": "alta",
-        "weights": {
-          "resultScenario": 0.3,
-          "individualProduction": 0.2,
-          "historicalRating": 0.15,
-          "officialMvpHistory": 0.15,
-          "tacticalFit": 0.1,
-          "opponentHistory": 0.05,
-          "dataReliability": 0.05
-        },
-        "components": {
-          "resultScenario": 53.5,
-          "individualProduction": 55.8,
-          "historicalRating": 62.7,
-          "officialMvpHistory": 68.9,
-          "tacticalFit": 86.5,
-          "opponentHistory": 20,
-          "dataReliability": 100
-        },
-        "mvpHistory": {
-          "season": "2025-26",
-          "provider": "Lega Serie A",
-          "award": "Panini Player of the Match",
-          "status": "official",
-          "awards": 5,
-          "recentAwards": 1,
-          "opponentAwards": 0,
-          "appearances": 36,
-          "starts": 33,
-          "minutes": 2843,
-          "ratePerStartPct": 15.2,
-          "awardsPer1000Minutes": 1.76,
-          "sourceUrl": "https://www.legaseriea.it/serie-a/awards/player-of-the-match"
-        },
-        "selectionRule": "favorite-over-50-gap-15",
-        "surpriseCandidate": null
-      },
       "scenarios": [
         {
           "id": "A",
@@ -10535,55 +10359,6 @@
           "possibleFirstBooked": false
         }
       ],
-      "mvpCandidate": {
-        "name": "Alisson Santos",
-        "teamId": "napoli",
-        "role": "Attaccante",
-        "score": 58.8,
-        "evidence": [
-          "0.43 gol/90",
-          "0 assist/90",
-          "1.72 tiri in porta/90",
-          "1 MVP ufficiali · 11.1% sulle titolarità",
-          "scenario squadra 52.3% vittoria · 1.61 gol attesi"
-        ],
-        "confidence": "alta",
-        "weights": {
-          "resultScenario": 0.3,
-          "individualProduction": 0.2,
-          "historicalRating": 0.15,
-          "officialMvpHistory": 0.15,
-          "tacticalFit": 0.1,
-          "opponentHistory": 0.05,
-          "dataReliability": 0.05
-        },
-        "components": {
-          "resultScenario": 52.3,
-          "individualProduction": 62.5,
-          "historicalRating": 59.1,
-          "officialMvpHistory": 48.3,
-          "tacticalFit": 85.4,
-          "opponentHistory": 20,
-          "dataReliability": 100
-        },
-        "mvpHistory": {
-          "season": "2025-26",
-          "provider": "Lega Serie A",
-          "award": "Panini Player of the Match",
-          "status": "official",
-          "awards": 1,
-          "recentAwards": 0,
-          "opponentAwards": 0,
-          "appearances": 14,
-          "starts": 9,
-          "minutes": 836,
-          "ratePerStartPct": 11.1,
-          "awardsPer1000Minutes": 1.2,
-          "sourceUrl": "https://www.legaseriea.it/serie-a/awards/player-of-the-match"
-        },
-        "selectionRule": "favorite-over-50-gap-15",
-        "surpriseCandidate": null
-      },
       "scenarios": [
         {
           "id": "A",
@@ -13070,56 +12845,6 @@
           "possibleFirstBooked": false
         }
       ],
-      "mvpCandidate": {
-        "name": "Lautaro Martínez",
-        "teamId": "inter",
-        "role": "Attaccante",
-        "score": 84.2,
-        "evidence": [
-          "0.7 gol/90",
-          "0.25 assist/90",
-          "1.61 tiri in porta/90",
-          "8 MVP ufficiali · 29.6% sulle titolarità",
-          "1 MVP nelle ultime 10 giornate",
-          "scenario squadra 83.3% vittoria · 3.22 gol attesi"
-        ],
-        "confidence": "alta",
-        "weights": {
-          "resultScenario": 0.3,
-          "individualProduction": 0.2,
-          "historicalRating": 0.15,
-          "officialMvpHistory": 0.15,
-          "tacticalFit": 0.1,
-          "opponentHistory": 0.05,
-          "dataReliability": 0.05
-        },
-        "components": {
-          "resultScenario": 83.3,
-          "individualProduction": 94.3,
-          "historicalRating": 65.5,
-          "officialMvpHistory": 100,
-          "tacticalFit": 95,
-          "opponentHistory": 20,
-          "dataReliability": 100
-        },
-        "mvpHistory": {
-          "season": "2025-26",
-          "provider": "Lega Serie A",
-          "award": "Panini Player of the Match",
-          "status": "official",
-          "awards": 8,
-          "recentAwards": 1,
-          "opponentAwards": 0,
-          "appearances": 30,
-          "starts": 27,
-          "minutes": 2179,
-          "ratePerStartPct": 29.6,
-          "awardsPer1000Minutes": 3.67,
-          "sourceUrl": "https://www.legaseriea.it/serie-a/awards/player-of-the-match"
-        },
-        "selectionRule": "favorite-over-50-gap-15",
-        "surpriseCandidate": null
-      },
       "scenarios": [
         {
           "id": "A",
@@ -15849,56 +15574,6 @@
           "possibleFirstBooked": false
         }
       ],
-      "mvpCandidate": {
-        "name": "Paul Mendy",
-        "teamId": "cagliari",
-        "role": "Attaccante",
-        "score": 52.9,
-        "evidence": [
-          "0.55 gol/90",
-          "0 assist/90",
-          "0.82 tiri in porta/90",
-          "1 MVP ufficiali · 33.3% sulle titolarità",
-          "1 MVP nelle ultime 10 giornate",
-          "scenario squadra 32.8% vittoria · 1.08 gol attesi"
-        ],
-        "confidence": "alta",
-        "weights": {
-          "resultScenario": 0.3,
-          "individualProduction": 0.2,
-          "historicalRating": 0.15,
-          "officialMvpHistory": 0.15,
-          "tacticalFit": 0.1,
-          "opponentHistory": 0.05,
-          "dataReliability": 0.05
-        },
-        "components": {
-          "resultScenario": 32.8,
-          "individualProduction": 56.9,
-          "historicalRating": 21.8,
-          "officialMvpHistory": 100,
-          "tacticalFit": 73.8,
-          "opponentHistory": 20,
-          "dataReliability": 100
-        },
-        "mvpHistory": {
-          "season": "2025-26",
-          "provider": "Lega Serie A",
-          "award": "Panini Player of the Match",
-          "status": "official",
-          "awards": 1,
-          "recentAwards": 1,
-          "opponentAwards": 0,
-          "appearances": 9,
-          "starts": 3,
-          "minutes": 330,
-          "ratePerStartPct": 33.3,
-          "awardsPer1000Minutes": 3.03,
-          "sourceUrl": "https://www.legaseriea.it/serie-a/awards/player-of-the-match"
-        },
-        "selectionRule": "scenario-weighted",
-        "surpriseCandidate": null
-      },
       "scenarios": [
         {
           "id": "A",
@@ -18631,56 +18306,6 @@
           "possibleFirstBooked": false
         }
       ],
-      "mvpCandidate": {
-        "name": "Donyell Malen",
-        "teamId": "roma",
-        "role": "Attaccante",
-        "score": 83.2,
-        "evidence": [
-          "0.85 gol/90",
-          "0.12 assist/90",
-          "1.89 tiri in porta/90",
-          "4 MVP ufficiali · 22.2% sulle titolarità",
-          "3 MVP nelle ultime 10 giornate",
-          "scenario squadra 63.7% vittoria · 1.92 gol attesi"
-        ],
-        "confidence": "alta",
-        "weights": {
-          "resultScenario": 0.3,
-          "individualProduction": 0.2,
-          "historicalRating": 0.15,
-          "officialMvpHistory": 0.15,
-          "tacticalFit": 0.1,
-          "opponentHistory": 0.05,
-          "dataReliability": 0.05
-        },
-        "components": {
-          "resultScenario": 63.7,
-          "individualProduction": 100,
-          "historicalRating": 92.7,
-          "officialMvpHistory": 100,
-          "tacticalFit": 92.2,
-          "opponentHistory": 20,
-          "dataReliability": 100
-        },
-        "mvpHistory": {
-          "season": "2025-26",
-          "provider": "Lega Serie A",
-          "award": "Panini Player of the Match",
-          "status": "official",
-          "awards": 4,
-          "recentAwards": 3,
-          "opponentAwards": 0,
-          "appearances": 18,
-          "starts": 18,
-          "minutes": 1478,
-          "ratePerStartPct": 22.2,
-          "awardsPer1000Minutes": 2.71,
-          "sourceUrl": "https://www.legaseriea.it/serie-a/awards/player-of-the-match"
-        },
-        "selectionRule": "favorite-over-50-gap-15",
-        "surpriseCandidate": null
-      },
       "scenarios": [
         {
           "id": "A",
@@ -21207,55 +20832,6 @@
           "possibleFirstBooked": false
         }
       ],
-      "mvpCandidate": {
-        "name": "Gonçalo Ramos",
-        "teamId": "milan",
-        "role": "Attaccante",
-        "score": 61.2,
-        "evidence": [
-          "0.52 gol/90",
-          "0.09 assist/90",
-          "1.9 tiri in porta/90",
-          "storico MVP Serie A: N/D",
-          "scenario squadra 52.6% vittoria · 1.81 gol attesi"
-        ],
-        "confidence": "moderata",
-        "weights": {
-          "resultScenario": 0.3,
-          "individualProduction": 0.2,
-          "historicalRating": 0.15,
-          "officialMvpHistory": 0.15,
-          "tacticalFit": 0.1,
-          "opponentHistory": 0.05,
-          "dataReliability": 0.05
-        },
-        "components": {
-          "resultScenario": 52.6,
-          "individualProduction": 77,
-          "historicalRating": 50,
-          "officialMvpHistory": 50,
-          "tacticalFit": 89.8,
-          "opponentHistory": 50,
-          "dataReliability": 70
-        },
-        "mvpHistory": {
-          "season": "2025-26",
-          "provider": "Lega Serie A",
-          "award": "Panini Player of the Match",
-          "status": "N/D",
-          "awards": null,
-          "recentAwards": null,
-          "opponentAwards": null,
-          "appearances": 25,
-          "starts": 10,
-          "minutes": 1044,
-          "ratePerStartPct": null,
-          "awardsPer1000Minutes": null,
-          "sourceUrl": "https://www.legaseriea.it/serie-a/awards/player-of-the-match"
-        },
-        "selectionRule": "favorite-over-50-gap-15",
-        "surpriseCandidate": null
-      },
       "scenarios": [
         {
           "id": "A",
@@ -23767,56 +23343,6 @@
           "possibleFirstBooked": false
         }
       ],
-      "mvpCandidate": {
-        "name": "Anastasios Douvikas",
-        "teamId": "como",
-        "role": "Attaccante",
-        "score": 58.3,
-        "evidence": [
-          "0.55 gol/90",
-          "0.04 assist/90",
-          "1.19 tiri in porta/90",
-          "3 MVP ufficiali · 12% sulle titolarità",
-          "2 MVP nelle ultime 10 giornate",
-          "scenario squadra 48.4% vittoria · 1.41 gol attesi"
-        ],
-        "confidence": "alta",
-        "weights": {
-          "resultScenario": 0.3,
-          "individualProduction": 0.2,
-          "historicalRating": 0.15,
-          "officialMvpHistory": 0.15,
-          "tacticalFit": 0.1,
-          "opponentHistory": 0.05,
-          "dataReliability": 0.05
-        },
-        "components": {
-          "resultScenario": 48.4,
-          "individualProduction": 65,
-          "historicalRating": 43.6,
-          "officialMvpHistory": 67.7,
-          "tacticalFit": 81,
-          "opponentHistory": 20,
-          "dataReliability": 100
-        },
-        "mvpHistory": {
-          "season": "2025-26",
-          "provider": "Lega Serie A",
-          "award": "Panini Player of the Match",
-          "status": "official",
-          "awards": 3,
-          "recentAwards": 2,
-          "opponentAwards": 0,
-          "appearances": 38,
-          "starts": 25,
-          "minutes": 2278,
-          "ratePerStartPct": 12,
-          "awardsPer1000Minutes": 1.32,
-          "sourceUrl": "https://www.legaseriea.it/serie-a/awards/player-of-the-match"
-        },
-        "selectionRule": "scenario-weighted",
-        "surpriseCandidate": null
-      },
       "scenarios": [
         {
           "id": "A",
@@ -26683,55 +26209,6 @@
           "possibleFirstBooked": false
         }
       ],
-      "mvpCandidate": {
-        "name": "John Yeboah",
-        "teamId": "venezia",
-        "role": "Attaccante",
-        "score": 54.7,
-        "evidence": [
-          "0.34 gol/90",
-          "0.3 assist/90",
-          "1.55 tiri in porta/90",
-          "storico MVP Serie A: N/D",
-          "scenario squadra 41.3% vittoria · 1.29 gol attesi"
-        ],
-        "confidence": "moderata",
-        "weights": {
-          "resultScenario": 0.3,
-          "individualProduction": 0.2,
-          "historicalRating": 0.15,
-          "officialMvpHistory": 0.15,
-          "tacticalFit": 0.1,
-          "opponentHistory": 0.05,
-          "dataReliability": 0.05
-        },
-        "components": {
-          "resultScenario": 41.3,
-          "individualProduction": 67.5,
-          "historicalRating": 50,
-          "officialMvpHistory": 50,
-          "tacticalFit": 78.4,
-          "opponentHistory": 50,
-          "dataReliability": 70
-        },
-        "mvpHistory": {
-          "season": "2025-26",
-          "provider": "Lega Serie A",
-          "award": "Panini Player of the Match",
-          "status": "N/D",
-          "awards": null,
-          "recentAwards": null,
-          "opponentAwards": null,
-          "appearances": 34,
-          "starts": 31,
-          "minutes": 2673,
-          "ratePerStartPct": null,
-          "awardsPer1000Minutes": null,
-          "sourceUrl": "https://www.legaseriea.it/serie-a/awards/player-of-the-match"
-        },
-        "selectionRule": "scenario-weighted",
-        "surpriseCandidate": null
-      },
       "scenarios": [
         {
           "id": "A",
@@ -29486,55 +28963,6 @@
           "possibleFirstBooked": false
         }
       ],
-      "mvpCandidate": {
-        "name": "Gianluca Scamacca",
-        "teamId": "atalanta",
-        "role": "Attaccante",
-        "score": 61.5,
-        "evidence": [
-          "0.68 gol/90",
-          "0.07 assist/90",
-          "1.5 tiri in porta/90",
-          "3 MVP ufficiali · 18.8% sulle titolarità",
-          "scenario squadra 45.4% vittoria · 1.47 gol attesi"
-        ],
-        "confidence": "alta",
-        "weights": {
-          "resultScenario": 0.3,
-          "individualProduction": 0.2,
-          "historicalRating": 0.15,
-          "officialMvpHistory": 0.15,
-          "tacticalFit": 0.1,
-          "opponentHistory": 0.05,
-          "dataReliability": 0.05
-        },
-        "components": {
-          "resultScenario": 45.4,
-          "individualProduction": 81.9,
-          "historicalRating": 43.6,
-          "officialMvpHistory": 71.4,
-          "tacticalFit": 82.3,
-          "opponentHistory": 20,
-          "dataReliability": 100
-        },
-        "mvpHistory": {
-          "season": "2025-26",
-          "provider": "Lega Serie A",
-          "award": "Panini Player of the Match",
-          "status": "official",
-          "awards": 3,
-          "recentAwards": 0,
-          "opponentAwards": 0,
-          "appearances": 24,
-          "starts": 16,
-          "minutes": 1319,
-          "ratePerStartPct": 18.8,
-          "awardsPer1000Minutes": 2.27,
-          "sourceUrl": "https://www.legaseriea.it/serie-a/awards/player-of-the-match"
-        },
-        "selectionRule": "scenario-weighted",
-        "surpriseCandidate": null
-      },
       "scenarios": [
         {
           "id": "A",
@@ -32339,56 +31767,6 @@
           "possibleFirstBooked": false
         }
       ],
-      "mvpCandidate": {
-        "name": "Lautaro Martínez",
-        "teamId": "inter",
-        "role": "Attaccante",
-        "score": 78.4,
-        "evidence": [
-          "0.7 gol/90",
-          "0.25 assist/90",
-          "1.61 tiri in porta/90",
-          "8 MVP ufficiali · 29.6% sulle titolarità",
-          "1 MVP nelle ultime 10 giornate",
-          "scenario squadra 64.1% vittoria · 2.25 gol attesi"
-        ],
-        "confidence": "alta",
-        "weights": {
-          "resultScenario": 0.3,
-          "individualProduction": 0.2,
-          "historicalRating": 0.15,
-          "officialMvpHistory": 0.15,
-          "tacticalFit": 0.1,
-          "opponentHistory": 0.05,
-          "dataReliability": 0.05
-        },
-        "components": {
-          "resultScenario": 64.1,
-          "individualProduction": 94.3,
-          "historicalRating": 65.5,
-          "officialMvpHistory": 100,
-          "tacticalFit": 95,
-          "opponentHistory": 20,
-          "dataReliability": 100
-        },
-        "mvpHistory": {
-          "season": "2025-26",
-          "provider": "Lega Serie A",
-          "award": "Panini Player of the Match",
-          "status": "official",
-          "awards": 8,
-          "recentAwards": 1,
-          "opponentAwards": 0,
-          "appearances": 30,
-          "starts": 27,
-          "minutes": 2179,
-          "ratePerStartPct": 29.6,
-          "awardsPer1000Minutes": 3.67,
-          "sourceUrl": "https://www.legaseriea.it/serie-a/awards/player-of-the-match"
-        },
-        "selectionRule": "favorite-over-50-gap-15",
-        "surpriseCandidate": null
-      },
       "scenarios": [
         {
           "id": "A",
@@ -35194,55 +34572,6 @@
           "possibleFirstBooked": false
         }
       ],
-      "mvpCandidate": {
-        "name": "Antonio Raimondo",
-        "teamId": "frosinone",
-        "role": "Attaccante",
-        "score": 47.2,
-        "evidence": [
-          "0.42 gol/90",
-          "0.04 assist/90",
-          "1.29 tiri in porta/90",
-          "storico MVP Serie A: N/D",
-          "scenario squadra 26.7% vittoria · 0.87 gol attesi"
-        ],
-        "confidence": "moderata",
-        "weights": {
-          "resultScenario": 0.3,
-          "individualProduction": 0.2,
-          "historicalRating": 0.15,
-          "officialMvpHistory": 0.15,
-          "tacticalFit": 0.1,
-          "opponentHistory": 0.05,
-          "dataReliability": 0.05
-        },
-        "components": {
-          "resultScenario": 26.7,
-          "individualProduction": 56.5,
-          "historicalRating": 50,
-          "officialMvpHistory": 50,
-          "tacticalFit": 69.1,
-          "opponentHistory": 50,
-          "dataReliability": 70
-        },
-        "mvpHistory": {
-          "season": "2025-26",
-          "provider": "Lega Serie A",
-          "award": "Panini Player of the Match",
-          "status": "N/D",
-          "awards": null,
-          "recentAwards": null,
-          "opponentAwards": null,
-          "appearances": 36,
-          "starts": 30,
-          "minutes": 2376,
-          "ratePerStartPct": null,
-          "awardsPer1000Minutes": null,
-          "sourceUrl": "https://www.legaseriea.it/serie-a/awards/player-of-the-match"
-        },
-        "selectionRule": "scenario-weighted",
-        "surpriseCandidate": null
-      },
       "scenarios": [
         {
           "id": "A",
@@ -38115,55 +37444,6 @@
           "possibleFirstBooked": false
         }
       ],
-      "mvpCandidate": {
-        "name": "Jérémie Boga",
-        "teamId": "juventus",
-        "role": "Attaccante",
-        "score": 55.3,
-        "evidence": [
-          "0.53 gol/90",
-          "0 assist/90",
-          "1.6 tiri in porta/90",
-          "0 MVP ufficiali · 0% sulle titolarità",
-          "scenario squadra 60.2% vittoria · 1.66 gol attesi"
-        ],
-        "confidence": "alta",
-        "weights": {
-          "resultScenario": 0.3,
-          "individualProduction": 0.2,
-          "historicalRating": 0.15,
-          "officialMvpHistory": 0.15,
-          "tacticalFit": 0.1,
-          "opponentHistory": 0.05,
-          "dataReliability": 0.05
-        },
-        "components": {
-          "resultScenario": 60.2,
-          "individualProduction": 68.3,
-          "historicalRating": 44.5,
-          "officialMvpHistory": 15,
-          "tacticalFit": 86.5,
-          "opponentHistory": 20,
-          "dataReliability": 100
-        },
-        "mvpHistory": {
-          "season": "2025-26",
-          "provider": "Lega Serie A",
-          "award": "Panini Player of the Match",
-          "status": "official",
-          "awards": 0,
-          "recentAwards": 0,
-          "opponentAwards": 0,
-          "appearances": 15,
-          "starts": 6,
-          "minutes": 677,
-          "ratePerStartPct": 0,
-          "awardsPer1000Minutes": 0,
-          "sourceUrl": "https://www.legaseriea.it/serie-a/awards/player-of-the-match"
-        },
-        "selectionRule": "favorite-over-50-gap-15",
-        "surpriseCandidate": null
-      },
       "scenarios": [
         {
           "id": "A",
@@ -41053,55 +40333,6 @@
           "possibleFirstBooked": false
         }
       ],
-      "mvpCandidate": {
-        "name": "Matteo Cancellieri",
-        "teamId": "lazio",
-        "role": "Attaccante",
-        "score": 46.2,
-        "evidence": [
-          "0.21 gol/90",
-          "0.1 assist/90",
-          "0.88 tiri in porta/90",
-          "2 MVP ufficiali · 9.5% sulle titolarità",
-          "scenario squadra 44.4% vittoria · 1.52 gol attesi"
-        ],
-        "confidence": "alta",
-        "weights": {
-          "resultScenario": 0.3,
-          "individualProduction": 0.2,
-          "historicalRating": 0.15,
-          "officialMvpHistory": 0.15,
-          "tacticalFit": 0.1,
-          "opponentHistory": 0.05,
-          "dataReliability": 0.05
-        },
-        "components": {
-          "resultScenario": 44.4,
-          "individualProduction": 36.2,
-          "historicalRating": 20.9,
-          "officialMvpHistory": 43.5,
-          "tacticalFit": 83.4,
-          "opponentHistory": 52,
-          "dataReliability": 100
-        },
-        "mvpHistory": {
-          "season": "2025-26",
-          "provider": "Lega Serie A",
-          "award": "Panini Player of the Match",
-          "status": "official",
-          "awards": 2,
-          "recentAwards": 0,
-          "opponentAwards": 1,
-          "appearances": 30,
-          "starts": 21,
-          "minutes": 1730,
-          "ratePerStartPct": 9.5,
-          "awardsPer1000Minutes": 1.16,
-          "sourceUrl": "https://www.legaseriea.it/serie-a/awards/player-of-the-match"
-        },
-        "selectionRule": "scenario-weighted",
-        "surpriseCandidate": null
-      },
       "scenarios": [
         {
           "id": "A",
@@ -43894,56 +43125,6 @@
           "possibleFirstBooked": false
         }
       ],
-      "mvpCandidate": {
-        "name": "Donyell Malen",
-        "teamId": "roma",
-        "role": "Attaccante",
-        "score": 81.2,
-        "evidence": [
-          "0.85 gol/90",
-          "0.12 assist/90",
-          "1.89 tiri in porta/90",
-          "4 MVP ufficiali · 22.2% sulle titolarità",
-          "3 MVP nelle ultime 10 giornate",
-          "scenario squadra 58.6% vittoria · 1.68 gol attesi"
-        ],
-        "confidence": "alta",
-        "weights": {
-          "resultScenario": 0.3,
-          "individualProduction": 0.2,
-          "historicalRating": 0.15,
-          "officialMvpHistory": 0.15,
-          "tacticalFit": 0.1,
-          "opponentHistory": 0.05,
-          "dataReliability": 0.05
-        },
-        "components": {
-          "resultScenario": 58.6,
-          "individualProduction": 100,
-          "historicalRating": 92.7,
-          "officialMvpHistory": 100,
-          "tacticalFit": 87,
-          "opponentHistory": 20,
-          "dataReliability": 100
-        },
-        "mvpHistory": {
-          "season": "2025-26",
-          "provider": "Lega Serie A",
-          "award": "Panini Player of the Match",
-          "status": "official",
-          "awards": 4,
-          "recentAwards": 3,
-          "opponentAwards": 0,
-          "appearances": 18,
-          "starts": 18,
-          "minutes": 1478,
-          "ratePerStartPct": 22.2,
-          "awardsPer1000Minutes": 2.71,
-          "sourceUrl": "https://www.legaseriea.it/serie-a/awards/player-of-the-match"
-        },
-        "selectionRule": "favorite-over-50-gap-15",
-        "surpriseCandidate": null
-      },
       "scenarios": [
         {
           "id": "A",
@@ -46760,55 +45941,6 @@
           "possibleFirstBooked": false
         }
       ],
-      "mvpCandidate": {
-        "name": "Gonçalo Ramos",
-        "teamId": "milan",
-        "role": "Attaccante",
-        "score": 64.8,
-        "evidence": [
-          "0.52 gol/90",
-          "0.09 assist/90",
-          "1.9 tiri in porta/90",
-          "storico MVP Serie A: N/D",
-          "scenario squadra 64% vittoria · 1.91 gol attesi"
-        ],
-        "confidence": "moderata",
-        "weights": {
-          "resultScenario": 0.3,
-          "individualProduction": 0.2,
-          "historicalRating": 0.15,
-          "officialMvpHistory": 0.15,
-          "tacticalFit": 0.1,
-          "opponentHistory": 0.05,
-          "dataReliability": 0.05
-        },
-        "components": {
-          "resultScenario": 64,
-          "individualProduction": 77,
-          "historicalRating": 50,
-          "officialMvpHistory": 50,
-          "tacticalFit": 92,
-          "opponentHistory": 50,
-          "dataReliability": 70
-        },
-        "mvpHistory": {
-          "season": "2025-26",
-          "provider": "Lega Serie A",
-          "award": "Panini Player of the Match",
-          "status": "N/D",
-          "awards": null,
-          "recentAwards": null,
-          "opponentAwards": null,
-          "appearances": 25,
-          "starts": 10,
-          "minutes": 1044,
-          "ratePerStartPct": null,
-          "awardsPer1000Minutes": null,
-          "sourceUrl": "https://www.legaseriea.it/serie-a/awards/player-of-the-match"
-        },
-        "selectionRule": "favorite-over-50-gap-15",
-        "surpriseCandidate": null
-      },
       "scenarios": [
         {
           "id": "A",
@@ -49572,56 +48704,6 @@
           "possibleFirstBooked": false
         }
       ],
-      "mvpCandidate": {
-        "name": "Keinan Davis",
-        "teamId": "udinese",
-        "role": "Attaccante",
-        "score": 62.6,
-        "evidence": [
-          "0.43 gol/90",
-          "0.17 assist/90",
-          "1.08 tiri in porta/90",
-          "4 MVP ufficiali · 14.8% sulle titolarità",
-          "1 MVP nelle ultime 10 giornate",
-          "scenario squadra 56% vittoria · 1.88 gol attesi"
-        ],
-        "confidence": "alta",
-        "weights": {
-          "resultScenario": 0.3,
-          "individualProduction": 0.2,
-          "historicalRating": 0.15,
-          "officialMvpHistory": 0.15,
-          "tacticalFit": 0.1,
-          "opponentHistory": 0.05,
-          "dataReliability": 0.05
-        },
-        "components": {
-          "resultScenario": 56,
-          "individualProduction": 60.3,
-          "historicalRating": 56.4,
-          "officialMvpHistory": 67.7,
-          "tacticalFit": 91.4,
-          "opponentHistory": 20,
-          "dataReliability": 100
-        },
-        "mvpHistory": {
-          "season": "2025-26",
-          "provider": "Lega Serie A",
-          "award": "Panini Player of the Match",
-          "status": "official",
-          "awards": 4,
-          "recentAwards": 1,
-          "opponentAwards": 0,
-          "appearances": 30,
-          "starts": 27,
-          "minutes": 2079,
-          "ratePerStartPct": 14.8,
-          "awardsPer1000Minutes": 1.92,
-          "sourceUrl": "https://www.legaseriea.it/serie-a/awards/player-of-the-match"
-        },
-        "selectionRule": "favorite-over-50-gap-15",
-        "surpriseCandidate": null
-      },
       "scenarios": [
         {
           "id": "A",
@@ -52514,56 +51596,6 @@
           "possibleFirstBooked": false
         }
       ],
-      "mvpCandidate": {
-        "name": "Scott McTominay",
-        "teamId": "napoli",
-        "role": "Centrocampista",
-        "score": 55.2,
-        "evidence": [
-          "0.32 gol/90",
-          "0.1 assist/90",
-          "1.1 tiri in porta/90",
-          "2 MVP ufficiali · 6.5% sulle titolarità",
-          "1 MVP nelle ultime 10 giornate",
-          "scenario squadra 36% vittoria · 1.24 gol attesi"
-        ],
-        "confidence": "alta",
-        "weights": {
-          "resultScenario": 0.3,
-          "individualProduction": 0.2,
-          "historicalRating": 0.15,
-          "officialMvpHistory": 0.15,
-          "tacticalFit": 0.1,
-          "opponentHistory": 0.05,
-          "dataReliability": 0.05
-        },
-        "components": {
-          "resultScenario": 36,
-          "individualProduction": 48.5,
-          "historicalRating": 100,
-          "officialMvpHistory": 42.8,
-          "tacticalFit": 72.3,
-          "opponentHistory": 20,
-          "dataReliability": 100
-        },
-        "mvpHistory": {
-          "season": "2025-26",
-          "provider": "Lega Serie A",
-          "award": "Panini Player of the Match",
-          "status": "official",
-          "awards": 2,
-          "recentAwards": 1,
-          "opponentAwards": 0,
-          "appearances": 33,
-          "starts": 31,
-          "minutes": 2793,
-          "ratePerStartPct": 6.5,
-          "awardsPer1000Minutes": 0.72,
-          "sourceUrl": "https://www.legaseriea.it/serie-a/awards/player-of-the-match"
-        },
-        "selectionRule": "scenario-weighted",
-        "surpriseCandidate": null
-      },
       "scenarios": [
         {
           "id": "A",
@@ -55351,55 +54383,6 @@
           "possibleFirstBooked": false
         }
       ],
-      "mvpCandidate": {
-        "name": "Vasilije Adzic",
-        "teamId": "sassuolo",
-        "role": "Centrocampista",
-        "score": 51.7,
-        "evidence": [
-          "0.55 gol/90",
-          "0 assist/90",
-          "2.21 tiri in porta/90",
-          "0 MVP ufficiali · 0% sulle titolarità",
-          "scenario squadra 45.4% vittoria · 1.66 gol attesi"
-        ],
-        "confidence": "alta",
-        "weights": {
-          "resultScenario": 0.3,
-          "individualProduction": 0.2,
-          "historicalRating": 0.15,
-          "officialMvpHistory": 0.15,
-          "tacticalFit": 0.1,
-          "opponentHistory": 0.05,
-          "dataReliability": 0.05
-        },
-        "components": {
-          "resultScenario": 45.4,
-          "individualProduction": 80,
-          "historicalRating": 38.2,
-          "officialMvpHistory": 15,
-          "tacticalFit": 81.5,
-          "opponentHistory": 20,
-          "dataReliability": 100
-        },
-        "mvpHistory": {
-          "season": "2025-26",
-          "provider": "Lega Serie A",
-          "award": "Panini Player of the Match",
-          "status": "official",
-          "awards": 0,
-          "recentAwards": 0,
-          "opponentAwards": 0,
-          "appearances": 10,
-          "starts": 1,
-          "minutes": 163,
-          "ratePerStartPct": 0,
-          "awardsPer1000Minutes": 0,
-          "sourceUrl": "https://www.legaseriea.it/serie-a/awards/player-of-the-match"
-        },
-        "selectionRule": "scenario-weighted",
-        "surpriseCandidate": null
-      },
       "scenarios": [
         {
           "id": "A",
@@ -58534,55 +57517,6 @@
           "possibleFirstBooked": false
         }
       ],
-      "mvpCandidate": {
-        "name": "Scamacca",
-        "teamId": "atalanta",
-        "role": "Attaccante",
-        "score": 66.6,
-        "evidence": [
-          "0.68 gol/90",
-          "0.07 assist/90",
-          "1.5 tiri in porta/90",
-          "3 MVP ufficiali · 18.8% sulle titolarità",
-          "scenario squadra 55.5% vittoria · 1.7 gol attesi"
-        ],
-        "confidence": "alta",
-        "weights": {
-          "resultScenario": 0.3,
-          "individualProduction": 0.2,
-          "historicalRating": 0.15,
-          "officialMvpHistory": 0.15,
-          "tacticalFit": 0.1,
-          "opponentHistory": 0.05,
-          "dataReliability": 0.05
-        },
-        "components": {
-          "resultScenario": 55.5,
-          "individualProduction": 81.9,
-          "historicalRating": 43.6,
-          "officialMvpHistory": 71.4,
-          "tacticalFit": 87.4,
-          "opponentHistory": 52,
-          "dataReliability": 100
-        },
-        "mvpHistory": {
-          "season": "2025-26",
-          "provider": "Lega Serie A",
-          "award": "Panini Player of the Match",
-          "status": "official",
-          "awards": 3,
-          "recentAwards": 0,
-          "opponentAwards": 1,
-          "appearances": 24,
-          "starts": 16,
-          "minutes": 1319,
-          "ratePerStartPct": 18.8,
-          "awardsPer1000Minutes": 2.27,
-          "sourceUrl": "https://www.legaseriea.it/serie-a/awards/player-of-the-match"
-        },
-        "selectionRule": "favorite-over-50-gap-15",
-        "surpriseCandidate": null
-      },
       "scenarios": [
         {
           "id": "A",
@@ -61687,55 +60621,6 @@
           "possibleFirstBooked": false
         }
       ],
-      "mvpCandidate": {
-        "name": "Paz",
-        "teamId": "como",
-        "role": "Attaccante",
-        "score": 61.6,
-        "evidence": [
-          "0.37 gol/90",
-          "0.19 assist/90",
-          "1.5 tiri in porta/90",
-          "3 MVP ufficiali · 9.1% sulle titolarità",
-          "scenario squadra 62.3% vittoria · 1.69 gol attesi"
-        ],
-        "confidence": "alta",
-        "weights": {
-          "resultScenario": 0.3,
-          "individualProduction": 0.2,
-          "historicalRating": 0.15,
-          "officialMvpHistory": 0.15,
-          "tacticalFit": 0.1,
-          "opponentHistory": 0.05,
-          "dataReliability": 0.05
-        },
-        "components": {
-          "resultScenario": 62.3,
-          "individualProduction": 63.6,
-          "historicalRating": 60.9,
-          "officialMvpHistory": 42.3,
-          "tacticalFit": 87.2,
-          "opponentHistory": 20,
-          "dataReliability": 100
-        },
-        "mvpHistory": {
-          "season": "2025-26",
-          "provider": "Lega Serie A",
-          "award": "Panini Player of the Match",
-          "status": "official",
-          "awards": 3,
-          "recentAwards": 0,
-          "opponentAwards": 0,
-          "appearances": 35,
-          "starts": 33,
-          "minutes": 2884,
-          "ratePerStartPct": 9.1,
-          "awardsPer1000Minutes": 1.04,
-          "sourceUrl": "https://www.legaseriea.it/serie-a/awards/player-of-the-match"
-        },
-        "selectionRule": "favorite-over-50-gap-15",
-        "surpriseCandidate": null
-      },
       "scenarios": [
         {
           "id": "A",
@@ -64963,55 +63848,6 @@
           "possibleFirstBooked": false
         }
       ],
-      "mvpCandidate": {
-        "name": "Farès Ghedjemis",
-        "teamId": "frosinone",
-        "role": "Attaccante",
-        "score": 55.1,
-        "evidence": [
-          "0.45 gol/90",
-          "0.09 assist/90",
-          "1.1 tiri in porta/90",
-          "storico MVP Serie A: N/D",
-          "scenario squadra 46.8% vittoria · 1.57 gol attesi"
-        ],
-        "confidence": "moderata",
-        "weights": {
-          "resultScenario": 0.3,
-          "individualProduction": 0.2,
-          "historicalRating": 0.15,
-          "officialMvpHistory": 0.15,
-          "tacticalFit": 0.1,
-          "opponentHistory": 0.05,
-          "dataReliability": 0.05
-        },
-        "components": {
-          "resultScenario": 46.8,
-          "individualProduction": 58.2,
-          "historicalRating": 50,
-          "officialMvpHistory": 50,
-          "tacticalFit": 84.5,
-          "opponentHistory": 50,
-          "dataReliability": 70
-        },
-        "mvpHistory": {
-          "season": "2025-26",
-          "provider": "Lega Serie A",
-          "award": "Panini Player of the Match",
-          "status": "N/D",
-          "awards": null,
-          "recentAwards": null,
-          "opponentAwards": null,
-          "appearances": 37,
-          "starts": 36,
-          "minutes": 3024,
-          "ratePerStartPct": null,
-          "awardsPer1000Minutes": null,
-          "sourceUrl": "https://www.legaseriea.it/serie-a/awards/player-of-the-match"
-        },
-        "selectionRule": "scenario-weighted",
-        "surpriseCandidate": null
-      },
       "scenarios": [
         {
           "id": "A",
@@ -68078,56 +66914,6 @@
           "possibleFirstBooked": false
         }
       ],
-      "mvpCandidate": {
-        "name": "Thuram",
-        "teamId": "inter",
-        "role": "Attaccante",
-        "score": 72.9,
-        "evidence": [
-          "0.61 gol/90",
-          "0.28 assist/90",
-          "1.37 tiri in porta/90",
-          "3 MVP ufficiali · 12.5% sulle titolarità",
-          "2 MVP nelle ultime 10 giornate",
-          "scenario squadra 67.1% vittoria · 2.44 gol attesi"
-        ],
-        "confidence": "alta",
-        "weights": {
-          "resultScenario": 0.3,
-          "individualProduction": 0.2,
-          "historicalRating": 0.15,
-          "officialMvpHistory": 0.15,
-          "tacticalFit": 0.1,
-          "opponentHistory": 0.05,
-          "dataReliability": 0.05
-        },
-        "components": {
-          "resultScenario": 67.1,
-          "individualProduction": 84.8,
-          "historicalRating": 66.4,
-          "officialMvpHistory": 69.2,
-          "tacticalFit": 95,
-          "opponentHistory": 20,
-          "dataReliability": 100
-        },
-        "mvpHistory": {
-          "season": "2025-26",
-          "provider": "Lega Serie A",
-          "award": "Panini Player of the Match",
-          "status": "official",
-          "awards": 3,
-          "recentAwards": 2,
-          "opponentAwards": 0,
-          "appearances": 29,
-          "starts": 24,
-          "minutes": 1912,
-          "ratePerStartPct": 12.5,
-          "awardsPer1000Minutes": 1.57,
-          "sourceUrl": "https://www.legaseriea.it/serie-a/awards/player-of-the-match"
-        },
-        "selectionRule": "favorite-over-50-gap-15",
-        "surpriseCandidate": null
-      },
       "scenarios": [
         {
           "id": "A",
@@ -71199,55 +69985,6 @@
           "possibleFirstBooked": false
         }
       ],
-      "mvpCandidate": {
-        "name": "Ramos",
-        "teamId": "milan",
-        "role": "Attaccante",
-        "score": 59.8,
-        "evidence": [
-          "0.52 gol/90",
-          "0.09 assist/90",
-          "1.9 tiri in porta/90",
-          "storico MVP Serie A: N/D",
-          "scenario squadra 49.8% vittoria · 1.56 gol attesi"
-        ],
-        "confidence": "moderata",
-        "weights": {
-          "resultScenario": 0.3,
-          "individualProduction": 0.2,
-          "historicalRating": 0.15,
-          "officialMvpHistory": 0.15,
-          "tacticalFit": 0.1,
-          "opponentHistory": 0.05,
-          "dataReliability": 0.05
-        },
-        "components": {
-          "resultScenario": 49.8,
-          "individualProduction": 77,
-          "historicalRating": 50,
-          "officialMvpHistory": 50,
-          "tacticalFit": 84.3,
-          "opponentHistory": 50,
-          "dataReliability": 70
-        },
-        "mvpHistory": {
-          "season": "2025-26",
-          "provider": "Lega Serie A",
-          "award": "Panini Player of the Match",
-          "status": "N/D",
-          "awards": null,
-          "recentAwards": null,
-          "opponentAwards": null,
-          "appearances": 25,
-          "starts": 10,
-          "minutes": 1044,
-          "ratePerStartPct": null,
-          "awardsPer1000Minutes": null,
-          "sourceUrl": "https://www.legaseriea.it/serie-a/awards/player-of-the-match"
-        },
-        "selectionRule": "scenario-weighted",
-        "surpriseCandidate": null
-      },
       "scenarios": [
         {
           "id": "A",
@@ -74340,55 +73077,6 @@
           "possibleFirstBooked": false
         }
       ],
-      "mvpCandidate": {
-        "name": "Varela",
-        "teamId": "monza",
-        "role": "Attaccante",
-        "score": 50.3,
-        "evidence": [
-          "0.36 gol/90",
-          "0.18 assist/90",
-          "1.36 tiri in porta/90",
-          "storico MVP Serie A: N/D",
-          "scenario squadra 32.9% vittoria · 1.11 gol attesi"
-        ],
-        "confidence": "moderata",
-        "weights": {
-          "resultScenario": 0.3,
-          "individualProduction": 0.2,
-          "historicalRating": 0.15,
-          "officialMvpHistory": 0.15,
-          "tacticalFit": 0.1,
-          "opponentHistory": 0.05,
-          "dataReliability": 0.05
-        },
-        "components": {
-          "resultScenario": 32.9,
-          "individualProduction": 60,
-          "historicalRating": 50,
-          "officialMvpHistory": 50,
-          "tacticalFit": 74.4,
-          "opponentHistory": 50,
-          "dataReliability": 70
-        },
-        "mvpHistory": {
-          "season": "2025-26",
-          "provider": "Lega Serie A",
-          "award": "Panini Player of the Match",
-          "status": "N/D",
-          "awards": null,
-          "recentAwards": null,
-          "opponentAwards": null,
-          "appearances": 32,
-          "starts": 15,
-          "minutes": 1521,
-          "ratePerStartPct": null,
-          "awardsPer1000Minutes": null,
-          "sourceUrl": "https://www.legaseriea.it/serie-a/awards/player-of-the-match"
-        },
-        "selectionRule": "scenario-weighted",
-        "surpriseCandidate": null
-      },
       "scenarios": [
         {
           "id": "A",
@@ -77569,56 +76257,6 @@
           "possibleFirstBooked": false
         }
       ],
-      "mvpCandidate": {
-        "name": "De Bruyne",
-        "teamId": "napoli",
-        "role": "Centrocampista",
-        "score": 59.7,
-        "evidence": [
-          "0.38 gol/90",
-          "0.15 assist/90",
-          "0.85 tiri in porta/90",
-          "1 MVP ufficiali · 7.7% sulle titolarità",
-          "1 MVP nelle ultime 10 giornate",
-          "scenario squadra 45.3% vittoria · 1.53 gol attesi"
-        ],
-        "confidence": "alta",
-        "weights": {
-          "resultScenario": 0.3,
-          "individualProduction": 0.2,
-          "historicalRating": 0.15,
-          "officialMvpHistory": 0.15,
-          "tacticalFit": 0.1,
-          "opponentHistory": 0.05,
-          "dataReliability": 0.05
-        },
-        "components": {
-          "resultScenario": 45.3,
-          "individualProduction": 51.5,
-          "historicalRating": 100,
-          "officialMvpHistory": 46.4,
-          "tacticalFit": 78.7,
-          "opponentHistory": 20,
-          "dataReliability": 100
-        },
-        "mvpHistory": {
-          "season": "2025-26",
-          "provider": "Lega Serie A",
-          "award": "Panini Player of the Match",
-          "status": "official",
-          "awards": 1,
-          "recentAwards": 1,
-          "opponentAwards": 0,
-          "appearances": 18,
-          "starts": 13,
-          "minutes": 1169,
-          "ratePerStartPct": 7.7,
-          "awardsPer1000Minutes": 0.86,
-          "sourceUrl": "https://www.legaseriea.it/serie-a/awards/player-of-the-match"
-        },
-        "selectionRule": "scenario-weighted",
-        "surpriseCandidate": null
-      },
       "scenarios": [
         {
           "id": "A",
@@ -80798,55 +79436,6 @@
           "possibleFirstBooked": false
         }
       ],
-      "mvpCandidate": {
-        "name": "Alajbegovic",
-        "teamId": "juventus",
-        "role": "Attaccante",
-        "score": 58.8,
-        "evidence": [
-          "0.42 gol/90",
-          "0.14 assist/90",
-          "1.6 tiri in porta/90",
-          "storico MVP Serie A: N/D",
-          "scenario squadra 52.6% vittoria · 1.69 gol attesi"
-        ],
-        "confidence": "moderata",
-        "weights": {
-          "resultScenario": 0.3,
-          "individualProduction": 0.2,
-          "historicalRating": 0.15,
-          "officialMvpHistory": 0.15,
-          "tacticalFit": 0.1,
-          "opponentHistory": 0.05,
-          "dataReliability": 0.05
-        },
-        "components": {
-          "resultScenario": 52.6,
-          "individualProduction": 66.7,
-          "historicalRating": 50,
-          "officialMvpHistory": 50,
-          "tacticalFit": 87.2,
-          "opponentHistory": 50,
-          "dataReliability": 70
-        },
-        "mvpHistory": {
-          "season": "2025-26",
-          "provider": "Lega Serie A",
-          "award": "Panini Player of the Match",
-          "status": "N/D",
-          "awards": null,
-          "recentAwards": null,
-          "opponentAwards": null,
-          "appearances": 28,
-          "starts": 22,
-          "minutes": 1912,
-          "ratePerStartPct": null,
-          "awardsPer1000Minutes": null,
-          "sourceUrl": "https://www.legaseriea.it/serie-a/awards/player-of-the-match"
-        },
-        "selectionRule": "favorite-over-50-gap-15",
-        "surpriseCandidate": null
-      },
       "scenarios": [
         {
           "id": "A",
@@ -83969,56 +82558,6 @@
           "possibleFirstBooked": false
         }
       ],
-      "mvpCandidate": {
-        "name": "Malen",
-        "teamId": "roma",
-        "role": "Attaccante",
-        "score": 80.5,
-        "evidence": [
-          "0.85 gol/90",
-          "0.12 assist/90",
-          "1.89 tiri in porta/90",
-          "4 MVP ufficiali · 22.2% sulle titolarità",
-          "3 MVP nelle ultime 10 giornate",
-          "scenario squadra 54.1% vittoria · 1.97 gol attesi"
-        ],
-        "confidence": "alta",
-        "weights": {
-          "resultScenario": 0.3,
-          "individualProduction": 0.2,
-          "historicalRating": 0.15,
-          "officialMvpHistory": 0.15,
-          "tacticalFit": 0.1,
-          "opponentHistory": 0.05,
-          "dataReliability": 0.05
-        },
-        "components": {
-          "resultScenario": 54.1,
-          "individualProduction": 100,
-          "historicalRating": 92.7,
-          "officialMvpHistory": 100,
-          "tacticalFit": 93.3,
-          "opponentHistory": 20,
-          "dataReliability": 100
-        },
-        "mvpHistory": {
-          "season": "2025-26",
-          "provider": "Lega Serie A",
-          "award": "Panini Player of the Match",
-          "status": "official",
-          "awards": 4,
-          "recentAwards": 3,
-          "opponentAwards": 0,
-          "appearances": 18,
-          "starts": 18,
-          "minutes": 1478,
-          "ratePerStartPct": 22.2,
-          "awardsPer1000Minutes": 2.71,
-          "sourceUrl": "https://www.legaseriea.it/serie-a/awards/player-of-the-match"
-        },
-        "selectionRule": "favorite-over-50-gap-15",
-        "surpriseCandidate": null
-      },
       "scenarios": [
         {
           "id": "A",
@@ -95600,75 +94139,6 @@
           "possibleFirstBooked": false
         }
       ],
-      "mvpCandidate": {
-        "name": "Bernardeschi",
-        "teamId": "bologna",
-        "role": "Attaccante",
-        "score": 49.7,
-        "evidence": [
-          "0.3 gol/90",
-          "0.15 assist/90",
-          "0.96 tiri in porta/90",
-          "1 MVP ufficiali · 8.3% sulle titolarità",
-          "scenario squadra 50.2% vittoria · 1.64 gol attesi"
-        ],
-        "confidence": "alta",
-        "weights": {
-          "resultScenario": 0.3,
-          "individualProduction": 0.2,
-          "historicalRating": 0.15,
-          "officialMvpHistory": 0.15,
-          "tacticalFit": 0.1,
-          "opponentHistory": 0.05,
-          "dataReliability": 0.05
-        },
-        "components": {
-          "resultScenario": 50.2,
-          "individualProduction": 47.1,
-          "historicalRating": 30.9,
-          "officialMvpHistory": 39.9,
-          "tacticalFit": 86.1,
-          "opponentHistory": 20,
-          "dataReliability": 100
-        },
-        "mvpHistory": {
-          "season": "2025-26",
-          "provider": "Lega Serie A",
-          "award": "Panini Player of the Match",
-          "status": "official",
-          "awards": 1,
-          "recentAwards": 0,
-          "opponentAwards": 0,
-          "appearances": 29,
-          "starts": 12,
-          "minutes": 1213,
-          "ratePerStartPct": 8.3,
-          "awardsPer1000Minutes": 0.82,
-          "sourceUrl": "https://www.legaseriea.it/serie-a/awards/player-of-the-match"
-        },
-        "selectionRule": "favorite-over-50-gap-15",
-        "surpriseCandidate": {
-          "name": "Daniel Bragança",
-          "teamId": "torino",
-          "role": "Centrocampista",
-          "score": 55.5,
-          "mvpHistory": {
-            "season": "2025-26",
-            "provider": "Lega Serie A",
-            "award": "Panini Player of the Match",
-            "status": "N/D",
-            "awards": null,
-            "recentAwards": null,
-            "opponentAwards": null,
-            "appearances": 14,
-            "starts": 5,
-            "minutes": 505,
-            "ratePerStartPct": null,
-            "awardsPer1000Minutes": null,
-            "sourceUrl": "https://www.legaseriea.it/serie-a/awards/player-of-the-match"
-          }
-        }
-      },
       "scenarios": [
         {
           "id": "A",
@@ -108545,56 +107015,6 @@
           "possibleFirstBooked": false
         }
       ],
-      "mvpCandidate": {
-        "name": "Kevin De Bruyne",
-        "teamId": "napoli",
-        "role": "Centrocampista",
-        "score": 60.7,
-        "evidence": [
-          "0.38 gol/90",
-          "0.15 assist/90",
-          "0.85 tiri in porta/90",
-          "1 MVP ufficiali · 7.7% sulle titolarità",
-          "1 MVP nelle ultime 10 giornate",
-          "scenario squadra 48.6% vittoria · 1.54 gol attesi"
-        ],
-        "confidence": "alta",
-        "weights": {
-          "resultScenario": 0.3,
-          "individualProduction": 0.2,
-          "historicalRating": 0.15,
-          "officialMvpHistory": 0.15,
-          "tacticalFit": 0.1,
-          "opponentHistory": 0.05,
-          "dataReliability": 0.05
-        },
-        "components": {
-          "resultScenario": 48.6,
-          "individualProduction": 51.5,
-          "historicalRating": 100,
-          "officialMvpHistory": 46.4,
-          "tacticalFit": 78.9,
-          "opponentHistory": 20,
-          "dataReliability": 100
-        },
-        "mvpHistory": {
-          "season": "2025-26",
-          "provider": "Lega Serie A",
-          "award": "Panini Player of the Match",
-          "status": "official",
-          "awards": 1,
-          "recentAwards": 1,
-          "opponentAwards": 0,
-          "appearances": 18,
-          "starts": 13,
-          "minutes": 1169,
-          "ratePerStartPct": 7.7,
-          "awardsPer1000Minutes": 0.86,
-          "sourceUrl": "https://www.legaseriea.it/serie-a/awards/player-of-the-match"
-        },
-        "selectionRule": "scenario-weighted",
-        "surpriseCandidate": null
-      },
       "scenarios": [
         {
           "id": "A",
@@ -118894,55 +117314,6 @@
           "possibleFirstBooked": false
         }
       ],
-      "mvpCandidate": {
-        "name": "Nico Paz",
-        "teamId": "como",
-        "role": "Attaccante",
-        "score": 57.4,
-        "evidence": [
-          "0.37 gol/90",
-          "0.19 assist/90",
-          "1.5 tiri in porta/90",
-          "3 MVP ufficiali · 9.1% sulle titolarità",
-          "scenario squadra 49.4% vittoria · 1.56 gol attesi"
-        ],
-        "confidence": "alta",
-        "weights": {
-          "resultScenario": 0.3,
-          "individualProduction": 0.2,
-          "historicalRating": 0.15,
-          "officialMvpHistory": 0.15,
-          "tacticalFit": 0.1,
-          "opponentHistory": 0.05,
-          "dataReliability": 0.05
-        },
-        "components": {
-          "resultScenario": 49.4,
-          "individualProduction": 63.6,
-          "historicalRating": 60.9,
-          "officialMvpHistory": 42.3,
-          "tacticalFit": 84.3,
-          "opponentHistory": 20,
-          "dataReliability": 100
-        },
-        "mvpHistory": {
-          "season": "2025-26",
-          "provider": "Lega Serie A",
-          "award": "Panini Player of the Match",
-          "status": "official",
-          "awards": 3,
-          "recentAwards": 0,
-          "opponentAwards": 0,
-          "appearances": 35,
-          "starts": 33,
-          "minutes": 2884,
-          "ratePerStartPct": 9.1,
-          "awardsPer1000Minutes": 1.04,
-          "sourceUrl": "https://www.legaseriea.it/serie-a/awards/player-of-the-match"
-        },
-        "selectionRule": "scenario-weighted",
-        "surpriseCandidate": null
-      },
       "scenarios": [
         {
           "id": "A",
@@ -130195,56 +128566,6 @@
           "possibleFirstBooked": false
         }
       ],
-      "mvpCandidate": {
-        "name": "Krstović",
-        "teamId": "atalanta",
-        "role": "Attaccante",
-        "score": 58.9,
-        "evidence": [
-          "0.5 gol/90",
-          "0.25 assist/90",
-          "1.71 tiri in porta/90",
-          "5 MVP ufficiali · 27.8% sulle titolarità",
-          "1 MVP nelle ultime 10 giornate",
-          "scenario squadra 26.7% vittoria · 1.16 gol attesi"
-        ],
-        "confidence": "alta",
-        "weights": {
-          "resultScenario": 0.3,
-          "individualProduction": 0.2,
-          "historicalRating": 0.15,
-          "officialMvpHistory": 0.15,
-          "tacticalFit": 0.1,
-          "opponentHistory": 0.05,
-          "dataReliability": 0.05
-        },
-        "components": {
-          "resultScenario": 26.7,
-          "individualProduction": 80.3,
-          "historicalRating": 41.8,
-          "officialMvpHistory": 100,
-          "tacticalFit": 75.5,
-          "opponentHistory": 20,
-          "dataReliability": 100
-        },
-        "mvpHistory": {
-          "season": "2025-26",
-          "provider": "Lega Serie A",
-          "award": "Panini Player of the Match",
-          "status": "official",
-          "awards": 5,
-          "recentAwards": 1,
-          "opponentAwards": 0,
-          "appearances": 33,
-          "starts": 18,
-          "minutes": 1786,
-          "ratePerStartPct": 27.8,
-          "awardsPer1000Minutes": 2.8,
-          "sourceUrl": "https://www.legaseriea.it/serie-a/awards/player-of-the-match"
-        },
-        "selectionRule": "scenario-weighted",
-        "surpriseCandidate": null
-      },
       "scenarios": [
         {
           "id": "A",
@@ -141378,55 +139699,6 @@
           "possibleFirstBooked": false
         }
       ],
-      "mvpCandidate": {
-        "name": "Ramos",
-        "teamId": "milan",
-        "role": "Attaccante",
-        "score": 64,
-        "evidence": [
-          "0.52 gol/90",
-          "0.09 assist/90",
-          "1.9 tiri in porta/90",
-          "storico MVP Serie A: N/D",
-          "scenario squadra 62% vittoria · 1.84 gol attesi"
-        ],
-        "confidence": "moderata",
-        "weights": {
-          "resultScenario": 0.3,
-          "individualProduction": 0.2,
-          "historicalRating": 0.15,
-          "officialMvpHistory": 0.15,
-          "tacticalFit": 0.1,
-          "opponentHistory": 0.05,
-          "dataReliability": 0.05
-        },
-        "components": {
-          "resultScenario": 62,
-          "individualProduction": 77,
-          "historicalRating": 50,
-          "officialMvpHistory": 50,
-          "tacticalFit": 90.5,
-          "opponentHistory": 50,
-          "dataReliability": 70
-        },
-        "mvpHistory": {
-          "season": "2025-26",
-          "provider": "Lega Serie A",
-          "award": "Panini Player of the Match",
-          "status": "N/D",
-          "awards": null,
-          "recentAwards": null,
-          "opponentAwards": null,
-          "appearances": 25,
-          "starts": 10,
-          "minutes": 1044,
-          "ratePerStartPct": null,
-          "awardsPer1000Minutes": null,
-          "sourceUrl": "https://www.legaseriea.it/serie-a/awards/player-of-the-match"
-        },
-        "selectionRule": "favorite-over-50-gap-15",
-        "surpriseCandidate": null
-      },
       "scenarios": [
         {
           "id": "A",
@@ -152297,55 +150569,6 @@
           "possibleFirstBooked": false
         }
       ],
-      "mvpCandidate": {
-        "name": "Berardi",
-        "teamId": "sassuolo",
-        "role": "Attaccante",
-        "score": 52.8,
-        "evidence": [
-          "0.36 gol/90",
-          "0.18 assist/90",
-          "0.94 tiri in porta/90",
-          "2 MVP ufficiali · 8.3% sulle titolarità",
-          "scenario squadra 44.8% vittoria · 1.58 gol attesi"
-        ],
-        "confidence": "alta",
-        "weights": {
-          "resultScenario": 0.3,
-          "individualProduction": 0.2,
-          "historicalRating": 0.15,
-          "officialMvpHistory": 0.15,
-          "tacticalFit": 0.1,
-          "opponentHistory": 0.05,
-          "dataReliability": 0.05
-        },
-        "components": {
-          "resultScenario": 44.8,
-          "individualProduction": 53,
-          "historicalRating": 55.5,
-          "officialMvpHistory": 39.9,
-          "tacticalFit": 84.8,
-          "opponentHistory": 20,
-          "dataReliability": 100
-        },
-        "mvpHistory": {
-          "season": "2025-26",
-          "provider": "Lega Serie A",
-          "award": "Panini Player of the Match",
-          "status": "official",
-          "awards": 2,
-          "recentAwards": 0,
-          "opponentAwards": 0,
-          "appearances": 26,
-          "starts": 24,
-          "minutes": 2016,
-          "ratePerStartPct": 8.3,
-          "awardsPer1000Minutes": 0.99,
-          "sourceUrl": "https://www.legaseriea.it/serie-a/awards/player-of-the-match"
-        },
-        "selectionRule": "scenario-weighted",
-        "surpriseCandidate": null
-      },
       "scenarios": [
         {
           "id": "A",
@@ -162742,55 +160965,6 @@
           "possibleFirstBooked": false
         }
       ],
-      "mvpCandidate": {
-        "name": "José David Romero",
-        "teamId": "parma",
-        "role": "Attaccante",
-        "score": 59.9,
-        "evidence": [
-          "0.96 gol/90",
-          "0.32 assist/90",
-          "2.25 tiri in porta/90",
-          "storico MVP Serie A: N/D",
-          "scenario squadra 38% vittoria · 1.15 gol attesi"
-        ],
-        "confidence": "moderata",
-        "weights": {
-          "resultScenario": 0.3,
-          "individualProduction": 0.2,
-          "historicalRating": 0.15,
-          "officialMvpHistory": 0.15,
-          "tacticalFit": 0.1,
-          "opponentHistory": 0.05,
-          "dataReliability": 0.05
-        },
-        "components": {
-          "resultScenario": 38,
-          "individualProduction": 100,
-          "historicalRating": 50,
-          "officialMvpHistory": 50,
-          "tacticalFit": 75.3,
-          "opponentHistory": 50,
-          "dataReliability": 70
-        },
-        "mvpHistory": {
-          "season": "2025-26",
-          "provider": "Lega Serie A",
-          "award": "Panini Player of the Match",
-          "status": "N/D",
-          "awards": null,
-          "recentAwards": null,
-          "opponentAwards": null,
-          "appearances": 7,
-          "starts": 3,
-          "minutes": 280,
-          "ratePerStartPct": null,
-          "awardsPer1000Minutes": null,
-          "sourceUrl": "https://www.legaseriea.it/serie-a/awards/player-of-the-match"
-        },
-        "selectionRule": "scenario-weighted",
-        "surpriseCandidate": null
-      },
       "scenarios": [
         {
           "id": "A",
@@ -175212,56 +173386,6 @@
           "possibleFirstBooked": false
         }
       ],
-      "mvpCandidate": {
-        "name": "Malen",
-        "teamId": "roma",
-        "role": "Attaccante",
-        "score": 75.1,
-        "evidence": [
-          "0.85 gol/90",
-          "0.12 assist/90",
-          "1.89 tiri in porta/90",
-          "4 MVP ufficiali · 22.2% sulle titolarità",
-          "3 MVP nelle ultime 10 giornate",
-          "scenario squadra 39.1% vittoria · 1.56 gol attesi"
-        ],
-        "confidence": "alta",
-        "weights": {
-          "resultScenario": 0.3,
-          "individualProduction": 0.2,
-          "historicalRating": 0.15,
-          "officialMvpHistory": 0.15,
-          "tacticalFit": 0.1,
-          "opponentHistory": 0.05,
-          "dataReliability": 0.05
-        },
-        "components": {
-          "resultScenario": 39.1,
-          "individualProduction": 100,
-          "historicalRating": 92.7,
-          "officialMvpHistory": 100,
-          "tacticalFit": 84.3,
-          "opponentHistory": 20,
-          "dataReliability": 100
-        },
-        "mvpHistory": {
-          "season": "2025-26",
-          "provider": "Lega Serie A",
-          "award": "Panini Player of the Match",
-          "status": "official",
-          "awards": 4,
-          "recentAwards": 3,
-          "opponentAwards": 0,
-          "appearances": 18,
-          "starts": 18,
-          "minutes": 1478,
-          "ratePerStartPct": 22.2,
-          "awardsPer1000Minutes": 2.71,
-          "sourceUrl": "https://www.legaseriea.it/serie-a/awards/player-of-the-match"
-        },
-        "selectionRule": "scenario-weighted",
-        "surpriseCandidate": null
-      },
       "scenarios": [
         {
           "id": "A",
@@ -187542,56 +185666,6 @@
           "possibleFirstBooked": false
         }
       ],
-      "mvpCandidate": {
-        "name": "Davis",
-        "teamId": "udinese",
-        "role": "Attaccante",
-        "score": 59.3,
-        "evidence": [
-          "0.43 gol/90",
-          "0.17 assist/90",
-          "1.08 tiri in porta/90",
-          "4 MVP ufficiali · 14.8% sulle titolarità",
-          "1 MVP nelle ultime 10 giornate",
-          "scenario squadra 48% vittoria · 1.48 gol attesi"
-        ],
-        "confidence": "alta",
-        "weights": {
-          "resultScenario": 0.3,
-          "individualProduction": 0.2,
-          "historicalRating": 0.15,
-          "officialMvpHistory": 0.15,
-          "tacticalFit": 0.1,
-          "opponentHistory": 0.05,
-          "dataReliability": 0.05
-        },
-        "components": {
-          "resultScenario": 48,
-          "individualProduction": 60.3,
-          "historicalRating": 56.4,
-          "officialMvpHistory": 67.7,
-          "tacticalFit": 82.6,
-          "opponentHistory": 20,
-          "dataReliability": 100
-        },
-        "mvpHistory": {
-          "season": "2025-26",
-          "provider": "Lega Serie A",
-          "award": "Panini Player of the Match",
-          "status": "official",
-          "awards": 4,
-          "recentAwards": 1,
-          "opponentAwards": 0,
-          "appearances": 30,
-          "starts": 27,
-          "minutes": 2079,
-          "ratePerStartPct": 14.8,
-          "awardsPer1000Minutes": 1.92,
-          "sourceUrl": "https://www.legaseriea.it/serie-a/awards/player-of-the-match"
-        },
-        "selectionRule": "scenario-weighted",
-        "surpriseCandidate": null
-      },
       "scenarios": [
         {
           "id": "A",
@@ -198785,56 +196859,6 @@
           "possibleFirstBooked": false
         }
       ],
-      "mvpCandidate": {
-        "name": "Noslin",
-        "teamId": "lazio",
-        "role": "Attaccante",
-        "score": 54.8,
-        "evidence": [
-          "0.31 gol/90",
-          "0.16 assist/90",
-          "1.02 tiri in porta/90",
-          "2 MVP ufficiali · 22.2% sulle titolarità",
-          "1 MVP nelle ultime 10 giornate",
-          "scenario squadra 43.5% vittoria · 1.37 gol attesi"
-        ],
-        "confidence": "alta",
-        "weights": {
-          "resultScenario": 0.3,
-          "individualProduction": 0.2,
-          "historicalRating": 0.15,
-          "officialMvpHistory": 0.15,
-          "tacticalFit": 0.1,
-          "opponentHistory": 0.05,
-          "dataReliability": 0.05
-        },
-        "components": {
-          "resultScenario": 43.5,
-          "individualProduction": 49.4,
-          "historicalRating": 29.1,
-          "officialMvpHistory": 89.9,
-          "tacticalFit": 80.1,
-          "opponentHistory": 20,
-          "dataReliability": 100
-        },
-        "mvpHistory": {
-          "season": "2025-26",
-          "provider": "Lega Serie A",
-          "award": "Panini Player of the Match",
-          "status": "official",
-          "awards": 2,
-          "recentAwards": 1,
-          "opponentAwards": 0,
-          "appearances": 29,
-          "starts": 9,
-          "minutes": 1147,
-          "ratePerStartPct": 22.2,
-          "awardsPer1000Minutes": 1.74,
-          "sourceUrl": "https://www.legaseriea.it/serie-a/awards/player-of-the-match"
-        },
-        "selectionRule": "scenario-weighted",
-        "surpriseCandidate": null
-      },
       "scenarios": [
         {
           "id": "A",
@@ -209862,55 +207886,6 @@
           "possibleFirstBooked": false
         }
       ],
-      "mvpCandidate": {
-        "name": "Gianluca Scamacca",
-        "teamId": "atalanta",
-        "role": "Attaccante",
-        "score": 67.4,
-        "evidence": [
-          "0.68 gol/90",
-          "0.07 assist/90",
-          "1.5 tiri in porta/90",
-          "3 MVP ufficiali · 18.8% sulle titolarità",
-          "scenario squadra 61.8% vittoria · 1.91 gol attesi"
-        ],
-        "confidence": "alta",
-        "weights": {
-          "resultScenario": 0.3,
-          "individualProduction": 0.2,
-          "historicalRating": 0.15,
-          "officialMvpHistory": 0.15,
-          "tacticalFit": 0.1,
-          "opponentHistory": 0.05,
-          "dataReliability": 0.05
-        },
-        "components": {
-          "resultScenario": 61.8,
-          "individualProduction": 81.9,
-          "historicalRating": 43.6,
-          "officialMvpHistory": 71.4,
-          "tacticalFit": 92,
-          "opponentHistory": 20,
-          "dataReliability": 100
-        },
-        "mvpHistory": {
-          "season": "2025-26",
-          "provider": "Lega Serie A",
-          "award": "Panini Player of the Match",
-          "status": "official",
-          "awards": 3,
-          "recentAwards": 0,
-          "opponentAwards": 0,
-          "appearances": 24,
-          "starts": 16,
-          "minutes": 1319,
-          "ratePerStartPct": 18.8,
-          "awardsPer1000Minutes": 2.27,
-          "sourceUrl": "https://www.legaseriea.it/serie-a/awards/player-of-the-match"
-        },
-        "selectionRule": "favorite-over-50-gap-15",
-        "surpriseCandidate": null
-      },
       "scenarios": [
         {
           "id": "A",
@@ -217745,55 +215720,6 @@
           "possibleFirstBooked": false
         }
       ],
-      "mvpCandidate": {
-        "name": "Kerim Alajbegović",
-        "teamId": "juventus",
-        "role": "Attaccante",
-        "score": 57.6,
-        "evidence": [
-          "0.42 gol/90",
-          "0.14 assist/90",
-          "1.6 tiri in porta/90",
-          "storico MVP Serie A: N/D",
-          "scenario squadra 49.8% vittoria · 1.51 gol attesi"
-        ],
-        "confidence": "moderata",
-        "weights": {
-          "resultScenario": 0.3,
-          "individualProduction": 0.2,
-          "historicalRating": 0.15,
-          "officialMvpHistory": 0.15,
-          "tacticalFit": 0.1,
-          "opponentHistory": 0.05,
-          "dataReliability": 0.05
-        },
-        "components": {
-          "resultScenario": 49.8,
-          "individualProduction": 66.7,
-          "historicalRating": 50,
-          "officialMvpHistory": 50,
-          "tacticalFit": 83.2,
-          "opponentHistory": 50,
-          "dataReliability": 70
-        },
-        "mvpHistory": {
-          "season": "2025-26",
-          "provider": "Lega Serie A",
-          "award": "Panini Player of the Match",
-          "status": "N/D",
-          "awards": null,
-          "recentAwards": null,
-          "opponentAwards": null,
-          "appearances": 28,
-          "starts": 22,
-          "minutes": 1912,
-          "ratePerStartPct": null,
-          "awardsPer1000Minutes": null,
-          "sourceUrl": "https://www.legaseriea.it/serie-a/awards/player-of-the-match"
-        },
-        "selectionRule": "scenario-weighted",
-        "surpriseCandidate": null
-      },
       "scenarios": [
         {
           "id": "A",
@@ -226508,56 +224434,6 @@
           "possibleFirstBooked": false
         }
       ],
-      "mvpCandidate": {
-        "name": "Donyell Malen",
-        "teamId": "roma",
-        "role": "Attaccante",
-        "score": 71.3,
-        "evidence": [
-          "0.85 gol/90",
-          "0.12 assist/90",
-          "1.89 tiri in porta/90",
-          "4 MVP ufficiali · 22.2% sulle titolarità",
-          "3 MVP nelle ultime 10 giornate",
-          "scenario squadra 29.1% vittoria · 1.21 gol attesi"
-        ],
-        "confidence": "alta",
-        "weights": {
-          "resultScenario": 0.3,
-          "individualProduction": 0.2,
-          "historicalRating": 0.15,
-          "officialMvpHistory": 0.15,
-          "tacticalFit": 0.1,
-          "opponentHistory": 0.05,
-          "dataReliability": 0.05
-        },
-        "components": {
-          "resultScenario": 29.1,
-          "individualProduction": 100,
-          "historicalRating": 92.7,
-          "officialMvpHistory": 100,
-          "tacticalFit": 76.6,
-          "opponentHistory": 20,
-          "dataReliability": 100
-        },
-        "mvpHistory": {
-          "season": "2025-26",
-          "provider": "Lega Serie A",
-          "award": "Panini Player of the Match",
-          "status": "official",
-          "awards": 4,
-          "recentAwards": 3,
-          "opponentAwards": 0,
-          "appearances": 18,
-          "starts": 18,
-          "minutes": 1478,
-          "ratePerStartPct": 22.2,
-          "awardsPer1000Minutes": 2.71,
-          "sourceUrl": "https://www.legaseriea.it/serie-a/awards/player-of-the-match"
-        },
-        "selectionRule": "scenario-weighted",
-        "surpriseCandidate": null
-      },
       "scenarios": [
         {
           "id": "A",
@@ -236408,55 +234284,6 @@
           "possibleFirstBooked": false
         }
       ],
-      "mvpCandidate": {
-        "name": "Beto",
-        "teamId": "fiorentina",
-        "role": "Attaccante",
-        "score": 52.3,
-        "evidence": [
-          "0.52 gol/90",
-          "0.06 assist/90",
-          "0.98 tiri in porta/90",
-          "storico MVP Serie A: N/D",
-          "scenario squadra 37.6% vittoria · 1.37 gol attesi"
-        ],
-        "confidence": "moderata",
-        "weights": {
-          "resultScenario": 0.3,
-          "individualProduction": 0.2,
-          "historicalRating": 0.15,
-          "officialMvpHistory": 0.15,
-          "tacticalFit": 0.1,
-          "opponentHistory": 0.05,
-          "dataReliability": 0.05
-        },
-        "components": {
-          "resultScenario": 37.6,
-          "individualProduction": 60.2,
-          "historicalRating": 50,
-          "officialMvpHistory": 50,
-          "tacticalFit": 80.1,
-          "opponentHistory": 50,
-          "dataReliability": 70
-        },
-        "mvpHistory": {
-          "season": "2025-26",
-          "provider": "Lega Serie A",
-          "award": "Panini Player of the Match",
-          "status": "N/D",
-          "awards": null,
-          "recentAwards": null,
-          "opponentAwards": null,
-          "appearances": 37,
-          "starts": 17,
-          "minutes": 1565,
-          "ratePerStartPct": null,
-          "awardsPer1000Minutes": null,
-          "sourceUrl": "https://www.legaseriea.it/serie-a/awards/player-of-the-match"
-        },
-        "selectionRule": "scenario-weighted",
-        "surpriseCandidate": null
-      },
       "scenarios": [
         {
           "id": "A",
@@ -245707,56 +243534,6 @@
           "possibleFirstBooked": false
         }
       ],
-      "mvpCandidate": {
-        "name": "Lautaro Martínez",
-        "teamId": "inter",
-        "role": "Attaccante",
-        "score": 81.1,
-        "evidence": [
-          "0.7 gol/90",
-          "0.25 assist/90",
-          "1.61 tiri in porta/90",
-          "8 MVP ufficiali · 29.6% sulle titolarità",
-          "1 MVP nelle ultime 10 giornate",
-          "scenario squadra 73.1% vittoria · 2.35 gol attesi"
-        ],
-        "confidence": "alta",
-        "weights": {
-          "resultScenario": 0.3,
-          "individualProduction": 0.2,
-          "historicalRating": 0.15,
-          "officialMvpHistory": 0.15,
-          "tacticalFit": 0.1,
-          "opponentHistory": 0.05,
-          "dataReliability": 0.05
-        },
-        "components": {
-          "resultScenario": 73.1,
-          "individualProduction": 94.3,
-          "historicalRating": 65.5,
-          "officialMvpHistory": 100,
-          "tacticalFit": 95,
-          "opponentHistory": 20,
-          "dataReliability": 100
-        },
-        "mvpHistory": {
-          "season": "2025-26",
-          "provider": "Lega Serie A",
-          "award": "Panini Player of the Match",
-          "status": "official",
-          "awards": 8,
-          "recentAwards": 1,
-          "opponentAwards": 0,
-          "appearances": 30,
-          "starts": 27,
-          "minutes": 2179,
-          "ratePerStartPct": 29.6,
-          "awardsPer1000Minutes": 3.67,
-          "sourceUrl": "https://www.legaseriea.it/serie-a/awards/player-of-the-match"
-        },
-        "selectionRule": "favorite-over-50-gap-15",
-        "surpriseCandidate": null
-      },
       "scenarios": [
         {
           "id": "A",
@@ -255232,56 +253009,6 @@
           "possibleFirstBooked": false
         }
       ],
-      "mvpCandidate": {
-        "name": "Tijjani Noslin",
-        "teamId": "lazio",
-        "role": "Attaccante",
-        "score": 58.8,
-        "evidence": [
-          "0.31 gol/90",
-          "0.16 assist/90",
-          "1.02 tiri in porta/90",
-          "2 MVP ufficiali · 22.2% sulle titolarità",
-          "1 MVP nelle ultime 10 giornate",
-          "scenario squadra 53.2% vittoria · 1.87 gol attesi"
-        ],
-        "confidence": "alta",
-        "weights": {
-          "resultScenario": 0.3,
-          "individualProduction": 0.2,
-          "historicalRating": 0.15,
-          "officialMvpHistory": 0.15,
-          "tacticalFit": 0.1,
-          "opponentHistory": 0.05,
-          "dataReliability": 0.05
-        },
-        "components": {
-          "resultScenario": 53.2,
-          "individualProduction": 49.4,
-          "historicalRating": 29.1,
-          "officialMvpHistory": 89.9,
-          "tacticalFit": 91.1,
-          "opponentHistory": 20,
-          "dataReliability": 100
-        },
-        "mvpHistory": {
-          "season": "2025-26",
-          "provider": "Lega Serie A",
-          "award": "Panini Player of the Match",
-          "status": "official",
-          "awards": 2,
-          "recentAwards": 1,
-          "opponentAwards": 0,
-          "appearances": 29,
-          "starts": 9,
-          "minutes": 1147,
-          "ratePerStartPct": 22.2,
-          "awardsPer1000Minutes": 1.74,
-          "sourceUrl": "https://www.legaseriea.it/serie-a/awards/player-of-the-match"
-        },
-        "selectionRule": "favorite-over-50-gap-15",
-        "surpriseCandidate": null
-      },
       "scenarios": [
         {
           "id": "A",
@@ -262725,55 +260452,6 @@
           "possibleFirstBooked": false
         }
       ],
-      "mvpCandidate": {
-        "name": "Emil Holm",
-        "teamId": "bologna",
-        "role": "Difensore",
-        "score": 51.3,
-        "evidence": [
-          "0.1 gol/90",
-          "0.4 assist/90",
-          "0.2 tiri in porta/90",
-          "0 MVP ufficiali · 0% sulle titolarità",
-          "scenario squadra 52.8% vittoria · 1.56 gol attesi"
-        ],
-        "confidence": "alta",
-        "weights": {
-          "resultScenario": 0.3,
-          "individualProduction": 0.2,
-          "historicalRating": 0.15,
-          "officialMvpHistory": 0.15,
-          "tacticalFit": 0.1,
-          "opponentHistory": 0.05,
-          "dataReliability": 0.05
-        },
-        "components": {
-          "resultScenario": 52.8,
-          "individualProduction": 31.2,
-          "historicalRating": 88.2,
-          "officialMvpHistory": 15,
-          "tacticalFit": 77.3,
-          "opponentHistory": 20,
-          "dataReliability": 100
-        },
-        "mvpHistory": {
-          "season": "2025-26",
-          "provider": "Lega Serie A",
-          "award": "Panini Player of the Match",
-          "status": "official",
-          "awards": 0,
-          "recentAwards": 0,
-          "opponentAwards": 0,
-          "appearances": 18,
-          "starts": 10,
-          "minutes": 891,
-          "ratePerStartPct": 0,
-          "awardsPer1000Minutes": 0,
-          "sourceUrl": "https://www.legaseriea.it/serie-a/awards/player-of-the-match"
-        },
-        "selectionRule": "favorite-over-50-gap-15",
-        "surpriseCandidate": null
-      },
       "scenarios": [
         {
           "id": "A",
@@ -271434,56 +269112,6 @@
           "possibleFirstBooked": false
         }
       ],
-      "mvpCandidate": {
-        "name": "Kevin De Bruyne",
-        "teamId": "napoli",
-        "role": "Centrocampista",
-        "score": 61.1,
-        "evidence": [
-          "0.38 gol/90",
-          "0.15 assist/90",
-          "0.85 tiri in porta/90",
-          "1 MVP ufficiali · 7.7% sulle titolarità",
-          "1 MVP nelle ultime 10 giornate",
-          "scenario squadra 49.4% vittoria · 1.59 gol attesi"
-        ],
-        "confidence": "alta",
-        "weights": {
-          "resultScenario": 0.3,
-          "individualProduction": 0.2,
-          "historicalRating": 0.15,
-          "officialMvpHistory": 0.15,
-          "tacticalFit": 0.1,
-          "opponentHistory": 0.05,
-          "dataReliability": 0.05
-        },
-        "components": {
-          "resultScenario": 49.4,
-          "individualProduction": 51.5,
-          "historicalRating": 100,
-          "officialMvpHistory": 46.4,
-          "tacticalFit": 80,
-          "opponentHistory": 20,
-          "dataReliability": 100
-        },
-        "mvpHistory": {
-          "season": "2025-26",
-          "provider": "Lega Serie A",
-          "award": "Panini Player of the Match",
-          "status": "official",
-          "awards": 1,
-          "recentAwards": 1,
-          "opponentAwards": 0,
-          "appearances": 18,
-          "starts": 13,
-          "minutes": 1169,
-          "ratePerStartPct": 7.7,
-          "awardsPer1000Minutes": 0.86,
-          "sourceUrl": "https://www.legaseriea.it/serie-a/awards/player-of-the-match"
-        },
-        "selectionRule": "scenario-weighted",
-        "surpriseCandidate": null
-      },
       "scenarios": [
         {
           "id": "A",
@@ -280155,55 +277783,6 @@
           "possibleFirstBooked": false
         }
       ],
-      "mvpCandidate": {
-        "name": "Gonçalo Ramos",
-        "teamId": "milan",
-        "role": "Attaccante",
-        "score": 61.2,
-        "evidence": [
-          "0.52 gol/90",
-          "0.09 assist/90",
-          "1.9 tiri in porta/90",
-          "storico MVP Serie A: N/D",
-          "scenario squadra 53.3% vittoria · 1.74 gol attesi"
-        ],
-        "confidence": "moderata",
-        "weights": {
-          "resultScenario": 0.3,
-          "individualProduction": 0.2,
-          "historicalRating": 0.15,
-          "officialMvpHistory": 0.15,
-          "tacticalFit": 0.1,
-          "opponentHistory": 0.05,
-          "dataReliability": 0.05
-        },
-        "components": {
-          "resultScenario": 53.3,
-          "individualProduction": 77,
-          "historicalRating": 50,
-          "officialMvpHistory": 50,
-          "tacticalFit": 88.3,
-          "opponentHistory": 50,
-          "dataReliability": 70
-        },
-        "mvpHistory": {
-          "season": "2025-26",
-          "provider": "Lega Serie A",
-          "award": "Panini Player of the Match",
-          "status": "N/D",
-          "awards": null,
-          "recentAwards": null,
-          "opponentAwards": null,
-          "appearances": 25,
-          "starts": 10,
-          "minutes": 1044,
-          "ratePerStartPct": null,
-          "awardsPer1000Minutes": null,
-          "sourceUrl": "https://www.legaseriea.it/serie-a/awards/player-of-the-match"
-        },
-        "selectionRule": "favorite-over-50-gap-15",
-        "surpriseCandidate": null
-      },
       "scenarios": [
         {
           "id": "A",
@@ -289948,56 +287527,6 @@
           "possibleFirstBooked": false
         }
       ],
-      "mvpCandidate": {
-        "name": "Keinan Davis",
-        "teamId": "udinese",
-        "role": "Attaccante",
-        "score": 58.9,
-        "evidence": [
-          "0.43 gol/90",
-          "0.17 assist/90",
-          "1.08 tiri in porta/90",
-          "4 MVP ufficiali · 14.8% sulle titolarità",
-          "1 MVP nelle ultime 10 giornate",
-          "scenario squadra 44.6% vittoria · 1.77 gol attesi"
-        ],
-        "confidence": "alta",
-        "weights": {
-          "resultScenario": 0.3,
-          "individualProduction": 0.2,
-          "historicalRating": 0.15,
-          "officialMvpHistory": 0.15,
-          "tacticalFit": 0.1,
-          "opponentHistory": 0.05,
-          "dataReliability": 0.05
-        },
-        "components": {
-          "resultScenario": 44.6,
-          "individualProduction": 60.3,
-          "historicalRating": 56.4,
-          "officialMvpHistory": 67.7,
-          "tacticalFit": 88.9,
-          "opponentHistory": 20,
-          "dataReliability": 100
-        },
-        "mvpHistory": {
-          "season": "2025-26",
-          "provider": "Lega Serie A",
-          "award": "Panini Player of the Match",
-          "status": "official",
-          "awards": 4,
-          "recentAwards": 1,
-          "opponentAwards": 0,
-          "appearances": 30,
-          "starts": 27,
-          "minutes": 2079,
-          "ratePerStartPct": 14.8,
-          "awardsPer1000Minutes": 1.92,
-          "sourceUrl": "https://www.legaseriea.it/serie-a/awards/player-of-the-match"
-        },
-        "selectionRule": "scenario-weighted",
-        "surpriseCandidate": null
-      },
       "scenarios": [
         {
           "id": "A",

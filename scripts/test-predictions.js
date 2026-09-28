@@ -7,7 +7,6 @@ const { opponentAbilityToExploit, teamProfilePlayerModifier, teamOffensiveAlloca
 const root = path.resolve(__dirname, "..");
 const dataset = JSON.parse(fs.readFileSync(path.join(root, "data/normalized/predictions.json"), "utf8"));
 const archivedMd1 = JSON.parse(fs.readFileSync(path.join(root, "data/sources/prediction-archive-md1-2026-27.json"), "utf8"));
-const mvpHistory = JSON.parse(fs.readFileSync(path.join(root, "data/sources/player-mvp-history-2025-26.json"), "utf8"));
 const myComboSource = JSON.parse(fs.readFileSync(path.join(root, "data/sources/mycombo-serie-a-2026-27-md-01.json"), "utf8"));
 const myComboMd2Path = path.join(root, "data/sources/mycombo-serie-a-2026-27-md-02.json");
 const myComboMd2Source = fs.existsSync(myComboMd2Path) ? JSON.parse(fs.readFileSync(myComboMd2Path, "utf8")) : { matches: {} };
@@ -69,9 +68,6 @@ assert(!Object.hasOwn(dataset.engine.weights, "market"), "Le quote non devono en
 assert(Math.abs(Object.values(dataset.engine.weights).reduce((total, value) => total + value, 0) - 1) < 1e-9, "I pesi non sommano a 1");
 assert(dataset.engine.weights.venueHistorical + dataset.engine.weights.overallHistorical + dataset.engine.weights.recentForm >= 0.8, "I dati storici devono guidare le lambda");
 assert(dataset.engine.weights.probableLineup > dataset.engine.weights.objectives, "Le formazioni devono pesare piu degli obiettivi");
-assert(Math.abs(Object.values(dataset.engine.mvpModel.weights).reduce((total, value) => total + value, 0) - 1) < 1e-9, "I pesi MVP non sommano a 1");
-assert(mvpHistory.coverage.awards >= 370 && mvpHistory.coverage.completionPct >= 97, "Copertura MVP ufficiali insufficiente");
-assert.strictEqual(dataset.engine.mvpModel.officialHistory.provider, "Lega Serie A", "Lo storico MVP deve usare la fonte ufficiale");
 assert.strictEqual(dataset.engine.scoreModel.type, "poisson", "Il modello punteggi selezionato deve essere Poisson");
 assert.strictEqual(dataset.engine.scoreModel.calibration, "none", "La calibrazione empirica monostagionale deve restare disattivata");
 assert.strictEqual(dataset.engine.decisionLayer.version, "1.0.0", "Versione del livello decisionale assente");
@@ -227,15 +223,7 @@ for (const prediction of dataset.predictions) {
     assert(prediction.likelyBooked.filter(candidate => !["atalanta", "bologna", "cagliari", "como", "fiorentina", "roma"].includes(candidate.teamId)).every(candidate => candidate.teamDisciplineFactor === 1), `${prediction.matchId}: i profili disciplina hanno contaminato altre squadre`);
     assert(prediction.likelyBooked.every(candidate => candidate.directOpponent || candidate.duelRisk === 1), `${prediction.matchId}: fallback duello incoerente`);
   }
-  assert(prediction.mvpCandidate?.name && prediction.mvpCandidate?.teamId, `${prediction.matchId}: candidato MVP assente`);
-  assert(prediction.mvpCandidate.score >= 0 && prediction.mvpCandidate.score <= 100, `${prediction.matchId}: indice MVP non valido`);
-  assert.deepStrictEqual(Object.keys(prediction.mvpCandidate.components), Object.keys(dataset.engine.mvpModel.weights), `${prediction.matchId}: componenti MVP incomplete`);
-  assert(["official", "N/D"].includes(prediction.mvpCandidate.mvpHistory.status), `${prediction.matchId}: storico MVP non dichiarato`);
-  if (prediction.mvpCandidate.mvpHistory.status === "official") assert(Number.isInteger(prediction.mvpCandidate.mvpHistory.awards), `${prediction.matchId}: premi MVP ufficiali non numerici`);
-  const homeWin = prediction.probabilities.final["1"] / 100;
-  const awayWin = prediction.probabilities.final["2"] / 100;
-  const favorite = homeWin >= awayWin ? { teamId: prediction.teamProjections[0].teamId, probability: homeWin, opponent: awayWin } : { teamId: prediction.teamProjections[1].teamId, probability: awayWin, opponent: homeWin };
-  if (favorite.probability >= 0.5 && favorite.probability - favorite.opponent >= 0.15) assert.strictEqual(prediction.mvpCandidate.teamId, favorite.teamId, `${prediction.matchId}: MVP incoerente con favorita netta`);
+  assert(!("mvpCandidate" in prediction), `${prediction.matchId}: il candidato MVP non deve essere generato`);
 }
 const atalantaVeneziaProfile = dataset.predictions.find(prediction => prediction.matchId === "atalanta-venezia-2026-27-md-06");
 assert(atalantaVeneziaProfile?.shooters.allPlayers.some(candidate => candidate.teamId === "venezia" && candidate.teamProfileMatchupFactor > 1), "Atalanta: profilo posizionale non collegato agli avversari");
@@ -417,9 +405,6 @@ const lecceRoma = dataset.predictions.find(prediction => prediction.matchId === 
 assert(milanVenezia.combinations.every(combo => !combo.legs.some(leg => leg.selection === "12")), "Milan-Venezia: il 12 non deve sostituire il più probabile 1X");
 assert(milanVenezia.combinations.every(combo => !combo.legs.some(leg => leg.selection?.startsWith("UNDER") && /U\/O 1\.5 (?:TEAM|SQUADRA) 1/i.test(leg.variant || ""))), "Milan-Venezia: evitare Under 1,5 casa contro la neopromossa");
 const torinoMilan = dataset.predictions.find(prediction => prediction.matchId === "torino-milan-2026-27-md-01");
-assert.strictEqual(torinoMilan.mvpCandidate.teamId, "milan", "Torino-Milan: il candidato MVP principale deve seguire il Milan favorito");
-assert.strictEqual(torinoMilan.mvpCandidate.mvpHistory.sourceUrl, dataset.sources.find(source => source.label.includes("Player of the Match"))?.url, "Torino-Milan: disponibilità dello storico MVP non esposta");
-if (torinoMilan.mvpCandidate.mvpHistory.status === "N/D") assert.strictEqual(torinoMilan.mvpCandidate.mvpHistory.awards, null, "Torino-Milan: premi MVP non disponibili inventati");
 assert.strictEqual(torinoMilan.teamProjections[0].venue, "home", "Torino-Milan: Torino non usa il campione casa");
 assert.strictEqual(torinoMilan.teamProjections[1].venue, "away", "Torino-Milan: Milan non usa il campione trasferta");
 assert.strictEqual(torinoMilan.teamProjections[0].shotsTotal.inputs[0].source, "home-for", "Torino-Milan: produzione Torino casa non collegata");

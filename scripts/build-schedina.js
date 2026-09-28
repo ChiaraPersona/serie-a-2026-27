@@ -21,9 +21,13 @@ const roundMatches = matches.filter(match => match.competition === "serie-a" && 
 if (roundMatches.length === 10 && roundMatches.every(match => match.status === "finished" && match.score)) {
   if (matchday === 1 && fs.existsSync(archivePath)) {
     const archive = JSON.parse(fs.readFileSync(archivePath, "utf8"));
-    fs.writeFileSync(outputPath, `${JSON.stringify(archive, null, 2)}\n`);
+    const serialized = JSON.stringify(archive, null, 2).replaceAll("MVP previsto", "Titolare previsto");
+    fs.writeFileSync(outputPath, `${serialized}\n`);
   } else if (!fs.existsSync(outputPath)) {
     throw new Error(`Schedina MD${matchdayCode} conclusa ma archivio normalizzato assente.`);
+  } else {
+    const serialized = fs.readFileSync(outputPath, "utf8").replaceAll("MVP previsto", "Titolare previsto");
+    fs.writeFileSync(outputPath, serialized);
   }
   console.log(`Schedina MD${matchdayCode} congelata: giornata conclusa, nessun ricalcolo retroattivo.`);
   process.exit(0);
@@ -327,11 +331,10 @@ function pickAnalysis(pick, market, prediction, selection) {
     const probability = 1 - Math.exp(-lambda);
     const coherent = pick.selection === "SI" && teamIndex >= 0 && context?.teamPosition === teamIndex && score[teamIndex] > 0
       && Number.isFinite(per90) && Number.isFinite(minutes) && minutes >= 700 && Number.isFinite(probability);
-    const isModelMvp = prediction.mvpCandidate?.name === pick.player;
     return {
       coherent,
       modelProbabilityPct: coherent ? round(probability * 100, 2) : null,
-      evidenceLabel: `${isModelMvp ? "MVP previsto" : "Titolare previsto"} · ${String(round(per90, 2)).replace(".", ",")} gol/90 · λ ${String(round(lambda, 2)).replace(".", ",")}`
+      evidenceLabel: `Titolare previsto · ${String(round(per90, 2)).replace(".", ",")} gol/90 · λ ${String(round(lambda, 2)).replace(".", ",")}`
     };
   }
   if (/TIRI.*GIOCATORE/.test(market.marketName)) {

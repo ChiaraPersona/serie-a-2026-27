@@ -329,7 +329,6 @@ const fixtures = pilotFixtures.map(fixture => {
     teamProjections,
     matchProjection,
     likelyBooked: [],
-    mvpCandidate: null,
     combinations: [],
     decisionSupport: { status: "unavailable", scenarios: [], correlationGraph: null },
     cards: matchCards ? { ...matchCards, lines: overLines(matchCards, [3.5, 4.5, 5.5]), refereeAdjustment: null, refereeStatus: "N/D · designazione non integrata", disciplinaryMotivationAdjustment: fixtureMotivation ? { home: fixtureMotivation.home.motivation.modelAdjustments.disciplinaryMotivationAdjustment, away: fixtureMotivation.away.motivation.modelAdjustments.disciplinaryMotivationAdjustment, applied: false } : null } : { central: null, sd: null, lines: [], refereeAdjustment: null, refereeStatus: "N/D · profili squadra non integrati", disciplinaryMotivationAdjustment: null },

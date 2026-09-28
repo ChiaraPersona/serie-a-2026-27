@@ -179,7 +179,7 @@ assert.ok(teamInterface.includes('official ? "Formazione ufficiale" : "Probabile
 assert.ok(readingLineupSource.includes('officialLineups?"Formazioni ufficiali":referenceLineups?"Formazioni di riferimento":"Probabili formazioni"'), "La Lettura non distingue formazioni ufficiali, di riferimento e probabili");
 assert.ok(readingLineupSource.includes('"Distinte ufficiali della giornata "+match.matchday'), "La Lettura non associa le distinte ufficiali alla giornata corretta");
 assert.ok(mainApp.includes('<details class="reading-completed-matchday">') && mainApp.includes("Tabellini delle partite precedenti"), "I tabellini conclusi non usano il menu a tendina dedicato alle partite precedenti");
-assert.ok(mainApp.includes("Storico MVP 2025/26") && mainApp.includes("prediction-mvp-history"), "Lo storico MVP individuale non è esposto nelle Letture");
+assert.ok(!mainApp.includes("Candidato MVP") && !mainApp.includes("prediction-mvp"), "Il candidato MVP non deve essere esposto nelle Letture");
 assert.ok(mainApp.includes("reading-official-mvp") && mainApp.includes("Panini Player of the Match") && mainApp.includes("match.mvp"), "L'MVP ufficiale della partita conclusa non è esposto nelle Letture");
 assert.ok(mainApp.includes("La partita in numeri") && mainApp.includes("prediction-v2-team-grid") && mainApp.includes("p20–p80"), "I volumi V2 casa/trasferta non sono esposti nelle Letture");
 assert.ok(!mainApp.includes("giornata di riferimento") && !teamInterface.includes("Data da definire · riferimento"), "Le date non definite non devono mostrare una data di riferimento");
