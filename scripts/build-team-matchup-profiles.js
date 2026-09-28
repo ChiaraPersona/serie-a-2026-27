@@ -2,6 +2,7 @@
 
 const fs = require("fs");
 const path = require("path");
+const zlib = require("zlib");
 
 const root = path.resolve(__dirname, "..");
 const read = relative => JSON.parse(fs.readFileSync(path.join(root, relative), "utf8"));
@@ -9,7 +10,10 @@ const source = read("data/sources/team-matchup-profiles-2026-27.json");
 const matches = read("data/normalized/matches.json");
 const volumeProfiles = new Map(read("data/normalized/team-volume-profiles-2025-26.json").profiles.map(profile => [profile.teamId, profile]));
 const styleProfiles = new Map(read("data/normalized/team-style-profiles.json").profiles.map(profile => [profile.teamId, profile]));
-const historicalMatches = read("data/normalized/referee-matches/2025-26/serie-a.json").matches;
+const historicalMatchesByCompetition = new Map([
+  ["serie-a", read("data/normalized/referee-matches/2025-26/serie-a.json").matches],
+  ["serie-b", read("data/normalized/referee-matches/2025-26/serie-b.json").matches]
+]);
 const teamIndex = read("data/teams/index.json").teams;
 const teams = new Map(teamIndex.map(team => [team.id, read(`data/teams/${team.id}.json`)]));
 const players = new Map(teamIndex.flatMap(team => (teams.get(team.id).squad || []).map(player => [player.id, player])));
@@ -47,6 +51,43 @@ const shrink = (historicalMean, currentRobustMean, sampleSize, priorEquivalentMa
 const confidenceWeight = confidence => ({ high: 1, "medium-high": 0.9, medium: 0.75, "medium-low": 0.55, low: 0.3, "very-low": 0.15 }[confidence] || 0);
 const volatilityLevel = stats => stats.mean && stats.standardDeviation / stats.mean >= 0.35 ? "high" : stats.mean && stats.standardDeviation / stats.mean >= 0.22 ? "medium" : "low";
 const sumAvailable = values => values.length ? values.reduce((total, value) => total + value, 0) : null;
+const statNumber = value => {
+  const parsed = Number(String(value ?? "").replace(",", "."));
+  return Number.isFinite(parsed) ? parsed : null;
+};
+
+function crossCompetitionVolumeProfile(config) {
+  const context = config.crossCompetitionHistoricalBaseline;
+  if (!context?.enabled) return null;
+  const competition = context.competitionId;
+  const competitionMatches = historicalMatchesByCompetition.get(competition) || [];
+  const selected = competitionMatches.filter(match => match.homeTeam.slug === config.teamId || match.awayTeam.slug === config.teamId);
+  if (!selected.length) return null;
+  const metricMap = { totalShots: "totalShots", shotsOnTarget: "shotsOnTarget", wonCorners: "wonCorners" };
+  const emptyVenue = () => Object.fromEntries(Object.keys(metricMap).map(metric => [metric, { for: [], against: [] }]));
+  const venues = { overall: emptyVenue(), home: emptyVenue(), away: emptyVenue() };
+  const possession = [];
+  for (const match of selected) {
+    const side = match.homeTeam.slug === config.teamId ? "home" : "away";
+    const opponentSide = side === "home" ? "away" : "home";
+    const rawPath = path.join(root, context.rawDirectory, `${match.providerFixtureId}.json.gz`);
+    if (!fs.existsSync(rawPath)) throw new Error(`${config.teamId}: referto storico ${competition} mancante ${match.providerFixtureId}`);
+    const raw = JSON.parse(zlib.gunzipSync(fs.readFileSync(rawPath)).toString("utf8"));
+    const boxscore = raw.bundle?.summary?.boxscore?.teams || [];
+    const stats = homeAway => Object.fromEntries((boxscore.find(team => team.homeAway === homeAway)?.statistics || []).map(stat => [stat.name, statNumber(stat.displayValue)]));
+    const own = stats(side), opponent = stats(opponentSide);
+    for (const [metric, providerMetric] of Object.entries(metricMap)) {
+      if (!Number.isFinite(own[providerMetric]) || !Number.isFinite(opponent[providerMetric])) throw new Error(`${config.teamId}: volume storico ${metric} incompleto in ${match.id}`);
+      venues.overall[metric].for.push(own[providerMetric]);
+      venues.overall[metric].against.push(opponent[providerMetric]);
+      venues[side][metric].for.push(own[providerMetric]);
+      venues[side][metric].against.push(opponent[providerMetric]);
+    }
+    if (Number.isFinite(own.possessionPct)) possession.push(own.possessionPct);
+  }
+  const summarizedVenues = Object.fromEntries(Object.entries(venues).map(([venue, metrics]) => [venue, Object.fromEntries(Object.entries(metrics).map(([metric, sides]) => [metric, { for: summary(sides.for), against: summary(sides.against) }]))]));
+  return { teamId: config.teamId, season: context.season, competition, matches: selected.length, venues: summarizedVenues, possessionPct: round(mean(possession)), sourceType: "cross-competition-observed-team-stats" };
+}
 const leagueXgShotRows = matches.filter(match => match.competition === "serie-a" && match.season === source.season && match.status === "finished").flatMap(match => [match.teamStats?.home, match.teamStats?.away]).filter(row => Number.isFinite(row?.expectedGoals) && row.shots > 0);
 const leagueXgTotal = leagueXgShotRows.reduce((total, row) => total + row.expectedGoals, 0);
 const leagueShotTotal = leagueXgShotRows.reduce((total, row) => total + row.shots, 0);
@@ -301,8 +342,8 @@ function roleShotDistribution(rows, playerField = "opponentPlayers") {
   };
 }
 
-function historicalDiscipline(teamId) {
-  const rows = historicalMatches.filter(match => match.homeTeam.slug === teamId || match.awayTeam.slug === teamId);
+function historicalDiscipline(teamId, competition = "serie-a") {
+  const rows = (historicalMatchesByCompetition.get(competition) || []).filter(match => match.homeTeam.slug === teamId || match.awayTeam.slug === teamId);
   const own = rows.map(match => match.homeTeam.slug === teamId ? match.teamStats.home : match.teamStats.away);
   const opponents = rows.map(match => match.homeTeam.slug === teamId ? match.teamStats.away : match.teamStats.home);
   return { matches: rows.length, foulsCommittedPerGame: round(mean(own.map(row => row.fouls))), foulsWonPerGame: round(mean(opponents.map(row => row.fouls))), yellowCardsPerGame: round(mean(own.map(row => row.yellowCards))) };
@@ -310,7 +351,7 @@ function historicalDiscipline(teamId) {
 
 function buildProfile(config) {
   const teamId = config.teamId;
-  const historicalVolume = volumeProfiles.get(teamId);
+  const historicalVolume = volumeProfiles.get(teamId) || crossCompetitionVolumeProfile(config);
   const historicalStyle = styleProfiles.get(teamId);
   const team = teams.get(teamId);
   if (!historicalVolume || !historicalStyle || !team) throw new Error(`${teamId}: baseline storica o squadra mancante`);
@@ -328,6 +369,7 @@ function buildProfile(config) {
   const robustShots = robustUpperMean(shotsAllowedValues), robustSot = robustUpperMean(sotAllowedValues);
   const historicalShotsAllowed = historicalVolume.venues.overall.totalShots.against.mean;
   const historicalSotAllowed = historicalVolume.venues.overall.shotsOnTarget.against.mean;
+  const historicalPossessionPct = Number.isFinite(historicalStyle.summary.possessionPct) ? historicalStyle.summary.possessionPct : historicalVolume.possessionPct;
   const shrunkShots = shrink(historicalShotsAllowed, robustShots.value, rows.length);
   const shrunkSot = shrink(historicalSotAllowed, robustSot.value, rows.length);
   const shotsPersistence = signalPersistence(shotsAllowedValues, historicalShotsAllowed);
@@ -390,7 +432,7 @@ function buildProfile(config) {
     priorEquivalentMatches: source.methodology.tacticalPriorEquivalentMatchesAfterCoachChange,
     shotsAllowedPerGame: shrink(historicalShotsAllowed, activeEra.shotsAllowedPerGame, activeEra.matches, source.methodology.tacticalPriorEquivalentMatchesAfterCoachChange),
     shotsOnTargetAllowedPerGame: shrink(historicalSotAllowed, activeEra.shotsOnTargetAllowedPerGame, activeEra.matches, source.methodology.tacticalPriorEquivalentMatchesAfterCoachChange),
-    possessionPct: shrink(historicalStyle.summary.possessionPct, activeEra.possessionPct, activeEra.matches, source.methodology.tacticalPriorEquivalentMatchesAfterCoachChange),
+    possessionPct: shrink(historicalPossessionPct, activeEra.possessionPct, activeEra.matches, source.methodology.tacticalPriorEquivalentMatchesAfterCoachChange),
     modelStatus: "diagnostic-prior-not-a-new-baseline"
   } : null;
   const current = {
@@ -452,12 +494,13 @@ function buildProfile(config) {
     secondaryShooterShare: expandedDistribution?.secondaryShooterBreadth.secondaryShooterShare ?? null,
     modelEffect: "allocation-shape-only-no-independent-volume-multiplier"
   };
-  const possessionShrinkage = shrink(historicalStyle.summary.possessionPct, current.possessionPct, rows.length);
+  const possessionShrinkage = shrink(historicalPossessionPct, current.possessionPct, rows.length);
   const defensiveShare = 1 - possessionShrinkage.value / 100;
   const defensiveLeagueRelative = defensiveShare / 0.5 - 1;
   const defensiveExposurePolicy = config.defensiveExposurePolicy || { enabled: false, maxImpactPct: 0, confidence: "low" };
   const defensiveExposureFactor = defensiveExposurePolicy.enabled ? Math.max(0.97, Math.min(1.03, 1 + defensiveLeagueRelative * defensiveExposurePolicy.maxImpactPct / 100 * confidenceWeight(defensiveExposurePolicy.confidence) * maturity)) : 1;
-  const historicalDisciplineValues = historicalDiscipline(teamId);
+  const historicalCompetition = config.crossCompetitionHistoricalBaseline?.enabled ? config.crossCompetitionHistoricalBaseline.competitionId : "serie-a";
+  const historicalDisciplineValues = historicalDiscipline(teamId, historicalCompetition);
   const currentDiscipline = { matches: rows.length, foulsCommitted: sumAvailable(values("own.fouls")), foulsCommittedPerGame: round(mean(values("own.fouls"))), foulsWon: sumAvailable(values("opponent.fouls")), foulsWonPerGame: round(mean(values("opponent.fouls"))), yellowCards: sumAvailable(values("own.yellowCards")), yellowCardsPerGame: round(mean(values("own.yellowCards"))), straightRedCards: sumAvailable(values("own.straightRedCards")) };
   currentDiscipline.foulsCommittedDistribution = summary(values("own.fouls"));
   currentDiscipline.foulsWonDistribution = summary(values("opponent.fouls"));
@@ -514,7 +557,8 @@ function buildProfile(config) {
       shotsForPerGame: historicalVolume.venues.overall.totalShots.for.mean, shotsAllowedPerGame: historicalShotsAllowed,
       shotsOnTargetForPerGame: historicalVolume.venues.overall.shotsOnTarget.for.mean, shotsOnTargetAllowedPerGame: historicalSotAllowed,
       cornersForPerGame: historicalVolume.venues.overall.wonCorners.for.mean, cornersAllowedPerGame: historicalVolume.venues.overall.wonCorners.against.mean,
-      possessionPct: historicalStyle.summary.possessionPct, passAccuracyPct: historicalStyle.summary.passSuccessPct, goalsPerGame: historicalStyle.derived.goalsPerGame,
+      possessionPct: historicalPossessionPct, passAccuracyPct: historicalStyle.summary.passSuccessPct, goalsPerGame: historicalStyle.derived.goalsPerGame,
+      ...(config.crossCompetitionHistoricalBaseline?.enabled ? { crossCompetitionHistoricalBaseline: { ...config.crossCompetitionHistoricalBaseline, sourceType: historicalVolume.sourceType, directComparability: false, modelUse: "existing-shrinkage-and-confidence-only" } } : {}),
       homeAwayShotDefense: {
         home: { shotsAllowedPerGame: historicalVolume.venues.home.totalShots.against.mean, shotsOnTargetAllowedPerGame: historicalVolume.venues.home.shotsOnTarget.against.mean },
         away: { shotsAllowedPerGame: historicalVolume.venues.away.totalShots.against.mean, shotsOnTargetAllowedPerGame: historicalVolume.venues.away.shotsOnTarget.against.mean },
@@ -588,7 +632,7 @@ function buildProfile(config) {
       modelStatus: "available-for-card-context-with-shrinkage",
       historicalCurrentAgreement: { score: disciplineAgreementScore, level: disciplineAgreement, sampleSize: rows.length, method: "one-minus-mean-relative-difference-across-fouls-committed-fouls-won-yellow-cards" },
       metricSignals: disciplineMetricSignals,
-      expectedDefensiveExposure: { value: round(defensiveShare), expectedPossessionPct: possessionShrinkage.value, leagueRelative: round(defensiveLeagueRelative), factor: round(defensiveExposureFactor, 4), confidence: defensiveExposurePolicy.confidence, sampleSize: rows.length, sourceType: "derived-possession-proxy", evidence: [`possesso storico ${round(historicalStyle.summary.possessionPct)}%`, `possesso current ${current.possessionPct}%`, `possesso shrinkato ${possessionShrinkage.value}%`], modelStatus: defensiveExposurePolicy.enabled ? "small-card-model-context-factor" : "inactive", doubleCountControl: "Il fattore viene attenuato ulteriormente dalla copertura current del giocatore nel card model." },
+      expectedDefensiveExposure: { value: round(defensiveShare), expectedPossessionPct: possessionShrinkage.value, leagueRelative: round(defensiveLeagueRelative), factor: round(defensiveExposureFactor, 4), confidence: defensiveExposurePolicy.confidence, sampleSize: rows.length, sourceType: "derived-possession-proxy", evidence: [`possesso storico ${round(historicalPossessionPct)}%`, `possesso current ${current.possessionPct}%`, `possesso shrinkato ${possessionShrinkage.value}%`], modelStatus: defensiveExposurePolicy.enabled ? "small-card-model-context-factor" : "inactive", doubleCountControl: "Il fattore viene attenuato ulteriormente dalla copertura current del giocatore nel card model." },
       foulIntensity: duelSignal ? { ...duelSignal, evidenceWeight: round(duelEvidenceWeight), directDuelEnvironmentFactor, application: "only-when-an-individual-direct-opponent-is-identified" } : { level: "unclassified", status: "inactive", confidence: "low", directDuelEnvironmentFactor: 1 }
     },
     corners: {

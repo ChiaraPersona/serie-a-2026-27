@@ -328,6 +328,525 @@
       ]
     },
     {
+      "teamId": "frosinone",
+      "crossCompetitionHistoricalBaseline": {
+        "enabled": true,
+        "season": "2025-26",
+        "competitionId": "serie-b",
+        "competitionName": "Serie B",
+        "rawDirectory": "data/raw/team-pages/espn/2025-26/serie-b",
+        "comparability": "limited-cross-competition",
+        "allowedUses": ["individual baselines", "player continuity", "role structure", "shooter distribution", "existing shrinkage prior"],
+        "restrictedUses": ["direct Serie A team-strength equivalence", "automatic role vulnerability activation", "new multiplier calibration"]
+      },
+      "currentTacticalContext": {
+        "coach": "Massimiliano Alvini",
+        "preferredFormation": "4-2-3-1",
+        "status": "verified-current",
+        "historicalPriorNote": "Il 2025/26 appartiene alla Serie B: volume, possesso e vulnerabilita sono un prior cross-competition a comparabilita limitata. Le baseline individuali e la continuita dei ruoli sono piu informative dei livelli squadra grezzi."
+      },
+      "currentSeasonRegimes": [
+        { "id": "alvini", "coach": "Massimiliano Alvini", "matchIds": ["frosinone-juventus-2026-27-md-01", "fiorentina-frosinone-2026-27-md-02", "frosinone-venezia-2026-27-md-03", "genoa-frosinone-2026-27-md-04", "frosinone-como-2026-27-md-05"], "status": "active", "tacticalConfidence": "medium", "formation": "4-2-3-1" }
+      ],
+      "shotLocationEvidence": [],
+      "offensiveSignals": {
+        "teamShotVolume": { "level": "elevated-current-serie-a", "status": "active", "confidence": "medium" },
+        "teamSotVolume": { "level": "elevated-current-serie-a", "status": "active", "confidence": "medium" },
+        "possessionIndependentShotCreation": { "level": "elevated-candidate", "status": "watch", "confidence": "medium-low", "modelEffect": "none-until-explicit-activation" },
+        "primaryShooterConcentration": { "level": "low", "status": "active", "confidence": "medium" },
+        "secondaryShooterBreadth": { "level": "high", "status": "active", "confidence": "medium" },
+        "defenderShotParticipation": { "level": "elevated", "status": "active", "confidence": "medium" },
+        "shotAccuracyVolatility": { "level": "high", "status": "active", "confidence": "medium", "modelEffect": "confidence-only" },
+        "volumeExpansionBreadth": { "level": "high-candidate", "status": "watch", "confidence": "medium-low", "modelEffect": "none-until-explicit-activation" },
+        "cornerProduction": { "level": "normal-to-elevated", "status": "active", "confidence": "medium-low" }
+      },
+      "offensiveAllocationPolicy": {
+        "enabled": true,
+        "method": "baseline-first-residual-role-player-allocation",
+        "playerWeight": 0.65,
+        "roleWeight": 0.35,
+        "setPieceWeight": 0,
+        "expansionBreadthWeight": 0,
+        "factorClamp": [0.85, 1.15],
+        "teamShotMaxAdjustmentPct": 6,
+        "teamSotMaxAdjustmentPct": 6,
+        "cornerMaxAdjustmentPct": 4,
+        "note": "Il target squadra resta separato per tiri, SOT e corner. L'extra-volume viene allocato da baseline individuali e ruolo; il segnale di espansione resta WATCH e non riceve peso."
+      },
+      "positionalShotVulnerability": {
+        "CF": { "level": "broad-access-not-role-specific", "confidence": "medium-low", "maxBoostPct": 0, "maxSotBoostPct": 0, "minimumBaselineShots90": 1.5, "minimumBaselineSot90": 0.35, "status": "watch" },
+        "W": { "level": "broad-access-not-role-specific", "confidence": "medium-low", "maxBoostPct": 0, "maxSotBoostPct": 0, "minimumBaselineShots90": 1, "minimumBaselineSot90": 0.25, "status": "watch" },
+        "AM": { "level": "broad-access-not-role-specific", "confidence": "medium-low", "maxBoostPct": 0, "maxSotBoostPct": 0, "minimumBaselineShots90": 1, "minimumBaselineSot90": 0.25, "status": "watch" },
+        "CM": { "level": "broad-access-not-role-specific", "confidence": "medium-low", "maxBoostPct": 0, "maxSotBoostPct": 0, "minimumBaselineShots90": 1, "minimumBaselineSot90": 0.25, "status": "watch" },
+        "DM": { "level": "unconfirmed", "confidence": "low", "maxBoostPct": 0, "maxSotBoostPct": 0, "minimumBaselineShots90": 0.8, "minimumBaselineSot90": 0.2, "status": "inactive" },
+        "FB": { "level": "broad-access-not-role-specific", "confidence": "medium-low", "maxBoostPct": 0, "maxSotBoostPct": 0, "minimumBaselineShots90": 0.7, "minimumBaselineSot90": 0.15, "status": "watch" },
+        "CB": { "level": "possible-no-shot-origin", "confidence": "low", "maxBoostPct": 0, "maxSotBoostPct": 0, "minimumBaselineShots90": 0.8, "minimumBaselineSot90": 0.15, "status": "watch" }
+      },
+      "vulnerabilitySignals": {
+        "totalShotVulnerability": { "level": "very-high-current", "status": "active", "confidence": "medium" },
+        "sotVulnerability": { "level": "normal", "status": "inactive", "confidence": "medium-low" },
+        "boxPenetration": { "level": "unknown", "status": "inactive", "confidence": "low", "sourceType": "unavailable" },
+        "defensiveShotDistributionBreadth": { "level": "high-candidate", "status": "watch", "confidence": "medium-low" },
+        "defensiveSotDistributionBreadth": { "level": "high-candidate", "status": "watch", "confidence": "medium-low" },
+        "centralForwardShotAccess": { "level": "normal-to-elevated", "status": "watch", "confidence": "medium-low", "evidenceMatches": 4 },
+        "secondLineShotAccess": { "level": "elevated-candidate", "status": "watch", "confidence": "medium-low", "evidenceMatches": 5 },
+        "fullbackWingbackShotAccess": { "level": "possible", "status": "watch", "confidence": "low", "evidenceMatches": 3 },
+        "centerBackShotAccess": { "level": "elevated-candidate-no-shot-origin", "status": "watch", "confidence": "medium-low", "evidenceMatches": 5 },
+        "territorialPressureSensitivity": { "level": "possible", "status": "watch", "confidence": "medium-low", "evidenceMatches": 5 }
+      },
+      "interactionPolicy": {
+        "enabled": true,
+        "method": "evidence-weighted-marginal-shot-sot-correction",
+        "teamShotMaxAdjustmentPct": 6,
+        "teamSotMaxAdjustmentPct": 3,
+        "playerGlobalClamp": [0.82, 1.18],
+        "note": "La magnitudine tiri ACTIVE usa un solo budget evidence-weighted. Il segnale SOT robusto e NORMAL e resta neutro; tutte le vulnerabilita di ruolo restano WATCH o INACTIVE."
+      },
+      "defensiveExposurePolicy": { "enabled": true, "maxImpactPct": 6, "confidence": "medium" },
+      "gameStateVolumeInflation": { "status": "watch", "confidence": "low" },
+      "disciplineSignal": { "foulIntensity": { "level": "elevated-current", "status": "active", "confidence": "medium", "directDuelMaxImpactPct": 0 } },
+      "overallConfidence": "medium",
+      "confidenceReason": "Cinque gare Serie A con continuita tattica e segnali current forti; il prior squadra 2025/26 appartiene pero alla Serie B e limita la comparabilita diretta.",
+      "evidence": [
+        "Cinque referti StatMuse 2026/27: 84 tiri, 28 SOT e 7.54 xG prodotti; 104 tiri, 26 SOT e 10.34 xGA concessi.",
+        "I tiri concessi 20-25-15-17-27 restano elevati in tutte le gare; winsorization p80 riduce soltanto 27 a 25.4 e porta la media robusta a 20.48.",
+        "I SOT concessi 5-4-4-5-8 hanno media 5.2 ma media robusta 4.72, sostanzialmente uguale al prior Serie B 4.711: nessun boost SOT centrale.",
+        "Le cinque formazioni current sono 4-2-3-1 con Massimiliano Alvini; il campione resta immaturo al 50% della soglia metodologica.",
+        "Il prior 2025/26 e ricostruito dai 38 referti ESPN Serie B e documentato come crossCompetitionHistoricalBaseline; non e trattato come popolazione Serie A equivalente.",
+        "Il confronto minuti-per-baseline mostra uplift diffuso per AM, CM, CB e FB, non un solo ruolo dominante; copertura, selezione dei giocatori e cinque gare impongono stato WATCH senza boost posizionali.",
+        "Shot origin e shot location non sono disponibili; il confronto role-uplift resta esplorativo e nessuna vulnerabilita di ruolo o piazzato viene attivata."
+      ]
+    },
+    {
+      "teamId": "genoa",
+      "currentTacticalContext": {
+        "coach": "Daniele De Rossi",
+        "preferredFormation": "3-4-2-1",
+        "status": "verified-current",
+        "historicalPriorNote": "Il 3-5-2 2025/26 resta un prior strutturale. Il regime De Rossi 2026/27 mantiene la difesa a tre ma alterna 3-4-2-1, 3-4-1-2 e 3-5-2; i livelli current restano un campione di cinque gare ad alta dipendenza dall'avversario."
+      },
+      "currentSeasonRegimes": [
+        { "id": "de-rossi", "coach": "Daniele De Rossi", "matchIds": ["genoa-napoli-2026-27-md-01", "lazio-genoa-2026-27-md-02", "genoa-como-2026-27-md-03", "genoa-frosinone-2026-27-md-04", "parma-genoa-2026-27-md-05"], "status": "active", "tacticalConfidence": "medium", "formation": "three-at-the-back-variable" }
+      ],
+      "shotLocationEvidence": [],
+      "offensiveSignals": {
+        "teamShotVolume": { "level": "normal", "status": "active", "confidence": "medium-high" },
+        "teamSotVolume": { "level": "low-current", "status": "active", "confidence": "medium" },
+        "offensiveShotQuality": { "level": "low-current-outlier-dependent", "status": "watch", "confidence": "medium-low", "modelEffect": "quality-context-only" },
+        "possessionIndependentShotCreation": { "level": "not-proven", "status": "watch", "confidence": "low", "modelEffect": "none" },
+        "primaryShooterConcentration": { "level": "medium", "status": "active", "confidence": "medium" },
+        "secondaryShooterBreadth": { "level": "high", "status": "active", "confidence": "medium" },
+        "shotAccuracyVolatility": { "level": "high", "status": "active", "confidence": "medium", "modelEffect": "confidence-only" },
+        "volumeExpansionBreadth": { "level": "possible", "status": "watch", "confidence": "low", "modelEffect": "none-until-explicit-activation" },
+        "cbSetPieceShotParticipation": { "level": "possible-proxy", "status": "watch", "confidence": "medium-low", "modelEffect": "none" },
+        "cornerProduction": { "level": "normal-to-elevated", "status": "active", "confidence": "medium-low" }
+      },
+      "offensiveAllocationPolicy": {
+        "enabled": true,
+        "method": "baseline-first-residual-role-player-allocation",
+        "playerWeight": 0.65,
+        "roleWeight": 0.35,
+        "setPieceWeight": 0,
+        "expansionBreadthWeight": 0,
+        "factorClamp": [0.88, 1.12],
+        "teamShotMaxAdjustmentPct": 4,
+        "teamSotMaxAdjustmentPct": 5,
+        "cornerMaxAdjustmentPct": 4,
+        "note": "Il volume squadra resta ancorato alle baseline separate per tiri, SOT e corner. La breadth descrive la distribuzione e non crea volume; piazzati ed espansione restano WATCH con peso zero."
+      },
+      "positionalShotVulnerability": {
+        "CF": { "level": "not-proven", "confidence": "low", "maxBoostPct": 0, "maxSotBoostPct": 0, "minimumBaselineShots90": 1.5, "minimumBaselineSot90": 0.35, "status": "watch" },
+        "W": { "level": "possible", "confidence": "low", "maxBoostPct": 0, "maxSotBoostPct": 0, "minimumBaselineShots90": 1, "minimumBaselineSot90": 0.25, "status": "watch" },
+        "AM": { "level": "possible", "confidence": "medium-low", "maxBoostPct": 0, "maxSotBoostPct": 0, "minimumBaselineShots90": 1, "minimumBaselineSot90": 0.25, "status": "watch" },
+        "CM": { "level": "possible", "confidence": "medium-low", "maxBoostPct": 0, "maxSotBoostPct": 0, "minimumBaselineShots90": 1, "minimumBaselineSot90": 0.25, "status": "watch" },
+        "DM": { "level": "possible", "confidence": "low", "maxBoostPct": 0, "maxSotBoostPct": 0, "minimumBaselineShots90": 0.8, "minimumBaselineSot90": 0.2, "status": "watch" },
+        "FB": { "level": "possible", "confidence": "medium-low", "maxBoostPct": 0, "maxSotBoostPct": 0, "minimumBaselineShots90": 0.7, "minimumBaselineSot90": 0.15, "status": "watch" },
+        "CB": { "level": "possible-no-shot-origin", "confidence": "medium-low", "maxBoostPct": 0, "maxSotBoostPct": 0, "minimumBaselineShots90": 0.6, "minimumBaselineSot90": 0.15, "status": "watch" }
+      },
+      "vulnerabilitySignals": {
+        "totalShotVulnerability": { "level": "elevated-volatile", "status": "watch", "confidence": "medium-low" },
+        "sotVulnerability": { "level": "volatile-not-proven", "status": "watch", "confidence": "medium-low" },
+        "boxPenetration": { "level": "unknown", "status": "inactive", "confidence": "low", "sourceType": "unavailable" },
+        "defensiveShotDistributionBreadth": { "level": "high-candidate", "status": "watch", "confidence": "medium-low" },
+        "defensiveSotDistributionBreadth": { "level": "high-candidate", "status": "watch", "confidence": "medium-low" },
+        "centralForwardShotAccess": { "level": "not-proven", "status": "watch", "confidence": "low", "evidenceMatches": 5 },
+        "secondLineShotAccess": { "level": "possible", "status": "watch", "confidence": "medium-low", "evidenceMatches": 5 },
+        "widePlayerShotAccess": { "level": "possible", "status": "watch", "confidence": "medium-low", "evidenceMatches": 5 },
+        "centerBackShotAccess": { "level": "possible-no-shot-origin", "status": "watch", "confidence": "low", "evidenceMatches": 5 },
+        "highQualityChanceVulnerability": { "level": "not-proven", "status": "watch", "confidence": "medium-low", "evidenceMatches": 5 }
+      },
+      "interactionPolicy": {
+        "enabled": true,
+        "method": "watch-gated-evidence-weighted-marginal-shot-sot-correction",
+        "teamShotMaxAdjustmentPct": 3,
+        "teamSotMaxAdjustmentPct": 3,
+        "playerGlobalClamp": [0.82, 1.18],
+        "note": "Le medie current sono diagnostiche: total shots e SOT restano WATCH, quindi il gate di stato impone effetto centrale zero. Tiri e SOT sono valutati indipendentemente e nessun ruolo riceve boost."
+      },
+      "defensiveExposurePolicy": { "enabled": true, "maxImpactPct": 6, "confidence": "medium-low" },
+      "gameStateVolumeInflation": { "status": "watch", "confidence": "low" },
+      "disciplineSignal": { "foulIntensity": { "level": "normal", "status": "active", "confidence": "medium", "directDuelMaxImpactPct": 0 } },
+      "overallConfidence": "medium-low",
+      "confidenceReason": "Cinque gare con continuita di allenatore ma alta dispersione, estremi opposti e forte dipendenza dal contesto avversario; lo storico Serie A resta il prior principale.",
+      "evidence": [
+        "Cinque referti StatMuse 2026/27: 59 tiri, 15 SOT e 4.36 xG prodotti; 79 tiri, 23 SOT e 6.41 xGA concessi.",
+        "La sequenza tiri concessi 13-15-20-26-5 ha media 15.8 ma range 21, CV elevato e persistenza bassa rispetto al prior: il segnale resta WATCH senza effetto centrale.",
+        "I 9 SOT concessi al Como sono un singolo estremo: la mediana e 4, la media robusta 4.12 e lo shrinkage torna vicino al prior storico, quindi nessuna vulnerabilita SOT strutturale viene attivata.",
+        "La miglior gara offensiva, 17 tiri e 1.89 xG contro Frosinone, coincide con un avversario gia caratterizzato da forte accesso al tiro; opponent dependence resta diagnostica.",
+        "Messias e Baldanzi hanno baseline, minuti e tier tiri/SOT distinti; il volume tiri di Baldanzi non viene trasferito ai SOT e il rate current di Messias viene shrinkato dal campione minuti.",
+        "Origine dei tiri e zone di tiro non sono disponibili: Østigard, Vasquez e gli accessi per ruolo restano proxy WATCH, non prove di piazzato o moltiplicatori."
+      ]
+    },
+    {
+      "teamId": "inter",
+      "currentTacticalContext": {
+        "coach": "Cristian Chivu",
+        "preferredFormation": "3-5-2",
+        "status": "verified-current",
+        "historicalPriorNote": "Il 3-5-2 e l'ambiente offensivo dominante del 2025/26 restano un prior forte. Il regime Chivu 2026/27 mantiene la difesa a tre e la struttura a due punte, con variante 3-1-4-2 contro Roma."
+      },
+      "currentSeasonRegimes": [
+        { "id": "chivu", "coach": "Cristian Chivu", "matchIds": ["inter-monza-2026-27-md-01", "cagliari-inter-2026-27-md-02", "inter-napoli-2026-27-md-03", "inter-udinese-2026-27-md-04", "roma-inter-2026-27-md-05"], "status": "active", "tacticalConfidence": "medium-high", "formation": "3-5-2" }
+      ],
+      "shotLocationEvidence": [],
+      "offensiveSignals": {
+        "teamShotVolume": { "level": "very-high-current", "status": "active", "confidence": "medium-high" },
+        "teamSotVolume": { "level": "very-high-current", "status": "active", "confidence": "medium-high" },
+        "offensiveShotQuality": { "level": "very-high-current", "status": "active", "confidence": "medium-high", "modelEffect": "quality-context-only" },
+        "possessionIndependentShotCreation": { "level": "not-proven", "status": "watch", "confidence": "low", "modelEffect": "none" },
+        "primaryShooterConcentration": { "level": "medium", "status": "active", "confidence": "medium-high" },
+        "secondaryShooterBreadth": { "level": "very-high", "status": "active", "confidence": "medium-high" },
+        "midfieldShotParticipation": { "level": "high", "status": "active", "confidence": "medium-high" },
+        "wingbackShotParticipation": { "level": "elevated", "status": "active", "confidence": "medium" },
+        "defenderShotParticipation": { "level": "elevated", "status": "active", "confidence": "medium" },
+        "sotDistributionBreadth": { "level": "high", "status": "active", "confidence": "medium", "modelEffect": "sot-allocation-evidence" },
+        "shotAccuracyVolatility": { "level": "medium", "status": "active", "confidence": "medium", "modelEffect": "confidence-only" },
+        "volumeExpansionBreadth": { "level": "high", "status": "active", "confidence": "medium", "modelEffect": "allocation-shape-only" },
+        "cbSetPieceShotParticipation": { "level": "possible-proxy", "status": "watch", "confidence": "medium-low", "modelEffect": "none" },
+        "cornerProduction": { "level": "high-volatile", "status": "active", "confidence": "medium" }
+      },
+      "offensiveAllocationPolicy": {
+        "enabled": true,
+        "method": "baseline-first-adaptive-expansion-and-primary-absence-redistribution",
+        "playerWeight": 0.65,
+        "roleWeight": 0.2,
+        "setPieceWeight": 0,
+        "expansionBreadthWeight": 0.2,
+        "factorClamp": [0.82, 1.18],
+        "teamShotMaxAdjustmentPct": 8,
+        "teamSotMaxAdjustmentPct": 8,
+        "cornerMaxAdjustmentPct": 6,
+        "note": "Il team environment e determinato prima della formazione disponibile. L'assenza di un primary modifica l'allocazione e la riconciliazione, non sottrae automaticamente la sua baseline dal target squadra; piazzati senza origine tiro restano a peso zero."
+      },
+      "positionalShotVulnerability": {
+        "CF": { "level": "not-proven", "confidence": "low", "maxBoostPct": 0, "maxSotBoostPct": 0, "minimumBaselineShots90": 1.5, "minimumBaselineSot90": 0.35, "status": "watch" },
+        "W": { "level": "possible", "confidence": "low", "maxBoostPct": 0, "maxSotBoostPct": 0, "minimumBaselineShots90": 1, "minimumBaselineSot90": 0.25, "status": "watch" },
+        "AM": { "level": "possible", "confidence": "medium-low", "maxBoostPct": 0, "maxSotBoostPct": 0, "minimumBaselineShots90": 1, "minimumBaselineSot90": 0.25, "status": "watch" },
+        "CM": { "level": "possible", "confidence": "medium-low", "maxBoostPct": 0, "maxSotBoostPct": 0, "minimumBaselineShots90": 1, "minimumBaselineSot90": 0.25, "status": "watch" },
+        "DM": { "level": "not-proven", "confidence": "low", "maxBoostPct": 0, "maxSotBoostPct": 0, "minimumBaselineShots90": 0.8, "minimumBaselineSot90": 0.2, "status": "watch" },
+        "FB": { "level": "not-proven", "confidence": "low", "maxBoostPct": 0, "maxSotBoostPct": 0, "minimumBaselineShots90": 0.7, "minimumBaselineSot90": 0.15, "status": "watch" },
+        "CB": { "level": "not-proven", "confidence": "low", "maxBoostPct": 0, "maxSotBoostPct": 0, "minimumBaselineShots90": 0.6, "minimumBaselineSot90": 0.15, "status": "watch" }
+      },
+      "vulnerabilitySignals": {
+        "totalShotVulnerability": { "level": "suppressed-historical-current-mixed", "status": "active", "confidence": "medium" },
+        "sotVulnerability": { "level": "volatile-not-proven", "status": "watch", "confidence": "medium-low" },
+        "generalShotSuppression": { "level": "strong-historical-current-mixed", "status": "active", "confidence": "medium", "evidenceMatches": 5 },
+        "generalSotSuppression": { "level": "not-proven-current", "status": "inactive", "confidence": "medium-low", "evidenceMatches": 5 },
+        "boxPenetration": { "level": "unknown", "status": "inactive", "confidence": "low", "sourceType": "unavailable" },
+        "centralForwardShotAccess": { "level": "not-proven", "status": "watch", "confidence": "low", "evidenceMatches": 5 },
+        "wingerAttackingMidfielderShotAccess": { "level": "possible", "status": "watch", "confidence": "medium-low", "evidenceMatches": 5 },
+        "secondLineShotAccess": { "level": "possible", "status": "watch", "confidence": "medium-low", "evidenceMatches": 5 },
+        "fullbackWingbackShotAccess": { "level": "not-proven", "status": "watch", "confidence": "low", "evidenceMatches": 5 },
+        "centerBackShotAccess": { "level": "not-proven", "status": "watch", "confidence": "low", "evidenceMatches": 5 },
+        "highQualityChanceVulnerability": { "level": "not-proven", "status": "watch", "confidence": "medium-low", "evidenceMatches": 5 }
+      },
+      "interactionPolicy": {
+        "enabled": true,
+        "direction": "suppression",
+        "method": "historical-supported-shot-suppression-with-neutral-sot-channel",
+        "teamShotMaxAdjustmentPct": 6,
+        "teamSotMaxAdjustmentPct": 0,
+        "playerGlobalClamp": [0.82, 1.18],
+        "note": "La suppression tiri usa il prior da 38 gare, la mediana current e un budget evidence-weighted. Il current SOT e troppo volatile e peggiore del prior: il canale SOT resta neutro con budget zero."
+      },
+      "defensiveExposurePolicy": { "enabled": true, "maxImpactPct": 6, "confidence": "medium-high" },
+      "gameStateVolumeInflation": { "status": "watch", "confidence": "low" },
+      "disciplineSignal": { "foulIntensity": { "level": "low-current", "status": "active", "confidence": "medium", "directDuelMaxImpactPct": 0 } },
+      "overallConfidence": "medium-high",
+      "confidenceReason": "Il campione current e di cinque gare, ma volume offensivo, SOT e struttura di allocazione concordano con un prior storico forte. La difesa tiri mantiene supporto storico ma mostra dipendenza dalla forza avversaria; i SOT concessi non sono stabili.",
+      "evidence": [
+        "Cinque referti StatMuse 2026/27: 116 tiri, 37 SOT, 14.58 xG e 31 corner prodotti; 57 tiri, 19 SOT e 6.63 xGA concessi.",
+        "Il floor offensivo resta 13 tiri e 5 SOT; la winsorization p80 lascia un volume robusto molto alto e lo shrinkage conserva il prior da 38 gare.",
+        "Inter-Udinese produce 27 tiri senza Lautaro: il team environment sopravvive all'assenza del primary e il volume viene redistribuito fra attaccanti, centrocampisti, wingback e difensori.",
+        "Lautaro e un primary individuale, ma top3 e secondary breadth mostrano che il team non dipende da un unico tiratore.",
+        "La difesa concede 7-10-16-6-18 tiri: il prior storico sostiene suppression, mentre il current mostra avversario-dipendenza e impedisce una classificazione assoluta.",
+        "I SOT concessi 3-0-7-5-4 sono molto volatili e superiori al prior robusto: nessuna suppression SOT centrale viene applicata.",
+        "Origine dei tiri e shot location non sono disponibili: il contributo di Akanji, Bisseck e Bastoni resta un proxy individuale, non setPieceConfirmed."
+      ]
+    },
+    {
+      "teamId": "juventus",
+      "currentTacticalContext": {
+        "coach": "Luciano Spalletti",
+        "preferredFormation": "4-2-3-1",
+        "status": "verified-current",
+        "historicalPriorNote": "Il 3-4-2-1 prevalente 2025/26 resta un prior storico. Il regime Spalletti 2026/27 usa soprattutto il 4-2-3-1, con varianti 4-4-2 e 3-4-2-1 nel campione corrente."
+      },
+      "currentSeasonRegimes": [
+        { "id": "spalletti", "coach": "Luciano Spalletti", "matchIds": ["frosinone-juventus-2026-27-md-01", "juventus-parma-2026-27-md-02", "juventus-milan-2026-27-md-03", "sassuolo-juventus-2026-27-md-04", "juventus-atalanta-2026-27-md-05"], "status": "active", "tacticalConfidence": "medium-high", "formation": "4-2-3-1" }
+      ],
+      "shotLocationEvidence": [],
+      "offensiveSignals": {
+        "teamShotVolume": { "level": "high-stable-current", "status": "active", "confidence": "high" },
+        "teamSotVolume": { "level": "high-stable-current", "status": "active", "confidence": "high" },
+        "offensiveShotQuality": { "level": "below-league-current", "status": "active", "confidence": "medium-high", "modelEffect": "quality-context-only" },
+        "possessionIndependentShotCreation": { "level": "not-proven", "status": "watch", "confidence": "low", "modelEffect": "none" },
+        "primaryShooterConcentration": { "level": "low", "status": "active", "confidence": "medium-high" },
+        "secondaryShooterBreadth": { "level": "very-high", "status": "active", "confidence": "medium-high" },
+        "midfieldShotParticipation": { "level": "high", "status": "active", "confidence": "medium-high" },
+        "wingerAttackingMidfielderShotParticipation": { "level": "high", "status": "active", "confidence": "medium-high" },
+        "defenderShotParticipation": { "level": "possible", "status": "watch", "confidence": "medium-low", "modelEffect": "none" },
+        "sotDistributionBreadth": { "level": "high", "status": "active", "confidence": "medium", "modelEffect": "sot-allocation-evidence" },
+        "shotAccuracyVolatility": { "level": "medium", "status": "active", "confidence": "medium", "modelEffect": "confidence-only" },
+        "volumeExpansionBreadth": { "level": "medium-distributed", "status": "active", "confidence": "medium", "modelEffect": "allocation-shape-only" },
+        "cbSetPieceShotParticipation": { "level": "possible-proxy", "status": "watch", "confidence": "medium-low", "modelEffect": "none" },
+        "cornerProduction": { "level": "very-high-current", "status": "active", "confidence": "medium-high" }
+      },
+      "offensiveAllocationPolicy": {
+        "enabled": true,
+        "method": "baseline-first-distributed-allocation-without-artificial-primary",
+        "playerWeight": 0.6,
+        "roleWeight": 0.25,
+        "setPieceWeight": 0,
+        "expansionBreadthWeight": 0.25,
+        "factorClamp": [0.82, 1.18],
+        "teamShotMaxAdjustmentPct": 8,
+        "teamSotMaxAdjustmentPct": 8,
+        "cornerMaxAdjustmentPct": 6,
+        "note": "Il volume squadra precede l'XI. La distribuzione ravvicinata 12-11-11-10-9 non crea un primary artificiale; campioni minuti ridotti restano shrinkati e i piazzati senza origine tiro hanno peso zero."
+      },
+      "positionalShotVulnerability": {
+        "CF": { "level": "suppressed-candidate", "confidence": "medium", "maxBoostPct": 0, "maxSotBoostPct": 0, "minimumBaselineShots90": 1.5, "minimumBaselineSot90": 0.35, "status": "watch" },
+        "W": { "level": "less-suppressed-not-elevated", "confidence": "medium-low", "maxBoostPct": 0, "maxSotBoostPct": 0, "minimumBaselineShots90": 1, "minimumBaselineSot90": 0.25, "status": "watch" },
+        "AM": { "level": "less-suppressed-not-elevated", "confidence": "medium-low", "maxBoostPct": 0, "maxSotBoostPct": 0, "minimumBaselineShots90": 1, "minimumBaselineSot90": 0.25, "status": "watch" },
+        "CM": { "level": "neutral-not-proven", "confidence": "low", "maxBoostPct": 0, "maxSotBoostPct": 0, "minimumBaselineShots90": 1, "minimumBaselineSot90": 0.25, "status": "watch" },
+        "DM": { "level": "unknown", "confidence": "low", "maxBoostPct": 0, "maxSotBoostPct": 0, "minimumBaselineShots90": 0.8, "minimumBaselineSot90": 0.2, "status": "watch" },
+        "FB": { "level": "not-proven", "confidence": "low", "maxBoostPct": 0, "maxSotBoostPct": 0, "minimumBaselineShots90": 0.7, "minimumBaselineSot90": 0.15, "status": "watch" },
+        "CB": { "level": "not-proven", "confidence": "low", "maxBoostPct": 0, "maxSotBoostPct": 0, "minimumBaselineShots90": 0.6, "minimumBaselineSot90": 0.15, "status": "watch" }
+      },
+      "vulnerabilitySignals": {
+        "totalShotVulnerability": { "level": "strongly-suppressed", "status": "active", "confidence": "medium-high" },
+        "sotVulnerability": { "level": "suppressed-with-current-volatility", "status": "active", "confidence": "medium" },
+        "generalShotSuppression": { "level": "very-strong-current-historical-supported", "status": "active", "confidence": "medium-high", "evidenceMatches": 5 },
+        "generalSotSuppression": { "level": "strong-current-historical-supported", "status": "active", "confidence": "medium", "evidenceMatches": 5 },
+        "centralForwardShotAccess": { "level": "suppressed-candidate", "status": "watch", "confidence": "medium", "evidenceMatches": 5 },
+        "wingerAttackingMidfielderShotAccess": { "level": "less-suppressed-not-elevated", "status": "watch", "confidence": "medium-low", "evidenceMatches": 5 },
+        "secondLineShotAccess": { "level": "neutral-not-proven", "status": "watch", "confidence": "low", "evidenceMatches": 5 },
+        "fullbackWingbackShotAccess": { "level": "not-proven", "status": "watch", "confidence": "low", "evidenceMatches": 5 },
+        "centerBackShotAccess": { "level": "not-proven", "status": "watch", "confidence": "low", "evidenceMatches": 5 },
+        "highQualityChanceVulnerability": { "level": "suppressed-current-diagnostic", "status": "watch", "confidence": "medium", "evidenceMatches": 5, "modelEffect": "none" },
+        "boxPenetration": { "level": "unknown", "status": "inactive", "confidence": "low", "sourceType": "unavailable" }
+      },
+      "interactionPolicy": {
+        "enabled": true,
+        "direction": "suppression",
+        "method": "historical-current-supported-team-suppression-with-neutral-relative-role-access",
+        "teamShotMaxAdjustmentPct": 8,
+        "teamSotMaxAdjustmentPct": 6,
+        "playerGlobalClamp": [0.82, 1.18],
+        "note": "La suppression di squadra e applicata una sola volta prima dell'allocation. CF suppression e accesso relativamente maggiore di W/AM restano descrittivi WATCH: nessun malus di ruolo duplicato e nessun boost compensativo."
+      },
+      "defensiveExposurePolicy": { "enabled": true, "maxImpactPct": 6, "confidence": "medium-high" },
+      "gameStateVolumeInflation": { "status": "watch", "confidence": "low" },
+      "disciplineSignal": { "foulIntensity": { "level": "high-current", "status": "active", "confidence": "medium", "directDuelMaxImpactPct": 0 } },
+      "overallConfidence": "medium-high",
+      "confidenceReason": "Il campione current e di cinque gare: il volume offensivo e il floor SOT concordano con il prior, mentre la suppression difensiva e sostenuta dal prior ma i segnali di ruolo e la chance quality restano descrittivi.",
+      "evidence": [
+        "Cinque referti StatMuse 2026/27: 88 tiri, 29 SOT, 7.84 xG e 43 corner prodotti; 39 tiri, 14 SOT e 2.40 xGA concessi.",
+        "Il floor offensivo e 14 tiri e 5 SOT in tutte le cinque gare; non esiste un singolo picco che determini la media.",
+        "La distribuzione 12-11-11-10-9 e l'HHI basso non sostengono un primary dominante: la breadth descrive l'allocation e non genera team volume.",
+        "La difesa concede 11-4-3-10-11 tiri e 0.48 xGA/gara; il profilo generale usa un solo budget di suppression, senza un secondo moltiplicatore xGA.",
+        "I centravanti mostrano accesso ridotto, ma il V2 corrente non possiede un malus posizionale negativo separato: CF resta WATCH e W/AM non riceve boost compensativi.",
+        "Origine dei tiri e shot location non sono disponibili: Bremer, Gatti e gli altri centrali restano proxy individuali, non setPieceConfirmed."
+      ]
+    },
+    {
+      "teamId": "lazio",
+      "currentTacticalContext": {
+        "coach": "Gennaro Gattuso",
+        "preferredFormation": "4-3-3",
+        "status": "verified-current",
+        "historicalPriorNote": "Il 4-3-3 prevalente 2025/26 resta coerente con tutte le prime cinque gare 2026/27. Il campione current mostra qualita delle occasioni superiore al volume grezzo, senza autorizzare un moltiplicatore xG separato."
+      },
+      "currentSeasonRegimes": [
+        { "id": "gattuso", "coach": "Gennaro Gattuso", "matchIds": ["bologna-lazio-2026-27-md-01", "lazio-genoa-2026-27-md-02", "udinese-lazio-2026-27-md-03", "lazio-milan-2026-27-md-04", "venezia-lazio-2026-27-md-05"], "status": "active", "tacticalConfidence": "medium-high", "formation": "4-3-3" }
+      ],
+      "shotLocationEvidence": [],
+      "offensiveSignals": {
+        "teamShotVolume": { "level": "normal-current", "status": "active", "confidence": "medium-high" },
+        "teamSotVolume": { "level": "normal-volatile", "status": "active", "confidence": "medium" },
+        "offensiveShotQuality": { "level": "high-current", "status": "active", "confidence": "medium-high", "modelEffect": "quality-context-only" },
+        "possessionIndependentShotCreation": { "level": "not-proven", "status": "watch", "confidence": "low", "modelEffect": "none" },
+        "possessionIndependentChanceCreation": { "level": "candidate", "status": "watch", "confidence": "low", "modelEffect": "none" },
+        "primaryShooterConcentration": { "level": "moderate", "status": "active", "confidence": "medium-high" },
+        "secondaryShooterBreadth": { "level": "moderate", "status": "active", "confidence": "medium" },
+        "midfieldShotParticipation": { "level": "elevated", "status": "active", "confidence": "medium" },
+        "wingerAttackingMidfielderShotParticipation": { "level": "elevated", "status": "active", "confidence": "medium-high" },
+        "defenderShotParticipation": { "level": "possible", "status": "watch", "confidence": "medium-low", "modelEffect": "none" },
+        "sotDistributionBreadth": { "level": "moderate", "status": "active", "confidence": "medium", "modelEffect": "sot-allocation-evidence" },
+        "shotAccuracyVolatility": { "level": "high", "status": "active", "confidence": "medium-high", "modelEffect": "confidence-only" },
+        "volumeExpansionBreadth": { "level": "moderate-primary-led", "status": "active", "confidence": "medium", "modelEffect": "allocation-shape-only" },
+        "cbSetPieceShotParticipation": { "level": "possible-proxy", "status": "watch", "confidence": "low", "modelEffect": "none" },
+        "cornerProduction": { "level": "normal-volatile", "status": "active", "confidence": "medium" }
+      },
+      "offensiveAllocationPolicy": {
+        "enabled": true,
+        "method": "baseline-first-primary-aware-distributed-allocation",
+        "playerWeight": 0.65,
+        "roleWeight": 0.2,
+        "setPieceWeight": 0,
+        "expansionBreadthWeight": 0.2,
+        "factorClamp": [0.82, 1.18],
+        "teamShotMaxAdjustmentPct": 8,
+        "teamSotMaxAdjustmentPct": 8,
+        "cornerMaxAdjustmentPct": 6,
+        "note": "Il team total precede l'XI. Zaccagni riceve la quota primary sostenuta da share, per90 e persistenza; l'eventuale sua assenza redistribuisce il volume senza creare un boost ad hoc. Origine piazzata non disponibile: peso set-piece zero."
+      },
+      "positionalShotVulnerability": {
+        "CF": { "level": "normal-not-suppressed", "confidence": "medium", "maxBoostPct": 0, "maxSotBoostPct": 0, "minimumBaselineShots90": 1.5, "minimumBaselineSot90": 0.35, "status": "watch" },
+        "W": { "level": "elevated-candidate", "confidence": "medium-low", "maxBoostPct": 0, "maxSotBoostPct": 0, "minimumBaselineShots90": 1, "minimumBaselineSot90": 0.25, "status": "watch" },
+        "AM": { "level": "elevated-candidate", "confidence": "medium-low", "maxBoostPct": 0, "maxSotBoostPct": 0, "minimumBaselineShots90": 1, "minimumBaselineSot90": 0.25, "status": "watch" },
+        "CM": { "level": "normal-not-proven", "confidence": "low", "maxBoostPct": 0, "maxSotBoostPct": 0, "minimumBaselineShots90": 1, "minimumBaselineSot90": 0.25, "status": "watch" },
+        "DM": { "level": "unknown", "confidence": "low", "maxBoostPct": 0, "maxSotBoostPct": 0, "minimumBaselineShots90": 0.8, "minimumBaselineSot90": 0.2, "status": "watch" },
+        "FB": { "level": "possible-access", "confidence": "low", "maxBoostPct": 0, "maxSotBoostPct": 0, "minimumBaselineShots90": 0.7, "minimumBaselineSot90": 0.15, "status": "watch" },
+        "CB": { "level": "possible-set-piece-access", "confidence": "low", "maxBoostPct": 0, "maxSotBoostPct": 0, "minimumBaselineShots90": 0.6, "minimumBaselineSot90": 0.15, "status": "watch" }
+      },
+      "vulnerabilitySignals": {
+        "totalShotVulnerability": { "level": "normal", "status": "active", "confidence": "medium-high" },
+        "sotVulnerability": { "level": "mild-elevation-volatile", "status": "watch", "confidence": "medium-low" },
+        "generalShotSuppression": { "level": "not-proven", "status": "inactive", "confidence": "medium", "evidenceMatches": 5 },
+        "generalSotSuppression": { "level": "not-proven", "status": "inactive", "confidence": "medium", "evidenceMatches": 5 },
+        "centralForwardShotAccess": { "level": "normal-not-suppressed", "status": "watch", "confidence": "medium", "evidenceMatches": 5 },
+        "wingerAttackingMidfielderShotAccess": { "level": "elevated-candidate", "status": "watch", "confidence": "medium-low", "evidenceMatches": 5 },
+        "secondLineShotAccess": { "level": "not-proven", "status": "watch", "confidence": "low", "evidenceMatches": 5 },
+        "fullbackWingbackShotAccess": { "level": "possible", "status": "watch", "confidence": "low", "evidenceMatches": 5 },
+        "centerBackShotAccess": { "level": "possible", "status": "watch", "confidence": "low", "evidenceMatches": 5 },
+        "highQualityChanceVulnerability": { "level": "normal-current", "status": "watch", "confidence": "medium", "evidenceMatches": 5, "modelEffect": "none" },
+        "boxPenetration": { "level": "unknown", "status": "inactive", "confidence": "low", "sourceType": "unavailable" }
+      },
+      "interactionPolicy": {
+        "enabled": true,
+        "direction": "vulnerability",
+        "method": "historical-current-neutral-team-environment-with-role-signals-watch-only",
+        "teamShotMaxAdjustmentPct": 6,
+        "teamSotMaxAdjustmentPct": 6,
+        "playerGlobalClamp": [0.82, 1.18],
+        "note": "Tiri concessi current e storici sono allineati; il lieve aumento SOT e volatile. Il team environment resta neutro e tutte le letture di ruolo sono WATCH con effetto zero, evitando la somma overall + wide + FB + CB."
+      },
+      "defensiveExposurePolicy": { "enabled": true, "maxImpactPct": 6, "confidence": "medium" },
+      "gameStateVolumeInflation": { "status": "watch", "confidence": "low" },
+      "disciplineSignal": { "foulIntensity": { "level": "normal-current", "status": "active", "confidence": "medium", "directDuelMaxImpactPct": 0 } },
+      "overallConfidence": "medium",
+      "confidenceReason": "Cinque gare current confermano un volume tiri normale e una chance quality elevata, ma SOT, possesso e accesso per ruolo sono volatili. La difesa e allineata al prior sui tiri e leggermente peggiore sui SOT: nessuna suppression o vulnerability centrale viene attivata.",
+      "evidence": [
+        "Cinque referti StatMuse 2026/27: 64 tiri, 19 SOT, 7.98 xG e 22 corner prodotti; 65 tiri, 25 SOT e 6.21 xGA concessi.",
+        "Il volume offensivo 10-15-19-8-12 resta vicino al prior da 38 gare; la sequenza SOT 3-2-6-6-2 e piu volatile e viene modellata separatamente.",
+        "Lazio-Milan combina 8 tiri, 6 SOT e 2.02 xG: la qualita resta contesto diagnostico e non diventa un nuovo moltiplicatore del volume.",
+        "Zaccagni produce 3-3-4-3-3 tiri e 25% del volume squadra: primary individuale persistente, senza costruire il team total dalla sua baseline.",
+        "La difesa concede 14-8-10-16-17 tiri, molto vicini ai 13.316 storici; i 3 gol subiti contro 6.21 xGA restano un warning risultati-processo.",
+        "Wide, FB e CB mostrano accesso descrittivo, ma campione, baseline avversarie e origine dei tiri non sostengono modifier separati; tutti restano WATCH.",
+        "Origine dei tiri, shot location e attribuzione set-piece non sono disponibili: i 3 tiri di Doekhi restano un proxy CB, non setPieceConfirmed."
+      ]
+    },
+    {
+      "teamId": "lecce",
+      "currentTacticalContext": {
+        "coach": "Eusebio Di Francesco",
+        "preferredFormation": "4-3-3",
+        "status": "verified-current",
+        "historicalPriorNote": "Il prior 2025/26 descrive gia un attacco a basso volume e una difesa permissiva. Le prime cinque gare 2026/27 amplificano nettamente l'accesso avversario a tiri e SOT; la distribuzione per ruolo resta descrittiva finche non viene isolato un residuo oltre l'effetto generale di squadra."
+      },
+      "currentSeasonRegimes": [
+        { "id": "di-francesco", "coach": "Eusebio Di Francesco", "matchIds": ["venezia-lecce-2026-27-md-01", "lecce-roma-2026-27-md-02", "cagliari-lecce-2026-27-md-03", "lecce-monza-2026-27-md-04", "milan-lecce-2026-27-md-05"], "status": "active", "tacticalConfidence": "medium-high", "formation": "4-3-3" }
+      ],
+      "shotLocationEvidence": [],
+      "offensiveSignals": {
+        "teamShotVolume": { "level": "low-current", "status": "active", "confidence": "medium-high" },
+        "teamSotVolume": { "level": "low-normal-current", "status": "active", "confidence": "medium" },
+        "offensiveShotQuality": { "level": "outlier-sensitive-current", "status": "watch", "confidence": "medium-low", "modelEffect": "quality-context-only" },
+        "possessionIndependentShotCreation": { "level": "not-proven", "status": "watch", "confidence": "low", "modelEffect": "none" },
+        "primaryShooterConcentration": { "level": "low", "status": "active", "confidence": "medium-high" },
+        "secondaryShooterBreadth": { "level": "distributed-low-volume", "status": "active", "confidence": "medium" },
+        "midfieldShotParticipation": { "level": "distributed", "status": "active", "confidence": "medium" },
+        "wingerAttackingMidfielderShotParticipation": { "level": "distributed-low-volume", "status": "active", "confidence": "medium-low" },
+        "defenderShotParticipation": { "level": "possible", "status": "watch", "confidence": "low", "modelEffect": "none" },
+        "sotDistributionBreadth": { "level": "distributed-low-volume", "status": "active", "confidence": "medium", "modelEffect": "sot-allocation-evidence" },
+        "shotAccuracyVolatility": { "level": "normal", "status": "active", "confidence": "medium", "modelEffect": "confidence-only" },
+        "volumeExpansionBreadth": { "level": "distributed-low-volume", "status": "active", "confidence": "medium", "modelEffect": "allocation-shape-only" },
+        "cbSetPieceShotParticipation": { "level": "possible-proxy", "status": "watch", "confidence": "low", "modelEffect": "none" },
+        "cornerProduction": { "level": "low-normal", "status": "active", "confidence": "medium" }
+      },
+      "offensiveAllocationPolicy": {
+        "enabled": true,
+        "method": "baseline-first-distributed-low-volume-allocation-without-forced-primary",
+        "playerWeight": 0.65,
+        "roleWeight": 0.2,
+        "setPieceWeight": 0,
+        "expansionBreadthWeight": 0.2,
+        "factorClamp": [0.82, 1.18],
+        "teamShotMaxAdjustmentPct": 8,
+        "teamSotMaxAdjustmentPct": 8,
+        "cornerMaxAdjustmentPct": 6,
+        "note": "Il team total precede l'XI. Il volume basso viene distribuito dalle baseline individuali senza forzare un primary; l'extra-volume eventuale non crea tiratori dal nulla. Origine piazzata non disponibile: peso set-piece zero."
+      },
+      "positionalShotVulnerability": {
+        "CF": { "level": "unresolved-after-team-effect", "confidence": "low", "maxBoostPct": 0, "maxSotBoostPct": 0, "minimumBaselineShots90": 1.5, "minimumBaselineSot90": 0.35, "status": "watch" },
+        "W": { "level": "unresolved-after-team-effect", "confidence": "low", "maxBoostPct": 0, "maxSotBoostPct": 0, "minimumBaselineShots90": 1, "minimumBaselineSot90": 0.25, "status": "watch" },
+        "AM": { "level": "unresolved-after-team-effect", "confidence": "low", "maxBoostPct": 0, "maxSotBoostPct": 0, "minimumBaselineShots90": 1, "minimumBaselineSot90": 0.25, "status": "watch" },
+        "CM": { "level": "unresolved-after-team-effect", "confidence": "low", "maxBoostPct": 0, "maxSotBoostPct": 0, "minimumBaselineShots90": 1, "minimumBaselineSot90": 0.25, "status": "watch" },
+        "DM": { "level": "unresolved-after-team-effect", "confidence": "low", "maxBoostPct": 0, "maxSotBoostPct": 0, "minimumBaselineShots90": 0.8, "minimumBaselineSot90": 0.2, "status": "watch" },
+        "FB": { "level": "unresolved-after-team-effect", "confidence": "low", "maxBoostPct": 0, "maxSotBoostPct": 0, "minimumBaselineShots90": 0.7, "minimumBaselineSot90": 0.15, "status": "watch" },
+        "CB": { "level": "unresolved-after-team-effect", "confidence": "low", "maxBoostPct": 0, "maxSotBoostPct": 0, "minimumBaselineShots90": 0.6, "minimumBaselineSot90": 0.15, "status": "watch" }
+      },
+      "vulnerabilitySignals": {
+        "totalShotVulnerability": { "level": "very-high-current", "status": "active", "confidence": "medium-high" },
+        "sotVulnerability": { "level": "very-high-current", "status": "active", "confidence": "medium-high" },
+        "generalShotSuppression": { "level": "not-proven", "status": "inactive", "confidence": "high", "evidenceMatches": 5 },
+        "generalSotSuppression": { "level": "not-proven", "status": "inactive", "confidence": "high", "evidenceMatches": 5 },
+        "centralForwardShotAccess": { "level": "unresolved-after-team-effect", "status": "watch", "confidence": "low", "evidenceMatches": 5 },
+        "wingerAttackingMidfielderShotAccess": { "level": "unresolved-after-team-effect", "status": "watch", "confidence": "low", "evidenceMatches": 5 },
+        "secondLineShotAccess": { "level": "unresolved-after-team-effect", "status": "watch", "confidence": "low", "evidenceMatches": 5 },
+        "fullbackWingbackShotAccess": { "level": "unresolved-after-team-effect", "status": "watch", "confidence": "low", "evidenceMatches": 5 },
+        "centerBackShotAccess": { "level": "unresolved-after-team-effect", "status": "watch", "confidence": "low", "evidenceMatches": 5 },
+        "roleSpecificSotVulnerability": { "level": "unresolved-after-team-effect", "status": "watch", "confidence": "low", "evidenceMatches": 5 },
+        "highQualityChanceVulnerability": { "level": "very-high-current", "status": "watch", "confidence": "medium", "evidenceMatches": 5, "modelEffect": "none" },
+        "boxPenetration": { "level": "unknown", "status": "inactive", "confidence": "low", "sourceType": "unavailable" }
+      },
+      "interactionPolicy": {
+        "enabled": true,
+        "direction": "vulnerability",
+        "method": "broad-team-vulnerability-before-player-allocation-role-residuals-watch-only",
+        "teamShotMaxAdjustmentPct": 8,
+        "teamSotMaxAdjustmentPct": 8,
+        "playerGlobalClamp": [0.82, 1.18],
+        "note": "La vulnerabilita generale viene applicata una sola volta al team total prima dell'allocation. Ogni accesso per ruolo resta WATCH ed e valutabile solo come residuo dopo il controllo dell'effetto generale: nessun doppio conteggio overall + ruolo."
+      },
+      "defensiveExposurePolicy": { "enabled": true, "maxImpactPct": 6, "confidence": "medium-high" },
+      "gameStateVolumeInflation": { "status": "watch", "confidence": "low" },
+      "disciplineSignal": { "foulIntensity": { "level": "normal-current", "status": "active", "confidence": "medium", "directDuelMaxImpactPct": 0 } },
+      "overallConfidence": "medium-high",
+      "confidenceReason": "Cinque gare current mostrano una vulnerabilita generale persistente: 16.6 tiri e 7.8 SOT concessi contro prior 12.737 e 4.263. Il segnale centrale e robusto al singolo match, ma la scomposizione per ruolo non ha ancora evidenza residua sufficiente e resta integralmente WATCH.",
+      "evidence": [
+        "Cinque referti StatMuse 2026/27: 42 tiri, 17 SOT, 5.24 xG e 17 corner prodotti; 83 tiri, 39 SOT e 11.82 xGA concessi.",
+        "La difesa concede 19-15-20-19-10 tiri e 7-8-9-11-4 SOT: quattro gare su cinque restano sopra entrambe le baseline storiche, quindi il segnale non dipende da un solo picco.",
+        "Il prior 2025/26 era gia permissivo con 12.737 tiri e 4.263 SOT concessi; il current amplia entrambe le metriche e sostiene un unico budget di vulnerability di squadra.",
+        "L'attacco produce 12-7-10-7-6 tiri e 5-3-3-3-3 SOT. Coulibaly guida con appena 6 tiri su 42: concentrazione bassa e struttura distribuita a basso volume.",
+        "Lecce genera 2.72 xG a Venezia, il 51.9% del totale; senza quella gara la media scende a 0.63 xG. La qualita offensiva resta WATCH e non genera un nuovo moltiplicatore.",
+        "I 10 gol subiti sono coerenti con 11.82 xGA: il processo difensivo e negativo, ma nessuna compensazione gol viene aggiunta al volume tiri/SOT.",
+        "Origine dei tiri, shot location e baseline avversarie normalizzate per ruolo non sono disponibili: tutti i segnali CF/W/AM/CM/DM/FB/CB restano WATCH con effetto zero."
+      ]
+    },
+    {
       "teamId": "roma",
       "currentTacticalContext": {
         "coach": "Gian Piero Gasperini",
