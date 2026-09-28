@@ -95,7 +95,7 @@ assert.ok(!postMatchSource.includes("reading-post-match-score"), "Il tabellino n
 for (const contract of ['["Tiri totali", "shots", ""]', '["Falli commessi", "fouls", ""]', '["Falli subiti", "fouls", "", true]', 'fromOpponent?"away":"home"', 'fromOpponent?"home":"away"']) assert.ok(postMatchSource.includes(contract), `Tabella statistiche reali: contratto ${contract} assente`);
 assert.ok(mainApp.includes("Risultato esatto pronosticato") && mainApp.includes("prediction?.scoreForecast?.display") && mainApp.includes('class="is-central"') && mainApp.includes("Centrale dai gol attesi arrotondati"), "Le Letture devono mostrare il risultato esatto centrale e le alternative senza sostituirlo con una fascia gol");
 const readingHeroSource = mainApp.slice(mainApp.indexOf("function readingPrototypeDetail"), mainApp.indexOf("function renderProbableLineups"));
-for (const contract of ["serie-a-shooters", "Possibili migliori tiratori", "Tiri totali", "Tiri in porta", "foulsCommittedPer90", "quota N/D"]) assert.ok(readingHeroSource.includes(contract), `Letture: pannello tiratori incompleto: ${contract}`);
+for (const contract of ["serie-a-shooters", "Possibili migliori tiratori", "shotProbabilities", "shotOnTargetProbabilities", "expectedMinutes", "prediction-v2-player-cards"]) assert.ok(mainApp.includes(contract), `Letture: pannello tiratori V2 incompleto: ${contract}`);
 assert.ok(readingHeroSource.includes('class="reading-matchup" aria-label=') && readingHeroSource.includes("teamLogo(home,{showName:false})") && readingHeroSource.includes("teamLogo(away,{showName:false})"), "La testata della Lettura non deve ripetere i nomi delle squadre accanto al risultato");
 assert.ok(readingHeroSource.includes("reading-exact-scores") && readingHeroSource.includes("reading-hero-surprise") && readingHeroSource.includes("prediction.confidence.value"), "Risultati esatti, sorpresa e confidenza devono stare nel primo blocco");
 for (const removed of ["Dati mancanti", "Verdetto preliminare", "Pronostico archiviato", "reading-verdict-prototype"]) assert.ok(!readingHeroSource.includes(removed), `Dettaglio Lettura: blocco rimosso ancora presente: ${removed}`);
@@ -123,7 +123,7 @@ for (const contract of ['data-team-season="${esc(stats.season)}"', "Statistiche 
 for (const contract of [".team-season-comparison", ".team-season-columns", ".team-season-column", ".team-season-list", ".team-season-splits", ".team-season-empty"]) assert.ok(styles.includes(contract), `Confronto statistiche squadra: stile ${contract} assente`);
 for (const contract of ["teamAttackChannels", "Direzioni d'attacco", "team-attack-channel-bars", "Canale prevalente:"]) assert.ok(teamInterface.includes(contract), `Direzioni d'attacco nelle statistiche squadra: manca ${contract}`);
 for (const contract of [".team-attack-channels", ".team-attack-channel-bars"]) assert.ok(styles.includes(contract), `Direzioni d'attacco nelle statistiche squadra: stile ${contract} assente`);
-for (const contract of ['class="prediction-channels"', "Lati d'attacco", "Canale prevalente:", 'style="width:${channels[key]}%"']) assert.ok(readingsInterface.includes(contract), `Lati d'attacco nelle Letture: manca ${contract}`);
+for (const contract of ['class="prediction-channels"', "Lati d'attacco", "Canale prevalente:", "prediction-v2-channels"]) assert.ok(readingsInterface.includes(contract), `Lati d'attacco nelle Letture: manca ${contract}`);
 assert.strictEqual(tacticalProfiles.profiles.filter(profile => profile.attackChannels).length, 20, "Le direzioni d'attacco devono coprire tutte le 20 squadre");
 for (const profile of tacticalProfiles.profiles) {
   const channels = profile.attackChannels;
@@ -181,7 +181,7 @@ assert.ok(readingLineupSource.includes('"Distinte ufficiali della giornata "+mat
 assert.ok(mainApp.includes('<details class="reading-completed-matchday">') && mainApp.includes("Tabellini delle partite precedenti"), "I tabellini conclusi non usano il menu a tendina dedicato alle partite precedenti");
 assert.ok(mainApp.includes("Storico MVP 2025/26") && mainApp.includes("prediction-mvp-history"), "Lo storico MVP individuale non è esposto nelle Letture");
 assert.ok(mainApp.includes("reading-official-mvp") && mainApp.includes("Panini Player of the Match") && mainApp.includes("match.mvp"), "L'MVP ufficiale della partita conclusa non è esposto nelle Letture");
-assert.ok(mainApp.includes("Totale partita") && mainApp.includes("prediction-match-volume") && mainApp.includes("percentili p20–p80"), "I totali volume casa/trasferta non sono esposti nelle Letture");
+assert.ok(mainApp.includes("La partita in numeri") && mainApp.includes("prediction-v2-team-grid") && mainApp.includes("p20–p80"), "I volumi V2 casa/trasferta non sono esposti nelle Letture");
 assert.ok(!mainApp.includes("giornata di riferimento") && !teamInterface.includes("Data da definire · riferimento"), "Le date non definite non devono mostrare una data di riferimento");
 assert.ok(teamInterface.includes("La stagione in sintesi") && teamInterface.includes("calculateObjectiveMetrics"), "La sintesi degli obiettivi non è integrata nelle pagine squadra");
 for (const contract of ["team-page-jumps", "team-analysis-grid", "team-roster-section", "squad-table-disclosure", "team-style-details", "team-method-details"]) assert.ok(teamInterface.includes(contract), `Gerarchia compatta pagina squadra: manca ${contract}`);
@@ -211,7 +211,7 @@ for (const removedRefereeContract of ["Quando tende ad ammonire", "datasetCompar
 const readingDetailSource=mainApp.slice(mainApp.indexOf("function readingPrototypeDetail"),mainApp.indexOf("function renderProbableLineups"));
 assert.ok(!readingDetailSource.includes("reading-context-rail")&&!readingDetailSource.includes("reading-evidence-card"),"Le vecchie schede di contesto squadra devono essere rimosse dalla Lettura");
 const readingDetailReturn=readingDetailSource.slice(readingDetailSource.lastIndexOf('return `<nav class="reading-back"'));
-assert.ok(readingDetailReturn.indexOf("reading-info-grid")<readingDetailReturn.indexOf("${refereePanel}"),"La designazione arbitrale deve occupare la seconda colonna informativa");
+assert.ok(readingDetailReturn.indexOf("${v2.discipline}")<readingDetailReturn.indexOf("${refereePanel}")&&readingDetailReturn.indexOf("${refereePanel}")<readingDetailReturn.indexOf("reading-info-grid"),"Disciplina, squadra arbitrale e formazioni devono mantenere l'ordine editoriale V2");
 assert.ok(matchCardSource.includes('m.status!=="scheduled"') && !matchCardSource.includes('<div class="actions">'), "Le card partita non devono mostrare Programmata o i pulsanti Lettura/Statistiche");
 assert.ok(!matchCardSource.includes('match-events') && !matchCardSource.includes('Marcatori') && !matchCardSource.includes('Ammoniti'), "Le card partita non devono mostrare riquadri evento prima dei dati reali");
 assert.ok(teamNavSource.includes('src="${esc(team.logo)}"') && !teamNavSource.includes("monochrome"), "La barra Calendario per squadra deve usare i loghi originali colorati");
