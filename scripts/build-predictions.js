@@ -5,6 +5,8 @@ const path = require("path");
 const { ENGINE_VERSION, PLAYER_MARKET_MODEL_VERSION, WEIGHTS, predictMatch } = require("./predictions/engine");
 const { DECISION_LAYER_VERSION, PROFILE_LIMITS, enrichPrediction } = require("./predictions/decision-layer");
 const { loadPlayerIdentities } = require("./player-identity");
+const { buildProfiles } = require("./build-team-matchup-profiles");
+const { compareCanonicalMatches } = require("./predictions/future-readiness");
 
 const root = path.resolve(__dirname, "..");
 const read = relative => JSON.parse(fs.readFileSync(path.join(root, relative), "utf8"));
@@ -72,7 +74,17 @@ for (const identity of identityRegistry.payload.players) {
   else squad.players.push({ id: identity.playerId, name: identity.canonicalName, role: null, detailedRole: null, identityAliases: identity.aliases });
 }
 const volumeByTeam = byId(volumeProfiles.profiles);
-const teamMatchupByTeam = byId(teamMatchupProfiles.profiles);
+const teamMatchupSnapshots = new Map();
+const teamMatchupsForTarget = match => {
+  const key = `md-${match.matchday}`;
+  if (!teamMatchupSnapshots.has(key)) {
+    const snapshot = Number(match.matchday) <= 1
+      ? { schemaVersion: 2, dataCutoff: { mode: "as-of-matchday", asOfMatchdayExclusive: match.matchday, completedMatchesUsed: 0 }, profiles: [] }
+      : buildProfiles({ asOfMatchday: match.matchday });
+    teamMatchupSnapshots.set(key, { snapshot, byTeam: byId(snapshot.profiles) });
+  }
+  return teamMatchupSnapshots.get(key);
+};
 const refereeRows = refereeAggregates.referees.filter(row => row.competition === "serie-a" && row.stage === "regular-season");
 const refereeBySlug = new Map(refereeRows.map(row => [row.refereeSlug, row]));
 const refereeLeagueAverage = {
@@ -156,35 +168,63 @@ function recentForm(teamId, targetMatch) {
   return { matches: rows.length, goalsFor: goalsFor / weightTotal, goalsAgainst: goalsAgainst / weightTotal, decay: 0.82, opponentAdjusted: true, currentSeasonMatches: currentSeason.length };
 }
 
+const currentPlayerPerformanceCache = new Map();
 function currentPlayerPerformance(teamId, targetMatch) {
+  const cacheKey = `${teamId}:${targetMatch.matchday}`;
+  if (currentPlayerPerformanceCache.has(cacheKey)) return currentPlayerPerformanceCache.get(cacheKey);
   const rows = matches.filter(match =>
     match.competition === "serie-a" &&
     match.season === "2026-27" &&
     match.status === "finished" &&
     match.matchday < targetMatch.matchday &&
     (match.homeTeam === teamId || match.awayTeam === teamId)
-  );
+  ).sort(compareCanonicalMatches);
   const aggregate = {};
   for (const match of rows) {
     const side = match.homeTeam === teamId ? "home" : "away";
     for (const player of match.playerStats?.[side] || []) {
       if (!(player.minutes > 0)) continue;
       const key = player.playerId || playerKey(player.player);
-      const current = aggregate[key] || { appearances: 0, minutes: 0, foulsCommitted: 0, foulsCommittedCoverage: 0, foulsWon: 0, foulsWonCoverage: 0, shots: 0, shotsCoverage: 0, shotsOnTarget: 0, shotsOnTargetCoverage: 0, starterAppearances: 0, starterMinutes: 0 };
+      const current = aggregate[key] || { appearances: 0, minutes: 0, foulsCommitted: 0, foulsCommittedCoverage: 0, foulsWon: 0, foulsWonCoverage: 0, shots: 0, shotsCoverage: 0, shotsSequence: [], shotsOnTarget: 0, shotsOnTargetCoverage: 0, shotsOnTargetSequence: [], expectedGoals: 0, expectedGoalsCoverage: 0, starterAppearances: 0, starterMinutes: 0, minutesSequence: [], starterSequence: [], lastAppearanceMatchday: null };
       current.appearances += 1;
       current.minutes += player.minutes;
       if (player.foulsCommitted != null) { current.foulsCommitted += player.foulsCommitted; current.foulsCommittedCoverage += 1; }
       if (player.foulsWon != null) { current.foulsWon += player.foulsWon; current.foulsWonCoverage += 1; }
-      if (player.shots != null) { current.shots += player.shots; current.shotsCoverage += 1; }
-      if (player.shotsOnTarget != null) { current.shotsOnTarget += player.shotsOnTarget; current.shotsOnTargetCoverage += 1; }
+      if (player.shots != null) { current.shots += player.shots; current.shotsCoverage += 1; current.shotsSequence.push(player.shots); }
+      if (player.shotsOnTarget != null) { current.shotsOnTarget += player.shotsOnTarget; current.shotsOnTargetCoverage += 1; current.shotsOnTargetSequence.push(player.shotsOnTarget); }
+      if (player.expectedGoals != null) { current.expectedGoals += player.expectedGoals; current.expectedGoalsCoverage += 1; }
       if (player.starter) {
         current.starterAppearances += 1;
         current.starterMinutes += player.minutes;
       }
+      current.lastAppearanceMatchday = match.matchday;
       aggregate[key] = current;
       aggregate[playerKey(player.player)] = current;
     }
   }
+  const recentMatches = rows.slice(-5);
+  const uniquePlayers = [...new Set(Object.values(aggregate))];
+  for (const current of uniquePlayers) {
+    const identityKeys = Object.entries(aggregate).filter(([, value]) => value === current).map(([key]) => key);
+    current.minutesSequence = recentMatches.map(match => {
+      const side = match.homeTeam === teamId ? "home" : "away";
+      const stat = (match.playerStats?.[side] || []).find(player => identityKeys.includes(player.playerId) || identityKeys.includes(playerKey(player.player)));
+      return Number(stat?.minutes || 0);
+    });
+    current.starterSequence = recentMatches.map(match => {
+      const side = match.homeTeam === teamId ? "home" : "away";
+      const stat = (match.playerStats?.[side] || []).find(player => identityKeys.includes(player.playerId) || identityKeys.includes(playerKey(player.player)));
+      return Boolean(stat?.starter);
+    });
+    current.recentTeamMatches = recentMatches.length;
+    current.recentAppearances = current.minutesSequence.filter(value => value > 0).length;
+    current.recentStarts = current.starterSequence.filter(Boolean).length;
+    current.recentAverageMinutes = recentMatches.length ? current.minutesSequence.reduce((total, value) => total + value, 0) / recentMatches.length : null;
+    current.expectedGoalsPer90 = current.expectedGoalsCoverage && current.minutes ? current.expectedGoals * 90 / current.minutes : null;
+    current.expectedGoalsPerShot = current.expectedGoalsCoverage && current.shots > 0 ? current.expectedGoals / current.shots : null;
+  }
+  aggregate.__meta = { teamId, asOfMatchdayExclusive: targetMatch.matchday, matchesUsed: rows.length, recentMatchIds: recentMatches.map(match => match.id) };
+  currentPlayerPerformanceCache.set(cacheKey, aggregate);
   return aggregate;
 }
 
@@ -236,6 +276,8 @@ const teamForMatch = (team, match) => {
 };
 
 const generatedPredictions = targetMatches.map(match => {
+  const matchupSnapshot = teamMatchupsForTarget(match);
+  const teamMatchupByTeam = matchupSnapshot.byTeam;
   const homeTeam = teamForMatch(teamById.get(match.homeTeam), match);
   const awayTeam = teamForMatch(teamById.get(match.awayTeam), match);
   const predictionGeneratedAt = existingPredictionByMatch.get(match.id)?.generatedAt || [generatedAt, homeTeam?.probableLineup?.source?.retrievedAt, awayTeam?.probableLineup?.source?.retrievedAt].filter(Boolean).sort().at(-1);
@@ -279,6 +321,27 @@ const generatedPredictions = targetMatches.map(match => {
       : null,
     generatedAt: predictionGeneratedAt
   });
+  prediction.futureDataDiagnostics = {
+    dataCutoff: { matchdayExclusive: match.matchday, targetMatchIdExcluded: match.id, completedOnly: true },
+    home: {
+      teamId: match.homeTeam,
+      currentMatchesUsed: teamMatchupByTeam.get(match.homeTeam)?.sampleSize ?? 0,
+      historicalWeight: teamMatchupByTeam.get(match.homeTeam)?.offense?.teamShotVolume?.shrinkage?.historicalWeight ?? null,
+      currentWeight: teamMatchupByTeam.get(match.homeTeam)?.offense?.teamShotVolume?.shrinkage?.currentWeight ?? null,
+      sampleMaturity: teamMatchupByTeam.get(match.homeTeam)?.confidence?.maturityWeight ?? null,
+      teamProfileConfidence: teamMatchupByTeam.get(match.homeTeam)?.confidence?.overall || "unknown"
+    },
+    away: {
+      teamId: match.awayTeam,
+      currentMatchesUsed: teamMatchupByTeam.get(match.awayTeam)?.sampleSize ?? 0,
+      historicalWeight: teamMatchupByTeam.get(match.awayTeam)?.offense?.teamShotVolume?.shrinkage?.historicalWeight ?? null,
+      currentWeight: teamMatchupByTeam.get(match.awayTeam)?.offense?.teamShotVolume?.shrinkage?.currentWeight ?? null,
+      sampleMaturity: teamMatchupByTeam.get(match.awayTeam)?.confidence?.maturityWeight ?? null,
+      teamProfileConfidence: teamMatchupByTeam.get(match.awayTeam)?.confidence?.overall || "unknown"
+    },
+    profileSnapshotSchemaVersion: matchupSnapshot.snapshot.schemaVersion,
+    opponentInteractionApplied: prediction.teamProjections.some(team => Math.abs(team.opponentMatchupInteraction?.shotsAdjustmentPct || 0) > 0 || Math.abs(team.opponentMatchupInteraction?.shotsOnTargetAdjustmentPct || 0) > 0)
+  };
   const validation = backtest?.headToHead?.outOfSample?.selected;
   const withoutHeadToHead = backtest?.headToHead?.outOfSample?.withoutHeadToHead;
   return validation ? {

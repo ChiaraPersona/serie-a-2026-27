@@ -3,6 +3,7 @@
 const fs = require("fs");
 const path = require("path");
 const zlib = require("zlib");
+const { assertUniqueMatchIds, compareCanonicalMatches, confidenceFromSample, sampleMaturity, selectCompletedMatches, signalStatusTransition } = require("./predictions/future-readiness");
 
 const root = path.resolve(__dirname, "..");
 const read = relative => JSON.parse(fs.readFileSync(path.join(root, relative), "utf8"));
@@ -349,13 +350,148 @@ function historicalDiscipline(teamId, competition = "serie-a") {
   return { matches: rows.length, foulsCommittedPerGame: round(mean(own.map(row => row.fouls))), foulsWonPerGame: round(mean(opponents.map(row => row.fouls))), yellowCardsPerGame: round(mean(own.map(row => row.yellowCards))) };
 }
 
-function buildProfile(config) {
+function buildOpponentStrengthDiagnostics(rows, historicalShotsAllowed, eligibleLeagueMatches = []) {
+  const minimumCurrentMatches = source.methodology.opponentNormalizationCurrentMinimumMatches || 6;
+  const currentAttackByTeam = new Map(teamIndex.map(team => {
+    const selected = eligibleLeagueMatches.filter(match => match.homeTeam === team.id || match.awayTeam === team.id);
+    const teamValues = metric => selected.map(match => {
+      const side = match.homeTeam === team.id ? "home" : "away";
+      return match.teamStats?.[side]?.[metric];
+    }).filter(Number.isFinite);
+    const shots = teamValues("shots"), sot = teamValues("shotsOnTarget");
+    return [team.id, { matches: selected.length, shots: robustUpperMean(shots).value, sot: robustUpperMean(sot).value }];
+  }));
+  const opponentBaseline = (teamId, metric) => {
+    const historical = volumeProfiles.get(teamId)?.venues?.overall?.[metric === "shots" ? "totalShots" : "shotsOnTarget"]?.for?.mean ?? null;
+    const current = currentAttackByTeam.get(teamId);
+    const currentValue = metric === "shots" ? current?.shots : current?.sot;
+    if ((current?.matches || 0) < minimumCurrentMatches) return { value: historical, historical, current: null, currentMatches: current?.matches || 0, source: Number.isFinite(historical) ? "historical-prior" : "unavailable" };
+    if (!Number.isFinite(historical)) return { value: currentValue, historical: null, current: currentValue, currentMatches: current.matches, source: "current-only-promoted-team" };
+    const stabilized = shrink(historical, currentValue, current.matches);
+    return { value: stabilized.value, historical, current: currentValue, currentMatches: current.matches, historicalWeight: stabilized.historicalWeight, currentWeight: stabilized.currentWeight, source: "historical-current-stabilized" };
+  };
+  const teamBaselines = teamIndex.map(team => ({ teamId: team.id, shots: opponentBaseline(team.id, "shots"), sot: opponentBaseline(team.id, "sot") }));
+  const leagueHistoricalShotsFor = mean(teamBaselines.map(item => item.shots.value).filter(Number.isFinite));
+  const leagueHistoricalSotFor = mean(teamBaselines.map(item => item.sot.value).filter(Number.isFinite));
+  const diagnostics = rows.map(row => {
+    const baseline = teamBaselines.find(item => item.teamId === row.opponentTeamId);
+    const historicalShotsFor = baseline?.shots.value ?? null;
+    const historicalSotFor = baseline?.sot.value ?? null;
+    const shotStrengthIndex = Number.isFinite(historicalShotsFor) ? historicalShotsFor / leagueHistoricalShotsFor : null;
+    const sotStrengthIndex = Number.isFinite(historicalSotFor) ? historicalSotFor / leagueHistoricalSotFor : null;
+    const normalizedShots = shotStrengthIndex ? row.opponent.shots / shotStrengthIndex : null;
+    const normalizedSot = sotStrengthIndex ? row.opponent.shotsOnTarget / sotStrengthIndex : null;
+    return {
+      matchId: row.matchId,
+      opponentTeamId: row.opponentTeamId,
+      actualShots: row.opponent.shots,
+      actualShotsOnTarget: row.opponent.shotsOnTarget,
+      actualXg: Number.isFinite(row.opponent.expectedGoals) ? row.opponent.expectedGoals : null,
+      xgPerShot: row.opponent.shots > 0 && Number.isFinite(row.opponent.expectedGoals) ? round(row.opponent.expectedGoals / row.opponent.shots, 4) : null,
+      opponentHistoricalShotsForPerGame: Number.isFinite(historicalShotsFor) ? round(historicalShotsFor) : null,
+      opponentHistoricalSotForPerGame: Number.isFinite(historicalSotFor) ? round(historicalSotFor) : null,
+      opponentStrengthBaseline: baseline ? { shots: baseline.shots, shotsOnTarget: baseline.sot } : null,
+      shotStrengthIndex: shotStrengthIndex == null ? null : round(shotStrengthIndex, 4),
+      sotStrengthIndex: sotStrengthIndex == null ? null : round(sotStrengthIndex, 4),
+      leagueNormalizedShots: normalizedShots == null ? null : round(normalizedShots),
+      leagueNormalizedShotsOnTarget: normalizedSot == null ? null : round(normalizedSot),
+      normalizedShotsResidualVsHistoricalDefense: normalizedShots == null ? null : round(normalizedShots - historicalShotsAllowed)
+    };
+  });
+  const normalizedShotsValues = diagnostics.map(row => row.leagueNormalizedShots).filter(Number.isFinite);
+  const normalizedSotValues = diagnostics.map(row => row.leagueNormalizedShotsOnTarget).filter(Number.isFinite);
+  return {
+    method: "observed-volume-divided-by-opponent-as-of-stabilized-strength-index",
+    formula: "observed / (opponent historical-current stabilized attack as-of cutoff / league as-of attack)",
+    leagueHistoricalShotsForPerGame: round(leagueHistoricalShotsFor),
+    leagueHistoricalSotForPerGame: round(leagueHistoricalSotFor),
+    rawShots: summary(rows.map(row => row.opponent.shots)),
+    normalizedShots: summary(normalizedShotsValues),
+    robustNormalizedShots: robustUpperMean(normalizedShotsValues),
+    normalizedShotsOnTarget: summary(normalizedSotValues),
+    rows: diagnostics,
+    sampleSize: diagnostics.length,
+    confidence: diagnostics.length >= 5 ? "medium" : "low",
+    modelEffect: "diagnostic-only-no-direct-modifier",
+    caveat: `La forza avversaria viene ricalcolata as-of; prima di ${minimumCurrentMatches} gare usa il prior storico. La normalizzazione non elimina eventi estremi e non sostituisce il modello matchup prospettico.`
+  };
+}
+
+function buildRoleAccessDiagnostics(rows) {
+  const roles = ["CF", "W", "AM", "CM", "DM", "FB", "CB"];
+  const totals = Object.fromEntries(roles.map(role => [role, { actual: 0, expected: 0, matchAdjustedExpected: 0, xg: 0, matches: new Set(), positiveResidualMatches: 0 }]));
+  for (const row of rows) {
+    const eligible = (row.opponentPlayers || []).map(stat => {
+      const rosterPlayer = players.get(stat.playerId);
+      const role = matchupRole(rosterPlayer);
+      const historicalShots90 = rosterPlayer?.previousSeason?.totals?.per90?.shots;
+      if (!role || !Number.isFinite(historicalShots90)) return null;
+      return { role, actual: stat.shots || 0, expected: historicalShots90 * (stat.minutes || 0) / 90, xg: Number.isFinite(stat.expectedGoals) ? stat.expectedGoals : 0 };
+    }).filter(Boolean);
+    const expectedTotal = eligible.reduce((total, item) => total + item.expected, 0);
+    const actualTotal = eligible.reduce((total, item) => total + item.actual, 0);
+    const matchScale = expectedTotal > 0 ? actualTotal / expectedTotal : 1;
+    const matchByRole = new Map();
+    for (const item of eligible) {
+      const roleRow = matchByRole.get(item.role) || { actual: 0, expected: 0, matchAdjustedExpected: 0, xg: 0 };
+      roleRow.actual += item.actual;
+      roleRow.expected += item.expected;
+      roleRow.matchAdjustedExpected += item.expected * matchScale;
+      roleRow.xg += item.xg;
+      matchByRole.set(item.role, roleRow);
+    }
+    for (const [role, item] of matchByRole) {
+      const total = totals[role];
+      total.actual += item.actual;
+      total.expected += item.expected;
+      total.matchAdjustedExpected += item.matchAdjustedExpected;
+      total.xg += item.xg;
+      total.matches.add(row.matchId);
+      if (item.actual > item.matchAdjustedExpected) total.positiveResidualMatches += 1;
+    }
+  }
+  return {
+    method: "individual-historical-shots90-times-observed-minutes-then-match-volume-normalization",
+    roles: Object.fromEntries(roles.map(role => {
+      const item = totals[role];
+      const matches = item.matches.size;
+      return [role, {
+        expectedShots: round(item.expected),
+        actualShots: item.actual,
+        residual: round(item.actual - item.expected),
+        matchAdjustedExpectedShots: round(item.matchAdjustedExpected),
+        matchAdjustedResidual: round(item.actual - item.matchAdjustedExpected),
+        actualXg: round(item.xg),
+        xgPerShot: item.actual ? round(item.xg / item.actual, 4) : null,
+        matches,
+        persistence: matches ? round(item.positiveResidualMatches / matches, 4) : null,
+        positiveResidualMatches: item.positiveResidualMatches
+      }];
+    })),
+    confidence: rows.length >= 5 ? "medium-low" : "low",
+    modelEffect: "diagnostic-only-role-signals-remain-source-controlled",
+    caveat: "Expected usa baseline individuali storiche e minuti osservati; il residuo match-adjusted neutralizza il volume squadra della singola gara e non implica causalita difensiva."
+  };
+}
+
+function buildProfile(config, options = {}) {
+  const matchDataset = options.matches || matches;
   const teamId = config.teamId;
   const historicalVolume = volumeProfiles.get(teamId) || crossCompetitionVolumeProfile(config);
   const historicalStyle = styleProfiles.get(teamId);
   const team = teams.get(teamId);
   if (!historicalVolume || !historicalStyle || !team) throw new Error(`${teamId}: baseline storica o squadra mancante`);
-  const currentMatches = matches.filter(match => match.competition === "serie-a" && match.season === source.season && match.status === "finished" && (match.homeTeam === teamId || match.awayTeam === teamId)).sort((a, b) => a.matchday - b.matchday);
+  const eligibleLeagueMatches = selectCompletedMatches(matchDataset, { competition: source.competition, season: source.season, asOfMatchday: options.asOfMatchday, asOfDate: options.asOfDate, excludeMatchId: options.excludeMatchId });
+  const currentMatches = eligibleLeagueMatches.filter(match => match.homeTeam === teamId || match.awayTeam === teamId).sort(compareCanonicalMatches);
+  if (!currentMatches.length) throw new Error(`${teamId}: nessuna partita conclusa disponibile prima del cutoff richiesto`);
+  const leaguePossessionShotRatesAsOf = eligibleLeagueMatches.flatMap(match => ["home", "away"].map(side => {
+    const stats = match.teamStats?.[side];
+    return stats?.possessionPct > 0 && Number.isFinite(stats.shots) ? stats.shots / (stats.possessionPct / 10) : null;
+  })).filter(Number.isFinite);
+  const leagueXgShotRowsAsOf = eligibleLeagueMatches.flatMap(match => [match.teamStats?.home, match.teamStats?.away]).filter(row => Number.isFinite(row?.expectedGoals) && row.shots > 0);
+  const leagueXgTotalAsOf = leagueXgShotRowsAsOf.reduce((total, row) => total + row.expectedGoals, 0);
+  const leagueShotTotalAsOf = leagueXgShotRowsAsOf.reduce((total, row) => total + row.shots, 0);
+  const leagueXgPerShotAsOf = leagueShotTotalAsOf ? leagueXgTotalAsOf / leagueShotTotalAsOf : null;
   const rows = currentMatches.map(match => {
     const side = match.homeTeam === teamId ? "home" : "away";
     const opponentSide = side === "home" ? "away" : "home";
@@ -388,12 +524,19 @@ function buildProfile(config) {
   const sotAllowedRoleDistribution = shotsAllowedRoleDistribution.sotRoleDistribution;
   const shotsVolatility = volatilityLevel(shotsAllowed), sotVolatility = volatilityLevel(sotAllowed);
   const possession = values("own.possessionPct");
-  const maturity = Math.min(1, rows.length / source.methodology.currentSeasonMaturityMatches);
+  const maturity = sampleMaturity(rows.length, source.methodology.currentSeasonMaturityMatches);
+  const roleAccessDiagnostics = config.opponentStrengthDiagnostics ? buildRoleAccessDiagnostics(rows) : null;
   const positional = Object.fromEntries(Object.entries(config.positionalShotVulnerability).map(([role, item]) => {
-    const status = item.status || (item.active ? "active" : "inactive");
+    const configuredStatus = item.status || (item.active ? "active" : "inactive");
+    const roleEvidence = roleAccessDiagnostics?.roles?.[role];
+    const normalizedMagnitude = roleEvidence?.matchAdjustedExpectedShots > 0 ? Math.max(0, roleEvidence.matchAdjustedResidual / roleEvidence.matchAdjustedExpectedShots) : null;
+    const transition = signalStatusTransition({ configuredStatus, sampleSize: rows.length, initialEvidenceMatches: source.methodology.initialEvidenceMatches || 5, evidenceMatches: roleEvidence?.matches || 0, persistence: roleEvidence?.persistence, stability: Number.isFinite(roleEvidence?.persistence) ? 0.5 + 0.5 * roleEvidence.persistence : null, normalizedMagnitude });
+    const status = transition.status;
     return [role, {
     ...item,
+    configuredStatus,
     status,
+    statusTransition: transition,
     active: status === "active",
     sampleSize: rows.length,
     season: source.season,
@@ -405,8 +548,9 @@ function buildProfile(config) {
     effectiveMaxSotBoostPct: status === "active" ? round((item.maxSotBoostPct ?? item.maxBoostPct) * confidenceWeight(item.confidence) * maturity * (sotVolatility === "high" ? 0.85 : sotVolatility === "medium" ? 0.93 : 1), 2) : 0
   }];
   }));
+  const configuredRegimeMatchIds = new Set((config.currentSeasonRegimes || []).flatMap(regime => regime.matchIds || []));
   const regimes = (config.currentSeasonRegimes || []).map(regime => {
-    const regimeRows = rows.filter(row => regime.matchIds.includes(row.matchId));
+    const regimeRows = rows.filter(row => regime.matchIds.includes(row.matchId) || (regime.status === "active" && !configuredRegimeMatchIds.has(row.matchId)));
     const locationByMatch = new Map(locationRows.map(item => [item.matchId, item]));
     const regimeLocations = regimeRows.map(row => locationByMatch.get(row.matchId)).filter(Boolean);
     return {
@@ -420,9 +564,9 @@ function buildProfile(config) {
       tacticalWeightPerMatch: source.methodology.coachEraTacticalWeights[regime.status] ?? 0,
       volumeUse: "retained-for-structural-and-player-baselines",
       tacticalUse: regime.status === "closed" ? "downweighted-after-coach-change" : "active-era-very-small-sample",
-      shotsAllowedPerGame: round(mean(regimeRows.map(row => row.opponent.shots))),
-      shotsOnTargetAllowedPerGame: round(mean(regimeRows.map(row => row.opponent.shotsOnTarget))),
-      possessionPct: round(mean(regimeRows.map(row => row.own.possessionPct))),
+      shotsAllowedPerGame: regimeRows.length ? round(mean(regimeRows.map(row => row.opponent.shots))) : null,
+      shotsOnTargetAllowedPerGame: regimeRows.length ? round(mean(regimeRows.map(row => row.opponent.shotsOnTarget))) : null,
+      possessionPct: regimeRows.length ? round(mean(regimeRows.map(row => row.own.possessionPct))) : null,
       insideBoxShotsAllowedPerMatch: regimeLocations.length ? round(mean(regimeLocations.map(item => item.insideBox))) : null
     };
   });
@@ -435,6 +579,23 @@ function buildProfile(config) {
     possessionPct: shrink(historicalPossessionPct, activeEra.possessionPct, activeEra.matches, source.methodology.tacticalPriorEquivalentMatchesAfterCoachChange),
     modelStatus: "diagnostic-prior-not-a-new-baseline"
   } : null;
+  const formationSequence = currentMatches.map(match => {
+    const side = match.homeTeam === teamId ? "home" : "away";
+    return { matchId: match.id, matchday: match.matchday, formation: match.formations?.[side] || null };
+  }).filter(item => item.formation);
+  const dominantFormation = sequence => {
+    const counts = sequence.reduce((map, item) => map.set(item.formation, (map.get(item.formation) || 0) + 1), new Map());
+    return [...counts.entries()].sort((left, right) => right[1] - left[1] || left[0].localeCompare(right[0]))[0]?.[0] || null;
+  };
+  const recentFormationSequence = formationSequence.slice(-5);
+  const observedFormationTrend = {
+    seasonToDate: dominantFormation(formationSequence),
+    recent: dominantFormation(recentFormationSequence),
+    recentWindowMatches: recentFormationSequence.length,
+    changeDetected: Boolean(formationSequence.length >= 6 && dominantFormation(formationSequence) && dominantFormation(recentFormationSequence) && dominantFormation(formationSequence) !== dominantFormation(recentFormationSequence)),
+    sequence: formationSequence,
+    modelStatus: "diagnostic-current-regime-input; manager identity still requires canonical source update"
+  };
   const current = {
     matches: rows.length,
     record: { wins: rows.filter(row => row.goalsFor > row.goalsAgainst).length, draws: rows.filter(row => row.goalsFor === row.goalsAgainst).length, losses: rows.filter(row => row.goalsFor < row.goalsAgainst).length, points: rows.reduce((total, row) => total + (row.goalsFor > row.goalsAgainst ? 3 : row.goalsFor === row.goalsAgainst ? 1 : 0), 0), goalsFor: rows.reduce((total, row) => total + row.goalsFor, 0), goalsAgainst: rows.reduce((total, row) => total + row.goalsAgainst, 0), cleanSheets: rows.filter(row => row.goalsAgainst === 0).length, failedToScore: rows.filter(row => row.goalsFor === 0).length },
@@ -454,8 +615,8 @@ function buildProfile(config) {
   const offensiveShotsPersistence = signalPersistence(shotsForValues, historicalShotsFor);
   const offensiveSotPersistence = signalPersistence(sotForValues, historicalSotFor);
   const cornerProductionPersistence = signalPersistence(cornersForValues, historicalCornersFor);
-  const leagueShotPossessionMean = mean(leaguePossessionShotRates);
-  const leagueShotPossessionSd = Math.sqrt(mean(leaguePossessionShotRates.map(value => (value - leagueShotPossessionMean) ** 2)));
+  const leagueShotPossessionMean = mean(leaguePossessionShotRatesAsOf);
+  const leagueShotPossessionSd = Math.sqrt(mean(leaguePossessionShotRatesAsOf.map(value => (value - leagueShotPossessionMean) ** 2)));
   const transitionRows = rows.map(row => {
     const shotsPer10PctPossession = row.opponent.possessionPct > 0 ? row.opponent.shots / (row.opponent.possessionPct / 10) : null;
     return { matchId: row.matchId, opponentTeamId: row.opponentTeamId, opponentPossessionPct: row.opponent.possessionPct, opponentShots: row.opponent.shots, shotsPer10PctPossession: round(shotsPer10PctPossession), leagueNormalizedZ: leagueShotPossessionSd ? round((shotsPer10PctPossession - leagueShotPossessionMean) / leagueShotPossessionSd) : null };
@@ -477,8 +638,8 @@ function buildProfile(config) {
   };
   const gameStateVolume = { status: config.gameStateVolumeInflation?.status || "inactive", confidence: config.gameStateVolumeInflation?.confidence || "low", goalTimestampsAvailable: rows.every(row => currentMatches.find(match => match.id === row.matchId)?.scorers?.every(scorer => Number.isFinite(scorer.minute))), shotTimestampsAvailable: false, tied: null, leading: null, trailing: null, modelEffect: "confidence-only-no-volume-adjustment", reason: "I minuti dei gol sono disponibili, ma i tiri non hanno timestamp: impossibile attribuire correttamente il volume agli stati tied/leading/trailing." };
   const shotQualityFor = aggregateShotQuality(xgForRows, "own");
-  const shotQualityLeagueRelative = Number.isFinite(shotQualityFor.xgPerShot) && Number.isFinite(leagueXgPerShot) ? shotQualityFor.xgPerShot / leagueXgPerShot - 1 : null;
-  const offensiveShotQuality = { ...shotQualityFor, leagueXgPerShot: leagueXgPerShot == null ? null : round(leagueXgPerShot, 4), leagueRelative: shotQualityLeagueRelative == null ? null : round(shotQualityLeagueRelative, 4), leagueSample: { matches: leagueXgShotRows.length / 2, teamMatchRows: leagueXgShotRows.length }, level: shotQualityLeagueRelative == null ? "unknown" : shotQualityLeagueRelative >= 0.2 ? "high" : shotQualityLeagueRelative >= 0.05 ? "elevated" : shotQualityLeagueRelative <= -0.1 ? "low" : "normal", status: xgForRows.length === rows.length ? "active" : "watch", confidence: xgForRows.length === rows.length ? "medium-high" : "low", modelEffect: "quality-context-only-separate-from-shot-and-sot-volume" };
+  const shotQualityLeagueRelative = Number.isFinite(shotQualityFor.xgPerShot) && Number.isFinite(leagueXgPerShotAsOf) ? shotQualityFor.xgPerShot / leagueXgPerShotAsOf - 1 : null;
+  const offensiveShotQuality = { ...shotQualityFor, leagueXgPerShot: leagueXgPerShotAsOf == null ? null : round(leagueXgPerShotAsOf, 4), leagueRelative: shotQualityLeagueRelative == null ? null : round(shotQualityLeagueRelative, 4), leagueSample: { matches: leagueXgShotRowsAsOf.length / 2, teamMatchRows: leagueXgShotRowsAsOf.length }, level: shotQualityLeagueRelative == null ? "unknown" : shotQualityLeagueRelative >= 0.2 ? "high" : shotQualityLeagueRelative >= 0.05 ? "elevated" : shotQualityLeagueRelative <= -0.1 ? "low" : "normal", status: xgForRows.length === rows.length ? "active" : "watch", confidence: xgForRows.length === rows.length ? "medium-high" : "low", modelEffect: "quality-context-only-separate-from-shot-and-sot-volume" };
   const maxShotRow = rows.reduce((best, row) => !best || row.own.shots > best.own.shots ? row : best, null);
   const expandedDistribution = maxShotRow ? roleShotDistribution([maxShotRow], "ownPlayers") : null;
   const volumeExpansionBreadth = {
@@ -523,7 +684,6 @@ function buildProfile(config) {
   const duelSignal = config.disciplineSignal?.foulIntensity;
   const duelEvidenceWeight = historicalDisciplineValues.matches + rows.length > 0 ? (historicalDisciplineValues.matches + rows.length) / (historicalDisciplineValues.matches + rows.length + 12) : 0;
   const directDuelEnvironmentFactor = duelSignal?.status === "active" ? round(1 + duelSignal.directDuelMaxImpactPct / 100 * confidenceWeight(duelSignal.confidence) * duelEvidenceWeight, 4) : 1;
-  const signalEntries = Object.entries(config.vulnerabilitySignals || {});
   const goalsAgainstPerGame = current.record.goalsAgainst / rows.length;
   const expectedGoalsAgainstMean = mean(values("opponent.expectedGoals"));
   const expectedGoalsAgainstPerGame = Number.isFinite(expectedGoalsAgainstMean) ? round(expectedGoalsAgainstMean) : null;
@@ -538,15 +698,58 @@ function buildProfile(config) {
     shotsAllowed: signalStability({ historical: historicalShotsAllowed, current: shotsAllowed.mean, historicalSampleSize: historicalVolume.matches, currentValues: shotsAllowedValues, direction: defensiveSignalDirection }),
     shotsOnTargetAllowed: signalStability({ historical: historicalSotAllowed, current: sotAllowed.mean, historicalSampleSize: historicalVolume.matches, currentValues: sotAllowedValues, direction: defensiveSignalDirection })
   };
+  const opponentStrengthDiagnostics = config.opponentStrengthDiagnostics ? buildOpponentStrengthDiagnostics(rows, historicalShotsAllowed, eligibleLeagueMatches) : null;
+  const metricSignal = (key, metric, stability, direction) => {
+    const signal = config.vulnerabilitySignals?.[key] || {};
+    const configuredStatus = signal.status || "inactive";
+    const historicalMean = metric?.historicalMean;
+    const robustMean = metric?.robustCurrentMean;
+    const normalizedMagnitude = Number.isFinite(historicalMean) && historicalMean > 0 && Number.isFinite(robustMean)
+      ? direction === "suppression" ? Math.max(0, 1 - robustMean / historicalMean) : Math.max(0, robustMean / historicalMean - 1)
+      : null;
+    const transition = signalStatusTransition({ configuredStatus, sampleSize: rows.length, initialEvidenceMatches: source.methodology.initialEvidenceMatches || 5, evidenceMatches: rows.length, persistence: stability?.persistence?.shareInSignalDirection, stability: stability?.score, normalizedMagnitude });
+    return { ...signal, configuredStatus, status: transition.status, statusTransition: transition };
+  };
+  const resolvedVulnerabilitySignals = { ...(config.vulnerabilitySignals || {}) };
+  resolvedVulnerabilitySignals.totalShotVulnerability = metricSignal("totalShotVulnerability", { historicalMean: historicalShotsAllowed, robustCurrentMean: robustShots.value }, defensiveMetricSignals.shotsAllowed, "elevation");
+  resolvedVulnerabilitySignals.sotVulnerability = metricSignal("sotVulnerability", { historicalMean: historicalSotAllowed, robustCurrentMean: robustSot.value }, defensiveMetricSignals.shotsOnTargetAllowed, "elevation");
+  resolvedVulnerabilitySignals.generalShotSuppression = metricSignal("generalShotSuppression", { historicalMean: historicalShotsAllowed, robustCurrentMean: robustShots.value }, signalStability({ historical: historicalShotsAllowed, current: shotsAllowed.mean, historicalSampleSize: historicalVolume.matches, currentValues: shotsAllowedValues, direction: "suppression" }), "suppression");
+  resolvedVulnerabilitySignals.generalSotSuppression = metricSignal("generalSotSuppression", { historicalMean: historicalSotAllowed, robustCurrentMean: robustSot.value }, signalStability({ historical: historicalSotAllowed, current: sotAllowed.mean, historicalSampleSize: historicalVolume.matches, currentValues: sotAllowedValues, direction: "suppression" }), "suppression");
+  const roleSignalMap = { centralForwardShotAccess: ["CF"], centralForwardSOTAccess: ["CF"], centralForwardHighQualityAccess: ["CF"], wideAttackerShotAccess: ["W"], widePlayerShotAccess: ["W"], attackingMidfielderShotAccess: ["AM"], wingerAttackingMidfielderShotAccess: ["W", "AM"], secondLineShotAccess: ["AM", "CM"], secondLineSOTAccess: ["AM", "CM"], fullbackWingbackShotAccess: ["FB"], fullbackWingbackSOTAccess: ["FB"], centerBackShotAccess: ["CB"], centerBackSetPieceShotAccess: ["CB"], centerBackSOTAccess: ["CB"] };
+  for (const [key, rolesForSignal] of Object.entries(roleSignalMap)) {
+    const signal = config.vulnerabilitySignals?.[key];
+    if (!signal) continue;
+    const evidenceRows = rolesForSignal.map(role => roleAccessDiagnostics?.roles?.[role]).filter(Boolean);
+    const expected = evidenceRows.reduce((total, item) => total + (item.matchAdjustedExpectedShots || 0), 0);
+    const residual = evidenceRows.reduce((total, item) => total + (item.matchAdjustedResidual || 0), 0);
+    const evidenceMatches = Math.max(0, ...evidenceRows.map(item => item.matches || 0));
+    const persistence = evidenceRows.length ? mean(evidenceRows.map(item => item.persistence).filter(Number.isFinite)) : null;
+    const normalizedMagnitude = expected > 0 ? Math.max(0, residual / expected) : null;
+    const configuredStatus = signal.status || "watch";
+    const transition = signalStatusTransition({ configuredStatus, sampleSize: rows.length, initialEvidenceMatches: source.methodology.initialEvidenceMatches || 5, evidenceMatches, persistence, stability: Number.isFinite(persistence) ? 0.5 + 0.5 * persistence : null, normalizedMagnitude });
+    resolvedVulnerabilitySignals[key] = { ...signal, configuredStatus, status: transition.status, statusTransition: transition };
+  }
+  const signalEntries = Object.entries(resolvedVulnerabilitySignals);
   return {
     teamId,
     teamName: team.name,
     season: source.season,
     sampleSize: rows.length,
+    dataCutoff: {
+      mode: Number.isInteger(options.asOfMatchday) ? "as-of-matchday" : options.asOfDate ? "as-of-date" : "current-completed",
+      asOfMatchdayExclusive: Number.isInteger(options.asOfMatchday) ? options.asOfMatchday : null,
+      asOfDateExclusive: options.asOfDate || null,
+      excludedMatchId: options.excludeMatchId || null,
+      latestMatchIdUsed: currentMatches.at(-1)?.id || null,
+      latestMatchdayUsed: currentMatches.at(-1)?.matchday || null,
+      currentMatchesUsed: rows.length,
+      completedOnly: true
+    },
     tacticalContext: {
       current: { coach: config.currentTacticalContext.coach, preferredFormation: config.currentTacticalContext.preferredFormation, status: config.currentTacticalContext.status, repositoryTeamCoach: team.coach },
       historicalPrior: { season: historicalStyle.season, formation: historicalStyle.formation?.code || null, formationAppearances: historicalStyle.formation?.appearances || null, note: config.currentTacticalContext.historicalPriorNote },
       currentSeasonRegimes: regimes,
+      observedFormationTrend,
       effectiveTacticalSampleSize,
       activeEraTacticalShrinkage,
       regimeWeighting: { closedEraPerMatch: source.methodology.coachEraTacticalWeights.closed, activeEraPerMatch: source.methodology.coachEraTacticalWeights.active, structuralStatisticsRetainAllMatchesAtFullWeight: true, tacticalStatisticsUseDownweightedClosedEra: true }
@@ -604,17 +807,18 @@ function buildProfile(config) {
       shotsAllowed: { ...shotsAllowed, historicalMean: round(historicalShotsAllowed), robustCurrentMean: robustShots.value, robustMethod: robustShots.method, upperCap: robustShots.cap, shrunkMean: shrunkShots.value, shrinkage: shrunkShots, signalPersistence: shotsPersistence, rawValues: shotsAllowedValues, outliers: rows.filter((row, index) => shotsAllowedValues[index] > robustShots.cap).map((row, index) => ({ matchId: row.matchId, value: shotsAllowedValues[rows.indexOf(row)], matchupFailure: true })) },
       shotsOnTargetAllowed: { ...sotAllowed, historicalMean: round(historicalSotAllowed), robustCurrentMean: robustSot.value, robustMethod: robustSot.method, upperCap: robustSot.cap, shrunkMean: shrunkSot.value, shrinkage: shrunkSot, signalPersistence: sotPersistence, rawValues: sotAllowedValues },
       opponentShotOnTargetRate: { historical: round(historicalOpponentShotOnTargetRate), current: round(currentOpponentShotOnTargetRate), shrunk: shrunkOpponentShotOnTargetRate.value, shrinkage: shrunkOpponentShotOnTargetRate, sampleSize: rows.length, sourceType: "derived-from-observed-team-totals", modelStatus: "diagnostic-separate-from-total-shots" },
+      ...(opponentStrengthDiagnostics ? { opponentStrengthDiagnostics, roleAccessDiagnostics } : {}),
       shotLocation: { insideBox, outsideBox, insideBoxShare: insideBoxShare == null ? null : round(insideBoxShare), insideBoxShotsAllowedPerMatch: insideBoxShotsAllowedPerMatch == null ? null : round(insideBoxShotsAllowedPerMatch), sampleSize: locationRows.length, confidence: locationRows.length ? (config.teamId === "bologna" ? "low" : "medium") : "low", sourceType: locationRows.length ? "derived" : "unavailable", verificationStatus: locationRows.length ? (locationRows.some(row => ["partial-estimate", "estimated"].includes(row.status)) ? "estimated-or-partially-verified" : "verified") : "unavailable", evidence: locationRows },
       opponentShotRoleDistribution: shotsAllowedRoleDistribution,
       shotsAllowedRoleDistribution,
       sotAllowedRoleDistribution,
-      defensiveShotDistributionBreadth: { ...shotsAllowedRoleDistribution.roleShotDistributionBreadth, status: config.vulnerabilitySignals?.defensiveShotDistributionBreadth?.status || "inactive", confidence: config.vulnerabilitySignals?.defensiveShotDistributionBreadth?.confidence || shotsAllowedRoleDistribution.roleShotDistributionBreadth.confidence },
-      defensiveSotDistributionBreadth: { ...shotsAllowedRoleDistribution.roleSotDistributionBreadth, status: config.vulnerabilitySignals?.defensiveSotDistributionBreadth?.status || "inactive", confidence: config.vulnerabilitySignals?.defensiveSotDistributionBreadth?.confidence || shotsAllowedRoleDistribution.roleSotDistributionBreadth.confidence },
-      shotQualityProfile: { for: aggregateShotQuality(xgForRows, "own"), against: aggregateShotQuality(xgAgainstRows, "opponent"), highQualityChanceVulnerability: { level: config.vulnerabilitySignals?.highQualityChanceVulnerability?.level || "not-proven", status: config.vulnerabilitySignals?.highQualityChanceVulnerability?.status || "watch", confidence: config.vulnerabilitySignals?.highQualityChanceVulnerability?.confidence || "low", modelEffect: "none" } },
-      shotPermissionProfile: { totalShotAccess: { value: shotsAllowed.mean, shrunkValue: shrunkShots.value, status: config.vulnerabilitySignals?.totalShotVulnerability?.status || "inactive", confidence: config.vulnerabilitySignals?.totalShotVulnerability?.confidence || "low" }, shotOnTargetAccess: { value: sotAllowed.mean, shrunkValue: shrunkSot.value, status: config.vulnerabilitySignals?.sotVulnerability?.status || "inactive", confidence: config.vulnerabilitySignals?.sotVulnerability?.confidence || "low" }, insideBoxAccess: { value: insideBoxShotsAllowedPerMatch == null ? null : round(insideBoxShotsAllowedPerMatch), sourceType: locationRows.length ? "derived" : "unavailable" }, highQualityShotAccess: { value: config.vulnerabilitySignals?.highQualityChanceVulnerability && xgAgainstRows.length === rows.length ? aggregateShotQuality(xgAgainstRows, "opponent").xgPerShot : null, sourceType: config.vulnerabilitySignals?.highQualityChanceVulnerability && xgAgainstRows.length === rows.length ? "derived-from-team-xg" : "unavailable", status: config.vulnerabilitySignals?.highQualityChanceVulnerability?.status || "watch", reason: "I SOT restano separati dalla qualita: l'xG/shot aggregato non dimostra da solo una vulnerabilita alle grandi occasioni." } },
+      defensiveShotDistributionBreadth: { ...shotsAllowedRoleDistribution.roleShotDistributionBreadth, status: resolvedVulnerabilitySignals.defensiveShotDistributionBreadth?.status || "inactive", confidence: resolvedVulnerabilitySignals.defensiveShotDistributionBreadth?.confidence || shotsAllowedRoleDistribution.roleShotDistributionBreadth.confidence },
+      defensiveSotDistributionBreadth: { ...shotsAllowedRoleDistribution.roleSotDistributionBreadth, status: resolvedVulnerabilitySignals.defensiveSotDistributionBreadth?.status || "inactive", confidence: resolvedVulnerabilitySignals.defensiveSotDistributionBreadth?.confidence || shotsAllowedRoleDistribution.roleSotDistributionBreadth.confidence },
+      shotQualityProfile: { for: aggregateShotQuality(xgForRows, "own"), against: aggregateShotQuality(xgAgainstRows, "opponent"), highQualityChanceVulnerability: { level: resolvedVulnerabilitySignals.highQualityChanceVulnerability?.level || "not-proven", status: resolvedVulnerabilitySignals.highQualityChanceVulnerability?.status || "watch", confidence: resolvedVulnerabilitySignals.highQualityChanceVulnerability?.confidence || "low", modelEffect: "none" } },
+      shotPermissionProfile: { totalShotAccess: { value: shotsAllowed.mean, shrunkValue: shrunkShots.value, status: resolvedVulnerabilitySignals.totalShotVulnerability?.status || "inactive", confidence: resolvedVulnerabilitySignals.totalShotVulnerability?.confidence || "low" }, shotOnTargetAccess: { value: sotAllowed.mean, shrunkValue: shrunkSot.value, status: resolvedVulnerabilitySignals.sotVulnerability?.status || "inactive", confidence: resolvedVulnerabilitySignals.sotVulnerability?.confidence || "low" }, insideBoxAccess: { value: insideBoxShotsAllowedPerMatch == null ? null : round(insideBoxShotsAllowedPerMatch), sourceType: locationRows.length ? "derived" : "unavailable" }, highQualityShotAccess: { value: resolvedVulnerabilitySignals.highQualityChanceVulnerability && xgAgainstRows.length === rows.length ? aggregateShotQuality(xgAgainstRows, "opponent").xgPerShot : null, sourceType: resolvedVulnerabilitySignals.highQualityChanceVulnerability && xgAgainstRows.length === rows.length ? "derived-from-team-xg" : "unavailable", status: resolvedVulnerabilitySignals.highQualityChanceVulnerability?.status || "watch", reason: "I SOT restano separati dalla qualita: l'xG/shot aggregato non dimostra da solo una vulnerabilita alle grandi occasioni." } },
       defensiveMetricSignals,
-      generalShotSuppression: { level: config.vulnerabilitySignals?.generalShotSuppression?.level || "normal", status: config.vulnerabilitySignals?.generalShotSuppression?.status || "inactive", confidence: config.vulnerabilitySignals?.generalShotSuppression?.confidence || "low", centralRatio: round(shrunkShots.value / historicalShotsAllowed, 4), signalStability: defensiveMetricSignals.shotsAllowed, modelEffect: config.interactionPolicy?.direction === "suppression" ? "evidence-weighted-team-volume-before-player-allocation" : "none" },
-      generalSotSuppression: { level: config.vulnerabilitySignals?.generalSotSuppression?.level || "normal", status: config.vulnerabilitySignals?.generalSotSuppression?.status || "inactive", confidence: config.vulnerabilitySignals?.generalSotSuppression?.confidence || "low", centralRatio: round(shrunkSot.value / historicalSotAllowed, 4), signalStability: defensiveMetricSignals.shotsOnTargetAllowed, modelEffect: config.interactionPolicy?.direction === "suppression" ? "evidence-weighted-team-volume-before-player-allocation" : "none" }
+      generalShotSuppression: { ...resolvedVulnerabilitySignals.generalShotSuppression, level: resolvedVulnerabilitySignals.generalShotSuppression?.level || "normal", status: resolvedVulnerabilitySignals.generalShotSuppression?.status || "inactive", confidence: resolvedVulnerabilitySignals.generalShotSuppression?.confidence || "low", centralRatio: round(shrunkShots.value / historicalShotsAllowed, 4), signalStability: signalStability({ historical: historicalShotsAllowed, current: shotsAllowed.mean, historicalSampleSize: historicalVolume.matches, currentValues: shotsAllowedValues, direction: "suppression" }), modelEffect: config.interactionPolicy?.direction === "suppression" ? "evidence-weighted-team-volume-before-player-allocation" : "none" },
+      generalSotSuppression: { ...resolvedVulnerabilitySignals.generalSotSuppression, level: resolvedVulnerabilitySignals.generalSotSuppression?.level || "normal", status: resolvedVulnerabilitySignals.generalSotSuppression?.status || "inactive", confidence: resolvedVulnerabilitySignals.generalSotSuppression?.confidence || "low", centralRatio: round(shrunkSot.value / historicalSotAllowed, 4), signalStability: signalStability({ historical: historicalSotAllowed, current: sotAllowed.mean, historicalSampleSize: historicalVolume.matches, currentValues: sotAllowedValues, direction: "suppression" }), modelEffect: config.interactionPolicy?.direction === "suppression" ? "evidence-weighted-team-volume-before-player-allocation" : "none" }
     },
     vulnerabilities: {
       signals: Object.fromEntries(signalEntries.map(([key, signal]) => [key, { ...signal, sampleSize: rows.length, season: source.season, modelEffect: signal.status !== "active" ? "none" : config.interactionPolicy?.enabled ? "single-dampened-interaction-budget" : !["centralForwardShotAccess", "secondLineShotAccess", "territorialPressureSensitivity"].includes(key) ? "classification-only" : "active-through-positional-policy" }])),
@@ -640,23 +844,30 @@ function buildProfile(config) {
       currentDistribution: summary(cornersForValues), robustCurrentForPerGame: robustUpperMean(cornersForValues).value, robustMethod: robustUpperMean(cornersForValues).method,
       shrunkForPerGame: cornerProductionShrinkage.value,
       historicalAllowedPerGame: historicalVolume.venues.overall.wonCorners.against.mean, currentAllowed: summary(values("opponent.corners")),
-      territorialPressureLink: { status: "experimental", reason: "Cinque gare non consentono di stimare separatamente una relazione stabile." }
+      territorialPressureLink: { status: "experimental", reason: `${rows.length} gare non consentono ancora di stimare separatamente una relazione causale stabile.` }
     },
     volatility: { shotsAllowed: shotsVolatility, shotsOnTargetAllowed: sotVolatility, effect: "confidence-and-uncertainty-only", changesCentralMean: false },
     resultsVsProcessDivergence: { observedGoalsAgainstPerMatch: round(goalsAgainstPerGame), expectedGoalsAgainstPerMatch: expectedGoalsAgainstPerGame, observedGoalsForPerMatch: goalsForPerGame, expectedGoalsForPerMatch: expectedGoalsForPerGame, offensiveResultProcessGap, offensiveLevel: offensiveResultProcessGap == null ? "unknown" : Math.abs(offensiveResultProcessGap) <= 0.3 ? "low" : Math.abs(offensiveResultProcessGap) <= 0.6 ? "medium" : "high", shotsAllowedPerMatch: shotsAllowed.mean, shotsOnTargetAllowedPerMatch: sotAllowed.mean, resultProcessGap, divergenceScore, sampleSize: rows.length, confidence: "medium", modelStatus: "regression-warning-only-no-automatic-goal-compensation", sourceType: expectedGoalsAgainstPerGame == null ? "partial" : "observed-team-stats" },
-    confidence: { overall: config.overallConfidence || (config.teamId === "bologna" ? "low" : "medium-low"), sampleSize: rows.length, maturityWeight: round(maturity), effectiveTacticalSampleSize, reason: config.confidenceReason || (config.teamId === "bologna" ? "Cinque gare divise fra due allenatori; la nuova era Palladino contiene una sola partita." : "Cinque gare e forte dispersione dei volumi concessi.") },
-    modelPolicy: { active: [...signalEntries.filter(([, item]) => item.status === "active").map(([key]) => key), ...Object.entries(config.offensiveSignals || {}).filter(([, item]) => item.status === "active").map(([key]) => `offense-${key}`), ...(Object.values(positional).some(item => item.status === "active") ? ["positional-shot-allocation"] : []), ...(config.offensiveAllocationPolicy?.enabled ? ["team-offensive-allocation"] : [])], watch: [...signalEntries.filter(([, item]) => item.status === "watch").map(([key]) => key), ...Object.entries(positional).filter(([, item]) => item.status === "watch").map(([role]) => `role-${role}`)], inactive: Object.entries(positional).filter(([, item]) => item.status === "inactive").map(([role]) => `role-${role}`), watchActivationCriteria: source.methodology.watchActivationCriteria, interactionPolicy: config.interactionPolicy || { enabled: false, method: "legacy-single-role-factor" }, offensiveAllocationPolicy: config.offensiveAllocationPolicy || { enabled: false, method: "legacy-uniform-reconciliation" }, inactiveForCentralTeamVolume: !config.interactionPolicy?.enabled },
+    confidence: { overall: rows.length <= 5 ? (config.overallConfidence || (config.teamId === "bologna" ? "low" : "medium-low")) : confidenceFromSample(rows.length, historicalVolume.matches, Boolean(config.crossCompetitionHistoricalBaseline?.enabled)), sampleSize: rows.length, maturityWeight: round(maturity), effectiveTacticalSampleSize, reason: rows.length <= 5 ? (config.confidenceReason || (config.teamId === "bologna" ? "Cinque gare divise fra due allenatori; la nuova era Palladino contiene una sola partita." : "Cinque gare e forte dispersione dei volumi concessi.")) : `Confidence ricalcolata su ${rows.length} gare concluse prima del cutoff; prior storico ${config.crossCompetitionHistoricalBaseline?.enabled ? "cross-competition a comparabilita limitata" : "omogeneo"}.` },
+    modelPolicy: { active: [...signalEntries.filter(([, item]) => item.status === "active").map(([key]) => key), ...Object.entries(config.offensiveSignals || {}).filter(([, item]) => item.status === "active").map(([key]) => `offense-${key}`), ...(Object.values(positional).some(item => item.status === "active") ? ["positional-shot-allocation"] : []), ...(config.offensiveAllocationPolicy?.enabled ? ["team-offensive-allocation"] : [])], watch: [...signalEntries.filter(([, item]) => item.status === "watch").map(([key]) => key), ...Object.entries(positional).filter(([, item]) => item.status === "watch").map(([role]) => `role-${role}`)], inactive: Object.entries(positional).filter(([, item]) => item.status === "inactive").map(([role]) => `role-${role}`), watchActivationCriteria: source.methodology.watchActivationCriteria, interactionPolicy: config.interactionPolicy || { enabled: false, method: "legacy-single-role-factor" }, offensiveAllocationPolicy: config.offensiveAllocationPolicy || { enabled: false, method: "legacy-uniform-reconciliation" }, playerPersistenceDiagnostics: Boolean(config.playerPersistenceDiagnostics), inactiveForCentralTeamVolume: !config.interactionPolicy?.enabled },
     dataQuality: { status: "partial-current-season", internalMatchStats: "verified", missingStatisticPolicy: "null-never-zero", shotLocation: locationRows.length ? (locationRows.some(row => ["partial-estimate", "estimated"].includes(row.status)) ? "estimated-or-partially-verified" : "verified") : "unavailable", setPieceOriginCoverage: "unavailable", gameStateShotTimestamps: "unavailable", xgCoverage: { for: xgForRows.length, against: xgAgainstRows.length, matches: rows.length }, playerRoleCoverage: shotsForRoleDistribution.roleCoverage, missingHistoricalPlayerBaselines: shotsForRoleDistribution.playerDistribution.filter(player => player.historicalShots90 == null || player.historicalShotsOnTarget90 == null).map(player => player.playerId), missing: ["field tilt", "tocchi in area strutturati per tutte le gare", "zone tiro native nel dataset interno", "origine open-play/corner/punizione dei singoli tiri", "ingressi in area individuali", "timestamp dei singoli tiri per volume tied/leading/trailing", ...(shotsForRoleDistribution.roleCoverage.genericRoleFallbackShots > 0 ? [`ruolo dettagliato per ${shotsForRoleDistribution.roleCoverage.genericRoleFallbackShots} ${shotsForRoleDistribution.roleCoverage.genericRoleFallbackShots === 1 ? "tiro attribuito" : "tiri attribuiti"} tramite fallback generico`] : []), ...(shotsForRoleDistribution.roleCoverage.unresolvedParticipants.length ? [`${shotsForRoleDistribution.roleCoverage.unresolvedParticipants.length} ${shotsForRoleDistribution.roleCoverage.unresolvedParticipants.length === 1 ? "partecipante current non presente" : "partecipanti current non presenti"} nella rosa corrente`] : []), ...(config.teamId === "bologna" ? ["coach prior Palladino affidabile e separabile dal contesto della squadra precedente"] : [])] },
     evidence: config.evidence
   };
 }
 
+function buildProfiles(options = {}) {
+  const matchDataset = options.matches || matches;
+  assertUniqueMatchIds(matchDataset);
+  const profiles = source.profiles.map(config => buildProfile(config, options));
+  const eligible = selectCompletedMatches(matchDataset, { competition: source.competition, season: source.season, asOfMatchday: options.asOfMatchday, asOfDate: options.asOfDate, excludeMatchId: options.excludeMatchId });
+  return { schemaVersion: 2, competition: source.competition, season: source.season, generatedAt: eligible.flatMap(match => match.sources || []).map(item => item.retrievedAt).filter(Boolean).sort().at(-1) || null, dataCutoff: { mode: Number.isInteger(options.asOfMatchday) ? "as-of-matchday" : options.asOfDate ? "as-of-date" : "current-completed", asOfMatchdayExclusive: Number.isInteger(options.asOfMatchday) ? options.asOfMatchday : null, asOfDateExclusive: options.asOfDate || null, excludedMatchId: options.excludeMatchId || null, completedMatchesUsed: eligible.length }, methodology: source.methodology, coverage: { teams: profiles.length, teamIds: profiles.map(profile => profile.teamId), scope: `Profili comparabili ${profiles.map(profile => profile.teamName).join(", ")}; le altre ${20 - profiles.length} squadre non sono compilate.` }, profiles };
+}
+
 function main() {
-  const profiles = source.profiles.map(buildProfile);
-  const output = { schemaVersion: 1, competition: source.competition, season: source.season, generatedAt: matches.filter(match => match.status === "finished").flatMap(match => match.sources || []).map(item => item.retrievedAt).filter(Boolean).sort().at(-1) || null, methodology: source.methodology, coverage: { teams: profiles.length, teamIds: profiles.map(profile => profile.teamId), scope: `Profili comparabili ${profiles.map(profile => profile.teamName).join(", ")}; le altre ${20 - profiles.length} squadre non sono compilate.` }, profiles };
+  const output = buildProfiles();
   fs.writeFileSync(path.join(root, "data/normalized/team-matchup-profiles-2026-27.json"), `${JSON.stringify(output, null, 2)}\n`);
-  console.log(`OK profili matchup squadra: ${profiles.length} (${profiles.map(profile => profile.teamId).join(", ")})`);
+  console.log(`OK profili matchup squadra: ${output.profiles.length} (${output.profiles.map(profile => profile.teamId).join(", ")})`);
 }
 
 if (require.main === module) main();
-module.exports = { signalPersistence, metricAgreement, signalStability, distributionShape, shooterStructure, roleDistributionBreadth, matchupRoleResolution };
+module.exports = { buildProfile, buildProfiles, signalPersistence, metricAgreement, signalStability, distributionShape, shooterStructure, roleDistributionBreadth, matchupRoleResolution, robustUpperMean, shrink };

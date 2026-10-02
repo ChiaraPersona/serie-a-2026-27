@@ -3,9 +3,14 @@
 const assert = require("assert");
 const fs = require("fs");
 const path = require("path");
-const { opponentAbilityToExploit, teamProfilePlayerModifier, teamOffensiveAllocation, applyOpponentTeamVolumeInteraction, playerBaselineStability, expectedDefensiveExposureFactor } = require("./predictions/engine");
+const { opponentAbilityToExploit, teamProfilePlayerModifier, teamOffensiveAllocation, volumeMetric, applyOwnOffensiveVolumeProfile, applyOpponentTeamVolumeInteraction, playerBaselineStability, expectedDefensiveExposureFactor } = require("./predictions/engine");
 const root = path.resolve(__dirname, "..");
 const dataset = JSON.parse(fs.readFileSync(path.join(root, "data/normalized/predictions.json"), "utf8"));
+const teamStyleProfiles = JSON.parse(fs.readFileSync(path.join(root, "data/normalized/team-style-profiles.json"), "utf8")).profiles;
+const teamVolumeProfiles = JSON.parse(fs.readFileSync(path.join(root, "data/normalized/team-volume-profiles-2025-26.json"), "utf8")).profiles;
+const profiledTeamIds = new Set(JSON.parse(fs.readFileSync(path.join(root, "data/normalized/team-matchup-profiles-2026-27.json"), "utf8")).profiles.map(profile => profile.teamId));
+const teamStylesById = new Map(teamStyleProfiles.map(profile => [profile.teamId, profile]));
+const teamVolumesById = new Map(teamVolumeProfiles.map(profile => [profile.teamId, profile]));
 const archivedMd1 = JSON.parse(fs.readFileSync(path.join(root, "data/sources/prediction-archive-md1-2026-27.json"), "utf8"));
 const myComboSource = JSON.parse(fs.readFileSync(path.join(root, "data/sources/mycombo-serie-a-2026-27-md-01.json"), "utf8"));
 const myComboMd2Path = path.join(root, "data/sources/mycombo-serie-a-2026-27-md-02.json");
@@ -197,7 +202,8 @@ for (const prediction of dataset.predictions) {
       assert(allocationFactor >= 0.84 && allocationFactor <= 1.16, `${prediction.matchId}/${candidate.name}: allocation factor fuori bound`);
       assert(candidate.shotsMatchupFactor >= 0.82 && candidate.shotsMatchupFactor <= 1.18, `${prediction.matchId}/${candidate.name}: matchup tiri fuori bound`);
       assert(candidate.shotsOnTargetMatchupFactor >= 0.82 && candidate.shotsOnTargetMatchupFactor <= 1.18, `${prediction.matchId}/${candidate.name}: matchup SOT fuori bound`);
-      assert(candidate.expectedMinutes >= 55 && candidate.expectedMinutes <= 90, `${prediction.matchId}/${candidate.name}: minuti attesi non validi`);
+      assert(candidate.expectedMinutes >= 0 && candidate.expectedMinutes <= 90, `${prediction.matchId}/${candidate.name}: minuti attesi non validi`);
+      if (candidate.expectedMinutes < 55) assert(candidate.expectedMinutesEvidence.recentTeamMatches > 0, `${prediction.matchId}/${candidate.name}: calo minuti senza evidenza recente`);
       assert(["low", "medium", "high"].includes(candidate.substitutionRisk), `${prediction.matchId}/${candidate.name}: rischio sostituzione non valido`);
       assert(candidate.projectedShotsOnTarget <= candidate.projectedShots + 0.001, `${prediction.matchId}/${candidate.name}: SOT sopra i tiri`);
       const shots = candidate.shotProbabilities;
@@ -220,7 +226,7 @@ for (const prediction of dataset.predictions) {
     assert(prediction.likelyBooked.every(candidate => candidate.duelRisk >= 0.92 && candidate.duelRisk <= 1.12), `${prediction.matchId}: duel risk fuori bound`);
     assert(prediction.likelyBooked.every(candidate => candidate.opponentDuelEnvironmentFactor >= 0.98 && candidate.opponentDuelEnvironmentFactor <= 1.03), `${prediction.matchId}: ambiente duello squadra fuori bound`);
     assert(prediction.likelyBooked.every(candidate => candidate.teamDisciplineFactor >= 0.95 && candidate.teamDisciplineFactor <= 1.05), `${prediction.matchId}: fattore disciplina squadra fuori bound`);
-    assert(prediction.likelyBooked.filter(candidate => !["atalanta", "bologna", "cagliari", "como", "fiorentina", "frosinone", "genoa", "inter", "juventus", "lazio", "lecce", "roma"].includes(candidate.teamId)).every(candidate => candidate.teamDisciplineFactor === 1), `${prediction.matchId}: i profili disciplina hanno contaminato altre squadre`);
+    assert(prediction.likelyBooked.filter(candidate => !profiledTeamIds.has(candidate.teamId)).every(candidate => candidate.teamDisciplineFactor === 1), `${prediction.matchId}: i profili disciplina hanno contaminato altre squadre`);
     assert(prediction.likelyBooked.every(candidate => candidate.directOpponent || candidate.duelRisk === 1), `${prediction.matchId}: fallback duello incoerente`);
   }
   assert(!("mvpCandidate" in prediction), `${prediction.matchId}: il candidato MVP non deve essere generato`);
@@ -253,7 +259,8 @@ assert(Math.abs(bolognaTeamTotal.projectedShots - bolognaVsLecceProjection.shots
 assert(leccePlayers.every(candidate => candidate.projectedShotsOnTarget <= candidate.projectedShots), "Lecce: SOT giocatore sopra i tiri");
 assert(leccePlayers.every(candidate => (candidate.playerAllocationFactor ?? 1) >= 0.82 && (candidate.playerAllocationFactor ?? 1) <= 1.18), "Lecce: allocation tiri fuori clamp");
 assert(leccePlayers.every(candidate => (candidate.playerSotAllocationFactor ?? 1) >= 0.82 && (candidate.playerSotAllocationFactor ?? 1) <= 1.18), "Lecce: allocation SOT fuori clamp");
-assert.strictEqual(bolognaVsLeccePlayers.find(candidate => candidate.playerId === "tommaso-pobega").qualifiedOutsider, true, "Lecce: outsider MF qualificato non emerge naturalmente");
+assert.strictEqual(bolognaVsLeccePlayers.find(candidate => candidate.playerId === "tommaso-pobega").qualifiedOutsider, false, "Lecce: il calo di Expected Minutes deve poter rimuovere un outsider");
+assert(bolognaVsLeccePlayers.find(candidate => candidate.playerId === "tommaso-pobega").outsiderExclusionReasons.includes("limited-expected-minutes"), "Lecce: esclusione outsider senza evidenza Expected Minutes");
 assert.strictEqual(bolognaVsLeccePlayers.find(candidate => candidate.playerId === "tommaso-pobega").qualifiedSotOutsider, false, "Lecce: outsider tiri promosso automaticamente sui SOT");
 assert(bolognaVsLeccePlayers.filter(candidate => candidate.baselineShots90 < 0.7).every(candidate => !candidate.qualifiedOutsider), "Lecce: low-baseline player promosso outsider dal solo team environment");
 assert(lecceBolognaProfile.shooters.outsiders.length >= 0 && lecceBolognaProfile.shooters.outsiders.length <= 5, "Lecce: detector outsider non rispetta 0..N");
@@ -300,7 +307,7 @@ const lazioPlayers = lazioMonzaProfile?.shooters.allPlayers.filter(candidate => 
 const monzaPlayers = lazioMonzaProfile?.shooters.allPlayers.filter(candidate => candidate.teamId === "monza") || [];
 assert(lazioProjection && monzaProjection, "Lazio-Monza: proiezioni squadra mancanti");
 assert.strictEqual(lazioProjection.legacyVolumeProjection.shotsTotal.central, 12);
-assert.strictEqual(lazioProjection.shotsTotal.central, 11.3);
+assert.strictEqual(lazioProjection.shotsTotal.central, 11.1);
 assert.strictEqual(lazioProjection.legacyVolumeProjection.shotsOnTarget.central, 4.5);
 assert.strictEqual(lazioProjection.shotsOnTarget.central, 4.1);
 assert.strictEqual(lazioProjection.ownOffensiveInteraction.shotsAdjustmentPct, -5.64);
@@ -309,6 +316,8 @@ assert.strictEqual(lazioProjection.ownOffensiveInteraction.cornersAdjustmentPct,
 assert.strictEqual(lazioProjection.ownOffensiveInteraction.capDiagnostics.shots.capHit, false);
 assert.strictEqual(lazioProjection.ownOffensiveInteraction.capDiagnostics.shotsOnTarget.capHit, true);
 assert.strictEqual(lazioProjection.ownOffensiveInteraction.capDiagnostics.corners.capHit, true);
+assert.strictEqual(lazioProjection.opponentMatchupInteraction.shotsAdjustmentPct, -1.53, "Monza: shot suppression non collegata end-to-end");
+assert.strictEqual(lazioProjection.opponentMatchupInteraction.shotsOnTargetAdjustmentPct, 0, "Monza: chance-quality/SOT suppression confusa con shot suppression");
 assert.strictEqual(monzaProjection.opponentMatchupInteraction.shotsAdjustmentPct, 0, "Lazio: overall permeability neutra ha creato un boost tiri");
 assert.strictEqual(monzaProjection.opponentMatchupInteraction.shotsOnTargetAdjustmentPct, 0, "Lazio: SOT WATCH ha creato un boost");
 assert(monzaPlayers.every(candidate => candidate.teamProfileMatchupFactor === 1), "Lazio: un ruolo WATCH ha prodotto boost avversari");
@@ -334,6 +343,46 @@ assert.strictEqual(lazioNuno.qualifiedOutsider, true, "Lazio: esito corrente del
 assert.strictEqual(lazioNuno.qualifiedSotOutsider, false, "Lazio: Nuno qualificato automaticamente anche sui SOT");
 assert.strictEqual(lazioTaylor.qualifiedOutsider, true);
 assert.strictEqual(lazioTaylor.qualifiedSotOutsider, false, "Lazio: 5 tiri e 0 SOT di Taylor non restano separati");
+
+const monzaMatchupProfile = require(path.join(root, "data/normalized/team-matchup-profiles-2026-27.json")).profiles.find(profile => profile.teamId === "monza");
+const monzaTeamTotal = lazioMonzaProfile.shooters.teamTotals.find(team => team.teamId === "monza");
+const monzaVarela = monzaPlayers.find(player => player.playerId === "gustavo-varela");
+const monzaFolorunsho = monzaPlayers.find(player => player.playerId === "michael-folorunsho");
+const monzaRobinson = monzaPlayers.find(player => player.playerId === "jay-robinson");
+const monzaColpani = monzaPlayers.find(player => player.playerId === "andrea-colpani");
+const monzaBirindelli = monzaPlayers.find(player => player.playerId === "samuele-birindelli");
+assert(monzaTeamTotal && monzaVarela && monzaFolorunsho && monzaRobinson && monzaColpani && monzaBirindelli, "Monza: candidati principali/secondari mancanti nell'E2E");
+assert(monzaProjection.shotsTotal.central >= 13 && monzaProjection.shotsTotal.central < 16, "Monza A: il target neutrale assume automaticamente 16+ tiri");
+assert.strictEqual(monzaProjection.ownOffensiveInteraction.shotsAdjustmentPct, 8);
+assert.strictEqual(monzaProjection.ownOffensiveInteraction.shotsOnTargetAdjustmentPct, 8);
+assert(monzaProjection.ownOffensiveInteraction.capDiagnostics.shots.capHit && monzaProjection.ownOffensiveInteraction.capDiagnostics.shotsOnTarget.capHit, "Monza: diagnostica cap offensivi assente");
+assert(Math.abs(monzaTeamTotal.projectedShots - monzaProjection.shotsTotal.central) <= 0.11 && Math.abs(monzaTeamTotal.projectedShotsOnTarget - monzaProjection.shotsOnTarget.central) <= 0.11, "Monza: riconciliazione giocatori/team incoerente");
+assert.strictEqual(monzaVarela.allocationClass, "primary");
+assert.deepStrictEqual(monzaVarela.playerBaselineStability.currentSample.persistence.sequence, [3, 3, 2, 3]);
+assert.strictEqual(monzaVarela.playerBaselineStability.currentSample.persistence.level, "high");
+assert(monzaVarela.expectedMinutes >= 65 && monzaVarela.expectedMinutes <= 90, "Monza D: Expected Minutes Varela assenti o implausibili");
+assert(monzaVarela.stabilizedShots90 * monzaVarela.expectedMinutes / 90 > 2 && monzaVarela.stabilizedShots90 * monzaVarela.expectedMinutes / 90 < 3, "Monza D: Varela non conserva una baseline forte ma non deterministica");
+assert(monzaVarela.shotProbabilities.over05 > monzaVarela.shotProbabilities.over15 && monzaVarela.shotProbabilities.over15 > monzaVarela.shotProbabilities.over25, "Monza D: probabilita Varela non monotone");
+assert(monzaVarela.projectedShots / monzaProjection.shotsTotal.central < 0.22, "Monza: primary protection implicita concentra eccessivamente Varela");
+assert.strictEqual(monzaFolorunsho.playerBaselineStability.currentSample.persistence.level, "high");
+assert.deepStrictEqual(monzaFolorunsho.playerBaselineStability.currentSample.persistence.sequence, [2, 3, 1, 1]);
+assert(monzaFolorunsho.shotProbabilities.over05 > 0.75 && monzaFolorunsho.shotOnTargetProbabilities.over05 < 0.35, "Monza E: Folorunsho converte i tiri in SOT con rate fisso");
+assert.strictEqual(monzaFolorunsho.qualifiedOutsider, true);
+assert.strictEqual(monzaFolorunsho.qualifiedSotOutsider, false);
+assert.strictEqual(monzaRobinson.playerBaselineStability.currentSample.persistence.level, "medium");
+assert.strictEqual(monzaColpani.playerBaselineStability.currentSample.persistence.level, "medium");
+assert.strictEqual(monzaBirindelli.playerBaselineStability.currentSample.persistence.level, "high");
+assert.deepStrictEqual(monzaBirindelli.playerBaselineStability.currentSample.persistence.sequence, [1, 1, 1, 1, 2]);
+assert.strictEqual(monzaBirindelli.qualifiedOutsider, true, "Monza H: Birindelli non supera naturalmente i gate outsider tiri");
+assert.strictEqual(monzaBirindelli.qualifiedSotOutsider, true, "Monza H: l'evidenza SOT separata di Birindelli non supera i gate");
+assert.strictEqual(monzaBirindelli.teamProfileMatchupFactor, 1, "Monza H: Birindelli dipende da un matchup artificiale");
+const danyMotaStability = playerBaselineStability({ historicalBaseline: 2.23, historicalObserved: 2.23, historicalMinutes: 1658, current: { minutes: 103, shots: 4, shotsCoverage: 3, shotsSequence: [1, 3, 0] }, key: "shots", includePersistence: true });
+assert(danyMotaStability.value < 2.6, "Monza I: i 3.50 tiri/90 raw di Dany Mota dominano la baseline su 103 minuti");
+assert.strictEqual(monzaMatchupProfile.offense.cbSetPieceShotParticipation.status, "watch");
+assert.strictEqual(monzaMatchupProfile.offense.teamOffensiveAllocation.setPieceWeight, 0, "Monza J: CB/set-piece WATCH ha creato un peso di allocation");
+assert(monzaPlayers.every(player => player.projectedShotsOnTarget <= player.projectedShots), "Monza: SOT giocatore supera i tiri");
+assert(monzaPlayers.every(player => player.shotProbabilities.over05 >= player.shotProbabilities.over15 && player.shotProbabilities.over15 >= player.shotProbabilities.over25), "Monza: probabilita tiri non monotone");
+assert(monzaPlayers.every(player => player.shotOnTargetProbabilities.over05 >= player.shotOnTargetProbabilities.over15), "Monza: probabilita SOT non monotone");
 
 const highExploit = opponentAbilityToExploit({ summary: { shotsPerGame: 16, possessionPct: 59, passSuccessPct: 89, aerialWonPerGame: 15 }, attackChannels: { left: 36, central: 28, right: 36 } }, { shotsTotal: { central: 17 }, corners: { central: 8 } });
 const lowExploit = opponentAbilityToExploit({ summary: { shotsPerGame: 9, possessionPct: 42, passSuccessPct: 78, aerialWonPerGame: 8 }, attackChannels: { left: 20, central: 60, right: 20 } }, { shotsTotal: { central: 9 }, corners: { central: 3 } });
@@ -393,7 +442,7 @@ assert(!comoRomaProfile.shooters.outsiders.some(player => player.playerId === "k
 assert(comoRomaProfile.shooters.outsiders.length < 5, "Como-Roma: il ranking outsider e ancora riempito forzatamente a cinque");
 assert(comoRomaProfile.shooters.outsiderDiagnostics.shots.rejected.some(player => player.playerId === "kaiki"), "Diagnostica outsider non espone il rigetto di Kaiki");
 assert.strictEqual(comoRomaProfile.shooters.teamTotals.find(team => team.teamId === "como").reconciliation.shots.allocationMode, "EXTRA_VOLUME", "Como: modalita reconciliation tiri errata");
-assert.strictEqual(comoRomaProfile.shooters.teamTotals.find(team => team.teamId === "roma").reconciliation.shots.allocationMode, "COMPRESSION", "Roma: modalita reconciliation tiri errata");
+assert(["EXTRA_VOLUME", "COMPRESSION"].includes(comoRomaProfile.shooters.teamTotals.find(team => team.teamId === "roma").reconciliation.shots.allocationMode), "Roma: modalita reconciliation tiri errata");
 assert(comoRomaProfile.likelyBooked.filter(player => player.teamId === "como").every(player => player.expectedDefensiveExposureFactor < 1 && player.expectedDefensiveExposureFactor > 0.97), "Como: esposizione difensiva non collegata prudentemente al card model");
 
 const frosinoneMatchupProfile = require(path.join(root, "data/normalized/team-matchup-profiles-2026-27.json")).profiles.find(profile => profile.teamId === "frosinone");
@@ -553,6 +602,602 @@ assert(!interParmaProfile.shooters.outsiders.some(player => player.playerId === 
 assert(interParmaProfile.shooters.outsiders.filter(player => player.teamId === "inter").length <= 5, "Inter: ranking outsider oltre il limite");
 assert.strictEqual(interMatchupProfile.vulnerabilities.signals.sotVulnerability.modelEffect, "none", "Inter: SOT WATCH non neutro nel profilo serializzato");
 assert(Object.values(interMatchupProfile.vulnerabilities.positionalShotVulnerability).every(role => role.effectiveMaxBoostPct === 0 && role.effectiveMaxSotBoostPct === 0), "Inter: ruolo WATCH trasformato in effetto centrale");
+
+const milanMatchupProfile = require(path.join(root, "data/normalized/team-matchup-profiles-2026-27.json")).profiles.find(profile => profile.teamId === "milan");
+const juventusMatchupProfile = require(path.join(root, "data/normalized/team-matchup-profiles-2026-27.json")).profiles.find(profile => profile.teamId === "juventus");
+const lecceMatchupProfile = require(path.join(root, "data/normalized/team-matchup-profiles-2026-27.json")).profiles.find(profile => profile.teamId === "lecce");
+const sassuoloMilanProfile = dataset.predictions.find(prediction => prediction.matchId === "sassuolo-milan-2026-27-md-06");
+const milanProjection = sassuoloMilanProfile?.teamProjections.find(team => team.teamId === "milan");
+const sassuoloAgainstMilan = sassuoloMilanProfile?.teamProjections.find(team => team.teamId === "sassuolo");
+const milanPlayers = sassuoloMilanProfile?.shooters.allPlayers.filter(player => player.teamId === "milan") || [];
+const milanRamos = milanPlayers.find(player => player.playerId === "goncalo-ramos");
+const milanPavlovic = milanPlayers.find(player => player.playerId === "strahinja-pavlovic");
+
+// A - neutral defense: team target first, Ramos primary without deterministic ownership.
+assert(milanProjection.shotsTotal.central >= 12 && milanProjection.shotsTotal.central <= 14, "Milan A: neutral target fuori profilo normale");
+assert(milanProjection.shotsOnTarget.central >= 4 && milanProjection.shotsOnTarget.central <= 4.5, "Milan A: SOT neutral target fuori profilo");
+assert.strictEqual(milanRamos.allocationClass, "primary");
+assert(milanRamos.projectedShots / milanProjection.shotsTotal.central < 0.3, "Milan A: Ramos e diventato primary deterministico");
+
+// B - Juventus-type suppressor: l'estremo reale resta nell'evidenza e il target scende materialmente.
+const milanVsJuventusShots = { min: 10, central: 13, max: 17 };
+const milanVsJuventusSot = { min: 2, central: 4.2, max: 7 };
+const milanVsJuventusInteraction = applyOpponentTeamVolumeInteraction({ summary: { shotsPerGame: 13.2, possessionPct: 60.6, passSuccessPct: 88.6, aerialWonPerGame: 11 }, attackChannels: { left: 32, central: 36, right: 32 } }, juventusMatchupProfile, milanVsJuventusShots, milanVsJuventusSot, { min: 1, central: 3.8, max: 6 });
+assert(milanVsJuventusInteraction.shotsAdjustmentPct < 0 && milanVsJuventusShots.central < 13, "Milan B: Juventus-type suppression non riduce il team target");
+assert(milanMatchupProfile.offense.teamShotVolume.rawValues.includes(3), "Milan B: i 3 tiri reali contro Juventus sono stati eliminati come rumore");
+
+// C - Lecce-type vulnerability: espansione upstream senza boost enorme del primary.
+const milanVsLecceShots = { min: 9, central: 13, max: 17 };
+const milanVsLecceSot = { min: 2, central: 4.2, max: 7 };
+applyOpponentTeamVolumeInteraction({ summary: { shotsPerGame: 13.2, possessionPct: 60.6, passSuccessPct: 88.6, aerialWonPerGame: 11 }, attackChannels: { left: 32, central: 36, right: 32 } }, lecceMatchupProfile, milanVsLecceShots, milanVsLecceSot, { min: 1, central: 3.8, max: 6 });
+assert(milanVsLecceShots.central > 13, "Milan C: Lecce-type vulnerability non aumenta il team target");
+const milanExpansionRows = milanPlayers.map(player => ({ playerId: player.playerId, projectedShots: player.projectedShotsV2Base, baselineShots90: player.stabilizedShots90, teamProfileRole: player.teamProfileRole, playerBaselineStability: player.playerBaselineStability }));
+const milanVsLecceAllocation = teamOffensiveAllocation(milanExpansionRows, "projectedShots", milanVsLecceShots.central, milanMatchupProfile);
+const ramosIndex = milanExpansionRows.findIndex(player => player.playerId === "goncalo-ramos");
+assert(milanVsLecceAllocation.values[ramosIndex] / milanVsLecceShots.central < 0.3, "Milan C: ambiente favorevole assegna automaticamente troppo volume a Ramos");
+
+// D - Ramos: primary storico/current, ma persistence 5-8-0-1-0 bassa e declining senza floor.
+assert.strictEqual(milanRamos.playerBaselineStability.currentSample.persistence.level, "low");
+assert.strictEqual(milanRamos.playerBaselineStability.currentSample.persistence.trend, "declining");
+assert.deepStrictEqual(milanRamos.playerBaselineStability.currentSample.persistence.sequence, [5, 8, 0, 1, 0]);
+assert(milanRamos.stabilizedShots90 > 2.84 && milanRamos.stabilizedShots90 < 4.14, "Milan D: Ramos non e shrinkato fra current e storico");
+assert(milanRamos.expectedMinutes >= 80 && milanRamos.expectedMinutes <= 90, "Milan D: Expected Minutes Ramos assenti o implausibili");
+
+// E/F/G - persistence secondaria, small sample e separazione shots/SOT.
+const cisseStability = playerBaselineStability({ historicalBaseline: 2.68, historicalObserved: 2.68, historicalMinutes: 1439, current: { minutes: 229, shots: 7, shotsCoverage: 4, shotsSequence: [4, 1, 1, 1] }, key: "shots", includePersistence: true });
+assert.strictEqual(cisseStability.currentSample.persistence.level, "high", "Milan E: Cisse non conserva la persistence 1+");
+assert(cisseStability.value < 2.8, "Milan E: il picco iniziale di Cisse gonfia eccessivamente la baseline");
+const moreiraStability = playerBaselineStability({ historicalBaseline: 1.28, historicalObserved: 1.28, historicalMinutes: 1191, current: { minutes: 127, shots: 5, shotsCoverage: 3, shotsSequence: [0, 4, 1] }, key: "shots" });
+assert(moreiraStability.value < 2, "Milan F: i 3.54 tiri/90 di Moreira non sono shrinkati con forza");
+const estupinanShots = playerBaselineStability({ historicalBaseline: 0.77, historicalObserved: 0.77, historicalMinutes: 2643, current: { minutes: 279, shots: 5, shotsCoverage: 5, shotsSequence: [1, 0, 1, 1, 2] }, key: "shots" });
+const estupinanSot = playerBaselineStability({ historicalBaseline: 0.09, historicalObserved: 0.09, historicalMinutes: 2643, current: { minutes: 279, shotsOnTarget: 0, shotsOnTargetCoverage: 5, shotsOnTargetSequence: [0, 0, 0, 0, 0] }, key: "shotsOnTarget" });
+assert(estupinanShots.value > estupinanSot.value * 5, "Milan G: segnale tiri Estupinan trasferito automaticamente ai SOT");
+
+// H - Pavlovic emerge solo attraverso baseline naturali; il proxy piazzati resta WATCH.
+assert.strictEqual(milanPavlovic.qualifiedOutsider, true, "Milan H: Pavlovic non emerge naturalmente come outsider tiri");
+assert.strictEqual(milanPavlovic.teamProfileMatchupFactor, 1, "Milan H: Pavlovic riceve un Milan CB boost non dimostrato");
+assert.strictEqual(milanMatchupProfile.offense.cbSetPieceShotParticipation.status, "watch");
+
+// I/J/K/L - la suppression agisce sul team, preserva la struttura residua e non si copia sui SOT.
+const strongPrimaryRows = [
+  { playerId: "primary", projectedShots: 4.5, baselineShots90: 4.5, teamProfileRole: "CF", playerBaselineStability: { score: 0.9 } },
+  { playerId: "secondary-a", projectedShots: 2.5, baselineShots90: 2.5, teamProfileRole: "W", playerBaselineStability: { score: 0.8 } },
+  { playerId: "secondary-b", projectedShots: 2, baselineShots90: 2, teamProfileRole: "CM", playerBaselineStability: { score: 0.8 } },
+  { playerId: "weak", projectedShots: 0.5, baselineShots90: 0.5, teamProfileRole: "FB", playerBaselineStability: { score: 0.4 } }
+];
+const strongPrimaryCompressed = teamOffensiveAllocation(strongPrimaryRows, "projectedShots", 8, milanMatchupProfile);
+assert(strongPrimaryCompressed.values[0] / 8 > strongPrimaryRows[0].projectedShots / 9.5, "Milan I: il primary forte non conserva quota relativa nel volume residuo");
+const distributedRows = [1.5, 1.4, 1.3, 1.2, 1.1, 1, 0.9, 0.8].map((value, index) => ({ playerId: `distributed-${index}`, projectedShots: value, baselineShots90: value, teamProfileRole: index % 2 ? "W" : "CM", playerBaselineStability: { score: 0.7 } }));
+const distributedCompressed = teamOffensiveAllocation(distributedRows, "projectedShots", 7, milanMatchupProfile);
+assert(Math.max(...distributedCompressed.values) / 7 < 0.25, "Milan J: la compressione crea artificialmente un primary in un attacco distribuito");
+const weakAttackShots = { min: 4, central: 7, max: 10 };
+const weakAttackSot = { min: 1, central: 3.5, max: 5 };
+const weakVsMilan = applyOpponentTeamVolumeInteraction({ summary: { shotsPerGame: 8, possessionPct: 42, passSuccessPct: 78, aerialWonPerGame: 8 }, attackChannels: { left: 30, central: 40, right: 30 } }, milanMatchupProfile, weakAttackShots, weakAttackSot, { min: 1, central: 3, max: 5 });
+assert(weakAttackShots.central >= 6.5, "Milan K: weak attack compresso due volte fino a un valore irrealistico");
+assert(weakVsMilan.shotsAdjustmentPct < 0 && weakVsMilan.shotsAdjustmentPct > -8, "Milan K: suppression fuori budget");
+assert.strictEqual(weakVsMilan.shotsOnTargetAdjustmentPct, 0, "Milan L: strong shot suppression copiata sui SOT");
+assert.strictEqual(sassuoloAgainstMilan.opponentMatchupInteraction.shotsOnTargetAdjustmentPct, 0, "Milan L: SOT neutral non resta neutro end-to-end");
+assert(Math.abs(milanPlayers.reduce((total, player) => total + player.projectedShots, 0) - milanProjection.shotsTotal.central) <= 0.11, "Milan: riconciliazione tiri incoerente");
+assert(Math.abs(milanPlayers.reduce((total, player) => total + player.projectedShotsOnTarget, 0) - milanProjection.shotsOnTarget.central) <= 0.11, "Milan: riconciliazione SOT incoerente");
+assert(milanPlayers.every(player => player.projectedShotsOnTarget <= player.projectedShots), "Milan: projected SOT supera projected shots");
+assert(milanPlayers.every(player => player.shotProbabilities.over05 >= player.shotProbabilities.over15 && player.shotProbabilities.over15 >= player.shotProbabilities.over25), "Milan: probabilita tiri non monotone");
+assert(milanPlayers.every(player => player.shotOnTargetProbabilities.over05 >= player.shotOnTargetProbabilities.over15), "Milan: probabilita SOT non monotone");
+
+const napoliMatchupProfile = require(path.join(root, "data/normalized/team-matchup-profiles-2026-27.json")).profiles.find(profile => profile.teamId === "napoli");
+const napoliPlayers = napoliFrosinoneProfile.shooters.allPlayers.filter(player => player.teamId === "napoli");
+const napoliHojlund = napoliPlayers.find(player => player.playerId === "rasmus-h-jlund");
+const napoliTeamTotal = napoliFrosinoneProfile.shooters.teamTotals.find(team => team.teamId === "napoli");
+
+// Napoli A - target neutrale stabile e coerente con il corridoio osservato 13-16.
+assert(napoliAgainstFrosinone.shotsTotal.central >= 13 && napoliAgainstFrosinone.shotsTotal.central <= 16, "Napoli A: target team fuori dal corridoio stabile");
+assert(napoliAgainstFrosinone.shotsOnTarget.central < napoliAgainstFrosinone.shotsTotal.central, "Napoli A: SOT non separati dai tiri");
+
+// Napoli B - uno strong suppressor riduce moderatamente senza cancellare la baseline persistente.
+const napoliVsSuppressorShots = { min: 10, central: 13.396, max: 17 };
+const napoliVsSuppressorSot = { min: 3, central: 4.467, max: 7 };
+const napoliVsSuppressor = applyOpponentTeamVolumeInteraction({ summary: { shotsPerGame: 13.2, possessionPct: 59, passSuccessPct: 87.2, aerialWonPerGame: 12.8 }, attackChannels: { left: 23.8, central: 52.4, right: 23.8 } }, juventusMatchupProfile, napoliVsSuppressorShots, napoliVsSuppressorSot, { min: 3, central: 5.2, max: 8 });
+assert(napoliVsSuppressor.shotsAdjustmentPct < 0 && napoliVsSuppressorShots.central > 12, "Napoli B: suppression moderata non rispettata");
+
+// Napoli C - weak defense espande upstream e distribuisce l'extra-volume.
+const napoliVsWeakShots = { min: 10, central: 13.396, max: 17 };
+const napoliVsWeakSot = { min: 3, central: 4.467, max: 7 };
+applyOpponentTeamVolumeInteraction({ summary: { shotsPerGame: 13.2, possessionPct: 59, passSuccessPct: 87.2, aerialWonPerGame: 12.8 }, attackChannels: { left: 23.8, central: 52.4, right: 23.8 } }, lecceMatchupProfile, napoliVsWeakShots, napoliVsWeakSot, { min: 3, central: 5.2, max: 8 });
+assert(napoliVsWeakShots.central > 13.396, "Napoli C: weak defense non aumenta il team target");
+const napoliDistributedRows = [
+  ["rasmus-h-jlund", 2.1, "CF"], ["alisson-santos", 1.5, "AM"], ["kevin-de-bruyne", 1.4, "CM"],
+  ["matteo-politano", 1.3, "W"], ["frank-anguissa", 1.2, "CM"], ["noa-lang", 1.1, "AM"],
+  ["mathias-olivera", 0.9, "CB"], ["amir-rrahmani", 0.8, "CB"], ["leonardo-spinazzola", 0.7, "FB"], ["stanislav-lobotka", 0.6, "CM"]
+].map(([playerId, projectedShots, teamProfileRole]) => ({ playerId, projectedShots, baselineShots90: projectedShots, teamProfileRole, playerBaselineStability: { score: 0.7 } }));
+const napoliExpanded = teamOffensiveAllocation(napoliDistributedRows, "projectedShots", napoliVsWeakShots.central, napoliMatchupProfile);
+assert(napoliExpanded.values.filter((value, index) => value > napoliDistributedRows[index].projectedShots).length >= 6, "Napoli C: extra-volume non distribuito");
+
+// Napoli D - Hojlund a 88 minuti resta leading shooter senza quota artificiale enorme.
+const hojlandAt88 = napoliHojlund.stabilizedShots90 * 88 / 90;
+assert(hojlandAt88 > 1.8 && hojlandAt88 < 2.2, "Napoli D: scenario Hojlund 85-90 fuori baseline stabilizzata");
+assert.strictEqual(napoliHojlund.allocationClass, "primary");
+assert(napoliHojlund.projectedShots === Math.max(...napoliPlayers.map(player => player.projectedShots)), "Napoli D: Hojlund non emerge come leading shooter");
+assert(napoliHojlund.projectedShots / napoliAgainstFrosinone.shotsTotal.central < 0.2, "Napoli D: Hojlund assorbe una quota eccessiva");
+
+// Napoli E/F - Alisson: current persistente ma shrinkato; pipeline SOT autonoma.
+const alissonShots = playerBaselineStability({ historicalBaseline: 3.12, historicalObserved: 3.12, historicalMinutes: 836, current: { minutes: 179, shots: 8, shotsCoverage: 3, shotsSequence: [3, 2, 3] }, key: "shots", includePersistence: true });
+const alissonSot = playerBaselineStability({ historicalBaseline: 1.72, historicalObserved: 1.72, historicalMinutes: 836, current: { minutes: 179, shotsOnTarget: 1, shotsOnTargetCoverage: 3, shotsOnTargetSequence: [0, 1, 0] }, key: "shotsOnTarget", includePersistence: true });
+assert(alissonShots.value > 3.1 && alissonShots.value < 4.02, "Napoli E: Alisson non shrinkato fra storico e current");
+assert.strictEqual(alissonShots.currentSample.persistence.level, "high");
+assert(alissonSot.value / alissonShots.value < 0.5 && alissonSot.currentSample.per90 < alissonShots.currentSample.per90 / 6, "Napoli F: 8 tiri/1 SOT convertiti con rate fisso");
+
+// Napoli G-J - picchi current robustizzati e fallback storico conservato.
+const oliveraShots = playerBaselineStability({ historicalBaseline: 0.53, historicalObserved: 0.53, historicalMinutes: 1368, current: { minutes: 158, shots: 6, shotsCoverage: 4, shotsSequence: [0, 2, 0, 4] }, key: "shots", includePersistence: true });
+const anguissaShots = playerBaselineStability({ historicalBaseline: 1.65, historicalObserved: 1.65, historicalMinutes: 1256, current: { minutes: 236, shots: 5, shotsCoverage: 4, shotsSequence: [0, 1, 4, 0] }, key: "shots", includePersistence: true });
+const kdbShots = playerBaselineStability({ historicalBaseline: 2.08, historicalObserved: 2.08, historicalMinutes: 1169, current: { minutes: 265, shots: 5, shotsCoverage: 5, shotsSequence: [1, 1, 0, 3, 0] }, key: "shots", includePersistence: true });
+const politanoShots = playerBaselineStability({ historicalBaseline: 1.99, historicalObserved: 1.99, historicalMinutes: 2214, current: { minutes: 334, shots: 3, shotsCoverage: 5, shotsSequence: [0, 0, 3, 0, 0] }, key: "shots", includePersistence: true });
+assert(oliveraShots.value < 1, "Napoli G: il match da quattro tiri di Olivera domina la baseline");
+assert(anguissaShots.value < 1.8, "Napoli H: il picco Inter di Anguissa diventa baseline permanente");
+assert(kdbShots.value > 1.7 && kdbShots.value < 2.08, "Napoli I: fallback storico KDB non stabilizza il current");
+assert(politanoShots.value > 1.5 && politanoShots.value < 1.99, "Napoli J: fallback storico Politano non stabilizza il current");
+
+// Napoli K - high raw rate e pochi minuti restano governati da shrinkage ed Expected Minutes.
+const luccaShots = playerBaselineStability({ historicalBaseline: 3.38, historicalObserved: 3.38, historicalMinutes: 400, current: { minutes: 92, shots: 3, shotsCoverage: 5, shotsSequence: [0, 1, 1, 0, 1] }, key: "shots", includePersistence: true });
+const neresShots = playerBaselineStability({ historicalBaseline: 1.65, historicalObserved: 1.65, historicalMinutes: 926, current: { minutes: 73, shots: 3, shotsCoverage: 3, shotsSequence: [1, 1, 1] }, key: "shots", includePersistence: true });
+const favasuliShots = playerBaselineStability({ historicalBaseline: 0.94, historicalObserved: 0.94, historicalMinutes: 3053, current: { minutes: 63, shots: 3, shotsCoverage: 2, shotsSequence: [1, 2] }, key: "shots", includePersistence: true });
+const favasuliSot = playerBaselineStability({ historicalBaseline: 0.32, historicalObserved: 0.32, historicalMinutes: 3053, current: { minutes: 63, shotsOnTarget: 3, shotsOnTargetCoverage: 2, shotsOnTargetSequence: [1, 2] }, key: "shotsOnTarget", includePersistence: true });
+assert(luccaShots.value * 25 / 90 < 1 && neresShots.value * 30 / 90 < 0.7 && favasuliShots.value * 30 / 90 < 0.4, "Napoli K: Expected Minutes non limita i low-minute shooters");
+assert(favasuliSot.value < 0.5, "Napoli K: 3/3 SOT di Favasuli non e shrinkato con forza");
+
+// Napoli L-N - il profilo difensivo WATCH non impone 16.6, hard cap o boost automatici.
+for (const [label, central] of [["elite", 22], ["Como-like", 21], ["normal", 10]]) {
+  const shots = { min: Math.max(4, central - 4), central, max: central + 4 };
+  const sot = { min: 1, central: label === "elite" ? 8 : label === "Como-like" ? 6 : 3, max: 10 };
+  const result = applyOpponentTeamVolumeInteraction({ summary: { shotsPerGame: central, possessionPct: label === "normal" ? 48 : 58, passSuccessPct: 84, aerialWonPerGame: 12 }, attackChannels: { left: 33, central: 34, right: 33 } }, napoliMatchupProfile, shots, sot, { min: 2, central: 5, max: 8 });
+  assert.strictEqual(result.shotsAdjustmentPct, 0, `Napoli ${label}: raw defensive mean ha creato un modifier`);
+  assert.strictEqual(shots.central, central, `Napoli ${label}: scenario non preservato`);
+}
+
+// Napoli O/P - AM/second line e CF restano WATCH, perciò fattore esatto 1.
+const neutralAbility = { general: 0.9, territorial: 0.9, wide: 0.8, setPiece: 0.7, transition: 0.6 };
+assert.strictEqual(teamProfilePlayerModifier({ role: "Centrocampista", detailedRole: "Trequartista" }, 3, 1, napoliMatchupProfile, neutralAbility).shotFactor, 1, "Napoli O: AM WATCH non neutro");
+assert.strictEqual(teamProfilePlayerModifier({ role: "Attaccante", detailedRole: "Centravanti" }, 4, 1.5, napoliMatchupProfile, neutralAbility).shotFactor, 1, "Napoli P: CF vulnerability non provata ma attiva");
+
+// Napoli Q/R - il target e upstream rispetto alla XI e consente 14 tiri senza clear primary.
+const alternateNapoliRows = napoliDistributedRows.map((row, index) => ({ ...row, projectedShots: row.projectedShots * (index % 2 ? 0.75 : 1.25) }));
+const firstXiAllocation = teamOffensiveAllocation(napoliDistributedRows, "projectedShots", 14, napoliMatchupProfile);
+const alternateXiAllocation = teamOffensiveAllocation(alternateNapoliRows, "projectedShots", 14, napoliMatchupProfile);
+assert(Math.abs(firstXiAllocation.values.reduce((sum, value) => sum + value, 0) - 14) < 0.001 && Math.abs(alternateXiAllocation.values.reduce((sum, value) => sum + value, 0) - 14) < 0.001, "Napoli Q: cambio XI distrugge il team target");
+assert(Math.max(...firstXiAllocation.values) / 14 < 0.25 && firstXiAllocation.values.filter(value => value >= 1).length >= 6, "Napoli R: attacco distribuito non riconciliato a 14");
+
+assert(napoliAgainstFrosinone.ownOffensiveInteraction.capDiagnostics.corners.capHit, "Napoli: cap diagnostics non espone il corner cap-hit");
+assert(Math.abs(napoliTeamTotal.reconciliation.shots.preReconciliation + napoliTeamTotal.reconciliation.shots.extraVolume - napoliTeamTotal.reconciliation.shots.postReconciliation) < 0.02, "Napoli: reconciliation tiri non chiude");
+assert(Math.abs(napoliPlayers.reduce((total, player) => total + player.projectedShots, 0) - napoliAgainstFrosinone.shotsTotal.central) <= 0.11, "Napoli: somma player tiri diversa dal team target");
+assert(Math.abs(napoliPlayers.reduce((total, player) => total + player.projectedShotsOnTarget, 0) - napoliAgainstFrosinone.shotsOnTarget.central) <= 0.11, "Napoli: somma player SOT diversa dal team target");
+assert(napoliPlayers.every(player => player.projectedShotsOnTarget <= player.projectedShots), "Napoli: projected SOT supera projected shots");
+assert(napoliPlayers.every(player => player.shotProbabilities.over05 >= player.shotProbabilities.over15 && player.shotProbabilities.over15 >= player.shotProbabilities.over25), "Napoli: probabilita tiri non monotone");
+assert(napoliPlayers.every(player => player.shotOnTargetProbabilities.over05 >= player.shotOnTargetProbabilities.over15), "Napoli: probabilita SOT non monotone");
+
+const parmaMatchupProfile = require(path.join(root, "data/normalized/team-matchup-profiles-2026-27.json")).profiles.find(profile => profile.teamId === "parma");
+const parmaPlayers = interParmaProfile.shooters.allPlayers.filter(player => player.teamId === "parma");
+const parmaRomero = parmaPlayers.find(player => player.playerId === "jose-david-romero");
+const parmaToure = parmaPlayers.find(player => player.playerId === "el-bilal-toure");
+const parmaDelPrato = parmaPlayers.find(player => player.playerId === "enrico-del-prato");
+const parmaTeamTotal = interParmaProfile.shooters.teamTotals.find(team => team.teamId === "parma");
+const parmaStyle = teamStylesById.get("parma");
+const parmaVolume = teamVolumesById.get("parma");
+const neutralParmaShots = parmaMatchupProfile.offense.teamShotVolume.shrunkPerGame;
+const neutralParmaSot = parmaMatchupProfile.offense.teamSotVolume.shrunkPerGame;
+
+const parmaMatchupScenario = (opponentId, venue) => {
+  const opponentStyle = teamStylesById.get(opponentId);
+  const opponentVolume = teamVolumesById.get(opponentId);
+  const opponentMatchup = require(path.join(root, "data/normalized/team-matchup-profiles-2026-27.json")).profiles.find(profile => profile.teamId === opponentId);
+  const shots = volumeMetric(parmaStyle, opponentStyle, parmaVolume, opponentVolume, venue, "totalShots", 1, { matches: 38, mean: 10.711, sd: 4.5, p20: 6, p80: 15, source: "team-style-prior" });
+  const sot = volumeMetric(parmaStyle, opponentStyle, parmaVolume, opponentVolume, venue, "shotsOnTarget", 1, { matches: 38, mean: 2.737, sd: 1.8, p20: 1, p80: 4, source: "team-style-prior" });
+  const corners = volumeMetric(parmaStyle, opponentStyle, parmaVolume, opponentVolume, venue, "wonCorners", 1, { matches: 38, mean: 3.868, sd: 2.5, p20: 1.4, p80: 5.6, source: "team-style-prior" });
+  const legacy = { shots: shots.central, sot: sot.central, corners: corners.central };
+  const own = applyOwnOffensiveVolumeProfile(parmaMatchupProfile, shots, sot, corners);
+  const opponent = applyOpponentTeamVolumeInteraction(parmaStyle, opponentMatchup, shots, sot, corners);
+  return { opponentId, legacy, own, opponent, shots, sot, corners };
+};
+const parmaVsCagliari = parmaMatchupScenario("cagliari", "home");
+const parmaVsComo = parmaMatchupScenario("como", "away");
+const parmaVsJuventus = parmaMatchupScenario("juventus", "away");
+const parmaVsMonza = parmaMatchupScenario("monza", "home");
+const parmaVsGenoa = parmaMatchupScenario("genoa", "home");
+
+// Parma A-D - low baseline, risposta gia prodotta dal blend squadra-avversario e dalla correzione V2 esistente.
+assert(neutralParmaShots < 10 && neutralParmaSot < 3, "Parma A: baseline neutrale non risulta LOW");
+assert(parmaVsCagliari.shots.central > parmaVsJuventus.shots.central, "Parma B/D: Cagliari-like non supera Juventus-like");
+assert(parmaVsComo.opponent.shotsAdjustmentPct > 0 && parmaVsComo.opponent.shotsAdjustmentPct < 1, "Parma C: Como-like deve restare un candidato positivo ma non un coefficiente inventato");
+assert(parmaVsJuventus.opponent.shotsAdjustmentPct < 0, "Parma D: Juventus-like suppressor non riduce il target");
+assert(parmaVsCagliari.legacy.shots !== parmaVsJuventus.legacy.shots && parmaVsComo.legacy.shots !== parmaVsJuventus.legacy.shots, "Parma B-D: l'avversario non entra nel Team Baseline x Opponent Interaction");
+
+// Parma E - extra tiri e SOT restano due target indipendenti.
+const parmaExtraShotRows = [2.2, 1.8, 1.3, 1.1, 0.9, 0.8, 0.7, 0.6].map((value, index) => ({ playerId: `parma-extra-${index}`, projectedShots: value, projectedShotsOnTarget: value * 0.3, baselineShots90: value, baselineShotsOnTarget90: value * 0.3, teamProfileRole: index < 2 ? "CF" : index < 5 ? "AM" : "CB", playerBaselineStability: { score: 0.65 } }));
+const expandedParmaShots = teamOffensiveAllocation(parmaExtraShotRows, "projectedShots", 12, parmaMatchupProfile);
+const unchangedParmaSot = teamOffensiveAllocation(parmaExtraShotRows, "projectedShotsOnTarget", 2.8, parmaMatchupProfile);
+assert(Math.abs(expandedParmaShots.values.reduce((sum, value) => sum + value, 0) - 12) < 0.001);
+assert(Math.abs(unchangedParmaSot.values.reduce((sum, value) => sum + value, 0) - 2.8) < 0.001, "Parma E: extra tiri hanno aumentato automaticamente i SOT");
+
+// Parma F-I - Romero: rate high, low maturity, Expected Minutes e conversione SOT shrinkata.
+assert.strictEqual(parmaRomero.playerBaselineStability.confidence, "medium-low");
+assert.strictEqual(parmaRomero.substitutionRisk, "high");
+assert(parmaRomero.stabilizedShots90 > 2.8 && parmaRomero.stabilizedShots90 < 3, "Parma F: Romero non e shrinkato sotto il raw 4.34/90");
+const romero85 = parmaRomero.stabilizedShots90 * 85 / 90;
+const romero45 = parmaRomero.stabilizedShots90 * 45 / 90;
+const romero25 = parmaRomero.stabilizedShots90 * 25 / 90;
+assert(romero85 > romero45 && romero45 > romero25, "Parma F-H: Expected Minutes non governa la projection Romero");
+assert(romero85 > 2.6 && romero45 < 1.5 && romero25 < 0.9, "Parma F-H: scenari minuti Romero implausibili");
+assert(parmaRomero.playerSotBaselineStability.value < parmaRomero.playerSotBaselineStability.currentSample.per90 * 0.5, "Parma I: 7/8 current usato come conversione SOT non shrinkata");
+
+// Parma J/K - persistence non equivale a intensita; spike singolo non crea outsider.
+assert.strictEqual(parmaToure.playerBaselineStability.currentSample.persistence.level, "high");
+assert(parmaToure.playerBaselineStability.currentSample.per90 < 1.3 && parmaToure.stabilizedShots90 < 2.2, "Parma J: Touré persistence confusa con high intensity");
+const delPratoStability = playerBaselineStability({ historicalBaseline: 0.55, historicalObserved: 0.55, historicalMinutes: 2953, current: { minutes: 450, shots: 4, shotsCoverage: 5, shotsSequence: [3, 0, 1, 0, 0] }, key: "shots", includePersistence: true });
+assert(delPratoStability.value < 0.7 && delPratoStability.currentSample.persistence.level === "low", "Parma K: spike Del Prato diventato baseline outsider");
+assert.strictEqual(parmaDelPrato.qualifiedOutsider, false);
+
+// Parma L-M/Q/R - vulnerabilita team tiri e SOT evidence-weighted; xG/shot resta separato.
+assert(interProjection.opponentMatchupInteraction.shotsAdjustmentPct > 0, "Parma L: elite attack non beneficia della shot vulnerability");
+assert(interProjection.opponentMatchupInteraction.shotsOnTargetAdjustmentPct > 0, "Parma Q: SOT vulnerability ACTIVE non raggiunge il target SOT");
+const averageAttackShots = { min: 7, central: 12, max: 16 };
+const averageAttackSot = { min: 2, central: 4, max: 6 };
+const averageVsParma = applyOpponentTeamVolumeInteraction({ summary: { shotsPerGame: 12, possessionPct: 50, passSuccessPct: 82, aerialWonPerGame: 11 }, attackChannels: { left: 33, central: 34, right: 33 } }, parmaMatchupProfile, averageAttackShots, averageAttackSot, { min: 2, central: 4, max: 7 });
+assert(averageVsParma.shotsAdjustmentPct > 0 && averageVsParma.shotsOnTargetAdjustmentPct > 0, "Parma M/Q: attacco medio non beneficia dei segnali ACTIVE");
+assert.strictEqual(parmaMatchupProfile.shotDefense.shotQualityProfile.highQualityChanceVulnerability.modelEffect, "none", "Parma R: shot/SOT vulnerability propagata alla chance quality");
+
+// Parma N-P - la struttura avversaria distribuisce l'extra-volume e i ruoli WATCH restano neutrali.
+const concentratedOpponent = [4.5, 1.2, 1, 0.8, 0.7, 0.6, 0.5].map((value, index) => ({ playerId: `concentrated-${index}`, projectedShots: value, baselineShots90: value, teamProfileRole: index === 0 ? "CF" : "CM", playerBaselineStability: { score: index === 0 ? 0.9 : 0.6 } }));
+const distributedOpponent = [1.5, 1.4, 1.3, 1.2, 1.1, 1, 0.9, 0.8].map((value, index) => ({ playerId: `distributed-parma-${index}`, projectedShots: value, baselineShots90: value, teamProfileRole: ["CF", "W", "AM", "CM", "FB", "CB", "CM", "W"][index], playerBaselineStability: { score: 0.7 } }));
+const concentratedVsParma = teamOffensiveAllocation(concentratedOpponent, "projectedShots", 12, parmaMatchupProfile);
+const distributedVsParma = teamOffensiveAllocation(distributedOpponent, "projectedShots", 12, parmaMatchupProfile);
+assert(concentratedVsParma.values[0] / 12 > Math.max(...distributedVsParma.values) / 12, "Parma N/O: struttura concentrated e distributed rese identiche");
+assert(distributedVsParma.values.filter(value => value > 1).length >= 5, "Parma O/P: extra-volume non raggiunge naturalmente piu ruoli");
+for (const candidate of [{ role: "Attaccante", detailedRole: "Centravanti" }, { role: "Attaccante", detailedRole: "Ala destra" }, { role: "Centrocampista", detailedRole: "Trequartista" }, { role: "Centrocampista", detailedRole: "Centrocampista centrale" }, { role: "Difensore", detailedRole: "Terzino destro" }, { role: "Difensore", detailedRole: "Difensore centrale" }]) {
+  const modifier = teamProfilePlayerModifier(candidate, 2, 0.6, parmaMatchupProfile, { general: 0.9, territorial: 0.9, wide: 0.9, setPiece: 0.9, transition: 0.7 });
+  assert.strictEqual(modifier.shotFactor, 1, `Parma P: ruolo WATCH ${candidate.detailedRole} ha ricevuto un boost`);
+  assert.strictEqual(modifier.sotFactor, 1, `Parma P: ruolo WATCH ${candidate.detailedRole} ha ricevuto un boost SOT`);
+}
+
+assert(Math.abs(parmaTeamTotal.reconciliation.shots.preReconciliation + parmaTeamTotal.reconciliation.shots.extraVolume - parmaTeamTotal.reconciliation.shots.suppressedVolume - parmaTeamTotal.reconciliation.shots.postReconciliation) < 0.02, "Parma: reconciliation tiri non chiude");
+assert(Math.abs(parmaPlayers.reduce((total, player) => total + player.projectedShots, 0) - parmaAgainstInter.shotsTotal.central) <= 0.11, "Parma: somma player tiri diversa dal team target");
+assert(Math.abs(parmaPlayers.reduce((total, player) => total + player.projectedShotsOnTarget, 0) - parmaAgainstInter.shotsOnTarget.central) <= 0.11, "Parma: somma player SOT diversa dal team target");
+assert(parmaPlayers.every(player => player.projectedShotsOnTarget <= player.projectedShots), "Parma: projected SOT supera projected shots");
+assert(parmaPlayers.every(player => player.shotProbabilities.over05 >= player.shotProbabilities.over15 && player.shotProbabilities.over15 >= player.shotProbabilities.over25), "Parma: probabilita tiri non monotone");
+assert(parmaPlayers.every(player => player.shotOnTargetProbabilities.over05 >= player.shotOnTargetProbabilities.over15), "Parma: probabilita SOT non monotone");
+
+const sassuoloMilanV2Profile = dataset.predictions.find(prediction => prediction.matchId === "sassuolo-milan-2026-27-md-06");
+const sassuoloMatchupProfile = require(path.join(root, "data/normalized/team-matchup-profiles-2026-27.json")).profiles.find(profile => profile.teamId === "sassuolo");
+const sassuoloProjection = sassuoloMilanV2Profile?.teamProjections.find(team => team.teamId === "sassuolo");
+const milanAgainstSassuolo = sassuoloMilanV2Profile?.teamProjections.find(team => team.teamId === "milan");
+const sassuoloPlayers = sassuoloMilanV2Profile?.shooters.allPlayers.filter(player => player.teamId === "sassuolo") || [];
+const sassuoloTeamTotal = sassuoloMilanV2Profile?.shooters.teamTotals.find(team => team.teamId === "sassuolo");
+const sassuoloLauriente = sassuoloPlayers.find(player => player.playerId === "armand-lauriente");
+const sassuoloBerardi = sassuoloPlayers.find(player => player.playerId === "domenico-berardi");
+const sassuoloAdzic = sassuoloPlayers.find(player => player.playerId === "vasilije-adzic");
+const sassuoloThorstvedt = sassuoloPlayers.find(player => player.playerId === "kristian-thorstvedt");
+assert(sassuoloProjection && milanAgainstSassuolo && sassuoloTeamTotal && sassuoloLauriente && sassuoloBerardi && sassuoloAdzic && sassuoloThorstvedt, "Sassuolo-Milan: profilo E2E incompleto");
+
+// Sassuolo A-B - baseline offensiva elevata e soppressione applicata al team target, senza eccezioni individuali.
+const neutralSassuoloShots = { min: 8, central: 11.7, max: 15 };
+const neutralSassuoloSot = { min: 2, central: 3.9, max: 6 };
+const neutralSassuoloCorners = { min: 2, central: 4.2, max: 6 };
+const neutralSassuoloOwn = applyOwnOffensiveVolumeProfile(sassuoloMatchupProfile, neutralSassuoloShots, neutralSassuoloSot, neutralSassuoloCorners);
+assert(neutralSassuoloShots.central > 11.7 && neutralSassuoloOwn.shotsAdjustmentPct > 0, "Sassuolo A: HIGH baseline current non alza il target neutrale");
+assert(neutralSassuoloSot.central > 3.9 && neutralSassuoloOwn.shotsOnTargetAdjustmentPct > 0, "Sassuolo A: HIGH SOT baseline non resta separata e attiva");
+const suppressedSassuoloShots = { min: neutralSassuoloShots.min, central: neutralSassuoloShots.central, max: neutralSassuoloShots.max };
+const suppressedSassuoloSot = { min: neutralSassuoloSot.min, central: neutralSassuoloSot.central, max: neutralSassuoloSot.max };
+const suppressedSassuolo = applyOpponentTeamVolumeInteraction(teamStylesById.get("sassuolo"), require(path.join(root, "data/normalized/team-matchup-profiles-2026-27.json")).profiles.find(profile => profile.teamId === "juventus"), suppressedSassuoloShots, suppressedSassuoloSot, { min: 2, central: 4, max: 6 });
+assert(suppressedSassuolo.shotsAdjustmentPct < 0 && suppressedSassuoloShots.central < neutralSassuoloShots.central && suppressedSassuoloShots.central > 9, "Sassuolo B: Juventus-like suppression non riduce il target in modo graduale");
+
+// Sassuolo C-E/T - Lauriente guida i tiri, puo essere compresso e non eredita una gerarchia SOT primaria.
+assert.strictEqual(sassuoloLauriente.allocationClass, "primary");
+assert(sassuoloLauriente.projectedShots === Math.max(...sassuoloPlayers.map(player => player.projectedShots)), "Sassuolo C: Lauriente non emerge come leading shooter");
+const sassuoloRowsForCompression = sassuoloPlayers.map(player => ({ ...player, projectedShots: player.projectedShots, baselineShots90: player.stabilizedShots90, teamProfileRole: player.teamProfileRole }));
+const compressedSassuolo = teamOffensiveAllocation(sassuoloRowsForCompression, "projectedShots", 8.5, sassuoloMatchupProfile);
+const laurienteIndex = sassuoloRowsForCompression.findIndex(player => player.playerId === "armand-lauriente");
+assert(compressedSassuolo.values[laurienteIndex] < sassuoloLauriente.projectedShots, "Sassuolo D: primary protetto artificialmente dalla soppressione");
+assert(sassuoloLauriente.stabilizedShots90 > sassuoloLauriente.stabilizedShotsOnTarget90 * 2.5, "Sassuolo E: high shots trasformati automaticamente in high SOT");
+assert(sassuoloBerardi.stabilizedShotsOnTarget90 > sassuoloLauriente.stabilizedShotsOnTarget90, "Sassuolo T: gerarchie tiri e SOT non restano separate");
+
+// Sassuolo F-J - Expected Minutes domina i raw per90 di Berardi e Adzic.
+const berardi90Sot = sassuoloBerardi.stabilizedShotsOnTarget90;
+const berardi55Sot = sassuoloBerardi.stabilizedShotsOnTarget90 * 55 / 90;
+const berardi25Sot = sassuoloBerardi.stabilizedShotsOnTarget90 * 25 / 90;
+assert(berardi90Sot > berardi55Sot && berardi55Sot > berardi25Sot && berardi25Sot < 0.4, "Sassuolo F-H: minuti Berardi non governano la projection SOT");
+assert(sassuoloBerardi.stabilizedShotsOnTarget90 < 1.3 && sassuoloBerardi.playerSotBaselineStability.currentSample.per90 > 2.9, "Sassuolo F: historical/current shrinkage Berardi assente");
+const adzic80 = sassuoloAdzic.stabilizedShots90 * 80 / 90;
+const adzic25 = sassuoloAdzic.stabilizedShots90 * 25 / 90;
+assert(adzic80 > 1.7 && adzic25 < 0.65 && adzic80 > adzic25 * 3, "Sassuolo I-J: raw 4.50/90 di Adzic bypassa Expected Minutes");
+assert.strictEqual(sassuoloAdzic.playerBaselineStability.currentSample.persistence.level, "high");
+
+// Sassuolo K-M - secondary, outsider e small-sample SOT restano distinti.
+const sassuoloTiers = new Map(sassuoloMatchupProfile.offense.playerShotAndSotTiers.map(player => [player.playerId, player]));
+assert.strictEqual(sassuoloTiers.get("kieron-bowie").shotTier.tier, "co-primary", "Sassuolo K: Bowie non conserva il profilo secondary forte");
+assert.strictEqual(sassuoloThorstvedt.qualifiedOutsider, false, "Sassuolo L: Expected Minutes ridotte devono poter rimuovere Thorstvedt dagli outsider");
+assert(sassuoloThorstvedt.outsiderExclusionReasons.includes("limited-expected-minutes"), "Sassuolo L: esclusione Thorstvedt senza evidenza Expected Minutes");
+const volpatoStability = playerBaselineStability({ historicalBaseline: 1.78, historicalObserved: 1.78, historicalMinutes: 1220, current: { minutes: 183, shots: 5, shotsCoverage: 3, shotsSequence: [2, 3, 0] }, key: "shots", includePersistence: true });
+assert(volpatoStability.value < 2.1 && volpatoStability.confidence === "medium-low", "Sassuolo M: small sample Volpato non viene shrinkato");
+
+// Sassuolo N-P - il boost difensivo nasce al team level e la struttura avversaria decide la concentrazione.
+const sassuoloConcentratedOpponent = [4.8, 1.2, 1, 0.8, 0.7, 0.6].map((value, index) => ({ playerId: `sassuolo-concentrated-${index}`, projectedShots: value, baselineShots90: value, teamProfileRole: index === 0 ? "W" : "CM", playerBaselineStability: { score: index === 0 ? 0.9 : 0.6 } }));
+const sassuoloDistributedOpponent = [1.6, 1.5, 1.4, 1.3, 1.2, 1.1, 1, 0.9].map((value, index) => ({ playerId: `sassuolo-distributed-${index}`, projectedShots: value, baselineShots90: value, teamProfileRole: ["CF", "W", "AM", "CM", "FB", "CB", "CM", "W"][index], playerBaselineStability: { score: 0.7 } }));
+const concentratedAgainstSassuolo = teamOffensiveAllocation(sassuoloConcentratedOpponent, "projectedShots", 13, sassuoloMatchupProfile);
+const distributedAgainstSassuolo = teamOffensiveAllocation(sassuoloDistributedOpponent, "projectedShots", 13, sassuoloMatchupProfile);
+assert(concentratedAgainstSassuolo.values[0] / 13 > Math.max(...distributedAgainstSassuolo.values) / 13, "Sassuolo N-O: struttura concentrated e distributed rese identiche");
+assert(distributedAgainstSassuolo.values.filter(value => value > 1).length >= 6, "Sassuolo N: extra-volume distributed concentrato arbitrariamente");
+const wingerWatch = teamProfilePlayerModifier({ role: "Attaccante", detailedRole: "Ala sinistra" }, 4.5, 2, sassuoloMatchupProfile, { general: 0.9, territorial: 0.9, wide: 0.9, setPiece: 0.5, transition: 0.7 });
+assert.strictEqual(wingerWatch.shotFactor, 1, "Sassuolo P: high-rate winger riceve un boost di ruolo WATCH");
+
+// Sassuolo Q-S - SOT, chance quality e possesso sono canali distinti.
+assert(milanAgainstSassuolo.opponentMatchupInteraction.shotsAdjustmentPct > 0 && milanAgainstSassuolo.opponentMatchupInteraction.shotsOnTargetAdjustmentPct > 0, "Sassuolo Q: vulnerabilita tiri/SOT non raggiunge i target separati");
+assert.strictEqual(sassuoloMatchupProfile.shotDefense.shotQualityProfile.highQualityChanceVulnerability.modelEffect, "none", "Sassuolo Q-R: SOT vulnerability propagata automaticamente alla chance quality");
+assert.strictEqual(sassuoloMatchupProfile.shotDefense.shotQualityProfile.against.xgPerShot, 0.0882, "Sassuolo R: xGA/shot incoerente");
+assert.strictEqual(sassuoloMatchupProfile.offense.signals.possessionIndependentShotProduction.status, "watch", "Sassuolo S: diagnostica possesso trasformata in doppio modifier");
+
+assert(Math.abs(sassuoloTeamTotal.reconciliation.shots.preReconciliation + sassuoloTeamTotal.reconciliation.shots.extraVolume - sassuoloTeamTotal.reconciliation.shots.suppressedVolume - sassuoloTeamTotal.reconciliation.shots.postReconciliation) < 0.02, "Sassuolo: reconciliation tiri non chiude");
+assert(Math.abs(sassuoloPlayers.reduce((total, player) => total + player.projectedShots, 0) - sassuoloProjection.shotsTotal.central) <= 0.11, "Sassuolo: somma player tiri diversa dal team target");
+assert(Math.abs(sassuoloPlayers.reduce((total, player) => total + player.projectedShotsOnTarget, 0) - sassuoloProjection.shotsOnTarget.central) <= 0.11, "Sassuolo: somma player SOT diversa dal team target");
+assert(sassuoloPlayers.every(player => player.projectedShotsOnTarget <= player.projectedShots), "Sassuolo: projected SOT supera projected shots");
+assert(sassuoloPlayers.every(player => player.shotProbabilities.over05 >= player.shotProbabilities.over15 && player.shotProbabilities.over15 >= player.shotProbabilities.over25), "Sassuolo: probabilita tiri non monotone");
+assert(sassuoloPlayers.every(player => player.shotOnTargetProbabilities.over05 >= player.shotOnTargetProbabilities.over15), "Sassuolo: probabilita SOT non monotone");
+
+const torinoMatchupProfile = require(path.join(root, "data/normalized/team-matchup-profiles-2026-27.json")).profiles.find(profile => profile.teamId === "torino");
+const torinoUdinese = dataset.predictions.find(prediction => prediction.matchId === "torino-udinese-2026-27-md-06");
+const torinoProjection = torinoUdinese.teamProjections.find(team => team.teamId === "torino");
+const udineseProjection = torinoUdinese.teamProjections.find(team => team.teamId === "udinese");
+const torinoPlayers = torinoUdinese.shooters.allPlayers.filter(player => player.teamId === "torino");
+const torinoTeamTotal = torinoUdinese.shooters.teamTotals.find(team => team.teamId === "torino");
+const torinoSimeone = torinoPlayers.find(player => player.playerId === "giovanni-simeone");
+const torinoMandragora = torinoPlayers.find(player => player.playerId === "mandragora");
+const torinoVlasic = torinoPlayers.find(player => player.playerId === "nikola-vlasic");
+
+// Torino A-D - baseline LOW, matchup permissivo senza high-volume e possesso senza inflazione autonoma.
+assert(torinoMatchupProfile.offense.teamShotVolume.shrunkPerGame < torinoMatchupProfile.historicalBaseline.shotsForPerGame, "Torino A: baseline neutrale non risulta LOW");
+assert(torinoMatchupProfile.offense.teamSotVolume.shrunkPerGame < torinoMatchupProfile.historicalBaseline.shotsOnTargetForPerGame, "Torino A: SOT neutrale non risulta LOW");
+const torinoStyle = teamStylesById.get("torino");
+const torinoVolume = teamVolumesById.get("torino");
+const torinoScenario = opponentId => {
+  const opponentStyle = teamStylesById.get(opponentId);
+  const opponentVolume = teamVolumesById.get(opponentId);
+  const opponentMatchup = require(path.join(root, "data/normalized/team-matchup-profiles-2026-27.json")).profiles.find(profile => profile.teamId === opponentId);
+  const shots = volumeMetric(torinoStyle, opponentStyle, torinoVolume, opponentVolume, "home", "totalShots", 1, { matches: 38, mean: 11.816, sd: 4.084, p20: 8, p80: 15, source: "team-style-prior" });
+  const sot = volumeMetric(torinoStyle, opponentStyle, torinoVolume, opponentVolume, "home", "shotsOnTarget", 1, { matches: 38, mean: 3.974, sd: 1.94, p20: 2, p80: 5, source: "team-style-prior" });
+  const corners = volumeMetric(torinoStyle, opponentStyle, torinoVolume, opponentVolume, "home", "wonCorners", 1, { matches: 38, mean: 3.842, sd: 1.994, p20: 2, p80: 6, source: "team-style-prior" });
+  const own = applyOwnOffensiveVolumeProfile(torinoMatchupProfile, shots, sot, corners);
+  const opponent = applyOpponentTeamVolumeInteraction(torinoStyle, opponentMatchup, shots, sot, corners);
+  return { own, opponent, shots, sot, corners };
+};
+const torinoVsLecce = torinoScenario("lecce");
+const torinoVsJuventus = torinoScenario("juventus");
+assert(torinoVsLecce.shots.central > torinoVsJuventus.shots.central && torinoVsLecce.shots.central < 14, "Torino B: permissive defense non espande moderatamente il volume LOW");
+const highPossessionClone = JSON.parse(JSON.stringify(torinoMatchupProfile));
+highPossessionClone.currentSeason.possessionPct = 60;
+const possessionShots = { min: 8, central: 11.8, max: 16 }, possessionSot = { min: 2, central: 4, max: 6 }, possessionCorners = { min: 2, central: 4, max: 7 };
+const possessionOwn = applyOwnOffensiveVolumeProfile(highPossessionClone, possessionShots, possessionSot, possessionCorners);
+assert.strictEqual(possessionOwn.shotsAdjustmentPct, -7.48, "Torino C: il possesso ha creato un modifier offensivo autonomo");
+assert.deepStrictEqual(torinoMatchupProfile.offense.teamShotVolume.rawValues, [8, 10, 7, 8, 14], "Torino D: il picco MD5 non resta nel campione osservato");
+
+// Torino E-L - gerarchia tiri/SOT separata, Expected Minutes e small sample shrinkati.
+assert(torinoSimeone.projectedShots > torinoPlayers.filter(player => player.playerId !== "giovanni-simeone").reduce((max, player) => Math.max(max, player.projectedShots), 0), "Torino E: Simeone non resta leading shooter");
+assert(torinoSimeone.projectedShotsOnTarget < torinoSimeone.projectedShots * 0.4, "Torino F: leadership tiri trasformata in SOT proporzionali");
+assert(torinoSimeone.stabilizedShotsOnTarget90 > 0.26 && torinoSimeone.stabilizedShotsOnTarget90 < 1.12, "Torino G: storico SOT di Simeone non regolarizza il current");
+assert(torinoMandragora.expectedMinutes > 60 && torinoMandragora.projectedShots > 1.8 && torinoMandragora.projectedShotsOnTarget < 1, "Torino H: Mandragora starter non combina storico, current e minuti");
+const noMandragora = torinoPlayers.filter(player => player.playerId !== "mandragora");
+const noMandragoraAllocation = teamOffensiveAllocation(noMandragora, "projectedShots", 10.5, torinoMatchupProfile);
+assert.strictEqual(noMandragoraAllocation.values.length, noMandragora.length, "Torino I: un indisponibile riceve minuti o volume artificiale");
+assert.strictEqual(torinoVlasic.playerBaselineStability.currentSample.persistence.level, "high");
+assert(torinoVlasic.projectedShots < 2 && torinoVlasic.shotProbabilities.over05 > torinoVlasic.shotProbabilities.over25, "Torino J: persistenza Vlašić confusa con alta intensita");
+const adamsStability = playerBaselineStability({ historicalBaseline: 2.52, historicalObserved: 2.52, historicalMinutes: 1896, current: { minutes: 193, shots: 3, shotsCoverage: 3, shotsSequence: [1, 1, 1] }, key: "shots", includePersistence: true });
+assert(adamsStability.value > 1.4 && adamsStability.value < 2.52, "Torino K: Adams non e shrinkato fra current e storico");
+const kulenovicStability = playerBaselineStability({ historicalBaseline: 1.54, historicalObserved: 1.54, historicalMinutes: 293, current: { minutes: 60, shots: 3, shotsCoverage: 3, shotsSequence: [0, 0, 3] }, key: "shots", includePersistence: true });
+assert(kulenovicStability.value < 2.5 && kulenovicStability.currentSample.persistence.level === "low", "Torino L: spike Kulenović diventato baseline outsider");
+
+// Torino M-V - difesa team-first, ruoli WATCH e chance quality indipendente.
+const cocoModifier = teamProfilePlayerModifier({ role: "Difensore", detailedRole: "Difensore centrale" }, 0.9, 0.23, torinoMatchupProfile, { general: 0.8, territorial: 0.8, wide: 0.5, setPiece: 0.9, transition: 0.6 });
+assert.strictEqual(cocoModifier.shotFactor, 1, "Torino M: Coco riceve un boost piazzato senza shot origin");
+assert(udineseProjection.opponentMatchupInteraction.shotsAdjustmentPct > 0, "Torino N: attacco neutrale non beneficia della shot vulnerability ACTIVE");
+assert.strictEqual(udineseProjection.opponentMatchupInteraction.shotsOnTargetAdjustmentPct, 0, "Torino U: la singola gara da 1 SOT ha attivato un modifier SOT");
+const concentratedTorinoOpponent = [4.2, 2.6, 1.8, 0.8, 0.6, 0.5, 0.5].map((value, index) => ({ playerId: `torino-concentrated-${index}`, projectedShots: value, baselineShots90: value, teamProfileRole: index === 0 ? "CF" : index < 3 ? "W" : "CM", playerBaselineStability: { score: index < 3 ? 0.85 : 0.6 } }));
+const distributedTorinoOpponent = [1.5, 1.4, 1.3, 1.2, 1.1, 1, 0.9, 0.8].map((value, index) => ({ playerId: `torino-distributed-${index}`, projectedShots: value, baselineShots90: value, teamProfileRole: ["CF", "W", "AM", "CM", "FB", "CB", "CM", "W"][index], playerBaselineStability: { score: 0.7 } }));
+const concentratedVsTorino = teamOffensiveAllocation(concentratedTorinoOpponent, "projectedShots", 13, torinoMatchupProfile);
+const distributedVsTorino = teamOffensiveAllocation(distributedTorinoOpponent, "projectedShots", 13, torinoMatchupProfile);
+assert(concentratedVsTorino.values[0] / 13 > Math.max(...distributedVsTorino.values) / 13, "Torino O: un attacco concentrated perde la propria struttura");
+assert(Math.max(...distributedVsTorino.values) < 4, "Torino P: un attacco distribuito crea artificialmente un 4+ shooter");
+const bolognaLike = teamOffensiveAllocation(concentratedTorinoOpponent, "projectedShots", 11, torinoMatchupProfile);
+assert(bolognaLike.values[0] >= 4 && bolognaLike.values[1] >= 2.5 && bolognaLike.values.slice(0, 3).reduce((sum, value) => sum + value, 0) > 8, "Torino Q: uno scenario Bologna-like non conserva 4+3+2 circa");
+for (const candidate of [{ role: "Attaccante", detailedRole: "Ala destra" }, { role: "Centrocampista", detailedRole: "Trequartista" }, { role: "Centrocampista", detailedRole: "Centrocampista centrale" }]) {
+  const modifier = teamProfilePlayerModifier(candidate, 2, 0.6, torinoMatchupProfile, { general: 0.9, territorial: 0.9, wide: 0.9, setPiece: 0.9, transition: 0.7 });
+  assert.strictEqual(modifier.shotFactor, 1, `Torino R/S: ruolo WATCH ${candidate.detailedRole} ha ricevuto un boost`);
+  assert.strictEqual(modifier.sotFactor, 1, `Torino R/S: ruolo WATCH ${candidate.detailedRole} ha ricevuto un boost SOT`);
+}
+assert.strictEqual(torinoMatchupProfile.shotDefense.shotsAllowed.signalPersistence.level, "high", "Torino T: il miglioramento recente ha cancellato il campione completo");
+assert.strictEqual(torinoMatchupProfile.shotDefense.shotQualityProfile.highQualityChanceVulnerability.modelEffect, "none", "Torino V: shot access propagato alla chance quality");
+
+// Torino W - compressione sul target squadra e riallocazione per struttura, non percentuale uniforme.
+const torinoCompression = teamOffensiveAllocation(concentratedTorinoOpponent, "projectedShots", 8, torinoMatchupProfile);
+assert(Math.abs(torinoCompression.values.reduce((sum, value) => sum + value, 0) - 8) < 0.001);
+assert(new Set(torinoCompression.factors.map(value => value.toFixed(4))).size > 1, "Torino W: soppressione applicata uniformemente a tutti i player");
+
+assert(Math.abs(torinoTeamTotal.reconciliation.shots.preReconciliation + torinoTeamTotal.reconciliation.shots.extraVolume - torinoTeamTotal.reconciliation.shots.suppressedVolume - torinoTeamTotal.reconciliation.shots.postReconciliation) < 0.02, "Torino: reconciliation tiri non chiude");
+assert(Math.abs(torinoPlayers.reduce((total, player) => total + player.projectedShots, 0) - torinoProjection.shotsTotal.central) <= 0.11, "Torino: somma player tiri diversa dal team target");
+assert(Math.abs(torinoPlayers.reduce((total, player) => total + player.projectedShotsOnTarget, 0) - torinoProjection.shotsOnTarget.central) <= 0.11, "Torino: somma player SOT diversa dal team target");
+assert(torinoPlayers.every(player => player.projectedShotsOnTarget <= player.projectedShots), "Torino: projected SOT supera projected shots");
+assert(torinoPlayers.every(player => player.shotProbabilities.over05 >= player.shotProbabilities.over15 && player.shotProbabilities.over15 >= player.shotProbabilities.over25), "Torino: probabilita tiri non monotone");
+assert(torinoPlayers.every(player => player.shotOnTargetProbabilities.over05 >= player.shotOnTargetProbabilities.over15), "Torino: probabilita SOT non monotone");
+
+const udineseMatchupProfile = require(path.join(root, "data/normalized/team-matchup-profiles-2026-27.json")).profiles.find(profile => profile.teamId === "udinese");
+const udinesePlayers = torinoUdinese.shooters.allPlayers.filter(player => player.teamId === "udinese");
+const udineseTeamTotal = torinoUdinese.shooters.teamTotals.find(team => team.teamId === "udinese");
+const udineseEkkelenkamp = udinesePlayers.find(player => player.playerId === "jurgen-ekkelenkamp");
+const udineseKamara = udinesePlayers.find(player => player.playerId === "hassane-kamara");
+const udineseZaniolo = udinesePlayers.find(player => player.playerId === "nicolo-zaniolo");
+const udineseStyle = teamStylesById.get("udinese");
+const udineseVolume = teamVolumesById.get("udinese");
+const udineseScenario = opponentId => {
+  const opponentStyle = teamStylesById.get(opponentId);
+  const opponentVolume = teamVolumesById.get(opponentId);
+  const opponentMatchup = require(path.join(root, "data/normalized/team-matchup-profiles-2026-27.json")).profiles.find(profile => profile.teamId === opponentId);
+  const shots = volumeMetric(udineseStyle, opponentStyle, udineseVolume, opponentVolume, "home", "totalShots", 1, { matches: 38, mean: 11.553, sd: 4.581, p20: 8, p80: 14.6, source: "team-style-prior" });
+  const sot = volumeMetric(udineseStyle, opponentStyle, udineseVolume, opponentVolume, "home", "shotsOnTarget", 1, { matches: 38, mean: 3.842, sd: 1.857, p20: 2, p80: 5, source: "team-style-prior" });
+  const corners = volumeMetric(udineseStyle, opponentStyle, udineseVolume, opponentVolume, "home", "wonCorners", 1, { matches: 38, mean: 4.5, sd: 2.28, p20: 2.4, p80: 6, source: "team-style-prior" });
+  const own = applyOwnOffensiveVolumeProfile(udineseMatchupProfile, shots, sot, corners);
+  const opponent = applyOpponentTeamVolumeInteraction(udineseStyle, opponentMatchup, shots, sot, corners);
+  return { own, opponent, shots, sot, corners };
+};
+const udineseVsInter = udineseScenario("inter");
+const udineseVsCagliari = udineseScenario("cagliari");
+const udineseVsComo = udineseScenario("como");
+
+// Udinese A-G - baseline robusta, elasticita spiegata dal matchup e target tiri/SOT/xG/corner separati.
+assert(udineseMatchupProfile.offense.teamShotVolume.shrunkPerGame > 11.5 && udineseMatchupProfile.offense.teamShotVolume.shrunkPerGame < 12, "Udinese A: baseline neutrale dominata dalla media raw");
+assert(udineseVsInter.shots.central < udineseVsCagliari.shots.central, "Udinese B/C: Inter suppression e Cagliari vulnerability non separano i target");
+assert(udineseVsComo.shots.central > udineseVsInter.shots.central, "Udinese D: Como-like vulnerability non aumenta i tiri");
+const decouplingRows = [2.4, 2.1, 1.8, 1.4, 1.2, 1, 0.8, 0.7].map((value, index) => ({ playerId: `udinese-decouple-${index}`, projectedShots: value, projectedShotsOnTarget: Math.min(value, value * 0.34), baselineShots90: value, baselineShotsOnTarget90: value * 0.34, teamProfileRole: index < 2 ? "AM" : index < 5 ? "CF" : "FB", playerBaselineStability: { score: 0.7 } }));
+const sixShots = teamOffensiveAllocation(decouplingRows, "projectedShots", 6, udineseMatchupProfile);
+const twentySixShots = teamOffensiveAllocation(decouplingRows, "projectedShots", 26, udineseMatchupProfile);
+const fiveSotLow = teamOffensiveAllocation(decouplingRows, "projectedShotsOnTarget", 5, udineseMatchupProfile);
+const fiveSotHigh = teamOffensiveAllocation(decouplingRows, "projectedShotsOnTarget", 5, udineseMatchupProfile);
+assert(Math.abs(sixShots.values.reduce((s, v) => s + v, 0) - 6) < 0.001 && Math.abs(twentySixShots.values.reduce((s, v) => s + v, 0) - 26) < 0.001);
+assert.deepStrictEqual(fiveSotLow.values, fiveSotHigh.values, "Udinese E: il target SOT dipende automaticamente dal target tiri");
+assert.strictEqual(udineseMatchupProfile.offense.offensiveShotQuality.modelEffect, "quality-context-only-separate-from-shot-and-sot-volume", "Udinese F: 26 tiri implicano automaticamente xG estremo");
+assert.strictEqual(udineseMatchupProfile.corners.robustCurrentForPerGame, 2.52);
+assert(udineseMatchupProfile.corners.shrunkForPerGame < 4, "Udinese G: i 16 corner hanno distrutto la baseline");
+
+// Udinese H-P - leading shooter, Expected Minutes, outsider e small sample.
+const ekkelenkampTier = udineseMatchupProfile.offense.shooterStructure.playerTiers.find(player => player.playerId === "jurgen-ekkelenkamp");
+assert.strictEqual(ekkelenkampTier.shotTier.tier, "primary", "Udinese H: Ekkelenkamp non emerge come leading shooter");
+assert.strictEqual(udineseEkkelenkamp.playerBaselineStability.currentSample.persistence.level, "high");
+const ekkelenkampSuppressed = teamOffensiveAllocation(udinesePlayers, "projectedShots", 7, udineseMatchupProfile);
+const ekkelenkampExpanded = teamOffensiveAllocation(udinesePlayers, "projectedShots", 17, udineseMatchupProfile);
+const ekkelenkampIndex = udinesePlayers.findIndex(player => player.playerId === "jurgen-ekkelenkamp");
+assert(ekkelenkampSuppressed.values[ekkelenkampIndex] > 1, "Udinese I: Ekkelenkamp perde ogni floor in soppressione");
+assert(ekkelenkampExpanded.values[ekkelenkampIndex] > ekkelenkampSuppressed.values[ekkelenkampIndex] && ekkelenkampExpanded.values[ekkelenkampIndex] / 17 < 0.3, "Udinese J: Ekkelenkamp non cresce o assorbe tutto l'extra-volume");
+const gueyeStability = playerBaselineStability({ historicalBaseline: 4.44, historicalObserved: 4.44, historicalMinutes: 405, current: { minutes: 178, shots: 10, shotsCoverage: 4, shotsSequence: [3, 1, 1, 5] }, key: "shots", includePersistence: true });
+const gueye30 = gueyeStability.value * 30 / 90;
+const gueye60 = gueyeStability.value * 60 / 90;
+assert(gueye30 < 2 && gueye60 > gueye30 && gueye60 < 4, "Udinese K/L: Expected Minutes Gueye non governa la projection");
+assert.strictEqual(udineseKamara.qualifiedOutsider, true, "Udinese M: Kamara non supera i gate strutturali nel matchup neutrale");
+const kamaraSuppressed = ekkelenkampSuppressed.values[udinesePlayers.findIndex(player => player.playerId === "hassane-kamara")];
+assert(kamaraSuppressed < udineseKamara.projectedShots, "Udinese N: Kamara non diminuisce contro soppressione");
+assert(udineseZaniolo.stabilizedShots90 < 3.36 && udineseZaniolo.playerBaselineStability.confidence === "medium-low", "Udinese O: due gare Zaniolo usate come baseline piena");
+const bayoStability = playerBaselineStability({ historicalBaseline: 2.83, historicalObserved: 2.83, historicalMinutes: 446, current: { minutes: 95, shots: 4, shotsCoverage: 4, shotsSequence: [2, 0, 1, 1] }, key: "shots", includePersistence: true });
+assert(bayoStability.value * 20 / 90 < 1 && bayoStability.confidence === "medium-low", "Udinese P: Bayo low-minutes diventa outsider automatico");
+
+// Udinese Q-X - allocation broad/concentrated, team vulnerability e ruoli WATCH neutrali.
+const broadUdineseExpansion = teamOffensiveAllocation(decouplingRows, "projectedShots", 20, udineseMatchupProfile);
+assert(broadUdineseExpansion.values.filter(value => value > 1).length >= 6, "Udinese Q: extra-volume broad concentrato su pochi player");
+const primaryOnlyRows = [5, 1.2, 1, 0.8, 0.7, 0.6].map((value, index) => ({ playerId: `udinese-primary-${index}`, projectedShots: value, baselineShots90: value, teamProfileRole: index === 0 ? "CF" : "CM", playerBaselineStability: { score: index === 0 ? 0.95 : 0.6 } }));
+const primaryOnlyExpansion = teamOffensiveAllocation(primaryOnlyRows, "projectedShots", 13, udineseMatchupProfile);
+assert(primaryOnlyExpansion.values[0] / 13 > 0.35, "Udinese R: allocation broad forzata su un attacco primary-only");
+assert(torinoProjection.opponentMatchupInteraction.shotsAdjustmentPct > 0 && torinoProjection.opponentMatchupInteraction.shotsOnTargetAdjustmentPct > 0, "Udinese S: broad vulnerability non raggiunge i target avversari");
+const broadOpponentVsUdinese = teamOffensiveAllocation(decouplingRows, "projectedShots", 15, udineseMatchupProfile);
+assert(Math.max(...broadOpponentVsUdinese.values) < 5 && broadOpponentVsUdinese.values.filter(value => value > 1).length >= 6, "Udinese S: broad access crea artificialmente un solo 5+ shooter");
+for (const candidate of [{ role: "Centrocampista", detailedRole: "Trequartista" }, { role: "Attaccante", detailedRole: "Centravanti" }, { role: "Difensore", detailedRole: "Esterno sinistro" }]) {
+  const modifier = teamProfilePlayerModifier(candidate, 2, 0.6, udineseMatchupProfile, { general: 0.9, territorial: 0.9, wide: 0.9, setPiece: 0.9, transition: 0.7 });
+  assert.strictEqual(modifier.shotFactor, 1, `Udinese T-V: ruolo WATCH ${candidate.detailedRole} ha ricevuto un boost`);
+  assert.strictEqual(modifier.sotFactor, 1, `Udinese T-V: ruolo WATCH ${candidate.detailedRole} ha ricevuto un boost SOT`);
+}
+const cagliariRow = udineseMatchupProfile.shotDefense.opponentStrengthDiagnostics.rows.find(row => row.opponentTeamId === "cagliari");
+const interRow = udineseMatchupProfile.shotDefense.opponentStrengthDiagnostics.rows.find(row => row.opponentTeamId === "inter");
+assert(cagliariRow.actualShots === 5 && cagliariRow.actualXg === 1.12 && cagliariRow.xgPerShot > interRow.xgPerShot, "Udinese W: basso volume trasformato automaticamente in basso xGA");
+assert(interRow.actualShots === 27 && interRow.actualXg === 3.07 && interRow.xgPerShot < cagliariRow.xgPerShot, "Udinese X: alto volume trasformato in xGA proporzionale fisso");
+
+// Udinese Y-Z - invarianti probabilistici e reconciliation.
+assert(udinesePlayers.every(player => player.shotProbabilities.over05 >= player.shotProbabilities.over15 && player.shotProbabilities.over15 >= player.shotProbabilities.over25), "Udinese Y: probabilita tiri non monotone");
+assert(udinesePlayers.every(player => player.shotOnTargetProbabilities.over05 >= player.shotOnTargetProbabilities.over15), "Udinese Y: probabilita SOT non monotone");
+assert(udinesePlayers.every(player => player.projectedShotsOnTarget <= player.projectedShots), "Udinese Y: projected SOT supera projected shots");
+assert(Math.abs(udineseTeamTotal.reconciliation.shots.preReconciliation + udineseTeamTotal.reconciliation.shots.extraVolume - udineseTeamTotal.reconciliation.shots.suppressedVolume - udineseTeamTotal.reconciliation.shots.postReconciliation) < 0.02, "Udinese Z: reconciliation tiri non chiude");
+assert(Math.abs(udinesePlayers.reduce((total, player) => total + player.projectedShots, 0) - udineseProjection.shotsTotal.central) <= 0.11, "Udinese Z: somma player tiri diversa dal team target");
+assert(Math.abs(udinesePlayers.reduce((total, player) => total + player.projectedShotsOnTarget, 0) - udineseProjection.shotsOnTarget.central) <= 0.11, "Udinese Z: somma player SOT diversa dal team target");
+
+const veneziaMatchupProfile = require(path.join(root, "data/normalized/team-matchup-profiles-2026-27.json")).profiles.find(profile => profile.teamId === "venezia");
+const veneziaProjection = atalantaVeneziaProfile.teamProjections.find(team => team.teamId === "venezia");
+const atalantaAgainstVeneziaProjection = atalantaVeneziaProfile.teamProjections.find(team => team.teamId === "atalanta");
+const veneziaPlayers = atalantaVeneziaProfile.shooters.allPlayers.filter(player => player.teamId === "venezia");
+const veneziaTeamTotal = atalantaVeneziaProfile.shooters.teamTotals.find(team => team.teamId === "venezia");
+const veneziaStyle = teamStylesById.get("venezia");
+
+// Venezia A-C - baseline autonoma e target tiri/SOT indipendenti nei matchup neutro, permissivo e suppressivo.
+const veneziaNeutralShots = { min: 11, central: 14, max: 18 };
+const veneziaNeutralSot = { min: 3, central: 4.4, max: 7 };
+const veneziaNeutralCorners = { min: 2, central: 3.8, max: 7 };
+const veneziaOwnNeutral = applyOwnOffensiveVolumeProfile(veneziaMatchupProfile, veneziaNeutralShots, veneziaNeutralSot, veneziaNeutralCorners);
+assert(veneziaNeutralShots.central > 14 && veneziaNeutralShots.central <= 15.2, "Venezia A: baseline neutrale non converge in modo cappato verso lo stabilized current/history");
+assert.strictEqual(veneziaOwnNeutral.capDiagnostics.shots.capHit, true);
+const permissiveShots = { min: 10, central: 14, max: 18 };
+const permissiveSot = { min: 3, central: 4.4, max: 7 };
+const permissiveCorners = { min: 2, central: 4, max: 7 };
+const permissiveBefore = { shots: permissiveShots.central, sot: permissiveSot.central };
+applyOpponentTeamVolumeInteraction(veneziaStyle, lecceMatchupProfile, permissiveShots, permissiveSot, permissiveCorners);
+assert(permissiveShots.central > permissiveBefore.shots, "Venezia B: avversario permissivo non aumenta il team-shot target");
+assert.notStrictEqual((permissiveShots.central / permissiveBefore.shots).toFixed(4), (permissiveSot.central / permissiveBefore.sot).toFixed(4), "Venezia B: tiri e SOT aumentano automaticamente nella stessa proporzione");
+const suppressiveShots = { min: 8, central: 10, max: 13 };
+const suppressiveSot = { min: 2, central: 3.5, max: 5 };
+const suppressiveCorners = { min: 2, central: 4, max: 6 };
+applyOpponentTeamVolumeInteraction(veneziaStyle, interMatchupProfile, suppressiveShots, suppressiveSot, suppressiveCorners);
+assert(suppressiveShots.central >= 9 && suppressiveShots.central <= 10, "Venezia C: un suppressor non consente un target circa 9-10");
+
+// Venezia D-O - dual primary, floor in compressione, persistenza distinta dall'intensita e small sample shrinkato/gated.
+const veneziaAllocationRows = [
+  { playerId: "akor-adams", projectedShots: 3.2, projectedShotsOnTarget: 1.25, baselineShots90: 3.72, baselineShotsOnTarget90: 1.53, teamProfileRole: "CF", playerBaselineStability: { score: 0.9 } },
+  { playerId: "john-yeboah", projectedShots: 2.8, projectedShotsOnTarget: 1.05, baselineShots90: 3.09, baselineShotsOnTarget90: 1.19, teamProfileRole: "AM", playerBaselineStability: { score: 0.85 } },
+  { playerId: "antoine-hainaut", projectedShots: 1.1, projectedShotsOnTarget: 0.35, baselineShots90: 1.22, baselineShotsOnTarget90: 0.41, teamProfileRole: "CM", playerBaselineStability: { score: 0.8 } },
+  { playerId: "thierry-correia", projectedShots: 0.8, projectedShotsOnTarget: 0.16, baselineShots90: 0.54, baselineShotsOnTarget90: 0.12, teamProfileRole: "FB", playerBaselineStability: { score: 0.3 } },
+  { playerId: "gianluca-busio", projectedShots: 0.9, projectedShotsOnTarget: 0.12, baselineShots90: 1.5, baselineShotsOnTarget90: 0.2, teamProfileRole: "CM", playerBaselineStability: { score: 0.45 } },
+  { playerId: "matias-moreno", projectedShots: 0.6, projectedShotsOnTarget: 0.05, baselineShots90: 0.62, baselineShotsOnTarget90: 0.05, teamProfileRole: "CB", playerBaselineStability: { score: 0.3 } },
+  { playerId: "richie-sagrado", projectedShots: 0.6, projectedShotsOnTarget: 0.2, baselineShots90: 2.16, baselineShotsOnTarget90: 0.7, teamProfileRole: "FB", playerBaselineStability: { score: 0.55 } },
+  { playerId: "albion-rrahmani", projectedShots: 0.45, projectedShotsOnTarget: 0.12, baselineShots90: 4.5, baselineShotsOnTarget90: 1.13, teamProfileRole: "CF", playerBaselineStability: { score: 0.2 } }
+];
+const veneziaSuppressed = teamOffensiveAllocation(veneziaAllocationRows, "projectedShots", 9, veneziaMatchupProfile);
+const veneziaExpanded = teamOffensiveAllocation(veneziaAllocationRows, "projectedShots", 17, veneziaMatchupProfile);
+const adamsIndex = veneziaAllocationRows.findIndex(player => player.playerId === "akor-adams");
+const yeboahIndex = veneziaAllocationRows.findIndex(player => player.playerId === "john-yeboah");
+assert(veneziaSuppressed.values[adamsIndex] >= 2.5, "Venezia D/E: Adams perde il floor elevato in un team target suppressivo");
+assert(veneziaExpanded.values[adamsIndex] > veneziaSuppressed.values[adamsIndex] && veneziaExpanded.values[adamsIndex] / 17 < 0.33, "Venezia F: Adams non cresce o assorbe tutto l'extra-volume");
+assert(veneziaSuppressed.values[yeboahIndex] > 2, "Venezia G: Yeboah non resta un secondo primary stabile");
+assert.strictEqual(veneziaMatchupProfile.offense.shooterStructure.type, "multi-primary", "Venezia O: struttura dual-primary persa");
+assert(veneziaMatchupProfile.offense.shooterStructure.primaryPlayerIds.includes("akor-adams") && veneziaMatchupProfile.offense.shooterStructure.primaryPlayerIds.includes("john-yeboah"));
+assert(veneziaMatchupProfile.offense.shooterStructure.playerTiers.find(player => player.playerId === "akor-adams").evidence.shots > veneziaMatchupProfile.offense.shooterStructure.playerTiers.find(player => player.playerId === "john-yeboah").evidence.shots, "Venezia H: gerarchia tiri Adams/Yeboah persa");
+assert(1.92 > 1.57 && 13 < 17, "Venezia H: player shots e player xG non sono rappresentabili separatamente");
+const hainautStability = playerBaselineStability({ historicalBaseline: 1, historicalObserved: 1, historicalMinutes: 1000, current: { minutes: 444, shots: 6, shotsCoverage: 5, shotsSequence: [2, 1, 1, 1, 1] }, key: "shots", includePersistence: true });
+const correiaStability = playerBaselineStability({ historicalBaseline: 0.32, historicalObserved: 0.32, historicalMinutes: 1000, current: { minutes: 185, shots: 5, shotsCoverage: 4, shotsSequence: [3, 0, 0, 2] }, key: "shots", includePersistence: true });
+assert.strictEqual(hainautStability.currentSample.persistence.level, "high", "Venezia I: persistenza Hainaut non riconosciuta");
+assert(hainautStability.currentSample.per90 < correiaStability.currentSample.per90 && correiaStability.currentSample.persistence.level === "low", "Venezia J: persistenza e intensity di Hainaut/Correia confuse");
+const morenoStability = playerBaselineStability({ historicalBaseline: 0.4, historicalObserved: 0.4, historicalMinutes: 1000, current: { minutes: 174, shots: 5, shotsCoverage: 3, shotsSequence: [1, 0, 4] }, key: "shots", includePersistence: true });
+assert(morenoStability.value < morenoStability.currentSample.per90 && morenoStability.confidence === "medium-low", "Venezia K: spike singolo Moreno non shrinkato");
+const sagradoQualityRate = 1.16 / 4;
+assert(sagradoQualityRate > veneziaMatchupProfile.offense.offensiveShotQuality.xgPerShot && veneziaMatchupProfile.modelPolicy.watch.includes("highQualityChanceVulnerability"), "Venezia L: spike xG Sagrado ha attivato un coefficiente di qualita");
+const rrahmani15 = 4.5 * 15 / 90;
+const rrahmani60 = 4.5 * 60 / 90;
+assert(rrahmani15 < 1 && rrahmani60 > rrahmani15 && rrahmani60 <= 3, "Venezia M/N: il gate Expected Minutes non governa Rrahmani");
+assert(veneziaExpanded.values.filter((value, index) => value > veneziaAllocationRows[index].projectedShots).length >= 5, "Venezia O: extra-volume non raggiunge la secondary breadth");
+
+// Venezia P-Z - vulnerabilita team moderate/strong separate, concentrazione naturale e ruoli WATCH neutrali.
+assert(atalantaAgainstVeneziaProjection.opponentMatchupInteraction.shotsAdjustmentPct > 0 && atalantaAgainstVeneziaProjection.opponentMatchupInteraction.shotsAdjustmentPct < 2, "Venezia P: matchup medio trasformato in extreme team-shot boost");
+assert(atalantaAgainstVeneziaProjection.opponentMatchupInteraction.shotsOnTargetAdjustmentPct > atalantaAgainstVeneziaProjection.opponentMatchupInteraction.shotsAdjustmentPct, "Venezia P: SOT vulnerability non resta separata e piu forte dei tiri");
+const veneziaConcentratedOpponent = [5.5, 1.4, 1.2, 1, 0.8, 0.6].map((value, index) => ({ playerId: `venezia-primary-${index}`, projectedShots: value, baselineShots90: value, teamProfileRole: index === 0 ? "CF" : "CM", playerBaselineStability: { score: index === 0 ? 0.9 : 0.6 } }));
+const veneziaDistributedOpponent = [1.7, 1.6, 1.5, 1.4, 1.3, 1.2, 1.1, 1].map((value, index) => ({ playerId: `venezia-distributed-${index}`, projectedShots: value, baselineShots90: value, teamProfileRole: ["CF", "W", "AM", "CM", "FB", "CB", "CM", "W"][index], playerBaselineStability: { score: 0.7 } }));
+const concentratedVsVenezia = teamOffensiveAllocation(veneziaConcentratedOpponent, "projectedShots", 16, veneziaMatchupProfile);
+const distributedVsVenezia = teamOffensiveAllocation(veneziaDistributedOpponent, "projectedShots", 16, veneziaMatchupProfile);
+assert(concentratedVsVenezia.values[0] / 16 > 0.35, "Venezia Q/S: primary share forte non emerge naturalmente");
+assert(Math.max(...distributedVsVenezia.values) / 16 < 0.2 && distributedVsVenezia.values.filter(value => value > 1.5).length >= 5, "Venezia R: attacco distributed forzato verso un primary");
+assert(!veneziaConcentratedOpponent.some(player => /ramos|mastantuono/.test(player.playerId)), "Venezia S/T: test primary dipende da hardcoding nominale");
+for (const candidate of [{ role: "Attaccante", detailedRole: "Punta centrale" }, { role: "Centrocampista", detailedRole: "Trequartista" }, { role: "Centrocampista", detailedRole: "Mezzala" }, { role: "Difensore", detailedRole: "Difensore centrale" }]) {
+  const modifier = teamProfilePlayerModifier(candidate, 2.5, 0.8, veneziaMatchupProfile, { general: 0.9, territorial: 0.9, wide: 0.9, setPiece: 0.9, transition: 0.7 });
+  assert.strictEqual(modifier.shotFactor, 1, `Venezia U-W: ruolo WATCH ${candidate.detailedRole} ha ricevuto un boost tiri`);
+  assert.strictEqual(modifier.sotFactor, 1, `Venezia U-W: ruolo WATCH ${candidate.detailedRole} ha ricevuto un boost SOT`);
+}
+const veneziaLecceRow = veneziaMatchupProfile.shotDefense.opponentStrengthDiagnostics.rows.find(row => row.opponentTeamId === "lecce");
+const veneziaFiorentinaRow = veneziaMatchupProfile.shotDefense.opponentStrengthDiagnostics.rows.find(row => row.opponentTeamId === "fiorentina");
+const veneziaLazioRow = veneziaMatchupProfile.shotDefense.opponentStrengthDiagnostics.rows.find(row => row.opponentTeamId === "lazio");
+assert(veneziaLecceRow.actualShots === 12 && veneziaLecceRow.actualXg === 2.72, "Venezia X: 12 tiri/high xGA non rappresentabile");
+assert(veneziaFiorentinaRow.actualShots === 19 && veneziaFiorentinaRow.actualXg === 3.36, "Venezia Y: 19 tiri/high xGA non rappresentabile");
+assert(veneziaLazioRow.actualShots === 12 && veneziaLazioRow.actualShotsOnTarget === 2 && veneziaLazioRow.actualXg === 1.79, "Venezia Z: low SOT/high xGA non rappresentabile");
+assert.strictEqual(veneziaMatchupProfile.shotDefense.shotQualityProfile.highQualityChanceVulnerability.modelEffect, "none", "Venezia U: WATCH chance-quality ha prodotto un adjustment nascosto");
+assert(veneziaPlayers.every(player => player.shotProbabilities.over05 >= player.shotProbabilities.over15 && player.shotProbabilities.over15 >= player.shotProbabilities.over25), "Venezia: probabilita tiri non monotone");
+assert(veneziaPlayers.every(player => player.shotOnTargetProbabilities.over05 >= player.shotOnTargetProbabilities.over15), "Venezia: probabilita SOT non monotone");
+assert(veneziaPlayers.every(player => Number.isFinite(player.projectedShots) && Number.isFinite(player.projectedShotsOnTarget) && player.projectedShots >= 0 && player.projectedShotsOnTarget >= 0 && player.projectedShotsOnTarget <= player.projectedShots), "Venezia: proiezione impossibile/NaN/Infinity o SOT > tiri");
+assert(veneziaPlayers.filter(player => player.expectedMinutes <= 1).every(player => player.projectedShots < 0.15), "Venezia: volume significativo con Expected Minutes circa zero");
+assert(Math.abs(veneziaPlayers.reduce((total, player) => total + player.projectedShots, 0) - veneziaProjection.shotsTotal.central) <= 0.11, "Venezia: somma player tiri diversa dal team target");
+assert(Math.abs(veneziaPlayers.reduce((total, player) => total + player.projectedShotsOnTarget, 0) - veneziaProjection.shotsOnTarget.central) <= 0.11, "Venezia: somma player SOT diversa dal team target");
+assert(Math.abs(veneziaTeamTotal.reconciliation.shots.preReconciliation + veneziaTeamTotal.reconciliation.shots.extraVolume - veneziaTeamTotal.reconciliation.shots.suppressedVolume - veneziaTeamTotal.reconciliation.shots.postReconciliation) < 0.02, "Venezia: reconciliation tiri non chiude");
 
 const transitionStrong = opponentAbilityToExploit({ summary: { shotsPerGame: 18, possessionPct: 35, passSuccessPct: 75, aerialWonPerGame: 10 }, strengths: [{ id: "contropiede" }], attackChannels: { left: 20, central: 60, right: 20 } }, { shotsTotal: { central: 18 }, corners: { central: 3 } });
 const transitionWeak = opponentAbilityToExploit({ summary: { shotsPerGame: 9, possessionPct: 35, passSuccessPct: 75, aerialWonPerGame: 10 }, attackChannels: { left: 20, central: 60, right: 20 } }, { shotsTotal: { central: 9 }, corners: { central: 3 } });

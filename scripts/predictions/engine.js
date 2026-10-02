@@ -520,13 +520,24 @@ function scalePlayerVolume(candidates, key, teamCentral) {
   return raw.map(item => ({ ...item, projection: round(item.value * factor, 2) }));
 }
 
-function playerBaselineStability({ historicalBaseline, historicalObserved, historicalMinutes, current, key, roleContinuity = true }) {
+function playerBaselineStability({ historicalBaseline, historicalObserved, historicalMinutes, current, key, roleContinuity = true, includePersistence = false }) {
   const coverageKey = `${key}Coverage`;
   const currentMinutes = Number(current?.minutes || 0);
   const currentValue = Number(current?.[key]);
   const currentCoverage = Number(current?.[coverageKey] || 0);
   const hasCurrent = currentMinutes > 0 && currentCoverage > 0 && Number.isFinite(currentValue);
   const currentPer90 = hasCurrent ? currentValue * 90 / currentMinutes : null;
+  const sequence = Array.isArray(current?.[`${key}Sequence`]) ? current[`${key}Sequence`].filter(Number.isFinite) : [];
+  const onePlusMatches = sequence.filter(value => value >= 1).length;
+  const onePlusShare = sequence.length ? onePlusMatches / sequence.length : null;
+  const firstWindow = sequence.length >= 5 ? sequence.slice(0, 2) : sequence.slice(0, Math.max(1, Math.floor(sequence.length / 2)));
+  const recentWindow = sequence.length >= 5 ? sequence.slice(-3) : sequence.slice(Math.max(1, Math.floor(sequence.length / 2)));
+  const windowMean = values => values.length ? sum(values) / values.length : null;
+  const firstWindowMean = windowMean(firstWindow);
+  const recentWindowMean = windowMean(recentWindow);
+  const trend = firstWindowMean > 0 && recentWindowMean <= firstWindowMean * 0.5 ? "declining" : firstWindowMean > 0 && recentWindowMean >= firstWindowMean * 1.5 ? "rising" : "stable-or-unclear";
+  const persistenceLevel = onePlusShare == null ? "unknown" : trend === "declining" && onePlusShare <= 0.6 ? "low" : onePlusShare >= 0.8 ? "high" : onePlusShare >= 0.6 ? "medium" : "low";
+  const currentPersistence = { sequence, onePlusMatches, onePlusShare: onePlusShare == null ? null : round(onePlusShare), level: persistenceLevel, firstWindowMean: firstWindowMean == null ? null : round(firstWindowMean), recentWindowMean: recentWindowMean == null ? null : round(recentWindowMean), trend, modelEffect: "diagnostic-current-weight-already-controlled-by-aggregate-agreement" };
   const historicalSampleReliability = clamp(Number(historicalMinutes || 0) / (Number(historicalMinutes || 0) + 900), 0, 0.82);
   const currentSampleReliability = hasCurrent ? clamp(currentMinutes / (currentMinutes + 900), 0, 0.35) : 0;
   if (!hasCurrent) return {
@@ -548,15 +559,22 @@ function playerBaselineStability({ historicalBaseline, historicalObserved, histo
   return {
     value, score: round(score), level, historicalCurrentAgreement: round(agreement),
     historicalSample: { minutes: historicalMinutes || 0, per90: round(historicalObserved), reliability: round(historicalSampleReliability) },
-    currentSample: { minutes: currentMinutes, per90: round(currentPer90), reliability: round(currentSampleReliability), coverage: currentCoverage },
+    currentSample: { minutes: currentMinutes, per90: round(currentPer90), reliability: round(currentSampleReliability), coverage: currentCoverage, ...(includePersistence ? { persistence: currentPersistence } : {}) },
     roleContinuity: roleContinuity ? "current-roster-role-consistent" : "unknown",
     confidence: currentMinutes >= 270 && historicalMinutes >= 900 ? "medium" : "medium-low",
-    evidence: [`storico ${round(historicalObserved)} /90 su ${historicalMinutes || 0} minuti`, `current ${round(currentPer90)} /90 su ${currentMinutes} minuti`, `peso current effettivo ${round(effectiveCurrentWeight * 100, 1)}% dopo agreement`],
+    evidence: [`storico ${round(historicalObserved)} /90 su ${historicalMinutes || 0} minuti`, `current ${round(currentPer90)} /90 su ${currentMinutes} minuti`, ...(includePersistence ? [`persistenza current ${persistenceLevel}${trend === "declining" ? "/declining" : ""}: ${onePlusMatches}/${sequence.length} gare con almeno 1`] : []), `peso current effettivo ${round(effectiveCurrentWeight * 100, 1)}% dopo agreement`],
     method: "historical-baseline-plus-current-signal-weighted-by-sample-and-agreement-without-multiplicative-double-count"
   };
 }
 
 const EXPECTED_MINUTES_PRIORS = Object.freeze({ Difensore: 79, Centrocampista: 76, Attaccante: 74, Portiere: 90 });
+const EXPECTED_MINUTES_POLICY = Object.freeze({
+  historicalEquivalentAppearances: 12,
+  currentStarterEquivalentMatches: 5,
+  recentWindowMatches: 5,
+  maximumHistoricalWeight: 0.76,
+  maximumCurrentStarterWeight: 0.5
+});
 
 function expectedMinutes(candidate, current = null) {
   const totals = candidate.player?.previousSeason?.totals || {};
@@ -566,14 +584,20 @@ function expectedMinutes(candidate, current = null) {
   const substituteAppearances = Number(totals.substituteAppearances || 0);
   const estimatedStarterMinutes = Number(totals.minutes || 0) - substituteAppearances * 22;
   const historical = starts > 0 ? clamp(estimatedStarterMinutes / starts, 45, 90) : prior;
-  const historyWeight = clamp(appearances / (appearances + 12), 0, 0.76);
+  const historyWeight = clamp(appearances / (appearances + EXPECTED_MINUTES_POLICY.historicalEquivalentAppearances), 0, EXPECTED_MINUTES_POLICY.maximumHistoricalWeight);
   let estimate = prior * (1 - historyWeight) + historical * historyWeight;
   if (current?.starterAppearances) {
     const currentAverage = current.starterMinutes / current.starterAppearances;
-    const currentWeight = clamp(current.starterAppearances / (current.starterAppearances + 5), 0, 0.5);
+    const currentWeight = clamp(current.starterAppearances / (current.starterAppearances + EXPECTED_MINUTES_POLICY.currentStarterEquivalentMatches), 0, EXPECTED_MINUTES_POLICY.maximumCurrentStarterWeight);
     estimate = estimate * (1 - currentWeight) + currentAverage * currentWeight;
   }
-  estimate = round(clamp(estimate, 55, 90), 1);
+  const recentTeamMatches = Number(current?.recentTeamMatches || 0);
+  const recentAverageMinutes = Number.isFinite(current?.recentAverageMinutes) ? current.recentAverageMinutes : null;
+  const recentWeight = recentAverageMinutes == null
+    ? 0
+    : clamp(recentTeamMatches / (recentTeamMatches + EXPECTED_MINUTES_POLICY.currentStarterEquivalentMatches), 0, EXPECTED_MINUTES_POLICY.maximumCurrentStarterWeight);
+  if (recentWeight > 0) estimate = estimate * (1 - recentWeight) + recentAverageMinutes * recentWeight;
+  estimate = round(clamp(estimate, 0, 90), 1);
   const completionRate = starts ? Number(totals.completeMatches || 0) / starts : null;
   const substitutedRate = starts ? Number(totals.substitutedOff || 0) / starts : null;
   const substitutionRisk = estimate >= 82 && (substitutedRate == null || substitutedRate < 0.42)
@@ -596,7 +620,15 @@ function expectedMinutes(candidate, current = null) {
       substituteAppearances,
       completionRate: completionRate == null ? null : round(completionRate, 3),
       substitutedRate: substitutedRate == null ? null : round(substitutedRate, 3),
-      currentStarterAppearances: current?.starterAppearances || 0
+      currentStarterAppearances: current?.starterAppearances || 0,
+      recentTeamMatches,
+      recentAppearances: current?.recentAppearances || 0,
+      recentStarts: current?.recentStarts || 0,
+      recentAverageMinutes: recentAverageMinutes == null ? null : round(recentAverageMinutes, 1),
+      recentWeight: round(recentWeight, 3),
+      lastAppearanceMatchday: current?.lastAppearanceMatchday || null,
+      fallbackUsed: appearances === 0 && !current?.starterAppearances && recentAverageMinutes == null,
+      policy: EXPECTED_MINUTES_POLICY
     }
   };
 }
@@ -943,8 +975,9 @@ function shooterCandidates(homeTeam, awayTeam, homeSquad, awaySquad, teamProject
       const per90 = totals.per90 || {};
       const current = currentPlayers?.[candidate.player?.id] || currentPlayers?.[cleanName(candidate.name)] || null;
       const minutes = expectedMinutes(candidate, current);
-      const shotStability = playerBaselineStability({ historicalBaseline: item.value, historicalObserved: item.observed, historicalMinutes: item.minutes, current, key: "shots" });
-      const sotStability = playerBaselineStability({ historicalBaseline: sotV1[index]?.value || 0, historicalObserved: sotV1[index]?.observed || 0, historicalMinutes: sotV1[index]?.minutes || 0, current, key: "shotsOnTarget" });
+      const includePersistence = Boolean(ownTeamMatchupProfile?.modelPolicy?.playerPersistenceDiagnostics);
+      const shotStability = playerBaselineStability({ historicalBaseline: item.value, historicalObserved: item.observed, historicalMinutes: item.minutes, current, key: "shots", includePersistence });
+      const sotStability = playerBaselineStability({ historicalBaseline: sotV1[index]?.value || 0, historicalObserved: sotV1[index]?.observed || 0, historicalMinutes: sotV1[index]?.minutes || 0, current, key: "shotsOnTarget", includePersistence });
       const shotBase = shotStability.value;
       const sotBase = Math.min(shotBase, sotStability.value);
       const matchup = playerMatchup(candidate, teamProfile, opponentProfile, opponentVolume, venue, shotBase, sotBase, opponentTeamMatchupProfile, projection);
@@ -989,6 +1022,20 @@ function shooterCandidates(homeTeam, awayTeam, homeSquad, awaySquad, teamProject
         substitutionRisk: minutes.substitutionRisk,
         likelyReplacement: minutes.likelyReplacement,
         expectedMinutesEvidence: minutes.evidence,
+        playerMatchesUsed: current?.appearances || 0,
+        playerMinutesUsed: current?.minutes || 0,
+        currentPlayerEvidence: current ? {
+          shots: current.shotsCoverage ? current.shots : null,
+          shotsOnTarget: current.shotsOnTargetCoverage ? current.shotsOnTarget : null,
+          expectedGoals: current.expectedGoalsCoverage ? round(current.expectedGoals, 3) : null,
+          expectedGoalsPer90: Number.isFinite(current.expectedGoalsPer90) ? round(current.expectedGoalsPer90, 3) : null,
+          expectedGoalsPerShot: Number.isFinite(current.expectedGoalsPerShot) ? round(current.expectedGoalsPerShot, 3) : null,
+          modelStatus: "diagnostic-only-no-new-xg-coefficient"
+        } : null,
+        signalStatus: shotStability.level,
+        signalEvidence: shotStability.evidence,
+        fallbackUsed: Boolean(minutes.evidence.fallbackUsed),
+        opponentInteractionApplied: Boolean(matchup.teamProfileRole && matchup.teamProfileConfidence !== "unknown"),
         foulsCommittedPer90: Number.isFinite(per90.foulsCommitted) ? round(per90.foulsCommitted, 2) : null,
         minutes: item.minutes,
         dataStatus: playerDataStatus(candidate, item.minutes),
@@ -1969,7 +2016,7 @@ function predictMatch(input) {
     status: "preliminary",
     engineVersion: ENGINE_VERSION,
     playerMarketModelVersion: PLAYER_MARKET_MODEL_VERSION,
-    teamMatchupProfileVersion: 1,
+    teamMatchupProfileVersion: 2,
     probabilities: {
       final: probabilityObject(final),
       marketNoMargin: market ? probabilityObject(market.probabilities) : null,
@@ -2031,4 +2078,4 @@ function predictMatch(input) {
   };
 }
 
-module.exports = { ENGINE_VERSION, PLAYER_MARKET_MODEL_VERSION, OUTCOMES, WEIGHTS, attackChannels, findMainOneXTwo, marketProbabilities, opponentAbilityToExploit, teamProfilePlayerModifier, teamOffensiveAllocation, applyOpponentTeamVolumeInteraction, playerBaselineStability, expectedDefensiveExposureFactor, predictMatch };
+module.exports = { ENGINE_VERSION, PLAYER_MARKET_MODEL_VERSION, OUTCOMES, WEIGHTS, attackChannels, findMainOneXTwo, marketProbabilities, opponentAbilityToExploit, teamProfilePlayerModifier, teamOffensiveAllocation, volumeMetric, applyOwnOffensiveVolumeProfile, applyOpponentTeamVolumeInteraction, playerBaselineStability, expectedMinutes, poissonAtLeast, expectedDefensiveExposureFactor, predictMatch };
