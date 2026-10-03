@@ -1,0 +1,262 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ExactScoreResearchEvaluation",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "exactScoreDataGate",
+    "researchOnly",
+    "promotionDisabled",
+    "sameSample",
+    "retrospective",
+    "prospective",
+    "caution",
+    "nextAction"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "researchOnly": {
+      "const": true
+    },
+    "promotionDisabled": {
+      "const": true
+    },
+    "exactScoreDataGate": {
+      "enum": [
+        "INSUFFICIENT",
+        "COLLECTING",
+        "READY_FOR_BASELINE_MODEL"
+      ]
+    },
+    "sameSample": {
+      "type": "object",
+      "required": [
+        "matchIds",
+        "n",
+        "folds"
+      ],
+      "properties": {
+        "matchIds": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "n": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "folds": {
+          "type": "array"
+        }
+      }
+    },
+    "retrospective": {
+      "type": "object",
+      "required": [
+        "label",
+        "models"
+      ],
+      "properties": {
+        "label": {
+          "const": "RETROSPECTIVE RESEARCH ONLY"
+        },
+        "models": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "model",
+              "sample",
+              "temporalCoverage",
+              "goalMAE",
+              "scoreLogLoss",
+              "exactHitRate",
+              "top3Coverage",
+              "top5Coverage",
+              "actualScoreRank",
+              "oneXtwo",
+              "btts",
+              "overUnder",
+              "calibration",
+              "lowScores",
+              "drawDiagnostic",
+              "uncertainty",
+              "matchDiagnostics"
+            ],
+            "properties": {
+              "sample": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "scoreLogLoss": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "exactHitRate": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "top3Coverage": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "top5Coverage": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "goalMAE": {
+                "type": "object",
+                "required": [
+                  "home",
+                  "away",
+                  "total"
+                ],
+                "properties": {
+                  "home": {
+                    "type": "object",
+                    "required": [
+                      "n",
+                      "mae",
+                      "rmse",
+                      "bias"
+                    ],
+                    "properties": {
+                      "n": {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "mae": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      },
+                      "rmse": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      },
+                      "bias": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      }
+                    }
+                  },
+                  "away": {
+                    "type": "object",
+                    "required": [
+                      "n",
+                      "mae",
+                      "rmse",
+                      "bias"
+                    ],
+                    "properties": {
+                      "n": {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "mae": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      },
+                      "rmse": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      },
+                      "bias": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      }
+                    }
+                  },
+                  "total": {
+                    "type": "object",
+                    "required": [
+                      "n",
+                      "mae",
+                      "rmse",
+                      "bias"
+                    ],
+                    "properties": {
+                      "n": {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "mae": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      },
+                      "rmse": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      },
+                      "bias": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "prospective": {
+      "type": "object",
+      "required": [
+        "pendingMatches",
+        "evaluatedMatches",
+        "exactScorePredictions",
+        "models",
+        "metrics"
+      ],
+      "properties": {
+        "evaluatedMatches": {
+          "const": 0
+        },
+        "exactScorePredictions": {
+          "const": 0
+        },
+        "metrics": {
+          "type": "null"
+        },
+        "models": {
+          "type": "array",
+          "maxItems": 0
+        }
+      }
+    },
+    "caution": {
+      "const": "Exact score hit rate is a secondary metric."
+    }
+  }
+}

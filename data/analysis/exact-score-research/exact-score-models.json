@@ -1,0 +1,136 @@
+{
+  "schemaVersion": 1,
+  "createdAt": "2026-10-03T00:45:12.894Z",
+  "ladder": [
+    "M0 League Average",
+    "M1 Goals",
+    "M2 xG",
+    "M3 xG + shots/SOT process",
+    "M4 advanced future candidate"
+  ],
+  "models": [
+    {
+      "id": "league-poisson-r0",
+      "name": "LEAGUE_AVERAGE_BASELINE",
+      "version": "r0.1",
+      "featureGroups": [
+        "GOAL_HISTORY",
+        "HOME_AWAY"
+      ],
+      "distribution": "INDEPENDENT_POISSON",
+      "fitted": false,
+      "state": "RESEARCH",
+      "research": true,
+      "production": false,
+      "createdAt": "2026-10-03T00:45:12.894Z",
+      "trainingCutoff": null,
+      "training": null,
+      "implementationStatus": "EXECUTABLE",
+      "configuration": {},
+      "notes": "As-of league venue means; historical league fallback for opening round; no tuned coefficients"
+    },
+    {
+      "id": "goals-poisson-r0",
+      "name": "TEAM_GOALS_BASELINE",
+      "version": "r0.1",
+      "featureGroups": [
+        "GOAL_HISTORY",
+        "HOME_AWAY",
+        "MATURITY"
+      ],
+      "distribution": "INDEPENDENT_POISSON",
+      "fitted": false,
+      "state": "RESEARCH",
+      "research": true,
+      "production": false,
+      "createdAt": "2026-10-03T00:45:12.894Z",
+      "trainingCutoff": null,
+      "training": null,
+      "implementationStatus": "AWAITING_RESEARCH_CONFIGURATION",
+      "configuration": {},
+      "notes": "Multiplicative attack x opposing defense; explicit shrinkage required, not optimized or validated"
+    },
+    {
+      "id": "xg-poisson-r0",
+      "name": "XG_BASELINE",
+      "version": "r0.1",
+      "featureGroups": [
+        "XG_PROCESS",
+        "HOME_AWAY",
+        "MATURITY"
+      ],
+      "distribution": "INDEPENDENT_POISSON",
+      "fitted": false,
+      "state": "RESEARCH",
+      "research": true,
+      "production": false,
+      "createdAt": "2026-10-03T00:45:12.894Z",
+      "trainingCutoff": null,
+      "training": null,
+      "implementationStatus": "AWAITING_RESEARCH_CONFIGURATION",
+      "configuration": {},
+      "notes": "Explicit xG coverage/shrinkage policy required; unavailable xG never replaced by goals"
+    },
+    {
+      "id": "process-poisson-r0",
+      "name": "PROCESS_BASELINE",
+      "version": "r0.1",
+      "featureGroups": [
+        "GOAL_HISTORY",
+        "XG_PROCESS",
+        "SHOT_PROCESS",
+        "SOT_PROCESS",
+        "CHANCE_QUALITY",
+        "DEFENSIVE_SUPPRESSION",
+        "MATCHUP"
+      ],
+      "distribution": "INDEPENDENT_POISSON",
+      "fitted": false,
+      "state": "RESEARCH",
+      "research": true,
+      "production": false,
+      "createdAt": "2026-10-03T00:45:12.894Z",
+      "trainingCutoff": null,
+      "training": null,
+      "implementationStatus": "INTERFACE_ONLY",
+      "configuration": {},
+      "notes": "Layer B awaits temporal ablation; no final coefficients"
+    }
+  ],
+  "dependencyCandidates": [
+    {
+      "id": "DIXON_COLES",
+      "state": "RESEARCH",
+      "status": "FUTURE_ONLY",
+      "fitted": false,
+      "training": null
+    },
+    {
+      "id": "BIVARIATE_POISSON",
+      "state": "RESEARCH",
+      "status": "FUTURE_ONLY",
+      "fitted": false,
+      "training": null
+    },
+    {
+      "id": "NEGATIVE_BINOMIAL",
+      "state": "RESEARCH",
+      "status": "FUTURE_ONLY",
+      "fitted": false,
+      "training": null
+    }
+  ],
+  "promotionRequirements": [
+    "valid walk-forward",
+    "no leakage",
+    "sufficient temporal sample",
+    "better than naive baseline OOS",
+    "calibrated 1X2",
+    "acceptable goal MAE",
+    "score-distribution improvement",
+    "no severe consistency failure",
+    "separate human decision"
+  ],
+  "promotionDisabled": true,
+  "thresholds": null
+}

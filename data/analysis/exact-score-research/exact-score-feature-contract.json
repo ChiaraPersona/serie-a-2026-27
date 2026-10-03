@@ -1,0 +1,569 @@
+{
+  "schemaVersion": 1,
+  "name": "ExactScoreFeatureVector",
+  "targets": [
+    "homeGoals",
+    "awayGoals"
+  ],
+  "groups": [
+    "GOAL_HISTORY",
+    "XG_PROCESS",
+    "SHOT_PROCESS",
+    "SOT_PROCESS",
+    "CHANCE_QUALITY",
+    "DEFENSIVE_SUPPRESSION",
+    "HOME_AWAY",
+    "MATURITY",
+    "MATCHUP"
+  ],
+  "definitions": {
+    "home.goalsFor": {
+      "group": "GOAL_HISTORY",
+      "type": "number|null"
+    },
+    "home.goalsAgainst": {
+      "group": "GOAL_HISTORY",
+      "type": "number|null"
+    },
+    "home.failedToScoreRate": {
+      "group": "GOAL_HISTORY",
+      "type": "number|null"
+    },
+    "home.cleanSheetRate": {
+      "group": "GOAL_HISTORY",
+      "type": "number|null"
+    },
+    "home.bttsRate": {
+      "group": "GOAL_HISTORY",
+      "type": "number|null"
+    },
+    "home.over15Rate": {
+      "group": "GOAL_HISTORY",
+      "type": "number|null"
+    },
+    "home.over25Rate": {
+      "group": "GOAL_HISTORY",
+      "type": "number|null"
+    },
+    "home.over35Rate": {
+      "group": "GOAL_HISTORY",
+      "type": "number|null"
+    },
+    "home.historicalGoalsFor": {
+      "group": "GOAL_HISTORY",
+      "type": "number|null"
+    },
+    "home.historicalGoalsAgainst": {
+      "group": "GOAL_HISTORY",
+      "type": "number|null"
+    },
+    "home.venueGoalsFor": {
+      "group": "HOME_AWAY",
+      "type": "number|null"
+    },
+    "home.venueGoalsAgainst": {
+      "group": "HOME_AWAY",
+      "type": "number|null"
+    },
+    "home.historicalVenueGoalsFor": {
+      "group": "HOME_AWAY",
+      "type": "number|null"
+    },
+    "home.historicalVenueGoalsAgainst": {
+      "group": "HOME_AWAY",
+      "type": "number|null"
+    },
+    "home.currentXGF": {
+      "group": "XG_PROCESS",
+      "type": "number|null"
+    },
+    "home.currentXGA": {
+      "group": "XG_PROCESS",
+      "type": "number|null"
+    },
+    "home.venueXGF": {
+      "group": "XG_PROCESS",
+      "type": "number|null"
+    },
+    "home.venueXGA": {
+      "group": "XG_PROCESS",
+      "type": "number|null"
+    },
+    "home.historicalXGF": {
+      "group": "XG_PROCESS",
+      "type": "number|null"
+    },
+    "home.historicalXGA": {
+      "group": "XG_PROCESS",
+      "type": "number|null"
+    },
+    "home.baselineShots": {
+      "group": "SHOT_PROCESS",
+      "type": "number|null"
+    },
+    "home.shotsAllowed": {
+      "group": "SHOT_PROCESS",
+      "type": "number|null"
+    },
+    "home.predictedTeamShots": {
+      "group": "SHOT_PROCESS",
+      "type": "number|null"
+    },
+    "home.baselineSOT": {
+      "group": "SOT_PROCESS",
+      "type": "number|null"
+    },
+    "home.sotAllowed": {
+      "group": "SOT_PROCESS",
+      "type": "number|null"
+    },
+    "home.predictedTeamSOT": {
+      "group": "SOT_PROCESS",
+      "type": "number|null"
+    },
+    "home.xGPerShot": {
+      "group": "CHANCE_QUALITY",
+      "type": "number|null"
+    },
+    "home.xGAllowedPerShot": {
+      "group": "CHANCE_QUALITY",
+      "type": "number|null"
+    },
+    "home.shotQuality": {
+      "group": "CHANCE_QUALITY",
+      "type": "number|null"
+    },
+    "home.finishingResidual": {
+      "group": "CHANCE_QUALITY",
+      "type": "number|null"
+    },
+    "home.goalkeepingResidual": {
+      "group": "CHANCE_QUALITY",
+      "type": "number|null"
+    },
+    "home.shotSuppression": {
+      "group": "DEFENSIVE_SUPPRESSION",
+      "type": "number|null"
+    },
+    "home.shotVulnerability": {
+      "group": "DEFENSIVE_SUPPRESSION",
+      "type": "number|null"
+    },
+    "home.sotSuppression": {
+      "group": "DEFENSIVE_SUPPRESSION",
+      "type": "number|null"
+    },
+    "home.sotVulnerability": {
+      "group": "DEFENSIVE_SUPPRESSION",
+      "type": "number|null"
+    },
+    "home.chanceQualitySuppression": {
+      "group": "DEFENSIVE_SUPPRESSION",
+      "type": "number|null"
+    },
+    "home.chanceQualityVulnerability": {
+      "group": "DEFENSIVE_SUPPRESSION",
+      "type": "number|null"
+    },
+    "home.ownShotAdjustmentPct": {
+      "group": "MATCHUP",
+      "type": "number|null"
+    },
+    "home.ownSotAdjustmentPct": {
+      "group": "MATCHUP",
+      "type": "number|null"
+    },
+    "home.opponentShotAdjustmentPct": {
+      "group": "MATCHUP",
+      "type": "number|null"
+    },
+    "home.opponentSotAdjustmentPct": {
+      "group": "MATCHUP",
+      "type": "number|null"
+    },
+    "home.isHome": {
+      "group": "HOME_AWAY",
+      "type": "number|null"
+    },
+    "home.currentMatches": {
+      "group": "MATURITY",
+      "type": "number|null"
+    },
+    "home.venueMatches": {
+      "group": "MATURITY",
+      "type": "number|null"
+    },
+    "home.xgCoverage": {
+      "group": "MATURITY",
+      "type": "number|null"
+    },
+    "home.xgaCoverage": {
+      "group": "MATURITY",
+      "type": "number|null"
+    },
+    "home.venueXgCoverage": {
+      "group": "MATURITY",
+      "type": "number|null"
+    },
+    "home.venueXgaCoverage": {
+      "group": "MATURITY",
+      "type": "number|null"
+    },
+    "home.sampleMaturity": {
+      "group": "MATURITY",
+      "type": "number|null"
+    },
+    "home.offensiveMaturity": {
+      "group": "MATURITY",
+      "type": "number|null"
+    },
+    "home.defensiveMaturity": {
+      "group": "MATURITY",
+      "type": "number|null"
+    },
+    "home.historicalWeight": {
+      "group": "MATURITY",
+      "type": "number|null"
+    },
+    "home.currentWeight": {
+      "group": "MATURITY",
+      "type": "number|null"
+    },
+    "away.goalsFor": {
+      "group": "GOAL_HISTORY",
+      "type": "number|null"
+    },
+    "away.goalsAgainst": {
+      "group": "GOAL_HISTORY",
+      "type": "number|null"
+    },
+    "away.failedToScoreRate": {
+      "group": "GOAL_HISTORY",
+      "type": "number|null"
+    },
+    "away.cleanSheetRate": {
+      "group": "GOAL_HISTORY",
+      "type": "number|null"
+    },
+    "away.bttsRate": {
+      "group": "GOAL_HISTORY",
+      "type": "number|null"
+    },
+    "away.over15Rate": {
+      "group": "GOAL_HISTORY",
+      "type": "number|null"
+    },
+    "away.over25Rate": {
+      "group": "GOAL_HISTORY",
+      "type": "number|null"
+    },
+    "away.over35Rate": {
+      "group": "GOAL_HISTORY",
+      "type": "number|null"
+    },
+    "away.historicalGoalsFor": {
+      "group": "GOAL_HISTORY",
+      "type": "number|null"
+    },
+    "away.historicalGoalsAgainst": {
+      "group": "GOAL_HISTORY",
+      "type": "number|null"
+    },
+    "away.venueGoalsFor": {
+      "group": "HOME_AWAY",
+      "type": "number|null"
+    },
+    "away.venueGoalsAgainst": {
+      "group": "HOME_AWAY",
+      "type": "number|null"
+    },
+    "away.historicalVenueGoalsFor": {
+      "group": "HOME_AWAY",
+      "type": "number|null"
+    },
+    "away.historicalVenueGoalsAgainst": {
+      "group": "HOME_AWAY",
+      "type": "number|null"
+    },
+    "away.currentXGF": {
+      "group": "XG_PROCESS",
+      "type": "number|null"
+    },
+    "away.currentXGA": {
+      "group": "XG_PROCESS",
+      "type": "number|null"
+    },
+    "away.venueXGF": {
+      "group": "XG_PROCESS",
+      "type": "number|null"
+    },
+    "away.venueXGA": {
+      "group": "XG_PROCESS",
+      "type": "number|null"
+    },
+    "away.historicalXGF": {
+      "group": "XG_PROCESS",
+      "type": "number|null"
+    },
+    "away.historicalXGA": {
+      "group": "XG_PROCESS",
+      "type": "number|null"
+    },
+    "away.baselineShots": {
+      "group": "SHOT_PROCESS",
+      "type": "number|null"
+    },
+    "away.shotsAllowed": {
+      "group": "SHOT_PROCESS",
+      "type": "number|null"
+    },
+    "away.predictedTeamShots": {
+      "group": "SHOT_PROCESS",
+      "type": "number|null"
+    },
+    "away.baselineSOT": {
+      "group": "SOT_PROCESS",
+      "type": "number|null"
+    },
+    "away.sotAllowed": {
+      "group": "SOT_PROCESS",
+      "type": "number|null"
+    },
+    "away.predictedTeamSOT": {
+      "group": "SOT_PROCESS",
+      "type": "number|null"
+    },
+    "away.xGPerShot": {
+      "group": "CHANCE_QUALITY",
+      "type": "number|null"
+    },
+    "away.xGAllowedPerShot": {
+      "group": "CHANCE_QUALITY",
+      "type": "number|null"
+    },
+    "away.shotQuality": {
+      "group": "CHANCE_QUALITY",
+      "type": "number|null"
+    },
+    "away.finishingResidual": {
+      "group": "CHANCE_QUALITY",
+      "type": "number|null"
+    },
+    "away.goalkeepingResidual": {
+      "group": "CHANCE_QUALITY",
+      "type": "number|null"
+    },
+    "away.shotSuppression": {
+      "group": "DEFENSIVE_SUPPRESSION",
+      "type": "number|null"
+    },
+    "away.shotVulnerability": {
+      "group": "DEFENSIVE_SUPPRESSION",
+      "type": "number|null"
+    },
+    "away.sotSuppression": {
+      "group": "DEFENSIVE_SUPPRESSION",
+      "type": "number|null"
+    },
+    "away.sotVulnerability": {
+      "group": "DEFENSIVE_SUPPRESSION",
+      "type": "number|null"
+    },
+    "away.chanceQualitySuppression": {
+      "group": "DEFENSIVE_SUPPRESSION",
+      "type": "number|null"
+    },
+    "away.chanceQualityVulnerability": {
+      "group": "DEFENSIVE_SUPPRESSION",
+      "type": "number|null"
+    },
+    "away.ownShotAdjustmentPct": {
+      "group": "MATCHUP",
+      "type": "number|null"
+    },
+    "away.ownSotAdjustmentPct": {
+      "group": "MATCHUP",
+      "type": "number|null"
+    },
+    "away.opponentShotAdjustmentPct": {
+      "group": "MATCHUP",
+      "type": "number|null"
+    },
+    "away.opponentSotAdjustmentPct": {
+      "group": "MATCHUP",
+      "type": "number|null"
+    },
+    "away.isHome": {
+      "group": "HOME_AWAY",
+      "type": "number|null"
+    },
+    "away.currentMatches": {
+      "group": "MATURITY",
+      "type": "number|null"
+    },
+    "away.venueMatches": {
+      "group": "MATURITY",
+      "type": "number|null"
+    },
+    "away.xgCoverage": {
+      "group": "MATURITY",
+      "type": "number|null"
+    },
+    "away.xgaCoverage": {
+      "group": "MATURITY",
+      "type": "number|null"
+    },
+    "away.venueXgCoverage": {
+      "group": "MATURITY",
+      "type": "number|null"
+    },
+    "away.venueXgaCoverage": {
+      "group": "MATURITY",
+      "type": "number|null"
+    },
+    "away.sampleMaturity": {
+      "group": "MATURITY",
+      "type": "number|null"
+    },
+    "away.offensiveMaturity": {
+      "group": "MATURITY",
+      "type": "number|null"
+    },
+    "away.defensiveMaturity": {
+      "group": "MATURITY",
+      "type": "number|null"
+    },
+    "away.historicalWeight": {
+      "group": "MATURITY",
+      "type": "number|null"
+    },
+    "away.currentWeight": {
+      "group": "MATURITY",
+      "type": "number|null"
+    },
+    "league.homeGoalsAverage": {
+      "group": "GOAL_HISTORY",
+      "type": "number|null"
+    },
+    "league.awayGoalsAverage": {
+      "group": "GOAL_HISTORY",
+      "type": "number|null"
+    },
+    "league.totalGoalsAverage": {
+      "group": "GOAL_HISTORY",
+      "type": "number|null"
+    },
+    "league.homeAdvantage": {
+      "group": "HOME_AWAY",
+      "type": "number|null"
+    },
+    "league.homeXGAverage": {
+      "group": "XG_PROCESS",
+      "type": "number|null"
+    },
+    "league.awayXGAverage": {
+      "group": "XG_PROCESS",
+      "type": "number|null"
+    },
+    "league.currentMatches": {
+      "group": "MATURITY",
+      "type": "number|null"
+    },
+    "league.historicalHomeGoalsAverage": {
+      "group": "GOAL_HISTORY",
+      "type": "number|null"
+    },
+    "league.historicalAwayGoalsAverage": {
+      "group": "GOAL_HISTORY",
+      "type": "number|null"
+    },
+    "context.matchday": {
+      "group": "HOME_AWAY",
+      "type": "number|null"
+    }
+  },
+  "provenanceRequired": [
+    "source",
+    "sourceHash",
+    "cutoff",
+    "period",
+    "kind",
+    "availability",
+    "matchesUsed",
+    "sample",
+    "availableBefore",
+    "competition",
+    "season",
+    "note"
+  ],
+  "missing": null,
+  "playerFeatures": false,
+  "quoteFeatures": false,
+  "threeLayers": [
+    "GOAL_STRENGTH",
+    "PROCESS_ADJUSTMENT",
+    "GOAL_DISTRIBUTION"
+  ],
+  "rawXGIsLambda": false,
+  "promotionStates": [
+    "RESEARCH",
+    "SHADOW",
+    "CANDIDATE",
+    "PRODUCTION"
+  ],
+  "maximumCurrentState": "RESEARCH",
+  "errorComponents": [
+    "GOAL_STRENGTH_ERROR",
+    "TEAM_PROCESS_ERROR",
+    "GOAL_CONVERSION_ERROR",
+    "DISTRIBUTION_ERROR",
+    "DEPENDENCE_ERROR"
+  ],
+  "ablations": [
+    {
+      "id": "ablation-0",
+      "name": "Goals only",
+      "status": "FUTURE_SAME_SAMPLE_SAME_FOLDS",
+      "isolatedIncrementRequired": true
+    },
+    {
+      "id": "ablation-1",
+      "name": "+ xG",
+      "status": "FUTURE_SAME_SAMPLE_SAME_FOLDS",
+      "isolatedIncrementRequired": true
+    },
+    {
+      "id": "ablation-2",
+      "name": "+ shots",
+      "status": "FUTURE_SAME_SAMPLE_SAME_FOLDS",
+      "isolatedIncrementRequired": true
+    },
+    {
+      "id": "ablation-3",
+      "name": "+ SOT",
+      "status": "FUTURE_SAME_SAMPLE_SAME_FOLDS",
+      "isolatedIncrementRequired": true
+    },
+    {
+      "id": "ablation-4",
+      "name": "+ chance quality",
+      "status": "FUTURE_SAME_SAMPLE_SAME_FOLDS",
+      "isolatedIncrementRequired": true
+    },
+    {
+      "id": "ablation-5",
+      "name": "+ matchup",
+      "status": "FUTURE_SAME_SAMPLE_SAME_FOLDS",
+      "isolatedIncrementRequired": true
+    }
+  ],
+  "scenarios": [
+    "PREDICTED PROCESS",
+    "ORACLE TEAM PROCESS (RETROSPECTIVE OFFLINE ONLY)"
+  ],
+  "finishingAndGoalkeepingResidualPolicy": {
+    "diagnosticOnly": true,
+    "shrinkage": null,
+    "persistenceAssumed": false
+  }
+}

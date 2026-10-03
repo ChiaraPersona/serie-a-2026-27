@@ -1,0 +1,1941 @@
+{
+  "schemaVersion": 1,
+  "metadata": {
+    "title": "Continuous Prediction Engine V2 evaluation",
+    "generatedAt": "2026-10-03T00:13:20.077Z",
+    "season": "2026-27",
+    "competition": "serie-a",
+    "engineVersion": [
+      "4.13.0"
+    ],
+    "modelVersion": [
+      "player-market-v2"
+    ],
+    "snapshotSchemaVersion": 3,
+    "modelFrozen": true,
+    "productionBehaviorChanged": false
+  },
+  "snapshots": {
+    "total": 10,
+    "prospective": 10,
+    "retrospective": 0,
+    "pending": 10,
+    "invalid": 0,
+    "manifestHash": "a158269d57feb26aeb91a4ef4d3042e931fcf8bf472f9dfe9fc2c766648efe1c"
+  },
+  "legacyMd5": {
+    "status": "LEGACY EVALUATION SNAPSHOT",
+    "matchdays": [
+      5
+    ],
+    "matchClusters": 10,
+    "playerObservations": 198,
+    "generatedAt": null,
+    "limitation": "No prospective immutable snapshot provenance was retained; excluded from cumulative prospective metrics."
+  },
+  "legacyInitialSignals": {
+    "teamShotsTarget": {
+      "firstSeen": 5,
+      "lastSeen": 5,
+      "matchdaysObserved": [
+        5
+      ],
+      "n": 20,
+      "effectSize": 4.5935,
+      "direction": "ABSOLUTE_ERROR",
+      "status": "WATCH / INSUFFICIENT",
+      "source": "legacy MD5 report"
+    },
+    "sotConversionGap": {
+      "firstSeen": 5,
+      "lastSeen": 5,
+      "matchdaysObserved": [
+        5
+      ],
+      "n": 121,
+      "effectSize": 0.0677,
+      "direction": "POSITIVE",
+      "status": "WATCH / INSUFFICIENT",
+      "source": "legacy MD5 report"
+    },
+    "cfStShotsBias": {
+      "firstSeen": 5,
+      "lastSeen": 5,
+      "matchdaysObserved": [
+        5
+      ],
+      "n": 17,
+      "effectSize": 0.5559,
+      "direction": "POSITIVE",
+      "status": "WATCH / INSUFFICIENT",
+      "source": "legacy MD5 report"
+    },
+    "shotsDispersion": {
+      "firstSeen": 5,
+      "lastSeen": 5,
+      "matchdaysObserved": [
+        5
+      ],
+      "n": 198,
+      "effectSize": 1.63,
+      "direction": "OVERDISPERSED",
+      "status": "WATCH / INSUFFICIENT",
+      "source": "legacy MD5 report"
+    }
+  },
+  "temporalCoverage": {
+    "totalMatchClusters": 0,
+    "totalPlayerObservations": 0,
+    "firstEvaluatedMatchday": null,
+    "lastEvaluatedMatchday": null,
+    "evaluatedMatchdays": [],
+    "snapshotMatchdays": [
+      6
+    ],
+    "pendingMatches": 10,
+    "maturityCoverage": {
+      "EARLY": 0,
+      "DEVELOPING": 0,
+      "MID SAMPLE": 0,
+      "MATURE": 0
+    }
+  },
+  "modelEvidenceMaturityCoverage": {
+    "teamProfileRecords": 20,
+    "maturityWeight": {
+      "n": 20,
+      "min": 0.5,
+      "mean": 0.5,
+      "max": 0.5
+    },
+    "teamProfileStatusCounts": {
+      "medium-low": 5,
+      "medium": 6,
+      "medium-high": 8,
+      "low": 1
+    },
+    "playerBaselineStabilityCounts": {
+      "low": 52,
+      "medium": 74,
+      "high": 74
+    }
+  },
+  "marketMetrics": {
+    "shots1Plus": {
+      "n": 0,
+      "brier": null,
+      "logLoss": null,
+      "ece": null
+    },
+    "shots2Plus": {
+      "n": 0,
+      "brier": null,
+      "logLoss": null,
+      "ece": null
+    },
+    "shots3Plus": {
+      "n": 0,
+      "brier": null,
+      "logLoss": null,
+      "ece": null
+    },
+    "shots4Plus": {
+      "n": 0,
+      "brier": null,
+      "logLoss": null,
+      "ece": null
+    },
+    "sot1Plus": {
+      "n": 0,
+      "brier": null,
+      "logLoss": null,
+      "ece": null
+    },
+    "sot2Plus": {
+      "n": 0,
+      "brier": null,
+      "logLoss": null,
+      "ece": null
+    }
+  },
+  "teamTargetDiagnostics": {
+    "shots": {
+      "n": 0,
+      "predictedMean": null,
+      "actualMean": null,
+      "mae": null,
+      "rmse": null,
+      "bias": null
+    },
+    "sot": {
+      "n": 0,
+      "predictedMean": null,
+      "actualMean": null,
+      "mae": null,
+      "rmse": null,
+      "bias": null
+    }
+  },
+  "allocationDiagnostics": {
+    "fullPlayerVolume": {
+      "shots": {
+        "n": 0,
+        "predictedMean": null,
+        "actualMean": null,
+        "mae": null,
+        "rmse": null,
+        "bias": null
+      },
+      "sot": {
+        "n": 0,
+        "predictedMean": null,
+        "actualMean": null,
+        "mae": null,
+        "rmse": null,
+        "bias": null
+      }
+    },
+    "actualTeamVolumeCounterfactual": {
+      "shots": {
+        "n": 0,
+        "predictedMean": null,
+        "actualMean": null,
+        "mae": null,
+        "rmse": null,
+        "bias": null
+      },
+      "sot": {
+        "n": 0,
+        "predictedMean": null,
+        "actualMean": null,
+        "mae": null,
+        "rmse": null,
+        "bias": null
+      }
+    },
+    "matchedPlayerVolumeCounterfactual": {
+      "shots": {
+        "n": 0,
+        "predictedMean": null,
+        "actualMean": null,
+        "mae": null,
+        "rmse": null,
+        "bias": null
+      },
+      "sot": {
+        "n": 0,
+        "predictedMean": null,
+        "actualMean": null,
+        "mae": null,
+        "rmse": null,
+        "bias": null
+      }
+    },
+    "matchedPlayerRows": 0
+  },
+  "sotConversionDiagnostics": {
+    "n": 0,
+    "predicted": null,
+    "actual": null,
+    "byRole": {},
+    "byTier": {},
+    "byTeam": {},
+    "byPlayer": {}
+  },
+  "distributionDiagnostics": {
+    "dispersion": {
+      "shots": {
+        "n": 0,
+        "mean": null,
+        "variance": null,
+        "index": null,
+        "status": "INSUFFICIENT"
+      },
+      "sot": {
+        "n": 0,
+        "mean": null,
+        "variance": null,
+        "index": null,
+        "status": "INSUFFICIENT"
+      },
+      "byTier": {},
+      "byRole": {},
+      "byExpectedMinutesBand": {
+        "<30": {
+          "shots": {
+            "n": 0,
+            "mean": null,
+            "variance": null,
+            "index": null,
+            "status": "INSUFFICIENT"
+          },
+          "sot": {
+            "n": 0,
+            "mean": null,
+            "variance": null,
+            "index": null,
+            "status": "INSUFFICIENT"
+          }
+        },
+        "30-59": {
+          "shots": {
+            "n": 0,
+            "mean": null,
+            "variance": null,
+            "index": null,
+            "status": "INSUFFICIENT"
+          },
+          "sot": {
+            "n": 0,
+            "mean": null,
+            "variance": null,
+            "index": null,
+            "status": "INSUFFICIENT"
+          }
+        },
+        "60-74": {
+          "shots": {
+            "n": 0,
+            "mean": null,
+            "variance": null,
+            "index": null,
+            "status": "INSUFFICIENT"
+          },
+          "sot": {
+            "n": 0,
+            "mean": null,
+            "variance": null,
+            "index": null,
+            "status": "INSUFFICIENT"
+          }
+        },
+        "75+": {
+          "shots": {
+            "n": 0,
+            "mean": null,
+            "variance": null,
+            "index": null,
+            "status": "INSUFFICIENT"
+          },
+          "sot": {
+            "n": 0,
+            "mean": null,
+            "variance": null,
+            "index": null,
+            "status": "INSUFFICIENT"
+          }
+        }
+      }
+    },
+    "negativeBinomialShadow": {
+      "status": "INSUFFICIENT",
+      "dispersion": null,
+      "markets": {}
+    },
+    "status": "SHADOW ONLY"
+  },
+  "matchupDiagnostics": {
+    "status": "COUNTERFACTUAL NOT EXACTLY RECONSTRUCTIBLE",
+    "noMatchupExact": null,
+    "noOpponentInteractionExact": null,
+    "note": "Stored component trace lacks re-run player allocation after neutralizing each factor; FULL V2 remains untouched."
+  },
+  "minutesDiagnostics": {
+    "mae": null,
+    "rmse": null,
+    "biasActualMinusExpected": null,
+    "n": 0,
+    "correlationExpectedVsActual": null,
+    "byLineupState": {},
+    "byExpectedMinutesBand": {
+      "<30": {
+        "n": 0,
+        "predictedMean": null,
+        "actualMean": null,
+        "mae": null,
+        "rmse": null,
+        "bias": null
+      },
+      "30-59": {
+        "n": 0,
+        "predictedMean": null,
+        "actualMean": null,
+        "mae": null,
+        "rmse": null,
+        "bias": null
+      },
+      "60-74": {
+        "n": 0,
+        "predictedMean": null,
+        "actualMean": null,
+        "mae": null,
+        "rmse": null,
+        "bias": null
+      },
+      "75+": {
+        "n": 0,
+        "predictedMean": null,
+        "actualMean": null,
+        "mae": null,
+        "rmse": null,
+        "bias": null
+      },
+      "N/D": {
+        "n": 0,
+        "predictedMean": null,
+        "actualMean": null,
+        "mae": null,
+        "rmse": null,
+        "bias": null
+      }
+    }
+  },
+  "outsiderDiagnostics": {
+    "outsider": {
+      "n": 0,
+      "predictedMean": null,
+      "actualMean": null,
+      "mae": null,
+      "rmse": null,
+      "bias": null
+    },
+    "outsiderExpectedMinutes": {
+      "n": 0,
+      "predictedMean": null,
+      "actualMean": null,
+      "mae": null,
+      "rmse": null,
+      "bias": null
+    },
+    "comparableSecondaryControlSameRole": {
+      "n": 0,
+      "predictedMean": null,
+      "actualMean": null,
+      "mae": null,
+      "rmse": null,
+      "bias": null
+    },
+    "byRole": {},
+    "outsiderN": 0,
+    "comparableSameRoleControlN": 0
+  },
+  "v1v2": {
+    "status": "V1 snapshot not available for the prospective snapshot IDs",
+    "comparableObservations": 0
+  },
+  "persistentSignals": {
+    "team-shots-target-bias": {
+      "label": "Team shots target bias",
+      "firstSeen": null,
+      "lastSeen": null,
+      "matchdaysObserved": [],
+      "n": 0,
+      "effectSize": null,
+      "minimumPracticalEffect": 2,
+      "direction": "N/D",
+      "confidence": "INSUFFICIENT",
+      "bootstrap": {
+        "status": "INSUFFICIENT",
+        "clusters": 0,
+        "ci95": null
+      },
+      "status": "INSUFFICIENT",
+      "history": []
+    },
+    "team-sot-target-bias": {
+      "label": "Team SOT target bias",
+      "firstSeen": null,
+      "lastSeen": null,
+      "matchdaysObserved": [],
+      "n": 0,
+      "effectSize": null,
+      "minimumPracticalEffect": 1,
+      "direction": "N/D",
+      "confidence": "INSUFFICIENT",
+      "bootstrap": {
+        "status": "INSUFFICIENT",
+        "clusters": 0,
+        "ci95": null
+      },
+      "status": "INSUFFICIENT",
+      "history": []
+    },
+    "player-cfst-shots-bias": {
+      "label": "CF/ST shots bias",
+      "firstSeen": null,
+      "lastSeen": null,
+      "matchdaysObserved": [],
+      "n": 0,
+      "effectSize": null,
+      "minimumPracticalEffect": 0.25,
+      "direction": "N/D",
+      "confidence": "INSUFFICIENT",
+      "bootstrap": {
+        "status": "INSUFFICIENT",
+        "clusters": 0,
+        "ci95": null
+      },
+      "status": "INSUFFICIENT",
+      "history": []
+    },
+    "sot-conversion-gap": {
+      "label": "SOT/shots conversion gap",
+      "firstSeen": null,
+      "lastSeen": null,
+      "matchdaysObserved": [],
+      "n": 0,
+      "effectSize": null,
+      "minimumPracticalEffect": 0.03,
+      "direction": "N/D",
+      "confidence": "INSUFFICIENT",
+      "bootstrap": {
+        "status": "INSUFFICIENT",
+        "clusters": 0,
+        "ci95": null
+      },
+      "status": "INSUFFICIENT",
+      "history": []
+    }
+  },
+  "matchdayMetrics": {
+    "6": {
+      "maturity": "DEVELOPING",
+      "matchClusters": 0,
+      "playerObservations": 0,
+      "teamObservations": 0,
+      "shots": {
+        "n": 0,
+        "predictedMean": null,
+        "actualMean": null,
+        "mae": null,
+        "rmse": null,
+        "bias": null
+      },
+      "sot": {
+        "n": 0,
+        "predictedMean": null,
+        "actualMean": null,
+        "mae": null,
+        "rmse": null,
+        "bias": null
+      },
+      "markets": {
+        "shots1Plus": {
+          "n": 0,
+          "brier": null,
+          "logLoss": null,
+          "ece": null
+        },
+        "shots2Plus": {
+          "n": 0,
+          "brier": null,
+          "logLoss": null,
+          "ece": null
+        },
+        "shots3Plus": {
+          "n": 0,
+          "brier": null,
+          "logLoss": null,
+          "ece": null
+        },
+        "shots4Plus": {
+          "n": 0,
+          "brier": null,
+          "logLoss": null,
+          "ece": null
+        },
+        "sot1Plus": {
+          "n": 0,
+          "brier": null,
+          "logLoss": null,
+          "ece": null
+        },
+        "sot2Plus": {
+          "n": 0,
+          "brier": null,
+          "logLoss": null,
+          "ece": null
+        }
+      },
+      "teamTarget": {
+        "shots": {
+          "n": 0,
+          "predictedMean": null,
+          "actualMean": null,
+          "mae": null,
+          "rmse": null,
+          "bias": null
+        },
+        "sot": {
+          "n": 0,
+          "predictedMean": null,
+          "actualMean": null,
+          "mae": null,
+          "rmse": null,
+          "bias": null
+        }
+      },
+      "allocation": {
+        "fullPlayerVolume": {
+          "shots": {
+            "n": 0,
+            "predictedMean": null,
+            "actualMean": null,
+            "mae": null,
+            "rmse": null,
+            "bias": null
+          },
+          "sot": {
+            "n": 0,
+            "predictedMean": null,
+            "actualMean": null,
+            "mae": null,
+            "rmse": null,
+            "bias": null
+          }
+        },
+        "actualTeamVolumeCounterfactual": {
+          "shots": {
+            "n": 0,
+            "predictedMean": null,
+            "actualMean": null,
+            "mae": null,
+            "rmse": null,
+            "bias": null
+          },
+          "sot": {
+            "n": 0,
+            "predictedMean": null,
+            "actualMean": null,
+            "mae": null,
+            "rmse": null,
+            "bias": null
+          }
+        },
+        "matchedPlayerVolumeCounterfactual": {
+          "shots": {
+            "n": 0,
+            "predictedMean": null,
+            "actualMean": null,
+            "mae": null,
+            "rmse": null,
+            "bias": null
+          },
+          "sot": {
+            "n": 0,
+            "predictedMean": null,
+            "actualMean": null,
+            "mae": null,
+            "rmse": null,
+            "bias": null
+          }
+        },
+        "matchedPlayerRows": 0
+      },
+      "sotConversion": {
+        "n": 0,
+        "predicted": null,
+        "actual": null,
+        "byRole": {},
+        "byTier": {},
+        "byTeam": {},
+        "byPlayer": {}
+      },
+      "poissonDispersion": {
+        "shots": {
+          "n": 0,
+          "mean": null,
+          "variance": null,
+          "index": null,
+          "status": "INSUFFICIENT"
+        },
+        "sot": {
+          "n": 0,
+          "mean": null,
+          "variance": null,
+          "index": null,
+          "status": "INSUFFICIENT"
+        },
+        "byTier": {},
+        "byRole": {},
+        "byExpectedMinutesBand": {
+          "<30": {
+            "shots": {
+              "n": 0,
+              "mean": null,
+              "variance": null,
+              "index": null,
+              "status": "INSUFFICIENT"
+            },
+            "sot": {
+              "n": 0,
+              "mean": null,
+              "variance": null,
+              "index": null,
+              "status": "INSUFFICIENT"
+            }
+          },
+          "30-59": {
+            "shots": {
+              "n": 0,
+              "mean": null,
+              "variance": null,
+              "index": null,
+              "status": "INSUFFICIENT"
+            },
+            "sot": {
+              "n": 0,
+              "mean": null,
+              "variance": null,
+              "index": null,
+              "status": "INSUFFICIENT"
+            }
+          },
+          "60-74": {
+            "shots": {
+              "n": 0,
+              "mean": null,
+              "variance": null,
+              "index": null,
+              "status": "INSUFFICIENT"
+            },
+            "sot": {
+              "n": 0,
+              "mean": null,
+              "variance": null,
+              "index": null,
+              "status": "INSUFFICIENT"
+            }
+          },
+          "75+": {
+            "shots": {
+              "n": 0,
+              "mean": null,
+              "variance": null,
+              "index": null,
+              "status": "INSUFFICIENT"
+            },
+            "sot": {
+              "n": 0,
+              "mean": null,
+              "variance": null,
+              "index": null,
+              "status": "INSUFFICIENT"
+            }
+          }
+        }
+      },
+      "expectedMinutes": {
+        "mae": null,
+        "rmse": null,
+        "biasActualMinusExpected": null,
+        "n": 0,
+        "correlationExpectedVsActual": null,
+        "byLineupState": {},
+        "byExpectedMinutesBand": {
+          "<30": {
+            "n": 0,
+            "predictedMean": null,
+            "actualMean": null,
+            "mae": null,
+            "rmse": null,
+            "bias": null
+          },
+          "30-59": {
+            "n": 0,
+            "predictedMean": null,
+            "actualMean": null,
+            "mae": null,
+            "rmse": null,
+            "bias": null
+          },
+          "60-74": {
+            "n": 0,
+            "predictedMean": null,
+            "actualMean": null,
+            "mae": null,
+            "rmse": null,
+            "bias": null
+          },
+          "75+": {
+            "n": 0,
+            "predictedMean": null,
+            "actualMean": null,
+            "mae": null,
+            "rmse": null,
+            "bias": null
+          },
+          "N/D": {
+            "n": 0,
+            "predictedMean": null,
+            "actualMean": null,
+            "mae": null,
+            "rmse": null,
+            "bias": null
+          }
+        }
+      },
+      "outsider": {
+        "outsider": {
+          "n": 0,
+          "predictedMean": null,
+          "actualMean": null,
+          "mae": null,
+          "rmse": null,
+          "bias": null
+        },
+        "outsiderExpectedMinutes": {
+          "n": 0,
+          "predictedMean": null,
+          "actualMean": null,
+          "mae": null,
+          "rmse": null,
+          "bias": null
+        },
+        "comparableSecondaryControlSameRole": {
+          "n": 0,
+          "predictedMean": null,
+          "actualMean": null,
+          "mae": null,
+          "rmse": null,
+          "bias": null
+        },
+        "byRole": {},
+        "outsiderN": 0,
+        "comparableSameRoleControlN": 0
+      },
+      "coverage": {
+        "playerShotsPct": null,
+        "playerSotPct": null,
+        "minutesPct": null,
+        "xgPct": null
+      },
+      "teamMatchupAndOpponentInteraction": {
+        "status": "COUNTERFACTUAL NOT EXACTLY RECONSTRUCTIBLE",
+        "noMatchupExact": null,
+        "noOpponentInteractionExact": null,
+        "note": "Stored component trace lacks re-run player allocation after neutralizing each factor; FULL V2 remains untouched."
+      },
+      "nbShadow": {
+        "status": "INSUFFICIENT",
+        "dispersion": null,
+        "markets": {}
+      }
+    }
+  },
+  "rollingMetrics": {
+    "last3Matchdays": {
+      "matchClusters": 0,
+      "playerObservations": 0,
+      "teamObservations": 0,
+      "shots": {
+        "n": 0,
+        "predictedMean": null,
+        "actualMean": null,
+        "mae": null,
+        "rmse": null,
+        "bias": null
+      },
+      "sot": {
+        "n": 0,
+        "predictedMean": null,
+        "actualMean": null,
+        "mae": null,
+        "rmse": null,
+        "bias": null
+      },
+      "markets": {
+        "shots1Plus": {
+          "n": 0,
+          "brier": null,
+          "logLoss": null,
+          "ece": null
+        },
+        "shots2Plus": {
+          "n": 0,
+          "brier": null,
+          "logLoss": null,
+          "ece": null
+        },
+        "shots3Plus": {
+          "n": 0,
+          "brier": null,
+          "logLoss": null,
+          "ece": null
+        },
+        "shots4Plus": {
+          "n": 0,
+          "brier": null,
+          "logLoss": null,
+          "ece": null
+        },
+        "sot1Plus": {
+          "n": 0,
+          "brier": null,
+          "logLoss": null,
+          "ece": null
+        },
+        "sot2Plus": {
+          "n": 0,
+          "brier": null,
+          "logLoss": null,
+          "ece": null
+        }
+      },
+      "teamTarget": {
+        "shots": {
+          "n": 0,
+          "predictedMean": null,
+          "actualMean": null,
+          "mae": null,
+          "rmse": null,
+          "bias": null
+        },
+        "sot": {
+          "n": 0,
+          "predictedMean": null,
+          "actualMean": null,
+          "mae": null,
+          "rmse": null,
+          "bias": null
+        }
+      },
+      "allocation": {
+        "fullPlayerVolume": {
+          "shots": {
+            "n": 0,
+            "predictedMean": null,
+            "actualMean": null,
+            "mae": null,
+            "rmse": null,
+            "bias": null
+          },
+          "sot": {
+            "n": 0,
+            "predictedMean": null,
+            "actualMean": null,
+            "mae": null,
+            "rmse": null,
+            "bias": null
+          }
+        },
+        "actualTeamVolumeCounterfactual": {
+          "shots": {
+            "n": 0,
+            "predictedMean": null,
+            "actualMean": null,
+            "mae": null,
+            "rmse": null,
+            "bias": null
+          },
+          "sot": {
+            "n": 0,
+            "predictedMean": null,
+            "actualMean": null,
+            "mae": null,
+            "rmse": null,
+            "bias": null
+          }
+        },
+        "matchedPlayerVolumeCounterfactual": {
+          "shots": {
+            "n": 0,
+            "predictedMean": null,
+            "actualMean": null,
+            "mae": null,
+            "rmse": null,
+            "bias": null
+          },
+          "sot": {
+            "n": 0,
+            "predictedMean": null,
+            "actualMean": null,
+            "mae": null,
+            "rmse": null,
+            "bias": null
+          }
+        },
+        "matchedPlayerRows": 0
+      },
+      "sotConversion": {
+        "n": 0,
+        "predicted": null,
+        "actual": null,
+        "byRole": {},
+        "byTier": {},
+        "byTeam": {},
+        "byPlayer": {}
+      },
+      "poissonDispersion": {
+        "shots": {
+          "n": 0,
+          "mean": null,
+          "variance": null,
+          "index": null,
+          "status": "INSUFFICIENT"
+        },
+        "sot": {
+          "n": 0,
+          "mean": null,
+          "variance": null,
+          "index": null,
+          "status": "INSUFFICIENT"
+        },
+        "byTier": {},
+        "byRole": {},
+        "byExpectedMinutesBand": {
+          "<30": {
+            "shots": {
+              "n": 0,
+              "mean": null,
+              "variance": null,
+              "index": null,
+              "status": "INSUFFICIENT"
+            },
+            "sot": {
+              "n": 0,
+              "mean": null,
+              "variance": null,
+              "index": null,
+              "status": "INSUFFICIENT"
+            }
+          },
+          "30-59": {
+            "shots": {
+              "n": 0,
+              "mean": null,
+              "variance": null,
+              "index": null,
+              "status": "INSUFFICIENT"
+            },
+            "sot": {
+              "n": 0,
+              "mean": null,
+              "variance": null,
+              "index": null,
+              "status": "INSUFFICIENT"
+            }
+          },
+          "60-74": {
+            "shots": {
+              "n": 0,
+              "mean": null,
+              "variance": null,
+              "index": null,
+              "status": "INSUFFICIENT"
+            },
+            "sot": {
+              "n": 0,
+              "mean": null,
+              "variance": null,
+              "index": null,
+              "status": "INSUFFICIENT"
+            }
+          },
+          "75+": {
+            "shots": {
+              "n": 0,
+              "mean": null,
+              "variance": null,
+              "index": null,
+              "status": "INSUFFICIENT"
+            },
+            "sot": {
+              "n": 0,
+              "mean": null,
+              "variance": null,
+              "index": null,
+              "status": "INSUFFICIENT"
+            }
+          }
+        }
+      },
+      "expectedMinutes": {
+        "mae": null,
+        "rmse": null,
+        "biasActualMinusExpected": null,
+        "n": 0,
+        "correlationExpectedVsActual": null,
+        "byLineupState": {},
+        "byExpectedMinutesBand": {
+          "<30": {
+            "n": 0,
+            "predictedMean": null,
+            "actualMean": null,
+            "mae": null,
+            "rmse": null,
+            "bias": null
+          },
+          "30-59": {
+            "n": 0,
+            "predictedMean": null,
+            "actualMean": null,
+            "mae": null,
+            "rmse": null,
+            "bias": null
+          },
+          "60-74": {
+            "n": 0,
+            "predictedMean": null,
+            "actualMean": null,
+            "mae": null,
+            "rmse": null,
+            "bias": null
+          },
+          "75+": {
+            "n": 0,
+            "predictedMean": null,
+            "actualMean": null,
+            "mae": null,
+            "rmse": null,
+            "bias": null
+          },
+          "N/D": {
+            "n": 0,
+            "predictedMean": null,
+            "actualMean": null,
+            "mae": null,
+            "rmse": null,
+            "bias": null
+          }
+        }
+      },
+      "outsider": {
+        "outsider": {
+          "n": 0,
+          "predictedMean": null,
+          "actualMean": null,
+          "mae": null,
+          "rmse": null,
+          "bias": null
+        },
+        "outsiderExpectedMinutes": {
+          "n": 0,
+          "predictedMean": null,
+          "actualMean": null,
+          "mae": null,
+          "rmse": null,
+          "bias": null
+        },
+        "comparableSecondaryControlSameRole": {
+          "n": 0,
+          "predictedMean": null,
+          "actualMean": null,
+          "mae": null,
+          "rmse": null,
+          "bias": null
+        },
+        "byRole": {},
+        "outsiderN": 0,
+        "comparableSameRoleControlN": 0
+      },
+      "coverage": {
+        "playerShotsPct": null,
+        "playerSotPct": null,
+        "minutesPct": null,
+        "xgPct": null
+      },
+      "teamMatchupAndOpponentInteraction": {
+        "status": "COUNTERFACTUAL NOT EXACTLY RECONSTRUCTIBLE",
+        "noMatchupExact": null,
+        "noOpponentInteractionExact": null,
+        "note": "Stored component trace lacks re-run player allocation after neutralizing each factor; FULL V2 remains untouched."
+      },
+      "nbShadow": {
+        "status": "INSUFFICIENT",
+        "dispersion": null,
+        "markets": {}
+      }
+    },
+    "last5Matchdays": {
+      "matchClusters": 0,
+      "playerObservations": 0,
+      "teamObservations": 0,
+      "shots": {
+        "n": 0,
+        "predictedMean": null,
+        "actualMean": null,
+        "mae": null,
+        "rmse": null,
+        "bias": null
+      },
+      "sot": {
+        "n": 0,
+        "predictedMean": null,
+        "actualMean": null,
+        "mae": null,
+        "rmse": null,
+        "bias": null
+      },
+      "markets": {
+        "shots1Plus": {
+          "n": 0,
+          "brier": null,
+          "logLoss": null,
+          "ece": null
+        },
+        "shots2Plus": {
+          "n": 0,
+          "brier": null,
+          "logLoss": null,
+          "ece": null
+        },
+        "shots3Plus": {
+          "n": 0,
+          "brier": null,
+          "logLoss": null,
+          "ece": null
+        },
+        "shots4Plus": {
+          "n": 0,
+          "brier": null,
+          "logLoss": null,
+          "ece": null
+        },
+        "sot1Plus": {
+          "n": 0,
+          "brier": null,
+          "logLoss": null,
+          "ece": null
+        },
+        "sot2Plus": {
+          "n": 0,
+          "brier": null,
+          "logLoss": null,
+          "ece": null
+        }
+      },
+      "teamTarget": {
+        "shots": {
+          "n": 0,
+          "predictedMean": null,
+          "actualMean": null,
+          "mae": null,
+          "rmse": null,
+          "bias": null
+        },
+        "sot": {
+          "n": 0,
+          "predictedMean": null,
+          "actualMean": null,
+          "mae": null,
+          "rmse": null,
+          "bias": null
+        }
+      },
+      "allocation": {
+        "fullPlayerVolume": {
+          "shots": {
+            "n": 0,
+            "predictedMean": null,
+            "actualMean": null,
+            "mae": null,
+            "rmse": null,
+            "bias": null
+          },
+          "sot": {
+            "n": 0,
+            "predictedMean": null,
+            "actualMean": null,
+            "mae": null,
+            "rmse": null,
+            "bias": null
+          }
+        },
+        "actualTeamVolumeCounterfactual": {
+          "shots": {
+            "n": 0,
+            "predictedMean": null,
+            "actualMean": null,
+            "mae": null,
+            "rmse": null,
+            "bias": null
+          },
+          "sot": {
+            "n": 0,
+            "predictedMean": null,
+            "actualMean": null,
+            "mae": null,
+            "rmse": null,
+            "bias": null
+          }
+        },
+        "matchedPlayerVolumeCounterfactual": {
+          "shots": {
+            "n": 0,
+            "predictedMean": null,
+            "actualMean": null,
+            "mae": null,
+            "rmse": null,
+            "bias": null
+          },
+          "sot": {
+            "n": 0,
+            "predictedMean": null,
+            "actualMean": null,
+            "mae": null,
+            "rmse": null,
+            "bias": null
+          }
+        },
+        "matchedPlayerRows": 0
+      },
+      "sotConversion": {
+        "n": 0,
+        "predicted": null,
+        "actual": null,
+        "byRole": {},
+        "byTier": {},
+        "byTeam": {},
+        "byPlayer": {}
+      },
+      "poissonDispersion": {
+        "shots": {
+          "n": 0,
+          "mean": null,
+          "variance": null,
+          "index": null,
+          "status": "INSUFFICIENT"
+        },
+        "sot": {
+          "n": 0,
+          "mean": null,
+          "variance": null,
+          "index": null,
+          "status": "INSUFFICIENT"
+        },
+        "byTier": {},
+        "byRole": {},
+        "byExpectedMinutesBand": {
+          "<30": {
+            "shots": {
+              "n": 0,
+              "mean": null,
+              "variance": null,
+              "index": null,
+              "status": "INSUFFICIENT"
+            },
+            "sot": {
+              "n": 0,
+              "mean": null,
+              "variance": null,
+              "index": null,
+              "status": "INSUFFICIENT"
+            }
+          },
+          "30-59": {
+            "shots": {
+              "n": 0,
+              "mean": null,
+              "variance": null,
+              "index": null,
+              "status": "INSUFFICIENT"
+            },
+            "sot": {
+              "n": 0,
+              "mean": null,
+              "variance": null,
+              "index": null,
+              "status": "INSUFFICIENT"
+            }
+          },
+          "60-74": {
+            "shots": {
+              "n": 0,
+              "mean": null,
+              "variance": null,
+              "index": null,
+              "status": "INSUFFICIENT"
+            },
+            "sot": {
+              "n": 0,
+              "mean": null,
+              "variance": null,
+              "index": null,
+              "status": "INSUFFICIENT"
+            }
+          },
+          "75+": {
+            "shots": {
+              "n": 0,
+              "mean": null,
+              "variance": null,
+              "index": null,
+              "status": "INSUFFICIENT"
+            },
+            "sot": {
+              "n": 0,
+              "mean": null,
+              "variance": null,
+              "index": null,
+              "status": "INSUFFICIENT"
+            }
+          }
+        }
+      },
+      "expectedMinutes": {
+        "mae": null,
+        "rmse": null,
+        "biasActualMinusExpected": null,
+        "n": 0,
+        "correlationExpectedVsActual": null,
+        "byLineupState": {},
+        "byExpectedMinutesBand": {
+          "<30": {
+            "n": 0,
+            "predictedMean": null,
+            "actualMean": null,
+            "mae": null,
+            "rmse": null,
+            "bias": null
+          },
+          "30-59": {
+            "n": 0,
+            "predictedMean": null,
+            "actualMean": null,
+            "mae": null,
+            "rmse": null,
+            "bias": null
+          },
+          "60-74": {
+            "n": 0,
+            "predictedMean": null,
+            "actualMean": null,
+            "mae": null,
+            "rmse": null,
+            "bias": null
+          },
+          "75+": {
+            "n": 0,
+            "predictedMean": null,
+            "actualMean": null,
+            "mae": null,
+            "rmse": null,
+            "bias": null
+          },
+          "N/D": {
+            "n": 0,
+            "predictedMean": null,
+            "actualMean": null,
+            "mae": null,
+            "rmse": null,
+            "bias": null
+          }
+        }
+      },
+      "outsider": {
+        "outsider": {
+          "n": 0,
+          "predictedMean": null,
+          "actualMean": null,
+          "mae": null,
+          "rmse": null,
+          "bias": null
+        },
+        "outsiderExpectedMinutes": {
+          "n": 0,
+          "predictedMean": null,
+          "actualMean": null,
+          "mae": null,
+          "rmse": null,
+          "bias": null
+        },
+        "comparableSecondaryControlSameRole": {
+          "n": 0,
+          "predictedMean": null,
+          "actualMean": null,
+          "mae": null,
+          "rmse": null,
+          "bias": null
+        },
+        "byRole": {},
+        "outsiderN": 0,
+        "comparableSameRoleControlN": 0
+      },
+      "coverage": {
+        "playerShotsPct": null,
+        "playerSotPct": null,
+        "minutesPct": null,
+        "xgPct": null
+      },
+      "teamMatchupAndOpponentInteraction": {
+        "status": "COUNTERFACTUAL NOT EXACTLY RECONSTRUCTIBLE",
+        "noMatchupExact": null,
+        "noOpponentInteractionExact": null,
+        "note": "Stored component trace lacks re-run player allocation after neutralizing each factor; FULL V2 remains untouched."
+      },
+      "nbShadow": {
+        "status": "INSUFFICIENT",
+        "dispersion": null,
+        "markets": {}
+      }
+    },
+    "seasonToDate": {
+      "matchClusters": 0,
+      "playerObservations": 0,
+      "teamObservations": 0,
+      "shots": {
+        "n": 0,
+        "predictedMean": null,
+        "actualMean": null,
+        "mae": null,
+        "rmse": null,
+        "bias": null
+      },
+      "sot": {
+        "n": 0,
+        "predictedMean": null,
+        "actualMean": null,
+        "mae": null,
+        "rmse": null,
+        "bias": null
+      },
+      "markets": {
+        "shots1Plus": {
+          "n": 0,
+          "brier": null,
+          "logLoss": null,
+          "ece": null
+        },
+        "shots2Plus": {
+          "n": 0,
+          "brier": null,
+          "logLoss": null,
+          "ece": null
+        },
+        "shots3Plus": {
+          "n": 0,
+          "brier": null,
+          "logLoss": null,
+          "ece": null
+        },
+        "shots4Plus": {
+          "n": 0,
+          "brier": null,
+          "logLoss": null,
+          "ece": null
+        },
+        "sot1Plus": {
+          "n": 0,
+          "brier": null,
+          "logLoss": null,
+          "ece": null
+        },
+        "sot2Plus": {
+          "n": 0,
+          "brier": null,
+          "logLoss": null,
+          "ece": null
+        }
+      },
+      "teamTarget": {
+        "shots": {
+          "n": 0,
+          "predictedMean": null,
+          "actualMean": null,
+          "mae": null,
+          "rmse": null,
+          "bias": null
+        },
+        "sot": {
+          "n": 0,
+          "predictedMean": null,
+          "actualMean": null,
+          "mae": null,
+          "rmse": null,
+          "bias": null
+        }
+      },
+      "allocation": {
+        "fullPlayerVolume": {
+          "shots": {
+            "n": 0,
+            "predictedMean": null,
+            "actualMean": null,
+            "mae": null,
+            "rmse": null,
+            "bias": null
+          },
+          "sot": {
+            "n": 0,
+            "predictedMean": null,
+            "actualMean": null,
+            "mae": null,
+            "rmse": null,
+            "bias": null
+          }
+        },
+        "actualTeamVolumeCounterfactual": {
+          "shots": {
+            "n": 0,
+            "predictedMean": null,
+            "actualMean": null,
+            "mae": null,
+            "rmse": null,
+            "bias": null
+          },
+          "sot": {
+            "n": 0,
+            "predictedMean": null,
+            "actualMean": null,
+            "mae": null,
+            "rmse": null,
+            "bias": null
+          }
+        },
+        "matchedPlayerVolumeCounterfactual": {
+          "shots": {
+            "n": 0,
+            "predictedMean": null,
+            "actualMean": null,
+            "mae": null,
+            "rmse": null,
+            "bias": null
+          },
+          "sot": {
+            "n": 0,
+            "predictedMean": null,
+            "actualMean": null,
+            "mae": null,
+            "rmse": null,
+            "bias": null
+          }
+        },
+        "matchedPlayerRows": 0
+      },
+      "sotConversion": {
+        "n": 0,
+        "predicted": null,
+        "actual": null,
+        "byRole": {},
+        "byTier": {},
+        "byTeam": {},
+        "byPlayer": {}
+      },
+      "poissonDispersion": {
+        "shots": {
+          "n": 0,
+          "mean": null,
+          "variance": null,
+          "index": null,
+          "status": "INSUFFICIENT"
+        },
+        "sot": {
+          "n": 0,
+          "mean": null,
+          "variance": null,
+          "index": null,
+          "status": "INSUFFICIENT"
+        },
+        "byTier": {},
+        "byRole": {},
+        "byExpectedMinutesBand": {
+          "<30": {
+            "shots": {
+              "n": 0,
+              "mean": null,
+              "variance": null,
+              "index": null,
+              "status": "INSUFFICIENT"
+            },
+            "sot": {
+              "n": 0,
+              "mean": null,
+              "variance": null,
+              "index": null,
+              "status": "INSUFFICIENT"
+            }
+          },
+          "30-59": {
+            "shots": {
+              "n": 0,
+              "mean": null,
+              "variance": null,
+              "index": null,
+              "status": "INSUFFICIENT"
+            },
+            "sot": {
+              "n": 0,
+              "mean": null,
+              "variance": null,
+              "index": null,
+              "status": "INSUFFICIENT"
+            }
+          },
+          "60-74": {
+            "shots": {
+              "n": 0,
+              "mean": null,
+              "variance": null,
+              "index": null,
+              "status": "INSUFFICIENT"
+            },
+            "sot": {
+              "n": 0,
+              "mean": null,
+              "variance": null,
+              "index": null,
+              "status": "INSUFFICIENT"
+            }
+          },
+          "75+": {
+            "shots": {
+              "n": 0,
+              "mean": null,
+              "variance": null,
+              "index": null,
+              "status": "INSUFFICIENT"
+            },
+            "sot": {
+              "n": 0,
+              "mean": null,
+              "variance": null,
+              "index": null,
+              "status": "INSUFFICIENT"
+            }
+          }
+        }
+      },
+      "expectedMinutes": {
+        "mae": null,
+        "rmse": null,
+        "biasActualMinusExpected": null,
+        "n": 0,
+        "correlationExpectedVsActual": null,
+        "byLineupState": {},
+        "byExpectedMinutesBand": {
+          "<30": {
+            "n": 0,
+            "predictedMean": null,
+            "actualMean": null,
+            "mae": null,
+            "rmse": null,
+            "bias": null
+          },
+          "30-59": {
+            "n": 0,
+            "predictedMean": null,
+            "actualMean": null,
+            "mae": null,
+            "rmse": null,
+            "bias": null
+          },
+          "60-74": {
+            "n": 0,
+            "predictedMean": null,
+            "actualMean": null,
+            "mae": null,
+            "rmse": null,
+            "bias": null
+          },
+          "75+": {
+            "n": 0,
+            "predictedMean": null,
+            "actualMean": null,
+            "mae": null,
+            "rmse": null,
+            "bias": null
+          },
+          "N/D": {
+            "n": 0,
+            "predictedMean": null,
+            "actualMean": null,
+            "mae": null,
+            "rmse": null,
+            "bias": null
+          }
+        }
+      },
+      "outsider": {
+        "outsider": {
+          "n": 0,
+          "predictedMean": null,
+          "actualMean": null,
+          "mae": null,
+          "rmse": null,
+          "bias": null
+        },
+        "outsiderExpectedMinutes": {
+          "n": 0,
+          "predictedMean": null,
+          "actualMean": null,
+          "mae": null,
+          "rmse": null,
+          "bias": null
+        },
+        "comparableSecondaryControlSameRole": {
+          "n": 0,
+          "predictedMean": null,
+          "actualMean": null,
+          "mae": null,
+          "rmse": null,
+          "bias": null
+        },
+        "byRole": {},
+        "outsiderN": 0,
+        "comparableSameRoleControlN": 0
+      },
+      "coverage": {
+        "playerShotsPct": null,
+        "playerSotPct": null,
+        "minutesPct": null,
+        "xgPct": null
+      },
+      "teamMatchupAndOpponentInteraction": {
+        "status": "COUNTERFACTUAL NOT EXACTLY RECONSTRUCTIBLE",
+        "noMatchupExact": null,
+        "noOpponentInteractionExact": null,
+        "note": "Stored component trace lacks re-run player allocation after neutralizing each factor; FULL V2 remains untouched."
+      },
+      "nbShadow": {
+        "status": "INSUFFICIENT",
+        "dispersion": null,
+        "markets": {}
+      }
+    }
+  },
+  "exactScoreDatasetStatus": {
+    "prospectiveValidMatches": 0,
+    "totalOutcomeRows": 0,
+    "actualXGCoverage": null,
+    "shotsSOTCoverage": {
+      "shots": null,
+      "sot": null
+    },
+    "goalFeatureCoverage": 0
+  },
+  "exactScoreDataGate": "INSUFFICIENT",
+  "modelChangeGate": {
+    "status": "CLOSED",
+    "checks": {
+      "matchClusters": {
+        "value": 0,
+        "reviewMinimum": 50,
+        "passed": false
+      },
+      "targetMatchdays": {
+        "value": 0,
+        "reviewMinimum": 5,
+        "passed": false
+      },
+      "playerObservations": {
+        "value": 0,
+        "reviewMinimum": 1000,
+        "passed": false
+      },
+      "multipleMaturityStages": {
+        "value": 0,
+        "reviewMinimum": 3,
+        "passed": false
+      },
+      "persistentSignalWithUncertainty": {
+        "value": 0,
+        "passed": false
+      },
+      "multipleComparisonReview": {
+        "value": "4 signals; match-cluster bootstrap with Bonferroni-adjusted two-sided 98.75% intervals",
+        "passed": false
+      }
+    },
+    "note": "Compound gate; one MD/10 matches cannot open it. The signal also requires persistence, clustered uncertainty, meaningful effect, and multiple-comparison review."
+  },
+  "modelChangeReview": {
+    "status": "CLOSED",
+    "findings": [],
+    "stopAfterReport": false,
+    "automaticModelChanges": false
+  },
+  "nextAction": "COLLECT PROSPECTIVE SNAPSHOTS",
+  "evaluationRows": [],
+  "exactScoreDataset": [],
+  "nonSportingOutcomes": [],
+  "pending": [
+    {
+      "snapshotId": "serie-a-2026-27-md06-atalanta-venezia-2026-27-md-06-player-market-v2",
+      "matchId": "atalanta-venezia-2026-27-md-06",
+      "matchday": 6,
+      "status": "scheduled",
+      "evaluationStatus": "PENDING",
+      "generationClass": "PROSPECTIVE IMMUTABLE SNAPSHOT"
+    },
+    {
+      "snapshotId": "serie-a-2026-27-md06-cagliari-juventus-2026-27-md-06-player-market-v2",
+      "matchId": "cagliari-juventus-2026-27-md-06",
+      "matchday": 6,
+      "status": "scheduled",
+      "evaluationStatus": "PENDING",
+      "generationClass": "PROSPECTIVE IMMUTABLE SNAPSHOT"
+    },
+    {
+      "snapshotId": "serie-a-2026-27-md06-como-roma-2026-27-md-06-player-market-v2",
+      "matchId": "como-roma-2026-27-md-06",
+      "matchday": 6,
+      "status": "scheduled",
+      "evaluationStatus": "PENDING",
+      "generationClass": "PROSPECTIVE IMMUTABLE SNAPSHOT"
+    },
+    {
+      "snapshotId": "serie-a-2026-27-md06-genoa-fiorentina-2026-27-md-06-player-market-v2",
+      "matchId": "genoa-fiorentina-2026-27-md-06",
+      "matchday": 6,
+      "status": "scheduled",
+      "evaluationStatus": "PENDING",
+      "generationClass": "PROSPECTIVE IMMUTABLE SNAPSHOT"
+    },
+    {
+      "snapshotId": "serie-a-2026-27-md06-inter-parma-2026-27-md-06-player-market-v2",
+      "matchId": "inter-parma-2026-27-md-06",
+      "matchday": 6,
+      "status": "scheduled",
+      "evaluationStatus": "PENDING",
+      "generationClass": "PROSPECTIVE IMMUTABLE SNAPSHOT"
+    },
+    {
+      "snapshotId": "serie-a-2026-27-md06-lazio-monza-2026-27-md-06-player-market-v2",
+      "matchId": "lazio-monza-2026-27-md-06",
+      "matchday": 6,
+      "status": "scheduled",
+      "evaluationStatus": "PENDING",
+      "generationClass": "PROSPECTIVE IMMUTABLE SNAPSHOT"
+    },
+    {
+      "snapshotId": "serie-a-2026-27-md06-lecce-bologna-2026-27-md-06-player-market-v2",
+      "matchId": "lecce-bologna-2026-27-md-06",
+      "matchday": 6,
+      "status": "scheduled",
+      "evaluationStatus": "PENDING",
+      "generationClass": "PROSPECTIVE IMMUTABLE SNAPSHOT"
+    },
+    {
+      "snapshotId": "serie-a-2026-27-md06-napoli-frosinone-2026-27-md-06-player-market-v2",
+      "matchId": "napoli-frosinone-2026-27-md-06",
+      "matchday": 6,
+      "status": "scheduled",
+      "evaluationStatus": "PENDING",
+      "generationClass": "PROSPECTIVE IMMUTABLE SNAPSHOT"
+    },
+    {
+      "snapshotId": "serie-a-2026-27-md06-sassuolo-milan-2026-27-md-06-player-market-v2",
+      "matchId": "sassuolo-milan-2026-27-md-06",
+      "matchday": 6,
+      "status": "scheduled",
+      "evaluationStatus": "PENDING",
+      "generationClass": "PROSPECTIVE IMMUTABLE SNAPSHOT"
+    },
+    {
+      "snapshotId": "serie-a-2026-27-md06-torino-udinese-2026-27-md-06-player-market-v2",
+      "matchId": "torino-udinese-2026-27-md-06",
+      "matchday": 6,
+      "status": "scheduled",
+      "evaluationStatus": "PENDING",
+      "generationClass": "PROSPECTIVE IMMUTABLE SNAPSHOT"
+    }
+  ],
+  "invalid": [],
+  "warnings": [
+    "Production prediction formulas and outputs were not changed by evaluation.",
+    "Actuals are joined only by canonical matchId and remain separate from immutable snapshots.",
+    "Unavailable actual fields remain null; no missing statistic is converted into a model feature or observed zero.",
+    "Exact score, 1X2, BTTS, and total goals model layers remain unimplemented."
+  ]
+}
