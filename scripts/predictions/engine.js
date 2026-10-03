@@ -1,4 +1,5 @@
 "use strict";
+const { normalizePlayerName } = require("../player-identity");
 
 const ENGINE_VERSION = "4.13.0";
 const PLAYER_MARKET_MODEL_VERSION = 2;
@@ -1236,8 +1237,18 @@ function bookingCandidates(homeTeam, awayTeam, homeSquad, awaySquad, homeProfile
     const duelEvidence = directOpponent
       ? [`opposizione laterale ${candidate.name} - ${directOpponent.name}`, `${directOpponent.foulsWonPer90} falli subiti/90 dall'avversario diretto`]
       : ["avversario diretto non identificabile con affidabilita: fallback al canale"];
+    const squad = candidate.teamId === homeTeam.id ? homeSquad : awaySquad;
+    const identityMatches = (squad?.players || []).filter(player => [player.name, ...(player.identityAliases || [])].some(name => normalizePlayerName(name) === normalizePlayerName(candidate.name)));
+    const identity = identityMatches.length === 1 ? identityMatches[0] : null;
     return {
       name: candidate.name,
+      playerName: candidate.name,
+      detailedRole: candidate.detailedRole ?? null,
+      playerId: identity?.id ?? null,
+      identityResolution: identity ? normalizePlayerName(identity.name) === normalizePlayerName(candidate.name) ? "CANONICAL_ID" : "VERIFIED_ALIAS" : identityMatches.length > 1 ? "COLLISION" : "UNRESOLVED_NAME_ONLY",
+      riskScoreSemantics: "COMPARATIVE_HEURISTIC_NOT_PROBABILITY",
+      calibratedProbability: null,
+      refereeFactorSource: !refereeProfile ? "NO_DESIGNATION_AVAILABLE" : referee.reliability ? "DESIGNATED_REFEREE_HISTORICAL_SAMPLE" : "INSUFFICIENT_REFEREE_EVIDENCE",
       teamId: candidate.teamId,
       role: candidate.role,
       riskScore,
@@ -1270,14 +1281,21 @@ function bookingCandidates(homeTeam, awayTeam, homeSquad, awaySquad, homeProfile
     };
   }).sort((a, b) => b.riskScore - a.riskScore || a.name.localeCompare(b.name, "it"));
 
-  const selected = rows.slice(0, 5);
+  const seenCardIdentities = new Set();
+  const uniqueRows = rows.filter(candidate => {
+    if (!candidate.playerId) return true;
+    const key = `${candidate.teamId}:${candidate.playerId}`;
+    if (seenCardIdentities.has(key)) return false;
+    seenCardIdentities.add(key); return true;
+  });
+  const selected = uniqueRows.slice(0, 5);
   for (const teamId of [homeTeam.id, awayTeam.id]) {
     if (!selected.some(candidate => candidate.teamId === teamId)) {
-      const replacement = rows.find(candidate => candidate.teamId === teamId && !selected.includes(candidate));
+      const replacement = uniqueRows.find(candidate => candidate.teamId === teamId && !selected.includes(candidate));
       if (replacement) selected[selected.length - 1] = replacement;
     }
   }
-  return selected.sort((a, b) => b.riskScore - a.riskScore).map((candidate, index) => ({ ...candidate, rank: index + 1, possibleFirstBooked: index === 0 }));
+  return selected.sort((a, b) => b.riskScore - a.riskScore).map((candidate, index) => ({ ...candidate, rank: index + 1, possibleFirstBooked: index === 0, firstBookedHeuristic: index === 0, firstBookedProbability: null }));
 }
 
 function shotAccuracy(players) {

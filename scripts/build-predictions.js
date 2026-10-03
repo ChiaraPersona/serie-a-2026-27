@@ -5,6 +5,7 @@ const path = require("path");
 const { ENGINE_VERSION, PLAYER_MARKET_MODEL_VERSION, WEIGHTS, predictMatch } = require("./predictions/engine");
 const { DECISION_LAYER_VERSION, PROFILE_LIMITS, enrichPrediction } = require("./predictions/decision-layer");
 const { loadPlayerIdentities } = require("./player-identity");
+const { aggregateDisciplinaryFeatures,historicalDisciplinaryFeatures } = require("./disciplinary-features");
 const { buildProfiles } = require("./build-team-matchup-profiles");
 const { compareCanonicalMatches } = require("./predictions/future-readiness");
 
@@ -74,6 +75,10 @@ for (const identity of identityRegistry.payload.players) {
   else squad.players.push({ id: identity.playerId, name: identity.canonicalName, role: null, detailedRole: null, identityAliases: identity.aliases });
 }
 const probableLineupSource = require("./probable-lineups").loadLatestProbableLineups(root);
+for (const fixture of officialLineups.fixtures) for (const team of fixture.teams) for (const entry of [...(team.players || []),...(team.substitutes || [])]) {
+  const player = squadsByTeam.get(team.teamId)?.players.find(p=>p.id===entry.playerId);
+  if (player) player.identityAliases=[...new Set([...(player.identityAliases || []),entry.sourceName,entry.currentName].filter(Boolean))];
+}
 for (const team of probableLineupSource.teams) for (const entry of team.players) {
   if (!entry.playerId) continue;
   const player = squadsByTeam.get(team.teamId)?.players.find(player => player.id === entry.playerId);
@@ -230,6 +235,10 @@ function currentPlayerPerformance(teamId, targetMatch) {
     current.expectedGoalsPerShot = current.expectedGoalsCoverage && current.shots > 0 ? current.expectedGoals / current.shots : null;
   }
   aggregate.__meta = { teamId, asOfMatchdayExclusive: targetMatch.matchday, matchesUsed: rows.length, recentMatchIds: recentMatches.map(match => match.id) };
+  for (const feature of aggregateDisciplinaryFeatures(matches,teamId,{asOfMatchdayExclusive:targetMatch.matchday,targetMatchId:targetMatch.id})) {
+    const current = aggregate[feature.playerId] || aggregate[playerKey(feature.playerName)];
+    if (current) current.disciplinaryFeatures = feature;
+  }
   currentPlayerPerformanceCache.set(cacheKey, aggregate);
   return aggregate;
 }
@@ -323,6 +332,25 @@ const generatedPredictions = targetMatches.map(match => {
       : null,
     generatedAt: predictionGeneratedAt
   });
+  prediction.cardDataContract = {schemaVersion:1,targetVersion:"card-targets-v1",modelState:"DATA_ONLY_LEGACY_HEURISTIC",calibratedProbability:null,teamEstimateTarget:"HISTORICAL_YELLOW_CARD_BASELINE_FIXED_DISPERSION_NOT_ALL_DISCIPLINARY_EVENTS"};
+  for (const candidate of prediction.likelyBooked || []) {
+    if (match.refereeAssignment?.referee?.slug && candidate.refereeFactorSource === "NO_DESIGNATION_AVAILABLE") candidate.refereeFactorSource = "DESIGNATED_REFEREE_EVIDENCE_UNAVAILABLE";
+    const player = squadsByTeam.get(candidate.teamId)?.players.find(p => p.id === candidate.playerId);
+    const exposure = prediction.shooters?.allPlayers?.find(p => p.playerId === candidate.playerId && p.teamId === candidate.teamId);
+    const current = currentPlayerPerformance(candidate.teamId,match)[candidate.playerId];
+    candidate.cardResearchFeatures = {
+      historicalDisciplinarySample: historicalDisciplinaryFeatures(player),
+      currentDisciplinarySample: current?.disciplinaryFeatures ?? null,
+      expectedMinutes: exposure?.expectedMinutes ?? null,
+      expectedMinutesReliability: exposure?.expectedMinutesReliability ?? null,
+      startingProbability: exposure?.startingProbability ?? null,
+      probableXIState: (candidate.teamId === match.homeTeam ? homeTeam : awayTeam)?.probableLineup?.status ?? "unknown",
+      substitutionRisk: exposure?.substitutionRisk ?? null,
+      exposureSource:"Player Market V2 serialized output; reference only, not used in riskScore",
+      cutoff:{asOfMatchdayExclusive:match.matchday,targetMatchIdExcluded:match.id},
+      usedInLegacyRiskScore:false
+    };
+  }
   prediction.futureDataDiagnostics = {
     dataCutoff: { matchdayExclusive: match.matchday, targetMatchIdExcluded: match.id, completedOnly: true },
     home: {

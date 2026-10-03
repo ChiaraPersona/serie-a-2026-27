@@ -3,13 +3,16 @@ import fs from "node:fs";
 import path from "node:path";
 import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
-import { settleLeg } from "../js/pages/betting-settlement.mjs";
+import { settleArchivedLeg } from "../js/pages/betting-settlement.mjs";
 
 const require = createRequire(import.meta.url);
 const { calculateStandings } = require("./standings.js");
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const read = file => JSON.parse(fs.readFileSync(path.join(root, file), "utf8"));
+const recordedOutcomes=read("data/sources/card-settlement-records-2026-10-03.json").records;
+// Original result assertions protect completed history; strict eligibility is tested separately.
+const settleLeg=(leg,match)=>settleArchivedLeg(leg,match,recordedOutcomes);
 const matches = read("data/normalized/matches.json");
 const schedina = read("data/normalized/schedina-md05.json");
 const predictions = read("data/normalized/predictions.json").predictions;

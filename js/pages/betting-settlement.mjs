@@ -1,3 +1,4 @@
+import { MARKET_RULES, playerCardOutcome, teamCardPoints } from './disciplinary.mjs';
 const finite=value=>value!==null&&value!==undefined&&value!==""&&Number.isFinite(Number(value));
 const normalized=value=>String(value??"").trim().toUpperCase().replaceAll("–","-").replaceAll(",",".");
 
@@ -99,11 +100,37 @@ function settlePlayerThreshold(selection,players,key,threshold){
   return unavailable();
 }
 
+export const settlementRecordKey=leg=>JSON.stringify([leg?.matchId,leg?.providerSelectionId??null,leg?.market,leg?.player??null,leg?.selection,leg?.label]);
+// Display a previously recorded historical outcome without relabeling it as a new
+// verified settlement. The strict current check remains independently available.
+export function settleArchivedLeg(leg,match,records=[]){
+  const current=settleLeg(leg,match);
+  const recorded=records.find(r=>r.key===settlementRecordKey(leg));
+  if(!recorded||match?.status!=="finished")return current;
+  return {status:recorded.status,label:recorded.label,verificationStatus:"LEGACY_RECORDED_OUTCOME",currentCheck:current,
+    reviewRequired:current.status!==recorded.status,source:recorded.source};
+}
+
 export function settleLeg(leg,match){
   if(match?.status!=="finished"||!finite(match?.score?.home)||!finite(match?.score?.away))return pending();
 
   const home=Number(match.score.home),away=Number(match.score.away),total=home+away;
   const market=normalized(leg?.market),selection=normalized(leg?.selection),actualScore=`${home}-${away}`;
+  if(market.includes("CARTELLINO")||leg?.marketFamily==="Ammoniti"){
+    // An abbreviated DUO label does not establish bench/post-match eligibility.
+    // New settlements require an explicitly selected and verified rule.
+    const ruleId=leg?.cardRuleId??null;
+    const target=leg?.cardTarget||(market.includes("(DUO)")?"PLAYER_DUO_CARD":"PLAYER_ANY_CARD");
+    const outcome=playerCardOutcome(match,{playerId:leg?.playerId,playerName:playerNameFromLeg(leg),teamId:leg?.teamId},target,MARKET_RULES[ruleId]);
+    if(outcome.void)return voided();
+    if(outcome.value===null||!["SI","NO"].includes(selection))return {...unavailable(),reason:outcome.reason,coverage:outcome.coverage};
+    return {...resultStatus(selection==="SI"?outcome.value:!outcome.value),identityResolution:outcome.identityResolution};
+  }
+  if(market.includes("PUNTI CARTELLINI")){
+    const ruleId=leg?.cardRuleId||(market==="U/O PUNTI CARTELLINI"?"SISAL_CARD_POINTS_REGULATION_V1":null);
+    const points=teamCardPoints(match,MARKET_RULES[ruleId]);
+    return points.value===null?{...unavailable(),reason:"CARD_POINTS_DATA_INSUFFICIENT",coverage:points.coverage}:settleThreshold(selection,points.value,thresholdFromLabel(leg?.label));
+  }
   const halfTime=finite(match?.halfTimeScore?.home)&&finite(match?.halfTimeScore?.away)?{home:Number(match.halfTimeScore.home),away:Number(match.halfTimeScore.away)}:null;
   const periodScores=text=>{
     if(!halfTime)return null;
@@ -239,14 +266,6 @@ export function settleLeg(leg,match){
     // A verified goal by the named player settles a scorer bet even when
     // the provider has not supplied individual statistics yet.
     if(market.includes("MARCATORE")&&(match.scorers||[]).some(row=>comparableName(row.player)===comparableName(leg.player)&&!row.ownGoal))return resultStatus(selection==="SI");
-    if((market.includes("CARTELLINO")||leg?.marketFamily==="Ammoniti")&&match?.resultCoverage?.participation==="available"){
-      if(playerDidNotPlay(match,leg?.player))return voided();
-      const duo=new Set([comparableName(leg?.player)]);
-      const replacement=(match?.substitutions||[]).find(item=>comparableName(item.playerOut)===comparableName(leg?.player));
-      if(replacement?.playerIn)duo.add(comparableName(replacement.playerIn));
-      const booked=(match?.bookings||[]).some(item=>duo.has(comparableName(item.player)));
-      return resultStatus(selection==="SI"?booked:!booked);
-    }
     if(match?.resultCoverage?.participation==="available"&&(market.includes("SEGNA O FA ASSIST")||market.includes("ASSIST")||market.includes("MARCATORE"))){
       if(playerDidNotPlay(match,leg?.player))return voided();
       const duo=new Set([comparableName(leg?.player)]);
@@ -262,12 +281,6 @@ export function settleLeg(leg,match){
     const players=playerDuo(match,playerName),goals=players?.reduce((sum,item)=>sum+(finite(item.goals)?Number(item.goals):0),0),assists=players?.reduce((sum,item)=>sum+(finite(item.assists)?Number(item.assists):0),0);
     if(!players&&playerDidNotPlay(match,playerName))return voided();
     if(!players)return unavailable();
-    if(market.includes("CARTELLINO")||leg?.marketFamily==="Ammoniti"){
-      if(!Array.isArray(match?.bookings)||!["SI","NO"].includes(selection))return unavailable();
-      const names=new Set(players.map(item=>comparableName(item.player)));
-      const booked=match.bookings.some(item=>names.has(comparableName(item.player)));
-      return resultStatus(selection==="SI"?booked:!booked);
-    }
     if(market.includes("SEGNA O FA ASSIST"))return resultStatus(selection==="SI"?goals+assists>0:goals+assists===0);
     if(market.includes("ASSIST"))return resultStatus(selection==="SI"?assists>0:assists===0);
     if(market.includes("MARCATORE"))return resultStatus(selection==="SI"?goals>0:goals===0);
@@ -283,11 +296,6 @@ export function settleLeg(leg,match){
     if(market.includes("FALLI SUBITI"))return settlePlayerThreshold(selection,players,"foulsWon",threshold);
     return unavailable();
   }
-  if(market==="U/O PUNTI CARTELLINI"){
-    if(!Array.isArray(match?.bookings))return unavailable();
-    return settleThreshold(selection,match.bookings.length,thresholdFromLabel(leg?.label));
-  }
-  if(market.includes("PUNTI CARTELLINI"))return unavailable();
 
   const threshold=thresholdFromLabel(leg?.label);
   if(market==="U/O GOAL SQUADRA TEMPO"){

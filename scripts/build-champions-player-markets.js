@@ -200,6 +200,8 @@ function buildBooked(players, event) {
       teamId: player.teamId,
       role: player.role,
       riskScore,
+      riskScoreSemantics: "COMPARATIVE_HEURISTIC_NOT_PROBABILITY",
+      calibratedProbability: null,
       evidence: [`${round(player.per90.cards, 2)} cartellini/90`, `${round(player.per90.foulsCommitted, 2)} falli/90`, player.dataStatus === "role-baseline" ? "baseline di ruolo" : `${player.minutes} minuti nel 2025/26`],
       dataStatus: player.dataStatus,
       sisal: quote
@@ -212,7 +214,7 @@ function buildBooked(players, event) {
       if (replacement) selected[selected.length - 1] = replacement;
     }
   }
-  return selected.sort((a, b) => b.riskScore - a.riskScore).map((candidate, index) => ({ ...candidate, rank: index + 1, possibleFirstBooked: index === 0 }));
+  return selected.sort((a, b) => b.riskScore - a.riskScore).map((candidate, index) => ({ ...candidate, rank: index + 1, possibleFirstBooked: index === 0, firstBookedHeuristic: index === 0, firstBookedProbability: null }));
 }
 
 function findSimpleMarket(event, marketCode, selectionName, variantTest = () => true) {

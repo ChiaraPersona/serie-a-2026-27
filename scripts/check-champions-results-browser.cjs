@@ -14,8 +14,31 @@ const server=http.createServer((req,res)=>{const p=path.resolve(root,'.'+decodeU
    if(name==='archive'){await page.waitForSelector('.betting-archive-card--champions');assert.match(await page.locator('.betting-archive-card--champions').innerText(),/31 esatte su 52/)}
    if(name==='calendar'){
     await page.waitForSelector('#champions-fixtures .fixture-card');
+    assert.equal(await page.locator('#champions-matchday').inputValue(),'2');
     assert.equal(await page.locator('#champions-fixtures .fixture-card').count(),18);
-    assert.equal(await page.locator('#champions-fixtures .reading-fixture-teams>b').filter({hasText:/\d+–\d+/}).count(),18);
+    assert.equal(await page.locator('#champions-fixtures .matchday-chip').filter({hasText:'Giornata 2'}).count(),18);
+    const archive=page.locator('#champions-completed-fixtures .champions-completed-round');
+    assert.equal(await archive.count(),1);
+    assert.equal(await archive.evaluate(el=>el.open),false);
+    assert.match(await archive.locator('summary').innerText(),/Conclusa[\s\S]*1ª giornata/i);
+    assert.equal(await archive.locator('.reading-fixture-teams>b').filter({hasText:/\d+–\d+/}).count(),18);
+    await archive.locator('summary').click();
+    assert.equal(await archive.evaluate(el=>el.open),true);
+    assert(await archive.locator('.fixture-card').first().isVisible());
+    assert(!(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth)),'Archivio aperto: overflow');
+    await archive.locator('summary').click();
+    await page.selectOption('#champions-team','Inter');
+    assert.equal(await page.locator('#champions-fixtures .fixture-card').count(),1);
+    assert.equal(await archive.locator('.fixture-card').count(),1);
+    await page.selectOption('#champions-matchday','all');
+    assert.equal(await page.locator('#champions-fixtures .fixture-card').count(),8);
+    assert.equal(await page.locator('.champions-completed-round').count(),1);
+    await page.selectOption('#champions-matchday','1');
+    assert.equal(await page.locator('.champions-completed-round').count(),1);
+    await page.locator('#champions-reset').click();
+    assert.equal(await page.locator('#champions-matchday').inputValue(),'2');
+    assert.equal(await page.locator('#champions-fixtures .fixture-card').count(),18);
+    assert.equal(await archive.evaluate(el=>el.open),false);
    }
    if(name==='report'){
     await page.waitForSelector('.champions-match-report');

@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Canonical disciplinary event",
+  "type": "object",
+  "required": [
+    "playerId",
+    "playerName",
+    "teamId",
+    "minute",
+    "addedTime",
+    "eventType",
+    "period",
+    "onPitchAtEvent",
+    "benchEvent",
+    "postMatchEvent",
+    "source",
+    "sourceEventType",
+    "classificationConfidence"
+  ],
+  "properties": {
+    "playerId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "playerName": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "teamId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "minute": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "addedTime": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "eventType": {
+      "enum": [
+        "yellow",
+        "yellowRedCard",
+        "redCard",
+        "unknown"
+      ]
+    },
+    "period": {
+      "enum": [
+        "firstHalf",
+        "secondHalf",
+        "extraTimeFirstHalf",
+        "extraTimeSecondHalf",
+        "interval",
+        "shootout",
+        "postMatch",
+        "unknown"
+      ]
+    },
+    "onPitchAtEvent": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "benchEvent": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "postMatchEvent": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "source": {
+      "type": [
+        "object",
+        "string",
+        "null"
+      ]
+    },
+    "sourceEventType": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "classificationConfidence": {
+      "enum": [
+        "SOURCE_EXPLICIT",
+        "UNRESOLVED"
+      ]
+    },
+    "eventOrder": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    }
+  }
+}

@@ -26,7 +26,10 @@ for (const slip of cardSlips) {
 }
 assert(!legs.some(leg => leg.matchId === "venezia-fiorentina-2026-27-md-04"));
 (async()=>{
-  const { settleLeg } = await import("../js/pages/betting-settlement.mjs");
+  const { settleArchivedLeg } = await import("../js/pages/betting-settlement.mjs");
+  // Preserve historical results while strict current-target verification remains separate.
+  const records=JSON.parse(fs.readFileSync(path.join(root,"data/sources/card-settlement-records-2026-10-03.json"),"utf8")).records;
+  const settleLeg=(leg,match)=>settleArchivedLeg(leg,match,records);
   const matchById = new Map(matches.map(match => [match.id, match]));
   const settlements = legs.map(leg => settleLeg(leg, matchById.get(leg.matchId)).status);
   assert.equal(settlements.length, 44);

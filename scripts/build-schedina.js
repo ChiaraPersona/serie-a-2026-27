@@ -291,7 +291,10 @@ function pickAnalysis(pick, market, prediction, selection) {
     return {
       coherent,
       modelProbabilityPct: coherent ? round(probability * 100, 2) : null,
-      evidenceLabel: coherent ? `Titolare previsto · rischio disciplinare ${candidate?.riskScore ?? pick.riskScore}/100` : "Candidato ammonizione non coerente"
+      probabilitySemantics: "HEURISTIC_UNVALIDATED_INDIVIDUAL_PROXY_FOR_DUO",
+      cardTarget: "PLAYER_DUO_CARD",
+      calibratedProbability: null,
+      evidenceLabel: coherent ? `Euristica non calibrata, DUO non modellato · rischio ${candidate?.riskScore ?? pick.riskScore}/100` : "Candidato ammonizione non coerente"
     };
   }
   if (["ASSIST (DUO) INC TS", "GIOCATORE (DUO) SEGNA O FA ASSIST INC TS"].includes(market.marketName)) {
@@ -408,7 +411,10 @@ function pickAnalysis(pick, market, prediction, selection) {
     return {
       coherent,
       modelProbabilityPct: coherent ? round(probability * 100, 2) : null,
-      evidenceLabel: `Punti cartellini centrali ${String(round(lambda, 2)).replace(".", ",")} · modello Poisson`
+      probabilitySemantics: "UNVALIDATED_YELLOW_BASELINE_PROXY_FOR_CARD_POINTS",
+      cardTarget: "TEAM_CARD_POINTS",
+      calibratedProbability: null,
+      evidenceLabel: `Baseline gialli ${String(round(lambda, 2)).replace(".", ",")} · proxy punti cartellini non validato`
     };
   }
   if (/TIRI TOTALI|TIRI IN PORTA/.test(market.marketName)) {
@@ -485,6 +491,7 @@ function resolvePick(pick) {
     label: pick.label || selectionLabel(event, pick.selection),
     odds: selection.odds,
     modelProbabilityPct: analysis.modelProbabilityPct,
+    ...(analysis.probabilitySemantics ? {probabilitySemantics:analysis.probabilitySemantics,calibratedProbability:null,cardTarget:analysis.cardTarget,targetVersion:"card-targets-v1"} : {}),
     fairOdds: Number.isFinite(analysis.modelProbabilityPct) && analysis.modelProbabilityPct > 0 ? round(100 / analysis.modelProbabilityPct) : null,
     expectedValuePct,
     reliability: market.marketScope === "player" ? "media" : /RISULTATO ESATTO/.test(market.marketName) ? "sperimentale" : "alta",
@@ -563,7 +570,8 @@ const slips = source.slips.map((slip, index) => {
     fairOdds: hasJointProbability ? round(1 / jointProbability) : null,
     expectedValuePct,
     qualityStatus,
-    qualityLabel: qualityStatus === "qualificata" ? "Supera il filtro prudenziale" : qualityStatus === "editoriale" ? "Lettura editoriale" : qualityStatus === "laboratorio" ? "Laboratorio ad alto rischio" : "N/D",
+    ...(legs.some(leg => leg.probabilitySemantics) ? {probabilitySemantics:"HEURISTIC_UNVALIDATED",calibratedProbability:null,qualitySemantics:"LEGACY_HEURISTIC_FILTER_NOT_STATISTICAL_VALIDATION"} : {}),
+    qualityLabel: legs.some(leg=>leg.probabilitySemantics) ? "Filtro euristico non calibrato" : qualityStatus === "qualificata" ? "Supera il filtro prudenziale" : qualityStatus === "editoriale" ? "Lettura editoriale" : qualityStatus === "laboratorio" ? "Laboratorio ad alto rischio" : "N/D",
     excludedLegsCount: excludedLegs.length,
     filterNote: excludedLegs.length ? `${excludedLegs.length} ${excludedLegs.length === 1 ? "gamba esclusa" : "gambe escluse"} perché sotto −10% di EV individuale.` : null,
     weakestLeg: weakestLeg ? { fixture: weakestLeg.fixture, label: weakestLeg.label, expectedValuePct: weakestLeg.expectedValuePct } : null,

@@ -1,6 +1,8 @@
 const fs = require("fs");
 const path = require("path");
 const { STAT_FIELDS, nullObject, per90, rate, percentage } = require("./model");
+const { aggregateDisciplinaryFeatures } = require("../disciplinary-features");
+const { componentAggregate } = require("../../js/pages/disciplinary.mjs");
 
 const root = path.resolve(__dirname, "../..");
 const read = relative => JSON.parse(fs.readFileSync(path.join(root, relative), "utf8"));
@@ -195,8 +197,9 @@ function seasonStats({ season, competition, source, lastUpdated, matchData, row 
   const discipline = {
     ...nullObject(STAT_FIELDS.discipline), foulsCommitted: fouls, foulsCommittedPerGame: rate(fouls, played),
     foulsWon, foulsWonPerGame: rate(foulsWon, played), yellowCards, yellowCardsPerGame: rate(yellowCards, played),
-    secondYellowCards, straightRedCards, dismissals: secondYellowCards + straightRedCards, penaltiesConceded,
-    penaltiesWon, disciplineIndex: rate(yellowCards + secondYellowCards * 2 + straightRedCards * 3, played)
+    secondYellowCards, straightRedCards, dismissals: componentAggregate({secondYellowCards,straightRedCards}).value, penaltiesConceded,
+    penaltiesWon, disciplineIndex: [yellowCards,secondYellowCards,straightRedCards].some(v=>v==null)?null:rate(yellowCards + secondYellowCards * 2 + straightRedCards * 3, played),
+    cardAggregation: componentAggregate({yellowCards,secondYellowCards,straightRedCards})
   };
   return {
     season, competition, source, lastUpdated, results, attack: nullObject(STAT_FIELDS.attack),
@@ -371,7 +374,7 @@ const leaderboardTeamAliases = { Internazionale: "Inter", "AS Roma": "Roma" };
 const leaderboardTeamName = name => leaderboardTeamAliases[name] || name;
 const cardTotal = entry => {
   const values = [entry.yellowCards, entry.secondYellowCards, entry.straightRedCards];
-  return values.every(value => value === null || value === undefined) ? null : values.reduce((sum, value) => sum + (value ?? 0), 0);
+  return values.some(value => value === null || value === undefined) ? null : values.reduce((sum, value) => sum + value, 0);
 };
 const domesticEntry = player => player.previousSeason?.entries?.find(entry => entry.competitionType === "domestic-league") || player.previousSeason?.entries?.[0] || null;
 const leaderboardTotal = (entry, metric) => metric.field === "cards" ? cardTotal(entry) : entry[metric.field];
@@ -391,6 +394,7 @@ const previousLeaderboardRows = leaderboardPlayers.map(({ team, player, entry })
   appearances: entry.appearances,
   minutes: entry.minutes,
   values: Object.fromEntries(leaderboardMetrics.map(metric => [metric.field, leaderboardTotal(entry, metric)])),
+  disciplinaryAggregation: componentAggregate({yellowCards:entry.yellowCards,secondYellowCards:entry.secondYellowCards,straightRedCards:entry.straightRedCards}),
   per90: Object.fromEntries(leaderboardMetrics.map(metric => [metric.field, entry.per90?.[metric.field] ?? null]))
 }));
 const currentLeaderboardMap = new Map();
@@ -429,20 +433,22 @@ for (const match of currentSeasonMatches) {
     ensureCurrentPlayer(booking.team, booking).cards += 1;
   }
 }
+const disciplinaryFeatureByKey = new Map(builtTeams.flatMap(team => aggregateDisciplinaryFeatures(currentSeasonMatches,team.id).map(f => [`${team.id}:${f.playerId}`,f])));
 const currentLeaderboardRows = [...currentLeaderboardMap.values()].map(row => {
+  const disciplinaryFeatures = disciplinaryFeatureByKey.get(`${row.currentTeamId}:${row.id}`);
   const values = {
     goals: row.coverage.goals === row.appearances ? row.sums.goals : null,
     assists: row.coverage.assists === row.appearances ? row.sums.assists : null,
     shots: row.coverage.shots === row.appearances ? row.sums.shots : null,
     shotsOnTarget: row.coverage.shotsOnTarget === row.appearances ? row.sums.shotsOnTarget : null,
-    cards: row.cards,
+    cards: disciplinaryFeatures?.disciplinaryCoverage?.status === "COMPLETE" ? disciplinaryFeatures.knownCardEvents : null,
     foulsCommitted: row.coverage.foulsCommitted === row.appearances ? row.sums.foulsCommitted : null,
     foulsWon: row.coverage.foulsWon === row.appearances ? row.sums.foulsWon : null
   };
   return {
     id: row.id, name: row.name, currentTeamId: row.currentTeamId, currentTeam: row.currentTeam,
     role: row.role, previousTeam: null, sameClub: false, competition: "Serie A",
-    appearances: row.appearances, minutes: row.minutes, values,
+    appearances: row.appearances, minutes: row.minutes, values, disciplinaryFeatures:disciplinaryFeatures ?? null,
     per90: Object.fromEntries(leaderboardMetrics.map(metric => [metric.field, per90(values[metric.field], row.minutes)]))
   };
 });

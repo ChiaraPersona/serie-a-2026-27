@@ -4,7 +4,7 @@ const standingsSideStats = (match, side) => match.teamStats?.[side] || match.sta
 const standingsCardTotal = stats => {
   if (!stats) return null;
   const values = [stats.yellowCards, stats.secondYellowCards, stats.straightRedCards].map(standingsNumber);
-  return values.every(value => value === null) ? null : values.reduce((total, value) => total + (value ?? 0), 0);
+  return values.some(value => value === null) ? null : values.reduce((total, value) => total + value, 0);
 };
 
 function calculateStandings(teams, matches, scope = "general") {
@@ -23,9 +23,15 @@ function calculateStandings(teams, matches, scope = "general") {
     penaltiesAgainst: 0,
     cardsFor: 0,
     cardsAgainst: 0,
-    disciplineCoverage: { penaltiesFor: 0, penaltiesAgainst: 0, cardsFor: 0, cardsAgainst: 0 }
+    disciplineCoverage: { penaltiesFor: 0, penaltiesAgainst: 0, cardsFor: 0, cardsAgainst: 0 },
+    cardComponents: { cardsFor: {yellowCards:0,secondYellowCards:0,straightRedCards:0}, cardsAgainst: {yellowCards:0,secondYellowCards:0,straightRedCards:0} },
+    cardComponentCoverage: { cardsFor: {yellowCards:0,secondYellowCards:0,straightRedCards:0}, cardsAgainst: {yellowCards:0,secondYellowCards:0,straightRedCards:0} }
   }]));
   const addDiscipline = (row, ownStats, opponentStats) => {
+    for (const [target,stats] of [["cardsFor",opponentStats],["cardsAgainst",ownStats]]) for (const field of ["yellowCards","secondYellowCards","straightRedCards"]) {
+      const value=standingsNumber(stats?.[field]);
+      if(value!==null){row.cardComponents[target][field]+=value;row.cardComponentCoverage[target][field]++;}
+    }
     const values = {
       penaltiesFor: standingsFirstNumber(ownStats?.penaltiesFor, ownStats?.penaltiesWon, ownStats?.penaltiesAwarded),
       penaltiesAgainst: standingsFirstNumber(ownStats?.penaltiesAgainst, ownStats?.penaltiesConceded, opponentStats?.penaltiesFor, opponentStats?.penaltiesWon),
@@ -56,15 +62,20 @@ function calculateStandings(teams, matches, scope = "general") {
   }
   return [...rows.values()].map(row => {
     const completeValue = key => row.played === 0 ? 0 : row.disciplineCoverage[key] === row.played ? row[key] : null;
-    const { disciplineCoverage, ...standing } = row;
+    const { disciplineCoverage, cardComponents, cardComponentCoverage, ...standing } = row;
     return {
       ...standing,
       goalDifference: row.goalsFor - row.goalsAgainst,
       penaltiesFor: completeValue("penaltiesFor"),
       penaltiesAgainst: completeValue("penaltiesAgainst"),
       cardsFor: completeValue("cardsFor"),
-      cardsAgainst: completeValue("cardsAgainst")
+      cardsAgainst: completeValue("cardsAgainst"),
+      disciplinaryAggregation:Object.fromEntries(["cardsFor","cardsAgainst"].map(key=>{
+        const missingComponents=Object.keys(cardComponents[key]).filter(field=>cardComponentCoverage[key][field]!==row.played);
+        const knownComponents=Object.fromEntries(Object.entries(cardComponents[key]).filter(([field])=>cardComponentCoverage[key][field]>0));
+        return [key,{value:completeValue(key),knownComponents,missingComponents,coverage:missingComponents.length?Object.keys(knownComponents).length?"PARTIAL":"UNKNOWN":"COMPLETE",componentMatchCoverage:cardComponentCoverage[key]}];
+      }))
     };
   }).sort((a,b) => b.points-a.points || b.goalDifference-a.goalDifference || b.goalsFor-a.goalsFor || a.team.localeCompare(b.team));
 }
-if (typeof module !== "undefined") module.exports = { calculateStandings };
+if (typeof module !== "undefined") module.exports = { calculateStandings, standingsCardTotal };

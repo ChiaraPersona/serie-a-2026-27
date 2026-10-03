@@ -5,6 +5,7 @@ const path = require("path");
 const assert = require("assert");
 const { parseStatmuseGame } = require("./parse-statmuse-game");
 const { loadPlayerIdentities } = require("./player-identity");
+const { cardType, normalizeEvent, eventCounts } = require("../js/pages/disciplinary.mjs");
 
 const formationNames = {
   fourThreeThree: "4-3-3",
@@ -33,7 +34,6 @@ const canonicalNames = new Map([
 
 const canonicalName = value => canonicalNames.get(value) || value;
 const normalize = value => String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/ł/gi, "l").replace(/đ/gi, "d").replace(/[ıİ]/g, "i").toLowerCase().replace(/[^a-z0-9]+/g, "");
-const slug = value => String(value).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 const stat = (lookup, key, fallback = null) => lookup?.[key]?.value ?? fallback;
 const displayedStat = (lookup, key, fallback = null) => {
   const displayed = lookup?.[key]?.display;
@@ -41,13 +41,14 @@ const displayedStat = (lookup, key, fallback = null) => {
   const number = Number(displayed);
   return Number.isFinite(number) ? number : fallback;
 };
-const eventMinute = event => event.clock.minute >= 90 ? 90 : event.clock.minute + 1;
+const eventMinute = event => !Number.isFinite(event.clock?.minute) ? null : event.clock.minute >= 90 ? 90 : event.clock.minute + 1;
 
 function squadResolver(root, teamId) {
   const team = JSON.parse(fs.readFileSync(path.join(root, `data/teams/${teamId}.json`), "utf8"));
   const identities = loadPlayerIdentities(root);
   const byName = new Map(team.squad.map(player => [normalize(player.name), player]));
   return name => {
+    if (!name) return { id:null, name:null };
     const canonical = canonicalName(name);
     const verified = identities.resolve(teamId, canonical) || identities.resolve(teamId, name);
     if (verified) return { id: verified.playerId, name: verified.canonicalName };
@@ -56,7 +57,7 @@ function squadResolver(root, teamId) {
     const surname = normalize(canonical.split(/\s+/).at(-1));
     const candidates = team.squad.filter(player => normalize(player.name).endsWith(surname));
     if (candidates.length === 1) return { id: candidates[0].id, name: candidates[0].name };
-    return { id: slug(canonical), name: canonical };
+    return { id: null, name: canonical };
   };
 }
 
@@ -84,8 +85,9 @@ const teamStats = team => {
     recoveries: stat(lookup, "BallRecoveries"),
     fouls: stat(lookup, "FoulsCommitted"),
     yellowCards: stat(lookup, "YellowCards"),
-    secondYellowCards: 0,
-    straightRedCards: stat(lookup, "RedCards", 0),
+    secondYellowCards: null,
+    straightRedCards: null,
+    providerDiscipline: { yellowCards: stat(lookup, "YellowCards"), dismissals: stat(lookup, "RedCards") },
     penaltiesFor: stat(lookup, "PenaltiesTaken", 0),
     penaltiesAgainst: stat(lookup, "PenaltiesCommitted", 0),
     duelsWon: stat(lookup, "DuelsWon"),
@@ -160,7 +162,9 @@ function importStatmuseResult({ root, config }) {
   }, new Map()).values()];
   const bookings = events.filter(event => event.type === "booking").map(event => {
     const player = resolveEventPlayer(event.teamId, event.playerId);
-    return { team: slugByTeamId.get(event.teamId), playerId: player.id, player: player.name, minute: eventMinute(event), card: event.bookingType === "yellowCard" ? "yellow" : event.bookingType };
+    const rawPeriod=event.period ?? event.clock?.period;
+    const period=["firstHalf","secondHalf","extraTimeFirstHalf","extraTimeSecondHalf","interval","shootout","postMatch"].includes(rawPeriod)?rawPeriod:"unknown";
+    return { team: slugByTeamId.get(event.teamId), playerId: player?.id ?? null, player: player?.name ?? null, minute: eventMinute(event), card: cardType(event.bookingType), sourceEventType: event.bookingType ?? null, source: { provider: "StatMuse", url: config.url, field: "playByPlay.events.bookingType" }, sourceClock:event.clock??null, period, addedTime: event.clock?.addedTime ?? null, postMatchEvent:period==="unknown"?null:period==="postMatch" };
   });
   const homePlayers = appearedPlayers(rootData, game.homeTeam, homeResolve);
   const awayPlayers = appearedPlayers(rootData, game.awayTeam, awayResolve);
@@ -169,6 +173,12 @@ function importStatmuseResult({ root, config }) {
     away: didNotPlayPlayers(rootData, game.awayTeam, awayResolve, awayPlayers)
   };
   const resultTeamStats = { home: teamStats(game.homeTeam), away: teamStats(game.awayTeam) };
+  const disciplineContext = {homeTeam:config.home.slug,awayTeam:config.away.slug,bookings,substitutions,didNotPlay,playerStats:{home:homePlayers,away:awayPlayers},coverage:{bookings:"complete",participation:"available",substitutions:"complete"}};
+  for (let i = 0; i < bookings.length; i++) bookings[i] = normalizeEvent(bookings[i], disciplineContext);
+  for (const [side,team] of [["home",config.home.slug],["away",config.away.slug]]) {
+    const counts = eventCounts(disciplineContext,team);
+    Object.assign(resultTeamStats[side], counts.value, {disciplinaryAggregation:counts});
+  }
   for (const [side, rows] of [["home", homePlayers], ["away", awayPlayers]]) {
     const sum = field => rows.reduce((total, row) => total + row[field], 0);
     assert.equal(sum("shots"), resultTeamStats[side].shots, `${config.matchId} ${side}: tiri non riconciliati`);

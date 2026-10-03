@@ -201,7 +201,7 @@ export function createPage(deps){
     const h2hEvents=(items,emptyLabel)=>Array.isArray(items)?items.length?`<ul>${items.map(item=>`<li><strong>${esc(item.player)}</strong><small>${esc(item.team)} · ${item.minute?`${esc(item.minute)}'`:"minuto N/D"}${item.penalty?" · rigore":""}${item.ownGoal?" · autogol":""}${item.note?` · ${esc(item.note)}`:""}</small></li>`).join("")}</ul>`:`<p class="reading-h2h-empty">${emptyLabel}</p>`:'<p class="reading-h2h-empty">Dettaglio N/D</p>';
     const h2hRows=(h2hFixture?.recentMatches||[]).map((match,index)=>{const fallbackSource=h2h.source.pages.find(page=>page.competition===match.competition&&page.season===match.season),sources=match.sources||[fallbackSource].filter(Boolean);return `<details class="reading-h2h-match"${index===0?" open":""}><summary><span>${esc(shortDate(match.date))} · ${esc(match.competition)}</span><strong>${esc(match.homeTeam)} ${match.score90.home}-${match.score90.away} ${esc(match.awayTeam)}</strong></summary><div class="reading-h2h-events"><section><h3>Marcatori</h3>${h2hEvents(match.goals,"Nessun gol")}</section><section><h3>Ammoniti</h3>${h2hEvents(match.bookings,"Nessun ammonito")}</section></div>${sources.map(source=>`<a href="${esc(source.url)}" target="_blank" rel="noreferrer">Fonte ${esc(source.provider||"UEFA")}</a>`).join("")}</details>`}).join("");
     const h2hPanel=h2hRows?`<section class="section reading-h2h-section champions-reading-h2h" id="champions-history"><header class="section-heading"><div><p class="eyebrow">Storico ufficiale · UEFA</p><h2>Ultimi ${h2hFixture.meetings} scontri diretti disponibili</h2></div><p>${h2hFixture.meetings}/${h2hFixture.maximumMeetings||4} precedenti · competizioni UEFA</p></header><div class="reading-h2h-list">${h2hRows}</div></section>`:"";
-    const bookedPanel=playerMarketEntry?.likelyBooked?.length?`<section class="prediction-booked-panel"><header><div><p class="eyebrow">Gerarchia disciplinare</p><h2>5 probabili ammoniti</h2></div><p>Indice comparativo; la quota è aggiunta dopo il calcolo.</p></header><ol>${playerMarketEntry.likelyBooked.map(candidate=>`<li class="${candidate.possibleFirstBooked?"possible-first-booked":""}"><span>${candidate.rank}</span><div><strong>${esc(candidate.name)}</strong><small>${esc(candidate.team)} · ${esc(candidate.role)}${candidate.possibleFirstBooked?" · possibile primo ammonito":""}</small><em>${candidate.evidence.map(esc).join(" · ")}</em>${candidate.sisal?`<small>Quota Sisal ${candidate.sisal.odds.toFixed(2)} · sostituto incluso</small>`:"<small>Quota Sisal N/D</small>"}</div><b>${candidate.riskScore}/100</b></li>`).join("")}</ol></section>`:"";
+    const bookedPanel=playerMarketEntry?.likelyBooked?.length?`<section class="prediction-booked-panel"><header><div><p class="eyebrow">Gerarchia disciplinare</p><h2>5 probabili ammoniti</h2></div><p>Indice comparativo, non probabilità. Primo nome: euristica del ranking.</p></header><ol>${playerMarketEntry.likelyBooked.map(candidate=>`<li class="${candidate.possibleFirstBooked?"possible-first-booked":""}"><span>${candidate.rank}</span><div><strong>${esc(candidate.name)}</strong><small>${esc(candidate.team)} · ${esc(candidate.role)}${candidate.possibleFirstBooked?" · possibile primo ammonito (euristica)":""}</small><em>${candidate.evidence.map(esc).join(" · ")}</em>${candidate.sisal?`<small>Quota Sisal ${candidate.sisal.odds.toFixed(2)} · sostituto incluso</small>`:"<small>Quota Sisal N/D</small>"}</div><b>${candidate.riskScore}/100</b></li>`).join("")}</ol></section>`:"";
     const shooterList=(items,key,marketKey)=>`<ol>${items.map(item=>{const quote=item.markets?.[marketKey];return `<li><span>${item.rank}</span><div><strong>${esc(item.name)}</strong><small>${esc(item.team)} · ${esc(item.role)}</small><em>${item.dataStatus==="role-baseline"?"Baseline di ruolo":`${item.minutes} minuti verificati nel 2025/26`}</em></div><b>${item[key].toFixed(2)}<small>${quote?`Sisal ${quote.odds.toFixed(2)}`:"quota N/D"}</small></b></li>`}).join("")}</ol>`;
     const shooters=playerMarketEntry?.shooters;
     const shootersPanel=shooters?`<section class="section champions-shooters" aria-labelledby="champions-shooters-title"><header class="section-heading"><div><p class="eyebrow">Probabili titolari · proiezione individuale</p><h2 id="champions-shooters-title">Possibili migliori tiratori</h2></div><p>Volumi previsti, non soglie dettate dalle quote.</p></header><div><article><h3>Tiri totali</h3><p>Media prevista del giocatore</p>${shooterList(shooters.totalShots,"projectedShots","shotsOver05")}</article><article><h3>Tiri in porta</h3><p>Media prevista nello specchio</p>${shooterList(shooters.shotsOnTarget,"projectedShotsOnTarget","shotsOnTargetOver05")}</article></div><p class="objective-method">Le frequenze per 90 minuti sono regolarizzate per ruolo e scalate sul volume atteso della squadra. “Sisal” è soltanto la quota disponibile per almeno un tiro o un tiro in porta con sostituto incluso.</p></section>`:"";
@@ -318,13 +318,28 @@ export function createPage(deps){
       return;
     }
     const pilotByFixture=new Map(pilot.fixtures.map(fixture=>[fixture.fixtureId,fixture]));
+    const matchdays=Array.from({length:data.summary.matchdays},(_,index)=>index+1);
+    const completedMatchdays=matchdays.filter(number=>{
+      const fixtures=data.fixtures.filter(fixture=>fixture.matchday===number);
+      return fixtures.length>0&&fixtures.every(fixture=>fixture.status==="finished");
+    });
+    const defaultMatchday=matchdays.find(number=>!completedMatchdays.includes(number))||matchdays.at(-1);
+    const calendarGroups=fixtures=>{
+      const active=fixtures.filter(fixture=>!completedMatchdays.includes(fixture.matchday));
+      const archive=completedMatchdays.map(number=>{
+        const round=fixtures.filter(fixture=>fixture.matchday===number);
+        if(!round.length)return "";
+        return `<details class="champions-strength-panel champions-completed-round" data-matchday="${number}"><summary><span><small>Conclusa</small><strong>${matchdayLabel(number)}</strong></span><span>${round.length} ${round.length===1?"partita":"partite"}</span></summary><div class="champions-completed-round-body">${fixtureGroups(round,branding,pilotByFixture)}</div></details>`;
+      }).join("");
+      return (active.length?fixtureGroups(active,branding,pilotByFixture):"")+archive;
+    };
     const teamOptions=data.teams.map(team=>`<option value="${esc(team)}">${esc(team)}</option>`).join("");
     document.querySelector("#app").innerHTML=`
       <section class="champions-hero" aria-labelledby="champions-title">
-        <div class="champions-status"><span aria-hidden="true"></span>Primo turno concluso · ${data.summary.finished} risultati</div>
+        <div class="champions-status"><span aria-hidden="true"></span>${matchdayLabel(defaultMatchday)} · ${data.summary.finished} risultati disponibili</div>
         <p class="eyebrow">UEFA Champions League 2026/27</p>
         <h1 id="champions-title">Tutte le notti<br>d’Europa.</h1>
-        <p class="lead">Il calendario ufficiale della fase campionato, completo di tutte le partite e di tutte le squadre. Risultati e tabellini del primo turno disponibili. Le proiezioni delle letture restano quelle precedenti alla partita.</p>
+        <p class="lead">Il calendario ufficiale della fase campionato, completo di tutte le partite e di tutte le squadre. La ${matchdayLabel(defaultMatchday)} è subito visibile; apri le giornate concluse per consultare risultati, tabellini e letture.</p>
         <div class="champions-hero-stats" aria-label="Riepilogo calendario"><div><strong>${data.summary.fixtures}</strong><span>partite</span></div><div><strong>${data.summary.teams}</strong><span>squadre</span></div><div><strong>${data.summary.matchdays}</strong><span>giornate</span></div></div><a class="champions-motivation-cta" href="champions-2026-27/motivazione.html">Motivation Index · 36 squadre →</a>
         <div class="champions-orbit" aria-hidden="true"><span>★</span></div>
       </section>
@@ -332,12 +347,13 @@ export function createPage(deps){
       <section class="champions-calendar" aria-labelledby="champions-calendar-title">
         <header class="champions-calendar-heading"><div><p class="eyebrow">Fase campionato</p><h2 id="champions-calendar-title">Calendario ufficiale</h2><p>Le partite con una lettura disponibile sono apribili direttamente dal calendario. Con “Tutte le giornate” puoi consultare l’intero programma delle 144 gare.</p></div><a href="${esc(data.source.url)}" target="_blank" rel="noreferrer">Fonte UEFA ↗</a></header>
         <div class="champions-controls">
-          <label><span>Giornata</span><select id="champions-matchday"><option value="all">Tutte le giornate</option>${Array.from({length:data.summary.matchdays},(_,index)=>`<option value="${index+1}"${index===0?" selected":""}>${matchdayLabel(index+1)}</option>`).join("")}</select></label>
+          <label><span>Giornata</span><select id="champions-matchday"><option value="all">Tutte le giornate</option>${matchdays.map(number=>`<option value="${number}"${number===defaultMatchday?" selected":""}>${matchdayLabel(number)}${completedMatchdays.includes(number)?" · Conclusa":""}</option>`).join("")}</select></label>
           <label><span>Squadra</span><select id="champions-team"><option value="all">Tutte le squadre</option>${teamOptions}</select></label>
           <button id="champions-reset" type="button">Azzera filtri</button>
         </div>
         <div class="champions-results-head"><p id="champions-results-label" aria-live="polite"></p><span>Risultati verificati al ${esc(shortDate(data.generatedAt.slice(0,10)))}</span></div>
         <div id="champions-fixtures"></div>
+        <div id="champions-completed-fixtures"></div>
       </section>`;
 
     const matchdaySelect=document.querySelector("#champions-matchday");
@@ -347,13 +363,15 @@ export function createPage(deps){
     const applyFilters=()=>{
       const matchday=matchdaySelect.value,team=teamSelect.value;
       const filtered=data.fixtures.filter(fixture=>(matchday==="all"||fixture.matchday===Number(matchday))&&(team==="all"||fixture.homeTeam===team||fixture.awayTeam===team));
-      results.innerHTML=fixtureGroups(filtered,branding,pilotByFixture);
+      results.innerHTML=calendarGroups(filtered)||fixtureGroups([],branding,pilotByFixture);
+      const archived=data.fixtures.filter(fixture=>completedMatchdays.includes(fixture.matchday)&&matchday!=="all"&&fixture.matchday!==Number(matchday)&&(team==="all"||fixture.homeTeam===team||fixture.awayTeam===team));
+      document.querySelector("#champions-completed-fixtures").innerHTML=calendarGroups(archived);
       const context=[matchday==="all"?"tutte le giornate":matchdayLabel(Number(matchday)),team==="all"?"tutte le squadre":team];
       resultsLabel.innerHTML=`<strong>${filtered.length}</strong> ${filtered.length===1?"partita":"partite"} · ${esc(context.join(" · "))}`;
     };
     matchdaySelect.addEventListener("change",applyFilters);
     teamSelect.addEventListener("change",applyFilters);
-    document.querySelector("#champions-reset").addEventListener("click",()=>{matchdaySelect.value="1";teamSelect.value="all";applyFilters()});
+    document.querySelector("#champions-reset").addEventListener("click",()=>{matchdaySelect.value=String(defaultMatchday);teamSelect.value="all";applyFilters()});
     applyFilters();
   }
   return {render};

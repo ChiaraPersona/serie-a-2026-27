@@ -1,0 +1,128 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Card outcomes, joined separately from immutable snapshots",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "matchId",
+    "playerId",
+    "ordinaryYellow",
+    "secondYellowDismissal",
+    "straightRed",
+    "anyQualifyingPlayerCard",
+    "duoQualifyingCard",
+    "firstQualifyingCardMinute",
+    "participation",
+    "minutesPlayed",
+    "cardWhileOnPitch",
+    "cardWhileOnBench",
+    "postMatchCard",
+    "teamCardPoints",
+    "coverage",
+    "eligibility",
+    "events",
+    "targetDefinition"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "matchId": {
+      "type": "string"
+    },
+    "playerId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "ordinaryYellow": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "secondYellowDismissal": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "straightRed": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "anyQualifyingPlayerCard": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "duoQualifyingCard": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "firstQualifyingCardMinute": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "participation": {
+      "enum": [
+        "PLAYED",
+        "UNUSED",
+        "unknown"
+      ]
+    },
+    "minutesPlayed": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "cardWhileOnPitch": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "cardWhileOnBench": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "postMatchCard": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "teamCardPoints": {
+      "type": "object"
+    },
+    "coverage": {
+      "enum": [
+        "COMPLETE",
+        "PARTIAL",
+        "UNAVAILABLE",
+        "UNKNOWN"
+      ]
+    },
+    "eligibility": {
+      "type": "object"
+    },
+    "events": {
+      "type": "array"
+    },
+    "targetDefinition": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": false
+}

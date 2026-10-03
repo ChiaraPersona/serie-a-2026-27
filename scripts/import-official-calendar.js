@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const playerIdentities = require("./player-identity").loadPlayerIdentities(path.resolve(__dirname,".."));
 
 const root = path.resolve(__dirname, "..");
 const raw = path.join(root, "data/raw/fixtures");
@@ -229,6 +230,7 @@ for (const result of matchResults.matches) {
     formations: result.formations,
     scorers: result.scorers,
     bookings: result.bookings,
+    playerIdentityAliases: playerIdentities.payload.players.filter(p=>[match.homeTeam,match.awayTeam].includes(p.teamId)).map(p=>({teamId:p.teamId,playerId:p.playerId,canonicalName:p.canonicalName,aliases:p.aliases})),
     substitutions: result.substitutions,
     didNotPlay: result.didNotPlay || { home: [], away: [] },
     teamStats: result.teamStats,

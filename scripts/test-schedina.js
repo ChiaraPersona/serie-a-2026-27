@@ -109,7 +109,10 @@ assert.doesNotMatch(shell, /href="fantacalcio\.html"/, "Fantacalcio deve restare
 console.log(`Schedina valida: ${data.slips.map(slip => `${slip.name} ${slip.combinedOdds.toFixed(2)}`).join(" · ")}`);
 
 (async()=>{
-  const {settleLeg}=await import("../js/pages/betting-settlement.mjs");
+  const {settleArchivedLeg}=await import("../js/pages/betting-settlement.mjs");
+  // Original assertions below verify preserved archived results; strict eligibility has dedicated regressions.
+  const records=JSON.parse(fs.readFileSync(path.join(root,"data/sources/card-settlement-records-2026-10-03.json"),"utf8")).records;
+  const settleLeg=(leg,match)=>settleArchivedLeg(leg,match,records);
   const matches=JSON.parse(fs.readFileSync(path.join(root,"data/normalized/matches.json"),"utf8"));
   const byId=new Map(matches.map(match=>[match.id,match]));
   const legsBySlip=new Map(data.slips.map(slip=>[slip.id,slip.legs]));

@@ -1,0 +1,240 @@
+{
+  "generatedAt": "2026-10-03T12:59:49.181Z",
+  "suites": 29,
+  "passed": 26,
+  "failed": 3,
+  "results": [
+    {
+      "command": "scripts/test-card-foundation.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "stdout": "PASS unknown card type never guessed\nPASS coverage unknown is distinct from zero\nPASS player YES unavailable feed\nPASS player NO unavailable feed\nPASS empty array unavailable under points\nPASS empty array unknown coverage\nPASS empty complete feed certifies zero\nPASS partial feed cannot settle\nPASS partial components preserve known yellow\nPASS standings retains partial yellow evidence\nPASS second-yellow is not straight red\nPASS straight red qualifies any card not ordinary yellow\nPASS bench excluded from on-pitch market\nPASS post-match excluded from regulation points\nPASS unknown context cannot settle points\nPASS unresolved player identity remains unavailable\nPASS abbreviated DUO without verified rule remains unavailable\nPASS ambiguous names do not merge identities\nPASS verified unused card preserved separately from market void\nPASS DUO uses direct replacement outcome\nPASS DUO needs complete substitutions\nPASS all-context rule requires all-context certification\nPASS simultaneous first-yellow events return tie set\nPASS first yellow orders known added time without inventing tie resolution\nPASS team points capped per player\nPASS partial points preserve known eligible components\nPASS all 164 events preserved with exact audited taxonomy and no duplicates\nPASS historical record retained independently of strict target check\nPASS Johan Vásquez Genoa-Frosinone MD4 real regression\nPASS Stefano Sabelli Genoa-Napoli MD1 real regression\nPASS current disciplinary features are data only and cutoff safe\nPASS partial current disciplinary features keep observed components\nPASS actuals unavailable fields remain null\nPASS unresolved actuals cannot create false zeros\nPASS historical research rate remains unknown with missing card component\nPASS unknown participation cannot fabricate zero starts or fouls\nPASS future research snapshot candidate probability must remain null\nPASS referee aggregate excludes unidentified and missing cards\nPASS referee fields with no yellow coverage never expose false zero\nPASS descriptive referee denominator and rich retained events\nPASS MD6 50 canonical/verified aliases without unresolved collisions\nPASS MD6 missing referee designation explicitly neutral fallback\nPASS snapshot and manifest bytes protected\nPASS legacy risk coefficients/formula byte-equivalent\nCard foundation: 44 tests passed, 0 failed",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "command": "scripts/test-player-identities.js",
+      "exitCode": 0,
+      "passed": true,
+      "stdout": "Identità collegate: 1590 righe calciatore in 50 referti, 1295 righe di formazioni ufficiali; null ammessi solo nei fallback role-baseline o nei candidati cartellini esplicitamente irrisolti.",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "command": "scripts/test-statmuse-refresh-md01-md05.js",
+      "exitCode": 0,
+      "passed": true,
+      "stdout": "Refresh StatMuse MD1-MD5 verificato: 50 referti aggiornati, revisioni sensibili e dettagli evento preservati.",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "command": "scripts/test-predictions.js",
+      "exitCode": 0,
+      "passed": true,
+      "stdout": "OK motore pronostici 4.13.0: 49 partite, dati mancanti dichiarati, fattore sorpresa validato",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "command": "scripts/test-reading-prediction-v2.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "stdout": "OK Lettura Prediction V2: 24 contratti UI/data",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "command": "scripts/test-team-matchup-profiles.js",
+      "exitCode": 0,
+      "passed": true,
+      "stdout": "OK profili matchup di tutte le 20 squadre (20); Venezia 15.923 tiri opponent-normalized, SOT high, xGA/shot 0.1636 WATCH; Udinese 16.404 tiri opponent-normalized; Torino 15.834 tiri opponent-normalized; Sassuolo 14.491; Parma 17.786; Napoli 14.821; Monza suppression -1.58%/0% SOT; Milan suppression ACTIVE; Lecce 0.68%/0.68% SOT; Juventus -2.13%/-1.58% SOT; Inter -1.22%/0% SOT; Frosinone 0.62% tiri",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "command": "scripts/test-team-volume-profiles.js",
+      "exitCode": 0,
+      "passed": true,
+      "stdout": "OK profili volume: 380 gare, casa/trasferta e percentili p20-p80 validati",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "command": "scripts/test-team-referee-profiles.js",
+      "exitCode": 0,
+      "passed": true,
+      "stdout": "OK team-referee: 20/20 squadre, 336 righe, 313 collegamenti ESPN",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "command": "scripts/referee-stats/test.js",
+      "exitCode": 0,
+      "passed": true,
+      "stdout": "OK aggregazioni arbitro e arbitro-squadra, baseline esclusiva e linguaggio neutrale",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "command": "scripts/test-future-data-readiness.js",
+      "exitCode": 0,
+      "passed": true,
+      "stdout": "OK future-data readiness: 30 controlli\n01. 1 MD5 -> MD6 update\n02. 2 MD5 -> MD10\n03. 3 MD5 -> MD20/MD30\n04. 4 historical weight decay\n05. 5 maturity growth\n06. 6 player hierarchy change\n07. 7 Expected Minutes decline\n08. 8 new player fallback\n09. 9 transferred/inactive player\n10. 10 WATCH -> ACTIVE\n11. 11 ACTIVE -> WATCH\n12. 12 WATCH -> INACTIVE\n13. 13 role residual accumulation\n14. 14 outlier dilution\n15. 15 shots/SOT independence\n16. 16 shots/xG independence\n17. 17 opponent normalization update\n18. 18 no future leakage\n19. 19 target match exclusion\n20. 20 unplayed fixture exclusion\n21. 21 duplicate match protection\n22. 22 shuffled chronological input\n23. 23 idempotency\n24. 24 probability monotonicity\n25. 25 SOT <= shots\n26. 26 team/player reconciliation\n27. 27 outsider 0..N\n28. 28 missing != zero\n29. 29 all 20 Team Profiles regression\n30. player structural baseline reacts without discarding history",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "command": "scripts/test-schedina.js",
+      "exitCode": 0,
+      "passed": true,
+      "stdout": "Schedina valida: Scintilla 4.51 · Bagliore 7.08 · Supernova 6.37 · Prisma 144.47 · Quasar 87.15 · Costellazione 26.45 · Quadrante 2499.00 · Ventaglio 68.51\nLiquidazione visiva Schedina valida.",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "command": "scripts/test-schedina-md02.js",
+      "exitCode": 0,
+      "passed": true,
+      "stdout": "Schedina MD2 valida: stessa matrice MD1, 8 proposte e 47 selezioni uniche, snapshot 2026-08-28T13:46:22.294Z.\nLiquidazione Milan-Venezia MD2 valida: 5 esiti verdi e 2 rossi.",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "command": "scripts/test-schedina-md03.js",
+      "exitCode": 0,
+      "passed": true,
+      "stdout": "Schedina MD03 valida: 8 proposte, 47 selezioni uniche e 2 profili giocatore coperti.",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "command": "scripts/test-schedina-md04.js",
+      "exitCode": 0,
+      "passed": true,
+      "stdout": "Schedina MD04 valida: 8 proposte, 44 selezioni liquidate (20 vinte, 22 perse, 2 annullate).",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "command": "scripts/test-schedina-md05.js",
+      "exitCode": 0,
+      "passed": true,
+      "stdout": "Schedina MD05 valida: 8 proposte, 45 selezioni e 10 MyCombo distinte.",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "command": "scripts/test-schedina-md05-results.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "stdout": "Risultati MD05 verificati per tutte le 10 partite; Schedina: 26 vinte, 17 perse e 2 annullate; classifica senza N/D disciplinari.",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "command": "scripts/test-betting-void-md02.js",
+      "exitCode": 0,
+      "passed": true,
+      "stdout": "Liquidazione 29 agosto valida: 12 esatte, 6 sbagliate, 1 annullata.\nLiquidazione MD2 completa: 26 esatte, 18 sbagliate, 3 annullate.",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "command": "scripts/test-prediction-snapshots.js",
+      "exitCode": 0,
+      "passed": true,
+      "stdout": "OK immutable snapshots: schema, as-of cutoff, target/future exclusion, hash, canonical join, missing data, lineup, exact-score features and gates",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "command": "scripts/validate-data.js",
+      "exitCode": 0,
+      "passed": true,
+      "stdout": "OK 20 squadre ufficiali e 20 loghi locali\nOK organico CAN 2026/27: 42 arbitri con fonti e statistiche non inventate\nOK snapshot arbitri 2025/26: Serie A e Serie B separate per 42 arbitri\nOK 38 giornate x 10 partite = 380\nOK Coppa Italia 2026/27: 43 incontri e percorsi con fonte, turni e programmazione\nOK ogni squadra: 38 gare, 19 casa, 19 trasferta\nOK 190 coppie: doppio confronto con casa/trasferta invertite\nOK prime 5 giornate: 50 programmazioni (50 confermate, 0 provvisorie)\nOK nessuna data o orario assegnati oltre la quinta giornata\nOK classifica finale 2025/26: 20 squadre e valori coerenti\nOK rendimento casa 2025/26: 20 squadre e valori coerenti\nOK rendimento trasferta 2025/26 e riconciliazione con classifica finale\nOK riepilogo statistico 2025/26 riconciliato con classifiche generale/casa/trasferta\nOK verdetti 2025/26 e promosse 2026/27 coerenti con le classifiche\nOK profili tattici WhoScored 2025/26: 20/20 con copertura e campioni dichiarati",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "command": "scripts/referee-stats/validate-season.js --season 2023-24",
+      "exitCode": 1,
+      "passed": false,
+      "stdout": "",
+      "stderr": "node:fs:622\r\n  return binding.open(\r\n                 ^\r\n\r\nError: ENOENT: no such file or directory, open 'C:\\Users\\utente\\Desktop\\seria-a-2026-27\\data\\raw\\referee-stats\\espn\\2023-24\\serie-a\\679226.json.gz'\r\n    at Object.openSync (node:fs:622:18)\r\n    at Object.readFileSync (node:fs:488:35)\r\n    at Object.<anonymous> (C:\\Users\\utente\\Desktop\\seria-a-2026-27\\scripts\\referee-stats\\validate-season.js:20:162)\r\n    at Module._compile (node:internal/modules/cjs/loader:1872:14)\r\n    at Object..js (node:internal/modules/cjs/loader:2003:10)\r\n    at Module.load (node:internal/modules/cjs/loader:1594:32)\r\n    at Module._load (node:internal/modules/cjs/loader:1396:12)\r\n    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)\r\n    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n    at node:internal/main/run_main_module:33:47 {\r\n  errno: -4058,\r\n  code: 'ENOENT',\r\n  syscall: 'open',\r\n  path: 'C:\\\\Users\\\\utente\\\\Desktop\\\\seria-a-2026-27\\\\data\\\\raw\\\\referee-stats\\\\espn\\\\2023-24\\\\serie-a\\\\679226.json.gz'\r\n}\r\n\r\nNode.js v24.19.0",
+      "error": null
+    },
+    {
+      "command": "scripts/test-app-modules.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "stdout": "OK moduli applicazione: 9 pagine e 4 componenti condivisi",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "command": "scripts/test-css-modules.js",
+      "exitCode": 0,
+      "passed": true,
+      "stdout": "CSS modulare valido: 11 moduli, entry point 877 byte.",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "command": "scripts/test-probable-lineups.js",
+      "exitCode": 0,
+      "passed": true,
+      "stdout": "Fantacalcio MD6: 20 squadre, 220 titolari, 458 collegati, 0 non collegati.",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "command": "scripts/test-champions-player-markets.js",
+      "exitCode": 0,
+      "passed": true,
+      "stdout": "Champions player markets: OK",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "command": "scripts/test-champions-schedina.js",
+      "exitCode": 0,
+      "passed": true,
+      "stdout": "Schedina Champions: OK",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "command": "scripts/test-champions-results.js",
+      "exitCode": 0,
+      "passed": true,
+      "stdout": "OK: 18 risultati, 126 gare future, archivio di 52 giocate invariato, esiti e dati mancanti.",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "command": "scripts/test-champions-reading-page.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "stdout": "OK dettaglio lettura Champions",
+      "stderr": "",
+      "error": null
+    },
+    {
+      "command": "scripts/referee-stats/validate-season.js --season 2024-25",
+      "exitCode": 1,
+      "passed": false,
+      "stdout": "",
+      "stderr": "node:fs:622\r\n  return binding.open(\r\n                 ^\r\n\r\nError: ENOENT: no such file or directory, open 'C:\\Users\\utente\\Desktop\\seria-a-2026-27\\data\\raw\\referee-stats\\espn\\2024-25\\serie-a\\712116.json.gz'\r\n    at Object.openSync (node:fs:622:18)\r\n    at Object.readFileSync (node:fs:488:35)\r\n    at Object.<anonymous> (C:\\Users\\utente\\Desktop\\seria-a-2026-27\\scripts\\referee-stats\\validate-season.js:20:162)\r\n    at Module._compile (node:internal/modules/cjs/loader:1872:14)\r\n    at Object..js (node:internal/modules/cjs/loader:2003:10)\r\n    at Module.load (node:internal/modules/cjs/loader:1594:32)\r\n    at Module._load (node:internal/modules/cjs/loader:1396:12)\r\n    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)\r\n    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n    at node:internal/main/run_main_module:33:47 {\r\n  errno: -4058,\r\n  code: 'ENOENT',\r\n  syscall: 'open',\r\n  path: 'C:\\\\Users\\\\utente\\\\Desktop\\\\seria-a-2026-27\\\\data\\\\raw\\\\referee-stats\\\\espn\\\\2024-25\\\\serie-a\\\\712116.json.gz'\r\n}\r\n\r\nNode.js v24.19.0",
+      "error": null
+    },
+    {
+      "command": "scripts/referee-stats/validate-2025-26.js",
+      "exitCode": 1,
+      "passed": false,
+      "stdout": "",
+      "stderr": "node:fs:622\r\n  return binding.open(\r\n                 ^\r\n\r\nError: ENOENT: no such file or directory, open 'C:\\Users\\utente\\Desktop\\seria-a-2026-27\\data\\raw\\referee-stats\\espn\\2025-26\\serie-a\\736790.json.gz'\r\n    at Object.openSync (node:fs:622:18)\r\n    at Object.readFileSync (node:fs:488:35)\r\n    at C:\\Users\\utente\\Desktop\\seria-a-2026-27\\scripts\\referee-stats\\validate-2025-26.js:8:261\r\n    at Array.map (<anonymous>)\r\n    at Object.<anonymous> (C:\\Users\\utente\\Desktop\\seria-a-2026-27\\scripts\\referee-stats\\validate-2025-26.js:8:92)\r\n    at Module._compile (node:internal/modules/cjs/loader:1872:14)\r\n    at Object..js (node:internal/modules/cjs/loader:2003:10)\r\n    at Module.load (node:internal/modules/cjs/loader:1594:32)\r\n    at Module._load (node:internal/modules/cjs/loader:1396:12)\r\n    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19) {\r\n  errno: -4058,\r\n  code: 'ENOENT',\r\n  syscall: 'open',\r\n  path: 'C:\\\\Users\\\\utente\\\\Desktop\\\\seria-a-2026-27\\\\data\\\\raw\\\\referee-stats\\\\espn\\\\2025-26\\\\serie-a\\\\736790.json.gz'\r\n}\r\n\r\nNode.js v24.19.0",
+      "error": null
+    }
+  ]
+}

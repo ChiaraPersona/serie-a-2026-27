@@ -25,7 +25,7 @@
   const searchKey = text => String(text || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase("it");
   const cards = stats => {
     const values = [stats?.yellowCards, stats?.secondYellowCards, stats?.straightRedCards];
-    return values.every(item => item === null || item === undefined) ? null : values.reduce((total, item) => total + (item ?? 0), 0);
+    return values.some(item => item === null || item === undefined) ? null : values.reduce((total, item) => total + item, 0);
   };
   const metric = (player, key, statsByPlayer = null) => {
     if (key === "age") return player.age;

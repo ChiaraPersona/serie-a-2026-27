@@ -303,6 +303,11 @@ function cardCandidates() {
       candidates.push({
         ...sourcePick(event, market, selection, `${booked.name} riceve un cartellino · sostituto incluso`, { player: booked.name, riskScore: booked.riskScore }),
         probability,
+        probabilitySemantics: "HEURISTIC_UNVALIDATED_INDIVIDUAL_PROXY_FOR_DUO",
+        calibratedProbability: null,
+        playerId: booked.playerId ?? null,
+        cardTarget: "PLAYER_DUO_CARD",
+        targetVersion: "card-targets-v1",
         riskScore: booked.riskScore,
         evidence: booked.evidence || []
       });

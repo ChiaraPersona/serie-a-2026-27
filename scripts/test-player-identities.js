@@ -48,10 +48,10 @@ const predictionNulls = [];
 function findPredictionNulls(value, location = "predictions") {
   if (Array.isArray(value)) return value.forEach((entry, index) => findPredictionNulls(entry, `${location}[${index}]`));
   if (!value || typeof value !== "object") return;
-  if (Object.hasOwn(value, "playerId") && value.playerId === null && value.dataStatus !== "role-baseline") predictionNulls.push(location);
+  if (Object.hasOwn(value, "playerId") && value.playerId === null && value.dataStatus !== "role-baseline" && !(value.identityResolution === "UNRESOLVED_NAME_ONLY" && value.riskScoreSemantics === "COMPARATIVE_HEURISTIC_NOT_PROBABILITY")) predictionNulls.push(location);
   for (const [key, entry] of Object.entries(value)) findPredictionNulls(entry, `${location}.${key}`);
 }
 findPredictionNulls(predictions);
 assert.deepEqual(predictionNulls, [], `pronostici con playerId nullo: ${predictionNulls.join(", ")}`);
 
-console.log(`Identità collegate: ${playerRows} righe calciatore in ${matches.length} referti, ${officialRows} righe di formazioni ufficiali; null ammessi solo nei fallback role-baseline.`);
+console.log(`Identità collegate: ${playerRows} righe calciatore in ${matches.length} referti, ${officialRows} righe di formazioni ufficiali; null ammessi solo nei fallback role-baseline o nei candidati cartellini esplicitamente irrisolti.`);

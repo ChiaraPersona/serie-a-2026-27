@@ -1,8 +1,10 @@
 const release=new URL(import.meta.url).searchParams.get("v")||"development";
-const {settleLeg}=await import(`./betting-settlement.mjs?v=${encodeURIComponent(release)}`);
+const {settleLeg:settleStrictLeg,settleArchivedLeg}=await import(`./betting-settlement.mjs?v=${encodeURIComponent(release)}`);
 
 export function createPage(deps){
   const {esc,dateOnly,hero,load}=deps;
+  let recordedOutcomes=[];
+  const settleLeg=(leg,match)=>settleArchivedLeg(leg,match,recordedOutcomes);
   const pct=value=>Number(value).toLocaleString("it-IT",Number(value)>0&&Number(value)<.01?{minimumFractionDigits:4,maximumFractionDigits:6}:{minimumFractionDigits:2,maximumFractionDigits:2});
   const odds=value=>Number(value).toLocaleString("it-IT",{minimumFractionDigits:2,maximumFractionDigits:2});
   const metric=(value,formatter,suffix="")=>Number.isFinite(value)?`${formatter(value)}${suffix}`:"N/D";
@@ -13,12 +15,13 @@ export function createPage(deps){
       const settlement=settleLeg(leg,matchById.get(leg.matchId));
       const settled=["won","lost","void"].includes(settlement.status);
       const symbol=settlement.status==="won"?"✓":settlement.status==="lost"?"×":"—";
-      const badge=settled?`<span class="betting-leg-result" aria-label="Esito ${esc(settlement.label.toLowerCase())}"><span aria-hidden="true">${symbol}</span> ${esc(settlement.label)}</span>`:"";
+      const badge=settled?`<span class="betting-leg-result" aria-label="Esito ${esc(settlement.label.toLowerCase())}"><span aria-hidden="true">${symbol}</span> ${esc(settlement.label)}${settlement.reviewRequired?" · archiviato, target da verificare":""}</span>`:"";
       return `<li${settled?` class="betting-leg--${settlement.status}" data-settlement="${settlement.status}"`:""}><span class="betting-leg-number">${String(index+1).padStart(2,"0")}</span><div><strong>${esc(leg.fixture)}</strong><span>${esc(leg.label)} <small>· ${esc(leg.evidenceLabel)}</small></span>${badge}</div><b>${odds(leg.odds)}</b></li>`;
     }).join("");
+    const cardHeuristic=slip.legs.some(leg=>leg.probabilitySemantics||leg.marketFamily==="Ammoniti"||/PUNTI CARTELLINI/.test(leg.market||""));
     const families=slip.marketFamilies.map(esc).join(" · ");
-    const weak=slip.weakestLeg?`<p class="betting-weakest">Gamba più fragile: <strong>${esc(slip.weakestLeg.label)}</strong> · EV ${slip.weakestLeg.expectedValuePct>0?"+":""}${pct(slip.weakestLeg.expectedValuePct)}%${slip.filterNote?`<small>${esc(slip.filterNote)}</small>`:""}</p>`:"";
-    return `<article class="betting-slip betting-slip--${esc(slip.id)}" data-quality="${esc(slip.qualityStatus)}"><header><div><p>${esc(slip.eyebrow)}</p><h2>${esc(slip.name)}</h2><small>${families}</small></div></header><div class="betting-slip-metrics"><div class="betting-slip-total"><span>Quota totale</span><strong>${odds(slip.combinedOdds)}</strong><small>${slip.legs.length} giocate</small></div><div><span>Probabilità</span><strong>${metric(slip.jointModelProbabilityPct,pct,"%")}</strong></div><div><span>Quota equa</span><strong>${metric(slip.fairOdds,odds)}</strong></div><div><span>EV stimato</span><strong>${metric(slip.expectedValuePct,pct,"%")}</strong></div></div><ol>${legs}</ol>${weak}</article>`;
+    const weak=slip.weakestLeg?`<p class="betting-weakest">Gamba più fragile: <strong>${esc(slip.weakestLeg.label)}</strong> · ${cardHeuristic?"EV euristico non validato":"EV"} ${slip.weakestLeg.expectedValuePct>0?"+":""}${pct(slip.weakestLeg.expectedValuePct)}%${slip.filterNote?`<small>${esc(slip.filterNote)}</small>`:""}</p>`:"";
+    return `<article class="betting-slip betting-slip--${esc(slip.id)}" data-quality="${esc(slip.qualityStatus)}"><header><div><p>${esc(slip.eyebrow)}</p><h2>${esc(slip.name)}</h2><small>${families}</small></div></header><div class="betting-slip-metrics"><div class="betting-slip-total"><span>Quota totale</span><strong>${odds(slip.combinedOdds)}</strong><small>${slip.legs.length} giocate</small></div><div><span>${cardHeuristic?"Indice euristico non calibrato":"Probabilità"}</span><strong>${metric(slip.jointModelProbabilityPct,pct,"%")}</strong></div><div><span>${cardHeuristic?"Quota derivata euristica":"Quota equa"}</span><strong>${metric(slip.fairOdds,odds)}</strong></div><div><span>${cardHeuristic?"EV euristico non validato":"EV stimato"}</span><strong>${metric(slip.expectedValuePct,pct,"%")}</strong></div></div><ol>${legs}</ol>${cardHeuristic?'<p class="betting-weakest">Cartellini: valori euristici non calibrati; probabilità DUO non modellata. Le quote derivate e l’EV non dimostrano un vantaggio statistico.</p>':""}${weak}</article>`;
   }
 
   function roundContent(data,matchById,{showLegend=false}={}){
@@ -89,9 +92,10 @@ export function createPage(deps){
   }
 
   function championsSlipCard(slip){
+    const cardHeuristic=slip.legs.some(leg=>leg.marketFamily==="Ammoniti"||leg.probabilitySemantics);
     const families=slip.marketFamilies.map(esc).join(" · ");
-    const weak=slip.weakestLeg?`<p class="betting-weakest">Gamba più fragile: <strong>${esc(slip.weakestLeg.label)}</strong> · EV ${slip.weakestLeg.expectedValuePct>0?"+":""}${pct(slip.weakestLeg.expectedValuePct)}%</p>`:"";
-    return `<article class="betting-slip betting-slip--champions betting-slip--${esc(slip.id)}" data-quality="${esc(slip.qualityStatus)}"><header><div><p>${esc(slip.eyebrow)}</p><h2>${esc(slip.name)}</h2><small>${families}</small></div></header><div class="betting-slip-metrics"><div class="betting-slip-total"><span>Quota totale</span><strong>${odds(slip.combinedOdds)}</strong><small>${slip.legs.length} giocate · solo riferimento</small></div><div><span>Probabilità</span><strong>${metric(slip.jointModelProbabilityPct,pct,"%")}</strong></div><div><span>Quota equa</span><strong>${metric(slip.fairOdds,odds)}</strong></div><div><span>EV stimato</span><strong>${metric(slip.expectedValuePct,pct,"%")}</strong></div></div><p class="betting-coverage">Esito schedina: ${slip.settlement?.status==="lost"?"Persa":slip.settlement?.status==="won"?"Vinta":"Da verificare"}</p><ol>${slip.legs.map((leg,index)=>`<li class="betting-leg--${esc(leg.settlement?.status||"pending")}" data-settlement="${esc(leg.settlement?.status||"pending")}"><span class="betting-leg-number">${String(index+1).padStart(2,"0")}</span><div><strong>${esc(leg.fixture)}</strong><span>${esc(leg.label)} <small>· ${esc(leg.evidenceLabel)}</small></span><span class="betting-leg-result" title="${esc(leg.settlement?.reason||"")}">${esc(leg.settlement?.label||"Da verificare")}</span></div><b>${odds(leg.odds)}</b></li>`).join("")}</ol>${weak}</article>`;
+    const weak=slip.weakestLeg?`<p class="betting-weakest">Gamba più fragile: <strong>${esc(slip.weakestLeg.label)}</strong> · ${cardHeuristic?"EV euristico non validato":"EV"} ${slip.weakestLeg.expectedValuePct>0?"+":""}${pct(slip.weakestLeg.expectedValuePct)}%</p>`:"";
+    return `<article class="betting-slip betting-slip--champions betting-slip--${esc(slip.id)}" data-quality="${esc(slip.qualityStatus)}"><header><div><p>${esc(slip.eyebrow)}</p><h2>${esc(slip.name)}</h2><small>${families}</small></div></header><div class="betting-slip-metrics"><div class="betting-slip-total"><span>Quota totale</span><strong>${odds(slip.combinedOdds)}</strong><small>${slip.legs.length} giocate · solo riferimento</small></div><div><span>${cardHeuristic?"Indice euristico non calibrato":"Probabilità"}</span><strong>${metric(slip.jointModelProbabilityPct,pct,"%")}</strong></div><div><span>${cardHeuristic?"Quota derivata euristica":"Quota equa"}</span><strong>${metric(slip.fairOdds,odds)}</strong></div><div><span>${cardHeuristic?"EV euristico non validato":"EV stimato"}</span><strong>${metric(slip.expectedValuePct,pct,"%")}</strong></div></div><p class="betting-coverage">Esito schedina: ${slip.settlement?.status==="lost"?"Persa":slip.settlement?.status==="won"?"Vinta":"Da verificare"}</p><ol>${slip.legs.map((leg,index)=>`<li class="betting-leg--${esc(leg.settlement?.status||"pending")}" data-settlement="${esc(leg.settlement?.status||"pending")}"><span class="betting-leg-number">${String(index+1).padStart(2,"0")}</span><div><strong>${esc(leg.fixture)}</strong><span>${esc(leg.label)} <small>· ${esc(leg.evidenceLabel)}</small></span><span class="betting-leg-result" title="${esc(leg.settlement?.reason||"")}">${esc(leg.settlement?.label||"Da verificare")}</span></div><b>${odds(leg.odds)}</b></li>`).join("")}</ol>${weak}</article>`;
   }
 
   function championsContent(data){
@@ -99,6 +103,7 @@ export function createPage(deps){
   }
 
   async function render(){
+    recordedOutcomes=(await load("card-settlement-records.json")).records;
     const [champions,md1,md2,md3,md4,md5,matches,predictionData,teams]=await Promise.all([load("schedina-champions-md01.json"),load("schedina.json"),load("schedina-md02.json"),load("schedina-md03.json"),load("schedina-md04.json"),load("schedina-md05.json"),load("matches.json"),load("predictions.json"),load("teams.json")]);
     const rounds={1:md1,2:md2,3:md3,4:md4,5:md5};
     const matchById=new Map((Array.isArray(matches)?matches:matches.matches||[]).map(match=>[match.id,match]));

@@ -1,0 +1,111 @@
+{
+  "targetVersion": "card-targets-v1",
+  "targets": {
+    "PLAYER_YELLOW": {
+      "version": "card-targets-v1",
+      "types": [
+        "yellow"
+      ],
+      "question": "At least one ordinary yellow; second-yellow dismissal alone is not ordinary yellow."
+    },
+    "PLAYER_ANY_CARD": {
+      "version": "card-targets-v1",
+      "types": [
+        "yellow",
+        "yellowRedCard",
+        "redCard"
+      ],
+      "question": "At least one eligible card under the named rule."
+    },
+    "PLAYER_DUO_CARD": {
+      "version": "card-targets-v1",
+      "types": [
+        "yellow",
+        "yellowRedCard",
+        "redCard"
+      ],
+      "question": "Player OR direct qualifying replacement, never an individual probability proxy."
+    },
+    "FIRST_BOOKED_PLAYER": {
+      "version": "card-targets-v1",
+      "types": [
+        "yellow"
+      ],
+      "question": "Earliest eligible ordinary yellow; tied timestamps require official order or a set of tied IDs."
+    },
+    "TEAM_CARD_POINTS": {
+      "version": "card-targets-v1",
+      "types": [
+        "yellow",
+        "yellowRedCard",
+        "redCard"
+      ],
+      "question": "Named rule applied per player, not array length."
+    }
+  },
+  "marketRules": {
+    "SISAL_CARD_POINTS_REGULATION_V1": {
+      "id": "SISAL_CARD_POINTS_REGULATION_V1",
+      "source": "https://www.sisal.it/content/dam/new-dam/italy/canali/sisal-it/doc-pdf/scommesse/info-scommesse/calcio.pdf",
+      "pages": [
+        427,
+        428
+      ],
+      "periods": [
+        "firstHalf",
+        "secondHalf"
+      ],
+      "bench": false,
+      "postMatch": false,
+      "points": {
+        "yellow": 1,
+        "yellowRedCard": 1,
+        "redCard": 1
+      },
+      "maxPerPlayer": 2,
+      "requiresParticipation": true
+    },
+    "SISAL_PLAYER_CARD_INC_TS_V1": {
+      "id": "SISAL_PLAYER_CARD_INC_TS_V1",
+      "source": "https://www.sisal.it/content/dam/new-dam/italy/canali/sisal-it/doc-pdf/scommesse/info-scommesse/calcio.pdf",
+      "periods": [
+        "firstHalf",
+        "secondHalf",
+        "extraTimeFirstHalf",
+        "extraTimeSecondHalf"
+      ],
+      "bench": false,
+      "postMatch": false,
+      "requiresParticipation": true
+    },
+    "SISAL_DUO_CARD_INC_TS_V1": {
+      "id": "SISAL_DUO_CARD_INC_TS_V1",
+      "source": "https://www.sisal.it/content/dam/new-dam/italy/canali/sisal-it/doc-pdf/scommesse/info-scommesse/calcio.pdf",
+      "periods": [
+        "firstHalf",
+        "secondHalf",
+        "extraTimeFirstHalf",
+        "extraTimeSecondHalf"
+      ],
+      "bench": false,
+      "postMatch": false,
+      "requiresParticipation": true,
+      "directReplacement": true
+    },
+    "SISAL_DUO_CARD_ALL_CONTEXTS_V1": {
+      "id": "SISAL_DUO_CARD_ALL_CONTEXTS_V1",
+      "source": "https://www.sisal.it/content/dam/new-dam/italy/canali/sisal-it/doc-pdf/scommesse/info-scommesse/calcio.pdf",
+      "pages": [
+        233,
+        234
+      ],
+      "periods": null,
+      "bench": true,
+      "postMatch": true,
+      "requiresParticipation": true,
+      "directReplacement": true,
+      "requiredScope": "ALL_CONTEXTS"
+    }
+  },
+  "modelState": "DATA_ONLY_NO_VALIDATED_CARD_MODEL"
+}

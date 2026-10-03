@@ -1,0 +1,256 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Future Card research snapshot - Phase 1",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "snapshotId",
+    "matchId",
+    "season",
+    "competition",
+    "generatedAt",
+    "cutoff",
+    "targetVersion",
+    "candidates"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "snapshotId": {
+      "type": "string"
+    },
+    "matchId": {
+      "type": "string"
+    },
+    "season": {
+      "type": "string"
+    },
+    "competition": {
+      "const": "serie-a"
+    },
+    "generatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "cutoff": {
+      "type": "object",
+      "minProperties": 1
+    },
+    "targetVersion": {
+      "const": "card-targets-v1"
+    },
+    "candidates": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/candidate"
+      }
+    }
+  },
+  "$defs": {
+    "candidate": {
+      "type": "object",
+      "required": [
+        "schemaVersion",
+        "playerId",
+        "playerName",
+        "team",
+        "opponent",
+        "role",
+        "detailedRole",
+        "probableXIState",
+        "expectedMinutes",
+        "expectedMinutesReliability",
+        "startingProbability",
+        "substitutionRisk",
+        "historicalDisciplinarySample",
+        "currentDisciplinarySample",
+        "foulsCommitted",
+        "foulsSuffered",
+        "referee",
+        "duelEvidence",
+        "legacyRiskScore",
+        "calibratedProbability",
+        "targetDefinition",
+        "coverage",
+        "generatedAt",
+        "cutoff",
+        "modelVersion",
+        "modelState",
+        "identityResolution"
+      ],
+      "properties": {
+        "schemaVersion": {
+          "const": 1
+        },
+        "playerId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "playerName": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "team": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "opponent": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "role": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "detailedRole": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "probableXIState": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "expectedMinutes": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "expectedMinutesReliability": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "startingProbability": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "substitutionRisk": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "historicalDisciplinarySample": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "currentDisciplinarySample": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "foulsCommitted": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "foulsSuffered": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "referee": {
+          "type": "object"
+        },
+        "duelEvidence": {
+          "type": [
+            "array",
+            "object",
+            "null"
+          ]
+        },
+        "legacyRiskScore": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "calibratedProbability": {
+          "type": "null"
+        },
+        "targetDefinition": {
+          "type": "object",
+          "required": [
+            "version",
+            "target",
+            "marketRuleId"
+          ],
+          "properties": {
+            "version": {
+              "const": "card-targets-v1"
+            },
+            "target": {
+              "enum": [
+                "PLAYER_YELLOW",
+                "PLAYER_ANY_CARD",
+                "PLAYER_DUO_CARD",
+                "FIRST_BOOKED_PLAYER",
+                "TEAM_CARD_POINTS"
+              ]
+            },
+            "marketRuleId": {
+              "enum": [
+                null,
+                "SISAL_CARD_POINTS_REGULATION_V1",
+                "SISAL_PLAYER_CARD_INC_TS_V1",
+                "SISAL_DUO_CARD_INC_TS_V1",
+                "SISAL_DUO_CARD_ALL_CONTEXTS_V1"
+              ]
+            }
+          }
+        },
+        "coverage": {
+          "type": "object"
+        },
+        "generatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "cutoff": {
+          "type": "object",
+          "minProperties": 1
+        },
+        "modelVersion": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "modelState": {
+          "const": "DATA_ONLY_NO_VALIDATED_CARD_MODEL"
+        },
+        "identityResolution": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
