@@ -13,7 +13,7 @@ const slugAliases = { "hellas-verona": "verona" };
 const teams = read("data/normalized/teams.json");
 const teamDetails = read("data/sources/team-pages/team-details-2026-27.json");
 const fantasyRoster = read("data/sources/fantacalcio-quotations-2026-27.json");
-const probableLineups = read("data/sources/probable-lineups-md5-2026-27.json");
+const probableLineups = require("../probable-lineups").loadLatestProbableLineups(root);
 const probableLineupByTeam = new Map(probableLineups.teams.map(team => [team.teamId, team]));
 const officialLineupsFile = path.join(root, "data/sources/official-lineups-2026-27.json");
 const officialLineups = fs.existsSync(officialLineupsFile) ? JSON.parse(fs.readFileSync(officialLineupsFile, "utf8")) : { fixtures: [] };
@@ -303,7 +303,8 @@ function buildTeam(team) {
     slug: team.slug, logo: `../${team.logo}`, monochromeLogo: `../assets/images/teams/monochrome/${team.id}-black.svg`, currentSeason: "2026/27", city: details.city, stadium: details.stadium, coach: details.coach, preferredFormation: details.preferredFormation,
     probableLineup: {
       formation: lineup.formation,
-      players: starters.map(player => player.currentName || player.sourceName),
+      players: starters.map(player => officialLineup ? player.currentName || player.sourceName : player.sourceName),
+      matchday: officialLineup?.matchday || probableLineups.matchday,
       context: officialLineup ? `Formazione ufficiale della ${officialLineup.matchday}ª giornata · ${officialLineup.fixtureLabel}` : `Proiezione della ${probableLineups.matchday}ª giornata`,
       status: officialLineup ? "official" : "probable",
       matchId: officialLineup?.matchId || null,
@@ -316,7 +317,8 @@ function buildTeam(team) {
     },
     ...(officialLineup ? { projectedLineup: {
       formation: projectedLineup.formation,
-      players: projectedStarters.map(player => player.currentName || player.sourceName),
+      players: projectedStarters.map(player => player.sourceName),
+      matchday: probableLineups.matchday,
       context: `Proiezione della ${probableLineups.matchday}ª giornata`,
       status: "probable",
       updatedAt: projectedLineup.updatedAt,
@@ -336,7 +338,19 @@ const builtTeams = teams.map(buildTeam);
 const index = { schemaVersion: 1, season: "2026/27", previousSeason: "2025/26", generatedAt: today, teams: builtTeams.map(team => {
   const normalizedTeam = teams.find(item => item.id === team.id);
   return { id: team.id, name: team.name, officialName: team.officialName, shortName: team.shortName, logo: team.logo, monochromeLogo: team.monochromeLogo, colors: normalizedTeam.colors, city: team.city, stadium: team.stadium, coach: team.coach, preferredFormation: team.preferredFormation, probableLineup: team.probableLineup, ...(team.projectedLineup ? { projectedLineup: team.projectedLineup } : {}), previousSeason: team.previousSeason, playerCount: team.squad.length, lastUpdated: team.lastUpdated };
-}) };
+}), officialLineups: Object.fromEntries(officialLineups.fixtures.flatMap(fixture => fixture.teams.map(team => [
+  `${fixture.matchId}:${team.teamId}`,
+  {
+    formation: team.formation,
+    players: team.players.map(player => player.currentName || player.sourceName),
+    substitutes: team.substitutes?.map(player => player.currentName || player.sourceName) || null,
+    coach: team.coach || null,
+    ...(team.coachConfirmation ? { coachConfirmation: team.coachConfirmation } : {}),
+    status: "official", matchId: fixture.matchId, matchday: fixture.matchday,
+    updatedAt: fixture.retrievedAt || fixture.date,
+    source: { provider: fixture.provider || officialLineups.provider, url: fixture.sourceUrl || officialLineups.sourceUrl || null, retrievedAt: fixture.retrievedAt || fixture.date }
+  }
+]))) };
 for (const team of builtTeams) write(`data/teams/${team.id}.json`, team);
 write("data/teams/index.json", index);
 

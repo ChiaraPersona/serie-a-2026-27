@@ -1,5 +1,7 @@
 # Match Outcome & Exact Score Research Framework
 
+The subsequent M1/M2 experiment is documented in [Exact Score Baselines M1/M2](exact-score-baselines-m1-m2.md). Run `npm run research:exact-score -- --models league,team-goals,xg --through-matchday 5` for its prespecified experimental hierarchical shrinkage, audited historical Understat xG priors, common-sample evaluation and paired bootstrap. The original no-argument M0 command and legacy explicit-configuration behavior remain supported; M0 estimates/distributions stay frozen. Historical xG marked unavailable in the original phase below is now audited and available in the new study adapter, with cross-provider comparability explicitly unverified. No original V2 process snapshots are backfilled.
+
 This is an isolated offline laboratory. Prediction Engine V2, team profiles, player markets, reconciliation, MD6 snapshots and public pages remain frozen. Its target is **a probability distribution over all plausible home/away scores**, not a single predicted score. `modalScore` is only the largest cell of that distribution.
 
 ## Isolation and commands

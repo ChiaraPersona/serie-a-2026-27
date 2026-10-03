@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const { loadPlayerIdentities } = require("./player-identity");
 
 const root = path.resolve(__dirname, "..");
 const sourceUrl = "https://www.fantacalcio.it/probabili-formazioni-serie-a";
@@ -8,6 +9,8 @@ const requestedMatchday = matchdayArgIndex >= 0 ? Number(process.argv[matchdayAr
 if (!Number.isInteger(requestedMatchday) || requestedMatchday < 1 || requestedMatchday > 38) throw new Error("Giornata non valida");
 const outputPath = path.join(root, `data/sources/probable-lineups-md${requestedMatchday}-2026-27.json`);
 const quotationsPath = path.join(root, "data/sources/fantacalcio-quotations-2026-27.json");
+const inputIndex = process.argv.indexOf("--input");
+const rawPath = path.join(root, `data/raw/fantacalcio/probable-lineups-md${requestedMatchday}-2026-27.html`);
 
 const decodeHtml = value => String(value)
   .replace(/&#x([0-9a-f]+);/gi, (_, hex) => String.fromCodePoint(parseInt(hex, 16)))
@@ -45,14 +48,19 @@ const extractList = (teamBlock, status) => {
 };
 
 async function main() {
-  const response = await fetch(sourceUrl, {
-    headers: {
-      "user-agent": "Mozilla/5.0 (compatible; SerieA2026DataImporter/1.0)",
-      "accept-language": "it-IT,it;q=0.9"
-    }
-  });
-  if (!response.ok) throw new Error(`Fantacalcio HTTP ${response.status}`);
-  const html = await response.text();
+  let html;
+  if (inputIndex >= 0) {
+    html = fs.readFileSync(path.resolve(root, process.argv[inputIndex + 1]), "utf8");
+  } else {
+    const response = await fetch(sourceUrl, {
+      headers: {
+        "user-agent": "Mozilla/5.0 (compatible; SerieA2026DataImporter/1.0)",
+        "accept-language": "it-IT,it;q=0.9"
+      }
+    });
+    if (!response.ok) throw new Error(`Fantacalcio HTTP ${response.status}`);
+    html = await response.text();
+  }
 
   const matchdayMatch = html.match(/Giornata\s+(\d+)/i);
   const matchday = matchdayMatch ? Number(matchdayMatch[1]) : null;
@@ -61,6 +69,8 @@ async function main() {
   const quotations = JSON.parse(fs.readFileSync(quotationsPath, "utf8"));
   const activePlayers = quotations.players.filter(player => player.status === "active");
   const rosterBySourceId = new Map(activePlayers.map(player => [Number(player.sourceId), player]));
+  const identities = loadPlayerIdentities(root);
+  const rosterByPlayerId = new Map(activePlayers.map(player => [`${player.teamId}:${player.playerId}`, player]));
   const teamIdByName = new Map(activePlayers.map(player => [normalize(player.team), player.teamId]));
 
   const headerRegex = /<h3 class="h6 team-name">([^<]+)<\/h3>/g;
@@ -84,17 +94,20 @@ async function main() {
       ...extractList(block, "reserve")
     ];
     const players = parsedPlayers.flatMap(player => {
-      const rosterPlayer = rosterBySourceId.get(player.sourceId);
+      const bySource = rosterBySourceId.get(player.sourceId);
+      const alias = identities.resolve(teamId, player.sourceName);
+      const rosterPlayer = bySource?.teamId === teamId ? bySource : alias ? rosterByPlayerId.get(`${teamId}:${alias.playerId}`) : null;
+      const verifiedAlias = rosterPlayer && rosterPlayer !== bySource;
       if (!rosterPlayer || rosterPlayer.teamId !== teamId) {
         if (player.lineupStatus === "starter") {
           return [{
             ...player,
             team,
             teamId,
-            playerId: null,
-            currentName: null,
-            matchStatus: "unmatched",
-            associationMethod: "unmatched-source-player"
+            playerId: alias?.playerId || null,
+            currentName: alias?.canonicalName || null,
+            matchStatus: alias ? "verified-alias" : "unmatched",
+            associationMethod: alias ? "verified-identity-alias" : "unmatched-source-player"
           }];
         }
         omittedNonRoster.push({ team, teamId, ...player });
@@ -106,8 +119,8 @@ async function main() {
         teamId,
         playerId: rosterPlayer.playerId ?? null,
         currentName: rosterPlayer.currentName ?? rosterPlayer.name ?? null,
-        matchStatus: rosterPlayer.playerId ? "linked-player" : "linked-listone",
-        associationMethod: rosterPlayer.playerId ? "fantacalcio-source-id" : "listone-only"
+        matchStatus: verifiedAlias ? "verified-alias" : rosterPlayer.playerId ? "linked-player" : "linked-listone",
+        associationMethod: verifiedAlias ? "verified-identity-alias" : rosterPlayer.playerId ? "fantacalcio-source-id" : "listone-only"
       }];
     });
 
@@ -133,15 +146,17 @@ async function main() {
     season: "2026/27",
     matchday,
     sourceUrl,
+    rawSnapshot: path.relative(root, rawPath).replace(/\\/g, "/"),
     importedAt: new Date().toISOString(),
     interpretation: `Percentuale editoriale di probabilità di titolarità per la ${matchday}ª giornata; non è una formazione ufficiale.`,
-    rosterPolicy: "Sono inclusi soltanto i calciatori presenti nelle rose ufficiali Fantacalcio correnti; infortunati e indisponibili appartenenti alla rosa non vengono esclusi.",
+    rosterPolicy: "Sono incluse le riserve presenti nelle rose ufficiali Fantacalcio correnti e tutti i titolari pubblicati dalla fonte; i titolari non collegati restano espliciti con playerId null. Le riserve fuori rosa sono conservate in omittedNonRoster. Infortunati e indisponibili appartenenti alla rosa non vengono esclusi.",
     coverage: {
       teams: teams.length,
       players: players.length,
       starters: players.filter(player => player.lineupStatus === "starter").length,
       reserves: players.filter(player => player.lineupStatus === "reserve").length,
-      linkedPlayers: players.filter(player => player.matchStatus === "linked-player").length,
+      linkedPlayers: players.filter(player => player.playerId).length,
+      verifiedAliases: players.filter(player => player.matchStatus === "verified-alias").length,
       linkedListoneOnly: players.filter(player => player.matchStatus === "linked-listone").length,
       unmatched: players.filter(player => player.matchStatus === "unmatched").length,
       omittedNonRoster: omittedNonRoster.length
@@ -150,6 +165,8 @@ async function main() {
     teams
   };
 
+  fs.mkdirSync(path.dirname(rawPath), { recursive: true });
+  fs.writeFileSync(rawPath, html);
   fs.writeFileSync(outputPath, `${JSON.stringify(dataset, null, 2)}\n`);
   console.log(`Fantacalcio MD${matchday}: ${teams.length} squadre, ${dataset.coverage.starters} titolari, ${dataset.coverage.reserves} riserve, ${omittedNonRoster.length} esclusi perché fuori rosa.`);
 }

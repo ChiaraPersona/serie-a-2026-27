@@ -198,5 +198,8 @@ function runRepositoryTests() {
   return { status: "PASS", retrospective: 50, prospectivePending: 10, explicitlyConfiguredCommonSample: 28, productionBuildIntegration: false };
 }
 
-if (require.main === module) console.log(JSON.stringify({ synthetic: runSyntheticTests(), repository: runRepositoryTests() }));
+if (require.main === module) {
+  const baselines = require("./research/exact-score/test-baselines");
+  console.log(JSON.stringify({ synthetic: runSyntheticTests(), repository: runRepositoryTests(), baselineSynthetic: baselines.runSyntheticBaselineTests(), baselines: baselines.runRepositoryBaselineTests() }));
+}
 module.exports = { runSyntheticTests, runRepositoryTests };

@@ -4,14 +4,15 @@ const { assertResearchState } = require("./contracts");
 const value = (vector, key) => vector.features[key]?.value ?? null;
 
 function registry(createdAt, configuration = {}) {
+  const study = configuration.baselineStudy === true;
   return {
     schemaVersion: 1, createdAt, ladder: ["M0 League Average", "M1 Goals", "M2 xG", "M3 xG + shots/SOT process", "M4 advanced future candidate"],
     models: [
       ["league-poisson-r0", "LEAGUE_AVERAGE_BASELINE", ["GOAL_HISTORY", "HOME_AWAY"], "EXECUTABLE", "As-of league venue means; historical league fallback for opening round; no tuned coefficients"],
-      ["goals-poisson-r0", "TEAM_GOALS_BASELINE", ["GOAL_HISTORY", "HOME_AWAY", "MATURITY"], configuration.priorEquivalentMatches != null ? "EXECUTABLE_EXPLICIT_RESEARCH_CONFIGURATION" : "AWAITING_RESEARCH_CONFIGURATION", "Multiplicative attack x opposing defense; explicit shrinkage required, not optimized or validated"],
-      ["xg-poisson-r0", "XG_BASELINE", ["XG_PROCESS", "HOME_AWAY", "MATURITY"], configuration.priorEquivalentMatches != null && configuration.minimumXGCoverage != null ? "EXECUTABLE_EXPLICIT_RESEARCH_CONFIGURATION" : "AWAITING_RESEARCH_CONFIGURATION", "Explicit xG coverage/shrinkage policy required; unavailable xG never replaced by goals"],
+      ["goals-poisson-r0", "TEAM_GOALS_BASELINE", ["GOAL_HISTORY", "HOME_AWAY", "MATURITY"], study || configuration.priorEquivalentMatches != null ? "EXECUTABLE_EXPLICIT_RESEARCH_CONFIGURATION" : "AWAITING_RESEARCH_CONFIGURATION", "Multiplicative attack x opposing defense; explicit shrinkage required, not optimized or validated"],
+      ["xg-poisson-r0", "XG_BASELINE", ["XG_PROCESS", "HOME_AWAY", "MATURITY"], study || configuration.priorEquivalentMatches != null && configuration.minimumXGCoverage != null ? "EXECUTABLE_EXPLICIT_RESEARCH_CONFIGURATION" : "AWAITING_RESEARCH_CONFIGURATION", "Explicit xG coverage/shrinkage policy required; unavailable xG never replaced by goals"],
       ["process-poisson-r0", "PROCESS_BASELINE", ["GOAL_HISTORY", "XG_PROCESS", "SHOT_PROCESS", "SOT_PROCESS", "CHANCE_QUALITY", "DEFENSIVE_SUPPRESSION", "MATCHUP"], "INTERFACE_ONLY", "Layer B awaits temporal ablation; no final coefficients"]
-    ].map(([id, name, featureGroups, implementationStatus, notes]) => ({ id, name, version: "r0.1", featureGroups, distribution: "INDEPENDENT_POISSON", fitted: false, state: "RESEARCH", research: true, production: false, createdAt, trainingCutoff: null, training: null, implementationStatus, configuration, notes })),
+    ].map(([id, name, featureGroups, implementationStatus, notes]) => ({ id, name, version: study && ["TEAM_GOALS_BASELINE", "XG_BASELINE"].includes(name) ? "r1.0" : "r0.1", featureGroups, distribution: "INDEPENDENT_POISSON", fitted: false, state: "RESEARCH", research: true, production: false, createdAt, trainingCutoff: null, training: null, implementationStatus, configuration: study ? (name === "LEAGUE_AVERAGE_BASELINE" ? {} : configuration.researchConfig) : configuration, executed: false, notes })),
     dependencyCandidates: ["DIXON_COLES", "BIVARIATE_POISSON", "NEGATIVE_BINOMIAL"].map(id => ({ id, state: "RESEARCH", status: "FUTURE_ONLY", fitted: false, training: null })),
     promotionRequirements: ["valid walk-forward", "no leakage", "sufficient temporal sample", "better than naive baseline OOS", "calibrated 1X2", "acceptable goal MAE", "score-distribution improvement", "no severe consistency failure", "separate human decision"],
     promotionDisabled: true, thresholds: null
@@ -45,6 +46,10 @@ function createModel(model, configuration = {}, gate = "INSUFFICIENT") {
     const diagnostics = { label: vector.generationClass === "RETROSPECTIVE" ? "RETROSPECTIVE RESEARCH ONLY" : "PROSPECTIVE RESEARCH ONLY", configuration, training: null, priorPolicy: "Historical Serie A venue prior; promoted/no-Serie-A-history falls back explicitly to league", layers: { goalStrength: null, processAdjustment: "NOT_APPLIED", goalDistribution: "INDEPENDENT_POISSON" } };
     if (model.name === "LEAGUE_AVERAGE_BASELINE") return buildPrediction(model, vector, lh, la, { ...diagnostics, leagueFallbackUsed: value(vector, "league.currentMatches") === 0, layers: { ...diagnostics.layers, goalStrength: { leagueHome: lh, leagueAway: la, homeAttackStrength: 1, awayAttackStrength: 1, homeDefensiveStrength: 1, awayDefensiveStrength: 1 } } });
     if (model.name === "PROCESS_BASELINE") return null;
+    if (configuration.baselineStudy === true) {
+      const output = require("./baselines").predictStrengthBaseline(vector, model.name, configuration.researchConfig);
+      return output ? buildPrediction(model, vector, output.lambdaHome, output.lambdaAway, output.diagnostics) : null;
+    }
     if (!(configuration.priorEquivalentMatches > 0)) return null;
     const xg = model.name === "XG_BASELINE";
     const baseH = xg ? league("home", true) : lh, baseA = xg ? league("away", true) : la;

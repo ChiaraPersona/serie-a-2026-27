@@ -8,6 +8,7 @@ export interface FeatureProvenance {
   kind: "OBSERVED" | "PREDICTED" | "CONTEXT" | "UNAVAILABLE";
   availability: "AVAILABLE" | "UNAVAILABLE"; matchesUsed: string[]; sample: number;
   availableBefore: string | null; competition: string | null; season: string | null; note: string | null;
+  historicalMatchesUsed?: string[];
 }
 export interface ExactScoreFeatureVector {
   schemaVersion: 1; matchId: string; homeTeam: string; awayTeam: string; targetMatchday: number;

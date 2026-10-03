@@ -7,9 +7,18 @@ const confidenceLabel=value=>value==="high"?"alta":value==="medium"?"media":valu
 const signalQuality=value=>!isFiniteNumber(value)?"Dati insufficienti":value>=.75?"Segnale forte":value>=.55?"Segnale medio":"Segnale debole";
 const playerKey=player=>`${player?.playerId||player?.name||""}|${player?.teamId||player?.team||""}`;
 
+export function fixtureLineupForMatch(match,team,teamDirectory){
+  const official=teamDirectory?.officialLineups?.[`${match?.id}:${team?.id}`];
+  if(official)return official;
+  const lineup=team?.probableLineup;
+  if(lineup?.status==="official"&&lineup.matchId!==match?.id)return team.projectedLineup||{...lineup,status:"reference"};
+  if(lineup?.matchday&&lineup.matchday!==match?.matchday)return {...lineup,status:"reference",context:`Riferimento dalla ${lineup.matchday}ª giornata`};
+  return lineup;
+}
+
 export function formationPresentation(match,teamDirectory){
   const teams=teamDirectory?.teams||[],meta=id=>teams.find(team=>team.id===id);
-  const fixtureLineup=team=>team?.probableLineup?.status==="official"&&team.probableLineup.matchId!==match?.id?(team.projectedLineup||{...team.probableLineup,status:"reference"}):team?.probableLineup;
+  const fixtureLineup=team=>fixtureLineupForMatch(match,team,teamDirectory);
   const lineups=[fixtureLineup(meta(match?.homeTeam)),fixtureLineup(meta(match?.awayTeam))];
   const official=lineups.length===2&&lineups.every(lineup=>lineup?.status==="official");
   const probable=lineups.some(lineup=>lineup?.status==="probable");
@@ -145,7 +154,7 @@ function readingPrototypeDetail(match,reading,teams,teamDirectory,objectiveProfi
 function renderProbableLineups(match,teamDirectory,prediction){
   if(!match||!teamDirectory)return;
   const meta=id=>teamDirectory.teams.find(team=>team.id===id),home=meta(match.homeTeam),away=meta(match.awayTeam);
-  const fixtureLineup=team=>team?.probableLineup?.status==="official"&&team.probableLineup.matchId!==match.id?(team.projectedLineup||{...team.probableLineup,status:"reference",referenceMatchId:team.probableLineup.matchId,context:"Ultima formazione ufficiale disponibile usata come riferimento"}):team?.probableLineup;
+  const fixtureLineup=team=>fixtureLineupForMatch(match,team,teamDirectory);
   const officialLineups=fixtureLineup(home)?.status==="official"&&fixtureLineup(away)?.status==="official";
   const card=team=>{const lineup=fixtureLineup(team);if(!lineup)return"";const shape=lineup.formation.split("-").map(Number),units=[1,...shape];let offset=0;const rows=units.map(size=>{const players=lineup.players.slice(offset,offset+size).reverse();offset+=size;return `<div class="reading-lineup-row" style="--reading-lineup-count:${size}">${players.map(player=>`<strong>${esc(player)}</strong>`).join("")}</div>`}).reverse().join("");const [primary="#174fa5",secondary="#081d48"]=team.colors||[],official=lineup.status==="official",reference=lineup.status==="reference",label=official?"Formazione ufficiale":reference?"Formazione di riferimento":"Probabile formazione",coachNote=lineup.coachConfirmation?` (${esc(lineup.coachConfirmation)})`:"",substitutes=official&&lineup.substitutes?.length?`<p class="reading-lineup-substitutes"><strong>A disposizione:</strong> ${lineup.substitutes.map(esc).join(", ")}</p>`:"";return `<article class="reading-lineup-card" style="--reading-lineup-primary:${esc(primary)};--reading-lineup-secondary:${esc(secondary)};--reading-lineup-head-ink:${contrastInk(secondary)}"><header><span>${esc(team.name)}</span><strong>${esc(lineup.formation)}</strong></header><div class="reading-lineup-field" aria-label="${label} ${esc(team.name)} con modulo ${esc(lineup.formation)}"><i class="reading-lineup-centre" aria-hidden="true"></i>${rows}</div><footer><span>Allenatore: ${esc(lineup.coach||team.coach||"N/D")}${coachNote}</span>${substitutes}</footer></article>`};
   const target=document.querySelector(".round16-formations");

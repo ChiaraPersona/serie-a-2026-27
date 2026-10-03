@@ -1,10 +1,15 @@
 {
   "schemaVersion": 1,
-  "createdAt": "2026-10-03T00:45:12.894Z",
+  "createdAt": "2026-10-03T09:55:53.102Z",
   "synthetic": {
     "status": "PASS",
     "assertions": 551,
     "scope": "SYNTHETIC_MATH_TEMPORAL_CONTRACT_EVALUATOR"
+  },
+  "baselineStudyTests": {
+    "status": "PASS",
+    "assertions": 98,
+    "scope": "M1_M2_SHRINKAGE_CUTOFF_FALLBACK_XG_PURITY_PAIRED_BOOTSTRAP"
   },
   "isolation": {
     "checkedFiles": 8177,
@@ -12,7 +17,15 @@
     "md6FileSHA256": "bb12972bedf482ab4210a11256ee3af1b68f442d264d3bdb106419c7aee38f78",
     "manifestSHA256": "d8c236c7e8bf6aa92a425cd14e479cb9f20c8fa150029ecc0f1b8c2d82119b4d"
   },
-  "configuration": {},
+  "configuration": {
+    "models": [
+      "league",
+      "team-goals",
+      "xg"
+    ],
+    "baselineStudy": true,
+    "throughMatchday": 5
+  },
   "datasetValidation": "PASS",
   "md6Actuals": "UNAVAILABLE",
   "maximumModelState": "RESEARCH"

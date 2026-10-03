@@ -6,7 +6,7 @@ const ERROR_COMPONENTS = ["GOAL_STRENGTH_ERROR", "TEAM_PROCESS_ERROR", "GOAL_CON
 const SIDES = {
   goalsFor: "GOAL_HISTORY", goalsAgainst: "GOAL_HISTORY", failedToScoreRate: "GOAL_HISTORY", cleanSheetRate: "GOAL_HISTORY", bttsRate: "GOAL_HISTORY", over15Rate: "GOAL_HISTORY", over25Rate: "GOAL_HISTORY", over35Rate: "GOAL_HISTORY",
   historicalGoalsFor: "GOAL_HISTORY", historicalGoalsAgainst: "GOAL_HISTORY", venueGoalsFor: "HOME_AWAY", venueGoalsAgainst: "HOME_AWAY", historicalVenueGoalsFor: "HOME_AWAY", historicalVenueGoalsAgainst: "HOME_AWAY",
-  currentXGF: "XG_PROCESS", currentXGA: "XG_PROCESS", venueXGF: "XG_PROCESS", venueXGA: "XG_PROCESS", historicalXGF: "XG_PROCESS", historicalXGA: "XG_PROCESS",
+  currentXGF: "XG_PROCESS", currentXGA: "XG_PROCESS", venueXGF: "XG_PROCESS", venueXGA: "XG_PROCESS", historicalXGF: "XG_PROCESS", historicalXGA: "XG_PROCESS", historicalVenueXGF: "XG_PROCESS", historicalVenueXGA: "XG_PROCESS",
   baselineShots: "SHOT_PROCESS", shotsAllowed: "SHOT_PROCESS", predictedTeamShots: "SHOT_PROCESS", baselineSOT: "SOT_PROCESS", sotAllowed: "SOT_PROCESS", predictedTeamSOT: "SOT_PROCESS",
   xGPerShot: "CHANCE_QUALITY", xGAllowedPerShot: "CHANCE_QUALITY", shotQuality: "CHANCE_QUALITY", finishingResidual: "CHANCE_QUALITY", goalkeepingResidual: "CHANCE_QUALITY",
   shotSuppression: "DEFENSIVE_SUPPRESSION", shotVulnerability: "DEFENSIVE_SUPPRESSION", sotSuppression: "DEFENSIVE_SUPPRESSION", sotVulnerability: "DEFENSIVE_SUPPRESSION", chanceQualitySuppression: "DEFENSIVE_SUPPRESSION", chanceQualityVulnerability: "DEFENSIVE_SUPPRESSION",
@@ -15,7 +15,7 @@ const SIDES = {
 };
 const FEATURE_DEFINITIONS = {
   ...Object.fromEntries(["home", "away"].flatMap(side => Object.entries(SIDES).map(([name, group]) => [`${side}.${name}`, { group, type: "number|null" }]))),
-  ...Object.fromEntries(Object.entries({ homeGoalsAverage: "GOAL_HISTORY", awayGoalsAverage: "GOAL_HISTORY", totalGoalsAverage: "GOAL_HISTORY", homeAdvantage: "HOME_AWAY", homeXGAverage: "XG_PROCESS", awayXGAverage: "XG_PROCESS", currentMatches: "MATURITY", historicalHomeGoalsAverage: "GOAL_HISTORY", historicalAwayGoalsAverage: "GOAL_HISTORY" }).map(([name, group]) => [`league.${name}`, { group, type: "number|null" }])),
+  ...Object.fromEntries(Object.entries({ homeGoalsAverage: "GOAL_HISTORY", awayGoalsAverage: "GOAL_HISTORY", totalGoalsAverage: "GOAL_HISTORY", homeAdvantage: "HOME_AWAY", homeXGAverage: "XG_PROCESS", awayXGAverage: "XG_PROCESS", currentMatches: "MATURITY", historicalHomeGoalsAverage: "GOAL_HISTORY", historicalAwayGoalsAverage: "GOAL_HISTORY", historicalHomeXGAverage: "XG_PROCESS", historicalAwayXGAverage: "XG_PROCESS" }).map(([name, group]) => [`league.${name}`, { group, type: "number|null" }])),
   "context.matchday": { group: "HOME_AWAY", type: "number|null" }
 };
 
@@ -39,6 +39,7 @@ function validateFeatureVector(vector, matches) {
       if (!match || id === vector.matchId || match.matchday >= cutoff.matchdayExclusive || match.status !== "finished" || match.competition !== "serie-a" || match.season !== "2026-27" || !match.date || Date.parse(`${match.date}T23:59:59Z`) >= Date.parse(cutoff.effectiveDateExclusive)) throw new Error(`Target/future/source leakage: ${key}:${id}`);
     }
     if (p.period === "HISTORICAL" && (p.season !== "2025-26" || p.competition !== "serie-a")) throw new Error(`Cross-competition prior cannot be treated as Serie A: ${key}`);
+    if (p.historicalMatchesUsed && (p.period !== "HISTORICAL" || !Array.isArray(p.historicalMatchesUsed) || p.historicalMatchesUsed.length !== p.sample || new Set(p.historicalMatchesUsed).size !== p.historicalMatchesUsed.length)) throw new Error(`Invalid historical match provenance: ${key}`);
   }
   const encoded = JSON.stringify(vector.features);
   if (/playerId|expectedMinutes|sisal|sportium|bookmaker|impliedProbability|actualHomeGoals|actualAwayGoals/i.test(encoded)) throw new Error("Forbidden player, quote, or actual feature");

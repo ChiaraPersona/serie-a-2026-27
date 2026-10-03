@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "createdAt": "2026-10-03T00:45:12.894Z",
+  "createdAt": "2026-10-03T09:55:53.102Z",
   "ladder": [
     "M0 League Average",
     "M1 Goals",
@@ -22,17 +22,18 @@
       "state": "RESEARCH",
       "research": true,
       "production": false,
-      "createdAt": "2026-10-03T00:45:12.894Z",
+      "createdAt": "2026-10-03T09:55:53.102Z",
       "trainingCutoff": null,
       "training": null,
       "implementationStatus": "EXECUTABLE",
       "configuration": {},
+      "executed": true,
       "notes": "As-of league venue means; historical league fallback for opening round; no tuned coefficients"
     },
     {
       "id": "goals-poisson-r0",
       "name": "TEAM_GOALS_BASELINE",
-      "version": "r0.1",
+      "version": "r1.0",
       "featureGroups": [
         "GOAL_HISTORY",
         "HOME_AWAY",
@@ -43,17 +44,73 @@
       "state": "RESEARCH",
       "research": true,
       "production": false,
-      "createdAt": "2026-10-03T00:45:12.894Z",
+      "createdAt": "2026-10-03T09:55:53.102Z",
       "trainingCutoff": null,
       "training": null,
-      "implementationStatus": "AWAITING_RESEARCH_CONFIGURATION",
-      "configuration": {},
+      "implementationStatus": "EXECUTABLE_EXPLICIT_RESEARCH_CONFIGURATION",
+      "configuration": {
+        "id": "goals-xg-hierarchical-r1",
+        "status": "EXPERIMENTAL",
+        "version": "r1.0",
+        "priorEquivalentMatches": 12,
+        "minimumXGCoverage": 1,
+        "hierarchy": "HISTORICAL_VENUE_OR_LEAGUE -> NON_VENUE_CURRENT -> VENUE_CURRENT",
+        "shrinkagePrincipleSource": "scripts/build-team-matchup-profiles.js: shrink / data/sources/team-matchup-profiles-2026-27.json: methodology.priorEquivalentMatches=12",
+        "shrinkageRationale": "Reuse n/(n+12) pseudo-count principle, without importing or changing production. Apply separately to disjoint non-venue and venue observations; no duplicated current matches.",
+        "lastNForm": false,
+        "finishingAdjustment": false,
+        "goalkeepingAdjustment": false,
+        "parameterSearch": false,
+        "bootstrap": {
+          "iterations": 4000,
+          "seed": 20261003,
+          "familyAlpha": 0.05,
+          "primaryMetricCount": 4,
+          "comparisonCount": 3,
+          "minimumMatchClusters": 2,
+          "minimumMatchdayClusters": 2
+        },
+        "diagnostics": {
+          "extremeLambdaLow": 0.25,
+          "extremeLambdaHigh": 4,
+          "largeDisagreementLambda": 0.5,
+          "largeDisagreementOutcome": 0.15,
+          "largeResidualGoalsPerMatch": 0.5,
+          "minimumTeamMatches": 10,
+          "calibrationMinimumBinCount": 10
+        },
+        "leader": {
+          "rule": "PRESPECIFIED_WEIGHTED_ORDINAL_RANKS",
+          "priorities": {
+            "scoreLogLoss": 5,
+            "oneXtwoRPS": 4,
+            "meanGoalMAE": 3,
+            "topCoverage": 2,
+            "calibrationECE": 1
+          },
+          "qualifier": "NOT VALIDATED PROSPECTIVELY",
+          "exactHitUsed": false
+        },
+        "inferenceRule": "BETTER/WORSE require family-adjusted paired intervals to agree for score LogLoss, RPS and mean goal MAE; mixed or zero-crossing intervals are INSUFFICIENT. SIMILAR only for identical primary per-match contributions; no equivalence margin inferred.",
+        "sensitivity": {
+          "enabled": false,
+          "reason": "No parameter search or full-sample policy selection"
+        },
+        "complexity": {
+          "fittedCoefficients": 0,
+          "shrinkageHyperparameters": 1,
+          "coveragePolicies": 1,
+          "individualOrTeamOverrides": 0
+        },
+        "callerOverrides": []
+      },
+      "executed": true,
       "notes": "Multiplicative attack x opposing defense; explicit shrinkage required, not optimized or validated"
     },
     {
       "id": "xg-poisson-r0",
       "name": "XG_BASELINE",
-      "version": "r0.1",
+      "version": "r1.0",
       "featureGroups": [
         "XG_PROCESS",
         "HOME_AWAY",
@@ -64,11 +121,67 @@
       "state": "RESEARCH",
       "research": true,
       "production": false,
-      "createdAt": "2026-10-03T00:45:12.894Z",
+      "createdAt": "2026-10-03T09:55:53.102Z",
       "trainingCutoff": null,
       "training": null,
-      "implementationStatus": "AWAITING_RESEARCH_CONFIGURATION",
-      "configuration": {},
+      "implementationStatus": "EXECUTABLE_EXPLICIT_RESEARCH_CONFIGURATION",
+      "configuration": {
+        "id": "goals-xg-hierarchical-r1",
+        "status": "EXPERIMENTAL",
+        "version": "r1.0",
+        "priorEquivalentMatches": 12,
+        "minimumXGCoverage": 1,
+        "hierarchy": "HISTORICAL_VENUE_OR_LEAGUE -> NON_VENUE_CURRENT -> VENUE_CURRENT",
+        "shrinkagePrincipleSource": "scripts/build-team-matchup-profiles.js: shrink / data/sources/team-matchup-profiles-2026-27.json: methodology.priorEquivalentMatches=12",
+        "shrinkageRationale": "Reuse n/(n+12) pseudo-count principle, without importing or changing production. Apply separately to disjoint non-venue and venue observations; no duplicated current matches.",
+        "lastNForm": false,
+        "finishingAdjustment": false,
+        "goalkeepingAdjustment": false,
+        "parameterSearch": false,
+        "bootstrap": {
+          "iterations": 4000,
+          "seed": 20261003,
+          "familyAlpha": 0.05,
+          "primaryMetricCount": 4,
+          "comparisonCount": 3,
+          "minimumMatchClusters": 2,
+          "minimumMatchdayClusters": 2
+        },
+        "diagnostics": {
+          "extremeLambdaLow": 0.25,
+          "extremeLambdaHigh": 4,
+          "largeDisagreementLambda": 0.5,
+          "largeDisagreementOutcome": 0.15,
+          "largeResidualGoalsPerMatch": 0.5,
+          "minimumTeamMatches": 10,
+          "calibrationMinimumBinCount": 10
+        },
+        "leader": {
+          "rule": "PRESPECIFIED_WEIGHTED_ORDINAL_RANKS",
+          "priorities": {
+            "scoreLogLoss": 5,
+            "oneXtwoRPS": 4,
+            "meanGoalMAE": 3,
+            "topCoverage": 2,
+            "calibrationECE": 1
+          },
+          "qualifier": "NOT VALIDATED PROSPECTIVELY",
+          "exactHitUsed": false
+        },
+        "inferenceRule": "BETTER/WORSE require family-adjusted paired intervals to agree for score LogLoss, RPS and mean goal MAE; mixed or zero-crossing intervals are INSUFFICIENT. SIMILAR only for identical primary per-match contributions; no equivalence margin inferred.",
+        "sensitivity": {
+          "enabled": false,
+          "reason": "No parameter search or full-sample policy selection"
+        },
+        "complexity": {
+          "fittedCoefficients": 0,
+          "shrinkageHyperparameters": 1,
+          "coveragePolicies": 1,
+          "individualOrTeamOverrides": 0
+        },
+        "callerOverrides": []
+      },
+      "executed": true,
       "notes": "Explicit xG coverage/shrinkage policy required; unavailable xG never replaced by goals"
     },
     {
@@ -89,11 +202,67 @@
       "state": "RESEARCH",
       "research": true,
       "production": false,
-      "createdAt": "2026-10-03T00:45:12.894Z",
+      "createdAt": "2026-10-03T09:55:53.102Z",
       "trainingCutoff": null,
       "training": null,
       "implementationStatus": "INTERFACE_ONLY",
-      "configuration": {},
+      "configuration": {
+        "id": "goals-xg-hierarchical-r1",
+        "status": "EXPERIMENTAL",
+        "version": "r1.0",
+        "priorEquivalentMatches": 12,
+        "minimumXGCoverage": 1,
+        "hierarchy": "HISTORICAL_VENUE_OR_LEAGUE -> NON_VENUE_CURRENT -> VENUE_CURRENT",
+        "shrinkagePrincipleSource": "scripts/build-team-matchup-profiles.js: shrink / data/sources/team-matchup-profiles-2026-27.json: methodology.priorEquivalentMatches=12",
+        "shrinkageRationale": "Reuse n/(n+12) pseudo-count principle, without importing or changing production. Apply separately to disjoint non-venue and venue observations; no duplicated current matches.",
+        "lastNForm": false,
+        "finishingAdjustment": false,
+        "goalkeepingAdjustment": false,
+        "parameterSearch": false,
+        "bootstrap": {
+          "iterations": 4000,
+          "seed": 20261003,
+          "familyAlpha": 0.05,
+          "primaryMetricCount": 4,
+          "comparisonCount": 3,
+          "minimumMatchClusters": 2,
+          "minimumMatchdayClusters": 2
+        },
+        "diagnostics": {
+          "extremeLambdaLow": 0.25,
+          "extremeLambdaHigh": 4,
+          "largeDisagreementLambda": 0.5,
+          "largeDisagreementOutcome": 0.15,
+          "largeResidualGoalsPerMatch": 0.5,
+          "minimumTeamMatches": 10,
+          "calibrationMinimumBinCount": 10
+        },
+        "leader": {
+          "rule": "PRESPECIFIED_WEIGHTED_ORDINAL_RANKS",
+          "priorities": {
+            "scoreLogLoss": 5,
+            "oneXtwoRPS": 4,
+            "meanGoalMAE": 3,
+            "topCoverage": 2,
+            "calibrationECE": 1
+          },
+          "qualifier": "NOT VALIDATED PROSPECTIVELY",
+          "exactHitUsed": false
+        },
+        "inferenceRule": "BETTER/WORSE require family-adjusted paired intervals to agree for score LogLoss, RPS and mean goal MAE; mixed or zero-crossing intervals are INSUFFICIENT. SIMILAR only for identical primary per-match contributions; no equivalence margin inferred.",
+        "sensitivity": {
+          "enabled": false,
+          "reason": "No parameter search or full-sample policy selection"
+        },
+        "complexity": {
+          "fittedCoefficients": 0,
+          "shrinkageHyperparameters": 1,
+          "coveragePolicies": 1,
+          "individualOrTeamOverrides": 0
+        },
+        "callerOverrides": []
+      },
+      "executed": false,
       "notes": "Layer B awaits temporal ablation; no final coefficients"
     }
   ],
@@ -132,5 +301,61 @@
     "separate human decision"
   ],
   "promotionDisabled": true,
-  "thresholds": null
+  "thresholds": null,
+  "researchConfig": {
+    "id": "goals-xg-hierarchical-r1",
+    "status": "EXPERIMENTAL",
+    "version": "r1.0",
+    "priorEquivalentMatches": 12,
+    "minimumXGCoverage": 1,
+    "hierarchy": "HISTORICAL_VENUE_OR_LEAGUE -> NON_VENUE_CURRENT -> VENUE_CURRENT",
+    "shrinkagePrincipleSource": "scripts/build-team-matchup-profiles.js: shrink / data/sources/team-matchup-profiles-2026-27.json: methodology.priorEquivalentMatches=12",
+    "shrinkageRationale": "Reuse n/(n+12) pseudo-count principle, without importing or changing production. Apply separately to disjoint non-venue and venue observations; no duplicated current matches.",
+    "lastNForm": false,
+    "finishingAdjustment": false,
+    "goalkeepingAdjustment": false,
+    "parameterSearch": false,
+    "bootstrap": {
+      "iterations": 4000,
+      "seed": 20261003,
+      "familyAlpha": 0.05,
+      "primaryMetricCount": 4,
+      "comparisonCount": 3,
+      "minimumMatchClusters": 2,
+      "minimumMatchdayClusters": 2
+    },
+    "diagnostics": {
+      "extremeLambdaLow": 0.25,
+      "extremeLambdaHigh": 4,
+      "largeDisagreementLambda": 0.5,
+      "largeDisagreementOutcome": 0.15,
+      "largeResidualGoalsPerMatch": 0.5,
+      "minimumTeamMatches": 10,
+      "calibrationMinimumBinCount": 10
+    },
+    "leader": {
+      "rule": "PRESPECIFIED_WEIGHTED_ORDINAL_RANKS",
+      "priorities": {
+        "scoreLogLoss": 5,
+        "oneXtwoRPS": 4,
+        "meanGoalMAE": 3,
+        "topCoverage": 2,
+        "calibrationECE": 1
+      },
+      "qualifier": "NOT VALIDATED PROSPECTIVELY",
+      "exactHitUsed": false
+    },
+    "inferenceRule": "BETTER/WORSE require family-adjusted paired intervals to agree for score LogLoss, RPS and mean goal MAE; mixed or zero-crossing intervals are INSUFFICIENT. SIMILAR only for identical primary per-match contributions; no equivalence margin inferred.",
+    "sensitivity": {
+      "enabled": false,
+      "reason": "No parameter search or full-sample policy selection"
+    },
+    "complexity": {
+      "fittedCoefficients": 0,
+      "shrinkageHyperparameters": 1,
+      "coveragePolicies": 1,
+      "individualOrTeamOverrides": 0
+    },
+    "callerOverrides": []
+  }
 }

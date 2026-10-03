@@ -7,7 +7,7 @@ const validGoals = score => score && [score.home, score.away].every(value => Num
 const currentSource = "data/normalized/matches.json";
 const historicalSource = "data/normalized/standings-2025-26.json";
 
-function makeFeatureVector({ target, matches, prior, snapshot = null, sourceHashes }) {
+function makeFeatureVector({ target, matches, prior, snapshot = null, sourceHashes, historicalXG = null }) {
   const roundKickoffs = matches.filter(m => m.competition === "serie-a" && m.season === "2026-27" && m.matchday === target.matchday).map(toKickoffUtc).filter(Number.isFinite);
   if (!roundKickoffs.length) throw new Error("Unknown matchday kickoff cutoff");
   const cutoffTime = Math.min(...roundKickoffs);
@@ -22,9 +22,10 @@ function makeFeatureVector({ target, matches, prior, snapshot = null, sourceHash
     if (!FEATURE_DEFINITIONS[key]) throw new Error(`Unknown feature ${key}`);
     const source = options.source || currentSource, available = Number.isFinite(value);
     const used = options.rows || [];
-    features[key] = { value: available ? value : null, group: FEATURE_DEFINITIONS[key].group, provenance: { source, sourceHash: sourceHashes[source], cutoff,
+    features[key] = { value: available ? value : null, group: FEATURE_DEFINITIONS[key].group, provenance: { source, sourceHash: options.sourceHash || sourceHashes[source], cutoff,
       period: options.period || "CURRENT", kind: options.kind || "OBSERVED", availability: available ? "AVAILABLE" : "UNAVAILABLE", matchesUsed: used.map(row => row.id),
-      sample: options.sample ?? used.length, availableBefore: options.availableBefore || null, competition: options.competition ?? "serie-a", season: options.season ?? "2026-27", note: options.note || null } };
+      sample: options.sample ?? used.length, availableBefore: options.availableBefore || null, competition: options.competition ?? "serie-a", season: options.season ?? "2026-27", note: options.note || null,
+      ...(options.historicalMatchesUsed ? { historicalMatchesUsed: options.historicalMatchesUsed } : {}) } };
   };
   for (const key of Object.keys(FEATURE_DEFINITIONS)) put(key, null, { period: "UNAVAILABLE", kind: "UNAVAILABLE", note: "Unavailable at the target cutoff; never imputed as zero" });
   const stat = (row, teamId, name, against = false) => {
@@ -83,6 +84,19 @@ function makeFeatureVector({ target, matches, prior, snapshot = null, sourceHash
     historicPut(`league.historical${side === "home" ? "Home" : "Away"}GoalsAverage`, played ? rows.reduce((n, row) => n + row.goalsFor, 0) / played : null, played);
   }
   put("context.matchday", target.matchday, { kind: "CONTEXT", period: "CONTEXT" });
+  if (historicalXG && historicalXG.competition === "serie-a" && historicalXG.season === "2025-26" && Date.parse(historicalXG.retrievedAt) < cutoffTime && historicalXG.rows.every(row => Date.parse(row.date) < cutoffTime)) {
+    const histXGPut = (key, rate) => put(key, rate?.value, { source: historicalXG.source, sourceHash: historicalXG.sourceHash, period: "HISTORICAL", kind: "OBSERVED", sample: rate?.sample || 0, historicalMatchesUsed: rate?.matchIds || [], season: "2025-26", availableBefore: historicalXG.retrievedAt, note: "Understat previous completed Serie A season; cross-provider scale comparability with current StatMuse xG unverified" });
+    for (const side of ["home", "away"]) {
+      const team = historicalXG.teams[target[`${side}Team`]];
+      histXGPut(`${side}.historicalXGF`, team?.overallFor);
+      histXGPut(`${side}.historicalXGA`, team?.overallAgainst);
+      histXGPut(`${side}.historicalVenueXGF`, team?.[`${side}For`]);
+      histXGPut(`${side}.historicalVenueXGA`, team?.[`${side}Against`]);
+    }
+    histXGPut("league.historicalHomeXGAverage", historicalXG.league.home);
+    histXGPut("league.historicalAwayXGAverage", historicalXG.league.away);
+    vector.diagnostics.historicalXG = historicalXG.audit;
+  }
   if (snapshot) {
     const failures = validateSnapshot(snapshot);
     if (failures.length || snapshot.matchId !== target.id || snapshot.matchday !== target.matchday || Date.parse(snapshot.generatedAt) >= cutoffTime || JSON.stringify(snapshot.dataCutoff) !== JSON.stringify(cutoff)) throw new Error(`Invalid prospective snapshot/cutoff: ${failures.join(",")}`);

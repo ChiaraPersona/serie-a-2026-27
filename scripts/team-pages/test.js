@@ -6,7 +6,7 @@ const root = path.resolve(__dirname, "../..");
 const read = file => JSON.parse(fs.readFileSync(path.join(root, file), "utf8"));
 const index = read("data/teams/index.json");
 const officialLineups = read("data/sources/official-lineups-2026-27.json");
-const probableLineups = read("data/sources/probable-lineups-md5-2026-27.json");
+const probableLineups = require("../probable-lineups").loadLatestProbableLineups(root);
 const playerLeaderboards = read("data/teams/player-leaderboards.json");
 const europeanCalendar = read("data/normalized/european-fixtures-2026-27.json");
 const mainApp = fs.readdirSync(path.join(root, "js"), { recursive: true })

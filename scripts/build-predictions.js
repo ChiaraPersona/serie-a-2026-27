@@ -73,6 +73,12 @@ for (const identity of identityRegistry.payload.players) {
   if (player) player.identityAliases = identity.aliases;
   else squad.players.push({ id: identity.playerId, name: identity.canonicalName, role: null, detailedRole: null, identityAliases: identity.aliases });
 }
+const probableLineupSource = require("./probable-lineups").loadLatestProbableLineups(root);
+for (const team of probableLineupSource.teams) for (const entry of team.players) {
+  if (!entry.playerId) continue;
+  const player = squadsByTeam.get(team.teamId)?.players.find(player => player.id === entry.playerId);
+  if (player) player.identityAliases = [...new Set([...(player.identityAliases || []), entry.sourceName, entry.currentName].filter(Boolean))];
+}
 const volumeByTeam = byId(volumeProfiles.profiles);
 const teamMatchupSnapshots = new Map();
 const teamMatchupsForTarget = match => {
@@ -236,10 +242,6 @@ const leagueTargetMatches = matches
   .sort((a, b) => a.matchday - b.matchday || a.id.localeCompare(b.id));
 const targetMatches = leagueTargetMatches;
 const predictionMatches = matches;
-const existingPredictionsPath = path.join(root, "data/normalized/predictions.json");
-const existingPredictionByMatch = fs.existsSync(existingPredictionsPath)
-  ? new Map(JSON.parse(fs.readFileSync(existingPredictionsPath, "utf8")).predictions.map(prediction => [prediction.matchId, prediction]))
-  : new Map();
 
 const officialReferenceByTeam = new Map(officialLineups.fixtures
   .flatMap(fixture => fixture.teams.map(lineup => [lineup.teamId, {
@@ -280,7 +282,7 @@ const generatedPredictions = targetMatches.map(match => {
   const teamMatchupByTeam = matchupSnapshot.byTeam;
   const homeTeam = teamForMatch(teamById.get(match.homeTeam), match);
   const awayTeam = teamForMatch(teamById.get(match.awayTeam), match);
-  const predictionGeneratedAt = existingPredictionByMatch.get(match.id)?.generatedAt || [generatedAt, homeTeam?.probableLineup?.source?.retrievedAt, awayTeam?.probableLineup?.source?.retrievedAt].filter(Boolean).sort().at(-1);
+  const predictionGeneratedAt = generatedAt;
   const prediction = predictMatch({
     match,
     reading: readingByMatch.get(match.id),

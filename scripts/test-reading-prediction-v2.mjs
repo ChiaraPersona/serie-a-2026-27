@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
-import { formationPresentation, renderPredictionV2Sections } from "../js/pages/readings.js";
+import { fixtureLineupForMatch, formationPresentation, renderPredictionV2Sections } from "../js/pages/readings.js";
 
 const root=process.cwd();
 const esc=value=>String(value).replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[char]);
@@ -60,6 +60,13 @@ const match={id:"home-away-md06",homeTeam:"home",awayTeam:"away"};
 const directory=status=>({teams:teams.map(team=>({id:team.id,probableLineup:{status,matchId:status==="official"?match.id:null}}))});
 assert.equal(formationPresentation(match,directory("probable")).label,"FORMAZIONI PROBABILI");
 assert.equal(formationPresentation(match,directory("official")).label,"FORMAZIONI UFFICIALI");
+const currentDirectory=JSON.parse(fs.readFileSync(path.join(root,"data/teams/index.json"),"utf8"));
+const canonicalOfficial=JSON.parse(fs.readFileSync(path.join(root,"data/sources/official-lineups-2026-27.json"),"utf8"));
+for(const fixture of canonicalOfficial.fixtures)for(const team of fixture.teams){
+  const selected=fixtureLineupForMatch({id:fixture.matchId,matchday:fixture.matchday},currentDirectory.teams.find(entry=>entry.id===team.teamId),currentDirectory);
+  assert.equal(selected.status,"official",`${fixture.matchId}:${team.teamId}: la nuova giornata non deve sostituire la distinta ufficiale`);
+  assert.deepEqual(selected.players,team.players.map(player=>player.currentName||player.sourceName));
+}
 
 // 14-16. Arbitro/candidati, range e probabilita SOT assenti non diventano zero.
 assert(render({...fullPrediction,likelyBooked:null}).discipline.includes("Candidati ammonizione N/D"));
@@ -98,7 +105,10 @@ const dataset=JSON.parse(fs.readFileSync(path.join(root,"data","normalized","pre
 const comoRoma=dataset.predictions.find(item=>item.matchId==="como-roma-2026-27-md-06");
 assert(comoRoma,"Como-Roma assente dal dataset");
 const realTeams=[{id:"como",name:"Como"},{id:"roma",name:"Roma"}],real=renderPredictionV2Sections({prediction:comoRoma,teams:realTeams,esc,teamLogo});
-for(const value of ["16,3","5,3","5,4","12,0","4,4","4,6"])assert(real.numbers.includes(value),`Como-Roma: valore ${value} non renderizzato`);
+for(const projection of comoRoma.teamProjections)for(const metric of ["shotsTotal","shotsOnTarget","corners"]){
+  const value=projection[metric].central.toLocaleString("it-IT",{minimumFractionDigits:1,maximumFractionDigits:1});
+  assert(real.numbers.includes(value),`Como-Roma: valore JSON ${value} non renderizzato`);
+}
 assert(real.why.includes("signal-unfavourable")&&real.why.includes("signal-favourable")&&real.why.includes("signal-neutral"),"Como-Roma: contrasto matchup tiri/SOT incompleto");
 
 console.log("OK Lettura Prediction V2: 24 contratti UI/data");

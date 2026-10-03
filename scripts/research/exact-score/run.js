@@ -5,6 +5,8 @@ const { makeFeatureVector, actualForResearch } = require("./features");
 const { FEATURE_GROUPS, FEATURE_DEFINITIONS, PROMOTION_STATES, ERROR_COMPONENTS, assertResearchState } = require("./contracts");
 const { registry, createModel } = require("./models");
 const { evaluateModel, walkForwardFolds, commonSample, correlationMatrix, goalDispersion } = require("./evaluate");
+const { studyConfiguration } = require("./config");
+const { SOURCE: historicalXGSource, historicalXGAdapter, auditCurrentXG } = require("./historical-xg");
 
 const root = path.resolve(__dirname, "../../..");
 const outputDir = "data/analysis/exact-score-research";
@@ -12,20 +14,28 @@ function loadInputs() {
   const sources = ["data/normalized/matches.json", "data/normalized/standings-2025-26.json", "data/analysis/prediction-continuous-evaluation-v2.json", "data/predictions/snapshots/manifest.json", "data/predictions/snapshots/2026-27/md-06.json"];
   const values = {}, sourceHashes = {};
   for (const source of sources) { const bytes = fs.readFileSync(path.join(root, source)); values[source] = JSON.parse(bytes.toString()); sourceHashes[source] = hash(bytes); }
+  let historicalXG = null;
+  if (fs.existsSync(path.join(root, historicalXGSource))) {
+    const bytes = fs.readFileSync(path.join(root, historicalXGSource)); sourceHashes[historicalXGSource] = hash(bytes);
+    historicalXG = historicalXGAdapter(JSON.parse(bytes.toString()), sourceHashes[historicalXGSource]);
+  }
   // Keep future fixture metadata only. MD6+ scores/statistics cannot reach any feature/evaluator.
   const matches = values[sources[0]].map(m => m.matchday >= 6 ? Object.fromEntries(["id", "competition", "season", "matchday", "date", "kickoff", "timezone", "homeTeam", "awayTeam", "status"].map(k => [k, m[k]])) : m);
-  return { matches, prior: values[sources[1]], continuous: values[sources[2]], manifest: values[sources[3]], snapshotFile: values[sources[4]], sourceHashes };
+  return { matches, prior: values[sources[1]], continuous: values[sources[2]], manifest: values[sources[3]], snapshotFile: values[sources[4]], sourceHashes, historicalXG };
 }
 
 function buildResearchArtifacts(inputs, configuration = {}, createdAt = new Date().toISOString()) {
   const { matches, prior, continuous, manifest, snapshotFile, sourceHashes } = inputs;
+  const throughMatchday = configuration.throughMatchday ?? 5;
+  if (!Number.isInteger(throughMatchday) || throughMatchday < 1 || throughMatchday > 5) throw new Error("Retrospective research through-matchday must be 1..5; MD6 prohibited");
+  if (configuration.baselineStudy) configuration = { ...configuration, researchConfig: configuration.researchConfig || studyConfiguration(configuration) };
   const gate = continuous.exactScoreDataGate;
   const models = registry(createdAt, configuration);
   models.models.forEach(model => assertResearchState(model, gate));
-  const retrospectiveTargets = matches.filter(m => m.competition === "serie-a" && m.season === "2026-27" && m.matchday >= 1 && m.matchday <= 5).sort((a, b) => a.matchday - b.matchday || a.id.localeCompare(b.id));
+  const retrospectiveTargets = matches.filter(m => m.competition === "serie-a" && m.season === "2026-27" && m.matchday >= 1 && m.matchday <= throughMatchday).sort((a, b) => a.matchday - b.matchday || a.id.localeCompare(b.id));
   if (new Set(retrospectiveTargets.map(m => m.id)).size !== retrospectiveTargets.length) throw new Error("Duplicate retrospective match identity");
   const retrospective = retrospectiveTargets.map(target => {
-    const vector = makeFeatureVector({ target, matches, prior, sourceHashes });
+    const vector = makeFeatureVector({ target, matches, prior, sourceHashes, historicalXG: configuration.baselineStudy ? inputs.historicalXG : null });
     return { matchId: target.id, targetMatchday: target.matchday, generationClass: "RETROSPECTIVE", retrospective: true, dataCutoff: vector.dataCutoff, vector, actual: actualForResearch(target), provenance: { source: "data/normalized/matches.json", sourceHash: sourceHashes["data/normalized/matches.json"], eventTimeReconstruction: true, originalPrematchAvailabilityProven: false } };
   });
   if (snapshotFile.matchday !== 6 || snapshotFile.snapshots?.length !== 10 || new Set(snapshotFile.snapshots.map(s => s.matchId)).size !== 10) throw new Error("Expected ten unique immutable MD6 snapshots");
@@ -40,9 +50,13 @@ function buildResearchArtifacts(inputs, configuration = {}, createdAt = new Date
   });
   const predictionsByModel = {}, coverage = [];
   for (const model of models.models) {
+    const shortName = { LEAGUE_AVERAGE_BASELINE: "league", TEAM_GOALS_BASELINE: "team-goals", XG_BASELINE: "xg", PROCESS_BASELINE: "process" }[model.name];
+    if (configuration.models && !configuration.models.includes(shortName)) { coverage.push({ modelId: model.id, status: "NOT_REQUESTED", availableMatches: 0, metrics: null }); continue; }
     if (!model.implementationStatus.startsWith("EXECUTABLE")) { coverage.push({ modelId: model.id, status: model.implementationStatus, availableMatches: 0, metrics: null }); continue; }
-    const implementation = createModel(model, configuration, gate);
+    const modelConfiguration = configuration.baselineStudy && model.name === "LEAGUE_AVERAGE_BASELINE" ? {} : configuration;
+    const implementation = createModel(model, modelConfiguration, gate);
     predictionsByModel[model.id] = retrospective.map(row => implementation.predictMatch(row.vector)).filter(Boolean);
+    model.executed = predictionsByModel[model.id].length > 0;
     coverage.push({ modelId: model.id, status: "RETROSPECTIVE_RESEARCH_ONLY", availableMatches: predictionsByModel[model.id].length, unavailableMatches: retrospective.filter(row => !predictionsByModel[model.id].some(p => p.matchId === row.matchId)).map(row => row.matchId) });
   }
   // All executed levels, including xG, use the exact same intersection; never compare 50 vs 40.
@@ -66,6 +80,11 @@ function buildResearchArtifacts(inputs, configuration = {}, createdAt = new Date
     nextAction: gate === "READY_FOR_BASELINE_MODEL" ? "BUILD EXACT SCORE BASELINE MODEL (SEPARATE PROMPT)" : "CONTINUE PROSPECTIVE DATA COLLECTION",
     limits: ["50 retrospective matches / five matchdays do not validate a model", "No retrospective frozen V2 process features", "MD6 actuals prohibited; no prospective goal-scoring predictions exist", "Goals/xG require explicit experimental shrinkage and xG coverage configuration", "Historical xG, chance-quality suppression, exact game-state timeline and open-play xG unavailable", "No fitted process or dependency model, no definitive prior weights", "Retrospective event time is proven; original historical data vintages are not"] };
   const retrospectivePredictions = { schemaVersion: 1, createdAt, label: "RETROSPECTIVE RESEARCH ONLY", generationClass: "RETROSPECTIVE", prospectivePredictions: 0, models: predictionsByModel };
+  if (configuration.baselineStudy) {
+    const xgAudit = { current: auditCurrentXG(matches, throughMatchday), historical: inputs.historicalXG?.audit || { status: "UNAVAILABLE" }, historicalTeamPriorMissing: [...new Set(retrospective.flatMap(row => [row.vector.homeTeam, row.vector.awayTeam]))].filter(team => !inputs.historicalXG?.teams[team]) };
+    require("./comparison").enrichBaselineEvaluation(evaluation, predictionsByModel, retrospective, models.models, configuration.researchConfig, xgAudit);
+    models.researchConfig = configuration.researchConfig;
+  }
   return { models, retrospectiveDataset, prospectiveDataset, retrospectivePredictions, contract, evaluation };
 }
 
@@ -77,7 +96,7 @@ function formatReport(artifacts, isolation, synthetic) {
     const m = e.retrospective.models.find(row => row.model.id === model.id);
     lines.push(m ? `| ${model.name} | ${m.sample} | ${metric(m.goalMAE.home.mae)} / ${metric(m.goalMAE.away.mae)} / ${metric(m.goalMAE.total.mae)} | ${metric(m.scoreLogLoss)} | ${metric(m.exactHitRate)} | ${metric(m.top3Coverage)} | ${metric(m.top5Coverage)} | ${metric(m.oneXtwo.rps)} | ${metric(m.btts.brier)} | ${metric(m.overUnder[2.5].brier)} |` : `| ${model.name} (${model.implementationStatus}) | 0 | N/D | N/D | N/D | N/D | N/D | N/D | N/D | N/D |`);
   }
-  lines.push("", "Top-3 and Top-5 coverage are practical diagnostics; sample/provenance is insufficient to declare a BEST MODEL. Current retrospective leader: " + (e.currentRetrospectiveLeader || "N/D (only one executed benchmark)"), "", "## Diagnostic examples", "", "Deterministic category selection; missing categories remain N/D. Full diagnostics for every evaluated match are in exact-score-evaluation.json.", "", "| Category | Match | lambda H/A | Modal | Top 3 | Actual | P(actual) | Rank | Surprise |", "|---|---|---|---|---|---|---:|---:|---:|");
+  lines.push("", "Top-3 and Top-5 coverage are practical diagnostics. Current retrospective leader: " + (e.currentRetrospectiveLeader || "N/D (only one executed benchmark)") + (e.leaderSelection ? " — NOT VALIDATED PROSPECTIVELY; prespecified multi-metric ranking, no promotion." : ""), "", "## Diagnostic examples", "", "Deterministic category selection; missing categories remain N/D. Full diagnostics for every evaluated match are in exact-score-evaluation.json.", "", "| Category | Match | lambda H/A | Modal | Top 3 | Actual | P(actual) | Rank | Surprise |", "|---|---|---|---|---|---|---:|---:|---:|");
   const diagnostics = e.retrospective.models[0]?.matchDiagnostics || [];
   const categories = { "modal hit": diagnostics.find(d => d.exactHit), "actual in top3, non-modal": diagnostics.find(d => d.top3Hit && !d.exactHit), "actual outside top5": diagnostics.find(d => !d.top5Hit), "highest surprise": [...diagnostics].sort((a, b) => b.scoreSurprise - a.scoreSurprise)[0] };
   for (const [label, d] of Object.entries(categories)) lines.push(d ? `| ${label} | ${d.matchId} | ${metric(d.lambdaHome)} / ${metric(d.lambdaAway)} | ${d.modalScore} | ${d.top3.map(s => `${s.score} (${metric(s.probability)})`).join(", ")} | ${d.actualScore} | ${metric(d.actualScoreProbability)} | ${d.actualScoreRank ?? "N/D"} | ${metric(d.scoreSurprise)} |` : `| ${label} | N/D | N/D | N/D | N/D | N/D | N/D | N/D | N/D |`);
@@ -88,6 +107,19 @@ function formatReport(artifacts, isolation, synthetic) {
 function parseConfiguration(args) {
   const configuration = {};
   for (let i = 0; i < args.length; i += 2) {
+    if (args[i] === "--models") {
+      if (!args[i + 1]) throw new Error("Missing research models");
+      const models = args[i + 1].split(",");
+      if (!models.includes("league") || new Set(models).size !== models.length || models.some(name => !["league", "team-goals", "xg"].includes(name))) throw new Error("Use league,team-goals,xg; M0 required, M3 not implemented");
+      configuration.models = models;
+      configuration.baselineStudy = models.some(name => ["team-goals", "xg"].includes(name));
+      continue;
+    }
+    if (args[i] === "--through-matchday") {
+      const md = Number(args[i + 1]);
+      if (!Number.isInteger(md) || md < 1 || md > 5) throw new Error("Only MD1–MD5 retrospective evaluation allowed");
+      configuration.throughMatchday = md; continue;
+    }
     const key = { "--prior-equivalent-matches": "priorEquivalentMatches", "--minimum-xg-coverage": "minimumXGCoverage" }[args[i]];
     const value = Number(args[i + 1]);
     if (!key || !Number.isFinite(value) || value <= 0 || (key === "minimumXGCoverage" && value > 1) || args[i + 1] == null) throw new Error("Invalid explicit research configuration");
@@ -101,6 +133,7 @@ function main() {
   const configuration = parseConfiguration(process.argv.slice(2));
   const artifacts = buildResearchArtifacts(loadInputs(), configuration);
   const synthetic = require("../../test-exact-score-research").runSyntheticTests();
+  const baselineStudyTests = configuration.baselineStudy ? require("./test-baselines").runSyntheticBaselineTests() : null;
   const isolation = assertProductionUnchanged(root, before);
   if (!packageBefore.equals(fs.readFileSync(path.join(root, "package.json")))) throw new Error("Research command changed package.json");
   fs.mkdirSync(path.join(root, outputDir), { recursive: true });
@@ -114,8 +147,14 @@ function main() {
   write("exact-score-retrospective-predictions.json", artifacts.retrospectivePredictions);
   write("exact-score-prospective-inputs.json", artifacts.prospectiveDataset);
   write("exact-score-evaluation.json", artifacts.evaluation);
-  write("research-validation.json", { schemaVersion: 1, createdAt: artifacts.evaluation.createdAt, synthetic, isolation, configuration, datasetValidation: "PASS", md6Actuals: "UNAVAILABLE", maximumModelState: "RESEARCH" });
+  write("research-validation.json", { schemaVersion: 1, createdAt: artifacts.evaluation.createdAt, synthetic, baselineStudyTests, isolation, configuration, datasetValidation: "PASS", md6Actuals: "UNAVAILABLE", maximumModelState: "RESEARCH" });
   fs.writeFileSync(path.join(root, outputDir, "research-report.md"), formatReport(artifacts, isolation, synthetic));
+  if (configuration.baselineStudy) {
+    write("exact-score-research-config.json", artifacts.evaluation.researchConfig);
+    const report = require("./baseline-report").formatBaselineReport(artifacts, isolation, synthetic, baselineStudyTests);
+    fs.writeFileSync(path.join(root, outputDir, "baselines-m1-m2-report.md"), report);
+    fs.writeFileSync(path.join(root, "docs/exact-score-baselines-m1-m2.md"), report);
+  }
   // Verify even after writes, including new unexpected non-research files.
   assertProductionUnchanged(root, before);
   console.log(JSON.stringify({ retrospective: artifacts.retrospectiveDataset.sample, prospectivePending: artifacts.prospectiveDataset.sample, commonEvaluationSample: artifacts.evaluation.sameSample.n, gate: artifacts.evaluation.exactScoreDataGate, syntheticAssertions: synthetic.assertions, productionChangedFiles: 0, nextAction: artifacts.evaluation.nextAction }));

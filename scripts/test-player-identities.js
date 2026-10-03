@@ -39,9 +39,9 @@ for (const fixture of official.fixtures) {
   }
 }
 
-const probable = read("data/sources/probable-lineups-md5-2026-27.json");
-assert.equal(probable.coverage.unmatched, 0, "probabili MD5 con identità non collegata");
-assert.ok(probable.teams.flatMap(team => team.players).every(player => player.playerId), "playerId nullo nelle probabili MD5");
+const probable = require("./probable-lineups").loadLatestProbableLineups(root);
+assert.equal(probable.coverage.unmatched, 0, `probabili MD${probable.matchday} con identità non collegata`);
+assert.ok(probable.teams.flatMap(team => team.players).every(player => player.playerId), `playerId nullo nelle probabili MD${probable.matchday}`);
 
 const predictions = read("data/normalized/predictions.json");
 const predictionNulls = [];
