@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Card C0-C4 research snapshot",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "snapshotId",
+    "season",
+    "competition",
+    "matchday",
+    "generatedAt",
+    "cutoff",
+    "configurationHash",
+    "targetDefinitions",
+    "modelState",
+    "researchLeader",
+    "matches",
+    "actualsExcluded",
+    "integrity"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 2
+    },
+    "snapshotId": {
+      "type": "string"
+    },
+    "season": {
+      "const": "2026-27"
+    },
+    "competition": {
+      "const": "serie-a"
+    },
+    "matchday": {
+      "const": 6
+    },
+    "generatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "cutoff": {
+      "type": "object"
+    },
+    "configurationHash": {
+      "type": "string"
+    },
+    "targetDefinitions": {
+      "type": "object"
+    },
+    "modelState": {
+      "const": "RESEARCH"
+    },
+    "researchLeader": {
+      "enum": [
+        "C0",
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "UNRESOLVED"
+      ]
+    },
+    "matches": {
+      "type": "array"
+    },
+    "actualsExcluded": {
+      "const": true
+    },
+    "integrity": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": true,
+  "metadata": {
+    "disclaimer": "OBSERVATIONAL TARGET — NOT BOOKMAKER-CERTIFIED",
+    "observationalTarget": "RECORDED_YELLOW",
+    "marketTarget": "PLAYER_YELLOW"
+  }
+}

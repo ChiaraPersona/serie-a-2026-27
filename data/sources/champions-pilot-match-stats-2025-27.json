@@ -1,8 +1,30 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "scope": "Champions League 2026/27: profili quantitativi delle 36 partecipanti, con baseline domestica quando disponibile e fallback UEFA esplicito",
-  "retrievedAt": "2026-09-07T16:30:38.337Z",
-  "cutoffDate": "2026-09-06",
+  "retrievedAt": "2026-10-03T21:43:52.454Z",
+  "asOf": "2026-10-03",
+  "cutoffDate": "2026-10-03",
+  "dateIntervals": [
+    {
+      "season": "2026-27",
+      "from": "2026-07-01",
+      "to": "2026-10-03"
+    }
+  ],
+  "lastImport": {
+    "asOf": "2026-10-03",
+    "retrievedAt": "2026-10-03T21:43:52.454Z",
+    "teams": [
+      "aek-athens"
+    ],
+    "leagues": [
+      "gre.1"
+    ],
+    "seasons": [
+      "2026-27"
+    ],
+    "matches": 5
+  },
   "teams": [
     {
       "id": "aek-athens",
@@ -300,7 +322,7 @@
     },
     {
       "id": "2026-27",
-      "dates": "20260701-20260906"
+      "dates": "20260701-20261003"
     }
   ],
   "metrics": [
@@ -311,16 +333,16 @@
     "yellowCards"
   ],
   "summary": {
-    "matches": 4764,
-    "completeMatches": 4179,
+    "matches": 4766,
+    "completeMatches": 4182,
     "teams": 36
   },
   "teamCoverage": [
     {
       "teamId": "aek-athens",
       "team": "AEK Athens",
-      "matches": 51,
-      "completeMatches": 18,
+      "matches": 53,
+      "completeMatches": 21,
       "baselineKind": "domestic"
     },
     {
@@ -677,13 +699,6 @@
     },
     {
       "season": "2026-27",
-      "league": "gre.1",
-      "retrievedAt": "2026-09-07T16:27:59.335Z",
-      "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/gre.1/scoreboard?dates=20260701-20260906&limit=1000",
-      "events": 19
-    },
-    {
-      "season": "2026-27",
       "league": "eng.1",
       "retrievedAt": "2026-09-06T16:52:11.039Z",
       "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/scoreboard?dates=20260701-20260906&limit=1000",
@@ -779,6 +794,20 @@
       "retrievedAt": "2026-09-07T16:28:03.841Z",
       "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.europa.conf/scoreboard?dates=20260701-20260906&limit=1000",
       "events": 0
+    },
+    {
+      "season": "2026-27",
+      "league": "gre.1",
+      "calendarYear": "2026",
+      "dateInterval": {
+        "from": "2026-07-01",
+        "to": "2026-10-03"
+      },
+      "retrievedAt": "2026-10-03T21:43:51.572Z",
+      "url": "https://site.api.espn.com/apis/site/v2/sports/soccer/gre.1/scoreboard?dates=2026&limit=1000",
+      "events": 237,
+      "eligibleEvents": 35,
+      "selectedTeamEvents": 5
     }
   ],
   "matches": [
@@ -187201,7 +187230,7 @@
         "provider": "ESPN",
         "url": "https://www.espn.com/soccer/match/_/gameId/401896829",
         "summaryUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/gre.1/summary?event=401896829",
-        "retrievedAt": "2026-09-07T16:30:17.681Z"
+        "retrievedAt": "2026-10-03T21:43:52.443Z"
       }
     },
     {
@@ -193008,7 +193037,7 @@
         "provider": "ESPN",
         "url": "https://www.espn.com/soccer/match/_/gameId/401896771",
         "summaryUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/gre.1/summary?event=401896771",
-        "retrievedAt": "2026-09-07T16:30:18.209Z"
+        "retrievedAt": "2026-10-03T21:43:52.445Z"
       }
     },
     {
@@ -195830,10 +195859,10 @@
         "name": "AEK Athens",
         "score": 5,
         "statistics": {
-          "totalShots": null,
-          "shotsOnTarget": null,
-          "wonCorners": null,
-          "foulsCommitted": null,
+          "totalShots": 21,
+          "shotsOnTarget": 10,
+          "wonCorners": 2,
+          "foulsCommitted": 16,
           "yellowCards": 2
         }
       },
@@ -195843,29 +195872,20 @@
         "name": "Aris",
         "score": 0,
         "statistics": {
-          "totalShots": null,
-          "shotsOnTarget": null,
-          "wonCorners": null,
-          "foulsCommitted": null,
+          "totalShots": 7,
+          "shotsOnTarget": 2,
+          "wonCorners": 2,
+          "foulsCommitted": 17,
           "yellowCards": 0
         }
       },
-      "coverage": "partial",
-      "missing": [
-        "home.totalShots",
-        "home.shotsOnTarget",
-        "home.wonCorners",
-        "home.foulsCommitted",
-        "away.totalShots",
-        "away.shotsOnTarget",
-        "away.wonCorners",
-        "away.foulsCommitted"
-      ],
+      "coverage": "complete",
+      "missing": [],
       "source": {
         "provider": "ESPN",
         "url": "https://www.espn.com/soccer/match/_/gameId/401896769",
         "summaryUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/gre.1/summary?event=401896769",
-        "retrievedAt": "2026-09-07T16:30:18.303Z"
+        "retrievedAt": "2026-10-03T21:43:52.448Z"
       }
     },
     {
@@ -197005,6 +197025,86 @@
         "url": "https://www.espn.com/soccer/match/_/gameId/401896825",
         "summaryUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/gre.1/summary?event=401896825",
         "retrievedAt": "2026-09-07T16:30:18.312Z"
+      }
+    },
+    {
+      "eventId": "401896764",
+      "season": "2026-27",
+      "league": "gre.1",
+      "date": "2026-09-13",
+      "home": {
+        "homeAway": "home",
+        "providerTeamId": "8354",
+        "name": "Asteras Tripoli",
+        "score": 1,
+        "statistics": {
+          "totalShots": 13,
+          "shotsOnTarget": 5,
+          "wonCorners": 8,
+          "foulsCommitted": 18,
+          "yellowCards": 2
+        }
+      },
+      "away": {
+        "homeAway": "away",
+        "providerTeamId": "887",
+        "name": "AEK Athens",
+        "score": 1,
+        "statistics": {
+          "totalShots": 21,
+          "shotsOnTarget": 3,
+          "wonCorners": 5,
+          "foulsCommitted": 11,
+          "yellowCards": 1
+        }
+      },
+      "coverage": "complete",
+      "missing": [],
+      "source": {
+        "provider": "ESPN",
+        "url": "https://www.espn.com/soccer/match/_/gameId/401896764",
+        "summaryUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/gre.1/summary?event=401896764",
+        "retrievedAt": "2026-10-03T21:43:52.451Z"
+      }
+    },
+    {
+      "eventId": "401896758",
+      "season": "2026-27",
+      "league": "gre.1",
+      "date": "2026-09-20",
+      "home": {
+        "homeAway": "home",
+        "providerTeamId": "20043",
+        "name": "Volos NFC",
+        "score": 1,
+        "statistics": {
+          "totalShots": 12,
+          "shotsOnTarget": 4,
+          "wonCorners": 3,
+          "foulsCommitted": 17,
+          "yellowCards": 2
+        }
+      },
+      "away": {
+        "homeAway": "away",
+        "providerTeamId": "887",
+        "name": "AEK Athens",
+        "score": 2,
+        "statistics": {
+          "totalShots": 11,
+          "shotsOnTarget": 2,
+          "wonCorners": 5,
+          "foulsCommitted": 17,
+          "yellowCards": 3
+        }
+      },
+      "coverage": "complete",
+      "missing": [],
+      "source": {
+        "provider": "ESPN",
+        "url": "https://www.espn.com/soccer/match/_/gameId/401896758",
+        "summaryUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/gre.1/summary?event=401896758",
+        "retrievedAt": "2026-10-03T21:43:52.454Z"
       }
     }
   ]

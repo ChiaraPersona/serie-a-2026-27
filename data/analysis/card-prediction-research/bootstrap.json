@@ -1,0 +1,253 @@
+{
+  "status": "RETROSPECTIVE_PAIRED_UNCERTAINTY",
+  "unit": "MATCH",
+  "seed": 20261004,
+  "iterations": 2000,
+  "familyAlpha": 0.05,
+  "perComparisonAlpha": 0.005555555555555556,
+  "comparisons": [
+    {
+      "id": "C1_MINUS_C0",
+      "before": "pRecordedYellow_C0",
+      "after": "pRecordedYellow_C1",
+      "added": "individual disciplinary history",
+      "pointDifferences": {
+        "brier": -0.0038274744203463246,
+        "logLoss": -0.009091044121943226,
+        "prAuc": 0.011560309575133793
+      },
+      "intervals": {
+        "brier": [
+          -0.011136023005388414,
+          0.0001672971261413125
+        ],
+        "logLoss": [
+          -0.02670725308466655,
+          0.002742275884617213
+        ],
+        "prAuc": [
+          -0.0036926378912153406,
+          0.034494300474104386
+        ]
+      },
+      "label": "POSSIBLY_BETTER",
+      "interpretation": "After minus before; smaller proper losses / larger AP. Match-clustered paired retrospective evidence only."
+    },
+    {
+      "id": "C2_MINUS_C1",
+      "before": "pRecordedYellow_C1",
+      "after": "pRecordedYellow_C2",
+      "added": "Expected Minutes plus fouls",
+      "pointDifferences": {
+        "brier": 0.00033885026671938434,
+        "logLoss": 0.003057492008789575,
+        "prAuc": -0.008461331665084101
+      },
+      "intervals": {
+        "brier": [
+          -0.0003028827783589294,
+          0.000987377369070371
+        ],
+        "logLoss": [
+          -0.0008510543055061861,
+          0.006978608011429248
+        ],
+        "prAuc": [
+          -0.020185647198026326,
+          -0.0001572247141228066
+        ]
+      },
+      "label": "INCONCLUSIVE",
+      "interpretation": "After minus before; smaller proper losses / larger AP. Match-clustered paired retrospective evidence only."
+    },
+    {
+      "id": "C3_MINUS_C2",
+      "before": "pRecordedYellow_C2",
+      "after": "pRecordedYellow_C3",
+      "added": "ACTIVE opponent matchup only",
+      "pointDifferences": {
+        "brier": 0,
+        "logLoss": 0,
+        "prAuc": 0
+      },
+      "intervals": {
+        "brier": [
+          0,
+          0
+        ],
+        "logLoss": [
+          0,
+          0
+        ],
+        "prAuc": [
+          0,
+          0
+        ]
+      },
+      "label": "SIMILAR",
+      "interpretation": "After minus before; smaller proper losses / larger AP. Match-clustered paired retrospective evidence only."
+    },
+    {
+      "id": "C4_MINUS_C3",
+      "before": "pRecordedYellow_C3",
+      "after": "pRecordedYellow_C4",
+      "added": "mature pre-match referee evidence",
+      "pointDifferences": {
+        "brier": 0,
+        "logLoss": 0,
+        "prAuc": 0
+      },
+      "intervals": {
+        "brier": [
+          0,
+          0
+        ],
+        "logLoss": [
+          0,
+          0
+        ],
+        "prAuc": [
+          0,
+          0
+        ]
+      },
+      "label": "SIMILAR",
+      "interpretation": "After minus before; smaller proper losses / larger AP. Match-clustered paired retrospective evidence only."
+    },
+    {
+      "id": "EXPECTED_MINUTES_MINUS_C1",
+      "before": "ablations.C1_NO_EXPECTED_MINUTES",
+      "after": "ablations.C1_PLUS_EXPECTED_MINUTES",
+      "added": "pre-match Expected Minutes",
+      "pointDifferences": {
+        "brier": 0.00033001021552679644,
+        "logLoss": 0.002936868657966052,
+        "prAuc": -0.008379413117908796
+      },
+      "intervals": {
+        "brier": [
+          -0.00029754055988953003,
+          0.0009711717616659285
+        ],
+        "logLoss": [
+          -0.0009018359025616181,
+          0.006776097446173132
+        ],
+        "prAuc": [
+          -0.019856233951721026,
+          -0.00012517018200090737
+        ]
+      },
+      "label": "INCONCLUSIVE",
+      "interpretation": "After minus before; smaller proper losses / larger AP. Match-clustered paired retrospective evidence only."
+    },
+    {
+      "id": "FOULS_MINUS_C1",
+      "before": "ablations.C1_NO_EXPECTED_MINUTES",
+      "after": "ablations.C1_PLUS_FOULS",
+      "added": "stabilized historical/current fouls",
+      "pointDifferences": {
+        "brier": 0.000012608717780734913,
+        "logLoss": 0.00012190916287363462,
+        "prAuc": -0.00006317655876568462
+      },
+      "intervals": {
+        "brier": [
+          -0.000024879513956973535,
+          0.00006306698832210911
+        ],
+        "logLoss": [
+          -0.00013849465456084793,
+          0.000524388975418996
+        ],
+        "prAuc": [
+          -0.0011583551420428003,
+          0.0007287430437421354
+        ]
+      },
+      "label": "INCONCLUSIVE",
+      "interpretation": "After minus before; smaller proper losses / larger AP. Match-clustered paired retrospective evidence only."
+    },
+    {
+      "id": "MINUTES_PLUS_FOULS_MINUS_C1",
+      "before": "ablations.C1_NO_EXPECTED_MINUTES",
+      "after": "ablations.FULL_C2",
+      "added": "Expected Minutes plus fouls",
+      "pointDifferences": {
+        "brier": 0.00033885026671938434,
+        "logLoss": 0.003057492008789575,
+        "prAuc": -0.008461331665084101
+      },
+      "intervals": {
+        "brier": [
+          -0.0003028827783589294,
+          0.000987377369070371
+        ],
+        "logLoss": [
+          -0.0008510543055061861,
+          0.006978608011429248
+        ],
+        "prAuc": [
+          -0.020185647198026326,
+          -0.0001572247141228066
+        ]
+      },
+      "label": "INCONCLUSIVE",
+      "interpretation": "After minus before; smaller proper losses / larger AP. Match-clustered paired retrospective evidence only."
+    },
+    {
+      "id": "TEAM_MINUS_C2",
+      "before": "ablations.FULL_C2",
+      "after": "ablations.C2_PLUS_TEAM",
+      "added": "team disciplinary environment",
+      "pointDifferences": {
+        "brier": 0,
+        "logLoss": 0,
+        "prAuc": 0
+      },
+      "intervals": {
+        "brier": [
+          0,
+          0
+        ],
+        "logLoss": [
+          0,
+          0
+        ],
+        "prAuc": [
+          0,
+          0
+        ]
+      },
+      "label": "SIMILAR",
+      "interpretation": "After minus before; smaller proper losses / larger AP. Match-clustered paired retrospective evidence only."
+    },
+    {
+      "id": "HOME_MINUS_C2",
+      "before": "ablations.FULL_C2",
+      "after": "ablations.C2_PLUS_HOME",
+      "added": "home/away",
+      "pointDifferences": {
+        "brier": 0.00008747846370316115,
+        "logLoss": 0.0008847961091028589,
+        "prAuc": -0.0017767075456841669
+      },
+      "intervals": {
+        "brier": [
+          -0.00026258269479217597,
+          0.0005794248026872187
+        ],
+        "logLoss": [
+          -0.0016914651941545016,
+          0.004277263185860603
+        ],
+        "prAuc": [
+          -0.007375219556171547,
+          0.002446028542966607
+        ]
+      },
+      "label": "INCONCLUSIVE",
+      "interpretation": "After minus before; smaller proper losses / larger AP. Match-clustered paired retrospective evidence only."
+    }
+  ]
+}

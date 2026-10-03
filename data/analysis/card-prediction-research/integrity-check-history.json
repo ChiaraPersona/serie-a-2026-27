@@ -1,0 +1,34 @@
+{
+  "originalBaselinePreserved": true,
+  "productionCardFilesModifiedByTask": false,
+  "checks": [
+    {
+      "stage": "INITIAL_RECHECK",
+      "status": "FAILED_CLOSED",
+      "reason": "Concurrent Champions updates detected against the original baseline; no rollback or rebaseline performed."
+    },
+    {
+      "stage": "USER_CLARIFICATION",
+      "status": "AUTHORIZED_EXTERNAL_WORK_CONFIRMED",
+      "confirmation": "Sì, lavoro Champions autorizzato in parallelo"
+    },
+    {
+      "stage": "SECOND_RECHECK",
+      "status": "FAILED_CLOSED",
+      "reason": "Parallel Champions work continued after accepted hashes: normalized 2026/27 and Champions test changed again. Exact-score suite also detected active concurrent drift at its fresh intra-run check. Final rerun must wait for a stable checkpoint."
+    },
+    {
+      "stage": "FINAL_STABLE_CHECKPOINT",
+      "checkedAt": "2026-10-03T21:55:27.602Z",
+      "status": "PASS_WITH_USER_CONFIRMED_PARALLEL_CHANGES",
+      "originalBaselineFiles": 8248,
+      "originalFilesUnchanged": 8245,
+      "userConfirmedChampionsChanges": 11,
+      "unexpectedChanges": [],
+      "cardResearchAssertionsPassed": 61,
+      "suitesPassed": 11,
+      "suitesTotal": 12,
+      "legacyExactScoreFailureRetained": true
+    }
+  ]
+}

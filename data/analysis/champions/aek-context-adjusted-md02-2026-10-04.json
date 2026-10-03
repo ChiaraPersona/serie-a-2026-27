@@ -1,0 +1,2270 @@
+{
+  "schemaVersion": 1,
+  "status": "aek-only-context-adjusted-player-baseline-pilot",
+  "generatedAt": "2026-10-03T22:38:12.016Z",
+  "asOf": "2026-10-03",
+  "fixture": {
+    "fixtureId": "ucl-2026-27-md02-14",
+    "date": "2026-10-14",
+    "homeTeam": "Shakhtar Donetsk",
+    "awayTeam": "AEK Athens"
+  },
+  "control": {
+    "path": "data\\analysis\\champions\\aek-context-control-2026-10-04.json",
+    "sha256": "a37bf18aea0e31d55634ee6debe4a9efbae4036289f0db75ba7782129fb9e1b4",
+    "lineup": {
+      "sourceFixtureId": "ucl-2026-27-md01-01",
+      "status": "official",
+      "source": {
+        "provider": "Diretta",
+        "url": "https://www.diretta.it/partita/calcio/aek-ANpZncAM/lask-linz-MipWYeKQ/riassunto/formazioni/?mid=EgODGq9F"
+      },
+      "team": "AEK Athens",
+      "formation": "4-4-2",
+      "players": [
+        "Brignoli",
+        "Rota",
+        "Moukoudi",
+        "Relvas",
+        "Pilio",
+        "Majer",
+        "Vitalis",
+        "Marin",
+        "Koita",
+        "Varga",
+        "Jovic"
+      ],
+      "note": "MD2 non dispone di una probabile formazione nel repository; il CONTROL congela l'ultimo XI ufficiale AEK disponibile senza inferenze."
+    }
+  },
+  "strengthSystem": {
+    "dataset": "data/normalized/champions-team-strength-2026-27.json",
+    "metric": "europeanStrengthIndex",
+    "range": [
+      0,
+      100
+    ],
+    "neutralChampionsReferenceStrength": 51.709,
+    "leagueStrengthFallback": {
+      "league": "gre.1",
+      "value": 20.9,
+      "contributors": [
+        {
+          "team": "AEK Athens",
+          "value": 20.9
+        }
+      ]
+    },
+    "opponentSampleK": 6,
+    "precedence": [
+      "opponent-specific europeanStrengthIndex",
+      "opponent domestic PPG shrinkato e ancorato al fallback di lega",
+      "derived league fallback",
+      "neutral Champions reference"
+    ]
+  },
+  "methodology": {
+    "reliability": "current minutes / (current minutes + 900), cap 0.35",
+    "pastContextNormalization": "factor = clamp(1 + (sampleStrength / neutralChampionsStrength - 1) * 0.2, 0.85, 1.15)",
+    "blending": "historical/role prior + strength-adjusted domestic evidence; current European evidence remains a separate sample-aware channel",
+    "futureMatchupAdjustment": "Not applied in the individual baseline. Shakhtar matchup is already embedded only in the frozen team projections from the CONTROL.",
+    "expectedMinutes": "Frozen from CONTROL; current-season average minutes do not update expected playing time.",
+    "reconciliation": "Shared scaleShotProjections helper; separate shots and SOT allocation against frozen team totals."
+  },
+  "strengthOfSchedule": {
+    "scoreboard": "data\\raw\\champions-pilot\\espn\\scoreboards\\2026-27\\gre.1\\2026-as-of-2026-10-03.json.gz",
+    "includedLeagueMatches": 35,
+    "excludedFutureEvents": 70,
+    "leagueAveragePointsPerMatch": 1.371,
+    "teamSampleOpponents": [
+      {
+        "eventId": "401896829",
+        "date": "2026-08-22",
+        "providerTeamId": "2575",
+        "team": "Iraklis",
+        "value": 19.7125,
+        "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+        "rawPointsPerMatch": 1.2,
+        "shrunkPointsPerMatch": 1.2935064935064935,
+        "leagueAveragePointsPerMatch": 1.3714285714285714,
+        "matches": 5,
+        "reliability": 0.45454545454545453
+      },
+      {
+        "eventId": "401896771",
+        "date": "2026-08-30",
+        "providerTeamId": "21969",
+        "team": "Kifisia",
+        "value": 18.327083333333334,
+        "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+        "rawPointsPerMatch": 1,
+        "shrunkPointsPerMatch": 1.2025974025974027,
+        "leagueAveragePointsPerMatch": 1.3714285714285714,
+        "matches": 5,
+        "reliability": 0.45454545454545453
+      },
+      {
+        "eventId": "401896769",
+        "date": "2026-09-05",
+        "providerTeamId": "11553",
+        "team": "Aris",
+        "value": 21.097916666666663,
+        "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+        "rawPointsPerMatch": 1.4,
+        "shrunkPointsPerMatch": 1.3844155844155843,
+        "leagueAveragePointsPerMatch": 1.3714285714285714,
+        "matches": 5,
+        "reliability": 0.45454545454545453
+      },
+      {
+        "eventId": "401896764",
+        "date": "2026-09-13",
+        "providerTeamId": "8354",
+        "team": "Asteras Tripoli",
+        "value": 14.170833333333333,
+        "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+        "rawPointsPerMatch": 0.4,
+        "shrunkPointsPerMatch": 0.92987012987013,
+        "leagueAveragePointsPerMatch": 1.3714285714285714,
+        "matches": 5,
+        "reliability": 0.45454545454545453
+      },
+      {
+        "eventId": "401896758",
+        "date": "2026-09-20",
+        "providerTeamId": "20043",
+        "team": "Volos NFC",
+        "value": 14.170833333333333,
+        "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+        "rawPointsPerMatch": 0.4,
+        "shrunkPointsPerMatch": 0.92987012987013,
+        "leagueAveragePointsPerMatch": 1.3714285714285714,
+        "matches": 5,
+        "reliability": 0.45454545454545453
+      }
+    ],
+    "individualEvidenceOpponents": [
+      {
+        "eventId": "401896771",
+        "date": "2026-08-30",
+        "providerTeamId": "21969",
+        "team": "Kifisia",
+        "value": 18.327083333333334,
+        "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+        "rawPointsPerMatch": 1,
+        "shrunkPointsPerMatch": 1.2025974025974027,
+        "leagueAveragePointsPerMatch": 1.3714285714285714,
+        "matches": 5,
+        "reliability": 0.45454545454545453
+      },
+      {
+        "eventId": "401896769",
+        "date": "2026-09-05",
+        "providerTeamId": "11553",
+        "team": "Aris",
+        "value": 21.097916666666663,
+        "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+        "rawPointsPerMatch": 1.4,
+        "shrunkPointsPerMatch": 1.3844155844155843,
+        "leagueAveragePointsPerMatch": 1.3714285714285714,
+        "matches": 5,
+        "reliability": 0.45454545454545453
+      },
+      {
+        "eventId": "401896764",
+        "date": "2026-09-13",
+        "providerTeamId": "8354",
+        "team": "Asteras Tripoli",
+        "value": 14.170833333333333,
+        "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+        "rawPointsPerMatch": 0.4,
+        "shrunkPointsPerMatch": 0.92987012987013,
+        "leagueAveragePointsPerMatch": 1.3714285714285714,
+        "matches": 5,
+        "reliability": 0.45454545454545453
+      },
+      {
+        "eventId": "401896758",
+        "date": "2026-09-20",
+        "providerTeamId": "20043",
+        "team": "Volos NFC",
+        "value": 14.170833333333333,
+        "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+        "rawPointsPerMatch": 0.4,
+        "shrunkPointsPerMatch": 0.92987012987013,
+        "leagueAveragePointsPerMatch": 1.3714285714285714,
+        "matches": 5,
+        "reliability": 0.45454545454545453
+      }
+    ],
+    "excludedFromIndividualEvidence": [
+      {
+        "eventId": "401896829",
+        "date": "2026-08-22",
+        "team": "Iraklis",
+        "reason": "player statistics unavailable/placeholder"
+      }
+    ],
+    "averageOpponentStrength": 16.942
+  },
+  "teamInvariant": {
+    "expectedTeamShotsBefore": 11.01,
+    "expectedTeamShotsAfter": 11.01,
+    "expectedTeamSotBefore": 3.91,
+    "expectedTeamSotAfter": 3.91,
+    "shotsInvariant": true,
+    "sotInvariant": true
+  },
+  "reconciliation": {
+    "sumProjectedPlayerShotsBefore": 11.03,
+    "sumProjectedPlayerShotsAfter": 11.01,
+    "sumProjectedPlayerSotBefore": 3.92,
+    "sumProjectedPlayerSotAfter": 3.91,
+    "targetTeamShots": 11.01,
+    "targetTeamSot": 3.91
+  },
+  "coverage": {
+    "registeredPlayers": 22,
+    "playersWithCurrentDomesticMinutes": 19,
+    "playersWithCurrentEuropeanMinutes": 0,
+    "playersWithCurrentOtherEuropeanMinutes": 1,
+    "controlStarters": 11,
+    "identityAnomalies": [
+      {
+        "player": "Pilio",
+        "status": "role-baseline-unmatched-lineup-name"
+      }
+    ]
+  },
+  "players": [
+    {
+      "playerId": "thomas-strakosha",
+      "player": "Thomas Strakosha",
+      "lineupName": null,
+      "identityStatus": "matched-not-in-control-xi",
+      "role": "goalkeeper",
+      "historicalMinutes": 1710,
+      "historicalShotsPer90": 0,
+      "historicalSotPer90": 0,
+      "historicalBaselineShotsPer90": 0.003448275862068966,
+      "historicalBaselineSotPer90": 0,
+      "currentDomesticMinutes": 180,
+      "rawCurrentShotsPer90": 0,
+      "rawCurrentSotPer90": 0,
+      "currentEuropeanEvidence": null,
+      "currentOtherEuropeanEvidence": null,
+      "opponentsFaced": [
+        {
+          "eventId": "401896769",
+          "date": "2026-09-05",
+          "providerTeamId": "11553",
+          "team": "Aris",
+          "value": 21.097916666666663,
+          "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+          "rawPointsPerMatch": 1.4,
+          "shrunkPointsPerMatch": 1.3844155844155843,
+          "leagueAveragePointsPerMatch": 1.3714285714285714,
+          "matches": 5,
+          "reliability": 0.45454545454545453
+        },
+        {
+          "eventId": "401896771",
+          "date": "2026-08-30",
+          "providerTeamId": "21969",
+          "team": "Kifisia",
+          "value": 18.327083333333334,
+          "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+          "rawPointsPerMatch": 1,
+          "shrunkPointsPerMatch": 1.2025974025974027,
+          "leagueAveragePointsPerMatch": 1.3714285714285714,
+          "matches": 5,
+          "reliability": 0.45454545454545453
+        }
+      ],
+      "currentSampleOpponentStrength": 19.7125,
+      "competitionStrengthFallback": {
+        "value": 20.9,
+        "used": false,
+        "contributors": [
+          {
+            "team": "AEK Athens",
+            "value": 20.9
+          }
+        ]
+      },
+      "neutralChampionsReferenceStrength": 51.70857142857143,
+      "strengthAdjustmentShots": 0.8762446126643828,
+      "strengthAdjustmentSot": 0.8762446126643828,
+      "adjustedCurrentShotsPer90": 0,
+      "adjustedCurrentSotPer90": 0,
+      "currentReliabilityWeight": 0.16666666666666666,
+      "currentEuropeanReliabilityWeight": 0,
+      "historicalWeight": 0.8333333333333334,
+      "blendedShotsPer90": 0.002873563218390805,
+      "blendedSotPer90": 0,
+      "expectedMinutes": 0,
+      "oldProjectedShots": 0,
+      "oldProjectedSot": 0,
+      "per90": {
+        "shots": 0.002873563218390805,
+        "shotsOnTarget": 0
+      },
+      "roleKey": "goalkeeper",
+      "projectedShots": 0,
+      "projectedSot": 0,
+      "reconciliationFactorShots": null,
+      "reconciliationFactorSot": null,
+      "deltaShots": 0,
+      "deltaSot": 0
+    },
+    {
+      "playerId": "marios-balamotis",
+      "player": "Marios Balamotis",
+      "lineupName": null,
+      "identityStatus": "matched-not-in-control-xi",
+      "role": "goalkeeper",
+      "historicalMinutes": null,
+      "historicalShotsPer90": null,
+      "historicalSotPer90": null,
+      "historicalBaselineShotsPer90": 0.01,
+      "historicalBaselineSotPer90": 0,
+      "currentDomesticMinutes": null,
+      "rawCurrentShotsPer90": null,
+      "rawCurrentSotPer90": null,
+      "currentEuropeanEvidence": null,
+      "currentOtherEuropeanEvidence": null,
+      "opponentsFaced": [],
+      "currentSampleOpponentStrength": null,
+      "competitionStrengthFallback": {
+        "value": 20.9,
+        "used": false,
+        "contributors": [
+          {
+            "team": "AEK Athens",
+            "value": 20.9
+          }
+        ]
+      },
+      "neutralChampionsReferenceStrength": 51.70857142857143,
+      "strengthAdjustmentShots": null,
+      "strengthAdjustmentSot": null,
+      "adjustedCurrentShotsPer90": null,
+      "adjustedCurrentSotPer90": null,
+      "currentReliabilityWeight": 0,
+      "currentEuropeanReliabilityWeight": 0,
+      "historicalWeight": 1,
+      "blendedShotsPer90": 0.01,
+      "blendedSotPer90": 0,
+      "expectedMinutes": 0,
+      "oldProjectedShots": 0,
+      "oldProjectedSot": 0,
+      "per90": {
+        "shots": 0.01,
+        "shotsOnTarget": 0
+      },
+      "roleKey": "goalkeeper",
+      "projectedShots": 0,
+      "projectedSot": 0,
+      "reconciliationFactorShots": null,
+      "reconciliationFactorSot": null,
+      "deltaShots": 0,
+      "deltaSot": 0
+    },
+    {
+      "playerId": "alberto-brignoli",
+      "player": "Alberto Brignoli",
+      "lineupName": "Brignoli",
+      "identityStatus": "matched",
+      "role": "goalkeeper",
+      "historicalMinutes": 180,
+      "historicalShotsPer90": 0,
+      "historicalSotPer90": 0,
+      "historicalBaselineShotsPer90": 0.008333333333333333,
+      "historicalBaselineSotPer90": 0,
+      "currentDomesticMinutes": 180,
+      "rawCurrentShotsPer90": 0,
+      "rawCurrentSotPer90": 0,
+      "currentEuropeanEvidence": null,
+      "currentOtherEuropeanEvidence": null,
+      "opponentsFaced": [
+        {
+          "eventId": "401896758",
+          "date": "2026-09-20",
+          "providerTeamId": "20043",
+          "team": "Volos NFC",
+          "value": 14.170833333333333,
+          "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+          "rawPointsPerMatch": 0.4,
+          "shrunkPointsPerMatch": 0.92987012987013,
+          "leagueAveragePointsPerMatch": 1.3714285714285714,
+          "matches": 5,
+          "reliability": 0.45454545454545453
+        },
+        {
+          "eventId": "401896764",
+          "date": "2026-09-13",
+          "providerTeamId": "8354",
+          "team": "Asteras Tripoli",
+          "value": 14.170833333333333,
+          "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+          "rawPointsPerMatch": 0.4,
+          "shrunkPointsPerMatch": 0.92987012987013,
+          "leagueAveragePointsPerMatch": 1.3714285714285714,
+          "matches": 5,
+          "reliability": 0.45454545454545453
+        }
+      ],
+      "currentSampleOpponentStrength": 14.170833333333333,
+      "competitionStrengthFallback": {
+        "value": 20.9,
+        "used": false,
+        "contributors": [
+          {
+            "team": "AEK Athens",
+            "value": 20.9
+          }
+        ]
+      },
+      "neutralChampionsReferenceStrength": 51.70857142857143,
+      "strengthAdjustmentShots": 0.8548103842045162,
+      "strengthAdjustmentSot": 0.8548103842045162,
+      "adjustedCurrentShotsPer90": 0,
+      "adjustedCurrentSotPer90": 0,
+      "currentReliabilityWeight": 0.16666666666666666,
+      "currentEuropeanReliabilityWeight": 0,
+      "historicalWeight": 0.8333333333333334,
+      "blendedShotsPer90": 0.006944444444444445,
+      "blendedSotPer90": 0,
+      "expectedMinutes": 90,
+      "oldProjectedShots": 0,
+      "oldProjectedSot": 0,
+      "per90": {
+        "shots": 0.006944444444444445,
+        "shotsOnTarget": 0
+      },
+      "roleKey": "goalkeeper",
+      "projectedShots": 0,
+      "projectedSot": 0,
+      "reconciliationFactorShots": null,
+      "reconciliationFactorSot": null,
+      "deltaShots": 0,
+      "deltaSot": 0
+    },
+    {
+      "playerId": "harold-moukoudi",
+      "player": "Harold Moukoudi",
+      "lineupName": "Moukoudi",
+      "identityStatus": "matched",
+      "role": "defender",
+      "historicalMinutes": 1575,
+      "historicalShotsPer90": 0.74,
+      "historicalSotPer90": 0.23,
+      "historicalBaselineShotsPer90": 0.7072727272727273,
+      "historicalBaselineSotPer90": 0.21181818181818182,
+      "currentDomesticMinutes": 360,
+      "rawCurrentShotsPer90": 0.25,
+      "rawCurrentSotPer90": 0,
+      "currentEuropeanEvidence": null,
+      "currentOtherEuropeanEvidence": null,
+      "opponentsFaced": [
+        {
+          "eventId": "401896758",
+          "date": "2026-09-20",
+          "providerTeamId": "20043",
+          "team": "Volos NFC",
+          "value": 14.170833333333333,
+          "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+          "rawPointsPerMatch": 0.4,
+          "shrunkPointsPerMatch": 0.92987012987013,
+          "leagueAveragePointsPerMatch": 1.3714285714285714,
+          "matches": 5,
+          "reliability": 0.45454545454545453
+        },
+        {
+          "eventId": "401896764",
+          "date": "2026-09-13",
+          "providerTeamId": "8354",
+          "team": "Asteras Tripoli",
+          "value": 14.170833333333333,
+          "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+          "rawPointsPerMatch": 0.4,
+          "shrunkPointsPerMatch": 0.92987012987013,
+          "leagueAveragePointsPerMatch": 1.3714285714285714,
+          "matches": 5,
+          "reliability": 0.45454545454545453
+        },
+        {
+          "eventId": "401896769",
+          "date": "2026-09-05",
+          "providerTeamId": "11553",
+          "team": "Aris",
+          "value": 21.097916666666663,
+          "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+          "rawPointsPerMatch": 1.4,
+          "shrunkPointsPerMatch": 1.3844155844155843,
+          "leagueAveragePointsPerMatch": 1.3714285714285714,
+          "matches": 5,
+          "reliability": 0.45454545454545453
+        },
+        {
+          "eventId": "401896771",
+          "date": "2026-08-30",
+          "providerTeamId": "21969",
+          "team": "Kifisia",
+          "value": 18.327083333333334,
+          "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+          "rawPointsPerMatch": 1,
+          "shrunkPointsPerMatch": 1.2025974025974027,
+          "leagueAveragePointsPerMatch": 1.3714285714285714,
+          "matches": 5,
+          "reliability": 0.45454545454545453
+        }
+      ],
+      "currentSampleOpponentStrength": 16.941666666666666,
+      "competitionStrengthFallback": {
+        "value": 20.9,
+        "used": false,
+        "contributors": [
+          {
+            "team": "AEK Athens",
+            "value": 20.9
+          }
+        ]
+      },
+      "neutralChampionsReferenceStrength": 51.70857142857143,
+      "strengthAdjustmentShots": 0.8655274984344494,
+      "strengthAdjustmentSot": 0.8655274984344494,
+      "adjustedCurrentShotsPer90": 0.21638187460861236,
+      "adjustedCurrentSotPer90": 0,
+      "currentReliabilityWeight": 0.2857142857142857,
+      "currentEuropeanReliabilityWeight": 0,
+      "historicalWeight": 0.7142857142857143,
+      "blendedShotsPer90": 0.567018197940123,
+      "blendedSotPer90": 0.1512987012987013,
+      "expectedMinutes": 84.6,
+      "oldProjectedShots": 0.55,
+      "oldProjectedSot": 0.16,
+      "per90": {
+        "shots": 0.567018197940123,
+        "shotsOnTarget": 0.1512987012987013
+      },
+      "roleKey": "defender",
+      "projectedShots": 0.45,
+      "projectedSot": 0.12,
+      "reconciliationFactorShots": 0.8430112301341558,
+      "reconciliationFactorSot": 0.8521136147554347,
+      "deltaShots": -0.1,
+      "deltaSot": -0.04
+    },
+    {
+      "playerId": "stavros-pilios",
+      "player": "Stavros Pilios",
+      "lineupName": null,
+      "identityStatus": "matched-not-in-control-xi",
+      "role": "defender",
+      "historicalMinutes": 1535,
+      "historicalShotsPer90": 0.82,
+      "historicalSotPer90": 0.06,
+      "historicalBaselineShotsPer90": 0.7571663244353183,
+      "historicalBaselineSotPer90": 0.10435318275154004,
+      "currentDomesticMinutes": 360,
+      "rawCurrentShotsPer90": 0.75,
+      "rawCurrentSotPer90": 0,
+      "currentEuropeanEvidence": null,
+      "currentOtherEuropeanEvidence": null,
+      "opponentsFaced": [
+        {
+          "eventId": "401896758",
+          "date": "2026-09-20",
+          "providerTeamId": "20043",
+          "team": "Volos NFC",
+          "value": 14.170833333333333,
+          "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+          "rawPointsPerMatch": 0.4,
+          "shrunkPointsPerMatch": 0.92987012987013,
+          "leagueAveragePointsPerMatch": 1.3714285714285714,
+          "matches": 5,
+          "reliability": 0.45454545454545453
+        },
+        {
+          "eventId": "401896764",
+          "date": "2026-09-13",
+          "providerTeamId": "8354",
+          "team": "Asteras Tripoli",
+          "value": 14.170833333333333,
+          "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+          "rawPointsPerMatch": 0.4,
+          "shrunkPointsPerMatch": 0.92987012987013,
+          "leagueAveragePointsPerMatch": 1.3714285714285714,
+          "matches": 5,
+          "reliability": 0.45454545454545453
+        },
+        {
+          "eventId": "401896769",
+          "date": "2026-09-05",
+          "providerTeamId": "11553",
+          "team": "Aris",
+          "value": 21.097916666666663,
+          "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+          "rawPointsPerMatch": 1.4,
+          "shrunkPointsPerMatch": 1.3844155844155843,
+          "leagueAveragePointsPerMatch": 1.3714285714285714,
+          "matches": 5,
+          "reliability": 0.45454545454545453
+        },
+        {
+          "eventId": "401896771",
+          "date": "2026-08-30",
+          "providerTeamId": "21969",
+          "team": "Kifisia",
+          "value": 18.327083333333334,
+          "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+          "rawPointsPerMatch": 1,
+          "shrunkPointsPerMatch": 1.2025974025974027,
+          "leagueAveragePointsPerMatch": 1.3714285714285714,
+          "matches": 5,
+          "reliability": 0.45454545454545453
+        }
+      ],
+      "currentSampleOpponentStrength": 16.941666666666666,
+      "competitionStrengthFallback": {
+        "value": 20.9,
+        "used": false,
+        "contributors": [
+          {
+            "team": "AEK Athens",
+            "value": 20.9
+          }
+        ]
+      },
+      "neutralChampionsReferenceStrength": 51.70857142857143,
+      "strengthAdjustmentShots": 0.8655274984344494,
+      "strengthAdjustmentSot": 0.8655274984344494,
+      "adjustedCurrentShotsPer90": 0.6491456238258371,
+      "adjustedCurrentSotPer90": 0,
+      "currentReliabilityWeight": 0.2857142857142857,
+      "currentEuropeanReliabilityWeight": 0,
+      "historicalWeight": 0.7142857142857143,
+      "blendedShotsPer90": 0.7263032671183237,
+      "blendedSotPer90": 0.07453798767967146,
+      "expectedMinutes": 0,
+      "oldProjectedShots": 0,
+      "oldProjectedSot": 0,
+      "per90": {
+        "shots": 0.7263032671183237,
+        "shotsOnTarget": 0.07453798767967146
+      },
+      "roleKey": "defender",
+      "projectedShots": 0,
+      "projectedSot": 0,
+      "reconciliationFactorShots": 0.8430112301341558,
+      "reconciliationFactorSot": 0.8521136147554347,
+      "deltaShots": 0,
+      "deltaSot": 0
+    },
+    {
+      "playerId": "lazaros-rota",
+      "player": "Lazaros Rota",
+      "lineupName": "Rota",
+      "identityStatus": "matched",
+      "role": "defender",
+      "historicalMinutes": 1876,
+      "historicalShotsPer90": 0.43,
+      "historicalSotPer90": 0.05,
+      "historicalBaselineShotsPer90": 0.5013256484149856,
+      "historicalBaselineSotPer90": 0.09214697406340058,
+      "currentDomesticMinutes": 270,
+      "rawCurrentShotsPer90": 1.3333333333333333,
+      "rawCurrentSotPer90": 0.6666666666666666,
+      "currentEuropeanEvidence": null,
+      "currentOtherEuropeanEvidence": null,
+      "opponentsFaced": [
+        {
+          "eventId": "401896764",
+          "date": "2026-09-13",
+          "providerTeamId": "8354",
+          "team": "Asteras Tripoli",
+          "value": 14.170833333333333,
+          "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+          "rawPointsPerMatch": 0.4,
+          "shrunkPointsPerMatch": 0.92987012987013,
+          "leagueAveragePointsPerMatch": 1.3714285714285714,
+          "matches": 5,
+          "reliability": 0.45454545454545453
+        },
+        {
+          "eventId": "401896769",
+          "date": "2026-09-05",
+          "providerTeamId": "11553",
+          "team": "Aris",
+          "value": 21.097916666666663,
+          "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+          "rawPointsPerMatch": 1.4,
+          "shrunkPointsPerMatch": 1.3844155844155843,
+          "leagueAveragePointsPerMatch": 1.3714285714285714,
+          "matches": 5,
+          "reliability": 0.45454545454545453
+        },
+        {
+          "eventId": "401896771",
+          "date": "2026-08-30",
+          "providerTeamId": "21969",
+          "team": "Kifisia",
+          "value": 18.327083333333334,
+          "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+          "rawPointsPerMatch": 1,
+          "shrunkPointsPerMatch": 1.2025974025974027,
+          "leagueAveragePointsPerMatch": 1.3714285714285714,
+          "matches": 5,
+          "reliability": 0.45454545454545453
+        }
+      ],
+      "currentSampleOpponentStrength": 17.865277777777777,
+      "competitionStrengthFallback": {
+        "value": 20.9,
+        "used": false,
+        "contributors": [
+          {
+            "team": "AEK Athens",
+            "value": 20.9
+          }
+        ]
+      },
+      "neutralChampionsReferenceStrength": 51.70857142857143,
+      "strengthAdjustmentShots": 0.8690998698444272,
+      "strengthAdjustmentSot": 0.8690998698444272,
+      "adjustedCurrentShotsPer90": 1.1587998264592363,
+      "adjustedCurrentSotPer90": 0.5793999132296181,
+      "currentReliabilityWeight": 0.23076923076923078,
+      "currentEuropeanReliabilityWeight": 0,
+      "historicalWeight": 0.7692307692307692,
+      "blendedShotsPer90": 0.6530504587328896,
+      "blendedSotPer90": 0.20458996002483543,
+      "expectedMinutes": 84.6,
+      "oldProjectedShots": 0.39,
+      "oldProjectedSot": 0.07,
+      "per90": {
+        "shots": 0.6530504587328896,
+        "shotsOnTarget": 0.20458996002483543
+      },
+      "roleKey": "defender",
+      "projectedShots": 0.52,
+      "projectedSot": 0.16,
+      "reconciliationFactorShots": 0.8430112301341558,
+      "reconciliationFactorSot": 0.8521136147554347,
+      "deltaShots": 0.13,
+      "deltaSot": 0.09
+    },
+    {
+      "playerId": "domagoj-vida",
+      "player": "Domagoj Vida",
+      "lineupName": null,
+      "identityStatus": "matched-not-in-control-xi",
+      "role": "defender",
+      "historicalMinutes": 317,
+      "historicalShotsPer90": 2.56,
+      "historicalSotPer90": 0.57,
+      "historicalBaselineShotsPer90": 1.1475102711585867,
+      "historicalBaselineSotPer90": 0.2815858668857847,
+      "currentDomesticMinutes": null,
+      "rawCurrentShotsPer90": null,
+      "rawCurrentSotPer90": null,
+      "currentEuropeanEvidence": null,
+      "currentOtherEuropeanEvidence": null,
+      "opponentsFaced": [],
+      "currentSampleOpponentStrength": null,
+      "competitionStrengthFallback": {
+        "value": 20.9,
+        "used": false,
+        "contributors": [
+          {
+            "team": "AEK Athens",
+            "value": 20.9
+          }
+        ]
+      },
+      "neutralChampionsReferenceStrength": 51.70857142857143,
+      "strengthAdjustmentShots": null,
+      "strengthAdjustmentSot": null,
+      "adjustedCurrentShotsPer90": null,
+      "adjustedCurrentSotPer90": null,
+      "currentReliabilityWeight": 0,
+      "currentEuropeanReliabilityWeight": 0,
+      "historicalWeight": 1,
+      "blendedShotsPer90": 1.1475102711585867,
+      "blendedSotPer90": 0.2815858668857847,
+      "expectedMinutes": 0,
+      "oldProjectedShots": 0,
+      "oldProjectedSot": 0,
+      "per90": {
+        "shots": 1.1475102711585867,
+        "shotsOnTarget": 0.2815858668857847
+      },
+      "roleKey": "defender",
+      "projectedShots": 0,
+      "projectedSot": 0,
+      "reconciliationFactorShots": 0.8430112301341558,
+      "reconciliationFactorSot": 0.8521136147554347,
+      "deltaShots": 0,
+      "deltaSot": 0
+    },
+    {
+      "playerId": "charalampos-lykogiannis",
+      "player": "Charalampos Lykogiannis",
+      "lineupName": null,
+      "identityStatus": "matched-not-in-control-xi",
+      "role": "defender",
+      "historicalMinutes": 1069,
+      "historicalShotsPer90": 0.76,
+      "historicalSotPer90": 0.17,
+      "historicalBaselineShotsPer90": 0.7097206703910615,
+      "historicalBaselineSotPer90": 0.17457084814626717,
+      "currentDomesticMinutes": null,
+      "rawCurrentShotsPer90": null,
+      "rawCurrentSotPer90": null,
+      "currentEuropeanEvidence": null,
+      "currentOtherEuropeanEvidence": null,
+      "opponentsFaced": [],
+      "currentSampleOpponentStrength": null,
+      "competitionStrengthFallback": {
+        "value": 20.9,
+        "used": false,
+        "contributors": [
+          {
+            "team": "AEK Athens",
+            "value": 20.9
+          }
+        ]
+      },
+      "neutralChampionsReferenceStrength": 51.70857142857143,
+      "strengthAdjustmentShots": null,
+      "strengthAdjustmentSot": null,
+      "adjustedCurrentShotsPer90": null,
+      "adjustedCurrentSotPer90": null,
+      "currentReliabilityWeight": 0,
+      "currentEuropeanReliabilityWeight": 0,
+      "historicalWeight": 1,
+      "blendedShotsPer90": 0.7097206703910615,
+      "blendedSotPer90": 0.17457084814626717,
+      "expectedMinutes": 0,
+      "oldProjectedShots": 0,
+      "oldProjectedSot": 0,
+      "per90": {
+        "shots": 0.7097206703910615,
+        "shotsOnTarget": 0.17457084814626717
+      },
+      "roleKey": "defender",
+      "projectedShots": 0,
+      "projectedSot": 0,
+      "reconciliationFactorShots": 0.8430112301341558,
+      "reconciliationFactorSot": 0.8521136147554347,
+      "deltaShots": 0,
+      "deltaSot": 0
+    },
+    {
+      "playerId": "filipe-relvas",
+      "player": "Filipe Relvas",
+      "lineupName": "Relvas",
+      "identityStatus": "matched",
+      "role": "defender",
+      "historicalMinutes": 1890,
+      "historicalShotsPer90": 0.48,
+      "historicalSotPer90": 0.14,
+      "historicalBaselineShotsPer90": 0.5348387096774194,
+      "historicalBaselineSotPer90": 0.15290322580645163,
+      "currentDomesticMinutes": 360,
+      "rawCurrentShotsPer90": 0.75,
+      "rawCurrentSotPer90": 0,
+      "currentEuropeanEvidence": null,
+      "currentOtherEuropeanEvidence": null,
+      "opponentsFaced": [
+        {
+          "eventId": "401896758",
+          "date": "2026-09-20",
+          "providerTeamId": "20043",
+          "team": "Volos NFC",
+          "value": 14.170833333333333,
+          "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+          "rawPointsPerMatch": 0.4,
+          "shrunkPointsPerMatch": 0.92987012987013,
+          "leagueAveragePointsPerMatch": 1.3714285714285714,
+          "matches": 5,
+          "reliability": 0.45454545454545453
+        },
+        {
+          "eventId": "401896764",
+          "date": "2026-09-13",
+          "providerTeamId": "8354",
+          "team": "Asteras Tripoli",
+          "value": 14.170833333333333,
+          "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+          "rawPointsPerMatch": 0.4,
+          "shrunkPointsPerMatch": 0.92987012987013,
+          "leagueAveragePointsPerMatch": 1.3714285714285714,
+          "matches": 5,
+          "reliability": 0.45454545454545453
+        },
+        {
+          "eventId": "401896769",
+          "date": "2026-09-05",
+          "providerTeamId": "11553",
+          "team": "Aris",
+          "value": 21.097916666666663,
+          "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+          "rawPointsPerMatch": 1.4,
+          "shrunkPointsPerMatch": 1.3844155844155843,
+          "leagueAveragePointsPerMatch": 1.3714285714285714,
+          "matches": 5,
+          "reliability": 0.45454545454545453
+        },
+        {
+          "eventId": "401896771",
+          "date": "2026-08-30",
+          "providerTeamId": "21969",
+          "team": "Kifisia",
+          "value": 18.327083333333334,
+          "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+          "rawPointsPerMatch": 1,
+          "shrunkPointsPerMatch": 1.2025974025974027,
+          "leagueAveragePointsPerMatch": 1.3714285714285714,
+          "matches": 5,
+          "reliability": 0.45454545454545453
+        }
+      ],
+      "currentSampleOpponentStrength": 16.941666666666666,
+      "competitionStrengthFallback": {
+        "value": 20.9,
+        "used": false,
+        "contributors": [
+          {
+            "team": "AEK Athens",
+            "value": 20.9
+          }
+        ]
+      },
+      "neutralChampionsReferenceStrength": 51.70857142857143,
+      "strengthAdjustmentShots": 0.8655274984344494,
+      "strengthAdjustmentSot": 0.8655274984344494,
+      "adjustedCurrentShotsPer90": 0.6491456238258371,
+      "adjustedCurrentSotPer90": 0,
+      "currentReliabilityWeight": 0.2857142857142857,
+      "currentEuropeanReliabilityWeight": 0,
+      "historicalWeight": 0.7142857142857143,
+      "blendedShotsPer90": 0.5674978280055387,
+      "blendedSotPer90": 0.10921658986175117,
+      "expectedMinutes": 84.6,
+      "oldProjectedShots": 0.41,
+      "oldProjectedSot": 0.12,
+      "per90": {
+        "shots": 0.5674978280055387,
+        "shotsOnTarget": 0.10921658986175117
+      },
+      "roleKey": "defender",
+      "projectedShots": 0.45,
+      "projectedSot": 0.09,
+      "reconciliationFactorShots": 0.8430112301341558,
+      "reconciliationFactorSot": 0.8521136147554347,
+      "deltaShots": 0.04,
+      "deltaSot": -0.03
+    },
+    {
+      "playerId": "kaan-kairinen",
+      "player": "Kaan Kairinen",
+      "lineupName": null,
+      "identityStatus": "matched-not-in-control-xi",
+      "role": "midfielder",
+      "historicalMinutes": 910,
+      "historicalShotsPer90": 0.1,
+      "historicalSotPer90": 0,
+      "historicalBaselineShotsPer90": 0.7215469613259669,
+      "historicalBaselineSotPer90": 0.20883977900552483,
+      "currentDomesticMinutes": 21,
+      "rawCurrentShotsPer90": 0,
+      "rawCurrentSotPer90": 0,
+      "currentEuropeanEvidence": null,
+      "currentOtherEuropeanEvidence": null,
+      "opponentsFaced": [
+        {
+          "eventId": "401896771",
+          "date": "2026-08-30",
+          "providerTeamId": "21969",
+          "team": "Kifisia",
+          "value": 18.327083333333334,
+          "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+          "rawPointsPerMatch": 1,
+          "shrunkPointsPerMatch": 1.2025974025974027,
+          "leagueAveragePointsPerMatch": 1.3714285714285714,
+          "matches": 5,
+          "reliability": 0.45454545454545453
+        }
+      ],
+      "currentSampleOpponentStrength": 18.327083333333334,
+      "competitionStrengthFallback": {
+        "value": 20.9,
+        "used": false,
+        "contributors": [
+          {
+            "team": "AEK Athens",
+            "value": 20.9
+          }
+        ]
+      },
+      "neutralChampionsReferenceStrength": 51.70857142857143,
+      "strengthAdjustmentShots": 0.8708860555494161,
+      "strengthAdjustmentSot": 0.8708860555494161,
+      "adjustedCurrentShotsPer90": 0,
+      "adjustedCurrentSotPer90": 0,
+      "currentReliabilityWeight": 0.02280130293159609,
+      "currentEuropeanReliabilityWeight": 0,
+      "historicalWeight": 0.9771986970684039,
+      "blendedShotsPer90": 0.7050947504814008,
+      "blendedSotPer90": 0.20407795994025227,
+      "expectedMinutes": 0,
+      "oldProjectedShots": 0,
+      "oldProjectedSot": 0,
+      "per90": {
+        "shots": 0.7050947504814008,
+        "shotsOnTarget": 0.20407795994025227
+      },
+      "roleKey": "midfielder",
+      "projectedShots": 0,
+      "projectedSot": 0,
+      "reconciliationFactorShots": 0.8430112301341558,
+      "reconciliationFactorSot": 0.8521136147554347,
+      "deltaShots": 0,
+      "deltaSot": 0
+    },
+    {
+      "playerId": "mijat-gacinovic",
+      "player": "Mijat Gaćinović",
+      "lineupName": null,
+      "identityStatus": "matched-not-in-control-xi",
+      "role": "midfielder",
+      "historicalMinutes": 592,
+      "historicalShotsPer90": 3.04,
+      "historicalSotPer90": 1.06,
+      "historicalBaselineShotsPer90": 2.020563002680965,
+      "historicalBaselineSotPer90": 0.673941018766756,
+      "currentDomesticMinutes": 210,
+      "rawCurrentShotsPer90": 1.7142857142857142,
+      "rawCurrentSotPer90": 0.42857142857142855,
+      "currentEuropeanEvidence": null,
+      "currentOtherEuropeanEvidence": null,
+      "opponentsFaced": [
+        {
+          "eventId": "401896758",
+          "date": "2026-09-20",
+          "providerTeamId": "20043",
+          "team": "Volos NFC",
+          "value": 14.170833333333333,
+          "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+          "rawPointsPerMatch": 0.4,
+          "shrunkPointsPerMatch": 0.92987012987013,
+          "leagueAveragePointsPerMatch": 1.3714285714285714,
+          "matches": 5,
+          "reliability": 0.45454545454545453
+        },
+        {
+          "eventId": "401896764",
+          "date": "2026-09-13",
+          "providerTeamId": "8354",
+          "team": "Asteras Tripoli",
+          "value": 14.170833333333333,
+          "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+          "rawPointsPerMatch": 0.4,
+          "shrunkPointsPerMatch": 0.92987012987013,
+          "leagueAveragePointsPerMatch": 1.3714285714285714,
+          "matches": 5,
+          "reliability": 0.45454545454545453
+        },
+        {
+          "eventId": "401896769",
+          "date": "2026-09-05",
+          "providerTeamId": "11553",
+          "team": "Aris",
+          "value": 21.097916666666663,
+          "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+          "rawPointsPerMatch": 1.4,
+          "shrunkPointsPerMatch": 1.3844155844155843,
+          "leagueAveragePointsPerMatch": 1.3714285714285714,
+          "matches": 5,
+          "reliability": 0.45454545454545453
+        }
+      ],
+      "currentSampleOpponentStrength": 16.47986111111111,
+      "competitionStrengthFallback": {
+        "value": 20.9,
+        "used": false,
+        "contributors": [
+          {
+            "team": "AEK Athens",
+            "value": 20.9
+          }
+        ]
+      },
+      "neutralChampionsReferenceStrength": 51.70857142857143,
+      "strengthAdjustmentShots": 0.8637413127294605,
+      "strengthAdjustmentSot": 0.8637413127294605,
+      "adjustedCurrentShotsPer90": 1.4806993932505037,
+      "adjustedCurrentSotPer90": 0.3701748483126259,
+      "currentReliabilityWeight": 0.1891891891891892,
+      "currentEuropeanReliabilityWeight": 0,
+      "historicalWeight": 0.8108108108108107,
+      "blendedShotsPer90": 1.9184266441400668,
+      "blendedSotPer90": 0.6164717432754341,
+      "expectedMinutes": 0,
+      "oldProjectedShots": 0,
+      "oldProjectedSot": 0,
+      "per90": {
+        "shots": 1.9184266441400668,
+        "shotsOnTarget": 0.6164717432754341
+      },
+      "roleKey": "midfielder",
+      "projectedShots": 0,
+      "projectedSot": 0,
+      "reconciliationFactorShots": 0.8430112301341558,
+      "reconciliationFactorSot": 0.8521136147554347,
+      "deltaShots": 0,
+      "deltaSot": 0
+    },
+    {
+      "playerId": "lovro-majer",
+      "player": "Lovro Majer",
+      "lineupName": "Majer",
+      "identityStatus": "matched",
+      "role": "midfielder",
+      "historicalMinutes": 1373,
+      "historicalShotsPer90": 1.77,
+      "historicalSotPer90": 0.46,
+      "historicalBaselineShotsPer90": 1.6036999560052796,
+      "historicalBaselineSotPer90": 0.4441619005719314,
+      "currentDomesticMinutes": 332,
+      "rawCurrentShotsPer90": 1.355421686746988,
+      "rawCurrentSotPer90": 0.2710843373493976,
+      "currentEuropeanEvidence": null,
+      "currentOtherEuropeanEvidence": null,
+      "opponentsFaced": [
+        {
+          "eventId": "401896758",
+          "date": "2026-09-20",
+          "providerTeamId": "20043",
+          "team": "Volos NFC",
+          "value": 14.170833333333333,
+          "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+          "rawPointsPerMatch": 0.4,
+          "shrunkPointsPerMatch": 0.92987012987013,
+          "leagueAveragePointsPerMatch": 1.3714285714285714,
+          "matches": 5,
+          "reliability": 0.45454545454545453
+        },
+        {
+          "eventId": "401896764",
+          "date": "2026-09-13",
+          "providerTeamId": "8354",
+          "team": "Asteras Tripoli",
+          "value": 14.170833333333333,
+          "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+          "rawPointsPerMatch": 0.4,
+          "shrunkPointsPerMatch": 0.92987012987013,
+          "leagueAveragePointsPerMatch": 1.3714285714285714,
+          "matches": 5,
+          "reliability": 0.45454545454545453
+        },
+        {
+          "eventId": "401896769",
+          "date": "2026-09-05",
+          "providerTeamId": "11553",
+          "team": "Aris",
+          "value": 21.097916666666663,
+          "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+          "rawPointsPerMatch": 1.4,
+          "shrunkPointsPerMatch": 1.3844155844155843,
+          "leagueAveragePointsPerMatch": 1.3714285714285714,
+          "matches": 5,
+          "reliability": 0.45454545454545453
+        },
+        {
+          "eventId": "401896771",
+          "date": "2026-08-30",
+          "providerTeamId": "21969",
+          "team": "Kifisia",
+          "value": 18.327083333333334,
+          "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+          "rawPointsPerMatch": 1,
+          "shrunkPointsPerMatch": 1.2025974025974027,
+          "leagueAveragePointsPerMatch": 1.3714285714285714,
+          "matches": 5,
+          "reliability": 0.45454545454545453
+        }
+      ],
+      "currentSampleOpponentStrength": 16.941666666666666,
+      "competitionStrengthFallback": {
+        "value": 20.9,
+        "used": false,
+        "contributors": [
+          {
+            "team": "AEK Athens",
+            "value": 20.9
+          }
+        ]
+      },
+      "neutralChampionsReferenceStrength": 51.70857142857143,
+      "strengthAdjustmentShots": 0.8655274984344494,
+      "strengthAdjustmentSot": 0.8655274984344494,
+      "adjustedCurrentShotsPer90": 1.1731547418539223,
+      "adjustedCurrentSotPer90": 0.23463094837078446,
+      "currentReliabilityWeight": 0.2694805194805195,
+      "currentEuropeanReliabilityWeight": 0,
+      "historicalWeight": 0.7305194805194806,
+      "blendedShotsPer90": 1.4876764080359204,
+      "blendedSotPer90": 0.38769739072551845,
+      "expectedMinutes": 84.6,
+      "oldProjectedShots": 1.24,
+      "oldProjectedSot": 0.35,
+      "per90": {
+        "shots": 1.4876764080359204,
+        "shotsOnTarget": 0.38769739072551845
+      },
+      "roleKey": "midfielder",
+      "projectedShots": 1.18,
+      "projectedSot": 0.31,
+      "reconciliationFactorShots": 0.8430112301341558,
+      "reconciliationFactorSot": 0.8521136147554347,
+      "deltaShots": -0.06,
+      "deltaSot": -0.04
+    },
+    {
+      "playerId": "kervin-arriaga",
+      "player": "Kervin Arriaga",
+      "lineupName": null,
+      "identityStatus": "matched-not-in-control-xi",
+      "role": "midfielder",
+      "historicalMinutes": 1527,
+      "historicalShotsPer90": 0.94,
+      "historicalSotPer90": 0.35,
+      "historicalBaselineShotsPer90": 1.0920395550061803,
+      "historicalBaselineSotPer90": 0.37595797280593324,
+      "currentDomesticMinutes": 69,
+      "rawCurrentShotsPer90": 0,
+      "rawCurrentSotPer90": 0,
+      "currentEuropeanEvidence": null,
+      "currentOtherEuropeanEvidence": null,
+      "opponentsFaced": [
+        {
+          "eventId": "401896758",
+          "date": "2026-09-20",
+          "providerTeamId": "20043",
+          "team": "Volos NFC",
+          "value": 14.170833333333333,
+          "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+          "rawPointsPerMatch": 0.4,
+          "shrunkPointsPerMatch": 0.92987012987013,
+          "leagueAveragePointsPerMatch": 1.3714285714285714,
+          "matches": 5,
+          "reliability": 0.45454545454545453
+        },
+        {
+          "eventId": "401896764",
+          "date": "2026-09-13",
+          "providerTeamId": "8354",
+          "team": "Asteras Tripoli",
+          "value": 14.170833333333333,
+          "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+          "rawPointsPerMatch": 0.4,
+          "shrunkPointsPerMatch": 0.92987012987013,
+          "leagueAveragePointsPerMatch": 1.3714285714285714,
+          "matches": 5,
+          "reliability": 0.45454545454545453
+        },
+        {
+          "eventId": "401896769",
+          "date": "2026-09-05",
+          "providerTeamId": "11553",
+          "team": "Aris",
+          "value": 21.097916666666663,
+          "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+          "rawPointsPerMatch": 1.4,
+          "shrunkPointsPerMatch": 1.3844155844155843,
+          "leagueAveragePointsPerMatch": 1.3714285714285714,
+          "matches": 5,
+          "reliability": 0.45454545454545453
+        }
+      ],
+      "currentSampleOpponentStrength": 16.47986111111111,
+      "competitionStrengthFallback": {
+        "value": 20.9,
+        "used": false,
+        "contributors": [
+          {
+            "team": "AEK Athens",
+            "value": 20.9
+          }
+        ]
+      },
+      "neutralChampionsReferenceStrength": 51.70857142857143,
+      "strengthAdjustmentShots": 0.8637413127294605,
+      "strengthAdjustmentSot": 0.8637413127294605,
+      "adjustedCurrentShotsPer90": 0,
+      "adjustedCurrentSotPer90": 0,
+      "currentReliabilityWeight": 0.07120743034055728,
+      "currentEuropeanReliabilityWeight": 0,
+      "historicalWeight": 0.9287925696594427,
+      "blendedShotsPer90": 1.0142782244639446,
+      "blendedSotPer90": 0.34918697164637763,
+      "expectedMinutes": 0,
+      "oldProjectedShots": 0,
+      "oldProjectedSot": 0,
+      "per90": {
+        "shots": 1.0142782244639446,
+        "shotsOnTarget": 0.34918697164637763
+      },
+      "roleKey": "midfielder",
+      "projectedShots": 0,
+      "projectedSot": 0,
+      "reconciliationFactorShots": 0.8430112301341558,
+      "reconciliationFactorSot": 0.8521136147554347,
+      "deltaShots": 0,
+      "deltaSot": 0
+    },
+    {
+      "playerId": "razvan-marin",
+      "player": "Răzvan Marin",
+      "lineupName": "Marin",
+      "identityStatus": "matched",
+      "role": "midfielder",
+      "historicalMinutes": 1563,
+      "historicalShotsPer90": 1.5,
+      "historicalSotPer90": 0.46,
+      "historicalBaselineShotsPer90": 1.4451887941534713,
+      "historicalBaselineSotPer90": 0.4453836784409257,
+      "currentDomesticMinutes": 350,
+      "rawCurrentShotsPer90": 1.0285714285714285,
+      "rawCurrentSotPer90": 0.5142857142857142,
+      "currentEuropeanEvidence": null,
+      "currentOtherEuropeanEvidence": null,
+      "opponentsFaced": [
+        {
+          "eventId": "401896758",
+          "date": "2026-09-20",
+          "providerTeamId": "20043",
+          "team": "Volos NFC",
+          "value": 14.170833333333333,
+          "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+          "rawPointsPerMatch": 0.4,
+          "shrunkPointsPerMatch": 0.92987012987013,
+          "leagueAveragePointsPerMatch": 1.3714285714285714,
+          "matches": 5,
+          "reliability": 0.45454545454545453
+        },
+        {
+          "eventId": "401896764",
+          "date": "2026-09-13",
+          "providerTeamId": "8354",
+          "team": "Asteras Tripoli",
+          "value": 14.170833333333333,
+          "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+          "rawPointsPerMatch": 0.4,
+          "shrunkPointsPerMatch": 0.92987012987013,
+          "leagueAveragePointsPerMatch": 1.3714285714285714,
+          "matches": 5,
+          "reliability": 0.45454545454545453
+        },
+        {
+          "eventId": "401896769",
+          "date": "2026-09-05",
+          "providerTeamId": "11553",
+          "team": "Aris",
+          "value": 21.097916666666663,
+          "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+          "rawPointsPerMatch": 1.4,
+          "shrunkPointsPerMatch": 1.3844155844155843,
+          "leagueAveragePointsPerMatch": 1.3714285714285714,
+          "matches": 5,
+          "reliability": 0.45454545454545453
+        },
+        {
+          "eventId": "401896771",
+          "date": "2026-08-30",
+          "providerTeamId": "21969",
+          "team": "Kifisia",
+          "value": 18.327083333333334,
+          "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+          "rawPointsPerMatch": 1,
+          "shrunkPointsPerMatch": 1.2025974025974027,
+          "leagueAveragePointsPerMatch": 1.3714285714285714,
+          "matches": 5,
+          "reliability": 0.45454545454545453
+        }
+      ],
+      "currentSampleOpponentStrength": 16.941666666666666,
+      "competitionStrengthFallback": {
+        "value": 20.9,
+        "used": false,
+        "contributors": [
+          {
+            "team": "AEK Athens",
+            "value": 20.9
+          }
+        ]
+      },
+      "neutralChampionsReferenceStrength": 51.70857142857143,
+      "strengthAdjustmentShots": 0.8655274984344494,
+      "strengthAdjustmentSot": 0.8655274984344494,
+      "adjustedCurrentShotsPer90": 0.8902568555325765,
+      "adjustedCurrentSotPer90": 0.44512842776628825,
+      "currentReliabilityWeight": 0.28,
+      "currentEuropeanReliabilityWeight": 0,
+      "historicalWeight": 0.72,
+      "blendedShotsPer90": 1.289807851339621,
+      "blendedSotPer90": 0.4453122082520272,
+      "expectedMinutes": 84.6,
+      "oldProjectedShots": 1.12,
+      "oldProjectedSot": 0.35,
+      "per90": {
+        "shots": 1.289807851339621,
+        "shotsOnTarget": 0.4453122082520272
+      },
+      "roleKey": "midfielder",
+      "projectedShots": 1.02,
+      "projectedSot": 0.36,
+      "reconciliationFactorShots": 0.8430112301341558,
+      "reconciliationFactorSot": 0.8521136147554347,
+      "deltaShots": -0.1,
+      "deltaSot": 0.01
+    },
+    {
+      "playerId": "petros-mantalos",
+      "player": "Petros Mantalos",
+      "lineupName": null,
+      "identityStatus": "matched-not-in-control-xi",
+      "role": "midfielder",
+      "historicalMinutes": 827,
+      "historicalShotsPer90": 0.54,
+      "historicalSotPer90": 0,
+      "historicalBaselineShotsPer90": 0.9621192819918934,
+      "historicalBaselineSotPer90": 0.2188766647365373,
+      "currentDomesticMinutes": 92,
+      "rawCurrentShotsPer90": 5.869565217391305,
+      "rawCurrentSotPer90": 0,
+      "currentEuropeanEvidence": null,
+      "currentOtherEuropeanEvidence": null,
+      "opponentsFaced": [
+        {
+          "eventId": "401896758",
+          "date": "2026-09-20",
+          "providerTeamId": "20043",
+          "team": "Volos NFC",
+          "value": 14.170833333333333,
+          "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+          "rawPointsPerMatch": 0.4,
+          "shrunkPointsPerMatch": 0.92987012987013,
+          "leagueAveragePointsPerMatch": 1.3714285714285714,
+          "matches": 5,
+          "reliability": 0.45454545454545453
+        },
+        {
+          "eventId": "401896764",
+          "date": "2026-09-13",
+          "providerTeamId": "8354",
+          "team": "Asteras Tripoli",
+          "value": 14.170833333333333,
+          "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+          "rawPointsPerMatch": 0.4,
+          "shrunkPointsPerMatch": 0.92987012987013,
+          "leagueAveragePointsPerMatch": 1.3714285714285714,
+          "matches": 5,
+          "reliability": 0.45454545454545453
+        },
+        {
+          "eventId": "401896769",
+          "date": "2026-09-05",
+          "providerTeamId": "11553",
+          "team": "Aris",
+          "value": 21.097916666666663,
+          "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+          "rawPointsPerMatch": 1.4,
+          "shrunkPointsPerMatch": 1.3844155844155843,
+          "leagueAveragePointsPerMatch": 1.3714285714285714,
+          "matches": 5,
+          "reliability": 0.45454545454545453
+        },
+        {
+          "eventId": "401896771",
+          "date": "2026-08-30",
+          "providerTeamId": "21969",
+          "team": "Kifisia",
+          "value": 18.327083333333334,
+          "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+          "rawPointsPerMatch": 1,
+          "shrunkPointsPerMatch": 1.2025974025974027,
+          "leagueAveragePointsPerMatch": 1.3714285714285714,
+          "matches": 5,
+          "reliability": 0.45454545454545453
+        }
+      ],
+      "currentSampleOpponentStrength": 16.941666666666666,
+      "competitionStrengthFallback": {
+        "value": 20.9,
+        "used": false,
+        "contributors": [
+          {
+            "team": "AEK Athens",
+            "value": 20.9
+          }
+        ]
+      },
+      "neutralChampionsReferenceStrength": 51.70857142857143,
+      "strengthAdjustmentShots": 0.8655274984344494,
+      "strengthAdjustmentSot": 0.8655274984344494,
+      "adjustedCurrentShotsPer90": 5.080270099506551,
+      "adjustedCurrentSotPer90": 0,
+      "currentReliabilityWeight": 0.09274193548387097,
+      "currentEuropeanReliabilityWeight": 0,
+      "historicalWeight": 0.907258064516129,
+      "blendedShotsPer90": 1.3440445594226882,
+      "blendedSotPer90": 0.19857761921661649,
+      "expectedMinutes": 0,
+      "oldProjectedShots": 0,
+      "oldProjectedSot": 0,
+      "per90": {
+        "shots": 1.3440445594226882,
+        "shotsOnTarget": 0.19857761921661649
+      },
+      "roleKey": "midfielder",
+      "projectedShots": 0,
+      "projectedSot": 0,
+      "reconciliationFactorShots": 0.8430112301341558,
+      "reconciliationFactorSot": 0.8521136147554347,
+      "deltaShots": 0,
+      "deltaSot": 0
+    },
+    {
+      "playerId": "milan-vitalis",
+      "player": "Milán Vitális",
+      "lineupName": "Vitalis",
+      "identityStatus": "matched",
+      "role": "midfielder",
+      "historicalMinutes": 389,
+      "historicalShotsPer90": 2.31,
+      "historicalSotPer90": 0.69,
+      "historicalBaselineShotsPer90": 1.6397129557796744,
+      "historicalBaselineSotPer90": 0.5014817688130333,
+      "currentDomesticMinutes": 204,
+      "rawCurrentShotsPer90": 0,
+      "rawCurrentSotPer90": 0,
+      "currentEuropeanEvidence": null,
+      "currentOtherEuropeanEvidence": {
+        "entries": 1,
+        "minutes": 135,
+        "shots": 2,
+        "shotsOnTarget": 2,
+        "shotsPer90": 1.3333333333333333,
+        "sotPer90": 1.3333333333333333,
+        "matchIds": [
+          "401891986",
+          "401892010"
+        ]
+      },
+      "opponentsFaced": [
+        {
+          "eventId": "401896758",
+          "date": "2026-09-20",
+          "providerTeamId": "20043",
+          "team": "Volos NFC",
+          "value": 14.170833333333333,
+          "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+          "rawPointsPerMatch": 0.4,
+          "shrunkPointsPerMatch": 0.92987012987013,
+          "leagueAveragePointsPerMatch": 1.3714285714285714,
+          "matches": 5,
+          "reliability": 0.45454545454545453
+        },
+        {
+          "eventId": "401896769",
+          "date": "2026-09-05",
+          "providerTeamId": "11553",
+          "team": "Aris",
+          "value": 21.097916666666663,
+          "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+          "rawPointsPerMatch": 1.4,
+          "shrunkPointsPerMatch": 1.3844155844155843,
+          "leagueAveragePointsPerMatch": 1.3714285714285714,
+          "matches": 5,
+          "reliability": 0.45454545454545453
+        },
+        {
+          "eventId": "401896771",
+          "date": "2026-08-30",
+          "providerTeamId": "21969",
+          "team": "Kifisia",
+          "value": 18.327083333333334,
+          "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+          "rawPointsPerMatch": 1,
+          "shrunkPointsPerMatch": 1.2025974025974027,
+          "leagueAveragePointsPerMatch": 1.3714285714285714,
+          "matches": 5,
+          "reliability": 0.45454545454545453
+        }
+      ],
+      "currentSampleOpponentStrength": 17.865277777777777,
+      "competitionStrengthFallback": {
+        "value": 20.9,
+        "used": false,
+        "contributors": [
+          {
+            "team": "AEK Athens",
+            "value": 20.9
+          }
+        ]
+      },
+      "neutralChampionsReferenceStrength": 51.70857142857143,
+      "strengthAdjustmentShots": 0.8690998698444272,
+      "strengthAdjustmentSot": 0.8690998698444272,
+      "adjustedCurrentShotsPer90": 0,
+      "adjustedCurrentSotPer90": 0,
+      "currentReliabilityWeight": 0.18478260869565216,
+      "currentEuropeanReliabilityWeight": 0,
+      "historicalWeight": 0.8152173913043479,
+      "blendedShotsPer90": 1.3367225182986477,
+      "blendedSotPer90": 0.4088166593584511,
+      "expectedMinutes": 84.6,
+      "oldProjectedShots": 1.27,
+      "oldProjectedSot": 0.39,
+      "per90": {
+        "shots": 1.3367225182986477,
+        "shotsOnTarget": 0.4088166593584511
+      },
+      "roleKey": "midfielder",
+      "projectedShots": 1.06,
+      "projectedSot": 0.33,
+      "reconciliationFactorShots": 0.8430112301341558,
+      "reconciliationFactorSot": 0.8521136147554347,
+      "deltaShots": -0.21,
+      "deltaSot": -0.06
+    },
+    {
+      "playerId": "luka-jovic",
+      "player": "Luka Jović",
+      "lineupName": "Jovic",
+      "identityStatus": "matched",
+      "role": "forward",
+      "historicalMinutes": 985,
+      "historicalShotsPer90": 2.38,
+      "historicalSotPer90": 1.1,
+      "historicalBaselineShotsPer90": 2.3656763925729445,
+      "historicalBaselineSotPer90": 0.9854111405835544,
+      "currentDomesticMinutes": 338,
+      "rawCurrentShotsPer90": 2.9289940828402368,
+      "rawCurrentSotPer90": 1.0650887573964498,
+      "currentEuropeanEvidence": null,
+      "currentOtherEuropeanEvidence": null,
+      "opponentsFaced": [
+        {
+          "eventId": "401896758",
+          "date": "2026-09-20",
+          "providerTeamId": "20043",
+          "team": "Volos NFC",
+          "value": 14.170833333333333,
+          "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+          "rawPointsPerMatch": 0.4,
+          "shrunkPointsPerMatch": 0.92987012987013,
+          "leagueAveragePointsPerMatch": 1.3714285714285714,
+          "matches": 5,
+          "reliability": 0.45454545454545453
+        },
+        {
+          "eventId": "401896764",
+          "date": "2026-09-13",
+          "providerTeamId": "8354",
+          "team": "Asteras Tripoli",
+          "value": 14.170833333333333,
+          "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+          "rawPointsPerMatch": 0.4,
+          "shrunkPointsPerMatch": 0.92987012987013,
+          "leagueAveragePointsPerMatch": 1.3714285714285714,
+          "matches": 5,
+          "reliability": 0.45454545454545453
+        },
+        {
+          "eventId": "401896769",
+          "date": "2026-09-05",
+          "providerTeamId": "11553",
+          "team": "Aris",
+          "value": 21.097916666666663,
+          "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+          "rawPointsPerMatch": 1.4,
+          "shrunkPointsPerMatch": 1.3844155844155843,
+          "leagueAveragePointsPerMatch": 1.3714285714285714,
+          "matches": 5,
+          "reliability": 0.45454545454545453
+        },
+        {
+          "eventId": "401896771",
+          "date": "2026-08-30",
+          "providerTeamId": "21969",
+          "team": "Kifisia",
+          "value": 18.327083333333334,
+          "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+          "rawPointsPerMatch": 1,
+          "shrunkPointsPerMatch": 1.2025974025974027,
+          "leagueAveragePointsPerMatch": 1.3714285714285714,
+          "matches": 5,
+          "reliability": 0.45454545454545453
+        }
+      ],
+      "currentSampleOpponentStrength": 16.941666666666666,
+      "competitionStrengthFallback": {
+        "value": 20.9,
+        "used": false,
+        "contributors": [
+          {
+            "team": "AEK Athens",
+            "value": 20.9
+          }
+        ]
+      },
+      "neutralChampionsReferenceStrength": 51.70857142857143,
+      "strengthAdjustmentShots": 0.8655274984344494,
+      "strengthAdjustmentSot": 0.8655274984344494,
+      "adjustedCurrentShotsPer90": 2.5351249214500147,
+      "adjustedCurrentSotPer90": 0.9218636078000054,
+      "currentReliabilityWeight": 0.2730210016155089,
+      "currentEuropeanReliabilityWeight": 0,
+      "historicalWeight": 0.7269789983844911,
+      "blendedShotsPer90": 2.4119393996492366,
+      "blendedSotPer90": 0.9680613295327956,
+      "expectedMinutes": 84.6,
+      "oldProjectedShots": 1.83,
+      "oldProjectedSot": 0.77,
+      "per90": {
+        "shots": 2.4119393996492366,
+        "shotsOnTarget": 0.9680613295327956
+      },
+      "roleKey": "forward",
+      "projectedShots": 1.91,
+      "projectedSot": 0.78,
+      "reconciliationFactorShots": 0.8430112301341558,
+      "reconciliationFactorSot": 0.8521136147554347,
+      "deltaShots": 0.08,
+      "deltaSot": 0.01
+    },
+    {
+      "playerId": "oleksandr-zubkov",
+      "player": "Oleksandr Zubkov",
+      "lineupName": null,
+      "identityStatus": "matched-not-in-control-xi",
+      "role": "forward",
+      "historicalMinutes": 2185,
+      "historicalShotsPer90": 2.97,
+      "historicalSotPer90": 0.74,
+      "historicalBaselineShotsPer90": 2.7891247974068074,
+      "historicalBaselineSotPer90": 0.7750081037277148,
+      "currentDomesticMinutes": 68,
+      "rawCurrentShotsPer90": 1.3235294117647058,
+      "rawCurrentSotPer90": 0,
+      "currentEuropeanEvidence": null,
+      "currentOtherEuropeanEvidence": null,
+      "opponentsFaced": [
+        {
+          "eventId": "401896758",
+          "date": "2026-09-20",
+          "providerTeamId": "20043",
+          "team": "Volos NFC",
+          "value": 14.170833333333333,
+          "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+          "rawPointsPerMatch": 0.4,
+          "shrunkPointsPerMatch": 0.92987012987013,
+          "leagueAveragePointsPerMatch": 1.3714285714285714,
+          "matches": 5,
+          "reliability": 0.45454545454545453
+        },
+        {
+          "eventId": "401896769",
+          "date": "2026-09-05",
+          "providerTeamId": "11553",
+          "team": "Aris",
+          "value": 21.097916666666663,
+          "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+          "rawPointsPerMatch": 1.4,
+          "shrunkPointsPerMatch": 1.3844155844155843,
+          "leagueAveragePointsPerMatch": 1.3714285714285714,
+          "matches": 5,
+          "reliability": 0.45454545454545453
+        },
+        {
+          "eventId": "401896771",
+          "date": "2026-08-30",
+          "providerTeamId": "21969",
+          "team": "Kifisia",
+          "value": 18.327083333333334,
+          "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+          "rawPointsPerMatch": 1,
+          "shrunkPointsPerMatch": 1.2025974025974027,
+          "leagueAveragePointsPerMatch": 1.3714285714285714,
+          "matches": 5,
+          "reliability": 0.45454545454545453
+        }
+      ],
+      "currentSampleOpponentStrength": 17.865277777777777,
+      "competitionStrengthFallback": {
+        "value": 20.9,
+        "used": false,
+        "contributors": [
+          {
+            "team": "AEK Athens",
+            "value": 20.9
+          }
+        ]
+      },
+      "neutralChampionsReferenceStrength": 51.70857142857143,
+      "strengthAdjustmentShots": 0.8690998698444272,
+      "strengthAdjustmentSot": 0.8690998698444272,
+      "adjustedCurrentShotsPer90": 1.1502792394999772,
+      "adjustedCurrentSotPer90": 0,
+      "currentReliabilityWeight": 0.07024793388429752,
+      "currentEuropeanReliabilityWeight": 0,
+      "historicalWeight": 0.9297520661157025,
+      "blendedShotsPer90": 2.673999283008394,
+      "blendedSotPer90": 0.7205653856972555,
+      "expectedMinutes": 0,
+      "oldProjectedShots": 0,
+      "oldProjectedSot": 0,
+      "per90": {
+        "shots": 2.673999283008394,
+        "shotsOnTarget": 0.7205653856972555
+      },
+      "roleKey": "forward",
+      "projectedShots": 0,
+      "projectedSot": 0,
+      "reconciliationFactorShots": 0.8430112301341558,
+      "reconciliationFactorSot": 0.8521136147554347,
+      "deltaShots": 0,
+      "deltaSot": 0
+    },
+    {
+      "playerId": "aboubakary-koita",
+      "player": "Aboubakary Koita",
+      "lineupName": "Koita",
+      "identityStatus": "matched",
+      "role": "forward",
+      "historicalMinutes": 1428,
+      "historicalShotsPer90": 2.58,
+      "historicalSotPer90": 0.82,
+      "historicalBaselineShotsPer90": 2.491082474226804,
+      "historicalBaselineSotPer90": 0.8354639175257732,
+      "currentDomesticMinutes": 172,
+      "rawCurrentShotsPer90": 3.13953488372093,
+      "rawCurrentSotPer90": 0.5232558139534884,
+      "currentEuropeanEvidence": null,
+      "currentOtherEuropeanEvidence": null,
+      "opponentsFaced": [
+        {
+          "eventId": "401896758",
+          "date": "2026-09-20",
+          "providerTeamId": "20043",
+          "team": "Volos NFC",
+          "value": 14.170833333333333,
+          "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+          "rawPointsPerMatch": 0.4,
+          "shrunkPointsPerMatch": 0.92987012987013,
+          "leagueAveragePointsPerMatch": 1.3714285714285714,
+          "matches": 5,
+          "reliability": 0.45454545454545453
+        },
+        {
+          "eventId": "401896764",
+          "date": "2026-09-13",
+          "providerTeamId": "8354",
+          "team": "Asteras Tripoli",
+          "value": 14.170833333333333,
+          "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+          "rawPointsPerMatch": 0.4,
+          "shrunkPointsPerMatch": 0.92987012987013,
+          "leagueAveragePointsPerMatch": 1.3714285714285714,
+          "matches": 5,
+          "reliability": 0.45454545454545453
+        },
+        {
+          "eventId": "401896769",
+          "date": "2026-09-05",
+          "providerTeamId": "11553",
+          "team": "Aris",
+          "value": 21.097916666666663,
+          "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+          "rawPointsPerMatch": 1.4,
+          "shrunkPointsPerMatch": 1.3844155844155843,
+          "leagueAveragePointsPerMatch": 1.3714285714285714,
+          "matches": 5,
+          "reliability": 0.45454545454545453
+        },
+        {
+          "eventId": "401896771",
+          "date": "2026-08-30",
+          "providerTeamId": "21969",
+          "team": "Kifisia",
+          "value": 18.327083333333334,
+          "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+          "rawPointsPerMatch": 1,
+          "shrunkPointsPerMatch": 1.2025974025974027,
+          "leagueAveragePointsPerMatch": 1.3714285714285714,
+          "matches": 5,
+          "reliability": 0.45454545454545453
+        }
+      ],
+      "currentSampleOpponentStrength": 16.941666666666666,
+      "competitionStrengthFallback": {
+        "value": 20.9,
+        "used": false,
+        "contributors": [
+          {
+            "team": "AEK Athens",
+            "value": 20.9
+          }
+        ]
+      },
+      "neutralChampionsReferenceStrength": 51.70857142857143,
+      "strengthAdjustmentShots": 0.8655274984344494,
+      "strengthAdjustmentSot": 0.8655274984344494,
+      "adjustedCurrentShotsPer90": 2.7173537741546667,
+      "adjustedCurrentSotPer90": 0.4528922956924445,
+      "currentReliabilityWeight": 0.16044776119402984,
+      "currentEuropeanReliabilityWeight": 0,
+      "historicalWeight": 0.8395522388059702,
+      "blendedShotsPer90": 2.5273871977226925,
+      "blendedSotPer90": 0.7740811573062467,
+      "expectedMinutes": 84.6,
+      "oldProjectedShots": 1.92,
+      "oldProjectedSot": 0.65,
+      "per90": {
+        "shots": 2.5273871977226925,
+        "shotsOnTarget": 0.7740811573062467
+      },
+      "roleKey": "forward",
+      "projectedShots": 2,
+      "projectedSot": 0.62,
+      "reconciliationFactorShots": 0.8430112301341558,
+      "reconciliationFactorSot": 0.8521136147554347,
+      "deltaShots": 0.08,
+      "deltaSot": -0.03
+    },
+    {
+      "playerId": "barnabas-varga",
+      "player": "Barnabás Varga",
+      "lineupName": "Varga",
+      "identityStatus": "matched",
+      "role": "forward",
+      "historicalMinutes": 1050,
+      "historicalShotsPer90": 2.31,
+      "historicalSotPer90": 1.46,
+      "historicalBaselineShotsPer90": 2.3284615384615384,
+      "historicalBaselineSotPer90": 1.1830769230769231,
+      "currentDomesticMinutes": 200,
+      "rawCurrentShotsPer90": 3.15,
+      "rawCurrentSotPer90": 1.8,
+      "currentEuropeanEvidence": null,
+      "currentOtherEuropeanEvidence": null,
+      "opponentsFaced": [
+        {
+          "eventId": "401896764",
+          "date": "2026-09-13",
+          "providerTeamId": "8354",
+          "team": "Asteras Tripoli",
+          "value": 14.170833333333333,
+          "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+          "rawPointsPerMatch": 0.4,
+          "shrunkPointsPerMatch": 0.92987012987013,
+          "leagueAveragePointsPerMatch": 1.3714285714285714,
+          "matches": 5,
+          "reliability": 0.45454545454545453
+        },
+        {
+          "eventId": "401896769",
+          "date": "2026-09-05",
+          "providerTeamId": "11553",
+          "team": "Aris",
+          "value": 21.097916666666663,
+          "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+          "rawPointsPerMatch": 1.4,
+          "shrunkPointsPerMatch": 1.3844155844155843,
+          "leagueAveragePointsPerMatch": 1.3714285714285714,
+          "matches": 5,
+          "reliability": 0.45454545454545453
+        },
+        {
+          "eventId": "401896771",
+          "date": "2026-08-30",
+          "providerTeamId": "21969",
+          "team": "Kifisia",
+          "value": 18.327083333333334,
+          "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+          "rawPointsPerMatch": 1,
+          "shrunkPointsPerMatch": 1.2025974025974027,
+          "leagueAveragePointsPerMatch": 1.3714285714285714,
+          "matches": 5,
+          "reliability": 0.45454545454545453
+        }
+      ],
+      "currentSampleOpponentStrength": 17.865277777777777,
+      "competitionStrengthFallback": {
+        "value": 20.9,
+        "used": false,
+        "contributors": [
+          {
+            "team": "AEK Athens",
+            "value": 20.9
+          }
+        ]
+      },
+      "neutralChampionsReferenceStrength": 51.70857142857143,
+      "strengthAdjustmentShots": 0.8690998698444272,
+      "strengthAdjustmentSot": 0.8690998698444272,
+      "adjustedCurrentShotsPer90": 2.737664590009946,
+      "adjustedCurrentSotPer90": 1.564379765719969,
+      "currentReliabilityWeight": 0.18181818181818182,
+      "currentEuropeanReliabilityWeight": 0,
+      "historicalWeight": 0.8181818181818181,
+      "blendedShotsPer90": 2.402862093288521,
+      "blendedSotPer90": 1.252404712648386,
+      "expectedMinutes": 84.6,
+      "oldProjectedShots": 1.8,
+      "oldProjectedSot": 0.92,
+      "per90": {
+        "shots": 2.402862093288521,
+        "shotsOnTarget": 1.252404712648386
+      },
+      "roleKey": "forward",
+      "projectedShots": 1.9,
+      "projectedSot": 1,
+      "reconciliationFactorShots": 0.8430112301341558,
+      "reconciliationFactorSot": 0.8521136147554347,
+      "deltaShots": 0.1,
+      "deltaSot": 0.08
+    },
+    {
+      "playerId": "joao-mario",
+      "player": "João Mário",
+      "lineupName": null,
+      "identityStatus": "matched-not-in-control-xi",
+      "role": "forward",
+      "historicalMinutes": 540,
+      "historicalShotsPer90": 1.83,
+      "historicalSotPer90": 1.17,
+      "historicalBaselineShotsPer90": 2.1550000000000002,
+      "historicalBaselineSotPer90": 0.97625,
+      "currentDomesticMinutes": 31,
+      "rawCurrentShotsPer90": 0,
+      "rawCurrentSotPer90": 0,
+      "currentEuropeanEvidence": null,
+      "currentOtherEuropeanEvidence": null,
+      "opponentsFaced": [
+        {
+          "eventId": "401896758",
+          "date": "2026-09-20",
+          "providerTeamId": "20043",
+          "team": "Volos NFC",
+          "value": 14.170833333333333,
+          "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+          "rawPointsPerMatch": 0.4,
+          "shrunkPointsPerMatch": 0.92987012987013,
+          "leagueAveragePointsPerMatch": 1.3714285714285714,
+          "matches": 5,
+          "reliability": 0.45454545454545453
+        }
+      ],
+      "currentSampleOpponentStrength": 14.170833333333333,
+      "competitionStrengthFallback": {
+        "value": 20.9,
+        "used": false,
+        "contributors": [
+          {
+            "team": "AEK Athens",
+            "value": 20.9
+          }
+        ]
+      },
+      "neutralChampionsReferenceStrength": 51.70857142857143,
+      "strengthAdjustmentShots": 0.8548103842045162,
+      "strengthAdjustmentSot": 0.8548103842045162,
+      "adjustedCurrentShotsPer90": 0,
+      "adjustedCurrentSotPer90": 0,
+      "currentReliabilityWeight": 0.03329752953813104,
+      "currentEuropeanReliabilityWeight": 0,
+      "historicalWeight": 0.966702470461869,
+      "blendedShotsPer90": 2.083243823845328,
+      "blendedSotPer90": 0.9437432867883996,
+      "expectedMinutes": 0,
+      "oldProjectedShots": 0,
+      "oldProjectedSot": 0,
+      "per90": {
+        "shots": 2.083243823845328,
+        "shotsOnTarget": 0.9437432867883996
+      },
+      "roleKey": "forward",
+      "projectedShots": 0,
+      "projectedSot": 0,
+      "reconciliationFactorShots": 0.8430112301341558,
+      "reconciliationFactorSot": 0.8521136147554347,
+      "deltaShots": 0,
+      "deltaSot": 0
+    },
+    {
+      "playerId": "zini",
+      "player": "Zini",
+      "lineupName": null,
+      "identityStatus": "matched-not-in-control-xi",
+      "role": "forward",
+      "historicalMinutes": 834,
+      "historicalShotsPer90": 2.48,
+      "historicalSotPer90": 0.97,
+      "historicalBaselineShotsPer90": 2.412525951557093,
+      "historicalBaselineSotPer90": 0.9129065743944635,
+      "currentDomesticMinutes": 163,
+      "rawCurrentShotsPer90": 3.8650306748466257,
+      "rawCurrentSotPer90": 2.7607361963190185,
+      "currentEuropeanEvidence": null,
+      "currentOtherEuropeanEvidence": null,
+      "opponentsFaced": [
+        {
+          "eventId": "401896758",
+          "date": "2026-09-20",
+          "providerTeamId": "20043",
+          "team": "Volos NFC",
+          "value": 14.170833333333333,
+          "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+          "rawPointsPerMatch": 0.4,
+          "shrunkPointsPerMatch": 0.92987012987013,
+          "leagueAveragePointsPerMatch": 1.3714285714285714,
+          "matches": 5,
+          "reliability": 0.45454545454545453
+        },
+        {
+          "eventId": "401896764",
+          "date": "2026-09-13",
+          "providerTeamId": "8354",
+          "team": "Asteras Tripoli",
+          "value": 14.170833333333333,
+          "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+          "rawPointsPerMatch": 0.4,
+          "shrunkPointsPerMatch": 0.92987012987013,
+          "leagueAveragePointsPerMatch": 1.3714285714285714,
+          "matches": 5,
+          "reliability": 0.45454545454545453
+        },
+        {
+          "eventId": "401896769",
+          "date": "2026-09-05",
+          "providerTeamId": "11553",
+          "team": "Aris",
+          "value": 21.097916666666663,
+          "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+          "rawPointsPerMatch": 1.4,
+          "shrunkPointsPerMatch": 1.3844155844155843,
+          "leagueAveragePointsPerMatch": 1.3714285714285714,
+          "matches": 5,
+          "reliability": 0.45454545454545453
+        },
+        {
+          "eventId": "401896771",
+          "date": "2026-08-30",
+          "providerTeamId": "21969",
+          "team": "Kifisia",
+          "value": 18.327083333333334,
+          "source": "opponent-domestic-ppg-anchored-to-derived-league-strength",
+          "rawPointsPerMatch": 1,
+          "shrunkPointsPerMatch": 1.2025974025974027,
+          "leagueAveragePointsPerMatch": 1.3714285714285714,
+          "matches": 5,
+          "reliability": 0.45454545454545453
+        }
+      ],
+      "currentSampleOpponentStrength": 16.941666666666666,
+      "competitionStrengthFallback": {
+        "value": 20.9,
+        "used": false,
+        "contributors": [
+          {
+            "team": "AEK Athens",
+            "value": 20.9
+          }
+        ]
+      },
+      "neutralChampionsReferenceStrength": 51.70857142857143,
+      "strengthAdjustmentShots": 0.8655274984344494,
+      "strengthAdjustmentSot": 0.8655274984344494,
+      "adjustedCurrentShotsPer90": 3.3452903313724116,
+      "adjustedCurrentSotPer90": 2.3894930938374372,
+      "currentReliabilityWeight": 0.1533396048918156,
+      "currentEuropeanReliabilityWeight": 0,
+      "historicalWeight": 0.8466603951081844,
+      "blendedShotsPer90": 2.5555556730151334,
+      "blendedSotPer90": 1.1393257678744302,
+      "expectedMinutes": 0,
+      "oldProjectedShots": 0,
+      "oldProjectedSot": 0,
+      "per90": {
+        "shots": 2.5555556730151334,
+        "shotsOnTarget": 1.1393257678744302
+      },
+      "roleKey": "forward",
+      "projectedShots": 0,
+      "projectedSot": 0,
+      "reconciliationFactorShots": 0.8430112301341558,
+      "reconciliationFactorSot": 0.8521136147554347,
+      "deltaShots": 0,
+      "deltaSot": 0
+    },
+    {
+      "playerId": "aek-athens-pilio",
+      "player": "Pilio",
+      "lineupName": "Pilio",
+      "identityStatus": "role-baseline-unmatched-lineup-name",
+      "role": "defender",
+      "historicalMinutes": null,
+      "historicalShotsPer90": null,
+      "historicalSotPer90": null,
+      "historicalBaselineShotsPer90": 0.65,
+      "historicalBaselineSotPer90": 0.18,
+      "currentDomesticMinutes": null,
+      "rawCurrentShotsPer90": null,
+      "rawCurrentSotPer90": null,
+      "currentEuropeanEvidence": null,
+      "currentOtherEuropeanEvidence": null,
+      "opponentsFaced": [],
+      "currentSampleOpponentStrength": null,
+      "competitionStrengthFallback": {
+        "value": 20.9,
+        "used": false,
+        "contributors": [
+          {
+            "team": "AEK Athens",
+            "value": 20.9
+          }
+        ]
+      },
+      "neutralChampionsReferenceStrength": 51.70857142857143,
+      "strengthAdjustmentShots": null,
+      "strengthAdjustmentSot": null,
+      "adjustedCurrentShotsPer90": null,
+      "adjustedCurrentSotPer90": null,
+      "currentReliabilityWeight": 0,
+      "currentEuropeanReliabilityWeight": 0,
+      "historicalWeight": 1,
+      "blendedShotsPer90": 0.65,
+      "blendedSotPer90": 0.18,
+      "expectedMinutes": 84.6,
+      "oldProjectedShots": 0.5,
+      "oldProjectedSot": 0.14,
+      "per90": {
+        "shots": 0.65,
+        "shotsOnTarget": 0.18
+      },
+      "roleKey": "defender",
+      "projectedShots": 0.52,
+      "projectedSot": 0.14,
+      "reconciliationFactorShots": 0.8430112301341558,
+      "reconciliationFactorSot": 0.8521136147554347,
+      "deltaShots": 0.02,
+      "deltaSot": 0
+    }
+  ]
+}

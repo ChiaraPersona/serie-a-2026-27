@@ -1,0 +1,206 @@
+{
+  "registryVersion": 2,
+  "configurationHash": "61f65a2d18a4f187504f0469c30d0dd905c6f41fe8a01fa5845310fff32dc216",
+  "configurationOnlyHash": "fa71d9f47579758d1cb149525b723136dcc96bf7f0003f558fd7c1b52cc73c4a",
+  "implementationHashes": {
+    "config.js": "f48f9af714460bf8641251cc3091e10a6e77986d3fb33099c8475aa828d8ef34",
+    "data.js": "f7a3945fa0186e4df0e38237a3f6607bfe257bcced0657a18dd159dff6279b9c",
+    "models.js": "e2fc1e0d1b3d2fde786afce1c4f40163f0da96e0ad318440e9458b6c9f95d25a",
+    "metrics.js": "9a7b9d25d5a3e5332e1a55f0a2c19d6b7f35de8c77b405193c046149d206e84e",
+    "snapshot.js": "68e4d808b9b2e00f0c7f557505292b03a6a7a73347d254b8aced01527cc7476e"
+  },
+  "disclaimer": "OBSERVATIONAL TARGET — NOT BOOKMAKER-CERTIFIED",
+  "observationalTarget": {
+    "id": "RECORDED_YELLOW",
+    "version": "recorded-yellow-v1"
+  },
+  "marketCertifiedTarget": {
+    "id": "PLAYER_YELLOW",
+    "version": "card-targets-v1",
+    "status": "NOT_VALIDATED"
+  },
+  "allowedStates": [
+    "RESEARCH",
+    "SHADOW",
+    "CANDIDATE",
+    "PRODUCTION"
+  ],
+  "promotionEnabled": false,
+  "models": [
+    {
+      "id": "C0",
+      "family": "Beta-Binomial hierarchical population baseline",
+      "formula": "Jeffreys league posterior; broad and supported detailed roles shrunk with k=12; leave target individual out of population prior",
+      "features": [
+        "league",
+        "broad role",
+        "supported detailed role"
+      ],
+      "state": "RESEARCH",
+      "version": "cards-c0-c4-recorded-yellow-r2",
+      "target": "RECORDED_YELLOW",
+      "targetVersion": "recorded-yellow-v1",
+      "disclaimer": "OBSERVATIONAL TARGET — NOT BOOKMAKER-CERTIFIED",
+      "estimand": "RECORDED_ORDINARY_YELLOW_IN_RECONSTRUCTED_PREMATCH_CANDIDATE_UNIVERSE",
+      "configurationHash": "61f65a2d18a4f187504f0469c30d0dd905c6f41fe8a01fa5845310fff32dc216",
+      "priors": {
+        "alpha": 0.5,
+        "beta": 0.5,
+        "rationale": "Jeffreys reference prior for Bernoulli; prior-only mean 0.5 is not an empirically calibrated card rate"
+      },
+      "shrinkage": {
+        "roleEquivalentObservations": 12,
+        "individualEquivalentObservations": 12,
+        "historicalDiscount": 0.5,
+        "detailedRoleMinimum": 20,
+        "principle": "12-equivalent-sample stabilization used elsewhere in repository; no shot/referee coefficient copied"
+      },
+      "dataCutoff": "Per-player target kickoff, source availability enforced",
+      "limitations": [
+        "Observational target, not bookmaker-certified",
+        "No prospective validation yet",
+        "No model promotion"
+      ]
+    },
+    {
+      "id": "C1",
+      "family": "Exposure-tempered Beta-Binomial individual posterior",
+      "formula": "(k*pC0 + discounted prior-season/current observational successes)/(k + effective samples)",
+      "features": [
+        "C0",
+        "timestamped 2025-26 Serie A ordinary-yellow aggregate",
+        "walk-forward current RECORDED_YELLOW history",
+        "sample maturity"
+      ],
+      "state": "RESEARCH",
+      "version": "cards-c0-c4-recorded-yellow-r2",
+      "target": "RECORDED_YELLOW",
+      "targetVersion": "recorded-yellow-v1",
+      "disclaimer": "OBSERVATIONAL TARGET — NOT BOOKMAKER-CERTIFIED",
+      "estimand": "RECORDED_ORDINARY_YELLOW_IN_RECONSTRUCTED_PREMATCH_CANDIDATE_UNIVERSE",
+      "configurationHash": "61f65a2d18a4f187504f0469c30d0dd905c6f41fe8a01fa5845310fff32dc216",
+      "priors": {
+        "alpha": 0.5,
+        "beta": 0.5,
+        "rationale": "Jeffreys reference prior for Bernoulli; prior-only mean 0.5 is not an empirically calibrated card rate"
+      },
+      "shrinkage": {
+        "roleEquivalentObservations": 12,
+        "individualEquivalentObservations": 12,
+        "historicalDiscount": 0.5,
+        "detailedRoleMinimum": 20,
+        "principle": "12-equivalent-sample stabilization used elsewhere in repository; no shot/referee coefficient copied"
+      },
+      "dataCutoff": "Per-player target kickoff, source availability enforced",
+      "limitations": [
+        "Observational target, not bookmaker-certified",
+        "No prospective validation yet",
+        "No model promotion"
+      ]
+    },
+    {
+      "id": "C2",
+      "family": "Training-fold penalized logistic offsets",
+      "formula": "logit(pC2)=logit(pC1)+bEM*xEM+bF*xF; coefficients estimated only on earlier matches with ridge=4",
+      "features": [
+        "C1",
+        "pre-match Expected Minutes",
+        "stabilized historical/current fouls/90"
+      ],
+      "state": "RESEARCH",
+      "version": "cards-c0-c4-recorded-yellow-r2",
+      "target": "RECORDED_YELLOW",
+      "targetVersion": "recorded-yellow-v1",
+      "disclaimer": "OBSERVATIONAL TARGET — NOT BOOKMAKER-CERTIFIED",
+      "estimand": "RECORDED_ORDINARY_YELLOW_IN_RECONSTRUCTED_PREMATCH_CANDIDATE_UNIVERSE",
+      "configurationHash": "61f65a2d18a4f187504f0469c30d0dd905c6f41fe8a01fa5845310fff32dc216",
+      "priors": {
+        "alpha": 0.5,
+        "beta": 0.5,
+        "rationale": "Jeffreys reference prior for Bernoulli; prior-only mean 0.5 is not an empirically calibrated card rate"
+      },
+      "shrinkage": {
+        "roleEquivalentObservations": 12,
+        "individualEquivalentObservations": 12,
+        "historicalDiscount": 0.5,
+        "detailedRoleMinimum": 20,
+        "principle": "12-equivalent-sample stabilization used elsewhere in repository; no shot/referee coefficient copied"
+      },
+      "dataCutoff": "Per-player target kickoff, source availability enforced",
+      "limitations": [
+        "Observational target, not bookmaker-certified",
+        "No prospective validation yet",
+        "No model promotion"
+      ]
+    },
+    {
+      "id": "C3",
+      "family": "Training-only logistic opponent offset, maturity/persistence gate",
+      "formula": "logit(pC3)=logit(pC2)+bO*xO only if ACTIVE; otherwise C3=C2",
+      "features": [
+        "C2",
+        "opponent foul-drawing pressure; other duel/channel families data-only"
+      ],
+      "state": "RESEARCH",
+      "version": "cards-c0-c4-recorded-yellow-r2",
+      "target": "RECORDED_YELLOW",
+      "targetVersion": "recorded-yellow-v1",
+      "disclaimer": "OBSERVATIONAL TARGET — NOT BOOKMAKER-CERTIFIED",
+      "estimand": "RECORDED_ORDINARY_YELLOW_IN_RECONSTRUCTED_PREMATCH_CANDIDATE_UNIVERSE",
+      "configurationHash": "61f65a2d18a4f187504f0469c30d0dd905c6f41fe8a01fa5845310fff32dc216",
+      "priors": {
+        "alpha": 0.5,
+        "beta": 0.5,
+        "rationale": "Jeffreys reference prior for Bernoulli; prior-only mean 0.5 is not an empirically calibrated card rate"
+      },
+      "shrinkage": {
+        "roleEquivalentObservations": 12,
+        "individualEquivalentObservations": 12,
+        "historicalDiscount": 0.5,
+        "detailedRoleMinimum": 20,
+        "principle": "12-equivalent-sample stabilization used elsewhere in repository; no shot/referee coefficient copied"
+      },
+      "dataCutoff": "Per-player target kickoff, source availability enforced",
+      "limitations": [
+        "Observational target, not bookmaker-certified",
+        "No prospective validation yet",
+        "No model promotion"
+      ]
+    },
+    {
+      "id": "C4",
+      "family": "Referee Beta-Binomial environment with eligible player-target evidence",
+      "formula": "Referee posterior shrunk toward pre-match league environment; only mature/persistent same-competition effect can alter C3; otherwise C4=C3",
+      "features": [
+        "C3",
+        "pre-match designated referee",
+        "eligible target history"
+      ],
+      "state": "RESEARCH",
+      "version": "cards-c0-c4-recorded-yellow-r2",
+      "target": "RECORDED_YELLOW",
+      "targetVersion": "recorded-yellow-v1",
+      "disclaimer": "OBSERVATIONAL TARGET — NOT BOOKMAKER-CERTIFIED",
+      "estimand": "RECORDED_ORDINARY_YELLOW_IN_RECONSTRUCTED_PREMATCH_CANDIDATE_UNIVERSE",
+      "configurationHash": "61f65a2d18a4f187504f0469c30d0dd905c6f41fe8a01fa5845310fff32dc216",
+      "priors": {
+        "alpha": 0.5,
+        "beta": 0.5,
+        "rationale": "Jeffreys reference prior for Bernoulli; prior-only mean 0.5 is not an empirically calibrated card rate"
+      },
+      "shrinkage": {
+        "roleEquivalentObservations": 12,
+        "individualEquivalentObservations": 12,
+        "historicalDiscount": 0.5,
+        "detailedRoleMinimum": 20,
+        "principle": "12-equivalent-sample stabilization used elsewhere in repository; no shot/referee coefficient copied"
+      },
+      "dataCutoff": "Per-player target kickoff, source availability enforced",
+      "limitations": [
+        "Observational target, not bookmaker-certified",
+        "No prospective validation yet",
+        "No model promotion"
+      ]
+    }
+  ]
+}
