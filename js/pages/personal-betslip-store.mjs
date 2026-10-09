@@ -54,6 +54,21 @@ function semanticKeys(selection){return unique(selection?.betSelection?.overlap?
 function quote(selection){return selection?.betSelection?.quote||{}}
 function compatibility(selection){return selection?.betSelection?.compatibility||{}}
 
+function scenarioRelation(left,right){
+  const a=left?.scenarioAnalysis,b=right?.scenarioAnalysis;
+  if(!a||!b)return null;
+  if(a.scoreMask&&b.scoreMask){
+    const leftMask=BigInt(a.scoreMask),rightMask=BigInt(b.scoreMask),intersection=leftMask&rightMask;
+    if(intersection===0n)return {type:"SCENARIO_INCOMPATIBILITY",message:`${left.label} e ${right.label}: non possono verificarsi nello stesso punteggio finale.`};
+    const leftSubset=intersection===leftMask,rightSubset=intersection===rightMask;
+    if(leftSubset!==rightSubset)return {type:"LOGICAL_IMPLICATION",message:`${left.label} e ${right.label}: una selezione implica logicamente l'altra; non sono indipendenti.`};
+    return {type:"LOGICAL_OVERLAP",message:`${left.label} e ${right.label}: eventi sovrapposti o correlati; non sono indipendenti.`};
+  }
+  const leftOutcomes=a.compatibleOutcomes||[],rightOutcomes=b.compatibleOutcomes||[];
+  if(leftOutcomes.length&&rightOutcomes.length&&!leftOutcomes.some(outcome=>rightOutcomes.includes(outcome)))return {type:"SCENARIO_INCOMPATIBILITY",message:`${left.label} e ${right.label}: scenari vincenti incompatibili.`};
+  return null;
+}
+
 function contradictory(left,right){
   if(matchId(left)!==matchId(right)||!marketId(left)||marketId(left)!==marketId(right)||left.selectionId===right.selectionId)return false;
   const a=marketOutcome(left),b=marketOutcome(right);
@@ -85,6 +100,8 @@ export function assessSelections(selections){
         addIssue("MARKET_CONTRADICTION",`${left.label} e ${right.label}: esiti contraddittori dello stesso mercato.`,[left.selectionId,right.selectionId]);
         continue;
       }
+      const relation=scenarioRelation(left,right);
+      if(relation){addIssue(relation.type,relation.message,[left.selectionId,right.selectionId],"warning");continue}
       const sameOverlap=overlapKey(left)&&overlapKey(left)===overlapKey(right);
       const sharedSemantic=semanticKeys(left).filter(key=>semanticKeys(right).includes(key));
       if(sameOverlap||sharedSemantic.length)addIssue("LOGICAL_OVERLAP",`${left.label} e ${right.label}: sovrapposizione logica${sharedSemantic.length?` (${sharedSemantic.join(", ")})`:""}.`,[left.selectionId,right.selectionId]);

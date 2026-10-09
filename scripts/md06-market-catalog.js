@@ -3,6 +3,7 @@
 const { attachBetSelection } = require("./betting-selection-contract");
 const { isPlayableSelection, playablePolicyFor } = require("./betting-market-policy");
 const { b2FamilyForMarket, isPrimaryScoreCompatible, evaluateDerivedScoreMarket, validateCanonicalDnb } = require("./score-market-evaluation");
+const { annotateCatalogMatches, CLASSIFICATIONS } = require("./md06-scenario-coherence");
 
 const finite = value => value !== null && value !== undefined && value !== "" && Number.isFinite(Number(value));
 const clean = value => String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
@@ -412,18 +413,24 @@ function buildMd06MarketCatalog({ predictionsData, odds, matches, schedinaSlips,
   if (duplicates.length) throw new Error(`Catalogo MD${code}: selectionId duplicati: ${duplicates.map(leg => leg.selectionId).join(", ")}`);
   const roundMatches = matches.filter(match => match.competition === "serie-a" && match.season === "2026-27" && match.matchday === matchday)
     .sort((left, right) => `${left.date}T${left.kickoff || "00:00"}`.localeCompare(`${right.date}T${right.kickoff || "00:00"}`));
-  const catalogMatches = roundMatches.map(match => {
+  const baseCatalogMatches = roundMatches.map(match => {
     const rows = selections.filter(leg => leg.matchId === match.id).sort(stableSort).map((leg, index) => ({ ...leg, catalogOrder: index }));
     return { matchId: match.id, date: match.date, kickoff: match.kickoff, homeTeam: match.homeTeam, awayTeam: match.awayTeam, selections: rows, total: rows.length, evaluated: rows.filter(leg => finite(leg.betSelection?.evaluation?.expectedValuePct)).length, notModelled: rows.filter(leg => !finite(leg.betSelection?.evaluation?.expectedValuePct)).length };
   });
+  const catalogMatches = annotateCatalogMatches({ catalogMatches: baseCatalogMatches, predictions });
   const all = catalogMatches.flatMap(match => match.selections);
+  const scenarioCounts = all.reduce((counts, leg) => {
+    const key = leg.scenarioAnalysis?.classification;
+    if (key) counts[key] = (counts[key] || 0) + 1;
+    return counts;
+  }, Object.fromEntries(Object.values(CLASSIFICATIONS).map(key => [key, 0])));
   return {
-    schemaVersion: 1,
+    schemaVersion: 2,
     matchday,
     generatedAt: new Date().toISOString(),
-    sources: { predictionsGeneratedAt: predictionsData.generatedAt, modelVersion: predictionsData.engine?.version || predictions[0]?.engineVersion || null, oddsRetrievedAt: odds.retrievedAt, oddsSnapshot: "data/normalized/odds/sisal/serie-a.json", probableLineupsImportedAt: probableLineups?.importedAt || null, probableLineupsProvider: probableLineups?.provider || null, officialLineupsRetrievedAt: officialLineups?.retrievedAt || null, officialFixturesAvailable: (officialLineups?.fixtures || []).filter(fixture => fixture.matchday === matchday).length },
+    sources: { predictionsGeneratedAt: predictionsData.generatedAt, modelVersion: predictionsData.engine?.version || predictions[0]?.engineVersion || null, oddsRetrievedAt: odds.retrievedAt, oddsSnapshot: "data/normalized/odds/sisal/serie-a.json", probableLineupsImportedAt: probableLineups?.importedAt || null, probableLineupsProvider: probableLineups?.provider || null, officialLineupsRetrievedAt: officialLineups?.retrievedAt || null, officialFixturesAvailable: (officialLineups?.fixtures || []).filter(fixture => fixture.matchday === matchday).length, scenarioCoherenceVersion: 1, scenarioCoherenceBasis: "Frozen Engine V2 probabilities and deterministic event logic; odds and EV excluded" },
     rules: { underAllowed: false, individualPlayerFoulsAllowed: false, cornerPeriodsAllowed: false, doubleChance12Allowed: false, fullMatchCornerOversAllowed: true, fullMatchTeamCornersAllowed: true, fullTimeCorner1X2Allowed: true, negativeExpectedValueAllowed: true, topNLimit: null },
-    totals: { initialVisible: initial.length, excludedByPolicy: excluded.filter(item => item.stage === "policy").length, excludedByLineup: excluded.filter(item => item.stage === "lineup").length, retainedInitial: retained.length, groupARequested: 128, groupARecovered: groupA.length, groupARejected: groupARejected.length, dnbRequested: 20, dnbRecovered: dnb.length, dnbRejected: dnbRejected.length, groupB2Requested: 203, groupB2Recovered: groupB2.length, groupB2Rejected: groupB2Rejected.length, finalSelections: all.length, evaluated: all.filter(leg => finite(leg.betSelection?.evaluation?.expectedValuePct)).length, notModelled: all.filter(leg => !finite(leg.betSelection?.evaluation?.expectedValuePct)).length },
+    totals: { initialVisible: initial.length, excludedByPolicy: excluded.filter(item => item.stage === "policy").length, excludedByLineup: excluded.filter(item => item.stage === "lineup").length, retainedInitial: retained.length, groupARequested: 128, groupARecovered: groupA.length, groupARejected: groupARejected.length, dnbRequested: 20, dnbRecovered: dnb.length, dnbRejected: dnbRejected.length, groupB2Requested: 203, groupB2Recovered: groupB2.length, groupB2Rejected: groupB2Rejected.length, finalSelections: all.length, evaluated: all.filter(leg => finite(leg.betSelection?.evaluation?.expectedValuePct)).length, notModelled: all.filter(leg => !finite(leg.betSelection?.evaluation?.expectedValuePct)).length, scenarioCounts },
     excluded,
     groupARejected,
     dnbRejected,

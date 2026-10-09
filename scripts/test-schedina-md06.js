@@ -101,6 +101,12 @@ assert.deepEqual(catalog.totals, {
   finalSelections: 383,
   evaluated: 367,
   notModelled: 16,
+  scenarioCounts: {
+    COHERENT_WITH_PREVALENT: 20,
+    ALTERNATIVE_TO_PREVALENT: 50,
+    COMPATIBLE_WITH_MULTIPLE_SCENARIOS: 297,
+    NOT_DETERMINABLE: 16,
+  },
 });
 assert.deepEqual(Object.fromEntries(catalog.matches.map(match => [match.matchId, match.total])), {
   "genoa-fiorentina-2026-27-md-06": 34,

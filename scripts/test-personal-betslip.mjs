@@ -10,9 +10,9 @@ const context6={competition:"serie-a",season:"2026-27",matchday:6,label:"Serie A
 const context7={competition:"serie-a",season:"2026-27",matchday:7,label:"Serie A · 7ª giornata"};
 const championsContext={competition:"champions-league",season:"2026-27",matchday:6,label:"Champions League · 6ª giornata"};
 
-function selection(id,{matchId="alpha-beta-2026-27-md-06",providerMarketId=`market-${id}`,market="MERCATO TEST",variant=null,outcome="OVER",label=`Scelta ${id}`,odds=1.8,verifiedAt="2026-10-09T10:43:00.203Z",availability="AVAILABLE_AT_SNAPSHOT",compatibilityStatus="COMPATIBILE",bookmakerCombinability,overlapKey=`overlap-${id}`,semanticKeys=[`semantic-${id}`],context=context6}={}){
+function selection(id,{matchId="alpha-beta-2026-27-md-06",providerMarketId=`market-${id}`,market="MERCATO TEST",variant=null,outcome="OVER",label=`Scelta ${id}`,odds=1.8,verifiedAt="2026-10-09T10:43:00.203Z",availability="AVAILABLE_AT_SNAPSHOT",compatibilityStatus="COMPATIBILE",bookmakerCombinability,overlapKey=`overlap-${id}`,semanticKeys=[`semantic-${id}`],scenarioAnalysis=null,context=context6}={}){
   const selectionId=`bet:sisal:${matchId}:${id}`;
-  return {selectionId,context,fixture:"Alpha - Beta",label,market,betSelection:{schemaVersion:1,selectionId,identity:{status:"VERIFIED_PROVIDER_IDS",matchId,provider:"sisal",providerMarketId,providerSelectionId:id},market:{name:market,variant,selection:outcome,bookmakerSemantics:{selectionName:outcome}},quote:{decimal:odds,verifiedAt,availability,source:{provider:"sisal",url:"https://example.test/quote"}},compatibility:{status:compatibilityStatus,bookmakerCombinability},overlap:{overlapKey,semanticKeys}}};
+  return {selectionId,context,fixture:"Alpha - Beta",label,market,scenarioAnalysis,betSelection:{schemaVersion:1,selectionId,identity:{status:"VERIFIED_PROVIDER_IDS",matchId,provider:"sisal",providerMarketId,providerSelectionId:id},market:{name:market,variant,selection:outcome,bookmakerSemantics:{selectionName:outcome}},quote:{decimal:odds,verifiedAt,availability,source:{provider:"sisal",url:"https://example.test/quote"}},compatibility:{status:compatibilityStatus,bookmakerCombinability},overlap:{overlapKey,semanticKeys}}};
 }
 
 {
@@ -107,6 +107,28 @@ function selection(id,{matchId="alpha-beta-2026-27-md-06",providerMarketId=`mark
     selection("sot",{providerMarketId:"shots-b",overlapKey:"player-shots",semanticKeys:["player:alpha","sot"]}),
   ]);
   assert.ok(overlap.issues.some(issue=>issue.type==="LOGICAL_OVERLAP"),"sovrapposizione logica non rilevata");
+
+  const scenarioIncompatibility=assessSelections([
+    selection("score-a",{scenarioAnalysis:{scoreMask:"0x1",compatibleOutcomes:["1"]}}),
+    selection("score-b",{scenarioAnalysis:{scoreMask:"0x2",compatibleOutcomes:["2"]}}),
+  ]);
+  assert.ok(scenarioIncompatibility.issues.some(issue=>issue.type==="SCENARIO_INCOMPATIBILITY"),"incompatibilità tra eventi di punteggio non rilevata");
+  const store=createPersonalBetslipStore({storage:memoryStorage()});store.setContext(context6);
+  assert.equal(store.add(selection("score-a",{scenarioAnalysis:{scoreMask:"0x1",compatibleOutcomes:["1"]}})).status,"ADDED");
+  assert.equal(store.add(selection("score-b",{scenarioAnalysis:{scoreMask:"0x2",compatibleOutcomes:["2"]}})).status,"ADDED","un'alternativa logica non deve essere bloccata");
+  assert.equal(store.getSnapshot().selections.length,2,"le alternative devono restare entrambe rimovibili");
+
+  const implication=assessSelections([
+    selection("subset",{scenarioAnalysis:{scoreMask:"0x1",compatibleOutcomes:["1"]}}),
+    selection("superset",{scenarioAnalysis:{scoreMask:"0x3",compatibleOutcomes:["1","X"]}}),
+  ]);
+  assert.ok(implication.issues.some(issue=>issue.type==="LOGICAL_IMPLICATION"),"implicazione logica non distinta dalla correlazione");
+
+  const correlated=assessSelections([
+    selection("overlap-a",{scenarioAnalysis:{scoreMask:"0x3",compatibleOutcomes:["1","X"]}}),
+    selection("overlap-b",{scenarioAnalysis:{scoreMask:"0x6",compatibleOutcomes:["X","2"]}}),
+  ]);
+  assert.ok(correlated.issues.some(issue=>issue.type==="LOGICAL_OVERLAP"),"correlazione tra eventi sovrapposti non rilevata");
 
   const unknownCombination=assessSelections([selection("c"),selection("d",{matchId:"gamma-delta-2026-27-md-06"})]);
   assert.ok(unknownCombination.issues.some(issue=>issue.type==="BOOKMAKER_COMBINABILITY_UNKNOWN"),"combinabilità bookmaker non verificata non segnalata");
