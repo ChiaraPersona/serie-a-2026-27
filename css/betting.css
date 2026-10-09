@@ -228,8 +228,8 @@ body[data-page="betting"] main>.hero .eyebrow{margin-bottom:4px;color:var(--glas
 .betting-matchday-heading{display:flex;justify-content:space-between;gap:16px;align-items:end;padding:0 2px 10px;border-bottom:1px solid rgba(22,72,126,.18)}
 .betting-matchday-heading h3{margin:3px 0 0;font-size:clamp(23px,2.3vw,31px);letter-spacing:-.035em}
 .betting-matchday-actions{display:flex;flex-wrap:wrap;gap:7px}
-.betting-matchday-actions button,.betting-market-filters button{min-height:32px;padding:6px 10px;border:1px solid rgba(28,109,255,.2);border-radius:8px;background:#fff;color:#1257a6;font:inherit;font-size:10px;font-weight:850;cursor:pointer}
-.betting-matchday-actions button:hover,.betting-market-filters button:hover,.betting-market-filters button.is-active{border-color:#1c6dff;background:#edf5ff;color:#0a477f}
+.betting-matchday-actions button{min-height:32px;padding:6px 10px;border:1px solid rgba(28,109,255,.2);border-radius:8px;background:#fff;color:#1257a6;font:inherit;font-size:10px;font-weight:850;cursor:pointer}
+.betting-matchday-actions button:hover{border-color:#1c6dff;background:#edf5ff;color:#0a477f}
 .betting-match-list{display:grid;gap:8px;min-width:0}
 .betting-match-panel{overflow:hidden;border:1px solid rgba(22,72,126,.17);border-radius:12px;background:rgba(255,255,255,.82)}
 .betting-match-panel>summary{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:12px;align-items:center;min-height:62px;padding:10px 14px;cursor:pointer;list-style:none}
@@ -242,11 +242,6 @@ body[data-page="betting"] main>.hero .eyebrow{margin-bottom:4px;color:var(--glas
 .betting-match-panel[open]>.betting-match-panel-summary,.betting-match-panel[open]>summary{background:#f7fbff}
 .betting-match-panel[open]>summary .betting-match-toggle{transform:rotate(45deg)}
 .betting-match-body{display:grid;gap:12px;padding:12px 14px 14px;border-top:1px solid rgba(22,72,126,.1)}
-.betting-market-tools{display:flex;justify-content:space-between;gap:12px;align-items:center}
-.betting-market-filters{display:flex;flex-wrap:wrap;gap:6px}
-.betting-market-filters button{min-height:30px;padding:5px 9px}
-.betting-market-sort{display:flex;gap:7px;align-items:center;color:#52677d;font-size:10px;font-weight:800;white-space:nowrap}
-.betting-market-sort select{min-height:32px;padding:5px 28px 5px 8px;border:1px solid rgba(22,72,126,.2);border-radius:8px;background:#fff;color:#173a60;font:inherit;font-size:11px}
 .betting-market-columns,.betting-market-row{display:grid;grid-template-columns:minmax(210px,2fr) repeat(4,minmax(70px,.55fr)) auto;gap:9px;align-items:center}
 .betting-market-columns{padding:0 8px;color:#61758a;font-size:9px;font-weight:850;text-transform:uppercase}
 .betting-market-columns span:not(:first-child){text-align:center}
@@ -292,8 +287,6 @@ body[data-page="betting"] main>.hero .eyebrow{margin-bottom:4px;color:var(--glas
 @media(max-width:760px){
   .betting-workspace-content{gap:18px}
   .betting-matchday-heading{align-items:flex-start}
-  .betting-market-tools{align-items:flex-start;flex-direction:column}
-  .betting-market-sort{white-space:normal}
 }
 
 @media(max-width:680px){

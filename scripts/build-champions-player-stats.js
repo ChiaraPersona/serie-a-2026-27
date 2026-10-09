@@ -140,6 +140,10 @@ function collectEspnRows({ season = "2025-26", asOf = null } = {}) {
       if (!Array.isArray(roster.roster) || !roster.roster.length) continue;
       counted = true;
       const providerTeamId = String(roster.team?.id || "");
+      const boxTeam = (payload.boxscore?.teams || []).find(item => String(item.team?.id || "") === providerTeamId);
+      const boxStats = statMap(boxTeam?.statistics);
+      const boxscorePlaceholder = ["totalShots", "shotsOnTarget", "wonCorners", "foulsCommitted"].every(field => boxStats[field] === 0);
+      const attackMetricsUnavailable = boxStats.totalShots == null || boxStats.shotsOnTarget == null || boxscorePlaceholder;
       if (!rosterMatchIdsByTeam.has(providerTeamId)) rosterMatchIdsByTeam.set(providerTeamId, new Set());
       rosterMatchIdsByTeam.get(providerTeamId).add(eventId);
       for (const row of roster.roster) {
@@ -153,6 +157,10 @@ function collectEspnRows({ season = "2025-26", asOf = null } = {}) {
         if (!athletesByTeamAndName.has(teamNameKey)) athletesByTeamAndName.set(teamNameKey, new Set());
         athletesByTeamAndName.get(teamNameKey).add(providerPlayerId);
         const stats = statMap(row.stats);
+        if (attackMetricsUnavailable) {
+          stats.totalShots = null;
+          stats.shotsOnTarget = null;
+        }
         if ((stats.appearances ?? 0) < 1) continue;
         if (!matchesByAthlete.has(providerPlayerId)) matchesByAthlete.set(providerPlayerId, []);
         matchesByAthlete.get(providerPlayerId).push({
@@ -466,7 +474,14 @@ function buildCurrent(args) {
       if (!entries.length) {
         return { ...player, providerPlayerId, identitySource, currentSeason: null, sourceMode: "espn-match-rosters", dataQuality: "unavailable", unmatchedReason: "Nessuna presenza 2026/27 nel campione importato" };
       }
-      const primaryEntries = entries.filter(entry => entry.teamId === config.espnTeamId && entry.competitionType === "domestic-league");
+      const sameTeamEntries = entries.filter(entry => entry.teamId === config.espnTeamId);
+      const domesticEntries = sameTeamEntries.filter(entry => entry.competitionType === "domestic-league");
+      const configuredCompetition = competitionLabels[config.league] || config.league;
+      const configuredEntries = sameTeamEntries.filter(entry => entry.competition === configuredCompetition);
+      const fallbackEntry = [...sameTeamEntries].sort((left, right) => (right.appearances ?? 0) - (left.appearances ?? 0) || left.competition.localeCompare(right.competition, "it"))[0];
+      const primaryEntries = config.baselineKind === "domestic"
+        ? domesticEntries
+        : configuredEntries.length ? configuredEntries : fallbackEntry ? [fallbackEntry] : [];
       const aggregate = currentAggregate(primaryEntries);
       const allEvidenceTotals = entries.length === primaryEntries.length ? null : currentAggregate(entries);
       return {
@@ -478,7 +493,12 @@ function buildCurrent(args) {
           asOf,
           entries,
           totals: aggregate,
-          totalsScope: { teamId: config.espnTeamId, competitionType: "domestic-league" },
+          totalsScope: {
+            teamId: config.espnTeamId,
+            competitionType: primaryEntries[0]?.competitionType || (config.baselineKind === "domestic" ? "domestic-league" : "uefa-competition"),
+            competition: primaryEntries.length === 1 ? primaryEntries[0].competition : null,
+            evidenceMode: config.baselineKind
+          },
           allEvidenceTotals,
           totalsByCompetition: entries
         },
@@ -574,4 +594,4 @@ function main(argv = process.argv.slice(2)) {
 
 if (require.main === module) main();
 
-module.exports = { normalize, parseArgs, collectEspnRows, aggregateEntries, currentAggregate, main };
+module.exports = { slug, normalize, squadTeams, parseArgs, collectEspnRows, aggregateEntries, currentAggregate, main };

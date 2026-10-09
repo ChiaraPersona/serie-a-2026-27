@@ -5,9 +5,11 @@ import { fileURLToPath } from "node:url";
 import { settleArchivedLeg } from "../js/pages/betting-settlement.mjs";
 import bettingMarketPolicy from "./betting-market-policy.js";
 import bettingSelectionContract from "./betting-selection-contract.js";
+import md06MarketCatalog from "./md06-market-catalog.js";
 
-const { isUnderPlayableSelection, isIndividualPlayerFoulMarket, isCornerPeriodMarket, isPlayableSelection } = bettingMarketPolicy;
+const { isUnderPlayableSelection, isIndividualPlayerFoulMarket, isCornerPeriodMarket, isDoubleChance12Selection, isPlayableSelection } = bettingMarketPolicy;
 const { attachBetSelection, selectionIdFor, normalizeReliability } = bettingSelectionContract;
+const { buildMd06MarketCatalog } = md06MarketCatalog;
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const read = relative => JSON.parse(fs.readFileSync(path.join(root, relative), "utf8"));
@@ -34,6 +36,8 @@ const odds = read("data/normalized/odds/sisal/serie-a.json");
 const md5 = read("data/normalized/schedina-md05.json");
 const settlementRecords = read("data/sources/card-settlement-records-2026-10-03.json").records;
 const operational = read("output/reports/serie-a-md06-operational-player-analysis-2026-10-09.json");
+const probableLineups = read("data/sources/probable-lineups-md6-2026-27.json");
+const officialLineups = read("data/sources/official-lineups-2026-27.json");
 const md5ReportPath = path.join(root, "output/reports/serie-a-md05-betting-decision-review-2026-10-09.json");
 const preservedMd5GeneratedAt = fs.existsSync(md5ReportPath) ? JSON.parse(fs.readFileSync(md5ReportPath, "utf8")).generatedAt : null;
 const matchById = new Map(matches.map(match => [match.id, match]));
@@ -403,6 +407,7 @@ function resolvePlayer(matchId, playerName, type) {
 function buildSlip({ id, type, eyebrow, name, description, validationStatus, risk, legs }) {
   assert(!legs.some(isUnderPlayableSelection), `${id}: una selezione Under non può essere resa giocabile dalla MD6`);
   assert(legs.every(leg => isPlayableSelection(leg, { matchday: 6 })), `${id}: un mercato escluso dalla policy MD6 non può essere reso giocabile`);
+  assert(!legs.some(isDoubleChance12Selection), `${id}: la doppia chance 12 non può essere resa giocabile dalla MD6`);
   assert(!legs.some(leg => leg.betSelection?.operational?.classification === "WATCH"), `${id}: un WATCH non può essere promosso automaticamente in schedina`);
   const combinedOdds = round(product(legs.map(leg => leg.odds)), 2);
   const jointAllowed = legs.every(leg => Number.isFinite(leg.modelProbabilityPct)) && new Set(legs.map(leg => leg.matchId)).size === legs.length;
@@ -522,6 +527,16 @@ const myComboCategoryCounts = myComboFixtureReviews.flatMap(row => row.legs).red
   return counts;
 }, {});
 
+const marketCatalog = buildMd06MarketCatalog({
+  predictionsData,
+  odds,
+  matches,
+  schedinaSlips: slips,
+  probableLineups,
+  officialLineups,
+  matchday: 6,
+});
+
 const fixtureCandidateReports = operational.fixtures.map(fixture => {
   const candidates = chooseDisplayCandidates(fixture);
   return {
@@ -561,6 +576,8 @@ const md6Report = {
     individualPlayerFoulsPolicyEffectiveFromMatchday: 6,
     cornerPeriodMarketsPlayable: false,
     cornerPeriodPolicyEffectiveFromMatchday: 6,
+    doubleChance12Playable: false,
+    doubleChance12PolicyEffectiveFromMatchday: 6,
     overMarketsRemainEligible: true,
     classificationIsOperationalNotGuarantee: true,
     noMd5ThresholdOptimization: true,
@@ -575,6 +592,7 @@ const md6Report = {
     underPlayableSelections: 0,
     individualPlayerFoulPlayableSelections: 0,
     cornerPeriodPlayableSelections: 0,
+    doubleChance12PlayableSelections: 0,
     underOccurrencesRemoved: 3 + Number(md6MyCombo?.constraints?.underSelectionPolicy?.previousPlayableLegOccurrencesRemoved || 0),
   },
   fixtures: fixtureCandidateReports,
@@ -592,6 +610,7 @@ const md6Report = {
   },
   topSelections: slips.flatMap(slip => slip.legs.map(leg => ({ slip: slip.name, validationStatus: slip.validationStatus, ...leg }))),
   officialLineupReview: watchCandidates,
+  marketCatalog: { totals: marketCatalog.totals, sources: marketCatalog.sources, matches: marketCatalog.matches.map(match => ({ matchId: match.matchId, total: match.total, evaluated: match.evaluated, notModelled: match.notModelled })) },
 };
 
 function md5Markdown(report) {
@@ -640,7 +659,7 @@ function md6Markdown(report) {
     "",
     `Generato: ${report.generatedAt}. Quote Sisal: ${report.sources.oddsRetrievedAt}.`,
     "",
-    `La classificazione è operativa, non una garanzia. Nessuna partita deve produrre obbligatoriamente una scelta. Dalla MD6 i mercati Under, i falli commessi/subiti del singolo giocatore e i corner dipendenti da singoli tempi o finestre temporali sono esclusi dalle giocate, ma restano nelle analisi, nei report e nello storico; gli Over, i mercati aggregati di squadra e i corner dell'intera partita restano eleggibili. Occorrenze Under giocabili rimosse nella migrazione: ${report.summary.underOccurrencesRemoved}. Le quote giocatore restano visibili come riferimento commerciale DUO: P V2 è individuale, pertanto EV e probabilità congiunta non sono calcolabili.`,
+    `La classificazione è operativa, non una garanzia. Nessuna partita deve produrre obbligatoriamente una scelta. Dalla MD6 i mercati Under, i falli commessi/subiti del singolo giocatore, i corner dipendenti da singoli tempi o finestre temporali e la doppia chance 12 sono esclusi dalle giocate, ma restano nelle analisi, nei report e nello storico; gli Over, i mercati aggregati di squadra e i corner dell'intera partita restano eleggibili. Occorrenze Under giocabili rimosse nella migrazione: ${report.summary.underOccurrencesRemoved}. Le quote giocatore restano visibili come riferimento commerciale DUO: P V2 è individuale, pertanto EV e probabilità congiunta non sono calcolabili.`,
     "",
   ];
   for (const fixture of report.fixtures) {
@@ -656,7 +675,7 @@ function md6Markdown(report) {
     lines.push(table(["Partita", "Selezione", "Quota", "P modello", "P V2 individuale", "EV", "Compatibilità", "Timestamp"], slip.legs.map(leg => [leg.fixture, leg.label, leg.odds, pct(leg.modelProbabilityPct), pct(leg.individualV2ProbabilityPct), leg.expectedValuePct == null ? "N/D" : `${leg.expectedValuePct > 0 ? "+" : ""}${leg.expectedValuePct}%`, leg.compatibility, leg.marketUpdatedAt])));
     lines.push("", `Quota totale: ${slip.combinedOdds}. Probabilità congiunta: ${pct(slip.jointModelProbabilityPct)}. EV: ${slip.expectedValuePct == null ? "N/D" : `${slip.expectedValuePct > 0 ? "+" : ""}${slip.expectedValuePct}%`}. Revisione: ${slip.reviewConditions}`, "");
   }
-  lines.push("## MyCombo", "", "La pipeline MD6 esclude Under, falli individuali e corner per tempi prima della costruzione dei portafogli; mantiene eleggibili Over, mercati aggregati di squadra e corner dell'intera partita. Non forza dieci esiti: il generatore canonico usa 3–6 gambe Safe, 4–7 Balanced e 5–8 Aggressive; un portafoglio resta N/D quando non raggiunge candidati distinti e semanticamente compatibili. Le etichette seguenti qualificano l’evidenza, non raccomandano automaticamente la multipla.", "");
+  lines.push("## MyCombo", "", "Il catalogo Schedina MD6 applica la policy centralizzata, inclusa l'esclusione della doppia chance 12, senza rigenerare i portafogli MyCombo esistenti. Under, falli individuali e corner per tempi restano esclusi; Over, mercati aggregati di squadra e corner dell'intera partita restano eleggibili. Le etichette seguenti qualificano l’evidenza, non raccomandano automaticamente la multipla.", "");
   if (report.myCombo.sourceAvailable) {
     lines.push(table(["Partita", "Leg Safe", "Supportati", "Plausibili", "Sperimentali", "Non valutabili"], report.myCombo.fixtures.map(row => {
       const counts = row.legs.reduce((result, leg) => ({ ...result, [leg.status]: (result[leg.status] || 0) + 1 }), {});
@@ -702,10 +721,11 @@ if (mode === "reports") {
     sourceUrl: odds.sourceUrl,
     oddsRetrievedAt: odds.retrievedAt,
     modelVersion: predictionsData.engine.version,
-    methodology: "Selezione decisionale senza modifica del modello: dalla MD6 Under, falli individuali e corner riferiti a singoli tempi o finestre temporali sono esclusi dalle giocate; Over e corner dell'intera partita restano eleggibili; i mercati giocatore DUO restano non confrontabili con V2 individuale.",
-    selectionRule: "Nessuna selezione obbligatoria per partita; dalla MD6 Under, falli individuali e corner per tempo sono esclusi dalle giocate; nessuna schedina è qualificata automaticamente. EV solo dove target, settlement e modello coincidono.",
+    methodology: "Catalogo separato dai portafogli decisionali e costruito senza modificare il modello: dalla MD6 Under, falli individuali, corner per tempo e doppia chance 12 sono esclusi; Over e corner dell'intera partita restano eleggibili. Le metriche mancanti restano N/D.",
+    selectionRule: "Tutte le selezioni tecnicamente valide del catalogo sono visualizzabili, anche con EV negativo. I portafogli non limitano la copertura; EV soltanto dove target, quota e confronto V2 coincidono.",
     coverage: { profilesEvaluated: slips.length, qualifiedProfiles: 0, unavailableProfiles: 0 },
     slips,
+    marketCatalog,
   };
   write("data/sources/schedina-serie-a-2026-27-md-06.json", source);
   write("data/sources/betting-selection-assessments-md06.json", selectionAssessmentSource);

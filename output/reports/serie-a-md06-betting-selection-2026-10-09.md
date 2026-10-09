@@ -1,8 +1,8 @@
 # Serie A MD6 — Selezione operativa e costruzione schedine
 
-Generato: 2026-10-09T18:20:27.690Z. Quote Sisal: 2026-10-09T10:43:00.203Z.
+Generato: 2026-10-09T21:11:20.647Z. Quote Sisal: 2026-10-09T10:43:00.203Z.
 
-La classificazione è operativa, non una garanzia. Nessuna partita deve produrre obbligatoriamente una scelta. Dalla MD6 i mercati Under, i falli commessi/subiti del singolo giocatore e i corner dipendenti da singoli tempi o finestre temporali sono esclusi dalle giocate, ma restano nelle analisi, nei report e nello storico; gli Over, i mercati aggregati di squadra e i corner dell'intera partita restano eleggibili. Occorrenze Under giocabili rimosse nella migrazione: 12. Le quote giocatore restano visibili come riferimento commerciale DUO: P V2 è individuale, pertanto EV e probabilità congiunta non sono calcolabili.
+La classificazione è operativa, non una garanzia. Nessuna partita deve produrre obbligatoriamente una scelta. Dalla MD6 i mercati Under, i falli commessi/subiti del singolo giocatore, i corner dipendenti da singoli tempi o finestre temporali e la doppia chance 12 sono esclusi dalle giocate, ma restano nelle analisi, nei report e nello storico; gli Over, i mercati aggregati di squadra e i corner dell'intera partita restano eleggibili. Occorrenze Under giocabili rimosse nella migrazione: 12. Le quote giocatore restano visibili come riferimento commerciale DUO: P V2 è individuale, pertanto EV e probabilità congiunta non sono calcolabili.
 
 ## Genoa - Fiorentina
 
@@ -214,7 +214,7 @@ Quota totale: 3.02. Probabilità congiunta: N/D. EV: N/D. Revisione: Rivedere do
 
 ## MyCombo
 
-La pipeline MD6 esclude Under, falli individuali e corner per tempi prima della costruzione dei portafogli; mantiene eleggibili Over, mercati aggregati di squadra e corner dell'intera partita. Non forza dieci esiti: il generatore canonico usa 3–6 gambe Safe, 4–7 Balanced e 5–8 Aggressive; un portafoglio resta N/D quando non raggiunge candidati distinti e semanticamente compatibili. Le etichette seguenti qualificano l’evidenza, non raccomandano automaticamente la multipla.
+Il catalogo Schedina MD6 applica la policy centralizzata, inclusa l'esclusione della doppia chance 12, senza rigenerare i portafogli MyCombo esistenti. Under, falli individuali e corner per tempi restano esclusi; Over, mercati aggregati di squadra e corner dell'intera partita restano eleggibili. Le etichette seguenti qualificano l’evidenza, non raccomandano automaticamente la multipla.
 
 | Partita | Leg Safe | Supportati | Plausibili | Sperimentali | Non valutabili |
 | --- | --- | --- | --- | --- | --- |

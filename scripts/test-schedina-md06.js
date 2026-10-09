@@ -4,7 +4,8 @@ const assert = require("assert");
 const fs = require("fs");
 const path = require("path");
 const { execFileSync } = require("child_process");
-const { isUnderPlayableSelection, isIndividualPlayerFoulMarket, isCornerPeriodMarket, isPlayableSelection } = require("./betting-market-policy");
+const { isUnderPlayableSelection, isIndividualPlayerFoulMarket, isCornerPeriodMarket, isDoubleChance12Selection, isPlayableSelection } = require("./betting-market-policy");
+const { resolveLineupEligibility } = require("./md06-market-catalog");
 
 const root = path.resolve(__dirname, "..");
 const read = relative => JSON.parse(fs.readFileSync(path.join(root, relative), "utf8"));
@@ -17,6 +18,7 @@ const review = read("output/reports/serie-a-md05-betting-decision-review-2026-10
 const selection = read("output/reports/serie-a-md06-betting-selection-2026-10-09.json");
 const selectionMarkdown = fs.readFileSync(path.join(root, "output/reports/serie-a-md06-betting-selection-2026-10-09.md"), "utf8");
 const page = fs.readFileSync(path.join(root, "js/pages/betting.js"), "utf8");
+const matches = read("data/normalized/matches.json");
 
 assert.equal(normalized.matchday, 6);
 assert(normalized.slips.length > 0, "MD6 deve poter produrre un numero variabile ma non vuoto di schedine quando esistono profili espliciti");
@@ -32,6 +34,7 @@ assert.equal(selection.rules.duoEvCertified, 0);
 assert.equal(selection.rules.underMarketsPlayable, false);
 assert.equal(selection.rules.individualPlayerFoulsPlayable, false);
 assert.equal(selection.rules.cornerPeriodMarketsPlayable, false);
+assert.equal(selection.rules.doubleChance12Playable, false);
 assert.equal(selection.rules.overMarketsRemainEligible, true);
 assert.equal(selection.myCombo.matches, 10);
 assert(!selectionMarkdown.includes("Probabilità congiunta: 0.0%"), "N/D non deve essere serializzato come probabilità zero");
@@ -77,6 +80,72 @@ for (const prediction of predictions) {
   assert(!prediction.combinations.flatMap(combo => combo.legs || []).some(isCornerPeriodMarket), `${prediction.matchId}: corner per tempo propagato nelle combinazioni operative`);
 }
 
+const catalog = normalized.marketCatalog;
+assert(catalog, "Catalogo mercati MD6 assente");
+assert.deepEqual(catalog.totals, {
+  initialVisible: 35,
+  excludedByPolicy: 1,
+  excludedByLineup: 2,
+  retainedInitial: 32,
+  groupARequested: 128,
+  groupARecovered: 128,
+  groupARejected: 0,
+  finalSelections: 160,
+  evaluated: 144,
+  notModelled: 16,
+});
+assert.deepEqual(Object.fromEntries(catalog.matches.map(match => [match.matchId, match.total])), {
+  "genoa-fiorentina-2026-27-md-06": 16,
+  "inter-parma-2026-27-md-06": 13,
+  "napoli-frosinone-2026-27-md-06": 16,
+  "como-roma-2026-27-md-06": 17,
+  "lazio-monza-2026-27-md-06": 16,
+  "lecce-bologna-2026-27-md-06": 17,
+  "sassuolo-milan-2026-27-md-06": 15,
+  "cagliari-juventus-2026-27-md-06": 17,
+  "atalanta-venezia-2026-27-md-06": 17,
+  "torino-udinese-2026-27-md-06": 16,
+});
+const catalogSelections = catalog.matches.flatMap(match => match.selections);
+assert.equal(new Set(catalogSelections.map(leg => leg.selectionId)).size, catalogSelections.length, "Catalogo MD6 con duplicati");
+assert(catalogSelections.every(leg => leg.betSelection.identity.status === "VERIFIED_PROVIDER_IDS"), "Identità provider non verificata nel catalogo");
+assert(catalogSelections.every(leg => leg.betSelection.quote.availability === "AVAILABLE_AT_SNAPSHOT" && Number.isFinite(leg.betSelection.quote.decimal) && leg.betSelection.quote.decimal >= 1), "Quota non valida nel catalogo");
+assert(!catalogSelections.some(isUnderPlayableSelection), "Under presente nel catalogo");
+assert(!catalogSelections.some(isIndividualPlayerFoulMarket), "Fallo individuale presente nel catalogo");
+assert(!catalogSelections.some(isCornerPeriodMarket), "Corner per tempo presente nel catalogo");
+assert(!catalogSelections.some(isDoubleChance12Selection), "Doppia chance 12 presente nel catalogo");
+assert(catalogSelections.some(leg => /1X2 CORNER/.test(leg.market) && /T\.R\./.test(leg.variant)), "Corner 1X2 T.R. non conservato");
+assert(catalogSelections.some(leg => Number(leg.betSelection.evaluation.expectedValuePct) < 0), "Gli EV negativi validi non devono essere eliminati");
+assert(!catalogSelections.some(leg => /ESPOSITO P\.|HUTCHINSON O\./.test(leg.variant || "")), "Panchinari prioritari ancora presenti");
+assert(catalogSelections.filter(leg => leg.betSelection.market.scope === "player").every(leg => ["official-starter", "probable-starter"].includes(leg.lineupEligibility.status)), "Mercato giocatore senza titolarità ammessa");
+const recoveredGroupA = catalogSelections.filter(leg => leg.catalogOrigin === "gruppo-a");
+assert.equal(recoveredGroupA.length, 128);
+for (const leg of recoveredGroupA) {
+  const evaluation = leg.betSelection.evaluation;
+  assert(Math.abs(evaluation.fairOdds - 100 / evaluation.modelProbabilityPct) <= 0.06, `${leg.selectionId}: quota equa incoerente`);
+  const expectedEv = (evaluation.modelProbabilityPct / 100 * leg.betSelection.quote.decimal - 1) * 100;
+  assert(Math.abs(evaluation.expectedValuePct - expectedEv) <= Math.max(0.2, leg.betSelection.quote.decimal * 0.06), `${leg.selectionId}: EV incoerente`);
+}
+for (const match of catalog.matches) {
+  const evs = match.selections.map(leg => leg.betSelection.evaluation.expectedValuePct);
+  const firstMissing = evs.findIndex(value => !Number.isFinite(value));
+  const evaluated = firstMissing < 0 ? evs : evs.slice(0, firstMissing);
+  assert(evaluated.every((value, index) => index === 0 || evaluated[index - 1] >= value), `${match.matchId}: ordine EV non decrescente`);
+  if (firstMissing >= 0) assert(evs.slice(firstMissing).every(value => !Number.isFinite(value)), `${match.matchId}: NOT_MODELLED mescolati agli EV`);
+}
+assert.equal(catalog.sources.modelVersion, "4.13.0");
+assert.equal(catalog.sources.predictionsGeneratedAt, read("data/normalized/predictions.json").generatedAt);
+assert.equal(catalog.sources.oddsRetrievedAt, odds.retrievedAt);
+assert.equal(catalog.sources.officialFixturesAvailable, 0);
+
+{
+  const matchById = new Map([["alpha-beta-2026-27-md-06", { id: "alpha-beta-2026-27-md-06", homeTeam: "alpha", awayTeam: "beta" }]]);
+  const leg = { matchId: "alpha-beta-2026-27-md-06", marketScope: "player", variant: "ROSSI M. U/O 0.5", betSelection: { market: { scope: "player", variant: "ROSSI M. U/O 0.5" } } };
+  const probableLineups = { provider: "Probabile", importedAt: "2026-10-09", teams: [{ teamId: "alpha", players: [{ playerId: "mario-rossi", currentName: "Mario Rossi", sourceName: "Rossi", lineupStatus: "starter" }] }] };
+  const officialLineups = { provider: "Ufficiale", retrievedAt: "2026-10-10", fixtures: [{ matchId: "alpha-beta-2026-27-md-06", matchday: 6, teams: [{ teamId: "alpha", players: [{ playerId: "altro", currentName: "Altro Giocatore" }] }, { teamId: "beta", players: [] }] }] };
+  assert.equal(resolveLineupEligibility({ leg, matchId: leg.matchId, matchById, probableLineups, officialLineups }).status, "official-nonstarter", "La formazione ufficiale deve prevalere sulla probabile");
+}
+
 assert.equal(isUnderPlayableSelection({ selection: "OVER", label: "Over 2,5 gol" }), false, "Gli Over devono restare eleggibili");
 assert.equal(isUnderPlayableSelection({ selection: "UNDER", label: "Under 2,5 gol" }), true);
 assert(odds.events.flatMap(event => event.markets).flatMap(market => market.selections || []).some(selection => selection.name === "UNDER"), "Gli Under devono restare nello snapshot statistico delle quote");
@@ -89,6 +158,8 @@ assert.equal(isPlayableSelection({matchId:"test-md-06",market:"CORNER NEI MINUTI
 assert.equal(isPlayableSelection({matchId:"test-md-06",market:"U/O CORNER",variant:"U/O 9.5 CORNER",selection:"OVER"},{matchday:6}),true,"i corner dell'intera partita devono restare eleggibili");
 assert.equal(isPlayableSelection({matchId:"test-md-06",market:"U/O CORNER SQUADRA 1",variant:"U/O 4.5 CORNER CASA",selection:"OVER"},{matchday:6}),true,"i corner squadra sull'intera partita devono restare eleggibili");
 assert.equal(isPlayableSelection({matchId:"test-md-06",market:"1X2 CORNER",variant:"CALCI D'ANGOLO 1X2 T.R.",selection:"1"},{matchday:6}),true,"l'1X2 corner a tempo regolamentare deve restare eleggibile");
+assert.equal(isPlayableSelection({matchId:"test-md-06",market:"DOPPIA CHANCE",selection:"12"},{matchday:6}),false,"la doppia chance 12 deve essere esclusa");
+assert.equal(isPlayableSelection({matchId:"test-md-06",market:"DOPPIA CHANCE",selection:"1X"},{matchday:6}),true,"la doppia chance 1X deve restare eleggibile");
 assert(myCombo.constraints.individualFoulSelectionPolicy.active,"policy falli individuali MD6 non serializzata");
 assert(myCombo.constraints.individualFoulSelectionPolicy.previousPlayableLegOccurrencesRemoved>0,"migrazione dei falli individuali preesistenti non tracciata");
 assert(myCombo.constraints.cornerPeriodSelectionPolicy.active,"policy corner per tempo MD6 non serializzata");
@@ -104,6 +175,10 @@ assert(page.includes("myComboRoundContent(predictionData.predictions||[],matchBy
 assert(page.includes("MyCombo per partita"));
 assert(page.includes("betting-workspace"));
 assert(page.includes("data-mycombo-open-all"));
+assert(page.includes("data.marketCatalog?.matches"), "La workspace MD6 non usa il catalogo normalizzato");
+assert(!page.includes("data-market-filter"), "La barra filtri deve essere rimossa");
+assert(!page.includes("data-market-sort"), "Il menu di ordinamento deve essere rimosso");
+assert(page.includes("markets.sort(marketEntryOrder)"), "Ordinamento automatico per EV assente");
 assert(!page.includes("MyCombo · scegli tra"));
 assert(!page.includes("betting-leg-number"),"la numerazione decorativa delle selezioni non deve essere renderizzata");
 

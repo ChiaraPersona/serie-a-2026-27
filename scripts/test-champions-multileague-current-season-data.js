@@ -17,12 +17,11 @@ const source = read("data/sources/champions-pilot-match-stats-2025-27.json");
 const audit = read("data/analysis/champions/multileague-current-season-batch-2026-10-09.json");
 
 assert.equal(data.asOf, "2026-10-09");
-assert.deepEqual(new Set(data.selection.teams), new Set(batch), "ultimo build non limitato al batch richiesto");
-assert.deepEqual(new Set(data.teams.map(team => team.id)), new Set(expectedAll), "dataset finale diverso da AEK + sei squadre");
-assert.deepEqual(new Set(source.lastImport.teams), new Set(batch), "ultimo import non limitato al batch richiesto");
-assert.deepEqual(source.lastImport.seasons, ["2026-27"]);
-assert.equal(source.lastImport.asOf, "2026-10-09");
-assert.equal(source.lastImport.matches, 36);
+assert.ok(expectedAll.every(id => data.teams.some(team => team.id === id)), "AEK + sei squadre non preservate nel dataset consolidato");
+assert.deepEqual(new Set(audit.source.lastImport.teams), new Set(batch), "audit Fase 5 non limitato al batch richiesto");
+assert.deepEqual(audit.source.lastImport.seasons, ["2026-27"]);
+assert.equal(audit.source.lastImport.asOf, "2026-10-09");
+assert.equal(audit.source.lastImport.matches, 36);
 
 const aek = data.teams.find(team => team.id === "aek-athens");
 assert.equal(data.teamSnapshots["aek-athens"].asOf, "2026-10-03");

@@ -65,8 +65,10 @@ assert.match(bettingPage, /data-personal-host/, "Schedina MD6: colonna personale
 assert.match(bettingPage, /data-mycombo-open-all/, "Schedina MD6: apertura globale MyCombo assente");
 assert.match(bettingPage, /data-match-open-all/, "Schedina MD6: apertura globale delle partite assente");
 assert.match(bettingPage, /data-match-close-all/, "Schedina MD6: chiusura globale delle partite assente");
-assert.match(bettingPage, /data-market-filter/, "Schedina MD6: filtri dei mercati assenti");
-assert.match(bettingPage, /data-market-sort/, "Schedina MD6: ordinamento dei mercati assente");
+assert.doesNotMatch(bettingPage, /data-market-filter/, "Schedina MD6: la barra filtri deve essere rimossa");
+assert.doesNotMatch(bettingPage, /data-market-sort/, "Schedina MD6: il menu di ordinamento deve essere rimosso");
+assert.match(bettingPage, /data\.marketCatalog\?\.matches/, "Schedina MD6: catalogo normalizzato non collegato");
+assert.match(bettingPage, /markets\.sort\(marketEntryOrder\)/, "Schedina MD6: ordinamento EV automatico assente");
 assert.match(bettingPage, /comboLegs\.filter\(hasVerifiedPlayableQuote\)/, "Schedina MD6: MyCombo senza quota verificata non filtrate");
 assert.match(bettingPage, /leftMissing!==rightMissing/, "Schedina MD6: metriche mancanti non gestite dall'ordinamento stabile");
 assert.doesNotMatch(bettingPage, /MyCombo · scegli tra|Seleziona o deseleziona gli esiti da combinare|Questi pulsanti appartengono esclusivamente/, "Schedina MD6: testo MyCombo rimosso ancora presente");
@@ -83,6 +85,7 @@ assert.match(bettingPage, /event\.key==="Escape"/, "Schedina: chiusura da tastie
 assert.match(bettingPage, /BOOKMAKER_COMBINABILITY_UNKNOWN/, "Schedina: avviso di combinabilità bookmaker non esposto");
 assert.doesNotMatch(bettingPage, /active\.reduce\(\(total,leg\)=>total\*leg\.odds/, "Schedina: vecchia quota MyCombo locale ancora calcolata");
 const bettingCss = fs.readFileSync(path.join(root, "css", "betting.css"), "utf8");
+assert.doesNotMatch(bettingCss, /betting-market-tools|betting-market-filters|betting-market-sort/, "Schedina MD6: stili della barra filtri ancora presenti");
 assert.doesNotMatch(bettingCss, /\.betting-leg-number/, "Schedina: stile della numerazione decorativa ancora presente");
 assert.match(bettingCss, /\.betting-archive-list\{width:100%;max-width:1180px/, "Schedina: griglia archivio non allineata alle card Statistiche squadra");
 assert.match(bettingCss, /\.betting-archive-performance small,\.betting-archive-performance strong\{display:block;color:#000\}/, "Schedina: valori del retro senza contrasto nero leggibile");

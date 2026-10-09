@@ -18,9 +18,9 @@ const teams = [
   { id: "borussia-dortmund", name: "Borussia Dortmund", espnTeamId: "124", league: "ger.1", leagueName: "Bundesliga", baselineKind: "domestic" },
   { id: "club-brugge", name: "Club Brugge", espnTeamId: "570", league: "bel.1", leagueName: "Pro League", baselineKind: "domestic" },
   { id: "como", name: "Como", espnTeamId: "2572", league: "ita.1", leagueName: "Serie A", baselineKind: "domestic" },
-  { id: "fenerbahce", name: "Fenerbahçe", espnTeamId: "436", league: "uefa.europa", leagueName: "UEFA Europa League", baselineKind: "uefa-fallback" },
+  { id: "fenerbahce", name: "Fenerbahçe", espnTeamId: "436", league: "tur.1", leagueName: "Super Lig", baselineKind: "domestic" },
   { id: "feyenoord", name: "Feyenoord", espnTeamId: "142", league: "ned.1", leagueName: "Eredivisie", baselineKind: "domestic" },
-  { id: "galatasaray", name: "Galatasaray", espnTeamId: "432", league: "uefa.champions", leagueName: "UEFA Champions League", baselineKind: "uefa-fallback" },
+  { id: "galatasaray", name: "Galatasaray", espnTeamId: "432", league: "tur.1", leagueName: "Super Lig", baselineKind: "domestic" },
   { id: "inter", name: "Inter", espnTeamId: "110", league: "ita.1", leagueName: "Serie A", baselineKind: "domestic" },
   { id: "lask", name: "LASK", espnTeamId: "4411", league: "aut.1", leagueName: "Bundesliga austriaca", baselineKind: "domestic" },
   { id: "leipzig", name: "Leipzig", espnTeamId: "11420", league: "ger.1", leagueName: "Bundesliga", baselineKind: "domestic" },
@@ -48,6 +48,9 @@ const teams = [
 const seasonBounds = {
   "2025-26": { from: "2025-07-01", to: "2026-06-30" },
   "2026-27": { from: "2026-07-01", to: null }
+};
+const annualCalendarLeagueStarts = {
+  "nor.1": "2026-01-01"
 };
 const requiredStats = ["totalShots", "shotsOnTarget", "wonCorners", "foulsCommitted", "yellowCards"];
 
@@ -135,7 +138,12 @@ function calendarYears(from, to) {
 
 async function cached(url, file, { refresh = false, fallback = null, metadata = {} } = {}) {
   if (!refresh && fs.existsSync(file)) return readGzip(file);
-  if (!refresh && fallback && fs.existsSync(fallback)) return readGzip(fallback);
+  if (!refresh && fallback && fs.existsSync(fallback)) {
+    const previous = readGzip(fallback);
+    const versioned = { ...previous, ...metadata, retrievedAt: previous.retrievedAt || new Date().toISOString(), url: previous.url || url };
+    writeGzip(file, versioned);
+    return versioned;
+  }
   const value = { retrievedAt: new Date().toISOString(), url, ...metadata, payload: await request(url) };
   writeGzip(file, value);
   return value;
@@ -190,16 +198,17 @@ async function main(argv = process.argv.slice(2)) {
   const scoreboards = [];
   for (const season of args.seasons) {
     for (const league of selectedLeagues) {
-      for (const year of calendarYears(season.from, season.to)) {
+      const effectiveFrom = season.id === "2026-27" ? (annualCalendarLeagueStarts[league] || season.from) : season.from;
+      for (const year of calendarYears(effectiveFrom, season.to)) {
         const url = `https://site.api.espn.com/apis/site/v2/sports/soccer/${league}/scoreboard?dates=${year}&limit=1000`;
         const versioned = path.join(rawRoot, "scoreboards", season.id, league, `${year}-as-of-${args.asOf}.json.gz`);
-        const raw = await cached(url, versioned, { refresh: args.refresh, metadata: { season: season.id, league, asOf: args.asOf, calendarYear: year, dateInterval: { from: season.from, to: season.to } } });
+        const raw = await cached(url, versioned, { refresh: args.refresh, metadata: { season: season.id, league, asOf: args.asOf, calendarYear: year, dateInterval: { from: effectiveFrom, to: season.to } } });
         const eligible = (raw.payload.events || []).filter(event => {
           const date = eventDate(event);
-          return date && date >= season.from && date <= season.to;
+          return date && date >= effectiveFrom && date <= season.to;
         });
         const selected = eligible.filter(event => eventHasTeam(event, selectedProviderTeamIds));
-        scoreboards.push({ season: season.id, league, calendarYear: year, dateInterval: { from: season.from, to: season.to }, retrievedAt: raw.retrievedAt, url, events: raw.payload.events?.length || 0, eligibleEvents: eligible.length, selectedTeamEvents: selected.length });
+        scoreboards.push({ season: season.id, league, calendarYear: year, dateInterval: { from: effectiveFrom, to: season.to }, retrievedAt: raw.retrievedAt, url, events: raw.payload.events?.length || 0, eligibleEvents: eligible.length, selectedTeamEvents: selected.length });
         for (const event of selected) {
           if (!isFinished(event)) continue;
           jobs.push({ season: season.id, league, event });
@@ -267,6 +276,12 @@ async function main(argv = process.argv.slice(2)) {
     asOf: args.asOf,
     cutoffDate: args.asOf,
     dateIntervals: args.seasons.map(({ id, from, to }) => ({ season: id, from, to })),
+    dateIntervalsByLeague: args.seasons.flatMap(season => selectedLeagues.map(league => ({
+      season: season.id,
+      league,
+      from: season.id === "2026-27" ? (annualCalendarLeagueStarts[league] || season.from) : season.from,
+      to: season.to
+    }))),
     lastImport: {
       asOf: args.asOf,
       retrievedAt: importedMatches.map(match => match.source.retrievedAt).filter(Boolean).sort().at(-1) || null,
@@ -290,4 +305,4 @@ async function main(argv = process.argv.slice(2)) {
 
 if (require.main === module) main().catch(error => { console.error(error.stack || error.message); process.exitCode = 1; });
 
-module.exports = { teams, seasonBounds, parseArgs, splitDateInterval, calendarYears, eventDate, eventHasTeam, cleanStats, main };
+module.exports = { teams, seasonBounds, annualCalendarLeagueStarts, parseArgs, splitDateInterval, calendarYears, eventDate, eventHasTeam, cleanStats, main };

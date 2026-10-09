@@ -44,8 +44,9 @@ assert.equal(hash(baselinePath), "4c09d7f109f9d5a3b769c153ed4c051cc7a99adb588a11
 const data = read(currentPath);
 assert.equal(data.source.rawSeason, "2026-27");
 assert.equal(data.asOf, asOf);
-assert.deepEqual(new Set(data.selection.teams), new Set(["arsenal", "inter", "bayern-munchen", "real-madrid", "paris-saint-germain", "bodo-glimt"]));
-assert.equal(data.teams.length, 7, "il dataset deve contenere AEK più il batch di sei squadre");
+const protectedSeven = ["aek-athens", "arsenal", "inter", "bayern-munchen", "real-madrid", "paris-saint-germain", "bodo-glimt"];
+assert.ok(protectedSeven.every(id => data.teams.some(team => team.id === id)), "AEK più il batch di sei squadre devono restare presenti");
+assert.equal(data.teams.length, 36, "il dataset consolidato deve contenere le 36 squadre");
 const aek = data.teams.find(team => team.id === "aek-athens");
 assert.ok(aek, "AEK deve essere preservata nel merge");
 assert.equal(aek.id, "aek-athens");
@@ -81,4 +82,4 @@ assert.equal(builder.normalize("Barnabás Varga"), builder.normalize("Barnabas V
 assert.equal(builder.normalize("Mijat Gaćinović"), builder.normalize("Mijat Gacinovic"));
 assert.equal(new Set(aek.players.map(player => builder.normalize(player.name))).size, aek.players.length, "duplicati nominali nella rosa AEK");
 
-console.log(`Test Champions current-season OK: batch as-of ${asOf}, AEK invariata a 2026-10-03 con ${aek.coverage.matches} gare`);
+console.log(`Test Champions current-season OK: 36 squadre as-of ${asOf}, AEK invariata a 2026-10-03 con ${aek.coverage.matches} gare`);
