@@ -30,6 +30,7 @@ function selection(id,{matchId="alpha-beta-2026-27-md-06",providerMarketId=`mark
   assert.equal(snapshot.selections.length,1,"una selezione falli già salvata deve essere conservata");
   assert(snapshot.assessment.issues.some(issue=>issue.type==="INDIVIDUAL_FOUL_NOT_PLAYABLE"),"la selezione falli salvata deve essere segnalata come non giocabile");
   assert.equal(snapshot.assessment.usableCombinedOdds,null,"una selezione falli salvata non deve entrare nella quota combinata");
+  assert.equal(snapshot.assessment.theoreticalCombinedOdds,null,"una selezione falli storica non deve essere riattivata nella quota teorica");
 }
 
 {
@@ -88,6 +89,7 @@ function selection(id,{matchId="alpha-beta-2026-27-md-06",providerMarketId=`mark
   assert.equal(snapshot.selections.length,1,"un corner per tempo già salvato deve essere conservato");
   assert(snapshot.assessment.issues.some(issue=>issue.type==="CORNER_PERIOD_NOT_PLAYABLE"),"il corner per tempo salvato deve essere segnalato come non giocabile");
   assert.equal(snapshot.assessment.usableCombinedOdds,null,"un corner per tempo salvato non deve entrare nella quota combinata");
+  assert.equal(snapshot.assessment.theoreticalCombinedOdds,null,"un corner per tempo storico non deve entrare nella quota teorica");
   assert.equal(restored.remove(periodCorner.selectionId).status,"REMOVED","il corner per tempo conservato deve restare rimovibile manualmente");
   assert.equal(restored.getSnapshot().selections.length,0,"la rimozione del corner per tempo conservato non è stata applicata");
 }
@@ -109,6 +111,21 @@ function selection(id,{matchId="alpha-beta-2026-27-md-06",providerMarketId=`mark
   const unknownCombination=assessSelections([selection("c"),selection("d",{matchId:"gamma-delta-2026-27-md-06"})]);
   assert.ok(unknownCombination.issues.some(issue=>issue.type==="BOOKMAKER_COMBINABILITY_UNKNOWN"),"combinabilità bookmaker non verificata non segnalata");
   assert.equal(unknownCombination.usableCombinedOdds,null,"senza conferma bookmaker la quota totale non deve apparire");
+  assert.equal(unknownCombination.theoreticalCombinedOdds,3.24,"la quota teorica deve restare distinta dalla combinabilità bookmaker");
+
+  const sameMatch=assessSelections([
+    selection("same-a",{odds:1.7}),
+    selection("same-b",{odds:2.1}),
+  ]);
+  assert.equal(sameMatch.theoreticalCombinedOdds,3.57,"la quota teorica deve moltiplicare anche due selezioni della stessa partita");
+  assert.equal(sameMatch.theoreticalQuoteCount,2,"il conteggio quote teoriche deve includere entrambe le selezioni valide");
+
+  const partial=assessSelections([
+    selection("valid",{odds:1.75}),
+    selection("invalid",{odds:null}),
+  ]);
+  assert.equal(partial.theoreticalCombinedOdds,1.75,"la quota teorica parziale deve usare soltanto quote numeriche valide");
+  assert.equal(partial.theoreticalExcludedCount,1,"la quota teorica parziale deve dichiarare le selezioni escluse");
 
   const confirmed=assessSelections([
     selection("e",{bookmakerCombinability:"CONFIRMED",odds:2}),
@@ -139,7 +156,8 @@ function selection(id,{matchId="alpha-beta-2026-27-md-06",providerMarketId=`mark
   assert.equal(retained.dataStatus,"MISSING_FROM_CURRENT_DATA","selezione scomparsa non conservata con avviso");
   assert.ok(snapshot.assessment.issues.some(issue=>issue.type==="MISSING_FROM_CURRENT_DATA"),"assenza dai dati correnti non esposta nella valutazione");
   const summary=personalBetslipSummary(snapshot);
-  assert.match(summary,/Quota totale non disponibile come giocabile/);
+  assert.match(summary,/Quota combinata teorica:/);
+  assert.match(summary,/combinabilità bookmaker resta una verifica separata/);
   assert.doesNotMatch(summary,/\blive\b/i,"il riepilogo non deve presentare le quote come live");
 }
 

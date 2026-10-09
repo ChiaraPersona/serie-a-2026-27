@@ -93,9 +93,13 @@ export function assessSelections(selections){
   const combinationConfirmed=rows.length<=1||rows.every(row=>compatibility(row).bookmakerCombinability==="CONFIRMED");
   if(rows.length>1&&!combinationConfirmed)addIssue("BOOKMAKER_COMBINABILITY_UNKNOWN","La combinabilità della multipla non è verificata dal bookmaker.",rows.map(row=>row.selectionId));
   const usable=rows.length>0&&!issues.some(issue=>issue.severity==="blocking")&&combinationConfirmed;
+  const theoreticalRows=rows.filter(row=>playability(row).status==="PLAYABLE"&&finite(quote(row).decimal)&&Number(quote(row).decimal)>0);
   return {
     issues,
     usableCombinedOdds:usable?Number(rows.reduce((total,row)=>total*Number(quote(row).decimal),1).toFixed(2)):null,
+    theoreticalCombinedOdds:theoreticalRows.length?theoreticalRows.reduce((total,row)=>total*Number(quote(row).decimal),1):null,
+    theoreticalQuoteCount:theoreticalRows.length,
+    theoreticalExcludedCount:rows.length-theoreticalRows.length,
     combinationConfirmed,
   };
 }
@@ -179,6 +183,8 @@ export function personalBetslipSummary(snapshot){
     const quoteText=finite(currentQuote.decimal)?Number(currentQuote.decimal).toLocaleString("it-IT",{minimumFractionDigits:2,maximumFractionDigits:2}):"N/D";
     return `${index+1}. ${selection.fixture||matchId(selection)||"Partita N/D"} — ${selection.label||selection.betSelection?.market?.selection||"Selezione N/D"} @ ${quoteText} (snapshot ${currentQuote.verifiedAt||"N/D"})`;
   });
-  const warning=snapshot?.assessment?.usableCombinedOdds==null?"Quota totale non disponibile come giocabile: verificare compatibilità, disponibilità e combinabilità bookmaker.":`Quota combinata verificata: ${snapshot.assessment.usableCombinedOdds.toLocaleString("it-IT",{minimumFractionDigits:2,maximumFractionDigits:2})}`;
+  const theoretical=snapshot?.assessment?.theoreticalCombinedOdds;
+  const excluded=Number(snapshot?.assessment?.theoreticalExcludedCount)||0;
+  const warning=theoretical==null?"Quota combinata teorica: N/D.":`Quota combinata teorica: ${theoretical.toLocaleString("it-IT",{minimumFractionDigits:2,maximumFractionDigits:2})}${excluded?` (parziale: ${excluded} selezioni non incluse)`:""}. La combinabilità bookmaker resta una verifica separata.`;
   return [heading,...rows,warning].join("\n");
 }

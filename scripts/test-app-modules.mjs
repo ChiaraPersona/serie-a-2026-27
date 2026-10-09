@@ -67,9 +67,17 @@ assert.match(bettingPage, /data-match-open-all/, "Schedina MD6: apertura globale
 assert.match(bettingPage, /data-match-close-all/, "Schedina MD6: chiusura globale delle partite assente");
 assert.match(bettingPage, /data-market-filter/, "Schedina MD6: filtri dei mercati assenti");
 assert.match(bettingPage, /data-market-sort/, "Schedina MD6: ordinamento dei mercati assente");
-assert.match(bettingPage, /hasValidEvaluation\(leg\)/, "Schedina MD6: mercati privi di valutazione non filtrati");
-assert.match(bettingPage, /Number\(right\.dataset\[sortKey\]\)-Number\(left\.dataset\[sortKey\]\)\|\|Number\(left\.dataset\.order\)-Number\(right\.dataset\.order\)/, "Schedina MD6: ordinamento stabile assente");
+assert.match(bettingPage, /comboLegs\.filter\(hasVerifiedPlayableQuote\)/, "Schedina MD6: MyCombo senza quota verificata non filtrate");
+assert.match(bettingPage, /leftMissing!==rightMissing/, "Schedina MD6: metriche mancanti non gestite dall'ordinamento stabile");
 assert.doesNotMatch(bettingPage, /MyCombo · scegli tra|Seleziona o deseleziona gli esiti da combinare|Questi pulsanti appartengono esclusivamente/, "Schedina MD6: testo MyCombo rimosso ancora presente");
+const matchdayWorkspace = bettingPage.slice(bettingPage.indexOf("function matchdayWorkspaceContent"), bettingPage.indexOf("function archiveRoundContent"));
+assert.doesNotMatch(matchdayWorkspace, />WATCH<|betting-match-watch|betting-match-mycombo/, "Schedina MD6: WATCH o MyCombo ancora separati visivamente");
+assert.match(matchdayWorkspace, /selezioni disponibili/, "Schedina MD6: conteggio delle sole selezioni disponibili assente");
+assert.match(bettingPage, /role="button" tabindex="0" data-selection-row data-personal-pick=/, "Schedina MD6: l'intera riga non è selezionabile da tastiera");
+assert.match(bettingPage, /event\.key==="Enter"\|\|event\.key===" "/, "Schedina MD6: toggle tastiera della riga assente");
+assert.match(bettingPage, /Quota combinata teorica/, "Schedina personale: quota combinata teorica assente");
+assert.match(bettingPage, /aria-label="Rimuovi selezione" title="Rimuovi selezione"/, "Schedina personale: rimozione accessibile con X assente");
+assert.doesNotMatch(matchdayWorkspace, />Aggiungi</, "Schedina MD6: pulsante Aggiungi ancora presente nelle righe");
 assert.match(bettingPage, /if\(number>=6\)currentContext=/, "Schedina: il costruttore non protegge la struttura degli archivi MD1-MD5");
 assert.match(bettingPage, /event\.key==="Escape"/, "Schedina: chiusura da tastiera del pannello assente");
 assert.match(bettingPage, /BOOKMAKER_COMBINABILITY_UNKNOWN/, "Schedina: avviso di combinabilità bookmaker non esposto");
@@ -84,6 +92,8 @@ assert.match(bettingCss, /@media\(min-width:1180px\)[\s\S]*\.personal-betslip-ro
 assert.match(bettingCss, /@media\(min-width:1180px\)[\s\S]*\.personal-betslip-trigger\{display:none\}/, "Schedina: trigger flottante non nascosto su desktop");
 assert.match(bettingCss, /\.betting-workspace\{display:grid;grid-template-columns:minmax\(0,7fr\) minmax\(300px,3fr\)/, "Schedina: griglia 70\/30 e colonna personale assente");
 assert.match(bettingCss, /\.betting-market-row\{display:grid;grid-template-columns:/, "Schedina: righe compatte dei mercati assenti");
+assert.match(bettingCss, /\.betting-market-row\.is-selected\{border-color:#1c6dff;background:#edf5ff/, "Schedina: stato selezionato della riga assente");
+assert.match(bettingCss, /\.personal-betslip-remove\{[^}]*color:#c21f2f/, "Schedina personale: X rossa di rimozione assente");
 assert.match(bettingCss, /\.personal-betslip-panel\[hidden\]\{display:none\}/, "Schedina: pannello chiuso ancora esposto alla navigazione assistiva");
 assert.match(bettingCss, /@media\(max-width:680px\).*\.personal-betslip-panel\{top:auto;right:0;bottom:0;left:0/s, "Schedina: bottom sheet mobile assente");
 const readingsPage = fs.readFileSync(path.join(root, "js", "pages", "readings.js"), "utf8");

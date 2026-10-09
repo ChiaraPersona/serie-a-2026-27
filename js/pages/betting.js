@@ -9,7 +9,7 @@ export function createPage(deps){
   const pct=value=>Number(value).toLocaleString("it-IT",Number(value)>0&&Number(value)<.01?{minimumFractionDigits:4,maximumFractionDigits:6}:{minimumFractionDigits:2,maximumFractionDigits:2});
   const odds=value=>Number(value).toLocaleString("it-IT",{minimumFractionDigits:2,maximumFractionDigits:2});
   const metric=(value,formatter,suffix="")=>Number.isFinite(value)?`${formatter(value)}${suffix}`:"N/D";
-  let personalStore=null,currentContext=null,personalNotice="",personalUnsubscribe=null,personalDocumentClick=null,personalMediaCleanup=null;
+  let personalStore=null,currentContext=null,personalNotice="",personalUnsubscribe=null,personalDocumentClick=null,personalDocumentKeydown=null,personalMediaCleanup=null,personalNoticeTimer=null;
   const selectionRegistry=new Map(),slipRegistry=new Map();
 
   function registerSelection(leg,{fixture=leg.fixture,sourceSection="modello"}={}){
@@ -64,6 +64,11 @@ export function createPage(deps){
 
   const isPlayableSelection=leg=>leg?.betSelection?.operational?.playability?.status!=="NOT_PLAYABLE"&&leg?.betSelection?.operational?.classification!=="ESCLUSO";
 
+  const hasVerifiedPlayableQuote=leg=>{
+    const contract=leg?.betSelection,quote=contract?.quote||{},compatibility=String(contract?.compatibility?.status||"");
+    return isPlayableSelection(leg)&&contract?.selectionId===leg?.selectionId&&contract?.identity?.status==="VERIFIED_PROVIDER_IDS"&&Boolean(contract.identity.providerSelectionId)&&Number.isFinite(Number(quote.decimal))&&Number(quote.decimal)>0&&Boolean(quote.verifiedAt)&&Boolean(quote.source?.provider)&&quote.availability==="AVAILABLE_AT_SNAPSHOT"&&!/^INCOMPATIBILE/.test(compatibility)&&compatibility!=="INCOMPATIBLE";
+  };
+
   function marketCategory(leg){
     const market=leg?.betSelection?.market||{},raw=String(market.family||leg.marketFamily||market.name||leg.market||"Altro").trim(),normalized=raw.toUpperCase();
     if(normalized.includes("TIRI IN PORTA"))return {key:"tiri-in-porta",label:"Tiri in porta"};
@@ -76,31 +81,26 @@ export function createPage(deps){
     return {key:raw.toLocaleLowerCase("it-IT").replace(/[^a-z0-9]+/g,"-").replace(/(^-|-$)/g,"")||"altro",label};
   }
 
-  function evaluatedMarketRow(leg,index,sourceSection){
-    const evaluation=leg.betSelection.evaluation,market=leg.betSelection.market||{},category=marketCategory(leg),selection=registerSelection(leg,{sourceSection}),threshold=market.threshold??market.selection,ev=Number(evaluation.expectedValuePct);
-    return `<li class="betting-market-row" data-model-market data-category="${esc(category.key)}" data-order="${index}" data-ev="${ev}" data-probability="${Number(evaluation.modelProbabilityPct)}" data-odds="${Number(leg.odds)}"><div class="betting-market-copy"><small>${esc(market.family||leg.marketFamily||leg.market||"Mercato")}</small><strong>${esc(leg.label)}</strong>${threshold!==null&&threshold!==undefined&&threshold!==""?`<span>${market.threshold!==null&&market.threshold!==undefined?"Soglia":"Esito"} ${esc(threshold)}</span>`:""}</div><span class="betting-market-metric"><small>Quota</small><b>${odds(leg.odds)}</b></span><span class="betting-market-metric"><small>Probabilità</small><b>${pct(evaluation.modelProbabilityPct)}%</b></span><span class="betting-market-metric"><small>Quota equa</small><b>${odds(evaluation.fairOdds)}</b></span><span class="betting-market-metric betting-market-ev ${ev>=0?"is-positive":"is-negative"}"><small>EV</small><b>${ev>0?"+":""}${pct(ev)}%</b></span>${personalPickButton(selection)}</li>`;
-  }
-
-  function compactMyComboRow(leg,match,teamById){
-    const home=teamById.get(match.homeTeam)?.name||match.homeTeam,away=teamById.get(match.awayTeam)?.name||match.awayTeam,playable=isPlayableSelection(leg),selection=playable?registerSelection(leg,{fixture:`${home} - ${away}`,sourceSection:"mycombo-partita"}):null,evaluation=hasValidEvaluation(leg)?leg.betSelection.evaluation:null;
-    return `<li class="betting-combo-row"><div><strong>${esc(leg.label)}</strong><span>${esc(leg.market)}</span>${evaluation?`<small>Probabilità ${pct(evaluation.modelProbabilityPct)}% · EV ${evaluation.expectedValuePct>0?"+":""}${pct(evaluation.expectedValuePct)}%</small>`:""}</div><b>${odds(leg.odds)}</b>${personalPickButton(selection)}</li>`;
+  function selectableMarketRow({leg,sourceSection},index,fixture){
+    const evaluation=hasValidEvaluation(leg)?leg.betSelection.evaluation:null,market=leg.betSelection.market||{},category=marketCategory(leg),selection=registerSelection(leg,{fixture,sourceSection}),threshold=market.threshold??market.selection,quote=Number(leg.betSelection.quote.decimal),probability=evaluation?Number(evaluation.modelProbabilityPct):null,fairOdds=evaluation?Number(evaluation.fairOdds):null,ev=evaluation?Number(evaluation.expectedValuePct):null;
+    const metricText=(value,formatter,suffix="")=>Number.isFinite(value)?`${formatter(value)}${suffix}`:"—";
+    return `<li class="betting-market-row betting-selection-row" role="button" tabindex="0" data-selection-row data-personal-pick="${esc(selection.selectionId)}" data-selection-label="${esc(leg.label)}" data-source-section="${esc(sourceSection)}" data-category="${esc(category.key)}" data-order="${index}" data-ev="${Number.isFinite(ev)?ev:""}" data-probability="${Number.isFinite(probability)?probability:""}" data-odds="${quote}" aria-pressed="false" aria-label="Aggiungi alla schedina: ${esc(leg.label)}"><div class="betting-market-copy"><small>${esc(market.family||leg.marketFamily||leg.market||"Mercato")}</small><strong>${esc(leg.label)}</strong>${threshold!==null&&threshold!==undefined&&threshold!==""?`<span>${market.threshold!==null&&market.threshold!==undefined?"Soglia":"Esito"} ${esc(threshold)}</span>`:""}</div><span class="betting-market-metric"><small>Quota</small><b>${odds(quote)}</b></span><span class="betting-market-metric"><small>Probabilità</small><b>${metricText(probability,pct,"%")}</b></span><span class="betting-market-metric"><small>Quota equa</small><b>${metricText(fairOdds,odds)}</b></span><span class="betting-market-metric betting-market-ev ${Number.isFinite(ev)?ev>=0?"is-positive":"is-negative":""}"><small>EV</small><b>${Number.isFinite(ev)&&ev>0?"+":""}${metricText(ev,pct,"%")}</b></span><span class="betting-selection-check" aria-hidden="true">✓</span></li>`;
   }
 
   function matchdayWorkspaceContent(data,predictions,matchById,teamById,matchday){
     const code=String(matchday).padStart(2,"0"),modelByMatch=new Map();
-    data.slips.flatMap(slip=>slip.legs.map(leg=>({leg,sourceSection:slip.qualityStatus==="laboratorio"?"laboratorio":"schedina-modello"}))).filter(({leg})=>hasValidEvaluation(leg)&&isPlayableSelection(leg)).forEach(entry=>{
+    data.slips.flatMap(slip=>slip.legs.map(leg=>({leg,sourceSection:slip.qualityStatus==="laboratorio"?"laboratorio":"schedina-modello"}))).filter(({leg})=>hasValidEvaluation(leg)&&hasVerifiedPlayableQuote(leg)).forEach(entry=>{
       const rows=modelByMatch.get(entry.leg.matchId)||[];rows.push(entry);modelByMatch.set(entry.leg.matchId,rows);
     });
     const predictionsByMatch=new Map(predictions.filter(prediction=>prediction.matchId.endsWith(`-md-${code}`)).map(prediction=>[prediction.matchId,prediction]));
     const matches=[...matchById.values()].filter(match=>match.id.endsWith(`-md-${code}`)).sort((left,right)=>`${left.date}T${left.kickoff||"00:00"}`.localeCompare(`${right.date}T${right.kickoff||"00:00"}`));
-    const panels=matches.map((match,matchIndex)=>{
+    const panels=matches.map(match=>{
       const home=teamById.get(match.homeTeam)?.name||match.homeTeam,away=teamById.get(match.awayTeam)?.name||match.awayTeam,prediction=predictionsByMatch.get(match.id),combo=prediction?.combinations?.find(item=>item.tier==="Safe"),comboLegs=combo?.legs||[],seen=new Set(),markets=[];
-      [...(modelByMatch.get(match.id)||[]),...comboLegs.filter(leg=>hasValidEvaluation(leg)&&isPlayableSelection(leg)).map(leg=>({leg,sourceSection:"mycombo-partita"}))].forEach(entry=>{if(entry.leg.selectionId&&!seen.has(entry.leg.selectionId)){seen.add(entry.leg.selectionId);markets.push(entry)}});
+      [...(modelByMatch.get(match.id)||[]),...comboLegs.filter(hasVerifiedPlayableQuote).map(leg=>({leg,sourceSection:"mycombo-partita"}))].forEach(entry=>{if(entry.leg.selectionId&&!seen.has(entry.leg.selectionId)){seen.add(entry.leg.selectionId);markets.push(entry)}});
       const categories=[];markets.forEach(({leg})=>{const category=marketCategory(leg);if(!categories.some(item=>item.key===category.key))categories.push(category)});
       const filters=markets.length?`<div class="betting-market-tools"><div class="betting-market-filters" role="group" aria-label="Filtra i mercati di ${esc(home)} - ${esc(away)}"><button type="button" class="is-active" data-market-filter="all" aria-pressed="true">Tutti</button>${categories.map(category=>`<button type="button" data-market-filter="${esc(category.key)}" aria-pressed="false">${esc(category.label)}</button>`).join("")}</div><label class="betting-market-sort">Ordina <select data-market-sort><option value="ev">EV decrescente</option><option value="probability">Probabilità decrescente</option><option value="odds">Quota decrescente</option></select></label></div>`:"";
-      const marketList=markets.length?`<div class="betting-market-columns" aria-hidden="true"><span>Mercato</span><span>Quota</span><span>Probabilità</span><span>Quota equa</span><span>EV</span><span></span></div><ol class="betting-market-list">${markets.map(({leg,sourceSection},index)=>evaluatedMarketRow(leg,index,sourceSection)).join("")}</ol>`:`<p class="betting-market-empty">Nessun mercato con probabilità, quota equa ed EV disponibili.</p>`;
-      const primary=comboLegs.filter(leg=>leg.betSelection?.operational?.classification!=="WATCH"),watch=comboLegs.filter(leg=>leg.betSelection?.operational?.classification==="WATCH"),comboContent=comboLegs.length?`<section class="betting-match-mycombo" aria-labelledby="match-mycombo-${matchIndex}"><h4 id="match-mycombo-${matchIndex}">MyCombo</h4>${primary.length?`<ol>${primary.map(leg=>compactMyComboRow(leg,match,teamById)).join("")}</ol>`:""}${watch.length?`<details class="betting-match-watch"><summary>WATCH</summary><ol>${watch.map(leg=>compactMyComboRow(leg,match,teamById)).join("")}</ol></details>`:""}</section>`:"";
-      return `<details class="betting-match-panel" data-match-panel data-match-id="${esc(match.id)}"><summary><span><small>${esc(dateOnly(match.date))} · ${esc(match.kickoff||"Orario N/D")}</small><strong>${esc(home)} - ${esc(away)}</strong></span><span class="betting-match-count">${markets.length} ${markets.length===1?"mercato valutato":"mercati valutati"}${comboLegs.length?` · MyCombo ${comboLegs.length}`:""}</span><span class="betting-match-toggle" aria-hidden="true">＋</span></summary><div class="betting-match-body">${filters}${marketList}${comboContent}</div></details>`;
+      const fixture=`${home} - ${away}`,marketList=markets.length?`<div class="betting-market-columns" aria-hidden="true"><span>Mercato</span><span>Quota</span><span>Probabilità</span><span>Quota equa</span><span>EV</span><span></span></div><ol class="betting-market-list">${markets.map((entry,index)=>selectableMarketRow(entry,index,fixture)).join("")}</ol>`:`<p class="betting-market-empty">Nessuna selezione disponibile.</p>`;
+      return `<details class="betting-match-panel" data-match-panel data-match-id="${esc(match.id)}"><summary><span><small>${esc(dateOnly(match.date))} · ${esc(match.kickoff||"Orario N/D")}</small><strong>${esc(home)} - ${esc(away)}</strong></span><span class="betting-match-count">${markets.length} ${markets.length===1?"selezione disponibile":"selezioni disponibili"}</span><span class="betting-match-toggle" aria-hidden="true">＋</span></summary><div class="betting-match-body">${filters}${marketList}</div></details>`;
     }).join("");
     return `<section class="betting-matchday-shell" aria-labelledby="betting-markets-title"><header class="betting-matchday-heading"><div><p class="eyebrow">${matches.length} partite · ordine cronologico</p><h3 id="betting-markets-title">Mercati per partita</h3></div><div class="betting-matchday-actions"><button type="button" data-match-open-all>Apri tutte</button><button type="button" data-match-close-all>Chiudi tutte</button></div></header><div class="betting-match-list">${panels}</div></section>`;
   }
@@ -153,8 +153,8 @@ export function createPage(deps){
       const list=panel.querySelector(".betting-market-list"),filterButtons=[...panel.querySelectorAll("[data-market-filter]")],sort=panel.querySelector("[data-market-sort]");
       const apply=()=>{
         if(!list)return;
-        const active=filterButtons.find(button=>button.getAttribute("aria-pressed")==="true")?.dataset.marketFilter||"all",sortKey=sort?.value||"ev",rows=[...list.querySelectorAll("[data-model-market]")];
-        rows.sort((left,right)=>Number(right.dataset[sortKey])-Number(left.dataset[sortKey])||Number(left.dataset.order)-Number(right.dataset.order)).forEach(row=>{row.hidden=active!=="all"&&row.dataset.category!==active;list.append(row)});
+        const active=filterButtons.find(button=>button.getAttribute("aria-pressed")==="true")?.dataset.marketFilter||"all",sortKey=sort?.value||"ev",rows=[...list.querySelectorAll("[data-selection-row]")],value=row=>row.dataset[sortKey]===""?null:Number(row.dataset[sortKey]);
+        rows.sort((left,right)=>{const leftValue=value(left),rightValue=value(right),leftMissing=!Number.isFinite(leftValue),rightMissing=!Number.isFinite(rightValue);if(leftMissing!==rightMissing)return leftMissing?1:-1;return (rightValue-leftValue)||Number(left.dataset.order)-Number(right.dataset.order)}).forEach(row=>{row.hidden=active!=="all"&&row.dataset.category!==active;list.append(row)});
       };
       filterButtons.forEach(button=>button.addEventListener("click",()=>{filterButtons.forEach(item=>{const active=item===button;item.classList.toggle("is-active",active);item.setAttribute("aria-pressed",String(active))});apply()}));
       sort?.addEventListener("change",apply);apply();
@@ -172,6 +172,7 @@ export function createPage(deps){
       const active=selected.has(button.dataset.personalPick);
       button.setAttribute("aria-pressed",String(active));
       button.classList.toggle("is-selected",active);
+      if(button.dataset.selectionLabel)button.setAttribute("aria-label",`${active?"Rimuovi dalla":"Aggiungi alla"} schedina: ${button.dataset.selectionLabel}`);
       if(button.classList.contains("betting-personal-pick")){
         const label=button.querySelector("span:last-child");
         if(label&&!button.disabled)label.textContent=active?"Aggiunta":"Aggiungi";
@@ -200,25 +201,36 @@ export function createPage(deps){
     const context=root.querySelector("[data-personal-context]");
     const content=root.querySelector("[data-personal-content]");
     const notice=root.querySelector("[data-personal-notice]");
-    const selections=snapshot?.selections||[],assessment=snapshot?.assessment||{issues:[],usableCombinedOdds:null};
+    const panel=root.querySelector(".personal-betslip-panel"),footer=panel.querySelector("footer"),selections=snapshot?.selections||[],assessment=snapshot?.assessment||{theoreticalCombinedOdds:null,theoreticalExcludedCount:0};
     context.textContent=snapshot?.context?personalContextLabel(snapshot.context):"Apri una giornata per iniziare o riprendere la schedina.";
     notice.textContent=personalNotice||snapshot?.storageError||"";
+    notice.hidden=!notice.textContent;
     const rows=selections.map(selection=>{
       const quote=selection.betSelection?.quote||{};
       const quoteText=quote.decimal!==null&&quote.decimal!==""&&Number.isFinite(Number(quote.decimal))?odds(quote.decimal):"N/D";
       const flags=[];
       if(selection.quoteChanged)flags.push(`Quota aggiornata${selection.previousQuote?` da ${odds(selection.previousQuote)}`:""}`);
-      return `<li class="personal-betslip-item"><div><small>${esc(selection.fixture||"Partita N/D")}</small><strong>${esc(selection.label||"Selezione N/D")}</strong><span>${esc(selection.market||selection.betSelection?.market?.name||"Mercato N/D")} · quota ${quoteText}</span>${flags.map(flag=>`<em>${esc(flag)}</em>`).join("")}</div><button type="button" data-personal-remove="${esc(selection.selectionId)}" aria-label="Rimuovi ${esc(selection.label||"selezione")}">Rimuovi</button></li>`;
+      return `<li class="personal-betslip-item"><div><small>${esc(selection.fixture||"Partita N/D")}</small><strong>${esc(selection.label||"Selezione N/D")}</strong><span>${esc(selection.market||selection.betSelection?.market?.name||"Mercato N/D")} · quota ${quoteText}</span>${flags.map(flag=>`<em>${esc(flag)}</em>`).join("")}</div><button type="button" class="personal-betslip-remove" data-personal-remove="${esc(selection.selectionId)}" aria-label="Rimuovi selezione" title="Rimuovi selezione"><span aria-hidden="true">×</span></button></li>`;
     }).join("");
-    const total=assessment.usableCombinedOdds==null?`<div class="personal-betslip-total is-unavailable"><span>Quota selezionata</span><strong>—</strong><small>La quota combinata non è mostrata finché compatibilità e combinabilità bookmaker non sono verificate.</small></div>`:`<div class="personal-betslip-total"><span>Quota selezionata</span><strong>${odds(assessment.usableCombinedOdds)}</strong><small>Ultime quote verificate disponibili.</small></div>`;
-    content.innerHTML=selections.length?`<ol class="personal-betslip-list">${rows}</ol>${total}`:`<div class="personal-betslip-empty"><strong>Nessuna selezione</strong><span>Aggiungi un mercato valutato o una selezione MyCombo.</span></div>${total}`;
+    const partial=Number(assessment.theoreticalExcludedCount)||0,totalValue=assessment.theoreticalCombinedOdds==null?"—":odds(assessment.theoreticalCombinedOdds),total=`<div class="personal-betslip-total"><span>Quota combinata teorica</span><strong>${totalValue}</strong><small>${partial?`Totale parziale: ${partial} ${partial===1?"selezione non inclusa":"selezioni non incluse"} perché senza quota valida o non giocabili.`:"Prodotto matematico delle quote selezionate; non conferma la combinabilità Sisal."}</small></div>`;
+    content.innerHTML=selections.length?`<ol class="personal-betslip-list">${rows}</ol>${total}`:`<div class="personal-betslip-empty"><span class="personal-betslip-empty-icon" aria-hidden="true">＋</span><strong>Nessuna selezione</strong><span>Aggiungi una giocata per iniziare</span></div>${total}`;
+    panel.classList.toggle("is-empty",!selections.length);
+    footer.hidden=!selections.length;
     root.querySelector("[data-personal-clear]").disabled=!selections.length;
     updatePersonalSelectionControls(snapshot);
+  }
+
+  function setPersonalNotice(message){
+    personalNotice=message;
+    if(personalNoticeTimer)clearTimeout(personalNoticeTimer);
+    renderPersonalBetslip(personalStore?.getSnapshot());
+    if(message)personalNoticeTimer=setTimeout(()=>{personalNotice="";renderPersonalBetslip(personalStore?.getSnapshot())},2200);
   }
 
   function mountPersonalBetslip(){
     personalUnsubscribe?.();
     if(personalDocumentClick)document.removeEventListener("click",personalDocumentClick);
+    if(personalDocumentKeydown)document.removeEventListener("keydown",personalDocumentKeydown);
     personalMediaCleanup?.();
     document.querySelector("[data-personal-root]")?.remove();
     const host=document.querySelector("[data-personal-host]");
@@ -233,25 +245,29 @@ export function createPage(deps){
     root.addEventListener("click",async event=>{
       const openButton=event.target.closest("[data-personal-open]"),closeButton=event.target.closest("[data-personal-close]"),removeButton=event.target.closest("[data-personal-remove]"),clearButton=event.target.closest("[data-personal-clear]");
       if(openButton){open();return}if(closeButton){close();return}
-      if(removeButton){personalStore.remove(removeButton.dataset.personalRemove);personalNotice="Selezione rimossa.";renderPersonalBetslip(personalStore.getSnapshot());return}
-      if(clearButton&&window.confirm("Vuoi svuotare la schedina personale di questa giornata?")){const result=personalStore.clear();personalNotice=`Schedina svuotata: ${result.removed||0} selezioni rimosse.`;renderPersonalBetslip(personalStore.getSnapshot());return}
+      if(removeButton){personalStore.remove(removeButton.dataset.personalRemove);setPersonalNotice("Selezione rimossa.");return}
+      if(clearButton&&window.confirm("Vuoi svuotare la schedina personale di questa giornata?")){const result=personalStore.clear();setPersonalNotice(`Schedina svuotata: ${result.removed||0} selezioni rimosse.`);return}
     });
-    personalDocumentClick=event=>{
-      const pick=event.target.closest("[data-personal-pick]");
+    const togglePersonalPick=pick=>{
       if(pick&&!pick.disabled){
         const id=pick.dataset.personalPick,snapshot=personalStore.getSnapshot(),active=snapshot.selections.some(selection=>selection.selectionId===id);
         const result=active?personalStore.remove(id):personalStore.add(selectionRegistry.get(id));
         const notices={ADDED:"Selezione aggiunta.",REMOVED:"Selezione rimossa.",DUPLICATE:"Selezione già presente.",UNDER_NOT_PLAYABLE:"Gli Under sono esclusi dalle proposte giocabili dalla sesta giornata.",INDIVIDUAL_FOUL_NOT_PLAYABLE:"I falli individuali sono esclusi dalle proposte giocabili dalla sesta giornata.",CORNER_PERIOD_NOT_PLAYABLE:"I corner riferiti a singoli tempi sono esclusi dalle proposte giocabili dalla sesta giornata.",UNVERIFIED_IDENTITY:"Selezione non aggiunta: identificazione bookmaker non verificata.",CONTEXT_MISMATCH:"Selezione non aggiunta: giornata o competizione non coerente."};
-        personalNotice=notices[result.status]||"Operazione non disponibile.";renderPersonalBetslip(personalStore.getSnapshot());
+        setPersonalNotice(notices[result.status]||"Operazione non disponibile.");
       }
+    };
+    personalDocumentClick=event=>{
+      const pick=event.target.closest("[data-personal-pick]");
+      if(pick)togglePersonalPick(pick);
       const addSlip=event.target.closest("[data-personal-add-slip]");
       if(addSlip&&!addSlip.disabled){
         const result=personalStore.addMany(slipRegistry.get(addSlip.dataset.personalAddSlip)||[]);
-        personalNotice=`${result.added} aggiunte${result.duplicates?` · ${result.duplicates} già presenti`:""}${result.rejected.length?` · ${result.rejected.length} non aggiunte`:""}.`;
-        renderPersonalBetslip(personalStore.getSnapshot());
+        setPersonalNotice(`${result.added} aggiunte${result.duplicates?` · ${result.duplicates} già presenti`:""}${result.rejected.length?` · ${result.rejected.length} non aggiunte`:""}.`);
       }
     };
+    personalDocumentKeydown=event=>{const pick=event.target.closest('[data-selection-row][data-personal-pick]');if(pick&&(event.key==="Enter"||event.key===" ")){event.preventDefault();togglePersonalPick(pick)}};
     document.addEventListener("click",personalDocumentClick);
+    document.addEventListener("keydown",personalDocumentKeydown);
     panel.addEventListener("keydown",event=>{
       if(event.key==="Escape"){event.preventDefault();close();return}
       if(event.key!=="Tab")return;

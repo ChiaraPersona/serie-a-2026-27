@@ -193,6 +193,19 @@ function currentRosterIds() {
   return byTeamAndName;
 }
 
+function historicalProviderIds() {
+  const byTeamAndName = new Map();
+  if (!fs.existsSync(historicalOutputPath)) return byTeamAndName;
+  const historical = JSON.parse(fs.readFileSync(historicalOutputPath, "utf8"));
+  for (const team of historical.teams || []) {
+    for (const player of team.players || []) {
+      if (!player.providerPlayerId) continue;
+      byTeamAndName.set(`${normalize(team.team)}|${normalize(player.name)}`, String(player.providerPlayerId));
+    }
+  }
+  return byTeamAndName;
+}
+
 function totals(entries) {
   if (!entries.length) return playerEntry({});
   const aggregate = {};
@@ -414,6 +427,7 @@ function buildCurrent(args) {
   }
   const espn = collectEspnRows({ season: "2026-27", asOf });
   const rosterIds = currentRosterIds();
+  const historicalIds = historicalProviderIds();
   const identity = read("data/sources/champions-player-history-aliases.json");
   const aliases = identity.aliases || {};
   const sourceMatches = (sourceConfig.matches || []).filter(match => match.season === "2026-27" && match.date <= asOf);
@@ -427,11 +441,19 @@ function buildCurrent(args) {
       const teamCandidates = [...(espn.athletesByTeamAndName.get(`${config.espnTeamId}|${nameKey}`) || [])];
       const globalCandidates = [...(espn.athletesByNormalizedName.get(nameKey) || [])];
       const verifiedId = identity.providerIds?.[`${team.team}|${player.name}`]?.id;
-      const candidates = verifiedId ? [String(verifiedId)] : rosterCandidates.length === 1 ? rosterCandidates : teamCandidates.length === 1 ? teamCandidates : globalCandidates.length === 1 ? globalCandidates : [];
+      const historicalId = historicalIds.get(`${normalize(team.team)}|${nameKey}`);
+      let candidates = [];
+      let identitySource = "unresolved";
+      if (verifiedId) [candidates, identitySource] = [[String(verifiedId)], "verified-identity-map"];
+      else if (rosterCandidates.length === 1) [candidates, identitySource] = [rosterCandidates, "current-team-roster"];
+      else if (teamCandidates.length === 1) [candidates, identitySource] = [teamCandidates, "current-match-team-name"];
+      else if (globalCandidates.length === 1) [candidates, identitySource] = [globalCandidates, "current-match-unique-name"];
+      else if (historicalId) [candidates, identitySource] = [[historicalId], "historical-dataset-exact-team-name"];
       if (candidates.length !== 1) {
         return {
           ...player,
           providerPlayerId: null,
+          identitySource,
           currentSeason: null,
           sourceMode: "espn-match-rosters",
           dataQuality: "unavailable",
@@ -442,7 +464,7 @@ function buildCurrent(args) {
       const entries = aggregateEntries(providerPlayerId, player.position, espn.matchesByAthlete.get(providerPlayerId) || [], { detailed: true })
         .map(entry => ({ ...entry, playerId: player.id, season: "2026/27", asOf }));
       if (!entries.length) {
-        return { ...player, providerPlayerId, currentSeason: null, sourceMode: "espn-match-rosters", dataQuality: "unavailable", unmatchedReason: "Nessuna presenza 2026/27 nel campione importato" };
+        return { ...player, providerPlayerId, identitySource, currentSeason: null, sourceMode: "espn-match-rosters", dataQuality: "unavailable", unmatchedReason: "Nessuna presenza 2026/27 nel campione importato" };
       }
       const primaryEntries = entries.filter(entry => entry.teamId === config.espnTeamId && entry.competitionType === "domestic-league");
       const aggregate = currentAggregate(primaryEntries);
@@ -450,6 +472,7 @@ function buildCurrent(args) {
       return {
         ...player,
         providerPlayerId,
+        identitySource,
         currentSeason: {
           season: "2026/27",
           asOf,
