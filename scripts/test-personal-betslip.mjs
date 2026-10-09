@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import {assessSelections,createPersonalBetslipStore,isIndividualPlayerFoulSelection,isPlayableUnder,personalBetslipSummary,PERSONAL_BETSLIP_STORAGE_KEY} from "../js/pages/personal-betslip-store.mjs";
+import {assessSelections,createPersonalBetslipStore,isCornerPeriodSelection,isIndividualPlayerFoulSelection,isPlayableUnder,personalBetslipSummary,PERSONAL_BETSLIP_STORAGE_KEY} from "../js/pages/personal-betslip-store.mjs";
 
 function memoryStorage(){
   const values=new Map();
@@ -10,9 +10,9 @@ const context6={competition:"serie-a",season:"2026-27",matchday:6,label:"Serie A
 const context7={competition:"serie-a",season:"2026-27",matchday:7,label:"Serie A · 7ª giornata"};
 const championsContext={competition:"champions-league",season:"2026-27",matchday:6,label:"Champions League · 6ª giornata"};
 
-function selection(id,{matchId="alpha-beta-2026-27-md-06",providerMarketId=`market-${id}`,market="MERCATO TEST",outcome="OVER",label=`Scelta ${id}`,odds=1.8,verifiedAt="2026-10-09T10:43:00.203Z",availability="AVAILABLE_AT_SNAPSHOT",compatibilityStatus="COMPATIBILE",bookmakerCombinability,overlapKey=`overlap-${id}`,semanticKeys=[`semantic-${id}`],context=context6}={}){
+function selection(id,{matchId="alpha-beta-2026-27-md-06",providerMarketId=`market-${id}`,market="MERCATO TEST",variant=null,outcome="OVER",label=`Scelta ${id}`,odds=1.8,verifiedAt="2026-10-09T10:43:00.203Z",availability="AVAILABLE_AT_SNAPSHOT",compatibilityStatus="COMPATIBILE",bookmakerCombinability,overlapKey=`overlap-${id}`,semanticKeys=[`semantic-${id}`],context=context6}={}){
   const selectionId=`bet:sisal:${matchId}:${id}`;
-  return {selectionId,context,fixture:"Alpha - Beta",label,market,betSelection:{schemaVersion:1,selectionId,identity:{status:"VERIFIED_PROVIDER_IDS",matchId,provider:"sisal",providerMarketId,providerSelectionId:id},market:{name:market,selection:outcome,bookmakerSemantics:{selectionName:outcome}},quote:{decimal:odds,verifiedAt,availability,source:{provider:"sisal",url:"https://example.test/quote"}},compatibility:{status:compatibilityStatus,bookmakerCombinability},overlap:{overlapKey,semanticKeys}}};
+  return {selectionId,context,fixture:"Alpha - Beta",label,market,betSelection:{schemaVersion:1,selectionId,identity:{status:"VERIFIED_PROVIDER_IDS",matchId,provider:"sisal",providerMarketId,providerSelectionId:id},market:{name:market,variant,selection:outcome,bookmakerSemantics:{selectionName:outcome}},quote:{decimal:odds,verifiedAt,availability,source:{provider:"sisal",url:"https://example.test/quote"}},compatibility:{status:compatibilityStatus,bookmakerCombinability},overlap:{overlapKey,semanticKeys}}};
 }
 
 {
@@ -69,6 +69,27 @@ function selection(id,{matchId="alpha-beta-2026-27-md-06",providerMarketId=`mark
   assert.equal(store.add(selection("under",{outcome:"UNDER",label:"Under 2,5"})).status,"UNDER_NOT_PLAYABLE","gli Under MD6 devono essere rifiutati");
   assert.equal(isPlayableUnder(selection("under-label",{outcome:"TOTAL",label:"Duo + Under 3,5"})),true,"riconoscimento Under nell'etichetta fallito");
   assert.equal(store.getSnapshot().selections.length,0,"un Under rifiutato non deve essere memorizzato");
+}
+
+{
+  const periodCorner=selection("corner-period",{market:"1 TEMPO: 1X2 CORNER",variant:"1T CORNER 1X2",outcome:"1",label:"Casa più corner nel primo tempo"});
+  const fullMatchCorner=selection("corner-full",{market:"U/O CORNER",variant:"U/O 9.5 CORNER",outcome:"OVER",label:"Over 9,5 corner"});
+  assert.equal(isCornerPeriodSelection(periodCorner),true,"corner del primo tempo non riconosciuto dalla semantica canonica");
+  assert.equal(isCornerPeriodSelection(fullMatchCorner),false,"corner dell'intera partita classificato per errore come mercato per tempo");
+  const store=createPersonalBetslipStore({storage:memoryStorage()});
+  store.setContext(context6);
+  assert.equal(store.add(periodCorner).status,"CORNER_PERIOD_NOT_PLAYABLE","i corner per tempo MD6 devono essere rifiutati");
+  assert.equal(store.add(fullMatchCorner).status,"ADDED","i corner dell'intera partita devono restare aggiungibili");
+
+  const storage=memoryStorage(),key="serie-a:2026-27:md06";
+  storage.setItem(PERSONAL_BETSLIP_STORAGE_KEY,JSON.stringify({version:1,activeContext:key,contexts:{[key]:{context:context6,selections:[periodCorner],updatedAt:"2026-10-09T12:00:00.000Z"}}}));
+  const restored=createPersonalBetslipStore({storage});
+  const snapshot=restored.getSnapshot();
+  assert.equal(snapshot.selections.length,1,"un corner per tempo già salvato deve essere conservato");
+  assert(snapshot.assessment.issues.some(issue=>issue.type==="CORNER_PERIOD_NOT_PLAYABLE"),"il corner per tempo salvato deve essere segnalato come non giocabile");
+  assert.equal(snapshot.assessment.usableCombinedOdds,null,"un corner per tempo salvato non deve entrare nella quota combinata");
+  assert.equal(restored.remove(periodCorner.selectionId).status,"REMOVED","il corner per tempo conservato deve restare rimovibile manualmente");
+  assert.equal(restored.getSnapshot().selections.length,0,"la rimozione del corner per tempo conservato non è stata applicata");
 }
 
 {

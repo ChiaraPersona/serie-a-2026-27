@@ -81,6 +81,7 @@ function createBetSelection(input = {}) {
     matchId,
     matchday: input.matchday,
     market: semantics.marketName,
+    variant: semantics.variantName,
     selection: semantics.selectionName,
     label: input.label,
   });

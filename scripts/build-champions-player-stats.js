@@ -12,6 +12,7 @@ const squadSourcePath = path.join(root, "data/sources/champions-registered-squad
 const squadFragmentsPath = path.join(root, "data/sources/champions-squads");
 const teamConfigPath = path.join(root, "data/sources/champions-pilot-match-stats-2025-27.json");
 const historicalOutputPath = path.join(root, "data/normalized/champions-player-stats-2025-26.json");
+const currentOutputPath = path.join(root, "data/normalized/champions-player-stats-2026-27.json");
 
 const serieATeams = new Map([
   ["Inter", "inter"],
@@ -28,7 +29,17 @@ const competitionLabels = {
 };
 
 const read = relative => JSON.parse(fs.readFileSync(path.join(root, relative), "utf8"));
-const slug = value => String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+const slug = value => String(value || "")
+  .normalize("NFD")
+  .replace(/[\u0300-\u036f]/g, "")
+  .toLowerCase()
+  .replace(/ı/g, "i")
+  .replace(/æ/g, "ae")
+  .replace(/ø/g, "o")
+  .replace(/đ/g, "d")
+  .replace(/ł/g, "l")
+  .replace(/[^a-z0-9]+/g, "-")
+  .replace(/(^-|-$)/g, "");
 function normalize(value) {
   return String(value || "")
     .normalize("NFD")
@@ -212,6 +223,7 @@ function aggregateEntries(providerPlayerId, position, rows, { detailed = false }
     return playerEntry({
       playerId: null,
       providerPlayerId,
+      teamId: matches[0].teamId,
       team: matches[0].team,
       competition: competitionLabels[league] || league,
       competitionType: league.startsWith("uefa.") ? "uefa-competition" : "domestic-league",
@@ -390,7 +402,16 @@ function buildCurrent(args) {
   const asOf = args.asOf || sourceConfig.asOf || new Date().toISOString().slice(0, 10);
   const configs = sourceConfig.teams;
   const configByName = new Map(configs.map(team => [team.name, team]));
-  const teams = selectCurrentTeams(squadTeams(), configs, args);
+  const registeredTeams = squadTeams();
+  const teams = selectCurrentTeams(registeredTeams, configs, args);
+  const selectedTeamIds = new Set(teams.map(team => team.id));
+  const previousOutput = fs.existsSync(currentOutputPath) ? JSON.parse(fs.readFileSync(currentOutputPath, "utf8")) : null;
+  const preservedTeams = (previousOutput?.teams || []).filter(team => !selectedTeamIds.has(team.id));
+  for (const team of preservedTeams) {
+    const snapshotAsOf = previousOutput.teamSnapshots?.[team.id]?.asOf || previousOutput.asOf || previousOutput.cutoffDate;
+    if (!snapshotAsOf) throw new Error(`${team.id}: as-of dello snapshot preservato mancante`);
+    if (snapshotAsOf > asOf) throw new Error(`${team.id}: PRESERVED_TEAM_FUTURE_LEAKAGE ${snapshotAsOf} > ${asOf}`);
+  }
   const espn = collectEspnRows({ season: "2026-27", asOf });
   const rosterIds = currentRosterIds();
   const identity = read("data/sources/champions-player-history-aliases.json");
@@ -419,19 +440,30 @@ function buildCurrent(args) {
       }
       const providerPlayerId = candidates[0];
       const entries = aggregateEntries(providerPlayerId, player.position, espn.matchesByAthlete.get(providerPlayerId) || [], { detailed: true })
-        .map(entry => ({ ...entry, playerId: player.id, season: "2026/27" }));
+        .map(entry => ({ ...entry, playerId: player.id, season: "2026/27", asOf }));
       if (!entries.length) {
         return { ...player, providerPlayerId, currentSeason: null, sourceMode: "espn-match-rosters", dataQuality: "unavailable", unmatchedReason: "Nessuna presenza 2026/27 nel campione importato" };
       }
-      const aggregate = currentAggregate(entries);
+      const primaryEntries = entries.filter(entry => entry.teamId === config.espnTeamId && entry.competitionType === "domestic-league");
+      const aggregate = currentAggregate(primaryEntries);
+      const allEvidenceTotals = entries.length === primaryEntries.length ? null : currentAggregate(entries);
       return {
         ...player,
         providerPlayerId,
-        currentSeason: { season: "2026/27", entries, totals: aggregate, totalsByCompetition: entries },
+        currentSeason: {
+          season: "2026/27",
+          asOf,
+          entries,
+          totals: aggregate,
+          totalsScope: { teamId: config.espnTeamId, competitionType: "domestic-league" },
+          allEvidenceTotals,
+          totalsByCompetition: entries
+        },
         sourceMode: "espn-match-rosters",
-        dataQuality: entries.every(entry => entry.dataQuality === "complete") ? "complete" : "partial"
+        dataQuality: primaryEntries.length ? (primaryEntries.every(entry => entry.dataQuality === "complete") ? "complete" : "partial") : "unavailable",
+        otherEvidenceQuality: entries.every(entry => entry.dataQuality === "complete") ? "complete" : "partial"
       };
-    });
+    }).map(player => ({ ...player, teamId: team.id }));
     const matches = sourceMatches.filter(match => match.home?.providerTeamId === config.espnTeamId || match.away?.providerTeamId === config.espnTeamId);
     const dates = matches.map(match => match.date).filter(Boolean).sort();
     const rosterMatchIds = espn.rosterMatchIdsByTeam.get(config.espnTeamId) || new Set();
@@ -440,6 +472,7 @@ function buildCurrent(args) {
       team: team.team,
       id: team.id,
       espnTeamId: config.espnTeamId,
+      asOf,
       sourceMode: "espn-match-rosters",
       coverage: {
         matches: matches.length,
@@ -462,10 +495,22 @@ function buildCurrent(args) {
       }
     };
   });
-  const allPlayers = outputTeams.flatMap(team => team.players);
-  const retrievedAt = outputTeams.flatMap(team => team.players)
+  const selectedOutputTeams = outputTeams;
+  const combinedById = new Map([...preservedTeams, ...selectedOutputTeams].map(team => [team.id, team]));
+  const combinedTeams = registeredTeams.map(team => combinedById.get(team.id)).filter(Boolean);
+  const allPlayers = combinedTeams.flatMap(team => team.players);
+  const retrievedAt = selectedOutputTeams.flatMap(team => team.players)
     .flatMap(player => player.currentSeason?.entries || [])
     .map(entry => entry.lastUpdated).filter(Boolean).sort().at(-1) || sourceConfig.lastImport?.retrievedAt?.slice(0, 10) || null;
+  const previousSnapshots = previousOutput?.teamSnapshots || Object.fromEntries((previousOutput?.teams || []).map(team => [team.id, {
+    asOf: previousOutput.asOf || previousOutput.cutoffDate,
+    retrievedAt: previousOutput.retrievedAt || null,
+    status: "preserved"
+  }]));
+  const teamSnapshots = Object.fromEntries(combinedTeams.map(team => [team.id, selectedTeamIds.has(team.id)
+    ? { asOf, retrievedAt: sourceConfig.lastImport?.retrievedAt || sourceConfig.retrievedAt || retrievedAt, status: "updated" }
+    : { ...previousSnapshots[team.id], status: "preserved" }
+  ]));
   const output = {
     schemaVersion: 1,
     season: "2026/27",
@@ -480,9 +525,11 @@ function buildCurrent(args) {
       rawSeason: "2026-27",
       note: "Solo summary ESPN 2026/27 con data evento non successiva all'as-of; associazioni ambigue o metriche assenti restano N/D/null."
     },
-    selection: { teams: outputTeams.map(team => team.id), league: args.league || null },
+    selection: { teams: selectedOutputTeams.map(team => team.id), league: args.league || null },
+    merge: { mode: "preserve-unselected", preservedTeams: preservedTeams.map(team => team.id) },
+    teamSnapshots,
     summary: {
-      teams: outputTeams.length,
+      teams: combinedTeams.length,
       players: allPlayers.length,
       withMinutes: allPlayers.filter(player => (player.currentSeason?.totals?.minutes ?? 0) > 0).length,
       complete: allPlayers.filter(player => player.dataQuality === "complete").length,
@@ -490,10 +537,9 @@ function buildCurrent(args) {
       unavailable: allPlayers.filter(player => player.dataQuality === "unavailable").length,
       sourceMatchesWithRosters: espn.sourceMatches
     },
-    teams: outputTeams
+    teams: combinedTeams
   };
-  const outputPath = path.join(root, "data/normalized/champions-player-stats-2026-27.json");
-  fs.writeFileSync(outputPath, `${JSON.stringify(output, null, 2)}\n`);
+  fs.writeFileSync(currentOutputPath, `${JSON.stringify(output, null, 2)}\n`);
   console.log(`Statistiche giocatori Champions 2026/27 as-of ${asOf}: ${output.summary.withMinutes} con minuti · ${output.summary.unavailable} N/D su ${output.summary.players}`);
   return output;
 }

@@ -3,7 +3,7 @@
 const fs = require("fs");
 const path = require("path");
 const { isSisalMyComboMarketName, sisalMyComboMarketNames } = require("./mycombo-market-policy");
-const { isUnderPlayableSelection, isIndividualPlayerFoulMarket, isPlayableSelection } = require("./betting-market-policy");
+const { isUnderPlayableSelection, isIndividualPlayerFoulMarket, isCornerPeriodMarket, isPlayableSelection } = require("./betting-market-policy");
 const { attachBetSelection, selectionIdFor } = require("./betting-selection-contract");
 
 const root = path.resolve(__dirname, "..");
@@ -23,9 +23,11 @@ const assessmentBySelectionId = new Map((assessmentSource?.assessments || []).ma
 const previousOutput = fs.existsSync(outputPath) ? JSON.parse(fs.readFileSync(outputPath, "utf8")) : null;
 const previousUnderLegOccurrences = Object.values(previousOutput?.matches || {}).flatMap(portfolios => portfolios).flatMap(portfolio => portfolio.legs || []).filter(isUnderPlayableSelection).length;
 const previousIndividualFoulOccurrences = Object.values(previousOutput?.matches || {}).flatMap(portfolios => portfolios).flatMap(portfolio => portfolio.legs || []).filter(isIndividualPlayerFoulMarket).length;
+const previousCornerPeriodOccurrences = Object.values(previousOutput?.matches || {}).flatMap(portfolios => portfolios).flatMap(portfolio => portfolio.legs || []).filter(isCornerPeriodMarket).length;
 const preservedUnderMigrationCount = Number(previousOutput?.constraints?.underSelectionPolicy?.previousPlayableLegOccurrencesRemoved || 0);
 const underCandidateExclusionsByMatch = {};
 const individualFoulCandidateExclusionsByMatch = {};
+const cornerPeriodCandidateExclusionsByMatch = {};
 
 const referenceOdds = { Safe: 5, Balanced: 10, Aggressive: 20 };
 const minimumLegOdds = matchday >= 5 ? 1.15 : 1.1;
@@ -430,12 +432,14 @@ function candidatePool(event, prediction, match) {
   }
 
   const uniqueCandidates = [...new Map(candidates.map(candidate => [candidate.providerSelectionId, { ...candidate, semanticKeys: candidate.semanticKeys || [] }])).values()];
-  const marketBySelectionId = new Map((event.markets || []).flatMap(market => (market.selections || []).map(selection => [String(selection.providerSelectionId), market.marketName])));
-  const policyInput = candidate => ({ matchId: match.id, market: marketBySelectionId.get(String(candidate.providerSelectionId)), selection: candidate.selection, label: candidate.label });
+  const marketBySelectionId = new Map((event.markets || []).flatMap(market => (market.selections || []).map(selection => [String(selection.providerSelectionId), market])));
+  const policyInput = candidate => { const market = marketBySelectionId.get(String(candidate.providerSelectionId)); return { matchId: match.id, market: market?.marketName, variant: market?.variantName, selection: candidate.selection, label: candidate.label }; };
   const underCandidates = matchday >= 6 ? uniqueCandidates.filter(isUnderPlayableSelection) : [];
   const individualFoulCandidates = matchday >= 6 ? uniqueCandidates.filter(candidate => isIndividualPlayerFoulMarket(policyInput(candidate))) : [];
+  const cornerPeriodCandidates = matchday >= 6 ? uniqueCandidates.filter(candidate => isCornerPeriodMarket(policyInput(candidate))) : [];
   if (matchday >= 6) underCandidateExclusionsByMatch[match.id] = underCandidates.length;
   if (matchday >= 6) individualFoulCandidateExclusionsByMatch[match.id] = individualFoulCandidates.length;
+  if (matchday >= 6) cornerPeriodCandidateExclusionsByMatch[match.id] = cornerPeriodCandidates.length;
   return uniqueCandidates
     .filter(candidate => matchday < 6 || isPlayableSelection(policyInput(candidate), { matchday }))
     .filter(candidate => {
@@ -645,6 +649,14 @@ output.constraints.individualFoulSelectionPolicy = {
   previousPlayableLegOccurrencesRemoved: Math.max(previousIndividualFoulOccurrences, Number(previousOutput?.constraints?.individualFoulSelectionPolicy?.previousPlayableLegOccurrencesRemoved || 0)),
   filteredCandidateSelections: Object.values(individualFoulCandidateExclusionsByMatch).reduce((sum, count) => sum + count, 0),
   filteredCandidateSelectionsByMatch: individualFoulCandidateExclusionsByMatch
+};
+output.constraints.cornerPeriodSelectionPolicy = {
+  effectiveFromMatchday: 6,
+  active: matchday >= 6,
+  rule: "I mercati corner dipendenti da primo tempo, secondo tempo, entrambi i tempi o finestre temporali sono esclusi dalle proposte giocabili; i corner dell'intera partita restano eleggibili.",
+  previousPlayableLegOccurrencesRemoved: Math.max(previousCornerPeriodOccurrences, Number(previousOutput?.constraints?.cornerPeriodSelectionPolicy?.previousPlayableLegOccurrencesRemoved || 0)),
+  filteredCandidateSelections: Object.values(cornerPeriodCandidateExclusionsByMatch).reduce((sum, count) => sum + count, 0),
+  filteredCandidateSelectionsByMatch: cornerPeriodCandidateExclusionsByMatch
 };
 fs.writeFileSync(outputPath, `${JSON.stringify(output, null, 2)}\n`);
 console.log(`OK MyCombo giornata ${matchday}: ${Object.keys(output.matches).length} partite · 30 portafogli · snapshot ${output.updatedAt}`);

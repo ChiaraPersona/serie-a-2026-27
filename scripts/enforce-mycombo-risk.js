@@ -3,7 +3,7 @@
 const fs = require("fs");
 const path = require("path");
 const { isSisalMyComboMarketName } = require("./mycombo-market-policy");
-const { isUnderPlayableSelection } = require("./betting-market-policy");
+const { isPlayableSelection } = require("./betting-market-policy");
 
 const root = path.resolve(__dirname, "..");
 const index = process.argv.indexOf("--matchday");
@@ -48,7 +48,7 @@ for (const [matchId, portfolios] of Object.entries(source.matches || {})) {
       throw new Error(`${matchId}/${portfolio.tier}: ${portfolio.legs?.length || 0} gambe fuori dall'intervallo ${limits.minimum}-${limits.maximum}`);
     }
     if (!combo?.legs?.length || combo.qualityStatus === "nd") throw new Error(`${matchId}/${portfolio.tier}: portafoglio non disponibile nel pronostico rigenerato`);
-    if (matchday >= 6 && (portfolio.legs.some(isUnderPlayableSelection) || combo.legs.some(isUnderPlayableSelection))) throw new Error(`${matchId}/${portfolio.tier}: selezione Under vietata dalla MD6`);
+    if (matchday >= 6 && (portfolio.legs.some(leg => !isPlayableSelection(leg, { matchday })) || combo.legs.some(leg => !isPlayableSelection(leg, { matchday })))) throw new Error(`${matchId}/${portfolio.tier}: selezione vietata dalla policy giocabile MD6+`);
     if (portfolio.legs.some(isExcludedMarket) || combo.legs.some(isExcludedMarket)) throw new Error(`${matchId}/${portfolio.tier}: mercato vietato presente nella MyCombo aperta`);
     if (combo.legs.some(leg => !isSisalMyComboMarketName(leg.market))) throw new Error(`${matchId}/${portfolio.tier}: mercato fuori dalla whitelist MyCombo Sisal`);
     const minimumOdds = source.constraints.minLegOddsInclusive;

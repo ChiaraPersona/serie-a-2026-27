@@ -57,6 +57,7 @@ assert.doesNotMatch(bettingPage, /class="betting-slip-copy"|class="betting-famil
 assert.match(bettingPage, /personal-betslip-store\.mjs/, "Schedina: store dedicato della schedina personale non importato");
 assert.match(bettingPage, /data-personal-pick/, "Schedina: controlli condivisi sulle singole selezioni assenti");
 assert.match(bettingPage, /data-personal-add-slip/, "Schedina: aggiunta completa della schedina modello assente");
+assert.doesNotMatch(bettingPage, /betting-leg-number/, "Schedina: numerazione decorativa delle selezioni ancora presente");
 assert.match(bettingPage, /id="personal-betslip-panel"/, "Schedina: pannello della schedina personale assente");
 assert.match(bettingPage, /class="betting-workspace"/, "Schedina MD6: workspace desktop a tre colonne assente");
 assert.match(bettingPage, /data-personal-host/, "Schedina MD6: colonna personale interna al contenuto assente");
@@ -67,6 +68,7 @@ assert.match(bettingPage, /event\.key==="Escape"/, "Schedina: chiusura da tastie
 assert.match(bettingPage, /BOOKMAKER_COMBINABILITY_UNKNOWN/, "Schedina: avviso di combinabilità bookmaker non esposto");
 assert.doesNotMatch(bettingPage, /active\.reduce\(\(total,leg\)=>total\*leg\.odds/, "Schedina: vecchia quota MyCombo locale ancora calcolata");
 const bettingCss = fs.readFileSync(path.join(root, "css", "betting.css"), "utf8");
+assert.doesNotMatch(bettingCss, /\.betting-leg-number/, "Schedina: stile della numerazione decorativa ancora presente");
 assert.match(bettingCss, /\.betting-archive-list\{width:100%;max-width:1180px/, "Schedina: griglia archivio non allineata alle card Statistiche squadra");
 assert.match(bettingCss, /\.betting-archive-performance small,\.betting-archive-performance strong\{display:block;color:#000\}/, "Schedina: valori del retro senza contrasto nero leggibile");
 assert.doesNotMatch(bettingCss, /betting-archive-performance[^}]*var\(--betting-gold\)/, "Schedina: il giallo poco leggibile e ancora usato negli indicatori del retro");

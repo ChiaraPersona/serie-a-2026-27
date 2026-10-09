@@ -5,7 +5,7 @@ const fs = require("fs");
 const path = require("path");
 const { execFileSync } = require("child_process");
 const { selectionIdFor, createBetSelection } = require("./betting-selection-contract");
-const { isUnderPlayableSelection } = require("./betting-market-policy");
+const { isCornerPeriodMarket, isUnderPlayableSelection } = require("./betting-market-policy");
 
 const root = path.resolve(__dirname, "..");
 const read = relative => JSON.parse(fs.readFileSync(path.join(root, relative), "utf8"));
@@ -40,6 +40,27 @@ assert.equal(duoUnit.evaluation.expectedValuePct, null);
 assert.equal(duoUnit.evaluation.individualModelProbabilityPct, 70);
 assert.equal(duoUnit.market.subject.type, "player-plus-substitute");
 
+const periodCornerUnit = createBetSelection({
+  matchId: "alpha-beta-2026-27-md-06",
+  matchday: 6,
+  provider: "Sisal",
+  providerSelectionId: "corner-period",
+  market: { marketName: "CORNER: ESITO 1 TEMPO/FINALE", variantName: "1T CORNER 1X2" },
+  selection: { name: "1/1", odds: 3.5, status: "open" },
+});
+assert.equal(periodCornerUnit.operational.playability.status, "NOT_PLAYABLE");
+assert.equal(periodCornerUnit.operational.playability.code, "CORNER_PERIOD_NOT_PLAYABLE");
+
+const fullMatchCornerUnit = createBetSelection({
+  matchId: "alpha-beta-2026-27-md-06",
+  matchday: 6,
+  provider: "Sisal",
+  providerSelectionId: "corner-full",
+  market: { marketName: "U/O CORNER", variantName: "U/O 9.5 CORNER" },
+  selection: { name: "OVER", odds: 1.8, status: "open" },
+});
+assert.equal(fullMatchCornerUnit.operational.playability.status, "PLAYABLE");
+
 const sourceLegs = source.slips.flatMap(slip => slip.picks);
 const normalizedLegs = normalized.slips.flatMap(slip => slip.legs);
 const myComboLegs = Object.values(myCombo.matches).flatMap(portfolios => portfolios.flatMap(portfolio => portfolio.legs || []));
@@ -53,6 +74,8 @@ for (const [label, legs] of [["source schedina", sourceLegs], ["schedina normali
     assert(leg.betSelection.quote.verifiedAt, `${label}: timestamp snapshot mancante`);
     assert(leg.betSelection.quote.source.snapshotPath, `${label}: provenienza snapshot mancante`);
     assert(leg.betSelection.quote.availability === "AVAILABLE_AT_SNAPSHOT", `${label}: disponibilità non riferita allo snapshot`);
+    assert.equal(leg.betSelection.operational.playability.status, "PLAYABLE", `${label}: selezione non giocabile propagata`);
+    assert(!isCornerPeriodMarket(leg), `${label}: corner per tempo propagato tra le proposte giocabili`);
   }
 }
 

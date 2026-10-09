@@ -25,11 +25,19 @@ export function isIndividualPlayerFoulSelection(selection){
   return name==="U O FALLI COMMESSI GIOCATORE"||name==="U O FALLI SUBITI GIOCATORE";
 }
 
+export function isCornerPeriodSelection(selection){
+  const bet=selection?.betSelection||selection||{};
+  const descriptor=normalizeText(`${bet.market?.name||selection?.market||selection?.marketName||""} ${bet.market?.variant||selection?.variant||selection?.variantName||""}`);
+  if(!/\bCORNER\b|\bCALCI(?:O)? D ANGOLO\b/.test(descriptor))return false;
+  return /\b(?:1|2) TEMPO\b|\b(?:1|2)T\b|\b(?:PRIMO|SECONDO) TEMPO\b|\b(?:PRIMA|SECONDA) FRAZIONE\b|\bENTRAMB[EI](?: I)? TEMPI\b|\bTEMPO X\b|\bMINUTI X Y\b|\b(?:PRIMI|ULTIMI) \d+ MINUTI\b/.test(descriptor);
+}
+
 function playability(selection){
   const declared=selection?.betSelection?.operational?.playability;
   if(declared?.status==="NOT_PLAYABLE")return declared;
   if(Number(selection?.context?.matchday)>=6&&isPlayableUnder(selection))return {status:"NOT_PLAYABLE",code:"UNDER_NOT_PLAYABLE",reason:"Gli Under sono esclusi dalle proposte giocabili dalla sesta giornata."};
   if(Number(selection?.context?.matchday)>=6&&isIndividualPlayerFoulSelection(selection))return {status:"NOT_PLAYABLE",code:"INDIVIDUAL_FOUL_NOT_PLAYABLE",reason:"I falli commessi o subiti del singolo giocatore sono esclusi dalle proposte giocabili dalla sesta giornata."};
+  if(Number(selection?.context?.matchday)>=6&&isCornerPeriodSelection(selection))return {status:"NOT_PLAYABLE",code:"CORNER_PERIOD_NOT_PLAYABLE",reason:"I corner riferiti a singoli tempi o finestre temporali sono esclusi dalle proposte giocabili dalla sesta giornata."};
   return {status:"PLAYABLE",code:null,reason:null};
 }
 

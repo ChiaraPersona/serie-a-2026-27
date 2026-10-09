@@ -1,8 +1,8 @@
 # Serie A MD6 — Selezione operativa e costruzione schedine
 
-Generato: 2026-10-09T18:00:37.939Z. Quote Sisal: 2026-10-09T10:43:00.203Z.
+Generato: 2026-10-09T18:20:27.690Z. Quote Sisal: 2026-10-09T10:43:00.203Z.
 
-La classificazione è operativa, non una garanzia. Nessuna partita deve produrre obbligatoriamente una scelta. Dalla MD6 i mercati Under e i falli commessi/subiti del singolo giocatore sono esclusi dalle giocate, ma restano nelle analisi, nei report e nello storico; gli Over e i mercati aggregati di squadra restano eleggibili. Occorrenze Under giocabili rimosse nella migrazione: 12. Le quote giocatore restano visibili come riferimento commerciale DUO: P V2 è individuale, pertanto EV e probabilità congiunta non sono calcolabili.
+La classificazione è operativa, non una garanzia. Nessuna partita deve produrre obbligatoriamente una scelta. Dalla MD6 i mercati Under, i falli commessi/subiti del singolo giocatore e i corner dipendenti da singoli tempi o finestre temporali sono esclusi dalle giocate, ma restano nelle analisi, nei report e nello storico; gli Over, i mercati aggregati di squadra e i corner dell'intera partita restano eleggibili. Occorrenze Under giocabili rimosse nella migrazione: 12. Le quote giocatore restano visibili come riferimento commerciale DUO: P V2 è individuale, pertanto EV e probabilità congiunta non sono calcolabili.
 
 ## Genoa - Fiorentina
 
@@ -214,17 +214,17 @@ Quota totale: 3.02. Probabilità congiunta: N/D. EV: N/D. Revisione: Rivedere do
 
 ## MyCombo
 
-La pipeline MD6 esclude Under e falli individuali prima della costruzione dei portafogli e mantiene eleggibili Over e mercati aggregati di squadra. Non forza dieci esiti: il generatore canonico usa 3–6 gambe Safe, 4–7 Balanced e 5–8 Aggressive; un portafoglio resta N/D quando non raggiunge candidati distinti e semanticamente compatibili. Le etichette seguenti qualificano l’evidenza, non raccomandano automaticamente la multipla.
+La pipeline MD6 esclude Under, falli individuali e corner per tempi prima della costruzione dei portafogli; mantiene eleggibili Over, mercati aggregati di squadra e corner dell'intera partita. Non forza dieci esiti: il generatore canonico usa 3–6 gambe Safe, 4–7 Balanced e 5–8 Aggressive; un portafoglio resta N/D quando non raggiunge candidati distinti e semanticamente compatibili. Le etichette seguenti qualificano l’evidenza, non raccomandano automaticamente la multipla.
 
 | Partita | Leg Safe | Supportati | Plausibili | Sperimentali | Non valutabili |
 | --- | --- | --- | --- | --- | --- |
 | Genoa - Fiorentina | 4 | 3 | 0 | 1 | 0 |
 | Inter - Parma | 3 | 1 | 0 | 2 | 0 |
-| Napoli - Frosinone | 3 | 2 | 0 | 1 | 0 |
+| Napoli - Frosinone | 4 | 2 | 1 | 1 | 0 |
 | Como - Roma | 3 | 3 | 0 | 0 | 0 |
-| Lazio - Monza | 4 | 1 | 0 | 3 | 0 |
+| Lazio - Monza | 4 | 3 | 0 | 1 | 0 |
 | Lecce - Bologna | 4 | 4 | 0 | 0 | 0 |
-| Sassuolo - Milan | 3 | 3 | 0 | 0 | 0 |
+| Sassuolo - Milan | 3 | 2 | 0 | 1 | 0 |
 | Cagliari - Juventus | 3 | 3 | 0 | 0 | 0 |
 | Atalanta - Venezia | 4 | 2 | 0 | 2 | 0 |
 | Torino - Udinese | 4 | 2 | 1 | 1 | 0 |

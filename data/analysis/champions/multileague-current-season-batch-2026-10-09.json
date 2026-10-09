@@ -1,0 +1,1824 @@
+{
+  "schemaVersion": 1,
+  "status": "pass",
+  "asOf": "2026-10-09",
+  "dateInterval": {
+    "from": "2026-07-01",
+    "to": "2026-10-09"
+  },
+  "scope": {
+    "selectedTeams": [
+      "arsenal",
+      "inter",
+      "bayern-munchen",
+      "real-madrid",
+      "paris-saint-germain",
+      "bodo-glimt"
+    ],
+    "excludedTeams": [
+      "aek-athens"
+    ],
+    "finalDatasetTeams": [
+      "real-madrid",
+      "inter",
+      "arsenal",
+      "aek-athens",
+      "bayern-munchen",
+      "bodo-glimt",
+      "paris-saint-germain"
+    ]
+  },
+  "source": {
+    "provider": "ESPN",
+    "path": "data/sources/champions-pilot-match-stats-2025-27.json",
+    "lastImport": {
+      "asOf": "2026-10-09",
+      "retrievedAt": "2026-10-09T18:15:27.478Z",
+      "teams": [
+        "arsenal",
+        "bayern-munchen",
+        "bodo-glimt",
+        "inter",
+        "paris-saint-germain",
+        "real-madrid"
+      ],
+      "leagues": [
+        "eng.1",
+        "ger.1",
+        "nor.1",
+        "ita.1",
+        "fra.1",
+        "esp.1"
+      ],
+      "seasons": [
+        "2026-27"
+      ],
+      "matches": 36
+    }
+  },
+  "aekInvariant": {
+    "asOf": "2026-10-03",
+    "expectedTeamHash": "f2f3deb29a908c2637510dbfecf2d754ff2ebe1086ef16bae0da1d545ef9d308",
+    "actualTeamHash": "f2f3deb29a908c2637510dbfecf2d754ff2ebe1086ef16bae0da1d545ef9d308",
+    "expectedSourceMatchesHash": "207c225e9b37d95be6134de09e880e767823048c62c572a2268da418d0d04a94",
+    "actualSourceMatchesHash": "207c225e9b37d95be6134de09e880e767823048c62c572a2268da418d0d04a94",
+    "preserved": true,
+    "matches": 5,
+    "players": 22,
+    "withMinutes": 19,
+    "complete": 19,
+    "partial": 0,
+    "unavailable": 3
+  },
+  "protectedInputs": {
+    "historicalPlayerStatsSha256": "4c09d7f109f9d5a3b769c153ed4c051cc7a99adb588a11f7c3a7cb3b348ef692",
+    "predictionBuilderSha256": "135788a773b8607db7f1386a1c9d6b5d2fb8560fdab914d652318bfe95691be5",
+    "leagueStrengthSha256": "82a4975c77509a1b49faa1b63ee84c08cade57cccd2edbf07625215644563d22"
+  },
+  "summary": {
+    "teams": 6,
+    "matches": 36,
+    "registeredPlayers": 162,
+    "playersWithMinutes": 117,
+    "unresolvedIdentities": 10,
+    "partialMatches": 0,
+    "matchesWithoutSummary": 0
+  },
+  "teams": [
+    {
+      "team": "Arsenal",
+      "teamId": "arsenal",
+      "providerTeamId": "359",
+      "league": "Premier League",
+      "asOf": "2026-10-09",
+      "matches": 5,
+      "players": 22,
+      "coverage": {
+        "completeMatches": 5,
+        "partialMatches": [],
+        "matchesWithoutSummary": [],
+        "minutes": {
+          "players": 19,
+          "registeredPlayers": 22
+        },
+        "shots": {
+          "players": 19,
+          "registeredPlayers": 22
+        },
+        "shotsOnTarget": {
+          "players": 19,
+          "registeredPlayers": 22
+        }
+      },
+      "reconciliation": {
+        "teamShots": 65,
+        "registeredPlayerShots": 62,
+        "shotsDifference": -3,
+        "teamShotsOnTarget": 24,
+        "registeredPlayerShotsOnTarget": 24,
+        "shotsOnTargetDifference": 0,
+        "outsideRegisteredSquad": [
+          {
+            "providerPlayerId": "352758",
+            "player": "Myles Lewis-Skelly",
+            "appearances": 4,
+            "shots": 3,
+            "shotsOnTarget": 0
+          },
+          {
+            "providerPlayerId": "397263",
+            "player": "Max Dowman",
+            "appearances": 1,
+            "shots": 0,
+            "shotsOnTarget": 0
+          }
+        ],
+        "status": "explained_registered_squad_gap"
+      },
+      "identities": {
+        "unresolved": [],
+        "withoutAppearances": [
+          {
+            "player": "Kepa Arrizabalaga",
+            "providerPlayerId": "169532",
+            "reason": "Nessuna presenza 2026/27 nel campione importato"
+          },
+          {
+            "player": "Illan Meslier",
+            "providerPlayerId": "265921",
+            "reason": "Nessuna presenza 2026/27 nel campione importato"
+          },
+          {
+            "player": "William Saliba",
+            "providerPlayerId": "277385",
+            "reason": "Nessuna presenza 2026/27 nel campione importato"
+          }
+        ],
+        "transfers": []
+      },
+      "competitionSeparation": [
+        "domestic-league|Premier League|359"
+      ],
+      "primaryPlayers": [
+        {
+          "player": "David Raya",
+          "providerPlayerId": "196176",
+          "appearances": 5,
+          "starts": 5,
+          "minutes": 450,
+          "shots": 0,
+          "shotsOnTarget": 0,
+          "dataQuality": "complete",
+          "competitions": [
+            {
+              "teamId": "359",
+              "team": "Arsenal",
+              "competition": "Premier League",
+              "competitionType": "domestic-league"
+            }
+          ]
+        },
+        {
+          "player": "Gabriel",
+          "providerPlayerId": "236322",
+          "appearances": 5,
+          "starts": 5,
+          "minutes": 450,
+          "shots": 5,
+          "shotsOnTarget": 2,
+          "dataQuality": "complete",
+          "competitions": [
+            {
+              "teamId": "359",
+              "team": "Arsenal",
+              "competition": "Premier League",
+              "competitionType": "domestic-league"
+            }
+          ]
+        },
+        {
+          "player": "Kai Havertz",
+          "providerPlayerId": "231182",
+          "appearances": 5,
+          "starts": 5,
+          "minutes": 438,
+          "shots": 10,
+          "shotsOnTarget": 6,
+          "dataQuality": "complete",
+          "competitions": [
+            {
+              "teamId": "359",
+              "team": "Arsenal",
+              "competition": "Premier League",
+              "competitionType": "domestic-league"
+            }
+          ]
+        },
+        {
+          "player": "Bukayo Saka",
+          "providerPlayerId": "280555",
+          "appearances": 5,
+          "starts": 5,
+          "minutes": 419,
+          "shots": 15,
+          "shotsOnTarget": 9,
+          "dataQuality": "complete",
+          "competitions": [
+            {
+              "teamId": "359",
+              "team": "Arsenal",
+              "competition": "Premier League",
+              "competitionType": "domestic-league"
+            }
+          ]
+        },
+        {
+          "player": "Riccardo Calafiori",
+          "providerPlayerId": "298329",
+          "appearances": 5,
+          "starts": 5,
+          "minutes": 418,
+          "shots": 7,
+          "shotsOnTarget": 1,
+          "dataQuality": "complete",
+          "competitions": [
+            {
+              "teamId": "359",
+              "team": "Arsenal",
+              "competition": "Premier League",
+              "competitionType": "domestic-league"
+            }
+          ]
+        },
+        {
+          "player": "Declan Rice",
+          "providerPlayerId": "238262",
+          "appearances": 5,
+          "starts": 5,
+          "minutes": 414,
+          "shots": 4,
+          "shotsOnTarget": 0,
+          "dataQuality": "complete",
+          "competitions": [
+            {
+              "teamId": "359",
+              "team": "Arsenal",
+              "competition": "Premier League",
+              "competitionType": "domestic-league"
+            }
+          ]
+        },
+        {
+          "player": "Martin Ødegaard",
+          "providerPlayerId": "203669",
+          "appearances": 5,
+          "starts": 5,
+          "minutes": 382,
+          "shots": 7,
+          "shotsOnTarget": 2,
+          "dataQuality": "complete",
+          "competitions": [
+            {
+              "teamId": "359",
+              "team": "Arsenal",
+              "competition": "Premier League",
+              "competitionType": "domestic-league"
+            }
+          ]
+        },
+        {
+          "player": "Christos Tzolis",
+          "providerPlayerId": "303793",
+          "appearances": 5,
+          "starts": 5,
+          "minutes": 365,
+          "shots": 4,
+          "shotsOnTarget": 2,
+          "dataQuality": "complete",
+          "competitions": [
+            {
+              "teamId": "359",
+              "team": "Arsenal",
+              "competition": "Premier League",
+              "competitionType": "domestic-league"
+            }
+          ]
+        },
+        {
+          "player": "Ben White",
+          "providerPlayerId": "241077",
+          "appearances": 4,
+          "starts": 4,
+          "minutes": 315,
+          "shots": 1,
+          "shotsOnTarget": 0,
+          "dataQuality": "complete",
+          "competitions": [
+            {
+              "teamId": "359",
+              "team": "Arsenal",
+              "competition": "Premier League",
+              "competitionType": "domestic-league"
+            }
+          ]
+        },
+        {
+          "player": "Ezri Konsa",
+          "providerPlayerId": "231859",
+          "appearances": 4,
+          "starts": 3,
+          "minutes": 281,
+          "shots": 1,
+          "shotsOnTarget": 0,
+          "dataQuality": "complete",
+          "competitions": [
+            {
+              "teamId": "359",
+              "team": "Arsenal",
+              "competition": "Premier League",
+              "competitionType": "domestic-league"
+            }
+          ]
+        }
+      ],
+      "status": "usable"
+    },
+    {
+      "team": "Inter",
+      "teamId": "inter",
+      "providerTeamId": "110",
+      "league": "Serie A",
+      "asOf": "2026-10-09",
+      "matches": 5,
+      "players": 23,
+      "coverage": {
+        "completeMatches": 5,
+        "partialMatches": [],
+        "matchesWithoutSummary": [],
+        "minutes": {
+          "players": 19,
+          "registeredPlayers": 23
+        },
+        "shots": {
+          "players": 19,
+          "registeredPlayers": 23
+        },
+        "shotsOnTarget": {
+          "players": 19,
+          "registeredPlayers": 23
+        }
+      },
+      "reconciliation": {
+        "teamShots": 116,
+        "registeredPlayerShots": 102,
+        "shotsDifference": -14,
+        "teamShotsOnTarget": 37,
+        "registeredPlayerShotsOnTarget": 32,
+        "shotsOnTargetDifference": -5,
+        "outsideRegisteredSquad": [
+          {
+            "providerPlayerId": "362674",
+            "player": "Pio Esposito",
+            "appearances": 5,
+            "shots": 13,
+            "shotsOnTarget": 5
+          },
+          {
+            "providerPlayerId": "240109",
+            "player": "Aleksandar Stankovic",
+            "appearances": 2,
+            "shots": 1,
+            "shotsOnTarget": 0
+          }
+        ],
+        "status": "explained_registered_squad_gap"
+      },
+      "identities": {
+        "unresolved": [],
+        "withoutAppearances": [
+          {
+            "player": "Raffaele Di Gennaro",
+            "providerPlayerId": "181322",
+            "reason": "Nessuna presenza 2026/27 nel campione importato"
+          },
+          {
+            "player": "Ivan Provedel",
+            "providerPlayerId": "181836",
+            "reason": "Nessuna presenza 2026/27 nel campione importato"
+          },
+          {
+            "player": "Mattia Marello",
+            "providerPlayerId": "412245",
+            "reason": "Nessuna presenza 2026/27 nel campione importato"
+          },
+          {
+            "player": "Djed Spence",
+            "providerPlayerId": "267711",
+            "reason": "Nessuna presenza 2026/27 nel campione importato"
+          }
+        ],
+        "transfers": []
+      },
+      "competitionSeparation": [
+        "domestic-league|Serie A|110"
+      ],
+      "primaryPlayers": [
+        {
+          "player": "Josep Martínez",
+          "providerPlayerId": "240533",
+          "appearances": 5,
+          "starts": 5,
+          "minutes": 450,
+          "shots": 0,
+          "shotsOnTarget": 0,
+          "dataQuality": "complete",
+          "competitions": [
+            {
+              "teamId": "110",
+              "team": "Internazionale",
+              "competition": "Serie A",
+              "competitionType": "domestic-league"
+            }
+          ]
+        },
+        {
+          "player": "Nicolò Barella",
+          "providerPlayerId": "204441",
+          "appearances": 5,
+          "starts": 5,
+          "minutes": 450,
+          "shots": 8,
+          "shotsOnTarget": 5,
+          "dataQuality": "complete",
+          "competitions": [
+            {
+              "teamId": "110",
+              "team": "Internazionale",
+              "competition": "Serie A",
+              "competitionType": "domestic-league"
+            }
+          ]
+        },
+        {
+          "player": "Manuel Akanji",
+          "providerPlayerId": "214562",
+          "appearances": 5,
+          "starts": 5,
+          "minutes": 413,
+          "shots": 7,
+          "shotsOnTarget": 1,
+          "dataQuality": "complete",
+          "competitions": [
+            {
+              "teamId": "110",
+              "team": "Internazionale",
+              "competition": "Serie A",
+              "competitionType": "domestic-league"
+            }
+          ]
+        },
+        {
+          "player": "Alessandro Bastoni",
+          "providerPlayerId": "249280",
+          "appearances": 5,
+          "starts": 5,
+          "minutes": 392,
+          "shots": 3,
+          "shotsOnTarget": 0,
+          "dataQuality": "complete",
+          "competitions": [
+            {
+              "teamId": "110",
+              "team": "Internazionale",
+              "competition": "Serie A",
+              "competitionType": "domestic-league"
+            }
+          ]
+        },
+        {
+          "player": "Piotr Zieliński",
+          "providerPlayerId": "177782",
+          "appearances": 5,
+          "starts": 4,
+          "minutes": 352,
+          "shots": 10,
+          "shotsOnTarget": 2,
+          "dataQuality": "complete",
+          "competitions": [
+            {
+              "teamId": "110",
+              "team": "Internazionale",
+              "competition": "Serie A",
+              "competitionType": "domestic-league"
+            }
+          ]
+        },
+        {
+          "player": "Andy Diouf",
+          "providerPlayerId": "319167",
+          "appearances": 4,
+          "starts": 4,
+          "minutes": 345,
+          "shots": 4,
+          "shotsOnTarget": 2,
+          "dataQuality": "complete",
+          "competitions": [
+            {
+              "teamId": "110",
+              "team": "Internazionale",
+              "competition": "Serie A",
+              "competitionType": "domestic-league"
+            }
+          ]
+        },
+        {
+          "player": "Lautaro Martínez",
+          "providerPlayerId": "219713",
+          "appearances": 4,
+          "starts": 4,
+          "minutes": 324,
+          "shots": 22,
+          "shotsOnTarget": 6,
+          "dataQuality": "complete",
+          "competitions": [
+            {
+              "teamId": "110",
+              "team": "Internazionale",
+              "competition": "Serie A",
+              "competitionType": "domestic-league"
+            }
+          ]
+        },
+        {
+          "player": "Federico Dimarco",
+          "providerPlayerId": "194748",
+          "appearances": 5,
+          "starts": 4,
+          "minutes": 316,
+          "shots": 7,
+          "shotsOnTarget": 2,
+          "dataQuality": "complete",
+          "competitions": [
+            {
+              "teamId": "110",
+              "team": "Internazionale",
+              "competition": "Serie A",
+              "competitionType": "domestic-league"
+            }
+          ]
+        },
+        {
+          "player": "Yann Bisseck",
+          "providerPlayerId": "266660",
+          "appearances": 4,
+          "starts": 3,
+          "minutes": 279,
+          "shots": 5,
+          "shotsOnTarget": 2,
+          "dataQuality": "complete",
+          "competitions": [
+            {
+              "teamId": "110",
+              "team": "Internazionale",
+              "competition": "Serie A",
+              "competitionType": "domestic-league"
+            }
+          ]
+        },
+        {
+          "player": "Marcus Thuram",
+          "providerPlayerId": "217331",
+          "appearances": 4,
+          "starts": 2,
+          "minutes": 230,
+          "shots": 15,
+          "shotsOnTarget": 5,
+          "dataQuality": "complete",
+          "competitions": [
+            {
+              "teamId": "110",
+              "team": "Internazionale",
+              "competition": "Serie A",
+              "competitionType": "domestic-league"
+            }
+          ]
+        }
+      ],
+      "status": "usable"
+    },
+    {
+      "team": "Bayern München",
+      "teamId": "bayern-munchen",
+      "providerTeamId": "132",
+      "league": "Bundesliga",
+      "asOf": "2026-10-09",
+      "matches": 4,
+      "players": 24,
+      "coverage": {
+        "completeMatches": 4,
+        "partialMatches": [],
+        "matchesWithoutSummary": [],
+        "minutes": {
+          "players": 18,
+          "registeredPlayers": 24
+        },
+        "shots": {
+          "players": 18,
+          "registeredPlayers": 24
+        },
+        "shotsOnTarget": {
+          "players": 18,
+          "registeredPlayers": 24
+        }
+      },
+      "reconciliation": {
+        "teamShots": 87,
+        "registeredPlayerShots": 83,
+        "shotsDifference": -4,
+        "teamShotsOnTarget": 35,
+        "registeredPlayerShotsOnTarget": 32,
+        "shotsOnTargetDifference": -3,
+        "outsideRegisteredSquad": [
+          {
+            "providerPlayerId": "402841",
+            "player": "Lennart Karl",
+            "appearances": 3,
+            "shots": 4,
+            "shotsOnTarget": 3
+          }
+        ],
+        "status": "explained_registered_squad_gap"
+      },
+      "identities": {
+        "unresolved": [
+          {
+            "player": "Sacha Boey",
+            "reason": "Nome non trovato nei roster partita importati"
+          },
+          {
+            "player": "Bastian Assomo",
+            "reason": "Nome non trovato nei roster partita importati"
+          }
+        ],
+        "withoutAppearances": [
+          {
+            "player": "Sven Ulreich",
+            "providerPlayerId": "113733",
+            "reason": "Nessuna presenza 2026/27 nel campione importato"
+          },
+          {
+            "player": "Hiroki Ito",
+            "providerPlayerId": "97111",
+            "reason": "Nessuna presenza 2026/27 nel campione importato"
+          },
+          {
+            "player": "Sacha Boey",
+            "providerPlayerId": null,
+            "reason": "Nome non trovato nei roster partita importati"
+          },
+          {
+            "player": "Bara Sapoko Ndiaye",
+            "providerPlayerId": "409016",
+            "reason": "Nessuna presenza 2026/27 nel campione importato"
+          },
+          {
+            "player": "Bastian Assomo",
+            "providerPlayerId": null,
+            "reason": "Nome non trovato nei roster partita importati"
+          },
+          {
+            "player": "Maycon Cardozo",
+            "providerPlayerId": "417373",
+            "reason": "Nessuna presenza 2026/27 nel campione importato"
+          }
+        ],
+        "transfers": []
+      },
+      "competitionSeparation": [
+        "domestic-league|Bundesliga|132"
+      ],
+      "primaryPlayers": [
+        {
+          "player": "Dayot Upamecano",
+          "providerPlayerId": "222793",
+          "appearances": 4,
+          "starts": 4,
+          "minutes": 315,
+          "shots": 3,
+          "shotsOnTarget": 1,
+          "dataQuality": "complete",
+          "competitions": [
+            {
+              "teamId": "132",
+              "team": "Bayern Munich",
+              "competition": "Bundesliga",
+              "competitionType": "domestic-league"
+            }
+          ]
+        },
+        {
+          "player": "Aleksandar Pavlović",
+          "providerPlayerId": "359370",
+          "appearances": 4,
+          "starts": 4,
+          "minutes": 311,
+          "shots": 6,
+          "shotsOnTarget": 2,
+          "dataQuality": "complete",
+          "competitions": [
+            {
+              "teamId": "132",
+              "team": "Bayern Munich",
+              "competition": "Bundesliga",
+              "competitionType": "domestic-league"
+            }
+          ]
+        },
+        {
+          "player": "Michael Olise",
+          "providerPlayerId": "286831",
+          "appearances": 4,
+          "starts": 3,
+          "minutes": 303,
+          "shots": 17,
+          "shotsOnTarget": 9,
+          "dataQuality": "complete",
+          "competitions": [
+            {
+              "teamId": "132",
+              "team": "Bayern Munich",
+              "competition": "Bundesliga",
+              "competitionType": "domestic-league"
+            }
+          ]
+        },
+        {
+          "player": "Harry Kane",
+          "providerPlayerId": "142200",
+          "appearances": 4,
+          "starts": 3,
+          "minutes": 296,
+          "shots": 16,
+          "shotsOnTarget": 5,
+          "dataQuality": "complete",
+          "competitions": [
+            {
+              "teamId": "132",
+              "team": "Bayern Munich",
+              "competition": "Bundesliga",
+              "competitionType": "domestic-league"
+            }
+          ]
+        },
+        {
+          "player": "Joshua Kimmich",
+          "providerPlayerId": "190161",
+          "appearances": 4,
+          "starts": 3,
+          "minutes": 295,
+          "shots": 1,
+          "shotsOnTarget": 1,
+          "dataQuality": "complete",
+          "competitions": [
+            {
+              "teamId": "132",
+              "team": "Bayern Munich",
+              "competition": "Bundesliga",
+              "competitionType": "domestic-league"
+            }
+          ]
+        },
+        {
+          "player": "Alphonso Davies",
+          "providerPlayerId": "236721",
+          "appearances": 4,
+          "starts": 3,
+          "minutes": 272,
+          "shots": 2,
+          "shotsOnTarget": 0,
+          "dataQuality": "complete",
+          "competitions": [
+            {
+              "teamId": "132",
+              "team": "Bayern Munich",
+              "competition": "Bundesliga",
+              "competitionType": "domestic-league"
+            }
+          ]
+        },
+        {
+          "player": "Manuel Neuer",
+          "providerPlayerId": "84774",
+          "appearances": 3,
+          "starts": 3,
+          "minutes": 270,
+          "shots": 0,
+          "shotsOnTarget": 0,
+          "dataQuality": "complete",
+          "competitions": [
+            {
+              "teamId": "132",
+              "team": "Bayern Munich",
+              "competition": "Bundesliga",
+              "competitionType": "domestic-league"
+            }
+          ]
+        },
+        {
+          "player": "Luis Díaz",
+          "providerPlayerId": "257390",
+          "appearances": 4,
+          "starts": 3,
+          "minutes": 268,
+          "shots": 12,
+          "shotsOnTarget": 5,
+          "dataQuality": "complete",
+          "competitions": [
+            {
+              "teamId": "132",
+              "team": "Bayern Munich",
+              "competition": "Bundesliga",
+              "competitionType": "domestic-league"
+            }
+          ]
+        },
+        {
+          "player": "Minjae Kim",
+          "providerPlayerId": "157688",
+          "appearances": 3,
+          "starts": 2,
+          "minutes": 219,
+          "shots": 0,
+          "shotsOnTarget": 0,
+          "dataQuality": "complete",
+          "competitions": [
+            {
+              "teamId": "132",
+              "team": "Bayern Munich",
+              "competition": "Bundesliga",
+              "competitionType": "domestic-league"
+            }
+          ]
+        },
+        {
+          "player": "Josip Stanišić",
+          "providerPlayerId": "276329",
+          "appearances": 3,
+          "starts": 2,
+          "minutes": 196,
+          "shots": 2,
+          "shotsOnTarget": 1,
+          "dataQuality": "complete",
+          "competitions": [
+            {
+              "teamId": "132",
+              "team": "Bayern Munich",
+              "competition": "Bundesliga",
+              "competitionType": "domestic-league"
+            }
+          ]
+        }
+      ],
+      "status": "usable"
+    },
+    {
+      "team": "Real Madrid",
+      "teamId": "real-madrid",
+      "providerTeamId": "86",
+      "league": "LaLiga",
+      "asOf": "2026-10-09",
+      "matches": 7,
+      "players": 35,
+      "coverage": {
+        "completeMatches": 7,
+        "partialMatches": [],
+        "matchesWithoutSummary": [],
+        "minutes": {
+          "players": 20,
+          "registeredPlayers": 35
+        },
+        "shots": {
+          "players": 20,
+          "registeredPlayers": 35
+        },
+        "shotsOnTarget": {
+          "players": 20,
+          "registeredPlayers": 35
+        }
+      },
+      "reconciliation": {
+        "teamShots": 132,
+        "registeredPlayerShots": 132,
+        "shotsDifference": 0,
+        "teamShotsOnTarget": 53,
+        "registeredPlayerShotsOnTarget": 53,
+        "shotsOnTargetDifference": 0,
+        "outsideRegisteredSquad": [],
+        "status": "exact"
+      },
+      "identities": {
+        "unresolved": [
+          {
+            "player": "Javi Navarro",
+            "reason": "Nome non trovato nei roster partita importati"
+          },
+          {
+            "player": "Diego Villalba",
+            "reason": "Nome non trovato nei roster partita importati"
+          },
+          {
+            "player": "Gabriel Valero",
+            "reason": "Nome non trovato nei roster partita importati"
+          }
+        ],
+        "withoutAppearances": [
+          {
+            "player": "Andriy Lunin",
+            "providerPlayerId": "257237",
+            "reason": "Nessuna presenza 2026/27 nel campione importato"
+          },
+          {
+            "player": "Sergio Mestre",
+            "providerPlayerId": "350351",
+            "reason": "Nessuna presenza 2026/27 nel campione importato"
+          },
+          {
+            "player": "Javi Navarro",
+            "providerPlayerId": null,
+            "reason": "Nome non trovato nei roster partita importati"
+          },
+          {
+            "player": "Raúl Asencio",
+            "providerPlayerId": "388338",
+            "reason": "Nessuna presenza 2026/27 nel campione importato"
+          },
+          {
+            "player": "Éder Militão",
+            "providerPlayerId": "228402",
+            "reason": "Nessuna presenza 2026/27 nel campione importato"
+          },
+          {
+            "player": "Jesus Fortea",
+            "providerPlayerId": "405544",
+            "reason": "Nessuna presenza 2026/27 nel campione importato"
+          },
+          {
+            "player": "Joan Martínez",
+            "providerPlayerId": "388339",
+            "reason": "Nessuna presenza 2026/27 nel campione importato"
+          },
+          {
+            "player": "Mario Rivas",
+            "providerPlayerId": "330352",
+            "reason": "Nessuna presenza 2026/27 nel campione importato"
+          },
+          {
+            "player": "Thiago Pitarch",
+            "providerPlayerId": "409019",
+            "reason": "Nessuna presenza 2026/27 nel campione importato"
+          },
+          {
+            "player": "Jorge Cestero",
+            "providerPlayerId": "415478",
+            "reason": "Nessuna presenza 2026/27 nel campione importato"
+          },
+          {
+            "player": "Diego Villalba",
+            "providerPlayerId": null,
+            "reason": "Nome non trovato nei roster partita importati"
+          },
+          {
+            "player": "Gabriel Valero",
+            "providerPlayerId": null,
+            "reason": "Nome non trovato nei roster partita importati"
+          },
+          {
+            "player": "Rodrygo",
+            "providerPlayerId": "267804",
+            "reason": "Nessuna presenza 2026/27 nel campione importato"
+          },
+          {
+            "player": "Daniel Yañez",
+            "providerPlayerId": "376422",
+            "reason": "Nessuna presenza 2026/27 nel campione importato"
+          }
+        ],
+        "transfers": [
+          {
+            "player": "Sergio Martínez",
+            "providerPlayerId": "409318",
+            "evidence": [
+              {
+                "teamId": "87",
+                "team": "Racing Santander",
+                "competition": "LaLiga",
+                "appearances": 2
+              }
+            ]
+          }
+        ]
+      },
+      "competitionSeparation": [
+        "domestic-league|LaLiga|86",
+        "domestic-league|LaLiga|87"
+      ],
+      "primaryPlayers": [
+        {
+          "player": "Thibaut Courtois",
+          "providerPlayerId": "134283",
+          "appearances": 7,
+          "starts": 7,
+          "minutes": 630,
+          "shots": 0,
+          "shotsOnTarget": 0,
+          "dataQuality": "complete",
+          "competitions": [
+            {
+              "teamId": "86",
+              "team": "Real Madrid",
+              "competition": "LaLiga",
+              "competitionType": "domestic-league"
+            }
+          ]
+        },
+        {
+          "player": "Kylian Mbappé",
+          "providerPlayerId": "231388",
+          "appearances": 7,
+          "starts": 7,
+          "minutes": 630,
+          "shots": 41,
+          "shotsOnTarget": 22,
+          "dataQuality": "complete",
+          "competitions": [
+            {
+              "teamId": "86",
+              "team": "Real Madrid",
+              "competition": "LaLiga",
+              "competitionType": "domestic-league"
+            }
+          ]
+        },
+        {
+          "player": "Vinícius Júnior",
+          "providerPlayerId": "252107",
+          "appearances": 7,
+          "starts": 7,
+          "minutes": 565,
+          "shots": 22,
+          "shotsOnTarget": 6,
+          "dataQuality": "complete",
+          "competitions": [
+            {
+              "teamId": "86",
+              "team": "Real Madrid",
+              "competition": "LaLiga",
+              "competitionType": "domestic-league"
+            }
+          ]
+        },
+        {
+          "player": "Federico Valverde",
+          "providerPlayerId": "235818",
+          "appearances": 7,
+          "starts": 7,
+          "minutes": 564,
+          "shots": 6,
+          "shotsOnTarget": 1,
+          "dataQuality": "complete",
+          "competitions": [
+            {
+              "teamId": "86",
+              "team": "Real Madrid",
+              "competition": "LaLiga",
+              "competitionType": "domestic-league"
+            }
+          ]
+        },
+        {
+          "player": "Dean Huijsen",
+          "providerPlayerId": "356000",
+          "appearances": 6,
+          "starts": 6,
+          "minutes": 540,
+          "shots": 6,
+          "shotsOnTarget": 2,
+          "dataQuality": "complete",
+          "competitions": [
+            {
+              "teamId": "86",
+              "team": "Real Madrid",
+              "competition": "LaLiga",
+              "competitionType": "domestic-league"
+            }
+          ]
+        },
+        {
+          "player": "Ibrahima Konaté",
+          "providerPlayerId": "251634",
+          "appearances": 6,
+          "starts": 6,
+          "minutes": 540,
+          "shots": 4,
+          "shotsOnTarget": 1,
+          "dataQuality": "complete",
+          "competitions": [
+            {
+              "teamId": "86",
+              "team": "Real Madrid",
+              "competition": "LaLiga",
+              "competitionType": "domestic-league"
+            }
+          ]
+        },
+        {
+          "player": "Jude Bellingham",
+          "providerPlayerId": "291281",
+          "appearances": 7,
+          "starts": 6,
+          "minutes": 529,
+          "shots": 16,
+          "shotsOnTarget": 7,
+          "dataQuality": "complete",
+          "competitions": [
+            {
+              "teamId": "86",
+              "team": "Real Madrid",
+              "competition": "LaLiga",
+              "competitionType": "domestic-league"
+            }
+          ]
+        },
+        {
+          "player": "Marc Cucurella",
+          "providerPlayerId": "259910",
+          "appearances": 7,
+          "starts": 4,
+          "minutes": 430,
+          "shots": 0,
+          "shotsOnTarget": 0,
+          "dataQuality": "complete",
+          "competitions": [
+            {
+              "teamId": "86",
+              "team": "Real Madrid",
+              "competition": "LaLiga",
+              "competitionType": "domestic-league"
+            }
+          ]
+        },
+        {
+          "player": "Denzel Dumfries",
+          "providerPlayerId": "213248",
+          "appearances": 6,
+          "starts": 5,
+          "minutes": 414,
+          "shots": 6,
+          "shotsOnTarget": 2,
+          "dataQuality": "complete",
+          "competitions": [
+            {
+              "teamId": "86",
+              "team": "Real Madrid",
+              "competition": "LaLiga",
+              "competitionType": "domestic-league"
+            }
+          ]
+        },
+        {
+          "player": "Arda Güler",
+          "providerPlayerId": "310452",
+          "appearances": 7,
+          "starts": 5,
+          "minutes": 349,
+          "shots": 11,
+          "shotsOnTarget": 4,
+          "dataQuality": "complete",
+          "competitions": [
+            {
+              "teamId": "86",
+              "team": "Real Madrid",
+              "competition": "LaLiga",
+              "competitionType": "domestic-league"
+            }
+          ]
+        }
+      ],
+      "status": "usable"
+    },
+    {
+      "team": "Paris Saint-Germain",
+      "teamId": "paris-saint-germain",
+      "providerTeamId": "160",
+      "league": "Ligue 1",
+      "asOf": "2026-10-09",
+      "matches": 5,
+      "players": 26,
+      "coverage": {
+        "completeMatches": 5,
+        "partialMatches": [],
+        "matchesWithoutSummary": [],
+        "minutes": {
+          "players": 20,
+          "registeredPlayers": 26
+        },
+        "shots": {
+          "players": 20,
+          "registeredPlayers": 26
+        },
+        "shotsOnTarget": {
+          "players": 20,
+          "registeredPlayers": 26
+        }
+      },
+      "reconciliation": {
+        "teamShots": 106,
+        "registeredPlayerShots": 106,
+        "shotsDifference": 0,
+        "teamShotsOnTarget": 36,
+        "registeredPlayerShotsOnTarget": 36,
+        "shotsOnTargetDifference": 0,
+        "outsideRegisteredSquad": [],
+        "status": "exact"
+      },
+      "identities": {
+        "unresolved": [
+          {
+            "player": "Arthur Vignaud",
+            "reason": "Nome non trovato nei roster partita importati"
+          },
+          {
+            "player": "David Boly",
+            "reason": "Nome non trovato nei roster partita importati"
+          }
+        ],
+        "withoutAppearances": [
+          {
+            "player": "Alessandro Longoni",
+            "providerPlayerId": "387725",
+            "reason": "Nessuna presenza 2026/27 nel campione importato"
+          },
+          {
+            "player": "Lucas Chevalier",
+            "providerPlayerId": "288925",
+            "reason": "Nessuna presenza 2026/27 nel campione importato"
+          },
+          {
+            "player": "Arthur Vignaud",
+            "providerPlayerId": null,
+            "reason": "Nome non trovato nei roster partita importati"
+          },
+          {
+            "player": "Illia Zabarnyi",
+            "providerPlayerId": "304503",
+            "reason": "Nessuna presenza 2026/27 nel campione importato"
+          },
+          {
+            "player": "David Boly",
+            "providerPlayerId": null,
+            "reason": "Nome non trovato nei roster partita importati"
+          },
+          {
+            "player": "Quentin Ndjantou",
+            "providerPlayerId": "403419",
+            "reason": "Nessuna presenza 2026/27 nel campione importato"
+          }
+        ],
+        "transfers": [
+          {
+            "player": "Mika Godts",
+            "providerPlayerId": "353363",
+            "evidence": [
+              {
+                "teamId": "139",
+                "team": "Ajax Amsterdam",
+                "competition": "Qualificazioni UEFA Conference League",
+                "appearances": 3
+              },
+              {
+                "teamId": "139",
+                "team": "Ajax Amsterdam",
+                "competition": "Eredivisie",
+                "appearances": 1
+              }
+            ]
+          }
+        ]
+      },
+      "competitionSeparation": [
+        "domestic-league|Eredivisie|139",
+        "domestic-league|Ligue 1|160",
+        "uefa-competition|Qualificazioni UEFA Conference League|139"
+      ],
+      "primaryPlayers": [
+        {
+          "player": "Matvei Safonov",
+          "providerPlayerId": "248699",
+          "appearances": 5,
+          "starts": 5,
+          "minutes": 450,
+          "shots": 0,
+          "shotsOnTarget": 0,
+          "dataQuality": "complete",
+          "competitions": [
+            {
+              "teamId": "160",
+              "team": "Paris Saint-Germain",
+              "competition": "Ligue 1",
+              "competitionType": "domestic-league"
+            }
+          ]
+        },
+        {
+          "player": "Marquinhos",
+          "providerPlayerId": "159047",
+          "appearances": 5,
+          "starts": 5,
+          "minutes": 450,
+          "shots": 4,
+          "shotsOnTarget": 4,
+          "dataQuality": "complete",
+          "competitions": [
+            {
+              "teamId": "160",
+              "team": "Paris Saint-Germain",
+              "competition": "Ligue 1",
+              "competitionType": "domestic-league"
+            }
+          ]
+        },
+        {
+          "player": "Willian Pacho",
+          "providerPlayerId": "287005",
+          "appearances": 5,
+          "starts": 5,
+          "minutes": 450,
+          "shots": 1,
+          "shotsOnTarget": 0,
+          "dataQuality": "complete",
+          "competitions": [
+            {
+              "teamId": "160",
+              "team": "Paris Saint-Germain",
+              "competition": "Ligue 1",
+              "competitionType": "domestic-league"
+            }
+          ]
+        },
+        {
+          "player": "Vitinha",
+          "providerPlayerId": "288897",
+          "appearances": 5,
+          "starts": 5,
+          "minutes": 429,
+          "shots": 12,
+          "shotsOnTarget": 3,
+          "dataQuality": "complete",
+          "competitions": [
+            {
+              "teamId": "160",
+              "team": "Paris Saint-Germain",
+              "competition": "Ligue 1",
+              "competitionType": "domestic-league"
+            }
+          ]
+        },
+        {
+          "player": "Warren Zaïre-Emery",
+          "providerPlayerId": "345581",
+          "appearances": 5,
+          "starts": 5,
+          "minutes": 381,
+          "shots": 5,
+          "shotsOnTarget": 1,
+          "dataQuality": "complete",
+          "competitions": [
+            {
+              "teamId": "160",
+              "team": "Paris Saint-Germain",
+              "competition": "Ligue 1",
+              "competitionType": "domestic-league"
+            }
+          ]
+        },
+        {
+          "player": "João Neves",
+          "providerPlayerId": "355061",
+          "appearances": 4,
+          "starts": 4,
+          "minutes": 330,
+          "shots": 10,
+          "shotsOnTarget": 4,
+          "dataQuality": "complete",
+          "competitions": [
+            {
+              "teamId": "160",
+              "team": "Paris Saint-Germain",
+              "competition": "Ligue 1",
+              "competitionType": "domestic-league"
+            }
+          ]
+        },
+        {
+          "player": "Achraf Hakimi",
+          "providerPlayerId": "240233",
+          "appearances": 4,
+          "starts": 4,
+          "minutes": 309,
+          "shots": 8,
+          "shotsOnTarget": 1,
+          "dataQuality": "complete",
+          "competitions": [
+            {
+              "teamId": "160",
+              "team": "Paris Saint-Germain",
+              "competition": "Ligue 1",
+              "competitionType": "domestic-league"
+            }
+          ]
+        },
+        {
+          "player": "Désiré Doué",
+          "providerPlayerId": "336388",
+          "appearances": 5,
+          "starts": 4,
+          "minutes": 301,
+          "shots": 14,
+          "shotsOnTarget": 4,
+          "dataQuality": "complete",
+          "competitions": [
+            {
+              "teamId": "160",
+              "team": "Paris Saint-Germain",
+              "competition": "Ligue 1",
+              "competitionType": "domestic-league"
+            }
+          ]
+        },
+        {
+          "player": "Fabián Ruiz",
+          "providerPlayerId": "214596",
+          "appearances": 5,
+          "starts": 3,
+          "minutes": 294,
+          "shots": 4,
+          "shotsOnTarget": 2,
+          "dataQuality": "complete",
+          "competitions": [
+            {
+              "teamId": "160",
+              "team": "Paris Saint-Germain",
+              "competition": "Ligue 1",
+              "competitionType": "domestic-league"
+            }
+          ]
+        },
+        {
+          "player": "Khvicha Kvaratskhelia",
+          "providerPlayerId": "274745",
+          "appearances": 5,
+          "starts": 4,
+          "minutes": 283,
+          "shots": 12,
+          "shotsOnTarget": 5,
+          "dataQuality": "complete",
+          "competitions": [
+            {
+              "teamId": "160",
+              "team": "Paris Saint-Germain",
+              "competition": "Ligue 1",
+              "competitionType": "domestic-league"
+            }
+          ]
+        }
+      ],
+      "status": "usable"
+    },
+    {
+      "team": "Bodø/Glimt",
+      "teamId": "bodo-glimt",
+      "providerTeamId": "2980",
+      "league": "Eliteserien",
+      "asOf": "2026-10-09",
+      "matches": 10,
+      "players": 32,
+      "coverage": {
+        "completeMatches": 10,
+        "partialMatches": [],
+        "matchesWithoutSummary": [],
+        "minutes": {
+          "players": 21,
+          "registeredPlayers": 32
+        },
+        "shots": {
+          "players": 21,
+          "registeredPlayers": 32
+        },
+        "shotsOnTarget": {
+          "players": 21,
+          "registeredPlayers": 32
+        }
+      },
+      "reconciliation": {
+        "teamShots": 183,
+        "registeredPlayerShots": 178,
+        "shotsDifference": -5,
+        "teamShotsOnTarget": 67,
+        "registeredPlayerShotsOnTarget": 65,
+        "shotsOnTargetDifference": -2,
+        "outsideRegisteredSquad": [
+          {
+            "providerPlayerId": "272624",
+            "player": "Kasper Høgh",
+            "appearances": 2,
+            "shots": 2,
+            "shotsOnTarget": 1
+          },
+          {
+            "providerPlayerId": "303934",
+            "player": "Anders Klynge",
+            "appearances": 1,
+            "shots": 0,
+            "shotsOnTarget": 0
+          },
+          {
+            "providerPlayerId": "340237",
+            "player": "Daniel Bassi",
+            "appearances": 2,
+            "shots": 1,
+            "shotsOnTarget": 0
+          },
+          {
+            "providerPlayerId": "399511",
+            "player": "Mikkel Hansen",
+            "appearances": 3,
+            "shots": 2,
+            "shotsOnTarget": 1
+          }
+        ],
+        "status": "explained_registered_squad_gap"
+      },
+      "identities": {
+        "unresolved": [
+          {
+            "player": "Matias Jaiteh",
+            "reason": "Nome non trovato nei roster partita importati"
+          },
+          {
+            "player": "Mathias Blix Olsen",
+            "reason": "Nome non trovato nei roster partita importati"
+          },
+          {
+            "player": "Kasper Solhaug",
+            "reason": "Nome non trovato nei roster partita importati"
+          }
+        ],
+        "withoutAppearances": [
+          {
+            "player": "Martin Lund Andersen",
+            "providerPlayerId": "3130704",
+            "reason": "Nessuna presenza 2026/27 nel campione importato"
+          },
+          {
+            "player": "Isak Sjong",
+            "providerPlayerId": "359286",
+            "reason": "Nessuna presenza 2026/27 nel campione importato"
+          },
+          {
+            "player": "Matias Jaiteh",
+            "providerPlayerId": null,
+            "reason": "Nome non trovato nei roster partita importati"
+          },
+          {
+            "player": "Mathias Blix Olsen",
+            "providerPlayerId": null,
+            "reason": "Nome non trovato nei roster partita importati"
+          },
+          {
+            "player": "Assan Sanyang",
+            "providerPlayerId": "3140226",
+            "reason": "Nessuna presenza 2026/27 nel campione importato"
+          },
+          {
+            "player": "Kasper Solhaug",
+            "providerPlayerId": null,
+            "reason": "Nome non trovato nei roster partita importati"
+          },
+          {
+            "player": "Levi Monsen Yeboah",
+            "providerPlayerId": "3133951",
+            "reason": "Nessuna presenza 2026/27 nel campione importato"
+          },
+          {
+            "player": "Erling Eliassen",
+            "providerPlayerId": "3133983",
+            "reason": "Nessuna presenza 2026/27 nel campione importato"
+          },
+          {
+            "player": "Jesper Rabben Nygård",
+            "providerPlayerId": "3133980",
+            "reason": "Nessuna presenza 2026/27 nel campione importato"
+          },
+          {
+            "player": "August Mikkelsen",
+            "providerPlayerId": "285947",
+            "reason": "Nessuna presenza 2026/27 nel campione importato"
+          },
+          {
+            "player": "Hindrin Chooly",
+            "providerPlayerId": "418004",
+            "reason": "Nessuna presenza 2026/27 nel campione importato"
+          }
+        ],
+        "transfers": []
+      },
+      "competitionSeparation": [
+        "domestic-league|Eliteserien|2980"
+      ],
+      "primaryPlayers": [
+        {
+          "player": "Fredrik Sjøvold",
+          "providerPlayerId": "333755",
+          "appearances": 10,
+          "starts": 10,
+          "minutes": 872,
+          "shots": 9,
+          "shotsOnTarget": 2,
+          "dataQuality": "complete",
+          "competitions": [
+            {
+              "teamId": "2980",
+              "team": "Bodo/Glimt",
+              "competition": "Eliteserien",
+              "competitionType": "domestic-league"
+            }
+          ]
+        },
+        {
+          "player": "Odin Bjørtuft",
+          "providerPlayerId": "269732",
+          "appearances": 10,
+          "starts": 10,
+          "minutes": 868,
+          "shots": 9,
+          "shotsOnTarget": 1,
+          "dataQuality": "complete",
+          "competitions": [
+            {
+              "teamId": "2980",
+              "team": "Bodo/Glimt",
+              "competition": "Eliteserien",
+              "competitionType": "domestic-league"
+            }
+          ]
+        },
+        {
+          "player": "Ole Didrik Blomberg",
+          "providerPlayerId": "307798",
+          "appearances": 10,
+          "starts": 9,
+          "minutes": 781,
+          "shots": 12,
+          "shotsOnTarget": 8,
+          "dataQuality": "complete",
+          "competitions": [
+            {
+              "teamId": "2980",
+              "team": "Bodo/Glimt",
+              "competition": "Eliteserien",
+              "competitionType": "domestic-league"
+            }
+          ]
+        },
+        {
+          "player": "Sondre Brunstad Fet",
+          "providerPlayerId": "208353",
+          "appearances": 10,
+          "starts": 9,
+          "minutes": 732,
+          "shots": 16,
+          "shotsOnTarget": 5,
+          "dataQuality": "complete",
+          "competitions": [
+            {
+              "teamId": "2980",
+              "team": "Bodo/Glimt",
+              "competition": "Eliteserien",
+              "competitionType": "domestic-league"
+            }
+          ]
+        },
+        {
+          "player": "Nikita Haikin",
+          "providerPlayerId": "217655",
+          "appearances": 8,
+          "starts": 8,
+          "minutes": 720,
+          "shots": 0,
+          "shotsOnTarget": 0,
+          "dataQuality": "complete",
+          "competitions": [
+            {
+              "teamId": "2980",
+              "team": "Bodo/Glimt",
+              "competition": "Eliteserien",
+              "competitionType": "domestic-league"
+            }
+          ]
+        },
+        {
+          "player": "Patrick Berg",
+          "providerPlayerId": "205924",
+          "appearances": 9,
+          "starts": 8,
+          "minutes": 718,
+          "shots": 20,
+          "shotsOnTarget": 6,
+          "dataQuality": "complete",
+          "competitions": [
+            {
+              "teamId": "2980",
+              "team": "Bodo/Glimt",
+              "competition": "Eliteserien",
+              "competitionType": "domestic-league"
+            }
+          ]
+        },
+        {
+          "player": "Sondre Auklend",
+          "providerPlayerId": "303740",
+          "appearances": 9,
+          "starts": 9,
+          "minutes": 703,
+          "shots": 16,
+          "shotsOnTarget": 2,
+          "dataQuality": "complete",
+          "competitions": [
+            {
+              "teamId": "2980",
+              "team": "Bodo/Glimt",
+              "competition": "Eliteserien",
+              "competitionType": "domestic-league"
+            }
+          ]
+        },
+        {
+          "player": "Andreas Helmersen",
+          "providerPlayerId": "218561",
+          "appearances": 10,
+          "starts": 7,
+          "minutes": 681,
+          "shots": 31,
+          "shotsOnTarget": 15,
+          "dataQuality": "complete",
+          "competitions": [
+            {
+              "teamId": "2980",
+              "team": "Bodo/Glimt",
+              "competition": "Eliteserien",
+              "competitionType": "domestic-league"
+            }
+          ]
+        },
+        {
+          "player": "Ola Brynhildsen",
+          "providerPlayerId": "255311",
+          "appearances": 10,
+          "starts": 8,
+          "minutes": 600,
+          "shots": 21,
+          "shotsOnTarget": 9,
+          "dataQuality": "complete",
+          "competitions": [
+            {
+              "teamId": "2980",
+              "team": "Bodo/Glimt",
+              "competition": "Eliteserien",
+              "competitionType": "domestic-league"
+            }
+          ]
+        },
+        {
+          "player": "Isak Määttä",
+          "providerPlayerId": "302019",
+          "appearances": 10,
+          "starts": 5,
+          "minutes": 474,
+          "shots": 4,
+          "shotsOnTarget": 0,
+          "dataQuality": "complete",
+          "competitions": [
+            {
+              "teamId": "2980",
+              "team": "Bodo/Glimt",
+              "competition": "Eliteserien",
+              "competitionType": "domestic-league"
+            }
+          ]
+        }
+      ],
+      "status": "usable"
+    }
+  ],
+  "gate": "CHAMPIONS MULTILEAGUE DATA GATE = PASS"
+}

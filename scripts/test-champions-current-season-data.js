@@ -4,7 +4,6 @@ const assert = require("assert");
 const crypto = require("crypto");
 const fs = require("fs");
 const path = require("path");
-const { execFileSync } = require("child_process");
 const importer = require("./import-champions-pilot-stats");
 const builder = require("./build-champions-player-stats");
 
@@ -38,23 +37,24 @@ assert.deepEqual(intervals.map(item => [item.from, item.to]), [
   ["2026-10-02", "2026-10-03"]
 ]);
 
-const baselineBefore = hash(baselinePath);
 const source = read(sourcePath);
 const asOf = source.asOf || source.cutoffDate;
-execFileSync(process.execPath, [path.join(root, "scripts/build-champions-player-stats.js"), "--season", "2026-27", "--team", "aek-athens", "--as-of", asOf], { cwd: root, stdio: "pipe" });
-assert.equal(hash(baselinePath), baselineBefore, "il builder current-season non deve modificare la baseline 2025/26");
+assert.equal(hash(baselinePath), "4c09d7f109f9d5a3b769c153ed4c051cc7a99adb588a11f7c3a7cb3b348ef692", "il dataset storico 2025/26 deve restare immutato");
 
 const data = read(currentPath);
 assert.equal(data.source.rawSeason, "2026-27");
 assert.equal(data.asOf, asOf);
-assert.deepEqual(data.selection.teams, ["aek-athens"]);
-assert.equal(data.teams.length, 1, "il pilot AEK non deve rigenerare tutte le squadre");
-const aek = data.teams[0];
+assert.deepEqual(new Set(data.selection.teams), new Set(["arsenal", "inter", "bayern-munchen", "real-madrid", "paris-saint-germain", "bodo-glimt"]));
+assert.equal(data.teams.length, 7, "il dataset deve contenere AEK più il batch di sei squadre");
+const aek = data.teams.find(team => team.id === "aek-athens");
+assert.ok(aek, "AEK deve essere preservata nel merge");
 assert.equal(aek.id, "aek-athens");
 assert.equal(aek.espnTeamId, "887");
-assert(!source.matches.some(match => match.season === "2026-27" && match.date > asOf && (match.home?.providerTeamId === "887" || match.away?.providerTeamId === "887")), "future leakage nei match AEK");
+assert.equal(data.teamSnapshots["aek-athens"].asOf, "2026-10-03");
+assert.equal(crypto.createHash("sha256").update(JSON.stringify(aek)).digest("hex"), "f2f3deb29a908c2637510dbfecf2d754ff2ebe1086ef16bae0da1d545ef9d308", "snapshot AEK modificato");
+assert(!source.matches.some(match => match.season === "2026-27" && match.date > "2026-10-03" && (match.home?.providerTeamId === "887" || match.away?.providerTeamId === "887")), "future leakage nei match AEK");
 
-const espn = builder.collectEspnRows({ season: "2026-27", asOf });
+const espn = builder.collectEspnRows({ season: "2026-27", asOf: "2026-10-03" });
 for (const player of aek.players.filter(item => item.currentSeason)) {
   const rows = espn.matchesByAthlete.get(player.providerPlayerId) || [];
   for (const entry of player.currentSeason.entries) {
@@ -81,4 +81,4 @@ assert.equal(builder.normalize("Barnabás Varga"), builder.normalize("Barnabas V
 assert.equal(builder.normalize("Mijat Gaćinović"), builder.normalize("Mijat Gacinovic"));
 assert.equal(new Set(aek.players.map(player => builder.normalize(player.name))).size, aek.players.length, "duplicati nominali nella rosa AEK");
 
-console.log(`Test Champions current-season OK: as-of ${asOf}, AEK ${aek.coverage.matches} gare, ${data.summary.withMinutes} giocatori con minuti`);
+console.log(`Test Champions current-season OK: batch as-of ${asOf}, AEK invariata a 2026-10-03 con ${aek.coverage.matches} gare`);
