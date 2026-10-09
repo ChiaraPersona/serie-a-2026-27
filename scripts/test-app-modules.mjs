@@ -40,7 +40,8 @@ const bettingPage = fs.readFileSync(path.join(root, "js", "pages", "betting.js")
   assert.match(bettingPage, /load\("schedina-md05\.json"\)/, "Schedina: dati della quinta giornata non caricati");
   assert.match(bettingPage, /load\("schedina-md06\.json"\)/, "Schedina: dati della sesta giornata non caricati");
   assert.doesNotMatch(bettingPage, /currentMyCombo=myComboRoundContent/, "Schedina: le MyCombo MD5 non devono comparire nella pagina principale");
-  assert.match(bettingPage, /const myCombo=\[5,6\]\.includes\(number\)\?myComboRoundContent/, "Schedina: MyCombo MD5/MD6 assenti dalle pagine dedicate");
+  assert.match(bettingPage, /const myCombo=number===5\?myComboRoundContent/, "Schedina: MyCombo MD5 assente dalla pagina archiviata");
+  assert.match(bettingPage, /matchdayWorkspaceContent\(data,predictionData\.predictions\|\|\[\],matchById,teamById,number\)/, "Schedina MD6: MyCombo e mercati non organizzati per partita");
   assert.match(bettingPage, /const rounds=\{1:md1,2:md2,3:md3,4:md4,5:md5,6:md6\}/, "Schedina: viste dedicate alle prime sei giornate assenti");
   assert.match(bettingPage, /archiveCard\(md2,2,matchById\)/, "Schedina: card della seconda giornata assente dall'archivio");
   assert.match(bettingPage, /archiveCard\(md3,3,matchById\)/, "Schedina: card della terza giornata assente dall'archivio");
@@ -62,6 +63,12 @@ assert.match(bettingPage, /id="personal-betslip-panel"/, "Schedina: pannello del
 assert.match(bettingPage, /class="betting-workspace"/, "Schedina MD6: workspace desktop a tre colonne assente");
 assert.match(bettingPage, /data-personal-host/, "Schedina MD6: colonna personale interna al contenuto assente");
 assert.match(bettingPage, /data-mycombo-open-all/, "Schedina MD6: apertura globale MyCombo assente");
+assert.match(bettingPage, /data-match-open-all/, "Schedina MD6: apertura globale delle partite assente");
+assert.match(bettingPage, /data-match-close-all/, "Schedina MD6: chiusura globale delle partite assente");
+assert.match(bettingPage, /data-market-filter/, "Schedina MD6: filtri dei mercati assenti");
+assert.match(bettingPage, /data-market-sort/, "Schedina MD6: ordinamento dei mercati assente");
+assert.match(bettingPage, /hasValidEvaluation\(leg\)/, "Schedina MD6: mercati privi di valutazione non filtrati");
+assert.match(bettingPage, /Number\(right\.dataset\[sortKey\]\)-Number\(left\.dataset\[sortKey\]\)\|\|Number\(left\.dataset\.order\)-Number\(right\.dataset\.order\)/, "Schedina MD6: ordinamento stabile assente");
 assert.doesNotMatch(bettingPage, /MyCombo · scegli tra|Seleziona o deseleziona gli esiti da combinare|Questi pulsanti appartengono esclusivamente/, "Schedina MD6: testo MyCombo rimosso ancora presente");
 assert.match(bettingPage, /if\(number>=6\)currentContext=/, "Schedina: il costruttore non protegge la struttura degli archivi MD1-MD5");
 assert.match(bettingPage, /event\.key==="Escape"/, "Schedina: chiusura da tastiera del pannello assente");
@@ -75,7 +82,8 @@ assert.doesNotMatch(bettingCss, /betting-archive-performance[^}]*var\(--betting-
 assert.match(bettingCss, /\.betting-slip-grid\{display:grid;grid-template-columns:repeat\(2,minmax\(0,1fr\)\)/, "Schedina: card desktop non organizzate su due colonne");
 assert.match(bettingCss, /@media\(min-width:1180px\)[\s\S]*\.personal-betslip-root\{position:sticky/, "Schedina: colonna personale sticky desktop assente");
 assert.match(bettingCss, /@media\(min-width:1180px\)[\s\S]*\.personal-betslip-trigger\{display:none\}/, "Schedina: trigger flottante non nascosto su desktop");
-assert.match(bettingCss, /\.betting-workspace\{display:grid;grid-template-columns:minmax\(0,2fr\) minmax\(300px,\.72fr\)/, "Schedina: griglia editoriale e colonna personale assente");
+assert.match(bettingCss, /\.betting-workspace\{display:grid;grid-template-columns:minmax\(0,7fr\) minmax\(300px,3fr\)/, "Schedina: griglia 70\/30 e colonna personale assente");
+assert.match(bettingCss, /\.betting-market-row\{display:grid;grid-template-columns:/, "Schedina: righe compatte dei mercati assenti");
 assert.match(bettingCss, /\.personal-betslip-panel\[hidden\]\{display:none\}/, "Schedina: pannello chiuso ancora esposto alla navigazione assistiva");
 assert.match(bettingCss, /@media\(max-width:680px\).*\.personal-betslip-panel\{top:auto;right:0;bottom:0;left:0/s, "Schedina: bottom sheet mobile assente");
 const readingsPage = fs.readFileSync(path.join(root, "js", "pages", "readings.js"), "utf8");
