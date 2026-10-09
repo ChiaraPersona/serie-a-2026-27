@@ -1,9 +1,11 @@
 body[data-page="betting"]{--betting-ink:#081626;--betting-blue:#1c6dff;--betting-cyan:#62efff;--betting-gold:#ffd76b}
-body[data-page="betting"] main>.hero{position:relative;isolation:isolate;overflow:hidden;margin-bottom:26px;padding:46px 38px;border:1px solid rgba(75,177,255,.26);border-radius:34px;background:radial-gradient(circle at 86% 30%,rgba(98,239,255,.2),transparent 23rem),linear-gradient(125deg,#06152b,#0c2b5d 60%,#0d4568);box-shadow:0 28px 70px rgba(0,43,112,.24),inset 0 1px rgba(255,255,255,.14)}
-body[data-page="betting"] main>.hero::before{content:"";position:absolute;z-index:-1;inset:-70%;background:conic-gradient(from 90deg,transparent 0 22%,rgba(255,255,255,.22) 26%,transparent 31% 100%);animation:betting-hero-shine 9s linear infinite}
-body[data-page="betting"] main>.hero::after{content:"✦";display:block;position:absolute;right:7%;top:50%;color:var(--betting-gold);font-size:clamp(70px,10vw,130px);line-height:1;filter:drop-shadow(0 0 20px rgba(255,215,107,.72));transform:translateY(-50%)}
-body[data-page="betting"] main>.hero h1,body[data-page="betting"] main>.hero .lead{color:#fff}
-body[data-page="betting"] main>.hero .eyebrow{color:var(--betting-gold)}
+body[data-page="betting"] main>.hero{display:block;min-height:0;margin-bottom:18px;padding:18px 20px;border:1px solid var(--glass-border);border-radius:18px;background:rgba(255,255,255,.42);box-shadow:none;text-align:left}
+body[data-page="betting"] main>.hero::before,body[data-page="betting"] main>.hero::after{display:none;content:none}
+body[data-page="betting"] main>.hero h1{max-width:none;margin:0;color:var(--glass-text);font-size:clamp(34px,4vw,48px);line-height:1.04}
+body[data-page="betting"] main>.hero .lead{max-width:760px;margin:7px 0 0;color:var(--glass-muted);font-size:15px;line-height:1.45}
+body[data-page="betting"] main>.hero .eyebrow{margin-bottom:4px;color:var(--glass-muted);font-size:10px;letter-spacing:.1em}
+body[data-page="betting"] main>.hero:has(+.betting-round-back+.betting-round-page--workspace) .lead{font-size:0}
+body[data-page="betting"] main>.hero:has(+.betting-round-back+.betting-round-page--workspace) .lead::after{content:"Quote, probabilità, quota equa ed EV delle selezioni.";font-size:15px}
 .site-nav .page-link[data-page-link="betting"]{position:relative;overflow:hidden;border-color:transparent;font-weight:850}
 .page-link[data-page-link="betting"]::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 25%,rgba(255,255,255,.52),transparent 70%);transform:translateX(-130%);animation:betting-nav-shine 4.8s ease-in-out infinite}
 .betting-archive{display:grid;gap:24px}
@@ -177,11 +179,10 @@ body[data-page="betting"] main>.hero .eyebrow{color:var(--betting-gold)}
 .personal-betslip-copy{border:1px solid #1257a6;background:#1257a6;color:#fff}
 .personal-betslip-clear{border:1px solid rgba(201,50,58,.22);background:#fff;color:#a7212a}
 .personal-betslip-panel button:disabled{opacity:.45;cursor:not-allowed}
-@keyframes betting-hero-shine{to{transform:rotate(1turn)}}
 @keyframes betting-nav-shine{0%,60%,100%{transform:translateX(-130%)}78%{transform:translateX(130%)}}
 @media(max-width:1040px){.betting-slip-grid,.betting-slip-grid-qualified{grid-template-columns:1fr}.betting-slip ol{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:20px}.betting-slip--supernova{grid-column:auto}.betting-slip--bagliore,.betting-slip--prisma,.betting-slip--quasar{margin-top:0}.betting-slip--prisma,.betting-slip--quasar{grid-column:auto}}
 @media(max-width:680px){body[data-page="betting"]{padding-bottom:78px}body[data-page="betting"] main>.hero{padding:30px 22px}body[data-page="betting"] main>.hero::after{right:2%;opacity:.23}.betting-archive-intro,.betting-intro,.betting-section-heading,.betting-slip-grid{grid-template-columns:1fr}.betting-slip--supernova,.betting-slip--costellazione,.betting-slip--quadrante,.betting-slip--ventaglio{grid-column:auto}.betting-stage{padding:16px 10px}.betting-slip{padding:14px;border-radius:16px}.betting-slip>header{align-items:flex-start}.betting-slip>header small,.betting-slip li div>span small{display:none}.betting-slip-metrics{grid-template-columns:1fr 1fr}.betting-slip-metrics>div{min-height:50px}.betting-slip ol{grid-template-columns:1fr;margin-top:8px}.betting-slip li{grid-template-columns:minmax(0,1fr) auto auto;gap:6px;min-height:42px;padding:5px 0}.betting-slip li strong{white-space:normal}.betting-personal-pick{padding:5px 7px}.betting-personal-pick span:last-child{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}.betting-leg-result{padding:2px 6px}.betting-nd-compact{display:grid;gap:3px}.betting-method{grid-template-columns:1fr}.betting-method strong{grid-row:auto}.personal-betslip-trigger{right:10px;bottom:9px;left:10px;justify-content:space-between;min-height:54px}.personal-betslip-panel{top:auto;right:0;bottom:0;left:0;width:100%;max-height:80vh;border-radius:22px 22px 0 0;transform:translateY(calc(100% + 16px))}.personal-betslip-panel[data-open="true"]{transform:translateY(0)}.personal-betslip-panel>header{padding:17px 16px 11px}.personal-betslip-content{padding:10px 12px 16px}}
-@media(prefers-reduced-motion:reduce){body[data-page="betting"] main>.hero::before,.page-link[data-page-link="betting"]::after{animation:none}.betting-round-back a,.betting-slip,.betting-mycombo-pick,.betting-personal-pick,.betting-personal-add-slip,.personal-betslip-panel{transition:none}}
+@media(prefers-reduced-motion:reduce){.page-link[data-page-link="betting"]::after{animation:none}.betting-round-back a,.betting-slip,.betting-mycombo-pick,.betting-personal-pick,.betting-personal-add-slip,.personal-betslip-panel{transition:none}}
 .betting-coverage{margin:0 auto 24px;max-width:1180px;padding:12px 16px;border:1px solid rgba(255,255,255,.16);border-radius:12px;color:rgba(255,255,255,.78)}
 .betting-coverage strong{color:#fff}
 
@@ -246,4 +247,11 @@ body[data-page="betting"] main>.hero .eyebrow{color:var(--betting-gold)}
   .betting-essential{padding:15px 12px}
   .betting-workspace .betting-section-heading{grid-template-columns:1fr}
   .betting-mycombo-actions{margin-top:4px}
+}
+
+@media(max-width:680px){
+  body[data-page="betting"] main>.hero{margin-bottom:14px;padding:14px 16px;border-radius:14px}
+  body[data-page="betting"] main>.hero h1{font-size:32px}
+  body[data-page="betting"] main>.hero .lead,
+  body[data-page="betting"] main>.hero:has(+.betting-round-back+.betting-round-page--workspace) .lead::after{font-size:14px}
 }
