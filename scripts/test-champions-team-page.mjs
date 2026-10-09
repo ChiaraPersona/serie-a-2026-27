@@ -18,11 +18,17 @@ for(const team of squads.teams){
  for(const f of fixtures)assert(calendar.includes(`data-team-home="${esc(f.homeTeam)}" data-team-away="${esc(f.awayTeam)}"`));
  const lineup=app.innerHTML.split('<section class="champions-team-lineup">')[1].split('</section>')[0];
  assert.equal((lineup.match(/class="reading-lineup-card /g)||[]).length,1,team.team);
- assert.equal((lineup.match(/<strong>/g)||[]).length,13,team.team);
- assert(app.innerHTML.includes('Editoriale · non ufficiale'));
+ const nextFixture=fixtures.slice().sort((a,b)=>`${a.date}T${a.kickoff}`.localeCompare(`${b.date}T${b.kickoff}`)).find(f=>f.probableFormation);
+ const side=nextFixture?.probableFormation?.[nextFixture.homeTeam===team.team?'home':'away'];
+ if(side?.formation===null){
+  assert.equal((lineup.match(/<strong>/g)||[]).length,2,team.team);
+  assert.equal((lineup.match(/<li>/g)||[]).length,11,team.team);
+  assert(lineup.includes('Modulo N/D'),team.team);
+ }else assert.equal((lineup.match(/<strong>/g)||[]).length,13,team.team);
+ assert(app.innerHTML.includes(nextFixture?.probableFormation?.status==='official'?'Confermate · Diretta':'Editoriale · non ufficiale'));
  assert(!app.innerHTML.includes('Rose registrate UEFA'));
  assert(calendar.includes('champions-calendar-list'));
  assert(!calendar.includes('fixture-card'));
  assert.equal((app.innerHTML.match(/data-champions-player=/g)||[]).length,team.players.length);
 }
-console.log('OK: 36 schede, 8 gare e 4 casa/4 trasferta per squadra, una formazione editoriale con 11 giocatori.');
+console.log('OK: 36 schede, 8 gare e 4 casa/4 trasferta per squadra, una formazione disponibile con 11 giocatori e modulo N/D preservato.');

@@ -1,0 +1,2194 @@
+{
+  "schemaVersion": 1,
+  "status": "partial",
+  "asOf": "2026-10-03",
+  "generatedAt": "2026-10-03",
+  "method": {
+    "metric": "UEFA cross-competition Elo",
+    "scaleOrientation": "higher means stronger",
+    "commonScale": true,
+    "trainingMatches": 1469,
+    "historyFrom": "2023-09-19",
+    "historyThrough": "2026-05-30",
+    "competitions": [
+      "ucl",
+      "uel",
+      "uecl"
+    ],
+    "competitionUpdateWeights": {
+      "ucl": 1,
+      "uel": 1,
+      "uecl": 1
+    },
+    "leagueAggregator": "median of all association clubs rated by the frozen UEFA Elo model",
+    "minimumRatedClubs": 3,
+    "selectionPolicy": "No Champions-only league average. All rated clubs from the association are included; European-selection bias remains explicit and uncorrected.",
+    "temporalPolicy": "The frozen model may be used only when generatedAt <= asOf and historyThrough < asOf.",
+    "shotTransferPolicy": "diagnostic-only; no Elo-to-shots conversion is calibrated or applied"
+  },
+  "sources": [
+    {
+      "path": "data/normalized/uefa-europe-history-2023-26.json",
+      "provider": "UEFA match feed",
+      "observations": 1469,
+      "through": "2026-05-30"
+    },
+    {
+      "path": "data/normalized/uefa-1x2-model-2026-27.json",
+      "method": "Nested chronological walk-forward Elo 1X2",
+      "observations": 1469,
+      "generatedAt": "2026-09-02"
+    },
+    {
+      "path": "data/normalized/champions-team-strength-2026-27.json",
+      "role": "ESI coherence diagnostic only; not mixed numerically with Elo"
+    }
+  ],
+  "neutralFallback": {
+    "type": "neutral",
+    "status": "fallback",
+    "method": "median of all clubs rated by the frozen UEFA Elo model",
+    "value": 1498.45,
+    "observations": 162
+  },
+  "championsReference": {
+    "method": "median direct Elo of 2026/27 Champions participants with a frozen rating",
+    "value": 1559.47,
+    "clubsRated": 33,
+    "clubsTotal": 36
+  },
+  "esiCoherence": {
+    "status": "diagnostic_only",
+    "comparablePairs": 33,
+    "spearmanRankCorrelation": 0.8927,
+    "note": "ESI and Elo are not combined or treated as linearly interchangeable."
+  },
+  "leagues": [
+    {
+      "association": "AUT",
+      "leagueCode": "aut.1",
+      "league": "Bundesliga austriaca",
+      "championsParticipants": 1,
+      "clubsRated": 4,
+      "observedMatches": 76,
+      "evidenceSource": "UEFA main-tournament match results 2023/24-2025/26",
+      "scale": "UEFA cross-competition Elo",
+      "aggregation": "median club rating",
+      "selectionCoverage": "European main-stage clubs only; domestic-league denominator unavailable",
+      "coveragePct": null,
+      "selectionBias": "European qualifiers are selected above the domestic-league average; no numeric correction is applied.",
+      "leagueStrength": 1394.59,
+      "evidenceStatus": "estimated",
+      "reliability": "low",
+      "fallback": null,
+      "clubs": [
+        {
+          "teamId": "50042",
+          "team": "SK Rapid",
+          "rating": 1445.14
+        },
+        {
+          "teamId": "63405",
+          "team": "LASK",
+          "rating": 1395.42
+        },
+        {
+          "teamId": "50111",
+          "team": "SK Sturm Graz",
+          "rating": 1393.75
+        },
+        {
+          "teamId": "50030",
+          "team": "FC Salzburg",
+          "rating": 1354.02
+        }
+      ]
+    },
+    {
+      "association": "AZE",
+      "leagueCode": "aze.1",
+      "league": "Premyer Liqa",
+      "championsParticipants": 1,
+      "clubsRated": 1,
+      "observedMatches": 28,
+      "evidenceSource": "UEFA main-tournament match results 2023/24-2025/26",
+      "scale": "UEFA cross-competition Elo",
+      "aggregation": "median club rating",
+      "selectionCoverage": "European main-stage clubs only; domestic-league denominator unavailable",
+      "coveragePct": null,
+      "selectionBias": "European qualifiers are selected above the domestic-league average; no numeric correction is applied.",
+      "leagueStrength": null,
+      "evidenceStatus": "insufficient_evidence",
+      "reliability": "insufficient",
+      "fallback": {
+        "type": "neutral",
+        "value": 1498.45,
+        "status": "fallback"
+      },
+      "clubs": [
+        {
+          "teamId": "60609",
+          "team": "Qarabağ FK",
+          "rating": 1385.44
+        }
+      ]
+    },
+    {
+      "association": "BEL",
+      "leagueCode": "bel.1",
+      "league": "Pro League",
+      "championsParticipants": 1,
+      "clubsRated": 7,
+      "observedMatches": 120,
+      "evidenceSource": "UEFA main-tournament match results 2023/24-2025/26",
+      "scale": "UEFA cross-competition Elo",
+      "aggregation": "median club rating",
+      "selectionCoverage": "European main-stage clubs only; domestic-league denominator unavailable",
+      "coveragePct": null,
+      "selectionBias": "European qualifiers are selected above the domestic-league average; no numeric correction is applied.",
+      "leagueStrength": 1511,
+      "evidenceStatus": "estimated",
+      "reliability": "medium",
+      "fallback": null,
+      "clubs": [
+        {
+          "teamId": "61582",
+          "team": "KRC Genk",
+          "rating": 1553.96
+        },
+        {
+          "teamId": "50043",
+          "team": "Club Brugge KV",
+          "rating": 1550.73
+        },
+        {
+          "teamId": "52884",
+          "team": "Cercle Brugge KSV",
+          "rating": 1536
+        },
+        {
+          "teamId": "4608",
+          "team": "KAA Gent",
+          "rating": 1511
+        },
+        {
+          "teamId": "50074",
+          "team": "RSC Anderlecht",
+          "rating": 1506.46
+        },
+        {
+          "teamId": "64125",
+          "team": "R. Union Saint-Gilloise",
+          "rating": 1505.41
+        },
+        {
+          "teamId": "50113",
+          "team": "Royal Antwerp FC",
+          "rating": 1435.03
+        }
+      ]
+    },
+    {
+      "association": "CZE",
+      "leagueCode": "cze.1",
+      "league": "Czech First League",
+      "championsParticipants": 1,
+      "clubsRated": 5,
+      "observedMatches": 98,
+      "evidenceSource": "UEFA main-tournament match results 2023/24-2025/26",
+      "scale": "UEFA cross-competition Elo",
+      "aggregation": "median club rating",
+      "selectionCoverage": "European main-stage clubs only; domestic-league denominator unavailable",
+      "coveragePct": null,
+      "selectionBias": "European qualifiers are selected above the domestic-league average; no numeric correction is applied.",
+      "leagueStrength": 1468.01,
+      "evidenceStatus": "estimated",
+      "reliability": "medium",
+      "fallback": null,
+      "clubs": [
+        {
+          "teamId": "64388",
+          "team": "FC Viktoria Plzeň",
+          "rating": 1587.58
+        },
+        {
+          "teamId": "52905",
+          "team": "SK Sigma Olomouc",
+          "rating": 1491.8
+        },
+        {
+          "teamId": "88134",
+          "team": "FK Mladá Boleslav",
+          "rating": 1468.01
+        },
+        {
+          "teamId": "50033",
+          "team": "AC Sparta Praha",
+          "rating": 1448.72
+        },
+        {
+          "teamId": "52498",
+          "team": "SK Slavia Praha",
+          "rating": 1401.12
+        }
+      ]
+    },
+    {
+      "association": "ENG",
+      "leagueCode": "eng.1",
+      "league": "Premier League",
+      "championsParticipants": 5,
+      "clubsRated": 12,
+      "observedMatches": 273,
+      "evidenceSource": "UEFA main-tournament match results 2023/24-2025/26",
+      "scale": "UEFA cross-competition Elo",
+      "aggregation": "median club rating",
+      "selectionCoverage": "European main-stage clubs only; domestic-league denominator unavailable",
+      "coveragePct": null,
+      "selectionBias": "European qualifiers are selected above the domestic-league average; no numeric correction is applied.",
+      "leagueStrength": 1598.88,
+      "evidenceStatus": "estimated",
+      "reliability": "high",
+      "fallback": null,
+      "clubs": [
+        {
+          "teamId": "52280",
+          "team": "Arsenal FC",
+          "rating": 1777.32
+        },
+        {
+          "teamId": "52683",
+          "team": "Aston Villa",
+          "rating": 1735.64
+        },
+        {
+          "teamId": "1652",
+          "team": "Tottenham Hotspur",
+          "rating": 1674.97
+        },
+        {
+          "teamId": "52914",
+          "team": "Chelsea FC",
+          "rating": 1648.08
+        },
+        {
+          "teamId": "7889",
+          "team": "Liverpool FC",
+          "rating": 1644.46
+        },
+        {
+          "teamId": "52682",
+          "team": "Manchester United",
+          "rating": 1609.43
+        },
+        {
+          "teamId": "52916",
+          "team": "Crystal Palace F.C.",
+          "rating": 1588.32
+        },
+        {
+          "teamId": "52919",
+          "team": "Manchester City",
+          "rating": 1575.58
+        },
+        {
+          "teamId": "52681",
+          "team": "Nottingham Forest FC",
+          "rating": 1574.39
+        },
+        {
+          "teamId": "2601105",
+          "team": "Brighton & Hove Albion",
+          "rating": 1559.76
+        },
+        {
+          "teamId": "53358",
+          "team": "West Ham United FC",
+          "rating": 1555.49
+        },
+        {
+          "teamId": "59324",
+          "team": "Newcastle United FC",
+          "rating": 1547.71
+        }
+      ]
+    },
+    {
+      "association": "ESP",
+      "leagueCode": "esp.1",
+      "league": "LaLiga",
+      "championsParticipants": 5,
+      "clubsRated": 11,
+      "observedMatches": 243,
+      "evidenceSource": "UEFA main-tournament match results 2023/24-2025/26",
+      "scale": "UEFA cross-competition Elo",
+      "aggregation": "median club rating",
+      "selectionCoverage": "European main-stage clubs only; domestic-league denominator unavailable",
+      "coveragePct": null,
+      "selectionBias": "European qualifiers are selected above the domestic-league average; no numeric correction is applied.",
+      "leagueStrength": 1548.09,
+      "evidenceStatus": "estimated",
+      "reliability": "high",
+      "fallback": null,
+      "clubs": [
+        {
+          "teamId": "50080",
+          "team": "FC Barcelona",
+          "rating": 1684.55
+        },
+        {
+          "teamId": "50051",
+          "team": "Real Madrid C.F.",
+          "rating": 1669.17
+        },
+        {
+          "teamId": "50124",
+          "team": "Atlético de Madrid",
+          "rating": 1637.92
+        },
+        {
+          "teamId": "74070",
+          "team": "Rayo Vallecano de Madrid",
+          "rating": 1565.7
+        },
+        {
+          "teamId": "52265",
+          "team": "Real Betis Balompié",
+          "rating": 1559.47
+        },
+        {
+          "teamId": "50123",
+          "team": "Real Sociedad de Fútbol",
+          "rating": 1548.09
+        },
+        {
+          "teamId": "53043",
+          "team": "Real Club Celta",
+          "rating": 1539.44
+        },
+        {
+          "teamId": "50125",
+          "team": "Athletic Club",
+          "rating": 1534.63
+        },
+        {
+          "teamId": "70691",
+          "team": "Villarreal CF",
+          "rating": 1428.16
+        },
+        {
+          "teamId": "52714",
+          "team": "Sevilla FC",
+          "rating": 1425.4
+        },
+        {
+          "teamId": "2602798",
+          "team": "Girona FC",
+          "rating": 1400.69
+        }
+      ]
+    },
+    {
+      "association": "FRA",
+      "leagueCode": "fra.1",
+      "league": "Ligue 1",
+      "championsParticipants": 3,
+      "clubsRated": 11,
+      "observedMatches": 200,
+      "evidenceSource": "UEFA main-tournament match results 2023/24-2025/26",
+      "scale": "UEFA cross-competition Elo",
+      "aggregation": "median club rating",
+      "selectionCoverage": "European main-stage clubs only; domestic-league denominator unavailable",
+      "coveragePct": null,
+      "selectionBias": "European qualifiers are selected above the domestic-league average; no numeric correction is applied.",
+      "leagueStrength": 1517.34,
+      "evidenceStatus": "estimated",
+      "reliability": "high",
+      "fallback": null,
+      "clubs": [
+        {
+          "teamId": "52747",
+          "team": "Paris Saint-Germain",
+          "rating": 1759.8
+        },
+        {
+          "teamId": "5312",
+          "team": "Olympique Lyonnais",
+          "rating": 1626.57
+        },
+        {
+          "teamId": "59857",
+          "team": "Racing Club de Strasbourg Alsace",
+          "rating": 1549.28
+        },
+        {
+          "teamId": "55031",
+          "team": "Stade Rennais FC",
+          "rating": 1532.01
+        },
+        {
+          "teamId": "75797",
+          "team": "LOSC Lille",
+          "rating": 1527.66
+        },
+        {
+          "teamId": "50023",
+          "team": "AS Monaco",
+          "rating": 1517.34
+        },
+        {
+          "teamId": "52934",
+          "team": "Toulouse FC",
+          "rating": 1511.51
+        },
+        {
+          "teamId": "52748",
+          "team": "Olympique de Marseille",
+          "rating": 1503.46
+        },
+        {
+          "teamId": "52277",
+          "team": "RC Lens",
+          "rating": 1500.8
+        },
+        {
+          "teamId": "2601306",
+          "team": "Stade Brestois 29",
+          "rating": 1481.22
+        },
+        {
+          "teamId": "52355",
+          "team": "OGC Nice",
+          "rating": 1344.19
+        }
+      ]
+    },
+    {
+      "association": "GER",
+      "leagueCode": "ger.1",
+      "league": "Bundesliga",
+      "championsParticipants": 4,
+      "clubsRated": 11,
+      "observedMatches": 231,
+      "evidenceSource": "UEFA main-tournament match results 2023/24-2025/26",
+      "scale": "UEFA cross-competition Elo",
+      "aggregation": "median club rating",
+      "selectionCoverage": "European main-stage clubs only; domestic-league denominator unavailable",
+      "coveragePct": null,
+      "selectionBias": "European qualifiers are selected above the domestic-league average; no numeric correction is applied.",
+      "leagueStrength": 1507.53,
+      "evidenceStatus": "estimated",
+      "reliability": "high",
+      "fallback": null,
+      "clubs": [
+        {
+          "teamId": "50037",
+          "team": "FC Bayern München",
+          "rating": 1758.69
+        },
+        {
+          "teamId": "50109",
+          "team": "Bayer 04 Leverkusen",
+          "rating": 1608.02
+        },
+        {
+          "teamId": "52758",
+          "team": "Borussia Dortmund",
+          "rating": 1594.25
+        },
+        {
+          "teamId": "59880",
+          "team": "SC Freiburg",
+          "rating": 1592.66
+        },
+        {
+          "teamId": "70853",
+          "team": "1. FSV Mainz 05",
+          "rating": 1571.82
+        },
+        {
+          "teamId": "2603791",
+          "team": "1. FC Heidenheim 1846",
+          "rating": 1507.53
+        },
+        {
+          "teamId": "2600431",
+          "team": "TSG 1899 Hoffenheim",
+          "rating": 1485.96
+        },
+        {
+          "teamId": "50107",
+          "team": "VfB Stuttgart",
+          "rating": 1477.9
+        },
+        {
+          "teamId": "50072",
+          "team": "Eintracht Frankfurt",
+          "rating": 1462.91
+        },
+        {
+          "teamId": "77977",
+          "team": "1. FC Union Berlin",
+          "rating": 1432.43
+        },
+        {
+          "teamId": "2603790",
+          "team": "RB Leipzig",
+          "rating": 1426.96
+        }
+      ]
+    },
+    {
+      "association": "GRE",
+      "leagueCode": "gre.1",
+      "league": "Super League Greece",
+      "championsParticipants": 1,
+      "clubsRated": 4,
+      "observedMatches": 109,
+      "evidenceSource": "UEFA main-tournament match results 2023/24-2025/26",
+      "scale": "UEFA cross-competition Elo",
+      "aggregation": "median club rating",
+      "selectionCoverage": "European main-stage clubs only; domestic-league denominator unavailable",
+      "coveragePct": null,
+      "selectionBias": "European qualifiers are selected above the domestic-league average; no numeric correction is applied.",
+      "leagueStrength": 1518.37,
+      "evidenceStatus": "estimated",
+      "reliability": "low",
+      "fallback": null,
+      "clubs": [
+        {
+          "teamId": "2610",
+          "team": "Olympiacos FC",
+          "rating": 1577.21
+        },
+        {
+          "teamId": "50129",
+          "team": "AEK Athens FC",
+          "rating": 1520.34
+        },
+        {
+          "teamId": "50084",
+          "team": "Panathinaikos FC",
+          "rating": 1516.39
+        },
+        {
+          "teamId": "50130",
+          "team": "PAOK FC",
+          "rating": 1472.92
+        }
+      ]
+    },
+    {
+      "association": "ITA",
+      "leagueCode": "ita.1",
+      "league": "Serie A",
+      "championsParticipants": 4,
+      "clubsRated": 9,
+      "observedMatches": 237,
+      "evidenceSource": "UEFA main-tournament match results 2023/24-2025/26",
+      "scale": "UEFA cross-competition Elo",
+      "aggregation": "median club rating",
+      "selectionCoverage": "European main-stage clubs only; domestic-league denominator unavailable",
+      "coveragePct": null,
+      "selectionBias": "European qualifiers are selected above the domestic-league average; no numeric correction is applied.",
+      "leagueStrength": 1568.54,
+      "evidenceStatus": "estimated",
+      "reliability": "high",
+      "fallback": null,
+      "clubs": [
+        {
+          "teamId": "50137",
+          "team": "AS Roma",
+          "rating": 1610.5
+        },
+        {
+          "teamId": "52817",
+          "team": "ACF Fiorentina",
+          "rating": 1605.55
+        },
+        {
+          "teamId": "50138",
+          "team": "FC Internazionale Milano",
+          "rating": 1605.1
+        },
+        {
+          "teamId": "52973",
+          "team": "S.S. Lazio",
+          "rating": 1604.5
+        },
+        {
+          "teamId": "52816",
+          "team": "Atalanta BC",
+          "rating": 1568.54
+        },
+        {
+          "teamId": "50139",
+          "team": "Juventus",
+          "rating": 1564.98
+        },
+        {
+          "teamId": "52969",
+          "team": "Bologna FC 1909",
+          "rating": 1542.84
+        },
+        {
+          "teamId": "50058",
+          "team": "AC Milan",
+          "rating": 1527.18
+        },
+        {
+          "teamId": "50136",
+          "team": "SSC Napoli",
+          "rating": 1468.46
+        }
+      ]
+    },
+    {
+      "association": "NED",
+      "leagueCode": "ned.1",
+      "league": "Eredivisie",
+      "championsParticipants": 2,
+      "clubsRated": 7,
+      "observedMatches": 142,
+      "evidenceSource": "UEFA main-tournament match results 2023/24-2025/26",
+      "scale": "UEFA cross-competition Elo",
+      "aggregation": "median club rating",
+      "selectionCoverage": "European main-stage clubs only; domestic-league denominator unavailable",
+      "coveragePct": null,
+      "selectionBias": "European qualifiers are selected above the domestic-league average; no numeric correction is applied.",
+      "leagueStrength": 1443.07,
+      "evidenceStatus": "estimated",
+      "reliability": "medium",
+      "fallback": null,
+      "clubs": [
+        {
+          "teamId": "52327",
+          "team": "AZ Alkmaar",
+          "rating": 1528.52
+        },
+        {
+          "teamId": "50062",
+          "team": "PSV Eindhoven",
+          "rating": 1514.53
+        },
+        {
+          "teamId": "52818",
+          "team": "FC Twente",
+          "rating": 1505.39
+        },
+        {
+          "teamId": "64207",
+          "team": "Go Ahead Eagles",
+          "rating": 1443.07
+        },
+        {
+          "teamId": "52749",
+          "team": "Feyenoord",
+          "rating": 1428.73
+        },
+        {
+          "teamId": "50143",
+          "team": "AFC Ajax",
+          "rating": 1410.05
+        },
+        {
+          "teamId": "52323",
+          "team": "FC Utrecht",
+          "rating": 1387.75
+        }
+      ]
+    },
+    {
+      "association": "NOR",
+      "leagueCode": "nor.1",
+      "league": "Eliteserien",
+      "championsParticipants": 2,
+      "clubsRated": 3,
+      "observedMatches": 66,
+      "evidenceSource": "UEFA main-tournament match results 2023/24-2025/26",
+      "scale": "UEFA cross-competition Elo",
+      "aggregation": "median club rating",
+      "selectionCoverage": "European main-stage clubs only; domestic-league denominator unavailable",
+      "coveragePct": null,
+      "selectionBias": "European qualifiers are selected above the domestic-league average; no numeric correction is applied.",
+      "leagueStrength": 1508.07,
+      "evidenceStatus": "estimated",
+      "reliability": "low",
+      "fallback": null,
+      "clubs": [
+        {
+          "teamId": "59333",
+          "team": "FK Bodø/Glimt",
+          "rating": 1565.15
+        },
+        {
+          "teamId": "50142",
+          "team": "Molde FK",
+          "rating": 1508.07
+        },
+        {
+          "teamId": "52770",
+          "team": "SK Brann",
+          "rating": 1444.76
+        }
+      ]
+    },
+    {
+      "association": "POR",
+      "leagueCode": "por.1",
+      "league": "Primeira Liga",
+      "championsParticipants": 2,
+      "clubsRated": 5,
+      "observedMatches": 134,
+      "evidenceSource": "UEFA main-tournament match results 2023/24-2025/26",
+      "scale": "UEFA cross-competition Elo",
+      "aggregation": "median club rating",
+      "selectionCoverage": "European main-stage clubs only; domestic-league denominator unavailable",
+      "coveragePct": null,
+      "selectionBias": "European qualifiers are selected above the domestic-league average; no numeric correction is applied.",
+      "leagueStrength": 1559.8,
+      "evidenceStatus": "estimated",
+      "reliability": "medium",
+      "fallback": null,
+      "clubs": [
+        {
+          "teamId": "50149",
+          "team": "Sporting Clube de Portugal",
+          "rating": 1577.22
+        },
+        {
+          "teamId": "50064",
+          "team": "FC Porto",
+          "rating": 1571.27
+        },
+        {
+          "teamId": "52336",
+          "team": "SC Braga",
+          "rating": 1559.8
+        },
+        {
+          "teamId": "50097",
+          "team": "Vitória SC",
+          "rating": 1542.8
+        },
+        {
+          "teamId": "50147",
+          "team": "SL Benfica",
+          "rating": 1468.52
+        }
+      ]
+    },
+    {
+      "association": "SVK",
+      "leagueCode": "svk.1",
+      "league": "Slovak Super Liga",
+      "championsParticipants": 1,
+      "clubsRated": 2,
+      "observedMatches": 28,
+      "evidenceSource": "UEFA main-tournament match results 2023/24-2025/26",
+      "scale": "UEFA cross-competition Elo",
+      "aggregation": "median club rating",
+      "selectionCoverage": "European main-stage clubs only; domestic-league denominator unavailable",
+      "coveragePct": null,
+      "selectionBias": "European qualifiers are selected above the domestic-league average; no numeric correction is applied.",
+      "leagueStrength": null,
+      "evidenceStatus": "insufficient_evidence",
+      "reliability": "insufficient",
+      "fallback": {
+        "type": "neutral",
+        "value": 1498.45,
+        "status": "fallback"
+      },
+      "clubs": [
+        {
+          "teamId": "52904",
+          "team": "FC Spartak Trnava",
+          "rating": 1413.51
+        },
+        {
+          "teamId": "52797",
+          "team": "ŠK Slovan Bratislava",
+          "rating": 1346.78
+        }
+      ]
+    },
+    {
+      "association": "TUR",
+      "leagueCode": "tur.1",
+      "league": "Süper Lig",
+      "championsParticipants": 2,
+      "clubsRated": 5,
+      "observedMatches": 92,
+      "evidenceSource": "UEFA main-tournament match results 2023/24-2025/26",
+      "scale": "UEFA cross-competition Elo",
+      "aggregation": "median club rating",
+      "selectionCoverage": "European main-stage clubs only; domestic-league denominator unavailable",
+      "coveragePct": null,
+      "selectionBias": "European qualifiers are selected above the domestic-league average; no numeric correction is applied.",
+      "leagueStrength": 1501.91,
+      "evidenceStatus": "estimated",
+      "reliability": "medium",
+      "fallback": null,
+      "clubs": [
+        {
+          "teamId": "52692",
+          "team": "Fenerbahçe SK",
+          "rating": 1553.57
+        },
+        {
+          "teamId": "53060",
+          "team": "Samsunspor FC",
+          "rating": 1541.4
+        },
+        {
+          "teamId": "50067",
+          "team": "Galatasaray A.Ş.",
+          "rating": 1501.91
+        },
+        {
+          "teamId": "2600288",
+          "team": "İstanbul Başakşehir FK",
+          "rating": 1485.43
+        },
+        {
+          "teamId": "50157",
+          "team": "Beşiktaş JK",
+          "rating": 1432.3
+        }
+      ]
+    },
+    {
+      "association": "UKR",
+      "leagueCode": "ukr.1",
+      "league": "Ukrainian Premier League",
+      "championsParticipants": 1,
+      "clubsRated": 3,
+      "observedMatches": 48,
+      "evidenceSource": "UEFA main-tournament match results 2023/24-2025/26",
+      "scale": "UEFA cross-competition Elo",
+      "aggregation": "median club rating",
+      "selectionCoverage": "European main-stage clubs only; domestic-league denominator unavailable",
+      "coveragePct": null,
+      "selectionBias": "European qualifiers are selected above the domestic-league average; no numeric correction is applied.",
+      "leagueStrength": 1480.51,
+      "evidenceStatus": "estimated",
+      "reliability": "low",
+      "fallback": null,
+      "clubs": [
+        {
+          "teamId": "52707",
+          "team": "FC Shakhtar Donetsk",
+          "rating": 1496.11
+        },
+        {
+          "teamId": "65130",
+          "team": "FC Zorya Luhansk",
+          "rating": 1480.51
+        },
+        {
+          "teamId": "52723",
+          "team": "FC Dynamo Kyiv",
+          "rating": 1410.4
+        }
+      ]
+    }
+  ],
+  "directClubRatings": [
+    {
+      "teamId": "52280",
+      "team": "Arsenal FC",
+      "countryCode": "ENG",
+      "rating": 1777.32,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "52747",
+      "team": "Paris Saint-Germain",
+      "countryCode": "FRA",
+      "rating": 1759.8,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "50037",
+      "team": "FC Bayern München",
+      "countryCode": "GER",
+      "rating": 1758.69,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "52683",
+      "team": "Aston Villa",
+      "countryCode": "ENG",
+      "rating": 1735.64,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "50080",
+      "team": "FC Barcelona",
+      "countryCode": "ESP",
+      "rating": 1684.55,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "1652",
+      "team": "Tottenham Hotspur",
+      "countryCode": "ENG",
+      "rating": 1674.97,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "50051",
+      "team": "Real Madrid C.F.",
+      "countryCode": "ESP",
+      "rating": 1669.17,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "52914",
+      "team": "Chelsea FC",
+      "countryCode": "ENG",
+      "rating": 1648.08,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "7889",
+      "team": "Liverpool FC",
+      "countryCode": "ENG",
+      "rating": 1644.46,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "50124",
+      "team": "Atlético de Madrid",
+      "countryCode": "ESP",
+      "rating": 1637.92,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "5312",
+      "team": "Olympique Lyonnais",
+      "countryCode": "FRA",
+      "rating": 1626.57,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "50137",
+      "team": "AS Roma",
+      "countryCode": "ITA",
+      "rating": 1610.5,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "52682",
+      "team": "Manchester United",
+      "countryCode": "ENG",
+      "rating": 1609.43,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "50109",
+      "team": "Bayer 04 Leverkusen",
+      "countryCode": "GER",
+      "rating": 1608.02,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "52817",
+      "team": "ACF Fiorentina",
+      "countryCode": "ITA",
+      "rating": 1605.55,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "50138",
+      "team": "FC Internazionale Milano",
+      "countryCode": "ITA",
+      "rating": 1605.1,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "52973",
+      "team": "S.S. Lazio",
+      "countryCode": "ITA",
+      "rating": 1604.5,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "52758",
+      "team": "Borussia Dortmund",
+      "countryCode": "GER",
+      "rating": 1594.25,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "59880",
+      "team": "SC Freiburg",
+      "countryCode": "GER",
+      "rating": 1592.66,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "52916",
+      "team": "Crystal Palace F.C.",
+      "countryCode": "ENG",
+      "rating": 1588.32,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "64388",
+      "team": "FC Viktoria Plzeň",
+      "countryCode": "CZE",
+      "rating": 1587.58,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "50149",
+      "team": "Sporting Clube de Portugal",
+      "countryCode": "POR",
+      "rating": 1577.22,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "2610",
+      "team": "Olympiacos FC",
+      "countryCode": "GRE",
+      "rating": 1577.21,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "52919",
+      "team": "Manchester City",
+      "countryCode": "ENG",
+      "rating": 1575.58,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "52681",
+      "team": "Nottingham Forest FC",
+      "countryCode": "ENG",
+      "rating": 1574.39,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "70853",
+      "team": "1. FSV Mainz 05",
+      "countryCode": "GER",
+      "rating": 1571.82,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "50064",
+      "team": "FC Porto",
+      "countryCode": "POR",
+      "rating": 1571.27,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "52816",
+      "team": "Atalanta BC",
+      "countryCode": "ITA",
+      "rating": 1568.54,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "74070",
+      "team": "Rayo Vallecano de Madrid",
+      "countryCode": "ESP",
+      "rating": 1565.7,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "59333",
+      "team": "FK Bodø/Glimt",
+      "countryCode": "NOR",
+      "rating": 1565.15,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "50139",
+      "team": "Juventus",
+      "countryCode": "ITA",
+      "rating": 1564.98,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "52336",
+      "team": "SC Braga",
+      "countryCode": "POR",
+      "rating": 1559.8,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "2601105",
+      "team": "Brighton & Hove Albion",
+      "countryCode": "ENG",
+      "rating": 1559.76,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "52265",
+      "team": "Real Betis Balompié",
+      "countryCode": "ESP",
+      "rating": 1559.47,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "64227",
+      "team": "KKS Lech Poznań",
+      "countryCode": "POL",
+      "rating": 1557.8,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "75795",
+      "team": "FC Midtjylland",
+      "countryCode": "DEN",
+      "rating": 1556.27,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "53358",
+      "team": "West Ham United FC",
+      "countryCode": "ENG",
+      "rating": 1555.49,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "61582",
+      "team": "KRC Genk",
+      "countryCode": "BEL",
+      "rating": 1553.96,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "52692",
+      "team": "Fenerbahçe SK",
+      "countryCode": "TUR",
+      "rating": 1553.57,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "50043",
+      "team": "Club Brugge KV",
+      "countryCode": "BEL",
+      "rating": 1550.73,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "59857",
+      "team": "Racing Club de Strasbourg Alsace",
+      "countryCode": "FRA",
+      "rating": 1549.28,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "50123",
+      "team": "Real Sociedad de Fútbol",
+      "countryCode": "ESP",
+      "rating": 1548.09,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "59324",
+      "team": "Newcastle United FC",
+      "countryCode": "ENG",
+      "rating": 1547.71,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "2600277",
+      "team": "Jagiellonia Białystok",
+      "countryCode": "POL",
+      "rating": 1546.19,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "54191",
+      "team": "AEK Larnaca FC",
+      "countryCode": "CYP",
+      "rating": 1543.51,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "52969",
+      "team": "Bologna FC 1909",
+      "countryCode": "ITA",
+      "rating": 1542.84,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "50097",
+      "team": "Vitória SC",
+      "countryCode": "POR",
+      "rating": 1542.8,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "59030",
+      "team": "NK Celje",
+      "countryCode": "SVN",
+      "rating": 1542.17,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "53060",
+      "team": "Samsunspor FC",
+      "countryCode": "TUR",
+      "rating": 1541.4,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "53043",
+      "team": "Real Club Celta",
+      "countryCode": "ESP",
+      "rating": 1539.44,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "52356",
+      "team": "HNK Rijeka",
+      "countryCode": "CRO",
+      "rating": 1536.87,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "52884",
+      "team": "Cercle Brugge KSV",
+      "countryCode": "BEL",
+      "rating": 1536,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "50125",
+      "team": "Athletic Club",
+      "countryCode": "ESP",
+      "rating": 1534.63,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "52298",
+      "team": "Ferencvárosi TC",
+      "countryCode": "HUN",
+      "rating": 1533.77,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "55031",
+      "team": "Stade Rennais FC",
+      "countryCode": "FRA",
+      "rating": 1532.01,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "52327",
+      "team": "AZ Alkmaar",
+      "countryCode": "NED",
+      "rating": 1528.52,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "75797",
+      "team": "LOSC Lille",
+      "countryCode": "FRA",
+      "rating": 1527.66,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "50058",
+      "team": "AC Milan",
+      "countryCode": "ITA",
+      "rating": 1527.18,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "52809",
+      "team": "Djurgården",
+      "countryCode": "SWE",
+      "rating": 1524.08,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "2609532",
+      "team": "Pafos FC",
+      "countryCode": "CYP",
+      "rating": 1522.14,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "50129",
+      "team": "AEK Athens FC",
+      "countryCode": "GRE",
+      "rating": 1520.34,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "50023",
+      "team": "AS Monaco",
+      "countryCode": "FRA",
+      "rating": 1517.34,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "79940",
+      "team": "FC Nordsjælland",
+      "countryCode": "DEN",
+      "rating": 1516.42,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "50084",
+      "team": "Panathinaikos FC",
+      "countryCode": "GRE",
+      "rating": 1516.39,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "50104",
+      "team": "FK Borac",
+      "countryCode": "BIH",
+      "rating": 1515.62,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "50062",
+      "team": "PSV Eindhoven",
+      "countryCode": "NED",
+      "rating": 1514.53,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "50118",
+      "team": "APOEL FC",
+      "countryCode": "CYP",
+      "rating": 1513.82,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "52934",
+      "team": "Toulouse FC",
+      "countryCode": "FRA",
+      "rating": 1511.51,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "4608",
+      "team": "KAA Gent",
+      "countryCode": "BEL",
+      "rating": 1511,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "50142",
+      "team": "Molde FK",
+      "countryCode": "NOR",
+      "rating": 1508.07,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "4251",
+      "team": "FC Lausanne-Sport",
+      "countryCode": "SUI",
+      "rating": 1507.56,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "2603791",
+      "team": "1. FC Heidenheim 1846",
+      "countryCode": "GER",
+      "rating": 1507.53,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "8538",
+      "team": "FC Lugano",
+      "countryCode": "SUI",
+      "rating": 1506.86,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "50074",
+      "team": "RSC Anderlecht",
+      "countryCode": "BEL",
+      "rating": 1506.46,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "50164",
+      "team": "GNK Dinamo",
+      "countryCode": "CRO",
+      "rating": 1506.01,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "64125",
+      "team": "R. Union Saint-Gilloise",
+      "countryCode": "BEL",
+      "rating": 1505.41,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "52818",
+      "team": "FC Twente",
+      "countryCode": "NED",
+      "rating": 1505.39,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "50008",
+      "team": "Servette FC",
+      "countryCode": "SUI",
+      "rating": 1503.86,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "52748",
+      "team": "Olympique de Marseille",
+      "countryCode": "FRA",
+      "rating": 1503.46,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "50067",
+      "team": "Galatasaray A.Ş.",
+      "countryCode": "TUR",
+      "rating": 1501.91,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "52277",
+      "team": "RC Lens",
+      "countryCode": "FRA",
+      "rating": 1500.8,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "52707",
+      "team": "FC Shakhtar Donetsk",
+      "countryCode": "UKR",
+      "rating": 1496.11,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "60566",
+      "team": "Raków Częstochowa",
+      "countryCode": "POL",
+      "rating": 1493.68,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "52697",
+      "team": "Víkingur Reykjavík",
+      "countryCode": "ISL",
+      "rating": 1492,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "52905",
+      "team": "SK Sigma Olomouc",
+      "countryCode": "CZE",
+      "rating": 1491.8,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "2600431",
+      "team": "TSG 1899 Hoffenheim",
+      "countryCode": "GER",
+      "rating": 1485.96,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "50050",
+      "team": "Celtic FC",
+      "countryCode": "SCO",
+      "rating": 1485.85,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "2600288",
+      "team": "İstanbul Başakşehir FK",
+      "countryCode": "TUR",
+      "rating": 1485.43,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "59045",
+      "team": "Maccabi Haifa FC",
+      "countryCode": "ISR",
+      "rating": 1483.49,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "50146",
+      "team": "Legia Warszawa",
+      "countryCode": "POL",
+      "rating": 1483.01,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "52344",
+      "team": "IF Elfsborg",
+      "countryCode": "SWE",
+      "rating": 1482.17,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "2601306",
+      "team": "Stade Brestois 29",
+      "countryCode": "FRA",
+      "rating": 1481.22,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "65130",
+      "team": "FC Zorya Luhansk",
+      "countryCode": "UKR",
+      "rating": 1480.51,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "50107",
+      "team": "VfB Stuttgart",
+      "countryCode": "GER",
+      "rating": 1477.9,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "2605572",
+      "team": "Lincoln Red Imps FC",
+      "countryCode": "GIB",
+      "rating": 1477.76,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "2606501",
+      "team": "Universitatea Craiova",
+      "countryCode": "ROU",
+      "rating": 1477.57,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "50120",
+      "team": "Heart of Midlothian FC",
+      "countryCode": "SCO",
+      "rating": 1475.21,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "50130",
+      "team": "PAOK FC",
+      "countryCode": "GRE",
+      "rating": 1472.92,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "53081",
+      "team": "NK Olimpija Ljubljana",
+      "countryCode": "SVN",
+      "rating": 1472.32,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "50147",
+      "team": "SL Benfica",
+      "countryCode": "POR",
+      "rating": 1468.52,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "50136",
+      "team": "SSC Napoli",
+      "countryCode": "ITA",
+      "rating": 1468.46,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "88134",
+      "team": "FK Mladá Boleslav",
+      "countryCode": "CZE",
+      "rating": 1468.01,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "51151",
+      "team": "FC St. Gallen 1879",
+      "countryCode": "SUI",
+      "rating": 1467.23,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "50072",
+      "team": "Eintracht Frankfurt",
+      "countryCode": "GER",
+      "rating": 1462.91,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "52381",
+      "team": "Shamrock Rovers FC",
+      "countryCode": "IRL",
+      "rating": 1461.92,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "2608290",
+      "team": "FC Drita",
+      "countryCode": "KOS",
+      "rating": 1457.78,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "50065",
+      "team": "Fotbal Club FCSB",
+      "countryCode": "ROU",
+      "rating": 1457.34,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "52350",
+      "team": "KuPS Kuopio",
+      "countryCode": "FIN",
+      "rating": 1457.02,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "50069",
+      "team": "FK Crvena Zvezda",
+      "countryCode": "SRB",
+      "rating": 1455.17,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "52709",
+      "team": "F.C. Copenhagen",
+      "countryCode": "DEN",
+      "rating": 1451.8,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "2609987",
+      "team": "FC Noah",
+      "countryCode": "ARM",
+      "rating": 1450.36,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "50033",
+      "team": "AC Sparta Praha",
+      "countryCode": "CZE",
+      "rating": 1448.72,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "69529",
+      "team": "Aris Limassol FC",
+      "countryCode": "CYP",
+      "rating": 1447.34,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "2603104",
+      "team": "PFC Ludogorets 1945",
+      "countryCode": "BUL",
+      "rating": 1446.78,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "2609552",
+      "team": "FC Ballkani",
+      "countryCode": "KOS",
+      "rating": 1445.68,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "50042",
+      "team": "SK Rapid",
+      "countryCode": "AUT",
+      "rating": 1445.14,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "52770",
+      "team": "SK Brann",
+      "countryCode": "NOR",
+      "rating": 1444.76,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "57475",
+      "team": "KÍ Klaksvík",
+      "countryCode": "FRO",
+      "rating": 1444.51,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "75807",
+      "team": "KF Shkëndija",
+      "countryCode": "MKD",
+      "rating": 1443.28,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "64207",
+      "team": "Go Ahead Eagles",
+      "countryCode": "NED",
+      "rating": 1443.07,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "50077",
+      "team": "Omonia FC",
+      "countryCode": "CYP",
+      "rating": 1442.06,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "50121",
+      "team": "Rangers FC",
+      "countryCode": "SCO",
+      "rating": 1440.99,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "50113",
+      "team": "Royal Antwerp FC",
+      "countryCode": "BEL",
+      "rating": 1435.03,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "59856",
+      "team": "FC Basel 1893",
+      "countryCode": "SUI",
+      "rating": 1434.09,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "77977",
+      "team": "1. FC Union Berlin",
+      "countryCode": "GER",
+      "rating": 1432.43,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "50157",
+      "team": "Beşiktaş JK",
+      "countryCode": "TUR",
+      "rating": 1432.3,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "85009",
+      "team": "Larne FC",
+      "countryCode": "NIR",
+      "rating": 1430.05,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "2607112",
+      "team": "FC Petrocub",
+      "countryCode": "MDA",
+      "rating": 1429.76,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "2609104",
+      "team": "FC RFS",
+      "countryCode": "LVA",
+      "rating": 1429.13,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "50060",
+      "team": "Hamrun Spartans F.C.",
+      "countryCode": "MLT",
+      "rating": 1429.03,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "52749",
+      "team": "Feyenoord",
+      "countryCode": "NED",
+      "rating": 1428.73,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "70691",
+      "team": "Villarreal CF",
+      "countryCode": "ESP",
+      "rating": 1428.16,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "2603790",
+      "team": "RB Leipzig",
+      "countryCode": "GER",
+      "rating": 1426.96,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "2600605",
+      "team": "FC Astana",
+      "countryCode": "KAZ",
+      "rating": 1426.79,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "52714",
+      "team": "Sevilla FC",
+      "countryCode": "ESP",
+      "rating": 1425.4,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "53020",
+      "team": "Shelbourne FC",
+      "countryCode": "IRL",
+      "rating": 1424.37,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "60457",
+      "team": "The New Saints FC",
+      "countryCode": "WAL",
+      "rating": 1423.54,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "50161",
+      "team": "FC Dinamo-Minsk",
+      "countryCode": "BLR",
+      "rating": 1421.53,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "73390",
+      "team": "HŠK Zrinjski Mostar",
+      "countryCode": "BIH",
+      "rating": 1416.18,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "50122",
+      "team": "Aberdeen FC",
+      "countryCode": "SCO",
+      "rating": 1414.59,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "52904",
+      "team": "FC Spartak Trnava",
+      "countryCode": "SVK",
+      "rating": 1413.51,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "69606",
+      "team": "FC Sheriff Tiraspol",
+      "countryCode": "MDA",
+      "rating": 1411.75,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "52723",
+      "team": "FC Dynamo Kyiv",
+      "countryCode": "UKR",
+      "rating": 1410.4,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "50143",
+      "team": "AFC Ajax",
+      "countryCode": "NED",
+      "rating": 1410.05,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "52498",
+      "team": "SK Slavia Praha",
+      "countryCode": "CZE",
+      "rating": 1401.12,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "2602798",
+      "team": "Girona FC",
+      "countryCode": "ESP",
+      "rating": 1400.69,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "79970",
+      "team": "FC Kairat Almaty",
+      "countryCode": "KAZ",
+      "rating": 1398.12,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "63405",
+      "team": "LASK",
+      "countryCode": "AUT",
+      "rating": 1395.42,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "60570",
+      "team": "FK Čukarički",
+      "countryCode": "SRB",
+      "rating": 1394.04,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "50111",
+      "team": "SK Sturm Graz",
+      "countryCode": "AUT",
+      "rating": 1393.75,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "52323",
+      "team": "FC Utrecht",
+      "countryCode": "NED",
+      "rating": 1387.75,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "71235",
+      "team": "Breiðablik",
+      "countryCode": "ISL",
+      "rating": 1386.79,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "60609",
+      "team": "Qarabağ FK",
+      "countryCode": "AZE",
+      "rating": 1385.44,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "2610140",
+      "team": "FK TSC",
+      "countryCode": "SRB",
+      "rating": 1384.83,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "50052",
+      "team": "HJK Helsinki",
+      "countryCode": "FIN",
+      "rating": 1383.42,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "57477",
+      "team": "Maccabi Tel-Aviv FC",
+      "countryCode": "ISR",
+      "rating": 1374.18,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "69621",
+      "team": "BK Häcken",
+      "countryCode": "SWE",
+      "rating": 1356.43,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "50030",
+      "team": "FC Salzburg",
+      "countryCode": "AUT",
+      "rating": 1354.02,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "50031",
+      "team": "BSC Young Boys",
+      "countryCode": "SUI",
+      "rating": 1346.99,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "52797",
+      "team": "ŠK Slovan Bratislava",
+      "countryCode": "SVK",
+      "rating": 1346.78,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "52355",
+      "team": "OGC Nice",
+      "countryCode": "FRA",
+      "rating": 1344.19,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    },
+    {
+      "teamId": "50152",
+      "team": "Malmö FF",
+      "countryCode": "SWE",
+      "rating": 1330.13,
+      "evidenceStatus": "direct",
+      "source": "frozen UEFA Elo"
+    }
+  ]
+}

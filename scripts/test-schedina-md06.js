@@ -4,7 +4,7 @@ const assert = require("assert");
 const fs = require("fs");
 const path = require("path");
 const { execFileSync } = require("child_process");
-const { isUnderPlayableSelection } = require("./betting-market-policy");
+const { isUnderPlayableSelection, isIndividualPlayerFoulMarket, isPlayableSelection } = require("./betting-market-policy");
 
 const root = path.resolve(__dirname, "..");
 const read = relative => JSON.parse(fs.readFileSync(path.join(root, relative), "utf8"));
@@ -30,6 +30,7 @@ assert.equal(selection.summary.matchesAnalyzed, 10);
 assert.equal(selection.summary.actionableCandidates, 26);
 assert.equal(selection.rules.duoEvCertified, 0);
 assert.equal(selection.rules.underMarketsPlayable, false);
+assert.equal(selection.rules.individualPlayerFoulsPlayable, false);
 assert.equal(selection.rules.overMarketsRemainEligible, true);
 assert.equal(selection.myCombo.matches, 10);
 assert(!selectionMarkdown.includes("Probabilità congiunta: 0.0%"), "N/D non deve essere serializzato come probabilità zero");
@@ -43,6 +44,7 @@ for (const slip of normalized.slips) {
   assert(slip.legs.every(leg => leg.marketUpdatedAt), `${slip.id}: timestamp quota mancante`);
   assert(!slip.legs.some(leg => /CARTELLIN/i.test(leg.market)), `${slip.id}: cartellini non autorizzati`);
   assert(!slip.legs.some(isUnderPlayableSelection), `${slip.id}: selezione Under ancora giocabile`);
+  assert(!slip.legs.some(isIndividualPlayerFoulMarket), `${slip.id}: falli individuali ancora giocabili`);
 }
 
 const duo = normalized.slips.find(slip => slip.validationStatus === "EV_NON_CALCOLABILE");
@@ -62,20 +64,29 @@ for (const [matchId, portfolios] of Object.entries(myCombo.matches)) {
   const safe = portfolios.find(portfolio => portfolio.tier === "Safe");
   assert(safe && safe.legs.length >= 3 && safe.legs.length <= 6, `${matchId}: Safe non deve forzare dieci esiti`);
   assert(!portfolios.flatMap(portfolio => portfolio.legs || []).some(isUnderPlayableSelection), `${matchId}: Under ancora presente nella MyCombo MD6`);
+  assert(!portfolios.flatMap(portfolio => portfolio.legs || []).some(isIndividualPlayerFoulMarket), `${matchId}: falli individuali ancora presenti nella MyCombo MD6`);
 }
 for (const prediction of predictions) {
   const safe = prediction.combinations.find(combo => combo.tier === "Safe");
   assert(safe?.legs?.length >= 3 && safe.legs.length <= 6, `${prediction.matchId}: MyCombo Safe non integrata`);
   assert(!prediction.combinations.flatMap(combo => combo.legs || []).some(isUnderPlayableSelection), `${prediction.matchId}: Under propagato nelle combinazioni operative`);
+  assert(!prediction.combinations.flatMap(combo => combo.legs || []).some(isIndividualPlayerFoulMarket), `${prediction.matchId}: falli individuali propagati nelle combinazioni operative`);
 }
 
 assert.equal(isUnderPlayableSelection({ selection: "OVER", label: "Over 2,5 gol" }), false, "Gli Over devono restare eleggibili");
 assert.equal(isUnderPlayableSelection({ selection: "UNDER", label: "Under 2,5 gol" }), true);
 assert(odds.events.flatMap(event => event.markets).flatMap(market => market.selections || []).some(selection => selection.name === "UNDER"), "Gli Under devono restare nello snapshot statistico delle quote");
+assert.equal(isPlayableSelection({matchId:"test-md-06",market:"U/O FALLI COMMESSI GIOCATORE",selection:"OVER"},{matchday:6}),false);
+assert.equal(isPlayableSelection({matchId:"test-md-06",market:"U/O FALLI SUBITI SQUADRA",selection:"OVER"},{matchday:6}),true,"i falli aggregati di squadra devono restare disponibili");
+assert(myCombo.constraints.individualFoulSelectionPolicy.active,"policy falli individuali MD6 non serializzata");
+assert(myCombo.constraints.individualFoulSelectionPolicy.previousPlayableLegOccurrencesRemoved>0,"migrazione dei falli individuali preesistenti non tracciata");
 
 assert(page.includes('load("schedina-md06.json")'));
 assert(page.includes("myComboRoundContent(predictionData.predictions||[],matchById,teamById,number)"));
-assert(page.includes("Il numero di esiti dipende dalla qualità disponibile"));
+assert(page.includes("MyCombo per partita"));
+assert(page.includes("betting-workspace"));
+assert(page.includes("data-mycombo-open-all"));
+assert(!page.includes("MyCombo · scegli tra"));
 
 const protectedArchives = [
   "data/normalized/schedina.json",

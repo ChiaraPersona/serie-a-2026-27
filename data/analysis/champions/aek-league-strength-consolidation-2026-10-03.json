@@ -1,0 +1,183 @@
+{
+  "schemaVersion": 1,
+  "status": "diagnostic-only-partial",
+  "asOf": "2026-10-03",
+  "fixture": {
+    "fixtureId": "ucl-2026-27-md02-14",
+    "date": "2026-10-14",
+    "homeTeam": "Shakhtar Donetsk",
+    "awayTeam": "AEK Athens"
+  },
+  "activation": false,
+  "gate": "CHAMPIONS LEAGUE-STRENGTH GATE = PARTIAL",
+  "reason": "The repository supports a common inter-league Elo scale and explicit league fallbacks, but not a validated conversion from Elo gaps to player shot-rate multipliers.",
+  "chain": [
+    "league level: association median UEFA Elo",
+    "past opponent strength: direct club Elo else explicit league/neutral fallback",
+    "current evidence adjustment: NOT APPLIED pending calibration",
+    "blended player baseline: frozen from prior AEK pilot",
+    "future matchup: frozen team model only"
+  ],
+  "before": {
+    "scale": "provisional Champions ESI 0-100",
+    "leagueStrengthGreece": 20.9,
+    "leagueContributors": 1,
+    "averageOpponentStrength": 16.942,
+    "transferabilityFactor": 0.865527
+  },
+  "after": {
+    "scale": "UEFA cross-competition Elo",
+    "leagueStrengthGreece": 1518.37,
+    "clubsRated": 4,
+    "reliability": "low",
+    "evidenceStatus": "estimated",
+    "averageOpponentStrength": 1518.37,
+    "transferabilityFactor": null,
+    "transferabilityStatus": "insufficient_evidence",
+    "fallback": null,
+    "opponentRows": [
+      {
+        "eventId": "401896771",
+        "date": "2026-08-30",
+        "team": "Kifisia",
+        "value": 1518.37,
+        "evidenceStatus": "fallback",
+        "source": "association median UEFA Elo",
+        "fallbackUsed": true,
+        "withinLeagueAdjustmentStatus": "insufficient_calibration",
+        "withinLeagueEvidence": null
+      },
+      {
+        "eventId": "401896769",
+        "date": "2026-09-05",
+        "team": "Aris",
+        "value": 1518.37,
+        "evidenceStatus": "fallback",
+        "source": "association median UEFA Elo",
+        "fallbackUsed": true,
+        "withinLeagueAdjustmentStatus": "insufficient_calibration",
+        "withinLeagueEvidence": null
+      },
+      {
+        "eventId": "401896764",
+        "date": "2026-09-13",
+        "team": "Asteras Tripoli",
+        "value": 1518.37,
+        "evidenceStatus": "fallback",
+        "source": "association median UEFA Elo",
+        "fallbackUsed": true,
+        "withinLeagueAdjustmentStatus": "insufficient_calibration",
+        "withinLeagueEvidence": null
+      },
+      {
+        "eventId": "401896758",
+        "date": "2026-09-20",
+        "team": "Volos NFC",
+        "value": 1518.37,
+        "evidenceStatus": "fallback",
+        "source": "association median UEFA Elo",
+        "fallbackUsed": true,
+        "withinLeagueAdjustmentStatus": "insufficient_calibration",
+        "withinLeagueEvidence": null
+      }
+    ]
+  },
+  "scaleDifference": "N/D: ESI and Elo are not linearly interchangeable.",
+  "players": [
+    {
+      "playerId": "luka-jovic",
+      "player": "Luka Jović",
+      "beforeBlendedShotsPer90": 2.411939,
+      "afterBlendedShotsPer90": 2.411939,
+      "difference": 0,
+      "status": "unchanged-production-freeze",
+      "reason": "No calibrated UEFA-Elo-to-shots transfer function is available."
+    },
+    {
+      "playerId": "barnabas-varga",
+      "player": "Barnabás Varga",
+      "beforeBlendedShotsPer90": 2.402862,
+      "afterBlendedShotsPer90": 2.402862,
+      "difference": 0,
+      "status": "unchanged-production-freeze",
+      "reason": "No calibrated UEFA-Elo-to-shots transfer function is available."
+    },
+    {
+      "playerId": "aboubakary-koita",
+      "player": "Aboubakary Koita",
+      "beforeBlendedShotsPer90": 2.527387,
+      "afterBlendedShotsPer90": 2.527387,
+      "difference": 0,
+      "status": "unchanged-production-freeze",
+      "reason": "No calibrated UEFA-Elo-to-shots transfer function is available."
+    },
+    {
+      "playerId": "zini",
+      "player": "Zini",
+      "beforeBlendedShotsPer90": 2.555556,
+      "afterBlendedShotsPer90": 2.555556,
+      "difference": 0,
+      "status": "unchanged-production-freeze",
+      "reason": "No calibrated UEFA-Elo-to-shots transfer function is available."
+    }
+  ],
+  "teamInvariant": {
+    "expectedTeamShotsBefore": 11.01,
+    "expectedTeamShotsAfter": 11.01,
+    "expectedTeamSotBefore": 3.91,
+    "expectedTeamSotAfter": 3.91,
+    "shotsInvariant": true,
+    "sotInvariant": true
+  },
+  "expectedMinutesInvariant": [
+    {
+      "playerId": "alberto-brignoli",
+      "expectedMinutes": 90
+    },
+    {
+      "playerId": "lazaros-rota",
+      "expectedMinutes": 84.6
+    },
+    {
+      "playerId": "harold-moukoudi",
+      "expectedMinutes": 84.6
+    },
+    {
+      "playerId": "filipe-relvas",
+      "expectedMinutes": 84.6
+    },
+    {
+      "playerId": "aek-athens-pilio",
+      "expectedMinutes": 84.6
+    },
+    {
+      "playerId": "lovro-majer",
+      "expectedMinutes": 84.6
+    },
+    {
+      "playerId": "milan-vitalis",
+      "expectedMinutes": 84.6
+    },
+    {
+      "playerId": "razvan-marin",
+      "expectedMinutes": 84.6
+    },
+    {
+      "playerId": "aboubakary-koita",
+      "expectedMinutes": 84.6
+    },
+    {
+      "playerId": "barnabas-varga",
+      "expectedMinutes": 84.6
+    },
+    {
+      "playerId": "luka-jovic",
+      "expectedMinutes": 84.6
+    }
+  ],
+  "protectedInputs": {
+    "historicalDatasetSha256": "4c09d7f109f9d5a3b769c153ed4c051cc7a99adb588a11f7c3a7cb3b348ef692",
+    "predictionBuilderSha256": "135788a773b8607db7f1386a1c9d6b5d2fb8560fdab914d652318bfe95691be5",
+    "leagueStrengthDataset": "data/analysis/champions/league-strength-2026-10-03.json"
+  }
+}

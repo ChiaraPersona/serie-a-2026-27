@@ -100,7 +100,7 @@ assert(renderer.includes("data-mycombo-pick"), "I dieci esiti MyCombo devono ess
 assert(renderer.includes("bindMyComboInteractions"), "Interazione MyCombo assente");
 assert(renderer.includes('data-finished="true"') && renderer.includes('verde = esito preso'), "Le MyCombo concluse devono mostrare gli esiti liquidati");
 assert(!renderer.includes('item.match.status!=="finished"'), "Monza-Sassuolo deve restare visibile come snapshot pre-partita nella sezione MyCombo");
-assert(renderer.indexOf("${myCombo}${roundContent") > renderer.indexOf("const myCombo="), "Le MyCombo devono precedere le schedine nella pagina MD05");
+assert(renderer.indexOf("${myCombo}${archiveRoundContent") > renderer.indexOf("const myCombo="), "Le MyCombo devono precedere le schedine nella pagina MD05");
 
 for (const prediction of predictions) {
   const combo = prediction.combinations.find(item => item.tier === "Safe");

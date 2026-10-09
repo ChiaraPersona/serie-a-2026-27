@@ -61,12 +61,13 @@ if (refreshOdds) {
 run("scripts/validate-sisal-odds.js");
 
 if (!validateOnly) {
-  if (matchday === 6) run("scripts/build-md06-betting-decision-package.mjs", ["--integrate"]);
+  if (matchday === 6) run("scripts/build-md06-betting-decision-package.mjs", ["--integrate"], 2);
   else run("scripts/build-predictions.js", [], 2);
   run("scripts/generate-mycombo-md01.js", ["--matchday", String(matchday)]);
   run("scripts/build-predictions.js", [], 2);
   if (matchday === 6) {
-    run("scripts/build-md06-betting-decision-package.mjs", ["--integrate"]);
+    run("scripts/build-md06-betting-decision-package.mjs", ["--integrate"], 2);
+    run("scripts/build-md06-betting-decision-package.mjs", [], 2);
   } else {
     run("scripts/generate-schedina-md02.js", ["--matchday", String(matchday)]);
     run("scripts/build-schedina.js", ["--matchday", String(matchday)]);

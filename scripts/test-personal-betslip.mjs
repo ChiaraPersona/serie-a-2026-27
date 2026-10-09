@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import {assessSelections,createPersonalBetslipStore,isPlayableUnder,personalBetslipSummary,PERSONAL_BETSLIP_STORAGE_KEY} from "../js/pages/personal-betslip-store.mjs";
+import {assessSelections,createPersonalBetslipStore,isIndividualPlayerFoulSelection,isPlayableUnder,personalBetslipSummary,PERSONAL_BETSLIP_STORAGE_KEY} from "../js/pages/personal-betslip-store.mjs";
 
 function memoryStorage(){
   const values=new Map();
@@ -10,9 +10,26 @@ const context6={competition:"serie-a",season:"2026-27",matchday:6,label:"Serie A
 const context7={competition:"serie-a",season:"2026-27",matchday:7,label:"Serie A · 7ª giornata"};
 const championsContext={competition:"champions-league",season:"2026-27",matchday:6,label:"Champions League · 6ª giornata"};
 
-function selection(id,{matchId="alpha-beta-2026-27-md-06",providerMarketId=`market-${id}`,outcome="OVER",label=`Scelta ${id}`,odds=1.8,verifiedAt="2026-10-09T10:43:00.203Z",availability="AVAILABLE_AT_SNAPSHOT",compatibilityStatus="COMPATIBILE",bookmakerCombinability,overlapKey=`overlap-${id}`,semanticKeys=[`semantic-${id}`],context=context6}={}){
+function selection(id,{matchId="alpha-beta-2026-27-md-06",providerMarketId=`market-${id}`,market="MERCATO TEST",outcome="OVER",label=`Scelta ${id}`,odds=1.8,verifiedAt="2026-10-09T10:43:00.203Z",availability="AVAILABLE_AT_SNAPSHOT",compatibilityStatus="COMPATIBILE",bookmakerCombinability,overlapKey=`overlap-${id}`,semanticKeys=[`semantic-${id}`],context=context6}={}){
   const selectionId=`bet:sisal:${matchId}:${id}`;
-  return {selectionId,context,fixture:"Alpha - Beta",label,market:"MERCATO TEST",betSelection:{schemaVersion:1,selectionId,identity:{status:"VERIFIED_PROVIDER_IDS",matchId,provider:"sisal",providerMarketId,providerSelectionId:id},market:{name:"MERCATO TEST",selection:outcome,bookmakerSemantics:{selectionName:outcome}},quote:{decimal:odds,verifiedAt,availability,source:{provider:"sisal",url:"https://example.test/quote"}},compatibility:{status:compatibilityStatus,bookmakerCombinability},overlap:{overlapKey,semanticKeys}}};
+  return {selectionId,context,fixture:"Alpha - Beta",label,market,betSelection:{schemaVersion:1,selectionId,identity:{status:"VERIFIED_PROVIDER_IDS",matchId,provider:"sisal",providerMarketId,providerSelectionId:id},market:{name:market,selection:outcome,bookmakerSemantics:{selectionName:outcome}},quote:{decimal:odds,verifiedAt,availability,source:{provider:"sisal",url:"https://example.test/quote"}},compatibility:{status:compatibilityStatus,bookmakerCombinability},overlap:{overlapKey,semanticKeys}}};
+}
+
+{
+  const store=createPersonalBetslipStore({storage:memoryStorage()});
+  store.setContext(context6);
+  const foul=selection("foul",{market:"U/O FALLI COMMESSI GIOCATORE",label:"Giocatore almeno 2 falli"});
+  assert.equal(isIndividualPlayerFoulSelection(foul),true,"mercato falli individuali non riconosciuto");
+  assert.equal(store.add(foul).status,"INDIVIDUAL_FOUL_NOT_PLAYABLE","i falli individuali MD6 devono essere rifiutati");
+  assert.equal(store.getSnapshot().selections.length,0,"un fallo individuale rifiutato non deve essere aggiunto");
+
+  const storage=memoryStorage(),key="serie-a:2026-27:md06";
+  storage.setItem(PERSONAL_BETSLIP_STORAGE_KEY,JSON.stringify({version:1,activeContext:key,contexts:{[key]:{context:context6,selections:[foul],updatedAt:"2026-10-09T12:00:00.000Z"}}}));
+  const restored=createPersonalBetslipStore({storage});
+  const snapshot=restored.getSnapshot();
+  assert.equal(snapshot.selections.length,1,"una selezione falli già salvata deve essere conservata");
+  assert(snapshot.assessment.issues.some(issue=>issue.type==="INDIVIDUAL_FOUL_NOT_PLAYABLE"),"la selezione falli salvata deve essere segnalata come non giocabile");
+  assert.equal(snapshot.assessment.usableCombinedOdds,null,"una selezione falli salvata non deve entrare nella quota combinata");
 }
 
 {

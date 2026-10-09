@@ -34,6 +34,8 @@ const odds = read("data/normalized/odds/sisal/serie-a.json");
 const md5 = read("data/normalized/schedina-md05.json");
 const settlementRecords = read("data/sources/card-settlement-records-2026-10-03.json").records;
 const operational = read("output/reports/serie-a-md06-operational-player-analysis-2026-10-09.json");
+const md5ReportPath = path.join(root, "output/reports/serie-a-md05-betting-decision-review-2026-10-09.json");
+const preservedMd5GeneratedAt = fs.existsSync(md5ReportPath) ? JSON.parse(fs.readFileSync(md5ReportPath, "utf8")).generatedAt : null;
 const matchById = new Map(matches.map(match => [match.id, match]));
 const predictionById = new Map(predictionsData.predictions.map(prediction => [prediction.matchId, prediction]));
 const eventById = new Map(odds.events.map(event => [event.canonicalMatchId, event]));
@@ -139,7 +141,7 @@ const myComboReviews = md5Predictions.map(prediction => {
 const md5Report = {
   schemaVersion: 1,
   reportType: "serie-a-md05-betting-decision-review",
-  generatedAt: new Date().toISOString(),
+  generatedAt: preservedMd5GeneratedAt || new Date().toISOString(),
   scope: "Decision audit only. Historical scores, settlements, models and archived MD5 data are read-only.",
   source: { schedina: "data/normalized/schedina-md05.json", settlementRecords: "data/sources/card-settlement-records-2026-10-03.json", matches: "data/normalized/matches.json" },
   totals: md5.slips.flatMap(slip => slip.legs).map(settle).reduce((result, settlement) => (result[settlement.status] = (result[settlement.status] || 0) + 1, result), { won: 0, lost: 0, void: 0, unavailable: 0, pending: 0 }),
@@ -634,7 +636,7 @@ function md6Markdown(report) {
     "",
     `Generato: ${report.generatedAt}. Quote Sisal: ${report.sources.oddsRetrievedAt}.`,
     "",
-    `La classificazione è operativa, non una garanzia. Nessuna partita deve produrre obbligatoriamente una scelta. Dalla MD6 i mercati Under sono esclusi dalle giocate, ma restano nelle analisi e nelle distribuzioni; gli Over restano eleggibili. Occorrenze giocabili rimosse nella migrazione: ${report.summary.underOccurrencesRemoved}. Le quote giocatore restano visibili come riferimento commerciale DUO: P V2 è individuale, pertanto EV e probabilità congiunta non sono calcolabili.`,
+    `La classificazione è operativa, non una garanzia. Nessuna partita deve produrre obbligatoriamente una scelta. Dalla MD6 i mercati Under e i falli commessi/subiti del singolo giocatore sono esclusi dalle giocate, ma restano nelle analisi, nei report e nello storico; gli Over e i mercati aggregati di squadra restano eleggibili. Occorrenze Under giocabili rimosse nella migrazione: ${report.summary.underOccurrencesRemoved}. Le quote giocatore restano visibili come riferimento commerciale DUO: P V2 è individuale, pertanto EV e probabilità congiunta non sono calcolabili.`,
     "",
   ];
   for (const fixture of report.fixtures) {
@@ -650,7 +652,7 @@ function md6Markdown(report) {
     lines.push(table(["Partita", "Selezione", "Quota", "P modello", "P V2 individuale", "EV", "Compatibilità", "Timestamp"], slip.legs.map(leg => [leg.fixture, leg.label, leg.odds, pct(leg.modelProbabilityPct), pct(leg.individualV2ProbabilityPct), leg.expectedValuePct == null ? "N/D" : `${leg.expectedValuePct > 0 ? "+" : ""}${leg.expectedValuePct}%`, leg.compatibility, leg.marketUpdatedAt])));
     lines.push("", `Quota totale: ${slip.combinedOdds}. Probabilità congiunta: ${pct(slip.jointModelProbabilityPct)}. EV: ${slip.expectedValuePct == null ? "N/D" : `${slip.expectedValuePct > 0 ? "+" : ""}${slip.expectedValuePct}%`}. Revisione: ${slip.reviewConditions}`, "");
   }
-  lines.push("## MyCombo", "", "La pipeline MD6 esclude gli Under prima della costruzione dei portafogli e mantiene eleggibili gli Over. Non forza dieci esiti: il generatore canonico usa 3–6 gambe Safe, 4–7 Balanced e 5–8 Aggressive; un portafoglio resta N/D quando non raggiunge candidati distinti e semanticamente compatibili. Le etichette seguenti qualificano l’evidenza, non raccomandano automaticamente la multipla.", "");
+  lines.push("## MyCombo", "", "La pipeline MD6 esclude Under e falli individuali prima della costruzione dei portafogli e mantiene eleggibili Over e mercati aggregati di squadra. Non forza dieci esiti: il generatore canonico usa 3–6 gambe Safe, 4–7 Balanced e 5–8 Aggressive; un portafoglio resta N/D quando non raggiunge candidati distinti e semanticamente compatibili. Le etichette seguenti qualificano l’evidenza, non raccomandano automaticamente la multipla.", "");
   if (report.myCombo.sourceAvailable) {
     lines.push(table(["Partita", "Leg Safe", "Supportati", "Plausibili", "Sperimentali", "Non valutabili"], report.myCombo.fixtures.map(row => {
       const counts = row.legs.reduce((result, leg) => ({ ...result, [leg.status]: (result[leg.status] || 0) + 1 }), {});
