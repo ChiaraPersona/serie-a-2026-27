@@ -2,6 +2,7 @@
 
 const fs = require("fs");
 const path = require("path");
+const { isUnderPlayableSelection } = require("./betting-market-policy");
 
 const root = path.resolve(__dirname, "..");
 const read = relative => JSON.parse(fs.readFileSync(path.join(root, relative), "utf8"));
@@ -92,6 +93,7 @@ function scoreCandidates() {
       if (row.family === "draw-no-bet" && prediction.verdict.outcome !== "X" && row.selection !== prediction.verdict.outcome) continue;
       const resolved = index.get(String(row.providerSelectionId));
       if (!resolved || !["1X2 ESITO FINALE", "DOPPIA CHANCE", "DRAW NO BET", "UNDER/OVER", "GOAL/NOGOAL", "CASA: SEGNA GOAL", "OSPITE: SEGNA GOAL"].includes(resolved.market.marketName)) continue;
+      if (matchday >= 6 && isUnderPlayableSelection({ market: resolved.market.marketName, selection: resolved.selection.name })) continue;
       const label = row.family === "goals"
         ? `${row.selection === "OVER" ? "Over" : "Under"} ${String(resolved.market.threshold).replace(".", ",")} gol`
         : row.family === "btts" ? (row.selection === "GOAL" ? "Entrambe le squadre segnano" : "Almeno una squadra non segna")
@@ -131,6 +133,7 @@ function volumeCandidates() {
       if (![central, sd, threshold].every(Number.isFinite) || sd <= 0) continue;
       for (const selection of market.selections) {
         if (selection.status !== "open" || selection.odds < 1.1 || !["OVER", "UNDER"].includes(selection.name)) continue;
+        if (matchday >= 6 && isUnderPlayableSelection({ market: market.marketName, selection: selection.name })) continue;
         const coherent = selection.name === "OVER" ? central > threshold : central < threshold;
         if (!coherent) continue;
         const under = normalCdf((threshold - central) / sd);
@@ -356,6 +359,11 @@ const output = {
   matchday,
   title: `Otto schedine, otto letture · ${matchday}ª giornata`,
   description: "Tre schedine miste, due dedicate ai giocatori, una Multigol casa/ospite e due poker di papabili ammoniti. Ogni blocco è una schedina autonoma; le MyCombo delle singole partite sono mostrate separatamente nella pagina della giornata. Quote esterne al modello, quota minima 1,10, nessun esito 12, nessun risultato esatto e nessuna selezione Sisal duplicata.",
+  underSelectionPolicy: {
+    effectiveFromMatchday: 6,
+    active: matchday >= 6,
+    rule: "Le selezioni Under sono escluse dalle proposte giocabili; gli Over restano eleggibili e gli Under restano disponibili negli input statistici e negli archivi.",
+  },
   slips
 };
 

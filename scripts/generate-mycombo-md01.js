@@ -4,6 +4,7 @@ const fs = require("fs");
 const path = require("path");
 const { isSisalMyComboMarketName, sisalMyComboMarketNames } = require("./mycombo-market-policy");
 const { isUnderPlayableSelection } = require("./betting-market-policy");
+const { attachBetSelection, selectionIdFor } = require("./betting-selection-contract");
 
 const root = path.resolve(__dirname, "..");
 const read = relative => JSON.parse(fs.readFileSync(path.join(root, relative), "utf8"));
@@ -16,6 +17,9 @@ const matchday = requestedMatchdayIndex >= 0 ? Number(process.argv[requestedMatc
 if (!Number.isInteger(matchday) || matchday < 1 || matchday > 38) throw new Error("--matchday deve essere compreso tra 1 e 38.");
 const outputFilename = `mycombo-serie-a-2026-27-md-${String(matchday).padStart(2, "0")}.json`;
 const outputPath = path.join(root, "data", "sources", outputFilename);
+const assessmentPath = path.join(root, "data", "sources", `betting-selection-assessments-md${String(matchday).padStart(2, "0")}.json`);
+const assessmentSource = fs.existsSync(assessmentPath) ? JSON.parse(fs.readFileSync(assessmentPath, "utf8")) : null;
+const assessmentBySelectionId = new Map((assessmentSource?.assessments || []).map(item => [item.selectionId, item]));
 const previousOutput = fs.existsSync(outputPath) ? JSON.parse(fs.readFileSync(outputPath, "utf8")) : null;
 const previousUnderLegOccurrences = Object.values(previousOutput?.matches || {}).flatMap(portfolios => portfolios).flatMap(portfolio => portfolio.legs || []).filter(isUnderPlayableSelection).length;
 const preservedUnderMigrationCount = Number(previousOutput?.constraints?.underSelectionPolicy?.previousPlayableLegOccurrencesRemoved || 0);
@@ -512,6 +516,10 @@ const output = {
   provider: "Sisal",
   oddsSnapshot: "data/normalized/odds/sisal/serie-a.json",
   updatedAt: String(odds.retrievedAt).slice(0, 10),
+  oddsRetrievedAt: odds.retrievedAt,
+  sourceUrl: odds.sourceUrl,
+  rawFile: odds.rawFile,
+  acquisition: odds.acquisition,
   constraints: {
     referenceOdds,
     quotaPolicy: "orientativa",
@@ -547,6 +555,46 @@ for (const event of odds.events) {
     continue;
   }
   const pool = candidatePool(event, prediction, match);
+  const selectionIndex = new Map(event.markets.flatMap(market => (market.selections || []).map(selection => [String(selection.providerSelectionId), { market, selection }])));
+  const serializeLeg = candidate => {
+    const resolved = selectionIndex.get(String(candidate.providerSelectionId));
+    if (!resolved) throw new Error(`${event.canonicalMatchId}: providerSelectionId non risolto ${candidate.providerSelectionId}`);
+    const { market, selection } = resolved;
+    const selectionId = selectionIdFor({ matchId: event.canonicalMatchId, provider: odds.provider, providerSelectionId: selection.providerSelectionId });
+    const assessment = assessmentBySelectionId.get(selectionId);
+    return attachBetSelection({
+      providerSelectionId: String(candidate.providerSelectionId),
+      providerMarketId: String(market.providerMarketId),
+      market: market.marketName,
+      variant: market.variantName,
+      marketScope: market.marketScope,
+      threshold: market.threshold ?? null,
+      selection: selection.name,
+      odds: selection.odds,
+      marketUpdatedAt: market.updatedAt,
+      overlapKey: candidate.overlapKey,
+      semanticKeys: candidate.semanticKeys,
+      label: candidate.label,
+    }, {
+      matchId: event.canonicalMatchId,
+      provider: odds.provider,
+      marketObject: market,
+      selectionObject: selection,
+      quoteSource: {
+        retrievedAt: odds.retrievedAt,
+        sourceUrl: odds.sourceUrl,
+        snapshotPath: "data/normalized/odds/sisal/serie-a.json",
+        rawFile: odds.rawFile,
+        acquisition: odds.acquisition,
+      },
+      classification: assessment?.classification,
+      classificationReason: assessment?.classificationReason,
+      reliability: assessment?.reliability,
+      compatibility: assessment?.compatibility || { status: "NOT_EVALUATED", reason: "Compatibilità specifica non valutata dal generatore MyCombo." },
+      warnings: assessment ? assessment.warnings : ["CLASSIFICATION_NOT_AVAILABLE"],
+      risks: assessment?.risks,
+    });
+  };
   console.log(`${event.canonicalMatchId}: ${pool.length} candidati modellati · ${pool.filter(candidate => candidate.anchor).length} ancore · ${new Set(pool.map(candidate => candidate.overlapKey)).size} gruppi`);
   const planned = new Map(["Aggressive", "Balanced", "Safe"].map(tier => {
     const portfolio = selectPortfolio(pool, tier) || fallbackPortfolio(pool, tier);
@@ -560,7 +608,7 @@ for (const event of odds.events) {
       tier,
       risk: matchday === 5 && tier === "Safe" ? `elevato · ${portfolio.legs.length} eventi` : undefined,
       logic: `Profilo ${tier.toLowerCase()} costruito sulle quote Sisal del ${String(event.retrievedAt).slice(0, 10)}: quota ${referenceOdds[tier]} orientativa, ${tierLimits[tier].minimum}-${tierLimits[tier].maximum} gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole ${minimumLegOdds.toFixed(2)}-${maximumLegOdds.toFixed(2)}. Il rischio resta informativo.`,
-      legs: portfolio.legs.map(({ providerSelectionId, overlapKey, semanticKeys, label }) => ({ providerSelectionId, overlapKey, semanticKeys, label }))
+      legs: portfolio.legs.map(serializeLeg)
     }];
 }));
   output.matches[event.canonicalMatchId] = ["Safe", "Balanced", "Aggressive"].map(tier => planned.get(tier));

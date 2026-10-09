@@ -4,8 +4,10 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { settleArchivedLeg } from "../js/pages/betting-settlement.mjs";
 import bettingMarketPolicy from "./betting-market-policy.js";
+import bettingSelectionContract from "./betting-selection-contract.js";
 
 const { isUnderPlayableSelection } = bettingMarketPolicy;
+const { attachBetSelection, selectionIdFor, normalizeReliability } = bettingSelectionContract;
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const read = relative => JSON.parse(fs.readFileSync(path.join(root, relative), "utf8"));
@@ -38,6 +40,14 @@ const eventById = new Map(odds.events.map(event => [event.canonicalMatchId, even
 const operationalById = new Map(operational.fixtures.map(fixture => [fixture.matchId, fixture]));
 const sisalSelectionById = new Map(odds.events.flatMap(event => event.markets.flatMap(market => market.selections.map(selection => [String(selection.providerSelectionId), { event, market, selection }]))));
 const settle = leg => settleArchivedLeg(leg, matchById.get(leg.matchId), settlementRecords);
+const quoteSource = {
+  provider: odds.provider,
+  retrievedAt: odds.retrievedAt,
+  sourceUrl: odds.sourceUrl,
+  snapshotPath: "data/normalized/odds/sisal/serie-a.json",
+  rawFile: odds.rawFile,
+  acquisition: odds.acquisition,
+};
 
 function familyKey(leg) {
   const market = String(leg.market || "").toUpperCase();
@@ -254,7 +264,7 @@ function resolveDoubleChance(matchId, selection) {
   const quote = market?.selections.find(item => item.name === selection && item.status === "open");
   assert(market && quote, `${matchId}: doppia chance ${selection} non disponibile`);
   const probability = [...selection].reduce((sum, outcome) => sum + Number(prediction.probabilities.final[outcome] || 0), 0) / 100;
-  return {
+  const legacy = {
     matchId,
     fixture: `${event.home.name} – ${event.away.name}`,
     startsAt: event.startsAt,
@@ -273,7 +283,21 @@ function resolveDoubleChance(matchId, selection) {
     marketUpdatedAt: market.updatedAt,
     compatibility: "COMPATIBILE",
     evStatus: "EV_CALCOLABILE",
+    fairOdds: round(1 / probability, 2),
+    overlapKey: "result-fulltime",
+    semanticKeys: ["result-fulltime"],
   };
+  return attachBetSelection(legacy, {
+    provider: odds.provider,
+    marketObject: market,
+    selectionObject: quote,
+    quoteSource,
+    classification: null,
+    reliability: { level: "Non valutabile", reason: "Il report decisionale MD6 non assegna un livello di affidabilità operativo ai mercati squadra." },
+    compatibility: { status: "COMPATIBILE", reason: "Target Doppia Chance e probabilità V2 sugli esiti coincidono." },
+    modelTarget: "Doppia Chance sul risultato finale",
+    bookmakerTarget: `${market.marketName} · ${selection}`,
+  });
 }
 
 function resolveGoals(matchId, selection, threshold) {
@@ -314,7 +338,8 @@ function resolvePlayer(matchId, playerName, type) {
   const market = type === "shots" ? player.sisal.shots1Plus : player.sisal.sot1Plus;
   assert(market.presence && market.identityStatus === "VERIFIED", `${matchId}: mercato ${playerName} non verificato`);
   const probability = type === "shots" ? player.shotProbabilities.over05 : player.shotOnTargetProbabilities.over05;
-  return {
+  const assessment = classifyPlayerCandidate(player, type);
+  const legacy = {
     matchId,
     fixture: fixture.matchLabel.replace(" - ", " – "),
     startsAt: eventById.get(matchId).startsAt,
@@ -338,11 +363,44 @@ function resolvePlayer(matchId, playerName, type) {
     compatibility: "INCOMPATIBILE_DUO",
     probabilitySemantics: type === "shots" ? "INDIVIDUAL_V2_VS_PLAYER_PLUS_SUBSTITUTE" : "INDIVIDUAL_V2_VS_DUO_POSTS_CROSSBAR_EXTRA_TIME",
     evStatus: "EV_NON_CALCOLABILE",
+    classification: assessment.classification,
+    classificationReason: assessment.reason,
+    reliability: normalizeReliability(assessment.reliability),
+    overlapKey: `player-volume-${player.playerId}-${type}`,
+    semanticKeys: [`player-volume-${player.playerId}-${type}`],
   };
+  return attachBetSelection(legacy, {
+    provider: odds.provider,
+    marketObject: {
+      marketName: market.marketName,
+      variantName: market.variantName,
+      marketScope: "player",
+      providerMarketId: market.providerMarketId,
+      updatedAt: market.updatedAt,
+    },
+    selectionObject: { name: "OVER", providerSelectionId: market.providerSelectionId, odds: market.odds, status: "open" },
+    quoteSource,
+    classification: assessment.classification,
+    classificationReason: assessment.reason,
+    reliability: assessment.reliability,
+    compatibility: {
+      status: "INCOMPATIBILE_DUO",
+      reason: "La probabilità V2 è individuale; la quota copre giocatore e sostituto e può includere ulteriori regole bookmaker.",
+      modelTarget: type === "shots" ? "Almeno un tiro del giocatore" : "Almeno un tiro in porta del giocatore",
+      bookmakerTarget: `${market.marketName} · ${market.variantName}`,
+    },
+    individualModelProbabilityPct: round(probability * 100, 2),
+    modelProbabilityPct: null,
+    fairOdds: null,
+    expectedValuePct: null,
+    warnings: ["MODEL_BOOKMAKER_TARGET_MISMATCH"],
+    risks: [player.substitutionRisk ? `SUBSTITUTION_RISK_${String(player.substitutionRisk).toUpperCase()}` : null].filter(Boolean),
+  });
 }
 
 function buildSlip({ id, type, eyebrow, name, description, validationStatus, risk, legs }) {
   assert(!legs.some(isUnderPlayableSelection), `${id}: una selezione Under non può essere resa giocabile dalla MD6`);
+  assert(!legs.some(leg => leg.betSelection?.operational?.classification === "WATCH"), `${id}: un WATCH non può essere promosso automaticamente in schedina`);
   const combinedOdds = round(product(legs.map(leg => leg.odds)), 2);
   const jointAllowed = legs.every(leg => Number.isFinite(leg.modelProbabilityPct)) && new Set(legs.map(leg => leg.matchId)).size === legs.length;
   const jointProbability = jointAllowed ? product(legs.map(leg => leg.modelProbabilityPct / 100)) : null;
@@ -393,6 +451,47 @@ const slips = [
     legs: [resolvePlayer("genoa-fiorentina-2026-27-md-06", "Milutin Osmajić", "sot"), resolvePlayer("lecce-bologna-2026-27-md-06", "Lassana Coulibaly", "shots"), resolvePlayer("cagliari-juventus-2026-27-md-06", "Alessandro Romano", "shots")],
   }),
 ].map((slip, index) => ({ ...slip, number: index + 1 }));
+
+const assessmentBySelectionId = new Map();
+for (const fixture of operational.fixtures) {
+  for (const player of fixture.players) {
+    for (const type of ["shots", "sot"]) {
+      const assessment = classifyPlayerCandidate(player, type);
+      if (!assessment.providerSelectionId) continue;
+      const selectionId = selectionIdFor({ matchId: fixture.matchId, provider: odds.provider, providerSelectionId: assessment.providerSelectionId });
+      const row = {
+        selectionId,
+        matchId: fixture.matchId,
+        provider: odds.provider,
+        providerMarketId: String(assessment.providerMarketId),
+        providerSelectionId: String(assessment.providerSelectionId),
+        classification: assessment.classification,
+        classificationReason: assessment.reason,
+        reliability: normalizeReliability(assessment.reliability),
+        compatibility: {
+          status: "INCOMPATIBILE_DUO",
+          reason: "Il modello V2 stima il giocatore individuale; la selezione commerciale è DUO.",
+          modelTarget: type === "shots" ? "Almeno un tiro del giocatore" : "Almeno un tiro in porta del giocatore",
+          bookmakerTarget: `${type === "shots" ? player.sisal.shots1Plus.marketName : player.sisal.sot1Plus.marketName} · ${type === "shots" ? player.sisal.shots1Plus.variantName : player.sisal.sot1Plus.variantName}`,
+        },
+        warnings: ["MODEL_BOOKMAKER_TARGET_MISMATCH"],
+        risks: [player.substitutionRisk ? `SUBSTITUTION_RISK_${String(player.substitutionRisk).toUpperCase()}` : null].filter(Boolean),
+      };
+      const previous = assessmentBySelectionId.get(selectionId);
+      assert(!previous || JSON.stringify(previous) === JSON.stringify(row), `${selectionId}: valutazioni operative conflittuali`);
+      assessmentBySelectionId.set(selectionId, row);
+    }
+  }
+}
+const selectionAssessmentSource = {
+  schemaVersion: 1,
+  competition: "serie-a",
+  season: "2026-27",
+  matchday: 6,
+  generatedFrom: "output/reports/serie-a-md06-operational-player-analysis-2026-10-09.json",
+  rule: "Valutazioni agganciate soltanto tramite matchId, provider e providerSelectionId; nessuna equivalenza dedotta dall'etichetta.",
+  assessments: [...assessmentBySelectionId.values()],
+};
 
 function classifyMyComboLeg(leg) {
   const quote = sisalSelectionById.get(String(leg.providerSelectionId));
@@ -576,13 +675,15 @@ if (mode === "reports") {
     title: "Schedine Serie A · 6ª giornata",
     description: "Due combinazioni selettive senza mercati Under: una compatibile e una osservazionale sui mercati DUO.",
     generatedFrom: "output/reports/serie-a-md06-betting-selection-2026-10-09.json",
-    slips: slips.map(slip => ({ id: slip.id, type: slip.type, eyebrow: slip.eyebrow, name: slip.name, description: slip.description, validationStatus: slip.validationStatus, risk: slip.risk, picks: slip.legs.map(leg => ({ matchId: leg.matchId, market: leg.market, variant: leg.variant, selection: leg.selection, player: leg.player || null, label: leg.label, providerMarketId: leg.providerMarketId, providerSelectionId: leg.providerSelectionId })) })),
+    selectionContractVersion: 1,
+    slips: slips.map(slip => ({ id: slip.id, type: slip.type, eyebrow: slip.eyebrow, name: slip.name, description: slip.description, validationStatus: slip.validationStatus, risk: slip.risk, picks: slip.legs.map(leg => ({ matchId: leg.matchId, market: leg.market, variant: leg.variant, selection: leg.selection, player: leg.player || null, label: leg.label, providerMarketId: leg.providerMarketId, providerSelectionId: leg.providerSelectionId, selectionId: leg.selectionId, overlapKey: leg.overlapKey, semanticKeys: leg.semanticKeys, classification: leg.betSelection.operational.classification, reliability: leg.betSelection.operational.reliability, compatibility: leg.betSelection.compatibility, betSelection: leg.betSelection })) })),
   };
   const normalized = {
     schemaVersion: 1,
     competition: "serie-a",
     season: "2026-27",
     matchday: 6,
+    selectionContractVersion: 1,
     generatedAt: new Date().toISOString(),
     title: source.title,
     description: source.description,
@@ -596,6 +697,7 @@ if (mode === "reports") {
     slips,
   };
   write("data/sources/schedina-serie-a-2026-27-md-06.json", source);
+  write("data/sources/betting-selection-assessments-md06.json", selectionAssessmentSource);
   write("data/normalized/schedina-md06.json", normalized);
   console.log(JSON.stringify({ mode, source: "data/sources/schedina-serie-a-2026-27-md-06.json", normalized: "data/normalized/schedina-md06.json", slips: slips.length, legs: slips.reduce((sum, slip) => sum + slip.legs.length, 0) }, null, 2));
 }

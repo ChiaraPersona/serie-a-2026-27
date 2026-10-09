@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const { isUnderPlayableSelection } = require("./betting-market-policy");
 
 const root = path.resolve(__dirname, "..");
 const read = relativePath => JSON.parse(fs.readFileSync(path.join(root, relativePath), "utf8"));
@@ -10,6 +11,9 @@ const matchdayCode = String(matchday).padStart(2, "0");
 const outputFilename = matchday === 1 ? "schedina.json" : `schedina-md${matchdayCode}.json`;
 const outputPath = path.join(root, "data", "normalized", outputFilename);
 const source = read(`data/sources/schedina-serie-a-2026-27-md-${matchdayCode}.json`);
+if (matchday >= 6 && source.slips.some(slip => (slip.picks || []).some(isUnderPlayableSelection))) {
+  throw new Error(`Schedina MD${matchdayCode}: le selezioni Under sono vietate nelle proposte giocabili dalla MD6.`);
+}
 if (matchday >= 4 && source.slips.some(slip => ["exact-score", "exact-score-multi"].includes(slip.type) || slip.picks?.some(pick => /^RISULTATO ESATTO/.test(pick.market)))) {
   throw new Error(`Schedina MD${matchdayCode}: i risultati esatti sono vietati dalla quarta giornata in avanti.`);
 }

@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bet-selection.schema.json",
+  "title": "BetSelection",
+  "type": "object",
+  "required": ["schemaVersion", "selectionId", "identity", "market", "quote", "operational", "evaluation", "compatibility", "overlap", "warnings", "risks"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "selectionId": { "type": ["string", "null"] },
+    "identity": {
+      "type": "object",
+      "required": ["status", "matchId", "provider", "providerMarketId", "providerSelectionId"],
+      "properties": {
+        "status": { "enum": ["VERIFIED_PROVIDER_IDS", "UNRESOLVED_PROVIDER_IDS"] },
+        "matchId": { "type": ["string", "null"] },
+        "provider": { "type": ["string", "null"] },
+        "providerMarketId": { "type": ["string", "null"] },
+        "providerSelectionId": { "type": ["string", "null"] }
+      }
+    },
+    "operational": {
+      "type": "object",
+      "required": ["classification", "classificationReason", "reliability"],
+      "properties": {
+        "classification": { "enum": ["PRINCIPALE", "INTERESSANTE", "OUTSIDER", "WATCH", "ESCLUSO", null] },
+        "classificationReason": { "type": ["string", "null"] },
+        "reliability": {
+          "type": "object",
+          "required": ["level", "reason"],
+          "properties": {
+            "level": { "enum": ["Alta", "Media", "Bassa", "Non valutabile"] },
+            "reason": { "type": "string" }
+          }
+        }
+      }
+    },
+    "evaluation": {
+      "type": "object",
+      "required": ["modelProbabilityPct", "individualModelProbabilityPct", "fairOdds", "expectedValuePct", "status"],
+      "properties": {
+        "modelProbabilityPct": { "type": ["number", "null"] },
+        "individualModelProbabilityPct": { "type": ["number", "null"] },
+        "fairOdds": { "type": ["number", "null"] },
+        "expectedValuePct": { "type": ["number", "null"] },
+        "status": { "type": ["string", "null"] }
+      }
+    },
+    "market": { "type": "object" },
+    "quote": { "type": "object" },
+    "compatibility": { "type": "object" },
+    "overlap": { "type": "object" },
+    "warnings": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "risks": { "type": "array", "items": { "type": "string" }, "uniqueItems": true }
+  }
+}

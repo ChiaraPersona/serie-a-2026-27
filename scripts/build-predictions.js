@@ -42,6 +42,22 @@ const myComboSource = {
   constraints: myComboSources.at(-1)?.constraints || {},
   matches: Object.assign({}, ...myComboSources.map(source => source.matches || {}))
 };
+const selectionAssessmentFiles = fs.readdirSync(path.join(root, "data/sources"))
+  .filter(filename => /^betting-selection-assessments-md\d{2}\.json$/.test(filename))
+  .sort();
+const selectionAssessmentsByMatch = new Map();
+for (const filename of selectionAssessmentFiles) {
+  for (const assessment of read(`data/sources/${filename}`).assessments || []) {
+    if (!assessment.matchId || !assessment.selectionId) continue;
+    const bySelection = selectionAssessmentsByMatch.get(assessment.matchId) || {};
+    const previous = bySelection[assessment.selectionId];
+    if (previous && JSON.stringify(previous) !== JSON.stringify(assessment)) {
+      throw new Error(`${filename}: valutazione conflittuale per ${assessment.selectionId}`);
+    }
+    bySelection[assessment.selectionId] = assessment;
+    selectionAssessmentsByMatch.set(assessment.matchId, bySelection);
+  }
+}
 const backtestPath = path.join(root, "data/generated/prediction-backtest-2025-26.json");
 const backtest = fs.existsSync(backtestPath) ? JSON.parse(fs.readFileSync(backtestPath, "utf8")) : null;
 const multiSeasonBacktestPath = path.join(root, "data/generated/prediction-backtest-multiseason.json");
@@ -328,7 +344,19 @@ const generatedPredictions = targetMatches.map(match => {
     oddsRetrievedAt: oddsByMatch.get(match.id)?.retrievedAt || null,
     oddsSourceUrl: odds.sourceUrl,
     myComboConfig: myComboSource.matches[match.id]
-      ? { constraints: myComboSource.constraints, portfolios: myComboSource.matches[match.id] }
+      ? {
+        constraints: myComboSource.constraints,
+        portfolios: myComboSource.matches[match.id],
+        selectionAssessments: selectionAssessmentsByMatch.get(match.id) || {},
+        quoteSource: {
+          provider: odds.provider,
+          retrievedAt: odds.retrievedAt,
+          sourceUrl: odds.sourceUrl,
+          snapshotPath: "data/normalized/odds/sisal/serie-a.json",
+          rawFile: odds.rawFile,
+          acquisition: odds.acquisition,
+        },
+      }
       : null,
     generatedAt: predictionGeneratedAt
   });

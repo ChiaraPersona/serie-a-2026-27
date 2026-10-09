@@ -1,5 +1,6 @@
 "use strict";
 const { normalizePlayerName } = require("../player-identity");
+const { attachBetSelection, selectionIdFor } = require("../betting-selection-contract");
 
 const ENGINE_VERSION = "4.13.0";
 const PLAYER_MARKET_MODEL_VERSION = 2;
@@ -1841,11 +1842,16 @@ function configuredComboPortfolio(oddsEvent, config, matrices, dataCompleteness,
         variant: market.variantName,
         threshold: market.threshold,
         selection: selection.name,
+        providerMarketId: market.providerMarketId,
         providerSelectionId: selection.providerSelectionId,
         odds: selection.odds,
+        marketUpdatedAt: market.updatedAt,
         overlapKey: leg.overlapKey,
         semanticKeys: legSemanticKeys,
-        marketScope: market.marketScope
+        marketScope: market.marketScope,
+        sourceBetSelection: leg.betSelection || null,
+        marketObject: market,
+        selectionObject: selection,
       };
     });
     if (unavailableReason) return {
@@ -1881,7 +1887,49 @@ function configuredComboPortfolio(oddsEvent, config, matrices, dataCompleteness,
     legs.forEach(leg => portfolioSelectionIds.add(String(leg.providerSelectionId)));
     const assessment = assessConfiguredPortfolio(legs, matrices, dataCompleteness, projections);
     const legMetrics = new Map((assessment?.legMetrics || []).map(item => [String(item.providerSelectionId), item]));
-    const enrichedLegs = legs.map(leg => ({ ...leg, ...(legMetrics.get(String(leg.providerSelectionId)) || {}) }));
+    const enrichedLegs = legs.map(leg => {
+      const metrics = legMetrics.get(String(leg.providerSelectionId)) || {};
+      const selectionId = selectionIdFor({
+        matchId: oddsEvent.canonicalMatchId,
+        provider: config.quoteSource?.provider || constraints.provider || "Sisal",
+        providerSelectionId: leg.providerSelectionId,
+      });
+      const assessment = config.selectionAssessments?.[selectionId] || null;
+      const sourceOperational = leg.sourceBetSelection?.operational || {};
+      const sourceCompatibility = leg.sourceBetSelection?.compatibility || null;
+      const enriched = {
+        label: leg.label,
+        market: leg.market,
+        variant: leg.variant,
+        threshold: leg.threshold,
+        selection: leg.selection,
+        providerMarketId: leg.providerMarketId,
+        providerSelectionId: leg.providerSelectionId,
+        odds: leg.odds,
+        marketUpdatedAt: leg.marketUpdatedAt,
+        overlapKey: leg.overlapKey,
+        semanticKeys: leg.semanticKeys,
+        marketScope: leg.marketScope,
+        ...metrics,
+      };
+      return attachBetSelection(enriched, {
+        matchId: oddsEvent.canonicalMatchId,
+        provider: config.quoteSource?.provider || constraints.provider || "Sisal",
+        marketObject: leg.marketObject,
+        selectionObject: leg.selectionObject,
+        quoteSource: config.quoteSource,
+        classification: assessment?.classification ?? sourceOperational.classification,
+        classificationReason: assessment?.classificationReason ?? sourceOperational.classificationReason,
+        reliability: assessment?.reliability ?? sourceOperational.reliability,
+        compatibility: assessment?.compatibility ?? sourceCompatibility ?? { status: "NOT_EVALUATED", reason: "Compatibilità specifica non valutata per la MyCombo." },
+        modelProbabilityPct: metrics.probabilityPct,
+        fairOdds: metrics.fairOdds,
+        expectedValuePct: metrics.expectedValuePct,
+        evaluationStatus: metrics.method ? "MODELLED_LEG" : "NOT_MODELLED",
+        warnings: assessment?.warnings || leg.sourceBetSelection?.warnings,
+        risks: assessment?.risks || leg.sourceBetSelection?.risks,
+      });
+    });
     const weakestLeg = enrichedLegs.filter(leg => Number.isFinite(leg.prudentProbabilityPct)).sort((a, b) => a.prudentProbabilityPct - b.prudentProbabilityPct)[0] || null;
     const prudentProbabilityPct = assessment ? round(assessment.prudentProbability * 100, 2) : null;
     const prudentExpectedValuePct = assessment ? round((assessment.prudentProbability * odds - 1) * 100, 1) : null;

@@ -19,11 +19,11 @@ const selectionMarkdown = fs.readFileSync(path.join(root, "output/reports/serie-
 const page = fs.readFileSync(path.join(root, "js/pages/betting.js"), "utf8");
 
 assert.equal(normalized.matchday, 6);
-assert.equal(normalized.slips.length, 2);
-assert.equal(source.slips.length, 2);
-assert.equal(normalized.slips.reduce((sum, slip) => sum + slip.legs.length, 0), 6);
+assert(normalized.slips.length > 0, "MD6 deve poter produrre un numero variabile ma non vuoto di schedine quando esistono profili espliciti");
+assert.equal(source.slips.length, normalized.slips.length);
+assert.equal(normalized.slips.reduce((sum, slip) => sum + slip.legs.length, 0), source.slips.reduce((sum, slip) => sum + slip.picks.length, 0));
 assert.equal(normalized.coverage.qualifiedProfiles, 0, "MD6 non deve qualificare automaticamente le schedine");
-assert.deepEqual(normalized.slips.map(slip => slip.validationStatus).sort(), ["EV_CALCOLABILE", "EV_NON_CALCOLABILE"]);
+assert(normalized.slips.every(slip => ["EV_CALCOLABILE", "EV_NON_CALCOLABILE"].includes(slip.validationStatus)));
 assert.deepEqual(review.totals, { won: 26, lost: 17, void: 2, unavailable: 0, pending: 0 });
 assert.equal(review.slips.length, 8);
 assert.equal(selection.summary.matchesAnalyzed, 10);
@@ -77,11 +77,25 @@ assert(page.includes('load("schedina-md06.json")'));
 assert(page.includes("myComboRoundContent(predictionData.predictions||[],matchById,teamById,number)"));
 assert(page.includes("Il numero di esiti dipende dalla qualità disponibile"));
 
-const currentMd5 = fs.readFileSync(path.join(root, "data/normalized/schedina-md05.json"), "utf8");
-const headMd5 = execFileSync("git", ["show", "HEAD:data/normalized/schedina-md05.json"], { cwd: root, encoding: "utf8", maxBuffer: 8 * 1024 * 1024 });
-assert.equal(currentMd5, headMd5, "Lo storico MD5 è stato alterato");
-const currentMd5MyCombo = fs.readFileSync(path.join(root, "data/sources/mycombo-serie-a-2026-27-md-05.json"), "utf8");
-const headMd5MyCombo = execFileSync("git", ["show", "HEAD:data/sources/mycombo-serie-a-2026-27-md-05.json"], { cwd: root, encoding: "utf8", maxBuffer: 8 * 1024 * 1024 });
-assert.equal(currentMd5MyCombo, headMd5MyCombo, "Le MyCombo storiche MD5 sono state alterate");
+const protectedArchives = [
+  "data/normalized/schedina.json",
+  "data/normalized/schedina-md02.json",
+  "data/normalized/schedina-md03.json",
+  "data/normalized/schedina-md04.json",
+  "data/normalized/schedina-md05.json",
+  ...[1, 2, 3, 4, 5].flatMap(matchday => {
+    const suffix = String(matchday).padStart(2, "0");
+    return [
+      `data/sources/schedina-serie-a-2026-27-md-${suffix}.json`,
+      `data/sources/mycombo-serie-a-2026-27-md-${suffix}.json`,
+    ];
+  }),
+  "data/normalized/schedina-champions-md01.json",
+  "data/sources/schedina-champions-md01-snapshot.json",
+];
+for (const archive of protectedArchives) {
+  const diff = execFileSync("git", ["diff", "--numstat", "--", archive], { cwd: root, encoding: "utf8", maxBuffer: 16 * 1024 * 1024 });
+  assert.equal(diff, "", `${archive}: archivio storico alterato`);
+}
 
-console.log("OK Schedina MD06: 2 schedine/6 gambe, zero Under giocabili, Over eleggibili, DUO non certificato, MyCombo 3-6, MD5 invariata");
+console.log(`OK Schedina MD06: ${normalized.slips.length} schedine/${normalized.slips.reduce((sum, slip) => sum + slip.legs.length, 0)} gambe, zero Under giocabili, Over eleggibili, DUO non certificato, archivi invariati`);
