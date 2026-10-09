@@ -3,6 +3,7 @@
 const fs = require("fs");
 const path = require("path");
 const { isSisalMyComboMarketName, sisalMyComboMarketNames } = require("./mycombo-market-policy");
+const { isUnderPlayableSelection } = require("./betting-market-policy");
 
 const root = path.resolve(__dirname, "..");
 const read = relative => JSON.parse(fs.readFileSync(path.join(root, relative), "utf8"));
@@ -16,6 +17,9 @@ if (!Number.isInteger(matchday) || matchday < 1 || matchday > 38) throw new Erro
 const outputFilename = `mycombo-serie-a-2026-27-md-${String(matchday).padStart(2, "0")}.json`;
 const outputPath = path.join(root, "data", "sources", outputFilename);
 const previousOutput = fs.existsSync(outputPath) ? JSON.parse(fs.readFileSync(outputPath, "utf8")) : null;
+const previousUnderLegOccurrences = Object.values(previousOutput?.matches || {}).flatMap(portfolios => portfolios).flatMap(portfolio => portfolio.legs || []).filter(isUnderPlayableSelection).length;
+const preservedUnderMigrationCount = Number(previousOutput?.constraints?.underSelectionPolicy?.previousPlayableLegOccurrencesRemoved || 0);
+const underCandidateExclusionsByMatch = {};
 
 const referenceOdds = { Safe: 5, Balanced: 10, Aggressive: 20 };
 const minimumLegOdds = matchday >= 5 ? 1.15 : 1.1;
@@ -419,7 +423,11 @@ function candidatePool(event, prediction, match) {
     }
   }
 
-  return [...new Map(candidates.map(candidate => [candidate.providerSelectionId, { ...candidate, semanticKeys: candidate.semanticKeys || [] }])).values()]
+  const uniqueCandidates = [...new Map(candidates.map(candidate => [candidate.providerSelectionId, { ...candidate, semanticKeys: candidate.semanticKeys || [] }])).values()];
+  const underCandidates = matchday >= 6 ? uniqueCandidates.filter(isUnderPlayableSelection) : [];
+  if (matchday >= 6) underCandidateExclusionsByMatch[match.id] = underCandidates.length;
+  return uniqueCandidates
+    .filter(candidate => matchday < 6 || !isUnderPlayableSelection(candidate))
     .filter(candidate => {
       return !isExcludedMarketName(candidate.overlapKey);
     })
@@ -568,5 +576,13 @@ const invalidRetainedMatches = Object.keys(output.matches).filter(matchId => {
 if (missingEligibleMatches.length || invalidRetainedMatches.length) {
   throw new Error(`Copertura MyCombo incompleta: aperte mancanti ${missingEligibleMatches.length}, storiche non valide ${invalidRetainedMatches.length}`);
 }
+output.constraints.underSelectionPolicy = {
+  effectiveFromMatchday: 6,
+  active: matchday >= 6,
+  rule: "Le selezioni Under sono escluse prima della costruzione dei portafogli; gli Over restano eleggibili.",
+  previousPlayableLegOccurrencesRemoved: Math.max(previousUnderLegOccurrences, preservedUnderMigrationCount),
+  filteredCandidateSelections: Object.values(underCandidateExclusionsByMatch).reduce((sum, count) => sum + count, 0),
+  filteredCandidateSelectionsByMatch: underCandidateExclusionsByMatch
+};
 fs.writeFileSync(outputPath, `${JSON.stringify(output, null, 2)}\n`);
 console.log(`OK MyCombo giornata ${matchday}: ${Object.keys(output.matches).length} partite · 30 portafogli · snapshot ${output.updatedAt}`);

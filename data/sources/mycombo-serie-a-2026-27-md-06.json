@@ -1,0 +1,1421 @@
+{
+  "provider": "Sisal",
+  "oddsSnapshot": "data/normalized/odds/sisal/serie-a.json",
+  "updatedAt": "2026-10-09",
+  "constraints": {
+    "referenceOdds": {
+      "Safe": 5,
+      "Balanced": 10,
+      "Aggressive": 20
+    },
+    "quotaPolicy": "orientativa",
+    "tierLimits": {
+      "Safe": {
+        "minimum": 3,
+        "maximum": 6,
+        "preferred": 3
+      },
+      "Balanced": {
+        "minimum": 4,
+        "maximum": 7,
+        "preferred": 4
+      },
+      "Aggressive": {
+        "minimum": 5,
+        "maximum": 8,
+        "preferred": 5
+      }
+    },
+    "displayedComboLegs": null,
+    "excludedMarketNames": [
+      "ARBITRO CONSULTA MONITOR VAR INC TS",
+      "RIGORE SI/NO",
+      "PRIMA SOSTITUZIONE NEL MATCH",
+      "PARI/DISPARI",
+      "CASA: PARI/DISPARI",
+      "OSPITE: PARI/DISPARI",
+      "CASA: SEGNA GOAL 2T",
+      "OSPITE: SEGNA GOAL 2T",
+      "SEGNA GOAL TEMPO X",
+      "SQUADRA X SEGNA NEI 2 TEMPI",
+      "SEGNA ULTIMO GOAL",
+      "1 TEMPO: SEGNA ULTIMO GOAL",
+      "2 TEMPO: SEGNA ULTIMO GOAL",
+      "1 TEMPO: 1X2 CORNER",
+      "TEMPO PRIMO GOAL",
+      "DRAW NO BET",
+      "DRAW NO BET TEMPO X",
+      "SQUADRA X VINCE ALMENO UN TEMPO",
+      "CASA: VINCE A 0",
+      "OSPITE: VINCE A 0",
+      "CASA: VINCE A 0 1T",
+      "OSPITE: VINCE A 0 1T",
+      "CASA: VINCE A 0 2T",
+      "OSPITE: VINCE A 0 2T"
+    ],
+    "excludedMarketNameFragments": [
+      "MULTIGIOCAT"
+    ],
+    "allowedMarketNames": [
+      "1 TEMPO: ESITO 1X2",
+      "1X2 CORNER",
+      "1X2 ESITO FINALE",
+      "1X2 HANDICAP CORNER",
+      "1X2 PUNTI CARTELLINI",
+      "1X2 TIRI IN PORTA",
+      "2 TEMPO: ESITO 1X2",
+      "ALMENO X CORNER IN ENTRAMBI I TEMPI",
+      "ALMENO X GOAL E Y CORNER IN ENTRAMBI I TEMPI",
+      "ASSIST (DUO) INC TS",
+      "CARTELLINO SI/NO (DUO) INC TS",
+      "DOPPIA CHANCE",
+      "ENTRAMBE ALMENO X CORNER IN ENTRAMBI I TEMPI",
+      "ENTRAMBE LE SQUADRE ALMENO X TIRI IN PORTA",
+      "GIOCATORE (DUO) SEGNA O CARTELLINO INC TS",
+      "GIOCATORE (DUO) SEGNA O FA ASSIST INC TS",
+      "GIOCATORE DOPPIETTA O PIÙ (DUO) INC TS",
+      "GOAL/NOGOAL",
+      "GOAL/NOGOAL TEMPO X",
+      "MARCATORE SI/NO (DUO) INC TS",
+      "MULTIGOAL",
+      "MULTIGOAL SQUADRA X",
+      "MULTIGOAL TEMPO X",
+      "PRIMO MARCATORE (DUO) INC TS",
+      "SEGNANO ENTRAMBE ALMENO 2 GOAL",
+      "SQUADRA CON PIU' CORNER IN ENTRAMBI I TEMPI",
+      "SQUADRA X ALMENO Y CORNER IN ENTRAMBI I TEMPI",
+      "SQUADRA X EFFETTUA ALMENO Y TIRI IN PORTA IN ENTRAMBI I TEMPI",
+      "U/O CORNER",
+      "U/O CORNER SQUADRA X",
+      "U/O FALLI COMMESSI GIOCATORE",
+      "U/O FALLI SUBITI GIOCATORE",
+      "U/O GOAL SQUADRA TEMPO",
+      "U/O PUNTI CARTELLINI",
+      "U/O SQUADRA X",
+      "U/O TIRI IN PORTA",
+      "U/O TIRI IN PORTA GIOCATORE (DUO) INC PALI TRAVERSE INC TS",
+      "U/O TIRI IN PORTA SQUADRA X",
+      "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+      "UNDER/OVER",
+      "UNDER/OVER TEMPO X"
+    ],
+    "providerEligibilityPolicy": "Solo selezioni con providerSelectionId presenti nello snapshot Sisal e ammesse nella sezione MyCombo; le famiglie note come non selezionabili sono escluse prima della costruzione dei portafogli.",
+    "minLegOddsInclusive": 1.15,
+    "maxLegOddsInclusive": 1.85,
+    "uniqueMarketFamilyWithinPortfolio": true,
+    "semanticOverlapPolicy": "Una sola gamba per macro-scenario: gol, esito, corner, tiri totali e tiri in porta non possono essere ripetuti o annidati nella stessa MyCombo, anche cambiando squadra, soglia o formulazione.",
+    "allowCrossTierSelectionReuse": true,
+    "promotedOpponentCaution": true,
+    "riskPolicy": "informativa",
+    "eligibilityPolicy": "validita-tecnica-e-intervalli",
+    "underSelectionPolicy": {
+      "effectiveFromMatchday": 6,
+      "active": true,
+      "rule": "Le selezioni Under sono escluse prima della costruzione dei portafogli; gli Over restano eleggibili.",
+      "previousPlayableLegOccurrencesRemoved": 9,
+      "filteredCandidateSelections": 131,
+      "filteredCandidateSelectionsByMatch": {
+        "genoa-fiorentina-2026-27-md-06": 18,
+        "inter-parma-2026-27-md-06": 17,
+        "napoli-frosinone-2026-27-md-06": 17,
+        "como-roma-2026-27-md-06": 13,
+        "lazio-monza-2026-27-md-06": 13,
+        "lecce-bologna-2026-27-md-06": 15,
+        "sassuolo-milan-2026-27-md-06": 15,
+        "cagliari-juventus-2026-27-md-06": 13,
+        "atalanta-venezia-2026-27-md-06": 6,
+        "torino-udinese-2026-27-md-06": 4
+      }
+    }
+  },
+  "matches": {
+    "genoa-fiorentina-2026-27-md-06": [
+      {
+        "tier": "Safe",
+        "logic": "Profilo safe costruito sulle quote Sisal del 2026-10-09: quota 5 orientativa, 3-6 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
+        "legs": [
+          {
+            "providerSelectionId": "5367456372",
+            "overlapKey": "player-vitinha oliveira v-u o falli commessi giocatore",
+            "semanticKeys": [
+              "player-vitinha oliveira v-fouls"
+            ],
+            "label": "VITINHA OLIVEIRA V. almeno 2 falli commessi"
+          },
+          {
+            "providerSelectionId": "5367462214",
+            "overlapKey": "player-pellegrino m-u o tiri totali giocatore duo inc ts",
+            "semanticKeys": [
+              "player-pellegrino m-shots"
+            ],
+            "label": "PELLEGRINO M. almeno 4 tiri totali, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5337164992",
+            "overlapKey": "scenario-goals-fulltime-match",
+            "semanticKeys": [
+              "goals-fulltime-match"
+            ],
+            "label": "MULTIGOAL MULTIESITI 16 ESITI · 2-6"
+          },
+          {
+            "providerSelectionId": "5367503760",
+            "overlapKey": "player-pellegrino m-u o falli subiti giocatore",
+            "semanticKeys": [
+              "player-pellegrino m-fouls"
+            ],
+            "label": "PELLEGRINO M. almeno 1 falli subiti"
+          }
+        ]
+      },
+      {
+        "tier": "Balanced",
+        "logic": "Profilo balanced costruito sulle quote Sisal del 2026-10-09: quota 10 orientativa, 4-7 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
+        "legs": [
+          {
+            "providerSelectionId": "5367462214",
+            "overlapKey": "player-pellegrino m-u o tiri totali giocatore duo inc ts",
+            "semanticKeys": [
+              "player-pellegrino m-shots"
+            ],
+            "label": "PELLEGRINO M. almeno 4 tiri totali, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5367751244",
+            "overlapKey": "player-pellegrino m-u o falli subiti giocatore",
+            "semanticKeys": [
+              "player-pellegrino m-fouls"
+            ],
+            "label": "PELLEGRINO M. almeno 2 falli subiti"
+          },
+          {
+            "providerSelectionId": "5367751245",
+            "overlapKey": "player-vitinha oliveira v-u o falli subiti giocatore",
+            "semanticKeys": [
+              "player-vitinha oliveira v-fouls"
+            ],
+            "label": "VITINHA OLIVEIRA V. almeno 2 falli subiti"
+          },
+          {
+            "providerSelectionId": "5369497796",
+            "overlapKey": "market-almeno x corner in entrambi i tempi",
+            "semanticKeys": [
+              "volume-corners"
+            ],
+            "label": "ALMENO 3 CORNER IN ENTRAMBI I TEMPI · SI"
+          },
+          {
+            "providerSelectionId": "5337196035",
+            "overlapKey": "scenario-goals-fulltime-match",
+            "semanticKeys": [
+              "goals-fulltime-match"
+            ],
+            "label": "Over 1,5 gol"
+          }
+        ]
+      },
+      {
+        "tier": "Aggressive",
+        "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-10-09: quota 20 orientativa, 5-8 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
+        "legs": [
+          {
+            "providerSelectionId": "5367456372",
+            "overlapKey": "player-vitinha oliveira v-u o falli commessi giocatore",
+            "semanticKeys": [
+              "player-vitinha oliveira v-fouls"
+            ],
+            "label": "VITINHA OLIVEIRA V. almeno 2 falli commessi"
+          },
+          {
+            "providerSelectionId": "5367462214",
+            "overlapKey": "player-pellegrino m-u o tiri totali giocatore duo inc ts",
+            "semanticKeys": [
+              "player-pellegrino m-shots"
+            ],
+            "label": "PELLEGRINO M. almeno 4 tiri totali, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5367463184",
+            "overlapKey": "player-vitinha oliveira v-u o tiri in porta giocatore duo inc pali traverse inc ts",
+            "semanticKeys": [
+              "player-vitinha oliveira v-shots"
+            ],
+            "label": "VITINHA OLIVEIRA V. almeno 1 tiri in porta, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5337193914",
+            "overlapKey": "scenario-btts-fulltime-match",
+            "semanticKeys": [
+              "btts-fulltime-match"
+            ],
+            "label": "Entrambe le squadre segnano"
+          },
+          {
+            "providerSelectionId": "5367503028",
+            "overlapKey": "player-ranieri l-u o falli subiti giocatore",
+            "semanticKeys": [
+              "player-ranieri l-fouls"
+            ],
+            "label": "RANIERI L. almeno 1 falli subiti"
+          },
+          {
+            "providerSelectionId": "5369497842",
+            "overlapKey": "market-u o corner squadra x",
+            "semanticKeys": [
+              "volume-corners"
+            ],
+            "label": "Genoa almeno 4 corner"
+          }
+        ]
+      }
+    ],
+    "inter-parma-2026-27-md-06": [
+      {
+        "tier": "Safe",
+        "logic": "Profilo safe costruito sulle quote Sisal del 2026-10-09: quota 5 orientativa, 3-6 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
+        "legs": [
+          {
+            "providerSelectionId": "5369498016",
+            "overlapKey": "market-entrambe almeno x corner in entrambi i tempi",
+            "semanticKeys": [
+              "volume-corners"
+            ],
+            "label": "ENTRAMBE ALMENO 1 CORNER ENTRAMBI TEMPI · SI"
+          },
+          {
+            "providerSelectionId": "5367465588",
+            "overlapKey": "player-dimarco f-u o tiri in porta giocatore duo inc pali traverse inc ts",
+            "semanticKeys": [
+              "player-dimarco f-shots"
+            ],
+            "label": "DIMARCO F. almeno 1 tiri in porta, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5367472927",
+            "overlapKey": "player-barella n-u o tiri in porta giocatore duo inc pali traverse inc ts",
+            "semanticKeys": [
+              "player-barella n-shots"
+            ],
+            "label": "BARELLA N. almeno 1 tiri in porta, sostituto incluso"
+          }
+        ]
+      },
+      {
+        "tier": "Balanced",
+        "logic": "Profilo balanced costruito sulle quote Sisal del 2026-10-09: quota 10 orientativa, 4-7 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
+        "legs": [
+          {
+            "providerSelectionId": "5369498016",
+            "overlapKey": "market-entrambe almeno x corner in entrambi i tempi",
+            "semanticKeys": [
+              "volume-corners"
+            ],
+            "label": "ENTRAMBE ALMENO 1 CORNER ENTRAMBI TEMPI · SI"
+          },
+          {
+            "providerSelectionId": "5367472927",
+            "overlapKey": "player-barella n-u o tiri in porta giocatore duo inc pali traverse inc ts",
+            "semanticKeys": [
+              "player-barella n-shots"
+            ],
+            "label": "BARELLA N. almeno 1 tiri in porta, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5367472953",
+            "overlapKey": "player-diouf a-u o tiri in porta giocatore duo inc pali traverse inc ts",
+            "semanticKeys": [
+              "player-diouf a-shots"
+            ],
+            "label": "DIOUF A. almeno 1 tiri in porta, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5337155091",
+            "overlapKey": "scenario-goals-fulltime-match",
+            "semanticKeys": [
+              "goals-fulltime-match"
+            ],
+            "label": "MULTIGOAL MULTIESITI 16 ESITI · 3-5"
+          }
+        ]
+      },
+      {
+        "tier": "Aggressive",
+        "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-10-09: quota 20 orientativa, 5-8 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
+        "legs": [
+          {
+            "providerSelectionId": "5369524276",
+            "overlapKey": "market-almeno x corner in entrambi i tempi",
+            "semanticKeys": [
+              "volume-corners"
+            ],
+            "label": "ALMENO 4 CORNER IN ENTRAMBI I TEMPI · SI"
+          },
+          {
+            "providerSelectionId": "5367472953",
+            "overlapKey": "player-diouf a-u o tiri in porta giocatore duo inc pali traverse inc ts",
+            "semanticKeys": [
+              "player-diouf a-shots"
+            ],
+            "label": "DIOUF A. almeno 1 tiri in porta, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5367468067",
+            "overlapKey": "player-romero d-u o tiri in porta giocatore duo inc pali traverse inc ts",
+            "semanticKeys": [
+              "player-romero d-shots"
+            ],
+            "label": "ROMERO D. almeno 1 tiri in porta, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5367472927",
+            "overlapKey": "player-barella n-u o tiri in porta giocatore duo inc pali traverse inc ts",
+            "semanticKeys": [
+              "player-barella n-shots"
+            ],
+            "label": "BARELLA N. almeno 1 tiri in porta, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5367472979",
+            "overlapKey": "player-zielinski p-u o tiri in porta giocatore duo inc pali traverse inc ts",
+            "semanticKeys": [
+              "player-zielinski p-shots"
+            ],
+            "label": "ZIELINSKI P. almeno 1 tiri in porta, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5337155531",
+            "overlapKey": "scenario-goals-fulltime-home",
+            "semanticKeys": [
+              "goals-fulltime-home"
+            ],
+            "label": "U/O 1.5 Inter · OVER"
+          }
+        ]
+      }
+    ],
+    "napoli-frosinone-2026-27-md-06": [
+      {
+        "tier": "Safe",
+        "logic": "Profilo safe costruito sulle quote Sisal del 2026-10-09: quota 5 orientativa, 3-6 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
+        "legs": [
+          {
+            "providerSelectionId": "5337211530",
+            "overlapKey": "scenario-goals-fulltime-match",
+            "semanticKeys": [
+              "goals-fulltime-match"
+            ],
+            "label": "MULTIGOAL MULTIESITI 16 ESITI · 3-5"
+          },
+          {
+            "providerSelectionId": "5337211265",
+            "overlapKey": "scenario-goals-fulltime-away",
+            "semanticKeys": [
+              "goals-fulltime-away"
+            ],
+            "label": "MULTIGOAL Frosinone MULTIESITI · 1-3"
+          },
+          {
+            "providerSelectionId": "5369497988",
+            "overlapKey": "market-entrambe almeno x corner in entrambi i tempi",
+            "semanticKeys": [
+              "volume-corners"
+            ],
+            "label": "ENTRAMBE ALMENO 1 CORNER ENTRAMBI TEMPI · SI"
+          },
+          {
+            "providerSelectionId": "5367478421",
+            "overlapKey": "player-oyono omva a-u o falli commessi giocatore",
+            "semanticKeys": [
+              "player-oyono omva a-fouls"
+            ],
+            "label": "OYONO OMVA A. almeno 1 falli commessi"
+          }
+        ]
+      },
+      {
+        "tier": "Balanced",
+        "logic": "Profilo balanced costruito sulle quote Sisal del 2026-10-09: quota 10 orientativa, 4-7 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
+        "legs": [
+          {
+            "providerSelectionId": "5367476229",
+            "overlapKey": "player-de bruyne k-u o tiri totali giocatore duo inc ts",
+            "semanticKeys": [
+              "player-de bruyne k-shots"
+            ],
+            "label": "DE BRUYNE K. almeno 4 tiri totali, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5337211521",
+            "overlapKey": "scenario-goals-fulltime-match",
+            "semanticKeys": [
+              "goals-fulltime-match"
+            ],
+            "label": "MULTIGOAL MULTIESITI 16 ESITI · 1-3"
+          },
+          {
+            "providerSelectionId": "5337211428",
+            "overlapKey": "scenario-goals-fulltime-home",
+            "semanticKeys": [
+              "goals-fulltime-home"
+            ],
+            "label": "MULTIGOAL Napoli MULTIESITI · 1-2"
+          },
+          {
+            "providerSelectionId": "5337211266",
+            "overlapKey": "scenario-goals-fulltime-away",
+            "semanticKeys": [
+              "goals-fulltime-away"
+            ],
+            "label": "MULTIGOAL Frosinone MULTIESITI · 1-4"
+          },
+          {
+            "providerSelectionId": "5337170436",
+            "overlapKey": "scenario-result-fulltime",
+            "semanticKeys": [
+              "result-fulltime"
+            ],
+            "label": "Nessun pareggio (12)"
+          }
+        ]
+      },
+      {
+        "tier": "Aggressive",
+        "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-10-09: quota 20 orientativa, 5-8 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
+        "legs": [
+          {
+            "providerSelectionId": "5337211428",
+            "overlapKey": "scenario-goals-fulltime-home",
+            "semanticKeys": [
+              "goals-fulltime-home"
+            ],
+            "label": "MULTIGOAL Napoli MULTIESITI · 1-2"
+          },
+          {
+            "providerSelectionId": "5367476229",
+            "overlapKey": "player-de bruyne k-u o tiri totali giocatore duo inc ts",
+            "semanticKeys": [
+              "player-de bruyne k-shots"
+            ],
+            "label": "DE BRUYNE K. almeno 4 tiri totali, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5337211530",
+            "overlapKey": "scenario-goals-fulltime-match",
+            "semanticKeys": [
+              "goals-fulltime-match"
+            ],
+            "label": "MULTIGOAL MULTIESITI 16 ESITI · 3-5"
+          },
+          {
+            "providerSelectionId": "5337211264",
+            "overlapKey": "scenario-goals-fulltime-away",
+            "semanticKeys": [
+              "goals-fulltime-away"
+            ],
+            "label": "MULTIGOAL Frosinone MULTIESITI · 1-2"
+          },
+          {
+            "providerSelectionId": "5337168279",
+            "overlapKey": "scenario-btts-fulltime-match",
+            "semanticKeys": [
+              "btts-fulltime-match"
+            ],
+            "label": "Entrambe le squadre segnano"
+          },
+          {
+            "providerSelectionId": "5369526557",
+            "overlapKey": "market-almeno x corner in entrambi i tempi",
+            "semanticKeys": [
+              "volume-corners"
+            ],
+            "label": "ALMENO 3 CORNER IN ENTRAMBI I TEMPI · SI"
+          }
+        ]
+      }
+    ],
+    "como-roma-2026-27-md-06": [
+      {
+        "tier": "Safe",
+        "logic": "Profilo safe costruito sulle quote Sisal del 2026-10-09: quota 5 orientativa, 3-6 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
+        "legs": [
+          {
+            "providerSelectionId": "5337215714",
+            "overlapKey": "scenario-goals-fulltime-match",
+            "semanticKeys": [
+              "goals-fulltime-match"
+            ],
+            "label": "MULTIGOAL MULTIESITI 16 ESITI · 3-5"
+          },
+          {
+            "providerSelectionId": "5369298856",
+            "overlapKey": "market-u o tiri in porta squadra x",
+            "semanticKeys": [
+              "volume-shots-on-target"
+            ],
+            "label": "Como almeno 5 tiri in porta"
+          },
+          {
+            "providerSelectionId": "5371749351",
+            "overlapKey": "market-1x2 corner",
+            "semanticKeys": [
+              "volume-corners"
+            ],
+            "label": "CALCI ANGOLO 1X2 T.R. · 1"
+          }
+        ]
+      },
+      {
+        "tier": "Balanced",
+        "logic": "Profilo balanced costruito sulle quote Sisal del 2026-10-09: quota 10 orientativa, 4-7 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
+        "legs": [
+          {
+            "providerSelectionId": "5369298266",
+            "overlapKey": "player-kean m-u o tiri in porta giocatore duo inc pali traverse inc ts",
+            "semanticKeys": [
+              "player-kean m-shots"
+            ],
+            "label": "KEAN M. almeno 2 tiri in porta, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5371749367",
+            "overlapKey": "market-u o corner",
+            "semanticKeys": [
+              "volume-corners"
+            ],
+            "label": "Partita almeno 9 corner"
+          },
+          {
+            "providerSelectionId": "5369270670",
+            "overlapKey": "player-baturina m-u o tiri in porta giocatore duo inc pali traverse inc ts",
+            "semanticKeys": [
+              "player-baturina m-shots"
+            ],
+            "label": "BATURINA M. almeno 1 tiri in porta, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5369270801",
+            "overlapKey": "player-kone manu-u o falli commessi giocatore",
+            "semanticKeys": [
+              "player-kone manu-fouls"
+            ],
+            "label": "KONE MANU almeno 2 falli commessi"
+          }
+        ]
+      },
+      {
+        "tier": "Aggressive",
+        "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-10-09: quota 20 orientativa, 5-8 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
+        "legs": [
+          {
+            "providerSelectionId": "5371749351",
+            "overlapKey": "market-1x2 corner",
+            "semanticKeys": [
+              "volume-corners"
+            ],
+            "label": "CALCI ANGOLO 1X2 T.R. · 1"
+          },
+          {
+            "providerSelectionId": "5369298266",
+            "overlapKey": "player-kean m-u o tiri in porta giocatore duo inc pali traverse inc ts",
+            "semanticKeys": [
+              "player-kean m-shots"
+            ],
+            "label": "KEAN M. almeno 2 tiri in porta, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5369270801",
+            "overlapKey": "player-kone manu-u o falli commessi giocatore",
+            "semanticKeys": [
+              "player-kone manu-fouls"
+            ],
+            "label": "KONE MANU almeno 2 falli commessi"
+          },
+          {
+            "providerSelectionId": "5369270791",
+            "overlapKey": "player-ndicka e-u o falli commessi giocatore",
+            "semanticKeys": [
+              "player-ndicka e-fouls"
+            ],
+            "label": "NDICKA E. almeno 2 falli commessi"
+          },
+          {
+            "providerSelectionId": "5337215714",
+            "overlapKey": "scenario-goals-fulltime-match",
+            "semanticKeys": [
+              "goals-fulltime-match"
+            ],
+            "label": "MULTIGOAL MULTIESITI 16 ESITI · 3-5"
+          }
+        ]
+      }
+    ],
+    "lazio-monza-2026-27-md-06": [
+      {
+        "tier": "Safe",
+        "logic": "Profilo safe costruito sulle quote Sisal del 2026-10-09: quota 5 orientativa, 3-6 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
+        "legs": [
+          {
+            "providerSelectionId": "5337208226",
+            "overlapKey": "scenario-goals-fulltime-home",
+            "semanticKeys": [
+              "goals-fulltime-home"
+            ],
+            "label": "U/O 1.5 Lazio · OVER"
+          },
+          {
+            "providerSelectionId": "5337198888",
+            "overlapKey": "scenario-result-fulltime",
+            "semanticKeys": [
+              "result-fulltime"
+            ],
+            "label": "Lazio vincente"
+          },
+          {
+            "providerSelectionId": "5337199138",
+            "overlapKey": "scenario-btts-fulltime-match",
+            "semanticKeys": [
+              "btts-fulltime-match"
+            ],
+            "label": "Entrambe le squadre segnano"
+          }
+        ]
+      },
+      {
+        "tier": "Balanced",
+        "logic": "Profilo balanced costruito sulle quote Sisal del 2026-10-09: quota 10 orientativa, 4-7 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
+        "legs": [
+          {
+            "providerSelectionId": "5369274165",
+            "overlapKey": "player-floriani mussolini r-u o tiri totali giocatore duo inc ts",
+            "semanticKeys": [
+              "player-floriani mussolini r-shots"
+            ],
+            "label": "FLORIANI MUSSOLINI R. almeno 1 tiri totali, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5369304883",
+            "overlapKey": "player-tavares n-u o tiri totali giocatore duo inc ts",
+            "semanticKeys": [
+              "player-tavares n-shots"
+            ],
+            "label": "TAVARES N. almeno 2 tiri totali, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5337208656",
+            "overlapKey": "scenario-goals-fulltime-match",
+            "semanticKeys": [
+              "goals-fulltime-match"
+            ],
+            "label": "MULTIGOAL MULTIESITI 16 ESITI · 2-4"
+          },
+          {
+            "providerSelectionId": "5337208280",
+            "overlapKey": "scenario-goals-fulltime-away",
+            "semanticKeys": [
+              "goals-fulltime-away"
+            ],
+            "label": "MULTIGOAL Monza MULTIESITI · 1-2"
+          },
+          {
+            "providerSelectionId": "5337208636",
+            "overlapKey": "scenario-goals-fulltime-home",
+            "semanticKeys": [
+              "goals-fulltime-home"
+            ],
+            "label": "MULTIGOAL Lazio MULTIESITI · 1-4"
+          }
+        ]
+      },
+      {
+        "tier": "Aggressive",
+        "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-10-09: quota 20 orientativa, 5-8 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
+        "legs": [
+          {
+            "providerSelectionId": "5337199138",
+            "overlapKey": "scenario-btts-fulltime-match",
+            "semanticKeys": [
+              "btts-fulltime-match"
+            ],
+            "label": "Entrambe le squadre segnano"
+          },
+          {
+            "providerSelectionId": "5369274165",
+            "overlapKey": "player-floriani mussolini r-u o tiri totali giocatore duo inc ts",
+            "semanticKeys": [
+              "player-floriani mussolini r-shots"
+            ],
+            "label": "FLORIANI MUSSOLINI R. almeno 1 tiri totali, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5371738187",
+            "overlapKey": "market-entrambe almeno x corner in entrambi i tempi",
+            "semanticKeys": [
+              "volume-corners"
+            ],
+            "label": "ENTRAMBE ALMENO 1 CORNER ENTRAMBI TEMPI · SI"
+          },
+          {
+            "providerSelectionId": "5337208281",
+            "overlapKey": "scenario-goals-fulltime-away",
+            "semanticKeys": [
+              "goals-fulltime-away"
+            ],
+            "label": "MULTIGOAL Monza MULTIESITI · 1-3"
+          },
+          {
+            "providerSelectionId": "5337208634",
+            "overlapKey": "scenario-goals-fulltime-home",
+            "semanticKeys": [
+              "goals-fulltime-home"
+            ],
+            "label": "MULTIGOAL Lazio MULTIESITI · 1-2"
+          },
+          {
+            "providerSelectionId": "5337208658",
+            "overlapKey": "scenario-goals-fulltime-match",
+            "semanticKeys": [
+              "goals-fulltime-match"
+            ],
+            "label": "MULTIGOAL MULTIESITI 16 ESITI · 2-6"
+          }
+        ]
+      }
+    ],
+    "lecce-bologna-2026-27-md-06": [
+      {
+        "tier": "Safe",
+        "logic": "Profilo safe costruito sulle quote Sisal del 2026-10-09: quota 5 orientativa, 3-6 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
+        "legs": [
+          {
+            "providerSelectionId": "5337206322",
+            "overlapKey": "scenario-result-fulltime",
+            "semanticKeys": [
+              "result-fulltime"
+            ],
+            "label": "Bologna vincente"
+          },
+          {
+            "providerSelectionId": "5371749293",
+            "overlapKey": "market-entrambe almeno x corner in entrambi i tempi",
+            "semanticKeys": [
+              "volume-corners"
+            ],
+            "label": "ENTRAMBE ALMENO 1 CORNER ENTRAMBI TEMPI · SI"
+          },
+          {
+            "providerSelectionId": "5337214576",
+            "overlapKey": "scenario-goals-fulltime-match",
+            "semanticKeys": [
+              "goals-fulltime-match"
+            ],
+            "label": "MULTIGOAL MULTIESITI 16 ESITI · 2-4"
+          }
+        ]
+      },
+      {
+        "tier": "Balanced",
+        "logic": "Profilo balanced costruito sulle quote Sisal del 2026-10-09: quota 10 orientativa, 4-7 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
+        "legs": [
+          {
+            "providerSelectionId": "5337206322",
+            "overlapKey": "scenario-result-fulltime",
+            "semanticKeys": [
+              "result-fulltime"
+            ],
+            "label": "Bologna vincente"
+          },
+          {
+            "providerSelectionId": "5337206434",
+            "overlapKey": "scenario-btts-fulltime-match",
+            "semanticKeys": [
+              "btts-fulltime-match"
+            ],
+            "label": "Entrambe le squadre segnano"
+          },
+          {
+            "providerSelectionId": "5369316587",
+            "overlapKey": "player-monteiro joel-u o tiri in porta giocatore duo inc pali traverse inc ts",
+            "semanticKeys": [
+              "player-monteiro joel-shots"
+            ],
+            "label": "MONTEIRO JOEL almeno 1 tiri in porta, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5369278136",
+            "overlapKey": "market-entrambe le squadre almeno x tiri in porta",
+            "semanticKeys": [
+              "volume-shots-on-target"
+            ],
+            "label": "Entrambe almeno 3 tiri in porta"
+          }
+        ]
+      },
+      {
+        "tier": "Aggressive",
+        "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-10-09: quota 20 orientativa, 5-8 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
+        "legs": [
+          {
+            "providerSelectionId": "5369316587",
+            "overlapKey": "player-monteiro joel-u o tiri in porta giocatore duo inc pali traverse inc ts",
+            "semanticKeys": [
+              "player-monteiro joel-shots"
+            ],
+            "label": "MONTEIRO JOEL almeno 1 tiri in porta, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5369639390",
+            "overlapKey": "player-monteiro joel-u o falli subiti giocatore",
+            "semanticKeys": [
+              "player-monteiro joel-fouls"
+            ],
+            "label": "MONTEIRO JOEL almeno 2 falli subiti"
+          },
+          {
+            "providerSelectionId": "5369323682",
+            "overlapKey": "player-tiago gabriel-u o tiri totali giocatore duo inc ts",
+            "semanticKeys": [
+              "player-tiago gabriel-shots"
+            ],
+            "label": "TIAGO GABRIEL almeno 1 tiri totali, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5371749293",
+            "overlapKey": "market-entrambe almeno x corner in entrambi i tempi",
+            "semanticKeys": [
+              "volume-corners"
+            ],
+            "label": "ENTRAMBE ALMENO 1 CORNER ENTRAMBI TEMPI · SI"
+          },
+          {
+            "providerSelectionId": "5337214337",
+            "overlapKey": "scenario-goals-fulltime-home",
+            "semanticKeys": [
+              "goals-fulltime-home"
+            ],
+            "label": "MULTIGOAL Lecce MULTIESITI · 1-3"
+          },
+          {
+            "providerSelectionId": "5337214555",
+            "overlapKey": "scenario-goals-fulltime-away",
+            "semanticKeys": [
+              "goals-fulltime-away"
+            ],
+            "label": "MULTIGOAL Bologna MULTIESITI · 1-3"
+          }
+        ]
+      }
+    ],
+    "sassuolo-milan-2026-27-md-06": [
+      {
+        "tier": "Safe",
+        "logic": "Profilo safe costruito sulle quote Sisal del 2026-10-09: quota 5 orientativa, 3-6 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
+        "legs": [
+          {
+            "providerSelectionId": "5337212176",
+            "overlapKey": "scenario-goals-fulltime-away",
+            "semanticKeys": [
+              "goals-fulltime-away"
+            ],
+            "label": "MULTIGOAL Milan MULTIESITI · 2-4"
+          },
+          {
+            "providerSelectionId": "5337172904",
+            "overlapKey": "scenario-goals-fulltime-match",
+            "semanticKeys": [
+              "goals-fulltime-match"
+            ],
+            "label": "Over 2,5 gol"
+          },
+          {
+            "providerSelectionId": "5371738074",
+            "overlapKey": "market-almeno x corner in entrambi i tempi",
+            "semanticKeys": [
+              "volume-corners"
+            ],
+            "label": "ALMENO 3 CORNER IN ENTRAMBI I TEMPI · SI"
+          }
+        ]
+      },
+      {
+        "tier": "Balanced",
+        "logic": "Profilo balanced costruito sulle quote Sisal del 2026-10-09: quota 10 orientativa, 4-7 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
+        "legs": [
+          {
+            "providerSelectionId": "5337212176",
+            "overlapKey": "scenario-goals-fulltime-away",
+            "semanticKeys": [
+              "goals-fulltime-away"
+            ],
+            "label": "MULTIGOAL Milan MULTIESITI · 2-4"
+          },
+          {
+            "providerSelectionId": "5337170659",
+            "overlapKey": "scenario-result-fulltime",
+            "semanticKeys": [
+              "result-fulltime"
+            ],
+            "label": "Milan vincente"
+          },
+          {
+            "providerSelectionId": "5371748952",
+            "overlapKey": "market-entrambe almeno x corner in entrambi i tempi",
+            "semanticKeys": [
+              "volume-corners"
+            ],
+            "label": "ENTRAMBE ALMENO 1 CORNER ENTRAMBI TEMPI · SI"
+          },
+          {
+            "providerSelectionId": "5337172904",
+            "overlapKey": "scenario-goals-fulltime-match",
+            "semanticKeys": [
+              "goals-fulltime-match"
+            ],
+            "label": "Over 2,5 gol"
+          }
+        ]
+      },
+      {
+        "tier": "Aggressive",
+        "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-10-09: quota 20 orientativa, 5-8 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
+        "legs": [
+          {
+            "providerSelectionId": "5337212176",
+            "overlapKey": "scenario-goals-fulltime-away",
+            "semanticKeys": [
+              "goals-fulltime-away"
+            ],
+            "label": "MULTIGOAL Milan MULTIESITI · 2-4"
+          },
+          {
+            "providerSelectionId": "5369326919",
+            "overlapKey": "player-chukwueze s-u o tiri in porta giocatore duo inc pali traverse inc ts",
+            "semanticKeys": [
+              "player-chukwueze s-shots"
+            ],
+            "label": "CHUKWUEZE S. almeno 1 tiri in porta, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5369280217",
+            "overlapKey": "player-rabiot a-u o tiri in porta giocatore duo inc pali traverse inc ts",
+            "semanticKeys": [
+              "player-rabiot a-shots"
+            ],
+            "label": "RABIOT A. almeno 1 tiri in porta, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5337212519",
+            "overlapKey": "scenario-goals-fulltime-match",
+            "semanticKeys": [
+              "goals-fulltime-match"
+            ],
+            "label": "MULTIGOAL MULTIESITI 16 ESITI · 1-3"
+          },
+          {
+            "providerSelectionId": "5369326951",
+            "overlapKey": "player-thorstvedt k-u o tiri in porta giocatore duo inc pali traverse inc ts",
+            "semanticKeys": [
+              "player-thorstvedt k-shots"
+            ],
+            "label": "THORSTVEDT K. almeno 1 tiri in porta, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5337172925",
+            "overlapKey": "scenario-result-fulltime",
+            "semanticKeys": [
+              "result-fulltime"
+            ],
+            "label": "Milan o pareggio (X2)"
+          }
+        ]
+      }
+    ],
+    "cagliari-juventus-2026-27-md-06": [
+      {
+        "tier": "Safe",
+        "logic": "Profilo safe costruito sulle quote Sisal del 2026-10-09: quota 5 orientativa, 3-6 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
+        "legs": [
+          {
+            "providerSelectionId": "5337213304",
+            "overlapKey": "scenario-goals-fulltime-home",
+            "semanticKeys": [
+              "goals-fulltime-home"
+            ],
+            "label": "MULTIGOAL Cagliari MULTIESITI · 1-2"
+          },
+          {
+            "providerSelectionId": "5337213412",
+            "overlapKey": "scenario-goals-fulltime-away",
+            "semanticKeys": [
+              "goals-fulltime-away"
+            ],
+            "label": "U/O 1.5 Juventus · OVER"
+          },
+          {
+            "providerSelectionId": "5369330778",
+            "overlapKey": "market-entrambe le squadre almeno x tiri in porta",
+            "semanticKeys": [
+              "volume-shots-on-target"
+            ],
+            "label": "Entrambe almeno 3 tiri in porta"
+          }
+        ]
+      },
+      {
+        "tier": "Balanced",
+        "logic": "Profilo balanced costruito sulle quote Sisal del 2026-10-09: quota 10 orientativa, 4-7 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
+        "legs": [
+          {
+            "providerSelectionId": "5371703595",
+            "overlapKey": "market-u o corner squadra x",
+            "semanticKeys": [
+              "volume-corners"
+            ],
+            "label": "Cagliari almeno 4 corner"
+          },
+          {
+            "providerSelectionId": "5337213476",
+            "overlapKey": "scenario-goals-fulltime-away",
+            "semanticKeys": [
+              "goals-fulltime-away"
+            ],
+            "label": "MULTIGOAL Juventus MULTIESITI · 2-4"
+          },
+          {
+            "providerSelectionId": "5369331344",
+            "overlapKey": "player-mendy p-u o tiri in porta giocatore duo inc pali traverse inc ts",
+            "semanticKeys": [
+              "player-mendy p-shots"
+            ],
+            "label": "MENDY P. almeno 1 tiri in porta, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5337213305",
+            "overlapKey": "scenario-goals-fulltime-home",
+            "semanticKeys": [
+              "goals-fulltime-home"
+            ],
+            "label": "MULTIGOAL Cagliari MULTIESITI · 1-3"
+          }
+        ]
+      },
+      {
+        "tier": "Aggressive",
+        "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-10-09: quota 20 orientativa, 5-8 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
+        "legs": [
+          {
+            "providerSelectionId": "5337213304",
+            "overlapKey": "scenario-goals-fulltime-home",
+            "semanticKeys": [
+              "goals-fulltime-home"
+            ],
+            "label": "MULTIGOAL Cagliari MULTIESITI · 1-2"
+          },
+          {
+            "providerSelectionId": "5371703595",
+            "overlapKey": "market-u o corner squadra x",
+            "semanticKeys": [
+              "volume-corners"
+            ],
+            "label": "Cagliari almeno 4 corner"
+          },
+          {
+            "providerSelectionId": "5337213476",
+            "overlapKey": "scenario-goals-fulltime-away",
+            "semanticKeys": [
+              "goals-fulltime-away"
+            ],
+            "label": "MULTIGOAL Juventus MULTIESITI · 2-4"
+          },
+          {
+            "providerSelectionId": "5369284647",
+            "overlapKey": "player-sarr pape-u o tiri in porta giocatore duo inc pali traverse inc ts",
+            "semanticKeys": [
+              "player-sarr pape-shots"
+            ],
+            "label": "SARR PAPE almeno 1 tiri in porta, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5369330522",
+            "overlapKey": "player-gonzalez nico-u o falli commessi giocatore",
+            "semanticKeys": [
+              "player-gonzalez nico-fouls"
+            ],
+            "label": "GONZALEZ NICO almeno 2 falli commessi"
+          }
+        ]
+      }
+    ],
+    "atalanta-venezia-2026-27-md-06": [
+      {
+        "tier": "Safe",
+        "logic": "Profilo safe costruito sulle quote Sisal del 2026-10-09: quota 5 orientativa, 3-6 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
+        "legs": [
+          {
+            "providerSelectionId": "5337176064",
+            "overlapKey": "scenario-goals-fulltime-match",
+            "semanticKeys": [
+              "goals-fulltime-match"
+            ],
+            "label": "MULTIGOAL MULTIESITI 16 ESITI · 3-5"
+          },
+          {
+            "providerSelectionId": "5371743421",
+            "overlapKey": "player-ederson-u o tiri in porta giocatore duo inc pali traverse inc ts",
+            "semanticKeys": [
+              "player-ederson-shots"
+            ],
+            "label": "EDERSON almeno 1 tiri in porta, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5337175736",
+            "overlapKey": "scenario-goals-fulltime-away",
+            "semanticKeys": [
+              "goals-fulltime-away"
+            ],
+            "label": "MULTIGOAL Venezia MULTIESITI · 1-2"
+          }
+        ]
+      },
+      {
+        "tier": "Balanced",
+        "logic": "Profilo balanced costruito sulle quote Sisal del 2026-10-09: quota 10 orientativa, 4-7 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
+        "legs": [
+          {
+            "providerSelectionId": "5337176064",
+            "overlapKey": "scenario-goals-fulltime-match",
+            "semanticKeys": [
+              "goals-fulltime-match"
+            ],
+            "label": "MULTIGOAL MULTIESITI 16 ESITI · 3-5"
+          },
+          {
+            "providerSelectionId": "5371743421",
+            "overlapKey": "player-ederson-u o tiri in porta giocatore duo inc pali traverse inc ts",
+            "semanticKeys": [
+              "player-ederson-shots"
+            ],
+            "label": "EDERSON almeno 1 tiri in porta, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5371733916",
+            "overlapKey": "player-adams a-u o tiri totali giocatore duo inc ts",
+            "semanticKeys": [
+              "player-adams a-shots"
+            ],
+            "label": "ADAMS A. almeno 3 tiri totali, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5337203922",
+            "overlapKey": "scenario-btts-fulltime-match",
+            "semanticKeys": [
+              "btts-fulltime-match"
+            ],
+            "label": "Entrambe le squadre segnano"
+          },
+          {
+            "providerSelectionId": "5337204623",
+            "overlapKey": "market-u o tiri in porta",
+            "semanticKeys": [
+              "volume-shots-on-target"
+            ],
+            "label": "Partita almeno 7 tiri in porta"
+          }
+        ]
+      },
+      {
+        "tier": "Aggressive",
+        "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-10-09: quota 20 orientativa, 5-8 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
+        "legs": [
+          {
+            "providerSelectionId": "5337176064",
+            "overlapKey": "scenario-goals-fulltime-match",
+            "semanticKeys": [
+              "goals-fulltime-match"
+            ],
+            "label": "MULTIGOAL MULTIESITI 16 ESITI · 3-5"
+          },
+          {
+            "providerSelectionId": "5371743194",
+            "overlapKey": "player-kike perez-u o falli commessi giocatore",
+            "semanticKeys": [
+              "player-kike perez-fouls"
+            ],
+            "label": "KIKE PEREZ almeno 2 falli commessi"
+          },
+          {
+            "providerSelectionId": "5371759104",
+            "overlapKey": "player-adams a-u o falli subiti giocatore",
+            "semanticKeys": [
+              "player-adams a-fouls"
+            ],
+            "label": "ADAMS A. almeno 1 falli subiti"
+          },
+          {
+            "providerSelectionId": "5371699735",
+            "overlapKey": "player-ederson-u o tiri totali giocatore duo inc ts",
+            "semanticKeys": [
+              "player-ederson-shots"
+            ],
+            "label": "EDERSON almeno 2 tiri totali, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5371734161",
+            "overlapKey": "player-de ketelaere c-u o falli commessi giocatore",
+            "semanticKeys": [
+              "player-de ketelaere c-fouls"
+            ],
+            "label": "DE KETELAERE C. almeno 1 falli commessi"
+          },
+          {
+            "providerSelectionId": "5337175899",
+            "overlapKey": "scenario-goals-fulltime-home",
+            "semanticKeys": [
+              "goals-fulltime-home"
+            ],
+            "label": "MULTIGOAL Atalanta MULTIESITI · 1-3"
+          }
+        ]
+      }
+    ],
+    "torino-udinese-2026-27-md-06": [
+      {
+        "tier": "Safe",
+        "logic": "Profilo safe costruito sulle quote Sisal del 2026-10-09: quota 5 orientativa, 3-6 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
+        "legs": [
+          {
+            "providerSelectionId": "5337165771",
+            "overlapKey": "scenario-btts-fulltime-match",
+            "semanticKeys": [
+              "btts-fulltime-match"
+            ],
+            "label": "Entrambe le squadre segnano"
+          },
+          {
+            "providerSelectionId": "5337155745",
+            "overlapKey": "scenario-goals-fulltime-home",
+            "semanticKeys": [
+              "goals-fulltime-home"
+            ],
+            "label": "MULTIGOAL Torino MULTIESITI · 1-4"
+          },
+          {
+            "providerSelectionId": "5371701669",
+            "overlapKey": "player-gomez unai-u o tiri in porta giocatore duo inc pali traverse inc ts",
+            "semanticKeys": [
+              "player-gomez unai-shots"
+            ],
+            "label": "GOMEZ UNAI almeno 1 tiri in porta, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5337166472",
+            "overlapKey": "market-u o tiri in porta",
+            "semanticKeys": [
+              "volume-shots-on-target"
+            ],
+            "label": "Partita almeno 7 tiri in porta"
+          }
+        ]
+      },
+      {
+        "tier": "Balanced",
+        "logic": "Profilo balanced costruito sulle quote Sisal del 2026-10-09: quota 10 orientativa, 4-7 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
+        "legs": [
+          {
+            "providerSelectionId": "5371701669",
+            "overlapKey": "player-gomez unai-u o tiri in porta giocatore duo inc pali traverse inc ts",
+            "semanticKeys": [
+              "player-gomez unai-shots"
+            ],
+            "label": "GOMEZ UNAI almeno 1 tiri in porta, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5337155743",
+            "overlapKey": "scenario-goals-fulltime-home",
+            "semanticKeys": [
+              "goals-fulltime-home"
+            ],
+            "label": "MULTIGOAL Torino MULTIESITI · 1-2"
+          },
+          {
+            "providerSelectionId": "5337207654",
+            "overlapKey": "scenario-goals-fulltime-match",
+            "semanticKeys": [
+              "goals-fulltime-match"
+            ],
+            "label": "MULTIGOAL MULTIESITI 16 ESITI · 2-4"
+          },
+          {
+            "providerSelectionId": "5337165771",
+            "overlapKey": "scenario-btts-fulltime-match",
+            "semanticKeys": [
+              "btts-fulltime-match"
+            ],
+            "label": "Entrambe le squadre segnano"
+          },
+          {
+            "providerSelectionId": "5337167944",
+            "overlapKey": "scenario-result-fulltime",
+            "semanticKeys": [
+              "result-fulltime"
+            ],
+            "label": "Nessun pareggio (12)"
+          }
+        ]
+      },
+      {
+        "tier": "Aggressive",
+        "logic": "Profilo aggressive costruito sulle quote Sisal del 2026-10-09: quota 20 orientativa, 5-8 gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole 1.15-1.85. Il rischio resta informativo.",
+        "legs": [
+          {
+            "providerSelectionId": "5371701669",
+            "overlapKey": "player-gomez unai-u o tiri in porta giocatore duo inc pali traverse inc ts",
+            "semanticKeys": [
+              "player-gomez unai-shots"
+            ],
+            "label": "GOMEZ UNAI almeno 1 tiri in porta, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5371757552",
+            "overlapKey": "player-kamara h-u o falli subiti giocatore",
+            "semanticKeys": [
+              "player-kamara h-fouls"
+            ],
+            "label": "KAMARA H. almeno 1 falli subiti"
+          },
+          {
+            "providerSelectionId": "5371700829",
+            "overlapKey": "player-kamara h-u o tiri totali giocatore duo inc ts",
+            "semanticKeys": [
+              "player-kamara h-shots"
+            ],
+            "label": "KAMARA H. almeno 2 tiri totali, sostituto incluso"
+          },
+          {
+            "providerSelectionId": "5337207649",
+            "overlapKey": "scenario-goals-fulltime-match",
+            "semanticKeys": [
+              "goals-fulltime-match"
+            ],
+            "label": "MULTIGOAL MULTIESITI 16 ESITI · 1-3"
+          },
+          {
+            "providerSelectionId": "5337165771",
+            "overlapKey": "scenario-btts-fulltime-match",
+            "semanticKeys": [
+              "btts-fulltime-match"
+            ],
+            "label": "Entrambe le squadre segnano"
+          },
+          {
+            "providerSelectionId": "5337155712",
+            "overlapKey": "scenario-goals-fulltime-away",
+            "semanticKeys": [
+              "goals-fulltime-away"
+            ],
+            "label": "MULTIGOAL Udinese MULTIESITI · 1-3"
+          }
+        ]
+      }
+    ]
+  }
+}

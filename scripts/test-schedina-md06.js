@@ -1,0 +1,87 @@
+"use strict";
+
+const assert = require("assert");
+const fs = require("fs");
+const path = require("path");
+const { execFileSync } = require("child_process");
+const { isUnderPlayableSelection } = require("./betting-market-policy");
+
+const root = path.resolve(__dirname, "..");
+const read = relative => JSON.parse(fs.readFileSync(path.join(root, relative), "utf8"));
+const normalized = read("data/normalized/schedina-md06.json");
+const source = read("data/sources/schedina-serie-a-2026-27-md-06.json");
+const myCombo = read("data/sources/mycombo-serie-a-2026-27-md-06.json");
+const odds = read("data/normalized/odds/sisal/serie-a.json");
+const predictions = read("data/normalized/predictions.json").predictions.filter(row => row.matchId.endsWith("-md-06"));
+const review = read("output/reports/serie-a-md05-betting-decision-review-2026-10-09.json");
+const selection = read("output/reports/serie-a-md06-betting-selection-2026-10-09.json");
+const selectionMarkdown = fs.readFileSync(path.join(root, "output/reports/serie-a-md06-betting-selection-2026-10-09.md"), "utf8");
+const page = fs.readFileSync(path.join(root, "js/pages/betting.js"), "utf8");
+
+assert.equal(normalized.matchday, 6);
+assert.equal(normalized.slips.length, 2);
+assert.equal(source.slips.length, 2);
+assert.equal(normalized.slips.reduce((sum, slip) => sum + slip.legs.length, 0), 6);
+assert.equal(normalized.coverage.qualifiedProfiles, 0, "MD6 non deve qualificare automaticamente le schedine");
+assert.deepEqual(normalized.slips.map(slip => slip.validationStatus).sort(), ["EV_CALCOLABILE", "EV_NON_CALCOLABILE"]);
+assert.deepEqual(review.totals, { won: 26, lost: 17, void: 2, unavailable: 0, pending: 0 });
+assert.equal(review.slips.length, 8);
+assert.equal(selection.summary.matchesAnalyzed, 10);
+assert.equal(selection.summary.actionableCandidates, 26);
+assert.equal(selection.rules.duoEvCertified, 0);
+assert.equal(selection.rules.underMarketsPlayable, false);
+assert.equal(selection.rules.overMarketsRemainEligible, true);
+assert.equal(selection.myCombo.matches, 10);
+assert(!selectionMarkdown.includes("Probabilità congiunta: 0.0%"), "N/D non deve essere serializzato come probabilità zero");
+assert(!selectionMarkdown.includes("| 0.0% | N/D | N/D | INCOMPATIBILE_DUO"), "P modello DUO mancante non deve diventare zero");
+
+const oddsSelections = new Set(odds.events.flatMap(event => event.markets.flatMap(market => market.selections.map(selection => selection.providerSelectionId))));
+for (const slip of normalized.slips) {
+  assert(slip.legs.length >= 2 && slip.legs.length <= 4, `${slip.id}: lunghezza impropria`);
+  assert.equal(new Set(slip.legs.map(leg => leg.matchId)).size, slip.legs.length, `${slip.id}: partita duplicata`);
+  assert(slip.legs.every(leg => oddsSelections.has(leg.providerSelectionId)), `${slip.id}: quota non presente nello snapshot`);
+  assert(slip.legs.every(leg => leg.marketUpdatedAt), `${slip.id}: timestamp quota mancante`);
+  assert(!slip.legs.some(leg => /CARTELLIN/i.test(leg.market)), `${slip.id}: cartellini non autorizzati`);
+  assert(!slip.legs.some(isUnderPlayableSelection), `${slip.id}: selezione Under ancora giocabile`);
+}
+
+const duo = normalized.slips.find(slip => slip.validationStatus === "EV_NON_CALCOLABILE");
+assert(duo.legs.every(leg => leg.compatibility === "INCOMPATIBILE_DUO" && leg.expectedValuePct == null));
+assert.equal(duo.jointModelProbabilityPct, null);
+assert.equal(duo.expectedValuePct, null);
+assert(duo.legs.every(leg => Number.isFinite(leg.individualV2ProbabilityPct)), "P V2 individuale deve restare visibile");
+
+const compatible = normalized.slips.find(slip => slip.validationStatus === "EV_CALCOLABILE");
+assert(compatible.legs.every(leg => leg.compatibility === "COMPATIBILE"));
+assert(Number.isFinite(compatible.jointModelProbabilityPct));
+assert(Number.isFinite(compatible.expectedValuePct));
+
+assert.equal(Object.keys(myCombo.matches).length, 10);
+for (const [matchId, portfolios] of Object.entries(myCombo.matches)) {
+  assert.equal(portfolios.length, 3, `${matchId}: servono tre profili MyCombo`);
+  const safe = portfolios.find(portfolio => portfolio.tier === "Safe");
+  assert(safe && safe.legs.length >= 3 && safe.legs.length <= 6, `${matchId}: Safe non deve forzare dieci esiti`);
+  assert(!portfolios.flatMap(portfolio => portfolio.legs || []).some(isUnderPlayableSelection), `${matchId}: Under ancora presente nella MyCombo MD6`);
+}
+for (const prediction of predictions) {
+  const safe = prediction.combinations.find(combo => combo.tier === "Safe");
+  assert(safe?.legs?.length >= 3 && safe.legs.length <= 6, `${prediction.matchId}: MyCombo Safe non integrata`);
+  assert(!prediction.combinations.flatMap(combo => combo.legs || []).some(isUnderPlayableSelection), `${prediction.matchId}: Under propagato nelle combinazioni operative`);
+}
+
+assert.equal(isUnderPlayableSelection({ selection: "OVER", label: "Over 2,5 gol" }), false, "Gli Over devono restare eleggibili");
+assert.equal(isUnderPlayableSelection({ selection: "UNDER", label: "Under 2,5 gol" }), true);
+assert(odds.events.flatMap(event => event.markets).flatMap(market => market.selections || []).some(selection => selection.name === "UNDER"), "Gli Under devono restare nello snapshot statistico delle quote");
+
+assert(page.includes('load("schedina-md06.json")'));
+assert(page.includes("myComboRoundContent(predictionData.predictions||[],matchById,teamById,number)"));
+assert(page.includes("Il numero di esiti dipende dalla qualità disponibile"));
+
+const currentMd5 = fs.readFileSync(path.join(root, "data/normalized/schedina-md05.json"), "utf8");
+const headMd5 = execFileSync("git", ["show", "HEAD:data/normalized/schedina-md05.json"], { cwd: root, encoding: "utf8", maxBuffer: 8 * 1024 * 1024 });
+assert.equal(currentMd5, headMd5, "Lo storico MD5 è stato alterato");
+const currentMd5MyCombo = fs.readFileSync(path.join(root, "data/sources/mycombo-serie-a-2026-27-md-05.json"), "utf8");
+const headMd5MyCombo = execFileSync("git", ["show", "HEAD:data/sources/mycombo-serie-a-2026-27-md-05.json"], { cwd: root, encoding: "utf8", maxBuffer: 8 * 1024 * 1024 });
+assert.equal(currentMd5MyCombo, headMd5MyCombo, "Le MyCombo storiche MD5 sono state alterate");
+
+console.log("OK Schedina MD06: 2 schedine/6 gambe, zero Under giocabili, Over eleggibili, DUO non certificato, MyCombo 3-6, MD5 invariata");

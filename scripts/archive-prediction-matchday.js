@@ -2,6 +2,7 @@
 
 const fs = require("fs");
 const path = require("path");
+const { execFileSync } = require("child_process");
 
 const root = path.resolve(__dirname, "..");
 const index = process.argv.indexOf("--matchday");
@@ -10,7 +11,16 @@ if (!Number.isInteger(matchday) || matchday < 1 || matchday > 38) {
   throw new Error("--matchday deve essere compreso tra 1 e 38.");
 }
 
-const predictions = JSON.parse(fs.readFileSync(path.join(root, "data", "normalized", "predictions.json"), "utf8"));
+const revisionIndex = process.argv.indexOf("--revision");
+const revision = revisionIndex >= 0 ? process.argv[revisionIndex + 1] : null;
+if (revisionIndex >= 0 && !revision) throw new Error("--revision richiede un riferimento Git.");
+const predictions = revision
+  ? JSON.parse(execFileSync(process.env.CODEX_GIT_PATH || "git", ["show", `${revision}:data/normalized/predictions.json`], {
+      cwd: root,
+      encoding: "utf8",
+      maxBuffer: 64 * 1024 * 1024
+    }))
+  : JSON.parse(fs.readFileSync(path.join(root, "data", "normalized", "predictions.json"), "utf8"));
 const matches = JSON.parse(fs.readFileSync(path.join(root, "data", "normalized", "matches.json"), "utf8"));
 const matchdayById = new Map(matches.map(match => [match.id, match.matchday]));
 const selected = predictions.predictions.filter(prediction => matchdayById.get(prediction.matchId) === matchday);
@@ -27,4 +37,4 @@ const output = {
 };
 const destination = path.join(root, "data", "sources", `prediction-archive-md${code}-2026-27.json`);
 fs.writeFileSync(destination, `${JSON.stringify(output, null, 2)}\n`);
-console.log(`Archivio pronostici MD${code}: ${selected.length} partite.`);
+console.log(`Archivio pronostici MD${code}: ${selected.length} partite${revision ? ` da ${revision}` : ""}.`);

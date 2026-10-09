@@ -166,7 +166,8 @@ async function main() {
   };
 
   fs.mkdirSync(path.dirname(rawPath), { recursive: true });
-  fs.writeFileSync(rawPath, html);
+  const normalizedRawSnapshot = html.replace(/[ \t]+$/gm, "");
+  fs.writeFileSync(rawPath, normalizedRawSnapshot);
   fs.writeFileSync(outputPath, `${JSON.stringify(dataset, null, 2)}\n`);
   console.log(`Fantacalcio MD${matchday}: ${teams.length} squadre, ${dataset.coverage.starters} titolari, ${dataset.coverage.reserves} riserve, ${omittedNonRoster.length} esclusi perché fuori rosa.`);
 }
