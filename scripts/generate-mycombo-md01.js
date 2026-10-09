@@ -3,7 +3,7 @@
 const fs = require("fs");
 const path = require("path");
 const { isSisalMyComboMarketName, sisalMyComboMarketNames } = require("./mycombo-market-policy");
-const { isUnderPlayableSelection } = require("./betting-market-policy");
+const { isUnderPlayableSelection, isIndividualPlayerFoulMarket, isPlayableSelection } = require("./betting-market-policy");
 const { attachBetSelection, selectionIdFor } = require("./betting-selection-contract");
 
 const root = path.resolve(__dirname, "..");
@@ -22,8 +22,10 @@ const assessmentSource = fs.existsSync(assessmentPath) ? JSON.parse(fs.readFileS
 const assessmentBySelectionId = new Map((assessmentSource?.assessments || []).map(item => [item.selectionId, item]));
 const previousOutput = fs.existsSync(outputPath) ? JSON.parse(fs.readFileSync(outputPath, "utf8")) : null;
 const previousUnderLegOccurrences = Object.values(previousOutput?.matches || {}).flatMap(portfolios => portfolios).flatMap(portfolio => portfolio.legs || []).filter(isUnderPlayableSelection).length;
+const previousIndividualFoulOccurrences = Object.values(previousOutput?.matches || {}).flatMap(portfolios => portfolios).flatMap(portfolio => portfolio.legs || []).filter(isIndividualPlayerFoulMarket).length;
 const preservedUnderMigrationCount = Number(previousOutput?.constraints?.underSelectionPolicy?.previousPlayableLegOccurrencesRemoved || 0);
 const underCandidateExclusionsByMatch = {};
+const individualFoulCandidateExclusionsByMatch = {};
 
 const referenceOdds = { Safe: 5, Balanced: 10, Aggressive: 20 };
 const minimumLegOdds = matchday >= 5 ? 1.15 : 1.1;
@@ -428,10 +430,14 @@ function candidatePool(event, prediction, match) {
   }
 
   const uniqueCandidates = [...new Map(candidates.map(candidate => [candidate.providerSelectionId, { ...candidate, semanticKeys: candidate.semanticKeys || [] }])).values()];
+  const marketBySelectionId = new Map((event.markets || []).flatMap(market => (market.selections || []).map(selection => [String(selection.providerSelectionId), market.marketName])));
+  const policyInput = candidate => ({ matchId: match.id, market: marketBySelectionId.get(String(candidate.providerSelectionId)), selection: candidate.selection, label: candidate.label });
   const underCandidates = matchday >= 6 ? uniqueCandidates.filter(isUnderPlayableSelection) : [];
+  const individualFoulCandidates = matchday >= 6 ? uniqueCandidates.filter(candidate => isIndividualPlayerFoulMarket(policyInput(candidate))) : [];
   if (matchday >= 6) underCandidateExclusionsByMatch[match.id] = underCandidates.length;
+  if (matchday >= 6) individualFoulCandidateExclusionsByMatch[match.id] = individualFoulCandidates.length;
   return uniqueCandidates
-    .filter(candidate => matchday < 6 || !isUnderPlayableSelection(candidate))
+    .filter(candidate => matchday < 6 || isPlayableSelection(policyInput(candidate), { matchday }))
     .filter(candidate => {
       return !isExcludedMarketName(candidate.overlapKey);
     })
@@ -631,6 +637,14 @@ output.constraints.underSelectionPolicy = {
   previousPlayableLegOccurrencesRemoved: Math.max(previousUnderLegOccurrences, preservedUnderMigrationCount),
   filteredCandidateSelections: Object.values(underCandidateExclusionsByMatch).reduce((sum, count) => sum + count, 0),
   filteredCandidateSelectionsByMatch: underCandidateExclusionsByMatch
+};
+output.constraints.individualFoulSelectionPolicy = {
+  effectiveFromMatchday: 6,
+  active: matchday >= 6,
+  rule: "I falli commessi o subiti del singolo giocatore sono esclusi dalle proposte giocabili; statistiche, analisi, report e mercati aggregati di squadra restano invariati.",
+  previousPlayableLegOccurrencesRemoved: Math.max(previousIndividualFoulOccurrences, Number(previousOutput?.constraints?.individualFoulSelectionPolicy?.previousPlayableLegOccurrencesRemoved || 0)),
+  filteredCandidateSelections: Object.values(individualFoulCandidateExclusionsByMatch).reduce((sum, count) => sum + count, 0),
+  filteredCandidateSelectionsByMatch: individualFoulCandidateExclusionsByMatch
 };
 fs.writeFileSync(outputPath, `${JSON.stringify(output, null, 2)}\n`);
 console.log(`OK MyCombo giornata ${matchday}: ${Object.keys(output.matches).length} partite · 30 portafogli · snapshot ${output.updatedAt}`);

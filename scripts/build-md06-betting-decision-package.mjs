@@ -6,7 +6,7 @@ import { settleArchivedLeg } from "../js/pages/betting-settlement.mjs";
 import bettingMarketPolicy from "./betting-market-policy.js";
 import bettingSelectionContract from "./betting-selection-contract.js";
 
-const { isUnderPlayableSelection } = bettingMarketPolicy;
+const { isUnderPlayableSelection, isIndividualPlayerFoulMarket, isPlayableSelection } = bettingMarketPolicy;
 const { attachBetSelection, selectionIdFor, normalizeReliability } = bettingSelectionContract;
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -400,6 +400,7 @@ function resolvePlayer(matchId, playerName, type) {
 
 function buildSlip({ id, type, eyebrow, name, description, validationStatus, risk, legs }) {
   assert(!legs.some(isUnderPlayableSelection), `${id}: una selezione Under non può essere resa giocabile dalla MD6`);
+  assert(legs.every(leg => isPlayableSelection(leg, { matchday: 6 })), `${id}: un mercato escluso dalla policy MD6 non può essere reso giocabile`);
   assert(!legs.some(leg => leg.betSelection?.operational?.classification === "WATCH"), `${id}: un WATCH non può essere promosso automaticamente in schedina`);
   const combinedOdds = round(product(legs.map(leg => leg.odds)), 2);
   const jointAllowed = legs.every(leg => Number.isFinite(leg.modelProbabilityPct)) && new Set(legs.map(leg => leg.matchId)).size === legs.length;
@@ -554,6 +555,8 @@ const md6Report = {
     duoEvCertified: 0,
     underMarketsPlayable: false,
     underPolicyEffectiveFromMatchday: 6,
+    individualPlayerFoulsPlayable: false,
+    individualPlayerFoulsPolicyEffectiveFromMatchday: 6,
     overMarketsRemainEligible: true,
     classificationIsOperationalNotGuarantee: true,
     noMd5ThresholdOptimization: true,
@@ -566,6 +569,7 @@ const md6Report = {
     slipsGenerated: slips.length,
     qualifiedSlips: 0,
     underPlayableSelections: 0,
+    individualPlayerFoulPlayableSelections: 0,
     underOccurrencesRemoved: 3 + Number(md6MyCombo?.constraints?.underSelectionPolicy?.previousPlayableLegOccurrencesRemoved || 0),
   },
   fixtures: fixtureCandidateReports,
@@ -576,6 +580,7 @@ const md6Report = {
     displayedTier: "Safe",
     forcedTenLegs: false,
     underSelectionPolicy: md6MyCombo?.constraints?.underSelectionPolicy || null,
+    individualFoulSelectionPolicy: md6MyCombo?.constraints?.individualFoulSelectionPolicy || null,
     categoryCounts: myComboCategoryCounts,
     fixtures: myComboFixtureReviews,
   },

@@ -1,6 +1,6 @@
 const release=new URL(import.meta.url).searchParams.get("v")||"development";
 const {settleLeg:settleStrictLeg,settleArchivedLeg}=await import(`./betting-settlement.mjs?v=${encodeURIComponent(release)}`);
-const {createPersonalBetslipStore,personalBetslipSummary}=await import(`./personal-betslip-store.mjs?v=${encodeURIComponent(release)}`);
+const {createPersonalBetslipStore}=await import(`./personal-betslip-store.mjs?v=${encodeURIComponent(release)}`);
 
 export function createPage(deps){
   const {esc,dateOnly,hero,load}=deps;
@@ -9,7 +9,7 @@ export function createPage(deps){
   const pct=value=>Number(value).toLocaleString("it-IT",Number(value)>0&&Number(value)<.01?{minimumFractionDigits:4,maximumFractionDigits:6}:{minimumFractionDigits:2,maximumFractionDigits:2});
   const odds=value=>Number(value).toLocaleString("it-IT",{minimumFractionDigits:2,maximumFractionDigits:2});
   const metric=(value,formatter,suffix="")=>Number.isFinite(value)?`${formatter(value)}${suffix}`:"N/D";
-  let personalStore=null,currentContext=null,personalNotice="",personalUnsubscribe=null,personalDocumentClick=null;
+  let personalStore=null,currentContext=null,personalNotice="",personalUnsubscribe=null,personalDocumentClick=null,personalMediaCleanup=null;
   const selectionRegistry=new Map(),slipRegistry=new Map();
 
   function registerSelection(leg,{fixture=leg.fixture,sourceSection="modello"}={}){
@@ -46,7 +46,18 @@ export function createPage(deps){
     return `<article class="betting-slip betting-slip--${esc(slip.id)}" data-quality="${esc(slip.qualityStatus)}"><header><div><p>${esc(slip.eyebrow)}</p><h2>${esc(slip.name)}</h2><small>${families}</small></div></header>${validation}<div class="betting-slip-metrics"><div class="betting-slip-total"><span>Quota totale</span><strong>${odds(slip.combinedOdds)}</strong><small>${slip.legs.length} giocate</small></div><div><span>${cardHeuristic?"Indice euristico non calibrato":duoIncompatible?"Probabilità congiunta":"Probabilità"}</span><strong>${metric(slip.jointModelProbabilityPct,pct,"%")}</strong></div><div><span>${cardHeuristic?"Quota derivata euristica":"Quota equa"}</span><strong>${metric(slip.fairOdds,odds)}</strong></div><div><span>${cardHeuristic?"EV euristico non validato":duoIncompatible?"EV non calcolabile":"EV stimato"}</span><strong>${metric(slip.expectedValuePct,pct,"%")}</strong></div></div>${addAll}<ol>${legs}</ol>${semanticWarning}${weak}</article>`;
   }
 
-  function roundContent(data,matchById,{showLegend=false}={}){
+  function modelSections(data,matchById,{showLegend=false}={}){
+    const model=data.slips.filter(slip=>!["laboratorio","nd"].includes(slip.qualityStatus)),laboratory=data.slips.filter(slip=>["laboratorio","nd"].includes(slip.qualityStatus));
+    const selected=model.length?`<div class="betting-slip-grid betting-slip-grid-qualified">${model.map(slip=>slipCard(slip,matchById)).join("")}</div>`:`<div class="betting-nd-compact"><strong>Nessuna schedina del modello</strong><span>Non sono state forzate combinazioni per questa giornata.</span></div>`;
+    const legend=showLegend?`<div class="betting-result-legend" aria-label="Legenda esiti"><span class="betting-result-legend--won"><b aria-hidden="true">✓</b> Esatto</span><span class="betting-result-legend--lost"><b aria-hidden="true">×</b> Sbagliato</span><span class="betting-result-legend--void"><b aria-hidden="true">—</b> Annullata</span><small>Se il calciatore non entra, la quota è annullata e la puntata viene restituita.</small></div>`:"";
+    const coverage=data.coverage?`<p class="betting-coverage"><strong>${data.coverage.qualifiedProfiles} proposte qualificate</strong> su ${data.coverage.profilesEvaluated} profili valutati · ${data.coverage.unavailableProfiles} profili N/D.</p>`:"";
+    const main=`<section class="betting-stage betting-model-section" aria-labelledby="betting-model-title"><header class="betting-section-heading"><h3 id="betting-model-title">Schedine del modello</h3></header>${legend}${selected}</section>`;
+    const lab=laboratory.length?`<section class="betting-stage betting-lab-section" aria-labelledby="betting-lab-title"><header class="betting-section-heading"><h3 id="betting-lab-title">Analisi e laboratorio</h3></header><div class="betting-slip-grid">${laboratory.map(slip=>slipCard(slip,matchById)).join("")}</div><footer class="betting-method"><strong>Metodo</strong><p>${esc(data.methodology)}</p><p>Quote ${esc(data.provider)} aggiornate al ${esc(dateOnly(data.oddsRetrievedAt))}. <a href="${esc(data.sourceUrl)}" target="_blank" rel="noreferrer">Fonte quote</a>.</p></footer></section>`:"";
+    const summary=`<section class="betting-essential" aria-labelledby="betting-essential-title"><h3 id="betting-essential-title">In sintesi</h3>${coverage}<p>${esc(data.selectionRule||"Nessuna selezione viene forzata.")}</p><p>Under e falli individuali del giocatore non sono proposte giocabili dalla MD6. Quote: ${esc(data.provider)}, snapshot ${esc(dateOnly(data.oddsRetrievedAt))}.</p></section>`;
+    return {summary,main,lab};
+  }
+
+  function archiveRoundContent(data,matchById,{showLegend=false}={}){
     const qualified=data.slips.filter(slip=>slip.qualityStatus==="qualificata"),others=data.slips.filter(slip=>slip.qualityStatus!=="qualificata");
     const selected=qualified.length?`<div class="betting-slip-grid betting-slip-grid-qualified">${qualified.map(slip=>slipCard(slip,matchById)).join("")}</div>`:`<div class="betting-nd-compact"><strong>Nessuna schedina qualificata</strong><span>Il controllo prudenziale non forza proposte: restano disponibili le letture editoriali e di laboratorio.</span></div>`;
     const legend=showLegend?`<div class="betting-result-legend" aria-label="Legenda esiti"><span class="betting-result-legend--won"><b aria-hidden="true">✓</b> Esatto</span><span class="betting-result-legend--lost"><b aria-hidden="true">×</b> Sbagliato</span><span class="betting-result-legend--void"><b aria-hidden="true">—</b> Annullata</span><small>Se il calciatore non entra, la quota è annullata e la puntata viene restituita.</small></div>`:"";
@@ -56,20 +67,29 @@ export function createPage(deps){
 
   function myComboRoundContent(predictions,matchById,teamById,matchday){
     const code=String(matchday).padStart(2,"0");
-    const entries=predictions.filter(prediction=>prediction.matchId.endsWith(`-md-${code}`)).map(prediction=>({prediction,combo:prediction.combinations?.find(item=>item.tier==="Safe"),match:matchById.get(prediction.matchId)})).filter(item=>item.match&&item.combo?.legs?.length);
+    const entries=predictions.filter(prediction=>prediction.matchId.endsWith(`-md-${code}`)).map(prediction=>({prediction,combo:prediction.combinations?.find(item=>item.tier==="Safe"),match:matchById.get(prediction.matchId)})).filter(item=>item.match&&item.combo?.legs?.length).sort((left,right)=>`${left.match.date}T${left.match.kickoff||"00:00"}`.localeCompare(`${right.match.date}T${right.match.kickoff||"00:00"}`));
+    const legRow=(leg,index,match,finished,forceDisabled=false)=>{const home=teamById.get(match.homeTeam)?.name||match.homeTeam,away=teamById.get(match.awayTeam)?.name||match.awayTeam,result=settleLeg({...leg,fixture:`${home} - ${away}`},match),settled=finished&&["won","lost","void"].includes(result.status),status=finished?(settled?result.status:"unavailable"):"pending",classification=leg.betSelection?.operational?.classification,reliability=leg.betSelection?.operational?.reliability?.level||"Non valutabile",playable=leg.betSelection?.operational?.playability?.status!=="NOT_PLAYABLE",selection=!forceDisabled&&playable&&classification!=="ESCLUSO"?registerSelection(leg,{fixture:`${home} - ${away}`,sourceSection:"mycombo-partita"}):null,badge=finished?`<span class="betting-leg-result">${esc(settled?result.label:"Da verificare")}</span>`:"";return `<li${finished?` class="betting-leg--${status}" data-settlement="${status}"`:""}><button type="button" class="betting-mycombo-pick" data-mycombo-pick${selection?` data-personal-pick="${esc(selection.selectionId)}"`:""} aria-pressed="false"${finished||!selection?" disabled":""}><span class="betting-leg-number">${String(index+1).padStart(2,"0")}</span><span class="betting-mycombo-pick-copy"><strong>${esc(leg.label)}</strong><span>${esc(leg.market)} · ${esc(classification||"Non valutabile")} · Affidabilità ${esc(reliability)}</span>${badge}</span><b>${odds(leg.odds)}</b></button></li>`};
     const cards=entries.map(({combo,match})=>{
       const home=teamById.get(match.homeTeam)?.name||match.homeTeam,away=teamById.get(match.awayTeam)?.name||match.awayTeam,finished=match.status==="finished";
-      const results=combo.legs.map(leg=>settleLeg({...leg,fixture:`${home} - ${away}`},match)),won=results.filter(result=>result.status==="won").length,decided=results.filter(result=>["won","lost","void"].includes(result.status)).length,pending=results.length-decided;
-      const metrics=finished?`<div class="betting-slip-total"><span>Esiti presi</span><strong>${won}</strong><small>${decided} esiti verificati</small></div><div><span>Da verificare</span><strong>${pending}/${results.length}</strong></div>`:`<div class="betting-slip-total"><span>Nella schedina</span><strong data-mycombo-active>0</strong><small>stato condiviso</small></div><div><span>Disponibili</span><strong>${combo.legs.length}</strong></div>`;
-      const legs=combo.legs.map((leg,index)=>{const result=results[index],settled=finished&&["won","lost","void"].includes(result.status),status=finished?(settled?result.status:"unavailable"):"pending",badge=finished?`<span class="betting-leg-result">${esc(settled?result.label:"Da verificare")}</span>`:"",selection=registerSelection(leg,{fixture:`${home} - ${away}`,sourceSection:"mycombo-partita"});return `<li${finished?` class="betting-leg--${status}" data-settlement="${status}"`:""}><button type="button" class="betting-mycombo-pick" data-mycombo-pick${selection?` data-personal-pick="${esc(selection.selectionId)}"`:""} aria-pressed="false"${finished||!selection?" disabled":""}><span class="betting-leg-number">${String(index+1).padStart(2,"0")}</span><span class="betting-mycombo-pick-copy"><strong>${esc(leg.market)}</strong><span>${esc(leg.label)}</span>${badge}</span><b>${odds(leg.odds)}</b></button></li>`}).join("");
-      return `<article class="betting-slip betting-mycombo-card" data-match-id="${esc(match.id)}"${finished?' data-finished="true"':""}><header><div><p>MyCombo · ${finished?"risultati":`scegli tra ${combo.legs.length} esiti`}</p><h2>${esc(home)} - ${esc(away)}</h2><small>${finished?`Finale ${match.score.home}-${match.score.away} · verde = esito preso`:"Aggiungi o rimuovi ogni esito dalla schedina personale condivisa"}</small></div></header><div class="betting-slip-metrics">${metrics}<div><span>Rischio</span><strong>${esc(combo.risk||combo.tier)}</strong></div></div><ol class="betting-mycombo-options">${legs}</ol><p class="betting-weakest">${finished?"Esiti verificati sul referto finale; i mercati non coperti dai dati disponibili restano da verificare.":"L’assenza di conflitti non dimostra che il bookmaker consenta la multipla: la combinabilità resta da verificare."}</p></article>`;
+      const main=combo.legs.filter(leg=>["PRINCIPALE","INTERESSANTE","OUTSIDER"].includes(leg.betSelection?.operational?.classification)&&leg.betSelection?.operational?.playability?.status!=="NOT_PLAYABLE");
+      const watch=combo.legs.filter(leg=>leg.betSelection?.operational?.classification==="WATCH"&&leg.betSelection?.operational?.playability?.status!=="NOT_PLAYABLE");
+      const review=combo.legs.filter(leg=>!main.includes(leg)&&!watch.includes(leg));
+      const mainRows=main.length?`<div class="betting-mycombo-group"><h4>Proposte</h4><ol class="betting-mycombo-options">${main.map((leg,index)=>legRow(leg,index,match,finished)).join("")}</ol></div>`:"";
+      const watchRows=watch.length?`<details class="betting-mycombo-watch"><summary>WATCH</summary><ol class="betting-mycombo-options">${watch.map((leg,index)=>legRow(leg,index,match,finished)).join("")}</ol></details>`:"";
+      const reviewRows=review.length?`<details class="betting-mycombo-review"><summary>Non valutabili</summary><ol class="betting-mycombo-options">${review.map((leg,index)=>legRow(leg,index,match,finished,true)).join("")}</ol></details>`:"";
+      return `<details class="betting-mycombo-card" data-match-id="${esc(match.id)}"${finished?' data-finished="true"':""}><summary><span><small>${esc(dateOnly(match.date))} · ${esc(match.kickoff||"Orario N/D")}</small><strong>${esc(home)} - ${esc(away)}</strong></span><span aria-hidden="true">＋</span></summary><div class="betting-mycombo-body">${mainRows}${watchRows}${reviewRows}</div></details>`;
     }).join("");
-    const title=matchday===5?"MyCombo · 10 esiti per gara":"MyCombo · candidati per gara";
-    const copy=matchday===5?"Ogni proposta contiene esattamente 10 esiti. Per le gare concluse gli esiti verificabili sono aggiornati sul referto: quelli presi sono evidenziati in verde, mentre i dati non coperti restano da verificare.":"Il numero di esiti dipende dalla qualità disponibile: nessun mercato viene aggiunto per raggiungere artificialmente quota dieci. La MyCombo resta un costruttore di scenari, non una multipla consigliata.";
-    return `<section class="betting-mycombo-round" aria-labelledby="betting-mycombo-md${code}-title"><header class="betting-section-heading"><div><p class="eyebrow">Una per ogni partita</p><h3 id="betting-mycombo-md${code}-title">${title}</h3></div><p>${copy}</p></header><div class="betting-slip-grid">${cards}</div></section>`;
+    return `<section class="betting-mycombo-round" aria-labelledby="betting-mycombo-md${code}-title"><header class="betting-section-heading"><h3 id="betting-mycombo-md${code}-title">MyCombo per partita</h3><div class="betting-mycombo-actions"><button type="button" data-mycombo-open-all>Apri tutte</button><button type="button" data-mycombo-close-all>Chiudi tutte</button></div></header><div class="betting-mycombo-list">${cards}</div></section>`;
   }
 
-  function bindMyComboInteractions(){updatePersonalSelectionControls(personalStore?.getSnapshot())}
+  function bindMyComboInteractions(matchday){
+    const storageKey=`serie-a-2026-27:mycombo-open:v1:md${String(matchday).padStart(2,"0")}`,details=[...document.querySelectorAll(".betting-mycombo-card")];
+    let saved=[];try{saved=JSON.parse(localStorage.getItem(storageKey)||"[]")}catch(_error){saved=[]}
+    details.forEach(detail=>{detail.open=saved.includes(detail.dataset.matchId);detail.addEventListener("toggle",()=>{try{localStorage.setItem(storageKey,JSON.stringify(details.filter(item=>item.open).map(item=>item.dataset.matchId)))}catch(_error){}})});
+    document.querySelector("[data-mycombo-open-all]")?.addEventListener("click",()=>details.forEach(detail=>{detail.open=true}));
+    document.querySelector("[data-mycombo-close-all]")?.addEventListener("click",()=>details.forEach(detail=>{detail.open=false}));
+    updatePersonalSelectionControls(personalStore?.getSnapshot());
+  }
 
   const personalContextLabel=context=>context?.label||`${context?.competition||"Competizione"} · ${context?.season||"stagione N/D"} · giornata ${context?.matchday??"N/D"}`;
 
@@ -93,11 +113,11 @@ export function createPage(deps){
   }
 
   function personalBetslipMarkup(){
-    return `<div class="personal-betslip-root" data-personal-root><button type="button" class="personal-betslip-trigger" data-personal-open aria-controls="personal-betslip-panel" aria-expanded="false"><span>Schedina personale</span><b data-personal-count>0</b></button><aside id="personal-betslip-panel" class="personal-betslip-panel" role="dialog" aria-modal="false" aria-labelledby="personal-betslip-title" hidden><header><div><p class="eyebrow">Costruttore condiviso</p><h2 id="personal-betslip-title" tabindex="-1">Schedina personale</h2></div><button type="button" class="personal-betslip-close" data-personal-close aria-label="Chiudi la schedina personale">×</button></header><p class="personal-betslip-context" data-personal-context></p><p class="personal-betslip-notice" data-personal-notice aria-live="polite"></p><div class="personal-betslip-content" data-personal-content></div><footer><button type="button" class="personal-betslip-copy" data-personal-copy>Copia riepilogo</button><button type="button" class="personal-betslip-clear" data-personal-clear>Svuota</button></footer></aside></div>`;
+    return `<div class="personal-betslip-root" data-personal-root><button type="button" class="personal-betslip-trigger" data-personal-open aria-controls="personal-betslip-panel" aria-expanded="false"><span>La mia schedina</span><b data-personal-count>0</b></button><aside id="personal-betslip-panel" class="personal-betslip-panel" role="dialog" aria-modal="false" aria-labelledby="personal-betslip-title" hidden><header><div><h2 id="personal-betslip-title" tabindex="-1">La mia schedina</h2></div><button type="button" class="personal-betslip-close" data-personal-close aria-label="Chiudi la mia schedina">×</button></header><p class="personal-betslip-context" data-personal-context></p><p class="personal-betslip-notice" data-personal-notice aria-live="polite"></p><div class="personal-betslip-content" data-personal-content></div><footer><button type="button" class="personal-betslip-clear" data-personal-clear>Svuota</button></footer></aside></div>`;
   }
 
   function issueLabel(issue){
-    const labels={EXACT_DUPLICATE:"Duplicato",LOGICAL_OVERLAP:"Sovrapposizione",MARKET_CONTRADICTION:"Contraddizione",BOOKMAKER_COMBINABILITY_UNKNOWN:"Combinabilità non verificata",MISSING_VERIFIED_QUOTE:"Quota non verificata",AVAILABILITY_NOT_CONFIRMED:"Disponibilità non confermata",MODEL_BOOKMAKER_INCOMPATIBLE:"Mercato incompatibile",MISSING_FROM_CURRENT_DATA:"Non più nei dati correnti"};
+    const labels={EXACT_DUPLICATE:"Duplicato",LOGICAL_OVERLAP:"Sovrapposizione",MARKET_CONTRADICTION:"Contraddizione",BOOKMAKER_COMBINABILITY_UNKNOWN:"Combinabilità non verificata",MISSING_VERIFIED_QUOTE:"Quota non verificata",AVAILABILITY_NOT_CONFIRMED:"Disponibilità non confermata",MODEL_BOOKMAKER_INCOMPATIBLE:"Mercato incompatibile",MISSING_FROM_CURRENT_DATA:"Non più nei dati correnti",UNDER_NOT_PLAYABLE:"Under non giocabile",INDIVIDUAL_FOUL_NOT_PLAYABLE:"Falli individuali non giocabili"};
     return labels[issue.type]||"Verifica richiesta";
   }
 
@@ -120,9 +140,8 @@ export function createPage(deps){
       return `<li class="personal-betslip-item"><div><small>${esc(selection.fixture||"Partita N/D")}</small><strong>${esc(selection.label||"Selezione N/D")}</strong><span>${esc(selection.market||selection.betSelection?.market?.name||"Mercato N/D")} · quota ${quoteText}</span><span>Snapshot ${esc(quote.verifiedAt||"N/D")}</span>${flags.map(flag=>`<em>${esc(flag)}</em>`).join("")}${related.map(issue=>`<em>${esc(issueLabel(issue))}</em>`).join("")}</div><button type="button" data-personal-remove="${esc(selection.selectionId)}" aria-label="Rimuovi ${esc(selection.label||"selezione")}">Rimuovi</button></li>`;
     }).join("");
     const warnings=assessment.issues.length?`<section class="personal-betslip-warnings" aria-labelledby="personal-betslip-warnings-title"><h3 id="personal-betslip-warnings-title">Avvisi di compatibilità</h3><ul>${assessment.issues.map(issue=>`<li><strong>${esc(issueLabel(issue))}</strong><span>${esc(issue.message)}</span></li>`).join("")}</ul></section>`:"";
-    const total=assessment.usableCombinedOdds==null?`<div class="personal-betslip-total is-unavailable"><span>Quota totale</span><strong>Non disponibile come giocabile</strong><small>Serve conferma su quote, compatibilità e combinabilità bookmaker.</small></div>`:`<div class="personal-betslip-total"><span>Quota combinata verificata</span><strong>${odds(assessment.usableCombinedOdds)}</strong><small>Calcolata sulle ultime quote verificate disponibili.</small></div>`;
-    content.innerHTML=selections.length?`<ol class="personal-betslip-list">${rows}</ol>${warnings}${total}<p class="personal-betslip-method">Il costruttore non calcola probabilità congiunte né EV.</p>`:`<div class="personal-betslip-empty"><strong>Nessuna selezione</strong><span>Usa “Aggiungi” nelle schedine del modello o scegli gli esiti MyCombo della giornata.</span></div>`;
-    root.querySelector("[data-personal-copy]").disabled=!selections.length;
+    const total=assessment.usableCombinedOdds==null?`<div class="personal-betslip-total is-unavailable"><span>Quota selezionata</span><strong>—</strong><small>La quota combinata non è mostrata finché compatibilità e combinabilità bookmaker non sono verificate.</small></div>`:`<div class="personal-betslip-total"><span>Quota selezionata</span><strong>${odds(assessment.usableCombinedOdds)}</strong><small>Ultime quote verificate disponibili.</small></div>`;
+    content.innerHTML=selections.length?`<ol class="personal-betslip-list">${rows}</ol>${warnings}${total}`:`<div class="personal-betslip-empty"><strong>Nessuna selezione</strong><span>Aggiungi una proposta del modello o una selezione MyCombo.</span></div>${total}`;
     root.querySelector("[data-personal-clear]").disabled=!selections.length;
     updatePersonalSelectionControls(snapshot);
   }
@@ -130,29 +149,29 @@ export function createPage(deps){
   function mountPersonalBetslip(){
     personalUnsubscribe?.();
     if(personalDocumentClick)document.removeEventListener("click",personalDocumentClick);
+    personalMediaCleanup?.();
     document.querySelector("[data-personal-root]")?.remove();
-    document.body.insertAdjacentHTML("beforeend",personalBetslipMarkup());
+    const host=document.querySelector("[data-personal-host]");
+    if(!host)return;
+    host.innerHTML=personalBetslipMarkup();
     const root=document.querySelector("[data-personal-root]"),panel=root.querySelector(".personal-betslip-panel"),trigger=root.querySelector("[data-personal-open]");
-    let previousFocus=null;
-    const open=()=>{previousFocus=document.activeElement;panel.hidden=false;requestAnimationFrame(()=>panel.dataset.open="true");trigger.setAttribute("aria-expanded","true");panel.querySelector("[data-personal-close]").focus()};
-    const close=()=>{delete panel.dataset.open;trigger.setAttribute("aria-expanded","false");setTimeout(()=>{if(!panel.dataset.open)panel.hidden=true},180);(previousFocus?.isConnected?previousFocus:trigger).focus()};
+    const desktop=window.matchMedia("(min-width:1180px)");let previousFocus=null,mobileOpen=false;
+    const syncMode=()=>{if(desktop.matches){panel.hidden=false;panel.dataset.open="true";panel.setAttribute("role","region");trigger.setAttribute("aria-expanded","true")}else{panel.setAttribute("role","dialog");if(!mobileOpen){delete panel.dataset.open;panel.hidden=true;trigger.setAttribute("aria-expanded","false")}}};
+    const open=()=>{if(desktop.matches)return;previousFocus=document.activeElement;mobileOpen=true;panel.hidden=false;requestAnimationFrame(()=>panel.dataset.open="true");trigger.setAttribute("aria-expanded","true");panel.querySelector("[data-personal-close]").focus()};
+    const close=()=>{if(desktop.matches)return;mobileOpen=false;delete panel.dataset.open;trigger.setAttribute("aria-expanded","false");setTimeout(()=>{if(!mobileOpen&&!desktop.matches)panel.hidden=true},180);(previousFocus?.isConnected?previousFocus:trigger).focus()};
+    desktop.addEventListener("change",syncMode);personalMediaCleanup=()=>desktop.removeEventListener("change",syncMode);syncMode();
     root.addEventListener("click",async event=>{
-      const openButton=event.target.closest("[data-personal-open]"),closeButton=event.target.closest("[data-personal-close]"),removeButton=event.target.closest("[data-personal-remove]"),copyButton=event.target.closest("[data-personal-copy]"),clearButton=event.target.closest("[data-personal-clear]");
+      const openButton=event.target.closest("[data-personal-open]"),closeButton=event.target.closest("[data-personal-close]"),removeButton=event.target.closest("[data-personal-remove]"),clearButton=event.target.closest("[data-personal-clear]");
       if(openButton){open();return}if(closeButton){close();return}
       if(removeButton){personalStore.remove(removeButton.dataset.personalRemove);personalNotice="Selezione rimossa.";renderPersonalBetslip(personalStore.getSnapshot());return}
       if(clearButton&&window.confirm("Vuoi svuotare la schedina personale di questa giornata?")){const result=personalStore.clear();personalNotice=`Schedina svuotata: ${result.removed||0} selezioni rimosse.`;renderPersonalBetslip(personalStore.getSnapshot());return}
-      if(copyButton){
-        const text=personalBetslipSummary(personalStore.getSnapshot());
-        try{await navigator.clipboard.writeText(text);personalNotice="Riepilogo copiato."}catch(_error){const area=document.createElement("textarea");area.value=text;area.setAttribute("readonly","");area.style.position="fixed";area.style.opacity="0";document.body.append(area);area.select();document.execCommand("copy");area.remove();personalNotice="Riepilogo copiato."}
-        renderPersonalBetslip(personalStore.getSnapshot());
-      }
     });
     personalDocumentClick=event=>{
       const pick=event.target.closest("[data-personal-pick]");
       if(pick&&!pick.disabled){
         const id=pick.dataset.personalPick,snapshot=personalStore.getSnapshot(),active=snapshot.selections.some(selection=>selection.selectionId===id);
         const result=active?personalStore.remove(id):personalStore.add(selectionRegistry.get(id));
-        const notices={ADDED:"Selezione aggiunta.",REMOVED:"Selezione rimossa.",DUPLICATE:"Selezione già presente.",UNDER_NOT_PLAYABLE:"Gli Under sono esclusi dalle proposte giocabili dalla sesta giornata.",UNVERIFIED_IDENTITY:"Selezione non aggiunta: identificazione bookmaker non verificata.",CONTEXT_MISMATCH:"Selezione non aggiunta: giornata o competizione non coerente."};
+        const notices={ADDED:"Selezione aggiunta.",REMOVED:"Selezione rimossa.",DUPLICATE:"Selezione già presente.",UNDER_NOT_PLAYABLE:"Gli Under sono esclusi dalle proposte giocabili dalla sesta giornata.",INDIVIDUAL_FOUL_NOT_PLAYABLE:"I falli individuali sono esclusi dalle proposte giocabili dalla sesta giornata.",UNVERIFIED_IDENTITY:"Selezione non aggiunta: identificazione bookmaker non verificata.",CONTEXT_MISMATCH:"Selezione non aggiunta: giornata o competizione non coerente."};
         personalNotice=notices[result.status]||"Operazione non disponibile.";renderPersonalBetslip(personalStore.getSnapshot());
       }
       const addSlip=event.target.closest("[data-personal-add-slip]");
@@ -240,9 +259,14 @@ export function createPage(deps){
       if(number>=6)currentContext={competition:"serie-a",season:"2026-27",matchday:number,label:`Serie A · ${ordinal} giornata`};
       const description=`Tutte le schedine della ${ordinalWord(number)} giornata, con quote, probabilità, quota equa ed EV consultabili.`;
       const myCombo=[5,6].includes(number)?myComboRoundContent(predictionData.predictions||[],matchById,teamById,number):"";
-      document.querySelector("#app").innerHTML=hero(`Archivio · ${ordinal} giornata`,"Schedine",description)+`<nav class="betting-round-back" aria-label="Navigazione archivio schedine"><a href="schedina.html">← Tutte le giornate</a></nav><section class="betting-round-page" aria-labelledby="betting-round-${String(number).padStart(2,"0")}-title"><header class="betting-round-heading"><p class="eyebrow">Serie A · 2026/27</p><h2 id="betting-round-${String(number).padStart(2,"0")}-title">${ordinal} giornata</h2></header>${myCombo}${roundContent(data,matchById,{showLegend:number===1})}</section>`;
+      if(number>=6){
+        const sections=modelSections(data,matchById);
+        document.querySelector("#app").innerHTML=hero(`Serie A · ${ordinal} giornata`,"Schedine",description)+`<nav class="betting-round-back" aria-label="Navigazione archivio schedine"><a href="schedina.html">← Tutte le giornate</a></nav><section class="betting-round-page betting-round-page--workspace" aria-labelledby="betting-round-${String(number).padStart(2,"0")}-title"><header class="betting-round-heading"><p class="eyebrow">Serie A · 2026/27</p><h2 id="betting-round-${String(number).padStart(2,"0")}-title">${ordinal} giornata</h2></header><div class="betting-workspace"><div class="betting-workspace-content">${sections.summary}${sections.main}${myCombo}${sections.lab}</div><aside class="betting-personal-column" data-personal-host aria-label="Costruttore della schedina personale"></aside></div></section>`;
+      }else{
+        document.querySelector("#app").innerHTML=hero(`Archivio · ${ordinal} giornata`,"Schedine",description)+`<nav class="betting-round-back" aria-label="Navigazione archivio schedine"><a href="schedina.html">← Tutte le giornate</a></nav><section class="betting-round-page" aria-labelledby="betting-round-${String(number).padStart(2,"0")}-title"><header class="betting-round-heading"><p class="eyebrow">Serie A · 2026/27</p><h2 id="betting-round-${String(number).padStart(2,"0")}-title">${ordinal} giornata</h2></header>${myCombo}${archiveRoundContent(data,matchById,{showLegend:number===1})}</section>`;
+      }
       if(currentContext)initializePersonalBetslip(currentContext);
-      if([5,6].includes(number))bindMyComboInteractions();
+      if([5,6].includes(number))bindMyComboInteractions(number);
       return;
     }
     document.querySelector("#app").innerHTML=hero("Archivio · Stagione 2026/27","Schedina","Le schedine e le MyCombo sono raccolte separatamente giornata per giornata.")+`<section class="betting-archive" aria-labelledby="betting-archive-title"><header class="betting-archive-intro"><div><p class="eyebrow">Archivio schedine</p><h2 id="betting-archive-title">Competizioni e giornate</h2></div><p>La prima card blu raccoglie la Champions; seguono le giornate di Serie A.</p></header><div class="betting-archive-list team-directory-grid team-flip-grid">${championsArchiveCard(champions)}${archiveCard(md1,1,matchById)}${archiveCard(md2,2,matchById)}${archiveCard(md3,3,matchById)}${archiveCard(md4,4,matchById)}${archiveCard(md5,5,matchById)}${archiveCard(md6,6,matchById)}</div></section>`;

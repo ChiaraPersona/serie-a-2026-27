@@ -1,5 +1,7 @@
 "use strict";
 
+const { playablePolicyFor } = require("./betting-market-policy");
+
 const CONTRACT_VERSION = 1;
 const CLASSIFICATIONS = Object.freeze(["PRINCIPALE", "INTERESSANTE", "OUTSIDER", "WATCH", "ESCLUSO"]);
 const RELIABILITY_LEVELS = Object.freeze(["Alta", "Media", "Bassa", "Non valutabile"]);
@@ -75,6 +77,13 @@ function createBetSelection(input = {}) {
   const overlapKey = stringOrNull(input.overlapKey);
   const semanticKeys = arrayOfStrings(input.semanticKeys);
   const warnings = arrayOfStrings(input.warnings);
+  const playability = playablePolicyFor({
+    matchId,
+    matchday: input.matchday,
+    market: semantics.marketName,
+    selection: semantics.selectionName,
+    label: input.label,
+  });
   if (!selectionId) warnings.push("UNRESOLVED_PROVIDER_IDENTITY");
   if (!classification) warnings.push("CLASSIFICATION_NOT_AVAILABLE");
   if (reliability.level === "Non valutabile") warnings.push("RELIABILITY_NOT_EVALUABLE");
@@ -123,6 +132,7 @@ function createBetSelection(input = {}) {
       classification,
       classificationReason: stringOrNull(input.classificationReason),
       reliability,
+      playability,
     },
     evaluation: {
       modelProbabilityPct,

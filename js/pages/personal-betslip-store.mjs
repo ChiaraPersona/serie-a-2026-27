@@ -19,6 +19,20 @@ export function isPlayableUnder(selection){
   return outcome==="UNDER"||/\bUNDER\b/.test(label);
 }
 
+export function isIndividualPlayerFoulSelection(selection){
+  const bet=selection?.betSelection||selection||{};
+  const name=normalizeText(bet.market?.name||selection?.market||selection?.marketName);
+  return name==="U O FALLI COMMESSI GIOCATORE"||name==="U O FALLI SUBITI GIOCATORE";
+}
+
+function playability(selection){
+  const declared=selection?.betSelection?.operational?.playability;
+  if(declared?.status==="NOT_PLAYABLE")return declared;
+  if(Number(selection?.context?.matchday)>=6&&isPlayableUnder(selection))return {status:"NOT_PLAYABLE",code:"UNDER_NOT_PLAYABLE",reason:"Gli Under sono esclusi dalle proposte giocabili dalla sesta giornata."};
+  if(Number(selection?.context?.matchday)>=6&&isIndividualPlayerFoulSelection(selection))return {status:"NOT_PLAYABLE",code:"INDIVIDUAL_FOUL_NOT_PLAYABLE",reason:"I falli commessi o subiti del singolo giocatore sono esclusi dalle proposte giocabili dalla sesta giornata."};
+  return {status:"PLAYABLE",code:null,reason:null};
+}
+
 function validCanonicalSelection(selection){
   const bet=selection?.betSelection;
   return Boolean(selection?.selectionId&&bet?.selectionId===selection.selectionId&&bet?.identity?.status==="VERIFIED_PROVIDER_IDS"&&bet.identity.providerSelectionId);
@@ -45,6 +59,8 @@ export function assessSelections(selections){
   const issues=[];
   const addIssue=(type,message,selectionIds=[],severity="blocking")=>issues.push({type,message,selectionIds:unique(selectionIds),severity});
   for(const row of rows){
+    const policy=playability(row);
+    if(policy.status==="NOT_PLAYABLE")addIssue(policy.code||"POLICY_NOT_PLAYABLE",`${row.label||row.selectionId}: ${policy.reason}`,[row.selectionId]);
     const currentQuote=quote(row);
     if(!finite(currentQuote.decimal)||!currentQuote.verifiedAt||!currentQuote.source?.provider)addIssue("MISSING_VERIFIED_QUOTE",`${row.label||row.selectionId}: quota verificata non disponibile.`,[row.selectionId]);
     if(currentQuote.availability!=="AVAILABLE_AT_SNAPSHOT")addIssue("AVAILABILITY_NOT_CONFIRMED",`${row.label||row.selectionId}: disponibilità non confermata dallo snapshot.`,[row.selectionId]);
@@ -110,7 +126,8 @@ export function createPersonalBetslipStore({storage=globalThis.localStorage,stor
     if(!active)return {status:"NO_ACTIVE_CONTEXT"};
     if(!validCanonicalSelection(selection))return {status:"UNVERIFIED_IDENTITY"};
     if(contextKey(selection.context)!==state.activeContext)return {status:"CONTEXT_MISMATCH"};
-    if(Number(active.context.matchday)>=6&&isPlayableUnder(selection))return {status:"UNDER_NOT_PLAYABLE"};
+    const policy=playability(selection);
+    if(policy.status==="NOT_PLAYABLE")return {status:policy.code||"POLICY_NOT_PLAYABLE",reason:policy.reason};
     if(active.selections.some(row=>row.selectionId===selection.selectionId))return {status:"DUPLICATE",selectionId:selection.selectionId};
     const stored={...clone(selection),addedAt:now(),addedQuote:finite(quote(selection).decimal)?Number(quote(selection).decimal):null,quoteChanged:false,dataStatus:"CURRENT"};
     active.selections.push(stored);active.updatedAt=now();commit();
