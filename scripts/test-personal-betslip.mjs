@@ -1,0 +1,121 @@
+import assert from "node:assert/strict";
+import {assessSelections,createPersonalBetslipStore,isPlayableUnder,personalBetslipSummary,PERSONAL_BETSLIP_STORAGE_KEY} from "../js/pages/personal-betslip-store.mjs";
+
+function memoryStorage(){
+  const values=new Map();
+  return {getItem:key=>values.get(key)??null,setItem:(key,value)=>values.set(key,String(value)),dump:()=>values.get(PERSONAL_BETSLIP_STORAGE_KEY)};
+}
+
+const context6={competition:"serie-a",season:"2026-27",matchday:6,label:"Serie A · 6ª giornata"};
+const context7={competition:"serie-a",season:"2026-27",matchday:7,label:"Serie A · 7ª giornata"};
+const championsContext={competition:"champions-league",season:"2026-27",matchday:6,label:"Champions League · 6ª giornata"};
+
+function selection(id,{matchId="alpha-beta-2026-27-md-06",providerMarketId=`market-${id}`,outcome="OVER",label=`Scelta ${id}`,odds=1.8,verifiedAt="2026-10-09T10:43:00.203Z",availability="AVAILABLE_AT_SNAPSHOT",compatibilityStatus="COMPATIBILE",bookmakerCombinability,overlapKey=`overlap-${id}`,semanticKeys=[`semantic-${id}`],context=context6}={}){
+  const selectionId=`bet:sisal:${matchId}:${id}`;
+  return {selectionId,context,fixture:"Alpha - Beta",label,market:"MERCATO TEST",betSelection:{schemaVersion:1,selectionId,identity:{status:"VERIFIED_PROVIDER_IDS",matchId,provider:"sisal",providerMarketId,providerSelectionId:id},market:{name:"MERCATO TEST",selection:outcome,bookmakerSemantics:{selectionName:outcome}},quote:{decimal:odds,verifiedAt,availability,source:{provider:"sisal",url:"https://example.test/quote"}},compatibility:{status:compatibilityStatus,bookmakerCombinability},overlap:{overlapKey,semanticKeys}}};
+}
+
+{
+  const storage=memoryStorage(),store=createPersonalBetslipStore({storage,now:()=>"2026-10-09T12:00:00.000Z"});
+  assert.equal(store.setContext(context6).status,"OK");
+  const first=selection("one");
+  assert.equal(store.add(first).status,"ADDED","aggiunta singola fallita");
+  assert.equal(store.add({...first,label:"Stessa identità, altra etichetta"}).status,"DUPLICATE","deduplica non basata sul selectionId stabile");
+  assert.equal(store.getSnapshot().selections.length,1,"il duplicato non deve creare una seconda riga");
+  assert.equal(store.remove(first.selectionId).status,"REMOVED","rimozione fallita");
+  assert.equal(store.getSnapshot().selections.length,0,"rimozione non applicata");
+
+  const a=selection("a"),b=selection("b",{matchId:"gamma-delta-2026-27-md-06"});
+  store.add(a);
+  const batch=store.addMany([{...a,sourceSection:"mycombo-partita"},b]);
+  assert.equal(batch.added,1,"aggiunta multipla deve aggiungere solo le selezioni nuove");
+  assert.equal(batch.duplicates,1,"aggiunta multipla deve segnalare i duplicati");
+  assert.ok(batch.assessment.issues.some(issue=>issue.type==="BOOKMAKER_COMBINABILITY_UNKNOWN"),"aggiunta multipla deve restituire le incompatibilità rilevate");
+  assert.equal(store.getSnapshot().selections[0].selectionId,a.selectionId,"aggiunta multipla non deve sostituire la selezione esistente");
+  assert.ok(storage.dump(),"stato versionato non salvato");
+
+  const restored=createPersonalBetslipStore({storage});
+  assert.equal(restored.getSnapshot().selections.length,2,"ripristino da localStorage fallito");
+  restored.setContext(context7);
+  assert.equal(restored.getSnapshot().selections.length,0,"le giornate devono avere bucket separati");
+  restored.setContext(championsContext);
+  assert.equal(restored.getSnapshot().selections.length,0,"le competizioni devono avere bucket separati");
+  restored.setContext(context6);
+  assert.equal(restored.getSnapshot().selections.length,2,"rientrando nella giornata va ripristinata la schedina corretta");
+  assert.equal(restored.clear().removed,2,"svuotamento del contesto attivo fallito");
+  assert.equal(restored.getSnapshot().selections.length,0,"lo svuotamento non deve lasciare selezioni");
+}
+
+{
+  const store=createPersonalBetslipStore({storage:memoryStorage()});
+  store.setContext(context6);
+  assert.equal(store.add(selection("under",{outcome:"UNDER",label:"Under 2,5"})).status,"UNDER_NOT_PLAYABLE","gli Under MD6 devono essere rifiutati");
+  assert.equal(isPlayableUnder(selection("under-label",{outcome:"TOTAL",label:"Duo + Under 3,5"})),true,"riconoscimento Under nell'etichetta fallito");
+  assert.equal(store.getSnapshot().selections.length,0,"un Under rifiutato non deve essere memorizzato");
+}
+
+{
+  const contradiction=assessSelections([
+    selection("home",{providerMarketId:"result",outcome:"1",label:"Vittoria casa"}),
+    selection("away",{providerMarketId:"result",outcome:"2",label:"Vittoria ospite"}),
+  ]);
+  assert.ok(contradiction.issues.some(issue=>issue.type==="MARKET_CONTRADICTION"),"contraddizione dello stesso mercato non rilevata");
+  assert.equal(contradiction.usableCombinedOdds,null,"una contraddizione non deve produrre quota totale");
+
+  const overlap=assessSelections([
+    selection("shots",{providerMarketId:"shots-a",overlapKey:"player-shots",semanticKeys:["player:alpha","shots"]}),
+    selection("sot",{providerMarketId:"shots-b",overlapKey:"player-shots",semanticKeys:["player:alpha","sot"]}),
+  ]);
+  assert.ok(overlap.issues.some(issue=>issue.type==="LOGICAL_OVERLAP"),"sovrapposizione logica non rilevata");
+
+  const unknownCombination=assessSelections([selection("c"),selection("d",{matchId:"gamma-delta-2026-27-md-06"})]);
+  assert.ok(unknownCombination.issues.some(issue=>issue.type==="BOOKMAKER_COMBINABILITY_UNKNOWN"),"combinabilità bookmaker non verificata non segnalata");
+  assert.equal(unknownCombination.usableCombinedOdds,null,"senza conferma bookmaker la quota totale non deve apparire");
+
+  const confirmed=assessSelections([
+    selection("e",{bookmakerCombinability:"CONFIRMED",odds:2}),
+    selection("f",{matchId:"gamma-delta-2026-27-md-06",bookmakerCombinability:"CONFIRMED",odds:1.5}),
+  ]);
+  assert.equal(confirmed.usableCombinedOdds,3,"la quota totale verificata deve usare le ultime quote disponibili");
+
+  for(const problematic of [
+    selection("duo",{compatibilityStatus:"INCOMPATIBILE_DUO",bookmakerCombinability:"CONFIRMED"}),
+    selection("missing-quote",{odds:null,bookmakerCombinability:"CONFIRMED"}),
+    selection("closed",{availability:"NOT_AVAILABLE",bookmakerCombinability:"CONFIRMED"}),
+  ])assert.equal(assessSelections([problematic]).usableCombinedOdds,null,"una selezione non giocabile non deve produrre quota totale");
+}
+
+{
+  const store=createPersonalBetslipStore({storage:memoryStorage(),now:()=>"2026-10-09T12:00:00.000Z"});
+  store.setContext(context6);
+  const original=selection("quote",{odds:1.8,verifiedAt:"2026-10-09T10:00:00.000Z"});
+  const missing=selection("missing");
+  store.add(original);store.add(missing);
+  const refreshed=selection("quote",{odds:1.95,verifiedAt:"2026-10-09T11:00:00.000Z"});
+  const result=store.reconcile([refreshed]);
+  assert.equal(result.missing,1,"una selezione scomparsa dai dati correnti deve essere contata");
+  const snapshot=store.getSnapshot(),updated=snapshot.selections.find(row=>row.selectionId===original.selectionId),retained=snapshot.selections.find(row=>row.selectionId===missing.selectionId);
+  assert.equal(updated.betSelection.quote.decimal,1.95,"riconciliazione non usa l'ultima quota verificata");
+  assert.equal(updated.quoteChanged,true,"variazione quota non segnalata");
+  assert.equal(updated.addedQuote,1.8,"quota al momento dell'aggiunta non conservata");
+  assert.equal(retained.dataStatus,"MISSING_FROM_CURRENT_DATA","selezione scomparsa non conservata con avviso");
+  assert.ok(snapshot.assessment.issues.some(issue=>issue.type==="MISSING_FROM_CURRENT_DATA"),"assenza dai dati correnti non esposta nella valutazione");
+  const summary=personalBetslipSummary(snapshot);
+  assert.match(summary,/Quota totale non disponibile come giocabile/);
+  assert.doesNotMatch(summary,/\blive\b/i,"il riepilogo non deve presentare le quote come live");
+}
+
+{
+  const brokenStorage={getItem(){throw new Error("lettura negata")},setItem(){throw new Error("scrittura negata")}};
+  const store=createPersonalBetslipStore({storage:brokenStorage});
+  assert.match(store.getSnapshot().storageError,/Ripristino non riuscito/);
+  store.setContext(context6);
+  assert.match(store.getSnapshot().storageError,/Salvataggio locale non riuscito/);
+}
+
+{
+  const corruptStorage={getItem:()=>"{non-json",setItem:()=>{}};
+  assert.match(createPersonalBetslipStore({storage:corruptStorage}).getSnapshot().storageError,/Ripristino non riuscito/,"JSON locale corrotto non gestito");
+}
+
+console.log("OK schedina personale: store, deduplica, compatibilità, quote, contesti e persistenza");
