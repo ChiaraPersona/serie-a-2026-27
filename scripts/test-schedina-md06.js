@@ -1,6 +1,7 @@
 "use strict";
 
 const assert = require("assert");
+const crypto = require("crypto");
 const fs = require("fs");
 const path = require("path");
 const { execFileSync } = require("child_process");
@@ -17,6 +18,7 @@ const predictions = read("data/normalized/predictions.json").predictions.filter(
 const review = read("output/reports/serie-a-md05-betting-decision-review-2026-10-09.json");
 const selection = read("output/reports/serie-a-md06-betting-selection-2026-10-09.json");
 const selectionMarkdown = fs.readFileSync(path.join(root, "output/reports/serie-a-md06-betting-selection-2026-10-09.md"), "utf8");
+const groupBAudit = read("output/reports/serie-a-md06-group-b-audit-2026-10-09.json");
 const page = fs.readFileSync(path.join(root, "js/pages/betting.js"), "utf8");
 const matches = read("data/normalized/matches.json");
 
@@ -90,21 +92,27 @@ assert.deepEqual(catalog.totals, {
   groupARequested: 128,
   groupARecovered: 128,
   groupARejected: 0,
-  finalSelections: 160,
-  evaluated: 144,
+  dnbRequested: 20,
+  dnbRecovered: 20,
+  dnbRejected: 0,
+  groupB2Requested: 203,
+  groupB2Recovered: 203,
+  groupB2Rejected: 0,
+  finalSelections: 383,
+  evaluated: 367,
   notModelled: 16,
 });
 assert.deepEqual(Object.fromEntries(catalog.matches.map(match => [match.matchId, match.total])), {
-  "genoa-fiorentina-2026-27-md-06": 16,
-  "inter-parma-2026-27-md-06": 13,
-  "napoli-frosinone-2026-27-md-06": 16,
-  "como-roma-2026-27-md-06": 17,
-  "lazio-monza-2026-27-md-06": 16,
-  "lecce-bologna-2026-27-md-06": 17,
-  "sassuolo-milan-2026-27-md-06": 15,
-  "cagliari-juventus-2026-27-md-06": 17,
-  "atalanta-venezia-2026-27-md-06": 17,
-  "torino-udinese-2026-27-md-06": 16,
+  "genoa-fiorentina-2026-27-md-06": 34,
+  "inter-parma-2026-27-md-06": 35,
+  "napoli-frosinone-2026-27-md-06": 39,
+  "como-roma-2026-27-md-06": 40,
+  "lazio-monza-2026-27-md-06": 39,
+  "lecce-bologna-2026-27-md-06": 39,
+  "sassuolo-milan-2026-27-md-06": 38,
+  "cagliari-juventus-2026-27-md-06": 39,
+  "atalanta-venezia-2026-27-md-06": 41,
+  "torino-udinese-2026-27-md-06": 39,
 });
 const catalogSelections = catalog.matches.flatMap(match => match.selections);
 assert.equal(new Set(catalogSelections.map(leg => leg.selectionId)).size, catalogSelections.length, "Catalogo MD6 con duplicati");
@@ -126,6 +134,41 @@ for (const leg of recoveredGroupA) {
   const expectedEv = (evaluation.modelProbabilityPct / 100 * leg.betSelection.quote.decimal - 1) * 100;
   assert(Math.abs(evaluation.expectedValuePct - expectedEv) <= Math.max(0.2, leg.betSelection.quote.decimal * 0.06), `${leg.selectionId}: EV incoerente`);
 }
+const preserved = catalogSelections.filter(leg => !["dnb-b1", "gruppo-b2"].includes(leg.catalogOrigin));
+assert.equal(preserved.length, 160, "Il catalogo precedente deve restare composto da 160 righe");
+assert.equal(preserved.filter(leg => Number.isFinite(leg.betSelection.evaluation.expectedValuePct)).length, 144, "Le 144 valutazioni esistenti devono restare valutate");
+assert.equal(preserved.filter(leg => !Number.isFinite(leg.betSelection.evaluation.expectedValuePct)).length, 16, "Le 16 righe NOT_MODELLED devono restare tali");
+assert(preserved.filter(leg => !Number.isFinite(leg.betSelection.evaluation.expectedValuePct)).every(leg => leg.betSelection.evaluation.kind === "NOT_MODELLED"), "Le righe senza modello devono essere dichiarate NOT_MODELLED");
+const preservedMetricsDigest = crypto.createHash("sha256").update(JSON.stringify(preserved.map(leg => [leg.selectionId, leg.betSelection.evaluation.modelProbabilityPct, leg.betSelection.evaluation.fairOdds, leg.betSelection.evaluation.expectedValuePct, leg.betSelection.evaluation.status]).sort((left, right) => left[0].localeCompare(right[0])))).digest("hex");
+assert.equal(preservedMetricsDigest, "c9e4b627ad5e583ef0c63acae734d54034633d464a46d1177d8e55820ff432ad", "Identità o metriche delle 160 righe Fase 5A alterate");
+
+const dnb = catalogSelections.filter(leg => leg.catalogOrigin === "dnb-b1");
+assert.equal(dnb.length, 20);
+assert(dnb.every(leg => leg.market === "DRAW NO BET" && leg.betSelection.evaluation.kind === "CANONICAL_DIRECT"), "DNB non marcati come valutazioni canoniche dirette");
+assert(dnb.every(leg => leg.betSelection.evaluation.probabilitySemantics === "CONDITIONAL_ON_NO_DRAW"), "Semantica condizionata DNB assente");
+assert(dnb.every(leg => leg.betSelection.evaluation.settlement?.pushOutcome === "X" && leg.betSelection.evaluation.settlement?.settledPeriod === "FULL_TIME"), "Rimborso sul pareggio DNB non serializzato");
+const expectedDnbIds = new Set(predictions.flatMap(prediction => (prediction.marketComparison || []).filter(row => row.family === "draw-no-bet").map(row => `bet:sisal:${prediction.matchId}:${row.providerSelectionId}`)));
+assert.deepEqual(new Set(dnb.map(leg => leg.selectionId)), expectedDnbIds, "I 20 DNB non coincidono con le valutazioni canoniche esistenti");
+
+const b2 = catalogSelections.filter(leg => leg.catalogOrigin === "gruppo-b2");
+assert.equal(b2.length, 203);
+assert.deepEqual(Object.fromEntries(["multigoal-match", "multigoal-team", "team-goals-over"].map(family => [family, b2.filter(leg => leg.derivedMarketFamily === family).length])), {
+  "multigoal-match": 105,
+  "multigoal-team": 71,
+  "team-goals-over": 27,
+});
+assert(b2.every(leg => leg.betSelection.evaluation.kind === "DERIVED_B2_SCORE_MATRIX"), "B2 non marcati come derivazioni dalla matrice punteggi");
+assert(b2.every(leg => leg.betSelection.evaluation.fairOddsBasis === "PRUDENT_PROBABILITY" && leg.betSelection.evaluation.expectedValueBasis === "PRUDENT_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE"), "Base prudente B2 non dichiarata");
+for (const leg of b2) {
+  const evaluation = leg.betSelection.evaluation;
+  assert(Math.abs(evaluation.fairOdds - 100 / evaluation.prudentProbabilityPct) <= 0.03, `${leg.selectionId}: fair B2 non coerente con P prudente`);
+  const expectedEv = (evaluation.prudentProbabilityPct / 100 * leg.betSelection.quote.decimal - 1) * 100;
+  assert(Math.abs(evaluation.expectedValuePct - expectedEv) <= Math.max(0.2, leg.betSelection.quote.decimal * 0.06), `${leg.selectionId}: EV B2 non coerente con P prudente`);
+}
+const auditedB2 = groupBAudit.classifications.filter(row => row.level === "B2");
+assert.equal(auditedB2.length, 203);
+assert(auditedB2.every(row => row.normalizationStatus === "VERIFIED_EXACT"), "L'audit B2 contiene identità raw non riconciliate");
+assert.deepEqual(new Set(b2.map(leg => leg.selectionId)), new Set(auditedB2.map(row => row.selectionId)), "L'integrazione B2 diverge dai 203 esiti auditati");
 for (const match of catalog.matches) {
   const evs = match.selections.map(leg => leg.betSelection.evaluation.expectedValuePct);
   const firstMissing = evs.findIndex(value => !Number.isFinite(value));

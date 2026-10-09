@@ -1,6 +1,6 @@
 # Serie A MD6 — Selezione operativa e costruzione schedine
 
-Generato: 2026-10-09T21:11:20.647Z. Quote Sisal: 2026-10-09T10:43:00.203Z.
+Generato: 2026-10-09T21:50:21.223Z. Quote Sisal: 2026-10-09T10:43:00.203Z.
 
 La classificazione è operativa, non una garanzia. Nessuna partita deve produrre obbligatoriamente una scelta. Dalla MD6 i mercati Under, i falli commessi/subiti del singolo giocatore, i corner dipendenti da singoli tempi o finestre temporali e la doppia chance 12 sono esclusi dalle giocate, ma restano nelle analisi, nei report e nello storico; gli Over, i mercati aggregati di squadra e i corner dell'intera partita restano eleggibili. Occorrenze Under giocabili rimosse nella migrazione: 12. Le quote giocatore restano visibili come riferimento commerciale DUO: P V2 è individuale, pertanto EV e probabilità congiunta non sono calcolabili.
 

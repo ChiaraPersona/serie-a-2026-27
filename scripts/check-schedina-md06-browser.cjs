@@ -6,7 +6,7 @@ const assert = require("node:assert/strict");
 
 const root = path.resolve(__dirname, "..");
 const output = path.join(root, "output", "md06");
-const expectedCounts = [16, 13, 16, 17, 16, 17, 15, 17, 17, 16];
+const expectedCounts = [34, 35, 39, 40, 39, 39, 38, 39, 41, 39];
 const types = {
   ".html": "text/html",
   ".js": "text/javascript",
@@ -47,7 +47,7 @@ async function verifyViewport(browser, width, height) {
   await page.locator("[data-match-open-all]").click();
   assert.equal(await page.locator("[data-match-panel][open]").count(), 10, `${width}px: Apri tutte non apre i pannelli`);
   const rows = page.locator("[data-selection-row]");
-  assert.equal(await rows.count(), 160, `${width}px: il catalogo visibile deve avere 160 selezioni`);
+  assert.equal(await rows.count(), 383, `${width}px: il catalogo visibile deve avere 383 selezioni`);
   assert.equal(await page.locator('[data-selection-row][data-ev=""]').count(), 16, `${width}px: devono restare 16 selezioni NOT_MODELLED`);
   const unmodelledMetrics = await rows.locator('[data-ev=""]').evaluateAll(items => items.every(item => {
     const values = [...item.querySelectorAll(".betting-market-metric b")].map(node => node.textContent.trim());

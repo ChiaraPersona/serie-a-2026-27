@@ -1,0 +1,1481 @@
+{
+  "schemaVersion": 1,
+  "phase": "7",
+  "status": "PARTIAL",
+  "asOf": "2026-10-09",
+  "scope": "Data recovery, player identity, UEFA squad eligibility, seven-match reconciliation, and 36-team diagnostics only.",
+  "invariants": {
+    "productionModelChanged": false,
+    "uiChanged": false,
+    "predictionsChanged": false,
+    "leagueStrengthChanged": false,
+    "originalRawOverwritten": false,
+    "predictionCandidateEligibilityChanged": false
+  },
+  "hashComparison": {
+    "protectedTeams": {
+      "count": 7,
+      "status": "UNCHANGED_BY_HASH_TEST"
+    },
+    "protectedFiles": {
+      "count": 7,
+      "status": "UNCHANGED_BY_HASH_TEST"
+    },
+    "protectedRawSnapshots": {
+      "count": 5266,
+      "status": "UNCHANGED_BY_HASH_TEST"
+    },
+    "predictionCandidateEligibility": {
+      "count": 74,
+      "status": "UNCHANGED_BY_HASH_TEST"
+    }
+  },
+  "summary": {
+    "priorityTeams": 4,
+    "priorityPass": 0,
+    "priorityPartial": 4,
+    "identityInitial": 65,
+    "identityResolved": 64,
+    "identityRemaining": 1,
+    "outsideContributors": 74,
+    "uefaVerified": 33,
+    "uefaUnknown": 41,
+    "auditedNonComparableMatches": 7,
+    "newlyComparableMatches": 0,
+    "diagnosticTeams": 36
+  },
+  "domesticRecovery": [
+    {
+      "team": "Sabah",
+      "provider": "Azerbaijan PFL official API",
+      "competition": "Misli Premyer Liqası 2026/27",
+      "status": "PARTIAL",
+      "matches": 2,
+      "playerObservations": 32,
+      "playersWithMinutes": 9,
+      "playersWithShots": 0,
+      "playersWithShotsOnTarget": 0,
+      "fields": {
+        "minutes": "substitutes_only; starters_unknown",
+        "shots": "unavailable",
+        "shotsOnTarget": "unavailable"
+      },
+      "matchIndex": [
+        {
+          "matchId": "6795",
+          "date": "31/08/2026 18:00",
+          "match": "Araz-Naxçıvan 0-1 Sabah",
+          "players": 16
+        },
+        {
+          "matchId": "6807",
+          "date": "05/09/2026 18:30",
+          "match": "Sabah 5-0 Zirə",
+          "players": 16
+        }
+      ],
+      "note": "Official PFL API identifies starters and entering substitutes; outgoing starter identity is absent, so starter minutes remain null."
+    },
+    {
+      "team": "Slavia Praha",
+      "provider": "Chance Liga official",
+      "competition": "Chance Liga 2026/27",
+      "status": "PARTIAL",
+      "matches": 10,
+      "playerObservations": 157,
+      "playersWithMinutes": 24,
+      "playersWithShots": 5,
+      "playersWithShotsOnTarget": 5,
+      "fields": {
+        "minutes": "available",
+        "shots": "position_dependent_partial",
+        "shotsOnTarget": "position_dependent_partial"
+      },
+      "reconciliation": [
+        {
+          "matchId": "8330",
+          "match": "SK Slavia Praha - 1.FC Slovácko",
+          "shots": 15,
+          "shotsOnTarget": 10,
+          "sourceUrl": "https://www.chanceliga.cz/zapas/8330-sks-fcs",
+          "playerShots": null,
+          "playerShotsOnTarget": null,
+          "playerSeriesComplete": false,
+          "exact": false
+        },
+        {
+          "matchId": "8339",
+          "match": "FC Baník Ostrava - SK Slavia Praha",
+          "shots": 15,
+          "shotsOnTarget": 5,
+          "sourceUrl": "https://www.chanceliga.cz/zapas/8339-fcb-sks",
+          "playerShots": null,
+          "playerShotsOnTarget": null,
+          "playerSeriesComplete": false,
+          "exact": false
+        },
+        {
+          "matchId": "8346",
+          "match": "SK Slavia Praha - FK Pardubice",
+          "shots": 33,
+          "shotsOnTarget": 5,
+          "sourceUrl": "https://www.chanceliga.cz/zapas/8346-sks-fkp",
+          "playerShots": null,
+          "playerShotsOnTarget": null,
+          "playerSeriesComplete": false,
+          "exact": false
+        },
+        {
+          "matchId": "8352",
+          "match": "FC Slovan Liberec - SK Slavia Praha",
+          "shots": 8,
+          "shotsOnTarget": 3,
+          "sourceUrl": "https://www.chanceliga.cz/zapas/8352-lib-sks",
+          "playerShots": null,
+          "playerShotsOnTarget": null,
+          "playerSeriesComplete": false,
+          "exact": false
+        },
+        {
+          "matchId": "8363",
+          "match": "SK Slavia Praha - Bohemians Praha 1905",
+          "shots": 26,
+          "shotsOnTarget": 7,
+          "sourceUrl": "https://www.chanceliga.cz/zapas/8363-sks-boh",
+          "playerShots": null,
+          "playerShotsOnTarget": null,
+          "playerSeriesComplete": false,
+          "exact": false
+        },
+        {
+          "matchId": "8373",
+          "match": "AC Sparta Praha - SK Slavia Praha",
+          "shots": 9,
+          "shotsOnTarget": 5,
+          "sourceUrl": "https://www.chanceliga.cz/zapas/8373-acs-sks",
+          "playerShots": null,
+          "playerShotsOnTarget": null,
+          "playerSeriesComplete": false,
+          "exact": false
+        },
+        {
+          "matchId": "8382",
+          "match": "SK Slavia Praha - FC Zbrojovka Brno",
+          "shots": 16,
+          "shotsOnTarget": 6,
+          "sourceUrl": "https://www.chanceliga.cz/zapas/8382-sks-zbr",
+          "playerShots": null,
+          "playerShotsOnTarget": null,
+          "playerSeriesComplete": false,
+          "exact": false
+        },
+        {
+          "matchId": "8390",
+          "match": "FK Teplice - SK Slavia Praha",
+          "shots": 13,
+          "shotsOnTarget": 7,
+          "sourceUrl": "https://www.chanceliga.cz/zapas/8390-tep-sks",
+          "playerShots": null,
+          "playerShotsOnTarget": null,
+          "playerSeriesComplete": false,
+          "exact": false
+        },
+        {
+          "matchId": "8398",
+          "match": "SK Slavia Praha - FC Viktoria Plzeň",
+          "shots": 21,
+          "shotsOnTarget": 5,
+          "sourceUrl": "https://www.chanceliga.cz/zapas/8398-sks-plz",
+          "playerShots": null,
+          "playerShotsOnTarget": null,
+          "playerSeriesComplete": false,
+          "exact": false
+        },
+        {
+          "matchId": "8406",
+          "match": "FC Zlín - SK Slavia Praha",
+          "shots": 20,
+          "shotsOnTarget": 3,
+          "sourceUrl": "https://www.chanceliga.cz/zapas/8406-fcz-sks",
+          "playerShots": null,
+          "playerShotsOnTarget": null,
+          "playerSeriesComplete": false,
+          "exact": false
+        }
+      ],
+      "note": "Official Chance Liga player rows and independent match totals; the site omits shots/SOT from some position-specific player tables, so unavailable values remain null."
+    },
+    {
+      "team": "Shakhtar Donetsk",
+      "provider": "Ukrainian Premier League official",
+      "competition": "UPL 2026/27",
+      "status": "PARTIAL",
+      "matches": 5,
+      "playerObservations": 80,
+      "playersWithMinutes": 24,
+      "playersWithShots": 0,
+      "playersWithShotsOnTarget": 0,
+      "fields": {
+        "minutes": "available_from_lineups_and_substitutions",
+        "shots": "unavailable",
+        "shotsOnTarget": "unavailable"
+      },
+      "matchIndex": [
+        {
+          "matchId": "15887",
+          "match": "Shakhtar - Kudrivka | Referee report | Ukrainian Premier League | UPL Official Site - upl.ua",
+          "players": 16
+        },
+        {
+          "matchId": "15897",
+          "match": "Epicentr - Shakhtar | Referee report | Ukrainian Premier League | UPL Official Site - upl.ua",
+          "players": 16
+        },
+        {
+          "matchId": "15910",
+          "match": "Shakhtar - Polissya | Referee report | Ukrainian Premier League | UPL Official Site - upl.ua",
+          "players": 16
+        },
+        {
+          "matchId": "15921",
+          "match": "Karpaty - Shakhtar | Referee report | Ukrainian Premier League | UPL Official Site - upl.ua",
+          "players": 16
+        },
+        {
+          "matchId": "15927",
+          "match": "Shakhtar - Chornomorets | Referee report | Ukrainian Premier League | UPL Official Site - upl.ua",
+          "players": 16
+        }
+      ],
+      "note": "Official UPL line-ups and substitution pairs; regulation minutes capped at 90, shots/SOT remain null."
+    },
+    {
+      "team": "Slovan Bratislava",
+      "provider": "Niké Liga official",
+      "competition": "Niké Liga 2026/27",
+      "status": "PARTIAL",
+      "matches": null,
+      "playerObservations": 27,
+      "playersWithMinutes": 27,
+      "playersWithShots": 0,
+      "playersWithShotsOnTarget": 0,
+      "fields": {
+        "minutes": "available_season_aggregate",
+        "shots": "unavailable",
+        "shotsOnTarget": "unavailable"
+      },
+      "players": [
+        {
+          "providerPlayerId": "2521",
+          "player": "Kevin Wimmer",
+          "minutes": 598
+        },
+        {
+          "providerPlayerId": "1507",
+          "player": "Samuel Kozlovský",
+          "minutes": 540
+        },
+        {
+          "providerPlayerId": "2972",
+          "player": "Daiki Matsuoka",
+          "minutes": 428
+        },
+        {
+          "providerPlayerId": "2964",
+          "player": "Svetozar Markovič",
+          "minutes": 400
+        },
+        {
+          "providerPlayerId": "2936",
+          "player": "Cesar Rodolfo Blackman Camarena",
+          "minutes": 398
+        },
+        {
+          "providerPlayerId": "2729",
+          "player": "Danylo Ihnatenko",
+          "minutes": 370
+        },
+        {
+          "providerPlayerId": "1812",
+          "player": "Alen Mustafić",
+          "minutes": 363
+        },
+        {
+          "providerPlayerId": "2844",
+          "player": "Peter Pokorný",
+          "minutes": 355
+        },
+        {
+          "providerPlayerId": "1395",
+          "player": "Kenan Bajrič",
+          "minutes": 346
+        },
+        {
+          "providerPlayerId": "1944",
+          "player": "Artur Gajdoš",
+          "minutes": 322
+        },
+        {
+          "providerPlayerId": "2250",
+          "player": "Tigran Barseghyan",
+          "minutes": 300
+        },
+        {
+          "providerPlayerId": "1397",
+          "player": "Andraž Šporar",
+          "minutes": 295
+        },
+        {
+          "providerPlayerId": "3065",
+          "player": "Suleiman Camara Sanneh",
+          "minutes": 290
+        },
+        {
+          "providerPlayerId": "2746",
+          "player": "Alexej Maroš",
+          "minutes": 279
+        },
+        {
+          "providerPlayerId": "3047",
+          "player": "Cristian Jesus Martinez",
+          "minutes": 271
+        },
+        {
+          "providerPlayerId": "2631",
+          "player": "Alasana Yirajang",
+          "minutes": 247
+        },
+        {
+          "providerPlayerId": "1862",
+          "player": "Adam Griger",
+          "minutes": 237
+        },
+        {
+          "providerPlayerId": "2003",
+          "player": "Rash Rahim Ibrahim",
+          "minutes": 197
+        },
+        {
+          "providerPlayerId": "3045",
+          "player": "Manasse Kianga",
+          "minutes": 191
+        },
+        {
+          "providerPlayerId": "2522",
+          "player": "Nino Marcelli",
+          "minutes": 176
+        },
+        {
+          "providerPlayerId": "2843",
+          "player": "Sandro Plinio Rosa Da Cruz",
+          "minutes": 175
+        },
+        {
+          "providerPlayerId": "1311",
+          "player": "Jurij Medveděv",
+          "minutes": 126
+        },
+        {
+          "providerPlayerId": "2277",
+          "player": "Roman Čerepkai",
+          "minutes": 102
+        },
+        {
+          "providerPlayerId": "3091",
+          "player": "Sahmkou Camara",
+          "minutes": 90
+        },
+        {
+          "providerPlayerId": "2842",
+          "player": "Mykola Kukharevych",
+          "minutes": 62
+        },
+        {
+          "providerPlayerId": "3046",
+          "player": "Matúš Tomáško",
+          "minutes": 28
+        },
+        {
+          "providerPlayerId": "3049",
+          "player": "Leo Hofstädter",
+          "minutes": 16
+        }
+      ],
+      "sourceUrl": "https://www.nikeliga.sk/statistiky/hraci?id_atribute=4&id_team=6",
+      "note": "Official Niké Liga season minutes; no official individual shots/SOT series in the captured source."
+    }
+  ],
+  "matchAudit": [
+    {
+      "team": "Fenerbahçe",
+      "teamId": "fenerbahce",
+      "matchId": "401888301",
+      "date": "2026-09-05",
+      "match": "Fenerbahce 1-2 Besiktas",
+      "originalProvider": "ESPN",
+      "originalRawPreserved": true,
+      "originalIssue": "not_comparable_missing_provider_value",
+      "originalPlayerShotsAvailable": false,
+      "alternativeEvidence": {
+        "sourceUrl": "https://bjk.com.tr/en/mac_merkezi/canli/25441",
+        "sourceStatus": "blocked_403",
+        "shots": null,
+        "shotsOnTarget": null
+      },
+      "independentlyComparable": false,
+      "decision": "still_not_comparable_missing_team_or_player_series",
+      "shots": null,
+      "shotsOnTarget": null
+    },
+    {
+      "team": "AEK Athens",
+      "teamId": "aek-athens",
+      "matchId": "401896829",
+      "date": "2026-08-22",
+      "match": "AEK Athens 4-0 Iraklis",
+      "originalProvider": "ESPN",
+      "originalRawPreserved": true,
+      "originalIssue": "not_comparable_missing_provider_value",
+      "originalPlayerShotsAvailable": false,
+      "alternativeEvidence": {
+        "sourceUrl": null,
+        "sourceStatus": "no_independent_official_source_found",
+        "shots": null,
+        "shotsOnTarget": null
+      },
+      "independentlyComparable": false,
+      "decision": "still_not_comparable_missing_team_or_player_series",
+      "shots": null,
+      "shotsOnTarget": null
+    },
+    {
+      "team": "Club Brugge",
+      "teamId": "club-brugge",
+      "matchId": "401879005",
+      "date": "2026-09-04",
+      "match": "Lommel SK 0-1 Club Brugge",
+      "originalProvider": "ESPN",
+      "originalRawPreserved": true,
+      "originalIssue": "not_comparable_missing_provider_value",
+      "originalPlayerShotsAvailable": false,
+      "alternativeEvidence": {
+        "sourceUrl": "https://www.proleague.be/fr/matchs/saison-2026-2027-jupiler-pro-league-5-lommel-sk-vs-club-brugge-632",
+        "sourceStatus": "official_team_totals_found",
+        "shots": 13,
+        "shotsOnTarget": 3
+      },
+      "independentlyComparable": false,
+      "decision": "team_total_recovered_but_player_series_missing",
+      "shots": null,
+      "shotsOnTarget": null
+    },
+    {
+      "team": "Galatasaray",
+      "teamId": "galatasaray",
+      "matchId": "401888304",
+      "date": "2026-09-04",
+      "match": "Istanbul Basaksehir 2-3 Galatasaray",
+      "originalProvider": "ESPN",
+      "originalRawPreserved": true,
+      "originalIssue": "not_comparable_missing_provider_value",
+      "originalPlayerShotsAvailable": false,
+      "alternativeEvidence": {
+        "sourceUrl": "https://www.galatasaray.org/haber/futbol/basaksehir-2-3-galatasaray/60892",
+        "sourceStatus": "official_lineups_no_team_shot_totals",
+        "shots": null,
+        "shotsOnTarget": null
+      },
+      "independentlyComparable": false,
+      "decision": "still_not_comparable_missing_team_or_player_series",
+      "shots": null,
+      "shotsOnTarget": null
+    },
+    {
+      "team": "LASK",
+      "teamId": "lask",
+      "matchId": "401881791",
+      "date": "2026-09-13",
+      "match": "SK Sturm Graz 2-1 LASK Linz",
+      "originalProvider": "ESPN",
+      "originalRawPreserved": true,
+      "originalIssue": "not_comparable_missing_provider_value",
+      "originalPlayerShotsAvailable": false,
+      "alternativeEvidence": {
+        "sourceUrl": "https://www.bundesliga.at/de/spielbericht/saison-2026-2027/56690/matchcenter",
+        "sourceStatus": "official_team_totals_found",
+        "shots": 26,
+        "shotsOnTarget": 4
+      },
+      "independentlyComparable": false,
+      "decision": "team_total_recovered_but_player_series_missing",
+      "shots": null,
+      "shotsOnTarget": null
+    },
+    {
+      "team": "LASK",
+      "teamId": "lask",
+      "matchId": "401881783",
+      "date": "2026-09-20",
+      "match": "TSV Hartberg 3-3 LASK Linz",
+      "originalProvider": "ESPN",
+      "originalRawPreserved": true,
+      "originalIssue": "not_comparable_missing_provider_value",
+      "originalPlayerShotsAvailable": false,
+      "alternativeEvidence": {
+        "sourceUrl": "https://www.bundesliga.at/de/spielbericht/saison-2026-2027/56698/matchcenter",
+        "sourceStatus": "official_team_totals_found",
+        "shots": 16,
+        "shotsOnTarget": 6
+      },
+      "independentlyComparable": false,
+      "decision": "team_total_recovered_but_player_series_missing",
+      "shots": null,
+      "shotsOnTarget": null
+    },
+    {
+      "team": "Viking",
+      "teamId": "viking",
+      "matchId": "401873920",
+      "date": "2026-09-04",
+      "match": "Sandefjord 1-1 Viking FK",
+      "originalProvider": "ESPN",
+      "originalRawPreserved": true,
+      "originalIssue": "not_comparable_missing_provider_value",
+      "originalPlayerShotsAvailable": false,
+      "alternativeEvidence": {
+        "sourceUrl": "https://www.sandefjordfotball.no/lag/import/tournament/eliteserien-2026/season/fotballsesongen-2026/match/round-20-sandefjord-fotball-x-viking",
+        "sourceStatus": "official_lineups_no_team_shot_totals",
+        "shots": null,
+        "shotsOnTarget": null
+      },
+      "independentlyComparable": false,
+      "decision": "still_not_comparable_missing_team_or_player_series",
+      "shots": null,
+      "shotsOnTarget": null
+    }
+  ],
+  "diagnostics": [
+    {
+      "team": "Real Madrid",
+      "teamId": "real-madrid",
+      "matchesObserved": 7,
+      "domesticMatchesRecovered": 0,
+      "playerMatchObservations": 108,
+      "minutesAvailableObservations": 108,
+      "shotsAvailableObservations": 108,
+      "shotsOnTargetAvailableObservations": 108,
+      "registeredEvidenceShare": 0.5714,
+      "registeredActive": 20,
+      "registeredPlayers": 35,
+      "dataQuality": "complete_for_current_fields",
+      "sampleSize": "medium",
+      "sampleReliability": "moderate",
+      "identityUnresolvedBefore": 3,
+      "identityUnresolvedAfter": 0,
+      "outsideContributors": 0,
+      "uefaEligibilityUnknown": 0,
+      "competitionTypes": [
+        "esp.1"
+      ],
+      "futureBacktestReadiness": "ready_for_diagnostic_backtest",
+      "note": "Diagnostic only; no coefficient, ranking, or production-model effect."
+    },
+    {
+      "team": "Inter",
+      "teamId": "inter",
+      "matchesObserved": 5,
+      "domesticMatchesRecovered": 0,
+      "playerMatchObservations": 80,
+      "minutesAvailableObservations": 80,
+      "shotsAvailableObservations": 80,
+      "shotsOnTargetAvailableObservations": 80,
+      "registeredEvidenceShare": 0.8261,
+      "registeredActive": 19,
+      "registeredPlayers": 23,
+      "dataQuality": "complete_for_current_fields",
+      "sampleSize": "medium",
+      "sampleReliability": "moderate",
+      "identityUnresolvedBefore": 0,
+      "identityUnresolvedAfter": 0,
+      "outsideContributors": 2,
+      "uefaEligibilityUnknown": 0,
+      "competitionTypes": [
+        "ita.1"
+      ],
+      "futureBacktestReadiness": "ready_for_diagnostic_backtest",
+      "note": "Diagnostic only; no coefficient, ranking, or production-model effect."
+    },
+    {
+      "team": "Napoli",
+      "teamId": "napoli",
+      "matchesObserved": 5,
+      "domesticMatchesRecovered": 0,
+      "playerMatchObservations": 78,
+      "minutesAvailableObservations": 78,
+      "shotsAvailableObservations": 78,
+      "shotsOnTargetAvailableObservations": 78,
+      "registeredEvidenceShare": 0.913,
+      "registeredActive": 21,
+      "registeredPlayers": 23,
+      "dataQuality": "complete_for_current_fields",
+      "sampleSize": "medium",
+      "sampleReliability": "moderate",
+      "identityUnresolvedBefore": 0,
+      "identityUnresolvedAfter": 0,
+      "outsideContributors": 0,
+      "uefaEligibilityUnknown": 0,
+      "competitionTypes": [
+        "ita.1"
+      ],
+      "futureBacktestReadiness": "ready_for_diagnostic_backtest",
+      "note": "Diagnostic only; no coefficient, ranking, or production-model effect."
+    },
+    {
+      "team": "Arsenal",
+      "teamId": "arsenal",
+      "matchesObserved": 5,
+      "domesticMatchesRecovered": 0,
+      "playerMatchObservations": 80,
+      "minutesAvailableObservations": 80,
+      "shotsAvailableObservations": 80,
+      "shotsOnTargetAvailableObservations": 80,
+      "registeredEvidenceShare": 0.8636,
+      "registeredActive": 19,
+      "registeredPlayers": 22,
+      "dataQuality": "complete_for_current_fields",
+      "sampleSize": "medium",
+      "sampleReliability": "moderate",
+      "identityUnresolvedBefore": 0,
+      "identityUnresolvedAfter": 0,
+      "outsideContributors": 2,
+      "uefaEligibilityUnknown": 0,
+      "competitionTypes": [
+        "eng.1"
+      ],
+      "futureBacktestReadiness": "ready_for_diagnostic_backtest",
+      "note": "Diagnostic only; no coefficient, ranking, or production-model effect."
+    },
+    {
+      "team": "Fenerbahçe",
+      "teamId": "fenerbahce",
+      "matchesObserved": 7,
+      "domesticMatchesRecovered": 0,
+      "playerMatchObservations": 110,
+      "minutesAvailableObservations": 110,
+      "shotsAvailableObservations": 95,
+      "shotsOnTargetAvailableObservations": 95,
+      "registeredEvidenceShare": 0.5833,
+      "registeredActive": 21,
+      "registeredPlayers": 36,
+      "dataQuality": "partial",
+      "sampleSize": "medium",
+      "sampleReliability": "limited_by_data_gaps",
+      "identityUnresolvedBefore": 7,
+      "identityUnresolvedAfter": 0,
+      "outsideContributors": 1,
+      "uefaEligibilityUnknown": 0,
+      "competitionTypes": [
+        "tur.1",
+        "uefa.champions"
+      ],
+      "futureBacktestReadiness": "not_ready_or_limited",
+      "note": "Diagnostic only; no coefficient, ranking, or production-model effect."
+    },
+    {
+      "team": "Roma",
+      "teamId": "roma",
+      "matchesObserved": 6,
+      "domesticMatchesRecovered": 0,
+      "playerMatchObservations": 96,
+      "minutesAvailableObservations": 96,
+      "shotsAvailableObservations": 96,
+      "shotsOnTargetAvailableObservations": 96,
+      "registeredEvidenceShare": 0.8333,
+      "registeredActive": 20,
+      "registeredPlayers": 24,
+      "dataQuality": "complete_for_current_fields",
+      "sampleSize": "medium",
+      "sampleReliability": "moderate",
+      "identityUnresolvedBefore": 0,
+      "identityUnresolvedAfter": 0,
+      "outsideContributors": 1,
+      "uefaEligibilityUnknown": 1,
+      "competitionTypes": [
+        "ita.1",
+        "uefa.champions"
+      ],
+      "futureBacktestReadiness": "ready_for_diagnostic_backtest",
+      "note": "Diagnostic only; no coefficient, ranking, or production-model effect."
+    },
+    {
+      "team": "Como",
+      "teamId": "como",
+      "matchesObserved": 5,
+      "domesticMatchesRecovered": 0,
+      "playerMatchObservations": 80,
+      "minutesAvailableObservations": 80,
+      "shotsAvailableObservations": 80,
+      "shotsOnTargetAvailableObservations": 80,
+      "registeredEvidenceShare": 0.9524,
+      "registeredActive": 20,
+      "registeredPlayers": 21,
+      "dataQuality": "complete_for_current_fields",
+      "sampleSize": "medium",
+      "sampleReliability": "moderate",
+      "identityUnresolvedBefore": 0,
+      "identityUnresolvedAfter": 0,
+      "outsideContributors": 1,
+      "uefaEligibilityUnknown": 1,
+      "competitionTypes": [
+        "ita.1"
+      ],
+      "futureBacktestReadiness": "ready_for_diagnostic_backtest",
+      "note": "Diagnostic only; no coefficient, ranking, or production-model effect."
+    },
+    {
+      "team": "Leipzig",
+      "teamId": "leipzig",
+      "matchesObserved": 4,
+      "domesticMatchesRecovered": 0,
+      "playerMatchObservations": 63,
+      "minutesAvailableObservations": 63,
+      "shotsAvailableObservations": 63,
+      "shotsOnTargetAvailableObservations": 63,
+      "registeredEvidenceShare": 0.8636,
+      "registeredActive": 19,
+      "registeredPlayers": 22,
+      "dataQuality": "complete_for_current_fields",
+      "sampleSize": "small",
+      "sampleReliability": "moderate",
+      "identityUnresolvedBefore": 0,
+      "identityUnresolvedAfter": 0,
+      "outsideContributors": 5,
+      "uefaEligibilityUnknown": 3,
+      "competitionTypes": [
+        "ger.1"
+      ],
+      "futureBacktestReadiness": "not_ready_or_limited",
+      "note": "Diagnostic only; no coefficient, ranking, or production-model effect."
+    },
+    {
+      "team": "AEK Athens",
+      "teamId": "aek-athens",
+      "matchesObserved": 5,
+      "domesticMatchesRecovered": 0,
+      "playerMatchObservations": 61,
+      "minutesAvailableObservations": 61,
+      "shotsAvailableObservations": 61,
+      "shotsOnTargetAvailableObservations": 61,
+      "registeredEvidenceShare": 0.8636,
+      "registeredActive": 19,
+      "registeredPlayers": 22,
+      "dataQuality": "complete_for_current_fields",
+      "sampleSize": "medium",
+      "sampleReliability": "moderate",
+      "identityUnresolvedBefore": 0,
+      "identityUnresolvedAfter": 0,
+      "outsideContributors": 1,
+      "uefaEligibilityUnknown": 1,
+      "competitionTypes": [
+        "gre.1"
+      ],
+      "futureBacktestReadiness": "ready_for_diagnostic_backtest",
+      "note": "Diagnostic only; no coefficient, ranking, or production-model effect."
+    },
+    {
+      "team": "Aston Villa",
+      "teamId": "aston-villa",
+      "matchesObserved": 5,
+      "domesticMatchesRecovered": 0,
+      "playerMatchObservations": 79,
+      "minutesAvailableObservations": 79,
+      "shotsAvailableObservations": 79,
+      "shotsOnTargetAvailableObservations": 79,
+      "registeredEvidenceShare": 0.913,
+      "registeredActive": 21,
+      "registeredPlayers": 23,
+      "dataQuality": "complete_for_current_fields",
+      "sampleSize": "medium",
+      "sampleReliability": "moderate",
+      "identityUnresolvedBefore": 0,
+      "identityUnresolvedAfter": 0,
+      "outsideContributors": 1,
+      "uefaEligibilityUnknown": 0,
+      "competitionTypes": [
+        "eng.1"
+      ],
+      "futureBacktestReadiness": "ready_for_diagnostic_backtest",
+      "note": "Diagnostic only; no coefficient, ranking, or production-model effect."
+    },
+    {
+      "team": "Atlético de Madrid",
+      "teamId": "atletico-de-madrid",
+      "matchesObserved": 7,
+      "domesticMatchesRecovered": 0,
+      "playerMatchObservations": 111,
+      "minutesAvailableObservations": 111,
+      "shotsAvailableObservations": 111,
+      "shotsOnTargetAvailableObservations": 111,
+      "registeredEvidenceShare": 0.8333,
+      "registeredActive": 20,
+      "registeredPlayers": 24,
+      "dataQuality": "complete_for_current_fields",
+      "sampleSize": "medium",
+      "sampleReliability": "moderate",
+      "identityUnresolvedBefore": 0,
+      "identityUnresolvedAfter": 0,
+      "outsideContributors": 3,
+      "uefaEligibilityUnknown": 3,
+      "competitionTypes": [
+        "esp.1"
+      ],
+      "futureBacktestReadiness": "ready_for_diagnostic_backtest",
+      "note": "Diagnostic only; no coefficient, ranking, or production-model effect."
+    },
+    {
+      "team": "Barcelona",
+      "teamId": "barcelona",
+      "matchesObserved": 7,
+      "domesticMatchesRecovered": 0,
+      "playerMatchObservations": 113,
+      "minutesAvailableObservations": 113,
+      "shotsAvailableObservations": 113,
+      "shotsOnTargetAvailableObservations": 113,
+      "registeredEvidenceShare": 0.92,
+      "registeredActive": 23,
+      "registeredPlayers": 25,
+      "dataQuality": "complete_for_current_fields",
+      "sampleSize": "medium",
+      "sampleReliability": "moderate",
+      "identityUnresolvedBefore": 0,
+      "identityUnresolvedAfter": 0,
+      "outsideContributors": 0,
+      "uefaEligibilityUnknown": 0,
+      "competitionTypes": [
+        "esp.1"
+      ],
+      "futureBacktestReadiness": "ready_for_diagnostic_backtest",
+      "note": "Diagnostic only; no coefficient, ranking, or production-model effect."
+    },
+    {
+      "team": "Bayern München",
+      "teamId": "bayern-munchen",
+      "matchesObserved": 4,
+      "domesticMatchesRecovered": 0,
+      "playerMatchObservations": 62,
+      "minutesAvailableObservations": 62,
+      "shotsAvailableObservations": 62,
+      "shotsOnTargetAvailableObservations": 62,
+      "registeredEvidenceShare": 0.75,
+      "registeredActive": 18,
+      "registeredPlayers": 24,
+      "dataQuality": "complete_for_current_fields",
+      "sampleSize": "small",
+      "sampleReliability": "moderate",
+      "identityUnresolvedBefore": 0,
+      "identityUnresolvedAfter": 0,
+      "outsideContributors": 1,
+      "uefaEligibilityUnknown": 0,
+      "competitionTypes": [
+        "ger.1"
+      ],
+      "futureBacktestReadiness": "not_ready_or_limited",
+      "note": "Diagnostic only; no coefficient, ranking, or production-model effect."
+    },
+    {
+      "team": "Bodø/Glimt",
+      "teamId": "bodo-glimt",
+      "matchesObserved": 11,
+      "domesticMatchesRecovered": 0,
+      "playerMatchObservations": 173,
+      "minutesAvailableObservations": 173,
+      "shotsAvailableObservations": 173,
+      "shotsOnTargetAvailableObservations": 173,
+      "registeredEvidenceShare": 0.6563,
+      "registeredActive": 21,
+      "registeredPlayers": 32,
+      "dataQuality": "complete_for_current_fields",
+      "sampleSize": "medium",
+      "sampleReliability": "moderate",
+      "identityUnresolvedBefore": 3,
+      "identityUnresolvedAfter": 0,
+      "outsideContributors": 4,
+      "uefaEligibilityUnknown": 4,
+      "competitionTypes": [
+        "nor.1"
+      ],
+      "futureBacktestReadiness": "ready_for_diagnostic_backtest",
+      "note": "Diagnostic only; no coefficient, ranking, or production-model effect."
+    },
+    {
+      "team": "Borussia Dortmund",
+      "teamId": "borussia-dortmund",
+      "matchesObserved": 4,
+      "domesticMatchesRecovered": 0,
+      "playerMatchObservations": 64,
+      "minutesAvailableObservations": 64,
+      "shotsAvailableObservations": 64,
+      "shotsOnTargetAvailableObservations": 64,
+      "registeredEvidenceShare": 0.5714,
+      "registeredActive": 16,
+      "registeredPlayers": 28,
+      "dataQuality": "complete_for_current_fields",
+      "sampleSize": "small",
+      "sampleReliability": "moderate",
+      "identityUnresolvedBefore": 0,
+      "identityUnresolvedAfter": 0,
+      "outsideContributors": 6,
+      "uefaEligibilityUnknown": 2,
+      "competitionTypes": [
+        "ger.1"
+      ],
+      "futureBacktestReadiness": "not_ready_or_limited",
+      "note": "Diagnostic only; no coefficient, ranking, or production-model effect."
+    },
+    {
+      "team": "Club Brugge",
+      "teamId": "club-brugge",
+      "matchesObserved": 7,
+      "domesticMatchesRecovered": 0,
+      "playerMatchObservations": 109,
+      "minutesAvailableObservations": 109,
+      "shotsAvailableObservations": 93,
+      "shotsOnTargetAvailableObservations": 93,
+      "registeredEvidenceShare": 0.64,
+      "registeredActive": 16,
+      "registeredPlayers": 25,
+      "dataQuality": "partial",
+      "sampleSize": "medium",
+      "sampleReliability": "limited_by_data_gaps",
+      "identityUnresolvedBefore": 0,
+      "identityUnresolvedAfter": 0,
+      "outsideContributors": 4,
+      "uefaEligibilityUnknown": 1,
+      "competitionTypes": [
+        "bel.1"
+      ],
+      "futureBacktestReadiness": "not_ready_or_limited",
+      "note": "Diagnostic only; no coefficient, ranking, or production-model effect."
+    },
+    {
+      "team": "Feyenoord",
+      "teamId": "feyenoord",
+      "matchesObserved": 7,
+      "domesticMatchesRecovered": 0,
+      "playerMatchObservations": 112,
+      "minutesAvailableObservations": 112,
+      "shotsAvailableObservations": 112,
+      "shotsOnTargetAvailableObservations": 112,
+      "registeredEvidenceShare": 0.4783,
+      "registeredActive": 22,
+      "registeredPlayers": 46,
+      "dataQuality": "complete_for_current_fields",
+      "sampleSize": "medium",
+      "sampleReliability": "moderate",
+      "identityUnresolvedBefore": 15,
+      "identityUnresolvedAfter": 1,
+      "outsideContributors": 3,
+      "uefaEligibilityUnknown": 2,
+      "competitionTypes": [
+        "ned.1"
+      ],
+      "futureBacktestReadiness": "ready_for_diagnostic_backtest",
+      "note": "Diagnostic only; no coefficient, ranking, or production-model effect."
+    },
+    {
+      "team": "Galatasaray",
+      "teamId": "galatasaray",
+      "matchesObserved": 8,
+      "domesticMatchesRecovered": 0,
+      "playerMatchObservations": 128,
+      "minutesAvailableObservations": 128,
+      "shotsAvailableObservations": 112,
+      "shotsOnTargetAvailableObservations": 112,
+      "registeredEvidenceShare": 0.6061,
+      "registeredActive": 20,
+      "registeredPlayers": 33,
+      "dataQuality": "partial",
+      "sampleSize": "medium",
+      "sampleReliability": "limited_by_data_gaps",
+      "identityUnresolvedBefore": 4,
+      "identityUnresolvedAfter": 0,
+      "outsideContributors": 3,
+      "uefaEligibilityUnknown": 3,
+      "competitionTypes": [
+        "tur.1",
+        "uefa.champions"
+      ],
+      "futureBacktestReadiness": "not_ready_or_limited",
+      "note": "Diagnostic only; no coefficient, ranking, or production-model effect."
+    },
+    {
+      "team": "LASK",
+      "teamId": "lask",
+      "matchesObserved": 7,
+      "domesticMatchesRecovered": 0,
+      "playerMatchObservations": 102,
+      "minutesAvailableObservations": 102,
+      "shotsAvailableObservations": 80,
+      "shotsOnTargetAvailableObservations": 80,
+      "registeredEvidenceShare": 0.5938,
+      "registeredActive": 19,
+      "registeredPlayers": 32,
+      "dataQuality": "partial",
+      "sampleSize": "medium",
+      "sampleReliability": "limited_by_data_gaps",
+      "identityUnresolvedBefore": 9,
+      "identityUnresolvedAfter": 0,
+      "outsideContributors": 1,
+      "uefaEligibilityUnknown": 1,
+      "competitionTypes": [
+        "aut.1"
+      ],
+      "futureBacktestReadiness": "not_ready_or_limited",
+      "note": "Diagnostic only; no coefficient, ranking, or production-model effect."
+    },
+    {
+      "team": "Lens",
+      "teamId": "lens",
+      "matchesObserved": 6,
+      "domesticMatchesRecovered": 0,
+      "playerMatchObservations": 96,
+      "minutesAvailableObservations": 96,
+      "shotsAvailableObservations": 96,
+      "shotsOnTargetAvailableObservations": 96,
+      "registeredEvidenceShare": 0.84,
+      "registeredActive": 21,
+      "registeredPlayers": 25,
+      "dataQuality": "complete_for_current_fields",
+      "sampleSize": "medium",
+      "sampleReliability": "moderate",
+      "identityUnresolvedBefore": 0,
+      "identityUnresolvedAfter": 0,
+      "outsideContributors": 2,
+      "uefaEligibilityUnknown": 2,
+      "competitionTypes": [
+        "fra.1",
+        "uefa.champions"
+      ],
+      "futureBacktestReadiness": "ready_for_diagnostic_backtest",
+      "note": "Diagnostic only; no coefficient, ranking, or production-model effect."
+    },
+    {
+      "team": "Liverpool",
+      "teamId": "liverpool",
+      "matchesObserved": 5,
+      "domesticMatchesRecovered": 0,
+      "playerMatchObservations": 77,
+      "minutesAvailableObservations": 77,
+      "shotsAvailableObservations": 77,
+      "shotsOnTargetAvailableObservations": 77,
+      "registeredEvidenceShare": 0.6,
+      "registeredActive": 15,
+      "registeredPlayers": 25,
+      "dataQuality": "complete_for_current_fields",
+      "sampleSize": "medium",
+      "sampleReliability": "moderate",
+      "identityUnresolvedBefore": 2,
+      "identityUnresolvedAfter": 0,
+      "outsideContributors": 3,
+      "uefaEligibilityUnknown": 0,
+      "competitionTypes": [
+        "eng.1"
+      ],
+      "futureBacktestReadiness": "ready_for_diagnostic_backtest",
+      "note": "Diagnostic only; no coefficient, ranking, or production-model effect."
+    },
+    {
+      "team": "Manchester City",
+      "teamId": "manchester-city",
+      "matchesObserved": 5,
+      "domesticMatchesRecovered": 0,
+      "playerMatchObservations": 71,
+      "minutesAvailableObservations": 71,
+      "shotsAvailableObservations": 71,
+      "shotsOnTargetAvailableObservations": 71,
+      "registeredEvidenceShare": 0.7826,
+      "registeredActive": 18,
+      "registeredPlayers": 23,
+      "dataQuality": "complete_for_current_fields",
+      "sampleSize": "medium",
+      "sampleReliability": "moderate",
+      "identityUnresolvedBefore": 0,
+      "identityUnresolvedAfter": 0,
+      "outsideContributors": 4,
+      "uefaEligibilityUnknown": 1,
+      "competitionTypes": [
+        "eng.1"
+      ],
+      "futureBacktestReadiness": "ready_for_diagnostic_backtest",
+      "note": "Diagnostic only; no coefficient, ranking, or production-model effect."
+    },
+    {
+      "team": "Lille",
+      "teamId": "lille",
+      "matchesObserved": 5,
+      "domesticMatchesRecovered": 0,
+      "playerMatchObservations": 79,
+      "minutesAvailableObservations": 79,
+      "shotsAvailableObservations": 79,
+      "shotsOnTargetAvailableObservations": 79,
+      "registeredEvidenceShare": 0.7917,
+      "registeredActive": 19,
+      "registeredPlayers": 24,
+      "dataQuality": "complete_for_current_fields",
+      "sampleSize": "medium",
+      "sampleReliability": "moderate",
+      "identityUnresolvedBefore": 0,
+      "identityUnresolvedAfter": 0,
+      "outsideContributors": 1,
+      "uefaEligibilityUnknown": 1,
+      "competitionTypes": [
+        "fra.1"
+      ],
+      "futureBacktestReadiness": "ready_for_diagnostic_backtest",
+      "note": "Diagnostic only; no coefficient, ranking, or production-model effect."
+    },
+    {
+      "team": "Manchester United",
+      "teamId": "manchester-united",
+      "matchesObserved": 6,
+      "domesticMatchesRecovered": 0,
+      "playerMatchObservations": 91,
+      "minutesAvailableObservations": 91,
+      "shotsAvailableObservations": 91,
+      "shotsOnTargetAvailableObservations": 91,
+      "registeredEvidenceShare": 0.68,
+      "registeredActive": 17,
+      "registeredPlayers": 25,
+      "dataQuality": "complete_for_current_fields",
+      "sampleSize": "medium",
+      "sampleReliability": "moderate",
+      "identityUnresolvedBefore": 0,
+      "identityUnresolvedAfter": 0,
+      "outsideContributors": 4,
+      "uefaEligibilityUnknown": 0,
+      "competitionTypes": [
+        "eng.1",
+        "uefa.champions"
+      ],
+      "futureBacktestReadiness": "ready_for_diagnostic_backtest",
+      "note": "Diagnostic only; no coefficient, ranking, or production-model effect."
+    },
+    {
+      "team": "Paris Saint-Germain",
+      "teamId": "paris-saint-germain",
+      "matchesObserved": 6,
+      "domesticMatchesRecovered": 0,
+      "playerMatchObservations": 95,
+      "minutesAvailableObservations": 95,
+      "shotsAvailableObservations": 95,
+      "shotsOnTargetAvailableObservations": 95,
+      "registeredEvidenceShare": 0.8077,
+      "registeredActive": 21,
+      "registeredPlayers": 26,
+      "dataQuality": "complete_for_current_fields",
+      "sampleSize": "medium",
+      "sampleReliability": "moderate",
+      "identityUnresolvedBefore": 0,
+      "identityUnresolvedAfter": 0,
+      "outsideContributors": 0,
+      "uefaEligibilityUnknown": 0,
+      "competitionTypes": [
+        "fra.1",
+        "uefa.champions"
+      ],
+      "futureBacktestReadiness": "ready_for_diagnostic_backtest",
+      "note": "Diagnostic only; no coefficient, ranking, or production-model effect."
+    },
+    {
+      "team": "Porto",
+      "teamId": "porto",
+      "matchesObserved": 7,
+      "domesticMatchesRecovered": 0,
+      "playerMatchObservations": 112,
+      "minutesAvailableObservations": 112,
+      "shotsAvailableObservations": 112,
+      "shotsOnTargetAvailableObservations": 112,
+      "registeredEvidenceShare": 0.6061,
+      "registeredActive": 20,
+      "registeredPlayers": 33,
+      "dataQuality": "complete_for_current_fields",
+      "sampleSize": "medium",
+      "sampleReliability": "moderate",
+      "identityUnresolvedBefore": 3,
+      "identityUnresolvedAfter": 0,
+      "outsideContributors": 4,
+      "uefaEligibilityUnknown": 4,
+      "competitionTypes": [
+        "por.1"
+      ],
+      "futureBacktestReadiness": "ready_for_diagnostic_backtest",
+      "note": "Diagnostic only; no coefficient, ranking, or production-model effect."
+    },
+    {
+      "team": "PSV Eindhoven",
+      "teamId": "psv-eindhoven",
+      "matchesObserved": 9,
+      "domesticMatchesRecovered": 0,
+      "playerMatchObservations": 139,
+      "minutesAvailableObservations": 139,
+      "shotsAvailableObservations": 139,
+      "shotsOnTargetAvailableObservations": 139,
+      "registeredEvidenceShare": 0.8696,
+      "registeredActive": 20,
+      "registeredPlayers": 23,
+      "dataQuality": "complete_for_current_fields",
+      "sampleSize": "medium",
+      "sampleReliability": "moderate",
+      "identityUnresolvedBefore": 0,
+      "identityUnresolvedAfter": 0,
+      "outsideContributors": 4,
+      "uefaEligibilityUnknown": 1,
+      "competitionTypes": [
+        "ned.1",
+        "uefa.champions"
+      ],
+      "futureBacktestReadiness": "ready_for_diagnostic_backtest",
+      "note": "Diagnostic only; no coefficient, ranking, or production-model effect."
+    },
+    {
+      "team": "Real Betis",
+      "teamId": "real-betis",
+      "matchesObserved": 7,
+      "domesticMatchesRecovered": 0,
+      "playerMatchObservations": 110,
+      "minutesAvailableObservations": 110,
+      "shotsAvailableObservations": 110,
+      "shotsOnTargetAvailableObservations": 110,
+      "registeredEvidenceShare": 0.88,
+      "registeredActive": 22,
+      "registeredPlayers": 25,
+      "dataQuality": "complete_for_current_fields",
+      "sampleSize": "medium",
+      "sampleReliability": "moderate",
+      "identityUnresolvedBefore": 0,
+      "identityUnresolvedAfter": 0,
+      "outsideContributors": 1,
+      "uefaEligibilityUnknown": 1,
+      "competitionTypes": [
+        "esp.1"
+      ],
+      "futureBacktestReadiness": "ready_for_diagnostic_backtest",
+      "note": "Diagnostic only; no coefficient, ranking, or production-model effect."
+    },
+    {
+      "team": "Sabah",
+      "teamId": "sabah",
+      "matchesObserved": 3,
+      "domesticMatchesRecovered": 2,
+      "playerMatchObservations": 48,
+      "minutesAvailableObservations": 26,
+      "shotsAvailableObservations": 16,
+      "shotsOnTargetAvailableObservations": 16,
+      "registeredEvidenceShare": 0.5185,
+      "registeredActive": 14,
+      "registeredPlayers": 27,
+      "dataQuality": "partial",
+      "sampleSize": "small",
+      "sampleReliability": "limited_by_data_gaps",
+      "identityUnresolvedBefore": 4,
+      "identityUnresolvedAfter": 0,
+      "outsideContributors": 2,
+      "uefaEligibilityUnknown": 2,
+      "competitionTypes": [
+        "uefa.champions",
+        "Misli Premyer Liqası 2026/27"
+      ],
+      "futureBacktestReadiness": "not_ready_or_limited",
+      "note": "Diagnostic only; no coefficient, ranking, or production-model effect."
+    },
+    {
+      "team": "Slavia Praha",
+      "teamId": "slavia-praha",
+      "matchesObserved": 11,
+      "domesticMatchesRecovered": 10,
+      "playerMatchObservations": 173,
+      "minutesAvailableObservations": 173,
+      "shotsAvailableObservations": 50,
+      "shotsOnTargetAvailableObservations": 50,
+      "registeredEvidenceShare": 0.6,
+      "registeredActive": 15,
+      "registeredPlayers": 25,
+      "dataQuality": "partial",
+      "sampleSize": "medium",
+      "sampleReliability": "limited_by_data_gaps",
+      "identityUnresolvedBefore": 2,
+      "identityUnresolvedAfter": 0,
+      "outsideContributors": 1,
+      "uefaEligibilityUnknown": 1,
+      "competitionTypes": [
+        "uefa.champions",
+        "Chance Liga 2026/27"
+      ],
+      "futureBacktestReadiness": "not_ready_or_limited",
+      "note": "Diagnostic only; no coefficient, ranking, or production-model effect."
+    },
+    {
+      "team": "Shakhtar Donetsk",
+      "teamId": "shakhtar-donetsk",
+      "matchesObserved": 6,
+      "domesticMatchesRecovered": 5,
+      "playerMatchObservations": 95,
+      "minutesAvailableObservations": 95,
+      "shotsAvailableObservations": 15,
+      "shotsOnTargetAvailableObservations": 15,
+      "registeredEvidenceShare": 0.5172,
+      "registeredActive": 15,
+      "registeredPlayers": 29,
+      "dataQuality": "partial",
+      "sampleSize": "medium",
+      "sampleReliability": "limited_by_data_gaps",
+      "identityUnresolvedBefore": 3,
+      "identityUnresolvedAfter": 0,
+      "outsideContributors": 0,
+      "uefaEligibilityUnknown": 0,
+      "competitionTypes": [
+        "uefa.champions",
+        "UPL 2026/27"
+      ],
+      "futureBacktestReadiness": "not_ready_or_limited",
+      "note": "Diagnostic only; no coefficient, ranking, or production-model effect."
+    },
+    {
+      "team": "Slovan Bratislava",
+      "teamId": "slovan-bratislava",
+      "matchesObserved": 1,
+      "domesticMatchesRecovered": 0,
+      "playerMatchObservations": 16,
+      "minutesAvailableObservations": 16,
+      "shotsAvailableObservations": 16,
+      "shotsOnTargetAvailableObservations": 16,
+      "registeredEvidenceShare": 0.5714,
+      "registeredActive": 16,
+      "registeredPlayers": 28,
+      "dataQuality": "partial",
+      "sampleSize": "small",
+      "sampleReliability": "limited_by_data_gaps",
+      "identityUnresolvedBefore": 4,
+      "identityUnresolvedAfter": 0,
+      "outsideContributors": 0,
+      "uefaEligibilityUnknown": 0,
+      "competitionTypes": [
+        "uefa.champions",
+        "Niké Liga 2026/27"
+      ],
+      "futureBacktestReadiness": "not_ready_or_limited",
+      "note": "Diagnostic only; no coefficient, ranking, or production-model effect."
+    },
+    {
+      "team": "Stuttgart",
+      "teamId": "stuttgart",
+      "matchesObserved": 4,
+      "domesticMatchesRecovered": 0,
+      "playerMatchObservations": 63,
+      "minutesAvailableObservations": 63,
+      "shotsAvailableObservations": 63,
+      "shotsOnTargetAvailableObservations": 63,
+      "registeredEvidenceShare": 0.5625,
+      "registeredActive": 18,
+      "registeredPlayers": 32,
+      "dataQuality": "complete_for_current_fields",
+      "sampleSize": "small",
+      "sampleReliability": "moderate",
+      "identityUnresolvedBefore": 4,
+      "identityUnresolvedAfter": 0,
+      "outsideContributors": 2,
+      "uefaEligibilityUnknown": 2,
+      "competitionTypes": [
+        "ger.1"
+      ],
+      "futureBacktestReadiness": "not_ready_or_limited",
+      "note": "Diagnostic only; no coefficient, ranking, or production-model effect."
+    },
+    {
+      "team": "Viking",
+      "teamId": "viking",
+      "matchesObserved": 21,
+      "domesticMatchesRecovered": 0,
+      "playerMatchObservations": 334,
+      "minutesAvailableObservations": 334,
+      "shotsAvailableObservations": 318,
+      "shotsOnTargetAvailableObservations": 318,
+      "registeredEvidenceShare": 0.8667,
+      "registeredActive": 26,
+      "registeredPlayers": 30,
+      "dataQuality": "partial",
+      "sampleSize": "broad",
+      "sampleReliability": "limited_by_data_gaps",
+      "identityUnresolvedBefore": 0,
+      "identityUnresolvedAfter": 0,
+      "outsideContributors": 4,
+      "uefaEligibilityUnknown": 3,
+      "competitionTypes": [
+        "nor.1"
+      ],
+      "futureBacktestReadiness": "not_ready_or_limited",
+      "note": "Diagnostic only; no coefficient, ranking, or production-model effect."
+    },
+    {
+      "team": "Villarreal",
+      "teamId": "villarreal",
+      "matchesObserved": 7,
+      "domesticMatchesRecovered": 0,
+      "playerMatchObservations": 112,
+      "minutesAvailableObservations": 112,
+      "shotsAvailableObservations": 112,
+      "shotsOnTargetAvailableObservations": 112,
+      "registeredEvidenceShare": 0.88,
+      "registeredActive": 22,
+      "registeredPlayers": 25,
+      "dataQuality": "complete_for_current_fields",
+      "sampleSize": "medium",
+      "sampleReliability": "moderate",
+      "identityUnresolvedBefore": 2,
+      "identityUnresolvedAfter": 0,
+      "outsideContributors": 0,
+      "uefaEligibilityUnknown": 0,
+      "competitionTypes": [
+        "esp.1"
+      ],
+      "futureBacktestReadiness": "ready_for_diagnostic_backtest",
+      "note": "Diagnostic only; no coefficient, ranking, or production-model effect."
+    },
+    {
+      "team": "Sporting CP",
+      "teamId": "sporting-cp",
+      "matchesObserved": 8,
+      "domesticMatchesRecovered": 0,
+      "playerMatchObservations": 125,
+      "minutesAvailableObservations": 125,
+      "shotsAvailableObservations": 125,
+      "shotsOnTargetAvailableObservations": 125,
+      "registeredEvidenceShare": 0.76,
+      "registeredActive": 19,
+      "registeredPlayers": 25,
+      "dataQuality": "complete_for_current_fields",
+      "sampleSize": "medium",
+      "sampleReliability": "moderate",
+      "identityUnresolvedBefore": 0,
+      "identityUnresolvedAfter": 0,
+      "outsideContributors": 3,
+      "uefaEligibilityUnknown": 1,
+      "competitionTypes": [
+        "por.1",
+        "uefa.champions"
+      ],
+      "futureBacktestReadiness": "ready_for_diagnostic_backtest",
+      "note": "Diagnostic only; no coefficient, ranking, or production-model effect."
+    }
+  ],
+  "gate": {
+    "status": "PARTIAL",
+    "productionPromotionAllowed": false,
+    "reasons": [
+      "4 priority teams retain unavailable fields",
+      "1 identities remain unresolved",
+      "41 outside contributors retain unknown UEFA eligibility",
+      "7 audited matches remain non-comparable"
+    ]
+  }
+}
