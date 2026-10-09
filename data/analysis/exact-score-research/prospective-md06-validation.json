@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-10-09T12:23:25.348Z",
+  "status": "PASS",
+  "assertions": 57,
+  "scope": [
+    "canonical frozen inputs",
+    "M0/M1/M2 formula parity",
+    "leakage",
+    "probability normalization",
+    "score matrix",
+    "1X2",
+    "BTTS",
+    "Over/Under 2.5",
+    "cutoff",
+    "hash",
+    "immutability",
+    "common sample",
+    "production integrity"
+  ],
+  "snapshotFile": "data/predictions/exact-score-research/2026-27/md-06.json",
+  "snapshotContainerHash": "7c88d58b44aa51cf1f32f629895e09e0baeed2a692fb5fec9afe4734d9956eed",
+  "manifestFile": "data/predictions/exact-score-research/manifest.json",
+  "evaluationFile": "data/analysis/exact-score-research/prospective-md06-evaluation.json",
+  "commonSample": 0,
+  "evaluationStatus": "PENDING",
+  "productionIntegrity": {
+    "checkedFiles": 11778,
+    "manifestBefore": "aa7b00fc337477605f8ec4105d668d2b587680aaf433e0bbabde412429646079",
+    "manifestAfter": "aa7b00fc337477605f8ec4105d668d2b587680aaf433e0bbabde412429646079",
+    "changedFiles": [],
+    "immutableSourceAssetsChanged": [],
+    "status": "PASS"
+  },
+  "knownPreexistingBaselineFailure": {
+    "status": "DOCUMENTED_NOT_RERUN",
+    "test": "scripts/research/exact-score/test-baselines.js repository historical freeze guard",
+    "reason": "The October 3 tmp baseline compares the current repository with an old whole-repository inventory; it is unrelated to the focused MD6 prospective checks and was documented in the preceding forensic audit."
+  }
+}

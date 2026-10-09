@@ -1,0 +1,2157 @@
+{
+  "title": "Exact-score MD6 final research closure",
+  "generatedAt": "2026-10-09T12:24:25.278Z",
+  "mode": "RESEARCH_CLOSURE",
+  "diagnostic": {
+    "status": "COMPLETE",
+    "anomalies": [
+      {
+        "matchId": "inter-parma-2026-27-md-06",
+        "diagnosis": "La divergenza è reale e nasce meccanicamente da una separazione favorita-outsider meno estrema del mercato: Engine assegna 73,1% all'Inter contro 84,6% no-vig. M1 è il più vicino; M0 e M2 sono molto più piatti.",
+        "evidence": "EVIDENCE",
+        "cause": "MODEL_MARKET_RELATIVE_STRENGTH_DIVERGENCE",
+        "rootCause": "CAUSE NOT ESTABLISHED",
+        "reason": "Mapping, normalizzazione e lambda non sono invertiti; gli artefatti disponibili non contengono un'ablation isolata dei componenti Engine sufficiente ad attribuire la differenza a un singolo fattore.",
+        "label": "Inter – Parma",
+        "engine": {
+          "lambdaHome": 2.35,
+          "lambdaAway": 0.75,
+          "oneXTwo": {
+            "1": 0.7306316898321186,
+            "2": 0.1017789075266133,
+            "X": 0.16758940264126804
+          }
+        },
+        "marketNoVig": {
+          "1": 0.8459839263054001,
+          "2": 0.04779809183625511,
+          "X": 0.10621798185834468
+        },
+        "engineMinusMarket": {
+          "1": -0.11535223647328152,
+          "2": 0.05398081569035819,
+          "X": 0.06137142078292336
+        },
+        "models": {
+          "M0": {
+            "lambdaHome": 1.48,
+            "lambdaAway": 1.42,
+            "oneXTwo": {
+              "1": 0.38957788346679756,
+              "2": 0.362789743768524,
+              "X": 0.24763237276434727
+            },
+            "fallback": null,
+            "maturity": null
+          },
+          "M1": {
+            "lambdaHome": 2.298535292015663,
+            "lambdaAway": 0.5121524498756673,
+            "oneXTwo": {
+              "1": 0.778839266965659,
+              "2": 0.06639210751629332,
+              "X": 0.15476862551753823
+            },
+            "fallback": {
+              "homeAttack": {
+                "prior": "HISTORICAL_TEAM_VENUE",
+                "coverage": null
+              },
+              "awayAttack": {
+                "prior": "HISTORICAL_TEAM_VENUE",
+                "coverage": null
+              },
+              "homeDefense": {
+                "prior": "HISTORICAL_TEAM_VENUE",
+                "coverage": null
+              },
+              "awayDefense": {
+                "prior": "HISTORICAL_TEAM_VENUE",
+                "coverage": null
+              }
+            },
+            "maturity": {
+              "homeAttack": {
+                "value": 0.31428571428571417,
+                "label": "PRIOR_DOMINATED"
+              },
+              "awayAttack": {
+                "value": 0.31428571428571417,
+                "label": "PRIOR_DOMINATED"
+              },
+              "homeDefense": {
+                "value": 0.31428571428571417,
+                "label": "PRIOR_DOMINATED"
+              },
+              "awayDefense": {
+                "value": 0.31428571428571417,
+                "label": "PRIOR_DOMINATED"
+              }
+            }
+          },
+          "M2": {
+            "lambdaHome": 2.0944138305518423,
+            "lambdaAway": 1.152584345290335,
+            "oneXTwo": {
+              "1": 0.5898767101169924,
+              "2": 0.20296666511796693,
+              "X": 0.20715662476473545
+            },
+            "fallback": {
+              "homeAttack": {
+                "prior": "LEAGUE_PRIOR_NO_SERIE_A_TEAM_PRIOR",
+                "coverage": null
+              },
+              "awayAttack": {
+                "prior": "LEAGUE_PRIOR_NO_SERIE_A_TEAM_PRIOR",
+                "coverage": null
+              },
+              "homeDefense": {
+                "prior": "LEAGUE_PRIOR_NO_SERIE_A_TEAM_PRIOR",
+                "coverage": null
+              },
+              "awayDefense": {
+                "prior": "LEAGUE_PRIOR_NO_SERIE_A_TEAM_PRIOR",
+                "coverage": null
+              }
+            },
+            "maturity": {
+              "homeAttack": {
+                "value": 0.31428571428571417,
+                "label": "PRIOR_DOMINATED"
+              },
+              "awayAttack": {
+                "value": 0.31428571428571417,
+                "label": "PRIOR_DOMINATED"
+              },
+              "homeDefense": {
+                "value": 0.31428571428571417,
+                "label": "PRIOR_DOMINATED"
+              },
+              "awayDefense": {
+                "value": 0.31428571428571417,
+                "label": "PRIOR_DOMINATED"
+              }
+            }
+          }
+        }
+      },
+      {
+        "matchId": "napoli-frosinone-2026-27-md-06",
+        "diagnosis": "Tutti e quattro i modelli sono meno estremi del mercato sulla favorita. Engine usa lambda 1,59/1,07, non dispone del blend xG comparabile e registra fallback-goals; M1/M2 dichiarano fallback di lega per il prior Serie A mancante del Frosinone.",
+        "evidence": "EVIDENCE",
+        "cause": "PROMOTED_TEAM_PRIOR_AND_EARLY_SAMPLE_UNCERTAINTY",
+        "rootCause": "CAUSE NOT ESTABLISHED",
+        "reason": "Sono verificati fallback e campione corrente di cinque gare, ma non è disponibile una decomposizione controfattuale che quantifichi quanto ciascun componente causi i 16,0 punti percentuali di differenza sulla vittoria Napoli.",
+        "label": "Napoli – Frosinone",
+        "engine": {
+          "lambdaHome": 1.59,
+          "lambdaAway": 1.07,
+          "oneXTwo": {
+            "1": 0.4940269042551934,
+            "2": 0.25568247621319345,
+            "X": 0.2502906195316129
+          }
+        },
+        "marketNoVig": {
+          "1": 0.6543046357615894,
+          "2": 0.14596026490066225,
+          "X": 0.1997350993377483
+        },
+        "engineMinusMarket": {
+          "1": -0.16027773150639596,
+          "2": 0.10972221131253121,
+          "X": 0.05055552019386461
+        },
+        "models": {
+          "M0": {
+            "lambdaHome": 1.48,
+            "lambdaAway": 1.42,
+            "oneXTwo": {
+              "1": 0.38957788346679756,
+              "2": 0.362789743768524,
+              "X": 0.24763237276434727
+            },
+            "fallback": null,
+            "maturity": null
+          },
+          "M1": {
+            "lambdaHome": 1.3945486563118823,
+            "lambdaAway": 1.0927005090346449,
+            "oneXTwo": {
+              "1": 0.4382641914015682,
+              "2": 0.29464731361112817,
+              "X": 0.2670884949870171
+            },
+            "fallback": {
+              "homeAttack": {
+                "prior": "HISTORICAL_TEAM_VENUE",
+                "coverage": null
+              },
+              "awayAttack": {
+                "prior": "LEAGUE_PRIOR_NO_SERIE_A_TEAM_PRIOR",
+                "coverage": null
+              },
+              "homeDefense": {
+                "prior": "HISTORICAL_TEAM_VENUE",
+                "coverage": null
+              },
+              "awayDefense": {
+                "prior": "LEAGUE_PRIOR_NO_SERIE_A_TEAM_PRIOR",
+                "coverage": null
+              }
+            },
+            "maturity": {
+              "homeAttack": {
+                "value": 0.31428571428571417,
+                "label": "PRIOR_DOMINATED"
+              },
+              "awayAttack": {
+                "value": 0.31428571428571417,
+                "label": "PRIOR_DOMINATED"
+              },
+              "homeDefense": {
+                "value": 0.31428571428571417,
+                "label": "PRIOR_DOMINATED"
+              },
+              "awayDefense": {
+                "value": 0.31428571428571417,
+                "label": "PRIOR_DOMINATED"
+              }
+            }
+          },
+          "M2": {
+            "lambdaHome": 1.7802876230941054,
+            "lambdaAway": 1.3736935733978244,
+            "oneXTwo": {
+              "1": 0.4713090258238262,
+              "2": 0.2975399322571969,
+              "X": 0.23115104191871905
+            },
+            "fallback": {
+              "homeAttack": {
+                "prior": "LEAGUE_PRIOR_NO_SERIE_A_TEAM_PRIOR",
+                "coverage": null
+              },
+              "awayAttack": {
+                "prior": "LEAGUE_PRIOR_NO_SERIE_A_TEAM_PRIOR",
+                "coverage": null
+              },
+              "homeDefense": {
+                "prior": "LEAGUE_PRIOR_NO_SERIE_A_TEAM_PRIOR",
+                "coverage": null
+              },
+              "awayDefense": {
+                "prior": "LEAGUE_PRIOR_NO_SERIE_A_TEAM_PRIOR",
+                "coverage": null
+              }
+            },
+            "maturity": {
+              "homeAttack": {
+                "value": 0.31428571428571417,
+                "label": "PRIOR_DOMINATED"
+              },
+              "awayAttack": {
+                "value": 0.31428571428571417,
+                "label": "PRIOR_DOMINATED"
+              },
+              "homeDefense": {
+                "value": 0.31428571428571417,
+                "label": "PRIOR_DOMINATED"
+              },
+              "awayDefense": {
+                "value": 0.31428571428571417,
+                "label": "PRIOR_DOMINATED"
+              }
+            }
+          }
+        }
+      },
+      {
+        "matchId": "como-roma-2026-27-md-06",
+        "diagnosis": "Engine rende il Como favorito (46,2% contro 36,5% no-vig), mentre M1 è quasi equilibrato e M2 favorisce la Roma. Il segnale è quindi specifico della stima di forza relativa dell'Engine, non della matrice o del mapping.",
+        "evidence": "EVIDENCE",
+        "cause": "ENGINE_SPECIFIC_RELATIVE_STRENGTH_DIRECTION",
+        "rootCause": "CAUSE NOT ESTABLISHED",
+        "reason": "I componenti Engine mostrano xG attivo e differenze di attacco/difesa, ma senza ablation predefinita non si può isolare quale interazione capovolga l'ordine rispetto a M2 e al mercato.",
+        "label": "Como – Roma",
+        "engine": {
+          "lambdaHome": 1.59,
+          "lambdaAway": 1.21,
+          "oneXTwo": {
+            "1": 0.46171935778917345,
+            "2": 0.2905434190917687,
+            "X": 0.2477372231190575
+          }
+        },
+        "marketNoVig": {
+          "1": 0.36458333333333337,
+          "2": 0.36458333333333337,
+          "X": 0.27083333333333337
+        },
+        "engineMinusMarket": {
+          "1": 0.09713602445584008,
+          "2": -0.0740399142415647,
+          "X": -0.023096110214275878
+        },
+        "models": {
+          "M0": {
+            "lambdaHome": 1.48,
+            "lambdaAway": 1.42,
+            "oneXTwo": {
+              "1": 0.38957788346679756,
+              "2": 0.362789743768524,
+              "X": 0.24763237276434727
+            },
+            "fallback": null,
+            "maturity": null
+          },
+          "M1": {
+            "lambdaHome": 1.1707463501093684,
+            "lambdaAway": 1.1446648269390896,
+            "oneXTwo": {
+              "1": 0.36515487009339564,
+              "2": 0.35230718705508224,
+              "X": 0.2825379428511822
+            },
+            "fallback": {
+              "homeAttack": {
+                "prior": "HISTORICAL_TEAM_VENUE",
+                "coverage": null
+              },
+              "awayAttack": {
+                "prior": "HISTORICAL_TEAM_VENUE",
+                "coverage": null
+              },
+              "homeDefense": {
+                "prior": "HISTORICAL_TEAM_VENUE",
+                "coverage": null
+              },
+              "awayDefense": {
+                "prior": "HISTORICAL_TEAM_VENUE",
+                "coverage": null
+              }
+            },
+            "maturity": {
+              "homeAttack": {
+                "value": 0.3076923076923077,
+                "label": "PRIOR_DOMINATED"
+              },
+              "awayAttack": {
+                "value": 0.31428571428571417,
+                "label": "PRIOR_DOMINATED"
+              },
+              "homeDefense": {
+                "value": 0.3076923076923077,
+                "label": "PRIOR_DOMINATED"
+              },
+              "awayDefense": {
+                "value": 0.31428571428571417,
+                "label": "PRIOR_DOMINATED"
+              }
+            }
+          },
+          "M2": {
+            "lambdaHome": 1.5478465409903253,
+            "lambdaAway": 1.7243258625846944,
+            "oneXTwo": {
+              "1": 0.34750354928084415,
+              "2": 0.4220614381064011,
+              "X": 0.23043501261261048
+            },
+            "fallback": {
+              "homeAttack": {
+                "prior": "LEAGUE_PRIOR_NO_SERIE_A_TEAM_PRIOR",
+                "coverage": null
+              },
+              "awayAttack": {
+                "prior": "LEAGUE_PRIOR_NO_SERIE_A_TEAM_PRIOR",
+                "coverage": null
+              },
+              "homeDefense": {
+                "prior": "LEAGUE_PRIOR_NO_SERIE_A_TEAM_PRIOR",
+                "coverage": null
+              },
+              "awayDefense": {
+                "prior": "LEAGUE_PRIOR_NO_SERIE_A_TEAM_PRIOR",
+                "coverage": null
+              }
+            },
+            "maturity": {
+              "homeAttack": {
+                "value": 0.3076923076923077,
+                "label": "PRIOR_DOMINATED"
+              },
+              "awayAttack": {
+                "value": 0.31428571428571417,
+                "label": "PRIOR_DOMINATED"
+              },
+              "homeDefense": {
+                "value": 0.3076923076923077,
+                "label": "PRIOR_DOMINATED"
+              },
+              "awayDefense": {
+                "value": 0.31428571428571417,
+                "label": "PRIOR_DOMINATED"
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "modelComparison": [
+    {
+      "matchId": "genoa-fiorentina-2026-27-md-06",
+      "label": "Genoa – Fiorentina",
+      "kickoffUtc": "2026-10-10T13:00:00.000Z",
+      "models": {
+        "ENGINE_4.13.0": {
+          "lambdaHome": 1.35,
+          "lambdaAway": 1.37,
+          "oneXTwo": {
+            "1": 0.3668559135811542,
+            "2": 0.37603629676125716,
+            "X": 0.25710778965758896
+          },
+          "bttsYes": 0.5524941294986492,
+          "over25": 0.511176391892553,
+          "top3": [
+            {
+              "homeGoals": 1,
+              "awayGoals": 1,
+              "score": "1-1",
+              "probability": 0.1218567046574731,
+              "rank": 1
+            },
+            {
+              "homeGoals": 0,
+              "awayGoals": 1,
+              "score": "0-1",
+              "probability": 0.0902642256722023,
+              "rank": 2
+            },
+            {
+              "homeGoals": 1,
+              "awayGoals": 0,
+              "score": "1-0",
+              "probability": 0.08894649974998035,
+              "rank": 3
+            }
+          ]
+        },
+        "M0": {
+          "lambdaHome": 1.48,
+          "lambdaAway": 1.42,
+          "oneXTwo": {
+            "1": 0.38957788346679756,
+            "2": 0.362789743768524,
+            "X": 0.24763237276434727
+          },
+          "bttsYes": 0.585671514775304,
+          "over25": 0.554036801442489,
+          "top3": [
+            {
+              "homeGoals": 1,
+              "awayGoals": 1,
+              "score": "1-1",
+              "probability": 0.11563679927054543,
+              "rank": 1
+            },
+            {
+              "homeGoals": 2,
+              "awayGoals": 1,
+              "score": "2-1",
+              "probability": 0.08557123146020362,
+              "rank": 2
+            },
+            {
+              "homeGoals": 1,
+              "awayGoals": 2,
+              "score": "1-2",
+              "probability": 0.08210212748208726,
+              "rank": 3
+            }
+          ]
+        },
+        "M1": {
+          "lambdaHome": 1.2219467728524571,
+          "lambdaAway": 1.2347821420455927,
+          "oneXTwo": {
+            "1": 0.3605041257902105,
+            "2": 0.3666682068108935,
+            "X": 0.27282766739808345
+          },
+          "bttsYes": 0.5001607636641713,
+          "over25": 0.44504013166466944,
+          "top3": [
+            {
+              "homeGoals": 1,
+              "awayGoals": 1,
+              "score": "1-1",
+              "probability": 0.12932986295824392,
+              "rank": 1
+            },
+            {
+              "homeGoals": 0,
+              "awayGoals": 1,
+              "score": "0-1",
+              "probability": 0.10583919515278244,
+              "rank": 2
+            },
+            {
+              "homeGoals": 1,
+              "awayGoals": 0,
+              "score": "1-0",
+              "probability": 0.1047390131055755,
+              "rank": 3
+            }
+          ]
+        },
+        "M2": {
+          "lambdaHome": 1.3130817257994114,
+          "lambdaAway": 1.4338764716849661,
+          "oneXTwo": {
+            "1": 0.34485218766808157,
+            "2": 0.4000695576698436,
+            "X": 0.25507825466165795
+          },
+          "bttsYes": 0.5567497445849935,
+          "over25": 0.5178077040303616,
+          "top3": [
+            {
+              "homeGoals": 1,
+              "awayGoals": 1,
+              "score": "1-1",
+              "probability": 0.12072986322371186,
+              "rank": 1
+            },
+            {
+              "homeGoals": 0,
+              "awayGoals": 1,
+              "score": "0-1",
+              "probability": 0.09194390634765012,
+              "rank": 2
+            },
+            {
+              "homeGoals": 1,
+              "awayGoals": 2,
+              "score": "1-2",
+              "probability": 0.08655585515311226,
+              "rank": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "matchId": "inter-parma-2026-27-md-06",
+      "label": "Inter – Parma",
+      "kickoffUtc": "2026-10-10T16:00:00.000Z",
+      "models": {
+        "ENGINE_4.13.0": {
+          "lambdaHome": 2.35,
+          "lambdaAway": 0.75,
+          "oneXTwo": {
+            "1": 0.7306316898321186,
+            "2": 0.1017789075266133,
+            "X": 0.16758940264126804
+          },
+          "bttsYes": 0.47716430106844854,
+          "over25": 0.5976513417039909,
+          "top3": [
+            {
+              "homeGoals": 2,
+              "awayGoals": 0,
+              "score": "2-0",
+              "probability": 0.12475971170352114,
+              "rank": 1
+            },
+            {
+              "homeGoals": 1,
+              "awayGoals": 0,
+              "score": "1-0",
+              "probability": 0.10617847804554989,
+              "rank": 2
+            },
+            {
+              "homeGoals": 3,
+              "awayGoals": 0,
+              "score": "3-0",
+              "probability": 0.09772844083442489,
+              "rank": 3
+            }
+          ]
+        },
+        "M0": {
+          "lambdaHome": 1.48,
+          "lambdaAway": 1.42,
+          "oneXTwo": {
+            "1": 0.38957788346679756,
+            "2": 0.362789743768524,
+            "X": 0.24763237276434727
+          },
+          "bttsYes": 0.585671514775304,
+          "over25": 0.554036801442489,
+          "top3": [
+            {
+              "homeGoals": 1,
+              "awayGoals": 1,
+              "score": "1-1",
+              "probability": 0.11563679927054543,
+              "rank": 1
+            },
+            {
+              "homeGoals": 2,
+              "awayGoals": 1,
+              "score": "2-1",
+              "probability": 0.08557123146020362,
+              "rank": 2
+            },
+            {
+              "homeGoals": 1,
+              "awayGoals": 2,
+              "score": "1-2",
+              "probability": 0.08210212748208726,
+              "rank": 3
+            }
+          ]
+        },
+        "M1": {
+          "lambdaHome": 2.298535292015663,
+          "lambdaAway": 0.5121524498756673,
+          "oneXTwo": {
+            "1": 0.778839266965659,
+            "2": 0.06639210751629332,
+            "X": 0.15476862551753823
+          },
+          "bttsYes": 0.360553367640196,
+          "over25": 0.5330901135297808,
+          "top3": [
+            {
+              "homeGoals": 2,
+              "awayGoals": 0,
+              "score": "2-0",
+              "probability": 0.15893010868453689,
+              "rank": 1
+            },
+            {
+              "homeGoals": 1,
+              "awayGoals": 0,
+              "score": "1-0",
+              "probability": 0.13828816049647488,
+              "rank": 2
+            },
+            {
+              "homeGoals": 3,
+              "awayGoals": 0,
+              "score": "3-0",
+              "probability": 0.12176882125843101,
+              "rank": 3
+            }
+          ]
+        },
+        "M2": {
+          "lambdaHome": 2.0944138305518423,
+          "lambdaAway": 1.152584345290335,
+          "oneXTwo": {
+            "1": 0.5898767101169924,
+            "2": 0.20296666511796693,
+            "X": 0.20715662476473545
+          },
+          "bttsYes": 0.5999288441300124,
+          "over25": 0.6298182743907919,
+          "top3": [
+            {
+              "homeGoals": 2,
+              "awayGoals": 1,
+              "score": "2-1",
+              "probability": 0.0983137642166933,
+              "rank": 1
+            },
+            {
+              "homeGoals": 1,
+              "awayGoals": 1,
+              "score": "1-1",
+              "probability": 0.09388188979900816,
+              "rank": 2
+            },
+            {
+              "homeGoals": 2,
+              "awayGoals": 0,
+              "score": "2-0",
+              "probability": 0.08529854202724586,
+              "rank": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "matchId": "napoli-frosinone-2026-27-md-06",
+      "label": "Napoli – Frosinone",
+      "kickoffUtc": "2026-10-10T18:45:00.000Z",
+      "models": {
+        "ENGINE_4.13.0": {
+          "lambdaHome": 1.59,
+          "lambdaAway": 1.07,
+          "oneXTwo": {
+            "1": 0.4940269042551934,
+            "2": 0.25568247621319345,
+            "X": 0.2502906195316129
+          },
+          "bttsYes": 0.5229760859293477,
+          "over25": 0.49639251682546254,
+          "top3": [
+            {
+              "homeGoals": 1,
+              "awayGoals": 1,
+              "score": "1-1",
+              "probability": 0.11903462323554978,
+              "rank": 1
+            },
+            {
+              "homeGoals": 1,
+              "awayGoals": 0,
+              "score": "1-0",
+              "probability": 0.11124731143509324,
+              "rank": 2
+            },
+            {
+              "homeGoals": 2,
+              "awayGoals": 1,
+              "score": "2-1",
+              "probability": 0.09463252547226209,
+              "rank": 3
+            }
+          ]
+        },
+        "M0": {
+          "lambdaHome": 1.48,
+          "lambdaAway": 1.42,
+          "oneXTwo": {
+            "1": 0.38957788346679756,
+            "2": 0.362789743768524,
+            "X": 0.24763237276434727
+          },
+          "bttsYes": 0.585671514775304,
+          "over25": 0.554036801442489,
+          "top3": [
+            {
+              "homeGoals": 1,
+              "awayGoals": 1,
+              "score": "1-1",
+              "probability": 0.11563679927054543,
+              "rank": 1
+            },
+            {
+              "homeGoals": 2,
+              "awayGoals": 1,
+              "score": "2-1",
+              "probability": 0.08557123146020362,
+              "rank": 2
+            },
+            {
+              "homeGoals": 1,
+              "awayGoals": 2,
+              "score": "1-2",
+              "probability": 0.08210212748208726,
+              "rank": 3
+            }
+          ]
+        },
+        "M1": {
+          "lambdaHome": 1.3945486563118823,
+          "lambdaAway": 1.0927005090346449,
+          "oneXTwo": {
+            "1": 0.4382641914015682,
+            "2": 0.29464731361112817,
+            "X": 0.2670884949870171
+          },
+          "bttsYes": 0.49988366977845705,
+          "over25": 0.4529119502635518,
+          "top3": [
+            {
+              "homeGoals": 1,
+              "awayGoals": 1,
+              "score": "1-1",
+              "probability": 0.12668821856434495,
+              "rank": 1
+            },
+            {
+              "homeGoals": 1,
+              "awayGoals": 0,
+              "score": "1-0",
+              "probability": 0.11594047730083762,
+              "rank": 2
+            },
+            {
+              "homeGoals": 0,
+              "awayGoals": 1,
+              "score": "0-1",
+              "probability": 0.09084531973190035,
+              "rank": 3
+            }
+          ]
+        },
+        "M2": {
+          "lambdaHome": 1.7802876230941054,
+          "lambdaAway": 1.3736935733978244,
+          "oneXTwo": {
+            "1": 0.4713090258238262,
+            "2": 0.2975399322571969,
+            "X": 0.23115104191871905
+          },
+          "bttsYes": 0.6209220852234401,
+          "over25": 0.6104093466569,
+          "top3": [
+            {
+              "homeGoals": 1,
+              "awayGoals": 1,
+              "score": "1-1",
+              "probability": 0.10438147015627702,
+              "rank": 1
+            },
+            {
+              "homeGoals": 2,
+              "awayGoals": 1,
+              "score": "2-1",
+              "probability": 0.09291451969979336,
+              "rank": 2
+            },
+            {
+              "homeGoals": 1,
+              "awayGoals": 0,
+              "score": "1-0",
+              "probability": 0.07598599293006078,
+              "rank": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "matchId": "como-roma-2026-27-md-06",
+      "label": "Como – Roma",
+      "kickoffUtc": "2026-10-11T10:30:00.000Z",
+      "models": {
+        "ENGINE_4.13.0": {
+          "lambdaHome": 1.59,
+          "lambdaAway": 1.21,
+          "oneXTwo": {
+            "1": 0.46171935778917345,
+            "2": 0.2905434190917687,
+            "X": 0.2477372231190575
+          },
+          "bttsYes": 0.5586421038436399,
+          "over25": 0.5304105912535402,
+          "top3": [
+            {
+              "homeGoals": 1,
+              "awayGoals": 1,
+              "score": "1-1",
+              "probability": 0.11702630356053283,
+              "rank": 1
+            },
+            {
+              "homeGoals": 1,
+              "awayGoals": 0,
+              "score": "1-0",
+              "probability": 0.09671595335581226,
+              "rank": 2
+            },
+            {
+              "homeGoals": 2,
+              "awayGoals": 1,
+              "score": "2-1",
+              "probability": 0.09303591133062358,
+              "rank": 3
+            }
+          ]
+        },
+        "M0": {
+          "lambdaHome": 1.48,
+          "lambdaAway": 1.42,
+          "oneXTwo": {
+            "1": 0.38957788346679756,
+            "2": 0.362789743768524,
+            "X": 0.24763237276434727
+          },
+          "bttsYes": 0.585671514775304,
+          "over25": 0.554036801442489,
+          "top3": [
+            {
+              "homeGoals": 1,
+              "awayGoals": 1,
+              "score": "1-1",
+              "probability": 0.11563679927054543,
+              "rank": 1
+            },
+            {
+              "homeGoals": 2,
+              "awayGoals": 1,
+              "score": "2-1",
+              "probability": 0.08557123146020362,
+              "rank": 2
+            },
+            {
+              "homeGoals": 1,
+              "awayGoals": 2,
+              "score": "1-2",
+              "probability": 0.08210212748208726,
+              "rank": 3
+            }
+          ]
+        },
+        "M1": {
+          "lambdaHome": 1.1707463501093684,
+          "lambdaAway": 1.1446648269390896,
+          "oneXTwo": {
+            "1": 0.36515487009339564,
+            "2": 0.35230718705508224,
+            "X": 0.2825379428511822
+          },
+          "bttsYes": 0.4702596009233771,
+          "over25": 0.4080438158613173,
+          "top3": [
+            {
+              "homeGoals": 1,
+              "awayGoals": 1,
+              "score": "1-1",
+              "probability": 0.1323033537035947,
+              "rank": 1
+            },
+            {
+              "homeGoals": 1,
+              "awayGoals": 0,
+              "score": "1-0",
+              "probability": 0.115582614744425,
+              "rank": 2
+            },
+            {
+              "homeGoals": 0,
+              "awayGoals": 1,
+              "score": "0-1",
+              "probability": 0.11300770119098405,
+              "rank": 3
+            }
+          ]
+        },
+        "M2": {
+          "lambdaHome": 1.5478465409903253,
+          "lambdaAway": 1.7243258625846944,
+          "oneXTwo": {
+            "1": 0.34750354928084415,
+            "2": 0.4220614381064011,
+            "X": 0.23043501261261048
+          },
+          "bttsYes": 0.6469252123761203,
+          "over25": 0.6349543393566663,
+          "top3": [
+            {
+              "homeGoals": 1,
+              "awayGoals": 1,
+              "score": "1-1",
+              "probability": 0.10121871612841532,
+              "rank": 1
+            },
+            {
+              "homeGoals": 1,
+              "awayGoals": 2,
+              "score": "1-2",
+              "probability": 0.08726702499892254,
+              "rank": 2
+            },
+            {
+              "homeGoals": 2,
+              "awayGoals": 1,
+              "score": "2-1",
+              "probability": 0.07833551982142466,
+              "rank": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "matchId": "lazio-monza-2026-27-md-06",
+      "label": "Lazio  – Monza",
+      "kickoffUtc": "2026-10-11T13:00:00.000Z",
+      "models": {
+        "ENGINE_4.13.0": {
+          "lambdaHome": 1.87,
+          "lambdaAway": 1.19,
+          "oneXTwo": {
+            "1": 0.5323908575433439,
+            "2": 0.2416282290733091,
+            "X": 0.22598091338334667
+          },
+          "bttsYes": 0.5884568467898529,
+          "over25": 0.5898087302528158,
+          "top3": [
+            {
+              "homeGoals": 1,
+              "awayGoals": 1,
+              "score": "1-1",
+              "probability": 0.10441769802196448,
+              "rank": 1
+            },
+            {
+              "homeGoals": 2,
+              "awayGoals": 1,
+              "score": "2-1",
+              "probability": 0.0976305476505368,
+              "rank": 2
+            },
+            {
+              "homeGoals": 1,
+              "awayGoals": 0,
+              "score": "1-0",
+              "probability": 0.0877459647243399,
+              "rank": 3
+            }
+          ]
+        },
+        "M0": {
+          "lambdaHome": 1.48,
+          "lambdaAway": 1.42,
+          "oneXTwo": {
+            "1": 0.38957788346679756,
+            "2": 0.362789743768524,
+            "X": 0.24763237276434727
+          },
+          "bttsYes": 0.585671514775304,
+          "over25": 0.554036801442489,
+          "top3": [
+            {
+              "homeGoals": 1,
+              "awayGoals": 1,
+              "score": "1-1",
+              "probability": 0.11563679927054543,
+              "rank": 1
+            },
+            {
+              "homeGoals": 2,
+              "awayGoals": 1,
+              "score": "2-1",
+              "probability": 0.08557123146020362,
+              "rank": 2
+            },
+            {
+              "homeGoals": 1,
+              "awayGoals": 2,
+              "score": "1-2",
+              "probability": 0.08210212748208726,
+              "rank": 3
+            }
+          ]
+        },
+        "M1": {
+          "lambdaHome": 1.7942759051319384,
+          "lambdaAway": 1.1306799871121223,
+          "oneXTwo": {
+            "1": 0.5290855042391591,
+            "2": 0.23898737726448802,
+            "X": 0.2319271184961352
+          },
+          "bttsYes": 0.5646055984128107,
+          "over25": 0.5597884685919564,
+          "top3": [
+            {
+              "homeGoals": 1,
+              "awayGoals": 1,
+              "score": "1-1",
+              "probability": 0.10887714560951364,
+              "rank": 1
+            },
+            {
+              "homeGoals": 2,
+              "awayGoals": 1,
+              "score": "2-1",
+              "probability": 0.09767781949334597,
+              "rank": 2
+            },
+            {
+              "homeGoals": 1,
+              "awayGoals": 0,
+              "score": "1-0",
+              "probability": 0.09629351085234782,
+              "rank": 3
+            }
+          ]
+        },
+        "M2": {
+          "lambdaHome": 1.4506161115128995,
+          "lambdaAway": 1.4178572527372353,
+          "oneXTwo": {
+            "1": 0.38271062060128874,
+            "2": 0.36801205244254753,
+            "X": 0.24927732695548513
+          },
+          "bttsYes": 0.5801272359023487,
+          "over25": 0.5467068901958688,
+          "top3": [
+            {
+              "homeGoals": 1,
+              "awayGoals": 1,
+              "score": "1-1",
+              "probability": 0.11679462382334216,
+              "rank": 1
+            },
+            {
+              "homeGoals": 2,
+              "awayGoals": 1,
+              "score": "2-1",
+              "probability": 0.08471208152811423,
+              "rank": 2
+            },
+            {
+              "homeGoals": 1,
+              "awayGoals": 2,
+              "score": "1-2",
+              "probability": 0.08279905223432138,
+              "rank": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "matchId": "lecce-bologna-2026-27-md-06",
+      "label": "Lecce – Bologna",
+      "kickoffUtc": "2026-10-11T13:00:00.000Z",
+      "models": {
+        "ENGINE_4.13.0": {
+          "lambdaHome": 0.9,
+          "lambdaAway": 1.56,
+          "oneXTwo": {
+            "1": 0.21731717991634403,
+            "2": 0.5279591584571354,
+            "X": 0.2547236616265205
+          },
+          "bttsYes": 0.46870020377626226,
+          "over25": 0.445761264043275,
+          "top3": [
+            {
+              "homeGoals": 0,
+              "awayGoals": 1,
+              "score": "0-1",
+              "probability": 0.1333085244831002,
+              "rank": 1
+            },
+            {
+              "homeGoals": 1,
+              "awayGoals": 1,
+              "score": "1-1",
+              "probability": 0.1199776720347902,
+              "rank": 2
+            },
+            {
+              "homeGoals": 0,
+              "awayGoals": 2,
+              "score": "0-2",
+              "probability": 0.10398064909681817,
+              "rank": 3
+            }
+          ]
+        },
+        "M0": {
+          "lambdaHome": 1.48,
+          "lambdaAway": 1.42,
+          "oneXTwo": {
+            "1": 0.38957788346679756,
+            "2": 0.362789743768524,
+            "X": 0.24763237276434727
+          },
+          "bttsYes": 0.585671514775304,
+          "over25": 0.554036801442489,
+          "top3": [
+            {
+              "homeGoals": 1,
+              "awayGoals": 1,
+              "score": "1-1",
+              "probability": 0.11563679927054543,
+              "rank": 1
+            },
+            {
+              "homeGoals": 2,
+              "awayGoals": 1,
+              "score": "2-1",
+              "probability": 0.08557123146020362,
+              "rank": 2
+            },
+            {
+              "homeGoals": 1,
+              "awayGoals": 2,
+              "score": "1-2",
+              "probability": 0.08210212748208726,
+              "rank": 3
+            }
+          ]
+        },
+        "M1": {
+          "lambdaHome": 0.6567878987640035,
+          "lambdaAway": 1.329782467238634,
+          "oneXTwo": {
+            "1": 0.18425040364167583,
+            "2": 0.5299473190157625,
+            "X": 0.28580227734209035
+          },
+          "bttsYes": 0.3541160630586244,
+          "over25": 0.3196886319909486,
+          "top3": [
+            {
+              "homeGoals": 0,
+              "awayGoals": 1,
+              "score": "0-1",
+              "probability": 0.18239967272518912,
+              "rank": 1
+            },
+            {
+              "homeGoals": 0,
+              "awayGoals": 0,
+              "score": "0-0",
+              "probability": 0.1371650455761776,
+              "rank": 2
+            },
+            {
+              "homeGoals": 0,
+              "awayGoals": 2,
+              "score": "0-2",
+              "probability": 0.12127594341001069,
+              "rank": 3
+            }
+          ]
+        },
+        "M2": {
+          "lambdaHome": 1.2614420155674133,
+          "lambdaAway": 1.572088477669982,
+          "oneXTwo": {
+            "1": 0.30635407489130806,
+            "2": 0.4459593766378901,
+            "X": 0.24768654847063537
+          },
+          "bttsYes": 0.5679484507400251,
+          "over25": 0.5385006214036967,
+          "top3": [
+            {
+              "homeGoals": 1,
+              "awayGoals": 1,
+              "score": "1-1",
+              "probability": 0.11661585997607367,
+              "rank": 1
+            },
+            {
+              "homeGoals": 0,
+              "awayGoals": 1,
+              "score": "0-1",
+              "probability": 0.09244646883243247,
+              "rank": 2
+            },
+            {
+              "homeGoals": 1,
+              "awayGoals": 2,
+              "score": "1-2",
+              "probability": 0.09166522489098072,
+              "rank": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "matchId": "sassuolo-milan-2026-27-md-06",
+      "label": "Sassuolo – Milan",
+      "kickoffUtc": "2026-10-11T16:00:00.000Z",
+      "models": {
+        "ENGINE_4.13.0": {
+          "lambdaHome": 1.06,
+          "lambdaAway": 1.74,
+          "oneXTwo": {
+            "1": 0.23045490707402272,
+            "2": 0.5328354233055969,
+            "X": 0.2367096696203808
+          },
+          "bttsYes": 0.5387776613074958,
+          "over25": 0.5303271931078501,
+          "top3": [
+            {
+              "homeGoals": 1,
+              "awayGoals": 1,
+              "score": "1-1",
+              "probability": 0.11221043070361159,
+              "rank": 1
+            },
+            {
+              "homeGoals": 0,
+              "awayGoals": 1,
+              "score": "0-1",
+              "probability": 0.1058588968901996,
+              "rank": 2
+            },
+            {
+              "homeGoals": 1,
+              "awayGoals": 2,
+              "score": "1-2",
+              "probability": 0.09762307471214207,
+              "rank": 3
+            }
+          ]
+        },
+        "M0": {
+          "lambdaHome": 1.48,
+          "lambdaAway": 1.42,
+          "oneXTwo": {
+            "1": 0.38957788346679756,
+            "2": 0.362789743768524,
+            "X": 0.24763237276434727
+          },
+          "bttsYes": 0.585671514775304,
+          "over25": 0.554036801442489,
+          "top3": [
+            {
+              "homeGoals": 1,
+              "awayGoals": 1,
+              "score": "1-1",
+              "probability": 0.11563679927054543,
+              "rank": 1
+            },
+            {
+              "homeGoals": 2,
+              "awayGoals": 1,
+              "score": "2-1",
+              "probability": 0.08557123146020362,
+              "rank": 2
+            },
+            {
+              "homeGoals": 1,
+              "awayGoals": 2,
+              "score": "1-2",
+              "probability": 0.08210212748208726,
+              "rank": 3
+            }
+          ]
+        },
+        "M1": {
+          "lambdaHome": 0.7811240681592991,
+          "lambdaAway": 1.6881674144945324,
+          "oneXTwo": {
+            "1": 0.17088287206679575,
+            "2": 0.5901968834486792,
+            "X": 0.23892024448395782
+          },
+          "bttsYes": 0.4418958070467408,
+          "over25": 0.4482858308239048,
+          "top3": [
+            {
+              "homeGoals": 0,
+              "awayGoals": 1,
+              "score": "0-1",
+              "probability": 0.14289461017818977,
+              "rank": 1
+            },
+            {
+              "homeGoals": 0,
+              "awayGoals": 2,
+              "score": "0-2",
+              "probability": 0.12061501230485935,
+              "rank": 2
+            },
+            {
+              "homeGoals": 1,
+              "awayGoals": 1,
+              "score": "1-1",
+              "probability": 0.11161841922042479,
+              "rank": 3
+            }
+          ]
+        },
+        "M2": {
+          "lambdaHome": 1.502458634634704,
+          "lambdaAway": 1.3629431282537636,
+          "oneXTwo": {
+            "1": 0.40689575556713403,
+            "2": 0.3443129522595196,
+            "X": 0.24879129217313853
+          },
+          "bttsYes": 0.578471501690667,
+          "over25": 0.5459889700579313,
+          "top3": [
+            {
+              "homeGoals": 1,
+              "awayGoals": 1,
+              "score": "1-1",
+              "probability": 0.11664122825846258,
+              "rank": 1
+            },
+            {
+              "homeGoals": 2,
+              "awayGoals": 1,
+              "score": "2-1",
+              "probability": 0.08762431027566225,
+              "rank": 2
+            },
+            {
+              "homeGoals": 1,
+              "awayGoals": 0,
+              "score": "1-0",
+              "probability": 0.08558040745831133,
+              "rank": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "matchId": "cagliari-juventus-2026-27-md-06",
+      "label": "Cagliari – Juventus",
+      "kickoffUtc": "2026-10-11T18:45:00.000Z",
+      "models": {
+        "ENGINE_4.13.0": {
+          "lambdaHome": 0.97,
+          "lambdaAway": 1.51,
+          "oneXTwo": {
+            "1": 0.2428642369378847,
+            "2": 0.49775157677889786,
+            "X": 0.25938418628321747
+          },
+          "bttsYes": 0.4837234540340411,
+          "over25": 0.4509445491590897,
+          "top3": [
+            {
+              "homeGoals": 0,
+              "awayGoals": 1,
+              "score": "0-1",
+              "probability": 0.1264757338860408,
+              "rank": 1
+            },
+            {
+              "homeGoals": 1,
+              "awayGoals": 1,
+              "score": "1-1",
+              "probability": 0.1226814618694596,
+              "rank": 2
+            },
+            {
+              "homeGoals": 0,
+              "awayGoals": 2,
+              "score": "0-2",
+              "probability": 0.0954891790839608,
+              "rank": 3
+            }
+          ]
+        },
+        "M0": {
+          "lambdaHome": 1.48,
+          "lambdaAway": 1.42,
+          "oneXTwo": {
+            "1": 0.38957788346679756,
+            "2": 0.362789743768524,
+            "X": 0.24763237276434727
+          },
+          "bttsYes": 0.585671514775304,
+          "over25": 0.554036801442489,
+          "top3": [
+            {
+              "homeGoals": 1,
+              "awayGoals": 1,
+              "score": "1-1",
+              "probability": 0.11563679927054543,
+              "rank": 1
+            },
+            {
+              "homeGoals": 2,
+              "awayGoals": 1,
+              "score": "2-1",
+              "probability": 0.08557123146020362,
+              "rank": 2
+            },
+            {
+              "homeGoals": 1,
+              "awayGoals": 2,
+              "score": "1-2",
+              "probability": 0.08210212748208726,
+              "rank": 3
+            }
+          ]
+        },
+        "M1": {
+          "lambdaHome": 0.688633741916393,
+          "lambdaAway": 0.9608846053380599,
+          "oneXTwo": {
+            "1": 0.2523412267613868,
+            "2": 0.4057320815813215,
+            "X": 0.341926691657088
+          },
+          "bttsYes": 0.3073262858402071,
+          "over25": 0.22951389299641772,
+          "top3": [
+            {
+              "homeGoals": 0,
+              "awayGoals": 0,
+              "score": "0-0",
+              "probability": 0.19214243226686875,
+              "rank": 1
+            },
+            {
+              "homeGoals": 0,
+              "awayGoals": 1,
+              "score": "0-1",
+              "probability": 0.1846267051974451,
+              "rank": 2
+            },
+            {
+              "homeGoals": 1,
+              "awayGoals": 0,
+              "score": "1-0",
+              "probability": 0.13231576211285093,
+              "rank": 3
+            }
+          ]
+        },
+        "M2": {
+          "lambdaHome": 1.1036624403053836,
+          "lambdaAway": 1.5376844557818141,
+          "oneXTwo": {
+            "1": 0.2726653438416519,
+            "2": 0.47303853951800834,
+            "X": 0.25429611664017326
+          },
+          "bttsYes": 0.5247329395429284,
+          "over25": 0.4919001177432418,
+          "top3": [
+            {
+              "homeGoals": 1,
+              "awayGoals": 1,
+              "score": "1-1",
+              "probability": 0.12094310254993247,
+              "rank": 1
+            },
+            {
+              "homeGoals": 0,
+              "awayGoals": 1,
+              "score": "0-1",
+              "probability": 0.10958341802088281,
+              "rank": 2
+            },
+            {
+              "homeGoals": 1,
+              "awayGoals": 2,
+              "score": "1-2",
+              "probability": 0.09298616441252854,
+              "rank": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "matchId": "atalanta-venezia-2026-27-md-06",
+      "label": "Atalanta – Venezia",
+      "kickoffUtc": "2026-10-12T16:30:00.000Z",
+      "models": {
+        "ENGINE_4.13.0": {
+          "lambdaHome": 1.91,
+          "lambdaAway": 0.87,
+          "oneXTwo": {
+            "1": 0.6177442290852757,
+            "2": 0.16533772287055937,
+            "X": 0.21691804804416462
+          },
+          "bttsYes": 0.49493458397117135,
+          "over25": 0.5253740975651868,
+          "top3": [
+            {
+              "homeGoals": 1,
+              "awayGoals": 0,
+              "score": "1-0",
+              "probability": 0.11859128144874448,
+              "rank": 1
+            },
+            {
+              "homeGoals": 2,
+              "awayGoals": 0,
+              "score": "2-0",
+              "probability": 0.11325467378355099,
+              "rank": 2
+            },
+            {
+              "homeGoals": 1,
+              "awayGoals": 1,
+              "score": "1-1",
+              "probability": 0.10317441486040768,
+              "rank": 3
+            }
+          ]
+        },
+        "M0": {
+          "lambdaHome": 1.48,
+          "lambdaAway": 1.42,
+          "oneXTwo": {
+            "1": 0.38957788346679756,
+            "2": 0.362789743768524,
+            "X": 0.24763237276434727
+          },
+          "bttsYes": 0.585671514775304,
+          "over25": 0.554036801442489,
+          "top3": [
+            {
+              "homeGoals": 1,
+              "awayGoals": 1,
+              "score": "1-1",
+              "probability": 0.11563679927054543,
+              "rank": 1
+            },
+            {
+              "homeGoals": 2,
+              "awayGoals": 1,
+              "score": "2-1",
+              "probability": 0.08557123146020362,
+              "rank": 2
+            },
+            {
+              "homeGoals": 1,
+              "awayGoals": 2,
+              "score": "1-2",
+              "probability": 0.08210212748208726,
+              "rank": 3
+            }
+          ]
+        },
+        "M1": {
+          "lambdaHome": 1.5343202439275097,
+          "lambdaAway": 0.8295650210737893,
+          "oneXTwo": {
+            "1": 0.5394172073201365,
+            "2": 0.20288293596513632,
+            "X": 0.25769985671425916
+          },
+          "bttsYes": 0.4422128892327073,
+          "over25": 0.4208279060719061,
+          "top3": [
+            {
+              "homeGoals": 1,
+              "awayGoals": 0,
+              "score": "1-0",
+              "probability": 0.14430909022329408,
+              "rank": 1
+            },
+            {
+              "homeGoals": 1,
+              "awayGoals": 1,
+              "score": "1-1",
+              "probability": 0.11971377347222632,
+              "rank": 2
+            },
+            {
+              "homeGoals": 2,
+              "awayGoals": 0,
+              "score": "2-0",
+              "probability": 0.11070817925618079,
+              "rank": 3
+            }
+          ]
+        },
+        "M2": {
+          "lambdaHome": 1.5468790167824036,
+          "lambdaAway": 1.5470616780961013,
+          "oneXTwo": {
+            "1": 0.3805716941582534,
+            "2": 0.38065093011084067,
+            "X": 0.23877737573071897
+          },
+          "bttsYes": 0.619539023110212,
+          "over25": 0.5975238375470248,
+          "top3": [
+            {
+              "homeGoals": 1,
+              "awayGoals": 1,
+              "score": "1-1",
+              "probability": 0.10846324804093194,
+              "rank": 1
+            },
+            {
+              "homeGoals": 1,
+              "awayGoals": 2,
+              "score": "1-2",
+              "probability": 0.08389966726297891,
+              "rank": 2
+            },
+            {
+              "homeGoals": 2,
+              "awayGoals": 1,
+              "score": "2-1",
+              "probability": 0.08388976124329138,
+              "rank": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "matchId": "torino-udinese-2026-27-md-06",
+      "label": "Torino – Udinese",
+      "kickoffUtc": "2026-10-12T18:45:00.000Z",
+      "models": {
+        "ENGINE_4.13.0": {
+          "lambdaHome": 1.48,
+          "lambdaAway": 1.77,
+          "oneXTwo": {
+            "1": 0.3238529796032961,
+            "2": 0.44623892289117684,
+            "X": 0.22990809750552713
+          },
+          "bttsYes": 0.640707940175055,
+          "over25": 0.6301897198343094,
+          "top3": [
+            {
+              "homeGoals": 1,
+              "awayGoals": 1,
+              "score": "1-1",
+              "probability": 0.1016398698934603,
+              "rank": 1
+            },
+            {
+              "homeGoals": 1,
+              "awayGoals": 2,
+              "score": "1-2",
+              "probability": 0.08995128485571237,
+              "rank": 2
+            },
+            {
+              "homeGoals": 2,
+              "awayGoals": 1,
+              "score": "2-1",
+              "probability": 0.0752135037211606,
+              "rank": 3
+            }
+          ]
+        },
+        "M0": {
+          "lambdaHome": 1.48,
+          "lambdaAway": 1.42,
+          "oneXTwo": {
+            "1": 0.38957788346679756,
+            "2": 0.362789743768524,
+            "X": 0.24763237276434727
+          },
+          "bttsYes": 0.585671514775304,
+          "over25": 0.554036801442489,
+          "top3": [
+            {
+              "homeGoals": 1,
+              "awayGoals": 1,
+              "score": "1-1",
+              "probability": 0.11563679927054543,
+              "rank": 1
+            },
+            {
+              "homeGoals": 2,
+              "awayGoals": 1,
+              "score": "2-1",
+              "probability": 0.08557123146020362,
+              "rank": 2
+            },
+            {
+              "homeGoals": 1,
+              "awayGoals": 2,
+              "score": "1-2",
+              "probability": 0.08210212748208726,
+              "rank": 3
+            }
+          ]
+        },
+        "M1": {
+          "lambdaHome": 1.4859618340866132,
+          "lambdaAway": 1.6528855799418163,
+          "oneXTwo": {
+            "1": 0.3460795032728719,
+            "2": 0.4179448487746539,
+            "X": 0.23597564795214826
+          },
+          "bttsYes": 0.6255515940188937,
+          "over25": 0.6071876944855074,
+          "top3": [
+            {
+              "homeGoals": 1,
+              "awayGoals": 1,
+              "score": "1-1",
+              "probability": 0.10643055684505581,
+              "rank": 1
+            },
+            {
+              "homeGoals": 1,
+              "awayGoals": 2,
+              "score": "1-2",
+              "probability": 0.08795876633718526,
+              "rank": 2
+            },
+            {
+              "homeGoals": 2,
+              "awayGoals": 1,
+              "score": "2-1",
+              "probability": 0.07907587272616934,
+              "rank": 3
+            }
+          ]
+        },
+        "M2": {
+          "lambdaHome": 1.5051597874216438,
+          "lambdaAway": 1.3767948842844528,
+          "oneXTwo": {
+            "1": 0.40468257958126097,
+            "2": 0.3472418530321634,
+            "X": 0.2480755673863402
+          },
+          "bttsYes": 0.5816571388551297,
+          "over25": 0.5498499474979486,
+          "top3": [
+            {
+              "homeGoals": 1,
+              "awayGoals": 1,
+              "score": "1-1",
+              "probability": 0.11610070036765252,
+              "rank": 1
+            },
+            {
+              "homeGoals": 2,
+              "awayGoals": 1,
+              "score": "2-1",
+              "probability": 0.08737505274243992,
+              "rank": 2
+            },
+            {
+              "homeGoals": 1,
+              "awayGoals": 0,
+              "score": "1-0",
+              "probability": 0.08432679529310738,
+              "rank": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "calibration": {
+    "source": "data/analysis/exact-score-research/exact-score-evaluation.json",
+    "sourceHash": "e2fa27a59efb778561f9512980dd350913027555f7f5316f4f5093eb9ab3ae9b",
+    "commonRetrospectiveSample": 50,
+    "models": {
+      "M0": {
+        "sample": 50,
+        "scoreLogLoss": 2.982501831033314,
+        "oneXTwoRPS": 0.24964801371041695,
+        "draw": {
+          "n": 50,
+          "predicted": 0.26409497940366494,
+          "observed": 0.18,
+          "actualMinusPredicted": -0.08409497940366495,
+          "status": "EXPLORATORY"
+        },
+        "lambdaBiasActualMinusPredicted": {
+          "home": 0.19973684210526318,
+          "away": 0.09333333333333331,
+          "total": 0.29307017543859665
+        },
+        "favoriteOutsider": {
+          "n": 50,
+          "favorite": {
+            "predicted": 0.3906454207006487,
+            "observed": 0.32
+          },
+          "outsider": {
+            "predicted": 0.34525959989537797,
+            "observed": 0.5
+          },
+          "maximumProbability": {
+            "mean": 0.3906454207006487,
+            "maximum": 0.40269031249983095,
+            "atLeast80Pct": 0
+          }
+        },
+        "extremeLambdaMatches": 0
+      },
+      "M1": {
+        "sample": 50,
+        "scoreLogLoss": 2.831561021192848,
+        "oneXTwoRPS": 0.19121470638387245,
+        "draw": {
+          "n": 50,
+          "predicted": 0.26346917429460104,
+          "observed": 0.18,
+          "actualMinusPredicted": -0.08346917429460105,
+          "status": "EXPLORATORY"
+        },
+        "lambdaBiasActualMinusPredicted": {
+          "home": 0.24504436443147384,
+          "away": 0.3223848236059926,
+          "total": 0.5674291880374664
+        },
+        "favoriteOutsider": {
+          "n": 50,
+          "favorite": {
+            "predicted": 0.5199083697148487,
+            "observed": 0.62
+          },
+          "outsider": {
+            "predicted": 0.21662245599021707,
+            "observed": 0.2
+          },
+          "maximumProbability": {
+            "mean": 0.5225416105410677,
+            "maximum": 0.7850479852181413,
+            "atLeast80Pct": 0
+          }
+        },
+        "extremeLambdaMatches": 0
+      },
+      "M2": {
+        "sample": 50,
+        "scoreLogLoss": 2.8108873085731814,
+        "oneXTwoRPS": 0.20283306715028282,
+        "draw": {
+          "n": 50,
+          "predicted": 0.23167047704707813,
+          "observed": 0.18,
+          "actualMinusPredicted": -0.05167047704707814,
+          "status": "EXPLORATORY"
+        },
+        "lambdaBiasActualMinusPredicted": {
+          "home": -0.08489074158201965,
+          "away": 0.19972762821609755,
+          "total": 0.11483688663407784
+        },
+        "favoriteOutsider": {
+          "n": 50,
+          "favorite": {
+            "predicted": 0.5348023458774955,
+            "observed": 0.54
+          },
+          "outsider": {
+            "predicted": 0.23352717707508094,
+            "observed": 0.28
+          },
+          "maximumProbability": {
+            "mean": 0.5348023458774955,
+            "maximum": 0.8436257154116242,
+            "atLeast80Pct": 2
+          }
+        },
+        "extremeLambdaMatches": 0
+      }
+    },
+    "evidence": [
+      {
+        "signal": "Sovrastima pareggi",
+        "classification": "WEAK INDICATION",
+        "evidence": "M0/M1/M2 prevedono in media 26.4%, 26.3%, 23.2% contro 18.0% osservato su 50 gare; campione retrospettivo breve."
+      },
+      {
+        "signal": "Sovrastima outsider",
+        "classification": "NOT ESTABLISHED",
+        "evidence": "M1 outsider 21.7% previsto vs 20.0% osservato; M2 23.4% vs 28.0%. Non emerge un eccesso comune."
+      },
+      {
+        "signal": "Sottostima favorite",
+        "classification": "WEAK INDICATION",
+        "evidence": "M1 52.0% previsto vs 62.0% osservato; M2 53.5% vs 54.0%. Indicazione non uniforme."
+      },
+      {
+        "signal": "Lambda casa/trasferta mal calibrati",
+        "classification": "WEAK INDICATION",
+        "evidence": "Bias totale actual-minus-lambda: M0 0.293, M1 0.567, M2 0.115. M1 appare più bassa, senza prova prospettica."
+      },
+      {
+        "signal": "Eccessiva dispersione",
+        "classification": "NOT ESTABLISHED",
+        "evidence": "Rapporto varianza/media osservato complessivo: casa 0.944, trasferta 0.807; il diagnostico esistente non prova overdispersione persistente."
+      },
+      {
+        "signal": "Probabilità estreme",
+        "classification": "NOT ESTABLISHED",
+        "evidence": "M1 non supera 80% in alcuna delle 50 gare; M2 lo fa in 2. Nessuna anomalia diffusa stabilita."
+      }
+    ],
+    "engineContext": {
+      "source": "data/generated/prediction-backtest-multiseason.json",
+      "sourceHash": "ef7f7604d5161c2f6f0e56fdba112d93de3f3622955f0e77b2669eb35f7c6660",
+      "scopeCaution": "The 1,201-match multi-season artifact validates the retrodatable statistical core, not every full Engine 4.13.0 contextual component.",
+      "sample": 1201,
+      "oneXTwoLogLoss": 1.0109,
+      "oneXTwoBrier": 0.6046,
+      "scoreLogLoss": 2.7957
+    }
+  },
+  "protocol": {
+    "decision": "PROSPECTIVE HEAD-TO-HEAD",
+    "models": [
+      "ENGINE_4.13.0",
+      "M0",
+      "M1",
+      "M2"
+    ],
+    "evaluateSeparately": true,
+    "ensemble": false,
+    "sisalRole": "EXTERNAL BENCHMARK ONLY — NOT A MODEL INPUT",
+    "futureModels": "NO M3/M4 IN THIS TASK",
+    "modelPromotion": "NONE"
+  },
+  "snapshots": {
+    "status": "FROZEN",
+    "matchCount": 10,
+    "predictionCount": 40,
+    "createdAt": "2026-10-09T12:22:37.357Z",
+    "revision": 3,
+    "frozenModels": [
+      "ENGINE_4.13.0",
+      "M0",
+      "M1",
+      "M2"
+    ],
+    "snapshotFile": "data/predictions/exact-score-research/2026-27/md-06.json",
+    "snapshotFileSHA256": "ca1715a6727ecd4578e7080492f183986de3af48c680afcdcc5975d9171a193d",
+    "containerHash": "7c88d58b44aa51cf1f32f629895e09e0baeed2a692fb5fec9afe4734d9956eed",
+    "manifestFile": "data/predictions/exact-score-research/manifest.json",
+    "manifestFileSHA256": "d89e6ada1c46d533af026b04dd7a3e104c1ab52c28f1cc00718f0ec4ae71c424",
+    "replacements": [
+      {
+        "supersededAt": "2026-10-09T12:17:47.082Z",
+        "reason": "Replace revision 1 generated from reconstructed vectors with the canonical frozen prospective vectors created 2026-10-03; formulas unchanged.",
+        "previousContainerHash": "aa5455da858161ae4dba124b28c46b8eea4434cb3b55ed8dbeee4254e6baca4b"
+      },
+      {
+        "supersededAt": "2026-10-09T12:22:37.357Z",
+        "reason": "Restore the canonical M1/M2 source files unchanged and move prospective execution to a metadata-only adapter over the canonical frozen vectors; formulas and outputs unchanged.",
+        "previousContainerHash": "c123fd3727a4fc4233f615c3227ea32417900c067fc66e042a2bf72353451af4"
+      }
+    ],
+    "existingImmutableAssets": [
+      {
+        "file": "data/analysis/champions/aek-context-control-2026-10-04.json",
+        "sha256": "a37bf18aea0e31d55634ee6debe4a9efbae4036289f0db75ba7782129fb9e1b4"
+      },
+      {
+        "file": "data/analysis/exact-score-research/exact-score-prospective-inputs.json",
+        "sha256": "42491bcade8a262d5a212001cfaea4fca14609d5058344e0b8c4c0ec6d5b58e7"
+      },
+      {
+        "file": "data/analysis/exact-score-research/exact-score-research-config.json",
+        "sha256": "059d3443057329c6724571a6e15ec94664a3cf17fbdbd63fbab8ef7289bac605"
+      },
+      {
+        "file": "data/predictions/card-snapshots/README.md",
+        "sha256": "c640a3dd22e47179ec59e2f5e41d33f24ec424a6aa0e035e471f8a75cac57eb9"
+      },
+      {
+        "file": "data/predictions/snapshots/2026-27/md-06.json",
+        "sha256": "bb12972bedf482ab4210a11256ee3af1b68f442d264d3bdb106419c7aee38f78"
+      },
+      {
+        "file": "data/predictions/snapshots/manifest.json",
+        "sha256": "d8c236c7e8bf6aa92a425cd14e479cb9f20c8fa150029ecc0f1b8c2d82119b4d"
+      }
+    ]
+  },
+  "evaluation": {
+    "status": "PENDING",
+    "commonSample": {
+      "n": 0,
+      "matchIds": [],
+      "rule": "INTERSECTION OF FINISHED NON-AWARDED MD6 MATCHES WITH ALL FOUR FROZEN MODELS"
+    },
+    "pendingMatchIds": [
+      "genoa-fiorentina-2026-27-md-06",
+      "inter-parma-2026-27-md-06",
+      "napoli-frosinone-2026-27-md-06",
+      "como-roma-2026-27-md-06",
+      "lazio-monza-2026-27-md-06",
+      "lecce-bologna-2026-27-md-06",
+      "sassuolo-milan-2026-27-md-06",
+      "cagliari-juventus-2026-27-md-06",
+      "atalanta-venezia-2026-27-md-06",
+      "torino-udinese-2026-27-md-06"
+    ],
+    "predictionRecalculation": false,
+    "output": "data/analysis/exact-score-research/prospective-md06-evaluation.json",
+    "outputSHA256": "68889aee2d356469e93254491e7b5cc285f79bbdb857716fb8e6fb30dea08db5",
+    "metricsWhenAvailable": [
+      "score log loss",
+      "1X2 RPS",
+      "BTTS Brier",
+      "Over 2.5 Brier",
+      "home/away goal MAE",
+      "exact hit",
+      "top 3/top 5",
+      "calibration"
+    ]
+  },
+  "tests": {
+    "schemaVersion": 1,
+    "generatedAt": "2026-10-09T12:23:25.348Z",
+    "status": "PASS",
+    "assertions": 57,
+    "scope": [
+      "canonical frozen inputs",
+      "M0/M1/M2 formula parity",
+      "leakage",
+      "probability normalization",
+      "score matrix",
+      "1X2",
+      "BTTS",
+      "Over/Under 2.5",
+      "cutoff",
+      "hash",
+      "immutability",
+      "common sample",
+      "production integrity"
+    ],
+    "snapshotFile": "data/predictions/exact-score-research/2026-27/md-06.json",
+    "snapshotContainerHash": "7c88d58b44aa51cf1f32f629895e09e0baeed2a692fb5fec9afe4734d9956eed",
+    "manifestFile": "data/predictions/exact-score-research/manifest.json",
+    "evaluationFile": "data/analysis/exact-score-research/prospective-md06-evaluation.json",
+    "commonSample": 0,
+    "evaluationStatus": "PENDING",
+    "productionIntegrity": {
+      "checkedFiles": 11778,
+      "manifestBefore": "aa7b00fc337477605f8ec4105d668d2b587680aaf433e0bbabde412429646079",
+      "manifestAfter": "aa7b00fc337477605f8ec4105d668d2b587680aaf433e0bbabde412429646079",
+      "changedFiles": [],
+      "immutableSourceAssetsChanged": [],
+      "status": "PASS"
+    },
+    "knownPreexistingBaselineFailure": {
+      "status": "DOCUMENTED_NOT_RERUN",
+      "test": "scripts/research/exact-score/test-baselines.js repository historical freeze guard",
+      "reason": "The October 3 tmp baseline compares the current repository with an old whole-repository inventory; it is unrelated to the focused MD6 prospective checks and was documented in the preceding forensic audit."
+    }
+  },
+  "productionIntegrity": {
+    "snapshotGeneration": {
+      "checkedFiles": 11778,
+      "manifestBefore": "aa7b00fc337477605f8ec4105d668d2b587680aaf433e0bbabde412429646079",
+      "manifestAfter": "aa7b00fc337477605f8ec4105d668d2b587680aaf433e0bbabde412429646079",
+      "changedFiles": [],
+      "immutableSourceAssetsChanged": [],
+      "status": "PASS"
+    },
+    "reportGeneration": {
+      "checkedFiles": 11778,
+      "manifestBefore": "aa7b00fc337477605f8ec4105d668d2b587680aaf433e0bbabde412429646079",
+      "manifestAfter": "aa7b00fc337477605f8ec4105d668d2b587680aaf433e0bbabde412429646079",
+      "changedFiles": []
+    },
+    "status": "PASS"
+  },
+  "decision": {
+    "diagnostic": "COMPLETE",
+    "prospectiveModels": "ENGINE_4.13.0 + M0 + M1 + M2",
+    "md6Snapshots": "FROZEN",
+    "matchesFrozen": "10/10",
+    "evaluation": "PENDING",
+    "modelPromotion": "NONE",
+    "productionModels": "UNCHANGED",
+    "existingImmutableSnapshots": "UNCHANGED",
+    "productionIntegrity": "PASS",
+    "phase": "CLOSED"
+  }
+}
