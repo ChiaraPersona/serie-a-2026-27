@@ -28,16 +28,22 @@ async function verifyViewport(browser, width, height) {
   await page.reload({ waitUntil: "networkidle" });
 
   assert.equal(await page.locator("[data-match-panel]").count(), 10, `${width}px: partite mancanti`);
-  assert.equal(await page.locator("[data-selected-forecast=true]").count(), 82, `${width}px: pronostici selezionati inattesi`);
+  assert.equal(await page.locator("[data-selected-forecast=true]").count(), 175, `${width}px: pronostici selezionati inattesi`);
+  assert.equal(await page.locator('[data-selected-forecast=true][data-quote-availability="unavailable"]').count(), 95, `${width}px: pronostici senza quota inattesi`);
+  assert.equal(await page.getByText("Quota non disponibile", { exact: true }).count(), 95, `${width}px: etichette quota non disponibile inattese`);
+  assert.equal(await page.locator('[data-selected-forecast=true][data-quote-availability="unavailable"][data-personal-pick]').count(), 0, `${width}px: pronostico senza quota aggiungibile`);
+  assert.equal(await page.locator('[data-selected-forecast=true]').filter({ hasText: "Draw No Bet" }).count(), 0, `${width}px: Draw No Bet ancora consigliato`);
   assert.equal(await page.locator("[data-market-mode]").count(), 0, `${width}px: selettore modalità ancora presente`);
   assert.equal(await page.locator("[data-market-mode-panel]").count(), 0, `${width}px: pannello catalogo completo ancora presente`);
   assert.equal(await page.locator(".betting-suggestion-reason").count(), 0, `${width}px: descrizioni tecniche ancora presenti`);
   assert.equal(await page.getByText("Tutti i mercati", { exact: true }).count(), 0, `${width}px: catalogo completo ancora accessibile`);
   assert.equal(await page.getByText("Pronostici suggeriti", { exact: true }).count(), 0, `${width}px: vecchia modalità ancora visibile`);
-  const selectedMetrics = await page.locator("[data-selected-forecast=true]").evaluateAll(rows => rows.map(row => ({ probability: Number(row.dataset.probability), odds: Number(row.dataset.odds), ev: Number(row.dataset.ev), metricLabels: [...row.querySelectorAll(".betting-market-metric small")].map(node => node.textContent.trim()), text: row.textContent })));
-  assert(selectedMetrics.every(row => Number.isFinite(row.probability) && Number.isFinite(row.odds) && row.odds >= 1 && Number.isFinite(row.ev)), `${width}px: pronostico senza probabilità, quota o EV`);
-  assert(selectedMetrics.some(row => row.ev < 0), `${width}px: nessun pronostico coerente con EV negativo esposto`);
-  assert(selectedMetrics.every(row => JSON.stringify(row.metricLabels) === JSON.stringify(["Probabilità", "Quota Sisal", "EV"])), `${width}px: metriche UI non minimali`);
+  const selectedMetrics = await page.locator("[data-selected-forecast=true]").evaluateAll(rows => rows.map(row => ({ probability: Number(row.dataset.probability), odds: row.dataset.odds === undefined ? null : Number(row.dataset.odds), ev: row.dataset.ev === undefined ? null : Number(row.dataset.ev), unavailable: row.dataset.quoteAvailability === "unavailable", hasPersonalPick: row.hasAttribute("data-personal-pick"), metricLabels: [...row.querySelectorAll(".betting-market-metric small")].map(node => node.textContent.trim()), text: row.textContent })));
+  assert(selectedMetrics.every(row => Number.isFinite(row.probability)), `${width}px: pronostico senza probabilità`);
+  assert(selectedMetrics.filter(row => !row.unavailable).every(row => Number.isFinite(row.odds) && row.odds >= 1 && Number.isFinite(row.ev) && row.hasPersonalPick), `${width}px: pronostico quotato incompleto`);
+  assert(selectedMetrics.filter(row => row.unavailable).every(row => row.odds === null && row.ev === null && !row.hasPersonalPick && row.metricLabels.join("|") === "Probabilità|Quota Sisal" && !/\bEV\b/.test(row.text)), `${width}px: stato senza quota non coerente`);
+  assert(selectedMetrics.some(row => !row.unavailable && row.ev < 0), `${width}px: nessun pronostico coerente con EV negativo esposto`);
+  assert(selectedMetrics.filter(row => !row.unavailable).every(row => JSON.stringify(row.metricLabels) === JSON.stringify(["Probabilità", "Quota Sisal", "EV"])), `${width}px: metriche quotate non minimali`);
   assert(selectedMetrics.every(row => !/P centrale|P prudente|sensibilit|affidabilit|compatibile con/i.test(row.text)), `${width}px: testo tecnico esposto`);
 
   await page.locator("[data-match-open-all]").click();

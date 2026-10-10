@@ -1,10 +1,10 @@
 {
   "schemaVersion": 2,
   "reportType": "SERIE_A_MD06_DEFINITIVE_FORECAST_SELECTION",
-  "generatedAt": "2026-10-10T09:58:13.079Z",
+  "generatedAt": "2026-10-10T10:35:50.504Z",
   "sources": {
     "oddsSnapshot": "data/normalized/odds/sisal/serie-a.json",
-    "oddsRetrievedAt": "2026-10-09T10:43:00.203Z",
+    "oddsRetrievedAt": "2026-10-10T09:57:30.921Z",
     "predictionSnapshot": "data/normalized/predictions.json",
     "predictionGeneratedAt": "2026-10-09T19:08:03.078Z",
     "engineVersion": "4.13.0",
@@ -14,34 +14,24 @@
     "phase5D": "output/reports/serie-a-md06-phase-5d-duo-audit-2026-10-09.md",
     "phase5E": "output/reports/serie-a-md06-phase-5e-final-audit-2026-10-09.md"
   },
-  "availabilityDisclosure": "Quote verificate nello snapshot Sisal del 9 ottobre 2026; disponibilità corrente non verificata.",
+  "availabilityDisclosure": "Le quote della baseline restano quelle certificate nello snapshot 2026-10-09T10:43:00.203Z; lo snapshot Sisal 2026-10-10T09:57:30.921Z è stato controllato per i nuovi mercati individuali. Per tiri e SOT senza contratto compatibile la quota resta N/D e l'EV non viene calcolato.",
   "invariants": {
     "certifiedSelections": 383,
     "certifiedSelectionIdsPreserved": true,
     "certifiedContractHashBefore": "9bc511e5edf5e6ca066de3ac03fc4747dd97a5534967cacb010d11c1bdea5693",
     "certifiedContractHashAfter": "9bc511e5edf5e6ca066de3ac03fc4747dd97a5534967cacb010d11c1bdea5693",
     "certifiedContractsUnchanged": true,
-    "catalogSelections": 1446,
-    "evaluatedSelections": 1038,
-    "notModelledSelections": 408
+    "catalogSelections": 1542,
+    "evaluatedSelections": 1133,
+    "notModelledSelections": 409
   },
   "previousEngineAudit": {
-    "totalSuggestions": 32,
+    "totalSuggestions": 82,
     "criteria": [
-      "Quota verificata nello snapshot",
-      "Probabilità validata",
-      "EV operativo almeno +2%",
-      "EV prudente non negativo per i mercati statistici",
-      "Limiti economici sulle quote",
-      "Scenario coerente o multi-scenario"
+      "Baseline sportiva approvata dall'utente"
     ],
     "ordering": [
-      "Segno dell'EV prudente",
-      "Affidabilità",
-      "EV prudente",
-      "EV centrale",
-      "Probabilità prudente",
-      "selectionId stabile"
+      "Ordine della baseline approvata per partita"
     ],
     "quantityLimit": null,
     "deficiencies": [
@@ -51,73 +41,74 @@
     ]
   },
   "selectionPolicy": {
-    "status": "SPORTS_COHERENCE_PRIMARY_EV_INFORMATION_ONLY",
+    "status": "APPROVED_BASELINE_FROZEN_PLUS_STRUCTURED_READING_V2",
     "eligibility": [
-      "Quota e identità provider verificate",
-      "Probabilità V2 esistente oppure modello discreto validato",
-      "Probabilità prudente disponibile",
-      "Affidabilità valutata",
-      "Scenario coerente o compatibile con più scenari",
-      "Supporto minimo differenziato per struttura del mercato e affidabilità",
-      "Settlement supportato",
+      "Gli 80 pronostici approvati non-DNB restano invariati",
+      "Draw No Bet escluso senza rimpiazzo",
+      "Tiri e SOT individuali letti dalle probabilità V2 serializzate",
+      "Minuti, titolarità, stabilità e matchup già presenti nelle letture",
+      "Quota opzionale solo per tiri/SOT individuali e soltanto con contratto full-match compatibile",
       "EV non usato come gate"
     ],
     "rankingTuple": [
-      "Coerenza con lo scenario prevalente",
-      "Forma diretta della previsione di risultato",
-      "Probabilità prudente",
-      "Solidità del modello",
-      "Probabilità centrale",
-      "selectionId"
+      "Ordine della baseline approvata",
+      "Famiglia tiri prima di SOT",
+      "Probabilità V2 della soglia scelta",
+      "playerId stabile"
     ],
     "deduplication": [
-      "Una sola scelta per identità canonica di soglia",
-      "Una sola forma per la stessa tesi direzionale di risultato",
-      "Una sola scelta per eventi logicamente equivalenti",
-      "Nessuna implicazione logica diretta tra due scelte",
-      "Nessuna coppia mutuamente esclusiva"
+      "Una sola soglia per giocatore e statistica",
+      "ID stabile indipendente dalla disponibilità della quota",
+      "DUO e contratti nei due tempi esclusi",
+      "Nessun mercato senza quota ammesso fuori da tiri/SOT individuali"
     ],
     "topNLimit": null
   },
   "coverage": {
-    "totalSuggestions": 82,
-    "averagePerMatch": 8.2,
+    "totalSuggestions": 175,
+    "averagePerMatch": 17.5,
     "byFamily": {
-      "shots": 17,
-      "goals-results": 31,
-      "sot": 18,
+      "shots": 78,
+      "goals-results": 29,
+      "sot": 52,
       "corners": 16
     },
-    "negativeEvSuggestions": 70,
-    "recoveredFromEconomicExclusion": 72,
+    "quotedSuggestions": 80,
+    "unquotedSuggestions": 95,
+    "negativeEvSuggestions": 68,
+    "recoveredFromEconomicExclusion": 70,
     "perMatch": [
       {
         "matchId": "genoa-fiorentina-2026-27-md-06",
         "fixture": "Genoa – Fiorentina",
-        "catalog": 155,
+        "catalog": 166,
         "quoted": 155,
-        "evaluated": 110,
+        "evaluated": 121,
         "notModelled": 45,
         "positiveEv": 6,
-        "previousSuggestions": 2,
-        "selected": 9,
+        "previousSuggestions": 9,
+        "removedDnb": 1,
+        "preservedBaseline": 8,
+        "newShots": 8,
+        "newSot": 3,
+        "unquoted": 11,
+        "selected": 19,
         "exclusions": {
           "MARGINAL_SPORTS_SUPPORT_BELOW_PORTFOLIO_STANDARD": 9,
           "NOT_COHERENT_WITH_PREVALENT_SCENARIO": 50,
           "SPORTS_SUPPORT_BELOW_MARKET_STANDARD": 63,
+          "DRAW_NO_BET_EXCLUDED_FROM_MD06_RECOMMENDATIONS": 2,
           "ROBUST_PROBABILITY_NOT_AVAILABLE": 47,
           "RELIABILITY_NOT_ASSESSED": 47,
           "CANONICAL_THRESHOLD_BALANCE_NOT_SELECTED": 22,
-          "EQUIVALENT_EVENT_ALREADY_SELECTED": 1,
-          "LOGICAL_IMPLICATION_WITH_HIGHER_RANKED_SELECTION": 3,
-          "RESULT_THESIS_ALREADY_SELECTED": 1,
+          "EQUIVALENT_EVENT_ALREADY_SELECTED": 2,
+          "LOGICAL_IMPLICATION_WITH_HIGHER_RANKED_SELECTION": 1,
           "NOT_MODELLED": 45,
           "SETTLEMENT_NOT_SUPPORTED": 45,
           "NO_COMPARABLE_SCORE_EVENT": 44,
           "STATISTICAL_FAMILY_NOT_VALIDATED": 44
         },
         "selectionIds": [
-          "bet:sisal:genoa-fiorentina-2026-27-md-06:5337164544",
           "bet:sisal:genoa-fiorentina-2026-27-md-06:5367456140",
           "bet:sisal:genoa-fiorentina-2026-27-md-06:5337222708",
           "bet:sisal:genoa-fiorentina-2026-27-md-06:5337164992",
@@ -125,31 +116,47 @@
           "bet:sisal:genoa-fiorentina-2026-27-md-06:5369524035",
           "bet:sisal:genoa-fiorentina-2026-27-md-06:5337194687",
           "bet:sisal:genoa-fiorentina-2026-27-md-06:5337194592",
-          "bet:sisal:genoa-fiorentina-2026-27-md-06:5337194619"
+          "bet:sisal:genoa-fiorentina-2026-27-md-06:5337194619",
+          "forecast:v2:genoa-fiorentina-2026-27-md-06:nicolo-fagioli:shots:1",
+          "forecast:v2:genoa-fiorentina-2026-27-md-06:leo-stigard:shots:1",
+          "forecast:v2:genoa-fiorentina-2026-27-md-06:milutin-osmajic:shots:2",
+          "forecast:v2:genoa-fiorentina-2026-27-md-06:franco-mastantuono:shots:3",
+          "forecast:v2:genoa-fiorentina-2026-27-md-06:johan-vasquez:shots:1",
+          "forecast:v2:genoa-fiorentina-2026-27-md-06:mateo-pellegrino:shots:2",
+          "forecast:v2:genoa-fiorentina-2026-27-md-06:vitinha:shots:3",
+          "forecast:v2:genoa-fiorentina-2026-27-md-06:tommaso-baldanzi:shots:3",
+          "forecast:v2:genoa-fiorentina-2026-27-md-06:leo-stigard:sot:1",
+          "forecast:v2:genoa-fiorentina-2026-27-md-06:franco-mastantuono:sot:2",
+          "forecast:v2:genoa-fiorentina-2026-27-md-06:milutin-osmajic:sot:2"
         ]
       },
       {
         "matchId": "inter-parma-2026-27-md-06",
         "fixture": "Inter – Parma",
-        "catalog": 150,
-        "quoted": 150,
-        "evaluated": 104,
-        "notModelled": 46,
+        "catalog": 161,
+        "quoted": 151,
+        "evaluated": 114,
+        "notModelled": 47,
         "positiveEv": 38,
-        "previousSuggestions": 5,
-        "selected": 9,
+        "previousSuggestions": 9,
+        "removedDnb": 0,
+        "preservedBaseline": 9,
+        "newShots": 7,
+        "newSot": 3,
+        "unquoted": 10,
+        "selected": 19,
         "exclusions": {
           "SPORTS_SUPPORT_BELOW_MARKET_STANDARD": 61,
-          "NOT_COHERENT_WITH_PREVALENT_SCENARIO": 51,
+          "NOT_COHERENT_WITH_PREVALENT_SCENARIO": 52,
+          "DRAW_NO_BET_EXCLUDED_FROM_MD06_RECOMMENDATIONS": 2,
           "MARGINAL_SPORTS_SUPPORT_BELOW_PORTFOLIO_STANDARD": 10,
           "CANONICAL_THRESHOLD_BALANCE_NOT_SELECTED": 23,
-          "RESULT_THESIS_ALREADY_SELECTED": 1,
-          "NOT_MODELLED": 46,
-          "ROBUST_PROBABILITY_NOT_AVAILABLE": 46,
-          "RELIABILITY_NOT_ASSESSED": 46,
-          "SETTLEMENT_NOT_SUPPORTED": 46,
-          "NO_COMPARABLE_SCORE_EVENT": 45,
-          "STATISTICAL_FAMILY_NOT_VALIDATED": 45
+          "NOT_MODELLED": 47,
+          "ROBUST_PROBABILITY_NOT_AVAILABLE": 47,
+          "RELIABILITY_NOT_ASSESSED": 47,
+          "SETTLEMENT_NOT_SUPPORTED": 47,
+          "NO_COMPARABLE_SCORE_EVENT": 46,
+          "STATISTICAL_FAMILY_NOT_VALIDATED": 46
         },
         "selectionIds": [
           "bet:sisal:inter-parma-2026-27-md-06:5337196340",
@@ -160,27 +167,43 @@
           "bet:sisal:inter-parma-2026-27-md-06:5337155400",
           "bet:sisal:inter-parma-2026-27-md-06:5369498092",
           "bet:sisal:inter-parma-2026-27-md-06:5367465410",
-          "bet:sisal:inter-parma-2026-27-md-06:5367465594"
+          "bet:sisal:inter-parma-2026-27-md-06:5367465594",
+          "forecast:v2:inter-parma-2026-27-md-06:yann-bisseck:shots:1",
+          "forecast:v2:inter-parma-2026-27-md-06:manuel-akanji:shots:1",
+          "forecast:v2:inter-parma-2026-27-md-06:marcus-thuram:shots:3",
+          "forecast:v2:inter-parma-2026-27-md-06:el-bilal-toure:shots:2",
+          "forecast:v2:inter-parma-2026-27-md-06:federico-dimarco:shots:2",
+          "forecast:v2:inter-parma-2026-27-md-06:alessandro-bastoni:shots:1",
+          "forecast:v2:inter-parma-2026-27-md-06:nicolo-barella:shots:2",
+          "forecast:v2:inter-parma-2026-27-md-06:el-bilal-toure:sot:1",
+          "forecast:v2:inter-parma-2026-27-md-06:federico-dimarco:sot:1",
+          "forecast:v2:inter-parma-2026-27-md-06:marcus-thuram:sot:2"
         ]
       },
       {
         "matchId": "napoli-frosinone-2026-27-md-06",
         "fixture": "Napoli – Frosinone",
-        "catalog": 152,
+        "catalog": 162,
         "quoted": 152,
-        "evaluated": 105,
+        "evaluated": 115,
         "notModelled": 47,
         "positiveEv": 19,
-        "previousSuggestions": 2,
-        "selected": 8,
+        "previousSuggestions": 8,
+        "removedDnb": 0,
+        "preservedBaseline": 8,
+        "newShots": 6,
+        "newSot": 4,
+        "unquoted": 10,
+        "selected": 18,
         "exclusions": {
           "SPORTS_SUPPORT_BELOW_MARKET_STANDARD": 66,
           "NOT_COHERENT_WITH_PREVALENT_SCENARIO": 52,
+          "DRAW_NO_BET_EXCLUDED_FROM_MD06_RECOMMENDATIONS": 2,
           "CANONICAL_THRESHOLD_BALANCE_NOT_SELECTED": 17,
           "MARGINAL_SPORTS_SUPPORT_BELOW_PORTFOLIO_STANDARD": 9,
           "ROBUST_PROBABILITY_NOT_AVAILABLE": 48,
           "RELIABILITY_NOT_ASSESSED": 48,
-          "RESULT_THESIS_ALREADY_SELECTED": 2,
+          "RESULT_THESIS_ALREADY_SELECTED": 1,
           "LOGICAL_IMPLICATION_WITH_HIGHER_RANKED_SELECTION": 2,
           "NOT_MODELLED": 47,
           "SETTLEMENT_NOT_SUPPORTED": 47,
@@ -195,22 +218,37 @@
           "bet:sisal:napoli-frosinone-2026-27-md-06:5367483087",
           "bet:sisal:napoli-frosinone-2026-27-md-06:5367475609",
           "bet:sisal:napoli-frosinone-2026-27-md-06:5337168988",
-          "bet:sisal:napoli-frosinone-2026-27-md-06:5369526529"
+          "bet:sisal:napoli-frosinone-2026-27-md-06:5369526529",
+          "forecast:v2:napoli-frosinone-2026-27-md-06:amir-rrahmani:shots:1",
+          "forecast:v2:napoli-frosinone-2026-27-md-06:fares-ghedjemis:shots:2",
+          "forecast:v2:napoli-frosinone-2026-27-md-06:kevin-de-bruyne:shots:2",
+          "forecast:v2:napoli-frosinone-2026-27-md-06:rasmus-h-jlund:shots:3",
+          "forecast:v2:napoli-frosinone-2026-27-md-06:giacomo-calo:shots:2",
+          "forecast:v2:napoli-frosinone-2026-27-md-06:giorgi-kvernadze:shots:3",
+          "forecast:v2:napoli-frosinone-2026-27-md-06:giorgi-kvernadze:sot:1",
+          "forecast:v2:napoli-frosinone-2026-27-md-06:matteo-politano:sot:1",
+          "forecast:v2:napoli-frosinone-2026-27-md-06:giacomo-calo:sot:1",
+          "forecast:v2:napoli-frosinone-2026-27-md-06:rasmus-h-jlund:sot:2"
         ]
       },
       {
         "matchId": "como-roma-2026-27-md-06",
         "fixture": "Como – Roma",
-        "catalog": 162,
+        "catalog": 172,
         "quoted": 162,
-        "evaluated": 114,
+        "evaluated": 124,
         "notModelled": 48,
         "positiveEv": 10,
-        "previousSuggestions": 3,
-        "selected": 10,
+        "previousSuggestions": 10,
+        "removedDnb": 0,
+        "preservedBaseline": 10,
+        "newShots": 5,
+        "newSot": 5,
+        "unquoted": 10,
+        "selected": 20,
         "exclusions": {
           "SPORTS_SUPPORT_BELOW_MARKET_STANDARD": 60,
-          "RESULT_THESIS_ALREADY_SELECTED": 1,
+          "DRAW_NO_BET_EXCLUDED_FROM_MD06_RECOMMENDATIONS": 2,
           "ROBUST_PROBABILITY_NOT_AVAILABLE": 49,
           "RELIABILITY_NOT_ASSESSED": 49,
           "MARGINAL_SPORTS_SUPPORT_BELOW_PORTFOLIO_STANDARD": 9,
@@ -232,28 +270,44 @@
           "bet:sisal:como-roma-2026-27-md-06:5337173976",
           "bet:sisal:como-roma-2026-27-md-06:5371749367",
           "bet:sisal:como-roma-2026-27-md-06:5371749312",
-          "bet:sisal:como-roma-2026-27-md-06:5369298344"
+          "bet:sisal:como-roma-2026-27-md-06:5369298344",
+          "forecast:v2:como-roma-2026-27-md-06:nico-paz:shots:3",
+          "forecast:v2:como-roma-2026-27-md-06:donyell-malen:shots:3",
+          "forecast:v2:como-roma-2026-27-md-06:assane-diao:shots:2",
+          "forecast:v2:como-roma-2026-27-md-06:paulo-dybala:shots:3",
+          "forecast:v2:como-roma-2026-27-md-06:anastasios-douvikas:shots:3",
+          "forecast:v2:como-roma-2026-27-md-06:paulo-dybala:sot:1",
+          "forecast:v2:como-roma-2026-27-md-06:assane-diao:sot:1",
+          "forecast:v2:como-roma-2026-27-md-06:donyell-malen:sot:2",
+          "forecast:v2:como-roma-2026-27-md-06:nico-paz:sot:2",
+          "forecast:v2:como-roma-2026-27-md-06:anastasios-douvikas:sot:2"
         ]
       },
       {
         "matchId": "lazio-monza-2026-27-md-06",
         "fixture": "Lazio – Monza",
-        "catalog": 73,
+        "catalog": 86,
         "quoted": 73,
-        "evaluated": 61,
+        "evaluated": 74,
         "notModelled": 12,
         "positiveEv": 19,
-        "previousSuggestions": 3,
-        "selected": 5,
+        "previousSuggestions": 5,
+        "removedDnb": 0,
+        "preservedBaseline": 5,
+        "newShots": 9,
+        "newSot": 4,
+        "unquoted": 13,
+        "selected": 18,
         "exclusions": {
           "SPORTS_SUPPORT_BELOW_MARKET_STANDARD": 36,
           "NOT_COHERENT_WITH_PREVALENT_SCENARIO": 17,
+          "DRAW_NO_BET_EXCLUDED_FROM_MD06_RECOMMENDATIONS": 2,
           "MARGINAL_SPORTS_SUPPORT_BELOW_PORTFOLIO_STANDARD": 6,
           "CANONICAL_THRESHOLD_BALANCE_NOT_SELECTED": 9,
           "ROBUST_PROBABILITY_NOT_AVAILABLE": 13,
           "RELIABILITY_NOT_ASSESSED": 13,
           "LOGICAL_IMPLICATION_WITH_HIGHER_RANKED_SELECTION": 2,
-          "RESULT_THESIS_ALREADY_SELECTED": 2,
+          "RESULT_THESIS_ALREADY_SELECTED": 1,
           "NOT_MODELLED": 12,
           "SETTLEMENT_NOT_SUPPORTED": 12,
           "NO_COMPARABLE_SCORE_EVENT": 11,
@@ -264,35 +318,52 @@
           "bet:sisal:lazio-monza-2026-27-md-06:5337208635",
           "bet:sisal:lazio-monza-2026-27-md-06:5337208657",
           "bet:sisal:lazio-monza-2026-27-md-06:5371749154",
-          "bet:sisal:lazio-monza-2026-27-md-06:5371703309"
+          "bet:sisal:lazio-monza-2026-27-md-06:5371703309",
+          "forecast:v2:lazio-monza-2026-27-md-06:samuele-birindelli:shots:1",
+          "forecast:v2:lazio-monza-2026-27-md-06:kenneth-taylor:shots:1",
+          "forecast:v2:lazio-monza-2026-27-md-06:nuno-tavares:shots:1",
+          "forecast:v2:lazio-monza-2026-27-md-06:jay-robinson:shots:2",
+          "forecast:v2:lazio-monza-2026-27-md-06:mattia-zaccagni:shots:2",
+          "forecast:v2:lazio-monza-2026-27-md-06:lorenzo-lucchesi:shots:1",
+          "forecast:v2:lazio-monza-2026-27-md-06:patrick-cutrone:shots:2",
+          "forecast:v2:lazio-monza-2026-27-md-06:michael-folorunsho:shots:2",
+          "forecast:v2:lazio-monza-2026-27-md-06:gustavo-varela:shots:3",
+          "forecast:v2:lazio-monza-2026-27-md-06:mattia-zaccagni:sot:1",
+          "forecast:v2:lazio-monza-2026-27-md-06:samuele-birindelli:sot:1",
+          "forecast:v2:lazio-monza-2026-27-md-06:davide-frattesi:sot:1",
+          "forecast:v2:lazio-monza-2026-27-md-06:gustavo-varela:sot:2"
         ]
       },
       {
         "matchId": "lecce-bologna-2026-27-md-06",
         "fixture": "Lecce – Bologna",
-        "catalog": 164,
+        "catalog": 170,
         "quoted": 164,
-        "evaluated": 119,
+        "evaluated": 125,
         "notModelled": 45,
         "positiveEv": 23,
-        "previousSuggestions": 4,
-        "selected": 9,
+        "previousSuggestions": 9,
+        "removedDnb": 1,
+        "preservedBaseline": 8,
+        "newShots": 3,
+        "newSot": 3,
+        "unquoted": 6,
+        "selected": 14,
         "exclusions": {
           "SPORTS_SUPPORT_BELOW_MARKET_STANDARD": 73,
           "MARGINAL_SPORTS_SUPPORT_BELOW_PORTFOLIO_STANDARD": 11,
           "ROBUST_PROBABILITY_NOT_AVAILABLE": 49,
           "RELIABILITY_NOT_ASSESSED": 49,
           "CANONICAL_THRESHOLD_BALANCE_NOT_SELECTED": 19,
-          "RESULT_THESIS_ALREADY_SELECTED": 1,
-          "LOGICAL_IMPLICATION_WITH_HIGHER_RANKED_SELECTION": 2,
+          "DRAW_NO_BET_EXCLUDED_FROM_MD06_RECOMMENDATIONS": 2,
           "NOT_COHERENT_WITH_PREVALENT_SCENARIO": 50,
+          "EQUIVALENT_EVENT_ALREADY_SELECTED": 1,
           "SETTLEMENT_NOT_SUPPORTED": 48,
           "NO_COMPARABLE_SCORE_EVENT": 46,
           "STATISTICAL_FAMILY_NOT_VALIDATED": 46,
           "NOT_MODELLED": 45
         },
         "selectionIds": [
-          "bet:sisal:lecce-bologna-2026-27-md-06:5337214296",
           "bet:sisal:lecce-bologna-2026-27-md-06:5337214555",
           "bet:sisal:lecce-bologna-2026-27-md-06:5337210882",
           "bet:sisal:lecce-bologna-2026-27-md-06:5369322034",
@@ -300,24 +371,36 @@
           "bet:sisal:lecce-bologna-2026-27-md-06:5371703442",
           "bet:sisal:lecce-bologna-2026-27-md-06:5337209550",
           "bet:sisal:lecce-bologna-2026-27-md-06:5369317469",
-          "bet:sisal:lecce-bologna-2026-27-md-06:5369278333"
+          "bet:sisal:lecce-bologna-2026-27-md-06:5369278333",
+          "forecast:v2:lecce-bologna-2026-27-md-06:federico-bernardeschi:shots:3",
+          "forecast:v2:lecce-bologna-2026-27-md-06:joel-monteiro:shots:2",
+          "forecast:v2:lecce-bologna-2026-27-md-06:roberto-piccoli:shots:3",
+          "forecast:v2:lecce-bologna-2026-27-md-06:federico-bernardeschi:sot:1",
+          "forecast:v2:lecce-bologna-2026-27-md-06:roberto-piccoli:sot:1",
+          "forecast:v2:lecce-bologna-2026-27-md-06:lassana-coulibaly:sot:1"
         ]
       },
       {
         "matchId": "sassuolo-milan-2026-27-md-06",
         "fixture": "Sassuolo – Milan",
-        "catalog": 166,
+        "catalog": 174,
         "quoted": 166,
-        "evaluated": 117,
+        "evaluated": 125,
         "notModelled": 49,
         "positiveEv": 14,
-        "previousSuggestions": 4,
-        "selected": 9,
+        "previousSuggestions": 9,
+        "removedDnb": 0,
+        "preservedBaseline": 9,
+        "newShots": 5,
+        "newSot": 3,
+        "unquoted": 8,
+        "selected": 17,
         "exclusions": {
           "SPORTS_SUPPORT_BELOW_MARKET_STANDARD": 67,
           "MARGINAL_SPORTS_SUPPORT_BELOW_PORTFOLIO_STANDARD": 14,
           "CANONICAL_THRESHOLD_BALANCE_NOT_SELECTED": 22,
-          "RESULT_THESIS_ALREADY_SELECTED": 2,
+          "DRAW_NO_BET_EXCLUDED_FROM_MD06_RECOMMENDATIONS": 2,
+          "RESULT_THESIS_ALREADY_SELECTED": 1,
           "LOGICAL_IMPLICATION_WITH_HIGHER_RANKED_SELECTION": 2,
           "ROBUST_PROBABILITY_NOT_AVAILABLE": 50,
           "RELIABILITY_NOT_ASSESSED": 50,
@@ -336,29 +419,43 @@
           "bet:sisal:sassuolo-milan-2026-27-md-06:5369326729",
           "bet:sisal:sassuolo-milan-2026-27-md-06:5371749011",
           "bet:sisal:sassuolo-milan-2026-27-md-06:5371749070",
-          "bet:sisal:sassuolo-milan-2026-27-md-06:5369324992"
+          "bet:sisal:sassuolo-milan-2026-27-md-06:5369324992",
+          "forecast:v2:sassuolo-milan-2026-27-md-06:goncalo-ramos:shots:3",
+          "forecast:v2:sassuolo-milan-2026-27-md-06:strahinja-pavlovic:shots:1",
+          "forecast:v2:sassuolo-milan-2026-27-md-06:armand-lauriente:shots:3",
+          "forecast:v2:sassuolo-milan-2026-27-md-06:samuel-chukwueze:shots:2",
+          "forecast:v2:sassuolo-milan-2026-27-md-06:domenico-berardi:shots:2",
+          "forecast:v2:sassuolo-milan-2026-27-md-06:armand-lauriente:sot:1",
+          "forecast:v2:sassuolo-milan-2026-27-md-06:samuel-chukwueze:sot:1",
+          "forecast:v2:sassuolo-milan-2026-27-md-06:goncalo-ramos:sot:2"
         ]
       },
       {
         "matchId": "cagliari-juventus-2026-27-md-06",
         "fixture": "Cagliari – Juventus",
-        "catalog": 161,
+        "catalog": 170,
         "quoted": 161,
-        "evaluated": 117,
+        "evaluated": 126,
         "notModelled": 44,
         "positiveEv": 31,
-        "previousSuggestions": 5,
-        "selected": 9,
+        "previousSuggestions": 9,
+        "removedDnb": 0,
+        "preservedBaseline": 9,
+        "newShots": 6,
+        "newSot": 3,
+        "unquoted": 9,
+        "selected": 18,
         "exclusions": {
           "SPORTS_SUPPORT_BELOW_MARKET_STANDARD": 65,
           "NOT_COHERENT_WITH_PREVALENT_SCENARIO": 49,
+          "DRAW_NO_BET_EXCLUDED_FROM_MD06_RECOMMENDATIONS": 2,
           "MARGINAL_SPORTS_SUPPORT_BELOW_PORTFOLIO_STANDARD": 10,
           "CANONICAL_THRESHOLD_BALANCE_NOT_SELECTED": 26,
           "ROBUST_PROBABILITY_NOT_AVAILABLE": 47,
           "RELIABILITY_NOT_ASSESSED": 47,
           "SETTLEMENT_NOT_SUPPORTED": 47,
           "LOGICAL_IMPLICATION_WITH_HIGHER_RANKED_SELECTION": 2,
-          "RESULT_THESIS_ALREADY_SELECTED": 2,
+          "RESULT_THESIS_ALREADY_SELECTED": 1,
           "NO_COMPARABLE_SCORE_EVENT": 45,
           "STATISTICAL_FAMILY_NOT_VALIDATED": 45,
           "NOT_MODELLED": 44
@@ -372,24 +469,39 @@
           "bet:sisal:cagliari-juventus-2026-27-md-06:5369330854",
           "bet:sisal:cagliari-juventus-2026-27-md-06:5337200638",
           "bet:sisal:cagliari-juventus-2026-27-md-06:5337202436",
-          "bet:sisal:cagliari-juventus-2026-27-md-06:5371738593"
+          "bet:sisal:cagliari-juventus-2026-27-md-06:5371738593",
+          "forecast:v2:cagliari-juventus-2026-27-md-06:bremer:shots:1",
+          "forecast:v2:cagliari-juventus-2026-27-md-06:alessandro-romano:shots:2",
+          "forecast:v2:cagliari-juventus-2026-27-md-06:nicolas-gonzalez:shots:3",
+          "forecast:v2:cagliari-juventus-2026-27-md-06:paul-mendy:shots:3",
+          "forecast:v2:cagliari-juventus-2026-27-md-06:randal-kolo-muani:shots:3",
+          "forecast:v2:cagliari-juventus-2026-27-md-06:daniel-maldini:shots:3",
+          "forecast:v2:cagliari-juventus-2026-27-md-06:douglas-luiz:sot:1",
+          "forecast:v2:cagliari-juventus-2026-27-md-06:paul-mendy:sot:1",
+          "forecast:v2:cagliari-juventus-2026-27-md-06:bremer:sot:1"
         ]
       },
       {
         "matchId": "atalanta-venezia-2026-27-md-06",
         "fixture": "Atalanta – Venezia",
-        "catalog": 133,
+        "catalog": 141,
         "quoted": 133,
-        "evaluated": 96,
+        "evaluated": 104,
         "notModelled": 37,
         "positiveEv": 5,
-        "previousSuggestions": 1,
-        "selected": 7,
+        "previousSuggestions": 7,
+        "removedDnb": 0,
+        "preservedBaseline": 7,
+        "newShots": 5,
+        "newSot": 3,
+        "unquoted": 8,
+        "selected": 15,
         "exclusions": {
           "SPORTS_SUPPORT_BELOW_MARKET_STANDARD": 61,
           "NOT_COHERENT_WITH_PREVALENT_SCENARIO": 42,
           "CANONICAL_THRESHOLD_BALANCE_NOT_SELECTED": 18,
-          "RESULT_THESIS_ALREADY_SELECTED": 2,
+          "DRAW_NO_BET_EXCLUDED_FROM_MD06_RECOMMENDATIONS": 2,
+          "RESULT_THESIS_ALREADY_SELECTED": 1,
           "LOGICAL_IMPLICATION_WITH_HIGHER_RANKED_SELECTION": 2,
           "ROBUST_PROBABILITY_NOT_AVAILABLE": 38,
           "RELIABILITY_NOT_ASSESSED": 38,
@@ -406,23 +518,36 @@
           "bet:sisal:atalanta-venezia-2026-27-md-06:5371733594",
           "bet:sisal:atalanta-venezia-2026-27-md-06:5371743198",
           "bet:sisal:atalanta-venezia-2026-27-md-06:5371743672",
-          "bet:sisal:atalanta-venezia-2026-27-md-06:5337204600"
+          "bet:sisal:atalanta-venezia-2026-27-md-06:5337204600",
+          "forecast:v2:atalanta-venezia-2026-27-md-06:gianluca-scamacca:shots:3",
+          "forecast:v2:atalanta-venezia-2026-27-md-06:john-yeboah:shots:3",
+          "forecast:v2:atalanta-venezia-2026-27-md-06:akor-adams:shots:3",
+          "forecast:v2:atalanta-venezia-2026-27-md-06:charles-de-ketelaere:shots:3",
+          "forecast:v2:atalanta-venezia-2026-27-md-06:lazar-samardzic:shots:3",
+          "forecast:v2:atalanta-venezia-2026-27-md-06:ederson:sot:1",
+          "forecast:v2:atalanta-venezia-2026-27-md-06:akor-adams:sot:2",
+          "forecast:v2:atalanta-venezia-2026-27-md-06:john-yeboah:sot:2"
         ]
       },
       {
         "matchId": "torino-udinese-2026-27-md-06",
         "fixture": "Torino – Udinese",
-        "catalog": 130,
+        "catalog": 140,
         "quoted": 130,
-        "evaluated": 95,
+        "evaluated": 105,
         "notModelled": 35,
         "positiveEv": 19,
-        "previousSuggestions": 3,
-        "selected": 7,
+        "previousSuggestions": 7,
+        "removedDnb": 0,
+        "preservedBaseline": 7,
+        "newShots": 7,
+        "newSot": 3,
+        "unquoted": 10,
+        "selected": 17,
         "exclusions": {
           "SPORTS_SUPPORT_BELOW_MARKET_STANDARD": 54,
           "MARGINAL_SPORTS_SUPPORT_BELOW_PORTFOLIO_STANDARD": 8,
-          "RESULT_THESIS_ALREADY_SELECTED": 1,
+          "DRAW_NO_BET_EXCLUDED_FROM_MD06_RECOMMENDATIONS": 2,
           "LOGICAL_IMPLICATION_WITH_HIGHER_RANKED_SELECTION": 2,
           "ROBUST_PROBABILITY_NOT_AVAILABLE": 37,
           "RELIABILITY_NOT_ASSESSED": 37,
@@ -441,15 +566,1095 @@
           "bet:sisal:torino-udinese-2026-27-md-06:5337166476",
           "bet:sisal:torino-udinese-2026-27-md-06:5371735780",
           "bet:sisal:torino-udinese-2026-27-md-06:5337166544",
-          "bet:sisal:torino-udinese-2026-27-md-06:5337166449"
+          "bet:sisal:torino-udinese-2026-27-md-06:5337166449",
+          "forecast:v2:torino-udinese-2026-27-md-06:jesper-karlstrom:shots:1",
+          "forecast:v2:torino-udinese-2026-27-md-06:keinan-davis:shots:2",
+          "forecast:v2:torino-udinese-2026-27-md-06:mandragora:shots:2",
+          "forecast:v2:torino-udinese-2026-27-md-06:giovanni-simeone:shots:3",
+          "forecast:v2:torino-udinese-2026-27-md-06:nikola-vlasic:shots:2",
+          "forecast:v2:torino-udinese-2026-27-md-06:hassane-kamara:shots:2",
+          "forecast:v2:torino-udinese-2026-27-md-06:jurgen-ekkelenkamp:shots:3",
+          "forecast:v2:torino-udinese-2026-27-md-06:jurgen-ekkelenkamp:sot:1",
+          "forecast:v2:torino-udinese-2026-27-md-06:keinan-davis:sot:1",
+          "forecast:v2:torino-udinese-2026-27-md-06:giovanni-simeone:sot:1"
         ]
       }
     ],
     "comparison": {
-      "previousSuggestions": 32,
-      "currentSuggestions": 82,
-      "delta": 50
+      "previousSuggestions": 82,
+      "removedDrawNoBet": 2,
+      "preservedApprovedNonDnb": 80,
+      "newPlayerShots": 61,
+      "newPlayerSot": 34,
+      "newPlayerCards": 0,
+      "newCardsOvers": 0,
+      "currentSuggestions": 175,
+      "delta": 93
     }
+  },
+  "readingIntegration": {
+    "source": "data/normalized/predictions.json#predictions[].shooters",
+    "readingsConsumer": "js/pages/readings.js",
+    "sharedStructuredData": true,
+    "added": 95,
+    "shots": 61,
+    "sot": 34,
+    "quoted": 0,
+    "unquoted": 95,
+    "duoPromoted": 0,
+    "excluded": [
+      {
+        "matchId": "genoa-fiorentina-2026-27-md-06",
+        "playerId": "vitinha",
+        "playerName": "Vitinha",
+        "metric": "sot",
+        "sources": [
+          "primary-shots",
+          "primary-sot"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SOT_STANDARD"
+        ]
+      },
+      {
+        "matchId": "genoa-fiorentina-2026-27-md-06",
+        "playerId": "tommaso-baldanzi",
+        "playerName": "Tommaso Baldanzi",
+        "metric": "sot",
+        "sources": [
+          "primary-shots",
+          "primary-sot"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SOT_STANDARD"
+        ]
+      },
+      {
+        "matchId": "genoa-fiorentina-2026-27-md-06",
+        "playerId": "goncalves-p",
+        "playerName": "Goncalves P.",
+        "metric": "sot",
+        "sources": [
+          "primary-sot"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SOT_STANDARD"
+        ]
+      },
+      {
+        "matchId": "genoa-fiorentina-2026-27-md-06",
+        "playerId": "mikael-ellertsson",
+        "playerName": "Mikael Ellertsson",
+        "metric": "shots",
+        "sources": [
+          "qualified-shots-outsider"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SHOTS_STANDARD"
+        ]
+      },
+      {
+        "matchId": "inter-parma-2026-27-md-06",
+        "playerId": "jose-david-romero",
+        "playerName": "José David Romero",
+        "metric": "shots",
+        "sources": [
+          "primary-shots",
+          "primary-sot"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SHOTS_STANDARD"
+        ]
+      },
+      {
+        "matchId": "inter-parma-2026-27-md-06",
+        "playerId": "jose-david-romero",
+        "playerName": "José David Romero",
+        "metric": "sot",
+        "sources": [
+          "primary-shots",
+          "primary-sot"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SOT_STANDARD"
+        ]
+      },
+      {
+        "matchId": "inter-parma-2026-27-md-06",
+        "playerId": "hakan-calhanoglu",
+        "playerName": "Hakan Çalhanoglu",
+        "metric": "sot",
+        "sources": [
+          "primary-sot"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SOT_STANDARD"
+        ]
+      },
+      {
+        "matchId": "napoli-frosinone-2026-27-md-06",
+        "playerId": "matteo-politano",
+        "playerName": "Matteo Politano",
+        "metric": "shots",
+        "sources": [
+          "primary-shots",
+          "primary-sot"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SHOTS_STANDARD"
+        ]
+      },
+      {
+        "matchId": "napoli-frosinone-2026-27-md-06",
+        "playerId": "fares-ghedjemis",
+        "playerName": "Farès Ghedjemis",
+        "metric": "sot",
+        "sources": [
+          "primary-shots",
+          "primary-sot"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SOT_STANDARD"
+        ]
+      },
+      {
+        "matchId": "napoli-frosinone-2026-27-md-06",
+        "playerId": "kevin-de-bruyne",
+        "playerName": "Kevin De Bruyne",
+        "metric": "sot",
+        "sources": [
+          "primary-shots",
+          "primary-sot"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SOT_STANDARD"
+        ]
+      },
+      {
+        "matchId": "napoli-frosinone-2026-27-md-06",
+        "playerId": "gabriele-bracaglia",
+        "playerName": "Gabriele Bracaglia",
+        "metric": "shots",
+        "sources": [
+          "qualified-shots-outsider",
+          "qualified-sot-outsider"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SHOTS_STANDARD"
+        ]
+      },
+      {
+        "matchId": "napoli-frosinone-2026-27-md-06",
+        "playerId": "gabriele-bracaglia",
+        "playerName": "Gabriele Bracaglia",
+        "metric": "sot",
+        "sources": [
+          "qualified-shots-outsider",
+          "qualified-sot-outsider"
+        ],
+        "reasons": [
+          "MODEL_THRESHOLD_NOT_SUPPORTED",
+          "READING_SUPPORT_BELOW_SOT_STANDARD"
+        ]
+      },
+      {
+        "matchId": "napoli-frosinone-2026-27-md-06",
+        "playerId": "stanislav-lobotka",
+        "playerName": "Stanislav Lobotka",
+        "metric": "shots",
+        "sources": [
+          "qualified-shots-outsider"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SHOTS_STANDARD"
+        ]
+      },
+      {
+        "matchId": "como-roma-2026-27-md-06",
+        "playerId": "lucas-da-cunha",
+        "playerName": "Lucas Da Cunha",
+        "metric": "shots",
+        "sources": [
+          "qualified-shots-outsider"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SHOTS_STANDARD"
+        ]
+      },
+      {
+        "matchId": "como-roma-2026-27-md-06",
+        "playerId": "yan-couto",
+        "playerName": "Yan Couto",
+        "metric": "shots",
+        "sources": [
+          "qualified-shots-outsider"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SHOTS_STANDARD"
+        ]
+      },
+      {
+        "matchId": "lazio-monza-2026-27-md-06",
+        "playerId": "jay-robinson",
+        "playerName": "Jay Robinson",
+        "metric": "sot",
+        "sources": [
+          "primary-shots",
+          "primary-sot"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SOT_STANDARD"
+        ]
+      },
+      {
+        "matchId": "lazio-monza-2026-27-md-06",
+        "playerId": "tijjani-noslin",
+        "playerName": "Tijjani Noslin",
+        "metric": "sot",
+        "sources": [
+          "primary-sot"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SOT_STANDARD"
+        ]
+      },
+      {
+        "matchId": "lazio-monza-2026-27-md-06",
+        "playerId": "gustav-isaksen",
+        "playerName": "Gustav Isaksen",
+        "metric": "sot",
+        "sources": [
+          "primary-sot"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SOT_STANDARD"
+        ]
+      },
+      {
+        "matchId": "lecce-bologna-2026-27-md-06",
+        "playerId": "riccardo-orsolini",
+        "playerName": "Riccardo Orsolini",
+        "metric": "shots",
+        "sources": [
+          "primary-shots",
+          "primary-sot"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SHOTS_STANDARD"
+        ]
+      },
+      {
+        "matchId": "lecce-bologna-2026-27-md-06",
+        "playerId": "riccardo-orsolini",
+        "playerName": "Riccardo Orsolini",
+        "metric": "sot",
+        "sources": [
+          "primary-shots",
+          "primary-sot"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SOT_STANDARD"
+        ]
+      },
+      {
+        "matchId": "lecce-bologna-2026-27-md-06",
+        "playerId": "willem-geubbels",
+        "playerName": "Willem Geubbels",
+        "metric": "shots",
+        "sources": [
+          "primary-shots",
+          "primary-sot"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SHOTS_STANDARD"
+        ]
+      },
+      {
+        "matchId": "lecce-bologna-2026-27-md-06",
+        "playerId": "willem-geubbels",
+        "playerName": "Willem Geubbels",
+        "metric": "sot",
+        "sources": [
+          "primary-shots",
+          "primary-sot"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SOT_STANDARD"
+        ]
+      },
+      {
+        "matchId": "lecce-bologna-2026-27-md-06",
+        "playerId": "lassana-coulibaly",
+        "playerName": "Lassana Coulibaly",
+        "metric": "shots",
+        "sources": [
+          "primary-sot",
+          "qualified-shots-outsider",
+          "qualified-sot-outsider"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SHOTS_STANDARD"
+        ]
+      },
+      {
+        "matchId": "lecce-bologna-2026-27-md-06",
+        "playerId": "lewis-ferguson",
+        "playerName": "Lewis Ferguson",
+        "metric": "shots",
+        "sources": [
+          "qualified-shots-outsider"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SHOTS_STANDARD"
+        ]
+      },
+      {
+        "matchId": "sassuolo-milan-2026-27-md-06",
+        "playerId": "christian-pulisic",
+        "playerName": "Christian Pulisic",
+        "metric": "shots",
+        "sources": [
+          "primary-shots",
+          "primary-sot"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SHOTS_STANDARD"
+        ]
+      },
+      {
+        "matchId": "sassuolo-milan-2026-27-md-06",
+        "playerId": "christian-pulisic",
+        "playerName": "Christian Pulisic",
+        "metric": "sot",
+        "sources": [
+          "primary-shots",
+          "primary-sot"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SOT_STANDARD"
+        ]
+      },
+      {
+        "matchId": "sassuolo-milan-2026-27-md-06",
+        "playerId": "domenico-berardi",
+        "playerName": "Domenico Berardi",
+        "metric": "sot",
+        "sources": [
+          "primary-shots",
+          "primary-sot"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SOT_STANDARD"
+        ]
+      },
+      {
+        "matchId": "sassuolo-milan-2026-27-md-06",
+        "playerId": "adrien-rabiot",
+        "playerName": "Adrien Rabiot",
+        "metric": "shots",
+        "sources": [
+          "qualified-shots-outsider"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SHOTS_STANDARD"
+        ]
+      },
+      {
+        "matchId": "cagliari-juventus-2026-27-md-06",
+        "playerId": "nicolas-gonzalez",
+        "playerName": "Nicolás González",
+        "metric": "sot",
+        "sources": [
+          "primary-shots",
+          "primary-sot"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SOT_STANDARD"
+        ]
+      },
+      {
+        "matchId": "cagliari-juventus-2026-27-md-06",
+        "playerId": "randal-kolo-muani",
+        "playerName": "Randal Kolo Muani",
+        "metric": "sot",
+        "sources": [
+          "primary-shots",
+          "primary-sot"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SOT_STANDARD"
+        ]
+      },
+      {
+        "matchId": "cagliari-juventus-2026-27-md-06",
+        "playerId": "edon-zhegrova",
+        "playerName": "Edon Zhegrova",
+        "metric": "shots",
+        "sources": [
+          "primary-shots",
+          "primary-sot"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SHOTS_STANDARD"
+        ]
+      },
+      {
+        "matchId": "cagliari-juventus-2026-27-md-06",
+        "playerId": "edon-zhegrova",
+        "playerName": "Edon Zhegrova",
+        "metric": "sot",
+        "sources": [
+          "primary-shots",
+          "primary-sot"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SOT_STANDARD"
+        ]
+      },
+      {
+        "matchId": "cagliari-juventus-2026-27-md-06",
+        "playerId": "michel-adopo",
+        "playerName": "Michel Adopo",
+        "metric": "sot",
+        "sources": [
+          "qualified-sot-outsider"
+        ],
+        "reasons": [
+          "MODEL_THRESHOLD_NOT_SUPPORTED"
+        ]
+      },
+      {
+        "matchId": "atalanta-venezia-2026-27-md-06",
+        "playerId": "gianluca-scamacca",
+        "playerName": "Gianluca Scamacca",
+        "metric": "sot",
+        "sources": [
+          "primary-shots",
+          "primary-sot"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SOT_STANDARD"
+        ]
+      },
+      {
+        "matchId": "atalanta-venezia-2026-27-md-06",
+        "playerId": "charles-de-ketelaere",
+        "playerName": "Charles De Ketelaere",
+        "metric": "sot",
+        "sources": [
+          "primary-shots",
+          "primary-sot"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SOT_STANDARD"
+        ]
+      },
+      {
+        "matchId": "atalanta-venezia-2026-27-md-06",
+        "playerId": "rowe",
+        "playerName": "Rowe",
+        "metric": "sot",
+        "sources": [
+          "primary-sot"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SOT_STANDARD"
+        ]
+      },
+      {
+        "matchId": "atalanta-venezia-2026-27-md-06",
+        "playerId": "ederson",
+        "playerName": "Éderson",
+        "metric": "shots",
+        "sources": [
+          "qualified-shots-outsider",
+          "qualified-sot-outsider"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SHOTS_STANDARD"
+        ]
+      },
+      {
+        "matchId": "torino-udinese-2026-27-md-06",
+        "playerId": "mandragora",
+        "playerName": "Mandragora",
+        "metric": "sot",
+        "sources": [
+          "primary-shots",
+          "primary-sot",
+          "qualified-shots-outsider"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SOT_STANDARD"
+        ]
+      },
+      {
+        "matchId": "torino-udinese-2026-27-md-06",
+        "playerId": "nikola-vlasic",
+        "playerName": "Nikola Vlasic",
+        "metric": "sot",
+        "sources": [
+          "primary-shots",
+          "qualified-shots-outsider",
+          "qualified-sot-outsider"
+        ],
+        "reasons": [
+          "MODEL_THRESHOLD_NOT_SUPPORTED"
+        ]
+      },
+      {
+        "matchId": "torino-udinese-2026-27-md-06",
+        "playerId": "hassane-kamara",
+        "playerName": "Hassane Kamara",
+        "metric": "sot",
+        "sources": [
+          "primary-sot",
+          "qualified-shots-outsider"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SOT_STANDARD"
+        ]
+      },
+      {
+        "matchId": "torino-udinese-2026-27-md-06",
+        "playerId": "mergim-vojvoda",
+        "playerName": "Mërgim Vojvoda",
+        "metric": "shots",
+        "sources": [
+          "qualified-shots-outsider"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SHOTS_STANDARD"
+        ]
+      }
+    ],
+    "quotedSelectionIds": [],
+    "excludedCandidates": [
+      {
+        "matchId": "genoa-fiorentina-2026-27-md-06",
+        "playerId": "vitinha",
+        "playerName": "Vitinha",
+        "metric": "sot",
+        "sources": [
+          "primary-shots",
+          "primary-sot"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SOT_STANDARD"
+        ]
+      },
+      {
+        "matchId": "genoa-fiorentina-2026-27-md-06",
+        "playerId": "tommaso-baldanzi",
+        "playerName": "Tommaso Baldanzi",
+        "metric": "sot",
+        "sources": [
+          "primary-shots",
+          "primary-sot"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SOT_STANDARD"
+        ]
+      },
+      {
+        "matchId": "genoa-fiorentina-2026-27-md-06",
+        "playerId": "goncalves-p",
+        "playerName": "Goncalves P.",
+        "metric": "sot",
+        "sources": [
+          "primary-sot"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SOT_STANDARD"
+        ]
+      },
+      {
+        "matchId": "genoa-fiorentina-2026-27-md-06",
+        "playerId": "mikael-ellertsson",
+        "playerName": "Mikael Ellertsson",
+        "metric": "shots",
+        "sources": [
+          "qualified-shots-outsider"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SHOTS_STANDARD"
+        ]
+      },
+      {
+        "matchId": "inter-parma-2026-27-md-06",
+        "playerId": "jose-david-romero",
+        "playerName": "José David Romero",
+        "metric": "shots",
+        "sources": [
+          "primary-shots",
+          "primary-sot"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SHOTS_STANDARD"
+        ]
+      },
+      {
+        "matchId": "inter-parma-2026-27-md-06",
+        "playerId": "jose-david-romero",
+        "playerName": "José David Romero",
+        "metric": "sot",
+        "sources": [
+          "primary-shots",
+          "primary-sot"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SOT_STANDARD"
+        ]
+      },
+      {
+        "matchId": "inter-parma-2026-27-md-06",
+        "playerId": "hakan-calhanoglu",
+        "playerName": "Hakan Çalhanoglu",
+        "metric": "sot",
+        "sources": [
+          "primary-sot"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SOT_STANDARD"
+        ]
+      },
+      {
+        "matchId": "napoli-frosinone-2026-27-md-06",
+        "playerId": "matteo-politano",
+        "playerName": "Matteo Politano",
+        "metric": "shots",
+        "sources": [
+          "primary-shots",
+          "primary-sot"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SHOTS_STANDARD"
+        ]
+      },
+      {
+        "matchId": "napoli-frosinone-2026-27-md-06",
+        "playerId": "fares-ghedjemis",
+        "playerName": "Farès Ghedjemis",
+        "metric": "sot",
+        "sources": [
+          "primary-shots",
+          "primary-sot"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SOT_STANDARD"
+        ]
+      },
+      {
+        "matchId": "napoli-frosinone-2026-27-md-06",
+        "playerId": "kevin-de-bruyne",
+        "playerName": "Kevin De Bruyne",
+        "metric": "sot",
+        "sources": [
+          "primary-shots",
+          "primary-sot"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SOT_STANDARD"
+        ]
+      },
+      {
+        "matchId": "napoli-frosinone-2026-27-md-06",
+        "playerId": "gabriele-bracaglia",
+        "playerName": "Gabriele Bracaglia",
+        "metric": "shots",
+        "sources": [
+          "qualified-shots-outsider",
+          "qualified-sot-outsider"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SHOTS_STANDARD"
+        ]
+      },
+      {
+        "matchId": "napoli-frosinone-2026-27-md-06",
+        "playerId": "gabriele-bracaglia",
+        "playerName": "Gabriele Bracaglia",
+        "metric": "sot",
+        "sources": [
+          "qualified-shots-outsider",
+          "qualified-sot-outsider"
+        ],
+        "reasons": [
+          "MODEL_THRESHOLD_NOT_SUPPORTED",
+          "READING_SUPPORT_BELOW_SOT_STANDARD"
+        ]
+      },
+      {
+        "matchId": "napoli-frosinone-2026-27-md-06",
+        "playerId": "stanislav-lobotka",
+        "playerName": "Stanislav Lobotka",
+        "metric": "shots",
+        "sources": [
+          "qualified-shots-outsider"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SHOTS_STANDARD"
+        ]
+      },
+      {
+        "matchId": "como-roma-2026-27-md-06",
+        "playerId": "lucas-da-cunha",
+        "playerName": "Lucas Da Cunha",
+        "metric": "shots",
+        "sources": [
+          "qualified-shots-outsider"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SHOTS_STANDARD"
+        ]
+      },
+      {
+        "matchId": "como-roma-2026-27-md-06",
+        "playerId": "yan-couto",
+        "playerName": "Yan Couto",
+        "metric": "shots",
+        "sources": [
+          "qualified-shots-outsider"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SHOTS_STANDARD"
+        ]
+      },
+      {
+        "matchId": "lazio-monza-2026-27-md-06",
+        "playerId": "jay-robinson",
+        "playerName": "Jay Robinson",
+        "metric": "sot",
+        "sources": [
+          "primary-shots",
+          "primary-sot"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SOT_STANDARD"
+        ]
+      },
+      {
+        "matchId": "lazio-monza-2026-27-md-06",
+        "playerId": "tijjani-noslin",
+        "playerName": "Tijjani Noslin",
+        "metric": "sot",
+        "sources": [
+          "primary-sot"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SOT_STANDARD"
+        ]
+      },
+      {
+        "matchId": "lazio-monza-2026-27-md-06",
+        "playerId": "gustav-isaksen",
+        "playerName": "Gustav Isaksen",
+        "metric": "sot",
+        "sources": [
+          "primary-sot"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SOT_STANDARD"
+        ]
+      },
+      {
+        "matchId": "lecce-bologna-2026-27-md-06",
+        "playerId": "riccardo-orsolini",
+        "playerName": "Riccardo Orsolini",
+        "metric": "shots",
+        "sources": [
+          "primary-shots",
+          "primary-sot"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SHOTS_STANDARD"
+        ]
+      },
+      {
+        "matchId": "lecce-bologna-2026-27-md-06",
+        "playerId": "riccardo-orsolini",
+        "playerName": "Riccardo Orsolini",
+        "metric": "sot",
+        "sources": [
+          "primary-shots",
+          "primary-sot"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SOT_STANDARD"
+        ]
+      },
+      {
+        "matchId": "lecce-bologna-2026-27-md-06",
+        "playerId": "willem-geubbels",
+        "playerName": "Willem Geubbels",
+        "metric": "shots",
+        "sources": [
+          "primary-shots",
+          "primary-sot"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SHOTS_STANDARD"
+        ]
+      },
+      {
+        "matchId": "lecce-bologna-2026-27-md-06",
+        "playerId": "willem-geubbels",
+        "playerName": "Willem Geubbels",
+        "metric": "sot",
+        "sources": [
+          "primary-shots",
+          "primary-sot"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SOT_STANDARD"
+        ]
+      },
+      {
+        "matchId": "lecce-bologna-2026-27-md-06",
+        "playerId": "lassana-coulibaly",
+        "playerName": "Lassana Coulibaly",
+        "metric": "shots",
+        "sources": [
+          "primary-sot",
+          "qualified-shots-outsider",
+          "qualified-sot-outsider"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SHOTS_STANDARD"
+        ]
+      },
+      {
+        "matchId": "lecce-bologna-2026-27-md-06",
+        "playerId": "lewis-ferguson",
+        "playerName": "Lewis Ferguson",
+        "metric": "shots",
+        "sources": [
+          "qualified-shots-outsider"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SHOTS_STANDARD"
+        ]
+      },
+      {
+        "matchId": "sassuolo-milan-2026-27-md-06",
+        "playerId": "christian-pulisic",
+        "playerName": "Christian Pulisic",
+        "metric": "shots",
+        "sources": [
+          "primary-shots",
+          "primary-sot"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SHOTS_STANDARD"
+        ]
+      },
+      {
+        "matchId": "sassuolo-milan-2026-27-md-06",
+        "playerId": "christian-pulisic",
+        "playerName": "Christian Pulisic",
+        "metric": "sot",
+        "sources": [
+          "primary-shots",
+          "primary-sot"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SOT_STANDARD"
+        ]
+      },
+      {
+        "matchId": "sassuolo-milan-2026-27-md-06",
+        "playerId": "domenico-berardi",
+        "playerName": "Domenico Berardi",
+        "metric": "sot",
+        "sources": [
+          "primary-shots",
+          "primary-sot"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SOT_STANDARD"
+        ]
+      },
+      {
+        "matchId": "sassuolo-milan-2026-27-md-06",
+        "playerId": "adrien-rabiot",
+        "playerName": "Adrien Rabiot",
+        "metric": "shots",
+        "sources": [
+          "qualified-shots-outsider"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SHOTS_STANDARD"
+        ]
+      },
+      {
+        "matchId": "cagliari-juventus-2026-27-md-06",
+        "playerId": "nicolas-gonzalez",
+        "playerName": "Nicolás González",
+        "metric": "sot",
+        "sources": [
+          "primary-shots",
+          "primary-sot"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SOT_STANDARD"
+        ]
+      },
+      {
+        "matchId": "cagliari-juventus-2026-27-md-06",
+        "playerId": "randal-kolo-muani",
+        "playerName": "Randal Kolo Muani",
+        "metric": "sot",
+        "sources": [
+          "primary-shots",
+          "primary-sot"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SOT_STANDARD"
+        ]
+      },
+      {
+        "matchId": "cagliari-juventus-2026-27-md-06",
+        "playerId": "edon-zhegrova",
+        "playerName": "Edon Zhegrova",
+        "metric": "shots",
+        "sources": [
+          "primary-shots",
+          "primary-sot"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SHOTS_STANDARD"
+        ]
+      },
+      {
+        "matchId": "cagliari-juventus-2026-27-md-06",
+        "playerId": "edon-zhegrova",
+        "playerName": "Edon Zhegrova",
+        "metric": "sot",
+        "sources": [
+          "primary-shots",
+          "primary-sot"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SOT_STANDARD"
+        ]
+      },
+      {
+        "matchId": "cagliari-juventus-2026-27-md-06",
+        "playerId": "michel-adopo",
+        "playerName": "Michel Adopo",
+        "metric": "sot",
+        "sources": [
+          "qualified-sot-outsider"
+        ],
+        "reasons": [
+          "MODEL_THRESHOLD_NOT_SUPPORTED"
+        ]
+      },
+      {
+        "matchId": "atalanta-venezia-2026-27-md-06",
+        "playerId": "gianluca-scamacca",
+        "playerName": "Gianluca Scamacca",
+        "metric": "sot",
+        "sources": [
+          "primary-shots",
+          "primary-sot"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SOT_STANDARD"
+        ]
+      },
+      {
+        "matchId": "atalanta-venezia-2026-27-md-06",
+        "playerId": "charles-de-ketelaere",
+        "playerName": "Charles De Ketelaere",
+        "metric": "sot",
+        "sources": [
+          "primary-shots",
+          "primary-sot"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SOT_STANDARD"
+        ]
+      },
+      {
+        "matchId": "atalanta-venezia-2026-27-md-06",
+        "playerId": "rowe",
+        "playerName": "Rowe",
+        "metric": "sot",
+        "sources": [
+          "primary-sot"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SOT_STANDARD"
+        ]
+      },
+      {
+        "matchId": "atalanta-venezia-2026-27-md-06",
+        "playerId": "ederson",
+        "playerName": "Éderson",
+        "metric": "shots",
+        "sources": [
+          "qualified-shots-outsider",
+          "qualified-sot-outsider"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SHOTS_STANDARD"
+        ]
+      },
+      {
+        "matchId": "torino-udinese-2026-27-md-06",
+        "playerId": "mandragora",
+        "playerName": "Mandragora",
+        "metric": "sot",
+        "sources": [
+          "primary-shots",
+          "primary-sot",
+          "qualified-shots-outsider"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SOT_STANDARD"
+        ]
+      },
+      {
+        "matchId": "torino-udinese-2026-27-md-06",
+        "playerId": "nikola-vlasic",
+        "playerName": "Nikola Vlasic",
+        "metric": "sot",
+        "sources": [
+          "primary-shots",
+          "qualified-shots-outsider",
+          "qualified-sot-outsider"
+        ],
+        "reasons": [
+          "MODEL_THRESHOLD_NOT_SUPPORTED"
+        ]
+      },
+      {
+        "matchId": "torino-udinese-2026-27-md-06",
+        "playerId": "hassane-kamara",
+        "playerName": "Hassane Kamara",
+        "metric": "sot",
+        "sources": [
+          "primary-sot",
+          "qualified-shots-outsider"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SOT_STANDARD"
+        ]
+      },
+      {
+        "matchId": "torino-udinese-2026-27-md-06",
+        "playerId": "mergim-vojvoda",
+        "playerName": "Mërgim Vojvoda",
+        "metric": "shots",
+        "sources": [
+          "qualified-shots-outsider"
+        ],
+        "reasons": [
+          "READING_SUPPORT_BELOW_SHOTS_STANDARD"
+        ]
+      }
+    ]
   },
   "thresholdCases": [
     {
@@ -1351,71 +2556,67 @@
   ],
   "sensitivity": [
     {
-      "mode": "probability-first",
-      "total": 82,
+      "mode": "approved-baseline-frozen",
+      "total": 80,
       "changedSelectionsVsBalanced": 0,
-      "unchangedSelections": 82
-    },
-    {
-      "mode": "solidity-first",
-      "total": 83,
-      "changedSelectionsVsBalanced": 3,
-      "unchangedSelections": 81
+      "unchangedSelections": 80
     }
   ],
   "statisticalMarkets": {
     "families": [
       {
         "family": "shots",
-        "identified": 6282,
+        "identified": 6510,
         "A": 340,
-        "B": 132,
-        "C": 5380,
-        "D": 430,
-        "selected": 17
+        "B": 130,
+        "C": 5612,
+        "D": 428,
+        "selected": 78
       },
       {
         "family": "sot",
-        "identified": 4699,
+        "identified": 4769,
         "A": 166,
-        "B": 186,
-        "C": 3853,
-        "D": 494,
-        "selected": 18
+        "B": 184,
+        "C": 3929,
+        "D": 490,
+        "selected": 52
       },
       {
         "family": "corners",
-        "identified": 1493,
+        "identified": 1491,
         "A": 165,
-        "B": 82,
-        "C": 335,
-        "D": 911,
+        "B": 81,
+        "C": 333,
+        "D": 912,
         "selected": 16
       },
       {
         "family": "cards",
-        "identified": 4760,
+        "identified": 4974,
         "A": 0,
         "B": 0,
-        "C": 2431,
-        "D": 2329,
+        "C": 2561,
+        "D": 2413,
         "selected": 0
       }
     ],
     "validated": [
       "Tiri squadra/partita e 1X2",
       "Tiri in porta squadra/partita e 1X2",
-      "Corner squadra/partita e 1X2"
+      "Corner squadra/partita e 1X2",
+      "Probabilità individuali V2 per tiri e SOT, senza ricostruzione frontend"
     ],
     "blocked": [
-      "Tiri e SOT giocatore DUO: sostituto incluso; sui SOT anche pali/traverse",
-      "Tiri e SOT giocatore standard: il contratto richiede almeno una occorrenza in entrambi i tempi e non equivale al totale full-match V2",
-      "Cartellini: le regole Sisal escludono panchina, staff, post-partita e già sostituiti; gli actuals aggregati disponibili non certificano queste esclusioni"
+      "Quote tiri e SOT DUO: sostituto incluso; sui SOT anche pali/traverse",
+      "Quote tiri e SOT nei due tempi: contratto diverso dal totale individuale full-match V2",
+      "Cartellini individuali: likelyBooked/riskScore non sono probabilità calibrate e il contratto richiede settlement event-level",
+      "Over cartellini: nessun modello MD6 statisticamente validato e pertinente alla soglia Sisal"
     ],
     "dataNeeded": [
-      "Identità effettiva del sostituto, minuti e pesi di scenario per DUO",
+      "Contratto Sisal individuale full-match riconciliabile per playerId, metrica e soglia",
       "Actuals cartellini event-level con stato del giocatore e timestamp",
-      "Ulteriori snapshot prospettici per monitorare calibrazione e drift senza riusare MD6"
+      "Modello disciplinare prospettico validato prima di promuovere cartellini o Over cartellini"
     ]
   },
   "suggestions": [
@@ -1537,6 +2738,142 @@
       "conservativeExpectedValuePct": -23.07,
       "reliability": "Bassa",
       "canonicalThresholdIdentity": null
+    },
+    {
+      "matchId": "atalanta-venezia-2026-27-md-06",
+      "fixture": "Atalanta – Venezia",
+      "rank": 8,
+      "family": "shots",
+      "selectionId": "forecast:v2:atalanta-venezia-2026-27-md-06:gianluca-scamacca:shots:3",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "Gianluca Scamacca 3+ tiri",
+      "probabilityPct": 65.44,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Media",
+      "canonicalThresholdIdentity": "shots:player:gianluca-scamacca:over"
+    },
+    {
+      "matchId": "atalanta-venezia-2026-27-md-06",
+      "fixture": "Atalanta – Venezia",
+      "rank": 9,
+      "family": "shots",
+      "selectionId": "forecast:v2:atalanta-venezia-2026-27-md-06:john-yeboah:shots:3",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "John Yeboah 3+ tiri",
+      "probabilityPct": 64.26,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Alta",
+      "canonicalThresholdIdentity": "shots:player:john-yeboah:over"
+    },
+    {
+      "matchId": "atalanta-venezia-2026-27-md-06",
+      "fixture": "Atalanta – Venezia",
+      "rank": 10,
+      "family": "shots",
+      "selectionId": "forecast:v2:atalanta-venezia-2026-27-md-06:akor-adams:shots:3",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "Akor Adams 3+ tiri",
+      "probabilityPct": 57.68,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Media",
+      "canonicalThresholdIdentity": "shots:player:akor-adams:over"
+    },
+    {
+      "matchId": "atalanta-venezia-2026-27-md-06",
+      "fixture": "Atalanta – Venezia",
+      "rank": 11,
+      "family": "shots",
+      "selectionId": "forecast:v2:atalanta-venezia-2026-27-md-06:charles-de-ketelaere:shots:3",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "Charles De Ketelaere 3+ tiri",
+      "probabilityPct": 43.81,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Bassa",
+      "canonicalThresholdIdentity": "shots:player:charles-de-ketelaere:over"
+    },
+    {
+      "matchId": "atalanta-venezia-2026-27-md-06",
+      "fixture": "Atalanta – Venezia",
+      "rank": 12,
+      "family": "shots",
+      "selectionId": "forecast:v2:atalanta-venezia-2026-27-md-06:lazar-samardzic:shots:3",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "Lazar Samardzic 3+ tiri",
+      "probabilityPct": 42.24,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Media",
+      "canonicalThresholdIdentity": "shots:player:lazar-samardzic:over"
+    },
+    {
+      "matchId": "atalanta-venezia-2026-27-md-06",
+      "fixture": "Atalanta – Venezia",
+      "rank": 13,
+      "family": "sot",
+      "selectionId": "forecast:v2:atalanta-venezia-2026-27-md-06:ederson:sot:1",
+      "market": "TIRI IN PORTA GIOCATORE",
+      "label": "Éderson 1+ SOT",
+      "probabilityPct": 47.8,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Media",
+      "canonicalThresholdIdentity": "sot:player:ederson:over"
+    },
+    {
+      "matchId": "atalanta-venezia-2026-27-md-06",
+      "fixture": "Atalanta – Venezia",
+      "rank": 14,
+      "family": "sot",
+      "selectionId": "forecast:v2:atalanta-venezia-2026-27-md-06:akor-adams:sot:2",
+      "market": "TIRI IN PORTA GIOCATORE",
+      "label": "Akor Adams 2+ SOT",
+      "probabilityPct": 32.65,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Alta",
+      "canonicalThresholdIdentity": "sot:player:akor-adams:over"
+    },
+    {
+      "matchId": "atalanta-venezia-2026-27-md-06",
+      "fixture": "Atalanta – Venezia",
+      "rank": 15,
+      "family": "sot",
+      "selectionId": "forecast:v2:atalanta-venezia-2026-27-md-06:john-yeboah:sot:2",
+      "market": "TIRI IN PORTA GIOCATORE",
+      "label": "John Yeboah 2+ SOT",
+      "probabilityPct": 31.56,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Alta",
+      "canonicalThresholdIdentity": "sot:player:john-yeboah:over"
     },
     {
       "matchId": "cagliari-juventus-2026-27-md-06",
@@ -1690,6 +3027,159 @@
       "conservativeExpectedValuePct": -23.92,
       "reliability": "Media",
       "canonicalThresholdIdentity": "corners:match:away:over:CORNER"
+    },
+    {
+      "matchId": "cagliari-juventus-2026-27-md-06",
+      "fixture": "Cagliari – Juventus",
+      "rank": 10,
+      "family": "shots",
+      "selectionId": "forecast:v2:cagliari-juventus-2026-27-md-06:bremer:shots:1",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "Bremer 1+ tiri",
+      "probabilityPct": 74.08,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Alta",
+      "canonicalThresholdIdentity": "shots:player:bremer:over"
+    },
+    {
+      "matchId": "cagliari-juventus-2026-27-md-06",
+      "fixture": "Cagliari – Juventus",
+      "rank": 11,
+      "family": "shots",
+      "selectionId": "forecast:v2:cagliari-juventus-2026-27-md-06:alessandro-romano:shots:2",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "Alessandro Romano 2+ tiri",
+      "probabilityPct": 54.6,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Alta",
+      "canonicalThresholdIdentity": "shots:player:alessandro-romano:over"
+    },
+    {
+      "matchId": "cagliari-juventus-2026-27-md-06",
+      "fixture": "Cagliari – Juventus",
+      "rank": 12,
+      "family": "shots",
+      "selectionId": "forecast:v2:cagliari-juventus-2026-27-md-06:nicolas-gonzalez:shots:3",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "Nicolás González 3+ tiri",
+      "probabilityPct": 53.05,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Bassa",
+      "canonicalThresholdIdentity": "shots:player:nicolas-gonzalez:over"
+    },
+    {
+      "matchId": "cagliari-juventus-2026-27-md-06",
+      "fixture": "Cagliari – Juventus",
+      "rank": 13,
+      "family": "shots",
+      "selectionId": "forecast:v2:cagliari-juventus-2026-27-md-06:paul-mendy:shots:3",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "Paul Mendy 3+ tiri",
+      "probabilityPct": 51.13,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Media",
+      "canonicalThresholdIdentity": "shots:player:paul-mendy:over"
+    },
+    {
+      "matchId": "cagliari-juventus-2026-27-md-06",
+      "fixture": "Cagliari – Juventus",
+      "rank": 14,
+      "family": "shots",
+      "selectionId": "forecast:v2:cagliari-juventus-2026-27-md-06:randal-kolo-muani:shots:3",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "Randal Kolo Muani 3+ tiri",
+      "probabilityPct": 50.64,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Media",
+      "canonicalThresholdIdentity": "shots:player:randal-kolo-muani:over"
+    },
+    {
+      "matchId": "cagliari-juventus-2026-27-md-06",
+      "fixture": "Cagliari – Juventus",
+      "rank": 15,
+      "family": "shots",
+      "selectionId": "forecast:v2:cagliari-juventus-2026-27-md-06:daniel-maldini:shots:3",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "Daniel Maldini 3+ tiri",
+      "probabilityPct": 41.98,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Alta",
+      "canonicalThresholdIdentity": "shots:player:daniel-maldini:over"
+    },
+    {
+      "matchId": "cagliari-juventus-2026-27-md-06",
+      "fixture": "Cagliari – Juventus",
+      "rank": 16,
+      "family": "sot",
+      "selectionId": "forecast:v2:cagliari-juventus-2026-27-md-06:douglas-luiz:sot:1",
+      "market": "TIRI IN PORTA GIOCATORE",
+      "label": "Douglas Luiz 1+ SOT",
+      "probabilityPct": 52.29,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Alta",
+      "canonicalThresholdIdentity": "sot:player:douglas-luiz:over"
+    },
+    {
+      "matchId": "cagliari-juventus-2026-27-md-06",
+      "fixture": "Cagliari – Juventus",
+      "rank": 17,
+      "family": "sot",
+      "selectionId": "forecast:v2:cagliari-juventus-2026-27-md-06:paul-mendy:sot:1",
+      "market": "TIRI IN PORTA GIOCATORE",
+      "label": "Paul Mendy 1+ SOT",
+      "probabilityPct": 52.29,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Alta",
+      "canonicalThresholdIdentity": "sot:player:paul-mendy:over"
+    },
+    {
+      "matchId": "cagliari-juventus-2026-27-md-06",
+      "fixture": "Cagliari – Juventus",
+      "rank": 18,
+      "family": "sot",
+      "selectionId": "forecast:v2:cagliari-juventus-2026-27-md-06:bremer:sot:1",
+      "market": "TIRI IN PORTA GIOCATORE",
+      "label": "Bremer 1+ SOT",
+      "probabilityPct": 42.88,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Alta",
+      "canonicalThresholdIdentity": "sot:player:bremer:over"
     },
     {
       "matchId": "como-roma-2026-27-md-06",
@@ -1862,26 +3352,179 @@
       "canonicalThresholdIdentity": "shots:match:home:over:TIRI TOTALI"
     },
     {
-      "matchId": "genoa-fiorentina-2026-27-md-06",
-      "fixture": "Genoa – Fiorentina",
-      "rank": 1,
-      "family": "goals-results",
-      "selectionId": "bet:sisal:genoa-fiorentina-2026-27-md-06:5337164544",
-      "market": "DRAW NO BET",
-      "label": "Fiorentina Draw No Bet",
-      "probabilityPct": 50.9,
-      "prudentProbabilityPct": 42.6,
-      "odds": 1.52,
-      "expectedValuePct": -16.8,
-      "expectedValueBasis": "P_WIN_TIMES_DECIMAL_ODDS_PLUS_P_PUSH_MINUS_ONE",
-      "conservativeExpectedValuePct": -26.3,
-      "reliability": "Bassa",
-      "canonicalThresholdIdentity": null
+      "matchId": "como-roma-2026-27-md-06",
+      "fixture": "Como – Roma",
+      "rank": 11,
+      "family": "shots",
+      "selectionId": "forecast:v2:como-roma-2026-27-md-06:nico-paz:shots:3",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "Nico Paz 3+ tiri",
+      "probabilityPct": 85.07,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Media",
+      "canonicalThresholdIdentity": "shots:player:nico-paz:over"
+    },
+    {
+      "matchId": "como-roma-2026-27-md-06",
+      "fixture": "Como – Roma",
+      "rank": 12,
+      "family": "shots",
+      "selectionId": "forecast:v2:como-roma-2026-27-md-06:donyell-malen:shots:3",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "Donyell Malen 3+ tiri",
+      "probabilityPct": 63.45,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Alta",
+      "canonicalThresholdIdentity": "shots:player:donyell-malen:over"
+    },
+    {
+      "matchId": "como-roma-2026-27-md-06",
+      "fixture": "Como – Roma",
+      "rank": 13,
+      "family": "shots",
+      "selectionId": "forecast:v2:como-roma-2026-27-md-06:assane-diao:shots:2",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "Assane Diao 2+ tiri",
+      "probabilityPct": 62.55,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Alta",
+      "canonicalThresholdIdentity": "shots:player:assane-diao:over"
+    },
+    {
+      "matchId": "como-roma-2026-27-md-06",
+      "fixture": "Como – Roma",
+      "rank": 14,
+      "family": "shots",
+      "selectionId": "forecast:v2:como-roma-2026-27-md-06:paulo-dybala:shots:3",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "Paulo Dybala 3+ tiri",
+      "probabilityPct": 53.53,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Media",
+      "canonicalThresholdIdentity": "shots:player:paulo-dybala:over"
+    },
+    {
+      "matchId": "como-roma-2026-27-md-06",
+      "fixture": "Como – Roma",
+      "rank": 15,
+      "family": "shots",
+      "selectionId": "forecast:v2:como-roma-2026-27-md-06:anastasios-douvikas:shots:3",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "Anastasios Douvikas 3+ tiri",
+      "probabilityPct": 50.39,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Media",
+      "canonicalThresholdIdentity": "shots:player:anastasios-douvikas:over"
+    },
+    {
+      "matchId": "como-roma-2026-27-md-06",
+      "fixture": "Como – Roma",
+      "rank": 16,
+      "family": "sot",
+      "selectionId": "forecast:v2:como-roma-2026-27-md-06:paulo-dybala:sot:1",
+      "market": "TIRI IN PORTA GIOCATORE",
+      "label": "Paulo Dybala 1+ SOT",
+      "probabilityPct": 62.84,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Media",
+      "canonicalThresholdIdentity": "sot:player:paulo-dybala:over"
+    },
+    {
+      "matchId": "como-roma-2026-27-md-06",
+      "fixture": "Como – Roma",
+      "rank": 17,
+      "family": "sot",
+      "selectionId": "forecast:v2:como-roma-2026-27-md-06:assane-diao:sot:1",
+      "market": "TIRI IN PORTA GIOCATORE",
+      "label": "Assane Diao 1+ SOT",
+      "probabilityPct": 50.34,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Alta",
+      "canonicalThresholdIdentity": "sot:player:assane-diao:over"
+    },
+    {
+      "matchId": "como-roma-2026-27-md-06",
+      "fixture": "Como – Roma",
+      "rank": 18,
+      "family": "sot",
+      "selectionId": "forecast:v2:como-roma-2026-27-md-06:donyell-malen:sot:2",
+      "market": "TIRI IN PORTA GIOCATORE",
+      "label": "Donyell Malen 2+ SOT",
+      "probabilityPct": 45.55,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Media",
+      "canonicalThresholdIdentity": "sot:player:donyell-malen:over"
+    },
+    {
+      "matchId": "como-roma-2026-27-md-06",
+      "fixture": "Como – Roma",
+      "rank": 19,
+      "family": "sot",
+      "selectionId": "forecast:v2:como-roma-2026-27-md-06:nico-paz:sot:2",
+      "market": "TIRI IN PORTA GIOCATORE",
+      "label": "Nico Paz 2+ SOT",
+      "probabilityPct": 42.19,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Media",
+      "canonicalThresholdIdentity": "sot:player:nico-paz:over"
+    },
+    {
+      "matchId": "como-roma-2026-27-md-06",
+      "fixture": "Como – Roma",
+      "rank": 20,
+      "family": "sot",
+      "selectionId": "forecast:v2:como-roma-2026-27-md-06:anastasios-douvikas:sot:2",
+      "market": "TIRI IN PORTA GIOCATORE",
+      "label": "Anastasios Douvikas 2+ SOT",
+      "probabilityPct": 37.32,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Media",
+      "canonicalThresholdIdentity": "sot:player:anastasios-douvikas:over"
     },
     {
       "matchId": "genoa-fiorentina-2026-27-md-06",
       "fixture": "Genoa – Fiorentina",
-      "rank": 2,
+      "rank": 1,
       "family": "sot",
       "selectionId": "bet:sisal:genoa-fiorentina-2026-27-md-06:5367456140",
       "market": "U/O TIRI IN PORTA SQUADRA X",
@@ -1898,7 +3541,7 @@
     {
       "matchId": "genoa-fiorentina-2026-27-md-06",
       "fixture": "Genoa – Fiorentina",
-      "rank": 3,
+      "rank": 2,
       "family": "goals-results",
       "selectionId": "bet:sisal:genoa-fiorentina-2026-27-md-06:5337222708",
       "market": "CASA: SEGNA GOAL",
@@ -1915,7 +3558,7 @@
     {
       "matchId": "genoa-fiorentina-2026-27-md-06",
       "fixture": "Genoa – Fiorentina",
-      "rank": 4,
+      "rank": 3,
       "family": "goals-results",
       "selectionId": "bet:sisal:genoa-fiorentina-2026-27-md-06:5337164992",
       "market": "MULTIGOAL",
@@ -1932,7 +3575,7 @@
     {
       "matchId": "genoa-fiorentina-2026-27-md-06",
       "fixture": "Genoa – Fiorentina",
-      "rank": 5,
+      "rank": 4,
       "family": "corners",
       "selectionId": "bet:sisal:genoa-fiorentina-2026-27-md-06:5369497842",
       "market": "U/O CORNER SQUADRA X",
@@ -1949,7 +3592,7 @@
     {
       "matchId": "genoa-fiorentina-2026-27-md-06",
       "fixture": "Genoa – Fiorentina",
-      "rank": 6,
+      "rank": 5,
       "family": "corners",
       "selectionId": "bet:sisal:genoa-fiorentina-2026-27-md-06:5369524035",
       "market": "U/O CORNER",
@@ -1966,7 +3609,7 @@
     {
       "matchId": "genoa-fiorentina-2026-27-md-06",
       "fixture": "Genoa – Fiorentina",
-      "rank": 7,
+      "rank": 6,
       "family": "shots",
       "selectionId": "bet:sisal:genoa-fiorentina-2026-27-md-06:5337194687",
       "market": "U/O TIRI TOTALI",
@@ -1983,7 +3626,7 @@
     {
       "matchId": "genoa-fiorentina-2026-27-md-06",
       "fixture": "Genoa – Fiorentina",
-      "rank": 8,
+      "rank": 7,
       "family": "shots",
       "selectionId": "bet:sisal:genoa-fiorentina-2026-27-md-06:5337194592",
       "market": "1X2 TIRI TOTALI",
@@ -2000,7 +3643,7 @@
     {
       "matchId": "genoa-fiorentina-2026-27-md-06",
       "fixture": "Genoa – Fiorentina",
-      "rank": 9,
+      "rank": 8,
       "family": "sot",
       "selectionId": "bet:sisal:genoa-fiorentina-2026-27-md-06:5337194619",
       "market": "U/O TIRI IN PORTA",
@@ -2013,6 +3656,193 @@
       "conservativeExpectedValuePct": -31.09,
       "reliability": "Media",
       "canonicalThresholdIdentity": "sot:match:match:over:TIRI IN PORTA"
+    },
+    {
+      "matchId": "genoa-fiorentina-2026-27-md-06",
+      "fixture": "Genoa – Fiorentina",
+      "rank": 9,
+      "family": "shots",
+      "selectionId": "forecast:v2:genoa-fiorentina-2026-27-md-06:nicolo-fagioli:shots:1",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "Nicolò Fagioli 1+ tiri",
+      "probabilityPct": 68.65,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Alta",
+      "canonicalThresholdIdentity": "shots:player:nicolo-fagioli:over"
+    },
+    {
+      "matchId": "genoa-fiorentina-2026-27-md-06",
+      "fixture": "Genoa – Fiorentina",
+      "rank": 10,
+      "family": "shots",
+      "selectionId": "forecast:v2:genoa-fiorentina-2026-27-md-06:leo-stigard:shots:1",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "Leo Østigard 1+ tiri",
+      "probabilityPct": 67.04,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Alta",
+      "canonicalThresholdIdentity": "shots:player:leo-stigard:over"
+    },
+    {
+      "matchId": "genoa-fiorentina-2026-27-md-06",
+      "fixture": "Genoa – Fiorentina",
+      "rank": 11,
+      "family": "shots",
+      "selectionId": "forecast:v2:genoa-fiorentina-2026-27-md-06:milutin-osmajic:shots:2",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "Milutin Osmajić 2+ tiri",
+      "probabilityPct": 62.8,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Alta",
+      "canonicalThresholdIdentity": "shots:player:milutin-osmajic:over"
+    },
+    {
+      "matchId": "genoa-fiorentina-2026-27-md-06",
+      "fixture": "Genoa – Fiorentina",
+      "rank": 12,
+      "family": "shots",
+      "selectionId": "forecast:v2:genoa-fiorentina-2026-27-md-06:franco-mastantuono:shots:3",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "Franco Mastantuono 3+ tiri",
+      "probabilityPct": 59.88,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Media",
+      "canonicalThresholdIdentity": "shots:player:franco-mastantuono:over"
+    },
+    {
+      "matchId": "genoa-fiorentina-2026-27-md-06",
+      "fixture": "Genoa – Fiorentina",
+      "rank": 13,
+      "family": "shots",
+      "selectionId": "forecast:v2:genoa-fiorentina-2026-27-md-06:johan-vasquez:shots:1",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "Johan Vásquez 1+ tiri",
+      "probabilityPct": 59.75,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Alta",
+      "canonicalThresholdIdentity": "shots:player:johan-vasquez:over"
+    },
+    {
+      "matchId": "genoa-fiorentina-2026-27-md-06",
+      "fixture": "Genoa – Fiorentina",
+      "rank": 14,
+      "family": "shots",
+      "selectionId": "forecast:v2:genoa-fiorentina-2026-27-md-06:mateo-pellegrino:shots:2",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "Mateo Pellegrino 2+ tiri",
+      "probabilityPct": 52.52,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Media",
+      "canonicalThresholdIdentity": "shots:player:mateo-pellegrino:over"
+    },
+    {
+      "matchId": "genoa-fiorentina-2026-27-md-06",
+      "fixture": "Genoa – Fiorentina",
+      "rank": 15,
+      "family": "shots",
+      "selectionId": "forecast:v2:genoa-fiorentina-2026-27-md-06:vitinha:shots:3",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "Vitinha 3+ tiri",
+      "probabilityPct": 52.1,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Alta",
+      "canonicalThresholdIdentity": "shots:player:vitinha:over"
+    },
+    {
+      "matchId": "genoa-fiorentina-2026-27-md-06",
+      "fixture": "Genoa – Fiorentina",
+      "rank": 16,
+      "family": "shots",
+      "selectionId": "forecast:v2:genoa-fiorentina-2026-27-md-06:tommaso-baldanzi:shots:3",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "Tommaso Baldanzi 3+ tiri",
+      "probabilityPct": 43.03,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Alta",
+      "canonicalThresholdIdentity": "shots:player:tommaso-baldanzi:over"
+    },
+    {
+      "matchId": "genoa-fiorentina-2026-27-md-06",
+      "fixture": "Genoa – Fiorentina",
+      "rank": 17,
+      "family": "sot",
+      "selectionId": "forecast:v2:genoa-fiorentina-2026-27-md-06:leo-stigard:sot:1",
+      "market": "TIRI IN PORTA GIOCATORE",
+      "label": "Leo Østigard 1+ SOT",
+      "probabilityPct": 44.57,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Alta",
+      "canonicalThresholdIdentity": "sot:player:leo-stigard:over"
+    },
+    {
+      "matchId": "genoa-fiorentina-2026-27-md-06",
+      "fixture": "Genoa – Fiorentina",
+      "rank": 18,
+      "family": "sot",
+      "selectionId": "forecast:v2:genoa-fiorentina-2026-27-md-06:franco-mastantuono:sot:2",
+      "market": "TIRI IN PORTA GIOCATORE",
+      "label": "Franco Mastantuono 2+ SOT",
+      "probabilityPct": 29.73,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Media",
+      "canonicalThresholdIdentity": "sot:player:franco-mastantuono:over"
+    },
+    {
+      "matchId": "genoa-fiorentina-2026-27-md-06",
+      "fixture": "Genoa – Fiorentina",
+      "rank": 19,
+      "family": "sot",
+      "selectionId": "forecast:v2:genoa-fiorentina-2026-27-md-06:milutin-osmajic:sot:2",
+      "market": "TIRI IN PORTA GIOCATORE",
+      "label": "Milutin Osmajić 2+ SOT",
+      "probabilityPct": 29,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Media",
+      "canonicalThresholdIdentity": "sot:player:milutin-osmajic:over"
     },
     {
       "matchId": "inter-parma-2026-27-md-06",
@@ -2168,6 +3998,176 @@
       "canonicalThresholdIdentity": "shots:match:away:over:TIRI TOTALI"
     },
     {
+      "matchId": "inter-parma-2026-27-md-06",
+      "fixture": "Inter – Parma",
+      "rank": 10,
+      "family": "shots",
+      "selectionId": "forecast:v2:inter-parma-2026-27-md-06:yann-bisseck:shots:1",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "Yann Bisseck 1+ tiri",
+      "probabilityPct": 72.2,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Media",
+      "canonicalThresholdIdentity": "shots:player:yann-bisseck:over"
+    },
+    {
+      "matchId": "inter-parma-2026-27-md-06",
+      "fixture": "Inter – Parma",
+      "rank": 11,
+      "family": "shots",
+      "selectionId": "forecast:v2:inter-parma-2026-27-md-06:manuel-akanji:shots:1",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "Manuel Akanji 1+ tiri",
+      "probabilityPct": 70.77,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Media",
+      "canonicalThresholdIdentity": "shots:player:manuel-akanji:over"
+    },
+    {
+      "matchId": "inter-parma-2026-27-md-06",
+      "fixture": "Inter – Parma",
+      "rank": 12,
+      "family": "shots",
+      "selectionId": "forecast:v2:inter-parma-2026-27-md-06:marcus-thuram:shots:3",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "Marcus Thuram 3+ tiri",
+      "probabilityPct": 70.25,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Media",
+      "canonicalThresholdIdentity": "shots:player:marcus-thuram:over"
+    },
+    {
+      "matchId": "inter-parma-2026-27-md-06",
+      "fixture": "Inter – Parma",
+      "rank": 13,
+      "family": "shots",
+      "selectionId": "forecast:v2:inter-parma-2026-27-md-06:el-bilal-toure:shots:2",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "El Bilal Touré 2+ tiri",
+      "probabilityPct": 64.05,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Bassa",
+      "canonicalThresholdIdentity": "shots:player:el-bilal-toure:over"
+    },
+    {
+      "matchId": "inter-parma-2026-27-md-06",
+      "fixture": "Inter – Parma",
+      "rank": 14,
+      "family": "shots",
+      "selectionId": "forecast:v2:inter-parma-2026-27-md-06:federico-dimarco:shots:2",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "Federico Dimarco 2+ tiri",
+      "probabilityPct": 62.55,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Alta",
+      "canonicalThresholdIdentity": "shots:player:federico-dimarco:over"
+    },
+    {
+      "matchId": "inter-parma-2026-27-md-06",
+      "fixture": "Inter – Parma",
+      "rank": 15,
+      "family": "shots",
+      "selectionId": "forecast:v2:inter-parma-2026-27-md-06:alessandro-bastoni:shots:1",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "Alessandro Bastoni 1+ tiri",
+      "probabilityPct": 58.52,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Alta",
+      "canonicalThresholdIdentity": "shots:player:alessandro-bastoni:over"
+    },
+    {
+      "matchId": "inter-parma-2026-27-md-06",
+      "fixture": "Inter – Parma",
+      "rank": 16,
+      "family": "shots",
+      "selectionId": "forecast:v2:inter-parma-2026-27-md-06:nicolo-barella:shots:2",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "Nicolò Barella 2+ tiri",
+      "probabilityPct": 56.34,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Alta",
+      "canonicalThresholdIdentity": "shots:player:nicolo-barella:over"
+    },
+    {
+      "matchId": "inter-parma-2026-27-md-06",
+      "fixture": "Inter – Parma",
+      "rank": 17,
+      "family": "sot",
+      "selectionId": "forecast:v2:inter-parma-2026-27-md-06:el-bilal-toure:sot:1",
+      "market": "TIRI IN PORTA GIOCATORE",
+      "label": "El Bilal Touré 1+ SOT",
+      "probabilityPct": 57.26,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Media",
+      "canonicalThresholdIdentity": "sot:player:el-bilal-toure:over"
+    },
+    {
+      "matchId": "inter-parma-2026-27-md-06",
+      "fixture": "Inter – Parma",
+      "rank": 18,
+      "family": "sot",
+      "selectionId": "forecast:v2:inter-parma-2026-27-md-06:federico-dimarco:sot:1",
+      "market": "TIRI IN PORTA GIOCATORE",
+      "label": "Federico Dimarco 1+ SOT",
+      "probabilityPct": 46.74,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Alta",
+      "canonicalThresholdIdentity": "sot:player:federico-dimarco:over"
+    },
+    {
+      "matchId": "inter-parma-2026-27-md-06",
+      "fixture": "Inter – Parma",
+      "rank": 19,
+      "family": "sot",
+      "selectionId": "forecast:v2:inter-parma-2026-27-md-06:marcus-thuram:sot:2",
+      "market": "TIRI IN PORTA GIOCATORE",
+      "label": "Marcus Thuram 2+ SOT",
+      "probabilityPct": 35.54,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Media",
+      "canonicalThresholdIdentity": "sot:player:marcus-thuram:over"
+    },
+    {
       "matchId": "lazio-monza-2026-27-md-06",
       "fixture": "Lazio – Monza",
       "rank": 1,
@@ -2253,26 +4253,230 @@
       "canonicalThresholdIdentity": "corners:match:home:over:CORNER"
     },
     {
-      "matchId": "lecce-bologna-2026-27-md-06",
-      "fixture": "Lecce – Bologna",
-      "rank": 1,
-      "family": "goals-results",
-      "selectionId": "bet:sisal:lecce-bologna-2026-27-md-06:5337214296",
-      "market": "DRAW NO BET",
-      "label": "Bologna Draw No Bet",
-      "probabilityPct": 71.1,
-      "prudentProbabilityPct": 63.9,
-      "odds": 1.33,
-      "expectedValuePct": -4.1,
-      "expectedValueBasis": "P_WIN_TIMES_DECIMAL_ODDS_PLUS_P_PUSH_MINUS_ONE",
-      "conservativeExpectedValuePct": -11,
+      "matchId": "lazio-monza-2026-27-md-06",
+      "fixture": "Lazio – Monza",
+      "rank": 6,
+      "family": "shots",
+      "selectionId": "forecast:v2:lazio-monza-2026-27-md-06:samuele-birindelli:shots:1",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "Samuele Birindelli 1+ tiri",
+      "probabilityPct": 71.35,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Alta",
+      "canonicalThresholdIdentity": "shots:player:samuele-birindelli:over"
+    },
+    {
+      "matchId": "lazio-monza-2026-27-md-06",
+      "fixture": "Lazio – Monza",
+      "rank": 7,
+      "family": "shots",
+      "selectionId": "forecast:v2:lazio-monza-2026-27-md-06:kenneth-taylor:shots:1",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "Kenneth Taylor 1+ tiri",
+      "probabilityPct": 68.02,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Alta",
+      "canonicalThresholdIdentity": "shots:player:kenneth-taylor:over"
+    },
+    {
+      "matchId": "lazio-monza-2026-27-md-06",
+      "fixture": "Lazio – Monza",
+      "rank": 8,
+      "family": "shots",
+      "selectionId": "forecast:v2:lazio-monza-2026-27-md-06:nuno-tavares:shots:1",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "Nuno Tavares 1+ tiri",
+      "probabilityPct": 62.47,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
       "reliability": "Media",
-      "canonicalThresholdIdentity": null
+      "canonicalThresholdIdentity": "shots:player:nuno-tavares:over"
+    },
+    {
+      "matchId": "lazio-monza-2026-27-md-06",
+      "fixture": "Lazio – Monza",
+      "rank": 9,
+      "family": "shots",
+      "selectionId": "forecast:v2:lazio-monza-2026-27-md-06:jay-robinson:shots:2",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "Jay Robinson 2+ tiri",
+      "probabilityPct": 59.4,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Alta",
+      "canonicalThresholdIdentity": "shots:player:jay-robinson:over"
+    },
+    {
+      "matchId": "lazio-monza-2026-27-md-06",
+      "fixture": "Lazio – Monza",
+      "rank": 10,
+      "family": "shots",
+      "selectionId": "forecast:v2:lazio-monza-2026-27-md-06:mattia-zaccagni:shots:2",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "Mattia Zaccagni 2+ tiri",
+      "probabilityPct": 59.4,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Bassa",
+      "canonicalThresholdIdentity": "shots:player:mattia-zaccagni:over"
+    },
+    {
+      "matchId": "lazio-monza-2026-27-md-06",
+      "fixture": "Lazio – Monza",
+      "rank": 11,
+      "family": "shots",
+      "selectionId": "forecast:v2:lazio-monza-2026-27-md-06:lorenzo-lucchesi:shots:1",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "Lorenzo Lucchesi 1+ tiri",
+      "probabilityPct": 58.1,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Alta",
+      "canonicalThresholdIdentity": "shots:player:lorenzo-lucchesi:over"
+    },
+    {
+      "matchId": "lazio-monza-2026-27-md-06",
+      "fixture": "Lazio – Monza",
+      "rank": 12,
+      "family": "shots",
+      "selectionId": "forecast:v2:lazio-monza-2026-27-md-06:patrick-cutrone:shots:2",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "Patrick Cutrone 2+ tiri",
+      "probabilityPct": 52.52,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Alta",
+      "canonicalThresholdIdentity": "shots:player:patrick-cutrone:over"
+    },
+    {
+      "matchId": "lazio-monza-2026-27-md-06",
+      "fixture": "Lazio – Monza",
+      "rank": 13,
+      "family": "shots",
+      "selectionId": "forecast:v2:lazio-monza-2026-27-md-06:michael-folorunsho:shots:2",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "Michael Folorunsho 2+ tiri",
+      "probabilityPct": 48.47,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Alta",
+      "canonicalThresholdIdentity": "shots:player:michael-folorunsho:over"
+    },
+    {
+      "matchId": "lazio-monza-2026-27-md-06",
+      "fixture": "Lazio – Monza",
+      "rank": 14,
+      "family": "shots",
+      "selectionId": "forecast:v2:lazio-monza-2026-27-md-06:gustavo-varela:shots:3",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "Gustavo Varela 3+ tiri",
+      "probabilityPct": 47.91,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Alta",
+      "canonicalThresholdIdentity": "shots:player:gustavo-varela:over"
+    },
+    {
+      "matchId": "lazio-monza-2026-27-md-06",
+      "fixture": "Lazio – Monza",
+      "rank": 15,
+      "family": "sot",
+      "selectionId": "forecast:v2:lazio-monza-2026-27-md-06:mattia-zaccagni:sot:1",
+      "market": "TIRI IN PORTA GIOCATORE",
+      "label": "Mattia Zaccagni 1+ SOT",
+      "probabilityPct": 61.71,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Bassa",
+      "canonicalThresholdIdentity": "sot:player:mattia-zaccagni:over"
+    },
+    {
+      "matchId": "lazio-monza-2026-27-md-06",
+      "fixture": "Lazio – Monza",
+      "rank": 16,
+      "family": "sot",
+      "selectionId": "forecast:v2:lazio-monza-2026-27-md-06:samuele-birindelli:sot:1",
+      "market": "TIRI IN PORTA GIOCATORE",
+      "label": "Samuele Birindelli 1+ SOT",
+      "probabilityPct": 44.57,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Media",
+      "canonicalThresholdIdentity": "sot:player:samuele-birindelli:over"
+    },
+    {
+      "matchId": "lazio-monza-2026-27-md-06",
+      "fixture": "Lazio – Monza",
+      "rank": 17,
+      "family": "sot",
+      "selectionId": "forecast:v2:lazio-monza-2026-27-md-06:davide-frattesi:sot:1",
+      "market": "TIRI IN PORTA GIOCATORE",
+      "label": "Davide Frattesi 1+ SOT",
+      "probabilityPct": 42.88,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Alta",
+      "canonicalThresholdIdentity": "sot:player:davide-frattesi:over"
+    },
+    {
+      "matchId": "lazio-monza-2026-27-md-06",
+      "fixture": "Lazio – Monza",
+      "rank": 18,
+      "family": "sot",
+      "selectionId": "forecast:v2:lazio-monza-2026-27-md-06:gustavo-varela:sot:2",
+      "market": "TIRI IN PORTA GIOCATORE",
+      "label": "Gustavo Varela 2+ SOT",
+      "probabilityPct": 30.46,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Alta",
+      "canonicalThresholdIdentity": "sot:player:gustavo-varela:over"
     },
     {
       "matchId": "lecce-bologna-2026-27-md-06",
       "fixture": "Lecce – Bologna",
-      "rank": 2,
+      "rank": 1,
       "family": "goals-results",
       "selectionId": "bet:sisal:lecce-bologna-2026-27-md-06:5337214555",
       "market": "MULTIGOAL SQUADRA X",
@@ -2289,7 +4493,7 @@
     {
       "matchId": "lecce-bologna-2026-27-md-06",
       "fixture": "Lecce – Bologna",
-      "rank": 3,
+      "rank": 2,
       "family": "goals-results",
       "selectionId": "bet:sisal:lecce-bologna-2026-27-md-06:5337210882",
       "market": "UNDER/OVER",
@@ -2306,7 +4510,7 @@
     {
       "matchId": "lecce-bologna-2026-27-md-06",
       "fixture": "Lecce – Bologna",
-      "rank": 4,
+      "rank": 3,
       "family": "sot",
       "selectionId": "bet:sisal:lecce-bologna-2026-27-md-06:5369322034",
       "market": "U/O TIRI IN PORTA SQUADRA X",
@@ -2323,7 +4527,7 @@
     {
       "matchId": "lecce-bologna-2026-27-md-06",
       "fixture": "Lecce – Bologna",
-      "rank": 5,
+      "rank": 4,
       "family": "corners",
       "selectionId": "bet:sisal:lecce-bologna-2026-27-md-06:5371738426",
       "market": "U/O CORNER SQUADRA X",
@@ -2340,7 +4544,7 @@
     {
       "matchId": "lecce-bologna-2026-27-md-06",
       "fixture": "Lecce – Bologna",
-      "rank": 6,
+      "rank": 5,
       "family": "corners",
       "selectionId": "bet:sisal:lecce-bologna-2026-27-md-06:5371703442",
       "market": "U/O CORNER",
@@ -2357,7 +4561,7 @@
     {
       "matchId": "lecce-bologna-2026-27-md-06",
       "fixture": "Lecce – Bologna",
-      "rank": 7,
+      "rank": 6,
       "family": "shots",
       "selectionId": "bet:sisal:lecce-bologna-2026-27-md-06:5337209550",
       "market": "U/O TIRI TOTALI",
@@ -2374,7 +4578,7 @@
     {
       "matchId": "lecce-bologna-2026-27-md-06",
       "fixture": "Lecce – Bologna",
-      "rank": 8,
+      "rank": 7,
       "family": "sot",
       "selectionId": "bet:sisal:lecce-bologna-2026-27-md-06:5369317469",
       "market": "U/O TIRI IN PORTA SQUADRA X",
@@ -2391,7 +4595,7 @@
     {
       "matchId": "lecce-bologna-2026-27-md-06",
       "fixture": "Lecce – Bologna",
-      "rank": 9,
+      "rank": 8,
       "family": "shots",
       "selectionId": "bet:sisal:lecce-bologna-2026-27-md-06:5369278333",
       "market": "U/O TIRI TOTALI SQUADRA X",
@@ -2404,6 +4608,108 @@
       "conservativeExpectedValuePct": -47.92,
       "reliability": "Media",
       "canonicalThresholdIdentity": "shots:match:away:over:TIRI TOTALI"
+    },
+    {
+      "matchId": "lecce-bologna-2026-27-md-06",
+      "fixture": "Lecce – Bologna",
+      "rank": 9,
+      "family": "shots",
+      "selectionId": "forecast:v2:lecce-bologna-2026-27-md-06:federico-bernardeschi:shots:3",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "Federico Bernardeschi 3+ tiri",
+      "probabilityPct": 50.39,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Alta",
+      "canonicalThresholdIdentity": "shots:player:federico-bernardeschi:over"
+    },
+    {
+      "matchId": "lecce-bologna-2026-27-md-06",
+      "fixture": "Lecce – Bologna",
+      "rank": 10,
+      "family": "shots",
+      "selectionId": "forecast:v2:lecce-bologna-2026-27-md-06:joel-monteiro:shots:2",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "Joël Monteiro 2+ tiri",
+      "probabilityPct": 45.22,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Media",
+      "canonicalThresholdIdentity": "shots:player:joel-monteiro:over"
+    },
+    {
+      "matchId": "lecce-bologna-2026-27-md-06",
+      "fixture": "Lecce – Bologna",
+      "rank": 11,
+      "family": "shots",
+      "selectionId": "forecast:v2:lecce-bologna-2026-27-md-06:roberto-piccoli:shots:3",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "Roberto Piccoli 3+ tiri",
+      "probabilityPct": 40.93,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Alta",
+      "canonicalThresholdIdentity": "shots:player:roberto-piccoli:over"
+    },
+    {
+      "matchId": "lecce-bologna-2026-27-md-06",
+      "fixture": "Lecce – Bologna",
+      "rank": 12,
+      "family": "sot",
+      "selectionId": "forecast:v2:lecce-bologna-2026-27-md-06:federico-bernardeschi:sot:1",
+      "market": "TIRI IN PORTA GIOCATORE",
+      "label": "Federico Bernardeschi 1+ SOT",
+      "probabilityPct": 64.3,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Alta",
+      "canonicalThresholdIdentity": "sot:player:federico-bernardeschi:over"
+    },
+    {
+      "matchId": "lecce-bologna-2026-27-md-06",
+      "fixture": "Lecce – Bologna",
+      "rank": 13,
+      "family": "sot",
+      "selectionId": "forecast:v2:lecce-bologna-2026-27-md-06:roberto-piccoli:sot:1",
+      "market": "TIRI IN PORTA GIOCATORE",
+      "label": "Roberto Piccoli 1+ SOT",
+      "probabilityPct": 51.81,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Media",
+      "canonicalThresholdIdentity": "sot:player:roberto-piccoli:over"
+    },
+    {
+      "matchId": "lecce-bologna-2026-27-md-06",
+      "fixture": "Lecce – Bologna",
+      "rank": 14,
+      "family": "sot",
+      "selectionId": "forecast:v2:lecce-bologna-2026-27-md-06:lassana-coulibaly:sot:1",
+      "market": "TIRI IN PORTA GIOCATORE",
+      "label": "Lassana Coulibaly 1+ SOT",
+      "probabilityPct": 45.12,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Bassa",
+      "canonicalThresholdIdentity": "sot:player:lassana-coulibaly:over"
     },
     {
       "matchId": "napoli-frosinone-2026-27-md-06",
@@ -2540,6 +4846,176 @@
       "conservativeExpectedValuePct": -30.92,
       "reliability": "Bassa",
       "canonicalThresholdIdentity": "corners:match:home:over:CORNER"
+    },
+    {
+      "matchId": "napoli-frosinone-2026-27-md-06",
+      "fixture": "Napoli – Frosinone",
+      "rank": 9,
+      "family": "shots",
+      "selectionId": "forecast:v2:napoli-frosinone-2026-27-md-06:amir-rrahmani:shots:1",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "Amir Rrahmani 1+ tiri",
+      "probabilityPct": 67.04,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Alta",
+      "canonicalThresholdIdentity": "shots:player:amir-rrahmani:over"
+    },
+    {
+      "matchId": "napoli-frosinone-2026-27-md-06",
+      "fixture": "Napoli – Frosinone",
+      "rank": 10,
+      "family": "shots",
+      "selectionId": "forecast:v2:napoli-frosinone-2026-27-md-06:fares-ghedjemis:shots:2",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "Farès Ghedjemis 2+ tiri",
+      "probabilityPct": 54.6,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Alta",
+      "canonicalThresholdIdentity": "shots:player:fares-ghedjemis:over"
+    },
+    {
+      "matchId": "napoli-frosinone-2026-27-md-06",
+      "fixture": "Napoli – Frosinone",
+      "rank": 11,
+      "family": "shots",
+      "selectionId": "forecast:v2:napoli-frosinone-2026-27-md-06:kevin-de-bruyne:shots:2",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "Kevin De Bruyne 2+ tiri",
+      "probabilityPct": 54.6,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Alta",
+      "canonicalThresholdIdentity": "shots:player:kevin-de-bruyne:over"
+    },
+    {
+      "matchId": "napoli-frosinone-2026-27-md-06",
+      "fixture": "Napoli – Frosinone",
+      "rank": 12,
+      "family": "shots",
+      "selectionId": "forecast:v2:napoli-frosinone-2026-27-md-06:rasmus-h-jlund:shots:3",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "Rasmus Højlund 3+ tiri",
+      "probabilityPct": 45.87,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Alta",
+      "canonicalThresholdIdentity": "shots:player:rasmus-h-jlund:over"
+    },
+    {
+      "matchId": "napoli-frosinone-2026-27-md-06",
+      "fixture": "Napoli – Frosinone",
+      "rank": 13,
+      "family": "shots",
+      "selectionId": "forecast:v2:napoli-frosinone-2026-27-md-06:giacomo-calo:shots:2",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "Giacomo Calo 2+ tiri",
+      "probabilityPct": 43.21,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Alta",
+      "canonicalThresholdIdentity": "shots:player:giacomo-calo:over"
+    },
+    {
+      "matchId": "napoli-frosinone-2026-27-md-06",
+      "fixture": "Napoli – Frosinone",
+      "rank": 14,
+      "family": "shots",
+      "selectionId": "forecast:v2:napoli-frosinone-2026-27-md-06:giorgi-kvernadze:shots:3",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "Giorgi Kvernadze 3+ tiri",
+      "probabilityPct": 40.4,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Alta",
+      "canonicalThresholdIdentity": "shots:player:giorgi-kvernadze:over"
+    },
+    {
+      "matchId": "napoli-frosinone-2026-27-md-06",
+      "fixture": "Napoli – Frosinone",
+      "rank": 15,
+      "family": "sot",
+      "selectionId": "forecast:v2:napoli-frosinone-2026-27-md-06:giorgi-kvernadze:sot:1",
+      "market": "TIRI IN PORTA GIOCATORE",
+      "label": "Giorgi Kvernadze 1+ SOT",
+      "probabilityPct": 49.34,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Media",
+      "canonicalThresholdIdentity": "sot:player:giorgi-kvernadze:over"
+    },
+    {
+      "matchId": "napoli-frosinone-2026-27-md-06",
+      "fixture": "Napoli – Frosinone",
+      "rank": 16,
+      "family": "sot",
+      "selectionId": "forecast:v2:napoli-frosinone-2026-27-md-06:matteo-politano:sot:1",
+      "market": "TIRI IN PORTA GIOCATORE",
+      "label": "Matteo Politano 1+ SOT",
+      "probabilityPct": 47.8,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Alta",
+      "canonicalThresholdIdentity": "sot:player:matteo-politano:over"
+    },
+    {
+      "matchId": "napoli-frosinone-2026-27-md-06",
+      "fixture": "Napoli – Frosinone",
+      "rank": 17,
+      "family": "sot",
+      "selectionId": "forecast:v2:napoli-frosinone-2026-27-md-06:giacomo-calo:sot:1",
+      "market": "TIRI IN PORTA GIOCATORE",
+      "label": "Giacomo Calo 1+ SOT",
+      "probabilityPct": 42.31,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Alta",
+      "canonicalThresholdIdentity": "sot:player:giacomo-calo:over"
+    },
+    {
+      "matchId": "napoli-frosinone-2026-27-md-06",
+      "fixture": "Napoli – Frosinone",
+      "rank": 18,
+      "family": "sot",
+      "selectionId": "forecast:v2:napoli-frosinone-2026-27-md-06:rasmus-h-jlund:sot:2",
+      "market": "TIRI IN PORTA GIOCATORE",
+      "label": "Rasmus Højlund 2+ SOT",
+      "probabilityPct": 29.73,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Alta",
+      "canonicalThresholdIdentity": "sot:player:rasmus-h-jlund:over"
     },
     {
       "matchId": "sassuolo-milan-2026-27-md-06",
@@ -2695,6 +5171,142 @@
       "canonicalThresholdIdentity": "shots:match:away:over:TIRI TOTALI"
     },
     {
+      "matchId": "sassuolo-milan-2026-27-md-06",
+      "fixture": "Sassuolo – Milan",
+      "rank": 10,
+      "family": "shots",
+      "selectionId": "forecast:v2:sassuolo-milan-2026-27-md-06:goncalo-ramos:shots:3",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "Gonçalo Ramos 3+ tiri",
+      "probabilityPct": 69.55,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Media",
+      "canonicalThresholdIdentity": "shots:player:goncalo-ramos:over"
+    },
+    {
+      "matchId": "sassuolo-milan-2026-27-md-06",
+      "fixture": "Sassuolo – Milan",
+      "rank": 11,
+      "family": "shots",
+      "selectionId": "forecast:v2:sassuolo-milan-2026-27-md-06:strahinja-pavlovic:shots:1",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "Strahinja Pavlović 1+ tiri",
+      "probabilityPct": 64.3,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Alta",
+      "canonicalThresholdIdentity": "shots:player:strahinja-pavlovic:over"
+    },
+    {
+      "matchId": "sassuolo-milan-2026-27-md-06",
+      "fixture": "Sassuolo – Milan",
+      "rank": 12,
+      "family": "shots",
+      "selectionId": "forecast:v2:sassuolo-milan-2026-27-md-06:armand-lauriente:shots:3",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "Armand Laurienté 3+ tiri",
+      "probabilityPct": 63.04,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Media",
+      "canonicalThresholdIdentity": "shots:player:armand-lauriente:over"
+    },
+    {
+      "matchId": "sassuolo-milan-2026-27-md-06",
+      "fixture": "Sassuolo – Milan",
+      "rank": 13,
+      "family": "shots",
+      "selectionId": "forecast:v2:sassuolo-milan-2026-27-md-06:samuel-chukwueze:shots:2",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "Samuel Chukwueze 2+ tiri",
+      "probabilityPct": 59.4,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Media",
+      "canonicalThresholdIdentity": "shots:player:samuel-chukwueze:over"
+    },
+    {
+      "matchId": "sassuolo-milan-2026-27-md-06",
+      "fixture": "Sassuolo – Milan",
+      "rank": 14,
+      "family": "shots",
+      "selectionId": "forecast:v2:sassuolo-milan-2026-27-md-06:domenico-berardi:shots:2",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "Domenico Berardi 2+ tiri",
+      "probabilityPct": 49.11,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Media",
+      "canonicalThresholdIdentity": "shots:player:domenico-berardi:over"
+    },
+    {
+      "matchId": "sassuolo-milan-2026-27-md-06",
+      "fixture": "Sassuolo – Milan",
+      "rank": 15,
+      "family": "sot",
+      "selectionId": "forecast:v2:sassuolo-milan-2026-27-md-06:armand-lauriente:sot:1",
+      "market": "TIRI IN PORTA GIOCATORE",
+      "label": "Armand Laurienté 1+ SOT",
+      "probabilityPct": 64.3,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Alta",
+      "canonicalThresholdIdentity": "sot:player:armand-lauriente:over"
+    },
+    {
+      "matchId": "sassuolo-milan-2026-27-md-06",
+      "fixture": "Sassuolo – Milan",
+      "rank": 16,
+      "family": "sot",
+      "selectionId": "forecast:v2:sassuolo-milan-2026-27-md-06:samuel-chukwueze:sot:1",
+      "market": "TIRI IN PORTA GIOCATORE",
+      "label": "Samuel Chukwueze 1+ SOT",
+      "probabilityPct": 47.27,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Alta",
+      "canonicalThresholdIdentity": "sot:player:samuel-chukwueze:over"
+    },
+    {
+      "matchId": "sassuolo-milan-2026-27-md-06",
+      "fixture": "Sassuolo – Milan",
+      "rank": 17,
+      "family": "sot",
+      "selectionId": "forecast:v2:sassuolo-milan-2026-27-md-06:goncalo-ramos:sot:2",
+      "market": "TIRI IN PORTA GIOCATORE",
+      "label": "Gonçalo Ramos 2+ SOT",
+      "probabilityPct": 35.89,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Bassa",
+      "canonicalThresholdIdentity": "sot:player:goncalo-ramos:over"
+    },
+    {
       "matchId": "torino-udinese-2026-27-md-06",
       "fixture": "Torino – Udinese",
       "rank": 1,
@@ -2812,13 +5424,208 @@
       "conservativeExpectedValuePct": -9.32,
       "reliability": "Media",
       "canonicalThresholdIdentity": null
+    },
+    {
+      "matchId": "torino-udinese-2026-27-md-06",
+      "fixture": "Torino – Udinese",
+      "rank": 8,
+      "family": "shots",
+      "selectionId": "forecast:v2:torino-udinese-2026-27-md-06:jesper-karlstrom:shots:1",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "Jesper Karlström 1+ tiri",
+      "probabilityPct": 61.71,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Alta",
+      "canonicalThresholdIdentity": "shots:player:jesper-karlstrom:over"
+    },
+    {
+      "matchId": "torino-udinese-2026-27-md-06",
+      "fixture": "Torino – Udinese",
+      "rank": 9,
+      "family": "shots",
+      "selectionId": "forecast:v2:torino-udinese-2026-27-md-06:keinan-davis:shots:2",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "Keinan Davis 2+ tiri",
+      "probabilityPct": 58.58,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Alta",
+      "canonicalThresholdIdentity": "shots:player:keinan-davis:over"
+    },
+    {
+      "matchId": "torino-udinese-2026-27-md-06",
+      "fixture": "Torino – Udinese",
+      "rank": 10,
+      "family": "shots",
+      "selectionId": "forecast:v2:torino-udinese-2026-27-md-06:mandragora:shots:2",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "Mandragora 2+ tiri",
+      "probabilityPct": 57.19,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Alta",
+      "canonicalThresholdIdentity": "shots:player:mandragora:over"
+    },
+    {
+      "matchId": "torino-udinese-2026-27-md-06",
+      "fixture": "Torino – Udinese",
+      "rank": 11,
+      "family": "shots",
+      "selectionId": "forecast:v2:torino-udinese-2026-27-md-06:giovanni-simeone:shots:3",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "Giovanni Simeone 3+ tiri",
+      "probabilityPct": 56.55,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Alta",
+      "canonicalThresholdIdentity": "shots:player:giovanni-simeone:over"
+    },
+    {
+      "matchId": "torino-udinese-2026-27-md-06",
+      "fixture": "Torino – Udinese",
+      "rank": 12,
+      "family": "shots",
+      "selectionId": "forecast:v2:torino-udinese-2026-27-md-06:nikola-vlasic:shots:2",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "Nikola Vlasic 2+ tiri",
+      "probabilityPct": 48.79,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Alta",
+      "canonicalThresholdIdentity": "shots:player:nikola-vlasic:over"
+    },
+    {
+      "matchId": "torino-udinese-2026-27-md-06",
+      "fixture": "Torino – Udinese",
+      "rank": 13,
+      "family": "shots",
+      "selectionId": "forecast:v2:torino-udinese-2026-27-md-06:hassane-kamara:shots:2",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "Hassane Kamara 2+ tiri",
+      "probabilityPct": 45.88,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Bassa",
+      "canonicalThresholdIdentity": "shots:player:hassane-kamara:over"
+    },
+    {
+      "matchId": "torino-udinese-2026-27-md-06",
+      "fixture": "Torino – Udinese",
+      "rank": 14,
+      "family": "shots",
+      "selectionId": "forecast:v2:torino-udinese-2026-27-md-06:jurgen-ekkelenkamp:shots:3",
+      "market": "TIRI TOTALI GIOCATORE",
+      "label": "Jurgen Ekkelenkamp 3+ tiri",
+      "probabilityPct": 41.72,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Bassa",
+      "canonicalThresholdIdentity": "shots:player:jurgen-ekkelenkamp:over"
+    },
+    {
+      "matchId": "torino-udinese-2026-27-md-06",
+      "fixture": "Torino – Udinese",
+      "rank": 15,
+      "family": "sot",
+      "selectionId": "forecast:v2:torino-udinese-2026-27-md-06:jurgen-ekkelenkamp:sot:1",
+      "market": "TIRI IN PORTA GIOCATORE",
+      "label": "Jurgen Ekkelenkamp 1+ SOT",
+      "probabilityPct": 57.26,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Media",
+      "canonicalThresholdIdentity": "sot:player:jurgen-ekkelenkamp:over"
+    },
+    {
+      "matchId": "torino-udinese-2026-27-md-06",
+      "fixture": "Torino – Udinese",
+      "rank": 16,
+      "family": "sot",
+      "selectionId": "forecast:v2:torino-udinese-2026-27-md-06:keinan-davis:sot:1",
+      "market": "TIRI IN PORTA GIOCATORE",
+      "label": "Keinan Davis 1+ SOT",
+      "probabilityPct": 57.26,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Media",
+      "canonicalThresholdIdentity": "sot:player:keinan-davis:over"
+    },
+    {
+      "matchId": "torino-udinese-2026-27-md-06",
+      "fixture": "Torino – Udinese",
+      "rank": 17,
+      "family": "sot",
+      "selectionId": "forecast:v2:torino-udinese-2026-27-md-06:giovanni-simeone:sot:1",
+      "market": "TIRI IN PORTA GIOCATORE",
+      "label": "Giovanni Simeone 1+ SOT",
+      "probabilityPct": 56.4,
+      "prudentProbabilityPct": null,
+      "odds": null,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Bassa",
+      "canonicalThresholdIdentity": "sot:player:giovanni-simeone:over"
     }
   ],
-  "tests": [],
+  "tests": [
+    {
+      "command": "node scripts/test-schedina-md06.js",
+      "status": "PASS"
+    },
+    {
+      "command": "node scripts/test-md06-suggested-forecasts.js",
+      "status": "PASS"
+    },
+    {
+      "command": "node scripts/test-personal-betslip.mjs",
+      "status": "PASS"
+    },
+    {
+      "command": "node scripts/check-schedina-md06-suggestions-browser.cjs",
+      "status": "PASS"
+    },
+    {
+      "command": "git diff --check",
+      "status": "PASS"
+    }
+  ],
   "testLimitations": [],
   "filesModified": [
+    "scripts/md06-player-forecast-integration.js",
+    "scripts/md06-market-catalog.js",
     "scripts/md06-suggested-forecasts.js",
     "scripts/build-md06-suggested-forecasts.js",
+    "js/pages/betting.js",
+    "css/betting.css",
     "scripts/test-md06-suggested-forecasts.js",
     "scripts/test-schedina-md06.js",
     "scripts/check-schedina-md06-suggestions-browser.cjs",

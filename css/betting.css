@@ -257,6 +257,8 @@ body[data-page="betting"] main>.hero .eyebrow{margin-bottom:4px;color:var(--glas
 .betting-market-row:hover{border-color:rgba(28,109,255,.3);background:#f8fbff}
 .betting-market-row:focus-visible{outline:3px solid rgba(28,109,255,.28);outline-offset:2px}
 .betting-market-row.is-selected{border-color:#1c6dff;background:#edf5ff;box-shadow:inset 0 0 0 1px rgba(28,109,255,.08)}
+.betting-market-row.is-unquoted{cursor:default}.betting-market-row.is-unquoted:hover{border-color:rgba(22,72,126,.09);background:rgba(255,255,255,.72)}
+.betting-market-quote-unavailable{grid-column:3/5}.betting-market-quote-unavailable b{color:#5d6f82;font-size:10px;font-weight:800}
 .betting-market-copy{display:grid;min-width:0;gap:2px}
 .betting-market-copy small{color:#52677d;font-size:9px;font-weight:800;text-transform:uppercase}
 .betting-market-copy strong{font-size:12px;line-height:1.35}
@@ -314,5 +316,6 @@ body[data-page="betting"] main>.hero .eyebrow{margin-bottom:4px;color:var(--glas
   .betting-market-row{position:relative;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;padding:10px 36px 10px 8px}
   .betting-market-copy{grid-column:1/-1}
   .betting-market-metric{text-align:left}
+  .betting-market-quote-unavailable{grid-column:2/4}
   .betting-selection-check{position:absolute;top:9px;right:7px}
 }

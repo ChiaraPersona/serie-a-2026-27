@@ -99,6 +99,7 @@ function assessSuggestion(leg) {
   const statisticalFamily = ["shots", "sot", "corners", "cards"].includes(family);
   const validatedStatisticalModel = statisticalFamily && evaluation.kind === "DISCRETE_COUNT_TEMPORAL_HOLDOUT";
   const conservativeEv = conservativeExpectedValuePct(leg);
+  if (/^draw-no-bet:/.test(modelTarget(leg).toLowerCase()) || /DRAW NO BET/.test(upper(`${leg.marketFamily || ""} ${leg.market || ""}`))) reasons.push("DRAW_NO_BET_EXCLUDED_FROM_MD06_RECOMMENDATIONS");
   if (!verifiedQuote(leg)) reasons.push("QUOTE_NOT_VERIFIED_AT_SNAPSHOT");
   if (evaluation.status === "NOT_MODELLED" || !finite(evaluation.modelProbabilityPct)) reasons.push("NOT_MODELLED");
   if (!finite(evaluation.prudentProbabilityPct)) reasons.push("ROBUST_PROBABILITY_NOT_AVAILABLE");

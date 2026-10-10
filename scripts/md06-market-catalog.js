@@ -6,6 +6,7 @@ const { b2FamilyForMarket, isPrimaryScoreCompatible, evaluateDerivedScoreMarket,
 const { annotateCatalogMatches, CLASSIFICATIONS } = require("./md06-scenario-coherence");
 const { reconstructStatisticalCoverage } = require("./md06-statistical-coverage");
 const { annotateSuggestedForecasts } = require("./md06-suggested-forecasts");
+const { integratePlayerForecasts } = require("./md06-player-forecast-integration");
 
 const finite = value => value !== null && value !== undefined && value !== "" && Number.isFinite(Number(value));
 const clean = value => String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
@@ -273,7 +274,7 @@ function stableSort(left, right) {
   return `${left.betSelection?.market?.family || ""}|${left.label || ""}|${left.selectionId}`.localeCompare(`${right.betSelection?.market?.family || ""}|${right.label || ""}|${right.selectionId}`, "it");
 }
 
-function buildMd06MarketCatalog({ predictionsData, odds, matches, schedinaSlips, probableLineups, officialLineups, statisticalModels = null, matchday = 6 }) {
+function buildMd06MarketCatalog({ predictionsData, odds, matches, schedinaSlips, probableLineups, officialLineups, statisticalModels = null, preservedCatalogSelections = [], approvedSuggestionRankById = null, matchday = 6 }) {
   const code = matchdayCode(matchday);
   const predictions = predictionsData.predictions.filter(prediction => prediction.matchId.endsWith(`-md-${code}`));
   const matchById = new Map(matches.map(match => [match.id, match]));
@@ -412,7 +413,16 @@ function buildMd06MarketCatalog({ predictionsData, odds, matches, schedinaSlips,
 
   const statisticalCoverage = reconstructStatisticalCoverage({ odds, existingSelectionIds: retainedIds, statisticalModels });
   for (const leg of statisticalCoverage.addableLegs) retainedIds.add(leg.selectionId);
-  const selections = [...retained, ...groupA, ...dnb, ...groupB2, ...statisticalCoverage.addableLegs];
+  const preservedById = new Map((preservedCatalogSelections || [])
+    .filter(leg => leg.catalogOrigin !== "prediction-v2-player-forecast" && leg.selectionId)
+    .map(leg => [leg.selectionId, leg]));
+  const regeneratedSelections = [...retained, ...groupA, ...dnb, ...groupB2, ...statisticalCoverage.addableLegs]
+    .map(leg => preservedById.has(leg.selectionId) ? JSON.parse(JSON.stringify(preservedById.get(leg.selectionId))) : leg);
+  const regeneratedIds = new Set(regeneratedSelections.map(leg => leg.selectionId));
+  const preservedMissing = (preservedCatalogSelections || [])
+    .filter(leg => leg.catalogOrigin !== "prediction-v2-player-forecast" && leg.selectionId && !regeneratedIds.has(leg.selectionId))
+    .map(leg => JSON.parse(JSON.stringify(leg)));
+  const selections = [...regeneratedSelections, ...preservedMissing];
   const duplicates = selections.filter((leg, index) => selections.findIndex(item => item.selectionId === leg.selectionId) !== index);
   if (duplicates.length) throw new Error(`Catalogo MD${code}: selectionId duplicati: ${duplicates.map(leg => leg.selectionId).join(", ")}`);
   const roundMatches = matches.filter(match => match.competition === "serie-a" && match.season === "2026-27" && match.matchday === matchday)
@@ -423,8 +433,22 @@ function buildMd06MarketCatalog({ predictionsData, odds, matches, schedinaSlips,
   });
   const scenarioCatalogMatches = annotateCatalogMatches({ catalogMatches: baseCatalogMatches, predictions });
   const suggested = annotateSuggestedForecasts(scenarioCatalogMatches);
-  const catalogMatches = suggested.matches;
+  const integrated = integratePlayerForecasts({
+    catalogMatches: suggested.matches,
+    predictions,
+    odds,
+    probableLineups,
+    officialLineups,
+    approvedSuggestionRankById,
+  });
+  const catalogMatches = integrated.matches;
   const all = catalogMatches.flatMap(match => match.selections);
+  const finalSuggestions = all.filter(leg => leg.suggestionAnalysis?.suggested);
+  const finalSuggestionsByFamily = finalSuggestions.reduce((counts, leg) => {
+    const family = leg.suggestionAnalysis.family;
+    counts[family] = (counts[family] || 0) + 1;
+    return counts;
+  }, {});
   const scenarioCounts = all.reduce((counts, leg) => {
     const key = leg.scenarioAnalysis?.classification;
     if (key) counts[key] = (counts[key] || 0) + 1;
@@ -435,9 +459,10 @@ function buildMd06MarketCatalog({ predictionsData, odds, matches, schedinaSlips,
     matchday,
     generatedAt: new Date().toISOString(),
     sources: { predictionsGeneratedAt: predictionsData.generatedAt, modelVersion: predictionsData.engine?.version || predictions[0]?.engineVersion || null, oddsRetrievedAt: odds.retrievedAt, oddsSnapshot: "data/normalized/odds/sisal/serie-a.json", probableLineupsImportedAt: probableLineups?.importedAt || null, probableLineupsProvider: probableLineups?.provider || null, officialLineupsRetrievedAt: officialLineups?.retrievedAt || null, officialFixturesAvailable: (officialLineups?.fixtures || []).filter(fixture => fixture.matchday === matchday).length, scenarioCoherenceVersion: 1, scenarioCoherenceBasis: "Frozen Engine V2 probabilities and deterministic event logic; odds and EV excluded" },
-    rules: { underAllowed: false, individualPlayerFoulsAllowed: false, cornerPeriodsAllowed: false, doubleChance12Allowed: false, fullMatchCornerOversAllowed: true, fullMatchTeamCornersAllowed: true, fullTimeCorner1X2Allowed: true, catalogAllowsNegativeExpectedValue: true, selectedForecastMinimumOperativeExpectedValuePct: 2, selectedForecastTopNLimit: null, oneSelectionPerCanonicalThresholdIdentity: true },
-    totals: { initialVisible: initial.length, excludedByPolicy: excluded.filter(item => item.stage === "policy").length, excludedByLineup: excluded.filter(item => item.stage === "lineup").length, retainedInitial: retained.length, groupARequested: 128, groupARecovered: groupA.length, groupARejected: groupARejected.length, dnbRequested: 20, dnbRecovered: dnb.length, dnbRejected: dnbRejected.length, groupB2Requested: 203, groupB2Recovered: groupB2.length, groupB2Rejected: groupB2Rejected.length, statisticalBAdded: statisticalCoverage.addableLegs.length, finalSelections: all.length, evaluated: all.filter(leg => finite(leg.betSelection?.evaluation?.expectedValuePct)).length, notModelled: all.filter(leg => !finite(leg.betSelection?.evaluation?.expectedValuePct)).length, suggestions: suggested.totals.suggestions, suggestionsByFamily: suggested.totals.byFamily, scenarioCounts },
+    rules: { underAllowed: false, individualPlayerFoulsAllowed: false, cornerPeriodsAllowed: false, doubleChance12Allowed: false, drawNoBetSuggestedAllowed: false, unquotedSuggestedFamilies: ["shots", "sot"], fullMatchCornerOversAllowed: true, fullMatchTeamCornersAllowed: true, fullTimeCorner1X2Allowed: true, catalogAllowsNegativeExpectedValue: true, selectedForecastMinimumOperativeExpectedValuePct: 2, selectedForecastTopNLimit: null, oneSelectionPerCanonicalThresholdIdentity: true },
+    totals: { initialVisible: initial.length, excludedByPolicy: excluded.filter(item => item.stage === "policy").length, excludedByLineup: excluded.filter(item => item.stage === "lineup").length, retainedInitial: retained.length, preservedCatalogSelections: preservedMissing.length, groupARequested: 128, groupARecovered: groupA.length, groupARejected: groupARejected.length, dnbRequested: 20, dnbRecovered: dnb.length, dnbRejected: dnbRejected.length, groupB2Requested: 203, groupB2Recovered: groupB2.length, groupB2Rejected: groupB2Rejected.length, statisticalBAdded: statisticalCoverage.addableLegs.length, playerForecastsAdded: integrated.summary.added, finalSelections: all.length, evaluated: all.filter(leg => finite(leg.betSelection?.evaluation?.modelProbabilityPct)).length, notModelled: all.filter(leg => !finite(leg.betSelection?.evaluation?.modelProbabilityPct)).length, suggestions: finalSuggestions.length, suggestionsByFamily: finalSuggestionsByFamily, scenarioCounts },
     statisticalCoverage: statisticalCoverage.summary,
+    playerForecastIntegration: integrated.summary,
     excluded,
     groupARejected,
     dnbRejected,

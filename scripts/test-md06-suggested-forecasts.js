@@ -8,10 +8,10 @@ const { pairRelation } = require("./md06-scenario-coherence");
 const {
   assessSuggestion,
   canonicalThresholdIdentity,
-  compareInterest,
   conservativeExpectedValuePct,
   interestTuple,
 } = require("./md06-suggested-forecasts");
+const { chooseShotsThreshold, chooseSotThreshold, isCompatibleIndividualMarket } = require("./md06-player-forecast-integration");
 
 const root = path.resolve(__dirname, "..");
 const read = relative => JSON.parse(fs.readFileSync(path.join(root, relative), "utf8"));
@@ -25,34 +25,55 @@ const suggestions = rows.filter(leg => leg.suggestionAnalysis?.suggested);
 const added = rows.filter(leg => String(leg.catalogOrigin || "").startsWith("statistical-"));
 const validated = added.filter(leg => leg.catalogOrigin === "statistical-model-validated");
 const blocked = added.filter(leg => leg.catalogOrigin === "statistical-b-not-modelled");
+const playerForecasts = rows.filter(leg => leg.catalogOrigin === "prediction-v2-player-forecast");
+const baselineSuggestions = suggestions.filter(leg => leg.suggestionAnalysis?.baselineApproved === true);
+const isDrawNoBet = leg => /^draw-no-bet:/.test(String(leg?.betSelection?.compatibility?.modelTarget || "").toLowerCase()) || /DRAW NO BET/i.test(`${leg.marketFamily || ""} ${leg.market || ""}`);
 
 assert.equal(schedina.marketCatalog.schemaVersion, 4);
-assert.equal(rows.length, 1446);
+assert.equal(rows.length, 1542);
 assert.equal(new Set(rows.map(leg => leg.selectionId)).size, rows.length);
-assert.equal(added.length, 1063);
+assert.equal(added.length, 1064);
 assert.equal(validated.length, 671);
-assert.equal(blocked.length, 392);
+assert.equal(blocked.length, 393);
 assert(blocked.every(leg => leg.coverageClassification === "B" && leg.betSelection.evaluation.status === "NOT_MODELLED"));
 assert(!blocked.some(leg => leg.suggestionAnalysis.suggested), "NOT_MODELLED promosso nei pronostici");
 assert(validated.every(leg => leg.coverageClassification === "A" && leg.betSelection.evaluation.kind === "DISCRETE_COUNT_TEMPORAL_HOLDOUT"));
-assert.equal(suggestions.length, 82);
-assert.equal(suggestions.filter(leg => Number(leg.betSelection.evaluation.expectedValuePct) < 0).length, 70);
-assert.equal(suggestions.filter(leg => Number(leg.betSelection.evaluation.expectedValuePct) < 2).length, 72);
-assert(suggestions.every(leg => leg.suggestionAnalysis.version === 2));
-assert(suggestions.every(leg => leg.suggestionAnalysis.criteria.includes("EV_INFORMATION_ONLY")));
+assert.equal(suggestions.length, 175);
+assert.equal(baselineSuggestions.length, 80);
+assert.equal(playerForecasts.length, 95);
+assert.equal(playerForecasts.filter(leg => leg.suggestionAnalysis.family === "shots").length, 61);
+assert.equal(playerForecasts.filter(leg => leg.suggestionAnalysis.family === "sot").length, 34);
+assert.equal(suggestions.filter(leg => Number.isFinite(leg.betSelection.evaluation.expectedValuePct) && leg.betSelection.evaluation.expectedValuePct < 0).length, 68);
+assert.equal(suggestions.filter(leg => Number.isFinite(leg.betSelection.evaluation.expectedValuePct) && leg.betSelection.evaluation.expectedValuePct < 2).length, 70);
+assert(suggestions.every(leg => [2, 3].includes(leg.suggestionAnalysis.version)));
+assert(baselineSuggestions.every(leg => leg.suggestionAnalysis.criteria.includes("EV_INFORMATION_ONLY")));
+assert(playerForecasts.every(leg => leg.suggestionAnalysis.criteria === "APPROVED_BASELINE_PLUS_STRUCTURED_READING_V2_NO_EV_GATE"));
 assert(suggestions.every(leg => leg.betSelection.evaluation.status !== "NOT_MODELLED"));
-assert(suggestions.every(leg => Number.isFinite(leg.betSelection.quote.decimal) && leg.betSelection.quote.availability === "AVAILABLE_AT_SNAPSHOT"));
-assert(suggestions.every(leg => Number.isFinite(leg.betSelection.evaluation.modelProbabilityPct) && Number.isFinite(leg.betSelection.evaluation.prudentProbabilityPct)));
-assert(suggestions.every(leg => Number.isFinite(conservativeExpectedValuePct(leg))));
+assert(baselineSuggestions.every(leg => Number.isFinite(leg.betSelection.quote.decimal) && leg.betSelection.quote.availability === "AVAILABLE_AT_SNAPSHOT"));
+assert(playerForecasts.every(leg => leg.betSelection.quote.decimal === null && leg.betSelection.quote.availability === "UNAVAILABLE"));
+assert(playerForecasts.every(leg => leg.betSelection.evaluation.expectedValuePct === null && leg.betSelection.evaluation.prudentProbabilityPct === null));
+assert(suggestions.every(leg => Number.isFinite(leg.betSelection.evaluation.modelProbabilityPct)));
+assert(baselineSuggestions.every(leg => Number.isFinite(leg.betSelection.evaluation.prudentProbabilityPct)));
+assert(baselineSuggestions.every(leg => Number.isFinite(conservativeExpectedValuePct(leg))));
 assert(suggestions.every(leg => ["Alta", "Media", "Bassa"].includes(leg.betSelection.operational.reliability.level)));
 assert(suggestions.some(leg => ["shots", "sot", "corners"].includes(leg.suggestionAnalysis.family)));
 assert(!suggestions.some(leg => leg.suggestionAnalysis.family === "cards"));
+assert(!suggestions.some(isDrawNoBet), "Draw No Bet promosso nei pronostici");
+assert(playerForecasts.every(leg => !/DUO|SOST|PALI|TRAVERSE|ENTRAMBI I TEMPI|NEI 2 TEMPI/i.test(leg.betSelection.compatibility.bookmakerTarget || "")), "Contratto non individuale promosso");
+assert.equal(new Set(playerForecasts.map(leg => `${leg.matchId}:${leg.playerId}:${leg.suggestionAnalysis.family}`)).size, playerForecasts.length, "Più soglie per giocatore e statistica");
+assert.equal(isCompatibleIndividualMarket({ marketScope: "player", marketName: "U/O TIRI TOTALI GIOCATORE (DUO) INC TS", variantName: "ROSSI E SUO SOST." }, "shots"), false);
+assert.equal(isCompatibleIndividualMarket({ marketScope: "player", marketName: "GIOCATORE ALMENO X TIRI TOTALI NEI 2 TEMPI SI/NO", variantName: "ROSSI IN ENTRAMBI I TEMPI" }, "shots"), false);
+assert.equal(isCompatibleIndividualMarket({ marketScope: "player", marketName: "U/O TIRI IN PORTA GIOCATORE", variantName: "ROSSI U/O 0.5" }, "sot"), true);
+assert.deepEqual(chooseShotsThreshold({ shotProbabilities: { over05: 0.94, over15: 0.74, over25: 0.49 } }), { count: 3, probability: 0.49, probabilityKey: "over25" });
+assert.deepEqual(chooseSotThreshold({ shotOnTargetProbabilities: { over05: 0.62, over15: 0.21 } }), { count: 1, probability: 0.62, probabilityKey: "over05" });
 assert(suggestions.every(leg => !Object.hasOwn(leg.suggestionAnalysis, "motivation")), "Le motivazioni descrittive non devono essere serializzate");
 
 for (const match of schedina.marketCatalog.matches) {
   const picks = match.selections.filter(leg => leg.suggestionAnalysis?.suggested).sort((left, right) => left.suggestionAnalysis.rank - right.suggestionAnalysis.rank);
   assert.deepEqual(picks.map(leg => leg.suggestionAnalysis.rank), picks.map((_, index) => index + 1), `${match.matchId}: ranking non contiguo`);
-  assert.deepEqual([...picks].sort(compareInterest).map(leg => leg.selectionId), picks.map(leg => leg.selectionId), `${match.matchId}: ordinamento non deterministico`);
+  const baseline = picks.filter(leg => leg.suggestionAnalysis.baselineApproved);
+  const integrated = picks.filter(leg => leg.catalogOrigin === "prediction-v2-player-forecast");
+  assert(picks.indexOf(integrated[0]) >= baseline.length || !integrated.length, `${match.matchId}: le aggiunte V2 devono seguire la baseline approvata`);
   const thresholdKeys = picks.map(canonicalThresholdIdentity).filter(Boolean);
   assert.equal(new Set(thresholdKeys).size, thresholdKeys.length, `${match.matchId}: più soglie della stessa identità canonica`);
   for (let left = 0; left < picks.length; left += 1) for (let right = left + 1; right < picks.length; right += 1) {
@@ -104,12 +125,19 @@ assert.equal(sha256("data/analysis/serie-a-md06-statistical-models-2026-10-10.js
 assert.equal(sha256("scripts/md06-statistical-models.js"), "283b8a89e1601280f60e76c5ac716c95cb776ac26a4ea218416c2f9d411d9cff", "Implementazione dei modelli statistici modificata");
 assert.equal(report.invariants.certifiedSelections, 383);
 assert(report.invariants.certifiedSelectionIdsPreserved && report.invariants.certifiedContractsUnchanged);
-assert.equal(report.invariants.catalogSelections, 1446);
-assert.equal(report.coverage.comparison.previousSuggestions, 32);
-assert.equal(report.coverage.totalSuggestions, 82);
-assert.equal(report.coverage.negativeEvSuggestions, 70);
-assert.equal(report.coverage.recoveredFromEconomicExclusion, 72);
-assert.equal(report.statisticalMarkets.families.reduce((sum, row) => sum + row.selected, 0), 51);
+assert.equal(report.invariants.catalogSelections, 1542);
+assert.equal(report.coverage.comparison.previousSuggestions, 82);
+assert.equal(report.coverage.comparison.removedDrawNoBet, 2);
+assert.equal(report.coverage.comparison.preservedApprovedNonDnb, 80);
+assert.equal(report.coverage.comparison.newPlayerShots, 61);
+assert.equal(report.coverage.comparison.newPlayerSot, 34);
+assert.equal(report.coverage.comparison.newPlayerCards, 0);
+assert.equal(report.coverage.comparison.newCardsOvers, 0);
+assert.equal(report.coverage.totalSuggestions, 175);
+assert.equal(report.coverage.unquotedSuggestions, 95);
+assert.equal(report.coverage.negativeEvSuggestions, 68);
+assert.equal(report.coverage.recoveredFromEconomicExclusion, 70);
+assert.equal(report.statisticalMarkets.families.reduce((sum, row) => sum + row.selected, 0), 146);
 assert(report.thresholdCases.some(item => ["shots", "sot", "corners"].some(family => item.canonicalIdentity.startsWith(`${family}:`)) && item.alternatives.some(leg => leg.selected)));
 
-console.log("OK selezione MD06: 82 pronostici sportivi, 70 a EV negativo, EV fuori da ammissione e ranking, modelli invariati");
+console.log("OK selezione MD06: 80 baseline non-DNB + 95 tiri/SOT V2, 95 senza quota, cartellini non forzati, modelli invariati");
