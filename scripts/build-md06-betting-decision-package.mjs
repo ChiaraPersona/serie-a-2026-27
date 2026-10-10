@@ -19,6 +19,9 @@ const write = (relative, value) => {
   fs.writeFileSync(target, typeof value === "string" ? value : `${JSON.stringify(value, null, 2)}\n`);
 };
 const mode = process.argv.includes("--integrate") ? "integrate" : "reports";
+const requestedMatchIndex = process.argv.indexOf("--match");
+const requestedMatchId = requestedMatchIndex >= 0 ? process.argv[requestedMatchIndex + 1] : null;
+if (requestedMatchIndex >= 0 && !requestedMatchId) throw new Error("--match richiede un matchId.");
 const finite = value => value !== null && value !== undefined && value !== "" && Number.isFinite(Number(value));
 const round = (value, digits = 4) => finite(value) ? Number(Number(value).toFixed(digits)) : null;
 const pct = value => finite(value) ? `${Number(value).toFixed(1)}%` : "N/D";
@@ -699,6 +702,19 @@ if (mode === "reports") {
   write("output/reports/serie-a-md06-betting-selection-2026-10-09.md", md6Markdown(md6Report));
   console.log(JSON.stringify({ mode, md5: { slips: md5Report.slips.length, totals: md5Report.totals, myCombo: md5Report.myCombo.totals }, md6: md6Report.summary }, null, 2));
 } else {
+  const previousSource = requestedMatchId ? read("data/sources/schedina-serie-a-2026-27-md-06.json") : null;
+  const previousNormalized = requestedMatchId ? read("data/normalized/schedina-md06.json") : null;
+  const mergeMatchItems = (previousSlips, nextSlips, itemsKey) => nextSlips.map(nextSlip => {
+    const previousSlip = previousSlips.find(slip => slip.id === nextSlip.id);
+    if (!previousSlip) return nextSlip;
+    const replacements = (nextSlip[itemsKey] || []).filter(item => item.matchId === requestedMatchId);
+    let replacementIndex = 0;
+    const merged = (previousSlip[itemsKey] || []).map(item => item.matchId === requestedMatchId
+      ? replacements[replacementIndex++] || item
+      : item);
+    merged.push(...replacements.slice(replacementIndex));
+    return { ...nextSlip, [itemsKey]: merged };
+  });
   const source = {
     schemaVersion: 1,
     competition: "serie-a",
@@ -729,8 +745,14 @@ if (mode === "reports") {
     slips,
     marketCatalog,
   };
+  if (requestedMatchId) {
+    const generatedTargetLegs = slips.flatMap(slip => slip.legs).filter(leg => leg.matchId === requestedMatchId);
+    assert(generatedTargetLegs.length > 0, `${requestedMatchId}: nessuna selezione Schedina da aggiornare`);
+    source.slips = mergeMatchItems(previousSource.slips, source.slips, "picks");
+    normalized.slips = mergeMatchItems(previousNormalized.slips, normalized.slips, "legs");
+  }
   write("data/sources/schedina-serie-a-2026-27-md-06.json", source);
   write("data/sources/betting-selection-assessments-md06.json", selectionAssessmentSource);
   write("data/normalized/schedina-md06.json", normalized);
-  console.log(JSON.stringify({ mode, source: "data/sources/schedina-serie-a-2026-27-md-06.json", normalized: "data/normalized/schedina-md06.json", slips: slips.length, legs: slips.reduce((sum, slip) => sum + slip.legs.length, 0) }, null, 2));
+  console.log(JSON.stringify({ mode, matchId: requestedMatchId, source: "data/sources/schedina-serie-a-2026-27-md-06.json", normalized: "data/normalized/schedina-md06.json", slips: slips.length, legs: slips.reduce((sum, slip) => sum + slip.legs.length, 0) }, null, 2));
 }
