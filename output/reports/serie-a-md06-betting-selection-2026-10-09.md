@@ -1,6 +1,6 @@
 # Serie A MD6 — Selezione operativa e costruzione schedine
 
-Generato: 2026-10-10T12:29:36.862Z. Quote Sisal: 2026-10-10T09:57:30.921Z.
+Generato: 2026-10-10T12:34:34.677Z. Quote Sisal: 2026-10-10T09:57:30.921Z.
 
 La classificazione è operativa, non una garanzia. Nessuna partita deve produrre obbligatoriamente una scelta. Dalla MD6 i mercati Under, i falli commessi/subiti del singolo giocatore, i corner dipendenti da singoli tempi o finestre temporali e la doppia chance 12 sono esclusi dalle giocate, ma restano nelle analisi, nei report e nello storico; gli Over, i mercati aggregati di squadra e i corner dell'intera partita restano eleggibili. Occorrenze Under giocabili rimosse nella migrazione: 12. Le quote giocatore restano visibili come riferimento commerciale DUO: P V2 è individuale, pertanto EV e probabilità congiunta non sono calcolabili.
 
@@ -220,9 +220,9 @@ Il catalogo Schedina MD6 applica la policy centralizzata, inclusa l'esclusione d
 | --- | --- | --- | --- | --- | --- |
 | Genoa - Fiorentina | 3 | 1 | 0 | 2 | 0 |
 | Inter - Parma | 3 | 1 | 0 | 2 | 0 |
-| Napoli - Frosinone | 4 | 4 | 0 | 0 | 0 |
+| Napoli - Frosinone | 4 | 2 | 1 | 1 | 0 |
 | Como - Roma | 3 | 3 | 0 | 0 | 0 |
-| Lazio - Monza | 4 | 2 | 1 | 1 | 0 |
+| Lazio - Monza | 4 | 3 | 0 | 1 | 0 |
 | Lecce - Bologna | 4 | 4 | 0 | 0 | 0 |
 | Sassuolo - Milan | 3 | 2 | 0 | 1 | 0 |
 | Cagliari - Juventus | 3 | 3 | 0 | 0 | 0 |

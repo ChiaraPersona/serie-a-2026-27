@@ -9,6 +9,9 @@ const root = path.resolve(__dirname, "..");
 const index = process.argv.indexOf("--matchday");
 const matchday = index >= 0 ? Number(process.argv[index + 1]) : 1;
 if (!Number.isInteger(matchday) || matchday < 1 || matchday > 38) throw new Error("--matchday deve essere compreso tra 1 e 38.");
+const requestedMatchIndex = process.argv.indexOf("--match");
+const requestedMatchId = requestedMatchIndex >= 0 ? process.argv[requestedMatchIndex + 1] : null;
+if (requestedMatchIndex >= 0 && !requestedMatchId) throw new Error("--match richiede un matchId.");
 
 const filename = `mycombo-serie-a-2026-27-md-${String(matchday).padStart(2, "0")}.json`;
 const sourcePath = path.join(root, "data/sources", filename);
@@ -31,6 +34,7 @@ let valid = 0;
 let unavailable = 0;
 
 for (const [matchId, portfolios] of Object.entries(source.matches || {})) {
+  if (requestedMatchId && matchId !== requestedMatchId) continue;
   if (matchById.get(matchId)?.status === "finished") continue;
   const prediction = predictionByMatch.get(matchId);
   if (!prediction) throw new Error(`Pronostico non trovato: ${matchId}`);
@@ -61,4 +65,5 @@ for (const [matchId, portfolios] of Object.entries(source.matches || {})) {
   }
 }
 
-console.log(`OK MyCombo giornata ${matchday}: ${valid} portafogli validati · ${unavailable} N/D motivati`);
+if (requestedMatchId && !Object.hasOwn(source.matches || {}, requestedMatchId)) throw new Error(`MyCombo non trovata: ${requestedMatchId}`);
+console.log(`OK MyCombo giornata ${matchday}${requestedMatchId ? ` · ${requestedMatchId}` : ""}: ${valid} portafogli validati · ${unavailable} N/D motivati`);
