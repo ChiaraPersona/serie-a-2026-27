@@ -634,20 +634,22 @@ assert(interPlayers.every(player => player.playerAllocationFactor >= 0.82 && pla
 assert(interPlayers.every(player => player.teamProfileShotsMatchupFactor === 1 && player.teamProfileShotsOnTargetMatchupFactor === 1), "Inter: un ruolo difensivo Parma non provato ha alterato i giocatori");
 assert(interPlayers.every(player => player.shotProbabilities.over05 >= player.shotProbabilities.over15 && player.shotProbabilities.over15 >= player.shotProbabilities.over25), "Inter: probabilita tiri non monotone");
 assert(interPlayers.every(player => player.shotOnTargetProbabilities.over05 >= player.shotOnTargetProbabilities.over15), "Inter: probabilita SOT non monotone");
-const interBonny = interPlayers.find(player => player.playerId === "ange-yoan-bonny");
 const interThuram = interPlayers.find(player => player.playerId === "marcus-thuram");
-const interBarella = interPlayers.find(player => player.playerId === "nicolo-barella");
-const interAkanji = interPlayers.find(player => player.playerId === "manuel-akanji");
+const interPio = interPlayers.find(player => player.playerId === "pio-esposito");
+const interCalhanoglu = interPlayers.find(player => player.playerId === "hakan-calhanoglu");
+const interPavard = interPlayers.find(player => player.playerId === "benjamin-pavard");
 const interBisseck = interPlayers.find(player => player.playerId === "yann-bisseck");
-const interBastoni = interPlayers.find(player => player.playerId === "alessandro-bastoni");
-assert(interBonny && interThuram && interBarella && interAkanji && interBisseck && interBastoni, "Inter: giocatori della probabile formazione corrente assenti dalla proiezione E2E");
-assert.strictEqual(interBonny.allocationClass, "secondary");
+const interDimarco = interPlayers.find(player => player.playerId === "federico-dimarco");
+const interCarlosAugusto = interPlayers.find(player => player.playerId === "carlos-augusto");
+assert(interThuram && interPio && interCalhanoglu && interPavard && interBisseck && interDimarco && interCarlosAugusto, "Inter: giocatori della formazione ufficiale corrente assenti dalla proiezione E2E");
 assert.strictEqual(interThuram.allocationClass, "co-primary");
-assert.strictEqual(interBonny.outsiderScore, null, "Inter: Bonny attaccante promosso a outsider");
+assert.strictEqual(interPio.allocationClass, "co-primary");
 assert.strictEqual(interThuram.outsiderScore, null, "Inter: Thuram co-primary promosso a outsider");
-assert(interBarella.stabilizedShotsOnTarget90 > interAkanji.stabilizedShotsOnTarget90, "Inter: tiri e SOT di Barella/Akanji non restano separati");
+assert.strictEqual(interPio.outsiderScore, null, "Inter: Pio Esposito co-primary promosso a outsider");
+assert(interCalhanoglu.stabilizedShotsOnTarget90 > interPavard.stabilizedShotsOnTarget90, "Inter: tiri e SOT di Calhanoglu/Pavard non restano separati");
 assert.strictEqual(interBisseck.qualifiedOutsider, true, "Inter: Bisseck con baseline e minuti credibili non supera i gate outsider tiri");
-assert(interBastoni.outsiderScore < interBisseck.outsiderScore, "Inter: Bastoni low-volume viene promosso sopra Bisseck");
+assert.strictEqual(interDimarco.qualifiedOutsider, true, "Inter: Dimarco non supera i gate outsider tiri");
+assert(interCarlosAugusto.outsiderScore < interBisseck.outsiderScore, "Inter: Carlos Augusto low-volume viene promosso sopra Bisseck");
 assert(!interParmaProfile.shooters.outsiders.some(player => ["primary", "co-primary"].includes(player.allocationClass)), "Inter: un primary/co-primary compare nel ranking outsider");
 assert(interParmaProfile.shooters.outsiders.filter(player => player.teamId === "inter").length <= 5, "Inter: ranking outsider oltre il limite");
 assert.strictEqual(interMatchupProfile.vulnerabilities.signals.sotVulnerability.modelEffect, "none", "Inter: SOT WATCH non neutro nel profilo serializzato");
@@ -824,7 +826,7 @@ assert(napoliPlayers.every(player => player.shotOnTargetProbabilities.over05 >= 
 
 const parmaMatchupProfile = require(path.join(root, "data/normalized/team-matchup-profiles-2026-27.json")).profiles.find(profile => profile.teamId === "parma");
 const parmaPlayers = interParmaProfile.shooters.allPlayers.filter(player => player.teamId === "parma");
-const parmaRomero = parmaPlayers.find(player => player.playerId === "jose-david-romero");
+const parmaElphege = parmaPlayers.find(player => player.playerId === "nesta-elphege");
 const parmaToure = parmaPlayers.find(player => player.playerId === "el-bilal-toure");
 const parmaDelPrato = parmaPlayers.find(player => player.playerId === "enrico-del-prato");
 const parmaTeamTotal = interParmaProfile.shooters.teamTotals.find(team => team.teamId === "parma");
@@ -865,16 +867,16 @@ const unchangedParmaSot = teamOffensiveAllocation(parmaExtraShotRows, "projected
 assert(Math.abs(expandedParmaShots.values.reduce((sum, value) => sum + value, 0) - 12) < 0.001);
 assert(Math.abs(unchangedParmaSot.values.reduce((sum, value) => sum + value, 0) - 2.8) < 0.001, "Parma E: extra tiri hanno aumentato automaticamente i SOT");
 
-// Parma F-I - Romero: rate high, low maturity, Expected Minutes e conversione SOT shrinkata.
-assert.strictEqual(parmaRomero.playerBaselineStability.confidence, "medium-low");
-assert.strictEqual(parmaRomero.substitutionRisk, "high");
-assert(parmaRomero.stabilizedShots90 > 2.8 && parmaRomero.stabilizedShots90 < 3, "Parma F: Romero non e shrinkato sotto il raw 4.34/90");
-const romero85 = parmaRomero.stabilizedShots90 * 85 / 90;
-const romero45 = parmaRomero.stabilizedShots90 * 45 / 90;
-const romero25 = parmaRomero.stabilizedShots90 * 25 / 90;
-assert(romero85 > romero45 && romero45 > romero25, "Parma F-H: Expected Minutes non governa la projection Romero");
-assert(romero85 > 2.6 && romero45 < 1.5 && romero25 < 0.9, "Parma F-H: scenari minuti Romero implausibili");
-assert(parmaRomero.playerSotBaselineStability.value < parmaRomero.playerSotBaselineStability.currentSample.per90 * 0.5, "Parma I: 7/8 current usato come conversione SOT non shrinkata");
+// Parma F-I - Elphege: profilo a bassa maturità, Expected Minutes e conversione SOT coerente.
+assert.strictEqual(parmaElphege.playerBaselineStability.confidence, "medium-low");
+assert.strictEqual(parmaElphege.substitutionRisk, "high");
+assert(parmaElphege.stabilizedShots90 > 2 && parmaElphege.stabilizedShots90 < 2.2, "Parma F: Elphege non e stabilizzato nel range atteso");
+const elphege85 = parmaElphege.stabilizedShots90 * 85 / 90;
+const elphege45 = parmaElphege.stabilizedShots90 * 45 / 90;
+const elphege25 = parmaElphege.stabilizedShots90 * 25 / 90;
+assert(elphege85 > elphege45 && elphege45 > elphege25, "Parma F-H: Expected Minutes non governa la projection Elphege");
+assert(elphege85 > 1.9 && elphege45 < 1.1 && elphege25 < 0.7, "Parma F-H: scenari minuti Elphege implausibili");
+assert(parmaElphege.playerSotBaselineStability.value < parmaElphege.playerBaselineStability.value, "Parma I: conversione SOT Elphege supera il rate tiri");
 
 // Parma J/K - persistence non equivale a intensita; spike singolo non crea outsider.
 assert.strictEqual(parmaToure.playerBaselineStability.currentSample.persistence.level, "high");

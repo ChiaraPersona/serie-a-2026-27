@@ -805,8 +805,8 @@ if (mode === "reports") {
     marketCatalog,
   };
   if (requestedMatchId) {
-    const generatedTargetLegs = slips.flatMap(slip => slip.legs).filter(leg => leg.matchId === requestedMatchId);
-    assert(generatedTargetLegs.length > 0, `${requestedMatchId}: nessuna selezione Schedina da aggiornare`);
+    const generatedTargetCatalog = marketCatalog.matches.find(match => match.matchId === requestedMatchId);
+    assert(generatedTargetCatalog?.selections?.length > 0, `${requestedMatchId}: nessun Pronostico selezionabile da aggiornare`);
     source.slips = mergeMatchItems(previousSource.slips, source.slips, "picks");
     normalized.slips = mergeMatchItems(previousNormalized.slips, normalized.slips, "legs");
   }
