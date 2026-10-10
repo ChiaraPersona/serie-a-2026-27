@@ -19,6 +19,7 @@ const sha256 = relative => crypto.createHash("sha256").update(fs.readFileSync(pa
 const clone = value => JSON.parse(JSON.stringify(value));
 const schedina = read("data/normalized/schedina-md06.json");
 const report = read("output/reports/serie-a-md06-definitive-selection-2026-10-10.json");
+const oddsSnapshot = read("data/normalized/odds/sisal/serie-a.json");
 const ui = fs.readFileSync(path.join(root, "js/pages/betting.js"), "utf8");
 const rows = schedina.marketCatalog.matches.flatMap(match => match.selections);
 const suggestions = rows.filter(leg => leg.suggestionAnalysis?.suggested);
@@ -65,6 +66,21 @@ assert(playerForecasts.every(leg => leg.betSelection.market.bookmakerSemantics?.
 assert(playerForecasts.filter(leg => leg.suggestionAnalysis.family === "sot").every(leg => leg.betSelection.market.bookmakerSemantics?.postsAndCrossbarIncluded === true), "Pali/traverse non dichiarati sui SOT");
 assert(playerForecasts.every(leg => /DUO|SOST/i.test(leg.betSelection.compatibility.bookmakerTarget || "")), "Contratto DUO non conservato");
 assert.equal(new Set(playerForecasts.map(leg => `${leg.matchId}:${leg.playerId}:${leg.suggestionAnalysis.family}`)).size, playerForecasts.length, "Più soglie per giocatore e statistica");
+const oddsEvents = new Map(oddsSnapshot.events.map(event => [event.canonicalMatchId, event]));
+for (const leg of playerForecasts) {
+  const semantics = leg.betSelection.market.bookmakerSemantics;
+  const expectedCode = leg.suggestionAnalysis.family === "shots" ? "28507" : "28506";
+  assert.equal(semantics.marketCode, expectedCode, `${leg.selectionId}: codice mercato errato`);
+  const providerMarket = oddsEvents.get(leg.matchId)?.markets.find(market => String(market.providerMarketId) === String(leg.providerMarketId));
+  assert(providerMarket, `${leg.selectionId}: mercato assente dallo snapshot`);
+  assert.equal(String(providerMarket.marketCode), expectedCode, `${leg.selectionId}: codice snapshot errato`);
+  assert.equal(Number(providerMarket.threshold), Number(leg.threshold), `${leg.selectionId}: soglia snapshot errata`);
+  assert.deepEqual(providerMarket.providerPlayerIds.map(String), [semantics.providerPlayerId], `${leg.selectionId}: provider player ID non univoco`);
+  const providerSelection = providerMarket.selections.find(selection => String(selection.providerSelectionId) === String(leg.providerSelectionId));
+  assert(providerSelection && providerSelection.status === "open" && providerSelection.name === "OVER", `${leg.selectionId}: selezione OVER non verificata`);
+  assert.equal(Number(providerSelection.odds), Number(leg.odds), `${leg.selectionId}: quota diversa dallo snapshot`);
+  assert.equal(leg.betSelection.quote.verifiedAt, oddsSnapshot.retrievedAt, `${leg.selectionId}: data snapshot non conservata`);
+}
 assert.equal(isCompatibleIndividualMarket({ marketScope: "player", marketName: "U/O TIRI TOTALI GIOCATORE (DUO) INC TS", variantName: "ROSSI E SUO SOST." }, "shots"), false);
 assert.equal(isSupportedDuoMarket({ marketScope: "player", marketCode: "28507", marketName: "U/O TIRI TOTALI GIOCATORE (DUO) INC TS", variantName: "ROSSI U/O 2.5 SOMMA TIRI E SUO SOST. INCL. T.S." }, "shots"), true);
 assert.equal(isSupportedDuoMarket({ marketScope: "player", marketCode: "28506", marketName: "U/O TIRI IN PORTA GIOCATORE (DUO) INC PALI TRAVERSE INC TS", variantName: "ROSSI U/O 1.5 SOMMA TIRI IN PORTA INC PALI E TRAVERSE E SUO SOST. INCL. T.S." }, "sot"), true);

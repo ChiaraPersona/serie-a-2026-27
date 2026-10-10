@@ -67,6 +67,22 @@ function selection(id,{matchId="alpha-beta-2026-27-md-06",providerMarketId=`mark
 {
   const store=createPersonalBetslipStore({storage:memoryStorage()});
   store.setContext(context6);
+  const shots=selection("yeboah-shots",{matchId:"atalanta-venezia-2026-27-md-06",providerMarketId:"820932205",label:"John Yeboah e suo eventuale sostituto 3+ tiri",odds:1.65,verifiedAt:"2026-10-10T09:57:30.921Z",compatibilityStatus:"BOOKMAKER_CONTRACT_VERIFIED_MODEL_PROBABILITY_UNAVAILABLE",overlapKey:"john-yeboah-shots"});
+  const sot=selection("yeboah-sot",{matchId:"atalanta-venezia-2026-27-md-06",providerMarketId:"820938089",label:"John Yeboah e suo eventuale sostituto 2+ tiri in porta (pali e traverse inclusi)",odds:3.75,verifiedAt:"2026-10-10T09:57:30.921Z",compatibilityStatus:"BOOKMAKER_CONTRACT_VERIFIED_MODEL_PROBABILITY_UNAVAILABLE",overlapKey:"john-yeboah-sot"});
+  shots.betSelection.market.bookmakerSemantics={duo:true,substituteIncluded:true,postsAndCrossbarIncluded:false,providerPlayerId:"307273"};
+  sot.betSelection.market.bookmakerSemantics={duo:true,substituteIncluded:true,postsAndCrossbarIncluded:true,providerPlayerId:"307273"};
+  shots.betSelection.evaluation={modelProbabilityPct:null,expectedValuePct:null,status:"DUO_PROBABILITY_UNAVAILABLE",individualReference:{modelProbabilityPct:64.26,appliedToDuo:false}};
+  sot.betSelection.evaluation={modelProbabilityPct:null,expectedValuePct:null,status:"DUO_PROBABILITY_UNAVAILABLE",individualReference:{modelProbabilityPct:31.56,appliedToDuo:false}};
+  assert.equal(store.add(shots).status,"ADDED","DUO tiri con quota verificata non aggiungibile");
+  assert.equal(store.add(sot).status,"ADDED","DUO SOT con quota verificata non aggiungibile");
+  assert.equal(store.add(shots).status,"DUPLICATE","deduplica DUO non applicata");
+  assert.equal(store.getSnapshot().assessment.theoreticalCombinedOdds,6.1875,"quota teorica DUO non ricalcolata");
+  assert.equal(store.remove(shots.selectionId).status,"REMOVED","DUO non rimovibile");
+}
+
+{
+  const store=createPersonalBetslipStore({storage:memoryStorage()});
+  store.setContext(context6);
   assert.equal(store.add(selection("under",{outcome:"UNDER",label:"Under 2,5"})).status,"UNDER_NOT_PLAYABLE","gli Under MD6 devono essere rifiutati");
   assert.equal(isPlayableUnder(selection("under-label",{outcome:"TOTAL",label:"Duo + Under 3,5"})),true,"riconoscimento Under nell'etichetta fallito");
   assert.equal(store.getSnapshot().selections.length,0,"un Under rifiutato non deve essere memorizzato");
