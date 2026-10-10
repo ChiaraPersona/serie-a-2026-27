@@ -11,7 +11,7 @@ const {
   conservativeExpectedValuePct,
   interestTuple,
 } = require("./md06-suggested-forecasts");
-const { chooseShotsThreshold, chooseSotThreshold, isCompatibleIndividualMarket } = require("./md06-player-forecast-integration");
+const { chooseShotsThreshold, chooseSotThreshold, isCompatibleIndividualMarket, isSupportedDuoMarket } = require("./md06-player-forecast-integration");
 
 const root = path.resolve(__dirname, "..");
 const read = relative => JSON.parse(fs.readFileSync(path.join(root, relative), "utf8"));
@@ -50,18 +50,24 @@ assert(baselineSuggestions.every(leg => leg.suggestionAnalysis.criteria.includes
 assert(playerForecasts.every(leg => leg.suggestionAnalysis.criteria === "APPROVED_BASELINE_PLUS_STRUCTURED_READING_V2_NO_EV_GATE"));
 assert(suggestions.every(leg => leg.betSelection.evaluation.status !== "NOT_MODELLED"));
 assert(baselineSuggestions.every(leg => Number.isFinite(leg.betSelection.quote.decimal) && leg.betSelection.quote.availability === "AVAILABLE_AT_SNAPSHOT"));
-assert(playerForecasts.every(leg => leg.betSelection.quote.decimal === null && leg.betSelection.quote.availability === "UNAVAILABLE"));
-assert(playerForecasts.every(leg => leg.betSelection.evaluation.expectedValuePct === null && leg.betSelection.evaluation.prudentProbabilityPct === null));
-assert(suggestions.every(leg => Number.isFinite(leg.betSelection.evaluation.modelProbabilityPct)));
+assert(playerForecasts.every(leg => Number.isFinite(leg.betSelection.quote.decimal) && leg.betSelection.quote.availability === "AVAILABLE_AT_SNAPSHOT"));
+assert(playerForecasts.every(leg => leg.betSelection.identity.status === "VERIFIED_PROVIDER_IDS" && leg.betSelection.identity.providerMarketId && leg.betSelection.identity.providerSelectionId));
+assert(playerForecasts.every(leg => leg.betSelection.evaluation.modelProbabilityPct === null && leg.betSelection.evaluation.expectedValuePct === null && leg.betSelection.evaluation.prudentProbabilityPct === null));
+assert(playerForecasts.every(leg => Number.isFinite(leg.betSelection.evaluation.individualReference?.modelProbabilityPct) && leg.betSelection.evaluation.individualReference.appliedToDuo === false));
+assert(baselineSuggestions.every(leg => Number.isFinite(leg.betSelection.evaluation.modelProbabilityPct)));
 assert(baselineSuggestions.every(leg => Number.isFinite(leg.betSelection.evaluation.prudentProbabilityPct)));
 assert(baselineSuggestions.every(leg => Number.isFinite(conservativeExpectedValuePct(leg))));
 assert(suggestions.every(leg => ["Alta", "Media", "Bassa"].includes(leg.betSelection.operational.reliability.level)));
 assert(suggestions.some(leg => ["shots", "sot", "corners"].includes(leg.suggestionAnalysis.family)));
 assert(!suggestions.some(leg => leg.suggestionAnalysis.family === "cards"));
 assert(!suggestions.some(isDrawNoBet), "Draw No Bet promosso nei pronostici");
-assert(playerForecasts.every(leg => !/DUO|SOST|PALI|TRAVERSE|ENTRAMBI I TEMPI|NEI 2 TEMPI/i.test(leg.betSelection.compatibility.bookmakerTarget || "")), "Contratto non individuale promosso");
+assert(playerForecasts.every(leg => leg.betSelection.market.bookmakerSemantics?.duo === true && leg.betSelection.market.bookmakerSemantics?.substituteIncluded === true), "Semantica DUO assente");
+assert(playerForecasts.filter(leg => leg.suggestionAnalysis.family === "sot").every(leg => leg.betSelection.market.bookmakerSemantics?.postsAndCrossbarIncluded === true), "Pali/traverse non dichiarati sui SOT");
+assert(playerForecasts.every(leg => /DUO|SOST/i.test(leg.betSelection.compatibility.bookmakerTarget || "")), "Contratto DUO non conservato");
 assert.equal(new Set(playerForecasts.map(leg => `${leg.matchId}:${leg.playerId}:${leg.suggestionAnalysis.family}`)).size, playerForecasts.length, "Più soglie per giocatore e statistica");
 assert.equal(isCompatibleIndividualMarket({ marketScope: "player", marketName: "U/O TIRI TOTALI GIOCATORE (DUO) INC TS", variantName: "ROSSI E SUO SOST." }, "shots"), false);
+assert.equal(isSupportedDuoMarket({ marketScope: "player", marketCode: "28507", marketName: "U/O TIRI TOTALI GIOCATORE (DUO) INC TS", variantName: "ROSSI U/O 2.5 SOMMA TIRI E SUO SOST. INCL. T.S." }, "shots"), true);
+assert.equal(isSupportedDuoMarket({ marketScope: "player", marketCode: "28506", marketName: "U/O TIRI IN PORTA GIOCATORE (DUO) INC PALI TRAVERSE INC TS", variantName: "ROSSI U/O 1.5 SOMMA TIRI IN PORTA INC PALI E TRAVERSE E SUO SOST. INCL. T.S." }, "sot"), true);
 assert.equal(isCompatibleIndividualMarket({ marketScope: "player", marketName: "GIOCATORE ALMENO X TIRI TOTALI NEI 2 TEMPI SI/NO", variantName: "ROSSI IN ENTRAMBI I TEMPI" }, "shots"), false);
 assert.equal(isCompatibleIndividualMarket({ marketScope: "player", marketName: "U/O TIRI IN PORTA GIOCATORE", variantName: "ROSSI U/O 0.5" }, "sot"), true);
 assert.deepEqual(chooseShotsThreshold({ shotProbabilities: { over05: 0.94, over15: 0.74, over25: 0.49 } }), { count: 3, probability: 0.49, probabilityKey: "over25" });
@@ -134,10 +140,18 @@ assert.equal(report.coverage.comparison.newPlayerSot, 34);
 assert.equal(report.coverage.comparison.newPlayerCards, 0);
 assert.equal(report.coverage.comparison.newCardsOvers, 0);
 assert.equal(report.coverage.totalSuggestions, 175);
-assert.equal(report.coverage.unquotedSuggestions, 95);
+assert.equal(report.coverage.quotedSuggestions, 175);
+assert.equal(report.coverage.unquotedSuggestions, 0);
 assert.equal(report.coverage.negativeEvSuggestions, 68);
 assert.equal(report.coverage.recoveredFromEconomicExclusion, 70);
 assert.equal(report.statisticalMarkets.families.reduce((sum, row) => sum + row.selected, 0), 146);
 assert(report.thresholdCases.some(item => ["shots", "sot", "corners"].some(family => item.canonicalIdentity.startsWith(`${family}:`)) && item.alternatives.some(leg => leg.selected)));
 
-console.log("OK selezione MD06: 80 baseline non-DNB + 95 tiri/SOT V2, 95 senza quota, cartellini non forzati, modelli invariati");
+const yeboah = playerForecasts.filter(leg => leg.playerId === "john-yeboah");
+assert.deepEqual(yeboah.map(leg => [leg.suggestionAnalysis.family, leg.providerMarketId, leg.providerSelectionId, leg.betSelection.market.bookmakerSemantics.providerPlayerId]).sort(), [
+  ["shots", "820932205", "5371733876", "307273"],
+  ["sot", "820938089", "5371743856", "307273"],
+]);
+assert(!yeboah.some(leg => leg.betSelection.market.bookmakerSemantics.providerPlayerId === "628786"), "Yeboah ancora associato a Schingtienne");
+
+console.log("OK selezione MD06: 80 baseline non-DNB + 95 tiri/SOT DUO quotati, probabilità/EV DUO N/D, cartellini non forzati, modelli invariati");

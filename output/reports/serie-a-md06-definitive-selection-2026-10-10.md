@@ -1,6 +1,6 @@
 # Serie A 2026/27 — Schedina MD6: integrazione tiratori, SOT e cartellini
 
-Generato: 2026-10-10T10:35:50.504Z. Engine V2 4.13.0; quote Sisal snapshot 2026-10-10T09:57:30.921Z.
+Generato: 2026-10-10T11:31:32.142Z. Engine V2 4.13.0; quote Sisal snapshot 2026-10-10T09:57:30.921Z.
 
 ## Esito
 
@@ -11,37 +11,37 @@ Generato: 2026-10-10T10:35:50.504Z. Engine V2 4.13.0; quote Sisal snapshot 2026-
 - Nuovi SOT individuali: **34**.
 - Nuovi cartellini individuali: **0**.
 - Nuovi Over cartellini: **0**.
-- Pronostici senza quota: **95**.
+- Pronostici senza quota: **0**.
 - Totale finale: **175**.
 
-> Le quote della baseline restano quelle certificate nello snapshot 2026-10-09T10:43:00.203Z; lo snapshot Sisal 2026-10-10T09:57:30.921Z è stato controllato per i nuovi mercati individuali. Per tiri e SOT senza contratto compatibile la quota resta N/D e l'EV non viene calcolato.
+> Le quote della baseline restano quelle certificate nello snapshot 2026-10-09T10:43:00.203Z; i 95 mercati tiri/SOT usano le quote del contratto Sisal DUO nello snapshot 2026-10-10T09:57:30.921Z. Il contratto include l'eventuale sostituto e, per i SOT, pali e traverse. Probabilità DUO ed EV restano N/D.
 
 ## Totale finale per partita
 
 | Partita | Iniziali | DNB rimossi | Preservati | Nuovi tiri | Nuovi SOT | Senza quota | Finale |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| Genoa – Fiorentina | 9 | 1 | 8 | 8 | 3 | 11 | 19 |
-| Inter – Parma | 9 | 0 | 9 | 7 | 3 | 10 | 19 |
-| Napoli – Frosinone | 8 | 0 | 8 | 6 | 4 | 10 | 18 |
-| Como – Roma | 10 | 0 | 10 | 5 | 5 | 10 | 20 |
-| Lazio – Monza | 5 | 0 | 5 | 9 | 4 | 13 | 18 |
-| Lecce – Bologna | 9 | 1 | 8 | 3 | 3 | 6 | 14 |
-| Sassuolo – Milan | 9 | 0 | 9 | 5 | 3 | 8 | 17 |
-| Cagliari – Juventus | 9 | 0 | 9 | 6 | 3 | 9 | 18 |
-| Atalanta – Venezia | 7 | 0 | 7 | 5 | 3 | 8 | 15 |
-| Torino – Udinese | 7 | 0 | 7 | 7 | 3 | 10 | 17 |
+| Genoa – Fiorentina | 9 | 1 | 8 | 8 | 3 | 0 | 19 |
+| Inter – Parma | 9 | 0 | 9 | 7 | 3 | 0 | 19 |
+| Napoli – Frosinone | 8 | 0 | 8 | 6 | 4 | 0 | 18 |
+| Como – Roma | 10 | 0 | 10 | 5 | 5 | 0 | 20 |
+| Lazio – Monza | 5 | 0 | 5 | 9 | 4 | 0 | 18 |
+| Lecce – Bologna | 9 | 1 | 8 | 3 | 3 | 0 | 14 |
+| Sassuolo – Milan | 9 | 0 | 9 | 5 | 3 | 0 | 17 |
+| Cagliari – Juventus | 9 | 0 | 9 | 6 | 3 | 0 | 18 |
+| Atalanta – Venezia | 7 | 0 | 7 | 5 | 3 | 0 | 15 |
+| Torino – Udinese | 7 | 0 | 7 | 7 | 3 | 0 | 17 |
 
 ## Collegamento Letture → Schedina
 
 Letture e Schedina ora condividono la stessa sorgente strutturata: **SÌ**. La sorgente è `data/normalized/predictions.json#predictions[].shooters`, già consumata da `js/pages/readings.js`. Il selettore non estrae nomi dall'HTML e non ricalcola Poisson, minuti, matchup o allocazione.
 
-Per ogni giocatore e statistica viene scelta una sola soglia dalle probabilità V2 serializzate. Gli ID dei pronostici restano stabili anche quando la quota è assente, così un futuro contratto individuale full-match compatibile può valorizzare la stessa riga senza duplicarla.
+Per ogni giocatore e statistica viene scelta una sola soglia dalle probabilità V2 serializzate. La previsione resta riferita al singolo, mentre quota e identificativi appartengono al contratto Sisal DUO e sono collegati senza duplicare la riga.
 
 ## Quote e contratti
 
-Nuovi pronostici individuali quotati: **0**. Nuovi pronostici individuali senza quota: **95**. Contratti DUO promossi: **0**.
+Nuovi pronostici individuali quotati: **95**. Nuovi pronostici individuali senza quota: **0**. Contratti DUO promossi: **95**.
 
-Lo snapshot corrente espone per questi mercati solo contratti DUO o richieste di almeno un tiro in entrambi i tempi. Non sono equivalenti al totale individuale full-match: le quote non vengono associate e l'EV resta N/D.
+I contratti DUO includono il giocatore nominato e il suo eventuale sostituto; il codice 28506 include anche pali e traverse. Le quote sono associate, ma probabilità DUO ed EV restano N/D perché la probabilità V2 individuale non viene trasferita al contratto bookmaker.
 
 ## Cartellini
 
@@ -95,15 +95,11 @@ Nessun cartellino individuale e nessun Over cartellini è stato aggiunto. `likel
 
 ## Controlli di qualità
 
-Le 80 selezioni approvate non-DNB sono preservate con hash **ff600135e0a4009bc901c13c34bb1cfb5cb624ccd391caf2a2c1dd8e54c96af7**. Draw No Bet residui nei consigliati: **0**. Mercati senza quota fuori da tiri/SOT individuali: **0**.
+Le 80 selezioni approvate non-DNB sono preservate con hash **ff600135e0a4009bc901c13c34bb1cfb5cb624ccd391caf2a2c1dd8e54c96af7**. Draw No Bet residui nei consigliati: **0**. Pronostici senza quota verificata: **0**.
 
 Le 383 selezioni certificate e i loro contratti sono invariati: **SÌ**. MyCombo, modelli, pagine Champions e giornate precedenti non vengono rigenerati da questo script.
 
-- PASS — `node scripts/test-schedina-md06.js`
-- PASS — `node scripts/test-md06-suggested-forecasts.js`
-- PASS — `node scripts/test-personal-betslip.mjs`
-- PASS — `node scripts/check-schedina-md06-suggestions-browser.cjs`
-- PASS — `git diff --check`
+- Test finali da eseguire dopo la rigenerazione.
 
 ## File modificati
 

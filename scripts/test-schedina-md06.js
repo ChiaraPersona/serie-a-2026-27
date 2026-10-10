@@ -90,7 +90,9 @@ assert.equal(catalog.totals.playerForecastsAdded, 95);
 assert.equal(catalog.totals.suggestions, 175);
 assert.deepEqual(catalog.totals.suggestionsByFamily, { shots: 78, "goals-results": 29, sot: 52, corners: 16 });
 assert.equal(catalog.rules.drawNoBetSuggestedAllowed, false);
-assert.deepEqual(catalog.rules.unquotedSuggestedFamilies, ["shots", "sot"]);
+assert.deepEqual(catalog.rules.unquotedSuggestedFamilies, []);
+assert.equal(catalog.rules.duoPlayerMarketsAllowedWithVerifiedQuote, true);
+assert.equal(catalog.rules.duoProbabilityAndExpectedValueRequired, false);
 assert.deepEqual(Object.fromEntries(catalog.matches.map(match => [match.matchId, match.total])), {
   "genoa-fiorentina-2026-27-md-06": 166,
   "inter-parma-2026-27-md-06": 161,
@@ -110,8 +112,16 @@ assert.equal(new Set(catalogSelections.map(leg => leg.selectionId)).size, catalo
 assert(legacyCatalogSelections.every(leg => leg.betSelection.identity.status === "VERIFIED_PROVIDER_IDS"), "Identità provider non verificata nel catalogo storico");
 assert(legacyCatalogSelections.every(leg => leg.betSelection.quote.availability === "AVAILABLE_AT_SNAPSHOT" && Number.isFinite(leg.betSelection.quote.decimal) && leg.betSelection.quote.decimal >= 1), "Quota non valida nel catalogo storico");
 assert.equal(playerForecasts.length, 95);
-assert(playerForecasts.every(leg => leg.betSelection.identity.status === "NO_COMPATIBLE_PROVIDER_CONTRACT" && leg.betSelection.quote.availability === "UNAVAILABLE" && leg.betSelection.quote.decimal === null), "Pronostico individuale senza quota non esplicito");
-assert(playerForecasts.every(leg => leg.betSelection.evaluation.expectedValuePct === null && leg.betSelection.evaluation.prudentProbabilityPct === null), "EV o probabilità prudente inventati senza quota");
+assert(playerForecasts.every(leg => leg.betSelection.identity.status === "VERIFIED_PROVIDER_IDS" && leg.betSelection.identity.providerMarketId && leg.betSelection.identity.providerSelectionId && leg.betSelection.quote.availability === "AVAILABLE_AT_SNAPSHOT" && Number.isFinite(leg.betSelection.quote.decimal)), "Quota o identità Sisal DUO non verificata");
+assert(playerForecasts.every(leg => leg.betSelection.evaluation.modelProbabilityPct === null && leg.betSelection.evaluation.expectedValuePct === null && leg.betSelection.evaluation.prudentProbabilityPct === null), "Probabilità individuale o EV attribuiti al DUO");
+assert(playerForecasts.every(leg => Number.isFinite(leg.betSelection.evaluation.individualReference?.modelProbabilityPct) && leg.betSelection.evaluation.individualReference.appliedToDuo === false), "Previsione V2 individuale non preservata separatamente");
+assert(playerForecasts.every(leg => leg.betSelection.market.bookmakerSemantics?.duo === true && leg.betSelection.market.bookmakerSemantics?.substituteIncluded === true), "Contratto DUO non dichiarato");
+assert(playerForecasts.filter(leg => leg.suggestionAnalysis.family === "sot").every(leg => leg.betSelection.market.bookmakerSemantics?.postsAndCrossbarIncluded === true), "Pali/traverse non dichiarati nei SOT DUO");
+const yeboahForecasts = playerForecasts.filter(leg => leg.playerId === "john-yeboah");
+assert.deepEqual(yeboahForecasts.map(leg => [leg.suggestionAnalysis.family, leg.providerMarketId, leg.providerSelectionId, leg.betSelection.market.bookmakerSemantics.providerPlayerId]).sort(), [
+  ["shots", "820932205", "5371733876", "307273"],
+  ["sot", "820938089", "5371743856", "307273"],
+], "Identificativi Yeboah 3+ tiri / 2+ SOT errati");
 assert(!catalogSelections.some(isUnderPlayableSelection), "Under presente nel catalogo");
 assert(!catalogSelections.some(isIndividualPlayerFoulMarket), "Fallo individuale presente nel catalogo");
 assert(!catalogSelections.some(isCornerPeriodMarket), "Corner per tempo presente nel catalogo");
@@ -251,4 +261,4 @@ for (const archive of protectedArchives) {
   assert.equal(diff, "", `${archive}: archivio storico alterato`);
 }
 
-console.log(`OK Schedina MD06: ${normalized.slips.length} schedine/${normalized.slips.reduce((sum, slip) => sum + slip.legs.length, 0)} gambe, zero Under/falli individuali/corner per tempo giocabili, corner intera partita eleggibili, DUO non certificato, archivi invariati`);
+console.log(`OK Schedina MD06: ${normalized.slips.length} schedine/${normalized.slips.reduce((sum, slip) => sum + slip.legs.length, 0)} gambe, 95 DUO quotati con P/EV N/D, Yeboah corretto, archivi invariati`);

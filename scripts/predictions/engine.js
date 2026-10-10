@@ -481,7 +481,10 @@ const PLAYER_VOLUME_PRIORS = Object.freeze({
 
 function playerMarketQuote(oddsEvent, candidate, marketCode, threshold) {
   const names = [candidate.name, candidate.player?.name].filter(Boolean).map(cleanName);
-  const surnames = new Set(names.map(name => name.split(" ").at(-1)).filter(Boolean));
+  // A lineup alias such as "Yeboah J." must never turn the isolated initial
+  // into a surname and match an unrelated provider label (for example
+  // "Schingtienne J."). If the player's real surname is absent, fail closed.
+  const surnames = new Set(names.map(name => name.split(" ").at(-1)).filter(surname => surname?.length > 1));
   const matches = (oddsEvent?.markets || []).filter(market =>
     String(market.marketCode) === marketCode &&
     market.status === "open" &&

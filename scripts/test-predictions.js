@@ -66,6 +66,12 @@ const secondMatchdayPredictions = dataset.predictions.filter(prediction => predi
 const fourthMatchdayPredictions = dataset.predictions.filter(prediction => prediction.matchId.endsWith("-md-04"));
 const fifthMatchdayPredictions = dataset.predictions.filter(prediction => prediction.matchId.endsWith("-md-05"));
 const sixthMatchdayPredictions = dataset.predictions.filter(prediction => prediction.matchId.endsWith("-md-06"));
+const atalantaVeneziaMd6 = sixthMatchdayPredictions.find(prediction => prediction.matchId === "atalanta-venezia-2026-27-md-06");
+const johnYeboahMd6 = atalantaVeneziaMd6?.shooters?.allPlayers?.find(player => player.playerId === "john-yeboah");
+assert(johnYeboahMd6, "Atalanta-Venezia: John Yeboah non trovato nelle letture MD6");
+assert.strictEqual(johnYeboahMd6.markets.shotsOver05, null, "Yeboah J. non deve ereditare la quota 1+ tiri di Schingtienne J.");
+assert.strictEqual(String(johnYeboahMd6.markets.shotsOnTargetOver05?.providerMarketId), "820932249", "Yeboah: quota SOT 1+ non riconciliata con il mercato corretto");
+assert(!Object.values(johnYeboahMd6.markets).filter(Boolean).some(market => String(market.providerMarketId) === "820932456" || String(market.providerSelectionId) === "5371734896"), "Yeboah conserva identificativi di Schingtienne");
 const romaInterPrediction = fifthMatchdayPredictions.find(prediction => prediction.matchId === "roma-inter-2026-27-md-05");
 const cupPredictions = dataset.predictions.filter(prediction => prediction.matchId.startsWith("r16-"));
 assert.strictEqual(firstMatchdayPredictions.length, 10, "Devono restare disponibili i 10 pronostici archiviati della prima giornata");

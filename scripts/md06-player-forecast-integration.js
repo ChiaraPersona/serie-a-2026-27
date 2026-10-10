@@ -1,7 +1,15 @@
 "use strict";
 
 const finite = value => value !== null && value !== undefined && value !== "" && Number.isFinite(Number(value));
-const clean = value => String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+const clean = value => String(value || "")
+  .replace(/[Øø]/g, "o")
+  .replace(/[Łł]/g, "l")
+  .replace(/[Đð]/g, "d")
+  .replace(/[Þþ]/g, "th")
+  .replace(/ß/g, "ss")
+  .replace(/[Ææ]/g, "ae")
+  .replace(/[Œœ]/g, "oe")
+  .normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
 const round = (value, digits = 2) => Number(Number(value).toFixed(digits));
 const stabilityRank = value => ({ low: 1, medium: 2, high: 3 }[String(value || "").toLowerCase()] || 0);
 const reliabilityLabel = value => ({ high: "Alta", medium: "Media", low: "Bassa" }[String(value || "").toLowerCase()] || "Non valutabile");
@@ -91,18 +99,42 @@ function evaluateCandidate(player, metric, sources, lineup) {
   return { eligible: reasons.length === 0, reasons, threshold, expectedMinutes, isPrimary, isOutsider };
 }
 
+function providerSubject(market) {
+  return clean(String(market?.variantName || "").split(/\s+U\/O\s+/i)[0]);
+}
+
+function marketUniquelyMatchesPlayer(market, player, matchPlayers) {
+  const subjectTokens = providerSubject(market).split(" ").filter(Boolean);
+  const candidates = (matchPlayers || []).filter(candidate => {
+    const nameTokens = clean(candidate?.name).split(" ").filter(Boolean);
+    const surname = nameTokens.at(-1);
+    return surname?.length > 1 && subjectTokens.includes(surname);
+  });
+  if (candidates.length === 1) return candidates[0].playerId === player.playerId;
+  const exactCandidates = candidates.filter(candidate => {
+    const nameTokens = clean(candidate?.name).split(" ").filter(Boolean);
+    const givenTokens = nameTokens.slice(0, -1).filter(token => token.length > 1);
+    return givenTokens.some(token => subjectTokens.includes(token))
+      || (givenTokens[0] && subjectTokens.some(token => token.length === 1 && givenTokens[0].startsWith(token)));
+  });
+  return exactCandidates.length === 1 && exactCandidates[0].playerId === player.playerId;
+}
+
 function buildProviderPlayerMap(predictions, odds) {
   const eventByMatch = new Map((odds?.events || []).map(event => [event.canonicalMatchId, event]));
   const map = new Map();
   for (const prediction of predictions || []) {
     const event = eventByMatch.get(prediction.matchId);
     const marketById = new Map((event?.markets || []).map(market => [String(market.providerMarketId), market]));
+    const matchPlayers = prediction.shooters?.allPlayers || [];
     for (const player of prediction.shooters?.allPlayers || []) for (const quote of Object.values(player.markets || {}).filter(Boolean)) {
       const market = marketById.get(String(quote.providerMarketId));
+      if (!market || !marketUniquelyMatchesPlayer(market, player, matchPlayers)) continue;
       for (const providerPlayerId of market?.providerPlayerIds || []) {
         const key = `${prediction.matchId}:${providerPlayerId}`;
         const previous = map.get(key);
-        if (!previous || previous.playerId === player.playerId) map.set(key, { playerId: player.playerId, playerName: player.name, teamId: player.teamId });
+        if (!previous) map.set(key, { playerId: player.playerId, playerName: player.name, teamId: player.teamId });
+        else if (previous.playerId !== player.playerId) map.set(key, null);
       }
     }
   }
@@ -118,13 +150,25 @@ function isCompatibleIndividualMarket(market, metric) {
     : /TIRI IN PORTA/.test(descriptor);
 }
 
+function isSupportedDuoMarket(market, metric) {
+  const descriptor = `${market?.marketName || ""} ${market?.variantName || ""}`.toUpperCase();
+  if (market?.marketScope !== "player" || /ENTRAMBI I TEMPI|NEI 2 TEMPI/.test(descriptor)) return false;
+  if (metric === "shots") return String(market?.marketCode) === "28507"
+    && /TIRI TOTALI/.test(descriptor) && !/TIRI IN PORTA/.test(descriptor)
+    && /DUO|SOST|INC TS/.test(descriptor);
+  return String(market?.marketCode) === "28506"
+    && /TIRI IN PORTA/.test(descriptor) && /DUO|SOST|INC TS/.test(descriptor)
+    && /PALI/.test(descriptor) && /TRAVERSE/.test(descriptor);
+}
+
 function compatibleQuote({ odds, prediction, player, metric, threshold, providerPlayerMap }) {
   const event = (odds?.events || []).find(row => row.canonicalMatchId === prediction.matchId);
   if (!event) return null;
   const bookmakerThreshold = threshold.count - 0.5;
   const candidates = [];
   for (const market of event.markets || []) {
-    if (!isCompatibleIndividualMarket(market, metric) || Number(market.threshold) !== bookmakerThreshold || market.status !== "open") continue;
+    if (!isSupportedDuoMarket(market, metric) || Number(market.threshold) !== bookmakerThreshold || market.status !== "open") continue;
+    if ((market.providerPlayerIds || []).length !== 1) continue;
     const identities = [...new Set((market.providerPlayerIds || []).map(id => providerPlayerMap.get(`${prediction.matchId}:${id}`)?.playerId).filter(Boolean))];
     if (identities.length !== 1 || identities[0] !== player.playerId) continue;
     for (const selection of market.selections || []) {
@@ -139,9 +183,10 @@ function playerForecastLeg({ prediction, player, metric, threshold, lineup, quot
   const probabilityPct = round(threshold.probability * 100, 2);
   const quoted = Boolean(quoteRow);
   const quote = quoted ? Number(quoteRow.selection.odds) : null;
-  const expectedValuePct = quoted ? round(threshold.probability * quote * 100 - 100, 2) : null;
-  const metricLabel = metric === "shots" ? "tiri" : "SOT";
-  const marketFamily = metric === "shots" ? "Tiri totali giocatore" : "Tiri in porta giocatore";
+  const marketFamily = metric === "shots" ? "Tiri totali DUO" : "Tiri in porta DUO";
+  const duoDescription = metric === "shots"
+    ? `${player.name} e suo eventuale sostituto ${threshold.count}+ tiri`
+    : `${player.name} e suo eventuale sostituto ${threshold.count}+ tiri in porta (pali e traverse inclusi)`;
   const selectionId = `forecast:v2:${prediction.matchId}:${player.playerId}:${metric}:${threshold.count}`;
   const reliabilitySource = metric === "shots" ? player.playerBaselineStability : player.playerSotBaselineStability;
   const providerMarketId = quoted ? String(quoteRow.market.providerMarketId) : null;
@@ -157,23 +202,24 @@ function playerForecastLeg({ prediction, player, metric, threshold, lineup, quot
     matchId: prediction.matchId,
     fixture,
     startsAt: quoteRow?.event?.startsAt || null,
-    market: metric === "shots" ? "TIRI TOTALI GIOCATORE" : "TIRI IN PORTA GIOCATORE",
-    variant: `${player.name} ${threshold.count}+ ${metricLabel}`,
+    market: metric === "shots" ? "TIRI TOTALI GIOCATORE (DUO)" : "TIRI IN PORTA GIOCATORE (DUO, PALI/TRAVERSE INCLUSI)",
+    variant: duoDescription,
     marketScope: "player",
     marketFamily,
     threshold: threshold.count - 0.5,
     selection: "OVER",
-    label: `${player.name} ${threshold.count}+ ${metricLabel}`,
+    label: duoDescription,
     odds: quote,
-    modelProbabilityPct: probabilityPct,
+    modelProbabilityPct: null,
+    individualModelProbabilityPct: probabilityPct,
     fairOdds: null,
-    expectedValuePct,
-    evidenceLabel: `Prediction Engine V2 ${prediction.engineVersion || "N/D"} · lettura strutturata`,
+    expectedValuePct: null,
+    evidenceLabel: `Prediction Engine V2 ${prediction.engineVersion || "N/D"} sul singolo · contratto Sisal DUO`,
     providerMarketId,
     providerSelectionId,
     marketUpdatedAt: quoteRow?.market?.updatedAt || null,
-    compatibility: quoted ? "COMPATIBILE" : "QUOTA_NON_DISPONIBILE",
-    evStatus: quoted ? "EV_CALCOLABILE" : "EV_NON_CALCOLABILE",
+    compatibility: quoted ? "BOOKMAKER_CONTRACT_VERIFIED_MODEL_PROBABILITY_UNAVAILABLE" : "QUOTA_NON_DISPONIBILE",
+    evStatus: "DUO_PROBABILITY_NOT_VALIDATED",
     overlapKey: `player-forecast:${prediction.matchId}:${player.playerId}:${metric}`,
     semanticKeys: [`prediction-v2-player:${prediction.matchId}:${player.playerId}:${metric}`],
     selectionId,
@@ -193,22 +239,24 @@ function playerForecastLeg({ prediction, player, metric, threshold, lineup, quot
         providerSelectionId,
       },
       market: {
-        name: metric === "shots" ? "TIRI TOTALI GIOCATORE" : "TIRI IN PORTA GIOCATORE",
-        variant: `${player.name} ${threshold.count}+ ${metricLabel}`,
+        name: metric === "shots" ? "TIRI TOTALI GIOCATORE (DUO)" : "TIRI IN PORTA GIOCATORE (DUO, PALI/TRAVERSE INCLUSI)",
+        variant: duoDescription,
         scope: "player",
         family: marketFamily,
         threshold: threshold.count - 0.5,
         selection: "OVER",
-        subject: { type: "player", id: player.playerId, name: player.name, teamId: player.teamId },
+        subject: { type: "named-player-with-substitute", id: player.playerId, name: player.name, teamId: player.teamId },
         bookmakerSemantics: quoted ? {
           marketName: quoteRow.market.marketName,
           variantName: quoteRow.market.variantName,
           selectionName: quoteRow.selection.name,
-          duo: false,
-          substituteIncluded: false,
-          postsAndCrossbarIncluded: false,
+          marketCode: String(quoteRow.market.marketCode),
+          providerPlayerId: String(quoteRow.market.providerPlayerIds[0]),
+          duo: true,
+          substituteIncluded: true,
+          postsAndCrossbarIncluded: metric === "sot",
           extraTimeIncluded: false,
-          subjectType: "player",
+          subjectType: "named-player-and-substitute",
         } : null,
       },
       quote: {
@@ -221,21 +269,27 @@ function playerForecastLeg({ prediction, player, metric, threshold, lineup, quot
       },
       operational: {
         classification: sources.some(source => source.includes("outsider")) ? "OUTSIDER" : "INTERESSANTE",
-        classificationReason: "Profilo presente nella lettura V2 strutturata e ammesso dai criteri specifici per metrica.",
+        classificationReason: "Profilo presente nella lettura V2; giocabilità fondata sul contratto Sisal DUO verificato, non su un EV DUO.",
         reliability: { level: reliabilityLabel(reliabilitySource?.level), reason: reliabilitySource?.evidence?.join("; ") || "Stabilità V2 non disponibile." },
-        playability: quoted ? { status: "PLAYABLE", code: null, reason: null } : { status: "NOT_PLAYABLE", code: "QUOTE_UNAVAILABLE", reason: "Nessun contratto individuale full-match Sisal compatibile nello snapshot." },
+        playability: quoted ? { status: "PLAYABLE", code: null, reason: null } : { status: "NOT_PLAYABLE", code: "QUOTE_UNAVAILABLE", reason: "Nessun contratto Sisal DUO riconciliato nello snapshot." },
       },
       evaluation: {
-        modelProbabilityPct: probabilityPct,
+        modelProbabilityPct: null,
         fairOdds: null,
-        expectedValuePct,
-        status: quoted ? "EV_CALCOLABILE" : "MODELLED_QUOTE_UNAVAILABLE",
-        kind: "PREDICTION_ENGINE_V2_PLAYER_THRESHOLD",
+        expectedValuePct: null,
+        status: "DUO_PROBABILITY_UNAVAILABLE",
+        kind: "SISAL_DUO_PLAYER_THRESHOLD",
         prudentProbabilityPct: null,
         conservativeExpectedValuePct: null,
-        probabilitySemantics: "ABSOLUTE_EVENT",
+        probabilitySemantics: "DUO_CONTRACT_UNAVAILABLE",
         fairOddsBasis: null,
-        expectedValueBasis: quoted ? "CENTRAL_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE" : null,
+        expectedValueBasis: null,
+        individualReference: {
+          modelProbabilityPct: probabilityPct,
+          probabilitySemantics: "INDIVIDUAL_PLAYER_V2",
+          modelTarget: `player:${player.playerId}:${metric}:${threshold.count}+`,
+          appliedToDuo: false,
+        },
         provenance: {
           source: `predictions.shooters.allPlayers.${metric === "shots" ? "shotProbabilities" : "shotOnTargetProbabilities"}.${threshold.probabilityKey}`,
           modelVersion: prediction.engineVersion || null,
@@ -245,13 +299,13 @@ function playerForecastLeg({ prediction, player, metric, threshold, lineup, quot
         },
       },
       compatibility: {
-        status: quoted ? "COMPATIBILE" : "NO_COMPATIBLE_QUOTE",
-        reason: quoted ? "Contratto individuale full-match riconciliato per playerId, metrica e soglia." : "DUO, sostituto incluso, pali/traverse e contratti nei due tempi non sono equivalenti alla previsione individuale V2.",
+        status: quoted ? "BOOKMAKER_CONTRACT_VERIFIED_MODEL_PROBABILITY_UNAVAILABLE" : "NO_COMPATIBLE_QUOTE",
+        reason: quoted ? "Contratto Sisal DUO riconciliato per partita, provider player ID, codice mercato e soglia; la probabilità V2 individuale non è applicata al DUO." : "Nessun contratto Sisal DUO riconciliato per partita, provider player ID, codice mercato e soglia.",
         modelTarget: `player:${player.playerId}:${metric}:${threshold.count}+`,
         bookmakerTarget: quoted ? `${quoteRow.market.marketName} · ${quoteRow.market.variantName}` : null,
       },
       overlap: { overlapKey: `player-forecast:${prediction.matchId}:${player.playerId}:${metric}`, semanticKeys: [`prediction-v2-player:${prediction.matchId}:${player.playerId}:${metric}`] },
-      warnings: quoted ? [] : ["QUOTE_UNAVAILABLE", "DUO_CONTRACTS_EXCLUDED"],
+      warnings: quoted ? ["DUO_PROBABILITY_NOT_VALIDATED", "INDIVIDUAL_V2_NOT_APPLIED_TO_DUO"] : ["QUOTE_UNAVAILABLE", "DUO_PROBABILITY_NOT_VALIDATED"],
       risks: [],
     },
     forecastEvidence: {
@@ -265,6 +319,9 @@ function playerForecastLeg({ prediction, player, metric, threshold, lineup, quot
       matchupEvidence: player.matchupEvidence || [],
       outsiderScore: metric === "shots" ? player.outsiderScore : player.sotOutsiderScore,
       outsiderConfidence: metric === "shots" ? player.outsiderConfidence : player.sotOutsiderConfidence,
+      individualModelProbabilityPct: probabilityPct,
+      individualModelTarget: `player:${player.playerId}:${metric}:${threshold.count}+`,
+      appliedToDuo: false,
     },
     suggestionAnalysis: {
       version: 3,
@@ -279,7 +336,7 @@ function playerForecastLeg({ prediction, player, metric, threshold, lineup, quot
       resultThesisIdentity: null,
       rankingMode: "reading-v2-structured",
       rankingTuple: null,
-      heuristicDisclosure: "Soglia letta dalle probabilità individuali serializzate dal Prediction Engine V2; nessuna probabilità ricostruita nel selettore.",
+      heuristicDisclosure: "Soglia letta dalla previsione individuale V2; quota riferita al contratto Sisal DUO. Probabilità DUO ed EV non disponibili.",
       quoteAvailability: quoted ? "AVAILABLE_AT_SNAPSHOT" : "UNAVAILABLE",
       baselineApproved: false,
     },
@@ -331,7 +388,7 @@ function integratePlayerForecasts({ catalogMatches, predictions, odds, probableL
       added.push(leg);
     }
     additions.sort((left, right) => (left.suggestionAnalysis.family === right.suggestionAnalysis.family ? 0 : left.suggestionAnalysis.family === "shots" ? -1 : 1)
-      || Number(right.modelProbabilityPct) - Number(left.modelProbabilityPct)
+      || Number(right.individualModelProbabilityPct) - Number(left.individualModelProbabilityPct)
       || String(left.playerName).localeCompare(String(right.playerName), "it"));
     const baseline = match.selections.filter(leg => leg.suggestionAnalysis?.suggested).sort((left, right) => Number(left.suggestionAnalysis.rank) - Number(right.suggestionAnalysis.rank));
     const ranks = new Map([...baseline, ...additions].map((leg, index) => [leg.selectionId, index + 1]));
@@ -351,7 +408,7 @@ function integratePlayerForecasts({ catalogMatches, predictions, odds, probableL
       sot: added.filter(leg => leg.suggestionAnalysis.family === "sot").length,
       quoted: added.filter(leg => leg.betSelection.quote.availability === "AVAILABLE_AT_SNAPSHOT").length,
       unquoted: added.filter(leg => leg.betSelection.quote.availability === "UNAVAILABLE").length,
-      duoPromoted: 0,
+      duoPromoted: added.filter(leg => leg.betSelection.market.bookmakerSemantics?.duo === true).length,
       excluded,
       quotedSelectionIds: added.filter(leg => leg.betSelection.quote.availability === "AVAILABLE_AT_SNAPSHOT").map(leg => leg.selectionId),
     },
@@ -364,6 +421,7 @@ module.exports = {
   candidatePool,
   evaluateCandidate,
   isCompatibleIndividualMarket,
+  isSupportedDuoMarket,
   integratePlayerForecasts,
   applyApprovedBaseline,
 };
