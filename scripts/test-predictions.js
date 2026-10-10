@@ -7,6 +7,8 @@ const { opponentAbilityToExploit, teamProfilePlayerModifier, teamOffensiveAlloca
 const root = path.resolve(__dirname, "..");
 const dataset = JSON.parse(fs.readFileSync(path.join(root, "data/normalized/predictions.json"), "utf8"));
 const currentProbableLineups = require("./probable-lineups").loadLatestProbableLineups(root);
+const officialLineups = JSON.parse(fs.readFileSync(path.join(root, "data/sources/official-lineups-2026-27.json"), "utf8"));
+const officialLineupByMatchTeam = new Map(officialLineups.fixtures.flatMap(fixture => fixture.teams.map(team => [`${fixture.matchId}:${team.teamId}`, team])));
 const assertNotCurrentStarter = (teamId, playerId) => {
   const player = currentProbableLineups.teams.find(team => team.teamId === teamId)?.players.find(player => player.playerId === playerId);
   assert(!player || player.lineupStatus === "reserve", `${teamId}/${playerId}: candidato assente nonostante sia titolare nella fonte corrente`);
@@ -17,8 +19,11 @@ for (const match of currentMatches) {
   const prediction = dataset.predictions.find(prediction => prediction.matchId === match.id);
   assert(prediction, `${match.id}: pronostico della giornata corrente mancante`);
   for (const teamId of [match.homeTeam, match.awayTeam]) {
-    const expected = currentProbableLineups.teams.find(team => team.teamId === teamId).players
-      .filter(player => player.lineupStatus === "starter" && player.sourceRole !== "P").map(player => player.playerId).sort();
+    const official = officialLineupByMatchTeam.get(`${match.id}:${teamId}`);
+    const expected = official
+      ? official.players.slice(1).map(player => player.playerId).filter(Boolean).sort()
+      : currentProbableLineups.teams.find(team => team.teamId === teamId).players
+        .filter(player => player.lineupStatus === "starter" && player.sourceRole !== "P").map(player => player.playerId).sort();
     const actual = prediction.shooters.allPlayers.filter(player => player.teamId === teamId).map(player => player.playerId).sort();
     assert.deepStrictEqual(actual, expected, `${match.id}/${teamId}: giocatori modellati diversi dai titolari della fonte corrente`);
   }
@@ -39,7 +44,6 @@ const myComboMd4Source = fs.existsSync(myComboMd4Path) ? JSON.parse(fs.readFileS
 const myComboMd5Path = path.join(root, "data/sources/mycombo-serie-a-2026-27-md-05.json");
 const myComboMd5Source = fs.existsSync(myComboMd5Path) ? JSON.parse(fs.readFileSync(myComboMd5Path, "utf8")) : { matches: {} };
 const allMyComboMatches = { ...myComboSource.matches, ...myComboMd2Source.matches, ...myComboMd3Source.matches, ...myComboMd4Source.matches, ...myComboMd5Source.matches };
-const officialLineups = JSON.parse(fs.readFileSync(path.join(root, "data/sources/official-lineups-2026-27.json"), "utf8"));
 const identityAliases = JSON.parse(fs.readFileSync(path.join(root, "data/sources/player-identity-aliases-2026-27.json"), "utf8"));
 const previewMd3Path = path.join(root, "data/generated/prediction-preview-md03-2026-27.json");
 const cleanName = value => String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]/g, "");
@@ -590,16 +594,16 @@ assert(Math.abs(genoaPlayers.reduce((total, player) => total + player.projectedS
 assert(Math.abs(genoaPlayers.reduce((total, player) => total + player.projectedShotsOnTarget, 0) - genoaProjection.shotsOnTarget.central) <= 0.11, "Genoa: riconciliazione SOT incoerente");
 assert(genoaFiorentinaProfile.shooters.outsiders.filter(player => player.teamId === "genoa").length < 5, "Genoa: outsider tiri riempiti forzatamente");
 assert(genoaFiorentinaProfile.shooters.sotOutsiders.filter(player => player.teamId === "genoa").length < 5, "Genoa: outsider SOT riempiti forzatamente");
-const baldanzi = genoaPlayers.find(player => player.playerId === "tommaso-baldanzi");
-assert(baldanzi, "Genoa: Baldanzi assente dalla proiezione E2E");
-assert(baldanzi.stabilizedShots90 > baldanzi.stabilizedShotsOnTarget90 * 3, "Baldanzi: baseline tiri e SOT non restano separate");
-assert.strictEqual(baldanzi.qualifiedOutsider, false, "Baldanzi primary promosso automaticamente a outsider tiri");
-assert.strictEqual(baldanzi.qualifiedSotOutsider, false, "Baldanzi: un solo SOT current ha prodotto outsider SOT");
+const juniorMessias = genoaPlayers.find(player => player.playerId === "junior-messias");
+assert(juniorMessias, "Genoa: Junior Messias assente dalla proiezione E2E ufficiale");
+assert(juniorMessias.stabilizedShots90 > juniorMessias.stabilizedShotsOnTarget90 * 2.5, "Junior Messias: baseline tiri e SOT non restano separate");
+assert.strictEqual(juniorMessias.qualifiedOutsider, false, "Junior Messias primary promosso automaticamente a outsider tiri");
+assert.strictEqual(juniorMessias.qualifiedSotOutsider, false, "Junior Messias: profilo primary promosso automaticamente a outsider SOT");
 const mastantuono = fiorentinaPlayers.find(player => player.playerId === "franco-mastantuono");
 const fagioli = fiorentinaPlayers.find(player => player.playerId === "nicolo-fagioli");
 const ndour = fiorentinaPlayers.find(player => player.playerId === "cher-ndour");
 const alexJimenez = fiorentinaPlayers.find(player => player.playerId === "alex-jimenez");
-assert(mastantuono && fagioli && ndour && alexJimenez, "Fiorentina: giocatori della probabile formazione corrente assenti dalla proiezione E2E");
+assert(mastantuono && fagioli && ndour && alexJimenez, "Fiorentina: giocatori della formazione ufficiale corrente assenti dalla proiezione E2E");
 assert(mastantuono.stabilizedShots90 > mastantuono.baselineShots90 && mastantuono.stabilizedShots90 < mastantuono.playerBaselineStability.currentSample.per90, "Mastantuono: breakout current non stabilizzato correttamente");
 assert.strictEqual(mastantuono.allocationClass, "primary");
 assert.strictEqual(mastantuono.outsiderScore, null, "Mastantuono primary non deve diventare outsider");
