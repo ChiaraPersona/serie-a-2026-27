@@ -21,6 +21,14 @@ assert.deepEqual(official.teams.map(team => [team.teamId, team.formation, team.p
   ["napoli", "3-4-2-1", 11, 10],
   ["frosinone", "4-2-3-1", 11, 14],
 ]);
+assert.deepEqual(official.teams[0].players.map(player => player.playerId), [
+  "alex-meret", "benoit-badiashile", "amir-rrahmani", "rafa-marin", "leonardo-spinazzola",
+  "stanislav-lobotka", "kevin-de-bruyne", "giovanni-di-lorenzo", "noa-lang", "david-neres", "rasmus-h-jlund",
+]);
+assert.deepEqual(official.teams[1].players.map(player => player.playerId), [
+  "lorenzo-palmisani", "anthony-oyono", "gabriele-calvani", "giorgio-cittadini", "gabriele-bracaglia",
+  "giacomo-calo", "patrizio-masini", "fares-ghedjemis", "romano-schmid", "giorgi-kvernadze", "antonio-raimondo",
+]);
 assert(official.teams.flatMap(team => team.players).every(player => player.playerId), "Unresolved starter identity");
 const unresolved = official.teams.flatMap(team => team.substitutes).filter(player => !player.playerId);
 assert.deepEqual(unresolved.map(player => player.sourceName), ["Milton Pereyra"]);

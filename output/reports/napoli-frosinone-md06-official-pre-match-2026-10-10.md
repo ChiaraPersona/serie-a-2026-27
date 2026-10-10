@@ -1,6 +1,6 @@
 # Napoli–Frosinone — analisi prepartita con formazioni ufficiali
 
-Generato il 2026-10-10T18:29:42.478Z. Motore 4.13.0, Player Market V2; parametri, pesi, calibrazione e formule invariati.
+Generato il 2026-10-10T18:30:42.935Z. Motore 4.13.0, Player Market V2; parametri, pesi, calibrazione e formule invariati.
 
 ## 1. Formazioni ufficiali
 
@@ -29,7 +29,7 @@ Esito finale V2: Napoli 49.2% · pareggio 24.9% · Frosinone 25.9%. Sono probabi
 
 I profili di possesso utilizzati dal matchup sono 59% Napoli e 50% Frosinone: sono riferimenti storici, non una previsione del possesso della gara. Il proxy territoriale è 0,687 per il Napoli e 0,358 per il Frosinone.
 
-Il Napoli concentra il 52,4% della produzione nel corridoio centrale, con Politano e Lang che alimentano De Bruyne e Højlund. Il Frosinone è quasi speculare sulle fasce (43% a sinistra e 43% a destra) e produce soltanto il 14,1% centralmente. La vulnerabilità tiri del Frosinone aggiunge +0,88% al volume Napoli ma non ai SOT; i segnali difensivi del Napoli verso il Frosinone restano in watch e quindi neutrali nel coefficiente centrale.
+Il Napoli concentra il 52,4% della produzione nel corridoio centrale, con David Neres e Lang alle spalle di Højlund e De Bruyne nella linea a quattro. Il Frosinone è quasi speculare sulle fasce (43% a sinistra e 43% a destra) e produce soltanto il 14,1% centralmente. La vulnerabilità tiri del Frosinone aggiunge +0,88% al volume Napoli ma non ai SOT; i segnali difensivi del Napoli verso il Frosinone restano in watch e quindi neutrali nel coefficiente centrale.
 
 ## 3. Tiri e SOT individuali
 
@@ -69,7 +69,7 @@ Le probabilità 4+ tiri usano la stessa distribuzione di Poisson del V2. Per i p
 
 ## 4. Matchup decisivi
 
-- Højlund è il riferimento centrale Napoli: 2,51 tiri e 1,08 SOT attesi; il 3+ tiri vale circa 45,9%.
+- Højlund è il riferimento centrale Napoli: 2,77 tiri e 1,23 SOT attesi; il 3+ tiri vale circa 52,3%.
 - David Neres, De Bruyne e Lang sostengono Højlund nel 3-4-2-1; il ricalcolo assegna loro soltanto i volumi coerenti con l’undici ufficiale.
 - Kvernadze e Ghedjemis restano i principali sbocchi larghi del Frosinone, mentre Raimondo riceve minuti e volumi da titolare al posto di Bobček.
 - Meret, Badiashile e David Neres entrano nell’XI Napoli; Milinković-Savić, Gilmour e Politano passano in panchina. Il ricalcolo non modifica formule o pesi.
