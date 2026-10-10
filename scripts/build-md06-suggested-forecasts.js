@@ -19,19 +19,21 @@ const writeNormalized = process.argv.includes("--write");
 const testsPassed = process.argv.includes("--tests-passed");
 
 const schedina = read("data/normalized/schedina-md06.json");
-const baselineReport = read("output/reports/serie-a-md06-suggested-forecasts-2026-10-10.json");
+const statisticalModels = read("data/analysis/serie-a-md06-statistical-models-2026-10-10.json");
 const predictionsData = read("data/normalized/predictions.json");
 const odds = read("data/normalized/odds/sisal/serie-a.json");
 const matches = read("data/normalized/matches.json");
 const probableLineups = read("data/sources/probable-lineups-md6-2026-27.json");
 const officialLineups = read("data/sources/official-lineups-2026-27.json");
 const currentRows = schedina.marketCatalog.matches.flatMap(match => match.selections);
-const certifiedRows = currentRows.filter(leg => leg.catalogOrigin !== "statistical-b-not-modelled");
+const certifiedRows = currentRows.filter(leg => !String(leg.catalogOrigin || "").startsWith("statistical-"));
 assert.equal(certifiedRows.length, 383, "Il punto di partenza certificato deve contenere 383 selezioni");
+const baselineSuggestions = certifiedRows.filter(leg => leg.suggestionAnalysis?.suggested);
+assert.equal(baselineSuggestions.length, 12, "La baseline definitiva deve contenere 12 pronostici");
 const certifiedById = new Map(certifiedRows.map(leg => [leg.selectionId, leg]));
 const invariantBefore = hash(certifiedRows.map(invariantProjection).sort((a, b) => a.selectionId.localeCompare(b.selectionId)));
 
-const marketCatalog = buildMd06MarketCatalog({ predictionsData, odds, matches, schedinaSlips: schedina.slips, probableLineups, officialLineups, matchday: 6 });
+const marketCatalog = buildMd06MarketCatalog({ predictionsData, odds, matches, schedinaSlips: schedina.slips, probableLineups, officialLineups, statisticalModels, matchday: 6 });
 const rows = marketCatalog.matches.flatMap(match => match.selections);
 const rowById = new Map(rows.map(leg => [leg.selectionId, leg]));
 assert.equal(rowById.size, rows.length, "Il catalogo contiene selectionId duplicati");
@@ -41,8 +43,8 @@ assert.equal(invariantAfter, invariantBefore, "Quote, probabilità o contratti d
 
 const suggestions = rows.filter(leg => leg.suggestionAnalysis?.suggested);
 assert(suggestions.every(leg => leg.betSelection.evaluation.status !== "NOT_MODELLED" && verifiedQuote(leg)), "Pronostico senza modello o quota verificata");
-const baselinePerMatch = new Map((baselineReport.suggestions?.perMatch || []).map(row => [row.matchId, row.total]));
-const coverage = reconstructStatisticalCoverage({ odds, existingSelectionIds: new Set(certifiedById.keys()) });
+const baselinePerMatch = new Map(certifiedRows.map(leg => leg.matchId).map(matchId => [matchId, baselineSuggestions.filter(leg => leg.matchId === matchId).length]));
+const coverage = reconstructStatisticalCoverage({ odds, existingSelectionIds: new Set(certifiedById.keys()), statisticalModels });
 const decisionLabel = reason => ({
   OPERATIVE_EV_BELOW_TWO_PERCENT: "EV operativo inferiore al 2%",
   LOW_RELIABILITY_REQUIRES_NON_NEGATIVE_CONSERVATIVE_EV: "affidabilità Bassa con downside prudente negativo",
@@ -55,6 +57,7 @@ const decisionLabel = reason => ({
   RELIABILITY_NOT_ASSESSED: "qualità non valutabile",
   TAIL_PROBABILITY_TOO_LOW_FOR_RELIABILITY: "rischio di coda eccessivo",
   TAIL_ODDS_TOO_HIGH_FOR_RELIABILITY: "quota di coda oltre il limite",
+  STATISTICAL_TAIL_ODDS_TOO_HIGH: "quota oltre 4 per un modello statistico di conteggio",
 }[reason] || reason.toLowerCase().replace(/_/g, " "));
 
 const matchAudit = marketCatalog.matches.map(match => {
@@ -100,37 +103,39 @@ const sensitivity = ["value-first", "stability-first"].map(mode => {
 
 const coverageFamilies = ["shots", "sot", "corners", "cards"].map(family => {
   const audited = coverage.rows.filter(row => row.family === family);
-  return { family, identified: audited.length, A: audited.filter(row => row.state === STATES.A).length, B: audited.filter(row => row.state === STATES.B).length, C: audited.filter(row => row.state === STATES.C).length, D: audited.filter(row => row.state === STATES.D).length, selected: suggestions.filter(leg => leg.suggestionAnalysis.family === family).length };
+  const validated = rows.filter(leg => leg.statisticalFamily === family && leg.coverageClassification === "A").length;
+  return { family, identified: audited.length, A: validated, B: Math.max(0, audited.filter(row => row.state === STATES.B).length - validated), C: audited.filter(row => row.state === STATES.C).length, D: audited.filter(row => row.state === STATES.D).length, selected: suggestions.filter(leg => leg.suggestionAnalysis.family === family).length };
 });
 
 const report = {
   schemaVersion: 2,
   reportType: "SERIE_A_MD06_DEFINITIVE_FORECAST_SELECTION",
   generatedAt: new Date().toISOString(),
-  sources: { oddsSnapshot: "data/normalized/odds/sisal/serie-a.json", oddsRetrievedAt: odds.retrievedAt, predictionSnapshot: "data/normalized/predictions.json", predictionGeneratedAt: predictionsData.generatedAt, engineVersion: predictionsData.engine?.version || null, phase5B: "output/reports/serie-a-md06-phase-5b2-2026-10-09.md", phase5C: "output/reports/serie-a-md06-phase-5c-volume-validation-2026-10-09.md", phase5D: "output/reports/serie-a-md06-phase-5d-duo-audit-2026-10-09.md", phase5E: "output/reports/serie-a-md06-phase-5e-final-audit-2026-10-09.md" },
+  sources: { oddsSnapshot: "data/normalized/odds/sisal/serie-a.json", oddsRetrievedAt: odds.retrievedAt, predictionSnapshot: "data/normalized/predictions.json", predictionGeneratedAt: predictionsData.generatedAt, engineVersion: predictionsData.engine?.version || null, statisticalModels: "data/analysis/serie-a-md06-statistical-models-2026-10-10.json", phase5B: "output/reports/serie-a-md06-phase-5b2-2026-10-09.md", phase5C: "output/reports/serie-a-md06-phase-5c-volume-validation-2026-10-09.md", phase5D: "output/reports/serie-a-md06-phase-5d-duo-audit-2026-10-09.md", phase5E: "output/reports/serie-a-md06-phase-5e-final-audit-2026-10-09.md" },
   availabilityDisclosure: "Quote verificate nello snapshot Sisal del 9 ottobre 2026; disponibilità corrente non verificata.",
   invariants: { certifiedSelections: certifiedRows.length, certifiedSelectionIdsPreserved: [...certifiedById.keys()].every(id => rowById.has(id)), certifiedContractHashBefore: invariantBefore, certifiedContractHashAfter: invariantAfter, certifiedContractsUnchanged: invariantBefore === invariantAfter, catalogSelections: rows.length, evaluatedSelections: rows.filter(leg => leg.betSelection.evaluation.status !== "NOT_MODELLED").length, notModelledSelections: rows.filter(leg => leg.betSelection.evaluation.status === "NOT_MODELLED").length },
   previousEngineAudit: {
-    totalSuggestions: baselineReport.suggestions.total,
+    totalSuggestions: baselineSuggestions.length,
     criteria: ["Quota verificata nello snapshot", "Probabilità assoluta V2", "Affidabilità Alta o Media", "Probabilità centrale almeno 50%", "Probabilità prudente almeno 50%", "Scenario coerente o multi-scenario", "Score mask disponibile", "Esclusione integrale di tiri, SOT, corner e cartellini"],
     ordering: ["Probabilità prudente decrescente", "Probabilità centrale decrescente", "selectionId stabile"],
     quantityLimit: null,
     deficiencies: ["Quota ed EV non partecipavano alla scelta o all'ordinamento", "Soglia universale del 50%", "Deduplicazione per famiglie troppo larghe", "Catalogo completo esposto nell'interfaccia"],
   },
   selectionPolicy: {
-    status: "OPERATIONAL_HEURISTIC_NOT_STATISTICALLY_VALIDATED",
-    eligibility: ["Quota e identità provider verificate", "Probabilità V2 esistente e non NOT_MODELLED", "EV operativo almeno +2% secondo la base già serializzata", "Probabilità prudente disponibile", "Affidabilità Alta, Media o Bassa valutata", "Per affidabilità Bassa: EV prudente non negativo, P prudente almeno 25%, quota non oltre 4", "Per affidabilità Alta/Media: downside prudente non inferiore a -10%, P prudente almeno 20%, quota non oltre 6", "Scenario coerente o multi-scenario", "Settlement assoluto oppure DNB con push esplicito"],
+    status: "VALIDATED_PROBABILITIES_WITH_OPERATIONAL_PORTFOLIO_RULE",
+    eligibility: ["Quota e identità provider verificate", "Probabilità V2 esistente oppure modello discreto validato su holdout temporale", "EV operativo almeno +2% secondo la base già serializzata", "Probabilità prudente disponibile", "Affidabilità Alta, Media o Bassa valutata", "Per affidabilità Bassa: EV prudente non negativo, P prudente almeno 25%, quota non oltre 4", "Per modelli statistici discreti: EV prudente non negativo e quota non oltre 4", "Per affidabilità Alta/Media non statistica: downside prudente non inferiore a -10%, P prudente almeno 20%, quota non oltre 6", "Scenario coerente o multi-scenario", "Settlement assoluto oppure DNB con push esplicito"],
     rankingTuple: ["EV prudente non negativo", "Qualità dati", "EV prudente", "EV operativo", "Probabilità prudente", "Probabilità centrale", "selectionId"],
     deduplication: ["Una sola scelta per identità canonica di soglia", "Una sola forma per la stessa tesi direzionale di risultato", "Una sola scelta per eventi logicamente equivalenti", "Nessuna implicazione logica diretta tra due scelte", "Nessuna coppia mutuamente esclusiva"],
     topNLimit: null,
   },
-  coverage: { totalSuggestions: suggestions.length, averagePerMatch: Number((suggestions.length / 10).toFixed(1)), byFamily: countBy(suggestions, leg => leg.suggestionAnalysis.family), perMatch: matchAudit, comparison: { previousSuggestions: baselineReport.suggestions.total, currentSuggestions: suggestions.length, delta: suggestions.length - baselineReport.suggestions.total } },
+  coverage: { totalSuggestions: suggestions.length, averagePerMatch: Number((suggestions.length / 10).toFixed(1)), byFamily: countBy(suggestions, leg => leg.suggestionAnalysis.family), perMatch: matchAudit, comparison: { previousSuggestions: baselineSuggestions.length, currentSuggestions: suggestions.length, delta: suggestions.length - baselineSuggestions.length } },
   thresholdCases,
   sensitivity,
-  statisticalMarkets: { families: coverageFamilies, blocked: ["Tiri e SOT giocatore DUO: sostituto incluso; sui SOT anche pali/traverse", "Tiri e SOT squadra/partita: distribuzioni e verifica temporale fuori campione non validate", "Corner squadra/partita e 1X2: gate Fase 5C insufficiente", "Cartellini: contratto punti cartellino e distribuzione non riconciliati"], dataNeeded: ["Snapshot prospettici pre-partita e risultati completi su più giornate", "Join temporale fuori campione per squadra e avversario", "Identità effettiva del sostituto e pesi di scenario per DUO", "Regole Sisal complete per pali/traverse e punti cartellino", "Calibrazione, Brier/log loss e intervalli cluster-bootstrap su campione adeguato"] },
+  statisticalMarkets: { families: coverageFamilies, validated: ["Tiri squadra/partita e 1X2", "Tiri in porta squadra/partita e 1X2", "Corner squadra/partita e 1X2"], blocked: ["Tiri e SOT giocatore DUO: sostituto incluso; sui SOT anche pali/traverse", "Tiri e SOT giocatore standard: il contratto richiede almeno una occorrenza in entrambi i tempi e non equivale al totale full-match V2", "Cartellini: le regole Sisal escludono panchina, staff, post-partita e già sostituiti; gli actuals aggregati disponibili non certificano queste esclusioni"], dataNeeded: ["Identità effettiva del sostituto, minuti e pesi di scenario per DUO", "Actuals cartellini event-level con stato del giocatore e timestamp", "Ulteriori snapshot prospettici per monitorare calibrazione e drift senza riusare MD6"] },
   suggestions: suggestions.sort((a, b) => a.matchId.localeCompare(b.matchId) || a.suggestionAnalysis.rank - b.suggestionAnalysis.rank).map(leg => ({ matchId: leg.matchId, fixture: leg.fixture, rank: leg.suggestionAnalysis.rank, family: leg.suggestionAnalysis.family, selectionId: leg.selectionId, market: leg.market, label: leg.label, probabilityPct: leg.betSelection.evaluation.modelProbabilityPct, prudentProbabilityPct: leg.betSelection.evaluation.prudentProbabilityPct, odds: leg.betSelection.quote.decimal, expectedValuePct: leg.betSelection.evaluation.expectedValuePct, expectedValueBasis: leg.betSelection.evaluation.expectedValueBasis, conservativeExpectedValuePct: leg.suggestionAnalysis.conservativeExpectedValuePct, reliability: leg.betSelection.operational.reliability.level, canonicalThresholdIdentity: leg.suggestionAnalysis.canonicalThresholdIdentity })),
-  tests: testsPassed ? ["npm run test:schedina", "npm run test:personal-betslip", "npm run test:css", "node --no-warnings scripts/test-app-modules.mjs", "node scripts/check-schedina-md06-suggestions-browser.cjs", "git diff --check"].map(command => ({ command, status: "PASS" })) : [],
-  filesModified: ["scripts/md06-suggested-forecasts.js", "scripts/md06-market-catalog.js", "scripts/build-md06-suggested-forecasts.js", "scripts/test-md06-suggested-forecasts.js", "scripts/test-md06-scenario-coherence.js", "scripts/test-schedina-md06.js", "scripts/test-app-modules.mjs", "scripts/check-schedina-md06-suggestions-browser.cjs", "js/pages/betting.js", "css/betting.css", "css/styles.css", "scripts/build-site.js", "schedina.html", "data/normalized/schedina-md06.json", "output/reports/serie-a-md06-definitive-selection-2026-10-10.json", "output/reports/serie-a-md06-definitive-selection-2026-10-10.md", "output/md06/schedina-definitive-1440x1000.png", "output/md06/schedina-definitive-390x844.png"],
+  tests: testsPassed ? ["npm run test:schedina:md06", "npm run test:schedina", "npm run test:css", "node --no-warnings scripts/test-app-modules.mjs", "node scripts/check-schedina-md06-suggestions-browser.cjs", "git diff --check"].map(command => ({ command, status: "PASS" })) : [],
+  testLimitations: testsPassed ? [{ command: "npm test", status: "BLOCKED_BY_MISSING_HISTORICAL_FIXTURE", detail: "data/raw/referee-stats/espn/2023-24/serie-a/679226.json.gz assente; il blocco precede i test MD6." }] : [],
+  filesModified: ["scripts/md06-statistical-models.js", "scripts/build-md06-statistical-models.js", "scripts/md06-statistical-coverage.js", "scripts/md06-market-catalog.js", "scripts/md06-suggested-forecasts.js", "scripts/build-md06-betting-decision-package.mjs", "scripts/build-md06-suggested-forecasts.js", "scripts/build-betting-matchday.js", "scripts/test-md06-statistical-models.js", "scripts/test-schedina-md06.js", "scripts/test-md06-scenario-coherence.js", "scripts/test-md06-suggested-forecasts.js", "scripts/check-schedina-md06-suggestions-browser.cjs", "package.json", "data/analysis/serie-a-md06-statistical-models-2026-10-10.json", "data/normalized/schedina-md06.json", "output/reports/serie-a-md06-statistical-models-2026-10-10.md", "output/reports/serie-a-md06-betting-selection-2026-10-09.json", "output/reports/serie-a-md06-betting-selection-2026-10-09.md", "output/reports/serie-a-md06-definitive-selection-2026-10-10.json", "output/reports/serie-a-md06-definitive-selection-2026-10-10.md", "output/md06/schedina-definitive-1440x1000.png", "output/md06/schedina-definitive-390x844.png"],
 };
 
 const familyLabels = { shots: "Tiri totali", sot: "Tiri in porta", corners: "Corner", cards: "Cartellini", "goals-results": "Gol e risultati", other: "Altri" };
@@ -141,13 +146,13 @@ const markdown = [
   "",
   "## Esito",
   "",
-  `Selezionati **${report.coverage.totalSuggestions}** pronostici, media **${report.coverage.averagePerMatch}** per partita. Versione precedente: **${report.coverage.comparison.previousSuggestions}**; delta **${report.coverage.comparison.delta}**. L'obiettivo indicativo di 100 non è raggiunto perché i mercati statistici restano privi di validazione sufficiente e diverse partite non presentano valore robusto.`,
+  `Selezionati **${report.coverage.totalSuggestions}** pronostici, media **${report.coverage.averagePerMatch}** per partita. Versione precedente: **${report.coverage.comparison.previousSuggestions}**; delta **${report.coverage.comparison.delta}**. Il target indicativo di circa 100 non è forzato: le soglie senza gate temporale, le quote di coda e le famiglie con contratto non riconciliato restano escluse.`,
   "",
   `> ${report.availabilityDisclosure}`,
   "",
   "## A. Audit e copertura",
   "",
-  "Il motore precedente richiedeva P centrale e prudente almeno 50%, affidabilità Alta/Media e coerenza di scenario; ordinava per probabilità prudente e centrale. Quote ed EV non contribuivano alla scelta. Il nuovo motore non usa un punteggio pseudo-statistico: applica gate espliciti e un ordinamento lessicografico documentato.",
+  "Il motore precedente richiedeva P centrale e prudente almeno 50%, affidabilità Alta/Media e coerenza di scenario; ordinava per probabilità prudente e centrale. Quote ed EV non contribuivano alla scelta. Il nuovo motore aggiunge distribuzioni discrete validate su holdout temporale e applica gate espliciti più un ordinamento lessicografico documentato.",
   "",
   table(["Partita", "Catalogo", "Quotati", "Valutati", "EV > 0", "Precedenti", "Selezionati"], matchAudit.map(row => [row.fixture, row.catalog, row.quoted, row.evaluated, row.positiveEv, row.previousSuggestions, row.selected])),
   "",
@@ -186,6 +191,7 @@ const markdown = [
   `Le 383 selezioni certificate e i loro contratti sono invariati: **${report.invariants.certifiedContractsUnchanged ? "SÌ" : "NO"}**. Il catalogo interno conserva ${report.invariants.catalogSelections} righe, di cui ${report.invariants.notModelledSelections} NOT_MODELLED; la UI mostra soltanto le selezioni del motore.`,
   "",
   ...(testsPassed ? report.tests.map(item => `- PASS — \`${item.command}\``) : ["- Test finali da eseguire dopo la rigenerazione."]),
+  ...(testsPassed ? report.testLimitations.map(item => `- ${item.status} — \`${item.command}\`: ${item.detail}`) : []),
   "",
   "## File modificati",
   "",

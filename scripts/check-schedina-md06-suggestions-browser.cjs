@@ -28,7 +28,7 @@ async function verifyViewport(browser, width, height) {
   await page.reload({ waitUntil: "networkidle" });
 
   assert.equal(await page.locator("[data-match-panel]").count(), 10, `${width}px: partite mancanti`);
-  assert.equal(await page.locator("[data-selected-forecast=true]").count(), 12, `${width}px: pronostici selezionati inattesi`);
+  assert.equal(await page.locator("[data-selected-forecast=true]").count(), 32, `${width}px: pronostici selezionati inattesi`);
   assert.equal(await page.locator("[data-market-mode]").count(), 0, `${width}px: selettore modalità ancora presente`);
   assert.equal(await page.locator("[data-market-mode-panel]").count(), 0, `${width}px: pannello catalogo completo ancora presente`);
   assert.equal(await page.locator(".betting-suggestion-reason").count(), 0, `${width}px: descrizioni tecniche ancora presenti`);

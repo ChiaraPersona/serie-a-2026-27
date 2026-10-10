@@ -19,6 +19,7 @@ const review = read("output/reports/serie-a-md05-betting-decision-review-2026-10
 const selection = read("output/reports/serie-a-md06-betting-selection-2026-10-09.json");
 const selectionMarkdown = fs.readFileSync(path.join(root, "output/reports/serie-a-md06-betting-selection-2026-10-09.md"), "utf8");
 const groupBAudit = read("output/reports/serie-a-md06-group-b-audit-2026-10-09.json");
+const statisticalModels = read("data/analysis/serie-a-md06-statistical-models-2026-10-10.json");
 const page = fs.readFileSync(path.join(root, "js/pages/betting.js"), "utf8");
 const matches = read("data/normalized/matches.json");
 
@@ -100,13 +101,13 @@ assert.deepEqual(catalog.totals, {
   groupB2Rejected: 0,
   statisticalBAdded: 1063,
   finalSelections: 1446,
-  evaluated: 367,
-  notModelled: 1079,
-  suggestions: 12,
+  evaluated: 1038,
+  notModelled: 408,
+  suggestions: 32,
   suggestionsByFamily: {
-    shots: 0,
-    sot: 0,
-    corners: 0,
+    shots: 5,
+    sot: 5,
+    corners: 10,
     cards: 0,
     "goals-results": 12,
     other: 0,
@@ -114,8 +115,8 @@ assert.deepEqual(catalog.totals, {
   scenarioCounts: {
     COHERENT_WITH_PREVALENT: 20,
     ALTERNATIVE_TO_PREVALENT: 50,
-    COMPATIBLE_WITH_MULTIPLE_SCENARIOS: 297,
-    NOT_DETERMINABLE: 1079,
+    COMPATIBLE_WITH_MULTIPLE_SCENARIOS: 968,
+    NOT_DETERMINABLE: 408,
   },
 });
 assert.deepEqual(Object.fromEntries(catalog.matches.map(match => [match.matchId, match.total])), {
@@ -150,7 +151,7 @@ for (const leg of recoveredGroupA) {
   const expectedEv = (evaluation.modelProbabilityPct / 100 * leg.betSelection.quote.decimal - 1) * 100;
   assert(Math.abs(evaluation.expectedValuePct - expectedEv) <= Math.max(0.2, leg.betSelection.quote.decimal * 0.06), `${leg.selectionId}: EV incoerente`);
 }
-const preserved = catalogSelections.filter(leg => !["dnb-b1", "gruppo-b2", "statistical-b-not-modelled"].includes(leg.catalogOrigin));
+const preserved = catalogSelections.filter(leg => !["dnb-b1", "gruppo-b2"].includes(leg.catalogOrigin) && !String(leg.catalogOrigin || "").startsWith("statistical-"));
 assert.equal(preserved.length, 160, "Il catalogo precedente deve restare composto da 160 righe");
 assert.equal(preserved.filter(leg => Number.isFinite(leg.betSelection.evaluation.expectedValuePct)).length, 144, "Le 144 valutazioni esistenti devono restare valutate");
 assert.equal(preserved.filter(leg => !Number.isFinite(leg.betSelection.evaluation.expectedValuePct)).length, 16, "Le 16 righe NOT_MODELLED devono restare tali");
@@ -158,8 +159,13 @@ assert(preserved.filter(leg => !Number.isFinite(leg.betSelection.evaluation.expe
 const preservedMetricsDigest = crypto.createHash("sha256").update(JSON.stringify(preserved.map(leg => [leg.selectionId, leg.betSelection.evaluation.modelProbabilityPct, leg.betSelection.evaluation.fairOdds, leg.betSelection.evaluation.expectedValuePct, leg.betSelection.evaluation.status]).sort((left, right) => left[0].localeCompare(right[0])))).digest("hex");
 assert.equal(preservedMetricsDigest, "c9e4b627ad5e583ef0c63acae734d54034633d464a46d1177d8e55820ff432ad", "Identità o metriche delle 160 righe Fase 5A alterate");
 const statisticalB = catalogSelections.filter(leg => leg.catalogOrigin === "statistical-b-not-modelled");
-assert.equal(statisticalB.length, 1063, "Copertura statistica B inattesa");
+assert.equal(statisticalB.length, 392, "Copertura statistica B residua inattesa");
 assert(statisticalB.every(leg => leg.coverageClassification === "B" && leg.betSelection.evaluation.status === "NOT_MODELLED"), "Una riga B è stata valutata impropriamente");
+const statisticalA = catalogSelections.filter(leg => leg.catalogOrigin === "statistical-model-validated");
+assert.equal(statisticalA.length, 671, "Copertura statistica A inattesa");
+assert(statisticalA.every(leg => leg.coverageClassification === "A" && leg.betSelection.evaluation.kind === "DISCRETE_COUNT_TEMPORAL_HOLDOUT"), "Una riga A non usa il modello discreto validato");
+assert(statisticalA.every(leg => leg.betSelection.evaluation.provenance.validation.gate === "PASS" && leg.betSelection.evaluation.provenance.validation.exactThreshold.gate === "PASS"), "Gate aggregato o di soglia non superato");
+assert.equal(Object.keys(statisticalModels.evaluations).length, 676, "Numero valutazioni statistiche quotate inatteso");
 
 const dnb = catalogSelections.filter(leg => leg.catalogOrigin === "dnb-b1");
 assert.equal(dnb.length, 20);

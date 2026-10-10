@@ -83,6 +83,8 @@ function assessSuggestion(leg) {
   const reasons = [], evaluation = leg?.betSelection?.evaluation || {};
   const reliability = leg?.betSelection?.operational?.reliability?.level;
   const scenario = leg?.scenarioAnalysis || {}, family = suggestedFamily(leg);
+  const statisticalFamily = ["shots", "sot", "corners", "cards"].includes(family);
+  const validatedStatisticalModel = statisticalFamily && evaluation.kind === "DISCRETE_COUNT_TEMPORAL_HOLDOUT";
   const conservativeEv = conservativeExpectedValuePct(leg);
   if (!verifiedQuote(leg)) reasons.push("QUOTE_NOT_VERIFIED_AT_SNAPSHOT");
   if (evaluation.status === "NOT_MODELLED" || !finite(evaluation.modelProbabilityPct) || !finite(evaluation.expectedValuePct)) reasons.push("NOT_MODELLED");
@@ -90,12 +92,14 @@ function assessSuggestion(leg) {
   if (!Object.hasOwn(RELIABILITY_RANK, reliability)) reasons.push("RELIABILITY_NOT_ASSESSED");
   if (!settlementIsSupported(leg)) reasons.push("SETTLEMENT_NOT_SUPPORTED");
   if (!["COHERENT_WITH_PREVALENT", "COMPATIBLE_WITH_MULTIPLE_SCENARIOS"].includes(scenario.classification)) reasons.push("NOT_COHERENT_WITH_PREVALENT_SCENARIO");
-  if (!scenario.scoreMask) reasons.push("NO_COMPARABLE_SCORE_EVENT");
-  if (["shots", "sot", "corners", "cards"].includes(family)) reasons.push("STATISTICAL_FAMILY_NOT_VALIDATED");
+  if (!scenario.scoreMask && !validatedStatisticalModel) reasons.push("NO_COMPARABLE_SCORE_EVENT");
+  if (statisticalFamily && !validatedStatisticalModel) reasons.push("STATISTICAL_FAMILY_NOT_VALIDATED");
   if (finite(evaluation.expectedValuePct) && Number(evaluation.expectedValuePct) < 2) reasons.push("OPERATIVE_EV_BELOW_TWO_PERCENT");
   if (finite(evaluation.prudentProbabilityPct) && Number(evaluation.prudentProbabilityPct) < (reliability === "Bassa" ? 25 : 20)) reasons.push("TAIL_PROBABILITY_TOO_LOW_FOR_RELIABILITY");
   if (finite(leg?.betSelection?.quote?.decimal) && Number(leg.betSelection.quote.decimal) > (reliability === "Bassa" ? 4 : 6)) reasons.push("TAIL_ODDS_TOO_HIGH_FOR_RELIABILITY");
+  if (validatedStatisticalModel && finite(leg?.betSelection?.quote?.decimal) && Number(leg.betSelection.quote.decimal) > 4) reasons.push("STATISTICAL_TAIL_ODDS_TOO_HIGH");
   if (conservativeEv === null) reasons.push("CONSERVATIVE_EV_NOT_AVAILABLE");
+  else if (validatedStatisticalModel && conservativeEv < 0) reasons.push("STATISTICAL_MODEL_REQUIRES_NON_NEGATIVE_CONSERVATIVE_EV");
   else if (reliability === "Bassa" && conservativeEv < 0) reasons.push("LOW_RELIABILITY_REQUIRES_NON_NEGATIVE_CONSERVATIVE_EV");
   else if (["Alta", "Media"].includes(reliability) && conservativeEv < -10) reasons.push("CONSERVATIVE_DOWNSIDE_TOO_LARGE");
   return { eligible: reasons.length === 0, reasons, conservativeExpectedValuePct: conservativeEv };
@@ -146,6 +150,7 @@ function selectMatchSuggestions(match, { rankingMode = "balanced" } = {}) {
   const rankById = new Map(accepted.map((leg, index) => [leg.selectionId, index + 1]));
   const annotated = match.selections.map(leg => {
     const assessment = assessments.get(leg.selectionId), suggested = acceptedIds.has(leg.selectionId);
+    const validatedStatisticalModel = leg?.betSelection?.evaluation?.kind === "DISCRETE_COUNT_TEMPORAL_HOLDOUT";
     const reasons = suggested ? [] : assessment.eligible ? [rejected.get(leg.selectionId) || "LOWER_RANKED"] : assessment.reasons;
     return { ...leg, suggestionAnalysis: {
       version: 2,
@@ -153,14 +158,16 @@ function selectMatchSuggestions(match, { rankingMode = "balanced" } = {}) {
       rank: rankById.get(leg.selectionId) || null,
       family: suggestedFamily(leg),
       familyLabel: FAMILY_LABELS[suggestedFamily(leg)],
-      criteria: "VERIFIED_QUOTE_AND_VALIDATED_V2_AND_OPERATIVE_EV_AT_LEAST_TWO_PERCENT_WITH_RELIABILITY_ADJUSTED_DOWNSIDE_AND_SCENARIO_COHERENCE",
+      criteria: "VERIFIED_QUOTE_AND_VALIDATED_MODEL_AND_OPERATIVE_EV_AT_LEAST_TWO_PERCENT_WITH_RELIABILITY_ADJUSTED_DOWNSIDE_AND_SCENARIO_COHERENCE",
       reasons,
       conservativeExpectedValuePct: assessment.conservativeExpectedValuePct,
       canonicalThresholdIdentity: canonicalThresholdIdentity(leg),
       resultThesisIdentity: resultThesisIdentity(leg),
       rankingMode,
       rankingTuple: suggested ? interestTuple(leg, rankingMode) : null,
-      heuristicDisclosure: "Operational heuristic, not a statistically validated probability model.",
+      heuristicDisclosure: validatedStatisticalModel
+        ? "Discrete count probability validated on a temporal holdout; final portfolio selection remains an operational rule."
+        : "Operational portfolio rule applied to an existing probability model.",
       quoteAvailability: "AVAILABLE_AT_2026_10_09_SNAPSHOT_CURRENT_NOT_VERIFIED",
     } };
   });

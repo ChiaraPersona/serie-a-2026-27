@@ -273,7 +273,7 @@ function stableSort(left, right) {
   return `${left.betSelection?.market?.family || ""}|${left.label || ""}|${left.selectionId}`.localeCompare(`${right.betSelection?.market?.family || ""}|${right.label || ""}|${right.selectionId}`, "it");
 }
 
-function buildMd06MarketCatalog({ predictionsData, odds, matches, schedinaSlips, probableLineups, officialLineups, matchday = 6 }) {
+function buildMd06MarketCatalog({ predictionsData, odds, matches, schedinaSlips, probableLineups, officialLineups, statisticalModels = null, matchday = 6 }) {
   const code = matchdayCode(matchday);
   const predictions = predictionsData.predictions.filter(prediction => prediction.matchId.endsWith(`-md-${code}`));
   const matchById = new Map(matches.map(match => [match.id, match]));
@@ -410,7 +410,7 @@ function buildMd06MarketCatalog({ predictionsData, odds, matches, schedinaSlips,
     }
   }
 
-  const statisticalCoverage = reconstructStatisticalCoverage({ odds, existingSelectionIds: retainedIds });
+  const statisticalCoverage = reconstructStatisticalCoverage({ odds, existingSelectionIds: retainedIds, statisticalModels });
   for (const leg of statisticalCoverage.addableLegs) retainedIds.add(leg.selectionId);
   const selections = [...retained, ...groupA, ...dnb, ...groupB2, ...statisticalCoverage.addableLegs];
   const duplicates = selections.filter((leg, index) => selections.findIndex(item => item.selectionId === leg.selectionId) !== index);

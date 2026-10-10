@@ -38,6 +38,7 @@ const settlementRecords = read("data/sources/card-settlement-records-2026-10-03.
 const operational = read("output/reports/serie-a-md06-operational-player-analysis-2026-10-09.json");
 const probableLineups = read("data/sources/probable-lineups-md6-2026-27.json");
 const officialLineups = read("data/sources/official-lineups-2026-27.json");
+const statisticalModels = read("data/analysis/serie-a-md06-statistical-models-2026-10-10.json");
 const md5ReportPath = path.join(root, "output/reports/serie-a-md05-betting-decision-review-2026-10-09.json");
 const preservedMd5GeneratedAt = fs.existsSync(md5ReportPath) ? JSON.parse(fs.readFileSync(md5ReportPath, "utf8")).generatedAt : null;
 const matchById = new Map(matches.map(match => [match.id, match]));
@@ -534,6 +535,7 @@ const marketCatalog = buildMd06MarketCatalog({
   schedinaSlips: slips,
   probableLineups,
   officialLineups,
+  statisticalModels,
   matchday: 6,
 });
 
@@ -721,8 +723,8 @@ if (mode === "reports") {
     sourceUrl: odds.sourceUrl,
     oddsRetrievedAt: odds.retrievedAt,
     modelVersion: predictionsData.engine.version,
-    methodology: "Catalogo separato dai portafogli decisionali e costruito senza modificare il modello: DNB da confronto canonico V2 con rimborso sul pareggio; Multigoal e Over squadra B2 derivati dalla matrice punteggi e dalle sensibilità esistenti. Under, falli individuali, corner per tempo e doppia chance 12 sono esclusi; le metriche mancanti restano N/D.",
-    selectionRule: "Tutte le selezioni tecnicamente valide del catalogo sono visualizzabili, anche con EV negativo. I portafogli non limitano la copertura; DNB solo canonici e B2 solo per predicati esatti già supportati dalla matrice punteggi. B3 e B4 restano esclusi.",
+    methodology: "Catalogo separato dai portafogli decisionali: DNB e mercati gol dal Prediction Engine V2; tiri, SOT e corner full-time da distribuzioni discrete validate su holdout temporale walk-forward di 190 partite. Under, falli individuali, corner per tempo, doppia chance 12, DUO e contratti non riconciliati restano esclusi.",
+    selectionRule: "Una sola soglia per identita canonica; quota e contratto verificati, probabilita validata, EV centrale almeno +2% e downside prudente non negativo per i mercati statistici. Nessun riempimento forzato per raggiungere un numero prestabilito.",
     coverage: { profilesEvaluated: slips.length, qualifiedProfiles: 0, unavailableProfiles: 0 },
     slips,
     marketCatalog,

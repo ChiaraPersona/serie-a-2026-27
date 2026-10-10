@@ -148,7 +148,54 @@ function statisticalCoverageLeg({ row, event, market, selection, odds }) {
   return leg;
 }
 
-function reconstructStatisticalCoverage({ odds, existingSelectionIds = new Set() }) {
+function applyValidatedEvaluation(leg, evaluation) {
+  if (!evaluation) return leg;
+  const copy = JSON.parse(JSON.stringify(leg));
+  copy.modelProbabilityPct = evaluation.modelProbabilityPct;
+  copy.fairOdds = evaluation.fairOdds;
+  copy.expectedValuePct = evaluation.expectedValuePct;
+  copy.evStatus = "EV_CALCOLABILE";
+  copy.compatibility = "COMPATIBILE";
+  copy.evidenceLabel = `${evaluation.distribution} discreta · holdout temporale 190 gare`;
+  copy.catalogOrigin = "statistical-model-validated";
+  copy.coverageClassification = "A";
+  copy.betSelection.operational.reliability = {
+    level: evaluation.reliability || "Media",
+    reason: evaluation.reliability === "Bassa"
+      ? `Distribuzione validata su holdout temporale, ma storico Serie A precedente assente per: ${(evaluation.limitedHistoryTeams || []).join(", ")}; deduzione prudenziale ampliata.`
+      : "Distribuzione discreta validata su holdout temporale walk-forward di 190 partite; incertezza applicata alla probabilita prudente.",
+  };
+  copy.betSelection.evaluation = {
+    modelProbabilityPct: evaluation.modelProbabilityPct,
+    fairOdds: evaluation.fairOdds,
+    expectedValuePct: evaluation.expectedValuePct,
+    status: "EV_CALCOLABILE",
+    kind: "DISCRETE_COUNT_TEMPORAL_HOLDOUT",
+    prudentProbabilityPct: evaluation.prudentProbabilityPct,
+    conservativeExpectedValuePct: evaluation.conservativeExpectedValuePct,
+    probabilitySemantics: "ABSOLUTE_EVENT",
+    fairOddsBasis: "CENTRAL_DISCRETE_PROBABILITY",
+    expectedValueBasis: "CENTRAL_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+    provenance: {
+      source: "data/analysis/serie-a-md06-statistical-models-2026-10-10.json",
+      modelTarget: `statistical:${evaluation.subfamily}`,
+      distribution: evaluation.distribution,
+      mean: evaluation.mean,
+      uncertaintyDeductionPp: evaluation.uncertaintyDeductionPp,
+      validation: evaluation.validation,
+    },
+  };
+  copy.betSelection.compatibility = { status: "COMPATIBILE", reason: "Contratto Sisal full-time riconciliato con il conteggio storico e distribuzione discreta validata fuori campione.", modelTarget: `statistical:${evaluation.subfamily}`, bookmakerTarget: `${copy.market} · ${copy.variant || copy.selection}` };
+  copy.betSelection.warnings = (copy.betSelection.warnings || []).filter(warning => !["STATISTICAL_GATE_NOT_PASSED", "RELIABILITY_NOT_EVALUABLE"].includes(warning));
+  copy.betSelection.risks = [
+    `UNCERTAINTY_DEDUCTION_${evaluation.uncertaintyDeductionPp}_PP`,
+    ...(evaluation.limitedHistoryTeams?.length ? [`LIMITED_PRIOR_SERIE_A_HISTORY_${evaluation.limitedHistoryTeams.join("_").toUpperCase()}`] : []),
+    "CURRENT_QUOTE_AVAILABILITY_FROM_2026_10_09_SNAPSHOT",
+  ];
+  return copy;
+}
+
+function reconstructStatisticalCoverage({ odds, existingSelectionIds = new Set(), statisticalModels = null }) {
   const rows = [];
   const addableLegs = [];
   for (const event of odds.events || []) for (const market of event.markets || []) for (const selection of market.selections || []) {
@@ -157,7 +204,10 @@ function reconstructStatisticalCoverage({ odds, existingSelectionIds = new Set()
     const selectionId = `bet:${String(odds.provider).toLowerCase()}:${event.canonicalMatchId}:${selection.providerSelectionId}`;
     const enriched = { ...row, selectionId, alreadyPresent: existingSelectionIds.has(selectionId) };
     rows.push(enriched);
-    if (row.state === STATES.B && !enriched.alreadyPresent) addableLegs.push(statisticalCoverageLeg({ row, event, market, selection, odds }));
+    if (row.state === STATES.B && !enriched.alreadyPresent) {
+      const base = statisticalCoverageLeg({ row, event, market, selection, odds });
+      addableLegs.push(applyValidatedEvaluation(base, statisticalModels?.evaluations?.[String(selection.providerSelectionId)]));
+    }
   }
   const countBy = getter => rows.reduce((counts, row) => { const key = getter(row); counts[key] = (counts[key] || 0) + 1; return counts; }, {});
   return {
@@ -168,10 +218,12 @@ function reconstructStatisticalCoverage({ odds, existingSelectionIds = new Set()
       states: countBy(row => row.state),
       families: countBy(row => row.family),
       addableNotModelled: addableLegs.length,
+      validatedDiscreteModels: addableLegs.filter(leg => leg.coverageClassification === "A").length,
+      remainingNotModelled: addableLegs.filter(leg => leg.coverageClassification !== "A").length,
       alreadyPresent: rows.filter(row => row.alreadyPresent).length,
       currentAvailability: "NOT_VERIFIED_AFTER_SNAPSHOT",
     },
   };
 }
 
-module.exports = { STATES, ADDABLE, classifyCandidate, reconstructStatisticalCoverage, statisticalCoverageLeg };
+module.exports = { STATES, ADDABLE, classifyCandidate, reconstructStatisticalCoverage, statisticalCoverageLeg, applyValidatedEvaluation };

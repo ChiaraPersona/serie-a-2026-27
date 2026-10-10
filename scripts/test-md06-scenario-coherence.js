@@ -37,12 +37,12 @@ const counts = rows.reduce((result, row) => ({ ...result, [row.scenarioAnalysis.
 assert.deepEqual(counts, {
   [CLASSIFICATIONS.ALTERNATIVE]: 50,
   [CLASSIFICATIONS.COHERENT]: 20,
-  [CLASSIFICATIONS.MULTI]: 297,
-  [CLASSIFICATIONS.UNDETERMINED]: 1079,
+  [CLASSIFICATIONS.MULTI]: 968,
+  [CLASSIFICATIONS.UNDETERMINED]: 408,
 }, "Totali classificazione inattesi");
 
 const unmodelled = rows.filter(row => row.betSelection?.evaluation?.status === "NOT_MODELLED");
-assert.equal(unmodelled.length, 1079);
+assert.equal(unmodelled.length, 408);
 assert(unmodelled.every(row => row.scenarioAnalysis.classification === CLASSIFICATIONS.UNDETERMINED), "NOT_MODELLED non deve ricevere una probabilità o classificazione assertiva");
 assert(unmodelled.every(row => row.scenarioAnalysis.eventProbabilityPct === null), "NOT_MODELLED non deve ricevere probabilità inventate");
 
@@ -71,4 +71,4 @@ assert.equal(report.numericalAudit.inconsistencies.length, 0);
 assert.equal(report.numericalAudit.b2Checked, 203);
 assert.equal(report.numericalAudit.canonical1x2Checked, 30);
 
-console.log("OK coerenza scenario MD06: 10 partite, 1446 selezioni, 20 coerenti, 50 alternative, 297 multi-scenario, 1079 N/D");
+console.log("OK coerenza scenario MD06: 10 partite, 1446 selezioni, 20 coerenti, 50 alternative, 968 multi-scenario, 408 N/D");

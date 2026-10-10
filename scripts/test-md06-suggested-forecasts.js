@@ -12,22 +12,29 @@ const report = JSON.parse(fs.readFileSync(path.join(root, "output/reports/serie-
 const ui = fs.readFileSync(path.join(root, "js/pages/betting.js"), "utf8");
 const rows = schedina.marketCatalog.matches.flatMap(match => match.selections);
 const suggestions = rows.filter(leg => leg.suggestionAnalysis?.suggested);
-const added = rows.filter(leg => leg.catalogOrigin === "statistical-b-not-modelled");
+const added = rows.filter(leg => String(leg.catalogOrigin || "").startsWith("statistical-"));
+const validated = added.filter(leg => leg.catalogOrigin === "statistical-model-validated");
+const blocked = added.filter(leg => leg.catalogOrigin === "statistical-b-not-modelled");
 
 assert.equal(schedina.marketCatalog.schemaVersion, 4);
 assert.equal(rows.length, 1446);
 assert.equal(new Set(rows.map(leg => leg.selectionId)).size, rows.length);
 assert.equal(added.length, 1063);
-assert(added.every(leg => leg.coverageClassification === "B" && leg.betSelection.evaluation.status === "NOT_MODELLED"));
-assert(!added.some(leg => leg.suggestionAnalysis.suggested), "NOT_MODELLED promosso nei pronostici");
-assert.equal(suggestions.length, 12);
+assert.equal(validated.length, 671);
+assert.equal(blocked.length, 392);
+assert(blocked.every(leg => leg.coverageClassification === "B" && leg.betSelection.evaluation.status === "NOT_MODELLED"));
+assert(!blocked.some(leg => leg.suggestionAnalysis.suggested), "NOT_MODELLED promosso nei pronostici");
+assert(validated.every(leg => leg.coverageClassification === "A" && leg.betSelection.evaluation.kind === "DISCRETE_COUNT_TEMPORAL_HOLDOUT"));
+assert.equal(suggestions.length, 32);
 assert(suggestions.every(leg => leg.suggestionAnalysis.version === 2));
 assert(suggestions.every(leg => leg.betSelection.evaluation.status !== "NOT_MODELLED"));
 assert(suggestions.every(leg => Number.isFinite(leg.betSelection.quote.decimal) && leg.betSelection.quote.availability === "AVAILABLE_AT_SNAPSHOT"));
 assert(suggestions.every(leg => Number(leg.betSelection.evaluation.expectedValuePct) >= 2));
 assert(suggestions.every(leg => Number.isFinite(conservativeExpectedValuePct(leg))));
 assert(suggestions.every(leg => ["Alta", "Media", "Bassa"].includes(leg.betSelection.operational.reliability.level)));
-assert(!suggestions.some(leg => ["shots", "sot", "corners", "cards"].includes(leg.suggestionAnalysis.family)));
+assert(suggestions.some(leg => ["shots", "sot", "corners"].includes(leg.suggestionAnalysis.family)));
+assert(!suggestions.some(leg => leg.suggestionAnalysis.family === "cards"));
+assert(suggestions.filter(leg => ["shots", "sot", "corners"].includes(leg.suggestionAnalysis.family)).every(leg => leg.betSelection.quote.decimal <= 4 && leg.betSelection.evaluation.conservativeExpectedValuePct >= 0));
 assert(suggestions.every(leg => !Object.hasOwn(leg.suggestionAnalysis, "motivation")), "Le motivazioni descrittive non devono essere serializzate");
 
 for (const match of schedina.marketCatalog.matches) {
@@ -64,9 +71,9 @@ assert.match(ui, />EV</);
 assert.equal(report.invariants.certifiedSelections, 383);
 assert(report.invariants.certifiedSelectionIdsPreserved && report.invariants.certifiedContractsUnchanged);
 assert.equal(report.invariants.catalogSelections, 1446);
-assert.equal(report.coverage.previousSuggestions ?? report.coverage.comparison.previousSuggestions, 24);
-assert.equal(report.coverage.totalSuggestions, 12);
-assert.equal(report.statisticalMarkets.families.reduce((sum, row) => sum + row.selected, 0), 0);
-assert(report.thresholdCases.some(item => item.canonicalIdentity === "goals:match:over" && item.alternatives.some(leg => leg.label === "Over 2,5 gol" && leg.selected)));
+assert.equal(report.coverage.previousSuggestions ?? report.coverage.comparison.previousSuggestions, 12);
+assert.equal(report.coverage.totalSuggestions, 32);
+assert.equal(report.statisticalMarkets.families.reduce((sum, row) => sum + row.selected, 0), 20);
+assert(report.thresholdCases.some(item => ["shots", "sot", "corners"].some(family => item.canonicalIdentity.startsWith(`${family}:`)) && item.alternatives.some(leg => leg.selected)));
 
-console.log("OK selezione definitiva MD06: catalogo 1446 invariato, 12 pronostici quotati/modellati, soglie canoniche e UI unica");
+console.log("OK selezione definitiva MD06: 383 contratti preservati, 32 pronostici, modelli discreti validati, soglie canoniche e UI unica");
