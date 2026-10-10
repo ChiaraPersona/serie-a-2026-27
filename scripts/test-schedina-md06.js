@@ -102,13 +102,13 @@ assert.deepEqual(catalog.totals, {
   finalSelections: 1446,
   evaluated: 367,
   notModelled: 1079,
-  suggestions: 24,
+  suggestions: 12,
   suggestionsByFamily: {
     shots: 0,
     sot: 0,
     corners: 0,
     cards: 0,
-    "goals-results": 24,
+    "goals-results": 12,
     other: 0,
   },
   scenarioCounts: {
@@ -240,7 +240,10 @@ assert(page.includes("data-mycombo-open-all"));
 assert(page.includes("data.marketCatalog?.matches"), "La workspace MD6 non usa il catalogo normalizzato");
 assert(!page.includes("data-market-filter"), "La barra filtri deve essere rimossa");
 assert(!page.includes("data-market-sort"), "Il menu di ordinamento deve essere rimosso");
-assert(page.includes("markets.sort(marketEntryOrder)"), "Ordinamento automatico per EV assente");
+assert(page.includes("markets.sort((left,right)=>Number(left.leg.suggestionAnalysis.rank)-Number(right.leg.suggestionAnalysis.rank))"), "Ordinamento deterministico del motore assente");
+assert(!page.includes("data-market-mode="), "La modalità catalogo completo non deve essere disponibile");
+assert(!page.includes("Pronostici suggeriti"), "La vecchia modalità suggerita non deve essere disponibile");
+assert(!page.includes("Tutti i mercati"), "Il catalogo completo non deve essere esposto");
 assert(!page.includes("MyCombo · scegli tra"));
 assert(!page.includes("betting-leg-number"),"la numerazione decorativa delle selezioni non deve essere renderizzata");
 

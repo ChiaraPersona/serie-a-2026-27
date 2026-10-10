@@ -14,7 +14,7 @@ const predictionByMatch = new Map(predictions.map(prediction => [prediction.matc
 const catalog = schedina.marketCatalog;
 const rows = catalog.matches.flatMap(match => match.selections);
 
-assert.equal(catalog.schemaVersion, 3, "Il catalogo deve esporre scenario e suggerimenti schema v3");
+assert.equal(catalog.schemaVersion, 4, "Il catalogo deve esporre scenario e selezione definitiva schema v4");
 assert.equal(catalog.matches.length, 10, "Devono essere presenti dieci scenari partita");
 assert.equal(rows.length, 1446, "Catalogo ampliato inatteso");
 assert.equal(new Set(rows.map(row => row.selectionId)).size, 1446, "I selectionId devono restare unici");

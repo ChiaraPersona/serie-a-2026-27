@@ -28,32 +28,30 @@ async function verifyViewport(browser, width, height) {
   await page.reload({ waitUntil: "networkidle" });
 
   assert.equal(await page.locator("[data-match-panel]").count(), 10, `${width}px: partite mancanti`);
-  assert.equal(await page.locator('[data-market-mode="suggested"]').getAttribute("aria-pressed"), "true", `${width}px: modalità suggerita non predefinita`);
-  assert.equal(await page.locator('[data-market-mode-panel="suggested"] [data-selection-row][data-suggested="true"]').count(), 24, `${width}px: suggerimenti inattesi`);
-  assert.equal(await page.locator('[data-market-mode-panel="all"] [data-selection-row]').count(), 1446, `${width}px: catalogo completo inatteso`);
-  assert.equal(await page.locator('.betting-suggestion-family[data-suggestion-family="shots"],.betting-suggestion-family[data-suggestion-family="sot"],.betting-suggestion-family[data-suggestion-family="corners"],.betting-suggestion-family[data-suggestion-family="cards"]').count(), 0, `${width}px: famiglia non validata promossa`);
-  const suggestedMetrics = await page.locator('[data-market-mode-panel="suggested"] [data-suggested="true"]').evaluateAll(rows => rows.map(row => ({ probability: Number(row.dataset.probability), odds: Number(row.dataset.odds), reason: row.querySelector(".betting-suggestion-reason")?.textContent || "", evDisplay: getComputedStyle(row.querySelector(".betting-market-ev")).display })));
-  assert(suggestedMetrics.every(row => row.probability >= 50 && Number.isFinite(row.odds) && row.odds >= 1 && row.reason.includes("P prudente") && row.evDisplay === "none"), `${width}px: suggerimento senza prova o con EV visibile`);
-
-  await page.locator('[data-market-mode="all"]').click();
-  assert.equal(await page.locator('[data-market-mode="all"]').getAttribute("aria-pressed"), "true", `${width}px: modalità completa non attivata`);
-  assert.equal(await page.locator('[data-market-mode-panel="all"]').first().getAttribute("hidden"), null, `${width}px: catalogo completo non attivato`);
-  assert.notEqual(await page.locator('[data-market-mode-panel="suggested"]').first().getAttribute("hidden"), null, `${width}px: suggerimenti non nascosti`);
-  await page.locator('[data-market-mode="suggested"]').click();
+  assert.equal(await page.locator("[data-selected-forecast=true]").count(), 12, `${width}px: pronostici selezionati inattesi`);
+  assert.equal(await page.locator("[data-market-mode]").count(), 0, `${width}px: selettore modalità ancora presente`);
+  assert.equal(await page.locator("[data-market-mode-panel]").count(), 0, `${width}px: pannello catalogo completo ancora presente`);
+  assert.equal(await page.locator(".betting-suggestion-reason").count(), 0, `${width}px: descrizioni tecniche ancora presenti`);
+  assert.equal(await page.getByText("Tutti i mercati", { exact: true }).count(), 0, `${width}px: catalogo completo ancora accessibile`);
+  assert.equal(await page.getByText("Pronostici suggeriti", { exact: true }).count(), 0, `${width}px: vecchia modalità ancora visibile`);
+  const selectedMetrics = await page.locator("[data-selected-forecast=true]").evaluateAll(rows => rows.map(row => ({ probability: Number(row.dataset.probability), odds: Number(row.dataset.odds), ev: Number(row.dataset.ev), metricLabels: [...row.querySelectorAll(".betting-market-metric small")].map(node => node.textContent.trim()), text: row.textContent })));
+  assert(selectedMetrics.every(row => Number.isFinite(row.probability) && Number.isFinite(row.odds) && row.odds >= 1 && row.ev >= 2), `${width}px: pronostico senza probabilità, quota o EV`);
+  assert(selectedMetrics.every(row => JSON.stringify(row.metricLabels) === JSON.stringify(["Probabilità", "Quota Sisal", "EV"])), `${width}px: metriche UI non minimali`);
+  assert(selectedMetrics.every(row => !/P centrale|P prudente|sensibilit|affidabilit|compatibile con/i.test(row.text)), `${width}px: testo tecnico esposto`);
 
   await page.locator("[data-match-open-all]").click();
   const inter = page.locator('[data-match-id="inter-parma-2026-27-md-06"]');
-  const interPick = inter.locator('[data-market-mode-panel="suggested"] [data-selection-label="Inter vincente"]');
-  assert.equal(await interPick.count(), 1, `${width}px: Inter vincente non suggerita`);
-  assert.equal(await inter.locator('[data-market-mode-panel="suggested"] [data-selection-label="Parma vincente"]').count(), 0, `${width}px: Parma vincente suggerita impropriamente`);
-  await interPick.click();
-  assert.equal(await page.locator("[data-personal-count]").first().innerText(), "1", `${width}px: aggiunta suggerimento fallita`);
+  assert.equal(await inter.locator('[data-selection-label="Parma vincente"]').count(), 0, `${width}px: esito alternativo Parma vincente promosso`);
+  const firstPick = inter.locator("[data-selected-forecast=true]").first();
+  assert(await firstPick.count(), `${width}px: nessun pronostico selezionabile in Inter-Parma`);
+  await firstPick.click();
+  assert.equal(await page.locator("[data-personal-count]").first().innerText(), "1", `${width}px: aggiunta pronostico fallita`);
   await page.reload({ waitUntil: "networkidle" });
   assert.equal(await page.locator("[data-personal-count]").first().innerText(), "1", `${width}px: persistenza fallita`);
-  const firstSuggestedPanel = page.locator("[data-match-panel]").first();
-  if (!(await firstSuggestedPanel.isOpen?.())) await firstSuggestedPanel.evaluate(panel => { panel.open = true; });
-  await firstSuggestedPanel.scrollIntoViewIfNeeded();
-  await page.screenshot({ path: path.join(output, `schedina-suggestions-${width}x${height}.png`) });
+  await page.locator("[data-match-open-all]").click();
+  const firstPanel = page.locator("[data-match-panel]").first();
+  await firstPanel.scrollIntoViewIfNeeded();
+  await page.screenshot({ path: path.join(output, `schedina-definitive-${width}x${height}.png`) });
 
   if (width < 1180) {
     await page.locator("[data-personal-open]").click();
@@ -72,7 +70,7 @@ async function verifyViewport(browser, width, height) {
   assert.deepEqual(pageErrors, [], `${width}px: errori JavaScript`);
   assert.deepEqual(consoleErrors, [], `${width}px: errori console`);
   await context.close();
-  console.log(`OK suggerimenti MD6 browser ${width}x${height}`);
+  console.log(`OK selezione definitiva MD6 browser ${width}x${height}`);
 }
 
 (async () => {

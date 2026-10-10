@@ -68,13 +68,14 @@ assert.match(bettingPage, /data-match-close-all/, "Schedina MD6: chiusura global
 assert.doesNotMatch(bettingPage, /data-market-filter/, "Schedina MD6: la barra filtri deve essere rimossa");
 assert.doesNotMatch(bettingPage, /data-market-sort/, "Schedina MD6: il menu di ordinamento deve essere rimosso");
 assert.match(bettingPage, /data\.marketCatalog\?\.matches/, "Schedina MD6: catalogo normalizzato non collegato");
-assert.match(bettingPage, /markets\.sort\(marketEntryOrder\)/, "Schedina MD6: ordinamento EV automatico assente");
+assert.match(bettingPage, /markets\.sort\(\(left,right\)=>Number\(left\.leg\.suggestionAnalysis\.rank\)-Number\(right\.leg\.suggestionAnalysis\.rank\)\)/, "Schedina MD6: ordinamento deterministico del motore assente");
 assert.match(bettingPage, /comboLegs\.filter\(hasVerifiedPlayableQuote\)/, "Schedina MD6: MyCombo senza quota verificata non filtrate");
-assert.match(bettingPage, /leftMissing!==rightMissing/, "Schedina MD6: metriche mancanti non gestite dall'ordinamento stabile");
+assert.doesNotMatch(bettingPage, /data-market-mode=|Tutti i mercati|Pronostici suggeriti/, "Schedina MD6: vecchie modalità ancora presenti");
 assert.doesNotMatch(bettingPage, /MyCombo · scegli tra|Seleziona o deseleziona gli esiti da combinare|Questi pulsanti appartengono esclusivamente/, "Schedina MD6: testo MyCombo rimosso ancora presente");
 const matchdayWorkspace = bettingPage.slice(bettingPage.indexOf("function matchdayWorkspaceContent"), bettingPage.indexOf("function archiveRoundContent"));
 assert.doesNotMatch(matchdayWorkspace, />WATCH<|betting-match-watch|betting-match-mycombo/, "Schedina MD6: WATCH o MyCombo ancora separati visivamente");
-assert.match(matchdayWorkspace, /selezioni disponibili/, "Schedina MD6: conteggio delle sole selezioni disponibili assente");
+assert.match(matchdayWorkspace, /pronostici selezionati/, "Schedina MD6: conteggio dei pronostici selezionati assente");
+assert.doesNotMatch(matchdayWorkspace, /P centrale|P prudente|sensibilità V2|betting-suggestion-reason/, "Schedina MD6: descrizioni tecniche ancora presenti");
 assert.match(bettingPage, /role="button" tabindex="0" data-selection-row data-personal-pick=/, "Schedina MD6: l'intera riga non è selezionabile da tastiera");
 assert.match(bettingPage, /event\.key==="Enter"\|\|event\.key===" "/, "Schedina MD6: toggle tastiera della riga assente");
 assert.match(bettingPage, /Quota combinata teorica/, "Schedina personale: quota combinata teorica assente");

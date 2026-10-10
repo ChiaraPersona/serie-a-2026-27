@@ -431,11 +431,11 @@ function buildMd06MarketCatalog({ predictionsData, odds, matches, schedinaSlips,
     return counts;
   }, Object.fromEntries(Object.values(CLASSIFICATIONS).map(key => [key, 0])));
   return {
-    schemaVersion: 3,
+    schemaVersion: 4,
     matchday,
     generatedAt: new Date().toISOString(),
     sources: { predictionsGeneratedAt: predictionsData.generatedAt, modelVersion: predictionsData.engine?.version || predictions[0]?.engineVersion || null, oddsRetrievedAt: odds.retrievedAt, oddsSnapshot: "data/normalized/odds/sisal/serie-a.json", probableLineupsImportedAt: probableLineups?.importedAt || null, probableLineupsProvider: probableLineups?.provider || null, officialLineupsRetrievedAt: officialLineups?.retrievedAt || null, officialFixturesAvailable: (officialLineups?.fixtures || []).filter(fixture => fixture.matchday === matchday).length, scenarioCoherenceVersion: 1, scenarioCoherenceBasis: "Frozen Engine V2 probabilities and deterministic event logic; odds and EV excluded" },
-    rules: { underAllowed: false, individualPlayerFoulsAllowed: false, cornerPeriodsAllowed: false, doubleChance12Allowed: false, fullMatchCornerOversAllowed: true, fullMatchTeamCornersAllowed: true, fullTimeCorner1X2Allowed: true, negativeExpectedValueAllowed: true, topNLimit: null },
+    rules: { underAllowed: false, individualPlayerFoulsAllowed: false, cornerPeriodsAllowed: false, doubleChance12Allowed: false, fullMatchCornerOversAllowed: true, fullMatchTeamCornersAllowed: true, fullTimeCorner1X2Allowed: true, catalogAllowsNegativeExpectedValue: true, selectedForecastMinimumOperativeExpectedValuePct: 2, selectedForecastTopNLimit: null, oneSelectionPerCanonicalThresholdIdentity: true },
     totals: { initialVisible: initial.length, excludedByPolicy: excluded.filter(item => item.stage === "policy").length, excludedByLineup: excluded.filter(item => item.stage === "lineup").length, retainedInitial: retained.length, groupARequested: 128, groupARecovered: groupA.length, groupARejected: groupARejected.length, dnbRequested: 20, dnbRecovered: dnb.length, dnbRejected: dnbRejected.length, groupB2Requested: 203, groupB2Recovered: groupB2.length, groupB2Rejected: groupB2Rejected.length, statisticalBAdded: statisticalCoverage.addableLegs.length, finalSelections: all.length, evaluated: all.filter(leg => finite(leg.betSelection?.evaluation?.expectedValuePct)).length, notModelled: all.filter(leg => !finite(leg.betSelection?.evaluation?.expectedValuePct)).length, suggestions: suggested.totals.suggestions, suggestionsByFamily: suggested.totals.byFamily, scenarioCounts },
     statisticalCoverage: statisticalCoverage.summary,
     excluded,

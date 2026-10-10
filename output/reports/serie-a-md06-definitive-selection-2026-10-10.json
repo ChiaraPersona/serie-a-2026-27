@@ -1,0 +1,1408 @@
+{
+  "schemaVersion": 2,
+  "reportType": "SERIE_A_MD06_DEFINITIVE_FORECAST_SELECTION",
+  "generatedAt": "2026-10-10T09:09:55.071Z",
+  "sources": {
+    "oddsSnapshot": "data/normalized/odds/sisal/serie-a.json",
+    "oddsRetrievedAt": "2026-10-09T10:43:00.203Z",
+    "predictionSnapshot": "data/normalized/predictions.json",
+    "predictionGeneratedAt": "2026-10-09T19:08:03.078Z",
+    "engineVersion": "4.13.0",
+    "phase5B": "output/reports/serie-a-md06-phase-5b2-2026-10-09.md",
+    "phase5C": "output/reports/serie-a-md06-phase-5c-volume-validation-2026-10-09.md",
+    "phase5D": "output/reports/serie-a-md06-phase-5d-duo-audit-2026-10-09.md",
+    "phase5E": "output/reports/serie-a-md06-phase-5e-final-audit-2026-10-09.md"
+  },
+  "availabilityDisclosure": "Quote verificate nello snapshot Sisal del 9 ottobre 2026; disponibilità corrente non verificata.",
+  "invariants": {
+    "certifiedSelections": 383,
+    "certifiedSelectionIdsPreserved": true,
+    "certifiedContractHashBefore": "9bc511e5edf5e6ca066de3ac03fc4747dd97a5534967cacb010d11c1bdea5693",
+    "certifiedContractHashAfter": "9bc511e5edf5e6ca066de3ac03fc4747dd97a5534967cacb010d11c1bdea5693",
+    "certifiedContractsUnchanged": true,
+    "catalogSelections": 1446,
+    "evaluatedSelections": 367,
+    "notModelledSelections": 1079
+  },
+  "previousEngineAudit": {
+    "totalSuggestions": 24,
+    "criteria": [
+      "Quota verificata nello snapshot",
+      "Probabilità assoluta V2",
+      "Affidabilità Alta o Media",
+      "Probabilità centrale almeno 50%",
+      "Probabilità prudente almeno 50%",
+      "Scenario coerente o multi-scenario",
+      "Score mask disponibile",
+      "Esclusione integrale di tiri, SOT, corner e cartellini"
+    ],
+    "ordering": [
+      "Probabilità prudente decrescente",
+      "Probabilità centrale decrescente",
+      "selectionId stabile"
+    ],
+    "quantityLimit": null,
+    "deficiencies": [
+      "Quota ed EV non partecipavano alla scelta o all'ordinamento",
+      "Soglia universale del 50%",
+      "Deduplicazione per famiglie troppo larghe",
+      "Catalogo completo esposto nell'interfaccia"
+    ]
+  },
+  "selectionPolicy": {
+    "status": "OPERATIONAL_HEURISTIC_NOT_STATISTICALLY_VALIDATED",
+    "eligibility": [
+      "Quota e identità provider verificate",
+      "Probabilità V2 esistente e non NOT_MODELLED",
+      "EV operativo almeno +2% secondo la base già serializzata",
+      "Probabilità prudente disponibile",
+      "Affidabilità Alta, Media o Bassa valutata",
+      "Per affidabilità Bassa: EV prudente non negativo, P prudente almeno 25%, quota non oltre 4",
+      "Per affidabilità Alta/Media: downside prudente non inferiore a -10%, P prudente almeno 20%, quota non oltre 6",
+      "Scenario coerente o multi-scenario",
+      "Settlement assoluto oppure DNB con push esplicito"
+    ],
+    "rankingTuple": [
+      "EV prudente non negativo",
+      "Qualità dati",
+      "EV prudente",
+      "EV operativo",
+      "Probabilità prudente",
+      "Probabilità centrale",
+      "selectionId"
+    ],
+    "deduplication": [
+      "Una sola scelta per identità canonica di soglia",
+      "Una sola forma per la stessa tesi direzionale di risultato",
+      "Una sola scelta per eventi logicamente equivalenti",
+      "Nessuna implicazione logica diretta tra due scelte",
+      "Nessuna coppia mutuamente esclusiva"
+    ],
+    "topNLimit": null
+  },
+  "coverage": {
+    "totalSuggestions": 12,
+    "averagePerMatch": 1.2,
+    "byFamily": {
+      "goals-results": 12
+    },
+    "perMatch": [
+      {
+        "matchId": "genoa-fiorentina-2026-27-md-06",
+        "fixture": "Genoa – Fiorentina",
+        "catalog": 155,
+        "quoted": 155,
+        "evaluated": 32,
+        "notModelled": 123,
+        "positiveEv": 3,
+        "previousSuggestions": 3,
+        "selected": 0,
+        "exclusions": {
+          "NOT_COHERENT_WITH_PREVALENT_SCENARIO": 128,
+          "LOW_RELIABILITY_REQUIRES_NON_NEGATIVE_CONSERVATIVE_EV": 18,
+          "ROBUST_PROBABILITY_NOT_AVAILABLE": 125,
+          "RELIABILITY_NOT_ASSESSED": 125,
+          "CONSERVATIVE_EV_NOT_AVAILABLE": 125,
+          "OPERATIVE_EV_BELOW_TWO_PERCENT": 29,
+          "CONSERVATIVE_DOWNSIDE_TOO_LARGE": 10,
+          "NOT_MODELLED": 123,
+          "SETTLEMENT_NOT_SUPPORTED": 123,
+          "NO_COMPARABLE_SCORE_EVENT": 122,
+          "STATISTICAL_FAMILY_NOT_VALIDATED": 122,
+          "TAIL_ODDS_TOO_HIGH_FOR_RELIABILITY": 33
+        },
+        "selectionIds": []
+      },
+      {
+        "matchId": "inter-parma-2026-27-md-06",
+        "fixture": "Inter – Parma",
+        "catalog": 150,
+        "quoted": 150,
+        "evaluated": 34,
+        "notModelled": 116,
+        "positiveEv": 12,
+        "previousSuggestions": 2,
+        "selected": 3,
+        "exclusions": {
+          "NOT_COHERENT_WITH_PREVALENT_SCENARIO": 121,
+          "TAIL_PROBABILITY_TOO_LOW_FOR_RELIABILITY": 4,
+          "TAIL_ODDS_TOO_HIGH_FOR_RELIABILITY": 37,
+          "CANONICAL_THRESHOLD_ALREADY_SELECTED": 3,
+          "LOGICAL_IMPLICATION_WITH_HIGHER_RANKED_SELECTION": 1,
+          "OPERATIVE_EV_BELOW_TWO_PERCENT": 22,
+          "LOW_RELIABILITY_REQUIRES_NON_NEGATIVE_CONSERVATIVE_EV": 15,
+          "CONSERVATIVE_DOWNSIDE_TOO_LARGE": 7,
+          "NOT_MODELLED": 116,
+          "ROBUST_PROBABILITY_NOT_AVAILABLE": 116,
+          "RELIABILITY_NOT_ASSESSED": 116,
+          "SETTLEMENT_NOT_SUPPORTED": 116,
+          "CONSERVATIVE_EV_NOT_AVAILABLE": 116,
+          "NO_COMPARABLE_SCORE_EVENT": 115,
+          "STATISTICAL_FAMILY_NOT_VALIDATED": 115
+        },
+        "selectionIds": [
+          "bet:sisal:inter-parma-2026-27-md-06:5337225972",
+          "bet:sisal:inter-parma-2026-27-md-06:5337155399",
+          "bet:sisal:inter-parma-2026-27-md-06:5337155082"
+        ]
+      },
+      {
+        "matchId": "napoli-frosinone-2026-27-md-06",
+        "fixture": "Napoli – Frosinone",
+        "catalog": 152,
+        "quoted": 152,
+        "evaluated": 37,
+        "notModelled": 115,
+        "positiveEv": 8,
+        "previousSuggestions": 0,
+        "selected": 1,
+        "exclusions": {
+          "NOT_COHERENT_WITH_PREVALENT_SCENARIO": 120,
+          "TAIL_PROBABILITY_TOO_LOW_FOR_RELIABILITY": 4,
+          "TAIL_ODDS_TOO_HIGH_FOR_RELIABILITY": 30,
+          "LOW_RELIABILITY_REQUIRES_NON_NEGATIVE_CONSERVATIVE_EV": 29,
+          "OPERATIVE_EV_BELOW_TWO_PERCENT": 30,
+          "ROBUST_PROBABILITY_NOT_AVAILABLE": 116,
+          "RELIABILITY_NOT_ASSESSED": 116,
+          "CONSERVATIVE_EV_NOT_AVAILABLE": 116,
+          "NOT_MODELLED": 115,
+          "SETTLEMENT_NOT_SUPPORTED": 115,
+          "NO_COMPARABLE_SCORE_EVENT": 114,
+          "STATISTICAL_FAMILY_NOT_VALIDATED": 114
+        },
+        "selectionIds": [
+          "bet:sisal:napoli-frosinone-2026-27-md-06:5337211521"
+        ]
+      },
+      {
+        "matchId": "como-roma-2026-27-md-06",
+        "fixture": "Como – Roma",
+        "catalog": 162,
+        "quoted": 162,
+        "evaluated": 37,
+        "notModelled": 125,
+        "positiveEv": 5,
+        "previousSuggestions": 4,
+        "selected": 2,
+        "exclusions": {
+          "RESULT_THESIS_ALREADY_SELECTED": 1,
+          "LOGICAL_IMPLICATION_WITH_HIGHER_RANKED_SELECTION": 1,
+          "ROBUST_PROBABILITY_NOT_AVAILABLE": 126,
+          "RELIABILITY_NOT_ASSESSED": 126,
+          "CONSERVATIVE_EV_NOT_AVAILABLE": 126,
+          "OPERATIVE_EV_BELOW_TWO_PERCENT": 32,
+          "LOW_RELIABILITY_REQUIRES_NON_NEGATIVE_CONSERVATIVE_EV": 22,
+          "CONSERVATIVE_DOWNSIDE_TOO_LARGE": 9,
+          "NOT_COHERENT_WITH_PREVALENT_SCENARIO": 130,
+          "TAIL_PROBABILITY_TOO_LOW_FOR_RELIABILITY": 1,
+          "NOT_MODELLED": 125,
+          "SETTLEMENT_NOT_SUPPORTED": 125,
+          "NO_COMPARABLE_SCORE_EVENT": 124,
+          "STATISTICAL_FAMILY_NOT_VALIDATED": 124,
+          "TAIL_ODDS_TOO_HIGH_FOR_RELIABILITY": 32
+        },
+        "selectionIds": [
+          "bet:sisal:como-roma-2026-27-md-06:5337219980",
+          "bet:sisal:como-roma-2026-27-md-06:5337173145"
+        ]
+      },
+      {
+        "matchId": "lazio-monza-2026-27-md-06",
+        "fixture": "Lazio – Monza",
+        "catalog": 73,
+        "quoted": 73,
+        "evaluated": 37,
+        "notModelled": 36,
+        "positiveEv": 11,
+        "previousSuggestions": 0,
+        "selected": 1,
+        "exclusions": {
+          "NOT_COHERENT_WITH_PREVALENT_SCENARIO": 41,
+          "TAIL_PROBABILITY_TOO_LOW_FOR_RELIABILITY": 4,
+          "TAIL_ODDS_TOO_HIGH_FOR_RELIABILITY": 14,
+          "LOW_RELIABILITY_REQUIRES_NON_NEGATIVE_CONSERVATIVE_EV": 31,
+          "EQUIVALENT_EVENT_ALREADY_SELECTED": 1,
+          "LOGICAL_IMPLICATION_WITH_HIGHER_RANKED_SELECTION": 2,
+          "ROBUST_PROBABILITY_NOT_AVAILABLE": 37,
+          "RELIABILITY_NOT_ASSESSED": 37,
+          "CONSERVATIVE_EV_NOT_AVAILABLE": 37,
+          "OPERATIVE_EV_BELOW_TWO_PERCENT": 26,
+          "NOT_MODELLED": 36,
+          "SETTLEMENT_NOT_SUPPORTED": 36,
+          "NO_COMPARABLE_SCORE_EVENT": 35,
+          "STATISTICAL_FAMILY_NOT_VALIDATED": 35
+        },
+        "selectionIds": [
+          "bet:sisal:lazio-monza-2026-27-md-06:5337224076"
+        ]
+      },
+      {
+        "matchId": "lecce-bologna-2026-27-md-06",
+        "fixture": "lecce – bologna",
+        "catalog": 164,
+        "quoted": 164,
+        "evaluated": 39,
+        "notModelled": 125,
+        "positiveEv": 0,
+        "previousSuggestions": 4,
+        "selected": 0,
+        "exclusions": {
+          "ROBUST_PROBABILITY_NOT_AVAILABLE": 129,
+          "RELIABILITY_NOT_ASSESSED": 129,
+          "OPERATIVE_EV_BELOW_TWO_PERCENT": 39,
+          "CONSERVATIVE_EV_NOT_AVAILABLE": 129,
+          "CONSERVATIVE_DOWNSIDE_TOO_LARGE": 15,
+          "LOW_RELIABILITY_REQUIRES_NON_NEGATIVE_CONSERVATIVE_EV": 20,
+          "NOT_COHERENT_WITH_PREVALENT_SCENARIO": 130,
+          "TAIL_PROBABILITY_TOO_LOW_FOR_RELIABILITY": 3,
+          "SETTLEMENT_NOT_SUPPORTED": 128,
+          "NO_COMPARABLE_SCORE_EVENT": 126,
+          "STATISTICAL_FAMILY_NOT_VALIDATED": 126,
+          "NOT_MODELLED": 125,
+          "TAIL_ODDS_TOO_HIGH_FOR_RELIABILITY": 37
+        },
+        "selectionIds": []
+      },
+      {
+        "matchId": "sassuolo-milan-2026-27-md-06",
+        "fixture": "Sassuolo – Milan",
+        "catalog": 166,
+        "quoted": 166,
+        "evaluated": 37,
+        "notModelled": 129,
+        "positiveEv": 1,
+        "previousSuggestions": 4,
+        "selected": 0,
+        "exclusions": {
+          "OPERATIVE_EV_BELOW_TWO_PERCENT": 37,
+          "LOW_RELIABILITY_REQUIRES_NON_NEGATIVE_CONSERVATIVE_EV": 23,
+          "CONSERVATIVE_DOWNSIDE_TOO_LARGE": 12,
+          "ROBUST_PROBABILITY_NOT_AVAILABLE": 130,
+          "RELIABILITY_NOT_ASSESSED": 130,
+          "CONSERVATIVE_EV_NOT_AVAILABLE": 130,
+          "NOT_COHERENT_WITH_PREVALENT_SCENARIO": 134,
+          "TAIL_PROBABILITY_TOO_LOW_FOR_RELIABILITY": 3,
+          "NOT_MODELLED": 129,
+          "SETTLEMENT_NOT_SUPPORTED": 129,
+          "NO_COMPARABLE_SCORE_EVENT": 128,
+          "STATISTICAL_FAMILY_NOT_VALIDATED": 128,
+          "TAIL_ODDS_TOO_HIGH_FOR_RELIABILITY": 36
+        },
+        "selectionIds": []
+      },
+      {
+        "matchId": "cagliari-juventus-2026-27-md-06",
+        "fixture": "Cagliari – Juventus",
+        "catalog": 161,
+        "quoted": 161,
+        "evaluated": 39,
+        "notModelled": 122,
+        "positiveEv": 6,
+        "previousSuggestions": 4,
+        "selected": 1,
+        "exclusions": {
+          "NOT_COHERENT_WITH_PREVALENT_SCENARIO": 127,
+          "TAIL_PROBABILITY_TOO_LOW_FOR_RELIABILITY": 3,
+          "TAIL_ODDS_TOO_HIGH_FOR_RELIABILITY": 35,
+          "OPERATIVE_EV_BELOW_TWO_PERCENT": 34,
+          "LOW_RELIABILITY_REQUIRES_NON_NEGATIVE_CONSERVATIVE_EV": 20,
+          "ROBUST_PROBABILITY_NOT_AVAILABLE": 125,
+          "RELIABILITY_NOT_ASSESSED": 125,
+          "SETTLEMENT_NOT_SUPPORTED": 125,
+          "CONSERVATIVE_EV_NOT_AVAILABLE": 125,
+          "CONSERVATIVE_DOWNSIDE_TOO_LARGE": 9,
+          "NO_COMPARABLE_SCORE_EVENT": 123,
+          "STATISTICAL_FAMILY_NOT_VALIDATED": 123,
+          "NOT_MODELLED": 122
+        },
+        "selectionIds": [
+          "bet:sisal:cagliari-juventus-2026-27-md-06:5337178495"
+        ]
+      },
+      {
+        "matchId": "atalanta-venezia-2026-27-md-06",
+        "fixture": "Atalanta – Venezia",
+        "catalog": 133,
+        "quoted": 133,
+        "evaluated": 38,
+        "notModelled": 95,
+        "positiveEv": 3,
+        "previousSuggestions": 0,
+        "selected": 1,
+        "exclusions": {
+          "LOW_RELIABILITY_REQUIRES_NON_NEGATIVE_CONSERVATIVE_EV": 36,
+          "NOT_COHERENT_WITH_PREVALENT_SCENARIO": 100,
+          "OPERATIVE_EV_BELOW_TWO_PERCENT": 36,
+          "TAIL_PROBABILITY_TOO_LOW_FOR_RELIABILITY": 5,
+          "TAIL_ODDS_TOO_HIGH_FOR_RELIABILITY": 25,
+          "ROBUST_PROBABILITY_NOT_AVAILABLE": 96,
+          "RELIABILITY_NOT_ASSESSED": 96,
+          "CONSERVATIVE_EV_NOT_AVAILABLE": 96,
+          "NOT_MODELLED": 95,
+          "SETTLEMENT_NOT_SUPPORTED": 95,
+          "NO_COMPARABLE_SCORE_EVENT": 95,
+          "STATISTICAL_FAMILY_NOT_VALIDATED": 95
+        },
+        "selectionIds": [
+          "bet:sisal:atalanta-venezia-2026-27-md-06:5337203923"
+        ]
+      },
+      {
+        "matchId": "torino-udinese-2026-27-md-06",
+        "fixture": "Torino – Udinese",
+        "catalog": 130,
+        "quoted": 130,
+        "evaluated": 37,
+        "notModelled": 93,
+        "positiveEv": 18,
+        "previousSuggestions": 3,
+        "selected": 3,
+        "exclusions": {
+          "CANONICAL_THRESHOLD_ALREADY_SELECTED": 2,
+          "LOGICAL_IMPLICATION_WITH_HIGHER_RANKED_SELECTION": 8,
+          "ROBUST_PROBABILITY_NOT_AVAILABLE": 95,
+          "RELIABILITY_NOT_ASSESSED": 95,
+          "CONSERVATIVE_EV_NOT_AVAILABLE": 95,
+          "EQUIVALENT_EVENT_ALREADY_SELECTED": 1,
+          "OPERATIVE_EV_BELOW_TWO_PERCENT": 21,
+          "LOW_RELIABILITY_REQUIRES_NON_NEGATIVE_CONSERVATIVE_EV": 13,
+          "TAIL_PROBABILITY_TOO_LOW_FOR_RELIABILITY": 2,
+          "CONSERVATIVE_DOWNSIDE_TOO_LARGE": 5,
+          "NOT_COHERENT_WITH_PREVALENT_SCENARIO": 98,
+          "NOT_MODELLED": 93,
+          "SETTLEMENT_NOT_SUPPORTED": 93,
+          "NO_COMPARABLE_SCORE_EVENT": 92,
+          "STATISTICAL_FAMILY_NOT_VALIDATED": 92,
+          "TAIL_ODDS_TOO_HIGH_FOR_RELIABILITY": 22
+        },
+        "selectionIds": [
+          "bet:sisal:torino-udinese-2026-27-md-06:5337167924",
+          "bet:sisal:torino-udinese-2026-27-md-06:5337237955",
+          "bet:sisal:torino-udinese-2026-27-md-06:5337207656"
+        ]
+      }
+    ],
+    "comparison": {
+      "previousSuggestions": 24,
+      "currentSuggestions": 12,
+      "delta": -12
+    }
+  },
+  "thresholdCases": [
+    {
+      "key": "inter-parma-2026-27-md-06:goals:home:range",
+      "matchId": "inter-parma-2026-27-md-06",
+      "fixture": "Inter – Parma",
+      "canonicalIdentity": "goals:home:range",
+      "alternatives": [
+        {
+          "selectionId": "bet:sisal:inter-parma-2026-27-md-06:5337155399",
+          "label": "Inter multigoal 1-2",
+          "probabilityPct": 48.7,
+          "prudentProbabilityPct": 44.7,
+          "odds": 2.6,
+          "expectedValuePct": 16.3,
+          "expectedValueBasis": "PRUDENT_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+          "conservativeExpectedValuePct": 16.2,
+          "reliability": "Bassa",
+          "selected": true,
+          "exclusionReasons": [],
+          "decision": "Scelta dal ranking dopo gate, deduplicazione e controllo di coerenza"
+        },
+        {
+          "selectionId": "bet:sisal:inter-parma-2026-27-md-06:5337155400",
+          "label": "Inter multigoal 1-3",
+          "probabilityPct": 69.5,
+          "prudentProbabilityPct": 66.6,
+          "odds": 1.6,
+          "expectedValuePct": 6.5,
+          "expectedValueBasis": "PRUDENT_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+          "conservativeExpectedValuePct": 6.6,
+          "reliability": "Bassa",
+          "selected": false,
+          "exclusionReasons": [
+            "CANONICAL_THRESHOLD_ALREADY_SELECTED"
+          ],
+          "decision": "altra soglia canonica meglio classificata"
+        },
+        {
+          "selectionId": "bet:sisal:inter-parma-2026-27-md-06:5337155401",
+          "label": "Inter multigoal 1-4",
+          "probabilityPct": 81.7,
+          "prudentProbabilityPct": 80.8,
+          "odds": 1.27,
+          "expectedValuePct": 2.6,
+          "expectedValueBasis": "PRUDENT_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+          "conservativeExpectedValuePct": 2.6,
+          "reliability": "Bassa",
+          "selected": false,
+          "exclusionReasons": [
+            "CANONICAL_THRESHOLD_ALREADY_SELECTED"
+          ],
+          "decision": "altra soglia canonica meglio classificata"
+        },
+        {
+          "selectionId": "bet:sisal:inter-parma-2026-27-md-06:5337155402",
+          "label": "Inter multigoal 2-3",
+          "probabilityPct": 47.1,
+          "prudentProbabilityPct": 46.1,
+          "odds": 2.1,
+          "expectedValuePct": -3.1,
+          "expectedValueBasis": "PRUDENT_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+          "conservativeExpectedValuePct": -3.2,
+          "reliability": "Bassa",
+          "selected": false,
+          "exclusionReasons": [
+            "OPERATIVE_EV_BELOW_TWO_PERCENT",
+            "LOW_RELIABILITY_REQUIRES_NON_NEGATIVE_CONSERVATIVE_EV"
+          ],
+          "decision": "EV operativo inferiore al 2%; affidabilità Bassa con downside prudente negativo"
+        },
+        {
+          "selectionId": "bet:sisal:inter-parma-2026-27-md-06:5337155403",
+          "label": "Inter multigoal 2-4",
+          "probabilityPct": 59.4,
+          "prudentProbabilityPct": 56.3,
+          "odds": 1.52,
+          "expectedValuePct": -14.4,
+          "expectedValueBasis": "PRUDENT_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+          "conservativeExpectedValuePct": -14.4,
+          "reliability": "Bassa",
+          "selected": false,
+          "exclusionReasons": [
+            "OPERATIVE_EV_BELOW_TWO_PERCENT",
+            "LOW_RELIABILITY_REQUIRES_NON_NEGATIVE_CONSERVATIVE_EV"
+          ],
+          "decision": "EV operativo inferiore al 2%; affidabilità Bassa con downside prudente negativo"
+        }
+      ]
+    },
+    {
+      "key": "inter-parma-2026-27-md-06:goals:match:range",
+      "matchId": "inter-parma-2026-27-md-06",
+      "fixture": "Inter – Parma",
+      "canonicalIdentity": "goals:match:range",
+      "alternatives": [
+        {
+          "selectionId": "bet:sisal:inter-parma-2026-27-md-06:5337155082",
+          "label": "Multigoal 1-3",
+          "probabilityPct": 58,
+          "prudentProbabilityPct": 52.4,
+          "odds": 2,
+          "expectedValuePct": 4.8,
+          "expectedValueBasis": "PRUDENT_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+          "conservativeExpectedValuePct": 4.8,
+          "reliability": "Bassa",
+          "selected": true,
+          "exclusionReasons": [],
+          "decision": "Scelta dal ranking dopo gate, deduplicazione e controllo di coerenza"
+        },
+        {
+          "selectionId": "bet:sisal:inter-parma-2026-27-md-06:5337155083",
+          "label": "Multigoal 1-4",
+          "probabilityPct": 75.4,
+          "prudentProbabilityPct": 71.1,
+          "odds": 1.45,
+          "expectedValuePct": 3.1,
+          "expectedValueBasis": "PRUDENT_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+          "conservativeExpectedValuePct": 3.1,
+          "reliability": "Bassa",
+          "selected": false,
+          "exclusionReasons": [
+            "CANONICAL_THRESHOLD_ALREADY_SELECTED"
+          ],
+          "decision": "altra soglia canonica meglio classificata"
+        },
+        {
+          "selectionId": "bet:sisal:inter-parma-2026-27-md-06:5337155084",
+          "label": "Multigoal 1-5",
+          "probabilityPct": 86.3,
+          "prudentProbabilityPct": 84,
+          "odds": 1.18,
+          "expectedValuePct": -0.9,
+          "expectedValueBasis": "PRUDENT_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+          "conservativeExpectedValuePct": -0.9,
+          "reliability": "Bassa",
+          "selected": false,
+          "exclusionReasons": [
+            "OPERATIVE_EV_BELOW_TWO_PERCENT",
+            "LOW_RELIABILITY_REQUIRES_NON_NEGATIVE_CONSERVATIVE_EV"
+          ],
+          "decision": "EV operativo inferiore al 2%; affidabilità Bassa con downside prudente negativo"
+        },
+        {
+          "selectionId": "bet:sisal:inter-parma-2026-27-md-06:5337155086",
+          "label": "Multigoal 2-3",
+          "probabilityPct": 44.1,
+          "prudentProbabilityPct": 41.1,
+          "odds": 2.4,
+          "expectedValuePct": -1.2,
+          "expectedValueBasis": "PRUDENT_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+          "conservativeExpectedValuePct": -1.4,
+          "reliability": "Bassa",
+          "selected": false,
+          "exclusionReasons": [
+            "OPERATIVE_EV_BELOW_TWO_PERCENT",
+            "LOW_RELIABILITY_REQUIRES_NON_NEGATIVE_CONSERVATIVE_EV"
+          ],
+          "decision": "EV operativo inferiore al 2%; affidabilità Bassa con downside prudente negativo"
+        },
+        {
+          "selectionId": "bet:sisal:inter-parma-2026-27-md-06:5337155087",
+          "label": "Multigoal 2-4",
+          "probabilityPct": 61.5,
+          "prudentProbabilityPct": 59.9,
+          "odds": 1.65,
+          "expectedValuePct": -1.2,
+          "expectedValueBasis": "PRUDENT_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+          "conservativeExpectedValuePct": -1.2,
+          "reliability": "Bassa",
+          "selected": false,
+          "exclusionReasons": [
+            "OPERATIVE_EV_BELOW_TWO_PERCENT",
+            "LOW_RELIABILITY_REQUIRES_NON_NEGATIVE_CONSERVATIVE_EV"
+          ],
+          "decision": "EV operativo inferiore al 2%; affidabilità Bassa con downside prudente negativo"
+        },
+        {
+          "selectionId": "bet:sisal:inter-parma-2026-27-md-06:5337155085",
+          "label": "Multigoal 1-6",
+          "probabilityPct": 91.9,
+          "prudentProbabilityPct": 91.3,
+          "odds": 1.07,
+          "expectedValuePct": -2.3,
+          "expectedValueBasis": "PRUDENT_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+          "conservativeExpectedValuePct": -2.3,
+          "reliability": "Bassa",
+          "selected": false,
+          "exclusionReasons": [
+            "OPERATIVE_EV_BELOW_TWO_PERCENT",
+            "LOW_RELIABILITY_REQUIRES_NON_NEGATIVE_CONSERVATIVE_EV"
+          ],
+          "decision": "EV operativo inferiore al 2%; affidabilità Bassa con downside prudente negativo"
+        },
+        {
+          "selectionId": "bet:sisal:inter-parma-2026-27-md-06:5337155088",
+          "label": "Multigoal 2-5",
+          "probabilityPct": 72.3,
+          "prudentProbabilityPct": 70.5,
+          "odds": 1.33,
+          "expectedValuePct": -6.3,
+          "expectedValueBasis": "PRUDENT_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+          "conservativeExpectedValuePct": -6.2,
+          "reliability": "Bassa",
+          "selected": false,
+          "exclusionReasons": [
+            "OPERATIVE_EV_BELOW_TWO_PERCENT",
+            "LOW_RELIABILITY_REQUIRES_NON_NEGATIVE_CONSERVATIVE_EV"
+          ],
+          "decision": "EV operativo inferiore al 2%; affidabilità Bassa con downside prudente negativo"
+        },
+        {
+          "selectionId": "bet:sisal:inter-parma-2026-27-md-06:5337155089",
+          "label": "Multigoal 2-6",
+          "probabilityPct": 78,
+          "prudentProbabilityPct": 74.6,
+          "odds": 1.18,
+          "expectedValuePct": -12,
+          "expectedValueBasis": "PRUDENT_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+          "conservativeExpectedValuePct": -12,
+          "reliability": "Bassa",
+          "selected": false,
+          "exclusionReasons": [
+            "OPERATIVE_EV_BELOW_TWO_PERCENT",
+            "LOW_RELIABILITY_REQUIRES_NON_NEGATIVE_CONSERVATIVE_EV"
+          ],
+          "decision": "EV operativo inferiore al 2%; affidabilità Bassa con downside prudente negativo"
+        },
+        {
+          "selectionId": "bet:sisal:inter-parma-2026-27-md-06:5337155090",
+          "label": "Multigoal 3-4",
+          "probabilityPct": 39.9,
+          "prudentProbabilityPct": 37.9,
+          "odds": 2.25,
+          "expectedValuePct": -14.8,
+          "expectedValueBasis": "PRUDENT_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+          "conservativeExpectedValuePct": -14.7,
+          "reliability": "Bassa",
+          "selected": false,
+          "exclusionReasons": [
+            "OPERATIVE_EV_BELOW_TWO_PERCENT",
+            "LOW_RELIABILITY_REQUIRES_NON_NEGATIVE_CONSERVATIVE_EV"
+          ],
+          "decision": "EV operativo inferiore al 2%; affidabilità Bassa con downside prudente negativo"
+        },
+        {
+          "selectionId": "bet:sisal:inter-parma-2026-27-md-06:5337155092",
+          "label": "Multigoal 3-6",
+          "probabilityPct": 56.3,
+          "prudentProbabilityPct": 50.7,
+          "odds": 1.48,
+          "expectedValuePct": -25,
+          "expectedValueBasis": "PRUDENT_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+          "conservativeExpectedValuePct": -25,
+          "reliability": "Bassa",
+          "selected": false,
+          "exclusionReasons": [
+            "OPERATIVE_EV_BELOW_TWO_PERCENT",
+            "LOW_RELIABILITY_REQUIRES_NON_NEGATIVE_CONSERVATIVE_EV"
+          ],
+          "decision": "EV operativo inferiore al 2%; affidabilità Bassa con downside prudente negativo"
+        }
+      ]
+    },
+    {
+      "key": "napoli-frosinone-2026-27-md-06:goals:match:range",
+      "matchId": "napoli-frosinone-2026-27-md-06",
+      "fixture": "Napoli – Frosinone",
+      "canonicalIdentity": "goals:match:range",
+      "alternatives": [
+        {
+          "selectionId": "bet:sisal:napoli-frosinone-2026-27-md-06:5337211521",
+          "label": "Multigoal 1-3",
+          "probabilityPct": 65.2,
+          "prudentProbabilityPct": 60.9,
+          "odds": 1.72,
+          "expectedValuePct": 4.7,
+          "expectedValueBasis": "PRUDENT_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+          "conservativeExpectedValuePct": 4.7,
+          "reliability": "Bassa",
+          "selected": true,
+          "exclusionReasons": [],
+          "decision": "Scelta dal ranking dopo gate, deduplicazione e controllo di coerenza"
+        },
+        {
+          "selectionId": "bet:sisal:napoli-frosinone-2026-27-md-06:5337211522",
+          "label": "Multigoal 1-4",
+          "probabilityPct": 79.8,
+          "prudentProbabilityPct": 77.3,
+          "odds": 1.3,
+          "expectedValuePct": 0.5,
+          "expectedValueBasis": "PRUDENT_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+          "conservativeExpectedValuePct": 0.5,
+          "reliability": "Bassa",
+          "selected": false,
+          "exclusionReasons": [
+            "OPERATIVE_EV_BELOW_TWO_PERCENT"
+          ],
+          "decision": "EV operativo inferiore al 2%"
+        },
+        {
+          "selectionId": "bet:sisal:napoli-frosinone-2026-27-md-06:5337211525",
+          "label": "Multigoal 2-3",
+          "probabilityPct": 46.7,
+          "prudentProbabilityPct": 45.3,
+          "odds": 2.2,
+          "expectedValuePct": -0.4,
+          "expectedValueBasis": "PRUDENT_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+          "conservativeExpectedValuePct": -0.3,
+          "reliability": "Bassa",
+          "selected": false,
+          "exclusionReasons": [
+            "OPERATIVE_EV_BELOW_TWO_PERCENT",
+            "LOW_RELIABILITY_REQUIRES_NON_NEGATIVE_CONSERVATIVE_EV"
+          ],
+          "decision": "EV operativo inferiore al 2%; affidabilità Bassa con downside prudente negativo"
+        },
+        {
+          "selectionId": "bet:sisal:napoli-frosinone-2026-27-md-06:5337211523",
+          "label": "Multigoal 1-5",
+          "probabilityPct": 87.7,
+          "prudentProbabilityPct": 87,
+          "odds": 1.13,
+          "expectedValuePct": -1.7,
+          "expectedValueBasis": "PRUDENT_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+          "conservativeExpectedValuePct": -1.7,
+          "reliability": "Bassa",
+          "selected": false,
+          "exclusionReasons": [
+            "OPERATIVE_EV_BELOW_TWO_PERCENT",
+            "LOW_RELIABILITY_REQUIRES_NON_NEGATIVE_CONSERVATIVE_EV"
+          ],
+          "decision": "EV operativo inferiore al 2%; affidabilità Bassa con downside prudente negativo"
+        },
+        {
+          "selectionId": "bet:sisal:napoli-frosinone-2026-27-md-06:5337211524",
+          "label": "Multigoal 1-6",
+          "probabilityPct": 91.1,
+          "prudentProbabilityPct": 89.8,
+          "odds": 1.05,
+          "expectedValuePct": -5.7,
+          "expectedValueBasis": "PRUDENT_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+          "conservativeExpectedValuePct": -5.7,
+          "reliability": "Bassa",
+          "selected": false,
+          "exclusionReasons": [
+            "OPERATIVE_EV_BELOW_TWO_PERCENT",
+            "LOW_RELIABILITY_REQUIRES_NON_NEGATIVE_CONSERVATIVE_EV"
+          ],
+          "decision": "EV operativo inferiore al 2%; affidabilità Bassa con downside prudente negativo"
+        },
+        {
+          "selectionId": "bet:sisal:napoli-frosinone-2026-27-md-06:5337211526",
+          "label": "Multigoal 2-4",
+          "probabilityPct": 61.3,
+          "prudentProbabilityPct": 59.6,
+          "odds": 1.52,
+          "expectedValuePct": -9.4,
+          "expectedValueBasis": "PRUDENT_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+          "conservativeExpectedValuePct": -9.4,
+          "reliability": "Bassa",
+          "selected": false,
+          "exclusionReasons": [
+            "OPERATIVE_EV_BELOW_TWO_PERCENT",
+            "LOW_RELIABILITY_REQUIRES_NON_NEGATIVE_CONSERVATIVE_EV"
+          ],
+          "decision": "EV operativo inferiore al 2%; affidabilità Bassa con downside prudente negativo"
+        },
+        {
+          "selectionId": "bet:sisal:napoli-frosinone-2026-27-md-06:5337211527",
+          "label": "Multigoal 2-5",
+          "probabilityPct": 69.2,
+          "prudentProbabilityPct": 65.6,
+          "odds": 1.3,
+          "expectedValuePct": -14.7,
+          "expectedValueBasis": "PRUDENT_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+          "conservativeExpectedValuePct": -14.7,
+          "reliability": "Bassa",
+          "selected": false,
+          "exclusionReasons": [
+            "OPERATIVE_EV_BELOW_TWO_PERCENT",
+            "LOW_RELIABILITY_REQUIRES_NON_NEGATIVE_CONSERVATIVE_EV"
+          ],
+          "decision": "EV operativo inferiore al 2%; affidabilità Bassa con downside prudente negativo"
+        },
+        {
+          "selectionId": "bet:sisal:napoli-frosinone-2026-27-md-06:5337211528",
+          "label": "Multigoal 2-6",
+          "probabilityPct": 72.7,
+          "prudentProbabilityPct": 68.1,
+          "odds": 1.2,
+          "expectedValuePct": -18.3,
+          "expectedValueBasis": "PRUDENT_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+          "conservativeExpectedValuePct": -18.3,
+          "reliability": "Bassa",
+          "selected": false,
+          "exclusionReasons": [
+            "OPERATIVE_EV_BELOW_TWO_PERCENT",
+            "LOW_RELIABILITY_REQUIRES_NON_NEGATIVE_CONSERVATIVE_EV"
+          ],
+          "decision": "EV operativo inferiore al 2%; affidabilità Bassa con downside prudente negativo"
+        },
+        {
+          "selectionId": "bet:sisal:napoli-frosinone-2026-27-md-06:5337211529",
+          "label": "Multigoal 3-4",
+          "probabilityPct": 36.6,
+          "prudentProbabilityPct": 33.5,
+          "odds": 2.2,
+          "expectedValuePct": -26.3,
+          "expectedValueBasis": "PRUDENT_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+          "conservativeExpectedValuePct": -26.3,
+          "reliability": "Bassa",
+          "selected": false,
+          "exclusionReasons": [
+            "OPERATIVE_EV_BELOW_TWO_PERCENT",
+            "LOW_RELIABILITY_REQUIRES_NON_NEGATIVE_CONSERVATIVE_EV"
+          ],
+          "decision": "EV operativo inferiore al 2%; affidabilità Bassa con downside prudente negativo"
+        },
+        {
+          "selectionId": "bet:sisal:napoli-frosinone-2026-27-md-06:5337211530",
+          "label": "Multigoal 3-5",
+          "probabilityPct": 44.5,
+          "prudentProbabilityPct": 39.5,
+          "odds": 1.75,
+          "expectedValuePct": -30.8,
+          "expectedValueBasis": "PRUDENT_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+          "conservativeExpectedValuePct": -30.9,
+          "reliability": "Bassa",
+          "selected": false,
+          "exclusionReasons": [
+            "OPERATIVE_EV_BELOW_TWO_PERCENT",
+            "LOW_RELIABILITY_REQUIRES_NON_NEGATIVE_CONSERVATIVE_EV"
+          ],
+          "decision": "EV operativo inferiore al 2%; affidabilità Bassa con downside prudente negativo"
+        },
+        {
+          "selectionId": "bet:sisal:napoli-frosinone-2026-27-md-06:5337211531",
+          "label": "Multigoal 3-6",
+          "probabilityPct": 48,
+          "prudentProbabilityPct": 41.9,
+          "odds": 1.57,
+          "expectedValuePct": -34.1,
+          "expectedValueBasis": "PRUDENT_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+          "conservativeExpectedValuePct": -34.2,
+          "reliability": "Bassa",
+          "selected": false,
+          "exclusionReasons": [
+            "OPERATIVE_EV_BELOW_TWO_PERCENT",
+            "LOW_RELIABILITY_REQUIRES_NON_NEGATIVE_CONSERVATIVE_EV"
+          ],
+          "decision": "EV operativo inferiore al 2%; affidabilità Bassa con downside prudente negativo"
+        }
+      ]
+    },
+    {
+      "key": "torino-udinese-2026-27-md-06:goals:match:over",
+      "matchId": "torino-udinese-2026-27-md-06",
+      "fixture": "Torino – Udinese",
+      "canonicalIdentity": "goals:match:over",
+      "alternatives": [
+        {
+          "selectionId": "bet:sisal:torino-udinese-2026-27-md-06:5337167928",
+          "label": "Over 3,5 gol",
+          "probabilityPct": 40.4,
+          "prudentProbabilityPct": 33.2,
+          "odds": 3.6,
+          "expectedValuePct": 45.4,
+          "expectedValueBasis": "CENTRAL_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+          "conservativeExpectedValuePct": 19.4,
+          "reliability": "Bassa",
+          "selected": false,
+          "exclusionReasons": [
+            "CANONICAL_THRESHOLD_ALREADY_SELECTED"
+          ],
+          "decision": "altra soglia canonica meglio classificata"
+        },
+        {
+          "selectionId": "bet:sisal:torino-udinese-2026-27-md-06:5337167924",
+          "label": "Over 2,5 gol",
+          "probabilityPct": 62.6,
+          "prudentProbabilityPct": 55.6,
+          "odds": 2,
+          "expectedValuePct": 25.2,
+          "expectedValueBasis": "CENTRAL_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+          "conservativeExpectedValuePct": 11.1,
+          "reliability": "Media",
+          "selected": true,
+          "exclusionReasons": [],
+          "decision": "Scelta dal ranking dopo gate, deduplicazione e controllo di coerenza"
+        },
+        {
+          "selectionId": "bet:sisal:torino-udinese-2026-27-md-06:5337167908",
+          "label": "Over 1,5 gol",
+          "probabilityPct": 83.3,
+          "prudentProbabilityPct": 78.6,
+          "odds": 1.33,
+          "expectedValuePct": 10.7,
+          "expectedValueBasis": "CENTRAL_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+          "conservativeExpectedValuePct": 4.6,
+          "reliability": "Media",
+          "selected": false,
+          "exclusionReasons": [
+            "CANONICAL_THRESHOLD_ALREADY_SELECTED"
+          ],
+          "decision": "altra soglia canonica meglio classificata"
+        }
+      ]
+    },
+    {
+      "key": "torino-udinese-2026-27-md-06:goals:match:range",
+      "matchId": "torino-udinese-2026-27-md-06",
+      "fixture": "Torino – Udinese",
+      "canonicalIdentity": "goals:match:range",
+      "alternatives": [
+        {
+          "selectionId": "bet:sisal:torino-udinese-2026-27-md-06:5337207659",
+          "label": "Multigoal 3-6",
+          "probabilityPct": 58,
+          "prudentProbabilityPct": 52.7,
+          "odds": 2.1,
+          "expectedValuePct": 10.6,
+          "expectedValueBasis": "PRUDENT_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+          "conservativeExpectedValuePct": 10.7,
+          "reliability": "Bassa",
+          "selected": false,
+          "exclusionReasons": [
+            "LOGICAL_IMPLICATION_WITH_HIGHER_RANKED_SELECTION"
+          ],
+          "decision": "implica o è implicato da una scelta meglio classificata"
+        },
+        {
+          "selectionId": "bet:sisal:torino-udinese-2026-27-md-06:5337207658",
+          "label": "Multigoal 3-5",
+          "probabilityPct": 51.8,
+          "prudentProbabilityPct": 48.1,
+          "odds": 2.2,
+          "expectedValuePct": 5.8,
+          "expectedValueBasis": "PRUDENT_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+          "conservativeExpectedValuePct": 5.8,
+          "reliability": "Bassa",
+          "selected": false,
+          "exclusionReasons": [
+            "LOGICAL_IMPLICATION_WITH_HIGHER_RANKED_SELECTION"
+          ],
+          "decision": "implica o è implicato da una scelta meglio classificata"
+        },
+        {
+          "selectionId": "bet:sisal:torino-udinese-2026-27-md-06:5337207656",
+          "label": "Multigoal 2-6",
+          "probabilityPct": 78.7,
+          "prudentProbabilityPct": 75.8,
+          "odds": 1.36,
+          "expectedValuePct": 3.1,
+          "expectedValueBasis": "PRUDENT_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+          "conservativeExpectedValuePct": 3.1,
+          "reliability": "Bassa",
+          "selected": true,
+          "exclusionReasons": [],
+          "decision": "Scelta dal ranking dopo gate, deduplicazione e controllo di coerenza"
+        },
+        {
+          "selectionId": "bet:sisal:torino-udinese-2026-27-md-06:5337207657",
+          "label": "Multigoal 3-4",
+          "probabilityPct": 40.2,
+          "prudentProbabilityPct": 38.6,
+          "odds": 2.6,
+          "expectedValuePct": 0.5,
+          "expectedValueBasis": "PRUDENT_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+          "conservativeExpectedValuePct": 0.4,
+          "reliability": "Bassa",
+          "selected": false,
+          "exclusionReasons": [
+            "OPERATIVE_EV_BELOW_TWO_PERCENT"
+          ],
+          "decision": "EV operativo inferiore al 2%"
+        },
+        {
+          "selectionId": "bet:sisal:torino-udinese-2026-27-md-06:5337207655",
+          "label": "Multigoal 2-5",
+          "probabilityPct": 72.4,
+          "prudentProbabilityPct": 71.2,
+          "odds": 1.4,
+          "expectedValuePct": -0.3,
+          "expectedValueBasis": "PRUDENT_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+          "conservativeExpectedValuePct": -0.3,
+          "reliability": "Bassa",
+          "selected": false,
+          "exclusionReasons": [
+            "OPERATIVE_EV_BELOW_TWO_PERCENT",
+            "LOW_RELIABILITY_REQUIRES_NON_NEGATIVE_CONSERVATIVE_EV"
+          ],
+          "decision": "EV operativo inferiore al 2%; affidabilità Bassa con downside prudente negativo"
+        },
+        {
+          "selectionId": "bet:sisal:torino-udinese-2026-27-md-06:5337207652",
+          "label": "Multigoal 1-6",
+          "probabilityPct": 91.5,
+          "prudentProbabilityPct": 90.3,
+          "odds": 1.06,
+          "expectedValuePct": -4.3,
+          "expectedValueBasis": "PRUDENT_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+          "conservativeExpectedValuePct": -4.3,
+          "reliability": "Bassa",
+          "selected": false,
+          "exclusionReasons": [
+            "OPERATIVE_EV_BELOW_TWO_PERCENT",
+            "LOW_RELIABILITY_REQUIRES_NON_NEGATIVE_CONSERVATIVE_EV"
+          ],
+          "decision": "EV operativo inferiore al 2%; affidabilità Bassa con downside prudente negativo"
+        },
+        {
+          "selectionId": "bet:sisal:torino-udinese-2026-27-md-06:5337207654",
+          "label": "Multigoal 2-4",
+          "probabilityPct": 60.8,
+          "prudentProbabilityPct": 58.6,
+          "odds": 1.57,
+          "expectedValuePct": -8,
+          "expectedValueBasis": "PRUDENT_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+          "conservativeExpectedValuePct": -8,
+          "reliability": "Bassa",
+          "selected": false,
+          "exclusionReasons": [
+            "OPERATIVE_EV_BELOW_TWO_PERCENT",
+            "LOW_RELIABILITY_REQUIRES_NON_NEGATIVE_CONSERVATIVE_EV"
+          ],
+          "decision": "EV operativo inferiore al 2%; affidabilità Bassa con downside prudente negativo"
+        },
+        {
+          "selectionId": "bet:sisal:torino-udinese-2026-27-md-06:5337207651",
+          "label": "Multigoal 1-5",
+          "probabilityPct": 85.2,
+          "prudentProbabilityPct": 82.3,
+          "odds": 1.1,
+          "expectedValuePct": -9.5,
+          "expectedValueBasis": "PRUDENT_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+          "conservativeExpectedValuePct": -9.5,
+          "reliability": "Bassa",
+          "selected": false,
+          "exclusionReasons": [
+            "OPERATIVE_EV_BELOW_TWO_PERCENT",
+            "LOW_RELIABILITY_REQUIRES_NON_NEGATIVE_CONSERVATIVE_EV"
+          ],
+          "decision": "EV operativo inferiore al 2%; affidabilità Bassa con downside prudente negativo"
+        },
+        {
+          "selectionId": "bet:sisal:torino-udinese-2026-27-md-06:5337207650",
+          "label": "Multigoal 1-4",
+          "probabilityPct": 73.6,
+          "prudentProbabilityPct": 68.8,
+          "odds": 1.16,
+          "expectedValuePct": -20.2,
+          "expectedValueBasis": "PRUDENT_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+          "conservativeExpectedValuePct": -20.2,
+          "reliability": "Bassa",
+          "selected": false,
+          "exclusionReasons": [
+            "OPERATIVE_EV_BELOW_TWO_PERCENT",
+            "LOW_RELIABILITY_REQUIRES_NON_NEGATIVE_CONSERVATIVE_EV"
+          ],
+          "decision": "EV operativo inferiore al 2%; affidabilità Bassa con downside prudente negativo"
+        },
+        {
+          "selectionId": "bet:sisal:torino-udinese-2026-27-md-06:5337207653",
+          "label": "Multigoal 2-3",
+          "probabilityPct": 42.9,
+          "prudentProbabilityPct": 39.5,
+          "odds": 1.95,
+          "expectedValuePct": -22.9,
+          "expectedValueBasis": "PRUDENT_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+          "conservativeExpectedValuePct": -23,
+          "reliability": "Bassa",
+          "selected": false,
+          "exclusionReasons": [
+            "OPERATIVE_EV_BELOW_TWO_PERCENT",
+            "LOW_RELIABILITY_REQUIRES_NON_NEGATIVE_CONSERVATIVE_EV"
+          ],
+          "decision": "EV operativo inferiore al 2%; affidabilità Bassa con downside prudente negativo"
+        },
+        {
+          "selectionId": "bet:sisal:torino-udinese-2026-27-md-06:5337207649",
+          "label": "Multigoal 1-3",
+          "probabilityPct": 55.7,
+          "prudentProbabilityPct": 49.7,
+          "odds": 1.4,
+          "expectedValuePct": -30.4,
+          "expectedValueBasis": "PRUDENT_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+          "conservativeExpectedValuePct": -30.4,
+          "reliability": "Bassa",
+          "selected": false,
+          "exclusionReasons": [
+            "OPERATIVE_EV_BELOW_TWO_PERCENT",
+            "LOW_RELIABILITY_REQUIRES_NON_NEGATIVE_CONSERVATIVE_EV"
+          ],
+          "decision": "EV operativo inferiore al 2%; affidabilità Bassa con downside prudente negativo"
+        }
+      ]
+    }
+  ],
+  "sensitivity": [
+    {
+      "mode": "value-first",
+      "total": 14,
+      "changedSelectionsVsBalanced": 8,
+      "unchangedSelections": 9
+    },
+    {
+      "mode": "stability-first",
+      "total": 11,
+      "changedSelectionsVsBalanced": 11,
+      "unchangedSelections": 6
+    }
+  ],
+  "statisticalMarkets": {
+    "families": [
+      {
+        "family": "shots",
+        "identified": 6282,
+        "A": 0,
+        "B": 472,
+        "C": 5380,
+        "D": 430,
+        "selected": 0
+      },
+      {
+        "family": "sot",
+        "identified": 4699,
+        "A": 0,
+        "B": 352,
+        "C": 3853,
+        "D": 494,
+        "selected": 0
+      },
+      {
+        "family": "corners",
+        "identified": 1493,
+        "A": 0,
+        "B": 247,
+        "C": 335,
+        "D": 911,
+        "selected": 0
+      },
+      {
+        "family": "cards",
+        "identified": 4760,
+        "A": 0,
+        "B": 0,
+        "C": 2431,
+        "D": 2329,
+        "selected": 0
+      }
+    ],
+    "blocked": [
+      "Tiri e SOT giocatore DUO: sostituto incluso; sui SOT anche pali/traverse",
+      "Tiri e SOT squadra/partita: distribuzioni e verifica temporale fuori campione non validate",
+      "Corner squadra/partita e 1X2: gate Fase 5C insufficiente",
+      "Cartellini: contratto punti cartellino e distribuzione non riconciliati"
+    ],
+    "dataNeeded": [
+      "Snapshot prospettici pre-partita e risultati completi su più giornate",
+      "Join temporale fuori campione per squadra e avversario",
+      "Identità effettiva del sostituto e pesi di scenario per DUO",
+      "Regole Sisal complete per pali/traverse e punti cartellino",
+      "Calibrazione, Brier/log loss e intervalli cluster-bootstrap su campione adeguato"
+    ]
+  },
+  "suggestions": [
+    {
+      "matchId": "atalanta-venezia-2026-27-md-06",
+      "fixture": "Atalanta – Venezia",
+      "rank": 1,
+      "family": "goals-results",
+      "selectionId": "bet:sisal:atalanta-venezia-2026-27-md-06:5337203923",
+      "market": "GOAL/NOGOAL",
+      "label": "Almeno una squadra non segna",
+      "probabilityPct": 51,
+      "prudentProbabilityPct": 46.5,
+      "odds": 2.25,
+      "expectedValuePct": 14.7,
+      "expectedValueBasis": "CENTRAL_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+      "conservativeExpectedValuePct": 4.5,
+      "reliability": "Bassa",
+      "canonicalThresholdIdentity": null
+    },
+    {
+      "matchId": "cagliari-juventus-2026-27-md-06",
+      "fixture": "Cagliari – Juventus",
+      "rank": 1,
+      "family": "goals-results",
+      "selectionId": "bet:sisal:cagliari-juventus-2026-27-md-06:5337178495",
+      "market": "CASA: SEGNA GOAL",
+      "label": "Cagliari segna",
+      "probabilityPct": 62.1,
+      "prudentProbabilityPct": 58.2,
+      "odds": 1.65,
+      "expectedValuePct": 2.5,
+      "expectedValueBasis": "CENTRAL_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+      "conservativeExpectedValuePct": -3.9,
+      "reliability": "Media",
+      "canonicalThresholdIdentity": null
+    },
+    {
+      "matchId": "como-roma-2026-27-md-06",
+      "fixture": "Como – Roma",
+      "rank": 1,
+      "family": "goals-results",
+      "selectionId": "bet:sisal:como-roma-2026-27-md-06:5337219980",
+      "market": "OSPITE: SEGNA GOAL",
+      "label": "Roma non segna",
+      "probabilityPct": 29.5,
+      "prudentProbabilityPct": 26.1,
+      "odds": 4,
+      "expectedValuePct": 18.1,
+      "expectedValueBasis": "CENTRAL_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+      "conservativeExpectedValuePct": 4.5,
+      "reliability": "Media",
+      "canonicalThresholdIdentity": null
+    },
+    {
+      "matchId": "como-roma-2026-27-md-06",
+      "fixture": "Como – Roma",
+      "rank": 2,
+      "family": "goals-results",
+      "selectionId": "bet:sisal:como-roma-2026-27-md-06:5337173145",
+      "market": "1X2 ESITO FINALE",
+      "label": "Como vincente",
+      "probabilityPct": 46.2,
+      "prudentProbabilityPct": 39.6,
+      "odds": 2.6,
+      "expectedValuePct": 20.1,
+      "expectedValueBasis": "CENTRAL_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+      "conservativeExpectedValuePct": 2.8,
+      "reliability": "Media",
+      "canonicalThresholdIdentity": null
+    },
+    {
+      "matchId": "inter-parma-2026-27-md-06",
+      "fixture": "Inter – Parma",
+      "rank": 1,
+      "family": "goals-results",
+      "selectionId": "bet:sisal:inter-parma-2026-27-md-06:5337225972",
+      "market": "OSPITE: SEGNA GOAL",
+      "label": "Parma segna",
+      "probabilityPct": 52.8,
+      "prudentProbabilityPct": 49.1,
+      "odds": 2.1,
+      "expectedValuePct": 10.8,
+      "expectedValueBasis": "CENTRAL_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+      "conservativeExpectedValuePct": 3.1,
+      "reliability": "Media",
+      "canonicalThresholdIdentity": null
+    },
+    {
+      "matchId": "inter-parma-2026-27-md-06",
+      "fixture": "Inter – Parma",
+      "rank": 2,
+      "family": "goals-results",
+      "selectionId": "bet:sisal:inter-parma-2026-27-md-06:5337155399",
+      "market": "MULTIGOAL SQUADRA X",
+      "label": "Inter multigoal 1-2",
+      "probabilityPct": 48.7,
+      "prudentProbabilityPct": 44.7,
+      "odds": 2.6,
+      "expectedValuePct": 16.3,
+      "expectedValueBasis": "PRUDENT_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+      "conservativeExpectedValuePct": 16.2,
+      "reliability": "Bassa",
+      "canonicalThresholdIdentity": "goals:home:range"
+    },
+    {
+      "matchId": "inter-parma-2026-27-md-06",
+      "fixture": "Inter – Parma",
+      "rank": 3,
+      "family": "goals-results",
+      "selectionId": "bet:sisal:inter-parma-2026-27-md-06:5337155082",
+      "market": "MULTIGOAL",
+      "label": "Multigoal 1-3",
+      "probabilityPct": 58,
+      "prudentProbabilityPct": 52.4,
+      "odds": 2,
+      "expectedValuePct": 4.8,
+      "expectedValueBasis": "PRUDENT_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+      "conservativeExpectedValuePct": 4.8,
+      "reliability": "Bassa",
+      "canonicalThresholdIdentity": "goals:match:range"
+    },
+    {
+      "matchId": "lazio-monza-2026-27-md-06",
+      "fixture": "Lazio – Monza",
+      "rank": 1,
+      "family": "goals-results",
+      "selectionId": "bet:sisal:lazio-monza-2026-27-md-06:5337224076",
+      "market": "OSPITE: SEGNA GOAL",
+      "label": "Monza segna",
+      "probabilityPct": 69.3,
+      "prudentProbabilityPct": 65.4,
+      "odds": 1.62,
+      "expectedValuePct": 12.2,
+      "expectedValueBasis": "CENTRAL_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+      "conservativeExpectedValuePct": 6,
+      "reliability": "Bassa",
+      "canonicalThresholdIdentity": null
+    },
+    {
+      "matchId": "napoli-frosinone-2026-27-md-06",
+      "fixture": "Napoli – Frosinone",
+      "rank": 1,
+      "family": "goals-results",
+      "selectionId": "bet:sisal:napoli-frosinone-2026-27-md-06:5337211521",
+      "market": "MULTIGOAL",
+      "label": "Multigoal 1-3",
+      "probabilityPct": 65.2,
+      "prudentProbabilityPct": 60.9,
+      "odds": 1.72,
+      "expectedValuePct": 4.7,
+      "expectedValueBasis": "PRUDENT_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+      "conservativeExpectedValuePct": 4.7,
+      "reliability": "Bassa",
+      "canonicalThresholdIdentity": "goals:match:range"
+    },
+    {
+      "matchId": "torino-udinese-2026-27-md-06",
+      "fixture": "Torino – Udinese",
+      "rank": 1,
+      "family": "goals-results",
+      "selectionId": "bet:sisal:torino-udinese-2026-27-md-06:5337167924",
+      "market": "UNDER/OVER",
+      "label": "Over 2,5 gol",
+      "probabilityPct": 62.6,
+      "prudentProbabilityPct": 55.6,
+      "odds": 2,
+      "expectedValuePct": 25.2,
+      "expectedValueBasis": "CENTRAL_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+      "conservativeExpectedValuePct": 11.1,
+      "reliability": "Media",
+      "canonicalThresholdIdentity": "goals:match:over"
+    },
+    {
+      "matchId": "torino-udinese-2026-27-md-06",
+      "fixture": "Torino – Udinese",
+      "rank": 2,
+      "family": "goals-results",
+      "selectionId": "bet:sisal:torino-udinese-2026-27-md-06:5337237955",
+      "market": "OSPITE: SEGNA GOAL",
+      "label": "Udinese segna",
+      "probabilityPct": 82.8,
+      "prudentProbabilityPct": 79.5,
+      "odds": 1.35,
+      "expectedValuePct": 11.8,
+      "expectedValueBasis": "CENTRAL_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+      "conservativeExpectedValuePct": 7.3,
+      "reliability": "Media",
+      "canonicalThresholdIdentity": null
+    },
+    {
+      "matchId": "torino-udinese-2026-27-md-06",
+      "fixture": "Torino – Udinese",
+      "rank": 3,
+      "family": "goals-results",
+      "selectionId": "bet:sisal:torino-udinese-2026-27-md-06:5337207656",
+      "market": "MULTIGOAL",
+      "label": "Multigoal 2-6",
+      "probabilityPct": 78.7,
+      "prudentProbabilityPct": 75.8,
+      "odds": 1.36,
+      "expectedValuePct": 3.1,
+      "expectedValueBasis": "PRUDENT_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+      "conservativeExpectedValuePct": 3.1,
+      "reliability": "Bassa",
+      "canonicalThresholdIdentity": "goals:match:range"
+    }
+  ],
+  "tests": [
+    {
+      "command": "npm run test:schedina",
+      "status": "PASS"
+    },
+    {
+      "command": "npm run test:personal-betslip",
+      "status": "PASS"
+    },
+    {
+      "command": "npm run test:css",
+      "status": "PASS"
+    },
+    {
+      "command": "node --no-warnings scripts/test-app-modules.mjs",
+      "status": "PASS"
+    },
+    {
+      "command": "node scripts/check-schedina-md06-suggestions-browser.cjs",
+      "status": "PASS"
+    },
+    {
+      "command": "git diff --check",
+      "status": "PASS"
+    }
+  ],
+  "filesModified": [
+    "scripts/md06-suggested-forecasts.js",
+    "scripts/md06-market-catalog.js",
+    "scripts/build-md06-suggested-forecasts.js",
+    "scripts/test-md06-suggested-forecasts.js",
+    "scripts/test-md06-scenario-coherence.js",
+    "scripts/test-schedina-md06.js",
+    "scripts/test-app-modules.mjs",
+    "scripts/check-schedina-md06-suggestions-browser.cjs",
+    "js/pages/betting.js",
+    "css/betting.css",
+    "css/styles.css",
+    "scripts/build-site.js",
+    "schedina.html",
+    "data/normalized/schedina-md06.json",
+    "output/reports/serie-a-md06-definitive-selection-2026-10-10.json",
+    "output/reports/serie-a-md06-definitive-selection-2026-10-10.md",
+    "output/md06/schedina-definitive-1440x1000.png",
+    "output/md06/schedina-definitive-390x844.png"
+  ]
+}

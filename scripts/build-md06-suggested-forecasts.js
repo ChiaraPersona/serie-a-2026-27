@@ -6,6 +6,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 const { buildMd06MarketCatalog } = require("./md06-market-catalog");
 const { reconstructStatisticalCoverage, STATES } = require("./md06-statistical-coverage");
+const { canonicalThresholdIdentity, conservativeExpectedValuePct, selectMatchSuggestions, verifiedQuote } = require("./md06-suggested-forecasts");
 
 const root = path.resolve(__dirname, "..");
 const read = relative => JSON.parse(fs.readFileSync(path.join(root, relative), "utf8"));
@@ -18,122 +19,173 @@ const writeNormalized = process.argv.includes("--write");
 const testsPassed = process.argv.includes("--tests-passed");
 
 const schedina = read("data/normalized/schedina-md06.json");
+const baselineReport = read("output/reports/serie-a-md06-suggested-forecasts-2026-10-10.json");
 const predictionsData = read("data/normalized/predictions.json");
 const odds = read("data/normalized/odds/sisal/serie-a.json");
 const matches = read("data/normalized/matches.json");
 const probableLineups = read("data/sources/probable-lineups-md6-2026-27.json");
 const officialLineups = read("data/sources/official-lineups-2026-27.json");
 const currentRows = schedina.marketCatalog.matches.flatMap(match => match.selections);
-const previousRows = currentRows.filter(leg => leg.catalogOrigin !== "statistical-b-not-modelled");
-assert.equal(previousRows.length, 383, "Il punto di partenza certificato deve contenere 383 selezioni");
-const previousById = new Map(previousRows.map(leg => [leg.selectionId, leg]));
-const previousInvariantHash = hash([...previousById.values()].map(invariantProjection).sort((a, b) => a.selectionId.localeCompare(b.selectionId)));
+const certifiedRows = currentRows.filter(leg => leg.catalogOrigin !== "statistical-b-not-modelled");
+assert.equal(certifiedRows.length, 383, "Il punto di partenza certificato deve contenere 383 selezioni");
+const certifiedById = new Map(certifiedRows.map(leg => [leg.selectionId, leg]));
+const invariantBefore = hash(certifiedRows.map(invariantProjection).sort((a, b) => a.selectionId.localeCompare(b.selectionId)));
 
 const marketCatalog = buildMd06MarketCatalog({ predictionsData, odds, matches, schedinaSlips: schedina.slips, probableLineups, officialLineups, matchday: 6 });
 const rows = marketCatalog.matches.flatMap(match => match.selections);
 const rowById = new Map(rows.map(leg => [leg.selectionId, leg]));
-assert.equal(rowById.size, rows.length, "Il catalogo ampliato contiene selectionId duplicati");
-for (const id of previousById.keys()) assert(rowById.has(id), `Selezione certificata rimossa: ${id}`);
-const preservedHash = hash([...previousById.keys()].map(id => invariantProjection(rowById.get(id))).sort((a, b) => a.selectionId.localeCompare(b.selectionId)));
-assert.equal(preservedHash, previousInvariantHash, "Quote, probabilità o contratti delle 383 selezioni certificate sono cambiati");
+assert.equal(rowById.size, rows.length, "Il catalogo contiene selectionId duplicati");
+for (const id of certifiedById.keys()) assert(rowById.has(id), `Selezione certificata rimossa: ${id}`);
+const invariantAfter = hash([...certifiedById.keys()].map(id => invariantProjection(rowById.get(id))).sort((a, b) => a.selectionId.localeCompare(b.selectionId)));
+assert.equal(invariantAfter, invariantBefore, "Quote, probabilità o contratti delle 383 selezioni certificate sono cambiati");
 
-const coverage = reconstructStatisticalCoverage({ odds, existingSelectionIds: new Set(previousById.keys()) });
-const added = rows.filter(leg => !previousById.has(leg.selectionId));
-assert(added.every(leg => leg.catalogOrigin === "statistical-b-not-modelled" && leg.betSelection.evaluation.status === "NOT_MODELLED"), "Sono state aggiunte righe diverse dalla classe B NOT_MODELLED");
 const suggestions = rows.filter(leg => leg.suggestionAnalysis?.suggested);
-assert(suggestions.every(leg => leg.betSelection.evaluation.status !== "NOT_MODELLED" && Number.isFinite(leg.betSelection.quote.decimal)), "Suggerimento senza modello o quota");
+assert(suggestions.every(leg => leg.betSelection.evaluation.status !== "NOT_MODELLED" && verifiedQuote(leg)), "Pronostico senza modello o quota verificata");
+const baselinePerMatch = new Map((baselineReport.suggestions?.perMatch || []).map(row => [row.matchId, row.total]));
+const coverage = reconstructStatisticalCoverage({ odds, existingSelectionIds: new Set(certifiedById.keys()) });
+const decisionLabel = reason => ({
+  OPERATIVE_EV_BELOW_TWO_PERCENT: "EV operativo inferiore al 2%",
+  LOW_RELIABILITY_REQUIRES_NON_NEGATIVE_CONSERVATIVE_EV: "affidabilità Bassa con downside prudente negativo",
+  CONSERVATIVE_DOWNSIDE_TOO_LARGE: "downside prudente oltre il limite",
+  CANONICAL_THRESHOLD_ALREADY_SELECTED: "altra soglia canonica meglio classificata",
+  EQUIVALENT_EVENT_ALREADY_SELECTED: "evento equivalente già selezionato",
+  LOGICAL_IMPLICATION_WITH_HIGHER_RANKED_SELECTION: "implica o è implicato da una scelta meglio classificata",
+  MUTUALLY_EXCLUSIVE_WITH_HIGHER_RANKED_SELECTION: "incompatibile con una scelta meglio classificata",
+  NOT_COHERENT_WITH_PREVALENT_SCENARIO: "alternativo allo scenario prevalente",
+  RELIABILITY_NOT_ASSESSED: "qualità non valutabile",
+  TAIL_PROBABILITY_TOO_LOW_FOR_RELIABILITY: "rischio di coda eccessivo",
+  TAIL_ODDS_TOO_HIGH_FOR_RELIABILITY: "quota di coda oltre il limite",
+}[reason] || reason.toLowerCase().replace(/_/g, " "));
 
-const coverageByMatch = new Map();
-for (const row of coverage.rows) {
-  const bucket = coverageByMatch.get(row.matchId) || [];
-  bucket.push(row);
-  coverageByMatch.set(row.matchId, bucket);
-}
-const matchRows = marketCatalog.matches.map(match => {
-  const audit = coverageByMatch.get(match.matchId) || [];
-  const matchSuggestions = match.selections.filter(leg => leg.suggestionAnalysis?.suggested);
-  const previous = match.selections.filter(leg => previousById.has(leg.selectionId));
-  const newRows = match.selections.filter(leg => !previousById.has(leg.selectionId));
+const matchAudit = marketCatalog.matches.map(match => {
+  const evaluated = match.selections.filter(leg => leg.betSelection.evaluation.status !== "NOT_MODELLED");
+  const selected = match.selections.filter(leg => leg.suggestionAnalysis?.suggested).sort((a, b) => a.suggestionAnalysis.rank - b.suggestionAnalysis.rank);
+  const exclusions = match.selections.filter(leg => !leg.suggestionAnalysis?.suggested).flatMap(leg => leg.suggestionAnalysis?.reasons || []);
   return {
     matchId: match.matchId,
     fixture: match.selections[0]?.fixture || `${match.homeTeam} – ${match.awayTeam}`,
-    sisalMarketsIdentified: new Set(audit.map(row => row.providerMarketId)).size,
-    sisalOutcomesClassified: audit.length,
-    previousCatalog: previous.length,
-    added: newRows.length,
-    states: { A: audit.filter(row => row.state === STATES.A).length, B: audit.filter(row => row.state === STATES.B).length, C: audit.filter(row => row.state === STATES.C).length, D: audit.filter(row => row.state === STATES.D).length },
-    suggestions: matchSuggestions.length,
-    suggestionsByFamily: countBy(matchSuggestions, leg => leg.suggestionAnalysis.family),
-    excludedReasons: countBy(audit.filter(row => [STATES.C, STATES.D].includes(row.state)), row => row.reason),
+    catalog: match.selections.length,
+    quoted: match.selections.filter(verifiedQuote).length,
+    evaluated: evaluated.length,
+    notModelled: match.selections.length - evaluated.length,
+    positiveEv: evaluated.filter(leg => Number(leg.betSelection.evaluation.expectedValuePct) > 0).length,
+    previousSuggestions: baselinePerMatch.get(match.matchId) || 0,
+    selected: selected.length,
+    exclusions: countBy(exclusions, reason => reason),
+    selectionIds: selected.map(leg => leg.selectionId),
   };
 });
 
-const familyRows = ["shots", "sot", "corners", "cards"].map(family => {
-  const audit = coverage.rows.filter(row => row.family === family);
-  const addedFamily = added.filter(leg => leg.statisticalFamily === family);
-  return { family, identified: audit.length, A: audit.filter(row => row.state === STATES.A).length, B: audit.filter(row => row.state === STATES.B).length, C: audit.filter(row => row.state === STATES.C).length, D: audit.filter(row => row.state === STATES.D).length, addedNotModelled: addedFamily.length, suggested: suggestions.filter(leg => leg.suggestionAnalysis.family === family).length };
+const thresholdGroups = new Map();
+for (const leg of rows.filter(leg => leg.betSelection.evaluation.status !== "NOT_MODELLED" && verifiedQuote(leg))) {
+  const identity = canonicalThresholdIdentity(leg);
+  if (!identity) continue;
+  const key = `${leg.matchId}:${identity}`, group = thresholdGroups.get(key) || [];
+  group.push(leg); thresholdGroups.set(key, group);
+}
+const thresholdCases = [...thresholdGroups.entries()].filter(([, group]) => group.length > 1 && group.some(leg => leg.suggestionAnalysis.suggested)).map(([key, group]) => ({
+  key,
+  matchId: group[0].matchId,
+  fixture: group[0].fixture,
+  canonicalIdentity: canonicalThresholdIdentity(group[0]),
+  alternatives: group.map(leg => ({ selectionId: leg.selectionId, label: leg.label, probabilityPct: leg.betSelection.evaluation.modelProbabilityPct, prudentProbabilityPct: leg.betSelection.evaluation.prudentProbabilityPct, odds: leg.betSelection.quote.decimal, expectedValuePct: leg.betSelection.evaluation.expectedValuePct, expectedValueBasis: leg.betSelection.evaluation.expectedValueBasis, conservativeExpectedValuePct: conservativeExpectedValuePct(leg), reliability: leg.betSelection.operational.reliability.level, selected: leg.suggestionAnalysis.suggested, exclusionReasons: leg.suggestionAnalysis.reasons, decision: leg.suggestionAnalysis.suggested ? "Scelta dal ranking dopo gate, deduplicazione e controllo di coerenza" : (leg.suggestionAnalysis.reasons || []).map(decisionLabel).join("; ") })),
+})).slice(0, 8);
+
+const balancedIds = new Set(suggestions.map(leg => leg.selectionId));
+const sensitivity = ["value-first", "stability-first"].map(mode => {
+  const ids = new Set(marketCatalog.matches.flatMap(match => selectMatchSuggestions(match, { rankingMode: mode }).suggestions));
+  const changed = [...new Set([...balancedIds, ...ids])].filter(id => balancedIds.has(id) !== ids.has(id));
+  return { mode, total: ids.size, changedSelectionsVsBalanced: changed.length, unchangedSelections: [...balancedIds].filter(id => ids.has(id)).length };
+});
+
+const coverageFamilies = ["shots", "sot", "corners", "cards"].map(family => {
+  const audited = coverage.rows.filter(row => row.family === family);
+  return { family, identified: audited.length, A: audited.filter(row => row.state === STATES.A).length, B: audited.filter(row => row.state === STATES.B).length, C: audited.filter(row => row.state === STATES.C).length, D: audited.filter(row => row.state === STATES.D).length, selected: suggestions.filter(leg => leg.suggestionAnalysis.family === family).length };
 });
 
 const report = {
-  schemaVersion: 1,
-  reportType: "SERIE_A_MD06_SUGGESTED_FORECASTS_AND_STATISTICAL_COVERAGE",
+  schemaVersion: 2,
+  reportType: "SERIE_A_MD06_DEFINITIVE_FORECAST_SELECTION",
   generatedAt: new Date().toISOString(),
-  sources: { oddsSnapshot: "data/normalized/odds/sisal/serie-a.json", oddsRetrievedAt: odds.retrievedAt, rawFile: odds.rawFile, predictionSnapshot: "data/normalized/predictions.json", predictionGeneratedAt: predictionsData.generatedAt, engineVersion: predictionsData.engine?.version || null, phase5C: "data/analysis/serie-a-md06-phase-5c-volume-validation-2026-10-09.json", phase5D: "output/reports/serie-a-md06-phase-5d-duo-audit-2026-10-09.json" },
-  availabilityDisclosure: "Le quote erano aperte e verificate nello snapshot del 9 ottobre 2026. La disponibilità corrente non è stata verificata e non viene dichiarata.",
-  invariants: { previousSelections: previousRows.length, previousSelectionIdsPreserved: [...previousById.keys()].every(id => rowById.has(id)), previousQuoteProbabilityContractHashBefore: previousInvariantHash, previousQuoteProbabilityContractHashAfter: preservedHash, previousQuoteProbabilityContractUnchanged: previousInvariantHash === preservedHash, evaluatedSelections: rows.filter(leg => leg.betSelection.evaluation.status !== "NOT_MODELLED").length },
-  catalog: { total: rows.length, added: added.length, addedA: added.filter(leg => leg.coverageClassification === "A").length, addedBNotModelled: added.filter(leg => leg.coverageClassification === "B").length, notModelled: rows.filter(leg => leg.betSelection.evaluation.status === "NOT_MODELLED").length },
-  coverage: { candidates: coverage.summary.candidates, stateTotals: { A: coverage.rows.filter(row => row.state === STATES.A).length, B: coverage.rows.filter(row => row.state === STATES.B).length, C: coverage.rows.filter(row => row.state === STATES.C).length, D: coverage.rows.filter(row => row.state === STATES.D).length }, families: familyRows, perMatch: matchRows },
-  suggestions: { total: suggestions.length, byFamily: countBy(suggestions, leg => leg.suggestionAnalysis.family), perMatch: matchRows.map(row => ({ matchId: row.matchId, fixture: row.fixture, total: row.suggestions, byFamily: row.suggestionsByFamily })), selections: suggestions.map(leg => ({ matchId: leg.matchId, fixture: leg.fixture, selectionId: leg.selectionId, family: leg.suggestionAnalysis.family, market: leg.market, label: leg.label, probabilityPct: leg.betSelection.evaluation.modelProbabilityPct, prudentProbabilityPct: leg.betSelection.evaluation.prudentProbabilityPct, odds: leg.betSelection.quote.decimal, quoteVerifiedAt: leg.betSelection.quote.verifiedAt, motivation: leg.suggestionAnalysis.motivation })) },
-  unresolvedLimits: [
-    "Tiri giocatore: i contratti Sisal sono DUO e includono il sostituto; la probabilità individuale V2 non è pertinente.",
-    "SOT giocatore: DUO, sostituto e pali/traverse non coincidono con il target V2 individuale.",
-    "SOT e corner squadra/partita: Fase 5C non ha superato il gate; le righe quotate restano NOT_MODELLED.",
-    "Over cartellini: i mercati sono punti cartellini; regole complete su gialli, rossi, doppie ammonizioni, panchina e settlement non sono documentate nello snapshot e la distribuzione non è calibrata.",
-    "Disponibilità corrente: non verificata dopo lo snapshot Sisal del 9 ottobre 2026.",
-  ],
+  sources: { oddsSnapshot: "data/normalized/odds/sisal/serie-a.json", oddsRetrievedAt: odds.retrievedAt, predictionSnapshot: "data/normalized/predictions.json", predictionGeneratedAt: predictionsData.generatedAt, engineVersion: predictionsData.engine?.version || null, phase5B: "output/reports/serie-a-md06-phase-5b2-2026-10-09.md", phase5C: "output/reports/serie-a-md06-phase-5c-volume-validation-2026-10-09.md", phase5D: "output/reports/serie-a-md06-phase-5d-duo-audit-2026-10-09.md", phase5E: "output/reports/serie-a-md06-phase-5e-final-audit-2026-10-09.md" },
+  availabilityDisclosure: "Quote verificate nello snapshot Sisal del 9 ottobre 2026; disponibilità corrente non verificata.",
+  invariants: { certifiedSelections: certifiedRows.length, certifiedSelectionIdsPreserved: [...certifiedById.keys()].every(id => rowById.has(id)), certifiedContractHashBefore: invariantBefore, certifiedContractHashAfter: invariantAfter, certifiedContractsUnchanged: invariantBefore === invariantAfter, catalogSelections: rows.length, evaluatedSelections: rows.filter(leg => leg.betSelection.evaluation.status !== "NOT_MODELLED").length, notModelledSelections: rows.filter(leg => leg.betSelection.evaluation.status === "NOT_MODELLED").length },
+  previousEngineAudit: {
+    totalSuggestions: baselineReport.suggestions.total,
+    criteria: ["Quota verificata nello snapshot", "Probabilità assoluta V2", "Affidabilità Alta o Media", "Probabilità centrale almeno 50%", "Probabilità prudente almeno 50%", "Scenario coerente o multi-scenario", "Score mask disponibile", "Esclusione integrale di tiri, SOT, corner e cartellini"],
+    ordering: ["Probabilità prudente decrescente", "Probabilità centrale decrescente", "selectionId stabile"],
+    quantityLimit: null,
+    deficiencies: ["Quota ed EV non partecipavano alla scelta o all'ordinamento", "Soglia universale del 50%", "Deduplicazione per famiglie troppo larghe", "Catalogo completo esposto nell'interfaccia"],
+  },
+  selectionPolicy: {
+    status: "OPERATIONAL_HEURISTIC_NOT_STATISTICALLY_VALIDATED",
+    eligibility: ["Quota e identità provider verificate", "Probabilità V2 esistente e non NOT_MODELLED", "EV operativo almeno +2% secondo la base già serializzata", "Probabilità prudente disponibile", "Affidabilità Alta, Media o Bassa valutata", "Per affidabilità Bassa: EV prudente non negativo, P prudente almeno 25%, quota non oltre 4", "Per affidabilità Alta/Media: downside prudente non inferiore a -10%, P prudente almeno 20%, quota non oltre 6", "Scenario coerente o multi-scenario", "Settlement assoluto oppure DNB con push esplicito"],
+    rankingTuple: ["EV prudente non negativo", "Qualità dati", "EV prudente", "EV operativo", "Probabilità prudente", "Probabilità centrale", "selectionId"],
+    deduplication: ["Una sola scelta per identità canonica di soglia", "Una sola forma per la stessa tesi direzionale di risultato", "Una sola scelta per eventi logicamente equivalenti", "Nessuna implicazione logica diretta tra due scelte", "Nessuna coppia mutuamente esclusiva"],
+    topNLimit: null,
+  },
+  coverage: { totalSuggestions: suggestions.length, averagePerMatch: Number((suggestions.length / 10).toFixed(1)), byFamily: countBy(suggestions, leg => leg.suggestionAnalysis.family), perMatch: matchAudit, comparison: { previousSuggestions: baselineReport.suggestions.total, currentSuggestions: suggestions.length, delta: suggestions.length - baselineReport.suggestions.total } },
+  thresholdCases,
+  sensitivity,
+  statisticalMarkets: { families: coverageFamilies, blocked: ["Tiri e SOT giocatore DUO: sostituto incluso; sui SOT anche pali/traverse", "Tiri e SOT squadra/partita: distribuzioni e verifica temporale fuori campione non validate", "Corner squadra/partita e 1X2: gate Fase 5C insufficiente", "Cartellini: contratto punti cartellino e distribuzione non riconciliati"], dataNeeded: ["Snapshot prospettici pre-partita e risultati completi su più giornate", "Join temporale fuori campione per squadra e avversario", "Identità effettiva del sostituto e pesi di scenario per DUO", "Regole Sisal complete per pali/traverse e punti cartellino", "Calibrazione, Brier/log loss e intervalli cluster-bootstrap su campione adeguato"] },
+  suggestions: suggestions.sort((a, b) => a.matchId.localeCompare(b.matchId) || a.suggestionAnalysis.rank - b.suggestionAnalysis.rank).map(leg => ({ matchId: leg.matchId, fixture: leg.fixture, rank: leg.suggestionAnalysis.rank, family: leg.suggestionAnalysis.family, selectionId: leg.selectionId, market: leg.market, label: leg.label, probabilityPct: leg.betSelection.evaluation.modelProbabilityPct, prudentProbabilityPct: leg.betSelection.evaluation.prudentProbabilityPct, odds: leg.betSelection.quote.decimal, expectedValuePct: leg.betSelection.evaluation.expectedValuePct, expectedValueBasis: leg.betSelection.evaluation.expectedValueBasis, conservativeExpectedValuePct: leg.suggestionAnalysis.conservativeExpectedValuePct, reliability: leg.betSelection.operational.reliability.level, canonicalThresholdIdentity: leg.suggestionAnalysis.canonicalThresholdIdentity })),
   tests: testsPassed ? ["npm run test:schedina", "npm run test:personal-betslip", "npm run test:css", "node --no-warnings scripts/test-app-modules.mjs", "node scripts/check-schedina-md06-suggestions-browser.cjs", "git diff --check"].map(command => ({ command, status: "PASS" })) : [],
-  filesModified: ["scripts/md06-statistical-coverage.js", "scripts/md06-suggested-forecasts.js", "scripts/md06-market-catalog.js", "scripts/build-md06-suggested-forecasts.js", "scripts/test-md06-suggested-forecasts.js", "scripts/test-md06-scenario-coherence.js", "scripts/test-schedina-md06.js", "scripts/check-schedina-md06-suggestions-browser.cjs", "js/pages/betting.js", "css/betting.css", "css/styles.css", "scripts/build-site.js", "package.json", "schedina.html", "data/normalized/schedina-md06.json", "output/reports/serie-a-md06-suggested-forecasts-2026-10-10.json", "output/reports/serie-a-md06-suggested-forecasts-2026-10-10.md"],
+  filesModified: ["scripts/md06-suggested-forecasts.js", "scripts/md06-market-catalog.js", "scripts/build-md06-suggested-forecasts.js", "scripts/test-md06-suggested-forecasts.js", "scripts/test-md06-scenario-coherence.js", "scripts/test-schedina-md06.js", "scripts/test-app-modules.mjs", "scripts/check-schedina-md06-suggestions-browser.cjs", "js/pages/betting.js", "css/betting.css", "css/styles.css", "scripts/build-site.js", "schedina.html", "data/normalized/schedina-md06.json", "output/reports/serie-a-md06-definitive-selection-2026-10-10.json", "output/reports/serie-a-md06-definitive-selection-2026-10-10.md", "output/md06/schedina-definitive-1440x1000.png", "output/md06/schedina-definitive-390x844.png"],
 };
 
-const labels = { shots: "Tiri totali", sot: "Tiri in porta", corners: "Corner", cards: "Cartellini", "goals-results": "Gol e risultati", other: "Altri" };
+const familyLabels = { shots: "Tiri totali", sot: "Tiri in porta", corners: "Corner", cards: "Cartellini", "goals-results": "Gol e risultati", other: "Altri" };
 const markdown = [
-  "# Serie A 2026/27 — Schedina MD6: pronostici suggeriti e copertura statistica",
+  "# Serie A 2026/27 — Schedina MD6: revisione definitiva del motore di selezione",
   "",
   `Generato: ${report.generatedAt}. Engine V2 ${report.sources.engineVersion}; quote Sisal snapshot ${report.sources.oddsRetrievedAt}.`,
   "",
   "## Esito",
   "",
-  `Catalogo: **${report.catalog.total}** selezioni. Le **383** precedenti sono rimaste identiche nei contratti, nelle quote e nelle valutazioni; aggiunte **${report.catalog.addedBNotModelled}** righe B esclusivamente NOT_MODELLED. Nuove righe A: **${report.catalog.addedA}**. Pronostici suggeriti: **${report.suggestions.total}**.`,
+  `Selezionati **${report.coverage.totalSuggestions}** pronostici, media **${report.coverage.averagePerMatch}** per partita. Versione precedente: **${report.coverage.comparison.previousSuggestions}**; delta **${report.coverage.comparison.delta}**. L'obiettivo indicativo di 100 non è raggiunto perché i mercati statistici restano privi di validazione sufficiente e diverse partite non presentano valore robusto.`,
   "",
   `> ${report.availabilityDisclosure}`,
   "",
-  "## Copertura per partita",
+  "## A. Audit e copertura",
   "",
-  table(["Partita", "Mercati Sisal", "Esiti classificati", "Precedenti", "Aggiunti", "A", "B", "C", "D", "Suggeriti"], matchRows.map(row => [row.fixture, row.sisalMarketsIdentified, row.sisalOutcomesClassified, row.previousCatalog, row.added, row.states.A, row.states.B, row.states.C, row.states.D, row.suggestions])),
+  "Il motore precedente richiedeva P centrale e prudente almeno 50%, affidabilità Alta/Media e coerenza di scenario; ordinava per probabilità prudente e centrale. Quote ed EV non contribuivano alla scelta. Il nuovo motore non usa un punteggio pseudo-statistico: applica gate espliciti e un ordinamento lessicografico documentato.",
   "",
-  "## Copertura delle famiglie richieste",
+  table(["Partita", "Catalogo", "Quotati", "Valutati", "EV > 0", "Precedenti", "Selezionati"], matchAudit.map(row => [row.fixture, row.catalog, row.quoted, row.evaluated, row.positiveEv, row.previousSuggestions, row.selected])),
   "",
-  table(["Famiglia", "Esiti individuati", "A", "B", "C", "D", "Aggiunti N/D", "Suggeriti"], familyRows.map(row => [labels[row.family], row.identified, row.A, row.B, row.C, row.D, row.addedNotModelled, row.suggested])),
+  "### Famiglie selezionate",
   "",
-  "Le righe B ampliano soltanto la consultazione del catalogo completo; non costituiscono copertura predittiva e non sono conteggiate come suggerimenti.",
+  table(["Famiglia", "Numero"], Object.entries(report.coverage.byFamily).map(([family, count]) => [familyLabels[family] || family, count])),
   "",
-  "## Pronostici suggeriti",
+  "## B. Scelta delle soglie",
   "",
-  ...matchRows.flatMap(row => {
-    const picks = report.suggestions.selections.filter(item => item.matchId === row.matchId);
-    return [`### ${row.fixture}`, "", ...(picks.length ? picks.map(item => `- **${item.label}** — P ${item.probabilityPct.toFixed(1)}%; prudente ${item.prudentProbabilityPct.toFixed(1)}%; quota Sisal ${item.odds.toFixed(2)}. ${item.motivation}`) : ["- Nessun pronostico supera tutti i criteri deterministici."]), ""];
-  }),
-  "## Criterio deterministico",
+  "Ogni gruppo usa un'identità canonica basata su metrica, entità, direzione e contratto; non sulla somiglianza delle etichette. L'ordinamento bilanciato privilegia prima il downside prudente non negativo, poi qualità, EV prudente, EV operativo e probabilità prudente.",
   "",
-  "Un suggerimento richiede contemporaneamente: identità e quota Sisal verificate nello snapshot; probabilità assoluta V2 già modellata; affidabilità esistente Alta/Media; probabilità centrale e prudente almeno 50%; scenario coerente o multi-scenario; evento rappresentabile nella matrice punteggi. Quote ed EV non partecipano alla scelta. Gli equivalenti e i supersets più deboli sono rimossi; eventuali coppie mutuamente esclusive sono risolte a favore del margine prudente maggiore.",
+  ...thresholdCases.flatMap(item => [
+    `### ${item.fixture} — ${item.canonicalIdentity}`,
+    "",
+    table(["Soglia", "P", "P prudente", "Quota", "EV", "EV prudente", "Affidabilità", "Scelta", "Decisione"], item.alternatives.map(leg => [leg.label, `${leg.probabilityPct}%`, `${leg.prudentProbabilityPct}%`, leg.odds, `${leg.expectedValuePct}%`, `${leg.conservativeExpectedValuePct}%`, leg.reliability, leg.selected ? "SÌ" : "NO", leg.decision])),
+    "",
+  ]),
+  "### Sensibilità dell'euristica",
   "",
-  "## Limiti non risolti",
+  table(["Variante", "Totale", "Scelte cambiate", "Scelte confermate"], sensitivity.map(item => [item.mode, item.total, item.changedSelectionsVsBalanced, item.unchangedSelections])),
   "",
-  ...report.unresolvedLimits.map(item => `- ${item}`),
+  "Queste varianti non sono nuovi modelli: cambiano soltanto l'ordine lessicografico tra i candidati che hanno già superato i medesimi gate.",
   "",
-  "## Test",
+  "## C. Mercati statistici",
   "",
-  ...(testsPassed ? report.tests.map(item => `- PASS — \`${item.command}\``) : ["- In attesa dell'esecuzione finale."]),
+  table(["Famiglia", "Individuati", "A", "B", "C", "D", "Selezionati"], coverageFamilies.map(row => [familyLabels[row.family], row.identified, row.A, row.B, row.C, row.D, row.selected])),
+  "",
+  ...report.statisticalMarkets.blocked.map(item => `- ${item}`),
+  "",
+  "Dati necessari per lo sblocco:",
+  "",
+  ...report.statisticalMarkets.dataNeeded.map(item => `- ${item}`),
+  "",
+  "## D. Qualità",
+  "",
+  `Le 383 selezioni certificate e i loro contratti sono invariati: **${report.invariants.certifiedContractsUnchanged ? "SÌ" : "NO"}**. Il catalogo interno conserva ${report.invariants.catalogSelections} righe, di cui ${report.invariants.notModelledSelections} NOT_MODELLED; la UI mostra soltanto le selezioni del motore.`,
+  "",
+  ...(testsPassed ? report.tests.map(item => `- PASS — \`${item.command}\``) : ["- Test finali da eseguire dopo la rigenerazione."]),
   "",
   "## File modificati",
   "",
@@ -142,6 +194,6 @@ const markdown = [
 ].join("\n");
 
 if (writeNormalized) write("data/normalized/schedina-md06.json", { ...schedina, marketCatalog });
-write("output/reports/serie-a-md06-suggested-forecasts-2026-10-10.json", report);
-write("output/reports/serie-a-md06-suggested-forecasts-2026-10-10.md", markdown);
-console.log(JSON.stringify({ status: "PASS", writeNormalized, testsPassed, catalog: report.catalog, coverage: report.coverage.stateTotals, suggestions: report.suggestions.total, suggestionsByFamily: report.suggestions.byFamily }, null, 2));
+write("output/reports/serie-a-md06-definitive-selection-2026-10-10.json", report);
+write("output/reports/serie-a-md06-definitive-selection-2026-10-10.md", markdown);
+console.log(JSON.stringify({ status: "PASS", writeNormalized, testsPassed, catalog: report.invariants.catalogSelections, suggestions: report.coverage.totalSuggestions, averagePerMatch: report.coverage.averagePerMatch, byFamily: report.coverage.byFamily, perMatch: matchAudit.map(row => ({ matchId: row.matchId, selected: row.selected })) }, null, 2));
