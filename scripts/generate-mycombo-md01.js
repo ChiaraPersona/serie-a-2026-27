@@ -514,6 +514,78 @@ function fallbackPortfolio(pool, tier) {
   return attempts.sort((left, right) => Math.abs(Math.log(left.product / referenceOdds[tier])) - Math.abs(Math.log(right.product / referenceOdds[tier])) || right.quality - left.quality)[0] || null;
 }
 
+function targetedPortfolio(pool, tier, previousPortfolio, event, match) {
+  if (!requestedMatchId || !previousPortfolio?.legs?.length) return null;
+  const limits = tierLimits[tier];
+  const targetSize = Math.min(limits.maximum, Math.max(limits.minimum, previousPortfolio.legs.length));
+  const poolBySelectionId = new Map(pool.map(candidate => [String(candidate.providerSelectionId), candidate]));
+  const currentSelectionById = new Map((event.markets || []).flatMap(market => (market.selections || []).map(selection => [String(selection.providerSelectionId), { market, selection }])));
+  for (const leg of previousPortfolio.legs) {
+    const selectionId = String(leg.providerSelectionId);
+    const playerScoped = leg.marketScope === "player" || String(leg.betSelection?.market?.subject?.type || "").startsWith("player");
+    if (playerScoped || poolBySelectionId.has(selectionId)) continue;
+    const current = currentSelectionById.get(selectionId);
+    if (!current || current.selection.status !== "open") continue;
+    const policyInput = {
+      matchId: match.id,
+      market: current.market.marketName,
+      variant: current.market.variantName,
+      selection: current.selection.name,
+      label: leg.label
+    };
+    if (!isPlayableSelection(policyInput, { matchday })) continue;
+    if (current.selection.odds < minimumLegOdds || current.selection.odds > maximumLegOdds) continue;
+    poolBySelectionId.set(selectionId, {
+      providerSelectionId: selectionId,
+      overlapKey: leg.overlapKey,
+      semanticKeys: leg.semanticKeys || [],
+      label: leg.label,
+      odds: current.selection.odds,
+      quality: 0,
+      anchor: false
+    });
+  }
+  const preserved = previousPortfolio.legs
+    .map(leg => poolBySelectionId.get(String(leg.providerSelectionId)))
+    .filter(Boolean);
+  const uniquePreserved = [...new Map(preserved.map(candidate => [candidate.providerSelectionId, candidate])).values()];
+  const initial = {
+    product: uniquePreserved.reduce((product, candidate) => product * candidate.odds, 1),
+    legs: uniquePreserved,
+    overlapKeys: new Set(uniquePreserved.map(candidate => candidate.overlapKey)),
+    semanticKeys: new Set(uniquePreserved.flatMap(candidate => candidate.semanticKeys)),
+    quality: uniquePreserved.reduce((quality, candidate) => quality + candidate.quality, 0)
+  };
+  if (initial.legs.length > targetSize) return null;
+  const replacementsNeeded = targetSize - initial.legs.length;
+  if (replacementsNeeded === 0) return initial;
+
+  const playerCandidates = pool.filter(candidate => candidate.semanticKeys.some(key => key.startsWith("player-")));
+  let beam = [initial];
+  for (let depth = 0; depth < replacementsNeeded; depth += 1) {
+    const expanded = [];
+    for (const state of beam) {
+      for (const candidate of playerCandidates) {
+        if (state.legs.some(leg => leg.providerSelectionId === candidate.providerSelectionId)
+          || state.overlapKeys.has(candidate.overlapKey)
+          || candidate.semanticKeys.some(key => state.semanticKeys.has(key))) continue;
+        expanded.push({
+          product: state.product * candidate.odds,
+          legs: [...state.legs, candidate],
+          overlapKeys: new Set([...state.overlapKeys, candidate.overlapKey]),
+          semanticKeys: new Set([...state.semanticKeys, ...candidate.semanticKeys]),
+          quality: state.quality + candidate.quality
+        });
+      }
+    }
+    beam = expanded.sort((left, right) => {
+      const distance = Math.abs(Math.log(left.product / referenceOdds[tier])) - Math.abs(Math.log(right.product / referenceOdds[tier]));
+      return distance || right.quality - left.quality;
+    }).slice(0, 300);
+  }
+  return beam[0] || null;
+}
+
 const oddsEventByMatchId = new Map(odds.events.map(event => [event.canonicalMatchId, event]));
 const eligibleMatches = matches.filter(match => match.matchday === matchday && match.status !== "finished");
 if (requestedMatchId && !eligibleMatches.some(match => match.id === requestedMatchId)) {
@@ -614,8 +686,9 @@ for (const event of odds.events) {
     });
   };
   console.log(`${event.canonicalMatchId}: ${pool.length} candidati modellati · ${pool.filter(candidate => candidate.anchor).length} ancore · ${new Set(pool.map(candidate => candidate.overlapKey)).size} gruppi`);
+  const previousPortfoliosByTier = new Map((previousOutput?.matches?.[event.canonicalMatchId] || []).map(portfolio => [portfolio.tier, portfolio]));
   const planned = new Map(["Aggressive", "Balanced", "Safe"].map(tier => {
-    const portfolio = selectPortfolio(pool, tier) || fallbackPortfolio(pool, tier);
+    const portfolio = targetedPortfolio(pool, tier, previousPortfoliosByTier.get(tier), event, match) || selectPortfolio(pool, tier) || fallbackPortfolio(pool, tier);
     if (!portfolio) return [tier, {
       tier,
       status: "N/D",

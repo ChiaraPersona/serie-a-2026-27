@@ -38,10 +38,19 @@ for (const lineup of official.teams) {
 }
 
 assert.equal(myCombo.length, 3, "Servono tre profili MyCombo mirati");
+const preservedNonPlayerSelectionIdsByTier = {
+  Safe: ["5337164631", "5337196035"],
+  Balanced: ["5337164992", "5337164662"],
+  Aggressive: ["5337193914", "5337164631", "5337164662", "5337164986"],
+};
+const benchedPlayerSelectionIds = new Set(["5367462214", "5367462817"]);
 for (const portfolio of myCombo) {
   assert(portfolio.legs.length >= 3 && portfolio.legs.length <= 8, `${portfolio.tier}: numero gambe non valido`);
   assert(portfolio.legs.every(leg => isPlayableSelection(leg, { matchday: 6 })), `${portfolio.tier}: selezione non giocabile`);
   assert(!portfolio.legs.some(isUnderPlayableSelection), `${portfolio.tier}: Under giocabile presente`);
+  const selectionIds = new Set(portfolio.legs.map(leg => String(leg.providerSelectionId)));
+  assert(preservedNonPlayerSelectionIdsByTier[portfolio.tier].every(selectionId => selectionIds.has(selectionId)), `${portfolio.tier}: pronostico non-tiri preesistente eliminato`);
+  assert(!portfolio.legs.some(leg => benchedPlayerSelectionIds.has(String(leg.providerSelectionId))), `${portfolio.tier}: mercato giocatore riferito a una riserva ancora presente`);
   const rendered = prediction.combinations.find(combo => combo.tier === portfolio.tier);
   assert.deepEqual(rendered.legs.map(leg => leg.selectionId), portfolio.legs.map(leg => leg.selectionId), `${portfolio.tier}: MyCombo non propagata nel pronostico`);
 }
