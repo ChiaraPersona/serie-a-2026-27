@@ -31,7 +31,7 @@ const baselineSuggestions = suggestions.filter(leg => leg.suggestionAnalysis?.ba
 const isDrawNoBet = leg => /^draw-no-bet:/.test(String(leg?.betSelection?.compatibility?.modelTarget || "").toLowerCase()) || /DRAW NO BET/i.test(`${leg.marketFamily || ""} ${leg.market || ""}`);
 
 assert.equal(schedina.marketCatalog.schemaVersion, 4);
-assert.equal(rows.length, 1542);
+assert.equal(rows.length, 1541);
 assert.equal(new Set(rows.map(leg => leg.selectionId)).size, rows.length);
 assert.equal(added.length, 1064);
 assert.equal(validated.length, 671);
@@ -39,10 +39,10 @@ assert.equal(blocked.length, 393);
 assert(blocked.every(leg => leg.coverageClassification === "B" && leg.betSelection.evaluation.status === "NOT_MODELLED"));
 assert(!blocked.some(leg => leg.suggestionAnalysis.suggested), "NOT_MODELLED promosso nei pronostici");
 assert(validated.every(leg => leg.coverageClassification === "A" && leg.betSelection.evaluation.kind === "DISCRETE_COUNT_TEMPORAL_HOLDOUT"));
-assert.equal(suggestions.length, 175);
+assert.equal(suggestions.length, 173);
 assert.equal(baselineSuggestions.length, 80);
-assert.equal(playerForecasts.length, 95);
-assert.equal(playerForecasts.filter(leg => leg.suggestionAnalysis.family === "shots").length, 61);
+assert.equal(playerForecasts.length, 93);
+assert.equal(playerForecasts.filter(leg => leg.suggestionAnalysis.family === "shots").length, 59);
 assert.equal(playerForecasts.filter(leg => leg.suggestionAnalysis.family === "sot").length, 34);
 assert.equal(suggestions.filter(leg => Number.isFinite(leg.betSelection.evaluation.expectedValuePct) && leg.betSelection.evaluation.expectedValuePct < 0).length, 68);
 assert.equal(suggestions.filter(leg => Number.isFinite(leg.betSelection.evaluation.expectedValuePct) && leg.betSelection.evaluation.expectedValuePct < 2).length, 70);
@@ -51,8 +51,15 @@ assert(baselineSuggestions.every(leg => leg.suggestionAnalysis.criteria.includes
 assert(playerForecasts.every(leg => leg.suggestionAnalysis.criteria === "APPROVED_BASELINE_PLUS_STRUCTURED_READING_V2_NO_EV_GATE"));
 assert(suggestions.every(leg => leg.betSelection.evaluation.status !== "NOT_MODELLED"));
 assert(baselineSuggestions.every(leg => Number.isFinite(leg.betSelection.quote.decimal) && leg.betSelection.quote.availability === "AVAILABLE_AT_SNAPSHOT"));
-assert(playerForecasts.every(leg => Number.isFinite(leg.betSelection.quote.decimal) && leg.betSelection.quote.availability === "AVAILABLE_AT_SNAPSHOT"));
-assert(playerForecasts.every(leg => leg.betSelection.identity.status === "VERIFIED_PROVIDER_IDS" && leg.betSelection.identity.providerMarketId && leg.betSelection.identity.providerSelectionId));
+const unquotedPlayerForecasts = playerForecasts.filter(leg => leg.betSelection.quote.availability !== "AVAILABLE_AT_SNAPSHOT");
+assert.deepEqual(unquotedPlayerForecasts.map(leg => leg.selectionId).sort(), [
+  "forecast:v2:genoa-fiorentina-2026-27-md-06:leo-stigard:shots:1",
+  "forecast:v2:genoa-fiorentina-2026-27-md-06:leo-stigard:sot:1",
+]);
+assert(unquotedPlayerForecasts.every(leg => leg.betSelection.quote.decimal === null && leg.providerMarketId === null && leg.providerSelectionId === null));
+assert(unquotedPlayerForecasts.every(leg => leg.betSelection.identity.status === "NO_COMPATIBLE_PROVIDER_CONTRACT" && leg.betSelection.compatibility.status === "NO_COMPATIBLE_QUOTE"));
+const quotedPlayerForecasts = playerForecasts.filter(leg => leg.betSelection.quote.availability === "AVAILABLE_AT_SNAPSHOT");
+assert(quotedPlayerForecasts.every(leg => leg.betSelection.identity.status === "VERIFIED_PROVIDER_IDS" && leg.betSelection.identity.providerMarketId && leg.betSelection.identity.providerSelectionId));
 assert(playerForecasts.every(leg => leg.betSelection.evaluation.modelProbabilityPct === null && leg.betSelection.evaluation.expectedValuePct === null && leg.betSelection.evaluation.prudentProbabilityPct === null));
 assert(playerForecasts.every(leg => Number.isFinite(leg.betSelection.evaluation.individualReference?.modelProbabilityPct) && leg.betSelection.evaluation.individualReference.appliedToDuo === false));
 assert(baselineSuggestions.every(leg => Number.isFinite(leg.betSelection.evaluation.modelProbabilityPct)));
@@ -62,12 +69,12 @@ assert(suggestions.every(leg => ["Alta", "Media", "Bassa"].includes(leg.betSelec
 assert(suggestions.some(leg => ["shots", "sot", "corners"].includes(leg.suggestionAnalysis.family)));
 assert(!suggestions.some(leg => leg.suggestionAnalysis.family === "cards"));
 assert(!suggestions.some(isDrawNoBet), "Draw No Bet promosso nei pronostici");
-assert(playerForecasts.every(leg => leg.betSelection.market.bookmakerSemantics?.duo === true && leg.betSelection.market.bookmakerSemantics?.substituteIncluded === true), "Semantica DUO assente");
-assert(playerForecasts.filter(leg => leg.suggestionAnalysis.family === "sot").every(leg => leg.betSelection.market.bookmakerSemantics?.postsAndCrossbarIncluded === true), "Pali/traverse non dichiarati sui SOT");
-assert(playerForecasts.every(leg => /DUO|SOST/i.test(leg.betSelection.compatibility.bookmakerTarget || "")), "Contratto DUO non conservato");
+assert(quotedPlayerForecasts.every(leg => leg.betSelection.market.bookmakerSemantics?.duo === true && leg.betSelection.market.bookmakerSemantics?.substituteIncluded === true), "Semantica DUO assente");
+assert(quotedPlayerForecasts.filter(leg => leg.suggestionAnalysis.family === "sot").every(leg => leg.betSelection.market.bookmakerSemantics?.postsAndCrossbarIncluded === true), "Pali/traverse non dichiarati sui SOT");
+assert(quotedPlayerForecasts.every(leg => /DUO|SOST/i.test(leg.betSelection.compatibility.bookmakerTarget || "")), "Contratto DUO non conservato");
 assert.equal(new Set(playerForecasts.map(leg => `${leg.matchId}:${leg.playerId}:${leg.suggestionAnalysis.family}`)).size, playerForecasts.length, "Più soglie per giocatore e statistica");
 const oddsEvents = new Map(oddsSnapshot.events.map(event => [event.canonicalMatchId, event]));
-for (const leg of playerForecasts) {
+for (const leg of quotedPlayerForecasts) {
   const semantics = leg.betSelection.market.bookmakerSemantics;
   const expectedCode = leg.suggestionAnalysis.family === "shots" ? "28507" : "28506";
   assert.equal(semantics.marketCode, expectedCode, `${leg.selectionId}: codice mercato errato`);

@@ -42,6 +42,16 @@ const operational = read("output/reports/serie-a-md06-operational-player-analysi
 const probableLineups = read("data/sources/probable-lineups-md6-2026-27.json");
 const officialLineups = read("data/sources/official-lineups-2026-27.json");
 const statisticalModels = read("data/analysis/serie-a-md06-statistical-models-2026-10-10.json");
+const previousSource = requestedMatchId ? read("data/sources/schedina-serie-a-2026-27-md-06.json") : null;
+const previousNormalized = requestedMatchId ? read("data/normalized/schedina-md06.json") : null;
+const preservedCatalogSelections = requestedMatchId
+  ? previousNormalized.marketCatalog.matches.flatMap(match => match.selections)
+  : [];
+const approvedSuggestionRankById = requestedMatchId
+  ? new Map(preservedCatalogSelections
+    .filter(leg => leg.catalogOrigin !== "prediction-v2-player-forecast" && leg.suggestionAnalysis?.suggested)
+    .map(leg => [leg.selectionId, Number(leg.suggestionAnalysis.rank) || Number.MAX_SAFE_INTEGER]))
+  : null;
 const md5ReportPath = path.join(root, "output/reports/serie-a-md05-betting-decision-review-2026-10-09.json");
 const preservedMd5GeneratedAt = fs.existsSync(md5ReportPath) ? JSON.parse(fs.readFileSync(md5ReportPath, "utf8")).generatedAt : null;
 const matchById = new Map(matches.map(match => [match.id, match]));
@@ -531,7 +541,7 @@ const myComboCategoryCounts = myComboFixtureReviews.flatMap(row => row.legs).red
   return counts;
 }, {});
 
-const marketCatalog = buildMd06MarketCatalog({
+const generatedMarketCatalog = buildMd06MarketCatalog({
   predictionsData,
   odds,
   matches,
@@ -539,8 +549,59 @@ const marketCatalog = buildMd06MarketCatalog({
   probableLineups,
   officialLineups,
   statisticalModels,
+  preservedCatalogSelections,
+  approvedSuggestionRankById,
   matchday: 6,
 });
+const aggregateCatalog = catalogMatches => {
+  const all = catalogMatches.flatMap(match => match.selections);
+  const suggestions = all.filter(leg => leg.suggestionAnalysis?.suggested);
+  const suggestionsByFamily = suggestions.reduce((counts, leg) => {
+    const family = leg.suggestionAnalysis.family;
+    counts[family] = (counts[family] || 0) + 1;
+    return counts;
+  }, {});
+  const scenarioCounts = all.reduce((counts, leg) => {
+    const classification = leg.scenarioAnalysis?.classification;
+    if (classification) counts[classification] = (counts[classification] || 0) + 1;
+    return counts;
+  }, {
+    COHERENT_WITH_PREVALENT: 0,
+    ALTERNATIVE_TO_PREVALENT: 0,
+    COMPATIBLE_WITH_MULTIPLE_SCENARIOS: 0,
+    NOT_DETERMINABLE: 0,
+  });
+  return {
+    finalSelections: all.length,
+    evaluated: all.filter(leg => finite(leg.betSelection?.evaluation?.modelProbabilityPct)).length,
+    notModelled: all.filter(leg => !finite(leg.betSelection?.evaluation?.modelProbabilityPct)).length,
+    suggestions: suggestions.length,
+    suggestionsByFamily,
+    scenarioCounts,
+  };
+};
+let marketCatalog = generatedMarketCatalog;
+if (requestedMatchId) {
+  const generatedTarget = generatedMarketCatalog.matches.find(match => match.matchId === requestedMatchId);
+  assert(generatedTarget, `${requestedMatchId}: catalogo pronostici mirato non generato`);
+  const mergedMatches = previousNormalized.marketCatalog.matches.map(match => match.matchId === requestedMatchId ? generatedTarget : match);
+  const mergeDiagnosticRows = key => [
+    ...(previousNormalized.marketCatalog[key] || []).filter(row => row.matchId !== requestedMatchId),
+    ...(generatedMarketCatalog[key] || []).filter(row => row.matchId === requestedMatchId),
+  ];
+  marketCatalog = {
+    ...previousNormalized.marketCatalog,
+    generatedAt: generatedMarketCatalog.generatedAt,
+    sources: generatedMarketCatalog.sources,
+    totals: { ...generatedMarketCatalog.totals, ...aggregateCatalog(mergedMatches) },
+    playerForecastIntegration: generatedMarketCatalog.playerForecastIntegration,
+    excluded: mergeDiagnosticRows("excluded"),
+    groupARejected: mergeDiagnosticRows("groupARejected"),
+    dnbRejected: mergeDiagnosticRows("dnbRejected"),
+    groupB2Rejected: mergeDiagnosticRows("groupB2Rejected"),
+    matches: mergedMatches,
+  };
+}
 
 const fixtureCandidateReports = operational.fixtures.map(fixture => {
   const candidates = chooseDisplayCandidates(fixture);
@@ -702,8 +763,6 @@ if (mode === "reports") {
   write("output/reports/serie-a-md06-betting-selection-2026-10-09.md", md6Markdown(md6Report));
   console.log(JSON.stringify({ mode, md5: { slips: md5Report.slips.length, totals: md5Report.totals, myCombo: md5Report.myCombo.totals }, md6: md6Report.summary }, null, 2));
 } else {
-  const previousSource = requestedMatchId ? read("data/sources/schedina-serie-a-2026-27-md-06.json") : null;
-  const previousNormalized = requestedMatchId ? read("data/normalized/schedina-md06.json") : null;
   const mergeMatchItems = (previousSlips, nextSlips, itemsKey) => nextSlips.map(nextSlip => {
     const previousSlip = previousSlips.find(slip => slip.id === nextSlip.id);
     if (!previousSlip) return nextSlip;
