@@ -67,8 +67,8 @@ const starters = official.teams.flatMap(team => team.players.map((entry, index) 
 }));
 
 const mainBenchIds = new Set([
-  "scott-mctominay", "david-neres", "lorenzo-lucca", "sam-beukema", "benoit-badiashile",
-  "antonio-raimondo", "alessio-zerbin", "seydou-fini", "ilario-monterisi", "kevin-akpoguma",
+  "scott-mctominay", "matteo-politano", "billy-gilmour", "lorenzo-lucca", "sam-beukema",
+  "tomas-bobcek", "alessio-zerbin", "seydou-fini", "ilario-monterisi", "kevin-akpoguma",
 ]);
 const substitutes = official.teams.flatMap(team => team.substitutes.map(entry => ({
   teamId: team.teamId, team: team.team, playerId: entry.playerId, sourceName: entry.sourceName,
@@ -136,7 +136,7 @@ const report = {
   matchId, fixture: "Napoli – Frosinone", kickoff,
   engine: { version: prediction.engineVersion, playerMarketModelVersion: prediction.playerMarketModelVersion, formulasChanged: false },
   source: {
-    provider: official.provider, url: official.sourceUrl, secondaryUrl: official.secondarySourceUrl,
+    provider: official.provider, url: official.sourceUrl, secondaryUrls: official.secondarySourceUrls,
     requestedUrl: official.requestedSourceUrl, verificationNote: official.verificationNote, retrievedAt: official.retrievedAt,
   },
   oddsSnapshot: { provider: odds.provider, retrievedAt: odds.retrievedAt, sourceUrl: odds.sourceUrl, beforeKickoff: new Date(odds.retrievedAt) < new Date(kickoff) },
@@ -144,7 +144,8 @@ const report = {
   outcomeProbabilities: prediction.probabilities.final,
   formations: official.teams, lineupChanges, collective, starters, substitutes, selectedForecasts: selected,
   limitations: [
-    "Fanpage non mostrava ancora la distinta alle 19:53 CEST; XI, moduli e panchine sono stati verificati su due feed live concordanti, Tuttosport ed EL PAÍS.",
+    "La distinta Diretta.it fornita dall'utente è autoritativa per gli XI; le panchine sono il complemento degli undici sui convocati ufficiali dei due club.",
+    "Milton Pereyra è presente nei convocati del Napoli ma non ha un'identità canonica verificata nel repository: playerId null, senza statistiche inventate.",
     "Possesso: il motore espone profili storici usati nel matchup, non una percentuale previsionale della singola partita.",
     "Portieri: tiri e SOT individuali non sono modellati; N/D non equivale a zero.",
     "Panchina: il V2 non calibra probabilità di ingresso e minuti da subentrante; le proiezioni precedenti da titolare non vengono riciclate.",
@@ -187,19 +188,19 @@ const markdown = [
     `Panchina: ${team.substitutes.map(player => player.sourceName).join(", ")}.`, "",
   ]),
   `Cambi rispetto alla proiezione precedente: ${lineupChanges.map(change => `${change.teamId}: entrano ${change.entered.join(", ") || "nessuno"}; escono ${change.exited.join(", ") || "nessuno"}`).join(" | ")}.`, "",
-  "Verifica fonti: Fanpage risultava ancora in attesa alle 19:53 CEST; la distinta è stata confermata prima del calcio d’inizio da Tuttosport ed EL PAÍS, i cui feed live concordavano su XI, moduli e panchine.", "",
+  "Verifica fonti: la distinta Diretta.it fornita dall’utente alle 20:24 CEST è autoritativa per gli XI; le panchine sono state ricavate sottraendo gli undici dai convocati ufficiali pubblicati dai due club.", "",
   "## 2. Previsione collettiva", "", ...official.teams.map(teamLine), "",
   `Esito finale V2: Napoli ${pct(prediction.probabilities.final["1"])} · pareggio ${pct(prediction.probabilities.final.X)} · Frosinone ${pct(prediction.probabilities.final["2"])}. Sono probabilità del modello; la distribuzione no-margin ricavata dal mercato (${pct(prediction.probabilities.marketNoMargin["1"])} / ${pct(prediction.probabilities.marketNoMargin.X)} / ${pct(prediction.probabilities.marketNoMargin["2"])}) è una fonte distinta.`, "",
   "I profili di possesso utilizzati dal matchup sono 59% Napoli e 50% Frosinone: sono riferimenti storici, non una previsione del possesso della gara. Il proxy territoriale è 0,687 per il Napoli e 0,358 per il Frosinone.", "",
-  "Il Napoli concentra il 52,4% della produzione nel corridoio centrale, con Politano e Lang che alimentano De Bruyne e Højlund. Il Frosinone è quasi speculare sulle fasce (43% a sinistra e 43% a destra) e produce soltanto il 14,1% centralmente. La vulnerabilità tiri del Frosinone aggiunge +0,88% al volume Napoli ma non ai SOT; i segnali difensivi del Napoli verso il Frosinone restano in watch e quindi neutrali nel coefficiente centrale.", "",
+  "Il Napoli concentra il 52,4% della produzione nel corridoio centrale, con David Neres e Lang alle spalle di Højlund e De Bruyne nella linea a quattro. Il Frosinone è quasi speculare sulle fasce (43% a sinistra e 43% a destra) e produce soltanto il 14,1% centralmente. La vulnerabilità tiri del Frosinone aggiunge +0,88% al volume Napoli ma non ai SOT; i segnali difensivi del Napoli verso il Frosinone restano in watch e quindi neutrali nel coefficiente centrale.", "",
   "## 3. Tiri e SOT individuali", "", "### Napoli", "", starterTable("napoli"), "", "### Frosinone", "", starterTable("frosinone"), "",
   "Le probabilità 4+ tiri usano la stessa distribuzione di Poisson del V2. Per i portieri i valori restano N/D.", "",
   "## 4. Matchup decisivi", "",
-  "- Højlund è il riferimento centrale Napoli: 2,51 tiri e 1,08 SOT attesi; il 3+ tiri vale circa 45,9%.",
-  "- Politano e De Bruyne restano i principali generatori secondari: 1,90 e 1,84 tiri attesi, con 1+ SOT rispettivamente intorno al 47,8% e 45,7%.",
-  "- Kvernadze guida il volume del Frosinone: 2,36 tiri attesi e 3+ al 42,0%; Ghedjemis e Calò sono gli altri profili più esposti alla produzione larga.",
-  "- Vanja Milinkovic-Savic e Lang entrano nell’XI Napoli al posto di Meret e Neres; Cittadini sostituisce Monterisi nel Frosinone. Il ricalcolo redistribuisce i volumi senza modificare formule o pesi.",
-  "- Rrahmani, Gilmour, Calò e Bracaglia restano valutati: difensori e centrocampisti non sono esclusi automaticamente dai mercati tiri.", "",
+  "- Højlund è il riferimento centrale Napoli: 2,77 tiri e 1,23 SOT attesi; il 3+ tiri vale circa 52,3%.",
+  "- David Neres, De Bruyne e Lang sostengono Højlund nel 3-4-2-1; il ricalcolo assegna loro soltanto i volumi coerenti con l’undici ufficiale.",
+  "- Kvernadze e Ghedjemis restano i principali sbocchi larghi del Frosinone, mentre Raimondo riceve minuti e volumi da titolare al posto di Bobček.",
+  "- Meret, Badiashile e David Neres entrano nell’XI Napoli; Milinković-Savić, Gilmour e Politano passano in panchina. Il ricalcolo non modifica formule o pesi.",
+  "- Rrahmani, Lobotka, De Bruyne, Calò e Bracaglia restano valutati: difensori e centrocampisti non sono esclusi automaticamente dai mercati tiri.", "",
   "## 5. Principali possibili subentranti", "", benchTable, "",
   "## 6. Pronostici solidi", "", recommendationTable("solido"), "",
   "Alta probabilità e convenienza economica restano concetti separati: ogni quota va confrontata con la quota equa e con l’EV, quando semanticamente calcolabile.", "",

@@ -18,10 +18,12 @@ const report = read("output/reports/napoli-frosinone-md06-official-pre-match-202
 assert(official && prediction && catalog && report, "Napoli-Frosinone MD6: artifact missing");
 assert(new Date(official.retrievedAt) < kickoff, "Official lineup retrieval must be pre-kickoff");
 assert.deepEqual(official.teams.map(team => [team.teamId, team.formation, team.players.length, team.substitutes.length]), [
-  ["napoli", "4-2-3-1", 11, 9],
-  ["frosinone", "4-2-3-1", 11, 13],
+  ["napoli", "3-4-2-1", 11, 10],
+  ["frosinone", "4-2-3-1", 11, 14],
 ]);
-assert(official.teams.flatMap(team => [...team.players, ...team.substitutes]).every(player => player.playerId), "Unresolved official identity");
+assert(official.teams.flatMap(team => team.players).every(player => player.playerId), "Unresolved starter identity");
+const unresolved = official.teams.flatMap(team => team.substitutes).filter(player => !player.playerId);
+assert.deepEqual(unresolved.map(player => player.sourceName), ["Milton Pereyra"]);
 assert.equal(prediction.dataQuality.probableLineups, "22/22 titolari ufficiali confermati");
 assert.equal(prediction.engineVersion, "4.13.0");
 assert.equal(prediction.playerMarketModelVersion, 2);
@@ -31,7 +33,7 @@ const modeled = new Set(prediction.shooters.allPlayers.map(player => player.play
 assert.deepEqual([...modeled].sort(), [...officialOutfield].sort(), "Player Market V2 must contain exactly the official outfield starters");
 assert.equal(report.starters.length, 22);
 assert.equal(report.starters.filter(player => !player.goalkeeper).length, 20);
-assert.equal(report.substitutes.length, 22);
+assert.equal(report.substitutes.length, 24);
 
 for (const goalkeeper of report.starters.filter(player => player.goalkeeper)) {
   assert.equal(goalkeeper.expectedMinutes, null);
@@ -60,10 +62,10 @@ for (const substitute of report.substitutes) {
 assert.equal(Object.values(prediction.probabilities.final).reduce((sum, value) => sum + value, 0), 100);
 const selectedIds = new Set(catalog.suggestions);
 const selected = catalog.selections.filter(selection => selectedIds.has(selection.selectionId));
-assert.equal(selected.length, 18);
+assert.equal(selected.length, 17);
 const selectedPlayerIds = selected.map(selection => selection.playerId || selection.betSelection?.market?.subject?.id).filter(Boolean);
 assert(selectedPlayerIds.every(playerId => officialOutfield.has(playerId)), "A selected player forecast belongs to a bench player");
-for (const benchPlayerId of ["alex-meret", "david-neres", "scott-mctominay", "lorenzo-lucca", "ilario-monterisi", "antonio-raimondo", "alessio-zerbin"]) {
+for (const benchPlayerId of ["vanja-milinkovic-savic", "billy-gilmour", "matteo-politano", "scott-mctominay", "lorenzo-lucca", "ilario-monterisi", "tomas-bobcek", "alessio-zerbin"]) {
   assert(!selectedPlayerIds.includes(benchPlayerId), `${benchPlayerId}: bench player still selected`);
 }
 
