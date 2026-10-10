@@ -103,13 +103,13 @@ assert.deepEqual(catalog.totals, {
   finalSelections: 1446,
   evaluated: 1038,
   notModelled: 408,
-  suggestions: 32,
+  suggestions: 82,
   suggestionsByFamily: {
-    shots: 5,
-    sot: 5,
-    corners: 10,
+    shots: 17,
+    sot: 18,
+    corners: 16,
     cards: 0,
-    "goals-results": 12,
+    "goals-results": 31,
     other: 0,
   },
   scenarioCounts: {

@@ -17,6 +17,19 @@ const table = (headers, rows) => [`| ${headers.join(" | ")} |`, `| ${headers.map
 const invariantProjection = leg => ({ selectionId: leg.selectionId, matchId: leg.matchId, quote: leg.betSelection?.quote, evaluation: leg.betSelection?.evaluation, market: leg.betSelection?.market, providerMarketId: leg.providerMarketId, providerSelectionId: leg.providerSelectionId });
 const writeNormalized = process.argv.includes("--write");
 const testsPassed = process.argv.includes("--tests-passed");
+const baselineTotal = 32;
+const baselinePerMatch = new Map(Object.entries({
+  "genoa-fiorentina-2026-27-md-06": 2,
+  "inter-parma-2026-27-md-06": 5,
+  "napoli-frosinone-2026-27-md-06": 2,
+  "como-roma-2026-27-md-06": 3,
+  "lazio-monza-2026-27-md-06": 3,
+  "lecce-bologna-2026-27-md-06": 4,
+  "sassuolo-milan-2026-27-md-06": 4,
+  "cagliari-juventus-2026-27-md-06": 5,
+  "atalanta-venezia-2026-27-md-06": 1,
+  "torino-udinese-2026-27-md-06": 3,
+}));
 
 const schedina = read("data/normalized/schedina-md06.json");
 const statisticalModels = read("data/analysis/serie-a-md06-statistical-models-2026-10-10.json");
@@ -28,8 +41,6 @@ const officialLineups = read("data/sources/official-lineups-2026-27.json");
 const currentRows = schedina.marketCatalog.matches.flatMap(match => match.selections);
 const certifiedRows = currentRows.filter(leg => !String(leg.catalogOrigin || "").startsWith("statistical-"));
 assert.equal(certifiedRows.length, 383, "Il punto di partenza certificato deve contenere 383 selezioni");
-const baselineSuggestions = certifiedRows.filter(leg => leg.suggestionAnalysis?.suggested);
-assert.equal(baselineSuggestions.length, 12, "La baseline definitiva deve contenere 12 pronostici");
 const certifiedById = new Map(certifiedRows.map(leg => [leg.selectionId, leg]));
 const invariantBefore = hash(certifiedRows.map(invariantProjection).sort((a, b) => a.selectionId.localeCompare(b.selectionId)));
 
@@ -43,21 +54,17 @@ assert.equal(invariantAfter, invariantBefore, "Quote, probabilità o contratti d
 
 const suggestions = rows.filter(leg => leg.suggestionAnalysis?.suggested);
 assert(suggestions.every(leg => leg.betSelection.evaluation.status !== "NOT_MODELLED" && verifiedQuote(leg)), "Pronostico senza modello o quota verificata");
-const baselinePerMatch = new Map(certifiedRows.map(leg => leg.matchId).map(matchId => [matchId, baselineSuggestions.filter(leg => leg.matchId === matchId).length]));
 const coverage = reconstructStatisticalCoverage({ odds, existingSelectionIds: new Set(certifiedById.keys()), statisticalModels });
 const decisionLabel = reason => ({
-  OPERATIVE_EV_BELOW_TWO_PERCENT: "EV operativo inferiore al 2%",
-  LOW_RELIABILITY_REQUIRES_NON_NEGATIVE_CONSERVATIVE_EV: "affidabilità Bassa con downside prudente negativo",
-  CONSERVATIVE_DOWNSIDE_TOO_LARGE: "downside prudente oltre il limite",
   CANONICAL_THRESHOLD_ALREADY_SELECTED: "altra soglia canonica meglio classificata",
   EQUIVALENT_EVENT_ALREADY_SELECTED: "evento equivalente già selezionato",
   LOGICAL_IMPLICATION_WITH_HIGHER_RANKED_SELECTION: "implica o è implicato da una scelta meglio classificata",
   MUTUALLY_EXCLUSIVE_WITH_HIGHER_RANKED_SELECTION: "incompatibile con una scelta meglio classificata",
   NOT_COHERENT_WITH_PREVALENT_SCENARIO: "alternativo allo scenario prevalente",
   RELIABILITY_NOT_ASSESSED: "qualità non valutabile",
-  TAIL_PROBABILITY_TOO_LOW_FOR_RELIABILITY: "rischio di coda eccessivo",
-  TAIL_ODDS_TOO_HIGH_FOR_RELIABILITY: "quota di coda oltre il limite",
-  STATISTICAL_TAIL_ODDS_TOO_HIGH: "quota oltre 4 per un modello statistico di conteggio",
+  SPORTS_SUPPORT_BELOW_MARKET_STANDARD: "supporto sportivo insufficiente per struttura del mercato e affidabilità",
+  MARGINAL_SPORTS_SUPPORT_BELOW_PORTFOLIO_STANDARD: "supporto marginale insufficiente dopo il controllo di varietà",
+  CANONICAL_THRESHOLD_BALANCE_NOT_SELECTED: "altra soglia offre un equilibrio sportivo migliore",
 }[reason] || reason.toLowerCase().replace(/_/g, " "));
 
 const matchAudit = marketCatalog.matches.map(match => {
@@ -95,7 +102,7 @@ const thresholdCases = [...thresholdGroups.entries()].filter(([, group]) => grou
 })).slice(0, 8);
 
 const balancedIds = new Set(suggestions.map(leg => leg.selectionId));
-const sensitivity = ["value-first", "stability-first"].map(mode => {
+const sensitivity = ["probability-first", "solidity-first"].map(mode => {
   const ids = new Set(marketCatalog.matches.flatMap(match => selectMatchSuggestions(match, { rankingMode: mode }).suggestions));
   const changed = [...new Set([...balancedIds, ...ids])].filter(id => balancedIds.has(id) !== ids.has(id));
   return { mode, total: ids.size, changedSelectionsVsBalanced: changed.length, unchangedSelections: [...balancedIds].filter(id => ids.has(id)).length };
@@ -115,27 +122,27 @@ const report = {
   availabilityDisclosure: "Quote verificate nello snapshot Sisal del 9 ottobre 2026; disponibilità corrente non verificata.",
   invariants: { certifiedSelections: certifiedRows.length, certifiedSelectionIdsPreserved: [...certifiedById.keys()].every(id => rowById.has(id)), certifiedContractHashBefore: invariantBefore, certifiedContractHashAfter: invariantAfter, certifiedContractsUnchanged: invariantBefore === invariantAfter, catalogSelections: rows.length, evaluatedSelections: rows.filter(leg => leg.betSelection.evaluation.status !== "NOT_MODELLED").length, notModelledSelections: rows.filter(leg => leg.betSelection.evaluation.status === "NOT_MODELLED").length },
   previousEngineAudit: {
-    totalSuggestions: baselineSuggestions.length,
-    criteria: ["Quota verificata nello snapshot", "Probabilità assoluta V2", "Affidabilità Alta o Media", "Probabilità centrale almeno 50%", "Probabilità prudente almeno 50%", "Scenario coerente o multi-scenario", "Score mask disponibile", "Esclusione integrale di tiri, SOT, corner e cartellini"],
-    ordering: ["Probabilità prudente decrescente", "Probabilità centrale decrescente", "selectionId stabile"],
+    totalSuggestions: baselineTotal,
+    criteria: ["Quota verificata nello snapshot", "Probabilità validata", "EV operativo almeno +2%", "EV prudente non negativo per i mercati statistici", "Limiti economici sulle quote", "Scenario coerente o multi-scenario"],
+    ordering: ["Segno dell'EV prudente", "Affidabilità", "EV prudente", "EV centrale", "Probabilità prudente", "selectionId stabile"],
     quantityLimit: null,
-    deficiencies: ["Quota ed EV non partecipavano alla scelta o all'ordinamento", "Soglia universale del 50%", "Deduplicazione per famiglie troppo larghe", "Catalogo completo esposto nell'interfaccia"],
+    deficiencies: ["L'EV determinava ammissione e ordinamento", "Esiti coerenti con EV negativo venivano esclusi", "Quote elevate potevano dominare la selezione statistica"],
   },
   selectionPolicy: {
-    status: "VALIDATED_PROBABILITIES_WITH_OPERATIONAL_PORTFOLIO_RULE",
-    eligibility: ["Quota e identità provider verificate", "Probabilità V2 esistente oppure modello discreto validato su holdout temporale", "EV operativo almeno +2% secondo la base già serializzata", "Probabilità prudente disponibile", "Affidabilità Alta, Media o Bassa valutata", "Per affidabilità Bassa: EV prudente non negativo, P prudente almeno 25%, quota non oltre 4", "Per modelli statistici discreti: EV prudente non negativo e quota non oltre 4", "Per affidabilità Alta/Media non statistica: downside prudente non inferiore a -10%, P prudente almeno 20%, quota non oltre 6", "Scenario coerente o multi-scenario", "Settlement assoluto oppure DNB con push esplicito"],
-    rankingTuple: ["EV prudente non negativo", "Qualità dati", "EV prudente", "EV operativo", "Probabilità prudente", "Probabilità centrale", "selectionId"],
+    status: "SPORTS_COHERENCE_PRIMARY_EV_INFORMATION_ONLY",
+    eligibility: ["Quota e identità provider verificate", "Probabilità V2 esistente oppure modello discreto validato", "Probabilità prudente disponibile", "Affidabilità valutata", "Scenario coerente o compatibile con più scenari", "Supporto minimo differenziato per struttura del mercato e affidabilità", "Settlement supportato", "EV non usato come gate"],
+    rankingTuple: ["Coerenza con lo scenario prevalente", "Forma diretta della previsione di risultato", "Probabilità prudente", "Solidità del modello", "Probabilità centrale", "selectionId"],
     deduplication: ["Una sola scelta per identità canonica di soglia", "Una sola forma per la stessa tesi direzionale di risultato", "Una sola scelta per eventi logicamente equivalenti", "Nessuna implicazione logica diretta tra due scelte", "Nessuna coppia mutuamente esclusiva"],
     topNLimit: null,
   },
-  coverage: { totalSuggestions: suggestions.length, averagePerMatch: Number((suggestions.length / 10).toFixed(1)), byFamily: countBy(suggestions, leg => leg.suggestionAnalysis.family), perMatch: matchAudit, comparison: { previousSuggestions: baselineSuggestions.length, currentSuggestions: suggestions.length, delta: suggestions.length - baselineSuggestions.length } },
+  coverage: { totalSuggestions: suggestions.length, averagePerMatch: Number((suggestions.length / 10).toFixed(1)), byFamily: countBy(suggestions, leg => leg.suggestionAnalysis.family), negativeEvSuggestions: suggestions.filter(leg => Number(leg.betSelection.evaluation.expectedValuePct) < 0).length, recoveredFromEconomicExclusion: suggestions.filter(leg => Number(leg.betSelection.evaluation.expectedValuePct) < 2).length, perMatch: matchAudit, comparison: { previousSuggestions: baselineTotal, currentSuggestions: suggestions.length, delta: suggestions.length - baselineTotal } },
   thresholdCases,
   sensitivity,
   statisticalMarkets: { families: coverageFamilies, validated: ["Tiri squadra/partita e 1X2", "Tiri in porta squadra/partita e 1X2", "Corner squadra/partita e 1X2"], blocked: ["Tiri e SOT giocatore DUO: sostituto incluso; sui SOT anche pali/traverse", "Tiri e SOT giocatore standard: il contratto richiede almeno una occorrenza in entrambi i tempi e non equivale al totale full-match V2", "Cartellini: le regole Sisal escludono panchina, staff, post-partita e già sostituiti; gli actuals aggregati disponibili non certificano queste esclusioni"], dataNeeded: ["Identità effettiva del sostituto, minuti e pesi di scenario per DUO", "Actuals cartellini event-level con stato del giocatore e timestamp", "Ulteriori snapshot prospettici per monitorare calibrazione e drift senza riusare MD6"] },
   suggestions: suggestions.sort((a, b) => a.matchId.localeCompare(b.matchId) || a.suggestionAnalysis.rank - b.suggestionAnalysis.rank).map(leg => ({ matchId: leg.matchId, fixture: leg.fixture, rank: leg.suggestionAnalysis.rank, family: leg.suggestionAnalysis.family, selectionId: leg.selectionId, market: leg.market, label: leg.label, probabilityPct: leg.betSelection.evaluation.modelProbabilityPct, prudentProbabilityPct: leg.betSelection.evaluation.prudentProbabilityPct, odds: leg.betSelection.quote.decimal, expectedValuePct: leg.betSelection.evaluation.expectedValuePct, expectedValueBasis: leg.betSelection.evaluation.expectedValueBasis, conservativeExpectedValuePct: leg.suggestionAnalysis.conservativeExpectedValuePct, reliability: leg.betSelection.operational.reliability.level, canonicalThresholdIdentity: leg.suggestionAnalysis.canonicalThresholdIdentity })),
-  tests: testsPassed ? ["npm run test:schedina:md06", "npm run test:schedina", "npm run test:css", "node --no-warnings scripts/test-app-modules.mjs", "node scripts/check-schedina-md06-suggestions-browser.cjs", "git diff --check"].map(command => ({ command, status: "PASS" })) : [],
-  testLimitations: testsPassed ? [{ command: "npm test", status: "BLOCKED_BY_MISSING_HISTORICAL_FIXTURE", detail: "data/raw/referee-stats/espn/2023-24/serie-a/679226.json.gz assente; il blocco precede i test MD6." }] : [],
-  filesModified: ["scripts/md06-statistical-models.js", "scripts/build-md06-statistical-models.js", "scripts/md06-statistical-coverage.js", "scripts/md06-market-catalog.js", "scripts/md06-suggested-forecasts.js", "scripts/build-md06-betting-decision-package.mjs", "scripts/build-md06-suggested-forecasts.js", "scripts/build-betting-matchday.js", "scripts/test-md06-statistical-models.js", "scripts/test-schedina-md06.js", "scripts/test-md06-scenario-coherence.js", "scripts/test-md06-suggested-forecasts.js", "scripts/check-schedina-md06-suggestions-browser.cjs", "package.json", "data/analysis/serie-a-md06-statistical-models-2026-10-10.json", "data/normalized/schedina-md06.json", "output/reports/serie-a-md06-statistical-models-2026-10-10.md", "output/reports/serie-a-md06-betting-selection-2026-10-09.json", "output/reports/serie-a-md06-betting-selection-2026-10-09.md", "output/reports/serie-a-md06-definitive-selection-2026-10-10.json", "output/reports/serie-a-md06-definitive-selection-2026-10-10.md", "output/md06/schedina-definitive-1440x1000.png", "output/md06/schedina-definitive-390x844.png"],
+  tests: testsPassed ? ["npm run test:schedina:md06", "node scripts/check-schedina-md06-suggestions-browser.cjs", "git diff --check"].map(command => ({ command, status: "PASS" })) : [],
+  testLimitations: [],
+  filesModified: ["scripts/md06-suggested-forecasts.js", "scripts/build-md06-suggested-forecasts.js", "scripts/test-md06-suggested-forecasts.js", "scripts/test-schedina-md06.js", "scripts/check-schedina-md06-suggestions-browser.cjs", "data/normalized/schedina-md06.json", "output/reports/serie-a-md06-definitive-selection-2026-10-10.json", "output/reports/serie-a-md06-definitive-selection-2026-10-10.md", "output/md06/schedina-definitive-1440x1000.png", "output/md06/schedina-definitive-390x844.png"],
 };
 
 const familyLabels = { shots: "Tiri totali", sot: "Tiri in porta", corners: "Corner", cards: "Cartellini", "goals-results": "Gol e risultati", other: "Altri" };
@@ -146,13 +153,13 @@ const markdown = [
   "",
   "## Esito",
   "",
-  `Selezionati **${report.coverage.totalSuggestions}** pronostici, media **${report.coverage.averagePerMatch}** per partita. Versione precedente: **${report.coverage.comparison.previousSuggestions}**; delta **${report.coverage.comparison.delta}**. Il target indicativo di circa 100 non è forzato: le soglie senza gate temporale, le quote di coda e le famiglie con contratto non riconciliato restano escluse.`,
+  `Selezionati **${report.coverage.totalSuggestions}** pronostici, media **${report.coverage.averagePerMatch}** per partita. Versione precedente: **${report.coverage.comparison.previousSuggestions}**; delta **${report.coverage.comparison.delta}**. I pronostici con EV negativo ora selezionati sono **${report.coverage.negativeEvSuggestions}**: l'EV resta esposto ma non determina ammissione o ordinamento.`,
   "",
   `> ${report.availabilityDisclosure}`,
   "",
   "## A. Audit e copertura",
   "",
-  "Il motore precedente richiedeva P centrale e prudente almeno 50%, affidabilità Alta/Media e coerenza di scenario; ordinava per probabilità prudente e centrale. Quote ed EV non contribuivano alla scelta. Il nuovo motore aggiunge distribuzioni discrete validate su holdout temporale e applica gate espliciti più un ordinamento lessicografico documentato.",
+  "Il motore precedente escludeva i mercati con EV centrale sotto +2% e, per le famiglie statistiche, con EV prudente negativo. La selezione ora usa coerenza sportiva, probabilità pertinente, solidità e varietà; quota ed EV non partecipano al gate o all'ordinamento generale.",
   "",
   table(["Partita", "Catalogo", "Quotati", "Valutati", "EV > 0", "Precedenti", "Selezionati"], matchAudit.map(row => [row.fixture, row.catalog, row.quoted, row.evaluated, row.positiveEv, row.previousSuggestions, row.selected])),
   "",
@@ -162,7 +169,7 @@ const markdown = [
   "",
   "## B. Scelta delle soglie",
   "",
-  "Ogni gruppo usa un'identità canonica basata su metrica, entità, direzione e contratto; non sulla somiglianza delle etichette. L'ordinamento bilanciato privilegia prima il downside prudente non negativo, poi qualità, EV prudente, EV operativo e probabilità prudente.",
+  "Ogni gruppo usa un'identità canonica basata su metrica, entità, direzione e contratto; non sulla somiglianza delle etichette. La soglia è scelta con un obiettivo di probabilità differenziato per tipo di mercato, solidità del modello e un contributo secondario della quota; l'EV non entra nel confronto.",
   "",
   ...thresholdCases.flatMap(item => [
     `### ${item.fixture} — ${item.canonicalIdentity}`,
@@ -174,7 +181,7 @@ const markdown = [
   "",
   table(["Variante", "Totale", "Scelte cambiate", "Scelte confermate"], sensitivity.map(item => [item.mode, item.total, item.changedSelectionsVsBalanced, item.unchangedSelections])),
   "",
-  "Queste varianti non sono nuovi modelli: cambiano soltanto l'ordine lessicografico tra i candidati che hanno già superato i medesimi gate.",
+  "Queste varianti non sono nuovi modelli: confrontano priorità alla probabilità o alla solidità senza utilizzare EV o quota nell'ordinamento generale.",
   "",
   "## C. Mercati statistici",
   "",

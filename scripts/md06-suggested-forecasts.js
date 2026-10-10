@@ -45,7 +45,7 @@ function settlementIsSupported(leg) {
   return evaluation.probabilitySemantics === "CONDITIONAL_ON_NO_DRAW"
     && evaluation.settlement?.type === "PUSH_ON_OUTCOME"
     && evaluation.expectedValueBasis === "P_WIN_TIMES_DECIMAL_ODDS_PLUS_P_PUSH_MINUS_ONE"
-    && finite(evaluation.conservativeExpectedValuePct);
+    && finite(evaluation.prudentProbabilityPct);
 }
 
 function canonicalEntity(leg) {
@@ -79,6 +79,19 @@ function resultThesisIdentity(leg) {
   return `result:${outcome}`;
 }
 
+function minimumSportsSupportPct(leg) {
+  if (leg?.scenarioAnalysis?.classification === "COHERENT_WITH_PREVALENT") return 0;
+  const family = suggestedFamily(leg);
+  const identity = canonicalThresholdIdentity(leg) || "";
+  const reliability = leg?.betSelection?.operational?.reliability?.level;
+  let minimum = 45;
+  if (["shots", "sot", "corners"].includes(family) && !identity) minimum = 38;
+  else if (identity.endsWith(":range")) minimum = 55;
+  else if (identity.endsWith(":over")) minimum = family === "goals-results" ? 50 : 45;
+  if (reliability === "Bassa") minimum += 5;
+  return minimum;
+}
+
 function assessSuggestion(leg) {
   const reasons = [], evaluation = leg?.betSelection?.evaluation || {};
   const reliability = leg?.betSelection?.operational?.reliability?.level;
@@ -87,48 +100,115 @@ function assessSuggestion(leg) {
   const validatedStatisticalModel = statisticalFamily && evaluation.kind === "DISCRETE_COUNT_TEMPORAL_HOLDOUT";
   const conservativeEv = conservativeExpectedValuePct(leg);
   if (!verifiedQuote(leg)) reasons.push("QUOTE_NOT_VERIFIED_AT_SNAPSHOT");
-  if (evaluation.status === "NOT_MODELLED" || !finite(evaluation.modelProbabilityPct) || !finite(evaluation.expectedValuePct)) reasons.push("NOT_MODELLED");
+  if (evaluation.status === "NOT_MODELLED" || !finite(evaluation.modelProbabilityPct)) reasons.push("NOT_MODELLED");
   if (!finite(evaluation.prudentProbabilityPct)) reasons.push("ROBUST_PROBABILITY_NOT_AVAILABLE");
   if (!Object.hasOwn(RELIABILITY_RANK, reliability)) reasons.push("RELIABILITY_NOT_ASSESSED");
   if (!settlementIsSupported(leg)) reasons.push("SETTLEMENT_NOT_SUPPORTED");
   if (!["COHERENT_WITH_PREVALENT", "COMPATIBLE_WITH_MULTIPLE_SCENARIOS"].includes(scenario.classification)) reasons.push("NOT_COHERENT_WITH_PREVALENT_SCENARIO");
   if (!scenario.scoreMask && !validatedStatisticalModel) reasons.push("NO_COMPARABLE_SCORE_EVENT");
   if (statisticalFamily && !validatedStatisticalModel) reasons.push("STATISTICAL_FAMILY_NOT_VALIDATED");
-  if (finite(evaluation.expectedValuePct) && Number(evaluation.expectedValuePct) < 2) reasons.push("OPERATIVE_EV_BELOW_TWO_PERCENT");
-  if (finite(evaluation.prudentProbabilityPct) && Number(evaluation.prudentProbabilityPct) < (reliability === "Bassa" ? 25 : 20)) reasons.push("TAIL_PROBABILITY_TOO_LOW_FOR_RELIABILITY");
-  if (finite(leg?.betSelection?.quote?.decimal) && Number(leg.betSelection.quote.decimal) > (reliability === "Bassa" ? 4 : 6)) reasons.push("TAIL_ODDS_TOO_HIGH_FOR_RELIABILITY");
-  if (validatedStatisticalModel && finite(leg?.betSelection?.quote?.decimal) && Number(leg.betSelection.quote.decimal) > 4) reasons.push("STATISTICAL_TAIL_ODDS_TOO_HIGH");
-  if (conservativeEv === null) reasons.push("CONSERVATIVE_EV_NOT_AVAILABLE");
-  else if (validatedStatisticalModel && conservativeEv < 0) reasons.push("STATISTICAL_MODEL_REQUIRES_NON_NEGATIVE_CONSERVATIVE_EV");
-  else if (reliability === "Bassa" && conservativeEv < 0) reasons.push("LOW_RELIABILITY_REQUIRES_NON_NEGATIVE_CONSERVATIVE_EV");
-  else if (["Alta", "Media"].includes(reliability) && conservativeEv < -10) reasons.push("CONSERVATIVE_DOWNSIDE_TOO_LARGE");
+  if (finite(evaluation.prudentProbabilityPct) && Number(evaluation.prudentProbabilityPct) < minimumSportsSupportPct(leg)) reasons.push("SPORTS_SUPPORT_BELOW_MARKET_STANDARD");
   return { eligible: reasons.length === 0, reasons, conservativeExpectedValuePct: conservativeEv };
 }
 
-function interestTuple(leg, rankingMode = "balanced") {
-  const evaluation = leg.betSelection.evaluation;
-  const reliability = RELIABILITY_RANK[leg.betSelection.operational.reliability.level] || 0;
-  const conservativeEv = conservativeExpectedValuePct(leg) ?? -Infinity;
-  const centralEv = Number(evaluation.expectedValuePct);
-  const prudent = Number(evaluation.prudentProbabilityPct);
-  const central = Number(evaluation.modelProbabilityPct);
-  if (rankingMode === "value-first") return [conservativeEv, centralEv, reliability, prudent, central];
-  if (rankingMode === "stability-first") return [prudent, reliability, conservativeEv, centralEv, central];
-  return [conservativeEv >= 0 ? 1 : 0, reliability, conservativeEv, centralEv, prudent, central];
+function scenarioRank(leg) {
+  return leg?.scenarioAnalysis?.classification === "COHERENT_WITH_PREVALENT" ? 3
+    : leg?.scenarioAnalysis?.classification === "COMPATIBLE_WITH_MULTIPLE_SCENARIOS" ? 2
+      : 0;
 }
 
-function compareInterest(left, right, rankingMode = "balanced") {
+function resultFormRank(leg) {
+  const target = modelTarget(leg).toLowerCase();
+  if (/^1x2:/.test(target)) return 3;
+  if (/^draw-no-bet:/.test(target)) return 2;
+  if (/^double-chance:/.test(target)) return 1;
+  return 0;
+}
+
+function interestTuple(leg, rankingMode = "probability-first") {
+  const evaluation = leg.betSelection.evaluation;
+  const reliability = RELIABILITY_RANK[leg.betSelection.operational.reliability.level] || 0;
+  const prudent = Number(evaluation.prudentProbabilityPct);
+  const central = Number(evaluation.modelProbabilityPct);
+  if (rankingMode === "solidity-first") return [scenarioRank(leg), resultFormRank(leg), reliability, prudent, central];
+  return [scenarioRank(leg), resultFormRank(leg), prudent, reliability, central];
+}
+
+function compareInterest(left, right, rankingMode = "probability-first") {
   const a = interestTuple(left, rankingMode), b = interestTuple(right, rankingMode);
   for (let index = 0; index < Math.max(a.length, b.length); index += 1) if (a[index] !== b[index]) return b[index] - a[index];
   return String(left.selectionId).localeCompare(String(right.selectionId));
 }
 
-function chooseSuggestions(match, rankingMode = "balanced") {
+function thresholdTargetPct(leg) {
+  const identity = canonicalThresholdIdentity(leg) || "";
+  if (identity.endsWith(":range")) return 68;
+  if (["shots", "sot", "corners"].includes(suggestedFamily(leg))) return 50;
+  if (identity.endsWith(":over")) return 58;
+  return 55;
+}
+
+function thresholdBalanceTuple(leg) {
+  const evaluation = leg.betSelection.evaluation;
+  const prudent = Number(evaluation.prudentProbabilityPct);
+  const central = Number(evaluation.modelProbabilityPct);
+  const reliability = RELIABILITY_RANK[leg.betSelection.operational.reliability.level] || 0;
+  const quote = Number(leg.betSelection.quote.decimal);
+  const target = thresholdTargetPct(leg);
+  const quoteCompromise = Number.isFinite(quote) ? Math.min(3, Math.log2(Math.max(1, quote))) : 0;
+  return [reliability, -Math.abs(prudent - target), quoteCompromise, prudent, central];
+}
+
+function compareThresholdBalance(left, right) {
+  const a = thresholdBalanceTuple(left), b = thresholdBalanceTuple(right);
+  for (let index = 0; index < a.length; index += 1) if (a[index] !== b[index]) return b[index] - a[index];
+  return String(left.selectionId).localeCompare(String(right.selectionId));
+}
+
+function marginalSportsSupportScore(leg, familySelectionsAlreadyAccepted = 0) {
+  const prudent = Number(leg.betSelection.evaluation.prudentProbabilityPct);
+  const reliability = RELIABILITY_RANK[leg.betSelection.operational.reliability.level] || 0;
+  const coherenceBonus = leg.scenarioAnalysis.classification === "COHERENT_WITH_PREVALENT" ? 12 : 0;
+  const reliabilityBonus = reliability === 3 ? 6 : reliability === 2 ? 3 : 0;
+  return prudent + coherenceBonus + reliabilityBonus - familySelectionsAlreadyAccepted * 7;
+}
+
+function minimumMarginalSportsSupportScore(leg) {
+  return ["shots", "sot", "corners"].includes(suggestedFamily(leg)) ? 45 : 48;
+}
+
+function chooseSuggestions(match, rankingMode = "probability-first") {
   const assessments = new Map(match.selections.map(leg => [leg.selectionId, assessSuggestion(leg)]));
-  const candidates = match.selections.filter(leg => assessments.get(leg.selectionId).eligible).sort((left, right) => compareInterest(left, right, rankingMode));
-  const thresholdSeen = new Set(), thesisSeen = new Set(), accepted = [], rejected = new Map();
+  const admitted = match.selections.filter(leg => assessments.get(leg.selectionId).eligible);
+  const thresholdGroups = new Map();
+  for (const leg of admitted) {
+    const key = canonicalThresholdIdentity(leg);
+    if (!key) continue;
+    const group = thresholdGroups.get(key) || [];
+    group.push(leg);
+    thresholdGroups.set(key, group);
+  }
+  const thresholdWinners = new Map();
+  const rejected = new Map();
+  for (const [key, group] of thresholdGroups) {
+    const ranked = group.slice().sort(compareThresholdBalance);
+    thresholdWinners.set(key, ranked[0].selectionId);
+    for (const leg of ranked.slice(1)) rejected.set(leg.selectionId, "CANONICAL_THRESHOLD_BALANCE_NOT_SELECTED");
+  }
+  const candidates = admitted
+    .filter(leg => {
+      const key = canonicalThresholdIdentity(leg);
+      return !key || thresholdWinners.get(key) === leg.selectionId;
+    })
+    .sort((left, right) => compareInterest(left, right, rankingMode));
+  const thresholdSeen = new Set(), thesisSeen = new Set(), accepted = [], familyCounts = new Map();
   for (const leg of candidates) {
     const thresholdKey = canonicalThresholdIdentity(leg), thesisKey = resultThesisIdentity(leg);
+    const family = suggestedFamily(leg), familyCount = familyCounts.get(family) || 0;
+    if (marginalSportsSupportScore(leg, familyCount) < minimumMarginalSportsSupportScore(leg)) {
+      rejected.set(leg.selectionId, "MARGINAL_SPORTS_SUPPORT_BELOW_PORTFOLIO_STANDARD");
+      continue;
+    }
     if (thresholdKey && thresholdSeen.has(thresholdKey)) { rejected.set(leg.selectionId, "CANONICAL_THRESHOLD_ALREADY_SELECTED"); continue; }
     if (thesisKey && thesisSeen.has(thesisKey)) { rejected.set(leg.selectionId, "RESULT_THESIS_ALREADY_SELECTED"); continue; }
     const equivalent = accepted.find(other => pairRelation(leg, other).type === "EQUIVALENT_OVERLAP");
@@ -138,13 +218,14 @@ function chooseSuggestions(match, rankingMode = "balanced") {
     const exclusive = accepted.find(other => pairRelation(leg, other).type === "MUTUALLY_EXCLUSIVE");
     if (exclusive) { rejected.set(leg.selectionId, "MUTUALLY_EXCLUSIVE_WITH_HIGHER_RANKED_SELECTION"); continue; }
     accepted.push(leg);
+    familyCounts.set(family, familyCount + 1);
     if (thresholdKey) thresholdSeen.add(thresholdKey);
     if (thesisKey) thesisSeen.add(thesisKey);
   }
   return { accepted, assessments, rejected };
 }
 
-function selectMatchSuggestions(match, { rankingMode = "balanced" } = {}) {
+function selectMatchSuggestions(match, { rankingMode = "probability-first" } = {}) {
   const { accepted, assessments, rejected } = chooseSuggestions(match, rankingMode);
   const acceptedIds = new Set(accepted.map(leg => leg.selectionId));
   const rankById = new Map(accepted.map((leg, index) => [leg.selectionId, index + 1]));
@@ -158,7 +239,7 @@ function selectMatchSuggestions(match, { rankingMode = "balanced" } = {}) {
       rank: rankById.get(leg.selectionId) || null,
       family: suggestedFamily(leg),
       familyLabel: FAMILY_LABELS[suggestedFamily(leg)],
-      criteria: "VERIFIED_QUOTE_AND_VALIDATED_MODEL_AND_OPERATIVE_EV_AT_LEAST_TWO_PERCENT_WITH_RELIABILITY_ADJUSTED_DOWNSIDE_AND_SCENARIO_COHERENCE",
+      criteria: "SPORTS_COHERENCE_VALIDATED_MODEL_RELIABILITY_AND_BALANCED_CANONICAL_THRESHOLD_WITH_EV_INFORMATION_ONLY",
       reasons,
       conservativeExpectedValuePct: assessment.conservativeExpectedValuePct,
       canonicalThresholdIdentity: canonicalThresholdIdentity(leg),
@@ -191,9 +272,16 @@ module.exports = {
   conservativeExpectedValuePct,
   canonicalThresholdIdentity,
   resultThesisIdentity,
+  minimumSportsSupportPct,
   assessSuggestion,
   interestTuple,
   compareInterest,
+  resultFormRank,
+  thresholdTargetPct,
+  thresholdBalanceTuple,
+  compareThresholdBalance,
+  marginalSportsSupportScore,
+  minimumMarginalSportsSupportScore,
   chooseSuggestions,
   selectMatchSuggestions,
   annotateSuggestedForecasts,
