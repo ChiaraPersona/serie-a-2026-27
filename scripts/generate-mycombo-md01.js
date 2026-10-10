@@ -15,6 +15,9 @@ const teams = read("data/teams/index.json").teams;
 const requestedMatchdayIndex = process.argv.indexOf("--matchday");
 const matchday = requestedMatchdayIndex >= 0 ? Number(process.argv[requestedMatchdayIndex + 1]) : 1;
 if (!Number.isInteger(matchday) || matchday < 1 || matchday > 38) throw new Error("--matchday deve essere compreso tra 1 e 38.");
+const requestedMatchIndex = process.argv.indexOf("--match");
+const requestedMatchId = requestedMatchIndex >= 0 ? process.argv[requestedMatchIndex + 1] : null;
+if (requestedMatchIndex >= 0 && !requestedMatchId) throw new Error("--match richiede un matchId.");
 const outputFilename = `mycombo-serie-a-2026-27-md-${String(matchday).padStart(2, "0")}.json`;
 const outputPath = path.join(root, "data", "sources", outputFilename);
 const assessmentPath = path.join(root, "data", "sources", `betting-selection-assessments-md${String(matchday).padStart(2, "0")}.json`);
@@ -25,9 +28,9 @@ const previousUnderLegOccurrences = Object.values(previousOutput?.matches || {})
 const previousIndividualFoulOccurrences = Object.values(previousOutput?.matches || {}).flatMap(portfolios => portfolios).flatMap(portfolio => portfolio.legs || []).filter(isIndividualPlayerFoulMarket).length;
 const previousCornerPeriodOccurrences = Object.values(previousOutput?.matches || {}).flatMap(portfolios => portfolios).flatMap(portfolio => portfolio.legs || []).filter(isCornerPeriodMarket).length;
 const preservedUnderMigrationCount = Number(previousOutput?.constraints?.underSelectionPolicy?.previousPlayableLegOccurrencesRemoved || 0);
-const underCandidateExclusionsByMatch = {};
-const individualFoulCandidateExclusionsByMatch = {};
-const cornerPeriodCandidateExclusionsByMatch = {};
+const underCandidateExclusionsByMatch = requestedMatchId ? { ...(previousOutput?.constraints?.underSelectionPolicy?.filteredCandidateSelectionsByMatch || {}) } : {};
+const individualFoulCandidateExclusionsByMatch = requestedMatchId ? { ...(previousOutput?.constraints?.individualFoulSelectionPolicy?.filteredCandidateSelectionsByMatch || {}) } : {};
+const cornerPeriodCandidateExclusionsByMatch = requestedMatchId ? { ...(previousOutput?.constraints?.cornerPeriodSelectionPolicy?.filteredCandidateSelectionsByMatch || {}) } : {};
 
 const referenceOdds = { Safe: 5, Balanced: 10, Aggressive: 20 };
 const minimumLegOdds = matchday >= 5 ? 1.15 : 1.1;
@@ -513,6 +516,10 @@ function fallbackPortfolio(pool, tier) {
 
 const oddsEventByMatchId = new Map(odds.events.map(event => [event.canonicalMatchId, event]));
 const eligibleMatches = matches.filter(match => match.matchday === matchday && match.status !== "finished");
+if (requestedMatchId && !eligibleMatches.some(match => match.id === requestedMatchId)) {
+  throw new Error(`--match ${requestedMatchId} non appartiene alle gare aperte della giornata ${matchday}.`);
+}
+if (requestedMatchId && !previousOutput) throw new Error(`Aggiornamento mirato impossibile: ${outputFilename} non esiste.`);
 const targetPredictions = predictionData.predictions.filter(prediction => eligibleMatches.some(match => match.id === prediction.matchId));
 if (targetPredictions.length !== eligibleMatches.length) throw new Error(`Pronostici giornata ${matchday} incompleti: ${targetPredictions.length}/${eligibleMatches.length} gare ancora aperte.`);
 if (targetPredictions.some(prediction => {
@@ -550,13 +557,14 @@ const output = {
     riskPolicy: "informativa",
     eligibilityPolicy: "validita-tecnica-e-intervalli"
   },
-  matches: {}
+  matches: requestedMatchId ? { ...previousOutput.matches } : {}
 };
 
 for (const event of odds.events) {
   const prediction = predictionById.get(event.canonicalMatchId);
   const match = matchById.get(event.canonicalMatchId);
   if (!prediction || !match || match.matchday !== matchday) continue;
+  if (requestedMatchId && event.canonicalMatchId !== requestedMatchId) continue;
   if (match.status === "finished") {
     if (previousOutput?.matches?.[event.canonicalMatchId]) {
       output.matches[event.canonicalMatchId] = previousOutput.matches[event.canonicalMatchId];
@@ -659,4 +667,4 @@ output.constraints.cornerPeriodSelectionPolicy = {
   filteredCandidateSelectionsByMatch: cornerPeriodCandidateExclusionsByMatch
 };
 fs.writeFileSync(outputPath, `${JSON.stringify(output, null, 2)}\n`);
-console.log(`OK MyCombo giornata ${matchday}: ${Object.keys(output.matches).length} partite · 30 portafogli · snapshot ${output.updatedAt}`);
+console.log(`OK MyCombo giornata ${matchday}${requestedMatchId ? ` · ${requestedMatchId}` : ""}: ${Object.keys(output.matches).length} partite · ${Object.values(output.matches).flat().length} portafogli · snapshot ${output.updatedAt}`);

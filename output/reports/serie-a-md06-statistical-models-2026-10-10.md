@@ -1,13 +1,13 @@
 # Serie A 2026/27 - modelli statistici Schedina MD6
 
-Generato: 2026-10-10T09:32:42.165Z
+Generato: 2026-10-10T12:29:26.892Z
 
 ## Esito
 
 - Storico ricostruito e riconciliato: **380 partite / 760 prestazioni squadra**.
 - Holdout temporale: **190 partite** (MD20-MD38), con aggiornamento walk-forward soltanto dopo ogni giornata conclusa.
 - Famiglie validate: **corners-match-over, corners-1x2-fulltime, shots-1x2, sot-1x2, sot-match-over, shots-match-over, corners-team-over, sot-team-over, shots-team-over**.
-- Valutazioni MD6 disponibili: **676**.
+- Valutazioni MD6 disponibili: **673**.
 
 ## Validazione
 

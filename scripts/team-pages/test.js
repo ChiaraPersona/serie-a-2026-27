@@ -172,6 +172,32 @@ for (const [teamId, expected] of Object.entries(atalantaBolognaExpected)) {
 const genoaNapoliOfficial = officialLineups.fixtures.find(fixture => fixture.matchId === "genoa-napoli-2026-27-md-01");
 assert.strictEqual(genoaNapoliOfficial.teams.find(team => team.teamId === "genoa").substitutes.length, 13, "genoa: panchina ufficiale incompleta");
 assert.strictEqual(genoaNapoliOfficial.teams.find(team => team.teamId === "napoli").substitutes.length, 13, "napoli: panchina ufficiale incompleta");
+const genoaFiorentinaOfficial = officialLineups.fixtures.find(fixture => fixture.matchId === "genoa-fiorentina-2026-27-md-06");
+assert.ok(genoaFiorentinaOfficial, "Genoa-Fiorentina: distinta ufficiale assente");
+const genoaFiorentinaExpected = {
+  genoa: {
+    formation: "3-4-2-1",
+    coach: "De Rossi D.",
+    players: ["Bijlow", "Otoa", "Ostigard", "Vasquez", "Ehizibue", "Frendrup", "Traore", "Ellertsson", "Junior Messias", "El Shaarawy", "Osmajic"],
+    substitutes: 13,
+    unresolvedSubstitutes: ["Klisys", "Lafont", "Wiafe"]
+  },
+  fiorentina: {
+    formation: "4-3-3",
+    coach: "Vanoli P.",
+    players: ["de Gea", "Jimenez", "Dragusin", "Ranieri", "Valdepenas", "Ndour", "Inao Oulai", "Fagioli", "Mastantuono", "Beto", "Gnonto"],
+    substitutes: 11,
+    unresolvedSubstitutes: ["Mazzeo"]
+  }
+};
+for (const [teamId, expected] of Object.entries(genoaFiorentinaExpected)) {
+  const lineup = genoaFiorentinaOfficial.teams.find(team => team.teamId === teamId);
+  assert.strictEqual(lineup.formation, expected.formation, `${teamId}: modulo Genoa-Fiorentina errato`);
+  assert.strictEqual(lineup.coach, expected.coach, `${teamId}: allenatore Genoa-Fiorentina errato`);
+  assert.deepStrictEqual(lineup.players.map(player => player.sourceName), expected.players, `${teamId}: ordine titolari Genoa-Fiorentina errato`);
+  assert.strictEqual(lineup.substitutes.length, expected.substitutes, `${teamId}: panchina Genoa-Fiorentina incompleta`);
+  assert.deepStrictEqual(lineup.substitutes.filter(player => player.playerId === null).map(player => player.sourceName), expected.unresolvedSubstitutes, `${teamId}: identità non risolte Genoa-Fiorentina errate`);
+}
 const torinoMilanSource = officialLineups.fixtures.find(fixture => fixture.matchId === "torino-milan-2026-27-md-01").teams.find(team => team.teamId === "torino");
 assert(torinoMilanSource.players.some(player => player.currentName === "Cesare Casadei") && !torinoMilanSource.players.some(player => player.currentName === "Alieu Njie"), "torino: correzione storica Casadei/Njie non preservata");
 assert.ok(teamInterface.includes("probable-lineup-substitutes") && readingLineupSource.includes("reading-lineup-substitutes"), "Le panchine ufficiali non sono renderizzate nelle pagine squadra e Letture");

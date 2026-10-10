@@ -1,6 +1,6 @@
 # Serie A MD6 — Selezione operativa e costruzione schedine
 
-Generato: 2026-10-10T09:32:06.269Z. Quote Sisal: 2026-10-09T10:43:00.203Z.
+Generato: 2026-10-10T12:29:36.862Z. Quote Sisal: 2026-10-10T09:57:30.921Z.
 
 La classificazione è operativa, non una garanzia. Nessuna partita deve produrre obbligatoriamente una scelta. Dalla MD6 i mercati Under, i falli commessi/subiti del singolo giocatore, i corner dipendenti da singoli tempi o finestre temporali e la doppia chance 12 sono esclusi dalle giocate, ma restano nelle analisi, nei report e nello storico; gli Over, i mercati aggregati di squadra e i corner dell'intera partita restano eleggibili. Occorrenze Under giocabili rimosse nella migrazione: 12. Le quote giocatore restano visibili come riferimento commerciale DUO: P V2 è individuale, pertanto EV e probabilità congiunta non sono calcolabili.
 
@@ -194,11 +194,11 @@ Tre doppie chance su gare distinte, scelte per coerenza V2 e non per quota minim
 
 | Partita | Selezione | Quota | P modello | P V2 individuale | EV | Compatibilità | Timestamp |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| Como – Roma | Como o pareggio (1X) | 1.5 | 70.9% | N/D | +6.35% | COMPATIBILE | 2026-10-09T10:30:08.860Z |
-| Genoa – Fiorentina | Genoa o pareggio (1X) | 1.65 | 62.2% | N/D | +2.63% | COMPATIBILE | 2026-10-09T08:11:24.406Z |
-| Torino – Udinese | Udinese o pareggio (X2) | 1.57 | 67.7% | N/D | +6.29% | COMPATIBILE | 2026-10-08T21:59:10.195Z |
+| Como – Roma | Como o pareggio (1X) | 1.48 | 70.9% | N/D | +4.93% | COMPATIBILE | 2026-10-09T13:56:19.932Z |
+| Genoa – Fiorentina | Genoa o pareggio (1X) | 1.62 | 63.1% | N/D | +2.22% | COMPATIBILE | 2026-10-10T09:46:03.185Z |
+| Torino – Udinese | Udinese o pareggio (X2) | 1.57 | 67.7% | N/D | +6.29% | COMPATIBILE | 2026-10-08T21:59:10.568Z |
 
-Quota totale: 3.89. Probabilità congiunta: 29.9%. EV: +16.14%. Revisione: Rivedere dopo XI ufficiali, variazioni quote o sospensione del mercato.
+Quota totale: 3.76. Probabilità congiunta: 30.3%. EV: +13.88%. Revisione: Rivedere dopo XI ufficiali, variazioni quote o sospensione del mercato.
 
 ### Tre profili DUO da monitorare
 
@@ -218,11 +218,11 @@ Il catalogo Schedina MD6 applica la policy centralizzata, inclusa l'esclusione d
 
 | Partita | Leg Safe | Supportati | Plausibili | Sperimentali | Non valutabili |
 | --- | --- | --- | --- | --- | --- |
-| Genoa - Fiorentina | 4 | 3 | 0 | 1 | 0 |
+| Genoa - Fiorentina | 3 | 1 | 0 | 2 | 0 |
 | Inter - Parma | 3 | 1 | 0 | 2 | 0 |
-| Napoli - Frosinone | 4 | 2 | 1 | 1 | 0 |
+| Napoli - Frosinone | 4 | 4 | 0 | 0 | 0 |
 | Como - Roma | 3 | 3 | 0 | 0 | 0 |
-| Lazio - Monza | 4 | 3 | 0 | 1 | 0 |
+| Lazio - Monza | 4 | 2 | 1 | 1 | 0 |
 | Lecce - Bologna | 4 | 4 | 0 | 0 | 0 |
 | Sassuolo - Milan | 3 | 2 | 0 | 1 | 0 |
 | Cagliari - Juventus | 3 | 3 | 0 | 0 | 0 |
