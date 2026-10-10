@@ -98,27 +98,37 @@ assert.deepEqual(catalog.totals, {
   groupB2Requested: 203,
   groupB2Recovered: 203,
   groupB2Rejected: 0,
-  finalSelections: 383,
+  statisticalBAdded: 1063,
+  finalSelections: 1446,
   evaluated: 367,
-  notModelled: 16,
+  notModelled: 1079,
+  suggestions: 24,
+  suggestionsByFamily: {
+    shots: 0,
+    sot: 0,
+    corners: 0,
+    cards: 0,
+    "goals-results": 24,
+    other: 0,
+  },
   scenarioCounts: {
     COHERENT_WITH_PREVALENT: 20,
     ALTERNATIVE_TO_PREVALENT: 50,
     COMPATIBLE_WITH_MULTIPLE_SCENARIOS: 297,
-    NOT_DETERMINABLE: 16,
+    NOT_DETERMINABLE: 1079,
   },
 });
 assert.deepEqual(Object.fromEntries(catalog.matches.map(match => [match.matchId, match.total])), {
-  "genoa-fiorentina-2026-27-md-06": 34,
-  "inter-parma-2026-27-md-06": 35,
-  "napoli-frosinone-2026-27-md-06": 39,
-  "como-roma-2026-27-md-06": 40,
-  "lazio-monza-2026-27-md-06": 39,
-  "lecce-bologna-2026-27-md-06": 39,
-  "sassuolo-milan-2026-27-md-06": 38,
-  "cagliari-juventus-2026-27-md-06": 39,
-  "atalanta-venezia-2026-27-md-06": 41,
-  "torino-udinese-2026-27-md-06": 39,
+  "genoa-fiorentina-2026-27-md-06": 155,
+  "inter-parma-2026-27-md-06": 150,
+  "napoli-frosinone-2026-27-md-06": 152,
+  "como-roma-2026-27-md-06": 162,
+  "lazio-monza-2026-27-md-06": 73,
+  "lecce-bologna-2026-27-md-06": 164,
+  "sassuolo-milan-2026-27-md-06": 166,
+  "cagliari-juventus-2026-27-md-06": 161,
+  "atalanta-venezia-2026-27-md-06": 133,
+  "torino-udinese-2026-27-md-06": 130,
 });
 const catalogSelections = catalog.matches.flatMap(match => match.selections);
 assert.equal(new Set(catalogSelections.map(leg => leg.selectionId)).size, catalogSelections.length, "Catalogo MD6 con duplicati");
@@ -140,13 +150,16 @@ for (const leg of recoveredGroupA) {
   const expectedEv = (evaluation.modelProbabilityPct / 100 * leg.betSelection.quote.decimal - 1) * 100;
   assert(Math.abs(evaluation.expectedValuePct - expectedEv) <= Math.max(0.2, leg.betSelection.quote.decimal * 0.06), `${leg.selectionId}: EV incoerente`);
 }
-const preserved = catalogSelections.filter(leg => !["dnb-b1", "gruppo-b2"].includes(leg.catalogOrigin));
+const preserved = catalogSelections.filter(leg => !["dnb-b1", "gruppo-b2", "statistical-b-not-modelled"].includes(leg.catalogOrigin));
 assert.equal(preserved.length, 160, "Il catalogo precedente deve restare composto da 160 righe");
 assert.equal(preserved.filter(leg => Number.isFinite(leg.betSelection.evaluation.expectedValuePct)).length, 144, "Le 144 valutazioni esistenti devono restare valutate");
 assert.equal(preserved.filter(leg => !Number.isFinite(leg.betSelection.evaluation.expectedValuePct)).length, 16, "Le 16 righe NOT_MODELLED devono restare tali");
 assert(preserved.filter(leg => !Number.isFinite(leg.betSelection.evaluation.expectedValuePct)).every(leg => leg.betSelection.evaluation.kind === "NOT_MODELLED"), "Le righe senza modello devono essere dichiarate NOT_MODELLED");
 const preservedMetricsDigest = crypto.createHash("sha256").update(JSON.stringify(preserved.map(leg => [leg.selectionId, leg.betSelection.evaluation.modelProbabilityPct, leg.betSelection.evaluation.fairOdds, leg.betSelection.evaluation.expectedValuePct, leg.betSelection.evaluation.status]).sort((left, right) => left[0].localeCompare(right[0])))).digest("hex");
 assert.equal(preservedMetricsDigest, "c9e4b627ad5e583ef0c63acae734d54034633d464a46d1177d8e55820ff432ad", "Identità o metriche delle 160 righe Fase 5A alterate");
+const statisticalB = catalogSelections.filter(leg => leg.catalogOrigin === "statistical-b-not-modelled");
+assert.equal(statisticalB.length, 1063, "Copertura statistica B inattesa");
+assert(statisticalB.every(leg => leg.coverageClassification === "B" && leg.betSelection.evaluation.status === "NOT_MODELLED"), "Una riga B è stata valutata impropriamente");
 
 const dnb = catalogSelections.filter(leg => leg.catalogOrigin === "dnb-b1");
 assert.equal(dnb.length, 20);
