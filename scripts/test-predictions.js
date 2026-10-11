@@ -454,7 +454,7 @@ assert(Math.abs(comoPlayers.reduce((total, player) => total + player.projectedSh
 assert(Math.abs(comoPlayers.reduce((total, player) => total + player.projectedShots, 0) - comoProjection.shotsTotal.central) <= 0.11, "Como: V2 non riconcilia il volume allocato");
 assert(comoPlayers.every(player => player.playerAllocationFactor >= 0.84 && player.playerAllocationFactor <= 1.16), "Como: allocation factor fuori clamp");
 const nicoPaz = comoPlayers.find(player => player.playerId === "nico-paz");
-const baturina = comoPlayers.find(player => player.playerId === "martin-baturina");
+const yanCouto = comoPlayers.find(player => player.playerId === "yan-couto");
 const jacoboRamon = comoPlayers.find(player => player.playerId === "jacobo-ramon");
 const chalobah = comoPlayers.find(player => player.playerId === "trevoh-chalobah");
 const kaiki = comoPlayers.find(player => player.playerId === "kaiki");
@@ -463,14 +463,14 @@ const cristante = romaPlayers.find(player => player.playerId === "bryan-cristant
 const mancini = romaPlayers.find(player => player.playerId === "gianluca-mancini");
 assert.strictEqual(nicoPaz.allocationClass, "primary");
 assert.strictEqual(nicoPaz.outsiderScore, null, "Il primary shooter non deve essere etichettato outsider");
-assert.strictEqual(baturina.allocationClass, "secondary");
-assert(baturina.playerAllocationFactor > 1, "Como: secondary shooter con evidence non valorizzato");
+assert.strictEqual(yanCouto.allocationClass, "secondary");
+assert(yanCouto.playerAllocationFactor > 1, "Como: secondary shooter con evidence non valorizzato");
 assert(jacoboRamon.playerAllocationFactor > chalobah.playerAllocationFactor, "Como: il CB con baseline piazzati superiore non beneficia piu del CB low-volume");
 assert(comoRomaProfile.shooters.allPlayers.filter(player => player.teamId === "roma").every(player => player.teamProfileMatchupFactor === 1), "Como: una vulnerabilita difensiva WATCH ha prodotto boost");
 assert(romaAgainstComoProjection.opponentMatchupInteraction.shotsAdjustmentPct > 0 && romaAgainstComoProjection.opponentMatchupInteraction.shotsOnTargetAdjustmentPct === 0, "Como: ELEVATED tiri e NORMAL SOT non sono indipendenti");
 assert.strictEqual(romaAgainstComoProjection.opponentMatchupInteraction.metricEvidence.shots.active, true, "Como: evidenza tiri ACTIVE non esposta");
 assert.strictEqual(romaAgainstComoProjection.opponentMatchupInteraction.metricEvidence.shotsOnTarget.active, false, "Como: SOT NORMAL non resta neutro");
-assert.strictEqual(comoRomaProfile.dataQuality.probableLineups, "22/22 titolari proiettati; fonte editoriale da riconfermare", "Como-Roma: conteggio XI dinamico errato");
+assert.strictEqual(comoRomaProfile.dataQuality.probableLineups, "22/22 titolari ufficiali confermati", "Como-Roma: conteggio XI ufficiale errato");
 assert.deepStrictEqual(comoRomaProfile.dataQuality.outfieldPlayersModeled, { modeled: 20, expected: 20, complete: true }, "Como-Roma: conteggio giocatori di movimento errato");
 if (kaiki) {
   assert.strictEqual(kaiki.qualifiedOutsider, false, "Kaiki non deve superare i gate outsider con stabilita bassa e ruolo generico");
