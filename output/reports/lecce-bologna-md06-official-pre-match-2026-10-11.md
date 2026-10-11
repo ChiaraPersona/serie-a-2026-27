@@ -43,7 +43,7 @@ I canali S/C/D sono quote di produzione previste per zona. Il possesso, quando p
 
 | Giocatore | Ruolo | Min | xTiri | xSOT | 1+ T | 2+ T | 3+ T | 4+ T | 1+ SOT | 2+ SOT | Affidabilità |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Wladimiro Falcone | Portiere | 0 | 0 | 0 | 0% | 0% | 0% | 0% | 0% | 0% | N/D — portiere fuori Player Market V2 |
+| Wladimiro Falcone | Portiere | N/D | N/D | N/D | N/D | N/D | N/D | N/D | N/D | N/D | N/D — portiere fuori Player Market V2 |
 | Danilo Veiga | Terzino destro | 89.2 | 0.29 | 0.09 | 25.2% | 3.5% | 0.3% | 0% | 8.6% | 0.4% | Alta · strong-history · stabilità medium |
 | Tiago Gabriel | Difensore centrale | 65.3 | 0.65 | 0.26 | 47.8% | 13.9% | 2.8% | 0.4% | 22.9% | 2.9% | Alta · strong-history · stabilità medium |
 | Jamil Siebert | Difensore centrale | 82.4 | 0.51 | 0.15 | 40% | 9.3% | 1.5% | 0.2% | 13.9% | 1% | Media · verified-history · stabilità high |
@@ -59,11 +59,11 @@ I canali S/C/D sono quote di produzione previste per zona. Il possesso, quando p
 
 | Giocatore | Ruolo | Min | xTiri | xSOT | 1+ T | 2+ T | 3+ T | 4+ T | 1+ SOT | 2+ SOT | Affidabilità |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Massimo Pessina | Portiere | 0 | 0 | 0 | 0% | 0% | 0% | 0% | 0% | 0% | N/D — portiere fuori Player Market V2 |
+| Massimo Pessina | Portiere | N/D | N/D | N/D | N/D | N/D | N/D | N/D | N/D | N/D | N/D — portiere fuori Player Market V2 |
 | Nicolo Casale | Braccetto destro | 76.2 | 0.65 | 0.11 | 47.8% | 13.9% | 2.8% | 0.4% | 10.4% | 0.6% | Bassa · limited-history · stabilità unknown |
 | Nadir Zortea | Difensore centrale | 58.9 | 0.44 | 0.07 | 35.6% | 7.3% | 1% | 0.1% | 6.8% | 0.2% | Alta · strong-history · stabilità high |
 | Torbjørn Heggem | Braccetto sinistro | 89 | 0.54 | 0.11 | 41.7% | 10.3% | 1.8% | 0.2% | 10.4% | 0.6% | Media · strong-history · stabilità low |
-| Matteo Darmian | Esterno destro | 76 (prior ruolo) | 0 | 0 | 0% | 0% | 0% | 0% | 0% | 0% | N/D — fallback generico non pubblicato come dato individuale |
+| Matteo Darmian | Esterno destro | 76 (prior ruolo) | N/D | N/D | N/D | N/D | N/D | N/D | N/D | N/D | N/D — fallback generico non pubblicato come dato individuale |
 | Lewis Ferguson | Centrocampista | 87.4 | 1.03 | 0.29 | 64.3% | 27.5% | 8.6% | 2.1% | 25.2% | 3.5% | Media · verified-history · stabilità high |
 | Tommaso Pobega | Centrocampista | 60 | 1.33 | 0.46 | 73.6% | 38.4% | 15% | 4.6% | 36.9% | 7.8% | Media · verified-history · stabilità medium |
 | Juan Miranda | Esterno sinistro | 74.8 | 0.47 | 0.17 | 37.5% | 8.1% | 1.2% | 0.1% | 15.6% | 1.3% | Alta · strong-history · stabilità medium |

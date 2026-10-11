@@ -304,6 +304,8 @@ const audit = {
     season: "2026/27",
     matchday: 1,
     chronology: "Latest Git-committed player forecast snapshot strictly before fixture kickoff; actuals joined later by teamId + registeredPlayerId.",
+    selectionScope: "Union of the serialized top-five shots and top-five shots-on-target candidates per fixture; this is not a full-XI evaluation.",
+    walkForwardStatus: "Pre-match snapshot evaluation without refitting. A rolling/expanding calibration fit is not identifiable from one partially observed matchday.",
     candidateMatches: fixtureAudits.length,
     admittedMatches: fixtureAudits.filter(item => item.status === "ADMITTED").length,
     excludedMatches: fixtureAudits.filter(item => item.status === "EXCLUDED").length,
@@ -363,6 +365,7 @@ const segmentRows = [
   ...metricRows(baselineA.pointMetrics.byRole, "ruolo"),
   ...metricRows(baselineA.pointMetrics.byTeam, "squadra"),
   ...metricRows(baselineA.pointMetrics.byMinuteBand, "minuti"),
+  ...metricRows(baselineA.pointMetrics.byMinuteSegment, "minuti high/low"),
   ...metricRows(baselineA.pointMetrics.byLeagueSegment, "lega")
 ];
 const exclusionRows = Object.entries(exclusionReasons).sort((a, b) => b[1] - a[1]);
@@ -408,6 +411,8 @@ Le statistiche storiche restano attribuite al club e alla data originali. Sono p
 
 Il timestamp di disponibilità del forecast è il commit Git che contiene lo snapshot, e deve essere strettamente precedente al kickoff. La data evento degli actual non viene confusa con la data di disponibilità degli input.
 
+Il perimetro giocatore è l'unione dei top-5 serializzati per tiri e per SOT in ciascuna gara: **non è un backtest dell'intero XI**. Con una sola giornata parzialmente coperta, il disegno è una valutazione di snapshot pre-match senza refit; una calibrazione rolling/expanding non è ancora identificabile.
+
 | motivo esclusione osservazione | conteggio |
 |---|---:|
 ${table(exclusionRows)}
@@ -449,7 +454,7 @@ Le celle \`tiny-no-claim\` non supportano conclusioni. Anche le celle \`descript
 
 ## G. Qualità del campione e trasferibilità
 
-Il campione copre una sola giornata e soltanto ${audit.evaluationDataset.admittedMatches}/18 gare con actual individuali recuperati. Le segmentazioni major-five-league e limited-or-other-league sono diagnostiche; non misurano ancora la trasferibilità europea. League Strength resta descrittiva e separata da opponent strength e da qualsiasi fattore player-level.
+Il campione copre una sola giornata, soltanto ${audit.evaluationDataset.admittedMatches}/18 gare con actual individuali recuperati e solo i candidati top-5 serializzati. Le segmentazioni major-five-league e limited-or-other-league sono diagnostiche; non misurano ancora la trasferibilità europea. League Strength resta descrittiva e separata da opponent strength e da qualsiasi fattore player-level.
 
 ## H. Invarianti e hash
 

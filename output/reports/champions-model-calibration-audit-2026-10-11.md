@@ -40,6 +40,8 @@ Le statistiche storiche restano attribuite al club e alla data originali. Sono p
 
 Il timestamp di disponibilità del forecast è il commit Git che contiene lo snapshot, e deve essere strettamente precedente al kickoff. La data evento degli actual non viene confusa con la data di disponibilità degli input.
 
+Il perimetro giocatore è l'unione dei top-5 serializzati per tiri e per SOT in ciascuna gara: **non è un backtest dell'intero XI**. Con una sola giornata parzialmente coperta, il disegno è una valutazione di snapshot pre-match senza refit; una calibrazione rolling/expanding non è ancora identificabile.
+
 | motivo esclusione osservazione | conteggio |
 |---|---:|
 | observed_champions_match_unavailable | 69 |
@@ -92,6 +94,8 @@ Il bias è `predetto - osservato`. Brier score: **NON CALCOLATO**; gli snapshot 
 | minuti | 1-30 | 2 | 1,79 | 2,031 | 1,79 | tiny-no-claim | 2 | 0,795 | 0,824 | 0,795 | tiny-no-claim |
 | minuti | 31-60 | 1 | 1,21 | 1,21 | 1,21 | tiny-no-claim | 1 | 0,81 | 0,81 | 0,81 | tiny-no-claim |
 | minuti | 61-90 | 27 | 1,883 | 2,35 | 0,011 | descriptive-small | 27 | 0,897 | 1,05 | 0,145 | descriptive-small |
+| minuti high/low | high-minutes-60-plus | 27 | 1,883 | 2,35 | 0,011 | descriptive-small | 27 | 0,897 | 1,05 | 0,145 | descriptive-small |
+| minuti high/low | low-minutes-under-60 | 3 | 1,597 | 1,8 | 1,597 | tiny-no-claim | 3 | 0,8 | 0,819 | 0,8 | tiny-no-claim |
 | lega | limited-or-other-league | 16 | 1,679 | 1,921 | 1,229 | descriptive-small | 16 | 0,782 | 0,9 | 0,594 | descriptive-small |
 | lega | major-five-league | 14 | 2,056 | 2,671 | -1,041 | tiny-no-claim | 14 | 1,008 | 1,159 | -0,228 | tiny-no-claim |
 
@@ -99,7 +103,7 @@ Le celle `tiny-no-claim` non supportano conclusioni. Anche le celle `descriptive
 
 ## G. Qualità del campione e trasferibilità
 
-Il campione copre una sola giornata e soltanto 6/18 gare con actual individuali recuperati. Le segmentazioni major-five-league e limited-or-other-league sono diagnostiche; non misurano ancora la trasferibilità europea. League Strength resta descrittiva e separata da opponent strength e da qualsiasi fattore player-level.
+Il campione copre una sola giornata, soltanto 6/18 gare con actual individuali recuperati e solo i candidati top-5 serializzati. Le segmentazioni major-five-league e limited-or-other-league sono diagnostiche; non misurano ancora la trasferibilità europea. League Strength resta descrittiva e separata da opponent strength e da qualsiasi fattore player-level.
 
 ## H. Invarianti e hash
 

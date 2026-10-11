@@ -41,6 +41,8 @@ assert.strictEqual(audit.evaluationDataset.candidatePlayerObservations, 101);
 assert.strictEqual(audit.evaluationDataset.admittedPlayerObservations, 30);
 assert.strictEqual(audit.evaluationDataset.shotsObservations, 30);
 assert.strictEqual(audit.evaluationDataset.shotsOnTargetObservations, 30);
+assert(audit.evaluationDataset.selectionScope.includes("not a full-XI evaluation"));
+assert(audit.evaluationDataset.walkForwardStatus.includes("not identifiable"));
 assert(audit.evaluationDataset.fixtures.every(fixture => fixture.predictionSnapshot));
 for (const fixture of audit.evaluationDataset.fixtures) {
   const kickoff = new Date(`${fixture.date}T${fixture.kickoff}:00+02:00`);
@@ -85,5 +87,6 @@ for (const section of ["A.", "B.", "C.", "D.", "E.", "F.", "G.", "H.", "I.", "J.
 assert(report.includes("CHAMPIONS MODEL-CALIBRATION GATE = PARTIAL"));
 assert(report.includes("Brier score: **NON CALCOLATO**"));
 assert(report.includes("Confronto paired A/B/C: **NON ESEGUITO**"));
+assert(report.includes("non è un backtest dell'intero XI"));
 
 console.log(`Champions model-calibration audit: PASS · ${audit.evaluationDataset.admittedMatches}/18 match · ${audit.evaluationDataset.admittedPlayerObservations} osservazioni · gate ${audit.status}`);

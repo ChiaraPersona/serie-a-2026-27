@@ -39,7 +39,7 @@ I canali S/C/D sono quote di produzione previste per zona. Il possesso, quando p
 
 | Giocatore | Ruolo | Min | xTiri | xSOT | 1+ T | 2+ T | 3+ T | 4+ T | 1+ SOT | 2+ SOT | Affidabilità |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Christos Mandas | Portiere | 0 | 0 | 0 | 0% | 0% | 0% | 0% | 0% | 0% | N/D — portiere fuori Player Market V2 |
+| Christos Mandas | Portiere | N/D | N/D | N/D | N/D | N/D | N/D | N/D | N/D | N/D | N/D — portiere fuori Player Market V2 |
 | Nuno Tavares | Terzino sinistro | 73.8 | 0.98 | 0.19 | 62.5% | 25.7% | 7.7% | 1.8% | 17.3% | 1.6% | Media · verified-history · stabilità medium |
 | Oliver Provstgaard | Difensore centrale | 89.1 | 0.42 | 0.13 | 34.3% | 6.7% | 0.9% | 0.1% | 12.2% | 0.8% | Media · verified-history · stabilità medium |
 | Danilho Doekhi | Difensore centrale | 71.1 | 0.9 | 0.21 | 59.3% | 22.8% | 6.3% | 1.4% | 18.9% | 1.9% | Alta · strong-history · stabilità medium |
@@ -55,7 +55,7 @@ I canali S/C/D sono quote di produzione previste per zona. Il possesso, quando p
 
 | Giocatore | Ruolo | Min | xTiri | xSOT | 1+ T | 2+ T | 3+ T | 4+ T | 1+ SOT | 2+ SOT | Affidabilità |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Noel Törnqvist | Portiere | 0 | 0 | 0 | 0% | 0% | 0% | 0% | 0% | 0% | N/D — portiere fuori Player Market V2 |
+| Noel Törnqvist | Portiere | N/D | N/D | N/D | N/D | N/D | N/D | N/D | N/D | N/D | N/D — portiere fuori Player Market V2 |
 | Eddy Kouadio | Braccetto destro | 85.8 | 0.63 | 0.24 | 46.7% | 13.2% | 2.6% | 0.4% | 21.3% | 2.5% | Bassa · limited-history · stabilità low |
 | Lorenzo Lucchesi | Difensore centrale | 81.9 | 0.93 | 0.41 | 60.5% | 23.8% | 6.8% | 1.5% | 33.6% | 6.4% | Media · verified-history · stabilità high |
 | Andrea Carboni | Braccetto sinistro | 87.5 | 1.11 | 0.37 | 67% | 30.5% | 10.2% | 2.6% | 30.9% | 5.4% | Alta · strong-history · stabilità high |
