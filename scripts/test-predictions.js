@@ -933,7 +933,8 @@ const sassuoloLauriente = sassuoloPlayers.find(player => player.playerId === "ar
 const sassuoloBerardi = sassuoloPlayers.find(player => player.playerId === "domenico-berardi");
 const sassuoloAdzic = sassuoloPlayers.find(player => player.playerId === "vasilije-adzic");
 const sassuoloThorstvedt = sassuoloPlayers.find(player => player.playerId === "kristian-thorstvedt");
-assert(sassuoloProjection && milanAgainstSassuolo && sassuoloTeamTotal && sassuoloLauriente && sassuoloBerardi && sassuoloThorstvedt, "Sassuolo-Milan: profilo E2E incompleto");
+assert(sassuoloProjection && milanAgainstSassuolo && sassuoloTeamTotal && sassuoloLauriente && sassuoloBerardi, "Sassuolo-Milan: profilo E2E incompleto");
+assert.strictEqual(sassuoloThorstvedt, undefined, "Sassuolo-Milan: Thorstvedt resta nei tiratori nonostante la panchina ufficiale");
 
 // Sassuolo A-B - baseline offensiva elevata e soppressione applicata al team target, senza eccezioni individuali.
 const neutralSassuoloShots = { min: 8, central: 11.7, max: 15 };
@@ -970,11 +971,9 @@ if (sassuoloAdzic) {
   assert.strictEqual(sassuoloAdzic.playerBaselineStability.currentSample.persistence.level, "high");
 } else assertNotCurrentStarter("sassuolo", "vasilije-adzic");
 
-// Sassuolo K-M - secondary, outsider e small-sample SOT restano distinti.
+// Sassuolo K-M - secondary, riserve ufficiali e small-sample SOT restano distinti.
 const sassuoloTiers = new Map(sassuoloMatchupProfile.offense.playerShotAndSotTiers.map(player => [player.playerId, player]));
 assert.strictEqual(sassuoloTiers.get("kieron-bowie").shotTier.tier, "co-primary", "Sassuolo K: Bowie non conserva il profilo secondary forte");
-assert.strictEqual(sassuoloThorstvedt.qualifiedOutsider, false, "Sassuolo L: Expected Minutes ridotte devono poter rimuovere Thorstvedt dagli outsider");
-assert(sassuoloThorstvedt.outsiderExclusionReasons.includes("limited-expected-minutes"), "Sassuolo L: esclusione Thorstvedt senza evidenza Expected Minutes");
 const volpatoStability = playerBaselineStability({ historicalBaseline: 1.78, historicalObserved: 1.78, historicalMinutes: 1220, current: { minutes: 183, shots: 5, shotsCoverage: 3, shotsSequence: [2, 3, 0] }, key: "shots", includePersistence: true });
 assert(volpatoStability.value < 2.1 && volpatoStability.confidence === "medium-low", "Sassuolo M: small sample Volpato non viene shrinkato");
 
