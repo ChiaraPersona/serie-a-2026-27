@@ -35,7 +35,7 @@ function rangeFromLeg(leg){
 }
 
 function playerNameFromLeg(leg){
-  if(leg?.player)return leg.player;
+  if(leg?.player||leg?.playerName||leg?.betSelection?.market?.subject?.name)return leg.player||leg.playerName||leg.betSelection.market.subject.name;
   const label=String(leg?.label||"").split(/\s+(?:almeno|riceve|segna|fa assist)\b/i)[0].trim();
   if(label)return label;
   return String(leg?.variant||"").split(/\s+(?:U\/O|SEGNA|RICEVE|FA ASSIST)\b/i)[0].trim();
@@ -43,6 +43,8 @@ function playerNameFromLeg(leg){
 
 function thresholdFromLabel(label){
   const text=normalized(label);
+  const plus=text.match(/(\d+(?:\.\d+)?)\+\s*TIRI/);
+  if(plus)return {value:Number(plus[1]),inclusive:true};
   const atLeast=text.match(/ALMENO\s+(\d+(?:\.\d+)?)/);
   if(atLeast)return {value:Number(atLeast[1]),inclusive:true};
   const lessThan=text.match(/MENO DI\s+(\d+(?:\.\d+)?)/);
@@ -71,7 +73,7 @@ function playerDuo(match,player){
     return words.length>0&&words.every(token=>candidateTokens.includes(token))&&initials.every(initial=>candidateTokens.some(token=>token.startsWith(initial)));
   });
   const primary=all.find(item=>comparableName(item.player)===name)||(fuzzy.length===1?fuzzy[0]:null);
-  const substitution=(match?.substitutions||[]).find(item=>comparableName(item.playerOut)===name);
+  const substitution=(match?.substitutions||[]).find(item=>comparableName(item.playerOut)===comparableName(primary?.player||player));
   if(!primary&&substitution){
     const goalsFor=person=>(match?.scorers||[]).filter(item=>!item.ownGoal&&comparableName(item.player)===comparableName(person)).length;
     return [{player,goals:goalsFor(player)}, {player:substitution.playerIn,goals:goalsFor(substitution.playerIn)}];
@@ -157,6 +159,12 @@ export function settleLeg(leg,match){
     return resultStatus(Number(actual)>=range.minimum&&Number(actual)<=range.maximum);
   }
 
+  if(/^1X2 (TIRI TOTALI|TIRI IN PORTA|CORNER)/.test(market)){
+    const key=market.includes("TIRI TOTALI")?"shots":market.includes("TIRI IN PORTA")?"shotsOnTarget":"corners";
+    const h=match?.teamStats?.home?.[key],a=match?.teamStats?.away?.[key];
+    if(!finite(h)||!finite(a))return unavailable();
+    return resultStatus(selection===(Number(h)>Number(a)?"1":Number(h)<Number(a)?"2":"X"));
+  }
   const outcome=home>away?"1":home<away?"2":"X";
   if(market.includes("1X2 ESITO FINALE"))return resultStatus(selection===outcome);
   if(market==="1 TEMPO: ESITO 1X2"||market==="2 TEMPO: ESITO 1X2"){
@@ -262,7 +270,7 @@ export function settleLeg(leg,match){
 
   if(leg?.marketScope==="player"||market.includes("GIOCATORE")||market.includes("ASSIST")||market.includes("MARCATORE")){
     const referencedPlayer=playerNameFromLeg(leg);
-    if(match?.resultCoverage?.participation==="available"&&!playerDuo(match,referencedPlayer))return voided();
+    if(match?.resultCoverage?.participation==="available"&&playerDidNotPlay(match,referencedPlayer))return voided();
     // A verified goal by the named player settles a scorer bet even when
     // the provider has not supplied individual statistics yet.
     if(market.includes("MARCATORE")&&(match.scorers||[]).some(row=>comparableName(row.player)===comparableName(leg.player)&&!row.ownGoal))return resultStatus(selection==="SI");
@@ -286,7 +294,9 @@ export function settleLeg(leg,match){
     if(market.includes("MARCATORE"))return resultStatus(selection==="SI"?goals>0:goals===0);
     const threshold=thresholdFromLabel(leg?.label);
     if(market.includes("TIRI IN PORTA")){
-      const settlement=settlePlayerThreshold(selection,players,"shotsOnTarget",threshold);
+      const includeWoodwork=leg?.betSelection?.market?.bookmakerSemantics?.postsAndCrossbarIncluded===true;
+      const adjusted=includeWoodwork?players.map(p=>({...p,shotsOnTarget:finite(p.shotsOnTarget)&&finite(p.hitWoodwork)?Number(p.shotsOnTarget)+Number(p.hitWoodwork):null})):players;
+      const settlement=settlePlayerThreshold(selection,adjusted,"shotsOnTarget",threshold);
       if(settlement.status!=="unavailable")return settlement;
       if(selection==="OVER"&&threshold?.inclusive&&goals>=threshold.value)return resultStatus(true);
       return unavailable();

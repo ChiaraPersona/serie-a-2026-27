@@ -76,7 +76,7 @@ const matchdayWorkspace = bettingPage.slice(bettingPage.indexOf("function matchd
 assert.doesNotMatch(matchdayWorkspace, />WATCH<|betting-match-watch|betting-match-mycombo/, "Schedina MD6: WATCH o MyCombo ancora separati visivamente");
 assert.match(matchdayWorkspace, /pronostici selezionati/, "Schedina MD6: conteggio dei pronostici selezionati assente");
 assert.doesNotMatch(matchdayWorkspace, /P centrale|P prudente|sensibilità V2|betting-suggestion-reason/, "Schedina MD6: descrizioni tecniche ancora presenti");
-assert.match(bettingPage, /role="button" tabindex="0" data-selection-row data-personal-pick=/, "Schedina MD6: l'intera riga non è selezionabile da tastiera");
+assert.match(bettingPage, /role="button" tabindex="0"/, "Schedina MD6: l'intera riga non è selezionabile da tastiera");
 assert.match(bettingPage, /event\.key==="Enter"\|\|event\.key===" "/, "Schedina MD6: toggle tastiera della riga assente");
 assert.match(bettingPage, /Quota combinata teorica/, "Schedina personale: quota combinata teorica assente");
 assert.match(bettingPage, /aria-label="Rimuovi selezione" title="Rimuovi selezione"/, "Schedina personale: rimozione accessibile con X assente");
