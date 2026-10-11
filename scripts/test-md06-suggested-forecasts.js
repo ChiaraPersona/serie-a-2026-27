@@ -31,21 +31,21 @@ const baselineSuggestions = suggestions.filter(leg => leg.suggestionAnalysis?.ba
 const isDrawNoBet = leg => /^draw-no-bet:/.test(String(leg?.betSelection?.compatibility?.modelTarget || "").toLowerCase()) || /DRAW NO BET/i.test(`${leg.marketFamily || ""} ${leg.market || ""}`);
 
 assert.equal(schedina.marketCatalog.schemaVersion, 4);
-assert.equal(rows.length, 1541);
+assert.equal(rows.length, 1536);
 assert.equal(new Set(rows.map(leg => leg.selectionId)).size, rows.length);
-assert.equal(added.length, 1064);
-assert.equal(validated.length, 671);
-assert.equal(blocked.length, 393);
+assert.equal(added.length, 1059);
+assert.equal(validated.length, 668);
+assert.equal(blocked.length, 391);
 assert(blocked.every(leg => leg.coverageClassification === "B" && leg.betSelection.evaluation.status === "NOT_MODELLED"));
 assert(!blocked.some(leg => leg.suggestionAnalysis.suggested), "NOT_MODELLED promosso nei pronostici");
 assert(validated.every(leg => leg.coverageClassification === "A" && leg.betSelection.evaluation.kind === "DISCRETE_COUNT_TEMPORAL_HOLDOUT"));
-assert.equal(suggestions.length, 172);
+assert.equal(suggestions.length, 168);
 assert.equal(baselineSuggestions.length, 80);
 assert.equal(playerForecasts.length, 92);
-assert.equal(playerForecasts.filter(leg => leg.suggestionAnalysis.family === "shots").length, 57);
-assert.equal(playerForecasts.filter(leg => leg.suggestionAnalysis.family === "sot").length, 35);
-assert.equal(suggestions.filter(leg => Number.isFinite(leg.betSelection.evaluation.expectedValuePct) && leg.betSelection.evaluation.expectedValuePct < 0).length, 68);
-assert.equal(suggestions.filter(leg => Number.isFinite(leg.betSelection.evaluation.expectedValuePct) && leg.betSelection.evaluation.expectedValuePct < 2).length, 70);
+assert.equal(playerForecasts.filter(leg => leg.suggestionAnalysis.family === "shots").length, 58);
+assert.equal(playerForecasts.filter(leg => leg.suggestionAnalysis.family === "sot").length, 34);
+assert.equal(suggestions.filter(leg => Number.isFinite(leg.betSelection.evaluation.expectedValuePct) && leg.betSelection.evaluation.expectedValuePct < 0).length, 70);
+assert.equal(suggestions.filter(leg => Number.isFinite(leg.betSelection.evaluation.expectedValuePct) && leg.betSelection.evaluation.expectedValuePct < 2).length, 71);
 assert(suggestions.every(leg => [2, 3].includes(leg.suggestionAnalysis.version)));
 assert(baselineSuggestions.every(leg => leg.suggestionAnalysis.criteria.includes("EV_INFORMATION_ONLY")));
 assert(playerForecasts.every(leg => leg.suggestionAnalysis.criteria === "APPROVED_BASELINE_PLUS_STRUCTURED_READING_V2_NO_EV_GATE"));
@@ -55,6 +55,8 @@ const unquotedPlayerForecasts = playerForecasts.filter(leg => leg.betSelection.q
 assert.deepEqual(unquotedPlayerForecasts.map(leg => leg.selectionId).sort(), [
   "forecast:v2:genoa-fiorentina-2026-27-md-06:leo-stigard:shots:1",
   "forecast:v2:genoa-fiorentina-2026-27-md-06:leo-stigard:sot:1",
+  "forecast:v2:napoli-frosinone-2026-27-md-06:rasmus-h-jlund:shots:3",
+  "forecast:v2:napoli-frosinone-2026-27-md-06:rasmus-h-jlund:sot:2",
 ]);
 assert(unquotedPlayerForecasts.every(leg => leg.betSelection.quote.decimal === null && leg.providerMarketId === null && leg.providerSelectionId === null));
 assert(unquotedPlayerForecasts.every(leg => leg.betSelection.identity.status === "NO_COMPATIBLE_PROVIDER_CONTRACT" && leg.betSelection.compatibility.status === "NO_COMPATIBLE_QUOTE"));
@@ -63,10 +65,27 @@ assert(quotedPlayerForecasts.every(leg => leg.betSelection.identity.status === "
 assert(playerForecasts.every(leg => leg.betSelection.evaluation.modelProbabilityPct === null && leg.betSelection.evaluation.expectedValuePct === null && leg.betSelection.evaluation.prudentProbabilityPct === null));
 assert(playerForecasts.every(leg => Number.isFinite(leg.betSelection.evaluation.individualReference?.modelProbabilityPct) && leg.betSelection.evaluation.individualReference.appliedToDuo === false));
 assert(baselineSuggestions.every(leg => Number.isFinite(leg.betSelection.evaluation.modelProbabilityPct)));
-assert(baselineSuggestions.every(leg => Number.isFinite(leg.betSelection.evaluation.prudentProbabilityPct)));
-assert(baselineSuggestions.every(leg => Number.isFinite(conservativeExpectedValuePct(leg))));
-assert(suggestions.every(leg => ["Alta", "Media", "Bassa"].includes(leg.betSelection.operational.reliability.level)));
+const baselineWithoutPrudentProbability = baselineSuggestions.filter(leg => !Number.isFinite(leg.betSelection.evaluation.prudentProbabilityPct));
+assert.deepEqual(baselineWithoutPrudentProbability.map(leg => leg.selectionId).sort(), [
+  "bet:sisal:cagliari-juventus-2026-27-md-06:5337198916",
+  "bet:sisal:cagliari-juventus-2026-27-md-06:5371703595",
+  "bet:sisal:lecce-bologna-2026-27-md-06:5371738426",
+]);
+assert(baselineWithoutPrudentProbability.every(leg => leg.betSelection.evaluation.kind === "CANONICAL_DIRECT" && Number.isFinite(leg.betSelection.evaluation.expectedValuePct)), "Le eccezioni senza P prudente devono restare valutazioni canoniche dirette con EV calcolato");
+assert(baselineSuggestions.filter(leg => Number.isFinite(leg.betSelection.evaluation.prudentProbabilityPct)).every(leg => Number.isFinite(conservativeExpectedValuePct(leg))));
+const nonAssessableReliability = suggestions.filter(leg => leg.betSelection.operational.reliability.level === "Non valutabile");
+assert.deepEqual(nonAssessableReliability.map(leg => leg.selectionId).sort(), [
+  "bet:sisal:cagliari-juventus-2026-27-md-06:5337198916",
+  "bet:sisal:cagliari-juventus-2026-27-md-06:5371703595",
+  "bet:sisal:lecce-bologna-2026-27-md-06:5371738426",
+  "forecast:v2:lazio-monza-2026-27-md-06:cyril-ngonge:shots:2",
+  "forecast:v2:lazio-monza-2026-27-md-06:cyril-ngonge:sot:1",
+]);
+assert(nonAssessableReliability.every(leg => leg.betSelection.operational.reliability.reason), "Ogni affidabilità non valutabile deve avere una motivazione esplicita");
+assert(suggestions.filter(leg => leg.betSelection.operational.reliability.level !== "Non valutabile").every(leg => ["Alta", "Media", "Bassa"].includes(leg.betSelection.operational.reliability.level)));
 assert(suggestions.some(leg => ["shots", "sot", "corners"].includes(leg.suggestionAnalysis.family)));
+assert(suggestions.some(leg => leg.suggestionAnalysis.family === "goals-results"), "I pronostici gol/risultato devono restare selezionati");
+assert(suggestions.some(leg => leg.suggestionAnalysis.family === "corners"), "I pronostici corner devono restare selezionati");
 assert(!suggestions.some(leg => leg.suggestionAnalysis.family === "cards"));
 assert(!suggestions.some(isDrawNoBet), "Draw No Bet promosso nei pronostici");
 assert(quotedPlayerForecasts.every(leg => leg.betSelection.market.bookmakerSemantics?.duo === true && leg.betSelection.market.bookmakerSemantics?.substituteIncluded === true), "Semantica DUO assente");
@@ -150,24 +169,24 @@ assert.match(ui, /Pronostici selezionati/);
 assert.match(ui, /Quota Sisal/);
 assert.match(ui, />EV</);
 
-assert.equal(sha256("data/analysis/serie-a-md06-statistical-models-2026-10-10.json"), "25f04262cb5a016ff79385f7c87d05b60bc2b5152d87e8e72f2fe2dbf2b0c22a", "Artefatto dei modelli statistici modificato");
+assert.equal(sha256("data/analysis/serie-a-md06-statistical-models-2026-10-10.json"), "d7758a50c95aef88cb1b483bb93196abf766c8b3f71b55d3e39a20695acd7e1b", "Artefatto dei modelli statistici modificato");
 assert.equal(sha256("scripts/md06-statistical-models.js"), "283b8a89e1601280f60e76c5ac716c95cb776ac26a4ea218416c2f9d411d9cff", "Implementazione dei modelli statistici modificata");
-assert.equal(report.invariants.certifiedSelections, 383);
+assert.equal(report.invariants.certifiedSelections, 385);
 assert(report.invariants.certifiedSelectionIdsPreserved && report.invariants.certifiedContractsUnchanged);
-assert.equal(report.invariants.catalogSelections, 1542);
+assert.equal(report.invariants.catalogSelections, 1536);
 assert.equal(report.coverage.comparison.previousSuggestions, 82);
 assert.equal(report.coverage.comparison.removedDrawNoBet, 2);
 assert.equal(report.coverage.comparison.preservedApprovedNonDnb, 80);
-assert.equal(report.coverage.comparison.newPlayerShots, 61);
-assert.equal(report.coverage.comparison.newPlayerSot, 34);
+assert.equal(report.coverage.comparison.newPlayerShots, 56);
+assert.equal(report.coverage.comparison.newPlayerSot, 32);
 assert.equal(report.coverage.comparison.newPlayerCards, 0);
 assert.equal(report.coverage.comparison.newCardsOvers, 0);
-assert.equal(report.coverage.totalSuggestions, 175);
-assert.equal(report.coverage.quotedSuggestions, 175);
+assert.equal(report.coverage.totalSuggestions, 168);
+assert.equal(report.coverage.quotedSuggestions, 168);
 assert.equal(report.coverage.unquotedSuggestions, 0);
-assert.equal(report.coverage.negativeEvSuggestions, 68);
-assert.equal(report.coverage.recoveredFromEconomicExclusion, 70);
-assert.equal(report.statisticalMarkets.families.reduce((sum, row) => sum + row.selected, 0), 146);
+assert.equal(report.coverage.negativeEvSuggestions, 70);
+assert.equal(report.coverage.recoveredFromEconomicExclusion, 71);
+assert.equal(report.statisticalMarkets.families.reduce((sum, row) => sum + row.selected, 0), 139);
 assert(report.thresholdCases.some(item => ["shots", "sot", "corners"].some(family => item.canonicalIdentity.startsWith(`${family}:`)) && item.alternatives.some(leg => leg.selected)));
 
 const yeboah = playerForecasts.filter(leg => leg.playerId === "john-yeboah");
@@ -177,4 +196,4 @@ assert.deepEqual(yeboah.map(leg => [leg.suggestionAnalysis.family, leg.providerM
 ]);
 assert(!yeboah.some(leg => leg.betSelection.market.bookmakerSemantics.providerPlayerId === "628786"), "Yeboah ancora associato a Schingtienne");
 
-console.log("OK selezione MD06: 80 baseline non-DNB + 95 tiri/SOT DUO quotati, probabilità/EV DUO N/D, cartellini non forzati, modelli invariati");
+console.log("OK selezione MD06: 80 baseline non-DNB + 88 tiri/SOT DUO quotati, probabilità/EV DUO N/D, cartellini non forzati, modelli invariati");

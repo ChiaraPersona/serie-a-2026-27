@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -18,10 +19,55 @@ const write = (relative, value) => {
   fs.mkdirSync(path.dirname(target), { recursive: true });
   fs.writeFileSync(target, typeof value === "string" ? value : `${JSON.stringify(value, null, 2)}\n`);
 };
+const writeBatchAtomic = entries => {
+  const retryFs = action => {
+    let lastError;
+    for (let attempt = 0; attempt < 6; attempt += 1) {
+      try { return action(); } catch (error) {
+        lastError = error;
+        if (!["EBUSY", "EPERM", "EACCES", "UNKNOWN"].includes(error.code)) throw error;
+        Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 300 * (attempt + 1));
+      }
+    }
+    throw lastError;
+  };
+  const transactionId = `${process.pid}-${Date.now()}`;
+  const staged = entries.map(([relative, value]) => {
+    const target = path.join(root, relative);
+    fs.mkdirSync(path.dirname(target), { recursive: true });
+    const temporary = `${target}.${transactionId}.tmp`;
+    const backup = `${target}.${transactionId}.bak`;
+    fs.writeFileSync(temporary, typeof value === "string" ? value : `${JSON.stringify(value, null, 2)}\n`);
+    return { target, temporary, backup, existed: fs.existsSync(target) };
+  });
+  const committed = [];
+  try {
+    for (const item of staged) {
+      if (item.existed) retryFs(() => fs.renameSync(item.target, item.backup));
+      retryFs(() => fs.renameSync(item.temporary, item.target));
+      committed.push(item);
+    }
+  } catch (error) {
+    for (const item of [...committed].reverse()) {
+      if (fs.existsSync(item.target)) retryFs(() => fs.unlinkSync(item.target));
+      if (fs.existsSync(item.backup)) retryFs(() => fs.renameSync(item.backup, item.target));
+    }
+    for (const item of staged) {
+      if (fs.existsSync(item.temporary)) retryFs(() => fs.unlinkSync(item.temporary));
+      if (!fs.existsSync(item.target) && fs.existsSync(item.backup)) retryFs(() => fs.renameSync(item.backup, item.target));
+    }
+    throw error;
+  }
+  for (const item of staged) if (fs.existsSync(item.backup)) {
+    try { retryFs(() => fs.unlinkSync(item.backup)); } catch (error) { console.warn(`Backup transazione non eliminato: ${item.backup} (${error.code || error.message})`); }
+  }
+};
 const mode = process.argv.includes("--integrate") ? "integrate" : "reports";
 const requestedMatchIndex = process.argv.indexOf("--match");
 const requestedMatchId = requestedMatchIndex >= 0 ? process.argv[requestedMatchIndex + 1] : null;
 if (requestedMatchIndex >= 0 && !requestedMatchId) throw new Error("--match richiede un matchId.");
+const allowQuoteUpdates = process.argv.includes("--update-quotes");
+const withdrawnSelectionIds = process.argv.flatMap((argument, index, args) => argument === "--withdraw" && args[index + 1] ? [args[index + 1]] : []);
 const finite = value => value !== null && value !== undefined && value !== "" && Number.isFinite(Number(value));
 const round = (value, digits = 4) => finite(value) ? Number(Number(value).toFixed(digits)) : null;
 const pct = value => finite(value) ? `${Number(value).toFixed(1)}%` : "N/D";
@@ -42,16 +88,17 @@ const operational = read("output/reports/serie-a-md06-operational-player-analysi
 const probableLineups = read("data/sources/probable-lineups-md6-2026-27.json");
 const officialLineups = read("data/sources/official-lineups-2026-27.json");
 const statisticalModels = read("data/analysis/serie-a-md06-statistical-models-2026-10-10.json");
-const previousSource = requestedMatchId ? read("data/sources/schedina-serie-a-2026-27-md-06.json") : null;
-const previousNormalized = requestedMatchId ? read("data/normalized/schedina-md06.json") : null;
-const preservedCatalogSelections = requestedMatchId
-  ? previousNormalized.marketCatalog.matches.flatMap(match => match.selections)
-  : [];
-const approvedSuggestionRankById = requestedMatchId
-  ? new Map(preservedCatalogSelections
-    .filter(leg => leg.catalogOrigin !== "prediction-v2-player-forecast" && leg.suggestionAnalysis?.suggested)
-    .map(leg => [leg.selectionId, Number(leg.suggestionAnalysis.rank) || Number.MAX_SAFE_INTEGER]))
-  : null;
+const approvedSuggestionBaseline = read("data/sources/md06-approved-suggestion-baseline.json");
+const previousSourcePath = path.join(root, "data/sources/schedina-serie-a-2026-27-md-06.json");
+const previousNormalizedPath = path.join(root, "data/normalized/schedina-md06.json");
+const previousSource = fs.existsSync(previousSourcePath) ? read("data/sources/schedina-serie-a-2026-27-md-06.json") : null;
+const previousNormalized = fs.existsSync(previousNormalizedPath) ? read("data/normalized/schedina-md06.json") : null;
+const preservedCatalogSelections = previousNormalized?.marketCatalog?.matches?.flatMap(match => match.selections) || [];
+const approvedSuggestionIds = approvedSuggestionBaseline.selections.map(row => row.selectionId).sort();
+assert.equal(approvedSuggestionBaseline.selectionCount, 80, "La baseline approvata MD6 deve contenere 80 pronostici non-DNB");
+assert.equal(approvedSuggestionIds.length, approvedSuggestionBaseline.selectionCount, "Conteggio della baseline approvata MD6 incoerente");
+assert.equal(crypto.createHash("sha256").update(JSON.stringify(approvedSuggestionIds)).digest("hex"), approvedSuggestionBaseline.selectionIdHash, "Hash della baseline approvata MD6 incoerente");
+const approvedSuggestionRankById = new Map(approvedSuggestionBaseline.selections.map(row => [row.selectionId, Number(row.rank) || Number.MAX_SAFE_INTEGER]));
 const md5ReportPath = path.join(root, "output/reports/serie-a-md05-betting-decision-review-2026-10-09.json");
 const preservedMd5GeneratedAt = fs.existsSync(md5ReportPath) ? JSON.parse(fs.readFileSync(md5ReportPath, "utf8")).generatedAt : null;
 const matchById = new Map(matches.map(match => [match.id, match]));
@@ -551,6 +598,9 @@ const generatedMarketCatalog = buildMd06MarketCatalog({
   statisticalModels,
   preservedCatalogSelections,
   approvedSuggestionRankById,
+  withdrawnSelectionIds,
+  allowQuoteUpdates,
+  targetMatchId: requestedMatchId,
   matchday: 6,
 });
 const aggregateCatalog = catalogMatches => {
@@ -595,6 +645,7 @@ if (requestedMatchId) {
     sources: generatedMarketCatalog.sources,
     totals: { ...generatedMarketCatalog.totals, ...aggregateCatalog(mergedMatches) },
     playerForecastIntegration: generatedMarketCatalog.playerForecastIntegration,
+    forecastSync: generatedMarketCatalog.forecastSync,
     excluded: mergeDiagnosticRows("excluded"),
     groupARejected: mergeDiagnosticRows("groupARejected"),
     dnbRejected: mergeDiagnosticRows("dnbRejected"),
@@ -810,8 +861,10 @@ if (mode === "reports") {
     source.slips = mergeMatchItems(previousSource.slips, source.slips, "picks");
     normalized.slips = mergeMatchItems(previousNormalized.slips, normalized.slips, "legs");
   }
-  write("data/sources/schedina-serie-a-2026-27-md-06.json", source);
-  write("data/sources/betting-selection-assessments-md06.json", selectionAssessmentSource);
-  write("data/normalized/schedina-md06.json", normalized);
+  writeBatchAtomic([
+    ["data/sources/schedina-serie-a-2026-27-md-06.json", source],
+    ["data/sources/betting-selection-assessments-md06.json", selectionAssessmentSource],
+    ["data/normalized/schedina-md06.json", normalized],
+  ]);
   console.log(JSON.stringify({ mode, matchId: requestedMatchId, source: "data/sources/schedina-serie-a-2026-27-md-06.json", normalized: "data/normalized/schedina-md06.json", slips: slips.length, legs: slips.reduce((sum, slip) => sum + slip.legs.length, 0) }, null, 2));
 }

@@ -1,6 +1,7 @@
 const release=new URL(import.meta.url).searchParams.get("v")||"development";
 const {settleLeg:settleStrictLeg,settleArchivedLeg}=await import(`./betting-settlement.mjs?v=${encodeURIComponent(release)}`);
 const {createPersonalBetslipStore}=await import(`./personal-betslip-store.mjs?v=${encodeURIComponent(release)}`);
+const {hasVerifiedPlayableQuote,isUnquotedIndividualForecast,sharedForecastsForMatch}=await import(`./shared-forecast-contract.mjs?v=${encodeURIComponent(release)}`);
 
 export function createPage(deps){
   const {esc,dateOnly,hero,load}=deps;
@@ -64,17 +65,6 @@ export function createPage(deps){
 
   const isPlayableSelection=leg=>leg?.betSelection?.operational?.playability?.status!=="NOT_PLAYABLE"&&leg?.betSelection?.operational?.classification!=="ESCLUSO";
 
-  const hasVerifiedPlayableQuote=leg=>{
-    const contract=leg?.betSelection,quote=contract?.quote||{},compatibility=String(contract?.compatibility?.status||"");
-    return leg?.lineupEligibility?.eligible!==false&&isPlayableSelection(leg)&&contract?.selectionId===leg?.selectionId&&contract?.identity?.status==="VERIFIED_PROVIDER_IDS"&&Boolean(contract.identity.providerSelectionId)&&Number.isFinite(Number(quote.decimal))&&Number(quote.decimal)>0&&Boolean(quote.verifiedAt)&&Boolean(quote.source?.provider)&&quote.availability==="AVAILABLE_AT_SNAPSHOT"&&!/^INCOMPATIBILE/.test(compatibility)&&compatibility!=="INCOMPATIBLE";
-  };
-
-  const isUnquotedIndividualForecast=leg=>leg?.catalogOrigin==="prediction-v2-player-forecast"
-    && ["shots","sot"].includes(leg?.suggestionAnalysis?.family)
-    && leg?.betSelection?.quote?.availability==="UNAVAILABLE"
-    && leg?.betSelection?.evaluation?.kind==="PREDICTION_ENGINE_V2_PLAYER_THRESHOLD"
-    && Number.isFinite(Number(leg?.betSelection?.evaluation?.modelProbabilityPct));
-
   function selectableMarketRow({leg,sourceSection},index,fixture,match){
     const evaluation=leg.betSelection.evaluation,market=leg.betSelection.market||{},semantics=market.bookmakerSemantics||{},selection=registerSelection(leg,{fixture,sourceSection}),quote=Number(leg.betSelection.quote.decimal),probability=evaluation.modelProbabilityPct==null?NaN:Number(evaluation.modelProbabilityPct),ev=evaluation.expectedValuePct==null?NaN:Number(evaluation.expectedValuePct),individualProbability=evaluation.individualReference?.modelProbabilityPct==null?NaN:Number(evaluation.individualReference.modelProbabilityPct),duo=semantics.duo===true;
     const metricText=(value,formatter,suffix="")=>Number.isFinite(value)?`${formatter(value)}${suffix}`:"—";
@@ -105,8 +95,8 @@ export function createPage(deps){
     const matches=[...matchById.values()].filter(match=>match.id.endsWith(`-md-${code}`)).sort((left,right)=>`${left.date}T${left.kickoff||"00:00"}`.localeCompare(`${right.date}T${right.kickoff||"00:00"}`));
     const panels=matches.map(match=>{
       const home=teamById.get(match.homeTeam)?.name||match.homeTeam,away=teamById.get(match.awayTeam)?.name||match.awayTeam,prediction=predictionsByMatch.get(match.id),combo=prediction?.combinations?.find(item=>item.tier==="Safe"),comboLegs=combo?.legs||[],seen=new Set(),markets=[];
-      const catalog=catalogByMatch.get(match.id),entries=catalog?.selections?.length?catalog.selections.map(leg=>({leg,sourceSection:leg.catalogOrigin||"catalogo-mercati"})):[...(modelByMatch.get(match.id)||[]),...comboLegs.filter(hasVerifiedPlayableQuote).map(leg=>({leg,sourceSection:"mycombo-partita"}))];
-      entries.filter(({leg})=>(hasVerifiedPlayableQuote(leg)||isUnquotedIndividualForecast(leg))&&leg.suggestionAnalysis?.suggested).forEach(entry=>{if(entry.leg.selectionId&&!seen.has(entry.leg.selectionId)){seen.add(entry.leg.selectionId);markets.push(entry)}});markets.sort((left,right)=>Number(left.leg.suggestionAnalysis.rank)-Number(right.leg.suggestionAnalysis.rank));
+      const catalog=catalogByMatch.get(match.id),shared=sharedForecastsForMatch(data.marketCatalog,match.id),entries=catalog?.selections?.length?shared.map(leg=>({leg,sourceSection:leg.catalogOrigin||"catalogo-mercati"})):[...(modelByMatch.get(match.id)||[]),...comboLegs.filter(hasVerifiedPlayableQuote).map(leg=>({leg,sourceSection:"mycombo-partita"}))];
+      entries.forEach(entry=>{if(entry.leg.selectionId&&!seen.has(entry.leg.selectionId)){seen.add(entry.leg.selectionId);markets.push(entry)}});markets.sort((left,right)=>Number(left.leg.suggestionAnalysis.rank)-Number(right.leg.suggestionAnalysis.rank));
       const fixture=`${home} - ${away}`,marketList=markets.length?`<div class="betting-market-columns" aria-hidden="true"><span>Mercato</span><span>Probabilità</span><span>Quota Sisal</span><span>EV</span><span></span></div><ol class="betting-market-list">${markets.map((entry,index)=>isUnquotedIndividualForecast(entry.leg)?unquotedForecastRow(entry,index):selectableMarketRow(entry,index,fixture,match)).join("")}</ol>`:`<p class="betting-market-empty">Nessun pronostico selezionato per questa partita.</p>`;
       return `<details class="betting-match-panel" data-match-panel data-match-id="${esc(match.id)}"><summary><span><small>${esc(dateOnly(match.date))} · ${esc(match.kickoff||"Orario N/D")}</small><strong>${esc(home)} - ${esc(away)}</strong></span><span class="betting-match-count">${markets.length} pronostici selezionati</span><span class="betting-match-toggle" aria-hidden="true">＋</span></summary><div class="betting-match-body">${marketList}</div></details>`;
     }).join("");

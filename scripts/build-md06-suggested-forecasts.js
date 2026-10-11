@@ -26,6 +26,7 @@ const removedDrawNoBetByMatch = new Map([
   ["lecce-bologna-2026-27-md-06", 1],
 ]);
 const approvedBaselineNonDnbHash = "ff600135e0a4009bc901c13c34bb1cfb5cb624ccd391caf2a2c1dd8e54c96af7";
+const certifiedSelectionTotal = 385;
 const baselinePerMatch = new Map(Object.entries({
   "genoa-fiorentina-2026-27-md-06": 9,
   "inter-parma-2026-27-md-06": 9,
@@ -46,16 +47,18 @@ const odds = read("data/normalized/odds/sisal/serie-a.json");
 const matches = read("data/normalized/matches.json");
 const probableLineups = read("data/sources/probable-lineups-md6-2026-27.json");
 const officialLineups = read("data/sources/official-lineups-2026-27.json");
+const approvedSuggestionBaseline = read("data/sources/md06-approved-suggestion-baseline.json");
 const currentRows = schedina.marketCatalog.matches.flatMap(match => match.selections);
 const isDrawNoBet = leg => /^draw-no-bet:/.test(String(leg?.betSelection?.compatibility?.modelTarget || "").toLowerCase()) || /DRAW NO BET/i.test(`${leg.marketFamily || ""} ${leg.market || ""}`);
-const currentApprovedBaseline = currentRows.filter(leg => leg.suggestionAnalysis?.baselineApproved === true || (leg.suggestionAnalysis?.suggested && leg.catalogOrigin !== "prediction-v2-player-forecast"));
-const currentApprovedNonDnb = currentApprovedBaseline.filter(leg => !isDrawNoBet(leg));
-const baselineOddsRetrievedAt = currentApprovedBaseline.find(leg => leg.betSelection?.quote?.verifiedAt)?.betSelection.quote.verifiedAt || schedina.oddsRetrievedAt;
-const approvedSuggestionRankById = new Map(currentApprovedNonDnb.map(leg => [leg.selectionId, Number(leg.suggestionAnalysis?.rank) || Number.MAX_SAFE_INTEGER]));
+const currentRowById = new Map(currentRows.map(leg => [leg.selectionId, leg]));
+const currentApprovedNonDnb = approvedSuggestionBaseline.selections.map(row => currentRowById.get(row.selectionId)).filter(Boolean);
+const baselineOddsRetrievedAt = currentApprovedNonDnb.find(leg => leg.betSelection?.quote?.verifiedAt)?.betSelection.quote.verifiedAt || schedina.oddsRetrievedAt;
+const approvedSuggestionRankById = new Map(approvedSuggestionBaseline.selections.map(row => [row.selectionId, Number(row.rank) || Number.MAX_SAFE_INTEGER]));
+assert.equal(approvedSuggestionBaseline.selectionCount, approvedBaselineNonDnbTotal, "La fonte canonica deve contenere 80 pronostici approvati non-DNB");
 assert.equal(currentApprovedNonDnb.length, approvedBaselineNonDnbTotal, "La baseline approvata non-DNB deve contenere 80 selezioni");
 assert.equal(hash(currentApprovedNonDnb.map(leg => leg.selectionId).sort()), approvedBaselineNonDnbHash, "La baseline approvata non-DNB è cambiata");
 const certifiedRows = currentRows.filter(leg => !String(leg.catalogOrigin || "").startsWith("statistical-") && leg.catalogOrigin !== "prediction-v2-player-forecast");
-assert.equal(certifiedRows.length, 383, "Il punto di partenza certificato deve contenere 383 selezioni");
+assert.equal(certifiedRows.length, certifiedSelectionTotal, `Il punto di partenza certificato deve contenere ${certifiedSelectionTotal} selezioni`);
 const certifiedById = new Map(certifiedRows.map(leg => [leg.selectionId, leg]));
 const invariantBefore = hash(certifiedRows.map(invariantProjection).sort((a, b) => a.selectionId.localeCompare(b.selectionId)));
 
@@ -65,7 +68,7 @@ const rowById = new Map(rows.map(leg => [leg.selectionId, leg]));
 assert.equal(rowById.size, rows.length, "Il catalogo contiene selectionId duplicati");
 for (const id of certifiedById.keys()) assert(rowById.has(id), `Selezione certificata rimossa: ${id}`);
 const invariantAfter = hash([...certifiedById.keys()].map(id => invariantProjection(rowById.get(id))).sort((a, b) => a.selectionId.localeCompare(b.selectionId)));
-assert.equal(invariantAfter, invariantBefore, "Quote, probabilità o contratti delle 383 selezioni certificate sono cambiati");
+assert.equal(invariantAfter, invariantBefore, `Quote, probabilità o contratti delle ${certifiedSelectionTotal} selezioni certificate sono cambiati`);
 
 const suggestions = rows.filter(leg => leg.suggestionAnalysis?.suggested);
 const addedPlayerForecasts = suggestions.filter(leg => leg.catalogOrigin === "prediction-v2-player-forecast");
@@ -233,7 +236,7 @@ const markdown = [
   "",
   `Le ${baselineSuggestions.length} selezioni approvate non-DNB sono preservate con hash **${approvedBaselineNonDnbHash}**. Draw No Bet residui nei consigliati: **${suggestions.filter(isDrawNoBet).length}**. Pronostici senza quota verificata: **${suggestions.filter(leg => !verifiedQuote(leg)).length}**.`,
   "",
-  `Le 383 selezioni certificate e i loro contratti sono invariati: **${report.invariants.certifiedContractsUnchanged ? "SÌ" : "NO"}**. MyCombo, modelli, pagine Champions e giornate precedenti non vengono rigenerati da questo script.`,
+  `Le ${certifiedSelectionTotal} selezioni certificate e i loro contratti sono invariati: **${report.invariants.certifiedContractsUnchanged ? "SÌ" : "NO"}**. MyCombo, modelli, pagine Champions e giornate precedenti non vengono rigenerati da questo script.`,
   "",
   ...(testsPassed ? report.tests.map(item => `- PASS — \`${item.command}\``) : ["- Test finali da eseguire dopo la rigenerazione."]),
   ...(testsPassed ? report.testLimitations.map(item => `- ${item.status} — \`${item.command}\`: ${item.detail}`) : []),

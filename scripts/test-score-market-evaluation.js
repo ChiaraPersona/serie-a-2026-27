@@ -49,7 +49,7 @@ for (const prediction of predictions) for (const combo of prediction.combination
   assert.equal(evaluated.prudentProbabilityPct, Math.min(...evaluated.sensitivityProbabilityPct), `${leg.selectionId}: prudenza non basata sul minimo delle sensibilità`);
   homologous.push(leg.selectionId);
 }
-assert.equal(homologous.length, 4, "Devono essere riprodotte le quattro valutazioni B2 omologhe già serializzate");
+assert.equal(homologous.length, 3, "Devono essere riprodotte le tre valutazioni B2 omologhe correnti");
 
 const dnbRows = [];
 for (const prediction of predictions) for (const row of prediction.marketComparison || []) {

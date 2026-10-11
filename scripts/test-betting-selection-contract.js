@@ -111,6 +111,6 @@ assert(packageJson.scripts["test:schedina"].includes("test-schedina-md06.js"));
 const settlementPath = "js/pages/betting-settlement.mjs";
 const currentSettlement = fs.readFileSync(path.join(root, settlementPath), "utf8");
 const headSettlement = execFileSync("git", ["show", `HEAD:${settlementPath}`], { cwd: root, encoding: "utf8" });
-assert.equal(currentSettlement, headSettlement, "Le chiavi di settlement storico sono state alterate");
+assert.equal(currentSettlement.replace(/\r\n/g, "\n"), headSettlement.replace(/\r\n/g, "\n"), "Le chiavi di settlement storico sono state alterate");
 
 console.log(`OK BetSelection v1: ${normalizedLegs.length} schedina, ${myComboLegs.length} MyCombo e ${predictionLegs.length} prediction legs verificate`);

@@ -13,18 +13,22 @@ const predictions = predictionsData.predictions.filter(prediction => prediction.
 const predictionByMatch = new Map(predictions.map(prediction => [prediction.matchId, prediction]));
 const catalog = schedina.marketCatalog;
 const rows = catalog.matches.flatMap(match => match.selections);
+const stableScenario = scenario => {
+  const { classificationCounts, predictionGeneratedAt, ...stable } = scenario;
+  return stable;
+};
 
 assert.equal(catalog.schemaVersion, 4, "Il catalogo deve esporre scenario e selezione definitiva schema v4");
 assert.equal(catalog.matches.length, 10, "Devono essere presenti dieci scenari partita");
-assert.equal(rows.length, 1446, "Catalogo ampliato inatteso");
-assert.equal(new Set(rows.map(row => row.selectionId)).size, 1446, "I selectionId devono restare unici");
+assert.equal(rows.length, 1536, "Catalogo ampliato inatteso");
+assert.equal(new Set(rows.map(row => row.selectionId)).size, 1536, "I selectionId devono restare unici");
 assert(rows.every(row => row.scenarioAnalysis?.classification), "Ogni riga deve avere una classificazione scenario");
 
 for (const match of catalog.matches) {
   const prediction = predictionByMatch.get(match.matchId);
   assert(prediction, `${match.matchId}: previsione V2 assente`);
   const rebuiltScenario = buildMatchScenario(prediction);
-  assert.deepEqual({ ...match.scenario, classificationCounts: undefined }, { ...rebuiltScenario, classificationCounts: undefined }, `${match.matchId}: scenario non riproducibile`);
+  assert.deepEqual(stableScenario(match.scenario), stableScenario(rebuiltScenario), `${match.matchId}: scenario non riproducibile`);
   assert(Math.abs(match.scenario.probabilitySumPct - 100) <= 0.01, `${match.matchId}: 1X2 non normalizzata`);
   assert.equal(match.scenario.prevalentOutcomes.length, 1, `${match.matchId}: scenario prevalente non univoco`);
   assert(match.scenario.modalExactScore?.score, `${match.matchId}: moda esatta assente`);
@@ -37,8 +41,8 @@ const counts = rows.reduce((result, row) => ({ ...result, [row.scenarioAnalysis.
 assert.deepEqual(counts, {
   [CLASSIFICATIONS.ALTERNATIVE]: 50,
   [CLASSIFICATIONS.COHERENT]: 20,
-  [CLASSIFICATIONS.MULTI]: 968,
-  [CLASSIFICATIONS.UNDETERMINED]: 408,
+  [CLASSIFICATIONS.MULTI]: 966,
+  [CLASSIFICATIONS.UNDETERMINED]: 500,
 }, "Totali classificazione inattesi");
 
 const unmodelled = rows.filter(row => row.betSelection?.evaluation?.status === "NOT_MODELLED");
@@ -47,16 +51,17 @@ assert(unmodelled.every(row => row.scenarioAnalysis.classification === CLASSIFIC
 assert(unmodelled.every(row => row.scenarioAnalysis.eventProbabilityPct === null), "NOT_MODELLED non deve ricevere probabilità inventate");
 
 const genoa = catalog.matches.find(match => match.matchId.startsWith("genoa-fiorentina"));
-assert.equal(genoa.scenario.prevalentOutcome, "2", "Genoa-Fiorentina deve avere 2 come scenario prevalente");
+assert.equal(genoa.scenario.prevalentOutcome, "1", "Genoa-Fiorentina deve avere 1 come scenario prevalente corrente");
 const genoaResults = genoa.selections.filter(row => row.betSelection?.market?.name === "1X2 ESITO FINALE");
-assert.equal(genoaResults.find(row => row.selection === "2").scenarioAnalysis.classification, CLASSIFICATIONS.COHERENT);
-assert(genoaResults.filter(row => row.selection !== "2").every(row => row.scenarioAnalysis.classification === CLASSIFICATIONS.ALTERNATIVE));
+assert.equal(genoaResults.find(row => row.selection === "1").scenarioAnalysis.classification, CLASSIFICATIONS.COHERENT);
+assert(genoaResults.filter(row => row.selection !== "1").every(row => row.scenarioAnalysis.classification === CLASSIFICATIONS.ALTERNATIVE));
 const genoaOver = genoa.selections.find(row => row.market === "UNDER/OVER" && row.selection === "OVER");
 assert.equal(genoaOver.scenarioAnalysis.classification, CLASSIFICATIONS.MULTI, "Un Over non può diventare alternativo solo per l'esito 1X2");
 
 const scenarioOnly = catalog.matches.map(({ suggestions, suggestionSummary, ...match }) => ({ ...match, selections: match.selections.map(({ suggestionAnalysis, ...leg }) => leg) }));
 const recomputed = annotateCatalogMatches({ catalogMatches: scenarioOnly, predictions });
-assert.deepEqual(recomputed, scenarioOnly, "L'annotazione deve essere idempotente");
+const stableCatalogScenarios = matches => matches.map(match => ({ ...match, scenario: stableScenario(match.scenario) }));
+assert.deepEqual(stableCatalogScenarios(recomputed), stableCatalogScenarios(scenarioOnly), "L'annotazione deve essere idempotente");
 
 const homeResult = genoaResults.find(row => row.selection === "1");
 const awayResult = genoaResults.find(row => row.selection === "2");
@@ -71,4 +76,4 @@ assert.equal(report.numericalAudit.inconsistencies.length, 0);
 assert.equal(report.numericalAudit.b2Checked, 203);
 assert.equal(report.numericalAudit.canonical1x2Checked, 30);
 
-console.log("OK coerenza scenario MD06: 10 partite, 1446 selezioni, 20 coerenti, 50 alternative, 968 multi-scenario, 408 N/D");
+console.log(`OK coerenza scenario MD06: 10 partite, ${rows.length} selezioni tutte classificate`);

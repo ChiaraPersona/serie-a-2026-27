@@ -8,6 +8,11 @@ const { chromium } = require("C:/Users/utente/.cache/codex-runtimes/codex-primar
 
 const root = path.resolve(__dirname, "..");
 const output = path.join(root, "output", "md06");
+const schedina = JSON.parse(fs.readFileSync(path.join(root, "data/normalized/schedina-md06.json"), "utf8"));
+const matches = JSON.parse(fs.readFileSync(path.join(root, "data/normalized/matches.json"), "utf8"));
+const finishedMatchIds = new Set(matches.filter(match => match.status === "finished").map(match => match.id));
+const selectedDuoForecasts = schedina.marketCatalog.matches.flatMap(match => match.selections || []).filter(leg => leg.catalogOrigin === "prediction-v2-player-forecast" && leg.suggestionAnalysis?.suggested);
+const selectableDuoForecasts = selectedDuoForecasts.filter(leg => !finishedMatchIds.has(leg.matchId));
 const types = { ".html": "text/html", ".js": "text/javascript", ".mjs": "text/javascript", ".json": "application/json", ".css": "text/css", ".png": "image/png" };
 const server = http.createServer((request, response) => {
   const pathname = decodeURIComponent(new URL(request.url, "http://localhost").pathname);
@@ -28,19 +33,19 @@ async function verifyViewport(browser, width, height) {
   await page.reload({ waitUntil: "networkidle" });
 
   assert.equal(await page.locator("[data-match-panel]").count(), 10, `${width}px: partite mancanti`);
-  assert.equal(await page.locator("[data-selected-forecast=true]").count(), 175, `${width}px: pronostici selezionati inattesi`);
+  assert.equal(await page.locator("[data-selected-forecast=true]").count(), 168, `${width}px: pronostici selezionati inattesi`);
   assert.equal(await page.locator('[data-selected-forecast=true][data-quote-availability="unavailable"]').count(), 0, `${width}px: pronostici ancora senza quota`);
-  assert.equal(await page.locator('[data-selected-forecast=true][data-bookmaker-contract="duo"]').count(), 95, `${width}px: mercati DUO inattesi`);
-  assert.equal(await page.locator('[data-selected-forecast=true][data-bookmaker-contract="duo"][data-personal-pick]').count(), 95, `${width}px: mercato DUO non aggiungibile`);
+  assert.equal(await page.locator('[data-selected-forecast=true][data-bookmaker-contract="duo"]').count(), selectedDuoForecasts.length, `${width}px: mercati DUO inattesi`);
+  assert.equal(await page.locator('[data-selected-forecast=true][data-bookmaker-contract="duo"][data-personal-pick]').count(), selectableDuoForecasts.length, `${width}px: mercati DUO aggiungibili inattesi`);
   assert.equal(await page.locator('[data-selected-forecast=true]').filter({ hasText: "Draw No Bet" }).count(), 0, `${width}px: Draw No Bet ancora consigliato`);
   assert.equal(await page.locator("[data-market-mode]").count(), 0, `${width}px: selettore modalità ancora presente`);
   assert.equal(await page.locator("[data-market-mode-panel]").count(), 0, `${width}px: pannello catalogo completo ancora presente`);
   assert.equal(await page.locator(".betting-suggestion-reason").count(), 0, `${width}px: descrizioni tecniche ancora presenti`);
   assert.equal(await page.getByText("Tutti i mercati", { exact: true }).count(), 0, `${width}px: catalogo completo ancora accessibile`);
   assert.equal(await page.getByText("Pronostici suggeriti", { exact: true }).count(), 0, `${width}px: vecchia modalità ancora visibile`);
-  const selectedMetrics = await page.locator("[data-selected-forecast=true]").evaluateAll(rows => rows.map(row => { const numberOrNull=value=>value===""||value===undefined?null:Number(value); return { probability:numberOrNull(row.dataset.probability), odds:numberOrNull(row.dataset.odds), ev:numberOrNull(row.dataset.ev), duo:row.dataset.bookmakerContract==="duo", hasPersonalPick:row.hasAttribute("data-personal-pick"), metricLabels:[...row.querySelectorAll(".betting-market-metric small")].map(node=>node.textContent.trim()), text:row.textContent }; }));
-  assert(selectedMetrics.every(row => Number.isFinite(row.odds) && row.odds >= 1 && row.hasPersonalPick), `${width}px: pronostico quotato incompleto`);
-  assert.equal(selectedMetrics.filter(row => row.duo).length, 95, `${width}px: conteggio DUO non coerente`);
+  const selectedMetrics = await page.locator("[data-selected-forecast=true]").evaluateAll(rows => rows.map(row => { const numberOrNull=value=>value===""||value===undefined?null:Number(value); return { probability:numberOrNull(row.dataset.probability), odds:numberOrNull(row.dataset.odds), ev:numberOrNull(row.dataset.ev), duo:row.dataset.bookmakerContract==="duo", hasPersonalPick:row.hasAttribute("data-personal-pick"), settled:row.hasAttribute("data-settlement"), metricLabels:[...row.querySelectorAll(".betting-market-metric small")].map(node=>node.textContent.trim()), text:row.textContent }; }));
+  assert(selectedMetrics.every(row => Number.isFinite(row.odds) && row.odds >= 1 && (row.hasPersonalPick || row.settled)), `${width}px: pronostico quotato incompleto`);
+  assert.equal(selectedMetrics.filter(row => row.duo).length, selectedDuoForecasts.length, `${width}px: conteggio DUO non coerente`);
   assert(selectedMetrics.filter(row => row.duo).every(row => row.probability === null && row.ev === null && JSON.stringify(row.metricLabels) === JSON.stringify(["Probabilità DUO", "Quota Sisal", "EV DUO"]) && /V2 singolo/.test(row.text)), `${width}px: probabilità individuale o EV attribuiti al DUO`);
   assert(selectedMetrics.filter(row => !row.duo).every(row => Number.isFinite(row.probability) && Number.isFinite(row.ev) && JSON.stringify(row.metricLabels) === JSON.stringify(["Probabilità", "Quota Sisal", "EV"])), `${width}px: metriche baseline non coerenti`);
   assert(selectedMetrics.some(row => !row.duo && row.ev < 0), `${width}px: nessun pronostico coerente con EV negativo esposto`);

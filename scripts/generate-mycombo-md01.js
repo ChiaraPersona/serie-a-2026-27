@@ -435,8 +435,8 @@ function candidatePool(event, prediction, match) {
   }
 
   const uniqueCandidates = [...new Map(candidates.map(candidate => [candidate.providerSelectionId, { ...candidate, semanticKeys: candidate.semanticKeys || [] }])).values()];
-  const marketBySelectionId = new Map((event.markets || []).flatMap(market => (market.selections || []).map(selection => [String(selection.providerSelectionId), market])));
-  const policyInput = candidate => { const market = marketBySelectionId.get(String(candidate.providerSelectionId)); return { matchId: match.id, market: market?.marketName, variant: market?.variantName, selection: candidate.selection, label: candidate.label }; };
+  const contractBySelectionId = new Map((event.markets || []).flatMap(market => (market.selections || []).map(selection => [String(selection.providerSelectionId), { market, selection }])));
+  const policyInput = candidate => { const contract = contractBySelectionId.get(String(candidate.providerSelectionId)); return { matchId: match.id, market: contract?.market?.marketName, variant: contract?.market?.variantName, selection: contract?.selection?.name, label: candidate.label }; };
   const underCandidates = matchday >= 6 ? uniqueCandidates.filter(isUnderPlayableSelection) : [];
   const individualFoulCandidates = matchday >= 6 ? uniqueCandidates.filter(candidate => isIndividualPlayerFoulMarket(policyInput(candidate))) : [];
   const cornerPeriodCandidates = matchday >= 6 ? uniqueCandidates.filter(candidate => isCornerPeriodMarket(policyInput(candidate))) : [];

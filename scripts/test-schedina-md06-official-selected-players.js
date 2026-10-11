@@ -19,6 +19,12 @@ const officialStartersByMatch = new Map((officialLineups.fixtures || [])
 const selectedPlayerForecasts = schedina.marketCatalog.matches
   .flatMap(match => match.selections || [])
   .filter(leg => leg.catalogOrigin === "prediction-v2-player-forecast" && leg.suggestionAnalysis?.suggested);
+const selectedForecasts = schedina.marketCatalog.matches
+  .flatMap(match => match.selections || [])
+  .filter(leg => leg.suggestionAnalysis?.suggested);
+const selectedFamilies = new Set(selectedForecasts.map(leg => leg.suggestionAnalysis.family));
+assert(selectedFamilies.has("goals-results"), "Pronostici gol/risultato eliminati durante l'aggiornamento delle formazioni");
+assert(selectedFamilies.has("corners"), "Pronostici corner eliminati durante l'aggiornamento delle formazioni");
 const refreshedMatchIds = new Set([
   "lazio-monza-2026-27-md-06",
   "lecce-bologna-2026-27-md-06",

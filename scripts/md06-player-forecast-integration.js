@@ -325,12 +325,12 @@ function playerForecastLeg({ prediction, player, metric, threshold, lineup, quot
     },
     suggestionAnalysis: {
       version: 3,
-      suggested: true,
+      suggested: quoted,
       rank: null,
       family: metric,
       familyLabel: metric === "shots" ? "Tiri totali" : "Tiri in porta",
       criteria: "APPROVED_BASELINE_PLUS_STRUCTURED_READING_V2_NO_EV_GATE",
-      reasons: [],
+      reasons: quoted ? [] : ["QUOTE_UNAVAILABLE"],
       conservativeExpectedValuePct: null,
       canonicalThresholdIdentity: `${metric}:player:${player.playerId}:over`,
       resultThesisIdentity: null,
@@ -344,6 +344,7 @@ function playerForecastLeg({ prediction, player, metric, threshold, lineup, quot
 }
 
 function applyApprovedBaseline(catalogMatches, approvedSuggestionRankById) {
+  if (approvedSuggestionRankById === null || approvedSuggestionRankById === undefined) return catalogMatches;
   const approved = approvedSuggestionRankById instanceof Map ? approvedSuggestionRankById : new Map(Object.entries(approvedSuggestionRankById || {}));
   return catalogMatches.map(match => {
     const selected = match.selections.filter(leg => approved.has(leg.selectionId)).sort((left, right) => Number(approved.get(left.selectionId)) - Number(approved.get(right.selectionId)) || String(left.selectionId).localeCompare(String(right.selectionId)));
@@ -391,9 +392,10 @@ function integratePlayerForecasts({ catalogMatches, predictions, odds, probableL
       || Number(right.individualModelProbabilityPct) - Number(left.individualModelProbabilityPct)
       || String(left.playerName).localeCompare(String(right.playerName), "it"));
     const baseline = match.selections.filter(leg => leg.suggestionAnalysis?.suggested).sort((left, right) => Number(left.suggestionAnalysis.rank) - Number(right.suggestionAnalysis.rank));
-    const ranks = new Map([...baseline, ...additions].map((leg, index) => [leg.selectionId, index + 1]));
+    const selectedAdditions = additions.filter(leg => leg.suggestionAnalysis.suggested);
+    const ranks = new Map([...baseline, ...selectedAdditions].map((leg, index) => [leg.selectionId, index + 1]));
     const selections = [...match.selections.map(leg => ranks.has(leg.selectionId) ? { ...leg, suggestionAnalysis: { ...leg.suggestionAnalysis, rank: ranks.get(leg.selectionId) } } : leg), ...additions.map(leg => ({ ...leg, suggestionAnalysis: { ...leg.suggestionAnalysis, rank: ranks.get(leg.selectionId) } }))];
-    const suggestions = [...baseline, ...additions].map(leg => leg.selectionId);
+    const suggestions = [...baseline, ...selectedAdditions].map(leg => leg.selectionId);
     const byFamily = suggestions.map(id => selections.find(leg => leg.selectionId === id)).reduce((counts, leg) => { const family = leg.suggestionAnalysis.family; counts[family] = (counts[family] || 0) + 1; return counts; }, {});
     return { ...match, selections, total: selections.length, evaluated: selections.filter(leg => finite(leg.betSelection?.evaluation?.modelProbabilityPct)).length, notModelled: selections.filter(leg => !finite(leg.betSelection?.evaluation?.modelProbabilityPct)).length, suggestions, suggestionSummary: { total: suggestions.length, byFamily } };
   });

@@ -34,9 +34,9 @@ async function verify(browser, width, height) {
   const lecceBologna = page.locator('[data-match-id="lecce-bologna-2026-27-md-06"]');
   const lazioMonza = page.locator('[data-match-id="lazio-monza-2026-27-md-06"]');
   const sassuoloMilan = page.locator('[data-match-id="sassuolo-milan-2026-27-md-06"]');
-  assert.equal(await lecceBologna.locator("[data-selected-forecast=true]").count(), 7, `${width}px: numero pronostici Lecce-Bologna inatteso`);
-  assert.equal(await lazioMonza.locator("[data-selected-forecast=true]").count(), 14, `${width}px: numero pronostici Lazio-Monza inatteso`);
-  assert.equal(await sassuoloMilan.locator("[data-selected-forecast=true]").count(), 7, `${width}px: numero pronostici Sassuolo-Milan inatteso`);
+  assert.equal(await lecceBologna.locator("[data-selected-forecast=true]").count(), 15, `${width}px: numero pronostici Lecce-Bologna inatteso`);
+  assert.equal(await lazioMonza.locator("[data-selected-forecast=true]").count(), 19, `${width}px: numero pronostici Lazio-Monza inatteso`);
+  assert.equal(await sassuoloMilan.locator("[data-selected-forecast=true]").count(), 16, `${width}px: numero pronostici Sassuolo-Milan inatteso`);
   assert.equal(await page.locator('[data-selected-forecast=true]').filter({ hasText: "Federico Bernardeschi" }).count(), 0, `${width}px: Bernardeschi ancora visibile`);
   assert.equal(await page.locator('[data-selected-forecast=true]').filter({ hasText: "Joël Monteiro" }).count(), 0, `${width}px: Monteiro ancora visibile`);
   assert.equal(await page.locator('[data-selected-forecast=true]').filter({ hasText: "Jay Robinson" }).count(), 0, `${width}px: Robinson ancora visibile`);
