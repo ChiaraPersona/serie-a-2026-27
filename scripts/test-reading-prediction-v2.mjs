@@ -87,6 +87,12 @@ const kaiki=player({name:"Kaiki",playerId:"kaiki",qualifiedOutsider:false,outsid
 const guarded=render({...fullPrediction,shooters:{...fullPrediction.shooters,outsiders:[kaiki],sotOutsiders:[]}}).outsiders;
 assert(!guarded.includes("Kaiki")&&guarded.includes("Nessun outsider qualificato"));
 
+// 20a. Un titolare ufficiale non risolto resta visibile, ma non pubblica prior generici come dato individuale.
+const unresolved=player({name:"Matteo Test",playerId:null,dataStatus:"role-baseline",expectedMinutes:76,projectedShots:1.29,projectedShotsOnTarget:.44,shotProbabilities:{over05:.72,over15:.37,over25:.14},shotOnTargetProbabilities:{over05:.36,over15:.07}});
+const unresolvedHtml=render({...fullPrediction,shooters:{totalShots:[unresolved],shotsOnTarget:[unresolved],allPlayers:[unresolved],outsiders:[],sotOutsiders:[]}}).shooters;
+assert(unresolvedHtml.includes("Matteo Test")&&unresolvedHtml.includes("Minuti attesi N/D"));
+assert(!unresolvedHtml.includes("1,29")&&!unresolvedHtml.includes("72%"),"Un prior di ruolo non deve apparire come previsione individuale");
+
 // 21. Tiri e SOT non vengono uniformati (Cagliari-like).
 const splitA=render({...fullPrediction,teamProjections:[projection("home","elevated","normal")]}).why;
 assert(splitA.includes("↑ favorevole")&&splitA.includes("→ neutro"));

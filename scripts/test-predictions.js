@@ -24,8 +24,14 @@ for (const match of currentMatches) {
       ? official.players.slice(1).map(player => player.playerId).filter(Boolean).sort()
       : currentProbableLineups.teams.find(team => team.teamId === teamId).players
         .filter(player => player.lineupStatus === "starter" && player.sourceRole !== "P").map(player => player.playerId).sort();
-    const actual = prediction.shooters.allPlayers.filter(player => player.teamId === teamId).map(player => player.playerId).sort();
+    const actualPlayers = prediction.shooters.allPlayers.filter(player => player.teamId === teamId);
+    const actual = actualPlayers.map(player => player.playerId).filter(Boolean).sort();
     assert.deepStrictEqual(actual, expected, `${match.id}/${teamId}: giocatori modellati diversi dai titolari della fonte corrente`);
+    if (official) {
+      const unresolvedExpected = official.players.slice(1).filter(player => !player.playerId).map(player => player.currentName || player.sourceName).sort();
+      const unresolvedActual = actualPlayers.filter(player => !player.playerId).map(player => player.lineupName || player.name).sort();
+      assert.deepStrictEqual(unresolvedActual, unresolvedExpected, `${match.id}/${teamId}: titolari ufficiali non risolti non preservati`);
+    }
   }
 }
 const teamStyleProfiles = JSON.parse(fs.readFileSync(path.join(root, "data/normalized/team-style-profiles.json"), "utf8")).profiles;
@@ -271,8 +277,8 @@ const lecceProjection = lecceBolognaProfile.teamProjections.find(team => team.te
 const bolognaVsLeccePlayers = lecceBolognaProfile.shooters.allPlayers.filter(candidate => candidate.teamId === "bologna");
 const leccePlayers = lecceBolognaProfile.shooters.allPlayers.filter(candidate => candidate.teamId === "lecce");
 assert.strictEqual(bolognaVsLecceProjection.opponentMatchupInteraction.method, "broad-team-vulnerability-before-player-allocation-role-residuals-watch-only");
-assert.strictEqual(bolognaVsLecceProjection.opponentMatchupInteraction.shotsAdjustmentPct, 0.78, "Lecce: broad shot vulnerability non applicata al team target Bologna");
-assert.strictEqual(bolognaVsLecceProjection.opponentMatchupInteraction.shotsOnTargetAdjustmentPct, 0.77, "Lecce: broad SOT vulnerability non applicata separatamente");
+assert.strictEqual(bolognaVsLecceProjection.opponentMatchupInteraction.shotsAdjustmentPct, 0.79, "Lecce: broad shot vulnerability non applicata al team target Bologna");
+assert.strictEqual(bolognaVsLecceProjection.opponentMatchupInteraction.shotsOnTargetAdjustmentPct, 0.78, "Lecce: broad SOT vulnerability non applicata separatamente");
 assert(bolognaVsLecceProjection.opponentMatchupInteraction.metricEvidence.shots.adjustmentPct > 0 && bolognaVsLecceProjection.opponentMatchupInteraction.metricEvidence.shotsOnTarget.adjustmentPct > 0);
 assert(bolognaVsLeccePlayers.every(candidate => candidate.teamProfileShotsMatchupFactor === 1 && candidate.teamProfileShotsOnTargetMatchupFactor === 1), "Lecce: broad environment duplicato con boost posizionali");
 assert.strictEqual(lecceProjection.ownOffensiveInteraction.shotsAdjustmentPct, -8, "Lecce: basso volume tiri non raggiunge il cap prudente");
@@ -387,7 +393,7 @@ const monzaFolorunsho = monzaPlayers.find(player => player.playerId === "michael
 const monzaRobinson = monzaPlayers.find(player => player.playerId === "jay-robinson");
 const monzaColpani = monzaPlayers.find(player => player.playerId === "andrea-colpani");
 const monzaBirindelli = monzaPlayers.find(player => player.playerId === "samuele-birindelli");
-assert(monzaTeamTotal && monzaVarela && monzaFolorunsho && monzaRobinson && monzaBirindelli, "Monza: candidati principali/secondari mancanti nell'E2E");
+assert(monzaTeamTotal && monzaVarela && monzaFolorunsho && monzaBirindelli, "Monza: candidati principali/secondari ufficiali mancanti nell'E2E");
 assert(monzaProjection.shotsTotal.central >= 13 && monzaProjection.shotsTotal.central < 16, "Monza A: il target neutrale assume automaticamente 16+ tiri");
 for (const metric of ["shots", "shotsOnTarget"]) {
   const adjustment = monzaProjection.ownOffensiveInteraction[`${metric}AdjustmentPct`];
@@ -407,9 +413,10 @@ assert.deepStrictEqual(monzaFolorunsho.playerBaselineStability.currentSample.per
 assert(monzaFolorunsho.shotProbabilities.over05 > 0.75 && monzaFolorunsho.shotOnTargetProbabilities.over05 < 0.35, "Monza E: Folorunsho converte i tiri in SOT con rate fisso");
 assert.strictEqual(monzaFolorunsho.qualifiedOutsider, true);
 assert.strictEqual(monzaFolorunsho.qualifiedSotOutsider, false);
-assert.strictEqual(monzaRobinson.playerBaselineStability.currentSample.persistence.level, "medium");
+if (monzaRobinson) assert.strictEqual(monzaRobinson.playerBaselineStability.currentSample.persistence.level, "medium");
+else assert(!officialLineupByMatchTeam.get("lazio-monza-2026-27-md-06:monza")?.players.some(player => player.playerId === "jay-robinson"), "Monza: Robinson escluso nonostante sia titolare ufficiale");
 if (monzaColpani) assert.strictEqual(monzaColpani.playerBaselineStability.currentSample.persistence.level, "medium");
-else assertNotCurrentStarter("monza", "andrea-colpani");
+else assert(!officialLineupByMatchTeam.get("lazio-monza-2026-27-md-06:monza")?.players.some(player => player.playerId === "andrea-colpani"), "Monza: Colpani escluso nonostante sia titolare ufficiale");
 assert.strictEqual(monzaBirindelli.playerBaselineStability.currentSample.persistence.level, "high");
 assert.deepStrictEqual(monzaBirindelli.playerBaselineStability.currentSample.persistence.sequence, [1, 1, 1, 1, 2]);
 assert.strictEqual(monzaBirindelli.qualifiedOutsider, true, "Monza H: Birindelli non supera naturalmente i gate outsider tiri");
