@@ -1,0 +1,2865 @@
+{
+  "schemaVersion": 1,
+  "phase": "8",
+  "auditDate": "2026-10-11",
+  "dataAsOf": "2026-10-09",
+  "status": "PARTIAL",
+  "scope": "Diagnostic identity audit and leakage-safe Champions player shots/SOT calibration assessment. No production activation.",
+  "identityAudit": {
+    "structuralContaminationDetected": false,
+    "atletico": {
+      "team": "Atlético de Madrid",
+      "requestedUrl": "https://www.uefa.com/uefachampionsleague/clubs/50124--athletic-club/squad/",
+      "resolvedUrl": "https://www.uefa.com/uefachampionsleague/clubs/50124--athletic-club/squad/",
+      "uefaClubId": "50124",
+      "pathSlugLooksLikeAthleticClub": true,
+      "bodyDeclaresAtletico": true,
+      "bodyDeclaresAthleticClub": false,
+      "contentDecision": "club-id-and-content-confirm-atletico; misleading slug is non-structural"
+    },
+    "crossClubProviderIdentities": {
+      "count": 5,
+      "structuralConflicts": 0,
+      "cases": [
+        {
+          "providerPlayerId": "387204",
+          "player": "Rodrigo Mora",
+          "intervals": [
+            {
+              "teamId": "porto",
+              "team": "Porto",
+              "firstObserved": "2026-08-09",
+              "lastObserved": "2026-08-09",
+              "observations": 1
+            },
+            {
+              "teamId": "roma",
+              "team": "Roma",
+              "firstObserved": "2026-08-24",
+              "lastObserved": "2026-09-14",
+              "observations": 5
+            }
+          ],
+          "sameDateConflicts": [],
+          "decision": "chronologically-consistent-club-change"
+        },
+        {
+          "providerPlayerId": "323807",
+          "player": "Neil El Aynaoui",
+          "intervals": [
+            {
+              "teamId": "roma",
+              "team": "Roma",
+              "firstObserved": "2026-08-24",
+              "lastObserved": "2026-08-24",
+              "observations": 1
+            },
+            {
+              "teamId": "leipzig",
+              "team": "Leipzig",
+              "firstObserved": "2026-09-05",
+              "lastObserved": "2026-09-20",
+              "observations": 3
+            }
+          ],
+          "sameDateConflicts": [],
+          "decision": "chronologically-consistent-club-change"
+        },
+        {
+          "providerPlayerId": "240912",
+          "player": "Joey Veerman",
+          "intervals": [
+            {
+              "teamId": "psv-eindhoven",
+              "team": "PSV Eindhoven",
+              "firstObserved": "2026-08-15",
+              "lastObserved": "2026-08-15",
+              "observations": 1
+            },
+            {
+              "teamId": "borussia-dortmund",
+              "team": "Borussia Dortmund",
+              "firstObserved": "2026-08-29",
+              "lastObserved": "2026-09-19",
+              "observations": 4
+            }
+          ],
+          "sameDateConflicts": [],
+          "decision": "chronologically-consistent-club-change"
+        },
+        {
+          "providerPlayerId": "274277",
+          "player": "Ayase Ueda",
+          "intervals": [
+            {
+              "teamId": "feyenoord",
+              "team": "Feyenoord",
+              "firstObserved": "2026-08-09",
+              "lastObserved": "2026-08-30",
+              "observations": 4
+            },
+            {
+              "teamId": "lille",
+              "team": "Lille",
+              "firstObserved": "2026-09-03",
+              "lastObserved": "2026-09-20",
+              "observations": 3
+            }
+          ],
+          "sameDateConflicts": [],
+          "decision": "chronologically-consistent-club-change"
+        },
+        {
+          "providerPlayerId": "350513",
+          "player": "Deniz Gül",
+          "intervals": [
+            {
+              "teamId": "porto",
+              "team": "Porto",
+              "firstObserved": "2026-08-09",
+              "lastObserved": "2026-08-23",
+              "observations": 3
+            },
+            {
+              "teamId": "galatasaray",
+              "team": "Galatasaray",
+              "firstObserved": "2026-09-04",
+              "lastObserved": "2026-10-09",
+              "observations": 5
+            }
+          ],
+          "sameDateConflicts": [],
+          "decision": "chronologically-consistent-club-change"
+        }
+      ]
+    },
+    "joeyVeerman": {
+      "providerPlayerId": "240912",
+      "player": "Joey Veerman",
+      "intervals": [
+        {
+          "teamId": "psv-eindhoven",
+          "team": "PSV Eindhoven",
+          "firstObserved": "2026-08-15",
+          "lastObserved": "2026-08-15",
+          "observations": 1
+        },
+        {
+          "teamId": "borussia-dortmund",
+          "team": "Borussia Dortmund",
+          "firstObserved": "2026-08-29",
+          "lastObserved": "2026-09-19",
+          "observations": 4
+        }
+      ],
+      "sameDateConflicts": [],
+      "decision": "chronologically-consistent-club-change"
+    },
+    "exactNameOnlyResolutions": {
+      "count": 37,
+      "calibrationPolicy": "exclude unless independently corroborated",
+      "cases": [
+        {
+          "team": "Real Madrid",
+          "teamId": "real-madrid",
+          "player": "Javi Navarro",
+          "playerId": "javi-navarro",
+          "previousProviderPlayerId": null,
+          "providerPlayerId": null,
+          "uefaPlayerId": "250201421",
+          "availableIdentifiers": {
+            "internalPlayerId": "javi-navarro",
+            "espnPlayerId": null,
+            "uefaPlayerId": "250201421"
+          },
+          "historicalProviderIds": [],
+          "transferEvidence": [],
+          "status": "resolved",
+          "resolutionMethod": "uefa_exact_name",
+          "confidence": "high",
+          "evidence": {
+            "uefaList": "B",
+            "uefaSquadUrl": "https://www.uefa.com/uefachampionsleague/clubs/50051/squad/",
+            "espnTeamLabel": null,
+            "espnUrl": null
+          },
+          "predictionCandidateEligible": true
+        },
+        {
+          "team": "Real Madrid",
+          "teamId": "real-madrid",
+          "player": "Diego Villalba",
+          "playerId": "diego-villalba",
+          "previousProviderPlayerId": null,
+          "providerPlayerId": null,
+          "uefaPlayerId": "250206694",
+          "availableIdentifiers": {
+            "internalPlayerId": "diego-villalba",
+            "espnPlayerId": null,
+            "uefaPlayerId": "250206694"
+          },
+          "historicalProviderIds": [],
+          "transferEvidence": [],
+          "status": "resolved",
+          "resolutionMethod": "uefa_exact_name",
+          "confidence": "high",
+          "evidence": {
+            "uefaList": "B",
+            "uefaSquadUrl": "https://www.uefa.com/uefachampionsleague/clubs/50051/squad/",
+            "espnTeamLabel": null,
+            "espnUrl": null
+          },
+          "predictionCandidateEligible": true
+        },
+        {
+          "team": "Real Madrid",
+          "teamId": "real-madrid",
+          "player": "Gabriel Valero",
+          "playerId": "gabriel-valero",
+          "previousProviderPlayerId": null,
+          "providerPlayerId": null,
+          "uefaPlayerId": "250213264",
+          "availableIdentifiers": {
+            "internalPlayerId": "gabriel-valero",
+            "espnPlayerId": null,
+            "uefaPlayerId": "250213264"
+          },
+          "historicalProviderIds": [],
+          "transferEvidence": [],
+          "status": "resolved",
+          "resolutionMethod": "uefa_exact_name",
+          "confidence": "high",
+          "evidence": {
+            "uefaList": "B",
+            "uefaSquadUrl": "https://www.uefa.com/uefachampionsleague/clubs/50051/squad/",
+            "espnTeamLabel": null,
+            "espnUrl": null
+          },
+          "predictionCandidateEligible": true
+        },
+        {
+          "team": "Fenerbahçe",
+          "teamId": "fenerbahce",
+          "player": "Yasir Caklı",
+          "playerId": "yasir-cakli",
+          "previousProviderPlayerId": null,
+          "providerPlayerId": null,
+          "uefaPlayerId": "250222125",
+          "availableIdentifiers": {
+            "internalPlayerId": "yasir-cakli",
+            "espnPlayerId": null,
+            "uefaPlayerId": "250222125"
+          },
+          "historicalProviderIds": [],
+          "transferEvidence": [],
+          "status": "resolved",
+          "resolutionMethod": "uefa_exact_name",
+          "confidence": "high",
+          "evidence": {
+            "uefaList": "B",
+            "uefaSquadUrl": "https://www.uefa.com/uefachampionsleague/clubs/52692--fenerbahce/squad/",
+            "espnTeamLabel": null,
+            "espnUrl": null
+          },
+          "predictionCandidateEligible": true
+        },
+        {
+          "team": "Fenerbahçe",
+          "teamId": "fenerbahce",
+          "player": "Çağan Sarıdikmen",
+          "playerId": "cagan-saridikmen",
+          "previousProviderPlayerId": null,
+          "providerPlayerId": null,
+          "uefaPlayerId": "250222120",
+          "availableIdentifiers": {
+            "internalPlayerId": "cagan-saridikmen",
+            "espnPlayerId": null,
+            "uefaPlayerId": "250222120"
+          },
+          "historicalProviderIds": [],
+          "transferEvidence": [],
+          "status": "resolved",
+          "resolutionMethod": "uefa_exact_name",
+          "confidence": "high",
+          "evidence": {
+            "uefaList": "B",
+            "uefaSquadUrl": "https://www.uefa.com/uefachampionsleague/clubs/52692--fenerbahce/squad/",
+            "espnTeamLabel": null,
+            "espnUrl": null
+          },
+          "predictionCandidateEligible": true
+        },
+        {
+          "team": "Fenerbahçe",
+          "teamId": "fenerbahce",
+          "player": "Bedirhan Korkmaz",
+          "playerId": "bedirhan-korkmaz",
+          "previousProviderPlayerId": null,
+          "providerPlayerId": null,
+          "uefaPlayerId": "250222123",
+          "availableIdentifiers": {
+            "internalPlayerId": "bedirhan-korkmaz",
+            "espnPlayerId": null,
+            "uefaPlayerId": "250222123"
+          },
+          "historicalProviderIds": [],
+          "transferEvidence": [],
+          "status": "resolved",
+          "resolutionMethod": "uefa_exact_name",
+          "confidence": "high",
+          "evidence": {
+            "uefaList": "B",
+            "uefaSquadUrl": "https://www.uefa.com/uefachampionsleague/clubs/52692--fenerbahce/squad/",
+            "espnTeamLabel": null,
+            "espnUrl": null
+          },
+          "predictionCandidateEligible": true
+        },
+        {
+          "team": "Fenerbahçe",
+          "teamId": "fenerbahce",
+          "player": "Güner Ekici",
+          "playerId": "guner-ekici",
+          "previousProviderPlayerId": null,
+          "providerPlayerId": null,
+          "uefaPlayerId": "250222124",
+          "availableIdentifiers": {
+            "internalPlayerId": "guner-ekici",
+            "espnPlayerId": null,
+            "uefaPlayerId": "250222124"
+          },
+          "historicalProviderIds": [],
+          "transferEvidence": [],
+          "status": "resolved",
+          "resolutionMethod": "uefa_exact_name",
+          "confidence": "high",
+          "evidence": {
+            "uefaList": "B",
+            "uefaSquadUrl": "https://www.uefa.com/uefachampionsleague/clubs/52692--fenerbahce/squad/",
+            "espnTeamLabel": null,
+            "espnUrl": null
+          },
+          "predictionCandidateEligible": true
+        },
+        {
+          "team": "Fenerbahçe",
+          "teamId": "fenerbahce",
+          "player": "Emirhan Ateş",
+          "playerId": "emirhan-ates",
+          "previousProviderPlayerId": null,
+          "providerPlayerId": null,
+          "uefaPlayerId": "250207773",
+          "availableIdentifiers": {
+            "internalPlayerId": "emirhan-ates",
+            "espnPlayerId": null,
+            "uefaPlayerId": "250207773"
+          },
+          "historicalProviderIds": [],
+          "transferEvidence": [],
+          "status": "resolved",
+          "resolutionMethod": "uefa_exact_name",
+          "confidence": "high",
+          "evidence": {
+            "uefaList": "B",
+            "uefaSquadUrl": "https://www.uefa.com/uefachampionsleague/clubs/52692--fenerbahce/squad/",
+            "espnTeamLabel": null,
+            "espnUrl": null
+          },
+          "predictionCandidateEligible": true
+        },
+        {
+          "team": "Bodø/Glimt",
+          "teamId": "bodo-glimt",
+          "player": "Matias Jaiteh",
+          "playerId": "matias-jaiteh",
+          "previousProviderPlayerId": null,
+          "providerPlayerId": null,
+          "uefaPlayerId": "250213119",
+          "availableIdentifiers": {
+            "internalPlayerId": "matias-jaiteh",
+            "espnPlayerId": null,
+            "uefaPlayerId": "250213119"
+          },
+          "historicalProviderIds": [],
+          "transferEvidence": [],
+          "status": "resolved",
+          "resolutionMethod": "uefa_exact_name",
+          "confidence": "high",
+          "evidence": {
+            "uefaList": "B",
+            "uefaSquadUrl": "https://www.uefa.com/uefachampionsleague/clubs/59333--bodo-glimt/squad/",
+            "espnTeamLabel": null,
+            "espnUrl": null
+          },
+          "predictionCandidateEligible": true
+        },
+        {
+          "team": "Bodø/Glimt",
+          "teamId": "bodo-glimt",
+          "player": "Mathias Blix Olsen",
+          "playerId": "mathias-blix-olsen",
+          "previousProviderPlayerId": null,
+          "providerPlayerId": null,
+          "uefaPlayerId": "250213088",
+          "availableIdentifiers": {
+            "internalPlayerId": "mathias-blix-olsen",
+            "espnPlayerId": null,
+            "uefaPlayerId": "250213088"
+          },
+          "historicalProviderIds": [],
+          "transferEvidence": [],
+          "status": "resolved",
+          "resolutionMethod": "uefa_exact_name",
+          "confidence": "high",
+          "evidence": {
+            "uefaList": "B",
+            "uefaSquadUrl": "https://www.uefa.com/uefachampionsleague/clubs/59333--bodo-glimt/squad/",
+            "espnTeamLabel": null,
+            "espnUrl": null
+          },
+          "predictionCandidateEligible": true
+        },
+        {
+          "team": "Bodø/Glimt",
+          "teamId": "bodo-glimt",
+          "player": "Kasper Solhaug",
+          "playerId": "kasper-solhaug",
+          "previousProviderPlayerId": null,
+          "providerPlayerId": null,
+          "uefaPlayerId": "250213132",
+          "availableIdentifiers": {
+            "internalPlayerId": "kasper-solhaug",
+            "espnPlayerId": null,
+            "uefaPlayerId": "250213132"
+          },
+          "historicalProviderIds": [],
+          "transferEvidence": [],
+          "status": "resolved",
+          "resolutionMethod": "uefa_exact_name",
+          "confidence": "high",
+          "evidence": {
+            "uefaList": "B",
+            "uefaSquadUrl": "https://www.uefa.com/uefachampionsleague/clubs/59333--bodo-glimt/squad/",
+            "espnTeamLabel": null,
+            "espnUrl": null
+          },
+          "predictionCandidateEligible": true
+        },
+        {
+          "team": "Feyenoord",
+          "teamId": "feyenoord",
+          "player": "Tim Haksteeg",
+          "playerId": "tim-haksteeg",
+          "previousProviderPlayerId": null,
+          "providerPlayerId": null,
+          "uefaPlayerId": "250183766",
+          "availableIdentifiers": {
+            "internalPlayerId": "tim-haksteeg",
+            "espnPlayerId": null,
+            "uefaPlayerId": "250183766"
+          },
+          "historicalProviderIds": [],
+          "transferEvidence": [],
+          "status": "resolved",
+          "resolutionMethod": "uefa_exact_name",
+          "confidence": "high",
+          "evidence": {
+            "uefaList": "B",
+            "uefaSquadUrl": "https://www.uefa.com/uefachampionsleague/clubs/52749--feyenoord/squad/",
+            "espnTeamLabel": null,
+            "espnUrl": null
+          },
+          "predictionCandidateEligible": true
+        },
+        {
+          "team": "Feyenoord",
+          "teamId": "feyenoord",
+          "player": "Marleyson Cruz",
+          "playerId": "marleyson-cruz",
+          "previousProviderPlayerId": null,
+          "providerPlayerId": null,
+          "uefaPlayerId": "250189848",
+          "availableIdentifiers": {
+            "internalPlayerId": "marleyson-cruz",
+            "espnPlayerId": null,
+            "uefaPlayerId": "250189848"
+          },
+          "historicalProviderIds": [],
+          "transferEvidence": [],
+          "status": "resolved",
+          "resolutionMethod": "uefa_exact_name",
+          "confidence": "high",
+          "evidence": {
+            "uefaList": "B",
+            "uefaSquadUrl": "https://www.uefa.com/uefachampionsleague/clubs/52749--feyenoord/squad/",
+            "espnTeamLabel": null,
+            "espnUrl": null
+          },
+          "predictionCandidateEligible": true
+        },
+        {
+          "team": "Feyenoord",
+          "teamId": "feyenoord",
+          "player": "Matthew Mparaganda",
+          "playerId": "matthew-mparaganda",
+          "previousProviderPlayerId": null,
+          "providerPlayerId": null,
+          "uefaPlayerId": "250199589",
+          "availableIdentifiers": {
+            "internalPlayerId": "matthew-mparaganda",
+            "espnPlayerId": null,
+            "uefaPlayerId": "250199589"
+          },
+          "historicalProviderIds": [],
+          "transferEvidence": [],
+          "status": "resolved",
+          "resolutionMethod": "uefa_exact_name",
+          "confidence": "high",
+          "evidence": {
+            "uefaList": "B",
+            "uefaSquadUrl": "https://www.uefa.com/uefachampionsleague/clubs/52749--feyenoord/squad/",
+            "espnTeamLabel": null,
+            "espnUrl": null
+          },
+          "predictionCandidateEligible": true
+        },
+        {
+          "team": "Feyenoord",
+          "teamId": "feyenoord",
+          "player": "Dani Slory",
+          "playerId": "dani-slory",
+          "previousProviderPlayerId": null,
+          "providerPlayerId": null,
+          "uefaPlayerId": "250200576",
+          "availableIdentifiers": {
+            "internalPlayerId": "dani-slory",
+            "espnPlayerId": null,
+            "uefaPlayerId": "250200576"
+          },
+          "historicalProviderIds": [],
+          "transferEvidence": [],
+          "status": "resolved",
+          "resolutionMethod": "uefa_exact_name",
+          "confidence": "high",
+          "evidence": {
+            "uefaList": "B",
+            "uefaSquadUrl": "https://www.uefa.com/uefachampionsleague/clubs/52749--feyenoord/squad/",
+            "espnTeamLabel": null,
+            "espnUrl": null
+          },
+          "predictionCandidateEligible": true
+        },
+        {
+          "team": "Feyenoord",
+          "teamId": "feyenoord",
+          "player": "Boaz Plantinga",
+          "playerId": "boaz-plantinga",
+          "previousProviderPlayerId": null,
+          "providerPlayerId": null,
+          "uefaPlayerId": "250216077",
+          "availableIdentifiers": {
+            "internalPlayerId": "boaz-plantinga",
+            "espnPlayerId": null,
+            "uefaPlayerId": "250216077"
+          },
+          "historicalProviderIds": [],
+          "transferEvidence": [],
+          "status": "resolved",
+          "resolutionMethod": "uefa_exact_name",
+          "confidence": "high",
+          "evidence": {
+            "uefaList": "B",
+            "uefaSquadUrl": "https://www.uefa.com/uefachampionsleague/clubs/52749--feyenoord/squad/",
+            "espnTeamLabel": null,
+            "espnUrl": null
+          },
+          "predictionCandidateEligible": true
+        },
+        {
+          "team": "Feyenoord",
+          "teamId": "feyenoord",
+          "player": "Nick De Koning",
+          "playerId": "nick-de-koning",
+          "previousProviderPlayerId": null,
+          "providerPlayerId": null,
+          "uefaPlayerId": "250200556",
+          "availableIdentifiers": {
+            "internalPlayerId": "nick-de-koning",
+            "espnPlayerId": null,
+            "uefaPlayerId": "250200556"
+          },
+          "historicalProviderIds": [],
+          "transferEvidence": [],
+          "status": "resolved",
+          "resolutionMethod": "uefa_exact_name",
+          "confidence": "high",
+          "evidence": {
+            "uefaList": "B",
+            "uefaSquadUrl": "https://www.uefa.com/uefachampionsleague/clubs/52749--feyenoord/squad/",
+            "espnTeamLabel": null,
+            "espnUrl": null
+          },
+          "predictionCandidateEligible": true
+        },
+        {
+          "team": "Feyenoord",
+          "teamId": "feyenoord",
+          "player": "Kevin Khan",
+          "playerId": "kevin-khan",
+          "previousProviderPlayerId": null,
+          "providerPlayerId": null,
+          "uefaPlayerId": "250199588",
+          "availableIdentifiers": {
+            "internalPlayerId": "kevin-khan",
+            "espnPlayerId": null,
+            "uefaPlayerId": "250199588"
+          },
+          "historicalProviderIds": [],
+          "transferEvidence": [],
+          "status": "resolved",
+          "resolutionMethod": "uefa_exact_name",
+          "confidence": "high",
+          "evidence": {
+            "uefaList": "B",
+            "uefaSquadUrl": "https://www.uefa.com/uefachampionsleague/clubs/52749--feyenoord/squad/",
+            "espnTeamLabel": null,
+            "espnUrl": null
+          },
+          "predictionCandidateEligible": true
+        },
+        {
+          "team": "Feyenoord",
+          "teamId": "feyenoord",
+          "player": "Luca Dahl Tomasson",
+          "playerId": "luca-dahl-tomasson",
+          "previousProviderPlayerId": null,
+          "providerPlayerId": null,
+          "uefaPlayerId": "250218024",
+          "availableIdentifiers": {
+            "internalPlayerId": "luca-dahl-tomasson",
+            "espnPlayerId": null,
+            "uefaPlayerId": "250218024"
+          },
+          "historicalProviderIds": [],
+          "transferEvidence": [],
+          "status": "resolved",
+          "resolutionMethod": "uefa_exact_name",
+          "confidence": "high",
+          "evidence": {
+            "uefaList": "B",
+            "uefaSquadUrl": "https://www.uefa.com/uefachampionsleague/clubs/52749--feyenoord/squad/",
+            "espnTeamLabel": null,
+            "espnUrl": null
+          },
+          "predictionCandidateEligible": true
+        },
+        {
+          "team": "Feyenoord",
+          "teamId": "feyenoord",
+          "player": "Kelvin Neijenhuis",
+          "playerId": "kelvin-neijenhuis",
+          "previousProviderPlayerId": null,
+          "providerPlayerId": null,
+          "uefaPlayerId": "250190224",
+          "availableIdentifiers": {
+            "internalPlayerId": "kelvin-neijenhuis",
+            "espnPlayerId": null,
+            "uefaPlayerId": "250190224"
+          },
+          "historicalProviderIds": [],
+          "transferEvidence": [],
+          "status": "resolved",
+          "resolutionMethod": "uefa_exact_name",
+          "confidence": "high",
+          "evidence": {
+            "uefaList": "B",
+            "uefaSquadUrl": "https://www.uefa.com/uefachampionsleague/clubs/52749--feyenoord/squad/",
+            "espnTeamLabel": null,
+            "espnUrl": null
+          },
+          "predictionCandidateEligible": true
+        },
+        {
+          "team": "Galatasaray",
+          "teamId": "galatasaray",
+          "player": "Aleksei Batrakov",
+          "playerId": "aleksei-batrakov",
+          "previousProviderPlayerId": null,
+          "providerPlayerId": null,
+          "uefaPlayerId": "250224345",
+          "availableIdentifiers": {
+            "internalPlayerId": "aleksei-batrakov",
+            "espnPlayerId": null,
+            "uefaPlayerId": "250224345"
+          },
+          "historicalProviderIds": [],
+          "transferEvidence": [],
+          "status": "resolved",
+          "resolutionMethod": "uefa_exact_name",
+          "confidence": "high",
+          "evidence": {
+            "uefaList": "A",
+            "uefaSquadUrl": "https://www.uefa.com/uefachampionsleague/clubs/50067/squad/",
+            "espnTeamLabel": null,
+            "espnUrl": null
+          },
+          "predictionCandidateEligible": true
+        },
+        {
+          "team": "LASK",
+          "teamId": "lask",
+          "player": "Christof Katzmayr",
+          "playerId": "christof-katzmayr",
+          "previousProviderPlayerId": null,
+          "providerPlayerId": null,
+          "uefaPlayerId": "250206921",
+          "availableIdentifiers": {
+            "internalPlayerId": "christof-katzmayr",
+            "espnPlayerId": null,
+            "uefaPlayerId": "250206921"
+          },
+          "historicalProviderIds": [],
+          "transferEvidence": [],
+          "status": "resolved",
+          "resolutionMethod": "uefa_exact_name",
+          "confidence": "high",
+          "evidence": {
+            "uefaList": "B",
+            "uefaSquadUrl": "https://www.uefa.com/uefachampionsleague/clubs/63405--lask/squad/",
+            "espnTeamLabel": null,
+            "espnUrl": null
+          },
+          "predictionCandidateEligible": true
+        },
+        {
+          "team": "LASK",
+          "teamId": "lask",
+          "player": "Joao Victor Tornich",
+          "playerId": "joao-victor-tornich",
+          "previousProviderPlayerId": null,
+          "providerPlayerId": null,
+          "uefaPlayerId": "250223204",
+          "availableIdentifiers": {
+            "internalPlayerId": "joao-victor-tornich",
+            "espnPlayerId": null,
+            "uefaPlayerId": "250223204"
+          },
+          "historicalProviderIds": [],
+          "transferEvidence": [],
+          "status": "resolved",
+          "resolutionMethod": "uefa_exact_name",
+          "confidence": "high",
+          "evidence": {
+            "uefaList": "A",
+            "uefaSquadUrl": "https://www.uefa.com/uefachampionsleague/clubs/63405--lask/squad/",
+            "espnTeamLabel": null,
+            "espnUrl": null
+          },
+          "predictionCandidateEligible": true
+        },
+        {
+          "team": "Porto",
+          "teamId": "porto",
+          "player": "Martim Cunha",
+          "playerId": "martim-cunha",
+          "previousProviderPlayerId": null,
+          "providerPlayerId": null,
+          "uefaPlayerId": "250185409",
+          "availableIdentifiers": {
+            "internalPlayerId": "martim-cunha",
+            "espnPlayerId": null,
+            "uefaPlayerId": "250185409"
+          },
+          "historicalProviderIds": [],
+          "transferEvidence": [],
+          "status": "resolved",
+          "resolutionMethod": "uefa_exact_name",
+          "confidence": "high",
+          "evidence": {
+            "uefaList": "B",
+            "uefaSquadUrl": "https://www.uefa.com/uefachampionsleague/clubs/50064--porto/squad/",
+            "espnTeamLabel": null,
+            "espnUrl": null
+          },
+          "predictionCandidateEligible": true
+        },
+        {
+          "team": "Porto",
+          "teamId": "porto",
+          "player": "Mateus Mide",
+          "playerId": "mateus-mide",
+          "previousProviderPlayerId": null,
+          "providerPlayerId": null,
+          "uefaPlayerId": "250204916",
+          "availableIdentifiers": {
+            "internalPlayerId": "mateus-mide",
+            "espnPlayerId": null,
+            "uefaPlayerId": "250204916"
+          },
+          "historicalProviderIds": [],
+          "transferEvidence": [],
+          "status": "resolved",
+          "resolutionMethod": "uefa_exact_name",
+          "confidence": "high",
+          "evidence": {
+            "uefaList": "B",
+            "uefaSquadUrl": "https://www.uefa.com/uefachampionsleague/clubs/50064--porto/squad/",
+            "espnTeamLabel": null,
+            "espnUrl": null
+          },
+          "predictionCandidateEligible": true
+        },
+        {
+          "team": "Sabah",
+          "teamId": "sabah",
+          "player": "Erivaldo Almeida",
+          "playerId": "erivaldo-almeida",
+          "previousProviderPlayerId": null,
+          "providerPlayerId": null,
+          "uefaPlayerId": "250221486",
+          "availableIdentifiers": {
+            "internalPlayerId": "erivaldo-almeida",
+            "espnPlayerId": null,
+            "uefaPlayerId": "250221486"
+          },
+          "historicalProviderIds": [],
+          "transferEvidence": [],
+          "status": "resolved",
+          "resolutionMethod": "uefa_exact_name",
+          "confidence": "high",
+          "evidence": {
+            "uefaList": "A",
+            "uefaSquadUrl": "https://www.uefa.com/uefachampionsleague/clubs/2609356/squad/",
+            "espnTeamLabel": null,
+            "espnUrl": null
+          },
+          "predictionCandidateEligible": true
+        },
+        {
+          "team": "Sabah",
+          "teamId": "sabah",
+          "player": "Aleksey Isaev",
+          "playerId": "aleksey-isaev",
+          "previousProviderPlayerId": null,
+          "providerPlayerId": null,
+          "uefaPlayerId": "250129032",
+          "availableIdentifiers": {
+            "internalPlayerId": "aleksey-isaev",
+            "espnPlayerId": null,
+            "uefaPlayerId": "250129032"
+          },
+          "historicalProviderIds": [],
+          "transferEvidence": [],
+          "status": "resolved",
+          "resolutionMethod": "uefa_exact_name",
+          "confidence": "high",
+          "evidence": {
+            "uefaList": "A",
+            "uefaSquadUrl": "https://www.uefa.com/uefachampionsleague/clubs/2609356/squad/",
+            "espnTeamLabel": null,
+            "espnUrl": null
+          },
+          "predictionCandidateEligible": true
+        },
+        {
+          "team": "Sabah",
+          "teamId": "sabah",
+          "player": "Jafar Mukhtarov",
+          "playerId": "jafar-mukhtarov",
+          "previousProviderPlayerId": null,
+          "providerPlayerId": null,
+          "uefaPlayerId": "250221231",
+          "availableIdentifiers": {
+            "internalPlayerId": "jafar-mukhtarov",
+            "espnPlayerId": null,
+            "uefaPlayerId": "250221231"
+          },
+          "historicalProviderIds": [],
+          "transferEvidence": [],
+          "status": "resolved",
+          "resolutionMethod": "uefa_exact_name",
+          "confidence": "high",
+          "evidence": {
+            "uefaList": "A",
+            "uefaSquadUrl": "https://www.uefa.com/uefachampionsleague/clubs/2609356/squad/",
+            "espnTeamLabel": null,
+            "espnUrl": null
+          },
+          "predictionCandidateEligible": true
+        },
+        {
+          "team": "Sabah",
+          "teamId": "sabah",
+          "player": "Shahin Ibrahimov",
+          "playerId": "shahin-ibrahimov",
+          "previousProviderPlayerId": null,
+          "providerPlayerId": null,
+          "uefaPlayerId": "250202772",
+          "availableIdentifiers": {
+            "internalPlayerId": "shahin-ibrahimov",
+            "espnPlayerId": null,
+            "uefaPlayerId": "250202772"
+          },
+          "historicalProviderIds": [],
+          "transferEvidence": [],
+          "status": "resolved",
+          "resolutionMethod": "uefa_exact_name",
+          "confidence": "high",
+          "evidence": {
+            "uefaList": "B",
+            "uefaSquadUrl": "https://www.uefa.com/uefachampionsleague/clubs/2609356/squad/",
+            "espnTeamLabel": null,
+            "espnUrl": null
+          },
+          "predictionCandidateEligible": true
+        },
+        {
+          "team": "Slavia Praha",
+          "teamId": "slavia-praha",
+          "player": "Emmanuel Ayaosi",
+          "playerId": "emmanuel-ayaosi",
+          "previousProviderPlayerId": null,
+          "providerPlayerId": null,
+          "uefaPlayerId": "250223128",
+          "availableIdentifiers": {
+            "internalPlayerId": "emmanuel-ayaosi",
+            "espnPlayerId": null,
+            "uefaPlayerId": "250223128"
+          },
+          "historicalProviderIds": [],
+          "transferEvidence": [],
+          "status": "resolved",
+          "resolutionMethod": "uefa_exact_name",
+          "confidence": "high",
+          "evidence": {
+            "uefaList": "A",
+            "uefaSquadUrl": "https://www.uefa.com/uefachampionsleague/clubs/52498--slavia-praha/squad/",
+            "espnTeamLabel": null,
+            "espnUrl": null
+          },
+          "predictionCandidateEligible": true
+        },
+        {
+          "team": "Slavia Praha",
+          "teamId": "slavia-praha",
+          "player": "Adonija Ouanda",
+          "playerId": "adonija-ouanda",
+          "previousProviderPlayerId": null,
+          "providerPlayerId": null,
+          "uefaPlayerId": "250223132",
+          "availableIdentifiers": {
+            "internalPlayerId": "adonija-ouanda",
+            "espnPlayerId": null,
+            "uefaPlayerId": "250223132"
+          },
+          "historicalProviderIds": [],
+          "transferEvidence": [],
+          "status": "resolved",
+          "resolutionMethod": "uefa_exact_name",
+          "confidence": "high",
+          "evidence": {
+            "uefaList": "A",
+            "uefaSquadUrl": "https://www.uefa.com/uefachampionsleague/clubs/52498--slavia-praha/squad/",
+            "espnTeamLabel": null,
+            "espnUrl": null
+          },
+          "predictionCandidateEligible": true
+        },
+        {
+          "team": "Shakhtar Donetsk",
+          "teamId": "shakhtar-donetsk",
+          "player": "Gabriel Carvalho",
+          "playerId": "gabriel-carvalho",
+          "previousProviderPlayerId": null,
+          "providerPlayerId": null,
+          "uefaPlayerId": "250224147",
+          "availableIdentifiers": {
+            "internalPlayerId": "gabriel-carvalho",
+            "espnPlayerId": null,
+            "uefaPlayerId": "250224147"
+          },
+          "historicalProviderIds": [],
+          "transferEvidence": [],
+          "status": "resolved",
+          "resolutionMethod": "uefa_exact_name",
+          "confidence": "high",
+          "evidence": {
+            "uefaList": "A",
+            "uefaSquadUrl": "https://www.uefa.com/uefachampionsleague/clubs/52707/squad/",
+            "espnTeamLabel": null,
+            "espnUrl": null
+          },
+          "predictionCandidateEligible": true
+        },
+        {
+          "team": "Slovan Bratislava",
+          "teamId": "slovan-bratislava",
+          "player": "Aleksandar Popović",
+          "playerId": "aleksandar-popovic",
+          "previousProviderPlayerId": null,
+          "providerPlayerId": null,
+          "uefaPlayerId": "250089413",
+          "availableIdentifiers": {
+            "internalPlayerId": "aleksandar-popovic",
+            "espnPlayerId": null,
+            "uefaPlayerId": "250089413"
+          },
+          "historicalProviderIds": [],
+          "transferEvidence": [],
+          "status": "resolved",
+          "resolutionMethod": "uefa_exact_name",
+          "confidence": "high",
+          "evidence": {
+            "uefaList": "A",
+            "uefaSquadUrl": "https://www.uefa.com/uefachampionsleague/clubs/52797--s-bratislava/squad/",
+            "espnTeamLabel": null,
+            "espnUrl": null
+          },
+          "predictionCandidateEligible": true
+        },
+        {
+          "team": "Stuttgart",
+          "teamId": "stuttgart",
+          "player": "Tom Walz",
+          "playerId": "tom-walz",
+          "previousProviderPlayerId": null,
+          "providerPlayerId": null,
+          "uefaPlayerId": "250218212",
+          "availableIdentifiers": {
+            "internalPlayerId": "tom-walz",
+            "espnPlayerId": null,
+            "uefaPlayerId": "250218212"
+          },
+          "historicalProviderIds": [],
+          "transferEvidence": [],
+          "status": "resolved",
+          "resolutionMethod": "uefa_exact_name",
+          "confidence": "high",
+          "evidence": {
+            "uefaList": "B",
+            "uefaSquadUrl": "https://www.uefa.com/uefachampionsleague/clubs/50107--stuttgart/squad/",
+            "espnTeamLabel": null,
+            "espnUrl": null
+          },
+          "predictionCandidateEligible": true
+        },
+        {
+          "team": "Stuttgart",
+          "teamId": "stuttgart",
+          "player": "Lucas Nagel",
+          "playerId": "lucas-nagel",
+          "previousProviderPlayerId": null,
+          "providerPlayerId": null,
+          "uefaPlayerId": "250224503",
+          "availableIdentifiers": {
+            "internalPlayerId": "lucas-nagel",
+            "espnPlayerId": null,
+            "uefaPlayerId": "250224503"
+          },
+          "historicalProviderIds": [],
+          "transferEvidence": [],
+          "status": "resolved",
+          "resolutionMethod": "uefa_exact_name",
+          "confidence": "high",
+          "evidence": {
+            "uefaList": "B",
+            "uefaSquadUrl": "https://www.uefa.com/uefachampionsleague/clubs/50107--stuttgart/squad/",
+            "espnTeamLabel": null,
+            "espnUrl": null
+          },
+          "predictionCandidateEligible": true
+        },
+        {
+          "team": "Villarreal",
+          "teamId": "villarreal",
+          "player": "Yakiv Kinareikin",
+          "playerId": "yakiv-kinareikin",
+          "previousProviderPlayerId": null,
+          "providerPlayerId": null,
+          "uefaPlayerId": "250175645",
+          "availableIdentifiers": {
+            "internalPlayerId": "yakiv-kinareikin",
+            "espnPlayerId": null,
+            "uefaPlayerId": "250175645"
+          },
+          "historicalProviderIds": [],
+          "transferEvidence": [],
+          "status": "resolved",
+          "resolutionMethod": "uefa_exact_name",
+          "confidence": "high",
+          "evidence": {
+            "uefaList": "A",
+            "uefaSquadUrl": "https://www.uefa.com/uefachampionsleague/clubs/70691/squad/",
+            "espnTeamLabel": null,
+            "espnUrl": null
+          },
+          "predictionCandidateEligible": true
+        },
+        {
+          "team": "Villarreal",
+          "teamId": "villarreal",
+          "player": "Nizar El Jmili",
+          "playerId": "nizar-el-jmili",
+          "previousProviderPlayerId": null,
+          "providerPlayerId": null,
+          "uefaPlayerId": "250224969",
+          "availableIdentifiers": {
+            "internalPlayerId": "nizar-el-jmili",
+            "espnPlayerId": null,
+            "uefaPlayerId": "250224969"
+          },
+          "historicalProviderIds": [],
+          "transferEvidence": [],
+          "status": "resolved",
+          "resolutionMethod": "uefa_exact_name",
+          "confidence": "high",
+          "evidence": {
+            "uefaList": "A",
+            "uefaSquadUrl": "https://www.uefa.com/uefachampionsleague/clubs/70691/squad/",
+            "espnTeamLabel": null,
+            "espnUrl": null
+          },
+          "predictionCandidateEligible": true
+        }
+      ]
+    },
+    "exactNamePlusTeamAffiliation": {
+      "count": 26
+    },
+    "currentRegistryPlayersWithOtherClubEvidence": {
+      "count": 10,
+      "policy": "retain as dated historical-club evidence; never relabel as current-club stats",
+      "cases": [
+        {
+          "team": "Real Madrid",
+          "teamId": "real-madrid",
+          "player": "Sergio Martínez",
+          "playerId": "sergio-martinez",
+          "otherClubEvidence": [
+            {
+              "teamId": "87",
+              "team": "Racing Santander",
+              "competition": "LaLiga",
+              "appearances": 2
+            }
+          ]
+        },
+        {
+          "team": "Borussia Dortmund",
+          "teamId": "borussia-dortmund",
+          "player": "Yan Couto",
+          "playerId": "yan-couto",
+          "otherClubEvidence": [
+            {
+              "teamId": "2572",
+              "team": "Como",
+              "competition": "Serie A",
+              "appearances": 5
+            }
+          ]
+        },
+        {
+          "team": "Borussia Dortmund",
+          "teamId": "borussia-dortmund",
+          "player": "Almugera Kabar",
+          "playerId": "almugera-kabar",
+          "otherClubEvidence": [
+            {
+              "teamId": "147",
+              "team": "NEC Nijmegen",
+              "competition": "Eredivisie",
+              "appearances": 3
+            }
+          ]
+        },
+        {
+          "team": "Borussia Dortmund",
+          "teamId": "borussia-dortmund",
+          "player": "Salih Özcan",
+          "playerId": "salih-ozcan",
+          "otherClubEvidence": [
+            {
+              "teamId": "1895",
+              "team": "Besiktas",
+              "competition": "tur.1",
+              "appearances": 4
+            }
+          ]
+        },
+        {
+          "team": "Borussia Dortmund",
+          "teamId": "borussia-dortmund",
+          "player": "Julian Brandt",
+          "playerId": "julian-brandt",
+          "otherClubEvidence": [
+            {
+              "teamId": "139",
+              "team": "Ajax Amsterdam",
+              "competition": "Eredivisie",
+              "appearances": 4
+            },
+            {
+              "teamId": "139",
+              "team": "Ajax Amsterdam",
+              "competition": "Qualificazioni UEFA Conference League",
+              "appearances": 4
+            }
+          ]
+        },
+        {
+          "team": "Borussia Dortmund",
+          "teamId": "borussia-dortmund",
+          "player": "Karim Adeyemi",
+          "playerId": "karim-adeyemi",
+          "otherClubEvidence": [
+            {
+              "teamId": "83",
+              "team": "Barcelona",
+              "competition": "LaLiga",
+              "appearances": 4
+            }
+          ]
+        },
+        {
+          "team": "Porto",
+          "teamId": "porto",
+          "player": "Samu",
+          "playerId": "samu",
+          "otherClubEvidence": [
+            {
+              "teamId": "5309",
+              "team": "Vitória de Guimaraes",
+              "competition": "Primeira Liga",
+              "appearances": 5
+            }
+          ]
+        },
+        {
+          "team": "PSV Eindhoven",
+          "teamId": "psv-eindhoven",
+          "player": "Sami Ouaissa",
+          "playerId": "sami-ouaissa",
+          "otherClubEvidence": [
+            {
+              "teamId": "147",
+              "team": "NEC Nijmegen",
+              "competition": "Eredivisie",
+              "appearances": 1
+            }
+          ]
+        },
+        {
+          "team": "PSV Eindhoven",
+          "teamId": "psv-eindhoven",
+          "player": "Sam Lammers",
+          "playerId": "sam-lammers",
+          "otherClubEvidence": [
+            {
+              "teamId": "152",
+              "team": "FC Twente",
+              "competition": "Eredivisie",
+              "appearances": 2
+            },
+            {
+              "teamId": "152",
+              "team": "FC Twente",
+              "competition": "Qualificazioni UEFA Conference League",
+              "appearances": 1
+            }
+          ]
+        },
+        {
+          "team": "Sporting CP",
+          "teamId": "sporting-cp",
+          "player": "Moncef Zekri",
+          "playerId": "moncef-zekri",
+          "otherClubEvidence": [
+            {
+              "teamId": "7879",
+              "team": "KV Mechelen",
+              "competition": "Pro League",
+              "appearances": 1
+            }
+          ]
+        }
+      ]
+    },
+    "uefaVerifiedOutsideInternalRegistry": {
+      "count": 33,
+      "listA": 7,
+      "listB": 26,
+      "predictionCandidateEligibilityChanged": false
+    },
+    "mikaMedina": {
+      "team": "Feyenoord",
+      "teamId": "feyenoord",
+      "player": "Mika Medina",
+      "playerId": "mika-medina",
+      "previousProviderPlayerId": null,
+      "providerPlayerId": null,
+      "uefaPlayerId": null,
+      "availableIdentifiers": {
+        "internalPlayerId": "mika-medina",
+        "espnPlayerId": null,
+        "uefaPlayerId": null
+      },
+      "historicalProviderIds": [],
+      "transferEvidence": [],
+      "status": "open",
+      "resolutionMethod": null,
+      "confidence": "unresolved",
+      "evidence": {
+        "uefaList": null,
+        "uefaSquadUrl": "https://www.uefa.com/uefachampionsleague/clubs/52749--feyenoord/squad/",
+        "espnTeamLabel": null,
+        "espnUrl": null
+      },
+      "predictionCandidateEligible": true
+    },
+    "decision": "no proven structural collision; material identity limitations remain and are excluded from calibration"
+  },
+  "evaluationDataset": {
+    "competition": "UEFA Champions League",
+    "season": "2026/27",
+    "matchday": 1,
+    "chronology": "Latest Git-committed player forecast snapshot strictly before fixture kickoff; actuals joined later by teamId + registeredPlayerId.",
+    "candidateMatches": 18,
+    "admittedMatches": 6,
+    "excludedMatches": 12,
+    "candidatePlayerObservations": 101,
+    "admittedPlayerObservations": 30,
+    "excludedPlayerObservations": 71,
+    "uniqueAdmittedPlayers": 30,
+    "shotsObservations": 30,
+    "shotsOnTargetObservations": 30,
+    "exclusionReasons": {
+      "observed_champions_match_unavailable": 69,
+      "no_observed_appearance": 2
+    },
+    "fixtures": [
+      {
+        "fixtureId": "ucl-2026-27-md01-01",
+        "fixture": "AEK Athens - LASK",
+        "date": "2026-09-08",
+        "kickoff": "18:45",
+        "predictionSnapshot": {
+          "commit": "2cd00e292f4125d9c854c61f41092f227002fc7c",
+          "committedAt": "2026-09-08T18:26:19+02:00",
+          "generatedAt": "2026-09-08T15:53:56.877Z"
+        },
+        "actualMatchId": null,
+        "candidatePlayerObservations": 6,
+        "admittedPlayerObservations": 0,
+        "status": "EXCLUDED",
+        "exclusionReason": "observed_champions_match_unavailable"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md01-02",
+        "fixture": "Club Brugge - Aston Villa",
+        "date": "2026-09-08",
+        "kickoff": "18:45",
+        "predictionSnapshot": {
+          "commit": "2cd00e292f4125d9c854c61f41092f227002fc7c",
+          "committedAt": "2026-09-08T18:26:19+02:00",
+          "generatedAt": "2026-09-08T15:53:56.877Z"
+        },
+        "actualMatchId": null,
+        "candidatePlayerObservations": 6,
+        "admittedPlayerObservations": 0,
+        "status": "EXCLUDED",
+        "exclusionReason": "observed_champions_match_unavailable"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md01-03",
+        "fixture": "Borussia Dortmund - Villarreal",
+        "date": "2026-09-08",
+        "kickoff": "21:00",
+        "predictionSnapshot": {
+          "commit": "f83ca35c7dda8db574c21a7797e9aae41d3eb485",
+          "committedAt": "2026-09-08T20:02:43+02:00",
+          "generatedAt": "2026-09-08T17:52:25.244Z"
+        },
+        "actualMatchId": null,
+        "candidatePlayerObservations": 6,
+        "admittedPlayerObservations": 0,
+        "status": "EXCLUDED",
+        "exclusionReason": "observed_champions_match_unavailable"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md01-04",
+        "fixture": "Porto - Manchester City",
+        "date": "2026-09-08",
+        "kickoff": "21:00",
+        "predictionSnapshot": {
+          "commit": "f83ca35c7dda8db574c21a7797e9aae41d3eb485",
+          "committedAt": "2026-09-08T20:02:43+02:00",
+          "generatedAt": "2026-09-08T17:52:25.244Z"
+        },
+        "actualMatchId": null,
+        "candidatePlayerObservations": 6,
+        "admittedPlayerObservations": 0,
+        "status": "EXCLUDED",
+        "exclusionReason": "observed_champions_match_unavailable"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md01-05",
+        "fixture": "Lille - Real Betis",
+        "date": "2026-09-08",
+        "kickoff": "21:00",
+        "predictionSnapshot": {
+          "commit": "f83ca35c7dda8db574c21a7797e9aae41d3eb485",
+          "committedAt": "2026-09-08T20:02:43+02:00",
+          "generatedAt": "2026-09-08T17:52:25.244Z"
+        },
+        "actualMatchId": null,
+        "candidatePlayerObservations": 5,
+        "admittedPlayerObservations": 0,
+        "status": "EXCLUDED",
+        "exclusionReason": "observed_champions_match_unavailable"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md01-06",
+        "fixture": "Real Madrid - Inter",
+        "date": "2026-09-08",
+        "kickoff": "21:00",
+        "predictionSnapshot": {
+          "commit": "f83ca35c7dda8db574c21a7797e9aae41d3eb485",
+          "committedAt": "2026-09-08T20:02:43+02:00",
+          "generatedAt": "2026-09-08T17:52:25.244Z"
+        },
+        "actualMatchId": null,
+        "candidatePlayerObservations": 6,
+        "admittedPlayerObservations": 0,
+        "status": "EXCLUDED",
+        "exclusionReason": "observed_champions_match_unavailable"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md01-07",
+        "fixture": "Barcelona - Feyenoord",
+        "date": "2026-09-09",
+        "kickoff": "18:45",
+        "predictionSnapshot": {
+          "commit": "36ef370d2411441cadfa0480e0a8718dbbbdc520",
+          "committedAt": "2026-09-09T17:58:49+02:00",
+          "generatedAt": "2026-09-09T15:50:08.142Z"
+        },
+        "actualMatchId": null,
+        "candidatePlayerObservations": 6,
+        "admittedPlayerObservations": 0,
+        "status": "EXCLUDED",
+        "exclusionReason": "observed_champions_match_unavailable"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md01-08",
+        "fixture": "Stuttgart - Viking",
+        "date": "2026-09-09",
+        "kickoff": "18:45",
+        "predictionSnapshot": {
+          "commit": "36ef370d2411441cadfa0480e0a8718dbbbdc520",
+          "committedAt": "2026-09-09T17:58:49+02:00",
+          "generatedAt": "2026-09-09T15:50:08.142Z"
+        },
+        "actualMatchId": null,
+        "candidatePlayerObservations": 7,
+        "admittedPlayerObservations": 0,
+        "status": "EXCLUDED",
+        "exclusionReason": "observed_champions_match_unavailable"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md01-09",
+        "fixture": "Liverpool - Atlético de Madrid",
+        "date": "2026-09-09",
+        "kickoff": "21:00",
+        "predictionSnapshot": {
+          "commit": "c10485739df20cd585c6157e0cec9b84133cc1d1",
+          "committedAt": "2026-09-09T20:05:30+02:00",
+          "generatedAt": "2026-09-09T18:04:01.910Z"
+        },
+        "actualMatchId": null,
+        "candidatePlayerObservations": 5,
+        "admittedPlayerObservations": 0,
+        "status": "EXCLUDED",
+        "exclusionReason": "observed_champions_match_unavailable"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md01-10",
+        "fixture": "Paris Saint-Germain - Slovan Bratislava",
+        "date": "2026-09-09",
+        "kickoff": "21:00",
+        "predictionSnapshot": {
+          "commit": "c10485739df20cd585c6157e0cec9b84133cc1d1",
+          "committedAt": "2026-09-09T20:05:30+02:00",
+          "generatedAt": "2026-09-09T18:04:01.910Z"
+        },
+        "actualMatchId": "401915445",
+        "candidatePlayerObservations": 6,
+        "admittedPlayerObservations": 6,
+        "status": "ADMITTED",
+        "exclusionReason": null
+      },
+      {
+        "fixtureId": "ucl-2026-27-md01-11",
+        "fixture": "Sporting CP - Galatasaray",
+        "date": "2026-09-09",
+        "kickoff": "21:00",
+        "predictionSnapshot": {
+          "commit": "c10485739df20cd585c6157e0cec9b84133cc1d1",
+          "committedAt": "2026-09-09T20:05:30+02:00",
+          "generatedAt": "2026-09-09T18:04:01.910Z"
+        },
+        "actualMatchId": "401915447",
+        "candidatePlayerObservations": 5,
+        "admittedPlayerObservations": 5,
+        "status": "ADMITTED",
+        "exclusionReason": null
+      },
+      {
+        "fixtureId": "ucl-2026-27-md01-12",
+        "fixture": "Napoli - Arsenal",
+        "date": "2026-09-09",
+        "kickoff": "21:00",
+        "predictionSnapshot": {
+          "commit": "c10485739df20cd585c6157e0cec9b84133cc1d1",
+          "committedAt": "2026-09-09T20:05:30+02:00",
+          "generatedAt": "2026-09-09T18:04:01.910Z"
+        },
+        "actualMatchId": null,
+        "candidatePlayerObservations": 6,
+        "admittedPlayerObservations": 0,
+        "status": "EXCLUDED",
+        "exclusionReason": "observed_champions_match_unavailable"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md01-13",
+        "fixture": "Fenerbahçe - Roma",
+        "date": "2026-09-10",
+        "kickoff": "18:45",
+        "predictionSnapshot": {
+          "commit": "5233ae8c4efb5ed167fc01014519645b49a884c0",
+          "committedAt": "2026-09-10T18:14:09+02:00",
+          "generatedAt": "2026-09-10T16:06:36.023Z"
+        },
+        "actualMatchId": "401915444",
+        "candidatePlayerObservations": 5,
+        "admittedPlayerObservations": 4,
+        "status": "ADMITTED",
+        "exclusionReason": null
+      },
+      {
+        "fixtureId": "ucl-2026-27-md01-14",
+        "fixture": "PSV Eindhoven - Shakhtar Donetsk",
+        "date": "2026-09-10",
+        "kickoff": "18:45",
+        "predictionSnapshot": {
+          "commit": "5233ae8c4efb5ed167fc01014519645b49a884c0",
+          "committedAt": "2026-09-10T18:14:09+02:00",
+          "generatedAt": "2026-09-10T16:06:36.023Z"
+        },
+        "actualMatchId": "401915422",
+        "candidatePlayerObservations": 5,
+        "admittedPlayerObservations": 5,
+        "status": "ADMITTED",
+        "exclusionReason": null
+      },
+      {
+        "fixtureId": "ucl-2026-27-md01-15",
+        "fixture": "Como - Leipzig",
+        "date": "2026-09-10",
+        "kickoff": "21:00",
+        "predictionSnapshot": {
+          "commit": "5233ae8c4efb5ed167fc01014519645b49a884c0",
+          "committedAt": "2026-09-10T18:14:09+02:00",
+          "generatedAt": "2026-09-10T16:06:36.023Z"
+        },
+        "actualMatchId": null,
+        "candidatePlayerObservations": 5,
+        "admittedPlayerObservations": 0,
+        "status": "EXCLUDED",
+        "exclusionReason": "observed_champions_match_unavailable"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md01-16",
+        "fixture": "Bayern München - Bodø/Glimt",
+        "date": "2026-09-10",
+        "kickoff": "21:00",
+        "predictionSnapshot": {
+          "commit": "5233ae8c4efb5ed167fc01014519645b49a884c0",
+          "committedAt": "2026-09-10T18:14:09+02:00",
+          "generatedAt": "2026-09-10T16:06:36.023Z"
+        },
+        "actualMatchId": null,
+        "candidatePlayerObservations": 5,
+        "admittedPlayerObservations": 0,
+        "status": "EXCLUDED",
+        "exclusionReason": "observed_champions_match_unavailable"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md01-17",
+        "fixture": "Manchester United - Sabah",
+        "date": "2026-09-10",
+        "kickoff": "21:00",
+        "predictionSnapshot": {
+          "commit": "5233ae8c4efb5ed167fc01014519645b49a884c0",
+          "committedAt": "2026-09-10T18:14:09+02:00",
+          "generatedAt": "2026-09-10T16:06:36.023Z"
+        },
+        "actualMatchId": "401915442",
+        "candidatePlayerObservations": 5,
+        "admittedPlayerObservations": 4,
+        "status": "ADMITTED",
+        "exclusionReason": null
+      },
+      {
+        "fixtureId": "ucl-2026-27-md01-18",
+        "fixture": "Slavia Praha - Lens",
+        "date": "2026-09-10",
+        "kickoff": "21:00",
+        "predictionSnapshot": {
+          "commit": "5233ae8c4efb5ed167fc01014519645b49a884c0",
+          "committedAt": "2026-09-10T18:14:09+02:00",
+          "generatedAt": "2026-09-10T16:06:36.023Z"
+        },
+        "actualMatchId": "401915440",
+        "candidatePlayerObservations": 6,
+        "admittedPlayerObservations": 6,
+        "status": "ADMITTED",
+        "exclusionReason": null
+      }
+    ],
+    "admittedObservations": [
+      {
+        "fixtureId": "ucl-2026-27-md01-10",
+        "fixture": "Paris Saint-Germain - Slovan Bratislava",
+        "date": "2026-09-09",
+        "kickoff": "21:00",
+        "predictionCommit": "c10485739df20cd585c6157e0cec9b84133cc1d1",
+        "predictionAvailableAt": "2026-09-09T20:05:30+02:00",
+        "predictionGeneratedAt": "2026-09-09T18:04:01.910Z",
+        "team": "Paris Saint-Germain",
+        "teamId": "paris-saint-germain",
+        "player": "Ousmane Dembélé",
+        "playerId": "ousmane-dembele",
+        "role": "attaccante",
+        "predictedShots": 3.98,
+        "predictedSot": 1.49,
+        "admitted": true,
+        "exclusionReason": null,
+        "matchId": "401915445",
+        "actualMinutes": 64,
+        "actualShots": 10,
+        "actualSot": 3,
+        "providerPlayerId": "229744",
+        "leagueCode": "fra.1",
+        "leagueSegment": "major-five-league",
+        "minuteBand": "61-90",
+        "minuteSegment": "high-minutes-60-plus"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md01-10",
+        "fixture": "Paris Saint-Germain - Slovan Bratislava",
+        "date": "2026-09-09",
+        "kickoff": "21:00",
+        "predictionCommit": "c10485739df20cd585c6157e0cec9b84133cc1d1",
+        "predictionAvailableAt": "2026-09-09T20:05:30+02:00",
+        "predictionGeneratedAt": "2026-09-09T18:04:01.910Z",
+        "team": "Paris Saint-Germain",
+        "teamId": "paris-saint-germain",
+        "player": "Ferran Torres",
+        "playerId": "ferran-torres",
+        "role": "attaccante",
+        "predictedShots": 3.64,
+        "predictedSot": 1.67,
+        "admitted": true,
+        "exclusionReason": null,
+        "matchId": "401915445",
+        "actualMinutes": 73,
+        "actualShots": 6,
+        "actualSot": 3,
+        "providerPlayerId": "265869",
+        "leagueCode": "fra.1",
+        "leagueSegment": "major-five-league",
+        "minuteBand": "61-90",
+        "minuteSegment": "high-minutes-60-plus"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md01-10",
+        "fixture": "Paris Saint-Germain - Slovan Bratislava",
+        "date": "2026-09-09",
+        "kickoff": "21:00",
+        "predictionCommit": "c10485739df20cd585c6157e0cec9b84133cc1d1",
+        "predictionAvailableAt": "2026-09-09T20:05:30+02:00",
+        "predictionGeneratedAt": "2026-09-09T18:04:01.910Z",
+        "team": "Paris Saint-Germain",
+        "teamId": "paris-saint-germain",
+        "player": "Maghnes Akliouche",
+        "playerId": "maghnes-akliouche",
+        "role": "centrocampista",
+        "predictedShots": 2.29,
+        "predictedSot": 0.84,
+        "admitted": true,
+        "exclusionReason": null,
+        "matchId": "401915445",
+        "actualMinutes": 90,
+        "actualShots": 3,
+        "actualSot": 0,
+        "providerPlayerId": "329690",
+        "leagueCode": "fra.1",
+        "leagueSegment": "major-five-league",
+        "minuteBand": "61-90",
+        "minuteSegment": "high-minutes-60-plus"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md01-10",
+        "fixture": "Paris Saint-Germain - Slovan Bratislava",
+        "date": "2026-09-09",
+        "kickoff": "21:00",
+        "predictionCommit": "c10485739df20cd585c6157e0cec9b84133cc1d1",
+        "predictionAvailableAt": "2026-09-09T20:05:30+02:00",
+        "predictionGeneratedAt": "2026-09-09T18:04:01.910Z",
+        "team": "Paris Saint-Germain",
+        "teamId": "paris-saint-germain",
+        "player": "Vitinha",
+        "playerId": "vitinha",
+        "role": "centrocampista",
+        "predictedShots": 2.16,
+        "predictedSot": 0.63,
+        "admitted": true,
+        "exclusionReason": null,
+        "matchId": "401915445",
+        "actualMinutes": 90,
+        "actualShots": 0,
+        "actualSot": 0,
+        "providerPlayerId": "288897",
+        "leagueCode": "fra.1",
+        "leagueSegment": "major-five-league",
+        "minuteBand": "61-90",
+        "minuteSegment": "high-minutes-60-plus"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md01-10",
+        "fixture": "Paris Saint-Germain - Slovan Bratislava",
+        "date": "2026-09-09",
+        "kickoff": "21:00",
+        "predictionCommit": "c10485739df20cd585c6157e0cec9b84133cc1d1",
+        "predictionAvailableAt": "2026-09-09T20:05:30+02:00",
+        "predictionGeneratedAt": "2026-09-09T18:04:01.910Z",
+        "team": "Paris Saint-Germain",
+        "teamId": "paris-saint-germain",
+        "player": "Fabián Ruiz",
+        "playerId": "fabian-ruiz",
+        "role": "centrocampista",
+        "predictedShots": 2.01,
+        "predictedSot": 0.58,
+        "admitted": true,
+        "exclusionReason": null,
+        "matchId": "401915445",
+        "actualMinutes": 90,
+        "actualShots": 4,
+        "actualSot": 1,
+        "providerPlayerId": "214596",
+        "leagueCode": "fra.1",
+        "leagueSegment": "major-five-league",
+        "minuteBand": "61-90",
+        "minuteSegment": "high-minutes-60-plus"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md01-10",
+        "fixture": "Paris Saint-Germain - Slovan Bratislava",
+        "date": "2026-09-09",
+        "kickoff": "21:00",
+        "predictionCommit": "c10485739df20cd585c6157e0cec9b84133cc1d1",
+        "predictionAvailableAt": "2026-09-09T20:05:30+02:00",
+        "predictionGeneratedAt": "2026-09-09T18:04:01.910Z",
+        "team": "Paris Saint-Germain",
+        "teamId": "paris-saint-germain",
+        "player": "Nuno Mendes",
+        "playerId": "nuno-mendes",
+        "role": "difensore",
+        "predictedShots": 1.64,
+        "predictedSot": 0.66,
+        "admitted": true,
+        "exclusionReason": null,
+        "matchId": "401915445",
+        "actualMinutes": 64,
+        "actualShots": 2,
+        "actualSot": 1,
+        "providerPlayerId": "290591",
+        "leagueCode": "fra.1",
+        "leagueSegment": "major-five-league",
+        "minuteBand": "61-90",
+        "minuteSegment": "high-minutes-60-plus"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md01-11",
+        "fixture": "Sporting CP - Galatasaray",
+        "date": "2026-09-09",
+        "kickoff": "21:00",
+        "predictionCommit": "c10485739df20cd585c6157e0cec9b84133cc1d1",
+        "predictionAvailableAt": "2026-09-09T20:05:30+02:00",
+        "predictionGeneratedAt": "2026-09-09T18:04:01.910Z",
+        "team": "Sporting CP",
+        "teamId": "sporting-cp",
+        "player": "Luis Suárez",
+        "playerId": "luis-suarez",
+        "role": "attaccante",
+        "predictedShots": 4.36,
+        "predictedSot": 2.03,
+        "admitted": true,
+        "exclusionReason": null,
+        "matchId": "401915447",
+        "actualMinutes": 74,
+        "actualShots": 3,
+        "actualSot": 2,
+        "providerPlayerId": "272722",
+        "leagueCode": "por.1",
+        "leagueSegment": "limited-or-other-league",
+        "minuteBand": "61-90",
+        "minuteSegment": "high-minutes-60-plus"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md01-11",
+        "fixture": "Sporting CP - Galatasaray",
+        "date": "2026-09-09",
+        "kickoff": "21:00",
+        "predictionCommit": "c10485739df20cd585c6157e0cec9b84133cc1d1",
+        "predictionAvailableAt": "2026-09-09T20:05:30+02:00",
+        "predictionGeneratedAt": "2026-09-09T18:04:01.910Z",
+        "team": "Sporting CP",
+        "teamId": "sporting-cp",
+        "player": "Rodrigo Zalazar",
+        "playerId": "rodrigo-zalazar",
+        "role": "centrocampista",
+        "predictedShots": 3.05,
+        "predictedSot": 1.24,
+        "admitted": true,
+        "exclusionReason": null,
+        "matchId": "401915447",
+        "actualMinutes": 66,
+        "actualShots": 1,
+        "actualSot": 1,
+        "providerPlayerId": "287494",
+        "leagueCode": "por.1",
+        "leagueSegment": "limited-or-other-league",
+        "minuteBand": "61-90",
+        "minuteSegment": "high-minutes-60-plus"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md01-11",
+        "fixture": "Sporting CP - Galatasaray",
+        "date": "2026-09-09",
+        "kickoff": "21:00",
+        "predictionCommit": "c10485739df20cd585c6157e0cec9b84133cc1d1",
+        "predictionAvailableAt": "2026-09-09T20:05:30+02:00",
+        "predictionGeneratedAt": "2026-09-09T18:04:01.910Z",
+        "team": "Sporting CP",
+        "teamId": "sporting-cp",
+        "player": "Geny Catamo",
+        "playerId": "geny-catamo",
+        "role": "attaccante",
+        "predictedShots": 2.76,
+        "predictedSot": 1.18,
+        "admitted": true,
+        "exclusionReason": null,
+        "matchId": "401915447",
+        "actualMinutes": 90,
+        "actualShots": 2,
+        "actualSot": 1,
+        "providerPlayerId": "296969",
+        "leagueCode": "por.1",
+        "leagueSegment": "limited-or-other-league",
+        "minuteBand": "61-90",
+        "minuteSegment": "high-minutes-60-plus"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md01-11",
+        "fixture": "Sporting CP - Galatasaray",
+        "date": "2026-09-09",
+        "kickoff": "21:00",
+        "predictionCommit": "c10485739df20cd585c6157e0cec9b84133cc1d1",
+        "predictionAvailableAt": "2026-09-09T20:05:30+02:00",
+        "predictionGeneratedAt": "2026-09-09T18:04:01.910Z",
+        "team": "Sporting CP",
+        "teamId": "sporting-cp",
+        "player": "Luis Guilherme",
+        "playerId": "luis-guilherme",
+        "role": "attaccante",
+        "predictedShots": 2.3,
+        "predictedSot": 0.8,
+        "admitted": true,
+        "exclusionReason": null,
+        "matchId": "401915447",
+        "actualMinutes": 90,
+        "actualShots": 1,
+        "actualSot": 0,
+        "providerPlayerId": "361429",
+        "leagueCode": "por.1",
+        "leagueSegment": "limited-or-other-league",
+        "minuteBand": "61-90",
+        "minuteSegment": "high-minutes-60-plus"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md01-11",
+        "fixture": "Sporting CP - Galatasaray",
+        "date": "2026-09-09",
+        "kickoff": "21:00",
+        "predictionCommit": "c10485739df20cd585c6157e0cec9b84133cc1d1",
+        "predictionAvailableAt": "2026-09-09T20:05:30+02:00",
+        "predictionGeneratedAt": "2026-09-09T18:04:01.910Z",
+        "team": "Sporting CP",
+        "teamId": "sporting-cp",
+        "player": "Issa Doumbia",
+        "playerId": "issa-doumbia",
+        "role": "centrocampista",
+        "predictedShots": 2.15,
+        "predictedSot": 0.85,
+        "admitted": true,
+        "exclusionReason": null,
+        "matchId": "401915447",
+        "actualMinutes": 74,
+        "actualShots": 0,
+        "actualSot": 0,
+        "providerPlayerId": "386592",
+        "leagueCode": "por.1",
+        "leagueSegment": "limited-or-other-league",
+        "minuteBand": "61-90",
+        "minuteSegment": "high-minutes-60-plus"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md01-13",
+        "fixture": "Fenerbahçe - Roma",
+        "date": "2026-09-10",
+        "kickoff": "18:45",
+        "predictionCommit": "5233ae8c4efb5ed167fc01014519645b49a884c0",
+        "predictionAvailableAt": "2026-09-10T18:14:09+02:00",
+        "predictionGeneratedAt": "2026-09-10T16:06:36.023Z",
+        "team": "Roma",
+        "teamId": "roma",
+        "player": "Donyell Malen",
+        "playerId": "donyell-malen",
+        "role": "attaccante",
+        "predictedShots": 3.05,
+        "predictedSot": 1.24,
+        "admitted": true,
+        "exclusionReason": null,
+        "matchId": "401915444",
+        "actualMinutes": 87,
+        "actualShots": 4,
+        "actualSot": 0,
+        "providerPlayerId": "259481",
+        "leagueCode": "ita.1",
+        "leagueSegment": "major-five-league",
+        "minuteBand": "61-90",
+        "minuteSegment": "high-minutes-60-plus"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md01-13",
+        "fixture": "Fenerbahçe - Roma",
+        "date": "2026-09-10",
+        "kickoff": "18:45",
+        "predictionCommit": "5233ae8c4efb5ed167fc01014519645b49a884c0",
+        "predictionAvailableAt": "2026-09-10T18:14:09+02:00",
+        "predictionGeneratedAt": "2026-09-10T16:06:36.023Z",
+        "team": "Fenerbahçe",
+        "teamId": "fenerbahce",
+        "player": "Mason Greenwood",
+        "playerId": "mason-greenwood",
+        "role": "attaccante",
+        "predictedShots": 2.8,
+        "predictedSot": 1.16,
+        "admitted": true,
+        "exclusionReason": null,
+        "matchId": "401915444",
+        "actualMinutes": 90,
+        "actualShots": 3,
+        "actualSot": 0,
+        "providerPlayerId": "276221",
+        "leagueCode": "tur.1",
+        "leagueSegment": "limited-or-other-league",
+        "minuteBand": "61-90",
+        "minuteSegment": "high-minutes-60-plus"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md01-13",
+        "fixture": "Fenerbahçe - Roma",
+        "date": "2026-09-10",
+        "kickoff": "18:45",
+        "predictionCommit": "5233ae8c4efb5ed167fc01014519645b49a884c0",
+        "predictionAvailableAt": "2026-09-10T18:14:09+02:00",
+        "predictionGeneratedAt": "2026-09-10T16:06:36.023Z",
+        "team": "Fenerbahçe",
+        "teamId": "fenerbahce",
+        "player": "Vedat Muriqi",
+        "playerId": "vedat-muriqi",
+        "role": "attaccante",
+        "predictedShots": 2.23,
+        "predictedSot": 0.93,
+        "admitted": true,
+        "exclusionReason": null,
+        "matchId": "401915444",
+        "actualMinutes": 72,
+        "actualShots": 1,
+        "actualSot": 1,
+        "providerPlayerId": "240209",
+        "leagueCode": "tur.1",
+        "leagueSegment": "limited-or-other-league",
+        "minuteBand": "61-90",
+        "minuteSegment": "high-minutes-60-plus"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md01-13",
+        "fixture": "Fenerbahçe - Roma",
+        "date": "2026-09-10",
+        "kickoff": "18:45",
+        "predictionCommit": "5233ae8c4efb5ed167fc01014519645b49a884c0",
+        "predictionAvailableAt": "2026-09-10T18:14:09+02:00",
+        "predictionGeneratedAt": "2026-09-10T16:06:36.023Z",
+        "team": "Roma",
+        "teamId": "roma",
+        "player": "Paulo Dybala",
+        "playerId": "paulo-dybala",
+        "role": "centrocampista",
+        "predictedShots": 1.95,
+        "predictedSot": 0.74,
+        "admitted": true,
+        "exclusionReason": null,
+        "matchId": "401915444",
+        "actualMinutes": 90,
+        "actualShots": 2,
+        "actualSot": 2,
+        "providerPlayerId": "164839",
+        "leagueCode": "ita.1",
+        "leagueSegment": "major-five-league",
+        "minuteBand": "61-90",
+        "minuteSegment": "high-minutes-60-plus"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md01-14",
+        "fixture": "PSV Eindhoven - Shakhtar Donetsk",
+        "date": "2026-09-10",
+        "kickoff": "18:45",
+        "predictionCommit": "5233ae8c4efb5ed167fc01014519645b49a884c0",
+        "predictionAvailableAt": "2026-09-10T18:14:09+02:00",
+        "predictionGeneratedAt": "2026-09-10T16:06:36.023Z",
+        "team": "Shakhtar Donetsk",
+        "teamId": "shakhtar-donetsk",
+        "player": "Kauã Elias",
+        "playerId": "kaua-elias",
+        "role": "attaccante",
+        "predictedShots": 3.24,
+        "predictedSot": 1.3,
+        "admitted": true,
+        "exclusionReason": null,
+        "matchId": "401915422",
+        "actualMinutes": 66,
+        "actualShots": 0,
+        "actualSot": 0,
+        "providerPlayerId": "361432",
+        "leagueCode": "uefa.europa.conf",
+        "leagueSegment": "limited-or-other-league",
+        "minuteBand": "61-90",
+        "minuteSegment": "high-minutes-60-plus"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md01-14",
+        "fixture": "PSV Eindhoven - Shakhtar Donetsk",
+        "date": "2026-09-10",
+        "kickoff": "18:45",
+        "predictionCommit": "5233ae8c4efb5ed167fc01014519645b49a884c0",
+        "predictionAvailableAt": "2026-09-10T18:14:09+02:00",
+        "predictionGeneratedAt": "2026-09-10T16:06:36.023Z",
+        "team": "PSV Eindhoven",
+        "teamId": "psv-eindhoven",
+        "player": "Ricardo Pepi",
+        "playerId": "ricardo-pepi",
+        "role": "attaccante",
+        "predictedShots": 3.14,
+        "predictedSot": 1.51,
+        "admitted": true,
+        "exclusionReason": null,
+        "matchId": "401915422",
+        "actualMinutes": 83,
+        "actualShots": 0,
+        "actualSot": 0,
+        "providerPlayerId": "289120",
+        "leagueCode": "ned.1",
+        "leagueSegment": "limited-or-other-league",
+        "minuteBand": "61-90",
+        "minuteSegment": "high-minutes-60-plus"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md01-14",
+        "fixture": "PSV Eindhoven - Shakhtar Donetsk",
+        "date": "2026-09-10",
+        "kickoff": "18:45",
+        "predictionCommit": "5233ae8c4efb5ed167fc01014519645b49a884c0",
+        "predictionAvailableAt": "2026-09-10T18:14:09+02:00",
+        "predictionGeneratedAt": "2026-09-10T16:06:36.023Z",
+        "team": "PSV Eindhoven",
+        "teamId": "psv-eindhoven",
+        "player": "Ruben van Bommel",
+        "playerId": "ruben-van-bommel",
+        "role": "attaccante",
+        "predictedShots": 2.05,
+        "predictedSot": 0.91,
+        "admitted": true,
+        "exclusionReason": null,
+        "matchId": "401915422",
+        "actualMinutes": 90,
+        "actualShots": 3,
+        "actualSot": 0,
+        "providerPlayerId": "340252",
+        "leagueCode": "ned.1",
+        "leagueSegment": "limited-or-other-league",
+        "minuteBand": "61-90",
+        "minuteSegment": "high-minutes-60-plus"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md01-14",
+        "fixture": "PSV Eindhoven - Shakhtar Donetsk",
+        "date": "2026-09-10",
+        "kickoff": "18:45",
+        "predictionCommit": "5233ae8c4efb5ed167fc01014519645b49a884c0",
+        "predictionAvailableAt": "2026-09-10T18:14:09+02:00",
+        "predictionGeneratedAt": "2026-09-10T16:06:36.023Z",
+        "team": "PSV Eindhoven",
+        "teamId": "psv-eindhoven",
+        "player": "Ivan Perišić",
+        "playerId": "ivan-perisic",
+        "role": "attaccante",
+        "predictedShots": 2.03,
+        "predictedSot": 0.67,
+        "admitted": true,
+        "exclusionReason": null,
+        "matchId": "401915422",
+        "actualMinutes": 90,
+        "actualShots": 2,
+        "actualSot": 0,
+        "providerPlayerId": "103485",
+        "leagueCode": "ned.1",
+        "leagueSegment": "limited-or-other-league",
+        "minuteBand": "61-90",
+        "minuteSegment": "high-minutes-60-plus"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md01-14",
+        "fixture": "PSV Eindhoven - Shakhtar Donetsk",
+        "date": "2026-09-10",
+        "kickoff": "18:45",
+        "predictionCommit": "5233ae8c4efb5ed167fc01014519645b49a884c0",
+        "predictionAvailableAt": "2026-09-10T18:14:09+02:00",
+        "predictionGeneratedAt": "2026-09-10T16:06:36.023Z",
+        "team": "PSV Eindhoven",
+        "teamId": "psv-eindhoven",
+        "player": "Guus Til",
+        "playerId": "guus-til",
+        "role": "centrocampista",
+        "predictedShots": 1.83,
+        "predictedSot": 0.73,
+        "admitted": true,
+        "exclusionReason": null,
+        "matchId": "401915422",
+        "actualMinutes": 90,
+        "actualShots": 0,
+        "actualSot": 0,
+        "providerPlayerId": "240965",
+        "leagueCode": "ned.1",
+        "leagueSegment": "limited-or-other-league",
+        "minuteBand": "61-90",
+        "minuteSegment": "high-minutes-60-plus"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md01-17",
+        "fixture": "Manchester United - Sabah",
+        "date": "2026-09-10",
+        "kickoff": "21:00",
+        "predictionCommit": "5233ae8c4efb5ed167fc01014519645b49a884c0",
+        "predictionAvailableAt": "2026-09-10T18:14:09+02:00",
+        "predictionGeneratedAt": "2026-09-10T16:06:36.023Z",
+        "team": "Manchester United",
+        "teamId": "manchester-united",
+        "player": "Matheus Cunha",
+        "playerId": "matheus-cunha",
+        "role": "attaccante",
+        "predictedShots": 2.82,
+        "predictedSot": 1.08,
+        "admitted": true,
+        "exclusionReason": null,
+        "matchId": "401915442",
+        "actualMinutes": 90,
+        "actualShots": 4,
+        "actualSot": 3,
+        "providerPlayerId": "259902",
+        "leagueCode": "eng.1",
+        "leagueSegment": "major-five-league",
+        "minuteBand": "61-90",
+        "minuteSegment": "high-minutes-60-plus"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md01-17",
+        "fixture": "Manchester United - Sabah",
+        "date": "2026-09-10",
+        "kickoff": "21:00",
+        "predictionCommit": "5233ae8c4efb5ed167fc01014519645b49a884c0",
+        "predictionAvailableAt": "2026-09-10T18:14:09+02:00",
+        "predictionGeneratedAt": "2026-09-10T16:06:36.023Z",
+        "team": "Manchester United",
+        "teamId": "manchester-united",
+        "player": "Bryan Mbeumo",
+        "playerId": "bryan-mbeumo",
+        "role": "attaccante",
+        "predictedShots": 2.31,
+        "predictedSot": 0.98,
+        "admitted": true,
+        "exclusionReason": null,
+        "matchId": "401915442",
+        "actualMinutes": 72,
+        "actualShots": 1,
+        "actualSot": 1,
+        "providerPlayerId": "271170",
+        "leagueCode": "eng.1",
+        "leagueSegment": "major-five-league",
+        "minuteBand": "61-90",
+        "minuteSegment": "high-minutes-60-plus"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md01-17",
+        "fixture": "Manchester United - Sabah",
+        "date": "2026-09-10",
+        "kickoff": "21:00",
+        "predictionCommit": "5233ae8c4efb5ed167fc01014519645b49a884c0",
+        "predictionAvailableAt": "2026-09-10T18:14:09+02:00",
+        "predictionGeneratedAt": "2026-09-10T16:06:36.023Z",
+        "team": "Sabah",
+        "teamId": "sabah",
+        "player": "Christian Nwachukwu",
+        "playerId": "christian-nwachukwu",
+        "role": "attaccante",
+        "predictedShots": 2.21,
+        "predictedSot": 0.81,
+        "admitted": true,
+        "exclusionReason": null,
+        "matchId": "401915442",
+        "actualMinutes": 45,
+        "actualShots": 1,
+        "actualSot": 0,
+        "providerPlayerId": "385377",
+        "leagueCode": "uefa.europa.conf_qual",
+        "leagueSegment": "limited-or-other-league",
+        "minuteBand": "31-60",
+        "minuteSegment": "low-minutes-under-60"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md01-17",
+        "fixture": "Manchester United - Sabah",
+        "date": "2026-09-10",
+        "kickoff": "21:00",
+        "predictionCommit": "5233ae8c4efb5ed167fc01014519645b49a884c0",
+        "predictionAvailableAt": "2026-09-10T18:14:09+02:00",
+        "predictionGeneratedAt": "2026-09-10T16:06:36.023Z",
+        "team": "Sabah",
+        "teamId": "sabah",
+        "player": "Veljko Simić",
+        "playerId": "veljko-simic",
+        "role": "attaccante",
+        "predictedShots": 2.21,
+        "predictedSot": 0.81,
+        "admitted": true,
+        "exclusionReason": null,
+        "matchId": "401915442",
+        "actualMinutes": 75,
+        "actualShots": 0,
+        "actualSot": 0,
+        "providerPlayerId": "193291",
+        "leagueCode": "uefa.europa.conf_qual",
+        "leagueSegment": "limited-or-other-league",
+        "minuteBand": "61-90",
+        "minuteSegment": "high-minutes-60-plus"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md01-18",
+        "fixture": "Slavia Praha - Lens",
+        "date": "2026-09-10",
+        "kickoff": "21:00",
+        "predictionCommit": "5233ae8c4efb5ed167fc01014519645b49a884c0",
+        "predictionAvailableAt": "2026-09-10T18:14:09+02:00",
+        "predictionGeneratedAt": "2026-09-10T16:06:36.023Z",
+        "team": "Lens",
+        "teamId": "lens",
+        "player": "Odsonne Édouard",
+        "playerId": "odsonne-edouard",
+        "role": "attaccante",
+        "predictedShots": 2.83,
+        "predictedSot": 1.58,
+        "admitted": true,
+        "exclusionReason": null,
+        "matchId": "401915440",
+        "actualMinutes": 28,
+        "actualShots": 2,
+        "actualSot": 1,
+        "providerPlayerId": "222180",
+        "leagueCode": "fra.1",
+        "leagueSegment": "major-five-league",
+        "minuteBand": "1-30",
+        "minuteSegment": "low-minutes-under-60"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md01-18",
+        "fixture": "Slavia Praha - Lens",
+        "date": "2026-09-10",
+        "kickoff": "21:00",
+        "predictionCommit": "5233ae8c4efb5ed167fc01014519645b49a884c0",
+        "predictionAvailableAt": "2026-09-10T18:14:09+02:00",
+        "predictionGeneratedAt": "2026-09-10T16:06:36.023Z",
+        "team": "Lens",
+        "teamId": "lens",
+        "player": "Franjo Ivanović",
+        "playerId": "franjo-ivanovic",
+        "role": "attaccante",
+        "predictedShots": 2.8,
+        "predictedSot": 1.56,
+        "admitted": true,
+        "exclusionReason": null,
+        "matchId": "401915440",
+        "actualMinutes": 61,
+        "actualShots": 0,
+        "actualSot": 0,
+        "providerPlayerId": "364180",
+        "leagueCode": "fra.1",
+        "leagueSegment": "major-five-league",
+        "minuteBand": "61-90",
+        "minuteSegment": "high-minutes-60-plus"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md01-18",
+        "fixture": "Slavia Praha - Lens",
+        "date": "2026-09-10",
+        "kickoff": "21:00",
+        "predictionCommit": "5233ae8c4efb5ed167fc01014519645b49a884c0",
+        "predictionAvailableAt": "2026-09-10T18:14:09+02:00",
+        "predictionGeneratedAt": "2026-09-10T16:06:36.023Z",
+        "team": "Slavia Praha",
+        "teamId": "slavia-praha",
+        "player": "Tomáš Chorý",
+        "playerId": "tomas-chory",
+        "role": "attaccante",
+        "predictedShots": 2.75,
+        "predictedSot": 1.01,
+        "admitted": true,
+        "exclusionReason": null,
+        "matchId": "401915440",
+        "actualMinutes": 14,
+        "actualShots": 0,
+        "actualSot": 0,
+        "providerPlayerId": "257336",
+        "leagueCode": "uefa.champions",
+        "leagueSegment": "limited-or-other-league",
+        "minuteBand": "1-30",
+        "minuteSegment": "low-minutes-under-60"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md01-18",
+        "fixture": "Slavia Praha - Lens",
+        "date": "2026-09-10",
+        "kickoff": "21:00",
+        "predictionCommit": "5233ae8c4efb5ed167fc01014519645b49a884c0",
+        "predictionAvailableAt": "2026-09-10T18:14:09+02:00",
+        "predictionGeneratedAt": "2026-09-10T16:06:36.023Z",
+        "team": "Lens",
+        "teamId": "lens",
+        "player": "Florian Thauvin",
+        "playerId": "florian-thauvin",
+        "role": "attaccante",
+        "predictedShots": 2.6,
+        "predictedSot": 1.15,
+        "admitted": true,
+        "exclusionReason": null,
+        "matchId": "401915440",
+        "actualMinutes": 90,
+        "actualShots": 8,
+        "actualSot": 3,
+        "providerPlayerId": "156898",
+        "leagueCode": "fra.1",
+        "leagueSegment": "major-five-league",
+        "minuteBand": "61-90",
+        "minuteSegment": "high-minutes-60-plus"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md01-18",
+        "fixture": "Slavia Praha - Lens",
+        "date": "2026-09-10",
+        "kickoff": "21:00",
+        "predictionCommit": "5233ae8c4efb5ed167fc01014519645b49a884c0",
+        "predictionAvailableAt": "2026-09-10T18:14:09+02:00",
+        "predictionGeneratedAt": "2026-09-10T16:06:36.023Z",
+        "team": "Slavia Praha",
+        "teamId": "slavia-praha",
+        "player": "Danijel Šturm",
+        "playerId": "danijel-sturm",
+        "role": "centrocampista",
+        "predictedShots": 1.55,
+        "predictedSot": 0.57,
+        "admitted": true,
+        "exclusionReason": null,
+        "matchId": "401915440",
+        "actualMinutes": 90,
+        "actualShots": 4,
+        "actualSot": 2,
+        "providerPlayerId": "322169",
+        "leagueCode": "uefa.champions",
+        "leagueSegment": "limited-or-other-league",
+        "minuteBand": "61-90",
+        "minuteSegment": "high-minutes-60-plus"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md01-18",
+        "fixture": "Slavia Praha - Lens",
+        "date": "2026-09-10",
+        "kickoff": "21:00",
+        "predictionCommit": "5233ae8c4efb5ed167fc01014519645b49a884c0",
+        "predictionAvailableAt": "2026-09-10T18:14:09+02:00",
+        "predictionGeneratedAt": "2026-09-10T16:06:36.023Z",
+        "team": "Lens",
+        "teamId": "lens",
+        "player": "Andrija Bulatović",
+        "playerId": "andrija-bulatovic",
+        "role": "centrocampista",
+        "predictedShots": 1.34,
+        "predictedSot": 0.61,
+        "admitted": true,
+        "exclusionReason": null,
+        "matchId": "401915440",
+        "actualMinutes": 90,
+        "actualShots": 4,
+        "actualSot": 0,
+        "providerPlayerId": "387061",
+        "leagueCode": "fra.1",
+        "leagueSegment": "major-five-league",
+        "minuteBand": "61-90",
+        "minuteSegment": "high-minutes-60-plus"
+      }
+    ]
+  },
+  "models": {
+    "A": {
+      "id": "A",
+      "label": "baseline-production-as-historically-serialized",
+      "status": "EVALUATED_LIMITED",
+      "pointMetrics": {
+        "overall": {
+          "shots": {
+            "n": 30,
+            "mae": 1.855,
+            "rmse": 2.301,
+            "bias": 0.169,
+            "sampleUse": "descriptive-small"
+          },
+          "shotsOnTarget": {
+            "n": 30,
+            "mae": 0.887,
+            "rmse": 1.029,
+            "bias": 0.211,
+            "sampleUse": "descriptive-small"
+          }
+        },
+        "byRole": {
+          "attaccante": {
+            "shots": {
+              "n": 20,
+              "mae": 1.961,
+              "rmse": 2.494,
+              "bias": 0.256,
+              "sampleUse": "descriptive-small"
+            },
+            "shotsOnTarget": {
+              "n": 20,
+              "mae": 0.964,
+              "rmse": 1.12,
+              "bias": 0.294,
+              "sampleUse": "descriptive-small"
+            }
+          },
+          "centrocampista": {
+            "shots": {
+              "n": 9,
+              "mae": 1.783,
+              "rmse": 1.955,
+              "bias": 0.037,
+              "sampleUse": "tiny-no-claim"
+            },
+            "shotsOnTarget": {
+              "n": 9,
+              "mae": 0.779,
+              "rmse": 0.856,
+              "bias": 0.088,
+              "sampleUse": "tiny-no-claim"
+            }
+          },
+          "difensore": {
+            "shots": {
+              "n": 1,
+              "mae": 0.36,
+              "rmse": 0.36,
+              "bias": -0.36,
+              "sampleUse": "tiny-no-claim"
+            },
+            "shotsOnTarget": {
+              "n": 1,
+              "mae": 0.34,
+              "rmse": 0.34,
+              "bias": -0.34,
+              "sampleUse": "tiny-no-claim"
+            }
+          }
+        },
+        "byTeam": {
+          "Fenerbahçe": {
+            "shots": {
+              "n": 2,
+              "mae": 0.715,
+              "rmse": 0.881,
+              "bias": 0.515,
+              "sampleUse": "tiny-no-claim"
+            },
+            "shotsOnTarget": {
+              "n": 2,
+              "mae": 0.615,
+              "rmse": 0.822,
+              "bias": 0.545,
+              "sampleUse": "tiny-no-claim"
+            }
+          },
+          "Lens": {
+            "shots": {
+              "n": 4,
+              "mae": 2.923,
+              "rmse": 3.345,
+              "bias": -1.108,
+              "sampleUse": "tiny-no-claim"
+            },
+            "shotsOnTarget": {
+              "n": 4,
+              "mae": 1.15,
+              "rmse": 1.281,
+              "bias": 0.225,
+              "sampleUse": "tiny-no-claim"
+            }
+          },
+          "Manchester United": {
+            "shots": {
+              "n": 2,
+              "mae": 1.245,
+              "rmse": 1.247,
+              "bias": 0.065,
+              "sampleUse": "tiny-no-claim"
+            },
+            "shotsOnTarget": {
+              "n": 2,
+              "mae": 0.97,
+              "rmse": 1.358,
+              "bias": -0.97,
+              "sampleUse": "tiny-no-claim"
+            }
+          },
+          "Paris Saint-Germain": {
+            "shots": {
+              "n": 6,
+              "mae": 2.267,
+              "rmse": 2.917,
+              "bias": -1.547,
+              "sampleUse": "tiny-no-claim"
+            },
+            "shotsOnTarget": {
+              "n": 6,
+              "mae": 0.845,
+              "rmse": 0.952,
+              "bias": -0.355,
+              "sampleUse": "tiny-no-claim"
+            }
+          },
+          "PSV Eindhoven": {
+            "shots": {
+              "n": 4,
+              "mae": 1.487,
+              "rmse": 1.878,
+              "bias": 1.012,
+              "sampleUse": "tiny-no-claim"
+            },
+            "shotsOnTarget": {
+              "n": 4,
+              "mae": 0.955,
+              "rmse": 1.011,
+              "bias": 0.955,
+              "sampleUse": "tiny-no-claim"
+            }
+          },
+          "Roma": {
+            "shots": {
+              "n": 2,
+              "mae": 0.5,
+              "rmse": 0.673,
+              "bias": -0.5,
+              "sampleUse": "tiny-no-claim"
+            },
+            "shotsOnTarget": {
+              "n": 2,
+              "mae": 1.25,
+              "rmse": 1.25,
+              "bias": -0.01,
+              "sampleUse": "tiny-no-claim"
+            }
+          },
+          "Sabah": {
+            "shots": {
+              "n": 2,
+              "mae": 1.71,
+              "rmse": 1.782,
+              "bias": 1.71,
+              "sampleUse": "tiny-no-claim"
+            },
+            "shotsOnTarget": {
+              "n": 2,
+              "mae": 0.81,
+              "rmse": 0.81,
+              "bias": 0.81,
+              "sampleUse": "tiny-no-claim"
+            }
+          },
+          "Shakhtar Donetsk": {
+            "shots": {
+              "n": 1,
+              "mae": 3.24,
+              "rmse": 3.24,
+              "bias": 3.24,
+              "sampleUse": "tiny-no-claim"
+            },
+            "shotsOnTarget": {
+              "n": 1,
+              "mae": 1.3,
+              "rmse": 1.3,
+              "bias": 1.3,
+              "sampleUse": "tiny-no-claim"
+            }
+          },
+          "Slavia Praha": {
+            "shots": {
+              "n": 2,
+              "mae": 2.6,
+              "rmse": 2.604,
+              "bias": 0.15,
+              "sampleUse": "tiny-no-claim"
+            },
+            "shotsOnTarget": {
+              "n": 2,
+              "mae": 1.22,
+              "rmse": 1.238,
+              "bias": -0.21,
+              "sampleUse": "tiny-no-claim"
+            }
+          },
+          "Sporting CP": {
+            "shots": {
+              "n": 5,
+              "mae": 1.524,
+              "rmse": 1.609,
+              "bias": 1.524,
+              "sampleUse": "tiny-no-claim"
+            },
+            "shotsOnTarget": {
+              "n": 5,
+              "mae": 0.42,
+              "rmse": 0.539,
+              "bias": 0.42,
+              "sampleUse": "tiny-no-claim"
+            }
+          }
+        },
+        "byMinuteBand": {
+          "1-30": {
+            "shots": {
+              "n": 2,
+              "mae": 1.79,
+              "rmse": 2.031,
+              "bias": 1.79,
+              "sampleUse": "tiny-no-claim"
+            },
+            "shotsOnTarget": {
+              "n": 2,
+              "mae": 0.795,
+              "rmse": 0.824,
+              "bias": 0.795,
+              "sampleUse": "tiny-no-claim"
+            }
+          },
+          "31-60": {
+            "shots": {
+              "n": 1,
+              "mae": 1.21,
+              "rmse": 1.21,
+              "bias": 1.21,
+              "sampleUse": "tiny-no-claim"
+            },
+            "shotsOnTarget": {
+              "n": 1,
+              "mae": 0.81,
+              "rmse": 0.81,
+              "bias": 0.81,
+              "sampleUse": "tiny-no-claim"
+            }
+          },
+          "61-90": {
+            "shots": {
+              "n": 27,
+              "mae": 1.883,
+              "rmse": 2.35,
+              "bias": 0.011,
+              "sampleUse": "descriptive-small"
+            },
+            "shotsOnTarget": {
+              "n": 27,
+              "mae": 0.897,
+              "rmse": 1.05,
+              "bias": 0.145,
+              "sampleUse": "descriptive-small"
+            }
+          }
+        },
+        "byMinuteSegment": {
+          "high-minutes-60-plus": {
+            "shots": {
+              "n": 27,
+              "mae": 1.883,
+              "rmse": 2.35,
+              "bias": 0.011,
+              "sampleUse": "descriptive-small"
+            },
+            "shotsOnTarget": {
+              "n": 27,
+              "mae": 0.897,
+              "rmse": 1.05,
+              "bias": 0.145,
+              "sampleUse": "descriptive-small"
+            }
+          },
+          "low-minutes-under-60": {
+            "shots": {
+              "n": 3,
+              "mae": 1.597,
+              "rmse": 1.8,
+              "bias": 1.597,
+              "sampleUse": "tiny-no-claim"
+            },
+            "shotsOnTarget": {
+              "n": 3,
+              "mae": 0.8,
+              "rmse": 0.819,
+              "bias": 0.8,
+              "sampleUse": "tiny-no-claim"
+            }
+          }
+        },
+        "byLeagueSegment": {
+          "limited-or-other-league": {
+            "shots": {
+              "n": 16,
+              "mae": 1.679,
+              "rmse": 1.921,
+              "bias": 1.229,
+              "sampleUse": "descriptive-small"
+            },
+            "shotsOnTarget": {
+              "n": 16,
+              "mae": 0.782,
+              "rmse": 0.9,
+              "bias": 0.594,
+              "sampleUse": "descriptive-small"
+            }
+          },
+          "major-five-league": {
+            "shots": {
+              "n": 14,
+              "mae": 2.056,
+              "rmse": 2.671,
+              "bias": -1.041,
+              "sampleUse": "tiny-no-claim"
+            },
+            "shotsOnTarget": {
+              "n": 14,
+              "mae": 1.008,
+              "rmse": 1.159,
+              "bias": -0.228,
+              "sampleUse": "tiny-no-claim"
+            }
+          }
+        }
+      },
+      "brier": {
+        "status": "NOT_CALCULATED",
+        "reason": "The versioned shooter rows preserve point forecasts, not a complete explicit probability surface for the same admitted observations. No artificial probabilities were reconstructed."
+      }
+    },
+    "B": {
+      "id": "B",
+      "label": "current-season-domestic-existing-blending",
+      "status": "CHRONOLOGY_BLOCKED",
+      "pointMetrics": null,
+      "sourceAvailability": "2026-10-09T20:50:55.469Z",
+      "reason": "The current-season player dataset was retrieved 2026-10-09T20:50:55.469Z, after all matchday-1 events. Event dates exist, but no versioned pre-match availability snapshot of these player inputs was found."
+    },
+    "C": {
+      "id": "C",
+      "label": "context-adjusted-league-strength-elo-candidate",
+      "status": "UNCALIBRATED",
+      "pointMetrics": null,
+      "sourceAvailability": {
+        "leagueStrengthGeneratedAt": "2026-10-03",
+        "contextPilotGeneratedAt": "2026-10-03T22:38:12.016Z",
+        "contextPilotAsOf": "2026-10-03"
+      },
+      "reason": "League Strength/context inputs post-date matchday 1, only the AEK pilot is serialized, and there is no prior Champions training window on which to estimate constrained coefficients without touching the final test."
+    }
+  },
+  "pairedComparison": {
+    "commonObservationsABC": 0,
+    "status": "NOT_RUN",
+    "reason": "B and C have no chronology-admissible predictions for the same observations; a paired test would manufacture a comparison."
+  },
+  "sampleAssessment": {
+    "status": "VERY_LIMITED",
+    "interpretation": "One partially observed Champions matchday supports descriptive baseline diagnostics only, not calibration or coefficient selection. Team and role cells marked tiny-no-claim must not be interpreted directionally."
+  },
+  "invariants": {
+    "productionModelChanged": false,
+    "protectedFilesChanged": false,
+    "protectedRawChanged": false,
+    "predictionCandidateEligibilityChanged": false,
+    "registryOrSquadAutoEdited": false,
+    "calibrationActivated": false,
+    "htmlOrUiChanged": false
+  },
+  "hashComparison": {
+    "protectedFiles": {
+      "count": 21,
+      "changed": [],
+      "status": "UNCHANGED"
+    },
+    "protectedRawSnapshots": {
+      "count": 5451,
+      "changed": [],
+      "status": "UNCHANGED"
+    },
+    "predictionCandidateEligibility": {
+      "count": 74,
+      "status": "UNCHANGED"
+    }
+  },
+  "gate": {
+    "value": "CHAMPIONS MODEL-CALIBRATION GATE = PARTIAL",
+    "reasons": [
+      "Baseline A has 30 chronology-admissible player observations across 6 matches.",
+      "No severe structural identity collision was proven after resolving Atlético by UEFA club ID/content and Veerman by dated club observations.",
+      "Baseline B is chronology-blocked and candidate C is uncalibrated; no A/B/C paired comparison is valid.",
+      "37 exact-name-only resolutions, 33 UEFA/internal-registry discrepancies and Mika Medina remain outside calibration."
+    ],
+    "productionRecommendation": "DO_NOT_ACTIVATE; collect versioned pre-match current-season inputs and at least two later chronological test windows, then rerun."
+  }
+}
