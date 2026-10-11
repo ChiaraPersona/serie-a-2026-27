@@ -7,6 +7,9 @@ const path = require("node:path");
 const { chromium } = require("C:/Users/utente/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright");
 
 const root = path.resolve(__dirname, "..");
+const officialLineups = JSON.parse(fs.readFileSync(path.join(root, "data/sources/official-lineups-2026-27.json"), "utf8"));
+const targetFixture = officialLineups.fixtures.find(fixture => fixture.matchId === "sassuolo-milan-2026-27-md-06");
+assert(targetFixture, "Formazione ufficiale Sassuolo-Milan assente dalla fonte canonica");
 const types = { ".html": "text/html", ".js": "text/javascript", ".mjs": "text/javascript", ".json": "application/json", ".css": "text/css", ".png": "image/png" };
 const server = http.createServer((request, response) => {
   const pathname = decodeURIComponent(new URL(request.url, "http://localhost").pathname);
@@ -31,8 +34,8 @@ async function verify(browser, width, height) {
   const lecceBologna = page.locator('[data-match-id="lecce-bologna-2026-27-md-06"]');
   const lazioMonza = page.locator('[data-match-id="lazio-monza-2026-27-md-06"]');
   const sassuoloMilan = page.locator('[data-match-id="sassuolo-milan-2026-27-md-06"]');
-  assert.equal(await lecceBologna.locator("[data-selected-forecast=true]").count(), 15, `${width}px: numero pronostici Lecce-Bologna inatteso`);
-  assert.equal(await lazioMonza.locator("[data-selected-forecast=true]").count(), 19, `${width}px: numero pronostici Lazio-Monza inatteso`);
+  assert.equal(await lecceBologna.locator("[data-selected-forecast=true]").count(), 7, `${width}px: numero pronostici Lecce-Bologna inatteso`);
+  assert.equal(await lazioMonza.locator("[data-selected-forecast=true]").count(), 14, `${width}px: numero pronostici Lazio-Monza inatteso`);
   assert.equal(await sassuoloMilan.locator("[data-selected-forecast=true]").count(), 7, `${width}px: numero pronostici Sassuolo-Milan inatteso`);
   assert.equal(await page.locator('[data-selected-forecast=true]').filter({ hasText: "Federico Bernardeschi" }).count(), 0, `${width}px: Bernardeschi ancora visibile`);
   assert.equal(await page.locator('[data-selected-forecast=true]').filter({ hasText: "Joël Monteiro" }).count(), 0, `${width}px: Monteiro ancora visibile`);
@@ -42,6 +45,20 @@ async function verify(browser, width, height) {
   assert.equal(await lecceBologna.locator('[data-selection-label="Nicolò Cambiaghi e suo eventuale sostituto 2+ tiri"]').count(), 1, `${width}px: Cambiaghi 2+ tiri assente`);
   assert.equal(await lazioMonza.locator('[data-selection-label="Cyril Ngonge e suo eventuale sostituto 2+ tiri"]').count(), 1, `${width}px: Ngonge 2+ tiri assente`);
   assert(!(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth)), `${width}px: overflow orizzontale`);
+
+  await page.goto(`http://127.0.0.1:${server.address().port}/lettura.html?match=${targetFixture.matchId}`, { waitUntil: "networkidle" });
+  const readingText = await page.locator("main").innerText();
+  assert.match(readingText, /Formazioni ufficiali/, `${width}px: intestazione formazioni ufficiali assente`);
+  assert.match(readingText, /Fonte Diretta\.it/, `${width}px: fonte Diretta.it assente dalla Lettura`);
+  assert.equal(await page.locator(".reading-lineup-card").count(), 2, `${width}px: schede formazione incomplete`);
+  for (const team of targetFixture.teams) {
+    assert(readingText.includes(team.formation), `${width}px: modulo ${team.teamId} assente`);
+    assert(readingText.includes(`Allenatore: ${team.coach}`), `${width}px: allenatore ${team.teamId} assente`);
+    for (const player of [...team.players, ...team.substitutes]) {
+      assert(readingText.includes(player.currentName), `${width}px: ${player.currentName} assente dalla Lettura`);
+    }
+  }
+  assert(!(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth)), `${width}px: overflow orizzontale nella Lettura`);
   assert.deepEqual(pageErrors, [], `${width}px: errori JavaScript`);
   assert.deepEqual(consoleErrors, [], `${width}px: errori console`);
   await context.close();
@@ -53,7 +70,7 @@ async function verify(browser, width, height) {
   try {
     await verify(browser, 1440, 1000);
     await verify(browser, 390, 844);
-    console.log("OK Schedina MD06 browser: formazioni ufficiali riflesse a 1440px e 390px.");
+    console.log("OK Schedina e Lettura MD06 browser: formazioni ufficiali riflesse a 1440px e 390px.");
   } finally {
     await browser.close();
     server.close();
