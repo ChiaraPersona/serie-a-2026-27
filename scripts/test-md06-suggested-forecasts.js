@@ -31,7 +31,7 @@ const baselineSuggestions = suggestions.filter(leg => leg.suggestionAnalysis?.ba
 const isDrawNoBet = leg => /^draw-no-bet:/.test(String(leg?.betSelection?.compatibility?.modelTarget || "").toLowerCase()) || /DRAW NO BET/i.test(`${leg.marketFamily || ""} ${leg.market || ""}`);
 
 assert.equal(schedina.marketCatalog.schemaVersion, 4);
-assert.equal(rows.length, 1536);
+assert.equal(rows.length, 1537);
 assert.equal(new Set(rows.map(leg => leg.selectionId)).size, rows.length);
 assert.equal(added.length, 1059);
 assert.equal(validated.length, 668);
@@ -39,10 +39,10 @@ assert.equal(blocked.length, 391);
 assert(blocked.every(leg => leg.coverageClassification === "B" && leg.betSelection.evaluation.status === "NOT_MODELLED"));
 assert(!blocked.some(leg => leg.suggestionAnalysis.suggested), "NOT_MODELLED promosso nei pronostici");
 assert(validated.every(leg => leg.coverageClassification === "A" && leg.betSelection.evaluation.kind === "DISCRETE_COUNT_TEMPORAL_HOLDOUT"));
-assert.equal(suggestions.length, 168);
+assert.equal(suggestions.length, 169);
 assert.equal(baselineSuggestions.length, 80);
-assert.equal(playerForecasts.length, 92);
-assert.equal(playerForecasts.filter(leg => leg.suggestionAnalysis.family === "shots").length, 58);
+assert.equal(playerForecasts.length, 93);
+assert.equal(playerForecasts.filter(leg => leg.suggestionAnalysis.family === "shots").length, 59);
 assert.equal(playerForecasts.filter(leg => leg.suggestionAnalysis.family === "sot").length, 34);
 assert.equal(suggestions.filter(leg => Number.isFinite(leg.betSelection.evaluation.expectedValuePct) && leg.betSelection.evaluation.expectedValuePct < 0).length, 70);
 assert.equal(suggestions.filter(leg => Number.isFinite(leg.betSelection.evaluation.expectedValuePct) && leg.betSelection.evaluation.expectedValuePct < 2).length, 71);
@@ -173,20 +173,20 @@ assert.equal(sha256("data/analysis/serie-a-md06-statistical-models-2026-10-10.js
 assert.equal(sha256("scripts/md06-statistical-models.js"), "283b8a89e1601280f60e76c5ac716c95cb776ac26a4ea218416c2f9d411d9cff", "Implementazione dei modelli statistici modificata");
 assert.equal(report.invariants.certifiedSelections, 385);
 assert(report.invariants.certifiedSelectionIdsPreserved && report.invariants.certifiedContractsUnchanged);
-assert.equal(report.invariants.catalogSelections, 1536);
+assert.equal(report.invariants.catalogSelections, 1537);
 assert.equal(report.coverage.comparison.previousSuggestions, 82);
 assert.equal(report.coverage.comparison.removedDrawNoBet, 2);
 assert.equal(report.coverage.comparison.preservedApprovedNonDnb, 80);
-assert.equal(report.coverage.comparison.newPlayerShots, 56);
+assert.equal(report.coverage.comparison.newPlayerShots, 57);
 assert.equal(report.coverage.comparison.newPlayerSot, 32);
 assert.equal(report.coverage.comparison.newPlayerCards, 0);
 assert.equal(report.coverage.comparison.newCardsOvers, 0);
-assert.equal(report.coverage.totalSuggestions, 168);
-assert.equal(report.coverage.quotedSuggestions, 168);
+assert.equal(report.coverage.totalSuggestions, 169);
+assert.equal(report.coverage.quotedSuggestions, 169);
 assert.equal(report.coverage.unquotedSuggestions, 0);
 assert.equal(report.coverage.negativeEvSuggestions, 70);
 assert.equal(report.coverage.recoveredFromEconomicExclusion, 71);
-assert.equal(report.statisticalMarkets.families.reduce((sum, row) => sum + row.selected, 0), 139);
+assert.equal(report.statisticalMarkets.families.reduce((sum, row) => sum + row.selected, 0), 140);
 assert(report.thresholdCases.some(item => ["shots", "sot", "corners"].some(family => item.canonicalIdentity.startsWith(`${family}:`)) && item.alternatives.some(leg => leg.selected)));
 
 const yeboah = playerForecasts.filter(leg => leg.playerId === "john-yeboah");
@@ -196,4 +196,4 @@ assert.deepEqual(yeboah.map(leg => [leg.suggestionAnalysis.family, leg.providerM
 ]);
 assert(!yeboah.some(leg => leg.betSelection.market.bookmakerSemantics.providerPlayerId === "628786"), "Yeboah ancora associato a Schingtienne");
 
-console.log("OK selezione MD06: 80 baseline non-DNB + 88 tiri/SOT DUO quotati, probabilità/EV DUO N/D, cartellini non forzati, modelli invariati");
+console.log("OK selezione MD06: 80 baseline non-DNB + 89 tiri/SOT DUO quotati, probabilità/EV DUO N/D, cartellini non forzati, modelli invariati");

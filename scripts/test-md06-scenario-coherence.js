@@ -20,8 +20,8 @@ const stableScenario = scenario => {
 
 assert.equal(catalog.schemaVersion, 4, "Il catalogo deve esporre scenario e selezione definitiva schema v4");
 assert.equal(catalog.matches.length, 10, "Devono essere presenti dieci scenari partita");
-assert.equal(rows.length, 1536, "Catalogo ampliato inatteso");
-assert.equal(new Set(rows.map(row => row.selectionId)).size, 1536, "I selectionId devono restare unici");
+assert.equal(rows.length, 1537, "Catalogo ampliato inatteso");
+assert.equal(new Set(rows.map(row => row.selectionId)).size, 1537, "I selectionId devono restare unici");
 assert(rows.every(row => row.scenarioAnalysis?.classification), "Ogni riga deve avere una classificazione scenario");
 
 for (const match of catalog.matches) {
@@ -42,7 +42,7 @@ assert.deepEqual(counts, {
   [CLASSIFICATIONS.ALTERNATIVE]: 50,
   [CLASSIFICATIONS.COHERENT]: 20,
   [CLASSIFICATIONS.MULTI]: 966,
-  [CLASSIFICATIONS.UNDETERMINED]: 500,
+  [CLASSIFICATIONS.UNDETERMINED]: 501,
 }, "Totali classificazione inattesi");
 
 const unmodelled = rows.filter(row => row.betSelection?.evaluation?.status === "NOT_MODELLED");

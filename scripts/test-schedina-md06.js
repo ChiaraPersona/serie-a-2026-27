@@ -85,10 +85,10 @@ for (const prediction of predictions) {
 
 const catalog = normalized.marketCatalog;
 assert(catalog, "Catalogo mercati MD6 assente");
-assert.equal(catalog.totals.finalSelections, 1536);
-assert.equal(catalog.totals.playerForecastsAdded, 92);
-assert.equal(catalog.totals.suggestions, 168);
-assert.deepEqual(catalog.totals.suggestionsByFamily, { shots: 73, "goals-results": 29, sot: 50, corners: 16 });
+assert.equal(catalog.totals.finalSelections, 1537);
+assert.equal(catalog.totals.playerForecastsAdded, 93);
+assert.equal(catalog.totals.suggestions, 169);
+assert.deepEqual(catalog.totals.suggestionsByFamily, { shots: 74, "goals-results": 29, sot: 50, corners: 16 });
 assert.equal(catalog.rules.drawNoBetSuggestedAllowed, false);
 assert.deepEqual(catalog.rules.unquotedSuggestedFamilies, []);
 assert.equal(catalog.rules.duoPlayerMarketsAllowedWithVerifiedQuote, true);
@@ -101,7 +101,7 @@ assert.deepEqual(Object.fromEntries(catalog.matches.map(match => [match.matchId,
   "lazio-monza-2026-27-md-06": 86,
   "lecce-bologna-2026-27-md-06": 171,
   "sassuolo-milan-2026-27-md-06": 172,
-  "cagliari-juventus-2026-27-md-06": 169,
+  "cagliari-juventus-2026-27-md-06": 170,
   "atalanta-venezia-2026-27-md-06": 141,
   "torino-udinese-2026-27-md-06": 141,
 });
@@ -111,10 +111,10 @@ const legacyCatalogSelections = catalogSelections.filter(leg => leg.catalogOrigi
 assert.equal(new Set(catalogSelections.map(leg => leg.selectionId)).size, catalogSelections.length, "Catalogo MD6 con duplicati");
 assert(legacyCatalogSelections.every(leg => leg.betSelection.identity.status === "VERIFIED_PROVIDER_IDS"), "Identità provider non verificata nel catalogo storico");
 assert(legacyCatalogSelections.every(leg => leg.betSelection.quote.availability === "AVAILABLE_AT_SNAPSHOT" && Number.isFinite(leg.betSelection.quote.decimal) && leg.betSelection.quote.decimal >= 1), "Quota non valida nel catalogo storico");
-assert.equal(playerForecasts.length, 92);
+assert.equal(playerForecasts.length, 93);
 const quotedPlayerForecasts = playerForecasts.filter(leg => leg.betSelection.quote.availability === "AVAILABLE_AT_SNAPSHOT");
 const unquotedPlayerForecasts = playerForecasts.filter(leg => leg.betSelection.quote.availability !== "AVAILABLE_AT_SNAPSHOT");
-assert.equal(quotedPlayerForecasts.length, 88);
+assert.equal(quotedPlayerForecasts.length, 89);
 assert(quotedPlayerForecasts.every(leg => leg.betSelection.identity.status === "VERIFIED_PROVIDER_IDS" && leg.betSelection.identity.providerMarketId && leg.betSelection.identity.providerSelectionId && Number.isFinite(leg.betSelection.quote.decimal)), "Quota o identità Sisal DUO non verificata");
 assert.deepEqual(unquotedPlayerForecasts.map(leg => leg.selectionId).sort(), [
   "forecast:v2:genoa-fiorentina-2026-27-md-06:leo-stigard:shots:1",
@@ -214,7 +214,7 @@ for (const match of catalog.matches) {
 assert.equal(catalog.sources.modelVersion, "4.13.0");
 assert.equal(catalog.sources.predictionsGeneratedAt, read("data/normalized/predictions.json").generatedAt);
 assert.equal(catalog.sources.oddsRetrievedAt, odds.retrievedAt);
-assert.equal(catalog.sources.officialFixturesAvailable, 7);
+assert.equal(catalog.sources.officialFixturesAvailable, 8);
 
 {
   const matchById = new Map([["alpha-beta-2026-27-md-06", { id: "alpha-beta-2026-27-md-06", homeTeam: "alpha", awayTeam: "beta" }]]);

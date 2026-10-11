@@ -7,12 +7,19 @@ const path = require("node:path");
 const { chromium } = require("C:/Users/utente/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright");
 
 const root = path.resolve(__dirname, "..");
-const matchId = "sassuolo-milan-2026-27-md-06";
+const valueAfter = flag => {
+  const index = process.argv.indexOf(flag);
+  return index >= 0 ? process.argv[index + 1] : null;
+};
+const matchId = valueAfter("--match") || "sassuolo-milan-2026-27-md-06";
 const data = JSON.parse(fs.readFileSync(path.join(root, "data/normalized/schedina-md06.json"), "utf8"));
 const expectedIds = data.marketCatalog.matches.find(match => match.matchId === matchId).selections
   .filter(leg => leg.suggestionAnalysis?.suggested)
   .map(leg => leg.selectionId)
   .sort();
+const officialData = JSON.parse(fs.readFileSync(path.join(root, "data/sources/official-lineups-2026-27.json"), "utf8"));
+const officialFixture = officialData.fixtures.find(fixture => fixture.matchId === matchId);
+const expectedStarters = (officialFixture?.teams || []).flatMap(team => team.players.map(player => player.currentName)).sort();
 const contentTypes = { ".html": "text/html", ".js": "text/javascript", ".mjs": "text/javascript", ".json": "application/json", ".css": "text/css", ".png": "image/png", ".svg": "image/svg+xml" };
 const server = http.createServer((request, response) => {
   const pathname = decodeURIComponent(new URL(request.url, "http://localhost").pathname);
@@ -46,6 +53,8 @@ async function verify(browser, width, height) {
   const bodyOverflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
   assert(bodyOverflow <= 1, `${width}px: overflow orizzontale della pagina (${bodyOverflow}px)`);
   assert.equal(await page.getByText("FORMAZIONI UFFICIALI", { exact: true }).count(), 1, `${width}px: formazioni ufficiali assenti dalla Lettura`);
+  const renderedStarters = (await page.locator(".reading-lineup-field strong").allTextContents()).map(value => value.trim()).sort();
+  assert.deepEqual(renderedStarters, expectedStarters, `${width}px: undici ufficiali non coerenti con la fonte canonica`);
   assert.equal(errors.length, 0, `${width}px: errori browser: ${errors.join(" | ")}`);
   await context.close();
 }

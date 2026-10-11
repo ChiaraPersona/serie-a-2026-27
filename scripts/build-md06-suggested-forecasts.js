@@ -16,8 +16,13 @@ const countBy = (rows, getter) => rows.reduce((counts, row) => { const key = get
 const finite = value => value !== null && value !== undefined && value !== "" && Number.isFinite(Number(value));
 const table = (headers, rows) => [`| ${headers.join(" | ")} |`, `| ${headers.map(() => "---").join(" | ")} |`, ...rows.map(row => `| ${row.map(value => String(value ?? "N/D").replace(/\|/g, "\\|").replace(/\r?\n/g, " ")).join(" | ")} |`)].join("\n");
 const invariantProjection = leg => ({ selectionId: leg.selectionId, matchId: leg.matchId, quote: leg.betSelection?.quote, evaluation: leg.betSelection?.evaluation, market: leg.betSelection?.market, providerMarketId: leg.providerMarketId, providerSelectionId: leg.providerSelectionId });
+const valueAfter = flag => {
+  const index = process.argv.indexOf(flag);
+  return index >= 0 ? process.argv[index + 1] : null;
+};
 const writeNormalized = process.argv.includes("--write");
 const testsPassed = process.argv.includes("--tests-passed");
+const targetMatchId = valueAfter("--match");
 const baselineTotal = 82;
 const approvedBaselineNonDnbTotal = 80;
 const removedDrawNoBetTotal = baselineTotal - approvedBaselineNonDnbTotal;
@@ -62,7 +67,7 @@ assert.equal(certifiedRows.length, certifiedSelectionTotal, `Il punto di partenz
 const certifiedById = new Map(certifiedRows.map(leg => [leg.selectionId, leg]));
 const invariantBefore = hash(certifiedRows.map(invariantProjection).sort((a, b) => a.selectionId.localeCompare(b.selectionId)));
 
-const marketCatalog = buildMd06MarketCatalog({ predictionsData, odds, matches, schedinaSlips: schedina.slips, probableLineups, officialLineups, statisticalModels, preservedCatalogSelections: currentRows, approvedSuggestionRankById, matchday: 6 });
+const marketCatalog = buildMd06MarketCatalog({ predictionsData, odds, matches, schedinaSlips: schedina.slips, probableLineups, officialLineups, statisticalModels, preservedCatalogSelections: currentRows, approvedSuggestionRankById, targetMatchId, matchday: 6 });
 const rows = marketCatalog.matches.flatMap(match => match.selections);
 const rowById = new Map(rows.map(leg => [leg.selectionId, leg]));
 assert.equal(rowById.size, rows.length, "Il catalogo contiene selectionId duplicati");

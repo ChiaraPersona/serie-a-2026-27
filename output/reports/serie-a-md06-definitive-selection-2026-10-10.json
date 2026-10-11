@@ -1,12 +1,12 @@
 {
   "schemaVersion": 2,
   "reportType": "SERIE_A_MD06_DEFINITIVE_FORECAST_SELECTION",
-  "generatedAt": "2026-10-11T16:50:18.176Z",
+  "generatedAt": "2026-10-11T18:08:07.601Z",
   "sources": {
     "oddsSnapshot": "data/normalized/odds/sisal/serie-a.json",
     "oddsRetrievedAt": "2026-10-10T09:57:30.921Z",
     "predictionSnapshot": "data/normalized/predictions.json",
-    "predictionGeneratedAt": "2026-10-11T16:48:38.583Z",
+    "predictionGeneratedAt": "2026-10-11T18:07:37.288Z",
     "engineVersion": "4.13.0",
     "statisticalModels": "data/analysis/serie-a-md06-statistical-models-2026-10-10.json",
     "phase5B": "output/reports/serie-a-md06-phase-5b2-2026-10-09.md",
@@ -21,8 +21,8 @@
     "certifiedContractHashBefore": "41ccd25354fc4b93a6964f3e62917df133630aff72f275036f83e614d520bb9b",
     "certifiedContractHashAfter": "41ccd25354fc4b93a6964f3e62917df133630aff72f275036f83e614d520bb9b",
     "certifiedContractsUnchanged": true,
-    "catalogSelections": 1536,
-    "evaluatedSelections": 1128,
+    "catalogSelections": 1537,
+    "evaluatedSelections": 1129,
     "notModelledSelections": 408
   },
   "previousEngineAudit": {
@@ -66,15 +66,15 @@
     "topNLimit": null
   },
   "coverage": {
-    "totalSuggestions": 168,
-    "averagePerMatch": 16.8,
+    "totalSuggestions": 169,
+    "averagePerMatch": 16.9,
     "byFamily": {
-      "shots": 73,
+      "shots": 74,
       "goals-results": 29,
       "sot": 50,
       "corners": 16
     },
-    "quotedSuggestions": 168,
+    "quotedSuggestions": 169,
     "unquotedSuggestions": 0,
     "negativeEvSuggestions": 70,
     "recoveredFromEconomicExclusion": 71,
@@ -429,18 +429,18 @@
       {
         "matchId": "cagliari-juventus-2026-27-md-06",
         "fixture": "Cagliari – Juventus",
-        "catalog": 169,
-        "quoted": 169,
-        "evaluated": 125,
+        "catalog": 170,
+        "quoted": 170,
+        "evaluated": 126,
         "notModelled": 44,
         "positiveEv": 30,
         "previousSuggestions": 9,
         "removedDnb": 0,
         "preservedBaseline": 9,
-        "newShots": 6,
+        "newShots": 7,
         "newSot": 3,
         "unquoted": 0,
-        "selected": 18,
+        "selected": 19,
         "exclusions": {
           "SPORTS_SUPPORT_BELOW_MARKET_STANDARD": 66,
           "NOT_COHERENT_WITH_PREVALENT_SCENARIO": 49,
@@ -466,14 +466,15 @@
           "bet:sisal:cagliari-juventus-2026-27-md-06:5337202436",
           "bet:sisal:cagliari-juventus-2026-27-md-06:5371738593",
           "forecast:v2:cagliari-juventus-2026-27-md-06:bremer:shots:1",
+          "forecast:v2:cagliari-juventus-2026-27-md-06:francisco-conceicao:shots:3",
+          "forecast:v2:cagliari-juventus-2026-27-md-06:daniel-maldini:shots:2",
           "forecast:v2:cagliari-juventus-2026-27-md-06:alessandro-romano:shots:2",
-          "forecast:v2:cagliari-juventus-2026-27-md-06:nicolas-gonzalez:shots:3",
           "forecast:v2:cagliari-juventus-2026-27-md-06:paul-mendy:shots:3",
+          "forecast:v2:cagliari-juventus-2026-27-md-06:nicolas-gonzalez:shots:3",
           "forecast:v2:cagliari-juventus-2026-27-md-06:randal-kolo-muani:shots:3",
-          "forecast:v2:cagliari-juventus-2026-27-md-06:daniel-maldini:shots:3",
-          "forecast:v2:cagliari-juventus-2026-27-md-06:douglas-luiz:sot:1",
+          "forecast:v2:cagliari-juventus-2026-27-md-06:daniel-maldini:sot:1",
           "forecast:v2:cagliari-juventus-2026-27-md-06:paul-mendy:sot:1",
-          "forecast:v2:cagliari-juventus-2026-27-md-06:bremer:sot:1"
+          "forecast:v2:cagliari-juventus-2026-27-md-06:francisco-conceicao:sot:2"
         ]
       },
       {
@@ -579,24 +580,24 @@
       "previousSuggestions": 82,
       "removedDrawNoBet": 2,
       "preservedApprovedNonDnb": 80,
-      "newPlayerShots": 56,
+      "newPlayerShots": 57,
       "newPlayerSot": 32,
       "newPlayerCards": 0,
       "newCardsOvers": 0,
-      "currentSuggestions": 168,
-      "delta": 86
+      "currentSuggestions": 169,
+      "delta": 87
     }
   },
   "readingIntegration": {
     "source": "data/normalized/predictions.json#predictions[].shooters",
     "readingsConsumer": "js/pages/readings.js",
     "sharedStructuredData": true,
-    "added": 92,
-    "shots": 58,
+    "added": 93,
+    "shots": 59,
     "sot": 34,
-    "quoted": 88,
+    "quoted": 89,
     "unquoted": 4,
-    "duoPromoted": 88,
+    "duoPromoted": 89,
     "excluded": [
       {
         "matchId": "genoa-fiorentina-2026-27-md-06",
@@ -926,28 +927,15 @@
       },
       {
         "matchId": "cagliari-juventus-2026-27-md-06",
-        "playerId": "edon-zhegrova",
-        "playerName": "Edon Zhegrova",
-        "metric": "shots",
-        "sources": [
-          "primary-shots",
-          "primary-sot"
-        ],
-        "reasons": [
-          "READING_SUPPORT_BELOW_SHOTS_STANDARD"
-        ]
-      },
-      {
-        "matchId": "cagliari-juventus-2026-27-md-06",
-        "playerId": "edon-zhegrova",
-        "playerName": "Edon Zhegrova",
+        "playerId": "bremer",
+        "playerName": "Bremer",
         "metric": "sot",
         "sources": [
-          "primary-shots",
-          "primary-sot"
+          "qualified-shots-outsider",
+          "qualified-sot-outsider"
         ],
         "reasons": [
-          "READING_SUPPORT_BELOW_SOT_STANDARD"
+          "MODEL_THRESHOLD_NOT_SUPPORTED"
         ]
       },
       {
@@ -1129,15 +1117,16 @@
       "forecast:v2:sassuolo-milan-2026-27-md-06:samuel-chukwueze:shots:2",
       "forecast:v2:sassuolo-milan-2026-27-md-06:domenico-berardi:shots:2",
       "forecast:v2:sassuolo-milan-2026-27-md-06:strahinja-pavlovic:shots:1",
-      "forecast:v2:cagliari-juventus-2026-27-md-06:nicolas-gonzalez:shots:3",
+      "forecast:v2:cagliari-juventus-2026-27-md-06:francisco-conceicao:shots:3",
+      "forecast:v2:cagliari-juventus-2026-27-md-06:francisco-conceicao:sot:2",
       "forecast:v2:cagliari-juventus-2026-27-md-06:paul-mendy:shots:3",
       "forecast:v2:cagliari-juventus-2026-27-md-06:paul-mendy:sot:1",
+      "forecast:v2:cagliari-juventus-2026-27-md-06:nicolas-gonzalez:shots:3",
       "forecast:v2:cagliari-juventus-2026-27-md-06:randal-kolo-muani:shots:3",
-      "forecast:v2:cagliari-juventus-2026-27-md-06:daniel-maldini:shots:3",
-      "forecast:v2:cagliari-juventus-2026-27-md-06:douglas-luiz:sot:1",
+      "forecast:v2:cagliari-juventus-2026-27-md-06:daniel-maldini:shots:2",
+      "forecast:v2:cagliari-juventus-2026-27-md-06:daniel-maldini:sot:1",
       "forecast:v2:cagliari-juventus-2026-27-md-06:alessandro-romano:shots:2",
       "forecast:v2:cagliari-juventus-2026-27-md-06:bremer:shots:1",
-      "forecast:v2:cagliari-juventus-2026-27-md-06:bremer:sot:1",
       "forecast:v2:atalanta-venezia-2026-27-md-06:gianluca-scamacca:shots:3",
       "forecast:v2:atalanta-venezia-2026-27-md-06:john-yeboah:shots:3",
       "forecast:v2:atalanta-venezia-2026-27-md-06:john-yeboah:sot:2",
@@ -1486,28 +1475,15 @@
       },
       {
         "matchId": "cagliari-juventus-2026-27-md-06",
-        "playerId": "edon-zhegrova",
-        "playerName": "Edon Zhegrova",
-        "metric": "shots",
-        "sources": [
-          "primary-shots",
-          "primary-sot"
-        ],
-        "reasons": [
-          "READING_SUPPORT_BELOW_SHOTS_STANDARD"
-        ]
-      },
-      {
-        "matchId": "cagliari-juventus-2026-27-md-06",
-        "playerId": "edon-zhegrova",
-        "playerName": "Edon Zhegrova",
+        "playerId": "bremer",
+        "playerName": "Bremer",
         "metric": "sot",
         "sources": [
-          "primary-shots",
-          "primary-sot"
+          "qualified-shots-outsider",
+          "qualified-sot-outsider"
         ],
         "reasons": [
-          "READING_SUPPORT_BELOW_SOT_STANDARD"
+          "MODEL_THRESHOLD_NOT_SUPPORTED"
         ]
       },
       {
@@ -2557,7 +2533,7 @@
         "B": 132,
         "C": 5612,
         "D": 428,
-        "selected": 73
+        "selected": 74
       },
       {
         "family": "sot",
@@ -3042,7 +3018,7 @@
       "market": "TIRI TOTALI GIOCATORE (DUO)",
       "label": "Bremer e suo eventuale sostituto 1+ tiri",
       "probabilityPct": null,
-      "individualProbabilityPct": 74.08,
+      "individualProbabilityPct": 70.77,
       "prudentProbabilityPct": null,
       "odds": 1.5,
       "expectedValuePct": null,
@@ -3056,11 +3032,47 @@
       "fixture": "Cagliari – Juventus",
       "rank": 11,
       "family": "shots",
+      "selectionId": "forecast:v2:cagliari-juventus-2026-27-md-06:francisco-conceicao:shots:3",
+      "market": "TIRI TOTALI GIOCATORE (DUO)",
+      "label": "Francisco Conceição e suo eventuale sostituto 3+ tiri",
+      "probabilityPct": null,
+      "individualProbabilityPct": 67.92,
+      "prudentProbabilityPct": null,
+      "odds": 1.33,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Alta",
+      "canonicalThresholdIdentity": "shots:player:francisco-conceicao:over"
+    },
+    {
+      "matchId": "cagliari-juventus-2026-27-md-06",
+      "fixture": "Cagliari – Juventus",
+      "rank": 12,
+      "family": "shots",
+      "selectionId": "forecast:v2:cagliari-juventus-2026-27-md-06:daniel-maldini:shots:2",
+      "market": "TIRI TOTALI GIOCATORE (DUO)",
+      "label": "Daniel Maldini e suo eventuale sostituto 2+ tiri",
+      "probabilityPct": null,
+      "individualProbabilityPct": 65.03,
+      "prudentProbabilityPct": null,
+      "odds": 1.25,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Alta",
+      "canonicalThresholdIdentity": "shots:player:daniel-maldini:over"
+    },
+    {
+      "matchId": "cagliari-juventus-2026-27-md-06",
+      "fixture": "Cagliari – Juventus",
+      "rank": 13,
+      "family": "shots",
       "selectionId": "forecast:v2:cagliari-juventus-2026-27-md-06:alessandro-romano:shots:2",
       "market": "TIRI TOTALI GIOCATORE (DUO)",
       "label": "Alessandro Romano e suo eventuale sostituto 2+ tiri",
       "probabilityPct": null,
-      "individualProbabilityPct": 54.6,
+      "individualProbabilityPct": 50.99,
       "prudentProbabilityPct": null,
       "odds": 2.75,
       "expectedValuePct": null,
@@ -3072,31 +3084,13 @@
     {
       "matchId": "cagliari-juventus-2026-27-md-06",
       "fixture": "Cagliari – Juventus",
-      "rank": 12,
-      "family": "shots",
-      "selectionId": "forecast:v2:cagliari-juventus-2026-27-md-06:nicolas-gonzalez:shots:3",
-      "market": "TIRI TOTALI GIOCATORE (DUO)",
-      "label": "Nicolás González e suo eventuale sostituto 3+ tiri",
-      "probabilityPct": null,
-      "individualProbabilityPct": 53.05,
-      "prudentProbabilityPct": null,
-      "odds": 1.4,
-      "expectedValuePct": null,
-      "expectedValueBasis": null,
-      "conservativeExpectedValuePct": null,
-      "reliability": "Bassa",
-      "canonicalThresholdIdentity": "shots:player:nicolas-gonzalez:over"
-    },
-    {
-      "matchId": "cagliari-juventus-2026-27-md-06",
-      "fixture": "Cagliari – Juventus",
-      "rank": 13,
+      "rank": 14,
       "family": "shots",
       "selectionId": "forecast:v2:cagliari-juventus-2026-27-md-06:paul-mendy:shots:3",
       "market": "TIRI TOTALI GIOCATORE (DUO)",
       "label": "Paul Mendy e suo eventuale sostituto 3+ tiri",
       "probabilityPct": null,
-      "individualProbabilityPct": 51.13,
+      "individualProbabilityPct": 46.89,
       "prudentProbabilityPct": null,
       "odds": 2,
       "expectedValuePct": null,
@@ -3108,13 +3102,31 @@
     {
       "matchId": "cagliari-juventus-2026-27-md-06",
       "fixture": "Cagliari – Juventus",
-      "rank": 14,
+      "rank": 15,
+      "family": "shots",
+      "selectionId": "forecast:v2:cagliari-juventus-2026-27-md-06:nicolas-gonzalez:shots:3",
+      "market": "TIRI TOTALI GIOCATORE (DUO)",
+      "label": "Nicolás González e suo eventuale sostituto 3+ tiri",
+      "probabilityPct": null,
+      "individualProbabilityPct": 46.64,
+      "prudentProbabilityPct": null,
+      "odds": 1.4,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Bassa",
+      "canonicalThresholdIdentity": "shots:player:nicolas-gonzalez:over"
+    },
+    {
+      "matchId": "cagliari-juventus-2026-27-md-06",
+      "fixture": "Cagliari – Juventus",
+      "rank": 16,
       "family": "shots",
       "selectionId": "forecast:v2:cagliari-juventus-2026-27-md-06:randal-kolo-muani:shots:3",
       "market": "TIRI TOTALI GIOCATORE (DUO)",
       "label": "Randal Kolo Muani e suo eventuale sostituto 3+ tiri",
       "probabilityPct": null,
-      "individualProbabilityPct": 50.64,
+      "individualProbabilityPct": 45.36,
       "prudentProbabilityPct": null,
       "odds": 1.33,
       "expectedValuePct": null,
@@ -3126,49 +3138,31 @@
     {
       "matchId": "cagliari-juventus-2026-27-md-06",
       "fixture": "Cagliari – Juventus",
-      "rank": 15,
-      "family": "shots",
-      "selectionId": "forecast:v2:cagliari-juventus-2026-27-md-06:daniel-maldini:shots:3",
-      "market": "TIRI TOTALI GIOCATORE (DUO)",
-      "label": "Daniel Maldini e suo eventuale sostituto 3+ tiri",
-      "probabilityPct": null,
-      "individualProbabilityPct": 41.98,
-      "prudentProbabilityPct": null,
-      "odds": 1.75,
-      "expectedValuePct": null,
-      "expectedValueBasis": null,
-      "conservativeExpectedValuePct": null,
-      "reliability": "Alta",
-      "canonicalThresholdIdentity": "shots:player:daniel-maldini:over"
-    },
-    {
-      "matchId": "cagliari-juventus-2026-27-md-06",
-      "fixture": "Cagliari – Juventus",
-      "rank": 16,
-      "family": "sot",
-      "selectionId": "forecast:v2:cagliari-juventus-2026-27-md-06:douglas-luiz:sot:1",
-      "market": "TIRI IN PORTA GIOCATORE (DUO, PALI/TRAVERSE INCLUSI)",
-      "label": "Douglas Luiz e suo eventuale sostituto 1+ tiri in porta (pali e traverse inclusi)",
-      "probabilityPct": null,
-      "individualProbabilityPct": 52.29,
-      "prudentProbabilityPct": null,
-      "odds": 2.4,
-      "expectedValuePct": null,
-      "expectedValueBasis": null,
-      "conservativeExpectedValuePct": null,
-      "reliability": "Alta",
-      "canonicalThresholdIdentity": "sot:player:douglas-luiz:over"
-    },
-    {
-      "matchId": "cagliari-juventus-2026-27-md-06",
-      "fixture": "Cagliari – Juventus",
       "rank": 17,
+      "family": "sot",
+      "selectionId": "forecast:v2:cagliari-juventus-2026-27-md-06:daniel-maldini:sot:1",
+      "market": "TIRI IN PORTA GIOCATORE (DUO, PALI/TRAVERSE INCLUSI)",
+      "label": "Daniel Maldini e suo eventuale sostituto 1+ tiri in porta (pali e traverse inclusi)",
+      "probabilityPct": null,
+      "individualProbabilityPct": 49.34,
+      "prudentProbabilityPct": null,
+      "odds": 1.57,
+      "expectedValuePct": null,
+      "expectedValueBasis": null,
+      "conservativeExpectedValuePct": null,
+      "reliability": "Media",
+      "canonicalThresholdIdentity": "sot:player:daniel-maldini:over"
+    },
+    {
+      "matchId": "cagliari-juventus-2026-27-md-06",
+      "fixture": "Cagliari – Juventus",
+      "rank": 18,
       "family": "sot",
       "selectionId": "forecast:v2:cagliari-juventus-2026-27-md-06:paul-mendy:sot:1",
       "market": "TIRI IN PORTA GIOCATORE (DUO, PALI/TRAVERSE INCLUSI)",
       "label": "Paul Mendy e suo eventuale sostituto 1+ tiri in porta (pali e traverse inclusi)",
       "probabilityPct": null,
-      "individualProbabilityPct": 52.29,
+      "individualProbabilityPct": 49.34,
       "prudentProbabilityPct": null,
       "odds": 1.75,
       "expectedValuePct": null,
@@ -3180,20 +3174,20 @@
     {
       "matchId": "cagliari-juventus-2026-27-md-06",
       "fixture": "Cagliari – Juventus",
-      "rank": 18,
+      "rank": 19,
       "family": "sot",
-      "selectionId": "forecast:v2:cagliari-juventus-2026-27-md-06:bremer:sot:1",
+      "selectionId": "forecast:v2:cagliari-juventus-2026-27-md-06:francisco-conceicao:sot:2",
       "market": "TIRI IN PORTA GIOCATORE (DUO, PALI/TRAVERSE INCLUSI)",
-      "label": "Bremer e suo eventuale sostituto 1+ tiri in porta (pali e traverse inclusi)",
+      "label": "Francisco Conceição e suo eventuale sostituto 2+ tiri in porta (pali e traverse inclusi)",
       "probabilityPct": null,
-      "individualProbabilityPct": 42.88,
+      "individualProbabilityPct": 32.65,
       "prudentProbabilityPct": null,
-      "odds": 3.25,
+      "odds": 2.75,
       "expectedValuePct": null,
       "expectedValueBasis": null,
       "conservativeExpectedValuePct": null,
       "reliability": "Alta",
-      "canonicalThresholdIdentity": "sot:player:bremer:over"
+      "canonicalThresholdIdentity": "sot:player:francisco-conceicao:over"
     },
     {
       "matchId": "como-roma-2026-27-md-06",
@@ -5623,7 +5617,28 @@
       "canonicalThresholdIdentity": "sot:player:giovanni-simeone:over"
     }
   ],
-  "tests": [],
+  "tests": [
+    {
+      "command": "node scripts/test-schedina-md06.js",
+      "status": "PASS"
+    },
+    {
+      "command": "node scripts/test-md06-suggested-forecasts.js",
+      "status": "PASS"
+    },
+    {
+      "command": "node scripts/test-personal-betslip.mjs",
+      "status": "PASS"
+    },
+    {
+      "command": "node scripts/check-schedina-md06-suggestions-browser.cjs",
+      "status": "PASS"
+    },
+    {
+      "command": "git diff --check",
+      "status": "PASS"
+    }
+  ],
   "testLimitations": [],
   "filesModified": [
     "scripts/md06-player-forecast-integration.js",

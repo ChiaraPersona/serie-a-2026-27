@@ -437,16 +437,67 @@ function buildMd06MarketCatalog({ predictionsData, odds, matches, schedinaSlips,
   });
   const scenarioIntegrated = annotateCatalogMatches({ catalogMatches: integrated.matches, predictions });
   const syncSummaries = [];
+  const officialFixtureByMatch = new Map((officialLineups?.fixtures || []).map(fixture => [fixture.matchId, fixture]));
+  const incomingPlayerForecastIdsByMatch = new Map(scenarioIntegrated.map(match => [
+    match.matchId,
+    new Set(match.selections.filter(leg => leg.catalogOrigin === "prediction-v2-player-forecast").map(leg => leg.selectionId)),
+  ]));
+  const supersededPlayerForecastIdsByMatch = new Map();
+  const preserveWithCurrentLineupState = leg => {
+    if (leg?.catalogOrigin !== "prediction-v2-player-forecast") return leg;
+    const fixture = officialFixtureByMatch.get(leg.matchId);
+    if (!fixture) return leg;
+    const starterIds = new Set(fixture.teams.flatMap(team => (team.players || []).map(player => player.playerId).filter(Boolean)));
+    const isStarter = starterIds.has(leg.playerId);
+    const remainsInAnalysis = incomingPlayerForecastIdsByMatch.get(leg.matchId)?.has(leg.selectionId) === true;
+    if (isStarter && remainsInAnalysis) return leg;
+    const status = isStarter ? "superseded-analysis" : "inactive-lineup";
+    return {
+      ...leg,
+      forecastStatus: status,
+      lineupEligibility: {
+        ...(leg.lineupEligibility || {}),
+        eligible: isStarter,
+        status: isStarter ? "official-starter" : "official-nonstarter",
+        source: fixture.provider || officialLineups.provider || "official",
+        sourceUpdatedAt: fixture.retrievedAt || officialLineups.retrievedAt || null,
+      },
+      suggestionAnalysis: {
+        ...(leg.suggestionAnalysis || {}),
+        suggested: false,
+        rank: null,
+        exclusionReason: isStarter ? "SUPERSEDED_BY_CURRENT_ANALYSIS" : "OFFICIAL_NONSTARTER",
+      },
+    };
+  };
   const preservedByMatch = new Map((preservedCatalogSelections || []).reduce((rows, leg) => {
+    const synchronizePlayerForecasts = !targetMatchId || leg.matchId === targetMatchId;
+    const obsoletePlayerForecast = synchronizePlayerForecasts
+      && leg?.catalogOrigin === "prediction-v2-player-forecast"
+      && officialFixtureByMatch.has(leg.matchId)
+      && incomingPlayerForecastIdsByMatch.get(leg.matchId)?.has(leg.selectionId) !== true;
+    if (obsoletePlayerForecast) {
+      const superseded = supersededPlayerForecastIdsByMatch.get(leg.matchId) || [];
+      superseded.push(leg.selectionId);
+      supersededPlayerForecastIdsByMatch.set(leg.matchId, superseded);
+      return rows;
+    }
     const list = rows.get(leg.matchId) || [];
-    list.push(leg);
+    list.push(preserveWithCurrentLineupState(leg));
     rows.set(leg.matchId, list);
     return rows;
   }, new Map()));
   const catalogMatches = scenarioIntegrated.map(match => {
+    const existingRows = preservedByMatch.get(match.matchId) || [];
+    const targetedIncrementalUpdate = Boolean(targetMatchId) && (preservedCatalogSelections || []).length > 0;
+    const incomingRows = targetedIncrementalUpdate
+      ? (match.matchId === targetMatchId
+        ? match.selections.filter(leg => leg.catalogOrigin === "prediction-v2-player-forecast")
+        : [])
+      : match.selections;
     const sync = upsertForecastSelections({
-      existing: preservedByMatch.get(match.matchId) || [],
-      incoming: match.selections,
+      existing: existingRows,
+      incoming: incomingRows,
       withdrawnSelectionIds,
       allowQuoteUpdates,
     });
@@ -459,12 +510,13 @@ function buildMd06MarketCatalog({ predictionsData, odds, matches, schedinaSlips,
     }, {});
     if (!targetMatchId || match.matchId === targetMatchId) syncSummaries.push({
       matchId: match.matchId,
-      before: sync.summary.before,
+      before: (preservedCatalogSelections || []).filter(leg => leg.matchId === match.matchId).length,
       incoming: sync.summary.incoming,
       after: sync.summary.after,
       added: sync.summary.added.length,
       updated: sync.summary.updated.length,
       preserved: sync.summary.preserved.length,
+      superseded: supersededPlayerForecastIdsByMatch.get(match.matchId) || [],
       withdrawn: sync.summary.withdrawn,
       quoteUpdatesAllowed: sync.summary.quoteUpdatesAllowed,
     });

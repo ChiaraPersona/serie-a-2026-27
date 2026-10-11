@@ -1,18 +1,18 @@
 # Serie A 2026/27 — Schedina MD6: integrazione tiratori, SOT e cartellini
 
-Generato: 2026-10-11T16:50:18.176Z. Engine V2 4.13.0; quote Sisal snapshot 2026-10-10T09:57:30.921Z.
+Generato: 2026-10-11T18:08:07.601Z. Engine V2 4.13.0; quote Sisal snapshot 2026-10-10T09:57:30.921Z.
 
 ## Esito
 
 - Totale iniziale: **82**.
 - Draw No Bet rimossi: **2**.
 - Pronostici approvati non-DNB preservati: **80**.
-- Nuovi tiri individuali: **56**.
+- Nuovi tiri individuali: **57**.
 - Nuovi SOT individuali: **32**.
 - Nuovi cartellini individuali: **0**.
 - Nuovi Over cartellini: **0**.
 - Pronostici senza quota: **0**.
-- Totale finale: **168**.
+- Totale finale: **169**.
 
 > Le quote della baseline restano quelle certificate nello snapshot 2026-10-10T09:57:30.921Z; i 95 mercati tiri/SOT usano le quote del contratto Sisal DUO nello snapshot 2026-10-10T09:57:30.921Z. Il contratto include l'eventuale sostituto e, per i SOT, pali e traverse. Probabilità DUO ed EV restano N/D.
 
@@ -27,7 +27,7 @@ Generato: 2026-10-11T16:50:18.176Z. Engine V2 4.13.0; quote Sisal snapshot 2026-
 | Lazio – Monza | 5 | 0 | 5 | 9 | 5 | 0 | 19 |
 | Lecce – Bologna | 9 | 1 | 8 | 4 | 3 | 0 | 15 |
 | Sassuolo – Milan | 9 | 0 | 9 | 5 | 2 | 0 | 16 |
-| Cagliari – Juventus | 9 | 0 | 9 | 6 | 3 | 0 | 18 |
+| Cagliari – Juventus | 9 | 0 | 9 | 7 | 3 | 0 | 19 |
 | Atalanta – Venezia | 7 | 0 | 7 | 5 | 3 | 0 | 15 |
 | Torino – Udinese | 7 | 0 | 7 | 7 | 3 | 0 | 17 |
 
@@ -39,7 +39,7 @@ Per ogni giocatore e statistica viene scelta una sola soglia dalle probabilità 
 
 ## Quote e contratti
 
-Nuovi pronostici individuali quotati: **88**. Nuovi pronostici individuali senza quota: **4**. Contratti DUO promossi: **88**.
+Nuovi pronostici individuali quotati: **89**. Nuovi pronostici individuali senza quota: **4**. Contratti DUO promossi: **89**.
 
 I contratti DUO includono il giocatore nominato e il suo eventuale sostituto; il codice 28506 include anche pali e traverse. Le quote sono associate, ma probabilità DUO ed EV restano N/D perché la probabilità V2 individuale non viene trasferita al contratto bookmaker.
 
@@ -77,8 +77,7 @@ Nessun cartellino individuale e nessun Over cartellini è stato aggiunto. `likel
 | sassuolo-milan-2026-27-md-06 | Adrien Rabiot | Tiri | minuti, stabilità o supporto outsider insufficienti per i tiri |
 | cagliari-juventus-2026-27-md-06 | Nicolás González | SOT | selettività SOT: minuti, precisione o stabilità insufficienti |
 | cagliari-juventus-2026-27-md-06 | Randal Kolo Muani | SOT | selettività SOT: minuti, precisione o stabilità insufficienti |
-| cagliari-juventus-2026-27-md-06 | Edon Zhegrova | Tiri | minuti, stabilità o supporto outsider insufficienti per i tiri |
-| cagliari-juventus-2026-27-md-06 | Edon Zhegrova | SOT | selettività SOT: minuti, precisione o stabilità insufficienti |
+| cagliari-juventus-2026-27-md-06 | Bremer | SOT | nessuna soglia V2 supera il supporto minimo |
 | cagliari-juventus-2026-27-md-06 | Michel Adopo | SOT | nessuna soglia V2 supera il supporto minimo |
 | atalanta-venezia-2026-27-md-06 | Gianluca Scamacca | SOT | selettività SOT: minuti, precisione o stabilità insufficienti |
 | atalanta-venezia-2026-27-md-06 | Charles De Ketelaere | SOT | selettività SOT: minuti, precisione o stabilità insufficienti |
@@ -95,7 +94,11 @@ Le 80 selezioni approvate non-DNB sono preservate con hash **ff600135e0a4009bc90
 
 Le 385 selezioni certificate e i loro contratti sono invariati: **SÌ**. MyCombo, modelli, pagine Champions e giornate precedenti non vengono rigenerati da questo script.
 
-- Test finali da eseguire dopo la rigenerazione.
+- PASS — `node scripts/test-schedina-md06.js`
+- PASS — `node scripts/test-md06-suggested-forecasts.js`
+- PASS — `node scripts/test-personal-betslip.mjs`
+- PASS — `node scripts/check-schedina-md06-suggestions-browser.cjs`
+- PASS — `git diff --check`
 
 ## File modificati
 

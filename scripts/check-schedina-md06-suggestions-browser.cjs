@@ -11,7 +11,8 @@ const output = path.join(root, "output", "md06");
 const schedina = JSON.parse(fs.readFileSync(path.join(root, "data/normalized/schedina-md06.json"), "utf8"));
 const matches = JSON.parse(fs.readFileSync(path.join(root, "data/normalized/matches.json"), "utf8"));
 const finishedMatchIds = new Set(matches.filter(match => match.status === "finished").map(match => match.id));
-const selectedDuoForecasts = schedina.marketCatalog.matches.flatMap(match => match.selections || []).filter(leg => leg.catalogOrigin === "prediction-v2-player-forecast" && leg.suggestionAnalysis?.suggested);
+const selectedForecasts = schedina.marketCatalog.matches.flatMap(match => match.selections || []).filter(leg => leg.suggestionAnalysis?.suggested);
+const selectedDuoForecasts = selectedForecasts.filter(leg => leg.catalogOrigin === "prediction-v2-player-forecast");
 const selectableDuoForecasts = selectedDuoForecasts.filter(leg => !finishedMatchIds.has(leg.matchId));
 const types = { ".html": "text/html", ".js": "text/javascript", ".mjs": "text/javascript", ".json": "application/json", ".css": "text/css", ".png": "image/png" };
 const server = http.createServer((request, response) => {
@@ -33,7 +34,7 @@ async function verifyViewport(browser, width, height) {
   await page.reload({ waitUntil: "networkidle" });
 
   assert.equal(await page.locator("[data-match-panel]").count(), 10, `${width}px: partite mancanti`);
-  assert.equal(await page.locator("[data-selected-forecast=true]").count(), 168, `${width}px: pronostici selezionati inattesi`);
+  assert.equal(await page.locator("[data-selected-forecast=true]").count(), selectedForecasts.length, `${width}px: pronostici selezionati inattesi`);
   assert.equal(await page.locator('[data-selected-forecast=true][data-quote-availability="unavailable"]').count(), 0, `${width}px: pronostici ancora senza quota`);
   assert.equal(await page.locator('[data-selected-forecast=true][data-bookmaker-contract="duo"]').count(), selectedDuoForecasts.length, `${width}px: mercati DUO inattesi`);
   assert.equal(await page.locator('[data-selected-forecast=true][data-bookmaker-contract="duo"][data-personal-pick]').count(), selectableDuoForecasts.length, `${width}px: mercati DUO aggiungibili inattesi`);
