@@ -22,6 +22,7 @@ const selectedPlayerForecasts = schedina.marketCatalog.matches
 const refreshedMatchIds = new Set([
   "lazio-monza-2026-27-md-06",
   "lecce-bologna-2026-27-md-06",
+  "sassuolo-milan-2026-27-md-06",
 ]);
 
 for (const leg of selectedPlayerForecasts) {
@@ -39,4 +40,12 @@ assert(!targetSelections.some(leg => leg.playerId === "federico-bernardeschi"), 
 assert(!targetSelections.some(leg => leg.playerId === "joel-monteiro"), "Monteiro non titolare ancora presente nei Pronostici selezionati");
 assert(targetSelections.some(leg => leg.selectionId === "forecast:v2:lecce-bologna-2026-27-md-06:nicolo-cambiaghi:shots:2"), "Sostituzione modellistica Cambiaghi 2+ tiri assente");
 
-console.log(`OK Schedina MD06: ${selectedPlayerForecasts.length} pronostici giocatore verificati contro le formazioni ufficiali disponibili; Bernardeschi escluso, Cambiaghi inserito.`);
+const sassuoloMilanSelections = selectedPlayerForecasts.filter(leg => leg.matchId === "sassuolo-milan-2026-27-md-06");
+assert(sassuoloMilanSelections.length > 0, "Pronostici giocatore Sassuolo-Milan assenti");
+assert(!sassuoloMilanSelections.some(leg => leg.playerId === "kristian-thorstvedt"), "Thorstvedt in panchina ancora presente nei Pronostici selezionati");
+for (const leg of sassuoloMilanSelections) {
+  assert.equal(leg.lineupEligibility?.source, "Diretta.it", `${leg.selectionId}: fonte specifica della formazione ufficiale non propagata`);
+  assert.equal(leg.lineupEligibility?.sourceUpdatedAt, "2026-10-11T17:16:47+02:00", `${leg.selectionId}: timestamp specifico della formazione ufficiale non propagato`);
+}
+
+console.log(`OK Schedina MD06: ${selectedPlayerForecasts.length} pronostici giocatore verificati contro le formazioni ufficiali disponibili; Sassuolo-Milan usa fonte e timestamp della fixture.`);

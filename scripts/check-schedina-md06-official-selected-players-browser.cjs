@@ -30,12 +30,15 @@ async function verify(browser, width, height) {
 
   const lecceBologna = page.locator('[data-match-id="lecce-bologna-2026-27-md-06"]');
   const lazioMonza = page.locator('[data-match-id="lazio-monza-2026-27-md-06"]');
+  const sassuoloMilan = page.locator('[data-match-id="sassuolo-milan-2026-27-md-06"]');
   assert.equal(await lecceBologna.locator("[data-selected-forecast=true]").count(), 15, `${width}px: numero pronostici Lecce-Bologna inatteso`);
   assert.equal(await lazioMonza.locator("[data-selected-forecast=true]").count(), 19, `${width}px: numero pronostici Lazio-Monza inatteso`);
+  assert.equal(await sassuoloMilan.locator("[data-selected-forecast=true]").count(), 7, `${width}px: numero pronostici Sassuolo-Milan inatteso`);
   assert.equal(await page.locator('[data-selected-forecast=true]').filter({ hasText: "Federico Bernardeschi" }).count(), 0, `${width}px: Bernardeschi ancora visibile`);
   assert.equal(await page.locator('[data-selected-forecast=true]').filter({ hasText: "Joël Monteiro" }).count(), 0, `${width}px: Monteiro ancora visibile`);
   assert.equal(await page.locator('[data-selected-forecast=true]').filter({ hasText: "Jay Robinson" }).count(), 0, `${width}px: Robinson ancora visibile`);
   assert.equal(await page.locator('[data-selected-forecast=true]').filter({ hasText: "Patrick Cutrone" }).count(), 0, `${width}px: Cutrone ancora visibile`);
+  assert.equal(await sassuoloMilan.locator('[data-selected-forecast=true]').filter({ hasText: "Kristian Thorstvedt" }).count(), 0, `${width}px: Thorstvedt in panchina ancora visibile`);
   assert.equal(await lecceBologna.locator('[data-selection-label="Nicolò Cambiaghi e suo eventuale sostituto 2+ tiri"]').count(), 1, `${width}px: Cambiaghi 2+ tiri assente`);
   assert.equal(await lazioMonza.locator('[data-selection-label="Cyril Ngonge e suo eventuale sostituto 2+ tiri"]').count(), 1, `${width}px: Ngonge 2+ tiri assente`);
   assert(!(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth)), `${width}px: overflow orizzontale`);

@@ -47,11 +47,13 @@ function resolveLineupEligibility({ leg, matchId, matchById, probableLineups, of
   const officialFixture = (officialLineups?.fixtures || []).find(fixture => fixture.matchId === matchId);
 
   if (officialFixture) {
+    const officialSource = officialFixture.provider || officialLineups.provider || "official";
+    const officialSourceUpdatedAt = officialFixture.retrievedAt || officialLineups.retrievedAt || null;
     const officialPlayers = officialFixture.teams.flatMap(team => (team.players || []).map(player => ({ ...player, sourceName: player.currentName, lineupStatus: "starter", teamId: team.teamId })));
     const officialPlayer = findUniquePlayer(officialPlayers, token)
       || (probablePlayer?.playerId ? officialPlayers.find(player => player.playerId === probablePlayer.playerId) : null);
-    if (officialPlayer) return { eligible: true, status: "official-starter", source: officialLineups.provider || "official", sourceUpdatedAt: officialLineups.retrievedAt || null, playerId: officialPlayer.playerId || null, playerName: officialPlayer.currentName || probablePlayer?.currentName || null };
-    return { eligible: false, status: probablePlayer ? "official-nonstarter" : "unknown", source: officialLineups.provider || "official", sourceUpdatedAt: officialLineups.retrievedAt || null, playerId: probablePlayer?.playerId || null, playerName: probablePlayer?.currentName || null };
+    if (officialPlayer) return { eligible: true, status: "official-starter", source: officialSource, sourceUpdatedAt: officialSourceUpdatedAt, playerId: officialPlayer.playerId || null, playerName: officialPlayer.currentName || probablePlayer?.currentName || null };
+    return { eligible: false, status: probablePlayer ? "official-nonstarter" : "unknown", source: officialSource, sourceUpdatedAt: officialSourceUpdatedAt, playerId: probablePlayer?.playerId || null, playerName: probablePlayer?.currentName || null };
   }
 
   if (!probablePlayer) return { eligible: false, status: "unknown", source: probableLineups?.provider || null, sourceUpdatedAt: probableLineups?.importedAt || null, playerId: null, playerName: null };

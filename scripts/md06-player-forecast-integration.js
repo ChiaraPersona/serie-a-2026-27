@@ -54,7 +54,7 @@ function lineupEligibility(player, matchId, probableLineups, officialLineups) {
   const official = (officialLineups?.fixtures || []).find(fixture => fixture.matchId === matchId);
   if (official) {
     const starter = official.teams.flatMap(team => team.players || []).find(row => row.playerId === player.playerId);
-    return { eligible: Boolean(starter), status: starter ? "official-starter" : "official-nonstarter", source: officialLineups.provider || "official", sourceUpdatedAt: officialLineups.retrievedAt || null, playerId: player.playerId, playerName: player.name };
+    return { eligible: Boolean(starter), status: starter ? "official-starter" : "official-nonstarter", source: official.provider || officialLineups.provider || "official", sourceUpdatedAt: official.retrievedAt || officialLineups.retrievedAt || null, playerId: player.playerId, playerName: player.name };
   }
   const probable = (probableLineups?.teams || []).flatMap(team => team.players || []).find(row => row.playerId === player.playerId);
   return {

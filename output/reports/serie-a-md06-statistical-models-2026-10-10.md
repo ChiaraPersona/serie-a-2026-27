@@ -1,6 +1,6 @@
 # Serie A 2026/27 - modelli statistici Schedina MD6
 
-Generato: 2026-10-10T12:34:15.367Z
+Generato: 2026-10-11T15:23:09.527Z
 
 ## Esito
 

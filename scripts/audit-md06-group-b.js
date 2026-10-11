@@ -269,7 +269,7 @@ function lineupFor(candidate) {
   const officialFixture = (officialLineups.fixtures || []).find(fixture => fixture.matchId === candidate.event.canonicalMatchId);
   if (officialFixture) {
     const starter = officialFixture.teams.flatMap(team => team.players || []).find(player => player.playerId === identity.playerId);
-    return { applicable: true, eligible: Boolean(starter), status: starter ? "official-starter" : "official-nonstarter", identityStatus: "VERIFIED_PROVIDER_PLAYER_ID", source: officialLineups.provider, sourceUpdatedAt: officialLineups.retrievedAt, ...identity };
+    return { applicable: true, eligible: Boolean(starter), status: starter ? "official-starter" : "official-nonstarter", identityStatus: "VERIFIED_PROVIDER_PLAYER_ID", source: officialFixture.provider || officialLineups.provider, sourceUpdatedAt: officialFixture.retrievedAt || officialLineups.retrievedAt, ...identity };
   }
   const probable = probableLineups.teams.flatMap(team => team.players || []).find(player => player.playerId === identity.playerId);
   return {
