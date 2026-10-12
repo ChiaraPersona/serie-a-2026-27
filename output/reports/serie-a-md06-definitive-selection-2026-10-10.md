@@ -1,6 +1,6 @@
 # Serie A 2026/27 — Schedina MD6: integrazione tiratori, SOT e cartellini
 
-Generato: 2026-10-11T18:08:07.601Z. Engine V2 4.13.0; quote Sisal snapshot 2026-10-10T09:57:30.921Z.
+Generato: 2026-10-12T15:46:52.581Z. Engine V2 4.13.0; quote Sisal snapshot 2026-10-10T09:57:30.921Z.
 
 ## Esito
 
@@ -79,7 +79,7 @@ Nessun cartellino individuale e nessun Over cartellini è stato aggiunto. `likel
 | cagliari-juventus-2026-27-md-06 | Randal Kolo Muani | SOT | selettività SOT: minuti, precisione o stabilità insufficienti |
 | cagliari-juventus-2026-27-md-06 | Bremer | SOT | nessuna soglia V2 supera il supporto minimo |
 | cagliari-juventus-2026-27-md-06 | Michel Adopo | SOT | nessuna soglia V2 supera il supporto minimo |
-| atalanta-venezia-2026-27-md-06 | Gianluca Scamacca | SOT | selettività SOT: minuti, precisione o stabilità insufficienti |
+| atalanta-venezia-2026-27-md-06 | Nikola Krstovic | SOT | selettività SOT: minuti, precisione o stabilità insufficienti |
 | atalanta-venezia-2026-27-md-06 | Charles De Ketelaere | SOT | selettività SOT: minuti, precisione o stabilità insufficienti |
 | atalanta-venezia-2026-27-md-06 | Rowe | SOT | selettività SOT: minuti, precisione o stabilità insufficienti |
 | atalanta-venezia-2026-27-md-06 | Éderson | Tiri | minuti, stabilità o supporto outsider insufficienti per i tiri |

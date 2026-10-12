@@ -487,7 +487,7 @@ function buildMd06MarketCatalog({ predictionsData, odds, matches, schedinaSlips,
     rows.set(leg.matchId, list);
     return rows;
   }, new Map()));
-  const catalogMatches = scenarioIntegrated.map(match => {
+  const mergedCatalogMatches = scenarioIntegrated.map(match => {
     const existingRows = preservedByMatch.get(match.matchId) || [];
     const targetedIncrementalUpdate = Boolean(targetMatchId) && (preservedCatalogSelections || []).length > 0;
     const incomingRows = targetedIncrementalUpdate
@@ -522,6 +522,7 @@ function buildMd06MarketCatalog({ predictionsData, odds, matches, schedinaSlips,
     });
     return { ...match, selections: rows, total: rows.length, evaluated: rows.filter(leg => finite(leg.betSelection?.evaluation?.modelProbabilityPct)).length, notModelled: rows.filter(leg => !finite(leg.betSelection?.evaluation?.modelProbabilityPct)).length, suggestions, suggestionSummary: { total: suggestions.length, byFamily } };
   });
+  const catalogMatches = annotateCatalogMatches({ catalogMatches: mergedCatalogMatches, predictions });
   const all = catalogMatches.flatMap(match => match.selections);
   const finalSuggestions = all.filter(leg => leg.suggestionAnalysis?.suggested);
   const finalSuggestionsByFamily = finalSuggestions.reduce((counts, leg) => {
