@@ -1,6 +1,6 @@
 # Serie A MD6 — Selezione operativa e costruzione schedine
 
-Generato: 2026-10-12T15:46:34.438Z. Quote Sisal: 2026-10-10T09:57:30.921Z.
+Generato: 2026-10-12T18:14:20.432Z. Quote Sisal: 2026-10-10T09:57:30.921Z.
 
 La classificazione è operativa, non una garanzia. Nessuna partita deve produrre obbligatoriamente una scelta. Dalla MD6 i mercati Under, i falli commessi/subiti del singolo giocatore, i corner dipendenti da singoli tempi o finestre temporali e la doppia chance 12 sono esclusi dalle giocate, ma restano nelle analisi, nei report e nello storico; gli Over, i mercati aggregati di squadra e i corner dell'intera partita restano eleggibili. Occorrenze Under giocabili rimosse nella migrazione: 12. Le quote giocatore restano visibili come riferimento commerciale DUO: P V2 è individuale, pertanto EV e probabilità congiunta non sono calcolabili.
 
@@ -196,9 +196,9 @@ Tre doppie chance su gare distinte, scelte per coerenza V2 e non per quota minim
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | Como – Roma | Como o pareggio (1X) | 1.48 | 71.0% | N/D | +5.08% | COMPATIBILE | 2026-10-09T13:56:19.932Z |
 | Genoa – Fiorentina | Genoa o pareggio (1X) | 1.62 | 63.1% | N/D | +2.22% | COMPATIBILE | 2026-10-10T09:46:03.185Z |
-| Torino – Udinese | Udinese o pareggio (X2) | 1.57 | 67.7% | N/D | +6.29% | COMPATIBILE | 2026-10-08T21:59:10.568Z |
+| Torino – Udinese | Udinese o pareggio (X2) | 1.57 | 67.6% | N/D | +6.13% | COMPATIBILE | 2026-10-08T21:59:10.568Z |
 
-Quota totale: 3.76. Probabilità congiunta: 30.3%. EV: +14.04%. Revisione: Rivedere dopo XI ufficiali, variazioni quote o sospensione del mercato.
+Quota totale: 3.76. Probabilità congiunta: 30.3%. EV: +13.87%. Revisione: Rivedere dopo XI ufficiali, variazioni quote o sospensione del mercato.
 
 ### Tre profili DUO da monitorare
 
@@ -227,7 +227,7 @@ Il catalogo Schedina MD6 applica la policy centralizzata, inclusa l'esclusione d
 | Sassuolo - Milan | 3 | 2 | 0 | 1 | 0 |
 | Cagliari - Juventus | 3 | 3 | 0 | 0 | 0 |
 | Atalanta - Venezia | 3 | 2 | 0 | 1 | 0 |
-| Torino - Udinese | 4 | 1 | 1 | 2 | 0 |
+| Torino - Udinese | 3 | 1 | 1 | 1 | 0 |
 
 ## Da rivalutare con le formazioni ufficiali
 

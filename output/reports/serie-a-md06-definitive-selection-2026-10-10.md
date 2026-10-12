@@ -1,14 +1,14 @@
 # Serie A 2026/27 — Schedina MD6: integrazione tiratori, SOT e cartellini
 
-Generato: 2026-10-12T15:46:52.581Z. Engine V2 4.13.0; quote Sisal snapshot 2026-10-10T09:57:30.921Z.
+Generato: 2026-10-12T18:14:32.788Z. Engine V2 4.13.0; quote Sisal snapshot 2026-10-10T09:57:30.921Z.
 
 ## Esito
 
 - Totale iniziale: **82**.
 - Draw No Bet rimossi: **2**.
 - Pronostici approvati non-DNB preservati: **80**.
-- Nuovi tiri individuali: **57**.
-- Nuovi SOT individuali: **32**.
+- Nuovi tiri individuali: **56**.
+- Nuovi SOT individuali: **33**.
 - Nuovi cartellini individuali: **0**.
 - Nuovi Over cartellini: **0**.
 - Pronostici senza quota: **0**.
@@ -29,7 +29,7 @@ Generato: 2026-10-12T15:46:52.581Z. Engine V2 4.13.0; quote Sisal snapshot 2026-
 | Sassuolo – Milan | 9 | 0 | 9 | 5 | 2 | 0 | 16 |
 | Cagliari – Juventus | 9 | 0 | 9 | 7 | 3 | 0 | 19 |
 | Atalanta – Venezia | 7 | 0 | 7 | 5 | 3 | 0 | 15 |
-| Torino – Udinese | 7 | 0 | 7 | 7 | 3 | 0 | 17 |
+| Torino – Udinese | 7 | 0 | 7 | 6 | 4 | 0 | 17 |
 
 ## Collegamento Letture → Schedina
 
@@ -84,8 +84,6 @@ Nessun cartellino individuale e nessun Over cartellini è stato aggiunto. `likel
 | atalanta-venezia-2026-27-md-06 | Rowe | SOT | selettività SOT: minuti, precisione o stabilità insufficienti |
 | atalanta-venezia-2026-27-md-06 | Éderson | Tiri | minuti, stabilità o supporto outsider insufficienti per i tiri |
 | torino-udinese-2026-27-md-06 | Mandragora | SOT | selettività SOT: minuti, precisione o stabilità insufficienti |
-| torino-udinese-2026-27-md-06 | Nikola Vlasic | SOT | nessuna soglia V2 supera il supporto minimo |
-| torino-udinese-2026-27-md-06 | Hassane Kamara | SOT | selettività SOT: minuti, precisione o stabilità insufficienti |
 | torino-udinese-2026-27-md-06 | Mërgim Vojvoda | Tiri | minuti, stabilità o supporto outsider insufficienti per i tiri |
 
 ## Controlli di qualità

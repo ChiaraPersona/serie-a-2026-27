@@ -88,7 +88,7 @@ assert(catalog, "Catalogo mercati MD6 assente");
 assert.equal(catalog.totals.finalSelections, 1537);
 assert.equal(catalog.totals.playerForecastsAdded, 93);
 assert.equal(catalog.totals.suggestions, 169);
-assert.deepEqual(catalog.totals.suggestionsByFamily, { shots: 74, "goals-results": 29, sot: 50, corners: 16 });
+assert.deepEqual(catalog.totals.suggestionsByFamily, { shots: 73, "goals-results": 29, sot: 51, corners: 16 });
 assert.equal(catalog.rules.drawNoBetSuggestedAllowed, false);
 assert.deepEqual(catalog.rules.unquotedSuggestedFamilies, []);
 assert.equal(catalog.rules.duoPlayerMarketsAllowedWithVerifiedQuote, true);
@@ -214,7 +214,7 @@ for (const match of catalog.matches) {
 assert.equal(catalog.sources.modelVersion, "4.13.0");
 assert.equal(catalog.sources.predictionsGeneratedAt, read("data/normalized/predictions.json").generatedAt);
 assert.equal(catalog.sources.oddsRetrievedAt, odds.retrievedAt);
-assert.equal(catalog.sources.officialFixturesAvailable, 9);
+assert.equal(catalog.sources.officialFixturesAvailable, 10);
 
 {
   const matchById = new Map([["alpha-beta-2026-27-md-06", { id: "alpha-beta-2026-27-md-06", homeTeam: "alpha", awayTeam: "beta" }]]);
