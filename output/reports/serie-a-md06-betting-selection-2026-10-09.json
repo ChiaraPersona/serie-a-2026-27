@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "reportType": "serie-a-md06-betting-selection",
-  "generatedAt": "2026-10-11T18:07:41.251Z",
+  "generatedAt": "2026-10-12T15:46:34.438Z",
   "scope": "Decision layer only. Player Market V2, coefficients, Team Profiles, odds and immutable snapshots are read-only inputs.",
   "sources": {
     "operationalReport": "output/reports/serie-a-md06-operational-player-analysis-2026-10-09.json",
@@ -14652,13 +14652,13 @@
       "active": true,
       "rule": "I falli commessi o subiti del singolo giocatore sono esclusi dalle proposte giocabili; statistiche, analisi, report e mercati aggregati di squadra restano invariati.",
       "previousPlayableLegOccurrencesRemoved": 16,
-      "filteredCandidateSelections": 345,
+      "filteredCandidateSelections": 373,
       "filteredCandidateSelectionsByMatch": {
         "lazio-monza-2026-27-md-06": 68,
         "lecce-bologna-2026-27-md-06": 70,
         "sassuolo-milan-2026-27-md-06": 76,
         "cagliari-juventus-2026-27-md-06": 76,
-        "atalanta-venezia-2026-27-md-06": 43,
+        "atalanta-venezia-2026-27-md-06": 71,
         "torino-udinese-2026-27-md-06": 12
       }
     },
@@ -14678,7 +14678,7 @@
       }
     },
     "categoryCounts": {
-      "SELEZIONE_SPERIMENTALE": 11,
+      "SELEZIONE_SPERIMENTALE": 10,
       "CANDIDATO_STATISTICAMENTE_SUPPORTATO": 19,
       "SCENARIO_PLAUSIBILE": 3
     },
@@ -17377,6 +17377,111 @@
         "tier": "Safe",
         "legs": [
           {
+            "providerSelectionId": "5337176064",
+            "providerMarketId": "814496799",
+            "market": "MULTIGOAL",
+            "variant": "MULTIGOAL MULTIESITI 16 ESITI",
+            "marketScope": "match",
+            "threshold": null,
+            "selection": "3-5",
+            "odds": 1.8,
+            "marketUpdatedAt": "2026-10-09T01:41:30.788Z",
+            "overlapKey": "scenario-goals-fulltime-match",
+            "semanticKeys": [
+              "goals-fulltime-match"
+            ],
+            "label": "MULTIGOAL MULTIESITI 16 ESITI · 3-5",
+            "selectionId": "bet:sisal:atalanta-venezia-2026-27-md-06:5337176064",
+            "betSelection": {
+              "schemaVersion": 1,
+              "selectionId": "bet:sisal:atalanta-venezia-2026-27-md-06:5337176064",
+              "identity": {
+                "status": "VERIFIED_PROVIDER_IDS",
+                "matchId": "atalanta-venezia-2026-27-md-06",
+                "provider": "sisal",
+                "providerMarketId": "814496799",
+                "providerSelectionId": "5337176064"
+              },
+              "market": {
+                "name": "MULTIGOAL",
+                "variant": "MULTIGOAL MULTIESITI 16 ESITI",
+                "scope": "match",
+                "family": null,
+                "threshold": null,
+                "selection": "3-5",
+                "subject": {
+                  "type": "match",
+                  "id": null,
+                  "name": null,
+                  "teamId": null
+                },
+                "bookmakerSemantics": {
+                  "marketName": "MULTIGOAL",
+                  "variantName": "MULTIGOAL MULTIESITI 16 ESITI",
+                  "selectionName": "3-5",
+                  "duo": false,
+                  "substituteIncluded": false,
+                  "postsAndCrossbarIncluded": false,
+                  "extraTimeIncluded": false,
+                  "subjectType": null
+                }
+              },
+              "quote": {
+                "decimal": 1.8,
+                "verifiedAt": "2026-10-10T09:57:30.921Z",
+                "marketUpdatedAt": "2026-10-09T01:41:30.788Z",
+                "availability": "AVAILABLE_AT_SNAPSHOT",
+                "providerStatus": "open",
+                "source": {
+                  "provider": "sisal",
+                  "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/serie-a?cluster=27&cde=1000001",
+                  "snapshotPath": "data/normalized/odds/sisal/serie-a.json",
+                  "rawFile": "data/raw/odds/sisal/serie-a/2026-10-10T09-57-30-921Z.json.gz",
+                  "acquisition": "public-page-browser-cdp"
+                }
+              },
+              "operational": {
+                "classification": null,
+                "classificationReason": null,
+                "reliability": {
+                  "level": "Non valutabile",
+                  "reason": "Nessun criterio di affidabilità verificabile disponibile per questa selezione."
+                },
+                "playability": {
+                  "status": "PLAYABLE",
+                  "code": null,
+                  "reason": null
+                }
+              },
+              "evaluation": {
+                "modelProbabilityPct": null,
+                "individualModelProbabilityPct": null,
+                "fairOdds": null,
+                "expectedValuePct": null,
+                "status": null
+              },
+              "compatibility": {
+                "status": "NOT_EVALUATED",
+                "reason": "Compatibilità specifica non valutata dal generatore MyCombo.",
+                "modelTarget": null,
+                "bookmakerTarget": null
+              },
+              "overlap": {
+                "overlapKey": "scenario-goals-fulltime-match",
+                "semanticKeys": [
+                  "goals-fulltime-match"
+                ]
+              },
+              "warnings": [
+                "CLASSIFICATION_NOT_AVAILABLE",
+                "RELIABILITY_NOT_EVALUABLE"
+              ],
+              "risks": []
+            },
+            "status": "CANDIDATO_STATISTICAMENTE_SUPPORTATO",
+            "reason": "famiglia coperta dai segnali squadra canonici; non equivale a raccomandazione"
+          },
+          {
             "providerSelectionId": "5371733916",
             "providerMarketId": "820932209",
             "market": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
@@ -17483,38 +17588,38 @@
             "reason": "target giocatore/disciplinare non validato come probabilità MyCombo"
           },
           {
-            "providerSelectionId": "5371733599",
-            "providerMarketId": "820932127",
-            "market": "ENTRAMBE LE SQUADRE ALMENO X TIRI IN PORTA",
-            "variant": "ENTRAMBE LE SQUADRE ALMENO 3 TIRI IN PORTA",
+            "providerSelectionId": "5337175736",
+            "providerMarketId": "814496748",
+            "market": "MULTIGOAL SQUADRA X",
+            "variant": "MULTIGOAL SQUADRA 2 MULTIESITI",
             "marketScope": "match",
             "threshold": null,
-            "selection": "SI",
-            "odds": 1.38,
-            "marketUpdatedAt": "2026-10-09T08:29:15.631Z",
-            "overlapKey": "market-entrambe le squadre almeno x tiri in porta",
+            "selection": "1-2",
+            "odds": 1.6,
+            "marketUpdatedAt": "2026-10-09T01:41:30.812Z",
+            "overlapKey": "scenario-goals-fulltime-away",
             "semanticKeys": [
-              "volume-shots-on-target"
+              "goals-fulltime-away"
             ],
-            "label": "Entrambe almeno 3 tiri in porta",
-            "selectionId": "bet:sisal:atalanta-venezia-2026-27-md-06:5371733599",
+            "label": "MULTIGOAL Venezia MULTIESITI · 1-2",
+            "selectionId": "bet:sisal:atalanta-venezia-2026-27-md-06:5337175736",
             "betSelection": {
               "schemaVersion": 1,
-              "selectionId": "bet:sisal:atalanta-venezia-2026-27-md-06:5371733599",
+              "selectionId": "bet:sisal:atalanta-venezia-2026-27-md-06:5337175736",
               "identity": {
                 "status": "VERIFIED_PROVIDER_IDS",
                 "matchId": "atalanta-venezia-2026-27-md-06",
                 "provider": "sisal",
-                "providerMarketId": "820932127",
-                "providerSelectionId": "5371733599"
+                "providerMarketId": "814496748",
+                "providerSelectionId": "5337175736"
               },
               "market": {
-                "name": "ENTRAMBE LE SQUADRE ALMENO X TIRI IN PORTA",
-                "variant": "ENTRAMBE LE SQUADRE ALMENO 3 TIRI IN PORTA",
+                "name": "MULTIGOAL SQUADRA X",
+                "variant": "MULTIGOAL SQUADRA 2 MULTIESITI",
                 "scope": "match",
                 "family": null,
                 "threshold": null,
-                "selection": "SI",
+                "selection": "1-2",
                 "subject": {
                   "type": "match",
                   "id": null,
@@ -17522,9 +17627,9 @@
                   "teamId": null
                 },
                 "bookmakerSemantics": {
-                  "marketName": "ENTRAMBE LE SQUADRE ALMENO X TIRI IN PORTA",
-                  "variantName": "ENTRAMBE LE SQUADRE ALMENO 3 TIRI IN PORTA",
-                  "selectionName": "SI",
+                  "marketName": "MULTIGOAL SQUADRA X",
+                  "variantName": "MULTIGOAL SQUADRA 2 MULTIESITI",
+                  "selectionName": "1-2",
                   "duo": false,
                   "substituteIncluded": false,
                   "postsAndCrossbarIncluded": false,
@@ -17533,9 +17638,9 @@
                 }
               },
               "quote": {
-                "decimal": 1.38,
+                "decimal": 1.6,
                 "verifiedAt": "2026-10-10T09:57:30.921Z",
-                "marketUpdatedAt": "2026-10-09T08:29:15.631Z",
+                "marketUpdatedAt": "2026-10-09T01:41:30.812Z",
                 "availability": "AVAILABLE_AT_SNAPSHOT",
                 "providerStatus": "open",
                 "source": {
@@ -17573,220 +17678,9 @@
                 "bookmakerTarget": null
               },
               "overlap": {
-                "overlapKey": "market-entrambe le squadre almeno x tiri in porta",
+                "overlapKey": "scenario-goals-fulltime-away",
                 "semanticKeys": [
-                  "volume-shots-on-target"
-                ]
-              },
-              "warnings": [
-                "CLASSIFICATION_NOT_AVAILABLE",
-                "RELIABILITY_NOT_EVALUABLE"
-              ],
-              "risks": []
-            },
-            "status": "CANDIDATO_STATISTICAMENTE_SUPPORTATO",
-            "reason": "famiglia coperta dai segnali squadra canonici; non equivale a raccomandazione"
-          },
-          {
-            "providerSelectionId": "5371699735",
-            "providerMarketId": "820939331",
-            "market": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
-            "variant": "EDERSON U/O 1.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
-            "marketScope": "player",
-            "threshold": "1.5",
-            "selection": "OVER",
-            "odds": 1.8,
-            "marketUpdatedAt": "2026-10-09T08:29:13.365Z",
-            "overlapKey": "player-ederson-u o tiri totali giocatore duo inc ts",
-            "semanticKeys": [
-              "player-ederson-shots"
-            ],
-            "label": "EDERSON almeno 2 tiri totali, sostituto incluso",
-            "selectionId": "bet:sisal:atalanta-venezia-2026-27-md-06:5371699735",
-            "betSelection": {
-              "schemaVersion": 1,
-              "selectionId": "bet:sisal:atalanta-venezia-2026-27-md-06:5371699735",
-              "identity": {
-                "status": "VERIFIED_PROVIDER_IDS",
-                "matchId": "atalanta-venezia-2026-27-md-06",
-                "provider": "sisal",
-                "providerMarketId": "820939331",
-                "providerSelectionId": "5371699735"
-              },
-              "market": {
-                "name": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
-                "variant": "EDERSON U/O 1.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
-                "scope": "player",
-                "family": null,
-                "threshold": 1.5,
-                "selection": "OVER",
-                "subject": {
-                  "type": "player-plus-substitute",
-                  "id": null,
-                  "name": "EDERSON U/O 1.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
-                  "teamId": null
-                },
-                "bookmakerSemantics": {
-                  "marketName": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
-                  "variantName": "EDERSON U/O 1.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
-                  "selectionName": "OVER",
-                  "duo": true,
-                  "substituteIncluded": true,
-                  "postsAndCrossbarIncluded": false,
-                  "extraTimeIncluded": true,
-                  "subjectType": "player-plus-substitute"
-                }
-              },
-              "quote": {
-                "decimal": 1.8,
-                "verifiedAt": "2026-10-10T09:57:30.921Z",
-                "marketUpdatedAt": "2026-10-09T08:29:13.365Z",
-                "availability": "AVAILABLE_AT_SNAPSHOT",
-                "providerStatus": "open",
-                "source": {
-                  "provider": "sisal",
-                  "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/serie-a?cluster=27&cde=1000001",
-                  "snapshotPath": "data/normalized/odds/sisal/serie-a.json",
-                  "rawFile": "data/raw/odds/sisal/serie-a/2026-10-10T09-57-30-921Z.json.gz",
-                  "acquisition": "public-page-browser-cdp"
-                }
-              },
-              "operational": {
-                "classification": null,
-                "classificationReason": null,
-                "reliability": {
-                  "level": "Non valutabile",
-                  "reason": "Nessun criterio di affidabilità verificabile disponibile per questa selezione."
-                },
-                "playability": {
-                  "status": "PLAYABLE",
-                  "code": null,
-                  "reason": null
-                }
-              },
-              "evaluation": {
-                "modelProbabilityPct": null,
-                "individualModelProbabilityPct": null,
-                "fairOdds": null,
-                "expectedValuePct": null,
-                "status": null
-              },
-              "compatibility": {
-                "status": "NOT_EVALUATED",
-                "reason": "Compatibilità specifica non valutata dal generatore MyCombo.",
-                "modelTarget": null,
-                "bookmakerTarget": null
-              },
-              "overlap": {
-                "overlapKey": "player-ederson-u o tiri totali giocatore duo inc ts",
-                "semanticKeys": [
-                  "player-ederson-shots"
-                ]
-              },
-              "warnings": [
-                "CLASSIFICATION_NOT_AVAILABLE",
-                "RELIABILITY_NOT_EVALUABLE",
-                "MODEL_BOOKMAKER_TARGET_MISMATCH"
-              ],
-              "risks": []
-            },
-            "status": "SELEZIONE_SPERIMENTALE",
-            "reason": "target giocatore/disciplinare non validato come probabilità MyCombo"
-          },
-          {
-            "providerSelectionId": "5337206039",
-            "providerMarketId": "814497094",
-            "market": "UNDER/OVER",
-            "variant": "U/O 1.5",
-            "marketScope": "match",
-            "threshold": "1.5",
-            "selection": "OVER",
-            "odds": 1.15,
-            "marketUpdatedAt": "2026-10-05T10:49:05.601Z",
-            "overlapKey": "scenario-goals-fulltime-match",
-            "semanticKeys": [
-              "goals-fulltime-match"
-            ],
-            "label": "Over 1,5 gol",
-            "selectionId": "bet:sisal:atalanta-venezia-2026-27-md-06:5337206039",
-            "betSelection": {
-              "schemaVersion": 1,
-              "selectionId": "bet:sisal:atalanta-venezia-2026-27-md-06:5337206039",
-              "identity": {
-                "status": "VERIFIED_PROVIDER_IDS",
-                "matchId": "atalanta-venezia-2026-27-md-06",
-                "provider": "sisal",
-                "providerMarketId": "814497094",
-                "providerSelectionId": "5337206039"
-              },
-              "market": {
-                "name": "UNDER/OVER",
-                "variant": "U/O 1.5",
-                "scope": "match",
-                "family": null,
-                "threshold": 1.5,
-                "selection": "OVER",
-                "subject": {
-                  "type": "match",
-                  "id": null,
-                  "name": null,
-                  "teamId": null
-                },
-                "bookmakerSemantics": {
-                  "marketName": "UNDER/OVER",
-                  "variantName": "U/O 1.5",
-                  "selectionName": "OVER",
-                  "duo": false,
-                  "substituteIncluded": false,
-                  "postsAndCrossbarIncluded": false,
-                  "extraTimeIncluded": false,
-                  "subjectType": null
-                }
-              },
-              "quote": {
-                "decimal": 1.15,
-                "verifiedAt": "2026-10-10T09:57:30.921Z",
-                "marketUpdatedAt": "2026-10-05T10:49:05.601Z",
-                "availability": "AVAILABLE_AT_SNAPSHOT",
-                "providerStatus": "open",
-                "source": {
-                  "provider": "sisal",
-                  "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/serie-a?cluster=27&cde=1000001",
-                  "snapshotPath": "data/normalized/odds/sisal/serie-a.json",
-                  "rawFile": "data/raw/odds/sisal/serie-a/2026-10-10T09-57-30-921Z.json.gz",
-                  "acquisition": "public-page-browser-cdp"
-                }
-              },
-              "operational": {
-                "classification": null,
-                "classificationReason": null,
-                "reliability": {
-                  "level": "Non valutabile",
-                  "reason": "Nessun criterio di affidabilità verificabile disponibile per questa selezione."
-                },
-                "playability": {
-                  "status": "PLAYABLE",
-                  "code": null,
-                  "reason": null
-                }
-              },
-              "evaluation": {
-                "modelProbabilityPct": null,
-                "individualModelProbabilityPct": null,
-                "fairOdds": null,
-                "expectedValuePct": null,
-                "status": null
-              },
-              "compatibility": {
-                "status": "NOT_EVALUATED",
-                "reason": "Compatibilità specifica non valutata dal generatore MyCombo.",
-                "modelTarget": null,
-                "bookmakerTarget": null
-              },
-              "overlap": {
-                "overlapKey": "scenario-goals-fulltime-match",
-                "semanticKeys": [
-                  "goals-fulltime-match"
+                  "goals-fulltime-away"
                 ]
               },
               "warnings": [
@@ -22042,25 +21936,25 @@
   ],
   "marketCatalog": {
     "totals": {
-      "initialVisible": 31,
+      "initialVisible": 30,
       "excludedByPolicy": 0,
       "excludedByLineup": 1,
-      "retainedInitial": 30,
-      "preservedCatalogSelections": 1505,
+      "retainedInitial": 29,
+      "preservedCatalogSelections": 1470,
       "groupARequested": 128,
-      "groupARecovered": 129,
+      "groupARecovered": 130,
       "groupARejected": 0,
       "dnbRequested": 20,
       "dnbRecovered": 20,
       "dnbRejected": 0,
       "groupB2Requested": 203,
-      "groupB2Recovered": 206,
+      "groupB2Recovered": 204,
       "groupB2Rejected": 0,
-      "statisticalBAdded": 1059,
+      "statisticalBAdded": 1060,
       "playerForecastsAdded": 93,
       "finalSelections": 1537,
-      "evaluated": 1036,
-      "notModelled": 501,
+      "evaluated": 1034,
+      "notModelled": 503,
       "suggestions": 169,
       "suggestionsByFamily": {
         "shots": 74,
@@ -22071,19 +21965,19 @@
       "scenarioCounts": {
         "COHERENT_WITH_PREVALENT": 20,
         "ALTERNATIVE_TO_PREVALENT": 50,
-        "COMPATIBLE_WITH_MULTIPLE_SCENARIOS": 966,
-        "NOT_DETERMINABLE": 501
+        "COMPATIBLE_WITH_MULTIPLE_SCENARIOS": 964,
+        "NOT_DETERMINABLE": 503
       }
     },
     "sources": {
-      "predictionsGeneratedAt": "2026-10-11T18:07:37.288Z",
+      "predictionsGeneratedAt": "2026-10-12T15:46:20.604Z",
       "modelVersion": "4.13.0",
       "oddsRetrievedAt": "2026-10-10T09:57:30.921Z",
       "oddsSnapshot": "data/normalized/odds/sisal/serie-a.json",
       "probableLineupsImportedAt": "2026-10-09T13:14:40.957Z",
       "probableLineupsProvider": "Fantacalcio.it",
       "officialLineupsRetrievedAt": "2026-08-22",
-      "officialFixturesAvailable": 8,
+      "officialFixturesAvailable": 9,
       "scenarioCoherenceVersion": 1,
       "scenarioCoherenceBasis": "Frozen Engine V2 probabilities and deterministic event logic; odds and EV excluded"
     },
@@ -22139,8 +22033,8 @@
       {
         "matchId": "atalanta-venezia-2026-27-md-06",
         "total": 141,
-        "evaluated": 96,
-        "notModelled": 45
+        "evaluated": 94,
+        "notModelled": 47
       },
       {
         "matchId": "torino-udinese-2026-27-md-06",
