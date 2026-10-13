@@ -63,8 +63,56 @@ const screenshotDirectory=(process.argv.find(argument=>argument.startsWith('--sc
         await page.selectOption('#champions-player-sort','minutes');
         const sortedMinutes=await page.locator('.champions-player-stats-table tbody tr:visible').evaluateAll(rows=>rows.map(row=>row.dataset.statMinutes===''?null:Number(row.dataset.statMinutes)));
         assert.deepEqual(sortedMinutes,sortedMinutes.slice().sort((a,b)=>a==null&&b==null?0:a==null?1:b==null?-1:b-a),`${item.id}: ordinamento minuti`);
+        const shotsRanking=await page.locator('[data-ranking-panel="shots"]').innerText();
         await page.locator('[data-player-ranking="shotsOnTarget"]').click();
         assert.equal(await page.locator('[data-player-ranking="shotsOnTarget"]').getAttribute('aria-pressed'),'true',`${item.id}: selettore SOT`);
+        assert.equal(await page.locator('[data-ranking-panel]:visible').count(),1,`${item.id}: un solo ranking visibile`);
+        assert.equal(await page.locator('[data-ranking-panel]:visible').getAttribute('data-ranking-panel'),'shotsOnTarget',`${item.id}: pannello SOT visibile`);
+        const sotRanking=await page.locator('[data-ranking-panel="shotsOnTarget"]').innerText();
+        if(item.id==='bayern-munchen')assert.notEqual(sotRanking,shotsRanking,`${item.id}: il cambio metrica deve aggiornare valori e classifica`);
+        const visibleRankingRows=await page.locator('[data-ranking-panel]:visible>li').count();
+        if(item.id==='bayern-munchen')assert.equal(visibleRankingRows,5,`${item.id}: cinque giocatori nel ranking`);
+        else assert(visibleRankingRows>=1&&visibleRankingRows<=5,`${item.id}: ranking limitato ai dati realmente disponibili`);
+        const visual=await page.evaluate(({hasVolume,width})=>{
+          const style=selector=>getComputedStyle(document.querySelector(selector));
+          const box=selector=>document.querySelector(selector)?.getBoundingClientRect()||null;
+          const rankingBar=box('[data-ranking-panel]:not([hidden]) i');
+          const result={
+            summaryTitleColor:style('.champions-team-summary h2').color,
+            summaryTitleSize:parseFloat(style('.champions-team-summary h2').fontSize),
+            overviewTitleColor:style('.champions-player-overview h2').color,
+            overviewTitleSize:parseFloat(style('.champions-player-overview h2').fontSize),
+            selectorHeight:box('[data-player-ranking]').height,
+            selectorFont:parseFloat(style('[data-player-ranking]').fontSize),
+            rankingBarHeight:rankingBar?.height||0,
+            rankingHasData:Boolean(rankingBar),
+            tableFont:parseFloat(style('.champions-player-stats-table').fontSize),
+            controlsBackground:style('#champions-player-search').backgroundColor
+          };
+          if(hasVolume){
+            result.volumeColumns=style('.champions-volume-grid').gridTemplateColumns.split(' ').filter(Boolean).length;
+            const lines=[...document.querySelectorAll('.champions-volume-comparison:first-child .champions-volume-line')];
+            result.volumeLineTops=lines.map(line=>Math.round(line.getBoundingClientRect().top));
+            result.volumeBarHeight=box('.champions-volume-line i').height;
+          }
+          result.expectedColumns=width<=600?1:2;
+          return result;
+        },{hasVolume:item.volume,width});
+        assert.equal(visual.summaryTitleColor,'rgb(255, 255, 255)',`${item.id}: contrasto titolo riepilogo`);
+        assert(visual.summaryTitleSize>=32,`${item.id}: dimensione titolo riepilogo`);
+        assert.equal(visual.overviewTitleColor,'rgb(255, 255, 255)',`${item.id}: contrasto titolo giocatori`);
+        assert(visual.overviewTitleSize>=32,`${item.id}: dimensione titolo giocatori`);
+        assert(visual.selectorHeight>=44&&visual.selectorFont>=11,`${item.id}: selettori leggibili`);
+        if(visual.rankingHasData)assert(visual.rankingBarHeight>=11,`${item.id}: barre ranking visibili`);
+        else assert.equal(await page.locator('[data-ranking-panel]:visible>li.is-empty').count(),1,`${item.id}: ranking N/D esplicito`);
+        assert(visual.tableFont>=11,`${item.id}: testo tabella leggibile`);
+        assert(!visual.controlsBackground.includes('255, 255, 255'),`${item.id}: controlli coerenti con la card scura`);
+        if(item.volume){
+          assert.equal(visual.volumeColumns,visual.expectedColumns,`${item.id}: griglia volumi ${width}px`);
+          assert(visual.volumeBarHeight>=13,`${item.id}: barre volumi visibili`);
+          if(width>600)assert.equal(visual.volumeLineTops[0],visual.volumeLineTops[1],`${item.id}: produzione e concessione affiancate`);
+          else assert(visual.volumeLineTops[1]>visual.volumeLineTops[0],`${item.id}: produzione e concessione verticali su mobile`);
+        }
         assert.equal(await page.locator('.champions-player-stats-table thead th').first().evaluate(cell=>getComputedStyle(cell).position),'sticky',`${item.id}: intestazione sticky`);
         assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,`${item.id} ${width}px: overflow pagina`);
         if(width===390)assert(await page.locator('.champions-player-table-wrap').evaluate(node=>node.scrollWidth>node.clientWidth),`${item.id}: tabella scorrevole`);

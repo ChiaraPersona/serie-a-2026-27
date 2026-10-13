@@ -3,12 +3,12 @@
   "competition": "UEFA Champions League",
   "season": "2026/27",
   "matchday": 2,
-  "generatedAt": "2026-10-13T16:01:46.8664249+02:00",
+  "generatedAt": "2026-10-13T16:10:37.4963673+02:00",
   "provider": "Sisal",
   "oddsRetrievedAt": "2026-10-13T09:55:14.800Z",
   "sourceUrl": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001",
   "status": "PRE_MATCH",
-  "methodology": "La card conserva integralmente le 63 selezioni delle Fasi 12B/12C e aggiunge mercati squadra su contratti esatti coperti dalle distribuzioni gia serializzate e dal backtest disponibile, oltre a nuovi riferimenti individuali tiri/SOT. I contratti individuali DUO mantengono probabilita, quota equa ed EV N/D.",
+  "methodology": "La card conserva integralmente le 94 selezioni concluse con la Fase 12D e aggiunge outsider su contratti Sisal esatti: soglie gol con probabilita gia serializzata e riferimenti individuali tiri/SOT sostenuti da minuti, storico e volumi. I contratti individuali DUO mantengono probabilita, quota equa ed EV N/D.",
   "selectionRule": "Nessun numero fisso per gara. Classe A: contratto full-match identico a una soglia probabilistica gia validata o alla distribuzione gol gia adottata. Classe B: volume individuale motivante e quota valida, ma contratto DUO non probabilisticamente valutabile. Nessuna conversione automatica di una media in probabilita.",
   "settlementPolicy": "Puntata simulata di 1 € per esito. ROI e profitto/perdita includono soltanto esiti ufficialmente definiti; pending e non verificabili non sono perdite.",
   "sources": {
@@ -30,6 +30,13 @@
       "status": "PRE_MATCH",
       "baselineSelectionIdsSha256": "0B3D8B6DA442D8C734A21939AB59FF1132E9E389D3932022122FA2855EBC760C"
     },
+    "outsiders": {
+      "path": "data/sources/champions-md02-phase12d-outsiders-2026-27.json",
+      "sha256": "9B961E55B91A998225933AE66A89DF9761BF3855B29E1998C26F9313B1FA5348",
+      "generatedAt": "2026-10-13T16:10:37.4963673+02:00",
+      "status": "PRE_MATCH",
+      "baselineSelectionIdsSha256": "BCCB8231BBEA3026B3F5C6F66B3D6D4D6DE06ADF227B05428EA599A904A28596"
+    },
     "odds": {
       "path": "data/normalized/odds/sisal/champions-league.json",
       "sha256": "2969A579C55F3748FA8712BD83374E86239163518204ED7FAFCBDAC7C03FA4FB",
@@ -42,26 +49,29 @@
   },
   "summary": {
     "fixtures": 18,
-    "predictions": 94,
-    "clickableSelections": 94,
+    "predictions": 120,
+    "clickableSelections": 120,
     "result1x2": 9,
     "doubleChance": 9,
     "phase12BPredictions": 18,
-    "teamPredictions": 35,
+    "teamPredictions": 42,
     "phase12DTeamPredictions": 17,
     "phase12DIndividualPredictions": 14,
-    "individualPredictions": 59,
-    "individualShots": 38,
-    "individualShotsOnTarget": 21,
-    "teamGoals": 6,
+    "outsiderPredictions": 26,
+    "outsiderTeamPredictions": 7,
+    "outsiderIndividualPredictions": 19,
+    "individualPredictions": 78,
+    "individualShots": 52,
+    "individualShotsOnTarget": 26,
+    "teamGoals": 13,
     "teamCorners": 5,
     "teamShots": 3,
     "teamShotsOnTarget": 3,
-    "mathematicallyEvaluable": 35,
+    "mathematicallyEvaluable": 42,
     "won": 0,
     "lost": 0,
     "void": 0,
-    "pending": 94,
+    "pending": 120,
     "stakeEuro": 0,
     "grossReturnEuro": null,
     "profitLossEuro": null,
@@ -657,6 +667,312 @@
             },
             "overlap": {
               "overlapKey": "ucl-2026-27-md02-01:821927322",
+              "semanticKeys": []
+            }
+          }
+        },
+        {
+          "selectionId": "sisal:4858138:821928592:5376859993",
+          "context": {
+            "competition": "champions",
+            "season": "2026-27",
+            "matchday": 2
+          },
+          "matchId": "ucl-2026-27-md02-01",
+          "fixture": "Lens - Sporting CP",
+          "market": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+          "marketScope": "player",
+          "marketFamily": "Tiri giocatore",
+          "selection": "OVER",
+          "providerSelectionCode": "2",
+          "label": "Odsonne Édouard over 3,5 tiri · sostituto incluso",
+          "odds": 3.25,
+          "modelProbabilityPct": null,
+          "fairOdds": null,
+          "expectedValuePct": null,
+          "evidenceLabel": "Proiezione singolo: 2,73 tiri · 84,6 min",
+          "motivation": "2,73 tiri attesi in 84,6 minuti; forward, storico verificato su 1.841 minuti e affidabilita 67,2%.",
+          "limitation": "Il forecast quantifica i tiri del solo giocatore; la quota Sisal include anche il sostituto. Probabilita, quota equa ed EV del contratto restano N/D.",
+          "classification": "B",
+          "player": {
+            "canonicalPlayerId": "odsonne-edouard",
+            "canonicalName": "Odsonne Édouard",
+            "providerPlayerIds": [
+              "157058"
+            ],
+            "team": "Lens",
+            "side": "home",
+            "role": "forward",
+            "lineupStatus": "probable-starter",
+            "expectedMinutes": 84.6,
+            "historyMinutes": 1841,
+            "reliability": 0.6717,
+            "dataStatus": "verified-history",
+            "projectedShots": 2.73,
+            "projectedShotsOnTarget": 1.2
+          },
+          "dataQuality": {
+            "fixtureDetailedVolumes": true,
+            "playerDataStatus": "verified-history",
+            "identityStatus": "resolved"
+          },
+          "providerEventId": "4858138",
+          "providerMarketId": "821928592",
+          "providerSelectionId": "5376859993",
+          "marketCode": "28507",
+          "marketName": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+          "variantName": "EDOUARD O. U/O 3.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+          "threshold": 3.5,
+          "modifiers": {
+            "threshold": "3.5",
+            "variantName": "EDOUARD O. U/O 3.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+            "periodScope": "full-match",
+            "replacementIncluded": true,
+            "woodworkIncluded": false
+          },
+          "settlement": {
+            "status": "pending",
+            "label": "Da verificare"
+          },
+          "betSelection": {
+            "selectionId": "sisal:4858138:821928592:5376859993",
+            "identity": {
+              "status": "VERIFIED_PROVIDER_IDS",
+              "matchId": "ucl-2026-27-md02-01",
+              "providerEventId": "4858138",
+              "providerMarketId": "821928592",
+              "providerSelectionId": "5376859993",
+              "providerPlayerIds": [
+                "157058"
+              ],
+              "canonicalPlayerIds": [
+                "odsonne-edouard"
+              ]
+            },
+            "market": {
+              "name": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+              "family": "Tiri giocatore",
+              "code": "28507",
+              "variant": "EDOUARD O. U/O 3.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+              "threshold": 3.5,
+              "selection": "OVER",
+              "modifiers": {
+                "threshold": "3.5",
+                "variantName": "EDOUARD O. U/O 3.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+                "periodScope": "full-match",
+                "replacementIncluded": true,
+                "woodworkIncluded": false
+              },
+              "bookmakerSemantics": {
+                "selectionName": "OVER",
+                "selectionCode": "2",
+                "modifiers": {
+                  "threshold": "3.5",
+                  "variantName": "EDOUARD O. U/O 3.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+                  "periodScope": "full-match",
+                  "replacementIncluded": true,
+                  "woodworkIncluded": false
+                },
+                "duo": true,
+                "replacementIncluded": true,
+                "postsAndCrossbarIncluded": false
+              }
+            },
+            "quote": {
+              "decimal": 3.25,
+              "oddsRaw": 325,
+              "availability": "AVAILABLE_AT_SNAPSHOT",
+              "verifiedAt": "2026-10-13T09:55:14.800Z",
+              "marketUpdatedAt": "2026-10-12T18:20:45.664Z",
+              "source": {
+                "provider": "Sisal",
+                "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001"
+              }
+            },
+            "evaluation": {
+              "status": "NOT_MODELLED",
+              "kind": "INDIVIDUAL_FORECAST_REFERENCE_ONLY",
+              "modelProbabilityPct": null,
+              "fairOdds": null,
+              "expectedValuePct": null,
+              "individualForecast": {
+                "metric": "shots",
+                "mean": 2.73,
+                "expectedMinutes": 84.6
+              },
+              "provenance": {
+                "source": "data/normalized/champions-md02-integration-2026-27.json",
+                "predictionGeneratedAt": "2026-10-13T14:01:36.326Z",
+                "curationSource": "data/sources/champions-md02-phase12d-outsiders-2026-27.json",
+                "curatedAt": "2026-10-13T16:10:37.4963673+02:00"
+              }
+            },
+            "compatibility": {
+              "status": "REFERENCE_ONLY_DUO_REPLACEMENT_NOT_MODELLED",
+              "bookmakerCombinability": "UNKNOWN",
+              "limitation": "Il forecast quantifica i tiri del solo giocatore; la quota Sisal include anche il sostituto. Probabilita, quota equa ed EV del contratto restano N/D."
+            },
+            "operational": {
+              "playability": {
+                "status": "PLAYABLE"
+              },
+              "classification": "SELEZIONATO"
+            },
+            "overlap": {
+              "overlapKey": "ucl-2026-27-md02-01:821928592",
+              "semanticKeys": []
+            }
+          }
+        },
+        {
+          "selectionId": "sisal:4858138:821927323:5376857369",
+          "context": {
+            "competition": "champions",
+            "season": "2026-27",
+            "matchday": 2
+          },
+          "matchId": "ucl-2026-27-md02-01",
+          "fixture": "Lens - Sporting CP",
+          "market": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+          "marketScope": "player",
+          "marketFamily": "Tiri giocatore",
+          "selection": "OVER",
+          "providerSelectionCode": "2",
+          "label": "Issa Doumbia over 1,5 tiri · sostituto incluso",
+          "odds": 2.4,
+          "modelProbabilityPct": null,
+          "fairOdds": null,
+          "expectedValuePct": null,
+          "evidenceLabel": "Proiezione singolo: 1,56 tiri · 84,6 min",
+          "motivation": "1,56 tiri attesi in 84,6 minuti; midfielder, storico verificato su 3.120 minuti e affidabilita 77,6%.",
+          "limitation": "Il forecast quantifica i tiri del solo giocatore; la quota Sisal include anche il sostituto. Probabilita, quota equa ed EV del contratto restano N/D.",
+          "classification": "B",
+          "player": {
+            "canonicalPlayerId": "issa-doumbia",
+            "canonicalName": "Issa Doumbia",
+            "providerPlayerIds": [
+              "586313"
+            ],
+            "team": "Sporting CP",
+            "side": "away",
+            "role": "midfielder",
+            "lineupStatus": "probable-starter",
+            "expectedMinutes": 84.6,
+            "historyMinutes": 3120,
+            "reliability": 0.7761,
+            "dataStatus": "verified-history",
+            "projectedShots": 1.56,
+            "projectedShotsOnTarget": 0.53
+          },
+          "dataQuality": {
+            "fixtureDetailedVolumes": true,
+            "playerDataStatus": "verified-history",
+            "identityStatus": "resolved"
+          },
+          "providerEventId": "4858138",
+          "providerMarketId": "821927323",
+          "providerSelectionId": "5376857369",
+          "marketCode": "28507",
+          "marketName": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+          "variantName": "DOUMBIA ISSA U/O 1.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+          "threshold": 1.5,
+          "modifiers": {
+            "threshold": "1.5",
+            "variantName": "DOUMBIA ISSA U/O 1.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+            "periodScope": "full-match",
+            "replacementIncluded": true,
+            "woodworkIncluded": false
+          },
+          "settlement": {
+            "status": "pending",
+            "label": "Da verificare"
+          },
+          "betSelection": {
+            "selectionId": "sisal:4858138:821927323:5376857369",
+            "identity": {
+              "status": "VERIFIED_PROVIDER_IDS",
+              "matchId": "ucl-2026-27-md02-01",
+              "providerEventId": "4858138",
+              "providerMarketId": "821927323",
+              "providerSelectionId": "5376857369",
+              "providerPlayerIds": [
+                "586313"
+              ],
+              "canonicalPlayerIds": [
+                "issa-doumbia"
+              ]
+            },
+            "market": {
+              "name": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+              "family": "Tiri giocatore",
+              "code": "28507",
+              "variant": "DOUMBIA ISSA U/O 1.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+              "threshold": 1.5,
+              "selection": "OVER",
+              "modifiers": {
+                "threshold": "1.5",
+                "variantName": "DOUMBIA ISSA U/O 1.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+                "periodScope": "full-match",
+                "replacementIncluded": true,
+                "woodworkIncluded": false
+              },
+              "bookmakerSemantics": {
+                "selectionName": "OVER",
+                "selectionCode": "2",
+                "modifiers": {
+                  "threshold": "1.5",
+                  "variantName": "DOUMBIA ISSA U/O 1.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+                  "periodScope": "full-match",
+                  "replacementIncluded": true,
+                  "woodworkIncluded": false
+                },
+                "duo": true,
+                "replacementIncluded": true,
+                "postsAndCrossbarIncluded": false
+              }
+            },
+            "quote": {
+              "decimal": 2.4,
+              "oddsRaw": 240,
+              "availability": "AVAILABLE_AT_SNAPSHOT",
+              "verifiedAt": "2026-10-13T09:55:14.800Z",
+              "marketUpdatedAt": "2026-10-12T13:44:59.170Z",
+              "source": {
+                "provider": "Sisal",
+                "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001"
+              }
+            },
+            "evaluation": {
+              "status": "NOT_MODELLED",
+              "kind": "INDIVIDUAL_FORECAST_REFERENCE_ONLY",
+              "modelProbabilityPct": null,
+              "fairOdds": null,
+              "expectedValuePct": null,
+              "individualForecast": {
+                "metric": "shots",
+                "mean": 1.56,
+                "expectedMinutes": 84.6
+              },
+              "provenance": {
+                "source": "data/normalized/champions-md02-integration-2026-27.json",
+                "predictionGeneratedAt": "2026-10-13T14:01:36.326Z",
+                "curationSource": "data/sources/champions-md02-phase12d-outsiders-2026-27.json",
+                "curatedAt": "2026-10-13T16:10:37.4963673+02:00"
+              }
+            },
+            "compatibility": {
+              "status": "REFERENCE_ONLY_DUO_REPLACEMENT_NOT_MODELLED",
+              "bookmakerCombinability": "UNKNOWN",
+              "limitation": "Il forecast quantifica i tiri del solo giocatore; la quota Sisal include anche il sostituto. Probabilita, quota equa ed EV del contratto restano N/D."
+            },
+            "operational": {
+              "playability": {
+                "status": "PLAYABLE"
+              },
+              "classification": "SELEZIONATO"
+            },
+            "overlap": {
+              "overlapKey": "ucl-2026-27-md02-01:821927323",
               "semanticKeys": []
             }
           }
@@ -1812,6 +2128,447 @@
               "semanticKeys": []
             }
           }
+        },
+        {
+          "selectionId": "sisal:4858146:810823358:5317157812",
+          "context": {
+            "competition": "champions",
+            "season": "2026-27",
+            "matchday": 2
+          },
+          "matchId": "ucl-2026-27-md02-03",
+          "fixture": "Arsenal - Lille",
+          "market": "UNDER/OVER",
+          "marketScope": "match",
+          "marketFamily": "Gol",
+          "selection": "UNDER",
+          "providerSelectionCode": "1",
+          "label": "Totale partita under 2,5 gol",
+          "odds": 2.4,
+          "modelProbabilityPct": 46.4,
+          "fairOdds": 2.16,
+          "expectedValuePct": 11.4,
+          "evidenceLabel": "Totale partita: 2,82 gol · P 46,4%",
+          "motivation": "2,82 gol attesi; probabilita 46,4% dalla distribuzione Poisson gia serializzata.",
+          "classification": "A",
+          "dataQuality": {
+            "fixtureDetailedVolumes": "pilot statistico completo",
+            "sampleCoverage": null,
+            "currentSeasonReliabilityPct": null,
+            "validation": "POISSON_GOAL_MODEL"
+          },
+          "providerEventId": "4858146",
+          "providerMarketId": "810823358",
+          "providerSelectionId": "5317157812",
+          "marketCode": "7989",
+          "marketName": "UNDER/OVER",
+          "variantName": "U/O 2.5",
+          "threshold": 2.5,
+          "modifiers": {
+            "threshold": "2.5",
+            "variantName": "U/O 2.5",
+            "periodScope": "full-match",
+            "replacementIncluded": false,
+            "woodworkIncluded": false,
+            "duo": false
+          },
+          "settlement": {
+            "status": "pending",
+            "label": "Da verificare"
+          },
+          "betSelection": {
+            "selectionId": "sisal:4858146:810823358:5317157812",
+            "identity": {
+              "status": "VERIFIED_PROVIDER_IDS",
+              "matchId": "ucl-2026-27-md02-03",
+              "providerEventId": "4858146",
+              "providerMarketId": "810823358",
+              "providerSelectionId": "5317157812",
+              "providerPlayerIds": [],
+              "canonicalPlayerIds": []
+            },
+            "market": {
+              "name": "UNDER/OVER",
+              "family": "Gol",
+              "code": "7989",
+              "variant": "U/O 2.5",
+              "threshold": 2.5,
+              "selection": "UNDER",
+              "modifiers": {
+                "threshold": "2.5",
+                "variantName": "U/O 2.5",
+                "periodScope": "full-match",
+                "replacementIncluded": false,
+                "woodworkIncluded": false,
+                "duo": false
+              },
+              "bookmakerSemantics": {
+                "selectionName": "UNDER",
+                "selectionCode": "1",
+                "modifiers": {
+                  "threshold": "2.5",
+                  "variantName": "U/O 2.5",
+                  "periodScope": "full-match",
+                  "replacementIncluded": false,
+                  "woodworkIncluded": false,
+                  "duo": false
+                }
+              }
+            },
+            "quote": {
+              "decimal": 2.4,
+              "oddsRaw": 240,
+              "availability": "AVAILABLE_AT_SNAPSHOT",
+              "verifiedAt": "2026-10-13T09:55:14.800Z",
+              "marketUpdatedAt": "2026-10-13T00:48:39.673Z",
+              "source": {
+                "provider": "Sisal",
+                "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001"
+              }
+            },
+            "evaluation": {
+              "status": "MODELLED_VALIDATED_TEAM_MARKET",
+              "kind": "totalGoals",
+              "modelProbabilityPct": 46.4,
+              "fairOdds": 2.16,
+              "expectedValuePct": 11.4,
+              "forecast": {
+                "metric": "totalGoals",
+                "central": 2.82,
+                "threshold": 2.5,
+                "selection": "UNDER",
+                "validation": "POISSON_GOAL_MODEL"
+              },
+              "provenance": {
+                "source": "data/normalized/champions-md02-integration-2026-27.json",
+                "predictionGeneratedAt": "2026-10-13T14:01:36.326Z",
+                "curationSource": "data/sources/champions-md02-phase12d-outsiders-2026-27.json",
+                "curatedAt": "2026-10-13T16:10:37.4963673+02:00"
+              }
+            },
+            "compatibility": {
+              "status": "COMPATIBILE_CONTRATTO_ESATTO",
+              "bookmakerCombinability": "UNKNOWN"
+            },
+            "operational": {
+              "playability": {
+                "status": "PLAYABLE"
+              },
+              "classification": "SELEZIONATO_A"
+            },
+            "overlap": {
+              "overlapKey": "ucl-2026-27-md02-03:810823358",
+              "semanticKeys": [
+                "ucl-2026-27-md02-03:totalGoals:match:UNDER:2.5"
+              ]
+            }
+          }
+        },
+        {
+          "selectionId": "sisal:4858146:821922371:5376832677",
+          "context": {
+            "competition": "champions",
+            "season": "2026-27",
+            "matchday": 2
+          },
+          "matchId": "ucl-2026-27-md02-03",
+          "fixture": "Arsenal - Lille",
+          "market": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+          "marketScope": "player",
+          "marketFamily": "Tiri giocatore",
+          "selection": "OVER",
+          "providerSelectionCode": "2",
+          "label": "Ayase Ueda over 2,5 tiri · sostituto incluso",
+          "odds": 3.5,
+          "modelProbabilityPct": null,
+          "fairOdds": null,
+          "expectedValuePct": null,
+          "evidenceLabel": "Proiezione singolo: 2,4 tiri · 84,6 min",
+          "motivation": "2,4 tiri attesi in 84,6 minuti; forward, storico verificato su 2.969 minuti e affidabilita 76,7%.",
+          "limitation": "Il forecast quantifica i tiri del solo giocatore; la quota Sisal include anche il sostituto. Probabilita, quota equa ed EV del contratto restano N/D.",
+          "classification": "B",
+          "player": {
+            "canonicalPlayerId": "ayase-ueda",
+            "canonicalName": "Ayase Ueda",
+            "providerPlayerIds": [
+              "416204"
+            ],
+            "team": "Lille",
+            "side": "away",
+            "role": "forward",
+            "lineupStatus": "probable-starter",
+            "expectedMinutes": 84.6,
+            "historyMinutes": 2969,
+            "reliability": 0.7674,
+            "dataStatus": "verified-history",
+            "projectedShots": 2.4,
+            "projectedShotsOnTarget": 1.04
+          },
+          "dataQuality": {
+            "fixtureDetailedVolumes": true,
+            "playerDataStatus": "verified-history",
+            "identityStatus": "resolved"
+          },
+          "providerEventId": "4858146",
+          "providerMarketId": "821922371",
+          "providerSelectionId": "5376832677",
+          "marketCode": "28507",
+          "marketName": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+          "variantName": "UEDA AYASE U/O 2.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+          "threshold": 2.5,
+          "modifiers": {
+            "threshold": "2.5",
+            "variantName": "UEDA AYASE U/O 2.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+            "periodScope": "full-match",
+            "replacementIncluded": true,
+            "woodworkIncluded": false
+          },
+          "settlement": {
+            "status": "pending",
+            "label": "Da verificare"
+          },
+          "betSelection": {
+            "selectionId": "sisal:4858146:821922371:5376832677",
+            "identity": {
+              "status": "VERIFIED_PROVIDER_IDS",
+              "matchId": "ucl-2026-27-md02-03",
+              "providerEventId": "4858146",
+              "providerMarketId": "821922371",
+              "providerSelectionId": "5376832677",
+              "providerPlayerIds": [
+                "416204"
+              ],
+              "canonicalPlayerIds": [
+                "ayase-ueda"
+              ]
+            },
+            "market": {
+              "name": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+              "family": "Tiri giocatore",
+              "code": "28507",
+              "variant": "UEDA AYASE U/O 2.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+              "threshold": 2.5,
+              "selection": "OVER",
+              "modifiers": {
+                "threshold": "2.5",
+                "variantName": "UEDA AYASE U/O 2.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+                "periodScope": "full-match",
+                "replacementIncluded": true,
+                "woodworkIncluded": false
+              },
+              "bookmakerSemantics": {
+                "selectionName": "OVER",
+                "selectionCode": "2",
+                "modifiers": {
+                  "threshold": "2.5",
+                  "variantName": "UEDA AYASE U/O 2.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+                  "periodScope": "full-match",
+                  "replacementIncluded": true,
+                  "woodworkIncluded": false
+                },
+                "duo": true,
+                "replacementIncluded": true,
+                "postsAndCrossbarIncluded": false
+              }
+            },
+            "quote": {
+              "decimal": 3.5,
+              "oddsRaw": 350,
+              "availability": "AVAILABLE_AT_SNAPSHOT",
+              "verifiedAt": "2026-10-13T09:55:14.800Z",
+              "marketUpdatedAt": "2026-10-12T20:20:01.135Z",
+              "source": {
+                "provider": "Sisal",
+                "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001"
+              }
+            },
+            "evaluation": {
+              "status": "NOT_MODELLED",
+              "kind": "INDIVIDUAL_FORECAST_REFERENCE_ONLY",
+              "modelProbabilityPct": null,
+              "fairOdds": null,
+              "expectedValuePct": null,
+              "individualForecast": {
+                "metric": "shots",
+                "mean": 2.4,
+                "expectedMinutes": 84.6
+              },
+              "provenance": {
+                "source": "data/normalized/champions-md02-integration-2026-27.json",
+                "predictionGeneratedAt": "2026-10-13T14:01:36.326Z",
+                "curationSource": "data/sources/champions-md02-phase12d-outsiders-2026-27.json",
+                "curatedAt": "2026-10-13T16:10:37.4963673+02:00"
+              }
+            },
+            "compatibility": {
+              "status": "REFERENCE_ONLY_DUO_REPLACEMENT_NOT_MODELLED",
+              "bookmakerCombinability": "UNKNOWN",
+              "limitation": "Il forecast quantifica i tiri del solo giocatore; la quota Sisal include anche il sostituto. Probabilita, quota equa ed EV del contratto restano N/D."
+            },
+            "operational": {
+              "playability": {
+                "status": "PLAYABLE"
+              },
+              "classification": "SELEZIONATO"
+            },
+            "overlap": {
+              "overlapKey": "ucl-2026-27-md02-03:821922371",
+              "semanticKeys": []
+            }
+          }
+        },
+        {
+          "selectionId": "sisal:4858146:821921851:5376819861",
+          "context": {
+            "competition": "champions",
+            "season": "2026-27",
+            "matchday": 2
+          },
+          "matchId": "ucl-2026-27-md02-03",
+          "fixture": "Arsenal - Lille",
+          "market": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+          "marketScope": "player",
+          "marketFamily": "Tiri giocatore",
+          "selection": "OVER",
+          "providerSelectionCode": "2",
+          "label": "Benjamin André over 0,5 tiri · sostituto incluso",
+          "odds": 2.5,
+          "modelProbabilityPct": null,
+          "fairOdds": null,
+          "expectedValuePct": null,
+          "evidenceLabel": "Proiezione singolo: 0,84 tiri · 84,6 min",
+          "motivation": "0,84 tiri attesi in 84,6 minuti; midfielder, storico verificato su 2.946 minuti e affidabilita 76,6%.",
+          "limitation": "Il forecast quantifica i tiri del solo giocatore; la quota Sisal include anche il sostituto. Probabilita, quota equa ed EV del contratto restano N/D.",
+          "classification": "B",
+          "player": {
+            "canonicalPlayerId": "benjamin-andre",
+            "canonicalName": "Benjamin André",
+            "providerPlayerIds": [
+              "31213"
+            ],
+            "team": "Lille",
+            "side": "away",
+            "role": "midfielder",
+            "lineupStatus": "probable-starter",
+            "expectedMinutes": 84.6,
+            "historyMinutes": 2946,
+            "reliability": 0.766,
+            "dataStatus": "verified-history",
+            "projectedShots": 0.84,
+            "projectedShotsOnTarget": 0.26
+          },
+          "dataQuality": {
+            "fixtureDetailedVolumes": true,
+            "playerDataStatus": "verified-history",
+            "identityStatus": "resolved"
+          },
+          "providerEventId": "4858146",
+          "providerMarketId": "821921851",
+          "providerSelectionId": "5376819861",
+          "marketCode": "28507",
+          "marketName": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+          "variantName": "ANDRE B. U/O 0.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+          "threshold": 0.5,
+          "modifiers": {
+            "threshold": "0.5",
+            "variantName": "ANDRE B. U/O 0.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+            "periodScope": "full-match",
+            "replacementIncluded": true,
+            "woodworkIncluded": false
+          },
+          "settlement": {
+            "status": "pending",
+            "label": "Da verificare"
+          },
+          "betSelection": {
+            "selectionId": "sisal:4858146:821921851:5376819861",
+            "identity": {
+              "status": "VERIFIED_PROVIDER_IDS",
+              "matchId": "ucl-2026-27-md02-03",
+              "providerEventId": "4858146",
+              "providerMarketId": "821921851",
+              "providerSelectionId": "5376819861",
+              "providerPlayerIds": [
+                "31213"
+              ],
+              "canonicalPlayerIds": [
+                "benjamin-andre"
+              ]
+            },
+            "market": {
+              "name": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+              "family": "Tiri giocatore",
+              "code": "28507",
+              "variant": "ANDRE B. U/O 0.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+              "threshold": 0.5,
+              "selection": "OVER",
+              "modifiers": {
+                "threshold": "0.5",
+                "variantName": "ANDRE B. U/O 0.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+                "periodScope": "full-match",
+                "replacementIncluded": true,
+                "woodworkIncluded": false
+              },
+              "bookmakerSemantics": {
+                "selectionName": "OVER",
+                "selectionCode": "2",
+                "modifiers": {
+                  "threshold": "0.5",
+                  "variantName": "ANDRE B. U/O 0.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+                  "periodScope": "full-match",
+                  "replacementIncluded": true,
+                  "woodworkIncluded": false
+                },
+                "duo": true,
+                "replacementIncluded": true,
+                "postsAndCrossbarIncluded": false
+              }
+            },
+            "quote": {
+              "decimal": 2.5,
+              "oddsRaw": 250,
+              "availability": "AVAILABLE_AT_SNAPSHOT",
+              "verifiedAt": "2026-10-13T09:55:14.800Z",
+              "marketUpdatedAt": "2026-10-12T13:44:59.829Z",
+              "source": {
+                "provider": "Sisal",
+                "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001"
+              }
+            },
+            "evaluation": {
+              "status": "NOT_MODELLED",
+              "kind": "INDIVIDUAL_FORECAST_REFERENCE_ONLY",
+              "modelProbabilityPct": null,
+              "fairOdds": null,
+              "expectedValuePct": null,
+              "individualForecast": {
+                "metric": "shots",
+                "mean": 0.84,
+                "expectedMinutes": 84.6
+              },
+              "provenance": {
+                "source": "data/normalized/champions-md02-integration-2026-27.json",
+                "predictionGeneratedAt": "2026-10-13T14:01:36.326Z",
+                "curationSource": "data/sources/champions-md02-phase12d-outsiders-2026-27.json",
+                "curatedAt": "2026-10-13T16:10:37.4963673+02:00"
+              }
+            },
+            "compatibility": {
+              "status": "REFERENCE_ONLY_DUO_REPLACEMENT_NOT_MODELLED",
+              "bookmakerCombinability": "UNKNOWN",
+              "limitation": "Il forecast quantifica i tiri del solo giocatore; la quota Sisal include anche il sostituto. Probabilita, quota equa ed EV del contratto restano N/D."
+            },
+            "operational": {
+              "playability": {
+                "status": "PLAYABLE"
+              },
+              "classification": "SELEZIONATO"
+            },
+            "overlap": {
+              "overlapKey": "ucl-2026-27-md02-03:821921851",
+              "semanticKeys": []
+            }
+          }
         }
       ]
     },
@@ -2538,6 +3295,447 @@
             },
             "overlap": {
               "overlapKey": "ucl-2026-27-md02-04:821888775",
+              "semanticKeys": []
+            }
+          }
+        },
+        {
+          "selectionId": "sisal:4858177:810814206:5317191050",
+          "context": {
+            "competition": "champions",
+            "season": "2026-27",
+            "matchday": 2
+          },
+          "matchId": "ucl-2026-27-md02-04",
+          "fixture": "Atlético de Madrid - Manchester United",
+          "market": "UNDER/OVER",
+          "marketScope": "match",
+          "marketFamily": "Gol",
+          "selection": "OVER",
+          "providerSelectionCode": "2",
+          "label": "Totale partita over 3,5 gol",
+          "odds": 2.5,
+          "modelProbabilityPct": 43.6,
+          "fairOdds": 2.29,
+          "expectedValuePct": 9,
+          "evidenceLabel": "Totale partita: 3,37 gol · P 43,6%",
+          "motivation": "3,37 gol attesi; probabilita 43,6% dalla distribuzione Poisson gia serializzata.",
+          "classification": "A",
+          "dataQuality": {
+            "fixtureDetailedVolumes": "pilot statistico completo",
+            "sampleCoverage": null,
+            "currentSeasonReliabilityPct": null,
+            "validation": "POISSON_GOAL_MODEL"
+          },
+          "providerEventId": "4858177",
+          "providerMarketId": "810814206",
+          "providerSelectionId": "5317191050",
+          "marketCode": "7989",
+          "marketName": "UNDER/OVER",
+          "variantName": "U/O 3.5",
+          "threshold": 3.5,
+          "modifiers": {
+            "threshold": "3.5",
+            "variantName": "U/O 3.5",
+            "periodScope": "full-match",
+            "replacementIncluded": false,
+            "woodworkIncluded": false,
+            "duo": false
+          },
+          "settlement": {
+            "status": "pending",
+            "label": "Da verificare"
+          },
+          "betSelection": {
+            "selectionId": "sisal:4858177:810814206:5317191050",
+            "identity": {
+              "status": "VERIFIED_PROVIDER_IDS",
+              "matchId": "ucl-2026-27-md02-04",
+              "providerEventId": "4858177",
+              "providerMarketId": "810814206",
+              "providerSelectionId": "5317191050",
+              "providerPlayerIds": [],
+              "canonicalPlayerIds": []
+            },
+            "market": {
+              "name": "UNDER/OVER",
+              "family": "Gol",
+              "code": "7989",
+              "variant": "U/O 3.5",
+              "threshold": 3.5,
+              "selection": "OVER",
+              "modifiers": {
+                "threshold": "3.5",
+                "variantName": "U/O 3.5",
+                "periodScope": "full-match",
+                "replacementIncluded": false,
+                "woodworkIncluded": false,
+                "duo": false
+              },
+              "bookmakerSemantics": {
+                "selectionName": "OVER",
+                "selectionCode": "2",
+                "modifiers": {
+                  "threshold": "3.5",
+                  "variantName": "U/O 3.5",
+                  "periodScope": "full-match",
+                  "replacementIncluded": false,
+                  "woodworkIncluded": false,
+                  "duo": false
+                }
+              }
+            },
+            "quote": {
+              "decimal": 2.5,
+              "oddsRaw": 250,
+              "availability": "AVAILABLE_AT_SNAPSHOT",
+              "verifiedAt": "2026-10-13T09:55:14.800Z",
+              "marketUpdatedAt": "2026-10-13T09:08:00.812Z",
+              "source": {
+                "provider": "Sisal",
+                "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001"
+              }
+            },
+            "evaluation": {
+              "status": "MODELLED_VALIDATED_TEAM_MARKET",
+              "kind": "totalGoals",
+              "modelProbabilityPct": 43.6,
+              "fairOdds": 2.29,
+              "expectedValuePct": 9,
+              "forecast": {
+                "metric": "totalGoals",
+                "central": 3.37,
+                "threshold": 3.5,
+                "selection": "OVER",
+                "validation": "POISSON_GOAL_MODEL"
+              },
+              "provenance": {
+                "source": "data/normalized/champions-md02-integration-2026-27.json",
+                "predictionGeneratedAt": "2026-10-13T14:01:36.326Z",
+                "curationSource": "data/sources/champions-md02-phase12d-outsiders-2026-27.json",
+                "curatedAt": "2026-10-13T16:10:37.4963673+02:00"
+              }
+            },
+            "compatibility": {
+              "status": "COMPATIBILE_CONTRATTO_ESATTO",
+              "bookmakerCombinability": "UNKNOWN"
+            },
+            "operational": {
+              "playability": {
+                "status": "PLAYABLE"
+              },
+              "classification": "SELEZIONATO_A"
+            },
+            "overlap": {
+              "overlapKey": "ucl-2026-27-md02-04:810814206",
+              "semanticKeys": [
+                "ucl-2026-27-md02-04:totalGoals:match:OVER:3.5"
+              ]
+            }
+          }
+        },
+        {
+          "selectionId": "sisal:4858177:821888897:5376635025",
+          "context": {
+            "competition": "champions",
+            "season": "2026-27",
+            "matchday": 2
+          },
+          "matchId": "ucl-2026-27-md02-04",
+          "fixture": "Atlético de Madrid - Manchester United",
+          "market": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+          "marketScope": "player",
+          "marketFamily": "Tiri giocatore",
+          "selection": "OVER",
+          "providerSelectionCode": "2",
+          "label": "Marcus Rashford over 3,5 tiri · sostituto incluso",
+          "odds": 4.5,
+          "modelProbabilityPct": null,
+          "fairOdds": null,
+          "expectedValuePct": null,
+          "evidenceLabel": "Proiezione singolo: 2,91 tiri · 84,6 min",
+          "motivation": "2,91 tiri attesi in 84,6 minuti; forward, storico verificato su 2.341 minuti e affidabilita 72,2%.",
+          "limitation": "Il forecast quantifica i tiri del solo giocatore; la quota Sisal include anche il sostituto. Probabilita, quota equa ed EV del contratto restano N/D.",
+          "classification": "B",
+          "player": {
+            "canonicalPlayerId": "marcus-rashford",
+            "canonicalName": "Marcus Rashford",
+            "providerPlayerIds": [
+              "12073"
+            ],
+            "team": "Manchester United",
+            "side": "away",
+            "role": "forward",
+            "lineupStatus": "probable-starter",
+            "expectedMinutes": 84.6,
+            "historyMinutes": 2341,
+            "reliability": 0.7223,
+            "dataStatus": "verified-history",
+            "projectedShots": 2.91,
+            "projectedShotsOnTarget": 1.04
+          },
+          "dataQuality": {
+            "fixtureDetailedVolumes": true,
+            "playerDataStatus": "verified-history",
+            "identityStatus": "resolved"
+          },
+          "providerEventId": "4858177",
+          "providerMarketId": "821888897",
+          "providerSelectionId": "5376635025",
+          "marketCode": "28507",
+          "marketName": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+          "variantName": "RASHFORD M. U/O 3.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+          "threshold": 3.5,
+          "modifiers": {
+            "threshold": "3.5",
+            "variantName": "RASHFORD M. U/O 3.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+            "periodScope": "full-match",
+            "replacementIncluded": true,
+            "woodworkIncluded": false
+          },
+          "settlement": {
+            "status": "pending",
+            "label": "Da verificare"
+          },
+          "betSelection": {
+            "selectionId": "sisal:4858177:821888897:5376635025",
+            "identity": {
+              "status": "VERIFIED_PROVIDER_IDS",
+              "matchId": "ucl-2026-27-md02-04",
+              "providerEventId": "4858177",
+              "providerMarketId": "821888897",
+              "providerSelectionId": "5376635025",
+              "providerPlayerIds": [
+                "12073"
+              ],
+              "canonicalPlayerIds": [
+                "marcus-rashford"
+              ]
+            },
+            "market": {
+              "name": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+              "family": "Tiri giocatore",
+              "code": "28507",
+              "variant": "RASHFORD M. U/O 3.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+              "threshold": 3.5,
+              "selection": "OVER",
+              "modifiers": {
+                "threshold": "3.5",
+                "variantName": "RASHFORD M. U/O 3.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+                "periodScope": "full-match",
+                "replacementIncluded": true,
+                "woodworkIncluded": false
+              },
+              "bookmakerSemantics": {
+                "selectionName": "OVER",
+                "selectionCode": "2",
+                "modifiers": {
+                  "threshold": "3.5",
+                  "variantName": "RASHFORD M. U/O 3.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+                  "periodScope": "full-match",
+                  "replacementIncluded": true,
+                  "woodworkIncluded": false
+                },
+                "duo": true,
+                "replacementIncluded": true,
+                "postsAndCrossbarIncluded": false
+              }
+            },
+            "quote": {
+              "decimal": 4.5,
+              "oddsRaw": 450,
+              "availability": "AVAILABLE_AT_SNAPSHOT",
+              "verifiedAt": "2026-10-13T09:55:14.800Z",
+              "marketUpdatedAt": "2026-10-12T13:45:00.034Z",
+              "source": {
+                "provider": "Sisal",
+                "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001"
+              }
+            },
+            "evaluation": {
+              "status": "NOT_MODELLED",
+              "kind": "INDIVIDUAL_FORECAST_REFERENCE_ONLY",
+              "modelProbabilityPct": null,
+              "fairOdds": null,
+              "expectedValuePct": null,
+              "individualForecast": {
+                "metric": "shots",
+                "mean": 2.91,
+                "expectedMinutes": 84.6
+              },
+              "provenance": {
+                "source": "data/normalized/champions-md02-integration-2026-27.json",
+                "predictionGeneratedAt": "2026-10-13T14:01:36.326Z",
+                "curationSource": "data/sources/champions-md02-phase12d-outsiders-2026-27.json",
+                "curatedAt": "2026-10-13T16:10:37.4963673+02:00"
+              }
+            },
+            "compatibility": {
+              "status": "REFERENCE_ONLY_DUO_REPLACEMENT_NOT_MODELLED",
+              "bookmakerCombinability": "UNKNOWN",
+              "limitation": "Il forecast quantifica i tiri del solo giocatore; la quota Sisal include anche il sostituto. Probabilita, quota equa ed EV del contratto restano N/D."
+            },
+            "operational": {
+              "playability": {
+                "status": "PLAYABLE"
+              },
+              "classification": "SELEZIONATO"
+            },
+            "overlap": {
+              "overlapKey": "ucl-2026-27-md02-04:821888897",
+              "semanticKeys": []
+            }
+          }
+        },
+        {
+          "selectionId": "sisal:4858177:821891749:5376648956",
+          "context": {
+            "competition": "champions",
+            "season": "2026-27",
+            "matchday": 2
+          },
+          "matchId": "ucl-2026-27-md02-04",
+          "fixture": "Atlético de Madrid - Manchester United",
+          "market": "U/O  TIRI IN PORTA GIOCATORE (DUO) INC PALI TRAVERSE INC TS",
+          "marketScope": "player",
+          "marketFamily": "Tiri in porta giocatore",
+          "selection": "OVER",
+          "providerSelectionCode": "2",
+          "label": "Alejandro Grimaldo over 0,5 SOT · sostituto incluso · pali/traverse inclusi",
+          "odds": 2,
+          "modelProbabilityPct": null,
+          "fairOdds": null,
+          "expectedValuePct": null,
+          "evidenceLabel": "Proiezione singolo: 0,75 SOT · 84,6 min",
+          "motivation": "0,75 SOT attesi in 84,6 minuti; defender, storico verificato su 3.603 minuti e affidabilita 80%.",
+          "limitation": "Il forecast quantifica i SOT del solo giocatore; la quota Sisal include il sostituto e anche pali/traverse. Probabilita, quota equa ed EV del contratto restano N/D.",
+          "classification": "B",
+          "player": {
+            "canonicalPlayerId": "alejandro-grimaldo",
+            "canonicalName": "Alejandro Grimaldo",
+            "providerPlayerIds": [
+              "58191"
+            ],
+            "team": "Atlético de Madrid",
+            "side": "home",
+            "role": "defender",
+            "lineupStatus": "probable-starter",
+            "expectedMinutes": 84.6,
+            "historyMinutes": 3603,
+            "reliability": 0.8001,
+            "dataStatus": "verified-history",
+            "projectedShots": 1.81,
+            "projectedShotsOnTarget": 0.75
+          },
+          "dataQuality": {
+            "fixtureDetailedVolumes": true,
+            "playerDataStatus": "verified-history",
+            "identityStatus": "resolved"
+          },
+          "providerEventId": "4858177",
+          "providerMarketId": "821891749",
+          "providerSelectionId": "5376648956",
+          "marketCode": "28506",
+          "marketName": "U/O  TIRI IN PORTA GIOCATORE (DUO) INC PALI TRAVERSE INC TS",
+          "variantName": "ALEX GRIMALDO U/O 0.5 SOMMA TIRI IN PORTA INC PALI E TRAVERSE E SUO SOST. INCL. T.S.",
+          "threshold": 0.5,
+          "modifiers": {
+            "threshold": "0.5",
+            "variantName": "ALEX GRIMALDO U/O 0.5 SOMMA TIRI IN PORTA INC PALI E TRAVERSE E SUO SOST. INCL. T.S.",
+            "periodScope": "full-match",
+            "replacementIncluded": true,
+            "woodworkIncluded": true
+          },
+          "settlement": {
+            "status": "pending",
+            "label": "Da verificare"
+          },
+          "betSelection": {
+            "selectionId": "sisal:4858177:821891749:5376648956",
+            "identity": {
+              "status": "VERIFIED_PROVIDER_IDS",
+              "matchId": "ucl-2026-27-md02-04",
+              "providerEventId": "4858177",
+              "providerMarketId": "821891749",
+              "providerSelectionId": "5376648956",
+              "providerPlayerIds": [
+                "58191"
+              ],
+              "canonicalPlayerIds": [
+                "alejandro-grimaldo"
+              ]
+            },
+            "market": {
+              "name": "U/O  TIRI IN PORTA GIOCATORE (DUO) INC PALI TRAVERSE INC TS",
+              "family": "Tiri in porta giocatore",
+              "code": "28506",
+              "variant": "ALEX GRIMALDO U/O 0.5 SOMMA TIRI IN PORTA INC PALI E TRAVERSE E SUO SOST. INCL. T.S.",
+              "threshold": 0.5,
+              "selection": "OVER",
+              "modifiers": {
+                "threshold": "0.5",
+                "variantName": "ALEX GRIMALDO U/O 0.5 SOMMA TIRI IN PORTA INC PALI E TRAVERSE E SUO SOST. INCL. T.S.",
+                "periodScope": "full-match",
+                "replacementIncluded": true,
+                "woodworkIncluded": true
+              },
+              "bookmakerSemantics": {
+                "selectionName": "OVER",
+                "selectionCode": "2",
+                "modifiers": {
+                  "threshold": "0.5",
+                  "variantName": "ALEX GRIMALDO U/O 0.5 SOMMA TIRI IN PORTA INC PALI E TRAVERSE E SUO SOST. INCL. T.S.",
+                  "periodScope": "full-match",
+                  "replacementIncluded": true,
+                  "woodworkIncluded": true
+                },
+                "duo": true,
+                "replacementIncluded": true,
+                "postsAndCrossbarIncluded": true
+              }
+            },
+            "quote": {
+              "decimal": 2,
+              "oddsRaw": 200,
+              "availability": "AVAILABLE_AT_SNAPSHOT",
+              "verifiedAt": "2026-10-13T09:55:14.800Z",
+              "marketUpdatedAt": "2026-10-12T13:45:00.025Z",
+              "source": {
+                "provider": "Sisal",
+                "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001"
+              }
+            },
+            "evaluation": {
+              "status": "NOT_MODELLED",
+              "kind": "INDIVIDUAL_FORECAST_REFERENCE_ONLY",
+              "modelProbabilityPct": null,
+              "fairOdds": null,
+              "expectedValuePct": null,
+              "individualForecast": {
+                "metric": "shotsOnTarget",
+                "mean": 0.75,
+                "expectedMinutes": 84.6
+              },
+              "provenance": {
+                "source": "data/normalized/champions-md02-integration-2026-27.json",
+                "predictionGeneratedAt": "2026-10-13T14:01:36.326Z",
+                "curationSource": "data/sources/champions-md02-phase12d-outsiders-2026-27.json",
+                "curatedAt": "2026-10-13T16:10:37.4963673+02:00"
+              }
+            },
+            "compatibility": {
+              "status": "REFERENCE_ONLY_DUO_REPLACEMENT_AND_WOODWORK_NOT_MODELLED",
+              "bookmakerCombinability": "UNKNOWN",
+              "limitation": "Il forecast quantifica i SOT del solo giocatore; la quota Sisal include il sostituto e anche pali/traverse. Probabilita, quota equa ed EV del contratto restano N/D."
+            },
+            "operational": {
+              "playability": {
+                "status": "PLAYABLE"
+              },
+              "classification": "SELEZIONATO"
+            },
+            "overlap": {
+              "overlapKey": "ucl-2026-27-md02-04:821891749",
               "semanticKeys": []
             }
           }
@@ -3423,6 +4621,159 @@
               "semanticKeys": []
             }
           }
+        },
+        {
+          "selectionId": "sisal:4858180:822318867:5378989938",
+          "context": {
+            "competition": "champions",
+            "season": "2026-27",
+            "matchday": 2
+          },
+          "matchId": "ucl-2026-27-md02-05",
+          "fixture": "Inter - Club Brugge",
+          "market": "U/O  TIRI IN PORTA GIOCATORE (DUO) INC PALI TRAVERSE INC TS",
+          "marketScope": "player",
+          "marketFamily": "Tiri in porta giocatore",
+          "selection": "OVER",
+          "providerSelectionCode": "2",
+          "label": "Hugo Vetlesen over 0,5 SOT · sostituto incluso · pali/traverse inclusi",
+          "odds": 2.75,
+          "modelProbabilityPct": null,
+          "fairOdds": null,
+          "expectedValuePct": null,
+          "evidenceLabel": "Proiezione singolo: 0,69 SOT · 84,6 min",
+          "motivation": "0,69 SOT attesi in 84,6 minuti; midfielder, storico verificato su 1.472 minuti e affidabilita 62,1%.",
+          "limitation": "Il forecast quantifica i SOT del solo giocatore; la quota Sisal include il sostituto e anche pali/traverse. Probabilita, quota equa ed EV del contratto restano N/D.",
+          "classification": "B",
+          "player": {
+            "canonicalPlayerId": "hugo-vetlesen",
+            "canonicalName": "Hugo Vetlesen",
+            "providerPlayerIds": [
+              "298432"
+            ],
+            "team": "Club Brugge",
+            "side": "away",
+            "role": "midfielder",
+            "lineupStatus": "probable-starter",
+            "expectedMinutes": 84.6,
+            "historyMinutes": 1472,
+            "reliability": 0.6206,
+            "dataStatus": "verified-history",
+            "projectedShots": 1.84,
+            "projectedShotsOnTarget": 0.69
+          },
+          "dataQuality": {
+            "fixtureDetailedVolumes": true,
+            "playerDataStatus": "verified-history",
+            "identityStatus": "resolved"
+          },
+          "providerEventId": "4858180",
+          "providerMarketId": "822318867",
+          "providerSelectionId": "5378989938",
+          "marketCode": "28506",
+          "marketName": "U/O  TIRI IN PORTA GIOCATORE (DUO) INC PALI TRAVERSE INC TS",
+          "variantName": "VETLESEN H. V. U/O 0.5 SOMMA TIRI IN PORTA INC PALI E TRAVERSE E SUO SOST. INCL. T.S.",
+          "threshold": 0.5,
+          "modifiers": {
+            "threshold": "0.5",
+            "variantName": "VETLESEN H. V. U/O 0.5 SOMMA TIRI IN PORTA INC PALI E TRAVERSE E SUO SOST. INCL. T.S.",
+            "periodScope": "full-match",
+            "replacementIncluded": true,
+            "woodworkIncluded": true
+          },
+          "settlement": {
+            "status": "pending",
+            "label": "Da verificare"
+          },
+          "betSelection": {
+            "selectionId": "sisal:4858180:822318867:5378989938",
+            "identity": {
+              "status": "VERIFIED_PROVIDER_IDS",
+              "matchId": "ucl-2026-27-md02-05",
+              "providerEventId": "4858180",
+              "providerMarketId": "822318867",
+              "providerSelectionId": "5378989938",
+              "providerPlayerIds": [
+                "298432"
+              ],
+              "canonicalPlayerIds": [
+                "hugo-vetlesen"
+              ]
+            },
+            "market": {
+              "name": "U/O  TIRI IN PORTA GIOCATORE (DUO) INC PALI TRAVERSE INC TS",
+              "family": "Tiri in porta giocatore",
+              "code": "28506",
+              "variant": "VETLESEN H. V. U/O 0.5 SOMMA TIRI IN PORTA INC PALI E TRAVERSE E SUO SOST. INCL. T.S.",
+              "threshold": 0.5,
+              "selection": "OVER",
+              "modifiers": {
+                "threshold": "0.5",
+                "variantName": "VETLESEN H. V. U/O 0.5 SOMMA TIRI IN PORTA INC PALI E TRAVERSE E SUO SOST. INCL. T.S.",
+                "periodScope": "full-match",
+                "replacementIncluded": true,
+                "woodworkIncluded": true
+              },
+              "bookmakerSemantics": {
+                "selectionName": "OVER",
+                "selectionCode": "2",
+                "modifiers": {
+                  "threshold": "0.5",
+                  "variantName": "VETLESEN H. V. U/O 0.5 SOMMA TIRI IN PORTA INC PALI E TRAVERSE E SUO SOST. INCL. T.S.",
+                  "periodScope": "full-match",
+                  "replacementIncluded": true,
+                  "woodworkIncluded": true
+                },
+                "duo": true,
+                "replacementIncluded": true,
+                "postsAndCrossbarIncluded": true
+              }
+            },
+            "quote": {
+              "decimal": 2.75,
+              "oddsRaw": 275,
+              "availability": "AVAILABLE_AT_SNAPSHOT",
+              "verifiedAt": "2026-10-13T09:55:14.800Z",
+              "marketUpdatedAt": "2026-10-12T13:45:00.113Z",
+              "source": {
+                "provider": "Sisal",
+                "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001"
+              }
+            },
+            "evaluation": {
+              "status": "NOT_MODELLED",
+              "kind": "INDIVIDUAL_FORECAST_REFERENCE_ONLY",
+              "modelProbabilityPct": null,
+              "fairOdds": null,
+              "expectedValuePct": null,
+              "individualForecast": {
+                "metric": "shotsOnTarget",
+                "mean": 0.69,
+                "expectedMinutes": 84.6
+              },
+              "provenance": {
+                "source": "data/normalized/champions-md02-integration-2026-27.json",
+                "predictionGeneratedAt": "2026-10-13T14:01:36.326Z",
+                "curationSource": "data/sources/champions-md02-phase12d-outsiders-2026-27.json",
+                "curatedAt": "2026-10-13T16:10:37.4963673+02:00"
+              }
+            },
+            "compatibility": {
+              "status": "REFERENCE_ONLY_DUO_REPLACEMENT_AND_WOODWORK_NOT_MODELLED",
+              "bookmakerCombinability": "UNKNOWN",
+              "limitation": "Il forecast quantifica i SOT del solo giocatore; la quota Sisal include il sostituto e anche pali/traverse. Probabilita, quota equa ed EV del contratto restano N/D."
+            },
+            "operational": {
+              "playability": {
+                "status": "PLAYABLE"
+              },
+              "classification": "SELEZIONATO"
+            },
+            "overlap": {
+              "overlapKey": "ucl-2026-27-md02-05:822318867",
+              "semanticKeys": []
+            }
+          }
         }
       ]
     },
@@ -4170,6 +5521,294 @@
               "semanticKeys": []
             }
           }
+        },
+        {
+          "selectionId": "sisal:4858143:810812673:5317142893",
+          "context": {
+            "competition": "champions",
+            "season": "2026-27",
+            "matchday": 2
+          },
+          "matchId": "ucl-2026-27-md02-06",
+          "fixture": "Galatasaray - Barcelona",
+          "market": "UNDER/OVER",
+          "marketScope": "match",
+          "marketFamily": "Gol",
+          "selection": "UNDER",
+          "providerSelectionCode": "1",
+          "label": "Totale partita under 3,5 gol",
+          "odds": 2.4,
+          "modelProbabilityPct": 46.8,
+          "fairOdds": 2.14,
+          "expectedValuePct": 12.3,
+          "evidenceLabel": "Totale partita: 3,82 gol · P 46,8%",
+          "motivation": "3,82 gol attesi; probabilita 46,8% dalla distribuzione Poisson gia serializzata.",
+          "classification": "A",
+          "dataQuality": {
+            "fixtureDetailedVolumes": "pilot statistico completo",
+            "sampleCoverage": null,
+            "currentSeasonReliabilityPct": null,
+            "validation": "POISSON_GOAL_MODEL"
+          },
+          "providerEventId": "4858143",
+          "providerMarketId": "810812673",
+          "providerSelectionId": "5317142893",
+          "marketCode": "7989",
+          "marketName": "UNDER/OVER",
+          "variantName": "U/O 3.5",
+          "threshold": 3.5,
+          "modifiers": {
+            "threshold": "3.5",
+            "variantName": "U/O 3.5",
+            "periodScope": "full-match",
+            "replacementIncluded": false,
+            "woodworkIncluded": false,
+            "duo": false
+          },
+          "settlement": {
+            "status": "pending",
+            "label": "Da verificare"
+          },
+          "betSelection": {
+            "selectionId": "sisal:4858143:810812673:5317142893",
+            "identity": {
+              "status": "VERIFIED_PROVIDER_IDS",
+              "matchId": "ucl-2026-27-md02-06",
+              "providerEventId": "4858143",
+              "providerMarketId": "810812673",
+              "providerSelectionId": "5317142893",
+              "providerPlayerIds": [],
+              "canonicalPlayerIds": []
+            },
+            "market": {
+              "name": "UNDER/OVER",
+              "family": "Gol",
+              "code": "7989",
+              "variant": "U/O 3.5",
+              "threshold": 3.5,
+              "selection": "UNDER",
+              "modifiers": {
+                "threshold": "3.5",
+                "variantName": "U/O 3.5",
+                "periodScope": "full-match",
+                "replacementIncluded": false,
+                "woodworkIncluded": false,
+                "duo": false
+              },
+              "bookmakerSemantics": {
+                "selectionName": "UNDER",
+                "selectionCode": "1",
+                "modifiers": {
+                  "threshold": "3.5",
+                  "variantName": "U/O 3.5",
+                  "periodScope": "full-match",
+                  "replacementIncluded": false,
+                  "woodworkIncluded": false,
+                  "duo": false
+                }
+              }
+            },
+            "quote": {
+              "decimal": 2.4,
+              "oddsRaw": 240,
+              "availability": "AVAILABLE_AT_SNAPSHOT",
+              "verifiedAt": "2026-10-13T09:55:14.800Z",
+              "marketUpdatedAt": "2026-10-12T13:44:59.282Z",
+              "source": {
+                "provider": "Sisal",
+                "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001"
+              }
+            },
+            "evaluation": {
+              "status": "MODELLED_VALIDATED_TEAM_MARKET",
+              "kind": "totalGoals",
+              "modelProbabilityPct": 46.8,
+              "fairOdds": 2.14,
+              "expectedValuePct": 12.3,
+              "forecast": {
+                "metric": "totalGoals",
+                "central": 3.82,
+                "threshold": 3.5,
+                "selection": "UNDER",
+                "validation": "POISSON_GOAL_MODEL"
+              },
+              "provenance": {
+                "source": "data/normalized/champions-md02-integration-2026-27.json",
+                "predictionGeneratedAt": "2026-10-13T14:01:36.326Z",
+                "curationSource": "data/sources/champions-md02-phase12d-outsiders-2026-27.json",
+                "curatedAt": "2026-10-13T16:10:37.4963673+02:00"
+              }
+            },
+            "compatibility": {
+              "status": "COMPATIBILE_CONTRATTO_ESATTO",
+              "bookmakerCombinability": "UNKNOWN"
+            },
+            "operational": {
+              "playability": {
+                "status": "PLAYABLE"
+              },
+              "classification": "SELEZIONATO_A"
+            },
+            "overlap": {
+              "overlapKey": "ucl-2026-27-md02-06:810812673",
+              "semanticKeys": [
+                "ucl-2026-27-md02-06:totalGoals:match:UNDER:3.5"
+              ]
+            }
+          }
+        },
+        {
+          "selectionId": "sisal:4858143:822328609:5379080871",
+          "context": {
+            "competition": "champions",
+            "season": "2026-27",
+            "matchday": 2
+          },
+          "matchId": "ucl-2026-27-md02-06",
+          "fixture": "Galatasaray - Barcelona",
+          "market": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+          "marketScope": "player",
+          "marketFamily": "Tiri giocatore",
+          "selection": "OVER",
+          "providerSelectionCode": "2",
+          "label": "Dani Olmo over 3,5 tiri · sostituto incluso",
+          "odds": 2.75,
+          "modelProbabilityPct": null,
+          "fairOdds": null,
+          "expectedValuePct": null,
+          "evidenceLabel": "Proiezione singolo: 2,72 tiri · 84,6 min",
+          "motivation": "2,72 tiri attesi in 84,6 minuti; forward, storico verificato su 2.522 minuti e affidabilita 73,7%.",
+          "limitation": "Il forecast quantifica i tiri del solo giocatore; la quota Sisal include anche il sostituto. Probabilita, quota equa ed EV del contratto restano N/D.",
+          "classification": "B",
+          "player": {
+            "canonicalPlayerId": "dani-olmo",
+            "canonicalName": "Dani Olmo",
+            "providerPlayerIds": [
+              "38342"
+            ],
+            "team": "Barcelona",
+            "side": "away",
+            "role": "forward",
+            "lineupStatus": "probable-starter",
+            "expectedMinutes": 84.6,
+            "historyMinutes": 2522,
+            "reliability": 0.737,
+            "dataStatus": "verified-history",
+            "projectedShots": 2.72,
+            "projectedShotsOnTarget": 0.8
+          },
+          "dataQuality": {
+            "fixtureDetailedVolumes": true,
+            "playerDataStatus": "verified-history",
+            "identityStatus": "resolved"
+          },
+          "providerEventId": "4858143",
+          "providerMarketId": "822328609",
+          "providerSelectionId": "5379080871",
+          "marketCode": "28507",
+          "marketName": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+          "variantName": "OLMO D. U/O 3.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+          "threshold": 3.5,
+          "modifiers": {
+            "threshold": "3.5",
+            "variantName": "OLMO D. U/O 3.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+            "periodScope": "full-match",
+            "replacementIncluded": true,
+            "woodworkIncluded": false
+          },
+          "settlement": {
+            "status": "pending",
+            "label": "Da verificare"
+          },
+          "betSelection": {
+            "selectionId": "sisal:4858143:822328609:5379080871",
+            "identity": {
+              "status": "VERIFIED_PROVIDER_IDS",
+              "matchId": "ucl-2026-27-md02-06",
+              "providerEventId": "4858143",
+              "providerMarketId": "822328609",
+              "providerSelectionId": "5379080871",
+              "providerPlayerIds": [
+                "38342"
+              ],
+              "canonicalPlayerIds": [
+                "dani-olmo"
+              ]
+            },
+            "market": {
+              "name": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+              "family": "Tiri giocatore",
+              "code": "28507",
+              "variant": "OLMO D. U/O 3.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+              "threshold": 3.5,
+              "selection": "OVER",
+              "modifiers": {
+                "threshold": "3.5",
+                "variantName": "OLMO D. U/O 3.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+                "periodScope": "full-match",
+                "replacementIncluded": true,
+                "woodworkIncluded": false
+              },
+              "bookmakerSemantics": {
+                "selectionName": "OVER",
+                "selectionCode": "2",
+                "modifiers": {
+                  "threshold": "3.5",
+                  "variantName": "OLMO D. U/O 3.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+                  "periodScope": "full-match",
+                  "replacementIncluded": true,
+                  "woodworkIncluded": false
+                },
+                "duo": true,
+                "replacementIncluded": true,
+                "postsAndCrossbarIncluded": false
+              }
+            },
+            "quote": {
+              "decimal": 2.75,
+              "oddsRaw": 275,
+              "availability": "AVAILABLE_AT_SNAPSHOT",
+              "verifiedAt": "2026-10-13T09:55:14.800Z",
+              "marketUpdatedAt": "2026-10-12T13:44:59.278Z",
+              "source": {
+                "provider": "Sisal",
+                "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001"
+              }
+            },
+            "evaluation": {
+              "status": "NOT_MODELLED",
+              "kind": "INDIVIDUAL_FORECAST_REFERENCE_ONLY",
+              "modelProbabilityPct": null,
+              "fairOdds": null,
+              "expectedValuePct": null,
+              "individualForecast": {
+                "metric": "shots",
+                "mean": 2.72,
+                "expectedMinutes": 84.6
+              },
+              "provenance": {
+                "source": "data/normalized/champions-md02-integration-2026-27.json",
+                "predictionGeneratedAt": "2026-10-13T14:01:36.326Z",
+                "curationSource": "data/sources/champions-md02-phase12d-outsiders-2026-27.json",
+                "curatedAt": "2026-10-13T16:10:37.4963673+02:00"
+              }
+            },
+            "compatibility": {
+              "status": "REFERENCE_ONLY_DUO_REPLACEMENT_NOT_MODELLED",
+              "bookmakerCombinability": "UNKNOWN",
+              "limitation": "Il forecast quantifica i tiri del solo giocatore; la quota Sisal include anche il sostituto. Probabilita, quota equa ed EV del contratto restano N/D."
+            },
+            "operational": {
+              "playability": {
+                "status": "PLAYABLE"
+              },
+              "classification": "SELEZIONATO"
+            },
+            "overlap": {
+              "overlapKey": "ucl-2026-27-md02-06:822328609",
+              "semanticKeys": []
+            }
+          }
         }
       ]
     },
@@ -4897,6 +6536,159 @@
             },
             "overlap": {
               "overlapKey": "ucl-2026-27-md02-07:822440794",
+              "semanticKeys": []
+            }
+          }
+        },
+        {
+          "selectionId": "sisal:4858176:822440956:5379722099",
+          "context": {
+            "competition": "champions",
+            "season": "2026-27",
+            "matchday": 2
+          },
+          "matchId": "ucl-2026-27-md02-07",
+          "fixture": "Leipzig - PSV Eindhoven",
+          "market": "U/O  TIRI IN PORTA GIOCATORE (DUO) INC PALI TRAVERSE INC TS",
+          "marketScope": "player",
+          "marketFamily": "Tiri in porta giocatore",
+          "selection": "OVER",
+          "providerSelectionCode": "2",
+          "label": "Sven Mijnans over 1,5 SOT · sostituto incluso · pali/traverse inclusi",
+          "odds": 3.75,
+          "modelProbabilityPct": null,
+          "fairOdds": null,
+          "expectedValuePct": null,
+          "evidenceLabel": "Proiezione singolo: 1,17 SOT · 84,6 min",
+          "motivation": "1,17 SOT attesi in 84,6 minuti; midfielder, storico verificato su 3.588 minuti e affidabilita 80%.",
+          "limitation": "Il forecast quantifica i SOT del solo giocatore; la quota Sisal include il sostituto e anche pali/traverse. Probabilita, quota equa ed EV del contratto restano N/D.",
+          "classification": "B",
+          "player": {
+            "canonicalPlayerId": "sven-mijnans",
+            "canonicalName": "Sven Mijnans",
+            "providerPlayerIds": [
+              "423704"
+            ],
+            "team": "PSV Eindhoven",
+            "side": "away",
+            "role": "midfielder",
+            "lineupStatus": "probable-starter",
+            "expectedMinutes": 84.6,
+            "historyMinutes": 3588,
+            "reliability": 0.7995,
+            "dataStatus": "verified-history",
+            "projectedShots": 2.69,
+            "projectedShotsOnTarget": 1.17
+          },
+          "dataQuality": {
+            "fixtureDetailedVolumes": true,
+            "playerDataStatus": "verified-history",
+            "identityStatus": "resolved"
+          },
+          "providerEventId": "4858176",
+          "providerMarketId": "822440956",
+          "providerSelectionId": "5379722099",
+          "marketCode": "28506",
+          "marketName": "U/O  TIRI IN PORTA GIOCATORE (DUO) INC PALI TRAVERSE INC TS",
+          "variantName": "MIJNANS S. U/O 1.5 SOMMA TIRI IN PORTA INC PALI E TRAVERSE E SUO SOST. INCL. T.S.",
+          "threshold": 1.5,
+          "modifiers": {
+            "threshold": "1.5",
+            "variantName": "MIJNANS S. U/O 1.5 SOMMA TIRI IN PORTA INC PALI E TRAVERSE E SUO SOST. INCL. T.S.",
+            "periodScope": "full-match",
+            "replacementIncluded": true,
+            "woodworkIncluded": true
+          },
+          "settlement": {
+            "status": "pending",
+            "label": "Da verificare"
+          },
+          "betSelection": {
+            "selectionId": "sisal:4858176:822440956:5379722099",
+            "identity": {
+              "status": "VERIFIED_PROVIDER_IDS",
+              "matchId": "ucl-2026-27-md02-07",
+              "providerEventId": "4858176",
+              "providerMarketId": "822440956",
+              "providerSelectionId": "5379722099",
+              "providerPlayerIds": [
+                "423704"
+              ],
+              "canonicalPlayerIds": [
+                "sven-mijnans"
+              ]
+            },
+            "market": {
+              "name": "U/O  TIRI IN PORTA GIOCATORE (DUO) INC PALI TRAVERSE INC TS",
+              "family": "Tiri in porta giocatore",
+              "code": "28506",
+              "variant": "MIJNANS S. U/O 1.5 SOMMA TIRI IN PORTA INC PALI E TRAVERSE E SUO SOST. INCL. T.S.",
+              "threshold": 1.5,
+              "selection": "OVER",
+              "modifiers": {
+                "threshold": "1.5",
+                "variantName": "MIJNANS S. U/O 1.5 SOMMA TIRI IN PORTA INC PALI E TRAVERSE E SUO SOST. INCL. T.S.",
+                "periodScope": "full-match",
+                "replacementIncluded": true,
+                "woodworkIncluded": true
+              },
+              "bookmakerSemantics": {
+                "selectionName": "OVER",
+                "selectionCode": "2",
+                "modifiers": {
+                  "threshold": "1.5",
+                  "variantName": "MIJNANS S. U/O 1.5 SOMMA TIRI IN PORTA INC PALI E TRAVERSE E SUO SOST. INCL. T.S.",
+                  "periodScope": "full-match",
+                  "replacementIncluded": true,
+                  "woodworkIncluded": true
+                },
+                "duo": true,
+                "replacementIncluded": true,
+                "postsAndCrossbarIncluded": true
+              }
+            },
+            "quote": {
+              "decimal": 3.75,
+              "oddsRaw": 375,
+              "availability": "AVAILABLE_AT_SNAPSHOT",
+              "verifiedAt": "2026-10-13T09:55:14.800Z",
+              "marketUpdatedAt": "2026-10-12T15:21:05.157Z",
+              "source": {
+                "provider": "Sisal",
+                "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001"
+              }
+            },
+            "evaluation": {
+              "status": "NOT_MODELLED",
+              "kind": "INDIVIDUAL_FORECAST_REFERENCE_ONLY",
+              "modelProbabilityPct": null,
+              "fairOdds": null,
+              "expectedValuePct": null,
+              "individualForecast": {
+                "metric": "shotsOnTarget",
+                "mean": 1.17,
+                "expectedMinutes": 84.6
+              },
+              "provenance": {
+                "source": "data/normalized/champions-md02-integration-2026-27.json",
+                "predictionGeneratedAt": "2026-10-13T14:01:36.326Z",
+                "curationSource": "data/sources/champions-md02-phase12d-outsiders-2026-27.json",
+                "curatedAt": "2026-10-13T16:10:37.4963673+02:00"
+              }
+            },
+            "compatibility": {
+              "status": "REFERENCE_ONLY_DUO_REPLACEMENT_AND_WOODWORK_NOT_MODELLED",
+              "bookmakerCombinability": "UNKNOWN",
+              "limitation": "Il forecast quantifica i SOT del solo giocatore; la quota Sisal include il sostituto e anche pali/traverse. Probabilita, quota equa ed EV del contratto restano N/D."
+            },
+            "operational": {
+              "playability": {
+                "status": "PLAYABLE"
+              },
+              "classification": "SELEZIONATO"
+            },
+            "overlap": {
+              "overlapKey": "ucl-2026-27-md02-07:822440956",
               "semanticKeys": []
             }
           }
@@ -5647,6 +7439,294 @@
               "semanticKeys": []
             }
           }
+        },
+        {
+          "selectionId": "sisal:4858141:810812050:5317139355",
+          "context": {
+            "competition": "champions",
+            "season": "2026-27",
+            "matchday": 2
+          },
+          "matchId": "ucl-2026-27-md02-08",
+          "fixture": "Viking - Bayern München",
+          "market": "UNDER/OVER",
+          "marketScope": "match",
+          "marketFamily": "Gol",
+          "selection": "UNDER",
+          "providerSelectionCode": "1",
+          "label": "Totale partita under 3,5 gol",
+          "odds": 2.9,
+          "modelProbabilityPct": 39.6,
+          "fairOdds": 2.53,
+          "expectedValuePct": 14.8,
+          "evidenceLabel": "Totale partita: 4,2 gol · P 39,6%",
+          "motivation": "4,2 gol attesi; probabilita 39,6% dalla distribuzione Poisson gia serializzata.",
+          "classification": "A",
+          "dataQuality": {
+            "fixtureDetailedVolumes": "pilot statistico completo",
+            "sampleCoverage": null,
+            "currentSeasonReliabilityPct": null,
+            "validation": "POISSON_GOAL_MODEL"
+          },
+          "providerEventId": "4858141",
+          "providerMarketId": "810812050",
+          "providerSelectionId": "5317139355",
+          "marketCode": "7989",
+          "marketName": "UNDER/OVER",
+          "variantName": "U/O 3.5",
+          "threshold": 3.5,
+          "modifiers": {
+            "threshold": "3.5",
+            "variantName": "U/O 3.5",
+            "periodScope": "full-match",
+            "replacementIncluded": false,
+            "woodworkIncluded": false,
+            "duo": false
+          },
+          "settlement": {
+            "status": "pending",
+            "label": "Da verificare"
+          },
+          "betSelection": {
+            "selectionId": "sisal:4858141:810812050:5317139355",
+            "identity": {
+              "status": "VERIFIED_PROVIDER_IDS",
+              "matchId": "ucl-2026-27-md02-08",
+              "providerEventId": "4858141",
+              "providerMarketId": "810812050",
+              "providerSelectionId": "5317139355",
+              "providerPlayerIds": [],
+              "canonicalPlayerIds": []
+            },
+            "market": {
+              "name": "UNDER/OVER",
+              "family": "Gol",
+              "code": "7989",
+              "variant": "U/O 3.5",
+              "threshold": 3.5,
+              "selection": "UNDER",
+              "modifiers": {
+                "threshold": "3.5",
+                "variantName": "U/O 3.5",
+                "periodScope": "full-match",
+                "replacementIncluded": false,
+                "woodworkIncluded": false,
+                "duo": false
+              },
+              "bookmakerSemantics": {
+                "selectionName": "UNDER",
+                "selectionCode": "1",
+                "modifiers": {
+                  "threshold": "3.5",
+                  "variantName": "U/O 3.5",
+                  "periodScope": "full-match",
+                  "replacementIncluded": false,
+                  "woodworkIncluded": false,
+                  "duo": false
+                }
+              }
+            },
+            "quote": {
+              "decimal": 2.9,
+              "oddsRaw": 290,
+              "availability": "AVAILABLE_AT_SNAPSHOT",
+              "verifiedAt": "2026-10-13T09:55:14.800Z",
+              "marketUpdatedAt": "2026-10-12T13:44:59.238Z",
+              "source": {
+                "provider": "Sisal",
+                "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001"
+              }
+            },
+            "evaluation": {
+              "status": "MODELLED_VALIDATED_TEAM_MARKET",
+              "kind": "totalGoals",
+              "modelProbabilityPct": 39.6,
+              "fairOdds": 2.53,
+              "expectedValuePct": 14.8,
+              "forecast": {
+                "metric": "totalGoals",
+                "central": 4.2,
+                "threshold": 3.5,
+                "selection": "UNDER",
+                "validation": "POISSON_GOAL_MODEL"
+              },
+              "provenance": {
+                "source": "data/normalized/champions-md02-integration-2026-27.json",
+                "predictionGeneratedAt": "2026-10-13T14:01:36.326Z",
+                "curationSource": "data/sources/champions-md02-phase12d-outsiders-2026-27.json",
+                "curatedAt": "2026-10-13T16:10:37.4963673+02:00"
+              }
+            },
+            "compatibility": {
+              "status": "COMPATIBILE_CONTRATTO_ESATTO",
+              "bookmakerCombinability": "UNKNOWN"
+            },
+            "operational": {
+              "playability": {
+                "status": "PLAYABLE"
+              },
+              "classification": "SELEZIONATO_A"
+            },
+            "overlap": {
+              "overlapKey": "ucl-2026-27-md02-08:810812050",
+              "semanticKeys": [
+                "ucl-2026-27-md02-08:totalGoals:match:UNDER:3.5"
+              ]
+            }
+          }
+        },
+        {
+          "selectionId": "sisal:4858141:822325176:5379023059",
+          "context": {
+            "competition": "champions",
+            "season": "2026-27",
+            "matchday": 2
+          },
+          "matchId": "ucl-2026-27-md02-08",
+          "fixture": "Viking - Bayern München",
+          "market": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+          "marketScope": "player",
+          "marketFamily": "Tiri giocatore",
+          "selection": "OVER",
+          "providerSelectionCode": "2",
+          "label": "Kristoffer Askildsen over 1,5 tiri · sostituto incluso",
+          "odds": 4,
+          "modelProbabilityPct": null,
+          "fairOdds": null,
+          "expectedValuePct": null,
+          "evidenceLabel": "Proiezione singolo: 1,84 tiri · 84,6 min",
+          "motivation": "1,84 tiri attesi in 84,6 minuti; midfielder, storico verificato su 2.189 minuti e affidabilita 70,9%.",
+          "limitation": "Il forecast quantifica i tiri del solo giocatore; la quota Sisal include anche il sostituto. Probabilita, quota equa ed EV del contratto restano N/D.",
+          "classification": "B",
+          "player": {
+            "canonicalPlayerId": "kristoffer-askildsen",
+            "canonicalName": "Kristoffer Askildsen",
+            "providerPlayerIds": [
+              "398475"
+            ],
+            "team": "Viking",
+            "side": "home",
+            "role": "midfielder",
+            "lineupStatus": "probable-starter",
+            "expectedMinutes": 84.6,
+            "historyMinutes": 2189,
+            "reliability": 0.7086,
+            "dataStatus": "verified-history",
+            "projectedShots": 1.84,
+            "projectedShotsOnTarget": 0.49
+          },
+          "dataQuality": {
+            "fixtureDetailedVolumes": true,
+            "playerDataStatus": "verified-history",
+            "identityStatus": "resolved"
+          },
+          "providerEventId": "4858141",
+          "providerMarketId": "822325176",
+          "providerSelectionId": "5379023059",
+          "marketCode": "28507",
+          "marketName": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+          "variantName": "ASKILDSEN K. U/O 1.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+          "threshold": 1.5,
+          "modifiers": {
+            "threshold": "1.5",
+            "variantName": "ASKILDSEN K. U/O 1.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+            "periodScope": "full-match",
+            "replacementIncluded": true,
+            "woodworkIncluded": false
+          },
+          "settlement": {
+            "status": "pending",
+            "label": "Da verificare"
+          },
+          "betSelection": {
+            "selectionId": "sisal:4858141:822325176:5379023059",
+            "identity": {
+              "status": "VERIFIED_PROVIDER_IDS",
+              "matchId": "ucl-2026-27-md02-08",
+              "providerEventId": "4858141",
+              "providerMarketId": "822325176",
+              "providerSelectionId": "5379023059",
+              "providerPlayerIds": [
+                "398475"
+              ],
+              "canonicalPlayerIds": [
+                "kristoffer-askildsen"
+              ]
+            },
+            "market": {
+              "name": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+              "family": "Tiri giocatore",
+              "code": "28507",
+              "variant": "ASKILDSEN K. U/O 1.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+              "threshold": 1.5,
+              "selection": "OVER",
+              "modifiers": {
+                "threshold": "1.5",
+                "variantName": "ASKILDSEN K. U/O 1.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+                "periodScope": "full-match",
+                "replacementIncluded": true,
+                "woodworkIncluded": false
+              },
+              "bookmakerSemantics": {
+                "selectionName": "OVER",
+                "selectionCode": "2",
+                "modifiers": {
+                  "threshold": "1.5",
+                  "variantName": "ASKILDSEN K. U/O 1.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+                  "periodScope": "full-match",
+                  "replacementIncluded": true,
+                  "woodworkIncluded": false
+                },
+                "duo": true,
+                "replacementIncluded": true,
+                "postsAndCrossbarIncluded": false
+              }
+            },
+            "quote": {
+              "decimal": 4,
+              "oddsRaw": 400,
+              "availability": "AVAILABLE_AT_SNAPSHOT",
+              "verifiedAt": "2026-10-13T09:55:14.800Z",
+              "marketUpdatedAt": "2026-10-12T17:07:40.518Z",
+              "source": {
+                "provider": "Sisal",
+                "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001"
+              }
+            },
+            "evaluation": {
+              "status": "NOT_MODELLED",
+              "kind": "INDIVIDUAL_FORECAST_REFERENCE_ONLY",
+              "modelProbabilityPct": null,
+              "fairOdds": null,
+              "expectedValuePct": null,
+              "individualForecast": {
+                "metric": "shots",
+                "mean": 1.84,
+                "expectedMinutes": 84.6
+              },
+              "provenance": {
+                "source": "data/normalized/champions-md02-integration-2026-27.json",
+                "predictionGeneratedAt": "2026-10-13T14:01:36.326Z",
+                "curationSource": "data/sources/champions-md02-phase12d-outsiders-2026-27.json",
+                "curatedAt": "2026-10-13T16:10:37.4963673+02:00"
+              }
+            },
+            "compatibility": {
+              "status": "REFERENCE_ONLY_DUO_REPLACEMENT_NOT_MODELLED",
+              "bookmakerCombinability": "UNKNOWN",
+              "limitation": "Il forecast quantifica i tiri del solo giocatore; la quota Sisal include anche il sostituto. Probabilita, quota equa ed EV del contratto restano N/D."
+            },
+            "operational": {
+              "playability": {
+                "status": "PLAYABLE"
+              },
+              "classification": "SELEZIONATO"
+            },
+            "overlap": {
+              "overlapKey": "ucl-2026-27-md02-08:822325176",
+              "semanticKeys": []
+            }
+          }
         }
       ]
     },
@@ -6392,6 +8472,159 @@
             },
             "overlap": {
               "overlapKey": "ucl-2026-27-md02-09:821934797",
+              "semanticKeys": []
+            }
+          }
+        },
+        {
+          "selectionId": "sisal:4858139:821934696:5376893722",
+          "context": {
+            "competition": "champions",
+            "season": "2026-27",
+            "matchday": 2
+          },
+          "matchId": "ucl-2026-27-md02-09",
+          "fixture": "Villarreal - Napoli",
+          "market": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+          "marketScope": "player",
+          "marketFamily": "Tiri giocatore",
+          "selection": "OVER",
+          "providerSelectionCode": "2",
+          "label": "Giovanni Di Lorenzo over 0,5 tiri · sostituto incluso",
+          "odds": 1.8,
+          "modelProbabilityPct": null,
+          "fairOdds": null,
+          "expectedValuePct": null,
+          "evidenceLabel": "Proiezione singolo: 0,85 tiri · 84,6 min",
+          "motivation": "0,85 tiri attesi in 84,6 minuti; defender, storico verificato su 2.278 minuti e affidabilita 71,7%.",
+          "limitation": "Il forecast quantifica i tiri del solo giocatore; la quota Sisal include anche il sostituto. Probabilita, quota equa ed EV del contratto restano N/D.",
+          "classification": "B",
+          "player": {
+            "canonicalPlayerId": "giovanni-di-lorenzo",
+            "canonicalName": "Giovanni Di Lorenzo",
+            "providerPlayerIds": [
+              "148393"
+            ],
+            "team": "Napoli",
+            "side": "away",
+            "role": "defender",
+            "lineupStatus": "probable-starter",
+            "expectedMinutes": 84.6,
+            "historyMinutes": 2278,
+            "reliability": 0.7168,
+            "dataStatus": "verified-history",
+            "projectedShots": 0.85,
+            "projectedShotsOnTarget": 0.3
+          },
+          "dataQuality": {
+            "fixtureDetailedVolumes": true,
+            "playerDataStatus": "verified-history",
+            "identityStatus": "resolved"
+          },
+          "providerEventId": "4858139",
+          "providerMarketId": "821934696",
+          "providerSelectionId": "5376893722",
+          "marketCode": "28507",
+          "marketName": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+          "variantName": "DI LORENZO G. U/O 0.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+          "threshold": 0.5,
+          "modifiers": {
+            "threshold": "0.5",
+            "variantName": "DI LORENZO G. U/O 0.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+            "periodScope": "full-match",
+            "replacementIncluded": true,
+            "woodworkIncluded": false
+          },
+          "settlement": {
+            "status": "pending",
+            "label": "Da verificare"
+          },
+          "betSelection": {
+            "selectionId": "sisal:4858139:821934696:5376893722",
+            "identity": {
+              "status": "VERIFIED_PROVIDER_IDS",
+              "matchId": "ucl-2026-27-md02-09",
+              "providerEventId": "4858139",
+              "providerMarketId": "821934696",
+              "providerSelectionId": "5376893722",
+              "providerPlayerIds": [
+                "148393"
+              ],
+              "canonicalPlayerIds": [
+                "giovanni-di-lorenzo"
+              ]
+            },
+            "market": {
+              "name": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+              "family": "Tiri giocatore",
+              "code": "28507",
+              "variant": "DI LORENZO G. U/O 0.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+              "threshold": 0.5,
+              "selection": "OVER",
+              "modifiers": {
+                "threshold": "0.5",
+                "variantName": "DI LORENZO G. U/O 0.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+                "periodScope": "full-match",
+                "replacementIncluded": true,
+                "woodworkIncluded": false
+              },
+              "bookmakerSemantics": {
+                "selectionName": "OVER",
+                "selectionCode": "2",
+                "modifiers": {
+                  "threshold": "0.5",
+                  "variantName": "DI LORENZO G. U/O 0.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+                  "periodScope": "full-match",
+                  "replacementIncluded": true,
+                  "woodworkIncluded": false
+                },
+                "duo": true,
+                "replacementIncluded": true,
+                "postsAndCrossbarIncluded": false
+              }
+            },
+            "quote": {
+              "decimal": 1.8,
+              "oddsRaw": 180,
+              "availability": "AVAILABLE_AT_SNAPSHOT",
+              "verifiedAt": "2026-10-13T09:55:14.800Z",
+              "marketUpdatedAt": "2026-10-13T09:22:30.049Z",
+              "source": {
+                "provider": "Sisal",
+                "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001"
+              }
+            },
+            "evaluation": {
+              "status": "NOT_MODELLED",
+              "kind": "INDIVIDUAL_FORECAST_REFERENCE_ONLY",
+              "modelProbabilityPct": null,
+              "fairOdds": null,
+              "expectedValuePct": null,
+              "individualForecast": {
+                "metric": "shots",
+                "mean": 0.85,
+                "expectedMinutes": 84.6
+              },
+              "provenance": {
+                "source": "data/normalized/champions-md02-integration-2026-27.json",
+                "predictionGeneratedAt": "2026-10-13T14:01:36.326Z",
+                "curationSource": "data/sources/champions-md02-phase12d-outsiders-2026-27.json",
+                "curatedAt": "2026-10-13T16:10:37.4963673+02:00"
+              }
+            },
+            "compatibility": {
+              "status": "REFERENCE_ONLY_DUO_REPLACEMENT_NOT_MODELLED",
+              "bookmakerCombinability": "UNKNOWN",
+              "limitation": "Il forecast quantifica i tiri del solo giocatore; la quota Sisal include anche il sostituto. Probabilita, quota equa ed EV del contratto restano N/D."
+            },
+            "operational": {
+              "playability": {
+                "status": "PLAYABLE"
+              },
+              "classification": "SELEZIONATO"
+            },
+            "overlap": {
+              "overlapKey": "ucl-2026-27-md02-09:821934696",
               "semanticKeys": []
             }
           }
@@ -7413,6 +9646,159 @@
               "semanticKeys": []
             }
           }
+        },
+        {
+          "selectionId": "sisal:4858181:822444815:5379737104",
+          "context": {
+            "competition": "champions",
+            "season": "2026-27",
+            "matchday": 2
+          },
+          "matchId": "ucl-2026-27-md02-10",
+          "fixture": "Feyenoord - Como",
+          "market": "U/O  TIRI IN PORTA GIOCATORE (DUO) INC PALI TRAVERSE INC TS",
+          "marketScope": "player",
+          "marketFamily": "Tiri in porta giocatore",
+          "selection": "OVER",
+          "providerSelectionCode": "2",
+          "label": "Nacho Ferri over 1,5 SOT · sostituto incluso · pali/traverse inclusi",
+          "odds": 3,
+          "modelProbabilityPct": null,
+          "fairOdds": null,
+          "expectedValuePct": null,
+          "evidenceLabel": "Proiezione singolo: 1,52 SOT · 84,6 min",
+          "motivation": "1,52 SOT attesi in 84,6 minuti; forward, storico verificato su 2.914 minuti e affidabilita 76,4%.",
+          "limitation": "Il forecast quantifica i SOT del solo giocatore; la quota Sisal include il sostituto e anche pali/traverse. Probabilita, quota equa ed EV del contratto restano N/D.",
+          "classification": "B",
+          "player": {
+            "canonicalPlayerId": "nacho-ferri",
+            "canonicalName": "Nacho Ferri",
+            "providerPlayerIds": [
+              "776278"
+            ],
+            "team": "Feyenoord",
+            "side": "home",
+            "role": "forward",
+            "lineupStatus": "probable-starter",
+            "expectedMinutes": 84.6,
+            "historyMinutes": 2914,
+            "reliability": 0.764,
+            "dataStatus": "verified-history",
+            "projectedShots": 3.73,
+            "projectedShotsOnTarget": 1.52
+          },
+          "dataQuality": {
+            "fixtureDetailedVolumes": true,
+            "playerDataStatus": "verified-history",
+            "identityStatus": "resolved"
+          },
+          "providerEventId": "4858181",
+          "providerMarketId": "822444815",
+          "providerSelectionId": "5379737104",
+          "marketCode": "28506",
+          "marketName": "U/O  TIRI IN PORTA GIOCATORE (DUO) INC PALI TRAVERSE INC TS",
+          "variantName": "FERRI JULIA I. U/O 1.5 SOMMA TIRI IN PORTA INC PALI E TRAVERSE E SUO SOST. INCL. T.S.",
+          "threshold": 1.5,
+          "modifiers": {
+            "threshold": "1.5",
+            "variantName": "FERRI JULIA I. U/O 1.5 SOMMA TIRI IN PORTA INC PALI E TRAVERSE E SUO SOST. INCL. T.S.",
+            "periodScope": "full-match",
+            "replacementIncluded": true,
+            "woodworkIncluded": true
+          },
+          "settlement": {
+            "status": "pending",
+            "label": "Da verificare"
+          },
+          "betSelection": {
+            "selectionId": "sisal:4858181:822444815:5379737104",
+            "identity": {
+              "status": "VERIFIED_PROVIDER_IDS",
+              "matchId": "ucl-2026-27-md02-10",
+              "providerEventId": "4858181",
+              "providerMarketId": "822444815",
+              "providerSelectionId": "5379737104",
+              "providerPlayerIds": [
+                "776278"
+              ],
+              "canonicalPlayerIds": [
+                "nacho-ferri"
+              ]
+            },
+            "market": {
+              "name": "U/O  TIRI IN PORTA GIOCATORE (DUO) INC PALI TRAVERSE INC TS",
+              "family": "Tiri in porta giocatore",
+              "code": "28506",
+              "variant": "FERRI JULIA I. U/O 1.5 SOMMA TIRI IN PORTA INC PALI E TRAVERSE E SUO SOST. INCL. T.S.",
+              "threshold": 1.5,
+              "selection": "OVER",
+              "modifiers": {
+                "threshold": "1.5",
+                "variantName": "FERRI JULIA I. U/O 1.5 SOMMA TIRI IN PORTA INC PALI E TRAVERSE E SUO SOST. INCL. T.S.",
+                "periodScope": "full-match",
+                "replacementIncluded": true,
+                "woodworkIncluded": true
+              },
+              "bookmakerSemantics": {
+                "selectionName": "OVER",
+                "selectionCode": "2",
+                "modifiers": {
+                  "threshold": "1.5",
+                  "variantName": "FERRI JULIA I. U/O 1.5 SOMMA TIRI IN PORTA INC PALI E TRAVERSE E SUO SOST. INCL. T.S.",
+                  "periodScope": "full-match",
+                  "replacementIncluded": true,
+                  "woodworkIncluded": true
+                },
+                "duo": true,
+                "replacementIncluded": true,
+                "postsAndCrossbarIncluded": true
+              }
+            },
+            "quote": {
+              "decimal": 3,
+              "oddsRaw": 300,
+              "availability": "AVAILABLE_AT_SNAPSHOT",
+              "verifiedAt": "2026-10-13T09:55:14.800Z",
+              "marketUpdatedAt": "2026-10-12T15:12:24.387Z",
+              "source": {
+                "provider": "Sisal",
+                "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001"
+              }
+            },
+            "evaluation": {
+              "status": "NOT_MODELLED",
+              "kind": "INDIVIDUAL_FORECAST_REFERENCE_ONLY",
+              "modelProbabilityPct": null,
+              "fairOdds": null,
+              "expectedValuePct": null,
+              "individualForecast": {
+                "metric": "shotsOnTarget",
+                "mean": 1.52,
+                "expectedMinutes": 84.6
+              },
+              "provenance": {
+                "source": "data/normalized/champions-md02-integration-2026-27.json",
+                "predictionGeneratedAt": "2026-10-13T14:01:36.326Z",
+                "curationSource": "data/sources/champions-md02-phase12d-outsiders-2026-27.json",
+                "curatedAt": "2026-10-13T16:10:37.4963673+02:00"
+              }
+            },
+            "compatibility": {
+              "status": "REFERENCE_ONLY_DUO_REPLACEMENT_AND_WOODWORK_NOT_MODELLED",
+              "bookmakerCombinability": "UNKNOWN",
+              "limitation": "Il forecast quantifica i SOT del solo giocatore; la quota Sisal include il sostituto e anche pali/traverse. Probabilita, quota equa ed EV del contratto restano N/D."
+            },
+            "operational": {
+              "playability": {
+                "status": "PLAYABLE"
+              },
+              "classification": "SELEZIONATO"
+            },
+            "overlap": {
+              "overlapKey": "ucl-2026-27-md02-10:822444815",
+              "semanticKeys": []
+            }
+          }
         }
       ]
     },
@@ -7987,6 +10373,294 @@
               "semanticKeys": [
                 "ucl-2026-27-md02-11:totalGoals:match:UNDER:3.5"
               ]
+            }
+          }
+        },
+        {
+          "selectionId": "sisal:4858179:810815375:5317198121",
+          "context": {
+            "competition": "champions",
+            "season": "2026-27",
+            "matchday": 2
+          },
+          "matchId": "ucl-2026-27-md02-11",
+          "fixture": "LASK - Liverpool",
+          "market": "UNDER/OVER",
+          "marketScope": "match",
+          "marketFamily": "Gol",
+          "selection": "UNDER",
+          "providerSelectionCode": "1",
+          "label": "Totale partita under 2,5 gol",
+          "odds": 3.1,
+          "modelProbabilityPct": 35.9,
+          "fairOdds": 2.79,
+          "expectedValuePct": 11.3,
+          "evidenceLabel": "Totale partita: 3,3 gol · P 35,9%",
+          "motivation": "3,3 gol attesi; probabilita 35,9% dalla distribuzione Poisson gia serializzata.",
+          "classification": "A",
+          "dataQuality": {
+            "fixtureDetailedVolumes": "pilot statistico completo",
+            "sampleCoverage": null,
+            "currentSeasonReliabilityPct": null,
+            "validation": "POISSON_GOAL_MODEL"
+          },
+          "providerEventId": "4858179",
+          "providerMarketId": "810815375",
+          "providerSelectionId": "5317198121",
+          "marketCode": "7989",
+          "marketName": "UNDER/OVER",
+          "variantName": "U/O 2.5",
+          "threshold": 2.5,
+          "modifiers": {
+            "threshold": "2.5",
+            "variantName": "U/O 2.5",
+            "periodScope": "full-match",
+            "replacementIncluded": false,
+            "woodworkIncluded": false,
+            "duo": false
+          },
+          "settlement": {
+            "status": "pending",
+            "label": "Da verificare"
+          },
+          "betSelection": {
+            "selectionId": "sisal:4858179:810815375:5317198121",
+            "identity": {
+              "status": "VERIFIED_PROVIDER_IDS",
+              "matchId": "ucl-2026-27-md02-11",
+              "providerEventId": "4858179",
+              "providerMarketId": "810815375",
+              "providerSelectionId": "5317198121",
+              "providerPlayerIds": [],
+              "canonicalPlayerIds": []
+            },
+            "market": {
+              "name": "UNDER/OVER",
+              "family": "Gol",
+              "code": "7989",
+              "variant": "U/O 2.5",
+              "threshold": 2.5,
+              "selection": "UNDER",
+              "modifiers": {
+                "threshold": "2.5",
+                "variantName": "U/O 2.5",
+                "periodScope": "full-match",
+                "replacementIncluded": false,
+                "woodworkIncluded": false,
+                "duo": false
+              },
+              "bookmakerSemantics": {
+                "selectionName": "UNDER",
+                "selectionCode": "1",
+                "modifiers": {
+                  "threshold": "2.5",
+                  "variantName": "U/O 2.5",
+                  "periodScope": "full-match",
+                  "replacementIncluded": false,
+                  "woodworkIncluded": false,
+                  "duo": false
+                }
+              }
+            },
+            "quote": {
+              "decimal": 3.1,
+              "oddsRaw": 310,
+              "availability": "AVAILABLE_AT_SNAPSHOT",
+              "verifiedAt": "2026-10-13T09:55:14.800Z",
+              "marketUpdatedAt": "2026-10-12T13:45:00.075Z",
+              "source": {
+                "provider": "Sisal",
+                "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001"
+              }
+            },
+            "evaluation": {
+              "status": "MODELLED_VALIDATED_TEAM_MARKET",
+              "kind": "totalGoals",
+              "modelProbabilityPct": 35.9,
+              "fairOdds": 2.79,
+              "expectedValuePct": 11.3,
+              "forecast": {
+                "metric": "totalGoals",
+                "central": 3.3,
+                "threshold": 2.5,
+                "selection": "UNDER",
+                "validation": "POISSON_GOAL_MODEL"
+              },
+              "provenance": {
+                "source": "data/normalized/champions-md02-integration-2026-27.json",
+                "predictionGeneratedAt": "2026-10-13T14:01:36.326Z",
+                "curationSource": "data/sources/champions-md02-phase12d-outsiders-2026-27.json",
+                "curatedAt": "2026-10-13T16:10:37.4963673+02:00"
+              }
+            },
+            "compatibility": {
+              "status": "COMPATIBILE_CONTRATTO_ESATTO",
+              "bookmakerCombinability": "UNKNOWN"
+            },
+            "operational": {
+              "playability": {
+                "status": "PLAYABLE"
+              },
+              "classification": "SELEZIONATO_A"
+            },
+            "overlap": {
+              "overlapKey": "ucl-2026-27-md02-11:810815375",
+              "semanticKeys": [
+                "ucl-2026-27-md02-11:totalGoals:match:UNDER:2.5"
+              ]
+            }
+          }
+        },
+        {
+          "selectionId": "sisal:4858179:822421392:5379593873",
+          "context": {
+            "competition": "champions",
+            "season": "2026-27",
+            "matchday": 2
+          },
+          "matchId": "ucl-2026-27-md02-11",
+          "fixture": "LASK - Liverpool",
+          "market": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+          "marketScope": "player",
+          "marketFamily": "Tiri giocatore",
+          "selection": "OVER",
+          "providerSelectionCode": "2",
+          "label": "Kasper Jørgensen over 2,5 tiri · sostituto incluso",
+          "odds": 4.5,
+          "modelProbabilityPct": null,
+          "fairOdds": null,
+          "expectedValuePct": null,
+          "evidenceLabel": "Proiezione singolo: 2,15 tiri · 84,6 min",
+          "motivation": "2,15 tiri attesi in 84,6 minuti; defender, storico verificato su 2.760 minuti e affidabilita 75,4%.",
+          "limitation": "Il forecast quantifica i tiri del solo giocatore; la quota Sisal include anche il sostituto. Probabilita, quota equa ed EV del contratto restano N/D.",
+          "classification": "B",
+          "player": {
+            "canonicalPlayerId": "kasper-j-rgensen",
+            "canonicalName": "Kasper Jørgensen",
+            "providerPlayerIds": [
+              "419045"
+            ],
+            "team": "LASK",
+            "side": "home",
+            "role": "defender",
+            "lineupStatus": "probable-starter",
+            "expectedMinutes": 84.6,
+            "historyMinutes": 2760,
+            "reliability": 0.7541,
+            "dataStatus": "verified-history",
+            "projectedShots": 2.15,
+            "projectedShotsOnTarget": 0.65
+          },
+          "dataQuality": {
+            "fixtureDetailedVolumes": true,
+            "playerDataStatus": "verified-history",
+            "identityStatus": "resolved"
+          },
+          "providerEventId": "4858179",
+          "providerMarketId": "822421392",
+          "providerSelectionId": "5379593873",
+          "marketCode": "28507",
+          "marketName": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+          "variantName": "JORGENSEN K. U/O 2.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+          "threshold": 2.5,
+          "modifiers": {
+            "threshold": "2.5",
+            "variantName": "JORGENSEN K. U/O 2.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+            "periodScope": "full-match",
+            "replacementIncluded": true,
+            "woodworkIncluded": false
+          },
+          "settlement": {
+            "status": "pending",
+            "label": "Da verificare"
+          },
+          "betSelection": {
+            "selectionId": "sisal:4858179:822421392:5379593873",
+            "identity": {
+              "status": "VERIFIED_PROVIDER_IDS",
+              "matchId": "ucl-2026-27-md02-11",
+              "providerEventId": "4858179",
+              "providerMarketId": "822421392",
+              "providerSelectionId": "5379593873",
+              "providerPlayerIds": [
+                "419045"
+              ],
+              "canonicalPlayerIds": [
+                "kasper-j-rgensen"
+              ]
+            },
+            "market": {
+              "name": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+              "family": "Tiri giocatore",
+              "code": "28507",
+              "variant": "JORGENSEN K. U/O 2.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+              "threshold": 2.5,
+              "selection": "OVER",
+              "modifiers": {
+                "threshold": "2.5",
+                "variantName": "JORGENSEN K. U/O 2.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+                "periodScope": "full-match",
+                "replacementIncluded": true,
+                "woodworkIncluded": false
+              },
+              "bookmakerSemantics": {
+                "selectionName": "OVER",
+                "selectionCode": "2",
+                "modifiers": {
+                  "threshold": "2.5",
+                  "variantName": "JORGENSEN K. U/O 2.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+                  "periodScope": "full-match",
+                  "replacementIncluded": true,
+                  "woodworkIncluded": false
+                },
+                "duo": true,
+                "replacementIncluded": true,
+                "postsAndCrossbarIncluded": false
+              }
+            },
+            "quote": {
+              "decimal": 4.5,
+              "oddsRaw": 450,
+              "availability": "AVAILABLE_AT_SNAPSHOT",
+              "verifiedAt": "2026-10-13T09:55:14.800Z",
+              "marketUpdatedAt": "2026-10-12T14:53:30.816Z",
+              "source": {
+                "provider": "Sisal",
+                "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001"
+              }
+            },
+            "evaluation": {
+              "status": "NOT_MODELLED",
+              "kind": "INDIVIDUAL_FORECAST_REFERENCE_ONLY",
+              "modelProbabilityPct": null,
+              "fairOdds": null,
+              "expectedValuePct": null,
+              "individualForecast": {
+                "metric": "shots",
+                "mean": 2.15,
+                "expectedMinutes": 84.6
+              },
+              "provenance": {
+                "source": "data/normalized/champions-md02-integration-2026-27.json",
+                "predictionGeneratedAt": "2026-10-13T14:01:36.326Z",
+                "curationSource": "data/sources/champions-md02-phase12d-outsiders-2026-27.json",
+                "curatedAt": "2026-10-13T16:10:37.4963673+02:00"
+              }
+            },
+            "compatibility": {
+              "status": "REFERENCE_ONLY_DUO_REPLACEMENT_NOT_MODELLED",
+              "bookmakerCombinability": "UNKNOWN",
+              "limitation": "Il forecast quantifica i tiri del solo giocatore; la quota Sisal include anche il sostituto. Probabilita, quota equa ed EV del contratto restano N/D."
+            },
+            "operational": {
+              "playability": {
+                "status": "PLAYABLE"
+              },
+              "classification": "SELEZIONATO"
+            },
+            "overlap": {
+              "overlapKey": "ucl-2026-27-md02-11:822421392",
+              "semanticKeys": []
             }
           }
         }
@@ -9142,6 +11816,447 @@
               "semanticKeys": []
             }
           }
+        },
+        {
+          "selectionId": "sisal:4858182:810824493:5317163694",
+          "context": {
+            "competition": "champions",
+            "season": "2026-27",
+            "matchday": 2
+          },
+          "matchId": "ucl-2026-27-md02-12",
+          "fixture": "Roma - Real Madrid",
+          "market": "UNDER/OVER",
+          "marketScope": "match",
+          "marketFamily": "Gol",
+          "selection": "UNDER",
+          "providerSelectionCode": "1",
+          "label": "Totale partita under 2,5 gol",
+          "odds": 2.9,
+          "modelProbabilityPct": 37.5,
+          "fairOdds": 2.67,
+          "expectedValuePct": 8.7,
+          "evidenceLabel": "Totale partita: 3,22 gol · P 37,5%",
+          "motivation": "3,22 gol attesi; probabilita 37,5% dalla distribuzione Poisson gia serializzata.",
+          "classification": "A",
+          "dataQuality": {
+            "fixtureDetailedVolumes": "pilot statistico completo",
+            "sampleCoverage": null,
+            "currentSeasonReliabilityPct": null,
+            "validation": "POISSON_GOAL_MODEL"
+          },
+          "providerEventId": "4858182",
+          "providerMarketId": "810824493",
+          "providerSelectionId": "5317163694",
+          "marketCode": "7989",
+          "marketName": "UNDER/OVER",
+          "variantName": "U/O 2.5",
+          "threshold": 2.5,
+          "modifiers": {
+            "threshold": "2.5",
+            "variantName": "U/O 2.5",
+            "periodScope": "full-match",
+            "replacementIncluded": false,
+            "woodworkIncluded": false,
+            "duo": false
+          },
+          "settlement": {
+            "status": "pending",
+            "label": "Da verificare"
+          },
+          "betSelection": {
+            "selectionId": "sisal:4858182:810824493:5317163694",
+            "identity": {
+              "status": "VERIFIED_PROVIDER_IDS",
+              "matchId": "ucl-2026-27-md02-12",
+              "providerEventId": "4858182",
+              "providerMarketId": "810824493",
+              "providerSelectionId": "5317163694",
+              "providerPlayerIds": [],
+              "canonicalPlayerIds": []
+            },
+            "market": {
+              "name": "UNDER/OVER",
+              "family": "Gol",
+              "code": "7989",
+              "variant": "U/O 2.5",
+              "threshold": 2.5,
+              "selection": "UNDER",
+              "modifiers": {
+                "threshold": "2.5",
+                "variantName": "U/O 2.5",
+                "periodScope": "full-match",
+                "replacementIncluded": false,
+                "woodworkIncluded": false,
+                "duo": false
+              },
+              "bookmakerSemantics": {
+                "selectionName": "UNDER",
+                "selectionCode": "1",
+                "modifiers": {
+                  "threshold": "2.5",
+                  "variantName": "U/O 2.5",
+                  "periodScope": "full-match",
+                  "replacementIncluded": false,
+                  "woodworkIncluded": false,
+                  "duo": false
+                }
+              }
+            },
+            "quote": {
+              "decimal": 2.9,
+              "oddsRaw": 290,
+              "availability": "AVAILABLE_AT_SNAPSHOT",
+              "verifiedAt": "2026-10-13T09:55:14.800Z",
+              "marketUpdatedAt": "2026-10-12T14:39:56.505Z",
+              "source": {
+                "provider": "Sisal",
+                "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001"
+              }
+            },
+            "evaluation": {
+              "status": "MODELLED_VALIDATED_TEAM_MARKET",
+              "kind": "totalGoals",
+              "modelProbabilityPct": 37.5,
+              "fairOdds": 2.67,
+              "expectedValuePct": 8.7,
+              "forecast": {
+                "metric": "totalGoals",
+                "central": 3.22,
+                "threshold": 2.5,
+                "selection": "UNDER",
+                "validation": "POISSON_GOAL_MODEL"
+              },
+              "provenance": {
+                "source": "data/normalized/champions-md02-integration-2026-27.json",
+                "predictionGeneratedAt": "2026-10-13T14:01:36.326Z",
+                "curationSource": "data/sources/champions-md02-phase12d-outsiders-2026-27.json",
+                "curatedAt": "2026-10-13T16:10:37.4963673+02:00"
+              }
+            },
+            "compatibility": {
+              "status": "COMPATIBILE_CONTRATTO_ESATTO",
+              "bookmakerCombinability": "UNKNOWN"
+            },
+            "operational": {
+              "playability": {
+                "status": "PLAYABLE"
+              },
+              "classification": "SELEZIONATO_A"
+            },
+            "overlap": {
+              "overlapKey": "ucl-2026-27-md02-12:810824493",
+              "semanticKeys": [
+                "ucl-2026-27-md02-12:totalGoals:match:UNDER:2.5"
+              ]
+            }
+          }
+        },
+        {
+          "selectionId": "sisal:4858182:822397215:5379468394",
+          "context": {
+            "competition": "champions",
+            "season": "2026-27",
+            "matchday": 2
+          },
+          "matchId": "ucl-2026-27-md02-12",
+          "fixture": "Roma - Real Madrid",
+          "market": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+          "marketScope": "player",
+          "marketFamily": "Tiri giocatore",
+          "selection": "OVER",
+          "providerSelectionCode": "2",
+          "label": "Paulo Dybala over 3,5 tiri · sostituto incluso",
+          "odds": 2.4,
+          "modelProbabilityPct": null,
+          "fairOdds": null,
+          "expectedValuePct": null,
+          "evidenceLabel": "Proiezione singolo: 2,94 tiri · 84,6 min",
+          "motivation": "2,94 tiri attesi in 84,6 minuti; forward, storico verificato su 1.355 minuti e affidabilita 60,1%.",
+          "limitation": "Il forecast quantifica i tiri del solo giocatore; la quota Sisal include anche il sostituto. Probabilita, quota equa ed EV del contratto restano N/D.",
+          "classification": "B",
+          "player": {
+            "canonicalPlayerId": "paulo-dybala",
+            "canonicalName": "Paulo Dybala",
+            "providerPlayerIds": [
+              "57428"
+            ],
+            "team": "Roma",
+            "side": "home",
+            "role": "forward",
+            "lineupStatus": "probable-starter",
+            "expectedMinutes": 84.6,
+            "historyMinutes": 1355,
+            "reliability": 0.6009,
+            "dataStatus": "verified-history",
+            "projectedShots": 2.94,
+            "projectedShotsOnTarget": 1.13
+          },
+          "dataQuality": {
+            "fixtureDetailedVolumes": true,
+            "playerDataStatus": "verified-history",
+            "identityStatus": "resolved"
+          },
+          "providerEventId": "4858182",
+          "providerMarketId": "822397215",
+          "providerSelectionId": "5379468394",
+          "marketCode": "28507",
+          "marketName": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+          "variantName": "DYBALA P. U/O 3.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+          "threshold": 3.5,
+          "modifiers": {
+            "threshold": "3.5",
+            "variantName": "DYBALA P. U/O 3.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+            "periodScope": "full-match",
+            "replacementIncluded": true,
+            "woodworkIncluded": false
+          },
+          "settlement": {
+            "status": "pending",
+            "label": "Da verificare"
+          },
+          "betSelection": {
+            "selectionId": "sisal:4858182:822397215:5379468394",
+            "identity": {
+              "status": "VERIFIED_PROVIDER_IDS",
+              "matchId": "ucl-2026-27-md02-12",
+              "providerEventId": "4858182",
+              "providerMarketId": "822397215",
+              "providerSelectionId": "5379468394",
+              "providerPlayerIds": [
+                "57428"
+              ],
+              "canonicalPlayerIds": [
+                "paulo-dybala"
+              ]
+            },
+            "market": {
+              "name": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+              "family": "Tiri giocatore",
+              "code": "28507",
+              "variant": "DYBALA P. U/O 3.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+              "threshold": 3.5,
+              "selection": "OVER",
+              "modifiers": {
+                "threshold": "3.5",
+                "variantName": "DYBALA P. U/O 3.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+                "periodScope": "full-match",
+                "replacementIncluded": true,
+                "woodworkIncluded": false
+              },
+              "bookmakerSemantics": {
+                "selectionName": "OVER",
+                "selectionCode": "2",
+                "modifiers": {
+                  "threshold": "3.5",
+                  "variantName": "DYBALA P. U/O 3.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+                  "periodScope": "full-match",
+                  "replacementIncluded": true,
+                  "woodworkIncluded": false
+                },
+                "duo": true,
+                "replacementIncluded": true,
+                "postsAndCrossbarIncluded": false
+              }
+            },
+            "quote": {
+              "decimal": 2.4,
+              "oddsRaw": 240,
+              "availability": "AVAILABLE_AT_SNAPSHOT",
+              "verifiedAt": "2026-10-13T09:55:14.800Z",
+              "marketUpdatedAt": "2026-10-13T02:35:50.465Z",
+              "source": {
+                "provider": "Sisal",
+                "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001"
+              }
+            },
+            "evaluation": {
+              "status": "NOT_MODELLED",
+              "kind": "INDIVIDUAL_FORECAST_REFERENCE_ONLY",
+              "modelProbabilityPct": null,
+              "fairOdds": null,
+              "expectedValuePct": null,
+              "individualForecast": {
+                "metric": "shots",
+                "mean": 2.94,
+                "expectedMinutes": 84.6
+              },
+              "provenance": {
+                "source": "data/normalized/champions-md02-integration-2026-27.json",
+                "predictionGeneratedAt": "2026-10-13T14:01:36.326Z",
+                "curationSource": "data/sources/champions-md02-phase12d-outsiders-2026-27.json",
+                "curatedAt": "2026-10-13T16:10:37.4963673+02:00"
+              }
+            },
+            "compatibility": {
+              "status": "REFERENCE_ONLY_DUO_REPLACEMENT_NOT_MODELLED",
+              "bookmakerCombinability": "UNKNOWN",
+              "limitation": "Il forecast quantifica i tiri del solo giocatore; la quota Sisal include anche il sostituto. Probabilita, quota equa ed EV del contratto restano N/D."
+            },
+            "operational": {
+              "playability": {
+                "status": "PLAYABLE"
+              },
+              "classification": "SELEZIONATO"
+            },
+            "overlap": {
+              "overlapKey": "ucl-2026-27-md02-12:822397215",
+              "semanticKeys": []
+            }
+          }
+        },
+        {
+          "selectionId": "sisal:4858182:822399634:5379482130",
+          "context": {
+            "competition": "champions",
+            "season": "2026-27",
+            "matchday": 2
+          },
+          "matchId": "ucl-2026-27-md02-12",
+          "fixture": "Roma - Real Madrid",
+          "market": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+          "marketScope": "player",
+          "marketFamily": "Tiri giocatore",
+          "selection": "OVER",
+          "providerSelectionCode": "2",
+          "label": "Marten De Roon over 0,5 tiri · sostituto incluso",
+          "odds": 2,
+          "modelProbabilityPct": null,
+          "fairOdds": null,
+          "expectedValuePct": null,
+          "evidenceLabel": "Proiezione singolo: 0,81 tiri · 84,6 min",
+          "motivation": "0,81 tiri attesi in 84,6 minuti; midfielder, storico verificato su 2.714 minuti e affidabilita 75,1%.",
+          "limitation": "Il forecast quantifica i tiri del solo giocatore; la quota Sisal include anche il sostituto. Probabilita, quota equa ed EV del contratto restano N/D.",
+          "classification": "B",
+          "player": {
+            "canonicalPlayerId": "marten-de-roon",
+            "canonicalName": "Marten De Roon",
+            "providerPlayerIds": [
+              "57456"
+            ],
+            "team": "Roma",
+            "side": "home",
+            "role": "midfielder",
+            "lineupStatus": "probable-starter",
+            "expectedMinutes": 84.6,
+            "historyMinutes": 2714,
+            "reliability": 0.751,
+            "dataStatus": "verified-history",
+            "projectedShots": 0.81,
+            "projectedShotsOnTarget": 0.22
+          },
+          "dataQuality": {
+            "fixtureDetailedVolumes": true,
+            "playerDataStatus": "verified-history",
+            "identityStatus": "resolved"
+          },
+          "providerEventId": "4858182",
+          "providerMarketId": "822399634",
+          "providerSelectionId": "5379482130",
+          "marketCode": "28507",
+          "marketName": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+          "variantName": "DE ROON M. U/O 0.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+          "threshold": 0.5,
+          "modifiers": {
+            "threshold": "0.5",
+            "variantName": "DE ROON M. U/O 0.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+            "periodScope": "full-match",
+            "replacementIncluded": true,
+            "woodworkIncluded": false
+          },
+          "settlement": {
+            "status": "pending",
+            "label": "Da verificare"
+          },
+          "betSelection": {
+            "selectionId": "sisal:4858182:822399634:5379482130",
+            "identity": {
+              "status": "VERIFIED_PROVIDER_IDS",
+              "matchId": "ucl-2026-27-md02-12",
+              "providerEventId": "4858182",
+              "providerMarketId": "822399634",
+              "providerSelectionId": "5379482130",
+              "providerPlayerIds": [
+                "57456"
+              ],
+              "canonicalPlayerIds": [
+                "marten-de-roon"
+              ]
+            },
+            "market": {
+              "name": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+              "family": "Tiri giocatore",
+              "code": "28507",
+              "variant": "DE ROON M. U/O 0.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+              "threshold": 0.5,
+              "selection": "OVER",
+              "modifiers": {
+                "threshold": "0.5",
+                "variantName": "DE ROON M. U/O 0.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+                "periodScope": "full-match",
+                "replacementIncluded": true,
+                "woodworkIncluded": false
+              },
+              "bookmakerSemantics": {
+                "selectionName": "OVER",
+                "selectionCode": "2",
+                "modifiers": {
+                  "threshold": "0.5",
+                  "variantName": "DE ROON M. U/O 0.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+                  "periodScope": "full-match",
+                  "replacementIncluded": true,
+                  "woodworkIncluded": false
+                },
+                "duo": true,
+                "replacementIncluded": true,
+                "postsAndCrossbarIncluded": false
+              }
+            },
+            "quote": {
+              "decimal": 2,
+              "oddsRaw": 200,
+              "availability": "AVAILABLE_AT_SNAPSHOT",
+              "verifiedAt": "2026-10-13T09:55:14.800Z",
+              "marketUpdatedAt": "2026-10-12T13:44:59.913Z",
+              "source": {
+                "provider": "Sisal",
+                "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001"
+              }
+            },
+            "evaluation": {
+              "status": "NOT_MODELLED",
+              "kind": "INDIVIDUAL_FORECAST_REFERENCE_ONLY",
+              "modelProbabilityPct": null,
+              "fairOdds": null,
+              "expectedValuePct": null,
+              "individualForecast": {
+                "metric": "shots",
+                "mean": 0.81,
+                "expectedMinutes": 84.6
+              },
+              "provenance": {
+                "source": "data/normalized/champions-md02-integration-2026-27.json",
+                "predictionGeneratedAt": "2026-10-13T14:01:36.326Z",
+                "curationSource": "data/sources/champions-md02-phase12d-outsiders-2026-27.json",
+                "curatedAt": "2026-10-13T16:10:37.4963673+02:00"
+              }
+            },
+            "compatibility": {
+              "status": "REFERENCE_ONLY_DUO_REPLACEMENT_NOT_MODELLED",
+              "bookmakerCombinability": "UNKNOWN",
+              "limitation": "Il forecast quantifica i tiri del solo giocatore; la quota Sisal include anche il sostituto. Probabilita, quota equa ed EV del contratto restano N/D."
+            },
+            "operational": {
+              "playability": {
+                "status": "PLAYABLE"
+              },
+              "classification": "SELEZIONATO"
+            },
+            "overlap": {
+              "overlapKey": "ucl-2026-27-md02-12:822399634",
+              "semanticKeys": []
+            }
+          }
         }
       ]
     },
@@ -9886,6 +13001,159 @@
             },
             "overlap": {
               "overlapKey": "ucl-2026-27-md02-13:822473467",
+              "semanticKeys": []
+            }
+          }
+        },
+        {
+          "selectionId": "sisal:4858178:822481714:5379908219",
+          "context": {
+            "competition": "champions",
+            "season": "2026-27",
+            "matchday": 2
+          },
+          "matchId": "ucl-2026-27-md02-13",
+          "fixture": "Aston Villa - Fenerbahçe",
+          "market": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+          "marketScope": "player",
+          "marketFamily": "Tiri giocatore",
+          "selection": "OVER",
+          "providerSelectionCode": "2",
+          "label": "Mason Greenwood over 3,5 tiri · sostituto incluso",
+          "odds": 2.25,
+          "modelProbabilityPct": null,
+          "fairOdds": null,
+          "expectedValuePct": null,
+          "evidenceLabel": "Proiezione singolo: 2,97 tiri · 84,6 min",
+          "motivation": "2,97 tiri attesi in 84,6 minuti; forward, storico verificato su 3.142 minuti e affidabilita 77,7%.",
+          "limitation": "Il forecast quantifica i tiri del solo giocatore; la quota Sisal include anche il sostituto. Probabilita, quota equa ed EV del contratto restano N/D.",
+          "classification": "B",
+          "player": {
+            "canonicalPlayerId": "mason-greenwood",
+            "canonicalName": "Mason Greenwood",
+            "providerPlayerIds": [
+              "1048406"
+            ],
+            "team": "Fenerbahçe",
+            "side": "away",
+            "role": "forward",
+            "lineupStatus": "probable-starter",
+            "expectedMinutes": 84.6,
+            "historyMinutes": 3142,
+            "reliability": 0.7773,
+            "dataStatus": "verified-history",
+            "projectedShots": 2.97,
+            "projectedShotsOnTarget": 1.3
+          },
+          "dataQuality": {
+            "fixtureDetailedVolumes": true,
+            "playerDataStatus": "verified-history",
+            "identityStatus": "resolved"
+          },
+          "providerEventId": "4858178",
+          "providerMarketId": "822481714",
+          "providerSelectionId": "5379908219",
+          "marketCode": "28507",
+          "marketName": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+          "variantName": "GREENWOOD M. U/O 3.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+          "threshold": 3.5,
+          "modifiers": {
+            "threshold": "3.5",
+            "variantName": "GREENWOOD M. U/O 3.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+            "periodScope": "full-match",
+            "replacementIncluded": true,
+            "woodworkIncluded": false
+          },
+          "settlement": {
+            "status": "pending",
+            "label": "Da verificare"
+          },
+          "betSelection": {
+            "selectionId": "sisal:4858178:822481714:5379908219",
+            "identity": {
+              "status": "VERIFIED_PROVIDER_IDS",
+              "matchId": "ucl-2026-27-md02-13",
+              "providerEventId": "4858178",
+              "providerMarketId": "822481714",
+              "providerSelectionId": "5379908219",
+              "providerPlayerIds": [
+                "1048406"
+              ],
+              "canonicalPlayerIds": [
+                "mason-greenwood"
+              ]
+            },
+            "market": {
+              "name": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+              "family": "Tiri giocatore",
+              "code": "28507",
+              "variant": "GREENWOOD M. U/O 3.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+              "threshold": 3.5,
+              "selection": "OVER",
+              "modifiers": {
+                "threshold": "3.5",
+                "variantName": "GREENWOOD M. U/O 3.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+                "periodScope": "full-match",
+                "replacementIncluded": true,
+                "woodworkIncluded": false
+              },
+              "bookmakerSemantics": {
+                "selectionName": "OVER",
+                "selectionCode": "2",
+                "modifiers": {
+                  "threshold": "3.5",
+                  "variantName": "GREENWOOD M. U/O 3.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+                  "periodScope": "full-match",
+                  "replacementIncluded": true,
+                  "woodworkIncluded": false
+                },
+                "duo": true,
+                "replacementIncluded": true,
+                "postsAndCrossbarIncluded": false
+              }
+            },
+            "quote": {
+              "decimal": 2.25,
+              "oddsRaw": 225,
+              "availability": "AVAILABLE_AT_SNAPSHOT",
+              "verifiedAt": "2026-10-13T09:55:14.800Z",
+              "marketUpdatedAt": "2026-10-12T16:19:01.882Z",
+              "source": {
+                "provider": "Sisal",
+                "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001"
+              }
+            },
+            "evaluation": {
+              "status": "NOT_MODELLED",
+              "kind": "INDIVIDUAL_FORECAST_REFERENCE_ONLY",
+              "modelProbabilityPct": null,
+              "fairOdds": null,
+              "expectedValuePct": null,
+              "individualForecast": {
+                "metric": "shots",
+                "mean": 2.97,
+                "expectedMinutes": 84.6
+              },
+              "provenance": {
+                "source": "data/normalized/champions-md02-integration-2026-27.json",
+                "predictionGeneratedAt": "2026-10-13T14:01:36.326Z",
+                "curationSource": "data/sources/champions-md02-phase12d-outsiders-2026-27.json",
+                "curatedAt": "2026-10-13T16:10:37.4963673+02:00"
+              }
+            },
+            "compatibility": {
+              "status": "REFERENCE_ONLY_DUO_REPLACEMENT_NOT_MODELLED",
+              "bookmakerCombinability": "UNKNOWN",
+              "limitation": "Il forecast quantifica i tiri del solo giocatore; la quota Sisal include anche il sostituto. Probabilita, quota equa ed EV del contratto restano N/D."
+            },
+            "operational": {
+              "playability": {
+                "status": "PLAYABLE"
+              },
+              "classification": "SELEZIONATO"
+            },
+            "overlap": {
+              "overlapKey": "ucl-2026-27-md02-13:822481714",
               "semanticKeys": []
             }
           }
@@ -11196,6 +14464,159 @@
               ]
             }
           }
+        },
+        {
+          "selectionId": "sisal:4858142:822436643:5379692328",
+          "context": {
+            "competition": "champions",
+            "season": "2026-27",
+            "matchday": 2
+          },
+          "matchId": "ucl-2026-27-md02-15",
+          "fixture": "Bodø/Glimt - Borussia Dortmund",
+          "market": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+          "marketScope": "player",
+          "marketFamily": "Tiri giocatore",
+          "selection": "OVER",
+          "providerSelectionCode": "2",
+          "label": "Sondre Auklend over 2,5 tiri · sostituto incluso",
+          "odds": 4,
+          "modelProbabilityPct": null,
+          "fairOdds": null,
+          "expectedValuePct": null,
+          "evidenceLabel": "Proiezione singolo: 2,14 tiri · 84,6 min",
+          "motivation": "2,14 tiri attesi in 84,6 minuti; midfielder, storico verificato su 2.184 minuti e affidabilita 70,8%.",
+          "limitation": "Il forecast quantifica i tiri del solo giocatore; la quota Sisal include anche il sostituto. Probabilita, quota equa ed EV del contratto restano N/D.",
+          "classification": "B",
+          "player": {
+            "canonicalPlayerId": "sondre-auklend",
+            "canonicalName": "Sondre Auklend",
+            "providerPlayerIds": [
+              "517337"
+            ],
+            "team": "Bodø/Glimt",
+            "side": "home",
+            "role": "midfielder",
+            "lineupStatus": "probable-starter",
+            "expectedMinutes": 84.6,
+            "historyMinutes": 2184,
+            "reliability": 0.7082,
+            "dataStatus": "verified-history",
+            "projectedShots": 2.14,
+            "projectedShotsOnTarget": 0.57
+          },
+          "dataQuality": {
+            "fixtureDetailedVolumes": true,
+            "playerDataStatus": "verified-history",
+            "identityStatus": "resolved"
+          },
+          "providerEventId": "4858142",
+          "providerMarketId": "822436643",
+          "providerSelectionId": "5379692328",
+          "marketCode": "28507",
+          "marketName": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+          "variantName": "AUKLEND S. U/O 2.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+          "threshold": 2.5,
+          "modifiers": {
+            "threshold": "2.5",
+            "variantName": "AUKLEND S. U/O 2.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+            "periodScope": "full-match",
+            "replacementIncluded": true,
+            "woodworkIncluded": false
+          },
+          "settlement": {
+            "status": "pending",
+            "label": "Da verificare"
+          },
+          "betSelection": {
+            "selectionId": "sisal:4858142:822436643:5379692328",
+            "identity": {
+              "status": "VERIFIED_PROVIDER_IDS",
+              "matchId": "ucl-2026-27-md02-15",
+              "providerEventId": "4858142",
+              "providerMarketId": "822436643",
+              "providerSelectionId": "5379692328",
+              "providerPlayerIds": [
+                "517337"
+              ],
+              "canonicalPlayerIds": [
+                "sondre-auklend"
+              ]
+            },
+            "market": {
+              "name": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+              "family": "Tiri giocatore",
+              "code": "28507",
+              "variant": "AUKLEND S. U/O 2.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+              "threshold": 2.5,
+              "selection": "OVER",
+              "modifiers": {
+                "threshold": "2.5",
+                "variantName": "AUKLEND S. U/O 2.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+                "periodScope": "full-match",
+                "replacementIncluded": true,
+                "woodworkIncluded": false
+              },
+              "bookmakerSemantics": {
+                "selectionName": "OVER",
+                "selectionCode": "2",
+                "modifiers": {
+                  "threshold": "2.5",
+                  "variantName": "AUKLEND S. U/O 2.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+                  "periodScope": "full-match",
+                  "replacementIncluded": true,
+                  "woodworkIncluded": false
+                },
+                "duo": true,
+                "replacementIncluded": true,
+                "postsAndCrossbarIncluded": false
+              }
+            },
+            "quote": {
+              "decimal": 4,
+              "oddsRaw": 400,
+              "availability": "AVAILABLE_AT_SNAPSHOT",
+              "verifiedAt": "2026-10-13T09:55:14.800Z",
+              "marketUpdatedAt": "2026-10-13T04:19:44.889Z",
+              "source": {
+                "provider": "Sisal",
+                "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001"
+              }
+            },
+            "evaluation": {
+              "status": "NOT_MODELLED",
+              "kind": "INDIVIDUAL_FORECAST_REFERENCE_ONLY",
+              "modelProbabilityPct": null,
+              "fairOdds": null,
+              "expectedValuePct": null,
+              "individualForecast": {
+                "metric": "shots",
+                "mean": 2.14,
+                "expectedMinutes": 84.6
+              },
+              "provenance": {
+                "source": "data/normalized/champions-md02-integration-2026-27.json",
+                "predictionGeneratedAt": "2026-10-13T14:01:36.326Z",
+                "curationSource": "data/sources/champions-md02-phase12d-outsiders-2026-27.json",
+                "curatedAt": "2026-10-13T16:10:37.4963673+02:00"
+              }
+            },
+            "compatibility": {
+              "status": "REFERENCE_ONLY_DUO_REPLACEMENT_NOT_MODELLED",
+              "bookmakerCombinability": "UNKNOWN",
+              "limitation": "Il forecast quantifica i tiri del solo giocatore; la quota Sisal include anche il sostituto. Probabilita, quota equa ed EV del contratto restano N/D."
+            },
+            "operational": {
+              "playability": {
+                "status": "PLAYABLE"
+              },
+              "classification": "SELEZIONATO"
+            },
+            "overlap": {
+              "overlapKey": "ucl-2026-27-md02-15:822436643",
+              "semanticKeys": []
+            }
+          }
         }
       ]
     },
@@ -12213,6 +15634,159 @@
               "semanticKeys": []
             }
           }
+        },
+        {
+          "selectionId": "sisal:4858174:822410566:5379526973",
+          "context": {
+            "competition": "champions",
+            "season": "2026-27",
+            "matchday": 2
+          },
+          "matchId": "ucl-2026-27-md02-16",
+          "fixture": "Manchester City - Paris Saint-Germain",
+          "market": "U/O  TIRI IN PORTA GIOCATORE (DUO) INC PALI TRAVERSE INC TS",
+          "marketScope": "player",
+          "marketFamily": "Tiri in porta giocatore",
+          "selection": "OVER",
+          "providerSelectionCode": "2",
+          "label": "Enzo Fernández over 0,5 SOT · sostituto incluso · pali/traverse inclusi",
+          "odds": 2,
+          "modelProbabilityPct": null,
+          "fairOdds": null,
+          "expectedValuePct": null,
+          "evidenceLabel": "Proiezione singolo: 0,65 SOT · 84,6 min",
+          "motivation": "0,65 SOT attesi in 84,6 minuti; midfielder, storico verificato su 3.869 minuti e affidabilita 81,1%.",
+          "limitation": "Il forecast quantifica i SOT del solo giocatore; la quota Sisal include il sostituto e anche pali/traverse. Probabilita, quota equa ed EV del contratto restano N/D.",
+          "classification": "B",
+          "player": {
+            "canonicalPlayerId": "enzo-fernandez",
+            "canonicalName": "Enzo Fernández",
+            "providerPlayerIds": [
+              "413715"
+            ],
+            "team": "Manchester City",
+            "side": "home",
+            "role": "midfielder",
+            "lineupStatus": "probable-starter",
+            "expectedMinutes": 84.6,
+            "historyMinutes": 3869,
+            "reliability": 0.8113,
+            "dataStatus": "verified-history",
+            "projectedShots": 1.67,
+            "projectedShotsOnTarget": 0.65
+          },
+          "dataQuality": {
+            "fixtureDetailedVolumes": true,
+            "playerDataStatus": "verified-history",
+            "identityStatus": "resolved"
+          },
+          "providerEventId": "4858174",
+          "providerMarketId": "822410566",
+          "providerSelectionId": "5379526973",
+          "marketCode": "28506",
+          "marketName": "U/O  TIRI IN PORTA GIOCATORE (DUO) INC PALI TRAVERSE INC TS",
+          "variantName": "FERNANDEZ E. U/O 0.5 SOMMA TIRI IN PORTA INC PALI E TRAVERSE E SUO SOST. INCL. T.S.",
+          "threshold": 0.5,
+          "modifiers": {
+            "threshold": "0.5",
+            "variantName": "FERNANDEZ E. U/O 0.5 SOMMA TIRI IN PORTA INC PALI E TRAVERSE E SUO SOST. INCL. T.S.",
+            "periodScope": "full-match",
+            "replacementIncluded": true,
+            "woodworkIncluded": true
+          },
+          "settlement": {
+            "status": "pending",
+            "label": "Da verificare"
+          },
+          "betSelection": {
+            "selectionId": "sisal:4858174:822410566:5379526973",
+            "identity": {
+              "status": "VERIFIED_PROVIDER_IDS",
+              "matchId": "ucl-2026-27-md02-16",
+              "providerEventId": "4858174",
+              "providerMarketId": "822410566",
+              "providerSelectionId": "5379526973",
+              "providerPlayerIds": [
+                "413715"
+              ],
+              "canonicalPlayerIds": [
+                "enzo-fernandez"
+              ]
+            },
+            "market": {
+              "name": "U/O  TIRI IN PORTA GIOCATORE (DUO) INC PALI TRAVERSE INC TS",
+              "family": "Tiri in porta giocatore",
+              "code": "28506",
+              "variant": "FERNANDEZ E. U/O 0.5 SOMMA TIRI IN PORTA INC PALI E TRAVERSE E SUO SOST. INCL. T.S.",
+              "threshold": 0.5,
+              "selection": "OVER",
+              "modifiers": {
+                "threshold": "0.5",
+                "variantName": "FERNANDEZ E. U/O 0.5 SOMMA TIRI IN PORTA INC PALI E TRAVERSE E SUO SOST. INCL. T.S.",
+                "periodScope": "full-match",
+                "replacementIncluded": true,
+                "woodworkIncluded": true
+              },
+              "bookmakerSemantics": {
+                "selectionName": "OVER",
+                "selectionCode": "2",
+                "modifiers": {
+                  "threshold": "0.5",
+                  "variantName": "FERNANDEZ E. U/O 0.5 SOMMA TIRI IN PORTA INC PALI E TRAVERSE E SUO SOST. INCL. T.S.",
+                  "periodScope": "full-match",
+                  "replacementIncluded": true,
+                  "woodworkIncluded": true
+                },
+                "duo": true,
+                "replacementIncluded": true,
+                "postsAndCrossbarIncluded": true
+              }
+            },
+            "quote": {
+              "decimal": 2,
+              "oddsRaw": 200,
+              "availability": "AVAILABLE_AT_SNAPSHOT",
+              "verifiedAt": "2026-10-13T09:55:14.800Z",
+              "marketUpdatedAt": "2026-10-12T13:44:59.866Z",
+              "source": {
+                "provider": "Sisal",
+                "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001"
+              }
+            },
+            "evaluation": {
+              "status": "NOT_MODELLED",
+              "kind": "INDIVIDUAL_FORECAST_REFERENCE_ONLY",
+              "modelProbabilityPct": null,
+              "fairOdds": null,
+              "expectedValuePct": null,
+              "individualForecast": {
+                "metric": "shotsOnTarget",
+                "mean": 0.65,
+                "expectedMinutes": 84.6
+              },
+              "provenance": {
+                "source": "data/normalized/champions-md02-integration-2026-27.json",
+                "predictionGeneratedAt": "2026-10-13T14:01:36.326Z",
+                "curationSource": "data/sources/champions-md02-phase12d-outsiders-2026-27.json",
+                "curatedAt": "2026-10-13T16:10:37.4963673+02:00"
+              }
+            },
+            "compatibility": {
+              "status": "REFERENCE_ONLY_DUO_REPLACEMENT_AND_WOODWORK_NOT_MODELLED",
+              "bookmakerCombinability": "UNKNOWN",
+              "limitation": "Il forecast quantifica i SOT del solo giocatore; la quota Sisal include il sostituto e anche pali/traverse. Probabilita, quota equa ed EV del contratto restano N/D."
+            },
+            "operational": {
+              "playability": {
+                "status": "PLAYABLE"
+              },
+              "classification": "SELEZIONATO"
+            },
+            "overlap": {
+              "overlapKey": "ucl-2026-27-md02-16:822410566",
+              "semanticKeys": []
+            }
+          }
         }
       ]
     },
@@ -13096,6 +16670,159 @@
               "semanticKeys": []
             }
           }
+        },
+        {
+          "selectionId": "sisal:4858175:822427716:5379618278",
+          "context": {
+            "competition": "champions",
+            "season": "2026-27",
+            "matchday": 2
+          },
+          "matchId": "ucl-2026-27-md02-17",
+          "fixture": "Real Betis - Porto",
+          "market": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+          "marketScope": "player",
+          "marketFamily": "Tiri giocatore",
+          "selection": "OVER",
+          "providerSelectionCode": "2",
+          "label": "Abde Ezzalzouli over 3,5 tiri · sostituto incluso",
+          "odds": 2.5,
+          "modelProbabilityPct": null,
+          "fairOdds": null,
+          "expectedValuePct": null,
+          "evidenceLabel": "Proiezione singolo: 2,85 tiri · 84,6 min",
+          "motivation": "2,85 tiri attesi in 84,6 minuti; forward, storico verificato su 3.061 minuti e affidabilita 77,3%.",
+          "limitation": "Il forecast quantifica i tiri del solo giocatore; la quota Sisal include anche il sostituto. Probabilita, quota equa ed EV del contratto restano N/D.",
+          "classification": "B",
+          "player": {
+            "canonicalPlayerId": "abde-ezzalzouli",
+            "canonicalName": "Abde Ezzalzouli",
+            "providerPlayerIds": [
+              "524418"
+            ],
+            "team": "Real Betis",
+            "side": "home",
+            "role": "forward",
+            "lineupStatus": "probable-starter",
+            "expectedMinutes": 84.6,
+            "historyMinutes": 3061,
+            "reliability": 0.7728,
+            "dataStatus": "verified-history",
+            "projectedShots": 2.85,
+            "projectedShotsOnTarget": 0.97
+          },
+          "dataQuality": {
+            "fixtureDetailedVolumes": true,
+            "playerDataStatus": "verified-history",
+            "identityStatus": "resolved"
+          },
+          "providerEventId": "4858175",
+          "providerMarketId": "822427716",
+          "providerSelectionId": "5379618278",
+          "marketCode": "28507",
+          "marketName": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+          "variantName": "EZZALZOULI A. U/O 3.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+          "threshold": 3.5,
+          "modifiers": {
+            "threshold": "3.5",
+            "variantName": "EZZALZOULI A. U/O 3.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+            "periodScope": "full-match",
+            "replacementIncluded": true,
+            "woodworkIncluded": false
+          },
+          "settlement": {
+            "status": "pending",
+            "label": "Da verificare"
+          },
+          "betSelection": {
+            "selectionId": "sisal:4858175:822427716:5379618278",
+            "identity": {
+              "status": "VERIFIED_PROVIDER_IDS",
+              "matchId": "ucl-2026-27-md02-17",
+              "providerEventId": "4858175",
+              "providerMarketId": "822427716",
+              "providerSelectionId": "5379618278",
+              "providerPlayerIds": [
+                "524418"
+              ],
+              "canonicalPlayerIds": [
+                "abde-ezzalzouli"
+              ]
+            },
+            "market": {
+              "name": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+              "family": "Tiri giocatore",
+              "code": "28507",
+              "variant": "EZZALZOULI A. U/O 3.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+              "threshold": 3.5,
+              "selection": "OVER",
+              "modifiers": {
+                "threshold": "3.5",
+                "variantName": "EZZALZOULI A. U/O 3.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+                "periodScope": "full-match",
+                "replacementIncluded": true,
+                "woodworkIncluded": false
+              },
+              "bookmakerSemantics": {
+                "selectionName": "OVER",
+                "selectionCode": "2",
+                "modifiers": {
+                  "threshold": "3.5",
+                  "variantName": "EZZALZOULI A. U/O 3.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
+                  "periodScope": "full-match",
+                  "replacementIncluded": true,
+                  "woodworkIncluded": false
+                },
+                "duo": true,
+                "replacementIncluded": true,
+                "postsAndCrossbarIncluded": false
+              }
+            },
+            "quote": {
+              "decimal": 2.5,
+              "oddsRaw": 250,
+              "availability": "AVAILABLE_AT_SNAPSHOT",
+              "verifiedAt": "2026-10-13T09:55:14.800Z",
+              "marketUpdatedAt": "2026-10-12T14:36:31.250Z",
+              "source": {
+                "provider": "Sisal",
+                "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001"
+              }
+            },
+            "evaluation": {
+              "status": "NOT_MODELLED",
+              "kind": "INDIVIDUAL_FORECAST_REFERENCE_ONLY",
+              "modelProbabilityPct": null,
+              "fairOdds": null,
+              "expectedValuePct": null,
+              "individualForecast": {
+                "metric": "shots",
+                "mean": 2.85,
+                "expectedMinutes": 84.6
+              },
+              "provenance": {
+                "source": "data/normalized/champions-md02-integration-2026-27.json",
+                "predictionGeneratedAt": "2026-10-13T14:01:36.326Z",
+                "curationSource": "data/sources/champions-md02-phase12d-outsiders-2026-27.json",
+                "curatedAt": "2026-10-13T16:10:37.4963673+02:00"
+              }
+            },
+            "compatibility": {
+              "status": "REFERENCE_ONLY_DUO_REPLACEMENT_NOT_MODELLED",
+              "bookmakerCombinability": "UNKNOWN",
+              "limitation": "Il forecast quantifica i tiri del solo giocatore; la quota Sisal include anche il sostituto. Probabilita, quota equa ed EV del contratto restano N/D."
+            },
+            "operational": {
+              "playability": {
+                "status": "PLAYABLE"
+              },
+              "classification": "SELEZIONATO"
+            },
+            "overlap": {
+              "overlapKey": "ucl-2026-27-md02-17:822427716",
+              "semanticKeys": []
+            }
+          }
         }
       ]
     },
@@ -13823,6 +17550,141 @@
               "overlapKey": "ucl-2026-27-md02-18:810819775",
               "semanticKeys": [
                 "ucl-2026-27-md02-18:totalGoals:match:UNDER:3.5"
+              ]
+            }
+          }
+        },
+        {
+          "selectionId": "sisal:4858140:810819774:5317123345",
+          "context": {
+            "competition": "champions",
+            "season": "2026-27",
+            "matchday": 2
+          },
+          "matchId": "ucl-2026-27-md02-18",
+          "fixture": "Slovan Bratislava - Stuttgart",
+          "market": "UNDER/OVER",
+          "marketScope": "match",
+          "marketFamily": "Gol",
+          "selection": "UNDER",
+          "providerSelectionCode": "1",
+          "label": "Totale partita under 2,5 gol",
+          "odds": 3.25,
+          "modelProbabilityPct": 38.5,
+          "fairOdds": 2.6,
+          "expectedValuePct": 25.1,
+          "evidenceLabel": "Totale partita: 3,17 gol · P 38,5%",
+          "motivation": "3,17 gol attesi; probabilita 38,5% dalla distribuzione Poisson gia serializzata.",
+          "classification": "A",
+          "dataQuality": {
+            "fixtureDetailedVolumes": "pilot statistico completo",
+            "sampleCoverage": null,
+            "currentSeasonReliabilityPct": null,
+            "validation": "POISSON_GOAL_MODEL"
+          },
+          "providerEventId": "4858140",
+          "providerMarketId": "810819774",
+          "providerSelectionId": "5317123345",
+          "marketCode": "7989",
+          "marketName": "UNDER/OVER",
+          "variantName": "U/O 2.5",
+          "threshold": 2.5,
+          "modifiers": {
+            "threshold": "2.5",
+            "variantName": "U/O 2.5",
+            "periodScope": "full-match",
+            "replacementIncluded": false,
+            "woodworkIncluded": false,
+            "duo": false
+          },
+          "settlement": {
+            "status": "pending",
+            "label": "Da verificare"
+          },
+          "betSelection": {
+            "selectionId": "sisal:4858140:810819774:5317123345",
+            "identity": {
+              "status": "VERIFIED_PROVIDER_IDS",
+              "matchId": "ucl-2026-27-md02-18",
+              "providerEventId": "4858140",
+              "providerMarketId": "810819774",
+              "providerSelectionId": "5317123345",
+              "providerPlayerIds": [],
+              "canonicalPlayerIds": []
+            },
+            "market": {
+              "name": "UNDER/OVER",
+              "family": "Gol",
+              "code": "7989",
+              "variant": "U/O 2.5",
+              "threshold": 2.5,
+              "selection": "UNDER",
+              "modifiers": {
+                "threshold": "2.5",
+                "variantName": "U/O 2.5",
+                "periodScope": "full-match",
+                "replacementIncluded": false,
+                "woodworkIncluded": false,
+                "duo": false
+              },
+              "bookmakerSemantics": {
+                "selectionName": "UNDER",
+                "selectionCode": "1",
+                "modifiers": {
+                  "threshold": "2.5",
+                  "variantName": "U/O 2.5",
+                  "periodScope": "full-match",
+                  "replacementIncluded": false,
+                  "woodworkIncluded": false,
+                  "duo": false
+                }
+              }
+            },
+            "quote": {
+              "decimal": 3.25,
+              "oddsRaw": 325,
+              "availability": "AVAILABLE_AT_SNAPSHOT",
+              "verifiedAt": "2026-10-13T09:55:14.800Z",
+              "marketUpdatedAt": "2026-10-13T03:49:57.936Z",
+              "source": {
+                "provider": "Sisal",
+                "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001"
+              }
+            },
+            "evaluation": {
+              "status": "MODELLED_VALIDATED_TEAM_MARKET",
+              "kind": "totalGoals",
+              "modelProbabilityPct": 38.5,
+              "fairOdds": 2.6,
+              "expectedValuePct": 25.1,
+              "forecast": {
+                "metric": "totalGoals",
+                "central": 3.17,
+                "threshold": 2.5,
+                "selection": "UNDER",
+                "validation": "POISSON_GOAL_MODEL"
+              },
+              "provenance": {
+                "source": "data/normalized/champions-md02-integration-2026-27.json",
+                "predictionGeneratedAt": "2026-10-13T14:01:36.326Z",
+                "curationSource": "data/sources/champions-md02-phase12d-outsiders-2026-27.json",
+                "curatedAt": "2026-10-13T16:10:37.4963673+02:00"
+              }
+            },
+            "compatibility": {
+              "status": "COMPATIBILE_CONTRATTO_ESATTO",
+              "bookmakerCombinability": "UNKNOWN"
+            },
+            "operational": {
+              "playability": {
+                "status": "PLAYABLE"
+              },
+              "classification": "SELEZIONATO_A"
+            },
+            "overlap": {
+              "overlapKey": "ucl-2026-27-md02-18:810819774",
+              "semanticKeys": [
+                "ucl-2026-27-md02-18:totalGoals:match:UNDER:2.5"
               ]
             }
           }

@@ -7,6 +7,7 @@ const paths={
   integration:"data/normalized/champions-md02-integration-2026-27.json",
   individualSelection:"data/sources/champions-md02-individual-selection-2026-27.json",
   phase12d:"data/sources/champions-md02-phase12d-additions-2026-27.json",
+  outsiders:"data/sources/champions-md02-phase12d-outsiders-2026-27.json",
   odds:"data/normalized/odds/sisal/champions-league.json",
   calendar:"data/normalized/champions-league-2026-27.json",
   output:"data/normalized/schedina-champions-md02.json"
@@ -19,6 +20,7 @@ const finite=value=>value!==null&&value!==""&&Number.isFinite(Number(value));
 const integration=read(paths.integration);
 const individualSelection=read(paths.individualSelection);
 const phase12d=read(paths.phase12d);
+const outsiders=read(paths.outsiders);
 const odds=read(paths.odds);
 const calendar=read(paths.calendar);
 const eventByFixture=new Map(odds.events.map(event=>[event.canonicalMatchId,event]));
@@ -135,7 +137,7 @@ const additionalTeamMarket={
   "23311":{family:"Tiri in porta squadra",metric:"shotsOnTarget",unit:"tiri in porta",validatedThreshold:3.5,validation:"WALK_FORWARD_SOT_3_5"}
 };
 
-function selectedAdditionalTeamForecast(fixture,pick){
+function selectedAdditionalTeamForecast(fixture,pick,curation={source:paths.phase12d,curatedAt:phase12d.generatedAt}){
   const config=additionalTeamMarket[String(pick.marketCode)];
   if(!config||pick.classification!=="A")throw new Error(`${fixture.fixtureId}: mercato squadra 12D non supportato ${pick.marketCode}`);
   const event=eventByFixture.get(fixture.fixtureId);
@@ -219,7 +221,7 @@ function selectedAdditionalTeamForecast(fixture,pick){
       identity:{status:"VERIFIED_PROVIDER_IDS",matchId:fixture.fixtureId,providerEventId:event.providerEventId,providerMarketId:market.providerMarketId,providerSelectionId:selection.providerSelectionId,providerPlayerIds:[],canonicalPlayerIds:[]},
       market:{name:market.marketName,family:config.family,code:String(market.marketCode),variant:market.variantName,threshold,selection:pick.selection,modifiers:originalModifiers,bookmakerSemantics:{selectionName:selection.name,selectionCode:selection.code,modifiers:originalModifiers}},
       quote:{decimal:Number(selection.odds),oddsRaw:selection.oddsRaw,availability:"AVAILABLE_AT_SNAPSHOT",verifiedAt:event.retrievedAt||odds.retrievedAt,marketUpdatedAt:market.updatedAt||null,source:{provider:"Sisal",url:odds.sourceUrl}},
-      evaluation:{status:"MODELLED_VALIDATED_TEAM_MARKET",kind:config.metric,modelProbabilityPct:Number(probability),fairOdds,expectedValuePct,forecast:{metric:config.metric,central:Number(central),threshold,selection:pick.selection,validation:config.validation},provenance:{source:paths.integration,predictionGeneratedAt:integration.generatedAt,curationSource:paths.phase12d,curatedAt:phase12d.generatedAt}},
+      evaluation:{status:"MODELLED_VALIDATED_TEAM_MARKET",kind:config.metric,modelProbabilityPct:Number(probability),fairOdds,expectedValuePct,forecast:{metric:config.metric,central:Number(central),threshold,selection:pick.selection,validation:config.validation},provenance:{source:paths.integration,predictionGeneratedAt:integration.generatedAt,curationSource:curation.source,curatedAt:curation.curatedAt}},
       compatibility:{status:"COMPATIBILE_CONTRATTO_ESATTO",bookmakerCombinability:"UNKNOWN"},
       operational:{playability:{status:"PLAYABLE"},classification:"SELEZIONATO_A"},
       overlap:{overlapKey:`${fixture.fixtureId}:${market.providerMarketId}`,semanticKeys:[`${fixture.fixtureId}:${config.metric}:${pick.teamSide||"match"}:${pick.selection}:${threshold}`]}
@@ -358,6 +360,8 @@ const fixtures=integration.fixtures.map(fixture=>{
   const individualPicks=individualSelection.picks.filter(pick=>pick.fixtureId===fixture.fixtureId).map(pick=>selectedIndividualForecast(fixture,pick));
   const phase12dTeamPicks=phase12d.teamPicks.filter(pick=>pick.fixtureId===fixture.fixtureId).map(pick=>selectedAdditionalTeamForecast(fixture,pick));
   const phase12dIndividualPicks=phase12d.individualPicks.filter(pick=>pick.fixtureId===fixture.fixtureId).map(pick=>selectedIndividualForecast(fixture,pick,{source:paths.phase12d,curatedAt:phase12d.generatedAt,classification:"B"}));
+  const outsiderTeamPicks=outsiders.teamPicks.filter(pick=>pick.fixtureId===fixture.fixtureId).map(pick=>selectedAdditionalTeamForecast(fixture,pick,{source:paths.outsiders,curatedAt:outsiders.generatedAt}));
+  const outsiderIndividualPicks=outsiders.individualPicks.filter(pick=>pick.fixtureId===fixture.fixtureId).map(pick=>selectedIndividualForecast(fixture,pick,{source:paths.outsiders,curatedAt:outsiders.generatedAt,classification:"B"}));
   return {
     fixtureId:fixture.fixtureId,
     date:fixture.date,
@@ -368,13 +372,17 @@ const fixtures=integration.fixtures.map(fixture=>{
     score:calendarFixture?.score||null,
     readingUrl:`champions-league.html?match=${fixture.fixtureId}`,
     forecastSyncKey:fixture.generationSync?.forecastKey||fixture.syncKey,
-    selections:[selectedForecast(fixture),...individualPicks,...phase12dTeamPicks,...phase12dIndividualPicks]
+    selections:[selectedForecast(fixture),...individualPicks,...phase12dTeamPicks,...phase12dIndividualPicks,...outsiderTeamPicks,...outsiderIndividualPicks]
   };
 });
 const selections=fixtures.flatMap(fixture=>fixture.selections);
-const baselineSelections=fixtures.flatMap(fixture=>fixture.selections.filter(selection=>selection.betSelection.evaluation.provenance?.curationSource!==paths.phase12d));
+const additiveSources=new Set([paths.phase12d,paths.outsiders]);
+const baselineSelections=fixtures.flatMap(fixture=>fixture.selections.filter(selection=>!additiveSources.has(selection.betSelection.evaluation.provenance?.curationSource)));
 const baselineHash=crypto.createHash("sha256").update(JSON.stringify(baselineSelections.map(selection=>selection.selectionId).sort())).digest("hex").toUpperCase();
 if(baselineSelections.length!==phase12d.baseline.predictions||baselineHash!==phase12d.baseline.selectionIdsSha256)throw new Error(`Baseline Fasi 12B/12C alterata: ${baselineSelections.length} selezioni, hash ${baselineHash}`);
+const outsiderBaselineSelections=fixtures.flatMap(fixture=>fixture.selections.filter(selection=>selection.betSelection.evaluation.provenance?.curationSource!==paths.outsiders));
+const outsiderBaselineHash=crypto.createHash("sha256").update(JSON.stringify(outsiderBaselineSelections.map(selection=>selection.selectionId).sort())).digest("hex").toUpperCase();
+if(outsiderBaselineSelections.length!==outsiders.baseline.predictions||outsiderBaselineHash!==outsiders.baseline.selectionIdsSha256)throw new Error(`Baseline Fase 12D alterata: ${outsiderBaselineSelections.length} selezioni, hash ${outsiderBaselineHash}`);
 if(new Set(selections.map(selection=>selection.selectionId)).size!==selections.length)throw new Error("selectionId duplicati dopo l'ampliamento 12D");
 const won=selections.filter(selection=>selection.settlement.status==="won").length;
 const lost=selections.filter(selection=>selection.settlement.status==="lost").length;
@@ -388,18 +396,19 @@ const output={
   competition:"UEFA Champions League",
   season:"2026/27",
   matchday:2,
-  generatedAt:phase12d.generatedAt,
+  generatedAt:outsiders.generatedAt,
   provider:"Sisal",
   oddsRetrievedAt:odds.retrievedAt,
   sourceUrl:odds.sourceUrl,
   status:pending===selections.length?"PRE_MATCH":pending?"PARTIAL_RESULTS":"SETTLED",
-  methodology:"La card conserva integralmente le 63 selezioni delle Fasi 12B/12C e aggiunge mercati squadra su contratti esatti coperti dalle distribuzioni gia serializzate e dal backtest disponibile, oltre a nuovi riferimenti individuali tiri/SOT. I contratti individuali DUO mantengono probabilita, quota equa ed EV N/D.",
+  methodology:"La card conserva integralmente le 94 selezioni concluse con la Fase 12D e aggiunge outsider su contratti Sisal esatti: soglie gol con probabilita gia serializzata e riferimenti individuali tiri/SOT sostenuti da minuti, storico e volumi. I contratti individuali DUO mantengono probabilita, quota equa ed EV N/D.",
   selectionRule:"Nessun numero fisso per gara. Classe A: contratto full-match identico a una soglia probabilistica gia validata o alla distribuzione gol gia adottata. Classe B: volume individuale motivante e quota valida, ma contratto DUO non probabilisticamente valutabile. Nessuna conversione automatica di una media in probabilita.",
   settlementPolicy:"Puntata simulata di 1 € per esito. ROI e profitto/perdita includono soltanto esiti ufficialmente definiti; pending e non verificabili non sono perdite.",
   sources:{
     integration:{path:paths.integration,sha256:hash(paths.integration),generatedAt:integration.generatedAt},
     individualSelection:{path:paths.individualSelection,sha256:hash(paths.individualSelection),curatedAt:individualSelection.curatedAt,status:individualSelection.status},
     phase12d:{path:paths.phase12d,sha256:hash(paths.phase12d),generatedAt:phase12d.generatedAt,status:phase12d.status,baselineSelectionIdsSha256:phase12d.baseline.selectionIdsSha256},
+    outsiders:{path:paths.outsiders,sha256:hash(paths.outsiders),generatedAt:outsiders.generatedAt,status:outsiders.status,baselineSelectionIdsSha256:outsiders.baseline.selectionIdsSha256},
     odds:{path:paths.odds,sha256:hash(paths.odds),retrievedAt:odds.retrievedAt},
     officialResults:{path:paths.calendar,sha256:hash(paths.calendar)}
   },
@@ -413,6 +422,9 @@ const output={
     teamPredictions:selections.filter(selection=>selection.marketScope!=="player").length,
     phase12DTeamPredictions:phase12d.teamPicks.length,
     phase12DIndividualPredictions:phase12d.individualPicks.length,
+    outsiderPredictions:outsiders.teamPicks.length+outsiders.individualPicks.length,
+    outsiderTeamPredictions:outsiders.teamPicks.length,
+    outsiderIndividualPredictions:outsiders.individualPicks.length,
     individualPredictions:selections.filter(selection=>selection.marketScope==="player").length,
     individualShots:selections.filter(selection=>selection.marketCode==="28507").length,
     individualShotsOnTarget:selections.filter(selection=>selection.marketCode==="28506").length,
@@ -430,7 +442,7 @@ const output={
   fixtures
 };
 
-if(output.summary.fixtures!==18||output.summary.phase12BPredictions!==18||output.summary.individualPredictions!==individualSelection.picks.length+phase12d.individualPicks.length||output.summary.predictions!==phase12d.baseline.predictions+phase12d.teamPicks.length+phase12d.individualPicks.length)throw new Error(`Copertura MD2 incompleta: ${output.summary.fixtures} partite, ${output.summary.phase12BPredictions} pronostici 12B, ${output.summary.individualPredictions} individuali, ${output.summary.predictions} totali`);
+if(output.summary.fixtures!==18||output.summary.phase12BPredictions!==18||output.summary.individualPredictions!==individualSelection.picks.length+phase12d.individualPicks.length+outsiders.individualPicks.length||output.summary.predictions!==outsiders.baseline.predictions+outsiders.teamPicks.length+outsiders.individualPicks.length)throw new Error(`Copertura MD2 incompleta: ${output.summary.fixtures} partite, ${output.summary.phase12BPredictions} pronostici 12B, ${output.summary.individualPredictions} individuali, ${output.summary.predictions} totali`);
 fs.writeFileSync(path.join(root,paths.output),`${JSON.stringify(output,null,2)}\n`);
 console.log(`Generata ${paths.output}: ${output.summary.fixtures} partite, ${output.summary.predictions} pronostici, ${output.summary.clickableSelections} cliccabili`);
 

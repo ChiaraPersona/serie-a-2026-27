@@ -1,0 +1,200 @@
+{
+  "schemaVersion": 1,
+  "phase": "Champions referee integration 2B",
+  "generatedFromRawAt": "2026-10-13",
+  "scope": {
+    "targetSeasons": [
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26"
+    ],
+    "burnInSeasons": [
+      "2021-22"
+    ],
+    "qualificationsExcluded": true
+  },
+  "coverage": {
+    "bySeason": {
+      "2022-23": {
+        "matches": 125,
+        "referees": 41,
+        "matchCardsComplete": 125,
+        "matchFoulsComplete": 125,
+        "teamRows": 250,
+        "teamCardsComplete": 250,
+        "teamFoulsComplete": 250,
+        "playerAppearances": 3836,
+        "playerCardsComplete": 3836,
+        "playerFoulsComplete": 3836,
+        "playerMinutesAvailable": 3836
+      },
+      "2023-24": {
+        "matches": 125,
+        "referees": 45,
+        "matchCardsComplete": 125,
+        "matchFoulsComplete": 125,
+        "teamRows": 250,
+        "teamCardsComplete": 250,
+        "teamFoulsComplete": 250,
+        "playerAppearances": 3800,
+        "playerCardsComplete": 3800,
+        "playerFoulsComplete": 3800,
+        "playerMinutesAvailable": 3800
+      },
+      "2024-25": {
+        "matches": 189,
+        "referees": 45,
+        "matchCardsComplete": 189,
+        "matchFoulsComplete": 189,
+        "teamRows": 378,
+        "teamCardsComplete": 378,
+        "teamFoulsComplete": 378,
+        "playerAppearances": 5825,
+        "playerCardsComplete": 5825,
+        "playerFoulsComplete": 5825,
+        "playerMinutesAvailable": 5825
+      },
+      "2025-26": {
+        "matches": 189,
+        "referees": 43,
+        "matchCardsComplete": 189,
+        "matchFoulsComplete": 189,
+        "teamRows": 378,
+        "teamCardsComplete": 378,
+        "teamFoulsComplete": 378,
+        "playerAppearances": 5850,
+        "playerCardsComplete": 5850,
+        "playerFoulsComplete": 5850,
+        "playerMinutesAvailable": 5850
+      }
+    },
+    "matches": 628,
+    "teamRows": 1256,
+    "playerAppearances": 19311,
+    "refereesIdentified": 68,
+    "refereeAssignmentsPresent": 628,
+    "refereeAssignmentsPreMatchTimestampVerified": 0,
+    "excludedBenchStaffOrUnresolvedCardEvents": 16,
+    "preMatchFeatureCoverage": {
+      "matchTotals": {
+        "candidate": 9420,
+        "verified": 6080,
+        "unverified": 2850,
+        "unavailable": 490,
+        "verifiedPct": 64.54
+      },
+      "teamCards": {
+        "candidate": 18840,
+        "verified": 12160,
+        "unverified": 5700,
+        "unavailable": 980,
+        "verifiedPct": 64.54
+      },
+      "individualCards": {
+        "candidate": 96555,
+        "verified": 88895,
+        "unverified": 0,
+        "unavailable": 7660,
+        "verifiedPct": 92.07
+      }
+    }
+  },
+  "integrity": {
+    "duplicateMatchIds": 0,
+    "duplicateTeamKeys": 0,
+    "duplicatePlayerKeys": 0,
+    "chronologyFailures": 0,
+    "cardArithmeticFailures": [],
+    "teamToMatchCardFailures": [],
+    "playerToTeamCardFailures": []
+  },
+  "targetDefinitions": {
+    "yellowCards": "Ordinary yellow-card key events assigned to athletes recorded as having appeared; includes a first yellow before a later second-yellow dismissal.",
+    "secondYellowCards": "Red-card key events whose source text explicitly says Second yellow card.",
+    "directRedCards": "Other red-card key events assigned to athletes recorded as having appeared.",
+    "totalCards": "yellowCards + secondYellowCards + directRedCards. Provider boxscore yellow/red counts are retained separately and never substituted.",
+    "benchStaffPolicy": "Events for rostered non-participants, staff or unresolved participants are excluded from individual/team/model targets and reported separately.",
+    "minutes": "Derived after the match from starter and substitution clocks; outcome/exposure only, never a pre-match feature."
+  },
+  "antiLeakage": {
+    "status": "PASS_WITH_DOCUMENTED_EXCLUSIONS",
+    "rules": [
+      "Rolling features use only matches with kickoff strictly earlier than the current kickoff; simultaneous matches are updated as one batch.",
+      "Actual starters, appearances, substitutions and minutes are post-match outcome/exposure fields and never pre-match features.",
+      "The current match boxscore, events and player statistics are target data only.",
+      "Historical referee names identify the actual official, but no source publication timestamp proves when the designation became available; referee features are blocked for strict training.",
+      "Role metadata from the post-match roster is not admitted as a timestamp-verified feature."
+    ]
+  },
+  "rollingOrigin": {
+    "folds": [
+      {
+        "id": "fold-1",
+        "trainSeasons": [
+          "2022-23"
+        ],
+        "validationSeason": "2023-24",
+        "trainMatches": 125,
+        "validationMatches": 125,
+        "chronologyPass": true
+      },
+      {
+        "id": "fold-2",
+        "trainSeasons": [
+          "2022-23",
+          "2023-24"
+        ],
+        "validationSeason": "2024-25",
+        "trainMatches": 250,
+        "validationMatches": 189,
+        "chronologyPass": true
+      },
+      {
+        "id": "fold-3",
+        "trainSeasons": [
+          "2022-23",
+          "2023-24",
+          "2024-25"
+        ],
+        "validationSeason": "2025-26",
+        "trainMatches": 439,
+        "validationMatches": 189,
+        "chronologyPass": true
+      }
+    ]
+  },
+  "baselineSpecifications": {
+    "totalCardsNoReferee": "Competition/season intercept plus strictly-prior home and away team disciplinary rates; referee identity and referee priors omitted.",
+    "teamCardsNoReferee": "Strictly-prior team and opponent disciplinary rates with venue indicator; referee omitted.",
+    "individualCardsNoReferee": "Conditional-on-appearance research baseline using strictly-prior player card/foul exposure only; actual participation and minutes are outcomes, not predictors.",
+    "status": "SPECIFIED_NOT_FITTED"
+  },
+  "calibrationReadiness": {
+    "totalCards": {
+      "status": "READY_FOR_BASELINE_CALIBRATION_ONLY",
+      "refereeEffect": "BLOCKED_ASSIGNMENT_PUBLICATION_TIMESTAMPS",
+      "noModelTrained": true
+    },
+    "teamCards": {
+      "status": "READY_FOR_BASELINE_CALIBRATION_ONLY",
+      "refereeEffect": "BLOCKED_ASSIGNMENT_PUBLICATION_TIMESTAMPS",
+      "noModelTrained": true
+    },
+    "individualCardsConditionalOnAppearance": {
+      "status": "PARTIAL_RESEARCH_READY",
+      "blocker": "Actual participant universe is post-match; role and lineup availability are not timestamp-certified.",
+      "noModelTrained": true
+    },
+    "individualCardsUnconditional": {
+      "status": "NOT_READY",
+      "blocker": "No timestamp-certified pre-match lineup/participation model.",
+      "noModelTrained": true
+    }
+  },
+  "sources": {
+    "fixtures": "UEFA match feed, phase=TOURNAMENT",
+    "refereeMatchTeamPlayerData": "ESPN public match summary feed",
+    "rawManifest": "data/raw/champions-referee-phase-2b/2026-10-13/manifest.json"
+  }
+}
