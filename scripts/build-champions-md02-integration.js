@@ -12,6 +12,7 @@ const paths = {
   squads: "data/normalized/champions-registered-squads-2026-27.json",
   playerStats: "data/normalized/champions-player-stats-2025-26.json",
   uefaSquadAudit: "data/analysis/champions/uefa-squad-audit-2026-10-09.json",
+  identityOverlay: "data/sources/champions-player-identity-overlay-md02-2026-27.json",
   odds: "data/normalized/odds/sisal/champions-league.json",
   probableSource: "data/sources/champions-probable-formations-md02-2026-27.json",
   output: "data/normalized/champions-md02-integration-2026-27.json",
@@ -37,6 +38,7 @@ const predictions = read(paths.predictions);
 const squads = read(paths.squads);
 const playerStats = read(paths.playerStats);
 const uefaSquadAudit = read(paths.uefaSquadAudit);
+const identityOverlay = read(paths.identityOverlay);
 const odds = read(paths.odds);
 const probableSource = read(paths.probableSource);
 
@@ -54,6 +56,25 @@ const squadByTeam = new Map(squads.teams.map(team => [team.team, team]));
 const statsByTeam = new Map(playerStats.teams.map(team => [team.team, team]));
 const predictionByFixture = new Map(predictions.fixtures.map(fixture => [fixture.fixtureId, fixture]));
 const oddsByFixture = new Map(odds.events.map(event => [event.canonicalMatchId, event]));
+const overlayByTeam = new Map();
+const overlayStableIds = new Set();
+for (const identity of identityOverlay.players) {
+  const key = `${identity.team}:${identity.canonicalPlayerId}`;
+  if (overlayStableIds.has(identity.stablePlayerId) || overlayStableIds.has(key)) throw new Error(`Identità overlay duplicata: ${identity.stablePlayerId}`);
+  overlayStableIds.add(identity.stablePlayerId);
+  overlayStableIds.add(key);
+  const rows = overlayByTeam.get(identity.team) || [];
+  rows.push({
+    id: identity.canonicalPlayerId,
+    name: identity.canonicalName,
+    aliases: identity.aliases,
+    providerIds: identity.providerIds,
+    stablePlayerId: identity.stablePlayerId,
+    identityOverlay: true,
+    identityEvidence: identity.evidence
+  });
+  overlayByTeam.set(identity.team, rows);
+}
 
 const rolePrior = {
   goalkeeper: { shots: 0.01, shotsOnTarget: 0, cards: 0.04, foulsCommitted: 0.04, goals: 0, assists: 0 },
@@ -77,6 +98,7 @@ function teamPlayers(team) {
   const registered = squadByTeam.get(team)?.players || [];
   const byId = new Map(statistical.map(player => [player.id, player]));
   for (const player of registered) if (!byId.has(player.id)) byId.set(player.id, player);
+  for (const player of overlayByTeam.get(team) || []) if (!byId.has(player.id)) byId.set(player.id, player);
   return [...byId.values()];
 }
 
@@ -93,6 +115,8 @@ function resolveCanonical(team, suppliedName) {
   const aliasId = verifiedAliases[`${team}:${wanted}`];
   const alias = aliasId ? players.find(player => player.id === aliasId) : null;
   if (alias) return { player: alias, method: "verified-alias" };
+  const overlayAlias = players.filter(player => player.identityOverlay && [player.name, ...(player.aliases || [])].some(aliasName => normalize(aliasName) === wanted));
+  if (overlayAlias.length === 1) return { player: overlayAlias[0], method: "verified-identity-overlay" };
   const exact = players.filter(player => normalize(player.name) === wanted || normalize(player.id) === wanted);
   if (exact.length === 1) return { player: exact[0], method: "exact" };
   const fullTokens = players.filter(player => wantedTokens.length > 1 && wantedTokens.every(token => tokens(player.name).includes(token)));
@@ -171,7 +195,7 @@ function playerRate(player, role) {
 function marketFlags(market) {
   const label = `${market.marketName || ""} ${market.variantName || ""}`;
   const replacementIncluded = /DUO|INC\.?\s*T\.?S\.?|SOSTITUT|\bSOST\b/i.test(label);
-  const woodworkIncluded = market.marketCode === "28506" || /PALI|TRAVERSE/i.test(label);
+  const woodworkIncluded = market.marketCode === "28506" || /PAL[OI]|TRAVERS[AE]/i.test(label);
   const periodScope = ["28673", "28674"].includes(market.marketCode) || /PRIMO TEMPO|1° TEMPO/i.test(label)
     ? "first-half"
     : ["28609", "28610"].includes(market.marketCode) || /ENTRAMBI I TEMPI/i.test(label) ? "both-halves" : "full-match";
@@ -181,6 +205,7 @@ function marketFlags(market) {
   else if (["31665", "31666"].includes(market.marketCode)) forecastCompatibility = "REFERENCE_ONLY_MULTI_PLAYER_DUO_NOT_MODELLED";
   else if (periodScope === "first-half") forecastCompatibility = "BLOCKED_FIRST_HALF_SPLIT_NOT_MODELLED";
   else if (periodScope === "both-halves") forecastCompatibility = "BLOCKED_BOTH_HALVES_CONTRACT_NOT_MODELLED";
+  else if (woodworkIncluded) forecastCompatibility = "REFERENCE_ONLY_REPLACEMENT_AND_WOODWORK_NOT_MODELLED";
   else if (replacementIncluded) forecastCompatibility = "REFERENCE_ONLY_REPLACEMENT_NOT_MODELLED";
   return { replacementIncluded, woodworkIncluded, periodScope, forecastCompatibility };
 }
@@ -209,6 +234,14 @@ function bestCanonicalForMarket(players, market) {
 
 function providerIdentityMap(event, fixturePlayers) {
   const votes = new Map();
+  const result = new Map();
+  for (const player of fixturePlayers) {
+    const providerId = player.providerIds?.sisal;
+    if (!providerId) continue;
+    const existing = result.get(providerId);
+    if (existing && existing !== player.id) throw new Error(`Collisione Sisal ${providerId}: ${existing}/${player.id}`);
+    result.set(providerId, player.id);
+  }
   for (const market of event.markets.filter(item => item.marketScope === "player" && item.providerPlayerIds?.length === 1)) {
     const candidate = bestCanonicalForMarket(fixturePlayers, market);
     if (!candidate) continue;
@@ -217,7 +250,6 @@ function providerIdentityMap(event, fixturePlayers) {
     counts.set(candidate.id, (counts.get(candidate.id) || 0) + 1);
     votes.set(providerId, counts);
   }
-  const result = new Map();
   for (const [providerId, counts] of votes) {
     const ranked = [...counts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
     if (!ranked[1] || ranked[0][1] > ranked[1][1]) result.set(providerId, ranked[0][0]);
@@ -225,10 +257,17 @@ function providerIdentityMap(event, fixturePlayers) {
   return result;
 }
 
-function decorateMarket(market, providerMap) {
+function decorateMarket(event, market, providerMap) {
   const flags = marketFlags(market);
   const canonicalPlayerIds = market.providerPlayerIds.map(id => providerMap.get(id) || null);
   const linked = canonicalPlayerIds.every(Boolean);
+  const modifiers = {
+    threshold: market.threshold,
+    variantName: market.variantName,
+    periodScope: flags.periodScope,
+    replacementIncluded: flags.replacementIncluded,
+    woodworkIncluded: flags.woodworkIncluded
+  };
   return {
     providerMarketId: market.providerMarketId,
     marketCode: market.marketCode,
@@ -241,10 +280,16 @@ function decorateMarket(market, providerMap) {
     providerPlayerIds: market.providerPlayerIds,
     canonicalPlayerIds,
     identityStatus: linked ? "resolved" : "partial-or-unresolved",
+    mathematicalEvaluability: "NOT_EVALUABLE_WITH_CURRENT_MODEL",
+    quoteAvailability: market.status === "open" ? "MARKET_OPEN" : "MARKET_NOT_OPEN",
+    modifiers,
     ...flags,
     selections: market.selections.map(selection => ({
       ...selection,
       providerUsable: selection.status === "open" && Number(selection.odds) > 1,
+      quoteAvailability: selection.status === "open" && Number(selection.odds) > 1 ? "AVAILABLE_AT_SNAPSHOT" : "UNAVAILABLE_AT_SNAPSHOT",
+      interfaceSelectable: selection.status === "open" && Number(selection.odds) > 1 && Boolean(event.providerEventId && market.providerMarketId && selection.providerSelectionId),
+      selectionId: `sisal:${event.providerEventId}:${market.providerMarketId}:${selection.providerSelectionId}`,
       modelProbability: null,
       fairOdds: null,
       expectedValue: null,
@@ -309,7 +354,7 @@ const fixtures = md02.map(fixture => {
   const away = buildLineup(fixture, prediction, "away", availability.filter(item => item.side === "away"));
   const eventPlayers = [...teamPlayers(fixture.homeTeam), ...teamPlayers(fixture.awayTeam)];
   const providerMap = providerIdentityMap(event, eventPlayers);
-  const playerMarkets = event.markets.filter(market => market.marketScope === "player").map(market => decorateMarket(market, providerMap));
+  const playerMarkets = event.markets.filter(market => market.marketScope === "player").map(market => decorateMarket(event, market, providerMap));
   const providerIds = new Set(playerMarkets.flatMap(market => market.providerPlayerIds));
   const selectionRows = playerMarkets.flatMap(market => market.selections.map(selection => ({ market, selection })));
   const providerUsable = selectionRows.filter(row => row.selection.providerUsable);
@@ -337,6 +382,7 @@ const fixtures = md02.map(fixture => {
         resolvedProviderPlayerIds: [...providerIds].filter(id => providerMap.has(id)).length,
         selections: selectionRows.length,
         providerUsableSelections: providerUsable.length,
+        interfaceSelectableSelections: selectionRows.filter(row => row.selection.interfaceSelectable).length,
         linkedProviderUsableSelections: linkedProviderUsable.length,
         modelComparableSelections: 0
       }
@@ -363,7 +409,7 @@ const rawRelative = odds.rawFile?.replace(/\\/g, "/") || null;
 const rawHash = rawRelative && fs.existsSync(absolute(rawRelative)) ? hashFile(rawRelative) : null;
 
 const output = {
-  schemaVersion: "1.0.0",
+  schemaVersion: "1.1.0",
   phase: 12,
   competition: "UEFA Champions League",
   season: "2026-27",
@@ -389,17 +435,18 @@ const output = {
     canonicalSquads: { snapshotDate: squads.snapshotDate, input: inputHashes.squads },
     historicalPlayerStats: { generatedAt: playerStats.generatedAt, input: inputHashes.playerStats },
     uefaSquadAudit: { asOf: uefaSquadAudit.asOf, input: inputHashes.uefaSquadAudit },
+    identityOverlay: { updatedAt: identityOverlay.updatedAt, input: inputHashes.identityOverlay },
     teamPredictions: { generatedAt: predictions.generatedAt, input: inputHashes.predictions },
     calendar: { generatedAt: calendar.generatedAt, input: inputHashes.calendar }
   },
   policies: {
-    canonicalIdentity: "exact, all-tokens or unique-surname only; unresolved identities remain null",
+    canonicalIdentity: "exact, verified identity-overlay, all-tokens or unique-surname only; ambiguous identities remain null",
     availability: "UEFA unavailable, suspended and doubt states are stored; no uncalibrated minute reduction is applied to doubts",
     expectedMinutes: "The existing 0.94 starter exposure is applied to probable outfield starters; goalkeepers receive 90 minutes",
     oddsIntegrity: "Original market and selection identifiers, odds, oddsRaw, status, threshold and modifiers are copied without mutation",
     substituteMarkets: "Replacement-inclusive markets are reference-only. Event probability, fair odds and EV remain null",
-    woodwork: "Market 28506 includes posts/crossbars and replacement; it is not compared with the individual shots-on-target model",
-    periodMarkets: "First-half and both-halves markets are blocked because the current model is full-match only",
+    woodwork: "Markets explicitly mentioning posts/crossbars, including 28506 and 28090, are not compared with the individual shots-on-target model",
+    periodMarkets: "First-half and both-halves markets remain selectable at provider odds but are not mathematically evaluated because the current model is full-match only",
     frozenSnapshots: "No frozen snapshot is created or overwritten by this builder",
     serieA: "No Serie A input or output is read or written by this builder"
   },
@@ -431,6 +478,8 @@ const output = {
       resolvedProviderPlayerIds: resolvedProviderIds.size,
       providerUsableSelections: selectionRows.filter(row => row.selection.providerUsable).length,
       linkedProviderUsableSelections: selectionRows.filter(row => row.selection.providerUsable && row.market.identityStatus === "resolved").length,
+      interfaceSelectableSelections: selectionRows.filter(row => row.selection.interfaceSelectable).length,
+      mathematicallyEvaluableSelections: selectionRows.filter(row => row.market.mathematicalEvaluability === "EVALUABLE").length,
       modelComparablePlayerSelections: 0,
       usedForPlayerProbabilityOrEv: 0,
       compatibility
@@ -438,7 +487,7 @@ const output = {
   },
   generationReadiness: {
     reading: "READY_FOR_MD2_BUILD",
-    schedina: "PARTIAL_STRICT_GATE",
+    schedina: "READY_FOR_VALID_PROVIDER_QUOTES_WITH_NULL_MODEL_METRICS",
     commonJoinKey: "fixtureId",
     synchronizedFixtures: fixtures.length,
     blockers: [
@@ -453,6 +502,7 @@ const output = {
 
 const unresolvedStarters = lineupPlayers.filter(player => !player.canonicalPlayerId);
 const unresolvedAvailability = availabilityRows.filter(player => !player.canonicalPlayerId);
+const volumeBlockedFixtures = predictions.fixtures.filter(fixture => !fixture.dataQuality?.detailedVolumesAvailable);
 const report = [
   "# Integrazione Fase 12 — UEFA MD2 + quote Sisal",
   "",
@@ -462,33 +512,42 @@ const report = [
   "",
   `- Copertura partite: **${output.coverage.fixtures}/18**; probabili XI complete: **${output.coverage.probableLineups}/18**.`,
   `- Probabili titolari: **${output.coverage.canonicalStartersResolved}/${output.coverage.probableStarters}** associati a ID canonico; **${output.coverage.canonicalStartersUnresolved}** non risolti.`,
-  `- Dei ${output.coverage.canonicalStartersUnresolved} titolari senza ID canonico interno, **${output.coverage.unresolvedStartersWithExternalIdentityEvidence}** hanno evidenza identificativa esterna UEFA ma restano null finché il registro canonico non viene aggiornato.`,
+  `- Overlay identità MD2: **${identityOverlay.players.length}** record additivi verificati; nessuna rosa UEFA congelata è stata riscritta.`,
   `- Pronostici squadra: **${predictions.coverage.detailedVolumeFixtures}/18** con volumi dettagliati; risultato/goal e relative quote disponibili **18/18**.`,
   `- Disponibilità UEFA: **${output.coverage.availability.unavailable} indisponibili**, **${output.coverage.availability.suspended} squalificati**, **${output.coverage.availability.doubts} in dubbio**; ${output.coverage.availability.canonicalResolved}/${output.coverage.availability.total} associati.`,
   `- Quote: snapshot Sisal **${output.coverage.odds.matchedEvents}/18** eventi; **${output.coverage.odds.playerMarkets}** mercati giocatore e **${output.coverage.odds.playerSelections}** selezioni indicizzate.`,
-  `- Selezioni aperte con quota > 1: **${output.coverage.odds.providerUsableSelections}**; anche con identità giocatore risolta: **${output.coverage.odds.linkedProviderUsableSelections}**.`,
-  `- Selezioni giocatore utilizzabili per probabilità/EV: **0**. Sono mantenute come riferimento provider, senza inventare probabilità.`,
+  `- Selezioni aperte con quota > 1 e selezionabili nell'interfaccia: **${output.coverage.odds.interfaceSelectableSelections}**; anche con identità canonica giocatore completa: **${output.coverage.odds.linkedProviderUsableSelections}**.`,
+  `- Selezioni giocatore matematicamente valutabili: **${output.coverage.odds.mathematicallyEvaluableSelections}**. Probabilità ed EV restano N/D senza impedire l'uso della quota provider valida.`,
+  "",
+  "## Identità recuperate",
+  "",
+  ...identityOverlay.players.map(identity => `- ${identity.team}: **${identity.canonicalName}** → \`${identity.stablePlayerId}\`${identity.providerIds.uefa ? ` · UEFA ${identity.providerIds.uefa}` : " · UEFA ID N/D"}${identity.providerIds.sisal ? ` · Sisal ${identity.providerIds.sisal}` : ""}.`),
+  "- Viking: **Haugen** resta nullo perché la fonte UEFA non indica l'iniziale e nello stesso evento esistono Herman Haugen e Kristoffer Haugen con ID Sisal distinti.",
   "",
   "## Copertura per partita",
   "",
-  "| Partita | Titolari ID | Disponibilità | Mercati giocatore | Quote aperte collegate | Stato |",
+  "| Partita | Titolari ID | Disponibilità | Mercati giocatore | Quote selezionabili | Stato |",
   "|---|---:|---:|---:|---:|---|",
   ...fixtures.map(fixture => {
     const starters = [...fixture.lineups.home.players, ...fixture.lineups.away.players];
     const resolved = starters.filter(player => player.canonicalPlayerId).length;
     const blocked = starters.length - resolved;
-    return `| ${fixture.homeTeam}–${fixture.awayTeam} | ${resolved}/22 | ${fixture.availability.length} | ${fixture.oddsEvent.coverage.playerMarkets} | ${fixture.oddsEvent.coverage.linkedProviderUsableSelections} | ${blocked ? `PARZIALE (${blocked} ID)` : "OK"} |`;
+    return `| ${fixture.homeTeam}–${fixture.awayTeam} | ${resolved}/22 | ${fixture.availability.length} | ${fixture.oddsEvent.coverage.playerMarkets} | ${fixture.oddsEvent.coverage.interfaceSelectableSelections} | ${blocked ? `PARZIALE (${blocked} ID)` : "OK"} |`;
   }),
   "",
   "## Minuti e modello",
   "",
   "L'esposizione esistente del modello è applicata ai probabili titolari UEFA: 84,6 minuti ai giocatori di movimento (0,94 × 90) e 90 ai portieri. Nessuna riduzione arbitraria è applicata ai giocatori in dubbio. I volumi squadra e la riconciliazione matematica restano invariati.",
   "",
+  "## Partita senza volumi dettagliati",
+  "",
+  ...volumeBlockedFixtures.map(fixture => `- **${fixture.homeTeam}–${fixture.awayTeam}** (${fixture.fixtureId}): solo pronostico risultato/gol. Sabah dispone di un solo incontro completo nel fallback UEFA, nessuna gara interna e un solo campione esterno; non supera la soglia esistente di 6 gare complessive e almeno 2 casa/2 trasferta. Slavia Praha è coperta, ma il gate richiede entrambi i profili.`),
+  "",
   "## Compatibilità mercati Sisal",
   "",
   ...Object.entries(compatibility).map(([status, count]) => `- ${status}: ${count.markets} mercati, ${count.selections} selezioni.`),
   "",
-  "I mercati 28507 includono il sostituto; i 28506 includono sia il sostituto sia pali/traverse. I mercati del primo tempo e quelli che richiedono esito in entrambi i tempi non sono confrontabili con il modello individuale full-match. Quote, quoteRaw, soglie, ID, stato e modificatori originali restano invariati nell'artefatto e nello snapshot autorevole.",
+  "I mercati 28507 includono il sostituto; i 28506 e gli altri contratti che lo dichiarano (per esempio 28090) includono anche pali/traverse. I mercati del primo tempo e quelli che richiedono esito in entrambi i tempi non sono confrontabili con il modello individuale full-match. Quote, quoteRaw, soglie, ID, stato e modificatori originali restano invariati nell'artefatto e nello snapshot autorevole.",
   "",
   "## Blocchi",
   "",
@@ -498,7 +557,7 @@ const report = [
   "",
   "## Sincronizzazione e integrità",
   "",
-  "Lettura e schedina condividono `fixtureId` per tutte le 18 gare. La schedina è predisposta con gate fail-closed: può consumare soltanto mercati con contratto compatibile. Nessuno snapshot congelato è stato creato o sovrascritto; il builder non legge né scrive dati Serie A.",
+  "Lettura e schedina condividono `fixtureId`, `providerEventId`, `providerMarketId`, `providerSelectionId` e `selectionId` per tutte le 18 gare. Una quota valida è selezionabile anche con probabilità/EV N/D; la compatibilità matematica resta un campo separato e non viene aggirata. Nessuno snapshot congelato è stato creato o sovrascritto; il builder non legge né scrive dati Serie A.",
   "",
   `- Probabili UEFA SHA-256: \`${inputHashes.probableSource.sha256}\``,
   `- Quote Sisal normalizzate SHA-256: \`${inputHashes.odds.sha256}\``,
@@ -509,5 +568,5 @@ const report = [
 
 write(paths.output, output);
 write(paths.report, report);
-console.log(`OK Fase 12 MD2: ${fixtures.length}/18 gare · titolari ${output.coverage.canonicalStartersResolved}/${lineupPlayers.length} · quote collegate ${output.coverage.odds.linkedProviderUsableSelections} · probabilità giocatore 0`);
+console.log(`OK Fase 12 MD2: ${fixtures.length}/18 gare · titolari ${output.coverage.canonicalStartersResolved}/${lineupPlayers.length} · quote selezionabili ${output.coverage.odds.interfaceSelectableSelections} · probabilità giocatore 0`);
 

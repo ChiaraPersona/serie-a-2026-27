@@ -332,6 +332,18 @@ export function createPage(deps){
     const teamById=new Map((Array.isArray(teams)?teams:teams.teams||[]).map(team=>[team.id,team]));
     const matchday=new URLSearchParams(location.search).get("giornata");
     const competition=new URLSearchParams(location.search).get("competizione");
+    if(competition==="champions"&&matchday==="2"){
+      const integration=await load("champions-md02-integration-2026-27.json");
+      const {createChampionsSelection}=await import(`./champions-market-ui.mjs?v=${encodeURIComponent(release)}`);
+      for(const fixture of integration.fixtures)for(const market of fixture.oddsEvent.playerMarkets)for(const selection of market.selections)if(selection.interfaceSelectable){
+        const contract=createChampionsSelection(fixture,market,selection);
+        selectionRegistry.set(contract.selectionId,contract);
+      }
+      currentContext={competition:"champions",season:"2026-27",matchday:2,label:"Champions League · 2ª giornata"};
+      document.querySelector("#app").innerHTML=hero("UEFA Champions League · 2ª giornata","Schedina personale","Le quote valide aggiunte dalle letture MD2 restano disponibili anche con probabilità ed EV N/D.")+`<nav class="betting-round-back" aria-label="Navigazione schedina Champions"><a href="champions-league.html">← Letture Champions</a></nav><section class="betting-round-page betting-round-page--workspace"><header class="betting-round-heading"><p class="eyebrow">Champions League · 2026/27</p><h2>2ª giornata</h2></header><div class="betting-workspace"><div class="betting-workspace-content"><section class="betting-stage"><div class="betting-intro"><div><p class="eyebrow">Mercati collegati alle letture</p><h3>Componi dalle 18 partite MD2</h3></div><p>Apri una lettura Champions per cercare e aggiungere quote; questa pagina conserva la schedina tramite fixtureId e identificativi Sisal.</p></div><p class="betting-coverage">${integration.coverage.odds.interfaceSelectableSelections.toLocaleString("it-IT")} selezioni Sisal disponibili nello snapshot verificato.</p></section></div><aside class="betting-personal-column" data-personal-host aria-label="Schedina personale Champions MD2"></aside></div></section>`;
+      initializePersonalBetslip(currentContext);
+      return;
+    }
     if(competition==="champions"){
       document.querySelector("#app").innerHTML=hero("UEFA Champions League · 2026/27","Schedine Champions","Archivio del primo turno: giocate originali ed esiti verificabili delle gare dell’8–10 settembre.")+`<nav class="betting-round-back" aria-label="Navigazione archivio schedine"><a href="schedina.html">← Tutte le schedine</a></nav><section class="betting-round-page betting-round-page--champions"><header class="betting-round-heading"><p class="eyebrow">Champions League · 2026/27</p><h2>1ª giornata</h2></header>${championsContent(champions)}</section>`;
       return;

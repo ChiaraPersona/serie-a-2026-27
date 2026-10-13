@@ -13,6 +13,7 @@ const output = read("data/normalized/champions-md02-integration-2026-27.json");
 const odds = read("data/normalized/odds/sisal/champions-league.json");
 const squads = read("data/normalized/champions-registered-squads-2026-27.json");
 const stats = read("data/normalized/champions-player-stats-2025-26.json");
+const identityOverlay = read("data/sources/champions-player-identity-overlay-md02-2026-27.json");
 
 assert.strictEqual(hash("data/sources/champions-probable-formations-md02-2026-27.json"), "83AEE4C3049B20BAA900E67E54A16FA25FEE3960906EB178085B11782D56F289");
 assert.strictEqual(hash("data/normalized/odds/sisal/champions-league.json"), "2969A579C55F3748FA8712BD83374E86239163518204ED7FAFCBDAC7C03FA4FB");
@@ -24,20 +25,22 @@ assert.strictEqual(output.fixtures.length, 18);
 assert.strictEqual(output.coverage.fixtures, 18);
 assert.strictEqual(output.coverage.probableLineups, 18);
 assert.strictEqual(output.coverage.probableStarters, 396);
-assert.strictEqual(output.coverage.canonicalStartersResolved, 382);
-assert.strictEqual(output.coverage.canonicalStartersUnresolved, 14);
-assert.strictEqual(output.coverage.unresolvedStartersWithExternalIdentityEvidence, 12);
+assert.strictEqual(output.coverage.canonicalStartersResolved, 395);
+assert.strictEqual(output.coverage.canonicalStartersUnresolved, 1);
+assert.strictEqual(output.coverage.unresolvedStartersWithExternalIdentityEvidence, 0);
 assert.strictEqual(output.coverage.availability.total, 109);
 assert.strictEqual(output.coverage.availability.unavailable, 75);
 assert.strictEqual(output.coverage.availability.suspended, 4);
 assert.strictEqual(output.coverage.availability.doubts, 30);
-assert.strictEqual(output.coverage.availability.canonicalResolved, 105);
-assert.strictEqual(output.coverage.availability.canonicalUnresolved, 4);
-assert.strictEqual(output.coverage.availability.unresolvedWithExternalIdentityEvidence, 3);
+assert.strictEqual(output.coverage.availability.canonicalResolved, 109);
+assert.strictEqual(output.coverage.availability.canonicalUnresolved, 0);
+assert.strictEqual(output.coverage.availability.unresolvedWithExternalIdentityEvidence, 0);
 assert.strictEqual(output.coverage.odds.events, 18);
 assert.strictEqual(output.coverage.odds.matchedEvents, 18);
 assert.strictEqual(output.coverage.odds.playerMarkets, odds.summary.playerMarkets);
 assert.strictEqual(output.coverage.odds.usedForPlayerProbabilityOrEv, 0);
+assert.strictEqual(output.coverage.odds.interfaceSelectableSelections, 50399);
+assert.strictEqual(output.coverage.odds.mathematicallyEvaluableSelections, 0);
 assert.strictEqual(output.generationReadiness.synchronizedFixtures, 18);
 assert.strictEqual(output.policies.frozenSnapshots.includes("No frozen snapshot"), true);
 assert.strictEqual(output.policies.serieA.includes("No Serie A input or output"), true);
@@ -56,6 +59,25 @@ for (const teamName of new Set([...squads.teams.map(team => team.team), ...stats
   ]);
   canonicalByTeam.set(teamName, ids);
 }
+for (const identity of identityOverlay.players) {
+  const ids = canonicalByTeam.get(identity.team) || new Set();
+  ids.add(identity.canonicalPlayerId);
+  canonicalByTeam.set(identity.team, ids);
+}
+assert.strictEqual(new Set(identityOverlay.players.map(identity => identity.stablePlayerId)).size, identityOverlay.players.length, "stablePlayerId overlay duplicati");
+
+const unresolved = output.fixtures.flatMap(fixture => [...fixture.lineups.home.players, ...fixture.lineups.away.players]).filter(player => !player.canonicalPlayerId);
+assert.deepStrictEqual(unresolved.map(player => [player.team, player.suppliedName]), [["Viking", "Haugen"]]);
+const veerman = output.fixtures.flatMap(fixture => [...fixture.lineups.home.players, ...fixture.lineups.away.players]).find(player => player.suppliedName === "Veerman");
+assert(veerman, "Veerman assente dalle probabili");
+assert.strictEqual(veerman.team, "Borussia Dortmund");
+assert.strictEqual(veerman.canonicalPlayerId, "joey-veerman");
+assert.strictEqual(identityOverlay.players.find(player => player.stablePlayerId === "borussia-dortmund:joey-veerman")?.providerIds.sisal, "245502");
+const volumeInvariantRows = output.fixtures.flatMap(fixture => ["home", "away"].flatMap(side => fixture.lineups[side].players.map((player, index) => [fixture.fixtureId, side, index, player.expectedMinutes, player.projectedShots, player.projectedShotsOnTarget])));
+assert.strictEqual(crypto.createHash("sha256").update(JSON.stringify(volumeInvariantRows)).digest("hex").toUpperCase(), "821A479943AFC92B973CAA338D5F77CAB8F28D9B0D445C45AF0BAC0DE763B43B", "Volumi/minuti MD2 modificati");
+const missingDetailed = output.fixtures.filter(fixture => !fixture.teamPrediction.dataQuality?.detailedVolumesAvailable);
+assert.deepStrictEqual(missingDetailed.map(fixture => fixture.fixtureId), ["ucl-2026-27-md02-02"]);
+assert.deepStrictEqual(missingDetailed[0].teamPrediction.dataQuality.teamSamples, ["N/D", "N/D"]);
 
 const oddsByFixture = new Map(odds.events.map(event => [event.canonicalMatchId, event]));
 let playerMarketCount = 0;
@@ -87,6 +109,11 @@ for (const fixture of output.fixtures) {
       assert.strictEqual(selection.modelProbability, null);
       assert.strictEqual(selection.fairOdds, null);
       assert.strictEqual(selection.expectedValue, null);
+      assert.strictEqual(selection.interfaceSelectable, selection.status === "open" && Number(selection.odds) > 1);
+      if (selection.interfaceSelectable) {
+        assert(selection.selectionId.startsWith(`sisal:${originalEvent.providerEventId}:${market.providerMarketId}:`));
+        assert.strictEqual(selection.quoteAvailability, "AVAILABLE_AT_SNAPSHOT");
+      }
     });
     if (market.marketCode === "28506") {
       assert.strictEqual(market.replacementIncluded, true);
@@ -97,6 +124,11 @@ for (const fixture of output.fixtures) {
       assert.strictEqual(market.replacementIncluded, true);
       assert.strictEqual(market.forecastCompatibility, "REFERENCE_ONLY_DUO_REPLACEMENT_NOT_MODELLED");
     }
+    if (market.marketCode === "28090") {
+      assert.strictEqual(market.replacementIncluded, true);
+      assert.strictEqual(market.woodworkIncluded, true);
+      assert.strictEqual(market.forecastCompatibility, "REFERENCE_ONLY_REPLACEMENT_AND_WOODWORK_NOT_MODELLED");
+    }
     playerMarketCount += 1;
     playerSelectionCount += market.selections.length;
   }
@@ -105,5 +137,5 @@ for (const fixture of output.fixtures) {
 assert.strictEqual(playerMarketCount, output.coverage.odds.playerMarkets);
 assert.strictEqual(playerSelectionCount, output.coverage.odds.playerSelections);
 assert.strictEqual(output.coverage.odds.modelComparablePlayerSelections, 0);
-console.log(`OK test Fase 12 MD2: 18/18 · titolari ${output.coverage.canonicalStartersResolved}/396 · ${playerMarketCount} mercati · ${playerSelectionCount} selezioni integre`);
+console.log(`OK test Fase 12 MD2: 18/18 · titolari ${output.coverage.canonicalStartersResolved}/396 · disponibilità ${output.coverage.availability.canonicalResolved}/109 · ${playerMarketCount} mercati · ${playerSelectionCount} selezioni integre`);
 
