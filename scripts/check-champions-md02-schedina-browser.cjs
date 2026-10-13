@@ -38,6 +38,8 @@ const server=http.createServer((request,response)=>{
       assert.equal(await page.locator('[data-market-family="Tiri giocatore"]').count(),27,`${width}px: pronostici tiri`);
       assert.equal(await page.locator('[data-market-family="Tiri in porta giocatore"]').count(),18,`${width}px: pronostici SOT`);
       assert.equal(await page.locator('[data-selection-row][data-bookmaker-contract="duo"][data-probability=""][data-ev=""]').count(),45,`${width}px: P/EV individuali devono restare N/D`);
+      assert.equal(await page.locator('.betting-champions-md02-markets .betting-market-group').count(),0,`${width}px: intestazioni automatiche mercato ancora visibili`);
+      assert.equal(await page.locator('.betting-champions-md02-markets h4').count(),0,`${width}px: titoli o numerazioni automatiche ancora visibili`);
       assert.match(await page.locator('.betting-champions-md02-summary').innerText(),/63 pronostici da verificare[\s\S]*ROI e profitto\/perdita restano N\/D/);
       assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,`${width}px: overflow orizzontale`);
     }
@@ -63,9 +65,15 @@ const server=http.createServer((request,response)=>{
     await page.locator(`[data-personal-pick="${selectionId}"]`).click();
     assert.equal(await page.locator('[data-personal-count]').first().innerText(),'0','Rimozione MyCombo');
 
-    await page.goto(`${origin}/champions-league.html?match=ucl-2026-27-md02-01`,{waitUntil:'networkidle'});
-    await page.waitForSelector('[data-champions-published-root]');
-    assert.equal(await page.locator('[data-published-selection-id]').count(),2,'Lettura e schedina non condividono le due proposte individuali');
+    for(const width of [1280,390]){
+      await page.setViewportSize({width,height:900});
+      await page.goto(`${origin}/champions-league.html?match=ucl-2026-27-md02-01`,{waitUntil:'networkidle'});
+      await page.waitForSelector('[data-champions-published-root]');
+      assert.equal(await page.locator('[data-published-selection-id]').count(),2,`${width}px: lettura e schedina non condividono le due proposte individuali`);
+      assert.equal(await page.locator('[data-champions-market-root],#champions-sisal-markets,.champions-market-browser,.champions-market-controls,.champions-market-slip').count(),0,`${width}px: catalogo o ricerca quote ancora visibili`);
+      assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,`${width}px: overflow orizzontale lettura`);
+    }
+    await page.setViewportSize({width:1280,height:900});
     const publishedButton=page.locator('[data-add-published-selection]').first();
     const publishedId=await publishedButton.getAttribute('data-add-published-selection');
     await publishedButton.click();
