@@ -7,13 +7,14 @@ Non modifica il motore Champions, le letture o i pronostici del sito: li legge s
 
 ```powershell
 & 'C:\Users\utente\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe' .\fantachampions-2026-27\scripts\run_analysis.py
+& 'C:\Users\utente\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe' -m unittest discover -s .\fantachampions-2026-27\tests -v
 ```
 
 Output principali:
 
 - `data/listone.json`: estrazione verificabile del PDF iniziale;
 - `data/team-advancement.json`: simulazione Monte Carlo delle 36 squadre;
-- `data/player-projections.json`: proiezioni dichiaratamente modellate, con copertura e incertezza;
+- `data/player-projections.json`: proiezioni dichiaratamente modellate per ogni giocatore e per ciascuna MD2-MD8, con avversario, xG da motore/fit Poisson, probabilità di voto e intervallo d'incertezza;
 - `output/strategies.json`: tre rose, formazione MD2, panchina e controlli;
 - `output/report.md`: report leggibile;
 - `output/validation.json`: esito dei vincoli regolamentari e limiti dei dati.

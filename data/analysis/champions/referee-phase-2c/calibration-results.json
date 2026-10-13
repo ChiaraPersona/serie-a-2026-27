@@ -8,7 +8,7 @@
       "team-cards.json": "ce9c4cec9c405cc27e7e0748801731091d676da010d8512b1070f08aba4e7ab7",
       "rolling-origin-splits.json": "3d910302877dca7b05086e4827ffeb3e1fdcd4ed51b95a9aadba52439a678b56"
     },
-    "designationEvidenceSha256": "ff0e49c4a057742714ecfda69fafabbf0a4b8b3655dc0fb42d5e7a8156d81ff6",
+    "designationEvidenceSha256": "015632df13121943db0a5f84b6f0e25bf4351d804c9aa055ee07e7aced6e7fc5",
     "seed": 20261013,
     "bootstrapIterations": 500
   },
@@ -50,24 +50,32 @@
         "n": 628,
         "sum": 2364,
         "mean": 3.764331,
+        "variance": 4.253782,
+        "dispersionIndex": 1.130023,
         "zeroRate": 0.036624
       },
       "secondYellowCards": {
         "n": 628,
         "sum": 52,
         "mean": 0.082803,
+        "variance": 0.082447,
+        "dispersionIndex": 0.995706,
         "zeroRate": 0.920382
       },
       "directRedCards": {
         "n": 628,
         "sum": 55,
         "mean": 0.08758,
+        "variance": 0.083227,
+        "dispersionIndex": 0.950297,
         "zeroRate": 0.914013
       },
       "totalCards": {
         "n": 628,
         "sum": 2471,
         "mean": 3.934713,
+        "variance": 4.676752,
+        "dispersionIndex": 1.188588,
         "zeroRate": 0.035032
       }
     },
@@ -76,24 +84,32 @@
         "n": 1256,
         "sum": 2364,
         "mean": 1.882166,
+        "variance": 1.731124,
+        "dispersionIndex": 0.919751,
         "zeroRate": 0.144904
       },
       "secondYellowCards": {
         "n": 1256,
         "sum": 52,
         "mean": 0.041401,
+        "variance": 0.042906,
+        "dispersionIndex": 1.036347,
         "zeroRate": 0.960191
       },
       "directRedCards": {
         "n": 1256,
         "sum": 55,
         "mean": 0.04379,
+        "variance": 0.041906,
+        "dispersionIndex": 0.956972,
         "zeroRate": 0.95621
       },
       "totalCards": {
         "n": 1256,
         "sum": 2471,
         "mean": 1.967357,
+        "variance": 1.920049,
+        "dispersionIndex": 0.975954,
         "zeroRate": 0.142516
       }
     }
@@ -1822,7 +1838,578 @@
               }
             }
           },
-          "byRefereeHistory": {},
+          "byRefereeHistory": {
+            "0": {
+              "n": 42,
+              "mae": 2.017653,
+              "logScore": 2.30936,
+              "meanObserved": 4.380952,
+              "meanPredicted": 4.154807,
+              "thresholds": {
+                "over3.5": {
+                  "n": 42,
+                  "events": 26,
+                  "observedRate": 0.619048,
+                  "meanPredicted": 0.580498,
+                  "brier": 0.242887,
+                  "ece5": 0.097433,
+                  "calibrationBins": [
+                    {
+                      "n": 9,
+                      "meanPredicted": 0.464481,
+                      "observedRate": 0.555556
+                    },
+                    {
+                      "n": 9,
+                      "meanPredicted": 0.56185,
+                      "observedRate": 0.666667
+                    },
+                    {
+                      "n": 8,
+                      "meanPredicted": 0.610861,
+                      "observedRate": 0.5
+                    },
+                    {
+                      "n": 8,
+                      "meanPredicted": 0.613423,
+                      "observedRate": 0.75
+                    },
+                    {
+                      "n": 8,
+                      "meanPredicted": 0.668706,
+                      "observedRate": 0.625
+                    }
+                  ]
+                },
+                "over4.5": {
+                  "n": 42,
+                  "events": 22,
+                  "observedRate": 0.52381,
+                  "meanPredicted": 0.399073,
+                  "brier": 0.271465,
+                  "ece5": 0.124737,
+                  "calibrationBins": [
+                    {
+                      "n": 9,
+                      "meanPredicted": 0.297296,
+                      "observedRate": 0.444444
+                    },
+                    {
+                      "n": 9,
+                      "meanPredicted": 0.379139,
+                      "observedRate": 0.555556
+                    },
+                    {
+                      "n": 8,
+                      "meanPredicted": 0.419192,
+                      "observedRate": 0.625
+                    },
+                    {
+                      "n": 8,
+                      "meanPredicted": 0.420239,
+                      "observedRate": 0.5
+                    },
+                    {
+                      "n": 8,
+                      "meanPredicted": 0.494713,
+                      "observedRate": 0.5
+                    }
+                  ]
+                },
+                "over5.5": {
+                  "n": 42,
+                  "events": 14,
+                  "observedRate": 0.333333,
+                  "meanPredicted": 0.248645,
+                  "brier": 0.239822,
+                  "ece5": 0.121799,
+                  "calibrationBins": [
+                    {
+                      "n": 9,
+                      "meanPredicted": 0.173393,
+                      "observedRate": 0.222222
+                    },
+                    {
+                      "n": 9,
+                      "meanPredicted": 0.229488,
+                      "observedRate": 0.333333
+                    },
+                    {
+                      "n": 8,
+                      "meanPredicted": 0.254731,
+                      "observedRate": 0.625
+                    },
+                    {
+                      "n": 8,
+                      "meanPredicted": 0.258738,
+                      "observedRate": 0.25
+                    },
+                    {
+                      "n": 8,
+                      "meanPredicted": 0.338678,
+                      "observedRate": 0.25
+                    }
+                  ]
+                }
+              }
+            },
+            "1-2": {
+              "n": 74,
+              "mae": 1.636354,
+              "logScore": 2.12008,
+              "meanObserved": 3.702703,
+              "meanPredicted": 4.090165,
+              "thresholds": {
+                "over3.5": {
+                  "n": 74,
+                  "events": 39,
+                  "observedRate": 0.527027,
+                  "meanPredicted": 0.577063,
+                  "brier": 0.249893,
+                  "ece5": 0.080089,
+                  "calibrationBins": [
+                    {
+                      "n": 15,
+                      "meanPredicted": 0.460264,
+                      "observedRate": 0.533333
+                    },
+                    {
+                      "n": 15,
+                      "meanPredicted": 0.565775,
+                      "observedRate": 0.466667
+                    },
+                    {
+                      "n": 15,
+                      "meanPredicted": 0.608446,
+                      "observedRate": 0.533333
+                    },
+                    {
+                      "n": 15,
+                      "meanPredicted": 0.613423,
+                      "observedRate": 0.466667
+                    },
+                    {
+                      "n": 14,
+                      "meanPredicted": 0.641719,
+                      "observedRate": 0.642857
+                    }
+                  ]
+                },
+                "over4.5": {
+                  "n": 74,
+                  "events": 27,
+                  "observedRate": 0.364865,
+                  "meanPredicted": 0.388992,
+                  "brier": 0.236493,
+                  "ece5": 0.117897,
+                  "calibrationBins": [
+                    {
+                      "n": 15,
+                      "meanPredicted": 0.287775,
+                      "observedRate": 0.466667
+                    },
+                    {
+                      "n": 15,
+                      "meanPredicted": 0.374495,
+                      "observedRate": 0.333333
+                    },
+                    {
+                      "n": 15,
+                      "meanPredicted": 0.414261,
+                      "observedRate": 0.466667
+                    },
+                    {
+                      "n": 15,
+                      "meanPredicted": 0.419494,
+                      "observedRate": 0.2
+                    },
+                    {
+                      "n": 14,
+                      "meanPredicted": 0.453217,
+                      "observedRate": 0.357143
+                    }
+                  ]
+                },
+                "over5.5": {
+                  "n": 74,
+                  "events": 11,
+                  "observedRate": 0.148649,
+                  "meanPredicted": 0.234715,
+                  "brier": 0.133052,
+                  "ece5": 0.086066,
+                  "calibrationBins": [
+                    {
+                      "n": 15,
+                      "meanPredicted": 0.161911,
+                      "observedRate": 0.066667
+                    },
+                    {
+                      "n": 15,
+                      "meanPredicted": 0.222511,
+                      "observedRate": 0.2
+                    },
+                    {
+                      "n": 15,
+                      "meanPredicted": 0.250905,
+                      "observedRate": 0.2
+                    },
+                    {
+                      "n": 15,
+                      "meanPredicted": 0.254731,
+                      "observedRate": 0.066667
+                    },
+                    {
+                      "n": 14,
+                      "meanPredicted": 0.287002,
+                      "observedRate": 0.214286
+                    }
+                  ]
+                }
+              }
+            },
+            "3-5": {
+              "n": 99,
+              "mae": 2.00102,
+              "logScore": 2.318423,
+              "meanObserved": 4.030303,
+              "meanPredicted": 4.129647,
+              "thresholds": {
+                "over3.5": {
+                  "n": 99,
+                  "events": 56,
+                  "observedRate": 0.565657,
+                  "meanPredicted": 0.585243,
+                  "brier": 0.250856,
+                  "ece5": 0.126846,
+                  "calibrationBins": [
+                    {
+                      "n": 20,
+                      "meanPredicted": 0.473992,
+                      "observedRate": 0.55
+                    },
+                    {
+                      "n": 20,
+                      "meanPredicted": 0.574383,
+                      "observedRate": 0.55
+                    },
+                    {
+                      "n": 20,
+                      "meanPredicted": 0.61054,
+                      "observedRate": 0.8
+                    },
+                    {
+                      "n": 20,
+                      "meanPredicted": 0.613423,
+                      "observedRate": 0.4
+                    },
+                    {
+                      "n": 19,
+                      "meanPredicted": 0.657489,
+                      "observedRate": 0.526316
+                    }
+                  ]
+                },
+                "over4.5": {
+                  "n": 99,
+                  "events": 40,
+                  "observedRate": 0.40404,
+                  "meanPredicted": 0.39673,
+                  "brier": 0.244957,
+                  "ece5": 0.09486,
+                  "calibrationBins": [
+                    {
+                      "n": 20,
+                      "meanPredicted": 0.298833,
+                      "observedRate": 0.4
+                    },
+                    {
+                      "n": 20,
+                      "meanPredicted": 0.38184,
+                      "observedRate": 0.45
+                    },
+                    {
+                      "n": 20,
+                      "meanPredicted": 0.416455,
+                      "observedRate": 0.5
+                    },
+                    {
+                      "n": 20,
+                      "meanPredicted": 0.419494,
+                      "observedRate": 0.25
+                    },
+                    {
+                      "n": 19,
+                      "meanPredicted": 0.470727,
+                      "observedRate": 0.421053
+                    }
+                  ]
+                },
+                "over5.5": {
+                  "n": 99,
+                  "events": 25,
+                  "observedRate": 0.252525,
+                  "meanPredicted": 0.240555,
+                  "brier": 0.187399,
+                  "ece5": 0.026211,
+                  "calibrationBins": [
+                    {
+                      "n": 20,
+                      "meanPredicted": 0.167887,
+                      "observedRate": 0.25
+                    },
+                    {
+                      "n": 20,
+                      "meanPredicted": 0.2275,
+                      "observedRate": 0.2
+                    },
+                    {
+                      "n": 20,
+                      "meanPredicted": 0.252996,
+                      "observedRate": 0.25
+                    },
+                    {
+                      "n": 20,
+                      "meanPredicted": 0.254749,
+                      "observedRate": 0.25
+                    },
+                    {
+                      "n": 19,
+                      "meanPredicted": 0.302751,
+                      "observedRate": 0.315789
+                    }
+                  ]
+                }
+              }
+            },
+            "6-10": {
+              "n": 147,
+              "mae": 1.750703,
+              "logScore": 2.161987,
+              "meanObserved": 4.095238,
+              "meanPredicted": 4.134928,
+              "thresholds": {
+                "over3.5": {
+                  "n": 147,
+                  "events": 89,
+                  "observedRate": 0.605442,
+                  "meanPredicted": 0.57939,
+                  "brier": 0.241312,
+                  "ece5": 0.100628,
+                  "calibrationBins": [
+                    {
+                      "n": 30,
+                      "meanPredicted": 0.463322,
+                      "observedRate": 0.7
+                    },
+                    {
+                      "n": 30,
+                      "meanPredicted": 0.569043,
+                      "observedRate": 0.466667
+                    },
+                    {
+                      "n": 29,
+                      "meanPredicted": 0.613423,
+                      "observedRate": 0.689655
+                    },
+                    {
+                      "n": 29,
+                      "meanPredicted": 0.613423,
+                      "observedRate": 0.551724
+                    },
+                    {
+                      "n": 29,
+                      "meanPredicted": 0.642095,
+                      "observedRate": 0.62069
+                    }
+                  ]
+                },
+                "over4.5": {
+                  "n": 147,
+                  "events": 66,
+                  "observedRate": 0.44898,
+                  "meanPredicted": 0.396736,
+                  "brier": 0.255256,
+                  "ece5": 0.090943,
+                  "calibrationBins": [
+                    {
+                      "n": 30,
+                      "meanPredicted": 0.300234,
+                      "observedRate": 0.533333
+                    },
+                    {
+                      "n": 30,
+                      "meanPredicted": 0.389303,
+                      "observedRate": 0.366667
+                    },
+                    {
+                      "n": 29,
+                      "meanPredicted": 0.419494,
+                      "observedRate": 0.517241
+                    },
+                    {
+                      "n": 29,
+                      "meanPredicted": 0.419494,
+                      "observedRate": 0.344828
+                    },
+                    {
+                      "n": 29,
+                      "meanPredicted": 0.458739,
+                      "observedRate": 0.482759
+                    }
+                  ]
+                },
+                "over5.5": {
+                  "n": 147,
+                  "events": 38,
+                  "observedRate": 0.258503,
+                  "meanPredicted": 0.245249,
+                  "brier": 0.196923,
+                  "ece5": 0.099404,
+                  "calibrationBins": [
+                    {
+                      "n": 30,
+                      "meanPredicted": 0.177747,
+                      "observedRate": 0.3
+                    },
+                    {
+                      "n": 30,
+                      "meanPredicted": 0.241516,
+                      "observedRate": 0.166667
+                    },
+                    {
+                      "n": 29,
+                      "meanPredicted": 0.254731,
+                      "observedRate": 0.413793
+                    },
+                    {
+                      "n": 29,
+                      "meanPredicted": 0.254731,
+                      "observedRate": 0.172414
+                    },
+                    {
+                      "n": 29,
+                      "meanPredicted": 0.299975,
+                      "observedRate": 0.241379
+                    }
+                  ]
+                }
+              }
+            },
+            "11+": {
+              "n": 141,
+              "mae": 1.748179,
+              "logScore": 2.132595,
+              "meanObserved": 3.546099,
+              "meanPredicted": 3.89165,
+              "thresholds": {
+                "over3.5": {
+                  "n": 141,
+                  "events": 63,
+                  "observedRate": 0.446809,
+                  "meanPredicted": 0.523158,
+                  "brier": 0.257691,
+                  "ece5": 0.07635,
+                  "calibrationBins": [
+                    {
+                      "n": 29,
+                      "meanPredicted": 0.425771,
+                      "observedRate": 0.413793
+                    },
+                    {
+                      "n": 28,
+                      "meanPredicted": 0.465069,
+                      "observedRate": 0.392857
+                    },
+                    {
+                      "n": 28,
+                      "meanPredicted": 0.514191,
+                      "observedRate": 0.5
+                    },
+                    {
+                      "n": 28,
+                      "meanPredicted": 0.589507,
+                      "observedRate": 0.5
+                    },
+                    {
+                      "n": 28,
+                      "meanPredicted": 0.624732,
+                      "observedRate": 0.428571
+                    }
+                  ]
+                },
+                "over4.5": {
+                  "n": 141,
+                  "events": 41,
+                  "observedRate": 0.29078,
+                  "meanPredicted": 0.353191,
+                  "brier": 0.214911,
+                  "ece5": 0.080022,
+                  "calibrationBins": [
+                    {
+                      "n": 29,
+                      "meanPredicted": 0.26753,
+                      "observedRate": 0.310345
+                    },
+                    {
+                      "n": 28,
+                      "meanPredicted": 0.30295,
+                      "observedRate": 0.214286
+                    },
+                    {
+                      "n": 28,
+                      "meanPredicted": 0.349823,
+                      "observedRate": 0.321429
+                    },
+                    {
+                      "n": 28,
+                      "meanPredicted": 0.40826,
+                      "observedRate": 0.321429
+                    },
+                    {
+                      "n": 28,
+                      "meanPredicted": 0.440451,
+                      "observedRate": 0.285714
+                    }
+                  ]
+                },
+                "over5.5": {
+                  "n": 141,
+                  "events": 25,
+                  "observedRate": 0.177305,
+                  "meanPredicted": 0.21894,
+                  "brier": 0.149662,
+                  "ece5": 0.04864,
+                  "calibrationBins": [
+                    {
+                      "n": 29,
+                      "meanPredicted": 0.155384,
+                      "observedRate": 0.172414
+                    },
+                    {
+                      "n": 28,
+                      "meanPredicted": 0.18277,
+                      "observedRate": 0.178571
+                    },
+                    {
+                      "n": 28,
+                      "meanPredicted": 0.221126,
+                      "observedRate": 0.178571
+                    },
+                    {
+                      "n": 28,
+                      "meanPredicted": 0.253235,
+                      "observedRate": 0.142857
+                    },
+                    {
+                      "n": 28,
+                      "meanPredicted": 0.284452,
+                      "observedRate": 0.214286
+                    }
+                  ]
+                }
+              }
+            }
+          },
           "designationCertifiedSubset": {
             "preKickoff": {
               "n": 379,
@@ -3366,6 +3953,10 @@
           "low": -0.003226,
           "high": 0.001474,
           "median": -0.001008
+        },
+        "comparisonSample": {
+          "rows": 503,
+          "matches": 503
         }
       },
       "baselines": {
@@ -4585,6 +5176,101 @@
                 }
               }
             }
+          }
+        }
+      },
+      "baselinePairedComparisons95": {
+        "negative_binomial_minus_historical": {
+          "mae_B_minus_A": {
+            "low": -0.090897,
+            "high": 0.052056,
+            "median": -0.021542
+          },
+          "logScore_B_minus_A": {
+            "low": -0.07689,
+            "high": 0.018658,
+            "median": -0.031907
+          },
+          "brier_over3.5_B_minus_A": {
+            "low": -0.026671,
+            "high": 0.002937,
+            "median": -0.011843
+          },
+          "brier_over4.5_B_minus_A": {
+            "low": -0.009449,
+            "high": 0.014141,
+            "median": 0.001396
+          },
+          "brier_over5.5_B_minus_A": {
+            "low": -0.003878,
+            "high": 0.009954,
+            "median": 0.00313
+          },
+          "comparisonSample": {
+            "rows": 189,
+            "matches": 189
+          }
+        },
+        "poisson_minus_historical": {
+          "mae_B_minus_A": {
+            "low": -0.041052,
+            "high": 0.033572,
+            "median": -0.005255
+          },
+          "logScore_B_minus_A": {
+            "low": -0.026658,
+            "high": 0.014544,
+            "median": -0.00656
+          },
+          "brier_over3.5_B_minus_A": {
+            "low": -0.00805,
+            "high": 0.006254,
+            "median": -0.000995
+          },
+          "brier_over4.5_B_minus_A": {
+            "low": -0.004998,
+            "high": 0.008696,
+            "median": 0.002005
+          },
+          "brier_over5.5_B_minus_A": {
+            "low": -0.006245,
+            "high": 0.004428,
+            "median": -0.000987
+          },
+          "comparisonSample": {
+            "rows": 503,
+            "matches": 503
+          }
+        },
+        "poisson_minus_negative_binomial": {
+          "mae_B_minus_A": {
+            "low": -0.002606,
+            "high": 0.002775,
+            "median": 0.000435
+          },
+          "logScore_B_minus_A": {
+            "low": -0.018613,
+            "high": 0.039669,
+            "median": 0.011627
+          },
+          "brier_over3.5_B_minus_A": {
+            "low": -0.001603,
+            "high": 0.006199,
+            "median": 0.00215
+          },
+          "brier_over4.5_B_minus_A": {
+            "low": 0.000119,
+            "high": 0.004267,
+            "median": 0.001984
+          },
+          "brier_over5.5_B_minus_A": {
+            "low": -0.002676,
+            "high": 0.003361,
+            "median": 0.000492
+          },
+          "comparisonSample": {
+            "rows": 189,
+            "matches": 189
           }
         }
       }
@@ -5887,7 +6573,578 @@
               }
             }
           },
-          "byRefereeHistory": {},
+          "byRefereeHistory": {
+            "0": {
+              "n": 84,
+              "mae": 1.172017,
+              "logScore": 1.781694,
+              "meanObserved": 2.190476,
+              "meanPredicted": 2.057216,
+              "thresholds": {
+                "over3.5": {
+                  "n": 84,
+                  "events": 14,
+                  "observedRate": 0.166667,
+                  "meanPredicted": 0.159473,
+                  "brier": 0.14126,
+                  "ece5": 0.112228,
+                  "calibrationBins": [
+                    {
+                      "n": 17,
+                      "meanPredicted": 0.068632,
+                      "observedRate": 0.176471
+                    },
+                    {
+                      "n": 17,
+                      "meanPredicted": 0.120424,
+                      "observedRate": 0.0
+                    },
+                    {
+                      "n": 17,
+                      "meanPredicted": 0.165917,
+                      "observedRate": 0.352941
+                    },
+                    {
+                      "n": 17,
+                      "meanPredicted": 0.176291,
+                      "observedRate": 0.176471
+                    },
+                    {
+                      "n": 16,
+                      "meanPredicted": 0.272763,
+                      "observedRate": 0.125
+                    }
+                  ]
+                },
+                "over4.5": {
+                  "n": 84,
+                  "events": 5,
+                  "observedRate": 0.059524,
+                  "meanPredicted": 0.064568,
+                  "brier": 0.059939,
+                  "ece5": 0.089896,
+                  "calibrationBins": [
+                    {
+                      "n": 17,
+                      "meanPredicted": 0.01995,
+                      "observedRate": 0.117647
+                    },
+                    {
+                      "n": 17,
+                      "meanPredicted": 0.042086,
+                      "observedRate": 0.0
+                    },
+                    {
+                      "n": 17,
+                      "meanPredicted": 0.064533,
+                      "observedRate": 0.176471
+                    },
+                    {
+                      "n": 17,
+                      "meanPredicted": 0.07024,
+                      "observedRate": 0.0
+                    },
+                    {
+                      "n": 16,
+                      "meanPredicted": 0.129871,
+                      "observedRate": 0.0
+                    }
+                  ]
+                },
+                "over5.5": {
+                  "n": 84,
+                  "events": 3,
+                  "observedRate": 0.035714,
+                  "meanPredicted": 0.022976,
+                  "brier": 0.035447,
+                  "ece5": 0.048001,
+                  "calibrationBins": [
+                    {
+                      "n": 17,
+                      "meanPredicted": 0.004943,
+                      "observedRate": 0.058824
+                    },
+                    {
+                      "n": 17,
+                      "meanPredicted": 0.012581,
+                      "observedRate": 0.0
+                    },
+                    {
+                      "n": 17,
+                      "meanPredicted": 0.021466,
+                      "observedRate": 0.117647
+                    },
+                    {
+                      "n": 17,
+                      "meanPredicted": 0.023978,
+                      "observedRate": 0.0
+                    },
+                    {
+                      "n": 16,
+                      "meanPredicted": 0.053719,
+                      "observedRate": 0.0
+                    }
+                  ]
+                }
+              }
+            },
+            "1-2": {
+              "n": 148,
+              "mae": 1.09986,
+              "logScore": 1.688157,
+              "meanObserved": 1.851351,
+              "meanPredicted": 2.073775,
+              "thresholds": {
+                "over3.5": {
+                  "n": 148,
+                  "events": 18,
+                  "observedRate": 0.121622,
+                  "meanPredicted": 0.164968,
+                  "brier": 0.113939,
+                  "ece5": 0.087431,
+                  "calibrationBins": [
+                    {
+                      "n": 30,
+                      "meanPredicted": 0.057924,
+                      "observedRate": 0.166667
+                    },
+                    {
+                      "n": 30,
+                      "meanPredicted": 0.140921,
+                      "observedRate": 0.066667
+                    },
+                    {
+                      "n": 30,
+                      "meanPredicted": 0.165917,
+                      "observedRate": 0.133333
+                    },
+                    {
+                      "n": 29,
+                      "meanPredicted": 0.173589,
+                      "observedRate": 0.034483
+                    },
+                    {
+                      "n": 29,
+                      "meanPredicted": 0.290976,
+                      "observedRate": 0.206897
+                    }
+                  ]
+                },
+                "over4.5": {
+                  "n": 148,
+                  "events": 4,
+                  "observedRate": 0.027027,
+                  "meanPredicted": 0.0687,
+                  "brier": 0.030397,
+                  "ece5": 0.049347,
+                  "calibrationBins": [
+                    {
+                      "n": 30,
+                      "meanPredicted": 0.016538,
+                      "observedRate": 0.033333
+                    },
+                    {
+                      "n": 30,
+                      "meanPredicted": 0.052033,
+                      "observedRate": 0.0
+                    },
+                    {
+                      "n": 30,
+                      "meanPredicted": 0.064533,
+                      "observedRate": 0.066667
+                    },
+                    {
+                      "n": 29,
+                      "meanPredicted": 0.068718,
+                      "observedRate": 0.0
+                    },
+                    {
+                      "n": 29,
+                      "meanPredicted": 0.144194,
+                      "observedRate": 0.034483
+                    }
+                  ]
+                },
+                "over5.5": {
+                  "n": 148,
+                  "events": 2,
+                  "observedRate": 0.013514,
+                  "meanPredicted": 0.025389,
+                  "brier": 0.013955,
+                  "ece5": 0.023739,
+                  "calibrationBins": [
+                    {
+                      "n": 30,
+                      "meanPredicted": 0.004069,
+                      "observedRate": 0.033333
+                    },
+                    {
+                      "n": 30,
+                      "meanPredicted": 0.016455,
+                      "observedRate": 0.0
+                    },
+                    {
+                      "n": 30,
+                      "meanPredicted": 0.021466,
+                      "observedRate": 0.0
+                    },
+                    {
+                      "n": 29,
+                      "meanPredicted": 0.023292,
+                      "observedRate": 0.0
+                    },
+                    {
+                      "n": 29,
+                      "meanPredicted": 0.062841,
+                      "observedRate": 0.034483
+                    }
+                  ]
+                }
+              }
+            },
+            "3-5": {
+              "n": 198,
+              "mae": 1.177085,
+              "logScore": 1.760317,
+              "meanObserved": 2.015152,
+              "meanPredicted": 2.082519,
+              "thresholds": {
+                "over3.5": {
+                  "n": 198,
+                  "events": 30,
+                  "observedRate": 0.151515,
+                  "meanPredicted": 0.164186,
+                  "brier": 0.127103,
+                  "ece5": 0.028118,
+                  "calibrationBins": [
+                    {
+                      "n": 40,
+                      "meanPredicted": 0.071277,
+                      "observedRate": 0.075
+                    },
+                    {
+                      "n": 40,
+                      "meanPredicted": 0.14049,
+                      "observedRate": 0.175
+                    },
+                    {
+                      "n": 40,
+                      "meanPredicted": 0.165917,
+                      "observedRate": 0.15
+                    },
+                    {
+                      "n": 39,
+                      "meanPredicted": 0.17178,
+                      "observedRate": 0.102564
+                    },
+                    {
+                      "n": 39,
+                      "meanPredicted": 0.27441,
+                      "observedRate": 0.25641
+                    }
+                  ]
+                },
+                "over4.5": {
+                  "n": 198,
+                  "events": 12,
+                  "observedRate": 0.060606,
+                  "meanPredicted": 0.067206,
+                  "brier": 0.057626,
+                  "ece5": 0.031795,
+                  "calibrationBins": [
+                    {
+                      "n": 40,
+                      "meanPredicted": 0.021367,
+                      "observedRate": 0.025
+                    },
+                    {
+                      "n": 40,
+                      "meanPredicted": 0.051741,
+                      "observedRate": 0.075
+                    },
+                    {
+                      "n": 40,
+                      "meanPredicted": 0.064533,
+                      "observedRate": 0.1
+                    },
+                    {
+                      "n": 39,
+                      "meanPredicted": 0.067712,
+                      "observedRate": 0.0
+                    },
+                    {
+                      "n": 39,
+                      "meanPredicted": 0.132317,
+                      "observedRate": 0.102564
+                    }
+                  ]
+                },
+                "over5.5": {
+                  "n": 198,
+                  "events": 3,
+                  "observedRate": 0.015152,
+                  "meanPredicted": 0.024261,
+                  "brier": 0.014847,
+                  "ece5": 0.01262,
+                  "calibrationBins": [
+                    {
+                      "n": 40,
+                      "meanPredicted": 0.005499,
+                      "observedRate": 0.0
+                    },
+                    {
+                      "n": 40,
+                      "meanPredicted": 0.016309,
+                      "observedRate": 0.025
+                    },
+                    {
+                      "n": 40,
+                      "meanPredicted": 0.021466,
+                      "observedRate": 0.0
+                    },
+                    {
+                      "n": 39,
+                      "meanPredicted": 0.022844,
+                      "observedRate": 0.0
+                    },
+                    {
+                      "n": 39,
+                      "meanPredicted": 0.055941,
+                      "observedRate": 0.051282
+                    }
+                  ]
+                }
+              }
+            },
+            "6-10": {
+              "n": 294,
+              "mae": 1.111749,
+              "logScore": 1.701361,
+              "meanObserved": 2.047619,
+              "meanPredicted": 2.052932,
+              "thresholds": {
+                "over3.5": {
+                  "n": 294,
+                  "events": 49,
+                  "observedRate": 0.166667,
+                  "meanPredicted": 0.155716,
+                  "brier": 0.14023,
+                  "ece5": 0.054854,
+                  "calibrationBins": [
+                    {
+                      "n": 59,
+                      "meanPredicted": 0.08554,
+                      "observedRate": 0.084746
+                    },
+                    {
+                      "n": 59,
+                      "meanPredicted": 0.148279,
+                      "observedRate": 0.20339
+                    },
+                    {
+                      "n": 59,
+                      "meanPredicted": 0.165917,
+                      "observedRate": 0.254237
+                    },
+                    {
+                      "n": 59,
+                      "meanPredicted": 0.165917,
+                      "observedRate": 0.186441
+                    },
+                    {
+                      "n": 58,
+                      "meanPredicted": 0.213912,
+                      "observedRate": 0.103448
+                    }
+                  ]
+                },
+                "over4.5": {
+                  "n": 294,
+                  "events": 8,
+                  "observedRate": 0.027211,
+                  "meanPredicted": 0.060998,
+                  "brier": 0.028462,
+                  "ece5": 0.043438,
+                  "calibrationBins": [
+                    {
+                      "n": 59,
+                      "meanPredicted": 0.026801,
+                      "observedRate": 0.050847
+                    },
+                    {
+                      "n": 59,
+                      "meanPredicted": 0.055562,
+                      "observedRate": 0.016949
+                    },
+                    {
+                      "n": 59,
+                      "meanPredicted": 0.064533,
+                      "observedRate": 0.033898
+                    },
+                    {
+                      "n": 59,
+                      "meanPredicted": 0.064533,
+                      "observedRate": 0.0
+                    },
+                    {
+                      "n": 58,
+                      "meanPredicted": 0.094119,
+                      "observedRate": 0.034483
+                    }
+                  ]
+                },
+                "over5.5": {
+                  "n": 294,
+                  "events": 1,
+                  "observedRate": 0.003401,
+                  "meanPredicted": 0.020799,
+                  "brier": 0.004044,
+                  "ece5": 0.021319,
+                  "calibrationBins": [
+                    {
+                      "n": 59,
+                      "meanPredicted": 0.007177,
+                      "observedRate": 0.016949
+                    },
+                    {
+                      "n": 59,
+                      "meanPredicted": 0.017812,
+                      "observedRate": 0.0
+                    },
+                    {
+                      "n": 59,
+                      "meanPredicted": 0.021466,
+                      "observedRate": 0.0
+                    },
+                    {
+                      "n": 59,
+                      "meanPredicted": 0.021466,
+                      "observedRate": 0.0
+                    },
+                    {
+                      "n": 58,
+                      "meanPredicted": 0.036335,
+                      "observedRate": 0.0
+                    }
+                  ]
+                }
+              }
+            },
+            "11+": {
+              "n": 282,
+              "mae": 1.079688,
+              "logScore": 1.638271,
+              "meanObserved": 1.77305,
+              "meanPredicted": 1.939166,
+              "thresholds": {
+                "over3.5": {
+                  "n": 282,
+                  "events": 32,
+                  "observedRate": 0.113475,
+                  "meanPredicted": 0.135307,
+                  "brier": 0.102939,
+                  "ece5": 0.050267,
+                  "calibrationBins": [
+                    {
+                      "n": 57,
+                      "meanPredicted": 0.076347,
+                      "observedRate": 0.070175
+                    },
+                    {
+                      "n": 57,
+                      "meanPredicted": 0.1051,
+                      "observedRate": 0.175439
+                    },
+                    {
+                      "n": 56,
+                      "meanPredicted": 0.136668,
+                      "observedRate": 0.107143
+                    },
+                    {
+                      "n": 56,
+                      "meanPredicted": 0.165755,
+                      "observedRate": 0.089286
+                    },
+                    {
+                      "n": 56,
+                      "meanPredicted": 0.194257,
+                      "observedRate": 0.125
+                    }
+                  ]
+                },
+                "over4.5": {
+                  "n": 282,
+                  "events": 11,
+                  "observedRate": 0.039007,
+                  "meanPredicted": 0.050468,
+                  "brier": 0.038659,
+                  "ece5": 0.034389,
+                  "calibrationBins": [
+                    {
+                      "n": 57,
+                      "meanPredicted": 0.022799,
+                      "observedRate": 0.017544
+                    },
+                    {
+                      "n": 57,
+                      "meanPredicted": 0.034861,
+                      "observedRate": 0.087719
+                    },
+                    {
+                      "n": 56,
+                      "meanPredicted": 0.049644,
+                      "observedRate": 0.053571
+                    },
+                    {
+                      "n": 56,
+                      "meanPredicted": 0.064448,
+                      "observedRate": 0.017857
+                    },
+                    {
+                      "n": 56,
+                      "meanPredicted": 0.081361,
+                      "observedRate": 0.017857
+                    }
+                  ]
+                },
+                "over5.5": {
+                  "n": 282,
+                  "events": 2,
+                  "observedRate": 0.007092,
+                  "meanPredicted": 0.016336,
+                  "brier": 0.007281,
+                  "ece5": 0.013332,
+                  "calibrationBins": [
+                    {
+                      "n": 57,
+                      "meanPredicted": 0.005789,
+                      "observedRate": 0.0
+                    },
+                    {
+                      "n": 57,
+                      "meanPredicted": 0.009849,
+                      "observedRate": 0.017544
+                    },
+                    {
+                      "n": 56,
+                      "meanPredicted": 0.015397,
+                      "observedRate": 0.017857
+                    },
+                    {
+                      "n": 56,
+                      "meanPredicted": 0.02143,
+                      "observedRate": 0.0
+                    },
+                    {
+                      "n": 56,
+                      "meanPredicted": 0.029519,
+                      "observedRate": 0.0
+                    }
+                  ]
+                }
+              }
+            }
+          },
           "designationCertifiedSubset": {
             "preKickoff": {
               "n": 758,
@@ -7431,6 +8688,10 @@
           "low": -3.2e-05,
           "high": 0.000155,
           "median": 6.9e-05
+        },
+        "comparisonSample": {
+          "rows": 1006,
+          "matches": 503
         }
       },
       "baselines": {
@@ -8396,6 +9657,39 @@
                 }
               }
             }
+          }
+        }
+      },
+      "baselinePairedComparisons95": {
+        "poisson_minus_historical": {
+          "mae_B_minus_A": {
+            "low": 0.000278,
+            "high": 0.041624,
+            "median": 0.022978
+          },
+          "logScore_B_minus_A": {
+            "low": -0.011281,
+            "high": 0.021565,
+            "median": 0.00578
+          },
+          "brier_over3.5_B_minus_A": {
+            "low": -0.003026,
+            "high": 0.003948,
+            "median": 0.000897
+          },
+          "brier_over4.5_B_minus_A": {
+            "low": -2.5e-05,
+            "high": 0.002322,
+            "median": 0.001196
+          },
+          "brier_over5.5_B_minus_A": {
+            "low": -2.9e-05,
+            "high": 0.00068,
+            "median": 0.000373
+          },
+          "comparisonSample": {
+            "rows": 1006,
+            "matches": 503
           }
         }
       }

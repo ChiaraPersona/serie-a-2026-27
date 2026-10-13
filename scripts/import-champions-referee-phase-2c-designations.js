@@ -125,14 +125,23 @@ async function main() {
 
   const feedFile = path.join(rawRoot, "law5", "champions-league-feed.json.gz");
   const feed = await fetchCached(feedUrl, feedFile, "json");
-  rawFiles.push({ file: feedFile, url: feedUrl, provider: "Law 5 - The Referee (Blogger feed)" });
-  const entries = (feed.feed?.entry || []).map(entry => ({
+  const declaredTotal = Number(feed.feed?.openSearch$totalResults?.$t || (feed.feed?.entry || []).length);
+  const feedPages = [{ feed, file: feedFile, url: feedUrl }];
+  for (let start = 151; start <= declaredTotal; start += 150) {
+    const url = `${feedUrl.replace("max-results=500", "max-results=150")}&start-index=${start}`;
+    const file = path.join(rawRoot, "law5", `champions-league-feed-page-${String(start).padStart(3, "0")}.json.gz`);
+    feedPages.push({ feed: await fetchCached(url, file, "json"), file, url });
+  }
+  for (const page of feedPages) rawFiles.push({ file: page.file, url: page.url, provider: "Law 5 - The Referee (Blogger feed)" });
+  const entries = feedPages.flatMap(page => (page.feed.feed?.entry || []).map(entry => ({
     publishedAt: entry.published?.$t || null,
     updatedAt: entry.updated?.$t || null,
     title: entry.title?.$t || null,
     url: entryLink(entry),
+    rawPath: rel(page.file),
     text: normalize(decodeHtml(entry.content?.$t || entry.summary?.$t || ""))
-  })).filter(entry => entry.publishedAt && entry.url);
+  }))).filter(entry => entry.publishedAt && entry.url)
+    .filter((entry, index, rows) => rows.findIndex(candidate => candidate.url === entry.url) === index);
 
   const officialByMatch = new Map();
   for (const source of officialEvidenceSources) {
@@ -183,7 +192,7 @@ async function main() {
         matchId: match.matchId, kickoffUtc: match.kickoffUtc, refereeId: match.refereeId, refereeName: match.refereeName,
         status: "INDIRECT_PRE_KICKOFF", authority: "THIRD_PARTY_APPOINTMENT_ARCHIVE", timestampPrecision: "ISO_DATETIME_FROM_BLOGGER_PUBLISHED_FIELD",
         publishedAt: evidence.publishedAt, evidenceUpdatedAt: evidence.updatedAt, evidenceTitle: evidence.title,
-        evidenceUrl: evidence.url, rawPath: rel(feedFile),
+        evidenceUrl: evidence.url, rawPath: evidence.rawPath,
         matchingRule: "PUBLISHED_AND_LAST_UPDATED_BEFORE_KICKOFF_WITHIN_14_DAYS_AND_NORMALIZED_HOME_AWAY_REFEREE_TEXT_MATCH",
         leadHours: Number(leadHours.toFixed(2)),
         horizons: { preKickoff: leadHours > 0, advance48h: leadHours >= 48 }
@@ -222,7 +231,8 @@ async function main() {
       usableAdvance48h: rows.filter(row => row.horizons.advance48h).length,
       rejectedBecauseCurrentArchiveContentWasUpdatedAtOrAfterKickoff: rows.filter(row => row.matchingRule === "MATCHING_POST_EXISTS_BUT_CURRENT_CONTENT_WAS_UPDATED_AT_OR_AFTER_KICKOFF").length,
       law5EntriesInspected: entries.length,
-      law5FeedDeclaredTotal: Number(feed.feed?.openSearch$totalResults?.$t || entries.length)
+      law5FeedDeclaredTotal: declaredTotal,
+      law5FeedPagesFetched: feedPages.length
     },
     rows
   };

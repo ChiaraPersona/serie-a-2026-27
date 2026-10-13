@@ -305,10 +305,13 @@ def bootstrap_ci(preds, iterations=500):
     return {key: {"low": round(float(np.quantile(vals, .025)), 6), "high": round(float(np.quantile(vals, .975)), 6)} for key, vals in samples.items()}
 
 
-def paired_difference_ci(a_preds, b_preds, iterations=500):
+def paired_difference_ci(a_preds, b_preds, iterations=500, allow_common=False):
     def key(p): return (p["matchId"], p.get("teamId"), p.get("homeAway"))
     a = {key(p): p for p in a_preds}; b = {key(p): p for p in b_preds}
-    if set(a) != set(b): raise ValueError("A/B prediction identity mismatch")
+    if set(a) != set(b):
+        if not allow_common: raise ValueError("A/B prediction identity mismatch")
+        common = set(a) & set(b)
+        a = {k: a[k] for k in common}; b = {k: b[k] for k in common}
     by_match = defaultdict(list)
     for k in sorted(a): by_match[k[0]].append(k)
     ids = sorted(by_match); rng = np.random.default_rng(SEED + 1); samples = defaultdict(list)
@@ -319,7 +322,9 @@ def paired_difference_ci(a_preds, b_preds, iterations=500):
         samples["mae_B_minus_A"].append(bm["mae"] - am["mae"]); samples["logScore_B_minus_A"].append(bm["logScore"] - am["logScore"])
         for t in THRESHOLDS:
             name = f"over{t}.5"; samples[f"brier_{name}_B_minus_A"].append(bm["thresholds"][name]["brier"] - am["thresholds"][name]["brier"])
-    return {key: {"low": round(float(np.quantile(vals, .025)), 6), "high": round(float(np.quantile(vals, .975)), 6), "median": round(float(np.median(vals)), 6)} for key, vals in samples.items()}
+    result = {key: {"low": round(float(np.quantile(vals, .025)), 6), "high": round(float(np.quantile(vals, .975)), 6), "median": round(float(np.median(vals)), 6)} for key, vals in samples.items()}
+    result["comparisonSample"] = {"rows": len(a), "matches": len(ids)}
+    return result
 
 
 def adjusted_prediction_rows(model, rows, level, fold_id, effects, history_counts, evidence, target_name="totalCards"):
@@ -342,12 +347,16 @@ def adjusted_prediction_rows(model, rows, level, fold_id, effects, history_count
     return output
 
 
-def baseline_prediction_rows(model, rows, level, fold_id, evidence, target_name="totalCards"):
+def baseline_prediction_rows(model, rows, level, fold_id, evidence, history_counts=None, target_name="totalCards"):
     output = prediction_rows(model, rows, level, fold_id, "baseline_no_referee", target_name)
     refs = {r["matchId"]: r["_refereeId"] for r in rows}
     for item in output:
         ev = evidence[item["matchId"]]
         item.update({"refereeId": refs[item["matchId"]], "designationTemporalStatus": ev["status"], "designationUsablePreKickoff": ev["horizons"]["preKickoff"], "designationUsableAdvance48h": ev["horizons"]["advance48h"]})
+        if history_counts is not None:
+            n = history_counts.get(item["refereeId"], 0)
+            item["refereePriorMatches"] = n
+            item["refereeHistoryBucket"] = "0" if n == 0 else "1-2" if n <= 2 else "3-5" if n <= 5 else "6-10" if n <= 10 else "11+"
     return output
 
 
@@ -396,7 +405,7 @@ def main():
                 k_scores.append({"k": k, "logScore": mean_log_score_adjusted(inner_model, inner_val, level, val_means)})
             best_k = min(k_scores, key=lambda r: (r["logScore"], r["k"]))["k"]
             model_a = fit_selected(overall_spec, train, level); effects, history = referee_effects(model_a, train, level, best_k)
-            a_preds = baseline_prediction_rows(model_a, test, level, fold["id"], evidence)
+            a_preds = baseline_prediction_rows(model_a, test, level, fold["id"], evidence, history)
             b_preds = adjusted_prediction_rows(model_a, test, level, fold["id"], effects, history, evidence)
             a_all.extend(a_preds); b_all.extend(b_preds)
             fold_experiments.append({
@@ -408,6 +417,11 @@ def main():
         for name, preds in level_baselines.items():
             baseline_results[name] = {"metrics": rounded(metrics(preds)), "uncertainty95": bootstrap_ci(preds), "bySeason": segments(preds)["bySeason"]}
             all_predictions.extend(preds)
+        baseline_comparisons = {}
+        names = sorted(level_baselines)
+        for i, left in enumerate(names):
+            for right in names[i + 1:]:
+                baseline_comparisons[f"{right}_minus_{left}"] = paired_difference_ci(level_baselines[left], level_baselines[right], allow_common=True)
         experiment[level] = {
             "scope": "RETROSPECTIVE_ALL_OOS; STRICT_PREMATCH_ONLY_WHERE_DESIGNATION_CERTIFIED",
             "folds": fold_experiments,
@@ -416,6 +430,7 @@ def main():
             "pairedDifference95": paired_difference_ci(a_all, b_all),
         }
         experiment[level]["baselines"] = baseline_results
+        experiment[level]["baselinePairedComparisons95"] = baseline_comparisons
         all_predictions.extend(a_all); all_predictions.extend(b_all)
 
     # Separate descriptive targets; never merged into totalCards.
@@ -424,7 +439,8 @@ def main():
         target_summary[level] = {}
         for name in ("yellowCards", "secondYellowCards", "directRedCards", "totalCards"):
             vals = np.array([target(r, level, name) for r in rows])
-            target_summary[level][name] = {"n": len(vals), "sum": int(vals.sum()), "mean": round(float(vals.mean()), 6), "zeroRate": round(float(np.mean(vals == 0)), 6)}
+            mean = float(vals.mean()); variance = float(np.var(vals, ddof=1))
+            target_summary[level][name] = {"n": len(vals), "sum": int(vals.sum()), "mean": round(mean, 6), "variance": round(variance, 6), "dispersionIndex": round(variance / mean, 6) if mean else None, "zeroRate": round(float(np.mean(vals == 0)), 6)}
 
     provenance = {
         "inputs": {name: sha256(IN_DIR / name) for name in ("match-totals.json", "team-cards.json", "rolling-origin-splits.json")},

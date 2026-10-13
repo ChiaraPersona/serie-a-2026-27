@@ -403,9 +403,89 @@ def build_md2_context(integration: dict, md2_predictions: dict) -> tuple[dict, d
                 "expectedGoals": xg,
                 "expectedGoalsAgainst": opp_xg,
                 "resultScore": result_score,
+                "probabilities": {
+                    "win": fixture["probabilities"][side] / 100,
+                    "draw": fixture["probabilities"]["draw"] / 100,
+                    "loss": fixture["probabilities"][opponent_side] / 100,
+                },
                 "cleanSheetProbability": math.exp(-opp_xg),
             }
     return starters, unavailable, team_forecasts
+
+
+def poisson_outcomes(home_xg: float, away_xg: float, max_goals: int = 10) -> tuple[float, float, float]:
+    home = np.array([math.exp(-home_xg) * home_xg**goals / math.factorial(goals) for goals in range(max_goals + 1)])
+    away = np.array([math.exp(-away_xg) * away_xg**goals / math.factorial(goals) for goals in range(max_goals + 1)])
+    matrix = np.outer(home, away)
+    total = float(matrix.sum())
+    return float(np.tril(matrix, -1).sum() / total), float(np.trace(matrix) / total), float(np.triu(matrix, 1).sum() / total)
+
+
+def build_league_matchday_context(calendar: dict, predictions: dict, md2_team: dict) -> dict[str, list[dict]]:
+    """Fit independent-Poisson xG to the engine's 1X2 probabilities for MD3-MD8.
+
+    MD2 keeps the richer existing forecast. Future matchdays use the closest
+    Poisson score distribution on a fixed xG grid; fit error is retained so the
+    approximation stays auditable.
+    """
+    grid = np.arange(0.15, 3.51, 0.05)
+    candidates = []
+    for home_xg in grid:
+        for away_xg in grid:
+            home_p, draw_p, away_p = poisson_outcomes(float(home_xg), float(away_xg))
+            candidates.append((float(home_xg), float(away_xg), home_p, draw_p, away_p))
+    candidate_matrix = np.array([[row[2], row[3], row[4]] for row in candidates])
+    predictions_by_id = {fixture["fixtureId"]: fixture for fixture in predictions["fixtures"]}
+    schedules = defaultdict(list)
+    for fixture in calendar["fixtures"]:
+        matchday = fixture["matchday"]
+        if matchday < 2 or matchday > 8:
+            continue
+        prediction = predictions_by_id[fixture["id"]]
+        probabilities = prediction["probabilities"]
+        target = np.array([probabilities["home"], probabilities["draw"], probabilities["away"]])
+        if matchday == 2 and fixture["homeTeam"] in md2_team and fixture["awayTeam"] in md2_team:
+            home_xg = md2_team[fixture["homeTeam"]]["expectedGoals"]
+            away_xg = md2_team[fixture["awayTeam"]]["expectedGoals"]
+            fit_error = None
+            source = "CHAMPIONS_MD2_ENGINE"
+        else:
+            errors = np.square(candidate_matrix - target).sum(axis=1)
+            index = int(np.argmin(errors))
+            home_xg, away_xg = candidates[index][0], candidates[index][1]
+            fit_error = float(math.sqrt(errors[index] / 3.0))
+            source = "POISSON_FIT_TO_CHAMPIONS_1X2"
+        for side, opponent_side, xg, xga in (
+            ("home", "away", home_xg, away_xg),
+            ("away", "home", away_xg, home_xg),
+        ):
+            team = fixture[f"{side}Team"]
+            side_probabilities = (
+                md2_team[team]["probabilities"]
+                if source == "CHAMPIONS_MD2_ENGINE"
+                else {
+                    "win": float(probabilities[side]),
+                    "draw": float(probabilities["draw"]),
+                    "loss": float(probabilities[opponent_side]),
+                }
+            )
+            schedules[team].append(
+                {
+                    "matchday": matchday,
+                    "fixtureId": fixture["id"],
+                    "opponent": fixture[f"{opponent_side}Team"],
+                    "venue": "home" if side == "home" else "away",
+                    "expectedGoals": round(float(xg), 4),
+                    "expectedGoalsAgainst": round(float(xga), 4),
+                    "cleanSheetProbability": round(math.exp(-float(xga)), 4),
+                    "resultScore": round(float(side_probabilities["win"] + 0.5 * side_probabilities["draw"]), 4),
+                    "probabilities": {key: round(float(value), 4) for key, value in side_probabilities.items()},
+                    "source": source,
+                    "poissonFitRmse": round(fit_error, 5) if fit_error is not None else None,
+                    "status": "MODELLED_NOT_OBSERVED",
+                }
+            )
+    return {team: sorted(items, key=lambda item: item["matchday"]) for team, items in schedules.items()}
 
 
 def penalty_rank(team: str, name: str) -> int | None:
@@ -424,6 +504,7 @@ def build_player_projections(
     starters: dict,
     unavailable: set,
     md2_team: dict,
+    league_matchdays: dict,
 ) -> list[dict]:
     current_players = {team: {p["id"]: p for p in data.get("players", [])} for team, data in current_by_team.items()}
     historic_players = {team: {p["id"]: p for p in data.get("players", [])} for team, data in historic_by_team.items()}
@@ -494,6 +575,7 @@ def build_player_projections(
 
         starter_info = starters.get((team, player_id))
         is_unavailable = (team, player_id) in unavailable
+        minutes_per_appearance = safe_number(current.get("minutesPerAppearance"), safe_number(historic.get("minutesPerAppearance"), 35.0))
         if is_unavailable:
             md2_vote_probability = 0.015
             expected_minutes = 0.0
@@ -504,7 +586,6 @@ def build_player_projections(
             md2_status = "probable-starter"
         else:
             md2_vote_probability = min(0.78, max(0.04, general_vote_probability * (0.43 + 0.18 * general_start_probability)))
-            minutes_per_appearance = safe_number(current.get("minutesPerAppearance"), safe_number(historic.get("minutesPerAppearance"), 35.0))
             expected_minutes = md2_vote_probability * min(70.0, minutes_per_appearance)
             md2_status = "not-in-probable-xi"
 
@@ -535,6 +616,62 @@ def build_player_projections(
             conditional_points = base_vote + 3 * projected_goal + projected_assist - 0.5 * projected_yellow - projected_red
         conditional_points = max(2.5, conditional_points)
         md2_expected = md2_vote_probability * conditional_points
+        event_variance = 0.42 + 9 * projected_goal + 1.8 * projected_assist + (forecast["expectedGoalsAgainst"] if row["role"] == "P" else 0)
+        md2_variance = md2_vote_probability * (event_variance + conditional_points**2) - md2_expected**2
+
+        league_phase = []
+        for match_context in league_matchdays[team]:
+            if match_context["matchday"] == 2:
+                league_phase.append(
+                    {
+                        **match_context,
+                        "voteProbability": round(md2_vote_probability, 4),
+                        "expectedMinutes": round(expected_minutes, 1),
+                        "expectedGoals": round(projected_goal, 4),
+                        "expectedAssists": round(projected_assist, 4),
+                        "expectedPointsConditionalOnVote": round(conditional_points, 3),
+                        "expectedPoints": round(md2_expected, 3),
+                        "expectedPointsLow": round(max(0.0, md2_expected - 1.28 * math.sqrt(max(0.0, md2_variance))), 3),
+                        "expectedPointsHigh": round(md2_expected + 1.28 * math.sqrt(max(0.0, md2_variance)), 3),
+                        "availabilityBasis": md2_status,
+                    }
+                )
+                continue
+            future_minutes = min(85.0, minutes_per_appearance)
+            future_team_factor = min(1.45, max(0.65, match_context["expectedGoals"] / 1.45))
+            future_goal = rates["goals"] * future_minutes / 90.0 * future_team_factor
+            future_assist = rates["assists"] * future_minutes / 90.0 * math.sqrt(future_team_factor)
+            future_yellow = rates["yellowCards"] * future_minutes / 90.0
+            future_red = rates["redCards"] * future_minutes / 90.0
+            future_base_vote = 5.72
+            future_base_vote += 0.34 * (match_context["resultScore"] - 0.5)
+            future_base_vote += 0.10 * min(1.5, rates["shotsOnTarget"])
+            future_base_vote += 0.07 * min(1.2, rates["assists"])
+            future_base_vote -= 0.08 * min(0.8, rates["yellowCards"])
+            future_base_vote += 0.08 * reliability
+            future_base_vote = min(6.55, max(5.45, future_base_vote))
+            if row["role"] == "P":
+                future_conditional = future_base_vote + match_context["cleanSheetProbability"] + 3 * rates["penaltiesSaved"] / 90.0 * future_minutes - match_context["expectedGoalsAgainst"]
+            else:
+                future_conditional = future_base_vote + 3 * future_goal + future_assist - 0.5 * future_yellow - future_red
+            future_conditional = max(2.5, future_conditional)
+            future_expected = general_vote_probability * future_conditional
+            future_event_variance = 0.42 + 9 * future_goal + 1.8 * future_assist + (match_context["expectedGoalsAgainst"] if row["role"] == "P" else 0)
+            future_variance = general_vote_probability * (future_event_variance + future_conditional**2) - future_expected**2
+            league_phase.append(
+                {
+                    **match_context,
+                    "voteProbability": round(general_vote_probability, 4),
+                    "expectedMinutes": round(future_minutes, 1),
+                    "expectedGoals": round(future_goal, 4),
+                    "expectedAssists": round(future_assist, 4),
+                    "expectedPointsConditionalOnVote": round(future_conditional, 3),
+                    "expectedPoints": round(future_expected, 3),
+                    "expectedPointsLow": round(max(0.0, future_expected - 1.28 * math.sqrt(max(0.0, future_variance))), 3),
+                    "expectedPointsHigh": round(future_expected + 1.28 * math.sqrt(max(0.0, future_variance)), 3),
+                    "availabilityBasis": "GENERAL_RATE_PRE_LINEUP",
+                }
+            )
 
         adv = advancement[team]
         p_direct = adv["directR16Pct"] / 100.0
@@ -544,14 +681,12 @@ def build_player_projections(
         p_sf = adv["reachSFPct"] / 100.0
         p_final = adv["reachFinalPct"] / 100.0
         general_conditional = conditional_points / max(0.35, team_factor ** 0.35)
-        league_points = 7 * general_vote_probability * general_conditional
+        league_points = sum(item["expectedPoints"] for item in league_phase)
         office_vote = RULES["playoffRestOfficialVote"]["goalkeeper" if row["role"] == "P" else "outfield"]
         playoff_points = 2 * (p_direct * office_vote + p_playoff * general_vote_probability * general_conditional)
         knockout_points = general_vote_probability * general_conditional * (2 * p_r16 + 2 * p_qf + 2 * p_sf + p_final)
         cumulative = league_points + playoff_points + knockout_points
 
-        event_variance = 0.42 + 9 * projected_goal + 1.8 * projected_assist + (forecast["expectedGoalsAgainst"] if row["role"] == "P" else 0)
-        md2_variance = md2_vote_probability * (event_variance + conditional_points**2) - md2_expected**2
         expected_turns = 7 + 2 * (p_direct + p_playoff) + 2 * p_r16 + 2 * p_qf + 2 * p_sf + p_final
         cumulative_sd = math.sqrt(max(0.1, expected_turns * max(0.4, event_variance) + cumulative * (1 - min(0.98, general_vote_probability))))
         identity_penalty = 0.0 if row["identityStatus"] == "matched" else 0.35
@@ -582,6 +717,7 @@ def build_player_projections(
                 "riskScore": round(risk, 4),
                 "effectiveStatMinutes": round(effective_minutes, 1),
                 "penaltyTakerRank": penalty_rank(team, row["canonicalName"] or row["name"]),
+                "leaguePhaseProjections": league_phase,
                 "teamAdvancement": adv,
                 "projectionStatus": "MODELLED_NOT_OBSERVED",
             }
@@ -621,8 +757,14 @@ def valid_roster(players: list[dict]) -> bool:
 def initial_roster(players: list[dict], strategy: str, budget_shadow: float) -> list[dict]:
     remaining = list(players)
     selected = []
-    effective_minimums = dict(RULES["minimumRoles"])
-    effective_minimums["F"] = max(2, effective_minimums["F"])
+    # The official minima alone can produce a formally valid but fragile squad:
+    # every allowed module needs two E, for example, so exactly two E leaves no
+    # automatic substitute.  Keep one reserve beyond the largest requirement
+    # used by any legal formation for every role.
+    effective_minimums = {
+        role: max(requirements[role] for requirements in RULES["formations"].values()) + 1
+        for role in RULES["minimumRoles"]
+    }
     for role, minimum in effective_minimums.items():
         candidates = sorted(
             (player for player in remaining if player["role"] == role),
@@ -713,6 +855,18 @@ def order_bench(roster: list[dict], starters: list[dict]) -> tuple[list[dict], l
     goalkeepers = sorted((player for player in available if player["role"] == "P"), key=lambda player: player["expectedPointsMD2"], reverse=True)
     bench = goalkeepers[:1]
     used = {player["id"] for player in bench}
+    # Reserve one high-probability option for every outfield role before filling
+    # the remaining slots by expected value. This materially improves the chance
+    # of completing a valid XI after automatic substitutions.
+    for role in ("D", "E", "C", "F", "A"):
+        role_options = sorted(
+            (player for player in available if player["id"] not in used and player["role"] == role),
+            key=lambda player: (player["md2VoteProbability"], player["expectedPointsMD2"]),
+            reverse=True,
+        )
+        if role_options:
+            bench.append(role_options[0])
+            used.add(role_options[0]["id"])
     role_scarcity = {"D": 1.10, "E": 1.12, "C": 1.05, "F": 1.10, "A": 1.04, "P": 0.65}
     movement = sorted(
         (player for player in available if player["id"] not in used),
@@ -886,6 +1040,10 @@ def strategy_output(name: str, roster: list[dict], rng: np.random.Generator) -> 
             "minimumRoles": all(counts[role] >= minimum for role, minimum in RULES["minimumRoles"].items()),
             "validFormation": simulation["formation"] in RULES["formations"],
             "benchSize": len(simulation["bench"]) == RULES["bench"],
+            "benchRoleCoverage": all(
+                any(by_id[player_id]["role"] == role for player_id in simulation["bench"])
+                for role in ("P", "D", "E", "C", "F", "A")
+            ),
             "excludedSize": len(simulation["excluded"]) == RULES["excluded"],
             "allInListone": len({player["id"] for player in roster}) == RULES["squadSize"],
             "noKnownUnavailableStarter": not any(by_id[player_id]["unavailableMD2"] for player_id in simulation["starters"]),
@@ -897,11 +1055,11 @@ def change_plan(strategy: dict) -> list[dict]:
     roster = strategy["roster"]
     weakest = sorted(roster, key=lambda player: (player["expectedCumulativePoints"], -player["riskScore"]))
     return [
-        {"window": "MD3-MD4", "action": "Use at most two ordinary transfers only for confirmed loss of role or injury.", "watch": [player["name"] for player in weakest[:2]]},
-        {"window": "MD5-MD6", "action": "Re-run advancement simulation; move one or two slots from teams drifting below 24th to top-16 probabilities."},
-        {"window": "MD7-MD8", "action": "Protect flexibility and retain cash/value; eliminated-player replacements do not consume the ordinary limit once removed from the game list."},
-        {"window": "Play-off", "action": "For direct-R16 players compare the guaranteed 6/5 office vote with a temporary equal-or-cheaper starter; avoid a temporary goalkeeper unless the replacement exceeds the 5-point office baseline."},
-        {"window": "Knockout", "action": "Concentrate transfers on confirmed starters from teams with the highest conditional reach-QF/SF probability; never spend both ordinary changes before lineups and availability are refreshed."},
+        {"window": "MD3-MD4", "action": "Usare al massimo i due cambi ordinari solo per perdita del posto o infortunio confermati.", "watch": [player["name"] for player in weakest[:2]]},
+        {"window": "MD5-MD6", "action": "Ricalcolare l'avanzamento; spostare uno o due slot dalle squadre in discesa sotto il 24° posto verso quelle con maggiore probabilità di top 16."},
+        {"window": "MD7-MD8", "action": "Proteggere flessibilità e valore residuo; i sostituti degli eliminati non consumano il limite ordinario solo dopo la rimozione dalle liste di gioco."},
+        {"window": "Play-off", "action": "Per chi accede direttamente agli ottavi confrontare il 6/5 d'ufficio con un titolare temporaneo di prezzo uguale o inferiore; evitare il portiere temporaneo se non supera la base di 5 punti."},
+        {"window": "Knockout", "action": "Concentrare i cambi sui titolari confermati delle squadre con maggiore probabilità condizionata di quarti e semifinali; non spendere entrambi i cambi prima dell'aggiornamento di formazioni e disponibilità."},
     ]
 
 
@@ -929,14 +1087,14 @@ def build_report(strategies: list[dict], advancement: dict, coverage: dict, sour
         "",
         "## Confronto quantitativo",
         "",
-        "| Strategia | Budget | Modulo MD2 | xFP MD2 | P10 MD2 | P90 MD2 | xFP cumulativi | P10 cumul. | P90 cumul. | P(>=1056) |",
-        "|---|---:|---|---:|---:|---:|---:|---:|---:|---:|",
+        "| Strategia | Budget | Modulo MD2 | xFP MD2 | P10 MD2 | P90 MD2 | P(11 voti) | xFP cumulativi | P10 cumul. | P90 cumul. | P(>=1056) |",
+        "|---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|",
     ]
     for strategy in strategies:
         md2 = strategy["md2"]
         cum = strategy["cumulative"]
         lines.append(
-            f"| {labels[strategy['strategy']]} | {strategy['budgetUsed']} | {md2['formation']} | {md2['simulatedMean']:.2f} | {md2['p10']:.2f} | {md2['p90']:.2f} | {cum['expected']:.2f} | {cum['p10']:.2f} | {cum['p90']:.2f} | {cum['thresholdProbabilitiesPct']['1056']:.2f}% |"
+            f"| {labels[strategy['strategy']]} | {strategy['budgetUsed']} | {md2['formation']} | {md2['simulatedMean']:.2f} | {md2['p10']:.2f} | {md2['p90']:.2f} | {md2['fullElevenProbabilityPct']:.2f}% | {cum['expected']:.2f} | {cum['p10']:.2f} | {cum['p90']:.2f} | {cum['thresholdProbabilitiesPct']['1056']:.2f}% |"
         )
     lines += [
         "",
@@ -1006,7 +1164,8 @@ def main() -> None:
     integration = read_json(INTEGRATION_PATH)
     advancement = simulate_advancement(calendar, predictions)
     starters, unavailable, md2_team = build_md2_context(integration, md2_predictions)
-    player_projections = build_player_projections(listone, current_by_team, historic_by_team, advancement, starters, unavailable, md2_team)
+    league_matchdays = build_league_matchday_context(calendar, predictions, md2_team)
+    player_projections = build_player_projections(listone, current_by_team, historic_by_team, advancement, starters, unavailable, md2_team, league_matchdays)
 
     rng = np.random.default_rng(SEED + 1)
     strategies = []
