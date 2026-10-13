@@ -1,18 +1,18 @@
 # Continuous Prediction Engine V2 evaluation
 
-Generated: 2026-10-03T00:13:20.077Z · Model: player-market-v2 · Engine: 4.13.0
+Generated: 2026-10-13T09:08:24.404Z · Model: player-market-v2 · Engine: 4.13.0
 
 ## Coverage and decision
 
-Evaluated matchdays: none; prospective matchdays: 6; retrospective/legacy: 5.
-Match clusters: 0 · player observations: 0 · gate: **MODEL_CHANGE_GATE: CLOSED** · exact-score data gate: **INSUFFICIENT** · next action: **COLLECT PROSPECTIVE SNAPSHOTS**.
+Evaluated matchdays: 6; prospective matchdays: 6; retrospective/legacy: 5.
+Match clusters: 10 · player observations: 200 · gate: **MODEL_CHANGE_GATE: CLOSED** · exact-score data gate: **COLLECTING** · next action: **COLLECT PROSPECTIVE SNAPSHOTS**.
 When MODEL_CHANGE_GATE reaches REVIEW, `modelChangeReview` lists the persistent issue, markets, matchdays, N, effect size, adjusted uncertainty and a research-only intervention hypothesis, then requires a separate human decision. No intervention is applied.
-Evaluation temporal maturity: {"EARLY":0,"DEVELOPING":0,"MID SAMPLE":0,"MATURE":0}. Model evidence maturity is separate: 20 team profiles; shrinkage maturity weight min/mean/max 0.5/0.5/0.5; player baseline stability levels {"low":52,"medium":74,"high":74}.
+Evaluation temporal maturity: {"EARLY":0,"DEVELOPING":10,"MID SAMPLE":0,"MATURE":0}. Model evidence maturity is separate: 20 team profiles; shrinkage maturity weight min/mean/max 0.5/0.5/0.5; player baseline stability levels {"low":52,"medium":74,"high":74}.
 
 | Maturity | Evaluated match clusters |
 |---|---:|
 | EARLY | 0 |
-| DEVELOPING | 0 |
+| DEVELOPING | 10 |
 | MID SAMPLE | 0 |
 | MATURE | 0 |
 
@@ -20,10 +20,10 @@ Evaluation temporal maturity: {"EARLY":0,"DEVELOPING":0,"MID SAMPLE":0,"MATURE":
 
 | Signal | First MD | Last MD | MDs observed | N | Effect | Direction | Cluster bootstrap 95% CI | Status |
 |---|---:|---:|---|---:|---:|---|---|---|
-| Team shots target bias | N/D | N/D | N/D | 0 | N/D | N/D | N/D | INSUFFICIENT |
-| Team SOT target bias | N/D | N/D | N/D | 0 | N/D | N/D | N/D | INSUFFICIENT |
-| CF/ST shots bias | N/D | N/D | N/D | 0 | N/D | N/D | N/D | INSUFFICIENT |
-| SOT/shots conversion gap | N/D | N/D | N/D | 0 | N/D | N/D | N/D | INSUFFICIENT |
+| Team shots target bias | 6 | 6 | 6 | 20 | -1.6195 | NEGATIVE | -3.267 – -0.0955 | NEW |
+| Team SOT target bias | 6 | 6 | 6 | 20 | -0.54 | NEGATIVE | -1.517 – 0.4215 | NEW |
+| CF/ST shots bias | N/D | N/D | N/D | 0 | N/D | N/D | 0.2308 – 0.4643 | INSUFFICIENT |
+| SOT/shots conversion gap | 6 | 6 | 6 | 98 | 0.0467 | POSITIVE | -0.0047 – 0.1008 | NEW |
 
 ## Operational contract
 
@@ -35,7 +35,7 @@ Before matchday: refresh source inputs and lineups, build V2 preview, save/valid
 
 ## Actual and exact-score dataset
 
-Actual results joined: 0; pending: 10; invalid: 0. Exact-score feature/outcome rows: 0; gate: **INSUFFICIENT**. Each row keeps pre-match X_home / X_away separate from actual home/away goals. READY_FOR_BASELINE_MODEL requires at least 100 prospective matches, 80% actual-xG and goal-feature coverage, 90% shots/SOT coverage and 10 evaluated matchdays. All goal features use matches strictly earlier than the target matchday. The report does not create score probabilities or calculate exact-score model metrics.
+Actual results joined: 10; pending: 0; invalid: 0. Exact-score feature/outcome rows: 10; gate: **COLLECTING**. Each row keeps pre-match X_home / X_away separate from actual home/away goals. READY_FOR_BASELINE_MODEL requires at least 100 prospective matches, 80% actual-xG and goal-feature coverage, 90% shots/SOT coverage and 10 evaluated matchdays. All goal features use matches strictly earlier than the target matchday. The report does not create score probabilities or calculate exact-score model metrics.
 
 Future roadmap: (1) prospective dataset; (2) home/away expected-goals baselines from historical goals, current goal averages and available xG; (3) independent Poisson score matrix; (4) calibration evaluation; (5) dependency and low-score correction comparison; (6) coherent 1X2/BTTS/Over-Under checks from the same goal distribution; (7) V2/V3 integration only after out-of-sample improvement. Stages 2–7 are not implemented.
 

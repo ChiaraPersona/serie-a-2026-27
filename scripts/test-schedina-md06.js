@@ -212,7 +212,8 @@ for (const match of catalog.matches) {
   if (firstMissing >= 0) assert(evs.slice(firstMissing).every(value => !Number.isFinite(value)), `${match.matchId}: NOT_MODELLED mescolati agli EV`);
 }
 assert.equal(catalog.sources.modelVersion, "4.13.0");
-assert.equal(catalog.sources.predictionsGeneratedAt, read("data/normalized/predictions.json").generatedAt);
+const md6PredictionTimestamps = [...new Set(read("data/normalized/predictions.json").predictions.filter(prediction => prediction.matchId.endsWith("-md-06")).map(prediction => prediction.generatedAt))];
+assert.deepEqual(md6PredictionTimestamps, [catalog.sources.predictionsGeneratedAt], "La Schedina MD6 deve restare collegata ai pronostici storici archiviati");
 assert.equal(catalog.sources.oddsRetrievedAt, odds.retrievedAt);
 assert.equal(catalog.sources.officialFixturesAvailable, 10);
 

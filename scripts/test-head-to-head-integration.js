@@ -19,7 +19,7 @@ const appRelease = fs.readFileSync(path.join(root, "scripts/build-site.js"), "ut
 assert.strictEqual(history.fixtures.length, 190, "Lo storico deve coprire le 190 partite di andata");
 assert.strictEqual(historySummary.fixtures.length, 190, "Il riepilogo H2H deve coprire le 190 partite di andata");
 assert(historySummary.fixtures.every(fixture => !fixture.previousMeetings && Number.isInteger(fixture.coverage?.available)), "Il riepilogo H2H deve escludere gli eventi di dettaglio");
-assert.strictEqual(predictions.predictions.length, 10, "Devono restare disponibili i 10 pronostici quotati");
+assert.strictEqual(predictions.predictions.length, 59, "Devono restare disponibili i pronostici archiviati MD1-MD6 e quelli correnti MD7");
 assert(predictions.predictions.every(prediction => prediction.headToHead?.usedInModel), "Ogni pronostico deve usare il correttivo H2H");
 assert(predictions.predictions.every(prediction => prediction.headToHead.home >= 0.95 && prediction.headToHead.home <= 1.05 && prediction.headToHead.away >= 0.95 && prediction.headToHead.away <= 1.05), "Il correttivo H2H deve restare entro il 5%");
 assert(app.includes('requestedMatchId?"first-leg-2026-27.json":"first-leg-2026-27-summary.json"'), "La pagina Lettura non separa indice e dettaglio H2H");

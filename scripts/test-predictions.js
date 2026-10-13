@@ -4,6 +4,7 @@ const assert = require("assert");
 const fs = require("fs");
 const path = require("path");
 const { opponentAbilityToExploit, teamProfilePlayerModifier, teamOffensiveAllocation, volumeMetric, applyOwnOffensiveVolumeProfile, applyOpponentTeamVolumeInteraction, playerBaselineStability, expectedDefensiveExposureFactor } = require("./predictions/engine");
+const { buildProfiles } = require("./build-team-matchup-profiles");
 const root = path.resolve(__dirname, "..");
 const dataset = JSON.parse(fs.readFileSync(path.join(root, "data/normalized/predictions.json"), "utf8"));
 const currentProbableLineups = require("./probable-lineups").loadLatestProbableLineups(root);
@@ -14,7 +15,7 @@ const assertNotCurrentStarter = (teamId, playerId) => {
   assert(!player || player.lineupStatus === "reserve", `${teamId}/${playerId}: candidato assente nonostante sia titolare nella fonte corrente`);
 };
 const currentMatches = JSON.parse(fs.readFileSync(path.join(root, "data/normalized/matches.json"), "utf8"))
-  .filter(match => match.competition === "serie-a" && match.season === "2026-27" && match.matchday === currentProbableLineups.matchday);
+  .filter(match => match.competition === "serie-a" && match.season === "2026-27" && match.matchday === currentProbableLineups.matchday && match.status !== "finished");
 for (const match of currentMatches) {
   const prediction = dataset.predictions.find(prediction => prediction.matchId === match.id);
   assert(prediction, `${match.id}: pronostico della giornata corrente mancante`);
@@ -37,6 +38,7 @@ for (const match of currentMatches) {
 const teamStyleProfiles = JSON.parse(fs.readFileSync(path.join(root, "data/normalized/team-style-profiles.json"), "utf8")).profiles;
 const teamVolumeProfiles = JSON.parse(fs.readFileSync(path.join(root, "data/normalized/team-volume-profiles-2025-26.json"), "utf8")).profiles;
 const profiledTeamIds = new Set(JSON.parse(fs.readFileSync(path.join(root, "data/normalized/team-matchup-profiles-2026-27.json"), "utf8")).profiles.map(profile => profile.teamId));
+const regressionTeamProfiles = buildProfiles({ asOfMatchday: 6 }).profiles;
 const teamStylesById = new Map(teamStyleProfiles.map(profile => [profile.teamId, profile]));
 const teamVolumesById = new Map(teamVolumeProfiles.map(profile => [profile.teamId, profile]));
 const archivedMd1 = JSON.parse(fs.readFileSync(path.join(root, "data/sources/prediction-archive-md1-2026-27.json"), "utf8"));
@@ -70,7 +72,7 @@ if (fs.existsSync(previewMd3Path)) {
   assert(previewMd3.predictions.every(prediction => prediction.market.status === "unavailable" && prediction.probabilities.marketNoMargin === null), "L'anteprima MD3 non deve inventare quote");
 }
 
-assert.strictEqual(dataset.predictions.length, 49, "Il motore deve conservare le giornate precedenti e coprire la quinta giornata di Serie A");
+assert.strictEqual(dataset.predictions.length, 59, "Il motore deve conservare MD1-MD6 e aggiungere le dieci gare della settima giornata");
 const firstMatchdayPredictions = dataset.predictions.filter(prediction => prediction.matchId.endsWith("-md-01"));
 const secondMatchdayPredictions = dataset.predictions.filter(prediction => prediction.matchId.endsWith("-md-02"));
 const fourthMatchdayPredictions = dataset.predictions.filter(prediction => prediction.matchId.endsWith("-md-04"));
@@ -115,9 +117,9 @@ assert.strictEqual(dataset.engine.validation.multiSeason.decision.xgRecommendati
 assert.strictEqual(dataset.engine.promotedTeamModel.attackFactor, 0.51, "Fattore offensivo neopromosse non validato");
 assert.strictEqual(dataset.engine.promotedTeamModel.defenceWeaknessFactor, 1.29, "Fattore difensivo neopromosse non validato");
 assert(dataset.predictions.every(prediction => prediction.dataQuality.missing.some(item => item.includes("meteo"))), "Il meteo non verificabile deve essere dichiarato N/D");
-assert(dataset.predictions.filter(prediction => !prediction.matchId.endsWith("-md-06")).every(prediction => !prediction.dataQuality.missing.some(item => item.includes("indisponibili"))), "Il monitor indisponibili aggiornato deve raggiungere tutte le letture archiviate fino alla quinta giornata");
+assert(dataset.predictions.filter(prediction => /-md-0[1-5]$/.test(prediction.matchId)).every(prediction => !prediction.dataQuality.missing.some(item => item.includes("indisponibili"))), "Il monitor indisponibili aggiornato deve raggiungere tutte le letture archiviate fino alla quinta giornata");
 for (const prediction of dataset.predictions) {
-  if (["-md-05", "-md-06"].some(suffix => prediction.matchId.endsWith(suffix))) assert.strictEqual(prediction.engineVersion, dataset.engine.version, `${prediction.matchId}: deve usare la versione corrente del motore`);
+  if (["-md-05", "-md-06", "-md-07"].some(suffix => prediction.matchId.endsWith(suffix))) assert.strictEqual(prediction.engineVersion, dataset.engine.version, `${prediction.matchId}: deve usare la versione corrente del motore`);
   else if (prediction.matchId.endsWith("-md-04")) assert.strictEqual(prediction.engineVersion, "4.12.0", `${prediction.matchId}: lo snapshot MD4 deve conservare la propria versione`);
   else assert.strictEqual(prediction.engineVersion, "4.11.0", `${prediction.matchId}: lo snapshot archiviato deve conservare la propria versione`);
   const probabilities = Object.values(prediction.probabilities.final);
@@ -386,7 +388,7 @@ assert.strictEqual(lazioNuno.qualifiedSotOutsider, false, "Lazio: Nuno qualifica
 assert.strictEqual(lazioTaylor.qualifiedOutsider, true);
 assert.strictEqual(lazioTaylor.qualifiedSotOutsider, false, "Lazio: 5 tiri e 0 SOT di Taylor non restano separati");
 
-const monzaMatchupProfile = require(path.join(root, "data/normalized/team-matchup-profiles-2026-27.json")).profiles.find(profile => profile.teamId === "monza");
+const monzaMatchupProfile = regressionTeamProfiles.find(profile => profile.teamId === "monza");
 const monzaTeamTotal = lazioMonzaProfile.shooters.teamTotals.find(team => team.teamId === "monza");
 const monzaVarela = monzaPlayers.find(player => player.playerId === "gustavo-varela");
 const monzaFolorunsho = monzaPlayers.find(player => player.playerId === "michael-folorunsho");
@@ -434,7 +436,7 @@ const highExploit = opponentAbilityToExploit({ summary: { shotsPerGame: 16, poss
 const lowExploit = opponentAbilityToExploit({ summary: { shotsPerGame: 9, possessionPct: 42, passSuccessPct: 78, aerialWonPerGame: 8 }, attackChannels: { left: 20, central: 60, right: 20 } }, { shotsTotal: { central: 9 }, corners: { central: 3 } });
 for (const feature of ["general", "territorial", "wide", "setPiece"]) assert(highExploit[feature] > lowExploit[feature], `Ability to exploit ${feature} non distingue gli scenari sintetici`);
 
-const cagliariMatchupProfile = require(path.join(root, "data/normalized/team-matchup-profiles-2026-27.json")).profiles.find(profile => profile.teamId === "cagliari");
+const cagliariMatchupProfile = regressionTeamProfiles.find(profile => profile.teamId === "cagliari");
 const lowBaselineCm = teamProfilePlayerModifier({ role: "Centrocampista", detailedRole: "centrocampista centrale" }, 0.4, 0.1, cagliariMatchupProfile, highExploit);
 const highBaselineCm = teamProfilePlayerModifier({ role: "Centrocampista", detailedRole: "centrocampista centrale" }, 2, 0.4, cagliariMatchupProfile, highExploit);
 assert.strictEqual(lowBaselineCm.shotFactor, 1, "Un CM senza propensione e stato creato dal matchup");
@@ -447,7 +449,7 @@ const setPieceCb = teamProfilePlayerModifier({ role: "Difensore", detailedRole: 
 assert.strictEqual(lowShotCb.shotFactor, 1);
 assert.strictEqual(setPieceCb.shotFactor, 1, "Il CB piazzato resta WATCH finche il campione non consente l'attivazione");
 
-const comoMatchupProfile = require(path.join(root, "data/normalized/team-matchup-profiles-2026-27.json")).profiles.find(profile => profile.teamId === "como");
+const comoMatchupProfile = regressionTeamProfiles.find(profile => profile.teamId === "como");
 const comoRomaProfile = dataset.predictions.find(prediction => prediction.matchId === "como-roma-2026-27-md-06");
 const comoProjection = comoRomaProfile?.teamProjections.find(team => team.teamId === "como");
 const romaAgainstComoProjection = comoRomaProfile?.teamProjections.find(team => team.teamId === "roma");
@@ -495,7 +497,7 @@ assert.strictEqual(comoRomaProfile.shooters.teamTotals.find(team => team.teamId 
 assert(["EXTRA_VOLUME", "COMPRESSION"].includes(comoRomaProfile.shooters.teamTotals.find(team => team.teamId === "roma").reconciliation.shots.allocationMode), "Roma: modalita reconciliation tiri errata");
 assert(comoRomaProfile.likelyBooked.filter(player => player.teamId === "como").every(player => player.expectedDefensiveExposureFactor < 1 && player.expectedDefensiveExposureFactor > 0.97), "Como: esposizione difensiva non collegata prudentemente al card model");
 
-const frosinoneMatchupProfile = require(path.join(root, "data/normalized/team-matchup-profiles-2026-27.json")).profiles.find(profile => profile.teamId === "frosinone");
+const frosinoneMatchupProfile = regressionTeamProfiles.find(profile => profile.teamId === "frosinone");
 const napoliFrosinoneProfile = dataset.predictions.find(prediction => prediction.matchId === "napoli-frosinone-2026-27-md-06");
 const napoliAgainstFrosinone = napoliFrosinoneProfile?.teamProjections.find(team => team.teamId === "napoli");
 const frosinoneProjection = napoliFrosinoneProfile?.teamProjections.find(team => team.teamId === "frosinone");
@@ -565,7 +567,7 @@ assert.strictEqual(breakoutBaseline.level, "low", "Un breakout current molto dis
 assert(breakoutBaseline.value > 1.2 && breakoutBaseline.value < 5, "Il breakout deve essere riconosciuto ma shrinkato, non azzerato o preso integralmente");
 assert(breakoutBaseline.currentSample.reliability < breakoutBaseline.historicalSample.reliability, "Affidabilita del campione e agreement storico-current non sono separati");
 
-const fiorentinaMatchupProfile = require(path.join(root, "data/normalized/team-matchup-profiles-2026-27.json")).profiles.find(profile => profile.teamId === "fiorentina");
+const fiorentinaMatchupProfile = regressionTeamProfiles.find(profile => profile.teamId === "fiorentina");
 const fiorentinaLowSotCm = teamProfilePlayerModifier({ role: "Centrocampista", detailedRole: "centrocampista centrale" }, 2, 0.1, fiorentinaMatchupProfile, highExploit);
 const fiorentinaHighSotCm = teamProfilePlayerModifier({ role: "Centrocampista", detailedRole: "centrocampista centrale" }, 2, 0.75, fiorentinaMatchupProfile, highExploit);
 assert.strictEqual(fiorentinaLowSotCm.shotFactor, 1, "Fiorentina: la vulnerabilita SOT non deve diventare boost tiri");
@@ -619,7 +621,7 @@ assert(fagioli.outsiderScore > alexJimenez.outsiderScore && fagioli.sotOutsiderS
 assert(genoaFiorentinaProfile.shooters.outsiders.some(player => player.playerId === "nicolo-fagioli"), "Fiorentina: ranking outsider tiri non espone Fagioli");
 assert(genoaFiorentinaProfile.shooters.outsiders.every(player => player.detailedRole !== "Difensore"), "Fiorentina: un difensore generico e entrato tra gli outsider tiri");
 
-const interMatchupProfile = require(path.join(root, "data/normalized/team-matchup-profiles-2026-27.json")).profiles.find(profile => profile.teamId === "inter");
+const interMatchupProfile = regressionTeamProfiles.find(profile => profile.teamId === "inter");
 const interParmaProfile = dataset.predictions.find(prediction => prediction.matchId === "inter-parma-2026-27-md-06");
 const interProjection = interParmaProfile?.teamProjections.find(team => team.teamId === "inter");
 const parmaAgainstInter = interParmaProfile?.teamProjections.find(team => team.teamId === "parma");
@@ -662,9 +664,9 @@ assert(interParmaProfile.shooters.outsiders.filter(player => player.teamId === "
 assert.strictEqual(interMatchupProfile.vulnerabilities.signals.sotVulnerability.modelEffect, "none", "Inter: SOT WATCH non neutro nel profilo serializzato");
 assert(Object.values(interMatchupProfile.vulnerabilities.positionalShotVulnerability).every(role => role.effectiveMaxBoostPct === 0 && role.effectiveMaxSotBoostPct === 0), "Inter: ruolo WATCH trasformato in effetto centrale");
 
-const milanMatchupProfile = require(path.join(root, "data/normalized/team-matchup-profiles-2026-27.json")).profiles.find(profile => profile.teamId === "milan");
-const juventusMatchupProfile = require(path.join(root, "data/normalized/team-matchup-profiles-2026-27.json")).profiles.find(profile => profile.teamId === "juventus");
-const lecceMatchupProfile = require(path.join(root, "data/normalized/team-matchup-profiles-2026-27.json")).profiles.find(profile => profile.teamId === "lecce");
+const milanMatchupProfile = regressionTeamProfiles.find(profile => profile.teamId === "milan");
+const juventusMatchupProfile = regressionTeamProfiles.find(profile => profile.teamId === "juventus");
+const lecceMatchupProfile = regressionTeamProfiles.find(profile => profile.teamId === "lecce");
 const sassuoloMilanProfile = dataset.predictions.find(prediction => prediction.matchId === "sassuolo-milan-2026-27-md-06");
 const milanProjection = sassuoloMilanProfile?.teamProjections.find(team => team.teamId === "milan");
 const sassuoloAgainstMilan = sassuoloMilanProfile?.teamProjections.find(team => team.teamId === "sassuolo");
@@ -742,7 +744,7 @@ assert(milanPlayers.every(player => player.projectedShotsOnTarget <= player.proj
 assert(milanPlayers.every(player => player.shotProbabilities.over05 >= player.shotProbabilities.over15 && player.shotProbabilities.over15 >= player.shotProbabilities.over25), "Milan: probabilita tiri non monotone");
 assert(milanPlayers.every(player => player.shotOnTargetProbabilities.over05 >= player.shotOnTargetProbabilities.over15), "Milan: probabilita SOT non monotone");
 
-const napoliMatchupProfile = require(path.join(root, "data/normalized/team-matchup-profiles-2026-27.json")).profiles.find(profile => profile.teamId === "napoli");
+const napoliMatchupProfile = regressionTeamProfiles.find(profile => profile.teamId === "napoli");
 const napoliPlayers = napoliFrosinoneProfile.shooters.allPlayers.filter(player => player.teamId === "napoli");
 const napoliHojlund = napoliPlayers.find(player => player.playerId === "rasmus-h-jlund");
 const napoliTeamTotal = napoliFrosinoneProfile.shooters.teamTotals.find(team => team.teamId === "napoli");
@@ -833,7 +835,7 @@ assert(napoliPlayers.every(player => player.projectedShotsOnTarget <= player.pro
 assert(napoliPlayers.every(player => player.shotProbabilities.over05 >= player.shotProbabilities.over15 && player.shotProbabilities.over15 >= player.shotProbabilities.over25), "Napoli: probabilita tiri non monotone");
 assert(napoliPlayers.every(player => player.shotOnTargetProbabilities.over05 >= player.shotOnTargetProbabilities.over15), "Napoli: probabilita SOT non monotone");
 
-const parmaMatchupProfile = require(path.join(root, "data/normalized/team-matchup-profiles-2026-27.json")).profiles.find(profile => profile.teamId === "parma");
+const parmaMatchupProfile = regressionTeamProfiles.find(profile => profile.teamId === "parma");
 const parmaPlayers = interParmaProfile.shooters.allPlayers.filter(player => player.teamId === "parma");
 const parmaElphege = parmaPlayers.find(player => player.playerId === "nesta-elphege");
 const parmaToure = parmaPlayers.find(player => player.playerId === "el-bilal-toure");
@@ -847,7 +849,7 @@ const neutralParmaSot = parmaMatchupProfile.offense.teamSotVolume.shrunkPerGame;
 const parmaMatchupScenario = (opponentId, venue) => {
   const opponentStyle = teamStylesById.get(opponentId);
   const opponentVolume = teamVolumesById.get(opponentId);
-  const opponentMatchup = require(path.join(root, "data/normalized/team-matchup-profiles-2026-27.json")).profiles.find(profile => profile.teamId === opponentId);
+  const opponentMatchup = regressionTeamProfiles.find(profile => profile.teamId === opponentId);
   const shots = volumeMetric(parmaStyle, opponentStyle, parmaVolume, opponentVolume, venue, "totalShots", 1, { matches: 38, mean: 10.711, sd: 4.5, p20: 6, p80: 15, source: "team-style-prior" });
   const sot = volumeMetric(parmaStyle, opponentStyle, parmaVolume, opponentVolume, venue, "shotsOnTarget", 1, { matches: 38, mean: 2.737, sd: 1.8, p20: 1, p80: 4, source: "team-style-prior" });
   const corners = volumeMetric(parmaStyle, opponentStyle, parmaVolume, opponentVolume, venue, "wonCorners", 1, { matches: 38, mean: 3.868, sd: 2.5, p20: 1.4, p80: 5.6, source: "team-style-prior" });
@@ -924,7 +926,7 @@ assert(parmaPlayers.every(player => player.shotProbabilities.over05 >= player.sh
 assert(parmaPlayers.every(player => player.shotOnTargetProbabilities.over05 >= player.shotOnTargetProbabilities.over15), "Parma: probabilita SOT non monotone");
 
 const sassuoloMilanV2Profile = dataset.predictions.find(prediction => prediction.matchId === "sassuolo-milan-2026-27-md-06");
-const sassuoloMatchupProfile = require(path.join(root, "data/normalized/team-matchup-profiles-2026-27.json")).profiles.find(profile => profile.teamId === "sassuolo");
+const sassuoloMatchupProfile = regressionTeamProfiles.find(profile => profile.teamId === "sassuolo");
 const sassuoloProjection = sassuoloMilanV2Profile?.teamProjections.find(team => team.teamId === "sassuolo");
 const milanAgainstSassuolo = sassuoloMilanV2Profile?.teamProjections.find(team => team.teamId === "milan");
 const sassuoloPlayers = sassuoloMilanV2Profile?.shooters.allPlayers.filter(player => player.teamId === "sassuolo") || [];
@@ -945,7 +947,7 @@ assert(neutralSassuoloShots.central > 11.7 && neutralSassuoloOwn.shotsAdjustment
 assert(neutralSassuoloSot.central > 3.9 && neutralSassuoloOwn.shotsOnTargetAdjustmentPct > 0, "Sassuolo A: HIGH SOT baseline non resta separata e attiva");
 const suppressedSassuoloShots = { min: neutralSassuoloShots.min, central: neutralSassuoloShots.central, max: neutralSassuoloShots.max };
 const suppressedSassuoloSot = { min: neutralSassuoloSot.min, central: neutralSassuoloSot.central, max: neutralSassuoloSot.max };
-const suppressedSassuolo = applyOpponentTeamVolumeInteraction(teamStylesById.get("sassuolo"), require(path.join(root, "data/normalized/team-matchup-profiles-2026-27.json")).profiles.find(profile => profile.teamId === "juventus"), suppressedSassuoloShots, suppressedSassuoloSot, { min: 2, central: 4, max: 6 });
+const suppressedSassuolo = applyOpponentTeamVolumeInteraction(teamStylesById.get("sassuolo"), regressionTeamProfiles.find(profile => profile.teamId === "juventus"), suppressedSassuoloShots, suppressedSassuoloSot, { min: 2, central: 4, max: 6 });
 assert(suppressedSassuolo.shotsAdjustmentPct < 0 && suppressedSassuoloShots.central < neutralSassuoloShots.central && suppressedSassuoloShots.central > 9, "Sassuolo B: Juventus-like suppression non riduce il target in modo graduale");
 
 // Sassuolo C-E/T - Lauriente guida i tiri, puo essere compresso e non eredita una gerarchia SOT primaria.
@@ -1000,7 +1002,7 @@ assert(sassuoloPlayers.every(player => player.projectedShotsOnTarget <= player.p
 assert(sassuoloPlayers.every(player => player.shotProbabilities.over05 >= player.shotProbabilities.over15 && player.shotProbabilities.over15 >= player.shotProbabilities.over25), "Sassuolo: probabilita tiri non monotone");
 assert(sassuoloPlayers.every(player => player.shotOnTargetProbabilities.over05 >= player.shotOnTargetProbabilities.over15), "Sassuolo: probabilita SOT non monotone");
 
-const torinoMatchupProfile = require(path.join(root, "data/normalized/team-matchup-profiles-2026-27.json")).profiles.find(profile => profile.teamId === "torino");
+const torinoMatchupProfile = regressionTeamProfiles.find(profile => profile.teamId === "torino");
 const torinoUdinese = dataset.predictions.find(prediction => prediction.matchId === "torino-udinese-2026-27-md-06");
 const torinoProjection = torinoUdinese.teamProjections.find(team => team.teamId === "torino");
 const udineseProjection = torinoUdinese.teamProjections.find(team => team.teamId === "udinese");
@@ -1008,7 +1010,7 @@ const torinoPlayers = torinoUdinese.shooters.allPlayers.filter(player => player.
 const torinoTeamTotal = torinoUdinese.shooters.teamTotals.find(team => team.teamId === "torino");
 const torinoSimeone = torinoPlayers.find(player => player.playerId === "giovanni-simeone");
 const torinoMandragora = torinoPlayers.find(player => player.playerId === "mandragora");
-const torinoVlasic = torinoPlayers.find(player => player.playerId === "nikola-vlasic");
+const torinoOristanio = torinoPlayers.find(player => player.playerId === "gaetano-oristanio");
 
 // Torino A-D - baseline LOW, matchup permissivo senza high-volume e possesso senza inflazione autonoma.
 assert(torinoMatchupProfile.offense.teamShotVolume.shrunkPerGame < torinoMatchupProfile.historicalBaseline.shotsForPerGame, "Torino A: baseline neutrale non risulta LOW");
@@ -1018,7 +1020,7 @@ const torinoVolume = teamVolumesById.get("torino");
 const torinoScenario = opponentId => {
   const opponentStyle = teamStylesById.get(opponentId);
   const opponentVolume = teamVolumesById.get(opponentId);
-  const opponentMatchup = require(path.join(root, "data/normalized/team-matchup-profiles-2026-27.json")).profiles.find(profile => profile.teamId === opponentId);
+  const opponentMatchup = regressionTeamProfiles.find(profile => profile.teamId === opponentId);
   const shots = volumeMetric(torinoStyle, opponentStyle, torinoVolume, opponentVolume, "home", "totalShots", 1, { matches: 38, mean: 11.816, sd: 4.084, p20: 8, p80: 15, source: "team-style-prior" });
   const sot = volumeMetric(torinoStyle, opponentStyle, torinoVolume, opponentVolume, "home", "shotsOnTarget", 1, { matches: 38, mean: 3.974, sd: 1.94, p20: 2, p80: 5, source: "team-style-prior" });
   const corners = volumeMetric(torinoStyle, opponentStyle, torinoVolume, opponentVolume, "home", "wonCorners", 1, { matches: 38, mean: 3.842, sd: 1.994, p20: 2, p80: 6, source: "team-style-prior" });
@@ -1044,8 +1046,8 @@ assert(torinoMandragora.expectedMinutes > 60 && torinoMandragora.projectedShots 
 const noMandragora = torinoPlayers.filter(player => player.playerId !== "mandragora");
 const noMandragoraAllocation = teamOffensiveAllocation(noMandragora, "projectedShots", 10.5, torinoMatchupProfile);
 assert.strictEqual(noMandragoraAllocation.values.length, noMandragora.length, "Torino I: un indisponibile riceve minuti o volume artificiale");
-assert.strictEqual(torinoVlasic.playerBaselineStability.currentSample.persistence.level, "high");
-assert(torinoVlasic.projectedShots < 2 && torinoVlasic.shotProbabilities.over05 > torinoVlasic.shotProbabilities.over25, "Torino J: persistenza Vlašić confusa con alta intensita");
+assert.strictEqual(torinoOristanio.playerBaselineStability.currentSample.persistence.level, "high");
+assert(torinoOristanio.projectedShots < 2 && torinoOristanio.shotProbabilities.over05 > torinoOristanio.shotProbabilities.over25, "Torino J: persistenza Oristanio confusa con alta intensita");
 const adamsStability = playerBaselineStability({ historicalBaseline: 2.52, historicalObserved: 2.52, historicalMinutes: 1896, current: { minutes: 193, shots: 3, shotsCoverage: 3, shotsSequence: [1, 1, 1] }, key: "shots", includePersistence: true });
 assert(adamsStability.value > 1.4 && adamsStability.value < 2.52, "Torino K: Adams non e shrinkato fra current e storico");
 const kulenovicStability = playerBaselineStability({ historicalBaseline: 1.54, historicalObserved: 1.54, historicalMinutes: 293, current: { minutes: 60, shots: 3, shotsCoverage: 3, shotsSequence: [0, 0, 3] }, key: "shots", includePersistence: true });
@@ -1084,7 +1086,7 @@ assert(torinoPlayers.every(player => player.projectedShotsOnTarget <= player.pro
 assert(torinoPlayers.every(player => player.shotProbabilities.over05 >= player.shotProbabilities.over15 && player.shotProbabilities.over15 >= player.shotProbabilities.over25), "Torino: probabilita tiri non monotone");
 assert(torinoPlayers.every(player => player.shotOnTargetProbabilities.over05 >= player.shotOnTargetProbabilities.over15), "Torino: probabilita SOT non monotone");
 
-const udineseMatchupProfile = require(path.join(root, "data/normalized/team-matchup-profiles-2026-27.json")).profiles.find(profile => profile.teamId === "udinese");
+const udineseMatchupProfile = regressionTeamProfiles.find(profile => profile.teamId === "udinese");
 const udinesePlayers = torinoUdinese.shooters.allPlayers.filter(player => player.teamId === "udinese");
 const udineseTeamTotal = torinoUdinese.shooters.teamTotals.find(team => team.teamId === "udinese");
 const udineseEkkelenkamp = udinesePlayers.find(player => player.playerId === "jurgen-ekkelenkamp");
@@ -1095,7 +1097,7 @@ const udineseVolume = teamVolumesById.get("udinese");
 const udineseScenario = opponentId => {
   const opponentStyle = teamStylesById.get(opponentId);
   const opponentVolume = teamVolumesById.get(opponentId);
-  const opponentMatchup = require(path.join(root, "data/normalized/team-matchup-profiles-2026-27.json")).profiles.find(profile => profile.teamId === opponentId);
+  const opponentMatchup = regressionTeamProfiles.find(profile => profile.teamId === opponentId);
   const shots = volumeMetric(udineseStyle, opponentStyle, udineseVolume, opponentVolume, "home", "totalShots", 1, { matches: 38, mean: 11.553, sd: 4.581, p20: 8, p80: 14.6, source: "team-style-prior" });
   const sot = volumeMetric(udineseStyle, opponentStyle, udineseVolume, opponentVolume, "home", "shotsOnTarget", 1, { matches: 38, mean: 3.842, sd: 1.857, p20: 2, p80: 5, source: "team-style-prior" });
   const corners = volumeMetric(udineseStyle, opponentStyle, udineseVolume, opponentVolume, "home", "wonCorners", 1, { matches: 38, mean: 4.5, sd: 2.28, p20: 2.4, p80: 6, source: "team-style-prior" });
@@ -1170,7 +1172,7 @@ assert(Math.abs(udineseTeamTotal.reconciliation.shots.preReconciliation + udines
 assert(Math.abs(udinesePlayers.reduce((total, player) => total + player.projectedShots, 0) - udineseProjection.shotsTotal.central) <= 0.11, "Udinese Z: somma player tiri diversa dal team target");
 assert(Math.abs(udinesePlayers.reduce((total, player) => total + player.projectedShotsOnTarget, 0) - udineseProjection.shotsOnTarget.central) <= 0.11, "Udinese Z: somma player SOT diversa dal team target");
 
-const veneziaMatchupProfile = require(path.join(root, "data/normalized/team-matchup-profiles-2026-27.json")).profiles.find(profile => profile.teamId === "venezia");
+const veneziaMatchupProfile = regressionTeamProfiles.find(profile => profile.teamId === "venezia");
 const veneziaProjection = atalantaVeneziaProfile.teamProjections.find(team => team.teamId === "venezia");
 const atalantaAgainstVeneziaProjection = atalantaVeneziaProfile.teamProjections.find(team => team.teamId === "atalanta");
 const veneziaPlayers = atalantaVeneziaProfile.shooters.allPlayers.filter(player => player.teamId === "venezia");

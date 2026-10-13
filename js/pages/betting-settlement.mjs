@@ -18,6 +18,9 @@ function teamStatFromLabel(leg,match,key){
   const label=comparableName(leg?.label);
   if(homeLabel&&label.includes(comparableName(homeLabel)))return match?.teamStats?.home?.[key];
   if(awayLabel&&label.includes(comparableName(awayLabel)))return match?.teamStats?.away?.[key];
+  const variant=normalized(leg?.variant);
+  if(variant.includes("SQUADRA 1"))return match?.teamStats?.home?.[key];
+  if(variant.includes("SQUADRA 2"))return match?.teamStats?.away?.[key];
   return null;
 }
 

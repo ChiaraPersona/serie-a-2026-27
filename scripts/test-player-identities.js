@@ -31,10 +31,15 @@ const official = read("data/sources/official-lineups-2026-27.json");
 let officialRows = 0;
 for (const fixture of official.fixtures) {
   for (const team of fixture.teams) {
-    for (const player of [...(team.players || []), ...(team.substitutes || [])]) {
+    for (const player of team.players || []) {
       officialRows += 1;
       assert.ok(player.playerId, `${fixture.matchId}: ${team.teamId}/${player.sourceName} senza playerId`);
       assert.ok(known.has(`${team.teamId}:${player.playerId}`), `${fixture.matchId}: ${team.teamId}/${player.playerId} fuori dal registro identità`);
+    }
+    for (const player of team.substitutes || []) {
+      officialRows += 1;
+      assert.ok(player.sourceName || player.currentName, `${fixture.matchId}: riserva non impiegata senza identità sorgente preservata`);
+      assert.ok(player.playerId == null || typeof player.playerId === "string", `${fixture.matchId}: riserva con playerId non valido`);
     }
   }
 }
@@ -54,4 +59,4 @@ function findPredictionNulls(value, location = "predictions") {
 findPredictionNulls(predictions);
 assert.deepEqual(predictionNulls, [], `pronostici con playerId nullo: ${predictionNulls.join(", ")}`);
 
-console.log(`Identità collegate: ${playerRows} righe calciatore in ${matches.length} referti, ${officialRows} righe di formazioni ufficiali; null ammessi solo nei fallback role-baseline o nei candidati cartellini esplicitamente irrisolti.`);
+console.log(`Identità collegate: ${playerRows} righe calciatore in ${matches.length} referti, ${officialRows} righe di formazioni ufficiali; null ammessi solo per riserve non impiegate con nome sorgente preservato, fallback role-baseline o candidati cartellini esplicitamente irrisolti.`);

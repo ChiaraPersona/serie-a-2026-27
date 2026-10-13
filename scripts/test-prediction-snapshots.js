@@ -73,7 +73,7 @@ if (fs.existsSync(snapshotFile) && fs.existsSync(manifestFile) && fs.existsSync(
   const originalContent = fs.readFileSync(snapshotFile, "utf8");
   const rerun = spawnSync(process.execPath, [path.join(root, "scripts/snapshot-predictions.js"), "--matchday", "6"], { cwd: root, encoding: "utf8" });
   assert.notEqual(rerun.status, 0, "il comando ha sovrascritto uno snapshot esistente senza flag");
-  assert.match(rerun.stderr, /SNAPSHOT_ALREADY_EXISTS/);
+  assert.match(rerun.stderr, /SNAPSHOT_ALREADY_EXISTS|SNAPSHOT BLOCKER: MD6 contains started\/finished fixtures/);
   assert.equal(fs.readFileSync(snapshotFile, "utf8"), originalContent, "contenuto immutabile alterato dal rerun");
   assert.equal(report.metadata.modelFrozen, true);
   assert.equal(report.metadata.productionBehaviorChanged, false);

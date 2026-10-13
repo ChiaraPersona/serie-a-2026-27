@@ -47,13 +47,13 @@ function syntheticMatch(matchday) {
   };
 }
 
-const syntheticDataset = [...clone(matches), ...Array.from({ length: 25 }, (_, index) => syntheticMatch(index + 6))];
+const syntheticDataset = [...clone(matches), ...Array.from({ length: 24 }, (_, index) => syntheticMatch(index + 7))];
 const profileAt = targetMatchday => buildProfile(veneziaConfig, { matches: syntheticDataset, asOfMatchday: targetMatchday });
-const t0 = profileAt(6), t1 = profileAt(7), t2 = profileAt(11), t3 = profileAt(21), t4 = profileAt(31);
+const t0 = profileAt(7), t1 = profileAt(8), t2 = profileAt(11), t3 = profileAt(21), t4 = profileAt(31);
 
-test("1 MD5 -> MD6 update", () => { assert.equal(t0.sampleSize, 5); assert.equal(t1.sampleSize, 6); assert.notEqual(t0.offense.teamShotVolume.current.mean, t1.offense.teamShotVolume.current.mean); });
-test("2 MD5 -> MD10", () => assert.equal(t2.sampleSize, 10));
-test("3 MD5 -> MD20/MD30", () => { assert.equal(t3.sampleSize, 20); assert.equal(t4.sampleSize, 30); });
+test("1 MD6 -> MD7 update", () => { assert.equal(t0.sampleSize, 6); assert.equal(t1.sampleSize, 7); assert.notEqual(t0.offense.teamShotVolume.current.mean, t1.offense.teamShotVolume.current.mean); });
+test("2 MD6 -> MD10", () => assert.equal(t2.sampleSize, 10));
+test("3 MD6 -> MD20/MD30", () => { assert.equal(t3.sampleSize, 20); assert.equal(t4.sampleSize, 30); });
 test("4 historical weight decay", () => assert(t4.offense.teamShotVolume.shrinkage.historicalWeight < t0.offense.teamShotVolume.shrinkage.historicalWeight));
 test("5 maturity growth", () => assert(t4.confidence.maturityWeight > t0.confidence.maturityWeight));
 test("6 player hierarchy change", () => {

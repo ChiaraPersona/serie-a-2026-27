@@ -3,11 +3,14 @@
 const assert = require("assert");
 const fs = require("fs");
 const path = require("path");
-const { signalPersistence, metricAgreement, signalStability, distributionShape, shooterStructure, roleDistributionBreadth } = require("./build-team-matchup-profiles");
+const { buildProfiles, signalPersistence, metricAgreement, signalStability, distributionShape, shooterStructure, roleDistributionBreadth } = require("./build-team-matchup-profiles");
 const { applyOpponentTeamVolumeInteraction, teamOffensiveAllocation, teamProfilePlayerModifier } = require("./predictions/engine");
 
 const root = path.resolve(__dirname, "..");
-const data = JSON.parse(fs.readFileSync(path.join(root, "data/normalized/team-matchup-profiles-2026-27.json"), "utf8"));
+const currentData = JSON.parse(fs.readFileSync(path.join(root, "data/normalized/team-matchup-profiles-2026-27.json"), "utf8"));
+assert.equal(currentData.dataCutoff.completedMatchesUsed, 60, "Il profilo corrente deve includere MD1-MD6");
+assert(currentData.profiles.every(profile => profile.sampleSize === 6), "Ogni squadra deve avere sei gare correnti");
+const data = buildProfiles({ asOfMatchday: 6 });
 const matches = JSON.parse(fs.readFileSync(path.join(root, "data/normalized/matches.json"), "utf8"));
 const requiredAllTeams = ["atalanta", "bologna", "cagliari", "como", "fiorentina", "frosinone", "genoa", "inter", "juventus", "lazio", "lecce", "milan", "monza", "napoli", "parma", "sassuolo", "torino", "udinese", "venezia", "roma"];
 assert.deepStrictEqual(data.coverage.teamIds, requiredAllTeams, "La copertura deve contenere esattamente tutti i venti Team Profiles V2");
