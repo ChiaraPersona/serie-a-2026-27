@@ -139,7 +139,7 @@ assert.match(championsPage, /reading-fixture match fixture-card(?: champions-fix
 assert.match(championsPage, /reading-fixture match fixture-card fixture-card-link champions-fixture champions-pilot-card/, "Champions: letture non integrate nelle card del calendario");
 assert.doesNotMatch(championsPage, /reading-fixture-preview/, "Champions: la vecchia anteprima interna non deve duplicare la card cliccabile");
 assert.doesNotMatch(championsPage, /Analisi delle italiane/, "Champions: sezione separata delle italiane ancora presente");
-assert.match(championsPage, /pilotByFixture=new Map\(pilot\.fixtures\.map/, "Champions: pronostici delle italiane non collegati al calendario");
+assert.match(championsPage, /pilotByFixture=new Map\(\[\.\.\.pilot\.fixtures,\.\.\.md2Summary\.fixtures\]\.map/, "Champions: pronostici MD1 e MD2 non collegati al calendario");
 assert.doesNotMatch(championsPage, /Designazioni arbitrali/, "Champions: designazioni arbitrali ancora presenti nella Home");
 assert.doesNotMatch(championsPage, /champions-referee-summary|refereeFooter/, "Champions: arbitro ancora mostrato nelle card del calendario");
 assert.doesNotMatch(championsFixtureCard, /referee|Arbitro/, "Champions: riferimenti arbitrali ancora presenti nel renderer delle card");
