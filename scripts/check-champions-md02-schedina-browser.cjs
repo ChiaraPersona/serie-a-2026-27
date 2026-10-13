@@ -80,7 +80,7 @@ const server=http.createServer((request,response)=>{
       assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,`${width}px: overflow orizzontale lettura`);
     }
     await page.setViewportSize({width:1280,height:900});
-    const publishedButton=page.locator('[data-add-published-selection]').first();
+    const publishedButton=page.locator('[data-published-selection-id]').filter({hasText:'Tiri giocatore'}).first().locator('[data-add-published-selection]');
     const publishedId=await publishedButton.getAttribute('data-add-published-selection');
     await publishedButton.click();
     assert.equal(await publishedButton.getAttribute('aria-pressed'),'true','Aggiunta dalla lettura non riuscita');
