@@ -1,16 +1,16 @@
 # Integrazione Fase 12 — UEFA MD2 + quote Sisal
 
-Generato: 2026-10-13T18:11:50.498Z
+Generato: 2026-10-13T18:14:52.209Z
 
 ## Esito
 
 - Copertura partite: **18/18**; XI complete: **18/18**; formazioni ufficiali applicate: **9/18**.
-- Titolari correnti: **381/396** associati a ID canonico; **15** non risolti.
+- Titolari correnti: **392/396** associati a ID canonico; **4** non risolti.
 - Overlay identità MD2: **17** record additivi verificati; nessuna rosa UEFA congelata è stata riscritta.
 - Pronostici squadra: **17/18** con volumi dettagliati; risultato/goal e relative quote disponibili **18/18**.
-- Disponibilità UEFA: **99 indisponibili**, **3 squalificati**, **22 in dubbio**; 70/124 associati.
+- Disponibilità UEFA: **99 indisponibili**, **3 squalificati**, **22 in dubbio**; 108/124 associati.
 - Quote: snapshot Sisal **18/18** eventi; **28109** mercati giocatore e **92818** selezioni indicizzate.
-- Selezioni aperte con quota > 1 e selezionabili nell'interfaccia: **50399**; anche con identità canonica giocatore completa: **47300**.
+- Selezioni aperte con quota > 1 e selezionabili nell'interfaccia: **50399**; anche con identità canonica giocatore completa: **47562**.
 - Selezioni giocatore matematicamente valutabili: **0**. Probabilità ed EV restano N/D senza impedire l'uso della quota provider valida.
 
 ## Identità recuperate
@@ -41,11 +41,11 @@ Generato: 2026-10-13T18:11:50.498Z
 | Lens–Sporting CP | 21/22 | 6 | 1141 | 1689 | PARZIALE (1 ID) |
 | Sabah–Slavia Praha | 22/22 | 9 | 1388 | 3110 | OK |
 | Arsenal–Lille | 21/22 | 7 | 1255 | 1960 | PARZIALE (1 ID) |
-| Atlético de Madrid–Manchester United | 21/22 | 8 | 1315 | 1999 | PARZIALE (1 ID) |
-| Inter–Club Brugge | 20/22 | 3 | 2237 | 4034 | PARZIALE (2 ID) |
-| Galatasaray–Barcelona | 16/22 | 11 | 1643 | 2921 | PARZIALE (6 ID) |
+| Atlético de Madrid–Manchester United | 22/22 | 8 | 1315 | 1999 | OK |
+| Inter–Club Brugge | 22/22 | 3 | 2237 | 4034 | OK |
+| Galatasaray–Barcelona | 22/22 | 11 | 1643 | 2921 | OK |
 | Leipzig–PSV Eindhoven | 22/22 | 12 | 1011 | 1823 | OK |
-| Viking–Bayern München | 19/22 | 8 | 1858 | 3412 | PARZIALE (3 ID) |
+| Viking–Bayern München | 21/22 | 8 | 1858 | 3412 | PARZIALE (1 ID) |
 | Villarreal–Napoli | 21/22 | 9 | 1665 | 2777 | PARZIALE (1 ID) |
 | Feyenoord–Como | 22/22 | 9 | 2075 | 3750 | OK |
 | LASK–Liverpool | 22/22 | 8 | 1118 | 1820 | OK |
@@ -82,73 +82,24 @@ I mercati 28507 includono il sostituto; i 28506 e gli altri contratti che lo dic
 
 - Titolare non risolto: Sporting CP — Joao Simoes.
 - Titolare non risolto: Arsenal — Lewis-Skelly.
-- Titolare non risolto: Manchester United — Martinez Li..
-- Titolare non risolto: Inter — Martinez J..
-- Titolare non risolto: Inter — Martinez L..
-- Titolare non risolto: Galatasaray — Cakir.
-- Titolare non risolto: Galatasaray — Yilmaz.
-- Titolare non risolto: Galatasaray — Elmali.
-- Titolare non risolto: Galatasaray — Akgun.
-- Titolare non risolto: Barcelona — Garcia J..
-- Titolare non risolto: Barcelona — Garcia E..
-- Titolare non risolto: Viking — Haugen.
-- Titolare non risolto: Bayern München — Kim Min-Jae.
 - Titolare non risolto: Bayern München — Karl.
 - Titolare non risolto: Napoli — Giovane.
-- Disponibilità non risolta: Arsenal — Hincapie P. (unavailable).
-- Disponibilità non risolta: Arsenal — Saliba W. (unavailable).
-- Disponibilità non risolta: Arsenal — Tzolis C. (unavailable).
-- Disponibilità non risolta: Arsenal — Zubimendi M. (unavailable).
 - Disponibilità non risolta: Lille — Igamane H. (unavailable).
-- Disponibilità non risolta: Lille — Mbappe E. (unavailable).
-- Disponibilità non risolta: Lille — Santos T. (unavailable).
-- Disponibilità non risolta: Manchester United — Dorgu P. (unavailable).
-- Disponibilità non risolta: Manchester United — Heaton T. (unavailable).
-- Disponibilità non risolta: Manchester United — Mazraoui N. (unavailable).
-- Disponibilità non risolta: Manchester United — Sesko B. (unavailable).
-- Disponibilità non risolta: Manchester United — Shaw L. (unavailable).
-- Disponibilità non risolta: Manchester United — Ugarte M. (unavailable).
-- Disponibilità non risolta: Inter — Jones C. (unavailable).
-- Disponibilità non risolta: Inter — Stones J. (unavailable).
-- Disponibilità non risolta: Club Brugge — Ordonez J. (unavailable).
 - Disponibilità non risolta: Galatasaray — Aydin E. (unavailable).
 - Disponibilità non risolta: Galatasaray — Ayhan K. (unavailable).
 - Disponibilità non risolta: Galatasaray — Guner A. (unavailable).
 - Disponibilità non risolta: Galatasaray — Karatas K. (unavailable).
-- Disponibilità non risolta: Galatasaray — Singo W. (unavailable).
 - Disponibilità non risolta: Galatasaray — Unyay A. (unavailable).
 - Disponibilità non risolta: Galatasaray — Yilmaz A. (unavailable).
 - Disponibilità non risolta: Barcelona — Bardghji R. (unavailable).
-- Disponibilità non risolta: Barcelona — Christensen A. (unavailable).
 - Disponibilità non risolta: Barcelona — de Jong F. (unavailable).
-- Disponibilità non risolta: Leipzig — Baumgartner C. (unavailable).
-- Disponibilità non risolta: Leipzig — Guiu M. (unavailable).
-- Disponibilità non risolta: Leipzig — Ouedraogo A. (unavailable).
 - Disponibilità non risolta: Leipzig — Zingerle L. (unavailable).
-- Disponibilità non risolta: PSV Eindhoven — Lammers S. (unavailable).
 - Disponibilità non risolta: PSV Eindhoven — Nagalo A. (unavailable).
-- Disponibilità non risolta: PSV Eindhoven — Ouaissa S. (unavailable).
-- Disponibilità non risolta: PSV Eindhoven — Pepi R. (unavailable).
-- Disponibilità non risolta: PSV Eindhoven — Plea A. (unavailable).
 - Disponibilità non risolta: PSV Eindhoven — Schouten J. (unavailable).
-- Disponibilità non risolta: PSV Eindhoven — Sildillia K. (unavailable).
-- Disponibilità non risolta: PSV Eindhoven — Wanner P. (unavailable).
-- Disponibilità non risolta: Viking — Baertelsen A. (unavailable).
-- Disponibilità non risolta: Viking — Berisha V. (unavailable).
-- Disponibilità non risolta: Viking — Bjorshol S. (unavailable).
 - Disponibilità non risolta: Viking — D'Agostino N. (unavailable).
-- Disponibilità non risolta: Viking — Frimpong K. (unavailable).
-- Disponibilità non risolta: Viking — Roseth M. (unavailable).
 - Disponibilità non risolta: Bayern München — Buchmann T. (unavailable).
-- Disponibilità non risolta: Bayern München — Musiala J. (unavailable).
-- Disponibilità non risolta: Villarreal — Buchanan T. (unavailable).
-- Disponibilità non risolta: Villarreal — Pepe N. (unavailable).
-- Disponibilità non risolta: Napoli — Anguissa F. (unavailable).
 - Disponibilità non risolta: Napoli — Buongiorno A. (unavailable).
-- Disponibilità non risolta: Napoli — Favasuli C. (unavailable).
 - Disponibilità non risolta: Napoli — Marianucci L. (unavailable).
-- Disponibilità non risolta: Napoli — Olivera M. (unavailable).
-- Disponibilità non risolta: Napoli — Vergara A. (unavailable).
 - Le probabilità evento e gli EV dei mercati giocatore restano N/D/null per incompatibilità contrattuale.
 
 ## Sincronizzazione e integrità

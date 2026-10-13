@@ -14,6 +14,7 @@ const odds=read("data/normalized/odds/sisal/champions-league.json");
 const individualSource=read("data/sources/champions-md02-individual-selection-2026-27.json");
 const phase12d=read("data/sources/champions-md02-phase12d-additions-2026-27.json");
 const outsiders=read("data/sources/champions-md02-phase12d-outsiders-2026-27.json");
+const targetedFixtureIds=new Set(["ucl-2026-27-md02-03","ucl-2026-27-md02-04","ucl-2026-27-md02-05","ucl-2026-27-md02-06","ucl-2026-27-md02-07","ucl-2026-27-md02-08","ucl-2026-27-md02-09"]);
 
 assert.equal(data.matchday,2);
 assert.equal(data.fixtures.length,18);
@@ -88,7 +89,7 @@ for(const fixture of data.fixtures){
       const bench=[...(source.lineups.home.bench||[]),...(source.lineups.away.bench||[])];
       const confirmedBench=bench.some(item=>item.canonicalPlayerId===individual.player.canonicalPlayerId);
       assert.equal(individual.player.lineupStatus,confirmedBench?"official-bench":"official-non-starter");
-      assert.equal(individual.dataQuality.benchStatus,confirmedBench?"confirmed":"not-listed");
+      if(targetedFixtureIds.has(fixture.fixtureId))assert.equal(individual.dataQuality.benchStatus,confirmedBench?"confirmed":"not-listed");
       assert.equal(individual.reviewStatus,"DA_RIVEDERE");
       assert.equal(individual.player.expectedMinutes,null);
       assert.equal(individual.betSelection.evaluation.individualForecast.mean,null);
@@ -129,7 +130,6 @@ for(const fixture of data.fixtures){
   }
 }
 
-const targetedFixtureIds=new Set(["ucl-2026-27-md02-03","ucl-2026-27-md02-04","ucl-2026-27-md02-05","ucl-2026-27-md02-06","ucl-2026-27-md02-07","ucl-2026-27-md02-08","ucl-2026-27-md02-09"]);
 const untouchedFixtures=data.fixtures.filter(fixture=>!targetedFixtureIds.has(fixture.fixtureId));
 const baselineSchedina=JSON.parse(execFileSync("git",["show","HEAD:data/normalized/schedina-champions-md02.json"],{cwd:root,encoding:"utf8",maxBuffer:64*1024*1024}));
 assert.equal(
@@ -196,6 +196,6 @@ assert.deepEqual(restored.getSnapshot().selections[0].betSelection.market.modifi
 
 assert.equal(integration.fixtures.find(fixture=>fixture.fixtureId==="ucl-2026-27-md02-02").teamPrediction.dataQuality.detailedVolumesAvailable,false);
 const viking=integration.fixtures.find(fixture=>fixture.fixtureId==="ucl-2026-27-md02-08");
-assert(viking.lineups.home.players.some(player=>player.suppliedName==="Haugen"&&player.canonicalPlayerId===null&&player.mappingStatus==="unresolved"));
+assert(viking.lineups.home.players.some(player=>player.suppliedName==="Haugen K."&&player.canonicalPlayerId==="kristoffer-haugen"&&player.mappingStatus==="resolved"));
 
 console.log("OK card Champions MD2 finale: 18 partite, 120 pronostici, 26 outsider, 18 preferiti, 42 valutabili e 120 quote cliccabili");

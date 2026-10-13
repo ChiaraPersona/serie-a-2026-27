@@ -34,7 +34,7 @@ const round = (value, digits = 2) => Number(Number(value).toFixed(digits));
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 const normalize = value => String(value || "")
   .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-  .toLowerCase().replace(/ł/g, "l").replace(/đ/g, "d").replace(/ø/g, "o").replace(/æ/g, "ae").replace(/œ/g, "oe").replace(/ß/g, "ss")
+  .toLowerCase().replace(/ı/g, "i").replace(/ł/g, "l").replace(/đ/g, "d").replace(/ø/g, "o").replace(/æ/g, "ae").replace(/œ/g, "oe").replace(/ß/g, "ss")
   .replace(/[^a-z0-9]+/g, " ").trim();
 const tokens = value => normalize(value).split(" ").filter(Boolean);
 
@@ -127,6 +127,11 @@ function resolveCanonical(team, suppliedName) {
   if (exact.length === 1) return { player: exact[0], method: "exact" };
   const fullTokens = players.filter(player => wantedTokens.length > 1 && wantedTokens.every(token => tokens(player.name).includes(token)));
   if (fullTokens.length === 1) return { player: fullTokens[0], method: "all-tokens" };
+  const surnameFirst = players.filter(player => {
+    const candidate = tokens(player.name);
+    return wantedTokens.length > 1 && candidate.at(-1) === wantedTokens[0] && candidate[0]?.startsWith(wantedTokens.slice(1).join(""));
+  });
+  if (surnameFirst.length === 1) return { player: surnameFirst[0], method: "surname-first-initial" };
   const surname = wantedTokens.at(-1);
   const surnameMatches = players.filter(player => tokens(player.name).at(-1) === surname);
   if (surnameMatches.length === 1) return { player: surnameMatches[0], method: "unique-surname" };
