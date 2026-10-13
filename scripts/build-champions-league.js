@@ -7,7 +7,7 @@ const root = path.resolve(__dirname, "..");
 const sourcePath = path.join(root, "data/sources/champions-league-2026-27.json");
 const brandingPath = path.join(root, "data/sources/champions-team-branding-2026-27.json");
 const refereeAssignmentsPath = path.join(root, "data/sources/champions-referee-assignments-2026-27.json");
-const probableFormationsPath = path.join(root, "data/sources/champions-probable-formations-md01-2026-27.json");
+const probableFormationsPaths = [1, 2].map(matchday => path.join(root, `data/sources/champions-probable-formations-md${String(matchday).padStart(2, "0")}-2026-27.json`));
 const outputPath = path.join(root, "data/normalized/champions-league-2026-27.json");
 const source = JSON.parse(fs.readFileSync(sourcePath, "utf8"));
 const results = JSON.parse(fs.readFileSync(path.join(root, "data/sources/champions-results-md01-2026-27.json"), "utf8"));
@@ -19,7 +19,7 @@ for (const result of results.fixtures) {
 }
 const branding = JSON.parse(fs.readFileSync(brandingPath, "utf8"));
 const refereeAssignmentsSource = JSON.parse(fs.readFileSync(refereeAssignmentsPath, "utf8"));
-const probableFormationsSource = JSON.parse(fs.readFileSync(probableFormationsPath, "utf8"));
+const probableFormationsSources = probableFormationsPaths.map(filePath => JSON.parse(fs.readFileSync(filePath, "utf8")));
 
 const fail = message => { throw new Error(`Champions League: ${message}`); };
 if (source.schemaVersion !== 1 || source.season !== "2026-27" || source.phase !== "league") fail("fonte non valida");
@@ -59,38 +59,60 @@ if (kabakov?.cardsSampleMatches !== 24 || kabakov?.foulsPredictionEligible !== f
 if (massa?.alternateStatistics?.yellowCardsPerMatch !== 4.73 || massa?.alternateStatistics?.foulsPerMatch !== 27.64) fail("campione alternativo Massa mancante");
 const refereeWatchlist = new Map(refereeAssignmentsSource.watchlist.map(item => [item.fixtureId, item.reason]));
 
-if (probableFormationsSource.schemaVersion !== 1 || probableFormationsSource.season !== source.season || probableFormationsSource.matchday !== 1 || probableFormationsSource.status !== "editorial-probable") fail("fonte moduli probabili non valida");
-if (!Array.isArray(probableFormationsSource.fixtures) || probableFormationsSource.fixtures.length !== 18) fail("attesi 18 moduli probabili per la prima giornata");
 const formationPattern = /^(?:[1-5]-){2,3}[1-5]$/;
-const confidenceBands = new Set(["very-high", "medium-high", "lower"]);
+const confidenceBands = new Set(["very-high", "medium-high", "lower", "not-rated"]);
 const probableFormations = new Map();
-for (const item of probableFormationsSource.fixtures) {
-  const fixture = source.fixtures.find(candidate => candidate.id === item.fixtureId);
-  if (!fixture || fixture.matchday !== 1) fail(`${item.fixtureId}: moduli probabili senza gara della prima giornata`);
-  if (probableFormations.has(item.fixtureId)) fail(`${item.fixtureId}: moduli probabili duplicati`);
-  if (fixture.homeTeam !== item.homeTeam || fixture.awayTeam !== item.awayTeam) fail(`${item.fixtureId}: squadre dei moduli probabili non coerenti con il calendario`);
-  if (!confidenceBands.has(item.confidenceBand) || !Array.isArray(item.uncertainSides) || item.uncertainSides.some(side => !["home", "away"].includes(side)) || new Set(item.uncertainSides).size !== item.uncertainSides.length) fail(`${item.fixtureId}: confidenza XI non valida`);
-  for (const formation of [item.homeFormation, item.awayFormation]) {
-    if (!formationPattern.test(formation) || formation.split("-").reduce((sum, value) => sum + Number(value), 0) !== 10) fail(`${item.fixtureId}: modulo probabile non valido`);
+for (const probableFormationsSource of probableFormationsSources) {
+  const expectedFixtures = source.fixtures.filter(fixture => fixture.matchday === probableFormationsSource.matchday);
+  if (probableFormationsSource.schemaVersion !== 1 || probableFormationsSource.season !== source.season || !Number.isInteger(probableFormationsSource.matchday) || probableFormationsSource.status !== "editorial-probable") fail("fonte moduli probabili non valida");
+  if (!Array.isArray(probableFormationsSource.fixtures) || probableFormationsSource.fixtures.length !== expectedFixtures.length) fail(`attesi ${expectedFixtures.length} moduli probabili per la giornata ${probableFormationsSource.matchday}`);
+  for (const item of probableFormationsSource.fixtures) {
+    const fixture = source.fixtures.find(candidate => candidate.id === item.fixtureId);
+    if (!fixture || fixture.matchday !== probableFormationsSource.matchday) fail(`${item.fixtureId}: moduli probabili senza gara della giornata ${probableFormationsSource.matchday}`);
+    if (probableFormations.has(item.fixtureId)) fail(`${item.fixtureId}: moduli probabili duplicati`);
+    if (fixture.homeTeam !== item.homeTeam || fixture.awayTeam !== item.awayTeam) fail(`${item.fixtureId}: squadre dei moduli probabili non coerenti con il calendario`);
+    if (!confidenceBands.has(item.confidenceBand) || !Array.isArray(item.uncertainSides) || item.uncertainSides.some(side => !["home", "away"].includes(side)) || new Set(item.uncertainSides).size !== item.uncertainSides.length) fail(`${item.fixtureId}: confidenza XI non valida`);
+    for (const formation of [item.homeFormation, item.awayFormation]) {
+      if (!formationPattern.test(formation) || formation.split("-").reduce((sum, value) => sum + Number(value), 0) !== 10) fail(`${item.fixtureId}: modulo probabile non valido`);
+    }
+    const normalizePlayers = (players, venue) => {
+      if (players == null) return null;
+      if (!Array.isArray(players) || players.length !== 11 || new Set(players).size !== 11 || players.some(name => typeof name !== "string" || !name.trim())) fail(`${item.fixtureId}: undici probabile ${venue} non valido`);
+      return players;
+    };
+    const normalizeNotes = (notes, venue) => {
+      if (notes == null) return [];
+      if (!Array.isArray(notes) || notes.some(note => typeof note !== "string" || !note.trim())) fail(`${item.fixtureId}: note ${venue} non valide`);
+      return notes;
+    };
+    const normalizeAvailability = (values, venue, label) => {
+      if (values == null) return null;
+      if (!Array.isArray(values) || values.some(value => typeof value !== "string" || !value.trim())) fail(`${item.fixtureId}: ${label} ${venue} non validi`);
+      return values;
+    };
+    const side = (venue, label) => {
+      const unavailable = normalizeAvailability(item[`${venue}Unavailable`], label, "indisponibili");
+      const doubts = normalizeAvailability(item[`${venue}Doubts`], label, "dubbi");
+      const notes = normalizeNotes(item[`${venue}Notes`], label);
+      if (unavailable !== null) notes.push(`Indisponibili: ${unavailable.length ? unavailable.join(", ") : "nessuno"}.`);
+      if (doubts !== null) notes.push(`In dubbio: ${doubts.length ? doubts.join(", ") : "nessuno"}.`);
+      return {
+        team: item[`${venue}Team`],
+        formation: item[`${venue}Formation`],
+        players: normalizePlayers(item[`${venue}Players`], label),
+        notes,
+        ...(unavailable !== null || doubts !== null ? { availability: { unavailable: unavailable || [], doubts: doubts || [] } } : {})
+      };
+    };
+    probableFormations.set(item.fixtureId, {
+      status: probableFormationsSource.status,
+      updatedAt: probableFormationsSource.updatedAt,
+      source: probableFormationsSource.source,
+      lineupConfidence: { band: item.confidenceBand, uncertainSides: item.uncertainSides },
+      home: side("home", "casa"),
+      away: side("away", "trasferta")
+    });
   }
-  const normalizePlayers = (players, venue) => {
-    if (players == null) return null;
-    if (!Array.isArray(players) || players.length !== 11 || new Set(players).size !== 11 || players.some(name => typeof name !== "string" || !name.trim())) fail(`${item.fixtureId}: undici probabile ${venue} non valido`);
-    return players;
-  };
-  const normalizeNotes = (notes, venue) => {
-    if (notes == null) return [];
-    if (!Array.isArray(notes) || notes.some(note => typeof note !== "string" || !note.trim())) fail(`${item.fixtureId}: note ${venue} non valide`);
-    return notes;
-  };
-  probableFormations.set(item.fixtureId, {
-    status: probableFormationsSource.status,
-    updatedAt: probableFormationsSource.updatedAt,
-    source: probableFormationsSource.source,
-    lineupConfidence: { band: item.confidenceBand, uncertainSides: item.uncertainSides },
-    home: { team: item.homeTeam, formation: item.homeFormation, players: normalizePlayers(item.homePlayers, "casa"), notes: normalizeNotes(item.homeNotes, "casa") },
-    away: { team: item.awayTeam, formation: item.awayFormation, players: normalizePlayers(item.awayPlayers, "trasferta"), notes: normalizeNotes(item.awayNotes, "trasferta") }
-  });
 }
 
 const ids = new Set();
@@ -187,7 +209,8 @@ fs.writeFileSync(outputPath, JSON.stringify({
   refereeVerification: refereeAssignmentsSource.verification,
   refereeMethodology: refereeAssignmentsSource.methodology,
   refereeWatchlist: refereeAssignmentsSource.watchlist,
-  probableFormationsSource: probableFormationsSource.source,
+  probableFormationsSource: probableFormationsSources[0].source,
+  probableFormationsSources: probableFormationsSources.map(item => ({ matchday: item.matchday, updatedAt: item.updatedAt, status: item.status, source: item.source })),
   summary: { teams: teamList.length, matchdays: matchdays.size, fixtures: fixtures.length, finished: resultById.size },
   teams: teamList,
   teamBranding,
