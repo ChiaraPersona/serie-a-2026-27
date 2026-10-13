@@ -1,6 +1,6 @@
 # Champions MD2 — audit finale outsider, etichette e preferiti
 
-Generato il 2026-10-13T14:37:01.209Z. Fonte outsider/preferiti: `data/sources/champions-md02-phase12d-outsiders-2026-27.json`.
+Generato il 2026-10-13T14:38:28.124Z. Fonte outsider/preferiti: `data/sources/champions-md02-phase12d-outsiders-2026-27.json`.
 
 ## 1. Audit degli 84,6 minuti attesi
 
@@ -142,8 +142,8 @@ Catalogo riusato senza nuovo download: 18 eventi, 37.489 mercati, 127.347 selezi
 | Tiri e SOT squadra/partita | 1425 | 1425 | A/C | 6 | Solo tiri squadra 10.5 e SOT squadra 3.5 sono soglie esatte coperte dal walk-forward. Totali partita e altre soglie non sono promossi. |
 | Tiri giocatore DUO | 2926 | 2926 | B | 25 | Volume del singolo disponibile; contratto 28507 include il sostituto. Probabilita, quota equa ed EV null. |
 
-Le regressioni coperte comprendono Champions MD1 e Serie A MD6. Nessun commit, push o deploy fa parte di questa fase.
+Le regressioni coperte comprendono Champions MD1 e Serie A MD6. Questo agente non ha eseguito commit, push o deploy. Durante la lavorazione è però comparso il commit concorrente esterno `400910a4` (“arbitraggio”), già coincidente con `origin/main`, che ha inglobato anche i file di questa fase; la cronologia non è stata alterata per tentare di rimuoverlo.
 
 ## 10. Gate finale
 
-**PARTIAL.** Integrazione, contratti, conteggi, tracciabilità e resa sono completi. Il limite residuo è metodologico e dichiarato: gli 84,6 minuti dei 19 outsider individuali sono un fallback condiviso, non una previsione individualizzata. I relativi contratti DUO restano quindi correttamente classe B e senza P/quota equa/EV.
+**PARTIAL.** Integrazione, contratti, conteggi, tracciabilità e resa sono completi. Restano due criticità dichiarate: gli 84,6 minuti dei 19 outsider individuali sono un fallback condiviso, non una previsione individualizzata; inoltre un processo concorrente esterno ha committato e pubblicato lo stato del repository mentre il lavoro era in corso. I contratti DUO restano correttamente classe B e senza P/quota equa/EV.

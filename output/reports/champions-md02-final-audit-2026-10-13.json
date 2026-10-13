@@ -1,9 +1,20 @@
 {
   "schemaVersion": 1,
   "phase": "CHAMPIONS-MD2-FINAL",
-  "generatedAt": "2026-10-13T14:37:01.209Z",
+  "generatedAt": "2026-10-13T14:38:28.124Z",
   "gate": "PARTIAL",
-  "gateReason": "Integrazione, tracciabilità e contratti sono completi; resta una limitazione modellistica esplicita: i 19 outsider individuali usano la stessa esposizione da titolare 0,94×90, non minuti individualizzati. I mercati DUO restano correttamente senza P, quota equa ed EV.",
+  "gateReason": "Integrazione, tracciabilità e contratti sono completi; resta una limitazione modellistica esplicita: i 19 outsider individuali usano la stessa esposizione da titolare 0,94×90, non minuti individualizzati. Inoltre, durante la lavorazione un processo concorrente esterno a questa esecuzione ha creato e pubblicato il commit 400910a4, nonostante questo agente non abbia eseguito commit, push o deploy.",
+  "repositoryConstraint": {
+    "actionsPerformedByThisAgent": {
+      "commit": false,
+      "push": false,
+      "deploy": false
+    },
+    "concurrentExternalChangeObserved": true,
+    "observedHead": "400910a4b5f452d4ee23bf9c7e819db48f0e5064",
+    "observedOriginMain": "400910a4b5f452d4ee23bf9c7e819db48f0e5064",
+    "note": "Il commit concorrente 'arbitraggio' ha inglobato anche i file di questa fase; la cronologia non è stata riscritta o alterata da questo agente."
+  },
   "preservation": {
     "predictions": 120,
     "uniqueSelectionIds": 120,

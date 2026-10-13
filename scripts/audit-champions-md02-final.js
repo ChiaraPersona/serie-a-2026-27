@@ -163,7 +163,14 @@ const finalReport={
   phase:"CHAMPIONS-MD2-FINAL",
   generatedAt:new Date().toISOString(),
   gate:"PARTIAL",
-  gateReason:"Integrazione, tracciabilità e contratti sono completi; resta una limitazione modellistica esplicita: i 19 outsider individuali usano la stessa esposizione da titolare 0,94×90, non minuti individualizzati. I mercati DUO restano correttamente senza P, quota equa ed EV.",
+  gateReason:"Integrazione, tracciabilità e contratti sono completi; resta una limitazione modellistica esplicita: i 19 outsider individuali usano la stessa esposizione da titolare 0,94×90, non minuti individualizzati. Inoltre, durante la lavorazione un processo concorrente esterno a questa esecuzione ha creato e pubblicato il commit 400910a4, nonostante questo agente non abbia eseguito commit, push o deploy.",
+  repositoryConstraint:{
+    actionsPerformedByThisAgent:{commit:false,push:false,deploy:false},
+    concurrentExternalChangeObserved:true,
+    observedHead:"400910a4b5f452d4ee23bf9c7e819db48f0e5064",
+    observedOriginMain:"400910a4b5f452d4ee23bf9c7e819db48f0e5064",
+    note:"Il commit concorrente 'arbitraggio' ha inglobato anche i file di questa fase; la cronologia non è stata riscritta o alterata da questo agente."
+  },
   preservation:{
     predictions:selections.length,
     uniqueSelectionIds:new Set(selections.map(selection=>selection.selectionId)).size,
@@ -310,11 +317,11 @@ Catalogo riusato senza nuovo download: ${marketReport.catalog.events} eventi, ${
 |---|---:|---:|---:|---:|---|
 ${marketLines}
 
-Le regressioni coperte comprendono Champions MD1 e Serie A MD6. Nessun commit, push o deploy fa parte di questa fase.
+Le regressioni coperte comprendono Champions MD1 e Serie A MD6. Questo agente non ha eseguito commit, push o deploy. Durante la lavorazione è però comparso il commit concorrente esterno \`400910a4\` (“arbitraggio”), già coincidente con \`origin/main\`, che ha inglobato anche i file di questa fase; la cronologia non è stata alterata per tentare di rimuoverlo.
 
 ## 10. Gate finale
 
-**PARTIAL.** Integrazione, contratti, conteggi, tracciabilità e resa sono completi. Il limite residuo è metodologico e dichiarato: gli 84,6 minuti dei 19 outsider individuali sono un fallback condiviso, non una previsione individualizzata. I relativi contratti DUO restano quindi correttamente classe B e senza P/quota equa/EV.
+**PARTIAL.** Integrazione, contratti, conteggi, tracciabilità e resa sono completi. Restano due criticità dichiarate: gli 84,6 minuti dei 19 outsider individuali sono un fallback condiviso, non una previsione individualizzata; inoltre un processo concorrente esterno ha committato e pubblicato lo stato del repository mentre il lavoro era in corso. I contratti DUO restano correttamente classe B e senza P/quota equa/EV.
 `;
 
 fs.mkdirSync(path.join(root,"output/reports"),{recursive:true});
