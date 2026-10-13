@@ -168,10 +168,14 @@ async function main() {
 
     const kickoff = Date.parse(match.kickoffUtc);
     const homeNeedles = teamNeedles(match.homeTeam), awayNeedles = teamNeedles(match.awayTeam), refereeNames = refereeNeedles(match, registryById);
-    const candidates = entries.filter(entry => {
+    const publishedCandidates = entries.filter(entry => {
       const published = Date.parse(entry.publishedAt);
       return published < kickoff && published >= kickoff - 14 * 86400000 &&
         containsNeedle(entry.text, homeNeedles) && containsNeedle(entry.text, awayNeedles) && containsNeedle(entry.text, refereeNames);
+    });
+    const candidates = publishedCandidates.filter(entry => {
+      const updated = Date.parse(entry.updatedAt);
+      return Number.isFinite(updated) && updated < kickoff;
     }).sort((a, b) => Date.parse(a.publishedAt) - Date.parse(b.publishedAt));
     if (candidates.length) {
       const evidence = candidates[0], leadHours = hoursBetween(evidence.publishedAt, match.kickoffUtc);
@@ -180,7 +184,7 @@ async function main() {
         status: "INDIRECT_PRE_KICKOFF", authority: "THIRD_PARTY_APPOINTMENT_ARCHIVE", timestampPrecision: "ISO_DATETIME_FROM_BLOGGER_PUBLISHED_FIELD",
         publishedAt: evidence.publishedAt, evidenceUpdatedAt: evidence.updatedAt, evidenceTitle: evidence.title,
         evidenceUrl: evidence.url, rawPath: rel(feedFile),
-        matchingRule: "PUBLISHED_BEFORE_KICKOFF_WITHIN_14_DAYS_AND_NORMALIZED_HOME_AWAY_REFEREE_TEXT_MATCH",
+        matchingRule: "PUBLISHED_AND_LAST_UPDATED_BEFORE_KICKOFF_WITHIN_14_DAYS_AND_NORMALIZED_HOME_AWAY_REFEREE_TEXT_MATCH",
         leadHours: Number(leadHours.toFixed(2)),
         horizons: { preKickoff: leadHours > 0, advance48h: leadHours >= 48 }
       };
@@ -188,7 +192,11 @@ async function main() {
     return {
       matchId: match.matchId, kickoffUtc: match.kickoffUtc, refereeId: match.refereeId, refereeName: match.refereeName,
       status: "NOT_VERIFIABLE", authority: null, timestampPrecision: null, evidenceUrl: null, rawPath: null,
-      matchingRule: "NO_ADMISSIBLE_TIMESTAMPED_SOURCE_MATCH", leadHours: null,
+      matchingRule: publishedCandidates.length
+        ? "MATCHING_POST_EXISTS_BUT_CURRENT_CONTENT_WAS_UPDATED_AT_OR_AFTER_KICKOFF"
+        : "NO_ADMISSIBLE_TIMESTAMPED_SOURCE_MATCH",
+      rejectedPostKickoffUpdatedCandidates: publishedCandidates.filter(entry => !Number.isFinite(Date.parse(entry.updatedAt)) || Date.parse(entry.updatedAt) >= kickoff).length,
+      leadHours: null,
       horizons: { preKickoff: false, advance48h: false }
     };
   });
@@ -202,7 +210,7 @@ async function main() {
     },
     sourcePolicy: {
       originalTimestampVerified: "Dated UEFA editorial page; date is conservatively bounded at 23:59:59 UTC and fetched text must contain both teams and referee.",
-      indirectPreKickoff: "Timestamped third-party appointment archive; exact Blogger published timestamp, both teams and referee must match within 14 days before kickoff.",
+      indirectPreKickoff: "Timestamped third-party appointment archive; exact Blogger published and last-updated timestamps must both precede kickoff, and both teams and referee must match within 14 days before kickoff.",
       notVerifiable: "Current acquisition timestamps, undated match pages and post-match records are inadmissible."
     },
     summary: {
@@ -212,6 +220,7 @@ async function main() {
       notVerifiable: counts("NOT_VERIFIABLE"),
       usablePreKickoff: rows.filter(row => row.horizons.preKickoff).length,
       usableAdvance48h: rows.filter(row => row.horizons.advance48h).length,
+      rejectedBecauseCurrentArchiveContentWasUpdatedAtOrAfterKickoff: rows.filter(row => row.matchingRule === "MATCHING_POST_EXISTS_BUT_CURRENT_CONTENT_WAS_UPDATED_AT_OR_AFTER_KICKOFF").length,
       law5EntriesInspected: entries.length,
       law5FeedDeclaredTotal: Number(feed.feed?.openSearch$totalResults?.$t || entries.length)
     },

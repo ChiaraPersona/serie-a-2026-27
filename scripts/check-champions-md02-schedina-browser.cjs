@@ -5,6 +5,7 @@ const path=require('node:path');
 const assert=require('node:assert/strict');
 
 const root=path.resolve(__dirname,'..');
+const championsMd02=JSON.parse(fs.readFileSync(path.join(root,'data/normalized/schedina-champions-md02.json'),'utf8'));
 const types={'.html':'text/html','.js':'text/javascript','.mjs':'text/javascript','.json':'application/json','.css':'text/css','.png':'image/png','.jpg':'image/jpeg'};
 const server=http.createServer((request,response)=>{
   const target=path.resolve(root,'.'+decodeURIComponent(new URL(request.url,'http://localhost').pathname));
@@ -35,6 +36,17 @@ const server=http.createServer((request,response)=>{
       assert.equal(await page.locator('[data-selection-row]').count(),120,`${width}px: pronostici MD2`);
       assert.equal(await page.locator('[data-selection-row][data-outsider="true"]').count(),26,`${width}px: etichette outsider`);
       assert.equal(await page.locator('[data-selection-row][data-preferred="true"]').count(),18,`${width}px: un preferito per partita`);
+      const preferredList=page.locator('.betting-champions-md02-markets ~ .betting-champions-preferred');
+      assert.equal(await preferredList.count(),1,`${width}px: listone preferiti assente o non in fondo alle card`);
+      assert.match(await preferredList.locator('header').innerText(),/I 18 preferiti[\s\S]*Un pronostico selezionato per ogni partita della giornata\./,`${width}px: intestazione listone`);
+      assert.equal(await preferredList.locator('[data-preferred-list-row]').count(),18,`${width}px: righe listone`);
+      assert.equal(await preferredList.locator('[data-personal-pick]').count(),18,`${width}px: pulsanti MyCombo listone`);
+      const preferredCardIds=(await page.locator('[data-selection-row][data-preferred="true"]').evaluateAll(rows=>rows.map(row=>row.dataset.personalPick))).sort();
+      const preferredListIds=(await preferredList.locator('[data-preferred-list-row]').evaluateAll(rows=>rows.map(row=>row.dataset.selectionId))).sort();
+      assert.deepEqual(preferredListIds,preferredCardIds,`${width}px: selectionId listone non sincronizzati con le card`);
+      const preferredChronology=await preferredList.locator('[data-preferred-list-row]').evaluateAll(rows=>rows.map(row=>row.dataset.kickoff));
+      assert.deepEqual(preferredChronology,[...preferredChronology].sort(),`${width}px: ordine cronologico listone`);
+      assert.equal(await preferredList.locator('[data-preferred-list-row][data-outsider="true"]').count(),2,`${width}px: doppie etichette listone`);
       assert.equal(await page.locator('.betting-match-reading-link').count(),18,`${width}px: link letture`);
       assert.equal(await page.locator('[data-selection-row][data-personal-pick]').count(),120,`${width}px: selezioni cliccabili`);
       assert.equal(await page.locator('[data-market-family="Tiri giocatore"]').count(),52,`${width}px: pronostici tiri`);
@@ -96,6 +108,30 @@ const server=http.createServer((request,response)=>{
     assert.equal(await page.locator(`[data-personal-pick="${selectionId}"]`).getAttribute('aria-pressed'),'true');
     await page.locator(`[data-personal-pick="${selectionId}"]`).click();
     assert.equal(await page.locator('[data-personal-count]').first().innerText(),'0','Rimozione MyCombo');
+
+    const listPreferredButton=page.locator('.betting-champions-preferred [data-personal-pick]').first();
+    const preferredId=await listPreferredButton.getAttribute('data-personal-pick');
+    const cardPreferredButton=page.locator(`[data-selection-row][data-personal-pick="${preferredId}"]`);
+    await listPreferredButton.click();
+    assert.equal(await listPreferredButton.getAttribute('aria-pressed'),'true','Listone non selezionato dopo aggiunta');
+    assert.equal(await cardPreferredButton.getAttribute('aria-pressed'),'true','Card partita non sincronizzata dal listone');
+    saved=await page.evaluate(()=>JSON.parse(localStorage.getItem('serie-a-2026-27:personal-betslip:v1')));
+    assert.equal(saved.contexts['champions:2026-27:md02'].selections.filter(item=>item.selectionId===preferredId).length,1,'Duplicazione MyCombo dal listone');
+    const preferredSaved=saved.contexts['champions:2026-27:md02'].selections.find(item=>item.selectionId===preferredId);
+    const preferredSource=championsMd02.fixtures.flatMap(fixture=>fixture.selections).find(selection=>selection.selectionId===preferredId);
+    assert(preferredSaved?.betSelection?.market?.modifiers,'Modificatori preferito non persistiti');
+    assert.deepEqual(preferredSaved.betSelection.market.modifiers,preferredSource.betSelection.market.modifiers,'Modificatori preferito alterati dal listone');
+    assert.equal(preferredSaved.betSelection.quote.decimal,preferredSource.betSelection.quote.decimal,'Quota preferito alterata dal listone');
+    assert.equal(preferredSaved.betSelection.evaluation.modelProbabilityPct,preferredSource.betSelection.evaluation.modelProbabilityPct,'Probabilità preferito alterata dal listone');
+    assert.equal(preferredSaved.betSelection.evaluation.expectedValuePct,preferredSource.betSelection.evaluation.expectedValuePct,'EV preferito alterato dal listone');
+    await page.reload({waitUntil:'networkidle'});
+    assert.equal(await page.locator(`.betting-champions-preferred [data-personal-pick="${preferredId}"]`).getAttribute('aria-pressed'),'true','Persistenza listone dopo reload');
+    const restoredCardPreferred=page.locator(`[data-selection-row][data-personal-pick="${preferredId}"]`);
+    assert.equal(await restoredCardPreferred.getAttribute('aria-pressed'),'true','Persistenza card dopo reload');
+    await restoredCardPreferred.locator('xpath=ancestor::details[1]').evaluate(panel=>panel.open=true);
+    await restoredCardPreferred.click();
+    assert.equal(await page.locator(`.betting-champions-preferred [data-personal-pick="${preferredId}"]`).getAttribute('aria-pressed'),'false','Listone non deselezionato dalla card');
+    assert.equal(await page.locator('[data-personal-count]').first().innerText(),'0','Rimozione bidirezionale MyCombo');
 
     const readingCases=[
       {id:'ucl-2026-27-md02-12',total:11,outsiders:3,both:0},

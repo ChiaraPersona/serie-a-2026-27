@@ -286,6 +286,18 @@ body[data-page="betting"] main>.hero .eyebrow{margin-bottom:4px;color:var(--glas
 .betting-selection-check{display:grid;place-items:center;width:24px;height:24px;border:1px solid rgba(28,109,255,.24);border-radius:50%;color:transparent;font-size:12px;font-weight:900;transition:background .14s ease,color .14s ease,opacity .14s ease}
 .betting-market-row.is-selected .betting-selection-check{border-color:#1c6dff;background:#1c6dff;color:#fff}
 .betting-market-empty{margin:0;padding:13px;border:1px dashed rgba(22,72,126,.2);border-radius:9px;color:#52677d;font-size:11px}
+.betting-champions-preferred{display:grid;gap:14px;padding:20px;border:1px solid rgba(7,86,201,.18);border-radius:18px;background:rgba(255,255,255,.82);box-shadow:0 12px 30px rgba(13,57,105,.07)}
+.betting-champions-preferred>header{display:flex;justify-content:space-between;align-items:end;gap:16px;padding-bottom:12px;border-bottom:1px solid rgba(22,72,126,.12)}
+.betting-champions-preferred>header .eyebrow{margin:0;color:#2878D4}
+.betting-champions-preferred>header h3{margin:3px 0 2px;color:#0a477f;font-size:25px}
+.betting-champions-preferred>header p{margin:0;color:#52677d;font-size:11px}
+.betting-champions-preferred>header>span{flex:0 0 auto;padding:5px 9px;border-radius:999px;background:#eaf3ff;color:#175ea9;font-size:9px;font-weight:900;text-transform:uppercase}
+.betting-champions-preferred>ol{display:grid;gap:6px;margin:0;padding:0;list-style:none}
+.betting-preferred-list-row{display:grid;grid-template-columns:minmax(130px,.8fr) minmax(220px,1.45fr) repeat(3,minmax(64px,.45fr)) minmax(118px,auto);gap:10px;align-items:center;min-height:78px;padding:10px 11px;border:1px solid rgba(22,72,126,.11);border-left:3px solid #D4A43B;border-radius:10px;background:#fff}
+.betting-preferred-list-fixture{display:grid;gap:3px;min-width:0}.betting-preferred-list-fixture small{color:#65788b;font-size:8px;font-weight:850;text-transform:uppercase}.betting-preferred-list-fixture strong{overflow-wrap:anywhere;color:#163f69;font-size:11px;line-height:1.35}
+.betting-preferred-list-copy .betting-editorial-badges{margin:1px 0 2px}.betting-preferred-list-copy>strong{overflow-wrap:anywhere}.betting-preferred-list-contract{color:#52677d;font-size:8px!important;line-height:1.35}
+.betting-preferred-list-metric{display:grid;gap:2px;text-align:center}.betting-preferred-list-metric small{color:#6b7c8e;font-size:8px;font-weight:800;text-transform:uppercase}.betting-preferred-list-metric b{color:#203b55;font-size:12px;font-variant-numeric:tabular-nums}.betting-preferred-list-metric.is-positive b{color:#087144}.betting-preferred-list-metric.is-negative b{color:#a7212a}
+.betting-preferred-list-pick{display:inline-flex;align-items:center;justify-content:center;gap:5px;min-height:36px;padding:7px 10px;border:1px solid #2878D4;border-radius:9px;background:#edf5ff;color:#175ea9;font:inherit;font-size:9px;font-weight:900;cursor:pointer}.betting-preferred-list-pick>span:first-child{font-size:14px;line-height:1}.betting-preferred-list-pick:hover{background:#e1efff}.betting-preferred-list-pick:focus-visible{outline:3px solid rgba(40,120,212,.25);outline-offset:2px}.betting-preferred-list-pick[aria-pressed="true"]{border-color:#126443;background:#126443;color:#fff}
 .betting-personal-column{min-width:0;align-self:stretch}
 .personal-betslip-panel>footer{grid-template-columns:1fr}
 .personal-betslip-analysis{display:grid;gap:7px;margin-top:10px;padding:10px;border:1px solid rgba(22,72,126,.15);border-radius:10px;background:#f8fbff}.personal-betslip-analysis>strong{color:#0a477f;font-size:11px}.personal-betslip-analysis ul{display:grid;gap:5px;margin:0;padding:0;list-style:none}.personal-betslip-analysis li{display:grid;gap:1px;padding-left:8px;border-left:2px solid rgba(39,116,200,.35)}.personal-betslip-analysis li b{font-size:9px}.personal-betslip-analysis li span,.personal-betslip-analysis>small{color:#52677d;font-size:8px;line-height:1.4}.personal-betslip-analysis li[data-issue-type="MARKET_CONTRADICTION"],.personal-betslip-analysis li[data-issue-type="SCENARIO_INCOMPATIBILITY"]{border-left-color:#cc7a13}
@@ -312,6 +324,8 @@ body[data-page="betting"] main>.hero .eyebrow{margin-bottom:4px;color:var(--glas
   .betting-workspace-content{gap:18px}
   .betting-matchday-heading{align-items:flex-start}
   .betting-matchday-controls{justify-items:start}
+  .betting-preferred-list-row{grid-template-columns:minmax(120px,.72fr) minmax(190px,1.28fr) repeat(3,minmax(58px,.4fr));gap:8px}
+  .betting-preferred-list-pick{grid-column:1/-1;justify-self:stretch}
 }
 
 @media(max-width:680px){
@@ -334,6 +348,13 @@ body[data-page="betting"] main>.hero .eyebrow{margin-bottom:4px;color:var(--glas
   .betting-market-metric{text-align:left}
   .betting-market-quote-unavailable{grid-column:2/4}
   .betting-selection-check{position:absolute;top:9px;right:7px}
+  .betting-champions-preferred{padding:14px 10px;border-radius:14px}
+  .betting-champions-preferred>header{align-items:flex-start;flex-direction:column;gap:8px;padding-inline:2px}
+  .betting-champions-preferred>header h3{font-size:23px}
+  .betting-preferred-list-row{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:11px 9px}
+  .betting-preferred-list-fixture,.betting-preferred-list-copy{grid-column:1/-1}
+  .betting-preferred-list-metric{text-align:left}
+  .betting-preferred-list-pick{grid-column:1/-1;width:100%}
 }
 
 /* Archived selected forecasts retain the same settlement palette as slips. */
