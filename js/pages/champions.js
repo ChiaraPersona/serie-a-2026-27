@@ -14,10 +14,34 @@ export function createPage(deps){
   };
 
   const refereeMetric=metric=>metric?`<strong class="${metric.highlight?"is-highlighted":""}">${esc(metric.display)}</strong>`:"N/D";
-  const refereeName=assignment=>assignment?.status==="assigned"?`${esc(assignment.referee.name)} <span aria-label="Nazionalità">${esc(assignment.referee.countryFlag)}</span>`:"Da designare";
+  const refereeNumber=(value,digits=2)=>Number.isFinite(value)?value.toLocaleString("it-IT",{minimumFractionDigits:digits,maximumFractionDigits:digits}):"N/D";
+  const refereePercent=value=>Number.isFinite(value)?`${Math.round(value*100)}%`:"N/D";
+  const refereeDate=value=>value?new Intl.DateTimeFormat("it-IT",{day:"2-digit",month:"2-digit",year:"numeric",timeZone:"Europe/Rome"}).format(new Date(`${value}T12:00:00Z`)):"N/D";
+  const refereeName=(assignment,profile)=>assignment?.status==="assigned"?`${esc(assignment.referee.name)} <span class="champions-reading-referee-country"><span aria-hidden="true">${esc(assignment.referee.countryFlag)}</span> ${profile?.country?esc(profile.country):"Nazionalità N/D"}</span>`:"Da designare";
+  const refereeOvers=(frequencies,label)=>{
+    const rows=[["over3_5","Over 3,5"],["over4_5","Over 4,5"],["over5_5","Over 5,5"]].filter(([key])=>Number.isFinite(frequencies?.[key]?.frequency));
+    if(!rows.length)return "";
+    return `<section class="champions-reading-referee-overs"><h3>${esc(label)}</h3><div>${rows.map(([key,name])=>{const metric=frequencies[key];return `<span><small>${name}</small><strong>${refereePercent(metric.frequency)}</strong><em>n=${metric.matches}</em></span>`}).join("")}</div></section>`;
+  };
 
-  function refereeReadingPanel(assignment){
+  function refereeReadingPanel(assignment,profile){
     if(!assignment||assignment.status!=="assigned")return "";
+    if(profile){
+      const career=profile.career;
+      const recent=profile.last10;
+      const currentUcl=profile.groupedSamples?.["current:champions-league"];
+      const historicalUcl=profile.groupedSamples?.["historical:champions-league"];
+      const roles=[
+        ["Assistenti",assignment.assistants?.join(" · ")],
+        ["IV ufficiale",assignment.fourthOfficial],
+        ["VAR",assignment.var],
+        ["AVAR",assignment.avar]
+      ].filter(([,value])=>value);
+      const officials=roles.length?`<dl>${roles.map(([label,value])=>`<div><dt>${label}</dt><dd>${esc(value)}</dd></div>`).join("")}</dl>`:"";
+      const recentSummary=recent?`<section class="champions-reading-referee-recent"><h3>Ultime ${recent.matches} gare</h3><p>${refereeDate(recent.period.from)}–${refereeDate(recent.period.to)} · <strong>${refereeNumber(recent.yellowCards.perMatch)}</strong> gialli · <strong>${refereeNumber(recent.redCards.perMatch)}</strong> rossi · <strong>${refereeNumber(recent.fouls.perMatch)}</strong> falli per gara</p>${refereeOvers(recent.overCardFrequencies,`Over recenti · n=${recent.matches}`)}</section>`:"";
+      const careerOvers=refereeOvers(career.overCardFrequencies,`Over carriera · n=${career.matches}`);
+      return `<aside class="reading-referee-assignment champions-reading-referee champions-reading-hero-referee has-validated-profile" id="lettura-referee" aria-labelledby="champions-reading-referee-title" data-referee-id="${esc(profile.refereeId)}"><header><div><p class="eyebrow">Designazione arbitrale</p><h2 id="champions-reading-referee-title">${refereeName(assignment,profile)}</h2></div><p>Profilo disciplinare validato.</p></header>${officials}<div class="champions-reading-referee-profile"><div class="reading-referee-stats champions-reading-referee-stats"><article><span>Partite arbitrate</span><strong>${career.matches}</strong></article><article><span>Gialli / gara</span><strong>${refereeNumber(career.yellowCards.perMatch)}</strong></article><article><span>Rossi / gara</span><strong>${refereeNumber(career.redCards.perMatch)}</strong></article><article><span>Falli / gara</span><strong>${refereeNumber(career.fouls.perMatch)}</strong></article></div><p class="champions-reading-referee-sample"><strong>Campione principale:</strong> carriera, tutte le competizioni · ${esc(career.period)} · n=${career.matches}. <strong>Champions League separata:</strong> 2026/27 n=${currentUcl?.matches??0} · storico n=${historicalUcl?.matches??0}.</p><div class="champions-reading-referee-detail">${careerOvers}${recentSummary}</div><p class="reading-referee-method">Fonte statistiche: <a href="${esc(profile.source.url)}" target="_blank" rel="noreferrer">${esc(profile.source.provider)} ↗</a> · snapshot ${refereeDate(profile.source.retrievedAt)}. TotalCards = gialli + rossi; campioni non combinati. Dati informativi: nessun correttivo applicato ai pronostici.</p></div></aside>`;
+    }
     const stats=assignment.statistics;
     const roles=[
       ["Assistenti",assignment.assistants?.join(" · ")],
@@ -247,7 +271,7 @@ export function createPage(deps){
     const selectedForecasts=selectedBlocks?`<section class="section champions-selected-forecasts" id="champions-selected-forecasts" aria-labelledby="champions-selected-forecasts-title"><header class="section-heading"><div><p class="eyebrow">Stessa selezione della schedina</p><h2 id="champions-selected-forecasts-title">Pronostici selezionati</h2></div></header>${selectedBlocks}</section>`:"";
     const round=md2MarketEntry?2:1;
     return `<nav class="reading-back champions-reading-back"><a href="champions-league.html">← Tutte le letture</a><span>Giornata ${round}</span></nav>
-      <section class="reading-match-hero champions-reading-match-hero" aria-labelledby="champions-reading-title"><div><p class="eyebrow">UEFA Champions League · Giornata ${round} · prepartita</p><h1 id="champions-reading-title">${esc(fixture.homeTeam)} - ${esc(fixture.awayTeam)}</h1><p>${esc(dayLabel(fixture.date))} · ${esc(fixture.kickoff)}</p></div><div class="reading-matchup champions-reading-matchup" aria-label="${esc(fixture.homeTeam)} contro ${esc(fixture.awayTeam)}">${teamBadge(fixture.homeTeam,branding,{showName:false})}<b>VS</b>${teamBadge(fixture.awayTeam,branding,{showName:false})}</div><div class="reading-summary reading-summary-prototype reading-hero-summary reading-result-summary champions-reading-summary"><div class="reading-exact-scores"><span>3 risultati esatti possibili</span><div class="reading-score-list">${scoreCards}</div></div>${surpriseFactorSignal(surpriseEntry)}<div class="reading-hero-signal"><span>Confidenza</span><strong>${confidence}</strong><small>${esc(fixture.dataQuality.label)}</small></div></div>${refereeReadingPanel(fixture.refereeAssignment)}</section>
+      <section class="reading-match-hero champions-reading-match-hero" aria-labelledby="champions-reading-title"><div><p class="eyebrow">UEFA Champions League · Giornata ${round} · prepartita</p><h1 id="champions-reading-title">${esc(fixture.homeTeam)} - ${esc(fixture.awayTeam)}</h1><p>${esc(dayLabel(fixture.date))} · ${esc(fixture.kickoff)}</p></div><div class="reading-matchup champions-reading-matchup" aria-label="${esc(fixture.homeTeam)} contro ${esc(fixture.awayTeam)}">${teamBadge(fixture.homeTeam,branding,{showName:false})}<b>VS</b>${teamBadge(fixture.awayTeam,branding,{showName:false})}</div><div class="reading-summary reading-summary-prototype reading-hero-summary reading-result-summary champions-reading-summary"><div class="reading-exact-scores"><span>3 risultati esatti possibili</span><div class="reading-score-list">${scoreCards}</div></div>${surpriseFactorSignal(surpriseEntry)}<div class="reading-hero-signal"><span>Confidenza</span><strong>${confidence}</strong><small>${esc(fixture.dataQuality.label)}</small></div></div>${refereeReadingPanel(fixture.refereeAssignment,fixture.refereeProfile)}</section>
       <section class="section reading-projection-prototype prediction-volume-section champions-reading-volume" id="champions-forecast"><header class="section-heading"><div><p class="eyebrow">Pronostico e dati di gara</p><h2>Scenario principale</h2></div><p>Distribuzione dei gol, volumi e contesto della partita.</p></header><div class="champions-reading-volume-block" id="champions-volumes">${matchProjection}${teamComparison}<p class="objective-method">Tiri e corner combinano produzione per sede, valori concessi dall'avversaria e ultime otto gare; le fasce sono percentili p20–p80, non margini fissi. Ogni coppia di barre usa una scala propria della statistica indicata. La designazione arbitrale è verificata ma non viene applicata come moltiplicatore automatico dei cartellini. I dati mancanti restano N/D.</p></div>${matchReport(fixture)}${motivationEntry?`<div class="champions-reading-scenario-context" id="champions-context" aria-labelledby="champions-context-title"><header class="champions-reading-section-heading"><div><p class="eyebrow">Contesto della gara</p><h3 id="champions-context-title">Motivazione</h3></div><p>Indicatore separato dal pronostico quantitativo.</p></header>${motivationPanel(motivationEntry)}</div>`:""}</section>
       ${selectedForecasts}
       <section class="section reading-info-grid champions-reading-info" id="champions-lineups">${probableFormationCard(fixture,squads)}</section>
@@ -411,10 +435,12 @@ export function createPage(deps){
       return;
     }
     const requestedCalendarFixture=requestedMatchId?data.fixtures.find(fixture=>fixture.id===requestedMatchId):null;
-    const [md2Pilot,md2Integration,md2Schedina]=requestedCalendarFixture?.matchday===2?await Promise.all([load("champions-pilot-predictions-md02-2026-27.json"),load("champions-md02-integration-2026-27.json"),load("schedina-champions-md02.json")]):[null,null,null];
+    const [md2Pilot,md2Integration,md2Schedina,md2RefereeHistory]=requestedCalendarFixture?.matchday===2?await Promise.all([load("champions-pilot-predictions-md02-2026-27.json"),load("champions-md02-integration-2026-27.json"),load("schedina-champions-md02.json"),load("champions-referee-history-2026-10-13.json")]):[null,null,null,null];
     const activePilot=md2Pilot||pilot;
     const requestedPilotFixture=requestedMatchId?activePilot.fixtures.find(fixture=>fixture.fixtureId===requestedMatchId):null;
-    const requestedFixture=requestedPilotFixture?{...requestedPilotFixture,status:requestedCalendarFixture?.status||requestedPilotFixture.status,score:requestedCalendarFixture?.score||requestedPilotFixture.score,matchReport:requestedCalendarFixture?.matchReport||requestedPilotFixture.matchReport,refereeAssignment:requestedCalendarFixture?.refereeAssignment||null,probableFormation:requestedCalendarFixture?.probableFormation||null}:null;
+    const refereeCheck=md2RefereeHistory?.officialVerification?.checks.find(item=>item.fixtureId===requestedMatchId);
+    const refereeProfile=refereeCheck?md2RefereeHistory.referees.find(item=>item.refereeId===refereeCheck.refereeId):null;
+    const requestedFixture=requestedPilotFixture?{...requestedPilotFixture,status:requestedCalendarFixture?.status||requestedPilotFixture.status,score:requestedCalendarFixture?.score||requestedPilotFixture.score,matchReport:requestedCalendarFixture?.matchReport||requestedPilotFixture.matchReport,refereeAssignment:requestedCalendarFixture?.refereeAssignment||null,refereeProfile,probableFormation:requestedCalendarFixture?.probableFormation||null}:null;
     if(requestedFixture){
       const surpriseByFixture=new Map(surpriseFactors.fixtures.map(item=>[item.fixtureId,item]));
       const md2MarketEntry=md2Integration?.fixtures.find(item=>item.fixtureId===requestedMatchId)||null;

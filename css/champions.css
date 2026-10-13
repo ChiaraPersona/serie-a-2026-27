@@ -1215,6 +1215,25 @@ body[data-page="champions"] .champions-reading-hero-referee>.champions-reading-r
 body[data-page="champions"] .champions-reading-hero-referee:not(:has(>dl)){grid-template-columns:minmax(210px,.65fr) minmax(0,1.5fr)}
 body[data-page="champions"] .champions-reading-hero-referee:not(:has(>dl))>.champions-reading-referee-stats{grid-column:2}
 body[data-page="champions"] .champions-reading-hero-referee>.reading-referee-method{grid-column:1/-1;margin:0;color:#91aecb;font-size:8px;line-height:1.35}
+body[data-page="champions"] .champions-reading-referee-country{display:block;margin-top:5px;color:#9fc0df;font-size:10px;font-weight:750;letter-spacing:.02em}
+body[data-page="champions"] .champions-reading-hero-referee.has-validated-profile>.champions-reading-referee-profile{grid-column:1/-1;display:grid;gap:8px;min-width:0}
+body[data-page="champions"] .champions-reading-referee-profile>.champions-reading-referee-stats{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:0}
+body[data-page="champions"] .champions-reading-referee-profile>.champions-reading-referee-stats>article{padding:8px 10px}
+body[data-page="champions"] .champions-reading-referee-profile>.champions-reading-referee-stats strong{font-size:16px}
+body[data-page="champions"] .champions-reading-referee-sample{margin:0;padding:0 2px;color:#aac3dd;font-size:9px;line-height:1.45}
+body[data-page="champions"] .champions-reading-referee-sample strong{color:#e9f6ff}
+body[data-page="champions"] .champions-reading-referee-detail{display:grid;grid-template-columns:minmax(250px,.75fr) minmax(0,1.25fr);gap:7px}
+body[data-page="champions"] .champions-reading-referee-detail>section{min-width:0;padding:9px 10px;border:1px solid rgba(134,201,255,.14);border-radius:10px;background:rgba(4,20,63,.5)}
+body[data-page="champions"] .champions-reading-referee-detail h3{margin:0 0 7px;color:#83c4ff;font-size:9px;letter-spacing:.07em;text-transform:uppercase}
+body[data-page="champions"] .champions-reading-referee-overs>div{display:flex;flex-wrap:wrap;gap:6px}
+body[data-page="champions"] .champions-reading-referee-overs span{display:grid;grid-template-columns:auto auto;align-items:baseline;gap:2px 6px;min-width:82px;padding:5px 7px;border-radius:8px;background:rgba(5,42,96,.66)}
+body[data-page="champions"] .champions-reading-referee-overs small{color:#a9c6df;font-size:8px;font-style:normal}
+body[data-page="champions"] .champions-reading-referee-overs strong{color:#fff;font-size:13px}
+body[data-page="champions"] .champions-reading-referee-overs em{grid-column:1/-1;color:#7fa4c9;font-size:7px;font-style:normal}
+body[data-page="champions"] .champions-reading-referee-recent>p{margin:0 0 7px;color:#c4dbef;font-size:9px;line-height:1.45}
+body[data-page="champions"] .champions-reading-referee-recent>p strong{color:#fff}
+body[data-page="champions"] .champions-reading-referee-profile>.reading-referee-method{margin:0;color:#91aecb;font-size:8px;line-height:1.4}
+body[data-page="champions"] .champions-reading-referee-profile>.reading-referee-method a{color:#83dfff;font-weight:800;text-decoration:none}
 
 body[data-page="champions"] .champions-reading-tactical-analysis .champions-reading-attack-card{padding:16px}
 body[data-page="champions"] .champions-reading-tactical-analysis .prediction-channels{gap:10px}
@@ -1227,6 +1246,7 @@ body[data-page="champions"] .champions-reading-tactical-analysis .prediction-cha
   body[data-page="champions"] .champions-reading-hero-referee.reading-referee-assignment,body[data-page="champions"] .champions-reading-hero-referee:not(:has(>dl)){grid-template-columns:minmax(180px,.7fr) minmax(0,1.3fr)}
   body[data-page="champions"] .champions-reading-hero-referee>dl{grid-column:2}
   body[data-page="champions"] .champions-reading-hero-referee>.champions-reading-referee-stats,body[data-page="champions"] .champions-reading-hero-referee:not(:has(>dl))>.champions-reading-referee-stats{grid-column:1/-1}
+  body[data-page="champions"] .champions-reading-referee-detail{grid-template-columns:1fr}
   body[data-page="champions"] .champions-selected-forecasts .champions-published-forecasts li{grid-template-columns:minmax(0,1fr) auto}
   body[data-page="champions"] .champions-selected-forecasts .champions-published-forecasts li>button{grid-column:1/-1;width:100%}
 }
@@ -1238,6 +1258,8 @@ body[data-page="champions"] .champions-reading-tactical-analysis .prediction-cha
   body[data-page="champions"] .champions-reading-hero-referee>header,body[data-page="champions"] .champions-reading-hero-referee>dl,body[data-page="champions"] .champions-reading-hero-referee>.champions-reading-referee-stats,body[data-page="champions"] .champions-reading-hero-referee:not(:has(>dl))>.champions-reading-referee-stats{grid-column:1}
   body[data-page="champions"] .champions-reading-hero-referee>dl{grid-template-columns:repeat(2,minmax(0,1fr))}
   body[data-page="champions"] .champions-reading-hero-referee>.champions-reading-referee-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  body[data-page="champions"] .champions-reading-referee-profile>.champions-reading-referee-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  body[data-page="champions"] .champions-reading-referee-detail>section{padding:8px}
   body[data-page="champions"] .champions-selected-forecasts .champions-published-forecasts li{grid-template-columns:1fr;padding:13px}
   body[data-page="champions"] .champions-published-metrics{grid-template-columns:repeat(3,minmax(0,1fr))}
   body[data-page="champions"] .champions-reading-tactical-analysis .prediction-channels>div{grid-template-columns:48px minmax(0,1fr) 42px}
