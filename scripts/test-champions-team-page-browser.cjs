@@ -20,6 +20,8 @@ const cases=[
   {id:'sabah',volume:false,attack:false}
 ];
 const widths=[1280,768,390];
+const snapshotLabel=(process.argv.find(argument=>argument.startsWith('--snapshot='))||'').split('=')[1]||null;
+const screenshotDirectory=(process.argv.find(argument=>argument.startsWith('--screenshots='))||'').slice('--screenshots='.length)||os.tmpdir();
 
 (async()=>{
   await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
@@ -66,6 +68,12 @@ const widths=[1280,768,390];
         assert.equal(await page.locator('.champions-player-stats-table thead th').first().evaluate(cell=>getComputedStyle(cell).position),'sticky',`${item.id}: intestazione sticky`);
         assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,`${item.id} ${width}px: overflow pagina`);
         if(width===390)assert(await page.locator('.champions-player-table-wrap').evaluate(node=>node.scrollWidth>node.clientWidth),`${item.id}: tabella scorrevole`);
+        if(snapshotLabel){
+          fs.mkdirSync(screenshotDirectory,{recursive:true});
+          for(const [section,selector] of [['summary','.champions-team-summary'],['volume','.champions-team-volume'],['players','.champions-player-overview'],['table','.champions-team-players']]){
+            await page.locator(selector).screenshot({path:path.join(screenshotDirectory,`${snapshotLabel}-${item.id}-${width}-${section}.png`)});
+          }
+        }
         if(item.id==='bayern-munchen')await page.screenshot({path:path.join(os.tmpdir(),`champions-team-bayern-${width}.png`),fullPage:true});
         console.log(`OK ${item.id} ${width}px`);
       }
