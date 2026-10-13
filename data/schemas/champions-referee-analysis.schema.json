@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.invalid/schemas/champions-referee-analysis.schema.json",
+  "title": "Champions referee Phase 2A diagnostic feature archive",
+  "type": "object",
+  "required": ["schemaVersion", "phase", "season", "matchday", "status", "coverage", "calibrationReadiness", "fixtures"],
+  "properties": {
+    "schemaVersion": {"const": 1},
+    "phase": {"const": "Champions referee integration 2A"},
+    "season": {"const": "2026-27"},
+    "matchday": {"const": 2},
+    "status": {"enum": ["ARCHIVE_VALIDATED_MODULE_ISOLATED", "BLOCKED"]},
+    "publicationStatus": {"const": "NO_REFEREE_PREDICTIONS_PUBLISHED"},
+    "activeEngineStatus": {"const": "UNCHANGED"},
+    "coverage": {
+      "type": "object",
+      "required": ["fixtures", "chronologyPass", "identityPass", "archiveIntegrityPass"],
+      "properties": {
+        "fixtures": {"const": 18},
+        "chronologyPass": {"type": "integer", "minimum": 0, "maximum": 18},
+        "identityPass": {"type": "integer", "minimum": 0, "maximum": 18},
+        "archiveIntegrityPass": {"type": "integer", "minimum": 0, "maximum": 18}
+      }
+    },
+    "calibrationReadiness": {
+      "type": "object",
+      "required": ["status", "blockers", "nextRequirements"],
+      "properties": {
+        "status": {"enum": ["NOT_READY_FOR_CALIBRATION", "READY_FOR_CALIBRATION"]},
+        "blockers": {"type": "array", "items": {"type": "string"}},
+        "nextRequirements": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "fixtures": {
+      "type": "array",
+      "minItems": 18,
+      "maxItems": 18,
+      "items": {
+        "type": "object",
+        "required": ["fixtureId", "kickoff", "refereeId", "samples", "reliability", "validation"],
+        "properties": {
+          "fixtureId": {"type": "string"},
+          "refereeId": {"pattern": "^uefa-referee:[a-z]{3}:[a-z0-9-]+$"},
+          "reliability": {
+            "type": "object",
+            "required": ["status", "numericScore", "dimensions"],
+            "properties": {
+              "status": {"enum": ["BLOCKED", "ELIGIBLE_FOR_CALIBRATION", "CALIBRATED"]},
+              "numericScore": {"type": "null"}
+            }
+          }
+        }
+      }
+    }
+  }
+}

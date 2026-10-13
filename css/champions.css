@@ -914,6 +914,160 @@ body[data-page="champions"] .champions-team-calendar :is(h2,strong){color:#fff}
 body[data-page="champions"] .champions-team-lineup .champions-reading-lineups{background:#041c50;border:1px solid #24518a;color:#fff}
 body[data-page="champions"] .champions-team-volume table{min-width:0;table-layout:fixed}
 @media(max-width:600px){body[data-page="champions"] .champions-team-volume :is(th,td){padding:9px 5px;overflow-wrap:anywhere}body[data-page="champions"] .champions-team-volume th:first-child{width:31%}}
+
+/* Champions team template · structural restyling shared by all 36 clubs. */
+body[data-page="champions"] .champions-team-detail{--team-panel:#041c50;--team-panel-soft:#07265c;--team-line:rgba(126,205,255,.23);--team-muted:#b9d8ef}
+body[data-page="champions"] .champions-team-hero{position:relative;isolation:isolate;overflow:hidden;display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,.48fr);padding:42px;background:radial-gradient(circle at 86% 16%,color-mix(in srgb,var(--club-accent) 34%,transparent),transparent 35%),linear-gradient(145deg,#073d8e,#02143f 72%)}
+body[data-page="champions"] .champions-team-hero::after{content:"";position:absolute;z-index:-1;right:-7%;bottom:-48%;width:320px;aspect-ratio:1;border:1px solid color-mix(in srgb,var(--club-accent-secondary) 28%,transparent);border-radius:50%;box-shadow:0 0 0 34px rgba(255,255,255,.025),0 0 0 68px rgba(255,255,255,.018)}
+.champions-team-identity{display:flex;align-items:center;gap:24px;min-width:0}
+.champions-team-hero-logo{display:grid;flex:0 0 118px;width:118px;height:118px;place-items:center;border:1px solid rgba(255,255,255,.2);border-radius:28px;background:rgba(1,17,55,.64);box-shadow:inset 0 1px rgba(255,255,255,.12),0 18px 38px rgba(0,7,39,.28)}
+.champions-team-hero-logo .team-logo{width:86px;height:86px;background:transparent}
+.champions-team-hero-logo .team-logo img{width:100%;height:100%;object-fit:contain}
+.champions-team-hero-logo .team-logo b{font-size:24px}
+body[data-page="champions"] .champions-team-hero h1{font-size:clamp(44px,6vw,78px);overflow-wrap:anywhere}
+.champions-team-hero-facts{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));align-self:stretch;gap:10px;min-width:0!important;padding:0!important;border:0!important;background:transparent!important;text-align:left!important}
+.champions-team-hero-facts article{display:grid;align-content:center;gap:5px;padding:18px;border:1px solid rgba(127,224,255,.2);border-radius:18px;background:rgba(1,17,55,.56)}
+.champions-team-hero-facts small,.champions-team-hero-facts span{color:#a9d2ee!important;font-size:8px!important;font-weight:850;text-transform:uppercase}
+.champions-team-hero-facts strong{color:#fff;font-family:var(--font-display);font-size:38px;font-weight:400;line-height:1}
+.champions-team-summary{margin:18px 0 28px;padding:26px;border:1px solid var(--team-line);border-radius:24px;background:linear-gradient(145deg,rgba(4,38,99,.82),rgba(2,18,57,.88))}
+.champions-team-summary>header,.champions-player-overview>header{display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:16px}
+.champions-team-summary>header .eyebrow,.champions-player-overview>header .eyebrow{margin:0 0 4px;color:#7fdcff}
+.champions-team-summary h2,.champions-player-overview h2{margin:0;color:#fff}
+.champions-team-summary>header>p,.champions-player-overview>header>p{max-width:590px;margin:0;color:var(--team-muted);font-size:10px;line-height:1.5;text-align:right}
+body[data-page="champions"] .champions-team-summary .champions-team-overview{grid-template-columns:repeat(4,minmax(0,1fr));margin:0}
+body[data-page="champions"] .champions-team-summary .champions-team-overview article{min-height:112px;padding:17px;border-color:var(--team-line);background:rgba(2,28,76,.78)}
+body[data-page="champions"] .champions-team-summary .champions-team-overview article.is-key-metric{border-top:3px solid color-mix(in srgb,var(--club-accent,#3b9cff) 74%,#72dcff);background:linear-gradient(145deg,rgba(6,55,117,.9),rgba(2,29,76,.9))}
+body[data-page="champions"] .champions-team-summary .champions-team-overview small{color:#8fdcff;font-size:8px;line-height:1.35}
+body[data-page="champions"] .champions-team-summary .champions-team-overview strong{font-size:20px;line-height:1.15}
+body[data-page="champions"] .champions-team-summary .champions-team-overview span{color:#b9d8ef;font-size:9px}
+body[data-page="champions"] .champions-team-summary .champions-team-status{margin-top:10px}
+body[data-page="champions"] .champions-team-summary .champions-team-status article{border-color:rgba(126,205,255,.16);background:rgba(1,19,57,.54)}
+.champions-team-calendar{padding:26px;border-color:var(--team-line);border-radius:24px;background:linear-gradient(145deg,#062456,#031943)}
+.champions-team-calendar>header{align-items:end;margin-bottom:16px}
+.champions-team-calendar>header .eyebrow{margin:0 0 4px;color:#7fdcff}
+.champions-team-calendar>header>a{padding:8px 11px;border:1px solid rgba(127,224,255,.22);border-radius:999px;background:rgba(7,58,126,.54);font-weight:800}
+.champions-calendar-list{display:grid;gap:8px}
+.champions-calendar-list li{overflow:hidden;border:1px solid rgba(126,205,255,.14);border-radius:14px;background:rgba(1,17,55,.58)}
+.champions-calendar-list li+li{border-top:1px solid rgba(126,205,255,.14)}
+.champions-calendar-list li.is-next{border-color:#61d5ff;box-shadow:0 0 0 1px rgba(97,213,255,.14),0 12px 28px rgba(0,10,40,.24)}
+.champions-calendar-list li.is-next::before{content:"Prossima partita";display:block;padding:5px 14px;background:linear-gradient(90deg,#0c6bd2,#0a4b9d);color:#fff;font-size:8px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+.champions-calendar-list li>a,.champions-calendar-list li>div{grid-template-columns:58px 112px minmax(220px,1fr) 78px 96px;gap:14px;padding:13px 15px}
+.champions-calendar-list li>a{transition:background .18s ease,transform .18s ease}
+.champions-calendar-list li>a:hover,.champions-calendar-list li>a:focus-visible{background:#0a3470;transform:translateY(-1px)}
+.champions-calendar-round{display:grid;color:#8fdcff;font-size:17px;font-weight:900;line-height:1}
+.champions-calendar-round span,.champions-calendar-date small,.champions-calendar-opponent>small,.champions-calendar-result small{display:block;margin-top:4px;color:#a8cae3;font-size:8px;font-weight:750;line-height:1.3;text-transform:uppercase}
+.champions-calendar-date{color:#fff;font-size:11px;font-weight:800}
+.champions-calendar-opponent{display:grid;gap:4px;min-width:0}
+.champions-calendar-opponent .team-with-logo{gap:9px;color:#fff;font-size:13px;font-weight:900}
+.champions-calendar-opponent .team-logo{width:30px;height:30px}
+.champions-calendar-opponent .team-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.champions-calendar-venue{padding:5px 8px;border:1px solid rgba(126,205,255,.18);border-radius:999px;color:#d9efff;font-size:9px;font-weight:850;text-align:center}
+.champions-calendar-result,.champions-calendar-action{display:grid;justify-items:end;color:#8edfff;font-size:9px;font-weight:850;text-align:right}
+.champions-calendar-result b{color:#fff;font-size:20px;line-height:1}
+.champions-calendar-action b{font-size:15px}
+.champions-calendar-action.is-muted{color:#91aec7;font-weight:700}
+.champions-volume-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.champions-volume-comparison{padding:16px;border:1px solid rgba(126,205,255,.15);border-radius:16px;background:rgba(1,17,55,.5)}
+.champions-volume-comparison>header{display:flex;align-items:start;justify-content:space-between;gap:12px;margin-bottom:13px}
+.champions-volume-comparison>header>div{display:grid;gap:3px}
+.champions-volume-comparison>header strong{color:#fff;font-size:13px}
+.champions-volume-comparison>header small,.champions-volume-comparison>header>span{color:#a9cbe4;font-size:8px;line-height:1.35}
+.champions-volume-line{display:grid;grid-template-columns:72px minmax(0,1fr) 44px;align-items:center;gap:9px;margin-top:8px}
+.champions-volume-line>span{color:#bfe9ff;font-size:8px;font-weight:850;text-transform:uppercase}
+.champions-volume-line>i{height:12px;overflow:hidden;border-radius:999px;background:rgba(4,48,105,.84)}
+.champions-volume-line>i>b{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#1584ec,#72ddff)}
+.champions-volume-line.is-against>i>b{background:linear-gradient(90deg,#9f6a28,#f2c15f)}
+.champions-volume-line>strong{color:#fff;font-size:11px;text-align:right}
+.champions-volume-data{margin-top:14px;border:1px solid rgba(126,205,255,.14);border-radius:13px;background:rgba(1,17,55,.4)}
+.champions-volume-data>summary{padding:12px 14px;cursor:pointer;color:#9fe5ff;font-size:9px;font-weight:850;text-transform:uppercase}
+.champions-volume-data .champions-strength-table-wrap{border-top:1px solid rgba(126,205,255,.12);border-radius:0 0 13px 13px}
+body[data-page="champions"] .champions-team-attack .prediction-channels{gap:13px;padding:18px;border:1px solid rgba(126,205,255,.14);border-radius:16px;background:rgba(1,17,55,.44)}
+body[data-page="champions"] .champions-team-attack .prediction-channels>span{color:#a9d9f5;font-size:9px}
+body[data-page="champions"] .champions-team-attack .prediction-channels>div{grid-template-columns:82px minmax(0,1fr) 52px;gap:12px;min-height:34px}
+body[data-page="champions"] .champions-team-attack .prediction-channels>div small{color:#fff;font-size:11px;font-weight:800}
+body[data-page="champions"] .champions-team-attack .prediction-channels i{height:14px;background:#031844}
+body[data-page="champions"] .champions-team-attack .prediction-channels i b{background:linear-gradient(90deg,var(--club-accent,#2475e8),#7fdcff);box-shadow:0 0 18px rgba(74,193,255,.32)}
+body[data-page="champions"] .champions-team-attack .prediction-channels>div strong{color:#fff;font-size:13px}
+body[data-page="champions"] .champions-team-attack .prediction-channels em{color:#ffe8a7;font-size:10px}
+.champions-team-lineup .champions-reading-lineups{padding:26px;border-radius:24px}
+.champions-team-lineup .reading-lineup-card{overflow:hidden;border-color:rgba(126,205,255,.26);background:#031943}
+.champions-team-lineup .reading-lineup-card>header{padding:14px 16px}
+.champions-team-lineup .reading-lineup-field{min-height:390px;margin:12px;padding:24px 14px;border-color:rgba(255,255,255,.76);background:repeating-linear-gradient(0deg,rgba(255,255,255,.045) 0,rgba(255,255,255,.045) 48px,rgba(0,0,0,.045) 48px,rgba(0,0,0,.045) 96px),linear-gradient(150deg,#176b45,#083b2b)}
+.champions-team-lineup .reading-lineup-row{width:min(calc(var(--reading-lineup-count) * 104px),100%);gap:7px}
+.champions-team-lineup .champions-reading-lineup-card .reading-lineup-row strong{max-width:104px;padding:6px 5px;border-radius:8px;background:rgba(0,18,42,.72);color:#fff;font-size:clamp(10px,1.15vw,13px);line-height:1.18;text-shadow:0 2px 4px #000}
+.champions-player-overview{margin:18px 0;padding:26px;border:1px solid var(--team-line);border-radius:24px;background:linear-gradient(145deg,rgba(5,47,108,.78),rgba(2,24,66,.85))}
+.champions-player-ranking-tabs{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px}
+.champions-player-ranking-tabs button{min-height:38px;padding:8px 15px;border:1px solid rgba(126,205,255,.24);border-radius:999px;background:#061f53;color:#cce9ff;font:inherit;font-size:9px;font-weight:900;cursor:pointer}
+.champions-player-ranking-tabs button.is-active{border-color:#79ddff;background:#0a5dbd;color:#fff;box-shadow:0 7px 18px rgba(0,75,165,.25)}
+.champions-player-ranking{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+.champions-player-ranking li{display:grid;grid-template-columns:32px minmax(0,1fr) 70px;align-items:center;gap:12px;padding:12px 14px;border:1px solid rgba(126,205,255,.14);border-radius:13px;background:rgba(1,17,55,.48)}
+.champions-player-rank{display:grid;width:28px;height:28px;place-items:center;border-radius:50%;background:#0b4b99;color:#fff;font-size:10px;font-weight:900}
+.champions-player-ranking li>span:nth-child(2){display:grid;gap:7px}
+.champions-player-ranking li>span strong{color:#fff;font-size:12px}
+.champions-player-ranking li i{height:9px;overflow:hidden;border-radius:999px;background:#031844}
+.champions-player-ranking li i b{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--club-accent,#2475e8),#7fdcff)}
+.champions-player-ranking li>b{color:#fff;font-family:var(--font-display);font-size:25px;font-weight:400;text-align:right}
+.champions-player-ranking li.is-empty{grid-template-columns:auto 1fr;color:#b9d8ef}
+.champions-player-controls{display:grid;grid-template-columns:minmax(210px,1.3fr) minmax(150px,.75fr) minmax(180px,.9fr) auto;align-items:end;gap:10px;margin:0 0 14px;padding:14px;border:1px solid rgba(126,205,255,.14);border-radius:14px;background:rgba(1,17,55,.48)}
+.champions-player-controls label{display:grid;gap:5px;color:#9ddcff;font-size:8px;font-weight:900;text-transform:uppercase}
+.champions-player-controls input,.champions-player-controls select{min-width:0;min-height:42px;padding:8px 10px;border:1px solid rgba(126,205,255,.24);border-radius:9px;background:#041b51;color:#fff;font:inherit;font-size:10px}
+.champions-player-controls input::placeholder{color:#8aa9c5}
+.champions-player-controls>p{margin:0;padding-bottom:12px;color:#cce9ff;font-size:9px;font-weight:850;white-space:nowrap}
+.champions-player-table-wrap{max-height:min(70vh,720px);overflow:auto;scrollbar-color:#1761b5 #041c50}
+body[data-page="champions"] .champions-team-players table{font-size:10px}
+body[data-page="champions"] .champions-team-players th,body[data-page="champions"] .champions-team-players td{padding:11px 12px}
+body[data-page="champions"] .champions-player-stats-table thead th{position:sticky;top:0;z-index:3;background:#07347b!important;color:#fff;font-size:8px}
+body[data-page="champions"] .champions-player-stats-table thead tr:nth-child(2) th{top:37px}
+body[data-page="champions"] .champions-player-stats-table thead th:first-child{left:0;z-index:5}
+body[data-page="champions"] .champions-player-stats-table tbody th{z-index:2;background:#041b51!important}
+body[data-page="champions"] .champions-player-stats-table tbody tr:hover th{background:#0b3974!important}
+
+@media(max-width:980px){
+ body[data-page="champions"] .champions-team-hero{grid-template-columns:1fr;padding:32px 28px}
+ .champions-team-hero-facts{grid-template-columns:repeat(2,minmax(0,1fr))}
+ body[data-page="champions"] .champions-team-summary .champions-team-overview{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .champions-team-summary .champions-team-status{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .champions-calendar-list li>a,.champions-calendar-list li>div{grid-template-columns:48px 92px minmax(180px,1fr) 70px 84px;gap:9px}
+ .champions-player-controls{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .champions-player-controls>p{grid-column:1/-1;padding:0}
+}
+@media(max-width:600px){
+ body[data-page="champions"] .champions-team-hero{gap:22px;padding:26px 18px}
+ .champions-team-identity{align-items:flex-start;gap:14px}
+ .champions-team-hero-logo{flex-basis:72px;width:72px;height:72px;border-radius:18px}
+ .champions-team-hero-logo .team-logo{width:54px;height:54px}
+ body[data-page="champions"] .champions-team-hero h1{font-size:clamp(35px,12vw,52px)}
+ .champions-team-hero-facts{grid-template-columns:1fr}
+ .champions-team-summary,.champions-team-calendar,.champions-player-overview{padding:20px 14px;border-radius:22px}
+ .champions-team-summary>header,.champions-player-overview>header{align-items:flex-start;flex-direction:column;gap:7px}
+ .champions-team-summary>header>p,.champions-player-overview>header>p{text-align:left}
+ body[data-page="champions"] .champions-team-summary .champions-team-overview{grid-template-columns:1fr}
+ .champions-team-summary .champions-team-status{grid-template-columns:1fr}
+ .champions-team-summary .champions-team-status article:first-child{grid-column:auto}
+ .champions-team-calendar>header{align-items:flex-start;flex-direction:column}
+ .champions-calendar-list li>a,.champions-calendar-list li>div{grid-template-columns:46px minmax(0,1fr) 72px;gap:7px 9px;padding:12px}
+ .champions-calendar-round{grid-column:1;grid-row:1/3}
+ .champions-calendar-date{grid-column:2;grid-row:1}
+ .champions-calendar-opponent{grid-column:2;grid-row:2}
+ .champions-calendar-opponent>small{display:none}
+ .champions-calendar-venue{grid-column:3;grid-row:1}
+ .champions-calendar-result,.champions-calendar-action{grid-column:3;grid-row:2}
+ .champions-calendar-opponent .team-name{font-size:11px}
+ .champions-volume-grid{grid-template-columns:1fr}
+ .champions-volume-line{grid-template-columns:68px minmax(0,1fr) 40px}
+ body[data-page="champions"] .champions-team-attack .prediction-channels{padding:14px 11px}
+ body[data-page="champions"] .champions-team-attack .prediction-channels>div{grid-template-columns:64px minmax(0,1fr) 42px;gap:7px}
+ .champions-team-lineup .champions-reading-lineups{padding:20px 12px}
+ .champions-team-lineup .reading-lineup-field{min-height:360px;margin:8px;padding:20px 5px}
+ .champions-team-lineup .reading-lineup-row{width:min(calc(var(--reading-lineup-count) * 76px),100%);gap:3px}
+ .champions-team-lineup .champions-reading-lineup-card .reading-lineup-row strong{max-width:76px;padding:5px 2px;font-size:9px}
+ .champions-player-ranking li{grid-template-columns:28px minmax(0,1fr) 52px;padding:10px;gap:8px}
+ .champions-player-ranking li>b{font-size:21px}
+ .champions-player-controls{grid-template-columns:1fr}
+ .champions-player-controls>p{grid-column:1}
+ body[data-page="champions"] .champions-team-players{padding:20px 12px}
+ body[data-page="champions"] .champions-team-players table{font-size:9px}
+}
 /* Completed match reports share the dark Champions surface. */
 .champions-match-report{padding:24px;background:linear-gradient(135deg,#0b3269,#07152f);color:#fff;margin:24px 0}
 .champions-match-report h1,.champions-match-report h2,.champions-match-report strong,.champions-match-report .eyebrow{color:#fff}

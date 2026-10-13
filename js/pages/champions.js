@@ -269,46 +269,120 @@ export function createPage(deps){
 
   function championsTeamDetail(team,strength,history,pilot,squads,attackProfile,data,branding){
     const teamFixtures=data.fixtures.filter(item=>item.homeTeam===team.team||item.awayTeam===team.team).sort((a,b)=>`${a.date}T${a.kickoff}`.localeCompare(`${b.date}T${b.kickoff}`));
-    const nextFixture=teamFixtures.find(item=>item.probableFormation);
-    const probableSide=nextFixture?.probableFormation?.[nextFixture.homeTeam===team.team?"home":"away"];
+    const lineupFixture=teamFixtures.find(item=>item.probableFormation);
+    const nextCalendarFixture=teamFixtures.find(item=>item.status!=="finished")||null;
+    const probableSide=lineupFixture?.probableFormation?.[lineupFixture.homeTeam===team.team?"home":"away"];
+    const brand=branding.get(team.team)||{colors:["#176bcb","#7fdcff"],logo:"",shortName:team.team.slice(0,3).toUpperCase()};
+    const readings=new Map(pilot.fixtures.filter(item=>item.homeTeam===team.team||item.awayTeam===team.team).map(item=>[item.fixtureId,item]));
+    const completed=data.fixtures.filter(item=>item.status==="finished");
+    const standings=new Map(data.teams.map(name=>[name,{team:name,played:0,points:0,gf:0,ga:0}]));
+    for(const item of completed)for(const [side,other] of [["home","away"],["away","home"]]){
+      const row=standings.get(item[`${side}Team`]);
+      row.played+=1;row.gf+=item.score[side];row.ga+=item.score[other];row.points+=item.score[side]>item.score[other]?3:item.score[side]===item.score[other]?1:0;
+    }
+    const standingRows=[...standings.values()].sort((a,b)=>b.points-a.points||(b.gf-b.ga)-(a.gf-a.ga)||b.gf-a.gf||a.team.localeCompare(b.team));
+    const standing=standingRows.find(item=>item.team===team.team);
+    const standingPosition=standingRows.findIndex(item=>item.team===team.team)+1;
     const calendarRows=teamFixtures.map(item=>{
-      const reading=pilot.fixtures.find(entry=>entry.fixtureId===item.id);
-      const content=`<span class="champions-calendar-round">${item.matchday}ª</span><span class="champions-calendar-date">${esc(shortDate(item.date))} · ${esc(item.kickoff)}</span><strong>${esc(item.homeTeam)} – ${esc(item.awayTeam)}</strong><span class="champions-calendar-venue">${item.homeTeam===team.team?"Casa":"Trasferta"}</span><span class="champions-calendar-action">${item.status==="finished"?`${item.score.home}–${item.score.away} · Finale`:reading?"Lettura →":""}</span>`;
-      return `<li data-team-home="${esc(item.homeTeam)}" data-team-away="${esc(item.awayTeam)}">${reading?`<a href="champions-league.html?match=${esc(reading.fixtureId)}">${content}</a>`:`<div>${content}</div>`}</li>`;
+      const reading=readings.get(item.id);
+      const opponent=item.homeTeam===team.team?item.awayTeam:item.homeTeam;
+      const venue=item.homeTeam===team.team?"Casa":"Trasferta";
+      const finished=item.status==="finished";
+      const next=!finished&&item.id===nextCalendarFixture?.id;
+      const action=finished?`<span class="champions-calendar-result"><b>${item.score.home}–${item.score.away}</b><small>Finale</small></span>`:reading?`<span class="champions-calendar-action">Apri lettura <b aria-hidden="true">→</b></span>`:`<span class="champions-calendar-action is-muted">Lettura N/D</span>`;
+      const content=`<span class="champions-calendar-round">${item.matchday}ª<span>giornata</span></span><time class="champions-calendar-date" datetime="${esc(`${item.date}T${item.kickoff}`)}">${esc(shortDate(item.date))}<small>${esc(item.kickoff)}</small></time><span class="champions-calendar-opponent">${teamBadge(opponent,branding)}<small>${esc(item.homeTeam)} – ${esc(item.awayTeam)}</small></span><span class="champions-calendar-venue">${venue}</span>${action}`;
+      return `<li class="${next?"is-next":""}" data-team-home="${esc(item.homeTeam)}" data-team-away="${esc(item.awayTeam)}">${reading?`<a href="champions-league.html?match=${esc(reading.fixtureId)}" aria-label="${finished?"Apri la lettura":"Apri la prossima lettura"} di ${esc(item.homeTeam)} - ${esc(item.awayTeam)}">${content}</a>`:`<div>${content}</div>`}</li>`;
     }).join("");
-    const calendarPanel=`<section class="champions-team-calendar" aria-labelledby="team-calendar-title"><header><div><h2 id="team-calendar-title">Calendario</h2><p>Fase campionato · ${teamFixtures.length} partite · orari italiani</p></div><a href="${esc(data.source.url)}" target="_blank" rel="noreferrer">Fonte UEFA ↗</a></header><ul class="champions-calendar-list">${calendarRows}</ul></section>`;
+    const calendarPanel=`<section class="champions-team-calendar" aria-labelledby="team-calendar-title"><header><div><p class="eyebrow">UEFA Champions League 2026/27</p><h2 id="team-calendar-title">Calendario</h2><p>Fase campionato · 8 giornate · orari italiani</p></div><a href="${esc(data.source.url)}" target="_blank" rel="noreferrer">Fonte UEFA ↗</a></header><ul class="champions-calendar-list">${calendarRows}</ul></section>`;
     const roleLabel=position=>({goalkeeper:"Portiere",defender:"Difensore",midfielder:"Centrocampista",forward:"Attaccante"}[position]||"N/D");
-    const fixture=pilot.fixtures.find(item=>item.homeTeam===team.team||item.awayTeam===team.team);
+    const nextReading=pilot.fixtures.find(item=>(item.homeTeam===team.team||item.awayTeam===team.team)&&data.fixtures.find(fixture=>fixture.id===item.fixtureId)?.status!=="finished")||pilot.fixtures.find(item=>item.homeTeam===team.team||item.awayTeam===team.team);
     const stat=value=>typeof value==="number"?value.toLocaleString("it-IT",{maximumFractionDigits:2}):"N/D";
     const playerCards=entry=>{
       const values=[entry?.yellowCards,entry?.secondYellowCards,entry?.straightRedCards];
       return values.every(value=>value==null)?null:values.reduce((sum,value)=>sum+(value??0),0);
     };
-    const playerRows=team.players.map(player=>{
+    const playerData=team.players.map((player,index)=>{
       const previous=player.previousSeason?.totals;
-      const competitions=[...new Set((player.previousSeason?.entries||[]).map(entry=>entry.competition))];
-      return `<tr data-champions-player="${esc(player.id)}"><th scope="row"><span>${esc(player.name)}${player.registrationList==="B"?"<em>Lista B</em>":""}</span><small>${competitions.length?esc(competitions.join(" · ")):"Storico 2025/26 N/D"}</small></th><td>${esc(roleLabel(player.position))}</td><td>${stat(previous?.appearances)}</td><td>${stat(previous?.minutes)}</td><td>${stat(previous?.goals)}</td><td>${stat(previous?.per90?.goals)}</td><td>${stat(previous?.assists)}</td><td>${stat(previous?.per90?.assists)}</td><td>${stat(previous?.shots)}</td><td>${stat(previous?.per90?.shots)}</td><td>${stat(previous?.shotsOnTarget)}</td><td>${stat(previous?.per90?.shotsOnTarget)}</td><td>${stat(playerCards(previous))}</td><td>${stat(previous?.per90?.cards)}</td><td>${stat(previous?.foulsCommitted)}</td><td>${stat(previous?.per90?.foulsCommitted)}</td><td>${stat(previous?.foulsWon)}</td><td>${stat(previous?.per90?.foulsWon)}</td></tr>`;
-    }).join("");
+      return {player,index,previous,cards:playerCards(previous),competitions:[...new Set((player.previousSeason?.entries||[]).map(entry=>entry.competition))]};
+    });
+    const dataNumber=value=>typeof value==="number"?String(value):"";
+    const playerRows=playerData.map(({player,index,previous,cards,competitions})=>`<tr data-champions-player="${esc(player.id)}" data-player-index="${index}" data-player-name="${esc(player.name.toLocaleLowerCase("it-IT"))}" data-player-role="${esc(player.position||"unknown")}" data-stat-appearances="${dataNumber(previous?.appearances)}" data-stat-minutes="${dataNumber(previous?.minutes)}" data-stat-goals="${dataNumber(previous?.goals)}" data-stat-assists="${dataNumber(previous?.assists)}" data-stat-shots="${dataNumber(previous?.shots)}" data-stat-shots-on-target="${dataNumber(previous?.shotsOnTarget)}" data-stat-cards="${dataNumber(cards)}" data-stat-fouls-committed="${dataNumber(previous?.foulsCommitted)}" data-stat-fouls-won="${dataNumber(previous?.foulsWon)}"><th scope="row"><span>${esc(player.name)}${player.registrationList==="B"?"<em>Lista B</em>":""}</span><small>${competitions.length?esc(competitions.join(" · ")):"Storico 2025/26 N/D"}</small></th><td>${esc(roleLabel(player.position))}</td><td>${stat(previous?.appearances)}</td><td>${stat(previous?.minutes)}</td><td>${stat(previous?.goals)}</td><td>${stat(previous?.per90?.goals)}</td><td>${stat(previous?.assists)}</td><td>${stat(previous?.per90?.assists)}</td><td>${stat(previous?.shots)}</td><td>${stat(previous?.per90?.shots)}</td><td>${stat(previous?.shotsOnTarget)}</td><td>${stat(previous?.per90?.shotsOnTarget)}</td><td>${stat(cards)}</td><td>${stat(previous?.per90?.cards)}</td><td>${stat(previous?.foulsCommitted)}</td><td>${stat(previous?.per90?.foulsCommitted)}</td><td>${stat(previous?.foulsWon)}</td><td>${stat(previous?.per90?.foulsWon)}</td></tr>`).join("");
     const strengthValue=strength?.europeanStrengthIndex==null?"N/D":strength.europeanStrengthIndex.toFixed(1);
     const historyValue=history?.overall?.pointsPerMatch==null?"N/D":history.overall.pointsPerMatch.toFixed(2);
     const volume=pilot.profiles.find(profile=>profile.team===team.team);
     const volumeMetrics=[
-      ["Gol",volume?.venues.overall.goals],
-      ["Tiri",volume?.venues.overall.totalShots],
-      ["Tiri in porta",volume?.venues.overall.shotsOnTarget],
-      ["Corner",volume?.venues.overall.wonCorners],
-      ["Falli",volume?.venues.overall.foulsCommitted],
-      ["Cartellini gialli",volume?.venues.overall.yellowCards]
+      ["Gol","Gol segnati e subiti",volume?.venues.overall.goals],
+      ["Tiri","Tiri prodotti e concessi",volume?.venues.overall.totalShots],
+      ["SOT","Tiri nello specchio prodotti e concessi",volume?.venues.overall.shotsOnTarget],
+      ["Corner","Corner ottenuti e concessi",volume?.venues.overall.wonCorners],
+      ["Falli","Falli commessi e subiti",volume?.venues.overall.foulsCommitted],
+      ["Cartellini gialli","Cartellini ricevuti e provocati",volume?.venues.overall.yellowCards]
     ];
     const metricCell=value=>value?.mean==null?"N/D":value.mean.toFixed(2);
-    const volumeRows=volumeMetrics.map(([label,value])=>`<tr><th scope="row">${esc(label)}</th><td>${metricCell(value?.for)}</td><td>${metricCell(value?.against)}</td><td>${value?.for.matches??0}</td></tr>`).join("");
+    const volumeRows=volumeMetrics.map(([label,,value])=>`<tr><th scope="row">${esc(label)}</th><td>${metricCell(value?.for)}</td><td>${metricCell(value?.against)}</td><td>${value?.for.matches??0}</td></tr>`).join("");
+    const volumeBars=volumeMetrics.map(([label,description,value])=>{
+      const produced=value?.for?.mean,conceded=value?.against?.mean;
+      if(produced==null||conceded==null)return "";
+      const scale=Math.max(produced,conceded,1);
+      return `<article class="champions-volume-comparison"><header><div><strong>${esc(label)}</strong><small>${esc(description)} · media per gara</small></div><span>${value.for.matches} gare</span></header><div class="champions-volume-line"><span>Produzione</span><i aria-hidden="true"><b style="width:${Math.round(produced/scale*100)}%"></b></i><strong>${produced.toFixed(2)}</strong></div><div class="champions-volume-line is-against"><span>Concessione</span><i aria-hidden="true"><b style="width:${Math.round(conceded/scale*100)}%"></b></i><strong>${conceded.toFixed(2)}</strong></div></article>`;
+    }).join("");
     const volumeSource=volume?.baselineKind==="uefa-fallback"?`${volume.league} · fallback UEFA`:(volume?.league||"N/D");
     const volumePanel=volume?.usableForDetailedVolumes
-      ?`<section class="champions-team-volume" aria-labelledby="champions-team-volume-title"><header><div><p class="eyebrow">Statistiche di squadra</p><h2 id="champions-team-volume-title">Produzione e concessioni</h2></div><p>${esc(volumeSource)} · ${volume.matches} gare complete · casa/trasferta ${volume.homeMatches}/${volume.awayMatches}</p></header><div class="champions-strength-table-wrap"><table><thead><tr><th>Metrica</th><th>Prodotti / gara</th><th>Concessi / gara</th><th>Campione</th></tr></thead><tbody>${volumeRows}</tbody></table></div><p class="objective-method">Medie storiche usate per i volumi della lettura. Il fallback UEFA è dichiarato e non viene presentato come campionato domestico.</p></section>`
-      :`<section class="champions-team-volume is-unavailable" aria-labelledby="champions-team-volume-title"><header><div><p class="eyebrow">Statistiche di squadra</p><h2 id="champions-team-volume-title">Dati N/D</h2></div><p>${esc(volumeSource)}</p></header><div class="reading-panel-empty"><strong>N/D</strong><p>Il provider non espone un campione con tiri, corner, falli e cartellini verificabili. Nessuno zero è stato dedotto.</p></div></section>`;
+      ?`<section class="champions-team-volume" aria-labelledby="champions-team-volume-title"><header><div><p class="eyebrow">Campione 2025/26–2026/27</p><h2 id="champions-team-volume-title">Produzione e concessioni</h2></div><p>${esc(volumeSource)} · ${volume.matches} gare complete · casa/trasferta ${volume.homeMatches}/${volume.awayMatches}</p></header><div class="champions-volume-grid">${volumeBars}</div><details class="champions-volume-data"><summary>Apri tutti i valori in tabella</summary><div class="champions-strength-table-wrap"><table><thead><tr><th>Metrica</th><th>Prodotti / gara</th><th>Concessi / gara</th><th>Campione</th></tr></thead><tbody>${volumeRows}</tbody></table></div></details><p class="objective-method">Medie storiche usate per i volumi della lettura. Il fallback UEFA è dichiarato e non viene presentato come campionato domestico.</p></section>`
+      :`<section class="champions-team-volume is-unavailable" aria-labelledby="champions-team-volume-title"><header><div><p class="eyebrow">Campione 2025/26–2026/27</p><h2 id="champions-team-volume-title">Produzione e concessioni · N/D</h2></div><p>${esc(volumeSource)}</p></header><div class="reading-panel-empty"><strong>N/D</strong><p>Il provider non espone un campione con tiri, corner, falli e cartellini verificabili. Nessuno zero è stato dedotto.</p></div></section>`;
+    const summaryMetricCards=volume?.usableForDetailedVolumes?volumeMetrics.slice(0,4).map(([label,,value])=>`<article class="is-key-metric"><small>${esc(label)} prodotti / gara</small><strong>${metricCell(value?.for)}</strong><span>${esc(volumeSource)} · campione 2025/26–2026/27</span></article>`).join(""):"";
     const channelSource=attackProfile?.sourceUrl?`<a href="${esc(attackProfile.sourceUrl)}" target="_blank" rel="noreferrer">Fonte WhoScored ↗</a>`:"<span>Fonte non disponibile</span>";
     const attackPanel=attackProfile?.attackChannels?`<section class="champions-team-attack" aria-labelledby="champions-team-attack-title"><header><div><p class="eyebrow">Statistiche di squadra · 2025/26</p><h2 id="champions-team-attack-title">Fasce d'attacco</h2></div><p>${esc(attackProfile?.competition||"Campione N/D")}${attackProfile?.dataQuality==="uefa-fallback"?" · fallback UEFA":""}</p></header>${attackChannelsPanel(attackProfile)}<footer>${attackProfile?.totalTouches?`<span>${attackProfile.totalTouches.toLocaleString("it-IT")} tocchi classificati</span>`:"<span>Nessuno zero dedotto</span>"}${channelSource}</footer></section>`:"";
-    return `<nav class="champions-reading-back"><a href="champions-league.html">← Champions League</a><span>Scheda squadra</span></nav><section class="champions-team-hero"><div><p class="eyebrow">UEFA Champions League 2026/27</p><h1>${esc(team.team)}</h1><p>Allenatore: ${esc(team.coach||"N/D")}</p></div><div><small>Rosa registrata</small><strong>${team.counts.total}</strong><span>${team.counts.listB} Lista B</span></div></section><section class="champions-team-status" aria-label="Stato dati squadra"><article><small>Registrazione UEFA</small><strong>Integrata</strong><span>${esc(shortDate(team.registration.updatedAt))}</span></article><article><small>Disponibilità</small><strong>N/D</strong><span>Nessuna deduzione</span></article><article><small>Probabile formazione</small><strong>${esc(probableSide?.formation||"N/D")}</strong><span>${probableSide?"Editoriale · non ufficiale":"Fonte non integrata"}</span></article><article><small>Convocati gara</small><strong>N/D</strong><span>Non pubblicati nel dataset</span></article><article><small>Distinta ufficiale</small><strong>N/D</strong><span>Da aggiornare a ridosso della gara</span></article></section><section class="champions-team-overview"><article><small>Indice europeo</small><strong>${strengthValue}</strong><span>${strength?.dataCoveragePct??"N/D"}% copertura</span></article><article><small>Punti/gara europei</small><strong>${historyValue}</strong><span>${history?.overall?.matches??"N/D"} gare storiche</span></article><article><small>Prossima lettura</small><strong>${fixture?`${esc(fixture.homeTeam)} – ${esc(fixture.awayTeam)}`:"N/D"}</strong>${fixture?`<a href="champions-league.html?match=${esc(fixture.fixtureId)}">Apri lettura →</a>`:"<span>Nessuna lettura pilot</span>"}</article></section>${calendarPanel}${nextFixture?`<section class="champions-team-lineup">${probableFormationCard(nextFixture,squads,team.team)}</section>`:""}${volumePanel}${attackPanel}<section class="champions-team-players"><header><div><p class="eyebrow">Statistiche 2025/26</p><h2>Giocatori</h2></div><p>Storico 2025/26; per i campionati ad anno solare è indicato il 2025. Dati ESPN e schede Serie A, con N/D per le statistiche non disponibili.</p></header><div class="champions-strength-table-wrap" role="region" aria-label="Statistiche giocatori; scorri orizzontalmente" tabindex="0"><table class="champions-player-stats-table"><thead><tr><th rowspan="2">Calciatore</th><th rowspan="2">Ruolo</th><th rowspan="2">PG</th><th rowspan="2">Min</th><th colspan="2">Gol</th><th colspan="2">Assist</th><th colspan="2">Tiri totali</th><th colspan="2">Tiri nello specchio</th><th colspan="2">Cartellini</th><th colspan="2">Falli commessi</th><th colspan="2">Falli subiti</th></tr><tr><th>Tot.</th><th>/90</th><th>Tot.</th><th>/90</th><th>Tot.</th><th>/90</th><th>Tot.</th><th>/90</th><th>Tot.</th><th>/90</th><th>Tot.</th><th>/90</th><th>Tot.</th><th>/90</th></tr></thead><tbody>${playerRows}</tbody></table></div><p class="champions-player-stats-note">Le statistiche Champions 2026/27 restano separate e saranno valorizzate solo dopo le gare ufficiali. Fonte storica: referti e statistiche stagionali ESPN. Per le italiane sono prioritari i profili Serie A; i dati mancanti sono integrati solo con associazioni verificate. Le competizioni ad anno solare riportano il 2025.</p></section>`;
+    const rankingItems=metric=>playerData.filter(item=>typeof item.previous?.[metric]==="number"&&item.previous[metric]>0).sort((a,b)=>b.previous[metric]-a.previous[metric]||a.player.name.localeCompare(b.player.name)).slice(0,5);
+    const rankingMarkup=(metric,label)=>{
+      const items=rankingItems(metric),maximum=items[0]?.previous?.[metric]||1;
+      return items.length?items.map((item,index)=>`<li><span class="champions-player-rank">${index+1}</span><span><strong>${esc(item.player.name)}</strong><i aria-hidden="true"><b style="width:${Math.round(item.previous[metric]/maximum*100)}%"></b></i></span><b>${stat(item.previous[metric])}</b></li>`).join(""):`<li class="is-empty"><strong>N/D</strong><span>Nessun valore ${esc(label.toLocaleLowerCase("it-IT"))} disponibile.</span></li>`;
+    };
+    const rankingData={shots:rankingMarkup("shots","Tiri"),shotsOnTarget:rankingMarkup("shotsOnTarget","SOT"),minutes:rankingMarkup("minutes","Minuti")};
+    const playersOverview=`<section class="champions-player-overview" aria-labelledby="champions-player-overview-title"><header><div><p class="eyebrow">Storico 2025/26</p><h2 id="champions-player-overview-title">Panoramica giocatori</h2></div><p>Classifica costruita soltanto sui totali disponibili. I valori N/D non sono trattati come zero.</p></header><div class="champions-player-ranking-tabs" role="group" aria-label="Metrica classifica giocatori"><button type="button" class="is-active" data-player-ranking="shots" aria-pressed="true">Tiri</button><button type="button" data-player-ranking="shotsOnTarget" aria-pressed="false">SOT</button><button type="button" data-player-ranking="minutes" aria-pressed="false">Minuti</button></div><ol class="champions-player-ranking" data-ranking-list data-ranking-shots="${esc(rankingData.shots)}" data-ranking-shots-on-target="${esc(rankingData.shotsOnTarget)}" data-ranking-minutes="${esc(rankingData.minutes)}">${rankingData.shots}</ol></section>`;
+    const playerControls=`<div class="champions-player-controls"><label><span>Cerca per nome</span><input type="search" id="champions-player-search" placeholder="Es. Kane" autocomplete="off"></label><label><span>Ruolo</span><select id="champions-player-role"><option value="all">Tutti i ruoli</option><option value="goalkeeper">Portieri</option><option value="defender">Difensori</option><option value="midfielder">Centrocampisti</option><option value="forward">Attaccanti</option></select></label><label><span>Ordina per statistica</span><select id="champions-player-sort"><option value="shots">Tiri</option><option value="shots-on-target">SOT</option><option value="minutes">Minuti</option><option value="goals">Gol</option><option value="assists">Assist</option><option value="appearances">Presenze</option><option value="cards">Cartellini</option><option value="fouls-committed">Falli commessi</option><option value="fouls-won">Falli subiti</option><option value="source">Ordine fonte</option></select></label><p id="champions-player-results" aria-live="polite">${team.players.length} giocatori</p></div>`;
+    const playersTable=`<section class="champions-team-players" aria-labelledby="champions-team-players-title"><header><div><p class="eyebrow">Statistiche 2025/26</p><h2 id="champions-team-players-title">Tabella completa</h2></div><p>Storico 2025/26; per i campionati ad anno solare è indicato il 2025. Dati ESPN e schede Serie A, con N/D per le statistiche non disponibili.</p></header>${playerControls}<div class="champions-strength-table-wrap champions-player-table-wrap" role="region" aria-label="Statistiche giocatori; scorri orizzontalmente" tabindex="0"><table class="champions-player-stats-table"><thead><tr><th rowspan="2">Calciatore</th><th rowspan="2">Ruolo</th><th rowspan="2">PG</th><th rowspan="2">Min</th><th colspan="2">Gol</th><th colspan="2">Assist</th><th colspan="2">Tiri totali</th><th colspan="2">Tiri nello specchio</th><th colspan="2">Cartellini</th><th colspan="2">Falli commessi</th><th colspan="2">Falli subiti</th></tr><tr><th>Tot.</th><th>/90</th><th>Tot.</th><th>/90</th><th>Tot.</th><th>/90</th><th>Tot.</th><th>/90</th><th>Tot.</th><th>/90</th><th>Tot.</th><th>/90</th><th>Tot.</th><th>/90</th></tr></thead><tbody>${playerRows}</tbody></table></div><p class="champions-player-stats-note">Le statistiche Champions 2026/27 restano separate e saranno valorizzate solo dopo le gare ufficiali. Fonte storica: referti e statistiche stagionali ESPN. Per le italiane sono prioritari i profili Serie A; i dati mancanti sono integrati solo con associazioni verificate. Le competizioni ad anno solare riportano il 2025.</p></section>`;
+    const summary=`<section class="champions-team-summary" aria-labelledby="champions-team-summary-title"><header><div><p class="eyebrow">Dati disponibili e provenienza</p><h2 id="champions-team-summary-title">Riepilogo</h2></div><p>UEFA Champions League 2026/27 · indicatori storici 2023/24–2026/27 specificati nelle singole card.</p></header><div class="champions-team-overview"><article><small>Posizione fase campionato</small><strong>${standingPosition}ª su 36</strong><span>Provvisoria · ${standing?.played||0} ${standing?.played===1?"gara":"gare"} conclusa/e</span></article><article><small>Indice europeo descrittivo</small><strong>${strengthValue} / 100</strong><span>Ranking e percorso UEFA · ${strength?.dataCoveragePct??"N/D"}% copertura</span></article><article><small>Punti per gara europei</small><strong>${historyValue}</strong><span>Competizioni UEFA 2023/24–2025/26 · ${history?.overall?.matches??"N/D"} gare</span></article>${summaryMetricCards}<article><small>Prossima lettura disponibile</small><strong>${nextReading?`${esc(nextReading.homeTeam)} – ${esc(nextReading.awayTeam)}`:"N/D"}</strong>${nextReading?`<a href="champions-league.html?match=${esc(nextReading.fixtureId)}">Apri lettura →</a>`:"<span>Nessuna lettura disponibile</span>"}</article></div><div class="champions-team-status" aria-label="Stato dati squadra"><article><small>Registrazione UEFA</small><strong>Integrata</strong><span>${esc(shortDate(team.registration.updatedAt))}</span></article><article><small>Disponibilità giocatori</small><strong>N/D</strong><span>Nessuna deduzione</span></article><article><small>Probabile formazione</small><strong>${esc(probableSide?.formation||"N/D")}</strong><span>${probableSide?"Editoriale · non ufficiale":"Fonte non integrata"}</span></article><article><small>Convocati gara</small><strong>N/D</strong><span>Non pubblicati nel dataset</span></article><article><small>Distinta ufficiale</small><strong>N/D</strong><span>Da aggiornare a ridosso della gara</span></article></div></section>`;
+    /* Extension slot: render future insight sections only after verified content is supplied. */
+    const futureInsights=[
+      {id:"offensive-identity",title:"Identità offensiva",content:null},
+      {id:"defensive-vulnerability",title:"Vulnerabilità difensive",content:null},
+      {id:"recent-form",title:"Andamento recente",content:null}
+    ].filter(item=>item.content).map(item=>`<section id="${item.id}" class="champions-team-insight"><h2>${esc(item.title)}</h2>${item.content}</section>`).join("");
+    const heroStyle=`--club-accent:${brand.colors?.[0]||"#176bcb"};--club-accent-secondary:${brand.colors?.[1]||"#7fdcff"}`;
+    const hero=`<section class="champions-team-hero" style="${esc(heroStyle)}"><div class="champions-team-identity"><span class="champions-team-hero-logo">${teamBadge(team.team,branding,{showName:false})}</span><div><p class="eyebrow">UEFA Champions League 2026/27</p><h1>${esc(team.team)}</h1><p>Allenatore: ${esc(team.coach||"N/D")}</p></div></div><div class="champions-team-hero-facts"><article><small>Rosa registrata UEFA</small><strong>${team.counts.total}</strong><span>${team.counts.listB} giocatori in Lista B</span></article><article><small>Posizione fase campionato</small><strong>${standingPosition}ª</strong><span>Classifica provvisoria su 36 · ${standing?.points||0} punti</span></article></div></section>`;
+    return `<nav class="champions-reading-back"><a href="champions-league.html">← Champions League</a><span>Scheda squadra</span></nav>${hero}${summary}${calendarPanel}${volumePanel}${attackPanel}${lineupFixture?`<section class="champions-team-lineup">${probableFormationCard(lineupFixture,squads,team.team)}</section>`:""}${futureInsights}${playersOverview}${playersTable}`;
+  }
+
+  function mountChampionsTeamControls(){
+    if(typeof document.querySelectorAll!=="function")return;
+    const table=document.querySelector(".champions-player-stats-table");
+    if(!table)return;
+    const body=table.tBodies[0],search=document.querySelector("#champions-player-search"),role=document.querySelector("#champions-player-role"),sort=document.querySelector("#champions-player-sort"),results=document.querySelector("#champions-player-results");
+    const rows=[...body.rows];
+    const value=(row,key)=>{const raw=row.dataset[`stat${key.split("-").map(part=>part[0].toUpperCase()+part.slice(1)).join("")}`];return raw===""||raw==null?null:Number(raw)};
+    const apply=()=>{
+      const query=search.value.trim().toLocaleLowerCase("it-IT"),selectedRole=role.value,selectedSort=sort.value;
+      const visible=rows.filter(row=>(selectedRole==="all"||row.dataset.playerRole===selectedRole)&&(!query||row.dataset.playerName.includes(query)));
+      const hidden=rows.filter(row=>!visible.includes(row));
+      if(selectedSort==="source")visible.sort((a,b)=>Number(a.dataset.playerIndex)-Number(b.dataset.playerIndex));
+      else visible.sort((a,b)=>{
+        const left=value(a,selectedSort),right=value(b,selectedSort);
+        if(left==null&&right==null)return a.dataset.playerName.localeCompare(b.dataset.playerName,"it");
+        if(left==null)return 1;if(right==null)return -1;
+        return right-left||a.dataset.playerName.localeCompare(b.dataset.playerName,"it");
+      });
+      visible.forEach(row=>{row.hidden=false;body.append(row)});
+      hidden.forEach(row=>{row.hidden=true;body.append(row)});
+      results.textContent=`${visible.length} ${visible.length===1?"giocatore":"giocatori"}`;
+    };
+    search.addEventListener("input",apply);role.addEventListener("change",apply);sort.addEventListener("change",apply);apply();
+    const ranking=document.querySelector("[data-ranking-list]");
+    document.querySelectorAll("[data-player-ranking]").forEach(button=>button.addEventListener("click",()=>{
+      const metric=button.dataset.playerRanking,key=metric==="shotsOnTarget"?"rankingShotsOnTarget":`ranking${metric[0].toUpperCase()}${metric.slice(1)}`;
+      ranking.innerHTML=ranking.dataset[key]||"";
+      document.querySelectorAll("[data-player-ranking]").forEach(item=>{const active=item===button;item.classList.toggle("is-active",active);item.setAttribute("aria-pressed",String(active))});
+    }));
   }
 
   function historyDirectory(history){
@@ -356,7 +430,10 @@ export function createPage(deps){
     }
     const requestedTeam=requestedTeamId?squads.teams.find(team=>team.id===requestedTeamId):null;
     if(requestedTeam){
-      document.querySelector("#app").innerHTML=`<div class="champions-team-detail">`+championsTeamDetail(requestedTeam,profiles.get(requestedTeam.team),histories.get(requestedTeam.team),pilot,squads,attackByTeam.get(requestedTeam.team),data,branding)+`</div>`;
+      const md2TeamPilot=await load("champions-pilot-predictions-md02-2026-27.json");
+      const teamPilot={...pilot,fixtures:[...pilot.fixtures,...md2TeamPilot.fixtures]};
+      document.querySelector("#app").innerHTML=`<div class="champions-team-detail">`+championsTeamDetail(requestedTeam,profiles.get(requestedTeam.team),histories.get(requestedTeam.team),teamPilot,squads,attackByTeam.get(requestedTeam.team),data,branding)+`</div>`;
+      mountChampionsTeamControls();
       return;
     }
     const md2Summary=await load("champions-pilot-predictions-md02-2026-27.json");
