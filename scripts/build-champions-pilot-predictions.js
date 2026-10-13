@@ -11,7 +11,13 @@ const championsHistory = read("data/normalized/champions-history-2023-26.json");
 const resultModel = read("data/normalized/champions-1x2-2026-27.json");
 const motivation = read("data/normalized/champions-motivation-md01-2026-27.json");
 const odds = read("data/normalized/odds/sisal/champions-league.json");
-const outputPath = path.join(root, "data/normalized/champions-pilot-predictions-2026-27.json");
+const matchdayArg = process.argv.indexOf("--matchday");
+const targetMatchday = matchdayArg >= 0 ? Number(process.argv[matchdayArg + 1]) : 1;
+if (!Number.isInteger(targetMatchday) || targetMatchday < 1 || targetMatchday > 8) throw new Error(`Giornata Champions non valida: ${process.argv[matchdayArg + 1] || "N/D"}`);
+const outputName = targetMatchday === 1
+  ? "champions-pilot-predictions-2026-27.json"
+  : `champions-pilot-predictions-md${String(targetMatchday).padStart(2, "0")}-2026-27.json`;
+const outputPath = path.join(root, "data/normalized", outputName);
 const pilotTeams = new Set(source.teams.map(team => team.id));
 const nameToId = new Map(source.teams.map(team => [team.name, team.id]));
 const metrics = ["goals", "totalShots", "shotsOnTarget", "wonCorners", "foulsCommitted", "yellowCards"];
@@ -255,7 +261,7 @@ const historicalOpeningFixtures = championsHistory.matches.filter(match =>
 const historicalOpeningTotalPrior = historicalOpeningFixtures.reduce((sum, match) => sum + match.score90.home + match.score90.away, 0) / historicalOpeningFixtures.length;
 if (!Number.isFinite(historicalOpeningTotalPrior) || historicalOpeningFixtures.length < 50) throw new Error("Baseline gol Champions della prima giornata insufficiente");
 
-const pilotFixtures = calendar.fixtures.filter(fixture => fixture.matchday === 1);
+const pilotFixtures = calendar.fixtures.filter(fixture => fixture.matchday === targetMatchday);
 const resultByFixture = new Map(resultModel.fixtures.map(item => [item.fixtureId, item]));
 const motivationByFixture = new Map(motivation.fixtures.map(item => [item.matchId, item]));
 const oddsByFixture = new Map(odds.events.filter(item => item.canonicalMatchId).map(item => [item.canonicalMatchId, item]));
@@ -346,14 +352,15 @@ const fixtures = pilotFixtures.map(fixture => {
   };
 });
 
-if (fixtures.length !== 18) throw new Error(`Prima giornata Champions incompleta: attese 18 gare, trovate ${fixtures.length}`);
+if (fixtures.length !== 18) throw new Error(`Giornata ${targetMatchday} Champions incompleta: attese 18 gare, trovate ${fixtures.length}`);
 const output = {
   schemaVersion: 1,
   competition: "champions-league",
   season: "2026-27",
   generatedAt: [source.retrievedAt, odds.retrievedAt].filter(Boolean).sort().at(-1),
-  status: "experimental-md01-team-volumes",
-  scope: `Prima giornata completa: 18 pronostici risultato e gol; volumi dettagliati su ${fixtures.filter(item => item.dataQuality.detailedVolumesAvailable).length} gare con profili verificabili delle 36 partecipanti`,
+  matchday: targetMatchday,
+  status: `experimental-md${String(targetMatchday).padStart(2, "0")}-team-volumes`,
+  scope: `Giornata ${targetMatchday} completa: 18 pronostici risultato e gol; volumi dettagliati su ${fixtures.filter(item => item.dataQuality.detailedVolumesAvailable).length} gare con profili verificabili delle 36 partecipanti`,
   warning: "Stime preliminari indipendenti dalle quote. Tutte le gare usano il modello UEFA Elo 1X2; i volumi usano la baseline domestica e, solo dove il provider non espone il campionato, un fallback UEFA dichiarato. Se il campione non supera i requisiti minimi, tiri, corner, falli e cartellini restano N/D. Moduli probabili, assenze e arbitri non modificano le proiezioni.",
   readingTemplate: {
     id: "serie-a-reading-v1",
@@ -374,4 +381,4 @@ const output = {
   fixtures
 };
 fs.writeFileSync(outputPath, `${JSON.stringify(output, null, 2)}\n`);
-console.log(`OK pronostici Champions MD1: ${fixtures.length} gare · ${fixtures.filter(item => item.dataQuality.detailedVolumesAvailable).length} con volumi · prior storico ${round(historicalOpeningTotalPrior)} gol`);
+console.log(`OK pronostici Champions MD${String(targetMatchday).padStart(2, "0")}: ${fixtures.length} gare · ${fixtures.filter(item => item.dataQuality.detailedVolumesAvailable).length} con volumi · prior storico ${round(historicalOpeningTotalPrior)} gol`);
