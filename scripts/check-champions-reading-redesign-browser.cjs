@@ -16,7 +16,7 @@ const server=http.createServer((request,response)=>{
 const cases=[
   {id:'ucl-2026-27-md02-03',name:'Arsenal - Lille',published:4,h2h:0},
   {id:'ucl-2026-27-md02-04',name:'Atlético de Madrid - Manchester United',published:3,h2h:2},
-  {id:'ucl-2026-27-md01-01',name:'Galatasaray - Atalanta',published:0,h2h:0,incomplete:true}
+  {id:'ucl-2026-27-md01-01',name:'AEK Athens - LASK',published:0,h2h:0,incomplete:true}
 ];
 
 const rgbValues=value=>(value.match(/[\d.]+/g)||[]).slice(0,3).map(Number);
@@ -62,6 +62,14 @@ const isDark=value=>rgbValues(value).reduce((sum,channel)=>sum+channel,0)<240;
           const publishedBackground=await published.evaluate(node=>getComputedStyle(node).backgroundColor);
           assert(isDark(selectedBackground),`${fixture.id}: sfondo pronostici non scuro (${selectedBackground})`);
           assert.equal(publishedBackground,'rgba(0, 0, 0, 0)',`${fixture.id}: involucro pronostici non trasparente`);
+          if(fixture.id==='ucl-2026-27-md02-03'&&width===1440){
+            await page.evaluate(()=>localStorage.clear());
+            const myComboButton=page.locator('[data-add-published-selection]').first();
+            await myComboButton.click();
+            assert.equal(await myComboButton.getAttribute('aria-pressed'),'true',`${fixture.id}: aggiunta MyCombo`);
+            assert(await page.evaluate(()=>Boolean(localStorage.getItem('serie-a-2026-27:personal-betslip:v1'))),`${fixture.id}: persistenza MyCombo`);
+            await page.evaluate(()=>localStorage.clear());
+          }
         }
 
         const baseline=page.locator('.champions-tactical-table-wrap');
@@ -74,7 +82,7 @@ const isDark=value=>rgbValues(value).reduce((sum,channel)=>sum+channel,0)<240;
         if(await referee.count()){
           const refereeBox=await referee.boundingBox();
           assert(refereeBox.height<(width===390?560:230),`${fixture.id} ${width}px: designazione arbitrale troppo alta (${refereeBox.height}px)`);
-          assert.match(await referee.innerText(),/Designazione arbitrale/);
+          assert.match(await referee.innerText(),/Designazione arbitrale/i);
         }
 
         const attackTracks=page.locator('.champions-reading-tactical-analysis .prediction-channels i');
