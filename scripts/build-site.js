@@ -17,10 +17,11 @@ const homeVersion = "20260919-roma-inter-juventus-fatigue-v1";
 const calendarVersion = "20260919-roma-inter-juventus-fatigue-v1";
 const teamVersion = "20261013-md06-results-v1";
 const leaderboardVersion = "20261013-md06-results-v1";
-const bettingVersion = "20261013-champions-md02-card-v1";
+const bettingVersion = "20261013-champions-md02-individual-v1";
 const readingVersion = "20261013-md06-results-v1";
 const cupVersion = "20260919-coppa-events-v1";
-const championsVersion = "20261013-champions-md02-sisal-v1";
+const championsVersion = "20261013-champions-md02-individual-v1";
+const championsMotivationVersion = "20261013-champions-md02-sisal-v1";
 const fantasyVersion = "20261009-probable-lineups-md06-v2";
 const headToHeadPath = path.join(root, "data/generated/head-to-head/first-leg-2026-27.json");
 if (fs.existsSync(headToHeadPath)) {
@@ -55,7 +56,7 @@ for (const [file,id,label] of pages) {
 }
 const motivationDir = path.join(root, "champions-2026-27");
 fs.mkdirSync(motivationDir, { recursive: true });
-const motivationHtml = `<!doctype html>\n<html lang="it"><head><meta charset="utf-8"><base href="../"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Motivation Index delle 36 squadre di UEFA Champions League 2026/27"><title>Motivation Index | Champions League 2026/27</title><link rel="stylesheet" href="css/styles.css?v=${championsVersion}"></head><body data-page="champions"><header id="site-top" class="site-header"><a class="brand" href="index.html"><span class="brand-mark"><img src="assets/images/serie-a-logo-mark.png" alt=""></span><span><strong>Serie A 2026/27</strong><small>Campionato e Coppa Italia</small></span></a><button class="menu-button" type="button" aria-controls="site-nav" aria-expanded="false">Menu</button><nav id="site-nav" class="site-nav" aria-label="Navigazione principale">${navigation("", "champions")}</nav></header><main id="app" tabindex="-1"><section class="loading"><p class="eyebrow">Caricamento</p><h1>Motivation Index</h1></section></main>${footer()}<script type="module" src="js/app.js?v=${championsVersion}"></script></body></html>`;
+const motivationHtml = `<!doctype html>\n<html lang="it"><head><meta charset="utf-8"><base href="../"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Motivation Index delle 36 squadre di UEFA Champions League 2026/27"><title>Motivation Index | Champions League 2026/27</title><link rel="stylesheet" href="css/styles.css?v=${championsMotivationVersion}"></head><body data-page="champions"><header id="site-top" class="site-header"><a class="brand" href="index.html"><span class="brand-mark"><img src="assets/images/serie-a-logo-mark.png" alt=""></span><span><strong>Serie A 2026/27</strong><small>Campionato e Coppa Italia</small></span></a><button class="menu-button" type="button" aria-controls="site-nav" aria-expanded="false">Menu</button><nav id="site-nav" class="site-nav" aria-label="Navigazione principale">${navigation("", "champions")}</nav></header><main id="app" tabindex="-1"><section class="loading"><p class="eyebrow">Caricamento</p><h1>Motivation Index</h1></section></main>${footer()}<script type="module" src="js/app.js?v=${championsMotivationVersion}"></script></body></html>`;
 fs.writeFileSync(path.join(motivationDir,"motivazione.html"),withFonts(motivationHtml));
 const squadDir = path.join(root, "statistiche-squadra");
 fs.mkdirSync(squadDir, { recursive: true });

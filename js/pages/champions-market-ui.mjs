@@ -58,12 +58,14 @@ const modifierLabels=market=>[
   market.threshold!=null?`soglia ${market.threshold}`:null
 ].filter(Boolean);
 
-export function mountChampionsMarketUi(fixture,{storage=globalThis.localStorage}={}){
+export function mountChampionsMarketUi(fixture,{storage=globalThis.localStorage,publishedSelections=[]}={}){
   const root=document.querySelector(`[data-champions-market-root][data-fixture-id="${CSS.escape(fixture.fixtureId)}"]`);
   if(!root)return null;
+  const scope=root.closest(".champions-sisal-catalog")||root;
   const store=createPersonalBetslipStore({storage});
   store.setContext({competition:"champions",season:"2026-27",matchday:2});
-  const contracts=fixture.oddsEvent.playerMarkets.flatMap(market=>market.selections.filter(selection=>selection.interfaceSelectable).map(selection=>createChampionsSelection(fixture,market,selection)));
+  const catalogContracts=fixture.oddsEvent.playerMarkets.flatMap(market=>market.selections.filter(selection=>selection.interfaceSelectable).map(selection=>createChampionsSelection(fixture,market,selection)));
+  const contracts=[...new Map([...catalogContracts,...publishedSelections].map(selection=>[selection.selectionId,selection])).values()];
   const retainedOtherFixtures=store.getSnapshot().selections.filter(row=>row.betSelection?.identity?.matchId!==fixture.fixtureId);
   store.reconcile([...retainedOtherFixtures,...contracts]);
 
@@ -102,8 +104,18 @@ export function mountChampionsMarketUi(fixture,{storage=globalThis.localStorage}
     const theoretical=snapshot.assessment.theoreticalCombinedOdds;
     container.innerHTML=rows.length?`<ol>${rows.map(row=>`<li><div><small>${esc(row.fixture)}</small><strong>${esc(row.label)}</strong><span>${modifierLabels({...(row.betSelection?.market?.modifiers||{}),threshold:row.betSelection?.market?.threshold}).map(esc).join(" · ")||"contratto originale"}</span></div><b>${formatOdds(row.betSelection?.quote?.decimal)}</b><button type="button" data-remove-selection="${esc(row.selectionId)}" aria-label="Rimuovi ${esc(row.label)}">×</button></li>`).join("")}</ol><div class="champions-market-total"><span>Quota combinata teorica</span><strong>${formatOdds(theoretical)}</strong><small>La combinabilità bookmaker resta separata.</small></div><button type="button" class="champions-market-clear" data-clear-slip>Svuota schedina</button>`:`<p class="champions-market-empty">Nessuna selezione. Le quote valide possono essere aggiunte anche con probabilità ed EV N/D.</p>`;
   };
+  const renderPublished=snapshot=>{
+    const selected=new Set(snapshot.selections.map(row=>row.selectionId));
+    scope.querySelectorAll("[data-add-published-selection]").forEach(button=>{
+      const active=selected.has(button.dataset.addPublishedSelection);
+      button.setAttribute("aria-pressed",String(active));
+      button.textContent=active?"Aggiunta":"Aggiungi";
+    });
+  };
   const byId=new Map(contracts.map(row=>[row.selectionId,row]));
-  root.addEventListener("click",event=>{
+  scope.addEventListener("click",event=>{
+    const published=event.target.closest("[data-add-published-selection]");
+    if(published){const row=byId.get(published.dataset.addPublishedSelection);if(row)store.add(row);return}
     const add=event.target.closest("[data-add-selection]");
     if(add){const row=byId.get(add.dataset.addSelection);if(row)store.add(row);return}
     const remove=event.target.closest("[data-remove-selection]");
@@ -114,8 +126,9 @@ export function mountChampionsMarketUi(fixture,{storage=globalThis.localStorage}
   });
   search.addEventListener("input",()=>{limit=100;renderMarkets()});
   selectableOnly.addEventListener("change",()=>{limit=100;renderMarkets()});
-  store.subscribe(renderSlip);
+  store.subscribe(snapshot=>{renderSlip(snapshot);renderPublished(snapshot)});
   renderMarkets();
   renderSlip(store.getSnapshot());
+  renderPublished(store.getSnapshot());
   return {store,contracts,renderMarkets};
 }

@@ -49,11 +49,14 @@ assert.equal(saved.find(row=>row.betSelection.market.code==="28609").betSelectio
 
 const championsSource=fs.readFileSync(path.join(root,"js/pages/champions.js"),"utf8");
 assert.match(championsSource,/champions-md02-integration-2026-27\.json/);
+assert.match(championsSource,/schedina-champions-md02\.json/);
+assert.match(championsSource,/data-add-published-selection/);
 assert.match(championsSource,/data-champions-market-root/);
 assert.doesNotMatch(championsSource,/MODEL_BOOKMAKER_INCOMPATIBLE/);
 const bettingSource=fs.readFileSync(path.join(root,"js/pages/betting.js"),"utf8");
 assert.match(bettingSource,/competition==="champions"&&matchday==="2"/);
 assert.match(bettingSource,/createChampionsSelection/);
+assert.match(bettingSource,/champions-md02-individuale/);
 assert.match(fs.readFileSync(path.join(root,"js/pages/champions-market-ui.mjs"),"utf8"),/schedina\.html\?competizione=champions&amp;giornata=2/);
 
 console.log(`OK UI mercati MD2: ${contracts.length} contratti aggiunti e ripristinati con quote, ID e modificatori invariati`);
