@@ -3,7 +3,7 @@
   if (!root) return;
 
   const base = document.body.dataset.depth === "team" ? "../" : "";
-  const release = "20261009-probable-lineups-md06-v2";
+  const release = "20261013-md06-results-v1";
   const defaultPlayerPhoto = `${base}assets/images/players/player-placeholder.png`;
   const esc = value => String(value ?? "").replace(/[&<>\"]/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[char]));
   const contrastInk = color => {
@@ -100,6 +100,12 @@
     pointsPerGame: "Punti / partita", goalsFor: "Gol fatti", goalsAgainst: "Gol subiti",
     goalDifference: "Differenza reti", cleanSheets: "Clean sheet", failedToScore: "Gare senza segnare",
     winPercentage: "Vittorie", drawPercentage: "Pareggi", lossPercentage: "Sconfitte",
+    shotsPerGame: "Tiri / partita", shotsOnTargetPerGame: "Tiri nello specchio / partita",
+    shotAccuracy: "Precisione tiri", shotConversion: "Conversione tiri", bigChancesMissed: "Grandi occasioni fallite",
+    expectedGoals: "xG", expectedGoalsPerGame: "xG / partita", goalsVsExpectedGoals: "Gol rispetto agli xG",
+    corners: "Corner", cornersPerGame: "Corner / partita", shotsConceded: "Tiri concessi",
+    shotsOnTargetConceded: "Tiri nello specchio concessi", expectedGoalsAgainst: "xG concessi",
+    averagePossession: "Possesso medio", passesAttempted: "Passaggi tentati", passesCompleted: "Passaggi riusciti",
     foulsCommitted: "Falli commessi", foulsCommittedPerGame: "Falli / partita", foulsWon: "Falli subiti",
     foulsWonPerGame: "Falli subiti / partita", yellowCards: "Gialli", yellowCardsPerGame: "Gialli / partita",
     secondYellowCards: "Doppi gialli", straightRedCards: "Rossi diretti", dismissals: "Espulsioni",
@@ -115,7 +121,8 @@
   };
 
   const statGrid = (object, keys, compact = false) => `<div class="${compact ? "player-stat-grid" : "team-stat-grid"}">${keys.map(key => `<article><span>${labels[key] || key}</span><strong>${key.endsWith("Percentage") || key === "passAccuracy" || key === "savePercentage" ? pct(object?.[key]) : value(object?.[key])}</strong></article>`).join("")}</div>`;
-  const teamSeasonList = (object, keys) => `<dl class="team-season-list">${keys.map(key => `<div><dt>${labels[key] || key}</dt><dd>${key.endsWith("Percentage") ? pct(object?.[key]) : value(object?.[key])}</dd></div>`).join("")}</dl>`;
+  const percentageKeys = new Set(["shotAccuracy", "shotConversion", "passAccuracy", "savePercentage", "averagePossession"]);
+  const teamSeasonList = (object, keys) => `<dl class="team-season-list">${keys.map(key => `<div><dt>${labels[key] || key}</dt><dd>${key.endsWith("Percentage") || percentageKeys.has(key) ? pct(object?.[key]) : value(object?.[key])}</dd></div>`).join("")}</dl>`;
   const teamNavigation = (team, teams) => {
     const currentIndex = teams.findIndex(item => item.id === team.id);
     const previous = teams[(currentIndex - 1 + teams.length) % teams.length];
@@ -292,7 +299,9 @@
   function teamSeasonStatsColumn(stats) {
     const noMatches = stats.results.played === 0 ? '<p class="team-season-empty">Nessuna partita conclusa: i totali sono a zero e le medie restano N/D.</p>' : "";
     const current = stats.season === "2026/27";
-    return `<details class="team-season-column" data-team-season="${esc(stats.season)}"${current ? " open" : ""}><summary class="team-season-heading"><div><span class="eyebrow">${esc(stats.competition)}</span><h2>Statistiche ${esc(stats.season)}</h2></div><span>${value(stats.results.played)} partite concluse</span></summary><div class="team-season-content">${noMatches}<section class="team-season-group"><h3>Risultati</h3>${teamSeasonList(stats.results, ["played", "won", "drawn", "lost", "points", "pointsPerGame", "goalsFor", "goalsAgainst", "goalDifference", "cleanSheets", "failedToScore", "winPercentage", "drawPercentage", "lossPercentage"])}</section><section class="team-season-group"><h3>Disciplina</h3>${teamSeasonList(stats.discipline, ["foulsCommitted", "foulsCommittedPerGame", "foulsWon", "foulsWonPerGame", "yellowCards", "yellowCardsPerGame", "secondYellowCards", "straightRedCards", "dismissals", "penaltiesConceded", "penaltiesWon", "disciplineIndex"])}</section><section class="team-season-group"><h3>Casa e trasferta</h3><div class="team-season-splits"><section><h4>Casa</h4>${teamSeasonList(stats.homeAway.home, ["played", "won", "drawn", "lost", "goalsFor", "goalsAgainst", "yellowCards"])}</section><section><h4>Trasferta</h4>${teamSeasonList(stats.homeAway.away, ["played", "won", "drawn", "lost", "goalsFor", "goalsAgainst", "yellowCards"])}</section></div></section></div></details>`;
+    const currentPerformance = current ? `<section class="team-season-group"><h3>Attacco</h3>${teamSeasonList(stats.attack, ["shots", "shotsPerGame", "shotsOnTarget", "shotsOnTargetPerGame", "shotAccuracy", "shotConversion", "bigChancesMissed", "expectedGoals", "expectedGoalsPerGame", "goalsVsExpectedGoals", "corners", "cornersPerGame"])}</section><section class="team-season-group"><h3>Difesa</h3>${teamSeasonList(stats.defence, ["shotsConceded", "shotsOnTargetConceded", "expectedGoalsAgainst", "saves", "savePercentage", "tackles", "interceptions", "clearances"])}</section><section class="team-season-group"><h3>Possesso e passaggi</h3>${teamSeasonList(stats.possession, ["averagePossession", "passesAttempted", "passesCompleted", "passAccuracy"])}</section>` : "";
+    const splitKeys = current ? ["played", "won", "drawn", "lost", "goalsFor", "goalsAgainst", "shots", "shotsOnTarget", "shotsConceded", "shotsOnTargetConceded", "expectedGoals", "expectedGoalsAgainst", "averagePossession", "yellowCards", "corners"] : ["played", "won", "drawn", "lost", "goalsFor", "goalsAgainst", "yellowCards"];
+    return `<details class="team-season-column" data-team-season="${esc(stats.season)}"${current ? " open" : ""}><summary class="team-season-heading"><div><span class="eyebrow">${esc(stats.competition)}</span><h2>Statistiche ${esc(stats.season)}</h2></div><span>${value(stats.results.played)} partite concluse</span></summary><div class="team-season-content">${noMatches}<section class="team-season-group"><h3>Risultati</h3>${teamSeasonList(stats.results, ["played", "won", "drawn", "lost", "points", "pointsPerGame", "goalsFor", "goalsAgainst", "goalDifference", "cleanSheets", "failedToScore", "winPercentage", "drawPercentage", "lossPercentage"])}</section>${currentPerformance}<section class="team-season-group"><h3>Disciplina</h3>${teamSeasonList(stats.discipline, ["foulsCommitted", "foulsCommittedPerGame", "foulsWon", "foulsWonPerGame", "yellowCards", "yellowCardsPerGame", "secondYellowCards", "straightRedCards", "dismissals", "penaltiesConceded", "penaltiesWon", "disciplineIndex"])}</section><section class="team-season-group"><h3>Casa e trasferta</h3><div class="team-season-splits"><section><h4>Casa</h4>${teamSeasonList(stats.homeAway.home, splitKeys)}</section><section><h4>Trasferta</h4>${teamSeasonList(stats.homeAway.away, splitKeys)}</section></div></section></div></details>`;
   }
 
   const attackChannelLabel = channel => channel === "left" ? "Fascia sinistra" : channel === "right" ? "Fascia destra" : "Zona centrale";

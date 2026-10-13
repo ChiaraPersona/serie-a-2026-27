@@ -159,16 +159,26 @@ function currentMatchStats(teamId) {
     const values = items.map(item => item[side]?.[field]);
     return values.every(value => value !== null && value !== undefined) ? values.reduce((total, value) => total + value, 0) : null;
   };
-  const split = items => ({
-    played: items.length,
-    won: items.filter(item => item.gf > item.ga).length,
-    drawn: items.filter(item => item.gf === item.ga).length,
-    lost: items.filter(item => item.gf < item.ga).length,
-    goalsFor: items.reduce((total, item) => total + item.gf, 0),
-    goalsAgainst: items.reduce((total, item) => total + item.ga, 0),
-    yellowCards: sum(items, "yellowCards"),
-    corners: sum(items, "corners")
-  });
+  const split = items => {
+    const possessionTotal = sum(items, "possessionPct");
+    return {
+      played: items.length,
+      won: items.filter(item => item.gf > item.ga).length,
+      drawn: items.filter(item => item.gf === item.ga).length,
+      lost: items.filter(item => item.gf < item.ga).length,
+      goalsFor: items.reduce((total, item) => total + item.gf, 0),
+      goalsAgainst: items.reduce((total, item) => total + item.ga, 0),
+      shots: sum(items, "shots"),
+      shotsOnTarget: sum(items, "shotsOnTarget"),
+      shotsConceded: sum(items, "shots", "opponent"),
+      shotsOnTargetConceded: sum(items, "shotsOnTarget", "opponent"),
+      expectedGoals: sum(items, "expectedGoals"),
+      expectedGoalsAgainst: sum(items, "expectedGoals", "opponent"),
+      averagePossession: possessionTotal == null ? null : rate(possessionTotal, items.length),
+      yellowCards: sum(items, "yellowCards"),
+      corners: sum(items, "corners")
+    };
+  };
   return { selected, home: split(selected.filter(item => item.isHome)), away: split(selected.filter(item => !item.isHome)), sum };
 }
 
@@ -224,7 +234,7 @@ function seasonStats({ season, competition, source, lastUpdated, matchData, row 
     shotsOnTarget,
     shotsOnTargetPerGame: shotsOnTarget == null ? null : rate(shotsOnTarget, played),
     shotAccuracy: shots == null || shotsOnTarget == null ? null : percentage(shotsOnTarget, shots),
-    goalsPerGame: results.goalsPerGame,
+    goalsPerGame: isCurrentSeason ? results.goalsPerGame : null,
     shotConversion: shots == null ? null : percentage(goalsFor, shots),
     bigChancesMissed,
     expectedGoals,
