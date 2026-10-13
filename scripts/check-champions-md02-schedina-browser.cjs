@@ -40,6 +40,12 @@ const server=http.createServer((request,response)=>{
       assert.equal(await page.locator('[data-selection-row][data-bookmaker-contract="duo"][data-probability=""][data-ev=""]').count(),45,`${width}px: P/EV individuali devono restare N/D`);
       assert.equal(await page.locator('.betting-champions-md02-markets .betting-market-group').count(),0,`${width}px: intestazioni automatiche mercato ancora visibili`);
       assert.equal(await page.locator('.betting-champions-md02-markets h4').count(),0,`${width}px: titoli o numerazioni automatiche ancora visibili`);
+      assert.equal(await page.locator('.betting-champions-md02-markets .betting-market-columns').count(),18,`${width}px: serve una sola riga colonne per partita`);
+      assert.equal(await page.locator('.betting-champions-md02-markets .betting-market-columns span:first-child').evaluateAll(nodes=>nodes.every(node=>node.textContent==="")),true,`${width}px: intestazione Mercato ancora visibile`);
+      assert.deepEqual(await page.locator('.betting-champions-md02-markets .betting-market-columns').first().locator('span').evaluateAll(nodes=>nodes.map(node=>node.textContent)),['','Probabilità','Quota Sisal','EV',''],`${width}px: intestazioni colonne Champions MD2`);
+      const lensPanel=page.locator('[data-match-id="ucl-2026-27-md02-01"]');
+      assert.equal(await lensPanel.locator('[data-selection-row]').count(),3,`${width}px: Lens-Sporting deve conservare tre pronostici consecutivi`);
+      assert.deepEqual(await lensPanel.locator('[data-selection-row]').evaluateAll(rows=>rows.map(row=>row.dataset.marketFamily)),['Doppia chance','Tiri giocatore','Tiri in porta giocatore'],`${width}px: ordine pronostici Lens-Sporting`);
       assert.match(await page.locator('.betting-champions-md02-summary').innerText(),/63 pronostici da verificare[\s\S]*ROI e profitto\/perdita restano N\/D/);
       assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,`${width}px: overflow orizzontale`);
     }

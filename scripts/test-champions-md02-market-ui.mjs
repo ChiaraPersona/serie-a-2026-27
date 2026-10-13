@@ -62,6 +62,7 @@ assert.match(bettingSource,/champions-md02-individuale/);
 assert.doesNotMatch(bettingSource,/label:"Pronostico squadra"/);
 assert.doesNotMatch(bettingSource,/label:"Tiri giocatore"/);
 assert.doesNotMatch(bettingSource,/data-market-group=/);
+assert.match(bettingSource,/<span><\/span><span>Probabilità<\/span><span>Quota Sisal<\/span><span>EV<\/span>/);
 assert.match(fs.readFileSync(path.join(root,"js/pages/champions-market-ui.mjs"),"utf8"),/schedina\.html\?competizione=champions&amp;giornata=2/);
 
 console.log(`OK UI mercati MD2: ${contracts.length} contratti aggiunti e ripristinati con quote, ID e modificatori invariati`);
