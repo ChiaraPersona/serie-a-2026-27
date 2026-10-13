@@ -7,6 +7,7 @@ import { createPage } from "../js/pages/champions.js";
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),"..");
 const app={innerHTML:""};
 globalThis.location={search:"?match=ucl-2026-27-md01-06"};
+globalThis.CSS={escape:value=>String(value)};
 globalThis.document={querySelector:selector=>selector==="#app"?app:null};
 const esc=value=>String(value??"").replace(/[&<>\"]/g,character=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[character]));
 const load=async name=>JSON.parse(fs.readFileSync(path.join(root,"data/normalized",name),"utf8"));
@@ -90,6 +91,17 @@ assert(app.innerHTML.includes("--reading-lineup-count:1"));
 for(const unavailableRole of ["Assistenti","IV ufficiale","VAR","AVAR"]){
   assert(!app.innerHTML.includes(`<dt>${unavailableRole}</dt>`),`Ruolo arbitrale non disponibile ancora visibile: ${unavailableRole}`);
 }
+globalThis.location.search="?match=ucl-2026-27-md02-12";
+await createPage({esc,load}).render();
+assert(app.innerHTML.includes("François Letexier"));
+assert(app.innerHTML.includes("Mugnier · Rahmouni"));
+assert(app.innerHTML.includes("Dechepy"));
+assert(app.innerHTML.includes("Higler"));
+assert(app.innerHTML.includes("van Boekel"));
+assert(app.innerHTML.includes("Statistiche disciplinari"));
+assert(app.innerHTML.includes("N/D"));
+globalThis.location.search="?match=ucl-2026-27-md01-06";
+await createPage({esc,load}).render();
 assert(!app.innerHTML.includes("reading-context-rail"));
 assert(!app.innerHTML.includes("reading-evidence-card"));
 assert(!app.innerHTML.includes("Over/Under"));

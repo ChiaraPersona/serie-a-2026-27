@@ -6,7 +6,10 @@ const path = require("path");
 const root = path.resolve(__dirname, "..");
 const sourcePath = path.join(root, "data/sources/champions-league-2026-27.json");
 const brandingPath = path.join(root, "data/sources/champions-team-branding-2026-27.json");
-const refereeAssignmentsPath = path.join(root, "data/sources/champions-referee-assignments-2026-27.json");
+const refereeAssignmentsPaths = [
+  "data/sources/champions-referee-assignments-2026-27.json",
+  "data/sources/champions-referee-assignments-md02-2026-27.json"
+].map(relativePath => path.join(root, relativePath));
 const probableFormationsPaths = [1, 2].map(matchday => path.join(root, `data/sources/champions-probable-formations-md${String(matchday).padStart(2, "0")}-2026-27.json`));
 const outputPath = path.join(root, "data/normalized/champions-league-2026-27.json");
 const source = JSON.parse(fs.readFileSync(sourcePath, "utf8"));
@@ -18,7 +21,7 @@ for (const result of results.fixtures) {
   for (const side of ["home", "away"]) if (result.scorers[side].length !== result.score[side]) throw new Error("Marcatori Champions incoerenti");
 }
 const branding = JSON.parse(fs.readFileSync(brandingPath, "utf8"));
-const refereeAssignmentsSource = JSON.parse(fs.readFileSync(refereeAssignmentsPath, "utf8"));
+const refereeAssignmentsSources = refereeAssignmentsPaths.map(filePath => JSON.parse(fs.readFileSync(filePath, "utf8")));
 const probableFormationsSources = probableFormationsPaths.map(filePath => JSON.parse(fs.readFileSync(filePath, "utf8")));
 
 const fail = message => { throw new Error(`Champions League: ${message}`); };
@@ -26,38 +29,44 @@ if (source.schemaVersion !== 1 || source.season !== "2026-27" || source.phase !=
 if (!source.source?.url?.startsWith("https://www.uefa.com/")) fail("fonte UEFA ufficiale mancante");
 if (!Array.isArray(source.fixtures) || source.fixtures.length !== source.expected?.fixtures) fail(`attese ${source.expected?.fixtures} gare, trovate ${source.fixtures?.length || 0}`);
 
-if (refereeAssignmentsSource.schemaVersion !== 1 || refereeAssignmentsSource.season !== source.season || refereeAssignmentsSource.matchday !== 1) fail("fonte designazioni arbitrali non valida");
-if (!Array.isArray(refereeAssignmentsSource.assignments) || refereeAssignmentsSource.assignments.length !== 18) fail("attese 18 designazioni per la prima giornata");
-if (refereeAssignmentsSource.verification?.designationsProvider !== "UEFA" || refereeAssignmentsSource.verification?.status !== "confirmed") fail("conferma UEFA delle designazioni mancante");
-if (refereeAssignmentsSource.methodology?.modelUsage !== "informational-only") fail("uso prudenziale delle statistiche arbitrali non dichiarato");
-if (!Array.isArray(refereeAssignmentsSource.watchlist) || refereeAssignmentsSource.watchlist.length !== 5) fail("watchlist arbitrale incompleta");
 const refereeAssignments = new Map();
 const refereeMetrics = ["yellowCardsPerMatch", "redCardsPerMatch", "foulsPerMatch", "penaltiesPerMatch"];
-for (const assignment of refereeAssignmentsSource.assignments) {
-  if (!assignment.fixtureId || refereeAssignments.has(assignment.fixtureId)) fail("designazione con ID mancante o duplicato");
-  if (!source.fixtures.some(fixture => fixture.id === assignment.fixtureId && fixture.matchday === 1)) fail(`${assignment.fixtureId}: designazione senza gara della prima giornata`);
-  if (!['assigned', 'pending'].includes(assignment.status)) fail(`${assignment.fixtureId}: stato designazione non valido`);
-  if (assignment.status === "pending") {
-    if (assignment.referee !== null || assignment.statistics !== null) fail(`${assignment.fixtureId}: designazione pendente con dati valorizzati`);
-  } else {
-    if (!assignment.referee?.name || !assignment.referee?.countryFlag) fail(`${assignment.fixtureId}: arbitro o nazionalità mancanti`);
-    if (!assignment.statistics || !refereeMetrics.every(metric => assignment.statistics[metric]?.display)) fail(`${assignment.fixtureId}: medie arbitrali incomplete`);
-    for (const metric of refereeMetrics) {
-      const value = assignment.statistics[metric].value;
-      if (value !== null && (!Number.isFinite(value) || value < 0)) fail(`${assignment.fixtureId}: ${metric} non valida`);
+for (const refereeAssignmentsSource of refereeAssignmentsSources) {
+  const expectedAssignments = source.fixtures.filter(fixture => fixture.matchday === refereeAssignmentsSource.matchday);
+  if (refereeAssignmentsSource.schemaVersion !== 1 || refereeAssignmentsSource.season !== source.season || !Number.isInteger(refereeAssignmentsSource.matchday)) fail("fonte designazioni arbitrali non valida");
+  if (!Array.isArray(refereeAssignmentsSource.assignments) || refereeAssignmentsSource.assignments.length !== expectedAssignments.length) fail(`attese ${expectedAssignments.length} designazioni per la giornata ${refereeAssignmentsSource.matchday}`);
+  if (refereeAssignmentsSource.verification?.designationsProvider !== "UEFA" || refereeAssignmentsSource.verification?.status !== "confirmed") fail("conferma UEFA delle designazioni mancante");
+  if (refereeAssignmentsSource.methodology?.modelUsage !== "informational-only") fail("uso prudenziale delle statistiche arbitrali non dichiarato");
+  if (!Array.isArray(refereeAssignmentsSource.watchlist)) fail("watchlist arbitrale non valida");
+  for (const assignment of refereeAssignmentsSource.assignments) {
+    if (!assignment.fixtureId || refereeAssignments.has(assignment.fixtureId)) fail("designazione con ID mancante o duplicato");
+    if (!source.fixtures.some(fixture => fixture.id === assignment.fixtureId && fixture.matchday === refereeAssignmentsSource.matchday)) fail(`${assignment.fixtureId}: designazione senza gara della giornata ${refereeAssignmentsSource.matchday}`);
+    if (!["assigned", "pending"].includes(assignment.status)) fail(`${assignment.fixtureId}: stato designazione non valido`);
+    if (assignment.status === "pending") {
+      if (assignment.referee !== null || assignment.statistics !== null) fail(`${assignment.fixtureId}: designazione pendente con dati valorizzati`);
+    } else {
+      if (!assignment.referee?.name || !assignment.referee?.countryFlag) fail(`${assignment.fixtureId}: arbitro o nazionalità mancanti`);
+      if (assignment.statistics !== null && !refereeMetrics.every(metric => assignment.statistics[metric]?.display)) fail(`${assignment.fixtureId}: medie arbitrali incomplete`);
+      for (const metric of refereeMetrics) {
+        const value = assignment.statistics?.[metric]?.value;
+        if (value !== undefined && value !== null && (!Number.isFinite(value) || value < 0)) fail(`${assignment.fixtureId}: ${metric} non valida`);
+      }
+      if (assignment.assistants !== undefined && (!Array.isArray(assignment.assistants) || assignment.assistants.length !== 2 || assignment.assistants.some(name => !name))) fail(`${assignment.fixtureId}: assistenti non validi`);
+      for (const role of ["fourthOfficial", "var", "avar"]) if (assignment[role] !== undefined && !assignment[role]) fail(`${assignment.fixtureId}: ${role} non valido`);
     }
+    refereeAssignments.set(assignment.fixtureId, assignment);
   }
-  refereeAssignments.set(assignment.fixtureId, assignment);
 }
-if (new Set(refereeAssignmentsSource.watchlist.map(item => item.fixtureId)).size !== refereeAssignmentsSource.watchlist.length) fail("watchlist arbitrale con gare duplicate");
-if (refereeAssignmentsSource.watchlist.some(item => !item.reason || refereeAssignments.get(item.fixtureId)?.status !== "assigned")) fail("watchlist arbitrale con gara o motivazione non valida");
+const refereeWatchlistRows = refereeAssignmentsSources.flatMap(item => item.watchlist);
+if (new Set(refereeWatchlistRows.map(item => item.fixtureId)).size !== refereeWatchlistRows.length) fail("watchlist arbitrale con gare duplicate");
+if (refereeWatchlistRows.some(item => !item.reason || refereeAssignments.get(item.fixtureId)?.status !== "assigned")) fail("watchlist arbitrale con gara o motivazione non valida");
 const godinho = refereeAssignments.get("ucl-2026-27-md01-01")?.context;
 const kabakov = refereeAssignments.get("ucl-2026-27-md01-05")?.context;
 const massa = refereeAssignments.get("ucl-2026-27-md01-09")?.context;
 if (godinho?.alternateStatistics?.yellowCardsPerMatch !== 6.43) fail("copertura alternativa Godinho mancante");
 if (kabakov?.cardsSampleMatches !== 24 || kabakov?.foulsPredictionEligible !== false) fail("cautela sul dato falli di Kabakov mancante");
 if (massa?.alternateStatistics?.yellowCardsPerMatch !== 4.73 || massa?.alternateStatistics?.foulsPerMatch !== 27.64) fail("campione alternativo Massa mancante");
-const refereeWatchlist = new Map(refereeAssignmentsSource.watchlist.map(item => [item.fixtureId, item.reason]));
+const refereeWatchlist = new Map(refereeWatchlistRows.map(item => [item.fixtureId, item.reason]));
 
 const formationPattern = /^(?:[1-5]-){2,3}[1-5]$/;
 const confidenceBands = new Set(["very-high", "medium-high", "lower", "not-rated"]);
@@ -205,10 +214,17 @@ fs.writeFileSync(outputPath, JSON.stringify({
   resultsSource: results.source,
   resultsCoverageNote: results.coverageNote,
   source: source.source,
-  refereeAssignmentsSource: refereeAssignmentsSource.source,
-  refereeVerification: refereeAssignmentsSource.verification,
-  refereeMethodology: refereeAssignmentsSource.methodology,
-  refereeWatchlist: refereeAssignmentsSource.watchlist,
+  refereeAssignmentsSource: refereeAssignmentsSources[0].source,
+  refereeAssignmentsSources: refereeAssignmentsSources.map(item => ({
+    matchday: item.matchday,
+    source: item.source,
+    supportingSources: item.supportingSources || [],
+    verification: item.verification,
+    methodology: item.methodology
+  })),
+  refereeVerification: refereeAssignmentsSources[0].verification,
+  refereeMethodology: refereeAssignmentsSources[0].methodology,
+  refereeWatchlist: refereeWatchlistRows,
   probableFormationsSource: probableFormationsSources[0].source,
   probableFormationsSources: probableFormationsSources.map(item => ({ matchday: item.matchday, updatedAt: item.updatedAt, status: item.status, source: item.source })),
   summary: { teams: teamList.length, matchdays: matchdays.size, fixtures: fixtures.length, finished: resultById.size },

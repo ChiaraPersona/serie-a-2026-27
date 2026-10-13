@@ -44,6 +44,15 @@ assert.equal(calendar.refereeMethodology.modelUsage, "informational-only");
 assert.equal(calendar.refereeWatchlist.length, 5);
 assert.equal(firstMatchday.filter(fixture => fixture.refereeAttention).length, 5);
 assert.equal(firstMatchday.find(fixture => fixture.id === "ucl-2026-27-md01-05").refereeAssignment.context.foulsPredictionEligible, false);
+const secondMatchday = calendar.fixtures.filter(fixture => fixture.matchday === 2);
+assert.equal(secondMatchday.length, 18);
+assert.equal(secondMatchday.filter(fixture => fixture.refereeAssignment?.status === "assigned").length, 18);
+assert.equal(secondMatchday.find(fixture => fixture.id === "ucl-2026-27-md02-10").refereeAssignment.referee.name, "Donatas Rumšas");
+assert.equal(secondMatchday.find(fixture => fixture.id === "ucl-2026-27-md02-12").refereeAssignment.referee.name, "François Letexier");
+assert.deepEqual(secondMatchday.find(fixture => fixture.id === "ucl-2026-27-md02-16").refereeAssignment.assistants, ["Beitinger", "Dietz"]);
+assert.equal(secondMatchday.find(fixture => fixture.id === "ucl-2026-27-md02-18").refereeAssignment.var, "Chiffi");
+assert.equal(secondMatchday.every(fixture => fixture.refereeAssignment.statistics === null), true);
+assert.equal(calendar.refereeAssignmentsSources.find(item => item.matchday === 2).source.provider, "UEFA");
 assert.equal(squads.teams.length, 36);
 assert.deepEqual(calendar.teamBranding.map(item => item.team).sort(), squads.teams.map(item => item.team).sort(), "Ogni logo deve avere una scheda squadra associata");
 for (const team of calendar.teamBranding) {
@@ -54,4 +63,4 @@ for (const team of calendar.teamBranding) {
   assert(logo.length >= 100, `${team.team}: logo vuoto`);
 }
 
-console.log("OK Champions: 36 squadre · 36 ID UEFA · 36 PNG · 18 designazioni MD1");
+console.log("OK Champions: 36 squadre · 36 ID UEFA · 36 PNG · designazioni MD1 e MD2");

@@ -18,7 +18,15 @@ export function createPage(deps){
   function refereeReadingPanel(assignment){
     if(!assignment||assignment.status!=="assigned")return `<section class="section reading-referee-assignment champions-reading-referee" id="lettura-referee"><header class="section-heading"><div><p class="eyebrow">Designazione arbitrale</p><h2>Arbitro</h2></div><p>Designazione e profilo disciplinare.</p></header><div class="reading-panel-empty"><strong>N/D</strong><p>La designazione ufficiale non è ancora disponibile nel dataset.</p></div></section>`;
     const stats=assignment.statistics;
-    return `<section class="section reading-referee-assignment champions-reading-referee" id="lettura-referee" aria-labelledby="champions-reading-referee-title"><header class="section-heading"><div><p class="eyebrow">Designazione arbitrale</p><h2 id="champions-reading-referee-title">${refereeName(assignment)}</h2></div><p>Designazione e profilo disciplinare.</p></header><div class="reading-referee-stats champions-reading-referee-stats"><article><span>Gialli / gara</span>${refereeMetric(stats.yellowCardsPerMatch)}</article><article><span>Rossi / gara</span>${refereeMetric(stats.redCardsPerMatch)}</article><article><span>Falli / gara</span>${refereeMetric(stats.foulsPerMatch)}</article><article><span>Rigori / gara</span>${refereeMetric(stats.penaltiesPerMatch)}</article></div><p class="reading-referee-method">Profilo storico riportato come fornito; non applicato automaticamente alle proiezioni della partita.</p></section>`;
+    const roles=[
+      ["Assistenti",assignment.assistants?.join(" · ")],
+      ["IV ufficiale",assignment.fourthOfficial],
+      ["VAR",assignment.var],
+      ["AVAR",assignment.avar]
+    ].filter(([,value])=>value);
+    const officials=roles.length?`<dl>${roles.map(([label,value])=>`<div><dt>${label}</dt><dd>${esc(value)}</dd></div>`).join("")}</dl>`:"";
+    const statistics=stats?`<div class="reading-referee-stats champions-reading-referee-stats"><article><span>Gialli / gara</span>${refereeMetric(stats.yellowCardsPerMatch)}</article><article><span>Rossi / gara</span>${refereeMetric(stats.redCardsPerMatch)}</article><article><span>Falli / gara</span>${refereeMetric(stats.foulsPerMatch)}</article><article><span>Rigori / gara</span>${refereeMetric(stats.penaltiesPerMatch)}</article></div><p class="reading-referee-method">Profilo storico riportato come fornito; non applicato automaticamente alle proiezioni della partita.</p>`:`<div class="reading-referee-stats champions-reading-referee-stats"><article><span>Statistiche disciplinari</span><strong>N/D</strong></article></div><p class="reading-referee-method">Le statistiche arbitrali non sono presenti nelle fonti e restano N/D. La designazione non modifica automaticamente il pronostico.</p>`;
+    return `<section class="section reading-referee-assignment champions-reading-referee" id="lettura-referee" aria-labelledby="champions-reading-referee-title"><header class="section-heading"><div><p class="eyebrow">Designazione arbitrale</p><h2 id="champions-reading-referee-title">${refereeName(assignment)}</h2></div><p>Designazione e profilo disciplinare.</p></header>${officials}${statistics}</section>`;
   }
 
 
