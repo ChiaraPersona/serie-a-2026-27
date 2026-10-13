@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "phase": "2D",
+  "policy": "All selection and tuning use development folds only. The complete 2025-26 season is evaluated once after specifications are locked.",
+  "developmentFolds": [
+    {
+      "id": "dev-1",
+      "train": [
+        "2021-22"
+      ],
+      "validation": "2022-23"
+    },
+    {
+      "id": "dev-2",
+      "train": [
+        "2021-22",
+        "2022-23"
+      ],
+      "validation": "2023-24"
+    },
+    {
+      "id": "dev-3",
+      "train": [
+        "2021-22",
+        "2022-23",
+        "2023-24"
+      ],
+      "validation": "2024-25"
+    }
+  ],
+  "finalTrainSeasons": [
+    "2021-22",
+    "2022-23",
+    "2023-24",
+    "2024-25"
+  ],
+  "finalHoldoutSeason": "2025-26",
+  "historicalCaveat": "The 2025-26 season was previously reported in Phase 2C; it is untouched by Phase 2D tuning but is not a never-before-seen organizational holdout."
+}

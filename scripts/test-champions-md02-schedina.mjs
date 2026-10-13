@@ -72,12 +72,25 @@ for(const fixture of data.fixtures){
     assert(sourcePick,`${individual.selectionId}: proposta editoriale non tracciata`);
     assert.equal(source.teamPrediction.dataQuality.detailedVolumesAvailable,true,`${fixture.fixtureId}: forecast individuale senza volumi dettagliati`);
     const player=[...source.lineups.home.players,...source.lineups.away.players].find(item=>item.canonicalPlayerId===individual.player.canonicalPlayerId);
-    assert(player,`${individual.selectionId}: giocatore non presente nei probabili titolari`);
-    assert.equal(player.mappingStatus,"resolved");
-    assert.equal(player.dataStatus,"verified-history");
-    assert.equal(individual.player.lineupStatus,"probable-starter");
+    const editorialPlayer=source.editorialLineups?[...source.editorialLineups.home.players,...source.editorialLineups.away.players].find(item=>item.canonicalPlayerId===individual.player.canonicalPlayerId):null;
+    assert(player||editorialPlayer,`${individual.selectionId}: giocatore non presente nella XI corrente o editoriale`);
+    const identityPlayer=player||editorialPlayer;
+    assert.equal(identityPlayer.mappingStatus,"resolved");
+    assert.equal(identityPlayer.dataStatus,"verified-history");
     const projectionKey=sourcePick.metric==="shots"?"projectedShots":"projectedShotsOnTarget";
-    assert.equal(individual.betSelection.evaluation.individualForecast.mean,player[projectionKey]);
+    if(player){
+      assert.equal(individual.player.lineupStatus,source.lineupStatus==="official"?"official-starter":"probable-starter");
+      assert.equal(individual.betSelection.evaluation.individualForecast.mean,player[projectionKey]);
+      if(source.lineupStatus==="official")assert(["CONFERMATO","AGGIORNATO"].includes(individual.reviewStatus));
+    }else{
+      assert.equal(source.lineupStatus,"official");
+      assert.equal(individual.player.lineupStatus,"official-non-starter");
+      assert.equal(individual.reviewStatus,"DA_RIVEDERE");
+      assert.equal(individual.player.expectedMinutes,null);
+      assert.equal(individual.betSelection.evaluation.individualForecast.mean,null);
+      assert.equal(individual.betSelection.operational.playability.status,"PLAYABLE");
+      assert.equal(individual.odds,individual.betSelection.quote.decimal);
+    }
     assert.equal(individual.betSelection.evaluation.status,"NOT_MODELLED");
     assert.equal(individual.modelProbabilityPct,null);
     assert.equal(individual.fairOdds,null);
@@ -111,6 +124,12 @@ for(const fixture of data.fixtures){
     assert.equal(teamPick.betSelection.compatibility.status,"COMPATIBILE_CONTRATTO_ESATTO");
   }
 }
+
+const targetedFixtureIds=new Set(["ucl-2026-27-md02-01","ucl-2026-27-md02-02"]);
+const untouchedFixtures=data.fixtures.filter(fixture=>!targetedFixtureIds.has(fixture.fixtureId));
+assert.equal(crypto.createHash("sha256").update(JSON.stringify(untouchedFixtures)).digest("hex").toUpperCase(),"C056EE2332D51D2A40D1F2B2930EF36C41FC86806486CA86DFFFE469BD4C4FD3","Le altre 16 gare della Schedina Champions sono cambiate");
+assert.equal(data.fixtures.find(fixture=>fixture.fixtureId==="ucl-2026-27-md02-01").selections.length,6);
+assert.equal(data.fixtures.find(fixture=>fixture.fixtureId==="ucl-2026-27-md02-02").selections.length,2);
 
 assert.equal(data.fixtures.find(fixture=>fixture.fixtureId==="ucl-2026-27-md02-02").selections.filter(item=>item.marketScope==="player").length,0,"Sabah-Slavia non deve ricevere forecast individuali");
 assert(new Set(data.fixtures.map(fixture=>fixture.selections.length)).size>2,"Non deve esserci un numero fisso di proposte per partita");

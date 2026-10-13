@@ -16,6 +16,7 @@ const stats = read("data/normalized/champions-player-stats-2025-26.json");
 const identityOverlay = read("data/sources/champions-player-identity-overlay-md02-2026-27.json");
 
 assert.strictEqual(hash("data/sources/champions-probable-formations-md02-2026-27.json"), "83AEE4C3049B20BAA900E67E54A16FA25FEE3960906EB178085B11782D56F289");
+assert.strictEqual(hash("data/sources/champions-official-formations-md02-2026-27.json"), "95C0ADB8FB4FFB5A0B6B73884057291620AEFD7A6BC8EA2A495B2AB0D7D31C06");
 assert.strictEqual(hash("data/normalized/odds/sisal/champions-league.json"), "2969A579C55F3748FA8712BD83374E86239163518204ED7FAFCBDAC7C03FA4FB");
 assert.strictEqual(hash("data/raw/odds/sisal/champions-league/2026-10-13T09-55-14-800Z.json.gz"), "4F4D59E24F0CA81D224344C8D5533668D63FD2F5C13CDD82C1E7F3B96E472BF0");
 
@@ -24,9 +25,10 @@ assert.strictEqual(output.matchday, 2);
 assert.strictEqual(output.fixtures.length, 18);
 assert.strictEqual(output.coverage.fixtures, 18);
 assert.strictEqual(output.coverage.probableLineups, 18);
+assert.strictEqual(output.coverage.officialLineups, 2);
 assert.strictEqual(output.coverage.probableStarters, 396);
-assert.strictEqual(output.coverage.canonicalStartersResolved, 395);
-assert.strictEqual(output.coverage.canonicalStartersUnresolved, 1);
+assert.strictEqual(output.coverage.canonicalStartersResolved, 394);
+assert.strictEqual(output.coverage.canonicalStartersUnresolved, 2);
 assert.strictEqual(output.coverage.unresolvedStartersWithExternalIdentityEvidence, 0);
 assert.strictEqual(output.coverage.availability.total, 109);
 assert.strictEqual(output.coverage.availability.unavailable, 75);
@@ -67,14 +69,23 @@ for (const identity of identityOverlay.players) {
 assert.strictEqual(new Set(identityOverlay.players.map(identity => identity.stablePlayerId)).size, identityOverlay.players.length, "stablePlayerId overlay duplicati");
 
 const unresolved = output.fixtures.flatMap(fixture => [...fixture.lineups.home.players, ...fixture.lineups.away.players]).filter(player => !player.canonicalPlayerId);
-assert.deepStrictEqual(unresolved.map(player => [player.team, player.suppliedName]), [["Viking", "Haugen"]]);
+assert.deepStrictEqual(unresolved.map(player => [player.team, player.suppliedName]), [["Sporting CP", "Joao Simoes"], ["Viking", "Haugen"]]);
 const veerman = output.fixtures.flatMap(fixture => [...fixture.lineups.home.players, ...fixture.lineups.away.players]).find(player => player.suppliedName === "Veerman");
 assert(veerman, "Veerman assente dalle probabili");
 assert.strictEqual(veerman.team, "Borussia Dortmund");
 assert.strictEqual(veerman.canonicalPlayerId, "joey-veerman");
 assert.strictEqual(identityOverlay.players.find(player => player.stablePlayerId === "borussia-dortmund:joey-veerman")?.providerIds.sisal, "245502");
-const volumeInvariantRows = output.fixtures.flatMap(fixture => ["home", "away"].flatMap(side => fixture.lineups[side].players.map((player, index) => [fixture.fixtureId, side, index, player.expectedMinutes, player.projectedShots, player.projectedShotsOnTarget])));
-assert.strictEqual(crypto.createHash("sha256").update(JSON.stringify(volumeInvariantRows)).digest("hex").toUpperCase(), "821A479943AFC92B973CAA338D5F77CAB8F28D9B0D445C45AF0BAC0DE763B43B", "Volumi/minuti MD2 modificati");
+const targetedFixtureIds = new Set(["ucl-2026-27-md02-01", "ucl-2026-27-md02-02"]);
+assert.strictEqual(crypto.createHash("sha256").update(JSON.stringify(output.fixtures.filter(fixture => !targetedFixtureIds.has(fixture.fixtureId)))).digest("hex").toUpperCase(), "CE4C13EA94AB65920C9E8D30F2C2352270690C2553D41C8006F1F896E99D771E", "Le altre 16 integrazioni Champions sono cambiate");
+const untouchedVolumeRows = output.fixtures.filter(fixture => !targetedFixtureIds.has(fixture.fixtureId)).flatMap(fixture => ["home", "away"].flatMap(side => fixture.lineups[side].players.map((player, index) => [fixture.fixtureId, side, index, player.expectedMinutes, player.projectedShots, player.projectedShotsOnTarget])));
+assert.strictEqual(crypto.createHash("sha256").update(JSON.stringify(untouchedVolumeRows)).digest("hex").toUpperCase(), "1DBE6B4AE1309F7949D3891D31269B5C998A69B585CE51719E2DCA6CF442A927", "Volumi/minuti delle altre 16 gare modificati");
+for (const fixtureId of targetedFixtureIds) {
+  const fixture = output.fixtures.find(item => item.fixtureId === fixtureId);
+  assert.strictEqual(fixture.lineupStatus, "official");
+  assert.strictEqual(fixture.probableFormationSource.provider, "Fantacalcio");
+  assert.strictEqual(fixture.editorialLineups.home.players.length, 11);
+  assert.strictEqual(fixture.editorialLineups.away.players.length, 11);
+}
 const missingDetailed = output.fixtures.filter(fixture => !fixture.teamPrediction.dataQuality?.detailedVolumesAvailable);
 assert.deepStrictEqual(missingDetailed.map(fixture => fixture.fixtureId), ["ucl-2026-27-md02-02"]);
 assert.deepStrictEqual(missingDetailed[0].teamPrediction.dataQuality.teamSamples, ["N/D", "N/D"]);

@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "phase": "2C",
+  "asOf": "2026-10-13",
+  "status": "PASS_WITH_PRE_EXISTING_REGRESSION_FAILURES",
+  "integrity": {
+    "phase2cDataset": "PASS",
+    "rollingOriginChronology": "PASS",
+    "designationTemporalGuard": "PASS",
+    "sameSampleAB": "PASS",
+    "finiteProbabilities": "PASS",
+    "targetArithmetic": "PASS"
+  },
+  "reproducibility": {
+    "status": "PASS",
+    "designationEvidenceDeterministic": true,
+    "calibrationResultsDeterministic": true,
+    "oosPredictionsDeterministic": true,
+    "rawManifestDeterministic": true,
+    "bootstrapSeed": 20261013,
+    "bootstrapIterations": 500
+  },
+  "protectedSurface": {
+    "status": "UNCHANGED_DURING_REPRODUCTION",
+    "checked": [
+      "data/normalized/champions-pilot-predictions-md02-2026-27.json",
+      "data/normalized/champions-md02-integration-2026-27.json",
+      "data/normalized/schedina-champions-md02.json",
+      "js/pages/champions.js",
+      "css/champions.css",
+      "scripts/build-champions-pilot-predictions.js",
+      "scripts/build-champions-md02-integration.js",
+      "scripts/build-champions-md02-schedina.js",
+      "scripts/build-readings.js",
+      "scripts/build-site.js"
+    ]
+  },
+  "tests": [
+    { "command": "node scripts/test-champions-referee-phase-2c.js", "status": "PASS" },
+    { "command": "node scripts/test-champions-referee-phase-2b.js", "status": "PASS" },
+    { "command": "node scripts/test-champions-md02-integration.js", "status": "PASS" },
+    { "command": "node scripts/test-champions-md02-schedina.mjs", "status": "PASS" },
+    {
+      "command": "node scripts/test-champions-pilot-predictions.js",
+      "status": "PRE_EXISTING_FAILURE",
+      "failure": "Line 70: expected direct Champions reading-link source string. All shots/SOT and volume assertions before this unrelated assertion passed."
+    },
+    {
+      "command": "node --no-warnings scripts/test-champions-reading-page.mjs",
+      "status": "PRE_EXISTING_FAILURE",
+      "failure": "Line 115: current rendered count 8 differs from expected 3. No expected hash/count was changed."
+    }
+  ]
+}

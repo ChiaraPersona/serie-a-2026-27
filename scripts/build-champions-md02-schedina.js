@@ -1,8 +1,12 @@
 const fs=require("fs");
 const path=require("path");
 const crypto=require("crypto");
+const {execFileSync}=require("child_process");
 
 const root=path.resolve(__dirname,"..");
+const fixturesArg=process.argv.indexOf("--fixtures");
+const targetFixtureIds=new Set(fixturesArg>=0?String(process.argv[fixturesArg+1]||"").split(",").map(value=>value.trim()).filter(Boolean):[]);
+const baselineFromHead=process.argv.includes("--baseline-head");
 const paths={
   integration:"data/normalized/champions-md02-integration-2026-27.json",
   individualSelection:"data/sources/champions-md02-individual-selection-2026-27.json",
@@ -245,10 +249,15 @@ function selectedIndividualForecast(fixture,pick,curation={source:paths.individu
   if(fixture.teamPrediction?.dataQuality?.detailedVolumesAvailable!==true)throw new Error(`${fixture.fixtureId}: volumi dettagliati mancanti, selezione individuale vietata`);
   const players=[...fixture.lineups.home.players,...fixture.lineups.away.players];
   const player=players.find(item=>item.canonicalPlayerId===pick.playerId);
-  if(!player)throw new Error(`${fixture.fixtureId}: giocatore canonico ${pick.playerId} non trovato nella probabile formazione`);
-  if(player.mappingStatus!=="resolved"||player.dataStatus!=="verified-history")throw new Error(`${fixture.fixtureId}: identita o storico non verificati per ${pick.playerId}`);
-  const projection=player[config.projectionKey];
-  if(!finite(projection)||!finite(player.expectedMinutes))throw new Error(`${fixture.fixtureId}: forecast/minuti N/D per ${pick.playerId}`);
+  const editorialPlayers=fixture.editorialLineups?[...fixture.editorialLineups.home.players,...fixture.editorialLineups.away.players]:[];
+  const editorialPlayer=editorialPlayers.find(item=>item.canonicalPlayerId===pick.playerId)||null;
+  const retainedForReview=!player&&fixture.lineupStatus==="official"&&editorialPlayer;
+  if(!player&&!retainedForReview)throw new Error(`${fixture.fixtureId}: giocatore canonico ${pick.playerId} non trovato nella formazione corrente`);
+  const playerRecord=player||editorialPlayer;
+  if(playerRecord.mappingStatus!=="resolved"||playerRecord.dataStatus!=="verified-history")throw new Error(`${fixture.fixtureId}: identita o storico non verificati per ${pick.playerId}`);
+  const projection=retainedForReview?null:playerRecord[config.projectionKey];
+  const previousProjection=editorialPlayer?.[config.projectionKey]??null;
+  if(!retainedForReview&&(!finite(projection)||!finite(playerRecord.expectedMinutes)))throw new Error(`${fixture.fixtureId}: forecast/minuti N/D per ${pick.playerId}`);
   const market=fixture.oddsEvent.playerMarkets.find(item=>item.marketCode===config.code&&item.canonicalPlayerIds.includes(pick.playerId)&&Number(item.threshold)===Number(pick.threshold)&&item.status==="open");
   const selection=market?.selections?.find(item=>item.name==="OVER"&&item.interfaceSelectable&&item.status==="open"&&finite(item.odds)&&Number(item.odds)>0);
   if(!market||!selection)throw new Error(`${fixture.fixtureId}: linea Sisal ${config.code} over ${pick.threshold} non trovata per ${pick.playerId}`);
@@ -262,8 +271,14 @@ function selectedIndividualForecast(fixture,pick,curation={source:paths.individu
   const limitation=pick.metric==="shotsOnTarget"
     ?"Il forecast quantifica i SOT del solo giocatore; la quota Sisal include il sostituto e anche pali/traverse. Probabilita, quota equa ed EV del contratto restano N/D."
     :"Il forecast quantifica i tiri del solo giocatore; la quota Sisal include anche il sostituto. Probabilita, quota equa ed EV del contratto restano N/D.";
-  const roleLabel=player.role||"ruolo N/D";
-  const motivation=`${round(projection,2).toLocaleString("it-IT")} ${config.unit} attesi in ${round(player.expectedMinutes,1).toLocaleString("it-IT")} minuti; ${roleLabel}, storico verificato su ${Number(player.minutes||0).toLocaleString("it-IT")} minuti e affidabilita ${round(Number(player.reliability)*100,1).toLocaleString("it-IT")}%.`;
+  const roleLabel=playerRecord.role||"ruolo N/D";
+  const reviewStatus=fixture.lineupStatus==="official"?(retainedForReview?"DA_RIVEDERE":finite(previousProjection)&&Math.abs(Number(projection)-Number(previousProjection))>=0.01?"AGGIORNATO":"CONFERMATO"):null;
+  const evidenceLabel=retainedForReview
+    ?`Non titolare nell'XI ufficiale · minuti e ${config.unit} attesi N/D`
+    :`Proiezione singolo: ${round(projection,2).toLocaleString("it-IT")} ${config.unit} · ${round(playerRecord.expectedMinutes,1).toLocaleString("it-IT")} min`;
+  const motivation=retainedForReview
+    ?`Il giocatore non compare nell'XI ufficiale e la fonte non pubblica la panchina. La quota e il contratto con sostituto restano disponibili, ma il modello non inventa minuti di subentro; la precedente proiezione editoriale era ${finite(previousProjection)?round(previousProjection,2).toLocaleString("it-IT"):"N/D"} ${config.unit}.`
+    :`${round(projection,2).toLocaleString("it-IT")} ${config.unit} attesi in ${round(playerRecord.expectedMinutes,1).toLocaleString("it-IT")} minuti; ${roleLabel}, storico verificato su ${Number(playerRecord.minutes||0).toLocaleString("it-IT")} minuti e affidabilita ${round(Number(playerRecord.reliability)*100,1).toLocaleString("it-IT")}%.`;
   return {
     selectionId,
     context:{competition:"champions",season:"2026-27",matchday:2},
@@ -274,31 +289,33 @@ function selectedIndividualForecast(fixture,pick,curation={source:paths.individu
     marketFamily:config.family,
     selection:"OVER",
     providerSelectionCode:selection.code,
-    label:`${player.canonicalName} over ${threshold.toLocaleString("it-IT")} ${config.unit}${market.replacementIncluded?" · sostituto incluso":""}${market.woodworkIncluded?" · pali/traverse inclusi":""}`,
+    label:`${playerRecord.canonicalName} over ${threshold.toLocaleString("it-IT")} ${config.unit}${market.replacementIncluded?" · sostituto incluso":""}${market.woodworkIncluded?" · pali/traverse inclusi":""}`,
     odds:Number(selection.odds),
     modelProbabilityPct:null,
     fairOdds:null,
     expectedValuePct:null,
-    evidenceLabel:`Proiezione singolo: ${round(projection,2).toLocaleString("it-IT")} ${config.unit} · ${round(player.expectedMinutes,1).toLocaleString("it-IT")} min`,
+    evidenceLabel,
     motivation,
     limitation,
-    classification:curation.classification,
+    classification:retainedForReview?"DA_RIVEDERE":curation.classification,
+    ...(reviewStatus?{reviewStatus}:{}),
     player:{
-      canonicalPlayerId:player.canonicalPlayerId,
-      canonicalName:player.canonicalName,
+      canonicalPlayerId:playerRecord.canonicalPlayerId,
+      canonicalName:playerRecord.canonicalName,
       providerPlayerIds:[...market.providerPlayerIds],
-      team:player.team,
-      side:player.side,
-      role:player.role,
-      lineupStatus:"probable-starter",
-      expectedMinutes:Number(player.expectedMinutes),
-      historyMinutes:Number(player.minutes||0),
-      reliability:Number(player.reliability),
-      dataStatus:player.dataStatus,
-      projectedShots:player.projectedShots,
-      projectedShotsOnTarget:player.projectedShotsOnTarget
+      team:playerRecord.team,
+      side:playerRecord.side,
+      role:playerRecord.role,
+      lineupStatus:retainedForReview?"official-non-starter":fixture.lineupStatus==="official"?"official-starter":"probable-starter",
+      expectedMinutes:retainedForReview?null:Number(playerRecord.expectedMinutes),
+      historyMinutes:Number(playerRecord.minutes||0),
+      reliability:Number(playerRecord.reliability),
+      dataStatus:playerRecord.dataStatus,
+      projectedShots:retainedForReview?null:playerRecord.projectedShots,
+      projectedShotsOnTarget:retainedForReview?null:playerRecord.projectedShotsOnTarget,
+      ...(fixture.lineupStatus==="official"?{previousEditorialProjection:finite(previousProjection)?Number(previousProjection):null}:{})
     },
-    dataQuality:{fixtureDetailedVolumes:true,playerDataStatus:player.dataStatus,identityStatus:player.mappingStatus},
+    dataQuality:{fixtureDetailedVolumes:true,playerDataStatus:playerRecord.dataStatus,identityStatus:playerRecord.mappingStatus,...(reviewStatus?{lineupReview:reviewStatus}:{})},
     providerEventId:fixture.oddsEvent.providerEventId,
     providerMarketId:market.providerMarketId,
     providerSelectionId:selection.providerSelectionId,
@@ -317,7 +334,7 @@ function selectedIndividualForecast(fixture,pick,curation={source:paths.individu
         providerMarketId:market.providerMarketId,
         providerSelectionId:selection.providerSelectionId,
         providerPlayerIds:[...market.providerPlayerIds],
-        canonicalPlayerIds:[player.canonicalPlayerId]
+        canonicalPlayerIds:[playerRecord.canonicalPlayerId]
       },
       market:{
         name:market.marketName,
@@ -350,11 +367,11 @@ function selectedIndividualForecast(fixture,pick,curation={source:paths.individu
         modelProbabilityPct:null,
         fairOdds:null,
         expectedValuePct:null,
-        individualForecast:{metric:pick.metric,mean:Number(projection),expectedMinutes:Number(player.expectedMinutes)},
+        individualForecast:{metric:pick.metric,mean:retainedForReview?null:Number(projection),expectedMinutes:retainedForReview?null:Number(playerRecord.expectedMinutes),...(fixture.lineupStatus==="official"?{previousEditorialMean:finite(previousProjection)?Number(previousProjection):null}:{})},
         provenance:{source:paths.integration,predictionGeneratedAt:integration.generatedAt,curationSource:curation.source,curatedAt:curation.curatedAt}
       },
       compatibility:{status:market.forecastCompatibility,bookmakerCombinability:"UNKNOWN",limitation},
-      operational:{playability:{status:"PLAYABLE"},classification:"SELEZIONATO"},
+      operational:{playability:{status:"PLAYABLE"},classification:retainedForReview?"DA_RIVEDERE":"SELEZIONATO",...(reviewStatus?{reviewStatus}:{})},
       overlap:{overlapKey:`${fixture.fixtureId}:${market.providerMarketId}`,semanticKeys:[]}
     }
   };
@@ -476,6 +493,15 @@ const output={
 };
 
 if(output.summary.fixtures!==18||output.summary.phase12BPredictions!==18||output.summary.individualPredictions!==individualSelection.picks.length+phase12d.individualPicks.length+outsiders.individualPicks.length||output.summary.predictions!==outsiders.baseline.predictions+outsiders.teamPicks.length+outsiders.individualPicks.length)throw new Error(`Copertura MD2 incompleta: ${output.summary.fixtures} partite, ${output.summary.phase12BPredictions} pronostici 12B, ${output.summary.individualPredictions} individuali, ${output.summary.predictions} totali`);
-fs.writeFileSync(path.join(root,paths.output),`${JSON.stringify(output,null,2)}\n`);
+let finalOutput=output;
+if(targetFixtureIds.size){
+  const previousOutput=baselineFromHead
+    ?JSON.parse(execFileSync("git",["show","HEAD:data/normalized/schedina-champions-md02.json"],{cwd:root,encoding:"utf8"}))
+    :read(paths.output);
+  const generatedById=new Map(output.fixtures.map(fixture=>[fixture.fixtureId,fixture]));
+  for(const fixtureId of targetFixtureIds)if(!generatedById.has(fixtureId)||!previousOutput.fixtures.some(fixture=>fixture.fixtureId===fixtureId))throw new Error(`${fixtureId}: target selettivo non valido`);
+  finalOutput={...output,fixtures:previousOutput.fixtures.map(fixture=>targetFixtureIds.has(fixture.fixtureId)?generatedById.get(fixture.fixtureId):fixture)};
+}
+fs.writeFileSync(path.join(root,paths.output),`${JSON.stringify(finalOutput,null,2)}\n`);
 console.log(`Generata ${paths.output}: ${output.summary.fixtures} partite, ${output.summary.predictions} pronostici, ${output.summary.clickableSelections} cliccabili`);
 

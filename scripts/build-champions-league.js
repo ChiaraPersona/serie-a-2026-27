@@ -2,6 +2,7 @@
 
 const fs = require("fs");
 const path = require("path");
+const { execFileSync } = require("child_process");
 
 const root = path.resolve(__dirname, "..");
 const sourcePath = path.join(root, "data/sources/champions-league-2026-27.json");
@@ -11,7 +12,11 @@ const refereeAssignmentsPaths = [
   "data/sources/champions-referee-assignments-md02-2026-27.json"
 ].map(relativePath => path.join(root, relativePath));
 const probableFormationsPaths = [1, 2].map(matchday => path.join(root, `data/sources/champions-probable-formations-md${String(matchday).padStart(2, "0")}-2026-27.json`));
+const officialFormationsPaths = [1, 2].map(matchday => path.join(root, `data/sources/champions-official-formations-md${String(matchday).padStart(2, "0")}-2026-27.json`));
 const outputPath = path.join(root, "data/normalized/champions-league-2026-27.json");
+const fixturesArg = process.argv.indexOf("--fixtures");
+const targetFixtureIds = new Set(fixturesArg >= 0 ? String(process.argv[fixturesArg + 1] || "").split(",").map(value => value.trim()).filter(Boolean) : []);
+const baselineFromHead = process.argv.includes("--baseline-head");
 const source = JSON.parse(fs.readFileSync(sourcePath, "utf8"));
 const results = JSON.parse(fs.readFileSync(path.join(root, "data/sources/champions-results-md01-2026-27.json"), "utf8"));
 const resultById = new Map(results.fixtures.map(item => [item.fixtureId, item]));
@@ -23,6 +28,7 @@ for (const result of results.fixtures) {
 const branding = JSON.parse(fs.readFileSync(brandingPath, "utf8"));
 const refereeAssignmentsSources = refereeAssignmentsPaths.map(filePath => JSON.parse(fs.readFileSync(filePath, "utf8")));
 const probableFormationsSources = probableFormationsPaths.map(filePath => JSON.parse(fs.readFileSync(filePath, "utf8")));
+const officialFormationsSources = officialFormationsPaths.map(filePath => JSON.parse(fs.readFileSync(filePath, "utf8")));
 
 const fail = message => { throw new Error(`Champions League: ${message}`); };
 if (source.schemaVersion !== 1 || source.season !== "2026-27" || source.phase !== "league") fail("fonte non valida");
@@ -125,15 +131,18 @@ for (const probableFormationsSource of probableFormationsSources) {
 }
 
 const ids = new Set();
-const officialSource = JSON.parse(fs.readFileSync(path.join(root, "data/sources/champions-official-formations-md01-2026-27.json"), "utf8"));
-for (const item of officialSource.fixtures) {
-  const editorial = probableFormations.get(item.fixtureId);
-  if (!editorial || item.status !== "official" || !item.source?.url) fail("formazione ufficiale non valida");
-  for (const side of ["home", "away"]) {
-    const team = item[side];
-    if (team.team !== editorial[side].team || team.players.length !== 11 || new Set(team.players).size !== 11 || (team.formation !== null && (!formationPattern.test(team.formation) || team.formation.split("-").reduce((a,b)=>a+Number(b),0)!==10))) fail(`${item.fixtureId}: XI ufficiale non valido`);
+for (const officialSource of officialFormationsSources) {
+  if (officialSource.schemaVersion !== 1 || officialSource.season !== source.season || !Number.isInteger(officialSource.matchday) || !Array.isArray(officialSource.fixtures)) fail("fonte formazioni ufficiali non valida");
+  for (const item of officialSource.fixtures) {
+    const editorial = probableFormations.get(item.fixtureId);
+    const calendarFixture = source.fixtures.find(fixture => fixture.id === item.fixtureId);
+    if (!editorial || !calendarFixture || calendarFixture.matchday !== officialSource.matchday || item.status !== "official" || !item.source?.url) fail("formazione ufficiale non valida");
+    for (const side of ["home", "away"]) {
+      const team = item[side];
+      if (team.team !== editorial[side].team || team.players.length !== 11 || new Set(team.players).size !== 11 || (team.formation !== null && (!formationPattern.test(team.formation) || team.formation.split("-").reduce((a,b)=>a+Number(b),0)!==10))) fail(`${item.fixtureId}: XI ufficiale non valido`);
+    }
+    probableFormations.set(item.fixtureId, { ...item, editorialProjection: editorial, lineupConfidence: { band: "very-high", uncertainSides: [] } });
   }
-  probableFormations.set(item.fixtureId, { ...item, editorialProjection: editorial, lineupConfidence: { band: "very-high", uncertainSides: [] } });
 }
 const matchups = new Set();
 const teams = new Map();
@@ -205,7 +214,7 @@ const teamBranding = branding.teams.map(item => {
 }).sort((a, b) => a.team.localeCompare(b.team, "it"));
 if (new Set(teamBranding.map(item => item.team)).size !== teamList.length) fail("branding con squadre duplicate");
 if (teamList.some(team => !teamBranding.some(item => item.team === team))) fail("branding incompleto");
-fs.writeFileSync(outputPath, JSON.stringify({
+const generatedOutput = {
   schemaVersion: 1,
   season: source.season,
   competition: source.competition,
@@ -227,10 +236,25 @@ fs.writeFileSync(outputPath, JSON.stringify({
   refereeWatchlist: refereeWatchlistRows,
   probableFormationsSource: probableFormationsSources[0].source,
   probableFormationsSources: probableFormationsSources.map(item => ({ matchday: item.matchday, updatedAt: item.updatedAt, status: item.status, source: item.source })),
+  officialFormationsSources: officialFormationsSources.map(item => ({ matchday: item.matchday, updatedAt: item.updatedAt || null, source: item.source || null, fixtures: item.fixtures.length })),
   summary: { teams: teamList.length, matchdays: matchdays.size, fixtures: fixtures.length, finished: resultById.size },
   teams: teamList,
   teamBranding,
   brandingSource: branding.source,
   fixtures
-}, null, 2));
+};
+let finalOutput = generatedOutput;
+if (targetFixtureIds.size) {
+  const previousOutput = baselineFromHead
+    ? JSON.parse(execFileSync("git", ["show", "HEAD:data/normalized/champions-league-2026-27.json"], { cwd: root, encoding: "utf8" }))
+    : JSON.parse(fs.readFileSync(outputPath, "utf8"));
+  const generatedById = new Map(generatedOutput.fixtures.map(fixture => [fixture.id, fixture]));
+  for (const fixtureId of targetFixtureIds) if (!generatedById.has(fixtureId) || !previousOutput.fixtures.some(fixture => fixture.id === fixtureId)) fail(`${fixtureId}: target selettivo non valido`);
+  finalOutput = {
+    ...previousOutput,
+    officialFormationsSources: generatedOutput.officialFormationsSources,
+    fixtures: previousOutput.fixtures.map(fixture => targetFixtureIds.has(fixture.id) ? generatedById.get(fixture.id) : fixture)
+  };
+}
+fs.writeFileSync(outputPath, JSON.stringify(finalOutput, null, 2));
 console.log(`OK Champions League: ${fixtures.length} gare · ${teamList.length} squadre · ${matchdays.size} giornate`);

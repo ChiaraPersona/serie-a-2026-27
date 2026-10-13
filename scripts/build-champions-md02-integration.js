@@ -15,6 +15,7 @@ const paths = {
   identityOverlay: "data/sources/champions-player-identity-overlay-md02-2026-27.json",
   odds: "data/normalized/odds/sisal/champions-league.json",
   probableSource: "data/sources/champions-probable-formations-md02-2026-27.json",
+  officialSource: "data/sources/champions-official-formations-md02-2026-27.json",
   output: "data/normalized/champions-md02-integration-2026-27.json",
   report: "output/reports/champions-md02-phase12-integration-2026-10-13.md"
 };
@@ -41,6 +42,7 @@ const uefaSquadAudit = read(paths.uefaSquadAudit);
 const identityOverlay = read(paths.identityOverlay);
 const odds = read(paths.odds);
 const probableSource = read(paths.probableSource);
+const officialSource = read(paths.officialSource);
 
 const inputHashes = Object.fromEntries(Object.entries(paths)
   .filter(([key]) => !["output", "report"].includes(key))
@@ -301,6 +303,7 @@ function decorateMarket(event, market, providerMap) {
 function buildLineup(fixture, prediction, side, availability) {
   const team = side === "home" ? fixture.homeTeam : fixture.awayTeam;
   const formation = fixture.probableFormation[side];
+  const lineupStatus = fixture.probableFormation.status === "official" ? "official" : "probable";
   const unavailableIds = new Set(availability.filter(item => ["unavailable", "suspended"].includes(item.status)).map(item => item.canonicalPlayerId).filter(Boolean));
   const players = formation.players.map((suppliedName, index) => {
     const resolved = resolveCanonical(team, suppliedName);
@@ -318,8 +321,9 @@ function buildLineup(fixture, prediction, side, availability) {
       side,
       lineupIndex: index,
       role,
+      ...(lineupStatus === "official" ? { lineupStatus } : {}),
       expectedMinutes: availabilityConflict ? null : role === "goalkeeper" ? 90 : 84.6,
-      expectedMinutesPolicy: availabilityConflict ? "BLOCKED_AVAILABILITY_CONFLICT" : role === "goalkeeper" ? "existing-model-goalkeeper-90" : "existing-model-starter-exposure-0.94x90",
+      expectedMinutesPolicy: availabilityConflict ? "BLOCKED_AVAILABILITY_CONFLICT" : role === "goalkeeper" ? lineupStatus === "official" ? "existing-model-official-goalkeeper-90" : "existing-model-goalkeeper-90" : lineupStatus === "official" ? "existing-model-official-starter-exposure-0.94x90" : "existing-model-starter-exposure-0.94x90",
       availabilityConflict,
       projectedShots: null,
       projectedShotsOnTarget: null,
@@ -337,7 +341,7 @@ function buildLineup(fixture, prediction, side, availability) {
     original.projectedShotsOnTarget = target[index]?.projection ?? null;
     original.shotsOnTargetReconciliationFactor = target[index] ? round(target[index].reconciliationFactor, 4) : null;
   });
-  return { team, formation: formation.formation, players };
+  return { team, formation: formation.formation, ...(lineupStatus === "official" ? { status: lineupStatus, source: fixture.probableFormation.source } : {}), players };
 }
 
 const fixtures = md02.map(fixture => {
@@ -345,13 +349,19 @@ const fixtures = md02.map(fixture => {
   const event = oddsByFixture.get(fixture.id);
   if (!prediction || !event) throw new Error(`Input MD2 mancante per ${fixture.id}`);
   const availability = [];
+  const availabilityFormation = fixture.probableFormation.editorialProjection || fixture.probableFormation;
   for (const side of ["home", "away"]) {
     const team = side === "home" ? fixture.homeTeam : fixture.awayTeam;
-    for (const raw of fixture.probableFormation[side].availability?.unavailable || []) availability.push({ team, side, ...availabilityEntry(team, "unavailable", raw) });
-    for (const raw of fixture.probableFormation[side].availability?.doubts || []) availability.push({ team, side, ...availabilityEntry(team, "doubt", raw) });
+    for (const raw of availabilityFormation[side].availability?.unavailable || []) availability.push({ team, side, ...availabilityEntry(team, "unavailable", raw) });
+    for (const raw of availabilityFormation[side].availability?.doubts || []) availability.push({ team, side, ...availabilityEntry(team, "doubt", raw) });
   }
   const home = buildLineup(fixture, prediction, "home", availability.filter(item => item.side === "home"));
   const away = buildLineup(fixture, prediction, "away", availability.filter(item => item.side === "away"));
+  const editorialFixture = fixture.probableFormation.editorialProjection ? { ...fixture, probableFormation: fixture.probableFormation.editorialProjection } : null;
+  const editorialLineups = editorialFixture ? {
+    home: buildLineup(editorialFixture, prediction, "home", availability.filter(item => item.side === "home")),
+    away: buildLineup(editorialFixture, prediction, "away", availability.filter(item => item.side === "away"))
+  } : null;
   const eventPlayers = [...teamPlayers(fixture.homeTeam), ...teamPlayers(fixture.awayTeam)];
   const providerMap = providerIdentityMap(event, eventPlayers);
   const playerMarkets = event.markets.filter(market => market.marketScope === "player").map(market => decorateMarket(event, market, providerMap));
@@ -370,6 +380,7 @@ const fixtures = md02.map(fixture => {
     lineupConfidence: fixture.probableFormation.lineupConfidence,
     availability,
     lineups: { home, away },
+    ...(fixture.probableFormation.status === "official" ? { lineupStatus: "official", editorialLineups } : {}),
     teamPrediction: prediction,
     oddsEvent: {
       providerEventId: event.providerEventId,
@@ -419,11 +430,12 @@ const output = {
   modelVersion: {
     team: predictions.status,
     playerVolumes: "champions-player-volume-existing-v1",
-    expectedMinutes: "probable-starter-0.94x90; goalkeeper-90",
+    expectedMinutes: "starter-0.94x90; goalkeeper-90; official XI overrides editorial XI only for supplied fixtures",
     mathematicalChange: false
   },
   sources: {
     probableFormations: { ...probableSource.source, updatedAt: probableSource.updatedAt, input: inputHashes.probableSource },
+    officialFormations: { ...officialSource.source, updatedAt: officialSource.updatedAt, fixtures: officialSource.fixtures.length, input: inputHashes.officialSource },
     odds: {
       provider: "Sisal",
       retrievedAt: odds.retrievedAt,
@@ -442,7 +454,7 @@ const output = {
   policies: {
     canonicalIdentity: "exact, verified identity-overlay, all-tokens or unique-surname only; ambiguous identities remain null",
     availability: "UEFA unavailable, suspended and doubt states are stored; no uncalibrated minute reduction is applied to doubts",
-    expectedMinutes: "The existing 0.94 starter exposure is applied to probable outfield starters; goalkeepers receive 90 minutes",
+    expectedMinutes: "The existing 0.94 starter exposure is applied to official starters when available and otherwise to probable starters; goalkeepers receive 90 minutes. Omitted players receive no invented substitute minutes",
     oddsIntegrity: "Original market and selection identifiers, odds, oddsRaw, status, threshold and modifiers are copied without mutation",
     substituteMarkets: "Replacement-inclusive markets are reference-only. Event probability, fair odds and EV remain null",
     woodwork: "Markets explicitly mentioning posts/crossbars, including 28506 and 28090, are not compared with the individual shots-on-target model",
@@ -453,6 +465,7 @@ const output = {
   coverage: {
     fixtures: fixtures.length,
     probableLineups: fixtures.filter(fixture => fixture.lineups.home.players.length === 11 && fixture.lineups.away.players.length === 11).length,
+    officialLineups: fixtures.filter(fixture => fixture.lineupStatus === "official").length,
     probableStarters: lineupPlayers.length,
     canonicalStartersResolved: lineupPlayers.filter(player => player.canonicalPlayerId).length,
     canonicalStartersUnresolved: lineupPlayers.filter(player => !player.canonicalPlayerId).length,
@@ -510,8 +523,8 @@ const report = [
   "",
   "## Esito",
   "",
-  `- Copertura partite: **${output.coverage.fixtures}/18**; probabili XI complete: **${output.coverage.probableLineups}/18**.`,
-  `- Probabili titolari: **${output.coverage.canonicalStartersResolved}/${output.coverage.probableStarters}** associati a ID canonico; **${output.coverage.canonicalStartersUnresolved}** non risolti.`,
+  `- Copertura partite: **${output.coverage.fixtures}/18**; XI complete: **${output.coverage.probableLineups}/18**; formazioni ufficiali applicate: **${output.coverage.officialLineups}/18**.`,
+  `- Titolari correnti: **${output.coverage.canonicalStartersResolved}/${output.coverage.probableStarters}** associati a ID canonico; **${output.coverage.canonicalStartersUnresolved}** non risolti.`,
   `- Overlay identità MD2: **${identityOverlay.players.length}** record additivi verificati; nessuna rosa UEFA congelata è stata riscritta.`,
   `- Pronostici squadra: **${predictions.coverage.detailedVolumeFixtures}/18** con volumi dettagliati; risultato/goal e relative quote disponibili **18/18**.`,
   `- Disponibilità UEFA: **${output.coverage.availability.unavailable} indisponibili**, **${output.coverage.availability.suspended} squalificati**, **${output.coverage.availability.doubts} in dubbio**; ${output.coverage.availability.canonicalResolved}/${output.coverage.availability.total} associati.`,

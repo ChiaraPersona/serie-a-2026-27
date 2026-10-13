@@ -1,11 +1,11 @@
 # Integrazione Fase 12 — UEFA MD2 + quote Sisal
 
-Generato: 2026-10-13T14:01:36.326Z
+Generato: 2026-10-13T16:04:48.283Z
 
 ## Esito
 
-- Copertura partite: **18/18**; probabili XI complete: **18/18**.
-- Probabili titolari: **395/396** associati a ID canonico; **1** non risolti.
+- Copertura partite: **18/18**; XI complete: **18/18**; formazioni ufficiali applicate: **2/18**.
+- Titolari correnti: **394/396** associati a ID canonico; **2** non risolti.
 - Overlay identità MD2: **17** record additivi verificati; nessuna rosa UEFA congelata è stata riscritta.
 - Pronostici squadra: **17/18** con volumi dettagliati; risultato/goal e relative quote disponibili **18/18**.
 - Disponibilità UEFA: **75 indisponibili**, **4 squalificati**, **30 in dubbio**; 109/109 associati.
@@ -38,7 +38,7 @@ Generato: 2026-10-13T14:01:36.326Z
 
 | Partita | Titolari ID | Disponibilità | Mercati giocatore | Quote selezionabili | Stato |
 |---|---:|---:|---:|---:|---|
-| Lens–Sporting CP | 22/22 | 6 | 1141 | 1689 | OK |
+| Lens–Sporting CP | 21/22 | 6 | 1141 | 1689 | PARZIALE (1 ID) |
 | Sabah–Slavia Praha | 22/22 | 9 | 1388 | 3110 | OK |
 | Arsenal–Lille | 22/22 | 8 | 1255 | 1960 | OK |
 | Atlético de Madrid–Manchester United | 22/22 | 8 | 1315 | 1999 | OK |
@@ -80,6 +80,7 @@ I mercati 28507 includono il sostituto; i 28506 e gli altri contratti che lo dic
 
 ## Blocchi
 
+- Titolare non risolto: Sporting CP — Joao Simoes.
 - Titolare non risolto: Viking — Haugen.
 - Nessun blocco di identità nelle liste disponibilità.
 - Le probabilità evento e gli EV dei mercati giocatore restano N/D/null per incompatibilità contrattuale.

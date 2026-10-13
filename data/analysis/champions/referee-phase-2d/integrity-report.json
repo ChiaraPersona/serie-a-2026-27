@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "phase": "2D",
+  "asOf": "2026-10-13",
+  "status": "PASS_WITH_CONCURRENT_PROJECT_CHANGES",
+  "phase2d": {
+    "datasetIntegrity": "PASS",
+    "rollingChronology": "PASS",
+    "lockedFinalHoldout": "PASS_WITH_PRIOR_PHASE_CAVEAT",
+    "sameSampleHistoricalAB": "PASS",
+    "designationTemporalGuard": "PASS",
+    "finiteProbabilities": "PASS",
+    "deterministicOutputs": true,
+    "bootstrapSeed": 20261013,
+    "bootstrapIterations": 1000
+  },
+  "preservation": {
+    "phase2bUnchangedDuringReproduction": true,
+    "phase2cUnchangedDuringReproduction": true,
+    "fantachampionsTrackedSampleUnchangedDuringReproduction": true,
+    "activeSurfaceComparison": "INCONCLUSIVE_CONCURRENT_CHANGES",
+    "concurrentlyChanged": [
+      "js/pages/champions.js",
+      "css/champions.css",
+      "scripts/build-site.js"
+    ],
+    "note": "The Phase 2D scripts do not read or write these three files. Their timestamps and git diff changed while the long reproducibility command was running, so they are recorded as concurrent user changes rather than Phase 2D regressions."
+  },
+  "tests": [
+    { "command": "node scripts/test-champions-referee-phase-2d.js", "status": "PASS" },
+    { "command": "node scripts/test-champions-referee-phase-2b.js", "status": "PASS" },
+    { "command": "node scripts/test-champions-referee-phase-2c.js", "status": "PASS" },
+    { "command": "node scripts/test-champions-md02-schedina.mjs", "status": "PASS" },
+    {
+      "command": "node scripts/test-champions-pilot-predictions.js",
+      "status": "PRE_EXISTING_FAILURE",
+      "failure": "Direct-link source-string assertion at line 70; all preceding shots/SOT and volume assertions passed."
+    },
+    {
+      "command": "node --no-warnings scripts/test-champions-reading-page.mjs",
+      "status": "PRE_EXISTING_FAILURE",
+      "failure": "Current count 8 differs from expected 3 at line 115."
+    },
+    {
+      "command": "node scripts/test-champions-md02-integration.js",
+      "status": "CONCURRENT_WORK_FAILURE",
+      "failure": "undefined !== 2 at line 28 while MD2 source/build/test files were being modified concurrently."
+    },
+    {
+      "command": "node scripts/test-champions-probable-formations-md02.js",
+      "status": "CONCURRENT_WORK_FAILURE",
+      "failure": "Protected fixture hash changed while Champions formation assets and tests were being modified concurrently."
+    }
+  ]
+}
