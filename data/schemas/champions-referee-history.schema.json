@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/schemas/champions-referee-history.schema.json",
+  "title": "Champions referee historical archive",
+  "type": "object",
+  "required": ["schemaVersion", "asOf", "status", "sourcePolicy", "metricDefinitions", "officialVerification", "referees"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "asOf": { "type": "string", "format": "date" },
+    "status": { "const": "research-only-not-model-input" },
+    "sourcePolicy": { "type": "object" },
+    "metricDefinitions": { "type": "object" },
+    "officialVerification": { "type": "object" },
+    "referees": {
+      "type": "array",
+      "minItems": 18,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "required": ["refereeId", "name", "country", "source", "career", "seasonCompetitionSamples", "groupedSamples", "last10"],
+        "properties": {
+          "refereeId": { "type": "string", "pattern": "^uefa-referee:[a-z]{3}:[a-z0-9-]+$" },
+          "career": { "type": "object" },
+          "seasonCompetitionSamples": { "type": "array" },
+          "groupedSamples": { "type": "object" },
+          "last10": { "type": "object" }
+        }
+      }
+    }
+  }
+}

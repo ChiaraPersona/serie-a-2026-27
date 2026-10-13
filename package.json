@@ -2,6 +2,8 @@
   "name": "serie-a-2026-27",
   "private": true,
   "scripts": {
+    "import:champions-referees": "node scripts/import-champions-referee-history.js --as-of 2026-10-13",
+    "test:champions-referees": "node scripts/test-champions-referee-history.js",
     "research:cards": "node scripts/research/cards/run.js",
     "test:card-research": "node scripts/test-card-prediction-research.js",
     "build:card-foundation": "node scripts/build-card-data-foundation.js",

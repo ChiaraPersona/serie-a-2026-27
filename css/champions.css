@@ -941,3 +941,66 @@ body[data-page="champions"] .champions-round-summary td{background:#0a234b!impor
 .champions-market-slip{position:sticky;top:88px;overflow:hidden}.champions-market-slip>header{padding:17px;background:linear-gradient(135deg,#061b36,#0c4d84);color:#fff}.champions-market-slip>header .eyebrow{margin:0;color:#62efff}.champions-market-slip h3{margin:4px 0 0;color:#fff;font-size:23px}.champions-market-slip>[data-market-slip]{display:grid;gap:12px;padding:12px}.champions-market-slip ol{display:grid;gap:8px;margin:0;padding:0;list-style:none}.champions-market-slip li{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:8px;align-items:center;padding:10px;border:1px solid rgba(126,218,255,.16);border-radius:11px;background:#061b4a}.champions-market-slip li div{display:grid;gap:2px;min-width:0}.champions-market-slip li small{color:#7fdcff;font-size:8px;font-weight:850}.champions-market-slip li strong{overflow-wrap:anywhere;color:#f7faff;font-size:10px}.champions-market-slip li span{color:#9bb8d5;font-size:8px}.champions-market-slip li>b{color:#bfe5ff;font-size:11px}.champions-market-slip li button{display:grid;place-items:center;width:30px;height:30px;border:1px solid rgba(255,122,130,.38);border-radius:8px;background:#4b1728;color:#ffabb1;font-size:18px;cursor:pointer}.champions-market-total{display:grid;gap:3px;padding:12px;border-radius:11px;background:#082d69}.champions-market-total span{color:#7fdcff;font-size:8px;font-weight:900;text-transform:uppercase}.champions-market-total strong{color:#f7faff;font-size:20px}.champions-market-total small,.champions-market-empty{color:#9bb8d5;font-size:9px;line-height:1.45}.champions-market-clear{justify-self:stretch;border-color:rgba(255,122,130,.38);background:#4b1728;color:#ffabb1}
 .champions-market-slip>header a{display:inline-flex;margin-top:9px;color:#fff;font-size:9px;font-weight:850;text-decoration:none}
 @media(max-width:900px){.champions-published-forecasts>header{align-items:flex-start;flex-direction:column}.champions-published-forecasts li{grid-template-columns:minmax(0,1fr) auto}.champions-published-forecasts li button{grid-column:1/-1}.champions-market-layout{grid-template-columns:1fr}.champions-market-slip{position:static}.champions-market-controls{grid-template-columns:1fr}.champions-market-controls .champions-market-toggle{min-height:0}.champions-market-card>summary{align-items:flex-start;flex-direction:column}.champions-market-tags{justify-content:flex-start}.champions-market-card li{grid-template-columns:minmax(0,1fr) auto}.champions-market-card li button{grid-column:1/-1}}
+
+/* Letture Champions · correzioni visive post-redesign */
+body[data-page="champions"] .champions-team-comparison{box-sizing:border-box;width:100%}
+body[data-page="champions"] .champions-team-comparison>header{width:100%}
+body[data-page="champions"] .champions-team-comparison>div{display:block;width:100%}
+body[data-page="champions"] .champions-team-comparison>div>.champions-comparison-row{display:grid;width:100%;grid-template-columns:minmax(96px,.45fr) minmax(150px,1.25fr) minmax(120px,.55fr) minmax(150px,1.25fr) minmax(96px,.45fr);gap:12px}
+body[data-page="champions"] .champions-comparison-track{width:100%;min-width:0;height:12px;border:1px solid rgba(127,220,255,.1);background:#061d4d}
+body[data-page="champions"] .champions-comparison-track i{min-width:3px}
+
+body[data-page="champions"] .champions-selected-forecasts{background:#031943!important;box-shadow:inset 0 1px rgba(255,255,255,.05),0 18px 48px rgba(0,8,37,.18)!important}
+body[data-page="champions"] .champions-selected-forecasts>.section-heading{margin-bottom:16px}
+body[data-page="champions"] .champions-selected-forecasts .champions-published-forecasts{gap:9px;margin:0;padding:0;border:0;background:transparent;color:#f7faff}
+body[data-page="champions"] .champions-selected-forecasts .champions-published-forecasts ol{gap:9px}
+body[data-page="champions"] .champions-selected-forecasts .champions-published-forecasts li{grid-template-columns:minmax(0,1.3fr) minmax(230px,.7fr) auto;gap:12px;padding:14px 15px;border-color:rgba(126,218,255,.2);background:#061f50}
+body[data-page="champions"] .champions-selected-forecasts .champions-published-forecasts li strong{font-size:12px;line-height:1.4}
+body[data-page="champions"] .champions-selected-forecasts .champions-published-forecasts li>button{min-width:132px}
+
+body[data-page="champions"] .champions-tactical-table-wrap{background:#031943}
+body[data-page="champions"] .champions-tactical-table-wrap :is(table,thead,tbody,tr,th,td){background:#031943;color:#e8f5ff}
+body[data-page="champions"] .champions-tactical-table-wrap thead th{background:#083677;color:#fff}
+body[data-page="champions"] .champions-tactical-table-wrap tbody th{background:#05275d;color:#83dfff}
+body[data-page="champions"] .champions-tactical-table-wrap td{color:#dcecff;white-space:normal}
+body[data-page="champions"] .champions-tactical-table-wrap tbody tr:hover :is(th,td),body[data-page="champions"] .champions-tactical-table-wrap tbody tr:focus-within :is(th,td){background:#0a3471;color:#fff}
+
+body[data-page="champions"] .champions-reading-hero-referee.reading-referee-assignment{display:grid;grid-template-columns:minmax(180px,.7fr) minmax(260px,1fr) minmax(320px,1.25fr);align-items:center;gap:8px 14px;padding:13px 15px}
+body[data-page="champions"] .champions-reading-hero-referee>header{grid-column:1;display:block}
+body[data-page="champions"] .champions-reading-hero-referee>header h2{font-size:19px;line-height:1.08}
+body[data-page="champions"] .champions-reading-hero-referee>header>p{display:none}
+body[data-page="champions"] .champions-reading-hero-referee>dl{grid-column:2;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin:0}
+body[data-page="champions"] .champions-reading-hero-referee>dl>div{padding:7px 9px}
+body[data-page="champions"] .champions-reading-hero-referee>.champions-reading-referee-stats{grid-column:3;gap:6px;margin:0}
+body[data-page="champions"] .champions-reading-hero-referee>.champions-reading-referee-stats>article{padding:7px 8px}
+body[data-page="champions"] .champions-reading-hero-referee>.champions-reading-referee-stats strong{font-size:15px}
+body[data-page="champions"] .champions-reading-hero-referee:not(:has(>dl)){grid-template-columns:minmax(210px,.65fr) minmax(0,1.5fr)}
+body[data-page="champions"] .champions-reading-hero-referee:not(:has(>dl))>.champions-reading-referee-stats{grid-column:2}
+body[data-page="champions"] .champions-reading-hero-referee>.reading-referee-method{grid-column:1/-1;margin:0;color:#91aecb;font-size:8px;line-height:1.35}
+
+body[data-page="champions"] .champions-reading-tactical-analysis .champions-reading-attack-card{padding:16px}
+body[data-page="champions"] .champions-reading-tactical-analysis .prediction-channels{gap:10px}
+body[data-page="champions"] .champions-reading-tactical-analysis .prediction-channels>div{grid-template-columns:52px minmax(0,1fr) 46px;gap:9px;min-height:32px}
+body[data-page="champions"] .champions-reading-tactical-analysis .prediction-channels>div small{font-size:9px}
+body[data-page="champions"] .champions-reading-tactical-analysis .prediction-channels>div strong{font-size:11px}
+body[data-page="champions"] .champions-reading-tactical-analysis .prediction-channels i{height:10px}
+
+@media(max-width:900px){
+  body[data-page="champions"] .champions-reading-hero-referee.reading-referee-assignment,body[data-page="champions"] .champions-reading-hero-referee:not(:has(>dl)){grid-template-columns:minmax(180px,.7fr) minmax(0,1.3fr)}
+  body[data-page="champions"] .champions-reading-hero-referee>dl{grid-column:2}
+  body[data-page="champions"] .champions-reading-hero-referee>.champions-reading-referee-stats,body[data-page="champions"] .champions-reading-hero-referee:not(:has(>dl))>.champions-reading-referee-stats{grid-column:1/-1}
+  body[data-page="champions"] .champions-selected-forecasts .champions-published-forecasts li{grid-template-columns:minmax(0,1fr) auto}
+  body[data-page="champions"] .champions-selected-forecasts .champions-published-forecasts li>button{grid-column:1/-1;width:100%}
+}
+
+@media(max-width:600px){
+  body[data-page="champions"] .champions-team-comparison>div>.champions-comparison-row{grid-template-columns:42px minmax(48px,1fr) 72px minmax(48px,1fr) 42px;gap:4px}
+  body[data-page="champions"] .champions-comparison-track{height:9px}
+  body[data-page="champions"] .champions-reading-hero-referee.reading-referee-assignment,body[data-page="champions"] .champions-reading-hero-referee:not(:has(>dl)){grid-template-columns:1fr;gap:8px;padding:12px}
+  body[data-page="champions"] .champions-reading-hero-referee>header,body[data-page="champions"] .champions-reading-hero-referee>dl,body[data-page="champions"] .champions-reading-hero-referee>.champions-reading-referee-stats,body[data-page="champions"] .champions-reading-hero-referee:not(:has(>dl))>.champions-reading-referee-stats{grid-column:1}
+  body[data-page="champions"] .champions-reading-hero-referee>dl{grid-template-columns:repeat(2,minmax(0,1fr))}
+  body[data-page="champions"] .champions-reading-hero-referee>.champions-reading-referee-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  body[data-page="champions"] .champions-selected-forecasts .champions-published-forecasts li{grid-template-columns:1fr;padding:13px}
+  body[data-page="champions"] .champions-published-metrics{grid-template-columns:repeat(3,minmax(0,1fr))}
+  body[data-page="champions"] .champions-reading-tactical-analysis .prediction-channels>div{grid-template-columns:48px minmax(0,1fr) 42px}
+}
