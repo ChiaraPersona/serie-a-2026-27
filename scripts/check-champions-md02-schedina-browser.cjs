@@ -24,7 +24,7 @@ const server=http.createServer((request,response)=>{
     await page.evaluate(()=>localStorage.clear());
     assert.equal(await page.locator('[data-champions-matchday="2"]').count(),1,'Card Champions MD2 non unica');
     assert.equal(await page.locator('.betting-archive-card--champions').count(),2,'Card Champions attese: MD1 e MD2');
-    assert.match(await page.locator('[data-champions-matchday="2"]').innerText(),/CL2[\s\S]*18 partite · 94 pronostici[\s\S]*94 da verificare[\s\S]*ROI e profitto\/perdita N\/D/);
+    assert.match(await page.locator('[data-champions-matchday="2"]').innerText(),/CL2[\s\S]*18 partite · 120 pronostici[\s\S]*120 da verificare[\s\S]*ROI e profitto\/perdita N\/D/);
     assert.match(await page.locator('.betting-archive-card--champions').first().innerText(),/CL1[\s\S]*31 esatte su 52/,'La card MD1 è cambiata');
 
     for(const width of [1280,390]){
@@ -32,21 +32,21 @@ const server=http.createServer((request,response)=>{
       await page.goto(`${origin}/schedina.html?competizione=champions&giornata=2`,{waitUntil:'networkidle'});
       await page.waitForSelector('[data-match-panel]');
       assert.equal(await page.locator('[data-match-panel]').count(),18,`${width}px: partite MD2`);
-      assert.equal(await page.locator('[data-selection-row]').count(),94,`${width}px: pronostici MD2`);
+      assert.equal(await page.locator('[data-selection-row]').count(),120,`${width}px: pronostici MD2`);
       assert.equal(await page.locator('.betting-match-reading-link').count(),18,`${width}px: link letture`);
-      assert.equal(await page.locator('[data-selection-row][data-personal-pick]').count(),94,`${width}px: selezioni cliccabili`);
-      assert.equal(await page.locator('[data-market-family="Tiri giocatore"]').count(),38,`${width}px: pronostici tiri`);
-      assert.equal(await page.locator('[data-market-family="Tiri in porta giocatore"]').count(),21,`${width}px: pronostici SOT`);
-      assert.equal(await page.locator('[data-selection-row][data-bookmaker-contract="duo"][data-probability=""][data-ev=""]').count(),59,`${width}px: P/EV individuali devono restare N/D`);
+      assert.equal(await page.locator('[data-selection-row][data-personal-pick]').count(),120,`${width}px: selezioni cliccabili`);
+      assert.equal(await page.locator('[data-market-family="Tiri giocatore"]').count(),52,`${width}px: pronostici tiri`);
+      assert.equal(await page.locator('[data-market-family="Tiri in porta giocatore"]').count(),26,`${width}px: pronostici SOT`);
+      assert.equal(await page.locator('[data-selection-row][data-bookmaker-contract="duo"][data-probability=""][data-ev=""]').count(),78,`${width}px: P/EV individuali devono restare N/D`);
       assert.equal(await page.locator('.betting-champions-md02-markets .betting-market-group').count(),0,`${width}px: intestazioni automatiche mercato ancora visibili`);
       assert.equal(await page.locator('.betting-champions-md02-markets h4').count(),0,`${width}px: titoli o numerazioni automatiche ancora visibili`);
       assert.equal(await page.locator('.betting-champions-md02-markets .betting-market-columns').count(),18,`${width}px: serve una sola riga colonne per partita`);
       assert.equal(await page.locator('.betting-champions-md02-markets .betting-market-columns span:first-child').evaluateAll(nodes=>nodes.every(node=>node.textContent==="")),true,`${width}px: intestazione Mercato ancora visibile`);
       assert.deepEqual(await page.locator('.betting-champions-md02-markets .betting-market-columns').first().locator('span').evaluateAll(nodes=>nodes.map(node=>node.textContent)),['','Probabilità','Quota Sisal','EV',''],`${width}px: intestazioni colonne Champions MD2`);
       const lensPanel=page.locator('[data-match-id="ucl-2026-27-md02-01"]');
-      assert.equal(await lensPanel.locator('[data-selection-row]').count(),4,`${width}px: Lens-Sporting deve conservare i tre pronostici e aggiungere Ivanovic`);
-      assert.deepEqual(await lensPanel.locator('[data-selection-row]').evaluateAll(rows=>rows.map(row=>row.dataset.marketFamily)),['Doppia chance','Tiri giocatore','Tiri in porta giocatore','Tiri giocatore'],`${width}px: ordine pronostici Lens-Sporting`);
-      assert.match(await page.locator('.betting-champions-md02-summary').innerText(),/94 pronostici da verificare[\s\S]*ROI e profitto\/perdita restano N\/D/);
+      assert.equal(await lensPanel.locator('[data-selection-row]').count(),6,`${width}px: Lens-Sporting deve conservare quattro pronostici e aggiungere due outsider`);
+      assert.deepEqual(await lensPanel.locator('[data-selection-row]').evaluateAll(rows=>rows.map(row=>row.dataset.marketFamily)),['Doppia chance','Tiri giocatore','Tiri in porta giocatore','Tiri giocatore','Tiri giocatore','Tiri giocatore'],`${width}px: ordine pronostici Lens-Sporting`);
+      assert.match(await page.locator('.betting-champions-md02-summary').innerText(),/120 pronostici da verificare[\s\S]*ROI e profitto\/perdita restano N\/D/);
       assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,`${width}px: overflow orizzontale`);
     }
 
@@ -75,7 +75,7 @@ const server=http.createServer((request,response)=>{
       await page.setViewportSize({width,height:900});
       await page.goto(`${origin}/champions-league.html?match=ucl-2026-27-md02-01`,{waitUntil:'networkidle'});
       await page.waitForSelector('[data-champions-published-root]');
-      assert.equal(await page.locator('[data-published-selection-id]').count(),4,`${width}px: lettura e schedina non condividono i quattro pronostici`);
+      assert.equal(await page.locator('[data-published-selection-id]').count(),6,`${width}px: lettura e schedina non condividono i sei pronostici`);
       assert.equal(await page.locator('[data-champions-market-root],#champions-sisal-markets,.champions-market-browser,.champions-market-controls,.champions-market-slip').count(),0,`${width}px: catalogo o ricerca quote ancora visibili`);
       assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,`${width}px: overflow orizzontale lettura`);
     }
@@ -97,7 +97,7 @@ const server=http.createServer((request,response)=>{
     await page.goto(`${origin}/schedina.html?giornata=6`,{waitUntil:'networkidle'});
     assert.equal(await page.locator('[data-match-panel]').count(),10,'Regressione pagina Serie A MD6');
     assert.deepEqual(errors,[],'Errori JavaScript in browser');
-    console.log('OK browser card Champions MD2: 18 partite, 94 pronostici, sync lettura/MyCombo, reload, mobile e regressioni');
+    console.log('OK browser card Champions MD2: 18 partite, 120 pronostici, sync lettura/MyCombo, reload, mobile e regressioni');
   }finally{
     await browser.close();
     server.close();

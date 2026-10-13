@@ -39,6 +39,12 @@ for(const team of squads.teams){
  assert(app.innerHTML.includes('id="champions-player-sort"'),`${team.team}: ordinamento giocatori`);
  assert(app.innerHTML.includes('champions-team-hero-logo'),`${team.team}: stemma hero`);
  assert(app.innerHTML.includes('Posizione fase campionato'),`${team.team}: posizione esplicita`);
+ assert(!/Allenatore:[^<\n]*[-\u2010-\u2015]{3,}/u.test(app.innerHTML),`${team.team}: nome allenatore senza trattini decorativi`);
+ if(team.id==='bayern-munchen'){
+  assert(app.innerHTML.includes('Allenatore: Vincent Kompany'),`${team.team}: allenatore pulito`);
+  assert(lineup.includes('Allenatore: Vincent Kompany'),`${team.team}: allenatore pulito sotto il campo`);
+ }
+ if(team.id==='borussia-dortmund')assert(app.innerHTML.includes('Allenatore: Niko Kovač'),`${team.team}: allenatore pulito`);
  assert(!app.innerHTML.includes('id="offensive-identity"'),`${team.team}: identità offensiva vuota nascosta`);
  const sectionOrder=['champions-team-hero','champions-team-summary','champions-team-calendar','champions-team-volume','champions-team-attack','champions-team-lineup','champions-player-overview','champions-team-players'].map(token=>app.innerHTML.indexOf(token)).filter(index=>index>=0);
  assert.deepEqual(sectionOrder,sectionOrder.slice().sort((a,b)=>a-b),`${team.team}: ordine sezioni`);

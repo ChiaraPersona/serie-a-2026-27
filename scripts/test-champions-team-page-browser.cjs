@@ -38,6 +38,14 @@ const screenshotDirectory=(process.argv.find(argument=>argument.startsWith('--sc
         assert.equal(await page.locator('.champions-team-hero-logo img').count(),1,`${item.id}: stemma`);
         assert(await page.locator('.champions-team-hero-logo img').evaluate(image=>image.naturalWidth>0),`${item.id}: stemma caricato`);
         assert.match(await page.locator('.champions-team-hero-facts').innerText(),/Posizione fase campionato/i);
+        const heroCoach=await page.locator('.champions-team-identity p').last().innerText();
+        const lineupCoach=await page.locator('.champions-team-lineup footer span').innerText();
+        assert.doesNotMatch(heroCoach,/[-\u2010-\u2015]{3,}/u,`${item.id}: allenatore hero senza trattini decorativi`);
+        assert.doesNotMatch(lineupCoach,/[-\u2010-\u2015]{3,}/u,`${item.id}: allenatore formazione senza trattini decorativi`);
+        if(item.id==='bayern-munchen'){
+          assert.equal(heroCoach,'Allenatore: Vincent Kompany',`${item.id}: allenatore hero pulito`);
+          assert.equal(lineupCoach,'Allenatore: Vincent Kompany',`${item.id}: allenatore formazione pulito`);
+        }
         assert.equal(await page.locator('.champions-calendar-list>li').count(),8,`${item.id}: calendario`);
         assert.equal(await page.locator('.champions-calendar-list>li.is-next').count(),1,`${item.id}: prossima gara`);
         assert.equal(await page.locator('.champions-calendar-result').count(),1,`${item.id}: risultato concluso`);
