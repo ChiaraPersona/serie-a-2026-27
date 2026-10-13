@@ -1,6 +1,6 @@
 # Champions League 2026/27 — Fase 12D
 
-Generato: 2026-10-13T15:51:09.3790257+02:00 · snapshot Sisal invariato: 2026-10-13T09:55:14.800Z
+Generato: 2026-10-13T16:01:46.8664249+02:00 · snapshot Sisal invariato: 2026-10-13T09:55:14.800Z
 
 ## Gate
 

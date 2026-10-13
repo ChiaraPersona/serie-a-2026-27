@@ -1,6 +1,6 @@
 # Integrazione Fase 12 — UEFA MD2 + quote Sisal
 
-Generato: 2026-10-13T10:57:01.835Z
+Generato: 2026-10-13T14:01:36.326Z
 
 ## Esito
 
@@ -92,46 +92,3 @@ Lettura e schedina condividono `fixtureId`, `providerEventId`, `providerMarketId
 - Quote Sisal normalizzate SHA-256: `2969A579C55F3748FA8712BD83374E86239163518204ED7FAFCBDAC7C03FA4FB`
 - Quote Sisal raw SHA-256: `4F4D59E24F0CA81D224344C8D5533668D63FD2F5C13CDD82C1E7F3B96E472BF0`
 - Timestamp quote: `2026-10-13T09:55:14.800Z`
-
-## Fase 12B — card Schedina seconda giornata
-
-### Stato della card
-
-- Card Champions MD2 presente una sola volta nell'archivio Schedine, accanto alla card Champions MD1 e prima delle card Serie A.
-- Fronte coerente con MD1 (`CL2`, UEFA, palette Champions); retro predisposto per 18 partite, 18 pronostici, stato degli esiti e rendimento su puntata simulata di 1 € per selezione.
-- Pagina di giornata: 18 pannelli partita in ordine cronologico, con collegamento diretto alla lettura tramite `fixtureId`.
-- Desktop 1280 px e mobile 390 px verificati senza overflow orizzontale.
-
-### Pronostici effettivamente pubblicati
-
-- **18** pronostici squadra già presenti nelle letture MD2, uno per partita.
-- **9** esiti finali 1X2 e **9** doppie chance a tempo pieno.
-- **18/18** corrispondenze esatte con una selezione Sisal aperta e quotata; **18** selezioni cliccabili.
-- Nessun mercato è stato trasformato in pronostico per la sola presenza della quota. Il catalogo completo dei mercati giocatore resta consultabile nelle letture e selezionabile con probabilità/EV N/D secondo la Fase 12.
-
-La fonte autorevole della card è `champions-md02-integration-2026-27.json`: per ogni fixture il builder riusa senza ricalcolo `teamPrediction.verdict.outcome`, `teamPrediction.verdict.label` e `teamPrediction.verdict.probabilityPct`, quindi collega la selezione corrispondente nello snapshot Sisal normalizzato. La quota, `oddsRaw`, gli ID evento/mercato/selezione, lo stato e i modificatori provengono dal record provider originale.
-
-### Sincronizzazione e MyCombo
-
-- Lettura e card condividono `fixtureId` e lo stesso verdetto squadra; la card conserva inoltre `providerEventId`, `providerMarketId`, `providerSelectionId` e `selectionId` Sisal.
-- Aggiunta, rimozione e persistenza dopo reload sono verificate sullo store condiviso `champions:2026-27:md02`.
-- I modificatori del contratto bookmaker restano nel record persistito. I mercati giocatore con sostituto, DUO, pali/traverse o primo tempo non sono stati rimossi né alterati.
-
-### Report sul retro
-
-Alla data dello snapshot le 18 gare non hanno ancora un esito ufficiale: **0 vinte, 0 perse, 18 da verificare**. Puntato, ritorno, ROI e profitto/perdita restano N/D. Il builder applica verde/rosso e il calcolo economico soltanto agli esiti ufficialmente definiti; selezioni pending, void o non verificabili non vengono contate come perse.
-
-### Casi incompleti preservati
-
-- Viking — **Haugen** resta privo di identità canonica: nessuna associazione tra Herman Haugen e Kristoffer Haugen.
-- Sabah–Slavia Praha mantiene `matchProjection: null` e volumi squadra dettagliati null; la card usa soltanto il verdetto risultato già generato e non modifica il motore.
-- La card MD1, gli snapshot congelati e i dati/formule Serie A non sono stati modificati.
-
-### Verifiche Fase 12B
-
-- `scripts/test-champions-md02-schedina.mjs`: 18 fixture uniche, 18 pronostici unici, corrispondenza lettura/quote, integrità quote e ID, casi Haugen e Sabah–Slavia, aggiunta/rimozione/reload e modificatori.
-- `scripts/test-champions-md02-integration.js`: 18/18, 395/396 titolari, 109/109 disponibilità, 28.109 mercati e 92.818 selezioni integre.
-- `scripts/test-champions-md02-market-ui.mjs`: contratti Sisal con sostituto, DUO, pali/traverse, primo tempo e persistenza invariati.
-- `scripts/test-champions-schedina-page.mjs`: card/pagina MD1 e 52 esiti storici invariati.
-- `scripts/test-app-modules.mjs`: 9 pagine e 4 componenti condivisi; regressioni strutturali e palette Champions superate.
-- `scripts/check-champions-md02-schedina-browser.cjs`: archivio, unicità card, 18 partite/pronostici, navigazione, MyCombo, reload, desktop/mobile, MD1 e Serie A MD6 superati.
