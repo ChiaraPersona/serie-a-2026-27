@@ -25,6 +25,11 @@ const odds=read(paths.odds);
 const calendar=read(paths.calendar);
 const eventByFixture=new Map(odds.events.map(event=>[event.canonicalMatchId,event]));
 const calendarByFixture=new Map(calendar.fixtures.map(fixture=>[fixture.id,fixture]));
+const outsiderSelectionIds=new Set([...outsiders.teamPicks,...outsiders.individualPicks].map(pick=>pick.selectionId));
+const preferredPicks=Array.isArray(outsiders.preferredPicks)?outsiders.preferredPicks:[];
+const preferredBySelectionId=new Map(preferredPicks.map(pick=>[pick.selectionId,pick]));
+const preferredByFixture=new Map(preferredPicks.map(pick=>[pick.fixtureId,pick]));
+if(preferredPicks.length!==18||preferredBySelectionId.size!==18||preferredByFixture.size!==18)throw new Error(`Fonte editoriale preferiti non valida: ${preferredPicks.length} righe, ${preferredBySelectionId.size} selectionId, ${preferredByFixture.size} partite`);
 
 function settle(selection,calendarFixture){
   if(calendarFixture?.status!=="finished"||!finite(calendarFixture?.score?.home)||!finite(calendarFixture?.score?.away))return {status:"pending",label:"Da verificare"};
@@ -362,6 +367,27 @@ const fixtures=integration.fixtures.map(fixture=>{
   const phase12dIndividualPicks=phase12d.individualPicks.filter(pick=>pick.fixtureId===fixture.fixtureId).map(pick=>selectedIndividualForecast(fixture,pick,{source:paths.phase12d,curatedAt:phase12d.generatedAt,classification:"B"}));
   const outsiderTeamPicks=outsiders.teamPicks.filter(pick=>pick.fixtureId===fixture.fixtureId).map(pick=>selectedAdditionalTeamForecast(fixture,pick,{source:paths.outsiders,curatedAt:outsiders.generatedAt}));
   const outsiderIndividualPicks=outsiders.individualPicks.filter(pick=>pick.fixtureId===fixture.fixtureId).map(pick=>selectedIndividualForecast(fixture,pick,{source:paths.outsiders,curatedAt:outsiders.generatedAt,classification:"B"}));
+  const selections=[selectedForecast(fixture),...individualPicks,...phase12dTeamPicks,...phase12dIndividualPicks,...outsiderTeamPicks,...outsiderIndividualPicks].map(selection=>{
+    const preferred=preferredBySelectionId.get(selection.selectionId)||null;
+    const isOutsider=outsiderSelectionIds.has(selection.selectionId);
+    return {
+      ...selection,
+      isOutsider,
+      isPreferred:Boolean(preferred),
+      editorial:{
+        isOutsider,
+        isPreferred:Boolean(preferred),
+        source:paths.outsiders,
+        ...(preferred?{preferred:{
+          curatedAt:outsiders.preferredCuratedAt,
+          evaluationClass:preferred.evaluationClass,
+          dataQuality:preferred.dataQuality,
+          reason:preferred.reason,
+          limitation:preferred.limitation
+        }}:{})
+      }
+    };
+  });
   return {
     fixtureId:fixture.fixtureId,
     date:fixture.date,
@@ -372,10 +398,16 @@ const fixtures=integration.fixtures.map(fixture=>{
     score:calendarFixture?.score||null,
     readingUrl:`champions-league.html?match=${fixture.fixtureId}`,
     forecastSyncKey:fixture.generationSync?.forecastKey||fixture.syncKey,
-    selections:[selectedForecast(fixture),...individualPicks,...phase12dTeamPicks,...phase12dIndividualPicks,...outsiderTeamPicks,...outsiderIndividualPicks]
+    selections
   };
 });
 const selections=fixtures.flatMap(fixture=>fixture.selections);
+for(const preferred of preferredPicks){
+  const fixture=fixtures.find(item=>item.fixtureId===preferred.fixtureId);
+  if(!fixture?.selections.some(selection=>selection.selectionId===preferred.selectionId&&selection.isPreferred===true))throw new Error(`${preferred.fixtureId}: preferito editoriale non risolto ${preferred.selectionId}`);
+}
+if(selections.filter(selection=>selection.isOutsider).length!==outsiderSelectionIds.size)throw new Error("Flag outsider non allineati alla fonte editoriale");
+if(selections.filter(selection=>selection.isPreferred).length!==18||fixtures.some(fixture=>fixture.selections.filter(selection=>selection.isPreferred).length!==1))throw new Error("Serve esattamente un preferito per ciascuna delle 18 partite");
 const additiveSources=new Set([paths.phase12d,paths.outsiders]);
 const baselineSelections=fixtures.flatMap(fixture=>fixture.selections.filter(selection=>!additiveSources.has(selection.betSelection.evaluation.provenance?.curationSource)));
 const baselineHash=crypto.createHash("sha256").update(JSON.stringify(baselineSelections.map(selection=>selection.selectionId).sort())).digest("hex").toUpperCase();
@@ -408,7 +440,7 @@ const output={
     integration:{path:paths.integration,sha256:hash(paths.integration),generatedAt:integration.generatedAt},
     individualSelection:{path:paths.individualSelection,sha256:hash(paths.individualSelection),curatedAt:individualSelection.curatedAt,status:individualSelection.status},
     phase12d:{path:paths.phase12d,sha256:hash(paths.phase12d),generatedAt:phase12d.generatedAt,status:phase12d.status,baselineSelectionIdsSha256:phase12d.baseline.selectionIdsSha256},
-    outsiders:{path:paths.outsiders,sha256:hash(paths.outsiders),generatedAt:outsiders.generatedAt,status:outsiders.status,baselineSelectionIdsSha256:outsiders.baseline.selectionIdsSha256},
+    outsiders:{path:paths.outsiders,sha256:hash(paths.outsiders),generatedAt:outsiders.generatedAt,preferredCuratedAt:outsiders.preferredCuratedAt,status:outsiders.status,baselineSelectionIdsSha256:outsiders.baseline.selectionIdsSha256},
     odds:{path:paths.odds,sha256:hash(paths.odds),retrievedAt:odds.retrievedAt},
     officialResults:{path:paths.calendar,sha256:hash(paths.calendar)}
   },
@@ -425,6 +457,7 @@ const output={
     outsiderPredictions:outsiders.teamPicks.length+outsiders.individualPicks.length,
     outsiderTeamPredictions:outsiders.teamPicks.length,
     outsiderIndividualPredictions:outsiders.individualPicks.length,
+    preferredPredictions:selections.filter(selection=>selection.isPreferred).length,
     individualPredictions:selections.filter(selection=>selection.marketScope==="player").length,
     individualShots:selections.filter(selection=>selection.marketCode==="28507").length,
     individualShotsOnTarget:selections.filter(selection=>selection.marketCode==="28506").length,

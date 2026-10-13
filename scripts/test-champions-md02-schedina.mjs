@@ -30,6 +30,7 @@ assert.equal(data.summary.phase12DIndividualPredictions,14);
 assert.equal(data.summary.outsiderPredictions,26);
 assert.equal(data.summary.outsiderTeamPredictions,7);
 assert.equal(data.summary.outsiderIndividualPredictions,19);
+assert.equal(data.summary.preferredPredictions,18);
 assert.equal(data.summary.individualPredictions,78);
 assert.equal(data.summary.individualShots,52);
 assert.equal(data.summary.individualShotsOnTarget,26);
@@ -116,6 +117,22 @@ assert(new Set(data.fixtures.map(fixture=>fixture.selections.length)).size>2,"No
 
 const phase12dIds=new Set([...phase12d.teamPicks,...phase12d.individualPicks].map(pick=>pick.selectionId));
 const outsiderIds=new Set([...outsiders.teamPicks,...outsiders.individualPicks].map(pick=>pick.selectionId));
+const preferredIds=new Set(outsiders.preferredPicks.map(pick=>pick.selectionId));
+assert.equal(outsiderIds.size,26,"La fonte editoriale outsider deve contenere 26 selectionId unici");
+assert.equal(outsiders.preferredPicks.length,18,"La fonte editoriale deve contenere 18 preferiti");
+assert.equal(preferredIds.size,18,"I preferiti devono avere 18 selectionId unici");
+assert.equal(new Set(outsiders.preferredPicks.map(pick=>pick.fixtureId)).size,18,"Serve un preferito editoriale per partita");
+assert.deepEqual(new Set(selections.filter(selection=>selection.isOutsider===true).map(selection=>selection.selectionId)),outsiderIds,"I flag outsider devono derivare esattamente dalla fonte editoriale");
+assert.deepEqual(new Set(selections.filter(selection=>selection.isPreferred===true).map(selection=>selection.selectionId)),preferredIds,"I flag preferito devono derivare esattamente dalla fonte editoriale");
+for(const fixture of data.fixtures){
+  const preferred=fixture.selections.filter(selection=>selection.isPreferred===true);
+  assert.equal(preferred.length,1,`${fixture.fixtureId}: deve esserci esattamente un preferito`);
+  const sourcePreferred=outsiders.preferredPicks.find(pick=>pick.fixtureId===fixture.fixtureId);
+  assert.equal(preferred[0].selectionId,sourcePreferred.selectionId,`${fixture.fixtureId}: mapping preferito divergente`);
+  assert.equal(preferred[0].editorial.preferred.reason,sourcePreferred.reason,`${fixture.fixtureId}: motivazione preferito non tracciata`);
+  assert.equal(preferred[0].editorial.preferred.curatedAt,outsiders.preferredCuratedAt,`${fixture.fixtureId}: timestamp preferito non tracciato`);
+  assert.equal(preferred[0].editorial.preferred.evaluationClass,"A",`${fixture.fixtureId}: preferito non matematicamente valutabile`);
+}
 const baselineIds=selections.filter(selection=>!phase12dIds.has(selection.selectionId)&&!outsiderIds.has(selection.selectionId)).map(selection=>selection.selectionId).sort();
 assert.equal(baselineIds.length,63);
 assert.equal(crypto.createHash("sha256").update(JSON.stringify(baselineIds)).digest("hex").toUpperCase(),phase12d.baseline.selectionIdsSha256,"I 63 selectionId delle Fasi 12B/12C sono cambiati");
@@ -153,4 +170,4 @@ assert.equal(integration.fixtures.find(fixture=>fixture.fixtureId==="ucl-2026-27
 const viking=integration.fixtures.find(fixture=>fixture.fixtureId==="ucl-2026-27-md02-08");
 assert(viking.lineups.home.players.some(player=>player.suppliedName==="Haugen"&&player.canonicalPlayerId===null&&player.mappingStatus==="unresolved"));
 
-console.log("OK card Champions MD2 Fase 12D outsider: 18 partite, 120 pronostici, 94 pre-outsider preservati, 42 valutabili e 120 quote cliccabili");
+console.log("OK card Champions MD2 finale: 18 partite, 120 pronostici, 26 outsider, 18 preferiti, 42 valutabili e 120 quote cliccabili");

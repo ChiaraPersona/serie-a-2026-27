@@ -168,12 +168,19 @@ function officialTeam(value) {
 }
 
 function parseOfficial(row, season) {
+  const referee = (row.referees || []).find(item => item.role === "REFEREE");
   return {
     uefaMatchId: String(row.id), season: season.season, targetSeason: season.target,
     date: row.kickOffTime?.date || null, kickoffUtc: row.kickOffTime?.dateTime || null,
     roundName: row.round?.translations?.name?.EN || row.round?.metaData?.name || null,
     matchday: row.matchday?.sequenceNumber == null ? null : Number(row.matchday.sequenceNumber),
     homeTeam: officialTeam(row.homeTeam), awayTeam: officialTeam(row.awayTeam),
+    referee: referee ? {
+      uefaPersonId: String(referee.person?.id || ""),
+      name: referee.person?.translations?.name?.EN || null,
+      countryIso3: referee.person?.countryCode || null,
+      role: referee.role
+    } : null,
     score90: row.score?.regular ? { home: row.score.regular.home, away: row.score.regular.away } : null,
     scoreTotal: row.score?.total ? { home: row.score.total.home, away: row.score.total.away } : null
   };
@@ -283,6 +290,10 @@ function parseSummary(link, wrapper) {
 
 function refereeKey(name) { return normalize(name); }
 function slug(name) { return normalize(name).replaceAll(" ", "-") || "unknown"; }
+function refereeNamesCompatible(left, right) {
+  const leftTokens = new Set(refereeKey(left).split(" ").filter(token => token.length > 2));
+  return refereeKey(right).split(" ").some(token => token.length > 2 && leftTokens.has(token));
+}
 
 function makeRefereeRegistry(matches) {
   const existing = JSON.parse(fs.readFileSync(existingRegistryPath, "utf8"));
@@ -291,24 +302,30 @@ function makeRefereeRegistry(matches) {
   const groups = new Map();
   for (const match of matches) {
     if (!match.refereeName) continue;
-    const key = refereeKey(match.refereeName);
-    if (!groups.has(key)) groups.set(key, { key, names: new Set(), matches: [] });
+    const key = match.refereeUefaPersonId ? `uefa:${match.refereeUefaPersonId}` : `name:${refereeKey(match.refereeName)}`;
+    if (!groups.has(key)) groups.set(key, { key, officialName: match.refereeName, uefaPersonId: match.refereeUefaPersonId, countryIso3: match.refereeCountryIso3, names: new Set(), matches: [] });
     groups.get(key).names.add(match.refereeName);
+    if (match.refereeProviderName) groups.get(key).names.add(match.refereeProviderName);
     groups.get(key).matches.push(match);
   }
   const usedIds = new Set();
   const referees = [...groups.values()].sort((a, b) => a.key.localeCompare(b.key)).map(group => {
-    const displayName = [...group.names].sort((a, b) => a.length - b.length || a.localeCompare(b))[0];
-    let id = existingByName.get(group.key) || `uefa-referee:und:${slug(displayName)}`;
+    const displayName = group.officialName || [...group.names].sort((a, b) => a.length - b.length || a.localeCompare(b))[0];
+    const existingId = [...group.names].map(name => existingByName.get(refereeKey(name))).find(Boolean);
+    let id = existingId || `uefa-referee:${String(group.countryIso3 || "und").toLowerCase()}:${slug(displayName)}`;
     if (usedIds.has(id)) id = `${id}-${crypto.createHash("sha1").update(group.key).digest("hex").slice(0, 8)}`;
     usedIds.add(id);
     return {
-      id, displayName, aliases: [...group.names].filter(name => name !== displayName).sort(), countryIso3: existing.referees.find(row => row.id === id)?.countryIso3 || null,
-      identityBasis: existingByName.has(group.key) ? "EXISTING_MD2_CANONICAL_ID_EXACT_NORMALIZED_NAME" : "ESPN_OFFICIAL_NORMALIZED_NAME_COUNTRY_UNAVAILABLE",
+      id, uefaPersonId: group.uefaPersonId || null, displayName, aliases: [...group.names].filter(name => name !== displayName).sort(), countryIso3: group.countryIso3 || existing.referees.find(row => row.id === id)?.countryIso3 || null,
+      identityBasis: existingId ? "EXISTING_MD2_CANONICAL_ID_MATCHED_TO_UEFA_PERSON" : group.uefaPersonId ? "UEFA_PERSON_ID_COUNTRY_AND_OFFICIAL_NAME" : "NORMALIZED_NAME_FALLBACK",
       matches: group.matches.length, firstKickoff: group.matches.map(row => row.kickoffUtc).sort()[0], lastKickoff: group.matches.map(row => row.kickoffUtc).sort().at(-1)
     };
   });
-  return { referees, byName: new Map(referees.flatMap(referee => [referee.displayName, ...(referee.aliases || [])].map(name => [refereeKey(name), referee.id]))) };
+  return {
+    referees,
+    byUefaPersonId: new Map(referees.filter(referee => referee.uefaPersonId).map(referee => [referee.uefaPersonId, referee.id])),
+    byName: new Map(referees.flatMap(referee => [referee.displayName, ...(referee.aliases || [])].map(name => [refereeKey(name), referee.id])))
+  };
 }
 
 function accumulator() { return { matches: 0, yellowCards: 0, secondYellowCards: 0, directRedCards: 0, totalCards: 0, foulsCommitted: 0, foulsMatches: 0, penaltiesAwarded: 0, minutes: 0, minuteMatches: 0 }; }
@@ -463,7 +480,13 @@ async function main() {
     uefaMatchId: link.official.uefaMatchId, espnEventId: link.espn.eventId, season: link.official.season, targetSeason: link.official.targetSeason,
     date: link.official.date, kickoffUtc: link.official.kickoffUtc, roundName: link.official.roundName, matchday: link.official.matchday,
     homeTeam: link.official.homeTeam, awayTeam: link.official.awayTeam, score90: link.official.score90, scoreTotal: link.official.scoreTotal,
-    refereeName: parsed.refereeName, refereeId: null, refereeAssignmentTemporalStatus: "NOT_SOURCE_TIMESTAMPED_PRE_KICKOFF",
+    refereeName: link.official.referee?.name || parsed.refereeName,
+    refereeUefaPersonId: link.official.referee?.uefaPersonId || null,
+    refereeCountryIso3: link.official.referee?.countryIso3 || null,
+    refereeProviderName: parsed.refereeName,
+    refereeId: null,
+    refereeAssignmentAuthority: link.official.referee ? "UEFA_OFFICIAL_MATCH_FEED" : "ESPN_FALLBACK",
+    refereeAssignmentTemporalStatus: "NOT_SOURCE_TIMESTAMPED_PRE_KICKOFF",
     cards: {
       yellowCards: parsed.teams.reduce((sum, row) => sum + row.yellowCards, 0),
       secondYellowCards: parsed.teams.reduce((sum, row) => sum + row.secondYellowCards, 0),
@@ -482,7 +505,7 @@ async function main() {
   }));
 
   const registry = makeRefereeRegistry(provisionalMatches);
-  for (const match of provisionalMatches) match.refereeId = registry.byName.get(refereeKey(match.refereeName)) || null;
+  for (const match of provisionalMatches) match.refereeId = registry.byUefaPersonId.get(match.refereeUefaPersonId) || registry.byName.get(refereeKey(match.refereeName)) || null;
   const provisionalTeams = [];
   const provisionalPlayers = [];
   for (const { link, parsed } of summaries) {
@@ -524,6 +547,7 @@ async function main() {
       matchFoulsComplete: matches.filter(match => finite(match.cards.foulsCommitted)).length,
       teamRows: teamRows.length, teamCardsComplete: teamRows.filter(row => [row.yellowCards, row.secondYellowCards, row.directRedCards, row.totalCards].every(finite)).length,
       teamFoulsComplete: teamRows.filter(row => finite(row.foulsCommitted)).length,
+      teamToPlayerFoulsReconciled: teamRows.filter(row => finite(row.foulsCommitted) && row.foulsCommitted === row.individualFoulsSum).length,
       playerAppearances: playerRows.length, playerCardsComplete: playerRows.filter(row => [row.yellowCards, row.secondYellowCards, row.directRedCards, row.totalCards].every(finite)).length,
       playerFoulsComplete: playerRows.filter(row => finite(row.foulsCommitted)).length, playerMinutesAvailable: playerRows.filter(row => finite(row.minutesPlayed)).length
     }];
@@ -540,6 +564,10 @@ async function main() {
       bySeason, matches: targetMatches.length, teamRows: targetTeams.length, playerAppearances: targetPlayers.length,
       refereesIdentified: new Set(targetMatches.map(match => match.refereeId).filter(Boolean)).size,
       refereeAssignmentsPresent: targetMatches.filter(match => match.refereeId).length,
+      refereeAssignmentsOfficialUefa: targetMatches.filter(match => match.refereeAssignmentAuthority === "UEFA_OFFICIAL_MATCH_FEED").length,
+      refereeProviderCrosschecksPresent: targetMatches.filter(match => match.refereeProviderName).length,
+      refereeProviderNormalizedNameVariants: targetMatches.filter(match => match.refereeProviderName && refereeKey(match.refereeProviderName) !== refereeKey(match.refereeName)).length,
+      refereeProviderIdentityConflicts: targetMatches.filter(match => match.refereeProviderName && !refereeNamesCompatible(match.refereeName, match.refereeProviderName)).map(match => ({ matchId: match.matchId, uefa: match.refereeName, espn: match.refereeProviderName })),
       refereeAssignmentsPreMatchTimestampVerified: targetMatches.filter(match => match.refereeAssignmentTemporalStatus === "VERIFIED_PRE_KICKOFF").length,
       excludedBenchStaffOrUnresolvedCardEvents: targetMatches.reduce((sum, match) => sum + match.excludedDisciplineEvents.length, 0),
       preMatchFeatureCoverage: { matchTotals: matchFeatureCoverage, teamCards: teamFeatureCoverage, individualCards: playerFeatureCoverage }
@@ -548,7 +576,13 @@ async function main() {
       duplicateMatchIds, duplicateTeamKeys, duplicatePlayerKeys, chronologyFailures,
       cardArithmeticFailures: targetMatches.filter(match => match.cards.totalCards !== match.cards.yellowCards + match.cards.secondYellowCards + match.cards.directRedCards).map(match => match.matchId),
       teamToMatchCardFailures: targetMatches.filter(match => targetTeams.filter(row => row.matchId === match.matchId).reduce((sum, row) => sum + row.totalCards, 0) !== match.cards.totalCards).map(match => match.matchId),
-      playerToTeamCardFailures: targetTeams.filter(team => targetPlayers.filter(player => player.matchId === team.matchId && player.uefaTeamId === team.uefaTeamId).reduce((sum, player) => sum + player.totalCards, 0) !== team.totalCards).map(team => `${team.matchId}|${team.uefaTeamId}`)
+      playerToTeamCardFailures: targetTeams.filter(team => targetPlayers.filter(player => player.matchId === team.matchId && player.uefaTeamId === team.uefaTeamId).reduce((sum, player) => sum + player.totalCards, 0) !== team.totalCards).map(team => `${team.matchId}|${team.uefaTeamId}`),
+      providerComparison: {
+        teamYellowRowsDifferentFromBoxscore: targetTeams.filter(team => team.yellowCards !== team.providerBoxscore.yellowCards).length,
+        teamRedRowsDifferentFromBoxscore: targetTeams.filter(team => team.secondYellowCards + team.directRedCards !== team.providerBoxscore.redCards).length,
+        teamFoulRowsDifferentFromPlayerSum: targetTeams.filter(team => team.foulsCommitted !== team.individualFoulsSum).length,
+        note: "Event-level player-on-field targets are authoritative for model targets; provider boxscore values remain comparison fields. Team fouls are authoritative at team level; individual foul sums are not substituted when they differ."
+      }
     },
     targetDefinitions: {
       yellowCards: "Ordinary yellow-card key events assigned to athletes recorded as having appeared; includes a first yellow before a later second-yellow dismissal.",
@@ -582,8 +616,8 @@ async function main() {
       individualCardsUnconditional: { status: "NOT_READY", blocker: "No timestamp-certified pre-match lineup/participation model.", noModelTrained: true }
     },
     sources: {
-      fixtures: "UEFA match feed, phase=TOURNAMENT",
-      refereeMatchTeamPlayerData: "ESPN public match summary feed",
+      fixturesAndRefereeAssignments: "UEFA match feed, phase=TOURNAMENT (official person ID, name and country)",
+      matchTeamPlayerStatisticsAndRefereeCrosscheck: "ESPN public match summary feed",
       rawManifest: "data/raw/champions-referee-phase-2b/2026-10-13/manifest.json"
     }
   };
@@ -594,7 +628,7 @@ async function main() {
     files: uniqueRaw.map(file => ({ path: rel(file), sha256: sha256(file), bytes: fs.statSync(file).size, sourceReuse: !file.startsWith(rawRoot) }))
   };
   writeJson(path.join(rawRoot, "manifest.json"), manifest);
-  writeJson(path.join(outRoot, "referee-registry.json"), { schemaVersion: 1, idPolicy: "Reuse an exact normalized-name MD2 canonical ID; otherwise assign immutable uefa-referee:und:<normalized-name>. Country enrichment must not change the ID.", referees: registry.referees });
+  writeJson(path.join(outRoot, "referee-registry.json"), { schemaVersion: 1, idPolicy: "Reuse an MD2 canonical ID when any official/provider name resolves to it; otherwise assign uefa-referee:<uefa-country>:<official-name>. Store the immutable UEFA person ID as the external identity anchor.", referees: registry.referees });
   writeJson(path.join(outRoot, "match-totals.json"), { schemaVersion: 1, targetDefinitions: quality.targetDefinitions, matches: targetMatches });
   writeJson(path.join(outRoot, "team-cards.json"), { schemaVersion: 1, targetDefinitions: quality.targetDefinitions, rows: targetTeams });
   writeJson(path.join(outRoot, "individual-cards.json"), { schemaVersion: 1, targetDefinitions: quality.targetDefinitions, rows: targetPlayers });

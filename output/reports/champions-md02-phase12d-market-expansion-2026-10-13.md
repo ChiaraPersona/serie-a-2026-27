@@ -72,7 +72,7 @@ Generato outsider: 2026-10-13T16:10:37.4963673+02:00 · snapshot Sisal invariato
 
 ### Candidati analizzati
 
-- Linee sottoposte allo screening: **2550 individuali** e **140 squadra**.
+- Linee sottoposte allo screening: **2569 individuali** e **147 squadra**.
 - Candidati che hanno superato il filtro preliminare: **106** (88 individuali, 18 squadra).
 - Approvati: **26**. Esclusi dopo il filtro: **80**.
 

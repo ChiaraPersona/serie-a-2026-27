@@ -33,6 +33,8 @@ const server=http.createServer((request,response)=>{
       await page.waitForSelector('[data-match-panel]');
       assert.equal(await page.locator('[data-match-panel]').count(),18,`${width}px: partite MD2`);
       assert.equal(await page.locator('[data-selection-row]').count(),120,`${width}px: pronostici MD2`);
+      assert.equal(await page.locator('[data-selection-row][data-outsider="true"]').count(),26,`${width}px: etichette outsider`);
+      assert.equal(await page.locator('[data-selection-row][data-preferred="true"]').count(),18,`${width}px: un preferito per partita`);
       assert.equal(await page.locator('.betting-match-reading-link').count(),18,`${width}px: link letture`);
       assert.equal(await page.locator('[data-selection-row][data-personal-pick]').count(),120,`${width}px: selezioni cliccabili`);
       assert.equal(await page.locator('[data-market-family="Tiri giocatore"]').count(),52,`${width}px: pronostici tiri`);
@@ -46,6 +48,30 @@ const server=http.createServer((request,response)=>{
       const lensPanel=page.locator('[data-match-id="ucl-2026-27-md02-01"]');
       assert.equal(await lensPanel.locator('[data-selection-row]').count(),6,`${width}px: Lens-Sporting deve conservare quattro pronostici e aggiungere due outsider`);
       assert.deepEqual(await lensPanel.locator('[data-selection-row]').evaluateAll(rows=>rows.map(row=>row.dataset.marketFamily)),['Doppia chance','Tiri giocatore','Tiri in porta giocatore','Tiri giocatore','Tiri giocatore','Tiri giocatore'],`${width}px: ordine pronostici Lens-Sporting`);
+      const fixtureCases=[
+        {id:'ucl-2026-27-md02-12',total:11,outsiders:3,both:0},
+        {id:'ucl-2026-27-md02-02',total:2,outsiders:0,both:0},
+        {id:'ucl-2026-27-md02-06',total:7,outsiders:2,both:1}
+      ];
+      for(const fixtureCase of fixtureCases){
+        const panel=page.locator(`[data-match-id="${fixtureCase.id}"]`);
+        await panel.evaluate(node=>node.open=true);
+        assert.equal(await panel.locator('[data-selection-row]').count(),fixtureCase.total,`${width}px: totale ${fixtureCase.id}`);
+        assert.equal(await panel.locator('[data-outsider="true"]').count(),fixtureCase.outsiders,`${width}px: outsider ${fixtureCase.id}`);
+        assert.equal(await panel.locator('[data-preferred="true"]').count(),1,`${width}px: preferito ${fixtureCase.id}`);
+        assert.equal(await panel.locator('[data-outsider="true"][data-preferred="true"]').count(),fixtureCase.both,`${width}px: doppia etichetta ${fixtureCase.id}`);
+      }
+      assert.match(await page.locator('[data-match-id="ucl-2026-27-md02-06"] [data-outsider="true"][data-preferred="true"]').innerText(),/OUTSIDER[\s\S]*PREFERITO/,`${width}px: badge combinati non visibili`);
+      const schedinaVisual=await page.locator('[data-match-id="ucl-2026-27-md02-06"] [data-outsider="true"][data-preferred="true"]').evaluate(row=>{
+        const outsider=row.querySelector('.betting-outsider-badge'),preferred=row.querySelector('.betting-preferred-badge'),star=preferred?.querySelector('span');
+        const rect=node=>{const box=node?.getBoundingClientRect();return box?{width:box.width,height:box.height}:null};
+        return {outsider:rect(outsider),preferred:rect(preferred),outsiderColor:getComputedStyle(outsider).color,outsiderBackground:getComputedStyle(outsider).backgroundColor,starColor:getComputedStyle(star).color,preferredBackground:getComputedStyle(preferred).backgroundColor,borderColor:getComputedStyle(row).borderLeftColor};
+      });
+      assert(schedinaVisual.outsider.width>0&&schedinaVisual.outsider.height>0,`${width}px: badge OUTSIDER illeggibile`);
+      assert(schedinaVisual.preferred.width>0&&schedinaVisual.preferred.height>0,`${width}px: badge PREFERITO illeggibile`);
+      assert.notEqual(schedinaVisual.outsiderColor,schedinaVisual.outsiderBackground,`${width}px: contrasto OUTSIDER nullo`);
+      assert.notEqual(schedinaVisual.starColor,schedinaVisual.preferredBackground,`${width}px: contrasto stella nullo`);
+      assert.notEqual(schedinaVisual.borderColor,'rgba(0, 0, 0, 0)',`${width}px: bordo preferito assente`);
       assert.match(await page.locator('.betting-champions-md02-summary').innerText(),/120 pronostici da verificare[\s\S]*ROI e profitto\/perdita restano N\/D/);
       assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,`${width}px: overflow orizzontale`);
     }
@@ -71,13 +97,34 @@ const server=http.createServer((request,response)=>{
     await page.locator(`[data-personal-pick="${selectionId}"]`).click();
     assert.equal(await page.locator('[data-personal-count]').first().innerText(),'0','Rimozione MyCombo');
 
+    const readingCases=[
+      {id:'ucl-2026-27-md02-12',total:11,outsiders:3,both:0},
+      {id:'ucl-2026-27-md02-02',total:2,outsiders:0,both:0},
+      {id:'ucl-2026-27-md02-06',total:7,outsiders:2,both:1}
+    ];
     for(const width of [1280,390]){
       await page.setViewportSize({width,height:900});
-      await page.goto(`${origin}/champions-league.html?match=ucl-2026-27-md02-01`,{waitUntil:'networkidle'});
-      await page.waitForSelector('[data-champions-published-root]');
-      assert.equal(await page.locator('[data-published-selection-id]').count(),6,`${width}px: lettura e schedina non condividono i sei pronostici`);
-      assert.equal(await page.locator('[data-champions-market-root],#champions-sisal-markets,.champions-market-browser,.champions-market-controls,.champions-market-slip').count(),0,`${width}px: catalogo o ricerca quote ancora visibili`);
-      assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,`${width}px: overflow orizzontale lettura`);
+      for(const readingCase of readingCases){
+        await page.goto(`${origin}/champions-league.html?match=${readingCase.id}`,{waitUntil:'networkidle'});
+        await page.waitForSelector('[data-champions-published-root]');
+        assert.equal(await page.locator('[data-published-selection-id]').count(),readingCase.total,`${width}px: sync lettura ${readingCase.id}`);
+        assert.equal(await page.locator('[data-published-selection-id][data-outsider="true"]').count(),readingCase.outsiders,`${width}px: outsider lettura ${readingCase.id}`);
+        assert.equal(await page.locator('[data-published-selection-id][data-preferred="true"]').count(),1,`${width}px: preferito lettura ${readingCase.id}`);
+        assert.equal(await page.locator('[data-published-selection-id][data-outsider="true"][data-preferred="true"]').count(),readingCase.both,`${width}px: doppia etichetta lettura ${readingCase.id}`);
+        if(readingCase.both){
+          const readingVisual=await page.locator('[data-published-selection-id][data-outsider="true"][data-preferred="true"]').evaluate(row=>{
+            const outsider=row.querySelector('.champions-outsider-badge'),preferred=row.querySelector('.champions-preferred-badge'),star=preferred?.querySelector('span');
+            const rect=node=>{const box=node?.getBoundingClientRect();return box?{width:box.width,height:box.height}:null};
+            return {outsider:rect(outsider),preferred:rect(preferred),outsiderColor:getComputedStyle(outsider).color,outsiderBackground:getComputedStyle(outsider).backgroundColor,starColor:getComputedStyle(star).color,preferredBackground:getComputedStyle(preferred).backgroundColor,borderColor:getComputedStyle(row).borderLeftColor};
+          });
+          assert(readingVisual.outsider.width>0&&readingVisual.preferred.width>0,`${width}px: badge lettura illeggibili`);
+          assert.notEqual(readingVisual.outsiderColor,readingVisual.outsiderBackground,`${width}px: contrasto OUTSIDER lettura nullo`);
+          assert.notEqual(readingVisual.starColor,readingVisual.preferredBackground,`${width}px: contrasto stella lettura nullo`);
+          assert.notEqual(readingVisual.borderColor,'rgba(0, 0, 0, 0)',`${width}px: bordo preferito lettura assente`);
+        }
+        assert.equal(await page.locator('[data-champions-market-root],#champions-sisal-markets,.champions-market-browser,.champions-market-controls,.champions-market-slip').count(),0,`${width}px: catalogo o ricerca quote ancora visibili`);
+        assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,`${width}px: overflow orizzontale lettura ${readingCase.id}`);
+      }
     }
     await page.setViewportSize({width:1280,height:900});
     const publishedButton=page.locator('[data-published-selection-id]').filter({hasText:'Tiri giocatore'}).first().locator('[data-add-published-selection]');

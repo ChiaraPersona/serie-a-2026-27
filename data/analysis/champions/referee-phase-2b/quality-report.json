@@ -24,6 +24,7 @@
         "teamRows": 250,
         "teamCardsComplete": 250,
         "teamFoulsComplete": 250,
+        "teamToPlayerFoulsReconciled": 132,
         "playerAppearances": 3836,
         "playerCardsComplete": 3836,
         "playerFoulsComplete": 3836,
@@ -37,6 +38,7 @@
         "teamRows": 250,
         "teamCardsComplete": 250,
         "teamFoulsComplete": 250,
+        "teamToPlayerFoulsReconciled": 150,
         "playerAppearances": 3800,
         "playerCardsComplete": 3800,
         "playerFoulsComplete": 3800,
@@ -50,6 +52,7 @@
         "teamRows": 378,
         "teamCardsComplete": 378,
         "teamFoulsComplete": 378,
+        "teamToPlayerFoulsReconciled": 219,
         "playerAppearances": 5825,
         "playerCardsComplete": 5825,
         "playerFoulsComplete": 5825,
@@ -57,12 +60,13 @@
       },
       "2025-26": {
         "matches": 189,
-        "referees": 43,
+        "referees": 44,
         "matchCardsComplete": 189,
         "matchFoulsComplete": 189,
         "teamRows": 378,
         "teamCardsComplete": 378,
         "teamFoulsComplete": 378,
+        "teamToPlayerFoulsReconciled": 378,
         "playerAppearances": 5850,
         "playerCardsComplete": 5850,
         "playerFoulsComplete": 5850,
@@ -72,23 +76,33 @@
     "matches": 628,
     "teamRows": 1256,
     "playerAppearances": 19311,
-    "refereesIdentified": 68,
+    "refereesIdentified": 69,
     "refereeAssignmentsPresent": 628,
+    "refereeAssignmentsOfficialUefa": 628,
+    "refereeProviderCrosschecksPresent": 628,
+    "refereeProviderNormalizedNameVariants": 85,
+    "refereeProviderIdentityConflicts": [
+      {
+        "matchId": "ucl:2025-26:2048056",
+        "uefa": "Paweł Raczkowski",
+        "espn": "Szymon Marciniak"
+      }
+    ],
     "refereeAssignmentsPreMatchTimestampVerified": 0,
     "excludedBenchStaffOrUnresolvedCardEvents": 16,
     "preMatchFeatureCoverage": {
       "matchTotals": {
         "candidate": 9420,
         "verified": 6080,
-        "unverified": 2850,
-        "unavailable": 490,
+        "unverified": 2955,
+        "unavailable": 385,
         "verifiedPct": 64.54
       },
       "teamCards": {
         "candidate": 18840,
         "verified": 12160,
-        "unverified": 5700,
-        "unavailable": 980,
+        "unverified": 5910,
+        "unavailable": 770,
         "verifiedPct": 64.54
       },
       "individualCards": {
@@ -107,7 +121,13 @@
     "chronologyFailures": 0,
     "cardArithmeticFailures": [],
     "teamToMatchCardFailures": [],
-    "playerToTeamCardFailures": []
+    "playerToTeamCardFailures": [],
+    "providerComparison": {
+      "teamYellowRowsDifferentFromBoxscore": 71,
+      "teamRedRowsDifferentFromBoxscore": 3,
+      "teamFoulRowsDifferentFromPlayerSum": 377,
+      "note": "Event-level player-on-field targets are authoritative for model targets; provider boxscore values remain comparison fields. Team fouls are authoritative at team level; individual foul sums are not substituted when they differ."
+    }
   },
   "targetDefinitions": {
     "yellowCards": "Ordinary yellow-card key events assigned to athletes recorded as having appeared; includes a first yellow before a later second-yellow dismissal.",
@@ -193,8 +213,8 @@
     }
   },
   "sources": {
-    "fixtures": "UEFA match feed, phase=TOURNAMENT",
-    "refereeMatchTeamPlayerData": "ESPN public match summary feed",
+    "fixturesAndRefereeAssignments": "UEFA match feed, phase=TOURNAMENT (official person ID, name and country)",
+    "matchTeamPlayerStatisticsAndRefereeCrosscheck": "ESPN public match summary feed",
     "rawManifest": "data/raw/champions-referee-phase-2b/2026-10-13/manifest.json"
   }
 }

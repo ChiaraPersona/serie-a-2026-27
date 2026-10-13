@@ -43,13 +43,15 @@ assert.deepStrictEqual(Object.fromEntries([...new Set(matches.map(row => row.sea
 assert.strictEqual(matches.length, 628);
 assert.strictEqual(teams.length, 1256);
 assert.strictEqual(players.length, 19311);
-assert.strictEqual(registry.length, 68);
+assert.strictEqual(registry.length, 75);
+assert.strictEqual(uniqueCount(matches.map(row => row.refereeId)), 69);
 assert.strictEqual(uniqueCount(matches.map(row => row.matchId)), matches.length);
 assert.strictEqual(uniqueCount(matches.map(row => row.uefaMatchId)), matches.length);
 assert.strictEqual(uniqueCount(matches.map(row => row.espnEventId)), matches.length);
 assert.strictEqual(uniqueCount(teams.map(row => `${row.matchId}:${row.homeAway}`)), teams.length);
 assert.strictEqual(uniqueCount(players.map(row => `${row.matchId}:${row.playerId}`)), players.length);
 assert.strictEqual(uniqueCount(registry.map(row => row.id)), registry.length);
+assert.strictEqual(uniqueCount(registry.map(row => row.uefaPersonId)), registry.length);
 
 const teamByMatch = new Map();
 const playerByMatchTeam = new Map();
@@ -74,6 +76,8 @@ for (const row of players) {
 for (const match of matches) {
   assert.strictEqual(match.cards.totalCards, match.cards.yellowCards + match.cards.secondYellowCards + match.cards.directRedCards);
   assert.strictEqual(match.refereeAssignmentTemporalStatus, "NOT_SOURCE_TIMESTAMPED_PRE_KICKOFF");
+  assert.strictEqual(match.refereeAssignmentAuthority, "UEFA_OFFICIAL_MATCH_FEED");
+  assert.ok(match.refereeUefaPersonId);
   assert.strictEqual(match.preMatchFeatures.refereePriorUcl.usable, false);
   assert.strictEqual(match.preMatchFeatures.outcomeFieldsExcluded, true);
   assert.ok(registry.some(row => row.id === match.refereeId));
@@ -93,6 +97,8 @@ assert.strictEqual(quality.integrity.duplicateTeamKeys, 0);
 assert.strictEqual(quality.integrity.duplicatePlayerKeys, 0);
 assert.strictEqual(quality.integrity.chronologyFailures, 0);
 assert.strictEqual(quality.antiLeakage.status, "PASS_WITH_DOCUMENTED_EXCLUSIONS");
+assert.strictEqual(quality.coverage.refereeAssignmentsOfficialUefa, matches.length);
+assert.strictEqual(quality.coverage.refereeProviderIdentityConflicts.length, 1);
 assert.ok(splitDocument.folds.every(fold => fold.chronologyPass));
 for (const fold of splitDocument.folds) {
   assert.strictEqual(uniqueCount(fold.trainMatchIds), fold.trainMatchIds.length);
@@ -100,7 +106,7 @@ for (const fold of splitDocument.folds) {
   assert.strictEqual(fold.trainMatchIds.some(id => fold.validationMatchIds.includes(id)), false);
 }
 const sven = registry.filter(row => /sven jablonski/i.test(row.displayName));
-const walsh = registry.filter(row => /nick(?:olas)? walsh/i.test(row.displayName));
+const walsh = registry.filter(row => /^(?:nicholas|nick) walsh$/i.test(row.displayName));
 assert.strictEqual(sven.length, 1);
 assert.strictEqual(sven[0].id, "uefa-referee:deu:sven-jablonski");
 assert.strictEqual(walsh.length, 1);
@@ -124,4 +130,4 @@ if (process.argv.includes("--repro")) {
 }
 
 assert.ok(fs.existsSync(rawRoot));
-console.log(`Phase 2B integrity PASS: ${matches.length} matches, ${teams.length} team rows, ${players.length} player rows, ${registry.length} referees, ${manifest.files.length} raw files${process.argv.includes("--repro") ? ", reproducibility/protected-surface PASS" : ""}`);
+console.log(`Phase 2B integrity PASS: ${matches.length} matches, ${teams.length} team rows, ${players.length} player rows, ${uniqueCount(matches.map(row => row.refereeId))} target referees (${registry.length} incl. burn-in), ${manifest.files.length} raw files${process.argv.includes("--repro") ? ", reproducibility/protected-surface PASS" : ""}`);

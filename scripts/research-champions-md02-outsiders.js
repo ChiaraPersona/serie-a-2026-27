@@ -9,7 +9,11 @@ const integration=read("data/normalized/champions-md02-integration-2026-27.json"
 const schedina=read("data/normalized/schedina-champions-md02.json");
 const odds=read("data/normalized/odds/sisal/champions-league.json");
 const eventByFixture=new Map(odds.events.map(event=>[event.canonicalMatchId,event]));
-const selectedIds=new Set(schedina.fixtures.flatMap(fixture=>fixture.selections.map(selection=>selection.selectionId)));
+const outsiderSourcePath=path.join(root,"data/sources/champions-md02-phase12d-outsiders-2026-27.json");
+const outsiderIds=fs.existsSync(outsiderSourcePath)
+  ?new Set(Object.values(read("data/sources/champions-md02-phase12d-outsiders-2026-27.json")).filter(Array.isArray).flat().map(row=>row?.selectionId).filter(Boolean))
+  :new Set();
+const selectedIds=new Set(schedina.fixtures.flatMap(fixture=>fixture.selections.map(selection=>selection.selectionId)).filter(selectionId=>!outsiderIds.has(selectionId)));
 const round=(value,digits=2)=>Number(Number(value).toFixed(digits));
 
 const individual=[];
