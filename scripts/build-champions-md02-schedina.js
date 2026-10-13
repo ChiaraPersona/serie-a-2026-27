@@ -251,7 +251,10 @@ function selectedIndividualForecast(fixture,pick,curation={source:paths.individu
   const player=players.find(item=>item.canonicalPlayerId===pick.playerId);
   const editorialPlayers=fixture.editorialLineups?[...fixture.editorialLineups.home.players,...fixture.editorialLineups.away.players]:[];
   const editorialPlayer=editorialPlayers.find(item=>item.canonicalPlayerId===pick.playerId)||null;
+  const benchPlayers=[...(fixture.lineups.home.bench||[]),...(fixture.lineups.away.bench||[])];
+  const benchPlayer=benchPlayers.find(item=>item.canonicalPlayerId===pick.playerId)||null;
   const retainedForReview=!player&&fixture.lineupStatus==="official"&&editorialPlayer;
+  const confirmedBench=retainedForReview&&Boolean(benchPlayer);
   if(!player&&!retainedForReview)throw new Error(`${fixture.fixtureId}: giocatore canonico ${pick.playerId} non trovato nella formazione corrente`);
   const playerRecord=player||editorialPlayer;
   if(playerRecord.mappingStatus!=="resolved"||playerRecord.dataStatus!=="verified-history")throw new Error(`${fixture.fixtureId}: identita o storico non verificati per ${pick.playerId}`);
@@ -274,10 +277,12 @@ function selectedIndividualForecast(fixture,pick,curation={source:paths.individu
   const roleLabel=playerRecord.role||"ruolo N/D";
   const reviewStatus=fixture.lineupStatus==="official"?(retainedForReview?"DA_RIVEDERE":finite(previousProjection)&&Math.abs(Number(projection)-Number(previousProjection))>=0.01?"AGGIORNATO":"CONFERMATO"):null;
   const evidenceLabel=retainedForReview
-    ?`Non titolare nell'XI ufficiale · minuti e ${config.unit} attesi N/D`
+    ?`${confirmedBench?"Panchina confermata":"Non titolare nell'XI ufficiale"} · minuti e ${config.unit} attesi N/D`
     :`Proiezione singolo: ${round(projection,2).toLocaleString("it-IT")} ${config.unit} · ${round(playerRecord.expectedMinutes,1).toLocaleString("it-IT")} min`;
   const motivation=retainedForReview
-    ?`Il giocatore non compare nell'XI ufficiale e la fonte non pubblica la panchina. La quota e il contratto con sostituto restano disponibili, ma il modello non inventa minuti di subentro; la precedente proiezione editoriale era ${finite(previousProjection)?round(previousProjection,2).toLocaleString("it-IT"):"N/D"} ${config.unit}.`
+    ?confirmedBench
+      ?`Il giocatore non parte titolare ma compare nella panchina ufficiale. La quota e il contratto con sostituto restano disponibili; il modello non inventa minuti di subentro e mantiene la selezione in revisione prudenziale. La precedente proiezione editoriale era ${finite(previousProjection)?round(previousProjection,2).toLocaleString("it-IT"):"N/D"} ${config.unit}.`
+      :`Il giocatore non compare nell'XI ufficiale né nella panchina pubblicata. La quota resta disponibile, ma minuti, probabilità ed EV restano N/D e la selezione richiede revisione. La precedente proiezione editoriale era ${finite(previousProjection)?round(previousProjection,2).toLocaleString("it-IT"):"N/D"} ${config.unit}.`
     :`${round(projection,2).toLocaleString("it-IT")} ${config.unit} attesi in ${round(playerRecord.expectedMinutes,1).toLocaleString("it-IT")} minuti; ${roleLabel}, storico verificato su ${Number(playerRecord.minutes||0).toLocaleString("it-IT")} minuti e affidabilita ${round(Number(playerRecord.reliability)*100,1).toLocaleString("it-IT")}%.`;
   return {
     selectionId,
@@ -306,7 +311,7 @@ function selectedIndividualForecast(fixture,pick,curation={source:paths.individu
       team:playerRecord.team,
       side:playerRecord.side,
       role:playerRecord.role,
-      lineupStatus:retainedForReview?"official-non-starter":fixture.lineupStatus==="official"?"official-starter":"probable-starter",
+      lineupStatus:retainedForReview?(confirmedBench?"official-bench":"official-non-starter"):fixture.lineupStatus==="official"?"official-starter":"probable-starter",
       expectedMinutes:retainedForReview?null:Number(playerRecord.expectedMinutes),
       historyMinutes:Number(playerRecord.minutes||0),
       reliability:Number(playerRecord.reliability),
@@ -315,7 +320,7 @@ function selectedIndividualForecast(fixture,pick,curation={source:paths.individu
       projectedShotsOnTarget:retainedForReview?null:playerRecord.projectedShotsOnTarget,
       ...(fixture.lineupStatus==="official"?{previousEditorialProjection:finite(previousProjection)?Number(previousProjection):null}:{})
     },
-    dataQuality:{fixtureDetailedVolumes:true,playerDataStatus:playerRecord.dataStatus,identityStatus:playerRecord.mappingStatus,...(reviewStatus?{lineupReview:reviewStatus}:{})},
+    dataQuality:{fixtureDetailedVolumes:true,playerDataStatus:playerRecord.dataStatus,identityStatus:playerRecord.mappingStatus,...(retainedForReview?{benchStatus:confirmedBench?"confirmed":"not-listed"}:{}),...(reviewStatus?{lineupReview:reviewStatus}:{})},
     providerEventId:fixture.oddsEvent.providerEventId,
     providerMarketId:market.providerMarketId,
     providerSelectionId:selection.providerSelectionId,
@@ -496,7 +501,7 @@ if(output.summary.fixtures!==18||output.summary.phase12BPredictions!==18||output
 let finalOutput=output;
 if(targetFixtureIds.size){
   const previousOutput=baselineFromHead
-    ?JSON.parse(execFileSync("git",["show","HEAD:data/normalized/schedina-champions-md02.json"],{cwd:root,encoding:"utf8"}))
+    ?JSON.parse(execFileSync("git",["show","HEAD:data/normalized/schedina-champions-md02.json"],{cwd:root,encoding:"utf8",maxBuffer:64*1024*1024}))
     :read(paths.output);
   const generatedById=new Map(output.fixtures.map(fixture=>[fixture.fixtureId,fixture]));
   for(const fixtureId of targetFixtureIds)if(!generatedById.has(fixtureId)||!previousOutput.fixtures.some(fixture=>fixture.fixtureId===fixtureId))throw new Error(`${fixtureId}: target selettivo non valido`);

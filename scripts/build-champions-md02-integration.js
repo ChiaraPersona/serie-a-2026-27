@@ -3,9 +3,13 @@
 const crypto = require("crypto");
 const fs = require("fs");
 const path = require("path");
+const { execFileSync } = require("child_process");
 const { scaleShotProjections } = require("./champions/player-volume-utils");
 
 const root = path.resolve(__dirname, "..");
+const fixturesArg = process.argv.indexOf("--fixtures");
+const targetFixtureIds = new Set(fixturesArg >= 0 ? String(process.argv[fixturesArg + 1] || "").split(",").map(value => value.trim()).filter(Boolean) : []);
+const baselineFromHead = process.argv.includes("--baseline-head");
 const paths = {
   calendar: "data/normalized/champions-league-2026-27.json",
   predictions: "data/normalized/champions-pilot-predictions-md02-2026-27.json",
@@ -341,7 +345,24 @@ function buildLineup(fixture, prediction, side, availability) {
     original.projectedShotsOnTarget = target[index]?.projection ?? null;
     original.shotsOnTargetReconciliationFactor = target[index] ? round(target[index].reconciliationFactor, 4) : null;
   });
-  return { team, formation: formation.formation, ...(lineupStatus === "official" ? { status: lineupStatus, source: fixture.probableFormation.source } : {}), players };
+  const bench = (formation.bench || []).map(suppliedName => {
+    const resolved = resolveCanonical(team, suppliedName);
+    return {
+      suppliedName,
+      canonicalPlayerId: resolved.player?.id || null,
+      canonicalName: resolved.player?.name || null,
+      mappingMethod: resolved.method,
+      mappingStatus: resolved.player ? "resolved" : "unresolved"
+    };
+  });
+  return {
+    team,
+    formation: formation.formation,
+    ...(lineupStatus === "official" ? { status: lineupStatus, source: fixture.probableFormation.source } : {}),
+    players,
+    ...(formation.bench ? { bench } : {}),
+    ...(formation.coach ? { coach: formation.coach } : {})
+  };
 }
 
 const fixtures = md02.map(fixture => {
@@ -349,7 +370,11 @@ const fixtures = md02.map(fixture => {
   const event = oddsByFixture.get(fixture.id);
   if (!prediction || !event) throw new Error(`Input MD2 mancante per ${fixture.id}`);
   const availability = [];
-  const availabilityFormation = fixture.probableFormation.editorialProjection || fixture.probableFormation;
+  const hasOfficialAvailability = fixture.probableFormation.status === "official" && ["home", "away"]
+    .some(side => fixture.probableFormation[side]?.availability);
+  const availabilityFormation = hasOfficialAvailability
+    ? fixture.probableFormation
+    : fixture.probableFormation.editorialProjection || fixture.probableFormation;
   for (const side of ["home", "away"]) {
     const team = side === "home" ? fixture.homeTeam : fixture.awayTeam;
     for (const raw of availabilityFormation[side].availability?.unavailable || []) availability.push({ team, side, ...availabilityEntry(team, "unavailable", raw) });
@@ -579,7 +604,21 @@ const report = [
   ""
 ].join("\n");
 
-write(paths.output, output);
+let finalOutput = output;
+if (targetFixtureIds.size) {
+  const previousOutput = baselineFromHead
+    ? JSON.parse(execFileSync("git", ["show", `HEAD:${paths.output}`], { cwd: root, encoding: "utf8", maxBuffer: 64 * 1024 * 1024 }))
+    : read(paths.output);
+  const generatedById = new Map(output.fixtures.map(fixture => [fixture.fixtureId, fixture]));
+  for (const fixtureId of targetFixtureIds) {
+    if (!generatedById.has(fixtureId) || !previousOutput.fixtures.some(fixture => fixture.fixtureId === fixtureId)) throw new Error(`${fixtureId}: target selettivo non valido`);
+  }
+  finalOutput = {
+    ...output,
+    fixtures: previousOutput.fixtures.map(fixture => targetFixtureIds.has(fixture.fixtureId) ? generatedById.get(fixture.fixtureId) : fixture)
+  };
+}
+write(paths.output, finalOutput);
 write(paths.report, report);
 console.log(`OK Fase 12 MD2: ${fixtures.length}/18 gare · titolari ${output.coverage.canonicalStartersResolved}/${lineupPlayers.length} · quote selezionabili ${output.coverage.odds.interfaceSelectableSelections} · probabilità giocatore 0`);
 

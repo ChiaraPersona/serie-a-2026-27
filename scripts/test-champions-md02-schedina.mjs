@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import crypto from "node:crypto";
 import path from "node:path";
+import {execFileSync} from "node:child_process";
 import {fileURLToPath} from "node:url";
 import {createPersonalBetslipStore} from "../js/pages/personal-betslip-store.mjs";
 
@@ -84,7 +85,10 @@ for(const fixture of data.fixtures){
       if(source.lineupStatus==="official")assert(["CONFERMATO","AGGIORNATO"].includes(individual.reviewStatus));
     }else{
       assert.equal(source.lineupStatus,"official");
-      assert.equal(individual.player.lineupStatus,"official-non-starter");
+      const bench=[...(source.lineups.home.bench||[]),...(source.lineups.away.bench||[])];
+      const confirmedBench=bench.some(item=>item.canonicalPlayerId===individual.player.canonicalPlayerId);
+      assert.equal(individual.player.lineupStatus,confirmedBench?"official-bench":"official-non-starter");
+      assert.equal(individual.dataQuality.benchStatus,confirmedBench?"confirmed":"not-listed");
       assert.equal(individual.reviewStatus,"DA_RIVEDERE");
       assert.equal(individual.player.expectedMinutes,null);
       assert.equal(individual.betSelection.evaluation.individualForecast.mean,null);
@@ -125,9 +129,14 @@ for(const fixture of data.fixtures){
   }
 }
 
-const targetedFixtureIds=new Set(["ucl-2026-27-md02-01","ucl-2026-27-md02-02"]);
+const targetedFixtureIds=new Set(["ucl-2026-27-md02-03","ucl-2026-27-md02-04","ucl-2026-27-md02-05","ucl-2026-27-md02-06","ucl-2026-27-md02-07","ucl-2026-27-md02-08","ucl-2026-27-md02-09"]);
 const untouchedFixtures=data.fixtures.filter(fixture=>!targetedFixtureIds.has(fixture.fixtureId));
-assert.equal(crypto.createHash("sha256").update(JSON.stringify(untouchedFixtures)).digest("hex").toUpperCase(),"C056EE2332D51D2A40D1F2B2930EF36C41FC86806486CA86DFFFE469BD4C4FD3","Le altre 16 gare della Schedina Champions sono cambiate");
+const baselineSchedina=JSON.parse(execFileSync("git",["show","HEAD:data/normalized/schedina-champions-md02.json"],{cwd:root,encoding:"utf8",maxBuffer:64*1024*1024}));
+assert.equal(
+  crypto.createHash("sha256").update(JSON.stringify(untouchedFixtures)).digest("hex").toUpperCase(),
+  crypto.createHash("sha256").update(JSON.stringify(baselineSchedina.fixtures.filter(fixture=>!targetedFixtureIds.has(fixture.fixtureId)))).digest("hex").toUpperCase(),
+  "Le 11 gare fuori ambito della Schedina Champions sono cambiate"
+);
 assert.equal(data.fixtures.find(fixture=>fixture.fixtureId==="ucl-2026-27-md02-01").selections.length,6);
 assert.equal(data.fixtures.find(fixture=>fixture.fixtureId==="ucl-2026-27-md02-02").selections.length,2);
 
