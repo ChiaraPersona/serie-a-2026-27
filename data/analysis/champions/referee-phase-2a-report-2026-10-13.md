@@ -1,6 +1,6 @@
 # Champions League 2026/27 — Fase 2A arbitrale
 
-Data di controllo: **2026-10-13**. Stato: **BLOCKED**. Stato calibrazione: **NOT_READY_FOR_CALIBRATION**. Nessun pronostico arbitrale è pubblicato e nessun builder attivo o file UI è collegato al modulo.
+Data di controllo: **2026-10-13**. Stato: **ARCHIVE_VALIDATED_MODULE_ISOLATED**. Stato calibrazione: **NOT_READY_FOR_CALIBRATION**. Nessun pronostico arbitrale è pubblicato e nessun builder attivo o file UI è collegato al modulo.
 
 ## Esito esecutivo
 
@@ -45,7 +45,7 @@ Copertura positiva UCL corrente: **14/18**; UCL storico: **18/18**. Un campione 
 ## Dati già disponibili nel repository
 
 - Formazioni probabili UEFA: 18 gare, 36 squadre, 396 giocatori. Il recupero è date-only: utilizzabile editorialmente, non come prova rigorosa pre-kickoff per calibrazione individuale.
-- Giocatori integrati MD2: 396 righe; ID canonici 395, tasso cartellini 396, tasso falli 396, minuti 396.
+- Giocatori integrati MD2: 396 righe; ID canonici 395, tasso cartellini 396, tasso falli 396, minuti 396. Identità irrisolta: Viking / Haugen.
 - Archivio giocatori 2026/27: 970 giocatori, 691 con minuti, 621 completi e 279 non disponibili; dati fino a 2026-10-09. Lo storico 2025/26 contiene 970 giocatori, di cui 797 completi.
 - Output cartellini attivo: una stima team-based esiste in 17/18 gare; candidati individuali pubblicati=0; refereeAdjustment null=18/18. Rimane invariato e non riceve input dalla Fase 2A.
 
@@ -69,11 +69,11 @@ Servono quindi storico match-level con ID stabili, assegnazioni UEFA collegate a
 
 ## Riproducibilità e regressioni
 
-Sono congelati SHA-256 di 11 asset protetti: tiri/SOT, integrazione-letture, schedina, dati giocatori, formazioni, builder e renderer. Risultano byte-identici 9/11; 1 renderer ha ricevuto una modifica concorrente dell'utente dopo il baseline ed è registrato separatamente. Tutti gli 10/11 asset sono ammessi dal controllo, e nessuno importa o consuma il modulo Phase 2A. Il test ricalcola gli hash e ricostruisce l'output due volte.
+Sono congelati SHA-256 di 13 asset protetti: tiri/SOT, integrazione-letture, schedina, dati giocatori, formazioni, builder e renderer. Risultano byte-identici 8/13; 5 asset hanno ricevuto modifiche concorrenti dell'utente dopo il baseline e sono registrati separatamente. Tutti gli 13/13 asset sono ammessi dal controllo, nessuno importa o consuma il modulo Phase 2A e ciascuno deve restare byte-identico durante il test. Il report viene ricostruito due volte per verificarne la determinismo.
 
-I test archivio arbitri, schedina MD2 e lettura Champions passano. Il test pilot verifica tutti gli assert di dati e volumi fino alla riga 71, poi fallisce su una stringa UI attesa non più coincidente. Il test integrazione MD2 si arresta prima delle invarianti di volume perché conserva un hash atteso obsoleto per champions-league-2026-27.json (e2b70704c55d9528125ca5e29a204a383e27b8c6efb48871a6e6566ce7765c89, contro l'attuale 0c56f68c14f75007dcb3d90cb138bb27d7506db7751397692a2cbfec0c388485). Entrambi i fallimenti erano già presenti nello stato protetto: la Fase 2A non ha modificato quei file.
+I test Phase 2A, archivio arbitri e schedina MD2 passano. Nel workspace concorrente attuale, il test lettura Champions fallisce alla riga 115 (atteso 3, ottenuto 5). Il test pilot verifica tutti gli assert di dati e volumi fino alla riga 71, poi fallisce su una stringa UI attesa non più coincidente. Il test integrazione MD2 si arresta prima delle invarianti di volume perché conserva un hash atteso obsoleto per champions-league-2026-27.json (e2b70704c55d9528125ca5e29a204a383e27b8c6efb48871a6e6566ce7765c89, contro l'attuale 0c56f68c14f75007dcb3d90cb138bb27d7506db7751397692a2cbfec0c388485). Questi fallimenti sono esterni alla Fase 2A: il modulo non è importato da builder, letture o UI e non ne modifica gli asset durante il test.
 
-Durante il lavoro sono comparsi cambiamenti concorrenti non appartenenti alla Fase 2A in `css/champions.css`, `js/pages/champions.js` e `data/sources/champions-md02-phase12d-additions-2026-27.json`. Sono stati preservati e non inclusi tra i file arbitrali creati o modificati da questa fase.
+Asset protetti con drift concorrente rilevato: `data/normalized/schedina-champions-md02.json`, `scripts/build-champions-md02-schedina.js`, `js/pages/champions.js`, `css/champions.css`, `scripts/build-site.js`. Sono stati preservati e non sono stati modificati dal builder Phase 2A.
 
 ## Verdetto
 

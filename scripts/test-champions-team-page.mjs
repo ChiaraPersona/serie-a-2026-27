@@ -29,6 +29,18 @@ for(const team of squads.teams){
  assert(!app.innerHTML.includes('Rose registrate UEFA'));
  assert(calendar.includes('champions-calendar-list'));
  assert(!calendar.includes('fixture-card'));
+ assert.equal((calendar.match(/champions-calendar-opponent/g)||[]).length,8,team.team);
+ assert.equal((calendar.match(/href="champions-league\.html\?match=/g)||[]).length,2,`${team.team}: letture MD1 e MD2`);
+ assert.equal((calendar.match(/class="is-next"/g)||[]).length,1,`${team.team}: prossima partita`);
  assert.equal((app.innerHTML.match(/data-champions-player=/g)||[]).length,team.players.length);
+ assert.equal((app.innerHTML.match(/data-player-ranking=/g)||[]).length,3,`${team.team}: selettori giocatori`);
+ assert(app.innerHTML.includes('id="champions-player-search"'),`${team.team}: ricerca giocatori`);
+ assert(app.innerHTML.includes('id="champions-player-role"'),`${team.team}: filtro ruolo`);
+ assert(app.innerHTML.includes('id="champions-player-sort"'),`${team.team}: ordinamento giocatori`);
+ assert(app.innerHTML.includes('champions-team-hero-logo'),`${team.team}: stemma hero`);
+ assert(app.innerHTML.includes('Posizione fase campionato'),`${team.team}: posizione esplicita`);
+ assert(!app.innerHTML.includes('id="offensive-identity"'),`${team.team}: identità offensiva vuota nascosta`);
+ const sectionOrder=['champions-team-hero','champions-team-summary','champions-team-calendar','champions-team-volume','champions-team-attack','champions-team-lineup','champions-player-overview','champions-team-players'].map(token=>app.innerHTML.indexOf(token)).filter(index=>index>=0);
+ assert.deepEqual(sectionOrder,sectionOrder.slice().sort((a,b)=>a-b),`${team.team}: ordine sezioni`);
 }
-console.log('OK: 36 schede, 8 gare e 4 casa/4 trasferta per squadra, una formazione disponibile con 11 giocatori e modulo N/D preservato.');
+console.log('OK: 36 schede condivise con hero, riepilogo, 8 gare, letture MD1/MD2, formazione, classifiche e controlli giocatori; N/D preservato.');

@@ -17,11 +17,11 @@ const homeVersion = "20260919-roma-inter-juventus-fatigue-v1";
 const calendarVersion = "20260919-roma-inter-juventus-fatigue-v1";
 const teamVersion = "20261013-md06-results-v1";
 const leaderboardVersion = "20261013-md06-results-v1";
-const bettingVersion = "20261013-champions-md02-individual-v1";
+const bettingVersion = "20261013-champions-md02-phase12d-v1";
 const readingVersion = "20261013-md06-results-v1";
 const cupVersion = "20260919-coppa-events-v1";
 const championsVersion = "20261013-champions-team-detail-v1";
-const championsMotivationVersion = "20261013-champions-md02-sisal-v1";
+const championsMotivationVersion = "20261013-champions-md02-phase12d-v1";
 const fantasyVersion = "20261009-probable-lineups-md06-v2";
 const headToHeadPath = path.join(root, "data/generated/head-to-head/first-leg-2026-27.json");
 if (fs.existsSync(headToHeadPath)) {

@@ -4,7 +4,7 @@
   "season": "2026-27",
   "matchday": 2,
   "asOf": "2026-10-13",
-  "status": "BLOCKED",
+  "status": "ARCHIVE_VALIDATED_MODULE_ISOLATED",
   "publicationStatus": "NO_REFEREE_PREDICTIONS_PUBLISHED",
   "activeEngineStatus": "UNCHANGED",
   "coverage": {
@@ -18,10 +18,10 @@
     "recent10Complete": 18,
     "rawSnapshotsHashPass": 19,
     "rawSnapshots": 19,
-    "productionBaselineHashPass": 9,
-    "productionBaselineAcceptable": 10,
-    "disclosedConcurrentProductionChanges": 1,
-    "productionBaselineFiles": 11
+    "productionBaselineHashPass": 8,
+    "productionBaselineAcceptable": 13,
+    "disclosedConcurrentProductionChanges": 5,
+    "productionBaselineFiles": 13
   },
   "chronologyPolicy": {
     "timezone": "Europe/Rome",
@@ -73,6 +73,13 @@
       "source": "data/normalized/champions-md02-integration-2026-27.json",
       "rows": 396,
       "canonicalIdsResolved": 395,
+      "unresolvedCanonicalIds": [
+        {
+          "fixtureId": "ucl-2026-27-md02-08",
+          "team": "Viking",
+          "suppliedName": "Haugen"
+        }
+      ],
       "cardRateAvailable": 396,
       "foulRateAvailable": 396,
       "minutesAvailable": 396,
@@ -328,6 +335,7 @@
         "sha256": "0c56f68c14f75007dcb3d90cb138bb27d7506db7751397692a2cbfec0c388485",
         "scope": "Champions fixtures and active competition data",
         "actualSha256": "0c56f68c14f75007dcb3d90cb138bb27d7506db7751397692a2cbfec0c388485",
+        "phase2Coupling": false,
         "status": "PASS"
       },
       {
@@ -335,6 +343,7 @@
         "sha256": "4b514a554019e361bc5ca020799e6a379a17921f5a5ef27aa3e9e32ff73148d3",
         "scope": "shots, SOT and active match forecasts",
         "actualSha256": "4b514a554019e361bc5ca020799e6a379a17921f5a5ef27aa3e9e32ff73148d3",
+        "phase2Coupling": false,
         "status": "PASS"
       },
       {
@@ -342,20 +351,23 @@
         "sha256": "4548f6ca6f65f1540867b7c2d0347a94d962537a8591e5dae7d48154d44fb756",
         "scope": "MD2 readings and lineup integration",
         "actualSha256": "4548f6ca6f65f1540867b7c2d0347a94d962537a8591e5dae7d48154d44fb756",
+        "phase2Coupling": false,
         "status": "PASS"
       },
       {
         "path": "data/normalized/schedina-champions-md02.json",
         "sha256": "94ed280e93e36ebc73d3239bd2a9039a1608b676d6eeede98517c039f751db73",
         "scope": "MD2 schedina",
-        "actualSha256": "94ed280e93e36ebc73d3239bd2a9039a1608b676d6eeede98517c039f751db73",
-        "status": "PASS"
+        "actualSha256": "00fdcda3ebfbc1a130d21817e266517e7698efe8614a0b836500b03dd414c952",
+        "phase2Coupling": false,
+        "status": "CONCURRENT_CHANGE_DISCLOSED"
       },
       {
         "path": "data/normalized/champions-player-stats-2026-27.json",
         "sha256": "f5e150ae0b776f681bda04b0587818ec4989ef0dd88d7c0467ba9c6b9b5c155f",
         "scope": "current player evidence",
         "actualSha256": "f5e150ae0b776f681bda04b0587818ec4989ef0dd88d7c0467ba9c6b9b5c155f",
+        "phase2Coupling": false,
         "status": "PASS"
       },
       {
@@ -363,6 +375,7 @@
         "sha256": "83aee4c3049b20baa900e67e54a16fa25fee3960906eb178085b11782d56f289",
         "scope": "MD2 probable formations",
         "actualSha256": "83aee4c3049b20baa900e67e54a16fa25fee3960906eb178085b11782d56f289",
+        "phase2Coupling": false,
         "status": "PASS"
       },
       {
@@ -370,6 +383,7 @@
         "sha256": "33f125092367f1d518d67bece8a55cc6b253e34cb9f114cb4233c80e79341cd7",
         "scope": "active prediction builder",
         "actualSha256": "33f125092367f1d518d67bece8a55cc6b253e34cb9f114cb4233c80e79341cd7",
+        "phase2Coupling": false,
         "status": "PASS"
       },
       {
@@ -377,6 +391,7 @@
         "sha256": "32d92a332be3ac49aa76fb7efcd2c1e34a9ceffcf5083f26fbd8649891bd1595",
         "scope": "active MD2 integration builder",
         "actualSha256": "32d92a332be3ac49aa76fb7efcd2c1e34a9ceffcf5083f26fbd8649891bd1595",
+        "phase2Coupling": false,
         "status": "PASS"
       },
       {
@@ -384,22 +399,42 @@
         "sha256": "bd5a17651d36730f463195fa62d907b199bf223f3181a60299293d0fee0e66c7",
         "scope": "active MD2 schedina builder",
         "actualSha256": "02283c2abdd58ce75ee6e9fbbdb63266213beab93335938929eaeec7160eed3f",
-        "status": "FAIL"
+        "phase2Coupling": false,
+        "status": "CONCURRENT_CHANGE_DISCLOSED"
       },
       {
         "path": "scripts/build-readings.js",
         "sha256": "3d342295efaad8353c844a31abfd44082a8b3e223e9fc0fb2f907b8597b70d7b",
         "scope": "readings builder",
         "actualSha256": "3d342295efaad8353c844a31abfd44082a8b3e223e9fc0fb2f907b8597b70d7b",
+        "phase2Coupling": false,
         "status": "PASS"
       },
       {
         "path": "js/pages/champions.js",
         "sha256": "610bd0943a0b5739495dead7d8f29849985f45d5c5e16c11d89d181efc6bcca1",
-        "allowedConcurrentSha256": "bc9b38ccde984bb9583462afcbbfaa9fa35a0891f2edc8bbac3d15ec83498dc5",
         "scope": "Champions UI renderer",
-        "note": "A concurrent user-owned edit appeared at 2026-10-13T13:50:45Z after the Phase 2A baseline was captured. Phase 2A does not import, write or consume the renderer.",
+        "note": "A concurrent user-owned edit appeared after the Phase 2A baseline was captured. Phase 2A does not import, write or consume the renderer.",
         "actualSha256": "bc9b38ccde984bb9583462afcbbfaa9fa35a0891f2edc8bbac3d15ec83498dc5",
+        "phase2Coupling": false,
+        "status": "CONCURRENT_CHANGE_DISCLOSED"
+      },
+      {
+        "path": "css/champions.css",
+        "sha256": "514d5c1b7ba7794c64de5dfe409ec189300336e71cfa7630c37df4e471c66729",
+        "scope": "Champions UI styles",
+        "note": "Concurrent user-owned changes are disclosed, not attributed to Phase 2A.",
+        "actualSha256": "d7887c1e1807354f3ee9d38453c0ef94b80275c4febabe3f084baef4f8221f59",
+        "phase2Coupling": false,
+        "status": "CONCURRENT_CHANGE_DISCLOSED"
+      },
+      {
+        "path": "scripts/build-site.js",
+        "sha256": "35f1237da5619dd17ee9900f36b30e474a1ca550e8a6b27149fcd050ae55bc6a",
+        "scope": "site builder",
+        "note": "Concurrent user-owned changes are disclosed, not attributed to Phase 2A.",
+        "actualSha256": "0370b7a6a22cdff4f7ab9aee3c8c0942a1c6146a4257c842174ce76c5021075e",
+        "phase2Coupling": false,
         "status": "CONCURRENT_CHANGE_DISCLOSED"
       }
     ],
@@ -415,18 +450,14 @@
     "phase2aIntegrity": "PASS",
     "refereeArchive": "PASS",
     "md2Schedina": "PASS",
-    "championsReading": "PASS",
+    "championsReading": "CONCURRENT_WORKSPACE_FAILURE",
+    "championsReadingFailure": "Assertion at scripts/test-champions-reading-page.mjs:115: expected 3, actual 5",
     "pilotPredictionDataAssertions": "PASS_THROUGH_LINE_71_THEN_PRE_EXISTING_UI_STRING_ASSERTION_FAILED",
     "pilotPredictionFailure": "Dettaglio lettura Champions non collegato",
     "md2Integration": "PRE_EXISTING_FROZEN_SOURCE_HASH_ASSERTION_FAILED",
     "md2IntegrationExpectedHash": "e2b70704c55d9528125ca5e29a204a383e27b8c6efb48871a6e6566ce7765c89",
     "md2IntegrationActualHash": "0c56f68c14f75007dcb3d90cb138bb27d7506db7751397692a2cbfec0c388485",
-    "attribution": "Both failures are outside Phase 2A. Ten protected assets retain their initial hashes; the separately disclosed renderer edit is concurrent and does not import or consume Phase 2A.",
-    "concurrentWorkspaceChangesNotOwnedByPhase2A": [
-      "css/champions.css",
-      "js/pages/champions.js",
-      "data/sources/champions-md02-phase12d-additions-2026-27.json"
-    ]
+    "attribution": "Both failures are outside Phase 2A. Baseline drift is disclosed as concurrent only when the active asset does not import or consume Phase 2A and remains byte-identical throughout the Phase 2A test."
   },
   "validationErrors": [],
   "fixtures": [

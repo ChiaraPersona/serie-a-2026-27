@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
+import crypto from "node:crypto";
 import path from "node:path";
 import {fileURLToPath} from "node:url";
 import {createPersonalBetslipStore} from "../js/pages/personal-betslip-store.mjs";
@@ -10,22 +11,30 @@ const data=read("data/normalized/schedina-champions-md02.json");
 const integration=read("data/normalized/champions-md02-integration-2026-27.json");
 const odds=read("data/normalized/odds/sisal/champions-league.json");
 const individualSource=read("data/sources/champions-md02-individual-selection-2026-27.json");
+const phase12d=read("data/sources/champions-md02-phase12d-additions-2026-27.json");
 
 assert.equal(data.matchday,2);
 assert.equal(data.fixtures.length,18);
 assert.equal(new Set(data.fixtures.map(fixture=>fixture.fixtureId)).size,18);
 const selections=data.fixtures.flatMap(fixture=>fixture.selections);
-assert.equal(selections.length,63);
-assert.equal(new Set(selections.map(selection=>selection.selectionId)).size,63);
-assert.equal(data.summary.clickableSelections,63);
+assert.equal(selections.length,94);
+assert.equal(new Set(selections.map(selection=>selection.selectionId)).size,94);
+assert.equal(data.summary.clickableSelections,94);
 assert.equal(data.summary.result1x2,9);
 assert.equal(data.summary.doubleChance,9);
 assert.equal(data.summary.phase12BPredictions,18);
-assert.equal(data.summary.individualPredictions,45);
-assert.equal(data.summary.individualShots,27);
-assert.equal(data.summary.individualShotsOnTarget,18);
-assert.equal(data.summary.mathematicallyEvaluable,18);
-assert.equal(data.summary.pending,63);
+assert.equal(data.summary.teamPredictions,35);
+assert.equal(data.summary.phase12DTeamPredictions,17);
+assert.equal(data.summary.phase12DIndividualPredictions,14);
+assert.equal(data.summary.individualPredictions,59);
+assert.equal(data.summary.individualShots,38);
+assert.equal(data.summary.individualShotsOnTarget,21);
+assert.equal(data.summary.teamGoals,6);
+assert.equal(data.summary.teamCorners,5);
+assert.equal(data.summary.teamShots,3);
+assert.equal(data.summary.teamShotsOnTarget,3);
+assert.equal(data.summary.mathematicallyEvaluable,35);
+assert.equal(data.summary.pending,94);
 assert.equal(data.summary.stakeEuro,0);
 assert.equal(data.summary.grossReturnEuro,null);
 assert.equal(data.summary.roiPct,null);
@@ -54,7 +63,7 @@ for(const fixture of data.fixtures){
   assert.match(fixture.readingUrl,new RegExp(`match=${fixture.fixtureId}$`));
 
   for(const individual of fixture.selections.filter(item=>item.marketScope==="player")){
-    const sourcePick=individualSource.picks.find(pick=>pick.fixtureId===fixture.fixtureId&&pick.playerId===individual.player.canonicalPlayerId&&Number(pick.threshold)===individual.threshold&&((pick.metric==="shots"&&individual.marketCode==="28507")||(pick.metric==="shotsOnTarget"&&individual.marketCode==="28506")));
+    const sourcePick=[...individualSource.picks,...phase12d.individualPicks].find(pick=>pick.fixtureId===fixture.fixtureId&&pick.playerId===individual.player.canonicalPlayerId&&Number(pick.threshold)===individual.threshold&&((pick.metric==="shots"&&individual.marketCode==="28507")||(pick.metric==="shotsOnTarget"&&individual.marketCode==="28506")));
     assert(sourcePick,`${individual.selectionId}: proposta editoriale non tracciata`);
     assert.equal(source.teamPrediction.dataQuality.detailedVolumesAvailable,true,`${fixture.fixtureId}: forecast individuale senza volumi dettagliati`);
     const player=[...source.lineups.home.players,...source.lineups.away.players].find(item=>item.canonicalPlayerId===individual.player.canonicalPlayerId);
@@ -84,10 +93,32 @@ for(const fixture of data.fixtures){
     assert.equal(individual.betSelection.market.bookmakerSemantics.postsAndCrossbarIncluded,individual.marketCode==="28506");
     assert.equal(individual.betSelection.identity.canonicalPlayerIds[0],individual.player.canonicalPlayerId);
   }
+
+  for(const teamPick of fixture.selections.filter(item=>item.betSelection.evaluation.status==="MODELLED_VALIDATED_TEAM_MARKET")){
+    const sourcePick=phase12d.teamPicks.find(pick=>pick.selectionId===teamPick.selectionId);
+    assert(sourcePick,`${teamPick.selectionId}: proposta squadra 12D non tracciata`);
+    assert.equal(sourcePick.classification,"A");
+    assert.equal(teamPick.classification,"A");
+    assert(Number.isFinite(teamPick.modelProbabilityPct));
+    assert(Number.isFinite(teamPick.fairOdds));
+    assert(Number.isFinite(teamPick.expectedValuePct));
+    assert.equal(teamPick.betSelection.quote.availability,"AVAILABLE_AT_SNAPSHOT");
+    assert.equal(teamPick.betSelection.compatibility.status,"COMPATIBILE_CONTRATTO_ESATTO");
+  }
 }
 
-assert.equal(data.fixtures.find(fixture=>fixture.fixtureId==="ucl-2026-27-md02-02").selections.length,1,"Sabah-Slavia non deve ricevere forecast individuali");
+assert.equal(data.fixtures.find(fixture=>fixture.fixtureId==="ucl-2026-27-md02-02").selections.filter(item=>item.marketScope==="player").length,0,"Sabah-Slavia non deve ricevere forecast individuali");
 assert(new Set(data.fixtures.map(fixture=>fixture.selections.length)).size>2,"Non deve esserci un numero fisso di proposte per partita");
+
+const phase12dIds=new Set([...phase12d.teamPicks,...phase12d.individualPicks].map(pick=>pick.selectionId));
+const baselineIds=selections.filter(selection=>!phase12dIds.has(selection.selectionId)).map(selection=>selection.selectionId).sort();
+assert.equal(baselineIds.length,63);
+assert.equal(crypto.createHash("sha256").update(JSON.stringify(baselineIds)).digest("hex").toUpperCase(),phase12d.baseline.selectionIdsSha256,"I 63 selectionId delle Fasi 12B/12C sono cambiati");
+for(const pick of [...phase12d.teamPicks,...phase12d.individualPicks]){
+  const fixture=data.fixtures.find(item=>item.fixtureId===pick.fixtureId);
+  const kickoff=new Date(`${fixture.date}T${fixture.kickoff}:00+02:00`);
+  assert(new Date(phase12d.generatedAt)<kickoff,`${pick.fixtureId}: proposta 12D non prepartita`);
+}
 
 const memory=new Map();
 const storage={getItem:key=>memory.get(key)||null,setItem:(key,value)=>memory.set(key,value)};
@@ -109,4 +140,4 @@ assert.equal(integration.fixtures.find(fixture=>fixture.fixtureId==="ucl-2026-27
 const viking=integration.fixtures.find(fixture=>fixture.fixtureId==="ucl-2026-27-md02-08");
 assert(viking.lineups.home.players.some(player=>player.suppliedName==="Haugen"&&player.canonicalPlayerId===null&&player.mappingStatus==="unresolved"));
 
-console.log("OK card Champions MD2: 18 partite, 18 verdetti + 45 individuali, quote/ID/modificatori e persistenza verificati");
+console.log("OK card Champions MD2 Fase 12D: 18 partite, 94 pronostici, 63 baseline preservati, 35 valutabili e 94 quote cliccabili");

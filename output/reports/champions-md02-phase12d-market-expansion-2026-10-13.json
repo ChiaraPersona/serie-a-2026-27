@@ -1,0 +1,2256 @@
+{
+  "schemaVersion": 1,
+  "phase": "12D",
+  "generatedAt": "2026-10-13T15:51:09.3790257+02:00",
+  "gate": "PARTIAL",
+  "gateReason": "Integrazione completa e prepartita; PARTIAL perche i 59 mercati individuali DUO restano in classe B con probabilita/EV N/D e i contratti falli, punti cartellini e marcatori non equivalenti restano esclusi.",
+  "temporalIntegrity": {
+    "timezone": "Europe/Rome",
+    "earliestKickoff": "2026-10-13T18:45:00+02:00",
+    "generatedBeforeEveryKickoff": true,
+    "preMatchCandidates": 31,
+    "retrospectiveCandidates": 0
+  },
+  "preservation": {
+    "baselinePredictions": 63,
+    "baselineSelectionIdsSha256": "0B3D8B6DA442D8C734A21939AB59FF1132E9E389D3932022122FA2855EBC760C",
+    "expectedBaselineSelectionIdsSha256": "0B3D8B6DA442D8C734A21939AB59FF1132E9E389D3932022122FA2855EBC760C",
+    "preserved": true
+  },
+  "catalog": {
+    "retrievedAt": "2026-10-13T09:55:14.800Z",
+    "sourceUrl": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001",
+    "events": 18,
+    "markets": 37489,
+    "selections": 127347,
+    "downloadedAgain": false
+  },
+  "validationEvidence": {
+    "volumeBacktestGeneratedAt": "2026-09-07T16:30:38.337Z",
+    "thresholds": {
+      "totalShots": 10.5,
+      "shotsOnTarget": 3.5,
+      "wonCorners": 4.5,
+      "yellowCards": 1.5
+    },
+    "metrics": {
+      "totalShots": {
+        "samples": 538,
+        "mae": 4.407,
+        "baselineMae": 4.812,
+        "maeImprovementPct": 8.4,
+        "rmse": 5.583,
+        "baselineRmse": 6.109,
+        "intervalCoveragePct": 51.3,
+        "brier": 0.184,
+        "baselineBrier": 0.21
+      },
+      "shotsOnTarget": {
+        "samples": 538,
+        "mae": 2.011,
+        "baselineMae": 2.174,
+        "maeImprovementPct": 7.5,
+        "rmse": 2.51,
+        "baselineRmse": 2.717,
+        "intervalCoveragePct": 49.8,
+        "brier": 0.207,
+        "baselineBrier": 0.231
+      },
+      "wonCorners": {
+        "samples": 538,
+        "mae": 2.264,
+        "baselineMae": 2.401,
+        "maeImprovementPct": 5.7,
+        "rmse": 2.904,
+        "baselineRmse": 3.066,
+        "intervalCoveragePct": 55.8,
+        "brier": 0.229,
+        "baselineBrier": 0.243
+      },
+      "yellowCards": {
+        "samples": 538,
+        "mae": 1.041,
+        "baselineMae": 1.038,
+        "maeImprovementPct": -0.3,
+        "rmse": 1.266,
+        "baselineRmse": 1.258,
+        "intervalCoveragePct": 54.8,
+        "brier": 0.247,
+        "baselineBrier": 0.248
+      }
+    },
+    "goalModel": "Poisson: totale iniziale dai gol prodotti/concessi per sede e forma recente quando disponibili; altrimenti prior di 3.31 gol calcolato su 52 gare di apertura Champions 2023/24-2025/26. Lambda adattate alle probabilità 1X2 senza usare quote."
+  },
+  "marketAnalysis": [
+    {
+      "type": "1X2 / doppia chance / DNB",
+      "markets": 54,
+      "selections": 144,
+      "validQuotes": 142,
+      "marketCodes": [
+        "3",
+        "17875",
+        "28319"
+      ],
+      "status": "A/C",
+      "support": "1X2 e doppia chance sono valutabili dalle probabilita gia serializzate; DNB e handicap richiedono gestione push non serializzata per questo output.",
+      "selected": 0
+    },
+    {
+      "type": "Altri mercati",
+      "markets": 11137,
+      "selections": 31076,
+      "validQuotes": 22648,
+      "marketCodes": [
+        "4",
+        "5",
+        "7",
+        "8",
+        "14",
+        "19",
+        "127",
+        "133",
+        "134",
+        "135",
+        "420",
+        "421",
+        "422",
+        "560",
+        "562",
+        "563",
+        "564",
+        "569",
+        "570",
+        "571",
+        "698",
+        "709",
+        "710",
+        "712",
+        "1537",
+        "4009",
+        "5169",
+        "5178",
+        "5604",
+        "9475",
+        "9492",
+        "9493",
+        "9494",
+        "9495",
+        "9496",
+        "9497",
+        "12192",
+        "12512",
+        "12563",
+        "13573",
+        "13574",
+        "13575",
+        "13576",
+        "13577",
+        "13578",
+        "13579",
+        "13580",
+        "13581",
+        "13582",
+        "14071",
+        "14091",
+        "14093",
+        "14095",
+        "14236",
+        "14610",
+        "14611",
+        "14612",
+        "14973",
+        "15154",
+        "15155",
+        "15361",
+        "15446",
+        "15447",
+        "15474",
+        "15475",
+        "16926",
+        "16929",
+        "16971",
+        "16972",
+        "16977",
+        "16981",
+        "17171",
+        "17176",
+        "17177",
+        "17186",
+        "18080",
+        "18081",
+        "18530",
+        "19567",
+        "19570",
+        "20190",
+        "20247",
+        "20249",
+        "20715",
+        "20716",
+        "21605",
+        "22453",
+        "22475",
+        "22476",
+        "22477",
+        "22478",
+        "23009",
+        "23052",
+        "23055",
+        "23150",
+        "23168",
+        "23169",
+        "23560",
+        "24356",
+        "24645",
+        "24704",
+        "24706",
+        "24822",
+        "25051",
+        "25091",
+        "25377",
+        "26041",
+        "26460",
+        "26484",
+        "27810",
+        "27823",
+        "27824",
+        "27905",
+        "27989",
+        "28094",
+        "28313",
+        "28547",
+        "28609",
+        "28610",
+        "28673",
+        "28674",
+        "29342",
+        "29343",
+        "29451",
+        "30510",
+        "30835",
+        "30836",
+        "31665",
+        "31666",
+        "31777",
+        "31778",
+        "99984",
+        "99985",
+        "99986",
+        "99987",
+        "99989"
+      ],
+      "status": "C",
+      "support": "Primo/secondo tempo, entrambi i tempi, handicap, combinazioni e mercati temporali non hanno un target probabilistico identico gia serializzato.",
+      "selected": 0
+    },
+    {
+      "type": "Cartellini / punti cartellini",
+      "markets": 1339,
+      "selections": 2714,
+      "validQuotes": 1554,
+      "marketCodes": [
+        "21294",
+        "28576",
+        "29403",
+        "29525",
+        "30843",
+        "30844",
+        "30869",
+        "31347",
+        "31401",
+        "31691",
+        "31871"
+      ],
+      "status": "C",
+      "support": "Il forecast conta cartellini, mentre Sisal quota punti cartellini con massimo due per giocatore o contratti DUO: target non equivalente.",
+      "selected": 0
+    },
+    {
+      "type": "Corner",
+      "markets": 1360,
+      "selections": 3173,
+      "validQuotes": 2490,
+      "marketCodes": [
+        "975",
+        "3197",
+        "5605",
+        "9904",
+        "9905",
+        "13585",
+        "20738",
+        "20740",
+        "21065",
+        "21370",
+        "21374",
+        "23060",
+        "26718",
+        "30814",
+        "30815",
+        "30816",
+        "30830"
+      ],
+      "status": "A/B/C",
+      "support": "Solo U/O corner squadra 4.5 e classificato A: e la soglia esatta del walk-forward. Le altre soglie restano descrittive e non ricevono P/EV.",
+      "selected": 5
+    },
+    {
+      "type": "Falli",
+      "markets": 4973,
+      "selections": 9949,
+      "validQuotes": 4938,
+      "marketCodes": [
+        "13878",
+        "13880",
+        "23531",
+        "26765",
+        "28039",
+        "28775",
+        "29450",
+        "30881",
+        "31757"
+      ],
+      "status": "C",
+      "support": "Forecast centrali senza distribuzione validata sul contratto; le poche linee match/squadra includono i supplementari.",
+      "selected": 0
+    },
+    {
+      "type": "Goal / over-under / multigol",
+      "markets": 1095,
+      "selections": 8094,
+      "validQuotes": 7972,
+      "marketCodes": [
+        "18",
+        "425",
+        "561",
+        "577",
+        "7989",
+        "9942",
+        "9943",
+        "12562",
+        "20251",
+        "23182",
+        "30361",
+        "30362",
+        "30393",
+        "30394",
+        "30562",
+        "99988",
+        "99990"
+      ],
+      "status": "A/C",
+      "support": "Over/under 1.5, 2.5 e 3.5 usano la distribuzione Poisson gia adottata. Goal/no-goal, multigol e combo non vengono ricostruiti fuori dal motore.",
+      "selected": 6
+    },
+    {
+      "type": "Marcatori e goal giocatore",
+      "markets": 11384,
+      "selections": 59903,
+      "validQuotes": 35053,
+      "marketCodes": [
+        "165",
+        "166",
+        "552",
+        "553",
+        "4257",
+        "5167",
+        "7148",
+        "7149",
+        "8333",
+        "13284",
+        "13572",
+        "14233",
+        "15911",
+        "17182",
+        "18347",
+        "18526",
+        "20929",
+        "21203",
+        "23140",
+        "24460",
+        "25760",
+        "28090",
+        "28231",
+        "28325",
+        "28545",
+        "28651",
+        "28875",
+        "28895",
+        "28903",
+        "28923",
+        "28925",
+        "28929",
+        "28930",
+        "28951",
+        "28952",
+        "28954",
+        "29344",
+        "31687"
+      ],
+      "status": "C",
+      "support": "Nessuna probabilita marcatore originale compatibile con sostituto, tempi, combinazioni o pali/traverse.",
+      "selected": 0
+    },
+    {
+      "type": "SOT giocatore DUO + pali/traverse",
+      "markets": 1796,
+      "selections": 3592,
+      "validQuotes": 1796,
+      "marketCodes": [
+        "28506"
+      ],
+      "status": "B",
+      "support": "Volume SOT del singolo disponibile; contratto 28506 include sostituto e pali/traverse. Probabilita, quota equa ed EV null.",
+      "selected": 3
+    },
+    {
+      "type": "Tiri e SOT squadra/partita",
+      "markets": 1425,
+      "selections": 2850,
+      "validQuotes": 1425,
+      "marketCodes": [
+        "15481",
+        "15859",
+        "23311",
+        "23334"
+      ],
+      "status": "A/C",
+      "support": "Solo tiri squadra 10.5 e SOT squadra 3.5 sono soglie esatte coperte dal walk-forward. Totali partita e altre soglie non sono promossi.",
+      "selected": 6
+    },
+    {
+      "type": "Tiri giocatore DUO",
+      "markets": 2926,
+      "selections": 5852,
+      "validQuotes": 2926,
+      "marketCodes": [
+        "28507"
+      ],
+      "status": "B",
+      "support": "Volume del singolo disponibile; contratto 28507 include il sostituto. Probabilita, quota equa ed EV null.",
+      "selected": 11
+    }
+  ],
+  "candidates": [
+    {
+      "fixtureId": "ucl-2026-27-md02-02",
+      "fixture": "Sabah - Slavia Praha",
+      "classification": "A",
+      "market": "UNDER/OVER",
+      "marketFamily": "Gol",
+      "marketCode": "7989",
+      "selection": "OVER",
+      "label": "Totale partita over 2,5 gol",
+      "threshold": 2.5,
+      "player": null,
+      "providerEventId": "4858137",
+      "providerMarketId": "810810961",
+      "providerSelectionId": "5317134384",
+      "selectionId": "sisal:4858137:810810961:5317134384",
+      "odds": 1.57,
+      "oddsRaw": 157,
+      "forecast": {
+        "metric": "totalGoals",
+        "central": 3.37,
+        "threshold": 2.5,
+        "selection": "OVER",
+        "validation": "POISSON_GOAL_MODEL"
+      },
+      "modelProbabilityPct": 65.5,
+      "fairOdds": 1.53,
+      "expectedValuePct": 2.8,
+      "motivation": "3,37 gol attesi; probabilita 65,5% dalla distribuzione Poisson gia serializzata.",
+      "dataQuality": {
+        "fixtureDetailedVolumes": "pronostico risultato e gol",
+        "sampleCoverage": null,
+        "currentSeasonReliabilityPct": null,
+        "validation": "POISSON_GOAL_MODEL"
+      },
+      "limitation": null,
+      "quoteVerifiedAt": "2026-10-13T09:55:14.800Z",
+      "source": {
+        "provider": "Sisal",
+        "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001",
+        "curation": "data/sources/champions-md02-phase12d-additions-2026-27.json"
+      },
+      "temporal": {
+        "generatedAt": "2026-10-13T15:51:09.3790257+02:00",
+        "kickoff": "2026-10-13T16:45:00.000Z",
+        "preMatch": true
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-03",
+      "fixture": "Arsenal - Lille",
+      "classification": "A",
+      "market": "UNDER/OVER",
+      "marketFamily": "Gol",
+      "marketCode": "7989",
+      "selection": "UNDER",
+      "label": "Totale partita under 3,5 gol",
+      "threshold": 3.5,
+      "player": null,
+      "providerEventId": "4858146",
+      "providerMarketId": "810823359",
+      "providerSelectionId": "5317157816",
+      "selectionId": "sisal:4858146:810823359:5317157816",
+      "odds": 1.52,
+      "oddsRaw": 152,
+      "forecast": {
+        "metric": "totalGoals",
+        "central": 2.82,
+        "threshold": 3.5,
+        "selection": "UNDER",
+        "validation": "POISSON_GOAL_MODEL"
+      },
+      "modelProbabilityPct": 68.6,
+      "fairOdds": 1.46,
+      "expectedValuePct": 4.3,
+      "motivation": "2,82 gol attesi; probabilita 68,6% dalla distribuzione Poisson gia serializzata.",
+      "dataQuality": {
+        "fixtureDetailedVolumes": "pilot statistico completo",
+        "sampleCoverage": null,
+        "currentSeasonReliabilityPct": null,
+        "validation": "POISSON_GOAL_MODEL"
+      },
+      "limitation": null,
+      "quoteVerifiedAt": "2026-10-13T09:55:14.800Z",
+      "source": {
+        "provider": "Sisal",
+        "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001",
+        "curation": "data/sources/champions-md02-phase12d-additions-2026-27.json"
+      },
+      "temporal": {
+        "generatedAt": "2026-10-13T15:51:09.3790257+02:00",
+        "kickoff": "2026-10-13T19:00:00.000Z",
+        "preMatch": true
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-04",
+      "fixture": "Atlético de Madrid - Manchester United",
+      "classification": "A",
+      "market": "UNDER/OVER",
+      "marketFamily": "Gol",
+      "marketCode": "7989",
+      "selection": "OVER",
+      "label": "Totale partita over 2,5 gol",
+      "threshold": 2.5,
+      "player": null,
+      "providerEventId": "4858177",
+      "providerMarketId": "810814205",
+      "providerSelectionId": "5317191046",
+      "selectionId": "sisal:4858177:810814205:5317191046",
+      "odds": 1.6,
+      "oddsRaw": 160,
+      "forecast": {
+        "metric": "totalGoals",
+        "central": 3.37,
+        "threshold": 2.5,
+        "selection": "OVER",
+        "validation": "POISSON_GOAL_MODEL"
+      },
+      "modelProbabilityPct": 65.5,
+      "fairOdds": 1.53,
+      "expectedValuePct": 4.8,
+      "motivation": "3,37 gol attesi; probabilita 65,5% dalla distribuzione Poisson gia serializzata.",
+      "dataQuality": {
+        "fixtureDetailedVolumes": "pilot statistico completo",
+        "sampleCoverage": null,
+        "currentSeasonReliabilityPct": null,
+        "validation": "POISSON_GOAL_MODEL"
+      },
+      "limitation": null,
+      "quoteVerifiedAt": "2026-10-13T09:55:14.800Z",
+      "source": {
+        "provider": "Sisal",
+        "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001",
+        "curation": "data/sources/champions-md02-phase12d-additions-2026-27.json"
+      },
+      "temporal": {
+        "generatedAt": "2026-10-13T15:51:09.3790257+02:00",
+        "kickoff": "2026-10-13T19:00:00.000Z",
+        "preMatch": true
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-05",
+      "fixture": "Inter - Club Brugge",
+      "classification": "A",
+      "market": "U/O TIRI TOTALI SQUADRA X",
+      "marketFamily": "Tiri squadra",
+      "marketCode": "23334",
+      "selection": "OVER",
+      "label": "Club Brugge over 10,5 tiri",
+      "threshold": 10.5,
+      "player": null,
+      "providerEventId": "4858180",
+      "providerMarketId": "822318899",
+      "providerSelectionId": "5378990067",
+      "selectionId": "sisal:4858180:822318899:5378990067",
+      "odds": 1.72,
+      "oddsRaw": 172,
+      "forecast": {
+        "metric": "shotsTotal",
+        "central": 12.23,
+        "threshold": 10.5,
+        "selection": "OVER",
+        "validation": "WALK_FORWARD_TOTAL_SHOTS_10_5"
+      },
+      "modelProbabilityPct": 60.7,
+      "fairOdds": 1.65,
+      "expectedValuePct": 4.4,
+      "motivation": "12,23 tiri attesi; probabilita originale 60,7% sulla soglia esatta gia coperta dal walk-forward.",
+      "dataQuality": {
+        "fixtureDetailedVolumes": true,
+        "sampleCoverage": 56,
+        "currentSeasonReliabilityPct": 50,
+        "validation": "WALK_FORWARD_TOTAL_SHOTS_10_5"
+      },
+      "limitation": null,
+      "quoteVerifiedAt": "2026-10-13T09:55:14.800Z",
+      "source": {
+        "provider": "Sisal",
+        "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001",
+        "curation": "data/sources/champions-md02-phase12d-additions-2026-27.json"
+      },
+      "temporal": {
+        "generatedAt": "2026-10-13T15:51:09.3790257+02:00",
+        "kickoff": "2026-10-13T19:00:00.000Z",
+        "preMatch": true
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-07",
+      "fixture": "Leipzig - PSV Eindhoven",
+      "classification": "A",
+      "market": "U/O CORNER SQUADRA X",
+      "marketFamily": "Corner squadra",
+      "marketCode": "23060",
+      "selection": "OVER",
+      "label": "PSV Eindhoven over 4,5 corner",
+      "threshold": 4.5,
+      "player": null,
+      "providerEventId": "4858176",
+      "providerMarketId": "821951423",
+      "providerSelectionId": "5376985276",
+      "selectionId": "sisal:4858176:821951423:5376985276",
+      "odds": 2,
+      "oddsRaw": 200,
+      "forecast": {
+        "metric": "corners",
+        "central": 5.42,
+        "threshold": 4.5,
+        "selection": "OVER",
+        "validation": "WALK_FORWARD_WON_CORNERS_4_5"
+      },
+      "modelProbabilityPct": 57.4,
+      "fairOdds": 1.74,
+      "expectedValuePct": 14.8,
+      "motivation": "5,42 corner attesi; probabilita originale 57,4% sulla soglia esatta gia coperta dal walk-forward.",
+      "dataQuality": {
+        "fixtureDetailedVolumes": true,
+        "sampleCoverage": 51,
+        "currentSeasonReliabilityPct": 60,
+        "validation": "WALK_FORWARD_WON_CORNERS_4_5"
+      },
+      "limitation": null,
+      "quoteVerifiedAt": "2026-10-13T09:55:14.800Z",
+      "source": {
+        "provider": "Sisal",
+        "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001",
+        "curation": "data/sources/champions-md02-phase12d-additions-2026-27.json"
+      },
+      "temporal": {
+        "generatedAt": "2026-10-13T15:51:09.3790257+02:00",
+        "kickoff": "2026-10-13T19:00:00.000Z",
+        "preMatch": true
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-10",
+      "fixture": "Feyenoord - Como",
+      "classification": "A",
+      "market": "U/O CORNER SQUADRA X",
+      "marketFamily": "Corner squadra",
+      "marketCode": "23060",
+      "selection": "OVER",
+      "label": "Feyenoord over 4,5 corner",
+      "threshold": 4.5,
+      "player": null,
+      "providerEventId": "4858181",
+      "providerMarketId": "822308423",
+      "providerSelectionId": "5379056413",
+      "selectionId": "sisal:4858181:822308423:5379056413",
+      "odds": 1.85,
+      "oddsRaw": 185,
+      "forecast": {
+        "metric": "corners",
+        "central": 5.97,
+        "threshold": 4.5,
+        "selection": "OVER",
+        "validation": "WALK_FORWARD_WON_CORNERS_4_5"
+      },
+      "modelProbabilityPct": 65.5,
+      "fairOdds": 1.53,
+      "expectedValuePct": 21.2,
+      "motivation": "5,97 corner attesi; probabilita originale 65,5% sulla soglia esatta gia coperta dal walk-forward.",
+      "dataQuality": {
+        "fixtureDetailedVolumes": true,
+        "sampleCoverage": 49,
+        "currentSeasonReliabilityPct": 53.8,
+        "validation": "WALK_FORWARD_WON_CORNERS_4_5"
+      },
+      "limitation": null,
+      "quoteVerifiedAt": "2026-10-13T09:55:14.800Z",
+      "source": {
+        "provider": "Sisal",
+        "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001",
+        "curation": "data/sources/champions-md02-phase12d-additions-2026-27.json"
+      },
+      "temporal": {
+        "generatedAt": "2026-10-13T15:51:09.3790257+02:00",
+        "kickoff": "2026-10-14T16:45:00.000Z",
+        "preMatch": true
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-10",
+      "fixture": "Feyenoord - Como",
+      "classification": "A",
+      "market": "U/O TIRI IN PORTA SQUADRA X",
+      "marketFamily": "Tiri in porta squadra",
+      "marketCode": "23311",
+      "selection": "OVER",
+      "label": "Feyenoord over 3,5 tiri in porta",
+      "threshold": 3.5,
+      "player": null,
+      "providerEventId": "4858181",
+      "providerMarketId": "822445407",
+      "providerSelectionId": "5379748908",
+      "selectionId": "sisal:4858181:822445407:5379748908",
+      "odds": 1.45,
+      "oddsRaw": 145,
+      "forecast": {
+        "metric": "shotsOnTarget",
+        "central": 5.82,
+        "threshold": 3.5,
+        "selection": "OVER",
+        "validation": "WALK_FORWARD_SOT_3_5"
+      },
+      "modelProbabilityPct": 83.2,
+      "fairOdds": 1.2,
+      "expectedValuePct": 20.6,
+      "motivation": "5,82 tiri in porta attesi; probabilita originale 83,2% sulla soglia esatta gia coperta dal walk-forward.",
+      "dataQuality": {
+        "fixtureDetailedVolumes": true,
+        "sampleCoverage": 49,
+        "currentSeasonReliabilityPct": 53.8,
+        "validation": "WALK_FORWARD_SOT_3_5"
+      },
+      "limitation": null,
+      "quoteVerifiedAt": "2026-10-13T09:55:14.800Z",
+      "source": {
+        "provider": "Sisal",
+        "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001",
+        "curation": "data/sources/champions-md02-phase12d-additions-2026-27.json"
+      },
+      "temporal": {
+        "generatedAt": "2026-10-13T15:51:09.3790257+02:00",
+        "kickoff": "2026-10-14T16:45:00.000Z",
+        "preMatch": true
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-11",
+      "fixture": "LASK - Liverpool",
+      "classification": "A",
+      "market": "UNDER/OVER",
+      "marketFamily": "Gol",
+      "marketCode": "7989",
+      "selection": "UNDER",
+      "label": "Totale partita under 3,5 gol",
+      "threshold": 3.5,
+      "player": null,
+      "providerEventId": "4858179",
+      "providerMarketId": "810815376",
+      "providerSelectionId": "5317198125",
+      "selectionId": "sisal:4858179:810815376:5317198125",
+      "odds": 1.8,
+      "oddsRaw": 180,
+      "forecast": {
+        "metric": "totalGoals",
+        "central": 3.3,
+        "threshold": 3.5,
+        "selection": "UNDER",
+        "validation": "POISSON_GOAL_MODEL"
+      },
+      "modelProbabilityPct": 58,
+      "fairOdds": 1.72,
+      "expectedValuePct": 4.4,
+      "motivation": "3,3 gol attesi; probabilita 58% dalla distribuzione Poisson gia serializzata.",
+      "dataQuality": {
+        "fixtureDetailedVolumes": "pilot statistico completo",
+        "sampleCoverage": null,
+        "currentSeasonReliabilityPct": null,
+        "validation": "POISSON_GOAL_MODEL"
+      },
+      "limitation": null,
+      "quoteVerifiedAt": "2026-10-13T09:55:14.800Z",
+      "source": {
+        "provider": "Sisal",
+        "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001",
+        "curation": "data/sources/champions-md02-phase12d-additions-2026-27.json"
+      },
+      "temporal": {
+        "generatedAt": "2026-10-13T15:51:09.3790257+02:00",
+        "kickoff": "2026-10-14T16:45:00.000Z",
+        "preMatch": true
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-12",
+      "fixture": "Roma - Real Madrid",
+      "classification": "A",
+      "market": "UNDER/OVER",
+      "marketFamily": "Gol",
+      "marketCode": "7989",
+      "selection": "UNDER",
+      "label": "Totale partita under 3,5 gol",
+      "threshold": 3.5,
+      "player": null,
+      "providerEventId": "4858182",
+      "providerMarketId": "810824494",
+      "providerSelectionId": "5317163698",
+      "selectionId": "sisal:4858182:810824494:5317163698",
+      "odds": 1.72,
+      "oddsRaw": 172,
+      "forecast": {
+        "metric": "totalGoals",
+        "central": 3.22,
+        "threshold": 3.5,
+        "selection": "UNDER",
+        "validation": "POISSON_GOAL_MODEL"
+      },
+      "modelProbabilityPct": 59.7,
+      "fairOdds": 1.68,
+      "expectedValuePct": 2.7,
+      "motivation": "3,22 gol attesi; probabilita 59,7% dalla distribuzione Poisson gia serializzata.",
+      "dataQuality": {
+        "fixtureDetailedVolumes": "pilot statistico completo",
+        "sampleCoverage": null,
+        "currentSeasonReliabilityPct": null,
+        "validation": "POISSON_GOAL_MODEL"
+      },
+      "limitation": null,
+      "quoteVerifiedAt": "2026-10-13T09:55:14.800Z",
+      "source": {
+        "provider": "Sisal",
+        "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001",
+        "curation": "data/sources/champions-md02-phase12d-additions-2026-27.json"
+      },
+      "temporal": {
+        "generatedAt": "2026-10-13T15:51:09.3790257+02:00",
+        "kickoff": "2026-10-14T19:00:00.000Z",
+        "preMatch": true
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-12",
+      "fixture": "Roma - Real Madrid",
+      "classification": "A",
+      "market": "U/O CORNER SQUADRA X",
+      "marketFamily": "Corner squadra",
+      "marketCode": "23060",
+      "selection": "OVER",
+      "label": "Roma over 4,5 corner",
+      "threshold": 4.5,
+      "player": null,
+      "providerEventId": "4858182",
+      "providerMarketId": "822328128",
+      "providerSelectionId": "5379068529",
+      "selectionId": "sisal:4858182:822328128:5379068529",
+      "odds": 2.1,
+      "oddsRaw": 210,
+      "forecast": {
+        "metric": "corners",
+        "central": 5.52,
+        "threshold": 4.5,
+        "selection": "OVER",
+        "validation": "WALK_FORWARD_WON_CORNERS_4_5"
+      },
+      "modelProbabilityPct": 58.4,
+      "fairOdds": 1.71,
+      "expectedValuePct": 22.6,
+      "motivation": "5,52 corner attesi; probabilita originale 58,4% sulla soglia esatta gia coperta dal walk-forward.",
+      "dataQuality": {
+        "fixtureDetailedVolumes": true,
+        "sampleCoverage": 54,
+        "currentSeasonReliabilityPct": 50,
+        "validation": "WALK_FORWARD_WON_CORNERS_4_5"
+      },
+      "limitation": null,
+      "quoteVerifiedAt": "2026-10-13T09:55:14.800Z",
+      "source": {
+        "provider": "Sisal",
+        "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001",
+        "curation": "data/sources/champions-md02-phase12d-additions-2026-27.json"
+      },
+      "temporal": {
+        "generatedAt": "2026-10-13T15:51:09.3790257+02:00",
+        "kickoff": "2026-10-14T19:00:00.000Z",
+        "preMatch": true
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-12",
+      "fixture": "Roma - Real Madrid",
+      "classification": "A",
+      "market": "U/O TIRI IN PORTA SQUADRA X",
+      "marketFamily": "Tiri in porta squadra",
+      "marketCode": "23311",
+      "selection": "OVER",
+      "label": "Roma over 3,5 tiri in porta",
+      "threshold": 3.5,
+      "player": null,
+      "providerEventId": "4858182",
+      "providerMarketId": "822399841",
+      "providerSelectionId": "5379482976",
+      "selectionId": "sisal:4858182:822399841:5379482976",
+      "odds": 1.45,
+      "oddsRaw": 145,
+      "forecast": {
+        "metric": "shotsOnTarget",
+        "central": 5.41,
+        "threshold": 3.5,
+        "selection": "OVER",
+        "validation": "WALK_FORWARD_SOT_3_5"
+      },
+      "modelProbabilityPct": 78.1,
+      "fairOdds": 1.28,
+      "expectedValuePct": 13.2,
+      "motivation": "5,41 tiri in porta attesi; probabilita originale 78,1% sulla soglia esatta gia coperta dal walk-forward.",
+      "dataQuality": {
+        "fixtureDetailedVolumes": true,
+        "sampleCoverage": 54,
+        "currentSeasonReliabilityPct": 50,
+        "validation": "WALK_FORWARD_SOT_3_5"
+      },
+      "limitation": null,
+      "quoteVerifiedAt": "2026-10-13T09:55:14.800Z",
+      "source": {
+        "provider": "Sisal",
+        "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001",
+        "curation": "data/sources/champions-md02-phase12d-additions-2026-27.json"
+      },
+      "temporal": {
+        "generatedAt": "2026-10-13T15:51:09.3790257+02:00",
+        "kickoff": "2026-10-14T19:00:00.000Z",
+        "preMatch": true
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-14",
+      "fixture": "Shakhtar Donetsk - AEK Athens",
+      "classification": "A",
+      "market": "U/O CORNER SQUADRA X",
+      "marketFamily": "Corner squadra",
+      "marketCode": "23060",
+      "selection": "UNDER",
+      "label": "AEK Athens under 4,5 corner",
+      "threshold": 4.5,
+      "player": null,
+      "providerEventId": "4858144",
+      "providerMarketId": "822326236",
+      "providerSelectionId": "5379066966",
+      "selectionId": "sisal:4858144:822326236:5379066966",
+      "odds": 1.62,
+      "oddsRaw": 162,
+      "forecast": {
+        "metric": "corners",
+        "central": 3.96,
+        "threshold": 4.5,
+        "selection": "UNDER",
+        "validation": "WALK_FORWARD_WON_CORNERS_4_5"
+      },
+      "modelProbabilityPct": 63.7,
+      "fairOdds": 1.57,
+      "expectedValuePct": 3.2,
+      "motivation": "3,96 corner attesi; probabilita originale 63,7% sulla soglia esatta gia coperta dal walk-forward.",
+      "dataQuality": {
+        "fixtureDetailedVolumes": true,
+        "sampleCoverage": 21,
+        "currentSeasonReliabilityPct": 40,
+        "validation": "WALK_FORWARD_WON_CORNERS_4_5"
+      },
+      "limitation": null,
+      "quoteVerifiedAt": "2026-10-13T09:55:14.800Z",
+      "source": {
+        "provider": "Sisal",
+        "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001",
+        "curation": "data/sources/champions-md02-phase12d-additions-2026-27.json"
+      },
+      "temporal": {
+        "generatedAt": "2026-10-13T15:51:09.3790257+02:00",
+        "kickoff": "2026-10-14T19:00:00.000Z",
+        "preMatch": true
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-15",
+      "fixture": "Bodø/Glimt - Borussia Dortmund",
+      "classification": "A",
+      "market": "U/O TIRI TOTALI SQUADRA X",
+      "marketFamily": "Tiri squadra",
+      "marketCode": "23334",
+      "selection": "OVER",
+      "label": "Bodø/Glimt over 10,5 tiri",
+      "threshold": 10.5,
+      "player": null,
+      "providerEventId": "4858142",
+      "providerMarketId": "822436384",
+      "providerSelectionId": "5379691483",
+      "selectionId": "sisal:4858142:822436384:5379691483",
+      "odds": 1.27,
+      "oddsRaw": 127,
+      "forecast": {
+        "metric": "shotsTotal",
+        "central": 17.32,
+        "threshold": 10.5,
+        "selection": "OVER",
+        "validation": "WALK_FORWARD_TOTAL_SHOTS_10_5"
+      },
+      "modelProbabilityPct": 90.2,
+      "fairOdds": 1.11,
+      "expectedValuePct": 14.6,
+      "motivation": "17,32 tiri attesi; probabilita originale 90,2% sulla soglia esatta gia coperta dal walk-forward.",
+      "dataQuality": {
+        "fixtureDetailedVolumes": true,
+        "sampleCoverage": 54,
+        "currentSeasonReliabilityPct": 64.7,
+        "validation": "WALK_FORWARD_TOTAL_SHOTS_10_5"
+      },
+      "limitation": null,
+      "quoteVerifiedAt": "2026-10-13T09:55:14.800Z",
+      "source": {
+        "provider": "Sisal",
+        "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001",
+        "curation": "data/sources/champions-md02-phase12d-additions-2026-27.json"
+      },
+      "temporal": {
+        "generatedAt": "2026-10-13T15:51:09.3790257+02:00",
+        "kickoff": "2026-10-14T19:00:00.000Z",
+        "preMatch": true
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-16",
+      "fixture": "Manchester City - Paris Saint-Germain",
+      "classification": "A",
+      "market": "U/O CORNER SQUADRA X",
+      "marketFamily": "Corner squadra",
+      "marketCode": "23060",
+      "selection": "OVER",
+      "label": "Manchester City over 4,5 corner",
+      "threshold": 4.5,
+      "player": null,
+      "providerEventId": "4858174",
+      "providerMarketId": "822308666",
+      "providerSelectionId": "5379057520",
+      "selectionId": "sisal:4858174:822308666:5379057520",
+      "odds": 1.7,
+      "oddsRaw": 170,
+      "forecast": {
+        "metric": "corners",
+        "central": 5.58,
+        "threshold": 4.5,
+        "selection": "OVER",
+        "validation": "WALK_FORWARD_WON_CORNERS_4_5"
+      },
+      "modelProbabilityPct": 65.5,
+      "fairOdds": 1.53,
+      "expectedValuePct": 11.3,
+      "motivation": "5,58 corner attesi; probabilita originale 65,5% sulla soglia esatta gia coperta dal walk-forward.",
+      "dataQuality": {
+        "fixtureDetailedVolumes": true,
+        "sampleCoverage": 53,
+        "currentSeasonReliabilityPct": 45.5,
+        "validation": "WALK_FORWARD_WON_CORNERS_4_5"
+      },
+      "limitation": null,
+      "quoteVerifiedAt": "2026-10-13T09:55:14.800Z",
+      "source": {
+        "provider": "Sisal",
+        "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001",
+        "curation": "data/sources/champions-md02-phase12d-additions-2026-27.json"
+      },
+      "temporal": {
+        "generatedAt": "2026-10-13T15:51:09.3790257+02:00",
+        "kickoff": "2026-10-14T19:00:00.000Z",
+        "preMatch": true
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-16",
+      "fixture": "Manchester City - Paris Saint-Germain",
+      "classification": "A",
+      "market": "U/O TIRI IN PORTA SQUADRA X",
+      "marketFamily": "Tiri in porta squadra",
+      "marketCode": "23311",
+      "selection": "OVER",
+      "label": "Paris Saint-Germain over 3,5 tiri in porta",
+      "threshold": 3.5,
+      "player": null,
+      "providerEventId": "4858174",
+      "providerMarketId": "822410688",
+      "providerSelectionId": "5379527485",
+      "selectionId": "sisal:4858174:822410688:5379527485",
+      "odds": 1.36,
+      "oddsRaw": 136,
+      "forecast": {
+        "metric": "shotsOnTarget",
+        "central": 5.32,
+        "threshold": 3.5,
+        "selection": "OVER",
+        "validation": "WALK_FORWARD_SOT_3_5"
+      },
+      "modelProbabilityPct": 77.7,
+      "fairOdds": 1.29,
+      "expectedValuePct": 5.7,
+      "motivation": "5,32 tiri in porta attesi; probabilita originale 77,7% sulla soglia esatta gia coperta dal walk-forward.",
+      "dataQuality": {
+        "fixtureDetailedVolumes": true,
+        "sampleCoverage": 57,
+        "currentSeasonReliabilityPct": 50,
+        "validation": "WALK_FORWARD_SOT_3_5"
+      },
+      "limitation": null,
+      "quoteVerifiedAt": "2026-10-13T09:55:14.800Z",
+      "source": {
+        "provider": "Sisal",
+        "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001",
+        "curation": "data/sources/champions-md02-phase12d-additions-2026-27.json"
+      },
+      "temporal": {
+        "generatedAt": "2026-10-13T15:51:09.3790257+02:00",
+        "kickoff": "2026-10-14T19:00:00.000Z",
+        "preMatch": true
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-17",
+      "fixture": "Real Betis - Porto",
+      "classification": "A",
+      "market": "U/O TIRI TOTALI SQUADRA X",
+      "marketFamily": "Tiri squadra",
+      "marketCode": "23334",
+      "selection": "OVER",
+      "label": "Porto over 10,5 tiri",
+      "threshold": 10.5,
+      "player": null,
+      "providerEventId": "4858175",
+      "providerMarketId": "822427489",
+      "providerSelectionId": "5379632168",
+      "selectionId": "sisal:4858175:822427489:5379632168",
+      "odds": 1.4,
+      "oddsRaw": 140,
+      "forecast": {
+        "metric": "shotsTotal",
+        "central": 13.28,
+        "threshold": 10.5,
+        "selection": "OVER",
+        "validation": "WALK_FORWARD_TOTAL_SHOTS_10_5"
+      },
+      "modelProbabilityPct": 74.4,
+      "fairOdds": 1.34,
+      "expectedValuePct": 4.2,
+      "motivation": "13,28 tiri attesi; probabilita originale 74,4% sulla soglia esatta gia coperta dal walk-forward.",
+      "dataQuality": {
+        "fixtureDetailedVolumes": true,
+        "sampleCoverage": 53,
+        "currentSeasonReliabilityPct": 53.8,
+        "validation": "WALK_FORWARD_TOTAL_SHOTS_10_5"
+      },
+      "limitation": null,
+      "quoteVerifiedAt": "2026-10-13T09:55:14.800Z",
+      "source": {
+        "provider": "Sisal",
+        "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001",
+        "curation": "data/sources/champions-md02-phase12d-additions-2026-27.json"
+      },
+      "temporal": {
+        "generatedAt": "2026-10-13T15:51:09.3790257+02:00",
+        "kickoff": "2026-10-14T19:00:00.000Z",
+        "preMatch": true
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-18",
+      "fixture": "Slovan Bratislava - Stuttgart",
+      "classification": "A",
+      "market": "UNDER/OVER",
+      "marketFamily": "Gol",
+      "marketCode": "7989",
+      "selection": "UNDER",
+      "label": "Totale partita under 3,5 gol",
+      "threshold": 3.5,
+      "player": null,
+      "providerEventId": "4858140",
+      "providerMarketId": "810819775",
+      "providerSelectionId": "5317123351",
+      "selectionId": "sisal:4858140:810819775:5317123351",
+      "odds": 1.9,
+      "oddsRaw": 190,
+      "forecast": {
+        "metric": "totalGoals",
+        "central": 3.17,
+        "threshold": 3.5,
+        "selection": "UNDER",
+        "validation": "POISSON_GOAL_MODEL"
+      },
+      "modelProbabilityPct": 60.8,
+      "fairOdds": 1.64,
+      "expectedValuePct": 15.5,
+      "motivation": "3,17 gol attesi; probabilita 60,8% dalla distribuzione Poisson gia serializzata.",
+      "dataQuality": {
+        "fixtureDetailedVolumes": "pilot statistico completo",
+        "sampleCoverage": null,
+        "currentSeasonReliabilityPct": null,
+        "validation": "POISSON_GOAL_MODEL"
+      },
+      "limitation": null,
+      "quoteVerifiedAt": "2026-10-13T09:55:14.800Z",
+      "source": {
+        "provider": "Sisal",
+        "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001",
+        "curation": "data/sources/champions-md02-phase12d-additions-2026-27.json"
+      },
+      "temporal": {
+        "generatedAt": "2026-10-13T15:51:09.3790257+02:00",
+        "kickoff": "2026-10-14T19:00:00.000Z",
+        "preMatch": true
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-01",
+      "fixture": "Lens - Sporting CP",
+      "classification": "B",
+      "market": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+      "marketFamily": "Tiri giocatore",
+      "marketCode": "28507",
+      "selection": "OVER",
+      "label": "Franjo Ivanović over 1,5 tiri · sostituto incluso",
+      "threshold": 1.5,
+      "player": {
+        "id": "franjo-ivanovic",
+        "name": "Franjo Ivanović",
+        "team": "Lens",
+        "role": "forward",
+        "expectedMinutes": 84.6
+      },
+      "providerEventId": "4858138",
+      "providerMarketId": "821927322",
+      "providerSelectionId": "5376857359",
+      "selectionId": "sisal:4858138:821927322:5376857359",
+      "odds": 1.2,
+      "oddsRaw": 120,
+      "forecast": {
+        "metric": "shots",
+        "mean": 2.71,
+        "expectedMinutes": 84.6
+      },
+      "modelProbabilityPct": null,
+      "fairOdds": null,
+      "expectedValuePct": null,
+      "motivation": "2,71 tiri attesi in 84,6 minuti; forward, storico verificato su 1.030 minuti e affidabilita 53,4%.",
+      "dataQuality": {
+        "fixtureDetailedVolumes": true,
+        "playerDataStatus": "verified-history",
+        "identityStatus": "resolved"
+      },
+      "limitation": "Il forecast quantifica i tiri del solo giocatore; la quota Sisal include anche il sostituto. Probabilita, quota equa ed EV del contratto restano N/D.",
+      "quoteVerifiedAt": "2026-10-13T09:55:14.800Z",
+      "source": {
+        "provider": "Sisal",
+        "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001",
+        "curation": "data/sources/champions-md02-phase12d-additions-2026-27.json"
+      },
+      "temporal": {
+        "generatedAt": "2026-10-13T15:51:09.3790257+02:00",
+        "kickoff": "2026-10-13T16:45:00.000Z",
+        "preMatch": true
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-03",
+      "fixture": "Arsenal - Lille",
+      "classification": "B",
+      "market": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+      "marketFamily": "Tiri giocatore",
+      "marketCode": "28507",
+      "selection": "OVER",
+      "label": "Ayase Ueda over 1,5 tiri · sostituto incluso",
+      "threshold": 1.5,
+      "player": {
+        "id": "ayase-ueda",
+        "name": "Ayase Ueda",
+        "team": "Lille",
+        "role": "forward",
+        "expectedMinutes": 84.6
+      },
+      "providerEventId": "4858146",
+      "providerMarketId": "821922449",
+      "providerSelectionId": "5376832991",
+      "selectionId": "sisal:4858146:821922449:5376832991",
+      "odds": 1.75,
+      "oddsRaw": 175,
+      "forecast": {
+        "metric": "shots",
+        "mean": 2.4,
+        "expectedMinutes": 84.6
+      },
+      "modelProbabilityPct": null,
+      "fairOdds": null,
+      "expectedValuePct": null,
+      "motivation": "2,4 tiri attesi in 84,6 minuti; forward, storico verificato su 2.969 minuti e affidabilita 76,7%.",
+      "dataQuality": {
+        "fixtureDetailedVolumes": true,
+        "playerDataStatus": "verified-history",
+        "identityStatus": "resolved"
+      },
+      "limitation": "Il forecast quantifica i tiri del solo giocatore; la quota Sisal include anche il sostituto. Probabilita, quota equa ed EV del contratto restano N/D.",
+      "quoteVerifiedAt": "2026-10-13T09:55:14.800Z",
+      "source": {
+        "provider": "Sisal",
+        "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001",
+        "curation": "data/sources/champions-md02-phase12d-additions-2026-27.json"
+      },
+      "temporal": {
+        "generatedAt": "2026-10-13T15:51:09.3790257+02:00",
+        "kickoff": "2026-10-13T19:00:00.000Z",
+        "preMatch": true
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-04",
+      "fixture": "Atlético de Madrid - Manchester United",
+      "classification": "B",
+      "market": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+      "marketFamily": "Tiri giocatore",
+      "marketCode": "28507",
+      "selection": "OVER",
+      "label": "Marcus Rashford over 1,5 tiri · sostituto incluso",
+      "threshold": 1.5,
+      "player": {
+        "id": "marcus-rashford",
+        "name": "Marcus Rashford",
+        "team": "Manchester United",
+        "role": "forward",
+        "expectedMinutes": 84.6
+      },
+      "providerEventId": "4858177",
+      "providerMarketId": "821888775",
+      "providerSelectionId": "5376634522",
+      "selectionId": "sisal:4858177:821888775:5376634522",
+      "odds": 1.5,
+      "oddsRaw": 150,
+      "forecast": {
+        "metric": "shots",
+        "mean": 2.91,
+        "expectedMinutes": 84.6
+      },
+      "modelProbabilityPct": null,
+      "fairOdds": null,
+      "expectedValuePct": null,
+      "motivation": "2,91 tiri attesi in 84,6 minuti; forward, storico verificato su 2.341 minuti e affidabilita 72,2%.",
+      "dataQuality": {
+        "fixtureDetailedVolumes": true,
+        "playerDataStatus": "verified-history",
+        "identityStatus": "resolved"
+      },
+      "limitation": "Il forecast quantifica i tiri del solo giocatore; la quota Sisal include anche il sostituto. Probabilita, quota equa ed EV del contratto restano N/D.",
+      "quoteVerifiedAt": "2026-10-13T09:55:14.800Z",
+      "source": {
+        "provider": "Sisal",
+        "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001",
+        "curation": "data/sources/champions-md02-phase12d-additions-2026-27.json"
+      },
+      "temporal": {
+        "generatedAt": "2026-10-13T15:51:09.3790257+02:00",
+        "kickoff": "2026-10-13T19:00:00.000Z",
+        "preMatch": true
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-05",
+      "fixture": "Inter - Club Brugge",
+      "classification": "B",
+      "market": "U/O  TIRI IN PORTA GIOCATORE (DUO) INC PALI TRAVERSE INC TS",
+      "marketFamily": "Tiri in porta giocatore",
+      "marketCode": "28506",
+      "selection": "OVER",
+      "label": "Marcus Thuram over 0,5 SOT · sostituto incluso · pali/traverse inclusi",
+      "threshold": 0.5,
+      "player": {
+        "id": "marcus-thuram",
+        "name": "Marcus Thuram",
+        "team": "Inter",
+        "role": "forward",
+        "expectedMinutes": 84.6
+      },
+      "providerEventId": "4858180",
+      "providerMarketId": "822315691",
+      "providerSelectionId": "5378999317",
+      "selectionId": "sisal:4858180:822315691:5378999317",
+      "odds": 1.16,
+      "oddsRaw": 116,
+      "forecast": {
+        "metric": "shotsOnTarget",
+        "mean": 1.22,
+        "expectedMinutes": 84.6
+      },
+      "modelProbabilityPct": null,
+      "fairOdds": null,
+      "expectedValuePct": null,
+      "motivation": "1,22 SOT attesi in 84,6 minuti; forward, storico verificato su 1.912 minuti e affidabilita 68%.",
+      "dataQuality": {
+        "fixtureDetailedVolumes": true,
+        "playerDataStatus": "verified-history",
+        "identityStatus": "resolved"
+      },
+      "limitation": "Il forecast quantifica i SOT del solo giocatore; la quota Sisal include il sostituto e anche pali/traverse. Probabilita, quota equa ed EV del contratto restano N/D.",
+      "quoteVerifiedAt": "2026-10-13T09:55:14.800Z",
+      "source": {
+        "provider": "Sisal",
+        "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001",
+        "curation": "data/sources/champions-md02-phase12d-additions-2026-27.json"
+      },
+      "temporal": {
+        "generatedAt": "2026-10-13T15:51:09.3790257+02:00",
+        "kickoff": "2026-10-13T19:00:00.000Z",
+        "preMatch": true
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-06",
+      "fixture": "Galatasaray - Barcelona",
+      "classification": "B",
+      "market": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+      "marketFamily": "Tiri giocatore",
+      "marketCode": "28507",
+      "selection": "OVER",
+      "label": "Dani Olmo over 1,5 tiri · sostituto incluso",
+      "threshold": 1.5,
+      "player": {
+        "id": "dani-olmo",
+        "name": "Dani Olmo",
+        "team": "Barcelona",
+        "role": "forward",
+        "expectedMinutes": 84.6
+      },
+      "providerEventId": "4858143",
+      "providerMarketId": "822328537",
+      "providerSelectionId": "5379080617",
+      "selectionId": "sisal:4858143:822328537:5379080617",
+      "odds": 1.2,
+      "oddsRaw": 120,
+      "forecast": {
+        "metric": "shots",
+        "mean": 2.72,
+        "expectedMinutes": 84.6
+      },
+      "modelProbabilityPct": null,
+      "fairOdds": null,
+      "expectedValuePct": null,
+      "motivation": "2,72 tiri attesi in 84,6 minuti; forward, storico verificato su 2.522 minuti e affidabilita 73,7%.",
+      "dataQuality": {
+        "fixtureDetailedVolumes": true,
+        "playerDataStatus": "verified-history",
+        "identityStatus": "resolved"
+      },
+      "limitation": "Il forecast quantifica i tiri del solo giocatore; la quota Sisal include anche il sostituto. Probabilita, quota equa ed EV del contratto restano N/D.",
+      "quoteVerifiedAt": "2026-10-13T09:55:14.800Z",
+      "source": {
+        "provider": "Sisal",
+        "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001",
+        "curation": "data/sources/champions-md02-phase12d-additions-2026-27.json"
+      },
+      "temporal": {
+        "generatedAt": "2026-10-13T15:51:09.3790257+02:00",
+        "kickoff": "2026-10-13T19:00:00.000Z",
+        "preMatch": true
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-07",
+      "fixture": "Leipzig - PSV Eindhoven",
+      "classification": "B",
+      "market": "U/O  TIRI IN PORTA GIOCATORE (DUO) INC PALI TRAVERSE INC TS",
+      "marketFamily": "Tiri in porta giocatore",
+      "marketCode": "28506",
+      "selection": "OVER",
+      "label": "Christopher Nkunku over 0,5 SOT · sostituto incluso · pali/traverse inclusi",
+      "threshold": 0.5,
+      "player": {
+        "id": "christopher-nkunku",
+        "name": "Christopher Nkunku",
+        "team": "Leipzig",
+        "role": "midfielder",
+        "expectedMinutes": 84.6
+      },
+      "providerEventId": "4858176",
+      "providerMarketId": "822440794",
+      "providerSelectionId": "5379720627",
+      "selectionId": "sisal:4858176:822440794:5379720627",
+      "odds": 1.16,
+      "oddsRaw": 116,
+      "forecast": {
+        "metric": "shotsOnTarget",
+        "mean": 0.99,
+        "expectedMinutes": 84.6
+      },
+      "modelProbabilityPct": null,
+      "fairOdds": null,
+      "expectedValuePct": null,
+      "motivation": "0,99 SOT attesi in 84,6 minuti; midfielder, storico verificato su 1.351 minuti e affidabilita 60%.",
+      "dataQuality": {
+        "fixtureDetailedVolumes": true,
+        "playerDataStatus": "verified-history",
+        "identityStatus": "resolved"
+      },
+      "limitation": "Il forecast quantifica i SOT del solo giocatore; la quota Sisal include il sostituto e anche pali/traverse. Probabilita, quota equa ed EV del contratto restano N/D.",
+      "quoteVerifiedAt": "2026-10-13T09:55:14.800Z",
+      "source": {
+        "provider": "Sisal",
+        "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001",
+        "curation": "data/sources/champions-md02-phase12d-additions-2026-27.json"
+      },
+      "temporal": {
+        "generatedAt": "2026-10-13T15:51:09.3790257+02:00",
+        "kickoff": "2026-10-13T19:00:00.000Z",
+        "preMatch": true
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-08",
+      "fixture": "Viking - Bayern München",
+      "classification": "B",
+      "market": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+      "marketFamily": "Tiri giocatore",
+      "marketCode": "28507",
+      "selection": "OVER",
+      "label": "Peter Christiansen over 1,5 tiri · sostituto incluso",
+      "threshold": 1.5,
+      "player": {
+        "id": "peter-christiansen",
+        "name": "Peter Christiansen",
+        "team": "Viking",
+        "role": "forward",
+        "expectedMinutes": 84.6
+      },
+      "providerEventId": "4858141",
+      "providerMarketId": "822307883",
+      "providerSelectionId": "5379053237",
+      "selectionId": "sisal:4858141:822307883:5379053237",
+      "odds": 1.57,
+      "oddsRaw": 157,
+      "forecast": {
+        "metric": "shots",
+        "mean": 2.68,
+        "expectedMinutes": 84.6
+      },
+      "modelProbabilityPct": null,
+      "fairOdds": null,
+      "expectedValuePct": null,
+      "motivation": "2,68 tiri attesi in 84,6 minuti; forward, storico verificato su 1.874 minuti e affidabilita 67,6%.",
+      "dataQuality": {
+        "fixtureDetailedVolumes": true,
+        "playerDataStatus": "verified-history",
+        "identityStatus": "resolved"
+      },
+      "limitation": "Il forecast quantifica i tiri del solo giocatore; la quota Sisal include anche il sostituto. Probabilita, quota equa ed EV del contratto restano N/D.",
+      "quoteVerifiedAt": "2026-10-13T09:55:14.800Z",
+      "source": {
+        "provider": "Sisal",
+        "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001",
+        "curation": "data/sources/champions-md02-phase12d-additions-2026-27.json"
+      },
+      "temporal": {
+        "generatedAt": "2026-10-13T15:51:09.3790257+02:00",
+        "kickoff": "2026-10-13T19:00:00.000Z",
+        "preMatch": true
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-09",
+      "fixture": "Villarreal - Napoli",
+      "classification": "B",
+      "market": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+      "marketFamily": "Tiri giocatore",
+      "marketCode": "28507",
+      "selection": "OVER",
+      "label": "Gerard Moreno over 1,5 tiri · sostituto incluso",
+      "threshold": 1.5,
+      "player": {
+        "id": "gerard-moreno",
+        "name": "Gerard Moreno",
+        "team": "Villarreal",
+        "role": "forward",
+        "expectedMinutes": 84.6
+      },
+      "providerEventId": "4858139",
+      "providerMarketId": "821934797",
+      "providerSelectionId": "5376899039",
+      "selectionId": "sisal:4858139:821934797:5376899039",
+      "odds": 1.25,
+      "oddsRaw": 125,
+      "forecast": {
+        "metric": "shots",
+        "mean": 2.54,
+        "expectedMinutes": 84.6
+      },
+      "modelProbabilityPct": null,
+      "fairOdds": null,
+      "expectedValuePct": null,
+      "motivation": "2,54 tiri attesi in 84,6 minuti; forward, storico verificato su 1.395 minuti e affidabilita 60,8%.",
+      "dataQuality": {
+        "fixtureDetailedVolumes": true,
+        "playerDataStatus": "verified-history",
+        "identityStatus": "resolved"
+      },
+      "limitation": "Il forecast quantifica i tiri del solo giocatore; la quota Sisal include anche il sostituto. Probabilita, quota equa ed EV del contratto restano N/D.",
+      "quoteVerifiedAt": "2026-10-13T09:55:14.800Z",
+      "source": {
+        "provider": "Sisal",
+        "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001",
+        "curation": "data/sources/champions-md02-phase12d-additions-2026-27.json"
+      },
+      "temporal": {
+        "generatedAt": "2026-10-13T15:51:09.3790257+02:00",
+        "kickoff": "2026-10-13T19:00:00.000Z",
+        "preMatch": true
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-10",
+      "fixture": "Feyenoord - Como",
+      "classification": "B",
+      "market": "U/O  TIRI IN PORTA GIOCATORE (DUO) INC PALI TRAVERSE INC TS",
+      "marketFamily": "Tiri in porta giocatore",
+      "marketCode": "28506",
+      "selection": "OVER",
+      "label": "Nacho Ferri over 0,5 SOT · sostituto incluso · pali/traverse inclusi",
+      "threshold": 0.5,
+      "player": {
+        "id": "nacho-ferri",
+        "name": "Nacho Ferri",
+        "team": "Feyenoord",
+        "role": "forward",
+        "expectedMinutes": 84.6
+      },
+      "providerEventId": "4858181",
+      "providerMarketId": "822445292",
+      "providerSelectionId": "5379737866",
+      "selectionId": "sisal:4858181:822445292:5379737866",
+      "odds": 1.44,
+      "oddsRaw": 144,
+      "forecast": {
+        "metric": "shotsOnTarget",
+        "mean": 1.52,
+        "expectedMinutes": 84.6
+      },
+      "modelProbabilityPct": null,
+      "fairOdds": null,
+      "expectedValuePct": null,
+      "motivation": "1,52 SOT attesi in 84,6 minuti; forward, storico verificato su 2.914 minuti e affidabilita 76,4%.",
+      "dataQuality": {
+        "fixtureDetailedVolumes": true,
+        "playerDataStatus": "verified-history",
+        "identityStatus": "resolved"
+      },
+      "limitation": "Il forecast quantifica i SOT del solo giocatore; la quota Sisal include il sostituto e anche pali/traverse. Probabilita, quota equa ed EV del contratto restano N/D.",
+      "quoteVerifiedAt": "2026-10-13T09:55:14.800Z",
+      "source": {
+        "provider": "Sisal",
+        "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001",
+        "curation": "data/sources/champions-md02-phase12d-additions-2026-27.json"
+      },
+      "temporal": {
+        "generatedAt": "2026-10-13T15:51:09.3790257+02:00",
+        "kickoff": "2026-10-14T16:45:00.000Z",
+        "preMatch": true
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-12",
+      "fixture": "Roma - Real Madrid",
+      "classification": "B",
+      "market": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+      "marketFamily": "Tiri giocatore",
+      "marketCode": "28507",
+      "selection": "OVER",
+      "label": "Paulo Dybala over 1,5 tiri · sostituto incluso",
+      "threshold": 1.5,
+      "player": {
+        "id": "paulo-dybala",
+        "name": "Paulo Dybala",
+        "team": "Roma",
+        "role": "forward",
+        "expectedMinutes": 84.6
+      },
+      "providerEventId": "4858182",
+      "providerMarketId": "822400587",
+      "providerSelectionId": "5379489006",
+      "selectionId": "sisal:4858182:822400587:5379489006",
+      "odds": 1.16,
+      "oddsRaw": 116,
+      "forecast": {
+        "metric": "shots",
+        "mean": 2.94,
+        "expectedMinutes": 84.6
+      },
+      "modelProbabilityPct": null,
+      "fairOdds": null,
+      "expectedValuePct": null,
+      "motivation": "2,94 tiri attesi in 84,6 minuti; forward, storico verificato su 1.355 minuti e affidabilita 60,1%.",
+      "dataQuality": {
+        "fixtureDetailedVolumes": true,
+        "playerDataStatus": "verified-history",
+        "identityStatus": "resolved"
+      },
+      "limitation": "Il forecast quantifica i tiri del solo giocatore; la quota Sisal include anche il sostituto. Probabilita, quota equa ed EV del contratto restano N/D.",
+      "quoteVerifiedAt": "2026-10-13T09:55:14.800Z",
+      "source": {
+        "provider": "Sisal",
+        "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001",
+        "curation": "data/sources/champions-md02-phase12d-additions-2026-27.json"
+      },
+      "temporal": {
+        "generatedAt": "2026-10-13T15:51:09.3790257+02:00",
+        "kickoff": "2026-10-14T19:00:00.000Z",
+        "preMatch": true
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-13",
+      "fixture": "Aston Villa - Fenerbahçe",
+      "classification": "B",
+      "market": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+      "marketFamily": "Tiri giocatore",
+      "marketCode": "28507",
+      "selection": "OVER",
+      "label": "Emiliano Buendía over 1,5 tiri · sostituto incluso",
+      "threshold": 1.5,
+      "player": {
+        "id": "emiliano-buendia",
+        "name": "Emiliano Buendía",
+        "team": "Aston Villa",
+        "role": "forward",
+        "expectedMinutes": 84.6
+      },
+      "providerEventId": "4858178",
+      "providerMarketId": "822473467",
+      "providerSelectionId": "5379916640",
+      "selectionId": "sisal:4858178:822473467:5379916640",
+      "odds": 1.16,
+      "oddsRaw": 116,
+      "forecast": {
+        "metric": "shots",
+        "mean": 2.5,
+        "expectedMinutes": 84.6
+      },
+      "modelProbabilityPct": null,
+      "fairOdds": null,
+      "expectedValuePct": null,
+      "motivation": "2,5 tiri attesi in 84,6 minuti; forward, storico verificato su 2.769 minuti e affidabilita 75,5%.",
+      "dataQuality": {
+        "fixtureDetailedVolumes": true,
+        "playerDataStatus": "verified-history",
+        "identityStatus": "resolved"
+      },
+      "limitation": "Il forecast quantifica i tiri del solo giocatore; la quota Sisal include anche il sostituto. Probabilita, quota equa ed EV del contratto restano N/D.",
+      "quoteVerifiedAt": "2026-10-13T09:55:14.800Z",
+      "source": {
+        "provider": "Sisal",
+        "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001",
+        "curation": "data/sources/champions-md02-phase12d-additions-2026-27.json"
+      },
+      "temporal": {
+        "generatedAt": "2026-10-13T15:51:09.3790257+02:00",
+        "kickoff": "2026-10-14T19:00:00.000Z",
+        "preMatch": true
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-14",
+      "fixture": "Shakhtar Donetsk - AEK Athens",
+      "classification": "B",
+      "market": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+      "marketFamily": "Tiri giocatore",
+      "marketCode": "28507",
+      "selection": "OVER",
+      "label": "Kauã Elias over 1,5 tiri · sostituto incluso",
+      "threshold": 1.5,
+      "player": {
+        "id": "kaua-elias",
+        "name": "Kauã Elias",
+        "team": "Shakhtar Donetsk",
+        "role": "forward",
+        "expectedMinutes": 84.6
+      },
+      "providerEventId": "4858144",
+      "providerMarketId": "822494796",
+      "providerSelectionId": "5380035442",
+      "selectionId": "sisal:4858144:822494796:5380035442",
+      "odds": 1.25,
+      "oddsRaw": 125,
+      "forecast": {
+        "metric": "shots",
+        "mean": 2.87,
+        "expectedMinutes": 84.6
+      },
+      "modelProbabilityPct": null,
+      "fairOdds": null,
+      "expectedValuePct": null,
+      "motivation": "2,87 tiri attesi in 84,6 minuti; forward, storico verificato su 817 minuti e affidabilita 47,6%.",
+      "dataQuality": {
+        "fixtureDetailedVolumes": true,
+        "playerDataStatus": "verified-history",
+        "identityStatus": "resolved"
+      },
+      "limitation": "Il forecast quantifica i tiri del solo giocatore; la quota Sisal include anche il sostituto. Probabilita, quota equa ed EV del contratto restano N/D.",
+      "quoteVerifiedAt": "2026-10-13T09:55:14.800Z",
+      "source": {
+        "provider": "Sisal",
+        "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001",
+        "curation": "data/sources/champions-md02-phase12d-additions-2026-27.json"
+      },
+      "temporal": {
+        "generatedAt": "2026-10-13T15:51:09.3790257+02:00",
+        "kickoff": "2026-10-14T19:00:00.000Z",
+        "preMatch": true
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-16",
+      "fixture": "Manchester City - Paris Saint-Germain",
+      "classification": "B",
+      "market": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+      "marketFamily": "Tiri giocatore",
+      "marketCode": "28507",
+      "selection": "OVER",
+      "label": "Ousmane Dembélé over 1,5 tiri · sostituto incluso",
+      "threshold": 1.5,
+      "player": {
+        "id": "ousmane-dembele",
+        "name": "Ousmane Dembélé",
+        "team": "Paris Saint-Germain",
+        "role": "forward",
+        "expectedMinutes": 84.6
+      },
+      "providerEventId": "4858174",
+      "providerMarketId": "822407528",
+      "providerSelectionId": "5379562023",
+      "selectionId": "sisal:4858174:822407528:5379562023",
+      "odds": 1.16,
+      "oddsRaw": 116,
+      "forecast": {
+        "metric": "shots",
+        "mean": 2.53,
+        "expectedMinutes": 84.6
+      },
+      "modelProbabilityPct": null,
+      "fairOdds": null,
+      "expectedValuePct": null,
+      "motivation": "2,53 tiri attesi in 84,6 minuti; forward, storico verificato su 1.890 minuti e affidabilita 67,7%.",
+      "dataQuality": {
+        "fixtureDetailedVolumes": true,
+        "playerDataStatus": "verified-history",
+        "identityStatus": "resolved"
+      },
+      "limitation": "Il forecast quantifica i tiri del solo giocatore; la quota Sisal include anche il sostituto. Probabilita, quota equa ed EV del contratto restano N/D.",
+      "quoteVerifiedAt": "2026-10-13T09:55:14.800Z",
+      "source": {
+        "provider": "Sisal",
+        "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001",
+        "curation": "data/sources/champions-md02-phase12d-additions-2026-27.json"
+      },
+      "temporal": {
+        "generatedAt": "2026-10-13T15:51:09.3790257+02:00",
+        "kickoff": "2026-10-14T19:00:00.000Z",
+        "preMatch": true
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-17",
+      "fixture": "Real Betis - Porto",
+      "classification": "B",
+      "market": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+      "marketFamily": "Tiri giocatore",
+      "marketCode": "28507",
+      "selection": "OVER",
+      "label": "Abde Ezzalzouli over 1,5 tiri · sostituto incluso",
+      "threshold": 1.5,
+      "player": {
+        "id": "abde-ezzalzouli",
+        "name": "Abde Ezzalzouli",
+        "team": "Real Betis",
+        "role": "forward",
+        "expectedMinutes": 84.6
+      },
+      "providerEventId": "4858175",
+      "providerMarketId": "822426842",
+      "providerSelectionId": "5379630012",
+      "selectionId": "sisal:4858175:822426842:5379630012",
+      "odds": 1.2,
+      "oddsRaw": 120,
+      "forecast": {
+        "metric": "shots",
+        "mean": 2.85,
+        "expectedMinutes": 84.6
+      },
+      "modelProbabilityPct": null,
+      "fairOdds": null,
+      "expectedValuePct": null,
+      "motivation": "2,85 tiri attesi in 84,6 minuti; forward, storico verificato su 3.061 minuti e affidabilita 77,3%.",
+      "dataQuality": {
+        "fixtureDetailedVolumes": true,
+        "playerDataStatus": "verified-history",
+        "identityStatus": "resolved"
+      },
+      "limitation": "Il forecast quantifica i tiri del solo giocatore; la quota Sisal include anche il sostituto. Probabilita, quota equa ed EV del contratto restano N/D.",
+      "quoteVerifiedAt": "2026-10-13T09:55:14.800Z",
+      "source": {
+        "provider": "Sisal",
+        "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001",
+        "curation": "data/sources/champions-md02-phase12d-additions-2026-27.json"
+      },
+      "temporal": {
+        "generatedAt": "2026-10-13T15:51:09.3790257+02:00",
+        "kickoff": "2026-10-14T19:00:00.000Z",
+        "preMatch": true
+      }
+    }
+  ],
+  "inserted": {
+    "total": 31,
+    "classA": 17,
+    "classB": 14,
+    "classC": 0,
+    "team": 17,
+    "individual": 14
+  },
+  "updatedTotals": {
+    "predictions": 94,
+    "clickableSelections": 94,
+    "mathematicallyEvaluable": 35,
+    "notProbabilisticallyEvaluable": 59
+  },
+  "distribution": [
+    {
+      "fixtureId": "ucl-2026-27-md02-01",
+      "fixture": "Lens - Sporting CP",
+      "kickoff": "2026-10-13 18:45 Europe/Rome",
+      "baseline": 3,
+      "added": 1,
+      "total": 4,
+      "classA": 0,
+      "classB": 1,
+      "markets": {
+        "Tiri giocatore": 1
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-02",
+      "fixture": "Sabah - Slavia Praha",
+      "kickoff": "2026-10-13 18:45 Europe/Rome",
+      "baseline": 1,
+      "added": 1,
+      "total": 2,
+      "classA": 1,
+      "classB": 0,
+      "markets": {
+        "Gol": 1
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-03",
+      "fixture": "Arsenal - Lille",
+      "kickoff": "2026-10-13 21:00 Europe/Rome",
+      "baseline": 4,
+      "added": 2,
+      "total": 6,
+      "classA": 1,
+      "classB": 1,
+      "markets": {
+        "Gol": 1,
+        "Tiri giocatore": 1
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-04",
+      "fixture": "Atlético de Madrid - Manchester United",
+      "kickoff": "2026-10-13 21:00 Europe/Rome",
+      "baseline": 3,
+      "added": 2,
+      "total": 5,
+      "classA": 1,
+      "classB": 1,
+      "markets": {
+        "Gol": 1,
+        "Tiri giocatore": 1
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-05",
+      "fixture": "Inter - Club Brugge",
+      "kickoff": "2026-10-13 21:00 Europe/Rome",
+      "baseline": 4,
+      "added": 2,
+      "total": 6,
+      "classA": 1,
+      "classB": 1,
+      "markets": {
+        "Tiri in porta giocatore": 1,
+        "Tiri squadra": 1
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-06",
+      "fixture": "Galatasaray - Barcelona",
+      "kickoff": "2026-10-13 21:00 Europe/Rome",
+      "baseline": 4,
+      "added": 1,
+      "total": 5,
+      "classA": 0,
+      "classB": 1,
+      "markets": {
+        "Tiri giocatore": 1
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-07",
+      "fixture": "Leipzig - PSV Eindhoven",
+      "kickoff": "2026-10-13 21:00 Europe/Rome",
+      "baseline": 3,
+      "added": 2,
+      "total": 5,
+      "classA": 1,
+      "classB": 1,
+      "markets": {
+        "Corner squadra": 1,
+        "Tiri in porta giocatore": 1
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-08",
+      "fixture": "Viking - Bayern München",
+      "kickoff": "2026-10-13 21:00 Europe/Rome",
+      "baseline": 4,
+      "added": 1,
+      "total": 5,
+      "classA": 0,
+      "classB": 1,
+      "markets": {
+        "Tiri giocatore": 1
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-09",
+      "fixture": "Villarreal - Napoli",
+      "kickoff": "2026-10-13 21:00 Europe/Rome",
+      "baseline": 4,
+      "added": 1,
+      "total": 5,
+      "classA": 0,
+      "classB": 1,
+      "markets": {
+        "Tiri giocatore": 1
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-10",
+      "fixture": "Feyenoord - Como",
+      "kickoff": "2026-10-14 18:45 Europe/Rome",
+      "baseline": 4,
+      "added": 3,
+      "total": 7,
+      "classA": 2,
+      "classB": 1,
+      "markets": {
+        "Corner squadra": 1,
+        "Tiri in porta giocatore": 1,
+        "Tiri in porta squadra": 1
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-11",
+      "fixture": "LASK - Liverpool",
+      "kickoff": "2026-10-14 18:45 Europe/Rome",
+      "baseline": 3,
+      "added": 1,
+      "total": 4,
+      "classA": 1,
+      "classB": 0,
+      "markets": {
+        "Gol": 1
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-12",
+      "fixture": "Roma - Real Madrid",
+      "kickoff": "2026-10-14 21:00 Europe/Rome",
+      "baseline": 4,
+      "added": 4,
+      "total": 8,
+      "classA": 3,
+      "classB": 1,
+      "markets": {
+        "Corner squadra": 1,
+        "Gol": 1,
+        "Tiri giocatore": 1,
+        "Tiri in porta squadra": 1
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-13",
+      "fixture": "Aston Villa - Fenerbahçe",
+      "kickoff": "2026-10-14 21:00 Europe/Rome",
+      "baseline": 4,
+      "added": 1,
+      "total": 5,
+      "classA": 0,
+      "classB": 1,
+      "markets": {
+        "Tiri giocatore": 1
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-14",
+      "fixture": "Shakhtar Donetsk - AEK Athens",
+      "kickoff": "2026-10-14 21:00 Europe/Rome",
+      "baseline": 2,
+      "added": 2,
+      "total": 4,
+      "classA": 1,
+      "classB": 1,
+      "markets": {
+        "Corner squadra": 1,
+        "Tiri giocatore": 1
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-15",
+      "fixture": "Bodø/Glimt - Borussia Dortmund",
+      "kickoff": "2026-10-14 21:00 Europe/Rome",
+      "baseline": 4,
+      "added": 1,
+      "total": 5,
+      "classA": 1,
+      "classB": 0,
+      "markets": {
+        "Tiri squadra": 1
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-16",
+      "fixture": "Manchester City - Paris Saint-Germain",
+      "kickoff": "2026-10-14 21:00 Europe/Rome",
+      "baseline": 4,
+      "added": 3,
+      "total": 7,
+      "classA": 2,
+      "classB": 1,
+      "markets": {
+        "Corner squadra": 1,
+        "Tiri giocatore": 1,
+        "Tiri in porta squadra": 1
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-17",
+      "fixture": "Real Betis - Porto",
+      "kickoff": "2026-10-14 21:00 Europe/Rome",
+      "baseline": 4,
+      "added": 2,
+      "total": 6,
+      "classA": 1,
+      "classB": 1,
+      "markets": {
+        "Tiri giocatore": 1,
+        "Tiri squadra": 1
+      }
+    },
+    {
+      "fixtureId": "ucl-2026-27-md02-18",
+      "fixture": "Slovan Bratislava - Stuttgart",
+      "kickoff": "2026-10-14 21:00 Europe/Rome",
+      "baseline": 4,
+      "added": 1,
+      "total": 5,
+      "classA": 1,
+      "classB": 0,
+      "markets": {
+        "Gol": 1
+      }
+    }
+  ],
+  "excluded": [
+    {
+      "market": "DNB, handicap e mercati con push",
+      "classification": "C",
+      "reason": "Gestione push/handicap non serializzata nel forecast MD2."
+    },
+    {
+      "market": "Goal/no-goal, multigol e combo goal",
+      "classification": "C",
+      "reason": "Nessuna probabilita originale serializzata per l'identico contratto; non ricostruita dalla sola media."
+    },
+    {
+      "market": "Corner diversi da U/O squadra 4.5",
+      "classification": "B/C",
+      "reason": "Volumi disponibili, ma il backtest esistente certifica soltanto la soglia squadra 4.5."
+    },
+    {
+      "market": "Falli match, squadra e giocatore",
+      "classification": "C",
+      "reason": "Distribuzione non validata e contratti Sisal inclusivi dei supplementari dove presenti."
+    },
+    {
+      "market": "Punti cartellini e cartellini DUO",
+      "classification": "C",
+      "reason": "Target provider diverso dal conteggio cartellini del forecast; cap per giocatore e sostituto non modellati."
+    },
+    {
+      "market": "Marcatori e primo/ultimo marcatore",
+      "classification": "C",
+      "reason": "Probabilita giocatore, sostituto, ordine e pali/traverse non modellate sul contratto Sisal."
+    },
+    {
+      "market": "Primo tempo, entrambi i tempi e combo",
+      "classification": "C",
+      "reason": "Il modello disponibile e full-match e non certifica le dipendenze richieste."
+    }
+  ],
+  "sources": {
+    "source": {
+      "path": "data/sources/champions-md02-phase12d-additions-2026-27.json",
+      "sha256": "5F45AC06AE3BF8B19C342C560508BE7594FB23D0F51E5A99712656389D68F16D"
+    },
+    "schedina": {
+      "path": "data/normalized/schedina-champions-md02.json",
+      "sha256": "00FDCDA3EBFBC1A130D21817E266517E7698EFE8614A0B836500B03DD414C952"
+    },
+    "odds": {
+      "path": "data/normalized/odds/sisal/champions-league.json",
+      "sha256": "2969A579C55F3748FA8712BD83374E86239163518204ED7FAFCBDAC7C03FA4FB"
+    },
+    "forecast": {
+      "path": "data/normalized/champions-pilot-predictions-md02-2026-27.json",
+      "sha256": "4B514A554019E361BC5CA020799E6A379A17921F5A5EF27AA3E9E32FF73148D3"
+    },
+    "volumeBacktest": {
+      "path": "data/normalized/champions-pilot-volume-backtest.json",
+      "sha256": "0EA2E91FA180EE28E7395AC197FBB2AF848E55D7E4A487B1E5DB595DD9EF809B"
+    }
+  }
+}

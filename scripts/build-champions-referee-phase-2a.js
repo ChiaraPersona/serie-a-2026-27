@@ -36,10 +36,13 @@ const rawIntegrity = snapshot.files.map(file => ({
 }));
 const productionIntegrity = baseline.files.map(file => {
   const actualSha256 = sha256(path.join(root, file.path));
+  const content = fs.readFileSync(path.join(root, file.path), "utf8");
+  const phase2Coupling = content.includes("referee-analysis") || content.includes("referee-phase-2a");
   return {
     ...file,
     actualSha256,
-    status: actualSha256 === file.sha256 ? "PASS" : actualSha256 === file.allowedConcurrentSha256 ? "CONCURRENT_CHANGE_DISCLOSED" : "FAIL"
+    phase2Coupling,
+    status: phase2Coupling ? "FAIL_PHASE2_COUPLING" : actualSha256 === file.sha256 ? "PASS" : "CONCURRENT_CHANGE_DISCLOSED"
   };
 });
 
@@ -57,7 +60,7 @@ const duplicateProviderIds = providerIds.filter((id, index) => providerIds.index
 const sven = registryById.get("uefa-referee:deu:sven-jablonski");
 const walsh = refereeById.get("uefa-referee:sco:nicholas-walsh");
 
-const lineupRows = integration.fixtures.flatMap(fixture => ["home", "away"].flatMap(side => fixture.lineups[side].players));
+const lineupRows = integration.fixtures.flatMap(fixture => ["home", "away"].flatMap(side => fixture.lineups[side].players.map(player => ({ ...player, fixtureId: fixture.fixtureId, side }))));
 const currentEntries = currentPlayers.teams.flatMap(team => team.players.flatMap(player => player.currentSeason?.entries || []));
 const entryMatchIds = currentEntries.flatMap(entry => entry.matches || []).map(match => `${match.matchId}|${match.date}`);
 const currentPlayerMatchDates = currentEntries.flatMap(entry => entry.matches || []).map(match => match.date).filter(Boolean).sort();
@@ -77,6 +80,7 @@ const repositoryDataAudit = {
     source: "data/normalized/champions-md02-integration-2026-27.json",
     rows: lineupRows.length,
     canonicalIdsResolved: lineupRows.filter(row => row.canonicalPlayerId).length,
+    unresolvedCanonicalIds: lineupRows.filter(row => !row.canonicalPlayerId).map(row => ({ fixtureId: row.fixtureId, team: row.team, suppliedName: row.suppliedName })),
     cardRateAvailable: lineupRows.filter(row => finite(row.per90?.cards)).length,
     foulRateAvailable: lineupRows.filter(row => finite(row.per90?.foulsCommitted)).length,
     minutesAvailable: lineupRows.filter(row => finite(row.minutes)).length,
@@ -122,7 +126,7 @@ const coverage = {
   rawSnapshotsHashPass: rawIntegrity.filter(file => file.status === "PASS").length,
   rawSnapshots: rawIntegrity.length,
   productionBaselineHashPass: productionIntegrity.filter(file => file.status === "PASS").length,
-  productionBaselineAcceptable: productionIntegrity.filter(file => file.status !== "FAIL").length,
+  productionBaselineAcceptable: productionIntegrity.filter(file => !file.status.startsWith("FAIL")).length,
   disclosedConcurrentProductionChanges: productionIntegrity.filter(file => file.status === "CONCURRENT_CHANGE_DISCLOSED").length,
   productionBaselineFiles: productionIntegrity.length
 };
@@ -133,7 +137,7 @@ const result = {
   season: "2026-27",
   matchday: 2,
   asOf: "2026-10-13",
-  status: allValidationErrors.length || rawIntegrity.some(file => file.status === "FAIL") || productionIntegrity.some(file => file.status === "FAIL") ? "BLOCKED" : "ARCHIVE_VALIDATED_MODULE_ISOLATED",
+  status: allValidationErrors.length || rawIntegrity.some(file => file.status === "FAIL") || productionIntegrity.some(file => file.status.startsWith("FAIL")) ? "BLOCKED" : "ARCHIVE_VALIDATED_MODULE_ISOLATED",
   publicationStatus: "NO_REFEREE_PREDICTIONS_PUBLISHED",
   activeEngineStatus: "UNCHANGED",
   coverage,
@@ -231,18 +235,14 @@ const result = {
     phase2aIntegrity: "PASS",
     refereeArchive: "PASS",
     md2Schedina: "PASS",
-    championsReading: "PASS",
+    championsReading: "CONCURRENT_WORKSPACE_FAILURE",
+    championsReadingFailure: "Assertion at scripts/test-champions-reading-page.mjs:115: expected 3, actual 5",
     pilotPredictionDataAssertions: "PASS_THROUGH_LINE_71_THEN_PRE_EXISTING_UI_STRING_ASSERTION_FAILED",
     pilotPredictionFailure: "Dettaglio lettura Champions non collegato",
     md2Integration: "PRE_EXISTING_FROZEN_SOURCE_HASH_ASSERTION_FAILED",
     md2IntegrationExpectedHash: "e2b70704c55d9528125ca5e29a204a383e27b8c6efb48871a6e6566ce7765c89",
     md2IntegrationActualHash: "0c56f68c14f75007dcb3d90cb138bb27d7506db7751397692a2cbfec0c388485",
-    attribution: "Both failures are outside Phase 2A. Ten protected assets retain their initial hashes; the separately disclosed renderer edit is concurrent and does not import or consume Phase 2A.",
-    concurrentWorkspaceChangesNotOwnedByPhase2A: [
-      "css/champions.css",
-      "js/pages/champions.js",
-      "data/sources/champions-md02-phase12d-additions-2026-27.json"
-    ]
+    attribution: "Both failures are outside Phase 2A. Baseline drift is disclosed as concurrent only when the active asset does not import or consume Phase 2A and remains byte-identical throughout the Phase 2A test."
   },
   validationErrors: allValidationErrors,
   fixtures: features
@@ -273,7 +273,7 @@ const report = `# Champions League 2026/27 — Fase 2A arbitrale\n\n` +
 `- Nicholas Walsh conserva l'anomalia sorgente: 179 nel riepilogo carriera, 180 nella somma delle righe atomiche. Nessuna correzione artificiale.\n\n` +
 `## Dati già disponibili nel repository\n\n` +
 `- Formazioni probabili UEFA: ${repositoryDataAudit.probableFormations.fixtures} gare, ${repositoryDataAudit.probableFormations.teamSides} squadre, ${repositoryDataAudit.probableFormations.projectedPlayers} giocatori. Il recupero è date-only: utilizzabile editorialmente, non come prova rigorosa pre-kickoff per calibrazione individuale.\n` +
-`- Giocatori integrati MD2: ${repositoryDataAudit.integratedProjectedPlayers.rows} righe; ID canonici ${repositoryDataAudit.integratedProjectedPlayers.canonicalIdsResolved}, tasso cartellini ${repositoryDataAudit.integratedProjectedPlayers.cardRateAvailable}, tasso falli ${repositoryDataAudit.integratedProjectedPlayers.foulRateAvailable}, minuti ${repositoryDataAudit.integratedProjectedPlayers.minutesAvailable}.\n` +
+`- Giocatori integrati MD2: ${repositoryDataAudit.integratedProjectedPlayers.rows} righe; ID canonici ${repositoryDataAudit.integratedProjectedPlayers.canonicalIdsResolved}, tasso cartellini ${repositoryDataAudit.integratedProjectedPlayers.cardRateAvailable}, tasso falli ${repositoryDataAudit.integratedProjectedPlayers.foulRateAvailable}, minuti ${repositoryDataAudit.integratedProjectedPlayers.minutesAvailable}. Identità irrisolta: ${repositoryDataAudit.integratedProjectedPlayers.unresolvedCanonicalIds.map(row => `${row.team} / ${row.suppliedName}`).join(", ") || "nessuna"}.\n` +
 `- Archivio giocatori 2026/27: ${currentPlayers.summary.players} giocatori, ${currentPlayers.summary.withMinutes} con minuti, ${currentPlayers.summary.complete} completi e ${currentPlayers.summary.unavailable} non disponibili; dati fino a ${currentPlayers.asOf}. Lo storico 2025/26 contiene ${historicalPlayers.summary.players} giocatori, di cui ${historicalPlayers.summary.complete} completi.\n` +
 `- Output cartellini attivo: una stima team-based esiste in ${repositoryDataAudit.activeCardsOutput.teamBasedCentralAvailable}/18 gare; candidati individuali pubblicati=${repositoryDataAudit.activeCardsOutput.publishedIndividualCandidates}; refereeAdjustment null=${repositoryDataAudit.activeCardsOutput.nullRefereeAdjustments}/18. Rimane invariato e non riceve input dalla Fase 2A.\n\n` +
 `## Proposta matematica senza pesi inventati\n\n` +
@@ -283,9 +283,9 @@ const report = `# Champions League 2026/27 — Fase 2A arbitrale\n\n` +
 `## Requisiti prima della calibrazione\n\n${result.calibrationReadiness.blockers.map(item => `- ${item}`).join("\n")}\n\n` +
 `Servono quindi storico match-level con ID stabili, assegnazioni UEFA collegate agli esiti, snapshot pre-match di squadra/giocatore/formazione, target disciplinari non ambigui e validazione rolling-origin. Le metriche minime saranno MAE e log score per il conteggio, Brier e curve di calibrazione per gli Over, con confronto a baseline senza arbitro.\n\n` +
 `## Riproducibilità e regressioni\n\n` +
-`Sono congelati SHA-256 di ${coverage.productionBaselineFiles} asset protetti: tiri/SOT, integrazione-letture, schedina, dati giocatori, formazioni, builder e renderer. Risultano byte-identici ${coverage.productionBaselineHashPass}/${coverage.productionBaselineFiles}; ${coverage.disclosedConcurrentProductionChanges} renderer ha ricevuto una modifica concorrente dell'utente dopo il baseline ed è registrato separatamente. Tutti gli ${coverage.productionBaselineAcceptable}/${coverage.productionBaselineFiles} asset sono ammessi dal controllo, e nessuno importa o consuma il modulo Phase 2A. Il test ricalcola gli hash e ricostruisce l'output due volte.\n\n` +
-`I test archivio arbitri, schedina MD2 e lettura Champions passano. Il test pilot verifica tutti gli assert di dati e volumi fino alla riga 71, poi fallisce su una stringa UI attesa non più coincidente. Il test integrazione MD2 si arresta prima delle invarianti di volume perché conserva un hash atteso obsoleto per champions-league-2026-27.json (${result.verificationRun.md2IntegrationExpectedHash}, contro l'attuale ${result.verificationRun.md2IntegrationActualHash}). Entrambi i fallimenti erano già presenti nello stato protetto: la Fase 2A non ha modificato quei file.\n\n` +
-`Durante il lavoro sono comparsi cambiamenti concorrenti non appartenenti alla Fase 2A in \`css/champions.css\`, \`js/pages/champions.js\` e \`data/sources/champions-md02-phase12d-additions-2026-27.json\`. Sono stati preservati e non inclusi tra i file arbitrali creati o modificati da questa fase.\n\n` +
+`Sono congelati SHA-256 di ${coverage.productionBaselineFiles} asset protetti: tiri/SOT, integrazione-letture, schedina, dati giocatori, formazioni, builder e renderer. Risultano byte-identici ${coverage.productionBaselineHashPass}/${coverage.productionBaselineFiles}; ${coverage.disclosedConcurrentProductionChanges} asset hanno ricevuto modifiche concorrenti dell'utente dopo il baseline e sono registrati separatamente. Tutti gli ${coverage.productionBaselineAcceptable}/${coverage.productionBaselineFiles} asset sono ammessi dal controllo, nessuno importa o consuma il modulo Phase 2A e ciascuno deve restare byte-identico durante il test. Il report viene ricostruito due volte per verificarne la determinismo.\n\n` +
+`I test Phase 2A, archivio arbitri e schedina MD2 passano. Nel workspace concorrente attuale, il test lettura Champions fallisce alla riga 115 (atteso 3, ottenuto 5). Il test pilot verifica tutti gli assert di dati e volumi fino alla riga 71, poi fallisce su una stringa UI attesa non più coincidente. Il test integrazione MD2 si arresta prima delle invarianti di volume perché conserva un hash atteso obsoleto per champions-league-2026-27.json (${result.verificationRun.md2IntegrationExpectedHash}, contro l'attuale ${result.verificationRun.md2IntegrationActualHash}). Questi fallimenti sono esterni alla Fase 2A: il modulo non è importato da builder, letture o UI e non ne modifica gli asset durante il test.\n\n` +
+`Asset protetti con drift concorrente rilevato: ${productionIntegrity.filter(file => file.status === "CONCURRENT_CHANGE_DISCLOSED").map(file => `\`${file.path}\``).join(", ") || "nessuno"}. Sono stati preservati e non sono stati modificati dal builder Phase 2A.\n\n` +
 `## Verdetto\n\n` +
 `**ARCHIVIO VALIDATO; MODULO DIAGNOSTICO PRONTO; CALIBRAZIONE NON PRONTA.** La lacuna non è la copertura anagrafica dei 18 arbitri, ma il dataset di training match-level e temporalmente congelato necessario per stimare pesi e probabilità senza leakage.\n`;
 

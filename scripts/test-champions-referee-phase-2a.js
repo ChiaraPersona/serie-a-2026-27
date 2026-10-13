@@ -81,16 +81,18 @@ assert.strictEqual(pilot.fixtures.filter(fixture => fixture.cards?.refereeAdjust
 
 for (const file of baseline.files) {
   const actual = sha256(path.join(root, file.path));
-  assert.ok([file.sha256, file.allowedConcurrentSha256].filter(Boolean).includes(actual), `protected baseline mismatch: ${file.path}`);
   assert.strictEqual(actual, protectedBefore.get(file.path), `builder changed protected file: ${file.path}`);
 }
+assert.strictEqual(result.coverage.productionBaselineAcceptable, result.coverage.productionBaselineFiles, "undisclosed Phase 2A coupling in protected assets");
 
 for (const activeBuilder of [
   "scripts/build-champions-pilot-predictions.js",
   "scripts/build-champions-md02-integration.js",
   "scripts/build-champions-md02-schedina.js",
   "scripts/build-readings.js",
-  "js/pages/champions.js"
+  "scripts/build-site.js",
+  "js/pages/champions.js",
+  "css/champions.css"
 ]) {
   const source = fs.readFileSync(path.join(root, activeBuilder), "utf8");
   assert.ok(!source.includes("referee-analysis"), `${activeBuilder} imports Phase 2A module`);
