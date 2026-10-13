@@ -201,10 +201,61 @@ function seasonStats({ season, competition, source, lastUpdated, matchData, row 
     penaltiesWon, disciplineIndex: [yellowCards,secondYellowCards,straightRedCards].some(v=>v==null)?null:rate(yellowCards + secondYellowCards * 2 + straightRedCards * 3, played),
     cardAggregation: componentAggregate({yellowCards,secondYellowCards,straightRedCards})
   };
+  const isCurrentSeason = season === "2026/27";
+  const shots = isCurrentSeason ? matchData.sum(matchData.selected, "shots") : null;
+  const shotsOnTarget = isCurrentSeason ? matchData.sum(matchData.selected, "shotsOnTarget") : null;
+  const shotsConceded = isCurrentSeason ? matchData.sum(matchData.selected, "shots", "opponent") : null;
+  const shotsOnTargetConceded = isCurrentSeason ? matchData.sum(matchData.selected, "shotsOnTarget", "opponent") : null;
+  const expectedGoals = isCurrentSeason ? matchData.sum(matchData.selected, "expectedGoals") : null;
+  const expectedGoalsAgainst = isCurrentSeason ? matchData.sum(matchData.selected, "expectedGoals", "opponent") : null;
+  const corners = isCurrentSeason ? matchData.sum(matchData.selected, "corners") : null;
+  const bigChancesMissed = isCurrentSeason ? matchData.sum(matchData.selected, "bigChancesMissed") : null;
+  const saves = isCurrentSeason ? matchData.sum(matchData.selected, "goalkeeperSaves") : null;
+  const tackles = isCurrentSeason ? matchData.sum(matchData.selected, "tackles") : null;
+  const interceptions = isCurrentSeason ? matchData.sum(matchData.selected, "interceptions") : null;
+  const clearances = isCurrentSeason ? matchData.sum(matchData.selected, "clearances") : null;
+  const possessionTotal = isCurrentSeason ? matchData.sum(matchData.selected, "possessionPct") : null;
+  const passesAttempted = isCurrentSeason ? matchData.sum(matchData.selected, "passesAttempted") : null;
+  const passesCompleted = isCurrentSeason ? matchData.sum(matchData.selected, "passesCompleted") : null;
+  const attack = {
+    ...nullObject(STAT_FIELDS.attack),
+    shots,
+    shotsPerGame: shots == null ? null : rate(shots, played),
+    shotsOnTarget,
+    shotsOnTargetPerGame: shotsOnTarget == null ? null : rate(shotsOnTarget, played),
+    shotAccuracy: shots == null || shotsOnTarget == null ? null : percentage(shotsOnTarget, shots),
+    goalsPerGame: results.goalsPerGame,
+    shotConversion: shots == null ? null : percentage(goalsFor, shots),
+    bigChancesMissed,
+    expectedGoals,
+    expectedGoalsPerGame: expectedGoals == null ? null : rate(expectedGoals, played),
+    goalsVsExpectedGoals: expectedGoals == null ? null : Number((goalsFor - expectedGoals).toFixed(2)),
+    corners,
+    cornersPerGame: corners == null ? null : rate(corners, played)
+  };
+  const defence = {
+    ...nullObject(STAT_FIELDS.defence),
+    shotsConceded,
+    shotsOnTargetConceded,
+    goalsAgainstPerGame: rate(goalsAgainst, played),
+    expectedGoalsAgainst,
+    cleanSheets: results.cleanSheets,
+    saves,
+    savePercentage: shotsOnTargetConceded == null || saves == null ? null : percentage(saves, shotsOnTargetConceded),
+    tackles,
+    interceptions,
+    clearances
+  };
+  const possession = {
+    ...nullObject(STAT_FIELDS.possession),
+    averagePossession: possessionTotal == null ? null : rate(possessionTotal, played),
+    passesAttempted,
+    passesCompleted,
+    passAccuracy: passesAttempted == null || passesCompleted == null ? null : percentage(passesCompleted, passesAttempted)
+  };
   return {
-    season, competition, source, lastUpdated, results, attack: nullObject(STAT_FIELDS.attack),
-    defence: { ...nullObject(STAT_FIELDS.defence), goalsAgainstPerGame: rate(goalsAgainst, played), cleanSheets: results.cleanSheets },
-    discipline, possession: nullObject(STAT_FIELDS.possession), homeAway: { home: matchData.home, away: matchData.away }
+    season, competition, source, lastUpdated, results, attack, defence,
+    discipline, possession, homeAway: { home: matchData.home, away: matchData.away }
   };
 }
 

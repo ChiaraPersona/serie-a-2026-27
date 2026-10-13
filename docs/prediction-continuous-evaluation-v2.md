@@ -1,6 +1,6 @@
 # Continuous Prediction Engine V2 evaluation
 
-Generated: 2026-10-13T09:08:24.404Z · Model: player-market-v2 · Engine: 4.13.0
+Generated: 2026-10-13T09:24:27.626Z · Model: player-market-v2 · Engine: 4.13.0
 
 ## Coverage and decision
 

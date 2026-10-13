@@ -40,6 +40,16 @@ for (const summary of index.teams) {
   assert.deepStrictEqual(Object.keys(team.teamStats.seasons), ["2026/27", "2025/26"], `${team.id}: statistiche stagionali non separate`);
   assert.strictEqual(team.teamStats.seasons["2026/27"].competition, "Serie A");
   assert.strictEqual(team.teamStats.seasons["2025/26"].competition, team.previousSeason.competition);
+  const currentTeamStats = team.teamStats.seasons["2026/27"];
+  for (const field of ["shots", "shotsPerGame", "shotsOnTarget", "shotsOnTargetPerGame", "shotAccuracy", "shotConversion", "expectedGoals", "expectedGoalsPerGame", "corners", "cornersPerGame"]) {
+    assert.notStrictEqual(currentTeamStats.attack[field], null, `${team.id}: ${field} 2026/27 non aggregato`);
+  }
+  for (const field of ["shotsConceded", "shotsOnTargetConceded", "expectedGoalsAgainst", "saves", "tackles", "interceptions", "clearances"]) {
+    assert.notStrictEqual(currentTeamStats.defence[field], null, `${team.id}: ${field} 2026/27 non aggregato`);
+  }
+  for (const field of ["averagePossession", "passesAttempted", "passesCompleted", "passAccuracy"]) {
+    assert.notStrictEqual(currentTeamStats.possession[field], null, `${team.id}: ${field} 2026/27 non aggregato`);
+  }
   assert.strictEqual(team.teamStats.total.results.played, team.teamStats.seasons["2026/27"].results.played + team.teamStats.seasons["2025/26"].results.played, `${team.id}: totale partite incoerente`);
   assert.strictEqual(team.teamStats.total.results.points, team.teamStats.seasons["2026/27"].results.points + team.teamStats.seasons["2025/26"].results.points, `${team.id}: totale punti incoerente`);
   for (const section of [team.teamStats.attack, team.teamStats.possession]) {
