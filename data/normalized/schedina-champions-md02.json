@@ -14,8 +14,8 @@
   "sources": {
     "integration": {
       "path": "data/normalized/champions-md02-integration-2026-27.json",
-      "sha256": "EC80EFEEC9EA7EB55DA41CC1F52E7233DC88971E3FAFDA30ED0D253795C437AA",
-      "generatedAt": "2026-10-13T18:14:52.209Z"
+      "sha256": "3F6C0D8AB417B5434C8C92C28505F8CA8516E4C193BFE6A68A054D5FC36754F4",
+      "generatedAt": "2026-10-14T15:59:50.329Z"
     },
     "individualSelection": {
       "path": "data/sources/champions-md02-individual-selection-2026-27.json",
@@ -45,7 +45,7 @@
     },
     "officialResults": {
       "path": "data/normalized/champions-league-2026-27.json",
-      "sha256": "765C565CF54FD53101EFB723F9FCEC9961BBFA404F79E3009125CAE1968BF900"
+      "sha256": "38BD85A3B03AF1B348098EDB0CEE3827A7CB86B8F36774CB2C6B47314F60067D"
     }
   },
   "summary": {
@@ -9010,7 +9010,7 @@
               "expectedValuePct": 14.3,
               "provenance": {
                 "source": "data/normalized/champions-md02-integration-2026-27.json",
-                "predictionGeneratedAt": "2026-10-13T14:01:36.326Z"
+                "predictionGeneratedAt": "2026-10-14T15:59:50.329Z"
               }
             },
             "compatibility": {
@@ -9061,6 +9061,7 @@
           "motivation": "3,73 tiri attesi in 84,6 minuti; forward, storico verificato su 2914 minuti e affidabilita 76,4%.",
           "limitation": "Il forecast quantifica i tiri del solo giocatore; la quota Sisal include anche il sostituto. Probabilita, quota equa ed EV del contratto restano N/D.",
           "classification": "B",
+          "reviewStatus": "CONFERMATO",
           "player": {
             "canonicalPlayerId": "nacho-ferri",
             "canonicalName": "Nacho Ferri",
@@ -9070,18 +9071,20 @@
             "team": "Feyenoord",
             "side": "home",
             "role": "forward",
-            "lineupStatus": "probable-starter",
+            "lineupStatus": "official-starter",
             "expectedMinutes": 84.6,
             "historyMinutes": 2914,
             "reliability": 0.764,
             "dataStatus": "verified-history",
             "projectedShots": 3.73,
-            "projectedShotsOnTarget": 1.52
+            "projectedShotsOnTarget": 1.52,
+            "previousEditorialProjection": 3.73
           },
           "dataQuality": {
             "fixtureDetailedVolumes": true,
             "playerDataStatus": "verified-history",
-            "identityStatus": "resolved"
+            "identityStatus": "resolved",
+            "lineupReview": "CONFERMATO"
           },
           "providerEventId": "4858181",
           "providerMarketId": "822445310",
@@ -9165,11 +9168,12 @@
               "individualForecast": {
                 "metric": "shots",
                 "mean": 3.73,
-                "expectedMinutes": 84.6
+                "expectedMinutes": 84.6,
+                "previousEditorialMean": 3.73
               },
               "provenance": {
                 "source": "data/normalized/champions-md02-integration-2026-27.json",
-                "predictionGeneratedAt": "2026-10-13T14:01:36.326Z",
+                "predictionGeneratedAt": "2026-10-14T15:59:50.329Z",
                 "curationSource": "data/sources/champions-md02-individual-selection-2026-27.json",
                 "curatedAt": "2026-10-13T13:38:51.5993900+02:00"
               }
@@ -9183,7 +9187,8 @@
               "playability": {
                 "status": "PLAYABLE"
               },
-              "classification": "SELEZIONATO"
+              "classification": "SELEZIONATO",
+              "reviewStatus": "CONFERMATO"
             },
             "overlap": {
               "overlapKey": "ucl-2026-27-md02-10:822445310",
@@ -9221,6 +9226,7 @@
           "motivation": "1,32 SOT attesi in 84,6 minuti; forward, storico verificato su 3207 minuti e affidabilita 78,1%.",
           "limitation": "Il forecast quantifica i SOT del solo giocatore; la quota Sisal include il sostituto e anche pali/traverse. Probabilita, quota equa ed EV del contratto restano N/D.",
           "classification": "B",
+          "reviewStatus": "CONFERMATO",
           "player": {
             "canonicalPlayerId": "anis-hadj-moussa",
             "canonicalName": "Anis Hadj Moussa",
@@ -9230,18 +9236,20 @@
             "team": "Feyenoord",
             "side": "home",
             "role": "forward",
-            "lineupStatus": "probable-starter",
+            "lineupStatus": "official-starter",
             "expectedMinutes": 84.6,
             "historyMinutes": 3207,
             "reliability": 0.7809,
             "dataStatus": "verified-history",
             "projectedShots": 3.24,
-            "projectedShotsOnTarget": 1.32
+            "projectedShotsOnTarget": 1.32,
+            "previousEditorialProjection": 1.32
           },
           "dataQuality": {
             "fixtureDetailedVolumes": true,
             "playerDataStatus": "verified-history",
-            "identityStatus": "resolved"
+            "identityStatus": "resolved",
+            "lineupReview": "CONFERMATO"
           },
           "providerEventId": "4858181",
           "providerMarketId": "822444069",
@@ -9325,11 +9333,12 @@
               "individualForecast": {
                 "metric": "shotsOnTarget",
                 "mean": 1.32,
-                "expectedMinutes": 84.6
+                "expectedMinutes": 84.6,
+                "previousEditorialMean": 1.32
               },
               "provenance": {
                 "source": "data/normalized/champions-md02-integration-2026-27.json",
-                "predictionGeneratedAt": "2026-10-13T14:01:36.326Z",
+                "predictionGeneratedAt": "2026-10-14T15:59:50.329Z",
                 "curationSource": "data/sources/champions-md02-individual-selection-2026-27.json",
                 "curatedAt": "2026-10-13T13:38:51.5993900+02:00"
               }
@@ -9343,7 +9352,8 @@
               "playability": {
                 "status": "PLAYABLE"
               },
-              "classification": "SELEZIONATO"
+              "classification": "SELEZIONATO",
+              "reviewStatus": "CONFERMATO"
             },
             "overlap": {
               "overlapKey": "ucl-2026-27-md02-10:822444069",
@@ -9377,10 +9387,11 @@
           "modelProbabilityPct": null,
           "fairOdds": null,
           "expectedValuePct": null,
-          "evidenceLabel": "Proiezione singolo: 2,88 tiri · 84,6 min",
-          "motivation": "2,88 tiri attesi in 84,6 minuti; midfielder, storico verificato su 2884 minuti e affidabilita 76,2%.",
+          "evidenceLabel": "Proiezione singolo: 3,35 tiri · 84,6 min",
+          "motivation": "3,35 tiri attesi in 84,6 minuti; midfielder, storico verificato su 2884 minuti e affidabilita 76,2%.",
           "limitation": "Il forecast quantifica i tiri del solo giocatore; la quota Sisal include anche il sostituto. Probabilita, quota equa ed EV del contratto restano N/D.",
           "classification": "B",
+          "reviewStatus": "AGGIORNATO",
           "player": {
             "canonicalPlayerId": "nicolas-paz",
             "canonicalName": "Nicolás Paz",
@@ -9390,18 +9401,20 @@
             "team": "Como",
             "side": "away",
             "role": "midfielder",
-            "lineupStatus": "probable-starter",
+            "lineupStatus": "official-starter",
             "expectedMinutes": 84.6,
             "historyMinutes": 2884,
             "reliability": 0.7622,
             "dataStatus": "verified-history",
-            "projectedShots": 2.88,
-            "projectedShotsOnTarget": 1.11
+            "projectedShots": 3.35,
+            "projectedShotsOnTarget": 1.4,
+            "previousEditorialProjection": 2.88
           },
           "dataQuality": {
             "fixtureDetailedVolumes": true,
             "playerDataStatus": "verified-history",
-            "identityStatus": "resolved"
+            "identityStatus": "resolved",
+            "lineupReview": "AGGIORNATO"
           },
           "providerEventId": "4858181",
           "providerMarketId": "822445073",
@@ -9484,12 +9497,13 @@
               "expectedValuePct": null,
               "individualForecast": {
                 "metric": "shots",
-                "mean": 2.88,
-                "expectedMinutes": 84.6
+                "mean": 3.35,
+                "expectedMinutes": 84.6,
+                "previousEditorialMean": 2.88
               },
               "provenance": {
                 "source": "data/normalized/champions-md02-integration-2026-27.json",
-                "predictionGeneratedAt": "2026-10-13T14:01:36.326Z",
+                "predictionGeneratedAt": "2026-10-14T15:59:50.329Z",
                 "curationSource": "data/sources/champions-md02-individual-selection-2026-27.json",
                 "curatedAt": "2026-10-13T13:38:51.5993900+02:00"
               }
@@ -9503,7 +9517,8 @@
               "playability": {
                 "status": "PLAYABLE"
               },
-              "classification": "SELEZIONATO"
+              "classification": "SELEZIONATO",
+              "reviewStatus": "AGGIORNATO"
             },
             "overlap": {
               "overlapKey": "ucl-2026-27-md02-10:822445073",
@@ -9630,7 +9645,7 @@
               },
               "provenance": {
                 "source": "data/normalized/champions-md02-integration-2026-27.json",
-                "predictionGeneratedAt": "2026-10-13T14:01:36.326Z",
+                "predictionGeneratedAt": "2026-10-14T15:59:50.329Z",
                 "curationSource": "data/sources/champions-md02-phase12d-additions-2026-27.json",
                 "curatedAt": "2026-10-13T16:01:46.8664249+02:00"
               }
@@ -9772,7 +9787,7 @@
               },
               "provenance": {
                 "source": "data/normalized/champions-md02-integration-2026-27.json",
-                "predictionGeneratedAt": "2026-10-13T14:01:36.326Z",
+                "predictionGeneratedAt": "2026-10-14T15:59:50.329Z",
                 "curationSource": "data/sources/champions-md02-phase12d-additions-2026-27.json",
                 "curatedAt": "2026-10-13T16:01:46.8664249+02:00"
               }
@@ -9832,6 +9847,7 @@
           "motivation": "1,52 SOT attesi in 84,6 minuti; forward, storico verificato su 2914 minuti e affidabilita 76,4%.",
           "limitation": "Il forecast quantifica i SOT del solo giocatore; la quota Sisal include il sostituto e anche pali/traverse. Probabilita, quota equa ed EV del contratto restano N/D.",
           "classification": "B",
+          "reviewStatus": "CONFERMATO",
           "player": {
             "canonicalPlayerId": "nacho-ferri",
             "canonicalName": "Nacho Ferri",
@@ -9841,18 +9857,20 @@
             "team": "Feyenoord",
             "side": "home",
             "role": "forward",
-            "lineupStatus": "probable-starter",
+            "lineupStatus": "official-starter",
             "expectedMinutes": 84.6,
             "historyMinutes": 2914,
             "reliability": 0.764,
             "dataStatus": "verified-history",
             "projectedShots": 3.73,
-            "projectedShotsOnTarget": 1.52
+            "projectedShotsOnTarget": 1.52,
+            "previousEditorialProjection": 1.52
           },
           "dataQuality": {
             "fixtureDetailedVolumes": true,
             "playerDataStatus": "verified-history",
-            "identityStatus": "resolved"
+            "identityStatus": "resolved",
+            "lineupReview": "CONFERMATO"
           },
           "providerEventId": "4858181",
           "providerMarketId": "822445292",
@@ -9936,11 +9954,12 @@
               "individualForecast": {
                 "metric": "shotsOnTarget",
                 "mean": 1.52,
-                "expectedMinutes": 84.6
+                "expectedMinutes": 84.6,
+                "previousEditorialMean": 1.52
               },
               "provenance": {
                 "source": "data/normalized/champions-md02-integration-2026-27.json",
-                "predictionGeneratedAt": "2026-10-13T14:01:36.326Z",
+                "predictionGeneratedAt": "2026-10-14T15:59:50.329Z",
                 "curationSource": "data/sources/champions-md02-phase12d-additions-2026-27.json",
                 "curatedAt": "2026-10-13T16:01:46.8664249+02:00"
               }
@@ -9954,7 +9973,8 @@
               "playability": {
                 "status": "PLAYABLE"
               },
-              "classification": "SELEZIONATO"
+              "classification": "SELEZIONATO",
+              "reviewStatus": "CONFERMATO"
             },
             "overlap": {
               "overlapKey": "ucl-2026-27-md02-10:822445292",
@@ -9992,6 +10012,7 @@
           "motivation": "1,52 SOT attesi in 84,6 minuti; forward, storico verificato su 2914 minuti e affidabilita 76,4%.",
           "limitation": "Il forecast quantifica i SOT del solo giocatore; la quota Sisal include il sostituto e anche pali/traverse. Probabilita, quota equa ed EV del contratto restano N/D.",
           "classification": "B",
+          "reviewStatus": "CONFERMATO",
           "player": {
             "canonicalPlayerId": "nacho-ferri",
             "canonicalName": "Nacho Ferri",
@@ -10001,18 +10022,20 @@
             "team": "Feyenoord",
             "side": "home",
             "role": "forward",
-            "lineupStatus": "probable-starter",
+            "lineupStatus": "official-starter",
             "expectedMinutes": 84.6,
             "historyMinutes": 2914,
             "reliability": 0.764,
             "dataStatus": "verified-history",
             "projectedShots": 3.73,
-            "projectedShotsOnTarget": 1.52
+            "projectedShotsOnTarget": 1.52,
+            "previousEditorialProjection": 1.52
           },
           "dataQuality": {
             "fixtureDetailedVolumes": true,
             "playerDataStatus": "verified-history",
-            "identityStatus": "resolved"
+            "identityStatus": "resolved",
+            "lineupReview": "CONFERMATO"
           },
           "providerEventId": "4858181",
           "providerMarketId": "822444815",
@@ -10096,11 +10119,12 @@
               "individualForecast": {
                 "metric": "shotsOnTarget",
                 "mean": 1.52,
-                "expectedMinutes": 84.6
+                "expectedMinutes": 84.6,
+                "previousEditorialMean": 1.52
               },
               "provenance": {
                 "source": "data/normalized/champions-md02-integration-2026-27.json",
-                "predictionGeneratedAt": "2026-10-13T14:01:36.326Z",
+                "predictionGeneratedAt": "2026-10-14T15:59:50.329Z",
                 "curationSource": "data/sources/champions-md02-phase12d-outsiders-2026-27.json",
                 "curatedAt": "2026-10-13T16:10:37.4963673+02:00"
               }
@@ -10114,7 +10138,8 @@
               "playability": {
                 "status": "PLAYABLE"
               },
-              "classification": "SELEZIONATO"
+              "classification": "SELEZIONATO",
+              "reviewStatus": "CONFERMATO"
             },
             "overlap": {
               "overlapKey": "ucl-2026-27-md02-10:822444815",
@@ -10243,7 +10268,7 @@
               "expectedValuePct": -22.6,
               "provenance": {
                 "source": "data/normalized/champions-md02-integration-2026-27.json",
-                "predictionGeneratedAt": "2026-10-13T14:01:36.326Z"
+                "predictionGeneratedAt": "2026-10-14T15:59:50.329Z"
               }
             },
             "compatibility": {
@@ -10290,10 +10315,11 @@
           "modelProbabilityPct": null,
           "fairOdds": null,
           "expectedValuePct": null,
-          "evidenceLabel": "Proiezione singolo: 2,15 tiri · 84,6 min",
-          "motivation": "2,15 tiri attesi in 84,6 minuti; defender, storico verificato su 2760 minuti e affidabilita 75,4%.",
+          "evidenceLabel": "Proiezione singolo: 2,06 tiri · 84,6 min",
+          "motivation": "2,06 tiri attesi in 84,6 minuti; defender, storico verificato su 2760 minuti e affidabilita 75,4%.",
           "limitation": "Il forecast quantifica i tiri del solo giocatore; la quota Sisal include anche il sostituto. Probabilita, quota equa ed EV del contratto restano N/D.",
           "classification": "B",
+          "reviewStatus": "AGGIORNATO",
           "player": {
             "canonicalPlayerId": "kasper-j-rgensen",
             "canonicalName": "Kasper Jørgensen",
@@ -10303,18 +10329,20 @@
             "team": "LASK",
             "side": "home",
             "role": "defender",
-            "lineupStatus": "probable-starter",
+            "lineupStatus": "official-starter",
             "expectedMinutes": 84.6,
             "historyMinutes": 2760,
             "reliability": 0.7541,
             "dataStatus": "verified-history",
-            "projectedShots": 2.15,
-            "projectedShotsOnTarget": 0.65
+            "projectedShots": 2.06,
+            "projectedShotsOnTarget": 0.62,
+            "previousEditorialProjection": 2.15
           },
           "dataQuality": {
             "fixtureDetailedVolumes": true,
             "playerDataStatus": "verified-history",
-            "identityStatus": "resolved"
+            "identityStatus": "resolved",
+            "lineupReview": "AGGIORNATO"
           },
           "providerEventId": "4858179",
           "providerMarketId": "822421335",
@@ -10397,12 +10425,13 @@
               "expectedValuePct": null,
               "individualForecast": {
                 "metric": "shots",
-                "mean": 2.15,
-                "expectedMinutes": 84.6
+                "mean": 2.06,
+                "expectedMinutes": 84.6,
+                "previousEditorialMean": 2.15
               },
               "provenance": {
                 "source": "data/normalized/champions-md02-integration-2026-27.json",
-                "predictionGeneratedAt": "2026-10-13T14:01:36.326Z",
+                "predictionGeneratedAt": "2026-10-14T15:59:50.329Z",
                 "curationSource": "data/sources/champions-md02-individual-selection-2026-27.json",
                 "curatedAt": "2026-10-13T13:38:51.5993900+02:00"
               }
@@ -10416,7 +10445,8 @@
               "playability": {
                 "status": "PLAYABLE"
               },
-              "classification": "SELEZIONATO"
+              "classification": "SELEZIONATO",
+              "reviewStatus": "AGGIORNATO"
             },
             "overlap": {
               "overlapKey": "ucl-2026-27-md02-11:822421335",
@@ -10450,10 +10480,11 @@
           "modelProbabilityPct": null,
           "fairOdds": null,
           "expectedValuePct": null,
-          "evidenceLabel": "Proiezione singolo: 0,64 SOT · 84,6 min",
-          "motivation": "0,64 SOT attesi in 84,6 minuti; midfielder, storico verificato su 3230 minuti e affidabilita 78,2%.",
+          "evidenceLabel": "Proiezione singolo: 0,55 SOT · 84,6 min",
+          "motivation": "0,55 SOT attesi in 84,6 minuti; midfielder, storico verificato su 3230 minuti e affidabilita 78,2%.",
           "limitation": "Il forecast quantifica i SOT del solo giocatore; la quota Sisal include il sostituto e anche pali/traverse. Probabilita, quota equa ed EV del contratto restano N/D.",
           "classification": "B",
+          "reviewStatus": "AGGIORNATO",
           "player": {
             "canonicalPlayerId": "florian-wirtz",
             "canonicalName": "Florian Wirtz",
@@ -10463,18 +10494,20 @@
             "team": "Liverpool",
             "side": "away",
             "role": "midfielder",
-            "lineupStatus": "probable-starter",
+            "lineupStatus": "official-starter",
             "expectedMinutes": 84.6,
             "historyMinutes": 3230,
             "reliability": 0.7821,
             "dataStatus": "verified-history",
-            "projectedShots": 1.76,
-            "projectedShotsOnTarget": 0.64
+            "projectedShots": 1.63,
+            "projectedShotsOnTarget": 0.55,
+            "previousEditorialProjection": 0.72
           },
           "dataQuality": {
             "fixtureDetailedVolumes": true,
             "playerDataStatus": "verified-history",
-            "identityStatus": "resolved"
+            "identityStatus": "resolved",
+            "lineupReview": "AGGIORNATO"
           },
           "providerEventId": "4858179",
           "providerMarketId": "822423448",
@@ -10557,12 +10590,13 @@
               "expectedValuePct": null,
               "individualForecast": {
                 "metric": "shotsOnTarget",
-                "mean": 0.64,
-                "expectedMinutes": 84.6
+                "mean": 0.55,
+                "expectedMinutes": 84.6,
+                "previousEditorialMean": 0.72
               },
               "provenance": {
                 "source": "data/normalized/champions-md02-integration-2026-27.json",
-                "predictionGeneratedAt": "2026-10-13T14:01:36.326Z",
+                "predictionGeneratedAt": "2026-10-14T15:59:50.329Z",
                 "curationSource": "data/sources/champions-md02-individual-selection-2026-27.json",
                 "curatedAt": "2026-10-13T13:38:51.5993900+02:00"
               }
@@ -10576,7 +10610,8 @@
               "playability": {
                 "status": "PLAYABLE"
               },
-              "classification": "SELEZIONATO"
+              "classification": "SELEZIONATO",
+              "reviewStatus": "AGGIORNATO"
             },
             "overlap": {
               "overlapKey": "ucl-2026-27-md02-11:822423448",
@@ -10703,7 +10738,7 @@
               },
               "provenance": {
                 "source": "data/normalized/champions-md02-integration-2026-27.json",
-                "predictionGeneratedAt": "2026-10-13T14:01:36.326Z",
+                "predictionGeneratedAt": "2026-10-14T15:59:50.329Z",
                 "curationSource": "data/sources/champions-md02-phase12d-additions-2026-27.json",
                 "curatedAt": "2026-10-13T16:01:46.8664249+02:00"
               }
@@ -10852,7 +10887,7 @@
               },
               "provenance": {
                 "source": "data/normalized/champions-md02-integration-2026-27.json",
-                "predictionGeneratedAt": "2026-10-13T14:01:36.326Z",
+                "predictionGeneratedAt": "2026-10-14T15:59:50.329Z",
                 "curationSource": "data/sources/champions-md02-phase12d-outsiders-2026-27.json",
                 "curatedAt": "2026-10-13T16:10:37.4963673+02:00"
               }
@@ -10901,10 +10936,11 @@
           "modelProbabilityPct": null,
           "fairOdds": null,
           "expectedValuePct": null,
-          "evidenceLabel": "Proiezione singolo: 2,15 tiri · 84,6 min",
-          "motivation": "2,15 tiri attesi in 84,6 minuti; defender, storico verificato su 2760 minuti e affidabilita 75,4%.",
+          "evidenceLabel": "Proiezione singolo: 2,06 tiri · 84,6 min",
+          "motivation": "2,06 tiri attesi in 84,6 minuti; defender, storico verificato su 2760 minuti e affidabilita 75,4%.",
           "limitation": "Il forecast quantifica i tiri del solo giocatore; la quota Sisal include anche il sostituto. Probabilita, quota equa ed EV del contratto restano N/D.",
           "classification": "B",
+          "reviewStatus": "AGGIORNATO",
           "player": {
             "canonicalPlayerId": "kasper-j-rgensen",
             "canonicalName": "Kasper Jørgensen",
@@ -10914,18 +10950,20 @@
             "team": "LASK",
             "side": "home",
             "role": "defender",
-            "lineupStatus": "probable-starter",
+            "lineupStatus": "official-starter",
             "expectedMinutes": 84.6,
             "historyMinutes": 2760,
             "reliability": 0.7541,
             "dataStatus": "verified-history",
-            "projectedShots": 2.15,
-            "projectedShotsOnTarget": 0.65
+            "projectedShots": 2.06,
+            "projectedShotsOnTarget": 0.62,
+            "previousEditorialProjection": 2.15
           },
           "dataQuality": {
             "fixtureDetailedVolumes": true,
             "playerDataStatus": "verified-history",
-            "identityStatus": "resolved"
+            "identityStatus": "resolved",
+            "lineupReview": "AGGIORNATO"
           },
           "providerEventId": "4858179",
           "providerMarketId": "822421392",
@@ -11008,12 +11046,13 @@
               "expectedValuePct": null,
               "individualForecast": {
                 "metric": "shots",
-                "mean": 2.15,
-                "expectedMinutes": 84.6
+                "mean": 2.06,
+                "expectedMinutes": 84.6,
+                "previousEditorialMean": 2.15
               },
               "provenance": {
                 "source": "data/normalized/champions-md02-integration-2026-27.json",
-                "predictionGeneratedAt": "2026-10-13T14:01:36.326Z",
+                "predictionGeneratedAt": "2026-10-14T15:59:50.329Z",
                 "curationSource": "data/sources/champions-md02-phase12d-outsiders-2026-27.json",
                 "curatedAt": "2026-10-13T16:10:37.4963673+02:00"
               }
@@ -11027,7 +11066,8 @@
               "playability": {
                 "status": "PLAYABLE"
               },
-              "classification": "SELEZIONATO"
+              "classification": "SELEZIONATO",
+              "reviewStatus": "AGGIORNATO"
             },
             "overlap": {
               "overlapKey": "ucl-2026-27-md02-11:822421392",
