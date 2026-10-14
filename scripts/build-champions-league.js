@@ -19,8 +19,10 @@ const targetFixtureIds = new Set(fixturesArg >= 0 ? String(process.argv[fixtures
 const baselineFromHead = process.argv.includes("--baseline-head");
 const source = JSON.parse(fs.readFileSync(sourcePath, "utf8"));
 const results = JSON.parse(fs.readFileSync(path.join(root, "data/sources/champions-results-md01-2026-27.json"), "utf8"));
-const resultById = new Map(results.fixtures.map(item => [item.fixtureId, item]));
-if (resultById.size !== results.fixtures.length) throw new Error("Risultati Champions duplicati");
+  const md02Path=path.join(root,'data/sources/champions-results-md02-2026-27.json');
+  const md02Results=fs.existsSync(md02Path)?JSON.parse(fs.readFileSync(md02Path,'utf8')):null;
+  const resultById = new Map([...results.fixtures,...(md02Results?.fixtures||[])].map(item => [item.fixtureId, item]));
+  if (resultById.size !== results.fixtures.length+(md02Results?.fixtures.length||0)) throw new Error("Risultati Champions duplicati");
 for (const result of results.fixtures) {
   if (!source.fixtures.some(f => f.id === result.fixtureId && f.matchday === results.matchday) || result.status !== "finished" || ![result.score?.home, result.score?.away].every(n => Number.isInteger(n) && n >= 0) || !result.sourceUrl?.startsWith("https://")) throw new Error("Risultato Champions non valido");
   for (const side of ["home", "away"]) if (result.scorers[side].length !== result.score[side]) throw new Error("Marcatori Champions incoerenti");
@@ -252,6 +254,7 @@ if (targetFixtureIds.size) {
   for (const fixtureId of targetFixtureIds) if (!generatedById.has(fixtureId) || !previousOutput.fixtures.some(fixture => fixture.id === fixtureId)) fail(`${fixtureId}: target selettivo non valido`);
   finalOutput = {
     ...previousOutput,
+    summary: {...previousOutput.summary,finished:generatedOutput.summary.finished},
     officialFormationsSources: generatedOutput.officialFormationsSources,
     fixtures: previousOutput.fixtures.map(fixture => targetFixtureIds.has(fixture.id) ? generatedById.get(fixture.id) : fixture)
   };

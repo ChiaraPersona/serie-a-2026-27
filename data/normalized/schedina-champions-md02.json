@@ -7,7 +7,7 @@
   "provider": "Sisal",
   "oddsRetrievedAt": "2026-10-13T09:55:14.800Z",
   "sourceUrl": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001",
-  "status": "PRE_MATCH",
+  "status": "PARTIAL_RESULTS",
   "methodology": "La card conserva integralmente le 94 selezioni concluse con la Fase 12D e aggiunge outsider su contratti Sisal esatti: soglie gol con probabilita gia serializzata e riferimenti individuali tiri/SOT sostenuti da minuti, storico e volumi. I contratti individuali DUO mantengono probabilita, quota equa ed EV N/D.",
   "selectionRule": "Nessun numero fisso per gara. Classe A: contratto full-match identico a una soglia probabilistica gia validata o alla distribuzione gol gia adottata. Classe B: volume individuale motivante e quota valida, ma contratto DUO non probabilisticamente valutabile. Nessuna conversione automatica di una media in probabilita.",
   "settlementPolicy": "Puntata simulata di 1 € per esito. ROI e profitto/perdita includono soltanto esiti ufficialmente definiti; pending e non verificabili non sono perdite.",
@@ -70,14 +70,14 @@
     "teamShots": 3,
     "teamShotsOnTarget": 3,
     "mathematicallyEvaluable": 42,
-    "won": 0,
-    "lost": 0,
+    "won": 11,
+    "lost": 10,
     "void": 0,
-    "pending": 120,
-    "stakeEuro": 0,
-    "grossReturnEuro": null,
-    "profitLossEuro": null,
-    "roiPct": null
+    "pending": 99,
+    "stakeEuro": 21,
+    "grossReturnEuro": 18.17,
+    "profitLossEuro": -2.83,
+    "roiPct": -13.48
   },
   "fixtures": [
     {
@@ -86,8 +86,11 @@
       "kickoff": "18:45",
       "homeTeam": "Lens",
       "awayTeam": "Sporting CP",
-      "status": "scheduled",
-      "score": null,
+      "status": "finished",
+      "score": {
+        "home": 0,
+        "away": 2
+      },
       "readingUrl": "champions-league.html?match=ucl-2026-27-md02-01",
       "forecastSyncKey": "ucl-2026-27-md02-01",
       "selections": [
@@ -126,8 +129,11 @@
             "duo": false
           },
           "settlement": {
-            "status": "pending",
-            "label": "Da verificare"
+            "status": "lost",
+            "label": "ROSSO",
+            "reason": "Risultato finale 0-2, tempi regolamentari; nessun supplementare in fase campionato.",
+            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
+            "nonStarter": false
           },
           "scenarioAnalysis": {
             "compatibleOutcomes": [
@@ -292,7 +298,10 @@
           },
           "settlement": {
             "status": "pending",
-            "label": "Da verificare"
+            "label": "DA VERIFICARE",
+            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
+            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
+            "nonStarter": false
           },
           "betSelection": {
             "selectionId": "sisal:4858138:821926893:5376855525",
@@ -457,7 +466,10 @@
           },
           "settlement": {
             "status": "pending",
-            "label": "Da verificare"
+            "label": "DA VERIFICARE",
+            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
+            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
+            "nonStarter": true
           },
           "betSelection": {
             "selectionId": "sisal:4858138:821927618:5376863469",
@@ -622,7 +634,10 @@
           },
           "settlement": {
             "status": "pending",
-            "label": "Da verificare"
+            "label": "DA VERIFICARE",
+            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
+            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
+            "nonStarter": false
           },
           "betSelection": {
             "selectionId": "sisal:4858138:821927322:5376857359",
@@ -787,7 +802,10 @@
           },
           "settlement": {
             "status": "pending",
-            "label": "Da verificare"
+            "label": "DA VERIFICARE",
+            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
+            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
+            "nonStarter": true
           },
           "betSelection": {
             "selectionId": "sisal:4858138:821928592:5376859993",
@@ -952,7 +970,10 @@
           },
           "settlement": {
             "status": "pending",
-            "label": "Da verificare"
+            "label": "DA VERIFICARE",
+            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
+            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
+            "nonStarter": false
           },
           "betSelection": {
             "selectionId": "sisal:4858138:821927323:5376857369",
@@ -1061,8 +1082,11 @@
       "kickoff": "18:45",
       "homeTeam": "Sabah",
       "awayTeam": "Slavia Praha",
-      "status": "scheduled",
-      "score": null,
+      "status": "finished",
+      "score": {
+        "home": 2,
+        "away": 0
+      },
       "readingUrl": "champions-league.html?match=ucl-2026-27-md02-02",
       "forecastSyncKey": "ucl-2026-27-md02-02",
       "selections": [
@@ -1101,8 +1125,11 @@
             "duo": false
           },
           "settlement": {
-            "status": "pending",
-            "label": "Da verificare"
+            "status": "won",
+            "label": "VERDE",
+            "reason": "Risultato finale 2-0, tempi regolamentari; nessun supplementare in fase campionato.",
+            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
+            "nonStarter": false
           },
           "scenarioAnalysis": {
             "compatibleOutcomes": [
@@ -1239,8 +1266,11 @@
             "duo": false
           },
           "settlement": {
-            "status": "pending",
-            "label": "Da verificare"
+            "status": "lost",
+            "label": "ROSSO",
+            "reason": "Risultato finale 2-0, tempi regolamentari; nessun supplementare in fase campionato.",
+            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
+            "nonStarter": false
           },
           "betSelection": {
             "selectionId": "sisal:4858137:810810961:5317134384",
@@ -1352,8 +1382,11 @@
       "kickoff": "21:00",
       "homeTeam": "Arsenal",
       "awayTeam": "Lille",
-      "status": "scheduled",
-      "score": null,
+      "status": "finished",
+      "score": {
+        "home": 3,
+        "away": 0
+      },
       "readingUrl": "champions-league.html?match=ucl-2026-27-md02-03",
       "forecastSyncKey": "ucl-2026-27-md02-03",
       "selections": [
@@ -1392,8 +1425,11 @@
             "duo": false
           },
           "settlement": {
-            "status": "pending",
-            "label": "Da verificare"
+            "status": "won",
+            "label": "VERDE",
+            "reason": "Risultato finale 3-0, tempi regolamentari; nessun supplementare in fase campionato.",
+            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
+            "nonStarter": false
           },
           "scenarioAnalysis": {
             "compatibleOutcomes": [
@@ -1551,7 +1587,10 @@
           },
           "settlement": {
             "status": "pending",
-            "label": "Da verificare"
+            "label": "DA VERIFICARE",
+            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
+            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
+            "nonStarter": true
           },
           "betSelection": {
             "selectionId": "sisal:4858146:821922356:5376832575",
@@ -1716,7 +1755,10 @@
           },
           "settlement": {
             "status": "pending",
-            "label": "Da verificare"
+            "label": "DA VERIFICARE",
+            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
+            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
+            "nonStarter": false
           },
           "betSelection": {
             "selectionId": "sisal:4858146:821922408:5376832817",
@@ -1881,7 +1923,10 @@
           },
           "settlement": {
             "status": "pending",
-            "label": "Da verificare"
+            "label": "DA VERIFICARE",
+            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
+            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
+            "nonStarter": false
           },
           "betSelection": {
             "selectionId": "sisal:4858146:821921916:5376820147",
@@ -2026,8 +2071,11 @@
             "duo": false
           },
           "settlement": {
-            "status": "pending",
-            "label": "Da verificare"
+            "status": "won",
+            "label": "VERDE",
+            "reason": "Risultato finale 3-0, tempi regolamentari; nessun supplementare in fase campionato.",
+            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
+            "nonStarter": false
           },
           "betSelection": {
             "selectionId": "sisal:4858146:810823359:5317157816",
@@ -2195,7 +2243,10 @@
           },
           "settlement": {
             "status": "pending",
-            "label": "Da verificare"
+            "label": "DA VERIFICARE",
+            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
+            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
+            "nonStarter": false
           },
           "betSelection": {
             "selectionId": "sisal:4858146:821922449:5376832991",
@@ -2340,8 +2391,11 @@
             "duo": false
           },
           "settlement": {
-            "status": "pending",
-            "label": "Da verificare"
+            "status": "lost",
+            "label": "ROSSO",
+            "reason": "Risultato finale 3-0, tempi regolamentari; nessun supplementare in fase campionato.",
+            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
+            "nonStarter": false
           },
           "betSelection": {
             "selectionId": "sisal:4858146:810823358:5317157812",
@@ -2502,7 +2556,10 @@
           },
           "settlement": {
             "status": "pending",
-            "label": "Da verificare"
+            "label": "DA VERIFICARE",
+            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
+            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
+            "nonStarter": false
           },
           "betSelection": {
             "selectionId": "sisal:4858146:821922371:5376832677",
@@ -2667,7 +2724,10 @@
           },
           "settlement": {
             "status": "pending",
-            "label": "Da verificare"
+            "label": "DA VERIFICARE",
+            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
+            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
+            "nonStarter": false
           },
           "betSelection": {
             "selectionId": "sisal:4858146:821921851:5376819861",
@@ -2776,8 +2836,11 @@
       "kickoff": "21:00",
       "homeTeam": "Atlético de Madrid",
       "awayTeam": "Manchester United",
-      "status": "scheduled",
-      "score": null,
+      "status": "finished",
+      "score": {
+        "home": 2,
+        "away": 0
+      },
       "readingUrl": "champions-league.html?match=ucl-2026-27-md02-04",
       "forecastSyncKey": "ucl-2026-27-md02-04",
       "selections": [
@@ -2816,8 +2879,11 @@
             "duo": false
           },
           "settlement": {
-            "status": "pending",
-            "label": "Da verificare"
+            "status": "won",
+            "label": "VERDE",
+            "reason": "Risultato finale 2-0, tempi regolamentari; nessun supplementare in fase campionato.",
+            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
+            "nonStarter": false
           },
           "scenarioAnalysis": {
             "compatibleOutcomes": [
@@ -2975,7 +3041,10 @@
           },
           "settlement": {
             "status": "pending",
-            "label": "Da verificare"
+            "label": "DA VERIFICARE",
+            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
+            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
+            "nonStarter": true
           },
           "betSelection": {
             "selectionId": "sisal:4858177:821890410:5376642298",
@@ -3140,7 +3209,10 @@
           },
           "settlement": {
             "status": "pending",
-            "label": "Da verificare"
+            "label": "DA VERIFICARE",
+            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
+            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
+            "nonStarter": false
           },
           "betSelection": {
             "selectionId": "sisal:4858177:821888605:5376633847",
@@ -3285,8 +3357,11 @@
             "duo": false
           },
           "settlement": {
-            "status": "pending",
-            "label": "Da verificare"
+            "status": "lost",
+            "label": "ROSSO",
+            "reason": "Risultato finale 2-0, tempi regolamentari; nessun supplementare in fase campionato.",
+            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
+            "nonStarter": false
           },
           "betSelection": {
             "selectionId": "sisal:4858177:810814205:5317191046",
@@ -3454,7 +3529,10 @@
           },
           "settlement": {
             "status": "pending",
-            "label": "Da verificare"
+            "label": "DA VERIFICARE",
+            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
+            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
+            "nonStarter": false
           },
           "betSelection": {
             "selectionId": "sisal:4858177:821888775:5376634522",
@@ -3599,8 +3677,11 @@
             "duo": false
           },
           "settlement": {
-            "status": "pending",
-            "label": "Da verificare"
+            "status": "lost",
+            "label": "ROSSO",
+            "reason": "Risultato finale 2-0, tempi regolamentari; nessun supplementare in fase campionato.",
+            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
+            "nonStarter": false
           },
           "betSelection": {
             "selectionId": "sisal:4858177:810814206:5317191050",
@@ -3761,7 +3842,10 @@
           },
           "settlement": {
             "status": "pending",
-            "label": "Da verificare"
+            "label": "DA VERIFICARE",
+            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
+            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
+            "nonStarter": false
           },
           "betSelection": {
             "selectionId": "sisal:4858177:821888897:5376635025",
@@ -3925,8 +4009,11 @@
             "woodworkIncluded": true
           },
           "settlement": {
-            "status": "pending",
-            "label": "Da verificare"
+            "status": "won",
+            "label": "VERDE",
+            "reason": "Palo su punizione documentato da UEFA; incluso nel contratto 28506.",
+            "sourceUrl": "https://it.uefa.com/uefachampionsleague/news/02aa-21d1f9bf8c14-02934d4c912d-1000--riepilogo-seconda-giornata-champions-league-cadono-inter-/",
+            "nonStarter": false
           },
           "betSelection": {
             "selectionId": "sisal:4858177:821891749:5376648956",
@@ -4035,8 +4122,11 @@
       "kickoff": "21:00",
       "homeTeam": "Inter",
       "awayTeam": "Club Brugge",
-      "status": "scheduled",
-      "score": null,
+      "status": "finished",
+      "score": {
+        "home": 3,
+        "away": 4
+      },
       "readingUrl": "champions-league.html?match=ucl-2026-27-md02-05",
       "forecastSyncKey": "ucl-2026-27-md02-05",
       "selections": [
@@ -4075,8 +4165,11 @@
             "duo": false
           },
           "settlement": {
-            "status": "pending",
-            "label": "Da verificare"
+            "status": "lost",
+            "label": "ROSSO",
+            "reason": "Risultato finale 3-4, tempi regolamentari; nessun supplementare in fase campionato.",
+            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
+            "nonStarter": false
           },
           "scenarioAnalysis": {
             "compatibleOutcomes": [
@@ -4233,7 +4326,10 @@
           },
           "settlement": {
             "status": "pending",
-            "label": "Da verificare"
+            "label": "DA VERIFICARE",
+            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
+            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
+            "nonStarter": false
           },
           "betSelection": {
             "selectionId": "sisal:4858180:822319165:5378991126",
@@ -4397,8 +4493,11 @@
             "woodworkIncluded": true
           },
           "settlement": {
-            "status": "pending",
-            "label": "Da verificare"
+            "status": "won",
+            "label": "VERDE",
+            "reason": "Gol ufficialmente documentati: limite inferiore di tiri e SOT, sufficiente soltanto quando supera la soglia OVER.",
+            "sourceUrl": "https://it.uefa.com/uefachampionsleague/news/02aa-21d1f9bf8c14-02934d4c912d-1000--riepilogo-seconda-giornata-champions-league-cadono-inter-/",
+            "nonStarter": false
           },
           "betSelection": {
             "selectionId": "sisal:4858180:822318885:5378990012",
@@ -4563,7 +4662,10 @@
           },
           "settlement": {
             "status": "pending",
-            "label": "Da verificare"
+            "label": "DA VERIFICARE",
+            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
+            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
+            "nonStarter": false
           },
           "betSelection": {
             "selectionId": "sisal:4858180:822318847:5378989876",
@@ -4709,7 +4811,10 @@
           },
           "settlement": {
             "status": "pending",
-            "label": "Da verificare"
+            "label": "DA VERIFICARE",
+            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
+            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
+            "nonStarter": false
           },
           "betSelection": {
             "selectionId": "sisal:4858180:822318899:5378990067",
@@ -4877,7 +4982,10 @@
           },
           "settlement": {
             "status": "pending",
-            "label": "Da verificare"
+            "label": "DA VERIFICARE",
+            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
+            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
+            "nonStarter": false
           },
           "betSelection": {
             "selectionId": "sisal:4858180:822315691:5378999317",
@@ -5042,7 +5150,10 @@
           },
           "settlement": {
             "status": "pending",
-            "label": "Da verificare"
+            "label": "DA VERIFICARE",
+            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
+            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
+            "nonStarter": false
           },
           "betSelection": {
             "selectionId": "sisal:4858180:822318867:5378989938",
@@ -5151,8 +5262,11 @@
       "kickoff": "21:00",
       "homeTeam": "Galatasaray",
       "awayTeam": "Barcelona",
-      "status": "scheduled",
-      "score": null,
+      "status": "finished",
+      "score": {
+        "home": 1,
+        "away": 4
+      },
       "readingUrl": "champions-league.html?match=ucl-2026-27-md02-06",
       "forecastSyncKey": "ucl-2026-27-md02-06",
       "selections": [
@@ -5191,8 +5305,11 @@
             "duo": false
           },
           "settlement": {
-            "status": "pending",
-            "label": "Da verificare"
+            "status": "won",
+            "label": "VERDE",
+            "reason": "Risultato finale 1-4, tempi regolamentari; nessun supplementare in fase campionato.",
+            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
+            "nonStarter": false
           },
           "scenarioAnalysis": {
             "compatibleOutcomes": [
@@ -5349,7 +5466,10 @@
           },
           "settlement": {
             "status": "pending",
-            "label": "Da verificare"
+            "label": "DA VERIFICARE",
+            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
+            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
+            "nonStarter": false
           },
           "betSelection": {
             "selectionId": "sisal:4858143:822328597:5379080809",
@@ -5514,7 +5634,10 @@
           },
           "settlement": {
             "status": "pending",
-            "label": "Da verificare"
+            "label": "DA VERIFICARE",
+            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
+            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
+            "nonStarter": false
           },
           "betSelection": {
             "selectionId": "sisal:4858143:822328741:5379081413",
@@ -5679,7 +5802,10 @@
           },
           "settlement": {
             "status": "pending",
-            "label": "Da verificare"
+            "label": "DA VERIFICARE",
+            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
+            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
+            "nonStarter": false
           },
           "betSelection": {
             "selectionId": "sisal:4858143:822328638:5379080986",
@@ -5844,7 +5970,10 @@
           },
           "settlement": {
             "status": "pending",
-            "label": "Da verificare"
+            "label": "DA VERIFICARE",
+            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
+            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
+            "nonStarter": false
           },
           "betSelection": {
             "selectionId": "sisal:4858143:822328537:5379080617",
@@ -5989,8 +6118,11 @@
             "duo": false
           },
           "settlement": {
-            "status": "pending",
-            "label": "Da verificare"
+            "status": "lost",
+            "label": "ROSSO",
+            "reason": "Risultato finale 1-4, tempi regolamentari; nessun supplementare in fase campionato.",
+            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
+            "nonStarter": false
           },
           "betSelection": {
             "selectionId": "sisal:4858143:810812673:5317142893",
@@ -6158,7 +6290,10 @@
           },
           "settlement": {
             "status": "pending",
-            "label": "Da verificare"
+            "label": "DA VERIFICARE",
+            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
+            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
+            "nonStarter": false
           },
           "betSelection": {
             "selectionId": "sisal:4858143:822328609:5379080871",
@@ -6267,8 +6402,11 @@
       "kickoff": "21:00",
       "homeTeam": "Leipzig",
       "awayTeam": "PSV Eindhoven",
-      "status": "scheduled",
-      "score": null,
+      "status": "finished",
+      "score": {
+        "home": 1,
+        "away": 0
+      },
       "readingUrl": "champions-league.html?match=ucl-2026-27-md02-07",
       "forecastSyncKey": "ucl-2026-27-md02-07",
       "selections": [
@@ -6307,8 +6445,11 @@
             "duo": false
           },
           "settlement": {
-            "status": "pending",
-            "label": "Da verificare"
+            "status": "lost",
+            "label": "ROSSO",
+            "reason": "Risultato finale 1-0, tempi regolamentari; nessun supplementare in fase campionato.",
+            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
+            "nonStarter": false
           },
           "scenarioAnalysis": {
             "compatibleOutcomes": [
@@ -6466,7 +6607,10 @@
           },
           "settlement": {
             "status": "pending",
-            "label": "Da verificare"
+            "label": "DA VERIFICARE",
+            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
+            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
+            "nonStarter": false
           },
           "betSelection": {
             "selectionId": "sisal:4858176:822442814:5379721386",
@@ -6630,8 +6774,11 @@
             "woodworkIncluded": true
           },
           "settlement": {
-            "status": "pending",
-            "label": "Da verificare"
+            "status": "won",
+            "label": "VERDE",
+            "reason": "Gol ufficialmente documentati: limite inferiore di tiri e SOT, sufficiente soltanto quando supera la soglia OVER.",
+            "sourceUrl": "https://it.uefa.com/uefachampionsleague/news/02aa-21d1f9bf8c14-02934d4c912d-1000--riepilogo-seconda-giornata-champions-league-cadono-inter-/",
+            "nonStarter": false
           },
           "betSelection": {
             "selectionId": "sisal:4858176:822440767:5379720511",
@@ -6777,7 +6924,10 @@
           },
           "settlement": {
             "status": "pending",
-            "label": "Da verificare"
+            "label": "DA VERIFICARE",
+            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
+            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
+            "nonStarter": false
           },
           "betSelection": {
             "selectionId": "sisal:4858176:821951423:5376985276",
@@ -6945,7 +7095,10 @@
           },
           "settlement": {
             "status": "pending",
-            "label": "Da verificare"
+            "label": "DA VERIFICARE",
+            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
+            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
+            "nonStarter": false
           },
           "betSelection": {
             "selectionId": "sisal:4858176:822440794:5379720627",
@@ -7110,7 +7263,10 @@
           },
           "settlement": {
             "status": "pending",
-            "label": "Da verificare"
+            "label": "DA VERIFICARE",
+            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
+            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
+            "nonStarter": false
           },
           "betSelection": {
             "selectionId": "sisal:4858176:822440956:5379722099",
@@ -7219,8 +7375,11 @@
       "kickoff": "21:00",
       "homeTeam": "Viking",
       "awayTeam": "Bayern München",
-      "status": "scheduled",
-      "score": null,
+      "status": "finished",
+      "score": {
+        "home": 3,
+        "away": 3
+      },
       "readingUrl": "champions-league.html?match=ucl-2026-27-md02-08",
       "forecastSyncKey": "ucl-2026-27-md02-08",
       "selections": [
@@ -7259,8 +7418,11 @@
             "duo": false
           },
           "settlement": {
-            "status": "pending",
-            "label": "Da verificare"
+            "status": "lost",
+            "label": "ROSSO",
+            "reason": "Risultato finale 3-3, tempi regolamentari; nessun supplementare in fase campionato.",
+            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
+            "nonStarter": false
           },
           "scenarioAnalysis": {
             "compatibleOutcomes": [
@@ -7417,7 +7579,10 @@
           },
           "settlement": {
             "status": "pending",
-            "label": "Da verificare"
+            "label": "DA VERIFICARE",
+            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
+            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
+            "nonStarter": false
           },
           "betSelection": {
             "selectionId": "sisal:4858141:822324471:5379048990",
@@ -7581,8 +7746,11 @@
             "woodworkIncluded": true
           },
           "settlement": {
-            "status": "pending",
-            "label": "Da verificare"
+            "status": "won",
+            "label": "VERDE",
+            "reason": "Gol ufficialmente documentati: limite inferiore di tiri e SOT, sufficiente soltanto quando supera la soglia OVER.",
+            "sourceUrl": "https://it.uefa.com/uefachampionsleague/news/02aa-21d1f9bf8c14-02934d4c912d-1000--riepilogo-seconda-giornata-champions-league-cadono-inter-/",
+            "nonStarter": false
           },
           "betSelection": {
             "selectionId": "sisal:4858141:822325380:5379058260",
@@ -7747,7 +7915,10 @@
           },
           "settlement": {
             "status": "pending",
-            "label": "Da verificare"
+            "label": "DA VERIFICARE",
+            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
+            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
+            "nonStarter": false
           },
           "betSelection": {
             "selectionId": "sisal:4858141:822325406:5379058382",
@@ -7912,7 +8083,10 @@
           },
           "settlement": {
             "status": "pending",
-            "label": "Da verificare"
+            "label": "DA VERIFICARE",
+            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
+            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
+            "nonStarter": false
           },
           "betSelection": {
             "selectionId": "sisal:4858141:822307883:5379053237",
@@ -8057,8 +8231,11 @@
             "duo": false
           },
           "settlement": {
-            "status": "pending",
-            "label": "Da verificare"
+            "status": "lost",
+            "label": "ROSSO",
+            "reason": "Risultato finale 3-3, tempi regolamentari; nessun supplementare in fase campionato.",
+            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
+            "nonStarter": false
           },
           "betSelection": {
             "selectionId": "sisal:4858141:810812050:5317139355",
@@ -8226,7 +8403,10 @@
           },
           "settlement": {
             "status": "pending",
-            "label": "Da verificare"
+            "label": "DA VERIFICARE",
+            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
+            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
+            "nonStarter": false
           },
           "betSelection": {
             "selectionId": "sisal:4858141:822325176:5379023059",
@@ -8335,8 +8515,11 @@
       "kickoff": "21:00",
       "homeTeam": "Villarreal",
       "awayTeam": "Napoli",
-      "status": "scheduled",
-      "score": null,
+      "status": "finished",
+      "score": {
+        "home": 3,
+        "away": 1
+      },
       "readingUrl": "champions-league.html?match=ucl-2026-27-md02-09",
       "forecastSyncKey": "ucl-2026-27-md02-09",
       "selections": [
@@ -8375,8 +8558,11 @@
             "duo": false
           },
           "settlement": {
-            "status": "pending",
-            "label": "Da verificare"
+            "status": "won",
+            "label": "VERDE",
+            "reason": "Risultato finale 3-1, tempi regolamentari; nessun supplementare in fase campionato.",
+            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
+            "nonStarter": false
           },
           "scenarioAnalysis": {
             "compatibleOutcomes": [
@@ -8541,7 +8727,10 @@
           },
           "settlement": {
             "status": "pending",
-            "label": "Da verificare"
+            "label": "DA VERIFICARE",
+            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
+            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
+            "nonStarter": false
           },
           "betSelection": {
             "selectionId": "sisal:4858139:821933839:5376899635",
@@ -8705,8 +8894,11 @@
             "woodworkIncluded": true
           },
           "settlement": {
-            "status": "pending",
-            "label": "Da verificare"
+            "status": "won",
+            "label": "VERDE",
+            "reason": "Gol ufficialmente documentati: limite inferiore di tiri e SOT, sufficiente soltanto quando supera la soglia OVER.",
+            "sourceUrl": "https://it.uefa.com/uefachampionsleague/news/02aa-21d1f9bf8c14-02934d4c912d-1000--riepilogo-seconda-giornata-champions-league-cadono-inter-/",
+            "nonStarter": false
           },
           "betSelection": {
             "selectionId": "sisal:4858139:821934911:5376899499",
@@ -8871,7 +9063,10 @@
           },
           "settlement": {
             "status": "pending",
-            "label": "Da verificare"
+            "label": "DA VERIFICARE",
+            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
+            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
+            "nonStarter": false
           },
           "betSelection": {
             "selectionId": "sisal:4858139:821933832:5376899615",
@@ -9036,7 +9231,10 @@
           },
           "settlement": {
             "status": "pending",
-            "label": "Da verificare"
+            "label": "DA VERIFICARE",
+            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
+            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
+            "nonStarter": false
           },
           "betSelection": {
             "selectionId": "sisal:4858139:821934797:5376899039",
@@ -9201,7 +9399,10 @@
           },
           "settlement": {
             "status": "pending",
-            "label": "Da verificare"
+            "label": "DA VERIFICARE",
+            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
+            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
+            "nonStarter": false
           },
           "betSelection": {
             "selectionId": "sisal:4858139:821934696:5376893722",
@@ -18861,5 +19062,6 @@
         }
       ]
     }
-  ]
+  ],
+  "settledAt": "2026-10-14"
 }
