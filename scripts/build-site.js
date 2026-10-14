@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const root = path.resolve(__dirname, "..");
+require('./apply-official-starter-policy.js').build();
 const teams = JSON.parse(fs.readFileSync(path.join(root, "data/normalized/teams.json"), "utf8"));
 const esc = value => String(value ?? "").replace(/[&<>\"]/g, character => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[character]));
 const pages = [
@@ -17,10 +18,10 @@ const homeVersion = "20260919-roma-inter-juventus-fatigue-v1";
 const calendarVersion = "20260919-roma-inter-juventus-fatigue-v1";
 const teamVersion = "20261013-md06-results-v1";
 const leaderboardVersion = "20261013-md06-results-v1";
-const bettingVersion = "20261014-champions-md02-results-v1";
+const bettingVersion = "20261014-champions-md02-results-v2";
 const readingVersion = "20261013-md06-results-v1";
 const cupVersion = "20260919-coppa-events-v1";
-const championsVersion = "20261014-champions-md02-results-v1";
+const championsVersion = "20261014-champions-md02-results-v2";
 const championsMotivationVersion = "20261013-champions-md02-phase12d-v1";
 const fantasyVersion = "20261009-probable-lineups-md06-v2";
 const headToHeadPath = path.join(root, "data/generated/head-to-head/first-leg-2026-27.json");
@@ -67,3 +68,4 @@ const squadPage = (team = null, version = teamVersion) => {
 };
 for (const team of teams) fs.writeFileSync(path.join(squadDir, `${team.id}.html`), withFonts(squadPage(team)));
 console.log(`Generate ${pages.length + 1} pagine.`);
+

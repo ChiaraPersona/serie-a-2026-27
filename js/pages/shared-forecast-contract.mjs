@@ -23,7 +23,9 @@ export function isUnquotedIndividualForecast(leg){
 }
 
 export function isPublishedForecast(leg){
-  return leg?.forecastStatus!=="withdrawn"
+  return leg?.lineupEligibility?.eligible!==false
+    && (!globalThis.officialStarterPolicy||globalThis.officialStarterPolicy.eligible(leg))
+    && leg?.forecastStatus!=="withdrawn"
     && leg?.suggestionAnalysis?.suggested===true
     && (hasVerifiedPlayableQuote(leg)||isUnquotedIndividualForecast(leg));
 }

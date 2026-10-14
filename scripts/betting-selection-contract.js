@@ -1,6 +1,8 @@
 "use strict";
 
 const { playablePolicyFor } = require("./betting-market-policy");
+const starterPolicy=require('../js/official-starter-policy');
+starterPolicy.configure(require('./apply-official-starter-policy').buildRegistry());
 
 const CONTRACT_VERSION = 1;
 const CLASSIFICATIONS = Object.freeze(["PRINCIPALE", "INTERESSANTE", "OUTSIDER", "WATCH", "ESCLUSO"]);
@@ -85,6 +87,7 @@ function createBetSelection(input = {}) {
     selection: semantics.selectionName,
     label: input.label,
   });
+  if(!starterPolicy.eligible({...input,betSelection:{identity:{matchId},market:{scope:input.marketScope,subject:input.subject}}}))Object.assign(playability,{status:'NOT_PLAYABLE',code:'OFFICIAL_NON_STARTER',reason:'Giocatore assente dagli undici ufficiali.'});
   if (!selectionId) warnings.push("UNRESOLVED_PROVIDER_IDENTITY");
   if (!classification) warnings.push("CLASSIFICATION_NOT_AVAILABLE");
   if (reliability.level === "Non valutabile") warnings.push("RELIABILITY_NOT_EVALUABLE");

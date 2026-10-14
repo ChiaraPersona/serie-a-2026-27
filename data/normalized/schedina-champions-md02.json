@@ -10,7 +10,7 @@
   "status": "PARTIAL_RESULTS",
   "methodology": "La card conserva integralmente le 94 selezioni concluse con la Fase 12D e aggiunge outsider su contratti Sisal esatti: soglie gol con probabilita gia serializzata e riferimenti individuali tiri/SOT sostenuti da minuti, storico e volumi. I contratti individuali DUO mantengono probabilita, quota equa ed EV N/D.",
   "selectionRule": "Nessun numero fisso per gara. Classe A: contratto full-match identico a una soglia probabilistica gia validata o alla distribuzione gol gia adottata. Classe B: volume individuale motivante e quota valida, ma contratto DUO non probabilisticamente valutabile. Nessuna conversione automatica di una media in probabilita.",
-  "settlementPolicy": "Puntata simulata di 1 € per esito. ROI e profitto/perdita includono soltanto esiti ufficialmente definiti; pending e non verificabili non sono perdite.",
+  "settlementPolicy": "Verifica statistica, non liquidazione ufficiale Sisal. ROI ipotetico: 1 € per selezione filtrata confermata; esclusi non titolari e controversi. Archivio originario: 58 mercati, 34 verdi e 24 rossi.",
   "sources": {
     "integration": {
       "path": "data/normalized/champions-md02-integration-2026-27.json",
@@ -50,8 +50,8 @@
   },
   "summary": {
     "fixtures": 18,
-    "predictions": 120,
-    "clickableSelections": 120,
+    "predictions": 116,
+    "clickableSelections": 116,
     "result1x2": 9,
     "doubleChance": 9,
     "phase12BPredictions": 18,
@@ -62,22 +62,22 @@
     "outsiderTeamPredictions": 7,
     "outsiderIndividualPredictions": 19,
     "preferredPredictions": 18,
-    "individualPredictions": 78,
-    "individualShots": 52,
-    "individualShotsOnTarget": 26,
+    "individualPredictions": 74,
+    "individualShots": 49,
+    "individualShotsOnTarget": 25,
     "teamGoals": 13,
     "teamCorners": 5,
     "teamShots": 3,
     "teamShotsOnTarget": 3,
     "mathematicallyEvaluable": 42,
-    "won": 11,
-    "lost": 10,
+    "won": 26,
+    "lost": 22,
     "void": 0,
-    "pending": 99,
-    "stakeEuro": 21,
-    "grossReturnEuro": 18.17,
-    "profitLossEuro": -2.83,
-    "roiPct": -13.48
+    "pending": 68,
+    "stakeEuro": 48,
+    "grossReturnEuro": 41.05,
+    "profitLossEuro": -6.95,
+    "roiPct": -14.48
   },
   "fixtures": [
     {
@@ -131,9 +131,10 @@
           "settlement": {
             "status": "lost",
             "label": "ROSSO",
-            "reason": "Risultato finale 0-2, tempi regolamentari; nessun supplementare in fase campionato.",
+            "reason": "Risultato UEFA 0-2",
             "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
-            "nonStarter": false
+            "basis": "STATISTICAL_VERIFICATION",
+            "officiallySettled": false
           },
           "scenarioAnalysis": {
             "compatibleOutcomes": [
@@ -297,11 +298,12 @@
             "woodworkIncluded": false
           },
           "settlement": {
-            "status": "pending",
-            "label": "DA VERIFICARE",
-            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
-            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
-            "nonStarter": false
+            "status": "won",
+            "label": "VERDE",
+            "reason": "3 tiri individuali (StatMuse); sostituto incluso non necessario",
+            "sourceUrl": "https://www.statmuse.com/fc/match/-113884",
+            "basis": "STATISTICAL_VERIFICATION",
+            "officiallySettled": false
           },
           "betSelection": {
             "selectionId": "sisal:4858138:821926893:5376855525",
@@ -403,174 +405,6 @@
           }
         },
         {
-          "selectionId": "sisal:4858138:821927618:5376863469",
-          "context": {
-            "competition": "champions",
-            "season": "2026-27",
-            "matchday": 2
-          },
-          "matchId": "ucl-2026-27-md02-01",
-          "fixture": "Lens - Sporting CP",
-          "market": "U/O  TIRI IN PORTA GIOCATORE (DUO) INC PALI TRAVERSE INC TS",
-          "marketScope": "player",
-          "marketFamily": "Tiri in porta giocatore",
-          "selection": "OVER",
-          "providerSelectionCode": "2",
-          "label": "Odsonne Édouard over 0,5 SOT · sostituto incluso · pali/traverse inclusi",
-          "odds": 1.25,
-          "modelProbabilityPct": null,
-          "fairOdds": null,
-          "expectedValuePct": null,
-          "evidenceLabel": "Non titolare nell'XI ufficiale · minuti e SOT attesi N/D",
-          "motivation": "Il giocatore non compare nell'XI ufficiale e la fonte non pubblica la panchina. La quota e il contratto con sostituto restano disponibili, ma il modello non inventa minuti di subentro; la precedente proiezione editoriale era 1,2 SOT.",
-          "limitation": "Il forecast quantifica i SOT del solo giocatore; la quota Sisal include il sostituto e anche pali/traverse. Probabilita, quota equa ed EV del contratto restano N/D.",
-          "classification": "DA_RIVEDERE",
-          "reviewStatus": "DA_RIVEDERE",
-          "player": {
-            "canonicalPlayerId": "odsonne-edouard",
-            "canonicalName": "Odsonne Édouard",
-            "providerPlayerIds": [
-              "157058"
-            ],
-            "team": "Lens",
-            "side": "home",
-            "role": "forward",
-            "lineupStatus": "official-non-starter",
-            "expectedMinutes": null,
-            "historyMinutes": 1841,
-            "reliability": 0.6717,
-            "dataStatus": "verified-history",
-            "projectedShots": null,
-            "projectedShotsOnTarget": null,
-            "previousEditorialProjection": 1.2
-          },
-          "dataQuality": {
-            "fixtureDetailedVolumes": true,
-            "playerDataStatus": "verified-history",
-            "identityStatus": "resolved",
-            "lineupReview": "DA_RIVEDERE"
-          },
-          "providerEventId": "4858138",
-          "providerMarketId": "821927618",
-          "providerSelectionId": "5376863469",
-          "marketCode": "28506",
-          "marketName": "U/O  TIRI IN PORTA GIOCATORE (DUO) INC PALI TRAVERSE INC TS",
-          "variantName": "EDOUARD O. U/O 0.5 SOMMA TIRI IN PORTA INC PALI E TRAVERSE E SUO SOST. INCL. T.S.",
-          "threshold": 0.5,
-          "modifiers": {
-            "threshold": "0.5",
-            "variantName": "EDOUARD O. U/O 0.5 SOMMA TIRI IN PORTA INC PALI E TRAVERSE E SUO SOST. INCL. T.S.",
-            "periodScope": "full-match",
-            "replacementIncluded": true,
-            "woodworkIncluded": true
-          },
-          "settlement": {
-            "status": "pending",
-            "label": "DA VERIFICARE",
-            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
-            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
-            "nonStarter": true
-          },
-          "betSelection": {
-            "selectionId": "sisal:4858138:821927618:5376863469",
-            "identity": {
-              "status": "VERIFIED_PROVIDER_IDS",
-              "matchId": "ucl-2026-27-md02-01",
-              "providerEventId": "4858138",
-              "providerMarketId": "821927618",
-              "providerSelectionId": "5376863469",
-              "providerPlayerIds": [
-                "157058"
-              ],
-              "canonicalPlayerIds": [
-                "odsonne-edouard"
-              ]
-            },
-            "market": {
-              "name": "U/O  TIRI IN PORTA GIOCATORE (DUO) INC PALI TRAVERSE INC TS",
-              "family": "Tiri in porta giocatore",
-              "code": "28506",
-              "variant": "EDOUARD O. U/O 0.5 SOMMA TIRI IN PORTA INC PALI E TRAVERSE E SUO SOST. INCL. T.S.",
-              "threshold": 0.5,
-              "selection": "OVER",
-              "modifiers": {
-                "threshold": "0.5",
-                "variantName": "EDOUARD O. U/O 0.5 SOMMA TIRI IN PORTA INC PALI E TRAVERSE E SUO SOST. INCL. T.S.",
-                "periodScope": "full-match",
-                "replacementIncluded": true,
-                "woodworkIncluded": true
-              },
-              "bookmakerSemantics": {
-                "selectionName": "OVER",
-                "selectionCode": "2",
-                "modifiers": {
-                  "threshold": "0.5",
-                  "variantName": "EDOUARD O. U/O 0.5 SOMMA TIRI IN PORTA INC PALI E TRAVERSE E SUO SOST. INCL. T.S.",
-                  "periodScope": "full-match",
-                  "replacementIncluded": true,
-                  "woodworkIncluded": true
-                },
-                "duo": true,
-                "replacementIncluded": true,
-                "postsAndCrossbarIncluded": true
-              }
-            },
-            "quote": {
-              "decimal": 1.25,
-              "oddsRaw": 125,
-              "availability": "AVAILABLE_AT_SNAPSHOT",
-              "verifiedAt": "2026-10-13T09:55:14.800Z",
-              "marketUpdatedAt": "2026-10-12T13:44:59.174Z",
-              "source": {
-                "provider": "Sisal",
-                "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001"
-              }
-            },
-            "evaluation": {
-              "status": "NOT_MODELLED",
-              "kind": "INDIVIDUAL_FORECAST_REFERENCE_ONLY",
-              "modelProbabilityPct": null,
-              "fairOdds": null,
-              "expectedValuePct": null,
-              "individualForecast": {
-                "metric": "shotsOnTarget",
-                "mean": null,
-                "expectedMinutes": null,
-                "previousEditorialMean": 1.2
-              },
-              "provenance": {
-                "source": "data/normalized/champions-md02-integration-2026-27.json",
-                "predictionGeneratedAt": "2026-10-13T16:04:48.283Z",
-                "curationSource": "data/sources/champions-md02-individual-selection-2026-27.json",
-                "curatedAt": "2026-10-13T13:38:51.5993900+02:00"
-              }
-            },
-            "compatibility": {
-              "status": "REFERENCE_ONLY_DUO_REPLACEMENT_AND_WOODWORK_NOT_MODELLED",
-              "bookmakerCombinability": "UNKNOWN",
-              "limitation": "Il forecast quantifica i SOT del solo giocatore; la quota Sisal include il sostituto e anche pali/traverse. Probabilita, quota equa ed EV del contratto restano N/D."
-            },
-            "operational": {
-              "playability": {
-                "status": "PLAYABLE"
-              },
-              "classification": "DA_RIVEDERE",
-              "reviewStatus": "DA_RIVEDERE"
-            },
-            "overlap": {
-              "overlapKey": "ucl-2026-27-md02-01:821927618",
-              "semanticKeys": []
-            }
-          },
-          "isOutsider": false,
-          "isPreferred": false,
-          "editorial": {
-            "isOutsider": false,
-            "isPreferred": false,
-            "source": "data/sources/champions-md02-phase12d-outsiders-2026-27.json"
-          }
-        },
-        {
           "selectionId": "sisal:4858138:821927322:5376857359",
           "context": {
             "competition": "champions",
@@ -635,9 +469,10 @@
           "settlement": {
             "status": "pending",
             "label": "DA VERIFICARE",
-            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
-            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
-            "nonStarter": false
+            "reason": "Verifica tabellino individuale del 13/10/2026; per Rashford 1 tiro e sostituto Amad Diallo 0 tiri.",
+            "sourceUrl": "https://www.playmakerstats.com/match_player_stats.php?id=12624798&one_stat=sshot",
+            "basis": "STATISTICAL_VERIFICATION",
+            "officiallySettled": false
           },
           "betSelection": {
             "selectionId": "sisal:4858138:821927322:5376857359",
@@ -739,174 +574,6 @@
           }
         },
         {
-          "selectionId": "sisal:4858138:821928592:5376859993",
-          "context": {
-            "competition": "champions",
-            "season": "2026-27",
-            "matchday": 2
-          },
-          "matchId": "ucl-2026-27-md02-01",
-          "fixture": "Lens - Sporting CP",
-          "market": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
-          "marketScope": "player",
-          "marketFamily": "Tiri giocatore",
-          "selection": "OVER",
-          "providerSelectionCode": "2",
-          "label": "Odsonne Édouard over 3,5 tiri · sostituto incluso",
-          "odds": 3.25,
-          "modelProbabilityPct": null,
-          "fairOdds": null,
-          "expectedValuePct": null,
-          "evidenceLabel": "Non titolare nell'XI ufficiale · minuti e tiri attesi N/D",
-          "motivation": "Il giocatore non compare nell'XI ufficiale e la fonte non pubblica la panchina. La quota e il contratto con sostituto restano disponibili, ma il modello non inventa minuti di subentro; la precedente proiezione editoriale era 2,73 tiri.",
-          "limitation": "Il forecast quantifica i tiri del solo giocatore; la quota Sisal include anche il sostituto. Probabilita, quota equa ed EV del contratto restano N/D.",
-          "classification": "DA_RIVEDERE",
-          "reviewStatus": "DA_RIVEDERE",
-          "player": {
-            "canonicalPlayerId": "odsonne-edouard",
-            "canonicalName": "Odsonne Édouard",
-            "providerPlayerIds": [
-              "157058"
-            ],
-            "team": "Lens",
-            "side": "home",
-            "role": "forward",
-            "lineupStatus": "official-non-starter",
-            "expectedMinutes": null,
-            "historyMinutes": 1841,
-            "reliability": 0.6717,
-            "dataStatus": "verified-history",
-            "projectedShots": null,
-            "projectedShotsOnTarget": null,
-            "previousEditorialProjection": 2.73
-          },
-          "dataQuality": {
-            "fixtureDetailedVolumes": true,
-            "playerDataStatus": "verified-history",
-            "identityStatus": "resolved",
-            "lineupReview": "DA_RIVEDERE"
-          },
-          "providerEventId": "4858138",
-          "providerMarketId": "821928592",
-          "providerSelectionId": "5376859993",
-          "marketCode": "28507",
-          "marketName": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
-          "variantName": "EDOUARD O. U/O 3.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
-          "threshold": 3.5,
-          "modifiers": {
-            "threshold": "3.5",
-            "variantName": "EDOUARD O. U/O 3.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
-            "periodScope": "full-match",
-            "replacementIncluded": true,
-            "woodworkIncluded": false
-          },
-          "settlement": {
-            "status": "pending",
-            "label": "DA VERIFICARE",
-            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
-            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
-            "nonStarter": true
-          },
-          "betSelection": {
-            "selectionId": "sisal:4858138:821928592:5376859993",
-            "identity": {
-              "status": "VERIFIED_PROVIDER_IDS",
-              "matchId": "ucl-2026-27-md02-01",
-              "providerEventId": "4858138",
-              "providerMarketId": "821928592",
-              "providerSelectionId": "5376859993",
-              "providerPlayerIds": [
-                "157058"
-              ],
-              "canonicalPlayerIds": [
-                "odsonne-edouard"
-              ]
-            },
-            "market": {
-              "name": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
-              "family": "Tiri giocatore",
-              "code": "28507",
-              "variant": "EDOUARD O. U/O 3.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
-              "threshold": 3.5,
-              "selection": "OVER",
-              "modifiers": {
-                "threshold": "3.5",
-                "variantName": "EDOUARD O. U/O 3.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
-                "periodScope": "full-match",
-                "replacementIncluded": true,
-                "woodworkIncluded": false
-              },
-              "bookmakerSemantics": {
-                "selectionName": "OVER",
-                "selectionCode": "2",
-                "modifiers": {
-                  "threshold": "3.5",
-                  "variantName": "EDOUARD O. U/O 3.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
-                  "periodScope": "full-match",
-                  "replacementIncluded": true,
-                  "woodworkIncluded": false
-                },
-                "duo": true,
-                "replacementIncluded": true,
-                "postsAndCrossbarIncluded": false
-              }
-            },
-            "quote": {
-              "decimal": 3.25,
-              "oddsRaw": 325,
-              "availability": "AVAILABLE_AT_SNAPSHOT",
-              "verifiedAt": "2026-10-13T09:55:14.800Z",
-              "marketUpdatedAt": "2026-10-12T18:20:45.664Z",
-              "source": {
-                "provider": "Sisal",
-                "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001"
-              }
-            },
-            "evaluation": {
-              "status": "NOT_MODELLED",
-              "kind": "INDIVIDUAL_FORECAST_REFERENCE_ONLY",
-              "modelProbabilityPct": null,
-              "fairOdds": null,
-              "expectedValuePct": null,
-              "individualForecast": {
-                "metric": "shots",
-                "mean": null,
-                "expectedMinutes": null,
-                "previousEditorialMean": 2.73
-              },
-              "provenance": {
-                "source": "data/normalized/champions-md02-integration-2026-27.json",
-                "predictionGeneratedAt": "2026-10-13T16:04:48.283Z",
-                "curationSource": "data/sources/champions-md02-phase12d-outsiders-2026-27.json",
-                "curatedAt": "2026-10-13T16:10:37.4963673+02:00"
-              }
-            },
-            "compatibility": {
-              "status": "REFERENCE_ONLY_DUO_REPLACEMENT_NOT_MODELLED",
-              "bookmakerCombinability": "UNKNOWN",
-              "limitation": "Il forecast quantifica i tiri del solo giocatore; la quota Sisal include anche il sostituto. Probabilita, quota equa ed EV del contratto restano N/D."
-            },
-            "operational": {
-              "playability": {
-                "status": "PLAYABLE"
-              },
-              "classification": "DA_RIVEDERE",
-              "reviewStatus": "DA_RIVEDERE"
-            },
-            "overlap": {
-              "overlapKey": "ucl-2026-27-md02-01:821928592",
-              "semanticKeys": []
-            }
-          },
-          "isOutsider": true,
-          "isPreferred": false,
-          "editorial": {
-            "isOutsider": true,
-            "isPreferred": false,
-            "source": "data/sources/champions-md02-phase12d-outsiders-2026-27.json"
-          }
-        },
-        {
           "selectionId": "sisal:4858138:821927323:5376857369",
           "context": {
             "competition": "champions",
@@ -971,9 +638,10 @@
           "settlement": {
             "status": "pending",
             "label": "DA VERIFICARE",
-            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
-            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
-            "nonStarter": false
+            "reason": "Verifica tabellino individuale del 13/10/2026; per Rashford 1 tiro e sostituto Amad Diallo 0 tiri.",
+            "sourceUrl": "https://www.playmakerstats.com/match_player_stats.php?id=12624798&one_stat=sshot",
+            "basis": "STATISTICAL_VERIFICATION",
+            "officiallySettled": false
           },
           "betSelection": {
             "selectionId": "sisal:4858138:821927323:5376857369",
@@ -1127,9 +795,10 @@
           "settlement": {
             "status": "won",
             "label": "VERDE",
-            "reason": "Risultato finale 2-0, tempi regolamentari; nessun supplementare in fase campionato.",
+            "reason": "Risultato UEFA 2-0",
             "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
-            "nonStarter": false
+            "basis": "STATISTICAL_VERIFICATION",
+            "officiallySettled": false
           },
           "scenarioAnalysis": {
             "compatibleOutcomes": [
@@ -1268,9 +937,10 @@
           "settlement": {
             "status": "lost",
             "label": "ROSSO",
-            "reason": "Risultato finale 2-0, tempi regolamentari; nessun supplementare in fase campionato.",
+            "reason": "2 gol totali (UEFA)",
             "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
-            "nonStarter": false
+            "basis": "STATISTICAL_VERIFICATION",
+            "officiallySettled": false
           },
           "betSelection": {
             "selectionId": "sisal:4858137:810810961:5317134384",
@@ -1427,9 +1097,10 @@
           "settlement": {
             "status": "won",
             "label": "VERDE",
-            "reason": "Risultato finale 3-0, tempi regolamentari; nessun supplementare in fase campionato.",
+            "reason": "Risultato UEFA 3-0",
             "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
-            "nonStarter": false
+            "basis": "STATISTICAL_VERIFICATION",
+            "officiallySettled": false
           },
           "scenarioAnalysis": {
             "compatibleOutcomes": [
@@ -1523,175 +1194,6 @@
           }
         },
         {
-          "selectionId": "sisal:4858146:821922356:5376832575",
-          "context": {
-            "competition": "champions",
-            "season": "2026-27",
-            "matchday": 2
-          },
-          "matchId": "ucl-2026-27-md02-03",
-          "fixture": "Arsenal - Lille",
-          "market": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
-          "marketScope": "player",
-          "marketFamily": "Tiri giocatore",
-          "selection": "OVER",
-          "providerSelectionCode": "2",
-          "label": "Bukayo Saka over 2,5 tiri · sostituto incluso",
-          "odds": 1.33,
-          "modelProbabilityPct": null,
-          "fairOdds": null,
-          "expectedValuePct": null,
-          "evidenceLabel": "Panchina confermata · minuti e tiri attesi N/D",
-          "motivation": "Il giocatore non parte titolare ma compare nella panchina ufficiale. La quota e il contratto con sostituto restano disponibili; il modello non inventa minuti di subentro e mantiene la selezione in revisione prudenziale. La precedente proiezione editoriale era 2,81 tiri.",
-          "limitation": "Il forecast quantifica i tiri del solo giocatore; la quota Sisal include anche il sostituto. Probabilita, quota equa ed EV del contratto restano N/D.",
-          "classification": "DA_RIVEDERE",
-          "reviewStatus": "DA_RIVEDERE",
-          "player": {
-            "canonicalPlayerId": "bukayo-saka",
-            "canonicalName": "Bukayo Saka",
-            "providerPlayerIds": [
-              "371663"
-            ],
-            "team": "Arsenal",
-            "side": "home",
-            "role": "forward",
-            "lineupStatus": "official-bench",
-            "expectedMinutes": null,
-            "historyMinutes": 2913,
-            "reliability": 0.764,
-            "dataStatus": "verified-history",
-            "projectedShots": null,
-            "projectedShotsOnTarget": null,
-            "previousEditorialProjection": 2.81
-          },
-          "dataQuality": {
-            "fixtureDetailedVolumes": true,
-            "playerDataStatus": "verified-history",
-            "identityStatus": "resolved",
-            "benchStatus": "confirmed",
-            "lineupReview": "DA_RIVEDERE"
-          },
-          "providerEventId": "4858146",
-          "providerMarketId": "821922356",
-          "providerSelectionId": "5376832575",
-          "marketCode": "28507",
-          "marketName": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
-          "variantName": "SAKA B. U/O 2.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
-          "threshold": 2.5,
-          "modifiers": {
-            "threshold": "2.5",
-            "variantName": "SAKA B. U/O 2.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
-            "periodScope": "full-match",
-            "replacementIncluded": true,
-            "woodworkIncluded": false
-          },
-          "settlement": {
-            "status": "pending",
-            "label": "DA VERIFICARE",
-            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
-            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
-            "nonStarter": true
-          },
-          "betSelection": {
-            "selectionId": "sisal:4858146:821922356:5376832575",
-            "identity": {
-              "status": "VERIFIED_PROVIDER_IDS",
-              "matchId": "ucl-2026-27-md02-03",
-              "providerEventId": "4858146",
-              "providerMarketId": "821922356",
-              "providerSelectionId": "5376832575",
-              "providerPlayerIds": [
-                "371663"
-              ],
-              "canonicalPlayerIds": [
-                "bukayo-saka"
-              ]
-            },
-            "market": {
-              "name": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
-              "family": "Tiri giocatore",
-              "code": "28507",
-              "variant": "SAKA B. U/O 2.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
-              "threshold": 2.5,
-              "selection": "OVER",
-              "modifiers": {
-                "threshold": "2.5",
-                "variantName": "SAKA B. U/O 2.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
-                "periodScope": "full-match",
-                "replacementIncluded": true,
-                "woodworkIncluded": false
-              },
-              "bookmakerSemantics": {
-                "selectionName": "OVER",
-                "selectionCode": "2",
-                "modifiers": {
-                  "threshold": "2.5",
-                  "variantName": "SAKA B. U/O 2.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
-                  "periodScope": "full-match",
-                  "replacementIncluded": true,
-                  "woodworkIncluded": false
-                },
-                "duo": true,
-                "replacementIncluded": true,
-                "postsAndCrossbarIncluded": false
-              }
-            },
-            "quote": {
-              "decimal": 1.33,
-              "oddsRaw": 133,
-              "availability": "AVAILABLE_AT_SNAPSHOT",
-              "verifiedAt": "2026-10-13T09:55:14.800Z",
-              "marketUpdatedAt": "2026-10-12T13:44:59.820Z",
-              "source": {
-                "provider": "Sisal",
-                "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001"
-              }
-            },
-            "evaluation": {
-              "status": "NOT_MODELLED",
-              "kind": "INDIVIDUAL_FORECAST_REFERENCE_ONLY",
-              "modelProbabilityPct": null,
-              "fairOdds": null,
-              "expectedValuePct": null,
-              "individualForecast": {
-                "metric": "shots",
-                "mean": null,
-                "expectedMinutes": null,
-                "previousEditorialMean": 2.81
-              },
-              "provenance": {
-                "source": "data/normalized/champions-md02-integration-2026-27.json",
-                "predictionGeneratedAt": "2026-10-13T18:14:52.209Z",
-                "curationSource": "data/sources/champions-md02-individual-selection-2026-27.json",
-                "curatedAt": "2026-10-13T13:38:51.5993900+02:00"
-              }
-            },
-            "compatibility": {
-              "status": "REFERENCE_ONLY_DUO_REPLACEMENT_NOT_MODELLED",
-              "bookmakerCombinability": "UNKNOWN",
-              "limitation": "Il forecast quantifica i tiri del solo giocatore; la quota Sisal include anche il sostituto. Probabilita, quota equa ed EV del contratto restano N/D."
-            },
-            "operational": {
-              "playability": {
-                "status": "PLAYABLE"
-              },
-              "classification": "DA_RIVEDERE",
-              "reviewStatus": "DA_RIVEDERE"
-            },
-            "overlap": {
-              "overlapKey": "ucl-2026-27-md02-03:821922356",
-              "semanticKeys": []
-            }
-          },
-          "isOutsider": false,
-          "isPreferred": false,
-          "editorial": {
-            "isOutsider": false,
-            "isPreferred": false,
-            "source": "data/sources/champions-md02-phase12d-outsiders-2026-27.json"
-          }
-        },
-        {
           "selectionId": "sisal:4858146:821922408:5376832817",
           "context": {
             "competition": "champions",
@@ -1754,11 +1256,12 @@
             "woodworkIncluded": true
           },
           "settlement": {
-            "status": "pending",
-            "label": "DA VERIFICARE",
-            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
-            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
-            "nonStarter": false
+            "status": "lost",
+            "label": "ROSSO",
+            "reason": "Lille 0 tiri in porta e 0 pali/traverse complessivi (Sky Sport)",
+            "sourceUrl": "https://sport.sky.it/calcio/champions-league/partite/2026/giornata-2/arsenal-lille/tabellino-statistiche",
+            "basis": "STATISTICAL_VERIFICATION",
+            "officiallySettled": false
           },
           "betSelection": {
             "selectionId": "sisal:4858146:821922408:5376832817",
@@ -1922,11 +1425,12 @@
             "woodworkIncluded": false
           },
           "settlement": {
-            "status": "pending",
-            "label": "DA VERIFICARE",
-            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
-            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
-            "nonStarter": false
+            "status": "won",
+            "label": "VERDE",
+            "reason": "Almeno 3 conclusioni in porta di Eze (StatMuse)",
+            "sourceUrl": "https://www.statmuse.com/fc/match/10-13-2026-ars-vs-lil-113886",
+            "basis": "STATISTICAL_VERIFICATION",
+            "officiallySettled": false
           },
           "betSelection": {
             "selectionId": "sisal:4858146:821921916:5376820147",
@@ -2073,9 +1577,10 @@
           "settlement": {
             "status": "won",
             "label": "VERDE",
-            "reason": "Risultato finale 3-0, tempi regolamentari; nessun supplementare in fase campionato.",
+            "reason": "3 gol totali (UEFA)",
             "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
-            "nonStarter": false
+            "basis": "STATISTICAL_VERIFICATION",
+            "officiallySettled": false
           },
           "betSelection": {
             "selectionId": "sisal:4858146:810823359:5317157816",
@@ -2242,11 +1747,12 @@
             "woodworkIncluded": false
           },
           "settlement": {
-            "status": "pending",
-            "label": "DA VERIFICARE",
-            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
-            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
-            "nonStarter": false
+            "status": "lost",
+            "label": "ROSSO",
+            "reason": "Ueda 1 tiro; sostituto Giroud 0 tiri",
+            "sourceUrl": "https://www.playmakerstats.com/match_player_stats.php?id=12624748&one_stat=sshot",
+            "basis": "STATISTICAL_VERIFICATION",
+            "officiallySettled": false
           },
           "betSelection": {
             "selectionId": "sisal:4858146:821922449:5376832991",
@@ -2393,9 +1899,10 @@
           "settlement": {
             "status": "lost",
             "label": "ROSSO",
-            "reason": "Risultato finale 3-0, tempi regolamentari; nessun supplementare in fase campionato.",
+            "reason": "3 gol totali (UEFA)",
             "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
-            "nonStarter": false
+            "basis": "STATISTICAL_VERIFICATION",
+            "officiallySettled": false
           },
           "betSelection": {
             "selectionId": "sisal:4858146:810823358:5317157812",
@@ -2555,11 +2062,12 @@
             "woodworkIncluded": false
           },
           "settlement": {
-            "status": "pending",
-            "label": "DA VERIFICARE",
-            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
-            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
-            "nonStarter": false
+            "status": "lost",
+            "label": "ROSSO",
+            "reason": "Ueda 1 tiro; sostituto Giroud 0 tiri",
+            "sourceUrl": "https://www.playmakerstats.com/match_player_stats.php?id=12624748&one_stat=sshot",
+            "basis": "STATISTICAL_VERIFICATION",
+            "officiallySettled": false
           },
           "betSelection": {
             "selectionId": "sisal:4858146:821922371:5376832677",
@@ -2723,11 +2231,12 @@
             "woodworkIncluded": false
           },
           "settlement": {
-            "status": "pending",
-            "label": "DA VERIFICARE",
-            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
-            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
-            "nonStarter": false
+            "status": "lost",
+            "label": "ROSSO",
+            "reason": "André 0 tiri, ha giocato 90 minuti",
+            "sourceUrl": "https://www.playmakerstats.com/match_player_stats.php?id=12624748&one_stat=sshot",
+            "basis": "STATISTICAL_VERIFICATION",
+            "officiallySettled": false
           },
           "betSelection": {
             "selectionId": "sisal:4858146:821921851:5376819861",
@@ -2881,9 +2390,10 @@
           "settlement": {
             "status": "won",
             "label": "VERDE",
-            "reason": "Risultato finale 2-0, tempi regolamentari; nessun supplementare in fase campionato.",
+            "reason": "Risultato UEFA 2-0",
             "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
-            "nonStarter": false
+            "basis": "STATISTICAL_VERIFICATION",
+            "officiallySettled": false
           },
           "scenarioAnalysis": {
             "compatibleOutcomes": [
@@ -2977,175 +2487,6 @@
           }
         },
         {
-          "selectionId": "sisal:4858177:821890410:5376642298",
-          "context": {
-            "competition": "champions",
-            "season": "2026-27",
-            "matchday": 2
-          },
-          "matchId": "ucl-2026-27-md02-04",
-          "fixture": "Atlético de Madrid - Manchester United",
-          "market": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
-          "marketScope": "player",
-          "marketFamily": "Tiri giocatore",
-          "selection": "OVER",
-          "providerSelectionCode": "2",
-          "label": "Ademola Lookman over 2,5 tiri · sostituto incluso",
-          "odds": 1.25,
-          "modelProbabilityPct": null,
-          "fairOdds": null,
-          "expectedValuePct": null,
-          "evidenceLabel": "Panchina confermata · minuti e tiri attesi N/D",
-          "motivation": "Il giocatore non parte titolare ma compare nella panchina ufficiale. La quota e il contratto con sostituto restano disponibili; il modello non inventa minuti di subentro e mantiene la selezione in revisione prudenziale. La precedente proiezione editoriale era 3,17 tiri.",
-          "limitation": "Il forecast quantifica i tiri del solo giocatore; la quota Sisal include anche il sostituto. Probabilita, quota equa ed EV del contratto restano N/D.",
-          "classification": "DA_RIVEDERE",
-          "reviewStatus": "DA_RIVEDERE",
-          "player": {
-            "canonicalPlayerId": "ademola-lookman",
-            "canonicalName": "Ademola Lookman",
-            "providerPlayerIds": [
-              "12567"
-            ],
-            "team": "Atlético de Madrid",
-            "side": "home",
-            "role": "forward",
-            "lineupStatus": "official-bench",
-            "expectedMinutes": null,
-            "historyMinutes": 2349,
-            "reliability": 0.723,
-            "dataStatus": "verified-history",
-            "projectedShots": null,
-            "projectedShotsOnTarget": null,
-            "previousEditorialProjection": 3.17
-          },
-          "dataQuality": {
-            "fixtureDetailedVolumes": true,
-            "playerDataStatus": "verified-history",
-            "identityStatus": "resolved",
-            "benchStatus": "confirmed",
-            "lineupReview": "DA_RIVEDERE"
-          },
-          "providerEventId": "4858177",
-          "providerMarketId": "821890410",
-          "providerSelectionId": "5376642298",
-          "marketCode": "28507",
-          "marketName": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
-          "variantName": "LOOKMAN A. U/O 2.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
-          "threshold": 2.5,
-          "modifiers": {
-            "threshold": "2.5",
-            "variantName": "LOOKMAN A. U/O 2.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
-            "periodScope": "full-match",
-            "replacementIncluded": true,
-            "woodworkIncluded": false
-          },
-          "settlement": {
-            "status": "pending",
-            "label": "DA VERIFICARE",
-            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
-            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
-            "nonStarter": true
-          },
-          "betSelection": {
-            "selectionId": "sisal:4858177:821890410:5376642298",
-            "identity": {
-              "status": "VERIFIED_PROVIDER_IDS",
-              "matchId": "ucl-2026-27-md02-04",
-              "providerEventId": "4858177",
-              "providerMarketId": "821890410",
-              "providerSelectionId": "5376642298",
-              "providerPlayerIds": [
-                "12567"
-              ],
-              "canonicalPlayerIds": [
-                "ademola-lookman"
-              ]
-            },
-            "market": {
-              "name": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
-              "family": "Tiri giocatore",
-              "code": "28507",
-              "variant": "LOOKMAN A. U/O 2.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
-              "threshold": 2.5,
-              "selection": "OVER",
-              "modifiers": {
-                "threshold": "2.5",
-                "variantName": "LOOKMAN A. U/O 2.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
-                "periodScope": "full-match",
-                "replacementIncluded": true,
-                "woodworkIncluded": false
-              },
-              "bookmakerSemantics": {
-                "selectionName": "OVER",
-                "selectionCode": "2",
-                "modifiers": {
-                  "threshold": "2.5",
-                  "variantName": "LOOKMAN A. U/O 2.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
-                  "periodScope": "full-match",
-                  "replacementIncluded": true,
-                  "woodworkIncluded": false
-                },
-                "duo": true,
-                "replacementIncluded": true,
-                "postsAndCrossbarIncluded": false
-              }
-            },
-            "quote": {
-              "decimal": 1.25,
-              "oddsRaw": 125,
-              "availability": "AVAILABLE_AT_SNAPSHOT",
-              "verifiedAt": "2026-10-13T09:55:14.800Z",
-              "marketUpdatedAt": "2026-10-12T13:45:00.024Z",
-              "source": {
-                "provider": "Sisal",
-                "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001"
-              }
-            },
-            "evaluation": {
-              "status": "NOT_MODELLED",
-              "kind": "INDIVIDUAL_FORECAST_REFERENCE_ONLY",
-              "modelProbabilityPct": null,
-              "fairOdds": null,
-              "expectedValuePct": null,
-              "individualForecast": {
-                "metric": "shots",
-                "mean": null,
-                "expectedMinutes": null,
-                "previousEditorialMean": 3.17
-              },
-              "provenance": {
-                "source": "data/normalized/champions-md02-integration-2026-27.json",
-                "predictionGeneratedAt": "2026-10-13T18:14:52.209Z",
-                "curationSource": "data/sources/champions-md02-individual-selection-2026-27.json",
-                "curatedAt": "2026-10-13T13:38:51.5993900+02:00"
-              }
-            },
-            "compatibility": {
-              "status": "REFERENCE_ONLY_DUO_REPLACEMENT_NOT_MODELLED",
-              "bookmakerCombinability": "UNKNOWN",
-              "limitation": "Il forecast quantifica i tiri del solo giocatore; la quota Sisal include anche il sostituto. Probabilita, quota equa ed EV del contratto restano N/D."
-            },
-            "operational": {
-              "playability": {
-                "status": "PLAYABLE"
-              },
-              "classification": "DA_RIVEDERE",
-              "reviewStatus": "DA_RIVEDERE"
-            },
-            "overlap": {
-              "overlapKey": "ucl-2026-27-md02-04:821890410",
-              "semanticKeys": []
-            }
-          },
-          "isOutsider": false,
-          "isPreferred": false,
-          "editorial": {
-            "isOutsider": false,
-            "isPreferred": false,
-            "source": "data/sources/champions-md02-phase12d-outsiders-2026-27.json"
-          }
-        },
-        {
           "selectionId": "sisal:4858177:821888605:5376633847",
           "context": {
             "competition": "champions",
@@ -3208,11 +2549,12 @@
             "woodworkIncluded": true
           },
           "settlement": {
-            "status": "pending",
-            "label": "DA VERIFICARE",
-            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
-            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
-            "nonStarter": false
+            "status": "lost",
+            "label": "ROSSO",
+            "reason": "Rashford 0 SOT + Amad Diallo 0 SOT. Legno United attribuito a Bruno Fernandes, non a Rashford/Amad.",
+            "sourceUrl": "https://www.theguardian.com/football/2026/oct/13/atletico-madrid-manchester-united-champions-league-match-report",
+            "basis": "STATISTICAL_VERIFICATION",
+            "officiallySettled": false
           },
           "betSelection": {
             "selectionId": "sisal:4858177:821888605:5376633847",
@@ -3359,9 +2701,10 @@
           "settlement": {
             "status": "lost",
             "label": "ROSSO",
-            "reason": "Risultato finale 2-0, tempi regolamentari; nessun supplementare in fase campionato.",
+            "reason": "2 gol totali (UEFA)",
             "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
-            "nonStarter": false
+            "basis": "STATISTICAL_VERIFICATION",
+            "officiallySettled": false
           },
           "betSelection": {
             "selectionId": "sisal:4858177:810814205:5317191046",
@@ -3528,11 +2871,12 @@
             "woodworkIncluded": false
           },
           "settlement": {
-            "status": "pending",
-            "label": "DA VERIFICARE",
-            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
-            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
-            "nonStarter": false
+            "status": "lost",
+            "label": "ROSSO",
+            "reason": "Verifica tabellino individuale del 13/10/2026; per Rashford 1 tiro e sostituto Amad Diallo 0 tiri.",
+            "sourceUrl": "https://fbref.com/en/matches/425b77e1/Atletico-Madrid-Manchester-United-October-13-2026-Champions-League",
+            "basis": "STATISTICAL_VERIFICATION",
+            "officiallySettled": false
           },
           "betSelection": {
             "selectionId": "sisal:4858177:821888775:5376634522",
@@ -3679,9 +3023,10 @@
           "settlement": {
             "status": "lost",
             "label": "ROSSO",
-            "reason": "Risultato finale 2-0, tempi regolamentari; nessun supplementare in fase campionato.",
+            "reason": "2 gol totali (UEFA)",
             "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
-            "nonStarter": false
+            "basis": "STATISTICAL_VERIFICATION",
+            "officiallySettled": false
           },
           "betSelection": {
             "selectionId": "sisal:4858177:810814206:5317191050",
@@ -3841,11 +3186,12 @@
             "woodworkIncluded": false
           },
           "settlement": {
-            "status": "pending",
-            "label": "DA VERIFICARE",
-            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
-            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
-            "nonStarter": false
+            "status": "lost",
+            "label": "ROSSO",
+            "reason": "Verifica tabellino individuale del 13/10/2026; per Rashford 1 tiro e sostituto Amad Diallo 0 tiri.",
+            "sourceUrl": "https://fbref.com/en/matches/425b77e1/Atletico-Madrid-Manchester-United-October-13-2026-Champions-League",
+            "basis": "STATISTICAL_VERIFICATION",
+            "officiallySettled": false
           },
           "betSelection": {
             "selectionId": "sisal:4858177:821888897:5376635025",
@@ -4011,9 +3357,10 @@
           "settlement": {
             "status": "won",
             "label": "VERDE",
-            "reason": "Palo su punizione documentato da UEFA; incluso nel contratto 28506.",
-            "sourceUrl": "https://it.uefa.com/uefachampionsleague/news/02aa-21d1f9bf8c14-02934d4c912d-1000--riepilogo-seconda-giornata-champions-league-cadono-inter-/",
-            "nonStarter": false
+            "reason": "Legno colpito da Grimaldo; contratto include pali/traverse.",
+            "sourceUrl": "https://www.theguardian.com/football/2026/oct/13/atletico-madrid-manchester-united-champions-league-match-report",
+            "basis": "STATISTICAL_VERIFICATION",
+            "officiallySettled": false
           },
           "betSelection": {
             "selectionId": "sisal:4858177:821891749:5376648956",
@@ -4167,9 +3514,10 @@
           "settlement": {
             "status": "lost",
             "label": "ROSSO",
-            "reason": "Risultato finale 3-4, tempi regolamentari; nessun supplementare in fase campionato.",
+            "reason": "Risultato UEFA 3-4",
             "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
-            "nonStarter": false
+            "basis": "STATISTICAL_VERIFICATION",
+            "officiallySettled": false
           },
           "scenarioAnalysis": {
             "compatibleOutcomes": [
@@ -4325,11 +3673,12 @@
             "woodworkIncluded": false
           },
           "settlement": {
-            "status": "pending",
-            "label": "DA VERIFICARE",
-            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
-            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
-            "nonStarter": false
+            "status": "won",
+            "label": "VERDE",
+            "reason": "Lautaro 12 tiri",
+            "sourceUrl": "https://fbref.com/en/matches/e7fd9484/Internazionale-Club-Brugge-October-13-2026-Champions-League",
+            "basis": "STATISTICAL_VERIFICATION",
+            "officiallySettled": false
           },
           "betSelection": {
             "selectionId": "sisal:4858180:822319165:5378991126",
@@ -4495,9 +3844,10 @@
           "settlement": {
             "status": "won",
             "label": "VERDE",
-            "reason": "Gol ufficialmente documentati: limite inferiore di tiri e SOT, sufficiente soltanto quando supera la soglia OVER.",
-            "sourceUrl": "https://it.uefa.com/uefachampionsleague/news/02aa-21d1f9bf8c14-02934d4c912d-1000--riepilogo-seconda-giornata-champions-league-cadono-inter-/",
-            "nonStarter": false
+            "reason": "Tresoldi autore di tre gol, almeno un tiro in porta",
+            "sourceUrl": "https://sport.sky.it/calcio/champions-league/partite/2026/giornata-2/inter-bruges/tabellino-statistiche",
+            "basis": "STATISTICAL_VERIFICATION",
+            "officiallySettled": false
           },
           "betSelection": {
             "selectionId": "sisal:4858180:822318885:5378990012",
@@ -4661,11 +4011,12 @@
             "woodworkIncluded": false
           },
           "settlement": {
-            "status": "pending",
-            "label": "DA VERIFICARE",
-            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
-            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
-            "nonStarter": false
+            "status": "won",
+            "label": "VERDE",
+            "reason": "Çalhanoğlu 2 tiri",
+            "sourceUrl": "https://fbref.com/en/matches/e7fd9484/Internazionale-Club-Brugge-October-13-2026-Champions-League",
+            "basis": "STATISTICAL_VERIFICATION",
+            "officiallySettled": false
           },
           "betSelection": {
             "selectionId": "sisal:4858180:822318847:5378989876",
@@ -4810,11 +4161,12 @@
             "duo": false
           },
           "settlement": {
-            "status": "pending",
-            "label": "DA VERIFICARE",
-            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
-            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
-            "nonStarter": false
+            "status": "won",
+            "label": "VERDE",
+            "reason": "18 tiri totali del Club Brugge (Sky Sport)",
+            "sourceUrl": "https://sport.sky.it/calcio/champions-league/partite/2026/giornata-2/inter-bruges/tabellino-statistiche",
+            "basis": "STATISTICAL_VERIFICATION",
+            "officiallySettled": false
           },
           "betSelection": {
             "selectionId": "sisal:4858180:822318899:5378990067",
@@ -4981,11 +4333,12 @@
             "woodworkIncluded": true
           },
           "settlement": {
-            "status": "pending",
-            "label": "DA VERIFICARE",
-            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
-            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
-            "nonStarter": false
+            "status": "won",
+            "label": "VERDE",
+            "reason": "Thuram 0 SOT, sostituto Francesco Esposito 1 SOT; sostituto incluso",
+            "sourceUrl": "https://fbref.com/en/matches/e7fd9484/Internazionale-Club-Brugge-October-13-2026-Champions-League",
+            "basis": "STATISTICAL_VERIFICATION",
+            "officiallySettled": false
           },
           "betSelection": {
             "selectionId": "sisal:4858180:822315691:5378999317",
@@ -5151,9 +4504,10 @@
           "settlement": {
             "status": "pending",
             "label": "DA VERIFICARE",
-            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
-            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
-            "nonStarter": false
+            "reason": "StatMuse registra 2 SOT di Vetlesen; discordanza con precedente conteggio 0, richiede riconciliazione provider.",
+            "sourceUrl": "https://www.statmuse.com/fc/match/-113889",
+            "basis": "STATISTICAL_VERIFICATION",
+            "officiallySettled": false
           },
           "betSelection": {
             "selectionId": "sisal:4858180:822318867:5378989938",
@@ -5307,9 +4661,10 @@
           "settlement": {
             "status": "won",
             "label": "VERDE",
-            "reason": "Risultato finale 1-4, tempi regolamentari; nessun supplementare in fase campionato.",
+            "reason": "Risultato UEFA 1-4",
             "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
-            "nonStarter": false
+            "basis": "STATISTICAL_VERIFICATION",
+            "officiallySettled": false
           },
           "scenarioAnalysis": {
             "compatibleOutcomes": [
@@ -5465,11 +4820,12 @@
             "woodworkIncluded": false
           },
           "settlement": {
-            "status": "pending",
-            "label": "DA VERIFICARE",
-            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
-            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
-            "nonStarter": false
+            "status": "lost",
+            "label": "ROSSO",
+            "reason": "Victor Osimhen: 1 tiro in 90 minuti, nessun sostituto; Over 3,5 non raggiunto.",
+            "sourceUrl": "https://fbref.com/en/players/8c90fd7a/all_comps/Victor-Osimhen-Stats---All-Competitions",
+            "basis": "STATISTICAL_VERIFICATION",
+            "officiallySettled": false
           },
           "betSelection": {
             "selectionId": "sisal:4858143:822328597:5379080809",
@@ -5635,9 +4991,10 @@
           "settlement": {
             "status": "pending",
             "label": "DA VERIFICARE",
-            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
-            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
-            "nonStarter": false
+            "reason": "Cronaca registra 1 tiro in porta al minuto 34 e zero legni Galatasaray; tabella individuale StatMuse indica 0 SOT, discordanza da conservare.",
+            "sourceUrl": "https://www.statmuse.com/fc/match/-113890",
+            "basis": "STATISTICAL_VERIFICATION",
+            "officiallySettled": false
           },
           "betSelection": {
             "selectionId": "sisal:4858143:822328741:5379081413",
@@ -5801,11 +5158,12 @@
             "woodworkIncluded": false
           },
           "settlement": {
-            "status": "pending",
-            "label": "DA VERIFICARE",
-            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
-            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
-            "nonStarter": false
+            "status": "won",
+            "label": "VERDE",
+            "reason": "Cronaca StatMuse: Yamal 5 conclusioni (12, 25, 52, 63, 69 minuti), supera 2,5.",
+            "sourceUrl": "https://www.statmuse.com/fc/match/10-13-2026-gal-vs-fcb-113890",
+            "basis": "STATISTICAL_VERIFICATION",
+            "officiallySettled": false
           },
           "betSelection": {
             "selectionId": "sisal:4858143:822328638:5379080986",
@@ -5969,11 +5327,12 @@
             "woodworkIncluded": false
           },
           "settlement": {
-            "status": "pending",
-            "label": "DA VERIFICARE",
-            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
-            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
-            "nonStarter": false
+            "status": "won",
+            "label": "VERDE",
+            "reason": "Olmo 2 conclusioni (24 e 45); anche senza il sostituto supera 1,5.",
+            "sourceUrl": "https://www.statmuse.com/fc/match/10-13-2026-gal-vs-fcb-113890",
+            "basis": "STATISTICAL_VERIFICATION",
+            "officiallySettled": false
           },
           "betSelection": {
             "selectionId": "sisal:4858143:822328537:5379080617",
@@ -6120,9 +5479,10 @@
           "settlement": {
             "status": "lost",
             "label": "ROSSO",
-            "reason": "Risultato finale 1-4, tempi regolamentari; nessun supplementare in fase campionato.",
+            "reason": "5 gol totali (UEFA)",
             "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
-            "nonStarter": false
+            "basis": "STATISTICAL_VERIFICATION",
+            "officiallySettled": false
           },
           "betSelection": {
             "selectionId": "sisal:4858143:810812673:5317142893",
@@ -6289,11 +5649,12 @@
             "woodworkIncluded": false
           },
           "settlement": {
-            "status": "pending",
-            "label": "DA VERIFICARE",
-            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
-            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
-            "nonStarter": false
+            "status": "lost",
+            "label": "ROSSO",
+            "reason": "Olmo 2 conclusioni e Gabriel Jesus, suo sostituto, 1 conclusione: totale 3, inferiore a 4.",
+            "sourceUrl": "https://www.statmuse.com/fc/match/10-13-2026-gal-vs-fcb-113890",
+            "basis": "STATISTICAL_VERIFICATION",
+            "officiallySettled": false
           },
           "betSelection": {
             "selectionId": "sisal:4858143:822328609:5379080871",
@@ -6447,9 +5808,10 @@
           "settlement": {
             "status": "lost",
             "label": "ROSSO",
-            "reason": "Risultato finale 1-0, tempi regolamentari; nessun supplementare in fase campionato.",
+            "reason": "Risultato UEFA 1-0",
             "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
-            "nonStarter": false
+            "basis": "STATISTICAL_VERIFICATION",
+            "officiallySettled": false
           },
           "scenarioAnalysis": {
             "compatibleOutcomes": [
@@ -6606,11 +5968,12 @@
             "woodworkIncluded": false
           },
           "settlement": {
-            "status": "pending",
-            "label": "DA VERIFICARE",
-            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
-            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
-            "nonStarter": false
+            "status": "lost",
+            "label": "ROSSO",
+            "reason": "Mijnans: 2 tiri (7 e 51); sostituto Mikkel Hansen all’84, nessun tiro nella cronaca completa.",
+            "sourceUrl": "https://www.futbol24.com/match/2026/10/13/international/UEFA/Champions-League/2026-2027/League-phase/RB-Leipzig/vs/PSV",
+            "basis": "STATISTICAL_VERIFICATION",
+            "officiallySettled": false
           },
           "betSelection": {
             "selectionId": "sisal:4858176:822442814:5379721386",
@@ -6776,9 +6139,10 @@
           "settlement": {
             "status": "won",
             "label": "VERDE",
-            "reason": "Gol ufficialmente documentati: limite inferiore di tiri e SOT, sufficiente soltanto quando supera la soglia OVER.",
-            "sourceUrl": "https://it.uefa.com/uefachampionsleague/news/02aa-21d1f9bf8c14-02934d4c912d-1000--riepilogo-seconda-giornata-champions-league-cadono-inter-/",
-            "nonStarter": false
+            "reason": "Gruda marcatore al 75°, dunque almeno un tiro in porta",
+            "sourceUrl": "https://sport.sky.it/calcio/champions-league/partite/2026/giornata-2/lipsia-psv/tabellino-statistiche",
+            "basis": "STATISTICAL_VERIFICATION",
+            "officiallySettled": false
           },
           "betSelection": {
             "selectionId": "sisal:4858176:822440767:5379720511",
@@ -6923,11 +6287,12 @@
             "duo": false
           },
           "settlement": {
-            "status": "pending",
-            "label": "DA VERIFICARE",
-            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
-            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
-            "nonStarter": false
+            "status": "won",
+            "label": "VERDE",
+            "reason": "13 corner del PSV (Sky Sport)",
+            "sourceUrl": "https://sport.sky.it/calcio/champions-league/partite/2026/giornata-2/lipsia-psv/tabellino-statistiche",
+            "basis": "STATISTICAL_VERIFICATION",
+            "officiallySettled": false
           },
           "betSelection": {
             "selectionId": "sisal:4858176:821951423:5376985276",
@@ -7096,9 +6461,10 @@
           "settlement": {
             "status": "pending",
             "label": "DA VERIFICARE",
-            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
-            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
-            "nonStarter": false
+            "reason": "Cronaca minuto 67 registra tiro in porta Nkunku; 90 minuti giocati. Tabella individuale StatMuse discordante (0).",
+            "sourceUrl": "https://www.statmuse.com/fc/match/-113892",
+            "basis": "STATISTICAL_VERIFICATION",
+            "officiallySettled": false
           },
           "betSelection": {
             "selectionId": "sisal:4858176:822440794:5379720627",
@@ -7262,11 +6628,12 @@
             "woodworkIncluded": true
           },
           "settlement": {
-            "status": "pending",
-            "label": "DA VERIFICARE",
-            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
-            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
-            "nonStarter": false
+            "status": "lost",
+            "label": "ROSSO",
+            "reason": "Mijnans: 1 tiro in porta (7), un tiro fuori (51); sostituto Hansen all’84 senza SOT/legni nella cronaca.",
+            "sourceUrl": "https://www.futbol24.com/match/2026/10/13/international/UEFA/Champions-League/2026-2027/League-phase/RB-Leipzig/vs/PSV",
+            "basis": "STATISTICAL_VERIFICATION",
+            "officiallySettled": false
           },
           "betSelection": {
             "selectionId": "sisal:4858176:822440956:5379722099",
@@ -7420,9 +6787,10 @@
           "settlement": {
             "status": "lost",
             "label": "ROSSO",
-            "reason": "Risultato finale 3-3, tempi regolamentari; nessun supplementare in fase campionato.",
+            "reason": "Risultato UEFA 3-3",
             "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
-            "nonStarter": false
+            "basis": "STATISTICAL_VERIFICATION",
+            "officiallySettled": false
           },
           "scenarioAnalysis": {
             "compatibleOutcomes": [
@@ -7578,11 +6946,12 @@
             "woodworkIncluded": false
           },
           "settlement": {
-            "status": "pending",
-            "label": "DA VERIFICARE",
-            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
-            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
-            "nonStarter": false
+            "status": "won",
+            "label": "VERDE",
+            "reason": "Harry Kane: 5 tiri, 90 minuti; Over 2,5 soddisfatto senza sostituto.",
+            "sourceUrl": "https://fbref.com/en/players/21a66f6a/all_comps/Harry-Kane-Stats---All-Competitions",
+            "basis": "STATISTICAL_VERIFICATION",
+            "officiallySettled": false
           },
           "betSelection": {
             "selectionId": "sisal:4858141:822324471:5379048990",
@@ -7748,9 +7117,10 @@
           "settlement": {
             "status": "won",
             "label": "VERDE",
-            "reason": "Gol ufficialmente documentati: limite inferiore di tiri e SOT, sufficiente soltanto quando supera la soglia OVER.",
-            "sourceUrl": "https://it.uefa.com/uefachampionsleague/news/02aa-21d1f9bf8c14-02934d4c912d-1000--riepilogo-seconda-giornata-champions-league-cadono-inter-/",
-            "nonStarter": false
+            "reason": "Kane ha segnato 2 gol",
+            "sourceUrl": "https://www.statmuse.com/fc/match/10-13-2026-vik-vs-bay-113891",
+            "basis": "STATISTICAL_VERIFICATION",
+            "officiallySettled": false
           },
           "betSelection": {
             "selectionId": "sisal:4858141:822325380:5379058260",
@@ -7914,11 +7284,12 @@
             "woodworkIncluded": false
           },
           "settlement": {
-            "status": "pending",
-            "label": "DA VERIFICARE",
-            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
-            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
-            "nonStarter": false
+            "status": "won",
+            "label": "VERDE",
+            "reason": "Olise 2 SOT al 6° e 10°, più 1 tiro fuori al 32°",
+            "sourceUrl": "https://www.statmuse.com/fc/match/10-13-2026-vik-vs-bay-113891",
+            "basis": "STATISTICAL_VERIFICATION",
+            "officiallySettled": false
           },
           "betSelection": {
             "selectionId": "sisal:4858141:822325406:5379058382",
@@ -8082,11 +7453,12 @@
             "woodworkIncluded": false
           },
           "settlement": {
-            "status": "pending",
-            "label": "DA VERIFICARE",
-            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
-            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
-            "nonStarter": false
+            "status": "won",
+            "label": "VERDE",
+            "reason": "Christiansen 2 tiri in porta nel tabellino",
+            "sourceUrl": "https://www.statmuse.com/fc/match/10-13-2026-vik-vs-bay-113891",
+            "basis": "STATISTICAL_VERIFICATION",
+            "officiallySettled": false
           },
           "betSelection": {
             "selectionId": "sisal:4858141:822307883:5379053237",
@@ -8233,9 +7605,10 @@
           "settlement": {
             "status": "lost",
             "label": "ROSSO",
-            "reason": "Risultato finale 3-3, tempi regolamentari; nessun supplementare in fase campionato.",
+            "reason": "6 gol totali (UEFA)",
             "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
-            "nonStarter": false
+            "basis": "STATISTICAL_VERIFICATION",
+            "officiallySettled": false
           },
           "betSelection": {
             "selectionId": "sisal:4858141:810812050:5317139355",
@@ -8402,11 +7775,12 @@
             "woodworkIncluded": false
           },
           "settlement": {
-            "status": "pending",
-            "label": "DA VERIFICARE",
-            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
-            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
-            "nonStarter": false
+            "status": "won",
+            "label": "VERDE",
+            "reason": "Askildsen: 2 tiri e 90 minuti (FBref).",
+            "sourceUrl": "https://fbref.com/en/players/a69cc629/matchlogs/2026/summary",
+            "basis": "STATISTICAL_VERIFICATION",
+            "officiallySettled": false
           },
           "betSelection": {
             "selectionId": "sisal:4858141:822325176:5379023059",
@@ -8560,9 +7934,10 @@
           "settlement": {
             "status": "won",
             "label": "VERDE",
-            "reason": "Risultato finale 3-1, tempi regolamentari; nessun supplementare in fase campionato.",
+            "reason": "Risultato UEFA 3-1",
             "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
-            "nonStarter": false
+            "basis": "STATISTICAL_VERIFICATION",
+            "officiallySettled": false
           },
           "scenarioAnalysis": {
             "compatibleOutcomes": [
@@ -8726,11 +8101,12 @@
             "woodworkIncluded": false
           },
           "settlement": {
-            "status": "pending",
-            "label": "DA VERIFICARE",
-            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
-            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
-            "nonStarter": false
+            "status": "won",
+            "label": "VERDE",
+            "reason": "Mikautadze 2 tiri (FBref) + Freeman sostituto diretto almeno 1 tiro bloccato al 78° (Futbol24).",
+            "sourceUrl": "https://www.futbol24.com/it/partita/2026/10/13/international/UEFA/Champions-League/2026-2027/League-phase/Villarreal/vs/Napoli",
+            "basis": "STATISTICAL_VERIFICATION",
+            "officiallySettled": false
           },
           "betSelection": {
             "selectionId": "sisal:4858139:821933839:5376899635",
@@ -8896,9 +8272,10 @@
           "settlement": {
             "status": "won",
             "label": "VERDE",
-            "reason": "Gol ufficialmente documentati: limite inferiore di tiri e SOT, sufficiente soltanto quando supera la soglia OVER.",
-            "sourceUrl": "https://it.uefa.com/uefachampionsleague/news/02aa-21d1f9bf8c14-02934d4c912d-1000--riepilogo-seconda-giornata-champions-league-cadono-inter-/",
-            "nonStarter": false
+            "reason": "Mikautadze segna al 23’: il gol basta per Over 0,5 SOT.",
+            "sourceUrl": "https://www.futbol24.com/match/2026/10/13/international/UEFA/Champions-League/2026-2027/League-phase/Villarreal/vs/Napoli",
+            "basis": "STATISTICAL_VERIFICATION",
+            "officiallySettled": false
           },
           "betSelection": {
             "selectionId": "sisal:4858139:821934911:5376899499",
@@ -9062,11 +8439,12 @@
             "woodworkIncluded": false
           },
           "settlement": {
-            "status": "pending",
-            "label": "DA VERIFICARE",
-            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
-            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
-            "nonStarter": false
+            "status": "lost",
+            "label": "ROSSO",
+            "reason": "Politano 1 tiro + Neres 0 tiri = 1. Neres entra al 61° per Politano.",
+            "sourceUrl": "https://fbref.com/en/players/5e861944/matchlogs/2026-2027/summary",
+            "basis": "STATISTICAL_VERIFICATION",
+            "officiallySettled": false
           },
           "betSelection": {
             "selectionId": "sisal:4858139:821933832:5376899615",
@@ -9232,9 +8610,10 @@
           "settlement": {
             "status": "pending",
             "label": "DA VERIFICARE",
-            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
-            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
-            "nonStarter": false
+            "reason": "Verifica tabellino individuale del 13/10/2026; per Rashford 1 tiro e sostituto Amad Diallo 0 tiri.",
+            "sourceUrl": "https://www.soccerzz.com/match_player_stats.php?id=12624807&one_stat=sshot",
+            "basis": "STATISTICAL_VERIFICATION",
+            "officiallySettled": false
           },
           "betSelection": {
             "selectionId": "sisal:4858139:821934797:5376899039",
@@ -9398,11 +8777,12 @@
             "woodworkIncluded": false
           },
           "settlement": {
-            "status": "pending",
-            "label": "DA VERIFICARE",
-            "reason": "Statistiche ufficiali complete, sostituzioni e/o pali e traverse non disponibili.",
-            "sourceUrl": "https://www.uefa.com/uefachampionsleague/news/02a8-2174c9e9019d-f909a77bd77a-1000--2026-27-champions-league-all-the-league-phase-fixtures-a/",
-            "nonStarter": false
+            "status": "won",
+            "label": "VERDE",
+            "reason": "1 tiro in porta nel tabellino individuale, sufficiente per Over 0,5 tiri totali.",
+            "sourceUrl": "https://playerstats.football/fixture/villarreal/napoli/2026-10-13",
+            "basis": "STATISTICAL_VERIFICATION",
+            "officiallySettled": false
           },
           "betSelection": {
             "selectionId": "sisal:4858139:821934696:5376893722",
@@ -19063,5 +18443,191 @@
       ]
     }
   ],
-  "settledAt": "2026-10-14"
+  "settledAt": "2026-10-14",
+  "verificationReport": {
+    "original": {
+      "total": 58,
+      "green": 34,
+      "red": 24,
+      "officiallySettled": false
+    },
+    "filtered": {
+      "total": 54,
+      "excluded": 4,
+      "considered": 48,
+      "green": 26,
+      "red": 22,
+      "pending": 6,
+      "stakeEuro": 48,
+      "grossReturnEuro": 41.05,
+      "roiPct": -14.48
+    },
+    "open": [
+      {
+        "fixtureId": "ucl-2026-27-md02-01",
+        "fixture": "Lens - Sporting CP",
+        "score": "0-2",
+        "selectionId": "sisal:4858138:821927618:5376863469",
+        "label": "Odsonne Édouard over 0,5 SOT · sostituto incluso · pali/traverse inclusi",
+        "market": "U/O  TIRI IN PORTA GIOCATORE (DUO) INC PALI TRAVERSE INC TS",
+        "selection": "OVER",
+        "odds": 1.25,
+        "status": "VERDE",
+        "reason": "Édouard 1 tiro in porta (cronaca Lens–Sporting, 62°). Entrato al 58° per Ivanović. Esito statistico, settlement Sisal DUO non confermato.",
+        "nonStarter": true,
+        "lineupStatus": "official-non-starter",
+        "excludeFromOperational": true,
+        "source": "https://sport.sky.it/calcio/champions-league/partite/2026/giornata-2/lens-sporting-cp",
+        "settlementCaveat": "Risultato statistico condizionato a regole Sisal DUO INC TS per giocatore non titolare; mantenere escluso dalla schedina operativa."
+      },
+      {
+        "fixtureId": "ucl-2026-27-md02-01",
+        "fixture": "Lens - Sporting CP",
+        "score": "0-2",
+        "selectionId": "sisal:4858138:821927322:5376857359",
+        "label": "Franjo Ivanović over 1,5 tiri · sostituto incluso",
+        "market": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+        "selection": "OVER",
+        "odds": 1.2,
+        "status": "VERDE",
+        "reason": "Verifica tabellino individuale del 13/10/2026; per Rashford 1 tiro e sostituto Amad Diallo 0 tiri.",
+        "nonStarter": false,
+        "lineupStatus": "official-starter",
+        "excludeFromOperational": false,
+        "source": "https://www.playmakerstats.com/match_player_stats.php?id=12624798&one_stat=sshot"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md02-01",
+        "fixture": "Lens - Sporting CP",
+        "score": "0-2",
+        "selectionId": "sisal:4858138:821928592:5376859993",
+        "label": "Odsonne Édouard over 3,5 tiri · sostituto incluso",
+        "market": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+        "selection": "OVER",
+        "odds": 3.25,
+        "status": "VERDE",
+        "reason": "Ivanović 3 tiri + Édouard 1 tiro = 4. Interpretazione cumulativa DUO INC TS da confermare con regolamento Sisal.",
+        "nonStarter": true,
+        "lineupStatus": "official-non-starter",
+        "excludeFromOperational": true,
+        "source": "https://www.playmakerstats.com/match_player_stats.php?id=12624798&one_stat=sshot",
+        "settlementCaveat": "Risultato statistico condizionato a regole Sisal DUO INC TS per giocatore non titolare; mantenere escluso dalla schedina operativa."
+      },
+      {
+        "fixtureId": "ucl-2026-27-md02-01",
+        "fixture": "Lens - Sporting CP",
+        "score": "0-2",
+        "selectionId": "sisal:4858138:821927323:5376857369",
+        "label": "Issa Doumbia over 1,5 tiri · sostituto incluso",
+        "market": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+        "selection": "OVER",
+        "odds": 2.4,
+        "status": "VERDE",
+        "reason": "Verifica tabellino individuale del 13/10/2026; per Rashford 1 tiro e sostituto Amad Diallo 0 tiri.",
+        "nonStarter": false,
+        "lineupStatus": "official-starter",
+        "excludeFromOperational": false,
+        "source": "https://www.playmakerstats.com/match_player_stats.php?id=12624798&one_stat=sshot"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md02-03",
+        "fixture": "Arsenal - Lille",
+        "score": "3-0",
+        "selectionId": "sisal:4858146:821922356:5376832575",
+        "label": "Bukayo Saka over 2,5 tiri · sostituto incluso",
+        "market": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+        "selection": "OVER",
+        "odds": 1.33,
+        "status": "ROSSO",
+        "reason": "Madueke 1 tiro + Saka 1 tiro = 2. Interpretazione cumulativa DUO INC TS da confermare con regolamento Sisal.",
+        "nonStarter": true,
+        "lineupStatus": "official-bench",
+        "excludeFromOperational": true,
+        "source": "https://fbref.com/en/players/bc7dc64d/matchlogs/2026-2027/c8/Bukayo-Saka-Match-Logs",
+        "settlementCaveat": "Risultato statistico condizionato a regole Sisal DUO INC TS per giocatore non titolare; mantenere escluso dalla schedina operativa."
+      },
+      {
+        "fixtureId": "ucl-2026-27-md02-04",
+        "fixture": "Atlético de Madrid - Manchester United",
+        "score": "2-0",
+        "selectionId": "sisal:4858177:821890410:5376642298",
+        "label": "Ademola Lookman over 2,5 tiri · sostituto incluso",
+        "market": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+        "selection": "OVER",
+        "odds": 1.25,
+        "status": "VERDE",
+        "reason": "Baena 3 tiri + Lookman 1 tiro = 4. Interpretazione cumulativa DUO INC TS da confermare con regolamento Sisal.",
+        "nonStarter": true,
+        "lineupStatus": "official-bench",
+        "excludeFromOperational": true,
+        "source": "https://fbref.com/en/matches/425b77e1/Atletico-Madrid-Manchester-United-October-13-2026-Champions-League",
+        "settlementCaveat": "Risultato statistico condizionato a regole Sisal DUO INC TS per giocatore non titolare; mantenere escluso dalla schedina operativa."
+      },
+      {
+        "fixtureId": "ucl-2026-27-md02-05",
+        "fixture": "Inter - Club Brugge",
+        "score": "3-4",
+        "selectionId": "sisal:4858180:822318867:5378989938",
+        "label": "Hugo Vetlesen over 0,5 SOT · sostituto incluso · pali/traverse inclusi",
+        "market": "U/O  TIRI IN PORTA GIOCATORE (DUO) INC PALI TRAVERSE INC TS",
+        "selection": "OVER",
+        "odds": 2.75,
+        "status": "VERDE",
+        "reason": "StatMuse registra 2 SOT di Vetlesen; discordanza con precedente conteggio 0, richiede riconciliazione provider.",
+        "nonStarter": false,
+        "lineupStatus": "official-starter",
+        "excludeFromOperational": false,
+        "source": "https://www.statmuse.com/fc/match/-113889"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md02-06",
+        "fixture": "Galatasaray - Barcelona",
+        "score": "1-4",
+        "selectionId": "sisal:4858143:822328741:5379081413",
+        "label": "Victor Osimhen over 1,5 SOT · sostituto incluso · pali/traverse inclusi",
+        "market": "U/O  TIRI IN PORTA GIOCATORE (DUO) INC PALI TRAVERSE INC TS",
+        "selection": "OVER",
+        "odds": 2,
+        "status": "ROSSO",
+        "reason": "Cronaca registra 1 tiro in porta al minuto 34 e zero legni Galatasaray; tabella individuale StatMuse indica 0 SOT, discordanza da conservare.",
+        "nonStarter": false,
+        "lineupStatus": "official-starter",
+        "excludeFromOperational": false,
+        "source": "https://www.statmuse.com/fc/match/-113890"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md02-07",
+        "fixture": "Leipzig - PSV Eindhoven",
+        "score": "1-0",
+        "selectionId": "sisal:4858176:822440794:5379720627",
+        "label": "Christopher Nkunku over 0,5 SOT · sostituto incluso · pali/traverse inclusi",
+        "market": "U/O  TIRI IN PORTA GIOCATORE (DUO) INC PALI TRAVERSE INC TS",
+        "selection": "OVER",
+        "odds": 1.16,
+        "status": "VERDE",
+        "reason": "Cronaca minuto 67 registra tiro in porta Nkunku; 90 minuti giocati. Tabella individuale StatMuse discordante (0).",
+        "nonStarter": false,
+        "lineupStatus": "official-starter",
+        "excludeFromOperational": false,
+        "source": "https://www.statmuse.com/fc/match/-113892"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md02-09",
+        "fixture": "Villarreal - Napoli",
+        "score": "3-1",
+        "selectionId": "sisal:4858139:821934797:5376899039",
+        "label": "Gerard Moreno over 1,5 tiri · sostituto incluso",
+        "market": "U/O TIRI TOTALI GIOCATORE (DUO) INC TS",
+        "selection": "OVER",
+        "odds": 1.25,
+        "status": "VERDE",
+        "reason": "Verifica tabellino individuale del 13/10/2026; per Rashford 1 tiro e sostituto Amad Diallo 0 tiri.",
+        "nonStarter": false,
+        "lineupStatus": "official-starter",
+        "excludeFromOperational": false,
+        "source": "https://www.soccerzz.com/match_player_stats.php?id=12624807&one_stat=sshot"
+      }
+    ],
+    "replacements": []
+  }
 }

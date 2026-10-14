@@ -510,4 +510,5 @@ if(targetFixtureIds.size){
 fs.writeFileSync(path.join(root,paths.output),`${JSON.stringify(finalOutput,null,2)}\n`);
 console.log(`Generata ${paths.output}: ${output.summary.fixtures} partite, ${output.summary.predictions} pronostici, ${output.summary.clickableSelections} cliccabili`);
 if(fs.existsSync(path.join(root,'data/sources/champions-results-md02-2026-27.json')))require('./settle-champions-md02.js').build();
+require('./apply-official-starter-policy.js').build();
 

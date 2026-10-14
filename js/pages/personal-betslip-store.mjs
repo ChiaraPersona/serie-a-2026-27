@@ -1,3 +1,4 @@
+import '../official-starter-policy.js';
 export const PERSONAL_BETSLIP_VERSION=1;
 export const PERSONAL_BETSLIP_STORAGE_KEY="serie-a-2026-27:personal-betslip:v1";
 
@@ -33,6 +34,7 @@ export function isCornerPeriodSelection(selection){
 }
 
 function playability(selection){
+  if(globalThis.officialStarterPolicy&&!globalThis.officialStarterPolicy.eligible(selection))return {status:'NOT_PLAYABLE',code:'OFFICIAL_NON_STARTER',reason:'Giocatore assente dagli undici ufficiali.'};
   const declared=selection?.betSelection?.operational?.playability;
   if(declared?.status==="NOT_PLAYABLE")return declared;
   if(Number(selection?.context?.matchday)>=6&&isPlayableUnder(selection))return {status:"NOT_PLAYABLE",code:"UNDER_NOT_PLAYABLE",reason:"Gli Under sono esclusi dalle proposte giocabili dalla sesta giornata."};
@@ -177,7 +179,7 @@ export function createPersonalBetslipStore({storage=globalThis.localStorage,stor
     const active=bucket();if(!active)return {status:"NO_ACTIVE_CONTEXT",updated:0,missing:0};
     const latest=new Map((latestSelections||[]).filter(validCanonicalSelection).map(row=>[row.selectionId,row]));
     let updated=0,missing=0;
-    active.selections=active.selections.map(stored=>{
+    active.selections=active.selections.filter(stored=>!globalThis.officialStarterPolicy||globalThis.officialStarterPolicy.eligible(stored)).map(stored=>{
       const fresh=latest.get(stored.selectionId);
       if(!fresh){missing+=1;return {...stored,dataStatus:"MISSING_FROM_CURRENT_DATA"}}
       const storedQuote=quote(stored),freshQuote=quote(fresh);
