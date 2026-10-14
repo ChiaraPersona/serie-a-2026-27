@@ -8,17 +8,23 @@ function build(){
   const originals=new Map(original.fixtures.flatMap(f=>f.selections).map(s=>[s.selectionId,s]));
   assert.equal(originals.size,58);assert.equal(report.records.length,58);assert.equal(new Set(report.records.map(r=>r.selectionId)).size,58);
   assert.equal(report.records.filter(r=>r.status==='VERDE').length,34);assert.equal(report.records.filter(r=>r.status==='ROSSO').length,24);assert.equal(report.records.filter(r=>r.excludeFromOperational).length,4);
+  const confirmationPath='data/sources/champions-verification-confirmations-2026-10-14.json';
+  const confirmations=fs.existsSync(path.join(root,confirmationPath))?read(confirmationPath).records:[];
+  const confirmed=new Map(confirmations.map(r=>[r.selectionId,r]));
+  assert.equal(confirmed.size,confirmations.length);
+  for(const c of confirmations){assert(originals.has(c.selectionId));assert(['VERDE','ROSSO'].includes(c.status));}
   const open=[];
   for(const r of report.records){
     const s=originals.get(r.selectionId);assert(s,r.selectionId);
     for(const [a,b] of [['matchId','fixtureId'],['odds','odds'],['label','label'],['market','market'],['selection','selection']])assert.equal(s[a],r[b],`${r.selectionId}: ${a}`);
-    if(/discord|discrepan|da confermare|settlementCaveat/i.test(r.reason)||r.settlementCaveat||(/Rashford 1 tiro/.test(r.reason)&&!r.label.includes('Rashford')))open.push(r.selectionId);
+    if(!confirmed.has(r.selectionId)&&(/discord|discrepan|da confermare|settlementCaveat/i.test(r.reason)||r.settlementCaveat||(/Rashford 1 tiro/.test(r.reason)&&!r.label.includes('Rashford'))))open.push(r.selectionId);
   }
+  report.records=report.records.map(r=>confirmed.has(r.selectionId)?{...r,status:confirmed.get(r.selectionId).status,originalEvidenceReason:r.reason,reason:confirmed.get(r.selectionId).reason,confirmationSource:confirmationPath}:r);
   const data=read('data/normalized/schedina-champions-md02.json'),byId=new Map(report.records.map(r=>[r.selectionId,r]));
   for(const f of data.fixtures)for(const s of f.selections){
     const r=byId.get(s.selectionId);if(!r)continue;
     const pending=open.includes(r.selectionId);
-    s.settlement={status:pending?'pending':r.status==='VERDE'?'won':'lost',label:pending?'DA VERIFICARE':r.status,reason:r.reason,sourceUrl:r.source,basis:'STATISTICAL_VERIFICATION',officiallySettled:false};
+    s.settlement={status:pending?'pending':r.status==='VERDE'?'won':'lost',label:pending?'DA VERIFICARE':r.status,reason:r.reason,sourceUrl:r.source,basis:r.confirmationSource?'USER_CONFIRMED_STATISTICAL_RESULT':'STATISTICAL_VERIFICATION',...(r.confirmationSource?{confirmationSource:r.confirmationSource,originalEvidenceReason:r.originalEvidenceReason}:{}),officiallySettled:false};
     const [home,away]=r.score.split('-').map(Number);f.status='finished';f.score={home,away};
   }
   const filtered=report.records.filter(r=>!r.excludeFromOperational&&data.fixtures.some(f=>f.selections.some(s=>s.selectionId===r.selectionId)));

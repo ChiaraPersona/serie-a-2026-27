@@ -7,7 +7,16 @@ const before=JSON.parse(cp.execFileSync('git',['show','HEAD:data/normalized/sche
 const excluded=require('../data/technical-archive/official-nonstarter-markets.json');
 assert.equal(excluded.length,4);
 assert.equal(data.verificationReport.filtered.total,54);
-assert.equal(data.verificationReport.filtered.considered,48);
+assert.equal(data.verificationReport.filtered.considered,54);
+assert.equal(data.verificationReport.filtered.green,29);
+assert.equal(data.verificationReport.filtered.red,25);
+assert.equal(data.verificationReport.filtered.pending,0);
+for(const confirmation of require('../data/sources/champions-verification-confirmations-2026-10-14.json').records){
+  const leg=data.fixtures.flatMap(f=>f.selections).find(s=>s.selectionId===confirmation.selectionId);
+  assert.equal(leg.settlement.label,confirmation.status);
+  assert.equal(leg.settlement.officiallySettled,false);
+  assert.equal(leg.settlement.basis,'USER_CONFIRMED_STATISTICAL_RESULT');
+}
 for(const f of data.fixtures){
   for(const s of f.selections)assert(policy.eligible(s,f.fixtureId),s.label);
   const old=before.fixtures.find(x=>x.fixtureId===f.fixtureId);
@@ -21,7 +30,7 @@ assert(!policy.eligible(synthetic));assert(policy.eligible({...synthetic,playerI
 assert(policy.eligible({...synthetic,matchId:'probable-fixture'}));
 assert(policy.eligible({matchId:'fixture-a',marketScope:'match'}));
 policy.configure({'fixture-a':{ids:['bench'],names:[]}});assert(policy.eligible(synthetic));
-console.log('OK official starter policy, scope, identity, modifiers, 58/54/48 reconciliation');
+console.log('OK official starter policy, scope, identity, modifiers, six confirmations and 58/54 reconciliation');
 (async()=>{
   policy.configure(buildRegistry());
   const {createPersonalBetslipStore,PERSONAL_BETSLIP_STORAGE_KEY}=await import('../js/pages/personal-betslip-store.mjs');
