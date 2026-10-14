@@ -1,14 +1,14 @@
 # Integrazione Fase 12 — UEFA MD2 + quote Sisal
 
-Generato: 2026-10-13T18:14:52.209Z
+Generato: 2026-10-14T18:18:01.764Z
 
 ## Esito
 
-- Copertura partite: **18/18**; XI complete: **18/18**; formazioni ufficiali applicate: **9/18**.
-- Titolari correnti: **392/396** associati a ID canonico; **4** non risolti.
+- Copertura partite: **18/18**; XI complete: **18/18**; formazioni ufficiali applicate: **18/18**.
+- Titolari correnti: **385/396** associati a ID canonico; **11** non risolti.
 - Overlay identità MD2: **17** record additivi verificati; nessuna rosa UEFA congelata è stata riscritta.
 - Pronostici squadra: **17/18** con volumi dettagliati; risultato/goal e relative quote disponibili **18/18**.
-- Disponibilità UEFA: **99 indisponibili**, **3 squalificati**, **22 in dubbio**; 108/124 associati.
+- Disponibilità UEFA: **158 indisponibili**, **1 squalificati**, **5 in dubbio**; 101/164 associati.
 - Quote: snapshot Sisal **18/18** eventi; **28109** mercati giocatore e **92818** selezioni indicizzate.
 - Selezioni aperte con quota > 1 e selezionabili nell'interfaccia: **50399**; anche con identità canonica giocatore completa: **47562**.
 - Selezioni giocatore matematicamente valutabili: **0**. Probabilità ed EV restano N/D senza impedire l'uso della quota provider valida.
@@ -47,15 +47,15 @@ Generato: 2026-10-13T18:14:52.209Z
 | Leipzig–PSV Eindhoven | 22/22 | 12 | 1011 | 1823 | OK |
 | Viking–Bayern München | 21/22 | 8 | 1858 | 3412 | PARZIALE (1 ID) |
 | Villarreal–Napoli | 21/22 | 9 | 1665 | 2777 | PARZIALE (1 ID) |
-| Feyenoord–Como | 22/22 | 9 | 2075 | 3750 | OK |
-| LASK–Liverpool | 22/22 | 8 | 1118 | 1820 | OK |
-| Roma–Real Madrid | 22/22 | 6 | 2238 | 3999 | OK |
-| Aston Villa–Fenerbahçe | 22/22 | 5 | 1156 | 1758 | OK |
-| Shakhtar Donetsk–AEK Athens | 22/22 | 5 | 1484 | 3206 | OK |
-| Bodø/Glimt–Borussia Dortmund | 22/22 | 6 | 1752 | 3269 | OK |
-| Manchester City–Paris Saint-Germain | 22/22 | 1 | 1483 | 2302 | OK |
-| Real Betis–Porto | 22/22 | 5 | 1919 | 3559 | OK |
-| Slovan Bratislava–Stuttgart | 22/22 | 6 | 1371 | 3011 | OK |
+| Feyenoord–Como | 22/22 | 13 | 2075 | 3750 | OK |
+| LASK–Liverpool | 21/22 | 13 | 1118 | 1820 | PARZIALE (1 ID) |
+| Roma–Real Madrid | 22/22 | 7 | 2238 | 3999 | OK |
+| Aston Villa–Fenerbahçe | 22/22 | 12 | 1156 | 1758 | OK |
+| Shakhtar Donetsk–AEK Athens | 19/22 | 15 | 1484 | 3206 | PARZIALE (3 ID) |
+| Bodø/Glimt–Borussia Dortmund | 21/22 | 10 | 1752 | 3269 | PARZIALE (1 ID) |
+| Manchester City–Paris Saint-Germain | 22/22 | 2 | 1483 | 2302 | OK |
+| Real Betis–Porto | 21/22 | 8 | 1919 | 3559 | PARZIALE (1 ID) |
+| Slovan Bratislava–Stuttgart | 21/22 | 11 | 1371 | 3011 | PARZIALE (1 ID) |
 
 ## Minuti e modello
 
@@ -84,6 +84,13 @@ I mercati 28507 includono il sostituto; i 28506 e gli altri contratti che lo dic
 - Titolare non risolto: Arsenal — Lewis-Skelly.
 - Titolare non risolto: Bayern München — Karl.
 - Titolare non risolto: Napoli — Giovane.
+- Titolare non risolto: Liverpool — Nyoni.
+- Titolare non risolto: Shakhtar Donetsk — Matvienko.
+- Titolare non risolto: Shakhtar Donetsk — Newerton.
+- Titolare non risolto: AEK Athens — Pilo.
+- Titolare non risolto: Borussia Dortmund — Karetsas.
+- Titolare non risolto: Porto — Costa.
+- Titolare non risolto: Slovan Bratislava — Camara.
 - Disponibilità non risolta: Lille — Igamane H. (unavailable).
 - Disponibilità non risolta: Galatasaray — Aydin E. (unavailable).
 - Disponibilità non risolta: Galatasaray — Ayhan K. (unavailable).
@@ -100,6 +107,53 @@ I mercati 28507 includono il sostituto; i 28506 e gli altri contratti che lo dic
 - Disponibilità non risolta: Bayern München — Buchmann T. (unavailable).
 - Disponibilità non risolta: Napoli — Buongiorno A. (unavailable).
 - Disponibilità non risolta: Napoli — Marianucci L. (unavailable).
+- Disponibilità non risolta: Feyenoord — Beelen T. (unavailable).
+- Disponibilità non risolta: Feyenoord — van Persie S. (unavailable).
+- Disponibilità non risolta: Como — Addai J. (unavailable).
+- Disponibilità non risolta: Como — Caqueret M. (unavailable).
+- Disponibilità non risolta: Como — Goldaniga E. (unavailable).
+- Disponibilità non risolta: Como — Kambwala W. (unavailable).
+- Disponibilità non risolta: Como — Lahdo A. (unavailable).
+- Disponibilità non risolta: LASK — Cheikne K. (unavailable).
+- Disponibilità non risolta: LASK — Harakate R. (unavailable).
+- Disponibilità non risolta: LASK — Smakaj A. (unavailable).
+- Disponibilità non risolta: Liverpool — Endo W. (unavailable).
+- Disponibilità non risolta: Roma — Bah M. (unavailable).
+- Disponibilità non risolta: Real Madrid — Mendy F. (unavailable).
+- Disponibilità non risolta: Aston Villa — Cisse M. (unavailable).
+- Disponibilità non risolta: Aston Villa — Harwood-Bellis T. (unavailable).
+- Disponibilità non risolta: Aston Villa — Madjo B. (unavailable).
+- Disponibilità non risolta: Aston Villa — Onana A. (unavailable).
+- Disponibilità non risolta: Fenerbahçe — Diouf A. (unavailable).
+- Disponibilità non risolta: Fenerbahçe — Fall A. (unavailable).
+- Disponibilità non risolta: Fenerbahçe — Oosterwolde J. (unavailable).
+- Disponibilità non risolta: Fenerbahçe — Yandas M. (unavailable).
+- Disponibilità non risolta: Shakhtar Donetsk — Azarovi I. (unavailable).
+- Disponibilità non risolta: Shakhtar Donetsk — Korniyenko V. (unavailable).
+- Disponibilità non risolta: Shakhtar Donetsk — Marlon (unavailable).
+- Disponibilità non risolta: Shakhtar Donetsk — Obah P. (unavailable).
+- Disponibilità non risolta: Shakhtar Donetsk — Puzankov T. (unavailable).
+- Disponibilità non risolta: Shakhtar Donetsk — Shved M. (unavailable).
+- Disponibilità non risolta: Shakhtar Donetsk — Tvardovskyi D. (unavailable).
+- Disponibilità non risolta: AEK Athens — Alexiou C. (unavailable).
+- Disponibilità non risolta: AEK Athens — Georgiev M. (unavailable).
+- Disponibilità non risolta: AEK Athens — Kutesa D. (unavailable).
+- Disponibilità non risolta: AEK Athens — Pierrot F. (unavailable).
+- Disponibilità non risolta: AEK Athens — Sahabo H. (unavailable).
+- Disponibilità non risolta: Bodø/Glimt — Bjortuft O. L. (unavailable).
+- Disponibilità non risolta: Borussia Dortmund — Konstantelias G. (unavailable).
+- Disponibilità non risolta: Borussia Dortmund — Lerma J. (unavailable).
+- Disponibilità non risolta: Porto — Gabriel Mec (unavailable).
+- Disponibilità non risolta: Porto — Prpic D. (unavailable).
+- Disponibilità non risolta: Porto — Sousa V. (unavailable).
+- Disponibilità non risolta: Slovan Bratislava — Griger A. (unavailable).
+- Disponibilità non risolta: Slovan Bratislava — Kianga M. (unavailable).
+- Disponibilità non risolta: Slovan Bratislava — Kukharevych M. (unavailable).
+- Disponibilità non risolta: Stuttgart — Al Dakhil A. (unavailable).
+- Disponibilità non risolta: Stuttgart — Diehl J. (unavailable).
+- Disponibilità non risolta: Stuttgart — Drljaca S. (unavailable).
+- Disponibilità non risolta: Stuttgart — Stergiou L. (unavailable).
+- Disponibilità non risolta: Stuttgart — Zagadou D. (unavailable).
 - Le probabilità evento e gli EV dei mercati giocatore restano N/D/null per incompatibilità contrattuale.
 
 ## Sincronizzazione e integrità
