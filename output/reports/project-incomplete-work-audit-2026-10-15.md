@@ -4,7 +4,7 @@ Data: 15 ottobre 2026, Europe/Rome. Base osservata: HEAD `c8c48026`, «probabili
 
 ## Esito e criteri
 
-L'inventario comprende **63 attività: 35 aperte, 20 completate e 8 superate**. Le aperte sono **23 PARZIALI, 7 SOSPESE e 5 DA VERIFICARE**. Non sono emerse attività NON INIZIATE comprovate come impegni approvati ancora vigenti. Le proposte di nuovi modelli e le attivazioni deliberatamente respinte non diventano lavori incompleti.
+L'inventario comprende **63 attività: 32 aperte, 23 completate e 8 superate**. Le aperte sono **20 PARZIALI, 7 SOSPESE e 5 DA VERIFICARE**. Non sono emerse attività NON INIZIATE comprovate come impegni approvati ancora vigenti. Le proposte di nuovi modelli e le attivazioni deliberatamente respinte non diventano lavori incompleti.
 
 Il numero è esatto rispetto alle unità numerate di questo report; non certifica l'esistenza di tutti gli accordi eventualmente presenti in conversazioni esterne al repository. DA VERIFICARE indica insufficienza di prove, non un difetto confermato. Le stime sono orientative, escludono attese del calendario e reperibilità delle fonti. Nessuna criticità è classificata critica: non è stato dimostrato un guasto generale o una perdita irreversibile.
 
@@ -28,14 +28,14 @@ I report successivi prevalgono sui precedenti soltanto per lo stesso oggetto. Un
 
 | Stato | Numero |
 |---|---:|
-| COMPLETATO | 20 |
-| PARZIALE | 23 |
+| COMPLETATO | 23 |
+| PARZIALE | 20 |
 | SOSPESO | 7 |
 | NON INIZIATO | 0 |
 | DA VERIFICARE | 5 |
 | SUPERATO | 8 |
 | **Totale** | **63** |
-| **Aperte** | **35** |
+| **Aperte** | **32** |
 
 Le suite con più asserzioni fallite sono raggruppate per contratto, non contate una volta per assert. Le quattro squadre del recovery domestico sono separate perché hanno fonti e blocchi distinti. I 279 unavailable delle statistiche correnti Champions e i 157 non valutabili del candidato minuti appartengono a universi differenti e non si sommano.
 
@@ -62,9 +62,6 @@ Le suite con più asserzioni fallite sono raggruppate per contratto, non contate
 | B11 | Confronto cronologico paired A/B/C | SOSPESO | alta |
 | B13 | Nove esiti grigi residui MD2 | PARZIALE | alta |
 | B14 | Certificazione provider del settlement | DA VERIFICARE | alta |
-| C01 | Suite rose/campo Serie A | PARZIALE | alta |
-| C02 | Suite integrazione/Letture Champions | PARZIALE | alta |
-| C03 | Test filtro titolari fermo a quattro esclusi | PARZIALE | alta |
 | A03 | Diagnostiche V2 non identificabili | PARZIALE | media |
 | A10 | Segnalazioni trasferimenti residue | DA VERIFICARE | media |
 | B12 | Cinque delta List A temporalmente ambigui | DA VERIFICARE | media |
@@ -403,51 +400,59 @@ Ogni scheda riporta area/stato, obiettivo, realizzato, mancanza, motivo document
 
 ### C01 — Suite rose/campo Serie A
 
-- **Area/stato/priorità:** test sito; PARZIALE; alta.
+- **Area/stato/priorità:** test sito; COMPLETATO; alta.
 - **Obiettivo:** verifiche significative su rose, fonti e disposizione del campo.
-- **Realizzato:** tre suite rilanciate, tre failure: Inter 24 contro 32, fonte Atalanta probable MD5, reverse() atteso nel renderer Letture.
-- **Manca:** stabilire per ciascun caso contratto vigente e comportamento effettivo, poi intervenire su test o implementazione in base alle prove.
+- **Realizzato:** Tre suite rose/campo PASS. Fonte canonica listone attivo con parità degli ID e statistiche storiche, fonti della giornata pubblicata, pulsanti stagione correnti. Modifiche concorrenti al campo preservate.
+- **Manca:** Nessuna anomalia residua nella scheda; ulteriori failure esterne MD7 documentate separatamente.
 - **Motivo:** aspettative statiche precedenti e restyle recente; failure certa, bug UI non dimostrato.
 - **File:** `scripts/team-pages/test-completed-teams.js:7`, `:13`; `test-all-teams.js:43`; `test.js:158`.
 - **Dipendenze:** rose attuali, requisito campo e commit c8c48026.
 - **Impegno:** 0,5–2 giorni.
-- **Prossima azione:** confronto semantico prima di aggiornare expected; nessun indebolimento degli assert solo per ottenere verde.
+- **Prossima azione:** Attendere verifica dell’utente; nessun ulteriore intervento in questo blocco.
+
+- **Aggiornamento Blocco 1:** vedere `output/reports/project-block-01-test-stability-2026-10-15.md`; verifica finale globale 18 PASS / 3 FAIL, sulle nove iniziali 8 PASS / 1 FAIL.
 
 ### C02 — Suite integrazione/Letture Champions
 
-- **Area/stato/priorità:** test Champions; PARZIALE; alta.
+- **Area/stato/priorità:** test Champions; COMPLETATO; alta.
 - **Obiettivo:** suite attendibile dopo ufficiali e restyle.
-- **Realizzato:** falliscono hash ufficiali MD2, requisito link diretto pilot e conteggio Letture 7 contro 3; test rendering ufficiali passa.
-- **Manca:** riconciliare versioni/hash e contratto di navigazione/card con i requisiti correnti.
+- **Realizzato:** Integrazione storica sul commit c3f193b con tutti gli hash/expected originali e verifica corrente distinta PASS; pilot e Letture PASS. Parità degli ID con Schedina, archiviati assenti e pulsanti gara conclusa disabilitati.
+- **Manca:** Nessuna anomalia residua nella scheda; ulteriori failure esterne MD7 documentate separatamente.
 - **Motivo:** failure già annotate nei report, ora riprodotte su HEAD; non tutte sono regressioni del prodotto.
 - **File:** `scripts/test-champions-md02-integration.js:19`, `test-champions-pilot-predictions.js:70`, `test-champions-reading-page.mjs:122`.
 - **Dipendenze:** UI vigente e fixture canoniche.
 - **Impegno:** 1–2 giorni.
-- **Prossima azione:** separare invarianti contrattuali da snapshot del contenuto e verificare il link effettivo.
+- **Prossima azione:** Attendere verifica dell’utente; nessun ulteriore intervento in questo blocco.
+
+- **Aggiornamento Blocco 1:** vedere `output/reports/project-block-01-test-stability-2026-10-15.md`; verifica finale globale 18 PASS / 3 FAIL, sulle nove iniziali 8 PASS / 1 FAIL.
 
 ### C03 — Test policy titolari fermo a quattro esclusi
 
-- **Area/stato/priorità:** policy condivisa; PARZIALE; alta.
+- **Area/stato/priorità:** policy condivisa; COMPLETATO; alta.
 - **Obiettivo:** filtro coerente su Lettura/Schedina/Preferiti/MyCombo e selezioni salvate.
-- **Realizzato:** policy, archivio e test presenti; test si ferma a 7 != 4.
-- **Manca:** audit corrente fixture per fixture e prosecuzione dei controlli oltre il conteggio storico.
+- **Realizzato:** Policy test PASS: sette archiviati correnti separati dalla coorte 58/54, registro canonico verificato senza chiamare il builder persistente dal test, controlli purge/reject MyCombo conservati.
+- **Manca:** Nessuna anomalia residua nella scheda; ulteriori failure esterne MD7 documentate separatamente.
 - **Motivo:** baseline precedente a ulteriori ufficiali; non è dimostrato un errore del filtro.
 - **File:** `scripts/test-official-starter-policy.cjs:8`, `scripts/apply-official-starter-policy.js`, `data/technical-archive/official-nonstarter-markets.json`.
 - **Dipendenze:** ufficiali canoniche e contratti salvati.
 - **Impegno:** 0,5–1 giorno.
-- **Prossima azione:** verificare i sette archiviati e tutte le selezioni operative, mantenendo quote/soglie/modificatori.
+- **Prossima azione:** Attendere verifica dell’utente; nessun ulteriore intervento in questo blocco.
+
+- **Aggiornamento Blocco 1:** vedere `output/reports/project-block-01-test-stability-2026-10-15.md`; verifica finale globale 18 PASS / 3 FAIL, sulle nove iniziali 8 PASS / 1 FAIL.
 
 ### C04 — Guard storici confrontati con file vivi
 
 - **Area/stato/priorità:** test audit; PARZIALE; media.
 - **Obiettivo:** verificare integrità storica nel corretto contesto.
-- **Realizzato:** full-data coverage fallisce sull'hash builder; historical recovery sull'hash calendario vivo.
-- **Manca:** separare replay storico e regressione corrente, provando l'origine Git dei delta.
+- **Realizzato:** Builder e calendario originari ritrovati e verificati su revisioni Git fissate; guard storici separati dal corrente. Resta FAIL per hash renderer 205fbcaf non ritrovato nella cronologia del percorso, conservato senza aggiornare il manifest.
+- **Manca:** Copia originale del renderer con hash verificabile; nessuna sostituzione con il file vivo.
 - **Motivo:** manifest di fasi congelate confrontati con file successivamente aggiornati.
 - **File:** `scripts/test-champions-full-data-coverage.js:93`, `test-champions-historical-recovery-audit.js:103`, relativi manifest Fasi 6/9.
 - **Dipendenze:** commit e fonti della fase corretta.
 - **Impegno:** 1–2 giorni.
-- **Prossima azione:** replay in copia/commit corretti, senza riscrivere automaticamente i vecchi hash.
+- **Prossima azione:** Acquisire evidenza storica originale, senza alterare hash o storico congelato; fermarsi su questo problema.
+
+- **Aggiornamento Blocco 1:** vedere `output/reports/project-block-01-test-stability-2026-10-15.md`; verifica finale globale 18 PASS / 3 FAIL, sulle nove iniziali 8 PASS / 1 FAIL.
 
 ### C05 — Copertura QA degli ultimi restyle
 
@@ -535,6 +540,8 @@ Ogni scheda riporta area/stato, obiettivo, realizzato, mancanza, motivo document
 | K18 | Ricerca arbitri Fasi 2B/2C/2D e decisione | report 2D finale: NON ATTIVARE; non è integrazione dimenticata |
 | K19 | Audit MD2, recovery e vista audit responsive | `output/champions-audit-browser-validation.json`: 117 righe, 74/34/9, 390/768/1440 senza overflow, errors vuoto |
 | K20 | Ricerca miglioramenti MD2 | report improvement-research 15 ottobre: simulazioni e verdetti conclusi, nessun nuovo coefficiente approvato |
+
+Aggiornamento Blocco 1: alle 20 chiusure originarie si aggiungono **C01, C02 e C03**, con prove nelle rispettive schede e nel report dedicato; C04 rimane PARZIALE. Le verifiche storiche 12/9 riportate sotto descrivono l’audit originario, non il nuovo esito 18/3.
 
 ## Attività superate, da non riaprire
 
