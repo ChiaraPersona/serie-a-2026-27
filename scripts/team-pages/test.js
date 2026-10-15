@@ -226,7 +226,7 @@ assert.ok(teamPageSource.includes('${value(team.preferredFormation)}</p>${pageJu
 for (const heading of ["Risultati", "Disciplina", "Casa e trasferta"]) assert.ok(teamInterface.includes(`<section class="team-season-group"><h3>${heading}</h3>`), `Statistiche squadra: sezione sempre visibile mancante: ${heading}`);
 assert.ok(!teamInterface.includes('<details class="team-season-group"') && !teamInterface.includes(".team-season-group>summary"), "Risultati, disciplina e casa/trasferta non devono usare tendine");
 for (const removedContract of [".team-season-group>summary", ".team-season-group[open]"]) assert.ok(!styles.includes(removedContract), `Statistiche squadra: stile della tendina ancora presente: ${removedContract}`);
-const editorialSections = ["identity", "season", "tactics", "statistics", "leaders", "comparator"];
+const editorialSections = ["identity", "season", "tactics", "roster", "statistics", "leaders", "comparator"];
 for (const section of editorialSections) assert.ok(teamInterface.includes('data-editorial-section="'+section+'"'), 'Sezione editoriale assente: '+section);
 for (const id of ["team-statistics-disclosure", "team-leaders-disclosure", "team-comparator-disclosure"]) assert.ok(teamInterface.includes(id), 'Pannello editoriale assente: '+id);
 assert.ok(teamPageSource.indexOf("${squadLeaderboards(team, currentLeaderboardRows)}") < teamPageSource.indexOf("${filters()}"), "I leader devono precedere filtri e tabella completa");
