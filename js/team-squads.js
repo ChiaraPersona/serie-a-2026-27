@@ -66,7 +66,7 @@
     return `<section class="detail-section team-objective-section" aria-labelledby="team-objective-heading"><header class="objective-section-head"><div><p class="eyebrow">Stagione 2026/27</p><h2 id="team-objective-heading">La stagione in sintesi</h2></div><p>Obiettivo e indicatori aggiornati sui risultati conclusi.</p></header><article class="objective-card"><header><span class="team-objective-team">${esc(team.name)}</span><span>${metrics.status === "preseason" ? "Valori iniziali" : "Stagione in corso"}</span></header><div class="objective-title"><small>Obiettivo iniziale</small><h3>${esc(profile.primaryObjective)}</h3><p>Secondario: ${esc(profile.secondaryObjective)} · posizione obiettivo ${profile.targetPosition}ª</p></div><div class="objective-metrics">${metricCard("Progresso obiettivo", `${metrics.objectiveProgress}%`, metrics.objectiveProgress)}${metricCard("Rendimento sulle attese", signed(metrics.seasonOverperformance), null, metrics.seasonOverperformance > 0 ? "positive" : metrics.seasonOverperformance < 0 ? "negative" : "")}${metricCard("Motivazione", `${metrics.motivationCurrent}/100`, metrics.motivationCurrent)}${metricCard("Pressione", `${metrics.pressureCurrent}/100`, metrics.pressureCurrent)}${metricCard("Urgenza punti", `${metrics.urgency}/100`, metrics.urgency, metrics.urgency >= 80 ? "urgent" : "")}</div></article><details class="team-method-details"><summary>Come vengono calcolati gli indicatori</summary><p>A inizio stagione progresso e scostamento restano neutrali; dopo ogni giornata il calcolo considera posizione, punti, proiezione a 38 gare e distanza dall'obiettivo. È un indicatore di contesto, non un pronostico.</p></details></section>`;
   };
 
-  const tacticalProfileSection = (team, dataset) => {
+  const tacticalProfileDetails = (team, dataset) => {
     const profile = dataset?.profiles?.find(item => item.teamId === team.id);
     if (!profile) return "";
     const metric = (label, content) => `<div><span>${label}</span><strong>${content}</strong></div>`;
@@ -75,6 +75,24 @@
       ? `<div class="team-style-goals">${profile.goalTypes.map(item => `<div><span>${esc(item.type)}</span><strong>${value(item.goals)}</strong><small>${value(item.sharePct, "%")}</small></div>`).join("")}</div>`
       : '<p class="muted">Composizione dei gol: N/D nella pagina WhoScored disponibile.</p>';
     return `<section class="detail-section team-style-section" aria-labelledby="team-style-heading"><header class="team-style-heading"><div><p class="eyebrow">${profile.characteristicsSeason==="2026-27"?`Numeri storici ${esc(profile.competition)} 2025/26 · tratti Serie A 2026/27`:`Baseline tattica storica · ${esc(profile.competition)} 2025/26`}</p><h2 id="team-style-heading">Stile di gioco</h2></div></header>${profile.notes?.length ? `<aside class="competition-warning"><strong>Limiti del campione</strong><p>${profile.notes.map(esc).join(" ")}</p></aside>` : ""}<div class="team-style-metrics">${metric("Partite", value(profile.summary.appearances))}${metric("Gol / gara", value(profile.derived.goalsPerGame))}${metric("Tiri / gara", value(profile.summary.shotsPerGame))}${metric("Possesso", pct(profile.summary.possessionPct))}${metric("Passaggi riusciti", pct(profile.summary.passSuccessPct))}${metric("Duelli aerei", value(profile.summary.aerialWonPerGame))}${metric("Gialli / gara", value(profile.derived.yellowCardsPerGame))}${metric("Modulo più usato", profile.formation.code ? `${esc(profile.formation.code)} · ${value(profile.formation.appearances)} gare` : "N/D")}</div><details class="team-style-details"><summary>Forze, debolezze e approfondimenti</summary><div class="team-style-details-content"><div class="team-style-trait-grid">${traits("Punti di forza", profile.strengths || [], "Punti di forza non esposti dal provider.")}${traits("Debolezze", profile.weaknesses || [], "Debolezze non esposte dal provider.")}${traits("Comportamenti ricorrenti", profile.playingStyle || [], "Stile non esposto dal provider.")}</div><div class="team-style-lower"><article><h3>Origine dei gol</h3>${goalTypes}</article></div><p class="objective-method">Uso previsto: fattore contestuale per le letture, da ricalibrare con forma 2026/27, assenze, allenatore, arbitro e quote. <a href="${esc(profile.source.url)}" target="_blank" rel="noreferrer">WhoScored</a>.</p></div></details></section>`;
+  };
+
+  const editorialDisclosure = (id, label, content, className = "") => `<details id="${id}" class="team-editorial-disclosure ${className}"><summary aria-controls="${id}-content" aria-expanded="false"><span>${label}</span><span class="team-disclosure-arrow" aria-hidden="true">↗</span></summary><div id="${id}-content" class="team-disclosure-content">${content}</div></details>`;
+
+  const tacticalProfileSection = (team, dataset) => {
+    const profile = dataset?.profiles?.find(item => item.teamId === team.id);
+    if (!profile) return '<section class="team-style-section"><h2>Stile di gioco</h2><p>Dati tattici non disponibili.</p></section>';
+    const candidates = [
+      ["Possesso medio", profile.summary.possessionPct, "%"],
+      ["Precisione dei passaggi", profile.summary.passSuccessPct, "%"],
+      ["Tiri a partita", profile.summary.shotsPerGame, ""],
+      ["Duelli aerei vinti / gara", profile.summary.aerialWonPerGame, ""],
+      ["Gol / gara", profile.derived.goalsPerGame, ""],
+      ["Gialli / gara", profile.derived.yellowCardsPerGame, ""],
+      ["Partite del campione", profile.summary.appearances, ""],
+      ["Modulo più usato", profile.formation.code, ""]
+    ].filter(([, number]) => number !== null && number !== undefined && number !== "").slice(0, 4);
+    return `<section class="detail-section team-style-section team-style-essential" aria-labelledby="team-style-essential-title"><header class="team-style-heading"><div><p class="eyebrow">Il profilo tattico</p><h2 id="team-style-essential-title">Stile di gioco</h2></div></header><p class="team-editorial-note">Baseline ${esc(profile.competition)} 2025/26 · ${value(profile.summary.appearances)} partite. Indicatori disponibili nella fonte, non una stima della stagione in corso.</p><dl class="team-tactical-summary">${candidates.map(([label, number, suffix]) => `<div><dt>${label}</dt><dd>${value(number, suffix)}</dd></div>`).join("")}</dl>${editorialDisclosure("team-style-disclosure", "Fonti e profilo tattico completo", tacticalProfileDetails(team, dataset))}</section>`;
   };
 
   const probableLineupSection = (team, teamSummary) => {
@@ -115,7 +133,7 @@
 
   const statGrid = (object, keys, compact = false) => `<div class="${compact ? "player-stat-grid" : "team-stat-grid"}">${keys.map(key => `<article><span>${labels[key] || key}</span><strong>${key.endsWith("Percentage") || key === "passAccuracy" || key === "savePercentage" ? pct(object?.[key]) : value(object?.[key])}</strong></article>`).join("")}</div>`;
   const percentageKeys = new Set(["shotAccuracy", "shotConversion", "passAccuracy", "savePercentage", "averagePossession"]);
-  const teamSeasonList = (object, keys) => `<dl class="team-season-list">${keys.map(key => `<div><dt>${labels[key] || key}</dt><dd>${key.endsWith("Percentage") || percentageKeys.has(key) ? pct(object?.[key]) : value(object?.[key])}</dd></div>`).join("")}</dl>`;
+  const teamSeasonList = (object, keys) => `<div class="team-stat-table-wrap"><table class="team-season-list"><caption class="sr-only">Statistiche del gruppo</caption><tbody>${keys.map(key => `<tr><th scope="row">${labels[key] || key}</th><td>${key.endsWith("Percentage") || percentageKeys.has(key) ? pct(object?.[key]) : value(object?.[key])}</td></tr>`).join("")}</tbody></table></div>`;
   const teamNavigation = (team, teams) => {
     const currentIndex = teams.findIndex(item => item.id === team.id);
     const previous = teams[(currentIndex - 1 + teams.length) % teams.length];
@@ -231,12 +249,14 @@
     }));
   }
 
-  function squadLeaderboardSection(rows, teamName, season) {
-    const cardsHtml = leaderboardStats.map(stat => {
-      const leaders = rows.map(row => ({ player: row.player, linked: row.linked, total: row.totals[stat.key], rate: row.per90?.[stat.key] }))
+  const rankedLeaders = (rows, stat) => rows.map(row => ({ player: row.player, linked: row.linked, total: row.totals[stat.key], rate: row.per90?.[stat.key] }))
         .filter(item => item.total !== null && item.total !== undefined)
         .sort((left, right) => right.total - left.total || (right.rate ?? -1) - (left.rate ?? -1) || left.player.name.localeCompare(right.player.name, "it"))
         .slice(0, 3);
+
+  function squadLeaderboardSection(rows, teamName, season) {
+    const cardsHtml = leaderboardStats.map(stat => {
+      const leaders = rankedLeaders(rows, stat);
       return `<article class="squad-leader-card"><header><h4>${esc(stat.label)}</h4><span>${stat.per90 ? "Totale · /90" : "Totale"}</span></header>${leaders.length ? `<ol>${leaders.map((item, index) => `<li><span class="leader-rank">${index + 1}</span>${item.linked ? `<button class="leader-player" type="button" data-player-id="${esc(item.player.id)}">${esc(item.player.name)}</button>` : `<span class="leader-player leader-player-unlinked">${esc(item.player.name)}<small>Scheda N/D</small></span>`}<strong>${value(item.total)}${stat.per90 ? `<small>${value(item.rate)} /90</small>` : ""}</strong></li>`).join("")}</ol>` : `<p class="muted">Dati non disponibili</p>`}</article>`;
     }).join("");
     const description = "Classifica sulle partite concluse e sui soli campi giocatore disponibili. Le metriche non coperte restano N/D.";
@@ -244,9 +264,27 @@
     return `<section class="squad-leaders squad-leaders-period" aria-labelledby="${titleId}"><header class="squad-leaders-header"><span class="squad-leaders-heading"><span><span class="eyebrow">Top 3 per statistica</span><strong id="${titleId}">I migliori di ${esc(teamName)} nel ${season}</strong></span><span>Stagione in corso</span></span></header><div class="squad-leaders-content"><p>${description}</p><div class="squad-leader-grid">${cardsHtml}</div></div></section>`;
   }
 
-  function squadLeaderboards(team, matches) {
-    const currentRows = currentSquadLeaderboardRows(team, matches);
+  function squadLeaderboards(team, currentRows) {
     return `<div id="squad-leaderboards" class="squad-leaderboards">${squadLeaderboardSection(currentRows, team.name, "2026/27")}</div>`;
+  }
+
+  function editorialLeaders(rows) {
+    return `<div class="team-leader-summary">${[["goals", "Miglior marcatore"], ["shots", "Più tiri"], ["assists", "Miglior assistman"]].map(([key, label]) => {
+      const first = rankedLeaders(rows, leaderboardStats.find(stat => stat.key === key))[0];
+      return `<article><p>${label}</p>${first ? `<strong>${esc(first.player.name)}</strong><span>${value(first.total)} · Serie A 2026/27</span>` : '<strong>N/D</strong><span>Dati non disponibili</span>'}</article>`;
+    }).join("")}</div>`;
+  }
+
+  function editorialSeason(team, currentStats, standings) {
+    const index = standings.findIndex(row => row.team === team.id);
+    const results = currentStats?.results;
+    const metrics = [["Posizione", index >= 0 ? index + 1 : null], ["Punti", results?.points], ["Partite", results?.played], ["Gol fatti", results?.goalsFor], ["Gol subiti", results?.goalsAgainst]];
+    return `<section class="team-season-summary" data-editorial-section="season" aria-labelledby="team-season-summary-title"><header class="team-editorial-heading"><p class="eyebrow">Serie A · 2026/27</p><h2 id="team-season-summary-title">La stagione in numeri</h2></header><dl class="team-key-numbers">${metrics.map(([label, number]) => `<div><dt>${label}</dt><dd>${value(number)}</dd></div>`).join("")}</dl>${team.europeanCompetitions?.length ? `<p class="team-editorial-note">Altre competizioni: ${team.europeanCompetitions.map(item => esc(typeof item === "string" ? item : item.name || item.competition || "")).filter(Boolean).join(" · ")}</p>` : ""}</section>`;
+  }
+
+  function editorialStatsSummary(stats) {
+    const groups = [["Attacco", [["Gol fatti", stats?.results?.goalsFor], ["Tiri / partita", stats?.attack?.shotsPerGame]]], ["Difesa", [["Gol subiti", stats?.results?.goalsAgainst], ["Clean sheet", stats?.results?.cleanSheets]]], ["Possesso e costruzione", [["Possesso medio", stats?.possession?.averagePossession, "%"], ["Precisione passaggi", stats?.possession?.passAccuracy, "%"]]]];
+    return `<div class="team-stat-summary">${groups.map(([label, metrics]) => `<article><h3>${label}</h3><dl>${metrics.map(([name, number, suffix]) => `<div><dt>${name}</dt><dd>${value(number, suffix || "")}</dd></div>`).join("")}</dl></article>`).join("")}</div>`;
   }
 
   function squadTable(players, statsByPlayer) {
@@ -305,7 +343,7 @@
   }
 
   function teamSeasonComparison(currentStats, previousStats, tacticalProfile) {
-    return `<section class="detail-section team-season-comparison" aria-labelledby="team-season-comparison-title"><header class="team-season-comparison-heading"><span class="eyebrow">Numeri e confronto stagionale</span><h2 id="team-season-comparison-title">Statistiche squadra</h2><p>La stagione in corso è aperta; il 2025/26 resta disponibile come confronto.</p></header>${teamAttackChannels(tacticalProfile)}<div class="team-season-columns">${currentStats ? teamSeasonStatsColumn(currentStats) : ""}${teamSeasonStatsColumn(previousStats)}</div></section>`;
+    return `<section class="detail-section team-season-comparison" aria-labelledby="team-season-comparison-title"><header class="team-season-comparison-heading"><span class="eyebrow">Numeri e confronto stagionale</span><h2 id="team-season-comparison-title">Statistiche squadra</h2><p>Serie A 2026/27 e confronto 2025/26: tutti i dati disponibili, inclusi casa e trasferta.</p></header>${teamAttackChannels(tacticalProfile)}<div class="team-season-columns">${currentStats ? teamSeasonStatsColumn(currentStats) : ""}${teamSeasonStatsColumn(previousStats)}</div></section>`;
   }
 
   function teamPage(team, objectiveDataset, standings, teams, matches, teamStyleProfiles) {
@@ -323,9 +361,22 @@
     const objectiveSection = objectiveStatus(team, objectiveDataset, standings);
     const lineupSection = probableLineupSection(team, teams.find(item => item.id === team.id));
     const styleSection = tacticalProfileSection(team, teamStyleProfiles);
-    const pageJumps = `<nav class="team-page-jumps" aria-label="Indice della pagina"><a href="#team-objective-heading">Sintesi</a><a href="#team-season-comparison-title">Statistiche</a><a class="team-calendar-link" href="${base}squadra.html?team=${esc(team.id)}">Calendario completo →</a><a href="#probable-lineup-heading">Formazione</a><a href="#team-style-heading">Stile</a><a href="#squad-roster-heading">Calciatori</a></nav>`;
-    root.innerHTML = `${teamNavigation(team, teams)}<section class="team-detail-hero"><img src="${team.logo}" alt="Stemma ${esc(team.name)}"><div><h1>${esc(team.officialName)}</h1><p>${esc(team.shortName)} · Città ${value(team.city)} · Stadio ${value(team.stadium)} · Allenatore ${value(team.coach)}</p><p><strong>Modulo preferito:</strong> ${value(team.preferredFormation)}</p>${pageJumps}<p class="team-data-coverage"><strong>Copertura rosa:</strong> ${quality.complete || 0} schede complete · ${quality.partial || 0} parziali · ${quality.unavailable || 0} non disponibili</p></div></section>${team.previousSeason.promoted ? `<aside class="competition-warning"><strong>Statistiche di provenienza: Serie B 2025/26.</strong> Non sono confrontate direttamente con i valori grezzi di Serie A.</aside>` : ""}${objectiveSection}${statsSections}<section class="team-tactics-section" aria-labelledby="team-tactics-heading"><header class="team-dashboard-heading"><p class="eyebrow">Assetto e caratteristiche</p><h2 id="team-tactics-heading">Tattica e formazione</h2></header><div class="team-analysis-grid">${lineupSection}${styleSection}</div></section><section class="detail-section team-roster-section" aria-labelledby="squad-roster-heading"><header class="team-roster-heading"><div><p class="eyebrow">Prestazioni individuali</p><h2 id="squad-roster-heading">Calciatori</h2></div><span>${team.squad.length} in rosa</span></header>${squadLeaderboards(team, matches)}<details class="squad-table-disclosure"><summary><span><strong>Rosa e statistiche complete</strong><small>${quality.complete || 0} schede complete · ${quality.partial || 0} parziali · ${quality.unavailable || 0} non disponibili</small></span><span>Apri la tabella</span></summary><div class="squad-table-disclosure-content"><p class="roster-summary">I dati sommano 2025/26 e 2026/27; seleziona un nome per il dettaglio.</p>${filters()}<div id="squad-results">${squadTable(team.squad, combinedPlayerStats)}</div></div></details></section><dialog id="player-detail" class="player-detail"><div id="player-detail-content"></div></dialog>`;
-    document.querySelector(".team-roster-section")?.insertAdjacentHTML("beforebegin", squadComparator(team, combinedPlayerStats));
+    const currentLeaderboardRows = currentSquadLeaderboardRows(team, matches);
+    const pageJumps = `<nav class="team-page-jumps" aria-label="Indice della pagina"><a href="#team-season-summary-title">Stagione</a><a href="#team-tactics-heading">Formazione e stile</a><a href="#team-statistics-title">Statistiche</a><a href="#squad-roster-heading">Protagonisti</a><a href="#team-comparator-disclosure">Comparatore</a><a class="team-calendar-link" href="${base}squadra.html?team=${esc(team.id)}">Calendario completo →</a></nav>`;
+    root.classList.add("team-editorial");
+    root.innerHTML = `${teamNavigation(team, teams)}<section class="team-detail-hero" data-editorial-section="identity"><img src="${team.logo}" alt="Stemma ${esc(team.name)}"><div><h1>${esc(team.officialName)}</h1><p>${esc(team.shortName)} · Città ${value(team.city)} · Stadio ${value(team.stadium)}</p><p><strong>Allenatore:</strong> ${value(team.coach)} · <strong>Modulo preferito:</strong> ${value(team.preferredFormation)}</p>${pageJumps}</div></section>
+    ${editorialSeason(team, currentStats, standings)}
+    <section class="team-tactics-section" data-editorial-section="tactics" aria-labelledby="team-tactics-heading"><header class="team-dashboard-heading team-editorial-heading"><p class="eyebrow">Assetto e caratteristiche</p><h2 id="team-tactics-heading">Probabile formazione e stile di gioco</h2></header><div class="team-analysis-grid">${lineupSection || '<p>Formazione non disponibile.</p>'}${styleSection}</div></section>
+    <section class="team-editorial-statistics" data-editorial-section="statistics" aria-labelledby="team-statistics-title"><header class="team-editorial-heading"><p class="eyebrow">Serie A · 2026/27</p><h2 id="team-statistics-title">Statistiche approfondite</h2></header>${editorialStatsSummary(currentStats)}${editorialDisclosure("team-statistics-disclosure", "Mostra tutte le statistiche", `${team.previousSeason.promoted ? '<p class="competition-warning">Statistiche di provenienza: Serie B 2025/26. Non sono confrontate direttamente con i valori grezzi di Serie A.</p>' : ""}${statsSections}${objectiveSection}`)} </section>
+    <section class="detail-section team-roster-section" data-editorial-section="leaders" aria-labelledby="squad-roster-heading"><header class="team-roster-heading team-editorial-heading"><div><p class="eyebrow">Prestazioni individuali</p><h2 id="squad-roster-heading">I protagonisti</h2></div></header>${editorialLeaders(currentLeaderboardRows)}${editorialDisclosure("team-leaders-disclosure", "Mostra tutte le classifiche", `${squadLeaderboards(team, currentLeaderboardRows)}<details class="squad-table-disclosure"><summary><span><strong>Rosa e statistiche complete</strong><small>${quality.complete || 0} schede complete · ${quality.partial || 0} parziali · ${quality.unavailable || 0} non disponibili</small></span><span>Apri la tabella</span></summary><div class="squad-table-disclosure-content"><p class="roster-summary">I dati sommano 2025/26 e 2026/27; seleziona un nome per il dettaglio.</p>${filters()}<div id="squad-results">${squadTable(team.squad, combinedPlayerStats)}</div></div></details>`)}</section>
+    <section class="team-editorial-comparator" data-editorial-section="comparator" aria-label="Comparatore calciatori">${editorialDisclosure("team-comparator-disclosure", "Confronta i calciatori", squadComparator(team, combinedPlayerStats))}</section><dialog id="player-detail" class="player-detail"><div id="player-detail-content"></div></dialog>`;
+    root.querySelectorAll("details").forEach(panel => {
+      const summary = panel.querySelector(":scope > summary");
+      if (!summary) return;
+      const sync = () => summary.setAttribute("aria-expanded", String(panel.open));
+      sync();
+      panel.addEventListener("toggle", sync);
+    });
     const comparatorSelectors = [...document.querySelectorAll("[data-team-comparator]")];
     const comparatorResult = document.querySelector("[data-team-comparator-result]");
     const refreshComparator = () => { comparatorResult.innerHTML = squadComparatorResult(team, combinedPlayerStats, comparatorSelectors.map(item => item.dataset.playerKey || "")); };
