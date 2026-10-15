@@ -370,7 +370,8 @@ export function createPage(deps){
     recordedOutcomes=(await load("card-settlement-records.json")).records;
     const [champions,championsMd02Operational,md1,md2,md3,md4,md5,md6,matches,predictionData,teams]=await Promise.all([load("schedina-champions-md01.json"),load("schedina-champions-md02.json"),load("schedina.json"),load("schedina-md02.json"),load("schedina-md03.json"),load("schedina-md04.json"),load("schedina-md05.json"),load("schedina-md06.json"),load("matches.json"),load("predictions.json"),load("teams.json")]);
     const championsMd02=championsAuditDisplay(championsMd02Operational,await load("champions-md02-audit-display.json"));
-    const rounds={1:md1,2:md2,3:md3,4:md4,5:md5,6:md6};
+    const md7=await load("schedina-md07.json");
+    const rounds={1:md1,2:md2,3:md3,4:md4,5:md5,6:md6,7:md7};
     const matchById=new Map((Array.isArray(matches)?matches:matches.matches||[]).map(match=>[match.id,match]));
     const teamById=new Map((Array.isArray(teams)?teams:teams.teams||[]).map(team=>[team.id,team]));
     const matchday=new URLSearchParams(location.search).get("giornata");
@@ -409,7 +410,7 @@ export function createPage(deps){
       if(number>=6)bindMatchdayInteractions(number);
       return;
     }
-    document.querySelector("#app").innerHTML=hero("Archivio · Stagione 2026/27","Schedina","Le schedine e le MyCombo sono raccolte separatamente giornata per giornata.")+`<section class="betting-archive" aria-labelledby="betting-archive-title"><header class="betting-archive-intro"><div><p class="eyebrow">Archivio schedine</p><h2 id="betting-archive-title">Competizioni e giornate</h2></div><p>Le card blu raccolgono la Champions; seguono le giornate di Serie A.</p></header><div class="betting-archive-list team-directory-grid team-flip-grid">${championsArchiveCard(champions)}${championsArchiveCard(championsMd02,2)}${archiveCard(md1,1,matchById)}${archiveCard(md2,2,matchById)}${archiveCard(md3,3,matchById)}${archiveCard(md4,4,matchById)}${archiveCard(md5,5,matchById)}${archiveCard(md6,6,matchById)}</div></section>`;
+    document.querySelector("#app").innerHTML=hero("Archivio · Stagione 2026/27","Schedina","Le schedine e le MyCombo sono raccolte separatamente giornata per giornata.")+`<section class="betting-archive" aria-labelledby="betting-archive-title"><header class="betting-archive-intro"><div><p class="eyebrow">Archivio schedine</p><h2 id="betting-archive-title">Competizioni e giornate</h2></div><p>Le card blu raccolgono la Champions; seguono le giornate di Serie A.</p></header><div class="betting-archive-list team-directory-grid team-flip-grid">${championsArchiveCard(champions)}${championsArchiveCard(championsMd02,2)}${archiveCard(md1,1,matchById)}${archiveCard(md2,2,matchById)}${archiveCard(md3,3,matchById)}${archiveCard(md4,4,matchById)}${archiveCard(md5,5,matchById)}${archiveCard(md6,6,matchById)}${archiveCard(md7,7,matchById)}</div></section>`;
   }
   return {render};
 }

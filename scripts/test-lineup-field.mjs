@@ -30,6 +30,13 @@ for (const id of ["milan-atalanta-2026-27-md-07", "bologna-inter-2026-27-md-07",
   });
   const html = renderLineupField(sides);
   assert.equal((html.match(/class="reading-kit-shirt"/g) || []).length, 22);
+  assert.equal(renderLineupField(sides, {orientation: "horizontal"}).replace(/lineup-kit-\d+/g, 'kit'), html.replace(/lineup-kit-\d+/g, 'kit'));
+  for (const side of sides) {
+    const vertical = renderLineupField([side], {orientation: "vertical"});
+    assert.equal((vertical.match(/class="reading-kit-shirt"/g) || []).length, 11);
+    assert(vertical.includes('data-orientation="vertical"'));
+    assert.equal((vertical.match(/is-goalkeeper/g) || []).length, 1);
+  }
   assert.equal(JSON.stringify(sides), snapshot, `${id}: no source mutation`);
 }
 console.log("OK horizontal lineups: 3 fixtures, 22 players, mirrored positions, spacing and unchanged source data.");

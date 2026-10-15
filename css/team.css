@@ -922,3 +922,101 @@ body[data-page="referees"] .team-referee-summary strong{color:var(--glass-text)}
   .team-flip-back strong{margin-bottom:3px;font-size:1.18rem}
   .team-flip-back b{margin-top:6px;padding-top:9px}
 }
+/* Shared team dashboard: the existing light and dark glass tokens only. */
+#team-squad-app{width:min(1360px,calc(100% - 48px));padding-top:28px;display:grid;gap:24px;color:var(--glass-light-text)}
+#team-squad-app>*,#team-squad-app .team-analysis-grid>*{min-width:0;max-width:none;width:100%;box-sizing:border-box}
+#team-squad-app :is(.team-detail-hero,.detail-section,.team-tactics-section){margin:0;padding:24px;border:1px solid var(--glass-light-border);border-radius:24px;background:var(--glass-light-bg);box-shadow:var(--glass-shadow);backdrop-filter:var(--glass-blur)}
+#team-squad-app :is(h1,h2,h3,h4){font-family:var(--font-body);color:inherit;letter-spacing:-.025em}
+#team-squad-app h1{font-size:clamp(28px,3vw,44px);line-height:1.12}
+#team-squad-app h2{font-size:clamp(20px,2vw,26px);font-weight:750;line-height:1.2}
+#team-squad-app :is(p,li){line-height:1.55}
+#team-squad-app .team-detail-hero{gap:28px}
+#team-squad-app .team-detail-hero>img{width:112px;height:112px;flex:none}
+#team-squad-app .team-data-coverage{font-size:12px;margin:14px 0 0;color:var(--muted)}
+#team-squad-app .team-page-navigation{margin:0;padding:0;gap:16px}
+#team-squad-app .team-page-jumps{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+#team-squad-app .team-page-jumps a{border:1px solid var(--glass-light-border);border-radius:999px;padding:8px 12px;background:transparent;color:inherit;font-size:12px}
+#team-squad-app .objective-card{border:0;background:transparent;box-shadow:none;backdrop-filter:none;border-radius:0}
+#team-squad-app .objective-card>header{padding:0 0 12px;background:transparent;border-color:var(--line)}
+#team-squad-app .objective-card>header>span{color:inherit}
+#team-squad-app .objective-title{padding:16px 0}
+#team-squad-app .objective-metrics{padding:0;gap:12px}
+#team-squad-app .objective-metric{border-radius:12px;background:transparent;box-shadow:none;border:1px solid var(--line);padding:14px}
+#team-squad-app .team-season-content{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px 24px;padding:8px 18px 18px}
+#team-squad-app .team-season-column{border-radius:16px;background:transparent}
+#team-squad-app .team-season-heading{background:transparent}
+#team-squad-app .team-season-heading h2{font-size:20px}
+#team-squad-app .team-season-group>h3{font-size:12px;color:var(--glass-light-text);border-bottom:2px solid var(--line);letter-spacing:.07em}
+#team-squad-app .team-season-list>div{padding:8px 0;gap:12px}
+#team-squad-app .team-season-list dd{font-variant-numeric:tabular-nums;flex-shrink:0;font-size:14px}
+#team-squad-app .team-season-list dt{font-size:12px}
+#team-squad-app .team-season-list>div:nth-child(even){background:rgba(20,43,59,.025)}
+#team-squad-app .team-dashboard-heading{margin-bottom:20px}
+#team-squad-app .team-dashboard-heading h2{margin:4px 0}
+#team-squad-app .team-analysis-grid{padding:0;margin:0;gap:28px;align-items:start;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr)}
+#team-squad-app .team-analysis-grid>.detail-section{padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;backdrop-filter:none}
+#team-squad-app .team-style-heading,#team-squad-app .probable-lineup-heading{min-height:74px;align-items:start;margin:0}
+#team-squad-app .probable-lineup-heading>span{display:none}
+#team-squad-app .probable-lineup-board{max-width:none;background:var(--glass-dark-bg);border:1px solid var(--glass-dark-border);border-radius:18px;box-shadow:var(--glass-shadow);backdrop-filter:var(--glass-blur);color:var(--glass-dark-text)}
+#team-squad-app .probable-lineup-board-head{background:transparent;padding:16px;gap:12px}
+#team-squad-app .probable-lineup-board-head img{width:42px;height:42px;border-radius:10px}
+#team-squad-app .probable-lineup-board-head h3{font-family:var(--font-body);font-size:20px;color:var(--glass-dark-text);text-transform:none}
+#team-squad-app .probable-lineup-board-head>strong{color:var(--glass-dark-text);background:transparent}
+#team-squad-app .probable-lineup-board footer{padding:0 16px 16px;gap:12px;align-items:start;flex-wrap:wrap}
+.team-vertical-field{position:relative;isolation:isolate;margin:0 12px 16px;height:600px;border-radius:12px;overflow:hidden;background:repeating-linear-gradient(0deg,rgba(255,255,255,.025) 0 10%,transparent 10% 20%),#183e33}
+.team-vertical-field .reading-kit-player{position:absolute;display:flex;align-items:center;flex-direction:column;gap:5px;width:17%;max-width:94px;transform:translate(-50%,-50%)}
+.team-vertical-field .reading-kit-player strong{box-sizing:border-box;width:100%;min-height:2.5em;padding:2px;color:#fff;font-size:12px;font-weight:650;line-height:1.25;overflow-wrap:anywhere;text-align:center;text-shadow:0 1px 3px #071e18}
+#team-squad-app .team-style-metrics{grid-template-columns:repeat(2,minmax(0,1fr));gap:0 18px}
+#team-squad-app .team-style-metrics>div{padding:12px 0;border:0;border-bottom:1px solid var(--line);border-radius:0;background:transparent}
+#team-squad-app .team-style-metrics span{font-size:11px;letter-spacing:.03em}
+#team-squad-app :is(.team-style-traits,.team-style-lower>article,.team-style-goals>div){background:transparent;border-radius:12px}
+#team-squad-app .team-style-details-content{padding:14px 0}
+#team-squad-app .team-style-trait-grid{gap:12px}
+#team-squad-app .player-comparator>header{align-items:start}
+#team-squad-app .player-comparator-controls input{box-sizing:border-box;min-width:0}
+#team-squad-app .player-comparator-head article{border-radius:14px}
+#team-squad-app .player-comparator-head h3{color:var(--glass-dark-text);font-size:20px;overflow-wrap:anywhere}
+#team-squad-app .squad-leader-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+#team-squad-app .squad-leader-card{height:100%;box-sizing:border-box;border:1px solid var(--glass-light-border);border-radius:16px;background:transparent;box-shadow:none;backdrop-filter:none;transform:none}
+#team-squad-app .squad-leader-card header{background:transparent;border-bottom:1px solid var(--line)}
+#team-squad-app .squad-leader-card li{grid-template-columns:22px minmax(0,1fr) auto;gap:8px;align-items:center;min-height:46px}
+#team-squad-app .squad-leader-card .leader-player{white-space:normal;overflow-wrap:anywhere;text-align:left}
+#team-squad-app .squad-leader-card strong{font-variant-numeric:tabular-nums}
+#team-squad-app :is(.team-season-comparison,.team-tactics-section,.team-roster-section,.player-comparator){scroll-margin-top:100px}
+@media(max-width:1000px){
+ #team-squad-app .team-season-content{grid-template-columns:repeat(2,minmax(0,1fr))}
+ #team-squad-app .team-analysis-grid{grid-template-columns:1fr}
+ #team-squad-app .team-probable-lineup{max-width:600px;margin:auto}
+ #team-squad-app .team-style-heading,#team-squad-app .probable-lineup-heading{min-height:0}
+ #team-squad-app .squad-leader-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:600px){
+ #team-squad-app{width:calc(100% - 24px);gap:16px;padding-top:20px}
+ #team-squad-app :is(.team-detail-hero,.detail-section,.team-tactics-section){padding:16px;border-radius:20px}
+ #team-squad-app .team-detail-hero{display:grid;grid-template-columns:64px minmax(0,1fr);gap:16px}
+ #team-squad-app .team-detail-hero>img{width:64px;height:64px;margin:0;align-self:start}
+ #team-squad-app .team-detail-hero h1{font-size:26px}
+ #team-squad-app .team-detail-hero>div>p{font-size:12px}
+ #team-squad-app .team-page-jumps{gap:6px}
+ #team-squad-app .team-page-jumps a{font-size:11px;padding:6px 8px}
+ #team-squad-app .objective-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}
+ #team-squad-app .team-season-content{grid-template-columns:1fr;padding:6px 12px 14px;gap:8px}
+ #team-squad-app .team-season-heading{padding:14px 12px;gap:8px;flex-wrap:wrap}
+ #team-squad-app .team-season-heading h2{font-size:18px}
+ #team-squad-app .team-season-heading>span{margin:0;font-size:11px;white-space:normal}
+ #team-squad-app .team-season-heading::after{margin-left:auto}
+ #team-squad-app .squad-leader-grid{grid-template-columns:1fr}
+ #team-squad-app .player-comparator>header{display:block}
+ #team-squad-app .player-comparator>header>p{margin-top:8px}
+ #team-squad-app .player-comparator-controls{grid-template-columns:1fr}
+ #team-squad-app .player-comparator-head{gap:8px}
+ #team-squad-app .player-comparator-head article{padding:12px}
+ #team-squad-app .player-comparator-head h3{font-size:16px}
+ #team-squad-app .player-comparator table{min-width:0;table-layout:fixed;font-size:11px}
+ #team-squad-app .player-comparator :is(th,td){padding:8px 4px;overflow-wrap:anywhere}
+ #team-squad-app .team-season-splits{gap:16px}
+ #team-squad-app .team-style-trait-grid{grid-template-columns:1fr}
+ .team-vertical-field{height:520px;margin:0 8px 12px}
+ .team-vertical-field .reading-kit-player strong{font-size:10px}
+ .team-vertical-field .reading-kit-shirt{width:30px;height:30px}
+}

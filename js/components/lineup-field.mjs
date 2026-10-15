@@ -19,7 +19,19 @@ export function lineupPositions(lineup, away = false) {
   });
 }
 
-export function renderLineupField(sides) {
+export function renderLineupField(sides, { orientation = "horizontal" } = {}) {
+  if (orientation === "vertical") {
+    const {team, lineup} = sides[0];
+    const [primary = "#174fa5", secondary = "#081d48"] = team.colors || [];
+    const positions = lineupPositions(lineup);
+    const players = positions.map(player => {
+      const x = 4 + (player.y - 12) * 92 / 76;
+      const y = 90 - (player.x - 6) * 80 / 38;
+      const count = positions.filter(item => item.line === player.line).length;
+      return `<div class="reading-kit-player${player.goalkeeper ? " is-goalkeeper" : ""}" data-tactical-line="${player.line}" style="left:${x}%;top:${y}%;width:${92 / count}%">${renderLineupKit(team, {goalkeeper: player.goalkeeper})}<strong title="${esc(player.name)}">${esc(player.name)}</strong></div>`;
+    }).join("");
+    return `<div class="team-vertical-field" data-orientation="vertical" aria-label="${esc(team.name)} · ${esc(lineup.formation)}" style="--reading-lineup-primary:${esc(primary)};--reading-lineup-secondary:${esc(secondary)}"><svg class="reading-field-markings" viewBox="0 0 600 900" preserveAspectRatio="none" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1"><rect x="14" y="14" width="572" height="872" rx="4"/><path d="M14 450H586"/><circle cx="300" cy="450" r="70"/><circle cx="300" cy="450" r="2"/><path d="M165 14V145H435V14M235 14V65H365V14M165 886V755H435V886M235 886V835H365V886"/></g></svg>${players}</div>`;
+  }
   const heading = sides.map(({team, lineup}) => `<div><span>${esc(team.name)}</span> <strong>${esc(lineup?.formation || "N/D")}</strong></div>`).join("");
   const players = sides.map(({team, lineup}, side) => {
     if (!lineup) return "";

@@ -288,8 +288,8 @@ function sideFromVariant(variant) {
   return /SQUADRA\s*1\b|CASA/.test(value) ? "home" : /SQUADRA\s*2\b|OSPITE/.test(value) ? "away" : null;
 }
 
-function buildCurrentEvaluations({ odds, fixtures, history, validation, priorTeamIds }) {
-  const fixtureById = new Map(fixtures.filter(match => match.matchday === 6 && match.competition === "serie-a").map(match => [match.id, match]));
+function buildCurrentEvaluations({ odds, fixtures, history, validation, priorTeamIds, matchday = 6 }) {
+  const fixtureById = new Map(fixtures.filter(match => match.matchday === matchday && match.competition === "serie-a").map(match => [match.id, match]));
   const sizeByFamily = Object.fromEntries(Object.keys(METRICS).map(family => [family, dispersionSize(history, family)]));
   const forecasts = new Map();
   for (const event of odds.events) {
@@ -381,4 +381,4 @@ function buildStatisticalModelArtifact() {
   };
 }
 
-module.exports = { METRICS, MARKET_MODELS, reconstructPriorSeason, currentSeasonActuals, forecastMean, dispersionSize, countPmf, convolve, probabilities, overProbability, buildStatisticalModelArtifact };
+module.exports = { METRICS, MARKET_MODELS, reconstructPriorSeason, currentSeasonActuals, forecastMean, dispersionSize, countPmf, convolve, probabilities, overProbability, buildStatisticalModelArtifact, buildCurrentEvaluations };

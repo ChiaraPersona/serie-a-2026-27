@@ -154,8 +154,8 @@ for (const field of ["foulsCommitted", "foulsWon"]) {
 for (const contract of [".squad-leaders-header", ".squad-leaders-content"]) assert.ok(styles.includes(contract), `Top 3 squadra 2026/27: stile ${contract} assente`);
 for (const removedContract of [".squad-leaders-summary", ".squad-leaders[open]"]) assert.ok(!styles.includes(removedContract), `Top 3 squadra 2026/27: stile della tendina ancora presente: ${removedContract}`);
 const readingLineupSource = mainApp.slice(mainApp.indexOf("function renderProbableLineups"), mainApp.indexOf("function renderReadingPilotEvidence"));
-assert.ok(teamInterface.includes("lineup.players.slice(offset, offset + size).reverse()"), "Le probabili formazioni delle pagine squadra devono essere specchiate orizzontalmente");
-assert.ok(readingLineupSource.includes("lineup.players.slice(offset,offset+size).reverse()"), "Le probabili formazioni delle Letture devono essere specchiate orizzontalmente");
+assert.ok(teamInterface.includes('orientation: "vertical"') && teamInterface.includes('components/lineup-field.mjs'), "Le pagine squadra devono riutilizzare il campo condiviso in verticale");
+assert.ok(readingLineupSource.includes("renderLineupField([{team:home,lineup:homeLineup},{team:away,lineup:awayLineup}])"), "Le Letture devono mantenere il campo orizzontale condiviso");
 const officialFixtureByTeam = new Map(officialLineups.fixtures
   .filter(fixture => fixture.matchday === probableLineups.matchday)
   .flatMap(fixture => fixture.teams.map(team => [team.teamId, fixture.matchId])));
@@ -210,7 +210,7 @@ for (const [teamId, expected] of Object.entries(genoaFiorentinaExpected)) {
 }
 const torinoMilanSource = officialLineups.fixtures.find(fixture => fixture.matchId === "torino-milan-2026-27-md-01").teams.find(team => team.teamId === "torino");
 assert(torinoMilanSource.players.some(player => player.currentName === "Cesare Casadei") && !torinoMilanSource.players.some(player => player.currentName === "Alieu Njie"), "torino: correzione storica Casadei/Njie non preservata");
-assert.ok(teamInterface.includes("probable-lineup-substitutes") && readingLineupSource.includes("reading-lineup-substitutes"), "Le panchine ufficiali non sono renderizzate nelle pagine squadra e Letture");
+assert.ok(teamInterface.includes("probable-lineup-substitutes") && fs.readFileSync(path.join(root, "js/components/lineup-field.mjs"), "utf8").includes("reading-lineup-substitutes"), "Le panchine ufficiali non sono renderizzate nelle pagine squadra e Letture");
 assert.ok(teamInterface.includes('official ? "Formazione ufficiale" : "Probabile formazione"'), "Le pagine squadra non distinguono la formazione ufficiale");
 assert.ok(readingLineupSource.includes('officialLineups?"Formazioni ufficiali":referenceLineups?"Formazioni di riferimento":"Probabili formazioni"'), "La Lettura non distingue formazioni ufficiali, di riferimento e probabili");
 assert.ok(readingLineupSource.includes('"Distinte ufficiali della giornata "+match.matchday'), "La Lettura non associa le distinte ufficiali alla giornata corretta");
@@ -222,11 +222,11 @@ assert.ok(mainApp.includes("La partita in numeri") && mainApp.includes("predicti
 assert.ok(!mainApp.includes("giornata di riferimento") && !teamInterface.includes("Data da definire · riferimento"), "Le date non definite non devono mostrare una data di riferimento");
 assert.ok(teamInterface.includes("La stagione in sintesi") && teamInterface.includes("calculateObjectiveMetrics"), "La sintesi degli obiettivi non è integrata nelle pagine squadra");
 for (const contract of ["team-page-jumps", "team-analysis-grid", "team-roster-section", "squad-table-disclosure", "team-style-details", "team-method-details"]) assert.ok(teamInterface.includes(contract), `Gerarchia compatta pagina squadra: manca ${contract}`);
-assert.ok(teamPageSource.includes('<p><strong>Modulo preferito:</strong> ${value(team.preferredFormation)}</p>${pageJumps}</div></section>'), "I collegamenti della pagina devono stare sotto il modulo preferito nel hero");
+assert.ok(teamPageSource.includes('<p><strong>Modulo preferito:</strong> ${value(team.preferredFormation)}</p>${pageJumps}'), "I collegamenti della pagina devono stare sotto il modulo preferito nel hero");
 for (const heading of ["Risultati", "Disciplina", "Casa e trasferta"]) assert.ok(teamInterface.includes(`<section class="team-season-group"><h3>${heading}</h3>`), `Statistiche squadra: sezione sempre visibile mancante: ${heading}`);
 assert.ok(!teamInterface.includes('<details class="team-season-group"') && !teamInterface.includes(".team-season-group>summary"), "Risultati, disciplina e casa/trasferta non devono usare tendine");
 for (const removedContract of [".team-season-group>summary", ".team-season-group[open]"]) assert.ok(!styles.includes(removedContract), `Statistiche squadra: stile della tendina ancora presente: ${removedContract}`);
-assert.ok(teamPageSource.includes("${objectiveSection}${statsSections}<div class=\"team-analysis-grid\">${lineupSection}${styleSection}"), "L'ordine della pagina squadra deve essere sintesi, statistiche, formazione e stile");
+assert.ok(teamPageSource.includes("${objectiveSection}${statsSections}<section class=\"team-tactics-section\"") && teamPageSource.includes("${lineupSection}${styleSection}</div></section>"), "L'ordine della pagina squadra deve essere sintesi, statistiche, formazione e stile");
 assert.ok(teamPageSource.indexOf("${squadLeaderboards(team, matches)}") < teamPageSource.indexOf("${filters()}"), "I leader devono precedere filtri e tabella completa");
 for (const contract of [".team-page-jumps", ".team-analysis-grid", ".squad-table-disclosure", ".team-style-details", ".team-season-content"]) assert.ok(styles.includes(contract), `Gerarchia compatta pagina squadra: stile ${contract} assente`);
 assert.ok(styles.includes(".team-style-trait-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);align-items:start;gap:10px}") && styles.includes(".team-style-traits:last-child{grid-column:1/-1}"), "Profilo tattico: la distribuzione deve essere 2 + 1 con proporzione 60/40");
