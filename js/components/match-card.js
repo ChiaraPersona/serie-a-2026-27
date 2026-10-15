@@ -16,7 +16,7 @@ function matchCard(m,teams){
 function homeMatchListItem(m,teams){
   const home=teams.find(team=>team.id===m.homeTeam),away=teams.find(team=>team.id===m.awayTeam);
   const finished=m.status==="finished"&&m.score,result=finished?`${m.score.home} – ${m.score.away}`:"–";
-  const readingLink=m.competition==="serie-a"&&m.id?`<a class="home-match-reading" href="lettura.html?match=${esc(m.id)}" aria-label="Apri la lettura di ${esc(home.name)} - ${esc(away.name)}"><span aria-hidden="true">↗</span></a>`:'<span class="home-match-reading-placeholder" aria-hidden="true"></span>';
+  const readingLink=m.competition==="serie-a"&&m.id?`<a class="home-match-reading" href="lettura.html?match=${esc(m.id)}" aria-label="Apri la lettura di ${esc(home.name)} - ${esc(away.name)}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 19 19 5M5 5h14v14"/></svg></a>`:'<span class="home-match-reading-placeholder" aria-hidden="true"></span>';
   return `<li class="home-match-row${finished?" is-finished":""}"><div class="home-match-meta"><time>${scheduleLabel(m)}</time></div><div class="home-match-teams">${teamLogo(home)}<b class="home-match-score" aria-label="${finished?`Risultato ${m.score.home} a ${m.score.away}`:"Partita da giocare"}">${result}</b>${teamLogo(away)}</div>${readingLink}</li>`
 }
   return {scheduleLabel,teamLogo,matchCard,homeMatchListItem};

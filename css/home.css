@@ -170,12 +170,12 @@ body[data-page="home"] .hero{
 }
 /* Dentro la stagione: stili confinati al solo dashboard della homepage. */
 .home-dashboard .home-dashboard-grid{grid-template-columns:minmax(0,68fr) minmax(0,32fr);gap:18px;align-items:stretch}
-.home-dashboard .home-next,.home-dashboard .home-rail a{border:1px solid rgba(20,43,59,.12);border-radius:22px;box-shadow:0 8px 24px rgba(20,43,59,.07);backdrop-filter:none}
-.home-dashboard .home-next{min-width:0;padding:22px 24px 10px;background:#f9fbfc}
+.home-dashboard .home-next,.home-dashboard .home-rail a{border:1px solid rgba(255,255,255,.58);border-radius:22px;box-shadow:0 8px 20px rgba(20,43,59,.07),0 22px 48px rgba(20,43,59,.08),inset 0 1px 1px rgba(255,255,255,.5)}
+.home-dashboard .home-next{min-width:0;padding:22px 24px 10px;background:#f0f5f8}
 .home-dashboard .home-next-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px}
 .home-dashboard .home-next h3{color:#142b3b;letter-spacing:0;text-transform:none}
 .home-dashboard .home-next h3>span{display:block;margin-bottom:5px;color:#526777;font-size:10px;letter-spacing:.12em}
-.home-dashboard .home-next h3>strong{display:block;font-size:26px;line-height:1.2;font-weight:750;letter-spacing:-.04em}
+.home-dashboard .home-next h3>strong{display:block;font-family:Inter,system-ui,sans-serif;font-size:clamp(20px,1.6vw,22px);line-height:1.35;font-weight:700;letter-spacing:normal;white-space:nowrap}
 .home-dashboard .home-matchday-nav{display:flex;flex-shrink:0;gap:8px}
 .home-dashboard .home-matchday-button{display:grid;place-items:center;width:34px;height:34px;min-height:34px;padding:0;border:1px solid #cbd6dc;border-radius:50%;background:transparent;color:#142b3b;font:500 18px/1 Inter,sans-serif;box-shadow:none;transform:none;transition:background .15s ease}
 .home-dashboard .home-matchday-button:hover:not(:disabled){background:#e7edf0;box-shadow:none;transform:none}
@@ -191,8 +191,15 @@ body[data-page="home"] .hero{
 .home-dashboard .home-match-row:has(a):hover{background:#edf2f4}
 .home-dashboard .home-rail{grid-template-columns:1fr;grid-template-rows:repeat(2,minmax(0,1fr));gap:18px;min-width:0}
 .home-dashboard .home-rail a{position:relative;display:flex;justify-content:flex-end;align-items:flex-start;min-height:210px;min-width:0;padding:26px 26px 54px;overflow:hidden;transform:none;cursor:pointer;transition:transform .2s ease,box-shadow .2s ease}
-.home-dashboard .home-rail .home-editorial-readings{background:#142b3b;color:#fff}
-.home-dashboard .home-rail .home-editorial-teams{background:#dce9e5;color:#142b3b}
+.home-dashboard .home-rail .home-editorial-readings{background:#122938;color:#fff;border-color:rgba(255,255,255,.18);box-shadow:0 8px 20px rgba(8,22,37,.12),0 22px 48px rgba(8,22,37,.14),inset 0 1px 1px rgba(255,255,255,.08)}
+.home-dashboard .home-rail .home-editorial-teams{background:#dce8e3;color:#142b3b}
+/* Solid surfaces above are the fallback; translucent layers require blur support. */
+@supports ((backdrop-filter:blur(14px)) or (-webkit-backdrop-filter:blur(14px))){
+ .home-dashboard .home-next,.home-dashboard .home-rail a{backdrop-filter:blur(14px) saturate(135%);-webkit-backdrop-filter:blur(14px) saturate(135%)}
+ .home-dashboard .home-next{background:linear-gradient(115deg,rgba(255,255,255,.3),rgba(255,255,255,0) 48%),rgba(232,241,247,.84)}
+ .home-dashboard .home-rail .home-editorial-teams{background:linear-gradient(115deg,rgba(255,255,255,.28),rgba(255,255,255,0) 48%),rgba(210,229,219,.84)}
+ .home-dashboard .home-rail .home-editorial-readings{background:linear-gradient(135deg,rgba(64,87,111,.18),rgba(6,20,36,.16)),rgba(12,30,47,.91)}
+}
 .home-dashboard .home-rail a>span{position:absolute;top:24px;left:26px;color:#d4a43b;font-size:10px;font-weight:800;letter-spacing:.16em}
 .home-dashboard .home-rail .home-editorial-teams>span{color:#245a55}
 .home-dashboard .home-rail strong{max-width:100%;margin:16px 0 7px;color:inherit;font-size:clamp(23px,2.4vw,32px);line-height:1.1;letter-spacing:-.04em}
@@ -200,7 +207,8 @@ body[data-page="home"] .hero{
 .home-dashboard .home-editorial-icon{width:52px;height:52px;margin-top:28px;color:#d4a43b}
 .home-dashboard .home-editorial-teams .home-editorial-icon{color:#245a55}
 .home-dashboard .home-editorial-arrow{position:absolute;right:24px;bottom:22px;width:25px;height:25px}
-.home-dashboard .home-rail a:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(20,43,59,.14)}
+.home-dashboard .home-rail a:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(20,43,59,.1),0 26px 52px rgba(20,43,59,.12),inset 0 1px 1px rgba(255,255,255,.32)}
+.home-dashboard .home-rail .home-editorial-readings:hover{box-shadow:0 10px 24px rgba(8,22,37,.15),0 26px 52px rgba(8,22,37,.18),inset 0 1px 1px rgba(255,255,255,.08)}
 .home-dashboard :is(a,button):focus-visible{outline:3px solid #b2811d;outline-offset:4px}
 @media(max-width:1000px){
  .home-dashboard .home-dashboard-grid{grid-template-columns:1fr}
@@ -210,7 +218,7 @@ body[data-page="home"] .hero{
 @media(max-width:580px){
  .home-dashboard .home-dashboard-grid,.home-dashboard .home-rail{gap:12px}
  .home-dashboard .home-next{padding:18px 14px 6px}
- .home-dashboard .home-next h3>strong{font-size:24px}
+ .home-dashboard .home-next h3>strong{font-size:20px}
  .home-dashboard .home-match-row{grid-template-columns:minmax(0,1fr) 34px;gap:7px 8px;padding:10px 0}
  .home-dashboard .home-match-meta{grid-column:1}
  .home-dashboard .home-match-teams{grid-column:1}
@@ -234,3 +242,6 @@ body[data-page="home"] .hero{
 .home-dashboard .home-matchday-button::before,.home-dashboard .home-matchday-button::after{content:none}
 @media(prefers-reduced-motion:reduce){.home-dashboard .home-rail a:hover{transform:none}}
 .home-dashboard .home-match-reading>span{margin:0;color:inherit}
+.home-dashboard .home-match-reading>svg{display:block;width:20px;height:20px;opacity:1;visibility:visible}
+.home-dashboard .home-matchday-button>svg{display:block;width:18px;height:18px}
+.home-dashboard [data-home-previous-matchday]>svg{transform:rotate(180deg)}
