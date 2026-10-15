@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const zlib = require("zlib");
 const { normalizeSisalCapture } = require("./sisal/normalize");
+const { enrichIdentifiers, stringifySisalDataset } = require("./sisal/identifiers");
 
 const root = path.resolve(__dirname, "..");
 const args = process.argv.slice(2);
@@ -27,7 +28,15 @@ const outputDirectory = path.join(root, "data", "normalized", "odds", "sisal");
 fs.mkdirSync(outputDirectory, { recursive: true });
 const outputFile = path.join(outputDirectory, `${competitionKey}.json`);
 let output = normalized;
-if (merge && fs.existsSync(outputFile)) {
+if (args.includes("--identifiers-only")) {
+  const previous = JSON.parse(fs.readFileSync(outputFile, "utf8"));
+  const files = [...new Set([previous.rawFile, ...(previous.rawFiles || []), ...previous.events.map(event => event.rawFile)].filter(Boolean))];
+  const captures = files.map(file => normalizeSisalCapture({
+    capture: JSON.parse(zlib.gunzipSync(fs.readFileSync(path.resolve(root, file))).toString("utf8")),
+    competitionKey, competition, rawFile: file, root,
+  }));
+  output = enrichIdentifiers(previous, captures);
+} else if (merge && fs.existsSync(outputFile)) {
   const previous = JSON.parse(fs.readFileSync(outputFile, "utf8"));
   const updatedIds = new Set(normalized.events.map((event) => event.canonicalMatchId));
   const events = [
@@ -52,6 +61,6 @@ if (merge && fs.existsSync(outputFile)) {
     events,
   };
 }
-fs.writeFileSync(outputFile, `${JSON.stringify(output, null, 2)}\n`);
+fs.writeFileSync(outputFile, stringifySisalDataset(output));
 console.log(`Normalizzato Sisal ${competitionKey}: ${output.summary.events} eventi, ${output.summary.markets} mercati, ${output.summary.selections} quote.`);
 console.log(path.relative(root, outputFile));

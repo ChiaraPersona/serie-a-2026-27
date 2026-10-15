@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const { originalIdentifiers } = require("./identifiers");
 
 function normalizedName(value) {
   return String(value || "")
@@ -60,7 +61,7 @@ function matchCanonicalEvent(event, competition, root, teamLookup) {
   };
 }
 
-function normalizeMarket(info, market) {
+function normalizeMarket(info, market, provenance) {
   const providerPlayerIds = [...new Set((Array.isArray(info.playerIds) ? info.playerIds : []).map(String))];
   const selections = (info.esitoList || [])
     .filter((selection) => Number.isFinite(selection.quota) && selection.quota > 0)
@@ -71,9 +72,11 @@ function normalizeMarket(info, market) {
       odds: Number((selection.quota / 100).toFixed(2)),
       oddsRaw: selection.quota,
       status: selection.stato === 1 ? "open" : "suspended",
+      ...originalIdentifiers(selection, "selection", provenance),
     }));
   return {
     providerMarketId: String(info.marketId),
+    ...originalIdentifiers(info, "market", provenance),
     marketCode: String(info.codiceScommessa),
     marketName: String(market?.descrizione || info.descrizione || "").trim(),
     variantName: String(info.descrizione || "").trim(),
@@ -88,6 +91,9 @@ function normalizeMarket(info, market) {
 
 function normalizeSisalCapture({ capture, competitionKey, competition, rawFile, root }) {
   const teamLookup = buildTeamLookup(root, competition.teamAliases || {});
+  const provenanceByPayload = new Map(capture.responses.map(response => [response.payload, {
+    kind: "provider-response", rawFile, responseUrl: response.url, retrievedAt: capture.retrievedAt,
+  }]));
   const details = capture.responses
     .filter((response) => response.url.includes("/eventDetail/") && response.payload?.avvenimentoFe)
     .map((response) => response.payload);
@@ -99,11 +105,13 @@ function normalizeSisalCapture({ capture, competitionKey, competition, rawFile, 
     for (const event of response.payload.avvenimentoFeList) {
       const regulatorEventId = String(event.regulatorEventId || `${event.codicePalinsesto}-${event.codiceAvvenimento}`);
       if (!payloadByEvent.has(regulatorEventId)) {
-        payloadByEvent.set(regulatorEventId, {
+        const payload = {
           avvenimentoFe: event,
           scommessaMap: response.payload.scommessaMap || {},
           infoAggiuntivaMap: response.payload.infoAggiuntivaMap || {},
-        });
+        };
+        provenanceByPayload.set(payload, provenanceByPayload.get(response.payload));
+        payloadByEvent.set(regulatorEventId, payload);
       }
     }
   }
@@ -116,12 +124,13 @@ function normalizeSisalCapture({ capture, competitionKey, competition, rawFile, 
       .filter((info) => Array.isArray(info.esitoList) && info.esitoList.length)
       .map((info) => {
         const key = `${info.codicePalinsesto}-${info.codiceAvvenimento}-${info.codiceScommessa}`;
-        return normalizeMarket(info, payload.scommessaMap?.[key]);
+        return normalizeMarket(info, payload.scommessaMap?.[key], { kind: "provider-response", sourceRef: "event" });
       })
       .filter((market) => market.selections.length)
       .sort((a, b) => a.marketName.localeCompare(b.marketName, "it") || a.variantName.localeCompare(b.variantName, "it"));
     return {
       providerEventId: String(event.eventId),
+      ...originalIdentifiers(event, "event", provenanceByPayload.get(payload)),
       regulatorEventId: String(event.regulatorEventId || `${event.codicePalinsesto}-${event.codiceAvvenimento}`),
       providerScheduleId: String(event.codicePalinsesto),
       providerMatchId: String(event.codiceAvvenimento),

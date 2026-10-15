@@ -80,3 +80,6 @@ const manifestNormalized = normalizeSisalCapture({ capture: manifestCapture, com
 assert.strictEqual(manifestNormalized.summary.events, 1);
 assert.strictEqual(manifestNormalized.summary.selections, 3);
 console.log("OK normalizzazione Sisal, quote decimali e matching calendario");
+require('./test-identifiers');
+const { execFileSync } = require('node:child_process');
+execFileSync(process.execPath, [path.join(__dirname, 'test-consumers.mjs')], { stdio: 'inherit' });

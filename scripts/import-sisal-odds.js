@@ -3,6 +3,7 @@ const path = require("path");
 const zlib = require("zlib");
 const { captureSisalPage } = require("./sisal/browser-capture");
 const { normalizeSisalCapture } = require("./sisal/normalize");
+const { stringifySisalDataset } = require("./sisal/identifiers");
 
 const root = path.resolve(__dirname, "..");
 const sourceConfig = JSON.parse(fs.readFileSync(path.join(root, "data", "sources", "sisal-odds.json"), "utf8"));
@@ -165,7 +166,7 @@ async function main() {
       events,
     };
   }
-  fs.writeFileSync(normalizedFile, `${JSON.stringify(output, null, 2)}\n`);
+  fs.writeFileSync(normalizedFile, stringifySisalDataset(output));
   console.log(`Sisal: ${artifact.responses.length} risposte API, ${updatedEvents.length} eventi aggiornati; dataset ${output.summary.events} eventi, ${output.summary.markets} mercati, ${output.summary.selections} quote, ${output.summary.playerMarkets} mercati giocatore.`);
   console.log(path.relative(root, outputFile));
   console.log(path.relative(root, normalizedFile));

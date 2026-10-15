@@ -3,36 +3,409 @@
   "$id": "https://chiarapersona.github.io/serie-a-2026-27/data/schemas/sisal-odds.schema.json",
   "title": "Sisal normalized odds",
   "type": "object",
-  "required": ["provider", "competition", "retrievedAt", "sourceUrl", "rawFile", "summary", "events"],
+  "required": [
+    "provider",
+    "competition",
+    "retrievedAt",
+    "sourceUrl",
+    "rawFile",
+    "summary",
+    "events"
+  ],
   "properties": {
-    "provider": { "const": "sisal" },
-    "competition": { "type": "string", "minLength": 1 },
-    "retrievedAt": { "type": "string", "format": "date-time" },
-    "sourceUrl": { "type": "string", "format": "uri" },
-    "rawFile": { "type": "string", "pattern": "\\.json\\.gz$" },
+    "provider": {
+      "const": "sisal"
+    },
+    "competition": {
+      "type": "string",
+      "minLength": 1
+    },
+    "retrievedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "sourceUrl": {
+      "type": "string",
+      "format": "uri"
+    },
+    "rawFile": {
+      "type": "string",
+      "pattern": "\\.json\\.gz$"
+    },
     "summary": {
       "type": "object",
-      "required": ["events", "matchedEvents", "unmatchedEvents", "markets", "playerMarkets", "selections"]
+      "required": [
+        "events",
+        "matchedEvents",
+        "unmatchedEvents",
+        "markets",
+        "playerMarkets",
+        "selections"
+      ]
     },
     "events": {
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["providerEventId", "regulatorEventId", "name", "startsAt", "eventType", "home", "away", "markets"],
+        "required": [
+          "providerEventId",
+          "regulatorEventId",
+          "name",
+          "startsAt",
+          "eventType",
+          "home",
+          "away",
+          "markets"
+        ],
         "properties": {
           "markets": {
             "type": "array",
             "items": {
               "type": "object",
-              "required": ["providerMarketId", "marketCode", "marketName", "marketScope", "providerPlayerIds", "selections"],
+              "required": [
+                "providerMarketId",
+                "marketCode",
+                "marketName",
+                "marketScope",
+                "providerPlayerIds",
+                "selections"
+              ],
               "properties": {
-                "marketScope": { "enum": ["match", "player"] },
-                "providerPlayerIds": { "type": "array", "items": { "type": "string" } }
+                "marketScope": {
+                  "enum": [
+                    "match",
+                    "player"
+                  ]
+                },
+                "providerPlayerIds": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "selections": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "providerSelectionId",
+                      "code",
+                      "odds",
+                      "oddsRaw"
+                    ],
+                    "properties": {
+                      "originalIdentifiers": {
+                        "type": "object",
+                        "required": [
+                          "selectionId",
+                          "brandId",
+                          "codiceEsito",
+                          "codiceScommessaAAMS",
+                          "codiceEsitoAAMS"
+                        ],
+                        "additionalProperties": false,
+                        "properties": {
+                          "selectionId": {
+                            "type": [
+                              "string",
+                              "number",
+                              "null"
+                            ]
+                          },
+                          "brandId": {
+                            "type": [
+                              "string",
+                              "number",
+                              "null"
+                            ]
+                          },
+                          "codiceEsito": {
+                            "type": [
+                              "string",
+                              "number",
+                              "null"
+                            ]
+                          },
+                          "codiceScommessaAAMS": {
+                            "type": [
+                              "string",
+                              "number",
+                              "null"
+                            ]
+                          },
+                          "codiceEsitoAAMS": {
+                            "type": [
+                              "string",
+                              "number",
+                              "null"
+                            ]
+                          }
+                        }
+                      },
+                      "identifierProvenance": {
+                        "$ref": "#/$defs/identifierProvenance"
+                      }
+                    }
+                  }
+                },
+                "originalIdentifiers": {
+                  "type": "object",
+                  "required": [
+                    "marketId",
+                    "eventId",
+                    "brandId",
+                    "codicePalinsesto",
+                    "codiceAvvenimento",
+                    "codiceScommessa",
+                    "codiceClasseEsito",
+                    "idInfoAggiuntiva",
+                    "key",
+                    "keyMultibrand",
+                    "offerId",
+                    "tradingSegmentKey"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "marketId": {
+                      "type": [
+                        "string",
+                        "number",
+                        "null"
+                      ]
+                    },
+                    "eventId": {
+                      "type": [
+                        "string",
+                        "number",
+                        "null"
+                      ]
+                    },
+                    "brandId": {
+                      "type": [
+                        "string",
+                        "number",
+                        "null"
+                      ]
+                    },
+                    "codicePalinsesto": {
+                      "type": [
+                        "string",
+                        "number",
+                        "null"
+                      ]
+                    },
+                    "codiceAvvenimento": {
+                      "type": [
+                        "string",
+                        "number",
+                        "null"
+                      ]
+                    },
+                    "codiceScommessa": {
+                      "type": [
+                        "string",
+                        "number",
+                        "null"
+                      ]
+                    },
+                    "codiceClasseEsito": {
+                      "type": [
+                        "string",
+                        "number",
+                        "null"
+                      ]
+                    },
+                    "idInfoAggiuntiva": {
+                      "type": [
+                        "string",
+                        "number",
+                        "null"
+                      ]
+                    },
+                    "key": {
+                      "type": [
+                        "string",
+                        "number",
+                        "null"
+                      ]
+                    },
+                    "keyMultibrand": {
+                      "type": [
+                        "string",
+                        "number",
+                        "null"
+                      ]
+                    },
+                    "offerId": {
+                      "type": [
+                        "string",
+                        "number",
+                        "null"
+                      ]
+                    },
+                    "tradingSegmentKey": {
+                      "type": [
+                        "string",
+                        "number",
+                        "null"
+                      ]
+                    }
+                  }
+                },
+                "identifierProvenance": {
+                  "$ref": "#/$defs/identifierProvenance"
+                }
               }
             }
+          },
+          "originalIdentifiers": {
+            "type": "object",
+            "required": [
+              "eventId",
+              "regulatorEventId",
+              "brandId",
+              "codicePalinsesto",
+              "codiceAvvenimento",
+              "codiceDisciplina",
+              "codiceManifestazione",
+              "key",
+              "keyMultibrand"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "eventId": {
+                "type": [
+                  "string",
+                  "number",
+                  "null"
+                ]
+              },
+              "regulatorEventId": {
+                "type": [
+                  "string",
+                  "number",
+                  "null"
+                ]
+              },
+              "brandId": {
+                "type": [
+                  "string",
+                  "number",
+                  "null"
+                ]
+              },
+              "codicePalinsesto": {
+                "type": [
+                  "string",
+                  "number",
+                  "null"
+                ]
+              },
+              "codiceAvvenimento": {
+                "type": [
+                  "string",
+                  "number",
+                  "null"
+                ]
+              },
+              "codiceDisciplina": {
+                "type": [
+                  "string",
+                  "number",
+                  "null"
+                ]
+              },
+              "codiceManifestazione": {
+                "type": [
+                  "string",
+                  "number",
+                  "null"
+                ]
+              },
+              "key": {
+                "type": [
+                  "string",
+                  "number",
+                  "null"
+                ]
+              },
+              "keyMultibrand": {
+                "type": [
+                  "string",
+                  "number",
+                  "null"
+                ]
+              }
+            }
+          },
+          "identifierProvenance": {
+            "$ref": "#/$defs/identifierProvenance"
           }
         }
       }
+    }
+  },
+  "$defs": {
+    "identifierProvenance": {
+      "type": "object",
+      "required": [
+        "kind"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "provider-response",
+            "synthetic-dom",
+            "unverified"
+          ]
+        },
+        "rawFile": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "responseUrl": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "retrievedAt": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sourceFile": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sourceRef": {
+          "const": "event"
+        }
+      },
+      "anyOf": [
+        {
+          "required": [
+            "rawFile",
+            "responseUrl",
+            "retrievedAt"
+          ]
+        },
+        {
+          "required": [
+            "sourceRef"
+          ],
+          "properties": {
+            "kind": {
+              "const": "provider-response"
+            }
+          }
+        }
+      ]
     }
   }
 }

@@ -15,9 +15,8 @@ body[data-page="betting"] main>.hero .eyebrow{margin-bottom:4px;color:var(--glas
 .betting-archive-card-front{gap:0}
 .betting-archive-number{width:100%;color:#fff;font-family:"Anton",sans-serif;font-size:88px;font-weight:400;line-height:.85;text-align:center;text-shadow:0 12px 24px rgba(0,0,0,.32)}
 .betting-archive-card-back strong{font-size:1.45rem}
-.betting-archive-list .betting-archive-card--champions-md02{height:360px;min-height:360px}
-.betting-archive-card--champions-md02 .team-flip-inner{min-height:360px}
-@media(max-width:760px){.betting-archive-list .betting-archive-card--champions-md02{height:auto}}
+.betting-archive-card--champions .betting-archive-card-back{gap:4px;padding:14px}
+.betting-archive-card--champions .betting-champions-verification{font-size:.65rem}
 .betting-archive-card--champions .team-flip-front{background:radial-gradient(circle at 70% 18%,rgba(80,196,255,.5),transparent 42%),linear-gradient(145deg,#0966e8,#031b4b)!important}
 .betting-champions-front{display:grid;place-content:center;justify-items:center}
 .betting-champions-front small{margin-top:9px;color:#c8ecff;font-size:10px;font-weight:950;letter-spacing:.32em}
@@ -366,3 +365,13 @@ body[data-page="betting"] main>.hero .eyebrow{margin-bottom:4px;color:var(--glas
 .betting-market-row[aria-disabled="true"]{cursor:default}
 .betting-market-row.betting-leg--won,.betting-market-row.betting-leg--won:hover{border-color:rgba(22,135,84,.2);background:linear-gradient(90deg,rgba(24,174,105,.12),rgba(24,174,105,.035))}
 .betting-market-row.betting-leg--lost,.betting-market-row.betting-leg--lost:hover{border-color:rgba(201,50,58,.2);background:linear-gradient(90deg,rgba(224,66,73,.11),rgba(224,66,73,.03))}
+
+/* Keep the Champions flip within the archive's existing card dimensions. */
+.betting-archive-card--champions .team-flip-inner{display:block;height:100%;min-height:0;padding:0;border:0;background:none;box-shadow:none;overflow:visible;transform:none!important}
+.betting-archive-card--champions:hover .team-flip-inner,.betting-archive-card--champions:focus-visible .team-flip-inner{transform:rotateY(180deg)!important}
+.betting-archive-card--champions .team-flip-face{position:absolute;inset:0;min-height:0;overflow:hidden;border:1px solid #00000015;border-radius:26px;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.betting-archive-card--champions .team-flip-back{transform:rotateY(180deg);background:radial-gradient(circle at 100% 0,color-mix(in srgb,var(--team-primary) 11%,transparent),transparent 52%),radial-gradient(circle at 0 100%,color-mix(in srgb,var(--team-secondary) 9%,transparent),transparent 48%),linear-gradient(115deg,rgba(255,255,255,.46),transparent 36%),#b5faff31}
+@media(max-width:1000px){.betting-archive-card--champions .betting-archive-card-back>strong{font-size:1.18rem}.betting-archive-card--champions .betting-archive-card-back>span{font-size:.7rem}.betting-archive-card--champions .betting-archive-card-back .betting-champions-verification{font-size:.6rem}.betting-archive-card--champions .team-flip-back b{margin-top:4px;padding-top:7px}}
+
+@media(hover:none){.betting-archive-card--champions{height:300px;perspective:1100px}}
+@media(max-width:760px){.betting-archive-card--champions{height:260px;perspective:1100px}}

@@ -2,6 +2,7 @@ const assert = require("assert");
 const fs = require("fs");
 const path = require("path");
 const zlib = require("zlib");
+const { FIELDS } = require("./sisal/identifiers");
 
 const root = path.resolve(__dirname, "..");
 const competitionIndex = process.argv.indexOf("--competition");
@@ -29,6 +30,43 @@ assert(dataset.events.every((event) => /^\d{4}-\d{2}-\d{2}T/.test(event.retrieve
 
 const markets = dataset.events.flatMap((event) => event.markets);
 const selections = markets.flatMap((market) => market.selections);
+const checkedIdentifierRawFiles = new Set();
+const eventProvenance = new WeakMap();
+for (const event of dataset.events) {
+  for (const market of event.markets) {
+    eventProvenance.set(market, event.identifierProvenance);
+    for (const selection of market.selections) eventProvenance.set(selection, event.identifierProvenance);
+  }
+}
+for (const [level, values, alias, original] of [
+  ['event', dataset.events, 'providerEventId', 'eventId'],
+  ['market', markets, 'providerMarketId', 'marketId'],
+  ['selection', selections, 'providerSelectionId', 'selectionId'],
+]) {
+  for (const value of values) {
+    // Historical snapshots without additive metadata remain supported.
+    if (!value.originalIdentifiers && !value.identifierProvenance) continue;
+    const identifiers = value.originalIdentifiers;
+    const provenance = value.identifierProvenance;
+    assert(identifiers && provenance, `Metadati identificativi incompleti: ${level}`);
+    assert(FIELDS[level].every(key => Object.hasOwn(identifiers, key)), `Identificativi originali incompleti: ${level}`);
+    assert(Object.values(identifiers).every(id => id === null || typeof id === 'string' || (typeof id === 'number' && Number.isFinite(id))), `Tipo identificativo originale non valido: ${level}`);
+    assert(['provider-response', 'synthetic-dom', 'unverified'].includes(provenance.kind), `Provenienza identificativi non valida: ${level}`);
+    if (provenance.kind === 'provider-response') {
+      const source = provenance.sourceRef === 'event' ? eventProvenance.get(value) : provenance;
+      assert(source?.kind === 'provider-response' && source.rawFile, `Riferimento raw identificativi mancante: ${level}`);
+      if (!checkedIdentifierRawFiles.has(source.rawFile)) {
+        assert(fs.existsSync(path.join(root, source.rawFile)), `Raw identificativi mancante: ${level}`);
+        checkedIdentifierRawFiles.add(source.rawFile);
+      }
+      assert(source.responseUrl && source.retrievedAt, `Provenienza provider incompleta: ${level}`);
+      assert(!/^(dom:|esito_)/.test(String(value[alias])), `ID sintetico classificato come provider: ${level}`);
+      if (identifiers[original] !== null) assert.strictEqual(String(identifiers[original]), value[alias], `ID originale diverso dall'alias: ${level}`);
+    } else {
+      assert(Object.values(identifiers).every(id => id === null), `Identificativi non verificati valorizzati: ${level}`);
+    }
+  }
+}
 assert(dataset.summary.markets === markets.length, "Conteggio mercati Sisal incoerente");
 assert(dataset.summary.selections === selections.length, "Conteggio selezioni Sisal incoerente");
 assert(dataset.summary.playerMarkets === markets.filter((market) => market.marketScope === "player").length, "Conteggio mercati giocatore Sisal incoerente");
