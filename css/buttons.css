@@ -172,8 +172,12 @@
   color:var(--button-blue-strong);
 }
 
+/* Home: selettori compatti in vetro, senza intervenire sul tabellone. */
 .home-standings .standings-switch,
 .home-standings .standings-scope-switch{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
   padding:0;
   border:0;
   border-radius:0;
@@ -182,36 +186,54 @@
 }
 
 .home-standings .standings-switch button,
-.home-standings .standings-scope-switch button,
-.home-standings .standings-switch button.active,
-.home-standings .standings-scope-switch button.active{
+.home-standings .standings-scope-switch button{
   flex:0 0 auto;
-  min-height:0;
-  padding:3px 0;
-  border:0;
-  border-radius:0;
-  background:transparent;
-  box-shadow:none;
-  color:#526266;
+  min-height:36px;
+  padding:8px 16px;
+  border:1px solid rgba(255,255,255,.68);
+  border-radius:999px;
+  background:#eaf1f4;
+  box-shadow:0 4px 12px rgba(20,43,59,.06),inset 0 1px rgba(255,255,255,.6);
+  color:#283e4b;
   font-size:.86rem;
+  line-height:1.2;
+  font-weight:700;
+  text-decoration:none;
+  transform:none;
+  transition:background-color .2s ease,box-shadow .2s ease,color .2s ease;
+}
+
+@supports ((backdrop-filter:blur(14px)) or (-webkit-backdrop-filter:blur(14px))){
+  .home-standings .standings-switch button,
+  .home-standings .standings-scope-switch button{
+    background:linear-gradient(115deg,rgba(255,255,255,.38),rgba(255,255,255,.16)),rgba(225,238,243,.76);
+    backdrop-filter:blur(14px) saturate(135%);
+    -webkit-backdrop-filter:blur(14px) saturate(135%);
+  }
 }
 
 .home-standings .standings-switch button:hover,
-.home-standings .standings-scope-switch button:hover,
+.home-standings .standings-scope-switch button:hover{
+  background-color:#e0ebf0;
+  color:#152e42;
+  box-shadow:0 5px 14px rgba(20,43,59,.1),inset 0 1px rgba(255,255,255,.6);
+  text-decoration:none;
+  transform:none;
+}
+
 .home-standings .standings-switch button.active,
 .home-standings .standings-scope-switch button.active{
-  border:0;
-  background:transparent;
-  box-shadow:none;
-  color:var(--button-blue-strong);
-  text-decoration:underline;
-  text-underline-offset:4px;
+  border-color:rgba(255,255,255,.24);
+  background:#142c40;
+  color:#fff;
+  box-shadow:0 4px 12px rgba(20,43,59,.14),inset 0 1px rgba(255,255,255,.1);
+  text-decoration:none;
   transform:none;
 }
 
 .home-standings .standings-switch button:focus-visible,
 .home-standings .standings-scope-switch button:focus-visible{
-  outline:2px solid rgba(167,116,22,.45);
+  outline:2px solid #9a6912;
   outline-offset:3px;
 }
 
@@ -265,7 +287,7 @@ button:disabled{
   .button,.menu-button,.home-matchday-button,.standings-switch button,.standings-scope-switch button,.fantasy-strategy-tabs button,.referee-season-nav a,.team-calendar-actions a{min-height:42px}
   .standings-switch{flex-direction:row}
   .team-calendar-actions a{flex:1}
-  .home-standings .standings-switch button,.home-standings .standings-scope-switch button{min-height:0;padding:5px 0}
+  .home-standings .standings-switch button,.home-standings .standings-scope-switch button{min-height:36px;padding:8px 14px}
 }
 
 @media(prefers-reduced-motion:reduce){
