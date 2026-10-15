@@ -1,6 +1,7 @@
 import {renderLineupField} from "../components/lineup-field.mjs";
 import {cardType} from './disciplinary.mjs';
-import {forecastView,sharedForecastsForMatch} from './shared-forecast-contract.mjs';
+import {forecastView,sharedForecastsForMatch,isCanonicalModelForecast} from './shared-forecast-contract.mjs';
+import {createPersonalBetslipStore} from './personal-betslip-store.mjs';
 const isFiniteNumber=value=>typeof value==="number"&&Number.isFinite(value);
 const decimal=(value,digits=1)=>isFiniteNumber(value)?value.toLocaleString("it-IT",{minimumFractionDigits:digits,maximumFractionDigits:digits}):"N/D";
 const probability=value=>isFiniteNumber(value)?`${(value*100).toLocaleString("it-IT",{minimumFractionDigits:0,maximumFractionDigits:1})}%`:"N/D";
@@ -73,8 +74,9 @@ export function renderPredictionV2Sections({prediction,teams=[],esc=value=>Strin
 export function renderSharedForecasts({marketCatalog,match,esc=value=>String(value)}={}){
   const forecasts=sharedForecastsForMatch(marketCatalog,match?.id).map(leg=>forecastView(leg,match?.matchday));
   if(!forecasts.length)return `<section class="section reading-shared-forecasts" aria-labelledby="reading-shared-forecasts-title"><header class="section-heading"><div><p class="eyebrow">Registro condiviso</p><h2 id="reading-shared-forecasts-title">Pronostici giocabili</h2></div><p>La Schedina non contiene selezioni pubblicate per questa partita.</p></header></section>`;
-  const rows=forecasts.map(item=>`<tr data-shared-forecast-id="${esc(item.id)}"><td><small>${esc(item.marketFamily||item.market||"Mercato")}</small><strong>${esc(item.player?.name?`${item.player.name} · ${item.selection||""}`:item.selection||"Selezione")}</strong></td><td>${esc(item.threshold==null?"—":`${item.modifier||""} ${item.threshold}`.trim())}</td><td>${esc(item.technicalMotivation)}</td><td><strong>${item.odds==null?"N/D":Number(item.odds).toLocaleString("it-IT",{minimumFractionDigits:2,maximumFractionDigits:2})}</strong><small>${item.odds==null?"Quota non disponibile":"Snapshot verificato"}</small></td></tr>`).join("");
-  return `<section class="section reading-shared-forecasts" aria-labelledby="reading-shared-forecasts-title"><header class="section-heading"><div><p class="eyebrow">Registro condiviso Lettura ↔ Schedina</p><h2 id="reading-shared-forecasts-title">Pronostici giocabili</h2></div><p>Le selezioni, le soglie e le quote provengono dallo stesso catalogo usato dalla Schedina.</p></header><div class="prediction-v2-shooter-table reading-shared-forecast-table"><table><thead><tr><th>Mercato e selezione</th><th>Soglia</th><th>Motivazione tecnica</th><th>Quota</th></tr></thead><tbody>${rows}</tbody></table></div><p class="objective-method">${forecasts.length} pronostici sincronizzati · <a href="schedina.html?giornata=${esc(match.matchday)}">Apri nella Schedina e nel costruttore personale</a>.</p></section>`;
+  const extended=forecasts.some(item=>item.canonicalModelForecast);
+  const rows=forecasts.map(item=>`<tr${item.canonicalModelForecast?' role="button" tabindex="0" aria-pressed="false"':""} data-shared-forecast-id="${esc(item.id)}"><td><small>${esc(item.marketFamily||item.market||"Mercato")}</small><strong>${esc(item.player?.name?`${item.player.name} · ${item.selection||""}`:item.selection||"Selezione")}</strong></td><td>${esc(item.threshold==null?"—":`${item.modifier||""} ${item.threshold}`.trim())}</td><td>${esc(item.technicalMotivation)}</td>${extended?`<td>${item.probability==null?"—":`${decimal(item.probability,2)}%`}</td>`:""}<td><strong>${item.odds==null?(extended?"—":"N/D"):Number(item.odds).toLocaleString("it-IT",{minimumFractionDigits:2,maximumFractionDigits:2})}</strong><small>${item.odds==null?(extended?"":"Quota non disponibile"):"Snapshot verificato"}</small></td>${extended?`<td>${item.expectedValue==null?"—":`${decimal(item.expectedValue,2)}%`}</td>`:""}</tr>`).join("");
+  return `<section class="section reading-shared-forecasts" aria-labelledby="reading-shared-forecasts-title"><header class="section-heading"><div><p class="eyebrow">Registro condiviso Lettura ↔ Schedina</p><h2 id="reading-shared-forecasts-title">Pronostici giocabili</h2></div><p>Le selezioni, le soglie e le quote provengono dallo stesso catalogo usato dalla Schedina.</p></header><div class="prediction-v2-shooter-table reading-shared-forecast-table"><table><thead><tr><th>Mercato e selezione</th><th>Soglia</th><th>Motivazione tecnica</th>${extended?"<th>Probabilità</th>":""}<th>Quota</th>${extended?"<th>EV</th>":""}</tr></thead><tbody>${rows}</tbody></table></div><p class="objective-method">${forecasts.length} pronostici sincronizzati · <a href="schedina.html?giornata=${esc(match.matchday)}">Apri nella Schedina e nel costruttore personale</a>.</p></section>`;
 }
 
 export function createPage(deps){
@@ -219,6 +221,19 @@ function pilotSection(aggregates,report){const serieA=report.competitions.find(i
     if(matchId&&!selectedMatch)html=`<aside class="data-warning"><strong>Partita non trovata</strong><p>Il collegamento richiesto non corrisponde al calendario corrente.</p></aside>${html}`;
   }
     document.querySelector("#app").innerHTML=html;
+    if(requestedMatchday===7&&document.querySelector('[data-shared-forecast-id][role="button"]')){
+      const context={competition:'serie-a',season:'2026-27',matchday:7,label:'Serie A · 7ª giornata'};
+      const store=createPersonalBetslipStore();store.setContext(context);
+      const latest=(forecastDataset?.marketCatalog?.matches||[]).flatMap(m=>sharedForecastsForMatch(forecastDataset.marketCatalog,m.matchId))
+        .map(leg=>({selectionId:leg.selectionId,context,fixture:leg.fixture,label:leg.label,market:leg.market,betSelection:leg.betSelection}));
+      store.reconcile(latest);
+      const update=()=>{const selected=new Set(store.getSnapshot().selections.map(s=>s.selectionId));document.querySelectorAll('[data-shared-forecast-id][role="button"]').forEach(row=>row.setAttribute('aria-pressed',String(selected.has(row.dataset.sharedForecastId))))};
+      for(const row of document.querySelectorAll('[data-shared-forecast-id][role="button"]')){
+        const toggle=()=>{const selection=latest.find(s=>s.selectionId===row.dataset.sharedForecastId);if(!isCanonicalModelForecast(selection))return;if(store.getSnapshot().selections.some(s=>s.selectionId===selection.selectionId))store.remove(selection.selectionId);else store.add(selection);update()};
+        row.addEventListener('click',toggle);row.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();toggle()}});
+      }
+      update();
+    }
   if(page==="readings"&&activeReadingMatch){renderProbableLineups(activeReadingMatch,teamDirectory,activePrediction);if(activeReadingMatch.competition!=="coppa-italia")renderReadingPilotEvidence(activeReading,activeReadingMatch);renderTacticalBaselines(activeReadingMatch,teamStyleProfiles,teams)}
   }
   return {render};

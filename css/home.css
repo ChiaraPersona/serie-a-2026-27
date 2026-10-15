@@ -252,3 +252,11 @@ body[data-page="home"] .hero{
 .home-standings>.section-heading h2{font-size:clamp(24px,2.6vw,34px);line-height:1.18}
 .home-standings>.standings-switch{margin:0 0 10px}
 .home-standings .standings-scope-switch{margin:0 0 14px}
+
+/* Ripristino della densita del calendario precedente al restyling.
+   La griglia mobile conserva il target Lettura da 44px sulle due righe. */
+.home-dashboard .home-next{padding-top:18px}
+.home-dashboard .home-next-head{margin-bottom:12px}
+@media(min-width:761px){
+ .home-dashboard .home-match-row>.home-match-reading{min-height:28px}
+}

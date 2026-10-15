@@ -25,8 +25,18 @@ const server=http.createServer((req,res)=>{const file=path.resolve(root,'.'+deco
     }
     const first=page.locator('[data-selected-forecast=true]').first();
     await first.click();assert.equal(await first.getAttribute('aria-pressed'),'true');
+    const pendingIds=data.marketCatalog.matches.flatMap(m=>m.selections).filter(l=>l.forecastIdentity&&l.suggestionAnalysis?.suggested).map(l=>l.selectionId);
+    for(const id of pendingIds){
+      const metrics=await page.locator(`[data-personal-pick="${id}"]`).first().locator('.betting-market-metric b').allTextContents();
+      assert.deepEqual(metrics.slice(-2),['—','—'],'Quota o EV mancanti mostrati come numero');
+      await page.locator(`[data-personal-pick="${id}"]`).first().evaluate(el=>el.click());
+    }
+    assert.equal(await page.locator('.personal-betslip-total strong').textContent(),'—');
+    assert.equal(await page.locator('.personal-betslip-analysis').count(),0);
     await page.reload({waitUntil:'networkidle'});
-    assert.equal(await page.locator('[data-selected-forecast=true][aria-pressed=true]').count(),1,'Selezione salvata persa');
+    assert.equal(await page.locator('[data-selected-forecast=true][aria-pressed=true]').count(),1+pendingIds.length,'Selezione salvata persa');
+    for(const id of pendingIds)await page.locator(`[data-personal-remove="${id}"]`).evaluate(el=>el.click());
+    assert.equal(await page.locator('[data-selected-forecast=true][aria-pressed=true]').count(),1,'Rimozione fallita');
     await page.locator('[data-match-open-all]').click();
     assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'Overflow schedina');
     await page.screenshot({path:path.join(root,`output/reports/serie-a-md07-${width}.png`),fullPage:true});
@@ -36,6 +46,14 @@ const server=http.createServer((req,res)=>{const file=path.resolve(root,'.'+deco
       const expected=sharedForecastsForMatch(data.marketCatalog,match.matchId).map(l=>l.selectionId).sort();
       const actual=await page.locator('[data-shared-forecast-id]').evaluateAll(rows=>rows.map(r=>r.dataset.sharedForecastId).sort());
       assert.deepEqual(actual,expected,`${width}px lettura ${match.matchId}`);
+      const pending=page.locator('[data-shared-forecast-id][role=button]').first();
+      if(await pending.count()){
+        await pending.click();assert.equal(await pending.getAttribute('aria-pressed'),'true');
+        await page.reload({waitUntil:'networkidle'});
+        const selected=page.locator('[data-shared-forecast-id][aria-pressed=true]');
+        assert.equal(await selected.count(),1);await selected.click();
+        assert.equal(await page.locator('[data-shared-forecast-id][aria-pressed=true]').count(),0);
+      }
       assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'Overflow lettura');
     }
     assert.equal(errors.length,0,errors.join('\n'));

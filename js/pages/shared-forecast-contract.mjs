@@ -1,5 +1,16 @@
 const finite=value=>value!==null&&value!==undefined&&value!==""&&Number.isFinite(Number(value));
 
+export function isCanonicalModelForecast(leg){
+  const bet=leg?.betSelection,target=bet?.forecastIdentity,id=bet?.identity;
+  return Boolean(leg?.selectionId&&bet?.selectionId===leg.selectionId
+    &&id?.canonicalForecastId===leg.selectionId&&target?.matchId===id.matchId
+    &&/^forecast:v2:/.test(leg.selectionId)&&target.matchId?.endsWith('-md-07')
+    &&['player','team'].includes(target.scope)&&['shots','sot'].includes(target.metric)
+    &&target.subjectId&&Number.isFinite(target.threshold)&&target.direction==='OVER'
+    &&target.period==='REGULATION'&&target.duo===false
+    &&bet.operational?.playability?.status==='PLAYABLE');
+}
+
 export function hasVerifiedPlayableQuote(leg){
   const contract=leg?.betSelection,quote=contract?.quote||{},compatibility=String(contract?.compatibility?.status||"");
   return leg?.lineupEligibility?.eligible!==false
@@ -27,7 +38,7 @@ export function isPublishedForecast(leg){
     && (!globalThis.officialStarterPolicy||globalThis.officialStarterPolicy.eligible(leg))
     && leg?.forecastStatus!=="withdrawn"
     && leg?.suggestionAnalysis?.suggested===true
-    && (hasVerifiedPlayableQuote(leg)||isUnquotedIndividualForecast(leg));
+    && (hasVerifiedPlayableQuote(leg)||isUnquotedIndividualForecast(leg)||isCanonicalModelForecast(leg));
 }
 
 export function sharedForecastsForMatch(marketCatalog,matchId){
@@ -50,6 +61,9 @@ export function forecastView(leg,matchday=null){
     threshold:market.threshold??leg?.threshold??null,
     modifier:market.selection||leg?.selection||null,
     odds:finite(quote.decimal)?Number(quote.decimal):null,
+    probability:finite(contract.evaluation?.modelProbabilityPct)?Number(contract.evaluation.modelProbabilityPct):null,
+    expectedValue:finite(contract.evaluation?.expectedValuePct)?Number(contract.evaluation.expectedValuePct):null,
+    canonicalModelForecast:isCanonicalModelForecast(leg),
     technicalMotivation:leg?.evidenceLabel||leg?.suggestionAnalysis?.heuristicDisclosure||contract.operational?.classificationReason||"Motivazione tecnica N/D",
     status:hasVerifiedPlayableQuote(leg)?"selected-playable":"selected-without-quote",
     provenance:{source:leg?.catalogOrigin||contract.evaluation?.provenance?.source||null,updatedAt:quote.marketUpdatedAt||contract.evaluation?.provenance?.predictionGeneratedAt||null},

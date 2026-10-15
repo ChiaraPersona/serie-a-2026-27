@@ -1,0 +1,5 @@
+const fs=require('fs');const p='output/home-height/measure.cjs';let s=fs.readFileSync(p,'utf8');s=s.replace("fullPage:true});}",`fullPage:true});if(ref==='corrected'){
+for(const season of ['current','archive'])for(const scope of ['general','home','away']){await page.locator('[data-standings-tab="'+season+'"]').click();await page.locator('[data-standings-panel="'+season+'"] [data-standings-scope-tab="'+scope+'"]').click();const panel=page.locator('[data-standings-panel="'+season+'"] [data-standings-scope-panel="'+scope+'"]');if(await panel.locator('tbody tr').count()!==20)throw Error('standings rows');await panel.locator('[data-standings-sort="points"]').click();}
+const label=page.locator('[data-home-matchday-label]'),initial=await label.textContent();await page.locator('[data-home-next-matchday]').click();if(await label.textContent()===initial)throw Error('next matchday');await page.locator('[data-home-previous-matchday]').click();if(await label.textContent()!==initial)throw Error('previous matchday');
+}}
+`);fs.writeFileSync(p,s);

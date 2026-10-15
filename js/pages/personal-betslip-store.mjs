@@ -1,4 +1,5 @@
 import '../official-starter-policy.js';
+import {isCanonicalModelForecast} from './shared-forecast-contract.mjs';
 export const PERSONAL_BETSLIP_VERSION=1;
 export const PERSONAL_BETSLIP_STORAGE_KEY="serie-a-2026-27:personal-betslip:v1";
 
@@ -45,7 +46,7 @@ function playability(selection){
 
 function validCanonicalSelection(selection){
   const bet=selection?.betSelection;
-  return Boolean(selection?.selectionId&&bet?.selectionId===selection.selectionId&&bet?.identity?.status==="VERIFIED_PROVIDER_IDS"&&bet.identity.providerSelectionId);
+  return isCanonicalModelForecast(selection)||Boolean(selection?.selectionId&&bet?.selectionId===selection.selectionId&&bet?.identity?.status==="VERIFIED_PROVIDER_IDS"&&bet.identity.providerSelectionId);
 }
 
 function marketOutcome(selection){return normalizeText(selection?.betSelection?.market?.selection||selection?.selection)}
@@ -87,8 +88,10 @@ export function assessSelections(selections){
     const policy=playability(row);
     if(policy.status==="NOT_PLAYABLE")addIssue(policy.code||"POLICY_NOT_PLAYABLE",`${row.label||row.selectionId}: ${policy.reason}`,[row.selectionId]);
     const currentQuote=quote(row);
-    if(!finite(currentQuote.decimal)||!currentQuote.verifiedAt||!currentQuote.source?.provider)addIssue("MISSING_VERIFIED_QUOTE",`${row.label||row.selectionId}: quota verificata non disponibile.`,[row.selectionId]);
-    if(currentQuote.availability!=="AVAILABLE_AT_SNAPSHOT")addIssue("AVAILABILITY_NOT_CONFIRMED",`${row.label||row.selectionId}: disponibilità non confermata dallo snapshot.`,[row.selectionId]);
+    if(!isCanonicalModelForecast(row)){
+      if(!finite(currentQuote.decimal)||!currentQuote.verifiedAt||!currentQuote.source?.provider)addIssue("MISSING_VERIFIED_QUOTE",`${row.label||row.selectionId}: quota verificata non disponibile.`,[row.selectionId]);
+      if(currentQuote.availability!=="AVAILABLE_AT_SNAPSHOT")addIssue("AVAILABILITY_NOT_CONFIRMED",`${row.label||row.selectionId}: disponibilità non confermata dallo snapshot.`,[row.selectionId]);
+    }
     const status=String(compatibility(row).status||"");
     if(/^INCOMPATIBILE/.test(status)||status==="INCOMPATIBLE")addIssue("MODEL_BOOKMAKER_INCOMPATIBLE",`${row.label||row.selectionId}: target bookmaker e modello non compatibili.`,[row.selectionId]);
     if(row.dataStatus==="MISSING_FROM_CURRENT_DATA")addIssue("MISSING_FROM_CURRENT_DATA",`${row.label||row.selectionId}: mercato non presente nei dati correnti; selezione conservata.`,[row.selectionId]);
@@ -110,13 +113,15 @@ export function assessSelections(selections){
     }
   }
   const combinationConfirmed=rows.length<=1||rows.every(row=>compatibility(row).bookmakerCombinability==="CONFIRMED");
-  if(rows.length>1&&!combinationConfirmed)addIssue("BOOKMAKER_COMBINABILITY_UNKNOWN","La combinabilità della multipla non è verificata dal bookmaker.",rows.map(row=>row.selectionId));
+  const pendingModelQuote=rows.some(row=>isCanonicalModelForecast(row)&&(!finite(quote(row).decimal)||quote(row).availability!=='AVAILABLE_AT_SNAPSHOT'));
+  if(rows.length>1&&!combinationConfirmed&&!pendingModelQuote)addIssue("BOOKMAKER_COMBINABILITY_UNKNOWN","La combinabilità della multipla non è verificata dal bookmaker.",rows.map(row=>row.selectionId));
   const usable=rows.length>0&&!issues.some(issue=>issue.severity==="blocking")&&combinationConfirmed;
   const theoreticalRows=rows.filter(row=>playability(row).status==="PLAYABLE"&&finite(quote(row).decimal)&&Number(quote(row).decimal)>0);
   return {
     issues,
-    usableCombinedOdds:usable?Number(rows.reduce((total,row)=>total*Number(quote(row).decimal),1).toFixed(2)):null,
-    theoreticalCombinedOdds:theoreticalRows.length?theoreticalRows.reduce((total,row)=>total*Number(quote(row).decimal),1):null,
+    usableCombinedOdds:usable&&!pendingModelQuote?Number(rows.reduce((total,row)=>total*Number(quote(row).decimal),1).toFixed(2)):null,
+    theoreticalCombinedOdds:!pendingModelQuote&&theoreticalRows.length?theoreticalRows.reduce((total,row)=>total*Number(quote(row).decimal),1):null,
+    pendingModelQuote,
     theoreticalQuoteCount:theoreticalRows.length,
     theoreticalExcludedCount:rows.length-theoreticalRows.length,
     combinationConfirmed,
@@ -185,7 +190,7 @@ export function createPersonalBetslipStore({storage=globalThis.localStorage,stor
       const storedQuote=quote(stored),freshQuote=quote(fresh);
       const useFresh=isoTime(freshQuote.verifiedAt)>=isoTime(storedQuote.verifiedAt);
       const changed=useFresh&&finite(freshQuote.decimal)&&Number(freshQuote.decimal)!==Number(storedQuote.decimal);
-      if(useFresh){updated+=1;return {...clone(fresh),addedAt:stored.addedAt,addedQuote:stored.addedQuote,previousQuote:changed?Number(storedQuote.decimal):(stored.previousQuote??null),quoteChanged:Boolean(stored.quoteChanged||changed),dataStatus:"CURRENT"}}
+      if(useFresh){updated+=1;return {...clone(fresh),addedAt:stored.addedAt,addedQuote:stored.addedQuote,previousQuote:changed&&finite(storedQuote.decimal)?Number(storedQuote.decimal):(stored.previousQuote??null),quoteChanged:Boolean(stored.quoteChanged||changed),dataStatus:"CURRENT"}}
       return {...stored,dataStatus:"CURRENT"};
     });
     active.updatedAt=now();commit();return {status:"RECONCILED",updated,missing};
@@ -199,11 +204,11 @@ export function personalBetslipSummary(snapshot){
   const heading=context?`Schedina personale · ${context.competition} ${context.season} · giornata ${context.matchday}`:"Schedina personale";
   const rows=(snapshot?.selections||[]).map((selection,index)=>{
     const currentQuote=quote(selection);
-    const quoteText=finite(currentQuote.decimal)?Number(currentQuote.decimal).toLocaleString("it-IT",{minimumFractionDigits:2,maximumFractionDigits:2}):"N/D";
+    const quoteText=finite(currentQuote.decimal)?Number(currentQuote.decimal).toLocaleString("it-IT",{minimumFractionDigits:2,maximumFractionDigits:2}):(isCanonicalModelForecast(selection)?"—":"N/D");
     return `${index+1}. ${selection.fixture||matchId(selection)||"Partita N/D"} — ${selection.label||selection.betSelection?.market?.selection||"Selezione N/D"} @ ${quoteText} (snapshot ${currentQuote.verifiedAt||"N/D"})`;
   });
   const theoretical=snapshot?.assessment?.theoreticalCombinedOdds;
   const excluded=Number(snapshot?.assessment?.theoreticalExcludedCount)||0;
-  const warning=theoretical==null?"Quota combinata teorica: N/D.":`Quota combinata teorica: ${theoretical.toLocaleString("it-IT",{minimumFractionDigits:2,maximumFractionDigits:2})}${excluded?` (parziale: ${excluded} selezioni non incluse)`:""}. La combinabilità bookmaker resta una verifica separata.`;
+  const warning=snapshot?.assessment?.pendingModelQuote?"Quota combinata teorica: —.":theoretical==null?"Quota combinata teorica: N/D.":`Quota combinata teorica: ${theoretical.toLocaleString("it-IT",{minimumFractionDigits:2,maximumFractionDigits:2})}${excluded?` (parziale: ${excluded} selezioni non incluse)`:""}. La combinabilità bookmaker resta una verifica separata.`;
   return [heading,...rows,warning].join("\n");
 }

@@ -130,6 +130,27 @@ function marketFamily(selection) {
     || "N/D";
 }
 
+// The provider adapter must supply the exact reconciled target. A quote for a
+// DUO or woodwork-inclusive target cannot be bound to a standard V2 forecast.
+function bindVerifiedForecastQuote({ forecast, providerSelection }) {
+  const source=forecast?.betSelection,target=source?.forecastIdentity,incoming=providerSelection?.betSelection;
+  if(!target||source.identity?.canonicalForecastId!==forecast.selectionId)throw new Error('CANONICAL_FORECAST_REQUIRED');
+  for(const key of ['matchId','scope','subjectId','metric','threshold','direction','period','duo','postsAndCrossbarIncluded']) {
+    if(target[key]!==incoming?.forecastIdentity?.[key])throw new Error(`FORECAST_CONTRACT_MISMATCH:${key}`);
+  }
+  if(incoming.identity?.status!=='VERIFIED_PROVIDER_IDS'||!incoming.identity.providerMarketId||!incoming.identity.providerSelectionId
+    ||!finite(incoming.quote?.decimal)||Number(incoming.quote.decimal)<=1||!incoming.quote.verifiedAt||!incoming.quote.source?.provider
+    ||incoming.quote.availability!=='AVAILABLE_AT_SNAPSHOT')throw new Error('VERIFIED_QUOTE_REQUIRED');
+  const result=clone(forecast);
+  result.odds=Number(incoming.quote.decimal);
+  result.providerMarketId=incoming.identity.providerMarketId;
+  result.providerSelectionId=incoming.identity.providerSelectionId;
+  result.betSelection.identity={...source.identity,...incoming.identity,canonicalForecastId:forecast.selectionId};
+  result.betSelection.quote=clone(incoming.quote);
+  result.suggestionAnalysis.quoteAvailability='AVAILABLE_AT_SNAPSHOT';
+  return result;
+}
+
 function countsByMarket(selections) {
   return Object.fromEntries([...(selections || []).reduce((counts, selection) => {
     const family = marketFamily(selection);
@@ -139,6 +160,7 @@ function countsByMarket(selections) {
 }
 
 module.exports = {
+  bindVerifiedForecastQuote,
   assertUniqueSelectionIds,
   countsByMarket,
   marketFamily,
