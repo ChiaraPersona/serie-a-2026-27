@@ -168,3 +168,59 @@ body[data-page="home"] .hero{
   border:1px solid rgba(255,255,255,.42);
   box-shadow:0 1px 0 rgba(255,255,255,.78),0 12px 22px rgba(31,39,52,.16),0 34px 64px rgba(31,39,52,.18),inset 0 0 0 1px rgba(2,8,20,.5),inset 0 16px 26px rgba(0,4,14,.42),inset 0 -12px 22px rgba(0,4,14,.3);
 }
+/* Dentro la stagione: stili confinati al solo dashboard della homepage. */
+.home-dashboard .home-dashboard-grid{grid-template-columns:minmax(0,68fr) minmax(0,32fr);gap:18px;align-items:stretch}
+.home-dashboard .home-next,.home-dashboard .home-rail a{border:1px solid rgba(20,43,59,.12);border-radius:22px;box-shadow:0 8px 24px rgba(20,43,59,.07);backdrop-filter:none}
+.home-dashboard .home-next{min-width:0;padding:22px 24px 10px;background:#f9fbfc}
+.home-dashboard .home-next-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px}
+.home-dashboard .home-next h3{color:#142b3b;letter-spacing:0;text-transform:none}
+.home-dashboard .home-next h3>span{display:block;margin-bottom:5px;color:#526777;font-size:10px;letter-spacing:.12em}
+.home-dashboard .home-next h3>strong{display:block;font-size:26px;line-height:1.2;font-weight:750;letter-spacing:-.04em}
+.home-dashboard .home-matchday-nav{display:flex;flex-shrink:0;gap:8px}
+.home-dashboard .home-matchday-button{display:grid;place-items:center;width:42px;height:42px;min-height:42px;padding:0;border:1px solid #cbd6dc;border-radius:50%;background:transparent;color:#142b3b;font:500 21px/1 Inter,sans-serif;box-shadow:none;transform:none;transition:background .15s ease}
+.home-dashboard .home-matchday-button:hover:not(:disabled){background:#e7edf0;box-shadow:none;transform:none}
+.home-dashboard .home-matchday-button:disabled{opacity:.35}
+.home-dashboard .home-match-list{border-top:1px solid #dce4e8}
+.home-dashboard .home-match-row{grid-template-columns:minmax(110px,.65fr) minmax(0,1.8fr);gap:14px;padding:12px 0;border-bottom:1px solid #e3e9ed}
+.home-dashboard .home-match-row:last-child{border-bottom:0}
+.home-dashboard .home-match-meta time{color:#526777;font-size:11px}
+.home-dashboard .home-match-teams{gap:8px;min-width:0}
+.home-dashboard .home-match-teams .team-name{color:#142b3b;font-size:13px;font-weight:650;white-space:normal;overflow:visible;text-overflow:clip;line-height:1.3;overflow-wrap:anywhere}
+.home-dashboard .home-match-teams .team-logo{width:28px;height:28px;flex-basis:28px}
+.home-dashboard .home-match-teams .home-match-score{color:#142b3b;font-size:14px;font-variant-numeric:tabular-nums}
+.home-dashboard .home-match-row:has(a):hover{background:#edf2f4}
+.home-dashboard .home-rail{grid-template-columns:1fr;grid-template-rows:repeat(2,minmax(0,1fr));gap:18px;min-width:0}
+.home-dashboard .home-rail a{position:relative;display:flex;justify-content:flex-end;align-items:flex-start;min-height:210px;min-width:0;padding:26px 26px 54px;overflow:hidden;transform:none;transition:box-shadow .15s ease}
+.home-dashboard .home-rail .home-editorial-readings{background:#142b3b;color:#fff}
+.home-dashboard .home-rail .home-editorial-teams{background:#dce9e5;color:#142b3b}
+.home-dashboard .home-rail a>span{position:absolute;top:24px;left:26px;color:#d4a43b;font-size:10px;font-weight:800;letter-spacing:.16em}
+.home-dashboard .home-rail .home-editorial-teams>span{color:#245a55}
+.home-dashboard .home-rail strong{max-width:100%;margin:16px 0 7px;color:inherit;font-size:clamp(23px,2.4vw,32px);line-height:1.1;letter-spacing:-.04em}
+.home-dashboard .home-rail small{color:inherit;font-size:13px;opacity:.85}
+.home-dashboard .home-editorial-icon{width:52px;height:52px;margin-top:28px;color:#d4a43b}
+.home-dashboard .home-editorial-teams .home-editorial-icon{color:#245a55}
+.home-dashboard .home-editorial-arrow{position:absolute;right:24px;bottom:22px;width:25px;height:25px}
+.home-dashboard .home-rail a:hover{transform:none;border-color:currentColor;box-shadow:0 10px 28px rgba(20,43,59,.14)}
+.home-dashboard :is(a,button):focus-visible{outline:3px solid #b2811d;outline-offset:4px}
+@media(max-width:1000px){
+ .home-dashboard .home-dashboard-grid{grid-template-columns:1fr}
+ .home-dashboard .home-rail{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:auto}
+ .home-dashboard .home-rail a{min-height:240px}
+}
+@media(max-width:580px){
+ .home-dashboard .home-dashboard-grid,.home-dashboard .home-rail{gap:12px}
+ .home-dashboard .home-next{padding:18px 14px 6px}
+ .home-dashboard .home-next h3>strong{font-size:24px}
+ .home-dashboard .home-match-row{grid-template-columns:1fr;gap:7px;padding:10px 0}
+ .home-dashboard .home-match-meta{grid-column:auto}
+ .home-dashboard .home-match-meta time{font-size:11px}
+ .home-dashboard .home-match-teams .team-name{font-size:12px}
+ .home-dashboard .home-rail a{padding:18px 16px 46px;min-height:230px;border-radius:22px}
+ .home-dashboard .home-rail a>span{top:18px;left:16px;font-size:9px}
+ .home-dashboard .home-rail strong{font-size:23px}
+ .home-dashboard .home-rail small{font-size:12px}
+ .home-dashboard .home-editorial-icon{width:38px;height:38px;margin-top:26px}
+ .home-dashboard .home-editorial-arrow{right:16px;bottom:16px;width:22px;height:22px}
+}
+@media(max-width:350px){.home-dashboard .home-rail{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.home-dashboard .home-rail a,.home-dashboard .home-matchday-button{transition:none}}

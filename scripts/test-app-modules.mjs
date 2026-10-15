@@ -26,10 +26,10 @@ assert.match(finishedMatchCard, /class="score score-result reading-final-score">
 const shell = fs.readFileSync(path.join(root, "index.html"), "utf8");
 assert.match(shell, /<script type="module" src="js\/app\.js\?v=[^"]+"><\/script>/, "entry point ES module non generato");
 const homeCss = fs.readFileSync(path.join(root, "css", "home.css"), "utf8");
-assert.match(homeCss, /\.home-next-head\{display:grid;grid-template-columns:minmax\(140px,\.72fr\) minmax\(280px,1\.55fr\)/, "Home: intestazione giornata non allineata alla griglia delle partite");
-assert.match(homeCss, /\.home-matchday-nav\{display:flex;grid-column:2;justify-self:center/, "Home: navigazione giornata non centrata sopra le squadre");
+assert.match(homeCss, /\.home-dashboard \.home-dashboard-grid\{grid-template-columns:minmax\(0,68fr\) minmax\(0,32fr\)/, "Home: proporzioni editoriali del dashboard assenti");
+assert.match(homeCss, /\.home-dashboard \.home-matchday-button\{[^}]*border-radius:50%/, "Home: controlli giornata circolari assenti");
 const homePage = fs.readFileSync(path.join(root, "js", "pages", "home.js"), "utf8");
-assert.match(homePage, /<a href="lettura\.html"><span>Letture<\/span><strong>Analisi e tabellini<\/strong>/, "Home: card Letture assente dalla colonna laterale");
+assert.match(homePage, /<a class="home-editorial-readings" href="lettura\.html">[\s\S]*?<strong>Dentro la partita\.<\/strong><small>Analisi e pronostici<\/small>/, "Home: card Letture assente dalla colonna laterale");
 assert.doesNotMatch(homePage, /<a href="#classifiche"><span>Classifiche<\/span><strong>Situazione e archivio<\/strong>/, "Home: vecchia card Classifiche ancora presente");
 const bettingPage = fs.readFileSync(path.join(root, "js", "pages", "betting.js"), "utf8");
   assert.match(bettingPage, /href="schedina\.html\?giornata=\$\{number\}"/, "Schedina: card-link parametrica delle giornate assente");
