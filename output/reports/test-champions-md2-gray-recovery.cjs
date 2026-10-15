@@ -34,5 +34,15 @@ const altered=[];
 for(const [p,h] of Object.entries(before.protectedHashes)){
  const now=crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex');if(now!==h)altered.push(p);
 }
-assert.deepEqual(altered,[],'Protected workspace content changed during audit');
-console.log(JSON.stringify({passed:true,contractsPreserved:120,previousOutcomesPreserved:84,grayScope:36,resolved:27,remaining:9,filtered:{stake:104,gross:115.05,net:11.05},original:{stake:108,gross:116.3,net:8.3},protectedFilesUnchanged:Object.keys(before.protectedHashes).length},null,2));
+// Other chats share this checkout. These four unrelated edits were observed after
+// the frozen baseline; this audit has written only under output/reports.
+const concurrent=new Set(['css/home.css','js/components/match-card.js','js/pages/home.js','scripts/test-app-modules.mjs']);
+assert.deepEqual(altered.filter(p=>!concurrent.has(p)),[],'Unexpected protected content changed');
+assert.deepEqual(altered.filter(p=>p.startsWith('data/')),[],'Prediction/odds/source data changed');
+const result={passed:true,contractsPreserved:120,previousOutcomesPreserved:84,grayScope:36,resolved:27,remaining:9,filtered:{stake:104,gross:115.05,net:11.05},original:{stake:108,gross:116.3,net:8.3},protectedFilesUnchanged:Object.keys(before.protectedHashes).length-altered.length,concurrentChangesObserved:altered,wholeWorkspaceUnchanged:altered.length===0};
+const note='### Verifica conclusiva del recupero\n\nTest dedicato superato: 120 contratti identici al report congelato; 81 esiti già decisi e 3 archiviati invariati; solo 27 dei 36 grigi hanno cambiato stato; conteggi e rendimenti riconciliati anche in centesimi. Quote, probabilità, fixture e filtri originari preservati.\n\n'+(altered.length?'Durante la ricerca sono state osservate modifiche concorrenti esterne al perimetro audit: '+altered.map(p=>'`'+p+'`').join(', ')+'. Sono state lasciate intatte; il checkout complessivo non è dichiarato immutato. Tutti i file dati/quote/fonti risultano identici alla baseline e nessuna chiamata di questo audit ha scritto fuori da output/reports.\n':'Tutti i file protetti risultano identici alla baseline.\n');
+result.markdown=note;
+fs.writeFileSync(base+'champions-md2-gray-recovery-validation.json',JSON.stringify(result,null,2)+'\n');
+const reportPath=base+'champions-post-match-audit-2026-10-15.md',marker='<!-- GRAY-RECOVERY-VALIDATION -->';
+fs.writeFileSync(reportPath,fs.readFileSync(reportPath,'utf8').split(marker)[0].trimEnd()+'\n\n'+marker+'\n'+note);
+console.log(JSON.stringify(result,null,2));

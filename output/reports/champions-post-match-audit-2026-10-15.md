@@ -576,3 +576,10 @@ MODIFICARE è una raccomandazione per infrastruttura di audit e raccolta, non un
 ### Controlli eseguiti
 
 18 fixture, 117 contratti finali, 3 archiviati prima del kickoff; duplicati 0, timestamp non ammissibili 0. 9049 file dati/script/JS/CSS verificati identici tramite SHA256 prima/dopo; riconciliazione conteggi e puntate superata. Nessuna necessità di test UI: nessun file del sito modificato.
+
+<!-- GRAY-RECOVERY-VALIDATION -->
+### Verifica conclusiva del recupero
+
+Test dedicato superato: 120 contratti identici al report congelato; 81 esiti già decisi e 3 archiviati invariati; solo 27 dei 36 grigi hanno cambiato stato; conteggi e rendimenti riconciliati anche in centesimi. Quote, probabilità, fixture e filtri originari preservati.
+
+Durante la ricerca sono state osservate modifiche concorrenti esterne al perimetro audit: `css/home.css`, `js/components/match-card.js`, `js/pages/home.js`, `scripts/test-app-modules.mjs`. Sono state lasciate intatte; il checkout complessivo non è dichiarato immutato. Tutti i file dati/quote/fonti risultano identici alla baseline e nessuna chiamata di questo audit ha scritto fuori da output/reports.

@@ -187,6 +187,8 @@ assert.equal(checks.fixtures,18);assert.equal(checks.uniqueAll,all.length);asser
 for(const s of all){assert(s.odds>1);assert(['VERDE','ROSSO','GRIGIO','VOID'].includes(s.audit.outcome.status));assert(!s.audit.outcome.officiallySettled);}
 assert.equal(stats.all.won+stats.all.lost,stats.all.verified);assert.equal(stats.all.stakeEuro,stats.all.verified);
 md+='### Controlli eseguiti\n\n'+`${checks.fixtures} fixture, ${checks.rows} contratti finali, ${checks.archive} archiviati prima del kickoff; duplicati 0, timestamp non ammissibili 0. ${checks.protectedFiles} file dati/script/JS/CSS verificati identici tramite SHA256 prima/dopo; riconciliazione conteggi e puntate superata. Nessuna necessità di test UI: nessun file del sito modificato.\n`;
+const validationPath=path.join(out,'champions-md2-gray-recovery-validation.json');
+if(grayRecovery&&fs.existsSync(validationPath))md+='\n<!-- GRAY-RECOVERY-VALIDATION -->\n'+JSON.parse(fs.readFileSync(validationPath,'utf8')).markdown;
 fs.writeFileSync(path.join(out,'champions-post-match-audit-2026-10-15.md'),md);
 fs.writeFileSync(path.join(out,'champions-post-match-audit-2026-10-15.json'),JSON.stringify({date:'2026-10-15',scope:'diagnostic-only',fixtures,stats,volume,rows,archive,checks,grayRecovery},null,2)+'\n');
 console.log(JSON.stringify({checks,stats:stats.all,official:stats.officialOnly,probability:stats.probability,volume:stats.volume},null,2));
