@@ -1,0 +1,1 @@
+const fs=require('fs');const p='output/team-editorial/check.cjs';let s=fs.readFileSync(p,'utf8').replace("const ids=teams.map(t=>t.id);","const ids=teams.map(t=>t.id).filter(id=>!process.env.TEAM_AUDIT_ONLY||id===process.env.TEAM_AUDIT_ONLY);").replace("id+' geometry '+k)","id+' geometry '+i+' '+k+' '+g[k]+' vs '+before.geometry[i][k])");fs.writeFileSync(p,s);
