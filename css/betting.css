@@ -375,3 +375,40 @@ body[data-page="betting"] main>.hero .eyebrow{margin-bottom:4px;color:var(--glas
 
 @media(hover:none){.betting-archive-card--champions{height:300px;perspective:1100px}}
 @media(max-width:760px){.betting-archive-card--champions{height:260px;perspective:1100px}}
+
+/* Champions MD2: audit archive only; the operational forecasts are unchanged. */
+.betting-champions-md02-summary .betting-result-legend{margin:12px 0 0}
+.betting-champions-md02-summary .betting-result-legend--pending{border-color:#aab6c2;background:#e4e9ee;color:#354657}
+.betting-champions-md02-summary .betting-result-legend--void{border-color:#bdc6ce!important;background:#f0f2f4;color:#465563}
+.betting-champions-md02-markets .betting-market-row[data-settlement="won"],.betting-champions-preferred [data-settlement="won"]{border-color:rgba(22,135,84,.3);background:linear-gradient(90deg,#dff3e8,#f0faf4);box-shadow:inset 3px 0 #168754}
+.betting-champions-md02-markets .betting-market-row[data-settlement="lost"],.betting-champions-preferred [data-settlement="lost"]{border-color:rgba(201,50,58,.3);background:linear-gradient(90deg,#f8dfe2,#fdf1f2);box-shadow:inset 3px 0 #c9323a}
+.betting-champions-md02-markets .betting-market-row[data-settlement="pending"],.betting-champions-preferred [data-settlement="pending"]{border-color:#b6c1cc;background:linear-gradient(90deg,#e1e7ed,#f0f3f6);box-shadow:inset 3px 0 #7b8b9b}
+.betting-champions-md02-markets .betting-market-row[data-settlement="void"],.betting-champions-preferred [data-settlement="void"]{border-color:#c4cdd5;background:#f1f3f5;box-shadow:inset 3px 0 #a1adb8}
+.betting-audit-economics{padding:12px;border:1px solid rgba(22,72,126,.13);border-radius:10px;background:rgba(238,246,252,.8)}
+.betting-audit-economics>header{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 14px}
+.betting-audit-economics>header>strong{font-size:14px}
+.betting-audit-economics>header>span,.betting-audit-economics>p{color:#52677d;font-size:10px;line-height:1.5}
+.betting-audit-economics dl{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:10px 0 0}
+.betting-audit-economics dl>div{min-width:0;padding:8px;border:1px solid rgba(22,72,126,.09);border-radius:8px;background:rgba(255,255,255,.72)}
+.betting-audit-economics dt{color:#52677d;font-size:10px}
+.betting-audit-economics dd{margin:3px 0 0;color:#142c40;font-size:15px;font-weight:800;font-variant-numeric:tabular-nums}
+.betting-audit-economics>p{margin:8px 0 0}
+@media(max-width:580px){.betting-audit-economics dl{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+.betting-round-page--audit .betting-workspace-content{grid-template-columns:minmax(0,1fr)}
+.betting-round-page--audit .betting-workspace-content>section{min-width:0}
+.betting-round-page--audit .betting-champions-preferred{grid-template-columns:minmax(0,1fr)}
+@media(min-width:681px){.betting-round-page--audit .betting-preferred-list-row{grid-template-columns:minmax(100px,.8fr) minmax(160px,1.45fr) repeat(3,minmax(54px,.45fr)) minmax(80px,auto);gap:8px}}
+
+/* Touch: show the CL2 archive return directly, within the existing card size. */
+@media(hover:none){
+  .betting-archive-card--champions[data-champions-matchday="2"]{height:300px;perspective:none}
+  .betting-archive-card--champions[data-champions-matchday="2"] .team-flip-inner{transform:none!important}
+  .betting-archive-card--champions[data-champions-matchday="2"] .team-flip-front{visibility:hidden}
+  .betting-archive-card--champions[data-champions-matchday="2"] .team-flip-back{transform:none;backface-visibility:visible;-webkit-backface-visibility:visible}
+}
+@media(max-width:760px) and (hover:none){.betting-archive-card--champions[data-champions-matchday="2"]{height:260px}}
+
+.betting-archive-card--champions[data-champions-matchday="2"] .betting-archive-card-back{gap:3px;padding:12px}
+.betting-archive-card--champions[data-champions-matchday="2"] .betting-archive-card-back>strong{margin-bottom:2px}
+.betting-archive-card--champions[data-champions-matchday="2"] .team-flip-back>b{margin-top:5px;padding-top:7px}

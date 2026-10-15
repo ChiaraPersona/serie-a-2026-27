@@ -272,3 +272,9 @@ main > .loading{
 .site-footer-bottom>a{display:inline-flex;align-items:center;gap:7px;flex:none;padding:8px 11px;border:1px solid rgba(255,255,255,.13);border-radius:999px;color:#dce7f7;text-decoration:none}
 
 .site-footer-bottom>a:hover,.site-footer-bottom>a:focus-visible{border-color:rgba(244,207,114,.42);color:#fff}
+/* Il solo glass della navbar nelle due pagine interessate. */
+body:is([data-page="home"],[data-page="team-stats"]) .site-header{
+ background:var(--glass-light-bg);border-color:var(--glass-light-border);
+ box-shadow:var(--glass-shadow);color:var(--glass-light-text);
+ backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);
+}

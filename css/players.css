@@ -366,3 +366,41 @@
 .player-comparator-result{margin-top:16px}.player-comparator-head{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:12px}.player-comparator-head article{padding:16px;border-radius:15px;background:#123f66;color:#fff}.player-comparator-head h3{margin:0;color:#fff;font-size:18px}.player-comparator-head p{margin:4px 0;color:#d7edf6;font-size:11px}.player-comparator-head strong{color:#fff;font-size:11px}
 .player-comparator table{width:100%;border-collapse:collapse;background:#fff}.player-comparator th,.player-comparator td{padding:11px;border-bottom:1px solid rgba(24,75,102,.11);text-align:left}.player-comparator td strong,.player-comparator td small{display:block}.player-comparator td small{margin-top:3px;color:var(--muted);font-size:10px}
 @media(max-width:700px){.player-comparator{padding:20px 14px}.player-comparator>header{align-items:flex-start;flex-direction:column}.player-comparator-controls,.team-player-comparator .player-comparator-controls{grid-template-columns:1fr}.player-comparator-head{grid-template-columns:1fr 1fr}.player-comparator table{min-width:560px}}
+/* Statistiche squadre: superfici esplicite, senza coinvolgere le 20 card. */
+body[data-page="team-stats"] :is(.player-comparator,.global-player-leaders,.global-leaderboard-controls){
+ background:var(--glass-light-bg);border-color:var(--glass-light-border);color:var(--glass-light-text);
+ box-shadow:var(--glass-shadow);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);
+}
+body[data-page="team-stats"] .player-comparator-head article{
+ background:var(--glass-dark-bg);border:1px solid var(--glass-dark-border);color:var(--glass-dark-text);
+ box-shadow:var(--glass-shadow);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);
+}
+body[data-page="team-stats"] .player-comparator-head :is(h3,p,strong){color:var(--glass-dark-text)}
+body[data-page="team-stats"] :is(.player-comparator>header>p,.global-player-leaders-heading>p,.global-leaderboard-caption span,.global-leaderboard-note){color:#52636b}
+body[data-page="team-stats"] .global-leaderboard-caption{background:rgba(255,255,255,.52);box-shadow:none}
+body[data-page="team-stats"] :is(.player-comparator,.global-player-leaders) .table-wrap{
+ background:rgba(255,255,255,.35);border-color:rgba(40,58,59,.14);box-shadow:0 14px 28px rgba(32,49,73,.07),inset 0 1px rgba(255,255,255,.54);
+}
+body[data-page="team-stats"] :is(.player-comparator table,.global-player-table){background:transparent;font-family:var(--font-body);font-variant-numeric:tabular-nums}
+body[data-page="team-stats"] :is(.player-comparator,.global-player-table) :is(th,td){border-bottom:1px solid rgba(40,58,59,.1)}
+body[data-page="team-stats"] :is(.player-comparator,.global-player-table) thead th{background:rgba(255,255,255,.52);color:#47575a;font-size:11px;font-weight:650;letter-spacing:.06em;text-transform:uppercase}
+body[data-page="team-stats"] .player-comparator tbody th{background:transparent;color:#47575a;font-weight:650}
+body[data-page="team-stats"] :is(.player-comparator,.global-player-table) tbody tr:nth-child(even){background:rgba(20,43,59,.025)}
+body[data-page="team-stats"] :is(.player-comparator,.global-player-table) tbody tr:hover{background:rgba(181,250,255,.34)}
+body[data-page="team-stats"] .player-comparator :is(th,td):nth-child(n+2){text-align:right}
+body[data-page="team-stats"] .global-player-table :is(th,td):nth-child(n+4){text-align:center}
+body[data-page="team-stats"] .global-leader-player strong{font-family:var(--font-body);font-size:14px;font-weight:800}
+body[data-page="team-stats"] .global-player-leaders .global-stat-button{
+ min-height:36px;padding:8px 16px;border:1px solid var(--glass-light-border);border-radius:999px;
+ background:var(--glass-light-bg);color:var(--glass-light-text);box-shadow:var(--glass-shadow);
+ backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);
+ font-size:.86rem;line-height:1.2;font-weight:700;transform:none;
+ transition:background-color .2s ease,box-shadow .2s ease,color .2s ease;
+}
+body[data-page="team-stats"] .global-player-leaders .global-stat-button:hover{background-color:#e0ebf0;color:#152e42;transform:none}
+body[data-page="team-stats"] .global-player-leaders .global-stat-button.active{background:var(--glass-dark-bg);border-color:var(--glass-dark-border);color:var(--glass-dark-text)}
+body[data-page="team-stats"] .global-stat-group>div{display:flex;flex-wrap:wrap;gap:8px}
+@media(prefers-reduced-motion:reduce){body[data-page="team-stats"] .global-player-leaders .global-stat-button{transition:none}}
+/* Posizioni leggibili sulle righe chiare, preservando le tinte delle medaglie. */
+body[data-page="team-stats"] .global-leader-rank{color:#294b61}
+body[data-page="team-stats"] .global-player-table tr:first-child .global-leader-rank{color:#78520f}
