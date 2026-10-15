@@ -177,7 +177,7 @@ function applyValidatedEvaluation(leg, evaluation) {
     fairOddsBasis: "CENTRAL_DISCRETE_PROBABILITY",
     expectedValueBasis: "CENTRAL_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
     provenance: {
-      source: "data/analysis/serie-a-md06-statistical-models-2026-10-10.json",
+      source: evaluation.sourcePath || "data/analysis/serie-a-md06-statistical-models-2026-10-10.json",
       modelTarget: `statistical:${evaluation.subfamily}`,
       distribution: evaluation.distribution,
       mean: evaluation.mean,

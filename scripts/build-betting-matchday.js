@@ -61,19 +61,23 @@ if (refreshOdds) {
 run("scripts/validate-sisal-odds.js");
 
 if (!validateOnly) {
-  if (matchday === 6) {
-    run("scripts/build-md06-statistical-models.js", [], 2);
-    run("scripts/build-md06-betting-decision-package.mjs", ["--integrate"], 2);
-  }
-  else run("scripts/build-predictions.js", [], 2);
-  run("scripts/generate-mycombo-md01.js", ["--matchday", String(matchday)]);
-  run("scripts/build-predictions.js", [], 2);
-  if (matchday === 6) {
-    run("scripts/build-md06-betting-decision-package.mjs", ["--integrate"], 2);
-    run("scripts/build-md06-betting-decision-package.mjs", [], 2);
+  if (matchday === 7) {
+    run("scripts/build-betting-md07.js");
   } else {
-    run("scripts/generate-schedina-md02.js", ["--matchday", String(matchday)]);
-    run("scripts/build-schedina.js", ["--matchday", String(matchday)]);
+    if (matchday === 6) {
+      run("scripts/build-md06-statistical-models.js", [], 2);
+      run("scripts/build-md06-betting-decision-package.mjs", ["--integrate"], 2);
+    }
+    else run("scripts/build-predictions.js", [], 2);
+    run("scripts/generate-mycombo-md01.js", ["--matchday", String(matchday)]);
+    run("scripts/build-predictions.js", [], 2);
+    if (matchday === 6) {
+      run("scripts/build-md06-betting-decision-package.mjs", ["--integrate"], 2);
+      run("scripts/build-md06-betting-decision-package.mjs", [], 2);
+    } else {
+      run("scripts/generate-schedina-md02.js", ["--matchday", String(matchday)]);
+      run("scripts/build-schedina.js", ["--matchday", String(matchday)]);
+    }
   }
 }
 
@@ -84,6 +88,7 @@ if (matchday === 6) {
 } else {
   const test = `scripts/test-schedina-md${String(matchday).padStart(2, "0")}.js`;
   if (fs.existsSync(path.join(root, test))) run(test);
+  else if (fs.existsSync(path.join(root, test.replace(/\.js$/, ".mjs")))) run(test.replace(/\.js$/, ".mjs"));
 }
 
 const changedProtected = protectedFiles

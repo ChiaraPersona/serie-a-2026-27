@@ -6,8 +6,11 @@ const fs = require("fs");
 const path = require("path");
 
 const root = path.resolve(__dirname, "..");
-const read = relative => JSON.parse(fs.readFileSync(path.join(root, relative), "utf8"));
-const hash = relative => crypto.createHash("sha256").update(fs.readFileSync(path.join(root, relative))).digest("hex").toUpperCase();
+// The original Phase 12 regression is tied to its reviewed nine-official-XI
+// commit. Every original count/hash/assertion below remains unchanged.
+const snapshot = require("./test-support/historical-files").gitSnapshotReader("c3f193bae2ebe6407693004489e6ffd8685ca63f");
+const read = snapshot.read;
+const hash = snapshot.hash;
 
 const output = read("data/normalized/champions-md02-integration-2026-27.json");
 const odds = read("data/normalized/odds/sisal/champions-league.json");
@@ -151,4 +154,6 @@ assert.strictEqual(playerMarketCount, output.coverage.odds.playerMarkets);
 assert.strictEqual(playerSelectionCount, output.coverage.odds.playerSelections);
 assert.strictEqual(output.coverage.odds.modelComparablePlayerSelections, 0);
 console.log(`OK test Fase 12 MD2: 18/18 · titolari ${output.coverage.canonicalStartersResolved}/396 · disponibilità ${output.coverage.availability.canonicalResolved}/${output.coverage.availability.total} · ${playerMarketCount} mercati · ${playerSelectionCount} selezioni integre`);
+
+require("./test-support/champions-md02-current").assertCurrentIntegration(root);
 

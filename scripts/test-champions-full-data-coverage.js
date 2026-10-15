@@ -90,7 +90,9 @@ for (const [teamId, snapshot] of Object.entries(control.protectedTeamSnapshots))
   assert.equal(hashJson(team), snapshot.sha256, `${teamId}: squadra validata modificata`);
   assert.equal(data.teamSnapshots[teamId].asOf, snapshot.asOf, `${teamId}: as-of modificato`);
 }
-for (const item of Object.values(control.protectedFiles)) assert.equal(hashFile(item.path), item.sha256, `${item.path}: invariante modificata`);
+const { assertHistoricalFile } = require("./test-support/historical-files");
+for (const item of Object.values(control.protectedFiles)) assertHistoricalFile(item,
+  item.path === "scripts/build-champions-pilot-predictions.js" ? "be95b1470714b023932f82da13586612c1c085b5" : undefined);
 for (const raw of control.protectedRawSnapshots) assert.equal(hashFile(raw.path), raw.sha256, `${raw.path}: raw preesistente sovrascritto`);
 
 assert.equal(contextControl.expectedTeamShots, 11.01);

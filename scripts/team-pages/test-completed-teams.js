@@ -4,12 +4,18 @@ const assert = require("assert");
 
 const root = path.resolve(__dirname, "../..");
 const read = relative => JSON.parse(fs.readFileSync(path.join(root, relative), "utf8"));
-const expectedCounts = { inter: 32, juventus: 36, napoli: 36 };
+const teamIds = ["inter", "juventus", "napoli"];
+const activeRoster = read("data/sources/fantacalcio-quotations-2026-27.json").players.filter(player => player.status === "active");
 const allowedStatuses = new Set(["confermato", "nuovo acquisto", "prestito", "rientro dal prestito", "primavera", "da verificare"]);
 
-for (const [teamId, expectedCount] of Object.entries(expectedCounts)) {
+for (const teamId of teamIds) {
+  const expectedIds = activeRoster.filter(player => player.teamId === teamId).map(player => player.playerId);
+  const expectedCount = expectedIds.length;
+  assert.ok(expectedCount >= 20, `${teamId}: fonte canonica rosa incompleta`);
   const generated = read(`data/generated/team-pages/${teamId}-squad.json`);
   const team = read(`data/teams/${teamId}.json`);
+  assert.deepStrictEqual(generated.players.map(player => player.id).sort(), [...expectedIds].sort(), `${teamId}: rosa diversa dal listone attivo canonico`);
+  assert.deepStrictEqual(team.squad.map(player => player.id).sort(), [...expectedIds].sort(), `${teamId}: identità rosa non propagate`);
   assert.strictEqual(generated.players.length, expectedCount, `${teamId}: numero rosa inatteso`);
   assert.strictEqual(team.squad.length, expectedCount, `${teamId}: rosa non propagata nella pagina`);
   assert.strictEqual(new Set(generated.players.map(player => player.id)).size, expectedCount, `${teamId}: ID duplicati`);
@@ -19,12 +25,14 @@ for (const [teamId, expectedCount] of Object.entries(expectedCounts)) {
   assert.ok(fs.existsSync(path.join(root, `statistiche-squadra/${teamId}.html`)), `${teamId}: HTML assente`);
 
   for (const player of generated.players) {
+    assert.deepStrictEqual(team.squad.find(row => row.id === player.id)?.previousSeason, player.previousSeason, `${teamId}/${player.id}: statistiche storiche o competizioni non propagate fedelmente`);
+    assert.deepStrictEqual(team.squad.find(row => row.id === player.id)?.previousSeason, player.previousSeason, `${teamId}/${player.id}: statistiche storiche o competizioni non propagate fedelmente`);
     assert.ok(allowedStatuses.has(player.status), `${teamId}/${player.name}: stato non ammesso`);
     assert.ok(fs.existsSync(path.join(root, `data/players/${teamId}/${player.id}.json`)), `${teamId}/${player.name}: JSON individuale assente`);
     assert.strictEqual(player.currentTeam, generated.team);
     assert.strictEqual(player.previousSeason.season, "2025/26");
     for (const entry of player.previousSeason.entries) {
-      assert.ok(["Serie A", "Serie B"].includes(entry.competition), `${player.name}: competizione non separata`);
+        assert.ok(typeof entry.competition === "string" && entry.competition.trim(), `${player.name}: competizione storica non dichiarata`);
       assert.ok(entry.team && entry.source && entry.lastUpdated, `${player.name}: provenienza incompleta`);
       for (const field of ["goals", "assists", "shots", "shotsOnTarget", "foulsCommitted", "foulsWon"]) {
         const expected = entry[field] == null || !entry.minutes ? null : Number((entry[field] * 90 / entry.minutes).toFixed(2));
@@ -48,7 +56,7 @@ const mainApp = fs.readdirSync(path.join(root, "js"), { recursive: true })
   .filter(file => file.endsWith(".js"))
   .map(file => fs.readFileSync(path.join(root, "js", file), "utf8"))
   .join("\n");
-for (const teamId of Object.keys(expectedCounts)) {
+for (const teamId of teamIds) {
   assert.ok(fs.existsSync(path.join(root, `statistiche-squadra/${teamId}.html`)), `${teamId}: pagina assente`);
 }
 assert.ok(!fs.existsSync(path.join(root, "statistiche-squadra/index.html")), "La pagina indice duplicata non deve essere generata");

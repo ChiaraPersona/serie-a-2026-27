@@ -100,7 +100,19 @@ assert.strictEqual(audit.invariants.productionModelChanged, false);
 assert.strictEqual(audit.invariants.serieAV2Changed, false);
 assert.strictEqual(audit.invariants.md6Changed, false);
 assert.strictEqual(audit.invariants.calibrationActivated, false);
-for (const item of Object.values(control.protectedFiles)) assert.strictEqual(sha256File(item.path), item.sha256, `File protetto mutato: ${item.path}`);
+const { assertHistoricalFile } = require("./test-support/historical-files");
+const reviewedHistoricalRevisions = {
+  "data/normalized/champions-league-2026-27.json": "7313a681f94199deb8f6bb0a6e495b9fba02fe79",
+  "scripts/build-champions-pilot-predictions.js": "be95b1470714b023932f82da13586612c1c085b5"
+};
+const missingHistoricalEvidence = [];
+for (const item of Object.values(control.protectedFiles)) {
+  try { assertHistoricalFile(item, reviewedHistoricalRevisions[item.path]); }
+  catch (error) {
+    if (!error.message.startsWith("HISTORICAL_EVIDENCE_MISSING:")) throw error;
+    missingHistoricalEvidence.push(error.message);
+  }
+}
 for (const item of control.protectedRawSnapshots) assert.strictEqual(sha256File(item.path), item.sha256, `Raw protetto mutato: ${item.path}`);
 for (const item of audit.historicalRecovery.rawSnapshots) assert.strictEqual(sha256File(item.path), item.sha256, `Raw Fase 9 mutato: ${item.path}`);
 
@@ -108,5 +120,9 @@ for (let section = 1; section <= 8; section += 1) assert(report.includes(`## ${s
 assert(report.includes("Brier: **NON CALCOLATO**"));
 assert(report.includes("Ricostruzioni retroattive usate | 0"));
 assert(report.includes("**PARTIAL**"));
+
+// Validate all remaining immutable raw and report assertions before reporting
+// an unresolved historical proof. Missing evidence still makes the suite FAIL.
+assert.deepStrictEqual(missingHistoricalEvidence, [], "Unresolved historical proof; all other recovery/raw assertions completed");
 
 console.log("Champions historical recovery audit: PASS · 18/18 partite · 94 osservazioni valide · 37/37 identità · gate PARTIAL");

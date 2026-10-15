@@ -40,7 +40,8 @@ for (const summary of index.teams) {
   assert.strictEqual(projectedLineup.players.length, 11, `${summary.id}: la proiezione MD5 deve avere 11 calciatori`);
   assert.strictEqual(projectedLineup.source.provider, "Fantacalcio.it", `${summary.id}: fonte proiezione MD5 assente`);
   assert.ok(team.sources.some(source => source.scope.includes("Modulo preferito")), `${summary.id}: fonte modulo preferito assente`);
-  assert.ok(team.sources.some(source => source.provider === "Fantacalcio.it" && source.scope.includes("Probabili formazioni della 5ª giornata")), `${summary.id}: fonte probabile formazione MD5 non registrata`);
+  assert.ok(team.sources.some(source => source.provider === projectedLineup.source.provider && source.scope === projectedLineup.source.scope && source.url === projectedLineup.source.url), `${summary.id}: fonte della formazione pubblicata MD${projectedLineup.matchday} non registrata`);
+  assert.ok(projectedLineup.source.scope.includes(`${projectedLineup.matchday}ª giornata`), `${summary.id}: giornata e provenienza della proiezione discordanti`);
   assert.ok(team.sources.some(source => source.provider === "Lega Serie A" && source.scope.includes("Allenatori")), `${summary.id}: fonte allenatore assente`);
   assert.ok(generated.players.length >= 20, `${summary.id}: rosa troppo corta`);
   assert.strictEqual(team.squad.length, generated.players.length, `${summary.id}: rosa non propagata`);

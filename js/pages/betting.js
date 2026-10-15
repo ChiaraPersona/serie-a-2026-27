@@ -294,8 +294,8 @@ export function createPage(deps){
 
   function archiveStats(data,matchById,resolve=leg=>settleLeg(leg,matchById.get(leg.matchId))){
     const unique=new Map();
-    const legs=data.matchday===6?(data.marketCatalog?.matches||[]).flatMap(match=>match.selections||[]).filter(leg=>hasVerifiedPlayableQuote(leg)&&leg.suggestionAnalysis?.suggested):data.slips.flatMap(slip=>slip.legs);
-    for(const leg of legs){const key=data.matchday===6?leg.selectionId:Symbol();if(!unique.has(key))unique.set(key,leg)}
+    const legs=data.matchday>=6?(data.marketCatalog?.matches||[]).flatMap(match=>match.selections||[]).filter(leg=>hasVerifiedPlayableQuote(leg)&&leg.suggestionAnalysis?.suggested):data.slips.flatMap(slip=>slip.legs);
+    for(const leg of legs){const key=data.matchday>=6?leg.selectionId:Symbol();if(!unique.has(key))unique.set(key,leg)}
     const archiveLegResults=[...unique.values()].map(leg=>({leg,settlement:resolve(leg)}));
     const archiveWins=archiveLegResults.filter(({settlement})=>settlement.status==="won").length;
     const archiveLosses=archiveLegResults.filter(({settlement})=>settlement.status==="lost").length;
