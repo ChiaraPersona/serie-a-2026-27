@@ -447,15 +447,16 @@ export function createPage(deps){
       const md2MarketEntry=md2Integration?.fixtures.find(item=>item.fixtureId===requestedMatchId)||null;
       const md2SchedinaFixture=md2Schedina?.fixtures.find(item=>item.fixtureId===requestedMatchId)||null;
       document.querySelector("#app").innerHTML=pilotReadingDetail(requestedFixture,activePilot,backtest,squads,branding,h2h,motivationByFixture.get(requestedMatchId),styleProfiles,attackByTeam,surpriseByFixture.get(requestedMatchId),md2MarketEntry?null:playerMarkets.fixtures.find(item=>item.fixtureId===requestedMatchId),md2MarketEntry?null:playerMarkets,md2MarketEntry,md2SchedinaFixture);
+      let personalReadingStore=null;
       if(md2MarketEntry){
         const release=document.querySelector('script[src*="js/app.js"]')?.src.match(/[?&]v=([^&]+)/)?.[1]||"dev";
         const {mountChampionsMarketUi}=await import(`./champions-market-ui.mjs?v=${encodeURIComponent(release)}`);
-        mountChampionsMarketUi(md2MarketEntry,{publishedSelections:md2SchedinaFixture?.selections||[]});
+        personalReadingStore=mountChampionsMarketUi(md2MarketEntry,{publishedSelections:md2SchedinaFixture?.selections||[]})?.store||null;
       }
       if(isReadingPilot('champions',requestedMatchId,location.search)&&typeof document.createElement==='function'){
         try{
           const [{adaptChampionsReading},{mountReadingShell}]=await Promise.all([import('./reading-detail/champions-adapter.mjs'),import('./reading-detail/shell.mjs')]);
-          await mountReadingShell(adaptChampionsReading({fixture:requestedFixture,calendarFixture:requestedCalendarFixture,branding,publishedSelections:md2SchedinaFixture?.selections||[]}));
+          await mountReadingShell(adaptChampionsReading({fixture:requestedFixture,calendarFixture:requestedCalendarFixture,branding,publishedSelections:md2SchedinaFixture?.selections||[]}),undefined,{store:personalReadingStore});
         }catch(error){console.warn('Lettura: vista precedente mantenuta.',error)}
       }
       return;

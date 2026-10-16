@@ -5,10 +5,10 @@ export const PILOT_FIXTURES=Object.freeze({
 });
 
 export function isReadingPilot(competition,id,search=''){
-  return PILOT_FIXTURES[competition]===id&&new URLSearchParams(search).get('layout')!=='legacy';
+  return (PILOT_FIXTURES[competition]===id||(competition==='serie-a'&&id==='milan-atalanta-2026-27-md-07'))&&new URLSearchParams(search).get('layout')!=='legacy';
 }
 
-export function createReadingView({competition,fixture,home,away,forecasts=[],prediction=null,formation=null,quality=null}){
+export function createReadingView({competition,fixture,home,away,forecasts=[],prediction=null,formation=null,quality=null,analysis=null,sources=null}){
   if(!fixture?.id||!home?.name||!away?.name)throw new Error('Reading identity unavailable');
   return Object.freeze({
     competition,
@@ -16,6 +16,6 @@ export function createReadingView({competition,fixture,home,away,forecasts=[],pr
     fixture:Object.freeze({...fixture}),
     home:Object.freeze({...home}),away:Object.freeze({...away}),
     // Retain references, including absent properties and explicit nulls.
-    forecasts:Object.freeze([...forecasts]),prediction,formation,quality
+    forecasts:Object.freeze([...forecasts]),prediction,formation,quality,analysis,sources
   });
 }

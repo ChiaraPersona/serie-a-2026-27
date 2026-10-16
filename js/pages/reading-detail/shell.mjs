@@ -1,3 +1,5 @@
+import {installScenario} from './scenario.mjs';
+import {installForecasts} from './forecasts.mjs';
 const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const definitions=[
   ['scenario','Scenario','01','M4 16l5-5 4 3 7-10'],
@@ -31,7 +33,7 @@ function heroMarkup(model){
   return `<header class="rd-hero" id="lettura-testata"><div class="rd-overline"><span class="rd-edition">${escape(label)} <i aria-hidden="true">/</i> Giornata ${escape(model.fixture.matchday??'N/D')}</span><span class="rd-status">${model.fixture.status==='finished'?'Partita conclusa':'Analisi prepartita'}</span></div><h1 class="rd-accessible-title">${escape(model.home.name)} – ${escape(model.away.name)}</h1><div class="rd-matchup">${side(model.home,'home')}<div class="rd-versus"><span>VS</span>${score}</div>${side(model.away,'away')}</div><div class="rd-match-meta"><time datetime="${escape(model.fixture.date||'')}">${escape(date)}</time><span>${escape(model.fixture.kickoff||'Orario N/D')}</span>${model.fixture.stadium?`<span>${escape(model.fixture.stadium)}</span>`:''}</div><div class="rd-editorial-note"><span>LA LETTURA</span><p>Numeri, protagonisti e chiavi della partita.</p></div></header>`;
 }
 
-export async function mountReadingShell(model,root=document.querySelector('#app')){
+export async function mountReadingShell(model,root=document.querySelector('#app'),options={}){
   if(!root||root.querySelector('.rd-shell'))return;
   // Await the isolated stylesheet before changing the page. Failure leaves legacy intact.
   const href=new URL('../../../css/reading-detail.css?v=20261016-bc1',import.meta.url).href;
@@ -53,6 +55,7 @@ export async function mountReadingShell(model,root=document.querySelector('#app'
     return [key,section];
   }));
   const placements=[];
+  const undo=[];
   const move=(node,parent)=>{placements.push({node,parent:node.parentNode,next:node.nextSibling});parent.append(node)};
   try{
     const back=root.querySelector('.reading-back');
@@ -81,6 +84,8 @@ export async function mountReadingShell(model,root=document.querySelector('#app'
       const link=document.createElement('a');link.href='#'+group.id;link.textContent=title;link.dataset.sectionLink=key;linkStrip.append(link);
     }
     const mini=document.createElement('div');mini.className='rd-mini';mini.innerHTML=`<span>${escape(model.home.name)}</span><b>VS</b><span>${escape(model.away.name)}</span>`;mini.setAttribute('aria-hidden','true');nav.prepend(mini);
+    undo.push(installScenario(model,groups.get('scenario').lastElementChild));
+    const forecastUi=installForecasts(model,groups.get('pronostici').lastElementChild,shell,options.store);undo.push(forecastUi.undo);
     root.replaceChildren(shell);document.body.dataset.readingDetailTheme=model.theme;
     const siteHeader=document.querySelector('.site-header');
     const headerOffset=()=>siteHeader?siteHeader.getBoundingClientRect().height+(parseFloat(getComputedStyle(siteHeader).top)||0):0;
@@ -101,6 +106,7 @@ export async function mountReadingShell(model,root=document.querySelector('#app'
     groups.forEach(group=>{if(group.isConnected)sectionObserver.observe(group)});
     window.addEventListener('pagehide',()=>{heroObserver.disconnect();sectionObserver.disconnect();sizeObserver?.disconnect()},{once:true});
   }catch(error){
+    undo.reverse().forEach(fn=>fn());
     // Restore moved nodes to their original parents in reverse order.
     for(const item of placements.reverse())item.parent.insertBefore(item.node,item.next?.parentNode===item.parent?item.next:null);
     root.replaceChildren(...original);delete document.body.dataset.readingDetailTheme;
