@@ -81,7 +81,9 @@ function build(){
   data.marketCatalog.totals.notModelled=after.size-data.marketCatalog.totals.evaluated;
   data.marketCatalog.totals.suggestionsByFamily=data.marketCatalog.matches.flatMap(m=>m.selections).filter(l=>l.suggestionAnalysis?.suggested).reduce((a,l)=>(a[l.suggestionAnalysis.family]=(a[l.suggestionAnalysis.family]||0)+1,a),{});
   data.marketCatalog.unquotedPublication={version:1,source:'cached forecasts only',excluded};
-  fs.writeFileSync('data/normalized/schedina-md07.json',JSON.stringify(data,null,2)+'\n');
+  const output='data/normalized/schedina-md07.json';
+  fs.writeFileSync(`${output}.tmp`,JSON.stringify(data,null,2)+'\n');
+  fs.renameSync(`${output}.tmp`,output);
   console.log(`MD7: ${data.marketCatalog.totals.suggestions} pronostici condivisi; nessuna ricerca quote o rigenerazione modello.`);
   return data;
 }

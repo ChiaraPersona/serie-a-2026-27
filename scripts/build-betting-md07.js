@@ -23,8 +23,6 @@ const write = (file, data) => {
 };
 const run = (file, args = [], env = {}) => execFileSync(process.execPath, [file, ...args], { cwd: root, env: { ...process.env, ...env }, stdio: "inherit" });
 const before = read("data/normalized/predictions.json");
-const savedCanonicalForecasts = fs.existsSync(path.join(root,'data/normalized/schedina-md07.json'))
-  ? read('data/normalized/schedina-md07.json').marketCatalog.matches.flatMap(m=>m.selections).filter(l=>l.forecastIdentity) : [];
 const walk = directory => fs.readdirSync(path.join(root,directory),{withFileTypes:true}).flatMap(entry=>entry.isDirectory()?walk(`${directory}/${entry.name}`):[`${directory}/${entry.name}`]);
 const protectedFiles = [...walk('data')].filter(file=>/champions/i.test(file)||/\/schedina(?:\.json|-md0[1-6]\.json)$/.test(file)||/\/(?:prediction-archive-md|mycombo-serie-a-2026-27-md-0[1-6]|schedina-serie-a-2026-27-md-0[1-6])/.test(file)||file.startsWith('data/predictions/snapshots/'));
 const digest = file=>createHash('sha256').update(fs.readFileSync(path.join(root,file))).digest('hex');
@@ -74,13 +72,8 @@ const marketCatalog = buildMd06MarketCatalog({ predictionsData, odds: roundOdds,
 for (const match of marketCatalog.matches) for (const leg of match.selections) {
   leg.isOutsider = leg.betSelection?.operational?.classification === 'OUTSIDER';
 }
-// Provider offers can enrich canonical forecasts only via exact target binding.
-// In particular, a later DUO offer must not replace a standard-player forecast.
-for (const saved of savedCanonicalForecasts) {
-  const match=marketCatalog.matches.find(m=>m.matchId===saved.matchId);
-  const index=match.selections.findIndex(l=>l.selectionId===saved.selectionId);
-  if(index<0)match.selections.push(saved);else match.selections[index]=saved;
-}
+// Rebuild canonical forecasts from the current lineup/model inputs. Reusing
+// previous rows would retain obsolete starters and stale probabilities.
 write("data/normalized/schedina-md07.json", { schemaVersion: 1, competition: "serie-a", season: "2026-27", matchday: 7,
   generatedAt: new Date().toISOString(), title: "Schedine Serie A · 7ª giornata", description: "Pronostici condivisi con le letture delle dieci partite.",
   provider: odds.provider, sourceUrl: odds.sourceUrl, oddsRetrievedAt: odds.retrievedAt, modelVersion: predictionsData.engine.version,

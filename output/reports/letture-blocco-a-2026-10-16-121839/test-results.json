@@ -1,0 +1,56 @@
+[
+  {
+    "test": "scripts/test-forecast-sync.js",
+    "exitCode": 0,
+    "signal": null,
+    "error": null,
+    "durationMs": 402,
+    "stdout": "{\n  \"status\": \"OK\",\n  \"simulatedMatchId\": \"sassuolo-milan-2026-27-md-06\",\n  \"before\": {\n    \"total\": 16,\n    \"byMarket\": {\n      \"corners\": 2,\n      \"goals-results\": 3,\n      \"shots\": 7,\n      \"sot\": 4\n    }\n  },\n  \"afterAddAndUpdate\": {\n    \"total\": 18,\n    \"byMarket\": {\n      \"corners\": 2,\n      \"goals-results\": 3,\n      \"shots\": 8,\n      \"sot\": 5\n    },\n    \"added\": [\n      \"bet:sisal:sassuolo-milan-2026-27-md-06:5369280365:sync-test-new\",\n      \"bet:sisal:sassuolo-milan-2026-27-md-06:5369326729:sync-test-new\"\n    ],\n    \"updated\": [\n      \"bet:sisal:sassuolo-milan-2026-27-md-06:5337170659\"\n    ]\n  },\n  \"preservedByMarket\": {\n    \"corners\": 2,\n    \"goals-results\": 3\n  },\n  \"idempotent\": true,\n  \"explicitQuoteUpdate\": true,\n  \"explicitWithdrawalOnly\": true,\n  \"sharedRendererIds\": 18,\n  \"historicalHashesUnchanged\": true\n}\n",
+    "stderr": ""
+  },
+  {
+    "test": "scripts/test-personal-betslip.mjs",
+    "exitCode": 0,
+    "signal": null,
+    "error": null,
+    "durationMs": 151,
+    "stdout": "OK schedina personale: store, deduplica, compatibilità, quote, contesti e persistenza\n",
+    "stderr": ""
+  },
+  {
+    "test": "scripts/test-reading-prediction-v2.mjs",
+    "exitCode": 0,
+    "signal": null,
+    "error": null,
+    "durationMs": 569,
+    "stdout": "OK Lettura Prediction V2: 24 contratti UI/data\n",
+    "stderr": ""
+  },
+  {
+    "test": "scripts/test-champions-reading-page.mjs",
+    "exitCode": 0,
+    "signal": null,
+    "error": null,
+    "durationMs": 4908,
+    "stdout": "OK dettaglio lettura Champions\n",
+    "stderr": ""
+  },
+  {
+    "test": "scripts/test-official-starter-policy.cjs",
+    "exitCode": 0,
+    "signal": null,
+    "error": null,
+    "durationMs": 1525,
+    "stdout": "OK official starter policy, scope, identity, modifiers, confirmations, current archive and original-cohort reconciliation\nOK stale MyCombo purge and direct add rejection\n",
+    "stderr": ""
+  },
+  {
+    "test": "scripts/test-champions-md02-market-ui.mjs",
+    "exitCode": 0,
+    "signal": null,
+    "error": null,
+    "durationMs": 1172,
+    "stdout": "OK UI mercati MD2: 5 contratti aggiunti e ripristinati con quote, ID e modificatori invariati\n",
+    "stderr": ""
+  }
+]

@@ -1,0 +1,157 @@
+{
+  "method": "Static dependency closure plus manual inspection before execution. Mock storage/DOM only; git show is read-only. No npm aliases, builders, browser, network, real localStorage or baseline updates.",
+  "tests": [
+    "scripts/test-forecast-sync.js",
+    "scripts/test-personal-betslip.mjs",
+    "scripts/test-reading-prediction-v2.mjs",
+    "scripts/test-champions-reading-page.mjs",
+    "scripts/test-official-starter-policy.cjs",
+    "scripts/test-champions-md02-market-ui.mjs"
+  ],
+  "dependencyFiles": [
+    {
+      "path": "js/components/lineup-field.mjs",
+      "sha256": "bedb2f2de8484fa7af13a0572fe00f826c771ef5b73d97b74f962d612f6f9838",
+      "mutationOrProcessLines": []
+    },
+    {
+      "path": "js/components/lineup-kit.mjs",
+      "sha256": "93f37a2f363b96f4410949d110f35b421c390058cb5a7358dcb075dac1e8892b",
+      "mutationOrProcessLines": []
+    },
+    {
+      "path": "js/official-starter-policy.js",
+      "sha256": "2614a2c635e3f7e36d365c7d9ecbc1f7707218ba60d865caaeb16269358cf362",
+      "mutationOrProcessLines": []
+    },
+    {
+      "path": "js/pages/champions-market-ui.mjs",
+      "sha256": "aca8b3deed9f2e528d3788c7b6392dc64b9e0a715865cfbbd0b4e99a9f58cdce",
+      "mutationOrProcessLines": [
+        {
+          "line": 61,
+          "text": "export function mountChampionsMarketUi(fixture,{storage=globalThis.localStorage,publishedSelections=[]}={}){"
+        }
+      ]
+    },
+    {
+      "path": "js/pages/champions.js",
+      "sha256": "2380661ac4b07c48c84b17b6f7764ae3e4d189e7beade162624be9f9c2d3e863",
+      "mutationOrProcessLines": []
+    },
+    {
+      "path": "js/pages/disciplinary.mjs",
+      "sha256": "a6245f0d936356d96814bf483fb28b7c56f7b9e34799f42b0d365e72c6f296f2",
+      "mutationOrProcessLines": []
+    },
+    {
+      "path": "js/pages/personal-betslip-store.mjs",
+      "sha256": "fb5682d0562dd1e5b63b730b235e9e0d93e43b0e6d5832359e1aeb078a64d7ec",
+      "mutationOrProcessLines": [
+        {
+          "line": 133,
+          "text": "export function createPersonalBetslipStore({storage=globalThis.localStorage,storageKey=PERSONAL_BETSLIP_STORAGE_KEY,now=()=>new Date().toISOString()}={}){"
+        },
+        {
+          "line": 141,
+          "text": "    try{storage?.setItem(storageKey,JSON.stringify({...state,storageError:null}));state.storageError=null}"
+        }
+      ]
+    },
+    {
+      "path": "js/pages/readings.js",
+      "sha256": "58d65ca4f3f3d61698f263a40cc2b4ff73407e494c5c20cb2a2953b9b0ae87bb",
+      "mutationOrProcessLines": []
+    },
+    {
+      "path": "js/pages/shared-forecast-contract.mjs",
+      "sha256": "9db89f1a5e55ee010636e3ca64895968d5122518dac1d05809f0d08ec7b6521a",
+      "mutationOrProcessLines": []
+    },
+    {
+      "path": "scripts/forecast-sync.js",
+      "sha256": "3d23934f8839665e67e7002473dbfa17d2c1e58f7832a756bc8da29bd5fc7e8e",
+      "mutationOrProcessLines": []
+    },
+    {
+      "path": "scripts/test-champions-md02-market-ui.mjs",
+      "sha256": "8cf84c5c33241a5f8a1f8e5159447587300c83c83f6f0caf2efe4f7191198f0c",
+      "mutationOrProcessLines": [
+        {
+          "line": 22,
+          "text": "const storage={getItem:key=>memory.get(key)||null,setItem:(key,value)=>memory.set(key,value)};"
+        }
+      ]
+    },
+    {
+      "path": "scripts/test-champions-reading-page.mjs",
+      "sha256": "f43645d256a44c8ce20579287ad9a49ef02d5fd884108348dfd152be33b44eed",
+      "mutationOrProcessLines": []
+    },
+    {
+      "path": "scripts/test-forecast-sync.js",
+      "sha256": "acaf72aef82b488f21affb992a3d15e6af051b6152c7a31e0fd7cdb640d81cba",
+      "mutationOrProcessLines": []
+    },
+    {
+      "path": "scripts/test-official-starter-policy.cjs",
+      "sha256": "b35c4119cd762ee0b680406c2a2a0c114191afc93d68bff73f79cfeb77cda400",
+      "mutationOrProcessLines": [
+        {
+          "line": 7,
+          "text": "const before=JSON.parse(cp.execFileSync('git',['show','HEAD:data/normalized/schedina-champions-md02.json'],{encoding:'utf8',maxBuffer:64e6}));"
+        },
+        {
+          "line": 61,
+          "text": "  const storage={getItem:()=>JSON.stringify(saved),setItem:()=>{}};"
+        }
+      ]
+    },
+    {
+      "path": "scripts/test-personal-betslip.mjs",
+      "sha256": "922182e161604e940f897eb0d3a16a55b6c47c8cd4cc2f81916eb2c8380bcc35",
+      "mutationOrProcessLines": [
+        {
+          "line": 6,
+          "text": "  return {getItem:key=>values.get(key)??null,setItem:(key,value)=>values.set(key,String(value)),dump:()=>values.get(PERSONAL_BETSLIP_STORAGE_KEY)};"
+        },
+        {
+          "line": 27,
+          "text": "  storage.setItem(PERSONAL_BETSLIP_STORAGE_KEY,JSON.stringify({version:1,activeContext:key,contexts:{[key]:{context:context6,selections:[foul],updatedAt:\"2026-10-09T12:00:00.000Z\"}}}));"
+        },
+        {
+          "line": 56,
+          "text": "  assert.equal(restored.getSnapshot().selections.length,2,\"ripristino da localStorage fallito\");"
+        },
+        {
+          "line": 102,
+          "text": "  storage.setItem(PERSONAL_BETSLIP_STORAGE_KEY,JSON.stringify({version:1,activeContext:key,contexts:{[key]:{context:context6,selections:[periodCorner],updatedAt:\"2026-10-09T12:00:00.000Z\"}}}));"
+        },
+        {
+          "line": 203,
+          "text": "  const brokenStorage={getItem(){throw new Error(\"lettura negata\")},setItem(){throw new Error(\"scrittura negata\")}};"
+        },
+        {
+          "line": 211,
+          "text": "  const corruptStorage={getItem:()=>\"{non-json\",setItem:()=>{}};"
+        }
+      ]
+    },
+    {
+      "path": "scripts/test-reading-prediction-v2.mjs",
+      "sha256": "3aaff3d394ff06fefac0731a387fa4690ee83ed71778854c421f6c47fce89f25",
+      "mutationOrProcessLines": []
+    }
+  ],
+  "excluded": [
+    {
+      "path": "scripts/test-schedina-md07.mjs",
+      "reason": "fs.writeFileSync to fixed preexisting output/reports/serie-a-md07-final-audit.json; not executed, equivalent relevant checks below use memory only."
+    },
+    {
+      "path": "scripts/test-betting-selection-contract.js",
+      "reason": "Imports scripts/betting-selection-contract.js which calls buildRegistry() at module initialization; buildRegistry writes normalized official-starter-registry.json. Not executed."
+    }
+  ],
+  "limitations": "Static scan is evidence, not a sandbox proof; before/after byte hashes and path inventories independently detect persistent changes."
+}

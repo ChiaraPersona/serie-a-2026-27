@@ -1,0 +1,434 @@
+[
+  {
+    "file": "js/pages/readings.js",
+    "lines": [
+      {
+        "line": 14,
+        "text": "export function fixtureLineupForMatch(match,team,teamDirectory){"
+      },
+      {
+        "line": 23,
+        "text": "export function formationPresentation(match,teamDirectory){"
+      },
+      {
+        "line": 32,
+        "text": "export function renderPredictionV2Sections({prediction,teams=[],esc=value=>String(value),teamLogo=()=>\"\"}={}){"
+      },
+      {
+        "line": 74,
+        "text": "export function renderSharedForecasts({marketCatalog,match,esc=value=>String(value)}={}){"
+      },
+      {
+        "line": 82,
+        "text": "export function createPage(deps){"
+      },
+      {
+        "line": 84,
+        "text": "const readingModules=["
+      },
+      {
+        "line": 93,
+        "text": "const readingField=section=>section?.content?`<div class=\"reading-content\"><p>${esc(section.content)}</p>${section.signals?.length?`<ul>${section.signals.map(signal=>`<li>${esc(signal)}</li>`).join(\"\")}</ul>`:\"\"}</div>`:`<div class=\"reading-missing\"><strong>N/D</strong><span>Sezione da compilare con dati verificati.</span></div>`;"
+      },
+      {
+        "line": 94,
+        "text": "function readingFixtureLink(match,teams,reading,prediction,history){"
+      },
+      {
+        "line": 104,
+        "text": "function readingIndex(readings,matches,teams,predictions=[],headToHeadData){"
+      },
+      {
+        "line": 113,
+        "text": "function readingDetail(match,reading,teams){"
+      },
+      {
+        "line": 119,
+        "text": "function headToHeadPanel(history,prediction){"
+      },
+      {
+        "line": 131,
+        "text": "function readingPostMatchReport(match,home,away){"
+      },
+      {
+        "line": 148,
+        "text": "function readingPrototypeDetail(match,reading,teams,teamDirectory,objectiveProfiles,prediction,history,refereeProfiles,forecastCatalog){"
+      },
+      {
+        "line": 153,
+        "text": "  const duplicatePanels=new Set([\"Campo\",\"Dati disponibili\"]);"
+      },
+      {
+        "line": 154,
+        "text": "  const dataPanel=(label,body,className=\"\")=>duplicatePanels.has(label)?\"\":`<section class=\"reading-data-panel ${className}\"><span>${label}</span>${body}</section>`;"
+      },
+      {
+        "line": 171,
+        "text": "function renderProbableLineups(match,teamDirectory,prediction){"
+      },
+      {
+        "line": 180,
+        "text": "function renderReadingPilotEvidence(reading,match){"
+      },
+      {
+        "line": 187,
+        "text": "function renderTacticalBaselines(match,dataset,teams){"
+      },
+      {
+        "line": 206,
+        "text": "  async function render(){"
+      },
+      {
+        "line": 208,
+        "text": "    const requestedMatchday=Number(requestedMatchId?.match(/-md-(\\d{2})$/)?.[1]),forecastFile=requestedMatchday===1?\"schedina.json\":requestedMatchday?`schedina-md${String(requestedMatchday).padStart(2,\"0\")}.json`:null;"
+      },
+      {
+        "line": 209,
+        "text": "    const [teams,matches,readings,objectiveProfiles,teamDirectory,teamStyleProfiles,predictionDataset,headToHeadData,refereeProfiles,forecastDataset]=await Promise.all([load(\"teams.json\"),load(\"matches.json\"),load(\"readings.json\"),loadObjectiveProfiles(),loadTeamDirectory(),load(\"team-style-profiles.json\"),load(\"predictions.json\"),loadGenerated(`head-to-head/${requestedMatchId?\"first-leg-2026-27.json\":\"first-leg-2026-27-summary.json\"}`),requestedMatchId?loadGenerated(\"reading-referee-profiles-2025-26.json\"):Promise.resolve(null),forecastFile?load(forecastFile).catch(()=>null):Promise.resolve(null)]);"
+      },
+      {
+        "line": 215,
+        "text": "    const matchId=new URLSearchParams(location.search).get(\"match\"),selectedMatch=league.find(match=>match.id===matchId),reading=readings.find(item=>item.matchId===matchId),prediction=predictionDataset?.predictions?.find(item=>item.matchId===matchId);"
+      },
+      {
+        "line": 220,
+        "text": "    html=selectedMatch?readingPrototypeDetail(selectedMatch,reading,allTeams,teamDirectory,objectiveProfiles,prediction,history,refereeProfiles,forecastDataset?.marketCatalog):readingIndex(readings,league,allTeams,predictionDataset?.predictions||[],headToHeadData);"
+      },
+      {
+        "line": 224,
+        "text": "    if(requestedMatchday===7&&document.querySelector('[data-shared-forecast-id][role=\"button\"]')){"
+      }
+    ]
+  },
+  {
+    "file": "js/pages/champions.js",
+    "lines": [
+      {
+        "line": 27,
+        "text": "  function refereeReadingPanel(assignment,profile){"
+      },
+      {
+        "line": 58,
+        "text": "  function matchReport(fixture){"
+      },
+      {
+        "line": 69,
+        "text": "  function roundTable(data){"
+      },
+      {
+        "line": 104,
+        "text": "  function strengthDirectory(strength){"
+      },
+      {
+        "line": 109,
+        "text": "  function modelAudit(model){"
+      },
+      {
+        "line": 139,
+        "text": "  function probableFormationCard(fixture,squads,onlyTeam=null){"
+      },
+      {
+        "line": 166,
+        "text": "  function tacticalAnalysisPanel(fixture,styleProfiles,volumeProfiles,attackByTeam,branding){"
+      },
+      {
+        "line": 208,
+        "text": "  function motivationOnlyDetail(fixture,entry,branding,squads){"
+      },
+      {
+        "line": 214,
+        "text": "  function motivationOverview(data,branding){"
+      },
+      {
+        "line": 229,
+        "text": "  function pilotReadingDetail(fixture,pilot,backtest,squads,branding,h2h,motivationEntry,styleProfiles,attackByTeam,surpriseEntry,playerMarketEntry,playerMarketDataset,md2MarketEntry,md2SchedinaFixture){"
+      },
+      {
+        "line": 258,
+        "text": "    const bookedPanel=playerMarketEntry?.likelyBooked?.length?`<section class=\"prediction-booked-panel\"><header><div><p class=\"eyebrow\">Gerarchia disciplinare</p><h2>5 probabili ammoniti</h2></div><p>Indice comparativo, non probabilità. Primo nome: euristica del ranking.</p></header><ol>${playerMarketEntry.likelyBooked.map(candidate=>`<li class=\"${candidate.possibleFirstBooked?\"possible-first-booked\":\"\"}\"><span>${candidate.rank}</span><div><strong>${esc(candidate.name)}</strong><small>${esc(candidate.team)} · ${esc(candidate.role)}${candidate.possibleFirstBooked?\" · possibile primo ammonito (euristica)\":\"\"}</small><em>${candidate.evidence.map(esc).join(\" · \")}</em>${candidate.sisal?`<small>Quota Sisal ${candidate.sisal.odds.toFixed(2)} · sostituto incluso</small>`:\"<small>Quota Sisal N/D</small>\"}</div><b>${candidate.riskScore}/100</b></li>`).join(\"\")}</ol></section>`:\"\";"
+      },
+      {
+        "line": 261,
+        "text": "    const shootersPanel=shooters?`<section class=\"section champions-shooters\" aria-labelledby=\"champions-shooters-title\"><header class=\"section-heading\"><div><p class=\"eyebrow\">Probabili titolari · proiezione individuale</p><h2 id=\"champions-shooters-title\">Possibili migliori tiratori</h2></div><p>Volumi previsti, non soglie dettate dalle quote.</p></header><div><article><h3>Tiri totali</h3><p>Media prevista del giocatore</p>${shooterList(shooters.totalShots,\"projectedShots\",\"shotsOver05\")}</article><article><h3>Tiri in porta</h3><p>Media prevista nello specchio</p>${shooterList(shooters.shotsOnTarget,\"projectedShotsOnTarget\",\"shotsOnTargetOver05\")}</article></div><p class=\"objective-method\">Le frequenze per 90 minuti sono regolarizzate per ruolo e scalate sul volume atteso della squadra. “Sisal” è soltanto la quota disponibile per almeno un tiro o un tiro in porta con sostituto incluso.</p></section>`:\"\";"
+      },
+      {
+        "line": 263,
+        "text": "    const myCombo=playerMarketEntry?.combinations?`<section class=\"section reading-panel-grid champions-reading-combo\"><section class=\"reading-data-panel reading-data-panel-wide\"><span>MyCombo</span><p class=\"champions-combo-policy\">Combinazioni selezionate dal modello con obiettivi di quota 5, 10 e 20. Quote indicative calcolate come prodotto delle singole selezioni.</p><div class=\"prediction-combos\">${playerMarketEntry.combinations.map(comboCard).join(\"\")}</div><small>Quote aggiornate ${esc(shortDate(String(playerMarketDataset?.oddsRetrievedAt||\"\").slice(0,10)))}. Esclusi cartellini, DNB, confronti tiri, prima a corner, quasi ammonito e mercati non compatibili.</small></section></section>`:\"\";"
+      },
+      {
+        "line": 269,
+        "text": "    const marketPanel=md2MarketEntry?publishedPanel:\"\";"
+      },
+      {
+        "line": 270,
+        "text": "    const selectedBlocks=[marketPanel,shootersPanel,bookedPanel?`<section class=\"section champions-player-predictions\"><div class=\"prediction-players-grid\">${bookedPanel}</div></section>`:\"\",myCombo].filter(Boolean).join(\"\");"
+      },
+      {
+        "line": 271,
+        "text": "    const selectedForecasts=selectedBlocks?`<section class=\"section champions-selected-forecasts\" id=\"champions-selected-forecasts\" aria-labelledby=\"champions-selected-forecasts-title\"><header class=\"section-heading\"><div><p class=\"eyebrow\">Stessa selezione della schedina</p><h2 id=\"champions-selected-forecasts-title\">Pronostici selezionati</h2></div></header>${selectedBlocks}</section>`:\"\";"
+      },
+      {
+        "line": 272,
+        "text": "    const round=md2MarketEntry?2:1;"
+      },
+      {
+        "line": 283,
+        "text": "  function registeredSquadsDirectory(squads,{detail=false}={}){"
+      },
+      {
+        "line": 415,
+        "text": "  function historyDirectory(history){"
+      },
+      {
+        "line": 437,
+        "text": "    const requestedCalendarFixture=requestedMatchId?data.fixtures.find(fixture=>fixture.id===requestedMatchId):null;"
+      },
+      {
+        "line": 438,
+        "text": "    const [md2Pilot,md2Integration,md2Schedina,md2RefereeHistory]=requestedCalendarFixture?.matchday===2?await Promise.all([load(\"champions-pilot-predictions-md02-2026-27.json\"),load(\"champions-md02-integration-2026-27.json\"),load(\"schedina-champions-md02.json\"),load(\"champions-referee-history-2026-10-13.json\")]):[null,null,null,null];"
+      },
+      {
+        "line": 440,
+        "text": "    const requestedPilotFixture=requestedMatchId?activePilot.fixtures.find(fixture=>fixture.fixtureId===requestedMatchId):null;"
+      },
+      {
+        "line": 443,
+        "text": "    const requestedFixture=requestedPilotFixture?{...requestedPilotFixture,status:requestedCalendarFixture?.status||requestedPilotFixture.status,score:requestedCalendarFixture?.score||requestedPilotFixture.score,matchReport:requestedCalendarFixture?.matchReport||requestedPilotFixture.matchReport,refereeAssignment:requestedCalendarFixture?.refereeAssignment||null,refereeProfile,probableFormation:requestedCalendarFixture?.probableFormation||null}:null;"
+      },
+      {
+        "line": 448,
+        "text": "      document.querySelector(\"#app\").innerHTML=pilotReadingDetail(requestedFixture,activePilot,backtest,squads,branding,h2h,motivationByFixture.get(requestedMatchId),styleProfiles,attackByTeam,surpriseByFixture.get(requestedMatchId),md2MarketEntry?null:playerMarkets.fixtures.find(item=>item.fixtureId===requestedMatchId),md2MarketEntry?null:playerMarkets,md2MarketEntry,md2SchedinaFixture);"
+      },
+      {
+        "line": 451,
+        "text": "        const {mountChampionsMarketUi}=await import(`./champions-market-ui.mjs?v=${encodeURIComponent(release)}`);"
+      },
+      {
+        "line": 452,
+        "text": "        mountChampionsMarketUi(md2MarketEntry,{publishedSelections:md2SchedinaFixture?.selections||[]});"
+      },
+      {
+        "line": 456,
+        "text": "    if(requestedCalendarFixture&&motivationByFixture.has(requestedMatchId)){"
+      },
+      {
+        "line": 457,
+        "text": "      document.querySelector(\"#app\").innerHTML=motivationOnlyDetail(requestedCalendarFixture,motivationByFixture.get(requestedMatchId),branding,squads);"
+      }
+    ]
+  },
+  {
+    "file": "js/pages/champions-market-ui.mjs",
+    "lines": [
+      {
+        "line": 6,
+        "text": "export function createChampionsSelection(fixture,market,selection){"
+      },
+      {
+        "line": 10,
+        "text": "    context:{competition:\"champions\",season:\"2026-27\",matchday:2},"
+      },
+      {
+        "line": 62,
+        "text": "  const root=document.querySelector(`[data-champions-market-root][data-fixture-id=\"${CSS.escape(fixture.fixtureId)}\"]`);"
+      },
+      {
+        "line": 63,
+        "text": "  const publishedRoot=document.querySelector(`[data-champions-published-root][data-fixture-id=\"${CSS.escape(fixture.fixtureId)}\"]`);"
+      },
+      {
+        "line": 64,
+        "text": "  if(!root&&!publishedRoot)return null;"
+      },
+      {
+        "line": 67,
+        "text": "  store.setContext({competition:\"champions\",season:\"2026-27\",matchday:2});"
+      },
+      {
+        "line": 68,
+        "text": "  const catalogContracts=fixture.oddsEvent.playerMarkets.flatMap(market=>market.selections.filter(selection=>selection.interfaceSelectable).map(selection=>createChampionsSelection(fixture,market,selection)));"
+      },
+      {
+        "line": 71,
+        "text": "  store.reconcile([...retainedOtherFixtures,...contracts]);"
+      },
+      {
+        "line": 91,
+        "text": "    if(!root)return;"
+      },
+      {
+        "line": 104,
+        "text": "    if(!root)return;"
+      },
+      {
+        "line": 122,
+        "text": "    if(!root)return;"
+      }
+    ]
+  },
+  {
+    "file": "js/pages/personal-betslip-store.mjs",
+    "lines": [
+      {
+        "line": 4,
+        "text": "export const PERSONAL_BETSLIP_STORAGE_KEY=\"serie-a-2026-27:personal-betslip:v1\";"
+      },
+      {
+        "line": 12,
+        "text": "export function contextKey(context){"
+      },
+      {
+        "line": 37,
+        "text": "function playability(selection){"
+      },
+      {
+        "line": 38,
+        "text": "  if(globalThis.officialStarterPolicy&&!globalThis.officialStarterPolicy.eligible(selection))return {status:'NOT_PLAYABLE',code:'OFFICIAL_NON_STARTER',reason:'Giocatore assente dagli undici ufficiali.'};"
+      },
+      {
+        "line": 41,
+        "text": "  if(Number(selection?.context?.matchday)>=6&&isPlayableUnder(selection))return {status:\"NOT_PLAYABLE\",code:\"UNDER_NOT_PLAYABLE\",reason:\"Gli Under sono esclusi dalle proposte giocabili dalla sesta giornata.\"};"
+      },
+      {
+        "line": 42,
+        "text": "  if(Number(selection?.context?.matchday)>=6&&isIndividualPlayerFoulSelection(selection))return {status:\"NOT_PLAYABLE\",code:\"INDIVIDUAL_FOUL_NOT_PLAYABLE\",reason:\"I falli commessi o subiti del singolo giocatore sono esclusi dalle proposte giocabili dalla sesta giornata.\"};"
+      },
+      {
+        "line": 43,
+        "text": "  if(Number(selection?.context?.matchday)>=6&&isCornerPeriodSelection(selection))return {status:\"NOT_PLAYABLE\",code:\"CORNER_PERIOD_NOT_PLAYABLE\",reason:\"I corner riferiti a singoli tempi o finestre temporali sono esclusi dalle proposte giocabili dalla sesta giornata.\"};"
+      },
+      {
+        "line": 97,
+        "text": "    if(row.dataStatus===\"MISSING_FROM_CURRENT_DATA\")addIssue(\"MISSING_FROM_CURRENT_DATA\",`${row.label||row.selectionId}: mercato non presente nei dati correnti; selezione conservata.`,[row.selectionId]);"
+      },
+      {
+        "line": 133,
+        "text": "export function createPersonalBetslipStore({storage=globalThis.localStorage,storageKey=PERSONAL_BETSLIP_STORAGE_KEY,now=()=>new Date().toISOString()}={}){"
+      },
+      {
+        "line": 160,
+        "text": "  const add=selection=>{"
+      },
+      {
+        "line": 168,
+        "text": "    const stored={...clone(selection),addedAt:now(),addedQuote:finite(quote(selection).decimal)?Number(quote(selection).decimal):null,quoteChanged:false,dataStatus:\"CURRENT\"};"
+      },
+      {
+        "line": 183,
+        "text": "  const reconcile=latestSelections=>{"
+      },
+      {
+        "line": 189,
+        "text": "      if(!fresh){missing+=1;return {...stored,dataStatus:\"MISSING_FROM_CURRENT_DATA\"}}"
+      },
+      {
+        "line": 193,
+        "text": "      if(useFresh){updated+=1;return {...clone(fresh),addedAt:stored.addedAt,addedQuote:stored.addedQuote,previousQuote:changed&&finite(storedQuote.decimal)?Number(storedQuote.decimal):(stored.previousQuote??null),quoteChanged:Boolean(stored.quoteChanged||changed),dataStatus:\"CURRENT\"}}"
+      }
+    ]
+  },
+  {
+    "file": "js/pages/shared-forecast-contract.mjs",
+    "lines": [
+      {
+        "line": 3,
+        "text": "export function isCanonicalModelForecast(leg){"
+      },
+      {
+        "line": 7,
+        "text": "    &&/^forecast:v2:/.test(leg.selectionId)&&target.matchId?.endsWith('-md-07')"
+      },
+      {
+        "line": 10,
+        "text": "    &&target.period==='REGULATION'&&target.duo===false"
+      },
+      {
+        "line": 14,
+        "text": "export function hasVerifiedPlayableQuote(leg){"
+      },
+      {
+        "line": 16,
+        "text": "  return leg?.lineupEligibility?.eligible!==false"
+      },
+      {
+        "line": 28,
+        "text": "export function isUnquotedIndividualForecast(leg){"
+      },
+      {
+        "line": 31,
+        "text": "    && leg?.betSelection?.quote?.availability===\"UNAVAILABLE\""
+      },
+      {
+        "line": 36,
+        "text": "export function isPublishedForecast(leg){"
+      },
+      {
+        "line": 37,
+        "text": "  return leg?.lineupEligibility?.eligible!==false"
+      },
+      {
+        "line": 38,
+        "text": "    && (!globalThis.officialStarterPolicy||globalThis.officialStarterPolicy.eligible(leg))"
+      },
+      {
+        "line": 44,
+        "text": "export function sharedForecastsForMatch(marketCatalog,matchId){"
+      },
+      {
+        "line": 51,
+        "text": "export function forecastView(leg,matchday=null){"
+      }
+    ]
+  },
+  {
+    "file": "scripts/betting-selection-contract.js",
+    "lines": [
+      {
+        "line": 5,
+        "text": "starterPolicy.configure(require('./apply-official-starter-policy').buildRegistry());"
+      }
+    ]
+  },
+  {
+    "file": "scripts/apply-official-starter-policy.js",
+    "lines": [
+      {
+        "line": 6,
+        "text": "function buildRegistry(){"
+      },
+      {
+        "line": 29,
+        "text": "  write('data/normalized/official-starter-registry.json',registry);policy.configure(registry);return registry;"
+      },
+      {
+        "line": 31,
+        "text": "function build(){"
+      }
+    ]
+  },
+  {
+    "file": "js/services/data-service.js",
+    "lines": [
+      {
+        "line": 7,
+        "text": "      const registry=await fetchJson(`${DATA}official-starter-registry.json`,'official starters');"
+      },
+      {
+        "line": 8,
+        "text": "      globalThis.officialStarterPolicy.configure(registry);"
+      },
+      {
+        "line": 9,
+        "text": "      return globalThis.officialStarterPolicy.filter(await fetchJson(`${DATA}${name}`,name));"
+      },
+      {
+        "line": 11,
+        "text": "    loadGenerated:path=>fetchJson(`data/generated/${path}`,path),"
+      },
+      {
+        "line": 12,
+        "text": "    loadTeamDirectory:()=>fetchJson(\"data/teams/index.json\",\"data/teams/index.json\"),"
+      }
+    ]
+  }
+]

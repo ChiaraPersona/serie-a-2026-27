@@ -20,5 +20,7 @@ const comments=[...raw.matchAll(/<h4 class="h6">([^<]+)<\/h4>\s*<div class="comm
 const report={source:source.sourceUrl,rawSnapshot:source.rawSnapshot,importedAt:source.importedAt,sections,comments,conflicts,
   coverage:{teams:source.teams.length,comments:comments.length,ballotEntries:sections.filter(p=>p.kind==='ballots').length,injured:sections.filter(p=>p.kind==='injureds').length,suspended:sections.filter(p=>p.kind==='suspendeds').length,doubts:sections.filter(p=>p.kind==='dubts').length},
   policy:'Probabili e dubbi restano editoriali. I report medici non sono certificazioni di assenza; nessuna identita dedotta per somiglianza.'};
-fs.writeFileSync('data/sources/md07-availability-and-ballots.json',JSON.stringify(report,null,2)+'\n');
+const output='data/sources/md07-availability-and-ballots.json';
+fs.writeFileSync(`${output}.tmp`,JSON.stringify(report,null,2)+'\n');
+fs.renameSync(`${output}.tmp`,output);
 console.log(JSON.stringify({coverage:report.coverage,conflicts,commentsWithCoachChange:comments.filter(p=>/eson|nuovo allen|cambio.*panchina|subentr/.test(p.text))},null,2));

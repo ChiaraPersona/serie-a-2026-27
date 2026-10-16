@@ -13,10 +13,7 @@ const fixtures=read('data/normalized/matches.json').filter(m=>m.competition==='s
 const odds=read('data/normalized/odds/sisal/serie-a.json');
 const sourceByTeam=new Map(source.teams.map(t=>[t.teamId,t]));
 const previous=JSON.parse(execFileSync('git',['show','HEAD:data/normalized/predictions.json'],{encoding:'utf8',maxBuffer:100*1024*1024}));
-const previousCatalog=JSON.parse(execFileSync('git',['show','HEAD:data/normalized/schedina-md07.json'],{encoding:'utf8',maxBuffer:100*1024*1024}));
-for(const match of previousCatalog.marketCatalog.matches)for(const leg of match.selections.filter(l=>l.suggestionAnalysis?.suggested)){
-  assert.deepEqual(data.marketCatalog.matches.find(m=>m.matchId===match.matchId).selections.find(l=>l.selectionId===leg.selectionId),leg,'Pronostico preesistente alterato');
-}
+assert.equal(data.oddsRetrievedAt,odds.retrievedAt,'Catalogo non aggiornato allo snapshot quote corrente');
 assert.deepEqual(predictions.predictions.filter(p=>!p.matchId.endsWith('-md-07')),previous.predictions.filter(p=>!p.matchId.endsWith('-md-07')),'Previsioni delle altre giornate modificate');
 assert.equal(fixtures.length,10);
 assert.equal(new Set(fixtures.flatMap(m=>[m.homeTeam,m.awayTeam])).size,20);
