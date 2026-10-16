@@ -15,6 +15,8 @@ const slugAliases = { "hellas-verona": "verona" };
 const teams = read("data/normalized/teams.json");
 const teamDetails = read("data/sources/team-pages/team-details-2026-27.json");
 const fantasyRoster = read("data/sources/fantacalcio-quotations-2026-27.json");
+const shirtNumbers = read("data/sources/team-pages/shirt-numbers-2026-27.json");
+const shirtNumberByPlayer = new Map(shirtNumbers.players.map(player => [`${player.teamId}:${player.playerId}`, player.shirtNumber]));
 const probableLineups = require("../probable-lineups").loadLatestProbableLineups(root);
 const probableLineupByTeam = new Map(probableLineups.teams.map(team => [team.teamId, team]));
 const officialLineupsFile = path.join(root, "data/sources/official-lineups-2026-27.json");
@@ -323,6 +325,7 @@ function buildTeam(team) {
     } : null;
     return {
       ...player,
+      shirtNumber: shirtNumberByPlayer.get(`${team.id}:${player.id}`) ?? null,
       dateOfBirth: player.dateOfBirth || details?.dateOfBirth || null,
       age: player.age ?? ageAt(details?.dateOfBirth),
       nationality: player.nationality || details?.nationality || null,
@@ -558,5 +561,5 @@ const comparator = {
 };
 write("data/teams/player-leaderboards.json", { schemaVersion: 3, currentSeason: "2026/27", previousSeason: "2025/26", generatedAt: leaderboardGeneratedAt, periods, comparator });
 write("data/schemas/team.schema.json", { $schema: "https://json-schema.org/draft/2020-12/schema", title: "Serie A team", type: "object", required: ["id", "currentSeason", "city", "stadium", "coach", "preferredFormation", "probableLineup", "previousSeason", "teamStats", "squad", "sources", "lastUpdated"], properties: { city: { type: "string", minLength: 1 }, stadium: { type: "string", minLength: 1 }, coach: { type: "string", minLength: 1 }, preferredFormation: { type: "string", pattern: "^[1-9](?:-[1-9]){2,4}$" }, probableLineup: { type: "object", required: ["formation", "players", "context", "status", "source"], properties: { formation: { type: "string", pattern: "^[1-9](?:-[1-9]){2,4}$" }, players: { type: "array", minItems: 11, maxItems: 11, items: { type: "string", minLength: 1 } }, status: { enum: ["probable", "official"] } } }, squad: { type: "array", items: { $ref: "player.schema.json" } } } });
-write("data/schemas/player.schema.json", { $schema: "https://json-schema.org/draft/2020-12/schema", title: "Serie A player", type: "object", required: ["id", "name", "currentTeam", "currentSeason", "role", "detailedRole", "status", "marketValue", "previousSeason", "sources", "dataQuality"], properties: { detailedRole: { type: "string", minLength: 1 }, status: { enum: ["confermato", "nuovo acquisto", "prestito", "rientro dal prestito", "primavera", "da verificare"] }, marketValue: { anyOf: [{ type: "null" }, { type: "object", required: ["amountEur", "currency", "provider", "retrievedAt", "sourceUrl"] }] }, photoAttribution: { anyOf: [{ type: "null" }, { type: "object", required: ["provider", "pageUrl", "artist", "license"] }] }, previousSeason: { type: "object", required: ["season", "entries", "totals", "totalsByCompetition"] } } });
+write("data/schemas/player.schema.json", { $schema: "https://json-schema.org/draft/2020-12/schema", title: "Serie A player", type: "object", required: ["id", "name", "currentTeam", "currentSeason", "role", "detailedRole", "status", "marketValue", "previousSeason", "sources", "dataQuality"], properties: { shirtNumber: { type: ["integer", "null"], minimum: 1, maximum: 99, description: "Numero anagrafico verificato; non utilizzato dal motore statistico." }, detailedRole: { type: "string", minLength: 1 }, status: { enum: ["confermato", "nuovo acquisto", "prestito", "rientro dal prestito", "primavera", "da verificare"] }, marketValue: { anyOf: [{ type: "null" }, { type: "object", required: ["amountEur", "currency", "provider", "retrievedAt", "sourceUrl"] }] }, photoAttribution: { anyOf: [{ type: "null" }, { type: "object", required: ["provider", "pageUrl", "artist", "license"] }] }, previousSeason: { type: "object", required: ["season", "entries", "totals", "totalsByCompetition"] } } });
 console.log(`Generati dati per ${teams.length} club (${index.teams.filter(team => team.previousSeason.promoted).length} da Serie B).`);

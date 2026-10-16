@@ -1126,3 +1126,12 @@ body[data-page="referees"] .team-referee-summary strong{color:var(--glass-text)}
 #team-squad-app.team-editorial .team-full-roster-table tbody th{font-weight:650}
 #team-squad-app.team-editorial .team-full-roster-table tbody tr:nth-child(even){background:rgba(20,43,59,.025)}
 #team-squad-app.team-editorial .team-full-roster-table tbody tr:hover{background:rgba(181,250,255,.34)}
+
+/* Verified squad numbers extend the historical table by one column. */
+#team-squad-app.team-editorial .squad-table{width:1673px;min-width:1673px}
+#team-squad-app.team-editorial .squad-col-number{width:52px}
+#team-squad-app.team-editorial .team-full-roster-section,#team-squad-app.team-editorial #squad-results{min-width:0;max-width:100%}
+
+#team-squad-app.team-editorial .squad-table :is(th,td):first-child{background:#f3f8fa}
+#team-squad-app.team-editorial .squad-table thead th{background:#edf3f5}
+#team-squad-app.team-editorial .squad-table tbody tr:is(:hover,:focus-within) td:first-child{background:#d5f1f2}

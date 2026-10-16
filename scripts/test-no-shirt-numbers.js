@@ -1,29 +1,23 @@
-"use strict";
-
-const assert=require("assert");
-const fs=require("fs");
-const path=require("path");
-const root=path.resolve(__dirname,"..");
-const targets=["data/players","data/teams","data/generated/team-pages","data/normalized","data/sources","js","scripts"];
-const excluded=new Set(["remove-shirt-numbers.js","test-no-shirt-numbers.js"]);
-const violations=[];
-
-function scan(target){
-  const absolute=path.join(root,target);
-  if(!fs.existsSync(absolute))return;
-  for(const entry of fs.readdirSync(absolute,{withFileTypes:true})){
-    if(entry.name==="raw"||entry.name==="node_modules"||excluded.has(entry.name))continue;
-    const file=path.join(absolute,entry.name);
-    if(entry.isDirectory())scan(path.relative(root,file));
-    else if(/\.(json|js|mjs)$/.test(entry.name)){
-      const source=fs.readFileSync(file,"utf8");
-      // The complete roster may display a verified number, or N/D when absent.
-      const text=path.relative(root,file).replaceAll("\\","/") === "js/team-squads.js" ? source.replaceAll("value(player.shirtNumber)", "value(null)") : source;
-      if(/shirtNumber|shirtNumbers/.test(text))violations.push(path.relative(root,file));
-    }
-  }
+'use strict';
+// Historical filename retained for package.json compatibility: numbers are now allowed
+// only as verified biographical metadata, never as predictive inputs.
+const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
+const root=path.resolve(__dirname,'..'),read=p=>JSON.parse(fs.readFileSync(path.join(root,p),'utf8'));
+const source=read('data/sources/team-pages/shirt-numbers-2026-27.json');
+const mapped=new Map();
+for(const row of source.players){
+ const key=`${row.teamId}:${row.playerId}`;assert(!mapped.has(key),`Duplicate ${key}`);
+ assert(Number.isInteger(row.shirtNumber)&&row.shirtNumber>=1&&row.shirtNumber<=99);
+ assert(source.documentEntries.some(e=>e.teamId===row.teamId&&e.name===row.sourceName&&e.number===row.shirtNumber&&e.page===row.page));mapped.set(key,row.shirtNumber);
 }
-
-targets.forEach(scan);
-assert.deepStrictEqual([...new Set(violations)],[],`Campi numero di maglia ancora presenti: ${[...new Set(violations)].join(", ")}`);
-console.log("OK: numeri di maglia assenti dai dataset; la rosa gestisce N/D e numeri verificati se disponibili.");
+let count=0;
+for(const team of read('data/normalized/teams.json')){
+ const actual=read(`data/teams/${team.id}.json`),profiles=read(`data/generated/team-pages/${team.id}-squad.json`).players;
+ assert.deepEqual(actual.squad.map(p=>p.id),profiles.map(p=>p.id));
+ const used=new Set();for(const p of actual.squad){const number=mapped.get(`${team.id}:${p.id}`)??null;assert.equal(p.shirtNumber,number);if(number!==null){assert(!used.has(number),`Duplicate number ${team.id}:${number}`);used.add(number);count++}}
+}
+assert.equal(count,source.players.length);
+for(const folder of ['scripts/predictions','js/predictions'])if(fs.existsSync(path.join(root,folder))){
+ const scan=dir=>{for(const e of fs.readdirSync(dir,{withFileTypes:true})){const p=path.join(dir,e.name);if(e.isDirectory())scan(p);else if(/\.[mc]?js$/.test(p))assert(!/shirtNumber/.test(fs.readFileSync(p,'utf8')),`Shirt number in prediction engine ${p}`)}};scan(path.join(root,folder));
+}
+console.log(`OK: ${count} verified numbers; 20 rosters unchanged; missing numbers null; no predictive dependency.`);
