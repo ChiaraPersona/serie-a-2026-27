@@ -29,9 +29,18 @@ export async function loadEvidence(model){
    const shirtNumber=numbering?shirtNumberAt(numbering,side.id,id,model.fixture.date):member?.shirtNumber??null;
    return {id,name:mapped?.currentName||name,index,shirtNumber,source:p,member};
   });
-  return {side,formation:raw?.formation??null,status:raw?.status??null,coach:raw?.coach||canonical?.coach||squadFiles[i]?.coach||registered?.coach||null,players,bench:raw?.bench||raw?.substitutes||canonical?.substitutes||[],source:raw?.source??null,updatedAt:raw?.updatedAt??null};
+  const bench=raw?.bench||raw?.substitutes||canonical?.substitutes||[];
+  const benchPlayerIds=[...bench,...(canonical?.substitutes||[])].map(p=>typeof p==='object'?(p.canonicalPlayerId||p.playerId||null):null).filter(Boolean);
+  if(raw?.status==='probable')benchPlayerIds.push(...(probable?.teams?.find(t=>t.teamId===side.id)?.players||[]).filter(p=>p.lineupStatus==='reserve').map(p=>p.playerId).filter(Boolean));
+  return {side,formation:raw?.formation??null,status:raw?.status??null,coach:raw?.coach||canonical?.coach||squadFiles[i]?.coach||registered?.coach||null,players,bench,benchPlayerIds,source:raw?.source??null,updatedAt:raw?.updatedAt??null};
  });
  return {analysis,directory,squadFiles,lineups};
+}
+export function playerLineupStatus(id,lineups){
+ if(!id)return 'unknown';
+ const relevant=lineups.filter(l=>['official','probable'].includes(l.status));
+ const starter=relevant.some(l=>l.players.some(p=>p.id===id)),bench=relevant.some(l=>(l.benchPlayerIds||[]).includes(id));
+ return starter===bench?'unknown':starter?'starter':'bench';
 }
 export function individualPlayers(model,evidence){
  const source=model.prediction?.shooters?.allPlayers;
@@ -41,6 +50,6 @@ export function individualPlayers(model,evidence){
   const lineup=evidence.lineups.find(l=>l.players.some(q=>q.id&&q.id===id));
   const lineupPlayer=lineup?.players.find(q=>q.id===id),member=lineupPlayer?.member;
   const outsider=(model.prediction?.shooters?.outsiders||[]).some(q=>q.playerId===id&&q.qualifiedOutsider===true)||(model.prediction?.shooters?.sotOutsiders||[]).some(q=>q.playerId===id&&q.qualifiedSotOutsider===true)||model.forecasts.some(l=>l.player?.canonicalPlayerId===id&&l.isOutsider===true);
-  return {id,name:p.name||p.canonicalName||p.suppliedName||'Identità non risolta',team:p.team||lineup?.side.name||'',role:p.detailedRole||p.role||member?.role||null,number:lineupPlayer?.shirtNumber??null,available:!!id&&p.dataStatus!=='role-baseline',outsider,source:p,member};
+  return {id,name:p.name||p.canonicalName||p.suppliedName||'Identità non risolta',team:p.team||lineup?.side.name||'',role:p.detailedRole||p.role||member?.role||null,number:lineupPlayer?.shirtNumber??null,lineupStatus:playerLineupStatus(id,evidence.lineups),available:!!id&&p.dataStatus!=='role-baseline',outsider,source:p,member};
  });
 }
