@@ -1,0 +1,1 @@
+const fs=require('fs');for(const file of ['css/team.css','css/betting.css','css/matches.css']){let s=fs.readFileSync(file,'utf8');s=s.replaceAll('max-width:1180px','max-width:var(--max)');fs.writeFileSync(file,s)}

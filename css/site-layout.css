@@ -1,0 +1,25 @@
+/* Final shared geometry, after competition and responsive modules. */
+body :is(.site-header,main,#team-squad-app,.site-footer-inner){
+  width:var(--container-width);
+  max-width:var(--max);
+  min-width:0;
+  margin-inline:auto;
+}
+/* Compact only the large outer spaces; keep internal fields and controls intact. */
+body:not([data-page="home"]) main{padding-top:32px;padding-bottom:64px}
+body:not([data-page="home"]) .site-footer{margin-top:32px}
+body:not([data-page="home"]) main>.section{margin-top:68px}
+body:not([data-page="home"]) main>.section>.section-heading{margin-bottom:22px}
+body:not([data-page="home"]) :is(.detail-section,.subpage-header){padding-block:27px}
+#team-squad-app.team-editorial>[data-editorial-section]{padding-block:20px}
+body[data-page="champions"] .champions-team-summary{padding-block:22px;margin-bottom:24px}
+@media(min-width:761px){
+  body[data-page="champions"] .champions-team-hero{padding-block:35px}
+  body[data-page="champions"] .champions-team-detail .champions-player-overview{padding-block:22px}
+}
+main>.table-wrap,main .table-wrap{max-width:100%;min-width:0;overflow-x:auto}
+@media(max-width:760px){
+  body:not([data-page="home"]) main{padding-top:24px}
+  body:not([data-page="home"]) main>.section{margin-top:52px}
+  #team-squad-app.team-editorial>[data-editorial-section]{padding-block:13px}
+}

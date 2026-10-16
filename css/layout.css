@@ -102,7 +102,7 @@ body[data-page="home"] .hero h1{color:#fff}
   top:12px;
   align-items:center;
   gap:24px;
-  width:min(calc(100% - 32px),1180px);
+  width:var(--container-width);
   min-height:68px;
   margin:12px auto 0;
   padding:9px 12px;
@@ -278,3 +278,9 @@ body:is([data-page="home"],[data-page="team-stats"]) .site-header{
  box-shadow:var(--glass-shadow);color:var(--glass-light-text);
  backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);
 }
+/* Shared outer alignment; specialised layouts retain their internal grids. */
+:is(.site-header,main,.site-footer-inner){width:var(--container-width)}
+body[data-page="home"] main{padding-top:24px;padding-bottom:48px}
+body[data-page="home"] main>.section{margin-top:48px}
+body[data-page="home"] main>.section>.section-heading{margin-bottom:20px}
+body[data-page="home"] .site-footer{margin-top:24px}
