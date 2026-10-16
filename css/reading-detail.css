@@ -16,18 +16,18 @@ body[data-reading-detail-theme] #app{max-width:1050px!important;width:calc(100% 
 .rd-edition i{margin:0 9px;font-style:normal;color:var(--rd-muted)}
 .rd-status{display:flex;align-items:center;gap:7px;color:var(--rd-muted);font-size:12px}
 .rd-status::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--rd-accent)}
-.rd-matchup{display:grid;grid-template-columns:minmax(0,1fr) 120px minmax(0,1fr);align-items:center;gap:20px;padding:40px 0 25px}
+.rd-matchup{display:grid;grid-template-columns:minmax(0,1fr) 120px minmax(0,1fr);align-items:center;gap:20px;padding:28px 0 12px}
 .rd-team{display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;min-width:0}
 .rd-team img{object-fit:contain;width:92px;height:92px;filter:drop-shadow(0 6px 9px #00000012);margin-bottom:8px}
 .rd-side{font-size:10px;text-transform:uppercase;letter-spacing:.16em;font-weight:750;color:var(--rd-home)}
 .rd-team--away .rd-side{color:var(--rd-away)}
 .rd-team-name{font-family:Anton,Inter,system-ui,sans-serif;font-size:clamp(28px,4vw,45px);line-height:1.15;font-weight:400;letter-spacing:.005em;overflow-wrap:anywhere}
 .rd-versus{display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
-.rd-versus>span:first-child{font-size:15px;font-weight:600;letter-spacing:.13em;color:var(--rd-muted)}
+.rd-versus>.rd-vs{font-size:15px;font-weight:600;letter-spacing:.13em;color:var(--rd-muted)}
 .rd-result{font-size:10px;text-transform:uppercase;letter-spacing:.09em;color:var(--rd-muted)}
-.rd-result b{display:block;color:var(--rd-ink);font-size:23px;letter-spacing:.04em;white-space:nowrap;margin-top:5px}
-.rd-match-meta{display:flex;justify-content:center;flex-wrap:wrap;gap:8px 18px;color:var(--rd-muted);font-size:12px;text-align:center}
-.rd-match-meta>span::before{content:"·";margin-right:18px;color:var(--rd-line)}
+.rd-result b{display:block;color:var(--rd-ink);font-size:32px;letter-spacing:.04em;white-space:nowrap;margin-top:5px}
+.rd-match-meta{display:flex;justify-content:flex-start;flex-wrap:wrap;gap:6px 12px;margin-top:7px;color:var(--rd-muted);font-size:11px;text-align:left}
+.rd-match-meta>span::before{content:"·";margin-right:12px;color:var(--rd-line)}
 .rd-editorial-note{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-top:35px;border-bottom:1px solid var(--rd-line);padding-bottom:16px}
 .rd-editorial-note>span{font-size:11px;font-weight:800;letter-spacing:.18em;color:var(--rd-accent)}
 .rd-editorial-note p{margin:0;color:var(--rd-muted);font-size:12px}
@@ -82,8 +82,9 @@ body[data-reading-detail-theme] #app{max-width:1050px!important;width:calc(100% 
 @media(max-width:767px){
   body[data-reading-detail-theme] #app{width:calc(100% - 32px)!important;padding-top:16px!important}
   .rd-shell .rd-back{margin-bottom:24px;font-size:11px}.rd-overline{align-items:flex-start;gap:8px}.rd-edition{font-size:10px;letter-spacing:.035em}.rd-edition i{margin:0 4px}.rd-status{font-size:10px}
-  .rd-matchup{grid-template-columns:minmax(0,1fr) 62px minmax(0,1fr);gap:8px;padding:30px 0 22px}
-  .rd-team img{width:68px;height:68px;margin-bottom:4px}.rd-team-name{font-size:27px;line-height:1.16}.rd-team{gap:7px}.rd-side{font-size:9px}.rd-versus>span:first-child{font-size:12px}.rd-result{font-size:8px}.rd-result b{font-size:19px}
+  .rd-matchup{grid-template-columns:minmax(0,1fr) 62px minmax(0,1fr);gap:8px;padding:22px 0 12px}
+  .rd-matchup:has(.rd-result){grid-template-columns:minmax(0,1fr) 72px minmax(0,1fr)}
+  .rd-team img{width:68px;height:68px;margin-bottom:4px}.rd-team-name{font-size:27px;line-height:1.16}.rd-team{gap:7px}.rd-side{font-size:9px}.rd-versus>.rd-vs{font-size:12px}.rd-result{font-size:8px}.rd-result b{font-size:27px;letter-spacing:0;word-spacing:-3px}
   .rd-match-meta{font-size:11px;gap:7px 12px}.rd-match-meta>span::before{margin-right:12px}.rd-editorial-note{align-items:flex-start;margin-top:25px}.rd-editorial-note p{font-size:11px;max-width:180px;text-align:right;line-height:1.5}.rd-editorial-note>span{font-size:10px;white-space:nowrap}
   .rd-hero{padding-bottom:15px}.rd-nav{margin-bottom:28px;padding-block:4px}.rd-nav a{font-size:11px;padding-inline:11px}
   .rd-nav.is-condensed{flex-direction:column;align-items:stretch;gap:0}.rd-nav.is-condensed .rd-mini{display:flex;width:100%;max-width:none;border:0;padding:6px 0;font-size:10px}.rd-nav-links{width:100%}
