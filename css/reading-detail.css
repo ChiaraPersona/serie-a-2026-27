@@ -191,3 +191,48 @@ body[data-reading-detail-theme] #app{padding-bottom:110px!important}
 /* Keep pilot typography legible above competition-wide heading rules. */
 .rd-shell :is(h3,h4,strong){color:var(--rd-ink)}
 body[data-reading-detail-theme=champions] .menu-button{background:var(--rd-soft)!important;border-color:var(--rd-line)}
+
+/* Compact player lists only; formation and discipline components keep their layout. */
+.rd-shell #lettura-giocatori .rd-player-toolbar{gap:12px;margin-bottom:8px}
+.rd-shell #lettura-giocatori [data-player-count]{margin:8px 0 12px}
+.rd-shell .rd-player-columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px;align-items:start}
+.rd-shell .rd-player-team{min-width:0}
+.rd-shell .rd-player-team-name{font:650 16px Inter,system-ui,sans-serif;margin:0;padding:9px 0 12px;border-bottom:1px solid var(--rd-line);overflow-wrap:anywhere}
+.rd-shell .rd-player-column-labels{display:grid;grid-template-columns:minmax(0,1fr) 40px 40px;gap:8px;padding:8px 22px 7px 0;color:var(--rd-muted);font-size:10px}
+.rd-shell .rd-player-column-labels>span:not(:first-child){text-align:right}
+.rd-shell .rd-player-row{border:0;border-bottom:1px solid var(--rd-line);border-radius:0;margin:0;padding:0;min-width:0;background:none}
+.rd-shell .rd-player-row>summary{display:grid;grid-template-columns:24px minmax(0,1fr) 40px 40px 14px;gap:8px;align-items:center;list-style:none;cursor:pointer;min-height:46px;padding:7px 0}
+.rd-shell .rd-player-row>summary::-webkit-details-marker{display:none}
+.rd-shell .rd-player-row>summary::after{content:none}
+.rd-shell .rd-row-number{font-size:11px;color:var(--rd-muted);font-variant-numeric:tabular-nums;text-align:center}
+.rd-shell .rd-row-identity{min-width:0}
+.rd-shell .rd-row-identity h3{font:550 13px/1.4 Inter,system-ui,sans-serif;margin:0;white-space:normal;overflow-wrap:anywhere}
+.rd-shell :is(.rd-row-shot,.rd-row-sot){font-size:14px;font-weight:650;text-align:right;font-variant-numeric:tabular-nums}
+.rd-shell .rd-row-chevron{font-size:13px;color:var(--rd-muted);text-align:center}
+.rd-shell .rd-player-row[open] .rd-row-chevron{transform:rotate(45deg)}
+.rd-shell .rd-compact-outsider{display:block;font-size:9px;color:var(--rd-accent);line-height:1.25}
+.rd-shell [data-metric-mode=shots] .rd-row-shot,.rd-shell [data-metric-mode=sot] .rd-row-sot{color:var(--rd-accent)}
+.rd-shell .rd-player-expanded{font-size:12px;line-height:1.65;padding:2px 0 12px;min-width:0;overflow-wrap:anywhere}
+.rd-shell .rd-player-expanded .rd-player-role{color:var(--rd-muted);font-size:11px;margin:5px 0}
+.rd-shell .rd-player-expanded .rd-player-kpis{gap:8px;margin:12px 0}
+.rd-shell .rd-player-expanded .rd-metric dd{font-size:17px}
+.rd-shell .rd-player-expanded .rd-player-probabilities{flex-wrap:wrap;gap:4px 12px;padding-top:8px}
+.rd-shell .rd-player-expanded .rd-record>div{grid-template-columns:1fr;gap:2px}
+.rd-shell .rd-player-expanded .rd-record{font-size:11px}
+@media(max-width:767px){
+ .rd-shell .rd-player-columns{gap:14px}
+ .rd-shell #lettura-giocatori .rd-player-toolbar{gap:8px}
+ .rd-shell .rd-player-team-name{font-size:14px;padding:7px 0 10px;min-height:36px}
+ .rd-shell .rd-player-column-labels{grid-template-columns:minmax(0,1fr) 24px 24px;gap:4px;padding-right:13px;font-size:9px}
+ .rd-shell .rd-player-row>summary{grid-template-columns:17px minmax(0,1fr) 24px 24px 9px;gap:4px;min-height:48px;padding:7px 0}
+ .rd-shell .rd-row-identity h3{font-size:11px;line-height:1.4}
+ .rd-shell .rd-row-number{font-size:9px}
+ .rd-shell :is(.rd-row-shot,.rd-row-sot){font-size:12px}
+ .rd-shell .rd-row-chevron{font-size:11px}
+ .rd-shell .rd-compact-outsider{font-size:8px}
+ .rd-shell .rd-player-expanded .rd-player-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .rd-shell .rd-player-expanded .rd-metric dd{font-size:15px}
+ .rd-shell .rd-player-expanded :is(.rd-footnote,.rd-empty){font-size:11px}
+ .rd-shell .rd-player-expanded .rd-empty{padding:6px 8px}
+ .rd-shell .rd-player-expanded .rd-player-links button{padding:7px;font-size:11px;overflow-wrap:anywhere}
+}
