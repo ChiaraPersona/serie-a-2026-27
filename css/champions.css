@@ -25,6 +25,8 @@ body[data-page="champions"] .brand strong,
 body[data-page="champions"] .brand small,
 body[data-page="champions"] .page-link{color:#eaf4ff}
 body[data-page="champions"] .menu-button{color:#fff}
+/* Static page marker: white from the first paint, with the original alpha channel. */
+body[data-page="champions"] .site-header .brand-mark img{filter:brightness(0) invert(1)}
 body[data-page="champions"] .page-link.active{background:rgba(15,86,171,.62);color:#fff}
 body[data-page="champions"] .footer-brand-mark{background:#71b8ff}
 body[data-page="champions"] main{padding-top:38px}
@@ -920,14 +922,15 @@ body[data-page="champions"] .champions-team-detail{--team-panel:#041c50;--team-p
 body[data-page="champions"] .champions-team-hero{position:relative;isolation:isolate;overflow:hidden;display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,.48fr);padding:42px;background:radial-gradient(circle at 86% 16%,color-mix(in srgb,var(--club-accent) 34%,transparent),transparent 35%),linear-gradient(145deg,#073d8e,#02143f 72%)}
 body[data-page="champions"] .champions-team-hero::after{content:"";position:absolute;z-index:-1;right:-7%;bottom:-48%;width:320px;aspect-ratio:1;border:1px solid color-mix(in srgb,var(--club-accent-secondary) 28%,transparent);border-radius:50%;box-shadow:0 0 0 34px rgba(255,255,255,.025),0 0 0 68px rgba(255,255,255,.018)}
 .champions-team-identity{display:flex;align-items:center;gap:24px;min-width:0}
-.champions-team-hero-logo{display:grid;flex:0 0 118px;width:118px;height:118px;place-items:center;border:1px solid rgba(255,255,255,.2);border-radius:28px;background:rgba(1,17,55,.64);box-shadow:inset 0 1px rgba(255,255,255,.12),0 18px 38px rgba(0,7,39,.28)}
-.champions-team-hero-logo .team-logo{width:86px;height:86px;background:transparent}
-.champions-team-hero-logo .team-logo img{width:100%;height:100%;object-fit:contain}
+.champions-team-hero-logo{display:grid;flex:0 0 160px;width:160px;height:160px;place-items:center;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none}
+.champions-team-hero-logo>.team-with-logo{width:100%;height:100%;justify-content:center}
+.champions-team-hero-logo .team-logo{flex:0 0 100%;width:100%;height:100%;border:0;border-radius:0;background:transparent;box-shadow:none;overflow:visible}
+.champions-team-hero-logo .team-logo img{display:block;width:100%;height:100%;object-fit:contain;border-radius:0;clip-path:none}
 .champions-team-hero-logo .team-logo b{font-size:24px}
 body[data-page="champions"] .champions-team-hero h1{font-size:clamp(44px,6vw,78px);overflow-wrap:anywhere}
-.champions-team-hero-facts{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));align-self:stretch;gap:10px;min-width:0!important;padding:0!important;border:0!important;background:transparent!important;text-align:left!important}
-.champions-team-hero-facts article{display:grid;align-content:center;gap:5px;padding:18px;border:1px solid rgba(127,224,255,.2);border-radius:18px;background:rgba(1,17,55,.56)}
-.champions-team-hero-facts small,.champions-team-hero-facts span{color:#a9d2ee!important;font-size:8px!important;font-weight:850;text-transform:uppercase}
+.champions-team-hero-facts{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));align-self:center;gap:22px;min-width:0!important;padding:0!important;border:0!important;background:transparent!important;text-align:left!important}
+.champions-team-hero-facts article{display:grid;align-content:start;gap:7px;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;min-width:0}
+.champions-team-hero-facts small,.champions-team-hero-facts span{color:#b9d8ef!important;font-size:10px!important;font-weight:650;text-transform:uppercase}
 .champions-team-hero-facts strong{color:#fff;font-family:var(--font-display);font-size:38px;font-weight:400;line-height:1}
 .champions-team-summary{margin:18px 0 28px;padding:26px;border:1px solid var(--team-line);border-radius:24px;background:linear-gradient(145deg,rgba(4,38,99,.82),rgba(2,18,57,.88))}
 .champions-team-summary>header,.champions-player-overview>header{display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:16px}
@@ -1034,10 +1037,11 @@ body[data-page="champions"] .champions-player-stats-table tbody tr:hover th{back
 @media(max-width:600px){
  body[data-page="champions"] .champions-team-hero{gap:22px;padding:26px 18px}
  .champions-team-identity{align-items:flex-start;gap:14px}
- .champions-team-hero-logo{flex-basis:72px;width:72px;height:72px;border-radius:18px}
- .champions-team-hero-logo .team-logo{width:54px;height:54px}
+ .champions-team-hero-logo{flex-basis:110px;width:110px;height:110px}
+ .champions-team-hero-logo .team-logo{width:100%;height:100%}
  body[data-page="champions"] .champions-team-hero h1{font-size:clamp(35px,12vw,52px)}
- .champions-team-hero-facts{grid-template-columns:1fr}
+ .champions-team-hero-facts{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+ .champions-team-hero-facts small,.champions-team-hero-facts span{font-size:9px!important}
  .champions-team-summary,.champions-team-calendar,.champions-player-overview{padding:20px 14px;border-radius:22px}
  .champions-team-summary>header,.champions-player-overview>header{align-items:flex-start;flex-direction:column;gap:7px}
  .champions-team-summary>header>p,.champions-player-overview>header>p{text-align:left}
@@ -1266,8 +1270,8 @@ body[data-page="champions"] .champions-reading-tactical-analysis .prediction-cha
 .champions-published-forecasts li[data-settlement="lost"] .champions-published-result { color: #f87171; font-weight: 700; }
 .champions-published-result { font-weight: 700; }
 
-/* Overview only: team pages and match readings never contain this direct child. */
-body[data-page="champions"]:has(#app > .champions-overview){
+/* Shared Champions canvas for overview and all team pages; match readings stay separate. */
+body[data-page="champions"]:has(#app > :is(.champions-overview,.champions-team-detail)){
   background-color:#07152c;
   background-image:radial-gradient(ellipse 90vw 80vh at 88% 6%,rgba(29,71,119,.46),transparent 80%),radial-gradient(ellipse 85vw 100vh at -12% 64%,rgba(20,49,88,.42),transparent 82%),radial-gradient(ellipse 75vw 75vh at 80% 112%,rgba(18,38,75,.36),transparent 82%);
   background-repeat:no-repeat;
@@ -1275,17 +1279,17 @@ body[data-page="champions"]:has(#app > .champions-overview){
   color:#f7faff;
   color-scheme:dark;
 }
-body[data-page="champions"]:has(#app > .champions-overview) .site-header{
+body[data-page="champions"]:has(#app > :is(.champions-overview,.champions-team-detail)) .site-header{
   --glass-text:#eaf4ff;
   background:linear-gradient(115deg,rgba(31,61,101,.88),rgba(7,21,44,.95));
   border-color:#304762;
   box-shadow:0 12px 32px #01091a44,inset 0 1px #b3d8ff24;
 }
-body[data-page="champions"]:has(#app > .champions-overview) :is(.menu-button,.site-nav.open){background:#10233f;border-color:#304762;color:#f2f6ff;box-shadow:0 8px 20px #01091a33}
-body[data-page="champions"]:has(#app > .champions-overview) .page-link:hover{background:#193a60;color:#fff}
-body[data-page="champions"]:has(#app > .champions-overview) .site-footer{background:linear-gradient(145deg,rgba(13,35,65,.8),rgba(7,21,44,.94));border-color:#304762;color:#dce7f7}
-body[data-page="champions"]:has(#app > .champions-overview) .site-footer :is(.footer-brand,a){color:#eaf4ff}
-body[data-page="champions"]:has(#app > .champions-overview) .site-footer :is(p,.footer-brand small){color:#afc3dc}
+body[data-page="champions"]:has(#app > :is(.champions-overview,.champions-team-detail)) :is(.menu-button,.site-nav.open){background:#10233f;border-color:#304762;color:#f2f6ff;box-shadow:0 8px 20px #01091a33}
+body[data-page="champions"]:has(#app > :is(.champions-overview,.champions-team-detail)) .page-link:hover{background:#193a60;color:#fff}
+body[data-page="champions"]:has(#app > :is(.champions-overview,.champions-team-detail)) .site-footer{background:linear-gradient(145deg,rgba(13,35,65,.8),rgba(7,21,44,.94));border-color:#304762;color:#dce7f7}
+body[data-page="champions"]:has(#app > :is(.champions-overview,.champions-team-detail)) .site-footer :is(.footer-brand,a){color:#eaf4ff}
+body[data-page="champions"]:has(#app > :is(.champions-overview,.champions-team-detail)) .site-footer :is(p,.footer-brand small){color:#afc3dc}
 .champions-overview{min-width:0}
 .champions-overview .champions-round-summary>summary strong{font-size:18px}
 .champions-overview .champions-round-summary>summary{gap:12px;flex-wrap:wrap}

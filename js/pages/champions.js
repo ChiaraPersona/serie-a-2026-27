@@ -59,7 +59,7 @@ export function createPage(deps){
   function matchReport(fixture){
     if(fixture?.status!=="finished")return "";
     const report=fixture.matchReport;
-    const scorers=side=>report.scorers[side].length?report.scorers[side].map(esc).join(" · "):"Nessun gol";
+    const scorers=side=>report.scorers[side].length?report.scorers[side].map(esc).join(" · "):fixture.score[side]===0?"Nessun gol":"Da verificare";
     const stats=report.statistics;
     const statsPanel=stats?`<h2>Statistiche finali</h2><table><thead><tr><th>Dato</th><th>Casa</th><th>Ospite</th></tr></thead><tbody>${[["Tiri","shots"],["Nello specchio","shotsOnTarget"],["Corner","corners"],["Falli","fouls"]].filter(([,key])=>stats[key]).map(([label,key])=>`<tr><th>${label}</th><td>${stats[key][0]}</td><td>${stats[key][1]}</td></tr>`).join("")}</tbody></table><a href="${esc(stats.sourceUrl)}" target="_blank" rel="noreferrer">Fonte statistiche ↗</a>`:"<p>Statistiche finali: da verificare.</p>";
     let cards=report.cards?`<h2>Ammoniti</h2><p><strong>Casa:</strong> ${report.cards.yellow.home.map(esc).join(" · ")||"Nessuno"}</p><p><strong>Ospite:</strong> ${report.cards.yellow.away.map(esc).join(" · ")||"Nessuno"}</p><p>${esc(report.cards.coverage)}</p><a href="${esc(report.cards.sourceUrl)}" target="_blank" rel="noreferrer">Fonte cartellini ↗</a>`:"<p>Ammoniti: da verificare.</p>";
