@@ -1,5 +1,9 @@
 # Formazioni ufficiali e mercati individuali
 
+## Regola permanente: fonti solo interne
+
+Non mostrare nell'interfaccia pubblica del sito Serie A e Champions League sezioni Fonti/Provenienza, elenchi, collegamenti, provider o note dedicati alle fonti dei dati. Conservare integralmente fonti, URL, metadati, archivi e documentazione nei file interni e continuare a verificarli per ogni aggiornamento. Non alterare statistiche, calcoli, motori o informazioni operative per applicare questa regola. Le nuove pagine devono usare la policy condivisa `js/public-presentation.js` e non aggiungere nuove sezioni pubbliche sulle fonti. Conservare attribuzioni e avvisi legalmente obbligatori: marcarli con `data-required-attribution` o `data-legal-notice`, senza nasconderli come provenienza statistica. Conservare inoltre stato ufficiale/probabile, limiti statistici e indicazioni N/D, esprimendoli senza riferimenti alle fonti.
+
 Quando l'utente consegna una formazione ufficiale, acquisire entrambi gli undici nella fonte canonica della competizione. Lo stato probabile non attiva il filtro definitivo.
 
 Per le sole fixture aggiornate, eseguire i builder esistenti di integrazione e previsione, utilizzando statistiche individuali, minuti previsti, ruolo, avversario e matchup. Non cambiare formule, pesi o criteri di approvazione. Confrontare ogni mercato individuale pubblicato con gli undici ufficiali, inclusi preferiti, cartellini, DUO, sostituti e pali/traverse. Rimuovere i non titolari dalle selezioni operative e conservarli esclusivamente nell'archivio tecnico.
