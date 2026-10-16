@@ -6,7 +6,11 @@ export function createDataService(release){
     load:async name=>{
       const registry=await fetchJson(`${DATA}official-starter-registry.json`,'official starters');
       globalThis.officialStarterPolicy.configure(registry);
-      return globalThis.officialStarterPolicy.filter(await fetchJson(`${DATA}${name}`,name));
+      const data=await fetchJson(`${DATA}${name}`,name);
+      // MD1 is a read-only historical archive: retain the original settled legs.
+      // Operational selections and saved MyCombo entries still use the starter policy.
+      if(name==='schedina-champions-md01.json')return data;
+      return globalThis.officialStarterPolicy.filter(data);
     },
     loadGenerated:path=>fetchJson(`data/generated/${path}`,path),
     loadTeamDirectory:()=>fetchJson("data/teams/index.json","data/teams/index.json"),
