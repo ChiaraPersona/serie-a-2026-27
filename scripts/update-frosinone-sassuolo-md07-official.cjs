@@ -66,7 +66,8 @@ fresh.selections=oldMatch.selections.map(old=>{
  }
  next=structuredClone(next);
  if(next.marketScope==='player'){
-  next.lineupEligibility=resolveLineupEligibility({leg:next,matchId:id,matchById:new Map(matches.map(m=>[m.id,m])),probableLineups:read('data/sources/probable-lineups-md7-2026-27.json'),officialLineups:official});
+  const known=fixture.teams.flatMap(t=>[...t.players,...t.substitutes]).find(p=>p.playerId===next.playerId);
+  next.lineupEligibility=known?{eligible:known.lineupStatus==='starter',status:known.lineupStatus==='starter'?'official-starter':'official-nonstarter',playerId:known.playerId,playerName:known.currentName,source:fixture.provider,sourceUpdatedAt:now}:resolveLineupEligibility({leg:next,matchId:id,matchById:new Map(matches.map(m=>[m.id,m])),probableLineups:read('data/sources/probable-lineups-md7-2026-27.json'),officialLineups:official});
   const playerId=next.lineupEligibility.playerId;
   if(playerId){next.playerId=playerId;next.playerName=next.lineupEligibility.playerName;next.betSelection.market.subject={...next.betSelection.market.subject,id:playerId};}
  }
