@@ -13,7 +13,11 @@ assert(scenario.includes('Gol attesi · modello'));assert(scenario.includes('0')
 assert(formationMarkup(empty).includes('Disposizione tattica non disponibile'));
 assert(playersMarkup(model,empty).includes('Tiri previsti</dt><dd>—'));
 assert(attackMarkup(null).includes('non disponibile'));assert(attackMarkup({left:0}).includes('0%'));
-assert(tacticsMarkup(model,empty).includes('Dati spaziali verificati non disponibili'));
+const tactics=tacticsMarkup(model,empty);
+assert(tactics.includes('Ripartizione delle direzioni d’attacco non disponibile.'));
+assert(tactics.includes('Le chiavi del confronto'));
+assert(!tactics.includes('rd-tactics-tab-duels'));
+assert(!tactics.includes('rd-traits'));
 const chronology={...empty,analysis:{matches:[{id:'FUTURE',date:'2026-10-17',status:'finished',score:{},homeTeam:'home'},{id:'PRIOR',date:'2026-10-01',status:'finished',score:{},homeTeam:'home'},{id:'TEST_ONLY',date:'2026-10-16',status:'finished',score:{},homeTeam:'home'}]}};
 assert.deepEqual(priorMatches(model,chronology,model.home).map(m=>m.id),['PRIOR']);
 assert.equal(JSON.stringify(model),before);
