@@ -1,5 +1,6 @@
 import {esc,number,pct,finite,metric,details,recordList,missing,tabs,mountTabs,sourceLink} from './format.mjs';
 import {lineupPositions} from '../../components/lineup-field.mjs';
+import {renderLineupKit} from '../../components/lineup-kit.mjs';
 import {individualPlayers} from './evidence.mjs';
 const label=s=>s==='official'?'Ufficiale':s==='probable'?'Probabile':s==='reference'?'Riferimento':'Da confermare';
 function preserve(container,content,title){
@@ -12,7 +13,8 @@ export function formationMarkup(evidence){
  const field=evidence.lineups.map((l,i)=>{
   const valid=typeof l.formation==='string'&&/^\d+(?:-\d+)+$/.test(l.formation)&&l.formation.split('-').map(Number).reduce((a,b)=>a+b,1)===11&&l.players.length===11;
   if(!valid)return '';
-  return lineupPositions({formation:l.formation,players:l.players},i===1).map(pos=>`<div class="rd-field-player is-${i?'away':'home'}" style="left:${pos.x}%;top:${pos.y}%"><span class="rd-shirt" aria-label="Numero ${pos.name.shirtNumber??'non disponibile'}">${esc(pos.name.shirtNumber??'—')}</span><strong>${esc(pos.name.name)}</strong></div>`).join('');
+  const team=evidence.directory?.teams?.find(t=>t.id===l.side.id)||l.side;
+  return lineupPositions({formation:l.formation,players:l.players},i===1).map(pos=>`<div class="rd-field-player is-${i?'away':'home'}${pos.goalkeeper?' is-goalkeeper':''}" style="left:${pos.x}%;top:${pos.y}%"><span class="rd-kit" aria-label="Numero ${pos.name.shirtNumber??'non disponibile'}">${renderLineupKit(team,{goalkeeper:pos.goalkeeper})}<b>${esc(pos.name.shirtNumber??'—')}</b></span><strong>${esc(pos.name.name)}</strong></div>`).join('');
  }).join('');
  const headings=`<div class="rd-lineup-head">${evidence.lineups.map(l=>`<div><h3>${esc(l.side.name)}</h3><b>${esc(l.formation||'Modulo N/D')} · ${label(l.status)}</b><span>Allenatore: ${esc(l.coach||'N/D')}</span></div>`).join('')}</div>`;
  const pitch=`<p class="rd-footnote">Un solo campo per entrambe le squadre. Su schermi stretti scorri il campo o consulta gli elenchi. Numeri non presenti nella fonte: —.</p><div class="rd-pitch-scroll" tabindex="0" role="region" aria-label="Campo delle formazioni, scorrimento orizzontale"><div class="rd-pitch"><svg viewBox="0 0 1080 600" aria-hidden="true"><g fill="none" stroke="currentColor"><rect x="14" y="14" width="1052" height="572"/><path d="M540 14V586M14 170H165V430H14M1066 170H915V430H1066"/><circle cx="540" cy="300" r="70"/></g></svg>${field}</div></div>`;

@@ -4,6 +4,16 @@
 
   const base = document.body.dataset.depth === "team" ? "../" : "";
   const { renderLineupField } = await import(`${base}js/components/lineup-field.mjs?v=20261015-team-dashboard`);
+  const {shirtNumberAt}=await import(`${base}js/pages/reading-detail/shirt-numbers.mjs`);
+  let numbering,officialNumbers,probableNumbers;
+  const numberFor=(team,lineup,name)=>{
+    const date=lineup.status==='official'?numberingMatches.find(m=>m.id===lineup.matchId)?.date:lineup.source?.retrievedAt;
+    const official=officialNumbers.fixtures.find(f=>f.matchId===lineup.matchId)?.teams?.find(t=>t.teamId===team.id);
+    const probable=probableNumbers.teams.find(t=>t.teamId===team.id);
+    const person=(lineup.status==='official'?official?.players:probable?.players)?.find(p=>p.sourceName===name||p.currentName===name);
+    return shirtNumberAt(numbering,team.id,person?.playerId,date);
+  };
+  let numberingMatches=[];
   const release = "20261016-team-editorial-v2";
   const defaultPlayerPhoto = `${base}assets/images/players/player-placeholder.png`;
   const esc = value => String(value ?? "").replace(/[&<>\"]/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[char]));
@@ -85,7 +95,7 @@
     const sourceLink = lineup.source?.url ? `<a href="${esc(lineup.source.url)}" target="_blank" rel="noreferrer">${esc(lineup.source.provider || "Fonte")}</a>` : esc(lineup.source?.provider || "Fonte non disponibile");
     const title = official ? "Formazione ufficiale" : "Probabile formazione";
     const substitutes = official && lineup.substitutes?.length ? `<p class="probable-lineup-substitutes"><strong>A disposizione:</strong> ${lineup.substitutes.map(esc).join(", ")}</p>` : "";
-    return `<section class="detail-section team-probable-lineup" aria-labelledby="probable-lineup-heading" style="--lineup-primary:${esc(primary)};--lineup-secondary:${esc(secondary)};--lineup-head-ink:${contrastInk(secondary)}"><header class="probable-lineup-heading"><div><p class="eyebrow">Serie A 2026/27 · ${esc(lineup.context || (official ? "formazione ufficiale" : "proiezione editoriale"))}</p><h2 id="probable-lineup-heading">${title}</h2></div>${official ? "" : "<span>Visualizzazione sperimentale</span>"}</header><div class="probable-lineup-board"><header class="probable-lineup-board-head"><img src="${esc(team.logo)}" alt=""><div><small>${official ? "XI ufficiale" : "Probabile XI"}</small><h3>${esc(team.name)}</h3></div><strong>${esc(lineup.formation)}</strong></header>${renderLineupField([{team: {...teamSummary, ...team, colors: teamSummary?.colors}, lineup}], {orientation: "vertical"})}<footer><div><p>${official ? `Formazione ufficiale ${esc(lineup.fixtureLabel||team.name)}` : "Proiezione editoriale, non distinta ufficiale"}</p>${substitutes}</div>${sourceLink}</footer></div></section>`;
+    return `<section class="detail-section team-probable-lineup" aria-labelledby="probable-lineup-heading" style="--lineup-primary:${esc(primary)};--lineup-secondary:${esc(secondary)};--lineup-head-ink:${contrastInk(secondary)}"><header class="probable-lineup-heading"><div><p class="eyebrow">Serie A 2026/27 · ${esc(lineup.context || (official ? "formazione ufficiale" : "proiezione editoriale"))}</p><h2 id="probable-lineup-heading">${title}</h2></div>${official ? "" : "<span>Visualizzazione sperimentale</span>"}</header><div class="probable-lineup-board"><header class="probable-lineup-board-head"><img src="${esc(team.logo)}" alt=""><div><small>${official ? "XI ufficiale" : "Probabile XI"}</small><h3>${esc(team.name)}</h3></div><strong>${esc(lineup.formation)}</strong></header>${renderLineupField([{team: {...teamSummary, ...team, colors: teamSummary?.colors}, lineup}], {orientation: "vertical",shirtNumberFor:name=>numberFor(team,lineup,name)})}<footer><div><p>${official ? `Formazione ufficiale ${esc(lineup.fixtureLabel||team.name)}` : "Proiezione editoriale, non distinta ufficiale"}</p>${substitutes}</div>${sourceLink}</footer></div></section>`;
   };
 
   const labels = {
@@ -405,13 +415,17 @@
     try {
       const teamId = document.body.dataset.team;
       if (!teamId) throw new Error("Squadra non specificata");
-      const [team, objectiveDataset, teams, matches, teamStyleProfiles] = await Promise.all([
+      const [team, objectiveDataset, teams, matches, teamStyleProfiles,numberData,officialData,probableData] = await Promise.all([
         load(`data/teams/${teamId}.json`),
         load("data/team-objectives.json"),
         load("data/normalized/teams.json"),
         load("data/normalized/matches.json"),
-        load("data/normalized/team-style-profiles.json")
+        load("data/normalized/team-style-profiles.json"),
+        load("data/sources/team-pages/shirt-numbers-2026-27.json"),
+        load("data/sources/official-lineups-2026-27.json"),
+        load("data/sources/probable-lineups-md7-2026-27.json")
       ]);
+      numbering=numberData;officialNumbers=officialData;probableNumbers=probableData;numberingMatches=matches;
       teamPage(team, objectiveDataset, calculateStandings(teams, matches), teams, matches, teamStyleProfiles);
     } catch (error) {
       root.innerHTML = `<div class="data-warning"><strong>Errore di caricamento</strong><p>${esc(error.message)}. Apri il sito tramite server locale, non con file://.</p></div>`;

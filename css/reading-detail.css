@@ -114,7 +114,7 @@ body[data-reading-detail-theme] .site-footer :is(a,p,small){color:var(--rd-muted
 .rd-shell .rd-diverging-intervals{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin-top:4px;min-height:14px}
 .rd-shell .rd-diverging-intervals small{font-size:10px;line-height:1.4;color:var(--rd-muted);padding-right:8px;overflow-wrap:anywhere}.rd-shell .rd-diverging-intervals small:last-child{text-align:right;padding:0 0 0 8px}
 .rd-shell .rd-score-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rd-line);border:1px solid var(--rd-line);margin-top:22px}
-.rd-shell .rd-score-grid article{display:flex;flex-direction:column;gap:6px;padding:18px;background:var(--rd-surface)}
+.rd-shell .rd-score-grid article{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:6px;padding:18px;background:var(--rd-surface)}
 .rd-shell .rd-score-grid small{font-size:11px;color:var(--rd-muted)}.rd-shell .rd-score-grid strong{font-family:Anton,Inter,sans-serif;font-size:32px;font-weight:400}.rd-shell .rd-score-grid article>span{font-size:11px;color:var(--rd-muted)}
 .rd-shell .rd-interpretation{font-size:17px;line-height:1.6;border-left:3px solid var(--rd-accent);padding-left:16px;margin-block:20px}
 .rd-shell .rd-footnote{font-size:12px;line-height:1.65;color:var(--rd-muted);margin:14px 0}
@@ -160,11 +160,13 @@ body[data-reading-detail-theme] #app:has(.rd-slip-trigger){padding-bottom:110px!
 .rd-shell .rd-two-col{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
 .rd-shell .rd-lineup-head{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-bottom:16px}.rd-shell .rd-lineup-head>div:last-child{text-align:right}.rd-shell .rd-lineup-head h3{font:700 20px Inter,system-ui,sans-serif;margin:0 0 8px}.rd-shell .rd-lineup-head b,.rd-shell .rd-lineup-head span{display:block;font-size:12px;line-height:1.7}.rd-shell .rd-lineup-head span{color:var(--rd-muted)}
 .rd-shell .rd-pitch-scroll{overflow-x:auto;max-width:100%;border:1px solid var(--rd-line);border-radius:7px;background:var(--rd-surface)}
-.rd-shell .rd-pitch{position:relative;aspect-ratio:1080/600;min-width:880px;background:linear-gradient(90deg,transparent 50%,#00000005 50%);color:var(--rd-line)}
+.rd-shell .rd-pitch{position:relative;aspect-ratio:1080/600;min-width:880px;background:repeating-linear-gradient(90deg,#ffffff07 0 10%,transparent 10% 20%),#183e33;color:#ffffff85}
 .rd-shell .rd-pitch>svg{position:absolute;inset:0;width:100%;height:100%;stroke-width:1.4}
 .rd-shell .rd-field-player{position:absolute;transform:translate(-50%,-50%);width:88px;display:flex;align-items:center;flex-direction:column;gap:5px;text-align:center;color:var(--rd-ink)}
-.rd-shell .rd-shirt{display:grid;place-items:center;width:31px;height:34px;background:var(--rd-home);color:var(--rd-bg);clip-path:polygon(23% 0,38% 7%,62% 7%,77% 0,100% 23%,85% 38%,76% 31%,76% 100%,24% 100%,24% 31%,15% 38%,0 23%);font-weight:750;font-size:11px}
-.rd-shell .rd-field-player.is-away .rd-shirt{background:var(--rd-away)}.rd-shell .rd-field-player strong{font-size:10px;line-height:1.2;background:var(--rd-surface);padding:2px 4px;border-radius:3px;font-weight:600;max-width:100%}
+.rd-shell .rd-kit{position:relative;width:38px;height:38px;--reading-lineup-primary:#e1b75d;--reading-lineup-secondary:#183e33}
+.rd-shell .rd-kit .reading-kit-shirt{width:100%;height:100%}
+.rd-shell .rd-kit>b{position:absolute;inset:13px 0 0;text-align:center;color:#fff;font-size:12px;line-height:17px;text-shadow:-1px -1px 1px #000,1px 1px 1px #000,-1px 1px 1px #000,1px -1px 1px #000}
+.rd-shell .rd-field-player strong{font-size:10px;line-height:1.2;color:#fff;background:#102d25d9;padding:2px 4px;border-radius:3px;font-weight:600;max-width:100%;text-align:center;overflow-wrap:anywhere}
 .rd-shell .rd-lineup-list{padding-left:22px;line-height:1.8;font-size:13px}.rd-shell .rd-lineup-list b{font-variant-numeric:tabular-nums;color:var(--rd-muted);display:inline-block;min-width:24px}
 .rd-shell .rd-player-toolbar{display:flex;gap:20px;justify-content:space-between;align-items:end;margin-bottom:16px}.rd-shell .rd-player-toolbar label{font-size:12px;color:var(--rd-muted);display:grid;gap:8px;min-width:0;width:min(360px,100%)}
 .rd-shell .rd-player-mode{display:flex;gap:4px}.rd-shell :is(.rd-player-mode button,.rd-player-links button){font:inherit;font-size:12px;min-height:44px;padding:9px 13px;border:1px solid var(--rd-line);border-radius:4px;background:var(--rd-surface);color:var(--rd-ink);cursor:pointer}

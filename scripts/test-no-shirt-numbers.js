@@ -8,7 +8,8 @@ const mapped=new Map();
 for(const row of source.players){
  const key=`${row.teamId}:${row.playerId}`;assert(!mapped.has(key),`Duplicate ${key}`);
  assert(Number.isInteger(row.shirtNumber)&&row.shirtNumber>=1&&row.shirtNumber<=99);
- assert(source.documentEntries.some(e=>e.teamId===row.teamId&&e.name===row.sourceName&&e.number===row.shirtNumber&&e.page===row.page));mapped.set(key,row.shirtNumber);
+ assert(source.numberHistory.some(e=>e.teamId===row.teamId&&e.playerId===row.playerId&&e.shirtNumber===row.shirtNumber&&e.documentDate===row.documentDate));
+ assert(/^https:\/\/(images\.legaseriea\.it|www\.transfermarkt\.it)\//.test(row.sourceUrl));mapped.set(key,row.shirtNumber);
 }
 let count=0;
 for(const team of read('data/normalized/teams.json')){

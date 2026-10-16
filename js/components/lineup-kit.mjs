@@ -29,7 +29,7 @@ export function lineupKitStyle(team) {
   };
 }
 
-export function renderLineupKit(team, { goalkeeper = false } = {}) {
+export function renderLineupKit(team, { goalkeeper = false, shirtNumber = null } = {}) {
   const kit = goalkeeper ? { pattern: "panel" } : lineupKitStyle(team);
   const id = `lineup-kit-${++sequence}`;
   let definition = "";
@@ -44,5 +44,6 @@ export function renderLineupKit(team, { goalkeeper = false } = {}) {
   const fill = definition ? ` style="fill:url(#${id})"` : "";
   const panel = kit.pattern === "panel" ? '<path class="kit-panel" d="M20 10H28V43H20Z"/>' : "";
   // The pattern fills the silhouette itself, so no part can spill outside it.
-  return `<svg class="reading-kit-shirt" data-kit-pattern="${kit.pattern}" viewBox="0 0 48 48" aria-hidden="true" focusable="false"${colors}>${definition}<path class="kit-body" d="${silhouette}"${fill}/>${panel}<path class="kit-trim" d="M18 6Q24 17 30 6M2 21 10 25M38 25 46 21"/></svg>`;
+  const number=Number.isInteger(shirtNumber)&&shirtNumber>=1&&shirtNumber<=99?`<text x="24" y="34" text-anchor="middle" fill="#fff" stroke="#10201c" stroke-width="2" paint-order="stroke" style="font:700 15px sans-serif">${shirtNumber}</text>`:'';
+  return `<svg class="reading-kit-shirt" data-kit-pattern="${kit.pattern}" viewBox="0 0 48 48" aria-hidden="true" focusable="false"${colors}>${definition}<path class="kit-body" d="${silhouette}"${fill}/>${panel}<path class="kit-trim" d="M18 6Q24 17 30 6M2 21 10 25M38 25 46 21"/>${number}</svg>`;
 }
