@@ -13,7 +13,7 @@ export function tacticsMarkup(model,evidence){
  const summary=sides.map((side,i)=>{const strengths=labelled(profiles[i]?.strengths).slice(0,2),weaknesses=labelled(profiles[i]?.weaknesses).slice(0,2);return `<p><strong>${esc(side.name)}</strong> — ${strengths.length?`Punti di forza: ${strengths.map(esc).join(' · ')}.`:'Punti di forza documentati N/D.'} ${weaknesses.length?`Vulnerabilità: ${weaknesses.map(esc).join(' · ')}.`:''}</p>`}).join('');
  const panels=sides.map((side,i)=>{
   const p=profiles[i],channels=evidence.analysis.attackChannels?.profiles?.find(p=>p.team===side.name)?.attackChannels||model.prediction?.teamProjections?.[i]?.attackChannels||p?.attackChannels;
-  return [i?'away':'home',i?'Ospite':'Casa',`<h3>${esc(side.name)}</h3><p class="rd-footnote">Baseline ${esc(p?.season||'storica')} · ${esc(p?.competition||'Campione N/D')} · ${number(p?.summary?.appearances,0)} gare</p>${attackMarkup(channels)}${details('Statistiche, campione e fonte',p?recordList({campione:p.summary,derivate:p.derived,qualita:p.dataQuality,note:p.notes})+sourceLink(p.source?.url,p.source?.provider||'Fonte'):missing('Profilo tattico strutturato non disponibile.'))}`];
+  return [i?'away':'home',i?'Ospite':'Casa',`<h3>${esc(side.name)}</h3><p class="rd-footnote">Baseline ${esc(p?.season||'storica')} · ${esc(p?.competition||'Campione N/D')} · ${number(p?.summary?.appearances,0)} gare</p><dl class="rd-player-kpis"><div><dt>Possesso</dt><dd>${number(p?.summary?.possessionPct)}${finite(p?.summary?.possessionPct)?'%':''}</dd></div><div><dt>Tiri / gara</dt><dd>${number(p?.summary?.shotsPerGame)}</dd></div><div><dt>Gol / gara</dt><dd>${number(p?.derived?.goalsPerGame)}</dd></div></dl>${attackMarkup(channels)}${details('Statistiche, campione e fonte',p?recordList({campione:p.summary,derivate:p.derived,qualita:p.dataQuality,note:p.notes})+sourceLink(p.source?.url,p.source?.provider||'Fonte'):missing('Profilo tattico strutturato non disponibile.'))}`];
  });
  return `<div class="rd-tactical-summary"><h3>Le chiavi del confronto</h3>${summary}<small>Descrizione della baseline della fonte; non è un nuovo pronostico.</small></div>`+tabs('rd-tactics',panels);
 }
@@ -28,12 +28,20 @@ function timeline(model,evidence,side){
 export function installTacticsHistory(model,evidence,containers){
  const oldTactics=[...containers.tattica.childNodes],oldHistory=[...containers.storico.childNodes];
  const tactical=document.createElement('div');tactical.innerHTML=tacticsMarkup(model,evidence);mountTabs(tactical);
- const original=document.createElement('details');original.className='rd-disclosure rd-original-detail';original.innerHTML='<summary>Evidenze tattiche e fonti originali</summary>';oldTactics.forEach(n=>original.append(n));containers.tattica.replaceChildren(tactical,original);
+ const recent=document.createElement('div');recent.className='rd-recent-form';recent.innerHTML='<h3>Andamento recente</h3><div class="rd-two-col">'+[model.home,model.away].map(side=>recentFormMarkup(model,evidence,side)).join('')+'</div>';
+ containers.tattica.replaceChildren(tactical,recent);
  const history=document.createElement('div');
  history.innerHTML=tabs('rd-history',[
-  ['form','Forma recente',`<div class="rd-two-col">${[model.home,model.away].map(s=>timeline(model,evidence,s)).map(html=>`<article>${html}</article>`).join('')}</div><p class="rd-footnote">Il campione è quello del calendario caricato, non necessariamente tutte le gare domestiche ed europee.</p>`],
   ['h2h','Precedenti','<div data-original-h2h></div>'],
  ]);
  const target=history.querySelector('[data-original-h2h]');if(oldHistory.length)oldHistory.forEach(n=>target.append(n));else target.innerHTML=missing('Precedenti verificati non disponibili per questa coppia.');mountTabs(history);containers.storico.replaceChildren(history);
  return ()=>{containers.tattica.replaceChildren(...oldTactics);containers.storico.replaceChildren(...oldHistory)};
+}
+
+export function recentFormMarkup(model,evidence,side){
+ const rows=priorMatches(model,evidence,side).filter(m=>finite(m.score.home)&&finite(m.score.away)).slice(0,5).reverse();
+ if(!rows.length)return '<article><h4>'+esc(side.name)+'</h4>'+missing('Andamento recente N/D: nessuna gara conclusa precedente disponibile.')+'</article>';
+ const values=rows.map(m=>{const home=m.homeTeam===side.id||m.homeTeam===side.name;const own=m.score[home?'home':'away'],other=m.score[home?'away':'home'];return own>other?3:own===other?1:0});
+ const points=values.map((v,i)=>[35+i*(250/Math.max(1,values.length-1)),110-v*28]);
+ return '<article><h4>'+esc(side.name)+'</h4><svg class="rd-form-chart" viewBox="0 0 320 150" role="img" aria-label="'+esc(side.name)+': punti nelle ultime gare disponibili"><path d="M25 26H300M25 54H300M25 82H300M25 110H300" fill="none" stroke="var(--rd-line)"/><polyline points="'+points.map(p=>p.join(',')).join(' ')+'" fill="none" stroke="var(--rd-accent)" stroke-width="2"/>'+points.map(([x,y],i)=>'<circle cx="'+x+'" cy="'+y+'" r="4" fill="var(--rd-accent)"><title>'+esc(rows[i].date)+': '+values[i]+' punti</title></circle><text x="'+x+'" y="137" text-anchor="middle" fill="currentColor" font-size="10">'+esc(rows[i].date.slice(5))+'</text>').join('')+'</svg><p class="rd-footnote">Vittoria 3 · Pareggio 1 · Sconfitta 0. Gare precedenti disponibili.</p>'+timeline(model,evidence,side)+'</article>';
 }
