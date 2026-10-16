@@ -1,0 +1,17 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';
+import {readingSections,readingResultsDestination} from '../../../js/pages/reading-detail/shell.mjs';
+const model={competition:'serie-a',fixture:{id:'atalanta-venezia-2026-27-md-06',matchday:6,status:'finished',date:'2000-01-01',score:{home:1,away:0}}};
+const before=JSON.stringify(model),keys=m=>readingSections(m).map(s=>s[0]),read=async p=>JSON.parse(await fs.readFile(p,'utf8'));
+assert.deepEqual(keys(model),['scenario','formazioni','giocatori','disciplina','tattica','storico']);
+assert.deepEqual(readingSections(model).map(s=>s[2]),['01','02','03','04','05','06']);
+for(const status of ['scheduled','live','in_progress','postponed',null,undefined])assert(keys({...model,fixture:{...model.fixture,status}}).includes('pronostici'));
+assert.equal(await readingResultsDestination(model,read),'schedina.html?giornata=6');
+assert.equal(await readingResultsDestination({...model,competition:'champions',fixture:{id:'ucl-2026-27-md02-05',status:'finished',matchday:2}},read),'schedina.html?giornata=2&competizione=champions');
+assert.equal(await readingResultsDestination({...model,fixture:{...model.fixture,status:'live'}},read),null);
+assert.equal(await readingResultsDestination({...model,fixture:{...model.fixture,id:'NOT_AVAILABLE'}},read),null);
+assert.equal(await readingResultsDestination({...model,fixture:{...model.fixture,matchday:1}},read),null);
+assert.equal(await readingResultsDestination(model,async()=>{throw Error('unavailable')}),null);
+assert.equal(await readingResultsDestination(model,async()=>({matchday:7,marketCatalog:{matches:[{matchId:model.fixture.id,selections:[{}]}]}})),null);
+assert.equal(JSON.stringify(model),before);
+console.log('PASS final status only, sequential sections, exact fixture/day archives, missing and unavailable destinations, no model mutation');

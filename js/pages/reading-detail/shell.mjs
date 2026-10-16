@@ -1,10 +1,8 @@
 import {installScenario} from './scenario.mjs';
 import {installForecasts} from './forecasts.mjs';
-import {loadEvidence} from './evidence.mjs';
+import {loadEvidence,readArtifact} from './evidence.mjs';
 import {installPeople} from './people.mjs';
 import {installTacticsHistory} from './tactics-history.mjs';
-import {loadVerification,installVerification} from './verification.mjs';
-import {esc,recordList,details} from './format.mjs';
 const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const definitions=[
   ['scenario','Scenario','01','M4 16l5-5 4 3 7-10'],
@@ -18,6 +16,30 @@ const definitions=[
   ['fonti','Fonti e metodo','09','M5 3h10l4 4v14H5z M15 3v5h4 M8 12h8 M8 16h6']
 ];
 const icon=path=>`<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="${path}"/></svg>`;
+
+export function readingSections(model){
+  // Only an explicit final status removes forecasts; a live score or past kickoff does not.
+  return definitions.filter(([key])=>!['verifica','fonti'].includes(key)&&(key!=='pronostici'||model.fixture.status!=='finished'))
+    .map(([key,title,,path],i)=>[key,title,String(i+1).padStart(2,'0'),path]);
+}
+
+export async function readingResultsDestination(model,read=readArtifact){
+  if(model.fixture.status!=='finished')return null;
+  try{
+    // These are the existing result-capable routes, not an extension of market gates.
+    if(model.competition==='serie-a'&&Number(model.fixture.matchday)===6){
+      const data=await read('data/normalized/schedina-md06.json');
+      const fixture=data.marketCatalog?.matches?.find(f=>f.matchId===model.fixture.id);
+      if(Number(data.matchday)===6&&fixture?.selections?.length)return 'schedina.html?giornata=6';
+    }
+    if(model.competition==='champions'&&Number(model.fixture.matchday)===2){
+      const data=await read('data/normalized/champions-md02-audit-display.json');
+      const fixture=data.fixtures?.find(f=>f.fixtureId===model.fixture.id);
+      if(Number(data.matchday)===2&&fixture?.status==='finished'&&fixture.contractIds?.length)return 'schedina.html?giornata=2&competizione=champions';
+    }
+  }catch{/* An unavailable archive must not produce a misleading link. */}
+  return null;
+}
 
 function classify(node){
   if(node.matches('.reading-post-match,.reading-archive-banner,.champions-match-report'))return 'verifica';
@@ -48,7 +70,8 @@ export async function mountReadingShell(model,root=document.querySelector('#app'
     sheet=document.createElement('link');sheet.rel='stylesheet';sheet.href=href;sheet.dataset.readingDetailCss='';
     await new Promise((resolve,reject)=>{sheet.onload=resolve;sheet.onerror=()=>{sheet.remove();reject(new Error('Reading stylesheet unavailable'))};document.head.append(sheet)});
   }
-  const evidence=await loadEvidence(model),verification=await loadVerification(model);
+  const evidence=await loadEvidence(model),resultsHref=await readingResultsDestination(model);
+  const visibleDefinitions=readingSections(model);
   const original=[...root.childNodes];
   const oldHero=root.querySelector('.reading-match-hero');
   if(!oldHero)return;
@@ -69,7 +92,13 @@ export async function mountReadingShell(model,root=document.querySelector('#app'
     if(back){back.classList.add('rd-back');move(back,shell);}
     const fallback=document.createElement('a');const previous=new URL(location.href);previous.searchParams.set('layout','legacy');fallback.href=previous.href;fallback.className='rd-fallback';fallback.textContent='Vista precedente';
     if(back)back.append(fallback);else shell.append(fallback);
-    shell.append(hero.firstElementChild,nav);
+    shell.append(hero.firstElementChild);
+    if(resultsHref){
+      const results=document.createElement('p');results.className='rd-footnote';
+      results.innerHTML=`<a data-reading-results-link href="${escape(resultsHref)}">Esiti nella Schedina · ${model.competition==='champions'?'Champions League':'Serie A'} · Giornata ${escape(model.fixture.matchday)} ↗</a>`;
+      shell.append(results);
+    }
+    shell.append(nav);
     const summary=oldHero.querySelector('.reading-summary');
     if(summary){summary.classList.add('rd-original-summary');move(summary,groups.get('scenario').lastElementChild);}
     const referee=oldHero.querySelector('.reading-referee-assignment');
@@ -84,18 +113,26 @@ export async function mountReadingShell(model,root=document.querySelector('#app'
       if(key)move(node,groups.get(key).lastElementChild);
       else move(node,shell); // Preserve unknown original content instead of dropping it.
     }
-    for(const [key,title] of definitions){
+    for(const [key,title,number] of visibleDefinitions){
       const group=groups.get(key);
+      group.querySelector('.rd-section-number').textContent=number;
       shell.append(group);
       const link=document.createElement('a');link.href='#'+group.id;link.textContent=title;link.dataset.sectionLink=key;linkStrip.append(link);
     }
     const mini=document.createElement('div');mini.className='rd-mini';mini.innerHTML=`<span>${escape(model.home.name)}</span><b>VS</b><span>${escape(model.away.name)}</span>`;mini.setAttribute('aria-hidden','true');nav.prepend(mini);
     undo.push(installScenario(model,groups.get('scenario').lastElementChild));
-    const forecastUi=installForecasts(model,groups.get('pronostici').lastElementChild,shell,options.store);undo.push(forecastUi.undo);
+    if(model.fixture.status!=='finished'){
+      const forecastUi=installForecasts(model,groups.get('pronostici').lastElementChild,shell,options.store);undo.push(forecastUi.undo);
+    }
     undo.push(installPeople(model,evidence,Object.fromEntries([...groups].map(([key,group])=>[key,group.lastElementChild])),shell));
     undo.push(installTacticsHistory(model,evidence,Object.fromEntries([...groups].map(([key,group])=>[key,group.lastElementChild]))));
-    undo.push(installVerification(model,evidence,verification,groups.get('verifica').lastElementChild,groups.get('pronostici').lastElementChild));
-    groups.get('fonti').lastElementChild.innerHTML=`<p class="rd-footnote">Dati osservati, proiezioni e interpretazioni hanno fonti e periodi distinti. Quote riferite allo snapshot provider, senza aggiornamenti in tempo reale.</p>${details('Provenienza e copertura',recordList({fontiFixture:evidence.analysis.match?.sources||evidence.analysis.match?.matchReport?.sourceUrl,fontiFormazioni:evidence.lineups.map(l=>({squadra:l.side.name,fonte:l.source,aggiornamento:l.updatedAt})),qualita:model.quality,previsioneAggiornata:model.prediction?.generatedAt??null,snapshot:verification.snapshot?{id:verification.snapshot.snapshotId,generatedAt:verification.snapshot.generatedAt,hash:verification.snapshot.integrity.sha256}:verification.snapshotReason}))}`;
+    if(model.fixture.status==='finished'){
+      // Existing player/discipline references now lead to the result archive, never a missing section.
+      shell.querySelectorAll('[data-market-link]').forEach(button=>{
+        if(resultsHref)button.addEventListener('click',()=>location.assign(resultsHref));
+        else button.disabled=true;
+      });
+    }
     root.replaceChildren(shell);document.body.dataset.readingDetailTheme=model.theme;
     const siteHeader=document.querySelector('.site-header');
     const headerOffset=()=>siteHeader?siteHeader.getBoundingClientRect().height+(parseFloat(getComputedStyle(siteHeader).top)||0):0;
