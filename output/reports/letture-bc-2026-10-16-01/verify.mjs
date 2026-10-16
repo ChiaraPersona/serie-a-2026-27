@@ -1,0 +1,13 @@
+import fs from 'node:fs';
+import crypto from 'node:crypto';
+import {execFileSync} from 'node:child_process';
+const dir='output/reports/letture-bc-2026-10-16-01';
+const baseline=JSON.parse(fs.readFileSync(dir+'/baseline.json','utf8'));
+const allowed=new Set(['js/pages/readings.js','js/pages/champions.js']);
+const changed=baseline.files.filter(f=>!fs.existsSync(f.path)||crypto.createHash('sha256').update(fs.readFileSync(f.path)).digest('hex')!==f.sha256).map(f=>f.path);
+const unauthorized=changed.filter(p=>!allowed.has(p));
+const head=execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim();
+const result={capturedAt:new Date().toISOString(),baselineHead:baseline.head,head,checked:baseline.files.length,changed,unauthorized,headUnchanged:head===baseline.head,status:execFileSync('git',['status','--porcelain=v1','--untracked-files=all'],{encoding:'utf8'})};
+fs.writeFileSync(dir+'/integrity.json',JSON.stringify(result,null,2));
+console.log(JSON.stringify({checked:result.checked,changed,unauthorized,headUnchanged:result.headUnchanged}));
+if(unauthorized.length||!result.headUnchanged)process.exitCode=1;

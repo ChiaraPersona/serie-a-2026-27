@@ -1,0 +1,100 @@
+/* Pilot B+C only: never applies to calendars, other fixtures, or the betslip. */
+body[data-reading-detail-theme]{--rd-bg:#f7f7f3;--rd-surface:#fff;--rd-soft:#eeefea;--rd-ink:#172b32;--rd-muted:#586b70;--rd-line:#d6dfdb;--rd-accent:#126451;--rd-home:#126451;--rd-away:#555b9b;--text:var(--rd-ink);--muted:var(--rd-muted);--surface:var(--rd-surface);--surface2:var(--rd-soft);--line:var(--rd-line);background:radial-gradient(ellipse at 8% 0%,#e7eee8 0,transparent 38rem),radial-gradient(ellipse at 100% 30%,#ececf4 0,transparent 35rem),var(--rd-bg)!important;color:var(--rd-ink)}
+body[data-reading-detail-theme="champions"]{--rd-bg:#07152c;--rd-surface:#10233f;--rd-soft:#142d4d;--rd-ink:#f2f6ff;--rd-muted:#afc3dc;--rd-line:#304762;--rd-accent:#9edbff;--rd-home:#9edbff;--rd-away:#d0b7ff;background:radial-gradient(ellipse at 70% -10%,#153964 0,transparent 45rem),radial-gradient(ellipse at 0% 55%,#102747 0,transparent 40rem),var(--rd-bg)!important}
+body[data-reading-detail-theme] #app{max-width:1050px!important;width:calc(100% - 48px)!important;padding:24px 0 64px!important;min-width:0}
+body[data-reading-detail-theme] .site-header{background:var(--rd-bg)!important;color:var(--rd-ink);border-color:var(--rd-line)}
+body[data-reading-detail-theme] :is(.brand,.footer-brand,.site-nav a,.menu-button){color:var(--rd-ink)!important}
+body[data-reading-detail-theme] .site-footer{background:var(--rd-bg)!important;border-color:var(--rd-line);color:var(--rd-ink)}
+body[data-reading-detail-theme] .site-footer :is(a,p,small){color:var(--rd-muted)!important}
+.rd-shell{color:var(--rd-ink);font-family:Inter,system-ui,sans-serif;min-width:0}
+.rd-shell *{box-sizing:border-box}
+.rd-shell a{color:var(--rd-accent)}
+.rd-shell .rd-back{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin:0 0 32px;padding:0!important;font-size:12px;color:var(--rd-muted);border:0;background:none}
+.rd-back a{text-decoration:none}
+.rd-back .rd-fallback{margin-left:auto;color:var(--rd-muted);text-decoration:underline;text-underline-offset:4px}
+.rd-accessible-title{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.rd-hero{padding:0 0 28px;border:0;border-radius:0;background:none;box-shadow:none}
+.rd-overline{display:flex;justify-content:space-between;align-items:center;gap:12px;border-top:2px solid var(--rd-ink);padding-top:16px}
+.rd-edition{font-size:12px;font-weight:750;text-transform:uppercase;letter-spacing:.08em}
+.rd-edition i{margin:0 9px;font-style:normal;color:var(--rd-muted)}
+.rd-status{display:flex;align-items:center;gap:7px;color:var(--rd-muted);font-size:12px}
+.rd-status::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--rd-accent)}
+.rd-matchup{display:grid;grid-template-columns:minmax(0,1fr) 120px minmax(0,1fr);align-items:center;gap:20px;padding:40px 0 25px}
+.rd-team{display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;min-width:0}
+.rd-team img{object-fit:contain;width:92px;height:92px;filter:drop-shadow(0 6px 9px #00000012);margin-bottom:8px}
+.rd-side{font-size:10px;text-transform:uppercase;letter-spacing:.16em;font-weight:750;color:var(--rd-home)}
+.rd-team--away .rd-side{color:var(--rd-away)}
+.rd-team-name{font-family:Anton,Inter,system-ui,sans-serif;font-size:clamp(28px,4vw,45px);line-height:1.15;font-weight:400;letter-spacing:.005em;overflow-wrap:anywhere}
+.rd-versus{display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+.rd-versus>span:first-child{font-size:15px;font-weight:600;letter-spacing:.13em;color:var(--rd-muted)}
+.rd-result{font-size:10px;text-transform:uppercase;letter-spacing:.09em;color:var(--rd-muted)}
+.rd-result b{display:block;color:var(--rd-ink);font-size:23px;letter-spacing:.04em;white-space:nowrap;margin-top:5px}
+.rd-match-meta{display:flex;justify-content:center;flex-wrap:wrap;gap:8px 18px;color:var(--rd-muted);font-size:12px;text-align:center}
+.rd-match-meta>span::before{content:"·";margin-right:18px;color:var(--rd-line)}
+.rd-editorial-note{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-top:35px;border-bottom:1px solid var(--rd-line);padding-bottom:16px}
+.rd-editorial-note>span{font-size:11px;font-weight:800;letter-spacing:.18em;color:var(--rd-accent)}
+.rd-editorial-note p{margin:0;color:var(--rd-muted);font-size:12px}
+.rd-nav{position:sticky;top:var(--rd-header-height,76px);z-index:15;display:flex;align-items:center;gap:3px;background:var(--rd-bg);border-bottom:1px solid var(--rd-line);padding:8px 0;margin-bottom:40px;isolation:isolate;max-width:100%}
+.rd-nav-links{display:flex;gap:3px;overflow-x:auto;scrollbar-width:thin;min-width:0;flex:1}
+.rd-nav a{flex:0 0 auto;display:flex;align-items:center;min-height:44px;padding:0 13px;text-decoration:none;color:var(--rd-muted);font-size:12px;font-weight:650;white-space:nowrap;border-radius:5px}
+.rd-nav a:hover,.rd-nav a[aria-current]{background:var(--rd-soft);color:var(--rd-accent)}
+.rd-mini{display:none;align-items:center;gap:8px;flex:0 0 auto;border-right:1px solid var(--rd-line);padding-right:14px;margin-right:5px;font-size:11px;font-weight:750;max-width:260px}
+.rd-mini span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:115px}
+.rd-mini b{font-size:9px;color:var(--rd-muted)}
+.rd-nav.is-condensed .rd-mini{display:flex}
+.rd-section{margin:0 0 52px;min-width:0;scroll-margin-top:calc(var(--rd-header-height,76px) + 84px)}
+.rd-section-heading{display:flex;align-items:center;gap:11px;padding:0 0 14px;margin-bottom:24px;border-bottom:1px solid var(--rd-line)}
+.rd-section-number{font-size:10px;font-weight:650;color:var(--rd-muted);font-variant-numeric:tabular-nums;margin-right:3px}
+.rd-section-heading svg{width:20px;height:20px;color:var(--rd-accent);flex-shrink:0}
+.rd-section-heading h2{font-family:Inter,system-ui,sans-serif;font-size:22px;font-weight:700;line-height:1.2;margin:0!important;letter-spacing:-.035em;color:var(--rd-ink)}
+.rd-section-content{min-width:0}
+.rd-shell .rd-section-content>.section{margin-top:24px!important}
+.rd-shell .rd-section-content>.section:first-child{margin-top:0!important}
+.rd-shell :is(.section-heading,.champions-reading-section-heading) h2{font-family:Inter,system-ui,sans-serif;font-size:20px;letter-spacing:-.035em;color:var(--rd-ink)}
+.rd-shell :is(.section-heading,.champions-reading-section-heading) p{font-size:12px;line-height:1.65;color:var(--rd-muted)}
+.rd-shell :is(.eyebrow,.objective-method,.muted,.reading-referee-method){color:var(--rd-muted)!important}
+.rd-shell .rd-original-summary{display:grid!important;grid-template-columns:2fr 1fr 1fr!important;gap:16px!important;padding:20px!important;margin:0 0 24px!important;border:1px solid var(--rd-line)!important;border-radius:8px!important;background:var(--rd-surface)!important;box-shadow:none!important;color:var(--rd-ink)!important}
+.rd-shell .rd-original-summary>div{min-width:0}
+.rd-shell .rd-original-summary :is(span,small){color:var(--rd-muted)!important}
+.rd-shell .rd-original-summary strong{color:var(--rd-ink)!important}
+.rd-shell .rd-original-summary .reading-formation-status{grid-column:1/-1;border-top:1px solid var(--rd-line);padding-top:10px}
+.rd-shell .reading-score-list{display:flex!important;gap:8px!important}
+.rd-shell .reading-score-list>div{flex:1;border:1px solid var(--rd-line)!important;background:var(--rd-soft)!important;border-radius:5px!important;padding:12px!important}
+.rd-shell .reading-score-list strong{font-size:25px!important}
+.rd-shell .reading-score-list small{font-size:10px!important}
+.rd-shell :is(.prediction-v2-team-card,.prediction-v2-matchup-card,.prediction-v2-player-card,.prediction-v2-outsider-grid>article,.prediction-v2-discipline-teams>article,.prediction-booked-panel,.reading-referee-assignment,.round16-info-box,.reading-tactical-card,.reading-h2h-match,.champions-team-comparison,.champions-match-projection,.champions-reading-tactical-analysis,.champions-published-forecasts>ol>li,.champions-match-report){background:var(--rd-surface)!important;border-color:var(--rd-line)!important;color:var(--rd-ink)!important;border-radius:8px!important;box-shadow:none!important}
+.rd-shell :is(.prediction-v2-team-card,.prediction-v2-matchup-card,.prediction-v2-player-card){padding:20px!important}
+.rd-shell :is(.prediction-v2-team-metrics,.prediction-v2-team-metrics>div,.prediction-v2-matchup-card>div>section,.prediction-v2-outsider-grid section,.champions-tactical-table-wrap td,.champions-tactical-table-wrap th){border-color:var(--rd-line)!important}
+.rd-shell :is(table,thead,tbody,tr,th,td){color:var(--rd-ink);border-color:var(--rd-line)}
+.rd-shell :is(th,thead){background:var(--rd-soft)!important}
+.rd-shell td{background:transparent}
+.rd-shell :is(.table-wrap,.prediction-v2-shooter-table,.champions-tactical-table-wrap,.reading-player-table-scroll){max-width:100%;overflow-x:auto}
+.rd-shell :is(.reading-shared-forecasts,.prediction-v2-numbers,.prediction-v2-why,.prediction-v2-shooters,.prediction-v2-outsiders,.prediction-v2-discipline,.champions-reading-volume,.champions-selected-forecasts,.reading-tactical-baseline){max-width:100%;min-width:0}
+.rd-shell :is(.champions-published-main,.champions-published-main strong,.champions-published-metrics strong,.champions-published-forecasts strong,.prediction-booked-panel strong,.reading-tactical-card strong){color:var(--rd-ink)!important}
+.rd-shell :is(.champions-published-main small,.champions-published-main>span,.champions-published-main em,.champions-published-metrics small,.champions-reading-volume .objective-method){color:var(--rd-muted)!important}
+.rd-shell :is(.champions-reading-volume,.champions-selected-forecasts,.reading-tactical-baseline){padding-inline:0!important;background:none!important;border:0!important;box-shadow:none!important}
+.rd-shell :is(.reading-info-grid,.champions-reading-info){display:block!important}
+.rd-shell .round16-formations{width:100%}
+.rd-shell .reading-h2h-section{background:var(--rd-surface);border-color:var(--rd-line);color:var(--rd-ink)}
+.rd-shell :is(a,button,summary):focus-visible{outline:2px solid var(--rd-accent);outline-offset:4px}
+.rd-shell .champions-published-forecasts button{min-height:44px}
+@media(max-width:1099px){
+  .rd-matchup{padding-top:32px}.rd-nav a{padding-inline:11px}.rd-team-name{font-size:35px}
+  .rd-shell .rd-original-summary{grid-template-columns:1.8fr 1fr 1fr!important}
+}
+@media(max-width:767px){
+  body[data-reading-detail-theme] #app{width:calc(100% - 32px)!important;padding-top:16px!important}
+  .rd-shell .rd-back{margin-bottom:24px;font-size:11px}.rd-overline{align-items:flex-start;gap:8px}.rd-edition{font-size:10px;letter-spacing:.035em}.rd-edition i{margin:0 4px}.rd-status{font-size:10px}
+  .rd-matchup{grid-template-columns:minmax(0,1fr) 62px minmax(0,1fr);gap:8px;padding:30px 0 22px}
+  .rd-team img{width:68px;height:68px;margin-bottom:4px}.rd-team-name{font-size:27px;line-height:1.16}.rd-team{gap:7px}.rd-side{font-size:9px}.rd-versus>span:first-child{font-size:12px}.rd-result{font-size:8px}.rd-result b{font-size:19px}
+  .rd-match-meta{font-size:11px;gap:7px 12px}.rd-match-meta>span::before{margin-right:12px}.rd-editorial-note{align-items:flex-start;margin-top:25px}.rd-editorial-note p{font-size:11px;max-width:180px;text-align:right;line-height:1.5}.rd-editorial-note>span{font-size:10px;white-space:nowrap}
+  .rd-hero{padding-bottom:15px}.rd-nav{margin-bottom:28px;padding-block:4px}.rd-nav a{font-size:11px;padding-inline:11px}
+  .rd-nav.is-condensed{flex-direction:column;align-items:stretch;gap:0}.rd-nav.is-condensed .rd-mini{display:flex;width:100%;max-width:none;border:0;padding:6px 0;font-size:10px}.rd-nav-links{width:100%}
+  .rd-section{margin-bottom:36px}.rd-section-heading{gap:9px;margin-bottom:18px;padding-bottom:12px}.rd-section-heading h2{font-size:20px}.rd-section-heading svg{width:18px;height:18px}
+  .rd-shell .rd-original-summary{grid-template-columns:1fr 1fr!important;padding:16px!important;gap:15px!important}.rd-shell .rd-original-summary .reading-exact-scores{grid-column:1/-1}.rd-shell .rd-original-summary .reading-formation-status{grid-column:1/-1}
+  .rd-shell .reading-score-list>div{padding:9px!important}.rd-shell .reading-score-list strong{font-size:23px!important}.rd-shell .reading-score-list small{font-size:9px!important}
+  .rd-shell :is(.prediction-v2-team-card,.prediction-v2-matchup-card,.prediction-v2-player-card){padding:16px!important}
+  .rd-shell .section-heading{display:block}.rd-shell .section-heading p{margin-top:8px}.rd-shell .section-heading h2{font-size:18px}
+  .rd-shell :is(.champions-published-main,.champions-published-metrics){min-width:0}.rd-shell .champions-published-forecasts>ol>li{overflow-wrap:anywhere}
+}
+@media(prefers-reduced-motion:reduce){.rd-shell *{scroll-behavior:auto!important;animation:none!important;transition:none!important}}

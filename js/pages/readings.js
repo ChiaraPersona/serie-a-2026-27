@@ -1,4 +1,5 @@
 import {renderLineupField} from "../components/lineup-field.mjs";
+import {isReadingPilot} from './reading-detail/view-model.mjs';
 import {cardType} from './disciplinary.mjs';
 import {forecastView,sharedForecastsForMatch,isCanonicalModelForecast} from './shared-forecast-contract.mjs';
 import {createPersonalBetslipStore} from './personal-betslip-store.mjs';
@@ -235,6 +236,12 @@ function pilotSection(aggregates,report){const serieA=report.competitions.find(i
       update();
     }
   if(page==="readings"&&activeReadingMatch){renderProbableLineups(activeReadingMatch,teamDirectory,activePrediction);if(activeReadingMatch.competition!=="coppa-italia")renderReadingPilotEvidence(activeReading,activeReadingMatch);renderTacticalBaselines(activeReadingMatch,teamStyleProfiles,teams)}
+  if(isReadingPilot('serie-a',activeReadingMatch?.id,location.search)&&typeof document.createElement==='function'){
+    try{
+      const [{adaptSerieAReading},{mountReadingShell}]=await Promise.all([import('./reading-detail/serie-a-adapter.mjs'),import('./reading-detail/shell.mjs')]);
+      await mountReadingShell(adaptSerieAReading({match:activeReadingMatch,teams,teamDirectory,prediction:activePrediction,marketCatalog:forecastDataset?.marketCatalog,formation:formationPresentation(activeReadingMatch,teamDirectory)}));
+    }catch(error){console.warn('Lettura: vista precedente mantenuta.',error)}
+  }
   }
   return {render};
 }

@@ -1,3 +1,4 @@
+import {isReadingPilot} from './reading-detail/view-model.mjs';
 export function createPage(deps){
   const {esc,load}=deps;
   const dayLabel=value=>new Intl.DateTimeFormat("it-IT",{weekday:"long",day:"numeric",month:"long",year:"numeric",timeZone:"Europe/Rome"}).format(new Date(`${value}T12:00:00+01:00`));
@@ -450,6 +451,12 @@ export function createPage(deps){
         const release=document.querySelector('script[src*="js/app.js"]')?.src.match(/[?&]v=([^&]+)/)?.[1]||"dev";
         const {mountChampionsMarketUi}=await import(`./champions-market-ui.mjs?v=${encodeURIComponent(release)}`);
         mountChampionsMarketUi(md2MarketEntry,{publishedSelections:md2SchedinaFixture?.selections||[]});
+      }
+      if(isReadingPilot('champions',requestedMatchId,location.search)&&typeof document.createElement==='function'){
+        try{
+          const [{adaptChampionsReading},{mountReadingShell}]=await Promise.all([import('./reading-detail/champions-adapter.mjs'),import('./reading-detail/shell.mjs')]);
+          await mountReadingShell(adaptChampionsReading({fixture:requestedFixture,calendarFixture:requestedCalendarFixture,branding,publishedSelections:md2SchedinaFixture?.selections||[]}));
+        }catch(error){console.warn('Lettura: vista precedente mantenuta.',error)}
       }
       return;
     }
