@@ -17,7 +17,7 @@ export async function loadEvidence(model){
  const probable=model.competition==='serie-a'&&Number(model.fixture.matchday)===7?await readArtifact('data/sources/probable-lineups-md7-2026-27.json'):null;
  const numbering=model.competition==='serie-a'?await readArtifact('data/sources/team-pages/shirt-numbers-2026-27.json'):null;
  const lineups=sides.map((side,i)=>{
-  const raw=model.competition==='serie-a'?analysis.lineups?.[i]?.lineup:analysis.lineups?.[i?'away':'home'];
+  const raw=model.competition==='serie-a'?analysis.lineups?.[i]?.lineup:analysis.lineups?.[i?'away':'home']||(()=>{const formation=analysis.match?.probableFormation,side=formation?.[i?'away':'home'];return side?{...side,status:formation.status,source:formation.source,updatedAt:formation.updatedAt}:null})();
   const canonical=official?.teams?.find(t=>t.teamId===side.id);
   const registered=analysis.squads?.teams?.find(t=>t.team===side.name);
   const roster=squadFiles[i]?.squad||registered?.players||[];

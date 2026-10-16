@@ -151,6 +151,7 @@ export async function mountReadingShell(model,root=document.querySelector('#app'
       if(!link||event.ctrlKey||event.metaKey||event.shiftKey||event.altKey)return;
       const target=groups.get(link.dataset.sectionLink);if(!target)return;
       event.preventDefault();nav.classList.add('is-condensed');
+      nav.querySelectorAll('[data-section-link]').forEach(item=>{if(item===link)item.setAttribute('aria-current','location');else item.removeAttribute('aria-current')});
       const offset=headerOffset()+nav.getBoundingClientRect().height+18;
       history.pushState(null,'',link.hash);
       window.scrollTo({top:window.scrollY+target.getBoundingClientRect().top-offset,behavior:'instant'});

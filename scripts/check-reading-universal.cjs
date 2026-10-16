@@ -12,15 +12,17 @@ const server=http.createServer((req,res)=>{const file=path.resolve(root,'.'+deco
  const page=await browser.newPage();page.on('pageerror',e=>failures.push(e.message));page.on('console',m=>{if(m.type()==='warning'&&m.text().includes('vista precedente'))warnings.push(m.text())});
  await page.route('https://fonts.googleapis.com/**',route=>route.abort());await page.route('https://fonts.gstatic.com/**',route=>route.abort());
  const matches=read('data/normalized/matches.json');
- const serieIds=new Set([...read('data/normalized/readings.json').map(r=>r.matchId),...read('data/normalized/predictions.json').predictions.map(p=>p.matchId)]);
+ const serieIds=new Set(matches.filter(m=>m.matchday<=19).map(m=>m.id));
  const clIds=new Set([...read('data/normalized/champions-pilot-predictions-2026-27.json').fixtures,...read('data/normalized/champions-pilot-predictions-md02-2026-27.json').fixtures].map(f=>f.fixtureId));
  const cases=[...matches.filter(m=>serieIds.has(m.id)&&m.competition!=='coppa-italia').map(m=>({id:m.id,route:'lettura.html',status:m.status,score:m.score,competition:'serie-a'})),...read('data/normalized/champions-league-2026-27.json').fixtures.filter(f=>clIds.has(f.id)).map(f=>({id:f.id,route:'champions-league.html',status:f.status,score:f.score,competition:'champions'}))];
- for(const fixture of cases){
+ let next=0;
+ const audit=async(page)=>{for(;;){const fixture=cases[next++];if(!fixture)break;
   await page.setViewportSize({width:1440,height:1000});await page.goto(`${origin}/${fixture.route}?match=${fixture.id}`);await page.waitForSelector('.rd-shell',{timeout:15000}).catch(()=>{});
   const state=await page.evaluate(()=>({shell:!!document.querySelector('.rd-shell'),sections:[...document.querySelectorAll('.rd-section')].map(n=>n.id),nav:[...document.querySelectorAll('[data-section-link]')].map(n=>n.hash.slice(1)),overflow:document.documentElement.scrollWidth>innerWidth,score:document.querySelector('.rd-result b')?.textContent,theme:document.body.dataset.readingDetailTheme}));
   try{assert(state.shell,fixture.id+': layout missing');assert.deepEqual(state.nav,state.sections);assert(!state.overflow,fixture.id+': overflow');if(fixture.status==='finished'){assert(!state.sections.includes('lettura-pronostici'));if(fixture.score)assert.equal(state.score,`${fixture.score.home} — ${fixture.score.away}`)}assert.equal(state.theme,fixture.competition)}catch(e){failures.push(e.message)}
-  results.push({...fixture,...state});console.log(fixture.id,state.shell?'OK':'MISSING');
- }
+  results.push({...fixture,...state});if(results.length%20===0)console.log('Checked',results.length,'/',cases.length);
+ }};
+ const pages=await Promise.all(Array.from({length:4},()=>browser.newPage()));for(const p of pages){p.on('pageerror',e=>failures.push(e.message));p.on('console',m=>{if(m.type()==='warning'&&m.text().includes('vista precedente'))warnings.push(m.text())});await p.route('https://fonts.googleapis.com/**',r=>r.abort());await p.route('https://fonts.gstatic.com/**',r=>r.abort());}await Promise.all(pages.map(audit));for(const p of pages)await p.close();
  const samples=['atalanta-venezia-2026-27-md-06','milan-atalanta-2026-27-md-07','atalanta-sassuolo-2026-27-md-01','ucl-2026-27-md02-05','ucl-2026-27-md01-01'];
  for(const id of samples){const f=cases.find(c=>c.id===id);if(!f)continue;for(const width of [1440,768,390]){await page.setViewportSize({width,height:1000});await page.goto(`${origin}/${f.route}?match=${id}`);await page.waitForSelector('.rd-shell');assert(!await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),id+' '+width+' overflow');const nav=page.locator('[data-section-link="giocatori"]');await nav.click();assert.equal(await nav.getAttribute('aria-current'),'location');const filter=page.locator('[data-player-lineup-filter="starter"]');await filter.click();assert.equal(await filter.getAttribute('aria-pressed'),'true');await filter.click();assert.equal(await page.locator('[data-player-card][hidden]').count(),0);if(width!==768)await page.screenshot({path:path.join(require('os').tmpdir(),`reading-universal-${id}-${width}.png`),fullPage:true});}}
  await page.goto(`${origin}/lettura.html?match=atalanta-venezia-2026-27-md-06&layout=legacy`);await page.waitForSelector('.reading-match-hero');assert.equal(await page.locator('.rd-shell').count(),0);

@@ -1,4 +1,4 @@
-/* Pilot B+C only: never applies to calendars, other fixtures, or the betslip. */
+/* Shared reading presentation, isolated from calendars and the betslip. */
 body[data-reading-detail-theme]{--rd-bg:#f7f7f3;--rd-surface:#fff;--rd-soft:#eeefea;--rd-ink:#172b32;--rd-muted:#586b70;--rd-line:#d6dfdb;--rd-accent:#126451;--rd-home:#126451;--rd-away:#555b9b;--text:var(--rd-ink);--muted:var(--rd-muted);--surface:var(--rd-surface);--surface2:var(--rd-soft);--line:var(--rd-line);background:radial-gradient(ellipse at 8% 0%,#e7eee8 0,transparent 38rem),radial-gradient(ellipse at 100% 30%,#ececf4 0,transparent 35rem),var(--rd-bg)!important;color:var(--rd-ink)}
 body[data-reading-detail-theme="champions"]{--rd-bg:#07152c;--rd-surface:#10233f;--rd-soft:#142d4d;--rd-ink:#f2f6ff;--rd-muted:#afc3dc;--rd-line:#304762;--rd-accent:#9edbff;--rd-home:#9edbff;--rd-away:#d0b7ff;background:radial-gradient(ellipse at 70% -10%,#153964 0,transparent 45rem),radial-gradient(ellipse at 0% 55%,#102747 0,transparent 40rem),var(--rd-bg)!important}
 body[data-reading-detail-theme] #app{max-width:1050px!important;width:calc(100% - 48px)!important;padding:24px 0 64px!important;min-width:0}
@@ -96,7 +96,7 @@ body[data-reading-detail-theme] #app{max-width:1050px!important;width:calc(100% 
   .rd-shell :is(.champions-published-main,.champions-published-metrics){min-width:0}.rd-shell .champions-published-forecasts>ol>li{overflow-wrap:anywhere}
 }
 @media(prefers-reduced-motion:reduce){.rd-shell *{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
-/* D–H components: all selectors remain inside the pilot shell. */
+/* Shared components remain inside the reading shell. */
 .rd-shell .rd-diverging{min-width:0}
 .rd-shell .rd-diverging-teams{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin-bottom:8px;font-size:13px;font-weight:650}
 .rd-shell .rd-diverging-teams .is-home{color:var(--rd-home)}.rd-shell .rd-diverging-teams .is-away{color:var(--rd-away);text-align:right}
@@ -240,3 +240,6 @@ body[data-reading-detail-theme=champions] .menu-button{background:var(--rd-soft)
  .rd-shell .rd-player-expanded .rd-empty{padding:6px 8px}
  .rd-shell .rd-player-expanded .rd-player-links button{padding:7px;font-size:11px;overflow-wrap:anywhere}
 }
+
+.rd-shell .rd-form-chart{display:block;width:100%;height:auto;max-height:200px}
+.rd-shell .rd-recent-form{margin-top:28px}
