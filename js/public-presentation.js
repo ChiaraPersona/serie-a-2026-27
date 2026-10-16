@@ -10,7 +10,8 @@
  document.head.append(style);
  const provider=/^(?:fonte(?:\s.*)?|apri la fonte|snapshot provider|source|(?:UEFA(?:\.com)?|ESPN|WhoScored|StatMuse|Transfermarkt|Fantacalcio(?:\.it)?|Diretta(?:\.it)?|Lega (?:Calcio )?Serie A|AIA|FBref|FootyStats|Soccerbase|Sofascore)(?:\s*↗)?)$/i;
  const privateKey=/^(?:font[ei]|sources?(?:[a-z_].*)?|references?|referenceUrl|provider|provenienza|provenance|origine|retrievedAt|importedAt)$/i;
- const dedicated='.source-list,.source-directory-list,.source-team-grid,.sources-directory,.champions-source-links,.reading-post-match-source,.fantasy-price-source,.team-referee-source,.source-check,[data-source-section]';
+ // Selection rows use source-section as an internal catalog group, not provenance UI.
+ const dedicated='.source-list,.source-directory-list,.source-team-grid,.sources-directory,.champions-source-links,.reading-post-match-source,.fantasy-price-source,.team-referee-source,.source-check,[data-source-section]:not([data-selection-row])';
  function apply(root){
   if(!root?.querySelectorAll||protectedNode(root))return;
   root.querySelectorAll('figcaption,p,small').forEach(n=>{if(/©|copyright|CC[ -]BY|Creative Commons|tutti i diritti riservati/i.test(n.textContent))n.dataset.requiredAttribution=''});
