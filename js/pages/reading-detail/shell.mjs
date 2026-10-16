@@ -121,7 +121,7 @@ export async function mountReadingShell(model,root=document.querySelector('#app'
     }
     const mini=document.createElement('div');mini.className='rd-mini';mini.innerHTML=`<span>${escape(model.home.name)}</span><b>VS</b><span>${escape(model.away.name)}</span>`;mini.setAttribute('aria-hidden','true');nav.prepend(mini);
     undo.push(installScenario(model,groups.get('scenario').lastElementChild));
-    if(model.fixture.status!=='finished'&&(model.forecasts.length||!groups.get('pronostici').lastElementChild.children.length)){
+    if(model.fixture.status!=='finished'&&model.forecasts.length){
       const forecastUi=installForecasts(model,groups.get('pronostici').lastElementChild,shell,options.store);undo.push(forecastUi.undo);
     }
     undo.push(installPeople(model,evidence,Object.fromEntries([...groups].map(([key,group])=>[key,group.lastElementChild])),shell));

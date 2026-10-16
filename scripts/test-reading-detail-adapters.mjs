@@ -30,4 +30,8 @@ const unquoted=adaptChampionsReading({fixture,calendarFixture:null,branding:new 
 assert.equal(unquoted.forecasts[0],unavailable);assert.equal(unquoted.forecasts[0].betSelection.quote.decimal,null);assert(!Object.hasOwn(unquoted.forecasts[0],'odds'));
 assert(isReadingPilot('serie-a',match.id));assert(isReadingPilot('champions',fixture.fixtureId));
 assert(!isReadingPilot('serie-a',match.id,'?layout=legacy'));assert(isReadingPilot('serie-a','milan-atalanta-2026-27-md-07'));assert(isReadingPilot('serie-a','juventus-lazio-2026-27-md-07'));assert(isReadingPilot('champions','ucl-2026-27-md01-06'));
+assert(!isReadingPilot('champions',fixture.fixtureId,'?layout=legacy'));
+assert(!isReadingPilot('coppa-italia','existing-fixture'));assert(!isReadingPilot('serie-a',null));
+const futureCl=adaptChampionsReading({fixture:{...fixture,status:'scheduled'},calendarFixture:{...calendar.fixtures.find(f=>f.id===fixture.fixtureId),status:'scheduled'},branding:new Map(calendar.teamBranding.map(t=>[t.team,t])),publishedSelections:published});
+assert.equal(futureCl.fixture.status,'scheduled');assert.deepEqual(futureCl.forecasts,published);assert.equal(before,JSON.stringify({fixture,published,calendar}));
 console.log('OK adattatori: riferimenti e contratti integri, null/proprieta assenti, identita, fonti distinte e layout universale e fallback legacy');

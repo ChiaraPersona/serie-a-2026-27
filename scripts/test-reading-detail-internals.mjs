@@ -30,4 +30,7 @@ assert(verificationMarkup(model,empty,{snapshot:null}).includes('ancora disputar
 const unquoted={selectionId:'TEST_ONLY',betSelection:{market:{modifiers:{replacementIncluded:true,woodworkIncluded:true}},quote:{decimal:null,availability:'UNAVAILABLE'},evaluation:{modelProbabilityPct:null,expectedValuePct:null}}};
 const contract=JSON.stringify(unquoted),view=forecastPresentation(unquoted);assert.equal(view.odds,null);assert.equal(view.probability,null);assert(!view.quoted);assert(view.tags.includes('Sostituto incluso')&&view.tags.includes('Pali/traverse'));assert.equal(JSON.stringify(unquoted),contract);
 assert(!canPickReading({...model,fixture:{status:'finished',matchday:2}},unquoted));assert(!canPickReading(model,unquoted));
+const namedOnly={...empty,lineups:[{side:{name:'Casa'},status:'official',players:[{id:null,name:'Giocatore disponibile',source:'Giocatore disponibile'}],bench:['Riserva disponibile']},empty.lineups[1]]};
+const incompletePlayers=playersMarkup({...model,prediction:null},namedOnly);
+assert(incompletePlayers.includes('Giocatore disponibile'));assert(incompletePlayers.includes('Riserva disponibile'));assert(incompletePlayers.includes('data-player-lineup="starter"'));assert(incompletePlayers.includes('data-player-lineup="bench"'));assert(!incompletePlayers.includes('NaN'));
 console.log('OK Letture D–H: zero/null, identità, assenza dati spaziali, cronologia, snapshot autentico/alterato/posteriore, contratti e gate immutati');

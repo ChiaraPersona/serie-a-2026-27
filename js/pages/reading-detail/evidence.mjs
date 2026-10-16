@@ -44,12 +44,15 @@ export function playerLineupStatus(id,lineups){
 }
 export function individualPlayers(model,evidence){
  const source=model.prediction?.shooters?.allPlayers;
- const projections=source||evidence.lineups.flatMap(l=>l.players.map(p=>p.source).filter(p=>p&&typeof p==='object'));
+ const projections=source?.length?source:evidence.lineups.flatMap(l=>[
+  ...l.players.map(p=>({...((p.source&&typeof p.source==='object')?p.source:{}),name:p.name,canonicalPlayerId:p.id,team:l.side.name,readingLineupStatus:['official','probable'].includes(l.status)?'starter':'unknown'})),
+  ...l.bench.map(p=>({...((p&&typeof p==='object')?p:{}),name:typeof p==='string'?p:p.canonicalName||p.currentName||p.suppliedName||p.name,team:l.side.name,readingLineupStatus:['official','probable'].includes(l.status)?'bench':'unknown'}))
+ ]);
  return projections.map(p=>{
   const id=p.playerId||p.canonicalPlayerId||null;
   const lineup=evidence.lineups.find(l=>l.players.some(q=>q.id&&q.id===id));
   const lineupPlayer=lineup?.players.find(q=>q.id===id),member=lineupPlayer?.member;
   const outsider=(model.prediction?.shooters?.outsiders||[]).some(q=>q.playerId===id&&q.qualifiedOutsider===true)||(model.prediction?.shooters?.sotOutsiders||[]).some(q=>q.playerId===id&&q.qualifiedSotOutsider===true)||model.forecasts.some(l=>l.player?.canonicalPlayerId===id&&l.isOutsider===true);
-  return {id,name:p.name||p.canonicalName||p.suppliedName||'Identità non risolta',team:p.team||lineup?.side.name||'',role:p.detailedRole||p.role||member?.role||null,number:lineupPlayer?.shirtNumber??null,lineupStatus:playerLineupStatus(id,evidence.lineups),available:!!id&&p.dataStatus!=='role-baseline',outsider,source:p,member};
+  return {id,name:p.name||p.canonicalName||p.suppliedName||'Identità non risolta',team:p.team||lineup?.side.name||'',role:p.detailedRole||p.role||member?.role||null,number:lineupPlayer?.shirtNumber??null,lineupStatus:p.readingLineupStatus||playerLineupStatus(id,evidence.lineups),available:!!id&&p.dataStatus!=='role-baseline',outsider,source:p,member};
  });
 }
