@@ -3,7 +3,10 @@ import {lineupPositions} from '../../components/lineup-field.mjs';
 import {individualPlayers} from './evidence.mjs';
 const label=s=>s==='official'?'Ufficiale':s==='probable'?'Probabile':s==='reference'?'Riferimento':'Da confermare';
 function preserve(container,content,title){
- const original=[...container.childNodes],backup=document.createElement('details');backup.className='rd-disclosure rd-original-detail';backup.innerHTML=`<summary>${esc(title)}</summary>`;original.forEach(n=>backup.append(n));container.replaceChildren(content,backup);return ()=>container.replaceChildren(...original);
+ const original=[...container.childNodes];
+ if(title){const backup=document.createElement('details');backup.className='rd-disclosure rd-original-detail';backup.innerHTML=`<summary>${esc(title)}</summary>`;original.forEach(n=>backup.append(n));container.replaceChildren(content,backup)}
+ else container.replaceChildren(content);
+ return ()=>container.replaceChildren(...original);
 }
 export function formationMarkup(evidence){
  const field=evidence.lineups.map((l,i)=>{
@@ -41,9 +44,9 @@ export function mountMarketLinks(root,shell){root.addEventListener('click',event
 export function installPeople(model,evidence,containers,shell){
  const undo=[];
  const formations=document.createElement('div');formations.className='rd-formations';formations.innerHTML=formationMarkup(evidence);
- undo.push(preserve(containers.formazioni,formations,'Distinta e informazioni originali'));
+ undo.push(preserve(containers.formazioni,formations));
  const players=document.createElement('div');players.innerHTML=playersMarkup(model,evidence);
- undo.push(preserve(containers.giocatori,players,'Graduatorie, outsider e proiezioni originali'));
+ undo.push(preserve(containers.giocatori,players));
  let mode='shots';const filter=()=>{const q=players.querySelector('input').value.trim().toLocaleLowerCase('it');let count=0;players.querySelectorAll('[data-player-card]').forEach(card=>{card.hidden=!card.dataset.playerSearch.includes(q)||(mode==='outsider'&&card.dataset.playerOutsider!=='true');if(!card.hidden)count++});players.querySelector('[data-player-count]').textContent=count?`${count} giocatori`:(mode==='outsider'?'Nessun outsider qualificato per i dati disponibili.':'Nessun giocatore trovato.');players.dataset.metricMode=mode};
  players.querySelector('input').addEventListener('input',filter);players.querySelectorAll('[data-player-mode]').forEach(b=>b.addEventListener('click',()=>{mode=b.dataset.playerMode;players.querySelectorAll('[data-player-mode]').forEach(n=>n.setAttribute('aria-pressed',String(n===b)));filter()}));filter();mountMarketLinks(players,shell);
  const projections=model.prediction?.teamProjections||[];
