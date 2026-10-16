@@ -1265,3 +1265,45 @@ body[data-page="champions"] .champions-reading-tactical-analysis .prediction-cha
 .champions-published-forecasts li[data-settlement="won"] .champions-published-result { color: #34d399; font-weight: 700; }
 .champions-published-forecasts li[data-settlement="lost"] .champions-published-result { color: #f87171; font-weight: 700; }
 .champions-published-result { font-weight: 700; }
+
+/* Overview only: team pages and match readings never contain this direct child. */
+body[data-page="champions"]:has(#app > .champions-overview){
+  background-color:#07152c;
+  background-image:radial-gradient(ellipse 90vw 80vh at 88% 6%,rgba(29,71,119,.46),transparent 80%),radial-gradient(ellipse 85vw 100vh at -12% 64%,rgba(20,49,88,.42),transparent 82%),radial-gradient(ellipse 75vw 75vh at 80% 112%,rgba(18,38,75,.36),transparent 82%);
+  background-repeat:no-repeat;
+  background-attachment:fixed;
+  color:#f7faff;
+  color-scheme:dark;
+}
+body[data-page="champions"]:has(#app > .champions-overview) .site-header{
+  --glass-text:#eaf4ff;
+  background:linear-gradient(115deg,rgba(31,61,101,.88),rgba(7,21,44,.95));
+  border-color:#304762;
+  box-shadow:0 12px 32px #01091a44,inset 0 1px #b3d8ff24;
+}
+body[data-page="champions"]:has(#app > .champions-overview) :is(.menu-button,.site-nav.open){background:#10233f;border-color:#304762;color:#f2f6ff;box-shadow:0 8px 20px #01091a33}
+body[data-page="champions"]:has(#app > .champions-overview) .page-link:hover{background:#193a60;color:#fff}
+body[data-page="champions"]:has(#app > .champions-overview) .site-footer{background:linear-gradient(145deg,rgba(13,35,65,.8),rgba(7,21,44,.94));border-color:#304762;color:#dce7f7}
+body[data-page="champions"]:has(#app > .champions-overview) .site-footer :is(.footer-brand,a){color:#eaf4ff}
+body[data-page="champions"]:has(#app > .champions-overview) .site-footer :is(p,.footer-brand small){color:#afc3dc}
+.champions-overview{min-width:0}
+.champions-overview .champions-round-summary>summary strong{font-size:18px}
+.champions-overview .champions-round-summary>summary{gap:12px;flex-wrap:wrap}
+.champions-overview .champions-round-summary table{width:100%;min-width:480px;border-collapse:collapse;color:#c9ddf7}
+.champions-overview .champions-round-summary :is(th,td){padding:10px 14px;border-top:1px solid #304762;text-align:left}
+.champions-overview .champions-round-summary th{color:#f2f6ff}
+.champions-overview .champions-archive-title{margin:30px 0 12px;color:#afc3dc;font-size:13px;font-weight:650;letter-spacing:.03em}
+.champions-overview .champions-completed-round{margin-top:10px;border-radius:15px;box-shadow:none}
+.champions-overview .champions-completed-round>summary{gap:12px;padding:13px 18px}
+.champions-overview .champions-completed-round>summary strong{font-size:17px}
+.champions-overview .champions-completed-round>summary small{font-size:9px;letter-spacing:.05em}
+.champions-overview .champions-completed-round>summary>span:first-child{min-width:0}
+.champions-overview .champions-completed-round>summary>span:last-of-type{margin-left:auto;white-space:nowrap}
+.champions-overview .champions-controls :is(select,button):focus-visible{outline:2px solid #9edbff;outline-offset:3px}
+@media(max-width:600px){
+ .champions-overview .champions-round-summary>summary{padding:17px}
+ .champions-overview .champions-round-summary>summary strong{font-size:16px}
+ .champions-overview .champions-completed-round>summary{gap:8px;padding:12px}
+ .champions-overview .champions-completed-round>summary strong{font-size:15px}
+ .champions-overview .champions-completed-round>summary small{font-size:8px}
+}
