@@ -1,3 +1,4 @@
+// Shared layout is the default for existing readings. Pilot IDs remain as historical references.
 // Presentation only. Source objects and bookmaker contracts are never mutated.
 export const PILOT_FIXTURES=Object.freeze({
   'serie-a':'atalanta-venezia-2026-27-md-06',
@@ -5,7 +6,7 @@ export const PILOT_FIXTURES=Object.freeze({
 });
 
 export function isReadingPilot(competition,id,search=''){
-  return (PILOT_FIXTURES[competition]===id||(competition==='serie-a'&&id==='milan-atalanta-2026-27-md-07'))&&new URLSearchParams(search).get('layout')!=='legacy';
+  return ['serie-a','champions'].includes(competition)&&typeof id==='string'&&id.length>0&&new URLSearchParams(search).get('layout')!=='legacy';
 }
 
 export function createReadingView({competition,fixture,home,away,forecasts=[],prediction=null,formation=null,quality=null,analysis=null,sources=null}){

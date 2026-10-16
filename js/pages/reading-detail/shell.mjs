@@ -11,7 +11,7 @@ const definitions=[
   ['giocatori','Giocatori','04','M8 8a4 4 0 1 0 8 0a4 4 0 1 0-8 0 M4 21v-2a8 8 0 0 1 16 0v2'],
   ['disciplina','Disciplina','05','M7 3h10v18H7z'],
   ['tattica','Analisi tattica','06','M4 4h5v5H4z M15 15h5v5h-5z M6 9v8h9 M15 6h5 M18 3v6'],
-  ['storico','Precedenti e storico','07','M4 8a9 9 0 1 1-1 8 M4 3v6h6 M12 7v6l4 2'],
+  ['storico','Precedenti','07','M4 8a9 9 0 1 1-1 8 M4 3v6h6 M12 7v6l4 2'],
   ['verifica','Tabellino e risultati','08','M4 4h16v16H4z M8 12l3 3 5-6'],
   ['fonti','Fonti e metodo','09','M5 3h10l4 4v14H5z M15 3v5h4 M8 12h8 M8 16h6']
 ];
@@ -58,13 +58,13 @@ function heroMarkup(model){
   const date=model.fixture.date?new Intl.DateTimeFormat('it-IT',{day:'numeric',month:'long',year:'numeric',timeZone:'Europe/Rome'}).format(new Date(model.fixture.date+'T12:00:00Z')):'Data N/D';
   const side=(team,position)=>`<div class="rd-team rd-team--${position}">${team.logo?`<img src="${escape(team.logo)}" alt="" width="100" height="100">`:''}<span class="rd-side">${position==='home'?'Casa':'Ospite'}</span><span class="rd-team-name">${escape(team.name)}</span></div>`;
   const score=model.fixture.status==='finished'&&model.fixture.score?`<span class="rd-result">Finale <b>${escape(model.fixture.score.home)} — ${escape(model.fixture.score.away)}</b></span>`:'';
-  return `<header class="rd-hero" id="lettura-testata"><div class="rd-overline"><span class="rd-edition">${escape(label)} <i aria-hidden="true">/</i> Giornata ${escape(model.fixture.matchday??'N/D')}</span><span class="rd-status">${model.fixture.status==='finished'?'Partita conclusa':'Analisi prepartita'}</span></div><div class="rd-match-meta"><time datetime="${escape(model.fixture.date||'')}">${escape(date)}</time><span>${escape(model.fixture.kickoff||'Orario N/D')}</span>${model.fixture.stadium?`<span>${escape(model.fixture.stadium)}</span>`:''}</div><h1 class="rd-accessible-title">${escape(model.home.name)} – ${escape(model.away.name)}</h1><div class="rd-matchup">${side(model.home,'home')}<div class="rd-versus">${score||'<span class="rd-vs">VS</span>'}</div>${side(model.away,'away')}</div><div class="rd-editorial-note"><span>LA LETTURA</span><p>Numeri, protagonisti e chiavi della partita.</p></div></header>`;
+  return `<header class="rd-hero" id="lettura-testata"><div class="rd-overline"><span class="rd-edition">${escape(label)} <i aria-hidden="true">/</i> Giornata ${escape(model.fixture.matchday??'N/D')}</span><span class="rd-status">${model.fixture.status==='finished'?'Partita conclusa':['live','in_progress'].includes(model.fixture.status)?'In corso':model.fixture.status==='postponed'?'Rinviata':model.fixture.status==='cancelled'?'Annullata':'Analisi prepartita'}</span></div><div class="rd-match-meta"><time datetime="${escape(model.fixture.date||'')}">${escape(date)}</time><span>${escape(model.fixture.kickoff||'Orario N/D')}</span>${model.fixture.stadium?`<span>${escape(model.fixture.stadium)}</span>`:''}</div><h1 class="rd-accessible-title">${escape(model.home.name)} – ${escape(model.away.name)}</h1><div class="rd-matchup">${side(model.home,'home')}<div class="rd-versus">${score||'<span class="rd-vs">VS</span>'}</div>${side(model.away,'away')}</div><div class="rd-editorial-note"><span>LA LETTURA</span><p>Numeri, protagonisti e chiavi della partita.</p></div></header>`;
 }
 
 export async function mountReadingShell(model,root=document.querySelector('#app'),options={}){
   if(!root||root.querySelector('.rd-shell'))return;
   // Await the isolated stylesheet before changing the page. Failure leaves legacy intact.
-  const href=new URL('../../../css/reading-detail.css?v=20261016-bc1',import.meta.url).href;
+  const href=new URL('../../../css/reading-detail.css?v=20261016-universal',import.meta.url).href;
   let sheet=document.querySelector('link[data-reading-detail-css]');
   if(!sheet){
     sheet=document.createElement('link');sheet.rel='stylesheet';sheet.href=href;sheet.dataset.readingDetailCss='';
@@ -108,10 +108,10 @@ export async function mountReadingShell(model,root=document.querySelector('#app'
     if(report)move(report,groups.get('verifica').lastElementChild);
     for(const node of original){
       if(node===oldHero||node===back||node===report)continue;
-      if(node.nodeType!==1){move(node,shell);continue;}
+      if(node.nodeType!==1)continue;
       const key=classify(node);
       if(key)move(node,groups.get(key).lastElementChild);
-      else move(node,shell); // Preserve unknown original content instead of dropping it.
+      else if(node.matches('[data-required-attribution],[data-legal-notice]')||node.querySelector('[data-required-attribution],[data-legal-notice]'))move(node,shell);
     }
     for(const [key,title,number] of visibleDefinitions){
       const group=groups.get(key);
@@ -121,7 +121,7 @@ export async function mountReadingShell(model,root=document.querySelector('#app'
     }
     const mini=document.createElement('div');mini.className='rd-mini';mini.innerHTML=`<span>${escape(model.home.name)}</span><b>VS</b><span>${escape(model.away.name)}</span>`;mini.setAttribute('aria-hidden','true');nav.prepend(mini);
     undo.push(installScenario(model,groups.get('scenario').lastElementChild));
-    if(model.fixture.status!=='finished'){
+    if(model.fixture.status!=='finished'&&(model.forecasts.length||!groups.get('pronostici').lastElementChild.children.length)){
       const forecastUi=installForecasts(model,groups.get('pronostici').lastElementChild,shell,options.store);undo.push(forecastUi.undo);
     }
     undo.push(installPeople(model,evidence,Object.fromEntries([...groups].map(([key,group])=>[key,group.lastElementChild])),shell));
@@ -132,6 +132,14 @@ export async function mountReadingShell(model,root=document.querySelector('#app'
         if(resultsHref)button.addEventListener('click',()=>location.assign(resultsHref));
         else button.disabled=true;
       });
+    }
+    // Build navigation from mounted, nonempty sections, after component installation.
+    linkStrip.replaceChildren();let sectionNumber=0;
+    for(const [key,title] of visibleDefinitions){
+      const group=groups.get(key);
+      if(!group.lastElementChild.textContent.trim()&&!group.lastElementChild.children.length){group.remove();continue;}
+      group.querySelector('.rd-section-number').textContent=String(++sectionNumber).padStart(2,'0');
+      const link=document.createElement('a');link.href='#'+group.id;link.textContent=title;link.dataset.sectionLink=key;linkStrip.append(link);
     }
     root.replaceChildren(shell);document.body.dataset.readingDetailTheme=model.theme;
     const siteHeader=document.querySelector('.site-header');

@@ -29,5 +29,5 @@ const unavailable={selectionId:'test-only',betSelection:{quote:{decimal:null,ava
 const unquoted=adaptChampionsReading({fixture,calendarFixture:null,branding:new Map(),publishedSelections:[unavailable]});
 assert.equal(unquoted.forecasts[0],unavailable);assert.equal(unquoted.forecasts[0].betSelection.quote.decimal,null);assert(!Object.hasOwn(unquoted.forecasts[0],'odds'));
 assert(isReadingPilot('serie-a',match.id));assert(isReadingPilot('champions',fixture.fixtureId));
-assert(!isReadingPilot('serie-a',match.id,'?layout=legacy'));assert(isReadingPilot('serie-a','milan-atalanta-2026-27-md-07'));assert(!isReadingPilot('serie-a','juventus-lazio-2026-27-md-07'));assert(!isReadingPilot('champions','ucl-2026-27-md01-06'));
-console.log('OK adattatori: riferimenti e contratti integri, null/proprieta assenti, identita, fonti distinte e gate dei due piloti');
+assert(!isReadingPilot('serie-a',match.id,'?layout=legacy'));assert(isReadingPilot('serie-a','milan-atalanta-2026-27-md-07'));assert(isReadingPilot('serie-a','juventus-lazio-2026-27-md-07'));assert(isReadingPilot('champions','ucl-2026-27-md01-06'));
+console.log('OK adattatori: riferimenti e contratti integri, null/proprieta assenti, identita, fonti distinte e layout universale e fallback legacy');
