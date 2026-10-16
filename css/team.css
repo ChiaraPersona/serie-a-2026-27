@@ -1135,3 +1135,29 @@ body[data-page="referees"] .team-referee-summary strong{color:var(--glass-text)}
 #team-squad-app.team-editorial .squad-table :is(th,td):first-child{background:#f3f8fa}
 #team-squad-app.team-editorial .squad-table thead th{background:#edf3f5}
 #team-squad-app.team-editorial .squad-table tbody tr:is(:hover,:focus-within) td:first-child{background:#d5f1f2}
+/* Compact team presentation; roster, comparator and lineup geometry are preserved. */
+#team-squad-app.team-editorial{max-width:1050px;gap:8px}
+#team-squad-app.team-editorial>.team-season-summary{padding-block:16px}
+#team-squad-app.team-editorial .team-season-summary .team-key-numbers dd{font-size:30px;margin-bottom:4px}
+#team-squad-app.team-editorial>.team-objective-compact{display:grid;grid-template-columns:1fr 1fr;gap:24px;padding:0 24px 20px}
+#team-squad-app.team-editorial .team-objective-compact h3{font-size:18px;margin:4px 0}
+#team-squad-app.team-editorial .team-objective-compact p,#team-squad-app.team-editorial .team-objective-compact small{font-size:12px;color:var(--muted);margin:0}
+#team-squad-app.team-editorial .team-objective-compact .objective-metrics{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+#team-squad-app.team-editorial .team-objective-compact .objective-metric{padding:0;border:0;border-radius:0;background:transparent}
+#team-squad-app.team-editorial>.team-tactics-section .team-editorial-heading,#team-squad-app.team-editorial>.team-roster-section .team-editorial-heading{margin-bottom:16px}
+#team-squad-app.team-editorial>.team-tactics-section .team-editorial-heading h2,#team-squad-app.team-editorial>.team-roster-section .team-editorial-heading h2{font-family:var(--font-body);font-size:24px;letter-spacing:-.025em;font-weight:650}
+#team-squad-app.team-editorial .team-tactical-analysis .team-style-trait-grid{grid-template-columns:1fr 1fr;gap:16px}
+#team-squad-app.team-editorial .team-tactical-analysis .team-style-traits{border-top:1px solid var(--line);padding:12px 0 0}
+#team-squad-app.team-editorial .team-tactical-analysis h3{font-size:14px;margin:0 0 10px}
+#team-squad-app.team-editorial .team-tactical-analysis li{font-size:12px;line-height:1.6}
+#team-squad-app.team-editorial .team-editorial-statistics .team-season-heading h2{font-size:24px}
+#team-squad-app.team-editorial .team-editorial-statistics .team-attack-channels{margin:0 0 20px;padding:0;border:0;background:transparent}
+#team-squad-app.team-editorial .squad-leader-grid{gap:24px 28px}
+#team-squad-app.team-editorial .squad-leader-card{border-top:1px solid var(--line)}
+@media(max-width:700px){
+ #team-squad-app.team-editorial>.team-objective-compact{grid-template-columns:1fr;padding:0 16px 16px;gap:16px}
+ #team-squad-app.team-editorial .team-tactical-analysis .team-style-trait-grid{grid-template-columns:1fr}
+}
+#team-squad-app.team-editorial .team-tactical-analysis .team-style-traits:last-child{grid-column:auto}
+#team-squad-app.team-editorial .team-editorial-statistics .team-season-heading{cursor:default}
+#team-squad-app.team-editorial .team-editorial-statistics .team-season-heading::after{content:none}

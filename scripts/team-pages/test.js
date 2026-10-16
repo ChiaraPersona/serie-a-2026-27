@@ -129,7 +129,7 @@ assert.ok(!teamPageSource.includes('<h2>Fonti</h2>') && !teamPageSource.includes
 assert.strictEqual((sourcesShell.match(/data-source-team=/g) || []).length, 20, "La pagina Fonti deve raccogliere tutte le 20 squadre");
 assert.ok(sourcesShell.includes("Fonti registrate") && sourcesShell.includes("Apri la fonte"), "La pagina Fonti non espone i riferimenti registrati");
 assert.ok(teamPageShell.includes('../fonti.html">Fonti</a>') && sourcesShell.includes('href="fonti.html">Fonti</a>'), "Il footer deve collegare la pagina Fonti a ogni profondità");
-for (const contract of ['data-team-season="${esc(stats.season)}"', "Statistiche ${esc(stats.season)}", "teamSeasonStatsColumn", "teamSeasonComparison", "teamSeasonList", '<section class="detail-section team-season-comparison"', 'class="team-season-columns"']) assert.ok(teamInterface.includes(contract), `Confronto statistiche squadra: manca ${contract}`);
+for (const contract of ['data-team-season="2026/27"', "Statistiche 2026/27", "teamSeasonStatsColumn", "teamSeasonList", "Produzione offensiva", "Solidità difensiva"]) assert.ok(teamInterface.includes(contract), `Statistiche essenziali: manca ${contract}`);
 for (const contract of [".team-season-comparison", ".team-season-columns", ".team-season-column", ".team-season-list", ".team-season-splits", ".team-season-empty"]) assert.ok(styles.includes(contract), `Confronto statistiche squadra: stile ${contract} assente`);
 for (const contract of ["teamAttackChannels", "Direzioni d'attacco", "team-attack-channel-bars", "Canale prevalente:"]) assert.ok(teamInterface.includes(contract), `Direzioni d'attacco nelle statistiche squadra: manca ${contract}`);
 for (const contract of [".team-attack-channels", ".team-attack-channel-bars"]) assert.ok(styles.includes(contract), `Direzioni d'attacco nelle statistiche squadra: stile ${contract} assente`);
@@ -141,11 +141,11 @@ for (const profile of tacticalProfiles.profiles) {
   assert.ok(Math.abs(channels.left + channels.central + channels.right - 100) <= .2, `Percentuali direzioni non valide: ${profile.teamId}`);
 }
 for (const removedContract of ["teamTotalStatsBlock", "team.teamStats.total", "Totale 2025/26 + 2026/27", "Riepilogo complessivo", '<details class="detail-section team-season-section"', '<summary class="team-season-summary"']) assert.ok(!teamInterface.includes(removedContract), `Confronto statistiche squadra: contenuto rimosso ancora presente: ${removedContract}`);
-for (const contract of ["currentSquadLeaderboardRows", "I migliori di ${esc(teamName)} nel ${season}", 'id="squad-leaderboards"', "Dati non disponibili", "Scheda N/D", 'closest("button.leader-player")']) assert.ok(teamInterface.includes(contract), `Top 3 squadra 2026/27: manca ${contract}`);
+for (const contract of ["currentSquadLeaderboardRows", "Classifiche individuali ${season}", 'id="squad-leaderboards"', "Dati non disponibili", "Scheda N/D", 'closest("button.leader-player")']) assert.ok(teamInterface.includes(contract), `Top 3 squadra 2026/27: manca ${contract}`);
 const squadLeaderboardsSource = teamInterface.slice(teamInterface.indexOf("function squadLeaderboards"), teamInterface.indexOf("function squadTable"));
 assert.ok(!teamInterface.includes("previousSquadLeaderboardRows") && !squadLeaderboardsSource.includes('"2025/26"'), "Il blocco I migliori del 2025/26 deve essere rimosso da ogni pagina squadra");
 const squadLeaderboardSectionSource = teamInterface.slice(teamInterface.indexOf("function squadLeaderboardSection"), teamInterface.indexOf("function squadLeaderboards"));
-assert.ok(squadLeaderboardSectionSource.includes('<section class="squad-leaders') && squadLeaderboardSectionSource.includes('<header class="squad-leaders-header">') && !squadLeaderboardSectionSource.includes("<details") && !squadLeaderboardSectionSource.includes("<summary"), "I migliori del 2026/27 devono essere sempre visibili e senza tendina");
+assert.ok(squadLeaderboardSectionSource.includes('<section class="squad-leaders') && squadLeaderboardSectionSource.includes('class="squad-leader-grid"') && !squadLeaderboardSectionSource.includes("<details") && !squadLeaderboardSectionSource.includes("<summary"), "I migliori del 2026/27 devono essere sempre visibili e senza tendina");
 const currentTeamLeadersSource = teamInterface.slice(teamInterface.indexOf("function currentSquadLeaderboardRows"), teamInterface.indexOf("function squadLeaderboardSection"));
 for (const field of ["foulsCommitted", "foulsWon"]) {
   assert.ok(currentTeamLeadersSource.includes(`row.coverage.${field} === row.appearances`) && currentTeamLeadersSource.includes(`row.sums.${field}`), `Top 3 squadra 2026/27: ${field} non aggregato`);
@@ -220,15 +220,15 @@ assert.ok(!mainApp.includes("Candidato MVP") && !mainApp.includes("prediction-mv
 assert.ok(mainApp.includes("reading-official-mvp") && mainApp.includes("Panini Player of the Match") && mainApp.includes("match.mvp"), "L'MVP ufficiale della partita conclusa non è esposto nelle Letture");
 assert.ok(mainApp.includes("La partita in numeri") && mainApp.includes("prediction-v2-team-grid") && mainApp.includes("p20–p80"), "I volumi V2 casa/trasferta non sono esposti nelle Letture");
 assert.ok(!mainApp.includes("giornata di riferimento") && !teamInterface.includes("Data da definire · riferimento"), "Le date non definite non devono mostrare una data di riferimento");
-assert.ok(teamInterface.includes("La stagione in sintesi") && teamInterface.includes("calculateObjectiveMetrics"), "La sintesi degli obiettivi non è integrata nelle pagine squadra");
-for (const contract of ["team-page-jumps", "team-analysis-grid", "team-roster-section", "team-full-roster-section", "team-style-details", "team-method-details"]) assert.ok(teamInterface.includes(contract), `Gerarchia compatta pagina squadra: manca ${contract}`);
+assert.ok(teamInterface.includes("Obiettivo iniziale") && teamInterface.includes("calculateObjectiveMetrics"), "La sintesi degli obiettivi non è integrata nelle pagine squadra");
+for (const contract of ["team-page-jumps", "team-analysis-grid", "team-roster-section", "team-full-roster-section", "team-tactical-analysis"]) assert.ok(teamInterface.includes(contract), `Gerarchia compatta pagina squadra: manca ${contract}`);
 assert.ok(teamPageSource.includes('${value(team.preferredFormation)}</p>${pageJumps}'), "I collegamenti devono seguire allenatore e modulo preferito nella testata");
-for (const heading of ["Risultati", "Disciplina", "Casa e trasferta"]) assert.ok(teamInterface.includes(`<section class="team-season-group"><h3>${heading}</h3>`), `Statistiche squadra: sezione sempre visibile mancante: ${heading}`);
+
 assert.ok(!teamInterface.includes('<details class="team-season-group"') && !teamInterface.includes(".team-season-group>summary"), "Risultati, disciplina e casa/trasferta non devono usare tendine");
 for (const removedContract of [".team-season-group>summary", ".team-season-group[open]"]) assert.ok(!styles.includes(removedContract), `Statistiche squadra: stile della tendina ancora presente: ${removedContract}`);
 const editorialSections = ["identity", "season", "tactics", "roster", "statistics", "leaders", "comparator"];
 for (const section of editorialSections) assert.ok(teamInterface.includes('data-editorial-section="'+section+'"'), 'Sezione editoriale assente: '+section);
-for (const id of ["team-statistics-disclosure", "team-leaders-disclosure", "team-comparator-disclosure"]) assert.ok(teamInterface.includes(id), 'Pannello editoriale assente: '+id);
+for (const id of ["team-comparator-disclosure"]) assert.ok(teamInterface.includes(id), 'Pannello editoriale assente: '+id);
 assert.ok(teamPageSource.includes("${fullSeasonRoster(team, combinedPlayerStats)}") && teamInterface.includes('id="squad-results"'), "La tabella completa deve avere una sezione autonoma con le statistiche originali");
 for (const contract of [".team-page-jumps", ".team-analysis-grid", ".squad-table-disclosure", ".team-style-details", ".team-season-content"]) assert.ok(styles.includes(contract), `Gerarchia compatta pagina squadra: stile ${contract} assente`);
 assert.ok(styles.includes(".team-style-trait-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);align-items:start;gap:10px}") && styles.includes(".team-style-traits:last-child{grid-column:1/-1}"), "Profilo tattico: la distribuzione deve essere 2 + 1 con proporzione 60/40");
