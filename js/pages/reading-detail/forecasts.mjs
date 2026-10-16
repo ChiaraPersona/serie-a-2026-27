@@ -22,7 +22,12 @@ export function installForecasts(model,container,shell,providedStore){
  const originals=[...container.childNodes],context={competition:model.competition,season:'2026-27',matchday:model.fixture.matchday};
  const store=providedStore||createPersonalBetslipStore();
  if(!providedStore){store.setContext(context);store.reconcile(store.getSnapshot().selections);}
- const forecasts=model.forecasts.map(leg=>({leg,view:forecastPresentation(leg)}));
+ const forecasts=model.forecasts.map(leg=>{
+  const view=forecastPresentation(leg),sides=[model.home,model.away];
+  const team=sides.find((t,i)=>view.team===t.id||view.team===model.prediction?.teamProjections?.[i]?.teamId||view.team===t.name);
+  view.team=team?.name||view.team;
+  return {leg,view};
+ });
  const root=document.createElement('div');root.className='rd-forecasts';
  const href=`schedina.html?giornata=${encodeURIComponent(model.fixture.matchday)}${model.competition==='champions'?'&competizione=champions':''}`;
  root.innerHTML=`<div class="rd-forecast-tools"><p>Lo stesso registro della Schedina. Quote riferite allo snapshot.</p><a href="${esc(href)}">Apri la Schedina ↗</a></div><form class="rd-filters" aria-label="Filtri pronostici"><label>Squadra<select name="team">${options(forecasts.map(f=>f.view.team),'Tutte le squadre')}</select></label><label>Giocatore<select name="player">${options(forecasts.map(f=>f.view.playerName),'Tutti i giocatori')}</select></label><label>Mercato<select name="market">${options(forecasts.map(f=>f.view.family),'Tutti i mercati')}</select></label><label>Quota<select name="quote"><option value="">Tutte</option><option value="yes">Disponibile nello snapshot</option><option value="no">Senza quota</option></select></label><label>In evidenza<select name="flags"><option value="">Tutti</option><option value="highlight">Evidenziati</option><option value="outsider">Outsider</option></select></label><button type="reset">Azzera filtri</button></form><p class="rd-filter-count" role="status" aria-live="polite"></p><div class="rd-forecast-list"></div>`;
@@ -42,7 +47,9 @@ export function installForecasts(model,container,shell,providedStore){
   [...list.children].forEach((row,i)=>{const v=forecasts[i]?.view;if(!v)return;const visible=(!data.get('team')||data.get('team')===v.team)&&(!data.get('player')||data.get('player')===v.playerName)&&(!data.get('market')||data.get('market')===v.family)&&(!data.get('quote')||(data.get('quote')==='yes')===v.quoted)&&(!data.get('flags')||(data.get('flags')==='outsider'?v.outsider:v.highlight));row.hidden=!visible;if(visible)count++});
   root.querySelector('[role=status]').textContent=`${count} di ${forecasts.length} pronostici`;
  };
- form.addEventListener('change',filter);form.addEventListener('reset',()=>queueMicrotask(filter));filter();
+ form.addEventListener('change',filter);form.addEventListener('submit',event=>event.preventDefault());
+ // Native reset updates controls after the event; filter on the following task.
+ form.addEventListener('reset',()=>setTimeout(filter,0));filter();
  const trigger=document.createElement('button');trigger.type='button';trigger.className='rd-slip-trigger';trigger.setAttribute('aria-haspopup','dialog');
  const dialog=document.createElement('dialog');dialog.className='rd-slip';dialog.setAttribute('aria-labelledby','rd-slip-title');
  dialog.innerHTML=`<header><div><small>${esc(model.competition==='champions'?'Champions League':'Serie A')} · Giornata ${esc(model.fixture.matchday)}</small><h2 id="rd-slip-title">La mia schedina</h2></div><button type="button" data-close aria-label="Chiudi schedina">×</button></header><div data-slip-content></div><p class="rd-slip-notice" role="status"></p><a href="${esc(href)}">Apri nella pagina Schedina ↗</a>`;

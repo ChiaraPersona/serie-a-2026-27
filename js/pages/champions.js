@@ -456,7 +456,8 @@ export function createPage(deps){
       if(isReadingPilot('champions',requestedMatchId,location.search)&&typeof document.createElement==='function'){
         try{
           const [{adaptChampionsReading},{mountReadingShell}]=await Promise.all([import('./reading-detail/champions-adapter.mjs'),import('./reading-detail/shell.mjs')]);
-          await mountReadingShell(adaptChampionsReading({fixture:requestedFixture,calendarFixture:requestedCalendarFixture,branding,publishedSelections:md2SchedinaFixture?.selections||[]}),undefined,{store:personalReadingStore});
+          const analysis={match:requestedCalendarFixture,matches:data.fixtures,lineups:md2MarketEntry?.lineups,availability:md2MarketEntry?.availability,referee:refereeProfile,styles:styleProfiles,attackChannels,history:h2h.fixtures.find(f=>f.fixtureId===requestedMatchId),squads,teamProfiles:activePilot.profiles};
+          await mountReadingShell(adaptChampionsReading({fixture:requestedFixture,calendarFixture:requestedCalendarFixture,branding,publishedSelections:md2SchedinaFixture?.selections||[],analysis}),undefined,{store:personalReadingStore});
         }catch(error){console.warn('Lettura: vista precedente mantenuta.',error)}
       }
       return;

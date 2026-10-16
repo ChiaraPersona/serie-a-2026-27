@@ -240,7 +240,8 @@ function pilotSection(aggregates,report){const serieA=report.competitions.find(i
   if(isReadingPilot('serie-a',activeReadingMatch?.id,location.search)&&typeof document.createElement==='function'){
     try{
       const [{adaptSerieAReading},{mountReadingShell}]=await Promise.all([import('./reading-detail/serie-a-adapter.mjs'),import('./reading-detail/shell.mjs')]);
-      await mountReadingShell(adaptSerieAReading({match:activeReadingMatch,teams,teamDirectory,prediction:activePrediction,marketCatalog:forecastDataset?.marketCatalog,formation:formationPresentation(activeReadingMatch,teamDirectory)}),undefined,{store:personalReadingStore});
+      const analysis={match:activeReadingMatch,matches,teamDirectory,styles:teamStyleProfiles,referees:refereeProfiles,reading:activeReading,history:headToHeadData?.fixtures?.find(f=>f.fixtureId===activeReadingMatch.id),lineups:[activeReadingMatch.homeTeam,activeReadingMatch.awayTeam].map(id=>{const team=teamDirectory.teams.find(t=>t.id===id);return {team,lineup:fixtureLineupForMatch(activeReadingMatch,team,teamDirectory)}})};
+      await mountReadingShell(adaptSerieAReading({match:activeReadingMatch,teams,teamDirectory,prediction:activePrediction,marketCatalog:forecastDataset?.marketCatalog,formation:formationPresentation(activeReadingMatch,teamDirectory),analysis}),undefined,{store:personalReadingStore});
     }catch(error){console.warn('Lettura: vista precedente mantenuta.',error)}
   }
   }

@@ -1,0 +1,106 @@
+[
+  {
+    "command": "node --no-warnings scripts/test-reading-detail-internals.mjs",
+    "result": {
+      "status": "fulfilled",
+      "value": {
+        "chunk_id": "2b9b73",
+        "wall_time_seconds": 1.5755522,
+        "exit_code": 0,
+        "original_token_count": 36,
+        "output": "OK Letture D–H: zero/null, identità, assenza dati spaziali, cronologia, snapshot autentico/alterato/posteriore, contratti e gate immutati\n"
+      }
+    }
+  },
+  {
+    "command": "node --no-warnings scripts/test-reading-detail-adapters.mjs",
+    "result": {
+      "status": "fulfilled",
+      "value": {
+        "chunk_id": "e0ebb0",
+        "wall_time_seconds": 2.3001579,
+        "exit_code": 0,
+        "original_token_count": 30,
+        "output": "OK adattatori: riferimenti e contratti integri, null/proprieta assenti, identita, fonti distinte e gate dei due piloti\n"
+      }
+    }
+  },
+  {
+    "command": "node scripts/test-personal-betslip.mjs",
+    "result": {
+      "status": "fulfilled",
+      "value": {
+        "chunk_id": "865467",
+        "wall_time_seconds": 1.5444067000000001,
+        "exit_code": 0,
+        "original_token_count": 22,
+        "output": "OK schedina personale: store, deduplica, compatibilità, quote, contesti e persistenza\n"
+      }
+    }
+  },
+  {
+    "command": "node scripts/test-forecast-sync.js",
+    "result": {
+      "status": "fulfilled",
+      "value": {
+        "chunk_id": "02f6c5",
+        "wall_time_seconds": 1.8747135,
+        "exit_code": 0,
+        "original_token_count": 209,
+        "output": "{\n  \"status\": \"OK\",\n  \"simulatedMatchId\": \"sassuolo-milan-2026-27-md-06\",\n  \"before\": {\n    \"total\": 16,\n    \"byMarket\": {\n      \"corners\": 2,\n      \"goals-results\": 3,\n      \"shots\": 7,\n      \"sot\": 4\n    }\n  },\n  \"afterAddAndUpdate\": {\n    \"total\": 18,\n    \"byMarket\": {\n      \"corners\": 2,\n      \"goals-results\": 3,\n      \"shots\": 8,\n      \"sot\": 5\n    },\n    \"added\": [\n      \"bet:sisal:sassuolo-milan-2026-27-md-06:5369280365:sync-test-new\",\n      \"bet:sisal:sassuolo-milan-2026-27-md-06:5369326729:sync-test-new\"\n    ],\n    \"updated\": [\n      \"bet:sisal:sassuolo-milan-2026-27-md-06:5337170659\"\n    ]\n  },\n  \"preservedByMarket\": {\n    \"corners\": 2,\n    \"goals-results\": 3\n  },\n  \"idempotent\": true,\n  \"explicitQuoteUpdate\": true,\n  \"explicitWithdrawalOnly\": true,\n  \"sharedRendererIds\": 18,\n  \"historicalHashesUnchanged\": true\n}\n"
+      }
+    }
+  },
+  {
+    "command": "node --no-warnings scripts/test-reading-prediction-v2.mjs",
+    "result": {
+      "status": "fulfilled",
+      "value": {
+        "chunk_id": "798369",
+        "wall_time_seconds": 2.1898321,
+        "exit_code": 0,
+        "original_token_count": 12,
+        "output": "OK Lettura Prediction V2: 24 contratti UI/data\n"
+      }
+    }
+  },
+  {
+    "command": "node --no-warnings scripts/test-champions-reading-page.mjs",
+    "result": {
+      "status": "fulfilled",
+      "value": {
+        "chunk_id": "56cba0",
+        "wall_time_seconds": 6.7962221,
+        "exit_code": 0,
+        "original_token_count": 8,
+        "output": "OK dettaglio lettura Champions\n"
+      }
+    }
+  },
+  {
+    "command": "node scripts/test-official-starter-policy.cjs",
+    "result": {
+      "status": "fulfilled",
+      "value": {
+        "chunk_id": "1a024c",
+        "wall_time_seconds": 3.3291936,
+        "exit_code": 0,
+        "original_token_count": 43,
+        "output": "OK official starter policy, scope, identity, modifiers, confirmations, current archive and original-cohort reconciliation\nOK stale MyCombo purge and direct add rejection\n"
+      }
+    }
+  },
+  {
+    "command": "node --no-warnings scripts/test-champions-md02-market-ui.mjs",
+    "result": {
+      "status": "fulfilled",
+      "value": {
+        "chunk_id": "02a47d",
+        "wall_time_seconds": 3.2093329,
+        "exit_code": 0,
+        "original_token_count": 24,
+        "output": "OK UI mercati MD2: 5 contratti aggiunti e ripristinati con quote, ID e modificatori invariati\n"
+      }
+    }
+  }
+]

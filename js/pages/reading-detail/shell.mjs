@@ -1,5 +1,10 @@
 import {installScenario} from './scenario.mjs';
 import {installForecasts} from './forecasts.mjs';
+import {loadEvidence} from './evidence.mjs';
+import {installPeople} from './people.mjs';
+import {installTacticsHistory} from './tactics-history.mjs';
+import {loadVerification,installVerification} from './verification.mjs';
+import {esc,recordList,details} from './format.mjs';
 const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const definitions=[
   ['scenario','Scenario','01','M4 16l5-5 4 3 7-10'],
@@ -9,7 +14,8 @@ const definitions=[
   ['disciplina','Disciplina','05','M7 3h10v18H7z'],
   ['tattica','Analisi tattica','06','M4 4h5v5H4z M15 15h5v5h-5z M6 9v8h9 M15 6h5 M18 3v6'],
   ['storico','Precedenti e storico','07','M4 8a9 9 0 1 1-1 8 M4 3v6h6 M12 7v6l4 2'],
-  ['verifica','Tabellino e risultati','08','M4 4h16v16H4z M8 12l3 3 5-6']
+  ['verifica','Tabellino e risultati','08','M4 4h16v16H4z M8 12l3 3 5-6'],
+  ['fonti','Fonti e metodo','09','M5 3h10l4 4v14H5z M15 3v5h4 M8 12h8 M8 16h6']
 ];
 const icon=path=>`<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="${path}"/></svg>`;
 
@@ -42,6 +48,7 @@ export async function mountReadingShell(model,root=document.querySelector('#app'
     sheet=document.createElement('link');sheet.rel='stylesheet';sheet.href=href;sheet.dataset.readingDetailCss='';
     await new Promise((resolve,reject)=>{sheet.onload=resolve;sheet.onerror=()=>{sheet.remove();reject(new Error('Reading stylesheet unavailable'))};document.head.append(sheet)});
   }
+  const evidence=await loadEvidence(model),verification=await loadVerification(model);
   const original=[...root.childNodes];
   const oldHero=root.querySelector('.reading-match-hero');
   if(!oldHero)return;
@@ -79,13 +86,16 @@ export async function mountReadingShell(model,root=document.querySelector('#app'
     }
     for(const [key,title] of definitions){
       const group=groups.get(key);
-      if(!group.lastElementChild.children.length)continue;
       shell.append(group);
       const link=document.createElement('a');link.href='#'+group.id;link.textContent=title;link.dataset.sectionLink=key;linkStrip.append(link);
     }
     const mini=document.createElement('div');mini.className='rd-mini';mini.innerHTML=`<span>${escape(model.home.name)}</span><b>VS</b><span>${escape(model.away.name)}</span>`;mini.setAttribute('aria-hidden','true');nav.prepend(mini);
     undo.push(installScenario(model,groups.get('scenario').lastElementChild));
     const forecastUi=installForecasts(model,groups.get('pronostici').lastElementChild,shell,options.store);undo.push(forecastUi.undo);
+    undo.push(installPeople(model,evidence,Object.fromEntries([...groups].map(([key,group])=>[key,group.lastElementChild])),shell));
+    undo.push(installTacticsHistory(model,evidence,Object.fromEntries([...groups].map(([key,group])=>[key,group.lastElementChild]))));
+    undo.push(installVerification(model,evidence,verification,groups.get('verifica').lastElementChild,groups.get('pronostici').lastElementChild));
+    groups.get('fonti').lastElementChild.innerHTML=`<p class="rd-footnote">Dati osservati, proiezioni e interpretazioni hanno fonti e periodi distinti. Quote riferite allo snapshot provider, senza aggiornamenti in tempo reale.</p>${details('Provenienza e copertura',recordList({fontiFixture:evidence.analysis.match?.sources||evidence.analysis.match?.matchReport?.sourceUrl,fontiFormazioni:evidence.lineups.map(l=>({squadra:l.side.name,fonte:l.source,aggiornamento:l.updatedAt})),qualita:model.quality,previsioneAggiornata:model.prediction?.generatedAt??null,snapshot:verification.snapshot?{id:verification.snapshot.snapshotId,generatedAt:verification.snapshot.generatedAt,hash:verification.snapshot.integrity.sha256}:verification.snapshotReason}))}`;
     root.replaceChildren(shell);document.body.dataset.readingDetailTheme=model.theme;
     const siteHeader=document.querySelector('.site-header');
     const headerOffset=()=>siteHeader?siteHeader.getBoundingClientRect().height+(parseFloat(getComputedStyle(siteHeader).top)||0):0;
