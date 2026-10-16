@@ -3,6 +3,7 @@
   if (!root) return;
 
   const base = document.body.dataset.depth === "team" ? "../" : "";
+  await import(`${base}js/public-presentation.js`);
   const { renderLineupField } = await import(`${base}js/components/lineup-field.mjs?v=20261015-team-dashboard`);
   const {shirtNumberAt}=await import(`${base}js/pages/reading-detail/shirt-numbers.mjs`);
   let numbering,officialNumbers,probableNumbers;

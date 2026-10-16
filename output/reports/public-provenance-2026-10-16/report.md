@@ -1,0 +1,11 @@
+# Policy permanente: fonti solo interne
+
+Regola registrata in AGENTS.md e implementata in js/public-presentation.js, negli entry point js/core/app.js e js/team-squads.js e nel generatore scripts/build-site.js. Helper delle Letture: js/pages/reading-detail/format.mjs. Le modifiche precedenti alla testata e al CSS sono preservate.
+
+31 shell HTML pubbliche aggiornate senza eseguire build o rigenerazioni dati: integrazione della policy, rimozione del collegamento Fonti e della nota nel footer. La pagina fonti.html presenta ora una pagina non disponibile, senza pubblicare elenchi o riferimenti. Il contenuto precedente e preservato in original-fonti.html in questa cartella interna; tutti gli archivi preesistenti rimangono invariati. Elenco completo delle shell in html-files.json.
+
+La policy gestisce anche contenuti asincroni, dettagli espandibili, schede giocatore, colonne dedicate alle fonti e metadati tecnici. Non modifica oggetti di dominio o store. Restano visibili risultati, quote, probabilita, stato ufficiale/probabile, avvisi di incertezza e N/D. Gli impieghi non relativi alle fonti, per esempio competizione di provenienza o eliminazione diretta, sono conservati. Le attribuzioni con indicatori di licenza/copyright e gli elementi data-required-attribution/data-legal-notice sono esclusi dalla rimozione. Nessuna valutazione legale o rimozione di avvisi obbligatori e stata eseguita.
+
+Verifiche: 81 viste, incluse 36 squadre Champions, 20 Serie A e principali pagine desktop/mobile; dettagli aperti; scheda giocatore; filtri delle Letture e apertura/chiusura schedina; renderer legacy; eccezioni per attribuzioni, licenze e avvisi; link interni operativi preservati. La prima scansione estesa ha individuato una citazione nelle schede giocatore, poi rimossa; i controlli gia superati sono registrati come tali nel risultato della ripresa, con completamento delle viste rimanenti. Successivo controllo mirato dei nomi provider, con pulizia e verifica finale Inter desktop/mobile.
+
+Integrita: 8646 hash dati invariati; motori, contratti, store e pronostici non modificati. Test Letture interni e adattatori superati. Integrazione del generatore verificata isolando la funzione di presentazione, senza eseguire il build. Nessun commit, push o deploy eseguito.

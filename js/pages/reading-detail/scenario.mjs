@@ -19,7 +19,6 @@ export function scenarioMarkup(model){
 }
 export function installScenario(model,group){
  const original=[...group.children];const content=document.createElement('div');content.className='rd-scenario';content.innerHTML=scenarioMarkup(model);
- const extended=document.createElement('details');extended.className='rd-disclosure rd-original-detail';extended.innerHTML='<summary>Spiegazione completa del modello e dati originali</summary>';
- original.forEach(node=>extended.append(node));group.replaceChildren(content,extended);
+ group.replaceChildren(content);
  return ()=>group.replaceChildren(...original);
 }

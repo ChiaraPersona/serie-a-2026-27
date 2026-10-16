@@ -67,6 +67,8 @@ const openingBacktest = fs.existsSync(openingBacktestPath) ? JSON.parse(fs.readF
 const generatedAt = new Date().toISOString();
 const previewMatchday = Number(process.env.SERIE_A_PREDICTION_PREVIEW_MATCHDAY);
 const previewMode = Number.isInteger(previewMatchday) && previewMatchday > 0;
+const requestedMatchId = process.env.SERIE_A_PREDICTION_MATCH_ID || null;
+if (requestedMatchId && !matches.some(match => match.id === requestedMatchId)) throw new Error(`Fixture sconosciuta: ${requestedMatchId}`);
 
 const byId = items => new Map(items.map(item => [item.teamId || item.team || item.matchId || item.canonicalMatchId, item]));
 const playerKey = value => String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9 ]/g, " ").replace(/\s+/g, " ").trim();
@@ -265,7 +267,7 @@ const nextScheduledMatchday = matches
 const leagueTargetMatches = matches
   .filter(match => match.competition === "serie-a" && match.season === "2026-27" && (previewMode ? match.matchday === previewMatchday : oddsByMatch.has(match.id) || match.matchday === nextScheduledMatchday))
   .sort((a, b) => a.matchday - b.matchday || a.id.localeCompare(b.id));
-const targetMatches = leagueTargetMatches;
+const targetMatches = requestedMatchId ? leagueTargetMatches.filter(match => match.id === requestedMatchId) : leagueTargetMatches;
 const predictionMatches = matches;
 
 const officialReferenceByTeam = new Map(officialLineups.fixtures
@@ -301,6 +303,17 @@ const teamForMatch = (team, match) => {
   if (team?.probableLineup?.status !== "official" || team.probableLineup.matchId === match.id) return team;
   return { ...team, probableLineup: team.projectedLineup || officialReferenceByTeam.get(team.id) || null };
 };
+// Official positional data are fixture inputs, never persistent roster changes.
+const squadForMatch = (teamId, match) => {
+  const squad = squadsByTeam.get(teamId);
+  const lineup = officialLineups.fixtures.find(fixture => fixture.matchId === match.id)?.teams.find(team => team.teamId === teamId);
+  if (!lineup?.players.some(player => player.role || player.detailedRole)) return squad;
+  const positions = new Map(lineup.players.map(player => [player.playerId, player]));
+  return { ...squad, players: squad.players.map(player => {
+    const position = positions.get(player.id);
+    return position ? { ...player, role: position.role || player.role, detailedRole: position.detailedRole || player.detailedRole } : player;
+  }) };
+};
 
 const generatedPredictions = targetMatches.map(match => {
   const matchupSnapshot = teamMatchupsForTarget(match);
@@ -329,8 +342,8 @@ const generatedPredictions = targetMatches.map(match => {
     headToHead: headToHeadByMatch.get(match.id) || headToHeadByPair.get(pairKey(match.homeTeam, match.awayTeam)),
     homeTeam,
     awayTeam,
-    homeSquad: squadsByTeam.get(match.homeTeam),
-    awaySquad: squadsByTeam.get(match.awayTeam),
+    homeSquad: squadForMatch(match.homeTeam, match),
+    awaySquad: squadForMatch(match.awayTeam, match),
     homeCurrentDiscipline: currentPlayerPerformance(match.homeTeam, match),
     awayCurrentDiscipline: currentPlayerPerformance(match.awayTeam, match),
     homeCurrentPlayers: currentPlayerPerformance(match.homeTeam, match),
@@ -578,7 +591,7 @@ const output = {
   predictions
 };
 
-const outputPath = previewMode
+const outputPath = process.env.SERIE_A_PREDICTION_OUTPUT ? path.resolve(root, process.env.SERIE_A_PREDICTION_OUTPUT) : previewMode
   ? path.join(root, "data/generated", `prediction-preview-md${String(previewMatchday).padStart(2, "0")}-2026-27.json`)
   : path.join(root, "data/normalized/predictions.json");
 fs.writeFileSync(outputPath, `${JSON.stringify(output, null, 2)}\n`);

@@ -2,7 +2,12 @@ const fs=require('fs'),path=require('path');
 const root=path.resolve(__dirname,'..');
 const policy=require('../js/official-starter-policy.js');
 const read=p=>JSON.parse(fs.readFileSync(path.join(root,p),'utf8'));
-const write=(p,d)=>fs.writeFileSync(path.join(root,p),JSON.stringify(d,null,2)+'\n');
+const write=(p,d)=>{
+  const target=path.join(root,p),body=JSON.stringify(d,null,2)+'\n';
+  if(fs.existsSync(target)&&fs.readFileSync(target,'utf8')===body)return;
+  const temporary=target+'.official.tmp';fs.writeFileSync(temporary,body);
+  for(let attempt=0;;attempt++)try{fs.renameSync(temporary,target);return;}catch(error){if(attempt===5)throw error;Atomics.wait(new Int32Array(new SharedArrayBuffer(4)),0,0,250);}
+};
 function buildRegistry(){
   const registry={};
   const add=(id,players)=>{registry[id]={ids:[...new Set(players.map(p=>p.playerId||p.canonicalPlayerId).filter(Boolean))],names:[...new Set(players.flatMap(p=>[p.currentName,p.canonicalName,p.name,typeof p==='string'?p:null]).filter(Boolean).map(policy.token))]};};

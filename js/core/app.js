@@ -1,3 +1,4 @@
+import '../public-presentation.js';
 const RELEASE=new URL(import.meta.url).searchParams.get("v")||"development";
 const [utils,{createDataService},{createMatchComponents},{currentPage},{loadPage}]=await Promise.all([
   import(`./utils.js?v=${encodeURIComponent(RELEASE)}`),

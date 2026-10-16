@@ -5,11 +5,12 @@ export const pct=(v,fraction=false)=>finite(v)?`${number(fraction?v*100:v)}%`:'�
 export const missing=text=>`<p class="rd-empty">${esc(text)}</p>`;
 export const metric=(label,value,unit='')=>`<div class="rd-metric"><dt>${esc(label)}</dt><dd>${number(value)}${finite(value)?esc(unit):''}</dd></div>`;
 export const details=(title,html)=>`<details class="rd-disclosure"><summary>${esc(title)}</summary><div>${html}</div></details>`;
-export const sourceLink=(url,label='Fonte')=>typeof url==='string'&&/^https?:\/\//.test(url)?`<a href="${esc(url)}" target="_blank" rel="noreferrer">${esc(label)} ↗</a>`:'';
+// Provenance remains in the input artifacts; it is not a public UI element.
+export const sourceLink=()=>'';
 export function recordList(value){
  if(value==null)return '—';
  if(Array.isArray(value))return value.length?`<ul>${value.map(v=>`<li>${recordList(v)}</li>`).join('')}</ul>`:'Nessun elemento disponibile';
- if(typeof value==='object')return `<dl class="rd-record">${Object.entries(value).map(([k,v])=>`<div><dt>${esc(k)}</dt><dd>${recordList(v)}</dd></div>`).join('')}</dl>`;
+ if(typeof value==='object')return `<dl class="rd-record">${Object.entries(value).filter(([k])=>!/^(?:sources?(?:[a-z_].*)?|references?|referenceUrl|provider|fonti|provenance|origine|retrievedAt|importedAt)$/i.test(k)).map(([k,v])=>`<div><dt>${esc(k)}</dt><dd>${recordList(v)}</dd></div>`).join('')}</dl>`;
  return esc(value);
 }
 export function tabs(id,items){return `<div class="rd-tabs" data-tabs><div role="tablist" aria-label="${esc(id)}">${items.map(([key,label],i)=>`<button type="button" id="${id}-tab-${key}" role="tab" aria-selected="${i===0}" aria-controls="${id}-panel-${key}" tabindex="${i===0?0:-1}">${esc(label)}</button>`).join('')}</div>${items.map(([key,,html],i)=>`<section role="tabpanel" tabindex="0" id="${id}-panel-${key}" aria-labelledby="${id}-tab-${key}" ${i?'hidden':''}>${html}</section>`).join('')}</div>`;}
