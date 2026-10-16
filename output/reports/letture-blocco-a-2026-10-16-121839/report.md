@@ -2,7 +2,7 @@
 
 Data: 16 ottobre 2026. Repository: `C:\Users\utente\Desktop\seria-a-2026-27`.
 
-**Verdetto: BLOCCO B PRONTO**, esclusivamente per view model e adattatori separati senza attivazione visuale. Le lacune dati e i limiti di verifica riportati qui restano vincoli del blocco successivo, non autorizzazioni a correggere dati o ampliare le regole operative.
+**Verdetto: BLOCCO B NON PRONTO.** La verifica finale ha rilevato scritture concorrenti rispetto all'acquisizione iniziale: **38 file protetti modificati e un nuovo raw Sisal**. I comandi di questo audit non hanno scritto tali percorsi; l'origine delle scritture non è stata accertata. I manifest e gli esiti iniziali sono conservati senza aggiornarli per far coincidere la baseline con il nuovo stato. Non viene eseguito alcun ripristino del lavoro concorrente.
 
 ## 1. Perimetro e stato Git
 
@@ -15,9 +15,18 @@ Stato iniziale acquisito prima di creare la directory di audit:
 - Nessun lavoro preesistente da distinguere o recuperare; nessun file preesistente sovrascritto.
 - Evidenza: [git-initial.json](git-initial.json), timestamp UTC e riferimento Git inclusi.
 
-Stato finale: stesso branch e HEAD, nessun file tracciato modificato, nessuna modifica staged. Le sole aggiunte sono i 19 file non tracciati di questa nuova directory `output/reports/letture-blocco-a-2026-10-16-121839/`, elencati nella sezione 10. Evidenza completa, un percorso per riga: [git-final.json](git-final.json). Il file intermedio `git-after-checks.json` fotografa il punto successivo ai test e precedente al completamento dei report.
+Stato alla prima chiusura: stesso branch e HEAD, ma **38 modifiche tracciate**, oltre al nuovo raw Sisal e agli artefatti di questo audit. Evidenza completa, un percorso per riga: [git-final.json](git-final.json). Una lettura Git successiva ha già rilevato 39 modifiche tracciate, fra cui anche `output/reports/serie-a-md07-1440.png`: il repository stava ancora cambiando. [git-close.json](git-close.json) registra lo stato Git all'ultima chiusura documentale, con timestamp; non viene presentato come stato immutabile di un processo concorrente. Il file intermedio `git-after-checks.json` fotografa il punto successivo ai test e precedente al completamento dei report.
 
-Non sono stati eseguiti build, importatori, rigenerazioni dati, commit, push o deploy. Non sono stati modificati HTML, CSS, JavaScript applicativo, specifica approvata, dataset, motori o aspettative dei test. I tre script creati in questa directory sono strumenti di acquisizione dell'audit, non codice applicativo.
+**Ultima chiusura Git, 12:29:46 UTC:** branch `main`, HEAD **`7d9ac6e08bd0c85843efe688700a01625a26059a`**, diverso da quello iniziale. Anche la maggior parte dei nuovi artefatti di questo audit risulta ormai tracciata: un'operazione concorrente ha aggiornato la storia Git durante il lavoro. Questo audit non ha impartito comandi di commit. Lo stato residuo registrato è esattamente:
+
+```text
+ M output/reports/letture-blocco-a-2026-10-16-121839/report.md
+?? output/reports/letture-blocco-a-2026-10-16-121839/git-close.json
+```
+
+La modifica al report è la correzione del verdetto per documentare l'esito negativo, successiva alla prima stesura. Nessuna modifica staged. Il fatto che gli altri cambiamenti siano entrati in un nuovo HEAD non li riconcilia con la baseline iniziale: restano necessarie una finestra stabile e una nuova acquisizione autorizzata, senza riscrivere i manifest qui conservati.
+
+Da questo audit non sono stati eseguiti build, importatori, rigenerazioni dati, commit, push o deploy. Le sue scritture sono limitate ai **20 file** di questa nuova directory, elencati nella sezione 10. Non sono stati modificati da questi comandi HTML, CSS, JavaScript applicativo, specifica approvata, dataset, motori o aspettative dei test. Il confronto non consente invece di dichiarare invariato il repository condiviso. I tre script creati in questa directory sono strumenti di acquisizione dell'audit, non codice applicativo.
 
 ## 2. Manifest e integrità
 
@@ -29,7 +38,11 @@ Non sono stati eseguiti build, importatori, rigenerazioni dati, commit, push o d
 - Totale protetto al termine: **13.282 file**. Le categorie del manifest sono classificazioni orientative, non gruppi disgiunti per significato statistico: per esempio uno snapshot può essere classificato come dato sorgente senza cessare di essere protetto.
 - Esclusi: nuova directory dell'audit, altri artefatti `output/` non dati/report (per esempio immagini), dipendenze/runtime ignorati fuori da `data/` e metadati interni `.git`.
 
-Risultato del confronto dopo i test: **zero file modificati, aggiunti o rimossi nel perimetro protetto**. Evidenze: [integrity-final.json](integrity-final.json), verifica immediatamente successiva al primo harness, e [final-verification.json](final-verification.json), nuova verifica dell'intero perimetro dopo il completamento documentale. Le liste file sono confrontate oltre agli hash, per rilevare anche aggiunte e cancellazioni.
+Risultato del primo confronto dopo i test: **zero file modificati, aggiunti o rimossi**, secondo [integrity-final.json](integrity-final.json), terminato alle 12:22:09 UTC. Risultato della successiva verifica, terminata alle **12:27:26 UTC**: **38 file protetti modificati, 1 aggiunto, 0 rimossi**, secondo [final-verification.json](final-verification.json). Questa seconda verifica **fallisce** il requisito di stabilità del Blocco A. Le liste sono confrontate oltre agli hash, per rilevare aggiunte e cancellazioni.
+
+L'acquisizione e il ricalcolo degli hash sono scansioni sequenziali, non snapshot atomici del filesystem. In presenza di scritture concorrenti non è possibile certificare che tutti i valori appartengano a un unico istante: né il primo confronto positivo né i test passati autorizzano a ignorare il successivo esito negativo. Serve una nuova acquisizione, in una nuova directory e durante una finestra stabile, prima di B. Gli hash riportati sotto restano quelli iniziali, non hash sostitutivi dei file cambiati.
+
+Fra i cambiamenti rilevati: quote Sisal, `predictions.json`, `schedina-md07.json`, probabili e disponibilità MD7, schede squadra, script MD7 e il report preesistente `serie-a-md07-final-audit.json`, che questo audit aveva esplicitamente escluso dalle scritture. Nuovo file rilevato: `data/raw/odds/sisal/serie-a/2026-10-16T12-21-18-724Z.json.gz`. L'elenco completo è conservato nella verifica, senza attribuire un autore o un comando non osservato.
 
 ### Hash di riferimento principali
 
@@ -50,7 +63,7 @@ L'elenco completo, senza abbreviazioni, è nei due manifest. Estratto dei file p
 | `data/normalized/schedina-champions-md02.json` | `b80378b653120749f54c6d4c235769ea3925ca13ac0eba03a09d648143dcf683` |
 | `docs/specifica-ux-letture-unificate-fase-2.md` | `2a3ced7655f1e225a735f739c7c0560b48c9631afeaf6fd17961d4a8744fd44a` |
 
-Non sono stati ricalcolati o sostituiti gli hash attesi dei test e degli snapshot esistenti.
+Questo audit non ha ricalcolato o sostituito gli hash attesi dei test e degli snapshot esistenti. Uno dei test esclusi, `test-schedina-md07.mjs`, risulta modificato dalla scrittura concorrente: le ragioni di esclusione e l'ispezione nel presente report descrivono la versione osservata inizialmente.
 
 ## 3. Metodo e forza delle evidenze
 
@@ -120,6 +133,8 @@ Il loader corrente limita `selectedMatch` a `competition === 'serie-a'`. Esiston
 `mountChampionsMarketUi` supporta sia un catalogo completo sia il solo `data-champions-published-root`: oggi il dettaglio usa il secondo. I test che costruiscono contratti del catalogo validano la semantica, ma non dimostrano che il catalogo sia visibile.
 
 ## 6. Registro dei mercati e campioni
+
+**Validità temporale:** i valori di questa sezione descrivono l'acquisizione effettuata durante l'audit. La successiva modifica di quote e dati MD7 li rende una baseline storica di confronto, non una descrizione certificata del nuovo stato finale. Non sono stati rigenerati per nascondere la divergenza.
 
 [published-markets.json](published-markets.json) contiene i **record originali completi** delle selezioni pubblicate, non una tabella impoverita: `selectionId`, provider event/market/selection/player IDs, identità canoniche, quote e metadati, probabilità, fair odds, EV, soglie, direzione, periodo, modificatori, semantiche bookmaker, stato operativo, evidenze e settlement, quando presenti.
 
@@ -194,7 +209,7 @@ Controlli aggiuntivi del solo harness: **3/3 PASS** (ammissibilità pubblicati, 
 - `test-betting-selection-contract.js`: importa `betting-selection-contract.js`, che chiama `buildRegistry()` all'inizializzazione; questa funzione scrive il registro normalizzato. Non eseguito. È una criticità da conoscere anche per il Blocco B: evitare di importare quel modulo per un adattatore di sola lettura.
 - Build/npm test aggregati, script browser, importatori e audit che scrivono dati: non eseguiti. Nessuna aspettativa aggiornata per far passare i test.
 
-L'audit statico non è una prova generale di purezza: i due confronti di integrità indipendenti documentano l'assenza di modifiche persistenti nel perimetro protetto. Il test sync confronta gli ID attraverso la stessa funzione condivisa; da solo non prova tutti i click tra due pagine browser. I test DOM possono usare loader raw, mentre l'harness dei campioni applica anche il filtro dati della produzione: conservare la distinzione nei test futuri.
+L'audit statico non è una prova generale di purezza: il primo confronto non ha rilevato variazioni, ma quello finale rileva modifiche concorrenti e impedisce di certificare la stabilità del repository. I test passati non vengono estesi al nuovo stato. Il test sync confronta gli ID attraverso la stessa funzione condivisa; da solo non prova tutti i click tra due pagine browser. I test DOM possono usare loader raw, mentre l'harness dei campioni applica anche il filtro dati della produzione: conservare la distinzione nei test futuri.
 
 ## 9. Rischi aperti e controlli obbligatori per il Blocco B
 
@@ -214,9 +229,9 @@ L'audit statico non è una prova generale di purezza: i due confronti di integri
 | Etichette/semantica esistenti imperfette | Hero Champions prepartita anche con report finale, H1 ulteriore nel report | Registrarle come comportamento attuale; correzioni visuali soltanto nei blocchi autorizzati |
 | CSS e route condivise | Renderer e fogli contengono rami estranei | B senza attivazione visuale; conservare indici, squadra, calendario e Coppa |
 | Test senza browser | Quattro render inerti e test store | Non dichiarare UI responsive/accessibile validata; browser nei blocchi visuali |
-| Baseline temporale | Solo lo stato acquisito è garantito | Prima di B confrontare HEAD, stato Git, manifest e contratti con questa baseline; nuove modifiche dell'utente richiedono riconciliazione, non reset |
+| Baseline temporale — BLOCCANTE | Cambiamenti concorrenti rilevati durante A | Attendere uno stato stabile e identificare il lavoro concorrente; nuova acquisizione separata e test delle versioni aggiornate, senza sovrascrivere questi manifest o ripristinare dati |
 
-Per iniziare B sono disponibili baseline, contratti, record campione, sezioni e limitazioni. In B aggiungere soltanto view model e adattatori non attivati, con confronti campo per campo e test in memoria; mantenere immutati i file protetti qui acquisiti salvo i nuovi file espressamente autorizzati nel blocco successivo. Nessun intervento C (shell, CSS, tema o renderer attivo) è stato iniziato.
+Sono disponibili evidenze, contratti acquisiti, record campione, sezioni e limitazioni, ma **non una baseline finale stabile che autorizzi tecnicamente l'avvio di B**. Dopo la nuova acquisizione stabile, B potrà riguardare soltanto view model e adattatori non attivati, previa autorizzazione. Nessun intervento B o C (shell, CSS, tema o renderer attivo) è stato iniziato.
 
 ## 10. File creati esattamente
 
@@ -239,7 +254,8 @@ Tutti esclusivamente sotto `output/reports/letture-blocco-a-2026-10-16-121839/`:
 | `source-evidence.json` | Evidenze di raggiungibilità e gate con numeri di riga |
 | `output-data-manifest.json` | 63 hash supplementari di dati/snapshot sotto output |
 | `final-verification.json` | Verifica finale dei 13.282 file protetti |
-| `git-final.json` | Stato Git finale con elenco delle sole aggiunte e file creati |
+| `git-final.json` | Stato Git alla prima chiusura: modifiche concorrenti, aggiunte e file dell'audit |
+| `git-close.json` | Ultimo stato Git dopo rilevazione delle scritture concorrenti e correzione del verdetto |
 | `baseline.mjs` | Harness di acquisizione, test verificati, controlli in memoria e rendering inerte |
 | `supplement.mjs` | Acquisizione dati legacy e riferimenti sorgente |
 | `finalize.mjs` | Acquisizione supplemento e confronto finale senza aggiornare baseline |
@@ -248,6 +264,6 @@ Gli script usano creazione esclusiva (`wx`) per i propri artefatti: non devono e
 
 ## 11. Verdetto
 
-**BLOCCO B PRONTO.** Le condizioni tecniche per predisporre adattatori distinti e non attivati sono soddisfatte: baseline congelata, contratti preservati, test di sola lettura passati, rami documentati e dati mancanti espliciti.
+**BLOCCO B NON PRONTO.** I controlli di sola lettura sono passati sulle versioni osservate, ma il confronto finale rileva 38 file protetti modificati e un nuovo raw Sisal. Quote, pronostici e altro lavoro concorrente non vengono modificati, ripristinati o assorbiti aggiornando i valori attesi. Occorre una nuova baseline durante una finestra stabile prima di considerare pronto B.
 
 Il verdetto non certifica dati mancanti, liquidazioni provider, assenza di qualsiasi difetto preesistente o validazione browser completa. Il lavoro si ferma qui in attesa dell'autorizzazione al blocco successivo.
