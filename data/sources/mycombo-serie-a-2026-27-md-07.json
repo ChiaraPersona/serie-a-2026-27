@@ -3329,16 +3329,24 @@
                 }
               },
               "evaluation": {
-                "modelProbabilityPct": null,
+                "modelProbabilityPct": 58.7,
                 "individualModelProbabilityPct": null,
-                "fairOdds": null,
-                "expectedValuePct": null,
-                "status": null
+                "fairOdds": 1.7,
+                "expectedValuePct": 0.9,
+                "status": "EV_CALCOLABILE",
+                "kind": "CANONICAL_DIRECT",
+                "probabilitySemantics": "ABSOLUTE_EVENT",
+                "fairOddsBasis": "CENTRAL_PROBABILITY",
+                "expectedValueBasis": "CENTRAL_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+                "provenance": {
+                  "source": "predictions.marketComparison",
+                  "modelTarget": "btts:GOAL:main"
+                }
               },
               "compatibility": {
-                "status": "NOT_EVALUATED",
-                "reason": "Compatibilità specifica non valutata dal generatore MyCombo.",
-                "modelTarget": null,
+                "status": "COMPATIBILE",
+                "reason": "Target collegato al confronto canonico V2 tramite providerSelectionId.",
+                "modelTarget": "btts:GOAL:main",
                 "bookmakerTarget": null
               },
               "overlap": {
@@ -3352,6 +3360,14 @@
                 "RELIABILITY_NOT_EVALUABLE"
               ],
               "risks": []
+            },
+            "lineupEligibility": {
+              "eligible": true,
+              "status": "not-applicable",
+              "source": null,
+              "sourceUpdatedAt": null,
+              "playerId": null,
+              "playerName": null
             }
           },
           {
@@ -3432,16 +3448,24 @@
                 }
               },
               "evaluation": {
-                "modelProbabilityPct": null,
+                "modelProbabilityPct": 58.8,
                 "individualModelProbabilityPct": null,
-                "fairOdds": null,
-                "expectedValuePct": null,
-                "status": null
+                "fairOdds": 1.7,
+                "expectedValuePct": -4.8,
+                "status": "EV_CALCOLABILE",
+                "kind": "CANONICAL_DIRECT",
+                "probabilitySemantics": "ABSOLUTE_EVENT",
+                "fairOddsBasis": "CENTRAL_PROBABILITY",
+                "expectedValueBasis": "CENTRAL_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+                "provenance": {
+                  "source": "predictions.marketComparison",
+                  "modelTarget": "1x2:2:main"
+                }
               },
               "compatibility": {
-                "status": "NOT_EVALUATED",
-                "reason": "Compatibilità specifica non valutata dal generatore MyCombo.",
-                "modelTarget": null,
+                "status": "COMPATIBILE",
+                "reason": "Target collegato al confronto canonico V2 tramite providerSelectionId.",
+                "modelTarget": "1x2:2:main",
                 "bookmakerTarget": null
               },
               "overlap": {
@@ -3455,6 +3479,14 @@
                 "RELIABILITY_NOT_EVALUABLE"
               ],
               "risks": []
+            },
+            "lineupEligibility": {
+              "eligible": true,
+              "status": "not-applicable",
+              "source": null,
+              "sourceUpdatedAt": null,
+              "playerId": null,
+              "playerName": null
             }
           },
           {
@@ -3535,11 +3567,12 @@
                 }
               },
               "evaluation": {
-                "modelProbabilityPct": null,
+                "modelProbabilityPct": 64.6,
                 "individualModelProbabilityPct": null,
-                "fairOdds": null,
-                "expectedValuePct": null,
-                "status": null
+                "fairOdds": 1.62,
+                "expectedValuePct": -6.4,
+                "status": "MODELLED_LEG",
+                "kind": "CANONICAL_DIRECT"
               },
               "compatibility": {
                 "status": "NOT_EVALUATED",
@@ -3558,6 +3591,14 @@
                 "RELIABILITY_NOT_EVALUABLE"
               ],
               "risks": []
+            },
+            "lineupEligibility": {
+              "eligible": true,
+              "status": "not-applicable",
+              "source": null,
+              "sourceUpdatedAt": null,
+              "playerId": null,
+              "playerName": null
             }
           },
           {
@@ -3638,16 +3679,24 @@
                 }
               },
               "evaluation": {
-                "modelProbabilityPct": null,
+                "modelProbabilityPct": 82.5,
                 "individualModelProbabilityPct": null,
-                "fairOdds": null,
-                "expectedValuePct": null,
-                "status": null
+                "fairOdds": 1.21,
+                "expectedValuePct": -2.7,
+                "status": "EV_CALCOLABILE",
+                "kind": "CANONICAL_DIRECT",
+                "probabilitySemantics": "ABSOLUTE_EVENT",
+                "fairOddsBasis": "CENTRAL_PROBABILITY",
+                "expectedValueBasis": "CENTRAL_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+                "provenance": {
+                  "source": "predictions.marketComparison",
+                  "modelTarget": "goals:OVER:1.5"
+                }
               },
               "compatibility": {
-                "status": "NOT_EVALUATED",
-                "reason": "Compatibilità specifica non valutata dal generatore MyCombo.",
-                "modelTarget": null,
+                "status": "COMPATIBILE",
+                "reason": "Target collegato al confronto canonico V2 tramite providerSelectionId.",
+                "modelTarget": "goals:OVER:1.5",
                 "bookmakerTarget": null
               },
               "overlap": {
@@ -3661,6 +3710,14 @@
                 "RELIABILITY_NOT_EVALUABLE"
               ],
               "risks": []
+            },
+            "lineupEligibility": {
+              "eligible": true,
+              "status": "not-applicable",
+              "source": null,
+              "sourceUpdatedAt": null,
+              "playerId": null,
+              "playerName": null
             }
           }
         ]
@@ -3699,7 +3756,7 @@
                 "name": "U/O CORNER SQUADRA X",
                 "variant": "U/O 3.5 CORNER SQUADRA 1",
                 "scope": "match",
-                "family": null,
+                "family": "Corner",
                 "threshold": 3.5,
                 "selection": "OVER",
                 "subject": {
@@ -3737,8 +3794,8 @@
                 "classification": null,
                 "classificationReason": null,
                 "reliability": {
-                  "level": "Non valutabile",
-                  "reason": "Nessun criterio di affidabilità verificabile disponibile per questa selezione."
+                  "level": "Media",
+                  "reason": "Distribuzione discreta validata su holdout temporale walk-forward di 190 partite; incertezza applicata alla probabilita prudente."
                 },
                 "playability": {
                   "status": "PLAYABLE",
@@ -3747,29 +3804,78 @@
                 }
               },
               "evaluation": {
-                "modelProbabilityPct": null,
-                "individualModelProbabilityPct": null,
-                "fairOdds": null,
-                "expectedValuePct": null,
-                "status": null
+                "modelProbabilityPct": 57.97,
+                "fairOdds": 1.73,
+                "expectedValuePct": 4.34,
+                "status": "EV_CALCOLABILE",
+                "kind": "DISCRETE_COUNT_TEMPORAL_HOLDOUT",
+                "prudentProbabilityPct": 54.75,
+                "conservativeExpectedValuePct": -1.45,
+                "probabilitySemantics": "ABSOLUTE_EVENT",
+                "fairOddsBasis": "CENTRAL_DISCRETE_PROBABILITY",
+                "expectedValueBasis": "CENTRAL_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+                "provenance": {
+                  "source": "data/analysis/serie-a-md07-statistical-models.json",
+                  "modelTarget": "statistical:corners-team-over",
+                  "distribution": "NEGATIVE_BINOMIAL",
+                  "mean": {
+                    "home": 4.422,
+                    "away": 4.772
+                  },
+                  "uncertaintyDeductionPp": 3.21,
+                  "validation": {
+                    "matchClusters": 190,
+                    "probabilityObservations": 4180,
+                    "brier": 0.1164,
+                    "baselineBrier": 0.1194,
+                    "deltaBrier": -0.003,
+                    "logLoss": 0.3625,
+                    "ece": 0.0107,
+                    "meanBias": 0.0587,
+                    "mae": 2.0907,
+                    "gate": "PASS",
+                    "gateCriteria": "clusters>=180; deltaBrier<=0.005; ECE<=0.08; absolute bias within family limit; exact threshold must have >=30 positive and >=30 negative holdout outcomes",
+                    "exactThreshold": {
+                      "observations": 380,
+                      "positives": 218,
+                      "negatives": 162,
+                      "brier": 0.2294,
+                      "baselineBrier": 0.2367,
+                      "deltaBrier": -0.0073,
+                      "ece": 0.0643,
+                      "gate": "PASS"
+                    }
+                  }
+                }
               },
               "compatibility": {
-                "status": "NOT_EVALUATED",
-                "reason": "Compatibilità specifica non valutata dal generatore MyCombo.",
-                "modelTarget": null,
-                "bookmakerTarget": null
+                "status": "COMPATIBILE",
+                "reason": "Contratto Sisal full-time riconciliato con il conteggio storico e distribuzione discreta validata fuori campione.",
+                "modelTarget": "statistical:corners-team-over",
+                "bookmakerTarget": "U/O CORNER SQUADRA X · U/O 3.5 CORNER SQUADRA 1"
               },
               "overlap": {
-                "overlapKey": "market-u o corner squadra x",
+                "overlapKey": "statistical:corners-team-over:U/O 3.5 CORNER SQUADRA 1:OVER",
                 "semanticKeys": [
-                  "volume-corners"
+                  "statistical-b:corners-team-over:5388017458"
                 ]
               },
               "warnings": [
-                "CLASSIFICATION_NOT_AVAILABLE",
-                "RELIABILITY_NOT_EVALUABLE"
+                "CURRENT_AVAILABILITY_NOT_VERIFIED",
+                "CLASSIFICATION_NOT_AVAILABLE"
               ],
-              "risks": []
+              "risks": [
+                "UNCERTAINTY_DEDUCTION_3.21_PP",
+                "CURRENT_QUOTE_AVAILABILITY_FROM_2026_10_09_SNAPSHOT"
+              ]
+            },
+            "lineupEligibility": {
+              "eligible": true,
+              "status": "not-applicable",
+              "source": null,
+              "sourceUpdatedAt": null,
+              "playerId": null,
+              "playerName": null
             }
           },
           {
@@ -3850,16 +3956,24 @@
                 }
               },
               "evaluation": {
-                "modelProbabilityPct": null,
+                "modelProbabilityPct": 58.7,
                 "individualModelProbabilityPct": null,
-                "fairOdds": null,
-                "expectedValuePct": null,
-                "status": null
+                "fairOdds": 1.7,
+                "expectedValuePct": 0.9,
+                "status": "EV_CALCOLABILE",
+                "kind": "CANONICAL_DIRECT",
+                "probabilitySemantics": "ABSOLUTE_EVENT",
+                "fairOddsBasis": "CENTRAL_PROBABILITY",
+                "expectedValueBasis": "CENTRAL_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+                "provenance": {
+                  "source": "predictions.marketComparison",
+                  "modelTarget": "btts:GOAL:main"
+                }
               },
               "compatibility": {
-                "status": "NOT_EVALUATED",
-                "reason": "Compatibilità specifica non valutata dal generatore MyCombo.",
-                "modelTarget": null,
+                "status": "COMPATIBILE",
+                "reason": "Target collegato al confronto canonico V2 tramite providerSelectionId.",
+                "modelTarget": "btts:GOAL:main",
                 "bookmakerTarget": null
               },
               "overlap": {
@@ -3873,6 +3987,14 @@
                 "RELIABILITY_NOT_EVALUABLE"
               ],
               "risks": []
+            },
+            "lineupEligibility": {
+              "eligible": true,
+              "status": "not-applicable",
+              "source": null,
+              "sourceUpdatedAt": null,
+              "playerId": null,
+              "playerName": null
             }
           },
           {
@@ -3905,7 +4027,7 @@
                 "name": "MULTIGOAL",
                 "variant": "MULTIGOAL MULTIESITI 16 ESITI",
                 "scope": "match",
-                "family": null,
+                "family": "Multigoal partita",
                 "threshold": null,
                 "selection": "3-5",
                 "subject": {
@@ -3943,8 +4065,8 @@
                 "classification": null,
                 "classificationReason": null,
                 "reliability": {
-                  "level": "Non valutabile",
-                  "reason": "Nessun criterio di affidabilità verificabile disponibile per questa selezione."
+                  "level": "Bassa",
+                  "reason": "Derivazione deterministica dalla matrice punteggi V2 e dalla sensibilità già esistente; nessuna nuova distribuzione."
                 },
                 "playability": {
                   "status": "PLAYABLE",
@@ -3953,29 +4075,61 @@
                 }
               },
               "evaluation": {
-                "modelProbabilityPct": null,
+                "modelProbabilityPct": 51.2,
                 "individualModelProbabilityPct": null,
-                "fairOdds": null,
-                "expectedValuePct": null,
-                "status": null
+                "fairOdds": 2.11,
+                "expectedValuePct": -12.4,
+                "status": "EV_CALCOLABILE",
+                "kind": "DERIVED_B2_SCORE_MATRIX",
+                "prudentProbabilityPct": 47.4,
+                "probabilitySemantics": "ABSOLUTE_EVENT",
+                "fairOddsBasis": "PRUDENT_PROBABILITY",
+                "expectedValueBasis": "PRUDENT_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+                "provenance": {
+                  "source": "predictions.expectedGoals",
+                  "predicateId": "score.total.inclusive:3-5",
+                  "predicateTarget": {
+                    "market": "MULTIGOAL",
+                    "variant": "MULTIGOAL MULTIESITI 16 ESITI",
+                    "threshold": null,
+                    "selection": "3-5"
+                  },
+                  "modelVersion": "4.13.0",
+                  "predictionGeneratedAt": "2026-10-17T14:56:44.820Z",
+                  "sensitivity": "central plus four lambda perturbations +/-10%; prudent probability is the minimum",
+                  "sensitivityProbabilityPct": [
+                    51.2,
+                    52.2,
+                    50.2,
+                    47.4,
+                    53.7
+                  ]
+                }
               },
               "compatibility": {
-                "status": "NOT_EVALUATED",
-                "reason": "Compatibilità specifica non valutata dal generatore MyCombo.",
-                "modelTarget": null,
-                "bookmakerTarget": null
+                "status": "COMPATIBILE",
+                "reason": "Il predicato bookmaker coincide con il predicato discreto applicato alla matrice punteggi.",
+                "modelTarget": "score.total.inclusive:3-5",
+                "bookmakerTarget": "MULTIGOAL · MULTIGOAL MULTIESITI 16 ESITI"
               },
               "overlap": {
-                "overlapKey": "scenario-goals-fulltime-match",
+                "overlapKey": "multigoal-match:MULTIGOAL MULTIESITI 16 ESITI:3-5",
                 "semanticKeys": [
-                  "goals-fulltime-match"
+                  "derived-b2:score.total.inclusive:3-5"
                 ]
               },
               "warnings": [
-                "CLASSIFICATION_NOT_AVAILABLE",
-                "RELIABILITY_NOT_EVALUABLE"
+                "CLASSIFICATION_NOT_AVAILABLE"
               ],
               "risks": []
+            },
+            "lineupEligibility": {
+              "eligible": true,
+              "status": "not-applicable",
+              "source": null,
+              "sourceUpdatedAt": null,
+              "playerId": null,
+              "playerName": null
             }
           },
           {
@@ -4008,7 +4162,7 @@
                 "name": "MULTIGOAL SQUADRA X",
                 "variant": "MULTIGOAL SQUADRA 1 MULTIESITI",
                 "scope": "match",
-                "family": null,
+                "family": "Multigoal squadra",
                 "threshold": null,
                 "selection": "1-4",
                 "subject": {
@@ -4046,8 +4200,8 @@
                 "classification": null,
                 "classificationReason": null,
                 "reliability": {
-                  "level": "Non valutabile",
-                  "reason": "Nessun criterio di affidabilità verificabile disponibile per questa selezione."
+                  "level": "Bassa",
+                  "reason": "Derivazione deterministica dalla matrice punteggi V2 e dalla sensibilità già esistente; nessuna nuova distribuzione."
                 },
                 "playability": {
                   "status": "PLAYABLE",
@@ -4056,29 +4210,61 @@
                 }
               },
               "evaluation": {
-                "modelProbabilityPct": null,
+                "modelProbabilityPct": 66.8,
                 "individualModelProbabilityPct": null,
-                "fairOdds": null,
-                "expectedValuePct": null,
-                "status": null
+                "fairOdds": 1.58,
+                "expectedValuePct": -6.6,
+                "status": "EV_CALCOLABILE",
+                "kind": "DERIVED_B2_SCORE_MATRIX",
+                "prudentProbabilityPct": 63.1,
+                "probabilitySemantics": "ABSOLUTE_EVENT",
+                "fairOddsBasis": "PRUDENT_PROBABILITY",
+                "expectedValueBasis": "PRUDENT_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+                "provenance": {
+                  "source": "predictions.expectedGoals",
+                  "predicateId": "score.home.inclusive:1-4",
+                  "predicateTarget": {
+                    "market": "MULTIGOAL SQUADRA X",
+                    "variant": "MULTIGOAL SQUADRA 1 MULTIESITI",
+                    "threshold": null,
+                    "selection": "1-4"
+                  },
+                  "modelVersion": "4.13.0",
+                  "predictionGeneratedAt": "2026-10-17T14:56:44.820Z",
+                  "sensitivity": "central plus four lambda perturbations +/-10%; prudent probability is the minimum",
+                  "sensitivityProbabilityPct": [
+                    66.8,
+                    63.1,
+                    70,
+                    63.1,
+                    70
+                  ]
+                }
               },
               "compatibility": {
-                "status": "NOT_EVALUATED",
-                "reason": "Compatibilità specifica non valutata dal generatore MyCombo.",
-                "modelTarget": null,
-                "bookmakerTarget": null
+                "status": "COMPATIBILE",
+                "reason": "Il predicato bookmaker coincide con il predicato discreto applicato alla matrice punteggi.",
+                "modelTarget": "score.home.inclusive:1-4",
+                "bookmakerTarget": "MULTIGOAL SQUADRA X · MULTIGOAL SQUADRA 1 MULTIESITI"
               },
               "overlap": {
-                "overlapKey": "scenario-goals-fulltime-home",
+                "overlapKey": "multigoal-team:MULTIGOAL SQUADRA 1 MULTIESITI:1-4",
                 "semanticKeys": [
-                  "goals-fulltime-home"
+                  "derived-b2:score.home.inclusive:1-4"
                 ]
               },
               "warnings": [
-                "CLASSIFICATION_NOT_AVAILABLE",
-                "RELIABILITY_NOT_EVALUABLE"
+                "CLASSIFICATION_NOT_AVAILABLE"
               ],
               "risks": []
+            },
+            "lineupEligibility": {
+              "eligible": true,
+              "status": "not-applicable",
+              "source": null,
+              "sourceUpdatedAt": null,
+              "playerId": null,
+              "playerName": null
             }
           },
           {
@@ -4111,7 +4297,7 @@
                 "name": "U/O TIRI IN PORTA",
                 "variant": "U/O 6.5 TIRI IN PORTA",
                 "scope": "match",
-                "family": null,
+                "family": "Tiri in porta",
                 "threshold": 6.5,
                 "selection": "OVER",
                 "subject": {
@@ -4149,8 +4335,8 @@
                 "classification": null,
                 "classificationReason": null,
                 "reliability": {
-                  "level": "Non valutabile",
-                  "reason": "Nessun criterio di affidabilità verificabile disponibile per questa selezione."
+                  "level": "Media",
+                  "reason": "Distribuzione discreta validata su holdout temporale walk-forward di 190 partite; incertezza applicata alla probabilita prudente."
                 },
                 "playability": {
                   "status": "PLAYABLE",
@@ -4159,29 +4345,78 @@
                 }
               },
               "evaluation": {
-                "modelProbabilityPct": null,
-                "individualModelProbabilityPct": null,
-                "fairOdds": null,
-                "expectedValuePct": null,
-                "status": null
+                "modelProbabilityPct": 67.49,
+                "fairOdds": 1.48,
+                "expectedValuePct": -20.36,
+                "status": "EV_CALCOLABILE",
+                "kind": "DISCRETE_COUNT_TEMPORAL_HOLDOUT",
+                "prudentProbabilityPct": 65.49,
+                "conservativeExpectedValuePct": -22.72,
+                "probabilitySemantics": "ABSOLUTE_EVENT",
+                "fairOddsBasis": "CENTRAL_DISCRETE_PROBABILITY",
+                "expectedValueBasis": "CENTRAL_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+                "provenance": {
+                  "source": "data/analysis/serie-a-md07-statistical-models.json",
+                  "modelTarget": "statistical:sot-match-over",
+                  "distribution": "NEGATIVE_BINOMIAL",
+                  "mean": {
+                    "home": 3.588,
+                    "away": 4.614
+                  },
+                  "uncertaintyDeductionPp": 2,
+                  "validation": {
+                    "matchClusters": 190,
+                    "probabilityObservations": 3040,
+                    "brier": 0.0967,
+                    "baselineBrier": 0.0977,
+                    "deltaBrier": -0.001,
+                    "logLoss": 0.3061,
+                    "ece": 0.0246,
+                    "meanBias": 0.1745,
+                    "mae": 2.2573,
+                    "gate": "PASS",
+                    "gateCriteria": "clusters>=180; deltaBrier<=0.005; ECE<=0.08; absolute bias within family limit; exact threshold must have >=30 positive and >=30 negative holdout outcomes",
+                    "exactThreshold": {
+                      "observations": 190,
+                      "positives": 125,
+                      "negatives": 65,
+                      "brier": 0.2263,
+                      "baselineBrier": 0.2256,
+                      "deltaBrier": 0.0008,
+                      "ece": 0.032,
+                      "gate": "PASS"
+                    }
+                  }
+                }
               },
               "compatibility": {
-                "status": "NOT_EVALUATED",
-                "reason": "Compatibilità specifica non valutata dal generatore MyCombo.",
-                "modelTarget": null,
-                "bookmakerTarget": null
+                "status": "COMPATIBILE",
+                "reason": "Contratto Sisal full-time riconciliato con il conteggio storico e distribuzione discreta validata fuori campione.",
+                "modelTarget": "statistical:sot-match-over",
+                "bookmakerTarget": "U/O TIRI IN PORTA · U/O 6.5 TIRI IN PORTA"
               },
               "overlap": {
-                "overlapKey": "market-u o tiri in porta",
+                "overlapKey": "statistical:sot-match-over:U/O 6.5 TIRI IN PORTA:OVER",
                 "semanticKeys": [
-                  "volume-shots-on-target"
+                  "statistical-b:sot-match-over:5374654595"
                 ]
               },
               "warnings": [
-                "CLASSIFICATION_NOT_AVAILABLE",
-                "RELIABILITY_NOT_EVALUABLE"
+                "CURRENT_AVAILABILITY_NOT_VERIFIED",
+                "CLASSIFICATION_NOT_AVAILABLE"
               ],
-              "risks": []
+              "risks": [
+                "UNCERTAINTY_DEDUCTION_2_PP",
+                "CURRENT_QUOTE_AVAILABILITY_FROM_2026_10_09_SNAPSHOT"
+              ]
+            },
+            "lineupEligibility": {
+              "eligible": true,
+              "status": "not-applicable",
+              "source": null,
+              "sourceUpdatedAt": null,
+              "playerId": null,
+              "playerName": null
             }
           }
         ]
@@ -4220,7 +4455,7 @@
                 "name": "U/O CORNER SQUADRA X",
                 "variant": "U/O 3.5 CORNER SQUADRA 1",
                 "scope": "match",
-                "family": null,
+                "family": "Corner",
                 "threshold": 3.5,
                 "selection": "OVER",
                 "subject": {
@@ -4258,8 +4493,8 @@
                 "classification": null,
                 "classificationReason": null,
                 "reliability": {
-                  "level": "Non valutabile",
-                  "reason": "Nessun criterio di affidabilità verificabile disponibile per questa selezione."
+                  "level": "Media",
+                  "reason": "Distribuzione discreta validata su holdout temporale walk-forward di 190 partite; incertezza applicata alla probabilita prudente."
                 },
                 "playability": {
                   "status": "PLAYABLE",
@@ -4268,29 +4503,78 @@
                 }
               },
               "evaluation": {
-                "modelProbabilityPct": null,
-                "individualModelProbabilityPct": null,
-                "fairOdds": null,
-                "expectedValuePct": null,
-                "status": null
+                "modelProbabilityPct": 57.97,
+                "fairOdds": 1.73,
+                "expectedValuePct": 4.34,
+                "status": "EV_CALCOLABILE",
+                "kind": "DISCRETE_COUNT_TEMPORAL_HOLDOUT",
+                "prudentProbabilityPct": 54.75,
+                "conservativeExpectedValuePct": -1.45,
+                "probabilitySemantics": "ABSOLUTE_EVENT",
+                "fairOddsBasis": "CENTRAL_DISCRETE_PROBABILITY",
+                "expectedValueBasis": "CENTRAL_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+                "provenance": {
+                  "source": "data/analysis/serie-a-md07-statistical-models.json",
+                  "modelTarget": "statistical:corners-team-over",
+                  "distribution": "NEGATIVE_BINOMIAL",
+                  "mean": {
+                    "home": 4.422,
+                    "away": 4.772
+                  },
+                  "uncertaintyDeductionPp": 3.21,
+                  "validation": {
+                    "matchClusters": 190,
+                    "probabilityObservations": 4180,
+                    "brier": 0.1164,
+                    "baselineBrier": 0.1194,
+                    "deltaBrier": -0.003,
+                    "logLoss": 0.3625,
+                    "ece": 0.0107,
+                    "meanBias": 0.0587,
+                    "mae": 2.0907,
+                    "gate": "PASS",
+                    "gateCriteria": "clusters>=180; deltaBrier<=0.005; ECE<=0.08; absolute bias within family limit; exact threshold must have >=30 positive and >=30 negative holdout outcomes",
+                    "exactThreshold": {
+                      "observations": 380,
+                      "positives": 218,
+                      "negatives": 162,
+                      "brier": 0.2294,
+                      "baselineBrier": 0.2367,
+                      "deltaBrier": -0.0073,
+                      "ece": 0.0643,
+                      "gate": "PASS"
+                    }
+                  }
+                }
               },
               "compatibility": {
-                "status": "NOT_EVALUATED",
-                "reason": "Compatibilità specifica non valutata dal generatore MyCombo.",
-                "modelTarget": null,
-                "bookmakerTarget": null
+                "status": "COMPATIBILE",
+                "reason": "Contratto Sisal full-time riconciliato con il conteggio storico e distribuzione discreta validata fuori campione.",
+                "modelTarget": "statistical:corners-team-over",
+                "bookmakerTarget": "U/O CORNER SQUADRA X · U/O 3.5 CORNER SQUADRA 1"
               },
               "overlap": {
-                "overlapKey": "market-u o corner squadra x",
+                "overlapKey": "statistical:corners-team-over:U/O 3.5 CORNER SQUADRA 1:OVER",
                 "semanticKeys": [
-                  "volume-corners"
+                  "statistical-b:corners-team-over:5388017458"
                 ]
               },
               "warnings": [
-                "CLASSIFICATION_NOT_AVAILABLE",
-                "RELIABILITY_NOT_EVALUABLE"
+                "CURRENT_AVAILABILITY_NOT_VERIFIED",
+                "CLASSIFICATION_NOT_AVAILABLE"
               ],
-              "risks": []
+              "risks": [
+                "UNCERTAINTY_DEDUCTION_3.21_PP",
+                "CURRENT_QUOTE_AVAILABILITY_FROM_2026_10_09_SNAPSHOT"
+              ]
+            },
+            "lineupEligibility": {
+              "eligible": true,
+              "status": "not-applicable",
+              "source": null,
+              "sourceUpdatedAt": null,
+              "playerId": null,
+              "playerName": null
             }
           },
           {
@@ -4395,6 +4679,16 @@
                 "MODEL_BOOKMAKER_TARGET_MISMATCH"
               ],
               "risks": []
+            },
+            "playerId": "pio-esposito",
+            "playerName": "Pio Esposito",
+            "lineupEligibility": {
+              "eligible": true,
+              "status": "official-starter",
+              "source": "Sky Sport",
+              "sourceUpdatedAt": "2026-10-17T14:56:42.681Z",
+              "playerId": "pio-esposito",
+              "playerName": "Pio Esposito"
             }
           },
           {
@@ -4499,6 +4793,16 @@
                 "MODEL_BOOKMAKER_TARGET_MISMATCH"
               ],
               "risks": []
+            },
+            "playerId": "juan-miranda",
+            "playerName": "Juan Miranda",
+            "lineupEligibility": {
+              "eligible": true,
+              "status": "official-starter",
+              "source": "Sky Sport",
+              "sourceUpdatedAt": "2026-10-17T14:56:42.681Z",
+              "playerId": "juan-miranda",
+              "playerName": "Juan Miranda"
             }
           },
           {
@@ -4579,16 +4883,24 @@
                 }
               },
               "evaluation": {
-                "modelProbabilityPct": null,
+                "modelProbabilityPct": 58.7,
                 "individualModelProbabilityPct": null,
-                "fairOdds": null,
-                "expectedValuePct": null,
-                "status": null
+                "fairOdds": 1.7,
+                "expectedValuePct": 0.9,
+                "status": "EV_CALCOLABILE",
+                "kind": "CANONICAL_DIRECT",
+                "probabilitySemantics": "ABSOLUTE_EVENT",
+                "fairOddsBasis": "CENTRAL_PROBABILITY",
+                "expectedValueBasis": "CENTRAL_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+                "provenance": {
+                  "source": "predictions.marketComparison",
+                  "modelTarget": "btts:GOAL:main"
+                }
               },
               "compatibility": {
-                "status": "NOT_EVALUATED",
-                "reason": "Compatibilità specifica non valutata dal generatore MyCombo.",
-                "modelTarget": null,
+                "status": "COMPATIBILE",
+                "reason": "Target collegato al confronto canonico V2 tramite providerSelectionId.",
+                "modelTarget": "btts:GOAL:main",
                 "bookmakerTarget": null
               },
               "overlap": {
@@ -4602,6 +4914,14 @@
                 "RELIABILITY_NOT_EVALUABLE"
               ],
               "risks": []
+            },
+            "lineupEligibility": {
+              "eligible": true,
+              "status": "not-applicable",
+              "source": null,
+              "sourceUpdatedAt": null,
+              "playerId": null,
+              "playerName": null
             }
           },
           {
@@ -4634,7 +4954,7 @@
                 "name": "MULTIGOAL",
                 "variant": "MULTIGOAL MULTIESITI 16 ESITI",
                 "scope": "match",
-                "family": null,
+                "family": "Multigoal partita",
                 "threshold": null,
                 "selection": "1-3",
                 "subject": {
@@ -4672,8 +4992,8 @@
                 "classification": null,
                 "classificationReason": null,
                 "reliability": {
-                  "level": "Non valutabile",
-                  "reason": "Nessun criterio di affidabilità verificabile disponibile per questa selezione."
+                  "level": "Bassa",
+                  "reason": "Derivazione deterministica dalla matrice punteggi V2 e dalla sensibilità già esistente; nessuna nuova distribuzione."
                 },
                 "playability": {
                   "status": "PLAYABLE",
@@ -4682,29 +5002,61 @@
                 }
               },
               "evaluation": {
-                "modelProbabilityPct": null,
+                "modelProbabilityPct": 56.8,
                 "individualModelProbabilityPct": null,
-                "fairOdds": null,
-                "expectedValuePct": null,
-                "status": null
+                "fairOdds": 1.96,
+                "expectedValuePct": -19.9,
+                "status": "EV_CALCOLABILE",
+                "kind": "DERIVED_B2_SCORE_MATRIX",
+                "prudentProbabilityPct": 51,
+                "probabilitySemantics": "ABSOLUTE_EVENT",
+                "fairOddsBasis": "PRUDENT_PROBABILITY",
+                "expectedValueBasis": "PRUDENT_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+                "provenance": {
+                  "source": "predictions.expectedGoals",
+                  "predicateId": "score.total.inclusive:1-3",
+                  "predicateTarget": {
+                    "market": "MULTIGOAL",
+                    "variant": "MULTIGOAL MULTIESITI 16 ESITI",
+                    "threshold": null,
+                    "selection": "1-3"
+                  },
+                  "modelVersion": "4.13.0",
+                  "predictionGeneratedAt": "2026-10-17T14:56:44.820Z",
+                  "sensitivity": "central plus four lambda perturbations +/-10%; prudent probability is the minimum",
+                  "sensitivityProbabilityPct": [
+                    56.8,
+                    55.2,
+                    58.4,
+                    62.3,
+                    51
+                  ]
+                }
               },
               "compatibility": {
-                "status": "NOT_EVALUATED",
-                "reason": "Compatibilità specifica non valutata dal generatore MyCombo.",
-                "modelTarget": null,
-                "bookmakerTarget": null
+                "status": "COMPATIBILE",
+                "reason": "Il predicato bookmaker coincide con il predicato discreto applicato alla matrice punteggi.",
+                "modelTarget": "score.total.inclusive:1-3",
+                "bookmakerTarget": "MULTIGOAL · MULTIGOAL MULTIESITI 16 ESITI"
               },
               "overlap": {
-                "overlapKey": "scenario-goals-fulltime-match",
+                "overlapKey": "multigoal-match:MULTIGOAL MULTIESITI 16 ESITI:1-3",
                 "semanticKeys": [
-                  "goals-fulltime-match"
+                  "derived-b2:score.total.inclusive:1-3"
                 ]
               },
               "warnings": [
-                "CLASSIFICATION_NOT_AVAILABLE",
-                "RELIABILITY_NOT_EVALUABLE"
+                "CLASSIFICATION_NOT_AVAILABLE"
               ],
               "risks": []
+            },
+            "lineupEligibility": {
+              "eligible": true,
+              "status": "not-applicable",
+              "source": null,
+              "sourceUpdatedAt": null,
+              "playerId": null,
+              "playerName": null
             }
           },
           {
@@ -4737,7 +5089,7 @@
                 "name": "MULTIGOAL SQUADRA X",
                 "variant": "MULTIGOAL SQUADRA 2 MULTIESITI",
                 "scope": "match",
-                "family": null,
+                "family": "Multigoal squadra",
                 "threshold": null,
                 "selection": "1-3",
                 "subject": {
@@ -4775,8 +5127,8 @@
                 "classification": null,
                 "classificationReason": null,
                 "reliability": {
-                  "level": "Non valutabile",
-                  "reason": "Nessun criterio di affidabilità verificabile disponibile per questa selezione."
+                  "level": "Bassa",
+                  "reason": "Derivazione deterministica dalla matrice punteggi V2 e dalla sensibilità già esistente; nessuna nuova distribuzione."
                 },
                 "playability": {
                   "status": "PLAYABLE",
@@ -4785,29 +5137,61 @@
                 }
               },
               "evaluation": {
-                "modelProbabilityPct": null,
+                "modelProbabilityPct": 72,
                 "individualModelProbabilityPct": null,
-                "fairOdds": null,
-                "expectedValuePct": null,
-                "status": null
+                "fairOdds": 1.42,
+                "expectedValuePct": -10.4,
+                "status": "EV_CALCOLABILE",
+                "kind": "DERIVED_B2_SCORE_MATRIX",
+                "prudentProbabilityPct": 70.5,
+                "probabilitySemantics": "ABSOLUTE_EVENT",
+                "fairOddsBasis": "PRUDENT_PROBABILITY",
+                "expectedValueBasis": "PRUDENT_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+                "provenance": {
+                  "source": "predictions.expectedGoals",
+                  "predicateId": "score.away.inclusive:1-3",
+                  "predicateTarget": {
+                    "market": "MULTIGOAL SQUADRA X",
+                    "variant": "MULTIGOAL SQUADRA 2 MULTIESITI",
+                    "threshold": null,
+                    "selection": "1-3"
+                  },
+                  "modelVersion": "4.13.0",
+                  "predictionGeneratedAt": "2026-10-17T14:56:44.820Z",
+                  "sensitivity": "central plus four lambda perturbations +/-10%; prudent probability is the minimum",
+                  "sensitivityProbabilityPct": [
+                    72,
+                    70.5,
+                    72.6,
+                    72.6,
+                    70.5
+                  ]
+                }
               },
               "compatibility": {
-                "status": "NOT_EVALUATED",
-                "reason": "Compatibilità specifica non valutata dal generatore MyCombo.",
-                "modelTarget": null,
-                "bookmakerTarget": null
+                "status": "COMPATIBILE",
+                "reason": "Il predicato bookmaker coincide con il predicato discreto applicato alla matrice punteggi.",
+                "modelTarget": "score.away.inclusive:1-3",
+                "bookmakerTarget": "MULTIGOAL SQUADRA X · MULTIGOAL SQUADRA 2 MULTIESITI"
               },
               "overlap": {
-                "overlapKey": "scenario-goals-fulltime-away",
+                "overlapKey": "multigoal-team:MULTIGOAL SQUADRA 2 MULTIESITI:1-3",
                 "semanticKeys": [
-                  "goals-fulltime-away"
+                  "derived-b2:score.away.inclusive:1-3"
                 ]
               },
               "warnings": [
-                "CLASSIFICATION_NOT_AVAILABLE",
-                "RELIABILITY_NOT_EVALUABLE"
+                "CLASSIFICATION_NOT_AVAILABLE"
               ],
               "risks": []
+            },
+            "lineupEligibility": {
+              "eligible": true,
+              "status": "not-applicable",
+              "source": null,
+              "sourceUpdatedAt": null,
+              "playerId": null,
+              "playerName": null
             }
           }
         ]
