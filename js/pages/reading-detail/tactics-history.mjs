@@ -39,9 +39,5 @@ export function installTacticsHistory(model,evidence,containers){
 }
 
 export function recentFormMarkup(model,evidence,side){
- const rows=priorMatches(model,evidence,side).filter(m=>finite(m.score.home)&&finite(m.score.away)).slice(0,5).reverse();
- if(!rows.length)return '<article><h4>'+esc(side.name)+'</h4>'+missing('Andamento recente N/D: nessuna gara conclusa precedente disponibile.')+'</article>';
- const values=rows.map(m=>{const home=m.homeTeam===side.id||m.homeTeam===side.name;const own=m.score[home?'home':'away'],other=m.score[home?'away':'home'];return own>other?3:own===other?1:0});
- const points=values.map((v,i)=>[35+i*(250/Math.max(1,values.length-1)),110-v*28]);
- return '<article><h4>'+esc(side.name)+'</h4><svg class="rd-form-chart" viewBox="0 0 320 150" role="img" aria-label="'+esc(side.name)+': punti nelle ultime gare disponibili"><path d="M25 26H300M25 54H300M25 82H300M25 110H300" fill="none" stroke="var(--rd-line)"/><polyline points="'+points.map(p=>p.join(',')).join(' ')+'" fill="none" stroke="var(--rd-accent)" stroke-width="2"/>'+points.map(([x,y],i)=>'<circle cx="'+x+'" cy="'+y+'" r="4" fill="var(--rd-accent)"><title>'+esc(rows[i].date)+': '+values[i]+' punti</title></circle><text x="'+x+'" y="137" text-anchor="middle" fill="currentColor" font-size="10">'+esc(rows[i].date.slice(5))+'</text>').join('')+'</svg><p class="rd-footnote">Vittoria 3 · Pareggio 1 · Sconfitta 0. Gare precedenti disponibili.</p>'+timeline(model,evidence,side)+'</article>';
+ return '<article>'+timeline(model,evidence,side)+'</article>';
 }

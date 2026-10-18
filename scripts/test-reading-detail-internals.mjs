@@ -2,9 +2,10 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {scenarioMarkup} from '../js/pages/reading-detail/scenario.mjs';
 import {formationMarkup,playersMarkup} from '../js/pages/reading-detail/people.mjs';
-import {priorMatches,attackMarkup,tacticsMarkup} from '../js/pages/reading-detail/tactics-history.mjs';
+import {priorMatches,attackMarkup,tacticsMarkup,recentFormMarkup} from '../js/pages/reading-detail/tactics-history.mjs';
 import {verifySnapshot,verificationMarkup} from '../js/pages/reading-detail/verification.mjs';
 import {forecastPresentation,canPickReading} from '../js/pages/reading-detail/forecasts.mjs';
+import {readingSections} from '../js/pages/reading-detail/shell.mjs';
 const read=p=>JSON.parse(fs.readFileSync(p,'utf8'));
 const empty={lineups:[{side:{name:'Casa'},formation:null,status:'official',players:[],bench:[]},{side:{name:'Ospite'},formation:null,players:[],bench:[]}],analysis:{matches:[]}};
 const model={competition:'serie-a',fixture:{id:'TEST_ONLY',date:'2026-10-16',status:'scheduled',matchday:6},home:{id:'home',name:'Casa'},away:{id:'away',name:'Ospite'},prediction:{teamProjections:[{expectedGoals:0,shotsTotal:{central:0,min:0,max:1}},{}],shooters:{allPlayers:[{name:'Identità non risolta',playerId:null,projectedShots:5,dataStatus:'role-baseline'}]}},forecasts:[]};
@@ -34,3 +35,6 @@ const namedOnly={...empty,lineups:[{side:{name:'Casa'},status:'official',players
 const incompletePlayers=playersMarkup({...model,prediction:null},namedOnly);
 assert(incompletePlayers.includes('Giocatore disponibile'));assert(incompletePlayers.includes('Riserva disponibile'));assert(incompletePlayers.includes('data-player-lineup="starter"'));assert(incompletePlayers.includes('data-player-lineup="bench"'));assert(!incompletePlayers.includes('NaN'));
 console.log('OK Letture D–H: zero/null, identità, assenza dati spaziali, cronologia, snapshot autentico/alterato/posteriore, contratti e gate immutati');
+
+for(const status of ['scheduled','live','finished']){const sections=readingSections({...model,fixture:{...model.fixture,status}});assert(!sections.some(([key])=>key==='pronostici'));assert.deepEqual(sections.map(s=>s[2]),sections.map((_,i)=>String(i+1).padStart(2,'0')));}
+const form=recentFormMarkup(model,{...chronology,analysis:{matches:[{id:'PRIOR',date:'2026-10-01',status:'finished',score:{home:2,away:1},homeTeam:'home',awayTeam:'away'}]}},model.home);assert(!form.includes('<svg'));assert(form.includes('2026-10-01'));assert(form.includes('2–1'));

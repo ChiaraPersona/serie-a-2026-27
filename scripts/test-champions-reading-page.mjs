@@ -49,10 +49,10 @@ assert(app.innerHTML.includes("Dati mancanti o in fallback: Assenze, Matchup."))
 assert(!app.innerHTML.includes("Fattore sorpresa</span><strong>N/D"));
 assert(!app.innerHTML.includes('class="prediction-match-volume champions-goal-forecast"'));
 assert(!app.innerHTML.includes('class="champions-reading-pending"'));
-assert(app.innerHTML.includes("Possibili migliori tiratori"));
-assert(app.innerHTML.includes("5 probabili ammoniti"));
-assert(app.innerHTML.includes("Kylian Mbappé"));
-assert(app.innerHTML.includes("Quota Sisal"));
+assert(!app.innerHTML.includes("Possibili migliori tiratori"));
+assert(!app.innerHTML.includes("5 probabili ammoniti"));
+
+assert(!app.innerHTML.includes("Quota Sisal"));
 assert(!app.innerHTML.includes("Motivazione, urgenza e pressione"));
 assert(app.innerHTML.includes("Analisi tattica delle squadre"));
 assert(app.innerHTML.includes("Baseline storica"));
@@ -118,28 +118,14 @@ assert(app.innerHTML.includes("campioni non combinati"));
 globalThis.location.search="?match=ucl-2026-27-md02-04";
 await createPage({esc,load}).render();
 assert(app.innerHTML.includes("Atlético de Madrid"));
-assert(app.innerHTML.includes('id="champions-selected-forecasts"'));
+assert(!app.innerHTML.includes('id="champions-selected-forecasts"'));
 const publishedFixture=(await load("schedina-champions-md02.json")).fixtures.find(f=>f.fixtureId==="ucl-2026-27-md02-04");
 assert(publishedFixture.selections.length>0);
 const publishedIds=[...app.innerHTML.matchAll(/data-published-selection-id="([^"]+)"/g)].map(match=>match[1]);
-assert.deepEqual(publishedIds,publishedFixture.selections.map(selection=>selection.selectionId),"Lettura and Schedina must publish exactly the same ordered IDs");
-for(const selection of publishedFixture.selections)assert(app.innerHTML.includes(esc(selection.label)),`Missing canonical label ${selection.selectionId}`);
-const archived=JSON.parse(fs.readFileSync(path.join(root,"data/technical-archive/official-nonstarter-markets.json"),"utf8"));
-for(const selection of archived.filter(s=>(s.matchId||s.fixtureId)===publishedFixture.fixtureId))assert(!publishedIds.includes(selection.selectionId),"Archived non-starter must never reappear");
-assert.equal((app.innerHTML.match(/Pronostici selezionati/g)||[]).length,1);
-assert(!app.innerHTML.includes("Esiti effettivamente selezionati"));
-assert(!app.innerHTML.includes("Nessun mercato aggiunto"));
-assert(app.innerHTML.includes("Atlético de Madrid (1)"));
-assert(!app.innerHTML.includes("Ademola Lookman over 2,5 tiri"),"Non-starter Lookman must remain excluded after official XI");
-assert(app.innerHTML.includes("Marcus Rashford over 0,5 SOT"));
-assert.deepEqual([...app.innerHTML.matchAll(/data-add-published-selection="([^"]+)"/g)].map(match=>match[1]),publishedIds);
-assert.equal((app.innerHTML.match(/Aggiungi a MyCombo/g)||[]).length,publishedIds.length);
-if(publishedFixture.status==="finished")assert.equal((app.innerHTML.match(/aria-pressed="false" disabled/g)||[]).length,publishedIds.length,"Finished fixture buttons remain disabled");
-assert(app.innerHTML.includes("Sostituto incluso"));
-assert(app.innerHTML.includes("Pali/traverse inclusi"));
-assert(app.innerHTML.includes("Soglia 2.5"));
-assert(app.innerHTML.includes("53,2%"));
-assert(app.innerHTML.includes("3,7%"));
+assert.deepEqual(publishedIds,[],"Forecast markets belong exclusively to Schedina");
+assert(!app.innerHTML.includes("Pronostici selezionati"));
+assert(!app.innerHTML.includes("data-add-published-selection"));
+assert(!app.innerHTML.includes("Aggiungi a MyCombo"));
 assert(app.innerHTML.includes('id="champions-history"'));
 assert.equal((app.innerHTML.match(/class="reading-h2h-match"/g)||[]).length,2);
 globalThis.location.search="?match=ucl-2026-27-md02-03";
@@ -156,7 +142,7 @@ assert(!app.innerHTML.includes("Over/Under"));
 assert(!app.innerHTML.includes("Rose registrate UEFA"));
 assert(!app.innerHTML.includes("Scenari e dipendenze"));
 assert(!app.innerHTML.includes("prediction-decision-panel"));
-for(const contract of ["reading-match-hero","reading-result-summary","reading-h2h-section","reading-referee-assignment","reading-info-grid","reading-tactical-baseline","prediction-volume-section","prediction-match-volume","prediction-players-grid","prediction-booked-panel","reading-panel-grid","MyCombo"]){
+for(const contract of ["reading-match-hero","reading-result-summary","reading-h2h-section","reading-referee-assignment","reading-info-grid","reading-tactical-baseline","prediction-volume-section","prediction-match-volume"]){
   assert(app.innerHTML.includes(contract),`Struttura Lettura Serie A mancante: ${contract}`);
 }
 assert(!app.innerHTML.includes("prediction-mvp"));
@@ -171,7 +157,7 @@ for(const historicalEvent of ["Toni Kroos","Rodrygo","Achraf Hakimi","Karim Benz
 assert(app.innerHTML.includes("autogol"));
 assert(app.innerHTML.includes("rigore"));
 assert(app.innerHTML.includes("minuto N/D"));
-const readingOrder=["reading-match-hero","prediction-volume-section","champions-selected-forecasts","reading-info-grid","champions-reading-tactical-analysis","champions-reading-history-disclosure"].map(contract=>app.innerHTML.indexOf(contract));
+const readingOrder=["reading-match-hero","prediction-volume-section","reading-info-grid","champions-reading-tactical-analysis","champions-reading-history-disclosure"].map(contract=>app.innerHTML.indexOf(contract));
 assert(readingOrder.every((position,index)=>position>=0&&(index===0||position>readingOrder[index-1])),"Ordine delle sezioni non allineato alla Lettura Serie A");
 assert(!app.innerHTML.includes("champions-calendar"));
 globalThis.location.search="?match=ucl-2026-27-md01-01";

@@ -1,12 +1,10 @@
 import {installScenario} from './scenario.mjs';
-import {installForecasts} from './forecasts.mjs';
 import {loadEvidence,readArtifact} from './evidence.mjs';
 import {installPeople} from './people.mjs';
 import {installTacticsHistory} from './tactics-history.mjs';
 const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const definitions=[
   ['scenario','Scenario','01','M4 16l5-5 4 3 7-10'],
-  ['pronostici','Pronostici','02','M5 4h14v16H5z M8 8h8 M8 12h5 M8 16h8'],
   ['formazioni','Formazioni','03','M3 5h18v14H3z M12 5v14 M9 12a3 3 0 1 0 6 0a3 3 0 1 0-6 0'],
   ['giocatori','Giocatori','04','M8 8a4 4 0 1 0 8 0a4 4 0 1 0-8 0 M4 21v-2a8 8 0 0 1 16 0v2'],
   ['disciplina','Disciplina','05','M7 3h10v18H7z'],
@@ -18,8 +16,7 @@ const definitions=[
 const icon=path=>`<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="${path}"/></svg>`;
 
 export function readingSections(model){
-  // Only an explicit final status removes forecasts; a live score or past kickoff does not.
-  return definitions.filter(([key])=>!['verifica','fonti'].includes(key)&&(key!=='pronostici'||model.fixture.status!=='finished'))
+  return definitions.filter(([key])=>!['verifica','fonti'].includes(key))
     .map(([key,title,,path],i)=>[key,title,String(i+1).padStart(2,'0'),path]);
 }
 
@@ -44,7 +41,6 @@ export async function readingResultsDestination(model,read=readArtifact){
 function classify(node){
   if(node.matches('.reading-post-match,.reading-archive-banner,.champions-match-report'))return 'verifica';
   if(node.matches('.prediction-v2-numbers,.prediction-v2-why,.champions-reading-volume'))return 'scenario';
-  if(node.matches('.reading-shared-forecasts,.champions-selected-forecasts'))return 'pronostici';
   if(node.matches('.reading-info-grid'))return 'formazioni';
   if(node.matches('.prediction-v2-shooters,.prediction-v2-outsiders'))return 'giocatori';
   if(node.matches('.prediction-v2-discipline,.reading-referee-assignment'))return 'disciplina';
@@ -121,9 +117,6 @@ export async function mountReadingShell(model,root=document.querySelector('#app'
     }
     const mini=document.createElement('div');mini.className='rd-mini';mini.innerHTML=`<span>${escape(model.home.name)}</span><b>VS</b><span>${escape(model.away.name)}</span>`;mini.setAttribute('aria-hidden','true');nav.prepend(mini);
     undo.push(installScenario(model,groups.get('scenario').lastElementChild));
-    if(model.fixture.status!=='finished'&&model.forecasts.length){
-      const forecastUi=installForecasts(model,groups.get('pronostici').lastElementChild,shell,options.store);undo.push(forecastUi.undo);
-    }
     undo.push(installPeople(model,evidence,Object.fromEntries([...groups].map(([key,group])=>[key,group.lastElementChild])),shell));
     undo.push(installTacticsHistory(model,evidence,Object.fromEntries([...groups].map(([key,group])=>[key,group.lastElementChild]))));
     if(model.fixture.status==='finished'){
