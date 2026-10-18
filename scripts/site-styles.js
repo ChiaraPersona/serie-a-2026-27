@@ -20,6 +20,10 @@ function applyStyleLinks(html) {
   html=html.replace(/<script src="[^"]*js\/initial-presentation\.js[^"\n]*"><\/script>/g, '');
   const reading=/<body[^>]*data-page="(?:readings|champions)"/.test(html);
   html=html.replace(/(<body[^>]*data-page="(?:readings|champions)"[^>]*>)/, `$1<script src="${prefix}js/initial-presentation.js?v=${bootVersion}"></script>`);
+  // Invalidate the application entry and its versioned module graph whenever
+  // the shared heading renderer changes; preserve each page's base release.
+  const headingVersion=createHash('sha256').update(fs.readFileSync(path.join(root,'js/core/utils.js'))).update(fs.readFileSync(path.join(root,'js/pages/readings.js'))).update(fs.readFileSync(path.join(root,'js/pages/champions.js'))).digest('hex').slice(0,12);
+  html=html.replace(/(src="[^"]*js\/app\.js\?v=)([^"&]+)/g,(_,start,version)=>`${start}${version.replace(/-headings-[a-f0-9]{12}$/, '')}-headings-${headingVersion}`);
   return html.replace(/(?:<link rel="stylesheet" href="[^"]*css\/[^"]+"(?: data-reading-detail-css)?>)+/, styleLinks(prefix, reading));
 }
 module.exports = {styleLinks, applyStyleLinks};

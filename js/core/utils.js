@@ -9,6 +9,12 @@ export const scheduleChronology=(left,right)=>{
   return leftDate.localeCompare(rightDate)||String(left.kickoff||"99:99").localeCompare(String(right.kickoff||"99:99"));
 };
 export const matchdayChronology=(left,right)=>(Number(left.matchday)||0)-(Number(right.matchday)||0)||scheduleChronology(left,right);
-export const hero=(eyebrow,title,text,aside="")=>`<section class="hero"><div><p class="eyebrow">${eyebrow}</p><h1>${title}</h1><p class="lead">${text}</p></div>${document.body.dataset.page==="home"?"":aside}</section>`;
+// Keep the call signature: descriptions are no longer page-heading content.
+// Competition/season/round metadata remains distinct from editorial subtitles.
+export const hero=(eyebrow,title,text,aside="")=>{
+  const home=document.body.dataset.page==="home";
+  const metadata=home||/^(Serie A|UEFA|Archivio|Organico CAN)/.test(eyebrow);
+  return `<section class="hero${home?"":" page-heading"}"><div>${metadata?`<p class="eyebrow">${eyebrow}</p>`:""}<h1>${title}</h1></div>${home?"":aside}</section>`;
+};
 export const empty=text=>`<div class="empty">${text}</div>`;
 export const competitionLabel=value=>value==="serie-a"?"Serie A":"Serie B";

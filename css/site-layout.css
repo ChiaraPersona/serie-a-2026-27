@@ -56,6 +56,47 @@ body #team-squad-app.team-editorial>.team-detail-hero h1{
 }
 body #app>.loading h1,
 body #team-squad-app>.loading h1{color:var(--ds-color-text)}
+
+/* One ordinary page-heading role, including the readings index and Schedine.
+   Team identities and match metadata keep their dedicated layouts. */
+body #app>.page-heading,
+body #app>.readings-index>.page-heading{
+  min-height:0;
+  margin:0 0 var(--ds-space-6);
+  padding:0;
+  border:0;
+  border-radius:0;
+  background:none;
+  box-shadow:none;
+  text-align:left;
+  align-items:start;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:var(--ds-space-5);
+}
+body #app .page-heading h1{
+  max-width:none;
+  margin:0;
+  font-family:var(--ds-font-display);
+  font-size:var(--ds-title-page);
+  font-weight:400;
+  line-height:var(--ds-leading-title);
+  letter-spacing:0;
+  color:var(--ds-color-text);
+  text-align:left;
+  overflow-wrap:anywhere;
+}
+body #app .page-heading .eyebrow{margin:0 0 var(--ds-space-2)}
+body #app>.page-heading::before,
+body #app>.page-heading::after{content:none}
+body #app>.page-heading + *,
+body #app>.readings-index>.page-heading + *{margin-top:0}
+body #app:has(>.page-heading),
+body #app:has(>.readings-index>.page-heading){padding-top:var(--ds-space-6)}
+@media(max-width:760px){
+  body #app:has(>.page-heading),
+  body #app:has(>.readings-index>.page-heading){padding-top:var(--ds-space-5)}
+  body #app>.page-heading{grid-template-columns:minmax(0,1fr)}
+}
 /* Only the two existing flagship heroes retain a larger page title. */
 body[data-page="home"] #app>.hero h1,
 body[data-page="champions"] #app .champions-hero h1{

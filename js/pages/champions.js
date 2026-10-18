@@ -496,13 +496,12 @@ export function createPage(deps){
         <div class="champions-status"><span aria-hidden="true"></span>${matchdayLabel(defaultMatchday)} · ${data.summary.finished} risultati disponibili</div>
         <p class="eyebrow">UEFA Champions League 2026/27</p>
         <h1 id="champions-title">Tutte le notti<br>d’Europa.</h1>
-        <p class="lead">Il calendario ufficiale della fase campionato, completo di tutte le partite e di tutte le squadre. <span data-champions-selection-copy>In primo piano la ${matchdayLabel(defaultMatchday)}.</span> Apri le giornate precedenti per consultare le partite, i risultati disponibili e le letture.</p>
         <div class="champions-hero-stats" aria-label="Riepilogo calendario"><div><strong>${data.summary.fixtures}</strong><span>partite</span></div><div><strong>${data.summary.teams}</strong><span>squadre</span></div><div><strong>${data.summary.matchdays}</strong><span>giornate</span></div></div>
         <div class="champions-orbit" aria-hidden="true"><span>★</span></div>
       </section>
       ${teamLogoDirectory(data.teamBranding,squads)}${roundTable(data)}
       <section class="champions-calendar" aria-labelledby="champions-calendar-title">
-        <header class="champions-calendar-heading"><div><p class="eyebrow">Fase campionato</p><h2 id="champions-calendar-title">Calendario · ${matchdayLabel(defaultMatchday)}</h2><p>Le partite con una lettura disponibile sono apribili direttamente dal calendario. Con “Tutte le giornate” puoi consultare l’intero programma delle 144 gare.</p></div><a href="${esc(data.source.url)}" target="_blank" rel="noreferrer">Fonte UEFA ↗</a></header>
+        <header class="champions-calendar-heading"><div><p class="eyebrow">Fase campionato</p><h2 id="champions-calendar-title">Calendario · ${matchdayLabel(defaultMatchday)}</h2><p><span data-champions-selection-copy>In primo piano la ${matchdayLabel(defaultMatchday)}.</span> Le partite con una lettura disponibile sono apribili direttamente dal calendario. Con “Tutte le giornate” puoi consultare l’intero programma delle 144 gare.</p></div><a href="${esc(data.source.url)}" target="_blank" rel="noreferrer">Fonte UEFA ↗</a></header>
         <div class="champions-controls">
           <label><span>Giornata</span><select id="champions-matchday"><option value="all">Tutte le giornate</option>${matchdays.map(number=>`<option value="${number}"${number===defaultMatchday?" selected":""}>${matchdayLabel(number)}${archivedMatchdays.includes(number)?" · Archivio":""}</option>`).join("")}</select></label>
           <label><span>Squadra</span><select id="champions-team"><option value="all">Tutte le squadre</option>${teamOptions}</select></label>
