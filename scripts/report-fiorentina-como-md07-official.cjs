@@ -39,6 +39,8 @@ const notes=[
  'Le voci Fiorentina 13+ tiri, Fiorentina 4+ SOT e Como 4+ SOT senza quota duplicano eventi gia presenti nelle righe quotate: conservarle nel registro non equivale a tre opportunita indipendenti. Con 21 voci operative risultano 18 eventi distinti. Nessun riempimento per raggiungere 20.',
  'Da Cunha e qualificato outsider tiri nella diagnostica ma non risulta una nuova selezione ammessa e quotata dal builder: 2+ tiri 45.22%, minuti attesi 72.6; osservazione, non aggiunta. Nessun difensore e qualificato outsider; Couto 1+ tiro 61.33% resta un profilo da monitorare.',
  'Fagioli 2+ tiri scende al 41.85%, sotto il 42% usato dal selettore per una nuova soglia 2+: contratto precedente conservato ma sconsigliato come nuova scelta. Mastantuono 2+ SOT (29.73%) e Pellegrino 1+ SOT (44.57%) restano piu variabili delle rispettive opzioni tiri.',
+ 'Verifica UI: nella vista Lettura attualmente in lavorazione il pannello mercati non e presente. Formazioni e proiezioni sono aggiornate; il registro e la Schedina espongono le 21 voci. Nessuna sezione e stata aggiunta o modificata per cambiare il layout. La vista precedente resta verificabile separatamente.',
+ 'I ruoli dettagliati derivano dal modulo e dall\'ordine dei nomi forniti, non da coordinate ufficiali o tracking. Le interpretazioni dei duelli restano ipotesi.',
  'Il risultato Frosinone-Sassuolo non entra nei coefficienti e non aumenta le probabilita di questa partita.'
 ];
 fs.writeFileSync(dir+'/analysis.json',JSON.stringify({matchId:id,official:report.official,markets:all,venueRows,players,notes,otherNineUnchanged:true},null,2)+'\n');

@@ -40,6 +40,10 @@
 
 - Fagioli 2+ tiri scende al 41.85%, sotto il 42% usato dal selettore per una nuova soglia 2+: contratto precedente conservato ma sconsigliato come nuova scelta. Mastantuono 2+ SOT (29.73%) e Pellegrino 1+ SOT (44.57%) restano piu variabili delle rispettive opzioni tiri.
 
+- Verifica UI: nella vista Lettura attualmente in lavorazione il pannello mercati non e presente. Formazioni e proiezioni sono aggiornate; il registro e la Schedina espongono le 21 voci. Nessuna sezione e stata aggiunta o modificata per cambiare il layout. La vista precedente resta verificabile separatamente.
+
+- I ruoli dettagliati derivano dal modulo e dall'ordine dei nomi forniti, non da coordinate ufficiali o tracking. Le interpretazioni dei duelli restano ipotesi.
+
 - Il risultato Frosinone-Sassuolo non entra nei coefficienti e non aumenta le probabilita di questa partita.
 
 | Mercato | P contratto | P solo titolare | Affidabilita baseline | Quota snapshot | Stato | Motivazione / minuti |
