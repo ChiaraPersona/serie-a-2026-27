@@ -9,7 +9,8 @@ export function createDataService(release){
       const data=await fetchJson(`${DATA}${name}`,name);
       // MD1 is a read-only historical archive: retain the original settled legs.
       // Operational selections and saved MyCombo entries still use the starter policy.
-      if(name==='schedina-champions-md01.json')return data;
+      // Final match evidence includes substitutes required by DUO settlement.
+      if(name==='schedina-champions-md01.json'||name==='matches.json')return data;
       return globalThis.officialStarterPolicy.filter(data);
     },
     loadGenerated:path=>fetchJson(`data/generated/${path}`,path),
