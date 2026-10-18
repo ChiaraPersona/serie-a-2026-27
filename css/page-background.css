@@ -1,14 +1,8 @@
-/* One page canvas for Serie A, Coppa Italia and Champions, including dynamic views.
-   Fixed, non-repeating layers keep long pages continuous without animations. */
-:root{
-  --site-page-background:
-    radial-gradient(ellipse 85vw 90vh at 105% 8%,rgba(234,243,245,.78),transparent 78%),
-    radial-gradient(ellipse 78vw 85vh at -12% 68%,rgba(245,241,235,.72),transparent 80%),
-    radial-gradient(ellipse 70vw 80vh at 70% 112%,rgba(233,236,235,.48),transparent 82%),
-    radial-gradient(ellipse 65vw 75vh at 30% -18%,rgba(255,255,255,.85),transparent 82%);
-}
+/* Continuous token-driven canvas. The static competition marker selects the
+   Champions theme before application modules or loading placeholders render. */
 body,body[data-page="champions"]{
-  background-color:#F8F7F4;
+  --site-page-background:var(--ds-page-background);
+  background-color:var(--ds-color-page);
   background-image:var(--site-page-background);
   background-repeat:no-repeat;
   background-attachment:fixed;

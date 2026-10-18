@@ -23,3 +23,115 @@ main>.table-wrap,main .table-wrap{max-width:100%;min-width:0;overflow-x:auto}
   body:not([data-page="home"]) main>.section{margin-top:52px}
   #team-squad-app.team-editorial>[data-editorial-section]{padding-block:13px}
 }
+
+/* Phase 2: outer geometry and editorial typography only. Component internals,
+   table scrolling, pitch coordinates and functional controls retain their CSS. */
+:root{
+  --page-gutter:var(--ds-page-gutter);
+  --container-width:min(var(--ds-content-max),calc(100% - 2 * var(--ds-page-gutter)));
+}
+body :is(.site-header,main,#team-squad-app,.site-footer-inner){
+  width:var(--container-width);
+  max-width:var(--ds-content-max);
+}
+body:not([data-page="home"]) main{padding-block:var(--ds-space-6) var(--ds-space-8)}
+body:not([data-page="home"]) main>.section{margin-top:var(--ds-space-8)}
+body main>.section>.section-heading{margin-bottom:var(--ds-space-5)}
+body[data-page="home"] main{padding-block:var(--ds-space-5) var(--ds-space-7)}
+body[data-page="home"] main>.section{margin-top:var(--ds-space-7)}
+
+/* Explicit page-title roles; match-card, player and numerical headings excluded. */
+body #app>.hero h1,
+body #app>.loading h1,
+body #team-squad-app>.loading h1,
+body #app>.reading-match-hero h1,
+body #app>.readings-index>.ri-title h1,
+body #app>.champions-match-report>h1,
+body #team-squad-app.team-editorial>.team-detail-hero h1{
+  font-family:var(--ds-font-display);
+  font-size:var(--ds-title-page);
+  font-weight:400;
+  line-height:var(--ds-leading-title);
+  overflow-wrap:anywhere;
+}
+/* Only the two existing flagship heroes retain a larger page title. */
+body[data-page="home"] #app>.hero h1,
+body[data-page="champions"] #app .champions-hero h1{
+  font-family:var(--ds-font-display);
+  font-size:var(--ds-title-hero);
+  line-height:var(--ds-leading-title);
+}
+body[data-page="champions"] #app .champions-team-hero h1,
+body[data-page="champions"] #app .champions-reading-hero h1{
+  font-family:var(--ds-font-display);
+  font-size:var(--ds-title-page);
+  line-height:var(--ds-leading-title);
+}
+
+/* Editorial sections, not generic H2/H3 or technical component headers. */
+body #app>.section>.section-heading h2,
+body #app>.home-standings [data-standings-scope-panel]>h2,
+body #app>.readings-index :is(.ri-heading-line>h2,.ri-section-title),
+body #app>.global-player-leaders>.global-player-leaders-heading h2,
+body #app>.player-comparator>header h2,
+body #app .betting-round-heading h2,
+body #team-squad-app.team-editorial>section>.team-editorial-heading h2,
+body #team-squad-app.team-editorial .team-editorial-statistics>.team-season-column>.team-season-heading h2{
+  font-family:var(--ds-font-display);
+  font-size:var(--ds-title-section);
+  font-weight:400;
+  line-height:var(--ds-leading-title);
+  overflow-wrap:anywhere;
+}
+
+/* Navbar: identical geometry, theme-local glass and navigation states. */
+body[data-page] .site-header{
+  --glass-text:var(--ds-color-text);
+  --glass-color:var(--ds-color-glass);
+  gap:var(--ds-space-5);
+  padding:var(--ds-space-2) var(--ds-space-3);
+  border-radius:var(--ds-radius-pill);
+  border-color:var(--ds-color-glass-border);
+  background:var(--ds-color-glass);
+  box-shadow:var(--ds-shadow-card);
+  font-family:var(--ds-font-body);
+  backdrop-filter:var(--ds-glass-blur);
+  -webkit-backdrop-filter:var(--ds-glass-blur);
+}
+body .site-header .page-link{
+  padding:var(--ds-space-2) var(--ds-space-3);
+  font-family:var(--ds-font-body);
+  font-size:var(--ds-text-meta);
+  font-weight:600;
+  line-height:var(--ds-leading-body);
+  color:var(--ds-color-text);
+}
+body .site-header .page-link:is(.active,:hover){
+  background:var(--ds-color-surface-soft);
+  border-color:var(--ds-color-border);
+  color:var(--ds-color-text);
+}
+body .site-header .page-link:focus-visible{
+  outline:2px solid var(--ds-color-focus);
+  outline-offset:3px;
+}
+body .site-header>.menu-button{color:var(--ds-color-text);font-family:var(--ds-font-body)}
+body .site-footer{font-family:var(--ds-font-body)}
+body .site-footer-inner{padding-block:var(--ds-space-7) var(--ds-space-5)}
+body .site-footer-top{padding-bottom:var(--ds-space-7)}
+body .site-footer-bottom{gap:var(--ds-space-5);padding-top:var(--ds-space-5)}
+
+@media(max-width:900px){
+  body .site-header{padding:var(--ds-space-2) var(--ds-space-3)}
+  body .site-header>.site-nav{
+    background:var(--ds-color-surface);
+    border-color:var(--ds-color-border);
+  }
+  body[data-page="champions"] .site-header .site-nav.open .page-link:not(.active){color:var(--ds-color-text)}
+}
+@media(max-width:760px){
+  body:not([data-page="home"]) main{padding-top:var(--ds-space-5)}
+  body:not([data-page="home"]) main>.section{margin-top:var(--ds-space-7)}
+  body .site-footer-inner{padding-top:var(--ds-space-6)}
+  body .site-footer-top{padding-bottom:var(--ds-space-6)}
+}

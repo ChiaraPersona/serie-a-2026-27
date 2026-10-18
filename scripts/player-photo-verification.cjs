@@ -27,6 +27,7 @@ function createVerifier(){
   let p=players.find(p=>p.id===original.playerId),qid=e?.wikidataId;
   if(!qid&&p)qid=depicts.find(id=>{const q=entityFor(id),m=matchingProvider(p,q);return m.qid||m.tm||m.espn});
   if(!p&&!original.playerId){const matches=players.flatMap(p=>depicts.map(id=>({p,q:entityFor(id),id}))).filter(({p,q})=>{const m=matchingProvider(p,q);return (m.qid||m.tm||m.espn)&&vals(q,'P569').some(v=>v.time?.slice(1,11)===p.dateOfBirth)});if(matches.length===1){p=matches[0].p;qid=matches[0].id}}
+  if(!qid&&!p&&depicts.length===1)qid=depicts[0];
   const entity=entityFor(qid),provider=p?matchingProvider(p,entity):{},births=vals(entity,'P569').map(v=>v.time?.slice(1,11)),birthMatch=!!p&&births.includes(p.dateOfBirth),birthConflict=!!p&&!!p.dateOfBirth&&births.length>0&&!birthMatch;
   const categoryMatch=vals(entity,'P373').some(category=>text(meta.Categories).split('|').includes(category));
   const p18=vals(entity,'P18').some(name=>norm(name)===norm(page?.title)),p180=depicts.includes(qid);
@@ -49,7 +50,7 @@ function createVerifier(){
   }
   const reasons=[];
   if(!playerId)reasons.push('NO_CANONICAL_ID_REFERENCE');
-  if(!e&&!p)reasons.push('NO_ARCHIVED_SOURCE_RECORD');
+  if(!e&&!p&&!info)reasons.push('NO_ARCHIVED_SOURCE_RECORD');
   if(!info)reasons.push('NO_LIVE_FILE_METADATA');
   if(!exactOriginal&&!thumbnailVerified)reasons.push('LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL');
   if(!licenseVerified)reasons.push('LICENSE_NOT_VERIFIED');

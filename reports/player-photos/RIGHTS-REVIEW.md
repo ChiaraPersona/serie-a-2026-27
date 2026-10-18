@@ -35,7 +35,7 @@ La tabella usa una causa principale esclusiva per non contare più volte lo stes
 - **assets/images/players/wikimedia/parma/adrian-benedyczak.jpg**: NO_CANONICAL_ID_REFERENCE, NO_ARCHIVED_SOURCE_RECORD, NO_LIVE_FILE_METADATA, LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL, LICENSE_NOT_VERIFIED, AUTHOR_NOT_VERIFIED, FILE_NOT_LINKED_TO_VERIFIED_SUBJECT.
 - **assets/images/players/wikimedia/roma/angelino.jpg**: NO_CANONICAL_ID_REFERENCE, NO_ARCHIVED_SOURCE_RECORD, NO_LIVE_FILE_METADATA, LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL, LICENSE_NOT_VERIFIED, AUTHOR_NOT_VERIFIED, FILE_NOT_LINKED_TO_VERIFIED_SUBJECT.
 - **assets/images/players/wikimedia/roma/tommaso-baldanzi.jpg**: NO_CANONICAL_ID_REFERENCE, NO_ARCHIVED_SOURCE_RECORD, NO_LIVE_FILE_METADATA, LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL, LICENSE_NOT_VERIFIED, AUTHOR_NOT_VERIFIED, FILE_NOT_LINKED_TO_VERIFIED_SUBJECT.
-- **assets/images/players/wikimedia/udinese/simone-pafundi.jpg**: NO_CANONICAL_ID_REFERENCE, NO_ARCHIVED_SOURCE_RECORD, FILE_NOT_LINKED_TO_VERIFIED_SUBJECT.
+- **assets/images/players/wikimedia/udinese/simone-pafundi.jpg**: NO_CANONICAL_ID_REFERENCE.
 
 ## Discordanze anagrafiche conservate
 
@@ -220,3 +220,10 @@ La tabella usa una causa principale esclusiva per non contare più volte lo stes
 I file sostituiti restano nell’archivio con stato SUPERSEDED_ARCHIVE_ONLY e non sono pubblicati. Non sono inclusi tra i casi ancora privi di una soluzione fotografica: il loro originale verificato è indicato nella stessa riga. Il duplicato di Simon Sohm è conservato e non incrementa il numero delle schede coperte. Le foto storiche non vengono inserite nelle rose correnti.
 
 Nessuna modifica a statistiche, rose, previsioni, JavaScript di interfaccia, CSS o grafica; nessuna cancellazione di fotografie, commit, push o deploy. Verifiche riproducibili con scripts/test-player-photo-registry.mjs e scripts/check-player-photos-browser.cjs; esiti e schermate in browser.json. Integrità dei file precedenti e del progetto in recovery/integrity.json.
+
+## Verifiche eseguite
+
+- Test del registro: hash originali e miniature, attribuzioni, unicità degli ID, file precedenti preservati, rifiuto di prove alterate o ETag deboli.
+- Desktop/mobile: 1440 px (151 foto approvate nelle rose controllate); 390 px (14 foto approvate nelle rose controllate). Desktop: tutte le 533 righe. Comparatore squadra, dettagli giocatore, pagina Giocatori, attribuzioni, fallback su errore e assenza di overflow: PASS.
+- Integrità: 207 file precedenti invariati; 9306 file protetti controllati, nessuna modifica ai dati sportivi e nessuna modifica di interfaccia eseguita da questo intervento. Sono state rilevate e preservate modifiche parallele a css/base.css, css/components.css e css/styles.css, separate in recovery/integrity.json.
+- Nessuna modifica ai file HTML/CSS/JS è necessaria per attivare il nuovo registro condiviso; l’interfaccia esistente lo rilegge senza cache persistente.

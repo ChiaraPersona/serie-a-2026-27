@@ -73,9 +73,9 @@
 .rd-shell .rd-referee-history-key{margin:9px 0 0;font-size:9px;line-height:1.5;color:var(--rd-muted)}
 @media(max-width:480px){.rd-shell .rd-referee-history-table{font-size:11px}.rd-shell .rd-referee-history-table :is(th,td){padding:8px 3px}.rd-shell .rd-referee-history-summary{gap:8px}.rd-shell .rd-referee-history-summary dd{font-size:19px}.rd-card-mark{margin-right:2px;width:5px;height:8px}.rd-referee-match{font-size:10px;gap:5px}.rd-shell .rd-referee-history-heading h3{font-size:14px}}
 @media(max-width:480px){.rd-referee-history-table :is(th,td):nth-child(2){width:37%}.rd-referee-history-table :is(th,td):nth-child(3){width:12%}.rd-referee-history-table :is(th,td):nth-child(4){width:17%}}
-body[data-reading-detail-theme]{--rd-bg:#f7f7f3;--rd-surface:#fff;--rd-soft:#eeefea;--rd-ink:#172b32;--rd-muted:#586b70;--rd-line:#d6dfdb;--rd-accent:#126451;--rd-home:#126451;--rd-away:#555b9b;--text:var(--rd-ink);--muted:var(--rd-muted);--surface:var(--rd-surface);--surface2:var(--rd-soft);--line:var(--rd-line);--rd-page-background:radial-gradient(ellipse at 8% 0%,#e7eee8 0,transparent 38rem),radial-gradient(ellipse at 100% 30%,#ececf4 0,transparent 35rem),var(--rd-bg);background:var(--rd-page-background)!important;background-attachment:fixed!important;color:var(--rd-ink)}
-body[data-reading-detail-theme="champions"]{--rd-bg:#07152c;--rd-surface:#10233f;--rd-soft:#142d4d;--rd-ink:#f2f6ff;--rd-muted:#afc3dc;--rd-line:#304762;--rd-accent:#9edbff;--rd-home:#9edbff;--rd-away:#d0b7ff;--rd-page-background:radial-gradient(ellipse at 70% -10%,#153964 0,transparent 45rem),radial-gradient(ellipse at 0% 55%,#102747 0,transparent 40rem),var(--rd-bg)}
-body[data-reading-detail-theme] #app{max-width:1050px!important;width:calc(100% - 48px)!important;padding:24px 0 64px!important;min-width:0}
+body[data-reading-detail-theme]{--rd-bg:#f7f7f3;--rd-surface:#fff;--rd-soft:#eeefea;--rd-ink:#172b32;--rd-muted:#586b70;--rd-line:#d6dfdb;--rd-accent:#126451;--rd-home:#126451;--rd-away:#555b9b;--text:var(--rd-ink);--muted:var(--rd-muted);--surface:var(--rd-surface);--surface2:var(--rd-soft);--line:var(--rd-line);--rd-page-background:var(--ds-page-background),linear-gradient(var(--ds-color-page),var(--ds-color-page));background:var(--rd-page-background)!important;background-attachment:fixed!important;color:var(--rd-ink)}
+body[data-reading-detail-theme="champions"]{--rd-bg:#07152c;--rd-surface:#10233f;--rd-soft:#142d4d;--rd-ink:#f2f6ff;--rd-muted:#afc3dc;--rd-line:#304762;--rd-accent:#9edbff;--rd-home:#9edbff;--rd-away:#d0b7ff;--rd-page-background:var(--ds-page-background),linear-gradient(var(--ds-color-page),var(--ds-color-page))}
+body[data-reading-detail-theme] #app{max-width:var(--ds-content-max)!important;width:var(--container-width)!important;padding:var(--ds-space-5) 0 var(--ds-space-8)!important;min-width:0}
 /* Navbar and footer retain the original shared layout.css / champions.css theme. */
 .rd-shell{color:var(--rd-ink);font-family:Inter,system-ui,sans-serif;min-width:0}
 .rd-shell *{box-sizing:border-box}
@@ -118,7 +118,7 @@ body[data-reading-detail-theme] #app{max-width:1050px!important;width:calc(100% 
 .rd-section-heading{display:flex;align-items:center;gap:11px;padding:0 0 14px;margin-bottom:24px;border-bottom:1px solid var(--rd-line)}
 .rd-section-number{font-size:10px;font-weight:650;color:var(--rd-muted);font-variant-numeric:tabular-nums;margin-right:3px}
 .rd-section-heading svg{width:20px;height:20px;color:var(--rd-accent);flex-shrink:0}
-.rd-section-heading h2{font-family:Inter,system-ui,sans-serif;font-size:22px;font-weight:700;line-height:1.2;margin:0!important;letter-spacing:-.035em;color:var(--rd-ink)}
+.rd-section-heading h2{font-family:var(--ds-font-display);font-size:var(--ds-title-section);font-weight:400;line-height:var(--ds-leading-title);margin:0!important;letter-spacing:-.035em;color:var(--rd-ink)}
 .rd-section-content{min-width:0}
 .rd-shell .rd-section-content>.section{margin-top:24px!important}
 .rd-shell .rd-section-content>.section:first-child{margin-top:0!important}
@@ -155,7 +155,7 @@ body[data-reading-detail-theme] #app{max-width:1050px!important;width:calc(100% 
   .rd-shell .rd-original-summary{grid-template-columns:1.8fr 1fr 1fr!important}
 }
 @media(max-width:767px){
-  body[data-reading-detail-theme] #app{width:calc(100% - 32px)!important;padding-top:16px!important}
+  body[data-reading-detail-theme] #app{width:var(--container-width)!important;padding-top:var(--ds-space-5)!important}
   .rd-shell .rd-back{margin-bottom:24px;font-size:11px}.rd-overline{align-items:flex-start;gap:8px}.rd-edition{font-size:10px;letter-spacing:.035em}.rd-edition i{margin:0 4px}.rd-status{font-size:10px}
   .rd-matchup{grid-template-columns:minmax(0,1fr) 62px minmax(0,1fr);gap:8px;padding:22px 0 12px}
   .rd-matchup:has(.rd-result){grid-template-columns:minmax(0,1fr) 72px minmax(0,1fr)}
@@ -163,7 +163,7 @@ body[data-reading-detail-theme] #app{max-width:1050px!important;width:calc(100% 
   .rd-match-meta{font-size:11px;gap:7px 12px}.rd-match-meta>span::before{margin-right:12px}.rd-editorial-note{align-items:flex-start;margin-top:25px}.rd-editorial-note p{font-size:11px;max-width:180px;text-align:right;line-height:1.5}.rd-editorial-note>span{font-size:10px;white-space:nowrap}
   .rd-hero{padding-bottom:15px}.rd-nav{margin-bottom:28px;padding-block:4px}.rd-nav a{font-size:11px;padding-inline:11px}
   .rd-nav.is-condensed{flex-direction:column;align-items:stretch;gap:0}.rd-nav.is-condensed .rd-mini{display:flex;width:100%;max-width:none;border:0;padding:6px 0;font-size:10px}.rd-nav-links{width:100%}
-  .rd-section{margin-bottom:36px}.rd-section-heading{gap:9px;margin-bottom:18px;padding-bottom:12px}.rd-section-heading h2{font-size:20px}.rd-section-heading svg{width:18px;height:18px}
+  .rd-section{margin-bottom:36px}.rd-section-heading{gap:9px;margin-bottom:18px;padding-bottom:12px}.rd-section-heading h2{font-size:var(--ds-title-section)}.rd-section-heading svg{width:18px;height:18px}
   .rd-shell .rd-original-summary{grid-template-columns:1fr 1fr!important;padding:16px!important;gap:15px!important}.rd-shell .rd-original-summary .reading-exact-scores{grid-column:1/-1}.rd-shell .rd-original-summary .reading-formation-status{grid-column:1/-1}
   .rd-shell .reading-score-list>div{padding:9px!important}.rd-shell .reading-score-list strong{font-size:23px!important}.rd-shell .reading-score-list small{font-size:9px!important}
   .rd-shell :is(.prediction-v2-team-card,.prediction-v2-matchup-card,.prediction-v2-player-card){padding:16px!important}
