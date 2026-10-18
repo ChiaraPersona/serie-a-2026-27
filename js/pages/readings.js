@@ -224,7 +224,7 @@ function pilotSection(aggregates,report){const serieA=report.competitions.find(i
     let finishReading=null;
   if(isReadingPilot('serie-a',activeReadingMatch?.id,location.search)&&typeof document.createElement==='function'){
     try{
-      const [{adaptSerieAReading},{mountReadingShell,prepareReadingShell}]=await Promise.all([import('./reading-detail/serie-a-adapter.mjs'),import('./reading-detail/shell.mjs?v=20261018-reading-clean-copy-v1')]);
+      const [{adaptSerieAReading},{mountReadingShell,prepareReadingShell}]=await Promise.all([import('./reading-detail/serie-a-adapter.mjs'),import('./reading-detail/shell.mjs?v=20261018-referee-dashboard-v1')]);
       const analysis={match:activeReadingMatch,matches,teamDirectory,styles:teamStyleProfiles,referees:refereeProfiles,reading:activeReading,history:headToHeadData?.fixtures?.find(f=>f.fixtureId===activeReadingMatch.id),lineups:[activeReadingMatch.homeTeam,activeReadingMatch.awayTeam].map(id=>{const team=teamDirectory.teams.find(t=>t.id===id);return {team,lineup:fixtureLineupForMatch(activeReadingMatch,team,teamDirectory)}})};
       const model=adaptSerieAReading({match:activeReadingMatch,teams,teamDirectory,prediction:activePrediction,marketCatalog:forecastDataset?.marketCatalog,formation:formationPresentation(activeReadingMatch,teamDirectory),analysis});
       const prepared=await prepareReadingShell(model);

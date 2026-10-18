@@ -325,3 +325,83 @@ body[data-reading-detail-theme] #app:has(.rd-slip-trigger){padding-bottom:110px!
 body[data-reading-detail-theme]{--rd-fouls-home:#126451}
 body[data-reading-detail-theme="champions"]{--rd-fouls-home:#78d6ac}
 .rd-shell .rd-diverging-row[data-statistic="fouls"]{--rd-home:var(--rd-fouls-home)}
+/* Shared referee dashboard: proportions follow the supplied reference at the existing 1050px width. */
+.rd-shell .rf-panel{padding:0!important;border:0!important;background:none!important;margin:0 0 32px!important;box-shadow:none!important}
+.rf-dashboard{--rf-yellow:#e6b500;--rf-red:#dc262c;--rf-green:#00856b;--rf-blue:#213e50;color:var(--rd-ink);font-size:12px;line-height:1.5;min-width:0}
+body[data-reading-detail-theme="champions"] .rf-dashboard{--rf-blue:#9ac5ee;--rf-green:#46c6a0}
+.rf-dashboard .rf-card{border:1px solid var(--rd-line);border-radius:15px;background:color-mix(in srgb,var(--rd-surface) 65%,transparent);padding:20px;min-width:0;box-shadow:none}
+.rf-dashboard :is(h3,h4,p,dl,dd){margin:0}
+.rf-dashboard .rf-heading,.rf-dashboard h4{font:750 12px/1.4 Inter,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--rd-ink)}
+.rf-dashboard .rf-heading{margin:0 0 13px;color:var(--rd-muted)}
+.rf-dashboard .rf-designation{display:grid;grid-template-columns:minmax(0,62fr) minmax(0,38fr);padding:22px 26px;margin-bottom:12px;gap:26px}
+.rf-identity{display:grid;grid-template-columns:130px minmax(0,1fr);align-items:center;gap:22px;min-width:0}
+.rf-identity>svg{width:130px;max-width:100%;height:120px;color:var(--rd-ink)}
+.rf-label,.rf-crew dt{font-size:11px;letter-spacing:.07em;font-weight:650;text-transform:uppercase;color:var(--rd-muted)}
+.rf-dashboard .rf-identity h3{font:800 32px/1.15 Inter,system-ui,sans-serif;letter-spacing:-.025em;margin:5px 0 10px;overflow-wrap:anywhere}
+.rf-dashboard .rf-season{border-top:1px solid var(--rd-line);padding-top:10px;margin-top:12px;color:var(--rd-muted);font-size:12px}
+.rf-crew{display:grid;gap:13px;align-content:center;border-left:1px solid var(--rd-line);padding-left:30px;min-width:0}
+.rf-crew>div{display:grid;grid-template-columns:100px minmax(0,1fr);gap:10px;align-items:baseline}
+.rf-crew dd{font-size:14px;overflow-wrap:anywhere}
+.rf-dashboard .rf-indicators{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;margin-bottom:12px;padding:20px 0}
+.rf-indicator{padding:0 25px;display:grid;gap:5px;min-width:0}
+.rf-indicator+.rf-indicator{border-left:1px solid var(--rd-line)}
+.rf-indicator strong{font-size:29px;line-height:1.2;font-weight:800;letter-spacing:-.02em}
+.rf-indicator>span{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--rd-muted);font-weight:700}
+.rf-dashboard small{font-size:10px;color:var(--rd-muted)}
+.rf-bar{height:7px;border-radius:3px;background:var(--rd-soft);overflow:hidden;margin:3px 0}
+.rf-bar i{display:block;height:100%;border-radius:3px;background:var(--rf-color)}
+.rf-yellow{--rf-color:var(--rf-yellow)}.rf-red{--rf-color:var(--rf-red)}.rf-green{--rf-color:var(--rf-green)}.rf-blue{--rf-color:var(--rf-blue)}
+.rf-lower{display:grid;grid-template-columns:minmax(0,65fr) minmax(0,35fr);gap:12px;align-items:start}
+.rf-side{display:grid;gap:10px;min-width:0}
+.rf-dashboard .rf-history{padding:17px 15px;align-self:stretch}
+.rf-dashboard .rf-history h4{margin:0 0 15px}
+.rf-table-scroll{max-width:100%;overflow-x:auto;overscroll-behavior-x:contain}
+.rf-dashboard table{border-collapse:collapse;width:100%;min-width:570px;table-layout:auto;font-size:10px;background:none;margin:0}
+.rf-dashboard :is(th,td){padding:12px 4px;border:0;border-bottom:1px solid var(--rd-line);background:none!important;color:var(--rd-ink);vertical-align:middle;text-align:center;white-space:nowrap}
+.rf-dashboard th{font-size:9px;font-weight:600;letter-spacing:.04em;color:var(--rd-muted);text-transform:uppercase}
+.rf-dashboard :is(th,td):nth-child(-n+3){text-align:left}
+.rf-dashboard td:nth-child(2){white-space:normal;max-width:80px;font-size:9px}
+.rf-dashboard td small{display:block;font-size:8px;white-space:nowrap}
+.rf-match{display:grid;grid-template-columns:minmax(65px,1fr) 35px minmax(65px,1fr);gap:5px;align-items:center;min-width:190px}
+.rf-match>span{display:flex;align-items:center;gap:4px;white-space:normal;line-height:1.3;min-width:0}
+.rf-match img{width:22px;height:25px;object-fit:contain;flex-shrink:0}
+.rf-match b{text-align:center;font-size:11px;white-space:nowrap}
+.rf-dashboard .rf-average-card{background:color-mix(in srgb,var(--rd-soft) 65%,transparent);padding:17px 19px}
+.rf-averages+ .rf-averages{border-top:1px solid var(--rd-line);margin-top:15px;padding-top:14px}
+.rf-dashboard .rf-averages h4{font-size:10px;letter-spacing:.04em;margin-bottom:12px}
+.rf-averages dl{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}
+.rf-averages dd{font-size:22px;line-height:1.25;font-weight:800}
+.rf-averages dt{font-size:8px;letter-spacing:.04em;text-transform:uppercase;color:var(--rd-muted);margin:4px 0}
+.rf-averages small{display:block;font-size:8px;line-height:1.5}
+.rf-dashboard .rf-trend{padding:16px 18px}
+.rf-trend h4{display:flex;align-items:center;gap:9px;font-size:10px;letter-spacing:.03em;margin-bottom:7px}
+.rf-trend svg{width:18px;height:18px;flex-shrink:0}
+.rf-dashboard .rf-trend p{font-size:11px;line-height:1.65;margin-top:5px}
+.rf-dashboard .rf-note{font-size:9px;line-height:1.6;color:var(--rd-muted);margin-top:11px}
+.rf-dashboard .rf-empty{color:var(--rd-muted);padding:24px 0}
+.rf-dashboard .rf-historical{margin-top:12px}
+.rf-historical .reading-referee-stats{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:14px!important;margin-top:12px!important;padding:0!important;background:none!important;border:0!important}
+.rf-historical .reading-referee-stats article{padding:0!important;border:0!important;background:none!important;box-shadow:none!important}
+.rf-historical .reading-referee-stats strong{display:block;color:var(--rd-ink)!important;font-size:18px!important}
+.rf-historical .reading-referee-stats :is(span,small){color:var(--rd-muted)!important;font-size:10px!important}
+@media(max-width:1000px){.rf-dashboard .rf-designation{padding:20px;gap:20px}.rf-identity{grid-template-columns:90px minmax(0,1fr);gap:15px}.rf-identity>svg{width:90px}.rf-dashboard .rf-identity h3{font-size:27px}.rf-crew{padding-left:20px}.rf-crew>div{grid-template-columns:80px minmax(0,1fr)}.rf-crew dd{font-size:12px}.rf-lower{grid-template-columns:1fr}.rf-side{grid-template-columns:1fr 1fr}.rf-match{min-width:220px}}
+@media(max-width:600px){.rf-dashboard .rf-designation{grid-template-columns:1fr;padding:20px;gap:18px}.rf-identity{grid-template-columns:70px minmax(0,1fr);gap:15px}.rf-identity>svg{width:70px;height:85px}.rf-dashboard .rf-identity h3{font-size:25px}.rf-crew{border-left:0;border-top:1px solid var(--rd-line);padding:16px 0 0;gap:10px}.rf-crew>div{grid-template-columns:95px minmax(0,1fr)}.rf-dashboard .rf-indicators{grid-template-columns:repeat(2,minmax(0,1fr));padding:0}.rf-indicator{padding:18px}.rf-indicator:nth-child(3){border-left:0}.rf-indicator:nth-child(n+3){border-top:1px solid var(--rd-line)}.rf-indicator strong{font-size:28px}.rf-indicator>span{font-size:9px}.rf-side{grid-template-columns:1fr}.rf-dashboard .rf-history{padding:17px 12px}.rf-historical .reading-referee-stats{grid-template-columns:repeat(2,minmax(0,1fr))!important}.rf-averages dd{font-size:23px}}
+/* Neutralize legacy designation rules only inside the shared dashboard. */
+.rd-shell .rf-dashboard dl>div{padding:0;border:0;border-radius:0;background:none}
+.rd-shell .rf-dashboard .rf-crew{grid-template-columns:minmax(0,1fr);margin:0}
+.rd-shell .rf-dashboard dt{color:var(--rd-muted);font-weight:600}
+.rd-shell .rf-dashboard dd{margin:0;color:var(--rd-ink)}
+.rd-shell .rf-dashboard .rf-crew dd{font-size:14px;font-weight:450}
+.rd-shell .rf-dashboard .rf-averages dd{font-size:22px;font-weight:800}
+.rd-shell .rf-dashboard .rf-averages dt{font-size:8px;letter-spacing:.04em;margin:4px 0}
+/* Match the reference's strong referee name despite the shared display-heading reset. */
+.rd-shell .rf-dashboard .rf-identity h3{font-weight:800!important;letter-spacing:-.025em!important}
+.rd-shell .rf-dashboard .rf-heading{font-weight:750!important;letter-spacing:.08em!important}
+.rd-shell .rf-dashboard th{background:transparent!important}
+/* Compact, readable text at the site's narrower 1050px canvas. */
+.rd-shell .rf-dashboard table{font-size:12px;min-width:600px}
+.rd-shell .rf-dashboard td:nth-child(2){font-size:10px}
+.rd-shell .rf-dashboard .rf-match b{font-size:12px}
+.rd-shell .rf-dashboard .rf-trend p{font-size:12px}
+.rd-shell .rf-dashboard .rf-averages :is(dt,small){font-size:9px}
+.rd-shell .rf-dashboard thead{background:transparent!important}

@@ -1,3 +1,4 @@
+import {mountRefereeDashboard} from './referee-dashboard.mjs?v=20261018-referee-dashboard-v1';
 import {esc} from './format.mjs';
 import {readArtifact} from './evidence.mjs';
 const known=v=>typeof v==='number'&&Number.isFinite(v);
@@ -36,12 +37,8 @@ export async function installRefereeHistory(model,container,read=readArtifact){
  const data=await read('data/generated/reading-referee-history.json');
  return mountRefereeHistory(model,container,data);
 }
-export function mountRefereeHistory(model,container,data){
- const panel=container.querySelector('.reading-referee-assignment');if(!panel||!data)return ()=>{};
- const entry=data.fixtures.find(f=>f.fixtureId===model.fixture.id&&f.competition===model.competition&&f.cutoffDate===model.fixture.date);
- if(model.competition==='champions'&&!entry?.rows.length)return ()=>{};
- const node=document.createElement('div');node.innerHTML=refereeHistoryMarkup(entry);const section=node.firstElementChild;
- const stats=panel.querySelector('.reading-referee-stats');
- if(stats)stats.after(section);else panel.append(section);
- return ()=>section.remove();
+export function mountRefereeHistory(model,container,data,teams=[]){
+ const panel=container.querySelector('.reading-referee-assignment');if(!panel)return ()=>{};
+ const entry=data?.fixtures?.find(f=>f.fixtureId===model.fixture.id&&f.competition===model.competition&&f.cutoffDate===model.fixture.date);
+ return mountRefereeDashboard(model,panel,entry,teams);
 }
