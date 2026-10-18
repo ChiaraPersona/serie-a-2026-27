@@ -32,7 +32,7 @@ const server=http.createServer((req,res)=>{const file=path.resolve(root,'.'+deco
    for(const width of (process.argv.includes('--samples-only')?[1440,768,390,320]:[1440,390])){
     await page.setViewportSize({width,height:1000});
     if(width===1440){await page.goto(`${base}/${f.competition==='serie-a'?'lettura':'champions-league'}.html?match=${f.id}`);await page.waitForSelector('.rd-shell');}
-    await page.locator('.rd-tactical-details .rd-disclosure').evaluateAll(nodes=>nodes.forEach(n=>n.open=false));
+    assert.equal(await page.locator('.rd-tactical-details').count(),0);
     const section=page.locator('#lettura-tattica'),columns=section.locator('[data-tactical-side]');
     assert.equal(await columns.count(),2);assert.equal(await section.getByText('Le chiavi del confronto',{exact:true}).count(),0);
     assert.equal(await section.locator('[role=tab],[role=tabpanel],.rd-tactical-summary').count(),0);

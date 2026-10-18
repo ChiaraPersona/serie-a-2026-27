@@ -45,8 +45,9 @@ function build(){
  const fixtures=[];
  for(const m of read('data/normalized/matches.json').filter(m=>m.competition==='serie-a')){
   const official=m.refereeAssignment?.referee;
-  const rows=recentMatches(domestic.get(official?.slug)||historical.get(official?.slug)||[],m.date||'');
-  fixtures.push({fixtureId:m.id,competition:'serie-a',cutoffDate:m.date,refereeId:official?.slug||null,refereeName:official?.name||null,rows,summary:summary(rows)});
+  const enrichment=curated.fixtureAnalyses?.find(e=>e.fixtureId===m.id&&e.refereeSlug===official?.slug);
+  const rows=recentMatches(enrichment?.matches||domestic.get(official?.slug)||historical.get(official?.slug)||[],m.date||'');
+  fixtures.push({fixtureId:m.id,competition:'serie-a',cutoffDate:m.date,refereeId:official?.slug||null,refereeName:official?.name||null,rows,summary:summary(rows),...(enrichment?{analysis:require('./referee-stats/reading-analysis').analyze(enrichment.matches,m.date)}:{})});
  }
  const checks=new Map(history.officialVerification.checks.map(c=>[c.fixtureId,c.refereeId]));
  for(const m of read('data/normalized/champions-league-2026-27.json').fixtures){

@@ -1,7 +1,7 @@
 import {installScenario} from './scenario.mjs?v=20261018-reading-cards-v1';
 import {loadEvidence,readArtifact} from './evidence.mjs';
 import {installPeople} from './people.mjs';
-import {installTacticsHistory} from './tactics-history.mjs?v=20261018-h2h-timeline-v1';
+import {installTacticsHistory} from './tactics-history.mjs?v=20261018-compact-comparison-v1';
 import {loadHistoryRows} from './head-to-head.mjs?v=20261018-h2h-timeline-v1';
 import {mountRefereeHistory} from './referee-history.mjs?v=20261018-initial-render-v2';
 const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));

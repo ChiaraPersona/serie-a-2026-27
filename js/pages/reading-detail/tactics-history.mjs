@@ -1,4 +1,4 @@
-import {esc,number,finite,recordList,details,missing,sourceLink} from './format.mjs';
+import {esc,number,finite,recordList,details,missing} from './format.mjs';
 import {historyMarkup,selectHistoryRows} from './head-to-head.mjs?v=20261018-h2h-timeline-v1';
 export function attackMarkup(channels){
  if(!channels)return missing('Ripartizione delle direzioni d’attacco non disponibile.');
@@ -12,7 +12,7 @@ export function tacticsMarkup(model,evidence){
  const sides=[model.home,model.away],profiles=sides.map((_,i)=>profileFor(model,evidence,i));
  const panels=sides.map((side,i)=>{
   const p=profiles[i],channels=evidence.analysis.attackChannels?.profiles?.find(p=>p.team===side.name)?.attackChannels||model.prediction?.teamProjections?.[i]?.attackChannels||p?.attackChannels;
-  return `<article class="rd-tactical-column" data-tactical-side="${i?'away':'home'}"><header class="rd-tactical-team"><span>${i?'Ospite':'Casa'}</span><h3>${esc(side.name)}</h3></header><p class="rd-footnote rd-tactical-baseline">Baseline ${esc(p?.season||'storica')} · ${esc(p?.competition||'Campione N/D')} · ${number(p?.summary?.appearances,0)} gare</p><dl class="rd-player-kpis rd-tactical-metrics"><div><dt>Possesso</dt><dd>${number(p?.summary?.possessionPct)}${finite(p?.summary?.possessionPct)?'%':''}</dd></div><div><dt>Tiri / gara</dt><dd>${number(p?.summary?.shotsPerGame)}</dd></div><div><dt>Gol / gara</dt><dd>${number(p?.derived?.goalsPerGame)}</dd></div></dl><div class="rd-tactical-directions">${attackMarkup(channels)}</div><div class="rd-tactical-details">${details('Statistiche, campione e fonte',p?recordList({campione:p.summary,derivate:p.derived,qualita:p.dataQuality,note:p.notes})+sourceLink(p.source?.url,p.source?.provider||'Fonte'):missing('Profilo tattico strutturato non disponibile.'))}</div></article>`;
+  return `<article class="rd-tactical-column" data-tactical-side="${i?'away':'home'}"><header class="rd-tactical-team"><span>${i?'Ospite':'Casa'}</span><h3>${esc(side.name)}</h3></header><p class="rd-footnote rd-tactical-baseline">Baseline ${esc(p?.season||'storica')} · ${esc(p?.competition||'Campione N/D')} · ${number(p?.summary?.appearances,0)} gare</p><dl class="rd-player-kpis rd-tactical-metrics"><div><dt>Possesso</dt><dd>${number(p?.summary?.possessionPct)}${finite(p?.summary?.possessionPct)?'%':''}</dd></div><div><dt>Tiri / gara</dt><dd>${number(p?.summary?.shotsPerGame)}</dd></div><div><dt>Gol / gara</dt><dd>${number(p?.derived?.goalsPerGame)}</dd></div></dl><div class="rd-tactical-directions">${attackMarkup(channels)}</div></article>`;
  });
  return `<div class="rd-tactical-comparison" aria-label="Confronto tattico Casa e Ospite">${panels.join('')}</div>`;
 }
