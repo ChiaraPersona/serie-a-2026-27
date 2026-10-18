@@ -46,8 +46,12 @@ function build(){
  for(const m of read('data/normalized/matches.json').filter(m=>m.competition==='serie-a')){
   const official=m.refereeAssignment?.referee;
   const enrichment=curated.fixtureAnalyses?.find(e=>e.fixtureId===m.id&&e.refereeSlug===official?.slug);
-  const rows=recentMatches(enrichment?.matches||domestic.get(official?.slug)||historical.get(official?.slug)||[],m.date||'');
-  fixtures.push({fixtureId:m.id,competition:'serie-a',cutoffDate:m.date,refereeId:official?.slug||null,refereeName:official?.name||null,rows,summary:summary(rows),...(enrichment?{analysis:require('./referee-stats/reading-analysis').analyze(enrichment.matches,m.date)}:{})});
+  const archived=enrichment?.historyRef?read(enrichment.historyRef).referees.find(r=>r.refereeId===official?.slug)?.matches.filter(r=>r.officialCompetition===true):null;
+  const sample=archived||enrichment?.matches||domestic.get(official?.slug)||historical.get(official?.slug)||[];
+  const rows=recentMatches(sample,m.date||'').map(r=>archived?Object.fromEntries(['id','date','season','competition','home','away','score','yellowCards','dismissals','secondYellowCards','directRedCards','fouls','penaltiesAwarded','disputedMetrics','missingMetrics','source'].map(k=>[k,r[k]])):r);
+  const analysis=enrichment?require('./referee-stats/reading-analysis').analyze(sample,m.date):null;
+  if(archived){analysis.showPercentComparison=true;analysis.limitations='Campione disponibile parziale. —: dato mancante o discordante.';analysis.counting='Gialli ordinari; espulsioni conteggiate una sola volta. Δ recente/stagionale; base zero: —.';analysis.seasonLabel='2026/27 · campione disponibile parziale';}
+  fixtures.push({fixtureId:m.id,competition:'serie-a',cutoffDate:m.date,refereeId:official?.slug||null,refereeName:official?.name||null,rows,summary:summary(rows),...(analysis?{analysis}:{})});
  }
  const checks=new Map(history.officialVerification.checks.map(c=>[c.fixtureId,c.refereeId]));
  for(const m of read('data/normalized/champions-league-2026-27.json').fixtures){
