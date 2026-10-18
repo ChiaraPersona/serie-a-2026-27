@@ -54,6 +54,8 @@ body #team-squad-app.team-editorial>.team-detail-hero h1{
   line-height:var(--ds-leading-title);
   overflow-wrap:anywhere;
 }
+body #app>.loading h1,
+body #team-squad-app>.loading h1{color:var(--ds-color-text)}
 /* Only the two existing flagship heroes retain a larger page title. */
 body[data-page="home"] #app>.hero h1,
 body[data-page="champions"] #app .champions-hero h1{
@@ -115,7 +117,12 @@ body .site-header .page-link:focus-visible{
   outline:2px solid var(--ds-color-focus);
   outline-offset:3px;
 }
-body .site-header>.menu-button{color:var(--ds-color-text);font-family:var(--ds-font-body)}
+body .site-header>.menu-button{
+  color:var(--ds-color-text);
+  background:var(--ds-color-surface-soft);
+  border-color:var(--ds-color-border);
+  font-family:var(--ds-font-body);
+}
 body .site-footer{font-family:var(--ds-font-body)}
 body .site-footer-inner{padding-block:var(--ds-space-7) var(--ds-space-5)}
 body .site-footer-top{padding-bottom:var(--ds-space-7)}
