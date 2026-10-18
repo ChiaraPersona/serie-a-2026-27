@@ -4,12 +4,18 @@ export function comparisonWidths(values){
  const max=Math.max(0,...values.filter(finite));
  return values.map(value=>finite(value)&&max>0?Math.max(0,value)/max*100:0);
 }
+// Both existing pipelines serialize expected yellow cards here; never use red-card or total-card counts.
+export function projectedYellowCards(projection){
+ const value=projection?.cards?.central;
+ return finite(value)&&value>=0?value:null;
+}
 export function scenarioMarkup(model){
  const projections=model.prediction?.teamProjections||[],sides=[model.home,model.away];
- const keys=[['expectedGoals','Gol attesi · modello'],['shotsTotal','Tiri'],['shotsOnTarget','SOT'],['corners','Corner']];
+ const keys=[['expectedGoals','Gol attesi · modello'],['shotsTotal','Tiri'],['shotsOnTarget','SOT'],['corners','Corner'],['cards','Cartellini previsti']];
  const comparisons=keys.map(([key,label])=>{
-  const values=sides.map((_,i)=>key==='expectedGoals'?projections[i]?.[key]:projections[i]?.[key]?.central),widths=comparisonWidths(values);
-  return `<article class="rd-diverging-row" aria-label="${esc(label)}: ${esc(sides[0].name)} ${number(values[0],2)}; ${esc(sides[1].name)} ${number(values[1],2)}"><div class="rd-diverging-top"><strong>${label}</strong>${values.map((value,i)=>`<b class="is-${i?'away':'home'}">${number(value,2)}</b>`).join('')}</div><div class="rd-diverging-track" aria-hidden="true">${values.map((value,i)=>`<span class="rd-diverging-half is-${i?'away':'home'}" data-available="${finite(value)}"><em style="width:${widths[i]}%"></em></span>`).join('')}</div></article>`;
+  const values=sides.map((_,i)=>key==='cards'?projectedYellowCards(projections[i]):key==='expectedGoals'?projections[i]?.[key]:projections[i]?.[key]?.central),widths=comparisonWidths(values);
+  const formatted=values.map(value=>key==='cards'?(finite(value)?value.toLocaleString('it-IT',{minimumFractionDigits:1,maximumFractionDigits:1}):'—'):number(value,2));
+  return `<article class="rd-diverging-row" aria-label="${esc(label)}: ${esc(sides[0].name)} ${formatted[0]}; ${esc(sides[1].name)} ${formatted[1]}"><div class="rd-diverging-top"><strong>${label}</strong>${formatted.map((value,i)=>`<b class="is-${i?'away':'home'}">${value}</b>`).join('')}</div><div class="rd-diverging-track" aria-hidden="true">${values.map((value,i)=>`<span class="rd-diverging-half is-${i?'away':'home'}" data-available="${finite(value)}"><em style="width:${widths[i]}%"></em></span>`).join('')}</div></article>`;
  }).join('');
  const chart=`<div class="rd-diverging" role="group" aria-label="Confronto delle previsioni, scala condivisa per ciascun indicatore"><div class="rd-diverging-teams">${sides.map((side,i)=>`<span class="is-${i?'away':'home'}">${esc(side.name)}</span>`).join('')}</div><div class="rd-diverging-rows">${comparisons}</div></div>`;
  const scores=model.prediction?.scoreForecast?.display||model.prediction?.exactScores||[];

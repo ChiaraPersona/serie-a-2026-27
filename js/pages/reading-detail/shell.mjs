@@ -1,4 +1,4 @@
-import {installScenario} from './scenario.mjs';
+import {installScenario} from './scenario.mjs?v=20261018-reading-cards-v1';
 import {loadEvidence,readArtifact} from './evidence.mjs';
 import {installPeople} from './people.mjs';
 import {installTacticsHistory} from './tactics-history.mjs?v=20261018-h2h-timeline-v1';
