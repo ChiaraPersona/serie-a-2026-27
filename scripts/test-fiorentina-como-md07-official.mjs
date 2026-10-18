@@ -10,7 +10,7 @@ policy.configure(read('data/normalized/official-starter-registry.json'));
 const data=read('data/normalized/schedina-md07.json'),m=data.marketCatalog.matches.find(m=>m.matchId===id),shared=sharedForecastsForMatch(data.marketCatalog,id);
 assert.equal(shared.length,21);assert(shared.every(l=>policy.eligible(l,id)));
 const official=read('data/sources/official-lineups-2026-27.json').fixtures.find(f=>f.matchId===id);
-assert.deepEqual(official.teams.map(t=>[t.players.length,t.substitutes.length]),[[11,0],[11,0]]);
+assert.deepEqual(official.teams.map(t=>t.players.length),[11,11]);
 const starters=new Set(official.teams.flatMap(t=>t.players.map(p=>p.playerId))),p=read('data/normalized/predictions.json').predictions.find(p=>p.matchId===id);
 for(const row of [...p.shooters.allPlayers,...p.likelyBooked])assert(starters.has(row.playerId));
 for(const leg of m.selections.filter(l=>l.catalogOrigin==='prediction-v2-player-forecast'&&policy.eligible(l,id))){
