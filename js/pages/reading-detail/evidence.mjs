@@ -1,11 +1,12 @@
 import {shirtNumberAt} from './shirt-numbers.mjs';
+import {connectBenchForecasts} from './bench-contract.mjs?v=20261018-bench-forecasts-v1';
 // Read existing public artifacts only; no builder, importer, or model dependency.
 export async function readArtifact(path){
  const response=await fetch(new URL('../../../'+path,import.meta.url));
  if(!response.ok)throw new Error(`Dati non disponibili: ${path}`);
  return response.json();
 }
-export async function loadEvidence(model){
+export async function loadEvidence(model,{benchForecasts=true}={}){
  const analysis=model.analysis||{},directory=analysis.teamDirectory||await readArtifact('data/teams/index.json');
  const sides=[model.home,model.away];
  const squadFiles=await Promise.all(sides.map(async(side,i)=>{
@@ -46,7 +47,8 @@ export async function loadEvidence(model){
   if(raw?.status==='probable')benchPlayerIds.push(...(probable?.teams?.find(t=>t.teamId===side.id)?.players||[]).filter(p=>p.lineupStatus==='reserve').map(p=>p.playerId).filter(Boolean));
   return {side,formation:raw?.formation??null,status:raw?.status??null,coach:raw?.coach||canonical?.coach||squadFiles[i]?.coach||registered?.coach||null,players,bench,benchPlayers,benchPlayerIds,source:raw?.source??null,updatedAt:raw?.updatedAt??null};
  });
- return {analysis,directory,squadFiles,lineups};
+ const benchData=benchForecasts?await readArtifact('data/normalized/reading-bench-forecasts.json').catch(()=>null):null;
+ return {analysis,directory,squadFiles,lineups,benchForecasts:benchData};
 }
 export function playerLineupStatus(id,lineups){
  if(!id)return 'unknown';
@@ -83,5 +85,5 @@ export function individualPlayers(model,evidence){
    if(status==='starter'||!assignedStarters.has(row))row.lineupStatus=['official','probable'].includes(l.status)?status:'unknown';
   }
  }
- return rows;
+ return connectBenchForecasts(model,evidence,rows);
 }

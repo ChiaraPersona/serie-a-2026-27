@@ -1,4 +1,4 @@
-import {mountRefereeDashboard} from './referee-dashboard.mjs?v=20261018-referee-dashboard-v1';
+import {mountRefereeDashboard} from './referee-dashboard.mjs?v=20261018-referee-compact-v1';
 import {esc} from './format.mjs';
 import {readArtifact} from './evidence.mjs';
 const known=v=>typeof v==='number'&&Number.isFinite(v);
@@ -30,7 +30,7 @@ function analysisMarkup(entry){
  html=html.replace('<th scope="col">Rig.</th>','<th scope="col">Falli</th>');
  let index=0;
  html=html.replace(/<td>([^<]*)<\/td><\/tr>/g,()=>{const r=rows[index++];return `<td>${value(r?.fouls)}<small>Rig. ${value(r?.penaltiesAwarded)}</small></td></tr>`;});
- return html.replace('</section>',`<p class="rd-referee-history-key">${esc(a.counting)} Δ = (media recente / media stagionale − 1) × 100; non definita con base zero. ${esc(a.seasonLabel)}. ${esc(a.limitations)}</p></section>`);
+ return html.replace('</section>',`<p class="rd-referee-history-key">Δ = (media recente / media stagionale − 1) × 100; non definita con base zero. ${esc(a.seasonLabel)}.</p></section>`);
 }
 export async function installRefereeHistory(model,container,read=readArtifact){
  const panel=container.querySelector('.reading-referee-assignment');if(!panel)return ()=>{};

@@ -398,5 +398,6 @@ module.exports = {
   collectRosterEvidence,
   estimateExpectedMinutes,
   playedMinutes,
+  rateForPlayer,
   conserveTeamVolume
 };

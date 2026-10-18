@@ -11,6 +11,10 @@ const readingPagesOnly = process.argv.includes('--reading-pages-only');
 const teamPagesOnly = readingPagesOnly || process.argv.includes('--team-pages-only');
 if (!teamPagesOnly && !presentationOnly) require('./apply-official-starter-policy.js').build();
 if (!teamPagesOnly && !presentationOnly && fs.existsSync(path.join(root,'data/sources/reading-referee-match-history.json'))) require('./build-reading-referee-history.js').build();
+// Readings consume a separate bench artifact; production starter forecasts stay untouched.
+if (!presentationOnly && !process.argv.includes('--team-pages-only')) {
+  require('node:child_process').execFileSync(process.execPath, [path.join(root, 'scripts/build-reading-bench-forecasts.mjs'), '--if-needed'], {cwd:root,stdio:'inherit'});
+}
 const teams = JSON.parse(fs.readFileSync(path.join(root, "data/normalized/teams.json"), "utf8"));
 const esc = value => String(value ?? "").replace(/[&<>\"]/g, character => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[character]));
 const pages = [
@@ -28,10 +32,9 @@ const calendarVersion = "20260919-roma-inter-juventus-fatigue-v1";
 const teamVersion = "20261016-team-editorial-v2";
 const leaderboardVersion = "20261013-md06-results-v1";
 const bettingVersion = "20261016-schedina-recovery-v2";
-const readingVersion = "20261018-complete-player-lists-v1";
+const readingVersion = "20261018-referee-compact-v1";
 const cupVersion = "20260919-coppa-events-v1";
-const championsVersion = "20261018-complete-player-lists-v1";
-const championsMotivationVersion = "20261013-champions-md02-phase12d-v1";
+const championsVersion = "20261018-referee-compact-v1";
 const fantasyVersion = "20261009-probable-lineups-md06-v2";
 const headToHeadPath = path.join(root, "data/generated/head-to-head/first-leg-2026-27.json");
 if (!teamPagesOnly && !presentationOnly && fs.existsSync(headToHeadPath)) {
@@ -64,10 +67,11 @@ for (const [file,id,label] of (readingPagesOnly ? pages.filter(([,id])=>["readin
   const html = `<!doctype html>\n<html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Serie A e Coppa Italia 2026/27: ${label}"><title>${label} | Serie A 2026/27</title><link rel="stylesheet" href="css/styles.css?v=${pageVersion}"></head><body data-page="${id}"><header id="site-top" class="site-header"><a class="brand" href="index.html"><span class="brand-mark"><img src="assets/images/serie-a-logo-mark.png" alt=""></span><span><strong>Serie A 2026/27</strong><small>Campionato e Coppa Italia</small></span></a><button class="menu-button" type="button" aria-controls="site-nav" aria-expanded="false">Menu</button><nav id="site-nav" class="site-nav" aria-label="Navigazione principale">${navigation("", id)}</nav></header>${main}${footer()}${scripts}</body></html>`;
   writeHtml(path.join(root,file), withFonts(html));
 }
-const motivationDir = path.join(root, "champions-2026-27");
-fs.mkdirSync(motivationDir, { recursive: true });
-const motivationHtml = `<!doctype html>\n<html lang="it"><head><meta charset="utf-8"><base href="../"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Motivation Index delle 36 squadre di UEFA Champions League 2026/27"><title>Motivation Index | Champions League 2026/27</title><link rel="stylesheet" href="css/styles.css?v=${championsMotivationVersion}"></head><body data-page="champions"><header id="site-top" class="site-header"><a class="brand" href="index.html"><span class="brand-mark"><img src="assets/images/serie-a-logo-mark.png" alt=""></span><span><strong>Serie A 2026/27</strong><small>Campionato e Coppa Italia</small></span></a><button class="menu-button" type="button" aria-controls="site-nav" aria-expanded="false">Menu</button><nav id="site-nav" class="site-nav" aria-label="Navigazione principale">${navigation("", "champions")}</nav></header><main id="app" tabindex="-1"><section class="loading"><p class="eyebrow">Caricamento</p><h1>Motivation Index</h1></section></main>${footer()}<script type="module" src="js/app.js?v=${championsMotivationVersion}"></script></body></html>`;
-if (!teamPagesOnly) writeHtml(path.join(motivationDir,"motivazione.html"),withFonts(motivationHtml));
+// Retired public overview; analytical motivation builders and datasets remain active.
+if (!teamPagesOnly) {
+  const retiredPage = path.join(root, "champions-2026-27/motivazione.html");
+  if (fs.existsSync(retiredPage)) fs.unlinkSync(retiredPage);
+}
 const squadDir = path.join(root, "statistiche-squadra");
 fs.mkdirSync(squadDir, { recursive: true });
 const squadPage = (team = null, version = teamVersion) => {

@@ -67,7 +67,7 @@ export function renderPredictionV2Sections({prediction,teams=[],esc=value=>Strin
 
   const booked=Array.isArray(prediction?.likelyBooked)?prediction.likelyBooked:[];
   const bookingRows=booked.map(candidate=>{const duel=candidate.directOpponent?`Duello diretto con ${esc(candidate.directOpponent)}`:"Duello diretto N/D",refereeMissing=candidate.refereeFactorSource==="NO_DESIGNATION_AVAILABLE"||candidate.refereeEvidence?.some(item=>/N\/D|non disponibile/i.test(item)),referee=candidate.refereeFactorSource==="NO_DESIGNATION_AVAILABLE"?"Arbitro non designato: fallback 1":refereeMissing?"Influenza arbitrale N/D":isFiniteNumber(candidate.refereeFactor)&&candidate.refereeFactor>1?"Arbitro sopra la baseline disciplinare":isFiniteNumber(candidate.refereeFactor)?"Influenza arbitrale neutra":"Influenza arbitrale N/D";return `<li class="${candidate.possibleFirstBooked?"possible-first-booked":""}"><span>${candidate.rank??"—"}</span><div><strong>${esc(candidate.name||"N/D")}</strong><small>${esc(teamFor(candidate.teamId).name)} · ${esc(candidate.role||"Ruolo N/D")}${candidate.possibleFirstBooked?" · possibile primo ammonito (euristica)":""}</small><em>${duel} · ${referee}</em></div><b>${isFiniteNumber(candidate.riskScore)?`${metric(candidate.riskScore,0)}/100`:"N/D"}</b></li>`}).join("");
-  const discipline=`<section class="prediction-booked-panel"><header><div><p class="eyebrow">Gerarchia disciplinare</p><h3>Probabili ammoniti</h3></div><p>Risk score comparativo, non probabilità di ammonizione. Primo nome: euristica del ranking, senza probabilità del primo cartellino.</p></header>${booked.length?`<ol>${bookingRows}</ol>`:'<p class="prediction-v2-empty">Candidati ammonizione N/D</p>'}</section>`;
+  const discipline=`<section class="prediction-booked-panel"><header><div><p class="eyebrow">Gerarchia disciplinare</p><h3>Probabili ammoniti</h3></div></header>${booked.length?`<ol>${bookingRows}</ol>`:'<p class="prediction-v2-empty">Candidati ammonizione N/D</p>'}</section>`;
   return {numbers,why,shooters:shooterPanel,outsiders:outsiderPanel,discipline};
 }
 
@@ -223,7 +223,7 @@ function pilotSection(aggregates,report){const serieA=report.competitions.find(i
     let finishReading=null;
   if(isReadingPilot('serie-a',activeReadingMatch?.id,location.search)&&typeof document.createElement==='function'){
     try{
-      const [{adaptSerieAReading},{mountReadingShell,prepareReadingShell}]=await Promise.all([import('./reading-detail/serie-a-adapter.mjs'),import('./reading-detail/shell.mjs?v=20261018-complete-player-lists-v1')]);
+      const [{adaptSerieAReading},{mountReadingShell,prepareReadingShell}]=await Promise.all([import('./reading-detail/serie-a-adapter.mjs'),import('./reading-detail/shell.mjs?v=20261018-referee-compact-v1')]);
       const analysis={match:activeReadingMatch,matches,teamDirectory,styles:teamStyleProfiles,referees:refereeProfiles,reading:activeReading,history:headToHeadData?.fixtures?.find(f=>f.fixtureId===activeReadingMatch.id),lineups:[activeReadingMatch.homeTeam,activeReadingMatch.awayTeam].map(id=>{const team=teamDirectory.teams.find(t=>t.id===id);return {team,lineup:fixtureLineupForMatch(activeReadingMatch,team,teamDirectory)}})};
       const model=adaptSerieAReading({match:activeReadingMatch,teams,teamDirectory,prediction:activePrediction,marketCatalog:forecastDataset?.marketCatalog,formation:formationPresentation(activeReadingMatch,teamDirectory),analysis});
       const prepared=await prepareReadingShell(model);

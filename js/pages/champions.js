@@ -212,12 +212,6 @@ export function createPage(deps){
     return `<nav class="reading-back champions-reading-back"><a href="champions-league.html">← Calendario Champions</a><span>Giornata ${fixture.matchday}</span></nav><section class="reading-match-hero champions-reading-match-hero"><div><p class="eyebrow">UEFA Champions League · Motivation Index</p><h1>${esc(fixture.homeTeam)} - ${esc(fixture.awayTeam)}</h1><p>${esc(dayLabel(fixture.date))} · ${esc(fixture.kickoff)}</p></div><div class="reading-matchup champions-reading-matchup">${teamBadge(fixture.homeTeam,branding,{showName:false})}<b>VS</b>${teamBadge(fixture.awayTeam,branding,{showName:false})}</div></section><aside class="reading-prototype-banner champions-reading-warning"><strong>Lettura parziale</strong><p>${availability}</p></aside>${motivationPanel(entry)}<section class="section reading-info-grid champions-reading-info">${probableFormationCard(fixture,squads)}</section>`;
   }
 
-  function motivationOverview(data,branding){
-    const objectives=data.objectiveLabels||{};
-    const rows=[...data.teams].sort((a,b)=>b.baseline.baselineMotivation-a.baseline.baselineMotivation||a.team.localeCompare(b.team,"it")).map(side=>{const base=side.baseline;return `<tr><th scope="row">${teamBadge(side.team,branding)}</th><td>${esc(base.country)}</td><td data-sort-value="${base.baselineMotivation}"><strong>${base.baselineMotivation}</strong></td><td>${esc(objectives[base.seasonObjective]||base.seasonObjective)}</td><td data-sort-value="${base.clubPressure}">${base.clubPressure}</td><td>${esc(base.experienceLevel)}</td></tr>`}).join("");
-    return `<nav class="reading-back champions-reading-back"><a href="champions-league.html">← Champions League</a><span>Overview 36 squadre</span></nav><section class="champions-motivation-overview"><header><p class="eyebrow">UEFA Champions League 2026/27</p><h1>Motivation Index</h1><p>Baseline stagionale separata dai punteggi dinamici delle singole partite.</p></header><div class="champions-motivation-overview-meta"><strong>${data.teams.length}</strong><span>squadre</span><a href="output/champions-motivation-md01-report.md">Report MD1 ↗</a></div><div class="champions-motivation-table-wrap"><table id="motivation-table"><thead><tr><th>Squadra</th><th>Paese</th><th><button type="button" data-sort="2">Motivation baseline ↕</button></th><th>Obiettivo</th><th><button type="button" data-sort="4">Pressione ↕</button></th><th>Esperienza Champions</th></tr></thead><tbody>${rows}</tbody></table></div><aside><strong>Trasparenza</strong><p>${esc(data.warning)}</p></aside></section>`;
-  }
-
   function surpriseFactorSignal(entry){
     if(!entry)return `<div class="reading-hero-signal reading-hero-surprise"><span>Fattore sorpresa</span><strong>N/D</strong><small>Dato non disponibile</small></div>`;
     const info="Misura quanto è probabile che la partita si discosti dal risultato più atteso, considerando mercato, forma, campo, assenze, matchup tattico e motivazione.";
@@ -427,13 +421,6 @@ export function createPage(deps){
     const attackByTeam=new Map(attackChannels.profiles.map(profile=>[profile.team,profile]));
     const branding=new Map(data.teamBranding.map(team=>[team.team,team]));
     const motivationByFixture=new Map(motivation.fixtures.map(fixture=>[fixture.matchId,fixture]));
-    const baselineByTeam=new Map(motivation.baselines.map(team=>[team.team,team]));
-    motivation.teams.forEach(side=>side.baseline=baselineByTeam.get(side.team));
-    if((location.pathname||"").endsWith("/champions-2026-27/motivazione.html")){
-      document.querySelector("#app").innerHTML=motivationOverview(motivation,branding);
-      document.querySelectorAll("[data-sort]").forEach(button=>button.addEventListener("click",()=>{const body=document.querySelector("#motivation-table tbody"),index=Number(button.dataset.sort),descending=button.dataset.direction!=="desc";button.dataset.direction=descending?"desc":"asc";[...body.rows].sort((a,b)=>(Number(a.cells[index].dataset.sortValue)||0)-(Number(b.cells[index].dataset.sortValue)||0)).sort((a,b)=>(descending?-1:1)*((Number(a.cells[index].dataset.sortValue)||0)-(Number(b.cells[index].dataset.sortValue)||0))).forEach(row=>body.append(row))}));
-      return;
-    }
     const requestedCalendarFixture=requestedMatchId?data.fixtures.find(fixture=>fixture.id===requestedMatchId):null;
     const [md2Pilot,md2Integration,md2Schedina,md2RefereeHistory]=requestedCalendarFixture?.matchday===2?await Promise.all([load("champions-pilot-predictions-md02-2026-27.json"),load("champions-md02-integration-2026-27.json"),load("schedina-champions-md02.json"),load("champions-referee-history-2026-10-13.json")]):[null,null,null,null];
     const activePilot=md2Pilot||pilot;
@@ -449,7 +436,7 @@ export function createPage(deps){
       let finishReading=null;
       if(isReadingPilot('champions',requestedMatchId,location.search)&&typeof document.createElement==='function'){
         try{
-          const [{adaptChampionsReading},{mountReadingShell,prepareReadingShell}]=await Promise.all([import('./reading-detail/champions-adapter.mjs'),import('./reading-detail/shell.mjs?v=20261018-complete-player-lists-v1')]);
+          const [{adaptChampionsReading},{mountReadingShell,prepareReadingShell}]=await Promise.all([import('./reading-detail/champions-adapter.mjs'),import('./reading-detail/shell.mjs?v=20261018-referee-compact-v1')]);
           const analysis={match:requestedCalendarFixture,matches:data.fixtures,lineups:md2MarketEntry?.lineups,availability:md2MarketEntry?.availability,referee:refereeProfile,styles:styleProfiles,attackChannels,history:h2h.fixtures.find(f=>f.fixtureId===requestedMatchId),squads,teamProfiles:activePilot.profiles};
           const model=adaptChampionsReading({fixture:requestedFixture,calendarFixture:requestedCalendarFixture,branding,publishedSelections:md2SchedinaFixture?.selections||[],analysis});
           const prepared=await prepareReadingShell(model);
@@ -510,7 +497,7 @@ export function createPage(deps){
         <p class="eyebrow">UEFA Champions League 2026/27</p>
         <h1 id="champions-title">Tutte le notti<br>d’Europa.</h1>
         <p class="lead">Il calendario ufficiale della fase campionato, completo di tutte le partite e di tutte le squadre. <span data-champions-selection-copy>In primo piano la ${matchdayLabel(defaultMatchday)}.</span> Apri le giornate precedenti per consultare le partite, i risultati disponibili e le letture.</p>
-        <div class="champions-hero-stats" aria-label="Riepilogo calendario"><div><strong>${data.summary.fixtures}</strong><span>partite</span></div><div><strong>${data.summary.teams}</strong><span>squadre</span></div><div><strong>${data.summary.matchdays}</strong><span>giornate</span></div></div><a class="champions-motivation-cta" href="champions-2026-27/motivazione.html">Motivation Index · 36 squadre →</a>
+        <div class="champions-hero-stats" aria-label="Riepilogo calendario"><div><strong>${data.summary.fixtures}</strong><span>partite</span></div><div><strong>${data.summary.teams}</strong><span>squadre</span></div><div><strong>${data.summary.matchdays}</strong><span>giornate</span></div></div>
         <div class="champions-orbit" aria-hidden="true"><span>★</span></div>
       </section>
       ${teamLogoDirectory(data.teamBranding,squads)}${roundTable(data)}

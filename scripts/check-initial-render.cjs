@@ -3,7 +3,7 @@ const {chromium}=require('C:/Users/utente/.cache/codex-runtimes/codex-primary-ru
 const root=path.resolve(__dirname,'..'),out=path.join(root,'output/reports/initial-render');fs.mkdirSync(out,{recursive:true});
 // Pin the pre-fix presentation while keeping concurrent statistics and panels current.
 const baseline=process.env.BASELINE_REF||'335df38d^';
-const publicFiles=[...fs.readdirSync(root).filter(f=>f.endsWith('.html')),...fs.readdirSync(path.join(root,'statistiche-squadra')).filter(f=>f.endsWith('.html')).map(f=>'statistiche-squadra/'+f),'champions-2026-27/motivazione.html'];
+const publicFiles=[...fs.readdirSync(root).filter(f=>f.endsWith('.html')),...fs.readdirSync(path.join(root,'statistiche-squadra')).filter(f=>f.endsWith('.html')).map(f=>'statistiche-squadra/'+f)];
 const old=new Map();for(const f of [...publicFiles,'js/core/app.js','js/pages/readings.js','js/pages/champions.js'])old.set(f,cp.execFileSync('git',['show',baseline+':'+f],{cwd:root,maxBuffer:10e6}));
 let legacyShell=fs.readFileSync(path.join(root,'js/pages/reading-detail/shell.mjs'),'utf8').replace('options.prepared||await prepareReadingShell(model)','await prepareReadingShell(model)');
 legacyShell=legacyShell.replace("  const {evidence,resultsHref,refereeHistory}=",`  if(!document.querySelector('link[data-reading-detail-css]')){const sheet=document.createElement('link');sheet.rel='stylesheet';sheet.href=new URL('../../../css/reading-detail.css',import.meta.url).href;sheet.dataset.readingDetailCss='';await new Promise((resolve,reject)=>{sheet.onload=resolve;sheet.onerror=reject;document.head.append(sheet)})}

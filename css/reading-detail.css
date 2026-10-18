@@ -352,7 +352,6 @@ body[data-reading-detail-theme="champions"] .rf-dashboard{--rf-blue:#9ac5ee;--rf
 .rf-bar i{display:block;height:100%;border-radius:3px;background:var(--rf-color)}
 .rf-yellow{--rf-color:var(--rf-yellow)}.rf-red{--rf-color:var(--rf-red)}.rf-green{--rf-color:var(--rf-green)}.rf-blue{--rf-color:var(--rf-blue)}
 .rf-lower{display:grid;grid-template-columns:minmax(0,65fr) minmax(0,35fr);gap:12px;align-items:start}
-.rf-side{display:grid;gap:10px;min-width:0}
 .rf-dashboard .rf-history{padding:17px 15px;align-self:stretch}
 .rf-dashboard .rf-history h4{margin:0 0 15px}
 .rf-table-scroll{max-width:100%;overflow-x:auto;overscroll-behavior-x:contain}
@@ -373,10 +372,6 @@ body[data-reading-detail-theme="champions"] .rf-dashboard{--rf-blue:#9ac5ee;--rf
 .rf-averages dd{font-size:22px;line-height:1.25;font-weight:800}
 .rf-averages dt{font-size:8px;letter-spacing:.04em;text-transform:uppercase;color:var(--rd-muted);margin:4px 0}
 .rf-averages small{display:block;font-size:8px;line-height:1.5}
-.rf-dashboard .rf-trend{padding:16px 18px}
-.rf-trend h4{display:flex;align-items:center;gap:9px;font-size:10px;letter-spacing:.03em;margin-bottom:7px}
-.rf-trend svg{width:18px;height:18px;flex-shrink:0}
-.rf-dashboard .rf-trend p{font-size:11px;line-height:1.65;margin-top:5px}
 .rf-dashboard .rf-note{font-size:9px;line-height:1.6;color:var(--rd-muted);margin-top:11px}
 .rf-dashboard .rf-empty{color:var(--rd-muted);padding:24px 0}
 .rf-dashboard .rf-historical{margin-top:12px}
@@ -384,8 +379,8 @@ body[data-reading-detail-theme="champions"] .rf-dashboard{--rf-blue:#9ac5ee;--rf
 .rf-historical .reading-referee-stats article{padding:0!important;border:0!important;background:none!important;box-shadow:none!important}
 .rf-historical .reading-referee-stats strong{display:block;color:var(--rd-ink)!important;font-size:18px!important}
 .rf-historical .reading-referee-stats :is(span,small){color:var(--rd-muted)!important;font-size:10px!important}
-@media(max-width:1000px){.rf-dashboard .rf-designation{padding:20px;gap:20px}.rf-identity{grid-template-columns:90px minmax(0,1fr);gap:15px}.rf-identity>svg{width:90px}.rf-dashboard .rf-identity h3{font-size:27px}.rf-crew{padding-left:20px}.rf-crew>div{grid-template-columns:80px minmax(0,1fr)}.rf-crew dd{font-size:12px}.rf-lower{grid-template-columns:1fr}.rf-side{grid-template-columns:1fr 1fr}.rf-match{min-width:220px}}
-@media(max-width:600px){.rf-dashboard .rf-designation{grid-template-columns:1fr;padding:20px;gap:18px}.rf-identity{grid-template-columns:70px minmax(0,1fr);gap:15px}.rf-identity>svg{width:70px;height:85px}.rf-dashboard .rf-identity h3{font-size:25px}.rf-crew{border-left:0;border-top:1px solid var(--rd-line);padding:16px 0 0;gap:10px}.rf-crew>div{grid-template-columns:95px minmax(0,1fr)}.rf-dashboard .rf-indicators{grid-template-columns:repeat(2,minmax(0,1fr));padding:0}.rf-indicator{padding:18px}.rf-indicator:nth-child(3){border-left:0}.rf-indicator:nth-child(n+3){border-top:1px solid var(--rd-line)}.rf-indicator strong{font-size:28px}.rf-indicator>span{font-size:9px}.rf-side{grid-template-columns:1fr}.rf-dashboard .rf-history{padding:17px 12px}.rf-historical .reading-referee-stats{grid-template-columns:repeat(2,minmax(0,1fr))!important}.rf-averages dd{font-size:23px}}
+@media(max-width:1000px){.rf-dashboard .rf-designation{padding:20px;gap:20px}.rf-identity{grid-template-columns:90px minmax(0,1fr);gap:15px}.rf-identity>svg{width:90px}.rf-dashboard .rf-identity h3{font-size:27px}.rf-crew{padding-left:20px}.rf-crew>div{grid-template-columns:80px minmax(0,1fr)}.rf-crew dd{font-size:12px}.rf-lower{grid-template-columns:1fr}.rf-match{min-width:220px}}
+@media(max-width:600px){.rf-dashboard .rf-designation{grid-template-columns:1fr;padding:20px;gap:18px}.rf-identity{grid-template-columns:70px minmax(0,1fr);gap:15px}.rf-identity>svg{width:70px;height:85px}.rf-dashboard .rf-identity h3{font-size:25px}.rf-crew{border-left:0;border-top:1px solid var(--rd-line);padding:16px 0 0;gap:10px}.rf-crew>div{grid-template-columns:95px minmax(0,1fr)}.rf-dashboard .rf-indicators{grid-template-columns:repeat(2,minmax(0,1fr));padding:0}.rf-indicator{padding:18px}.rf-indicator:nth-child(3){border-left:0}.rf-indicator:nth-child(n+3){border-top:1px solid var(--rd-line)}.rf-indicator strong{font-size:28px}.rf-indicator>span{font-size:9px}.rf-dashboard .rf-history{padding:17px 12px}.rf-historical .reading-referee-stats{grid-template-columns:repeat(2,minmax(0,1fr))!important}.rf-averages dd{font-size:23px}}
 /* Neutralize legacy designation rules only inside the shared dashboard. */
 .rd-shell .rf-dashboard dl>div{padding:0;border:0;border-radius:0;background:none}
 .rd-shell .rf-dashboard .rf-crew{grid-template-columns:minmax(0,1fr);margin:0}
@@ -402,7 +397,6 @@ body[data-reading-detail-theme="champions"] .rf-dashboard{--rf-blue:#9ac5ee;--rf
 .rd-shell .rf-dashboard table{font-size:12px;min-width:600px}
 .rd-shell .rf-dashboard td:nth-child(2){font-size:10px}
 .rd-shell .rf-dashboard .rf-match b{font-size:12px}
-.rd-shell .rf-dashboard .rf-trend p{font-size:12px}
 .rd-shell .rf-dashboard .rf-averages :is(dt,small){font-size:9px}
 .rd-shell .rf-dashboard thead{background:transparent!important}
 /* Lineup state belongs to each existing player row, including when filters are off. */

@@ -1,9 +1,9 @@
 import {installScenario} from './scenario.mjs?v=20261018-reading-clean-copy-v1';
-import {loadEvidence,readArtifact} from './evidence.mjs?v=20261018-complete-player-lists-v1';
-import {installPeople} from './people.mjs?v=20261018-complete-player-lists-v1';
+import {loadEvidence,readArtifact} from './evidence.mjs?v=20261018-bench-forecasts-v1';
+import {installPeople} from './people.mjs?v=20261018-bench-forecasts-v1';
 import {installTacticsHistory} from './tactics-history.mjs?v=20261018-compact-comparison-v1';
 import {loadHistoryRows} from './head-to-head.mjs?v=20261018-h2h-timeline-v1';
-import {mountRefereeHistory} from './referee-history.mjs?v=20261018-referee-dashboard-v1';
+import {mountRefereeHistory} from './referee-history.mjs?v=20261018-referee-compact-v1';
 const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const definitions=[
   ['scenario','Scenario','01','M4 16l5-5 4 3 7-10'],
@@ -56,7 +56,7 @@ function heroMarkup(model){
   const date=model.fixture.date?new Intl.DateTimeFormat('it-IT',{day:'numeric',month:'long',year:'numeric',timeZone:'Europe/Rome'}).format(new Date(model.fixture.date+'T12:00:00Z')):'Data N/D';
   const side=(team,position)=>`<div class="rd-team rd-team--${position}">${team.logo?`<img src="${escape(team.logo)}" alt="" width="100" height="100">`:''}<span class="rd-side">${position==='home'?'Casa':'Ospite'}</span><span class="rd-team-name">${escape(team.name)}</span></div>`;
   const score=model.fixture.status==='finished'&&model.fixture.score?`<span class="rd-result">Finale <b>${escape(model.fixture.score.home)} — ${escape(model.fixture.score.away)}</b></span>`:'';
-  return `<header class="rd-hero" id="lettura-testata"><div class="rd-overline"><span class="rd-edition">${escape(label)} <i aria-hidden="true">/</i> Giornata ${escape(model.fixture.matchday??'N/D')}</span><span class="rd-status">${model.fixture.status==='finished'?'Partita conclusa':['live','in_progress'].includes(model.fixture.status)?'In corso':model.fixture.status==='postponed'?'Rinviata':model.fixture.status==='cancelled'?'Annullata':'Analisi prepartita'}</span></div><div class="rd-match-meta"><time datetime="${escape(model.fixture.date||'')}">${escape(date)}</time><span>${escape(model.fixture.kickoff||'Orario N/D')}</span>${model.fixture.stadium?`<span>${escape(model.fixture.stadium)}</span>`:''}</div><h1 class="rd-accessible-title">${escape(model.home.name)} – ${escape(model.away.name)}</h1><div class="rd-matchup">${side(model.home,'home')}<div class="rd-versus">${score||'<span class="rd-vs">VS</span>'}</div>${side(model.away,'away')}</div><div class="rd-editorial-note"><span>LA LETTURA</span><p>Numeri, protagonisti e chiavi della partita.</p></div></header>`;
+  return `<header class="rd-hero" id="lettura-testata"><div class="rd-overline"><span class="rd-edition">${escape(label)} <i aria-hidden="true">/</i> Giornata ${escape(model.fixture.matchday??'N/D')}</span><span class="rd-status">${model.fixture.status==='finished'?'Partita conclusa':['live','in_progress'].includes(model.fixture.status)?'In corso':model.fixture.status==='postponed'?'Rinviata':model.fixture.status==='cancelled'?'Annullata':'Analisi prepartita'}</span></div><div class="rd-match-meta"><time datetime="${escape(model.fixture.date||'')}">${escape(date)}</time><span>${escape(model.fixture.kickoff||'Orario N/D')}</span>${model.fixture.stadium?`<span>${escape(model.fixture.stadium)}</span>`:''}</div><h1 class="rd-accessible-title">${escape(model.home.name)} – ${escape(model.away.name)}</h1><div class="rd-matchup">${side(model.home,'home')}<div class="rd-versus">${score||'<span class="rd-vs">VS</span>'}</div>${side(model.away,'away')}</div><div class="rd-editorial-note"><span>LA LETTURA</span></div></header>`;
 }
 
 export async function prepareReadingShell(model){
