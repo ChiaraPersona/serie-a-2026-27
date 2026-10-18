@@ -11,6 +11,11 @@ const server=http.createServer((req,res)=>{const f=path.resolve(root,'.'+new URL
  const fixtures=[['serie-a','juventus-lazio-2026-27-md-07'],['champions','ucl-2026-27-md02-05'],['champions','ucl-2026-27-md02-01']];
  for(const [competition,id] of fixtures)for(const width of [1440,901,768,390,320]){
   await page.setViewportSize({width,height:1100});await page.goto(`http://127.0.0.1:${server.address().port}/${competition==='serie-a'?'lettura':'champions-league'}.html?match=${id}`);await page.waitForSelector('.rf-dashboard');
+  assert.equal(await page.locator('.prediction-v2-discipline,.prediction-v2-discipline-teams').count(),0);
+  assert.equal(await page.getByText('Disciplina e ammoniti',{exact:true}).count(),0);
+  assert.equal(await page.locator('.rd-nav a[href="#lettura-disciplina"]').count(),1);
+  if(competition==='serie-a')assert.equal(await page.locator('#lettura-disciplina .prediction-booked-panel').count(),1);
+  await page.locator('.rd-nav a[href="#lettura-disciplina"]').click();assert.equal(await page.locator('#lettura-disciplina').count(),1);
   const panel=page.locator('.rf-dashboard');assert.equal(await panel.count(),1);assert.equal(await page.locator('.reading-referee-assignment').count(),1);
   assert.equal(await panel.locator('.rf-indicator').count(),4);assert.equal(await panel.locator('details').count(),0);
   assert.equal(await panel.locator('a').count(),0);

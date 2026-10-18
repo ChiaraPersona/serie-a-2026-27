@@ -45,7 +45,7 @@ function classify(node){
   if(node.matches('.prediction-v2-numbers,.prediction-v2-why,.champions-reading-volume'))return 'scenario';
   if(node.matches('.reading-info-grid'))return 'formazioni';
   if(node.matches('.prediction-v2-shooters,.prediction-v2-outsiders'))return 'giocatori';
-  if(node.matches('.prediction-v2-discipline,.reading-referee-assignment'))return 'disciplina';
+  if(node.matches('.prediction-booked-panel,.champions-player-predictions:has(.prediction-booked-panel),.reading-referee-assignment'))return 'disciplina';
   if(node.matches('.reading-tactical-baseline,.reading-pilot-evidence'))return 'tattica';
   if(node.matches('.reading-h2h-section'))return 'storico';
   return null;
