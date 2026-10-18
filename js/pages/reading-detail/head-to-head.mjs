@@ -21,7 +21,8 @@ export function selectHistoryRows(model,history,archives=null){
   }
  }
  const seen=new Set();
- return candidates.filter(m=>m.date&&m.date.slice(0,10)<model.fixture.date).sort((a,b)=>b.date.localeCompare(a.date)).filter(m=>{const id=key(m);if(seen.has(id))return false;seen.add(id);return true;}).slice(0,5).map(raw=>({id:key(raw),date:raw.date.slice(0,10),competition:raw.competition||'Competizione N/D',home:name(raw.homeTeam),away:name(raw.awayTeam),score:raw.score||raw.scoreTotal||raw.score90,raw}));
+ // Undated future fixtures retain their curated historical archive, without inventing a kickoff date.
+ return candidates.filter(m=>m.date&&(!model.fixture.date||m.date.slice(0,10)<model.fixture.date)).sort((a,b)=>b.date.localeCompare(a.date)).filter(m=>{const id=key(m);if(seen.has(id))return false;seen.add(id);return true;}).slice(0,5).map(raw=>({id:key(raw),date:raw.date.slice(0,10),competition:raw.competition||'Competizione N/D',home:name(raw.homeTeam),away:name(raw.awayTeam),score:raw.score||raw.scoreTotal||raw.score90,raw}));
 }
 
 let championsArchives;

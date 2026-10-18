@@ -8,6 +8,7 @@ const second={...first,providerFixtureId:'TEST_B',date:'2026-09-01',goals:[{play
 const history={previousMeetings:[second,first,{...first,date:'2026-10-19'},first]};
 const original=JSON.stringify(history),rows=selectHistoryRows(model,history),html=historyMarkup(rows);
 assert.deepEqual(rows.map(r=>r.id),['TEST_A','TEST_B']);assert.equal(JSON.stringify(history),original);
+assert.equal(selectHistoryRows({...model,fixture:{date:null}},{previousMeetings:[first,second]}).length,2);
 assert(!html.includes(' open'));assert(!html.includes('role="tab"'));assert(!html.includes('Uso nel modello'));assert(!html.includes('https://'));
 assert(html.includes('Squadra completa di casa'));assert(html.includes('45+2′'));assert(html.includes('0′'));
 assert.equal(cardKind({type:'red-card'}),'dismissal');assert.equal(cardKind({type:'direct-red'}),'direct-red');
@@ -23,7 +24,8 @@ const calendar=read('data/normalized/matches.json');
 for(const f of read('data/generated/head-to-head/first-leg-2026-27.json').fixtures){
  const date=calendar.find(m=>m.id===f.fixtureId)?.date;
  const records=selectHistoryRows({...model,fixture:{date}},f);assert(records.length<=5);assert.equal(records.length,new Set(records.map(r=>r.id)).size);
- assert(records.every(r=>r.date<date));assert.deepEqual(records.map(r=>r.date),records.map(r=>r.date).sort().reverse());
+ assert.equal(records.length,Math.min(5,f.previousMeetings.length));
+ assert(!date||records.every(r=>r.date<date));assert.deepEqual(records.map(r=>r.date),records.map(r=>r.date).sort().reverse());
  for(const r of records)assert.equal(r.raw,f.previousMeetings.find(m=>String(m.providerFixtureId)===r.id));
 }
 console.log('OK H2H: ultimi cinque, ID/eventi, cronologia, nomi completi, null/zero, minuti, espulsioni, chiusura iniziale e archivi immutati');
