@@ -56,3 +56,17 @@ body[data-page="player-stats"] .global-leader-player{color:var(--glass-text)}
 .compare-replacement{position:absolute;right:48px;top:50%;transform:translateY(-50%);display:flex;gap:4px;padding:4px;border:1px solid var(--glass-border,var(--line));border-radius:10px;background:#fafaf8;box-shadow:0 4px 14px #00000012;z-index:5}
 .compare-replacement button{width:32px;height:32px;border-radius:7px;border:1px solid var(--glass-border,var(--line));background:rgba(40,58,59,.04);color:var(--glass-text);font:inherit;font-weight:700;cursor:pointer}
 .compare-replacement button:is(:hover,:focus-visible){background:#e4ecee;outline:2px solid #325e83;outline-offset:1px}
+
+/* Shared approved portraits; attribution is a legally required credit. */
+.player-photo img{object-fit:contain;background:rgba(40,58,59,.035)}
+.player-photo-credit{position:relative;color:var(--glass-text);text-align:left;font-size:10px;line-height:1.5}
+.player-photo-credit summary{cursor:pointer;white-space:nowrap;list-style:none;font-size:9px}
+.player-photo-credit summary::-webkit-details-marker{display:none}
+.player-photo-credit-body{display:block;min-width:0;max-width:210px;white-space:normal;overflow-wrap:anywhere}
+.player-photo-credit-body small{display:block;font-size:9px;font-weight:400;color:var(--muted)}
+.player-photo-credit a{color:inherit;text-decoration:underline}
+.player-photo-credit[open] .player-photo-credit-body{position:absolute;top:100%;left:0;width:min(210px,70vw);padding:10px;border:1px solid var(--glass-border,var(--line));border-radius:10px;background:#fafaf8;box-shadow:0 5px 18px #00000020;z-index:12}
+.player-comparator-head article:last-child .player-photo-credit-body{left:auto;right:0}
+.roster-player-identity{display:flex;gap:10px;align-items:center}
+.squad-table .roster-player-identity .player-open{min-width:0;flex:1}
+.team-player-comparator .player-photo{margin:0 auto 10px}

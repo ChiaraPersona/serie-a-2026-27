@@ -6,14 +6,15 @@
 - photographs: 207
 - associatedPlayers: 152
 - missingPlayers: 381
-- verifiedPhotos: 0
-- unverifiedPhotos: 207
+- verifiedPhotos: 28
+- verifiedArchivePhotos: 12
+- unverifiedPhotos: 167
 - ambiguousPhotos: 0
 - unassociatedPhotos: 10
 
 Conteggio sulle rose correnti delle 20 squadre in data/teams; data/normalized/players.json è vuoto. Avatar e screenshot esclusi dal conteggio fotografie. Dimensioni, byte, associazioni, licenze dichiarate e percorsi completi sono in inventory.json. I file originali restano al loro posto; nessuna copia o conversione.
 
-Le licenze Wikimedia archiviate non equivalgono a una revisione dei diritti per questo sito: le foto restano bloccate fino a verifica documentata. Nessuna richiesta a Transfermarkt, download o hotlink. I riferimenti Transfermarkt sono quelli già presenti nel database; i mancanti restano null.
+Le licenze Wikimedia archiviate non equivalgono automaticamente ad autorizzazione. La revisione per file e gli esiti sono in RIGHTS-REVIEW.md e rights-audit.json; soltanto le approvazioni delle rose correnti entrano nel registro pubblico. I file VERIFIED_ARCHIVE_ONLY restano esclusi dalle pagine operative. Nessuna richiesta a Transfermarkt, download o hotlink. I riferimenti Transfermarkt sono quelli già presenti nel database; i mancanti restano null.
 
 ## Mancanti per squadra
 
