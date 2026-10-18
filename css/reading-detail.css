@@ -317,3 +317,11 @@ body[data-reading-detail-theme] #app:has(.rd-slip-trigger){padding-bottom:110px!
 
 .rd-shell .rd-form-chart{display:block;width:100%;height:auto;max-height:200px}
 .rd-shell .rd-recent-form{margin-top:28px}
+
+/* Discipline cards retain only the historical yellow-card baseline. */
+.rd-shell .prediction-v2-discipline-teams>article>dl{grid-template-columns:minmax(0,1fr)}
+
+/* A theme-aware green keeps the new home foul bar readable on both canvases. */
+body[data-reading-detail-theme]{--rd-fouls-home:#126451}
+body[data-reading-detail-theme="champions"]{--rd-fouls-home:#78d6ac}
+.rd-shell .rd-diverging-row[data-statistic="fouls"]{--rd-home:var(--rd-fouls-home)}

@@ -37,8 +37,24 @@ for(const [key,[slug,fixture]] of Object.entries(refs)){
   matches[1].verification=[source('https://ofstats.com/matches/view/ascoli-benevento-2026-09-05','42 minute second yellow Antonio Prisco; retained original one dismissal, no duplicated red')];
   discrepancies.push('Ascoli–Benevento: gialli 6 Calciotel / 7 OFStats / 8 OddAlerts; falli 18 OFStats/Statz contro 19 AIPredict/ScanGoal. Esclusi gialli e falli. Espulsione per seconda ammonizione Prisco verificata, conteggiata una volta; OFStats/OddAlerts aggregano anche il secondo giallo nel rosso. Cremonese–Pisa: gialli 3 Calciotel / 4 OFStats / 5 OddAlerts; espulsioni 2 Calciotel / 3 altri: valori originari conservati ma esclusi dalle medie, classificazione non risolta. Sampdoria–Catanzaro: 7 gialli e una espulsione confermati OddAlerts; tipologia espulsione non verificata.');
  }
+ if(key==='calzavara'){
+  const cup=matches.find(m=>m.date==='2026-09-02');
+  Object.assign(cup,{yellowCards:4,dismissals:0,secondYellowCards:0,directRedCards:0,fouls:null,disputedMetrics:['fouls'],verification:[source('https://ofstats.com/matches/view/sassuolo-frosinone-2026-09-02','Yellow 2+2, red 0+0; fouls 11+19'),source('https://nostrabet.com/en/tips/frosinone-sassuolo/','Yellow 2+2, red 0+0; fouls 12+19')]});
+  discrepancies[0]='Sassuolo–Frosinone: 4 gialli e 0 espulsioni verificati sui tabellini; falli 30 OFStats / 31 AIPredict e Nostrabet, esclusi. Risultato 1–1 prima dei rigori (4–3). Cagliari–Arezzo: falli 25 AIPredict / 26 OFStats, esclusi; rosso a Pisacane allenatore escluso dai cartellini giocatori. Last5Games riepilogo Serie B 11 gialli contro 10 nelle gare verificate: non usato.';
+ }
+ if(key==='ayroldi'){
+  const crem=matches.find(m=>m.date==='2026-05-10');
+  const ascoli=matches.find(m=>m.date==='2026-09-05');
+  ascoli.disputedMetrics=['fouls'];
+  ascoli.verification.push(source('https://www.skysports.com/football/ascoli-vs-benevento/6116012825407218232','Six ordinary yellows: Prisco, Rizzo, Curado, Beruatto, Maita, Kouan; Prisco second yellow separate'));
+  Object.assign(crem,{directRedCards:1,secondYellowCards:1,disputedMetrics:[],verification:[source('https://www.skysports.com/football/cremonese-vs-pisa/530405','Event log: yellow Bozhinov 16, second yellow 23, yellow Calabresi 49, direct red Loyola 57, yellow Hojholt 89'),source('https://unionstat.com/events/kremoneze-piza-10-05-2026/','Same event sequence: 3 yellows excluding second yellow; two dismissals')]});
+  discrepancies=['Ascoli–Benevento: gialli 6/7/8 nei riepiloghi, risolti dalla cronologia Sky: sei ammonizioni ordinarie e una seconda ammonizione separata. Falli 18/19 non risolti, esclusi. Cremonese–Pisa: riepiloghi 3/4/5 gialli e 2/3 rossi, risolti dalla cronologia Sky e Unionstat: 3 gialli ordinari, una seconda ammonizione e un rosso diretto. Conservati i totali originari. Sampdoria–Catanzaro: 7 gialli e una espulsione confermati OddAlerts; tipologia non ancora verificata.'];
+  matches[0].directRedCards=1;matches[0].secondYellowCards=0;
+  matches[0].verification=[source('https://www.skysports.com/football/sampdoria-vs-catanzaro/live/573945','Oliver Abildgaard red card, minute 64'),source('https://www.fotmob.com/players/650613/oliver-abildgaard','No yellow cards; one direct dismissal in this season, Catanzaro match')];
+  discrepancies[0]=discrepancies[0].replace('tipologia non ancora verificata.','rosso diretto Abildgaard al 64, verificato con cronologia e profilo giocatore (nessuna ammonizione).');
+ }
  for(const m of matches){
-  m.verification=[...(m.verification||[]),source(url(slug,'of'),'Match history and fouls where available'),source(url(slug,'ai'),'Cross-check; discrepancies retained separately')];
+  m.verification=[...(m.verification||[]),source(key==='calzavara'?'https://ofstats.com/matches/referee/cesena-catanzaro-2026-03-21':url(slug,'of'),'Match history and fouls where available'),source(key==='calzavara'?'https://aipredict.io/football/referee/andrea-calzavara/':url(slug,'ai'),'Cross-check; discrepancies retained separately')];
   m.missingMetrics=['yellowCards','dismissals','directRedCards','secondYellowCards','fouls'].filter(k=>m[k]===null||m.disputedMetrics?.includes(k));
  }
  analyses.push({fixtureId:fixture+'-2026-27-md-07',refereeSlug:slug,matches,discrepancies,seasonCoverage:'Only individually verified available 2026/27 games before fixture; completeness across all competitions not certified',retrievedAt:'2026-10-18'});
