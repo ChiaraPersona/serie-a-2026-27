@@ -8,13 +8,7 @@ const index = read("data/teams/index.json");
 const roleReport = read("data/generated/team-pages/detailed-role-report.json");
 const fantasyQuotations = read("data/sources/fantacalcio-quotations-2026-27.json");
 const activeFantasyPlayerKeys = new Set(fantasyQuotations.players.filter(player => player.status === "active").map(player => `${player.teamId}:${player.playerId}`));
-const wikimediaPhotos = read("data/sources/team-pages/wikimedia-player-photos.json");
-const wikimediaPhotoByPlayer = new Map(wikimediaPhotos.entries.map(entry => [`${entry.teamId}:${entry.playerId}`, entry]));
-const playerPlaceholder = "assets/images/players/player-placeholder.png";
-assert.ok(fs.existsSync(path.join(root, playerPlaceholder)), "Immagine fallback calciatore assente");
 const teamSquadsRenderer = fs.readFileSync(path.join(root, "js/team-squads.js"), "utf8");
-assert.ok(teamSquadsRenderer.includes(playerPlaceholder), "Fallback calciatore non collegato al renderer");
-assert.ok(!teamSquadsRenderer.includes("<figcaption>Foto:"), "Il testo della fonte foto non deve essere mostrato");
 assert.ok(teamSquadsRenderer.includes("const lineup = team.probableLineup || team.projectedLineup;"), "La formazione ufficiale deve avere precedenza sulla proiezione editoriale");
 let totalPlayers = 0;
 let coveredPlayers = 0;
@@ -61,18 +55,6 @@ for (const summary of index.teams) {
 
   for (const player of generated.players) {
     assert.ok(fs.existsSync(path.join(root, `data/players/${summary.id}/${player.id}.json`)), `${summary.id}/${player.id}: scheda assente`);
-    const wikimediaPhoto = wikimediaPhotoByPlayer.get(`${summary.id}:${player.id}`);
-    if (wikimediaPhoto) {
-      const builtPlayer = team.squad.find(item => item.id === player.id);
-      assert.strictEqual(builtPlayer.photoAttribution?.provider, "Wikimedia Commons", `${summary.id}/${player.id}: attribuzione Wikimedia assente`);
-      assert.ok(wikimediaPhoto.descriptionUrl && wikimediaPhoto.license && wikimediaPhoto.artist, `${summary.id}/${player.id}: metadati Wikimedia incompleti`);
-      if (wikimediaPhoto.localPath) {
-        assert.ok(fs.existsSync(path.join(root, ...wikimediaPhoto.localPath.split("/"))), `${summary.id}/${player.id}: file Wikimedia locale assente`);
-        assert.strictEqual(builtPlayer.photo, `../${wikimediaPhoto.localPath}`, `${summary.id}/${player.id}: percorso foto locale non propagato`);
-      } else {
-        assert.strictEqual(builtPlayer.photo, wikimediaPhoto.thumbnailUrl, `${summary.id}/${player.id}: fallback Wikimedia non propagato`);
-      }
-    }
     if (player.previousSeason.entries.length) coveredPlayers++;
     for (const entry of player.previousSeason.entries) {
       assert.ok(entry.competition && entry.team, `${summary.id}/${player.id}: squadra o competizione assente`);
@@ -88,6 +70,4 @@ assert.strictEqual(index.teams.filter(team => team.playerCount > 0).length, 20, 
 assert.ok(coveredPlayers / totalPlayers >= 0.7, `Copertura individuale insufficiente: ${coveredPlayers}/${totalPlayers}`);
 assert.strictEqual(roleReport.teams.length, 19, "Report ruoli specifici incompleto");
 assert.ok(specificRoles / totalPlayers >= 0.65, `Copertura ruoli specifici insufficiente: ${specificRoles}/${totalPlayers}`);
-assert.strictEqual(wikimediaPhotos.summary.matchedPhotos, wikimediaPhotos.entries.length, "Conteggio foto Wikimedia errato");
-assert.strictEqual(wikimediaPhotos.summary.localPhotos, wikimediaPhotos.entries.filter(entry => entry.localPath).length, "Conteggio foto Wikimedia locali errato");
 console.log(`Tutte le squadre: 20/20, ${totalPlayers} calciatori, ${coveredPlayers} con statistiche 2025/26, ${specificRoles} ruoli tattici specifici fuori dal Milan.`);

@@ -41,9 +41,7 @@ const playerDetailsFile = path.join(root, "data/sources/team-pages/transfermarkt
 const playerDetails = fs.existsSync(playerDetailsFile) ? JSON.parse(fs.readFileSync(playerDetailsFile, "utf8")) : { players: [], retrievedAt: null };
 const playerDetailsByPlayer = new Map(playerDetails.players.map(player => [`${player.teamId}:${player.playerId}`, player]));
 const today = ["2026-08-03", marketValues.retrievedAt, playerDetails.retrievedAt, probableLineupSource.retrievedAt, officialLineupSource.retrievedAt].filter(Boolean).sort().at(-1);
-const wikimediaPhotosFile = path.join(root, "data/sources/team-pages/wikimedia-player-photos.json");
-const wikimediaPhotos = fs.existsSync(wikimediaPhotosFile) ? JSON.parse(fs.readFileSync(wikimediaPhotosFile, "utf8")) : { entries: [], retrievedAt: null };
-const wikimediaPhotoByPlayer = new Map(wikimediaPhotos.entries.map(photo => [`${photo.teamId}:${photo.playerId}`, photo]));
+const existingPlayerIds = new Map((fs.existsSync(path.join(root,"data/teams")) ? fs.readdirSync(path.join(root,"data/teams")) : []).filter(name=>name.endsWith(".json")).flatMap(name=>{const team=JSON.parse(fs.readFileSync(path.join(root,"data/teams",name),"utf8"));return (team.squad||[]).map(player=>[`${team.id}:${player.id}`,player.providerIds||{}]);}));
 const serieAStandings = read("data/normalized/standings-2025-26.json");
 const currentSeasonMatches = read("data/normalized/matches.json")
   .filter(match => match.competition === "serie-a" && match.season === "2026-27" && match.status === "finished" && match.score);
@@ -316,13 +314,6 @@ function buildTeam(team) {
   const squad = (generatedSquad?.players || []).map(player => {
     const market = marketValueByPlayer.get(`${team.id}:${player.id}`);
     const details = playerDetailsByPlayer.get(`${team.id}:${player.id}`);
-    const wikimediaPhoto = wikimediaPhotoByPlayer.get(`${team.id}:${player.id}`);
-    const photoSource = wikimediaPhoto ? {
-      provider: "Wikimedia Commons",
-      scope: `Foto di ${player.name}`,
-      url: wikimediaPhoto.descriptionUrl,
-      retrievedAt: wikimediaPhoto.retrievedAt
-    } : null;
     return {
       ...player,
       shirtNumber: shirtNumberByPlayer.get(`${team.id}:${player.id}`) ?? null,
@@ -334,22 +325,11 @@ function buildTeam(team) {
       birthplace: player.birthplace || details?.birthplace || null,
       atMilanSince: player.atMilanSince || details?.clubSince || null,
       arrivalDate: player.arrivalDate || details?.clubSince || null,
-      providerIds: { ...(player.providerIds || {}), transfermarkt: market?.transfermarktId || null, wikidata: wikimediaPhoto?.wikidataId || null },
+      providerIds: { ...(player.providerIds || {}), transfermarkt: market?.transfermarktId || null, wikidata: player.providerIds?.wikidata || existingPlayerIds.get(`${team.id}:${player.id}`)?.wikidata || null },
       marketValue: market ? { amountEur: market.marketValueEur, label: market.marketValueLabel, currency: "EUR", provider: marketValues.provider, retrievedAt: marketValues.retrievedAt, providerUpdatedAt: market.marketValueUpdatedAt || null, sourceUrl: market.profileUrl } : null,
-      photo: wikimediaPhoto ? (wikimediaPhoto.localPath ? `../${wikimediaPhoto.localPath}` : wikimediaPhoto.thumbnailUrl) : player.photo,
-      photoAttribution: wikimediaPhoto ? {
-        provider: "Wikimedia Commons",
-        pageUrl: wikimediaPhoto.descriptionUrl,
-        artist: wikimediaPhoto.artist,
-        credit: wikimediaPhoto.credit,
-        license: wikimediaPhoto.license,
-        licenseUrl: wikimediaPhoto.licenseUrl,
-        originalUrl: wikimediaPhoto.originalUrl
-      } : null,
       sources: [
         ...(player.sources || []),
-        ...(details ? [{ provider: "Transfermarkt", scope: `Anagrafica di ${player.name}`, url: details.profileUrl, retrievedAt: playerDetails.retrievedAt }] : []),
-        ...(photoSource ? [photoSource] : [])
+        ...(details ? [{ provider: "Transfermarkt", scope: `Anagrafica di ${player.name}`, url: details.profileUrl, retrievedAt: playerDetails.retrievedAt }] : [])
       ]
     };
   });
@@ -360,7 +340,6 @@ function buildTeam(team) {
     { provider: previousCompetition === "serie-a" ? "Classifica fornita dall'utente" : "ESPN", scope: `${competitionName} 2025/26 - classifica calcolata dai risultati`, url: null, retrievedAt: "2026-07-18" },
     ...(generatedSquad?.rosterSource ? [generatedSquad.rosterSource] : []),
     ...(marketValues.retrievedAt ? [{ provider: "Transfermarkt", scope: `Valori di mercato individuali 2026/27 (${squad.filter(player => player.marketValue).length}/${squad.length})`, url: marketValues.sourceUrl, retrievedAt: marketValues.retrievedAt }] : []),
-    ...(wikimediaPhotos.retrievedAt ? [{ provider: "Wikimedia Commons", scope: `Foto locali con attribuzione (${squad.filter(player => player.photoAttribution).length}/${squad.length})`, url: wikimediaPhotos.sourceUrl, retrievedAt: wikimediaPhotos.retrievedAt }] : []),
     ...teamDetails.sources.filter(source => source.provider !== "Calciomercato.com"),
     lineupSource,
     ...(officialLineup ? [probableLineupSource] : [])
@@ -561,5 +540,5 @@ const comparator = {
 };
 write("data/teams/player-leaderboards.json", { schemaVersion: 3, currentSeason: "2026/27", previousSeason: "2025/26", generatedAt: leaderboardGeneratedAt, periods, comparator });
 write("data/schemas/team.schema.json", { $schema: "https://json-schema.org/draft/2020-12/schema", title: "Serie A team", type: "object", required: ["id", "currentSeason", "city", "stadium", "coach", "preferredFormation", "probableLineup", "previousSeason", "teamStats", "squad", "sources", "lastUpdated"], properties: { city: { type: "string", minLength: 1 }, stadium: { type: "string", minLength: 1 }, coach: { type: "string", minLength: 1 }, preferredFormation: { type: "string", pattern: "^[1-9](?:-[1-9]){2,4}$" }, probableLineup: { type: "object", required: ["formation", "players", "context", "status", "source"], properties: { formation: { type: "string", pattern: "^[1-9](?:-[1-9]){2,4}$" }, players: { type: "array", minItems: 11, maxItems: 11, items: { type: "string", minLength: 1 } }, status: { enum: ["probable", "official"] } } }, squad: { type: "array", items: { $ref: "player.schema.json" } } } });
-write("data/schemas/player.schema.json", { $schema: "https://json-schema.org/draft/2020-12/schema", title: "Serie A player", type: "object", required: ["id", "name", "currentTeam", "currentSeason", "role", "detailedRole", "status", "marketValue", "previousSeason", "sources", "dataQuality"], properties: { shirtNumber: { type: ["integer", "null"], minimum: 1, maximum: 99, description: "Numero anagrafico verificato; non utilizzato dal motore statistico." }, detailedRole: { type: "string", minLength: 1 }, status: { enum: ["confermato", "nuovo acquisto", "prestito", "rientro dal prestito", "primavera", "da verificare"] }, marketValue: { anyOf: [{ type: "null" }, { type: "object", required: ["amountEur", "currency", "provider", "retrievedAt", "sourceUrl"] }] }, photoAttribution: { anyOf: [{ type: "null" }, { type: "object", required: ["provider", "pageUrl", "artist", "license"] }] }, previousSeason: { type: "object", required: ["season", "entries", "totals", "totalsByCompetition"] } } });
+write("data/schemas/player.schema.json", { $schema: "https://json-schema.org/draft/2020-12/schema", title: "Serie A player", type: "object", required: ["id", "name", "currentTeam", "currentSeason", "role", "detailedRole", "status", "marketValue", "previousSeason", "sources", "dataQuality"], properties: { shirtNumber: { type: ["integer", "null"], minimum: 1, maximum: 99, description: "Numero anagrafico verificato; non utilizzato dal motore statistico." }, detailedRole: { type: "string", minLength: 1 }, status: { enum: ["confermato", "nuovo acquisto", "prestito", "rientro dal prestito", "primavera", "da verificare"] }, marketValue: { anyOf: [{ type: "null" }, { type: "object", required: ["amountEur", "currency", "provider", "retrievedAt", "sourceUrl"] }] }, previousSeason: { type: "object", required: ["season", "entries", "totals", "totalsByCompetition"] } } });
 console.log(`Generati dati per ${teams.length} club (${index.teams.filter(team => team.previousSeason.promoted).length} da Serie B).`);

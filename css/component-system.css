@@ -1,0 +1,174 @@
+/* Phase 3. Explicit component roles; no global card/grid/table reset. */
+
+/* A — Level 1: open editorial sections. Existing content order is unchanged. */
+body .readings-index :is(.ri-archive,.ri-future){
+  border:0;
+  border-radius:0;
+  background:none;
+  box-shadow:none;
+  padding-inline:0;
+}
+/* Level 2: related statistics, a soft surface without another nested card. */
+body[data-page="player-stats"] :is(.global-player-leaders,.player-comparator){
+  border-color:var(--ds-color-border);
+  border-radius:var(--ds-radius-panel);
+  background:var(--ds-color-glass);
+  box-shadow:var(--ds-shadow-card);
+}
+body .rd-shell .rf-dashboard .rf-card{
+  border-color:var(--ds-color-border);
+  border-radius:var(--ds-radius-card);
+  background:color-mix(in srgb,var(--ds-color-surface) 65%,transparent);
+}
+
+/* B — Level 3: keep team gradients, glass layers, flip and match interactions.
+   Archive rows remain rows; team and navigation cards keep a broader silhouette. */
+body .match.fixture-card,
+body .readings-index .ri-match:not(.ri-compact),
+body .cup-match-card{
+  border-radius:var(--ds-radius-card);
+  border-width:var(--ds-border-width);
+}
+body .team-flip-card .team-flip-face,
+body .home-rail :is(.home-editorial-readings,.home-editorial-teams){
+  border-radius:var(--ds-radius-panel);
+}
+
+/* C — Named table families. Column order, widths, alignment and sticky offsets
+   belong to their existing modules; multi-row sticky headers retain padding. */
+body :is(.standings-table,.squad-table,.reading-shared-forecast-table table),
+body .rd-shell :is(.rd-stat-table table,.rf-dashboard table){
+  font-family:var(--ds-font-data);
+  font-size:var(--ds-text-meta);
+  font-variant-numeric:tabular-nums;
+}
+body :is(.standings-table,.squad-table,.reading-shared-forecast-table table) td{
+  padding-block:var(--ds-space-3);
+  padding-inline:var(--ds-space-3);
+  border-bottom-color:var(--ds-color-border);
+}
+body :is(.standings-table,.squad-table) thead th{
+  font-family:var(--ds-font-body);
+  font-size:calc(var(--ds-text-meta) - 1px);
+  border-bottom-color:var(--ds-color-border);
+}
+body .standings-table thead th:not(.standings-column-active),
+body[data-page="player-stats"] .global-player-table thead th{
+  background:var(--ds-color-surface-soft);
+}
+body .rd-shell .rd-stat-table :is(th,td){
+  padding-block:var(--ds-space-3);
+  padding-inline:var(--ds-space-2);
+  border-bottom-color:var(--ds-color-border);
+}
+/* Referee micro-tables keep their compact typography and semantic marks. */
+body .rd-shell .rf-dashboard table{font-size:10px}
+body :is(.standings-table,.squad-table) tbody tr:is(:hover,:focus-within)>td:not(.standings-column-active){
+  background:color-mix(in srgb,var(--ds-color-accent) 8%,var(--ds-color-surface));
+}
+body[data-page="champions"] .rd-stat-table tbody tr:is(:hover,:focus-within)>td{
+  background:var(--ds-color-surface-soft);
+  color:var(--ds-color-text);
+}
+body :is(.squad-table-wrap,.player-ranking-scroll,.rd-stat-table,.rf-table-scroll):focus-visible{
+  outline:2px solid var(--ds-color-focus);
+  outline-offset:3px;
+}
+/* Filter chrome only: no dimensions, grid, options or handlers changed. */
+body :is(.squad-controls,.player-ranking-filters,.player-comparator-controls) :is(input,select),
+body .rd-shell :is(.rd-filters select,.rd-search){
+  border-radius:var(--ds-radius-control);
+  border-color:var(--ds-color-border);
+  background:var(--ds-color-surface);
+  color:var(--ds-color-text);
+  font-family:var(--ds-font-body);
+}
+body :is(.squad-controls,.player-ranking-filters,.player-comparator-controls) :is(input,select):focus-visible,
+body .rd-shell :is(.rd-filters select,.rd-search):focus-visible{
+  outline:2px solid var(--ds-color-focus);
+  outline-offset:3px;
+}
+@media(max-width:760px){
+  body :is(.standings-table,.squad-table,.reading-shared-forecast-table table) td,
+  body .rd-shell .rd-stat-table :is(th,td){padding-block:calc(var(--ds-space-2) + 2px)}
+}
+
+/* D — Indicator roles: tiny progress, comparative bars and referee micro-bars.
+   Fill colours and inline computed widths remain owned by existing renderers. */
+body .objective-metric .metric-track{height:var(--ds-space-1);border-radius:var(--ds-radius-pill)}
+body .comparison-bars .comparison-track,
+body .team-attack-channel-bars i{height:var(--ds-space-2);border-radius:var(--ds-radius-pill)}
+body .comparison-bars .comparison-track i{border-radius:inherit}
+body .rd-shell .rd-diverging-track{height:var(--ds-space-2);margin-top:var(--ds-space-1)}
+body .rd-shell .rd-diverging-half em{border-radius:var(--ds-space-1) 0 0 var(--ds-space-1)}
+body .rd-shell .rd-diverging-half.is-away em{border-radius:0 var(--ds-space-1) var(--ds-space-1) 0}
+body .rd-shell .rf-dashboard .rf-bar{
+  height:calc(var(--ds-space-1) + 2px);
+  border-radius:var(--ds-space-1);
+}
+body .rd-shell .rf-dashboard .rf-bar i{border-radius:inherit}
+body .comparison-bars .comparison-label,
+body .rd-shell .rd-diverging-top strong{font-family:var(--ds-font-body);font-size:var(--ds-text-meta)}
+body .comparison-bars .comparison-row>strong,
+body .team-attack-channel-bars strong,
+body .rd-shell .rd-diverging-top b,
+body .rd-shell .rf-dashboard .rf-indicator strong{
+  font-family:var(--ds-font-data);
+  font-variant-numeric:tabular-nums;
+}
+
+/* E — Shared control chrome. Intrinsic sizes and compact hit areas are retained. */
+body[data-page] main :is(.standings-switch button,.standings-scope-switch button,.global-stat-button,
+  .rd-player-mode button,.rd-row-actions button,.betting-personal-pick,
+  .betting-matchday-actions button,.betting-mycombo-actions button,.compare-pick){
+  border-radius:var(--ds-radius-control);
+  border-color:var(--ds-color-border);
+  background:var(--ds-color-surface);
+  color:var(--ds-color-text);
+  font-family:var(--ds-font-body);
+}
+body[data-page] main .global-stat-button{border-radius:var(--ds-radius-pill)}
+body[data-page] main :is(.standings-switch button,.standings-scope-switch button,.global-stat-button,
+  .rd-player-mode button,.rd-row-actions button,.betting-personal-pick,
+  .betting-matchday-actions button,.betting-mycombo-actions button,.compare-pick):not(:disabled):hover{
+  border-color:var(--ds-color-accent);
+  background:var(--ds-color-surface-soft);
+}
+body[data-page] main :is(.standings-switch button,.standings-scope-switch button,.global-stat-button,
+  .rd-player-mode button,.rd-row-actions button,.betting-personal-pick):is(.active,[aria-pressed="true"]){
+  background:var(--ds-color-accent-strong);
+  border-color:var(--ds-color-accent-strong);
+  color:var(--ds-color-on-accent);
+}
+body .rd-shell .rd-slip-trigger,
+body .personal-betslip-trigger{
+  border-radius:var(--ds-radius-pill);
+  background:var(--ds-color-accent-strong);
+  color:var(--ds-color-on-accent);
+  box-shadow:var(--ds-shadow-floating);
+  font-family:var(--ds-font-body);
+}
+body :is(.rd-slip button,.personal-betslip-clear,.personal-betslip-close){
+  border-radius:var(--ds-radius-control);
+  font-family:var(--ds-font-body);
+}
+body[data-page] main :is(.standings-switch button,.standings-scope-switch button,.global-stat-button,
+  .rd-player-mode button,.rd-row-actions button,.betting-personal-pick,
+  .betting-matchday-actions button,.betting-mycombo-actions button,.compare-pick):focus-visible,
+body :is(.rd-slip-trigger,.personal-betslip-trigger,.rd-slip button,
+  .personal-betslip-panel button):focus-visible{
+  outline:2px solid var(--ds-color-focus);
+  outline-offset:3px;
+}
+body[data-page] main :is(.rd-row-actions button,.betting-personal-pick,.compare-pick):disabled{
+  opacity:.5;
+  box-shadow:none;
+  cursor:not-allowed;
+}
+
+/* F — Only the long profile text responsible for the 320px overflow.
+   Comparator tracks, columns, photographs and document overflow are untouched. */
+body[data-page="player-stats"] .player-comparator-head :is(.player-photo-details,.player-comparison-details) p{
+  min-width:0;
+  overflow-wrap:anywhere;
+}

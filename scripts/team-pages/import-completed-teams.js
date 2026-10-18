@@ -448,7 +448,6 @@ async function buildTeam(teamId, teamConfig, entries, detailedRoles) {
       }
     }
     const completeness = playerEntries.length ? (playerEntries.some(entry => entry.minutes != null) ? "complete" : "partial") : "unavailable";
-    const photoUrl = seed.espnId ? `https://a.espncdn.com/i/headshots/soccer/players/full/${seed.espnId}.png` : null;
     const inferredRole = seed.espnId ? detailedRoles.get(seed.espnId) : null;
     const configuredDetailedRole = seed.detailedRole && seed.detailedRole !== seed.role ? seed.detailedRole : null;
     const player = {
@@ -459,7 +458,7 @@ async function buildTeam(teamId, teamConfig, entries, detailedRoles) {
       detailedRoleEvidence: inferredRole ? { starts: inferredRole.starts, occurrences: inferredRole.occurrences, confidence: inferredRole.confidence, roles: inferredRole.roles } : null,
       dateOfBirth: seed.dateOfBirth || null, age: ageAt(seed.dateOfBirth), nationality: seed.nationality || null,
       heightCm: seed.heightCm ?? null, weightKg: seed.weightKg ?? null, preferredFoot: null, birthplace: null, atMilanSince: null,
-      photo: photoUrl, remotePhotoSource: photoUrl, arrivalDate: seed.arrivalDate || null, status: seed.status || teamConfig.defaultStatus,
+      arrivalDate: seed.arrivalDate || null, status: seed.status || teamConfig.defaultStatus,
       previousTeam: playerEntries[0]?.team || null, previousCompetition: playerEntries[0]?.competition || null,
       previousSeason: { season: "2025/26", entries: playerEntries, totals: totals(playerEntries), totalsByCompetition: playerEntries.map(entry => ({ competition: entry.competition, team: entry.team, ...totals([entry]) })) },
       sources: [

@@ -9,11 +9,11 @@ for(const team of ['atalanta','inter','frosinone']){
  const url=`http://127.0.0.1:${server.address().port}/statistiche-squadra/${team}.html`;
  await page.route('**/js/team-squads.js?*',route=>route.fulfill({body:previous,contentType:'text/javascript'}));
  await page.goto(url,{waitUntil:'networkidle'});await page.waitForSelector('.team-full-roster-section');
- const baseline=await page.evaluate(()=>['.team-full-roster-section','.team-editorial-comparator','.probable-lineup-board'].map(sel=>(()=>{const el=document.querySelector(sel)?.cloneNode(true);el?.querySelectorAll('img[data-player-photo]').forEach(img=>{img.removeAttribute('src');img.classList.remove('is-fallback')});return el?.outerHTML})()));
+ const baseline=await page.evaluate(()=>['.team-full-roster-section','.team-editorial-comparator','.probable-lineup-board'].map(sel=>(()=>{const el=document.querySelector(sel)?.cloneNode(true);return el?.outerHTML})()));
  await page.unroute('**/js/team-squads.js?*');
  for(const width of [1280,768,390]){
  await page.setViewportSize({width,height:1000});await page.goto(url,{waitUntil:'networkidle'});await page.waitForSelector('.team-tactical-analysis');
- const current=await page.evaluate(()=>['.team-full-roster-section','.team-editorial-comparator','.probable-lineup-board'].map(sel=>(()=>{const el=document.querySelector(sel)?.cloneNode(true);el?.querySelectorAll('img[data-player-photo]').forEach(img=>{img.removeAttribute('src');img.classList.remove('is-fallback')});return el?.outerHTML})()));current.forEach((html,i)=>{if(html!==baseline[i]){let k=0;while(html[k]===baseline[i][k])k++;throw new Error(`${team} blocco ${i} differenza ${k}: ${html.slice(k-80,k+160)} BASE ${baseline[i].slice(k-80,k+160)}`)}});
+ const current=await page.evaluate(()=>['.team-full-roster-section','.team-editorial-comparator','.probable-lineup-board'].map(sel=>(()=>{const el=document.querySelector(sel)?.cloneNode(true);return el?.outerHTML})()));current.forEach((html,i)=>{if(html!==baseline[i]){let k=0;while(html[k]===baseline[i][k])k++;throw new Error(`${team} blocco ${i} differenza ${k}: ${html.slice(k-80,k+160)} BASE ${baseline[i].slice(k-80,k+160)}`)}});
  assert.equal(await page.locator('.team-key-numbers>div').count(),5);
  const text=await page.locator('#team-squad-app').innerText();for(const removed of ['La stagione in numeri','La stagione in sintesi','Come vengono calcolati','Statistiche approfondite','Precisione dei passaggi','Duelli aerei vinti','Modulo più usato'])assert(!text.includes(removed),removed);
  for(const selector of ['.team-style-traits','.squad-leader-card','.team-attack-channel-bars'])for(const item of await page.locator(selector).all())assert(await item.isVisible(),`${selector} visibile`);

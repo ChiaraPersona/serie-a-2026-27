@@ -100,7 +100,6 @@ async function profile(player) {
   const between = (label, next) => text.match(new RegExp(`${label}\\s+(.+?)\\s+${next}`, "i"))?.[1]?.trim() || null;
   const birthday = between("Birthday", "Birthplace");
   const heightRaw = between("Height", "Biography") || text.match(/Height\s+(\d[,.]\d{2}m)/i)?.[1] || null;
-  const og = html.match(/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)/i)?.[1] || html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image/i)?.[1] || null;
   return {
     sourceUrl: url,
     dateOfBirth: isoDate(birthday),
@@ -108,8 +107,7 @@ async function profile(player) {
     atMilanSince: between("At ACM since", "Weight"),
     weightKg: num(between("Weight", "Foot")?.replace(/kg/i, "")),
     preferredFoot: between("Foot", "Height"),
-    heightCm: heightRaw ? Math.round(Number(heightRaw.replace("m", "").replace(",", ".")) * 100) : null,
-    remoteImage: og
+    heightCm: heightRaw ? Math.round(Number(heightRaw.replace("m", "").replace(",", ".")) * 100) : null
   };
 }
 
@@ -187,18 +185,6 @@ function discoveredEspnIds(players) {
   return ids;
 }
 
-async function downloadPhoto(playerId, espnId) {
-  if (!espnId) return null;
-  const relative = `assets/images/players/milan/${playerId}.png`;
-  const target = path.join(root, relative);
-  if (!refresh) return fs.existsSync(target) ? `../${relative}` : null;
-  const url = `https://a.espncdn.com/i/headshots/soccer/players/full/${espnId}.png`;
-  const response = await fetch(url, { headers: { "user-agent": "Mozilla/5.0" } });
-  if (!response.ok || !String(response.headers.get("content-type") || "").startsWith("image/")) return null;
-  fs.mkdirSync(path.dirname(target), { recursive: true });
-  fs.writeFileSync(target, Buffer.from(await response.arrayBuffer()));
-  return `../${relative}`;
-}
 
 function matchMinutes(entry) {
   const stats = statMap(entry.stats);
@@ -273,7 +259,7 @@ async function main() {
   const profiles = {};
   for (const player of source.players) {
     try { profiles[player.id] = await profile(player); }
-    catch (error) { profiles[player.id] = { sourceUrl: `https://www.acmilan.com/en/teams/men-first-team/players/${player.profileSlug}`, error: error.message, dateOfBirth: null, heightCm: null, preferredFoot: null, remoteImage: null }; }
+    catch (error) { profiles[player.id] = { sourceUrl: `https://www.acmilan.com/en/teams/men-first-team/players/${player.profileSlug}`, error: error.message, dateOfBirth: null, heightCm: null, preferredFoot: null }; }
   }
   const inferredIds = discoveredEspnIds(source.players);
   const linkedPlayers = source.players.map(player => ({ ...player, espnId: player.espnId || inferredIds[player.id] || null }));
@@ -307,8 +293,6 @@ async function main() {
     const espnId = seed.espnId || inferredIds[seed.id] || null;
     const associationMethod = seed.espnId ? "provider-id" : inferredIds[seed.id] ? "nome+squadra+numero-maglia" : null;
     const uncertainAssociation = false;
-    const photo = await downloadPhoto(seed.id, espnId);
-    const remotePhotoSource = espnId ? `https://a.espncdn.com/i/headshots/soccer/players/full/${espnId}.png` : p.remoteImage;
     const player = {
       schemaVersion: 1, id: seed.id, name: seed.name, providerIds: { espn: espnId }, currentTeam: "Milan", currentSeason: "2026/27",
       role: seed.role, detailedRole: rolesByPlayer.get(seed.id)?.[0]?.role || seed.detailedRole,
@@ -317,7 +301,7 @@ async function main() {
       detailedRoleEvidence: rolesByPlayer.has(seed.id) ? { starts: rolesByPlayer.get(seed.id).reduce((total, item) => total + item.occurrences, 0), roles: rolesByPlayer.get(seed.id) } : null,
       dateOfBirth: p.dateOfBirth || seed.dateOfBirth || null, age: ageAt(p.dateOfBirth || seed.dateOfBirth), nationality: seed.nationality,
       heightCm: p.heightCm ?? seed.heightCm ?? null, weightKg: p.weightKg ?? seed.weightKg ?? null, preferredFoot: p.preferredFoot || seed.preferredFoot || null, birthplace: p.birthplace ?? seed.birthplace ?? null, atMilanSince: p.atMilanSince ?? seed.atMilanSince ?? null,
-      photo: photo || seed.photo || p.remoteImage || remotePhotoSource, remotePhotoSource, arrivalDate: seed.arrivalDate || null, status: seed.status,
+      arrivalDate: seed.arrivalDate || null, status: seed.status,
       previousTeam: entries.length > 1 && seed.previousTeam ? seed.previousTeam : entries[0]?.team || seed.previousTeam || null,
       previousCompetition: entries.length > 1 && seed.previousCompetition ? seed.previousCompetition : entries[0]?.competition || seed.previousCompetition || null,
       previousSeason: { season: "2025/26", entries, totals: totals(entries), totalsByCompetition: entries.map(entry => ({ competition: entry.competition, team: entry.team, ...totals([entry]) })) },
