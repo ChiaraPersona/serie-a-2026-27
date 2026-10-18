@@ -7,12 +7,13 @@ const writeHtml = (file, html) => {
   if (!fs.existsSync(file) || fs.readFileSync(file, 'utf8') !== html) fs.writeFileSync(file, html);
 };
 // Presentation-only refresh: never rebuild data or unrelated pages.
-const readingPagesOnly = process.argv.includes('--reading-pages-only');
+const readingsIndexOnly = process.argv.includes('--readings-index-only');
+const readingPagesOnly = readingsIndexOnly || process.argv.includes('--reading-pages-only');
 const teamPagesOnly = readingPagesOnly || process.argv.includes('--team-pages-only');
 if (!teamPagesOnly && !presentationOnly) require('./apply-official-starter-policy.js').build();
 if (!teamPagesOnly && !presentationOnly && fs.existsSync(path.join(root,'data/sources/reading-referee-match-history.json'))) require('./build-reading-referee-history.js').build();
 // Readings consume a separate bench artifact; production starter forecasts stay untouched.
-if (!presentationOnly && !process.argv.includes('--team-pages-only')) {
+if (!readingsIndexOnly && !presentationOnly && !process.argv.includes('--team-pages-only')) {
   require('node:child_process').execFileSync(process.execPath, [path.join(root, 'scripts/build-reading-bench-forecasts.mjs'), '--if-needed'], {cwd:root,stdio:'inherit'});
 }
 const teams = JSON.parse(fs.readFileSync(path.join(root, "data/normalized/teams.json"), "utf8"));
@@ -32,7 +33,7 @@ const calendarVersion = "20260919-roma-inter-juventus-fatigue-v1";
 const teamVersion = "20261016-team-editorial-v2";
 const leaderboardVersion = "20261013-md06-results-v1";
 const bettingVersion = "20261016-schedina-recovery-v2";
-const readingVersion = "20261018-referee-compact-v1";
+const readingVersion = "20261018-readings-dashboard-v1";
 const cupVersion = "20260919-coppa-events-v1";
 const championsVersion = "20261018-referee-compact-v1";
 const fantasyVersion = "20261009-probable-lineups-md06-v2";
@@ -60,13 +61,14 @@ const sourcesPageContent = () => {
   }).join("");
   return `<main id="app" tabindex="-1"><section class="hero sources-hero"><p class="eyebrow">Trasparenza dei dati</p><h1>Fonti</h1><p>Provider, ambiti e date di aggiornamento utilizzati per le rose e le statistiche delle 20 squadre.</p></section><section class="section sources-directory" aria-labelledby="sources-directory-title"><div class="section-heading"><div><p class="eyebrow">Squadra per squadra</p><h2 id="sources-directory-title">Fonti registrate</h2></div><p>Apri una squadra per consultare i riferimenti associati ai suoi dati.</p></div><div class="source-team-grid">${teamCards}</div></section></main>`;
 };
-for (const [file,id,label] of (readingPagesOnly ? pages.filter(([,id])=>["readings","champions"].includes(id)) : teamPagesOnly ? [] : pages)) {
+for (const [file,id,label] of (readingPagesOnly ? pages.filter(([,id])=>readingsIndexOnly?id==="readings":["readings","champions"].includes(id)) : teamPagesOnly ? [] : pages)) {
   const pageVersion = id === "home" ? homeVersion : id === "betting" ? bettingVersion : id === "readings" ? readingVersion : id === "cup" ? cupVersion : id === "champions" ? championsVersion : id === "fantasy" ? fantasyVersion : id === "team-stats" ? leaderboardVersion : id === "calendar" || id === "team" ? calendarVersion : version;
   const main = id === "sources" ? `<main id="app"><section class="section"><h1>Pagina non disponibile</h1><a href="index.html">Torna alla Home</a></section></main>` : `<main id="app" tabindex="-1"><section class="loading"><p class="eyebrow">Caricamento</p><h1>${label}</h1></section></main>`;
   const scripts = id === "sources" ? `<script>document.querySelector('.menu-button')?.addEventListener('click',e=>{const n=document.getElementById('site-nav'),open=e.currentTarget.getAttribute('aria-expanded')==='true';e.currentTarget.setAttribute('aria-expanded',String(!open));n.classList.toggle('open',!open)});</script>` : `${id === "home" ? `<script src="scripts/standings.js?v=${pageVersion}"></script>` : ""}${id === "fantasy" ? `<script src="scripts/fantasy-squad.js?v=${pageVersion}"></script>` : ""}<script type="module" src="js/app.js?v=${pageVersion}"></script>`;
   const html = `<!doctype html>\n<html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Serie A e Coppa Italia 2026/27: ${label}"><title>${label} | Serie A 2026/27</title><link rel="stylesheet" href="css/styles.css?v=${pageVersion}"></head><body data-page="${id}"><header id="site-top" class="site-header"><a class="brand" href="index.html"><span class="brand-mark"><img src="assets/images/serie-a-logo-mark.png" alt=""></span><span><strong>Serie A 2026/27</strong><small>Campionato e Coppa Italia</small></span></a><button class="menu-button" type="button" aria-controls="site-nav" aria-expanded="false">Menu</button><nav id="site-nav" class="site-nav" aria-label="Navigazione principale">${navigation("", id)}</nav></header>${main}${footer()}${scripts}</body></html>`;
   writeHtml(path.join(root,file), withFonts(html));
 }
+if (readingsIndexOnly) { console.log("Generato il solo shell Letture; dati e altre pagine invariati."); process.exit(0); }
 // Retired public overview; analytical motivation builders and datasets remain active.
 if (!teamPagesOnly) {
   const retiredPage = path.join(root, "champions-2026-27/motivazione.html");
