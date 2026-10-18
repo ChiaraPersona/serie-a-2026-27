@@ -20,6 +20,7 @@ button?.addEventListener("click",()=>{const open=navigation.classList.toggle("op
 try{
   const pageModule=await loadPage(page,RELEASE);
   await pageModule.createPage(dependencies).render();
+  if(!document.querySelector(".rd-shell"))delete document.body.dataset.readingDetailTheme;
 }catch(error){
   document.querySelector("#app").innerHTML=`<section class="empty"><h1>Dati non disponibili</h1><p>${utils.esc(error.message)}</p></section>`;
   console.error(error);

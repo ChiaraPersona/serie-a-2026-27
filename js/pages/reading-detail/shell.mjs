@@ -2,6 +2,7 @@ import {installScenario} from './scenario.mjs';
 import {loadEvidence,readArtifact} from './evidence.mjs';
 import {installPeople} from './people.mjs';
 import {installTacticsHistory} from './tactics-history.mjs';
+import {installRefereeHistory} from './referee-history.mjs';
 const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const definitions=[
   ['scenario','Scenario','01','M4 16l5-5 4 3 7-10'],
@@ -57,16 +58,14 @@ function heroMarkup(model){
   return `<header class="rd-hero" id="lettura-testata"><div class="rd-overline"><span class="rd-edition">${escape(label)} <i aria-hidden="true">/</i> Giornata ${escape(model.fixture.matchday??'N/D')}</span><span class="rd-status">${model.fixture.status==='finished'?'Partita conclusa':['live','in_progress'].includes(model.fixture.status)?'In corso':model.fixture.status==='postponed'?'Rinviata':model.fixture.status==='cancelled'?'Annullata':'Analisi prepartita'}</span></div><div class="rd-match-meta"><time datetime="${escape(model.fixture.date||'')}">${escape(date)}</time><span>${escape(model.fixture.kickoff||'Orario N/D')}</span>${model.fixture.stadium?`<span>${escape(model.fixture.stadium)}</span>`:''}</div><h1 class="rd-accessible-title">${escape(model.home.name)} – ${escape(model.away.name)}</h1><div class="rd-matchup">${side(model.home,'home')}<div class="rd-versus">${score||'<span class="rd-vs">VS</span>'}</div>${side(model.away,'away')}</div><div class="rd-editorial-note"><span>LA LETTURA</span><p>Numeri, protagonisti e chiavi della partita.</p></div></header>`;
 }
 
+export async function prepareReadingShell(model){
+  const [evidence,resultsHref]=await Promise.all([loadEvidence(model),readingResultsDestination(model)]);
+  return {evidence,resultsHref};
+}
+
 export async function mountReadingShell(model,root=document.querySelector('#app'),options={}){
   if(!root||root.querySelector('.rd-shell'))return;
-  // Await the isolated stylesheet before changing the page. Failure leaves legacy intact.
-  const href=new URL('../../../css/reading-detail.css?v=20261016-universal',import.meta.url).href;
-  let sheet=document.querySelector('link[data-reading-detail-css]');
-  if(!sheet){
-    sheet=document.createElement('link');sheet.rel='stylesheet';sheet.href=href;sheet.dataset.readingDetailCss='';
-    await new Promise((resolve,reject)=>{sheet.onload=resolve;sheet.onerror=()=>{sheet.remove();reject(new Error('Reading stylesheet unavailable'))};document.head.append(sheet)});
-  }
-  const evidence=await loadEvidence(model),resultsHref=await readingResultsDestination(model);
+  const {evidence,resultsHref}=options.prepared||await prepareReadingShell(model);
   const visibleDefinitions=readingSections(model);
   const original=[...root.childNodes];
   const oldHero=root.querySelector('.reading-match-hero');
@@ -119,6 +118,8 @@ export async function mountReadingShell(model,root=document.querySelector('#app'
     undo.push(installScenario(model,groups.get('scenario').lastElementChild));
     undo.push(installPeople(model,evidence,Object.fromEntries([...groups].map(([key,group])=>[key,group.lastElementChild])),shell));
     undo.push(installTacticsHistory(model,evidence,Object.fromEntries([...groups].map(([key,group])=>[key,group.lastElementChild]))));
+    // An unavailable informational archive must not prevent the existing reading from mounting.
+    try{undo.push(await installRefereeHistory(model,groups.get('disciplina').lastElementChild));}catch(error){console.warn('Storico arbitrale non disponibile',error);}
     if(model.fixture.status==='finished'){
       // Existing player/discipline references now lead to the result archive, never a missing section.
       shell.querySelectorAll('[data-market-link]').forEach(button=>{

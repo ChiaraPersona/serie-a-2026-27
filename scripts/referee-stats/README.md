@@ -1,5 +1,25 @@
 # Importatore statistiche arbitrali
 
+## Storico compatto nelle Letture
+
+La proiezione informativa `data/generated/reading-referee-history.json` non alimenta il motore,
+le stime disciplinari o la Schedina. Rigenerarla con `node scripts/build-reading-referee-history.js`
+dopo modifiche a calendario, designazioni o archivi. Il builder riusa le partite normalizzate
+Serie A/B e gli snapshot Champions esistenti; filtra prima della data della singola Lettura.
+
+Per aggiornare le sole schede pubbliche italiane: `node scripts/referee-stats/import-reading-history.js YYYY-MM-DD`.
+Il piccolo adattatore segue l'indice pubblico Calciotel, archivia gli HTML compressi nella
+stessa struttura raw del sistema arbitrale e accetta solo identità esatte (ordine nome/cognome
+irrilevante). Niente abbinamenti approssimativi: i nomi non coincidenti restano nel registro
+`missing`, con ripiego sullo storico già normalizzato. Il file sorgente conserva URL, hash,
+snapshot e definizioni; nessuna fonte compare nella nuova interfaccia.
+
+Il totale espulsioni non viene mai interpretato come totale di rossi diretti: le due componenti
+restano `null` se il riepilogo non distingue doppia ammonizione e rosso diretto. I rigori
+`penaltyKickShots` del vecchio normalizzatore ESPN non provano quanti rigori siano stati
+assegnati: nella nuova proiezione rimangono `null`, senza cambiare gli archivi esistenti.
+Medie e totali sono pubblicati solo se completi per tutte le righe visualizzate.
+
 Pipeline separata dagli HTML generati. Conserva snapshot raw, partite normalizzate e aggregati in cartelle differenti.
 
 ## Pilot ESPN senza credenziali
