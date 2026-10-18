@@ -1,7 +1,8 @@
 import {installScenario} from './scenario.mjs';
 import {loadEvidence,readArtifact} from './evidence.mjs';
 import {installPeople} from './people.mjs';
-import {installTacticsHistory} from './tactics-history.mjs?v=20261018-tactics-columns-v1';
+import {installTacticsHistory} from './tactics-history.mjs?v=20261018-h2h-timeline-v1';
+import {loadHistoryRows} from './head-to-head.mjs?v=20261018-h2h-timeline-v1';
 import {mountRefereeHistory} from './referee-history.mjs?v=20261018-initial-render-v2';
 const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const definitions=[
@@ -60,7 +61,7 @@ function heroMarkup(model){
 
 export async function prepareReadingShell(model){
   const [evidence,resultsHref,refereeHistory]=await Promise.all([loadEvidence(model),readingResultsDestination(model),readArtifact('data/generated/reading-referee-history.json').catch(error=>{console.warn('Storico arbitrale non disponibile',error);return null})]);
-  return {evidence,resultsHref,refereeHistory};
+  return {evidence:{...evidence,historyRows:await loadHistoryRows(model,evidence,readArtifact)},resultsHref,refereeHistory};
 }
 
 export async function mountReadingShell(model,root=document.querySelector('#app'),options={}){

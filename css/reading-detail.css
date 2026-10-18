@@ -1,4 +1,37 @@
 /* Shared reading presentation, isolated from calendars and the betslip. */
+.rd-shell .rd-h2h-count{margin:0 0 12px;font-size:11px;color:var(--rd-muted)}
+.rd-shell .rd-h2h-timeline{list-style:none;margin:0;padding:0 0 0 18px;border-left:1px solid var(--rd-line)}
+.rd-shell .rd-h2h-timeline>li{position:relative;padding:0;margin:0}
+.rd-shell .rd-h2h-timeline>li::before{content:"";position:absolute;left:-22px;top:22px;width:7px;height:7px;border:1px solid var(--rd-line);border-radius:50%;background:var(--rd-bg)}
+.rd-shell .rd-h2h-timeline>li:first-child::before{background:var(--rd-accent);border-color:var(--rd-accent)}
+.rd-shell .rd-h2h-meeting{margin:0;padding:0;border:0;border-bottom:1px solid var(--rd-line);border-radius:0;background:none;box-shadow:none;min-width:0}
+.rd-shell .rd-h2h-meeting>summary{display:block;list-style:none;padding:12px 8px;cursor:pointer;min-width:0;color:var(--rd-ink);background:none}
+.rd-shell .rd-h2h-meeting>summary::-webkit-details-marker{display:none}
+.rd-shell .rd-h2h-meeting>summary::marker{content:""}
+.rd-shell .rd-h2h-meeting>summary:focus-visible{outline:2px solid var(--rd-accent);outline-offset:2px}
+.rd-shell .rd-h2h-meeting.is-latest>summary{background:color-mix(in srgb,var(--rd-accent) 5%,transparent)}
+.rd-shell .rd-h2h-meta{display:flex;align-items:baseline;gap:8px;font-size:10px;line-height:1.4;color:var(--rd-muted);margin-bottom:7px}
+.rd-h2h-meta>time{flex-shrink:0;font-variant-numeric:tabular-nums}
+.rd-h2h-meta>span{flex:1;min-width:0;overflow-wrap:anywhere}
+.rd-shell .rd-h2h-meta>small{font-size:9px;color:var(--rd-accent);white-space:nowrap}
+.rd-h2h-toggle{width:12px;flex-shrink:0;font-style:normal;text-align:center;color:var(--rd-muted)}
+.rd-h2h-toggle::before{content:"+"}.rd-h2h-meeting[open] .rd-h2h-toggle::before{content:"−"}
+.rd-shell .rd-h2h-scoreline{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:16px}
+.rd-shell .rd-h2h-scoreline>span{font-size:14px;font-weight:600;line-height:1.35;min-width:0;overflow-wrap:anywhere}
+.rd-h2h-home{text-align:left}.rd-h2h-away{text-align:right}
+.rd-shell .rd-h2h-scoreline>b{display:flex;align-items:center;gap:7px;font-size:24px;line-height:1.2;font-weight:750;font-variant-numeric:tabular-nums;white-space:nowrap}
+.rd-h2h-scoreline>b>i{font-style:normal;font-size:14px;font-weight:400;color:var(--rd-muted)}
+.rd-shell .rd-h2h-events{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;padding:8px 8px 16px;margin:0;border:0;background:none}
+.rd-shell .rd-h2h-events>section{min-width:0;margin:0;padding:0;border:0;background:none}
+.rd-shell .rd-h2h-events h3{font:700 11px/1.4 Inter,system-ui,sans-serif;margin:0 0 8px;color:var(--rd-muted)}
+.rd-shell .rd-h2h-events ul{list-style:none;margin:0;padding:0}
+.rd-shell .rd-h2h-events li{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin:0;padding:5px 0;min-width:0}
+.rd-shell .rd-h2h-events li>div{min-width:0;overflow-wrap:anywhere}
+.rd-shell .rd-h2h-events li strong{display:block;font-size:12px;font-weight:600;line-height:1.4;color:var(--rd-ink)}
+.rd-shell .rd-h2h-events li small{display:block;font-size:10px;line-height:1.5;color:var(--rd-muted)}
+.rd-shell .rd-h2h-events li time{flex-shrink:0;font-size:11px;font-variant-numeric:tabular-nums;color:var(--rd-ink)}
+.rd-shell .rd-h2h-empty{font-size:11px;line-height:1.5;margin:0;color:var(--rd-muted)}
+@media(max-width:600px){.rd-shell .rd-h2h-timeline{padding-left:12px}.rd-shell .rd-h2h-timeline>li::before{left:-16px}.rd-shell .rd-h2h-meeting>summary{padding:11px 4px}.rd-shell .rd-h2h-meta{font-size:9px;gap:5px}.rd-shell .rd-h2h-meta>small{font-size:8px}.rd-shell .rd-h2h-scoreline{gap:8px}.rd-shell .rd-h2h-scoreline>span{font-size:12px}.rd-shell .rd-h2h-scoreline>b{font-size:20px;gap:4px}.rd-shell .rd-h2h-events{grid-template-columns:1fr;gap:16px;padding:8px 4px 14px}}
 .rd-shell .rd-tactical-comparison{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:28px;row-gap:12px;margin:0 0 24px}
 .rd-shell .rd-tactical-column{display:grid;grid-template-rows:subgrid;grid-row:1 / span 5;min-width:0;background:none;border:0;padding:0}
 .rd-shell .rd-tactical-team>span{display:block;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--rd-home);margin-bottom:5px}

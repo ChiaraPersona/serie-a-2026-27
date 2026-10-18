@@ -4,7 +4,7 @@
 
 - Undici ufficiali e moduli 4-2-3-1 forniti direttamente dall'utente il 18/10. Provenienza interna user-provided, nessuna verifica web indipendente dichiarata. Identita ricondotte agli ID canonici gia presenti, compreso Goncalves P. Nessuna duplicazione di giocatori.
 
-- Panchine e indisponibili non consegnati: N/D. Un giocatore escluso dall'undici non viene automaticamente dichiarato infortunato o presente in panchina. Le precedenti probabili restano editoriali.
+- Panchine e indisponibili non consegnati nel messaggio: non verificati indipendentemente in questo passaggio. Eventuali distinte aggiunte parallelamente nello workspace sono preservate, senza certificarle qui. Un giocatore escluso dall'undici non viene automaticamente dichiarato infortunato o presente in panchina. Le precedenti probabili restano editoriali.
 
 - Dati misurati 2026/27, sei gare: Fiorentina 16.167 tiri e 5.167 SOT fatti/gara, 11.5 tiri e 5 SOT concessi; Como 22.667 tiri e 6.667 SOT fatti, 14 tiri e 3.167 SOT concessi. Sono medie stagionali, non proiezioni della gara. Casa/trasferta sono separati nella tabella.
 

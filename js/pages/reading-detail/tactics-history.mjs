@@ -1,4 +1,5 @@
-import {esc,number,finite,recordList,details,missing,tabs,mountTabs,sourceLink} from './format.mjs';
+import {esc,number,finite,recordList,details,missing,sourceLink} from './format.mjs';
+import {historyMarkup,selectHistoryRows} from './head-to-head.mjs?v=20261018-h2h-timeline-v1';
 export function attackMarkup(channels){
  if(!channels)return missing('Ripartizione delle direzioni d’attacco non disponibile.');
  return `<div class="rd-channels">${[['left','Sinistra'],['central','Centro'],['right','Destra']].map(([key,label])=>`<div><span>${label}</span><i aria-hidden="true"><b style="width:${finite(channels[key])?Math.max(0,Math.min(100,channels[key])):0}%"></b></i><strong>${number(channels[key])}${finite(channels[key])?'%':''}</strong></div>`).join('')}</div><p class="rd-footnote">Canali d’attacco della fonte, non coordinate dei tiri.</p>`;
@@ -29,10 +30,8 @@ export function installTacticsHistory(model,evidence,containers){
  const recent=document.createElement('div');recent.className='rd-recent-form';recent.innerHTML='<h3>Andamento recente</h3><div class="rd-two-col">'+[model.home,model.away].map(side=>recentFormMarkup(model,evidence,side)).join('')+'</div>';
  containers.tattica.replaceChildren(tactical,recent);
  const history=document.createElement('div');
- history.innerHTML=tabs('rd-history',[
-  ['h2h','Precedenti','<div data-original-h2h></div>'],
- ]);
- const target=history.querySelector('[data-original-h2h]');if(oldHistory.length)oldHistory.forEach(n=>target.append(n));else target.innerHTML=missing('Precedenti verificati non disponibili per questa coppia.');mountTabs(history);containers.storico.replaceChildren(history);
+ history.innerHTML=historyMarkup(evidence.historyRows||selectHistoryRows(model,evidence.analysis.history));
+ containers.storico.replaceChildren(history);
  return ()=>{containers.tattica.replaceChildren(...oldTactics);containers.storico.replaceChildren(...oldHistory)};
 }
 
