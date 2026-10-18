@@ -8837,11 +8837,12 @@
                 }
               },
               "evaluation": {
-                "modelProbabilityPct": null,
+                "modelProbabilityPct": 63.5,
                 "individualModelProbabilityPct": null,
-                "fairOdds": null,
-                "expectedValuePct": null,
-                "status": null
+                "fairOdds": 1.71,
+                "expectedValuePct": 8,
+                "status": "MODELLED_LEG",
+                "kind": "CANONICAL_DIRECT"
               },
               "compatibility": {
                 "status": "NOT_EVALUATED",
@@ -8860,6 +8861,14 @@
                 "RELIABILITY_NOT_EVALUABLE"
               ],
               "risks": []
+            },
+            "lineupEligibility": {
+              "eligible": true,
+              "status": "not-applicable",
+              "source": null,
+              "sourceUpdatedAt": null,
+              "playerId": null,
+              "playerName": null
             }
           },
           {
@@ -8940,11 +8949,12 @@
                 }
               },
               "evaluation": {
-                "modelProbabilityPct": null,
+                "modelProbabilityPct": 50,
                 "individualModelProbabilityPct": null,
-                "fairOdds": null,
-                "expectedValuePct": null,
-                "status": null
+                "fairOdds": 2.27,
+                "expectedValuePct": -24.2,
+                "status": "MODELLED_LEG",
+                "kind": "CANONICAL_DIRECT"
               },
               "compatibility": {
                 "status": "NOT_EVALUATED",
@@ -8963,6 +8973,14 @@
                 "RELIABILITY_NOT_EVALUABLE"
               ],
               "risks": []
+            },
+            "lineupEligibility": {
+              "eligible": true,
+              "status": "not-applicable",
+              "source": null,
+              "sourceUpdatedAt": null,
+              "playerId": null,
+              "playerName": null
             }
           },
           {
@@ -9043,11 +9061,12 @@
                 }
               },
               "evaluation": {
-                "modelProbabilityPct": null,
+                "modelProbabilityPct": 57.3,
                 "individualModelProbabilityPct": null,
-                "fairOdds": null,
-                "expectedValuePct": null,
-                "status": null
+                "fairOdds": 1.8,
+                "expectedValuePct": -12.8,
+                "status": "MODELLED_LEG",
+                "kind": "CANONICAL_DIRECT"
               },
               "compatibility": {
                 "status": "NOT_EVALUATED",
@@ -9066,6 +9085,14 @@
                 "RELIABILITY_NOT_EVALUABLE"
               ],
               "risks": []
+            },
+            "lineupEligibility": {
+              "eligible": true,
+              "status": "not-applicable",
+              "source": null,
+              "sourceUpdatedAt": null,
+              "playerId": null,
+              "playerName": null
             }
           }
         ]
@@ -9152,11 +9179,12 @@
                 }
               },
               "evaluation": {
-                "modelProbabilityPct": null,
+                "modelProbabilityPct": 63.5,
                 "individualModelProbabilityPct": null,
-                "fairOdds": null,
-                "expectedValuePct": null,
-                "status": null
+                "fairOdds": 1.71,
+                "expectedValuePct": 8,
+                "status": "MODELLED_LEG",
+                "kind": "CANONICAL_DIRECT"
               },
               "compatibility": {
                 "status": "NOT_EVALUATED",
@@ -9175,6 +9203,14 @@
                 "RELIABILITY_NOT_EVALUABLE"
               ],
               "risks": []
+            },
+            "lineupEligibility": {
+              "eligible": true,
+              "status": "not-applicable",
+              "source": null,
+              "sourceUpdatedAt": null,
+              "playerId": null,
+              "playerName": null
             }
           },
           {
@@ -9207,7 +9243,7 @@
                 "name": "U/O SQUADRA X",
                 "variant": "U/O 1.5 SQUADRA 2",
                 "scope": "match",
-                "family": null,
+                "family": "Gol squadra · Over",
                 "threshold": 1.5,
                 "selection": "OVER",
                 "subject": {
@@ -9245,8 +9281,8 @@
                 "classification": null,
                 "classificationReason": null,
                 "reliability": {
-                  "level": "Non valutabile",
-                  "reason": "Nessun criterio di affidabilità verificabile disponibile per questa selezione."
+                  "level": "Bassa",
+                  "reason": "Derivazione deterministica dalla matrice punteggi V2 e dalla sensibilità già esistente; nessuna nuova distribuzione."
                 },
                 "playability": {
                   "status": "PLAYABLE",
@@ -9255,133 +9291,61 @@
                 }
               },
               "evaluation": {
-                "modelProbabilityPct": null,
+                "modelProbabilityPct": 51.3,
                 "individualModelProbabilityPct": null,
-                "fairOdds": null,
-                "expectedValuePct": null,
-                "status": null
+                "fairOdds": 2.18,
+                "expectedValuePct": -17.6,
+                "status": "EV_CALCOLABILE",
+                "kind": "DERIVED_B2_SCORE_MATRIX",
+                "prudentProbabilityPct": 45.8,
+                "probabilitySemantics": "ABSOLUTE_EVENT",
+                "fairOddsBasis": "PRUDENT_PROBABILITY",
+                "expectedValueBasis": "PRUDENT_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+                "provenance": {
+                  "source": "predictions.expectedGoals",
+                  "predicateId": "score.away.gt:1.5",
+                  "predicateTarget": {
+                    "market": "U/O SQUADRA X",
+                    "variant": "U/O 1.5 SQUADRA 2",
+                    "threshold": "1.5",
+                    "selection": "OVER"
+                  },
+                  "modelVersion": "4.13.0",
+                  "predictionGeneratedAt": "2026-10-18T12:15:21.796Z",
+                  "sensitivity": "central plus four lambda perturbations +/-10%; prudent probability is the minimum",
+                  "sensitivityProbabilityPct": [
+                    51.3,
+                    56.4,
+                    45.8,
+                    45.8,
+                    56.4
+                  ]
+                }
               },
               "compatibility": {
-                "status": "NOT_EVALUATED",
-                "reason": "Compatibilità specifica non valutata dal generatore MyCombo.",
-                "modelTarget": null,
-                "bookmakerTarget": null
+                "status": "COMPATIBILE",
+                "reason": "Il predicato bookmaker coincide con il predicato discreto applicato alla matrice punteggi.",
+                "modelTarget": "score.away.gt:1.5",
+                "bookmakerTarget": "U/O SQUADRA X · U/O 1.5 SQUADRA 2"
               },
               "overlap": {
-                "overlapKey": "scenario-goals-fulltime-away",
+                "overlapKey": "team-goals-over:U/O 1.5 SQUADRA 2:1.5",
                 "semanticKeys": [
-                  "goals-fulltime-away"
+                  "derived-b2:score.away.gt:1.5"
                 ]
               },
               "warnings": [
-                "CLASSIFICATION_NOT_AVAILABLE",
-                "RELIABILITY_NOT_EVALUABLE"
+                "CLASSIFICATION_NOT_AVAILABLE"
               ],
               "risks": []
-            }
-          },
-          {
-            "providerSelectionId": "5389471343",
-            "providerMarketId": "824253261",
-            "market": "U/O  TIRI IN PORTA GIOCATORE (DUO) INC PALI TRAVERSE INC TS",
-            "variant": "BATURINA M. U/O 0.5 SOMMA TIRI IN PORTA INC PALI E TRAVERSE E SUO SOST. INCL. T.S.",
-            "marketScope": "player",
-            "threshold": "0.5",
-            "selection": "OVER",
-            "odds": 1.75,
-            "marketUpdatedAt": "2026-10-16T08:14:39.078Z",
-            "overlapKey": "player-baturina m-u o tiri in porta giocatore duo inc pali traverse inc ts",
-            "semanticKeys": [
-              "player-baturina m-shots"
-            ],
-            "label": "BATURINA M. almeno 1 tiri in porta, sostituto incluso",
-            "selectionId": "bet:sisal:fiorentina-como-2026-27-md-07:5389471343",
-            "betSelection": {
-              "schemaVersion": 1,
-              "selectionId": "bet:sisal:fiorentina-como-2026-27-md-07:5389471343",
-              "identity": {
-                "status": "VERIFIED_PROVIDER_IDS",
-                "matchId": "fiorentina-como-2026-27-md-07",
-                "provider": "sisal",
-                "providerMarketId": "824253261",
-                "providerSelectionId": "5389471343"
-              },
-              "market": {
-                "name": "U/O  TIRI IN PORTA GIOCATORE (DUO) INC PALI TRAVERSE INC TS",
-                "variant": "BATURINA M. U/O 0.5 SOMMA TIRI IN PORTA INC PALI E TRAVERSE E SUO SOST. INCL. T.S.",
-                "scope": "player",
-                "family": null,
-                "threshold": 0.5,
-                "selection": "OVER",
-                "subject": {
-                  "type": "player-plus-substitute",
-                  "id": null,
-                  "name": "BATURINA M. U/O 0.5 SOMMA TIRI IN PORTA INC PALI E TRAVERSE E SUO SOST. INCL. T.S.",
-                  "teamId": null
-                },
-                "bookmakerSemantics": {
-                  "marketName": "U/O  TIRI IN PORTA GIOCATORE (DUO) INC PALI TRAVERSE INC TS",
-                  "variantName": "BATURINA M. U/O 0.5 SOMMA TIRI IN PORTA INC PALI E TRAVERSE E SUO SOST. INCL. T.S.",
-                  "selectionName": "OVER",
-                  "duo": true,
-                  "substituteIncluded": true,
-                  "postsAndCrossbarIncluded": true,
-                  "extraTimeIncluded": true,
-                  "subjectType": "player-plus-substitute"
-                }
-              },
-              "quote": {
-                "decimal": 1.75,
-                "verifiedAt": "2026-10-16T12:21:18.724Z",
-                "marketUpdatedAt": "2026-10-16T08:14:39.078Z",
-                "availability": "AVAILABLE_AT_SNAPSHOT",
-                "providerStatus": "open",
-                "source": {
-                  "provider": "sisal",
-                  "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/serie-a?cluster=27&cde=1000001",
-                  "snapshotPath": "data/normalized/odds/sisal/serie-a.json",
-                  "rawFile": "data/raw/odds/sisal/serie-a/2026-10-16T12-21-18-724Z.json.gz",
-                  "acquisition": "public-page-browser-cdp"
-                }
-              },
-              "operational": {
-                "classification": null,
-                "classificationReason": null,
-                "reliability": {
-                  "level": "Non valutabile",
-                  "reason": "Nessun criterio di affidabilità verificabile disponibile per questa selezione."
-                },
-                "playability": {
-                  "status": "PLAYABLE",
-                  "code": null,
-                  "reason": null
-                }
-              },
-              "evaluation": {
-                "modelProbabilityPct": null,
-                "individualModelProbabilityPct": null,
-                "fairOdds": null,
-                "expectedValuePct": null,
-                "status": null
-              },
-              "compatibility": {
-                "status": "NOT_EVALUATED",
-                "reason": "Compatibilità specifica non valutata dal generatore MyCombo.",
-                "modelTarget": null,
-                "bookmakerTarget": null
-              },
-              "overlap": {
-                "overlapKey": "player-baturina m-u o tiri in porta giocatore duo inc pali traverse inc ts",
-                "semanticKeys": [
-                  "player-baturina m-shots"
-                ]
-              },
-              "warnings": [
-                "CLASSIFICATION_NOT_AVAILABLE",
-                "RELIABILITY_NOT_EVALUABLE",
-                "MODEL_BOOKMAKER_TARGET_MISMATCH"
-              ],
-              "risks": []
+            },
+            "lineupEligibility": {
+              "eligible": true,
+              "status": "not-applicable",
+              "source": null,
+              "sourceUpdatedAt": null,
+              "playerId": null,
+              "playerName": null
             }
           },
           {
@@ -9462,11 +9426,12 @@
                 }
               },
               "evaluation": {
-                "modelProbabilityPct": null,
+                "modelProbabilityPct": 50,
                 "individualModelProbabilityPct": null,
-                "fairOdds": null,
-                "expectedValuePct": null,
-                "status": null
+                "fairOdds": 2.27,
+                "expectedValuePct": -24.2,
+                "status": "MODELLED_LEG",
+                "kind": "CANONICAL_DIRECT"
               },
               "compatibility": {
                 "status": "NOT_EVALUATED",
@@ -9485,6 +9450,14 @@
                 "RELIABILITY_NOT_EVALUABLE"
               ],
               "risks": []
+            },
+            "lineupEligibility": {
+              "eligible": true,
+              "status": "not-applicable",
+              "source": null,
+              "sourceUpdatedAt": null,
+              "playerId": null,
+              "playerName": null
             }
           }
         ]
@@ -9523,7 +9496,7 @@
                 "name": "MULTIGOAL",
                 "variant": "MULTIGOAL MULTIESITI 16 ESITI",
                 "scope": "match",
-                "family": null,
+                "family": "Multigoal partita",
                 "threshold": null,
                 "selection": "3-5",
                 "subject": {
@@ -9561,8 +9534,8 @@
                 "classification": null,
                 "classificationReason": null,
                 "reliability": {
-                  "level": "Non valutabile",
-                  "reason": "Nessun criterio di affidabilità verificabile disponibile per questa selezione."
+                  "level": "Bassa",
+                  "reason": "Derivazione deterministica dalla matrice punteggi V2 e dalla sensibilità già esistente; nessuna nuova distribuzione."
                 },
                 "playability": {
                   "status": "PLAYABLE",
@@ -9571,29 +9544,61 @@
                 }
               },
               "evaluation": {
-                "modelProbabilityPct": null,
+                "modelProbabilityPct": 46.1,
                 "individualModelProbabilityPct": null,
-                "fairOdds": null,
-                "expectedValuePct": null,
-                "status": null
+                "fairOdds": 2.42,
+                "expectedValuePct": -23.6,
+                "status": "EV_CALCOLABILE",
+                "kind": "DERIVED_B2_SCORE_MATRIX",
+                "prudentProbabilityPct": 41.3,
+                "probabilitySemantics": "ABSOLUTE_EVENT",
+                "fairOddsBasis": "PRUDENT_PROBABILITY",
+                "expectedValueBasis": "PRUDENT_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+                "provenance": {
+                  "source": "predictions.expectedGoals",
+                  "predicateId": "score.total.inclusive:3-5",
+                  "predicateTarget": {
+                    "market": "MULTIGOAL",
+                    "variant": "MULTIGOAL MULTIESITI 16 ESITI",
+                    "threshold": null,
+                    "selection": "3-5"
+                  },
+                  "modelVersion": "4.13.0",
+                  "predictionGeneratedAt": "2026-10-18T12:15:21.796Z",
+                  "sensitivity": "central plus four lambda perturbations +/-10%; prudent probability is the minimum",
+                  "sensitivityProbabilityPct": [
+                    46.1,
+                    47.1,
+                    45,
+                    41.3,
+                    49.9
+                  ]
+                }
               },
               "compatibility": {
-                "status": "NOT_EVALUATED",
-                "reason": "Compatibilità specifica non valutata dal generatore MyCombo.",
-                "modelTarget": null,
-                "bookmakerTarget": null
+                "status": "COMPATIBILE",
+                "reason": "Il predicato bookmaker coincide con il predicato discreto applicato alla matrice punteggi.",
+                "modelTarget": "score.total.inclusive:3-5",
+                "bookmakerTarget": "MULTIGOAL · MULTIGOAL MULTIESITI 16 ESITI"
               },
               "overlap": {
-                "overlapKey": "scenario-goals-fulltime-match",
+                "overlapKey": "multigoal-match:MULTIGOAL MULTIESITI 16 ESITI:3-5",
                 "semanticKeys": [
-                  "goals-fulltime-match"
+                  "derived-b2:score.total.inclusive:3-5"
                 ]
               },
               "warnings": [
-                "CLASSIFICATION_NOT_AVAILABLE",
-                "RELIABILITY_NOT_EVALUABLE"
+                "CLASSIFICATION_NOT_AVAILABLE"
               ],
               "risks": []
+            },
+            "lineupEligibility": {
+              "eligible": true,
+              "status": "not-applicable",
+              "source": null,
+              "sourceUpdatedAt": null,
+              "playerId": null,
+              "playerName": null
             }
           },
           {
@@ -9674,11 +9679,12 @@
                 }
               },
               "evaluation": {
-                "modelProbabilityPct": null,
+                "modelProbabilityPct": 63.5,
                 "individualModelProbabilityPct": null,
-                "fairOdds": null,
-                "expectedValuePct": null,
-                "status": null
+                "fairOdds": 1.71,
+                "expectedValuePct": 8,
+                "status": "MODELLED_LEG",
+                "kind": "CANONICAL_DIRECT"
               },
               "compatibility": {
                 "status": "NOT_EVALUATED",
@@ -9697,6 +9703,14 @@
                 "RELIABILITY_NOT_EVALUABLE"
               ],
               "risks": []
+            },
+            "lineupEligibility": {
+              "eligible": true,
+              "status": "not-applicable",
+              "source": null,
+              "sourceUpdatedAt": null,
+              "playerId": null,
+              "playerName": null
             }
           },
           {
@@ -9801,6 +9815,16 @@
                 "MODEL_BOOKMAKER_TARGET_MISMATCH"
               ],
               "risks": []
+            },
+            "playerId": "maxence-caqueret",
+            "playerName": "Maxence Caqueret",
+            "lineupEligibility": {
+              "eligible": true,
+              "status": "official-starter",
+              "source": "user-provided",
+              "sourceUpdatedAt": "2026-10-18T12:15:19.964Z",
+              "playerId": "maxence-caqueret",
+              "playerName": "Maxence Caqueret"
             }
           },
           {
@@ -9905,6 +9929,16 @@
                 "MODEL_BOOKMAKER_TARGET_MISMATCH"
               ],
               "risks": []
+            },
+            "playerId": "lucas-da-cunha",
+            "playerName": "Lucas Da Cunha",
+            "lineupEligibility": {
+              "eligible": true,
+              "status": "official-starter",
+              "source": "user-provided",
+              "sourceUpdatedAt": "2026-10-18T12:15:19.964Z",
+              "playerId": "lucas-da-cunha",
+              "playerName": "Lucas Da Cunha"
             }
           },
           {
@@ -9937,7 +9971,7 @@
                 "name": "MULTIGOAL SQUADRA X",
                 "variant": "MULTIGOAL SQUADRA 1 MULTIESITI",
                 "scope": "match",
-                "family": null,
+                "family": "Multigoal squadra",
                 "threshold": null,
                 "selection": "1-2",
                 "subject": {
@@ -9975,8 +10009,8 @@
                 "classification": null,
                 "classificationReason": null,
                 "reliability": {
-                  "level": "Non valutabile",
-                  "reason": "Nessun criterio di affidabilità verificabile disponibile per questa selezione."
+                  "level": "Bassa",
+                  "reason": "Derivazione deterministica dalla matrice punteggi V2 e dalla sensibilità già esistente; nessuna nuova distribuzione."
                 },
                 "playability": {
                   "status": "PLAYABLE",
@@ -9985,29 +10019,61 @@
                 }
               },
               "evaluation": {
-                "modelProbabilityPct": null,
+                "modelProbabilityPct": 56,
                 "individualModelProbabilityPct": null,
-                "fairOdds": null,
-                "expectedValuePct": null,
-                "status": null
+                "fairOdds": 1.85,
+                "expectedValuePct": -15.1,
+                "status": "EV_CALCOLABILE",
+                "kind": "DERIVED_B2_SCORE_MATRIX",
+                "prudentProbabilityPct": 54.1,
+                "probabilitySemantics": "ABSOLUTE_EVENT",
+                "fairOddsBasis": "PRUDENT_PROBABILITY",
+                "expectedValueBasis": "PRUDENT_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+                "provenance": {
+                  "source": "predictions.expectedGoals",
+                  "predicateId": "score.home.inclusive:1-2",
+                  "predicateTarget": {
+                    "market": "MULTIGOAL SQUADRA X",
+                    "variant": "MULTIGOAL SQUADRA 1 MULTIESITI",
+                    "threshold": null,
+                    "selection": "1-2"
+                  },
+                  "modelVersion": "4.13.0",
+                  "predictionGeneratedAt": "2026-10-18T12:15:21.796Z",
+                  "sensitivity": "central plus four lambda perturbations +/-10%; prudent probability is the minimum",
+                  "sensitivityProbabilityPct": [
+                    56,
+                    54.1,
+                    57.4,
+                    54.1,
+                    57.4
+                  ]
+                }
               },
               "compatibility": {
-                "status": "NOT_EVALUATED",
-                "reason": "Compatibilità specifica non valutata dal generatore MyCombo.",
-                "modelTarget": null,
-                "bookmakerTarget": null
+                "status": "COMPATIBILE",
+                "reason": "Il predicato bookmaker coincide con il predicato discreto applicato alla matrice punteggi.",
+                "modelTarget": "score.home.inclusive:1-2",
+                "bookmakerTarget": "MULTIGOAL SQUADRA X · MULTIGOAL SQUADRA 1 MULTIESITI"
               },
               "overlap": {
-                "overlapKey": "scenario-goals-fulltime-home",
+                "overlapKey": "multigoal-team:MULTIGOAL SQUADRA 1 MULTIESITI:1-2",
                 "semanticKeys": [
-                  "goals-fulltime-home"
+                  "derived-b2:score.home.inclusive:1-2"
                 ]
               },
               "warnings": [
-                "CLASSIFICATION_NOT_AVAILABLE",
-                "RELIABILITY_NOT_EVALUABLE"
+                "CLASSIFICATION_NOT_AVAILABLE"
               ],
               "risks": []
+            },
+            "lineupEligibility": {
+              "eligible": true,
+              "status": "not-applicable",
+              "source": null,
+              "sourceUpdatedAt": null,
+              "playerId": null,
+              "playerName": null
             }
           },
           {
@@ -10040,7 +10106,7 @@
                 "name": "U/O SQUADRA X",
                 "variant": "U/O 0.5 SQUADRA 2",
                 "scope": "match",
-                "family": null,
+                "family": "Gol squadra · Over",
                 "threshold": 0.5,
                 "selection": "OVER",
                 "subject": {
@@ -10078,8 +10144,8 @@
                 "classification": null,
                 "classificationReason": null,
                 "reliability": {
-                  "level": "Non valutabile",
-                  "reason": "Nessun criterio di affidabilità verificabile disponibile per questa selezione."
+                  "level": "Bassa",
+                  "reason": "Derivazione deterministica dalla matrice punteggi V2 e dalla sensibilità già esistente; nessuna nuova distribuzione."
                 },
                 "playability": {
                   "status": "PLAYABLE",
@@ -10088,29 +10154,61 @@
                 }
               },
               "evaluation": {
-                "modelProbabilityPct": null,
+                "modelProbabilityPct": 82.1,
                 "individualModelProbabilityPct": null,
-                "fairOdds": null,
-                "expectedValuePct": null,
-                "status": null
+                "fairOdds": 1.27,
+                "expectedValuePct": -9.5,
+                "status": "EV_CALCOLABILE",
+                "kind": "DERIVED_B2_SCORE_MATRIX",
+                "prudentProbabilityPct": 78.7,
+                "probabilitySemantics": "ABSOLUTE_EVENT",
+                "fairOddsBasis": "PRUDENT_PROBABILITY",
+                "expectedValueBasis": "PRUDENT_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+                "provenance": {
+                  "source": "predictions.expectedGoals",
+                  "predicateId": "score.away.gt:0.5",
+                  "predicateTarget": {
+                    "market": "U/O SQUADRA X",
+                    "variant": "U/O 0.5 SQUADRA 2",
+                    "threshold": "0.5",
+                    "selection": "OVER"
+                  },
+                  "modelVersion": "4.13.0",
+                  "predictionGeneratedAt": "2026-10-18T12:15:21.796Z",
+                  "sensitivity": "central plus four lambda perturbations +/-10%; prudent probability is the minimum",
+                  "sensitivityProbabilityPct": [
+                    82.1,
+                    84.9,
+                    78.7,
+                    78.7,
+                    84.9
+                  ]
+                }
               },
               "compatibility": {
-                "status": "NOT_EVALUATED",
-                "reason": "Compatibilità specifica non valutata dal generatore MyCombo.",
-                "modelTarget": null,
-                "bookmakerTarget": null
+                "status": "COMPATIBILE",
+                "reason": "Il predicato bookmaker coincide con il predicato discreto applicato alla matrice punteggi.",
+                "modelTarget": "score.away.gt:0.5",
+                "bookmakerTarget": "U/O SQUADRA X · U/O 0.5 SQUADRA 2"
               },
               "overlap": {
-                "overlapKey": "scenario-goals-fulltime-away",
+                "overlapKey": "team-goals-over:U/O 0.5 SQUADRA 2:0.5",
                 "semanticKeys": [
-                  "goals-fulltime-away"
+                  "derived-b2:score.away.gt:0.5"
                 ]
               },
               "warnings": [
-                "CLASSIFICATION_NOT_AVAILABLE",
-                "RELIABILITY_NOT_EVALUABLE"
+                "CLASSIFICATION_NOT_AVAILABLE"
               ],
               "risks": []
+            },
+            "lineupEligibility": {
+              "eligible": true,
+              "status": "not-applicable",
+              "source": null,
+              "sourceUpdatedAt": null,
+              "playerId": null,
+              "playerName": null
             }
           }
         ]

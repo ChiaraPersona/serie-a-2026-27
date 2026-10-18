@@ -23,14 +23,16 @@ const server=http.createServer((req,res)=>{const file=path.resolve(root,'.'+deco
   const attack=(f.competition==='champions'?channels.find(p=>p.team===name)?.attackChannels:null)||f.prediction?.teamProjections?.[i]?.attackChannels||profile?.attackChannels;
   return {name,metrics:[fmt(profile?.summary?.possessionPct)+(typeof profile?.summary?.possessionPct==='number'?'%':''),fmt(profile?.summary?.shotsPerGame),fmt(profile?.derived?.goalsPerGame)],attack:attack?['left','central','right'].map(key=>({text:fmt(attack[key])+(typeof attack[key]==='number'?'%':''),width:`${typeof attack[key]==='number'?Math.max(0,Math.min(100,attack[key])):0}%` })):[]};
  });
- const results=[],errors=[];let next=0;const target=path.join(root,'reports/reading-tactics');fs.mkdirSync(target,{recursive:true});
+ const results=[],errors=[];let next=0;const target=path.join(root,'reports/reading-tactics',process.argv.includes('--final')?'final':'');fs.mkdirSync(target,{recursive:true});
  try{
  const worker=async()=>{
   const page=await browser.newPage();page.on('pageerror',e=>errors.push(e.message));
   await page.route('https://fonts.googleapis.com/**',r=>r.abort());await page.route('https://fonts.gstatic.com/**',r=>r.abort());
   for(;;){const f=cases[next++];if(!f)break;const wanted=expected(f);
    for(const width of (process.argv.includes('--samples-only')?[1440,768,390,320]:[1440,390])){
-    await page.setViewportSize({width,height:1000});await page.goto(`${base}/${f.competition==='serie-a'?'lettura':'champions-league'}.html?match=${f.id}`);await page.waitForSelector('.rd-shell');
+    await page.setViewportSize({width,height:1000});
+    if(width===1440){await page.goto(`${base}/${f.competition==='serie-a'?'lettura':'champions-league'}.html?match=${f.id}`);await page.waitForSelector('.rd-shell');}
+    await page.locator('.rd-tactical-details .rd-disclosure').evaluateAll(nodes=>nodes.forEach(n=>n.open=false));
     const section=page.locator('#lettura-tattica'),columns=section.locator('[data-tactical-side]');
     assert.equal(await columns.count(),2);assert.equal(await section.getByText('Le chiavi del confronto',{exact:true}).count(),0);
     assert.equal(await section.locator('[role=tab],[role=tabpanel],.rd-tactical-summary').count(),0);
@@ -57,8 +59,10 @@ const server=http.createServer((req,res)=>{const file=path.resolve(root,'.'+deco
    }
   }await page.close();
  };
- await Promise.all(Array.from({length:4},worker));assert.deepEqual(errors,[]);assert.deepEqual(hashes(),before,'Protected inputs changed');
- fs.writeFileSync(path.join(target,process.argv.includes('--samples-only')?'samples-audit.json':'browser-audit.json'),JSON.stringify({results,errors,protectedInputs:'UNCHANGED'},null,2)+'\n');
+ await Promise.all(Array.from({length:4},worker));assert.deepEqual(errors,[]);
+ const after=hashes(),changedInputs=protectedFiles.filter((_,i)=>before[i]!==after[i]);
+ fs.writeFileSync(path.join(target,process.argv.includes('--samples-only')?'samples-audit.json':'browser-audit.json'),JSON.stringify({results,errors,protectedInputs:changedInputs.length?'CHANGED_DURING_CHECK':'UNCHANGED',changedInputs},null,2)+'\n');
+ assert.deepEqual(after,before,'Protected inputs changed');
  console.log(JSON.stringify({checks:results.length,errors,protectedInputs:'UNCHANGED'}));
  }finally{await browser.close();server.close()}
 })().catch(e=>{console.error(e);server.close();process.exitCode=1});

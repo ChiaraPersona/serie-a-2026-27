@@ -76,6 +76,14 @@ fresh.selections=oldMatch.selections.map(old=>{
    assert(Number.isFinite(probability),'Probabilità soglia originaria mancante: '+next.selectionId);
    const pct=Number((probability*100).toFixed(2)),stability=metric==='shots'?player.playerBaselineStability:player.playerSotBaselineStability;
    next.individualModelProbabilityPct=pct;
+   // Existing standard unquoted contracts keep their original semantics and current individual estimate.
+   if(old.forecastIdentity && old.betSelection?.evaluation?.probabilitySemantics==='INDIVIDUAL_PLAYER_V2'){
+    for(const field of ['forecastIdentity','market','marketFamily','label','variant','modifiers','quote','odds'])if(Object.hasOwn(old,field))next[field]=structuredClone(old[field]);
+    next.betSelection.market=structuredClone(old.betSelection.market);
+    next.betSelection.evaluation={...next.betSelection.evaluation,...structuredClone(old.betSelection.evaluation),modelProbabilityPct:pct};
+    next.modelProbabilityPct=pct;
+   }
+
    next.betSelection.operational.reliability={level:stability?.level==='high'?'Alta':stability?.level==='medium'?'Media':'Bassa',reason:stability?.evidence?.join('; ')||'N/D'};
    next.betSelection.evaluation.individualReference={...next.betSelection.evaluation.individualReference,modelProbabilityPct:pct,appliedToDuo:false};
    next.betSelection.evaluation.provenance={...next.betSelection.evaluation.provenance,predictionGeneratedAt:updated.predictions.find(p=>p.matchId===id).generatedAt};
