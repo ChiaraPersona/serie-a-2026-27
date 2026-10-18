@@ -1,7 +1,7 @@
 import {installScenario} from './scenario.mjs';
 import {loadEvidence,readArtifact} from './evidence.mjs';
 import {installPeople} from './people.mjs';
-import {installTacticsHistory} from './tactics-history.mjs';
+import {installTacticsHistory} from './tactics-history.mjs?v=20261018-tactics-columns-v1';
 import {mountRefereeHistory} from './referee-history.mjs?v=20261018-initial-render-v2';
 const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const definitions=[

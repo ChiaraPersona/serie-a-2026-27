@@ -3,6 +3,9 @@ const path = require("path");
 const {applyStyleLinks} = require('./site-styles');
 const presentationOnly = process.argv.includes('--presentation-only');
 const root = path.resolve(__dirname, "..");
+const writeHtml = (file, html) => {
+  if (!fs.existsSync(file) || fs.readFileSync(file, 'utf8') !== html) fs.writeFileSync(file, html);
+};
 // Presentation-only refresh: never rebuild data or unrelated pages.
 const readingPagesOnly = process.argv.includes('--reading-pages-only');
 const teamPagesOnly = readingPagesOnly || process.argv.includes('--team-pages-only');
@@ -25,9 +28,9 @@ const calendarVersion = "20260919-roma-inter-juventus-fatigue-v1";
 const teamVersion = "20261016-team-editorial-v2";
 const leaderboardVersion = "20261013-md06-results-v1";
 const bettingVersion = "20261016-schedina-recovery-v2";
-const readingVersion = "20261018-initial-render-v2";
+const readingVersion = "20261018-tactics-columns-v1";
 const cupVersion = "20260919-coppa-events-v1";
-const championsVersion = "20261018-initial-render-v2";
+const championsVersion = "20261018-tactics-columns-v1";
 const championsMotivationVersion = "20261013-champions-md02-phase12d-v1";
 const fantasyVersion = "20261009-probable-lineups-md06-v2";
 const headToHeadPath = path.join(root, "data/generated/head-to-head/first-leg-2026-27.json");
@@ -42,7 +45,7 @@ if (!teamPagesOnly && !presentationOnly && fs.existsSync(headToHeadPath)) {
   };
   fs.writeFileSync(path.join(root, "data/generated/head-to-head/first-leg-2026-27-summary.json"), JSON.stringify(summary, null, 2));
 }
-for (const obsoletePage of (teamPagesOnly ? [] : ["calendario.html", "classifica.html", "statistiche-squadra/index.html"])) {
+for (const obsoletePage of ((teamPagesOnly || presentationOnly) ? [] : ["calendario.html", "classifica.html", "statistiche-squadra/index.html"])) {
   const obsoletePath = path.join(root, obsoletePage);
   if (fs.existsSync(obsoletePath)) fs.unlinkSync(obsoletePath);
 }
@@ -59,12 +62,12 @@ for (const [file,id,label] of (readingPagesOnly ? pages.filter(([,id])=>["readin
   const main = id === "sources" ? `<main id="app"><section class="section"><h1>Pagina non disponibile</h1><a href="index.html">Torna alla Home</a></section></main>` : `<main id="app" tabindex="-1"><section class="loading"><p class="eyebrow">Caricamento</p><h1>${label}</h1></section></main>`;
   const scripts = id === "sources" ? `<script>document.querySelector('.menu-button')?.addEventListener('click',e=>{const n=document.getElementById('site-nav'),open=e.currentTarget.getAttribute('aria-expanded')==='true';e.currentTarget.setAttribute('aria-expanded',String(!open));n.classList.toggle('open',!open)});</script>` : `${id === "home" ? `<script src="scripts/standings.js?v=${pageVersion}"></script>` : ""}${id === "fantasy" ? `<script src="scripts/fantasy-squad.js?v=${pageVersion}"></script>` : ""}<script type="module" src="js/app.js?v=${pageVersion}"></script>`;
   const html = `<!doctype html>\n<html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Serie A e Coppa Italia 2026/27: ${label}"><title>${label} | Serie A 2026/27</title><link rel="stylesheet" href="css/styles.css?v=${pageVersion}"></head><body data-page="${id}"><header id="site-top" class="site-header"><a class="brand" href="index.html"><span class="brand-mark"><img src="assets/images/serie-a-logo-mark.png" alt=""></span><span><strong>Serie A 2026/27</strong><small>Campionato e Coppa Italia</small></span></a><button class="menu-button" type="button" aria-controls="site-nav" aria-expanded="false">Menu</button><nav id="site-nav" class="site-nav" aria-label="Navigazione principale">${navigation("", id)}</nav></header>${main}${footer()}${scripts}</body></html>`;
-  fs.writeFileSync(path.join(root,file), withFonts(html));
+  writeHtml(path.join(root,file), withFonts(html));
 }
 const motivationDir = path.join(root, "champions-2026-27");
 fs.mkdirSync(motivationDir, { recursive: true });
 const motivationHtml = `<!doctype html>\n<html lang="it"><head><meta charset="utf-8"><base href="../"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Motivation Index delle 36 squadre di UEFA Champions League 2026/27"><title>Motivation Index | Champions League 2026/27</title><link rel="stylesheet" href="css/styles.css?v=${championsMotivationVersion}"></head><body data-page="champions"><header id="site-top" class="site-header"><a class="brand" href="index.html"><span class="brand-mark"><img src="assets/images/serie-a-logo-mark.png" alt=""></span><span><strong>Serie A 2026/27</strong><small>Campionato e Coppa Italia</small></span></a><button class="menu-button" type="button" aria-controls="site-nav" aria-expanded="false">Menu</button><nav id="site-nav" class="site-nav" aria-label="Navigazione principale">${navigation("", "champions")}</nav></header><main id="app" tabindex="-1"><section class="loading"><p class="eyebrow">Caricamento</p><h1>Motivation Index</h1></section></main>${footer()}<script type="module" src="js/app.js?v=${championsMotivationVersion}"></script></body></html>`;
-if (!teamPagesOnly) fs.writeFileSync(path.join(motivationDir,"motivazione.html"),withFonts(motivationHtml));
+if (!teamPagesOnly) writeHtml(path.join(motivationDir,"motivazione.html"),withFonts(motivationHtml));
 const squadDir = path.join(root, "statistiche-squadra");
 fs.mkdirSync(squadDir, { recursive: true });
 const squadPage = (team = null, version = teamVersion) => {
@@ -72,9 +75,9 @@ const squadPage = (team = null, version = teamVersion) => {
   const depth = team ? "../" : "../";
   return `<!doctype html>\n<html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="${title} Â· Serie A 2026/27"><title>${title} | Serie A 2026/27</title><link rel="stylesheet" href="${depth}css/styles.css?v=${version}"></head><body data-page="team-stats" data-depth="team"${team ? ` data-team="${team.id}"` : ""}><header id="site-top" class="site-header"><a class="brand" href="${depth}index.html"><span class="brand-mark"><img src="${depth}assets/images/serie-a-logo-mark.png" alt=""></span><span><strong>Serie A 2026/27</strong><small>Campionato e Coppa Italia</small></span></a><button class="menu-button" type="button" aria-controls="site-nav" aria-expanded="false">Menu</button><nav id="site-nav" class="site-nav" aria-label="Navigazione principale">${navigation(depth, "team-stats")}</nav></header><main id="team-squad-app" tabindex="-1"><section class="loading"><p class="eyebrow">Caricamento</p><h1>${title}</h1></section></main>${footer(depth)}<script src="${depth}scripts/standings.js?v=${version}"></script><script src="${depth}scripts/objective-metrics.js?v=${version}"></script><script src="${depth}js/team-squads.js?v=${version}"></script><script>document.querySelector('.menu-button')?.addEventListener('click',e=>{const n=document.getElementById('site-nav'),open=e.currentTarget.getAttribute('aria-expanded')==='true';e.currentTarget.setAttribute('aria-expanded',String(!open));n.classList.toggle('open',!open)});</script></body></html>`;
 };
-for (const team of (readingPagesOnly ? [] : teams)) fs.writeFileSync(path.join(squadDir, `${team.id}.html`), withFonts(squadPage(team)));
+for (const team of (readingPagesOnly ? [] : teams)) writeHtml(path.join(squadDir, `${team.id}.html`), withFonts(squadPage(team)));
 console.log(readingPagesOnly ? "Generate 2 pagine Lettura, senza rigenerare dati o altre pagine." : teamPagesOnly ? `Generate ${teams.length} pagine squadra, senza rigenerare dati o altre pagine.` : `Generate ${pages.length + 1} pagine.`);
 
 
 const refereePage=path.join(root,'arbitri.html');
-if(!teamPagesOnly&&fs.existsSync(refereePage))fs.writeFileSync(refereePage,applyStyleLinks(fs.readFileSync(refereePage,'utf8')));
+if(!teamPagesOnly&&fs.existsSync(refereePage))writeHtml(refereePage,applyStyleLinks(fs.readFileSync(refereePage,'utf8')));
