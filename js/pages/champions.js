@@ -445,15 +445,16 @@ export function createPage(deps){
       const surpriseByFixture=new Map(surpriseFactors.fixtures.map(item=>[item.fixtureId,item]));
       const md2MarketEntry=md2Integration?.fixtures.find(item=>item.fixtureId===requestedMatchId)||null;
       const md2SchedinaFixture=md2Schedina?.fixtures.find(item=>item.fixtureId===requestedMatchId)||null;
+      // Resolve presentation dependencies before exposing any match content.
       let finishReading=null;
       if(isReadingPilot('champions',requestedMatchId,location.search)&&typeof document.createElement==='function'){
         try{
-          const [{adaptChampionsReading},{mountReadingShell,prepareReadingShell}]=await Promise.all([import('./reading-detail/champions-adapter.mjs'),import('./reading-detail/shell.mjs?v=20261018-initial-render-v1')]);
+          const [{adaptChampionsReading},{mountReadingShell,prepareReadingShell}]=await Promise.all([import('./reading-detail/champions-adapter.mjs'),import('./reading-detail/shell.mjs?v=20261018-initial-render-v2')]);
           const analysis={match:requestedCalendarFixture,matches:data.fixtures,lineups:md2MarketEntry?.lineups,availability:md2MarketEntry?.availability,referee:refereeProfile,styles:styleProfiles,attackChannels,history:h2h.fixtures.find(f=>f.fixtureId===requestedMatchId),squads,teamProfiles:activePilot.profiles};
           const model=adaptChampionsReading({fixture:requestedFixture,calendarFixture:requestedCalendarFixture,branding,publishedSelections:md2SchedinaFixture?.selections||[],analysis});
           const prepared=await prepareReadingShell(model);
           finishReading=store=>mountReadingShell(model,undefined,{store,prepared});
-        }catch(error){console.warn('Lettura: vista precedente mantenuta.',error)}
+        }catch(error){delete document.body.dataset.readingDetailTheme;console.warn('Lettura: vista precedente mantenuta.',error)}
       }
       const release=document.querySelector('script[src*="js/app.js"]')?.src.match(/[?&]v=([^&]+)/)?.[1]||"dev";
       const marketUi=md2MarketEntry?await import(`./champions-market-ui.mjs?v=${encodeURIComponent(release)}`):null;
@@ -464,7 +465,7 @@ export function createPage(deps){
         const {mountChampionsMarketUi}=marketUi;
         personalReadingStore=mountChampionsMarketUi(md2MarketEntry,{publishedSelections:md2SchedinaFixture?.selections||[]})?.store||null;
       }
-      if(finishReading){try{await finishReading(personalReadingStore)}catch(error){console.warn('Lettura: vista precedente mantenuta.',error)}}
+      if(finishReading){try{await finishReading(personalReadingStore)}catch(error){delete document.body.dataset.readingDetailTheme;console.warn('Lettura: vista precedente mantenuta.',error)}}
       return;
     }
     if(requestedCalendarFixture&&motivationByFixture.has(requestedMatchId)){

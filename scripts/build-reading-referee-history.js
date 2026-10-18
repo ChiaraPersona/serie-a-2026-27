@@ -38,7 +38,7 @@ function build(){
    if(date!==m.dateLabel)throw Error(`FootyMetrics row mismatch: ${p.refereeId} ${i}`);
    const competition=raw.match(/<img\b[^>]*alt="([^"]+)"/)?.[1]||null;
    const href=raw.match(/href="(\/fixtures\/[^"?#]+)"/)?.[1]||null;
-   return {id:href,date:m.date,competition,home:m.homeTeamCode,away:m.awayTeamCode,score:{home:m.homeGoals,away:m.awayGoals},yellowCards:m.yellowCards,dismissals:m.redCards,secondYellowCards:null,directRedCards:null,penaltiesAwarded:m.penalties,source:{...p.source,rawPath,matchUrl:href?'https://www.footymetrics.com'+href:null,limitations:['Dismissal split not exposed; total is not classified as direct red']}};
+   return {id:href,date:m.date,competition,home:m.homeTeamCode,away:m.awayTeamCode,score:{home:m.homeGoals,away:m.awayGoals},yellowCards:m.yellowCards,dismissals:m.redCards,secondYellowCards:m.redCards===0?0:null,directRedCards:m.redCards===0?0:null,penaltiesAwarded:m.penalties,source:{...p.source,rawPath,matchUrl:href?'https://www.footymetrics.com'+href:null,limitations:['Positive dismissal totals are not classified as direct red; a verified zero total entails zero of either type']}};
   });
   european.set(p.refereeId,rows);
  }
@@ -53,7 +53,7 @@ function build(){
   const id=checks.get(m.id),rows=recentMatches(european.get(id)||[],m.date||'');
   fixtures.push({fixtureId:m.id,competition:'champions',cutoffDate:m.date,refereeId:id||null,refereeName:m.refereeAssignment?.referee||null,rows,summary:summary(rows)});
  }
- const output={schemaVersion:1,informationalOnly:true,asOf:curated.asOf,policy:{cutoff:'Strictly before reading fixture date; same-day games excluded',selection:'Latest five available verified games; incomplete values remain null',yellowCards:'Provider ordinary-yellow count; never adds second-yellow dismissals',dismissals:'Total dismissals once; secondYellowCards and directRedCards remain separate nullable components',penalties:'Awarded in match; shootout kicks and penalty attempts never substituted',sources:'Internal metadata only; not rendered'},fixtures};
+ const output={schemaVersion:1,informationalOnly:true,asOf:curated.asOf,policy:{cutoff:'Strictly before reading fixture date; same-day games excluded',selection:'Latest five available verified games; incomplete values remain null',yellowCards:'Provider yellow-card count retained separately; second-yellow dismissals are never added to it',dismissals:'Total dismissals once; secondYellowCards and directRedCards remain separate nullable components',penalties:'Awarded in match; shootout kicks and penalty attempts never substituted',sources:'Internal metadata only; not rendered'},fixtures};
  fs.writeFileSync(path.join(root,'data/generated/reading-referee-history.json'),JSON.stringify(output,null,2)+'\n');
  console.log(JSON.stringify({fixtures:fixtures.length,withFive:fixtures.filter(f=>f.rows.length===5).length,serieA:fixtures.filter(f=>f.competition==='serie-a'&&f.rows.length).length,champions:fixtures.filter(f=>f.competition==='champions'&&f.rows.length).length,missingDomestic:curated.missing}));
  return output;

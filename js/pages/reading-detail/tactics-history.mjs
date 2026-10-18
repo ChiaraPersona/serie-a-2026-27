@@ -1,5 +1,4 @@
 import {esc,number,finite,recordList,details,missing,tabs,mountTabs,sourceLink} from './format.mjs';
-const labelled=list=>(list||[]).map(x=>typeof x==='string'?x:x.label).filter(Boolean);
 export function attackMarkup(channels){
  if(!channels)return missing('Ripartizione delle direzioni d’attacco non disponibile.');
  return `<div class="rd-channels">${[['left','Sinistra'],['central','Centro'],['right','Destra']].map(([key,label])=>`<div><span>${label}</span><i aria-hidden="true"><b style="width:${finite(channels[key])?Math.max(0,Math.min(100,channels[key])):0}%"></b></i><strong>${number(channels[key])}${finite(channels[key])?'%':''}</strong></div>`).join('')}</div><p class="rd-footnote">Canali d’attacco della fonte, non coordinate dei tiri.</p>`;
@@ -10,12 +9,11 @@ function profileFor(model,evidence,i){
 }
 export function tacticsMarkup(model,evidence){
  const sides=[model.home,model.away],profiles=sides.map((_,i)=>profileFor(model,evidence,i));
- const summary=sides.map((side,i)=>{const strengths=labelled(profiles[i]?.strengths).slice(0,2),weaknesses=labelled(profiles[i]?.weaknesses).slice(0,2);return `<p><strong>${esc(side.name)}</strong> — ${strengths.length?`Punti di forza: ${strengths.map(esc).join(' · ')}.`:'Punti di forza documentati N/D.'} ${weaknesses.length?`Vulnerabilità: ${weaknesses.map(esc).join(' · ')}.`:''}</p>`}).join('');
  const panels=sides.map((side,i)=>{
   const p=profiles[i],channels=evidence.analysis.attackChannels?.profiles?.find(p=>p.team===side.name)?.attackChannels||model.prediction?.teamProjections?.[i]?.attackChannels||p?.attackChannels;
-  return [i?'away':'home',i?'Ospite':'Casa',`<h3>${esc(side.name)}</h3><p class="rd-footnote">Baseline ${esc(p?.season||'storica')} · ${esc(p?.competition||'Campione N/D')} · ${number(p?.summary?.appearances,0)} gare</p><dl class="rd-player-kpis"><div><dt>Possesso</dt><dd>${number(p?.summary?.possessionPct)}${finite(p?.summary?.possessionPct)?'%':''}</dd></div><div><dt>Tiri / gara</dt><dd>${number(p?.summary?.shotsPerGame)}</dd></div><div><dt>Gol / gara</dt><dd>${number(p?.derived?.goalsPerGame)}</dd></div></dl>${attackMarkup(channels)}${details('Statistiche, campione e fonte',p?recordList({campione:p.summary,derivate:p.derived,qualita:p.dataQuality,note:p.notes})+sourceLink(p.source?.url,p.source?.provider||'Fonte'):missing('Profilo tattico strutturato non disponibile.'))}`];
+  return `<article class="rd-tactical-column" data-tactical-side="${i?'away':'home'}"><header class="rd-tactical-team"><span>${i?'Ospite':'Casa'}</span><h3>${esc(side.name)}</h3></header><p class="rd-footnote rd-tactical-baseline">Baseline ${esc(p?.season||'storica')} · ${esc(p?.competition||'Campione N/D')} · ${number(p?.summary?.appearances,0)} gare</p><dl class="rd-player-kpis rd-tactical-metrics"><div><dt>Possesso</dt><dd>${number(p?.summary?.possessionPct)}${finite(p?.summary?.possessionPct)?'%':''}</dd></div><div><dt>Tiri / gara</dt><dd>${number(p?.summary?.shotsPerGame)}</dd></div><div><dt>Gol / gara</dt><dd>${number(p?.derived?.goalsPerGame)}</dd></div></dl><div class="rd-tactical-directions">${attackMarkup(channels)}</div><div class="rd-tactical-details">${details('Statistiche, campione e fonte',p?recordList({campione:p.summary,derivate:p.derived,qualita:p.dataQuality,note:p.notes})+sourceLink(p.source?.url,p.source?.provider||'Fonte'):missing('Profilo tattico strutturato non disponibile.'))}</div></article>`;
  });
- return `<div class="rd-tactical-summary"><h3>Le chiavi del confronto</h3>${summary}<small>Descrizione della baseline della fonte; non è un nuovo pronostico.</small></div>`+tabs('rd-tactics',panels);
+ return `<div class="rd-tactical-comparison" aria-label="Confronto tattico Casa e Ospite">${panels.join('')}</div>`;
 }
 export function priorMatches(model,evidence,side){
  return (evidence.analysis.matches||[]).filter(m=>m.id!==model.fixture.id&&m.status==='finished'&&m.score&&m.date<model.fixture.date&&[m.homeTeam,m.awayTeam].some(t=>t===side.id||t===side.name)).sort((a,b)=>b.date.localeCompare(a.date)||String(b.kickoff||'').localeCompare(String(a.kickoff||'')));
@@ -27,7 +25,7 @@ function timeline(model,evidence,side){
 }
 export function installTacticsHistory(model,evidence,containers){
  const oldTactics=[...containers.tattica.childNodes],oldHistory=[...containers.storico.childNodes];
- const tactical=document.createElement('div');tactical.innerHTML=tacticsMarkup(model,evidence);mountTabs(tactical);
+ const tactical=document.createElement('div');tactical.innerHTML=tacticsMarkup(model,evidence);
  const recent=document.createElement('div');recent.className='rd-recent-form';recent.innerHTML='<h3>Andamento recente</h3><div class="rd-two-col">'+[model.home,model.away].map(side=>recentFormMarkup(model,evidence,side)).join('')+'</div>';
  containers.tattica.replaceChildren(tactical,recent);
  const history=document.createElement('div');

@@ -220,15 +220,16 @@ function pilotSection(aggregates,report){const serieA=report.competitions.find(i
     html=selectedMatch?readingPrototypeDetail(selectedMatch,reading,allTeams,teamDirectory,objectiveProfiles,prediction,history,refereeProfiles,forecastDataset?.marketCatalog):readingIndex(readings,league,allTeams,predictionDataset?.predictions||[],headToHeadData);
     if(matchId&&!selectedMatch)html=`<aside class="data-warning"><strong>Partita non trovata</strong><p>Il collegamento richiesto non corrisponde al calendario corrente.</p></aside>${html}`;
   }
+    // Resolve presentation dependencies before exposing any match content.
     let finishReading=null;
   if(isReadingPilot('serie-a',activeReadingMatch?.id,location.search)&&typeof document.createElement==='function'){
     try{
-      const [{adaptSerieAReading},{mountReadingShell,prepareReadingShell}]=await Promise.all([import('./reading-detail/serie-a-adapter.mjs'),import('./reading-detail/shell.mjs?v=20261018-initial-render-v1')]);
+      const [{adaptSerieAReading},{mountReadingShell,prepareReadingShell}]=await Promise.all([import('./reading-detail/serie-a-adapter.mjs'),import('./reading-detail/shell.mjs?v=20261018-initial-render-v2')]);
       const analysis={match:activeReadingMatch,matches,teamDirectory,styles:teamStyleProfiles,referees:refereeProfiles,reading:activeReading,history:headToHeadData?.fixtures?.find(f=>f.fixtureId===activeReadingMatch.id),lineups:[activeReadingMatch.homeTeam,activeReadingMatch.awayTeam].map(id=>{const team=teamDirectory.teams.find(t=>t.id===id);return {team,lineup:fixtureLineupForMatch(activeReadingMatch,team,teamDirectory)}})};
       const model=adaptSerieAReading({match:activeReadingMatch,teams,teamDirectory,prediction:activePrediction,marketCatalog:forecastDataset?.marketCatalog,formation:formationPresentation(activeReadingMatch,teamDirectory),analysis});
       const prepared=await prepareReadingShell(model);
       finishReading=store=>mountReadingShell(model,undefined,{store,prepared});
-    }catch(error){console.warn('Lettura: vista precedente mantenuta.',error)}
+    }catch(error){delete document.body.dataset.readingDetailTheme;console.warn('Lettura: vista precedente mantenuta.',error)}
   }
     document.querySelector("#app").innerHTML=html;
     let personalReadingStore=null;
@@ -246,7 +247,7 @@ function pilotSection(aggregates,report){const serieA=report.competitions.find(i
       update();
     }
   if(page==="readings"&&activeReadingMatch){renderProbableLineups(activeReadingMatch,teamDirectory,activePrediction);if(activeReadingMatch.competition!=="coppa-italia")renderReadingPilotEvidence(activeReading,activeReadingMatch);renderTacticalBaselines(activeReadingMatch,teamStyleProfiles,teams)}
-  if(finishReading){try{await finishReading(personalReadingStore)}catch(error){console.warn('Lettura: vista precedente mantenuta.',error)}}
+  if(finishReading){try{await finishReading(personalReadingStore)}catch(error){delete document.body.dataset.readingDetailTheme;console.warn('Lettura: vista precedente mantenuta.',error)}}
 
   }
   return {render};

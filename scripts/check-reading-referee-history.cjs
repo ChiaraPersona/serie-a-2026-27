@@ -8,7 +8,7 @@ const server=http.createServer((req,res)=>{const file=path.resolve(root,'.'+deco
  const browser=await chromium.launch({channel:'msedge',headless:true});
  const archive=read('data/generated/reading-referee-history.json');
  const ids=new Set([...read('data/normalized/champions-pilot-predictions-2026-27.json').fixtures,...read('data/normalized/champions-pilot-predictions-md02-2026-27.json').fixtures].map(f=>f.fixtureId));
- const cases=archive.fixtures.filter(f=>f.competition==='serie-a'?Number(f.fixtureId.match(/md-(\d+)$/)?.[1])<=19:ids.has(f.fixtureId));
+ const cases=archive.fixtures.filter(f=>f.competition==='serie-a'?Number(f.fixtureId.match(/md-(\d+)$/)?.[1])<=19:ids.has(f.fixtureId)).filter(f=>!process.argv.includes('--samples-only')||['milan-atalanta-2026-27-md-07','ucl-2026-27-md02-05'].includes(f.fixtureId));
  const errors=[],results=[];let next=0;
  const target=path.join(root,'reports/reading-referee-history');fs.mkdirSync(target,{recursive:true});
  try{
@@ -16,7 +16,7 @@ const server=http.createServer((req,res)=>{const file=path.resolve(root,'.'+deco
   const page=await browser.newPage();page.on('pageerror',e=>errors.push(e.message));
   await page.route('https://fonts.googleapis.com/**',r=>r.abort());await page.route('https://fonts.gstatic.com/**',r=>r.abort());
   for(;;){const fixture=cases[next++];if(!fixture)break;
-   for(const width of [1440,390]){
+   for(const width of (process.argv.includes('--samples-only')?[1440,768,390,320]:[1440,390])){
     await page.setViewportSize({width,height:1000});await page.goto(`${base}/${fixture.competition==='serie-a'?'lettura':'champions-league'}.html?match=${fixture.fixtureId}`);await page.waitForSelector('.rd-shell');
     const table=page.locator('.rd-referee-history-table');const expected=fixture.rows;
     if(expected.length){
@@ -39,7 +39,7 @@ const server=http.createServer((req,res)=>{const file=path.resolve(root,'.'+deco
  };
  await Promise.all(Array.from({length:4},worker));
  assert.deepEqual(errors,[]);
- fs.writeFileSync(path.join(target,'browser-audit.json'),JSON.stringify({results,errors},null,2)+'\n');
+ fs.writeFileSync(path.join(target,process.argv.includes('--samples-only')?'samples-audit.json':'browser-audit.json'),JSON.stringify({results,errors},null,2)+'\n');
  console.log(JSON.stringify({checks:results.length,tables:results.filter(r=>r.rows).length,errors}));
  }finally{await browser.close();server.close()}
 })().catch(e=>{console.error(e);server.close();process.exitCode=1});

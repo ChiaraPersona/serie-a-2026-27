@@ -2,7 +2,7 @@ import {installScenario} from './scenario.mjs';
 import {loadEvidence,readArtifact} from './evidence.mjs';
 import {installPeople} from './people.mjs';
 import {installTacticsHistory} from './tactics-history.mjs';
-import {installRefereeHistory} from './referee-history.mjs';
+import {mountRefereeHistory} from './referee-history.mjs?v=20261018-initial-render-v2';
 const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const definitions=[
   ['scenario','Scenario','01','M4 16l5-5 4 3 7-10'],
@@ -59,13 +59,13 @@ function heroMarkup(model){
 }
 
 export async function prepareReadingShell(model){
-  const [evidence,resultsHref]=await Promise.all([loadEvidence(model),readingResultsDestination(model)]);
-  return {evidence,resultsHref};
+  const [evidence,resultsHref,refereeHistory]=await Promise.all([loadEvidence(model),readingResultsDestination(model),readArtifact('data/generated/reading-referee-history.json').catch(error=>{console.warn('Storico arbitrale non disponibile',error);return null})]);
+  return {evidence,resultsHref,refereeHistory};
 }
 
 export async function mountReadingShell(model,root=document.querySelector('#app'),options={}){
   if(!root||root.querySelector('.rd-shell'))return;
-  const {evidence,resultsHref}=options.prepared||await prepareReadingShell(model);
+  const {evidence,resultsHref,refereeHistory}=options.prepared||await prepareReadingShell(model);
   const visibleDefinitions=readingSections(model);
   const original=[...root.childNodes];
   const oldHero=root.querySelector('.reading-match-hero');
@@ -119,7 +119,7 @@ export async function mountReadingShell(model,root=document.querySelector('#app'
     undo.push(installPeople(model,evidence,Object.fromEntries([...groups].map(([key,group])=>[key,group.lastElementChild])),shell));
     undo.push(installTacticsHistory(model,evidence,Object.fromEntries([...groups].map(([key,group])=>[key,group.lastElementChild]))));
     // An unavailable informational archive must not prevent the existing reading from mounting.
-    try{undo.push(await installRefereeHistory(model,groups.get('disciplina').lastElementChild));}catch(error){console.warn('Storico arbitrale non disponibile',error);}
+    try{undo.push(mountRefereeHistory(model,groups.get('disciplina').lastElementChild,refereeHistory));}catch(error){console.warn('Storico arbitrale non disponibile',error);}
     if(model.fixture.status==='finished'){
       // Existing player/discipline references now lead to the result archive, never a missing section.
       shell.querySelectorAll('[data-market-link]').forEach(button=>{

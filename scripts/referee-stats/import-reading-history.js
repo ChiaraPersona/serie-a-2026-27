@@ -13,7 +13,8 @@ function parseMatches(html){
   if(c.length!==8||!/^\d{2}\/\d{2}\/\d{4}$/.test(c[1]))return [];
   const teams=c[3].split(/\s+-\s+/),score=c[4].match(/^(\d+)\s*-\s*(\d+)$/);if(teams.length!==2||!score)return [];
   const [day,month,year]=c[1].split('/');
-  return [{date:`${year}-${month}-${day}`,season:c[0],competition:c[2],home:teams[0],away:teams[1],score:{home:Number(score[1]),away:Number(score[2])},yellowCards:count(c[5]),dismissals:count(c[6]),secondYellowCards:null,directRedCards:null,penaltiesAwarded:count(c[7])}];
+  const dismissals=count(c[6]);
+  return [{date:`${year}-${month}-${day}`,season:c[0],competition:c[2],home:teams[0],away:teams[1],score:{home:Number(score[1]),away:Number(score[2])},yellowCards:count(c[5]),dismissals,secondYellowCards:dismissals===0?0:null,directRedCards:dismissals===0?0:null,penaltiesAwarded:count(c[7])}];
  });
 }
 async function main(){

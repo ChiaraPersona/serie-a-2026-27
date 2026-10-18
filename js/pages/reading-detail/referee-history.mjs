@@ -17,6 +17,10 @@ export function refereeHistoryMarkup(entry){
 export async function installRefereeHistory(model,container,read=readArtifact){
  const panel=container.querySelector('.reading-referee-assignment');if(!panel)return ()=>{};
  const data=await read('data/generated/reading-referee-history.json');
+ return mountRefereeHistory(model,container,data);
+}
+export function mountRefereeHistory(model,container,data){
+ const panel=container.querySelector('.reading-referee-assignment');if(!panel||!data)return ()=>{};
  const entry=data.fixtures.find(f=>f.fixtureId===model.fixture.id&&f.competition===model.competition&&f.cutoffDate===model.fixture.date);
  if(model.competition==='champions'&&!entry?.rows.length)return ()=>{};
  const node=document.createElement('div');node.innerHTML=refereeHistoryMarkup(entry);const section=node.firstElementChild;

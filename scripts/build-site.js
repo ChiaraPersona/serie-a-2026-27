@@ -7,6 +7,7 @@ const root = path.resolve(__dirname, "..");
 const readingPagesOnly = process.argv.includes('--reading-pages-only');
 const teamPagesOnly = readingPagesOnly || process.argv.includes('--team-pages-only');
 if (!teamPagesOnly && !presentationOnly) require('./apply-official-starter-policy.js').build();
+if (!teamPagesOnly && !presentationOnly && fs.existsSync(path.join(root,'data/sources/reading-referee-match-history.json'))) require('./build-reading-referee-history.js').build();
 const teams = JSON.parse(fs.readFileSync(path.join(root, "data/normalized/teams.json"), "utf8"));
 const esc = value => String(value ?? "").replace(/[&<>\"]/g, character => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[character]));
 const pages = [
@@ -17,16 +18,16 @@ const navigationPages = pages.filter(([,id]) => !["team", "sources"].includes(id
 const navigation = (depth = "", activeId = "") => navigationPages.map(([file, id, label]) => `<a class="page-link${id === activeId ? " active" : ""}" data-page-link="${id}" href="${depth}${file}">${label}</a>`).join("");
 const footer = (depth = "") => `<footer class="site-footer"><div class="site-footer-inner"><div class="site-footer-top"><div class="site-footer-intro"><a class="footer-brand" href="${depth}index.html"><span class="footer-brand-mark"><img src="${depth}assets/images/serie-a-logo-mark.png" alt=""></span><span><strong>Serie A 2026/27</strong><small>Campionato e Coppa Italia</small></span></a><p>Calendario, rose, statistiche e letture della stagione raccolti in un unico spazio.</p><span class="footer-season">Stagione 2026/27</span></div><nav class="footer-nav" aria-label="Navigazione nel footer"><div><strong>Campionato</strong><a href="${depth}index.html">Home</a><a href="${depth}statistiche-squadre.html">Statistiche squadre</a></div><div><strong>Approfondimenti</strong><a href="${depth}lettura.html">Lettura</a><a href="${depth}coppa-italia.html">Coppa Italia</a><a href="${depth}champions-league.html">Champions League</a><a href="${depth}schedina.html">Schedina</a></div></nav></div><div class="site-footer-bottom"><p>Progetto statico indipendente</p><a href="#site-top">Torna su <span aria-hidden="true">↑</span></a></div></div></footer>`;
 const fontLinks = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">';
-const withFonts = input => {const html=applyStyleLinks(input);const prefix=html.match(/href="([^"]*)css\/styles\.css/)?.[1]||"";const policyVersion=html.includes('data-page="betting"')?'20261016-schedina-selection-rows-v2':'20261016-public-policy';return html.replace("</title>", `</title>${fontLinks}`).replace("</head>", `<script src="${prefix}js/public-presentation.js?v=${policyVersion}"></script></head>`)};
+const withFonts = input => {const html=applyStyleLinks(input);const prefix=html.match(/href="([^"]*)css\/(?:styles|base)\.css/)?.[1]||"";const policyVersion=html.includes('data-page="betting"')?'20261016-schedina-selection-rows-v2':'20261016-public-policy';return html.replace("</title>", `</title>${fontLinks}`).replace("</head>", `<script src="${prefix}js/public-presentation.js?v=${policyVersion}"></script></head>`)};
 const version = "20260901-coppa-round16-calendar-v1";
 const homeVersion = "20260919-roma-inter-juventus-fatigue-v1";
 const calendarVersion = "20260919-roma-inter-juventus-fatigue-v1";
 const teamVersion = "20261016-team-editorial-v2";
 const leaderboardVersion = "20261013-md06-results-v1";
 const bettingVersion = "20261016-schedina-recovery-v2";
-const readingVersion = "20261018-initial-render-v1";
+const readingVersion = "20261018-initial-render-v2";
 const cupVersion = "20260919-coppa-events-v1";
-const championsVersion = "20261018-initial-render-v1";
+const championsVersion = "20261018-initial-render-v2";
 const championsMotivationVersion = "20261013-champions-md02-phase12d-v1";
 const fantasyVersion = "20261009-probable-lineups-md06-v2";
 const headToHeadPath = path.join(root, "data/generated/head-to-head/first-leg-2026-27.json");
