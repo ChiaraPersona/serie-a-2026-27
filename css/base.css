@@ -1,5 +1,5 @@
 /* base.css - modulo del sistema grafico condiviso. */
-:root{--bg:#07110f;--surface:#101b18;--surface2:#162521;--line:#284039;--text:#f4f7f5;--muted:#9db0a9;--accent:#27d17f;--gold:#f2c14e;--danger:#ff6b6b;--max:1050px;--page-gutter:24px;--container-width:min(var(--max),calc(100% - 2 * var(--page-gutter)));color-scheme:dark;font-family:Inter,Segoe UI,Arial,sans-serif}
+:root{--bg:#07110f;--surface:#101b18;--surface2:#162521;--line:#284039;--text:#f4f7f5;--muted:#9db0a9;--accent:#27d17f;--gold:#f2c14e;--danger:#ff6b6b;--max:var(--ds-content-max);--page-gutter:24px;--container-width:min(var(--max),calc(100% - 2 * var(--page-gutter)));color-scheme:dark;font-family:Inter,Segoe UI,Arial,sans-serif}
 
 *{box-sizing:border-box}
 
@@ -75,16 +75,16 @@ h1,h2,h3,
   --color-text-muted:var(--muted);
   --color-border:var(--line);
   --color-accent:var(--accent);
-  --space-1:4px;
-  --space-2:8px;
-  --space-3:12px;
-  --space-4:16px;
-  --space-5:24px;
-  --space-6:32px;
-  --space-7:48px;
+  --space-1:var(--ds-space-1);
+  --space-2:var(--ds-space-2);
+  --space-3:var(--ds-space-3);
+  --space-4:var(--ds-space-4);
+  --space-5:var(--ds-space-5);
+  --space-6:var(--ds-space-6);
+  --space-7:var(--ds-space-7);
   --max-width:var(--max);
-  --transition-fast:.18s ease;
-  --transition-base:.28s cubic-bezier(.22,.8,.22,1);
+  --transition-fast:var(--ds-transition-fast);
+  --transition-base:var(--ds-transition-base);
 }
 /* Due superfici glass condivise; applicazione esplicita, senza cambiare i token legacy. */
 :root{

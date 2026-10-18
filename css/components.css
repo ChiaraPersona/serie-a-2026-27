@@ -438,8 +438,8 @@ table tbody tr:focus-within td{
 
 /* Tipografia editoriale: Anton per titoli e banner, Inter per testi e controlli. */
 :root{
-  --font-display:"Anton",Impact,sans-serif;
-  --font-body:"Inter","Segoe UI",Arial,sans-serif;
+  --font-display:var(--ds-font-display);
+  --font-body:var(--ds-font-body);
   font-family:var(--font-body);
   font-optical-sizing:auto;
 }

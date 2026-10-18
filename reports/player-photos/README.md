@@ -2,19 +2,20 @@
 
 - databasePlayers: 533
 - rosterRows: 533
-- scannedImages: 1108
-- photographs: 207
-- associatedPlayers: 152
-- missingPlayers: 381
-- verifiedPhotos: 28
-- verifiedArchivePhotos: 12
-- unverifiedPhotos: 167
+- scannedImages: 1174
+- photographs: 229
+- associatedPlayers: 153
+- missingPlayers: 380
+- verifiedPhotos: 151
+- verifiedArchivePhotos: 46
+- supersededArchivePhotos: 22
+- unverifiedPhotos: 10
 - ambiguousPhotos: 0
-- unassociatedPhotos: 10
+- unassociatedPhotos: 8
 
 Conteggio sulle rose correnti delle 20 squadre in data/teams; data/normalized/players.json è vuoto. Avatar e screenshot esclusi dal conteggio fotografie. Dimensioni, byte, associazioni, licenze dichiarate e percorsi completi sono in inventory.json. I file originali restano al loro posto; nessuna copia o conversione.
 
-Le licenze Wikimedia archiviate non equivalgono automaticamente ad autorizzazione. La revisione per file e gli esiti sono in RIGHTS-REVIEW.md e rights-audit.json; soltanto le approvazioni delle rose correnti entrano nel registro pubblico. I file VERIFIED_ARCHIVE_ONLY restano esclusi dalle pagine operative. Nessuna richiesta a Transfermarkt, download o hotlink. I riferimenti Transfermarkt sono quelli già presenti nel database; i mancanti restano null.
+Le licenze Wikimedia archiviate non equivalgono automaticamente ad autorizzazione. La revisione per file e gli esiti sono in RIGHTS-REVIEW.md e rights-audit.json; soltanto le approvazioni delle rose correnti entrano nel registro pubblico. I file VERIFIED_ARCHIVE_ONLY restano esclusi dalle pagine operative. Nessuna richiesta a Transfermarkt o hotlink. Le copie originali autorizzate e i file precedenti conservati sono documentati in recovery/replacements.json; il builder resta offline. I riferimenti Transfermarkt sono quelli già presenti nel database; i mancanti restano null.
 
 ## Mancanti per squadra
 
@@ -186,7 +187,6 @@ Le licenze Wikimedia archiviate non equivalgono automaticamente ad autorizzazion
 - Kamil Grabara — ID: kamil-grabara — TM: 346551
 - Zeki Çelik — ID: zeki-celik — TM: 251075
 - Andrea Cambiaso — ID: andrea-cambiaso — TM: 459658
-- Jhon Lucumí — ID: jhon-lucumi — TM: 413565
 - Lloyd Kelly — ID: lloyd-kelly — TM: 480116
 - Federico Gatti — ID: federico-gatti — TM: 509022
 - Daniele Rugani — ID: daniele-rugani — TM: 162959
@@ -467,8 +467,6 @@ Usare ID canonico e percorso locale esatto. Inserire la verifica in data/sources
 
 - assets/images/players/milan/santiago-gimenez.png — identità da confermare con ID, nessuna deduzione visiva
 - assets/images/players/wikimedia/bologna/federico-ravaglia.jpg — identità da confermare con ID, nessuna deduzione visiva
-- assets/images/players/wikimedia/bologna/jhon-lucumi.jpg — identità da confermare con ID, nessuna deduzione visiva
-- assets/images/players/wikimedia/fiorentina/simon-sohm.jpg — identità da confermare con ID, nessuna deduzione visiva
 - assets/images/players/wikimedia/inter/davide-frattesi.jpg — identità da confermare con ID, nessuna deduzione visiva
 - assets/images/players/wikimedia/juventus/lois-openda.jpg — identità da confermare con ID, nessuna deduzione visiva
 - assets/images/players/wikimedia/parma/adrian-benedyczak.jpg — identità da confermare con ID, nessuna deduzione visiva
@@ -476,7 +474,7 @@ Usare ID canonico e percorso locale esatto. Inserire la verifica in data/sources
 - assets/images/players/wikimedia/roma/tommaso-baldanzi.jpg — identità da confermare con ID, nessuna deduzione visiva
 - assets/images/players/wikimedia/udinese/simone-pafundi.jpg — identità da confermare con ID, nessuna deduzione visiva
 
-45 fotografie hanno un ID storico documentato ma non presente nelle rose correnti; conservate nell’inventario tecnico.
+50 fotografie hanno un ID storico documentato ma non presente nelle rose correnti; conservate nell’inventario tecnico.
 
 ## File dell’intervento
 
@@ -494,4 +492,4 @@ Usare ID canonico e percorso locale esatto. Inserire la verifica in data/sources
 - output/reports/player-statistics/players-1440.png
 - output/reports/player-statistics/players-390.png
 
-Nessun dato sportivo, immagine originale o altra funzionalità modificati. Nessun commit, push o deploy.
+Nessun dato sportivo, file precedente o grafica modificati. Eventuali nuovi originali verificati sono descritti nel report di recupero. Nessun commit, push o deploy.

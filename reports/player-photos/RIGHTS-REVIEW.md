@@ -1,260 +1,222 @@
-# Verifica fotografica e integrazione
+# Recupero delle fotografie bloccate
 
-- examinedPhotographs: 207
-- liveFileMetadata: 199
-- verifiedPhotographs: 40
-- publishableCurrentPhotos: 28
-- blockedPhotographs: 167
-- missingCurrentPlayers: 381
-- currentPlayersUsingPlaceholder: 505
+Esaminate tutte le **167 fotografie inizialmente bloccate**. Recuperati 157 casi: 134 file esistenti verificati, 22 sostituzioni verificate (19 originali e 3 miniature ufficiali) e 1 duplicato conservato solo in archivio. Restano 10 casi bloccati.
 
-## Coorti separate
+Copertura delle rose correnti: **151/533 (28.33%)**, rispetto a 28/533 (5,25%); **+123 schede** con foto pubblicabile. 382 schede mantengono il segnaposto: 380 senza una foto locale associata e 2 con foto ancora bloccata. 45 foto storiche e un duplicato verificati restano soltanto nell’archivio tecnico.
 
-| Coorte | Esaminate | Verificate | Bloccate |
-|---|---:|---:|---:|
-| CURRENT | 152 | 28 | 124 |
-| HISTORICAL | 45 | 12 | 33 |
-| UNASSOCIATED | 10 | 0 | 10 |
+## Cause dei blocchi
 
-Le foto storiche verificate restano nell’archivio tecnico e non entrano nel registro pubblico delle rose correnti. I 381 mancanti sono giocatori senza alcuna foto locale associata; gli avatar includono anche le foto ancora bloccate. Nessun valore sportivo modificato.
+La tabella usa una causa principale esclusiva per non contare più volte lo stesso file; le cause sovrapposte per ogni file sono conservate in rights-audit.json.
 
-La verifica non presume autorizzazioni in base al provider. Ogni approvazione lega ID canonico, percorso e SHA256 al file originale Commons con SHA1 identico, autore e licenza correnti, immagine P18 del soggetto e nessun conflitto anagrafico. Conservati i metadati completi, incluse restrizioni dichiarate. Uso editoriale informativo, nessuna modifica dei file, visualizzazione proporzionata; autore, pagina e licenza accessibili accanto alla fotografia. I file ridimensionati gia presenti per cui manca una prova binaria dell’origine restano bloccati.
+| Causa principale | Iniziali | Rimanenti |
+|---|---:|---:|
+| File locale non collegato all’originale verificato | 142 | 0 |
+| Licenza non verificata | 5 | 1 |
+| Conflitti anagrafici | 4 | 1 |
+| Identificativi Wikidata non confermati | 4 | 0 |
+| Fotografie non associate | 10 | 8 |
+| Altri problemi | 2 | 0 |
 
-## Identità delle rose correnti
+## Prove utilizzate
 
-- charles-de-ketelaere: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- davide-zappacosta: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- ederson: VERIFIED
-- giacomo-raspadori: VERIFIED
-- gianluca-gaetano: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- gianluca-scamacca: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- isak-hien: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- kamaldeen-sulemana: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- marco-carnesecchi: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- marco-sportiello: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- marten-de-roon: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL, CANONICAL_PHOTO_REFERENCE_MISMATCH, CANONICAL_WIKIDATA_ID_NOT_CONFIRMED
-- nicola-zalewski: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- odilon-kossounou: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- raoul-bellanova: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- sead-kolasinac: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- artem-dovbyk: VERIFIED
-- emil-holm: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL, LICENSE_NOT_VERIFIED
-- federico-bernardeschi: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- jens-odgaard: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- juan-miranda: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- lewis-ferguson: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- nadir-zortea: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- nikola-moro: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- oussama-el-azzouzi: VERIFIED
-- riccardo-orsolini: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- tommaso-pobega: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- torbj-rn-heggem: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- alessandro-deiola: VERIFIED
-- harry-winks: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- mattia-felici: VERIFIED
-- michel-adopo: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- raphael-kofler: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- sebastiano-esposito: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL, CANONICAL_PHOTO_REFERENCE_MISMATCH, CANONICAL_WIKIDATA_ID_NOT_CONFIRMED
-- yerry-mina: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL, LICENSE_NOT_VERIFIED
-- alex-valle: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL, LICENSE_NOT_VERIFIED
-- anastasios-douvikas: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- assane-diao: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- jean-butez: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- kaiki: VERIFIED
-- marc-oliver-kempf: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- martin-baturina: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- mauro-vigorito: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- maxence-caqueret: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- maximo-perrone: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- nico-paz: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- alex-jimenez: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- christ-inao-oulai: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- david-de-gea: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- marco-brescianini: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- oliver-christensen: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- anouar-el-azzouzi: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- anthony-oyono: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- kevin-akpoguma: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- sebastiano-desplanches: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- junior-messias: VERIFIED
-- mario-mitaj: VERIFIED
-- alessandro-bastoni: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- andy-diouf: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- ange-yoan-bonny: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- benjamin-pavard: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- federico-dimarco: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- hakan-calhanoglu: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- henrikh-mkhitaryan: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- john-stones: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- lautaro-martinez: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- luis-henrique: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- manuel-akanji: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- marcus-thuram: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- nicolo-barella: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- piotr-zielinski: VERIFIED
-- yann-bisseck: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- arkadiusz-milik: VERIFIED
-- bremer: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- carlo-pinsoglio: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- douglas-luiz: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- edon-zhegrova: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- francisco-conceicao: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- jeremie-boga: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- kerim-alajbegovic: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- khephren-thuram: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- manuel-locatelli: VERIFIED
-- pierre-kalulu: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- randal-kolo-muani: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- teun-koopmeiners: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- weston-mckennie: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- alfonso-pedraza: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- danilho-doekhi: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- danilo-cataldi: VERIFIED
-- luca-pellegrini: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- mattia-zaccagni: VERIFIED
-- nicolo-rovella: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- willem-geubbels: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- wladimiro-falcone: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- adrien-rabiot: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- alexis-saelemaekers: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- christian-pulisic: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- fikayo-tomori: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- goncalo-ramos: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL, BIRTH_DATE_CONFLICT
-- luka-modric: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL, BIRTH_DATE_CONFLICT
-- mario-gila: BLOCKED — BIRTH_DATE_CONFLICT
-- matteo-gabbia: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- mike-maignan: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL, BIRTH_DATE_CONFLICT
-- pervis-estupinan: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- pietro-terracciano: BLOCKED — FILE_NOT_LINKED_BY_WIKIDATA_P18, CANONICAL_WIKIDATA_ID_NOT_CONFIRMED
-- ruben-loftus-cheek: VERIFIED
-- samuele-ricci: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL, CANONICAL_PHOTO_REFERENCE_MISMATCH, CANONICAL_WIKIDATA_ID_NOT_CONFIRMED
-- strahinja-pavlovic: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- andrea-colpani: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- matteo-pessina: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- patrick-cutrone: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- billy-gilmour: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- david-neres: VERIFIED
-- frank-anguissa: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- giovanni-di-lorenzo: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- leonardo-spinazzola: VERIFIED
-- lorenzo-lucca: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- rasmus-h-jlund: VERIFIED
-- stanislav-lobotka: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- abdoulaye-ndiaye: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- adrian-bernabe: VERIFIED
-- benjamin-cremaschi: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- bryan-cristante: VERIFIED
-- daniele-ghilardi: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- devyne-rensch: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- donyell-malen: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL, FILE_NOT_LINKED_BY_WIKIDATA_P18
-- evan-ndicka: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- konstantinos-koulierakis: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- lorenzo-pellegrini: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- matias-soule: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- mile-svilar: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- paulo-dybala: VERIFIED
-- pierluigi-gollini: VERIFIED
-- santiago-castro: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- cristian-volpato: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- domenico-berardi: VERIFIED
-- kristian-thorstvedt: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- cesare-casadei: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- cristiano-biraghi: VERIFIED
-- duvan-zapata: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- eray-comert: VERIFIED
-- gvidas-gineitis: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- kian-fitz-jim: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- saul-coco: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- maduka-okoye: VERIFIED
-- nicolo-zaniolo: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- unai-gomez: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- akor-adams: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- gianluca-busio: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- john-yeboah: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL, FILE_NOT_LINKED_BY_WIKIDATA_P18
-- lion-lauberbach: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- simon-sohm: VERIFIED
-- thierry-correia: VERIFIED
+- Le miniature recuperate sono legate al file Commons con richieste HTTPS HEAD: ETag Swift MD5 forte, byte, percorso del file e versione temporale coincidono. SHA256 lega la verifica al file locale. Nessuna approvazione per somiglianza visiva. Evidenze: recovery/thumbnail-binding.json. Implementazione ufficiale del digest: https://doc.wikimedia.org/mediawiki-core/1.45.0/php/SwiftFileBackend_8php_source.html .
+- Per le miniature divergenti è stata acquisita una copia dell’originale identificato dall’API, con SHA1 e lunghezza esatti. Per tre originali non accessibili (HTTP 429) sono state acquisite le miniature ufficiali correnti, diverse dalle copie precedenti e verificate con ETag, byte e origine. Tutti i file precedenti restano nei percorsi iniziali. Il registro recovery/replacements.json riporta hash, percorso precedente, nuovo percorso, licenza e data. Gli originali riutilizzati non vengono riscaricati.
+- Identità basata su P18, P180 del file o appartenenza alla categoria esatta dichiarata da P373; collegamento al roster tramite ID Wikidata/Transfermarkt/ESPN, mai tramite nomi approssimativi. Le associazioni fotografiche aggiuntive sono in data/sources/team-pages/player-photo-associations.json.
+- Licenze CC controllate individualmente. Per le dichiarazioni public-domain sono conservati revisione del file, autore, liberatoria e, per i tre file Flickr, la dichiarazione PDM sulla pagina originale e la revisione Flickr archiviata. Le attribuzioni restano accessibili nell’interfaccia esistente.
 
-## Riferimenti storici (45)
+## Casi che richiedono intervento manuale
 
-- berat-djimsiti: VERIFIED — solo archivio tecnico
-- francesco-rossi: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- mitchel-bakker: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- jesper-karlsson: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL, LICENSE_NOT_VERIFIED
-- remo-freuler: VERIFIED — solo archivio tecnico
-- thijs-dallinga: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- gabriele-zappa: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- matteo-prati: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- velizar-iliya-iliev: VERIFIED — solo archivio tecnico
-- alberto-dossena: VERIFIED — solo archivio tecnico
-- alvaro-morata: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- emil-audero: BLOCKED — FILE_NOT_LINKED_BY_WIKIDATA_P18
-- luca-mazzitelli: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- marlon-mustapha: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- matthias-braunoder: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- nicolas-kuhn: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- stefan-posch: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- albert-gudmundsson: VERIFIED — solo archivio tecnico
-- moise-kean: VERIFIED — solo archivio tecnico
-- rolando-mandragora: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- alessandro-vogliacco: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- kristjan-asllani: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- arthur: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- fabio-miretti: VERIFIED — solo archivio tecnico
-- jonathan-david: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- mattia-perin: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL, LICENSE_NOT_VERIFIED
-- michele-di-gregorio: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- alessio-romagnoli: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- boulaye-dia: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- samuel-gigot: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- lameck-banda: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- christopher-nkunku: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- rafael-leao: BLOCKED — FILE_NOT_LINKED_BY_WIKIDATA_P18
-- youssouf-fofana: VERIFIED — solo archivio tecnico
-- andrea-petagna: VERIFIED — solo archivio tecnico
-- keita-balde: VERIFIED — solo archivio tecnico
-- alessandro-circati: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- oliver-s-rensen: VERIFIED — solo archivio tecnico
-- zion-suzuki: VERIFIED — solo archivio tecnico
-- anass-salah-eddine: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL, FILE_NOT_LINKED_BY_WIKIDATA_P18
-- neil-el-aynaoui: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- robinio-vaz: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- marcus-holmgren-pedersen: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- pietro-pellegri: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
-- kingsley-ehizibue: BLOCKED — LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL
+- **assets/images/players/milan/santiago-gimenez.png**: NO_CANONICAL_ID_REFERENCE, NO_ARCHIVED_SOURCE_RECORD, NO_LIVE_FILE_METADATA, LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL, LICENSE_NOT_VERIFIED, AUTHOR_NOT_VERIFIED, FILE_NOT_LINKED_TO_VERIFIED_SUBJECT.
+- **assets/images/players/wikimedia/bologna/federico-ravaglia.jpg**: NO_CANONICAL_ID_REFERENCE, NO_ARCHIVED_SOURCE_RECORD, NO_LIVE_FILE_METADATA, LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL, LICENSE_NOT_VERIFIED, AUTHOR_NOT_VERIFIED, FILE_NOT_LINKED_TO_VERIFIED_SUBJECT.
+- **alex-valle**: LICENSE_NOT_VERIFIED.
+- **assets/images/players/wikimedia/inter/davide-frattesi.jpg**: NO_CANONICAL_ID_REFERENCE, NO_ARCHIVED_SOURCE_RECORD, NO_LIVE_FILE_METADATA, LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL, LICENSE_NOT_VERIFIED, AUTHOR_NOT_VERIFIED, FILE_NOT_LINKED_TO_VERIFIED_SUBJECT.
+- **assets/images/players/wikimedia/juventus/lois-openda.jpg**: NO_CANONICAL_ID_REFERENCE, NO_ARCHIVED_SOURCE_RECORD, NO_LIVE_FILE_METADATA, LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL, LICENSE_NOT_VERIFIED, AUTHOR_NOT_VERIFIED, FILE_NOT_LINKED_TO_VERIFIED_SUBJECT.
+- **pietro-terracciano**: CANONICAL_WIKIDATA_ID_NOT_CONFIRMED, BIRTH_DATE_CONFLICT.
+- **assets/images/players/wikimedia/parma/adrian-benedyczak.jpg**: NO_CANONICAL_ID_REFERENCE, NO_ARCHIVED_SOURCE_RECORD, NO_LIVE_FILE_METADATA, LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL, LICENSE_NOT_VERIFIED, AUTHOR_NOT_VERIFIED, FILE_NOT_LINKED_TO_VERIFIED_SUBJECT.
+- **assets/images/players/wikimedia/roma/angelino.jpg**: NO_CANONICAL_ID_REFERENCE, NO_ARCHIVED_SOURCE_RECORD, NO_LIVE_FILE_METADATA, LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL, LICENSE_NOT_VERIFIED, AUTHOR_NOT_VERIFIED, FILE_NOT_LINKED_TO_VERIFIED_SUBJECT.
+- **assets/images/players/wikimedia/roma/tommaso-baldanzi.jpg**: NO_CANONICAL_ID_REFERENCE, NO_ARCHIVED_SOURCE_RECORD, NO_LIVE_FILE_METADATA, LOCAL_BYTES_NOT_BOUND_TO_VERIFIED_ORIGINAL, LICENSE_NOT_VERIFIED, AUTHOR_NOT_VERIFIED, FILE_NOT_LINKED_TO_VERIFIED_SUBJECT.
+- **assets/images/players/wikimedia/udinese/simone-pafundi.jpg**: NO_CANONICAL_ID_REFERENCE, NO_ARCHIVED_SOURCE_RECORD, FILE_NOT_LINKED_TO_VERIFIED_SUBJECT.
 
-## Dieci file senza associazione originaria
+## Discordanze anagrafiche conservate
 
-- assets/images/players/milan/santiago-gimenez.png: bloccata, nessuna associazione per nome; ricerca separata per hash in unassociated-metadata.json; origine e licenza non documentabili.
-- assets/images/players/wikimedia/bologna/federico-ravaglia.jpg: bloccata, nessuna associazione per nome; ricerca separata per hash in unassociated-metadata.json; origine e licenza non documentabili.
-- assets/images/players/wikimedia/bologna/jhon-lucumi.jpg: bloccata, nessuna associazione per nome; ricerca separata per hash in unassociated-metadata.json; scheda originale trovata, licenza CC BY-SA 4.0, autore Werner100359.
-- assets/images/players/wikimedia/fiorentina/simon-sohm.jpg: bloccata, nessuna associazione per nome; ricerca separata per hash in unassociated-metadata.json; scheda originale trovata, licenza CC BY-SA 4.0, autore Original: Steffen Prößdorf / Derivative work: Danyele.
-- assets/images/players/wikimedia/inter/davide-frattesi.jpg: bloccata, nessuna associazione per nome; ricerca separata per hash in unassociated-metadata.json; origine e licenza non documentabili.
-- assets/images/players/wikimedia/juventus/lois-openda.jpg: bloccata, nessuna associazione per nome; ricerca separata per hash in unassociated-metadata.json; origine e licenza non documentabili.
-- assets/images/players/wikimedia/parma/adrian-benedyczak.jpg: bloccata, nessuna associazione per nome; ricerca separata per hash in unassociated-metadata.json; origine e licenza non documentabili.
-- assets/images/players/wikimedia/roma/angelino.jpg: bloccata, nessuna associazione per nome; ricerca separata per hash in unassociated-metadata.json; origine e licenza non documentabili.
-- assets/images/players/wikimedia/roma/tommaso-baldanzi.jpg: bloccata, nessuna associazione per nome; ricerca separata per hash in unassociated-metadata.json; origine e licenza non documentabili.
-- assets/images/players/wikimedia/udinese/simone-pafundi.jpg: bloccata, nessuna associazione per nome; ricerca separata per hash in unassociated-metadata.json; scheda originale trovata, licenza CC BY-SA 2.0, autore Jimmy Baikovicius from Montevideo, Uruguay.
+- goncalo-ramos: foto VERIFIED; identità fotografica confermata tramite più identificativi indipendenti. La data di nascita nel database non è stata modificata.
+- luka-modric: foto VERIFIED; identità fotografica confermata tramite più identificativi indipendenti. La data di nascita nel database non è stata modificata.
+- mario-gila: foto VERIFIED; identità fotografica confermata tramite più identificativi indipendenti. La data di nascita nel database non è stata modificata.
+- mike-maignan: foto VERIFIED; identità fotografica confermata tramite più identificativi indipendenti. La data di nascita nel database non è stata modificata.
+- pietro-terracciano: foto BLOCKED; identità fotografica non risolta. La data di nascita nel database non è stata modificata.
 
-## Duplicati preesistenti
+## Esito per ciascun caso iniziale
 
-- assets/images/players/wikimedia/fiorentina/simon-sohm.jpg = assets/images/players/wikimedia/venezia/simon-sohm.jpg; ID di riferimento: simon-sohm. Nessuna copia creata o cancellata.
+| File o ID | Esito | Percorso selezionato |
+|---|---|---|
+| assets/images/players/milan/santiago-gimenez.png | BLOCKED | assets/images/players/milan/santiago-gimenez.png |
+| charles-de-ketelaere | RECOVERED | assets/images/players/wikimedia/atalanta/charles-de-ketelaere.jpg |
+| davide-zappacosta | RECOVERED | assets/images/players/wikimedia/atalanta/davide-zappacosta.jpg |
+| francesco-rossi | RECOVERED | assets/images/players/wikimedia/atalanta/francesco-rossi.jpg |
+| gianluca-gaetano | RECOVERED | assets/images/players/wikimedia/atalanta/gianluca-gaetano.png |
+| gianluca-scamacca | REPLACED_WITH_VERIFIED_ORIGINAL | assets/images/players/verified-originals/ffcb042386e794b7e3a7723dc587c1a1121e5d2b.jpg |
+| isak-hien | RECOVERED | assets/images/players/wikimedia/atalanta/isak-hien.jpg |
+| kamaldeen-sulemana | RECOVERED | assets/images/players/wikimedia/atalanta/kamaldeen-sulemana.jpg |
+| marco-carnesecchi | RECOVERED | assets/images/players/wikimedia/atalanta/marco-carnesecchi.jpg |
+| marco-sportiello | RECOVERED | assets/images/players/wikimedia/atalanta/marco-sportiello.jpg |
+| marten-de-roon | REPLACED_WITH_VERIFIED_ORIGINAL | assets/images/players/verified-originals/75768f37787ac14256938ef20cd8d701adbdba7b.jpg |
+| mitchel-bakker | RECOVERED | assets/images/players/wikimedia/atalanta/mitchel-bakker.jpg |
+| nicola-zalewski | RECOVERED | assets/images/players/wikimedia/atalanta/nicola-zalewski.jpg |
+| odilon-kossounou | RECOVERED | assets/images/players/wikimedia/atalanta/odilon-kossounou.jpg |
+| raoul-bellanova | RECOVERED | assets/images/players/wikimedia/atalanta/raoul-bellanova.jpg |
+| sead-kolasinac | RECOVERED | assets/images/players/wikimedia/atalanta/sead-kolasinac.jpg |
+| emil-holm | RECOVERED | assets/images/players/wikimedia/bologna/emil-holm.jpg |
+| federico-bernardeschi | RECOVERED | assets/images/players/wikimedia/bologna/federico-bernardeschi.jpg |
+| assets/images/players/wikimedia/bologna/federico-ravaglia.jpg | BLOCKED | assets/images/players/wikimedia/bologna/federico-ravaglia.jpg |
+| jens-odgaard | REPLACED_WITH_VERIFIED_ORIGINAL | assets/images/players/verified-originals/89133597189dc4e595372c888e8a31e38417daab.jpg |
+| jesper-karlsson | RECOVERED | assets/images/players/wikimedia/bologna/jesper-karlsson.jpg |
+| jhon-lucumi | RECOVERED | assets/images/players/wikimedia/bologna/jhon-lucumi.jpg |
+| juan-miranda | RECOVERED | assets/images/players/wikimedia/bologna/juan-miranda.jpg |
+| lewis-ferguson | RECOVERED | assets/images/players/wikimedia/bologna/lewis-ferguson.jpg |
+| nadir-zortea | RECOVERED | assets/images/players/wikimedia/bologna/nadir-zortea.jpg |
+| nikola-moro | RECOVERED | assets/images/players/wikimedia/bologna/nikola-moro.jpg |
+| riccardo-orsolini | RECOVERED | assets/images/players/wikimedia/bologna/riccardo-orsolini.jpg |
+| thijs-dallinga | REPLACED_WITH_VERIFIED_ORIGINAL | assets/images/players/verified-originals/187b35d6e3c463e154cee6a28a9cea309cce7b02.jpg |
+| tommaso-pobega | RECOVERED | assets/images/players/wikimedia/bologna/tommaso-pobega.jpg |
+| torbj-rn-heggem | RECOVERED | assets/images/players/wikimedia/bologna/torbj-rn-heggem.jpg |
+| gabriele-zappa | RECOVERED | assets/images/players/wikimedia/cagliari/gabriele-zappa.jpg |
+| harry-winks | RECOVERED | assets/images/players/wikimedia/cagliari/harry-winks.jpg |
+| matteo-prati | RECOVERED | assets/images/players/wikimedia/cagliari/matteo-prati.jpg |
+| michel-adopo | REPLACED_WITH_VERIFIED_ORIGINAL | assets/images/players/verified-originals/2d4ca32460c2e7434cd2e9352c944ecd3f76f314.png |
+| raphael-kofler | RECOVERED | assets/images/players/wikimedia/cagliari/raphael-kofler.jpg |
+| sebastiano-esposito | RECOVERED | assets/images/players/wikimedia/cagliari/sebastiano-esposito.jpg |
+| yerry-mina | RECOVERED | assets/images/players/wikimedia/cagliari/yerry-mina.jpg |
+| alex-valle | BLOCKED | assets/images/players/wikimedia/como/alex-valle.jpg |
+| alvaro-morata | RECOVERED | assets/images/players/wikimedia/como/alvaro-morata.jpg |
+| anastasios-douvikas | RECOVERED | assets/images/players/wikimedia/como/anastasios-douvikas.jpg |
+| assane-diao | RECOVERED | assets/images/players/wikimedia/como/assane-diao.jpg |
+| emil-audero | RECOVERED | assets/images/players/wikimedia/como/emil-audero.png |
+| jean-butez | RECOVERED | assets/images/players/wikimedia/como/jean-butez.jpg |
+| luca-mazzitelli | RECOVERED | assets/images/players/wikimedia/como/luca-mazzitelli.jpg |
+| marc-oliver-kempf | RECOVERED | assets/images/players/wikimedia/como/marc-oliver-kempf.jpg |
+| marlon-mustapha | RECOVERED | assets/images/players/wikimedia/como/marlon-mustapha.jpg |
+| martin-baturina | RECOVERED | assets/images/players/wikimedia/como/martin-baturina.jpg |
+| matthias-braunoder | RECOVERED | assets/images/players/wikimedia/como/matthias-braunoder.jpg |
+| mauro-vigorito | RECOVERED | assets/images/players/wikimedia/como/mauro-vigorito.jpg |
+| maxence-caqueret | RECOVERED | assets/images/players/wikimedia/como/maxence-caqueret.jpg |
+| maximo-perrone | RECOVERED | assets/images/players/wikimedia/como/maximo-perrone.jpg |
+| nico-paz | RECOVERED | assets/images/players/wikimedia/como/nico-paz.jpg |
+| nicolas-kuhn | RECOVERED | assets/images/players/wikimedia/como/nicolas-kuhn.jpg |
+| stefan-posch | RECOVERED | assets/images/players/wikimedia/como/stefan-posch.jpg |
+| alex-jimenez | RECOVERED | assets/images/players/wikimedia/fiorentina/alex-jimenez.png |
+| christ-inao-oulai | RECOVERED | assets/images/players/wikimedia/fiorentina/christ-inao-oulai.jpg |
+| david-de-gea | RECOVERED | assets/images/players/wikimedia/fiorentina/david-de-gea.jpg |
+| marco-brescianini | RECOVERED | assets/images/players/wikimedia/fiorentina/marco-brescianini.jpg |
+| oliver-christensen | RECOVERED | assets/images/players/wikimedia/fiorentina/oliver-christensen.jpg |
+| rolando-mandragora | REPLACED_WITH_VERIFIED_ORIGINAL | assets/images/players/verified-originals/140bd1d8788a6281d7561b41fbf1de528491f7bd.png |
+| simon-sohm | VERIFIED_DUPLICATE_ARCHIVE | assets/images/players/wikimedia/fiorentina/simon-sohm.jpg |
+| anouar-el-azzouzi | REPLACED_WITH_VERIFIED_ORIGINAL | assets/images/players/verified-originals/c41f1a17b03d4745c75c2977417a958e58fe9db6.jpg |
+| anthony-oyono | RECOVERED | assets/images/players/wikimedia/frosinone/anthony-oyono.jpg |
+| kevin-akpoguma | REPLACED_WITH_VERIFIED_ORIGINAL | assets/images/players/verified-originals/d7f5b2cb0bb2ce2b9eeed6aac80f3cf5c0edced8.jpg |
+| sebastiano-desplanches | RECOVERED | assets/images/players/wikimedia/frosinone/sebastiano-desplanches.jpg |
+| alessandro-vogliacco | RECOVERED | assets/images/players/wikimedia/genoa/alessandro-vogliacco.jpg |
+| alessandro-bastoni | RECOVERED | assets/images/players/wikimedia/inter/alessandro-bastoni.jpg |
+| andy-diouf | RECOVERED | assets/images/players/wikimedia/inter/andy-diouf.jpg |
+| ange-yoan-bonny | RECOVERED | assets/images/players/wikimedia/inter/ange-yoan-bonny.jpg |
+| benjamin-pavard | RECOVERED | assets/images/players/wikimedia/inter/benjamin-pavard.jpg |
+| assets/images/players/wikimedia/inter/davide-frattesi.jpg | BLOCKED | assets/images/players/wikimedia/inter/davide-frattesi.jpg |
+| federico-dimarco | RECOVERED | assets/images/players/wikimedia/inter/federico-dimarco.jpg |
+| hakan-calhanoglu | REPLACED_WITH_VERIFIED_ORIGINAL | assets/images/players/verified-originals/29a98571a70b6d6337ecbc63ad00cdb8ff3197d0.jpg |
+| henrikh-mkhitaryan | RECOVERED | assets/images/players/wikimedia/inter/henrikh-mkhitaryan.jpg |
+| john-stones | RECOVERED | assets/images/players/wikimedia/inter/john-stones.jpg |
+| kristjan-asllani | RECOVERED | assets/images/players/wikimedia/inter/kristjan-asllani.jpg |
+| lautaro-martinez | RECOVERED | assets/images/players/wikimedia/inter/lautaro-martinez.jpg |
+| luis-henrique | RECOVERED | assets/images/players/wikimedia/inter/luis-henrique.jpg |
+| manuel-akanji | REPLACED_WITH_VERIFIED_ORIGINAL | assets/images/players/verified-originals/24986a8406ed69a842cfb99fe80a7539e5389ce7.jpg |
+| marcus-thuram | RECOVERED | assets/images/players/wikimedia/inter/marcus-thuram.jpg |
+| nicolo-barella | RECOVERED | assets/images/players/wikimedia/inter/nicolo-barella.jpg |
+| yann-bisseck | RECOVERED | assets/images/players/wikimedia/inter/yann-bisseck.jpg |
+| arthur | RECOVERED | assets/images/players/wikimedia/juventus/arthur.jpg |
+| bremer | RECOVERED | assets/images/players/wikimedia/juventus/bremer.jpg |
+| carlo-pinsoglio | REPLACED_WITH_VERIFIED_ORIGINAL | assets/images/players/verified-originals/72721a9512ef1916deaefcf5230cf80534ba37c5.jpg |
+| douglas-luiz | RECOVERED | assets/images/players/wikimedia/juventus/douglas-luiz.jpg |
+| edon-zhegrova | RECOVERED | assets/images/players/wikimedia/juventus/edon-zhegrova.jpg |
+| francisco-conceicao | RECOVERED | assets/images/players/wikimedia/juventus/francisco-conceicao.jpg |
+| jeremie-boga | RECOVERED | assets/images/players/wikimedia/juventus/jeremie-boga.jpg |
+| jonathan-david | RECOVERED | assets/images/players/wikimedia/juventus/jonathan-david.jpg |
+| kerim-alajbegovic | RECOVERED | assets/images/players/wikimedia/juventus/kerim-alajbegovic.jpg |
+| khephren-thuram | RECOVERED | assets/images/players/wikimedia/juventus/khephren-thuram.jpg |
+| assets/images/players/wikimedia/juventus/lois-openda.jpg | BLOCKED | assets/images/players/wikimedia/juventus/lois-openda.jpg |
+| mattia-perin | RECOVERED | assets/images/players/wikimedia/juventus/mattia-perin.jpg |
+| michele-di-gregorio | RECOVERED | assets/images/players/wikimedia/juventus/michele-di-gregorio.jpg |
+| pierre-kalulu | RECOVERED | assets/images/players/wikimedia/juventus/pierre-kalulu.jpg |
+| randal-kolo-muani | RECOVERED | assets/images/players/wikimedia/juventus/randal-kolo-muani.jpg |
+| teun-koopmeiners | RECOVERED | assets/images/players/wikimedia/juventus/teun-koopmeiners.jpg |
+| weston-mckennie | RECOVERED | assets/images/players/wikimedia/juventus/weston-mckennie.jpg |
+| alessio-romagnoli | REPLACED_WITH_VERIFIED_ORIGINAL | assets/images/players/verified-originals/c57f149052fb3468d776829ae5e866bafb407409.png |
+| alfonso-pedraza | RECOVERED | assets/images/players/wikimedia/lazio/alfonso-pedraza.jpg |
+| boulaye-dia | RECOVERED | assets/images/players/wikimedia/lazio/boulaye-dia.jpg |
+| danilho-doekhi | RECOVERED | assets/images/players/wikimedia/lazio/danilho-doekhi.jpg |
+| luca-pellegrini | RECOVERED | assets/images/players/wikimedia/lazio/luca-pellegrini.jpg |
+| nicolo-rovella | RECOVERED | assets/images/players/wikimedia/lazio/nicolo-rovella.jpg |
+| samuel-gigot | RECOVERED | assets/images/players/wikimedia/lazio/samuel-gigot.jpg |
+| lameck-banda | RECOVERED | assets/images/players/wikimedia/lecce/lameck-banda.jpg |
+| willem-geubbels | REPLACED_WITH_VERIFIED_ORIGINAL | assets/images/players/verified-originals/b5cca018883a2415ffc86f5fe8e24e2a089cccd8.jpg |
+| wladimiro-falcone | RECOVERED | assets/images/players/wikimedia/lecce/wladimiro-falcone.jpg |
+| adrien-rabiot | RECOVERED | assets/images/players/wikimedia/milan/adrien-rabiot.jpg |
+| alexis-saelemaekers | RECOVERED | assets/images/players/wikimedia/milan/alexis-saelemaekers.jpg |
+| christian-pulisic | RECOVERED | assets/images/players/wikimedia/milan/christian-pulisic.jpg |
+| christopher-nkunku | RECOVERED | assets/images/players/wikimedia/milan/christopher-nkunku.jpg |
+| fikayo-tomori | RECOVERED | assets/images/players/wikimedia/milan/fikayo-tomori.jpg |
+| goncalo-ramos | RECOVERED | assets/images/players/wikimedia/milan/goncalo-ramos.jpg |
+| luka-modric | RECOVERED | assets/images/players/wikimedia/milan/luka-modric.jpg |
+| mario-gila | RECOVERED | assets/images/players/wikimedia/milan/mario-gila.png |
+| matteo-gabbia | RECOVERED | assets/images/players/wikimedia/milan/matteo-gabbia.jpg |
+| mike-maignan | RECOVERED | assets/images/players/wikimedia/milan/mike-maignan.jpg |
+| pervis-estupinan | RECOVERED | assets/images/players/wikimedia/milan/pervis-estupinan.jpg |
+| pietro-terracciano | BLOCKED | assets/images/players/wikimedia/milan/pietro-terracciano.jpg |
+| rafael-leao | RECOVERED | assets/images/players/wikimedia/milan/rafael-leao.jpg |
+| samuele-ricci | RECOVERED | assets/images/players/wikimedia/milan/samuele-ricci.jpg |
+| strahinja-pavlovic | RECOVERED | assets/images/players/wikimedia/milan/strahinja-pavlovic.jpg |
+| andrea-colpani | RECOVERED | assets/images/players/wikimedia/monza/andrea-colpani.jpg |
+| matteo-pessina | RECOVERED | assets/images/players/wikimedia/monza/matteo-pessina.jpg |
+| patrick-cutrone | RECOVERED | assets/images/players/wikimedia/monza/patrick-cutrone.png |
+| billy-gilmour | REPLACED_WITH_VERIFIED_ORIGINAL | assets/images/players/verified-originals/5c37103ace116c80c5809fe0e24d7ca263b3a0a4.jpg |
+| frank-anguissa | RECOVERED | assets/images/players/wikimedia/napoli/frank-anguissa.jpg |
+| giovanni-di-lorenzo | RECOVERED | assets/images/players/wikimedia/napoli/giovanni-di-lorenzo.jpg |
+| lorenzo-lucca | RECOVERED | assets/images/players/wikimedia/napoli/lorenzo-lucca.jpg |
+| stanislav-lobotka | REPLACED_WITH_VERIFIED_ORIGINAL | assets/images/players/verified-originals/97fe0e85d839ca0a2ed49251b8a5492c975ac2e6.jpg |
+| abdoulaye-ndiaye | RECOVERED | assets/images/players/wikimedia/parma/abdoulaye-ndiaye.png |
+| assets/images/players/wikimedia/parma/adrian-benedyczak.jpg | BLOCKED | assets/images/players/wikimedia/parma/adrian-benedyczak.jpg |
+| alessandro-circati | RECOVERED | assets/images/players/wikimedia/parma/alessandro-circati.jpg |
+| benjamin-cremaschi | RECOVERED | assets/images/players/wikimedia/parma/benjamin-cremaschi.jpg |
+| anass-salah-eddine | RECOVERED | assets/images/players/wikimedia/roma/anass-salah-eddine.jpg |
+| assets/images/players/wikimedia/roma/angelino.jpg | BLOCKED | assets/images/players/wikimedia/roma/angelino.jpg |
+| daniele-ghilardi | RECOVERED | assets/images/players/wikimedia/roma/daniele-ghilardi.jpg |
+| devyne-rensch | REPLACED_WITH_VERIFIED_ORIGINAL | assets/images/players/verified-originals/f8acf3b372f2b8d6e08d64361a9bb10d31f8bfef.jpg |
+| donyell-malen | REPLACED_WITH_VERIFIED_ORIGINAL | assets/images/players/verified-originals/e0f409ee30fdf835296e6a7bbc1e0152718880e3.jpg |
+| evan-ndicka | RECOVERED | assets/images/players/wikimedia/roma/evan-ndicka.jpg |
+| konstantinos-koulierakis | REPLACED_WITH_VERIFIED_DERIVATIVE | assets/images/players/verified-derivatives/9287040cd894baf64d07613afafbc25ee6c94b8eb021a96b343cf2e6f6aee756.jpg |
+| lorenzo-pellegrini | RECOVERED | assets/images/players/wikimedia/roma/lorenzo-pellegrini.jpg |
+| matias-soule | RECOVERED | assets/images/players/wikimedia/roma/matias-soule.jpg |
+| mile-svilar | RECOVERED | assets/images/players/wikimedia/roma/mile-svilar.jpg |
+| neil-el-aynaoui | RECOVERED | assets/images/players/wikimedia/roma/neil-el-aynaoui.jpg |
+| robinio-vaz | REPLACED_WITH_VERIFIED_ORIGINAL | assets/images/players/verified-originals/6b780f6fcd3f11e813b4df5fd1bebcfd7e70a97d.png |
+| santiago-castro | RECOVERED | assets/images/players/wikimedia/roma/santiago-castro.jpg |
+| assets/images/players/wikimedia/roma/tommaso-baldanzi.jpg | BLOCKED | assets/images/players/wikimedia/roma/tommaso-baldanzi.jpg |
+| cristian-volpato | RECOVERED | assets/images/players/wikimedia/sassuolo/cristian-volpato.jpg |
+| kristian-thorstvedt | RECOVERED | assets/images/players/wikimedia/sassuolo/kristian-thorstvedt.jpg |
+| cesare-casadei | RECOVERED | assets/images/players/wikimedia/torino/cesare-casadei.jpg |
+| duvan-zapata | RECOVERED | assets/images/players/wikimedia/torino/duvan-zapata.jpg |
+| gvidas-gineitis | RECOVERED | assets/images/players/wikimedia/torino/gvidas-gineitis.jpg |
+| kian-fitz-jim | RECOVERED | assets/images/players/wikimedia/torino/kian-fitz-jim.jpg |
+| marcus-holmgren-pedersen | RECOVERED | assets/images/players/wikimedia/torino/marcus-holmgren-pedersen.jpg |
+| pietro-pellegri | RECOVERED | assets/images/players/wikimedia/torino/pietro-pellegri.jpg |
+| saul-coco | REPLACED_WITH_VERIFIED_ORIGINAL | assets/images/players/verified-originals/5cc0aebe3d761178aff1ead1eb09dd1e07312573.jpg |
+| kingsley-ehizibue | REPLACED_WITH_VERIFIED_DERIVATIVE | assets/images/players/verified-derivatives/bf5a7c90d15137b7a779b851382c2c1707197d984de05957aaf802157e498366.jpg |
+| nicolo-zaniolo | RECOVERED | assets/images/players/wikimedia/udinese/nicolo-zaniolo.jpg |
+| assets/images/players/wikimedia/udinese/simone-pafundi.jpg | BLOCKED | assets/images/players/wikimedia/udinese/simone-pafundi.jpg |
+| unai-gomez | RECOVERED | assets/images/players/wikimedia/udinese/unai-gomez.jpg |
+| akor-adams | RECOVERED | assets/images/players/wikimedia/venezia/akor-adams.jpg |
+| gianluca-busio | REPLACED_WITH_VERIFIED_DERIVATIVE | assets/images/players/verified-derivatives/3561de7d4dbefe920d3480df602654242952df2b281066aa2458d2b852c3d3d4.jpg |
+| john-yeboah | RECOVERED | assets/images/players/wikimedia/venezia/john-yeboah.jpg |
+| lion-lauberbach | RECOVERED | assets/images/players/wikimedia/venezia/lion-lauberbach.jpg |
 
-## Evidenze
+I file sostituiti restano nell’archivio con stato SUPERSEDED_ARCHIVE_ONLY e non sono pubblicati. Non sono inclusi tra i casi ancora privi di una soluzione fotografica: il loro originale verificato è indicato nella stessa riga. Il duplicato di Simon Sohm è conservato e non incrementa il numero delle schede coperte. Le foto storiche non vengono inserite nelle rose correnti.
 
-- rights-audit.json: esito per ciascuno dei 207 file, motivi, licenza e verifiche.
-- live-metadata.json: 199 schede file e 196 entità Wikidata; errors conserva i primi HTTP 429, risolti dalla seconda passata.
-- unassociated-metadata.json: ricerca dei dieci hash non associati.
-- inventory.json: inventario offline, digest e dimensioni.
-- data/sources/team-pages/player-photo-approvals.json: approvazioni verificabili per le sole rose correnti.
-
-Nessun download di immagini, duplicazione, commit, push o deploy.
-
-## Verifiche finali
-
-- node scripts/test-player-photo-registry.mjs: PASS (ID, hash, licenze, attribuzioni, percorsi locali e fallback).
-- node scripts/check-player-photos-browser.cjs: PASS a 1440 e 390 pixel; 533 righe delle rose e tutte le 28 foto approvate controllate su desktop, campione Atalanta su mobile. Verificati Rosa completa, dettagli, comparatori, classifica, crediti e guasto immagine. Evidenze: browser.json, roster-1440.png, roster-390.png, comparator-1440.png, comparator-390.png.
-- node scripts/build-site.js --presentation-only: completato.
-- node scripts/test-css-modules.js: PASS.
-- integrity.json: PASS, tutti i 207 originali invariati, nessun file immagine aggiunto, nessuna modifica ai dati sportivi.
-- I test generali team-pages/test.js e test-app-modules.mjs restano bloccati rispettivamente sui contratti preesistenti “Partite concluse” delle Letture e “prime sei giornate” della Schedina; non sono attestati come superati.
+Nessuna modifica a statistiche, rose, previsioni, JavaScript di interfaccia, CSS o grafica; nessuna cancellazione di fotografie, commit, push o deploy. Verifiche riproducibili con scripts/test-player-photo-registry.mjs e scripts/check-player-photos-browser.cjs; esiti e schermate in browser.json. Integrità dei file precedenti e del progetto in recovery/integrity.json.
