@@ -408,3 +408,13 @@ body[data-reading-detail-theme="champions"] .rf-dashboard{--rf-blue:#9ac5ee;--rf
 /* Lineup state belongs to each existing player row, including when filters are off. */
 .rd-shell .rd-row-lineup{display:block;font-size:9px;line-height:1.3;color:var(--rd-muted);font-weight:450}
 @media(max-width:600px){.rd-shell .rd-row-lineup{font-size:8px}}
+/* The shared card rule above has !important and :is() takes the specificity of
+   its deepest selector. Override only Discipline's outer wrappers; transparent
+   borders retain their existing box geometry and all inter-section spacing. */
+.rd-shell #lettura-disciplina>.rd-section-content>:is(.prediction-booked-panel,.reading-referee-assignment.rf-panel,.champions-player-predictions){
+  background:transparent!important;
+  border-color:transparent!important;
+  box-shadow:none!important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+}
