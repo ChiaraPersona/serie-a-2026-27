@@ -27,4 +27,8 @@ assert.equal(source.teams.find(t=>t.teamId==='borussia-dortmund').starters.find(
 assert.equal(source.teams.find(t=>t.teamId==='real-madrid').starters.find(p=>p.sourceName==='Bellingham').playerId,'jude-bellingham');
 assert.equal(projectDocumentedTeam({teamId:'liverpool',players:[],lineupVerified:true,benchVerified:false}).status,'blocked-documentation-or-minutes');
 for(const f of output.fixtures){const html=md3ProbableMarkup(f);assert(!/https?:|sourceUrl|provenienza|Tiri \/90|foto|<img/.test(html));assert(html.includes('non ufficiali'));assert.equal((html.match(/data-md3-probable-player/g)||[]).length,22);}
+assert.equal(estimateExpectedMinutes([],'starter','2026-10-20T19:00:00Z').expectedMinutes,null);
+const minuteRecords=[52,61,70].map((minutes,i)=>({starter:true,namedBench:false,minutes,date:`2026-10-${10+i}`,retrievedAt:'2026-10-15T10:00:00Z',matchId:String(i),competitionType:'domestic-league',competitionCode:'test',season:'2026-27',sourceUrl:'internal-test'}));
+assert.equal(estimateExpectedMinutes(minuteRecords,'starter','2026-10-20T19:00:00Z').expectedMinutes,61);
+for(const t of teams){if(t.diagnosticSubset){assert.equal(t.diagnosticSubset.status,'NOT_AN_OPERATIONAL_FORECAST_INCOMPLETE_STARTER_SUBSET');assert.equal(t.diagnosticSubset.sotExceedsShots,0);}else if(t.collectiveOnly)assert.equal(t.diagnosticSubset,null);}
 console.log('OK 18/36/396; exact aliases, homonyms, conditional minutes, doubts, four excluded teams, unchanged reconciliation gate, no diagnostic rates published.');
