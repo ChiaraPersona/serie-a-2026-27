@@ -3,7 +3,7 @@ import vm from 'node:vm';
 import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
 import {individualPlayers} from '../../js/pages/reading-detail/evidence.mjs';
-import {benchContext} from '../../js/pages/reading-detail/bench-contract.mjs';
+import {starterScenarioContext} from '../../js/pages/reading-detail/bench-contract.mjs';
 
 // Read-only seam: run the existing individual-player branch in a private module.
 // No exports, coefficients or files of the shared engine are changed.
@@ -32,6 +32,12 @@ export function currentPlayerEvidence(matches,teamId,target){
   row.starterScenarioRecent={recentTeamMatches:starts.length,recentAppearances:starts.length,recentStarts:starts.length,recentAverageMinutes:starts.length?starts.reduce((n,p)=>n+p.minutes,0)/starts.length:null};
  }
  return aggregate;
+}
+
+export function reconcileStarterScenarioRows(rows,projection,profile){
+ engine.readingReconcilePlayerVolumes(rows,'projectedShots',projection.shotsTotal.central,null,profile);
+ engine.readingReconcilePlayerVolumes(rows,'projectedShotsOnTarget',projection.shotsOnTarget.central,'projectedShots',profile);
+ return rows;
 }
 
 export function buildStarterScenarioFixture({model,evidence},{squads,styles,volumes,matchupProfiles,matches}){
@@ -70,12 +76,11 @@ export function buildStarterScenarioFixture({model,evidence},{squads,styles,volu
   const matchup=engine.readingPlayerMatchup(candidate,styles.get(input.team.id),styles.get(sideData[1-side].team.id),volumes.get(sideData[1-side].team.id),side?'away':'home',shotBase,sotBase,matchupProfiles.get(sideData[1-side].team.id),projection);
   const q={name:member.name,playerId:p.id,teamId:input.team.id,role:member.role,detailedRole:member.detailedRole,baselineShots90:Number(shot.value.toFixed(2)),baselineShotsOnTarget90:Number(sot.value.toFixed(2)),stabilizedShots90:Number(shotBase.toFixed(2)),stabilizedShotsOnTarget90:Number(sotBase.toFixed(2)),...matchup,teamProfileRole:matchup.teamProfileRole,expectedMinutes:minutes.expectedMinutes,minutesFactor:minutes.minutesFactor,expectedMinutesEvidence:minutes.evidence,playerBaselineStability:shotStability,playerSotBaselineStability:sotStability,projectedShots:shotBase*matchup.shotsMatchupFactor*minutes.minutesFactor,projectedShotsOnTarget:sotBase*matchup.shotsOnTargetMatchupFactor*minutes.minutesFactor};
   const scratch=originals.map(original=>original===slot?q:{...clone(original),projectedShots:original.playerBaselineStability.value*original.shotsMatchupFactor*original.minutesFactor,projectedShotsOnTarget:Math.min(original.playerBaselineStability.value,original.playerSotBaselineStability.value)*original.shotsOnTargetMatchupFactor*original.minutesFactor});
-  engine.readingReconcilePlayerVolumes(scratch,'projectedShots',projection.shotsTotal.central,null,matchupProfiles.get(input.team.id));
-  engine.readingReconcilePlayerVolumes(scratch,'projectedShotsOnTarget',projection.shotsOnTarget.central,'projectedShots',matchupProfiles.get(input.team.id));
+  reconcileStarterScenarioRows(scratch,projection,matchupProfiles.get(input.team.id));
   if(!finite(q.projectedShots)||!finite(q.projectedShotsOnTarget)||!(q.expectedMinutes>0)){row.reason='individual-engine-output-unavailable';continue;}
   Object.assign(row,{projectedShots:q.projectedShots,projectedShotsOnTarget:q.projectedShotsOnTarget,assumedStarterMinutes:q.expectedMinutes,role:q.role,detailedRole:q.detailedRole,replacedSlotPlayerId:slot.playerId,
    evidence:{historicalMinutes:history?.minutes??null,currentMinutes:current?.minutes??null,baselineShots90:q.baselineShots90,baselineSot90:q.baselineShotsOnTarget90,stabilizedShots90:q.stabilizedShots90,stabilizedSot90:q.stabilizedShotsOnTarget90,shotsMatchupFactor:q.shotsMatchupFactor,sotMatchupFactor:q.shotsOnTargetMatchupFactor,teamScaling:q.teamScaling,minutes:q.expectedMinutesEvidence,matchup:q.matchupEvidence,allocationClass:q.allocationClass}});
  }
  if(snapshot()!==original)throw new Error('Starter scenario changed original inputs');
- return {fixtureId:model.fixture.id,competition:'serie-a',context:benchContext(model,evidence),players:rows,engineVersion:engine.ENGINE_VERSION};
+ return {fixtureId:model.fixture.id,competition:'serie-a',context:starterScenarioContext(model,evidence),players:rows,engineVersion:engine.ENGINE_VERSION};
 }
