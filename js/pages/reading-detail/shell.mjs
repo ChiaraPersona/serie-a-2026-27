@@ -54,7 +54,7 @@ function classify(node){
   return null;
 }
 
-function heroMarkup(model){
+export function heroMarkup(model){
   const label=model.theme==='champions'?'UEFA Champions League':'Serie A';
   const date=model.fixture.date?new Intl.DateTimeFormat('it-IT',{day:'numeric',month:'long',year:'numeric',timeZone:'Europe/Rome'}).format(new Date(model.fixture.date+'T12:00:00Z')):'Data N/D';
   const side=(team,position)=>`<div class="rd-team rd-team--${position}">${team.logo?`<img src="${escape(team.logo)}" alt="" width="100" height="100">`:''}<span class="rd-side">${position==='home'?'Casa':'Ospite'}</span><span class="rd-team-name">${escape(team.name)}</span></div>`;

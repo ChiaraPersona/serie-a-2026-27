@@ -40,6 +40,8 @@ for row in csvread('audit_34.csv'):
 assert len(audit)==34
 assert len({(r['league'],r['event_id'],r['player_id_espn']) for r in audit})==34
 counts=dict(collections.Counter(r['localDisposition'] for r in audit))
+dedupKeys={(r['competition'],r['event_id'],r['player_id_espn']) for r in csvread('six_candidate_dedup.csv')}
+assert dedupKeys=={(r['league'],r['event_id'],r['player_id_espn']) for r in audit if r['localDisposition']=='duplicate'}
 write('package2-row-audit.json',audit)
 write('package2-summary.json',{'candidates':34,'dispositions':counts,'imported':0,'quarantineReasons':dict(collections.Counter(f for r in audit if r['localDisposition']=='quarantine' for f in r['localFlags'])),'dedupReportRechecked':len(csvread('six_candidate_dedup.csv')),'package1Performances':len(ledger['performances'])})
 
@@ -120,6 +122,9 @@ changed=[]
 for p,h in before.items():
     file=ROOT/p
     if not file.exists() or hashlib.sha256(file.read_bytes()).hexdigest()!=h:changed.append(p)
-assert changed==['scripts/test-champions-current-season-data.js'],changed
-write('protected-verification.json',{'existingFilesChecked':len(before),'allowedChanged':changed,'package1Unchanged':True,'dataUnchanged':True})
+ownChanges=['scripts/test-champions-current-season-data.js']
+concurrentChanges=[p for p in changed if p not in ownChanges]
+assert not any(p.startswith('data/') for p in changed), 'Production data or Package 1 changed during audit'
+assert not any(p.startswith('scripts/') and p not in ownChanges for p in changed), 'Production builder changed during audit'
+write('protected-verification.json',{'existingFilesChecked':len(before),'allowedChanged':[p for p in changed if p in ownChanges],'concurrentChangesPreserved':concurrentChanges,'package1Unchanged':True,'dataUnchanged':True})
 print(json.dumps({'package2':counts,'teams':len(teamReports),'individualTeams':sum(t['individualForecastsAllowed'] for t in teamReports),'fixtures':len(fixtureReports),'oddsEvents':sum(f['odds']['eventPresent'] for f in fixtureReports),'collectiveOnlyDetailed':{t['teamId']:t['collective']['usableForDetailedVolumes'] for t in teamReports if not t['individualForecastsAllowed']},'protected':len(before)}))

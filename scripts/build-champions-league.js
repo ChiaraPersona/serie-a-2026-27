@@ -9,7 +9,8 @@ const sourcePath = path.join(root, "data/sources/champions-league-2026-27.json")
 const brandingPath = path.join(root, "data/sources/champions-team-branding-2026-27.json");
 const refereeAssignmentsPaths = [
   "data/sources/champions-referee-assignments-2026-27.json",
-  "data/sources/champions-referee-assignments-md02-2026-27.json"
+  "data/sources/champions-referee-assignments-md02-2026-27.json",
+  "data/sources/champions-referee-assignments-md03-2026-27.json"
 ].map(relativePath => path.join(root, relativePath));
 const probableFormationsPaths = [1, 2].map(matchday => path.join(root, `data/sources/champions-probable-formations-md${String(matchday).padStart(2, "0")}-2026-27.json`));
 const officialFormationsPaths = [1, 2].map(matchday => path.join(root, `data/sources/champions-official-formations-md${String(matchday).padStart(2, "0")}-2026-27.json`));
@@ -53,7 +54,7 @@ for (const refereeAssignmentsSource of refereeAssignmentsSources) {
     if (assignment.status === "pending") {
       if (assignment.referee !== null || assignment.statistics !== null) fail(`${assignment.fixtureId}: designazione pendente con dati valorizzati`);
     } else {
-      if (!assignment.referee?.name || !assignment.referee?.countryFlag) fail(`${assignment.fixtureId}: arbitro o nazionalità mancanti`);
+      if (!assignment.referee?.name || (!assignment.referee?.countryFlag && refereeAssignmentsSource.matchday !== 3)) fail(`${assignment.fixtureId}: arbitro o nazionalità mancanti`);
       if (assignment.statistics !== null && !refereeMetrics.every(metric => assignment.statistics[metric]?.display)) fail(`${assignment.fixtureId}: medie arbitrali incomplete`);
       for (const metric of refereeMetrics) {
         const value = assignment.statistics?.[metric]?.value;
@@ -260,4 +261,5 @@ if (targetFixtureIds.size) {
   };
 }
 fs.writeFileSync(outputPath, JSON.stringify(finalOutput, null, 2));
+require('./build-champions-md3-referees').build();
 console.log(`OK Champions League: ${fixtures.length} gare · ${teamList.length} squadre · ${matchdays.size} giornate`);

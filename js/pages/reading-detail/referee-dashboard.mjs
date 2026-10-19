@@ -3,7 +3,7 @@ const known=v=>typeof v==='number'&&Number.isFinite(v);
 const fmt=(v,d=1)=>known(v)?v.toLocaleString('it-IT',{minimumFractionDigits:d,maximumFractionDigits:d}):'—';
 const name=v=>typeof v==='string'?v:v?.name||'—';
 const metrics=[['yellowCards','Gialli',8,'yellow'],['dismissals','Rossi',1,'red'],['fouls','Falli',40,'green'],['totalCards','Cartellini',10,'blue']];
-const whistle='<svg viewBox="0 0 120 100" aria-hidden="true"><path d="M9 70 47 35 77 17 104 27 104 42 94 47C106 75 78 89 61 70L30 93Z" fill="currentColor"/><path d="m15 69 18 13 38-34-16-9Zm47-34 16-9 20 5-25 12Z" fill="var(--rd-surface)"/><path d="m68 35 7-4 8 4-7 5Z" fill="currentColor"/></svg>';
+export const whistle='<svg viewBox="0 0 120 100" aria-hidden="true"><path d="M9 70 47 35 77 17 104 27 104 42 94 47C106 75 78 89 61 70L30 93Z" fill="currentColor"/><path d="m15 69 18 13 38-34-16-9Zm47-34 16-9 20 5-25 12Z" fill="var(--rd-surface)"/><path d="m68 35 7-4 8 4-7 5Z" fill="currentColor"/></svg>';
 function rowsFor(entry){return (entry?.rows||[]).filter(r=>r.date<entry.cutoffDate).sort((a,b)=>b.date.localeCompare(a.date)).slice(0,5).map(r=>{const copy={...r};for(const key of r.disputedMetrics||[])copy[key]=null;return copy;});}
 function recentFor(entry,rows){
  if(entry?.analysis?.recent)return entry.analysis.recent;

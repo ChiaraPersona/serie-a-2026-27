@@ -1317,20 +1317,20 @@ body[data-page="champions"] .champions-overview>.champions-calendar{margin-top:v
 .champions-overview .champions-home-banner{height:290px;min-height:0;padding:0;overflow:hidden;background:#031039;border-radius:24px}
 .champions-overview .champions-home-banner::before{content:none}
 .champions-home-banner>img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 38%}
-.champions-days{display:flex;flex-wrap:wrap;gap:24px;margin-top:24px}
-.champions-day-group{min-width:0}
-.champions-day-group h3{margin:0 0 10px;color:#b5c9e8;font:600 12px var(--font-body)}
-.champions-day-grid{display:grid;grid-template-columns:repeat(8, minmax(0,1fr));gap:9px}
-.champions-day{width:112px;min-width:0;padding:12px 3px;border:1px solid #40577b;border-radius:13px;background:#0c2045;color:#bbd0ed;text-align:center;font:inherit;cursor:pointer}
+.champions-days{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:10px;margin-top:24px;padding:6px;min-width:0}
+.champions-day{width:100%;min-width:0;padding:9px 3px;border:1px solid #40577b;border-radius:13px;background:#0c2045;color:#bbd0ed;text-align:center;font:inherit;cursor:pointer}
 .champions-day>span{display:block;text-transform:uppercase;font-size:9px;letter-spacing:.06em}
 .champions-day strong{display:block;font:700 29px/1.4 var(--font-body);color:#fff}
 .champions-day small{font-size:9px}
 .champions-day.is-completed{background:linear-gradient(135deg,#303958,#242e4b);border-color:#596181}
 .champions-day.is-current{background:linear-gradient(135deg,#155ada,#253ea6);border-color:#66b9ff}
-.champions-day[aria-expanded="true"]{outline:2px solid #89d8ff;outline-offset:3px}
+.champions-day[aria-expanded="true"]{outline:3px solid #b4edff;outline-offset:2px;box-shadow:0 0 18px #66b9ff55,inset 0 0 0 1px #e1f7ff}
 .champions-day:focus-visible{outline:3px solid #c6a7ff;outline-offset:4px}
 .champions-day:hover{border-color:#a8ceff}
 .champions-overview .champions-controls{grid-template-columns:minmax(0,1fr) auto}
 .champions-overview .champions-calendar-heading h1{font-size:clamp(28px,4vw,40px);color:#fff}
-@media(max-width:1000px){.champions-day-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.champions-day{width:110px}}
-@media(max-width:600px){.champions-overview .champions-home-banner{height:210px;border-radius:18px}.champions-home-banner>img{object-position:81% 49%}.champions-days{display:grid;gap:20px}.champions-day-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.champions-day{width:100%}.champions-overview .champions-controls{grid-template-columns:minmax(0,1fr)}.champions-overview .champions-results-head{flex-wrap:wrap;gap:8px}}
+.champions-banner-title{position:absolute;left:clamp(24px,4vw,56px);top:50%;transform:translateY(-50%);max-width:55%;padding:18px 0;isolation:isolate}
+.champions-banner-title::before{content:"";position:absolute;inset:-20px -30px;z-index:-1;background:radial-gradient(ellipse,#020b2d66,transparent 72%);pointer-events:none}
+.champions-banner-title h2{margin:0;color:#fff;font:400 clamp(28px,4.4vw,62px)/1.1 var(--font-display);letter-spacing:.025em;text-shadow:0 2px 14px #020b2d80}
+.champions-banner-title p{margin:12px 0 0;color:#e0eaff;font:500 clamp(12px,1.4vw,17px)/1.4 var(--font-body);letter-spacing:.08em}
+@media(max-width:600px){.champions-overview .champions-home-banner{height:210px;border-radius:18px}.champions-home-banner>img{object-position:81% 49%}.champions-days{display:flex;flex-wrap:nowrap;gap:10px;overflow-x:auto;padding:7px 6px 12px;overscroll-behavior-x:contain}.champions-day{flex:0 0 78px}.champions-banner-title{left:18px;top:26px;transform:none;max-width:48%;padding:0}.champions-banner-title h2{font-size:clamp(23px,6vw,35px);line-height:1.15}.champions-banner-title p{margin-top:8px;font-size:11px;letter-spacing:.03em}.champions-overview .champions-controls{grid-template-columns:minmax(0,1fr)}.champions-overview .champions-results-head{flex-wrap:wrap;gap:8px}}

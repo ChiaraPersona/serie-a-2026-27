@@ -425,6 +425,13 @@ export function createPage(deps){
     const branding=new Map(data.teamBranding.map(team=>[team.team,team]));
     const motivationByFixture=new Map(motivation.fixtures.map(fixture=>[fixture.matchId,fixture]));
     const requestedCalendarFixture=requestedMatchId?data.fixtures.find(fixture=>fixture.id===requestedMatchId):null;
+    if(requestedCalendarFixture?.matchday===3&&requestedCalendarFixture.refereeAssignment?.status==='assigned'){
+      const [profiles,{md3RefereeMarkup}]=await Promise.all([load('champions-referee-profiles-md03-2026-27.json'),import('./reading-detail/champions-md3-referees.mjs?v=20261019-md3-referees-v1')]);
+      const profile=profiles.referees.find(p=>p.refereeId===requestedCalendarFixture.refereeAssignment.refereeId);
+      document.body.dataset.readingDetailTheme='champions';
+      document.querySelector('#app').innerHTML=md3RefereeMarkup(requestedCalendarFixture,profile,branding);
+      return;
+    }
     const [md2Pilot,md2Integration,md2Schedina,md2RefereeHistory]=requestedCalendarFixture?.matchday===2?await Promise.all([load("champions-pilot-predictions-md02-2026-27.json"),load("champions-md02-integration-2026-27.json"),load("schedina-champions-md02.json"),load("champions-referee-history-2026-10-13.json")]):[null,null,null,null];
     const activePilot=md2Pilot||pilot;
     const requestedPilotFixture=requestedMatchId?activePilot.fixtures.find(fixture=>fixture.fixtureId===requestedMatchId):null;
@@ -481,17 +488,14 @@ export function createPage(deps){
     const roundRange=number=>{const dates=roundRows(number).map(f=>f.date).filter(Boolean).sort();return dates.length?shortDate(dates[0])+(dates[0]!==dates.at(-1)?' – '+shortDate(dates.at(-1)):''):'Date da definire'};
     const roundStatus=number=>completedMatchdays.includes(number)?'Conclusa':roundRows(number).some(hasResult)?'In corso':'Da giocare';
     const dayButton=number=>`<button type="button" class="champions-day ${completedMatchdays.includes(number)?'is-completed':number===defaultMatchday?'is-current':'is-future'}" data-champions-day="${number}" aria-expanded="${number===defaultMatchday}" aria-controls="champions-fixtures" aria-label="${matchdayLabel(number)} · ${roundStatus(number)} · ${esc(roundRange(number))}"><span>Giornata</span><strong>${number}</strong><small>${roundStatus(number)}</small></button>`;
-    const dayGroup=(title,numbers)=>numbers.length?`<section class="champions-day-group" aria-label="${title}"><h3>${title}</h3><div class="champions-day-grid">${numbers.map(dayButton).join('')}</div></section>`:'';
     const teamOptions=data.teams.map(team=>`<option value="${esc(team)}">${esc(team)}</option>`).join("");
     document.querySelector("#app").innerHTML=`<div class="champions-overview">
-      <section class="champions-hero champions-home-banner" aria-label="UEFA Champions League 2026/27"><img src="assets/images/champions-home-2026-27.png" alt="UEFA Champions League, stadio illuminato in blu e viola" width="1920" height="1080" fetchpriority="high"></section>
+      <section class="champions-hero champions-home-banner" aria-label="UEFA Champions League 2026/27"><img src="assets/images/champions-home-2026-27.png" alt="UEFA Champions League, stadio illuminato in blu e viola" width="1920" height="1080" fetchpriority="high"><div class="champions-banner-title"><h2>CHAMPIONS LEAGUE</h2><p>Stagione 2026/27</p></div></section>
       ${teamLogoDirectory(data.teamBranding,squads)}${roundTable(data)}
       <section class="champions-calendar" aria-labelledby="champions-calendar-title">
         <header class="champions-calendar-heading"><div><p class="eyebrow">UEFA Champions League 2026/27 · Fase campionato</p><h1 id="champions-calendar-title">Calendario</h1><p>144 partite · 36 squadre · 8 giornate. Seleziona una giornata per consultare partite e risultati.</p></div></header>
         <nav class="champions-days" aria-label="Giornate della fase campionato">
-          ${dayGroup('Giornate concluse',completedMatchdays)}
-          ${dayGroup('Giornata attuale / prossima',completedMatchdays.includes(defaultMatchday)?[]:[defaultMatchday])}
-          ${dayGroup('Giornate future',matchdays.filter(number=>number!==defaultMatchday&&!completedMatchdays.includes(number)))}
+          ${matchdays.map(dayButton).join('')}
         </nav>
         <div class="champions-controls">
           <label><span>Squadra</span><select id="champions-team"><option value="all">Tutte le squadre</option>${teamOptions}</select></label>

@@ -1,0 +1,32 @@
+[
+  {
+    "test": "test-champions-current-season-data.js",
+    "exitCode": 0,
+    "stdout": "Test Champions current-season OK: team input 2026-10-09; individual cutoff 2026-10-19; raw retrieval verified independently; frozen AEK 2026-10-03 preserved\n",
+    "stderr": ""
+  },
+  {
+    "test": "test-champions-md3-readiness.js",
+    "exitCode": 0,
+    "stdout": "OK MD3 preparation: 6 duplicates / 28 quarantine / 0 imports, 18 exact fixture contracts, four collective-only gates; missing lineup/bench/identity/evidence/approval/odds block individual generation.\n",
+    "stderr": ""
+  },
+  {
+    "test": "test-champions-context-adjusted-baseline.js",
+    "exitCode": 1,
+    "stdout": "",
+    "stderr": "node:assert:90\n  throw new AssertionError(obj);\n  ^\n\nAssertionError [ERR_ASSERTION]: team prediction builder changed\n    at Object.<anonymous> (C:\\Users\\utente\\Desktop\\seria-a-2026-27\\scripts\\test-champions-context-adjusted-baseline.js:32:8)\n    at Module._compile (node:internal/modules/cjs/loader:1546:14)\n    at Object..js (node:internal/modules/cjs/loader:1689:10)\n    at Module.load (node:internal/modules/cjs/loader:1318:32)\n    at Function._load (node:internal/modules/cjs/loader:1128:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:315:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:218:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: '33f125092367f1d518d67bece8a55cc6b253e34cb9f114cb4233c80e79341cd7',\n  expected: '135788a773b8607db7f1386a1c9d6b5d2fb8560fdab914d652318bfe95691be5',\n  operator: '=='\n}\n\nNode.js v22.11.0\n"
+  },
+  {
+    "test": "test-champions-substitute-forecasts.js",
+    "exitCode": 0,
+    "stdout": "Champions Phase 11 tests: OK · starters 355/396 · substitutes 173/289 · non evaluable 157\n",
+    "stderr": ""
+  },
+  {
+    "test": "git diff --check",
+    "exitCode": 0,
+    "stdout": "",
+    "stderr": ""
+  }
+]
