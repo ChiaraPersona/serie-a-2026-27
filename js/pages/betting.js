@@ -376,6 +376,13 @@ export function createPage(deps){
     const teamById=new Map((Array.isArray(teams)?teams:teams.teams||[]).map(team=>[team.id,team]));
     const matchday=new URLSearchParams(location.search).get("giornata");
     const competition=new URLSearchParams(location.search).get("competizione");
+    if(competition==='champions'&&matchday==='3'){
+      const [catalog,{md3DraftMarkup},{mountChampionsMarketUi}]=await Promise.all([load('champions-md03-preliminary-2026-27.json'),import('./champions-md3-ui.mjs?v=20261019-md3-preliminary-v1'),import('./champions-market-ui.mjs?v=20261019-md3-preliminary-v1')]);
+      document.querySelector('#app').innerHTML=hero('UEFA Champions League · 3ª giornata','Schedina preliminare','Preparazione locale · nessuna Schedina definitiva pubblicata.')+md3DraftMarkup(catalog);
+      const store=createPersonalBetslipStore();
+      for(const fixture of catalog.fixtures)mountChampionsMarketUi(fixture,{store});
+      return;
+    }
     if(competition==="champions"&&matchday==="2"){
       const integration=await load("champions-md02-integration-2026-27.json");
       const {createChampionsSelection}=await import(`./champions-market-ui.mjs?v=${encodeURIComponent(release)}`);

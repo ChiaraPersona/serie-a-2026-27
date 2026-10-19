@@ -5,17 +5,18 @@ const formatOdds=value=>Number.isFinite(Number(value))?Number(value).toLocaleStr
 
 export function createChampionsSelection(fixture,market,selection){
   const modifiers={...market.modifiers};
+  const matchday=fixture.matchday||2,isMd3=matchday===3;
   return {
     selectionId:selection.selectionId,
-    context:{competition:"champions",season:"2026-27",matchday:2},
+    context:{competition:"champions",season:"2026-27",matchday},
     matchId:fixture.fixtureId,
     fixture:`${fixture.homeTeam} - ${fixture.awayTeam}`,
     label:`${market.variantName||market.marketName} · ${selection.name}`,
-    selection:selection.code||selection.name,
+    selection:isMd3?selection.name:selection.code||selection.name,
     market:market.marketName,
     variant:market.variantName,
-    modelProbability:null,
-    expectedValue:null,
+    modelProbability:isMd3?selection.modelProbability:null,
+    expectedValue:isMd3?selection.expectedValue:null,
     betSelection:{
       selectionId:selection.selectionId,
       identity:{
@@ -32,7 +33,7 @@ export function createChampionsSelection(fixture,market,selection){
         code:market.marketCode,
         variant:market.variantName,
         threshold:market.threshold,
-        selection:selection.code||selection.name,
+        selection:isMd3?selection.name:selection.code||selection.name,
         modifiers,
         bookmakerSemantics:{selectionName:selection.name,modifiers}
       },
@@ -58,20 +59,26 @@ const modifierLabels=market=>[
   market.threshold!=null?`soglia ${market.threshold}`:null
 ].filter(Boolean);
 
-export function mountChampionsMarketUi(fixture,{storage=globalThis.localStorage,publishedSelections=[]}={}){
+export function mountChampionsMarketUi(fixture,{storage=globalThis.localStorage,publishedSelections=[],store:providedStore=null}={}){
   const root=document.querySelector(`[data-champions-market-root][data-fixture-id="${CSS.escape(fixture.fixtureId)}"]`);
   const publishedRoot=document.querySelector(`[data-champions-published-root][data-fixture-id="${CSS.escape(fixture.fixtureId)}"]`);
   if(!root&&!publishedRoot)return null;
   const scope=root?.closest(".champions-sisal-catalog")||publishedRoot;
-  const store=createPersonalBetslipStore({storage});
-  store.setContext({competition:"champions",season:"2026-27",matchday:2});
+  const store=providedStore||createPersonalBetslipStore({storage});
+  store.setContext({competition:"champions",season:"2026-27",matchday:fixture.matchday||2});
   const catalogContracts=fixture.oddsEvent.playerMarkets.flatMap(market=>market.selections.filter(selection=>selection.interfaceSelectable).map(selection=>createChampionsSelection(fixture,market,selection)));
   const contracts=[...new Map([...catalogContracts,...publishedSelections].map(selection=>[selection.selectionId,selection])).values()];
   const retainedOtherFixtures=store.getSnapshot().selections.filter(row=>row.betSelection?.identity?.matchId!==fixture.fixtureId);
   store.reconcile([...retainedOtherFixtures,...contracts]);
 
-  if(root)root.innerHTML=`<div class="champions-market-layout"><div class="champions-market-browser"><div class="champions-market-controls"><label><span>Cerca mercato o giocatore</span><input type="search" data-market-search placeholder="Es. tiri, Veerman, primo tempo"></label><label class="champions-market-toggle"><input type="checkbox" data-market-selectable checked><span>Solo quote disponibili</span></label><strong data-market-count></strong></div><div class="champions-market-list" data-market-list></div><div class="champions-market-more"><button type="button" data-market-more>Mostra altri 100</button><button type="button" data-market-all>Mostra tutti</button></div></div><aside class="champions-market-slip" aria-labelledby="champions-market-slip-title"><header><p class="eyebrow">Sincronizzata per fixtureId</p><h3 id="champions-market-slip-title">La mia schedina</h3><a href="schedina.html?competizione=champions&amp;giornata=2">Apri nella pagina Schedina →</a></header><div data-market-slip></div></aside></div>`;
+  if(root)root.innerHTML=`<div class="champions-market-layout"><div class="champions-market-browser"><div class="champions-market-controls"><label><span>Cerca mercato o giocatore</span><input type="search" data-market-search placeholder="Es. tiri, Veerman, primo tempo"></label><label class="champions-market-toggle"><input type="checkbox" data-market-selectable checked><span>Solo quote disponibili</span></label><strong data-market-count></strong></div><div class="champions-market-list" data-market-list></div><div class="champions-market-more"><button type="button" data-market-more>Mostra altri 100</button><button type="button" data-market-all>Mostra tutti</button></div></div><aside class="champions-market-slip" aria-labelledby="champions-market-slip-title"><header><p class="eyebrow">Sincronizzata per fixtureId</p><h3 id="champions-market-slip-title">La mia schedina</h3><a href="schedina.html?competizione=champions&amp;giornata=${fixture.matchday||2}">Apri nella pagina Schedina →</a></header><div data-market-slip></div></aside></div>`;
   const list=root?.querySelector("[data-market-list]");
+  if(root&&fixture.matchday===3){
+    const title=root.querySelector('#champions-market-slip-title');title.id=fixture.fixtureId+'-market-slip-title';root.querySelector('.champions-market-slip').setAttribute('aria-labelledby',title.id);
+    root.querySelector('[data-market-search]').placeholder='Es. esito finale, gol, corner';
+    root.querySelector('.champions-market-controls label span').textContent='Cerca mercato';
+    root.querySelector('.champions-market-slip .eyebrow').textContent='Selezioni della 3ª giornata';
+  }
   const search=root?.querySelector("[data-market-search]");
   const selectableOnly=root?.querySelector("[data-market-selectable]");
   const count=root?.querySelector("[data-market-count]");
@@ -99,6 +106,15 @@ export function mountChampionsMarketUi(fixture,{storage=globalThis.localStorage,
     }).join("")||`<p class="reading-panel-empty">Nessun mercato corrisponde ai filtri.</p>`;
     more.hidden=shown.length>=rows.length;
     all.hidden=shown.length>=rows.length;
+    if(fixture.matchday===3){
+      const selections=new Map(rows.flatMap(m=>m.selections.map(s=>[s.selectionId,s])));
+      for(const button of list.querySelectorAll('[data-add-selection]')){
+        const s=selections.get(button.dataset.addSelection),li=button.closest('li');
+        li.querySelector('small').textContent=`Prob. ${Number.isFinite(s.modelProbabilityPct)?s.modelProbabilityPct.toLocaleString('it-IT')+'%':'N/D'} · EV ${Number.isFinite(s.expectedValue)?(s.expectedValue*100).toFixed(1)+'%':'N/D'}`;
+        if(s.preliminaryProposal)li.querySelector('strong').append(' · Verdetto preliminare');
+      }
+      list.querySelectorAll('.champions-market-card>summary small').forEach(n=>n.remove());
+    }
   };
   const renderSlip=snapshot=>{
     if(!root)return;
