@@ -35,7 +35,32 @@ export async function loadChampionsWorkspace(load,matchday){
       const leg=all.find(item=>item.selectionId===id);
       if(!leg||leg.odds!==approvedLeg.odds||leg.matchId!==approvedLeg.matchId)throw new Error(`Contratto CL3 approvato non corrispondente: ${id}`);
     }
-    all=all.concat(md3IndividualMarkets(individuals));
+    // Match a forecast to a Sisal contract only with exact verified player ID,
+    // compatible market semantics and a unique provider selection.
+    const individualForecasts=md3IndividualMarkets(individuals).map(forecast=>{
+      const matches=all.filter(leg=>{
+        const bet=leg.betSelection,market=bet?.market||{},identity=bet?.identity||{};
+        const playerIds=identity.canonicalPlayerIds||[];
+        const modifiers=market.modifiers||{};
+        const family=String(leg.suggestionAnalysis?.family||"").toLowerCase();
+        const expectedFamily=forecast.marketFamily==="SOT"?"sot":"shots";
+        const threshold=Number(market.threshold);
+        const compatibleThreshold=Number.isFinite(threshold)&&(Math.abs(threshold-(forecast.threshold-0.5))<0.001||Math.abs(threshold-forecast.threshold)<0.001);
+        const name=String(market.name||"").toLowerCase();
+        const isSot=/porta|sot|on.target/.test(name);
+        const isShots=/tiri|shots/.test(name);
+        const noExtraConditions=!modifiers.replacementIncluded&&!modifiers.woodworkIncluded&&!modifiers.firstHalf&&!modifiers.bothHalves&&!modifiers.periodScope&&!modifiers.duo;
+        return leg.matchId===forecast.matchId&&playerIds.length===1&&playerIds[0]===forecast.playerId
+          &&family===expectedFamily&&compatibleThreshold&&noExtraConditions
+          &&(expectedFamily==="sot"?isSot:isShots&&!isSot)&&hasVerifiedPlayableQuote(leg);
+      });
+      if(matches.length!==1)return forecast;
+      const quote=matches[0].betSelection.quote;
+      const decimal=Number(quote.decimal),probability=forecast.modelProbability;
+      return {...forecast,linkedSisalQuote:{decimal,verifiedAt:quote.verifiedAt,providerSelectionId:matches[0].betSelection.identity.providerSelectionId,
+        impliedProbabilityPct:100/decimal,expectedValuePct:(probability*decimal-1)*100}};
+    });
+    all=all.concat(individualForecasts);
   }else if(matchday===2){
     source=championsAuditDisplay(await load('schedina-champions-md02.json'),await load('champions-md02-audit-display.json'));
     all=source.fixtures.flatMap(f=>f.selections).map(leg=>({...leg,suggestionAnalysis:{suggested:true,rank:0}}));
