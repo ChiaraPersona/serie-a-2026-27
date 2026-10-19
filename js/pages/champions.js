@@ -426,7 +426,7 @@ export function createPage(deps){
     const motivationByFixture=new Map(motivation.fixtures.map(fixture=>[fixture.matchId,fixture]));
     const requestedCalendarFixture=requestedMatchId?data.fixtures.find(fixture=>fixture.id===requestedMatchId):null;
     if(requestedCalendarFixture?.matchday===3&&requestedCalendarFixture.refereeAssignment?.status==='assigned'){
-      const [profiles,{md3RefereeMarkup},catalog,{md3ForecastMarkup,md3CatalogMarkup},{mountChampionsMarketUi}]=await Promise.all([load('champions-referee-profiles-md03-2026-27.json'),import('./reading-detail/champions-md3-referees.mjs?v=20261019-md3-referees-v1'),load('champions-md03-preliminary-2026-27.json'),import('./champions-md3-ui.mjs?v=20261019-md3-preliminary-v1'),import('./champions-market-ui.mjs?v=20261019-md3-preliminary-v1')]);
+      const [profiles,{md3RefereeMarkup},catalog,{md3ForecastMarkup,md3CatalogMarkup},{mountChampionsMarketUi},probables,{md3ProbableMarkup}]=await Promise.all([load('champions-referee-profiles-md03-2026-27.json'),import('./reading-detail/champions-md3-referees.mjs?v=20261019-md3-referees-v1'),load('champions-md03-preliminary-2026-27.json'),import('./champions-md3-ui.mjs?v=20261019-md3-preliminary-v1'),import('./champions-market-ui.mjs?v=20261019-md3-preliminary-v1'),load('champions-md03-probable-individuals-2026-27.json'),import('./champions-md3-probable.mjs?v=20261019-probable-v1')]);
       const profile=profiles.referees.find(p=>p.refereeId===requestedCalendarFixture.refereeAssignment.refereeId);
       document.body.dataset.readingDetailTheme='champions';
       document.querySelector('#app').innerHTML=md3RefereeMarkup(requestedCalendarFixture,profile,branding);
@@ -435,6 +435,8 @@ export function createPage(deps){
       discipline.querySelector('.rd-section-number').textContent='02';
       discipline.insertAdjacentHTML('beforebegin',md3ForecastMarkup(fixture));
       discipline.insertAdjacentHTML('afterend',`<section class="rd-section"><header class="rd-section-heading"><span class="rd-section-number">03</span><h2>Mercati collettivi</h2></header><div class="rd-section-content">${md3CatalogMarkup(fixture)}</div></section>`);
+      const probableFixture=probables.fixtures.find(f=>f.fixtureId===fixture.fixtureId);
+      document.querySelector('#lettura-disciplina').parentElement.insertAdjacentHTML('beforeend',md3ProbableMarkup(probableFixture));
       mountChampionsMarketUi(fixture);
       return;
     }
