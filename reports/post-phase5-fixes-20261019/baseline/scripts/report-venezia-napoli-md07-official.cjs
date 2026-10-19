@@ -1,0 +1,40 @@
+const fs=require('node:fs'),assert=require('node:assert/strict');
+const dir='output/reports/venezia-napoli-md07-official',id='venezia-napoli-2026-27-md-07';
+const read=p=>JSON.parse(fs.readFileSync(p,'utf8'));
+const before=read(dir+'/before.json'),report=read(dir+'/report.json');
+const predictions=read('data/normalized/predictions.json'),data=read('data/normalized/schedina-md07.json'),combo=read('data/sources/mycombo-serie-a-2026-27-md-07.json');
+const p=predictions.predictions.find(x=>x.matchId===id),m=data.marketCatalog.matches.find(x=>x.matchId===id),old=before.schedina.marketCatalog.matches.find(x=>x.matchId===id);
+assert.deepEqual(predictions.predictions.filter(x=>x.matchId!==id),before.predictions.predictions.filter(x=>x.matchId!==id));
+assert.deepEqual(data.marketCatalog.matches.filter(x=>x.matchId!==id),before.schedina.marketCatalog.matches.filter(x=>x.matchId!==id));
+for(const [key,value]of Object.entries(before.mycombo.matches))if(key!==id)assert.deepEqual(combo.matches[key],value);
+for(const leg of old.selections){const next=m.selections.find(x=>x.selectionId===leg.selectionId);assert(next);assert.deepEqual(next.betSelection.quote,leg.betSelection.quote);assert.deepEqual(next.betSelection.market.bookmakerSemantics,leg.betSelection.market.bookmakerSemantics);assert.equal(next.threshold,leg.threshold);}
+const profiles=read('data/normalized/team-matchup-profiles-2026-27.json').profiles.filter(x=>['venezia','napoli'].includes(x.teamId));
+const matches=read('data/normalized/matches.json').filter(x=>x.status==='finished'&&x.matchday<7&&x.competition==='serie-a');
+const venueRows=[];
+for(const team of ['venezia','napoli'])for(const venue of ['home','away']){
+ const rows=matches.filter(x=>x[venue+'Team']===team),other=venue==='home'?'away':'home';
+ const mean=(side,key)=>{const a=rows.map(x=>x.teamStats?.[side]?.[key]).filter(Number.isFinite);return a.length?Number((a.reduce((a,b)=>a+b,0)/a.length).toFixed(2)):null;};
+ venueRows.push({team,venue,matches:rows.length,shotsFor:mean(venue,'shots'),shotsAgainst:mean(other,'shots'),sotFor:mean(venue,'shotsOnTarget'),sotAgainst:mean(other,'shotsOnTarget')});
+}
+const suggested=m.selections.filter(l=>l.suggestionAnalysis?.suggested&&l.lineupEligibility?.eligible!==false).sort((a,b)=>a.suggestionAnalysis.rank-b.suggestionAnalysis.rank);
+const all=suggested.map(l=>{const prev=old.selections.find(x=>x.selectionId===l.selectionId),comparison=report.comparisons.find(x=>x.selectionId===l.selectionId);return {selectionId:l.selectionId,label:l.label,probabilityPct:l.betSelection.evaluation.modelProbabilityPct,individualReferencePct:l.betSelection.evaluation.individualReference?.modelProbabilityPct??null,reliability:l.betSelection.operational.reliability.level,quote:l.betSelection.quote.decimal,quoteVerifiedAt:l.betSelection.quote.verifiedAt,status:!prev||!prev.suggestionAnalysis?.suggested?'AGGIUNTO':comparison&&(comparison.before!==comparison.after||comparison.individualBefore!==comparison.individualAfter)?'MODIFICATO':'CONFERMATO',reason:l.betSelection.operational.reliability.reason,lessReliable:comparison?.individualBefore!=null&&comparison.individualAfter<comparison.individualBefore,duo:!!l.betSelection.market.bookmakerSemantics?.duo};});
+const players=p.shooters.allPlayers.map(x=>({playerId:x.playerId,name:x.name,modelRole:x.teamProfileRole,expectedMinutes:x.expectedMinutes,substitutionRisk:x.substitutionRisk,substitutionProbability:null,baselineShots90:x.baselineShots90,shots:x.shotProbabilities,sot:x.shotOnTargetProbabilities,qualifiedOutsider:x.qualifiedOutsider,evidence:x.signalEvidence,matchupEvidence:x.matchupEvidence}));
+const notes=[
+ 'Dati misurati: prime sei giornate, separati casa/trasferta nella tabella. Napoli storico 2025/26 in trasferta: 12.579 tiri fatti / 9.684 concessi, 4.211 SOT fatti / 2.947 concessi (19 gare). Venezia senza storico omogeneo Serie A 2025/26: fallback Serie B, comparabilita limitata.',
+ 'Venezia: 15.667 tiri e 6.833 SOT concessi per gara nelle prime sei. Napoli: 16.667 e 3.833. Il volume concesso dal Napoli risente degli avversari e dell\'outlier Inter (29 tiri); non equivale ad accesso facile ai SOT.',
+ 'Zone del tiro native e origine da piazzato non disponibili: le distribuzioni per ruolo sono proxy, non mappe geografiche misurate. Nessun bonus aggiuntivo introdotto.',
+ 'Nicola e confermato per questa gara. Tutte le sei gare del profilo esistente appartengono a Stroppa: zero gare osservate del nuovo corso, effetto causale del cambio allenatore N/D. Profili e pesi globali preservati.',
+ 'Napoli tra Villarreal-Napoli del 13/10 e Napoli-Bodo/Glimt del 20/10. Politano, Anguissa, De Bruyne e Hojlund sono in panchina; Lucca, Giovane e Gilmour titolari. Il turnover e verificato negli undici; l\'attribuzione a fatica o gestione futura e ipotesi.',
+ 'Ipotesi tattiche: Di Lorenzo contro Haps/Sohm e Spinazzola contro Hainaut/Perez; Giovane e McTominay possono occupare gli intervalli fra esterni e braccetti. Non sono duelli esclusivi misurati e non ricevono nuovi coefficienti.',
+ 'Outsider: Rrahmani 1+ tiro (77.01% individuale) e Hainaut 1+ (66.38%) qualificati dal modello. Di Lorenzo 2+ (44.22%) e Rrahmani 2+ (43.21%) hanno varianza elevata; il secondo e un\'alternativa alla soglia 1+, non una selezione indipendente.',
+ 'Perez e qualificato come outsider ma privo di un nuovo contratto esatto ammesso con quota verificata: nessuna aggiunta. Lucca 39.6 minuti attesi e McTominay 49.1: titolarita ufficiale non equivale a 90 minuti. Probabilita numerica di sostituzione N/D; rischi e minuti sono stime del motore esistente.',
+ 'I 2+ SOT di Adams e Yeboah rimangono consultabili, con riferimento individuale sceso rispettivamente a 26.79% e 27.90%: opzioni aggressive, meno affidabili. Le soglie 1+ sono alternative piu prudenti.',
+ 'Tutti i contratti precedenti e le quote snapshot sono conservati. I due mercati Politano sono inattivi nelle superfici operative e conservati nell\'archivio tecnico. Nessun trasferimento della sua previsione.',
+ 'Probabilita DUO, pali/traverse ed EV DUO restano N/D. I riferimenti individuali non stimano il contratto con sostituto. Affidabilita individuale descrive la stabilita della baseline, non la probabilita di vincita DUO. Quote del 16/10, non verificate in tempo reale oggi.',
+ 'Falli, cartellini e altri mercati esistenti sono stati confrontati nel catalogo completo; nessuna nuova selezione forzata. I modelli aggregati validati non dipendenti dagli undici conservano la propria stima: nessun refit globale.'
+];
+fs.writeFileSync(dir+'/analysis.json',JSON.stringify({matchId:id,markets:all,venueRows,players,notes,otherNineUnchanged:true},null,2)+'\n');
+const fmt=x=>x==null?'N/D':String(x);
+const table='| Mercato | P contratto | P solo titolare | Affidabilita baseline | Quota snapshot | Stato |\n|---|---:|---:|---|---:|---|\n'+all.map(l=>`| ${l.label} | ${fmt(l.probabilityPct)}${l.probabilityPct==null?'':'%'} | ${fmt(l.individualReferencePct)}${l.individualReferencePct==null?'':'%'} | ${l.reliability} | ${fmt(l.quote)} | ${l.status}${l.lessReliable?' - supporto in calo':''} |`).join('\n');
+fs.writeFileSync(dir+'/REPORT.md','# Venezia–Napoli, giornata 7\n\n'+`169 mercati precedenti confrontati; ${report.comparisons.filter(c=>c.before!==c.after||c.individualBefore!==c.individualAfter).length} valutazioni variate. ${all.length} proposte operative; altre nove partite identiche allo snapshot. Motore ${p.engineVersion}.\n\n`+notes.map(n=>'- '+n).join('\n\n')+'\n\n'+table+'\n\n## Casa / trasferta 2026/27 (dati misurati)\n\n'+JSON.stringify(venueRows,null,2)+'\n\n## Minuti, ruoli e frequenze\n\n'+players.map(x=>`- ${x.name}: ${x.expectedMinutes} minuti stimati; rischio sostituzione ${x.substitutionRisk}; 1+ tiro ${Math.round(x.shots.over05*10000)/100}%. ${x.evidence?.join('; ')||'N/D'}`).join('\n')+'\n');
+console.log({status:'PASS',allOriginalContractsPreserved:169,shared:all.length,otherNineUnchanged:true,changed:report.comparisons.filter(c=>c.before!==c.after||c.individualBefore!==c.individualAfter).length});

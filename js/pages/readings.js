@@ -118,7 +118,7 @@ function readingIndex(readings,matches,teams,predictions=[]){
     return `<a class="ri-match ${compact?"ri-compact":"ri-glass"}${finished?" ri-finished":""}" style="${esc(style)}" data-fixture-id="${esc(match.id)}" href="lettura.html?match=${esc(match.id)}" aria-label="Apri analisi: ${esc(home.name)} - ${esc(away.name)}">${compact?"":`<span class="ri-date">${scheduleLabel(match)}</span>`}<span class="ri-teams">${teamLogo(home)}<b aria-label="${finished?"Risultato finale":"Contro"}">${score}</b>${teamLogo(away)}</span></a>`;
   };
   const grid=(day,compact=false)=>`<div class="ri-matches${compact?" ri-results":""}">${rows(day).map(m=>card(m,compact)).join("")}</div>`;
-  return `<link rel="stylesheet" href="css/readings-index.css?v=20261018-dashboard-glass-v2"><div class="readings-index"><header class="ri-title page-heading"><h1>Letture</h1></header><section class="ri-current" aria-labelledby="ri-current-title"><header class="ri-heading"><div><p class="eyebrow">Giornata attuale</p><div class="ri-heading-line"><h2 id="ri-current-title">${current?`Giornata ${current}`:"Campionato concluso"}</h2>${current?`<span class="ri-badge">${rows(current).filter(m=>m.status!=="finished").length} da giocare</span>`:""}</div></div>${current?`<span class="ri-range">${range(current)}</span>`:""}</header>${current?grid(current):""}</section><section class="ri-archive" aria-labelledby="ri-archive-title"><h2 id="ri-archive-title" class="ri-section-title">Archivio risultati</h2>${archive.length?archive.map((day,i)=>`<details class="ri-round"${i===0?" open":""}><summary><span class="ri-heading-line"><strong>Giornata ${day}</strong><span class="ri-badge">Conclusa</span></span><span class="ri-range">${range(day)}</span><span class="ri-chevron" aria-hidden="true">⌄</span></summary>${grid(day,true)}</details>`).join(""):"<p>Nessuna giornata conclusa.</p>"}</section><section class="ri-future" aria-labelledby="ri-future-title"><h2 id="ri-future-title" class="ri-section-title">Giornate future</h2><div class="ri-calendar">${future.map(day=>`<details class="ri-calendar-day"><summary><span>Giornata</span><strong>${day}</strong><small>${rows(day).length} partite</small></summary><div class="ri-future-panel"><header class="ri-heading"><h3>Giornata ${day}</h3><span class="ri-range">${range(day)}</span></header>${grid(day)}</div></details>`).join("")}</div>${future.length?"":"<p>Nessuna giornata futura in calendario.</p>"}</section></div>`;
+  return `<link rel="stylesheet" href="css/readings-index.css?v=20261019-archive-grid-v1"><div class="readings-index"><header class="ri-title page-heading"><h1>Letture</h1></header><section class="ri-current" aria-labelledby="ri-current-title"><header class="ri-heading"><div><p class="eyebrow">Giornata attuale</p><div class="ri-heading-line"><h2 id="ri-current-title">${current?`Giornata ${current}`:"Campionato concluso"}</h2>${current?`<span class="ri-badge">${rows(current).filter(m=>m.status!=="finished").length} da giocare</span>`:""}</div></div>${current?`<span class="ri-range">${range(current)}</span>`:""}</header>${current?grid(current):""}</section><section class="ri-archive" aria-labelledby="ri-archive-title"><h2 id="ri-archive-title" class="ri-section-title">Archivio risultati</h2>${archive.length?`<div class="ri-calendar">${archive.map(day=>`<button type="button" class="ri-archive-day" id="ri-archive-day-${day}" data-archive-day="${day}" aria-expanded="false" aria-controls="ri-archive-panel"><span>Giornata</span><strong>${day}</strong><small>Conclusa</small></button>`).join("")}</div><div id="ri-archive-panel" class="ri-future-panel" role="region" hidden></div>${archive.map(day=>`<template id="ri-archive-content-${day}"><header class="ri-heading"><h3>Giornata ${day}</h3><span class="ri-range">${range(day)}</span></header>${grid(day,true)}</template>`).join("")}`:"<p>Nessuna giornata conclusa.</p>"}</section><section class="ri-future" aria-labelledby="ri-future-title"><h2 id="ri-future-title" class="ri-section-title">Giornate future</h2><div class="ri-calendar">${future.map(day=>`<details class="ri-calendar-day"><summary><span>Giornata</span><strong>${day}</strong><small>${rows(day).length} partite</small></summary><div class="ri-future-panel"><header class="ri-heading"><h3>Giornata ${day}</h3><span class="ri-range">${range(day)}</span></header>${grid(day)}</div></details>`).join("")}</div>${future.length?"":"<p>Nessuna giornata futura in calendario.</p>"}</section></div>`;
 }
 function readingDetail(match,reading,teams){
   const home=teams.find(team=>team.id===match.homeTeam),away=teams.find(team=>team.id===match.awayTeam),sections=reading?.sections||{},completed=readingModules.filter(([key])=>sections[key]?.content).length;
@@ -241,6 +241,21 @@ function pilotSection(aggregates,report){const serieA=report.competitions.find(i
     }catch(error){delete document.body.dataset.readingDetailTheme;console.warn('Lettura: vista precedente mantenuta.',error)}
   }
     document.querySelector("#app").innerHTML=html;
+    const archivePanel=document.querySelector('#ri-archive-panel');
+    for(const button of document.querySelectorAll('[data-archive-day]')){
+      button.addEventListener('click',()=>{
+        const opening=button.getAttribute('aria-expanded')!=='true';
+        document.querySelectorAll('[data-archive-day]').forEach(item=>item.setAttribute('aria-expanded','false'));
+        archivePanel.replaceChildren();
+        archivePanel.hidden=!opening;
+        if(opening){
+          const template=document.getElementById(`ri-archive-content-${button.dataset.archiveDay}`);
+          archivePanel.append(template.content.cloneNode(true));
+          archivePanel.setAttribute('aria-labelledby',button.id);
+          button.setAttribute('aria-expanded','true');
+        }else archivePanel.removeAttribute('aria-labelledby');
+      });
+    }
     let personalReadingStore=null;
     if(requestedMatchday===7&&document.querySelector('[data-shared-forecast-id][role="button"]')){
       const context={competition:'serie-a',season:'2026-27',matchday:7,label:'Serie A · 7ª giornata'};

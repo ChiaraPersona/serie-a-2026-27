@@ -1,0 +1,516 @@
+#!/usr/bin/env node
+const fs = require("fs");
+const path = require("path");
+const zlib = require("zlib");
+const { PLAYER_FIELDS, playerEntry, round } = require("./model");
+
+const root = path.resolve(__dirname, "../..");
+const generatedAt = "2026-07-22";
+const configFiles = ["completed-teams-2026-27.json", "remaining-teams-2026-27.json"];
+const config = { teams: Object.assign({}, ...configFiles.map(file => JSON.parse(fs.readFileSync(path.join(root, "data/sources/team-pages", file), "utf8")).teams)) };
+const externalStats = JSON.parse(fs.readFileSync(path.join(root, "data/sources/team-pages/espn-external-stats-2025-26.json"), "utf8"));
+const fantasyExternalStats = JSON.parse(fs.readFileSync(path.join(root, "data/sources/fantasy-external-stats-2025-26.json"), "utf8"));
+const fantasyHistoricalStats = JSON.parse(fs.readFileSync(path.join(root, "data/sources/fantacalcio-stats-2025-26.json"), "utf8"));
+const providerIdOverrides = JSON.parse(fs.readFileSync(path.join(root, "data/sources/fantasy-provider-id-overrides-2026-27.json"), "utf8")).players;
+const fantasyRoster = JSON.parse(fs.readFileSync(path.join(root, "data/sources/fantacalcio-quotations-2026-27.json"), "utf8"));
+const selectedArg = process.argv.find(argument => argument.startsWith("--teams="));
+const selectedTeams = selectedArg ? selectedArg.slice(8).split(",").map(value => value.trim()).filter(Boolean) : Object.keys(config.teams);
+const refreshRosters = process.argv.includes("--refresh") || process.argv.includes("--refresh-rosters");
+const refreshEspn = process.argv.includes("--refresh") || process.argv.includes("--refresh-espn");
+
+const read = relative => JSON.parse(fs.readFileSync(path.join(root, relative), "utf8"));
+const write = (relative, value) => {
+  const target = path.join(root, relative);
+  fs.mkdirSync(path.dirname(target), { recursive: true });
+  fs.writeFileSync(target, `${JSON.stringify(value, null, 2)}\n`, "utf8");
+};
+const readRaw = file => JSON.parse((file.endsWith(".gz") ? zlib.gunzipSync(fs.readFileSync(file)) : fs.readFileSync(file)).toString("utf8"));
+const writeGzip = (file, value) => {
+  fs.mkdirSync(path.dirname(file), { recursive: true });
+  fs.writeFileSync(file, zlib.gzipSync(Buffer.from(`${JSON.stringify(value, null, 2)}\n`, "utf8"), { level: 9 }));
+};
+const num = value => Number.isFinite(Number(value)) ? Number(value) : null;
+const normalize = value => String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/gi, " ").trim().toLowerCase();
+const slug = value => normalize(value).replace(/\s+/g, "-");
+const sumNullable = values => {
+  const present = values.filter(value => value !== null && value !== undefined && Number.isFinite(Number(value)));
+  return present.length ? present.reduce((total, value) => total + Number(value), 0) : null;
+};
+const statMap = stats => Object.fromEntries((stats || []).map(stat => [stat.name, num(stat.value)]));
+const ageAt = birth => {
+  if (!birth) return null;
+  const born = new Date(`${birth}T00:00:00Z`), at = new Date(`${generatedAt}T00:00:00Z`);
+  let age = at.getUTCFullYear() - born.getUTCFullYear();
+  if (at.getUTCMonth() < born.getUTCMonth() || (at.getUTCMonth() === born.getUTCMonth() && at.getUTCDate() < born.getUTCDate())) age--;
+  return age;
+};
+const countryNames = {
+  Argentina: "Argentina", Austria: "Austria", Belgium: "Belgio", Brazil: "Brasile", Cameroon: "Camerun", Canada: "Canada",
+  Colombia: "Colombia", Croatia: "Croazia", Denmark: "Danimarca", Ecuador: "Ecuador", England: "Inghilterra", France: "Francia",
+  Germany: "Germania", Italy: "Italia", Netherlands: "Paesi Bassi", Nigeria: "Nigeria", Norway: "Norvegia", Poland: "Polonia",
+  Portugal: "Portogallo", Serbia: "Serbia", Slovakia: "Slovacchia", Slovenia: "Slovenia", Spain: "Spagna", Sweden: "Svezia",
+  Switzerland: "Svizzera", Turkey: "Turchia", Uruguay: "Uruguay", USA: "Stati Uniti"
+};
+const roleNames = { Goalkeeper: "Portiere", Defender: "Difensore", Midfielder: "Centrocampista", Forward: "Attaccante" };
+const fantasyRoleNames = { P: "Portiere", D: "Difensore", C: "Centrocampista", A: "Attaccante" };
+const tacticalRoleNames = {
+  Goalkeeper: "Portiere",
+  "Center Defender": "Difensore centrale",
+  "Center Left Defender": "Difensore centrale sinistro",
+  "Center Right Defender": "Difensore centrale destro",
+  "Left Back": "Terzino sinistro",
+  "Right Back": "Terzino destro",
+  "Left Midfielder": "Esterno sinistro",
+  "Right Midfielder": "Esterno destro",
+  "Center Midfielder": "Centrocampista centrale",
+  "Center Left Midfielder": "Centrocampista centrale sinistro",
+  "Center Right Midfielder": "Centrocampista centrale destro",
+  "Defensive Midfielder": "Mediano",
+  Sweeper: "Mediano",
+  "Rear Center Midfielder": "Mediano",
+  "Attacking Midfielder": "Trequartista",
+  "Attacking Midfielder Left": "Trequartista sinistro",
+  "Attacking Midfielder Right": "Trequartista destro",
+  "Rear Center Forward": "Seconda punta",
+  "Left Forward": "Ala sinistra",
+  "Right Forward": "Ala destra",
+  Forward: "Centravanti"
+};
+const competitionNames = {
+  "arg.1": "Liga Profesional Argentina", "bel.1": "Jupiler Pro League", "bra.1": "Brasileirão",
+  "den.1": "Superliga danese", "eng.1": "Premier League", "eng.2": "Championship", "esp.1": "LaLiga",
+  "fra.1": "Ligue 1", "ger.1": "Bundesliga", "ger.2": "2. Bundesliga", "ita.1": "Serie A", "ita.2": "Serie B",
+  "ned.1": "Eredivisie", "nor.1": "Eliteserien", "por.1": "Liga Portugal", "sco.1": "Scottish Premiership",
+  "sui.1": "Super League svizzera", "tur.1": "Süper Lig"
+};
+
+function fantasyExternalEntry(record, entry) {
+  const appearances = num(entry.appearances);
+  const minutes = num(entry.minutes);
+  const isGoalkeeper = record.role === "P";
+  const saves = isGoalkeeper ? num(entry.saves) : null;
+  const shotsFaced = isGoalkeeper ? num(entry.shotsFaced) : null;
+  return playerEntry({
+    playerId: record.playerId,
+    providerPlayerId: String(record.providerPlayerId),
+    team: entry.team || "N/D",
+    competition: entry.competition || competitionNames[entry.league] || entry.league,
+    competitionType: "domestic-league",
+    appearances,
+    starts: num(entry.starts),
+    substituteAppearances: num(entry.substituteAppearances),
+    minutes,
+    minutesPerAppearance: minutes !== null && appearances ? round(minutes / appearances) : null,
+    completeMatches: null,
+    substitutedOff: num(entry.substitutedOff),
+    goals: num(entry.goals),
+    assists: num(entry.assists),
+    shots: num(entry.shots),
+    shotsOnTarget: num(entry.shotsOnTarget),
+    penaltiesTaken: num(entry.penaltiesTaken),
+    penaltiesScored: num(entry.penaltiesScored),
+    offsides: num(entry.offsides),
+    keyPasses: num(entry.keyPasses),
+    passAccuracy: num(entry.passAccuracy),
+    crosses: num(entry.crosses),
+    foulsCommitted: num(entry.foulsCommitted),
+    foulsWon: num(entry.foulsWon),
+    yellowCards: num(entry.yellowCards),
+    secondYellowCards: null,
+    straightRedCards: num(entry.redCards),
+    tackles: num(entry.tackles),
+    interceptions: num(entry.interceptions),
+    clearances: num(entry.clearances),
+    goalsConceded: isGoalkeeper ? num(entry.goalsConceded) : null,
+    cleanSheets: isGoalkeeper ? num(entry.cleanSheets) : null,
+    saves,
+    savePercentage: saves !== null && shotsFaced ? round(saves * 100 / shotsFaced, 1) : null,
+    penaltiesFaced: isGoalkeeper ? num(entry.penaltiesFaced) : null,
+    penaltiesSaved: isGoalkeeper ? num(entry.penaltiesSaved) : null,
+    source: "ESPN Core",
+    sourceUrl: entry.sourceUrl || record.sourceUrl,
+    lastUpdated: String(record.retrievedAt || fantasyExternalStats.generatedAt || generatedAt).slice(0, 10),
+    fieldSources: { employment: "ESPN Core", attack: "ESPN Core", discipline: "ESPN Core", goalkeeping: "ESPN Core" }
+  });
+}
+
+function fantacalcioHistoricalEntry(stat, seed) {
+  return playerEntry({
+    playerId: seed.id,
+    providerPlayerId: String(stat.sourceId),
+    team: stat.team,
+    competition: "Serie A",
+    competitionType: "domestic-league",
+    appearances: num(stat.appearancesWithVote),
+    starts: null,
+    substituteAppearances: null,
+    minutes: null,
+    goals: num(stat.goalsFor),
+    assists: num(stat.assists),
+    penaltiesTaken: num(stat.penaltiesTaken),
+    penaltiesScored: num(stat.penaltiesScored),
+    yellowCards: num(stat.yellowCards),
+    secondYellowCards: null,
+    straightRedCards: num(stat.redCards),
+    goalsConceded: seed.role === "Portiere" ? num(stat.goalsAgainst) : null,
+    penaltiesSaved: seed.role === "Portiere" ? num(stat.penaltiesSaved) : null,
+    source: "Fantacalcio",
+    sourceUrl: "https://www.fantacalcio.it/serie-a/statistiche",
+    lastUpdated: fantasyHistoricalStats.importedAt,
+    fieldSources: { employment: "Fantacalcio", attack: "Fantacalcio", discipline: "Fantacalcio", goalkeeping: "Fantacalcio" }
+  });
+}
+
+function tacticalRole(positionName, formation) {
+  if (positionName === "Center Left Forward" || positionName === "Center Right Forward") {
+    return String(formation || "").endsWith("-1") ? "Trequartista" : "Seconda punta";
+  }
+  return tacticalRoleNames[positionName] || null;
+}
+
+function rosterCache(teamId) {
+  return path.join(root, `data/raw/team-pages/${teamId}/espn-roster-2026-27.json.gz`);
+}
+
+async function refreshRoster(teamId, teamConfig) {
+  const target = rosterCache(teamId);
+  if (!refreshRosters && fs.existsSync(target)) return;
+  const url = `https://site.api.espn.com/apis/site/v2/sports/soccer/${teamConfig.espnLeague || "ita.1"}/teams/${teamConfig.espnTeamId}/roster`;
+  const response = await fetch(url, { headers: { "user-agent": "Mozilla/5.0", accept: "application/json" } });
+  if (!response.ok) throw new Error(`${teamConfig.name}: rosa ESPN HTTP ${response.status}`);
+  writeGzip(target, { provider: "ESPN", season: "2026/27", retrievedAt: new Date().toISOString(), sourceUrl: url, roster: await response.json() });
+}
+
+function existingSummary(competition, fixtureId) {
+  const generic = path.join(root, `data/raw/team-pages/espn/2025-26/${competition}/${fixtureId}.json.gz`);
+  if (fs.existsSync(generic)) return generic;
+  const milan = path.join(root, `data/raw/team-pages/milan/espn/${competition}/${fixtureId}.json.gz`);
+  return fs.existsSync(milan) ? milan : null;
+}
+
+async function refreshEspnMatches() {
+  const leagueCode = competition => competition === "serie-a" ? "ita.1" : "ita.2";
+  for (const competition of ["serie-a", "serie-b"]) {
+    const matches = read(`data/normalized/referee-matches/2025-26/${competition}.json`).matches;
+    const targetDir = path.join(root, `data/raw/team-pages/espn/2025-26/${competition}`);
+    fs.mkdirSync(targetDir, { recursive: true });
+    const jobs = [];
+    let reused = 0;
+    for (const match of matches) {
+      const target = path.join(targetDir, `${match.providerFixtureId}.json.gz`);
+      if (!refreshEspn && fs.existsSync(target)) continue;
+      const reusable = existingSummary(competition, match.providerFixtureId);
+      if (reusable && reusable !== target) {
+        fs.copyFileSync(reusable, target);
+        reused++;
+        continue;
+      }
+      jobs.push({ fixtureId: match.providerFixtureId, target });
+    }
+    for (let index = 0; index < jobs.length; index += 8) {
+      await Promise.all(jobs.slice(index, index + 8).map(async job => {
+        const url = `https://site.api.espn.com/apis/site/v2/sports/soccer/${leagueCode(competition)}/summary?event=${job.fixtureId}`;
+        const response = await fetch(url, { headers: { "user-agent": "Mozilla/5.0", accept: "application/json" } });
+        if (!response.ok) throw new Error(`ESPN ${job.fixtureId}: HTTP ${response.status}`);
+        writeGzip(job.target, { provider: "espn", competition, season: "2025-26", retrievedAt: new Date().toISOString(), sourceUrl: url, bundle: { summary: await response.json() } });
+      }));
+      console.log(`ESPN ${competition === "serie-a" ? "Serie A" : "Serie B"}: ${Math.min(index + 8, jobs.length)}/${jobs.length} riepiloghi scaricati`);
+    }
+    console.log(`ESPN ${competition === "serie-a" ? "Serie A" : "Serie B"}: cache completa (${matches.length} partite; ${reused} riepiloghi riutilizzati).`);
+  }
+}
+
+function rawFiles() {
+  return ["serie-a", "serie-b"].flatMap(competition => {
+    const dir = path.join(root, `data/raw/team-pages/espn/2025-26/${competition}`);
+    return fs.readdirSync(dir).filter(name => name.endsWith(".json.gz")).map(name => ({ competition, file: path.join(dir, name) }));
+  });
+}
+
+function matchMinutes(entry) {
+  const stats = statMap(entry.stats);
+  if ((stats.appearances ?? 0) < 1) return null;
+  const play = (entry.plays || []).find(item => item.substitution && item.clock?.displayValue);
+  const minute = play ? Number(String(play.clock.displayValue).match(/\d+/)?.[0]) : null;
+  if (entry.starter) return entry.subbedOut && minute !== null ? Math.min(90, minute) : 90;
+  if (entry.subbedIn && minute !== null) return Math.max(0, 90 - Math.min(90, minute));
+  return null;
+}
+
+function allEntries(playersByEspnId) {
+  const buckets = new Map();
+  const roleCountsByEspnId = new Map();
+  for (const { competition, file } of rawFiles()) {
+    const raw = readRaw(file);
+    for (const roster of raw.bundle?.summary?.rosters || []) {
+      for (const row of roster.roster || []) {
+        const player = playersByEspnId.get(String(row.athlete?.id));
+        if (!player) continue;
+        const inferredRole = row.starter ? tacticalRole(row.position?.name, roster.formation) : null;
+        if (inferredRole) {
+          const playerRoles = roleCountsByEspnId.get(player.espnId) || new Map();
+          playerRoles.set(inferredRole, (playerRoles.get(inferredRole) || 0) + 1);
+          roleCountsByEspnId.set(player.espnId, playerRoles);
+        }
+        const stats = statMap(row.stats);
+        if ((stats.appearances ?? 0) < 1) continue;
+        const key = `${player.id}|${competition}|${roster.team?.id || roster.team?.displayName}`;
+        if (!buckets.has(key)) buckets.set(key, { playerId: player.id, playerRole: player.role, providerPlayerId: String(row.athlete.id), team: roster.team?.displayName || "N/D", competition, matches: [] });
+        buckets.get(key).matches.push({ row, stats, minutes: matchMinutes(row), retrievedAt: raw.retrievedAt || null });
+      }
+    }
+  }
+  const entries = [...buckets.values()].map(bucket => {
+    const matches = bucket.matches;
+    const total = field => sumNullable(matches.map(item => item.stats[field]));
+    const minutes = sumNullable(matches.map(item => item.minutes));
+    const isGoalkeeper = bucket.playerRole === "Portiere";
+    const saves = isGoalkeeper ? total("saves") : null;
+    const shotsFaced = isGoalkeeper ? total("shotsFaced") : null;
+    return playerEntry({
+      playerId: bucket.playerId, providerPlayerId: bucket.providerPlayerId, team: bucket.team === "AC Milan" ? "Milan" : bucket.team,
+      competition: bucket.competition === "serie-a" ? "Serie A" : "Serie B", competitionType: "domestic-league", appearances: matches.length,
+      starts: matches.filter(item => item.row.starter).length, substituteAppearances: matches.filter(item => item.row.subbedIn).length,
+      minutes, minutesPerAppearance: minutes === null ? null : round(minutes / matches.length),
+      completeMatches: matches.filter(item => item.row.starter && !item.row.subbedOut).length,
+      substitutedOff: matches.filter(item => item.row.starter && item.row.subbedOut).length,
+      goals: total("totalGoals"), assists: total("goalAssists"), shots: total("totalShots"), shotsOnTarget: total("shotsOnTarget"),
+      offsides: total("offsides"), foulsCommitted: total("foulsCommitted"), foulsWon: total("foulsSuffered"),
+      yellowCards: total("yellowCards"), secondYellowCards: null, straightRedCards: total("redCards"),
+      goalsConceded: isGoalkeeper ? total("goalsConceded") : null, saves,
+      savePercentage: saves !== null && shotsFaced ? round(saves * 100 / shotsFaced, 1) : null,
+      source: "ESPN", sourceUrl: `https://www.espn.com/soccer/player/_/id/${bucket.providerPlayerId}`,
+      lastUpdated: matches.map(item => item.retrievedAt).filter(Boolean).sort().at(-1)?.slice(0, 10) || generatedAt,
+      fieldSources: { employment: "ESPN match rosters", attack: "ESPN match rosters", discipline: "ESPN match rosters", goalkeeping: "ESPN match rosters" }
+    });
+  });
+  const detailedRoles = new Map([...roleCountsByEspnId].map(([espnId, counts]) => {
+    const ranked = [...counts].sort((left, right) => right[1] - left[1] || left[0].localeCompare(right[0], "it"));
+    const starts = ranked.reduce((total, [, count]) => total + count, 0);
+    return [espnId, {
+      role: ranked[0][0],
+      roles: ranked.map(([role, occurrences]) => ({ role, occurrences })),
+      starts,
+      occurrences: ranked[0][1],
+      confidence: round(ranked[0][1] / starts, 2)
+    }];
+  }));
+  return { entries, detailedRoles };
+}
+
+function totals(entries) {
+  if (!entries.length) return playerEntry({});
+  const aggregate = {};
+  for (const field of PLAYER_FIELDS) aggregate[field] = sumNullable(entries.map(entry => entry[field]));
+  aggregate.minutesPerAppearance = aggregate.minutes !== null && aggregate.appearances ? round(aggregate.minutes / aggregate.appearances) : null;
+  return playerEntry(aggregate);
+}
+
+function athleteDate(value) {
+  const match = String(value || "").match(/^\d{4}-\d{2}-\d{2}/);
+  return match ? match[0] : null;
+}
+
+function athleteCountry(athlete) {
+  const raw = athlete.citizenshipCountry?.name || athlete.citizenship || athlete.country?.name || null;
+  return countryNames[raw] || raw;
+}
+
+function athleteRole(athlete) {
+  const raw = athlete.position?.name || athlete.position?.displayName || "";
+  return roleNames[raw] || (raw.toLowerCase().includes("goalkeeper") ? "Portiere" : raw.toLowerCase().includes("defender") ? "Difensore" : raw.toLowerCase().includes("midfielder") ? "Centrocampista" : "Attaccante");
+}
+
+function rosterPlayers(teamId, teamConfig) {
+  if (!fs.existsSync(rosterCache(teamId))) throw new Error(`${teamConfig.name}: cache rosa assente; esegui con --refresh-rosters`);
+  const payload = readRaw(rosterCache(teamId)).roster;
+  const athletes = payload.athletes || [];
+  const included = new Set(teamConfig.includeEspnIds || []);
+  const excluded = new Set(teamConfig.excludeEspnIds || []);
+  const supplementalByEspnId = new Map(
+    (teamConfig.supplementalPlayers || [])
+      .filter(player => player.espnId)
+      .map(player => [String(player.espnId), player])
+  );
+  const selected = (teamConfig.rosterPolicy === "include" ? athletes.filter(athlete => included.has(String(athlete.id))) : athletes)
+    .filter(athlete => !excluded.has(String(athlete.id)));
+  const players = selected.map(athlete => {
+    const espnId = String(athlete.id);
+    const role = athleteRole(athlete);
+    const birth = athleteDate(athlete.dateOfBirth);
+    const base = {
+      id: slug(athlete.fullName || athlete.displayName), name: athlete.fullName || athlete.displayName, espnId, role,
+      detailedRole: roleNames[athlete.position?.name] || athlete.position?.displayName || role,
+      nationality: athleteCountry(athlete), dateOfBirth: birth,
+      heightCm: athlete.height ? Math.round(Number(athlete.height) * 2.54) : null,
+      weightKg: athlete.weight ? Math.round(Number(athlete.weight) * 0.453592) : null,
+      status: teamConfig.statusOverrides?.[espnId] || (teamConfig.confirmedEspnIds || []).includes(espnId) ? (teamConfig.statusOverrides?.[espnId] || "confermato") : teamConfig.defaultStatus
+    };
+    const supplemental = supplementalByEspnId.get(espnId);
+    if (!supplemental) return base;
+    return {
+      ...base,
+      ...supplemental,
+      id: slug(supplemental.name || base.name),
+      name: supplemental.name || base.name,
+      espnId,
+      role: supplemental.role || base.role,
+      detailedRole: supplemental.detailedRole || base.detailedRole,
+      nationality: supplemental.nationality || base.nationality,
+      dateOfBirth: supplemental.dateOfBirth || base.dateOfBirth,
+      heightCm: supplemental.heightCm ?? base.heightCm,
+      weightKg: supplemental.weightKg ?? base.weightKg,
+      status: supplemental.status || base.status
+    };
+  });
+  for (const supplemental of teamConfig.supplementalPlayers || []) {
+    if (players.some(player => supplemental.espnId && player.espnId === String(supplemental.espnId))) continue;
+    players.push({ id: slug(supplemental.name), heightCm: null, weightKg: null, ...supplemental, espnId: supplemental.espnId ? String(supplemental.espnId) : null });
+  }
+  const officialPlayers = fantasyRoster.players.filter(player => player.teamId === teamId && player.status === "active");
+  const byId = new Map(players.map(player => [player.id, player]));
+  return officialPlayers.map(source => {
+    const existing = source.playerId ? byId.get(source.playerId) : null;
+    const overriddenEspnId = providerIdOverrides[source.playerId]?.espn || null;
+    if (existing) return { ...existing, espnId: existing.espnId || overriddenEspnId, fantacalcioSourceId: source.sourceId, fantacalcioName: source.name };
+    const role = fantasyRoleNames[source.role] || null;
+    return {
+      id: slug(source.name),
+      name: source.name,
+      espnId: overriddenEspnId,
+      role,
+      detailedRole: role,
+      nationality: null,
+      dateOfBirth: null,
+      heightCm: null,
+      weightKg: null,
+      status: "confermato",
+      fantacalcioSourceId: source.sourceId,
+      fantacalcioName: source.name
+    };
+  });
+}
+
+function fantacalcioRosterSource(teamId) {
+  return {
+    provider: "Fantacalcio",
+    scope: "Rosa Serie A 2026/27 corrente; inclusi infortunati e indisponibili",
+    url: `https://www.fantacalcio.it/serie-a/squadre/${teamId}`,
+    retrievedAt: fantasyRoster.rosterSource?.retrievedAt || fantasyRoster.importedAt || null
+  };
+}
+
+function removeOrphanPlayerFiles(teamId, players) {
+  const directory = path.join(root, "data/players", teamId);
+  if (!fs.existsSync(directory)) return 0;
+  const keep = new Set(players.map(player => `${player.id}.json`));
+  let removed = 0;
+  for (const name of fs.readdirSync(directory)) {
+    if (!name.endsWith(".json") || keep.has(name)) continue;
+    fs.unlinkSync(path.join(directory, name));
+    removed++;
+  }
+  return removed;
+}
+
+async function buildTeam(teamId, teamConfig, entries, detailedRoles) {
+  const seeds = rosterPlayers(teamId, teamConfig);
+  const historicalByPlayerId = new Map(fantasyHistoricalStats.players.filter(stat => stat.playerId).map(stat => [stat.playerId, stat]));
+  const historicalByName = new Map();
+  for (const stat of fantasyHistoricalStats.players) {
+    const key = normalize(stat.name);
+    if (!historicalByName.has(key)) historicalByName.set(key, []);
+    historicalByName.get(key).push(stat);
+  }
+  const externalByPlayer = new Map();
+  for (const record of fantasyExternalStats.players) {
+    externalByPlayer.set(record.playerId, record.entries.map(entry => fantasyExternalEntry(record, entry)));
+  }
+  const manualExternalPlayers = new Set();
+  for (const entry of externalStats.entries) {
+    if (!manualExternalPlayers.has(entry.playerId)) {
+      externalByPlayer.set(entry.playerId, []);
+      manualExternalPlayers.add(entry.playerId);
+    }
+    externalByPlayer.get(entry.playerId).push(playerEntry(entry));
+  }
+  const squad = seeds.map(seed => {
+    let playerEntries = entries.filter(entry => entry.playerId === seed.id).sort((left, right) => (right.appearances ?? 0) - (left.appearances ?? 0));
+    let usesExternalStats = !playerEntries.length && externalByPlayer.has(seed.id);
+    if (usesExternalStats) playerEntries = externalByPlayer.get(seed.id);
+    if (!playerEntries.length) {
+      const byId = historicalByPlayerId.get(seed.id);
+      const exactNameMatches = historicalByName.get(normalize(seed.fantacalcioName || seed.name)) || [];
+      const historical = byId || (exactNameMatches.length === 1 ? exactNameMatches[0] : null);
+      if (historical) {
+        playerEntries = [fantacalcioHistoricalEntry(historical, seed)];
+        usesExternalStats = true;
+      }
+    }
+    const completeness = playerEntries.length ? (playerEntries.some(entry => entry.minutes != null) ? "complete" : "partial") : "unavailable";
+    const inferredRole = seed.espnId ? detailedRoles.get(seed.espnId) : null;
+    const configuredDetailedRole = seed.detailedRole && seed.detailedRole !== seed.role ? seed.detailedRole : null;
+    const player = {
+      schemaVersion: 1, id: seed.id, name: seed.name, providerIds: { espn: seed.espnId, fantacalcio: seed.fantacalcioSourceId || null }, currentTeam: teamConfig.name, currentSeason: "2026/27",
+      role: seed.role, detailedRole: inferredRole?.role || configuredDetailedRole || seed.role,
+      detailedRoles: inferredRole?.roles?.map(item => item.role) || [configuredDetailedRole || seed.role],
+      detailedRoleSource: inferredRole ? "ESPN - posizione da titolare 2025/26" : configuredDetailedRole ? "Configurazione rosa" : "ESPN - ruolo rosa generico",
+      detailedRoleEvidence: inferredRole ? { starts: inferredRole.starts, occurrences: inferredRole.occurrences, confidence: inferredRole.confidence, roles: inferredRole.roles } : null,
+      dateOfBirth: seed.dateOfBirth || null, age: ageAt(seed.dateOfBirth), nationality: seed.nationality || null,
+      heightCm: seed.heightCm ?? null, weightKg: seed.weightKg ?? null, preferredFoot: null, birthplace: null, atMilanSince: null,
+      arrivalDate: seed.arrivalDate || null, status: seed.status || teamConfig.defaultStatus,
+      previousTeam: playerEntries[0]?.team || null, previousCompetition: playerEntries[0]?.competition || null,
+      previousSeason: { season: "2025/26", entries: playerEntries, totals: totals(playerEntries), totalsByCompetition: playerEntries.map(entry => ({ competition: entry.competition, team: entry.team, ...totals([entry]) })) },
+      sources: [
+        fantacalcioRosterSource(teamId),
+        { ...teamConfig.source },
+        ...(seed.transferSource ? [seed.transferSource] : []),
+        ...playerEntries.map(entry => ({ provider: entry.source, scope: `${entry.team} - ${entry.competition} 2025/26`, url: entry.sourceUrl, retrievedAt: entry.lastUpdated }))
+      ],
+      dataQuality: {
+        status: completeness, uncertainAssociation: false, associationMethod: seed.espnId ? "provider-id" : null,
+        note: `${playerEntries.length ? (usesExternalStats ? "Statistiche 2025/26 importate dalla fonte esterna dichiarata." : "Statistiche aggregate dai roster partita ESPN.") : "Nessuna statistica 2025/26 verificata nel perimetro Serie A/Serie B ESPN; i valori restano N/D."}${inferredRole ? ` Ruolo tattico ricavato da ${inferredRole.starts} presenze da titolare 2025/26 (${inferredRole.occurrences} nel ruolo prevalente).` : " Ruolo specifico non assegnato senza evidenza tattica da titolare."}`
+      }
+    };
+    write(`data/players/${teamId}/${player.id}.json`, player);
+    return player;
+  });
+  write(`data/generated/team-pages/${teamId}-squad.json`, {
+    schemaVersion: 1, team: teamConfig.name, season: "2026/27", previousSeason: "2025/26", generatedAt: new Date().toISOString(),
+    coach: teamConfig.coach || null, rosterSource: fantacalcioRosterSource(teamId), players: squad
+  });
+  const removedOrphans = removeOrphanPlayerFiles(teamId, squad);
+  console.log(`${teamConfig.name}: ${squad.length} giocatori; complete=${squad.filter(player => player.dataQuality.status === "complete").length}; partial=${squad.filter(player => player.dataQuality.status === "partial").length}; unavailable=${squad.filter(player => player.dataQuality.status === "unavailable").length}; rimossi=${removedOrphans}`);
+  return squad;
+}
+
+async function main() {
+  for (const teamId of selectedTeams) {
+    if (!config.teams[teamId]) throw new Error(`Squadra non configurata: ${teamId}`);
+    await refreshRoster(teamId, config.teams[teamId]);
+  }
+  await refreshEspnMatches();
+  const seedsByTeam = Object.fromEntries(selectedTeams.map(teamId => [teamId, rosterPlayers(teamId, config.teams[teamId])]));
+  const byEspnId = new Map();
+  for (const seeds of Object.values(seedsByTeam)) for (const seed of seeds) if (seed.espnId) byEspnId.set(seed.espnId, seed);
+  const { entries, detailedRoles } = allEntries(byEspnId);
+  const built = [];
+  for (const teamId of selectedTeams) built.push({ teamId, players: await buildTeam(teamId, config.teams[teamId], entries, detailedRoles) });
+  if (selectedTeams.length === Object.keys(config.teams).length) {
+    write("data/generated/team-pages/detailed-role-report.json", {
+      schemaVersion: 1,
+      season: "2026/27",
+      evidenceSeason: "2025/26",
+      generatedAt: new Date().toISOString(),
+      method: "Ruolo tattico più frequente tra le presenze da titolare ESPN 2025/26; in assenza di evidenza resta il ruolo rosa generico.",
+      teams: built.map(({ teamId, players }) => ({
+        teamId,
+        players: players.length,
+        specificRoles: players.filter(player => player.detailedRole !== player.role).length,
+        genericRoles: players.filter(player => player.detailedRole === player.role).length
+      }))
+    });
+  }
+}
+
+main().catch(error => { console.error(error.stack || error.message); process.exit(1); });
