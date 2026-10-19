@@ -28,7 +28,11 @@ const fmt=v=>typeof v==='number'&&Number.isFinite(v)?v.toLocaleString('it-IT',{m
     if(overflow){const details=await page.evaluate(()=>[...document.querySelectorAll('#app *')].filter(e=>{const r=e.getBoundingClientRect();return r.width&&r.right>innerWidth+1}).map(e=>({tag:e.tagName,cls:e.className,width:e.getBoundingClientRect().width,right:e.getBoundingClientRect().right,text:e.textContent.slice(0,100)})));fs.writeFileSync(path.join(base,'overflow-diagnostic.json'),JSON.stringify(details,null,2));await page.screenshot({path:path.join(base,'overflow.png'),fullPage:true});}
     assert(!overflow,`${fixture.fixtureId}/${width}`);assert.deepEqual(errors,[]);
     results.push({fixtureId:fixture.fixtureId,width,exactValues:true,refereeCorrect:true,catalogMarkets:fixture.oddsEvent.playerMarkets.length,overflow,errors:[...errors]});
-    if(width!==320&&fixture.fixtureId.endsWith('-01'))await page.screenshot({path:path.join(base,`reading-${width}.png`),fullPage:true});
+    if(width!==320&&fixture.fixtureId.endsWith('-01')){
+     await page.screenshot({path:path.join(base,`reading-${width}.png`),fullPage:true});
+     await page.locator('.rf-panel').scrollIntoViewIfNeeded();
+     await page.screenshot({path:path.join(base,`reading-referee-viewport-${width}.png`)});
+    }
    }
    errors=[];await page.goto(`http://127.0.0.1:${server.address().port}/schedina.html?competizione=champions&giornata=3`,{waitUntil:'networkidle'});await page.waitForSelector('[data-md3-draft-fixture]');
    assert.equal(await page.locator('[data-md3-draft-fixture]').count(),18);assert.equal(await page.locator('.champions-market-card').count(),catalog.summary.markets);

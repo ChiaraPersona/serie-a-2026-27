@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {createChampionsSelection} from '../js/pages/champions-market-ui.mjs';
-import {createPersonalBetslipStore} from '../js/pages/personal-betslip-store.mjs';
+import {createPersonalBetslipStore,assessSelections} from '../js/pages/personal-betslip-store.mjs';
 const read=p=>JSON.parse(fs.readFileSync(p,'utf8'));
 const preview=read('data/analysis/champions/md3-offline-engine-2026-10-19/preview-md03.json');
 const catalog=read('data/normalized/champions-md03-preliminary-2026-27.json');
@@ -25,6 +25,8 @@ for(const f of catalog.fixtures){
  if(f.fixtureId==='ucl-2026-27-md03-02')assert(f.oddsEvent.playerMarkets.every(m=>!['shots','corners'].includes(m.family)));
 }
 assert.equal(contracts.length,657);
+const sameMarket=contracts.filter(c=>c.matchId===contracts[0].matchId&&c.betSelection.identity.providerMarketId===contracts[0].betSelection.identity.providerMarketId);
+assert(assessSelections(sameMarket.slice(0,2)).issues.some(i=>i.type==='MARKET_CONTRADICTION'));
 const memory=new Map(),storage={getItem:k=>memory.get(k)||null,setItem:(k,v)=>memory.set(k,v),removeItem:k=>memory.delete(k)};
 const store=createPersonalBetslipStore({storage});store.setContext({competition:'champions',season:'2026-27',matchday:3});
 const a=contracts[0],b=contracts.find(c=>c.matchId!==a.matchId);

@@ -187,6 +187,8 @@ body[data-reading-detail-theme] #app{max-width:var(--ds-content-max)!important;w
 .rd-shell .rd-diverging-intervals{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin-top:4px;min-height:14px}
 .rd-shell .rd-diverging-intervals small{font-size:10px;line-height:1.4;color:var(--rd-muted);padding-right:8px;overflow-wrap:anywhere}.rd-shell .rd-diverging-intervals small:last-child{text-align:right;padding:0 0 0 8px}
 .rd-shell .rd-score-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rd-line);border:1px solid var(--rd-line);margin-top:22px}
+/* Two-decimal frozen MD3 percentages must fit three cells at 320px. */
+@media(max-width:380px){.rd-shell[data-reading-fixture^="ucl-2026-27-md03-"] [data-md3-probability] strong{font-size:24px!important}}
 .rd-shell .rd-score-grid article{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:6px;padding:18px;background:var(--rd-surface)}
 .rd-shell .rd-score-grid small{font-size:11px;color:var(--rd-muted)}.rd-shell .rd-score-grid strong{font-family:Anton,Inter,sans-serif;font-size:32px;font-weight:400}.rd-shell .rd-score-grid article>span{font-size:11px;color:var(--rd-muted)}
 .rd-shell .rd-interpretation{font-size:17px;line-height:1.6;border-left:3px solid var(--rd-accent);padding-left:16px;margin-block:20px}
