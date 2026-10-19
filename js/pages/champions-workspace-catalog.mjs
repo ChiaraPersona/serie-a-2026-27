@@ -1,4 +1,5 @@
 import {createChampionsSelection} from './champions-market-ui.mjs';
+import {md3IndividualMarkets} from './champions-md3-individual-markets.mjs';
 import {championsAuditDisplay} from './champions-audit-display.mjs';
 import {hasVerifiedPlayableQuote} from './shared-forecast-contract.mjs';
 
