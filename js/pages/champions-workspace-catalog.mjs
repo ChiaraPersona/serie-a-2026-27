@@ -11,7 +11,7 @@ export async function loadChampionsWorkspace(load,matchday){
   const fixtures=calendar.fixtures.filter(f=>f.matchday===matchday).map(f=>({...f,readingUrl:`champions-league.html?match=${f.id}`}));
   let source,all=[];
   if(matchday===3){
-    const [catalog,approved]=await Promise.all([load('champions-md03-preliminary-2026-27.json'),load('schedina-champions-md03.json')]);
+    const [catalog,approved,individuals]=await Promise.all([load('champions-md03-preliminary-2026-27.json'),load('schedina-champions-md03.json'),load('champions-md03-probable-individuals-2026-27.json')]);
     source=approved;
     const approvedById=new Map(approved.slips.flatMap(s=>s.legs).map(leg=>[leg.selectionId,leg]));
     for(const fixture of catalog.fixtures)for(const market of fixture.oddsEvent.playerMarkets)for(const selection of market.selections){
