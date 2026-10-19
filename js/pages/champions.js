@@ -491,7 +491,12 @@ export function createPage(deps){
       return;
     }
     const md2Summary=await load("champions-pilot-predictions-md02-2026-27.json");
+    // Le Letture MD3 esistono nel calendario e vengono gestite da render()
+    // anche se non sono presenti negli archivi pilot MD1/MD2.
     const pilotByFixture=new Map([...pilot.fixtures,...md2Summary.fixtures].map(fixture=>[fixture.fixtureId,fixture]));
+    for(const fixture of data.fixtures){
+      if(fixture.matchday===3)pilotByFixture.set(fixture.id,{fixtureId:fixture.id});
+    }
     const matchdays=Array.from({length:data.summary.matchdays},(_,index)=>index+1);
     const roundRows=number=>data.fixtures.filter(fixture=>fixture.matchday===number);
     const hasResult=fixture=>fixture.status==="finished"&&Number.isFinite(fixture.score?.home)&&Number.isFinite(fixture.score?.away);
