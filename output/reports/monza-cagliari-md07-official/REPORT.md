@@ -124,3 +124,17 @@ Cagliari (4-3-1-2): Elia Caprile, Zé Pedro, Yerry Mina, Juan Rodríguez, Adam O
 - Daniel Maldini: 69.5 minuti stimati; rischio sostituzione high; 1+ tiro 88%. storico 2.2 /90 su 951 minuti; current 2.5 /90 su 432 minuti; peso current effettivo 30.6% dopo agreement
 - Paul Mendy: 71.2 minuti stimati; rischio sostituzione medium; 1+ tiro 93.73%. storico 4.1 /90 su 330 minuti; current 1.9 /90 su 424 minuti; peso current effettivo 24.3% dopo agreement
 - Nzola: 41.2 minuti stimati; rischio sostituzione high; 1+ tiro 75.34%. storico 2.3 /90 su 1522 minuti; current 0 /90 su 22 minuti; peso current effettivo 1.3% dopo agreement
+
+## Arbitro, tattica e verifiche
+
+Calzavara 2025/26: Serie A 2 gare, 2.5 gialli e 0 rossi/gara; Serie B 10 gare, 29.1 falli e 4 gialli/gara. Non trasferire la media falli di B alla A. Nessun correttivo aggiunto.
+
+Birindelli e Mangas possono attaccare le fasce contro Obert e Ze Pedro; Robinson e Mota fra terzini e centrali. Ipotesi, non duelli esclusivi misurati.
+
+Maldini puo ricevere fra i mediani e la difesa a tre, Mendy e Nzola occupare i centrali. Nessun nuovo coefficiente.
+
+Carboni e Mina sui piazzati: pericolosita specifica da piazzato N/D se non misurata.
+
+Akinsammiro fornito dall utente e ricondotto manualmente a Ebenezer Akinsanmiro, ID esistente ebenezer-akinsanmiro, sulla rosa Monza; nessun lookup fuzzy o nuova anagrafica.
+
+Panchine non fornite, sostituti specifici N/D. Test mirati e browser 1440/390 PASS. Controllo hash globale: modifiche concorrenti estranee in data/generated/reading-referee-history.json, data/normalized/champions-md03-probable-individuals-2026-27.json. Nove gare e archivio panchine estranei invariati nei controlli fixture-level; nessun ripristino di modifiche altrui.
