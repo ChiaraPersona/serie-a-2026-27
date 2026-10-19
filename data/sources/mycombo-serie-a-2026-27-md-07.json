@@ -13720,7 +13720,7 @@
                 "selection": "OVER",
                 "subject": {
                   "type": "player-plus-substitute",
-                  "id": null,
+                  "id": "andrea-carboni",
                   "name": "CARBONI A. U/O 0.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
                   "teamId": null
                 },
@@ -13767,7 +13767,8 @@
                 "individualModelProbabilityPct": null,
                 "fairOdds": null,
                 "expectedValuePct": null,
-                "status": null
+                "status": "NOT_MODELLED",
+                "kind": "NOT_MODELLED"
               },
               "compatibility": {
                 "status": "NOT_EVALUATED",
@@ -13787,6 +13788,16 @@
                 "MODEL_BOOKMAKER_TARGET_MISMATCH"
               ],
               "risks": []
+            },
+            "playerId": "andrea-carboni",
+            "playerName": "Andrea Carboni",
+            "lineupEligibility": {
+              "eligible": true,
+              "status": "official-starter",
+              "source": "user-provided",
+              "sourceUpdatedAt": "2026-10-19T15:45:20.750Z",
+              "playerId": "andrea-carboni",
+              "playerName": "Andrea Carboni"
             }
           },
           {
@@ -13871,7 +13882,8 @@
                 "individualModelProbabilityPct": null,
                 "fairOdds": null,
                 "expectedValuePct": null,
-                "status": null
+                "status": "NOT_MODELLED",
+                "kind": "NOT_MODELLED"
               },
               "compatibility": {
                 "status": "NOT_EVALUATED",
@@ -13890,6 +13902,14 @@
                 "RELIABILITY_NOT_EVALUABLE"
               ],
               "risks": []
+            },
+            "lineupEligibility": {
+              "eligible": true,
+              "status": "not-applicable",
+              "source": null,
+              "sourceUpdatedAt": null,
+              "playerId": null,
+              "playerName": null
             }
           },
           {
@@ -13927,7 +13947,7 @@
                 "selection": "OVER",
                 "subject": {
                   "type": "player-plus-substitute",
-                  "id": null,
+                  "id": "gustavo-varela",
                   "name": "VARELA G. U/O 0.5 SOMMA TIRI IN PORTA INC PALI E TRAVERSE E SUO SOST. INCL. T.S.",
                   "teamId": null
                 },
@@ -13974,7 +13994,8 @@
                 "individualModelProbabilityPct": null,
                 "fairOdds": null,
                 "expectedValuePct": null,
-                "status": null
+                "status": "NOT_MODELLED",
+                "kind": "NOT_MODELLED"
               },
               "compatibility": {
                 "status": "NOT_EVALUATED",
@@ -13994,6 +14015,16 @@
                 "MODEL_BOOKMAKER_TARGET_MISMATCH"
               ],
               "risks": []
+            },
+            "playerId": "gustavo-varela",
+            "playerName": "Gustavo Varela",
+            "lineupEligibility": {
+              "eligible": true,
+              "status": "official-starter",
+              "source": "user-provided",
+              "sourceUpdatedAt": "2026-10-19T15:45:20.750Z",
+              "playerId": "gustavo-varela",
+              "playerName": "Gustavo Varela"
             }
           },
           {
@@ -14074,16 +14105,24 @@
                 }
               },
               "evaluation": {
-                "modelProbabilityPct": null,
+                "modelProbabilityPct": 75.1,
                 "individualModelProbabilityPct": null,
-                "fairOdds": null,
-                "expectedValuePct": null,
-                "status": null
+                "fairOdds": 1.33,
+                "expectedValuePct": -2.3,
+                "status": "EV_CALCOLABILE",
+                "kind": "CANONICAL_DIRECT",
+                "probabilitySemantics": "ABSOLUTE_EVENT",
+                "fairOddsBasis": "CENTRAL_PROBABILITY",
+                "expectedValueBasis": "CENTRAL_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+                "provenance": {
+                  "source": "predictions.marketComparison",
+                  "modelTarget": "goals:OVER:1.5"
+                }
               },
               "compatibility": {
-                "status": "NOT_EVALUATED",
-                "reason": "Compatibilità specifica non valutata dal generatore MyCombo.",
-                "modelTarget": null,
+                "status": "COMPATIBILE",
+                "reason": "Target collegato al confronto canonico V2 tramite providerSelectionId.",
+                "modelTarget": "goals:OVER:1.5",
                 "bookmakerTarget": null
               },
               "overlap": {
@@ -14097,6 +14136,14 @@
                 "RELIABILITY_NOT_EVALUABLE"
               ],
               "risks": []
+            },
+            "lineupEligibility": {
+              "eligible": true,
+              "status": "not-applicable",
+              "source": null,
+              "sourceUpdatedAt": null,
+              "playerId": null,
+              "playerName": null
             }
           }
         ]
@@ -14207,6 +14254,16 @@
                 "MODEL_BOOKMAKER_TARGET_MISMATCH"
               ],
               "risks": []
+            },
+            "playerId": "paul-mendy",
+            "playerName": "Paul Mendy",
+            "lineupEligibility": {
+              "eligible": true,
+              "status": "official-starter",
+              "source": "user-provided",
+              "sourceUpdatedAt": "2026-10-19T15:45:20.750Z",
+              "playerId": "paul-mendy",
+              "playerName": "Paul Mendy"
             }
           },
           {
@@ -14239,7 +14296,7 @@
                 "name": "U/O CORNER SQUADRA X",
                 "variant": "U/O 4.5 CORNER SQUADRA 1",
                 "scope": "match",
-                "family": null,
+                "family": "Corner",
                 "threshold": 4.5,
                 "selection": "OVER",
                 "subject": {
@@ -14277,8 +14334,8 @@
                 "classification": null,
                 "classificationReason": null,
                 "reliability": {
-                  "level": "Non valutabile",
-                  "reason": "Nessun criterio di affidabilità verificabile disponibile per questa selezione."
+                  "level": "Bassa",
+                  "reason": "Distribuzione validata su holdout temporale, ma storico Serie A precedente assente per: monza; deduzione prudenziale ampliata."
                 },
                 "playability": {
                   "status": "PLAYABLE",
@@ -14287,29 +14344,79 @@
                 }
               },
               "evaluation": {
-                "modelProbabilityPct": null,
-                "individualModelProbabilityPct": null,
-                "fairOdds": null,
-                "expectedValuePct": null,
-                "status": null
+                "modelProbabilityPct": 51.8,
+                "fairOdds": 1.93,
+                "expectedValuePct": -16.09,
+                "status": "EV_CALCOLABILE",
+                "kind": "DISCRETE_COUNT_TEMPORAL_HOLDOUT",
+                "prudentProbabilityPct": 46.8,
+                "conservativeExpectedValuePct": -24.19,
+                "probabilitySemantics": "ABSOLUTE_EVENT",
+                "fairOddsBasis": "CENTRAL_DISCRETE_PROBABILITY",
+                "expectedValueBasis": "CENTRAL_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+                "provenance": {
+                  "source": "data/analysis/serie-a-md07-statistical-models.json",
+                  "modelTarget": "statistical:corners-team-over",
+                  "distribution": "NEGATIVE_BINOMIAL",
+                  "mean": {
+                    "home": 5.069,
+                    "away": 3.706
+                  },
+                  "uncertaintyDeductionPp": 5,
+                  "validation": {
+                    "matchClusters": 190,
+                    "probabilityObservations": 4180,
+                    "brier": 0.1164,
+                    "baselineBrier": 0.1194,
+                    "deltaBrier": -0.003,
+                    "logLoss": 0.3625,
+                    "ece": 0.0107,
+                    "meanBias": 0.0587,
+                    "mae": 2.0907,
+                    "gate": "PASS",
+                    "gateCriteria": "clusters>=180; deltaBrier<=0.005; ECE<=0.08; absolute bias within family limit; exact threshold must have >=30 positive and >=30 negative holdout outcomes",
+                    "exactThreshold": {
+                      "observations": 380,
+                      "positives": 167,
+                      "negatives": 213,
+                      "brier": 0.2355,
+                      "baselineBrier": 0.2403,
+                      "deltaBrier": -0.0048,
+                      "ece": 0.0344,
+                      "gate": "PASS"
+                    }
+                  }
+                }
               },
               "compatibility": {
-                "status": "NOT_EVALUATED",
-                "reason": "Compatibilità specifica non valutata dal generatore MyCombo.",
-                "modelTarget": null,
-                "bookmakerTarget": null
+                "status": "COMPATIBILE",
+                "reason": "Contratto Sisal full-time riconciliato con il conteggio storico e distribuzione discreta validata fuori campione.",
+                "modelTarget": "statistical:corners-team-over",
+                "bookmakerTarget": "U/O CORNER SQUADRA X · U/O 4.5 CORNER SQUADRA 1"
               },
               "overlap": {
-                "overlapKey": "market-u o corner squadra x",
+                "overlapKey": "statistical:corners-team-over:U/O 4.5 CORNER SQUADRA 1:OVER",
                 "semanticKeys": [
-                  "volume-corners"
+                  "statistical-b:corners-team-over:5388245429"
                 ]
               },
               "warnings": [
-                "CLASSIFICATION_NOT_AVAILABLE",
-                "RELIABILITY_NOT_EVALUABLE"
+                "CURRENT_AVAILABILITY_NOT_VERIFIED",
+                "CLASSIFICATION_NOT_AVAILABLE"
               ],
-              "risks": []
+              "risks": [
+                "UNCERTAINTY_DEDUCTION_5_PP",
+                "LIMITED_PRIOR_SERIE_A_HISTORY_MONZA",
+                "CURRENT_QUOTE_AVAILABILITY_FROM_2026_10_09_SNAPSHOT"
+              ]
+            },
+            "lineupEligibility": {
+              "eligible": true,
+              "status": "not-applicable",
+              "source": null,
+              "sourceUpdatedAt": null,
+              "playerId": null,
+              "playerName": null
             }
           },
           {
@@ -14347,7 +14454,7 @@
                 "selection": "OVER",
                 "subject": {
                   "type": "player-plus-substitute",
-                  "id": null,
+                  "id": "gustavo-varela",
                   "name": "VARELA G. U/O 0.5 SOMMA TIRI IN PORTA INC PALI E TRAVERSE E SUO SOST. INCL. T.S.",
                   "teamId": null
                 },
@@ -14394,7 +14501,8 @@
                 "individualModelProbabilityPct": null,
                 "fairOdds": null,
                 "expectedValuePct": null,
-                "status": null
+                "status": "NOT_MODELLED",
+                "kind": "NOT_MODELLED"
               },
               "compatibility": {
                 "status": "NOT_EVALUATED",
@@ -14414,6 +14522,16 @@
                 "MODEL_BOOKMAKER_TARGET_MISMATCH"
               ],
               "risks": []
+            },
+            "playerId": "gustavo-varela",
+            "playerName": "Gustavo Varela",
+            "lineupEligibility": {
+              "eligible": true,
+              "status": "official-starter",
+              "source": "user-provided",
+              "sourceUpdatedAt": "2026-10-19T15:45:20.750Z",
+              "playerId": "gustavo-varela",
+              "playerName": "Gustavo Varela"
             }
           },
           {
@@ -14451,7 +14569,7 @@
                 "selection": "OVER",
                 "subject": {
                   "type": "player-plus-substitute",
-                  "id": null,
+                  "id": "andrea-carboni",
                   "name": "CARBONI A. U/O 0.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
                   "teamId": null
                 },
@@ -14498,7 +14616,8 @@
                 "individualModelProbabilityPct": null,
                 "fairOdds": null,
                 "expectedValuePct": null,
-                "status": null
+                "status": "NOT_MODELLED",
+                "kind": "NOT_MODELLED"
               },
               "compatibility": {
                 "status": "NOT_EVALUATED",
@@ -14518,6 +14637,16 @@
                 "MODEL_BOOKMAKER_TARGET_MISMATCH"
               ],
               "risks": []
+            },
+            "playerId": "andrea-carboni",
+            "playerName": "Andrea Carboni",
+            "lineupEligibility": {
+              "eligible": true,
+              "status": "official-starter",
+              "source": "user-provided",
+              "sourceUpdatedAt": "2026-10-19T15:45:20.750Z",
+              "playerId": "andrea-carboni",
+              "playerName": "Andrea Carboni"
             }
           },
           {
@@ -14550,7 +14679,7 @@
                 "name": "MULTIGOAL",
                 "variant": "MULTIGOAL MULTIESITI 16 ESITI",
                 "scope": "match",
-                "family": null,
+                "family": "Multigoal partita",
                 "threshold": null,
                 "selection": "1-3",
                 "subject": {
@@ -14588,8 +14717,8 @@
                 "classification": null,
                 "classificationReason": null,
                 "reliability": {
-                  "level": "Non valutabile",
-                  "reason": "Nessun criterio di affidabilità verificabile disponibile per questa selezione."
+                  "level": "Bassa",
+                  "reason": "Derivazione deterministica dalla matrice punteggi V2 e dalla sensibilità già esistente; nessuna nuova distribuzione."
                 },
                 "playability": {
                   "status": "PLAYABLE",
@@ -14598,29 +14727,61 @@
                 }
               },
               "evaluation": {
-                "modelProbabilityPct": null,
+                "modelProbabilityPct": 64.7,
                 "individualModelProbabilityPct": null,
-                "fairOdds": null,
-                "expectedValuePct": null,
-                "status": null
+                "fairOdds": 1.66,
+                "expectedValuePct": -15.6,
+                "status": "EV_CALCOLABILE",
+                "kind": "DERIVED_B2_SCORE_MATRIX",
+                "prudentProbabilityPct": 60.3,
+                "probabilitySemantics": "ABSOLUTE_EVENT",
+                "fairOddsBasis": "PRUDENT_PROBABILITY",
+                "expectedValueBasis": "PRUDENT_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+                "provenance": {
+                  "source": "predictions.expectedGoals",
+                  "predicateId": "score.total.inclusive:1-3",
+                  "predicateTarget": {
+                    "market": "MULTIGOAL",
+                    "variant": "MULTIGOAL MULTIESITI 16 ESITI",
+                    "threshold": null,
+                    "selection": "1-3"
+                  },
+                  "modelVersion": "4.13.0",
+                  "predictionGeneratedAt": "2026-10-19T15:45:22.621Z",
+                  "sensitivity": "central plus four lambda perturbations +/-10%; prudent probability is the minimum",
+                  "sensitivityProbabilityPct": [
+                    64.7,
+                    64.5,
+                    64.9,
+                    68.4,
+                    60.3
+                  ]
+                }
               },
               "compatibility": {
-                "status": "NOT_EVALUATED",
-                "reason": "Compatibilità specifica non valutata dal generatore MyCombo.",
-                "modelTarget": null,
-                "bookmakerTarget": null
+                "status": "COMPATIBILE",
+                "reason": "Il predicato bookmaker coincide con il predicato discreto applicato alla matrice punteggi.",
+                "modelTarget": "score.total.inclusive:1-3",
+                "bookmakerTarget": "MULTIGOAL · MULTIGOAL MULTIESITI 16 ESITI"
               },
               "overlap": {
-                "overlapKey": "scenario-goals-fulltime-match",
+                "overlapKey": "multigoal-match:MULTIGOAL MULTIESITI 16 ESITI:1-3",
                 "semanticKeys": [
-                  "goals-fulltime-match"
+                  "derived-b2:score.total.inclusive:1-3"
                 ]
               },
               "warnings": [
-                "CLASSIFICATION_NOT_AVAILABLE",
-                "RELIABILITY_NOT_EVALUABLE"
+                "CLASSIFICATION_NOT_AVAILABLE"
               ],
               "risks": []
+            },
+            "lineupEligibility": {
+              "eligible": true,
+              "status": "not-applicable",
+              "source": null,
+              "sourceUpdatedAt": null,
+              "playerId": null,
+              "playerName": null
             }
           }
         ]
@@ -14659,7 +14820,7 @@
                 "name": "U/O CORNER",
                 "variant": "U/O 8.5 CORNER",
                 "scope": "match",
-                "family": null,
+                "family": "Corner",
                 "threshold": 8.5,
                 "selection": "OVER",
                 "subject": {
@@ -14697,8 +14858,8 @@
                 "classification": null,
                 "classificationReason": null,
                 "reliability": {
-                  "level": "Non valutabile",
-                  "reason": "Nessun criterio di affidabilità verificabile disponibile per questa selezione."
+                  "level": "Bassa",
+                  "reason": "Distribuzione validata su holdout temporale, ma storico Serie A precedente assente per: monza; deduzione prudenziale ampliata."
                 },
                 "playability": {
                   "status": "PLAYABLE",
@@ -14707,29 +14868,79 @@
                 }
               },
               "evaluation": {
-                "modelProbabilityPct": null,
-                "individualModelProbabilityPct": null,
-                "fairOdds": null,
-                "expectedValuePct": null,
-                "status": null
+                "modelProbabilityPct": 48.61,
+                "fairOdds": 2.06,
+                "expectedValuePct": -16.4,
+                "status": "EV_CALCOLABILE",
+                "kind": "DISCRETE_COUNT_TEMPORAL_HOLDOUT",
+                "prudentProbabilityPct": 43.61,
+                "conservativeExpectedValuePct": -25,
+                "probabilitySemantics": "ABSOLUTE_EVENT",
+                "fairOddsBasis": "CENTRAL_DISCRETE_PROBABILITY",
+                "expectedValueBasis": "CENTRAL_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+                "provenance": {
+                  "source": "data/analysis/serie-a-md07-statistical-models.json",
+                  "modelTarget": "statistical:corners-match-over",
+                  "distribution": "NEGATIVE_BINOMIAL",
+                  "mean": {
+                    "home": 5.069,
+                    "away": 3.706
+                  },
+                  "uncertaintyDeductionPp": 5,
+                  "validation": {
+                    "matchClusters": 190,
+                    "probabilityObservations": 1710,
+                    "brier": 0.1784,
+                    "baselineBrier": 0.1775,
+                    "deltaBrier": 0.0009,
+                    "logLoss": 0.536,
+                    "ece": 0.0245,
+                    "meanBias": 0.1174,
+                    "mae": 2.6424,
+                    "gate": "PASS",
+                    "gateCriteria": "clusters>=180; deltaBrier<=0.005; ECE<=0.08; absolute bias within family limit; exact threshold must have >=30 positive and >=30 negative holdout outcomes",
+                    "exactThreshold": {
+                      "observations": 190,
+                      "positives": 92,
+                      "negatives": 98,
+                      "brier": 0.2538,
+                      "baselineBrier": 0.2504,
+                      "deltaBrier": 0.0034,
+                      "ece": 0.0332,
+                      "gate": "PASS"
+                    }
+                  }
+                }
               },
               "compatibility": {
-                "status": "NOT_EVALUATED",
-                "reason": "Compatibilità specifica non valutata dal generatore MyCombo.",
-                "modelTarget": null,
-                "bookmakerTarget": null
+                "status": "COMPATIBILE",
+                "reason": "Contratto Sisal full-time riconciliato con il conteggio storico e distribuzione discreta validata fuori campione.",
+                "modelTarget": "statistical:corners-match-over",
+                "bookmakerTarget": "U/O CORNER · U/O 8.5 CORNER"
               },
               "overlap": {
-                "overlapKey": "market-u o corner",
+                "overlapKey": "statistical:corners-match-over:U/O 8.5 CORNER:OVER",
                 "semanticKeys": [
-                  "volume-corners"
+                  "statistical-b:corners-match-over:5388251621"
                 ]
               },
               "warnings": [
-                "CLASSIFICATION_NOT_AVAILABLE",
-                "RELIABILITY_NOT_EVALUABLE"
+                "CURRENT_AVAILABILITY_NOT_VERIFIED",
+                "CLASSIFICATION_NOT_AVAILABLE"
               ],
-              "risks": []
+              "risks": [
+                "UNCERTAINTY_DEDUCTION_5_PP",
+                "LIMITED_PRIOR_SERIE_A_HISTORY_MONZA",
+                "CURRENT_QUOTE_AVAILABILITY_FROM_2026_10_09_SNAPSHOT"
+              ]
+            },
+            "lineupEligibility": {
+              "eligible": true,
+              "status": "not-applicable",
+              "source": null,
+              "sourceUpdatedAt": null,
+              "playerId": null,
+              "playerName": null
             }
           },
           {
@@ -14834,6 +15045,16 @@
                 "MODEL_BOOKMAKER_TARGET_MISMATCH"
               ],
               "risks": []
+            },
+            "playerId": "gustavo-varela",
+            "playerName": "Gustavo Varela",
+            "lineupEligibility": {
+              "eligible": true,
+              "status": "official-starter",
+              "source": "user-provided",
+              "sourceUpdatedAt": "2026-10-19T15:45:20.750Z",
+              "playerId": "gustavo-varela",
+              "playerName": "Gustavo Varela"
             }
           },
           {
@@ -14871,7 +15092,7 @@
                 "selection": "OVER",
                 "subject": {
                   "type": "player-plus-substitute",
-                  "id": null,
+                  "id": "andrea-carboni",
                   "name": "CARBONI A. U/O 0.5 SOMMA TIRI TOTALI E SUO SOST. INCL. T.S.",
                   "teamId": null
                 },
@@ -14918,7 +15139,8 @@
                 "individualModelProbabilityPct": null,
                 "fairOdds": null,
                 "expectedValuePct": null,
-                "status": null
+                "status": "NOT_MODELLED",
+                "kind": "NOT_MODELLED"
               },
               "compatibility": {
                 "status": "NOT_EVALUATED",
@@ -14938,6 +15160,16 @@
                 "MODEL_BOOKMAKER_TARGET_MISMATCH"
               ],
               "risks": []
+            },
+            "playerId": "andrea-carboni",
+            "playerName": "Andrea Carboni",
+            "lineupEligibility": {
+              "eligible": true,
+              "status": "official-starter",
+              "source": "user-provided",
+              "sourceUpdatedAt": "2026-10-19T15:45:20.750Z",
+              "playerId": "andrea-carboni",
+              "playerName": "Andrea Carboni"
             }
           },
           {
@@ -14970,7 +15202,7 @@
                 "name": "GOAL/NOGOAL",
                 "variant": "GOAL/NO GOAL",
                 "scope": "match",
-                "family": null,
+                "family": "Gol/No Gol",
                 "threshold": null,
                 "selection": "GOAL",
                 "subject": {
@@ -15008,8 +15240,8 @@
                 "classification": null,
                 "classificationReason": null,
                 "reliability": {
-                  "level": "Non valutabile",
-                  "reason": "Nessun criterio di affidabilità verificabile disponibile per questa selezione."
+                  "level": "Bassa",
+                  "reason": "Valutazione già serializzata nel confronto canonico V2."
                 },
                 "playability": {
                   "status": "PLAYABLE",
@@ -15018,29 +15250,48 @@
                 }
               },
               "evaluation": {
-                "modelProbabilityPct": null,
+                "modelProbabilityPct": 54.7,
                 "individualModelProbabilityPct": null,
-                "fairOdds": null,
-                "expectedValuePct": null,
-                "status": null
+                "fairOdds": 1.83,
+                "expectedValuePct": -9.7,
+                "status": "EV_CALCOLABILE",
+                "kind": "CANONICAL_DIRECT",
+                "prudentProbabilityPct": 49.3,
+                "conservativeExpectedValuePct": -18.6,
+                "probabilitySemantics": "ABSOLUTE_EVENT",
+                "fairOddsBasis": "CENTRAL_PROBABILITY",
+                "expectedValueBasis": "CENTRAL_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+                "provenance": {
+                  "source": "predictions.marketComparison",
+                  "modelVersion": "4.13.0",
+                  "predictionGeneratedAt": "2026-10-19T15:45:22.621Z",
+                  "modelTarget": "btts:GOAL:main"
+                }
               },
               "compatibility": {
-                "status": "NOT_EVALUATED",
-                "reason": "Compatibilità specifica non valutata dal generatore MyCombo.",
-                "modelTarget": null,
-                "bookmakerTarget": null
+                "status": "COMPATIBILE",
+                "reason": "Target bookmaker e riga canonica V2 associati tramite providerSelectionId.",
+                "modelTarget": "btts:GOAL:main",
+                "bookmakerTarget": "GOAL/NOGOAL · GOAL/NO GOAL"
               },
               "overlap": {
-                "overlapKey": "scenario-btts-fulltime-match",
+                "overlapKey": "btts:GOAL:GOAL/NO GOAL",
                 "semanticKeys": [
-                  "btts-fulltime-match"
+                  "canonical:btts:GOAL:main"
                 ]
               },
               "warnings": [
-                "CLASSIFICATION_NOT_AVAILABLE",
-                "RELIABILITY_NOT_EVALUABLE"
+                "CLASSIFICATION_NOT_AVAILABLE"
               ],
               "risks": []
+            },
+            "lineupEligibility": {
+              "eligible": true,
+              "status": "not-applicable",
+              "source": null,
+              "sourceUpdatedAt": null,
+              "playerId": null,
+              "playerName": null
             }
           },
           {
@@ -15125,7 +15376,8 @@
                 "individualModelProbabilityPct": null,
                 "fairOdds": null,
                 "expectedValuePct": null,
-                "status": null
+                "status": "NOT_MODELLED",
+                "kind": "NOT_MODELLED"
               },
               "compatibility": {
                 "status": "NOT_EVALUATED",
@@ -15144,6 +15396,14 @@
                 "RELIABILITY_NOT_EVALUABLE"
               ],
               "risks": []
+            },
+            "lineupEligibility": {
+              "eligible": true,
+              "status": "not-applicable",
+              "source": null,
+              "sourceUpdatedAt": null,
+              "playerId": null,
+              "playerName": null
             }
           },
           {
@@ -15176,7 +15436,7 @@
                 "name": "U/O TIRI IN PORTA SQUADRA X",
                 "variant": "SQUADRA 1: U/O 3.5 TIRI IN PORTA",
                 "scope": "match",
-                "family": null,
+                "family": "Tiri in porta",
                 "threshold": 3.5,
                 "selection": "OVER",
                 "subject": {
@@ -15214,8 +15474,8 @@
                 "classification": null,
                 "classificationReason": null,
                 "reliability": {
-                  "level": "Non valutabile",
-                  "reason": "Nessun criterio di affidabilità verificabile disponibile per questa selezione."
+                  "level": "Bassa",
+                  "reason": "Distribuzione validata su holdout temporale, ma storico Serie A precedente assente per: monza; deduzione prudenziale ampliata."
                 },
                 "playability": {
                   "status": "PLAYABLE",
@@ -15224,29 +15484,79 @@
                 }
               },
               "evaluation": {
-                "modelProbabilityPct": null,
-                "individualModelProbabilityPct": null,
-                "fairOdds": null,
-                "expectedValuePct": null,
-                "status": null
+                "modelProbabilityPct": 67.32,
+                "fairOdds": 1.49,
+                "expectedValuePct": -2.38,
+                "status": "EV_CALCOLABILE",
+                "kind": "DISCRETE_COUNT_TEMPORAL_HOLDOUT",
+                "prudentProbabilityPct": 62.32,
+                "conservativeExpectedValuePct": -9.63,
+                "probabilitySemantics": "ABSOLUTE_EVENT",
+                "fairOddsBasis": "CENTRAL_DISCRETE_PROBABILITY",
+                "expectedValueBasis": "CENTRAL_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+                "provenance": {
+                  "source": "data/analysis/serie-a-md07-statistical-models.json",
+                  "modelTarget": "statistical:sot-team-over",
+                  "distribution": "NEGATIVE_BINOMIAL",
+                  "mean": {
+                    "home": 4.883,
+                    "away": 4.091
+                  },
+                  "uncertaintyDeductionPp": 5,
+                  "validation": {
+                    "matchClusters": 190,
+                    "probabilityObservations": 4940,
+                    "brier": 0.0808,
+                    "baselineBrier": 0.0864,
+                    "deltaBrier": -0.0056,
+                    "logLoss": 0.2507,
+                    "ece": 0.0138,
+                    "meanBias": 0.0872,
+                    "mae": 1.7584,
+                    "gate": "PASS",
+                    "gateCriteria": "clusters>=180; deltaBrier<=0.005; ECE<=0.08; absolute bias within family limit; exact threshold must have >=30 positive and >=30 negative holdout outcomes",
+                    "exactThreshold": {
+                      "observations": 380,
+                      "positives": 200,
+                      "negatives": 180,
+                      "brier": 0.2311,
+                      "baselineBrier": 0.2463,
+                      "deltaBrier": -0.0152,
+                      "ece": 0.0661,
+                      "gate": "PASS"
+                    }
+                  }
+                }
               },
               "compatibility": {
-                "status": "NOT_EVALUATED",
-                "reason": "Compatibilità specifica non valutata dal generatore MyCombo.",
-                "modelTarget": null,
-                "bookmakerTarget": null
+                "status": "COMPATIBILE",
+                "reason": "Contratto Sisal full-time riconciliato con il conteggio storico e distribuzione discreta validata fuori campione.",
+                "modelTarget": "statistical:sot-team-over",
+                "bookmakerTarget": "U/O TIRI IN PORTA SQUADRA X · SQUADRA 1: U/O 3.5 TIRI IN PORTA"
               },
               "overlap": {
-                "overlapKey": "market-u o tiri in porta squadra x",
+                "overlapKey": "statistical:sot-team-over:SQUADRA 1: U/O 3.5 TIRI IN PORTA:OVER",
                 "semanticKeys": [
-                  "volume-shots-on-target"
+                  "statistical-b:sot-team-over:5389859572"
                 ]
               },
               "warnings": [
-                "CLASSIFICATION_NOT_AVAILABLE",
-                "RELIABILITY_NOT_EVALUABLE"
+                "CURRENT_AVAILABILITY_NOT_VERIFIED",
+                "CLASSIFICATION_NOT_AVAILABLE"
               ],
-              "risks": []
+              "risks": [
+                "UNCERTAINTY_DEDUCTION_5_PP",
+                "LIMITED_PRIOR_SERIE_A_HISTORY_MONZA",
+                "CURRENT_QUOTE_AVAILABILITY_FROM_2026_10_09_SNAPSHOT"
+              ]
+            },
+            "lineupEligibility": {
+              "eligible": true,
+              "status": "not-applicable",
+              "source": null,
+              "sourceUpdatedAt": null,
+              "playerId": null,
+              "playerName": null
             }
           },
           {
@@ -15279,7 +15589,7 @@
                 "name": "MULTIGOAL",
                 "variant": "MULTIGOAL MULTIESITI 16 ESITI",
                 "scope": "match",
-                "family": null,
+                "family": "Multigoal partita",
                 "threshold": null,
                 "selection": "1-4",
                 "subject": {
@@ -15317,8 +15627,8 @@
                 "classification": null,
                 "classificationReason": null,
                 "reliability": {
-                  "level": "Non valutabile",
-                  "reason": "Nessun criterio di affidabilità verificabile disponibile per questa selezione."
+                  "level": "Bassa",
+                  "reason": "Derivazione deterministica dalla matrice punteggi V2 e dalla sensibilità già esistente; nessuna nuova distribuzione."
                 },
                 "playability": {
                   "status": "PLAYABLE",
@@ -15327,29 +15637,61 @@
                 }
               },
               "evaluation": {
-                "modelProbabilityPct": null,
+                "modelProbabilityPct": 79.6,
                 "individualModelProbabilityPct": null,
-                "fairOdds": null,
-                "expectedValuePct": null,
-                "status": null
+                "fairOdds": 1.3,
+                "expectedValuePct": -9.2,
+                "status": "EV_CALCOLABILE",
+                "kind": "DERIVED_B2_SCORE_MATRIX",
+                "prudentProbabilityPct": 76.9,
+                "probabilitySemantics": "ABSOLUTE_EVENT",
+                "fairOddsBasis": "PRUDENT_PROBABILITY",
+                "expectedValueBasis": "PRUDENT_PROBABILITY_TIMES_DECIMAL_ODDS_MINUS_ONE",
+                "provenance": {
+                  "source": "predictions.expectedGoals",
+                  "predicateId": "score.total.inclusive:1-4",
+                  "predicateTarget": {
+                    "market": "MULTIGOAL",
+                    "variant": "MULTIGOAL MULTIESITI 16 ESITI",
+                    "threshold": null,
+                    "selection": "1-4"
+                  },
+                  "modelVersion": "4.13.0",
+                  "predictionGeneratedAt": "2026-10-19T15:45:22.621Z",
+                  "sensitivity": "central plus four lambda perturbations +/-10%; prudent probability is the minimum",
+                  "sensitivityProbabilityPct": [
+                    79.6,
+                    79.5,
+                    79.7,
+                    81.2,
+                    76.9
+                  ]
+                }
               },
               "compatibility": {
-                "status": "NOT_EVALUATED",
-                "reason": "Compatibilità specifica non valutata dal generatore MyCombo.",
-                "modelTarget": null,
-                "bookmakerTarget": null
+                "status": "COMPATIBILE",
+                "reason": "Il predicato bookmaker coincide con il predicato discreto applicato alla matrice punteggi.",
+                "modelTarget": "score.total.inclusive:1-4",
+                "bookmakerTarget": "MULTIGOAL · MULTIGOAL MULTIESITI 16 ESITI"
               },
               "overlap": {
-                "overlapKey": "scenario-goals-fulltime-match",
+                "overlapKey": "multigoal-match:MULTIGOAL MULTIESITI 16 ESITI:1-4",
                 "semanticKeys": [
-                  "goals-fulltime-match"
+                  "derived-b2:score.total.inclusive:1-4"
                 ]
               },
               "warnings": [
-                "CLASSIFICATION_NOT_AVAILABLE",
-                "RELIABILITY_NOT_EVALUABLE"
+                "CLASSIFICATION_NOT_AVAILABLE"
               ],
               "risks": []
+            },
+            "lineupEligibility": {
+              "eligible": true,
+              "status": "not-applicable",
+              "source": null,
+              "sourceUpdatedAt": null,
+              "playerId": null,
+              "playerName": null
             }
           }
         ]
