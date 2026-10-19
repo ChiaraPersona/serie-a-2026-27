@@ -76,7 +76,9 @@ Superati:
 - `test-betting-selection-contract.js`: 6 contratti Schedina e 137+137 gambe MyCombo/previsioni Serie A.
 - `test-champions-reading-page.mjs`.
 
-Browser: verifica completa in corso; l'esito finale e le catture sono salvati in questa directory.
+Browser completato: **120 casi registrati**, nessun errore JavaScript o richiesta locale fallita (`browser-results.json`). Le 54 Letture MD1/2/3 sono controllate a 1440 e 390 px; le Schedine a 1440, 390 e 320 px. Verificati i valori collettivi congelati MD3 e i relativi arbitri, i mercati, l'assenza di overflow, aggiunta/rimozione/persistenza, contraddizioni, quota teorica, contesti separati, dialog mobile e flip touch CL3. Il DOM di Serie A MD6/MD7 e delle sette card Serie A coincide con la cattura iniziale. Sono inoltre verificati l'inserimento da MyCombo nella Lettura e la successiva rimozione dalla Schedina (`mycombo-results.json`). La sezione MD3 conserva la numerazione 03; quote MyCombo e righe condivise hanno contrasto coerente nelle Letture.
+
+**Difetto mobile preesistente, preservato:** la card CL1 ha altezza zero su touch a 390/320 px per il fallback `height:auto` delle card condivise; CL2 e CL3 conservano invece i rispettivi override di altezza. Il difetto si riproduce anche reinserendo il markup dell'archivio acquisito prima dell'attività, con le regole delle card non modificate. Registrato in `knownBaselineIssues` e nella cattura `archive-mobile-diagnostic.png`. Non è una regressione introdotta dall'unificazione; non è stato corretto perché CL1/CL2 sono protette esplicitamente e la visibilità CL3 è fuori dall'intervento richiesto.
 
 Anomalia preesistente, non aggirata: `test-champions-md02-schedina.mjs` attende 120 selezioni operative ma il file attuale ne contiene 113. Il test e il file dei dati hanno entrambi lo stesso hash di inizio attività. Il test specifico dell'archivio audit 117/113 è superato. Non sono state modificate le attese storiche per ottenere un esito verde.
 
