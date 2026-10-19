@@ -3,6 +3,7 @@
 const fs=require('fs'),path=require('path'),assert=require('assert/strict'),crypto=require('crypto');
 const {collectRosterEvidence,estimateExpectedMinutes,chronologicalEvidence,POLICY}=require('./champions/substitute-minutes');
 const {canonicalTeam,TEAM_ONLY,projectDocumentedTeam}=require('./champions/current-season-offline');
+const {scaleShotProjections}=require('./champions/player-volume-utils');
 const root=path.resolve(__dirname,'..'),read=p=>JSON.parse(fs.readFileSync(path.join(root,p),'utf8'));
 const sourcePath='data/sources/champions-probable-formations-md03-2026-27.json';
 const source=read(sourcePath),preview=read('data/analysis/champions/md3-offline-engine-2026-10-19/preview-md03.json');
@@ -41,13 +42,19 @@ const fixtures=preview.fixtures.map(f=>{
   });
   const eligible=players.filter(p=>!p.blockers.length).map(p=>({playerId:p.playerId,roleKey:p.role,expectedMinutes:p.expectedMinutes,per90:{shots:p.baseline.candidate.shots,shotsOnTarget:p.baseline.candidate.sot}}));
   const reconciliation=projectDocumentedTeam({teamId:t.teamId,players:eligible,lineupVerified:true,benchVerified:false,targetShots:target.shotsTotal?.central,targetSOT:target.shotsOnTarget?.central});
+  let diagnosticSubset=null;
+  if(eligible.length&&!TEAM_ONLY.has(t.teamId)){
+   const shots=scaleShotProjections(eligible,'shots',target.shotsTotal?.central),sot=scaleShotProjections(eligible,'shotsOnTarget',target.shotsOnTarget?.central);
+   const sum=items=>Number(items.reduce((n,x)=>n+x.projection,0).toFixed(2));
+   diagnosticSubset={status:'NOT_AN_OPERATIONAL_FORECAST_INCOMPLETE_STARTER_SUBSET',eligibleOutfieldPlayers:eligible.length,benchDocumented:false,shots:sum(shots),sot:sum(sot),shotsDifference:Number((sum(shots)-target.shotsTotal.central).toFixed(2)),sotDifference:Number((sum(sot)-target.shotsOnTarget.central).toFixed(2)),sotExceedsShots:shots.filter((p,i)=>sot[i].projection>p.projection).length};
+  }
   // Never mark an undocumented bench as verified to force projections through the existing gate.
   for(const p of players){
    const projection=reconciliation.players.find(x=>x.playerId===p.playerId);
    if(!p.blockers.length&&projection){p.projectedShots=projection.shots;p.projectedSOT=projection.sot;}
    else if(!p.blockers.length)p.blockers.push('BENCH_UNDOCUMENTED',reconciliation.status);
   }
-  return {teamId:t.teamId,team:t.team,venue,status:'probable',collectiveOnly:TEAM_ONLY.has(t.teamId),bench:null,benchStatus:'not-provided',unavailable:t.unavailable,suspended:t.suspended,doubtful:t.doubtful,players,reconciliation:{...reconciliation,targetShots:target.shotsTotal?.central??null,targetSOT:target.shotsOnTarget?.central??null,allocatedShots:players.some(p=>p.projectedShots!==null)?players.reduce((n,p)=>n+(p.projectedShots??0),0):null,allocatedSOT:players.some(p=>p.projectedSOT!==null)?players.reduce((n,p)=>n+(p.projectedSOT??0),0):null,expectedMinutes:players.reduce((n,p)=>n+(p.expectedMinutes??0),0)}};
+  return {teamId:t.teamId,team:t.team,venue,status:'probable',collectiveOnly:TEAM_ONLY.has(t.teamId),bench:null,benchStatus:'not-provided',unavailable:t.unavailable,suspended:t.suspended,doubtful:t.doubtful,players,diagnosticSubset,reconciliation:{...reconciliation,targetShots:target.shotsTotal?.central??null,targetSOT:target.shotsOnTarget?.central??null,allocatedShots:players.some(p=>p.projectedShots!==null)?players.reduce((n,p)=>n+(p.projectedShots??0),0):null,allocatedSOT:players.some(p=>p.projectedSOT!==null)?players.reduce((n,p)=>n+(p.projectedSOT??0),0):null,expectedMinutes:players.reduce((n,p)=>n+(p.expectedMinutes??0),0)}};
  });
  return {fixtureId:f.fixtureId,date:f.date,kickoffAt,status:'probable',teams};
 });
