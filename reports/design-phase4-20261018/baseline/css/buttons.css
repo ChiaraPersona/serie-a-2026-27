@@ -1,0 +1,295 @@
+/* buttons.css - sistema condiviso per CTA, filtri e azioni compatte. */
+:root{
+  --button-blue:#1e5f9d;
+  --button-blue-strong:#164c82;
+  --button-gold:#9b6c17;
+  --button-surface:rgba(255,255,255,.68);
+  --button-border:rgba(36,90,120,.2);
+  --button-shadow:0 7px 18px rgba(40,58,59,.09),inset 0 1px 0 rgba(255,255,255,.88);
+  --button-shadow-hover:0 11px 24px rgba(31,78,116,.15),inset 0 1px 0 rgba(255,255,255,.94);
+}
+
+.button,
+.menu-button,
+.global-stat-button,
+.home-matchday-button,
+.standings-switch button,
+.standings-scope-switch button,
+.fantasy-main-toggle,
+.fantasy-reset,
+.fantasy-row-actions button,
+.fantasy-strategy-tabs button,
+.fantasy-recommendation-actions button,
+.fantasy-excluded button,
+.referee-card-action,
+.referee-season-nav a,
+.team-calendar-actions a{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:.42em;
+  min-height:38px;
+  padding:8px 14px;
+  border:1px solid var(--button-border);
+  border-radius:999px;
+  background:linear-gradient(145deg,rgba(255,255,255,.82),var(--button-surface));
+  box-shadow:var(--button-shadow);
+  color:var(--button-blue);
+  font-family:var(--font-body);
+  font-size:.75rem;
+  font-weight:800;
+  line-height:1;
+  letter-spacing:.005em;
+  text-align:center;
+  text-decoration:none;
+  cursor:pointer;
+  user-select:none;
+  -webkit-tap-highlight-color:transparent;
+  transition:color .2s ease,border-color .2s ease,background .2s ease,box-shadow .2s ease,transform .2s cubic-bezier(.22,.8,.22,1);
+}
+
+.button:hover,
+.menu-button:hover,
+.global-stat-button:hover,
+.home-matchday-button:hover:not(:disabled),
+.standings-switch button:hover,
+.standings-scope-switch button:hover,
+.fantasy-main-toggle:hover,
+.fantasy-reset:hover,
+.fantasy-row-actions button:hover,
+.fantasy-strategy-tabs button:hover,
+.fantasy-recommendation-actions button:hover,
+.fantasy-excluded button:hover,
+.referee-card-action:hover,
+.referee-season-nav a:hover,
+.team-calendar-actions a:hover{
+  border-color:rgba(16,68,112,.62);
+  background:linear-gradient(135deg,#276da8,var(--button-blue-strong));
+  box-shadow:0 11px 24px rgba(22,76,130,.22),inset 0 1px 0 rgba(255,255,255,.22);
+  color:#fff;
+  text-decoration:none;
+  transform:translateY(-1px);
+}
+
+.button:active,
+.menu-button:active,
+.global-stat-button:active,
+.home-matchday-button:active:not(:disabled),
+.standings-switch button:active,
+.standings-scope-switch button:active,
+.fantasy-main-toggle:active,
+.fantasy-reset:active,
+.fantasy-row-actions button:active,
+.fantasy-strategy-tabs button:active,
+.fantasy-recommendation-actions button:active,
+.fantasy-excluded button:active,
+.referee-card-action:active,
+.referee-season-nav a:active,
+.team-calendar-actions a:active{
+  box-shadow:0 3px 9px rgba(40,58,59,.09),inset 0 1px 2px rgba(40,58,59,.08);
+  transform:translateY(0) scale(.98);
+}
+
+.button:focus-visible,
+.menu-button:focus-visible,
+.global-stat-button:focus-visible,
+.home-matchday-button:focus-visible,
+.standings-switch button:focus-visible,
+.standings-scope-switch button:focus-visible,
+.fantasy-main-toggle:focus-visible,
+.fantasy-reset:focus-visible,
+.fantasy-row-actions button:focus-visible,
+.fantasy-strategy-tabs button:focus-visible,
+.fantasy-recommendation-actions button:focus-visible,
+.fantasy-excluded button:focus-visible,
+.referee-card-action:focus-visible,
+.referee-season-nav a:focus-visible,
+.team-calendar-actions a:focus-visible{
+  outline:3px solid rgba(167,116,22,.28);
+  outline-offset:3px;
+}
+
+.button-primary{
+  border-color:rgba(122,86,21,.34);
+  background:linear-gradient(135deg,#f7e5aa,#d8ae53);
+  box-shadow:0 9px 20px rgba(122,86,21,.16),inset 0 1px 0 rgba(255,255,255,.72);
+  color:#4e360c;
+}
+
+.button-primary:hover{
+  border-color:rgba(122,86,21,.48);
+  background:linear-gradient(135deg,#fff0bd,#dfb75f);
+  color:#3f2b09;
+}
+
+.match.fixture-card .button{
+  border-color:var(--button-border);
+  background:linear-gradient(145deg,rgba(255,255,255,.82),rgba(232,243,247,.76));
+  box-shadow:var(--button-shadow);
+  color:var(--button-blue);
+}
+
+.match.fixture-card .button:hover,
+.match.fixture-card .button:focus-visible{
+  border-color:rgba(122,86,21,.46);
+  background:linear-gradient(135deg,#f5dfa3,#d5aa50);
+  box-shadow:0 10px 22px rgba(122,86,21,.19),inset 0 1px 0 rgba(255,255,255,.5);
+  color:#493309;
+}
+
+.home-matchday-button,
+.standings-switch button.active,
+.standings-scope-switch button.active,
+.fantasy-strategy-tabs button.active,
+.fantasy-squad-action.is-selected,
+.referee-season-nav a.active{
+  border-color:rgba(17,71,121,.5);
+  background:linear-gradient(135deg,#2b76b9,var(--button-blue-strong));
+  box-shadow:0 8px 19px rgba(22,76,130,.22),inset 0 1px 0 rgba(255,255,255,.24);
+  color:#fff;
+}
+
+.standings-switch,
+.standings-scope-switch{
+  gap:6px;
+  padding:6px;
+  border-radius:18px;
+}
+
+.standings-switch button,
+.standings-scope-switch button{
+  border-color:transparent;
+  background:transparent;
+  box-shadow:none;
+  color:#526266;
+}
+
+.standings-switch button:hover,
+.standings-scope-switch button:hover{
+  border-color:rgba(30,95,157,.28);
+  background:linear-gradient(145deg,rgba(224,242,247,.96),rgba(196,226,235,.82));
+  box-shadow:0 6px 15px rgba(31,78,116,.11),inset 0 1px 0 rgba(255,255,255,.7);
+  color:var(--button-blue-strong);
+}
+
+/* Home: selettori compatti in vetro, senza intervenire sul tabellone. */
+.home-standings .standings-switch,
+.home-standings .standings-scope-switch{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  padding:0;
+  border:0;
+  border-radius:0;
+  background:transparent;
+  box-shadow:none;
+}
+
+.home-standings .standings-switch button,
+.home-standings .standings-scope-switch button{
+  flex:0 0 auto;
+  min-height:36px;
+  padding:8px 16px;
+  border:1px solid rgba(255,255,255,.68);
+  border-radius:999px;
+  background:#eaf1f4;
+  box-shadow:0 4px 12px rgba(20,43,59,.06),inset 0 1px rgba(255,255,255,.6);
+  color:#283e4b;
+  font-size:.86rem;
+  line-height:1.2;
+  font-weight:700;
+  text-decoration:none;
+  transform:none;
+  transition:background-color .2s ease,box-shadow .2s ease,color .2s ease;
+}
+
+@supports ((backdrop-filter:blur(14px)) or (-webkit-backdrop-filter:blur(14px))){
+  .home-standings .standings-switch button,
+  .home-standings .standings-scope-switch button{
+    background:linear-gradient(115deg,rgba(255,255,255,.38),rgba(255,255,255,.16)),rgba(225,238,243,.76);
+    backdrop-filter:blur(14px) saturate(135%);
+    -webkit-backdrop-filter:blur(14px) saturate(135%);
+  }
+}
+
+.home-standings .standings-switch button:hover,
+.home-standings .standings-scope-switch button:hover{
+  background-color:#e0ebf0;
+  color:#152e42;
+  box-shadow:0 5px 14px rgba(20,43,59,.1),inset 0 1px rgba(255,255,255,.6);
+  text-decoration:none;
+  transform:none;
+}
+
+.home-standings .standings-switch button.active,
+.home-standings .standings-scope-switch button.active{
+  border-color:rgba(255,255,255,.24);
+  background:#142c40;
+  color:#fff;
+  box-shadow:0 4px 12px rgba(20,43,59,.14),inset 0 1px rgba(255,255,255,.1);
+  text-decoration:none;
+  transform:none;
+}
+
+.home-standings .standings-switch button:focus-visible,
+.home-standings .standings-scope-switch button:focus-visible{
+  outline:2px solid #9a6912;
+  outline-offset:3px;
+}
+
+.global-stat-button.active,
+.fantasy-main-toggle.active,
+.fantasy-main-action.is-main{
+  border-color:rgba(155,108,23,.34);
+  background:linear-gradient(135deg,#fff3c8,#e1bd68);
+  box-shadow:0 7px 17px rgba(122,86,21,.15),inset 0 1px 0 rgba(255,255,255,.72);
+  color:#66470f;
+}
+
+.fantasy-remove,
+.player-detail-close,
+.referee-profile-close{
+  display:grid;
+  place-items:center;
+  border:1px solid rgba(36,90,120,.16);
+  border-radius:50%;
+  background:rgba(255,255,255,.72);
+  box-shadow:0 6px 16px rgba(40,58,59,.1),inset 0 1px 0 #fff;
+  color:#526266;
+  cursor:pointer;
+  transition:color .2s ease,border-color .2s ease,background .2s ease,box-shadow .2s ease,transform .2s ease;
+}
+
+.fantasy-remove:hover,
+.player-detail-close:hover,
+.referee-profile-close:hover{
+  border-color:rgba(158,38,48,.24);
+  background:#fff;
+  box-shadow:0 9px 20px rgba(92,45,49,.13),inset 0 1px 0 #fff;
+  color:#9e2630;
+  transform:translateY(-1px);
+}
+
+.home-matchday-button:disabled,
+.button[aria-disabled="true"],
+button:disabled{
+  box-shadow:none;
+  cursor:not-allowed;
+  opacity:.48;
+  transform:none;
+}
+
+.menu-button{display:none}
+
+@media(max-width:900px){.menu-button{display:inline-flex}}
+
+@media(max-width:580px){
+  .button,.menu-button,.home-matchday-button,.standings-switch button,.standings-scope-switch button,.fantasy-strategy-tabs button,.referee-season-nav a,.team-calendar-actions a{min-height:42px}
+  .standings-switch{flex-direction:row}
+  .team-calendar-actions a{flex:1}
+  .home-standings .standings-switch button,.home-standings .standings-scope-switch button{min-height:36px;padding:8px 14px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .button,.menu-button,.global-stat-button,.home-matchday-button,.standings-switch button,.standings-scope-switch button,.fantasy-main-toggle,.fantasy-reset,.fantasy-row-actions button,.fantasy-strategy-tabs button,.fantasy-recommendation-actions button,.fantasy-excluded button,.referee-card-action,.referee-season-nav a,.team-calendar-actions a,.fantasy-remove,.player-detail-close,.referee-profile-close{transition:none}
+}

@@ -1,0 +1,32 @@
+{
+  "tokens": 49,
+  "unreferencedInCss": [
+    "--ds-text-compact",
+    "--ds-text-body",
+    "--ds-title-subsection",
+    "--ds-control-min-height",
+    "--ds-control-font-size",
+    "--ds-control-padding-block",
+    "--ds-control-padding-inline"
+  ],
+  "retained": "Catalogue and compatibility API: absence of CSS references does not prove safe removal",
+  "candidates": [
+    {
+      "file": "css/player-statistics.css",
+      "rule": "first player-comparator-head article",
+      "declaration": "text-align:left",
+      "reason": "Later identical selector unconditionally sets text-align:center"
+    },
+    {
+      "file": "css/player-statistics.css",
+      "rule": "max-width:700px player-comparator-controls",
+      "declaration": "grid-template-columns:minmax(0,1fr)",
+      "reason": "Same value as unconditional declaration in the same module"
+    }
+  ],
+  "retainedSpecificity": [
+    "site-layout.css: page-heading specificity intentionally overrides legacy per-page hero rules",
+    "component-system.css: explicit table/control families intentionally override legacy palette",
+    "reading-detail.css: existing important declarations retained; broad removal not demonstrated"
+  ]
+}

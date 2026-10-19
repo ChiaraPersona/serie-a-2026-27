@@ -1,0 +1,72 @@
+/* Dedicated player statistics; shared team pages keep their established layout. */
+
+body[data-page="player-stats"] .global-leader-player{display:flex;align-items:center;gap:9px}
+body[data-page="player-stats"] .player-comparator-head article{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;text-align:left;align-items:start}
+body[data-page="player-stats"] .player-comparator-head article>label{grid-column:1/-1;text-align:left}
+body[data-page="player-stats"] .player-comparator-controls{grid-template-columns:1fr 1fr}
+@media(max-width:700px){body[data-page="player-stats"] .player-comparator-head article{grid-template-columns:minmax(0,1fr);gap:7px}body[data-page="player-stats"] .player-comparator-head article input{padding:8px 5px;font-size:12px}}
+body[data-page="player-stats"] .global-player-leaders,body[data-page="player-stats"] .player-comparator{background:rgba(255,255,255,.48);border:1px solid var(--glass-border,var(--line));border-radius:24px;padding:24px;box-shadow:0 8px 24px rgba(40,58,59,.045);min-width:0}
+body[data-page="player-stats"] .global-player-leaders-heading{display:flex;justify-content:space-between;align-items:center;gap:18px}
+body[data-page="player-stats"] h2{margin:0 0 8px}body[data-page="player-stats"] header p{margin:0;color:#536a80}
+body[data-page="player-stats"] label{display:grid;gap:6px;font-size:12px;font-weight:650;color:#35506b}
+body[data-page="player-stats"] input,body[data-page="player-stats"] select{width:100%;min-width:0;padding:10px 12px;border:1px solid var(--glass-border,var(--line));border-radius:11px;background:rgba(255,255,255,.65);color:var(--glass-text);font:inherit}
+body[data-page="player-stats"] .global-stat-group>div{display:flex;flex-wrap:nowrap;gap:8px;overflow-x:auto;padding:4px 0 10px}
+body[data-page="player-stats"] .global-stat-group{min-width:0;display:block}body[data-page="player-stats"] .global-leaderboard-controls{display:block;margin:18px 0 8px}
+body[data-page="player-stats"] .global-stat-button{white-space:nowrap;border-radius:30px;padding:9px 16px;border:1px solid var(--glass-border,var(--line));background:rgba(255,255,255,.6);color:var(--glass-text)}
+body[data-page="player-stats"] .global-stat-button.active{background:#205b9e;color:white;border-color:#205b9e}
+.player-ranking-filters{display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px;margin:8px 0 20px}
+body[data-page="player-stats"] .table-wrap{width:100%;overflow-x:auto;border-radius:14px;border:1px solid var(--glass-border,var(--line));background:rgba(255,255,255,.28)}
+body[data-page="player-stats"] .global-player-table{width:100%;min-width:820px;table-layout:auto;border-collapse:collapse}
+body[data-page="player-stats"] .global-player-table col{width:auto}
+body[data-page="player-stats"] .global-player-table th,body[data-page="player-stats"] .global-player-table td{padding:8px 12px;border-bottom:1px solid var(--line);font-size:12px;line-height:1.4;font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right}
+body[data-page="player-stats"] .global-player-table th{background:#f3f5f4;color:var(--muted);font-size:11px;font-weight:650}
+body[data-page="player-stats"] .global-player-table tr:nth-child(even){background:rgba(20,43,59,.025)}
+body[data-page="player-stats"] .global-leader-rank{display:grid;place-items:center;width:27px;height:27px;border-radius:50%;background:rgba(40,58,59,.045);color:var(--muted)}
+body[data-page="player-stats"] tr:nth-child(-n+3) .global-leader-rank{background:rgba(167,140,75,.10);color:#80651d}
+body[data-page="player-stats"] .global-leader-value{color:#80682e;background:transparent;padding:0}
+body[data-page="player-stats"] .global-leader-rate{color:#325e83;background:transparent;padding:0}
+body[data-page="player-stats"] .global-leader-player small{display:block;font-size:11px;color:#637990}
+.player-team{display:flex;align-items:center;gap:8px}.player-team-badge{width:22px;height:25px;object-fit:contain;vertical-align:middle}
+.compare-pick{border:1px solid #c8ddec;background:#ecf5fc;color:#21598e;border-radius:8px;min-width:34px;min-height:32px;cursor:pointer;font-size:20px}
+body[data-page="player-stats"] .global-leaderboard-caption{margin:10px 0;font-size:12px;display:flex;justify-content:space-between;gap:10px}
+body[data-page="player-stats"] .global-leaderboard-note{font-size:11px;color:#637990;margin:12px 0 0}
+body[data-page="player-stats"] .player-comparator-controls{display:grid;grid-template-columns:1fr 2fr 2fr 1fr;gap:12px;margin:16px 0}
+.comparison-mode{max-width:210px;margin:12px 0 0 auto}
+body[data-page="player-stats"] .player-comparator-head{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:15px;margin:20px 0}
+body[data-page="player-stats"] .player-comparator-head article{background:rgba(255,255,255,.4);border:1px solid var(--glass-border,var(--line));border-radius:16px;text-align:center;padding:18px;min-width:0}
+body[data-page="player-stats"] .player-comparator-head h3{font-size:19px;margin:7px 0}
+body[data-page="player-stats"] .player-comparator-head p{font-size:12px;line-height:1.6;margin:8px 0}
+.comparison-vs{font-size:12px;font-weight:800;color:#7b92a9}
+.comparison-bars{background:transparent;border-radius:16px;padding:10px 16px}.comparison-row{display:grid;grid-template-columns:45px minmax(0,1fr) 140px minmax(0,1fr) 45px;gap:10px;align-items:center;padding:13px 0;border-bottom:1px solid var(--line);font-size:13px}.comparison-row:last-child{border:0}.comparison-row>strong:last-child{text-align:right}.comparison-label{text-align:center;font-size:12px;font-weight:650;color:#395773}.comparison-track{height:12px;background:rgba(40,58,59,.065);border-radius:20px;display:flex;overflow:hidden}.comparison-track.left{justify-content:flex-end}.comparison-track i{display:block;height:100%;border-radius:20px;background:#2968a7}.comparison-track.right i{background:#76add5}
+@media(max-width:700px){body[data-page="player-stats"] .global-player-leaders,body[data-page="player-stats"] .player-comparator{padding:15px;border-radius:18px}body[data-page="player-stats"] .global-player-leaders-heading{display:block}body[data-page="player-stats"] .global-player-leaders-heading>label{margin-top:15px}.player-ranking-filters{grid-template-columns:1fr 1fr}.player-ranking-filters>label:first-child{grid-column:1/-1}body[data-page="player-stats"] .player-comparator-controls{grid-template-columns:1fr 1fr}body[data-page="player-stats"] .player-comparator-head{gap:7px}body[data-page="player-stats"] .player-comparator-head article{padding:12px 7px}body[data-page="player-stats"] .player-comparator-head h3{font-size:15px;overflow-wrap:anywhere}body[data-page="player-stats"] .player-comparator-head strong{font-size:11px}.comparison-row{grid-template-columns:32px minmax(0,1fr) 86px minmax(0,1fr) 32px;gap:5px;font-size:11px}.comparison-label{font-size:10px}.comparison-bars{padding:7px}.comparison-track{height:9px}body[data-page="player-stats"] .global-leaderboard-caption{display:block}body[data-page="player-stats"] .global-leaderboard-caption span{display:block}}
+body[data-page="player-stats"] .player-comparator-head article,body[data-page="player-stats"] .player-comparator-head article h3,body[data-page="player-stats"] .player-comparator-head article strong{color:#193c60}body[data-page="player-stats"] .player-comparator-head article p{color:#536d85}
+
+/* Reuse the full-roster scrolling table; overrides apply only to this ranking. */
+body[data-page="player-stats"] .global-leaderboard-controls{background:transparent;border:0;box-shadow:none;padding:0;backdrop-filter:none}
+body[data-page="player-stats"] .player-ranking-scroll{max-height:min(72vh,760px);overflow:auto;overscroll-behavior:contain;scrollbar-gutter:stable;box-shadow:none;backdrop-filter:none}
+body[data-page="player-stats"] .global-player-table{background:transparent}
+body[data-page="player-stats"] .global-player-table :is(th,td):first-child{min-width:42px;width:42px;position:static;background:transparent;box-shadow:none;text-align:center}
+body[data-page="player-stats"] .global-player-table thead th,body[data-page="player-stats"] .global-player-table thead th:first-child{position:sticky;top:0;z-index:4;background:#f3f5f4;box-shadow:0 1px 0 var(--line)}
+body[data-page="player-stats"] .global-player-table :is(th,td):nth-child(2),body[data-page="player-stats"] .global-player-table :is(th,td):nth-child(3){text-align:left}
+body[data-page="player-stats"] .global-player-table tbody tr:is(:hover,:focus-within) td{background:rgba(40,58,59,.045);color:var(--glass-text)}
+body[data-page="player-stats"] .global-player-table tbody tr:is(:hover,:focus-within) td:first-child{box-shadow:none}
+body[data-page="player-stats"] .global-player-table td:last-child{position:relative}
+body[data-page="player-stats"] .global-leader-player{color:var(--glass-text)}
+.compare-pick{background:rgba(255,255,255,.65);border-color:var(--glass-border,var(--line));color:#325e83}
+.compare-replacement{position:absolute;right:48px;top:50%;transform:translateY(-50%);display:flex;gap:4px;padding:4px;border:1px solid var(--glass-border,var(--line));border-radius:10px;background:#fafaf8;box-shadow:0 4px 14px #00000012;z-index:5}
+.compare-replacement button{width:32px;height:32px;border-radius:7px;border:1px solid var(--glass-border,var(--line));background:rgba(40,58,59,.04);color:var(--glass-text);font:inherit;font-weight:700;cursor:pointer}
+.compare-replacement button:is(:hover,:focus-visible){background:#e4ecee;outline:2px solid #325e83;outline-offset:1px}
+
+
+
+
+
+
+
+
+
+
+
+.roster-player-identity{display:flex;gap:10px;align-items:center}
+.squad-table .roster-player-identity .player-open{min-width:0;flex:1}
+

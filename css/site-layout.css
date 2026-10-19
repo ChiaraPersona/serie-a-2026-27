@@ -70,7 +70,6 @@ body #app>.readings-index>.page-heading{
   box-shadow:none;
   text-align:left;
   align-items:start;
-  grid-template-columns:minmax(0,1fr) auto;
   gap:var(--ds-space-5);
 }
 body #app .page-heading h1{
@@ -85,7 +84,15 @@ body #app .page-heading h1{
   text-align:left;
   overflow-wrap:anywhere;
 }
-body #app .page-heading .eyebrow{margin:0 0 var(--ds-space-2)}
+body #app .page-heading .eyebrow{
+  margin:var(--ds-space-2) 0 0;
+  font-family:var(--ds-font-body);
+  font-size:var(--ds-text-meta);
+  font-weight:600;
+  line-height:var(--ds-leading-body);
+  letter-spacing:.08em;
+  color:var(--ds-color-text-muted);
+}
 body #app>.page-heading::before,
 body #app>.page-heading::after{content:none}
 body #app>.page-heading + *,
@@ -95,7 +102,6 @@ body #app:has(>.readings-index>.page-heading){padding-top:var(--ds-space-6)}
 @media(max-width:760px){
   body #app:has(>.page-heading),
   body #app:has(>.readings-index>.page-heading){padding-top:var(--ds-space-5)}
-  body #app>.page-heading{grid-template-columns:minmax(0,1fr)}
 }
 /* Only the two existing flagship heroes retain a larger page title. */
 body[data-page="home"] #app>.hero h1,
