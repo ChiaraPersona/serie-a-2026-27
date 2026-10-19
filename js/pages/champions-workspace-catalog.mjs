@@ -34,6 +34,7 @@ export async function loadChampionsWorkspace(load,matchday){
       const leg=all.find(item=>item.selectionId===id);
       if(!leg||leg.odds!==approvedLeg.odds||leg.matchId!==approvedLeg.matchId)throw new Error(`Contratto CL3 approvato non corrispondente: ${id}`);
     }
+    all=all.concat(md3IndividualMarkets(individuals));
   }else if(matchday===2){
     source=championsAuditDisplay(await load('schedina-champions-md02.json'),await load('champions-md02-audit-display.json'));
     all=source.fixtures.flatMap(f=>f.selections).map(leg=>({...leg,suggestionAnalysis:{suggested:true,rank:0}}));
