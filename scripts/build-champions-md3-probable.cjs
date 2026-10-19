@@ -36,6 +36,7 @@ const fixtures=preview.fixtures.map(f=>{
    const records=chronologicalEvidence(evidence.get(String(p.providerPlayerId))||[],kickoffAt);
    const estimate=blockers.length?{status:'not-evaluable',expectedMinutes:null,reason:blockers[0]}:estimateExpectedMinutes(records,'starter',kickoffAt);
    if(!Number.isFinite(estimate.expectedMinutes))blockers.push('EXPECTED_MINUTES_UNAVAILABLE');
+   if(!Number.isFinite(target.shotsTotal?.central)||!Number.isFinite(target.shotsOnTarget?.central))blockers.push('TEAM_VOLUMES_UNAVAILABLE');
    if(member?.position==='goalkeeper')blockers.push('GOALKEEPER_SHOT_METRIC_INELIGIBLE');
    if(!old?.primary?.candidate||old.primary.status!=='diagnostic-rate-only'||old.sample?.overlap)blockers.push('BASELINE_UNAVAILABLE_OR_UNSAFE');
    return {...p,lineupStatus:'probable',availability,uncertainty:availability==='doubtful'?'participation-unconfirmed-no-probability-assigned':'conditional-on-probable-start',role:member?.position||null,expectedMinutes:estimate.expectedMinutes,minutesEstimate:{...estimate,conditionalOnStarting:true,evidenceType:'existing-roster-and-substitution-clock-method',evidence:records.filter(r=>r.starter&&Number.isFinite(r.minutes)&&estimate.sample?.matchIds?.includes(r.matchId)&&estimate.sample.competitionCodes.includes(r.competitionCode)&&estimate.sample.seasons.includes(r.season))},baselineStatus:old?.primary?.status||null,baseline:old?.primary||null,historicalMinutes:old?.historicalMinutes??null,projectedShots:null,projectedSOT:null,eventProbabilities:null,blockers};
@@ -43,7 +44,7 @@ const fixtures=preview.fixtures.map(f=>{
   const eligible=players.filter(p=>!p.blockers.length).map(p=>({playerId:p.playerId,roleKey:p.role,expectedMinutes:p.expectedMinutes,per90:{shots:p.baseline.candidate.shots,shotsOnTarget:p.baseline.candidate.sot}}));
   const reconciliation=projectDocumentedTeam({teamId:t.teamId,players:eligible,lineupVerified:true,benchVerified:false,targetShots:target.shotsTotal?.central,targetSOT:target.shotsOnTarget?.central});
   let diagnosticSubset=null;
-  if(eligible.length&&!TEAM_ONLY.has(t.teamId)){
+  if(eligible.length&&!TEAM_ONLY.has(t.teamId)&&Number.isFinite(target.shotsTotal?.central)&&Number.isFinite(target.shotsOnTarget?.central)){
    const shots=scaleShotProjections(eligible,'shots',target.shotsTotal?.central),sot=scaleShotProjections(eligible,'shotsOnTarget',target.shotsOnTarget?.central);
    const sum=items=>Number(items.reduce((n,x)=>n+x.projection,0).toFixed(2));
    diagnosticSubset={status:'NOT_AN_OPERATIONAL_FORECAST_INCOMPLETE_STARTER_SUBSET',eligibleOutfieldPlayers:eligible.length,benchDocumented:false,shots:sum(shots),sot:sum(sot),shotsDifference:Number((sum(shots)-target.shotsTotal.central).toFixed(2)),sotDifference:Number((sum(sot)-target.shotsOnTarget.central).toFixed(2)),sotExceedsShots:shots.filter((p,i)=>sot[i].projection>p.projection).length};
