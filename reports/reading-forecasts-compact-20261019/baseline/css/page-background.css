@@ -1,0 +1,11 @@
+/* Continuous token-driven canvas. The static competition marker selects the
+   Champions theme before application modules or loading placeholders render. */
+body,body[data-page="champions"]{
+  --site-page-background:var(--ds-page-background);
+  background-color:var(--ds-color-page);
+  background-image:var(--site-page-background);
+  background-repeat:no-repeat;
+  background-attachment:fixed;
+}
+/* Retire the previous blue/gold veil and Champions dotted canvas only. */
+body::before,body[data-page="champions"]::before{content:none}

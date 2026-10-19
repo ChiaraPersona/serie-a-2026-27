@@ -473,68 +473,49 @@ export function createPage(deps){
     const md2Summary=await load("champions-pilot-predictions-md02-2026-27.json");
     const pilotByFixture=new Map([...pilot.fixtures,...md2Summary.fixtures].map(fixture=>[fixture.fixtureId,fixture]));
     const matchdays=Array.from({length:data.summary.matchdays},(_,index)=>index+1);
-    const completedMatchdays=matchdays.filter(number=>{
-      const fixtures=data.fixtures.filter(fixture=>fixture.matchday===number);
-      return fixtures.length>0&&fixtures.every(fixture=>fixture.status==="finished");
-    });
-    const defaultMatchday=data.fixtures.some(fixture=>fixture.matchday===3)?3:matchdays.find(number=>!completedMatchdays.includes(number))||matchdays.at(-1);
-    // Archiving is a display choice: it never changes the fixture's actual status.
-    const archivedMatchdays=matchdays.filter(number=>number<defaultMatchday||completedMatchdays.includes(number));
-    const archiveStatus=number=>{
-      const round=data.fixtures.filter(fixture=>fixture.matchday===number);
-      return completedMatchdays.includes(number)?'Conclusa':`${round.filter(fixture=>fixture.status==='finished').length}/${round.length} risultati disponibili`;
-    };
-    const calendarGroups=fixtures=>{
-      const active=fixtures.filter(fixture=>!archivedMatchdays.includes(fixture.matchday));
-      const archive=archivedMatchdays.map(number=>{
-        const round=fixtures.filter(fixture=>fixture.matchday===number);
-        if(!round.length)return "";
-        return `<details class="champions-strength-panel champions-completed-round" data-matchday="${number}"><summary><span><small>${esc(archiveStatus(number))}</small><strong>${matchdayLabel(number)}</strong></span><span>${round.length} ${round.length===1?"partita":"partite"}</span></summary><div class="champions-completed-round-body">${fixtureGroups(round,branding,pilotByFixture)}</div></details>`;
-      }).join("");
-      return (active.length?fixtureGroups(active,branding,pilotByFixture):"")+(archive?`<h3 class="champions-archive-title">Archivio giornate precedenti</h3>${archive}`:'');
-    };
+    const roundRows=number=>data.fixtures.filter(fixture=>fixture.matchday===number);
+    const hasResult=fixture=>fixture.status==="finished"&&Number.isFinite(fixture.score?.home)&&Number.isFinite(fixture.score?.away);
+    const completedMatchdays=matchdays.filter(number=>roundRows(number).length>0&&roundRows(number).every(hasResult));
+    const defaultMatchday=matchdays.find(number=>!completedMatchdays.includes(number))??matchdays.at(-1);
+    let selectedMatchday=defaultMatchday;
+    const roundRange=number=>{const dates=roundRows(number).map(f=>f.date).filter(Boolean).sort();return dates.length?shortDate(dates[0])+(dates[0]!==dates.at(-1)?' – '+shortDate(dates.at(-1)):''):'Date da definire'};
+    const roundStatus=number=>completedMatchdays.includes(number)?'Conclusa':roundRows(number).some(hasResult)?'In corso':'Da giocare';
+    const dayButton=number=>`<button type="button" class="champions-day ${completedMatchdays.includes(number)?'is-completed':number===defaultMatchday?'is-current':'is-future'}" data-champions-day="${number}" aria-expanded="${number===defaultMatchday}" aria-controls="champions-fixtures" aria-label="${matchdayLabel(number)} · ${roundStatus(number)} · ${esc(roundRange(number))}"><span>Giornata</span><strong>${number}</strong><small>${roundStatus(number)}</small></button>`;
+    const dayGroup=(title,numbers)=>numbers.length?`<section class="champions-day-group" aria-label="${title}"><h3>${title}</h3><div class="champions-day-grid">${numbers.map(dayButton).join('')}</div></section>`:'';
     const teamOptions=data.teams.map(team=>`<option value="${esc(team)}">${esc(team)}</option>`).join("");
     document.querySelector("#app").innerHTML=`<div class="champions-overview">
-      <section class="champions-hero" aria-labelledby="champions-title">
-        <div class="champions-status"><span aria-hidden="true"></span>${matchdayLabel(defaultMatchday)} · ${data.summary.finished} risultati disponibili</div>
-        <p class="eyebrow">UEFA Champions League 2026/27</p>
-        <h1 id="champions-title">Tutte le notti<br>d’Europa.</h1>
-        <div class="champions-hero-stats" aria-label="Riepilogo calendario"><div><strong>${data.summary.fixtures}</strong><span>partite</span></div><div><strong>${data.summary.teams}</strong><span>squadre</span></div><div><strong>${data.summary.matchdays}</strong><span>giornate</span></div></div>
-        <div class="champions-orbit" aria-hidden="true"><span>★</span></div>
-      </section>
+      <section class="champions-hero champions-home-banner" aria-label="UEFA Champions League 2026/27"><img src="assets/images/champions-home-2026-27.png" alt="UEFA Champions League, stadio illuminato in blu e viola" width="1920" height="1080" fetchpriority="high"></section>
       ${teamLogoDirectory(data.teamBranding,squads)}${roundTable(data)}
       <section class="champions-calendar" aria-labelledby="champions-calendar-title">
-        <header class="champions-calendar-heading"><div><p class="eyebrow">Fase campionato</p><h2 id="champions-calendar-title">Calendario · ${matchdayLabel(defaultMatchday)}</h2><p><span data-champions-selection-copy>In primo piano la ${matchdayLabel(defaultMatchday)}.</span> Le partite con una lettura disponibile sono apribili direttamente dal calendario. Con “Tutte le giornate” puoi consultare l’intero programma delle 144 gare.</p></div><a href="${esc(data.source.url)}" target="_blank" rel="noreferrer">Fonte UEFA ↗</a></header>
+        <header class="champions-calendar-heading"><div><p class="eyebrow">UEFA Champions League 2026/27 · Fase campionato</p><h1 id="champions-calendar-title">Calendario</h1><p>144 partite · 36 squadre · 8 giornate. Seleziona una giornata per consultare partite e risultati.</p></div></header>
+        <nav class="champions-days" aria-label="Giornate della fase campionato">
+          ${dayGroup('Giornate concluse',completedMatchdays)}
+          ${dayGroup('Giornata attuale / prossima',completedMatchdays.includes(defaultMatchday)?[]:[defaultMatchday])}
+          ${dayGroup('Giornate future',matchdays.filter(number=>number!==defaultMatchday&&!completedMatchdays.includes(number)))}
+        </nav>
         <div class="champions-controls">
-          <label><span>Giornata</span><select id="champions-matchday"><option value="all">Tutte le giornate</option>${matchdays.map(number=>`<option value="${number}"${number===defaultMatchday?" selected":""}>${matchdayLabel(number)}${archivedMatchdays.includes(number)?" · Archivio":""}</option>`).join("")}</select></label>
           <label><span>Squadra</span><select id="champions-team"><option value="all">Tutte le squadre</option>${teamOptions}</select></label>
           <button id="champions-reset" type="button">Azzera filtri</button>
         </div>
         <div class="champions-results-head"><p id="champions-results-label" aria-live="polite"></p><span>Snapshot calendario del ${esc(shortDate(data.generatedAt.slice(0,10)))}</span></div>
-        <div id="champions-fixtures"></div>
-        <div id="champions-completed-fixtures"></div>
+        <div id="champions-fixtures" role="region" aria-labelledby="champions-calendar-title"></div>
       </section></div>`;
 
-    const matchdaySelect=document.querySelector("#champions-matchday");
     const teamSelect=document.querySelector("#champions-team");
     const results=document.querySelector("#champions-fixtures");
     const resultsLabel=document.querySelector("#champions-results-label");
     const applyFilters=()=>{
-      const matchday=matchdaySelect.value,team=teamSelect.value;
-      const filtered=data.fixtures.filter(fixture=>(matchday==="all"||fixture.matchday===Number(matchday))&&(team==="all"||fixture.homeTeam===team||fixture.awayTeam===team));
-      results.innerHTML=calendarGroups(filtered)||fixtureGroups([],branding,pilotByFixture);
-      const archived=data.fixtures.filter(fixture=>archivedMatchdays.includes(fixture.matchday)&&matchday!=="all"&&fixture.matchday!==Number(matchday)&&(team==="all"||fixture.homeTeam===team||fixture.awayTeam===team));
-      document.querySelector("#champions-completed-fixtures").innerHTML=calendarGroups(archived);
-      const context=[matchday==="all"?"tutte le giornate":matchdayLabel(Number(matchday)),team==="all"?"tutte le squadre":team];
-      resultsLabel.innerHTML=`<strong>${filtered.length}</strong> ${filtered.length===1?"partita":"partite"} · ${esc(context.join(" · "))}`;
-      const selectedRound=matchday==='all'?'Tutte le giornate':matchdayLabel(Number(matchday));
-      document.querySelector('#champions-calendar-title').textContent=`Calendario · ${selectedRound}`;
-      document.querySelector('.champions-status').innerHTML=`<span aria-hidden="true"></span>${esc(selectedRound)} · ${data.summary.finished} risultati disponibili`;
-      document.querySelector('[data-champions-selection-copy]').textContent=matchday==='all'?'Stai consultando tutte le giornate.':`In primo piano la ${selectedRound}.`;
+      const team=teamSelect.value;
+      const filtered=data.fixtures.filter(fixture=>fixture.matchday===selectedMatchday&&(team==="all"||fixture.homeTeam===team||fixture.awayTeam===team));
+      results.innerHTML=selectedMatchday==null?'':fixtureGroups(filtered,branding,pilotByFixture);
+      results.hidden=selectedMatchday==null;
+      resultsLabel.textContent=selectedMatchday==null?'Seleziona una giornata.':`${filtered.length} ${filtered.length===1?'partita':'partite'} · ${roundRange(selectedMatchday)} · ${roundStatus(selectedMatchday)}`;
+      document.querySelector('#champions-calendar-title').textContent=selectedMatchday==null?'Calendario':`Calendario · ${matchdayLabel(selectedMatchday)}`;
+      document.querySelectorAll('[data-champions-day]').forEach(button=>button.setAttribute('aria-expanded',String(Number(button.dataset.championsDay)===selectedMatchday)));
     };
-    matchdaySelect.addEventListener("change",applyFilters);
+    document.querySelectorAll('[data-champions-day]').forEach(button=>button.addEventListener('click',()=>{const day=Number(button.dataset.championsDay);selectedMatchday=selectedMatchday===day?null:day;applyFilters()}));
     teamSelect.addEventListener("change",applyFilters);
-    document.querySelector("#champions-reset").addEventListener("click",()=>{matchdaySelect.value=String(defaultMatchday);teamSelect.value="all";applyFilters()});
+    document.querySelector("#champions-reset").addEventListener("click",()=>{selectedMatchday=defaultMatchday;teamSelect.value="all";applyFilters()});
     applyFilters();
   }
   return {render};

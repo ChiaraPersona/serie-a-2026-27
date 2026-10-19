@@ -412,3 +412,24 @@ body[data-reading-detail-theme="champions"] .rf-dashboard{--rf-blue:#9ac5ee;--rf
   backdrop-filter:none!important;
   -webkit-backdrop-filter:none!important;
 }
+/* Compact published forecasts; scoped to the reading list in both layouts. */
+.rd-forecasts .rd-compact-forecast-table{width:100%;table-layout:fixed;border-collapse:collapse;background:transparent;font-family:var(--ds-font-data);color:var(--ds-color-text)}
+.rd-forecasts .rd-compact-forecast-table :is(th,td){padding:8px 6px;border:0;border-bottom:1px solid var(--ds-color-border);background:transparent;line-height:1.4;vertical-align:middle;text-align:right;font-variant-numeric:tabular-nums;white-space:normal}
+.rd-forecasts .rd-compact-forecast-table th{font:600 12px/1.4 var(--ds-font-body);color:var(--ds-color-text-muted);text-transform:none;letter-spacing:0}
+.rd-forecasts .rd-compact-forecast-table td{font-size:13px}
+.rd-forecasts .rd-compact-forecast-table :is(th,td):first-child{text-align:left;width:auto;overflow-wrap:anywhere}
+.rd-forecasts .rd-compact-forecast-table :is(th,td):nth-child(2){width:100px}
+.rd-forecasts .rd-compact-forecast-table :is(th,td):nth-child(3){width:70px}
+.rd-forecasts .rd-compact-forecast-table :is(th,td):last-child{width:50px;padding-right:0}
+.rd-forecasts .rd-compact-forecast-table button{display:inline-grid;place-items:center;min-width:36px;width:36px;min-height:36px;padding:0;border:1px solid var(--ds-color-border);border-radius:var(--ds-radius-control);background:var(--ds-color-surface);color:var(--ds-color-accent);font:600 21px/1 var(--ds-font-body);cursor:pointer}
+.rd-forecasts .rd-compact-forecast-table button[aria-pressed="true"]{background:var(--ds-color-accent-strong);color:var(--ds-color-on-accent);border-color:var(--ds-color-accent-strong)}
+.rd-forecasts .rd-compact-forecast-table button:focus-visible{outline:2px solid var(--ds-color-focus);outline-offset:2px}
+.rd-forecasts .rd-compact-forecast-table button:disabled{opacity:.5;cursor:default}
+.rd-forecasts .rd-forecast-destination{display:inline-block;margin-top:var(--ds-space-3);font:500 12px/1.5 var(--ds-font-body);color:var(--ds-color-accent)}
+@media(max-width:600px){
+ .rd-forecasts .rd-compact-forecast-table :is(th,td){padding:8px 3px;font-size:11px}
+ .rd-forecasts .rd-compact-forecast-table :is(th,td):nth-child(2){width:72px}
+ .rd-forecasts .rd-compact-forecast-table :is(th,td):nth-child(3){width:43px}
+ .rd-forecasts .rd-compact-forecast-table :is(th,td):last-child{width:40px}
+ .rd-forecasts .rd-compact-forecast-table .rd-forecast-name{font-size:12px}
+}

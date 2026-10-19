@@ -1,0 +1,670 @@
+"use strict";
+
+const fs = require("fs");
+const path = require("path");
+const { isSisalMyComboMarketName, sisalMyComboMarketNames } = require("./mycombo-market-policy");
+const { isUnderPlayableSelection, isIndividualPlayerFoulMarket, isCornerPeriodMarket, isPlayableSelection } = require("./betting-market-policy");
+const { attachBetSelection, selectionIdFor } = require("./betting-selection-contract");
+
+const root = path.resolve(__dirname, "..");
+const read = relative => JSON.parse(fs.readFileSync(path.join(root, relative), "utf8"));
+const odds = read("data/normalized/odds/sisal/serie-a.json");
+const predictionData = read("data/normalized/predictions.json");
+const matches = read("data/normalized/matches.json");
+const teams = read("data/teams/index.json").teams;
+const requestedMatchdayIndex = process.argv.indexOf("--matchday");
+const matchday = requestedMatchdayIndex >= 0 ? Number(process.argv[requestedMatchdayIndex + 1]) : 1;
+if (!Number.isInteger(matchday) || matchday < 1 || matchday > 38) throw new Error("--matchday deve essere compreso tra 1 e 38.");
+const requestedMatchIndex = process.argv.indexOf("--match");
+const requestedMatchId = requestedMatchIndex >= 0 ? process.argv[requestedMatchIndex + 1] : null;
+if (requestedMatchIndex >= 0 && !requestedMatchId) throw new Error("--match richiede un matchId.");
+const outputFilename = `mycombo-serie-a-2026-27-md-${String(matchday).padStart(2, "0")}.json`;
+const outputPath = path.join(root, "data", "sources", outputFilename);
+const assessmentPath = path.join(root, "data", "sources", `betting-selection-assessments-md${String(matchday).padStart(2, "0")}.json`);
+const assessmentSource = fs.existsSync(assessmentPath) ? JSON.parse(fs.readFileSync(assessmentPath, "utf8")) : null;
+const assessmentBySelectionId = new Map((assessmentSource?.assessments || []).map(item => [item.selectionId, item]));
+const previousOutput = fs.existsSync(outputPath) ? JSON.parse(fs.readFileSync(outputPath, "utf8")) : null;
+const previousUnderLegOccurrences = Object.values(previousOutput?.matches || {}).flatMap(portfolios => portfolios).flatMap(portfolio => portfolio.legs || []).filter(isUnderPlayableSelection).length;
+const previousIndividualFoulOccurrences = Object.values(previousOutput?.matches || {}).flatMap(portfolios => portfolios).flatMap(portfolio => portfolio.legs || []).filter(isIndividualPlayerFoulMarket).length;
+const previousCornerPeriodOccurrences = Object.values(previousOutput?.matches || {}).flatMap(portfolios => portfolios).flatMap(portfolio => portfolio.legs || []).filter(isCornerPeriodMarket).length;
+const preservedUnderMigrationCount = Number(previousOutput?.constraints?.underSelectionPolicy?.previousPlayableLegOccurrencesRemoved || 0);
+const underCandidateExclusionsByMatch = requestedMatchId ? { ...(previousOutput?.constraints?.underSelectionPolicy?.filteredCandidateSelectionsByMatch || {}) } : {};
+const individualFoulCandidateExclusionsByMatch = requestedMatchId ? { ...(previousOutput?.constraints?.individualFoulSelectionPolicy?.filteredCandidateSelectionsByMatch || {}) } : {};
+const cornerPeriodCandidateExclusionsByMatch = requestedMatchId ? { ...(previousOutput?.constraints?.cornerPeriodSelectionPolicy?.filteredCandidateSelectionsByMatch || {}) } : {};
+
+const referenceOdds = { Safe: 5, Balanced: 10, Aggressive: 20 };
+const minimumLegOdds = matchday >= 5 ? 1.15 : 1.1;
+const maximumLegOdds = matchday === 5 ? 4 : 1.85;
+const excludedMarketNames = new Set([
+  "ARBITRO CONSULTA MONITOR VAR INC TS",
+  "RIGORE SI/NO",
+  "PRIMA SOSTITUZIONE NEL MATCH",
+  "PARI/DISPARI",
+  "CASA: PARI/DISPARI",
+  "OSPITE: PARI/DISPARI",
+  "CASA: SEGNA GOAL 2T",
+  "OSPITE: SEGNA GOAL 2T",
+  "SEGNA GOAL TEMPO X",
+  "SQUADRA X SEGNA NEI 2 TEMPI",
+  "SEGNA ULTIMO GOAL",
+  "1 TEMPO: SEGNA ULTIMO GOAL",
+  "2 TEMPO: SEGNA ULTIMO GOAL",
+  "1 TEMPO: 1X2 CORNER",
+  "TEMPO PRIMO GOAL",
+  "DRAW NO BET",
+  "DRAW NO BET TEMPO X",
+  "SQUADRA X VINCE ALMENO UN TEMPO",
+  "CASA: VINCE A 0",
+  "OSPITE: VINCE A 0",
+  "CASA: VINCE A 0 1T",
+  "OSPITE: VINCE A 0 1T",
+  "CASA: VINCE A 0 2T",
+  "OSPITE: VINCE A 0 2T"
+]);
+const excludedMarketNameFragments = ["MULTIGIOCAT"];
+const tierLimits = {
+  Safe: matchday === 5 ? { minimum: 10, maximum: 10, preferred: 10 } : { minimum: 3, maximum: 6, preferred: 3 },
+  Balanced: { minimum: 4, maximum: 7, preferred: 4 },
+  Aggressive: { minimum: 5, maximum: 8, preferred: 5 }
+};
+const teamById = new Map(teams.map(team => [team.id, team]));
+const matchById = new Map(matches.map(match => [match.id, match]));
+const predictionById = new Map(predictionData.predictions.map(prediction => [prediction.matchId, prediction]));
+const clean = value => String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+const round = value => Math.round(value * 100) / 100;
+const excludedMarketKeys = new Set([...excludedMarketNames].map(clean));
+const excludedMarketFragments = excludedMarketNameFragments.map(clean);
+const isExcludedMarketName = value => {
+  const key = clean(String(value || "").replace(/^market-/, ""));
+  return excludedMarketKeys.has(key) || excludedMarketFragments.some(fragment => key.includes(fragment));
+};
+
+function selectedPlayer(variantName, match) {
+  const variant = clean(variantName);
+  if (!variant) return false;
+  const projected = [match.homeTeam, match.awayTeam].flatMap(teamId => teamById.get(teamId)?.probableLineup?.players || []);
+  return projected.some(player => {
+    const tokens = clean(player.name || player).split(" ").filter(Boolean);
+    if (tokens.length < 2) return false;
+    const surname = tokens.at(-1);
+    const first = tokens[0];
+    return variant.includes(surname) && (variant.includes(first) || variant.includes(`${surname} ${first[0]}`));
+  });
+}
+
+function commonLabel(row, match) {
+  const home = teamById.get(match.homeTeam)?.name || match.homeTeam;
+  const away = teamById.get(match.awayTeam)?.name || match.awayTeam;
+  if (row.family === "1x2") return row.selection === "1" ? `${home} vincente` : row.selection === "2" ? `${away} vincente` : "Pareggio";
+  if (row.family === "double-chance") return row.selection === "1X" ? `${home} o pareggio (1X)` : row.selection === "X2" ? `${away} o pareggio (X2)` : "Nessun pareggio (12)";
+  if (row.family === "draw-no-bet") return `${row.selection === "1" ? home : away} Draw No Bet`;
+  if (row.family === "goals") return `${row.selection === "OVER" ? "Over" : "Under"} ${row.market.match(/[0-9.]+/)?.[0] || ""} gol`.replace(".5", ",5");
+  if (row.family === "btts") return row.selection === "GOAL" ? "Entrambe le squadre segnano" : "Almeno una squadra non segna";
+  if (row.family === "team-goal") {
+    const teamName = row.market.startsWith("Casa") ? home : away;
+    return row.selection === "SI" ? `${teamName} segna almeno un gol` : `${teamName} non segna`;
+  }
+  return `${row.market}: ${row.selection}`;
+}
+
+function projectedMetric(prediction, market) {
+  const metric = market.marketName.includes("TIRI IN PORTA") ? "shotsOnTarget"
+    : market.marketName.includes("TIRI TOTALI") ? "shotsTotal"
+      : market.marketName.includes("CORNER") ? "corners" : null;
+  if (!metric) return null;
+  const side = /SQUADRA 1\b/.test(market.variantName) ? 0 : /SQUADRA 2\b/.test(market.variantName) ? 1 : null;
+  return side == null ? prediction.matchProjection?.[metric] : prediction.teamProjections?.[side]?.[metric];
+}
+
+function volumeLabel(market, selection, match) {
+  const home = teamById.get(match.homeTeam)?.name || match.homeTeam;
+  const away = teamById.get(match.awayTeam)?.name || match.awayTeam;
+  const team = /SQUADRA 1\b/.test(market.variantName) ? home : /SQUADRA 2\b/.test(market.variantName) ? away : null;
+  const direction = selection.name === "OVER" ? "almeno" : "meno di";
+  const minimum = selection.name === "OVER" ? Math.floor(Number(market.threshold)) + 1 : Number(market.threshold) + 0.5;
+  const value = String(minimum).replace(".5", ",5");
+  const metric = market.marketName.includes("TIRI IN PORTA") ? "tiri in porta" : market.marketName.includes("TIRI TOTALI") ? "tiri totali" : "corner";
+  return `${team ? `${team} ` : "Partita "}${direction} ${value} ${metric}`;
+}
+
+function riskyHomeUnderAgainstPromoted(market, selection, prediction, match) {
+  const awayPromoted = Boolean(teamById.get(match.awayTeam)?.previousSeason?.promoted);
+  const homeFavorite = prediction.probabilities.final["1"] > Math.max(prediction.probabilities.final.X, prediction.probabilities.final["2"]);
+  if (!awayPromoted || !homeFavorite || !String(selection.name).toUpperCase().includes("UNDER")) return false;
+  const thresholds = [...String(market.variantName || "").matchAll(/U\/O\s+(\d+(?:\.\d+)?)\s+(?:TEAM|SQUADRA)\s+1/gi)].map(item => Number(item[1]));
+  if (!thresholds.some(threshold => threshold <= 1.5)) return false;
+  if (market.marketName === "COMBO: U/O CASA + U/O OSPITE") return String(selection.name).toUpperCase().split("+")[0] === "UNDER";
+  return /SQUADRA 1\b|TEAM 1\b/i.test(market.variantName);
+}
+
+function preferredDoubleChance(prediction) {
+  const probabilities = prediction.probabilities.final;
+  return [["1X", probabilities["1"] + probabilities.X], ["X2", probabilities.X + probabilities["2"]], ["12", probabilities["1"] + probabilities["2"]]]
+    .sort((left, right) => right[1] - left[1])[0][0];
+}
+
+function teamScope(value) {
+  return /(?:SQUADRA|TEAM)\s*1\b/i.test(value) ? "home" : /(?:SQUADRA|TEAM)\s*2\b/i.test(value) ? "away" : "match";
+}
+
+function periodScope(value) {
+  return /(?:TEMPO\s*2\b|\b2\s*TEMPO)/i.test(value) ? "second-half" : /(?:TEMPO\s*1\b|\b1\s*TEMPO)/i.test(value) ? "first-half" : "fulltime";
+}
+
+function goalsSemanticKey(market) {
+  const descriptor = `${market.marketName} ${market.variantName || ""}`;
+  const kind = market.marketName.includes("GOAL/NOGOAL") ? "btts" : "goals";
+  return `${kind}-${periodScope(descriptor)}-${teamScope(descriptor)}`;
+}
+
+function scoreSemanticKeys(market) {
+  if (["MULTIGOAL", "MULTIGOAL SQUADRA X", "U/O SQUADRA X", "COMBO: U/O CASA + U/O OSPITE"].includes(market.marketName)) return [goalsSemanticKey(market)];
+  if (["COMBO: DC + U/O", "COMBO: 1X2 + U/O", "COMBO: DC + GOAL/NOGOAL"].includes(market.marketName)) return ["result-fulltime", goalsSemanticKey(market)];
+  return [];
+}
+
+function comparisonSemanticKeys(row, market) {
+  if (["1x2", "double-chance", "draw-no-bet"].includes(row.family)) return ["result-fulltime"];
+  if (["goals", "btts", "team-goal"].includes(row.family)) return [goalsSemanticKey(market)];
+  return [];
+}
+
+function scoreMarketCandidate(market, selection, prediction, match) {
+  const [homeGoals, awayGoals] = prediction.scoreForecast.primary.score.split("-").map(Number);
+  const total = homeGoals + awayGoals;
+  const outcome = homeGoals > awayGoals ? "1" : homeGoals < awayGoals ? "2" : "X";
+  const compact = String(selection.name).replace(/\s+/g, "").toUpperCase();
+  if (market.marketName.startsWith("COMBO: DC +") && compact.split("+")[0] !== preferredDoubleChance(prediction)) return null;
+  let compatible = false;
+  if (market.marketName === "MULTIGOAL") {
+    const range = compact.match(/^(\d+)-(\d+)$/);
+    compatible = Boolean(range && total >= Number(range[1]) && total <= Number(range[2]));
+  } else if (market.marketName === "MULTIGOAL SQUADRA X") {
+    const range = compact.match(/^(\d+)-(\d+)$/);
+    const goals = /SQUADRA 1\b/.test(market.variantName) ? homeGoals : awayGoals;
+    compatible = Boolean(range && goals >= Number(range[1]) && goals <= Number(range[2]));
+  } else if (market.marketName === "U/O SQUADRA X") {
+    const goals = /SQUADRA 1\b/.test(market.variantName) ? homeGoals : awayGoals;
+    const threshold = Number(market.threshold);
+    compatible = selection.name === "OVER" ? goals > threshold : selection.name === "UNDER" ? goals < threshold : false;
+  } else if (["COMBO: DC + U/O", "COMBO: 1X2 + U/O"].includes(market.marketName)) {
+    const [resultPart, goalsPart] = compact.split("+");
+    const threshold = Number(market.threshold);
+    const resultOk = resultPart === outcome || resultPart?.includes(outcome);
+    const goalsOk = goalsPart === "OVER" ? total > threshold : goalsPart === "UNDER" ? total < threshold : false;
+    compatible = resultOk && goalsOk;
+  } else if (market.marketName === "COMBO: DC + GOAL/NOGOAL") {
+    const [resultPart, goalsPart] = compact.split("+");
+    const resultOk = resultPart?.includes(outcome);
+    const btts = homeGoals > 0 && awayGoals > 0;
+    compatible = resultOk && (goalsPart === "GOAL" ? btts : goalsPart === "NOGOAL" ? !btts : false);
+  } else if (market.marketName === "COMBO: U/O CASA + U/O OSPITE") {
+    const thresholds = [...market.variantName.matchAll(/U\/O\s+(\d+(?:\.\d+)?)/gi)].map(match => Number(match[1]));
+    const parts = compact.split("+");
+    compatible = thresholds.length === 2 && parts.length === 2 && [homeGoals, awayGoals].every((goals, index) => parts[index] === "OVER" ? goals > thresholds[index] : parts[index] === "UNDER" ? goals < thresholds[index] : false);
+  }
+  if (!compatible) return null;
+  const home = teamById.get(match.homeTeam)?.name || match.homeTeam;
+  const away = teamById.get(match.awayTeam)?.name || match.awayTeam;
+  return {
+    providerSelectionId: String(selection.providerSelectionId),
+    overlapKey: `scenario-${scoreSemanticKeys(market).join("-") || clean(market.marketName)}`,
+    label: `${market.variantName} · ${selection.name}`.replace(/SQUADRA 1|TEAM 1/g, home).replace(/SQUADRA 2|TEAM 2/g, away),
+    odds: selection.odds,
+    semanticKeys: scoreSemanticKeys(market),
+    quality: 125 + selection.odds * 5,
+    anchor: true
+  };
+}
+
+function candidatePool(event, prediction, match) {
+  const marketIndex = new Map();
+  for (const market of event.markets || []) {
+    if (!isSisalMyComboMarketName(market.marketName)) continue;
+    for (const selection of market.selections || []) marketIndex.set(String(selection.providerSelectionId), { market, selection });
+  }
+  const candidates = [];
+  const bestDoubleChanceProbability = Math.max(0, ...(prediction.marketComparison || []).filter(row => row.family === "double-chance" && row.scenarioCompatible).map(row => row.modelProbabilityPct));
+  for (const row of prediction.marketComparison || []) {
+    if (!row.scenarioCompatible || row.modelProbabilityPct < 45) continue;
+    if (row.family === "double-chance" && row.modelProbabilityPct < bestDoubleChanceProbability) continue;
+    if (!["1x2", "double-chance", "goals", "btts", "team-goal"].includes(row.family)) continue;
+    const resolved = marketIndex.get(String(row.providerSelectionId));
+    if (!resolved) continue;
+    if (riskyHomeUnderAgainstPromoted(resolved.market, resolved.selection, prediction, match)) continue;
+    candidates.push({
+      providerSelectionId: String(row.providerSelectionId),
+      overlapKey: `scenario-${comparisonSemanticKeys(row, resolved.market).join("-") || clean(resolved.market.marketName)}`,
+      label: commonLabel(row, match),
+      odds: row.odds,
+      semanticKeys: comparisonSemanticKeys(row, resolved.market),
+      quality: 130 + row.modelProbabilityPct,
+      anchor: true,
+      modelSupported: true
+    });
+  }
+
+  const supportedVolumes = new Set(["U/O TIRI IN PORTA", "U/O CORNER", "U/O TIRI IN PORTA SQUADRA X", "U/O CORNER SQUADRA X"]);
+  for (const market of event.markets || []) {
+    if (!isSisalMyComboMarketName(market.marketName)) continue;
+    const projection = projectedMetric(prediction, market);
+    if (!supportedVolumes.has(market.marketName) || !projection || !Number.isFinite(Number(market.threshold))) continue;
+    const threshold = Number(market.threshold);
+    const metricMargin = market.marketName.includes("TIRI TOTALI") ? 1.8 : 0.8;
+    const side = /SQUADRA 1\b/.test(market.variantName) ? "home" : /SQUADRA 2\b/.test(market.variantName) ? "away" : "match";
+    const metric = market.marketName.includes("TIRI IN PORTA") ? "shots-on-target" : market.marketName.includes("TIRI TOTALI") ? "shots-total" : "corners";
+    for (const selection of market.selections || []) {
+      if (selection.status !== "open" || !["OVER", "UNDER"].includes(selection.name)) continue;
+      if (riskyHomeUnderAgainstPromoted(market, selection, prediction, match)) continue;
+      const coherent = selection.name === "OVER" ? projection.central >= threshold + metricMargin : projection.central <= threshold - metricMargin;
+      if (!coherent) continue;
+      candidates.push({
+        providerSelectionId: String(selection.providerSelectionId),
+        overlapKey: `market-${clean(market.marketName)}`,
+        label: volumeLabel(market, selection, match),
+        odds: selection.odds,
+        semanticKeys: [`volume-${metric}`],
+        quality: 105 + Math.min(20, Math.abs(projection.central - threshold) * 3),
+        anchor: false,
+        modelSupported: true
+      });
+    }
+  }
+
+  for (const market of event.markets || []) {
+    if (!isSisalMyComboMarketName(market.marketName)) continue;
+    for (const selection of market.selections || []) {
+      if (selection.status !== "open") continue;
+      if (riskyHomeUnderAgainstPromoted(market, selection, prediction, match)) continue;
+      const candidate = scoreMarketCandidate(market, selection, prediction, match);
+      if (candidate) candidates.push({ ...candidate, modelSupported: true });
+    }
+  }
+
+  for (const market of event.markets || []) {
+    if (!isSisalMyComboMarketName(market.marketName)) continue;
+    const isShots = market.marketName === "ENTRAMBE LE SQUADRE ALMENO X TIRI IN PORTA";
+    const isCorners = market.marketName === "ENTRAMBE ALMENO X CORNER";
+    if (!isShots && !isCorners) continue;
+    const threshold = Number(market.variantName.match(/ALMENO\s+(\d+(?:\.\d+)?)/i)?.[1]);
+    const metric = isShots ? "shotsOnTarget" : "corners";
+    if (!Number.isFinite(threshold) || prediction.teamProjections.some(team => team?.[metric]?.central < threshold + 0.4)) continue;
+    const selection = (market.selections || []).find(item => item.status === "open" && item.name === "SI");
+    if (!selection) continue;
+    candidates.push({
+      providerSelectionId: String(selection.providerSelectionId),
+      overlapKey: `market-${clean(market.marketName)}`,
+      label: `Entrambe almeno ${threshold} ${isShots ? "tiri in porta" : "corner"}`,
+      odds: selection.odds,
+      semanticKeys: [isShots ? "volume-shots-on-target" : "volume-corners"],
+      quality: 108 + selection.odds * 4,
+      anchor: false,
+      modelSupported: true
+    });
+  }
+
+  for (const market of event.markets || []) {
+    const homeCorners = prediction.teamProjections?.[0]?.corners?.central;
+    const awayCorners = prediction.teamProjections?.[1]?.corners?.central;
+    if (!Number.isFinite(homeCorners) || !Number.isFinite(awayCorners)) continue;
+    const higherSide = homeCorners >= awayCorners ? "TEAM 1" : "TEAM 2";
+    const supported = new Set(["1X2 CORNER", "SQUADRA X ALMENO Y CORNER IN ENTRAMBI I TEMPI", "ALMENO X CORNER IN ENTRAMBI I TEMPI", "ENTRAMBE ALMENO X CORNER IN ENTRAMBI I TEMPI"]);
+    if (!supported.has(market.marketName)) continue;
+    for (const selection of market.selections || []) {
+      if (selection.status !== "open") continue;
+      let coherent = false;
+      let overlapKey = `market-${clean(market.marketName)}`;
+      if (market.marketName === "1X2 CORNER") {
+        const side = selection.name === "1" ? "TEAM 1" : selection.name === "2" ? "TEAM 2" : selection.name;
+        coherent = Math.abs(homeCorners - awayCorners) >= 0.5 && side === higherSide;
+      } else {
+        const threshold = Number(market.variantName.match(/ALMENO\s+(\d+)/i)?.[1]);
+        if (!Number.isFinite(threshold) || selection.name !== "SI") continue;
+        if (market.marketName === "SQUADRA X ALMENO Y CORNER IN ENTRAMBI I TEMPI") {
+          const central = /SQUADRA 1\b/.test(market.variantName) ? homeCorners : awayCorners;
+          coherent = central >= threshold * 2 + 0.5;
+        } else if (market.marketName === "ENTRAMBE ALMENO X CORNER IN ENTRAMBI I TEMPI") {
+          coherent = Math.min(homeCorners, awayCorners) >= threshold * 2 + 0.5;
+        } else coherent = homeCorners + awayCorners >= threshold * 2 + 1;
+      }
+      if (!coherent) continue;
+      candidates.push({
+        providerSelectionId: String(selection.providerSelectionId),
+        overlapKey,
+        label: `${market.variantName} · ${selection.name}`.replace(/TEAM 1|SQUADRA 1/g, teamById.get(match.homeTeam)?.name || match.homeTeam).replace(/TEAM 2|SQUADRA 2/g, teamById.get(match.awayTeam)?.name || match.awayTeam),
+        odds: selection.odds,
+        semanticKeys: ["volume-corners"],
+        quality: 102 + selection.odds * 4,
+        anchor: false
+      });
+    }
+  }
+
+  const playerMarkets = new Map([
+    ["U/O TIRI TOTALI GIOCATORE (DUO) INC TS", { metric: "tiri totali", maximum: 3.5, key: "shots", substituteIncluded: true }],
+    ["U/O TIRI IN PORTA GIOCATORE (DUO) INC PALI TRAVERSE INC TS", { metric: "tiri in porta", maximum: 1.5, key: "shots", substituteIncluded: true }],
+    ["U/O  TIRI IN PORTA GIOCATORE (DUO) INC PALI TRAVERSE INC TS", { metric: "tiri in porta", maximum: 1.5, key: "shots", substituteIncluded: true }],
+    ["U/O FALLI COMMESSI GIOCATORE", { metric: "falli commessi", maximum: 1.5, key: "fouls", substituteIncluded: false }],
+    ["U/O FALLI SUBITI GIOCATORE", { metric: "falli subiti", maximum: 1.5, key: "fouls", substituteIncluded: false }]
+  ]);
+  for (const market of event.markets || []) {
+    if (!isSisalMyComboMarketName(market.marketName)) continue;
+    const kind = playerMarkets.get(market.marketName);
+    const threshold = Number(market.threshold);
+    if (!kind || threshold > kind.maximum || !selectedPlayer(market.variantName, match)) continue;
+    const selection = (market.selections || []).find(item => item.status === "open" && item.name === "OVER");
+    if (!selection) continue;
+    const player = market.variantName.split(/ U\/O /i)[0].trim();
+    const playerKey = clean(player);
+    candidates.push({
+      providerSelectionId: String(selection.providerSelectionId),
+      overlapKey: `player-${playerKey}-${clean(market.marketName)}`,
+      label: `${player} almeno ${Math.floor(threshold) + 1} ${kind.metric}${kind.substituteIncluded ? ", sostituto incluso" : ""}`,
+      odds: selection.odds,
+      semanticKeys: [`player-${playerKey}-${kind.key}`],
+      quality: 95 + selection.odds * 5,
+      anchor: false
+    });
+  }
+
+  for (const market of event.markets || []) {
+    if (market.marketName !== "MARCATORE SI/NO (DUO) INC TS" || !selectedPlayer(market.variantName, match)) continue;
+    const selection = (market.selections || []).find(item => item.status === "open" && item.name === "SI" && item.odds >= minimumLegOdds && item.odds <= maximumLegOdds);
+    if (!selection) continue;
+    const player = market.variantName.split(/\s+SEGNA\b/i)[0].trim();
+    candidates.push({
+      providerSelectionId: String(selection.providerSelectionId),
+      overlapKey: "market-marcatore-duo",
+      label: `${player} segna, sostituto incluso`,
+      odds: selection.odds,
+      semanticKeys: ["player-goal"],
+      quality: 88 + Math.max(0, 5 - selection.odds),
+      anchor: false,
+      modelSupported: true
+    });
+  }
+
+  if (matchday === 5) {
+    const distinctEventMarkets = new Map([
+      ["1X2 ESITO FINALE", "result"],
+      ["UNDER/OVER", "goals"],
+      ["1 TEMPO: 1X2 CORNER", "corners-first-half"],
+      ["TEMPO PRIMO GOAL", "first-goal-period"],
+      ["DOPPIA CHANCE TEMPO X", "result-first-half"],
+      ["U/O GOAL SQUADRA TEMPO", "team-goals-period"],
+      ["VINCE O QUASI (1UP/2UP)", "win-or-lead"],
+      ["UNDER/OVER TEMPO X", "goals-period"],
+      ["CASA: SEGNA GOAL 2T", "home-goal-second-half"],
+      ["OSPITE: SEGNA GOAL 2T", "away-goal-second-half"],
+      ["SQUADRA X SEGNA NEI 2 TEMPI", "team-scores-both-halves"],
+      ["1 TEMPO: ESITO 1X2", "result-first-half-1x2"],
+      ["2 TEMPO: ESITO 1X2", "result-second-half-1x2"],
+      ["GOAL/NOGOAL TEMPO X", "goals-period-btts"],
+      ["1X2 NEI MINUTI X-Y", "result-opening-window"],
+      ["SEGNA ULTIMO GOAL", "last-goal-team"],
+      ["SEGNA GOAL TEMPO X", "scoring-team-period"]
+    ]);
+    const home = teamById.get(match.homeTeam)?.name || match.homeTeam;
+    const away = teamById.get(match.awayTeam)?.name || match.awayTeam;
+    for (const [marketName, semanticKey] of distinctEventMarkets) {
+      if (!isSisalMyComboMarketName(marketName)) continue;
+      const markets = (event.markets || []).filter(market => market.marketName === marketName);
+      const choices = markets.flatMap(market => (market.selections || [])
+        .filter(selection => selection.status === "open" && selection.odds >= minimumLegOdds && selection.odds <= maximumLegOdds)
+        .map(selection => ({ market, selection })));
+      const choice = choices.sort((left, right) => left.selection.odds - right.selection.odds || String(left.selection.providerSelectionId).localeCompare(String(right.selection.providerSelectionId)))[0];
+      if (!choice) continue;
+      const period = /(?:TEMPO|\b)(?:\s*)2\b|2 TEMPO/i.test(choice.market.variantName) ? "second-half" : "first-half";
+      const resolvedSemanticKey = marketName.includes("GOAL") || marketName.includes("MULTIGOAL") || marketName.includes("UNDER/OVER")
+        ? goalsSemanticKey(choice.market)
+        : marketName.includes("TEMPO X") ? semanticKey.replace("first-half", period).replace("period", period) : semanticKey;
+      const label = `${choice.market.variantName} · ${choice.selection.name}`
+        .replace(/TEAM 1|SQUADRA 1/g, home)
+        .replace(/TEAM 2|SQUADRA 2/g, away);
+      candidates.push({
+        providerSelectionId: String(choice.selection.providerSelectionId),
+        overlapKey: `scenario-${resolvedSemanticKey}`,
+        label,
+        odds: choice.selection.odds,
+        semanticKeys: [resolvedSemanticKey],
+        quality: 112 + (maximumLegOdds - choice.selection.odds) * 5,
+        anchor: false,
+        modelSupported: false
+      });
+    }
+  }
+
+  const uniqueCandidates = [...new Map(candidates.map(candidate => [candidate.providerSelectionId, { ...candidate, semanticKeys: candidate.semanticKeys || [] }])).values()];
+  const contractBySelectionId = new Map((event.markets || []).flatMap(market => (market.selections || []).map(selection => [String(selection.providerSelectionId), { market, selection }])));
+  const policyInput = candidate => { const contract = contractBySelectionId.get(String(candidate.providerSelectionId)); return { matchId: match.id, market: contract?.market?.marketName, variant: contract?.market?.variantName, selection: contract?.selection?.name, label: candidate.label }; };
+  const underCandidates = matchday >= 6 ? uniqueCandidates.filter(isUnderPlayableSelection) : [];
+  const individualFoulCandidates = matchday >= 6 ? uniqueCandidates.filter(candidate => isIndividualPlayerFoulMarket(policyInput(candidate))) : [];
+  const cornerPeriodCandidates = matchday >= 6 ? uniqueCandidates.filter(candidate => isCornerPeriodMarket(policyInput(candidate))) : [];
+  if (matchday >= 6) underCandidateExclusionsByMatch[match.id] = underCandidates.length;
+  if (matchday >= 6) individualFoulCandidateExclusionsByMatch[match.id] = individualFoulCandidates.length;
+  if (matchday >= 6) cornerPeriodCandidateExclusionsByMatch[match.id] = cornerPeriodCandidates.length;
+  return uniqueCandidates
+    .filter(candidate => matchday < 6 || isPlayableSelection(policyInput(candidate), { matchday }))
+    .filter(candidate => {
+      return !isExcludedMarketName(candidate.overlapKey);
+    })
+    .filter(candidate => candidate.odds >= minimumLegOdds && candidate.odds <= maximumLegOdds)
+    .sort((left, right) => right.quality - left.quality || right.odds - left.odds);
+}
+
+function selectPortfolio(pool, tier) {
+  const reference = referenceOdds[tier];
+  const limits = tierLimits[tier];
+  const available = pool.slice(0, matchday === 5 ? 220 : 120);
+  let beam = [{ product: 1, legs: [], overlapKeys: new Set(), semanticKeys: new Set(), quality: 0 }];
+  for (let depth = 0; depth < limits.maximum; depth += 1) {
+    const expanded = [...beam];
+    for (const state of beam) {
+      for (const candidate of available) {
+        if (state.legs.some(leg => leg.providerSelectionId === candidate.providerSelectionId) || state.overlapKeys.has(candidate.overlapKey) || candidate.semanticKeys.some(key => state.semanticKeys.has(key))) continue;
+        const product = state.product * candidate.odds;
+        expanded.push({
+          product,
+          legs: [...state.legs, candidate],
+          overlapKeys: new Set([...state.overlapKeys, candidate.overlapKey]),
+          semanticKeys: new Set([...state.semanticKeys, ...candidate.semanticKeys]),
+          quality: state.quality + candidate.quality
+        });
+      }
+    }
+    const buckets = new Map();
+    for (const state of expanded) {
+      const key = `${state.legs.length}:${Math.round(Math.log(state.product) * 60)}:${[...state.semanticKeys].sort().join(",")}`;
+      const legDistance = Math.abs(state.legs.length - limits.preferred);
+      const referenceDistance = Math.abs(Math.log(state.product / reference));
+      const score = referenceDistance * 1000 + legDistance * 10 - state.quality / Math.max(1, state.legs.length) / 100;
+      if (!buckets.has(key) || score < buckets.get(key).score) buckets.set(key, { state, score });
+    }
+    beam = [...buckets.values()].sort((a, b) => a.score - b.score).slice(0, 500).map(item => item.state);
+  }
+  const eligible = beam.filter(state => state.legs.length >= limits.minimum
+    && state.legs.length <= limits.maximum);
+  eligible.sort((left, right) => {
+    const referenceDistance = Math.abs(Math.log(left.product / reference)) - Math.abs(Math.log(right.product / reference));
+    const legDistance = Math.abs(left.legs.length - limits.preferred) - Math.abs(right.legs.length - limits.preferred);
+    const quality = right.quality / right.legs.length - left.quality / left.legs.length;
+    return referenceDistance || legDistance || quality || left.legs.length - right.legs.length;
+  });
+  if (!eligible[0]) return null;
+  return eligible[0];
+}
+
+function fallbackPortfolio(pool, tier) {
+  const limits = tierLimits[tier];
+  const attempts = [];
+  for (let offset = 0; offset < Math.min(pool.length, 80); offset += 1) {
+    const ordered = [...pool.slice(offset), ...pool.slice(0, offset)];
+    const state = { product: 1, legs: [], overlapKeys: new Set(), semanticKeys: new Set(), quality: 0 };
+    for (const candidate of ordered) {
+      if (state.overlapKeys.has(candidate.overlapKey) || candidate.semanticKeys.some(key => state.semanticKeys.has(key))) continue;
+      state.legs.push(candidate);
+      state.product *= candidate.odds;
+      state.quality += candidate.quality;
+      state.overlapKeys.add(candidate.overlapKey);
+      candidate.semanticKeys.forEach(key => state.semanticKeys.add(key));
+      if (state.legs.length === limits.preferred) break;
+    }
+    if (state.legs.length >= limits.minimum) attempts.push(state);
+  }
+  return attempts.sort((left, right) => Math.abs(Math.log(left.product / referenceOdds[tier])) - Math.abs(Math.log(right.product / referenceOdds[tier])) || right.quality - left.quality)[0] || null;
+}
+
+const oddsEventByMatchId = new Map(odds.events.map(event => [event.canonicalMatchId, event]));
+const eligibleMatches = matches.filter(match => match.matchday === matchday && match.status !== "finished");
+if (requestedMatchId && !eligibleMatches.some(match => match.id === requestedMatchId)) {
+  throw new Error(`--match ${requestedMatchId} non appartiene alle gare aperte della giornata ${matchday}.`);
+}
+if (requestedMatchId && !previousOutput) throw new Error(`Aggiornamento mirato impossibile: ${outputFilename} non esiste.`);
+const targetPredictions = predictionData.predictions.filter(prediction => eligibleMatches.some(match => match.id === prediction.matchId));
+if (targetPredictions.length !== eligibleMatches.length) throw new Error(`Pronostici giornata ${matchday} incompleti: ${targetPredictions.length}/${eligibleMatches.length} gare ancora aperte.`);
+if (targetPredictions.some(prediction => {
+  const event = oddsEventByMatchId.get(prediction.matchId);
+  return !event || prediction.market?.status !== "available" || String(prediction.market.retrievedAt) !== String(event.retrievedAt);
+})) {
+  throw new Error(`I pronostici della giornata ${matchday} devono essere rigenerati sullo stesso snapshot Sisal prima di creare i portafogli.`);
+}
+
+const output = {
+  provider: "Sisal",
+  oddsSnapshot: "data/normalized/odds/sisal/serie-a.json",
+  updatedAt: String(odds.retrievedAt).slice(0, 10),
+  oddsRetrievedAt: odds.retrievedAt,
+  sourceUrl: odds.sourceUrl,
+  rawFile: odds.rawFile,
+  acquisition: odds.acquisition,
+  constraints: {
+    referenceOdds,
+    quotaPolicy: "orientativa",
+    tierLimits,
+    displayedComboLegs: matchday === 5 ? 10 : null,
+    excludedMarketNames: [...excludedMarketNames],
+    excludedMarketNameFragments,
+    allowedMarketNames: [...sisalMyComboMarketNames].sort(),
+    providerEligibilityPolicy: "Solo selezioni con providerSelectionId presenti nello snapshot Sisal e ammesse nella sezione MyCombo; le famiglie note come non selezionabili sono escluse prima della costruzione dei portafogli.",
+    minLegOddsInclusive: minimumLegOdds,
+    maxLegOddsInclusive: maximumLegOdds,
+    uniqueMarketFamilyWithinPortfolio: true,
+    semanticOverlapPolicy: matchday === 5
+      ? "Una sola gamba per macro-scenario: Multigoal e Under/Over appartengono entrambi allo scenario gol e non possono convivere; nessuna variante correlata della stessa famiglia puo essere ripetuta. Handicap, mercati asiatici, vince a zero e squadra vince almeno un tempo sono esclusi."
+      : "Una sola gamba per macro-scenario: gol, esito, corner, tiri totali e tiri in porta non possono essere ripetuti o annidati nella stessa MyCombo, anche cambiando squadra, soglia o formulazione.",
+    allowCrossTierSelectionReuse: true,
+    promotedOpponentCaution: true,
+    riskPolicy: "informativa",
+    eligibilityPolicy: "validita-tecnica-e-intervalli"
+  },
+  matches: requestedMatchId ? { ...previousOutput.matches } : {}
+};
+
+for (const event of odds.events) {
+  const prediction = predictionById.get(event.canonicalMatchId);
+  const match = matchById.get(event.canonicalMatchId);
+  if (!prediction || !match || match.matchday !== matchday) continue;
+  if (requestedMatchId && event.canonicalMatchId !== requestedMatchId) continue;
+  if (match.status === "finished") {
+    if (previousOutput?.matches?.[event.canonicalMatchId]) {
+      output.matches[event.canonicalMatchId] = previousOutput.matches[event.canonicalMatchId];
+      console.log(`${event.canonicalMatchId}: portafogli storici congelati (partita conclusa)`);
+    } else console.log(`${event.canonicalMatchId}: nessun portafoglio storico da creare (partita conclusa)`);
+    continue;
+  }
+  const pool = candidatePool(event, prediction, match);
+  const selectionIndex = new Map(event.markets.flatMap(market => (market.selections || []).map(selection => [String(selection.providerSelectionId), { market, selection }])));
+  const serializeLeg = candidate => {
+    const resolved = selectionIndex.get(String(candidate.providerSelectionId));
+    if (!resolved) throw new Error(`${event.canonicalMatchId}: providerSelectionId non risolto ${candidate.providerSelectionId}`);
+    const { market, selection } = resolved;
+    const selectionId = selectionIdFor({ matchId: event.canonicalMatchId, provider: odds.provider, providerSelectionId: selection.providerSelectionId });
+    const assessment = assessmentBySelectionId.get(selectionId);
+    return attachBetSelection({
+      providerSelectionId: String(candidate.providerSelectionId),
+      providerMarketId: String(market.providerMarketId),
+      market: market.marketName,
+      variant: market.variantName,
+      marketScope: market.marketScope,
+      threshold: market.threshold ?? null,
+      selection: selection.name,
+      odds: selection.odds,
+      marketUpdatedAt: market.updatedAt,
+      overlapKey: candidate.overlapKey,
+      semanticKeys: candidate.semanticKeys,
+      label: candidate.label,
+    }, {
+      matchId: event.canonicalMatchId,
+      provider: odds.provider,
+      marketObject: market,
+      selectionObject: selection,
+      quoteSource: {
+        retrievedAt: odds.retrievedAt,
+        sourceUrl: odds.sourceUrl,
+        snapshotPath: "data/normalized/odds/sisal/serie-a.json",
+        rawFile: odds.rawFile,
+        acquisition: odds.acquisition,
+      },
+      classification: assessment?.classification,
+      classificationReason: assessment?.classificationReason,
+      reliability: assessment?.reliability,
+      compatibility: assessment?.compatibility || { status: "NOT_EVALUATED", reason: "Compatibilità specifica non valutata dal generatore MyCombo." },
+      warnings: assessment ? assessment.warnings : ["CLASSIFICATION_NOT_AVAILABLE"],
+      risks: assessment?.risks,
+    });
+  };
+  console.log(`${event.canonicalMatchId}: ${pool.length} candidati modellati · ${pool.filter(candidate => candidate.anchor).length} ancore · ${new Set(pool.map(candidate => candidate.overlapKey)).size} gruppi`);
+  const planned = new Map(["Aggressive", "Balanced", "Safe"].map(tier => {
+    const portfolio = selectPortfolio(pool, tier) || fallbackPortfolio(pool, tier);
+    if (!portfolio) return [tier, {
+      tier,
+      status: "N/D",
+      reason: `Candidati insufficienti per il profilo ${tier}: servono almeno ${tierLimits[tier].minimum} mercati distinti con quota tra ${minimumLegOdds.toFixed(2)} e ${maximumLegOdds.toFixed(2)}.`,
+      legs: []
+    }];
+    return [tier, {
+      tier,
+      risk: matchday === 5 && tier === "Safe" ? `elevato · ${portfolio.legs.length} eventi` : undefined,
+      logic: `Profilo ${tier.toLowerCase()} costruito sulle quote Sisal del ${String(event.retrievedAt).slice(0, 10)}: quota ${referenceOdds[tier]} orientativa, ${tierLimits[tier].minimum}-${tierLimits[tier].maximum} gambe, mercati distinti, nessuna ripetizione della stessa famiglia e quote singole ${minimumLegOdds.toFixed(2)}-${maximumLegOdds.toFixed(2)}. Il rischio resta informativo.`,
+      legs: portfolio.legs.map(serializeLeg)
+    }];
+}));
+  output.matches[event.canonicalMatchId] = ["Safe", "Balanced", "Aggressive"].map(tier => planned.get(tier));
+}
+
+const missingEligibleMatches = eligibleMatches.filter(match => !output.matches[match.id]);
+const invalidRetainedMatches = Object.keys(output.matches).filter(matchId => {
+  const match = matchById.get(matchId);
+  return !match
+    || match.matchday !== matchday
+    || (match.status === "finished" && !previousOutput?.matches?.[matchId]);
+});
+if (missingEligibleMatches.length || invalidRetainedMatches.length) {
+  throw new Error(`Copertura MyCombo incompleta: aperte mancanti ${missingEligibleMatches.length}, storiche non valide ${invalidRetainedMatches.length}`);
+}
+output.constraints.underSelectionPolicy = {
+  effectiveFromMatchday: 6,
+  active: matchday >= 6,
+  rule: "Le selezioni Under sono escluse prima della costruzione dei portafogli; gli Over restano eleggibili.",
+  previousPlayableLegOccurrencesRemoved: Math.max(previousUnderLegOccurrences, preservedUnderMigrationCount),
+  filteredCandidateSelections: Object.values(underCandidateExclusionsByMatch).reduce((sum, count) => sum + count, 0),
+  filteredCandidateSelectionsByMatch: underCandidateExclusionsByMatch
+};
+output.constraints.individualFoulSelectionPolicy = {
+  effectiveFromMatchday: 6,
+  active: matchday >= 6,
+  rule: "I falli commessi o subiti del singolo giocatore sono esclusi dalle proposte giocabili; statistiche, analisi, report e mercati aggregati di squadra restano invariati.",
+  previousPlayableLegOccurrencesRemoved: Math.max(previousIndividualFoulOccurrences, Number(previousOutput?.constraints?.individualFoulSelectionPolicy?.previousPlayableLegOccurrencesRemoved || 0)),
+  filteredCandidateSelections: Object.values(individualFoulCandidateExclusionsByMatch).reduce((sum, count) => sum + count, 0),
+  filteredCandidateSelectionsByMatch: individualFoulCandidateExclusionsByMatch
+};
+output.constraints.cornerPeriodSelectionPolicy = {
+  effectiveFromMatchday: 6,
+  active: matchday >= 6,
+  rule: "I mercati corner dipendenti da primo tempo, secondo tempo, entrambi i tempi o finestre temporali sono esclusi dalle proposte giocabili; i corner dell'intera partita restano eleggibili.",
+  previousPlayableLegOccurrencesRemoved: Math.max(previousCornerPeriodOccurrences, Number(previousOutput?.constraints?.cornerPeriodSelectionPolicy?.previousPlayableLegOccurrencesRemoved || 0)),
+  filteredCandidateSelections: Object.values(cornerPeriodCandidateExclusionsByMatch).reduce((sum, count) => sum + count, 0),
+  filteredCandidateSelectionsByMatch: cornerPeriodCandidateExclusionsByMatch
+};
+fs.writeFileSync(outputPath, `${JSON.stringify(output, null, 2)}\n`);
+console.log(`OK MyCombo giornata ${matchday}${requestedMatchId ? ` · ${requestedMatchId}` : ""}: ${Object.keys(output.matches).length} partite · ${Object.values(output.matches).flat().length} portafogli · snapshot ${output.updatedAt}`);

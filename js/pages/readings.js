@@ -1,7 +1,8 @@
 import {renderLineupField} from "../components/lineup-field.mjs";
 import {isReadingPilot} from './reading-detail/view-model.mjs';
 import {cardType} from './disciplinary.mjs';
-import {forecastView,sharedForecastsForMatch,isCanonicalModelForecast} from './shared-forecast-contract.mjs';
+import {sharedForecastsForMatch} from './shared-forecast-contract.mjs';
+import {compactForecastMarkup,publishedReadingForecasts,installForecasts} from './reading-detail/forecasts.mjs?v=20261019-compact-all-v1';
 import {createPersonalBetslipStore} from './personal-betslip-store.mjs';
 const isFiniteNumber=value=>typeof value==="number"&&Number.isFinite(value);
 const decimal=(value,digits=1)=>isFiniteNumber(value)?value.toLocaleString("it-IT",{minimumFractionDigits:digits,maximumFractionDigits:digits}):"N/D";
@@ -71,12 +72,10 @@ export function renderPredictionV2Sections({prediction,teams=[],esc=value=>Strin
   return {numbers,why,shooters:shooterPanel,outsiders:outsiderPanel,discipline};
 }
 
-export function renderSharedForecasts({marketCatalog,match,esc=value=>String(value)}={}){
-  const forecasts=sharedForecastsForMatch(marketCatalog,match?.id).filter(isCanonicalModelForecast).map(leg=>forecastView(leg,match?.matchday));
-  if(!forecasts.length)return "";
-  const extended=forecasts.some(item=>item.canonicalModelForecast);
-  const rows=forecasts.map(item=>`<tr${item.canonicalModelForecast&&match.status!=='finished'?' role="button" tabindex="0" aria-pressed="false"':""} data-shared-forecast-id="${esc(item.id)}"><td><small>${esc(item.marketFamily||item.market||"Mercato")}</small><strong>${esc(item.player?.name?`${item.player.name} · ${item.selection||""}`:item.selection||"Selezione")}</strong></td><td>${esc(item.threshold==null?"—":`${item.modifier||""} ${item.threshold}`.trim())}</td><td>${esc(item.technicalMotivation)}</td>${extended?`<td>${item.probability==null?"—":`${decimal(item.probability,2)}%`}</td>`:""}<td><strong>${item.odds==null?(extended?"—":"N/D"):Number(item.odds).toLocaleString("it-IT",{minimumFractionDigits:2,maximumFractionDigits:2})}</strong><small>${item.odds==null?(extended?"":"Quota non disponibile"):""}</small></td>${extended?`<td>${item.expectedValue==null?"—":`${decimal(item.expectedValue,2)}%`}</td>`:""}</tr>`).join("");
-  return `<section class="section reading-shared-forecasts" aria-labelledby="reading-shared-forecasts-title"><header class="section-heading"><div><p class="eyebrow">Registro condiviso Lettura ↔ Schedina</p><h2 id="reading-shared-forecasts-title">Pronostici giocabili</h2></div><p>Previsioni del modello selezionabili per la Schedina personale.</p></header><div class="prediction-v2-shooter-table reading-shared-forecast-table"><table><thead><tr><th>Mercato e selezione</th><th>Soglia</th><th>Motivazione tecnica</th>${extended?"<th>Probabilità</th>":""}<th>Quota</th>${extended?"<th>EV</th>":""}</tr></thead><tbody>${rows}</tbody></table></div><p class="objective-method">${forecasts.length} pronostici sincronizzati · <a href="schedina.html?giornata=${esc(match.matchday)}">Apri nella Schedina e nel costruttore personale</a>.</p></section>`;
+export function renderSharedForecasts({marketCatalog,match}={}){
+ const forecasts=publishedReadingForecasts(marketCatalog,match?.id);
+ if(!forecasts.length)return '';
+ return `<section class="section reading-shared-forecasts" aria-labelledby="reading-shared-forecasts-title"><header class="section-heading"><h2 id="reading-shared-forecasts-title">Pronostici</h2></header><div data-reading-forecast-content>${compactForecastMarkup({competition:'serie-a',fixture:match,forecasts})}</div></section>`;
 }
 
 export function createPage(deps){
@@ -233,7 +232,7 @@ function pilotSection(aggregates,report){const serieA=report.competitions.find(i
     let finishReading=null;
   if(isReadingPilot('serie-a',activeReadingMatch?.id,location.search)&&typeof document.createElement==='function'){
     try{
-      const [{adaptSerieAReading},{mountReadingShell,prepareReadingShell}]=await Promise.all([import('./reading-detail/serie-a-adapter.mjs?v=20261019-canonical-forecasts-v1'),import('./reading-detail/shell.mjs?v=20261019-canonical-forecasts-v1')]);
+      const [{adaptSerieAReading},{mountReadingShell,prepareReadingShell}]=await Promise.all([import('./reading-detail/serie-a-adapter.mjs?v=20261019-compact-all-v1'),import('./reading-detail/shell.mjs?v=20261019-compact-all-v1')]);
       const analysis={match:activeReadingMatch,matches,teamDirectory,styles:teamStyleProfiles,referees:refereeProfiles,reading:activeReading,history:headToHeadData?.fixtures?.find(f=>f.fixtureId===activeReadingMatch.id),lineups:[activeReadingMatch.homeTeam,activeReadingMatch.awayTeam].map(id=>{const team=teamDirectory.teams.find(t=>t.id===id);return {team,lineup:fixtureLineupForMatch(activeReadingMatch,team,teamDirectory)}})};
       const model=adaptSerieAReading({match:activeReadingMatch,teams,teamDirectory,prediction:activePrediction,marketCatalog:forecastDataset?.marketCatalog,formation:formationPresentation(activeReadingMatch,teamDirectory),analysis});
       const prepared=await prepareReadingShell(model);
@@ -257,20 +256,14 @@ function pilotSection(aggregates,report){const serieA=report.competitions.find(i
       });
     }
     let personalReadingStore=null;
-    if(requestedMatchday===7&&document.querySelector('[data-shared-forecast-id][role="button"]')){
-      const context={competition:'serie-a',season:'2026-27',matchday:7,label:'Serie A · 7ª giornata'};
+    if(activeReadingMatch&&publishedReadingForecasts(forecastDataset?.marketCatalog,activeReadingMatch.id).length){
+      const context={competition:'serie-a',season:'2026-27',matchday:requestedMatchday};
       const store=createPersonalBetslipStore();personalReadingStore=store;store.setContext(context);
-      const latest=(forecastDataset?.marketCatalog?.matches||[]).flatMap(m=>sharedForecastsForMatch(forecastDataset.marketCatalog,m.matchId))
-        .map(leg=>({selectionId:leg.selectionId,context,fixture:leg.fixture,label:leg.label,market:leg.market,betSelection:leg.betSelection}));
+      const latest=(forecastDataset?.marketCatalog?.matches||[]).flatMap(m=>sharedForecastsForMatch(forecastDataset.marketCatalog,m.matchId)).map(leg=>({...leg,context}));
       store.reconcile(latest);
-      const update=()=>{const selected=new Set(store.getSnapshot().selections.map(s=>s.selectionId));document.querySelectorAll('[data-shared-forecast-id][role="button"]').forEach(row=>row.setAttribute('aria-pressed',String(selected.has(row.dataset.sharedForecastId))))};
-      for(const row of document.querySelectorAll('[data-shared-forecast-id][role="button"]')){
-        const toggle=()=>{const selection=latest.find(s=>s.selectionId===row.dataset.sharedForecastId);if(!isCanonicalModelForecast(selection))return;if(store.getSnapshot().selections.some(s=>s.selectionId===selection.selectionId))store.remove(selection.selectionId);else store.add(selection);update()};
-        row.addEventListener('click',toggle);row.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();toggle()}});
-      }
-      const unsubscribe=store.subscribe(update);update();
-      window.addEventListener('pagehide',unsubscribe,{once:true});
+      if(!finishReading){const content=document.querySelector('[data-reading-forecast-content]');if(content)installForecasts({competition:'serie-a',fixture:activeReadingMatch,forecasts:publishedReadingForecasts(forecastDataset.marketCatalog,activeReadingMatch.id)},content,document.querySelector('#app'),store);}
     }
+
   if(page==="readings"&&activeReadingMatch){renderProbableLineups(activeReadingMatch,teamDirectory,activePrediction);if(activeReadingMatch.competition!=="coppa-italia")renderReadingPilotEvidence(activeReading,activeReadingMatch);renderTacticalBaselines(activeReadingMatch,teamStyleProfiles,teams)}
   if(finishReading){try{await finishReading(personalReadingStore)}catch(error){delete document.body.dataset.readingDetailTheme;console.warn('Lettura: vista precedente mantenuta.',error)}}
 

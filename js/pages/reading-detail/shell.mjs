@@ -1,5 +1,4 @@
-import {isCanonicalModelForecast} from '../shared-forecast-contract.mjs';
-import {installForecasts} from './forecasts.mjs?v=20261019-canonical-forecasts-v1';
+import {installForecasts} from './forecasts.mjs?v=20261019-compact-all-v1';
 import {installScenario} from './scenario.mjs?v=20261018-reading-clean-copy-v1';
 import {loadEvidence,readArtifact} from './evidence.mjs?v=20261018-bench-forecasts-v1';
 import {installPeople} from './people.mjs?v=20261018-bench-forecasts-v1';
@@ -21,7 +20,7 @@ const definitions=[
 const icon=path=>`<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="${path}"/></svg>`;
 
 export function readingSections(model){
-  return definitions.filter(([key])=>!['verifica','fonti'].includes(key)&&(key!=='pronostici'||model.competition==='serie-a'&&model.forecasts?.some(isCanonicalModelForecast)))
+  return definitions.filter(([key])=>!['verifica','fonti'].includes(key)&&(key!=='pronostici'||model.competition==='serie-a'&&model.forecasts?.length>0))
     .map(([key,title,,path],i)=>[key,title,String(i+1).padStart(2,'0'),path]);
 }
 

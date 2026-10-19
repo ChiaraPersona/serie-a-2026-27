@@ -45,11 +45,11 @@ const server=http.createServer((req,res)=>{const file=path.resolve(root,'.'+deco
     await page.locator('[data-match-open-all]').click();
     assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'Overflow schedina');
     await page.screenshot({path:path.join(root,`output/reports/serie-a-md07-${width}.png`),fullPage:true});
-    // Readings expose published canonical forecasts; provider rows stay in Schedina.
+    // Readings expose the same published catalog as Schedina, including quoted markets.
     for(const match of data.marketCatalog.matches){
       await page.goto(`${base}/lettura.html?match=${match.matchId}`,{waitUntil:'networkidle'});
       await page.waitForSelector('.rd-shell');
-      const canonical=sharedForecastsForMatch(data.marketCatalog,match.matchId).filter(isCanonicalModelForecast);assert.equal(await page.locator('[data-forecast-id]').count(),canonical.length);assert.equal(await page.locator('#lettura-pronostici').count(),canonical.length?1:0);
+      const published=sharedForecastsForMatch(data.marketCatalog,match.matchId);assert.equal(await page.locator('[data-forecast-id]').count(),published.length);assert.equal(await page.locator('#lettura-pronostici').count(),published.length?1:0);
       assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'Overflow lettura');
     }
     assert.equal(errors.length,0,errors.join('\n'));
