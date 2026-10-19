@@ -15,3 +15,11 @@ export function connectBenchForecasts(model,evidence,players){
  }
  return players;
 }
+
+// Hypothetical starts are a separate, read-only attachment, never bench minutes.
+export function connectStarterScenarios(model,evidence,players){
+ if(model.competition!=='serie-a')return players;
+ const f=evidence.starterScenarios,valid=f?.fixtureId===model.fixture.id&&f?.competition==='serie-a'&&f.context===benchContext(model,evidence);
+ for(const p of players){if(p.lineupStatus!=='bench')continue;const matches=valid&&p.id?f.players.filter(r=>r.playerId===p.id&&r.team===p.team):[];p.starterScenario=matches.length===1?matches[0]:null;}
+ return players;
+}

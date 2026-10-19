@@ -1,5 +1,5 @@
 import {shirtNumberAt} from './shirt-numbers.mjs';
-import {connectBenchForecasts} from './bench-contract.mjs?v=20261018-bench-forecasts-v1';
+import {connectBenchForecasts,connectStarterScenarios} from './bench-contract.mjs?v=20261019-starter-scenario-v1';
 // Read existing public artifacts only; no builder, importer, or model dependency.
 export async function readArtifact(path){
  const response=await fetch(new URL('../../../'+path,import.meta.url));
@@ -48,7 +48,8 @@ export async function loadEvidence(model,{benchForecasts=true}={}){
   return {side,formation:raw?.formation??null,status:raw?.status??null,coach:raw?.coach||canonical?.coach||squadFiles[i]?.coach||registered?.coach||null,players,bench,benchPlayers,benchPlayerIds,source:raw?.source??null,updatedAt:raw?.updatedAt??null};
  });
  const benchData=benchForecasts?await readArtifact('data/normalized/reading-bench-forecasts.json').catch(()=>null):null;
- return {analysis,directory,squadFiles,lineups,benchForecasts:benchData};
+ const starterScenarios=benchForecasts&&model.competition==='serie-a'&&model.prediction?await readArtifact('data/generated/reading-bench-starter-scenarios/'+encodeURIComponent(model.fixture.id)+'.json').catch(()=>null):null;
+ return {analysis,directory,squadFiles,lineups,benchForecasts:benchData,starterScenarios};
 }
 export function playerLineupStatus(id,lineups){
  if(!id)return 'unknown';
@@ -85,5 +86,5 @@ export function individualPlayers(model,evidence){
    if(status==='starter'||!assignedStarters.has(row))row.lineupStatus=['official','probable'].includes(l.status)?status:'unknown';
   }
  }
- return connectBenchForecasts(model,evidence,rows);
+ return connectStarterScenarios(model,evidence,connectBenchForecasts(model,evidence,rows));
 }
