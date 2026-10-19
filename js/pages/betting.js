@@ -380,7 +380,7 @@ export function createPage(deps){
     const teams=forecast.teamProjections||[];
     const metrics=[["Tiri previsti","shotsTotal"],["SOT previsti","shotsOnTarget"],["Corner previsti","corners"]];
     const rows=metrics.map(([label,key])=>{const values=teams.map(t=>t[key]?.central??null);return '<div><dt>'+label+'</dt><dd>'+values.map(fmt).join(" – ")+'</dd></div>'}).join("");
-    const p=forecast.probabilities||{},dc=[["1X",p.home,p.draw],["X2",p.draw,p.away],["12",p.home,p.away]].map(([label,a,b])=>'<div><dt>'+label+'</dt><dd>'+fmt(typeof a==="number"&&typeof b==="number"?a+b:null)+'%</dd></div>').join("");
+    const p=forecast.probabilities||{},dc=[["1X",p.home,p.draw],["X2",p.draw,p.away]].map(([label,a,b])=>'<div><dt>'+label+'</dt><dd>'+fmt(typeof a==="number"&&typeof b==="number"?a+b:null)+'%</dd></div>').join("");
     return '<section class="betting-team-forecast"><h4>Previsioni della partita</h4><p>Valori casa – trasferta · doppie chance derivate dalle probabilità 1X2, non selezioni approvate.</p><dl>'+rows+dc+'</dl></section>';
   }
 
