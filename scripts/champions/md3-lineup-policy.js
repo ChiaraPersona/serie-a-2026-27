@@ -21,7 +21,7 @@ function derivePredictedBench(probable,callups){
 }
 function projectMd3Team({mode,documentation,...args}){
  if(TEAM_ONLY.has(canonicalTeam(args.teamId)))return {status:'blocked-collective-only',players:[]};
- const accepted=mode==='official'?documentation?.officialXI===true&&documentation?.officialBench===true:mode==='probable'?documentation?.probableXI===true&&documentation?.matchCallups===true&&documentation?.predictedBench===true:false;
+ const accepted=mode==='official'?documentation?.officialXI===true&&documentation?.officialBench===true:mode==='probable'?documentation?.probableXI===true:false;
  if(!accepted)return {status:mode==='probable'?'blocked-match-callups-undocumented':'blocked-official-documentation',players:[]};
  if(!Number.isFinite(args.targetShots)||!Number.isFinite(args.targetSOT))return {status:'blocked-team-volumes',players:[]};
  // The underlying flag means documented coverage here, not an assertion of official bench status.

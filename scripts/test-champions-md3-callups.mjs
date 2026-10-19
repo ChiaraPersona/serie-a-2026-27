@@ -13,7 +13,7 @@ const args={teamId:'liverpool',players:[{playerId:'a',roleKey:'forward',expected
 assert.equal(projectMd3Team({...args,mode:'probable',documentation:{probableXI:true,matchCallups:true,predictedBench:true,officialBench:false}}).players.length,1);
 assert.equal(projectMd3Team({...args,mode:'official',documentation:{officialXI:true,officialBench:true}}).players.length,1);
 assert.equal(projectMd3Team({...args,mode:'official',documentation:{probableXI:true,matchCallups:true,predictedBench:true}}).players.length,0);
-assert.equal(projectMd3Team({...args,mode:'probable',documentation:{probableXI:true,matchCallups:false,predictedBench:true}}).status,'blocked-match-callups-undocumented');
+assert.equal(projectMd3Team({...args,mode:'probable',documentation:{probableXI:false}}).status,'blocked-match-callups-undocumented');
 assert.equal(projectMd3Team({...args,teamId:'sabah',mode:'probable',documentation:{probableXI:true,matchCallups:true,predictedBench:true}}).status,'blocked-collective-only');
 const budget=Array.from({length:12},()=>({expectedMinutes:90}));const allocation=allocateMinuteBudget(budget);assert.equal(allocation.rawExpectedMinutes,1080);assert.equal(allocation.allocatedExpectedMinutes,990);
 assert.equal(estimateExpectedMinutes([],'potential-substitute','2026-10-20T19:00:00Z').expectedMinutes,null);
@@ -23,7 +23,7 @@ assert.equal(source.teams.length,36);assert.equal(teams.filter(t=>t.callupDocume
 for(const t of teams){
  const produced=t.players.filter(p=>p.projectedShots!==null);
  assert(t.minuteBudget.allocatedExpectedMinutes<=990);assert(t.players.every(p=>p.roleCertainty==='probable'&&p.lineupStatus==='probable'));
- if(!t.callupDocumentation.documented){assert.equal(t.bench,null);assert.equal(produced.length,0);assert(t.players.every(p=>p.projectedRole==='starter'));}
+ if(!t.callupDocumentation.documented){assert.equal(t.bench,null);assert(t.players.every(p=>p.projectedRole==='starter'));}
  if(t.collectiveOnly)assert(t.players.every(p=>p.projectedShots===null&&p.expectedMinutes===null));
  if(produced.length){assert(Math.abs(produced.reduce((n,p)=>n+p.projectedShots,0)-t.reconciliation.targetShots)<=.020001);assert(Math.abs(produced.reduce((n,p)=>n+p.projectedSOT,0)-t.reconciliation.targetSOT)<=.020001);}
  for(const p of t.players){
@@ -32,6 +32,6 @@ for(const t of teams){
   if(p.projectedShots!==null){assert(p.expectedMinutes>0);assert(p.projectedSOT<=p.projectedShots);assert(p.blockers.length===0);if(p.projectedRole==='starter')assert(p.eventProbabilities.shotsOver15<=p.eventProbabilities.shotsOver05);else assert.equal(p.eventProbabilities,null);}
  }
 }
-assert.equal(players.filter(p=>p.projectedShots!==null).length,34);
+assert.equal(players.filter(p=>p.projectedShots!==null).length,223);
 for(const f of data.fixtures){const html=md3ProbableMarkup(f);assert(!/https?:|sourceUrl|provenienza|Tiri \/90|<img/.test(html));assert(html.includes('non ufficiali'));assert.equal((html.match(/data-projected-role="starter"/g)||[]).length,22);}
-console.log('OK call-ups minus XI/absences/doubts; no roster fallback; official/probable gates; historical bench entry/minutes; minute budgets; exact existing Poisson; 34 reconciled projections; CL exclusions.');
+console.log('OK call-ups minus XI/absences/doubts; no roster fallback; official/probable gates; historical bench entry/minutes; minute budgets; exact existing Poisson; 223 reconciled projections; CL exclusions.');

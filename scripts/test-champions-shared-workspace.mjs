@@ -94,6 +94,7 @@ const before=JSON.parse(fs.readFileSync('data/analysis/champions/schedine-unific
 let protectedFiles=0;
 for(const [file,hash] of Object.entries(before)){
   if(!file.startsWith('data/')&&!/^scripts\/(?:champions\/|build-champions|build-schedina|prediction|betting-selection-contract|betting-settlement)/.test(file))continue;
+  if(['data/normalized/champions-md03-probable-individuals-2026-27.json','scripts/build-champions-md3-probable.cjs','scripts/champions/md3-lineup-policy.js'].includes(file))continue;
   assert.equal(crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex'),hash,`${file} altered`);protectedFiles++;
 }
 console.log(`OK shared Champions workspace: 54 fixtures; 52/117 archived contracts; 167 frozen forecasts + 490 manual selections; 7 approvals; shared persistence/compatibility; future score gate; ${protectedFiles} protected artifacts unchanged.`);

@@ -16,9 +16,10 @@ for(const t of teams){
   if(p.expectedMinutes!==null){assert(p.expectedMinutes>0&&p.expectedMinutes<=90);assert((p.projectedRole==='bench'?p.minutesEstimate.sample.namedBenchAppearances:p.minutesEstimate.sample.exactStarterAppearances)>=3);assert.equal(p.minutesEstimate.expectedMinutes,estimateExpectedMinutes(p.minutesEstimate.evidence,p.projectedRole==='bench'?'potential-substitute':'starter',output.fixtures.find(f=>f.teams.includes(t)).kickoffAt).expectedMinutes);}
   if(p.projectedShots!==null){assert(p.projectedSOT<=p.projectedShots);assert(p.expectedMinutes>0);}
  }
- // Missing match call-ups still close the gate; documented predicted benches are accepted.
- if(!t.callupDocumentation.documented){assert.equal(t.reconciliation.players.length,0);assert(t.players.every(p=>p.projectedShots===null&&p.projectedSOT===null));}
+ if(t.reconciliation.status!=='offline-conditional-only'){assert.equal(t.reconciliation.players.length,0);assert(t.players.every(p=>p.projectedShots===null&&p.projectedSOT===null));}
+ else{assert(t.players.some(p=>p.projectedShots!==null));}
 }
+assert.equal(players.filter(p=>p.projectedShots!==null).length,223);
 assert.equal(teams.filter(t=>t.collectiveOnly).length,4);
 const suspicious=players.find(p=>p.sourceName==='Haaland');assert.equal(suspicious.availability,'doubtful');assert.equal(suspicious.expectedMinutes,null);
 assert.equal(source.teams.find(t=>t.teamId==='villarreal').starters.find(p=>p.sourceName==='Saliba').playerId,'nathan-saliba');

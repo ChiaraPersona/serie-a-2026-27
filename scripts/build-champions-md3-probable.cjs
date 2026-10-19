@@ -59,7 +59,7 @@ const fixtures=preview.fixtures.map(f=>{
   for(const p of players){
    const projection=reconciliation.players.find(x=>x.playerId===p.playerId);
    if(!p.blockers.length&&projection){p.projectedShots=projection.shots;p.projectedSOT=projection.sot;p.eventProbabilities=p.projectedRole==='starter'?starterThresholds(projection.shots,projection.sot):null;p.eventProbabilityBlocker=p.projectedRole==='bench'?'BENCH_THRESHOLD_PROBABILITY_NOT_VALIDATED':null;}
-   else if(!p.blockers.length)p.blockers.push(predicted.documented?'TEAM_RECONCILIATION_NOT_PASSED':'MATCH_CALLUPS_UNDOCUMENTED',reconciliation.status);
+   else if(!p.blockers.length)p.blockers.push('TEAM_RECONCILIATION_NOT_PASSED',reconciliation.status);
   }
   return {teamId:t.teamId,team:t.team,venue,status:'probable',collectiveOnly:TEAM_ONLY.has(t.teamId),bench:predicted.bench,benchStatus:predicted.documented?'predicted-from-documented-callups':'not-provided',callupDocumentation:predicted,minuteBudget,unavailable:t.unavailable,suspended:t.suspended,doubtful:t.doubtful,players,diagnosticSubset,reconciliation:{...reconciliation,targetShots:target.shotsTotal?.central??null,targetSOT:target.shotsOnTarget?.central??null,allocatedShots:players.some(p=>p.projectedShots!==null)?players.reduce((n,p)=>n+(p.projectedShots??0),0):null,allocatedSOT:players.some(p=>p.projectedSOT!==null)?players.reduce((n,p)=>n+(p.projectedSOT??0),0):null,expectedMinutes:players.reduce((n,p)=>n+(p.expectedMinutes??0),0)}};
  });
