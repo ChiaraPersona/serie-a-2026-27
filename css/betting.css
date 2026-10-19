@@ -440,3 +440,7 @@ body[data-page="betting"][data-competition-theme="champions"] .betting-result-le
 body[data-page="betting"][data-competition-theme="champions"] .betting-market-ev.is-negative b{color:#ffabb1}
 body[data-page="betting"][data-competition-theme="champions"] .betting-market-copy .betting-outsider-badge{color:var(--ds-color-accent);border-color:var(--ds-color-accent)}
 body[data-page="betting"][data-competition-theme="champions"] :is(.betting-market-snapshot-note,.betting-weakest small){color:var(--ds-color-text-muted)}
+
+/* CL3 keeps the existing fixed-size flip under the shared touch fallback. */
+@media(hover:none){.betting-archive-card--champions[data-champions-matchday='3']{height:300px;perspective:1100px}}
+@media(max-width:760px) and (hover:none){.betting-archive-card--champions[data-champions-matchday='3']{height:260px}}
