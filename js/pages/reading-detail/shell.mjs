@@ -1,3 +1,5 @@
+import {isCanonicalModelForecast} from '../shared-forecast-contract.mjs';
+import {installForecasts} from './forecasts.mjs?v=20261019-canonical-forecasts-v1';
 import {installScenario} from './scenario.mjs?v=20261018-reading-clean-copy-v1';
 import {loadEvidence,readArtifact} from './evidence.mjs?v=20261018-bench-forecasts-v1';
 import {installPeople} from './people.mjs?v=20261018-bench-forecasts-v1';
@@ -7,6 +9,7 @@ import {mountRefereeHistory} from './referee-history.mjs?v=20261018-referee-comp
 const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const definitions=[
   ['scenario','Scenario','01','M4 16l5-5 4 3 7-10'],
+  ['pronostici','Pronostici','02','M4 6h16 M4 12h16 M4 18h16'],
   ['formazioni','Formazioni','03','M3 5h18v14H3z M12 5v14 M9 12a3 3 0 1 0 6 0a3 3 0 1 0-6 0'],
   ['giocatori','Giocatori','04','M8 8a4 4 0 1 0 8 0a4 4 0 1 0-8 0 M4 21v-2a8 8 0 0 1 16 0v2'],
   ['disciplina','Disciplina','05','M7 3h10v18H7z'],
@@ -18,7 +21,7 @@ const definitions=[
 const icon=path=>`<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="${path}"/></svg>`;
 
 export function readingSections(model){
-  return definitions.filter(([key])=>!['verifica','fonti'].includes(key))
+  return definitions.filter(([key])=>!['verifica','fonti'].includes(key)&&(key!=='pronostici'||model.competition==='serie-a'&&model.forecasts?.some(isCanonicalModelForecast)))
     .map(([key,title,,path],i)=>[key,title,String(i+1).padStart(2,'0'),path]);
 }
 
@@ -41,6 +44,7 @@ export async function readingResultsDestination(model,read=readArtifact){
 }
 
 function classify(node){
+  if(node.matches('.reading-shared-forecasts'))return 'pronostici';
   if(node.matches('.reading-post-match,.reading-archive-banner,.champions-match-report'))return 'verifica';
   if(node.matches('.prediction-v2-numbers,.prediction-v2-why,.champions-reading-volume'))return 'scenario';
   if(node.matches('.reading-info-grid'))return 'formazioni';
@@ -116,6 +120,7 @@ export async function mountReadingShell(model,root=document.querySelector('#app'
       const link=document.createElement('a');link.href='#'+group.id;link.textContent=title;link.dataset.sectionLink=key;linkStrip.append(link);
     }
     const mini=document.createElement('div');mini.className='rd-mini';mini.innerHTML=`<span>${escape(model.home.name)}</span><b>VS</b><span>${escape(model.away.name)}</span>`;mini.setAttribute('aria-hidden','true');nav.prepend(mini);
+    if(visibleDefinitions.some(([key])=>key==='pronostici')){const forecasts=installForecasts(model,groups.get('pronostici').lastElementChild,shell,options.store);undo.push(forecasts.undo);}
     undo.push(installScenario(model,groups.get('scenario').lastElementChild));
     undo.push(installPeople(model,evidence,Object.fromEntries([...groups].map(([key,group])=>[key,group.lastElementChild])),shell));
     undo.push(installTacticsHistory(model,evidence,Object.fromEntries([...groups].map(([key,group])=>[key,group.lastElementChild]))));

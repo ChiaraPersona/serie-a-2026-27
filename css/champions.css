@@ -1306,3 +1306,10 @@ body[data-page="champions"]:has(#app > :is(.champions-overview,.champions-team-d
 
 /* Phase 4: the calendar groups autonomous match cards, without an outer card. */
 body[data-page="champions"] .champions-overview>.champions-calendar{margin-top:var(--ds-space-6);padding:0;border:0;border-radius:0;background:none;box-shadow:none;backdrop-filter:none}
+
+/* Intrinsic wrapping for team identities only; preserve short-name alignment. */
+@media(max-width:600px){
+ body[data-page="champions"] .champions-team-detail .champions-team-identity{flex-wrap:wrap}
+ body[data-page="champions"] .champions-team-detail .champions-team-identity>div:not(.champions-team-hero-logo){flex:1 1 min-content;min-width:0}
+ body[data-page="champions"] .champions-team-detail .champions-team-identity h1{overflow-wrap:break-word}
+}

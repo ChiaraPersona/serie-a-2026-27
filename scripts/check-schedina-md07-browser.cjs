@@ -6,7 +6,7 @@ const data=JSON.parse(fs.readFileSync(path.join(root,'data/normalized/schedina-m
 const types={'.html':'text/html','.js':'text/javascript','.mjs':'text/javascript','.json':'application/json','.css':'text/css','.svg':'image/svg+xml','.png':'image/png'};
 const server=http.createServer((req,res)=>{const file=path.resolve(root,'.'+decodeURIComponent(new URL(req.url,'http://localhost').pathname));if(!file.startsWith(root+path.sep))return res.writeHead(403).end();fs.readFile(file,(e,b)=>{res.writeHead(e?404:200,{'Content-Type':types[path.extname(file)]||'application/octet-stream'});res.end(e?'Missing':b)})});
 (async()=>{
-  const {sharedForecastsForMatch}=await import('../js/pages/shared-forecast-contract.mjs');
+  const {sharedForecastsForMatch,isCanonicalModelForecast}=await import('../js/pages/shared-forecast-contract.mjs');
   await new Promise(r=>server.listen(0,'127.0.0.1',r));
   const browser=await chromium.launch({headless:true,channel:'msedge'});
   const base=`http://127.0.0.1:${server.address().port}`;
@@ -45,11 +45,11 @@ const server=http.createServer((req,res)=>{const file=path.resolve(root,'.'+deco
     await page.locator('[data-match-open-all]').click();
     assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'Overflow schedina');
     await page.screenshot({path:path.join(root,`output/reports/serie-a-md07-${width}.png`),fullPage:true});
-    // Forecasts remain in Schedina; readings expose only match analysis.
+    // Readings expose published canonical forecasts; provider rows stay in Schedina.
     for(const match of data.marketCatalog.matches){
       await page.goto(`${base}/lettura.html?match=${match.matchId}`,{waitUntil:'networkidle'});
       await page.waitForSelector('.rd-shell');
-      assert.equal(await page.locator('[data-shared-forecast-id],[data-forecast-id],#lettura-pronostici').count(),0);
+      const canonical=sharedForecastsForMatch(data.marketCatalog,match.matchId).filter(isCanonicalModelForecast);assert.equal(await page.locator('[data-forecast-id]').count(),canonical.length);assert.equal(await page.locator('#lettura-pronostici').count(),canonical.length?1:0);
       assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'Overflow lettura');
     }
     assert.equal(errors.length,0,errors.join('\n'));

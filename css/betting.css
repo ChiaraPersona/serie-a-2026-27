@@ -412,3 +412,30 @@ body[data-page="betting"] main>.hero .eyebrow{margin-bottom:4px;color:var(--glas
 .betting-archive-card--champions[data-champions-matchday="2"] .betting-archive-card-back{gap:3px;padding:12px}
 .betting-archive-card--champions[data-champions-matchday="2"] .betting-archive-card-back>strong{margin-bottom:2px}
 .betting-archive-card--champions[data-champions-matchday="2"] .team-flip-back>b{margin-top:5px;padding-top:7px}
+/* Champions betting uses the existing competition tokens before app mount. */
+body[data-page="betting"][data-competition-theme="champions"]{
+ color-scheme:dark;--glass-text:var(--ds-color-text);--glass-muted:var(--ds-color-text-muted);--glass-blue:var(--ds-color-accent);--glass-gold:var(--betting-gold);--betting-ink:var(--ds-color-text);--text:var(--ds-color-text);--muted:var(--ds-color-text-muted);
+}
+body[data-page="betting"][data-competition-theme="champions"] :is(.betting-stage,.betting-champions-stage,.betting-slip,.betting-champions-md02-summary,.betting-champions-md02-markets,.betting-match-panel,.personal-betslip-panel){
+ background:var(--ds-color-glass);color:var(--ds-color-text);border-color:var(--ds-color-glass-border);box-shadow:var(--ds-shadow-card);
+}
+body[data-page="betting"][data-competition-theme="champions"] :is(.betting-match-panel[open]>summary,.betting-market-row,.betting-audit-economics,.betting-audit-economics dl>div,.betting-slip-metrics>div,.betting-coverage,.personal-betslip-item,.personal-betslip-analysis,.personal-betslip-total,.personal-betslip-panel>footer){background:var(--ds-color-surface-soft);color:var(--ds-color-text)}
+body[data-page="betting"][data-competition-theme="champions"] :is(.betting-round-back a,.betting-quality,.betting-family-list span,.betting-slip li>b,.betting-market-group>h4 span,.betting-matchday-actions button,.personal-betslip-clear){background:var(--ds-color-surface);color:var(--ds-color-accent);border-color:var(--ds-color-border)}
+body[data-page="betting"][data-competition-theme="champions"] :is(.betting-slip li div>span,.betting-market-copy small,.betting-market-copy span,.betting-market-metric small,.betting-market-columns,.betting-match-panel>summary small,.betting-match-count,.betting-audit-economics>header>span,.betting-audit-economics>p,.betting-audit-economics dt,.betting-essential p,.personal-betslip-context,.personal-betslip-method,.personal-betslip-empty span,.personal-betslip-item span,.personal-betslip-analysis li span,.personal-betslip-analysis>small,.personal-betslip-total>small){color:var(--ds-color-text-muted)}
+body[data-page="betting"][data-competition-theme="champions"] :is(.betting-round-heading .eyebrow,.betting-slip>header p,.betting-market-group>h4,.betting-match-reading-link,.betting-match-toggle,.betting-coverage strong,.personal-betslip-empty strong,.personal-betslip-item small,.personal-betslip-total>span,.personal-betslip-analysis>strong){color:var(--ds-color-accent)}
+body[data-page="betting"][data-competition-theme="champions"] :is(.betting-audit-economics dd,.betting-market-metric b,.personal-betslip-total>strong){color:var(--ds-color-text)}
+body[data-page="betting"][data-competition-theme="champions"] .betting-market-row:hover{background:var(--ds-color-surface);border-color:var(--ds-color-accent)}
+body[data-page="betting"][data-competition-theme="champions"] .betting-market-row.is-selected{background:var(--ds-color-surface-soft);border-color:var(--ds-color-accent);box-shadow:inset 3px 0 var(--ds-color-accent)}
+body[data-page="betting"][data-competition-theme="champions"] .betting-market-row[data-settlement="won"]{background:color-mix(in srgb,#168754 18%,var(--ds-color-surface));border-color:#168754}
+body[data-page="betting"][data-competition-theme="champions"] .betting-market-row[data-settlement="lost"]{background:color-mix(in srgb,#c9323a 18%,var(--ds-color-surface));border-color:#c9323a}
+body[data-page="betting"][data-competition-theme="champions"] .betting-market-row:is([data-settlement="pending"],[data-settlement="void"]){background:var(--ds-color-surface-soft);border-color:var(--ds-color-border)}
+body[data-page="betting"][data-competition-theme="champions"] :is(button,a,[role="button"],summary):focus-visible{outline:2px solid var(--ds-color-focus);outline-offset:3px}
+body[data-page="betting"][data-competition-theme="champions"] .site-nav.open .page-link:not(.active){color:var(--ds-color-text)}
+body[data-page="betting"][data-competition-theme="champions"] :is(.betting-section-heading h3,.betting-essential h3,.betting-match-panel>summary strong,.betting-market-copy strong,.betting-slip h2){color:var(--ds-color-text)}
+body[data-page="betting"][data-competition-theme="champions"] .betting-essential .betting-coverage{color:var(--ds-color-text-muted)}
+body[data-page="betting"][data-competition-theme="champions"] :is(.betting-weakest strong,.betting-nd-compact strong,.betting-method strong){color:var(--ds-color-accent)}
+body[data-page="betting"][data-competition-theme="champions"] .betting-result-legend--won,
+body[data-page="betting"][data-competition-theme="champions"] .betting-market-ev.is-positive b{color:#80e0b3}
+body[data-page="betting"][data-competition-theme="champions"] .betting-result-legend--lost,
+body[data-page="betting"][data-competition-theme="champions"] .betting-market-ev.is-negative b{color:#ffabb1}
+body[data-page="betting"][data-competition-theme="champions"] .betting-market-copy .betting-outsider-badge{color:var(--ds-color-accent);border-color:var(--ds-color-accent)}

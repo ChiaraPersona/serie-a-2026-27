@@ -19,7 +19,7 @@ function applyStyleLinks(html) {
   const bootVersion=createHash('sha256').update(boot).digest('hex').slice(0,12);
   html=html.replace(/<script src="[^"]*js\/initial-presentation\.js[^"\n]*"><\/script>/g, '');
   const reading=/<body[^>]*data-page="(?:readings|champions)"/.test(html);
-  html=html.replace(/(<body[^>]*data-page="(?:readings|champions)"[^>]*>)/, `$1<script src="${prefix}js/initial-presentation.js?v=${bootVersion}"></script>`);
+  html=html.replace(/(<body[^>]*data-page="(?:readings|champions|betting)"[^>]*>)/, `$1<script src="${prefix}js/initial-presentation.js?v=${bootVersion}"></script>`);
   // Invalidate the application entry and its versioned module graph whenever
   // the shared heading renderer changes; preserve each page's base release.
   const headingVersion=createHash('sha256').update(fs.readFileSync(path.join(root,'js/core/utils.js'))).update(fs.readFileSync(path.join(root,'js/pages/readings.js'))).update(fs.readFileSync(path.join(root,'js/pages/champions.js'))).digest('hex').slice(0,12);

@@ -44,4 +44,10 @@ assert(incompletePlayers.includes('Giocatore disponibile'));assert(incompletePla
 console.log('OK Letture D–H: zero/null, identità, assenza dati spaziali, cronologia, snapshot autentico/alterato/posteriore, contratti e gate immutati');
 
 for(const status of ['scheduled','live','finished']){const sections=readingSections({...model,fixture:{...model.fixture,status}});assert(!sections.some(([key])=>key==='pronostici'));assert.deepEqual(sections.map(s=>s[2]),sections.map((_,i)=>String(i+1).padStart(2,'0')));}
+const {sharedForecastsForMatch,isCanonicalModelForecast}=await import('../js/pages/shared-forecast-contract.mjs');
+const catalog=read('data/normalized/schedina-md07.json').marketCatalog;
+const canonical=sharedForecastsForMatch(catalog,'fiorentina-como-2026-27-md-07').filter(isCanonicalModelForecast);
+assert.equal(canonical.length,4);
+for(const status of ['scheduled','live','finished']){const real={...model,competition:'serie-a',fixture:{...model.fixture,status,matchday:7},forecasts:canonical};assert(readingSections(real).some(([key])=>key==='pronostici'));assert.equal(canPickReading(real,canonical[0]),status!=='finished');}
+assert.equal(sharedForecastsForMatch(catalog,'udinese-lecce-2026-27-md-07').filter(isCanonicalModelForecast).length,0);
 const form=recentFormMarkup(model,{...chronology,analysis:{matches:[{id:'PRIOR',date:'2026-10-01',status:'finished',score:{home:2,away:1},homeTeam:'home',awayTeam:'away'}]}},model.home);assert(!form.includes('<svg'));assert(form.includes('2026-10-01'));assert(form.includes('2–1'));
