@@ -1,0 +1,56 @@
+[
+  {
+    "test": "test-champions-package1.js",
+    "exitCode": 0,
+    "stdout": "OK Package 1: 817 deduplicated performances, 519 players, 31 updated/36 preserved squads, exact statistical deltas, 14 rechecks, 18 fixture coverage.\n",
+    "stderr": ""
+  },
+  {
+    "test": "test-champions-registered-squads.js",
+    "exitCode": 0,
+    "stdout": "Rose registrate Champions: test superato.\n",
+    "stderr": ""
+  },
+  {
+    "test": "test-champions-player-markets.js",
+    "exitCode": 0,
+    "stdout": "Champions player markets: OK\n",
+    "stderr": ""
+  },
+  {
+    "test": "test-champions-pilot-predictions.js",
+    "exitCode": 0,
+    "stdout": "OK pronostici Champions MD1: 18 gare · risultato e gol completi · volumi mancanti espliciti\n",
+    "stderr": ""
+  },
+  {
+    "test": "test-champions-current-season-data.js",
+    "exitCode": 1,
+    "stdout": "",
+    "stderr": "node:assert:90\n  throw new AssertionError(obj);\n  ^\n\nAssertionError [ERR_ASSERTION]: '2026-10-19' == '2026-10-09'\n    at Object.<anonymous> (C:\\Users\\utente\\Desktop\\seria-a-2026-27\\scripts\\test-champions-current-season-data.js:46:8)\n    at Module._compile (node:internal/modules/cjs/loader:1546:14)\n    at Object..js (node:internal/modules/cjs/loader:1689:10)\n    at Module.load (node:internal/modules/cjs/loader:1318:32)\n    at Function._load (node:internal/modules/cjs/loader:1128:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:315:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:218:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: '2026-10-19',\n  expected: '2026-10-09',\n  operator: '=='\n}\n\nNode.js v22.11.0\n"
+  },
+  {
+    "test": "test-champions-reading-page.mjs",
+    "exitCode": 0,
+    "stdout": "OK dettaglio lettura Champions\n",
+    "stderr": "(node:6116) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/utente/Desktop/seria-a-2026-27/js/pages/champions.js is not specified and it doesn't parse as CommonJS.\nReparsing as ES module because module syntax was detected. This incurs a performance overhead.\nTo eliminate this warning, add \"type\": \"module\" to C:\\Users\\utente\\Desktop\\seria-a-2026-27\\package.json.\n(Use `node --trace-warnings ...` to show where the warning was created)\n"
+  },
+  {
+    "test": "test-champions-schedina-page.mjs",
+    "exitCode": 0,
+    "stdout": "OK pagina Schedina Champions\n",
+    "stderr": "(node:17268) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/utente/Desktop/seria-a-2026-27/js/pages/betting.js is not specified and it doesn't parse as CommonJS.\nReparsing as ES module because module syntax was detected. This incurs a performance overhead.\nTo eliminate this warning, add \"type\": \"module\" to C:\\Users\\utente\\Desktop\\seria-a-2026-27\\package.json.\n(Use `node --trace-warnings ...` to show where the warning was created)\n"
+  },
+  {
+    "test": "test-betting-selection-contract.js",
+    "exitCode": 0,
+    "stdout": "OK BetSelection v1: 6 schedina, 137 MyCombo e 137 prediction legs verificate\n",
+    "stderr": ""
+  },
+  {
+    "test": "test-personal-betslip.mjs",
+    "exitCode": 0,
+    "stdout": "OK schedina personale: store, deduplica, compatibilità, quote, contesti e persistenza\n",
+    "stderr": ""
+  }
+]

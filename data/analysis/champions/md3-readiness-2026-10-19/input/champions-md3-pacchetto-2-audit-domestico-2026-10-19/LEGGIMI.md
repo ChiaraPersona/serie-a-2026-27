@@ -1,0 +1,1 @@
+Pacchetto 2: audit di 34 righe rispetto ai referti locali. Le righe PROVISIONAL non sono approvate per importazione: minuti assenti e nessuna seconda fonte indipendente. QUARANTINE contiene anomalie di squadra e/o statistiche di squadra non utilizzabili. Le quattro squadre escluse restano su statistiche collettive. Nessun dato del repository modificato.

@@ -43,7 +43,42 @@ assert.equal(hash(baselinePath), "4c09d7f109f9d5a3b769c153ed4c051cc7a99adb588a11
 
 const data = read(currentPath);
 assert.equal(data.source.rawSeason, "2026-27");
-assert.equal(data.asOf, asOf);
+// Team imports, player imports and raw retrieval timestamps are different clocks.
+const package1 = data.package1Import ? read(path.join(root, data.package1Import.source)) : null;
+const frozen = package1 ? read(path.join(root, "data/analysis/champions/package1-2026-10-19/normalized-before.json")) : data;
+const individualAsOf = data.package1Import?.asOf || asOf;
+assert.equal(data.asOf, [asOf, individualAsOf].sort().at(-1));
+assert.equal(data.cutoffDate, data.asOf);
+assert.equal(data.dateInterval.to, data.asOf);
+assert(asOf <= data.asOf, "team input cannot be later than the consolidated cutoff");
+if (package1) {
+  assert.equal(package1.performances.length, data.package1Import.performances);
+  const updatedTeams = new Set(package1.performances.map(row => row.canonicalTeamId));
+  for (const team of data.teams) {
+    const previous = frozen.teams.find(item => item.id === team.id);
+    if (!updatedTeams.has(team.id)) {
+      assert.deepEqual(team, previous, `${team.id}: untouched team changed`);
+      assert.deepEqual(data.teamSnapshots[team.id], frozen.teamSnapshots[team.id]);
+      continue;
+    }
+    assert.deepEqual(team.coverage, previous.coverage, `${team.id}: collective coverage changed during individual import`);
+    assert.equal(data.teamSnapshots[team.id].asOf, individualAsOf);
+    const rows = package1.performances.filter(row => row.canonicalTeamId === team.id);
+    const latestRetrieval = rows.map(row => row.evidenceRetrievedAt).sort().at(-1);
+    assert.equal(data.teamSnapshots[team.id].retrievedAt, latestRetrieval);
+    for (const row of rows) {
+      assert(row.date <= individualAsOf, `${row.auditKey}: event later than individual cutoff`);
+      assert.equal(row.minutesObserved, null);
+      assert.equal(row.minutesStatus, "estimated");
+      const rawPath = path.join(root, `data/raw/champions-pilot/espn/summaries/2026-27/${row.league}/${individualAsOf}/${row.event_id}.json.gz`);
+      const raw = JSON.parse(require("zlib").gunzipSync(fs.readFileSync(rawPath)));
+      assert.equal(raw.retrievedAt, row.evidenceRetrievedAt);
+      assert.equal(raw.eventDate, row.date);
+      assert.equal(raw.asOf, individualAsOf);
+      assert.equal(String(raw.eventId), row.event_id);
+    }
+  }
+}
 const protectedSeven = ["aek-athens", "arsenal", "inter", "bayern-munchen", "real-madrid", "paris-saint-germain", "bodo-glimt"];
 assert.ok(protectedSeven.every(id => data.teams.some(team => team.id === id)), "AEK più il batch di sei squadre devono restare presenti");
 assert.equal(data.teams.length, 36, "il dataset consolidato deve contenere le 36 squadre");
@@ -51,21 +86,20 @@ const aek = data.teams.find(team => team.id === "aek-athens");
 assert.ok(aek, "AEK deve essere preservata nel merge");
 assert.equal(aek.id, "aek-athens");
 assert.equal(aek.espnTeamId, "887");
-assert.equal(data.teamSnapshots["aek-athens"].asOf, "2026-10-03");
-assert.equal(crypto.createHash("sha256").update(JSON.stringify(aek)).digest("hex"), "f2f3deb29a908c2637510dbfecf2d754ff2ebe1086ef16bae0da1d545ef9d308", "snapshot AEK modificato");
+const frozenAek = frozen.teams.find(team => team.id === "aek-athens");
+assert.equal(frozen.teamSnapshots["aek-athens"].asOf, "2026-10-03");
+assert.equal(crypto.createHash("sha256").update(JSON.stringify(frozenAek)).digest("hex"), "f2f3deb29a908c2637510dbfecf2d754ff2ebe1086ef16bae0da1d545ef9d308", "snapshot AEK congelato modificato");
 assert(!source.matches.some(match => match.season === "2026-27" && match.date > "2026-10-03" && (match.home?.providerTeamId === "887" || match.away?.providerTeamId === "887")), "future leakage nei match AEK");
 
-const espn = builder.collectEspnRows({ season: "2026-27", asOf: "2026-10-03" });
+const espn = builder.collectEspnRows({ season: "2026-27", asOf: individualAsOf });
 for (const player of aek.players.filter(item => item.currentSeason)) {
   const rows = espn.matchesByAthlete.get(player.providerPlayerId) || [];
   for (const entry of player.currentSeason.entries) {
-    const matching = rows.filter(row => row.league === (Object.entries({
-      "Super League Greece": "gre.1",
-      "UEFA Champions League": "uefa.champions",
-      "UEFA Europa League": "uefa.europa",
-      "UEFA Conference League": "uefa.europa.conf",
-      "Qualificazioni UEFA Conference League": "uefa.europa.conf_qual"
-    }).find(([label]) => label === entry.competition)?.[1] || entry.competition));
+    // Compare the actual entry sample, not every raw event acquired since a snapshot.
+    const ids = new Set((entry.matches || []).map(match => String(match.matchId)));
+    const matching = rows.filter(row => ids.has(row.matchId));
+    assert.equal(new Set(matching.map(row => row.matchId)).size, ids.size, `${player.name}: raw sample incomplete`);
+    assert((entry.matches || []).every(match => match.date <= (entry.asOf || player.currentSeason.asOf || individualAsOf)));
     const sum = field => {
       const values = matching.map(row => row.stats[field]).filter(Number.isFinite);
       return values.length ? values.reduce((total, value) => total + value, 0) : null;
@@ -82,4 +116,4 @@ assert.equal(builder.normalize("Barnabás Varga"), builder.normalize("Barnabas V
 assert.equal(builder.normalize("Mijat Gaćinović"), builder.normalize("Mijat Gacinovic"));
 assert.equal(new Set(aek.players.map(player => builder.normalize(player.name))).size, aek.players.length, "duplicati nominali nella rosa AEK");
 
-console.log(`Test Champions current-season OK: 36 squadre as-of ${asOf}, AEK invariata a 2026-10-03 con ${aek.coverage.matches} gare`);
+console.log(`Test Champions current-season OK: team input ${asOf}; individual cutoff ${individualAsOf}; raw retrieval verified independently; frozen AEK 2026-10-03 preserved`);
