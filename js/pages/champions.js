@@ -415,6 +415,15 @@ export function createPage(deps){
     return `<details class="champions-strength-panel champions-history-panel"><summary><span><small>${history.summary.historicalMatches} risultati ufficiali</small><strong>Rendimento europeo 2023/24–2025/26</strong></span><span>${history.summary.sufficient} campioni sufficienti · ${history.summary.limited} limitati · ${history.summary.unavailable} N/D</span></summary><div class="champions-strength-intro"><p>Champions, Europa e Conference sui 90 minuti. Pesi provvisori: UCL 1,00 · UEL 0,78 · UECL 0,62. Casa, trasferta, ultime dieci e avversari restano indicatori descrittivi, non probabilità.</p><span class="champions-source-links">${sourceLinks}</span></div><div class="champions-strength-table-wrap"><table class="champions-strength-table champions-history-table"><thead><tr><th>Squadra</th><th>P/G</th><th>P/G pond.</th><th>Casa</th><th>Trasf.</th><th>Ultime 10</th><th>Avversari</th><th>Progressione</th><th>Campione</th></tr></thead><tbody>${rows}</tbody></table></div></details>`;
   }
 
+  async function appendSharedSchedina(matchday,fixtureId,host){
+    if(!host||typeof host.insertAdjacentHTML!=="function")return;
+    const [{loadChampionsWorkspace},{createPage:createBettingPage}]=await Promise.all([import('./champions-workspace-catalog.mjs?v=20261019-shared-schedine-v1'),import('./betting.js?v=20261019-shared-schedine-v1')]);
+    const workspace=await loadChampionsWorkspace(load,matchday);
+    const controller=createBettingPage({...deps,dateOnly:deps.dateOnly||(value=>String(value||"").slice(0,10))});
+    host.insertAdjacentHTML('beforeend',controller.championsWorkspaceMarkup(workspace,fixtureId));
+    controller.mountChampionsWorkspace(workspace);
+  }
+
   async function render(){
     const requestedMatchId=new URLSearchParams(location.search).get("match");
     const requestedTeamId=new URLSearchParams(location.search).get("team");
@@ -426,7 +435,7 @@ export function createPage(deps){
     const motivationByFixture=new Map(motivation.fixtures.map(fixture=>[fixture.matchId,fixture]));
     const requestedCalendarFixture=requestedMatchId?data.fixtures.find(fixture=>fixture.id===requestedMatchId):null;
     if(requestedCalendarFixture?.matchday===3&&requestedCalendarFixture.refereeAssignment?.status==='assigned'){
-      const [profiles,{md3RefereeMarkup},catalog,{md3ForecastMarkup,md3CatalogMarkup},{mountChampionsMarketUi},probables,{md3ProbableMarkup}]=await Promise.all([load('champions-referee-profiles-md03-2026-27.json'),import('./reading-detail/champions-md3-referees.mjs?v=20261019-md3-referees-v1'),load('champions-md03-preliminary-2026-27.json'),import('./champions-md3-ui.mjs?v=20261019-md3-probable-v1'),import('./champions-market-ui.mjs?v=20261019-md3-preliminary-v1'),load('champions-md03-probable-individuals-2026-27.json'),import('./champions-md3-probable.mjs?v=20261019-probable-v1')]);
+      const [profiles,{md3RefereeMarkup},catalog,{md3ForecastMarkup},probables,{md3ProbableMarkup}]=await Promise.all([load('champions-referee-profiles-md03-2026-27.json'),import('./reading-detail/champions-md3-referees.mjs?v=20261019-md3-referees-v1'),load('champions-md03-preliminary-2026-27.json'),import('./champions-md3-ui.mjs?v=20261019-md3-callups-v3'),load('champions-md03-probable-individuals-2026-27.json'),import('./champions-md3-probable.mjs?v=20261019-callups-v3')]);
       const profile=profiles.referees.find(p=>p.refereeId===requestedCalendarFixture.refereeAssignment.refereeId);
       document.body.dataset.readingDetailTheme='champions';
       document.querySelector('#app').innerHTML=md3RefereeMarkup(requestedCalendarFixture,profile,branding);
@@ -434,10 +443,10 @@ export function createPage(deps){
       const discipline=document.querySelector('#lettura-disciplina');
       discipline.querySelector('.rd-section-number').textContent='02';
       discipline.insertAdjacentHTML('beforebegin',md3ForecastMarkup(fixture));
-      discipline.insertAdjacentHTML('afterend',`<section class="rd-section"><header class="rd-section-heading"><span class="rd-section-number">03</span><h2>Mercati collettivi</h2></header><div class="rd-section-content">${md3CatalogMarkup(fixture)}</div></section>`);
+
       const probableFixture=probables.fixtures.find(f=>f.fixtureId===fixture.fixtureId);
+      await appendSharedSchedina(3,requestedMatchId,discipline.parentElement);
       document.querySelector('#lettura-disciplina').parentElement.insertAdjacentHTML('beforeend',md3ProbableMarkup(probableFixture));
-      mountChampionsMarketUi(fixture);
       return;
     }
     const [md2Pilot,md2Integration,md2Schedina,md2RefereeHistory]=requestedCalendarFixture?.matchday===2?await Promise.all([load("champions-pilot-predictions-md02-2026-27.json"),load("champions-md02-integration-2026-27.json"),load("schedina-champions-md02.json"),load("champions-referee-history-2026-10-13.json")]):[null,null,null,null];
@@ -462,19 +471,15 @@ export function createPage(deps){
         }catch(error){delete document.body.dataset.readingDetailTheme;console.warn('Lettura: vista precedente mantenuta.',error)}
       }
       const release=document.querySelector('script[src*="js/app.js"]')?.src.match(/[?&]v=([^&]+)/)?.[1]||"dev";
-      const marketUi=md2MarketEntry?await import(`./champions-market-ui.mjs?v=${encodeURIComponent(release)}`):null;
-      document.querySelector("#app").innerHTML=pilotReadingDetail(requestedFixture,activePilot,backtest,squads,branding,h2h,motivationByFixture.get(requestedMatchId),styleProfiles,attackByTeam,surpriseByFixture.get(requestedMatchId),md2MarketEntry?null:playerMarkets.fixtures.find(item=>item.fixtureId===requestedMatchId),md2MarketEntry?null:playerMarkets,md2MarketEntry,md2SchedinaFixture);
-      let personalReadingStore=null;
-      if(md2MarketEntry){
 
-        const {mountChampionsMarketUi}=marketUi;
-        personalReadingStore=mountChampionsMarketUi(md2MarketEntry,{publishedSelections:md2SchedinaFixture?.selections||[]})?.store||null;
-      }
-      if(finishReading){try{await finishReading(personalReadingStore)}catch(error){delete document.body.dataset.readingDetailTheme;console.warn('Lettura: vista precedente mantenuta.',error)}}
+      document.querySelector("#app").innerHTML=pilotReadingDetail(requestedFixture,activePilot,backtest,squads,branding,h2h,motivationByFixture.get(requestedMatchId),styleProfiles,attackByTeam,surpriseByFixture.get(requestedMatchId),md2MarketEntry?null:playerMarkets.fixtures.find(item=>item.fixtureId===requestedMatchId),md2MarketEntry?null:playerMarkets,md2MarketEntry,md2SchedinaFixture);
+      if(finishReading){try{await finishReading(null)}catch(error){delete document.body.dataset.readingDetailTheme;console.warn('Lettura: vista precedente mantenuta.',error)}}
+      await appendSharedSchedina(requestedCalendarFixture.matchday,requestedMatchId,document.querySelector('.rd-shell')||document.querySelector('#app'));
       return;
     }
     if(requestedCalendarFixture&&motivationByFixture.has(requestedMatchId)){
       document.querySelector("#app").innerHTML=motivationOnlyDetail(requestedCalendarFixture,motivationByFixture.get(requestedMatchId),branding,squads);
+      await appendSharedSchedina(requestedCalendarFixture.matchday,requestedMatchId,document.querySelector("#app"));
       return;
     }
     const requestedTeam=requestedTeamId?squads.teams.find(team=>team.id===requestedTeamId):null;

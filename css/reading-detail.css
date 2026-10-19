@@ -435,3 +435,6 @@ body[data-reading-detail-theme="champions"] .rf-dashboard{--rf-blue:#9ac5ee;--rf
  .rd-forecasts .rd-compact-forecast-table :is(th,td):last-child{width:40px}
  .rd-forecasts .rd-compact-forecast-table .rd-forecast-name{font-size:12px}
 }
+
+/* MD3 operative decimals and bench labels need a full team column on phones. */
+@media(max-width:600px){.rd-shell #lettura-probabili .rd-player-columns{grid-template-columns:minmax(0,1fr)}.rd-shell #lettura-probabili .rd-player-row>summary{grid-template-columns:17px minmax(0,1fr) 36px 36px 9px;gap:6px}.rd-shell #lettura-probabili .rd-player-column-labels{grid-template-columns:minmax(0,1fr) 36px 36px;gap:6px;padding-right:15px}}

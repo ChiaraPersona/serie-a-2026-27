@@ -1,0 +1,41 @@
+{
+  "browserRuns": [
+    {
+      "command": "node scripts/check-champions-md3-callups-browser.cjs",
+      "result": "PASS",
+      "pages": 57,
+      "widths": [
+        1440,
+        390,
+        320
+      ],
+      "checks": [
+        "frozen collective values",
+        "18 referees",
+        "434 probable roles per fixture",
+        "exact operative values",
+        "numeric text not overlapping",
+        "no local data HTTP errors",
+        "manual catalog/persistence"
+      ]
+    },
+    {
+      "command": "node scripts/check-champions-md3-callups-browser.cjs --320-only",
+      "result": "PASS",
+      "pages": 19,
+      "widths": [
+        320
+      ],
+      "checks": [
+        "final identity/role labels",
+        "exact individual data",
+        "responsive layout"
+      ]
+    }
+  ],
+  "cardInvestigation": {
+    "url": "http://127.0.0.1:8766/schedina.html",
+    "result": "Already visible before edits at 1440/390/320 px; no JavaScript or HTTP failures; user cancelled further investigation.",
+    "rendererChanged": false
+  }
+}
