@@ -31,7 +31,7 @@ const server=http.createServer((req,res)=>{const file=path.resolve(root,'.'+deco
   const direct=await page.locator('a[href*="match="]').evaluateAll(nodes=>nodes.find(a=>/lettura.html|champions-league.html/.test(a.href))?.href);
   if(direct)await page.goto(direct);
   else{
-   const directory=page.locator('.site-nav a[href$="lettura.html"]').first();if(!await directory.isVisible())await page.locator('.menu-button').click();await directory.click();await page.waitForSelector('.reading-fixture[href*="match="]:visible');await page.locator('.reading-fixture[href*="match="]:visible').first().click();
+   const directory=page.locator('.site-nav a[href$="lettura.html"]').first();if(!await directory.isVisible())await page.locator('.menu-button').click();await directory.click();await page.waitForSelector('.ri-match[href*="match="]:visible,.reading-fixture[href*="match="]:visible');await page.locator('.ri-match[href*="match="]:visible,.reading-fixture[href*="match="]:visible').first().click();
   }
   await page.waitForSelector('.rd-shell');console.log('Navigation OK',route,direct?'direct':'via indice Letture');
  }
