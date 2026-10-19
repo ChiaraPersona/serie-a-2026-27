@@ -10,10 +10,11 @@ const finite=value=>value!=null&&Number.isFinite(value);
 export async function loadChampionsWorkspace(load,matchday){
   const calendar=await load('champions-league-2026-27.json');
   const fixtures=calendar.fixtures.filter(f=>f.matchday===matchday).map(f=>({...f,readingUrl:`champions-league.html?match=${f.id}`}));
-  let source,all=[];
+  let source,all=[],teamForecasts=null;
   if(matchday===3){
     const [catalog,approved,individuals]=await Promise.all([load('champions-md03-preliminary-2026-27.json'),load('schedina-champions-md03.json'),load('champions-md03-probable-individuals-2026-27.json')]);
     source=approved;
+    teamForecasts=new Map(catalog.fixtures.map(f=>[f.fixtureId,f.forecast]));
     const approvedById=new Map(approved.slips.flatMap(s=>s.legs).map(leg=>[leg.selectionId,leg]));
     for(const fixture of catalog.fixtures)for(const market of fixture.oddsEvent.playerMarkets)for(const selection of market.selections){
       if(!selection.interfaceSelectable||selection.status!=='open'||market.status!=='open')continue;
@@ -55,5 +56,5 @@ export async function loadChampionsWorkspace(load,matchday){
   }else throw new Error('Giornata Champions non supportata');
   const matches=fixtures.map(f=>({matchId:f.id,selections:all.filter(leg=>leg.matchId===f.id)}));
   if(all.some(leg=>!fixtures.some(f=>f.id===leg.matchId)))throw new Error('Fixture Champions estranea alla giornata');
-  return {championsWorkspace:true,matchday,season:source.season,source,fixtures,all,slips:[],oddsRetrievedAt:source.oddsRetrievedAt||all[0]?.betSelection?.quote?.verifiedAt,marketCatalog:{matches}};
+  return {championsWorkspace:true,matchday,teamForecasts,season:source.season,source,fixtures,all,slips:[],oddsRetrievedAt:source.oddsRetrievedAt||all[0]?.betSelection?.quote?.verifiedAt,marketCatalog:{matches}};
 }
