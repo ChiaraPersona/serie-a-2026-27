@@ -72,7 +72,7 @@ async function build(){
   // Same independent-Poisson expression as build-champions-player-markets.candidateLegs.
   const btts=Number.isFinite(xg?.home)&&Number.isFinite(xg?.away)?(1-Math.exp(-xg.home))*(1-Math.exp(-xg.away)):null;
   const excluded=integration.summary.excluded.filter(p=>p.matchId===f.id);
-  return {...original,selections:original.selections.concat(evaluated),suggestions:original.suggestions.concat(selection.accepted.map(l=>l.selectionId)),
+  return {matchId:f.id,selections:evaluated,suggestions:selection.accepted.map(l=>l.selectionId),originalPublished:original.suggestions.length,
    forecastCoverage:{distributions,generatedIndividualMarkets:distributions.reduce((n,p)=>n+(p.shots?.length||0)+(p.sot?.length||0),0),
     teamProjections:forecast.teamProjections,matchProjection:forecast.matchProjection,cards:forecast.cards,
     result:forecast.probabilities,doubleChance:{'1X':forecast.probabilities.home+forecast.probabilities.draw,'X2':forecast.probabilities.draw+forecast.probabilities.away},
@@ -90,7 +90,7 @@ async function build(){
  const report=calendar.fixtures.filter(f=>eligible(f,now)).map(f=>{
   const m=output.matches.find(m=>m.matchId===f.id),c=m?.forecastCoverage;
   return {fixtureId:f.id,matchday:f.matchday,match:`${f.homeTeam} - ${f.awayTeam}`,probableLineups:c?'22/22':'non disponibili',individualMarkets:c?.generatedIndividualMarkets||0,
-   published:m?.selections.filter(l=>l.suggestionAnalysis?.suggested).length||0,publishedIndividual:m?.selections.filter(l=>l.marketScope==='player'&&l.suggestionAnalysis?.suggested).length||0,missing:c?.missing||['Probabili formazioni non presenti per questa giornata']};
+   published:m?(m.originalPublished+m.selections.filter(l=>l.suggestionAnalysis?.suggested).length):0,publishedIndividual:m?.selections.filter(l=>l.marketScope==='player'&&l.suggestionAnalysis?.suggested).length||0,missing:c?.missing||['Probabili formazioni non presenti per questa giornata']};
  });
  fs.mkdirSync('output/champions-upcoming-forecasts',{recursive:true});
  fs.writeFileSync('output/champions-upcoming-forecasts/coverage.json',JSON.stringify(report,null,2)+'\n');

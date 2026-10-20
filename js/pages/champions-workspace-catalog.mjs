@@ -142,7 +142,9 @@ export async function loadChampionsWorkspaceMd3Derived(load,matchday,{upcoming=t
     for(const match of publication.matches){
       const index=matches.findIndex(m=>m.matchId===match.matchId);
       if(index<0)throw Error('Fixture estranea al catalogo probabili Champions');
-      matches[index]=match;
+      const previous=matches[index],ids=new Set(previous.selections.map(l=>l.selectionId));
+      if(match.selections.some(l=>ids.has(l.selectionId)))throw Error('Previsione individuale Champions duplicata');
+      matches[index]={...previous,selections:previous.selections.concat(match.selections),suggestions:previous.suggestions.concat(match.suggestions),forecastCoverage:match.forecastCoverage};
     }
   }
   const all=matches.flatMap(match=>match.selections);

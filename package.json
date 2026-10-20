@@ -2,6 +2,8 @@
   "name": "serie-a-2026-27",
   "private": true,
   "scripts": {
+    "build:champions:upcoming": "node scripts/build-champions-upcoming-forecasts.cjs && node scripts/build-site.js --presentation-only --md3-pages-only",
+    "test:champions:upcoming": "node --no-warnings scripts/test-champions-upcoming-forecasts.mjs",
     "build:champions-referees:phase2a": "node scripts/build-champions-referee-phase-2a.js",
     "test:champions-referees:phase2a": "node scripts/test-champions-referee-phase-2a.js",
     "import:champions-referees": "node scripts/import-champions-referee-history.js --as-of 2026-10-13",
