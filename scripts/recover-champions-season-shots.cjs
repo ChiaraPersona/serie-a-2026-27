@@ -9,15 +9,16 @@ const dataset=read(path.join(root,'data/normalized/champions-player-stats-2026-2
 const config=read(path.join(root,'data/sources/champions-pilot-match-stats-2025-27.json'));
 const save=(p,d)=>{fs.mkdirSync(path.dirname(p),{recursive:true});fs.writeFileSync(p,JSON.stringify(d,null,2)+'\n');};
 const failures=[];
-function official(league){return !!league&&!/friendly|emirates|champs_cup|testimonial|allstar/i.test(league);}
+function official(league){return !!league&&!/friendly|emirates|champs_cup|joan_gamper|testimonial|allstar/i.test(league);}
+function officialClub(league){return official(league)&&! /^(fifa\.(world|worldq|confederations|olympics|u\d)|uefa\.(euro$|euroq|nations|u\d)|concacaf\.|conmebol\.|caf\.|afc\.(asian|u\d)|ofc\.|international)/.test(league);}
 function inScope(date,league){const from=league?.startsWith('nor.')?'2026-01-01':'2026-07-01';return date&&date>=from&&date<='2026-10-20';}
-async function request(url,key){
+async function request(url,key,{allow404=false}={}){
  const file=path.join(rawRoot,key+'.json.gz');
  if(fs.existsSync(file))return JSON.parse(zlib.gunzipSync(fs.readFileSync(file)));
  let error;
  for(let attempt=0;attempt<3;attempt++)try{
    const response=await fetch(url,{signal:AbortSignal.timeout(25000),headers:{accept:'application/json'}});
-   if(!response.ok)throw Error('HTTP '+response.status);
+   if(!response.ok&&!(allow404&&response.status===404))throw Error('HTTP '+response.status);
    const raw={url,retrievedAt:new Date().toISOString(),status:response.status,payload:await response.json()};
    fs.mkdirSync(path.dirname(file),{recursive:true});fs.writeFileSync(file,zlib.gzipSync(JSON.stringify(raw)));return raw;
  }catch(e){error=e;}
@@ -46,4 +47,4 @@ async function main(){
  console.log(JSON.stringify({events:jobs.size,failures:failures.length,players:dataset.teams.reduce((s,t)=>s+t.players.length,0)}));
 }
 if(require.main===module)main().catch(e=>{console.error(e);process.exitCode=1;});
-module.exports={official,inScope,rawRoot,analysis,request,parallel};
+module.exports={official,officialClub,inScope,rawRoot,analysis,request,parallel};
