@@ -6,6 +6,9 @@ const {canonicalTeam,TEAM_ONLY,projectDocumentedTeam}=require('./champions/curre
 const {scaleShotProjections}=require('./champions/player-volume-utils');
 const {derivePredictedBench,projectMd3Team,allocateMinuteBudget,starterThresholds}=require('./champions/md3-lineup-policy');
 const root=path.resolve(__dirname,'..'),read=p=>JSON.parse(fs.readFileSync(path.join(root,p),'utf8'));
+const outputIndex=process.argv.indexOf('--output-file');
+const outputFile=outputIndex<0?'data/normalized/champions-md03-probable-individuals-2026-27.json':process.argv[outputIndex+1];
+if(outputIndex>=0&&(!outputFile||path.isAbsolute(outputFile)||outputFile.includes('..')||!/^data\/derived\/champions-md03\/[a-z0-9-]+\.json$/.test(outputFile)))throw Error('Versioned MD3 output required under data/derived/champions-md03/');
 const sourcePath='data/sources/champions-probable-formations-md03-2026-27.json';
 const source=read(sourcePath),preview=read('data/analysis/champions/md3-offline-engine-2026-10-19/preview-md03.json');
 const current=read('data/normalized/champions-player-stats-2026-27.json'),registered=read('data/normalized/champions-registered-squads-2026-27.json');
@@ -91,5 +94,7 @@ const fixtures=preview.fixtures.map(f=>{
 });
 const players=fixtures.flatMap(f=>f.teams.flatMap(t=>t.players));
 const output={schemaVersion:1,competition:'champions',season:'2026-27',matchday:3,status:'probable',source:{...source.source,path:sourcePath,sha256:crypto.createHash('sha256').update(fs.readFileSync(path.join(root,sourcePath))).digest('hex')},policy:{collectiveForecast:'frozen-unchanged',individuals:'probable-XI-with-match-callups-or-full-squad-fallback-and-existing-team-reconciliation-gate',probableIsNotOfficial:true,expectedMinutes:POLICY,benchInvented:false,currentEstimatedMinutesUsedInPrimary:false},summary:{fixtures:18,teams:36,probableStarters:players.filter(p=>p.projectedRole==='starter').length,predictedBench:players.filter(p=>p.projectedRole==='bench').length,teamsWithDocumentedCallups:fixtures.flatMap(f=>f.teams).filter(t=>t.callupDocumentation.documented).length,operationalPlayers:players.filter(p=>p.projectedShots!==null).length,nonOperationalPlayers:players.filter(p=>p.projectedShots===null).length,resolvedStarters:players.filter(p=>p.projectedRole==='starter'&&p.playerId&&p.registeredPlayerId).length,resolvedBench:players.filter(p=>p.projectedRole==='bench'&&p.playerId&&p.registeredPlayerId).length,unresolvedStarters:players.filter(p=>p.projectedRole==='starter'&&(!p.playerId||!p.registeredPlayerId)).length,unresolvedBench:players.filter(p=>p.projectedRole==='bench'&&(!p.playerId||!p.registeredPlayerId)).length,minuteEstimates:players.filter(p=>Number.isFinite(p.expectedMinutes)).length,generatedForecasts:players.filter(p=>p.projectedShots!==null).length,doubtfulStarters:players.filter(p=>p.availability==='doubtful').length,collectiveOnlyStarters:players.filter(p=>p.blockers.includes('COLLECTIVE_ONLY_TEAM')).length,blockedStarters:players.filter(p=>p.projectedRole==='starter'&&p.projectedShots===null).length},fixtures};
-fs.writeFileSync(path.join(root,'data/normalized/champions-md03-probable-individuals-2026-27.json'),JSON.stringify(output,null,2)+'\n');
+fs.mkdirSync(path.dirname(path.join(root,outputFile)),{recursive:true});
+if(outputIndex>=0&&fs.existsSync(path.join(root,outputFile)))throw Error('Versioned MD3 output already exists');
+fs.writeFileSync(path.join(root,outputFile),JSON.stringify(output,null,2)+'\n');
 console.log(JSON.stringify(output.summary));
