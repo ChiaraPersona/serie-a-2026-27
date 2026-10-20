@@ -22,6 +22,8 @@ const server=http.createServer((req,res)=>{
       const panels=page.locator(`[data-champions-workspace="${day}"] [data-match-panel]`);
       assert.equal(await panels.count(),18,`giornata ${day}`);
       assert.equal(await page.locator('.betting-team-forecast').count(),0);
+      assert.equal(await page.getByText('MyCombo · N/D — Nessuna combinazione approvata.').count(),0);
+      assert.equal(await page.locator('[data-champions-combo-status]').count(),0);
       for(let i=0;i<Math.min(await panels.count(),2);i++){
         const panel=panels.nth(i);
         await panel.locator(':scope > summary').click();
