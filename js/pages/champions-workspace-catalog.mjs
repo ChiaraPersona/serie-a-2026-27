@@ -1,9 +1,9 @@
 import {createChampionsSelection} from './champions-market-ui.mjs';
-import {md3IndividualMarkets} from './champions-md3-individual-markets.mjs';
+import {md3IndividualMarkets,md3IndividualCandidates} from './champions-md3-individual-markets.mjs';
 import {championsAuditDisplay} from './champions-audit-display.mjs';
 import {hasVerifiedPlayableQuote} from './shared-forecast-contract.mjs';
 
-const familyLabels={result:'Risultato', 'double-chance':'Doppia chance',goals:'Gol',corners:'Corner',shots:'Tiri'};
+const familyLabels={result:'Risultato', 'double-chance':'Doppia chance',goals:'Gol',corners:'Corner',shots:'Tiri','team-shots':'Tiri squadra','team-sot':'SOT squadra','team-corners':'Corner squadra'};
 const finite=value=>value!=null&&Number.isFinite(value);
 
 // Presentation adapter only: the archived contracts and frozen probabilities are never rebuilt.
@@ -24,8 +24,9 @@ export async function loadChampionsWorkspace(load,matchday){
       leg.marketFamily=familyLabels[market.family]||market.family;
       leg.approvedPreliminary=approvedById.has(leg.selectionId);
       leg.catalogOrigin='champions-frozen-md03';
-      leg.suggestionAnalysis={suggested:finite(p),rank:leg.approvedPreliminary?0:1,family:market.family};
+      leg.suggestionAnalysis={suggested:leg.approvedPreliminary,rank:leg.approvedPreliminary?0:1,family:market.family};
       leg.betSelection.market.family=leg.marketFamily;
+      if(market.subject)leg.betSelection.market.subject=market.subject;
       leg.betSelection.evaluation={status:finite(p)?'FROZEN_FORECAST':'NOT_MODELLED',modelProbabilityPct:p??null,fairOdds:finite(selection.modelProbability)&&selection.modelProbability>0?1/selection.modelProbability:null,expectedValuePct:finite(ev)?ev*100:null};
       leg.betSelection.operational.classification=leg.approvedPreliminary?'PRINCIPALE':'WATCH';
       leg.settlement=approvedById.get(leg.selectionId)?.settlement;
@@ -37,7 +38,8 @@ export async function loadChampionsWorkspace(load,matchday){
     }
     // Match a forecast to a Sisal contract only with exact verified player ID,
     // compatible market semantics and a unique provider selection.
-    const individualForecasts=md3IndividualMarkets(individuals).map(forecast=>{
+    const shortlisted=new Map(md3IndividualMarkets(individuals).map(leg=>[leg.selectionId,leg]));
+    const individualForecasts=md3IndividualCandidates(individuals).map(candidate=>shortlisted.get(candidate.selectionId)||candidate).map(forecast=>{
       const matches=all.filter(leg=>{
         const bet=leg.betSelection,market=bet?.market||{},identity=bet?.identity||{};
         const playerIds=identity.canonicalPlayerIds||[];
