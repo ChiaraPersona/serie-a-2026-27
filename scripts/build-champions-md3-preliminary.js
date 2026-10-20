@@ -1,5 +1,5 @@
 "use strict";
-// Serialization and exact provider joins only. No prediction/Poisson builder imports.
+// Serialize frozen forecasts and evaluate current selection requirements only.
 const fs=require('fs'),path=require('path'),crypto=require('crypto'),assert=require('assert/strict');
 const root=path.resolve(__dirname,'..'),read=p=>JSON.parse(fs.readFileSync(path.join(root,p),'utf8'));
 const previewPath='data/analysis/champions/md3-offline-engine-2026-10-19/preview-md03.json';
@@ -62,6 +62,32 @@ assert.equal(fixtures.length,18);
 const all=fixtures.flatMap(f=>f.oddsEvent.playerMarkets.flatMap(m=>m.selections));
 assert.equal(new Set(all.map(s=>s.selectionId)).size,all.length);
 const output={schemaVersion:1,competition:'champions',season:'2026-27',matchday:3,status:'PRELIMINARY_NOT_FINAL',forecastInput:{path:previewPath,sha256:hash(previewPath)},oddsInput:{path:'data/normalized/odds/sisal/champions-league.json',sha256:hash('data/normalized/odds/sisal/champions-league.json')},summary:{fixtures:18,markets:fixtures.reduce((n,f)=>n+f.oddsEvent.playerMarkets.length,0),selections:all.length,preliminaryProposals:all.filter(s=>s.preliminaryProposal).length},fixtures,excludedContracts:exclusions};
-fs.writeFileSync(path.join(outputDir,'champions-md03-preliminary-2026-27.json'),JSON.stringify(output,null,2)+'\n');
+async function completeSelectionRequirements(){
+ const {loadChampionsWorkspace}=await import('../js/pages/champions-workspace-catalog.mjs');
+ const {evaluateRequirements,selectRequirements}=require('./champions/md3-selection-requirements.cjs');
+ const individuals=read('data/normalized/champions-md03-probable-individuals-2026-27.json');
+ const evidence={preview,pilot:read('data/normalized/champions-pilot-volume-backtest.json'),calibration:read('data/analysis/champions/model-calibration-audit-2026-10-11.json')};
+ const workspace=await loadChampionsWorkspace(async name=>{
+  if(name==='champions-md03-preliminary-2026-27.json')return output;
+  const value=read('data/normalized/'+name);
+  if(name==='schedina-champions-md03.json'){const {marketCatalog,...archive}=value;return archive;}
+  return value;
+ },3);
+ for(const fixture of fixtures){
+  const evaluated=selectRequirements(evaluateRequirements(workspace.all.filter(l=>l.matchId===fixture.fixtureId),fixture,individuals.fixtures.find(f=>f.fixtureId===fixture.fixtureId),evidence));
+  const byId=new Map(evaluated.map(l=>[l.selectionId,l]));
+  const requirements=leg=>({quoteEvidence:{decimal:leg.betSelection.quote.decimal,verifiedAt:leg.betSelection.quote.verifiedAt,providerSelectionId:leg.betSelection.identity.providerSelectionId||null},evaluation:leg.betSelection.evaluation,reliability:leg.betSelection.operational.reliability,scenarioAnalysis:leg.scenarioAnalysis,suggestionAnalysis:leg.suggestionAnalysis,selectionStatus:leg.selectionStatus,qualifiedSelection:!!leg.qualifiedSelection});
+  for(const market of fixture.oddsEvent.playerMarkets)for(const selection of market.selections){const leg=byId.get(selection.selectionId);if(leg)selection.selectionRequirements=requirements(leg);}
+  fixture.individualForecasts=evaluated.filter(l=>l.catalogOrigin==='champions-md03-individual-model').map(l=>({selectionId:l.selectionId,selectionRequirements:requirements(l)}));
+ }
+ output.selectionPolicy={version:1,selector:'md06-suggested-forecasts.selectMatchSuggestions',approvedImmutable:true,automaticApproval:false,oddsSnapshotAt:odds.retrievedAt,statisticalValidation:'NOT_VALIDATED_FOR_FROZEN_MD3_MODEL'};
+ // Keep the existing catalog layout; compact the per-selection analytical
+ // contracts to avoid hundreds of thousands of formatting-only lines.
+ const contracts=[];
+ const serialized=JSON.stringify(output,(key,value)=>key==='selectionRequirements'?(contracts.push(JSON.stringify(value)),`__CL3_REQUIREMENTS_${contracts.length-1}__`):value,2)
+  .replace(/"__CL3_REQUIREMENTS_(\d+)__"/g,(_,index)=>contracts[Number(index)]);
+ fs.writeFileSync(path.join(outputDir,'champions-md03-preliminary-2026-27.json'),serialized+'\n');
+}
+completeSelectionRequirements().catch(error=>{console.error(error);process.exitCode=1;});
 fs.writeFileSync(path.join(outputDir,'schedina-champions-md03-draft.json'),JSON.stringify({schemaVersion:1,competition:'champions',season:'2026-27',matchday:3,status:'DRAFT_NOT_PUBLISHED',catalog:'champions-md03-preliminary-2026-27.json',summary:output.summary,slips:[],publishedSelections:[]},null,2)+'\n');
 console.log(JSON.stringify(output.summary));

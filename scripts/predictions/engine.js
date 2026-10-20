@@ -1,6 +1,7 @@
 "use strict";
 const { normalizePlayerName } = require("../player-identity");
 const { attachBetSelection, selectionIdFor } = require("../betting-selection-contract");
+const { rankShooterCandidates } = require('./rank-shooter-candidates');
 
 const ENGINE_VERSION = "4.13.0";
 const PLAYER_MARKET_MODEL_VERSION = 2;
@@ -1123,10 +1124,7 @@ function shooterCandidates(homeTeam, awayTeam, homeSquad, awaySquad, teamProject
     }
     rows.push(...teamRows);
   }
-  const ranked = (key, marketKey) => [...rows]
-    .sort((left, right) => right[key] - left[key] || left.name.localeCompare(right.name, "it"))
-    .slice(0, 5)
-    .map((row, index) => ({ ...row, rank: index + 1, marketKey }));
+  const ranked = (key, marketKey) => rankShooterCandidates(rows, key, marketKey);
   return {
     totalShots: ranked("projectedShots", "shotsOver05"),
     shotsOnTarget: ranked("projectedShotsOnTarget", "shotsOnTargetOver05"),

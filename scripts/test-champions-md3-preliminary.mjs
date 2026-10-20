@@ -10,7 +10,7 @@ const draft=read('data/normalized/schedina-champions-md03-draft.json');
 assert.equal(catalog.fixtures.length,18);assert.equal(draft.status,'DRAFT_NOT_PUBLISHED');assert.deepEqual(draft.slips,[]);
 const contracts=[];
 for(const f of catalog.fixtures){
- const original=preview.fixtures.find(p=>p.fixtureId===f.fixtureId);assert.deepEqual(f.forecast,original.collective);assert.equal(f.individualForecasts,null);assert.equal(f.lineups,null);
+ const original=preview.fixtures.find(p=>p.fixtureId===f.fixtureId);assert.deepEqual(f.forecast,original.collective);assert(Array.isArray(f.individualForecasts));assert(f.individualForecasts.every(row=>row.selectionId&&row.selectionRequirements&&!Object.hasOwn(row,'modelProbability')));assert.equal(f.lineups,null);
  const event=odds.events.find(e=>e.canonicalMatchId===f.fixtureId);assert.equal(f.oddsEvent.providerEventId,event.providerEventId);
  for(const m of f.oddsEvent.playerMarkets){
   const raw=event.markets.find(x=>x.providerMarketId===m.providerMarketId);assert(raw);assert.equal(raw.status,'open');assert.equal(raw.marketScope,'match');assert.deepEqual(raw.providerPlayerIds,[]);

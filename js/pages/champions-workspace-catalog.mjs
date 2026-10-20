@@ -5,6 +5,20 @@ import {hasVerifiedPlayableQuote} from './shared-forecast-contract.mjs';
 
 const familyLabels={result:'Risultato', 'double-chance':'Doppia chance',goals:'Gol',corners:'Corner',shots:'Tiri','team-shots':'Tiri squadra','team-sot':'SOT squadra','team-corners':'Corner squadra'};
 const finite=value=>value!=null&&Number.isFinite(value);
+function applySelectionRequirements(leg,requirements){
+  if(!requirements)return leg;
+  // Central probabilities and historical quote contracts remain authoritative.
+  if(requirements.evaluation.modelProbabilityPct!==leg.betSelection.evaluation.modelProbabilityPct)throw Error('CL3 selection requirements: frozen probability mismatch');
+  const evidence=requirements.quoteEvidence,quote=leg.betSelection.quote;
+  if(!evidence||evidence.decimal!==quote.decimal||evidence.verifiedAt!==quote.verifiedAt||evidence.providerSelectionId!==(leg.betSelection.identity.providerSelectionId||null))throw Error('CL3 selection requirements: quote contract mismatch');
+  leg.betSelection.evaluation={...leg.betSelection.evaluation,...requirements.evaluation};
+  leg.betSelection.operational.reliability=requirements.reliability;
+  leg.scenarioAnalysis=requirements.scenarioAnalysis;
+  leg.selectionStatus=requirements.selectionStatus;
+  leg.qualifiedSelection=requirements.qualifiedSelection;
+  if(!leg.approvedPreliminary)leg.suggestionAnalysis=requirements.suggestionAnalysis;
+  return leg;
+}
 
 // Presentation adapter only: the archived contracts and frozen probabilities are never rebuilt.
 export async function loadChampionsWorkspace(load,matchday){
@@ -15,6 +29,12 @@ export async function loadChampionsWorkspace(load,matchday){
     const [catalog,approved,individuals]=await Promise.all([load('champions-md03-preliminary-2026-27.json'),load('schedina-champions-md03.json'),load('champions-md03-probable-individuals-2026-27.json')]);
     source=approved;
     teamForecasts=new Map(catalog.fixtures.map(f=>[f.fixtureId,f.forecast]));
+    if(approved.marketCatalog?.policy==='SHARED_SERIE_A_LINEUP_FORECASTS'){
+      if(approved.lineupInput.sha256!==individuals.source.sha256)throw new Error('Rigenerare i pronostici Champions dopo la modifica delle probabili formazioni');
+      all=approved.marketCatalog.matches.flatMap(m=>m.selections);
+      if(all.some(leg=>!fixtures.some(f=>f.id===leg.matchId)))throw new Error('Fixture Champions estranea alla giornata');
+      return {championsWorkspace:true,lineupManaged:true,matchday,teamForecasts,season:approved.season,source:approved,fixtures,all,slips:[],oddsRetrievedAt:approved.oddsRetrievedAt,marketCatalog:approved.marketCatalog};
+    }
     const approvedById=new Map(approved.slips.flatMap(s=>s.legs).map(leg=>[leg.selectionId,leg]));
     for(const fixture of catalog.fixtures)for(const market of fixture.oddsEvent.playerMarkets)for(const selection of market.selections){
       if(!selection.interfaceSelectable||selection.status!=='open'||market.status!=='open')continue;
@@ -30,6 +50,7 @@ export async function loadChampionsWorkspace(load,matchday){
       leg.betSelection.evaluation={status:finite(p)?'FROZEN_FORECAST':'NOT_MODELLED',modelProbabilityPct:p??null,fairOdds:finite(selection.modelProbability)&&selection.modelProbability>0?1/selection.modelProbability:null,expectedValuePct:finite(ev)?ev*100:null};
       leg.betSelection.operational.classification=leg.approvedPreliminary?'PRINCIPALE':'WATCH';
       leg.settlement=approvedById.get(leg.selectionId)?.settlement;
+      applySelectionRequirements(leg,selection.selectionRequirements);
       if(hasVerifiedPlayableQuote(leg))all.push(leg);
     }
     for(const [id,approvedLeg] of approvedById){
@@ -62,7 +83,8 @@ export async function loadChampionsWorkspace(load,matchday){
       return {...forecast,linkedSisalQuote:{decimal,verifiedAt:quote.verifiedAt,providerSelectionId:matches[0].betSelection.identity.providerSelectionId,
         impliedProbabilityPct:100/decimal,expectedValuePct:(probability*decimal-1)*100}};
     });
-    all=all.concat(individualForecasts);
+    const individualRequirements=new Map(catalog.fixtures.flatMap(f=>(f.individualForecasts||[]).map(row=>[row.selectionId,row.selectionRequirements])));
+    all=all.concat(individualForecasts.map(leg=>applySelectionRequirements(leg,individualRequirements.get(leg.selectionId))));
   }else if(matchday===2){
     source=championsAuditDisplay(await load('schedina-champions-md02.json'),await load('champions-md02-audit-display.json'));
     all=source.fixtures.flatMap(f=>f.selections).map(leg=>({...leg,suggestionAnalysis:{suggested:true,rank:0}}));

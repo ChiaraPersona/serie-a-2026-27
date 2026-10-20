@@ -1,9 +1,15 @@
 'use strict';
 const assert=require('assert/strict');
 const {projectDocumentedTeam,TEAM_ONLY,canonicalTeam}=require('./current-season-offline');
-function derivePredictedBench(probable,callups){
+function derivePredictedBench(probable,callups,squad){
  const missing={mode:'probable',documented:false,bench:null,excluded:[],doubtful:[],reason:'MATCH_CALLUPS_UNDOCUMENTED'};
- if(!callups||callups.status!=='documented')return missing;
+ if(!callups||callups.status!=='documented'){
+  if(!squad)return missing;
+  assert.equal(squad.teamId,probable.teamId);
+  const excludedIds=new Set([...probable.starters,...probable.unavailable,...probable.suspended,...probable.doubtful].map(p=>p.playerId).filter(Boolean));
+  const bench=squad.players.filter(p=>p.playerId&&!excludedIds.has(p.playerId)).map(p=>({...p,registeredPlayerId:p.registeredPlayerId||p.playerId,sourceName:p.sourceName||p.canonicalName,projectedRole:'bench',lineupStatus:'probable',roleCertainty:'probable',callupStatus:'unconfirmed'}));
+  return {...missing,bench,rosterFallback:true,reason:'FULL_SQUAD_PENDING_MATCH_CALLUPS'};
+ }
  assert.equal(callups.fixtureId,probable.fixtureId);assert.equal(callups.teamId,probable.teamId);
  assert.equal(callups.source?.scope,'match-specific-callups');assert.equal(callups.source.complete,true);assert(callups.source.url);
  assert(Array.isArray(callups.players));

@@ -23,7 +23,7 @@ assert.equal(source.teams.length,36);assert.equal(teams.filter(t=>t.callupDocume
 for(const t of teams){
  const produced=t.players.filter(p=>p.projectedShots!==null);
  assert(t.minuteBudget.allocatedExpectedMinutes<=990);assert(t.players.every(p=>p.roleCertainty==='probable'&&p.lineupStatus==='probable'));
- if(!t.callupDocumentation.documented){assert.equal(t.bench,null);assert(t.players.every(p=>p.projectedRole==='starter'));}
+ if(!t.callupDocumentation.documented){assert.equal(t.benchStatus,'full-squad-pending-callups');assert(Array.isArray(t.bench));assert(t.bench.every(p=>p.callupStatus==='unconfirmed'));}
  if(t.collectiveOnly)assert(t.players.every(p=>p.projectedShots===null&&p.expectedMinutes===null));
  if(produced.length){assert(Math.abs(produced.reduce((n,p)=>n+p.projectedShots,0)-t.reconciliation.targetShots)<=.020001);assert(Math.abs(produced.reduce((n,p)=>n+p.projectedSOT,0)-t.reconciliation.targetSOT)<=.020001);}
  for(const p of t.players){
@@ -34,4 +34,4 @@ for(const t of teams){
 }
 assert.equal(players.filter(p=>p.projectedShots!==null).length,data.summary.operationalPlayers);
 for(const f of data.fixtures){const html=md3ProbableMarkup(f);assert(!/https?:|sourceUrl|provenienza|Tiri \/90|<img/.test(html));assert(html.includes('non ufficiali'));assert.equal((html.match(/data-projected-role="starter"/g)||[]).length,22);}
-console.log('OK call-ups minus XI/absences/doubts; no roster fallback; official/probable gates; historical bench entry/minutes; minute budgets; exact existing Poisson; reconciled projections verified; CL exclusions.');
+console.log('OK call-ups minus XI/absences/doubts; full squad fallback pending call-ups; official/probable gates; historical bench entry/minutes; minute budgets; exact existing Poisson; reconciled projections verified; CL exclusions.');

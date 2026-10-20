@@ -1,0 +1,79 @@
+{
+  "visible": 1721,
+  "main": 55,
+  "approved": 7,
+  "newSelected": 0,
+  "newApproved": 0,
+  "scenario": {
+    "VERIFIED": 214,
+    "UNVERIFIABLE": 1507
+  },
+  "reliability": {
+    "Bassa": 1709,
+    "Non valutabile": 12
+  },
+  "sensitivity": 214,
+  "validatedPrudent": 0,
+  "exactQuoted": 551,
+  "byFamily": {
+    "result": 54,
+    "double-chance": 52,
+    "team-corners": 123,
+    "team-sot": 114,
+    "team-shots": 100,
+    "goals": 108,
+    "shots": 702,
+    "sot": 468
+  },
+  "exclusions": {
+    "ROBUST_PROBABILITY_NOT_AVAILABLE": 1714,
+    "NOT_COHERENT_WITH_PREVALENT_SCENARIO": 1561,
+    "CHAMPIONS_EVENT_MODEL_NOT_VALIDATED": 1714,
+    "NO_COMPARABLE_SCORE_EVENT": 1507,
+    "STATISTICAL_FAMILY_NOT_VALIDATED": 337,
+    "RELIABILITY_NOT_ASSESSED": 12,
+    "QUOTE_NOT_VERIFIED_AT_SNAPSHOT": 1170,
+    "SETTLEMENT_NOT_SUPPORTED": 1170
+  },
+  "positiveSelectorAndRendererControl": "PASS",
+  "integrity": "PASS",
+  "filesModified": [
+    "data/normalized/champions-md03-preliminary-2026-27.json",
+    "js/pages/betting.js",
+    "js/pages/champions-workspace-catalog.mjs",
+    "scripts/build-champions-md3-preliminary.js",
+    "scripts/champions/md3-selection-requirements.cjs",
+    "scripts/test-champions-md3-preliminary.mjs",
+    "scripts/test-champions-md3-selection-requirements.mjs"
+  ],
+  "targetedTestsPassed": [
+    "test-champions-md3-selection-requirements.mjs",
+    "test-champions-md3-preliminary.mjs",
+    "test-champions-md3-approved.mjs",
+    "test-champions-md3-market-expansion.mjs --live",
+    "test-app-modules.mjs"
+  ],
+  "oddsSnapshot": {
+    "latestAccessible": "2026-10-19T11:59:06.318Z",
+    "laterSnapshotFound": false,
+    "individualSimpleQuotes": 0,
+    "individualContractsExcluded": [
+      "DUO includes replacement",
+      "SOT DUO includes woodwork",
+      "both halves",
+      "specified period"
+    ]
+  },
+  "mainByFamily": {
+    "result": 5,
+    "double-chance": 2,
+    "individual-shots": 45,
+    "individual-sot": 3
+  },
+  "remainingRequirements": {
+    "modelValidation": "Chronologically frozen predictions and certified outcomes for this MD3 model; pilot domestic walk-forward and Elo-only holdout cannot validate derived markets.",
+    "volumeGate": "180 clusters; family deltaBrier<=0.005, ECE<=0.08, bias limits; each threshold >=30 positive/30 negative, deltaBrier<=0.015 and ECE<=0.10.",
+    "playerCalibration": "Existing audit has 30 admissible observations over 6 matches; gate PARTIAL, DO_NOT_ACTIVATE; at least two later chronological test windows required.",
+    "individuals": "Exact simple Sisal contracts; conditional-start probability semantics cannot be sold as unconditional, starting probability unestimated."
+  }
+}

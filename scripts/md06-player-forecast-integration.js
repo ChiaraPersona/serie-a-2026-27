@@ -194,7 +194,7 @@ function playerForecastLeg({ prediction, player, metric, threshold, lineup, quot
   const quoteSource = quoted ? {
     provider: odds.provider,
     url: odds.sourceUrl,
-    snapshotPath: "data/normalized/odds/sisal/serie-a.json",
+    snapshotPath: odds.normalizedPath || "data/normalized/odds/sisal/serie-a.json",
     rawFile: quoteRow.event.rawFile || odds.rawFile,
     acquisition: odds.acquisition,
   } : null;
@@ -214,7 +214,7 @@ function playerForecastLeg({ prediction, player, metric, threshold, lineup, quot
     individualModelProbabilityPct: probabilityPct,
     fairOdds: null,
     expectedValuePct: null,
-    evidenceLabel: `Prediction Engine V2 ${prediction.engineVersion || "N/D"} sul singolo · contratto Sisal DUO`,
+    evidenceLabel: `${prediction.engineName || 'Prediction Engine V2'} ${prediction.engineVersion || "N/D"} sul singolo · contratto Sisal DUO`,
     providerMarketId,
     providerSelectionId,
     marketUpdatedAt: quoteRow?.market?.updatedAt || null,
@@ -363,9 +363,9 @@ function applyApprovedBaseline(catalogMatches, approvedSuggestionRankById) {
   });
 }
 
-function integratePlayerForecasts({ catalogMatches, predictions, odds, probableLineups, officialLineups, approvedSuggestionRankById }) {
+function integratePlayerForecasts({ catalogMatches, predictions, odds, probableLineups, officialLineups, approvedSuggestionRankById, verifiedProviderPlayerMap = null }) {
   const baselineMatches = applyApprovedBaseline(catalogMatches, approvedSuggestionRankById);
-  const providerPlayerMap = buildProviderPlayerMap(predictions, odds);
+  const providerPlayerMap = verifiedProviderPlayerMap || buildProviderPlayerMap(predictions, odds);
   const predictionByMatch = new Map((predictions || []).map(prediction => [prediction.matchId, prediction]));
   const excluded = [];
   const added = [];

@@ -4,7 +4,8 @@ export function isCanonicalModelForecast(leg){
   const bet=leg?.betSelection,target=bet?.forecastIdentity,id=bet?.identity;
   return Boolean(leg?.selectionId&&bet?.selectionId===leg.selectionId
     &&id?.canonicalForecastId===leg.selectionId&&target?.matchId===id.matchId
-    &&/^forecast:v2:/.test(leg.selectionId)&&target.matchId?.endsWith('-md-07')
+    &&/^forecast:v2:/.test(leg.selectionId)
+    &&(target.matchId?.endsWith('-md-07')||(leg.context?.competition==='champions'&&leg.context?.matchday===3&&/^ucl-2026-27-md03-\d{2}$/.test(target.matchId)))
     &&['player','team'].includes(target.scope)&&['shots','sot'].includes(target.metric)
     &&target.subjectId&&Number.isFinite(target.threshold)&&target.direction==='OVER'
     &&target.period==='REGULATION'&&target.duo===false
