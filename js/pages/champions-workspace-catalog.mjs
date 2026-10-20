@@ -114,7 +114,7 @@ export async function loadChampionsWorkspace(load,matchday){
 
 // A versioned MD3 view over the archived publication. The historical source,
 // slips and MyCombo stay bound to their original snapshot.
-export async function loadChampionsWorkspaceMd3Derived(load,matchday){
+export async function loadChampionsWorkspaceMd3Derived(load,matchday,{upcoming=true}={}){
   const workspace=await loadChampionsWorkspace(load,matchday);
   if(matchday!==3)return workspace;
   const derived=await load('../derived/champions-md03/market-catalog-v2-2026-10-20.json');
@@ -136,11 +136,20 @@ export async function loadChampionsWorkspaceMd3Derived(load,matchday){
     throw new Error('Selezione Sabah-Dortmund MD3 non coerente');
   overrides.set(sabah.fixtureId,sabah.matches[0]);
   const matches=derived.matches.map(match=>overrides.get(match.matchId)||match);
+  if(upcoming){
+    const publication=await load('../derived/champions-md03/upcoming-forecasts.json');
+    if(publication.schemaVersion!==1||publication.competition!=='champions')throw Error('Catalogo probabili Champions non coerente');
+    for(const match of publication.matches){
+      const index=matches.findIndex(m=>m.matchId===match.matchId);
+      if(index<0)throw Error('Fixture estranea al catalogo probabili Champions');
+      matches[index]=match;
+    }
+  }
   const all=matches.flatMap(match=>match.selections);
   // The official-starter policy may remove selections after a lineup update.
-  if(all.filter(leg=>leg.suggestionAnalysis?.suggested).length>derived.summary.selected+sabah.matches[0].suggestions.length)
+  if(!upcoming&&all.filter(leg=>leg.suggestionAnalysis?.suggested).length>derived.summary.selected+sabah.matches[0].suggestions.length)
     throw new Error('Selezioni preliminari Champions MD3 non coerenti');
   return {...workspace,all,derivedVersion:sabah.version,
     marketCatalog:{...workspace.marketCatalog,matches,
-      totals:{...workspace.marketCatalog.totals,preliminary:all.filter(leg=>leg.suggestionAnalysis?.suggested).length}}};
+      totals:{...workspace.marketCatalog.totals,approved:all.filter(leg=>leg.suggestionAnalysis?.suggested&&leg.qualifiedSelection).length,preliminary:all.filter(leg=>leg.suggestionAnalysis?.suggested&&!leg.qualifiedSelection).length}}};
 }
