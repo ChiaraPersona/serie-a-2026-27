@@ -6,8 +6,8 @@ const ROOT=path.resolve(__dirname,'../..'),read=p=>JSON.parse(fs.readFileSync(pa
 const hash=p=>crypto.createHash('sha256').update(fs.readFileSync(path.join(ROOT,p))).digest('hex');
 const digest=v=>crypto.createHash('sha256').update(JSON.stringify(v)).digest('hex');
 const finite=v=>typeof v==='number'&&Number.isFinite(v);
-const MODEL_FILES={collective:['scripts/build-champions-pilot-predictions.js','scripts/build-champions-1x2.js','scripts/champions/offline-collective.js','data/normalized/uefa-1x2-model-2026-27.json'],player:['scripts/build-champions-md3-probable.cjs','scripts/champions/md3-lineup-policy.js','scripts/champions/current-season-offline.js','scripts/champions/context-adjusted-player-baseline.js','scripts/champions/player-volume-utils.js','scripts/champions/substitute-minutes.js']};
-function currentModels(){const modules=Object.fromEntries(Object.entries(MODEL_FILES).map(([scope,files])=>[scope,Object.fromEntries(files.map(p=>[p,hash(p)]))]));const collective='champions-collective:'+digest(modules.collective);return {ids:{collective,player:'champions-player:'+digest({collective,modules:modules.player})},modules};}
+const MODEL_FILES={collective:['scripts/build-champions-pilot-predictions.js','scripts/build-champions-1x2.js','scripts/champions/offline-collective.js'],player:['scripts/build-champions-md3-probable.cjs','scripts/champions/md3-lineup-policy.js','scripts/champions/current-season-offline.js','scripts/champions/context-adjusted-player-baseline.js','scripts/champions/player-volume-utils.js','scripts/champions/substitute-minutes.js']};
+function currentModels(){const modules=Object.fromEntries(Object.entries(MODEL_FILES).map(([scope,files])=>[scope,Object.fromEntries(files.map(p=>[p,hash(p)]))]));const collective='champions-collective:'+digest({modules:modules.collective,uefaParameters:read('data/normalized/uefa-1x2-model-2026-27.json').parameters});return {ids:{collective,player:'champions-player:'+digest({collective,modules:modules.player})},modules};}
 function collectActuals(now){
  const calendar=read('data/normalized/champions-league-2026-27.json'),teams=[],players=[],conflicts=[];
  for(const f of calendar.fixtures.filter(f=>f.status==='finished')){
@@ -56,7 +56,7 @@ function baselineFor(target,actuals,history,now){
 function captureCurrent(now,outputRoot){
  const models=currentModels(),calendar=read('data/normalized/champions-league-2026-27.json'),individuals=read('data/normalized/champions-md03-probable-individuals-2026-27.json');
  const catalog=read('data/normalized/schedina-champions-md03.json'),forecasts=read('data/normalized/champions-md03-preliminary-2026-27.json'),actuals=collectActuals(now),history=read('data/normalized/uefa-europe-history-2023-26.json');
- const inputPaths=['data/normalized/champions-league-2026-27.json','data/normalized/champions-md03-probable-individuals-2026-27.json','data/normalized/champions-md03-preliminary-2026-27.json','data/normalized/schedina-champions-md03.json','data/normalized/odds/sisal/champions-league.json','data/normalized/uefa-europe-history-2023-26.json','data/sources/champions-probable-formations-md03-2026-27.json','data/normalized/champions-md03-player-database-2026-27.json'];
+ const inputPaths=['data/normalized/champions-league-2026-27.json','data/normalized/champions-md03-probable-individuals-2026-27.json','data/normalized/champions-md03-preliminary-2026-27.json','data/normalized/schedina-champions-md03.json','data/normalized/odds/sisal/champions-league.json','data/normalized/uefa-europe-history-2023-26.json','data/normalized/uefa-1x2-model-2026-27.json','data/sources/champions-probable-formations-md03-2026-27.json','data/normalized/champions-md03-player-database-2026-27.json'];
  const receipts=Object.fromEntries(inputPaths.map(p=>[p,hash(p)]));
  const candidate={generatedAt:now,model:{ids:models.ids,modules:models.modules},dataVersion:{capturedAt:now,availabilityProof:'CONTROLLED_LOCAL_CAPTURE_BEFORE_KICKOFF_NOT_EXTERNAL_TIMESTAMP_AUTHORITY',inputs:receipts},kickoffVerification:{source:'data/normalized/champions-league-2026-27.json',timezone:'Europe/Rome'},identityOverlay:{source:'CANONICAL_PLAYER_AND_TEAM_IDS_ONLY'},fixtures:[]};
  for(const f of calendar.fixtures.filter(f=>f.matchday===3)){
@@ -100,7 +100,7 @@ function gitInventory(){
     const probs=forecast.probabilities,score=f.score||f.matchReport?.score;
     if(f.status==='finished'&&finite(score?.home)&&finite(score?.away)){
      const actual=score.home>score.away?'1':score.home<score.away?'2':'X';
-     for(const [event,probability] of [['1',probs.home/100],['X',probs.draw/100],['2',probs.away/100],['1X',(probs.home+probs.draw)/100],['X2',(probs.draw+probs.away)/100]])historicalObservations.push({fixtureId:id,source:p,commit:v.commit,availableAt:v.availableAt,kickoffAt:new Date(ko).toISOString(),event,probability,outcome:Number(event.includes(actual)),baselineProbability:null,scope:'ORIGINAL_SNAPSHOT_DIAGNOSTIC_ONLY',modelId:'legacy:'+digest(v.d.methodology||{})});
+     for(const [event,probability] of [['1',probs.home/100],['X',probs.draw/100],['2',probs.away/100],['1X',(probs.home+probs.draw)/100],['X2',(probs.draw+probs.away)/100]])historicalObservations.push({fixtureId:id,source:p,commit:v.commit,availableAt:v.availableAt,kickoffAt:new Date(ko).toISOString(),event,probability,outcome:Number(event.includes(actual)),baselineProbability:null,scope:'ORIGINAL_SNAPSHOT_DIAGNOSTIC_ONLY',modelId:'legacy:'+digest({path:p,commit:v.commit,methodology:v.d.methodology||{}})});
     }
    }}
   }
@@ -108,4 +108,8 @@ function gitInventory(){
  }
  return {items,historicalObservations};
 }
-module.exports={ROOT,read,hash,digest,currentModels,collectActuals,actualFor,baselineFor,captureCurrent,readFrozen,gitInventory};
+function loadRegistry(){
+ const file='data/analysis/champions/event-validation/registry.json';if(!fs.existsSync(path.join(ROOT,file)))return null;
+ const value=read(file),{contentHash,...payload}=value;if(contentHash!==digest(payload))throw Error('Champions validation registry integrity failure');return value;
+}
+module.exports={loadRegistry,ROOT,read,hash,digest,currentModels,collectActuals,actualFor,baselineFor,captureCurrent,readFrozen,gitInventory};

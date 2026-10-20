@@ -1,0 +1,2296 @@
+{
+  "schemaVersion": 1,
+  "kind": "champions-immutable-prematch-player-forecast-snapshot",
+  "immutable": true,
+  "createdAt": "2026-10-20T14:34:48.393Z",
+  "competition": "champions",
+  "phase": "league",
+  "season": "2026-27",
+  "matchday": 3,
+  "fixtureId": "ucl-2026-27-md03-01",
+  "date": "2026-10-20",
+  "kickoff": "18:45",
+  "timezone": "Europe/Rome",
+  "kickoffAt": "2026-10-20T16:45:00.000Z",
+  "homeTeam": "Fenerbahçe",
+  "awayTeam": "Slavia Praha",
+  "chronologyStatus": "VALID_PREMATCH_SNAPSHOT",
+  "evaluationWindow": "test",
+  "model": {
+    "ids": {
+      "collective": "champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f",
+      "player": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1"
+    },
+    "modules": {
+      "collective": {
+        "scripts/build-champions-pilot-predictions.js": "33f125092367f1d518d67bece8a55cc6b253e34cb9f114cb4233c80e79341cd7",
+        "scripts/build-champions-1x2.js": "14862aba1553ab311ac0a9c634acdb748e38950d6ea5c32be2b4e48fe9dfde83",
+        "scripts/champions/offline-collective.js": "c061eabcac55ca28bb32ba68143009e50fa668a829108c22bb7fcf0987e31ab6"
+      },
+      "player": {
+        "scripts/build-champions-md3-probable.cjs": "3f81ca7dabbeeb96779ee6c9ee0f3897367865cbeae0904f3eece48c260e0b11",
+        "scripts/champions/md3-lineup-policy.js": "5de9c6e48c301568096e200c9a032ea1dc7e9eb6b07d3962f6863b57a8d02e40",
+        "scripts/champions/current-season-offline.js": "893ca70e5d73cf30f193aa16d4add179eabb381d431f9cba56e9779c89eb9bdd",
+        "scripts/champions/context-adjusted-player-baseline.js": "67bfffa938d134b6dca9b8018cd4b55146f4aead56b61ad25072fb7eb00d9f3d",
+        "scripts/champions/player-volume-utils.js": "d283e14790930987242f42c2d57fd14e9274635d1fcfa0f8c2fad7fa0a7ef6a6",
+        "scripts/champions/substitute-minutes.js": "bf74d46f1b41ab33821dcc277a4259f4ea7f35762f1f26fd4bfd2797663780cd"
+      }
+    }
+  },
+  "dataVersion": {
+    "capturedAt": "2026-10-20T14:34:48.393Z",
+    "availabilityProof": "CONTROLLED_LOCAL_CAPTURE_BEFORE_KICKOFF_NOT_EXTERNAL_TIMESTAMP_AUTHORITY",
+    "inputs": {
+      "data/normalized/champions-league-2026-27.json": "976ba156fc47ce8e908a3102539b0dd22005303dde6a9bca2e42f21cac8df0da",
+      "data/normalized/champions-md03-probable-individuals-2026-27.json": "ec5843586edd877946b3e878f8a6a992c2b4c6ae665217b71fb6ff7512a2ba62",
+      "data/normalized/champions-md03-preliminary-2026-27.json": "d26b35e51c804872c8beae51a6044d69d46f97190d6ea4536d23fde8a44f7c66",
+      "data/normalized/schedina-champions-md03.json": "4aeb2efabb30c6e205d7ef1a9d1673f0e2651d754a5a1ba5acc8bfbf06a2f936",
+      "data/normalized/odds/sisal/champions-league.json": "aa6fd6de6bd301dd16298337abff92e1869d96b4aa6be4313fe3a3dd410aa09b",
+      "data/normalized/uefa-europe-history-2023-26.json": "0817482042ba8bf3a522185aee52c580f3f21be79cec4daf83a7a2bae79c1e0e",
+      "data/normalized/uefa-1x2-model-2026-27.json": "d02e3b50291c32bacdadc7eaaa9a2fcc0633cd57a06df9480a347fb0f441b19d",
+      "data/sources/champions-probable-formations-md03-2026-27.json": "bffa9eb554cc5143bdbe51fcb22c7b53a2e9768cd7e7444fb26bf09d89fa99f9",
+      "data/normalized/champions-md03-player-database-2026-27.json": "5252d97d536f832ac8672a09c4d75a4cc7d130c5f977a5e42a5c17732d8c2db6"
+    }
+  },
+  "kickoffVerification": {
+    "source": "data/normalized/champions-league-2026-27.json",
+    "timezone": "Europe/Rome"
+  },
+  "identityOverlaySource": "CANONICAL_PLAYER_AND_TEAM_IDS_ONLY",
+  "coverage": {
+    "completeForSnapshotUniverse": true,
+    "universe": "ALL_EXISTING_PROBABLE_PLAYERS_AND_AVAILABLE_CONTRACT_EVENTS_INCLUDING_EXPLICIT_BLOCKERS",
+    "players": 72,
+    "events": 13,
+    "unresolved": 0
+  },
+  "players": [
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "ederson",
+      "name": "Ederson",
+      "role": "goalkeeper",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 88.8,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "nathan-ake",
+      "name": "Nathan Aké",
+      "role": "defender",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 88.8,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "milan-skriniar",
+      "name": "Milan Škriniar",
+      "role": "defender",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 80.2,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "archie-brown",
+      "name": "Archie Brown",
+      "role": "midfielder",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 83.4,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "nelson-semedo",
+      "name": "Nélson Semedo",
+      "role": "defender",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 84.6,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "matteo-guendouzi",
+      "name": "Matteo Guendouzi",
+      "role": "midfielder",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 84.1,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "ismail-yuksek",
+      "name": "İsmail Yüksek",
+      "role": "midfielder",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 73.8,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "irfan-can-kahveci",
+      "name": "İrfan Can Kahveci",
+      "role": "midfielder",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 76.3,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "oguz-aydin",
+      "name": "Oğuz Aydın",
+      "role": "midfielder",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 70,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "mason-greenwood",
+      "name": "Mason Greenwood",
+      "role": "forward",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 82.8,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "vedat-muriqi",
+      "name": "Vedat Muriqi",
+      "role": "forward",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 74.1,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "tarik-cetin",
+      "name": "Tarık Çetin",
+      "role": "goalkeeper",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "mert-gunok",
+      "name": "Mert Günok",
+      "role": "goalkeeper",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "kuzey-sapaz",
+      "name": "Kuzey Sapaz",
+      "role": "goalkeeper",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "yasir-cakli",
+      "name": "Yasir Caklı",
+      "role": "goalkeeper",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "yigit-efe-demir",
+      "name": "Yiğit Efe Demir",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 10,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "kojo-peprah-oppong",
+      "name": "Kojo Peprah Oppong",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "ognjen-mimovic",
+      "name": "Ognjen Mimović",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "cagan-saridikmen",
+      "name": "Çağan Sarıdikmen",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "bedirhan-korkmaz",
+      "name": "Bedirhan Korkmaz",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "gokmen-ozdemir",
+      "name": "Gökmen Özdemir",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "levent-mercan",
+      "name": "Levent Mercan",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 28.8,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "bartug-elmaz",
+      "name": "Bartuğ Elmaz",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 11.1,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "efe-fettahoglu",
+      "name": "Efe Fettahoğlu",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "emin-sayar",
+      "name": "Emin Sayar",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "guner-ekici",
+      "name": "Güner Ekici",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "emirhan-ates",
+      "name": "Emirhan Ateş",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "n-golo-kante",
+      "name": "N'Golo Kanté",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "kerem-akturkoglu",
+      "name": "Kerem Aktürkoğlu",
+      "role": "forward",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 22.1,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "romelu-lukaku",
+      "name": "Romelu Lukaku",
+      "role": "forward",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 8.6,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "dorgeles-nene",
+      "name": "Dorgeles Nene",
+      "role": "forward",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 22.5,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "alaettin-ekici",
+      "name": "Alaettin Ekici",
+      "role": "forward",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "jakub-markovic",
+      "name": "Jakub Markovič",
+      "role": "goalkeeper",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "ange-n-guessan",
+      "name": "Ange N'Guessan",
+      "role": "defender",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "david-zima",
+      "name": "David Zima",
+      "role": "defender",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "tomas-vlcek",
+      "name": "Tomáš Vlček",
+      "role": "defender",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "tomas-holes",
+      "name": "Tomáš Holeš",
+      "role": "defender",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "michal-sadilek",
+      "name": "Michal Sadílek",
+      "role": "midfielder",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "david-moses",
+      "name": "David Moses",
+      "role": "midfielder",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "lukas-provod",
+      "name": "Lukáš Provod",
+      "role": "midfielder",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "danijel-sturm",
+      "name": "Danijel Šturm",
+      "role": "midfielder",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "emmanuel-ayaosi",
+      "name": "Emmanuel Ayaosi",
+      "role": "midfielder",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "tomas-chory",
+      "name": "Tomáš Chorý",
+      "role": "forward",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "nazar-domchak",
+      "name": "Nazar Domchak",
+      "role": "goalkeeper",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "adam-rezek",
+      "name": "Adam Rezek",
+      "role": "goalkeeper",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "adam-paar",
+      "name": "Adam Paar",
+      "role": "goalkeeper",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "ondrej-suchy",
+      "name": "Ondřej Suchý",
+      "role": "goalkeeper",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "mikulas-konecny",
+      "name": "Mikuláš Konečný",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "jakub-kolisek",
+      "name": "Jakub Kolísek",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "david-barcot",
+      "name": "David Barčot",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "stepan-chalus",
+      "name": "Štěpán Chaluš",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "filip-kocvara",
+      "name": "Filip Kočvara",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "martin-kovar",
+      "name": "Martin Kovář",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "jachym-palivec",
+      "name": "Jáchym Palivec",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "vit-skokan",
+      "name": "Vít Skokan",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "oskar-kubiak",
+      "name": "Oskar Kubiak",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "samuel-isife",
+      "name": "Samuel Isife",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "mubarak-suleiman",
+      "name": "Mubarak Suleiman",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "toumani-diakite",
+      "name": "Toumani Diakite",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "wiktor-nowak",
+      "name": "Wiktor Nowak",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "pavel-kacor",
+      "name": "Pavel Kačor",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "karel-belzik",
+      "name": "Karel Belžík",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "ondrej-frolik",
+      "name": "Ondřej Frolík",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "aleksa-ilincic",
+      "name": "Aleksa Ilinčič",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "jakub-kratochvil",
+      "name": "Jakub Kratochvíl",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "ondrej-masek",
+      "name": "Ondřej Mašek",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "martin-palascak",
+      "name": "Martin Palaščák",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "mojmir-chytil",
+      "name": "Mojmír Chytil",
+      "role": "forward",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "dan-kohout",
+      "name": "Dan Kohout",
+      "role": "forward",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "matej-kotrba",
+      "name": "Matěj Kotrba",
+      "role": "forward",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "petr-potmesil",
+      "name": "Petr Potměšil",
+      "role": "forward",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "adam-prochazka",
+      "name": "Adam Procházka",
+      "role": "forward",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    }
+  ],
+  "events": [
+    {
+      "modelId": "champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f",
+      "target": {
+        "scope": "match",
+        "metric": "result",
+        "threshold": null,
+        "direction": "1",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": 0.674,
+      "mean": null,
+      "quote": {
+        "decimal": 1.57,
+        "oddsRaw": 157,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911220:823777389:5387046768",
+      "eventId": "[\"[\\\"champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f\\\",\\\"match\\\",\\\"result\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"1\"]:",
+      "baselineProbability": 0.4970178926441352,
+      "baseline": {
+        "probability": 0.4970178926441352,
+        "n": 503,
+        "positives": 250,
+        "availableAt": "2026-10-20T14:34:48.393Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:34:48.393Z",
+      "trainingThroughAt": "2026-10-20T14:34:48.393Z",
+      "baselineAvailableAt": "2026-10-20T14:34:48.393Z"
+    },
+    {
+      "modelId": "champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f",
+      "target": {
+        "scope": "match",
+        "metric": "result",
+        "threshold": null,
+        "direction": "X",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": 0.149,
+      "mean": null,
+      "quote": {
+        "decimal": 4.5,
+        "oddsRaw": 450,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911220:823777389:5387046769",
+      "eventId": "[\"[\\\"champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f\\\",\\\"match\\\",\\\"result\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"X\"]:",
+      "baselineProbability": 0.1749502982107356,
+      "baseline": {
+        "probability": 0.1749502982107356,
+        "n": 503,
+        "positives": 88,
+        "availableAt": "2026-10-20T14:34:48.393Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:34:48.393Z",
+      "trainingThroughAt": "2026-10-20T14:34:48.393Z",
+      "baselineAvailableAt": "2026-10-20T14:34:48.393Z"
+    },
+    {
+      "modelId": "champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f",
+      "target": {
+        "scope": "match",
+        "metric": "result",
+        "threshold": null,
+        "direction": "2",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": 0.177,
+      "mean": null,
+      "quote": {
+        "decimal": 5.5,
+        "oddsRaw": 550,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911220:823777389:5387046770",
+      "eventId": "[\"[\\\"champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f\\\",\\\"match\\\",\\\"result\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"2\"]:",
+      "baselineProbability": 0.32803180914512925,
+      "baseline": {
+        "probability": 0.32803180914512925,
+        "n": 503,
+        "positives": 165,
+        "availableAt": "2026-10-20T14:34:48.393Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:34:48.393Z",
+      "trainingThroughAt": "2026-10-20T14:34:48.393Z",
+      "baselineAvailableAt": "2026-10-20T14:34:48.393Z"
+    },
+    {
+      "modelId": "champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f",
+      "target": {
+        "scope": "match",
+        "metric": "double-chance",
+        "threshold": null,
+        "direction": "1X",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": 0.823,
+      "mean": null,
+      "quote": {
+        "decimal": 1.16,
+        "oddsRaw": 116,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911220:823802443:5387049034",
+      "eventId": "[\"[\\\"champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f\\\",\\\"match\\\",\\\"double-chance\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"1X\"]:",
+      "baselineProbability": 0.6719681908548708,
+      "baseline": {
+        "probability": 0.6719681908548708,
+        "n": 503,
+        "positives": 338,
+        "availableAt": "2026-10-20T14:34:48.393Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:34:48.393Z",
+      "trainingThroughAt": "2026-10-20T14:34:48.393Z",
+      "baselineAvailableAt": "2026-10-20T14:34:48.393Z"
+    },
+    {
+      "modelId": "champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f",
+      "target": {
+        "scope": "match",
+        "metric": "double-chance",
+        "threshold": null,
+        "direction": "X2",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": 0.326,
+      "mean": null,
+      "quote": {
+        "decimal": 2.4,
+        "oddsRaw": 240,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911220:823802443:5387049036",
+      "eventId": "[\"[\\\"champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f\\\",\\\"match\\\",\\\"double-chance\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"X2\"]:",
+      "baselineProbability": 0.5029821073558648,
+      "baseline": {
+        "probability": 0.5029821073558648,
+        "n": 503,
+        "positives": 253,
+        "availableAt": "2026-10-20T14:34:48.393Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:34:48.393Z",
+      "trainingThroughAt": "2026-10-20T14:34:48.393Z",
+      "baselineAvailableAt": "2026-10-20T14:34:48.393Z"
+    },
+    {
+      "modelId": "champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f",
+      "target": {
+        "scope": "match",
+        "metric": "corners",
+        "threshold": null,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": null,
+      "mean": 9.1,
+      "quote": {
+        "decimal": 1.62,
+        "oddsRaw": 162,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911220:825861583:5398001352",
+      "eventId": "[\"[\\\"champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f\\\",\\\"match\\\",\\\"corners\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"OVER\"]:",
+      "baselineProbability": 1,
+      "baseline": {
+        "probability": 1,
+        "n": 17,
+        "positives": 17,
+        "availableAt": "2026-10-20T14:34:48.393Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:34:48.393Z",
+      "trainingThroughAt": "2026-10-20T14:34:48.393Z",
+      "baselineAvailableAt": "2026-10-20T14:34:48.393Z"
+    },
+    {
+      "modelId": "champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f",
+      "target": {
+        "scope": "team",
+        "metric": "corners",
+        "threshold": null,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": "fenerbahce"
+      },
+      "probability": null,
+      "mean": 5.74,
+      "quote": {
+        "decimal": 6,
+        "oddsRaw": 600,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911220:825861578:5398001329",
+      "eventId": "[\"[\\\"champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f\\\",\\\"team\\\",\\\"corners\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"OVER\"]:fenerbahce",
+      "baselineProbability": 0.9705882352941176,
+      "baseline": {
+        "probability": 0.9705882352941176,
+        "n": 34,
+        "positives": 33,
+        "availableAt": "2026-10-20T14:34:48.393Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:34:48.393Z",
+      "trainingThroughAt": "2026-10-20T14:34:48.393Z",
+      "baselineAvailableAt": "2026-10-20T14:34:48.393Z"
+    },
+    {
+      "modelId": "champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f",
+      "target": {
+        "scope": "team",
+        "metric": "corners",
+        "threshold": null,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": "slavia-praha"
+      },
+      "probability": null,
+      "mean": 3.39,
+      "quote": {
+        "decimal": 25,
+        "oddsRaw": 2500,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911220:825861609:5398001463",
+      "eventId": "[\"[\\\"champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f\\\",\\\"team\\\",\\\"corners\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"OVER\"]:slavia-praha",
+      "baselineProbability": 0.9705882352941176,
+      "baseline": {
+        "probability": 0.9705882352941176,
+        "n": 34,
+        "positives": 33,
+        "availableAt": "2026-10-20T14:34:48.393Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:34:48.393Z",
+      "trainingThroughAt": "2026-10-20T14:34:48.393Z",
+      "baselineAvailableAt": "2026-10-20T14:34:48.393Z"
+    },
+    {
+      "modelId": "champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f",
+      "target": {
+        "scope": "team",
+        "metric": "sot",
+        "threshold": null,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": "fenerbahce"
+      },
+      "probability": null,
+      "mean": 7.14,
+      "quote": {
+        "decimal": 7,
+        "oddsRaw": 700,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911220:825386433:5395413666",
+      "eventId": "[\"[\\\"champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f\\\",\\\"team\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"OVER\"]:fenerbahce",
+      "baselineProbability": 0.9166666666666666,
+      "baseline": {
+        "probability": 0.9166666666666666,
+        "n": 36,
+        "positives": 33,
+        "availableAt": "2026-10-20T14:34:48.393Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:34:48.393Z",
+      "trainingThroughAt": "2026-10-20T14:34:48.393Z",
+      "baselineAvailableAt": "2026-10-20T14:34:48.393Z"
+    },
+    {
+      "modelId": "champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f",
+      "target": {
+        "scope": "team",
+        "metric": "sot",
+        "threshold": null,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": "slavia-praha"
+      },
+      "probability": null,
+      "mean": 3.67,
+      "quote": {
+        "decimal": 12,
+        "oddsRaw": 1200,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911220:825386316:5395413202",
+      "eventId": "[\"[\\\"champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f\\\",\\\"team\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"OVER\"]:slavia-praha",
+      "baselineProbability": 0.9166666666666666,
+      "baseline": {
+        "probability": 0.9166666666666666,
+        "n": 36,
+        "positives": 33,
+        "availableAt": "2026-10-20T14:34:48.393Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:34:48.393Z",
+      "trainingThroughAt": "2026-10-20T14:34:48.393Z",
+      "baselineAvailableAt": "2026-10-20T14:34:48.393Z"
+    },
+    {
+      "modelId": "champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f",
+      "target": {
+        "scope": "match",
+        "metric": "shots",
+        "threshold": null,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": null,
+      "mean": 29.6,
+      "quote": {
+        "decimal": 4,
+        "oddsRaw": 400,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911220:825376075:5395362451",
+      "eventId": "[\"[\\\"champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f\\\",\\\"match\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"OVER\"]:",
+      "baselineProbability": 1,
+      "baseline": {
+        "probability": 1,
+        "n": 18,
+        "positives": 18,
+        "availableAt": "2026-10-20T14:34:48.393Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:34:48.393Z",
+      "trainingThroughAt": "2026-10-20T14:34:48.393Z",
+      "baselineAvailableAt": "2026-10-20T14:34:48.393Z"
+    },
+    {
+      "modelId": "champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f",
+      "target": {
+        "scope": "team",
+        "metric": "shots",
+        "threshold": null,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": "fenerbahce"
+      },
+      "probability": null,
+      "mean": 17.57,
+      "quote": {
+        "decimal": 7,
+        "oddsRaw": 700,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911220:825376108:5395362575",
+      "eventId": "[\"[\\\"champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f\\\",\\\"team\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"OVER\"]:fenerbahce",
+      "baselineProbability": 1,
+      "baseline": {
+        "probability": 1,
+        "n": 36,
+        "positives": 36,
+        "availableAt": "2026-10-20T14:34:48.393Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:34:48.393Z",
+      "trainingThroughAt": "2026-10-20T14:34:48.393Z",
+      "baselineAvailableAt": "2026-10-20T14:34:48.393Z"
+    },
+    {
+      "modelId": "champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f",
+      "target": {
+        "scope": "team",
+        "metric": "shots",
+        "threshold": null,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": "slavia-praha"
+      },
+      "probability": null,
+      "mean": 12,
+      "quote": {
+        "decimal": 1.4,
+        "oddsRaw": 140,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911220:825376081:5395362461",
+      "eventId": "[\"[\\\"champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f\\\",\\\"team\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"OVER\"]:slavia-praha",
+      "baselineProbability": 1,
+      "baseline": {
+        "probability": 1,
+        "n": 36,
+        "positives": 36,
+        "availableAt": "2026-10-20T14:34:48.393Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:34:48.393Z",
+      "trainingThroughAt": "2026-10-20T14:34:48.393Z",
+      "baselineAvailableAt": "2026-10-20T14:34:48.393Z"
+    }
+  ],
+  "teamProjections": [
+    {
+      "teamId": "fenerbahce",
+      "team": "Fenerbahçe",
+      "venue": "home",
+      "expectedGoals": 2.2,
+      "shotsTotal": {
+        "central": 17.57,
+        "sd": 4.29,
+        "min": 14,
+        "max": 21.2,
+        "interval": "p20-p80-approx",
+        "normalization": {
+          "method": "relative-to-domestic-league",
+          "targetBaseline": 17.634,
+          "currentSeasonReliabilityPct": 50
+        },
+        "inputs": [
+          {
+            "label": "Fenerbahçe in casa",
+            "value": 14.548,
+            "weightPct": 50.6
+          },
+          {
+            "label": "Slavia Praha concede in trasferta",
+            "value": 21.309,
+            "weightPct": 39.4
+          },
+          {
+            "label": "ultime 8 Fenerbahçe",
+            "value": 18.142,
+            "weightPct": 10
+          }
+        ]
+      },
+      "shotsOnTarget": {
+        "central": 7.14,
+        "sd": 2.64,
+        "min": 4.9,
+        "max": 9.4,
+        "interval": "p20-p80-approx",
+        "normalization": {
+          "method": "relative-to-domestic-league",
+          "targetBaseline": 6.441,
+          "currentSeasonReliabilityPct": 50
+        },
+        "inputs": [
+          {
+            "label": "Fenerbahçe in casa",
+            "value": 6.326,
+            "weightPct": 50.6
+          },
+          {
+            "label": "Slavia Praha concede in trasferta",
+            "value": 7.939,
+            "weightPct": 39.4
+          },
+          {
+            "label": "ultime 8 Fenerbahçe",
+            "value": 8.164,
+            "weightPct": 10
+          }
+        ]
+      },
+      "corners": {
+        "central": 5.74,
+        "sd": 2.01,
+        "min": 4.1,
+        "max": 7.4,
+        "interval": "p20-p80-approx",
+        "normalization": {
+          "method": "relative-to-domestic-league",
+          "targetBaseline": 5.627,
+          "currentSeasonReliabilityPct": 50
+        },
+        "inputs": [
+          {
+            "label": "Fenerbahçe in casa",
+            "value": 4.594,
+            "weightPct": 50.6
+          },
+          {
+            "label": "Slavia Praha concede in trasferta",
+            "value": 6.987,
+            "weightPct": 39.4
+          },
+          {
+            "label": "ultime 8 Fenerbahçe",
+            "value": 6.605,
+            "weightPct": 10
+          }
+        ]
+      },
+      "fouls": {
+        "central": 10.99,
+        "sd": 1.9,
+        "min": 9.4,
+        "max": 12.6,
+        "interval": "p20-p80-approx",
+        "normalization": {
+          "method": "relative-to-domestic-league",
+          "targetBaseline": 11.289,
+          "currentSeasonReliabilityPct": 50
+        },
+        "inputs": [
+          {
+            "label": "Fenerbahçe in casa",
+            "value": 10.841,
+            "weightPct": 50.6
+          },
+          {
+            "label": "Slavia Praha concede in trasferta",
+            "value": 11.164,
+            "weightPct": 39.4
+          },
+          {
+            "label": "ultime 8 Fenerbahçe",
+            "value": 11.096,
+            "weightPct": 10
+          }
+        ]
+      },
+      "cards": {
+        "central": 2.77,
+        "sd": 1.31,
+        "min": 1.7,
+        "max": 3.9,
+        "interval": "p20-p80-approx",
+        "normalization": {
+          "method": "relative-to-domestic-league",
+          "targetBaseline": 1.69,
+          "currentSeasonReliabilityPct": 50
+        },
+        "inputs": [
+          {
+            "label": "Fenerbahçe in casa",
+            "value": 3.203,
+            "weightPct": 50.6
+          },
+          {
+            "label": "Slavia Praha concede in trasferta",
+            "value": 2.48,
+            "weightPct": 39.4
+          },
+          {
+            "label": "ultime 8 Fenerbahçe",
+            "value": 1.759,
+            "weightPct": 10
+          }
+        ]
+      },
+      "lines": {
+        "shotsTotal": [
+          {
+            "threshold": 8.5,
+            "overPct": 99,
+            "underPct": 1
+          },
+          {
+            "threshold": 10.5,
+            "overPct": 95.9,
+            "underPct": 4.1
+          },
+          {
+            "threshold": 12.5,
+            "overPct": 88.6,
+            "underPct": 11.4
+          },
+          {
+            "threshold": 14.5,
+            "overPct": 75.6,
+            "underPct": 24.4
+          },
+          {
+            "threshold": 16.5,
+            "overPct": 58.3,
+            "underPct": 41.7
+          }
+        ],
+        "shotsOnTarget": [
+          {
+            "threshold": 2.5,
+            "overPct": 97.3,
+            "underPct": 2.7
+          },
+          {
+            "threshold": 3.5,
+            "overPct": 92.5,
+            "underPct": 7.5
+          },
+          {
+            "threshold": 4.5,
+            "overPct": 83.9,
+            "underPct": 16.1
+          },
+          {
+            "threshold": 5.5,
+            "overPct": 71.7,
+            "underPct": 28.3
+          },
+          {
+            "threshold": 6.5,
+            "overPct": 57.1,
+            "underPct": 42.9
+          }
+        ],
+        "corners": [
+          {
+            "threshold": 3.5,
+            "overPct": 82.4,
+            "underPct": 17.6
+          },
+          {
+            "threshold": 4.5,
+            "overPct": 67.9,
+            "underPct": 32.1
+          },
+          {
+            "threshold": 5.5,
+            "overPct": 51.2,
+            "underPct": 48.8
+          },
+          {
+            "threshold": 6.5,
+            "overPct": 35.2,
+            "underPct": 64.8
+          }
+        ]
+      }
+    },
+    {
+      "teamId": "slavia-praha",
+      "team": "Slavia Praha",
+      "venue": "away",
+      "expectedGoals": 0.93,
+      "shotsTotal": {
+        "central": 12,
+        "sd": 5.12,
+        "min": 7.7,
+        "max": 16.3,
+        "interval": "p20-p80-approx",
+        "normalization": {
+          "method": "relative-to-domestic-league",
+          "targetBaseline": 12.737,
+          "currentSeasonReliabilityPct": 14.3
+        },
+        "inputs": [
+          {
+            "label": "Slavia Praha in trasferta",
+            "value": 12.02,
+            "weightPct": 54.6
+          },
+          {
+            "label": "Fenerbahçe concede in casa",
+            "value": 11.983,
+            "weightPct": 42.5
+          },
+          {
+            "label": "ultime 8 Slavia Praha",
+            "value": 11.769,
+            "weightPct": 2.9
+          }
+        ]
+      },
+      "shotsOnTarget": {
+        "central": 3.67,
+        "sd": 1.83,
+        "min": 2.1,
+        "max": 5.2,
+        "interval": "p20-p80-approx",
+        "normalization": {
+          "method": "relative-to-domestic-league",
+          "targetBaseline": 4.716,
+          "currentSeasonReliabilityPct": 14.3
+        },
+        "inputs": [
+          {
+            "label": "Slavia Praha in trasferta",
+            "value": 3.389,
+            "weightPct": 54.6
+          },
+          {
+            "label": "Fenerbahçe concede in casa",
+            "value": 4.083,
+            "weightPct": 42.5
+          },
+          {
+            "label": "ultime 8 Slavia Praha",
+            "value": 3.026,
+            "weightPct": 2.9
+          }
+        ]
+      },
+      "corners": {
+        "central": 3.39,
+        "sd": 1.65,
+        "min": 2,
+        "max": 4.8,
+        "interval": "p20-p80-approx",
+        "normalization": {
+          "method": "relative-to-domestic-league",
+          "targetBaseline": 4.168,
+          "currentSeasonReliabilityPct": 14.3
+        },
+        "inputs": [
+          {
+            "label": "Slavia Praha in trasferta",
+            "value": 2.052,
+            "weightPct": 54.6
+          },
+          {
+            "label": "Fenerbahçe concede in casa",
+            "value": 5.12,
+            "weightPct": 42.5
+          },
+          {
+            "label": "ultime 8 Slavia Praha",
+            "value": 3.168,
+            "weightPct": 2.9
+          }
+        ]
+      },
+      "fouls": {
+        "central": 14.96,
+        "sd": 2.32,
+        "min": 13,
+        "max": 16.9,
+        "interval": "p20-p80-approx",
+        "normalization": {
+          "method": "relative-to-domestic-league",
+          "targetBaseline": 11.372,
+          "currentSeasonReliabilityPct": 14.3
+        },
+        "inputs": [
+          {
+            "label": "Slavia Praha in trasferta",
+            "value": 15.612,
+            "weightPct": 54.6
+          },
+          {
+            "label": "Fenerbahçe concede in casa",
+            "value": 14.171,
+            "weightPct": 42.5
+          },
+          {
+            "label": "ultime 8 Slavia Praha",
+            "value": 14.243,
+            "weightPct": 2.9
+          }
+        ]
+      },
+      "cards": {
+        "central": 2.2,
+        "sd": 1.41,
+        "min": 1,
+        "max": 3.4,
+        "interval": "p20-p80-approx",
+        "normalization": {
+          "method": "relative-to-domestic-league",
+          "targetBaseline": 1.792,
+          "currentSeasonReliabilityPct": 14.3
+        },
+        "inputs": [
+          {
+            "label": "Slavia Praha in trasferta",
+            "value": 1.975,
+            "weightPct": 54.6
+          },
+          {
+            "label": "Fenerbahçe concede in casa",
+            "value": 2.533,
+            "weightPct": 42.5
+          },
+          {
+            "label": "ultime 8 Slavia Praha",
+            "value": 1.429,
+            "weightPct": 2.9
+          }
+        ]
+      },
+      "lines": {
+        "shotsTotal": [
+          {
+            "threshold": 8.5,
+            "overPct": 73.6,
+            "underPct": 26.4
+          },
+          {
+            "threshold": 10.5,
+            "overPct": 57.6,
+            "underPct": 42.4
+          },
+          {
+            "threshold": 12.5,
+            "overPct": 41.8,
+            "underPct": 58.2
+          },
+          {
+            "threshold": 14.5,
+            "overPct": 28.3,
+            "underPct": 71.7
+          },
+          {
+            "threshold": 16.5,
+            "overPct": 18,
+            "underPct": 82
+          }
+        ],
+        "shotsOnTarget": [
+          {
+            "threshold": 2.5,
+            "overPct": 70.9,
+            "underPct": 29.1
+          },
+          {
+            "threshold": 3.5,
+            "overPct": 50,
+            "underPct": 50
+          },
+          {
+            "threshold": 4.5,
+            "overPct": 30.7,
+            "underPct": 69.3
+          },
+          {
+            "threshold": 5.5,
+            "overPct": 16.6,
+            "underPct": 83.4
+          },
+          {
+            "threshold": 6.5,
+            "overPct": 7.9,
+            "underPct": 92.1
+          }
+        ],
+        "corners": [
+          {
+            "threshold": 3.5,
+            "overPct": 43.9,
+            "underPct": 56.1
+          },
+          {
+            "threshold": 4.5,
+            "overPct": 25.4,
+            "underPct": 74.6
+          },
+          {
+            "threshold": 5.5,
+            "overPct": 12.8,
+            "underPct": 87.2
+          },
+          {
+            "threshold": 6.5,
+            "overPct": 5.7,
+            "underPct": 94.3
+          }
+        ]
+      }
+    }
+  ],
+  "contentHash": "87b4cdc096c0dd4e6c4da99bec4aadb980cdc6e768e23f6055bdc255c1cfdd8f"
+}

@@ -3,14 +3,17 @@
 const {buildMatchScenario,classifySelectionScenario,scorePredicateForLeg,pairRelation}=require('../md06-scenario-coherence');
 const {selectMatchSuggestions}=require('../md06-suggested-forecasts');
 const {scoreMatrix,sensitivityMatrices,matrixProbability}=require('../predictions/engine');
+const {resolveValidation,prudentEvaluation}=require('./event-validation.cjs');
+const {zonedLocalToUtc}=require('./complete-forecast-snapshots');
 const finite=v=>v!==null&&v!==undefined&&Number.isFinite(v);
 const round=v=>Number(v.toFixed(4));
 
-function validationFor(leg,evidence){
+function validationFor(leg,evidence,fixture){
  const family=leg.suggestionAnalysis.family,player=leg.marketScope==='player';
  const volume=player||/shots|sot|corners/.test(family);
  const metric=/sot/.test(family)?'shotsOnTarget':/corners/.test(family)?'wonCorners':'totalShots';
- return {status:'NOT_VALIDATED',approvable:false,competition:'champions',family,
+ const resolved=resolveValidation(leg,evidence.validationRegistry,evidence.modelIds,fixture?zonedLocalToUtc(fixture.date,fixture.kickoff,'Europe/Rome'):null);
+ return {...resolved,family,
   evidence:volume&&!player?evidence.pilot.metrics[metric]||null:null,
   evidenceScope:player?'NO_PLAYER_EVENT_TEMPORAL_HOLDOUT':volume?'DOMESTIC_WALK_FORWARD_NOT_MD3_MODEL':'UEFA_ELO_NOT_FITTED_POISSON_OR_DERIVED_MARKETS',
   required:volume?'Temporal holdout for this Champions model and exact event: clusters>=180, deltaBrier<=0.005, ECE<=0.08, absolute bias<=2.5 shots / 1.25 SOT or corners; exact threshold >=30 positive and >=30 negative outcomes, deltaBrier<=0.015, ECE<=0.10 (existing V2 gates).'
@@ -31,7 +34,7 @@ function evaluateRequirements(legs,fixture,individualFixture,evidence){
   const team=(f.teamProjections||[]).find(t=>t.teamId===(leg.teamId||leg.betSelection.market.subject?.id));
   const iteam=individualFixture?.teams.find(t=>t.teamId===leg.teamId);
   const p=iteam?.players.find(p=>p.playerId===leg.playerId);
-  const validation=validationFor(leg,evidence),missing=[],contradictions=[];
+  const validation=validationFor(leg,evidence,fixture),missing=[],contradictions=[];
   const check=(condition,reason)=>{if(!condition)contradictions.push(reason);};
   if(player){
    if(!p)missing.push('CANONICAL_PLAYER_EVIDENCE_MISSING');
@@ -54,7 +57,7 @@ function evaluateRequirements(legs,fixture,individualFixture,evidence){
    if(finite(t.shotsTotal?.central)&&finite(t.shotsOnTarget?.central))check(t.shotsTotal.central>=t.shotsOnTarget.central,'TEAM_SOT_EXCEED_SHOTS');
   }
   const predicate=scorePredicateForLeg(leg);
-  if(!predicate&&!player)missing.push('NO_JOINT_SCORE_DISTRIBUTION_FOR_VOLUME');
+  if(!predicate&&!player&&!validation.approvable)missing.push('NO_VALIDATED_MARGINAL_DISTRIBUTION_FOR_VOLUME');
   if(!finite(evaluation.modelProbabilityPct))missing.push('EVENT_PROBABILITY_MISSING');
   else check(evaluation.modelProbabilityPct>=0&&evaluation.modelProbabilityPct<=100,'INVALID_EVENT_PROBABILITY');
   let analysis=classifySelectionScenario(leg,scenario);
@@ -73,9 +76,13 @@ function evaluateRequirements(legs,fixture,individualFixture,evidence){
    const values=matrices.map(m=>matrixProbability(m,predicate.predicate)*100);
    sensitivity={method:'V2_SCORE_MATRIX_FOUR_LAMBDA_PERTURBATIONS_10_PERCENT',probabilitiesPct:values.map(round),minimumPct:round(Math.min(evaluation.modelProbabilityPct,...values)),centralModelDifferencePct:round(values[0]-evaluation.modelProbabilityPct),validated:false};
   }
-  evaluation.prudentProbabilityPct=null;
-  evaluation.conservativeExpectedValuePct=null;
-  evaluation.uncertainty={status:'SENSITIVITY_ONLY_NOT_CALIBRATED',sensitivity,blocker:validation.required};
+  const prudent=prudentEvaluation(evaluation.modelProbabilityPct,validation,leg.betSelection.quote?.decimal,{limitedHistory:player});
+  Object.assign(evaluation,prudent);
+  if(validation.approvable){
+    if(/shots|sot|corners/.test(family))evaluation.kind='DISCRETE_COUNT_TEMPORAL_HOLDOUT';
+    leg.betSelection.operational.reliability={...leg.betSelection.operational.reliability,level:player?'Bassa':'Media',status:'VALIDATED_TEMPORAL_HOLDOUT',reason:'Exact model/event passed the shared temporal holdout gates.'};
+  }
+  evaluation.uncertainty={status:validation.approvable?'VALIDATED_MD7_PRUDENTIAL_DEDUCTION':'SENSITIVITY_ONLY_NOT_CALIBRATED',sensitivity,blocker:validation.approvable?null:validation.required};
   evaluation.probabilitySemantics=player?'CONDITIONAL_ON_PROBABLE_START':'ABSOLUTE_EVENT';
   evaluation.validation=validation;
   // Set targets for the unchanged V2 deduplication/threshold selector.
@@ -101,4 +108,4 @@ function selectRequirements(legs){
    betSelection:{...leg.betSelection,operational:{...leg.betSelection.operational,classification:qualified?'SELEZIONATA':leg.betSelection.operational.classification}}};
  });
 }
-module.exports={evaluateRequirements,selectRequirements};
+module.exports={validationFor,evaluateRequirements,selectRequirements};

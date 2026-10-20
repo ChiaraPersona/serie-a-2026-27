@@ -14,12 +14,14 @@ function targetForLeg(leg){
 function familyKey(modelId,t){return JSON.stringify([modelId,t.scope,t.metric,t.period,t.duo,t.woodwork,t.extraTime,t.conditionalOnStart]);}
 function eventKey(modelId,t){return JSON.stringify([familyKey(modelId,t),t.threshold,t.direction]);}
 function observationIssue(row){
- if(!row.modelId||!row.fixtureId||!row.target?.metric)return 'IDENTITY_OR_TARGET_MISSING';
+ if(!row.modelId||!row.fixtureId||!row.target?.metric||(['player','team'].includes(row.target.scope)&&!row.target.subjectId))return 'IDENTITY_OR_TARGET_MISSING';
+ if(row.target.period!=='REGULATION')return 'PERIOD_NOT_SUPPORTED';
  const ko=Date.parse(row.kickoffAt),made=Date.parse(row.availableAt);
  if(!Number.isFinite(ko)||!Number.isFinite(made)||made>=ko||row.availabilityVerified!==true)return 'PREMATCH_AVAILABILITY_UNPROVEN';
  for(const field of ['latestInputAt','trainingThroughAt','baselineAvailableAt'])if(!Number.isFinite(Date.parse(row[field]))||Date.parse(row[field])>=ko)return 'INPUT_OR_BASELINE_LEAKAGE';
  if(!finite(row.probability)||row.probability<0||row.probability>1)return 'ORIGINAL_EVENT_PROBABILITY_MISSING';
  if(!finite(row.baselineProbability)||row.baselineProbability<0||row.baselineProbability>1)return 'PREMATCH_BASELINE_MISSING';
+ if(!row.baseline||row.baseline.positives<C.thresholdPositives||row.baseline.n-row.baseline.positives<C.thresholdNegatives)return 'PREMATCH_BASELINE_SAMPLE_INSUFFICIENT';
  if(![0,1].includes(row.outcome)||row.actualVerified!==true)return 'EXACT_ACTUAL_MISSING_OR_DISPUTED';
  if(row.target.duo||row.target.woodwork||row.target.extraTime)return 'EXTENDED_CONTRACT_ACTUALS_NOT_CERTIFIED';
  if(row.phase!=='test')return 'DIAGNOSTIC_NOT_PREREGISTERED_HOLDOUT';

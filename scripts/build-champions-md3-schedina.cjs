@@ -4,6 +4,7 @@
 const fs=require('node:fs'),assert=require('node:assert/strict'),crypto=require('node:crypto');
 const {execFileSync}=require('node:child_process');
 const {buildSharedIndividualCatalog}=require('./champions/md3-shared-forecast-integration.cjs');
+const {currentModels,loadRegistry}=require('./champions/validation-data.cjs');
 const {buildPublication}=require('./champions/md3-publication-policy.cjs');
 const {playablePolicyFor}=require('./betting-market-policy');
 const read=p=>JSON.parse(fs.readFileSync(p,'utf8'));
@@ -34,7 +35,7 @@ async function build(){
     l.context={...l.context,forecastPolicy:'SERIE_A_CURRENT'};return true;
   })}));
   const result=buildSharedIndividualCatalog({baseMatches,individuals,database,odds:read(oddsPath),identityArchive:read('data/normalized/champions-md02-integration-2026-27.json')});
-  const publication=await buildPublication({matches:result.matches,fixtures:read('data/normalized/champions-md03-preliminary-2026-27.json').fixtures,individuals,evidence:{officialRegistry:read('data/normalized/official-starter-registry.json'),preview:read('data/analysis/champions/md3-offline-engine-2026-10-19/preview-md03.json'),pilot:read('data/normalized/champions-pilot-volume-backtest.json'),calibration:read('data/analysis/champions/model-calibration-audit-2026-10-11.json')}});
+  const publication=await buildPublication({matches:result.matches,fixtures:read('data/normalized/champions-md03-preliminary-2026-27.json').fixtures,individuals,evidence:{validationRegistry:loadRegistry(),modelIds:currentModels().ids,officialRegistry:read('data/normalized/official-starter-registry.json'),preview:read('data/analysis/champions/md3-offline-engine-2026-10-19/preview-md03.json'),pilot:read('data/normalized/champions-pilot-volume-backtest.json'),calibration:read('data/analysis/champions/model-calibration-audit-2026-10-11.json')}});
   result.matches=publication.matches;
   const all=result.matches.flatMap(m=>m.selections),selected=all.filter(l=>l.suggestionAnalysis?.suggested),players=all.filter(l=>l.marketScope==='player');
   for(const leg of all)leg.context={...leg.context,forecastPolicy:'SERIE_A_CURRENT'};

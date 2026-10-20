@@ -1,0 +1,1832 @@
+{
+  "schemaVersion": 1,
+  "kind": "champions-immutable-prematch-player-forecast-snapshot",
+  "immutable": true,
+  "createdAt": "2026-10-20T14:34:48.393Z",
+  "competition": "champions",
+  "phase": "league",
+  "season": "2026-27",
+  "matchday": 3,
+  "fixtureId": "ucl-2026-27-md03-03",
+  "date": "2026-10-20",
+  "kickoff": "21:00",
+  "timezone": "Europe/Rome",
+  "kickoffAt": "2026-10-20T19:00:00.000Z",
+  "homeTeam": "Roma",
+  "awayTeam": "Slovan Bratislava",
+  "chronologyStatus": "VALID_PREMATCH_SNAPSHOT",
+  "evaluationWindow": "test",
+  "model": {
+    "ids": {
+      "collective": "champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f",
+      "player": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1"
+    },
+    "modules": {
+      "collective": {
+        "scripts/build-champions-pilot-predictions.js": "33f125092367f1d518d67bece8a55cc6b253e34cb9f114cb4233c80e79341cd7",
+        "scripts/build-champions-1x2.js": "14862aba1553ab311ac0a9c634acdb748e38950d6ea5c32be2b4e48fe9dfde83",
+        "scripts/champions/offline-collective.js": "c061eabcac55ca28bb32ba68143009e50fa668a829108c22bb7fcf0987e31ab6"
+      },
+      "player": {
+        "scripts/build-champions-md3-probable.cjs": "3f81ca7dabbeeb96779ee6c9ee0f3897367865cbeae0904f3eece48c260e0b11",
+        "scripts/champions/md3-lineup-policy.js": "5de9c6e48c301568096e200c9a032ea1dc7e9eb6b07d3962f6863b57a8d02e40",
+        "scripts/champions/current-season-offline.js": "893ca70e5d73cf30f193aa16d4add179eabb381d431f9cba56e9779c89eb9bdd",
+        "scripts/champions/context-adjusted-player-baseline.js": "67bfffa938d134b6dca9b8018cd4b55146f4aead56b61ad25072fb7eb00d9f3d",
+        "scripts/champions/player-volume-utils.js": "d283e14790930987242f42c2d57fd14e9274635d1fcfa0f8c2fad7fa0a7ef6a6",
+        "scripts/champions/substitute-minutes.js": "bf74d46f1b41ab33821dcc277a4259f4ea7f35762f1f26fd4bfd2797663780cd"
+      }
+    }
+  },
+  "dataVersion": {
+    "capturedAt": "2026-10-20T14:34:48.393Z",
+    "availabilityProof": "CONTROLLED_LOCAL_CAPTURE_BEFORE_KICKOFF_NOT_EXTERNAL_TIMESTAMP_AUTHORITY",
+    "inputs": {
+      "data/normalized/champions-league-2026-27.json": "976ba156fc47ce8e908a3102539b0dd22005303dde6a9bca2e42f21cac8df0da",
+      "data/normalized/champions-md03-probable-individuals-2026-27.json": "ec5843586edd877946b3e878f8a6a992c2b4c6ae665217b71fb6ff7512a2ba62",
+      "data/normalized/champions-md03-preliminary-2026-27.json": "d26b35e51c804872c8beae51a6044d69d46f97190d6ea4536d23fde8a44f7c66",
+      "data/normalized/schedina-champions-md03.json": "4aeb2efabb30c6e205d7ef1a9d1673f0e2651d754a5a1ba5acc8bfbf06a2f936",
+      "data/normalized/odds/sisal/champions-league.json": "aa6fd6de6bd301dd16298337abff92e1869d96b4aa6be4313fe3a3dd410aa09b",
+      "data/normalized/uefa-europe-history-2023-26.json": "0817482042ba8bf3a522185aee52c580f3f21be79cec4daf83a7a2bae79c1e0e",
+      "data/normalized/uefa-1x2-model-2026-27.json": "d02e3b50291c32bacdadc7eaaa9a2fcc0633cd57a06df9480a347fb0f441b19d",
+      "data/sources/champions-probable-formations-md03-2026-27.json": "bffa9eb554cc5143bdbe51fcb22c7b53a2e9768cd7e7444fb26bf09d89fa99f9",
+      "data/normalized/champions-md03-player-database-2026-27.json": "5252d97d536f832ac8672a09c4d75a4cc7d130c5f977a5e42a5c17732d8c2db6"
+    }
+  },
+  "kickoffVerification": {
+    "source": "data/normalized/champions-league-2026-27.json",
+    "timezone": "Europe/Rome"
+  },
+  "identityOverlaySource": "CANONICAL_PLAYER_AND_TEAM_IDS_ONLY",
+  "coverage": {
+    "completeForSnapshotUniverse": true,
+    "universe": "ALL_EXISTING_PROBABLE_PLAYERS_AND_AVAILABLE_CONTRACT_EVENTS_INCLUDING_EXPLICIT_BLOCKERS",
+    "players": 48,
+    "events": 12,
+    "unresolved": 0
+  },
+  "players": [
+    {
+      "teamId": "roma",
+      "internalPlayerId": "pierluigi-gollini",
+      "name": "Pierluigi Gollini",
+      "role": "goalkeeper",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 90,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "roma",
+      "internalPlayerId": "evan-ndicka",
+      "name": "Evan Ndicka",
+      "role": null,
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 90,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "roma",
+      "internalPlayerId": "mario-hermoso",
+      "name": "Mario Hermoso",
+      "role": null,
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 82.5,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "roma",
+      "internalPlayerId": "gianluca-mancini",
+      "name": "Gianluca Mancini",
+      "role": null,
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 88,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "roma",
+      "internalPlayerId": "marten-de-roon",
+      "name": "Marten De Roon",
+      "role": null,
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 81,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "roma",
+      "internalPlayerId": "lorenzo-pellegrini",
+      "name": "Lorenzo Pellegrini",
+      "role": null,
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 64.6,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "roma",
+      "internalPlayerId": "devyne-rensch",
+      "name": "Devyne Rensch",
+      "role": null,
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 79,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "roma",
+      "internalPlayerId": "wesley",
+      "name": "Wesley",
+      "role": null,
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 90,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "roma",
+      "internalPlayerId": "rodrigo-mora",
+      "name": "Rodrigo Mora",
+      "role": null,
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 64.7,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "roma",
+      "internalPlayerId": "matias-soule",
+      "name": "Matías Soulé",
+      "role": null,
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 70.4,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "roma",
+      "internalPlayerId": "donyell-malen",
+      "name": "Donyell Malen",
+      "role": null,
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 79.1,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "roma",
+      "internalPlayerId": "devis-vasquez",
+      "name": "Devis Vasquez",
+      "role": "goalkeeper",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE"
+      ]
+    },
+    {
+      "teamId": "roma",
+      "internalPlayerId": "giorgio-de-marzi",
+      "name": "Giorgio De Marzi",
+      "role": "goalkeeper",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "roma",
+      "internalPlayerId": "konstantinos-koulierakis",
+      "name": "Konstantinos Koulierakis",
+      "role": null,
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 7.5,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "roma",
+      "internalPlayerId": "nahuel-molina",
+      "name": "Nahuel Molina",
+      "role": null,
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 15.7,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "roma",
+      "internalPlayerId": "leonardo-balerdi",
+      "name": "Leonardo Balerdi",
+      "role": null,
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 20.3,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "roma",
+      "internalPlayerId": "emanuele-lulli",
+      "name": "Emanuele Lulli",
+      "role": null,
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "roma",
+      "internalPlayerId": "daniele-ghilardi",
+      "name": "Daniele Ghilardi",
+      "role": null,
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 17.8,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "roma",
+      "internalPlayerId": "niccolo-pisilli",
+      "name": "Niccolò Pisilli",
+      "role": null,
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 17.8,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "roma",
+      "internalPlayerId": "santiago-castro",
+      "name": "Santiago Castro",
+      "role": null,
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 19.1,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "roma",
+      "internalPlayerId": "antonio-arena",
+      "name": "Antonio Arena",
+      "role": null,
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 2.1,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "slovan-bratislava",
+      "internalPlayerId": "dominik-takac",
+      "name": "Dominik Takáč",
+      "role": "goalkeeper",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE"
+      ]
+    },
+    {
+      "teamId": "slovan-bratislava",
+      "internalPlayerId": "svetozar-markovic",
+      "name": "Svetozar Marković",
+      "role": "defender",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "slovan-bratislava",
+      "internalPlayerId": "kenan-bajric",
+      "name": "Kenan Bajrić",
+      "role": "defender",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "slovan-bratislava",
+      "internalPlayerId": "sandro-cruz",
+      "name": "Sandro Cruz",
+      "role": "defender",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "slovan-bratislava",
+      "internalPlayerId": "cesar-blackman",
+      "name": "Cesar Blackman",
+      "role": "defender",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "slovan-bratislava",
+      "internalPlayerId": "alen-mustafic",
+      "name": "Alen Mustafić",
+      "role": "midfielder",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "slovan-bratislava",
+      "internalPlayerId": "peter-pokorny",
+      "name": "Peter Pokorný",
+      "role": "midfielder",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "slovan-bratislava",
+      "internalPlayerId": "cristian-martinez",
+      "name": "Cristian Martínez",
+      "role": "midfielder",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slovan-bratislava",
+      "internalPlayerId": "suleiman-camara",
+      "name": "Suleiman Camara",
+      "role": "forward",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slovan-bratislava",
+      "internalPlayerId": "tigran-barseghyan",
+      "name": "Tigran Barseghyan",
+      "role": "midfielder",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "slovan-bratislava",
+      "internalPlayerId": "andraz-sporar",
+      "name": "Andraž Šporar",
+      "role": "forward",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "slovan-bratislava",
+      "internalPlayerId": "aleksandar-popovic",
+      "name": "Aleksandar Popović",
+      "role": "goalkeeper",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slovan-bratislava",
+      "internalPlayerId": "david-balog",
+      "name": "Dávid Balog",
+      "role": "goalkeeper",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slovan-bratislava",
+      "internalPlayerId": "matus-macik",
+      "name": "Matúš Macík",
+      "role": "goalkeeper",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slovan-bratislava",
+      "internalPlayerId": "samuel-kozlovsky",
+      "name": "Samuel Kozlovský",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slovan-bratislava",
+      "internalPlayerId": "kevin-wimmer",
+      "name": "Kevin Wimmer",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "slovan-bratislava",
+      "internalPlayerId": "matus-tomasko",
+      "name": "Matúš Tomáško",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slovan-bratislava",
+      "internalPlayerId": "robert-tomanek",
+      "name": "Robert Tománek",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slovan-bratislava",
+      "internalPlayerId": "sahmkou-camara",
+      "name": "Sahmkou Camara",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slovan-bratislava",
+      "internalPlayerId": "rahim-ibrahim",
+      "name": "Rahim Ibrahim",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "slovan-bratislava",
+      "internalPlayerId": "leo-hofstadter",
+      "name": "Leo Hofstädter",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slovan-bratislava",
+      "internalPlayerId": "artur-gajdos",
+      "name": "Artur Gajdoš",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "slovan-bratislava",
+      "internalPlayerId": "danylo-ihnatenko",
+      "name": "Danylo Ihnatenko",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "slovan-bratislava",
+      "internalPlayerId": "daiki-matsuoka",
+      "name": "Daiki Matsuoka",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "slovan-bratislava",
+      "internalPlayerId": "nino-marcelli",
+      "name": "Nino Marcelli",
+      "role": "forward",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "slovan-bratislava",
+      "internalPlayerId": "alasana-yirajang",
+      "name": "Alasana Yirajang",
+      "role": "forward",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "slovan-bratislava",
+      "internalPlayerId": "alexej-maros",
+      "name": "Alexej Maroš",
+      "role": "forward",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    }
+  ],
+  "events": [
+    {
+      "modelId": "champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f",
+      "target": {
+        "scope": "match",
+        "metric": "result",
+        "threshold": null,
+        "direction": "1",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": 0.77,
+      "mean": null,
+      "quote": {
+        "decimal": 1.13,
+        "oddsRaw": 113,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911210:823790111:5386992428",
+      "eventId": "[\"[\\\"champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f\\\",\\\"match\\\",\\\"result\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"1\"]:",
+      "baselineProbability": 0.4970178926441352,
+      "baseline": {
+        "probability": 0.4970178926441352,
+        "n": 503,
+        "positives": 250,
+        "availableAt": "2026-10-20T14:34:48.393Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:34:48.393Z",
+      "trainingThroughAt": "2026-10-20T14:34:48.393Z",
+      "baselineAvailableAt": "2026-10-20T14:34:48.393Z"
+    },
+    {
+      "modelId": "champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f",
+      "target": {
+        "scope": "match",
+        "metric": "result",
+        "threshold": null,
+        "direction": "X",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": 0.124,
+      "mean": null,
+      "quote": {
+        "decimal": 9,
+        "oddsRaw": 900,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911210:823790111:5386992429",
+      "eventId": "[\"[\\\"champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f\\\",\\\"match\\\",\\\"result\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"X\"]:",
+      "baselineProbability": 0.1749502982107356,
+      "baseline": {
+        "probability": 0.1749502982107356,
+        "n": 503,
+        "positives": 88,
+        "availableAt": "2026-10-20T14:34:48.393Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:34:48.393Z",
+      "trainingThroughAt": "2026-10-20T14:34:48.393Z",
+      "baselineAvailableAt": "2026-10-20T14:34:48.393Z"
+    },
+    {
+      "modelId": "champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f",
+      "target": {
+        "scope": "match",
+        "metric": "result",
+        "threshold": null,
+        "direction": "2",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": 0.106,
+      "mean": null,
+      "quote": {
+        "decimal": 20,
+        "oddsRaw": 2000,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911210:823790111:5386992430",
+      "eventId": "[\"[\\\"champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f\\\",\\\"match\\\",\\\"result\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"2\"]:",
+      "baselineProbability": 0.32803180914512925,
+      "baseline": {
+        "probability": 0.32803180914512925,
+        "n": 503,
+        "positives": 165,
+        "availableAt": "2026-10-20T14:34:48.393Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:34:48.393Z",
+      "trainingThroughAt": "2026-10-20T14:34:48.393Z",
+      "baselineAvailableAt": "2026-10-20T14:34:48.393Z"
+    },
+    {
+      "modelId": "champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f",
+      "target": {
+        "scope": "match",
+        "metric": "double-chance",
+        "threshold": null,
+        "direction": "X2",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": 0.23,
+      "mean": null,
+      "quote": {
+        "decimal": 6,
+        "oddsRaw": 600,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911210:823790608:5387013743",
+      "eventId": "[\"[\\\"champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f\\\",\\\"match\\\",\\\"double-chance\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"X2\"]:",
+      "baselineProbability": 0.5029821073558648,
+      "baseline": {
+        "probability": 0.5029821073558648,
+        "n": 503,
+        "positives": 253,
+        "availableAt": "2026-10-20T14:34:48.393Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:34:48.393Z",
+      "trainingThroughAt": "2026-10-20T14:34:48.393Z",
+      "baselineAvailableAt": "2026-10-20T14:34:48.393Z"
+    },
+    {
+      "modelId": "champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f",
+      "target": {
+        "scope": "match",
+        "metric": "corners",
+        "threshold": null,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": null,
+      "mean": 8.5,
+      "quote": {
+        "decimal": 1.85,
+        "oddsRaw": 185,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911210:825861909:5398006109",
+      "eventId": "[\"[\\\"champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f\\\",\\\"match\\\",\\\"corners\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"OVER\"]:",
+      "baselineProbability": 1,
+      "baseline": {
+        "probability": 1,
+        "n": 17,
+        "positives": 17,
+        "availableAt": "2026-10-20T14:34:48.393Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:34:48.393Z",
+      "trainingThroughAt": "2026-10-20T14:34:48.393Z",
+      "baselineAvailableAt": "2026-10-20T14:34:48.393Z"
+    },
+    {
+      "modelId": "champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f",
+      "target": {
+        "scope": "team",
+        "metric": "corners",
+        "threshold": null,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": "roma"
+      },
+      "probability": null,
+      "mean": 6.35,
+      "quote": {
+        "decimal": 4,
+        "oddsRaw": 400,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911210:825861911:5398006113",
+      "eventId": "[\"[\\\"champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f\\\",\\\"team\\\",\\\"corners\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"OVER\"]:roma",
+      "baselineProbability": 0.9705882352941176,
+      "baseline": {
+        "probability": 0.9705882352941176,
+        "n": 34,
+        "positives": 33,
+        "availableAt": "2026-10-20T14:34:48.393Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:34:48.393Z",
+      "trainingThroughAt": "2026-10-20T14:34:48.393Z",
+      "baselineAvailableAt": "2026-10-20T14:34:48.393Z"
+    },
+    {
+      "modelId": "champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f",
+      "target": {
+        "scope": "team",
+        "metric": "corners",
+        "threshold": null,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": "slovan-bratislava"
+      },
+      "probability": null,
+      "mean": 2.17,
+      "quote": {
+        "decimal": 33,
+        "oddsRaw": 3300,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911210:825861889:5398006031",
+      "eventId": "[\"[\\\"champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f\\\",\\\"team\\\",\\\"corners\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"OVER\"]:slovan-bratislava",
+      "baselineProbability": 0.9705882352941176,
+      "baseline": {
+        "probability": 0.9705882352941176,
+        "n": 34,
+        "positives": 33,
+        "availableAt": "2026-10-20T14:34:48.393Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:34:48.393Z",
+      "trainingThroughAt": "2026-10-20T14:34:48.393Z",
+      "baselineAvailableAt": "2026-10-20T14:34:48.393Z"
+    },
+    {
+      "modelId": "champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f",
+      "target": {
+        "scope": "team",
+        "metric": "sot",
+        "threshold": null,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": "roma"
+      },
+      "probability": null,
+      "mean": 7.05,
+      "quote": {
+        "decimal": 3.1,
+        "oddsRaw": 310,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911210:825456378:5395788785",
+      "eventId": "[\"[\\\"champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f\\\",\\\"team\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"OVER\"]:roma",
+      "baselineProbability": 0.9166666666666666,
+      "baseline": {
+        "probability": 0.9166666666666666,
+        "n": 36,
+        "positives": 33,
+        "availableAt": "2026-10-20T14:34:48.393Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:34:48.393Z",
+      "trainingThroughAt": "2026-10-20T14:34:48.393Z",
+      "baselineAvailableAt": "2026-10-20T14:34:48.393Z"
+    },
+    {
+      "modelId": "champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f",
+      "target": {
+        "scope": "team",
+        "metric": "sot",
+        "threshold": null,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": "slovan-bratislava"
+      },
+      "probability": 0.02,
+      "mean": 2.42,
+      "quote": {
+        "decimal": 16,
+        "oddsRaw": 1600,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911210:825456412:5395788952",
+      "eventId": "[\"[\\\"champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f\\\",\\\"team\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"OVER\"]:slovan-bratislava",
+      "baselineProbability": 0.9166666666666666,
+      "baseline": {
+        "probability": 0.9166666666666666,
+        "n": 36,
+        "positives": 33,
+        "availableAt": "2026-10-20T14:34:48.393Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:34:48.393Z",
+      "trainingThroughAt": "2026-10-20T14:34:48.393Z",
+      "baselineAvailableAt": "2026-10-20T14:34:48.393Z"
+    },
+    {
+      "modelId": "champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f",
+      "target": {
+        "scope": "match",
+        "metric": "shots",
+        "threshold": null,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": null,
+      "mean": 27.5,
+      "quote": {
+        "decimal": 2.6,
+        "oddsRaw": 260,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911210:825456470:5395788357",
+      "eventId": "[\"[\\\"champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f\\\",\\\"match\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"OVER\"]:",
+      "baselineProbability": 1,
+      "baseline": {
+        "probability": 1,
+        "n": 18,
+        "positives": 18,
+        "availableAt": "2026-10-20T14:34:48.393Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:34:48.393Z",
+      "trainingThroughAt": "2026-10-20T14:34:48.393Z",
+      "baselineAvailableAt": "2026-10-20T14:34:48.393Z"
+    },
+    {
+      "modelId": "champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f",
+      "target": {
+        "scope": "team",
+        "metric": "shots",
+        "threshold": null,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": "roma"
+      },
+      "probability": null,
+      "mean": 19.78,
+      "quote": {
+        "decimal": 2.5,
+        "oddsRaw": 250,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911210:825456123:5395771677",
+      "eventId": "[\"[\\\"champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f\\\",\\\"team\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"OVER\"]:roma",
+      "baselineProbability": 1,
+      "baseline": {
+        "probability": 1,
+        "n": 36,
+        "positives": 36,
+        "availableAt": "2026-10-20T14:34:48.393Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:34:48.393Z",
+      "trainingThroughAt": "2026-10-20T14:34:48.393Z",
+      "baselineAvailableAt": "2026-10-20T14:34:48.393Z"
+    },
+    {
+      "modelId": "champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f",
+      "target": {
+        "scope": "team",
+        "metric": "shots",
+        "threshold": null,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": "slovan-bratislava"
+      },
+      "probability": null,
+      "mean": 7.73,
+      "quote": {
+        "decimal": 1.95,
+        "oddsRaw": 195,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911210:825456486:5395788423",
+      "eventId": "[\"[\\\"champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f\\\",\\\"team\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"OVER\"]:slovan-bratislava",
+      "baselineProbability": 1,
+      "baseline": {
+        "probability": 1,
+        "n": 36,
+        "positives": 36,
+        "availableAt": "2026-10-20T14:34:48.393Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:34:48.393Z",
+      "trainingThroughAt": "2026-10-20T14:34:48.393Z",
+      "baselineAvailableAt": "2026-10-20T14:34:48.393Z"
+    }
+  ],
+  "teamProjections": [
+    {
+      "teamId": "roma",
+      "team": "Roma",
+      "venue": "home",
+      "expectedGoals": 2.4,
+      "shotsTotal": {
+        "central": 19.78,
+        "sd": 7.85,
+        "min": 13.2,
+        "max": 26.4,
+        "interval": "p20-p80-approx",
+        "normalization": {
+          "method": "relative-to-domestic-league",
+          "targetBaseline": 14.136,
+          "currentSeasonReliabilityPct": 50
+        },
+        "inputs": [
+          {
+            "label": "Roma in casa",
+            "value": 17.166,
+            "weightPct": 50.6
+          },
+          {
+            "label": "Slovan Bratislava concede in trasferta",
+            "value": 23.029,
+            "weightPct": 39.4
+          },
+          {
+            "label": "ultime 8 Roma",
+            "value": 20.222,
+            "weightPct": 10
+          }
+        ]
+      },
+      "shotsOnTarget": {
+        "central": 7.05,
+        "sd": 2.73,
+        "min": 4.8,
+        "max": 9.3,
+        "interval": "p20-p80-approx",
+        "normalization": {
+          "method": "relative-to-domestic-league",
+          "targetBaseline": 4.637,
+          "currentSeasonReliabilityPct": 50
+        },
+        "inputs": [
+          {
+            "label": "Roma in casa",
+            "value": 5.867,
+            "weightPct": 50.6
+          },
+          {
+            "label": "Slovan Bratislava concede in trasferta",
+            "value": 8.651,
+            "weightPct": 39.4
+          },
+          {
+            "label": "ultime 8 Roma",
+            "value": 6.695,
+            "weightPct": 10
+          }
+        ]
+      },
+      "corners": {
+        "central": 6.35,
+        "sd": 3.36,
+        "min": 3.5,
+        "max": 9.2,
+        "interval": "p20-p80-approx",
+        "normalization": {
+          "method": "relative-to-domestic-league",
+          "targetBaseline": 5.021,
+          "currentSeasonReliabilityPct": 50
+        },
+        "inputs": [
+          {
+            "label": "Roma in casa",
+            "value": 6.031,
+            "weightPct": 50.6
+          },
+          {
+            "label": "Slovan Bratislava concede in trasferta",
+            "value": 6.716,
+            "weightPct": 39.4
+          },
+          {
+            "label": "ultime 8 Roma",
+            "value": 6.532,
+            "weightPct": 10
+          }
+        ]
+      },
+      "fouls": {
+        "central": 12.61,
+        "sd": 3.41,
+        "min": 9.7,
+        "max": 15.5,
+        "interval": "p20-p80-approx",
+        "normalization": {
+          "method": "relative-to-domestic-league",
+          "targetBaseline": 12.371,
+          "currentSeasonReliabilityPct": 50
+        },
+        "inputs": [
+          {
+            "label": "Roma in casa",
+            "value": 13.214,
+            "weightPct": 50.6
+          },
+          {
+            "label": "Slovan Bratislava concede in trasferta",
+            "value": 11.474,
+            "weightPct": 39.4
+          },
+          {
+            "label": "ultime 8 Roma",
+            "value": 14.055,
+            "weightPct": 10
+          }
+        ]
+      },
+      "cards": {
+        "central": 1.6,
+        "sd": 1.26,
+        "min": 0.5,
+        "max": 2.7,
+        "interval": "p20-p80-approx",
+        "normalization": {
+          "method": "relative-to-domestic-league",
+          "targetBaseline": 1.848,
+          "currentSeasonReliabilityPct": 50
+        },
+        "inputs": [
+          {
+            "label": "Roma in casa",
+            "value": 1.716,
+            "weightPct": 50.6
+          },
+          {
+            "label": "Slovan Bratislava concede in trasferta",
+            "value": 1.372,
+            "weightPct": 39.4
+          },
+          {
+            "label": "ultime 8 Roma",
+            "value": 1.88,
+            "weightPct": 10
+          }
+        ]
+      },
+      "lines": {
+        "shotsTotal": [
+          {
+            "threshold": 8.5,
+            "overPct": 95.1,
+            "underPct": 4.9
+          },
+          {
+            "threshold": 10.5,
+            "overPct": 89.8,
+            "underPct": 10.2
+          },
+          {
+            "threshold": 12.5,
+            "overPct": 82.4,
+            "underPct": 17.6
+          },
+          {
+            "threshold": 14.5,
+            "overPct": 73.1,
+            "underPct": 26.9
+          },
+          {
+            "threshold": 16.5,
+            "overPct": 62.8,
+            "underPct": 37.2
+          }
+        ],
+        "shotsOnTarget": [
+          {
+            "threshold": 2.5,
+            "overPct": 96.8,
+            "underPct": 3.2
+          },
+          {
+            "threshold": 3.5,
+            "overPct": 91.5,
+            "underPct": 8.5
+          },
+          {
+            "threshold": 4.5,
+            "overPct": 82.4,
+            "underPct": 17.6
+          },
+          {
+            "threshold": 5.5,
+            "overPct": 69.8,
+            "underPct": 30.2
+          },
+          {
+            "threshold": 6.5,
+            "overPct": 55.3,
+            "underPct": 44.7
+          }
+        ],
+        "corners": [
+          {
+            "threshold": 3.5,
+            "overPct": 79.6,
+            "underPct": 20.4
+          },
+          {
+            "threshold": 4.5,
+            "overPct": 67.8,
+            "underPct": 32.2
+          },
+          {
+            "threshold": 5.5,
+            "overPct": 55.2,
+            "underPct": 44.8
+          },
+          {
+            "threshold": 6.5,
+            "overPct": 43.2,
+            "underPct": 56.8
+          }
+        ]
+      }
+    },
+    {
+      "teamId": "slovan-bratislava",
+      "team": "Slovan Bratislava",
+      "venue": "away",
+      "expectedGoals": 0.63,
+      "shotsTotal": {
+        "central": 7.73,
+        "sd": 2.92,
+        "min": 5.3,
+        "max": 10.2,
+        "interval": "p20-p80-approx",
+        "normalization": {
+          "method": "relative-to-domestic-league",
+          "targetBaseline": 10.947,
+          "currentSeasonReliabilityPct": 14.3
+        },
+        "inputs": [
+          {
+            "label": "Slovan Bratislava in trasferta",
+            "value": 6.915,
+            "weightPct": 54.6
+          },
+          {
+            "label": "Roma concede in casa",
+            "value": 8.682,
+            "weightPct": 42.5
+          },
+          {
+            "label": "ultime 7 Slovan Bratislava",
+            "value": 9.25,
+            "weightPct": 2.9
+          }
+        ]
+      },
+      "shotsOnTarget": {
+        "central": 2.42,
+        "sd": 1.68,
+        "min": 1,
+        "max": 3.8,
+        "interval": "p20-p80-approx",
+        "normalization": {
+          "method": "relative-to-domestic-league",
+          "targetBaseline": 3.627,
+          "currentSeasonReliabilityPct": 14.3
+        },
+        "inputs": [
+          {
+            "label": "Slovan Bratislava in trasferta",
+            "value": 1.799,
+            "weightPct": 54.6
+          },
+          {
+            "label": "Roma concede in casa",
+            "value": 3.137,
+            "weightPct": 42.5
+          },
+          {
+            "label": "ultime 7 Slovan Bratislava",
+            "value": 3.531,
+            "weightPct": 2.9
+          }
+        ]
+      },
+      "corners": {
+        "central": 2.17,
+        "sd": 1.63,
+        "min": 0.8,
+        "max": 3.5,
+        "interval": "p20-p80-approx",
+        "normalization": {
+          "method": "relative-to-domestic-league",
+          "targetBaseline": 3.858,
+          "currentSeasonReliabilityPct": 14.3
+        },
+        "inputs": [
+          {
+            "label": "Slovan Bratislava in trasferta",
+            "value": 1.514,
+            "weightPct": 54.6
+          },
+          {
+            "label": "Roma concede in casa",
+            "value": 2.9,
+            "weightPct": 42.5
+          },
+          {
+            "label": "ultime 7 Slovan Bratislava",
+            "value": 3.878,
+            "weightPct": 2.9
+          }
+        ]
+      },
+      "fouls": {
+        "central": 12.69,
+        "sd": 4.2,
+        "min": 9.2,
+        "max": 16.2,
+        "interval": "p20-p80-approx",
+        "normalization": {
+          "method": "relative-to-domestic-league",
+          "targetBaseline": 12.596,
+          "currentSeasonReliabilityPct": 14.3
+        },
+        "inputs": [
+          {
+            "label": "Slovan Bratislava in trasferta",
+            "value": 11.677,
+            "weightPct": 54.6
+          },
+          {
+            "label": "Roma concede in casa",
+            "value": 14.155,
+            "weightPct": 42.5
+          },
+          {
+            "label": "ultime 7 Slovan Bratislava",
+            "value": 10.296,
+            "weightPct": 2.9
+          }
+        ]
+      },
+      "cards": {
+        "central": 2.51,
+        "sd": 1.22,
+        "min": 1.5,
+        "max": 3.5,
+        "interval": "p20-p80-approx",
+        "normalization": {
+          "method": "relative-to-domestic-league",
+          "targetBaseline": 2.13,
+          "currentSeasonReliabilityPct": 14.3
+        },
+        "inputs": [
+          {
+            "label": "Slovan Bratislava in trasferta",
+            "value": 2.232,
+            "weightPct": 54.6
+          },
+          {
+            "label": "Roma concede in casa",
+            "value": 2.905,
+            "weightPct": 42.5
+          },
+          {
+            "label": "ultime 7 Slovan Bratislava",
+            "value": 2.102,
+            "weightPct": 2.9
+          }
+        ]
+      },
+      "lines": {
+        "shotsTotal": [
+          {
+            "threshold": 8.5,
+            "overPct": 37.2,
+            "underPct": 62.8
+          },
+          {
+            "threshold": 10.5,
+            "overPct": 16.8,
+            "underPct": 83.2
+          },
+          {
+            "threshold": 12.5,
+            "overPct": 6.1,
+            "underPct": 93.9
+          },
+          {
+            "threshold": 14.5,
+            "overPct": 1.8,
+            "underPct": 98.2
+          },
+          {
+            "threshold": 16.5,
+            "overPct": 0.4,
+            "underPct": 99.6
+          }
+        ],
+        "shotsOnTarget": [
+          {
+            "threshold": 2.5,
+            "overPct": 42.7,
+            "underPct": 57.3
+          },
+          {
+            "threshold": 3.5,
+            "overPct": 23.4,
+            "underPct": 76.6
+          },
+          {
+            "threshold": 4.5,
+            "overPct": 11.3,
+            "underPct": 88.7
+          },
+          {
+            "threshold": 5.5,
+            "overPct": 4.9,
+            "underPct": 95.1
+          },
+          {
+            "threshold": 6.5,
+            "overPct": 2,
+            "underPct": 98
+          }
+        ],
+        "corners": [
+          {
+            "threshold": 3.5,
+            "overPct": 19,
+            "underPct": 81
+          },
+          {
+            "threshold": 4.5,
+            "overPct": 8.8,
+            "underPct": 91.2
+          },
+          {
+            "threshold": 5.5,
+            "overPct": 3.8,
+            "underPct": 96.2
+          },
+          {
+            "threshold": 6.5,
+            "overPct": 1.5,
+            "underPct": 98.5
+          }
+        ]
+      }
+    }
+  ],
+  "contentHash": "33b07dc31e9c3e2590115dea47e0de999e22975606fed6a147f5c911ba173edf"
+}
