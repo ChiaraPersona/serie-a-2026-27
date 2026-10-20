@@ -133,7 +133,7 @@ export function createPage(deps){
       }
       if(compactForecasts)markets.sort((a,b)=>presentationRank(a.leg)-presentationRank(b.leg));
       const fixture=`${home} - ${away}`,marketList=markets.length?`<div class="betting-market-columns" aria-hidden="true"><span>Mercato</span><span>Probabilità</span><span>Quota Sisal</span><span>EV</span><span></span></div><ol class="betting-market-list">${data.championsWorkspace?championsGroupedRows(markets,fixture,match):markets.map((entry,index)=>isUnquotedIndividualForecast(entry.leg)?unquotedForecastRow(entry,index):selectableMarketRow(entry,index,fixture,match)).join("")}</ol>`:`<p class="betting-market-empty">Nessun pronostico selezionato per questa partita.</p>`;
-      return `<details class="betting-match-panel" data-match-panel data-match-id="${esc(match.id)}"><summary><span><small>${esc(dateOnly(match.date))} · ${esc(match.kickoff||"Orario N/D")}</small><strong>${esc(home)} - ${esc(away)}</strong></span><span class="betting-match-count">${selectedCount} pronostici selezionati</span><span class="betting-match-toggle" aria-hidden="true">＋</span></summary><div class="betting-match-body">${data.championsWorkspace&&data.matchday===3?championsTeamForecastPanel(data.teamForecasts?.get(match.id)):""}${marketList}${data.championsWorkspace&&data.matchday!==3?championsManualMarkets(catalog?.selections||[],fixture,match):""}${data.championsWorkspace&&data.matchday===3?championsComboStatus(data,match.id):""}${data.championsWorkspace?`<a class="betting-match-reading-link" href="${esc(match.readingUrl)}">Apri la lettura della partita →</a>`:""}</div></details>`;
+      return `<details class="betting-match-panel" data-match-panel data-match-id="${esc(match.id)}"><summary><span><small>${esc(dateOnly(match.date))} · ${esc(match.kickoff||"Orario N/D")}</small><strong>${esc(home)} - ${esc(away)}</strong></span><span class="betting-match-count">${selectedCount} pronostici selezionati</span><span class="betting-match-toggle" aria-hidden="true">＋</span></summary><div class="betting-match-body">${marketList}${data.championsWorkspace&&data.matchday!==3?championsManualMarkets(catalog?.selections||[],fixture,match):""}${data.championsWorkspace&&data.matchday===3?championsComboStatus(data,match.id):""}${data.championsWorkspace?`<a class="betting-match-reading-link" href="${esc(match.readingUrl)}">Apri la lettura della partita →</a>`:""}</div></details>`;
     }).join("");
     return `<section class="betting-matchday-shell" aria-labelledby="betting-markets-title"><header class="betting-matchday-heading"><div><p class="eyebrow">${matches.length} partite · ordine cronologico</p><h3 id="betting-markets-title">Pronostici selezionati</h3><p class="betting-market-snapshot-note">Quote Sisal verificate nello snapshot del ${esc(dateOnly(data.oddsRetrievedAt))}; la disponibilità attuale va ricontrollata sul bookmaker.</p></div><div class="betting-matchday-actions"><button type="button" data-match-open-all>Apri tutte</button><button type="button" data-match-close-all>Chiudi tutte</button></div></header><div class="betting-match-list">${panels}</div></section>`;
   }
@@ -396,16 +396,6 @@ export function createPage(deps){
     const groups=new Map();
     entries.forEach(entry=>{const family=entry.leg.marketFamily||entry.leg.betSelection.market.family||"Altri mercati";if(!groups.has(family))groups.set(family,[]);groups.get(family).push(entry)});
     return [...groups].map(([family,rows])=>`<li class="betting-market-family-heading"><h4>${esc(family)}</h4></li>${rows.map((entry,index)=>entry.leg.catalogOrigin==='champions-md03-individual-model'?unquotedForecastRow(entry,index):selectableMarketRow(entry,index,fixture,match)).join("")}`).join("");
-  }
-
-  function championsTeamForecastPanel(forecast){
-    if(!forecast)return "";
-    const fmt=value=>typeof value==="number"&&Number.isFinite(value)?value.toLocaleString("it-IT",{maximumFractionDigits:1}):"N/D";
-    const teams=forecast.teamProjections||[];
-    const metrics=[["Tiri previsti","shotsTotal"],["SOT previsti","shotsOnTarget"],["Corner previsti","corners"]];
-    const rows=metrics.map(([label,key])=>{const values=teams.map(t=>t[key]?.central??null);return '<div><dt>'+label+'</dt><dd>'+values.map(fmt).join(" – ")+'</dd></div>'}).join("");
-    const p=forecast.probabilities||{},dc=[["1X",p.home,p.draw],["X2",p.draw,p.away]].map(([label,a,b])=>'<div><dt>'+label+'</dt><dd>'+fmt(typeof a==="number"&&typeof b==="number"?a+b:null)+'%</dd></div>').join("");
-    return '<section class="betting-team-forecast'+(compactForecasts?' betting-team-forecast--compact':'')+'">'+(compactForecasts?'':'<h4>Previsioni della partita</h4><p>Valori casa – trasferta · doppie chance derivate dalle probabilità 1X2, non selezioni approvate.</p>')+'<dl aria-label="Previsioni numeriche casa – trasferta">'+rows+dc+'</dl></section>';
   }
 
   function championsComboStatus(workspace,matchId){
