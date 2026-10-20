@@ -16,11 +16,12 @@
     const name=player.canonicalName||player.name||row.playerName||subject.name||(typeof row.player==='string'?row.player:null);
     return Boolean(name&&fixture.names.includes(token(name)));
   }
-  function filter(value,matchId){
-    if(Array.isArray(value))return value.filter(row=>eligible(row,matchId)).map(row=>filter(row,matchId));
+  function filter(value,matchId,archivedMatchIds=new Set()){
+    if(Array.isArray(value))return value.filter(row=>archivedMatchIds.has(row?.fixtureId||row?.matchId||row?.betSelection?.identity?.matchId||matchId)||eligible(row,matchId)).map(row=>filter(row,matchId,archivedMatchIds));
     if(!value||typeof value!=='object')return value;
     const id=value.fixtureId||value.matchId||value.id||matchId;
-    const copy={};for(const [key,item] of Object.entries(value))copy[key]=filter(item,id);
+    if(archivedMatchIds.has(id))return value;
+    const copy={};for(const [key,item] of Object.entries(value))copy[key]=filter(item,id,archivedMatchIds);
     return copy;
   }
   const api={configure,eligible,filter,token};scope.officialStarterPolicy=api;

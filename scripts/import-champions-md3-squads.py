@@ -73,6 +73,7 @@ for i,pair in enumerate(fixtures):
     old=next((p for p in overlay if p['canonicalPlayerId']==internal),None)
     if old and not entry['uefaPlayerId']:entry['uefaPlayerId']=old['providerIds'].get('uefa')
     cases.append({'teamId':tid,'alias':alias,'canonicalName':canonical,'playerId':internal,'providerPlayerId':pid,'uefaPlayerId':entry['uefaPlayerId'],'rosterPath':rosterPath,'sourceUrl':url,'status':'resolved-existing-database-identity'})
+   entry['stablePlayerId']=tid+':'+entry['playerId']
    players.append(entry)
  teams[-1]['players']=players
 assert not unparsed,unparsed
@@ -88,7 +89,7 @@ for t in teams:
    if case:p.update({k:case[k] for k in ['playerId','providerPlayerId','canonicalName']},registeredPlayerId=case['playerId'],identityStatus='resolved-md3-reviewed-existing-identity',identityEvidence={'sourceUrl':case['sourceUrl'],'rosterPath':case['rosterPath']})
    hits=[x for x in t['players'] if (p.get('playerId') and x['playerId']==p['playerId']) or norm(x['sourceName'])==norm(p['sourceName']) or norm(x['displayName'])==norm(p['sourceName']) or (p.get('providerPlayerId') and x['providerPlayerId']==p['providerPlayerId'])]
    if len(hits)==1:
-    p['shirtNumber']=hits[0]['shirtNumber'];p['uefaRole']=hits[0]['role'];hits[0]['availability']=cat
+    p['shirtNumber']=hits[0]['shirtNumber'];p['uefaRole']=hits[0]['role'];p['stablePlayerId']=hits[0]['stablePlayerId'];hits[0]['availability']=cat
     if not p.get('playerId'):
      p.update({k:hits[0][k] for k in ['playerId','registeredPlayerId','providerPlayerId','canonicalName']},identityStatus='resolved-exact-uefa-display-name',identityEvidence={'sourceUrl':t['source']['url']})
  # Potential bench is eligibility minus XI and known absences/doubts. It is NOT a match call-up.
@@ -102,7 +103,7 @@ for t in callups['teams']:
  for p in t.get('players') or []:
   hits=[x for x in squad['players'] if (p.get('playerId') and x['playerId']==p['playerId']) or norm(p['sourceName']) in [norm(x['sourceName']),norm(x['canonicalName']),norm(x['displayName'])]]
   if len(hits)==1:
-   x=hits[0];p.update({k:x[k] for k in ['playerId','registeredPlayerId','providerPlayerId','canonicalName','shirtNumber']},identityStatus='resolved-exact-md3-squad',eligibilityStatus='listed-md3-squad')
+   x=hits[0];p.update({k:x[k] for k in ['playerId','registeredPlayerId','providerPlayerId','canonicalName','shirtNumber','stablePlayerId']},identityStatus='resolved-exact-md3-squad',eligibilityStatus='listed-md3-squad')
   else:p['eligibilityStatus']='not-reconciled-with-md3-eligible-squad'
 write('data/sources/champions-callups-md03-2026-27.json',callups)
 print(json.dumps({'teams':len(teams),'players':sum(len(t['players']) for t in teams),'resolved':len(cases),'unmatchedStarters':{t['teamId']:t['unmatchedProbableStarters'] for t in teams if t['unmatchedProbableStarters']}},ensure_ascii=True))

@@ -8,16 +8,12 @@ const squads=read('data/sources/champions-md03-squads-2026-27.json');
 const history=read('data/normalized/champions-player-stats-2025-26.json');
 const seasonal=read('data/sources/champions-player-season-history-2025-26.json');
 const current=read('data/normalized/champions-player-stats-2026-27.json');
-const previousPath='data/normalized/champions-md03-player-database-2026-27.json';
-const previous=process.argv.includes('--reuse-history')?read(previousPath):null;
-const historicalRows=previous?{matchesByAthlete:new Map()}:collectEspnRows({season:'2025-26'});
+const historicalRows=collectEspnRows({season:'2025-26'});
 const teams=squads.teams.map(t=>({...t,players:t.players.map(p=>{
  const ct=current.teams.find(x=>x.team===t.team),ht=history.teams.find(x=>x.team===t.team);
  const member=ct.players.find(x=>x.id===p.playerId||(p.providerPlayerId&&String(x.providerPlayerId)===p.providerPlayerId));
  let historical=ht.players.find(x=>x.id===p.playerId||(p.providerPlayerId&&String(x.providerPlayerId)===p.providerPlayerId));
  let origin=historical?.previousSeason?'existing-normalized-history':null;
- const cached=previous?.teams.find(x=>x.teamId===t.teamId)?.players.find(x=>x.id===p.playerId&&x.providerPlayerId===p.providerPlayerId);
- if(!historical?.previousSeason&&cached?.previousSeason){historical=cached;origin=cached.historicalSource;}
  if(!historical?.previousSeason&&p.providerPlayerId){
   const entries=aggregateEntries(p.providerPlayerId,member?.position||p.role,historicalRows.matchesByAthlete.get(p.providerPlayerId)||[]).map(e=>({...e,playerId:p.playerId}));
   if(entries.length){historical={id:p.playerId,name:p.canonicalName,providerPlayerId:p.providerPlayerId,previousSeason:{season:'2025/26',entries,totals:totals(entries),totalsByCompetition:entries},sourceMode:'espn-match-rosters',dataQuality:'available-existing-evidence'};origin='existing-raw-match-history';}

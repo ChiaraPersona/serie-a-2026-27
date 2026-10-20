@@ -11,6 +11,13 @@ export function createDataService(release){
       // Operational selections and saved MyCombo entries still use the starter policy.
       // Final match evidence includes substitutes required by DUO settlement.
       if(name==='schedina-champions-md01.json'||name==='matches.json')return data;
+      // Preserve original contracts on completed Serie A fixtures for settlement.
+      // eligible() remains strict for operational selections and saved MyCombo.
+      if(/^schedina-md\d+\.json$/.test(name)||name==='predictions.json'){
+        const matches=await fetchJson(`${DATA}matches.json`,'archive match status');
+        const archived=new Set(matches.filter(m=>m.competition==='serie-a'&&m.status==='finished'&&m.score).map(m=>m.id));
+        return globalThis.officialStarterPolicy.filter(data,undefined,archived);
+      }
       return globalThis.officialStarterPolicy.filter(data);
     },
     loadGenerated:path=>fetchJson(`data/generated/${path}`,path),

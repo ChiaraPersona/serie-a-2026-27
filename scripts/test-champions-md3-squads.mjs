@@ -8,6 +8,9 @@ const read=p=>JSON.parse(fs.readFileSync(p,'utf8'));
 const squads=read('data/sources/champions-md03-squads-2026-27.json'),db=read('data/normalized/champions-md03-player-database-2026-27.json'),probable=read('data/sources/champions-probable-formations-md03-2026-27.json'),output=read('data/normalized/champions-md03-probable-individuals-2026-27.json');
 assert.equal(squads.teams.length,36);assert.equal(new Set(squads.teams.map(t=>t.teamId)).size,36);assert.equal(new Set(squads.teams.map(t=>t.fixtureId)).size,18);
 assert.equal(squads.identityResolutions.length,15);assert.equal(new Set(squads.identityResolutions.map(p=>p.providerPlayerId)).size,15);
+const allPlayers=squads.teams.flatMap(t=>t.players);
+assert.equal(new Set(allPlayers.map(p=>p.stablePlayerId)).size,allPlayers.length);
+const homonyms=allPlayers.filter(p=>p.playerId==='ruben-gomez');assert.equal(homonyms.length,2);assert.notEqual(homonyms[0].stablePlayerId,homonyms[1].stablePlayerId);assert.notEqual(homonyms[0].providerPlayerId,homonyms[1].providerPlayerId);
 for(const c of squads.identityResolutions){
  const t=db.teams.find(t=>t.teamId===c.teamId),hits=t.players.filter(p=>p.playerId===c.playerId);
  assert.equal(hits.length,1);assert.equal(hits[0].providerPlayerId,c.providerPlayerId);assert(c.uefaPlayerId,`missing UEFA id ${c.alias}`);

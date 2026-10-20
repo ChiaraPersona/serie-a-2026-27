@@ -176,7 +176,12 @@ function currentMatchStats(teamId) {
       expectedGoalsAgainst: sum(items, "expectedGoals", "opponent"),
       averagePossession: possessionTotal == null ? null : rate(possessionTotal, items.length),
       yellowCards: sum(items, "yellowCards"),
-      corners: sum(items, "corners")
+      secondYellowCards: sum(items, "secondYellowCards"),
+      straightRedCards: sum(items, "straightRedCards"),
+      foulsCommitted: sum(items, "fouls"),
+      foulsWon: sum(items, "fouls", "opponent"),
+      corners: sum(items, "corners"),
+      cornersAgainst: sum(items, "corners", "opponent")
     };
   };
   return { selected, home: split(selected.filter(item => item.isHome)), away: split(selected.filter(item => !item.isHome)), sum };
@@ -298,7 +303,7 @@ function buildTeam(team) {
   const latestOfficial = officialLineupByTeam.get(team.id);
   const officialLineup = latestOfficial?.matchday === probableLineups.matchday ? latestOfficial : null;
   const lineup = officialLineup || projectedLineup;
-  const starters = officialLineup ? officialLineup.players : projectedStarters;
+  const starters = officialLineup ? officialLineup.players.filter(player => player.lineupStatus === "starter") : projectedStarters;
   const lineupSource = officialLineup ? { provider: officialLineup.provider || officialLineupSource.provider, scope: `Formazioni ufficiali ${officialLineup.fixtureLabel}, ${officialLineup.matchday}ª giornata`, url: officialLineup.sourceUrl || null, retrievedAt: officialLineup.retrievedAt || officialLineupSource.retrievedAt } : probableLineupSource;
   if (!details?.city || !details?.stadium || !details?.coach || !details?.preferredFormation) throw new Error(`${team.name}: anagrafica 2026/27 incompleta`);
   if (!lineup || !/^[1-9](?:-[1-9]){2,4}$/.test(lineup.formation) || starters.length !== 11) throw new Error(`${team.name}: probabile formazione editoriale incompleta`);
@@ -450,7 +455,7 @@ const ensureCurrentPlayer = (teamId, matchPlayer) => {
     currentLeaderboardMap.set(key, {
       id: matchPlayer.playerId, name: squadPlayer?.name || matchPlayer.player, currentTeamId: teamId,
       currentTeam: team?.name || teamId, role: squadPlayer?.detailedRole || squadPlayer?.role || null,
-      appearances: 0, minutes: 0, sums: { goals: 0, assists: 0, shots: 0, shotsOnTarget: 0, foulsCommitted: 0, foulsWon: 0 },
+      appearances: 0, starts: 0, minutes: 0, sums: { goals: 0, assists: 0, shots: 0, shotsOnTarget: 0, foulsCommitted: 0, foulsWon: 0 },
       coverage: { goals: 0, assists: 0, shots: 0, shotsOnTarget: 0, foulsCommitted: 0, foulsWon: 0 }, cards: 0
     });
   }
@@ -463,6 +468,7 @@ for (const match of currentSeasonMatches) {
       if (!matchPlayer.playerId) continue;
       const row = ensureCurrentPlayer(teamId, matchPlayer);
       row.appearances += 1;
+      row.starts += matchPlayer.starter === true ? 1 : 0;
       row.minutes += matchPlayer.minutes ?? 0;
       for (const field of ["goals", "assists", "shots", "shotsOnTarget", "foulsCommitted", "foulsWon"]) {
         if (typeof matchPlayer[field] !== "number") continue;
@@ -491,7 +497,8 @@ const currentLeaderboardRows = [...currentLeaderboardMap.values()].map(row => {
   return {
     id: row.id, name: row.name, currentTeamId: row.currentTeamId, currentTeam: row.currentTeam,
     role: row.role, previousTeam: null, sameClub: false, competition: "Serie A",
-    appearances: row.appearances, minutes: row.minutes, values, disciplinaryFeatures:disciplinaryFeatures ?? null,
+    appearances: row.appearances, starts: row.starts, minutes: row.minutes, values, disciplinaryFeatures:disciplinaryFeatures ?? null,
+    perGame: Object.fromEntries(leaderboardMetrics.map(metric => [metric.field, values[metric.field] == null ? null : rate(values[metric.field], row.appearances)])),
     per90: Object.fromEntries(leaderboardMetrics.map(metric => [metric.field, per90(values[metric.field], row.minutes)]))
   };
 });

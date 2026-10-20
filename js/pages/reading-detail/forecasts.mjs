@@ -13,8 +13,8 @@ export function forecastPresentation(leg){
   outsider:leg.isOutsider===true,highlight:leg.isPreferred===true,
   tags:[modifiers.replacementIncluded||market.bookmakerSemantics?.replacementIncluded?'Sostituto incluso':null,modifiers.woodworkIncluded||market.bookmakerSemantics?.postsAndCrossbarIncluded?'Pali/traverse':null,market.bookmakerSemantics?.duo?'DUO':null,modifiers.periodScope==='first-half'?'Primo tempo':modifiers.periodScope==='both-halves'?'Entrambi i tempi':null,market.threshold!=null?`Soglia ${market.threshold}`:null].filter(Boolean)};
 }
-export function publishedReadingForecasts(catalog,matchId){
- const unique=new Map();for(const leg of sharedForecastsForMatch(catalog,matchId))if(!unique.has(leg.selectionId))unique.set(leg.selectionId,leg);return [...unique.values()];
+export function publishedReadingForecasts(catalog,matchId,match=null){
+ const unique=new Map();for(const leg of sharedForecastsForMatch(catalog,matchId,match))if(!unique.has(leg.selectionId))unique.set(leg.selectionId,leg);return [...unique.values()];
 }
 export function canPickReading(model,leg){
  return model.fixture.status!=='finished'&&model.competition==='serie-a'&&isPublishedForecast(leg)&&(isCanonicalModelForecast(leg)||hasVerifiedPlayableQuote(leg));

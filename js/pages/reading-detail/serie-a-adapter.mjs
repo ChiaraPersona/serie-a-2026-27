@@ -10,6 +10,6 @@ export function adaptSerieAReading({match,teams,teamDirectory,prediction,marketC
   return createReadingView({competition:'serie-a',
     fixture:{id:match.id,matchday:match.matchday,date:match.date,kickoff:match.kickoff,status:match.status,score:match.score??null,stadium:homeMeta?.stadium??null},
     home:side(match.homeTeam),away:side(match.awayTeam),
-    forecasts:publishedReadingForecasts(marketCatalog,match.id),prediction,formation,quality:prediction?.dataQuality??null,analysis,sources
+    forecasts:publishedReadingForecasts(marketCatalog,match.id,match),prediction,formation,quality:prediction?.dataQuality??null,analysis,sources
   });
 }

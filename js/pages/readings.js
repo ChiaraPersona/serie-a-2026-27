@@ -73,7 +73,7 @@ export function renderPredictionV2Sections({prediction,teams=[],esc=value=>Strin
 }
 
 export function renderSharedForecasts({marketCatalog,match}={}){
- const forecasts=publishedReadingForecasts(marketCatalog,match?.id);
+ const forecasts=publishedReadingForecasts(marketCatalog,match?.id,match);
  if(!forecasts.length)return '';
  return `<section class="section reading-shared-forecasts" aria-labelledby="reading-shared-forecasts-title"><header class="section-heading"><h2 id="reading-shared-forecasts-title">Pronostici</h2></header><div data-reading-forecast-content>${compactForecastMarkup({competition:'serie-a',fixture:match,forecasts})}</div></section>`;
 }
@@ -256,12 +256,12 @@ function pilotSection(aggregates,report){const serieA=report.competitions.find(i
       });
     }
     let personalReadingStore=null;
-    if(activeReadingMatch&&publishedReadingForecasts(forecastDataset?.marketCatalog,activeReadingMatch.id).length){
+    if(activeReadingMatch&&publishedReadingForecasts(forecastDataset?.marketCatalog,activeReadingMatch.id,activeReadingMatch).length){
       const context={competition:'serie-a',season:'2026-27',matchday:requestedMatchday};
       const store=createPersonalBetslipStore();personalReadingStore=store;store.setContext(context);
       const latest=(forecastDataset?.marketCatalog?.matches||[]).flatMap(m=>sharedForecastsForMatch(forecastDataset.marketCatalog,m.matchId)).map(leg=>({...leg,context}));
       store.reconcile(latest);
-      if(!finishReading){const content=document.querySelector('[data-reading-forecast-content]');if(content)installForecasts({competition:'serie-a',fixture:activeReadingMatch,forecasts:publishedReadingForecasts(forecastDataset.marketCatalog,activeReadingMatch.id)},content,document.querySelector('#app'),store);}
+      if(!finishReading){const content=document.querySelector('[data-reading-forecast-content]');if(content)installForecasts({competition:'serie-a',fixture:activeReadingMatch,forecasts:publishedReadingForecasts(forecastDataset.marketCatalog,activeReadingMatch.id,activeReadingMatch)},content,document.querySelector('#app'),store);}
     }
 
   if(page==="readings"&&activeReadingMatch){renderProbableLineups(activeReadingMatch,teamDirectory,activePrediction);if(activeReadingMatch.competition!=="coppa-italia")renderReadingPilotEvidence(activeReading,activeReadingMatch);renderTacticalBaselines(activeReadingMatch,teamStyleProfiles,teams)}

@@ -47,7 +47,7 @@ function syntheticMatch(matchday) {
   };
 }
 
-const syntheticDataset = [...clone(matches), ...Array.from({ length: 24 }, (_, index) => syntheticMatch(index + 7))];
+const syntheticDataset = [...clone(matches).filter(match => match.competition !== 'serie-a' || match.matchday < 7), ...Array.from({ length: 24 }, (_, index) => syntheticMatch(index + 7))];
 const profileAt = targetMatchday => buildProfile(veneziaConfig, { matches: syntheticDataset, asOfMatchday: targetMatchday });
 const t0 = profileAt(7), t1 = profileAt(8), t2 = profileAt(11), t3 = profileAt(21), t4 = profileAt(31);
 

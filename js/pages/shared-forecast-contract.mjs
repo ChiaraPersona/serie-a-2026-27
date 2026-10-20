@@ -33,18 +33,18 @@ export function isUnquotedIndividualForecast(leg){
     && finite(leg?.betSelection?.evaluation?.individualReference?.modelProbabilityPct);
 }
 
-export function isPublishedForecast(leg){
+export function isPublishedForecast(leg,{archived=false}={}){
   return leg?.lineupEligibility?.eligible!==false
-    && (!globalThis.officialStarterPolicy||globalThis.officialStarterPolicy.eligible(leg))
+    && (archived||!globalThis.officialStarterPolicy||globalThis.officialStarterPolicy.eligible(leg))
     && leg?.forecastStatus!=="withdrawn"
     && leg?.suggestionAnalysis?.suggested===true
     && (hasVerifiedPlayableQuote(leg)||isUnquotedIndividualForecast(leg)||isCanonicalModelForecast(leg));
 }
 
-export function sharedForecastsForMatch(marketCatalog,matchId){
+export function sharedForecastsForMatch(marketCatalog,matchId,match=null){
   const fixture=(marketCatalog?.matches||[]).find(match=>match.matchId===matchId);
   return (fixture?.selections||[])
-    .filter(isPublishedForecast)
+    .filter(leg=>isPublishedForecast(leg,{archived:match?.id===matchId&&match?.status==='finished'}))
     .sort((left,right)=>Number(left.suggestionAnalysis?.rank??Number.MAX_SAFE_INTEGER)-Number(right.suggestionAnalysis?.rank??Number.MAX_SAFE_INTEGER)||String(left.selectionId).localeCompare(String(right.selectionId),"it"));
 }
 

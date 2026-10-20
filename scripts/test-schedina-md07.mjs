@@ -33,7 +33,8 @@ for(const fixture of fixtures){
   for(const leg of selections){
     assert(!allIds.has(leg.selectionId),'Duplicato');allIds.add(leg.selectionId);
     assert(hasVerifiedPlayableQuote(leg)||isCanonicalModelForecast(leg),leg.selectionId);
-    if(leg.playerId) assert(eligible.has(leg.playerId),leg.playerId);
+    // Completed fixtures retain the original pre-match contracts for settlement.
+    if(leg.playerId && fixture.status !== 'finished') assert(eligible.has(leg.playerId),leg.playerId);
     const contract=leg.betSelection,quote=event.markets.flatMap(m=>m.selections).find(s=>String(s.providerSelectionId)===String(contract.identity.providerSelectionId));
     if(hasVerifiedPlayableQuote(leg)){assert(quote,leg.selectionId);assert.equal(quote.odds,contract.quote.decimal)}
     else {assert.equal(contract.quote.decimal,null);assert.equal(contract.evaluation.expectedValuePct,null)}
