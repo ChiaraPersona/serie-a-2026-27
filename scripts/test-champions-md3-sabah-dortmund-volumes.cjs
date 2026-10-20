@@ -1,0 +1,38 @@
+'use strict';
+const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto'),assert=require('node:assert/strict');
+const root=path.resolve(__dirname,'..'),read=p=>JSON.parse(fs.readFileSync(path.join(root,p),'utf8'));
+const digest=p=>crypto.createHash('sha256').update(fs.readFileSync(path.join(root,p))).digest('hex');
+const target='ucl-2026-27-md03-02';
+const artifact=read('data/derived/champions-md03/sabah-dortmund-volumes-v1-2026-10-20.json');
+const evidence=read(artifact.source.path),source=read('data/sources/champions-pilot-match-stats-2025-27.json');
+assert.equal(artifact.fixtureId,target);assert.equal(artifact.status,'DIAGNOSTIC_ONLY_NOT_PUBLISHED');assert.equal(artifact.publicationGate.passed,false);
+assert.equal(digest(artifact.source.path),artifact.source.sha256);
+assert.equal(digest(artifact.builder.path),artifact.builder.sha256);
+for(const [p,h] of Object.entries(artifact.protectedHashes))assert.equal(digest(p),h,`protected input changed: ${p}`);
+assert.equal(evidence.matches.length,13);
+assert(evidence.matches.every(m=>`${m.date}T00:00:00Z`<evidence.cutoff&&m.date<'2026-10-20'));
+assert(evidence.matches.every(m=>['shots','sot','corners','fouls','yellow'].every(k=>m[k].length===2&&m[k].every(Number.isInteger))));
+assert(evidence.matches.every(m=>m.sot.every((v,i)=>v<=m.shots[i])));
+const sabah=artifact.profiles.find(p=>p.teamId==='sabah'),dortmund=artifact.profiles.find(p=>p.teamId==='borussia-dortmund');
+assert.deepEqual([sabah.matches,sabah.homeMatches,sabah.awayMatches],[10,5,5]);
+assert.deepEqual([dortmund.matches,dortmund.homeMatches,dortmund.awayMatches],[52,26,26]);
+assert(sabah.usableForDetailedVolumes&&dortmund.usableForDetailedVolumes);
+assert.equal(artifact.forecast.dataQuality.detailedVolumesAvailable,true);
+assert(artifact.forecast.teamProjections.every(t=>['shotsTotal','shotsOnTarget','corners'].every(k=>Number.isFinite(t[k]?.central)&&t[k].lines===undefined)));
+const qualifiers=evidence.matches.filter(m=>m.competition==='uefa.champions_qual'&&m.home==='Sabah');
+assert.equal(qualifiers.length,4); // Four qualifier home games plus MD2 league-phase home.
+const average=a=>a.reduce((s,v)=>s+v,0)/a.length;
+assert.equal(average([29,35,13,13,13]),20.6);
+assert.equal(average([13,13,13]),13);
+const original=read('data/derived/champions-md03/market-catalog-v2-2026-10-20.json');
+const official=read('data/derived/champions-md03/market-catalog-official-two-v1-2026-10-20.json');
+const effective=new Map(original.matches.map(m=>[m.matchId,m]));for(const m of official.matches)effective.set(m.matchId,m);
+assert.equal(effective.size,18);assert.equal(effective.get(target).suggestions.length,0);
+const otherIds=[...effective.keys()].filter(id=>id!==target);assert.equal(otherIds.length,17);
+// Both source catalogs were covered by the pre-replay SHA-256 snapshot above.
+// Their unchanged bytes protect every one of the 17 non-target fixture rows.
+assert.equal(digest('data/derived/champions-md03/market-catalog-official-two-v1-2026-10-20.json'),artifact.protectedHashes['data/derived/champions-md03/market-catalog-official-two-v1-2026-10-20.json']);
+const odds=read('data/normalized/odds/sisal/champions-league.json').events.find(e=>e.canonicalMatchId===target);assert(odds);
+const categories=['U/O TIRI TOTALI SQUADRA X','U/O TIRI IN PORTA SQUADRA X','U/O CORNER SQUADRA X','U/O CORNER','1X2 ESITO FINALE','DOPPIA CHANCE','UNDER/OVER'];
+const counts=Object.fromEntries(categories.map(name=>[name,odds.markets.filter(m=>m.marketName===name).flatMap(m=>m.selections.filter(s=>s.status==='open'&&Number.isFinite(s.odds)&&s.odds>1)).length]));
+console.log(JSON.stringify({passed:true,sourceMatches:source.matches.length,addedEvidenceMatches:evidence.matches.length,profiles:{sabah:sabah.matches,dortmund:dortmund.matches},otherFixturesProtectedByUnchangedCatalogHash:otherIds.length,officialSelectionsUnchanged:effective.get(target).suggestions.length,exactProviderContractsAvailable:counts,publication:'BLOCKED_UNCALIBRATED_QUALIFIER_TRANSFER'},null,2));
