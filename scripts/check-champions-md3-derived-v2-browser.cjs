@@ -18,7 +18,10 @@ const server=http.createServer((req,res)=>{
   for(const width of [1440,390]){
    await page.setViewportSize({width,height:900});
    await page.goto(`${base}/schedina.html?competizione=champions&giornata=3`,{waitUntil:'networkidle'});
-   await page.waitForSelector('[data-champions-workspace="3"]');
+   await page.waitForSelector('[data-champions-workspace="3"]',{state:'attached'});
+   if(!(await page.locator('[data-champions-workspace="3"]').isVisible())){
+    console.log('DIAGNOSTIC',JSON.stringify({errors,body:await page.locator('body').getAttribute('class'),section:await page.locator('[data-champions-workspace="3"]').evaluate(node=>({display:getComputedStyle(node).display,visibility:getComputedStyle(node).visibility,ancestor:node.closest('[hidden]')?.outerHTML.slice(0,200)}))}));
+   }
    assert.equal(await page.locator('[data-match-panel]').count(),18);
    assert.equal(await page.locator('[data-selection-row][data-selected-forecast="true"]').count(),113);
    for(const match of derived.matches){
@@ -29,7 +32,7 @@ const server=http.createServer((req,res)=>{
    assert(!(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth)),`overflow ${width}`);
    assert.deepEqual(errors,[]);
    await page.goto(`${base}/champions-league.html?match=ucl-2026-27-md03-01`,{waitUntil:'networkidle'});
-   await page.waitForSelector('[data-champions-workspace="3"]');
+   await page.waitForSelector('[data-champions-workspace="3"]',{state:'attached'});
    assert.equal(await page.locator('[data-champions-workspace="3"] [data-selection-row][data-selected-forecast="true"]').count(),6);
    assert.equal(await page.locator('[data-md3-probable-team="fenerbahce"] [data-projected-role="starter"]').count(),11);
    assert(!(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth)),`reading overflow ${width}`);
