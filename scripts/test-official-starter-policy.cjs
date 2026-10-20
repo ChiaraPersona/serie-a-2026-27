@@ -57,10 +57,10 @@ console.log('OK official starter policy, scope, identity, modifiers, confirmatio
 (async()=>{
   policy.configure(registry);
   const {createPersonalBetslipStore,PERSONAL_BETSLIP_STORAGE_KEY}=await import('../js/pages/personal-betslip-store.mjs');
-  const context=excluded[0].context,key='champions:2026-27:md02',saved={version:1,activeContext:key,contexts:{[key]:{context,selections:excluded}}};
+  const context=excludedOriginal[0].context,key='champions:2026-27:md02',saved={version:1,activeContext:key,contexts:{[key]:{context,selections:excludedOriginal}}};
   const storage={getItem:()=>JSON.stringify(saved),setItem:()=>{}};
   const store=createPersonalBetslipStore({storage});store.setContext(context);store.reconcile(data.fixtures.flatMap(f=>f.selections));
   assert.equal(store.getSnapshot().selections.length,0);
-  for(const row of excluded)assert.equal(store.add(row).status,'OFFICIAL_NON_STARTER');
+  for(const row of excludedOriginal)assert.equal(store.add(row).status,'OFFICIAL_NON_STARTER');
   console.log('OK stale MyCombo purge and direct add rejection');
 })().catch(e=>{console.error(e);process.exitCode=1;});

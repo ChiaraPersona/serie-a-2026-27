@@ -35,7 +35,18 @@ const server=http.createServer((req,res)=>{
    await page.waitForSelector('[data-champions-workspace="3"]',{state:'attached'});
    assert.equal(await page.locator('[data-champions-workspace="3"] [data-selection-row][data-selected-forecast="true"]').count(),6);
    assert.equal(await page.locator('[data-md3-probable-team="fenerbahce"] [data-projected-role="starter"]').count(),11);
+   assert.equal(await page.locator('[data-md3-probable-team="slavia-praha"] [data-projected-role="starter"]').count(),11);
+   assert.equal(await page.locator('[data-md3-probable-team="fenerbahce"] small').filter({hasText:'Titolare ufficiale'}).count(),11);
+   assert((await page.locator('[data-md3-probable-team="fenerbahce"] [data-projected-role="bench"]').count())>0);
    assert(!(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth)),`reading overflow ${width}`);
+   assert.deepEqual(errors,[]);
+   await page.goto(`${base}/champions-league.html?match=ucl-2026-27-md03-02`,{waitUntil:'networkidle'});
+   await page.waitForSelector('[data-champions-workspace="3"]',{state:'attached'});
+   assert.equal(await page.locator('[data-md3-probable-team="sabah"] [data-projected-role="starter"]').count(),11);
+   assert.equal(await page.locator('[data-md3-probable-team="borussia-dortmund"] [data-projected-role="starter"]').count(),11);
+   assert.equal(await page.locator('[data-champions-workspace="3"] [data-selection-row][data-selected-forecast="true"]').count(),0);
+   assert.equal(await page.locator('[data-md3-probable-team="sabah"] small').filter({hasText:'Titolare ufficiale'}).count(),11);
+   assert(!(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth)),`second reading overflow ${width}`);
    assert.deepEqual(errors,[]);
   }
   await page.goto(`${base}/schedina.html?competizione=champions&giornata=3`,{waitUntil:'networkidle'});

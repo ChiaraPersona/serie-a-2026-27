@@ -55,7 +55,7 @@ for(const match of derived.matches){
 }
 const load=name=>Promise.resolve(read(`data/normalized/${name}`));
 const workspace=await loadChampionsWorkspaceMd3Derived(load,3);
-assert.equal(workspace.derivedVersion,derived.version);
+assert.equal(workspace.derivedVersion,'official-two-v1-2026-10-20');
 assert.equal(workspace.marketCatalog.matches.length,18);
 assert.equal(workspace.all.filter(l=>l.suggestionAnalysis?.suggested).length,113);
 assert.deepEqual(workspace.source.marketCatalog.myCombo,frozen.marketCatalog.myCombo);

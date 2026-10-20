@@ -21,6 +21,7 @@ export function createDataService(release){
       return globalThis.officialStarterPolicy.filter(data);
     },
     loadGenerated:path=>fetchJson(`data/generated/${path}`,path),
+    loadDerived:path=>{if(!/^champions-md03\/[a-z0-9-]+\.json$/.test(path))throw new Error('Percorso derivato non valido');return fetchJson(`data/derived/${path}`,path)},
     loadTeamDirectory:()=>fetchJson("data/teams/index.json","data/teams/index.json"),
     loadPlayerLeaderboards:()=>fetchJson("data/teams/player-leaderboards.json","data/teams/player-leaderboards.json"),
     loadObjectiveProfiles:()=>fetchJson("data/team-objectives.json","data/team-objectives.json")

@@ -124,11 +124,18 @@ export async function loadChampionsWorkspaceMd3Derived(load,matchday){
   const fixtureIds=new Set(workspace.fixtures.map(f=>f.id));
   if(derived.matches.some(match=>!fixtureIds.has(match.matchId))||new Set(derived.matches.map(match=>match.matchId)).size!==fixtureIds.size)
     throw new Error('Fixture Champions MD3 non coerenti');
-  const all=derived.matches.flatMap(match=>match.selections);
+  const official=await load('../derived/champions-md03/market-catalog-official-two-v1-2026-10-20.json');
+  const targetIds=['ucl-2026-27-md03-01','ucl-2026-27-md03-02'];
+  if(official.version!=='official-two-v1-2026-10-20'||official.status!=='PRELIMINARY_NOT_STATISTICALLY_VALIDATED'||
+    official.matches.length!==2||official.matches.some((match,index)=>match.matchId!==targetIds[index]))
+    throw new Error('Aggiornamento ufficiale Champions MD3 non coerente');
+  const overrides=new Map(official.matches.map(match=>[match.matchId,match]));
+  const matches=derived.matches.map(match=>overrides.get(match.matchId)||match);
+  const all=matches.flatMap(match=>match.selections);
   // The official-starter policy may remove selections after a lineup update.
   if(all.filter(leg=>leg.suggestionAnalysis?.suggested).length>derived.summary.selected)
     throw new Error('Selezioni preliminari Champions MD3 non coerenti');
-  return {...workspace,all,derivedVersion:derived.version,
-    marketCatalog:{...workspace.marketCatalog,matches:derived.matches,
+  return {...workspace,all,derivedVersion:official.version,
+    marketCatalog:{...workspace.marketCatalog,matches,
       totals:{...workspace.marketCatalog.totals,preliminary:all.filter(leg=>leg.suggestionAnalysis?.suggested).length}}};
 }
