@@ -1,3 +1,4 @@
+import {championsKit} from './champions-kits.mjs';
 // Presentation only. Palette indices refer to the existing team.colors values.
 const styles = Object.freeze({
   frosinone: { pattern: "solid", primary: 1 },
@@ -29,7 +30,9 @@ export function lineupKitStyle(team) {
   };
 }
 
-export function renderLineupKit(team, { goalkeeper = false, shirtNumber = null } = {}) {
+export function renderLineupKit(team, { goalkeeper = false, shirtNumber = null, competition = null } = {}) {
+  const champions = competition === "champions" ? championsKit(team) : null;
+  if(champions)return renderChampionsKit(champions,shirtNumber);
   const kit = goalkeeper ? { pattern: "panel" } : lineupKitStyle(team);
   const id = `lineup-kit-${++sequence}`;
   let definition = "";
@@ -46,4 +49,19 @@ export function renderLineupKit(team, { goalkeeper = false, shirtNumber = null }
   // The pattern fills the silhouette itself, so no part can spill outside it.
   const number=Number.isInteger(shirtNumber)&&shirtNumber>=1&&shirtNumber<=99?`<text x="24" y="34" text-anchor="middle" fill="#fff" stroke="#10201c" stroke-width="2" paint-order="stroke" style="font:700 15px sans-serif">${shirtNumber}</text>`:'';
   return `<svg class="reading-kit-shirt" data-kit-pattern="${kit.pattern}" viewBox="0 0 48 48" aria-hidden="true" focusable="false"${colors}>${definition}<path class="kit-body" d="${silhouette}"${fill}/>${panel}<path class="kit-trim" d="M18 6Q24 17 30 6M2 21 10 25M38 25 46 21"/>${number}</svg>`;
+}
+
+function renderChampionsKit(kit,shirtNumber){
+ const id=`lineup-kit-${++sequence}`,p=kit.primary,s=kit.secondary;
+ let decoration='';
+ if(kit.pattern==='vertical')for(let x=6;x<48;x+=12)decoration+=`<rect x="${x}" width="6" height="48" fill="${s}"/>`;
+ if(kit.pattern==='horizontal')for(let y=6;y<48;y+=12)decoration+=`<rect y="${y}" width="48" height="6" fill="${s}"/>`;
+ if(kit.pattern==='halves')decoration=`<rect x="24" width="24" height="48" fill="${s}"/>`;
+ if(kit.pattern==='center')decoration=`<rect x="20" width="8" height="48" fill="${s}"/>`;
+ if(kit.pattern==='chest')decoration=`<rect y="21" width="48" height="7" fill="${s}"/>`;
+ if(kit.pattern==='sleeves')decoration=`<path d="M0 0H13V28H0ZM35 0H48V28H35Z" fill="${s}"/>`;
+ const light=(color)=>{const c=color.slice(1);return .2126*parseInt(c.slice(0,2),16)+.7152*parseInt(c.slice(2,4),16)+.0722*parseInt(c.slice(4,6),16)>155};
+ const ink=light(p)?'#111111':'#FFFFFF',outline=light(p)?'#FFFFFF':'#111111';
+ const number=Number.isInteger(shirtNumber)&&shirtNumber>=1&&shirtNumber<=99?`<text x="24" y="34" text-anchor="middle" fill="${ink}" stroke="${outline}" stroke-width="2" paint-order="stroke" style="font:700 15px sans-serif">${shirtNumber}</text>`:`<text x="24" y="34" text-anchor="middle" fill="${ink}" stroke="${outline}" stroke-width="2" paint-order="stroke" style="font:700 15px sans-serif">—</text>`;
+ return `<svg class="reading-kit-shirt" data-champions-kit="${kit.id}" data-kit-pattern="${kit.pattern}" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><defs><clipPath id="${id}"><path d="${silhouette}"/></clipPath></defs><g clip-path="url(#${id})"><path d="${silhouette}" fill="${p}"/>${decoration}<path d="M18 6Q24 17 30 6M2 21 10 25M38 25 46 21" fill="none" stroke="${s}" stroke-width="2"/></g><path d="${silhouette}" fill="none" stroke="#d4d4d4" stroke-width="1"/>${number}</svg>`;
 }

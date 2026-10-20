@@ -20,7 +20,7 @@ export function lineupPositions(lineup, away = false) {
   });
 }
 
-export function renderLineupField(sides, { orientation = "horizontal", shirtNumberFor = () => null } = {}) {
+export function renderLineupField(sides, { orientation = "horizontal", shirtNumberFor = () => null, competition = null } = {}) {
   if (sides.some(({lineup}) => lineup && !lineupPositions(lineup).length)) {
     return `<div class="reading-lineup-grid">${sides.map(({team,lineup})=>`<section><h3>${esc(team.name)}</h3><p>Disposizione tattica non disponibile</p><ol>${(lineup?.players||[]).map(p=>`<li>${esc(typeof p==='string'?p:p.name||p.currentName)}</li>`).join('')}</ol></section>`).join('')}</div>`;
   }
@@ -32,7 +32,7 @@ export function renderLineupField(sides, { orientation = "horizontal", shirtNumb
       const x = 4 + (player.y - 12) * 92 / 76;
       const y = 90 - (player.x - 6) * 80 / 38;
       const count = positions.filter(item => item.line === player.line).length;
-      return `<div class="reading-kit-player${player.goalkeeper ? " is-goalkeeper" : ""}" data-tactical-line="${player.line}" style="left:${x}%;top:${y}%;width:${92 / count}%">${renderLineupKit(team, {goalkeeper: player.goalkeeper,shirtNumber:shirtNumberFor(player.name)})}<strong title="${esc(player.name)}">${esc(player.name)}</strong></div>`;
+      return `<div class="reading-kit-player${player.goalkeeper ? " is-goalkeeper" : ""}" data-tactical-line="${player.line}" style="left:${x}%;top:${y}%;width:${92 / count}%">${renderLineupKit(team, {competition,goalkeeper: player.goalkeeper,shirtNumber:shirtNumberFor(player.name)})}<strong title="${esc(player.name)}">${esc(player.name)}</strong></div>`;
     }).join("");
     return `<div class="team-vertical-field" data-orientation="vertical" aria-label="${esc(team.name)} · ${esc(lineup.formation)}" style="--reading-lineup-primary:${esc(primary)};--reading-lineup-secondary:${esc(secondary)}"><svg class="reading-field-markings" viewBox="0 0 600 900" preserveAspectRatio="none" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1"><rect x="14" y="14" width="572" height="872" rx="4"/><path d="M14 450H586"/><circle cx="300" cy="450" r="70"/><circle cx="300" cy="450" r="2"/><path d="M165 14V145H435V14M235 14V65H365V14M165 886V755H435V886M235 886V835H365V886"/></g></svg>${players}</div>`;
   }
@@ -40,7 +40,7 @@ export function renderLineupField(sides, { orientation = "horizontal", shirtNumb
   const players = sides.map(({team, lineup}, side) => {
     if (!lineup) return "";
     const [primary = "#174fa5", secondary = "#081d48"] = team.colors || [];
-    return `<div class="reading-field-team" data-lineup-side="${side === 0 ? "home" : "away"}" aria-label="${esc(team.name)} · ${esc(lineup.formation)}" style="--reading-lineup-primary:${esc(primary)};--reading-lineup-secondary:${esc(secondary)}">${lineupPositions(lineup, side === 1).map(player => `<div class="reading-kit-player${player.goalkeeper ? " is-goalkeeper" : ""}" data-tactical-line="${player.line}" style="left:${player.x}%;top:${player.y}%">${renderLineupKit(team, {goalkeeper: player.goalkeeper})}<strong title="${esc(player.name)}">${esc(player.name)}</strong></div>`).join("")}</div>`;
+    return `<div class="reading-field-team" data-lineup-side="${side === 0 ? "home" : "away"}" aria-label="${esc(team.name)} · ${esc(lineup.formation)}" style="--reading-lineup-primary:${esc(primary)};--reading-lineup-secondary:${esc(secondary)}">${lineupPositions(lineup, side === 1).map(player => `<div class="reading-kit-player${player.goalkeeper ? " is-goalkeeper" : ""}" data-tactical-line="${player.line}" style="left:${player.x}%;top:${player.y}%">${renderLineupKit(team, {competition,goalkeeper: player.goalkeeper})}<strong title="${esc(player.name)}">${esc(player.name)}</strong></div>`).join("")}</div>`;
   }).join("");
   const coaches = sides.map(({team, lineup}) => {
     const confirmation = lineup?.coachConfirmation ? ` (${esc(lineup.coachConfirmation)})` : "";

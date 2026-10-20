@@ -1,3 +1,4 @@
+import {esc,number} from './format.mjs';
 import {createReadingView} from './view-model.mjs';
 import {mountReadingShell,prepareReadingShell} from './shell.mjs?v=20261020-champions-layout-v1';
 
@@ -10,8 +11,20 @@ export async function mountChampionsReading({fixture,prediction,probableFixture,
  const root=document.querySelector('#app');
  const draft=document.createElement('div');draft.innerHTML=refereeMarkup;
  root.innerHTML='<div class="reading-back"><a href="champions-league.html">← Letture Champions League</a></div><div class="reading-match-hero"></div>';
- const referee=draft.querySelector('.reading-referee-assignment');if(referee)root.append(referee);
+ const referee=draft.querySelector('.reading-referee-assignment');
+ if(referee){
+   const sample=document.createElement('div');sample.className='champions-reading-referee-detail';
+   for(const node of [...referee.querySelectorAll('.rf-season,.rf-indicators,.rf-note')])sample.append(node);
+   referee.append(sample);root.append(referee);
+ }
  await mountReadingShell(model,root,{prepared,extend:async context=>{
+   const scenario=context.groups.get('scenario').lastElementChild;
+   const probabilities=document.createElement('p');probabilities.className='rd-footnote';
+   probabilities.textContent=['home','draw','away'].map((key,i)=>`${['1','X','2'][i]}: ${number(prediction.probabilities?.[key],2)}%`).join(' · ');
+   scenario.append(probabilities);
+   const totals=document.createElement('details');totals.className='rd-disclosure';
+   totals.innerHTML='<summary>Totali previsti · modello</summary><dl class="rd-player-kpis">'+[['Gol',prediction.expectedGoals?.total],['Tiri',prediction.matchProjection?.shotsTotal?.central],['SOT',prediction.matchProjection?.shotsOnTarget?.central],['Corner',prediction.matchProjection?.corners?.central],['Cartellini',prediction.cards?.central]].map(([label,value])=>`<div><dt>${esc(label)}</dt><dd>${number(value,2)}</dd></div>`).join('')+'</dl>';
+   scenario.append(totals);
    if(probableMarkup){
      const draft=document.createElement('div');draft.innerHTML=probableMarkup;
      const content=context.groups.get('giocatori').lastElementChild;
@@ -21,6 +34,12 @@ export async function mountChampionsReading({fixture,prediction,probableFixture,
        content.replaceChildren();
        const toolbar=document.createElement('div');toolbar.className='rd-player-toolbar';toolbar.innerHTML='<div class="rd-player-mode" role="group" aria-label="Filtra per formazione"><button type="button" data-player-lineup-filter="starter" aria-pressed="true">Titolari</button><button type="button" data-player-lineup-filter="bench" aria-pressed="false">Panchinari</button></div>';
        content.append(toolbar,columns);
+       columns.querySelectorAll('.rd-player-team').forEach(team=>{
+         const extra=document.createElement('details');extra.className='rd-disclosure';extra.innerHTML='<summary>Disponibilità e rosa</summary>';
+         for(const child of [...team.children])if(child.matches('p,h4,[data-md3-potential-bench]'))extra.append(child);
+         team.append(extra);
+       });
+       columns.querySelectorAll('.rd-row-identity > small').forEach(note=>note.closest('details').querySelector('.rd-player-expanded').prepend(note));
        const note=draft.querySelector('.rd-section-content > p');if(note)context.groups.get('formazioni').lastElementChild.prepend(note);
        columns.querySelectorAll('[data-md3-probable-player]').forEach(row=>{row.dataset.playerCard='';row.dataset.playerLineup=row.dataset.projectedRole;});
        const filter=active=>{

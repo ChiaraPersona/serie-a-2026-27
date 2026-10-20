@@ -49,7 +49,7 @@ export async function loadEvidence(model,{benchForecasts=true}={}){
  });
  const benchData=benchForecasts?await readArtifact('data/normalized/reading-bench-forecasts.json').catch(()=>null):null;
  const starterScenarios=benchForecasts&&model.competition==='serie-a'&&model.prediction?await readArtifact('data/generated/reading-bench-starter-scenarios/'+encodeURIComponent(model.fixture.id)+'.json').catch(()=>null):null;
- return {analysis,directory,squadFiles,lineups,benchForecasts:benchData,starterScenarios};
+ return {competition:model.competition,analysis,directory,squadFiles,lineups,benchForecasts:benchData,starterScenarios};
 }
 export function playerLineupStatus(id,lineups){
  if(!id)return 'unknown';
