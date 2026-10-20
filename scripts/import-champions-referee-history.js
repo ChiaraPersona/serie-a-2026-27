@@ -376,7 +376,8 @@ async function main() {
   console.log(JSON.stringify(report.coverage, null, 2));
 }
 
-main().catch(error => {
+module.exports={htmlLines,parseProfile,parseSeasonCompetition,parseRecent,recentSummary};
+if(require.main===module)main().catch(error => {
   console.error(error.stack || error.message);
   process.exitCode = 1;
 });
