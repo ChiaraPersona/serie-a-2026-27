@@ -594,4 +594,4 @@ function main(argv = process.argv.slice(2)) {
 
 if (require.main === module) main();
 
-module.exports = { slug, normalize, squadTeams, parseArgs, collectEspnRows, aggregateEntries, currentAggregate, main };
+module.exports = { slug, normalize, squadTeams, parseArgs, collectEspnRows, aggregateEntries, currentAggregate, seasonalHistory, totals, main };

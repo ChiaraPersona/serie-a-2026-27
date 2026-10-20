@@ -9,6 +9,18 @@ const root=path.resolve(__dirname,'..'),read=p=>JSON.parse(fs.readFileSync(path.
 const sourcePath='data/sources/champions-probable-formations-md03-2026-27.json';
 const source=read(sourcePath),preview=read('data/analysis/champions/md3-offline-engine-2026-10-19/preview-md03.json');
 const current=read('data/normalized/champions-player-stats-2026-27.json'),registered=read('data/normalized/champions-registered-squads-2026-27.json');
+const md3Database=read('data/normalized/champions-md03-player-database-2026-27.json');
+// Scope additions to MD3 in memory, preserving frozen global and MD1/MD2 snapshots.
+for(const team of md3Database.teams){
+ const ct=current.teams.find(t=>t.team===team.team),rt=registered.teams.find(t=>t.team===team.team);
+ for(const p of team.players){
+  const existing=ct.players.find(x=>x.id===p.playerId);
+  if(!existing)ct.players.push({...p});else if(!existing.providerPlayerId&&p.providerPlayerId)existing.providerPlayerId=p.providerPlayerId;
+  const member=rt.players.find(x=>x.id===p.playerId);
+  if(!member)rt.players.push({...p,id:p.playerId,providerIds:{espn:p.providerPlayerId}});
+  else if(!member.providerIds?.espn&&p.providerPlayerId)member.providerIds={...member.providerIds,espn:p.providerPlayerId};
+ }
+}
 const cal=read('data/normalized/champions-league-2026-27.json');
 const callupData=read('data/sources/champions-callups-md03-2026-27.json');
 assert.equal(source.status,'probable');assert.equal(source.teams.length,36);
@@ -30,7 +42,9 @@ const fixtures=preview.fixtures.map(f=>{
   const isIn=(p,category)=>t[category].some(x=>(p.playerId&&x.playerId===p.playerId)||x.sourceName===p.sourceName);
   const oldTeam=f.teams.find(x=>canonicalTeam(x.teamId)===t.teamId),target=oldTeam.teamProjection;
   const players=[...t.starters.map(p=>({...p,projectedRole:'starter',roleCertainty:'probable',source:source.source})),...(predicted.bench||[])].map(p=>{
-   const old=p.playerId?oldTeam.individuals.find(x=>x.playerId===p.playerId||(p.providerPlayerId&&String(x.providerPlayerId)===String(p.providerPlayerId))):null;
+   const previous=p.playerId?oldTeam.individuals.find(x=>x.playerId===p.playerId||(p.providerPlayerId&&String(x.providerPlayerId)===String(p.providerPlayerId))):null;
+   const recovered=md3Database.teams.find(x=>x.teamId===t.teamId).players.find(x=>x.playerId===p.playerId);
+   const old=previous?.primary?.candidate?previous:recovered;
    const member=p.playerId?currentTeam.players.find(x=>x.id===p.playerId):null;
    const availability=isIn(p,'suspended')?'suspended':isIn(p,'unavailable')?'unavailable':isIn(p,'doubtful')?'doubtful':p.projectedRole==='bench'?'predicted-bench':'probable-starter';
    const blockers=[];
@@ -44,7 +58,7 @@ const fixtures=preview.fixtures.map(f=>{
    if(!Number.isFinite(target.shotsTotal?.central)||!Number.isFinite(target.shotsOnTarget?.central))blockers.push('TEAM_VOLUMES_UNAVAILABLE');
    if(member?.position==='goalkeeper')blockers.push('GOALKEEPER_SHOT_METRIC_INELIGIBLE');
    if(!old?.primary?.candidate||old.primary.status!=='diagnostic-rate-only'||old.sample?.overlap)blockers.push('BASELINE_UNAVAILABLE_OR_UNSAFE');
-   return {...p,lineupStatus:'probable',availability,uncertainty:availability==='doubtful'?'participation-unconfirmed-no-probability-assigned':'conditional-on-probable-start',role:member?.position||null,expectedMinutes:estimate.expectedMinutes,minutesEstimate:{...estimate,conditionalOnStarting:p.projectedRole==='starter',evidenceType:'existing-roster-and-substitution-clock-method',evidence:records.filter(r=>(p.projectedRole==='bench'?r.namedBench:r.starter)&&estimate.sample?.matchIds?.includes(r.matchId)&&estimate.sample.competitionCodes.includes(r.competitionCode)&&estimate.sample.seasons.includes(r.season))},baselineStatus:old?.primary?.status||null,baseline:old?.primary||null,historicalMinutes:old?.historicalMinutes??null,projectedShots:null,projectedSOT:null,eventProbabilities:null,blockers};
+   return {...p,lineupStatus:'probable',availability,startingProbability:null,startingProbabilityStatus:'NOT_ESTIMATED_BY_EXISTING_MODEL',uncertainty:availability==='doubtful'?'participation-unconfirmed-no-probability-assigned':'conditional-on-probable-start',role:member?.position||null,expectedMinutes:estimate.expectedMinutes,minutesEstimate:{...estimate,conditionalOnStarting:p.projectedRole==='starter',evidenceType:'existing-roster-and-substitution-clock-method',evidence:records.filter(r=>(p.projectedRole==='bench'?r.namedBench:r.starter)&&estimate.sample?.matchIds?.includes(r.matchId)&&estimate.sample.competitionCodes.includes(r.competitionCode)&&estimate.sample.seasons.includes(r.season))},baselineStatus:old?.primary?.status||null,baseline:old?.primary||null,historicalMinutes:old?.historicalMinutes??null,projectedShots:null,projectedSOT:null,eventProbabilities:null,blockers};
   });
   const minuteBudget=allocateMinuteBudget(players);
   const eligible=players.filter(p=>!p.blockers.length).map(p=>({playerId:p.playerId,roleKey:p.role,expectedMinutes:p.expectedMinutes,per90:{shots:p.baseline.candidate.shots,shotsOnTarget:p.baseline.candidate.sot}}));
@@ -61,7 +75,12 @@ const fixtures=preview.fixtures.map(f=>{
    if(!p.blockers.length&&projection){p.projectedShots=projection.shots;p.projectedSOT=projection.sot;p.eventProbabilities=p.projectedRole==='starter'?starterThresholds(projection.shots,projection.sot):null;p.eventProbabilityBlocker=p.projectedRole==='bench'?'BENCH_THRESHOLD_PROBABILITY_NOT_VALIDATED':null;}
    else if(!p.blockers.length)p.blockers.push('TEAM_RECONCILIATION_NOT_PASSED',reconciliation.status);
   }
-  return {teamId:t.teamId,team:t.team,venue,status:'probable',collectiveOnly:TEAM_ONLY.has(t.teamId),bench:predicted.bench,benchStatus:predicted.documented?'predicted-from-documented-callups':'not-provided',callupDocumentation:predicted,minuteBudget,unavailable:t.unavailable,suspended:t.suspended,doubtful:t.doubtful,players,diagnosticSubset,reconciliation:{...reconciliation,targetShots:target.shotsTotal?.central??null,targetSOT:target.shotsOnTarget?.central??null,allocatedShots:players.some(p=>p.projectedShots!==null)?players.reduce((n,p)=>n+(p.projectedShots??0),0):null,allocatedSOT:players.some(p=>p.projectedSOT!==null)?players.reduce((n,p)=>n+(p.projectedSOT??0),0):null,expectedMinutes:players.reduce((n,p)=>n+(p.expectedMinutes??0),0)}};
+  const squad=md3Database.teams.find(x=>x.teamId===t.teamId);
+  const occupied=new Set(players.map(p=>p.playerId));
+  const potentialBench=squad.potentialBench.filter(p=>!occupied.has(p.playerId));
+  const units=t.rawLine.split('|')[0].split(';').map(line=>line.split(',').length);
+  assert.equal(units.reduce((n,v)=>n+v,0),11);
+  return {teamId:t.teamId,team:t.team,venue,status:'probable',formation:units.slice(1).join('-'),eligibleSquadPlayers:squad.players.length,potentialBench,collectiveOnly:TEAM_ONLY.has(t.teamId),bench:predicted.bench,benchStatus:predicted.documented?'predicted-from-documented-callups':'not-provided',callupDocumentation:predicted,minuteBudget,unavailable:t.unavailable,suspended:t.suspended,doubtful:t.doubtful,players,diagnosticSubset,reconciliation:{...reconciliation,targetShots:target.shotsTotal?.central??null,targetSOT:target.shotsOnTarget?.central??null,allocatedShots:players.some(p=>p.projectedShots!==null)?players.reduce((n,p)=>n+(p.projectedShots??0),0):null,allocatedSOT:players.some(p=>p.projectedSOT!==null)?players.reduce((n,p)=>n+(p.projectedSOT??0),0):null,expectedMinutes:players.reduce((n,p)=>n+(p.expectedMinutes??0),0)}};
  });
  return {fixtureId:f.fixtureId,date:f.date,kickoffAt,status:'probable',teams};
 });

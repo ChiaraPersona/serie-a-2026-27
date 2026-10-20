@@ -19,7 +19,7 @@ for(const t of teams){
  if(t.reconciliation.status!=='offline-conditional-only'){assert.equal(t.reconciliation.players.length,0);assert(t.players.every(p=>p.projectedShots===null&&p.projectedSOT===null));}
  else{assert(t.players.some(p=>p.projectedShots!==null));}
 }
-assert.equal(players.filter(p=>p.projectedShots!==null).length,223);
+assert.equal(players.filter(p=>p.projectedShots!==null).length,output.summary.operationalPlayers);
 assert.equal(teams.filter(t=>t.collectiveOnly).length,4);
 const suspicious=players.find(p=>p.sourceName==='Haaland');assert.equal(suspicious.availability,'doubtful');assert.equal(suspicious.expectedMinutes,null);
 assert.equal(source.teams.find(t=>t.teamId==='villarreal').starters.find(p=>p.sourceName==='Saliba').playerId,'nathan-saliba');

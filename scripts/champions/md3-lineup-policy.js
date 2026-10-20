@@ -11,6 +11,7 @@ function derivePredictedBench(probable,callups){
  const seen=new Set(),bench=[],excluded=[],doubtful=[];
  for(const p of callups.players){
   const key=p.playerId||p.sourceName;assert(!seen.has(key),'duplicate call-up');seen.add(key);
+  if(p.eligibilityStatus==='not-reconciled-with-md3-eligible-squad'){excluded.push({...p,exclusionReason:'MD3_ELIGIBILITY_UNCONFIRMED'});continue;}
   if(probable.unavailable.some(x=>same(p,x))||probable.suspended.some(x=>same(p,x))){excluded.push(p);continue;}
   if(probable.doubtful.some(x=>same(p,x))){doubtful.push(p);continue;}
   if(probable.starters.some(x=>same(p,x)))continue;
@@ -40,6 +41,6 @@ function allocateMinuteBudget(players){
 const poissonAtLeast=(lambda,threshold)=>{let term=Math.exp(-lambda),cumulative=term;for(let k=1;k<threshold;k+=1){term*=lambda/k;cumulative+=term;}return Math.max(0,Math.min(1,1-cumulative));};
 function starterThresholds(shots,sot){
  if(!Number.isFinite(shots)||!Number.isFinite(sot))return null;
- return {shotsOver05:poissonAtLeast(shots,1),shotsOver15:poissonAtLeast(shots,2),sotOver05:poissonAtLeast(sot,1),status:'PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON'};
+ return {shotsOver05:poissonAtLeast(shots,1),shotsOver15:poissonAtLeast(shots,2),shotsOver25:poissonAtLeast(shots,3),sotOver05:poissonAtLeast(sot,1),sotOver15:poissonAtLeast(sot,2),status:'PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON'};
 }
 module.exports={derivePredictedBench,projectMd3Team,allocateMinuteBudget,starterThresholds,poissonAtLeast};

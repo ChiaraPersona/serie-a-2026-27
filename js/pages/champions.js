@@ -436,7 +436,7 @@ export function createPage(deps){
     const motivationByFixture=new Map(motivation.fixtures.map(fixture=>[fixture.matchId,fixture]));
     const requestedCalendarFixture=requestedMatchId?data.fixtures.find(fixture=>fixture.id===requestedMatchId):null;
     if(requestedCalendarFixture?.matchday===3&&requestedCalendarFixture.refereeAssignment?.status==='assigned'){
-      const [profiles,{md3RefereeMarkup},catalog,{md3ForecastMarkup},probables,{md3ProbableMarkup}]=await Promise.all([load('champions-referee-profiles-md03-2026-27.json'),import('./reading-detail/champions-md3-referees.mjs?v=20261019-md3-referees-v1'),load('champions-md03-preliminary-2026-27.json'),import('./champions-md3-ui.mjs?v=20261019-md3-callups-v3'),load('champions-md03-probable-individuals-2026-27.json'),import('./champions-md3-probable.mjs?v=20261019-callups-v3')]);
+      const [profiles,{md3RefereeMarkup},catalog,{md3ForecastMarkup},probables,{md3ProbableMarkup}]=await Promise.all([load('champions-referee-profiles-md03-2026-27.json'),import('./reading-detail/champions-md3-referees.mjs?v=20261019-md3-referees-v1'),load('champions-md03-preliminary-2026-27.json'),import('./champions-md3-ui.mjs?v=20261019-md3-callups-v3'),load('champions-md03-probable-individuals-2026-27.json'),import('./champions-md3-probable.mjs?v=20261020-md3-squads-v1')]);
       const profile=profiles.referees.find(p=>p.refereeId===requestedCalendarFixture.refereeAssignment.refereeId);
       document.body.dataset.readingDetailTheme='champions';
       document.querySelector('#app').innerHTML=md3RefereeMarkup(requestedCalendarFixture,profile,branding);

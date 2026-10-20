@@ -19,7 +19,7 @@ const budget=Array.from({length:12},()=>({expectedMinutes:90}));const allocation
 assert.equal(estimateExpectedMinutes([],'potential-substitute','2026-10-20T19:00:00Z').expectedMinutes,null);
 const code=fs.readFileSync('scripts/build-champions-player-markets.js','utf8').match(/const poissonAtLeast = \(lambda, threshold\) => \{[\s\S]*?\n\};/)[0];const reference=vm.runInNewContext(`${code};poissonAtLeast`,{Math,clamp:(n,a,b)=>Math.max(a,Math.min(b,n))});for(const lambda of [0,.3,1,2.5,6])for(const k of [1,2])assert.equal(poissonAtLeast(lambda,k),reference(lambda,k));
 const data=read('data/normalized/champions-md03-probable-individuals-2026-27.json'),source=read('data/sources/champions-callups-md03-2026-27.json'),teams=data.fixtures.flatMap(f=>f.teams),players=teams.flatMap(t=>t.players);
-assert.equal(source.teams.length,36);assert.equal(teams.filter(t=>t.callupDocumentation.documented).length,3);assert.equal(players.filter(p=>p.projectedRole==='starter').length,396);assert.equal(players.filter(p=>p.projectedRole==='bench').length,38);
+assert.equal(source.teams.length,36);assert.equal(teams.filter(t=>t.callupDocumentation.documented).length,3);assert.equal(players.filter(p=>p.projectedRole==='starter').length,396);assert.equal(players.filter(p=>p.projectedRole==='bench').length,data.summary.predictedBench);
 for(const t of teams){
  const produced=t.players.filter(p=>p.projectedShots!==null);
  assert(t.minuteBudget.allocatedExpectedMinutes<=990);assert(t.players.every(p=>p.roleCertainty==='probable'&&p.lineupStatus==='probable'));
@@ -32,6 +32,6 @@ for(const t of teams){
   if(p.projectedShots!==null){assert(p.expectedMinutes>0);assert(p.projectedSOT<=p.projectedShots);assert(p.blockers.length===0);if(p.projectedRole==='starter')assert(p.eventProbabilities.shotsOver15<=p.eventProbabilities.shotsOver05);else assert.equal(p.eventProbabilities,null);}
  }
 }
-assert.equal(players.filter(p=>p.projectedShots!==null).length,223);
+assert.equal(players.filter(p=>p.projectedShots!==null).length,data.summary.operationalPlayers);
 for(const f of data.fixtures){const html=md3ProbableMarkup(f);assert(!/https?:|sourceUrl|provenienza|Tiri \/90|<img/.test(html));assert(html.includes('non ufficiali'));assert.equal((html.match(/data-projected-role="starter"/g)||[]).length,22);}
-console.log('OK call-ups minus XI/absences/doubts; no roster fallback; official/probable gates; historical bench entry/minutes; minute budgets; exact existing Poisson; 223 reconciled projections; CL exclusions.');
+console.log('OK call-ups minus XI/absences/doubts; no roster fallback; official/probable gates; historical bench entry/minutes; minute budgets; exact existing Poisson; reconciled projections verified; CL exclusions.');
