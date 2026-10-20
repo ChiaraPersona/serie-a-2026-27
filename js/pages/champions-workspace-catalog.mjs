@@ -135,11 +135,19 @@ export async function loadChampionsWorkspaceMd3Derived(load,matchday,{upcoming=t
     sabah.fixtureId!=='ucl-2026-27-md03-02'||sabah.matches.length!==1||sabah.matches[0].matchId!==sabah.fixtureId)
     throw new Error('Selezione Sabah-Dortmund MD3 non coerente');
   overrides.set(sabah.fixtureId,sabah.matches[0]);
+  const seven=await load('../derived/champions-md03/market-catalog-official-seven-v1-2026-10-20.json');
+  const sevenIds=new Set(['03','04','05','06','07','08','09'].map(n=>'ucl-2026-27-md03-'+n));
+  if(seven.version!=='official-seven-v1-2026-10-20'||seven.status!=='PRELIMINARY_NOT_STATISTICALLY_VALIDATED'||seven.matches.length!==7||
+    new Set(seven.matches.map(m=>m.matchId)).size!==7||seven.matches.some(m=>!sevenIds.has(m.matchId)))throw Error('Aggiornamento ufficiale delle sette gare Champions non coerente');
+  for(const match of seven.matches)overrides.set(match.matchId,match);
   const matches=derived.matches.map(match=>overrides.get(match.matchId)||match);
   if(upcoming){
     const publication=await load('../derived/champions-md03/upcoming-forecasts.json');
     if(publication.schemaVersion!==1||publication.competition!=='champions')throw Error('Catalogo probabili Champions non coerente');
     for(const match of publication.matches){
+      // An official recalculation supersedes the earlier probable overlay for
+      // this fixture, including saved nonstarter candidates.
+      if(sevenIds.has(match.matchId))continue;
       const index=matches.findIndex(m=>m.matchId===match.matchId);
       if(index<0)throw Error('Fixture estranea al catalogo probabili Champions');
       const previous=matches[index],ids=new Set(previous.selections.map(l=>l.selectionId));
@@ -149,9 +157,9 @@ export async function loadChampionsWorkspaceMd3Derived(load,matchday,{upcoming=t
   }
   const all=matches.flatMap(match=>match.selections);
   // The official-starter policy may remove selections after a lineup update.
-  if(!upcoming&&all.filter(leg=>leg.suggestionAnalysis?.suggested).length>derived.summary.selected+sabah.matches[0].suggestions.length)
+  if(!upcoming&&all.filter(leg=>leg.suggestionAnalysis?.suggested).length>derived.summary.selected+sabah.matches[0].suggestions.length+seven.summary.selected)
     throw new Error('Selezioni preliminari Champions MD3 non coerenti');
-  return {...workspace,all,derivedVersion:sabah.version,
+  return {...workspace,all,derivedVersion:seven.version,
     marketCatalog:{...workspace.marketCatalog,matches,
       totals:{...workspace.marketCatalog.totals,approved:all.filter(leg=>leg.suggestionAnalysis?.suggested&&leg.qualifiedSelection).length,preliminary:all.filter(leg=>leg.suggestionAnalysis?.suggested&&!leg.qualifiedSelection).length}}};
 }

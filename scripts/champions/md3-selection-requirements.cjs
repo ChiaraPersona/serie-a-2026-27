@@ -39,7 +39,7 @@ function evaluateRequirements(legs,fixture,individualFixture,evidence){
   if(player){
    if(!p)missing.push('CANONICAL_PLAYER_EVIDENCE_MISSING');
    else{
-    check(p.projectedRole==='starter'&&p.availability==='probable-starter','NOT_PROBABLE_STARTER');
+    check(p.projectedRole==='starter'&&['probable-starter','official-starter'].includes(p.availability),'NOT_PROBABLE_STARTER');
     if(!finite(p.expectedMinutes))missing.push('EXPECTED_MINUTES_MISSING');else check(p.expectedMinutes>0&&p.expectedMinutes<=90,'INVALID_EXPECTED_MINUTES');
     if(!finite(p.projectedShots)||!finite(p.projectedSOT))missing.push('PLAYER_VOLUMES_MISSING');
     else{check(p.projectedShots>=p.projectedSOT,'PLAYER_SOT_EXCEED_SHOTS');if(team){check(p.projectedShots<=team.shotsTotal.central,'PLAYER_SHOTS_EXCEED_TEAM');check(p.projectedSOT<=team.shotsOnTarget.central,'PLAYER_SOT_EXCEED_TEAM');}else missing.push('TEAM_VOLUMES_MISSING');}

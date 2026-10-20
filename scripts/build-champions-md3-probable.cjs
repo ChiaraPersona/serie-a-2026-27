@@ -9,13 +9,19 @@ const root=path.resolve(__dirname,'..'),read=p=>JSON.parse(fs.readFileSync(path.
 const outputIndex=process.argv.indexOf('--output-file');
 const outputFile=outputIndex<0?'data/normalized/champions-md03-probable-individuals-2026-27.json':process.argv[outputIndex+1];
 if(outputIndex>=0&&(!outputFile||path.isAbsolute(outputFile)||outputFile.includes('..')||!/^data\/derived\/champions-md03\/[a-z0-9-]+\.json$/.test(outputFile)))throw Error('Versioned MD3 output required under data/derived/champions-md03/');
-const officialMode=process.argv.includes('--official-two-fixtures');
+const officialScopeIndex=process.argv.indexOf('--official-fixtures');
+const officialRequested=officialScopeIndex<0?null:process.argv[officialScopeIndex+1]?.split(',').filter(Boolean);
+if(officialScopeIndex>=0&&!officialRequested?.length)throw Error('Explicit official fixture IDs required');
+const officialMode=process.argv.includes('--official-two-fixtures')||officialScopeIndex>=0;
 if(officialMode&&outputIndex<0)throw Error('Official MD3 requires a versioned output');
 const sourcePath=officialMode?'data/sources/champions-official-formations-md03-2026-27.json':'data/sources/champions-probable-formations-md03-2026-27.json';
-const originalSource=read(sourcePath),source=officialMode?{status:'official',source:{consultedAt:originalSource.fixtures[0].source.capturedAt},teams:originalSource.fixtures.flatMap(f=>['home','away'].map(venue=>({fixtureId:f.fixtureId,venue,...f[venue],status:'official',starters:f[venue].players,unavailable:f[venue].unavailable||[],suspended:[],doubtful:[]})))}:originalSource;
+const fullSource=read(sourcePath),originalSource=officialRequested?{...fullSource,fixtures:fullSource.fixtures.filter(f=>officialRequested.includes(f.fixtureId))}:fullSource;
+if(officialRequested)assert.deepEqual(originalSource.fixtures.map(f=>f.fixtureId).sort(),[...officialRequested].sort());
+const source=officialMode?{status:'official',source:{consultedAt:originalSource.fixtures.map(f=>f.source.capturedAt).sort().at(-1)},teams:originalSource.fixtures.flatMap(f=>['home','away'].map(venue=>({fixtureId:f.fixtureId,venue,...f[venue],status:'official',starters:f[venue].players,unavailable:f[venue].unavailable||[],suspended:[],doubtful:[]})))}:originalSource;
 const preview=read('data/analysis/champions/md3-offline-engine-2026-10-19/preview-md03.json');
 const current=read('data/normalized/champions-player-stats-2026-27.json'),registered=read('data/normalized/champions-registered-squads-2026-27.json');
 const md3Database=read('data/normalized/champions-md03-player-database-2026-27.json');
+if(process.argv.includes('--current-shooting'))require('./champions/md3-identity-corrections.cjs').applyIdentityCorrections(root,md3Database,current,registered);
 // Scope additions to MD3 in memory, preserving frozen global and MD1/MD2 snapshots.
 for(const team of md3Database.teams){
  const ct=current.teams.find(t=>t.team===team.team),rt=registered.teams.find(t=>t.team===team.team);
@@ -29,15 +35,23 @@ for(const team of md3Database.teams){
 }
 const cal=read('data/normalized/champions-league-2026-27.json');
 const callupData=read('data/sources/champions-callups-md03-2026-27.json');
-assert.equal(source.status,officialMode?'official':'probable');assert.equal(source.teams.length,officialMode?4:36);
+assert.equal(source.status,officialMode?'official':'probable');assert.equal(source.teams.length,officialMode?originalSource.fixtures.length*2:36);
 const ids=new Set(source.teams.filter(t=>!TEAM_ONLY.has(t.teamId)).flatMap(t=>{
  const callups=callupData.teams.find(c=>c.teamId===t.teamId);
  const reserves=officialMode?t.bench:callups?.status==='documented'?callups.players:md3Database.teams.find(s=>s.teamId===t.teamId).players;
  return [...t.starters,...reserves].map(p=>p.providerPlayerId);
 }).filter(Boolean).map(String));
 const evidence=collectRosterEvidence(root,ids);
+const useObserved=process.argv.includes('--current-shooting');
+if(useObserved&&!officialRequested)throw Error('Current shooting refresh requires explicit official fixture scope');
+const observed=useObserved?require('./champions/md3-observed-shooting.cjs').loadObservedShooting(root,source.teams.map(t=>({...t,players:[...t.starters,...t.bench]}))):null;
+if(observed)for(const [id,rows]of observed.minutes){
+ const keys=new Set(rows.map(r=>r.date+'|'+r.competitionCode));
+ const previous=evidence.get(id)||[];
+ evidence.set(id,previous.filter(r=>r.season!=='2026-27'||!keys.has(r.date+'|'+r.competitionCode)).concat(rows).sort((a,b)=>String(a.date).localeCompare(String(b.date))||a.matchId.localeCompare(b.matchId)));
+}
 const targetFixtureIds=new Set(officialMode?originalSource.fixtures.map(f=>f.fixtureId):preview.fixtures.map(f=>f.fixtureId));
-if(officialMode)assert.deepEqual([...targetFixtureIds].sort(),['ucl-2026-27-md03-01','ucl-2026-27-md03-02']);
+if(officialMode&&!officialRequested)assert.deepEqual([...targetFixtureIds].sort(),['ucl-2026-27-md03-01','ucl-2026-27-md03-02']);
 const fixtures=preview.fixtures.filter(f=>targetFixtureIds.has(f.fixtureId)).map(f=>{
  const c=cal.fixtures.find(c=>c.id===f.fixtureId),kickoffAt=`${f.date}T${c.kickoff||f.collective.kickoff}:00+02:00`;
  assert(Number.isFinite(Date.parse(kickoffAt)),kickoffAt);
@@ -56,7 +70,12 @@ const fixtures=preview.fixtures.filter(f=>targetFixtureIds.has(f.fixtureId)).map
   const players=[...t.starters.map(p=>({...p,projectedRole:'starter',roleCertainty:officialMode?'official':'probable',source:officialMode?originalSource.fixtures.find(x=>x.fixtureId===f.fixtureId).source:source.source})),...(predicted.bench||[]).map(p=>officialMode?{...p,projectedRole:'bench',roleCertainty:'official'}:p)].map(p=>{
    const previous=p.playerId?oldTeam.individuals.find(x=>x.playerId===p.playerId||(p.providerPlayerId&&String(x.providerPlayerId)===String(p.providerPlayerId))):null;
    const recovered=md3Database.teams.find(x=>x.teamId===t.teamId).players.find(x=>x.playerId===p.playerId);
-   const old=previous?.primary?.candidate?previous:recovered;
+   let old=previous?.primary?.candidate?previous:recovered;
+   const observedRows=observed?.byPlayer.get(t.teamId+':'+p.playerId)||[];
+   if((observedRows.length||recovered?.identityCorrection)&&recovered){
+    const primary=require('./champions/current-season-offline').rateCandidate({historical:recovered,role:recovered.position,rows:observedRows,contextFactor:old?.primary?.contextFactor??1});
+    old={...old,primary,historicalMinutes:recovered.historicalMinutes,sample:{...old?.sample,overlap:0,observedCurrentAppearances:observedRows.length}};
+   }
    const member=p.playerId?currentTeam.players.find(x=>x.id===p.playerId):null;
    const availability=isIn(p,'suspended')?'suspended':isIn(p,'unavailable')?'unavailable':isIn(p,'doubtful')?'doubtful':p.projectedRole==='bench'?(officialMode?'official-bench':'predicted-bench'):(officialMode?'official-starter':'probable-starter');
    const blockers=[];
@@ -101,6 +120,7 @@ const fixtures=preview.fixtures.filter(f=>targetFixtureIds.has(f.fixtureId)).map
 const players=fixtures.flatMap(f=>f.teams.flatMap(t=>t.players));
 const output={schemaVersion:1,competition:'champions',season:'2026-27',matchday:3,status:officialMode?'official':'probable',source:{...source.source,path:sourcePath,sha256:crypto.createHash('sha256').update(fs.readFileSync(path.join(root,sourcePath))).digest('hex')},policy:{collectiveForecast:officialMode?'frozen-unchanged-lineup-independent':'frozen-unchanged',individuals:officialMode?'official-XI-and-bench-existing-team-reconciliation-gate':'probable-XI-with-match-callups-or-full-squad-fallback-and-existing-team-reconciliation-gate',probableIsNotOfficial:!officialMode,expectedMinutes:POLICY,benchInvented:false,currentEstimatedMinutesUsedInPrimary:false},summary:{fixtures:fixtures.length,teams:fixtures.length*2,probableStarters:players.filter(p=>p.projectedRole==='starter').length,predictedBench:players.filter(p=>p.projectedRole==='bench').length,teamsWithDocumentedCallups:fixtures.flatMap(f=>f.teams).filter(t=>t.callupDocumentation.documented).length,operationalPlayers:players.filter(p=>p.projectedShots!==null).length,nonOperationalPlayers:players.filter(p=>p.projectedShots===null).length,resolvedStarters:players.filter(p=>p.projectedRole==='starter'&&p.playerId&&p.registeredPlayerId).length,resolvedBench:players.filter(p=>p.projectedRole==='bench'&&p.playerId&&p.registeredPlayerId).length,unresolvedStarters:players.filter(p=>p.projectedRole==='starter'&&(!p.playerId||!p.registeredPlayerId)).length,unresolvedBench:players.filter(p=>p.projectedRole==='bench'&&(!p.playerId||!p.registeredPlayerId)).length,minuteEstimates:players.filter(p=>Number.isFinite(p.expectedMinutes)).length,generatedForecasts:players.filter(p=>p.projectedShots!==null).length,doubtfulStarters:players.filter(p=>p.availability==='doubtful').length,collectiveOnlyStarters:players.filter(p=>p.blockers.includes('COLLECTIVE_ONLY_TEAM')).length,blockedStarters:players.filter(p=>p.projectedRole==='starter'&&p.projectedShots===null).length},fixtures};
 fs.mkdirSync(path.dirname(path.join(root,outputFile)),{recursive:true});
+if(observed)output.currentShootingEvidence={asOf:observed.asOf,source:'data/sources/champions-player-shooting-evidence-2026-10-20.json',policy:'Observed minutes and reconciled current-club match shooting only; conflict buckets excluded; existing rateCandidate unchanged',audit:observed.audit};
 if(outputIndex>=0&&fs.existsSync(path.join(root,outputFile)))throw Error('Versioned MD3 output already exists');
 fs.writeFileSync(path.join(root,outputFile),JSON.stringify(output,null,2)+'\n');
 console.log(JSON.stringify(output.summary));
