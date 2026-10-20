@@ -582,6 +582,7 @@ function buildCurrent(args) {
     },
     teams: combinedTeams
   };
+  require('./champions/season-shooting-overlay.cjs').attachSeasonShooting(output, asOf);
   fs.writeFileSync(currentOutputPath, `${JSON.stringify(output, null, 2)}\n`);
   console.log(`Statistiche giocatori Champions 2026/27 as-of ${asOf}: ${output.summary.withMinutes} con minuti · ${output.summary.unavailable} N/D su ${output.summary.players}`);
   return output;

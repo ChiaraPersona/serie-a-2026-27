@@ -22,6 +22,9 @@ function main(){
    for(const c of props.competitions||[]){
      const file=path.join(base,`statz-${teamId}-competition-${c.id}.json.gz`);if(!fs.existsSync(file))continue;
      const sliced=gz(file),league=competitionMap[c.id];if(!league){errors.push({teamId,competition:c.id,reason:'COMPETITION_MAPPING_MISSING'});continue;}
+     // The provider includes the previous Club World Cup in some current-page totals.
+     // It has no dated 2026/27 club evidence here and must not enter this season.
+     if(league==='fifa.cwc')continue;
      for(const row of sliced.payload.rows||[]){
        const exact=candidate.players.filter(p=>p.teamId===teamId&&normalize(p.name)===normalize(row.name));
        if(exact.length!==1)continue;
@@ -31,6 +34,18 @@ function main(){
        const value={teamId,playerId:p.playerId,name:p.name,provider:'Statz/Sportmonks',providerPlayerId:String(row.id),providerTeamId:String(row.team_id),league,competition:c.name,appearances:row.apps,minutes:row.mins,shots:row.sh,shotsOnTarget:row.sot,asOf:props.seo.date_modified,sourceUrl:sliced.url,retrievedAt:sliced.retrievedAt,comparison,primary:primary?{appearances:primary.appearances,shots:primary.shots,shotsOnTarget:primary.shotsOnTarget}:null};
        secondary.push(value);
      }
+   }
+ }
+ const tableRaw=gz(path.join(base,'slavia-team-shooting.json.gz'));
+ for(const table of tableRaw.body.matchAll(/<table[^>]*>([\s\S]*?)<\/table>/g)){
+   const headers=[...table[1].matchAll(/<th[^>]*>([\s\S]*?)<\/th>/g)].map(m=>/title="([^"]+)"/.exec(m[1])?.[1]||clean(m[1]));
+   const sh=headers.indexOf('Střely'),sot=headers.indexOf('Střely na branku'),app=headers.indexOf('Počet odehraných zápasů');if(sh<0||sot<0||app<0)continue;
+   for(const row of table[1].matchAll(/<tr[^>]*>([\s\S]*?)<\/tr>/g)){
+     const cells=[...row[1].matchAll(/<td[^>]*>([\s\S]*?)<\/td>/g)].map(m=>m[1]);if(cells.length!==headers.length)continue;
+     const name=clean(cells[1]),targets=candidate.players.filter(p=>p.teamId==='slavia-praha'&&normalize(p.name)===normalize(name));if(targets.length!==1)continue;
+     const int=i=>/^\d+$/.test(clean(cells[i]))?Number(clean(cells[i])):null;
+     if(int(sh)===null||int(sot)===null||int(sot)>int(sh)||!(int(app)>0))continue;
+     secondary.push({teamId:'slavia-praha',playerId:targets[0].playerId,name,provider:'Chance Liga',providerPlayerId:/\/hrac\/(\d+)/.exec(cells[1])?.[1]||null,providerTeamId:'5',league:'cze.1',competition:'Chance Liga',appearances:int(app),shots:int(sh),shotsOnTarget:int(sot),asOf:'2026-10-20',sourceUrl:tableRaw.url,retrievedAt:tableRaw.retrievedAt,comparison:'new-competition-evidence',primary:null});
    }
  }
  const officialDir=path.join(base,'slavia-players');
