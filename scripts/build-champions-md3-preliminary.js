@@ -2,6 +2,10 @@
 // Serialize frozen forecasts and evaluate current selection requirements only.
 const fs=require('fs'),path=require('path'),crypto=require('crypto'),assert=require('assert/strict');
 const root=path.resolve(__dirname,'..'),read=p=>JSON.parse(fs.readFileSync(path.join(root,p),'utf8'));
+function write(file,body){
+ const temporary=file+'.md3.tmp';fs.writeFileSync(temporary,body);
+ for(let attempt=0;;attempt++)try{fs.renameSync(temporary,file);return;}catch(error){if(attempt>=5)throw error;Atomics.wait(new Int32Array(new SharedArrayBuffer(4)),0,0,250);}
+}
 const previewPath='data/analysis/champions/md3-offline-engine-2026-10-19/preview-md03.json';
 const preview=read(previewPath),odds=read('data/normalized/odds/sisal/champions-league.json');
 const hash=p=>crypto.createHash('sha256').update(fs.readFileSync(path.join(root,p))).digest('hex');
@@ -86,8 +90,8 @@ async function completeSelectionRequirements(){
  const contracts=[];
  const serialized=JSON.stringify(output,(key,value)=>key==='selectionRequirements'?(contracts.push(JSON.stringify(value)),`__CL3_REQUIREMENTS_${contracts.length-1}__`):value,2)
   .replace(/"__CL3_REQUIREMENTS_(\d+)__"/g,(_,index)=>contracts[Number(index)]);
- fs.writeFileSync(path.join(outputDir,'champions-md03-preliminary-2026-27.json'),serialized+'\n');
+ write(path.join(outputDir,'champions-md03-preliminary-2026-27.json'),serialized+'\n');
 }
 completeSelectionRequirements().catch(error=>{console.error(error);process.exitCode=1;});
-fs.writeFileSync(path.join(outputDir,'schedina-champions-md03-draft.json'),JSON.stringify({schemaVersion:1,competition:'champions',season:'2026-27',matchday:3,status:'DRAFT_NOT_PUBLISHED',catalog:'champions-md03-preliminary-2026-27.json',summary:output.summary,slips:[],publishedSelections:[]},null,2)+'\n');
+write(path.join(outputDir,'schedina-champions-md03-draft.json'),JSON.stringify({schemaVersion:1,competition:'champions',season:'2026-27',matchday:3,status:'DRAFT_NOT_PUBLISHED',catalog:'champions-md03-preliminary-2026-27.json',summary:output.summary,slips:[],publishedSelections:[]},null,2)+'\n');
 console.log(JSON.stringify(output.summary));

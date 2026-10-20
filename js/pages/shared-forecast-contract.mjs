@@ -1,4 +1,5 @@
 const finite=value=>value!==null&&value!==undefined&&value!==""&&Number.isFinite(Number(value));
+export const usesCurrentForecastPolicy=leg=>Number(leg?.context?.matchday)>=6||leg?.context?.forecastPolicy==='SERIE_A_CURRENT';
 
 export function isCanonicalModelForecast(leg){
   const bet=leg?.betSelection,target=bet?.forecastIdentity,id=bet?.identity;

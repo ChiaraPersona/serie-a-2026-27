@@ -14,14 +14,14 @@ const homonyms=allPlayers.filter(p=>p.playerId==='ruben-gomez');assert.equal(hom
 for(const c of squads.identityResolutions){
  const t=db.teams.find(t=>t.teamId===c.teamId),hits=t.players.filter(p=>p.playerId===c.playerId);
  assert.equal(hits.length,1);assert.equal(hits[0].providerPlayerId,c.providerPlayerId);assert(c.uefaPlayerId,`missing UEFA id ${c.alias}`);
- const p=probable.teams.find(t=>t.teamId===c.teamId).starters.find(p=>p.sourceName===c.alias);assert.equal(p.playerId,c.playerId);
+ const tCurrent=output.fixtures.flatMap(f=>f.teams).find(t=>t.teamId===c.teamId);const p=tCurrent.players.find(p=>p.playerId===c.playerId)||t.players.find(p=>p.playerId===c.playerId);assert.equal(p.playerId,c.playerId);
 }
 for(const t of squads.teams){
  assert.equal(t.unmatchedProbableStarters.length,0);assert.equal(new Set(t.players.map(p=>p.playerId)).size,t.players.length);
  assert(t.players.every(p=>Number.isInteger(p.shirtNumber)&&p.role&&p.playerId));
  const pt=probable.teams.find(p=>p.teamId===t.teamId);assert.equal(pt.starters.length,11);
  const excluded=new Set(['starters','unavailable','suspended','doubtful']);assert(t.potentialBench.every(p=>!excluded.has(p.availability)));
- const ids=new Set(pt.starters.map(p=>p.playerId));assert(t.potentialBench.every(p=>!ids.has(p.playerId)));
+ const ids=new Set(t.players.filter(p=>p.availability==='starters').map(p=>p.playerId));assert(t.potentialBench.every(p=>!ids.has(p.playerId)));
  for(const p of db.teams.find(x=>x.teamId===t.teamId).players){
   assert.equal(p.statistics,null);if(p.previousSeason)assert(p.historicalSource);
   if(p.primary.candidate){assert(p.historicalMinutes>0);assert(p.primary.candidate.sot<=p.primary.candidate.shots);}

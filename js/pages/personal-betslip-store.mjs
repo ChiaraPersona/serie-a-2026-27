@@ -1,5 +1,5 @@
 import '../official-starter-policy.js';
-import {isCanonicalModelForecast} from './shared-forecast-contract.mjs';
+import {isCanonicalModelForecast,usesCurrentForecastPolicy} from './shared-forecast-contract.mjs';
 export const PERSONAL_BETSLIP_VERSION=1;
 export const PERSONAL_BETSLIP_STORAGE_KEY="serie-a-2026-27:personal-betslip:v1";
 
@@ -38,9 +38,9 @@ function playability(selection){
   if(globalThis.officialStarterPolicy&&!globalThis.officialStarterPolicy.eligible(selection))return {status:'NOT_PLAYABLE',code:'OFFICIAL_NON_STARTER',reason:'Giocatore assente dagli undici ufficiali.'};
   const declared=selection?.betSelection?.operational?.playability;
   if(declared?.status==="NOT_PLAYABLE")return declared;
-  if(Number(selection?.context?.matchday)>=6&&isPlayableUnder(selection))return {status:"NOT_PLAYABLE",code:"UNDER_NOT_PLAYABLE",reason:"Gli Under sono esclusi dalle proposte giocabili dalla sesta giornata."};
-  if(Number(selection?.context?.matchday)>=6&&isIndividualPlayerFoulSelection(selection))return {status:"NOT_PLAYABLE",code:"INDIVIDUAL_FOUL_NOT_PLAYABLE",reason:"I falli commessi o subiti del singolo giocatore sono esclusi dalle proposte giocabili dalla sesta giornata."};
-  if(Number(selection?.context?.matchday)>=6&&isCornerPeriodSelection(selection))return {status:"NOT_PLAYABLE",code:"CORNER_PERIOD_NOT_PLAYABLE",reason:"I corner riferiti a singoli tempi o finestre temporali sono esclusi dalle proposte giocabili dalla sesta giornata."};
+  if(usesCurrentForecastPolicy(selection)&&isPlayableUnder(selection))return {status:"NOT_PLAYABLE",code:"UNDER_NOT_PLAYABLE",reason:"Gli Under sono esclusi dalle proposte giocabili con la policy corrente."};
+  if(usesCurrentForecastPolicy(selection)&&isIndividualPlayerFoulSelection(selection))return {status:"NOT_PLAYABLE",code:"INDIVIDUAL_FOUL_NOT_PLAYABLE",reason:"I falli commessi o subiti del singolo giocatore sono esclusi dalle proposte giocabili con la policy corrente."};
+  if(usesCurrentForecastPolicy(selection)&&isCornerPeriodSelection(selection))return {status:"NOT_PLAYABLE",code:"CORNER_PERIOD_NOT_PLAYABLE",reason:"I corner riferiti a singoli tempi o finestre temporali sono esclusi dalle proposte giocabili con la policy corrente."};
   return {status:"PLAYABLE",code:null,reason:null};
 }
 

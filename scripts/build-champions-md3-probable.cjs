@@ -24,7 +24,11 @@ for(const team of md3Database.teams){
 const cal=read('data/normalized/champions-league-2026-27.json');
 const callupData=read('data/sources/champions-callups-md03-2026-27.json');
 assert.equal(source.status,'probable');assert.equal(source.teams.length,36);
-const ids=new Set(source.teams.filter(t=>!TEAM_ONLY.has(t.teamId)).flatMap(t=>[...t.starters,...(callupData.teams.find(c=>c.teamId===t.teamId)?.players||[])].map(p=>p.providerPlayerId)).filter(Boolean).map(String));
+const ids=new Set(source.teams.filter(t=>!TEAM_ONLY.has(t.teamId)).flatMap(t=>{
+ const callups=callupData.teams.find(c=>c.teamId===t.teamId);
+ const reserves=callups?.status==='documented'?callups.players:md3Database.teams.find(s=>s.teamId===t.teamId).players;
+ return [...t.starters,...reserves].map(p=>p.providerPlayerId);
+}).filter(Boolean).map(String));
 const evidence=collectRosterEvidence(root,ids);
 const fixtures=preview.fixtures.map(f=>{
  const c=cal.fixtures.find(c=>c.id===f.fixtureId),kickoffAt=`${f.date}T${c.kickoff||f.collective.kickoff}:00+02:00`;
@@ -55,6 +59,7 @@ const fixtures=preview.fixtures.map(f=>{
    const records=chronologicalEvidence(evidence.get(String(p.providerPlayerId))||[],kickoffAt);
    const estimate=blockers.length?{status:'not-evaluable',expectedMinutes:null,reason:blockers[0]}:estimateExpectedMinutes(records,p.projectedRole==='bench'?'potential-substitute':'starter',kickoffAt);
    if(!Number.isFinite(estimate.expectedMinutes))blockers.push('EXPECTED_MINUTES_UNAVAILABLE');
+   else if(estimate.expectedMinutes<=0)blockers.push('NO_EXPECTED_PLAYING_TIME');
    if(!Number.isFinite(target.shotsTotal?.central)||!Number.isFinite(target.shotsOnTarget?.central))blockers.push('TEAM_VOLUMES_UNAVAILABLE');
    if(member?.position==='goalkeeper')blockers.push('GOALKEEPER_SHOT_METRIC_INELIGIBLE');
    if(!old?.primary?.candidate||old.primary.status!=='diagnostic-rate-only'||old.sample?.overlap)blockers.push('BASELINE_UNAVAILABLE_OR_UNSAFE');

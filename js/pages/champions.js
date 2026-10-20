@@ -418,7 +418,7 @@ export function createPage(deps){
 
   async function appendSharedSchedina(matchday,fixtureId,host){
     if(!host||typeof host.insertAdjacentHTML!=="function")return;
-    const [{loadChampionsWorkspace},{createPage:createBettingPage}]=await Promise.all([import('./champions-workspace-catalog.mjs?v=20261019-shared-schedine-v1'),import('./betting.js?v=20261019-shared-schedine-v1')]);
+    const [{loadChampionsWorkspace},{createPage:createBettingPage}]=await Promise.all([import('./champions-workspace-catalog.mjs?v=20261020-champions-lineup-forecasts-v1'),import('./betting.js?v=20261020-champions-lineup-forecasts-v1')]);
     const workspace=await loadChampionsWorkspace(load,matchday);
     const controller=createBettingPage({...deps,dateOnly:deps.dateOnly||(value=>String(value||"").slice(0,10))});
     host.insertAdjacentHTML('beforeend',controller.championsWorkspaceMarkup(workspace,fixtureId));

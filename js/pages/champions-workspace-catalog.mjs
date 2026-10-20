@@ -43,6 +43,10 @@ export async function loadChampionsWorkspace(load,matchday){
       leg.marketScope=market.marketScope;
       leg.marketFamily=familyLabels[market.family]||market.family;
       leg.approvedPreliminary=approvedById.has(leg.selectionId);
+      if(leg.approvedPreliminary){
+        leg.approvedOriginalOdds=approvedById.get(leg.selectionId).odds;
+        leg.quoteChanged=leg.odds!==leg.approvedOriginalOdds;
+      }
       leg.catalogOrigin='champions-frozen-md03';
       leg.suggestionAnalysis={suggested:leg.approvedPreliminary,rank:leg.approvedPreliminary?0:1,family:market.family};
       leg.betSelection.market.family=leg.marketFamily;
@@ -55,7 +59,7 @@ export async function loadChampionsWorkspace(load,matchday){
     }
     for(const [id,approvedLeg] of approvedById){
       const leg=all.find(item=>item.selectionId===id);
-      if(!leg||leg.odds!==approvedLeg.odds||leg.matchId!==approvedLeg.matchId)throw new Error(`Contratto CL3 approvato non corrispondente: ${id}`);
+      if(!leg||leg.matchId!==approvedLeg.matchId||leg.betSelection.identity.providerMarketId!==approvedLeg.providerMarketId||leg.betSelection.identity.providerSelectionId!==approvedLeg.providerSelectionId)throw new Error(`Contratto CL3 approvato non corrispondente: ${id}`);
     }
     // Match a forecast to a Sisal contract only with exact verified player ID,
     // compatible market semantics and a unique provider selection.

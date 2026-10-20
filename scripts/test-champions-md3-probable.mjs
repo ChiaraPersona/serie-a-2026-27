@@ -9,11 +9,11 @@ assert.equal(source.status,'probable');assert.equal(source.teams.length,36);asse
 const teams=output.fixtures.flatMap(f=>f.teams),players=teams.flatMap(t=>t.players);
 assert.equal(players.filter(p=>p.projectedRole==='starter').length,396);assert.equal(new Set(players.filter(p=>p.providerPlayerId).map(p=>p.providerPlayerId)).size,players.filter(p=>p.providerPlayerId).length);
 for(const t of teams){
- assert.equal(t.status,'probable');assert.equal(t.players.filter(p=>p.projectedRole==='starter').length,11);if(!t.callupDocumentation.documented)assert.equal(t.bench,null);
+ assert.equal(t.status,'probable');assert.equal(t.players.filter(p=>p.projectedRole==='starter').length,11);if(!t.callupDocumentation.documented){assert.equal(t.benchStatus,'full-squad-pending-callups');assert(Array.isArray(t.bench));}
  for(const p of t.players){
   assert.equal(p.lineupStatus,'probable');if(p.projectedShots===null||p.projectedRole==='bench')assert.equal(p.eventProbabilities,null);
   if(!p.playerId||t.collectiveOnly||['doubtful','unavailable','suspended'].includes(p.availability)){assert.equal(p.expectedMinutes,null);assert.equal(p.projectedShots,null);assert.equal(p.projectedSOT,null);}
-  if(p.expectedMinutes!==null){assert(p.expectedMinutes>0&&p.expectedMinutes<=90);assert((p.projectedRole==='bench'?p.minutesEstimate.sample.namedBenchAppearances:p.minutesEstimate.sample.exactStarterAppearances)>=3);assert.equal(p.minutesEstimate.expectedMinutes,estimateExpectedMinutes(p.minutesEstimate.evidence,p.projectedRole==='bench'?'potential-substitute':'starter',output.fixtures.find(f=>f.teams.includes(t)).kickoffAt).expectedMinutes);}
+  if(p.expectedMinutes!==null){assert(p.expectedMinutes>=0&&p.expectedMinutes<=90);if(p.expectedMinutes===0){assert.equal(p.projectedShots,null);assert(p.blockers.includes('NO_EXPECTED_PLAYING_TIME'));}assert((p.projectedRole==='bench'?p.minutesEstimate.sample.namedBenchAppearances:p.minutesEstimate.sample.exactStarterAppearances)>=3);assert.equal(p.minutesEstimate.expectedMinutes,estimateExpectedMinutes(p.minutesEstimate.evidence,p.projectedRole==='bench'?'potential-substitute':'starter',output.fixtures.find(f=>f.teams.includes(t)).kickoffAt).expectedMinutes);}
   if(p.projectedShots!==null){assert(p.projectedSOT<=p.projectedShots);assert(p.expectedMinutes>0);}
  }
  if(t.reconciliation.status!=='offline-conditional-only'){assert.equal(t.reconciliation.players.length,0);assert(t.players.every(p=>p.projectedShots===null&&p.projectedSOT===null));}
@@ -21,11 +21,11 @@ for(const t of teams){
 }
 assert.equal(players.filter(p=>p.projectedShots!==null).length,output.summary.operationalPlayers);
 assert.equal(teams.filter(t=>t.collectiveOnly).length,4);
-const suspicious=players.find(p=>p.sourceName==='Haaland');assert.equal(suspicious.availability,'doubtful');assert.equal(suspicious.expectedMinutes,null);
-assert.equal(source.teams.find(t=>t.teamId==='villarreal').starters.find(p=>p.sourceName==='Saliba').playerId,'nathan-saliba');
+const suspicious=source.teams.find(t=>t.teamId==='manchester-city').doubtful.find(p=>p.playerId==='erling-haaland');assert(suspicious);assert(!players.some(p=>p.playerId===suspicious.playerId));
+assert.equal(source.teams.find(t=>t.teamId==='villarreal').starters.find(p=>p.playerId==='nathan-saliba').playerId,'nathan-saliba');
 assert.equal(source.teams.find(t=>t.teamId==='arsenal').unavailable.find(p=>p.sourceName==='Saliba').playerId,'william-saliba');
-assert.equal(source.teams.find(t=>t.teamId==='borussia-dortmund').starters.find(p=>p.sourceName==='Bellingham').playerId,'jobe-bellingham');
-assert.equal(source.teams.find(t=>t.teamId==='real-madrid').starters.find(p=>p.sourceName==='Bellingham').playerId,'jude-bellingham');
+assert.equal(source.teams.find(t=>t.teamId==='borussia-dortmund').starters.find(p=>p.playerId==='jobe-bellingham').playerId,'jobe-bellingham');
+assert.equal(source.teams.find(t=>t.teamId==='real-madrid').starters.find(p=>p.playerId==='jude-bellingham').playerId,'jude-bellingham');
 assert.equal(projectDocumentedTeam({teamId:'liverpool',players:[],lineupVerified:true,benchVerified:false}).status,'blocked-documentation-or-minutes');
 for(const f of output.fixtures){const html=md3ProbableMarkup(f);assert(!/https?:|sourceUrl|provenienza|Tiri \/90|foto|<img/.test(html));assert(html.includes('non ufficiali'));assert.equal((html.match(/data-md3-probable-player/g)||[]).length,f.teams.reduce((n,t)=>n+t.players.length,0));}
 assert.equal(estimateExpectedMinutes([],'starter','2026-10-20T19:00:00Z').expectedMinutes,null);
