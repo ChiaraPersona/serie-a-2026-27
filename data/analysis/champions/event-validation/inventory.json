@@ -1,0 +1,331 @@
+{
+  "schemaVersion": 1,
+  "asOf": "2026-10-20T14:33:07.250Z",
+  "inputs": {
+    "data/normalized/uefa-europe-history-2023-26.json": "0817482042ba8bf3a522185aee52c580f3f21be79cec4daf83a7a2bae79c1e0e",
+    "data/normalized/champions-pilot-volume-backtest.json": "0ea2e91fa180ee28e7395ac197fbb2af848e55d7e4a487b1e5db595dd9ef809b",
+    "data/generated/uefa-1x2-backtest.json": "cad68a9375ddca9090c4b7b5a9482e47915ce1a8fb72e66bbc64a753b58265f0",
+    "data/analysis/champions/model-calibration-audit-2026-10-11.json": "0d3469fbb9236201d868216c2a7aebdffc0b7adae37e8047e6e87e1702f63209"
+  },
+  "historicalResultMatches": 1469,
+  "championsHistoryMatches": 503,
+  "finishedFixtures": 36,
+  "teamCountActuals": {
+    "shots": 36,
+    "sot": 36,
+    "corners": 34
+  },
+  "exactPlayerActuals": 62,
+  "priorStrictPlayerAuditObservations": 30,
+  "historicalSnapshots": [
+    {
+      "path": "data/normalized/champions-pilot-predictions-2026-27.json",
+      "versions": 14,
+      "fixtures": 18,
+      "prematchFixtures": 18,
+      "originalResultEventProbabilities": 90,
+      "scope": "LEGACY_MODEL_ONLY_NOT_MD3_VALIDATION",
+      "proof": "GIT_COMMITTER_TIMESTAMP_AND_SERIALIZED_GENERATION_TIME"
+    },
+    {
+      "path": "data/normalized/champions-pilot-predictions-md02-2026-27.json",
+      "versions": 1,
+      "fixtures": 18,
+      "prematchFixtures": 18,
+      "originalResultEventProbabilities": 90,
+      "scope": "LEGACY_MODEL_ONLY_NOT_MD3_VALIDATION",
+      "proof": "GIT_COMMITTER_TIMESTAMP_AND_SERIALIZED_GENERATION_TIME"
+    },
+    {
+      "path": "data/normalized/champions-player-markets-md01-2026-27.json",
+      "versions": 11,
+      "fixtures": 18,
+      "prematchFixtures": 18,
+      "originalResultEventProbabilities": 0,
+      "scope": "LEGACY_MODEL_ONLY_NOT_MD3_VALIDATION",
+      "proof": "GIT_COMMITTER_TIMESTAMP_AND_SERIALIZED_GENERATION_TIME"
+    }
+  ],
+  "historicalDiagnostics": {
+    "legacy:13119f0a0a462c05153b4c8bc918a4bc98dc9e31e0105c8f7305d51e2ea530b5": {
+      "independentFixtures": 36,
+      "probabilityObservations": 180,
+      "brier": 0.1504827444444445,
+      "ece": 0.09960000000000001,
+      "logLoss": 0.472056553264152,
+      "status": "DIAGNOSTIC_ONLY_NO_MD3_TRANSFER",
+      "events": {
+        "1": {
+          "n": 36,
+          "brier": 0.17120327777777777,
+          "ece": 0.20183333333333328
+        },
+        "2": {
+          "n": 36,
+          "brier": 0.1624849444444444,
+          "ece": 0.12088888888888888
+        },
+        "X": {
+          "n": 36,
+          "brier": 0.08503727777777778,
+          "ece": 0.09600000000000002
+        },
+        "1X": {
+          "n": 36,
+          "brier": 0.1624849444444444,
+          "ece": 0.14311111111111108
+        },
+        "X2": {
+          "n": 36,
+          "brier": 0.1712032777777778,
+          "ece": 0.20183333333333342
+        }
+      }
+    }
+  },
+  "freeze": {
+    "capturedAt": "2026-10-20T14:33:07.250Z",
+    "results": [
+      {
+        "fixtureId": "ucl-2026-27-md03-01",
+        "status": "FROZEN",
+        "path": "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-01--2026-10-20T14-33-07-250Z.json",
+        "contentHash": "2d40c2deb5d033104c949289e7c31af6f59d20804161db260d9f6a5732832154"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md03-02",
+        "status": "FROZEN",
+        "path": "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-02--2026-10-20T14-33-07-250Z.json",
+        "contentHash": "c66b136d9aff107602fe78d49684c8d6b1b04356cdba03ca46145cbbe7b7eb1e"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md03-03",
+        "status": "FROZEN",
+        "path": "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-03--2026-10-20T14-33-07-250Z.json",
+        "contentHash": "f43c45e7f386cde030aca79c0c5232bc09b0f4f09d9ce8dec306de61ed46db1b"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md03-04",
+        "status": "FROZEN",
+        "path": "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-04--2026-10-20T14-33-07-250Z.json",
+        "contentHash": "1cc5c06338125d817a138cca5871555f7d36d6d03846d98ec97d52de5277afe3"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md03-05",
+        "status": "FROZEN",
+        "path": "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-05--2026-10-20T14-33-07-250Z.json",
+        "contentHash": "2b31d030d4f53ddcc2ef59c17e6e58e6aecad703d10c6eb04cd71f1a105662fa"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md03-06",
+        "status": "FROZEN",
+        "path": "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-06--2026-10-20T14-33-07-250Z.json",
+        "contentHash": "75c0c695f4b2f6d1385ec1351d8e8e764e07a09966e3c0359badf63d638e7791"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md03-07",
+        "status": "FROZEN",
+        "path": "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-07--2026-10-20T14-33-07-250Z.json",
+        "contentHash": "6567fdd6f10ce738ce04ca5cdac4f9dba9fb3244c62e306afa7cb8b71e9f4530"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md03-08",
+        "status": "FROZEN",
+        "path": "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-08--2026-10-20T14-33-07-250Z.json",
+        "contentHash": "118bbec35c3a4c64018e7e6a0daa096f4d7614f90e5c76e68921109dbe523bbf"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md03-09",
+        "status": "FROZEN",
+        "path": "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-09--2026-10-20T14-33-07-250Z.json",
+        "contentHash": "86d180675610c97d292d3f2beb6e03a585970366e873d1fdbe86a6cf7852687d"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md03-10",
+        "status": "FROZEN",
+        "path": "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-10--2026-10-20T14-33-07-250Z.json",
+        "contentHash": "942c9199ecc8ebb844dc4d1b65f70dcc152d6eaac296b3b51d0d745687b27fc7"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md03-11",
+        "status": "FROZEN",
+        "path": "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-11--2026-10-20T14-33-07-250Z.json",
+        "contentHash": "5d8f84df4391e58e80e3da3fa789f6282798d14ea3fa90b31d5dfb050434d9af"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md03-12",
+        "status": "FROZEN",
+        "path": "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-12--2026-10-20T14-33-07-250Z.json",
+        "contentHash": "c8e790865d1e725ec73efa1fac8203c9bafb10ca4464afd0b749a9a5f68625e2"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md03-13",
+        "status": "FROZEN",
+        "path": "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-13--2026-10-20T14-33-07-250Z.json",
+        "contentHash": "ed03810f543cc14b02645f3b46d962ea1510491fc1a7c6c38d9eae71f879971b"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md03-14",
+        "status": "FROZEN",
+        "path": "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-14--2026-10-20T14-33-07-250Z.json",
+        "contentHash": "6d3ce33ebb6c03ff3f2ac78a18ac29f49fb847ef689f600122afa938e008bcf7"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md03-15",
+        "status": "FROZEN",
+        "path": "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-15--2026-10-20T14-33-07-250Z.json",
+        "contentHash": "221e8d8049b013bd3f5c66b8b7a9d6e2dfe5eeec85d103cb1356b56834ae502d"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md03-16",
+        "status": "FROZEN",
+        "path": "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-16--2026-10-20T14-33-07-250Z.json",
+        "contentHash": "fe4c27a7c400a10ee04959f58cb27a25bdc2dd09491c579678401c8f1091e78e"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md03-17",
+        "status": "FROZEN",
+        "path": "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-17--2026-10-20T14-33-07-250Z.json",
+        "contentHash": "e3bd6454421437930415763a77c24956b33f90dca0f26e78ab758d1209ea30ff"
+      },
+      {
+        "fixtureId": "ucl-2026-27-md03-18",
+        "status": "FROZEN",
+        "path": "data/predictions/champions-event-snapshots/md03/ucl-2026-27-md03-18--2026-10-20T14-33-07-250Z.json",
+        "contentHash": "8b7cde3717acf76df345ab238a3ac64615db3c3dba6391e4a247e497e7ee6714"
+      }
+    ]
+  },
+  "latestSnapshots": [
+    {
+      "fixtureId": "ucl-2026-27-md03-01",
+      "capturedAt": "2026-10-20T14:33:07.250Z",
+      "kickoffAt": "2026-10-20T16:45:00.000Z",
+      "events": 13,
+      "players": 72
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-02",
+      "capturedAt": "2026-10-20T14:33:07.250Z",
+      "kickoffAt": "2026-10-20T16:45:00.000Z",
+      "events": 5,
+      "players": 49
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-03",
+      "capturedAt": "2026-10-20T14:33:07.250Z",
+      "kickoffAt": "2026-10-20T19:00:00.000Z",
+      "events": 12,
+      "players": 48
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-04",
+      "capturedAt": "2026-10-20T14:33:07.250Z",
+      "kickoffAt": "2026-10-20T19:00:00.000Z",
+      "events": 117,
+      "players": 80
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-05",
+      "capturedAt": "2026-10-20T14:33:07.250Z",
+      "kickoffAt": "2026-10-20T19:00:00.000Z",
+      "events": 106,
+      "players": 74
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-06",
+      "capturedAt": "2026-10-20T14:33:07.250Z",
+      "kickoffAt": "2026-10-20T19:00:00.000Z",
+      "events": 119,
+      "players": 46
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-07",
+      "capturedAt": "2026-10-20T14:33:07.250Z",
+      "kickoffAt": "2026-10-20T19:00:00.000Z",
+      "events": 123,
+      "players": 48
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-08",
+      "capturedAt": "2026-10-20T14:33:07.250Z",
+      "kickoffAt": "2026-10-20T19:00:00.000Z",
+      "events": 117,
+      "players": 50
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-09",
+      "capturedAt": "2026-10-20T14:33:07.250Z",
+      "kickoffAt": "2026-10-20T19:00:00.000Z",
+      "events": 116,
+      "players": 51
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-10",
+      "capturedAt": "2026-10-20T14:33:07.250Z",
+      "kickoffAt": "2026-10-21T16:45:00.000Z",
+      "events": 13,
+      "players": 47
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-11",
+      "capturedAt": "2026-10-20T14:33:07.250Z",
+      "kickoffAt": "2026-10-21T16:45:00.000Z",
+      "events": 58,
+      "players": 54
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-12",
+      "capturedAt": "2026-10-20T14:33:07.250Z",
+      "kickoffAt": "2026-10-21T19:00:00.000Z",
+      "events": 112,
+      "players": 87
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-13",
+      "capturedAt": "2026-10-20T14:33:07.250Z",
+      "kickoffAt": "2026-10-21T19:00:00.000Z",
+      "events": 59,
+      "players": 70
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-14",
+      "capturedAt": "2026-10-20T14:33:07.250Z",
+      "kickoffAt": "2026-10-21T19:00:00.000Z",
+      "events": 64,
+      "players": 76
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-15",
+      "capturedAt": "2026-10-20T14:33:07.250Z",
+      "kickoffAt": "2026-10-21T19:00:00.000Z",
+      "events": 65,
+      "players": 50
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-16",
+      "capturedAt": "2026-10-20T14:33:07.250Z",
+      "kickoffAt": "2026-10-21T19:00:00.000Z",
+      "events": 109,
+      "players": 60
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-17",
+      "capturedAt": "2026-10-20T14:33:07.250Z",
+      "kickoffAt": "2026-10-21T19:00:00.000Z",
+      "events": 116,
+      "players": 87
+    },
+    {
+      "fixtureId": "ucl-2026-27-md03-18",
+      "capturedAt": "2026-10-20T14:33:07.250Z",
+      "kickoffAt": "2026-10-21T19:00:00.000Z",
+      "events": 103,
+      "players": 54
+    }
+  ],
+  "eligibleTestObservations": 0,
+  "pendingObservations": 1427,
+  "quarantined": [],
+  "approvalCount": 0
+}

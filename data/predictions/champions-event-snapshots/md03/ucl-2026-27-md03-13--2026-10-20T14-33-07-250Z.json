@@ -1,0 +1,3751 @@
+{
+  "schemaVersion": 1,
+  "kind": "champions-immutable-prematch-player-forecast-snapshot",
+  "immutable": true,
+  "createdAt": "2026-10-20T14:33:07.250Z",
+  "competition": "champions",
+  "phase": "league",
+  "season": "2026-27",
+  "matchday": 3,
+  "fixtureId": "ucl-2026-27-md03-13",
+  "date": "2026-10-21",
+  "kickoff": "21:00",
+  "timezone": "Europe/Rome",
+  "kickoffAt": "2026-10-21T19:00:00.000Z",
+  "homeTeam": "Club Brugge",
+  "awayTeam": "Lens",
+  "chronologyStatus": "VALID_PREMATCH_SNAPSHOT",
+  "evaluationWindow": "test",
+  "model": {
+    "ids": {
+      "collective": "champions-collective:af8beccb07d030c510e36746dde06bfb142b0f6998ac759e8a884ca317509ee5",
+      "player": "champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f"
+    },
+    "modules": {
+      "collective": {
+        "scripts/build-champions-pilot-predictions.js": "33f125092367f1d518d67bece8a55cc6b253e34cb9f114cb4233c80e79341cd7",
+        "scripts/build-champions-1x2.js": "14862aba1553ab311ac0a9c634acdb748e38950d6ea5c32be2b4e48fe9dfde83",
+        "scripts/champions/offline-collective.js": "c061eabcac55ca28bb32ba68143009e50fa668a829108c22bb7fcf0987e31ab6",
+        "data/normalized/uefa-1x2-model-2026-27.json": "d02e3b50291c32bacdadc7eaaa9a2fcc0633cd57a06df9480a347fb0f441b19d"
+      },
+      "player": {
+        "scripts/build-champions-md3-probable.cjs": "3f81ca7dabbeeb96779ee6c9ee0f3897367865cbeae0904f3eece48c260e0b11",
+        "scripts/champions/md3-lineup-policy.js": "5de9c6e48c301568096e200c9a032ea1dc7e9eb6b07d3962f6863b57a8d02e40",
+        "scripts/champions/current-season-offline.js": "893ca70e5d73cf30f193aa16d4add179eabb381d431f9cba56e9779c89eb9bdd",
+        "scripts/champions/context-adjusted-player-baseline.js": "67bfffa938d134b6dca9b8018cd4b55146f4aead56b61ad25072fb7eb00d9f3d",
+        "scripts/champions/player-volume-utils.js": "d283e14790930987242f42c2d57fd14e9274635d1fcfa0f8c2fad7fa0a7ef6a6",
+        "scripts/champions/substitute-minutes.js": "bf74d46f1b41ab33821dcc277a4259f4ea7f35762f1f26fd4bfd2797663780cd"
+      }
+    }
+  },
+  "dataVersion": {
+    "capturedAt": "2026-10-20T14:33:07.250Z",
+    "availabilityProof": "CONTROLLED_LOCAL_CAPTURE_BEFORE_KICKOFF_NOT_EXTERNAL_TIMESTAMP_AUTHORITY",
+    "inputs": {
+      "data/normalized/champions-league-2026-27.json": "976ba156fc47ce8e908a3102539b0dd22005303dde6a9bca2e42f21cac8df0da",
+      "data/normalized/champions-md03-probable-individuals-2026-27.json": "ec5843586edd877946b3e878f8a6a992c2b4c6ae665217b71fb6ff7512a2ba62",
+      "data/normalized/champions-md03-preliminary-2026-27.json": "d26b35e51c804872c8beae51a6044d69d46f97190d6ea4536d23fde8a44f7c66",
+      "data/normalized/schedina-champions-md03.json": "4aeb2efabb30c6e205d7ef1a9d1673f0e2651d754a5a1ba5acc8bfbf06a2f936",
+      "data/normalized/odds/sisal/champions-league.json": "aa6fd6de6bd301dd16298337abff92e1869d96b4aa6be4313fe3a3dd410aa09b",
+      "data/normalized/uefa-europe-history-2023-26.json": "0817482042ba8bf3a522185aee52c580f3f21be79cec4daf83a7a2bae79c1e0e",
+      "data/sources/champions-probable-formations-md03-2026-27.json": "bffa9eb554cc5143bdbe51fcb22c7b53a2e9768cd7e7444fb26bf09d89fa99f9",
+      "data/normalized/champions-md03-player-database-2026-27.json": "5252d97d536f832ac8672a09c4d75a4cc7d130c5f977a5e42a5c17732d8c2db6"
+    }
+  },
+  "kickoffVerification": {
+    "source": "data/normalized/champions-league-2026-27.json",
+    "timezone": "Europe/Rome"
+  },
+  "identityOverlaySource": "CANONICAL_PLAYER_AND_TEAM_IDS_ONLY",
+  "coverage": {
+    "completeForSnapshotUniverse": true,
+    "universe": "ALL_EXISTING_PROBABLE_PLAYERS_AND_AVAILABLE_CONTRACT_EVENTS_INCLUDING_EXPLICIT_BLOCKERS",
+    "players": 70,
+    "events": 59,
+    "unresolved": 0
+  },
+  "players": [
+    {
+      "teamId": "club-brugge",
+      "internalPlayerId": "yann-sommer",
+      "name": "Yann Sommer",
+      "role": "goalkeeper",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 88.3,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE"
+      ]
+    },
+    {
+      "teamId": "club-brugge",
+      "internalPlayerId": "brandon-mechele",
+      "name": "Brandon Mechele",
+      "role": "defender",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 88.4,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "club-brugge",
+      "internalPlayerId": "han-beom-lee",
+      "name": "Han-beom Lee",
+      "role": "defender",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 88.6,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "club-brugge",
+      "internalPlayerId": "joaquin-seys",
+      "name": "Joaquin Seys",
+      "role": "midfielder",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 82.6,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "club-brugge",
+      "internalPlayerId": "kyriani-sabbe",
+      "name": "Kyriani Sabbe",
+      "role": "defender",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 80.6,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "club-brugge",
+      "internalPlayerId": "hans-vanaken",
+      "name": "Hans Vanaken",
+      "role": "midfielder",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 88.6,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "club-brugge",
+      "internalPlayerId": "freddie-potts",
+      "name": "Freddie Potts",
+      "role": "midfielder",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 87.1,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "club-brugge",
+      "internalPlayerId": "hugo-vetlesen",
+      "name": "Hugo Vetlesen",
+      "role": "midfielder",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 77.8,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "club-brugge",
+      "internalPlayerId": "jan-virgili",
+      "name": "Jan Virgili",
+      "role": "forward",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 81.7,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "club-brugge",
+      "internalPlayerId": "carlos-forbs",
+      "name": "Carlos Forbs",
+      "role": "forward",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 75.4,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "club-brugge",
+      "internalPlayerId": "nicolo-tresoldi",
+      "name": "Nicolo Tresoldi",
+      "role": "forward",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 71,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "club-brugge",
+      "internalPlayerId": "nordin-jackers",
+      "name": "Nordin Jackers",
+      "role": "goalkeeper",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE"
+      ]
+    },
+    {
+      "teamId": "club-brugge",
+      "internalPlayerId": "axl-de-corte",
+      "name": "Axl De Corte",
+      "role": "goalkeeper",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "club-brugge",
+      "internalPlayerId": "argus-vanden-driessche",
+      "name": "Argus Vanden Driessche",
+      "role": "goalkeeper",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "club-brugge",
+      "internalPlayerId": "thibeau-kestemont",
+      "name": "Thibeau Kestemont",
+      "role": "goalkeeper",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "club-brugge",
+      "internalPlayerId": "matteo-dams",
+      "name": "Matteo Dams",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "club-brugge",
+      "internalPlayerId": "hugo-siquet",
+      "name": "Hugo Siquet",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 7.8,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "club-brugge",
+      "internalPlayerId": "samba-coulibaly",
+      "name": "Samba Coulibaly",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "club-brugge",
+      "internalPlayerId": "jorne-spileers",
+      "name": "Jorne Spileers",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 9.9,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "club-brugge",
+      "internalPlayerId": "samuel-van-hoogen",
+      "name": "Samuel Van Hoogen",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "club-brugge",
+      "internalPlayerId": "andre-garcia",
+      "name": "Andre Garcia",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "club-brugge",
+      "internalPlayerId": "alexander-vandeperre",
+      "name": "Alexander Vandeperre",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "club-brugge",
+      "internalPlayerId": "wout-verlinden",
+      "name": "Wout Verlinden",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "club-brugge",
+      "internalPlayerId": "axl-wins",
+      "name": "Axl Wins",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "club-brugge",
+      "internalPlayerId": "cheveyo-tsawa",
+      "name": "Cheveyo Tsawa",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 4.8,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "club-brugge",
+      "internalPlayerId": "lynnt-audoor",
+      "name": "Lynnt Audoor",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 3.9,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "club-brugge",
+      "internalPlayerId": "jessi-da-silva",
+      "name": "Jessi Da Silva",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "club-brugge",
+      "internalPlayerId": "lucas-delorge",
+      "name": "Lucas Delorge",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "club-brugge",
+      "internalPlayerId": "felix-lemarechal",
+      "name": "Félix Lemarechal",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 14.5,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "club-brugge",
+      "internalPlayerId": "tian-koren",
+      "name": "Tian Koren",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 2.6,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "club-brugge",
+      "internalPlayerId": "gianluca-okon",
+      "name": "Gianluca Okon",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "club-brugge",
+      "internalPlayerId": "mohamed-galal-elbay",
+      "name": "Mohamed Galal Elbay",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "club-brugge",
+      "internalPlayerId": "naim-amengai",
+      "name": "Naim Amengai",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "club-brugge",
+      "internalPlayerId": "romeo-vermant",
+      "name": "Romeo Vermant",
+      "role": "forward",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 20.1,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "club-brugge",
+      "internalPlayerId": "wisdom-mike",
+      "name": "Wisdom Mike",
+      "role": "forward",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 2.4,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "club-brugge",
+      "internalPlayerId": "milan-robberechts",
+      "name": "Milan Robberechts",
+      "role": "forward",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "club-brugge",
+      "internalPlayerId": "mamadou-diakhon",
+      "name": "Mamadou Diakhon",
+      "role": "forward",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 13.9,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "club-brugge",
+      "internalPlayerId": "andrej-vasovic",
+      "name": "Andrej Vasovic",
+      "role": "forward",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "club-brugge",
+      "internalPlayerId": "jakke-van-britsom",
+      "name": "Jakke Van Britsom",
+      "role": "forward",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "lens",
+      "internalPlayerId": "robin-risser",
+      "name": "Robin Risser",
+      "role": "goalkeeper",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 90,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE"
+      ]
+    },
+    {
+      "teamId": "lens",
+      "internalPlayerId": "saud-abdulhamid",
+      "name": "Saud Abdulhamid",
+      "role": "defender",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 80.1,
+      "startingProbability": null,
+      "projectedShots": 0.57,
+      "projectedShotsOnTarget": 0.17,
+      "eventProbabilities": {
+        "shotsOver05": 0.4344745613004629,
+        "shotsOver15": 0.11212506124172683,
+        "shotsOver25": 0.02025545372498705,
+        "sotOver05": 0.1563351834036163,
+        "sotOver15": 0.01291216458223099,
+        "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
+      },
+      "blockers": []
+    },
+    {
+      "teamId": "lens",
+      "internalPlayerId": "souleymane-sagnan",
+      "name": "Souleymane Sagnan",
+      "role": "defender",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 80.7,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "lens",
+      "internalPlayerId": "kyllian-antonio",
+      "name": "Kyllian Antonio",
+      "role": "defender",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 83.6,
+      "startingProbability": null,
+      "projectedShots": 0.64,
+      "projectedShotsOnTarget": 0.14,
+      "eventProbabilities": {
+        "shotsOver05": 0.47270757595695145,
+        "shotsOver15": 0.13524042456940033,
+        "shotsOver25": 0.027250936125383984,
+        "sotOver05": 0.13064176460119414,
+        "sotOver15": 0.00893161164536127,
+        "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
+      },
+      "blockers": []
+    },
+    {
+      "teamId": "lens",
+      "internalPlayerId": "amadou-haidara",
+      "name": "Amadou Haidara",
+      "role": "midfielder",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 66.8,
+      "startingProbability": null,
+      "projectedShots": 0.99,
+      "projectedShotsOnTarget": 0.36,
+      "eventProbabilities": {
+        "shotsOver05": 0.6284233089779543,
+        "shotsOver15": 0.26056238486612904,
+        "shotsOver25": 0.0784712274307755,
+        "sotOver05": 0.302323673928969,
+        "sotOver15": 0.05116019654339787,
+        "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
+      },
+      "blockers": []
+    },
+    {
+      "teamId": "lens",
+      "internalPlayerId": "andrija-bulatovic",
+      "name": "Andrija Bulatović",
+      "role": "midfielder",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 89.6,
+      "startingProbability": null,
+      "projectedShots": 1.48,
+      "projectedShotsOnTarget": 0.51,
+      "eventProbabilities": {
+        "shotsOver05": 0.7723623116161873,
+        "shotsOver15": 0.4354585328081444,
+        "shotsOver25": 0.18614973649019273,
+        "sotOver05": 0.3995044211877341,
+        "sotOver15": 0.0932516759934785,
+        "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
+      },
+      "blockers": []
+    },
+    {
+      "teamId": "lens",
+      "internalPlayerId": "michal-skoras",
+      "name": "Michał Skóraś",
+      "role": "defender",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 80.8,
+      "startingProbability": null,
+      "projectedShots": 1.24,
+      "projectedShotsOnTarget": 0.27,
+      "eventProbabilities": {
+        "shotsOver05": 0.7106157820609493,
+        "shotsOver15": 0.3517793518165264,
+        "shotsOver25": 0.12930076506498422,
+        "sotOver05": 0.23662050566314685,
+        "sotOver15": 0.030508042192196494,
+        "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
+      },
+      "blockers": []
+    },
+    {
+      "teamId": "lens",
+      "internalPlayerId": "matthieu-udol",
+      "name": "Matthieu Udol",
+      "role": "defender",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 81.8,
+      "startingProbability": null,
+      "projectedShots": 1.25,
+      "projectedShotsOnTarget": 0.4,
+      "eventProbabilities": {
+        "shotsOver05": 0.7134952031398099,
+        "shotsOver15": 0.3553642070645723,
+        "shotsOver25": 0.13153233451754875,
+        "sotOver05": 0.3296799539643607,
+        "sotOver15": 0.06155193555010485,
+        "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
+      },
+      "blockers": []
+    },
+    {
+      "teamId": "lens",
+      "internalPlayerId": "florian-thauvin",
+      "name": "Florian Thauvin",
+      "role": "forward",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 87.1,
+      "startingProbability": null,
+      "projectedShots": 2.77,
+      "projectedShotsOnTarget": 0.94,
+      "eventProbabilities": {
+        "shotsOver05": 0.9373379952578469,
+        "shotsOver15": 0.7637642421220826,
+        "shotsOver25": 0.5233645940290491,
+        "sotOver05": 0.6093721646414789,
+        "sotOver15": 0.24218199940446894,
+        "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
+      },
+      "blockers": []
+    },
+    {
+      "teamId": "lens",
+      "internalPlayerId": "mickael-cuisance",
+      "name": "Mickaël Cuisance",
+      "role": "midfielder",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 72.2,
+      "startingProbability": null,
+      "projectedShots": 1.21,
+      "projectedShotsOnTarget": 0.32,
+      "eventProbabilities": {
+        "shotsOver05": 0.7018027205701126,
+        "shotsOver15": 0.3409840124599489,
+        "shotsOver25": 0.12268869405329985,
+        "sotOver05": 0.27385096292630906,
+        "sotOver15": 0.04148327106272798,
+        "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
+      },
+      "blockers": []
+    },
+    {
+      "teamId": "lens",
+      "internalPlayerId": "franjo-ivanovic",
+      "name": "Franjo Ivanović",
+      "role": "forward",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 70,
+      "startingProbability": null,
+      "projectedShots": 2.4,
+      "projectedShotsOnTarget": 1.01,
+      "eventProbabilities": {
+        "shotsOver05": 0.9092820467105875,
+        "shotsOver15": 0.6915589588159975,
+        "shotsOver25": 0.4302912533424894,
+        "sotOver05": 0.6357810204284766,
+        "sotOver15": 0.26791985106123817,
+        "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
+      },
+      "blockers": []
+    },
+    {
+      "teamId": "lens",
+      "internalPlayerId": "regis-gurtner",
+      "name": "Regis Gurtner",
+      "role": "goalkeeper",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "lens",
+      "internalPlayerId": "mathieu-gorgelin",
+      "name": "Mathieu Gorgelin",
+      "role": "goalkeeper",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE"
+      ]
+    },
+    {
+      "teamId": "lens",
+      "internalPlayerId": "daivy-lefranc-yeboah",
+      "name": "Daivy Lefranc-Yeboah",
+      "role": "goalkeeper",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "lens",
+      "internalPlayerId": "arthur-mogo-njimfo",
+      "name": "Arthur Mogo Njimfo",
+      "role": "goalkeeper",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "lens",
+      "internalPlayerId": "fedwan-messaoudi",
+      "name": "Fedwan Messaoudi",
+      "role": "goalkeeper",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "lens",
+      "internalPlayerId": "nidal-celik",
+      "name": "Nidal Čelik",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "lens",
+      "internalPlayerId": "samson-baidoo",
+      "name": "Samson Baidoo",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 25.7,
+      "startingProbability": null,
+      "projectedShots": 0.25,
+      "projectedShotsOnTarget": 0.06,
+      "eventProbabilities": null,
+      "blockers": []
+    },
+    {
+      "teamId": "lens",
+      "internalPlayerId": "jean-clair-todibo",
+      "name": "Jean-Clair Todibo",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 3.5,
+      "startingProbability": null,
+      "projectedShots": 0.01,
+      "projectedShotsOnTarget": 0,
+      "eventProbabilities": null,
+      "blockers": []
+    },
+    {
+      "teamId": "lens",
+      "internalPlayerId": "djulian-fernoc",
+      "name": "Djulian Fernoc",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "lens",
+      "internalPlayerId": "noe-kemtchoum",
+      "name": "Noé Kemtchoum",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "lens",
+      "internalPlayerId": "yacine-titraoui",
+      "name": "Yacine Titraoui",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "lens",
+      "internalPlayerId": "leopold-joursky",
+      "name": "Léopold Joursky",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "lens",
+      "internalPlayerId": "nathanael-gane-bernardino",
+      "name": "Nathanaël Gane Bernardino",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "lens",
+      "internalPlayerId": "lucas-robbe",
+      "name": "Lucas Robbe",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "lens",
+      "internalPlayerId": "florian-sotoca",
+      "name": "Florian Sotoca",
+      "role": "forward",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 11.3,
+      "startingProbability": null,
+      "projectedShots": 0.33,
+      "projectedShotsOnTarget": 0.08,
+      "eventProbabilities": null,
+      "blockers": []
+    },
+    {
+      "teamId": "lens",
+      "internalPlayerId": "thorgan-hazard",
+      "name": "Thorgan Hazard",
+      "role": "forward",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 16.5,
+      "startingProbability": null,
+      "projectedShots": 0.49,
+      "projectedShotsOnTarget": 0.18,
+      "eventProbabilities": null,
+      "blockers": []
+    },
+    {
+      "teamId": "lens",
+      "internalPlayerId": "odsonne-edouard",
+      "name": "Odsonne Édouard",
+      "role": "forward",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 20.4,
+      "startingProbability": null,
+      "projectedShots": 0.71,
+      "projectedShotsOnTarget": 0.3,
+      "eventProbabilities": null,
+      "blockers": []
+    },
+    {
+      "teamId": "lens",
+      "internalPlayerId": "junior-kadile",
+      "name": "Junior Kadile",
+      "role": "forward",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 12,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "lens",
+      "internalPlayerId": "mohamed-seddik",
+      "name": "Mohamed Seddik",
+      "role": "forward",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "lens",
+      "internalPlayerId": "mezian-mesloub-soares",
+      "name": "Mezian Mesloub Soares",
+      "role": "forward",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    }
+  ],
+  "events": [
+    {
+      "modelId": "champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "saud-abdulhamid",
+        "teamId": "lens"
+      },
+      "probability": 0.4344745613004629,
+      "mean": 0.57,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:saud-abdulhamid",
+      "baselineProbability": 0.5454545454545454,
+      "baseline": {
+        "probability": 0.5454545454545454,
+        "n": 22,
+        "positives": 12,
+        "availableAt": "2026-10-20T14:33:07.250Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:33:07.250Z",
+      "trainingThroughAt": "2026-10-20T14:33:07.250Z",
+      "baselineAvailableAt": "2026-10-20T14:33:07.250Z"
+    },
+    {
+      "modelId": "champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "saud-abdulhamid",
+        "teamId": "lens"
+      },
+      "probability": 0.11212506124172683,
+      "mean": 0.57,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:saud-abdulhamid",
+      "baselineProbability": 0.2727272727272727,
+      "baseline": {
+        "probability": 0.2727272727272727,
+        "n": 22,
+        "positives": 6,
+        "availableAt": "2026-10-20T14:33:07.250Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:33:07.250Z",
+      "trainingThroughAt": "2026-10-20T14:33:07.250Z",
+      "baselineAvailableAt": "2026-10-20T14:33:07.250Z"
+    },
+    {
+      "modelId": "champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 2.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "saud-abdulhamid",
+        "teamId": "lens"
+      },
+      "probability": 0.02025545372498705,
+      "mean": 0.57,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",2.5,\"OVER\"]:saud-abdulhamid",
+      "baselineProbability": 0.18181818181818182,
+      "baseline": {
+        "probability": 0.18181818181818182,
+        "n": 22,
+        "positives": 4,
+        "availableAt": "2026-10-20T14:33:07.250Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:33:07.250Z",
+      "trainingThroughAt": "2026-10-20T14:33:07.250Z",
+      "baselineAvailableAt": "2026-10-20T14:33:07.250Z"
+    },
+    {
+      "modelId": "champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "saud-abdulhamid",
+        "teamId": "lens"
+      },
+      "probability": 0.1563351834036163,
+      "mean": 0.17,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:saud-abdulhamid",
+      "baselineProbability": 0.36363636363636365,
+      "baseline": {
+        "probability": 0.36363636363636365,
+        "n": 22,
+        "positives": 8,
+        "availableAt": "2026-10-20T14:33:07.250Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:33:07.250Z",
+      "trainingThroughAt": "2026-10-20T14:33:07.250Z",
+      "baselineAvailableAt": "2026-10-20T14:33:07.250Z"
+    },
+    {
+      "modelId": "champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "saud-abdulhamid",
+        "teamId": "lens"
+      },
+      "probability": 0.01291216458223099,
+      "mean": 0.17,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:saud-abdulhamid",
+      "baselineProbability": 0.045454545454545456,
+      "baseline": {
+        "probability": 0.045454545454545456,
+        "n": 22,
+        "positives": 1,
+        "availableAt": "2026-10-20T14:33:07.250Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:33:07.250Z",
+      "trainingThroughAt": "2026-10-20T14:33:07.250Z",
+      "baselineAvailableAt": "2026-10-20T14:33:07.250Z"
+    },
+    {
+      "modelId": "champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "kyllian-antonio",
+        "teamId": "lens"
+      },
+      "probability": 0.47270757595695145,
+      "mean": 0.64,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:kyllian-antonio",
+      "baselineProbability": 0.5454545454545454,
+      "baseline": {
+        "probability": 0.5454545454545454,
+        "n": 22,
+        "positives": 12,
+        "availableAt": "2026-10-20T14:33:07.250Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:33:07.250Z",
+      "trainingThroughAt": "2026-10-20T14:33:07.250Z",
+      "baselineAvailableAt": "2026-10-20T14:33:07.250Z"
+    },
+    {
+      "modelId": "champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "kyllian-antonio",
+        "teamId": "lens"
+      },
+      "probability": 0.13524042456940033,
+      "mean": 0.64,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:kyllian-antonio",
+      "baselineProbability": 0.2727272727272727,
+      "baseline": {
+        "probability": 0.2727272727272727,
+        "n": 22,
+        "positives": 6,
+        "availableAt": "2026-10-20T14:33:07.250Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:33:07.250Z",
+      "trainingThroughAt": "2026-10-20T14:33:07.250Z",
+      "baselineAvailableAt": "2026-10-20T14:33:07.250Z"
+    },
+    {
+      "modelId": "champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 2.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "kyllian-antonio",
+        "teamId": "lens"
+      },
+      "probability": 0.027250936125383984,
+      "mean": 0.64,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",2.5,\"OVER\"]:kyllian-antonio",
+      "baselineProbability": 0.18181818181818182,
+      "baseline": {
+        "probability": 0.18181818181818182,
+        "n": 22,
+        "positives": 4,
+        "availableAt": "2026-10-20T14:33:07.250Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:33:07.250Z",
+      "trainingThroughAt": "2026-10-20T14:33:07.250Z",
+      "baselineAvailableAt": "2026-10-20T14:33:07.250Z"
+    },
+    {
+      "modelId": "champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "kyllian-antonio",
+        "teamId": "lens"
+      },
+      "probability": 0.13064176460119414,
+      "mean": 0.14,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:kyllian-antonio",
+      "baselineProbability": 0.36363636363636365,
+      "baseline": {
+        "probability": 0.36363636363636365,
+        "n": 22,
+        "positives": 8,
+        "availableAt": "2026-10-20T14:33:07.250Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:33:07.250Z",
+      "trainingThroughAt": "2026-10-20T14:33:07.250Z",
+      "baselineAvailableAt": "2026-10-20T14:33:07.250Z"
+    },
+    {
+      "modelId": "champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "kyllian-antonio",
+        "teamId": "lens"
+      },
+      "probability": 0.00893161164536127,
+      "mean": 0.14,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:kyllian-antonio",
+      "baselineProbability": 0.045454545454545456,
+      "baseline": {
+        "probability": 0.045454545454545456,
+        "n": 22,
+        "positives": 1,
+        "availableAt": "2026-10-20T14:33:07.250Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:33:07.250Z",
+      "trainingThroughAt": "2026-10-20T14:33:07.250Z",
+      "baselineAvailableAt": "2026-10-20T14:33:07.250Z"
+    },
+    {
+      "modelId": "champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "amadou-haidara",
+        "teamId": "lens"
+      },
+      "probability": 0.6284233089779543,
+      "mean": 0.99,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:amadou-haidara",
+      "baselineProbability": 0.5454545454545454,
+      "baseline": {
+        "probability": 0.5454545454545454,
+        "n": 22,
+        "positives": 12,
+        "availableAt": "2026-10-20T14:33:07.250Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:33:07.250Z",
+      "trainingThroughAt": "2026-10-20T14:33:07.250Z",
+      "baselineAvailableAt": "2026-10-20T14:33:07.250Z"
+    },
+    {
+      "modelId": "champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "amadou-haidara",
+        "teamId": "lens"
+      },
+      "probability": 0.26056238486612904,
+      "mean": 0.99,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:amadou-haidara",
+      "baselineProbability": 0.2727272727272727,
+      "baseline": {
+        "probability": 0.2727272727272727,
+        "n": 22,
+        "positives": 6,
+        "availableAt": "2026-10-20T14:33:07.250Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:33:07.250Z",
+      "trainingThroughAt": "2026-10-20T14:33:07.250Z",
+      "baselineAvailableAt": "2026-10-20T14:33:07.250Z"
+    },
+    {
+      "modelId": "champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 2.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "amadou-haidara",
+        "teamId": "lens"
+      },
+      "probability": 0.0784712274307755,
+      "mean": 0.99,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",2.5,\"OVER\"]:amadou-haidara",
+      "baselineProbability": 0.18181818181818182,
+      "baseline": {
+        "probability": 0.18181818181818182,
+        "n": 22,
+        "positives": 4,
+        "availableAt": "2026-10-20T14:33:07.250Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:33:07.250Z",
+      "trainingThroughAt": "2026-10-20T14:33:07.250Z",
+      "baselineAvailableAt": "2026-10-20T14:33:07.250Z"
+    },
+    {
+      "modelId": "champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "amadou-haidara",
+        "teamId": "lens"
+      },
+      "probability": 0.302323673928969,
+      "mean": 0.36,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:amadou-haidara",
+      "baselineProbability": 0.36363636363636365,
+      "baseline": {
+        "probability": 0.36363636363636365,
+        "n": 22,
+        "positives": 8,
+        "availableAt": "2026-10-20T14:33:07.250Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:33:07.250Z",
+      "trainingThroughAt": "2026-10-20T14:33:07.250Z",
+      "baselineAvailableAt": "2026-10-20T14:33:07.250Z"
+    },
+    {
+      "modelId": "champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "amadou-haidara",
+        "teamId": "lens"
+      },
+      "probability": 0.05116019654339787,
+      "mean": 0.36,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:amadou-haidara",
+      "baselineProbability": 0.045454545454545456,
+      "baseline": {
+        "probability": 0.045454545454545456,
+        "n": 22,
+        "positives": 1,
+        "availableAt": "2026-10-20T14:33:07.250Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:33:07.250Z",
+      "trainingThroughAt": "2026-10-20T14:33:07.250Z",
+      "baselineAvailableAt": "2026-10-20T14:33:07.250Z"
+    },
+    {
+      "modelId": "champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "andrija-bulatovic",
+        "teamId": "lens"
+      },
+      "probability": 0.7723623116161873,
+      "mean": 1.48,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:andrija-bulatovic",
+      "baselineProbability": 0.5454545454545454,
+      "baseline": {
+        "probability": 0.5454545454545454,
+        "n": 22,
+        "positives": 12,
+        "availableAt": "2026-10-20T14:33:07.250Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:33:07.250Z",
+      "trainingThroughAt": "2026-10-20T14:33:07.250Z",
+      "baselineAvailableAt": "2026-10-20T14:33:07.250Z"
+    },
+    {
+      "modelId": "champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "andrija-bulatovic",
+        "teamId": "lens"
+      },
+      "probability": 0.4354585328081444,
+      "mean": 1.48,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:andrija-bulatovic",
+      "baselineProbability": 0.2727272727272727,
+      "baseline": {
+        "probability": 0.2727272727272727,
+        "n": 22,
+        "positives": 6,
+        "availableAt": "2026-10-20T14:33:07.250Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:33:07.250Z",
+      "trainingThroughAt": "2026-10-20T14:33:07.250Z",
+      "baselineAvailableAt": "2026-10-20T14:33:07.250Z"
+    },
+    {
+      "modelId": "champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 2.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "andrija-bulatovic",
+        "teamId": "lens"
+      },
+      "probability": 0.18614973649019273,
+      "mean": 1.48,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",2.5,\"OVER\"]:andrija-bulatovic",
+      "baselineProbability": 0.18181818181818182,
+      "baseline": {
+        "probability": 0.18181818181818182,
+        "n": 22,
+        "positives": 4,
+        "availableAt": "2026-10-20T14:33:07.250Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:33:07.250Z",
+      "trainingThroughAt": "2026-10-20T14:33:07.250Z",
+      "baselineAvailableAt": "2026-10-20T14:33:07.250Z"
+    },
+    {
+      "modelId": "champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "andrija-bulatovic",
+        "teamId": "lens"
+      },
+      "probability": 0.3995044211877341,
+      "mean": 0.51,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:andrija-bulatovic",
+      "baselineProbability": 0.36363636363636365,
+      "baseline": {
+        "probability": 0.36363636363636365,
+        "n": 22,
+        "positives": 8,
+        "availableAt": "2026-10-20T14:33:07.250Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:33:07.250Z",
+      "trainingThroughAt": "2026-10-20T14:33:07.250Z",
+      "baselineAvailableAt": "2026-10-20T14:33:07.250Z"
+    },
+    {
+      "modelId": "champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "andrija-bulatovic",
+        "teamId": "lens"
+      },
+      "probability": 0.0932516759934785,
+      "mean": 0.51,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:andrija-bulatovic",
+      "baselineProbability": 0.045454545454545456,
+      "baseline": {
+        "probability": 0.045454545454545456,
+        "n": 22,
+        "positives": 1,
+        "availableAt": "2026-10-20T14:33:07.250Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:33:07.250Z",
+      "trainingThroughAt": "2026-10-20T14:33:07.250Z",
+      "baselineAvailableAt": "2026-10-20T14:33:07.250Z"
+    },
+    {
+      "modelId": "champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "michal-skoras",
+        "teamId": "lens"
+      },
+      "probability": 0.7106157820609493,
+      "mean": 1.24,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:michal-skoras",
+      "baselineProbability": 0.5454545454545454,
+      "baseline": {
+        "probability": 0.5454545454545454,
+        "n": 22,
+        "positives": 12,
+        "availableAt": "2026-10-20T14:33:07.250Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:33:07.250Z",
+      "trainingThroughAt": "2026-10-20T14:33:07.250Z",
+      "baselineAvailableAt": "2026-10-20T14:33:07.250Z"
+    },
+    {
+      "modelId": "champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "michal-skoras",
+        "teamId": "lens"
+      },
+      "probability": 0.3517793518165264,
+      "mean": 1.24,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:michal-skoras",
+      "baselineProbability": 0.2727272727272727,
+      "baseline": {
+        "probability": 0.2727272727272727,
+        "n": 22,
+        "positives": 6,
+        "availableAt": "2026-10-20T14:33:07.250Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:33:07.250Z",
+      "trainingThroughAt": "2026-10-20T14:33:07.250Z",
+      "baselineAvailableAt": "2026-10-20T14:33:07.250Z"
+    },
+    {
+      "modelId": "champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 2.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "michal-skoras",
+        "teamId": "lens"
+      },
+      "probability": 0.12930076506498422,
+      "mean": 1.24,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",2.5,\"OVER\"]:michal-skoras",
+      "baselineProbability": 0.18181818181818182,
+      "baseline": {
+        "probability": 0.18181818181818182,
+        "n": 22,
+        "positives": 4,
+        "availableAt": "2026-10-20T14:33:07.250Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:33:07.250Z",
+      "trainingThroughAt": "2026-10-20T14:33:07.250Z",
+      "baselineAvailableAt": "2026-10-20T14:33:07.250Z"
+    },
+    {
+      "modelId": "champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "michal-skoras",
+        "teamId": "lens"
+      },
+      "probability": 0.23662050566314685,
+      "mean": 0.27,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:michal-skoras",
+      "baselineProbability": 0.36363636363636365,
+      "baseline": {
+        "probability": 0.36363636363636365,
+        "n": 22,
+        "positives": 8,
+        "availableAt": "2026-10-20T14:33:07.250Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:33:07.250Z",
+      "trainingThroughAt": "2026-10-20T14:33:07.250Z",
+      "baselineAvailableAt": "2026-10-20T14:33:07.250Z"
+    },
+    {
+      "modelId": "champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "michal-skoras",
+        "teamId": "lens"
+      },
+      "probability": 0.030508042192196494,
+      "mean": 0.27,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:michal-skoras",
+      "baselineProbability": 0.045454545454545456,
+      "baseline": {
+        "probability": 0.045454545454545456,
+        "n": 22,
+        "positives": 1,
+        "availableAt": "2026-10-20T14:33:07.250Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:33:07.250Z",
+      "trainingThroughAt": "2026-10-20T14:33:07.250Z",
+      "baselineAvailableAt": "2026-10-20T14:33:07.250Z"
+    },
+    {
+      "modelId": "champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "matthieu-udol",
+        "teamId": "lens"
+      },
+      "probability": 0.7134952031398099,
+      "mean": 1.25,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:matthieu-udol",
+      "baselineProbability": 0.5454545454545454,
+      "baseline": {
+        "probability": 0.5454545454545454,
+        "n": 22,
+        "positives": 12,
+        "availableAt": "2026-10-20T14:33:07.250Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:33:07.250Z",
+      "trainingThroughAt": "2026-10-20T14:33:07.250Z",
+      "baselineAvailableAt": "2026-10-20T14:33:07.250Z"
+    },
+    {
+      "modelId": "champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "matthieu-udol",
+        "teamId": "lens"
+      },
+      "probability": 0.3553642070645723,
+      "mean": 1.25,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:matthieu-udol",
+      "baselineProbability": 0.2727272727272727,
+      "baseline": {
+        "probability": 0.2727272727272727,
+        "n": 22,
+        "positives": 6,
+        "availableAt": "2026-10-20T14:33:07.250Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:33:07.250Z",
+      "trainingThroughAt": "2026-10-20T14:33:07.250Z",
+      "baselineAvailableAt": "2026-10-20T14:33:07.250Z"
+    },
+    {
+      "modelId": "champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 2.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "matthieu-udol",
+        "teamId": "lens"
+      },
+      "probability": 0.13153233451754875,
+      "mean": 1.25,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",2.5,\"OVER\"]:matthieu-udol",
+      "baselineProbability": 0.18181818181818182,
+      "baseline": {
+        "probability": 0.18181818181818182,
+        "n": 22,
+        "positives": 4,
+        "availableAt": "2026-10-20T14:33:07.250Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:33:07.250Z",
+      "trainingThroughAt": "2026-10-20T14:33:07.250Z",
+      "baselineAvailableAt": "2026-10-20T14:33:07.250Z"
+    },
+    {
+      "modelId": "champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "matthieu-udol",
+        "teamId": "lens"
+      },
+      "probability": 0.3296799539643607,
+      "mean": 0.4,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:matthieu-udol",
+      "baselineProbability": 0.36363636363636365,
+      "baseline": {
+        "probability": 0.36363636363636365,
+        "n": 22,
+        "positives": 8,
+        "availableAt": "2026-10-20T14:33:07.250Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:33:07.250Z",
+      "trainingThroughAt": "2026-10-20T14:33:07.250Z",
+      "baselineAvailableAt": "2026-10-20T14:33:07.250Z"
+    },
+    {
+      "modelId": "champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "matthieu-udol",
+        "teamId": "lens"
+      },
+      "probability": 0.06155193555010485,
+      "mean": 0.4,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:matthieu-udol",
+      "baselineProbability": 0.045454545454545456,
+      "baseline": {
+        "probability": 0.045454545454545456,
+        "n": 22,
+        "positives": 1,
+        "availableAt": "2026-10-20T14:33:07.250Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:33:07.250Z",
+      "trainingThroughAt": "2026-10-20T14:33:07.250Z",
+      "baselineAvailableAt": "2026-10-20T14:33:07.250Z"
+    },
+    {
+      "modelId": "champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "florian-thauvin",
+        "teamId": "lens"
+      },
+      "probability": 0.9373379952578469,
+      "mean": 2.77,
+      "quote": null,
+      "role": "forward",
+      "eventId": "[\"[\\\"champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:florian-thauvin",
+      "baselineProbability": 0.5454545454545454,
+      "baseline": {
+        "probability": 0.5454545454545454,
+        "n": 22,
+        "positives": 12,
+        "availableAt": "2026-10-20T14:33:07.250Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:33:07.250Z",
+      "trainingThroughAt": "2026-10-20T14:33:07.250Z",
+      "baselineAvailableAt": "2026-10-20T14:33:07.250Z"
+    },
+    {
+      "modelId": "champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "florian-thauvin",
+        "teamId": "lens"
+      },
+      "probability": 0.7637642421220826,
+      "mean": 2.77,
+      "quote": null,
+      "role": "forward",
+      "eventId": "[\"[\\\"champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:florian-thauvin",
+      "baselineProbability": 0.2727272727272727,
+      "baseline": {
+        "probability": 0.2727272727272727,
+        "n": 22,
+        "positives": 6,
+        "availableAt": "2026-10-20T14:33:07.250Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:33:07.250Z",
+      "trainingThroughAt": "2026-10-20T14:33:07.250Z",
+      "baselineAvailableAt": "2026-10-20T14:33:07.250Z"
+    },
+    {
+      "modelId": "champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 2.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "florian-thauvin",
+        "teamId": "lens"
+      },
+      "probability": 0.5233645940290491,
+      "mean": 2.77,
+      "quote": null,
+      "role": "forward",
+      "eventId": "[\"[\\\"champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",2.5,\"OVER\"]:florian-thauvin",
+      "baselineProbability": 0.18181818181818182,
+      "baseline": {
+        "probability": 0.18181818181818182,
+        "n": 22,
+        "positives": 4,
+        "availableAt": "2026-10-20T14:33:07.250Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:33:07.250Z",
+      "trainingThroughAt": "2026-10-20T14:33:07.250Z",
+      "baselineAvailableAt": "2026-10-20T14:33:07.250Z"
+    },
+    {
+      "modelId": "champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "florian-thauvin",
+        "teamId": "lens"
+      },
+      "probability": 0.6093721646414789,
+      "mean": 0.94,
+      "quote": null,
+      "role": "forward",
+      "eventId": "[\"[\\\"champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:florian-thauvin",
+      "baselineProbability": 0.36363636363636365,
+      "baseline": {
+        "probability": 0.36363636363636365,
+        "n": 22,
+        "positives": 8,
+        "availableAt": "2026-10-20T14:33:07.250Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:33:07.250Z",
+      "trainingThroughAt": "2026-10-20T14:33:07.250Z",
+      "baselineAvailableAt": "2026-10-20T14:33:07.250Z"
+    },
+    {
+      "modelId": "champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "florian-thauvin",
+        "teamId": "lens"
+      },
+      "probability": 0.24218199940446894,
+      "mean": 0.94,
+      "quote": null,
+      "role": "forward",
+      "eventId": "[\"[\\\"champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:florian-thauvin",
+      "baselineProbability": 0.045454545454545456,
+      "baseline": {
+        "probability": 0.045454545454545456,
+        "n": 22,
+        "positives": 1,
+        "availableAt": "2026-10-20T14:33:07.250Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:33:07.250Z",
+      "trainingThroughAt": "2026-10-20T14:33:07.250Z",
+      "baselineAvailableAt": "2026-10-20T14:33:07.250Z"
+    },
+    {
+      "modelId": "champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "mickael-cuisance",
+        "teamId": "lens"
+      },
+      "probability": 0.7018027205701126,
+      "mean": 1.21,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:mickael-cuisance",
+      "baselineProbability": 0.5454545454545454,
+      "baseline": {
+        "probability": 0.5454545454545454,
+        "n": 22,
+        "positives": 12,
+        "availableAt": "2026-10-20T14:33:07.250Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:33:07.250Z",
+      "trainingThroughAt": "2026-10-20T14:33:07.250Z",
+      "baselineAvailableAt": "2026-10-20T14:33:07.250Z"
+    },
+    {
+      "modelId": "champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "mickael-cuisance",
+        "teamId": "lens"
+      },
+      "probability": 0.3409840124599489,
+      "mean": 1.21,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:mickael-cuisance",
+      "baselineProbability": 0.2727272727272727,
+      "baseline": {
+        "probability": 0.2727272727272727,
+        "n": 22,
+        "positives": 6,
+        "availableAt": "2026-10-20T14:33:07.250Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:33:07.250Z",
+      "trainingThroughAt": "2026-10-20T14:33:07.250Z",
+      "baselineAvailableAt": "2026-10-20T14:33:07.250Z"
+    },
+    {
+      "modelId": "champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 2.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "mickael-cuisance",
+        "teamId": "lens"
+      },
+      "probability": 0.12268869405329985,
+      "mean": 1.21,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",2.5,\"OVER\"]:mickael-cuisance",
+      "baselineProbability": 0.18181818181818182,
+      "baseline": {
+        "probability": 0.18181818181818182,
+        "n": 22,
+        "positives": 4,
+        "availableAt": "2026-10-20T14:33:07.250Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:33:07.250Z",
+      "trainingThroughAt": "2026-10-20T14:33:07.250Z",
+      "baselineAvailableAt": "2026-10-20T14:33:07.250Z"
+    },
+    {
+      "modelId": "champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "mickael-cuisance",
+        "teamId": "lens"
+      },
+      "probability": 0.27385096292630906,
+      "mean": 0.32,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:mickael-cuisance",
+      "baselineProbability": 0.36363636363636365,
+      "baseline": {
+        "probability": 0.36363636363636365,
+        "n": 22,
+        "positives": 8,
+        "availableAt": "2026-10-20T14:33:07.250Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:33:07.250Z",
+      "trainingThroughAt": "2026-10-20T14:33:07.250Z",
+      "baselineAvailableAt": "2026-10-20T14:33:07.250Z"
+    },
+    {
+      "modelId": "champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "mickael-cuisance",
+        "teamId": "lens"
+      },
+      "probability": 0.04148327106272798,
+      "mean": 0.32,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:mickael-cuisance",
+      "baselineProbability": 0.045454545454545456,
+      "baseline": {
+        "probability": 0.045454545454545456,
+        "n": 22,
+        "positives": 1,
+        "availableAt": "2026-10-20T14:33:07.250Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:33:07.250Z",
+      "trainingThroughAt": "2026-10-20T14:33:07.250Z",
+      "baselineAvailableAt": "2026-10-20T14:33:07.250Z"
+    },
+    {
+      "modelId": "champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "franjo-ivanovic",
+        "teamId": "lens"
+      },
+      "probability": 0.9092820467105875,
+      "mean": 2.4,
+      "quote": null,
+      "role": "forward",
+      "eventId": "[\"[\\\"champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:franjo-ivanovic",
+      "baselineProbability": 0.5454545454545454,
+      "baseline": {
+        "probability": 0.5454545454545454,
+        "n": 22,
+        "positives": 12,
+        "availableAt": "2026-10-20T14:33:07.250Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:33:07.250Z",
+      "trainingThroughAt": "2026-10-20T14:33:07.250Z",
+      "baselineAvailableAt": "2026-10-20T14:33:07.250Z"
+    },
+    {
+      "modelId": "champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "franjo-ivanovic",
+        "teamId": "lens"
+      },
+      "probability": 0.6915589588159975,
+      "mean": 2.4,
+      "quote": null,
+      "role": "forward",
+      "eventId": "[\"[\\\"champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:franjo-ivanovic",
+      "baselineProbability": 0.2727272727272727,
+      "baseline": {
+        "probability": 0.2727272727272727,
+        "n": 22,
+        "positives": 6,
+        "availableAt": "2026-10-20T14:33:07.250Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:33:07.250Z",
+      "trainingThroughAt": "2026-10-20T14:33:07.250Z",
+      "baselineAvailableAt": "2026-10-20T14:33:07.250Z"
+    },
+    {
+      "modelId": "champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 2.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "franjo-ivanovic",
+        "teamId": "lens"
+      },
+      "probability": 0.4302912533424894,
+      "mean": 2.4,
+      "quote": null,
+      "role": "forward",
+      "eventId": "[\"[\\\"champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",2.5,\"OVER\"]:franjo-ivanovic",
+      "baselineProbability": 0.18181818181818182,
+      "baseline": {
+        "probability": 0.18181818181818182,
+        "n": 22,
+        "positives": 4,
+        "availableAt": "2026-10-20T14:33:07.250Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:33:07.250Z",
+      "trainingThroughAt": "2026-10-20T14:33:07.250Z",
+      "baselineAvailableAt": "2026-10-20T14:33:07.250Z"
+    },
+    {
+      "modelId": "champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "franjo-ivanovic",
+        "teamId": "lens"
+      },
+      "probability": 0.6357810204284766,
+      "mean": 1.01,
+      "quote": null,
+      "role": "forward",
+      "eventId": "[\"[\\\"champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:franjo-ivanovic",
+      "baselineProbability": 0.36363636363636365,
+      "baseline": {
+        "probability": 0.36363636363636365,
+        "n": 22,
+        "positives": 8,
+        "availableAt": "2026-10-20T14:33:07.250Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:33:07.250Z",
+      "trainingThroughAt": "2026-10-20T14:33:07.250Z",
+      "baselineAvailableAt": "2026-10-20T14:33:07.250Z"
+    },
+    {
+      "modelId": "champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "franjo-ivanovic",
+        "teamId": "lens"
+      },
+      "probability": 0.26791985106123817,
+      "mean": 1.01,
+      "quote": null,
+      "role": "forward",
+      "eventId": "[\"[\\\"champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:franjo-ivanovic",
+      "baselineProbability": 0.045454545454545456,
+      "baseline": {
+        "probability": 0.045454545454545456,
+        "n": 22,
+        "positives": 1,
+        "availableAt": "2026-10-20T14:33:07.250Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:33:07.250Z",
+      "trainingThroughAt": "2026-10-20T14:33:07.250Z",
+      "baselineAvailableAt": "2026-10-20T14:33:07.250Z"
+    },
+    {
+      "modelId": "champions-collective:af8beccb07d030c510e36746dde06bfb142b0f6998ac759e8a884ca317509ee5",
+      "target": {
+        "scope": "match",
+        "metric": "result",
+        "threshold": null,
+        "direction": "1",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": 0.5579999999999999,
+      "mean": null,
+      "quote": {
+        "decimal": 2,
+        "oddsRaw": 200,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911217:823793393:5387018149",
+      "eventId": "[\"[\\\"champions-collective:af8beccb07d030c510e36746dde06bfb142b0f6998ac759e8a884ca317509ee5\\\",\\\"match\\\",\\\"result\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"1\"]:",
+      "baselineProbability": 0.4970178926441352,
+      "baseline": {
+        "probability": 0.4970178926441352,
+        "n": 503,
+        "positives": 250,
+        "availableAt": "2026-10-20T14:33:07.250Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:33:07.250Z",
+      "trainingThroughAt": "2026-10-20T14:33:07.250Z",
+      "baselineAvailableAt": "2026-10-20T14:33:07.250Z"
+    },
+    {
+      "modelId": "champions-collective:af8beccb07d030c510e36746dde06bfb142b0f6998ac759e8a884ca317509ee5",
+      "target": {
+        "scope": "match",
+        "metric": "result",
+        "threshold": null,
+        "direction": "X",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": 0.177,
+      "mean": null,
+      "quote": {
+        "decimal": 4,
+        "oddsRaw": 400,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911217:823793393:5387018150",
+      "eventId": "[\"[\\\"champions-collective:af8beccb07d030c510e36746dde06bfb142b0f6998ac759e8a884ca317509ee5\\\",\\\"match\\\",\\\"result\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"X\"]:",
+      "baselineProbability": 0.1749502982107356,
+      "baseline": {
+        "probability": 0.1749502982107356,
+        "n": 503,
+        "positives": 88,
+        "availableAt": "2026-10-20T14:33:07.250Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:33:07.250Z",
+      "trainingThroughAt": "2026-10-20T14:33:07.250Z",
+      "baselineAvailableAt": "2026-10-20T14:33:07.250Z"
+    },
+    {
+      "modelId": "champions-collective:af8beccb07d030c510e36746dde06bfb142b0f6998ac759e8a884ca317509ee5",
+      "target": {
+        "scope": "match",
+        "metric": "result",
+        "threshold": null,
+        "direction": "2",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": 0.265,
+      "mean": null,
+      "quote": {
+        "decimal": 3.25,
+        "oddsRaw": 325,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911217:823793393:5387018151",
+      "eventId": "[\"[\\\"champions-collective:af8beccb07d030c510e36746dde06bfb142b0f6998ac759e8a884ca317509ee5\\\",\\\"match\\\",\\\"result\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"2\"]:",
+      "baselineProbability": 0.32803180914512925,
+      "baseline": {
+        "probability": 0.32803180914512925,
+        "n": 503,
+        "positives": 165,
+        "availableAt": "2026-10-20T14:33:07.250Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:33:07.250Z",
+      "trainingThroughAt": "2026-10-20T14:33:07.250Z",
+      "baselineAvailableAt": "2026-10-20T14:33:07.250Z"
+    },
+    {
+      "modelId": "champions-collective:af8beccb07d030c510e36746dde06bfb142b0f6998ac759e8a884ca317509ee5",
+      "target": {
+        "scope": "match",
+        "metric": "double-chance",
+        "threshold": null,
+        "direction": "1X",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": 0.735,
+      "mean": null,
+      "quote": {
+        "decimal": 1.33,
+        "oddsRaw": 133,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911217:823793890:5387027097",
+      "eventId": "[\"[\\\"champions-collective:af8beccb07d030c510e36746dde06bfb142b0f6998ac759e8a884ca317509ee5\\\",\\\"match\\\",\\\"double-chance\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"1X\"]:",
+      "baselineProbability": 0.6719681908548708,
+      "baseline": {
+        "probability": 0.6719681908548708,
+        "n": 503,
+        "positives": 338,
+        "availableAt": "2026-10-20T14:33:07.250Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:33:07.250Z",
+      "trainingThroughAt": "2026-10-20T14:33:07.250Z",
+      "baselineAvailableAt": "2026-10-20T14:33:07.250Z"
+    },
+    {
+      "modelId": "champions-collective:af8beccb07d030c510e36746dde06bfb142b0f6998ac759e8a884ca317509ee5",
+      "target": {
+        "scope": "match",
+        "metric": "double-chance",
+        "threshold": null,
+        "direction": "X2",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": 0.442,
+      "mean": null,
+      "quote": {
+        "decimal": 1.8,
+        "oddsRaw": 180,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911217:823793890:5387027099",
+      "eventId": "[\"[\\\"champions-collective:af8beccb07d030c510e36746dde06bfb142b0f6998ac759e8a884ca317509ee5\\\",\\\"match\\\",\\\"double-chance\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"X2\"]:",
+      "baselineProbability": 0.5029821073558648,
+      "baseline": {
+        "probability": 0.5029821073558648,
+        "n": 503,
+        "positives": 253,
+        "availableAt": "2026-10-20T14:33:07.250Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:33:07.250Z",
+      "trainingThroughAt": "2026-10-20T14:33:07.250Z",
+      "baselineAvailableAt": "2026-10-20T14:33:07.250Z"
+    },
+    {
+      "modelId": "champions-collective:af8beccb07d030c510e36746dde06bfb142b0f6998ac759e8a884ca317509ee5",
+      "target": {
+        "scope": "team",
+        "metric": "sot",
+        "threshold": null,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": "club-brugge"
+      },
+      "probability": null,
+      "mean": 6.24,
+      "quote": {
+        "decimal": 10,
+        "oddsRaw": 1000,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911217:825959229:5398658391",
+      "eventId": "[\"[\\\"champions-collective:af8beccb07d030c510e36746dde06bfb142b0f6998ac759e8a884ca317509ee5\\\",\\\"team\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"OVER\"]:club-brugge",
+      "baselineProbability": 0.9166666666666666,
+      "baseline": {
+        "probability": 0.9166666666666666,
+        "n": 36,
+        "positives": 33,
+        "availableAt": "2026-10-20T14:33:07.250Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:33:07.250Z",
+      "trainingThroughAt": "2026-10-20T14:33:07.250Z",
+      "baselineAvailableAt": "2026-10-20T14:33:07.250Z"
+    },
+    {
+      "modelId": "champions-collective:af8beccb07d030c510e36746dde06bfb142b0f6998ac759e8a884ca317509ee5",
+      "target": {
+        "scope": "team",
+        "metric": "sot",
+        "threshold": null,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": "lens"
+      },
+      "probability": null,
+      "mean": 4.74,
+      "quote": {
+        "decimal": 12,
+        "oddsRaw": 1200,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911217:825963859:5398677905",
+      "eventId": "[\"[\\\"champions-collective:af8beccb07d030c510e36746dde06bfb142b0f6998ac759e8a884ca317509ee5\\\",\\\"team\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"OVER\"]:lens",
+      "baselineProbability": 0.9166666666666666,
+      "baseline": {
+        "probability": 0.9166666666666666,
+        "n": 36,
+        "positives": 33,
+        "availableAt": "2026-10-20T14:33:07.250Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:33:07.250Z",
+      "trainingThroughAt": "2026-10-20T14:33:07.250Z",
+      "baselineAvailableAt": "2026-10-20T14:33:07.250Z"
+    },
+    {
+      "modelId": "champions-collective:af8beccb07d030c510e36746dde06bfb142b0f6998ac759e8a884ca317509ee5",
+      "target": {
+        "scope": "match",
+        "metric": "shots",
+        "threshold": null,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": null,
+      "mean": 31.1,
+      "quote": {
+        "decimal": 3.1,
+        "oddsRaw": 310,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911217:825963852:5398677883",
+      "eventId": "[\"[\\\"champions-collective:af8beccb07d030c510e36746dde06bfb142b0f6998ac759e8a884ca317509ee5\\\",\\\"match\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"OVER\"]:",
+      "baselineProbability": 1,
+      "baseline": {
+        "probability": 1,
+        "n": 18,
+        "positives": 18,
+        "availableAt": "2026-10-20T14:33:07.250Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:33:07.250Z",
+      "trainingThroughAt": "2026-10-20T14:33:07.250Z",
+      "baselineAvailableAt": "2026-10-20T14:33:07.250Z"
+    },
+    {
+      "modelId": "champions-collective:af8beccb07d030c510e36746dde06bfb142b0f6998ac759e8a884ca317509ee5",
+      "target": {
+        "scope": "team",
+        "metric": "shots",
+        "threshold": null,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": "club-brugge"
+      },
+      "probability": null,
+      "mean": 16.74,
+      "quote": {
+        "decimal": 1.03,
+        "oddsRaw": 103,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911217:825959274:5398658571",
+      "eventId": "[\"[\\\"champions-collective:af8beccb07d030c510e36746dde06bfb142b0f6998ac759e8a884ca317509ee5\\\",\\\"team\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"OVER\"]:club-brugge",
+      "baselineProbability": 1,
+      "baseline": {
+        "probability": 1,
+        "n": 36,
+        "positives": 36,
+        "availableAt": "2026-10-20T14:33:07.250Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:33:07.250Z",
+      "trainingThroughAt": "2026-10-20T14:33:07.250Z",
+      "baselineAvailableAt": "2026-10-20T14:33:07.250Z"
+    },
+    {
+      "modelId": "champions-collective:af8beccb07d030c510e36746dde06bfb142b0f6998ac759e8a884ca317509ee5",
+      "target": {
+        "scope": "team",
+        "metric": "shots",
+        "threshold": null,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": "lens"
+      },
+      "probability": null,
+      "mean": 14.32,
+      "quote": {
+        "decimal": 1.11,
+        "oddsRaw": 111,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911217:825964139:5398669086",
+      "eventId": "[\"[\\\"champions-collective:af8beccb07d030c510e36746dde06bfb142b0f6998ac759e8a884ca317509ee5\\\",\\\"team\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"OVER\"]:lens",
+      "baselineProbability": 1,
+      "baseline": {
+        "probability": 1,
+        "n": 36,
+        "positives": 36,
+        "availableAt": "2026-10-20T14:33:07.250Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:33:07.250Z",
+      "trainingThroughAt": "2026-10-20T14:33:07.250Z",
+      "baselineAvailableAt": "2026-10-20T14:33:07.250Z"
+    },
+    {
+      "modelId": "champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 2.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": true,
+        "woodwork": false,
+        "extraTime": true,
+        "conditionalOnStart": true,
+        "subjectId": "florian-thauvin",
+        "teamId": "lens"
+      },
+      "probability": null,
+      "mean": 2.77,
+      "quote": {
+        "decimal": 2,
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "marketUpdatedAt": "2026-10-19T21:13:50.507Z",
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "providerStatus": "open",
+        "source": {
+          "provider": "sisal",
+          "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001",
+          "snapshotPath": "data/normalized/odds/sisal/champions-league.json",
+          "rawFile": "data/raw/odds/sisal/champions-league/2026-10-20T12-48-29-424Z.json.gz",
+          "acquisition": "public-page-browser-cdp"
+        }
+      },
+      "selectionId": "forecast:v2:ucl-2026-27-md03-13:florian-thauvin:shots:3",
+      "eventId": "[\"[\\\"champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",true,false,true,true]\",2.5,\"OVER\"]:florian-thauvin",
+      "baselineProbability": 0.18181818181818182,
+      "baseline": {
+        "probability": 0.18181818181818182,
+        "n": 22,
+        "positives": 4,
+        "availableAt": "2026-10-20T14:33:07.250Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:33:07.250Z",
+      "trainingThroughAt": "2026-10-20T14:33:07.250Z",
+      "baselineAvailableAt": "2026-10-20T14:33:07.250Z"
+    },
+    {
+      "modelId": "champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 2.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": true,
+        "woodwork": false,
+        "extraTime": true,
+        "conditionalOnStart": true,
+        "subjectId": "franjo-ivanovic",
+        "teamId": "lens"
+      },
+      "probability": null,
+      "mean": 2.4,
+      "quote": {
+        "decimal": 1.75,
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "marketUpdatedAt": "2026-10-19T13:44:28.922Z",
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "providerStatus": "open",
+        "source": {
+          "provider": "sisal",
+          "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001",
+          "snapshotPath": "data/normalized/odds/sisal/champions-league.json",
+          "rawFile": "data/raw/odds/sisal/champions-league/2026-10-20T12-48-29-424Z.json.gz",
+          "acquisition": "public-page-browser-cdp"
+        }
+      },
+      "selectionId": "forecast:v2:ucl-2026-27-md03-13:franjo-ivanovic:shots:3",
+      "eventId": "[\"[\\\"champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",true,false,true,true]\",2.5,\"OVER\"]:franjo-ivanovic",
+      "baselineProbability": 0.18181818181818182,
+      "baseline": {
+        "probability": 0.18181818181818182,
+        "n": 22,
+        "positives": 4,
+        "availableAt": "2026-10-20T14:33:07.250Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:33:07.250Z",
+      "trainingThroughAt": "2026-10-20T14:33:07.250Z",
+      "baselineAvailableAt": "2026-10-20T14:33:07.250Z"
+    },
+    {
+      "modelId": "champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": true,
+        "woodwork": true,
+        "extraTime": true,
+        "conditionalOnStart": true,
+        "subjectId": "franjo-ivanovic",
+        "teamId": "lens"
+      },
+      "probability": null,
+      "mean": 1.01,
+      "quote": {
+        "decimal": 1.4,
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "marketUpdatedAt": "2026-10-19T17:44:04.725Z",
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "providerStatus": "open",
+        "source": {
+          "provider": "sisal",
+          "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001",
+          "snapshotPath": "data/normalized/odds/sisal/champions-league.json",
+          "rawFile": "data/raw/odds/sisal/champions-league/2026-10-20T12-48-29-424Z.json.gz",
+          "acquisition": "public-page-browser-cdp"
+        }
+      },
+      "selectionId": "forecast:v2:ucl-2026-27-md03-13:franjo-ivanovic:sot:1",
+      "eventId": "[\"[\\\"champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",true,true,true,true]\",0.5,\"OVER\"]:franjo-ivanovic",
+      "baselineProbability": 0.36363636363636365,
+      "baseline": {
+        "probability": 0.36363636363636365,
+        "n": 22,
+        "positives": 8,
+        "availableAt": "2026-10-20T14:33:07.250Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:33:07.250Z",
+      "trainingThroughAt": "2026-10-20T14:33:07.250Z",
+      "baselineAvailableAt": "2026-10-20T14:33:07.250Z"
+    },
+    {
+      "modelId": "champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": true,
+        "woodwork": true,
+        "extraTime": true,
+        "conditionalOnStart": true,
+        "subjectId": "florian-thauvin",
+        "teamId": "lens"
+      },
+      "probability": null,
+      "mean": 0.94,
+      "quote": {
+        "decimal": 1.5,
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "marketUpdatedAt": "2026-10-19T13:44:33.044Z",
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "providerStatus": "open",
+        "source": {
+          "provider": "sisal",
+          "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001",
+          "snapshotPath": "data/normalized/odds/sisal/champions-league.json",
+          "rawFile": "data/raw/odds/sisal/champions-league/2026-10-20T12-48-29-424Z.json.gz",
+          "acquisition": "public-page-browser-cdp"
+        }
+      },
+      "selectionId": "forecast:v2:ucl-2026-27-md03-13:florian-thauvin:sot:1",
+      "eventId": "[\"[\\\"champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",true,true,true,true]\",0.5,\"OVER\"]:florian-thauvin",
+      "baselineProbability": 0.36363636363636365,
+      "baseline": {
+        "probability": 0.36363636363636365,
+        "n": 22,
+        "positives": 8,
+        "availableAt": "2026-10-20T14:33:07.250Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:33:07.250Z",
+      "trainingThroughAt": "2026-10-20T14:33:07.250Z",
+      "baselineAvailableAt": "2026-10-20T14:33:07.250Z"
+    }
+  ],
+  "teamProjections": [
+    {
+      "teamId": "club-brugge",
+      "team": "Club Brugge",
+      "venue": "home",
+      "expectedGoals": 2.3,
+      "shotsTotal": {
+        "central": 16.74,
+        "sd": 4.85,
+        "min": 12.7,
+        "max": 20.8,
+        "interval": "p20-p80-approx",
+        "normalization": {
+          "method": "relative-to-domestic-league",
+          "targetBaseline": 14.303,
+          "currentSeasonReliabilityPct": 50
+        },
+        "inputs": [
+          {
+            "label": "Club Brugge in casa",
+            "value": 19.047,
+            "weightPct": 50.6
+          },
+          {
+            "label": "Lens concede in trasferta",
+            "value": 12.545,
+            "weightPct": 39.4
+          },
+          {
+            "label": "ultime 8 Club Brugge",
+            "value": 21.577,
+            "weightPct": 10
+          }
+        ]
+      },
+      "shotsOnTarget": {
+        "central": 6.24,
+        "sd": 2.24,
+        "min": 4.4,
+        "max": 8.1,
+        "interval": "p20-p80-approx",
+        "normalization": {
+          "method": "relative-to-domestic-league",
+          "targetBaseline": 4.841,
+          "currentSeasonReliabilityPct": 50
+        },
+        "inputs": [
+          {
+            "label": "Club Brugge in casa",
+            "value": 7.188,
+            "weightPct": 50.6
+          },
+          {
+            "label": "Lens concede in trasferta",
+            "value": 4.702,
+            "weightPct": 39.4
+          },
+          {
+            "label": "ultime 8 Club Brugge",
+            "value": 7.497,
+            "weightPct": 10
+          }
+        ]
+      },
+      "corners": {
+        "central": 5.86,
+        "sd": 3.64,
+        "min": 2.8,
+        "max": 8.9,
+        "interval": "p20-p80-approx",
+        "normalization": {
+          "method": "relative-to-domestic-league",
+          "targetBaseline": 5.426,
+          "currentSeasonReliabilityPct": 50
+        },
+        "inputs": [
+          {
+            "label": "Club Brugge in casa",
+            "value": 6.615,
+            "weightPct": 50.6
+          },
+          {
+            "label": "Lens concede in trasferta",
+            "value": 4.116,
+            "weightPct": 39.4
+          },
+          {
+            "label": "ultime 8 Club Brugge",
+            "value": 8.914,
+            "weightPct": 10
+          }
+        ]
+      },
+      "fouls": {
+        "central": 9.68,
+        "sd": 3.09,
+        "min": 7.1,
+        "max": 12.3,
+        "interval": "p20-p80-approx",
+        "normalization": {
+          "method": "relative-to-domestic-league",
+          "targetBaseline": 11.442,
+          "currentSeasonReliabilityPct": 50
+        },
+        "inputs": [
+          {
+            "label": "Club Brugge in casa",
+            "value": 9.109,
+            "weightPct": 50.6
+          },
+          {
+            "label": "Lens concede in trasferta",
+            "value": 11.113,
+            "weightPct": 39.4
+          },
+          {
+            "label": "ultime 8 Club Brugge",
+            "value": 6.937,
+            "weightPct": 10
+          }
+        ]
+      },
+      "cards": {
+        "central": 1.33,
+        "sd": 0.91,
+        "min": 0.6,
+        "max": 2.1,
+        "interval": "p20-p80-approx",
+        "normalization": {
+          "method": "relative-to-domestic-league",
+          "targetBaseline": 1.651,
+          "currentSeasonReliabilityPct": 50
+        },
+        "inputs": [
+          {
+            "label": "Club Brugge in casa",
+            "value": 0.965,
+            "weightPct": 50.6
+          },
+          {
+            "label": "Lens concede in trasferta",
+            "value": 1.813,
+            "weightPct": 39.4
+          },
+          {
+            "label": "ultime 8 Club Brugge",
+            "value": 1.301,
+            "weightPct": 10
+          }
+        ]
+      },
+      "lines": {
+        "shotsTotal": [
+          {
+            "threshold": 8.5,
+            "overPct": 96.9,
+            "underPct": 3.1
+          },
+          {
+            "threshold": 10.5,
+            "overPct": 91.1,
+            "underPct": 8.9
+          },
+          {
+            "threshold": 12.5,
+            "overPct": 80.6,
+            "underPct": 19.4
+          },
+          {
+            "threshold": 14.5,
+            "overPct": 66,
+            "underPct": 34
+          },
+          {
+            "threshold": 16.5,
+            "overPct": 49.5,
+            "underPct": 50.5
+          }
+        ],
+        "shotsOnTarget": [
+          {
+            "threshold": 2.5,
+            "overPct": 94.8,
+            "underPct": 5.2
+          },
+          {
+            "threshold": 3.5,
+            "overPct": 86.9,
+            "underPct": 13.1
+          },
+          {
+            "threshold": 4.5,
+            "overPct": 74.6,
+            "underPct": 25.4
+          },
+          {
+            "threshold": 5.5,
+            "overPct": 59.2,
+            "underPct": 40.8
+          },
+          {
+            "threshold": 6.5,
+            "overPct": 43.2,
+            "underPct": 56.8
+          }
+        ],
+        "corners": [
+          {
+            "threshold": 3.5,
+            "overPct": 71.3,
+            "underPct": 28.7
+          },
+          {
+            "threshold": 4.5,
+            "overPct": 59.2,
+            "underPct": 40.8
+          },
+          {
+            "threshold": 5.5,
+            "overPct": 47.5,
+            "underPct": 52.5
+          },
+          {
+            "threshold": 6.5,
+            "overPct": 37,
+            "underPct": 63
+          }
+        ]
+      }
+    },
+    {
+      "teamId": "lens",
+      "team": "Lens",
+      "venue": "away",
+      "expectedGoals": 1.52,
+      "shotsTotal": {
+        "central": 14.32,
+        "sd": 5.63,
+        "min": 9.6,
+        "max": 19.1,
+        "interval": "p20-p80-approx",
+        "normalization": {
+          "method": "relative-to-domestic-league",
+          "targetBaseline": 11.686,
+          "currentSeasonReliabilityPct": 50
+        },
+        "inputs": [
+          {
+            "label": "Lens in trasferta",
+            "value": 15.636,
+            "weightPct": 50.6
+          },
+          {
+            "label": "Club Brugge concede in casa",
+            "value": 12.308,
+            "weightPct": 39.4
+          },
+          {
+            "label": "ultime 8 Lens",
+            "value": 15.6,
+            "weightPct": 10
+          }
+        ]
+      },
+      "shotsOnTarget": {
+        "central": 4.74,
+        "sd": 2.53,
+        "min": 2.6,
+        "max": 6.9,
+        "interval": "p20-p80-approx",
+        "normalization": {
+          "method": "relative-to-domestic-league",
+          "targetBaseline": 4.045,
+          "currentSeasonReliabilityPct": 50
+        },
+        "inputs": [
+          {
+            "label": "Lens in trasferta",
+            "value": 5.068,
+            "weightPct": 50.6
+          },
+          {
+            "label": "Club Brugge concede in casa",
+            "value": 4.048,
+            "weightPct": 39.4
+          },
+          {
+            "label": "ultime 8 Lens",
+            "value": 5.79,
+            "weightPct": 10
+          }
+        ]
+      },
+      "corners": {
+        "central": 5.49,
+        "sd": 2.82,
+        "min": 3.1,
+        "max": 7.9,
+        "interval": "p20-p80-approx",
+        "normalization": {
+          "method": "relative-to-domestic-league",
+          "targetBaseline": 4.478,
+          "currentSeasonReliabilityPct": 50
+        },
+        "inputs": [
+          {
+            "label": "Lens in trasferta",
+            "value": 6.318,
+            "weightPct": 50.6
+          },
+          {
+            "label": "Club Brugge concede in casa",
+            "value": 3.997,
+            "weightPct": 39.4
+          },
+          {
+            "label": "ultime 8 Lens",
+            "value": 7.128,
+            "weightPct": 10
+          }
+        ]
+      },
+      "fouls": {
+        "central": 11.56,
+        "sd": 3.28,
+        "min": 8.8,
+        "max": 14.3,
+        "interval": "p20-p80-approx",
+        "normalization": {
+          "method": "relative-to-domestic-league",
+          "targetBaseline": 11.9,
+          "currentSeasonReliabilityPct": 50
+        },
+        "inputs": [
+          {
+            "label": "Lens in trasferta",
+            "value": 12.16,
+            "weightPct": 50.6
+          },
+          {
+            "label": "Club Brugge concede in casa",
+            "value": 10.976,
+            "weightPct": 39.4
+          },
+          {
+            "label": "ultime 8 Lens",
+            "value": 10.779,
+            "weightPct": 10
+          }
+        ]
+      },
+      "cards": {
+        "central": 2.12,
+        "sd": 1.03,
+        "min": 1.3,
+        "max": 3,
+        "interval": "p20-p80-approx",
+        "normalization": {
+          "method": "relative-to-domestic-league",
+          "targetBaseline": 1.97,
+          "currentSeasonReliabilityPct": 50
+        },
+        "inputs": [
+          {
+            "label": "Lens in trasferta",
+            "value": 2.264,
+            "weightPct": 50.6
+          },
+          {
+            "label": "Club Brugge concede in casa",
+            "value": 1.977,
+            "weightPct": 39.4
+          },
+          {
+            "label": "ultime 8 Lens",
+            "value": 1.916,
+            "weightPct": 10
+          }
+        ]
+      },
+      "lines": {
+        "shotsTotal": [
+          {
+            "threshold": 8.5,
+            "overPct": 85.6,
+            "underPct": 14.4
+          },
+          {
+            "threshold": 10.5,
+            "overPct": 73.5,
+            "underPct": 26.5
+          },
+          {
+            "threshold": 12.5,
+            "overPct": 59.1,
+            "underPct": 40.9
+          },
+          {
+            "threshold": 14.5,
+            "overPct": 44.7,
+            "underPct": 55.3
+          },
+          {
+            "threshold": 16.5,
+            "overPct": 31.8,
+            "underPct": 68.2
+          }
+        ],
+        "shotsOnTarget": [
+          {
+            "threshold": 2.5,
+            "overPct": 80.9,
+            "underPct": 19.1
+          },
+          {
+            "threshold": 3.5,
+            "overPct": 65.6,
+            "underPct": 34.4
+          },
+          {
+            "threshold": 4.5,
+            "overPct": 49.2,
+            "underPct": 50.8
+          },
+          {
+            "threshold": 5.5,
+            "overPct": 34.3,
+            "underPct": 65.7
+          },
+          {
+            "threshold": 6.5,
+            "overPct": 22.4,
+            "underPct": 77.6
+          }
+        ],
+        "corners": [
+          {
+            "threshold": 3.5,
+            "overPct": 74.3,
+            "underPct": 25.7
+          },
+          {
+            "threshold": 4.5,
+            "overPct": 59.8,
+            "underPct": 40.2
+          },
+          {
+            "threshold": 5.5,
+            "overPct": 45.3,
+            "underPct": 54.7
+          },
+          {
+            "threshold": 6.5,
+            "overPct": 32.4,
+            "underPct": 67.6
+          }
+        ]
+      }
+    }
+  ],
+  "contentHash": "ed03810f543cc14b02645f3b46d962ea1510491fc1a7c6c38d9eae71f879971b"
+}

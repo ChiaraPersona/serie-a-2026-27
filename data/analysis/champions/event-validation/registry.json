@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "criteria": {
+    "clusters": 180,
+    "deltaBrier": 0.005,
+    "ece": 0.08,
+    "thresholdPositives": 30,
+    "thresholdNegatives": 30,
+    "thresholdDeltaBrier": 0.015,
+    "thresholdEce": 0.1,
+    "oneXTwoPositives": 60,
+    "oneXTwoNegatives": 120
+  },
+  "eligible": 0,
+  "excluded": [],
+  "families": [],
+  "events": [],
+  "competition": "champions",
+  "generatedAt": "2026-10-20T14:33:07.250Z",
+  "modelIds": {
+    "collective": "champions-collective:af8beccb07d030c510e36746dde06bfb142b0f6998ac759e8a884ca317509ee5",
+    "player": "champions-player:896c6d1c1392bf067141ba98b63320fff613f29633ecd6e6d35703124b186a4f"
+  },
+  "modelModules": {
+    "collective": {
+      "scripts/build-champions-pilot-predictions.js": "33f125092367f1d518d67bece8a55cc6b253e34cb9f114cb4233c80e79341cd7",
+      "scripts/build-champions-1x2.js": "14862aba1553ab311ac0a9c634acdb748e38950d6ea5c32be2b4e48fe9dfde83",
+      "scripts/champions/offline-collective.js": "c061eabcac55ca28bb32ba68143009e50fa668a829108c22bb7fcf0987e31ab6",
+      "data/normalized/uefa-1x2-model-2026-27.json": "d02e3b50291c32bacdadc7eaaa9a2fcc0633cd57a06df9480a347fb0f441b19d"
+    },
+    "player": {
+      "scripts/build-champions-md3-probable.cjs": "3f81ca7dabbeeb96779ee6c9ee0f3897367865cbeae0904f3eece48c260e0b11",
+      "scripts/champions/md3-lineup-policy.js": "5de9c6e48c301568096e200c9a032ea1dc7e9eb6b07d3962f6863b57a8d02e40",
+      "scripts/champions/current-season-offline.js": "893ca70e5d73cf30f193aa16d4add179eabb381d431f9cba56e9779c89eb9bdd",
+      "scripts/champions/context-adjusted-player-baseline.js": "67bfffa938d134b6dca9b8018cd4b55146f4aead56b61ad25072fb7eb00d9f3d",
+      "scripts/champions/player-volume-utils.js": "d283e14790930987242f42c2d57fd14e9274635d1fcfa0f8c2fad7fa0a7ef6a6",
+      "scripts/champions/substitute-minutes.js": "bf74d46f1b41ab33821dcc277a4259f4ea7f35762f1f26fd4bfd2797663780cd"
+    }
+  },
+  "protocol": {
+    "scope": "EXACT_MODEL_AND_EVENT_ONLY",
+    "clusters": "INDEPENDENT_FIXTURES_NOT_PLAYERS_OR_QUOTE_ROWS",
+    "snapshotRule": "LATEST_IMMUTABLE_PREMATCH_CAPTURE_PER_FIXTURE",
+    "parameterFit": "NONE_MODEL_FROZEN",
+    "uncertainty": "EXISTING_MD7_DEDUCTION_ONLY_AFTER_PASS",
+    "myCombo": "OUT_OF_SCOPE"
+  },
+  "pendingObservations": 1427,
+  "contentHash": "dd2480f3a0f88b7e4dd401cceed76b4c064f25c7872a6b8a3e799434dba78e16"
+}

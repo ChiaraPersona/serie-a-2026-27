@@ -426,7 +426,9 @@ function snapshotPayload(candidate, fixture, evaluationWindow) {
     kickoffVerification: candidate.kickoffVerification,
     identityOverlaySource: candidate.identityOverlay.source,
     coverage: fixture.coverage,
-    players: fixture.players
+    players: fixture.players,
+    ...(fixture.events?{events:fixture.events}:{}),
+    ...(fixture.teamProjections?{teamProjections:fixture.teamProjections}:{})
   };
 }
 

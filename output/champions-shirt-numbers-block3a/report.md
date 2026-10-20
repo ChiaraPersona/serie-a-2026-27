@@ -125,3 +125,5 @@ Riutilizzati il builder, il resolver e il componente grafico gia presenti; nessu
 - Nessun builder di previsioni o schedine eseguito; nessuna modifica a quote, calendario, risultati o Serie A.
 - Nessun commit, push o deploy eseguito da questo intervento.
 
+
+Verifica browser finale: PASS su sei gare MD1-MD3 a 1440, 390 e 320 px (18 controlli); 22 maglie per campo, nessun overflow o errore JavaScript. Tutti i numeri visibili nei campi delle due squadre salvo le due etichette ambigue Akgun/Yilmaz nella MD1, mantenute —. Verificati anche il renderer legacy e l isolamento Serie A.

@@ -9,6 +9,8 @@ const METRICS = Object.freeze({
   sot: { profile: "shotsOnTarget", current: "shotsOnTarget", maximum: 35, biasLimit: 1.25 },
   corners: { profile: "wonCorners", current: "corners", maximum: 35, biasLimit: 1.25 },
 });
+// Shared thresholds: values unchanged; competition validators use the same gates.
+const VALIDATION_CRITERIA = Object.freeze({clusters:180,deltaBrier:0.005,ece:0.08,thresholdPositives:30,thresholdNegatives:30,thresholdDeltaBrier:0.015,thresholdEce:0.10,oneXTwoPositives:60,oneXTwoNegatives:120});
 const MARKET_MODELS = Object.freeze({
   "15859": { family: "shots", subfamily: "shots-match-over", kind: "match-over" },
   "23334": { family: "shots", subfamily: "shots-team-over", kind: "team-over" },
@@ -239,12 +241,12 @@ function validateSubfamily({ definition, marketCode, thresholds, forecasts }) {
       deltaBrier: round(brier(rows.model) - brier(rows.baseline)),
       ece: round(ece(rows.model)),
     };
-    const enoughOutcomes = definition.kind === "one-x-two" ? positives >= 60 && negatives >= 120 : positives >= 30 && negatives >= 30;
-    return [key, { ...row, gate: enoughOutcomes && row.deltaBrier <= 0.015 && row.ece <= 0.10 ? "PASS" : "FAIL" }];
+    const enoughOutcomes = definition.kind === "one-x-two" ? positives >= VALIDATION_CRITERIA.oneXTwoPositives && negatives >= VALIDATION_CRITERIA.oneXTwoNegatives : positives >= VALIDATION_CRITERIA.thresholdPositives && negatives >= VALIDATION_CRITERIA.thresholdNegatives;
+    return [key, { ...row, gate: enoughOutcomes && row.deltaBrier <= VALIDATION_CRITERIA.thresholdDeltaBrier && row.ece <= VALIDATION_CRITERIA.thresholdEce ? "PASS" : "FAIL" }];
   }));
-  const passed = metrics.matchClusters >= 180
-    && metrics.deltaBrier <= 0.005
-    && metrics.ece <= 0.08
+  const passed = metrics.matchClusters >= VALIDATION_CRITERIA.clusters
+    && metrics.deltaBrier <= VALIDATION_CRITERIA.deltaBrier
+    && metrics.ece <= VALIDATION_CRITERIA.ece
     && Math.abs(metrics.meanBias) <= METRICS[definition.family].biasLimit
     && Object.values(thresholdValidation).some(row => row.gate === "PASS");
   return { ...metrics, gate: passed ? "PASS" : "FAIL", gateCriteria: "clusters>=180; deltaBrier<=0.005; ECE<=0.08; absolute bias within family limit; exact threshold must have >=30 positive and >=30 negative holdout outcomes", thresholds: thresholdValidation };
@@ -381,4 +383,4 @@ function buildStatisticalModelArtifact() {
   };
 }
 
-module.exports = { METRICS, MARKET_MODELS, reconstructPriorSeason, currentSeasonActuals, forecastMean, dispersionSize, countPmf, convolve, probabilities, overProbability, buildStatisticalModelArtifact, buildCurrentEvaluations };
+module.exports = { VALIDATION_CRITERIA, brier, ece, logLoss, METRICS, MARKET_MODELS, reconstructPriorSeason, currentSeasonActuals, forecastMean, dispersionSize, countPmf, convolve, probabilities, overProbability, buildStatisticalModelArtifact, buildCurrentEvaluations };
