@@ -383,4 +383,4 @@ function buildStatisticalModelArtifact() {
   };
 }
 
-module.exports = { VALIDATION_CRITERIA, brier, ece, logLoss, METRICS, MARKET_MODELS, reconstructPriorSeason, currentSeasonActuals, forecastMean, dispersionSize, countPmf, convolve, probabilities, overProbability, buildStatisticalModelArtifact, buildCurrentEvaluations };
+module.exports = { validateSubfamily, VALIDATION_CRITERIA, brier, ece, logLoss, METRICS, MARKET_MODELS, reconstructPriorSeason, currentSeasonActuals, forecastMean, dispersionSize, countPmf, convolve, probabilities, overProbability, buildStatisticalModelArtifact, buildCurrentEvaluations };

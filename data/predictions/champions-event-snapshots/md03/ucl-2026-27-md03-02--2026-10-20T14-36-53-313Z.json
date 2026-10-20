@@ -1,0 +1,1169 @@
+{
+  "schemaVersion": 1,
+  "kind": "champions-immutable-prematch-player-forecast-snapshot",
+  "immutable": true,
+  "createdAt": "2026-10-20T14:36:53.313Z",
+  "competition": "champions",
+  "phase": "league",
+  "season": "2026-27",
+  "matchday": 3,
+  "fixtureId": "ucl-2026-27-md03-02",
+  "date": "2026-10-20",
+  "kickoff": "18:45",
+  "timezone": "Europe/Rome",
+  "kickoffAt": "2026-10-20T16:45:00.000Z",
+  "homeTeam": "Sabah",
+  "awayTeam": "Borussia Dortmund",
+  "chronologyStatus": "VALID_PREMATCH_SNAPSHOT",
+  "evaluationWindow": "test",
+  "model": {
+    "ids": {
+      "collective": "champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f",
+      "player": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1"
+    },
+    "modules": {
+      "collective": {
+        "scripts/build-champions-pilot-predictions.js": "33f125092367f1d518d67bece8a55cc6b253e34cb9f114cb4233c80e79341cd7",
+        "scripts/build-champions-1x2.js": "14862aba1553ab311ac0a9c634acdb748e38950d6ea5c32be2b4e48fe9dfde83",
+        "scripts/champions/offline-collective.js": "c061eabcac55ca28bb32ba68143009e50fa668a829108c22bb7fcf0987e31ab6"
+      },
+      "player": {
+        "scripts/build-champions-md3-probable.cjs": "3f81ca7dabbeeb96779ee6c9ee0f3897367865cbeae0904f3eece48c260e0b11",
+        "scripts/champions/md3-lineup-policy.js": "5de9c6e48c301568096e200c9a032ea1dc7e9eb6b07d3962f6863b57a8d02e40",
+        "scripts/champions/current-season-offline.js": "893ca70e5d73cf30f193aa16d4add179eabb381d431f9cba56e9779c89eb9bdd",
+        "scripts/champions/context-adjusted-player-baseline.js": "67bfffa938d134b6dca9b8018cd4b55146f4aead56b61ad25072fb7eb00d9f3d",
+        "scripts/champions/player-volume-utils.js": "d283e14790930987242f42c2d57fd14e9274635d1fcfa0f8c2fad7fa0a7ef6a6",
+        "scripts/champions/substitute-minutes.js": "bf74d46f1b41ab33821dcc277a4259f4ea7f35762f1f26fd4bfd2797663780cd"
+      }
+    }
+  },
+  "dataVersion": {
+    "capturedAt": "2026-10-20T14:36:53.313Z",
+    "availabilityProof": "CONTROLLED_LOCAL_CAPTURE_BEFORE_KICKOFF_NOT_EXTERNAL_TIMESTAMP_AUTHORITY",
+    "inputs": {
+      "data/sources/champions-pilot-match-stats-2025-27.json": "6fe3bd617f8cc6d739669fca4d7a019baa30e65d6ef40377dc9492bd512b93cb",
+      "data/normalized/champions-league-2026-27.json": "976ba156fc47ce8e908a3102539b0dd22005303dde6a9bca2e42f21cac8df0da",
+      "data/normalized/champions-md03-probable-individuals-2026-27.json": "ec5843586edd877946b3e878f8a6a992c2b4c6ae665217b71fb6ff7512a2ba62",
+      "data/normalized/champions-md03-preliminary-2026-27.json": "d26b35e51c804872c8beae51a6044d69d46f97190d6ea4536d23fde8a44f7c66",
+      "data/normalized/schedina-champions-md03.json": "4aeb2efabb30c6e205d7ef1a9d1673f0e2651d754a5a1ba5acc8bfbf06a2f936",
+      "data/normalized/odds/sisal/champions-league.json": "aa6fd6de6bd301dd16298337abff92e1869d96b4aa6be4313fe3a3dd410aa09b",
+      "data/normalized/uefa-europe-history-2023-26.json": "0817482042ba8bf3a522185aee52c580f3f21be79cec4daf83a7a2bae79c1e0e",
+      "data/normalized/uefa-1x2-model-2026-27.json": "d02e3b50291c32bacdadc7eaaa9a2fcc0633cd57a06df9480a347fb0f441b19d",
+      "data/sources/champions-probable-formations-md03-2026-27.json": "bffa9eb554cc5143bdbe51fcb22c7b53a2e9768cd7e7444fb26bf09d89fa99f9",
+      "data/normalized/champions-md03-player-database-2026-27.json": "5252d97d536f832ac8672a09c4d75a4cc7d130c5f977a5e42a5c17732d8c2db6"
+    }
+  },
+  "kickoffVerification": {
+    "source": "data/normalized/champions-league-2026-27.json",
+    "timezone": "Europe/Rome"
+  },
+  "identityOverlaySource": "CANONICAL_PLAYER_AND_TEAM_IDS_ONLY",
+  "coverage": {
+    "completeForSnapshotUniverse": true,
+    "universe": "ALL_EXISTING_PROBABLE_PLAYERS_AND_AVAILABLE_CONTRACT_EVENTS_INCLUDING_EXPLICIT_BLOCKERS",
+    "players": 49,
+    "events": 5,
+    "unresolved": 0
+  },
+  "players": [
+    {
+      "teamId": "sabah",
+      "internalPlayerId": "stas-pokatilov",
+      "name": "Stas Pokatilov",
+      "role": "goalkeeper",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "TEAM_VOLUMES_UNAVAILABLE",
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE"
+      ]
+    },
+    {
+      "teamId": "sabah",
+      "internalPlayerId": "aden-mccarthy",
+      "name": "Aden McCarthy",
+      "role": "defender",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "TEAM_VOLUMES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "sabah",
+      "internalPlayerId": "steve-solvet",
+      "name": "Steve Solvet",
+      "role": "defender",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "TEAM_VOLUMES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "sabah",
+      "internalPlayerId": "tymoteusz-puchacz",
+      "name": "Tymoteusz Puchacz",
+      "role": "defender",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "TEAM_VOLUMES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "sabah",
+      "internalPlayerId": "akim-zedadka",
+      "name": "Akim Zedadka",
+      "role": "defender",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "TEAM_VOLUMES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "sabah",
+      "internalPlayerId": "ivan-lepinjica",
+      "name": "Ivan Lepinjica",
+      "role": "midfielder",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "TEAM_VOLUMES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "sabah",
+      "internalPlayerId": "umarali-rakhmonaliev",
+      "name": "Umarali Rakhmonaliev",
+      "role": "midfielder",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "TEAM_VOLUMES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "sabah",
+      "internalPlayerId": "du-queiroz",
+      "name": "Du Queiroz",
+      "role": "midfielder",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "TEAM_VOLUMES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "sabah",
+      "internalPlayerId": "veljko-simic",
+      "name": "Veljko Simić",
+      "role": "forward",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "TEAM_VOLUMES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "sabah",
+      "internalPlayerId": "kaheem-parris",
+      "name": "Kaheem Parris",
+      "role": "midfielder",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "TEAM_VOLUMES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "sabah",
+      "internalPlayerId": "joy-lance-mickels",
+      "name": "Joy-Lance Mickels",
+      "role": "forward",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "TEAM_VOLUMES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "sabah",
+      "internalPlayerId": "amin-ramazanov",
+      "name": "Amin Ramazanov",
+      "role": "goalkeeper",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "TEAM_VOLUMES_UNAVAILABLE",
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "sabah",
+      "internalPlayerId": "rauf-ayyubov",
+      "name": "Rauf Ayyubov",
+      "role": "goalkeeper",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "TEAM_VOLUMES_UNAVAILABLE",
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "sabah",
+      "internalPlayerId": "ravan-mirzammadov",
+      "name": "Ravan Mirzammadov",
+      "role": "goalkeeper",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "TEAM_VOLUMES_UNAVAILABLE",
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "sabah",
+      "internalPlayerId": "rahman-dashdamirov",
+      "name": "Rahman Dashdamirov",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "TEAM_VOLUMES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "sabah",
+      "internalPlayerId": "tellur-mutallimov",
+      "name": "Tellur Mutallimov",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "TEAM_VOLUMES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "sabah",
+      "internalPlayerId": "erivaldo-almeida",
+      "name": "Erivaldo Almeida",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "TEAM_VOLUMES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "sabah",
+      "internalPlayerId": "abdulakh-khaibulaev",
+      "name": "Abdulakh Khaibulaev",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "TEAM_VOLUMES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "sabah",
+      "internalPlayerId": "aleksey-isaev",
+      "name": "Aleksey Isaev",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "TEAM_VOLUMES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "sabah",
+      "internalPlayerId": "rauf-rustamli",
+      "name": "Rauf Rustamli",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "TEAM_VOLUMES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "sabah",
+      "internalPlayerId": "rodrigo-fernandes",
+      "name": "Rodrigo Fernandes",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "TEAM_VOLUMES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "sabah",
+      "internalPlayerId": "jafar-mukhtarov",
+      "name": "Jafar Mukhtarov",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "TEAM_VOLUMES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "sabah",
+      "internalPlayerId": "shahin-ibrahimov",
+      "name": "Shahin Ibrahimov",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "TEAM_VOLUMES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "sabah",
+      "internalPlayerId": "christian-nwachukwu",
+      "name": "Christian Nwachukwu",
+      "role": "forward",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "TEAM_VOLUMES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "sabah",
+      "internalPlayerId": "xander-severina",
+      "name": "Xander Severina",
+      "role": "forward",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "TEAM_VOLUMES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "sabah",
+      "internalPlayerId": "orphe-mbina",
+      "name": "Orphé Mbina",
+      "role": "forward",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "TEAM_VOLUMES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "borussia-dortmund",
+      "internalPlayerId": "gregor-kobel",
+      "name": "Gregor Kobel",
+      "role": "goalkeeper",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 89.5,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_VOLUMES_UNAVAILABLE",
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE"
+      ]
+    },
+    {
+      "teamId": "borussia-dortmund",
+      "internalPlayerId": "waldemar-anton",
+      "name": "Waldemar Anton",
+      "role": "defender",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 81.6,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_VOLUMES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "borussia-dortmund",
+      "internalPlayerId": "ramy-bensebaini",
+      "name": "Ramy Bensebaini",
+      "role": "defender",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 85,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_VOLUMES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "borussia-dortmund",
+      "internalPlayerId": "kouakou-gadou",
+      "name": "Joane Gadou",
+      "role": "defender",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 89.5,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_VOLUMES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "borussia-dortmund",
+      "internalPlayerId": "joey-veerman",
+      "name": "Joey Veerman",
+      "role": "midfielder",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 89.5,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_VOLUMES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "borussia-dortmund",
+      "internalPlayerId": "jobe-bellingham",
+      "name": "Jobe Bellingham",
+      "role": "forward",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 83.6,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_VOLUMES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "borussia-dortmund",
+      "internalPlayerId": "daniel-svensson",
+      "name": "Daniel Svensson",
+      "role": "defender",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 89.5,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_VOLUMES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "borussia-dortmund",
+      "internalPlayerId": "maximilian-beier",
+      "name": "Maximilian Beier",
+      "role": "forward",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 69.3,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_VOLUMES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "borussia-dortmund",
+      "internalPlayerId": "felix-nmecha",
+      "name": "Felix Nmecha",
+      "role": "midfielder",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 82.1,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_VOLUMES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "borussia-dortmund",
+      "internalPlayerId": "samuele-inacio",
+      "name": "Samuele Inacio",
+      "role": "forward",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 80.4,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_VOLUMES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "borussia-dortmund",
+      "internalPlayerId": "fabio-silva",
+      "name": "Fábio Silva",
+      "role": "forward",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 71,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_VOLUMES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "borussia-dortmund",
+      "internalPlayerId": "nico-schlotterbeck",
+      "name": "Nico Schlotterbeck",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "TEAM_VOLUMES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "borussia-dortmund",
+      "internalPlayerId": "serhou-guirassy",
+      "name": "Serhou Guirassy",
+      "role": "forward",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 20.3,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_VOLUMES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "borussia-dortmund",
+      "internalPlayerId": "carney-chukwuemeka",
+      "name": "Carney Chukwuemeka",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 17.5,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_VOLUMES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "borussia-dortmund",
+      "internalPlayerId": "ethan-nwaneri",
+      "name": "Ethan Nwaneri",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 6,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_VOLUMES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "borussia-dortmund",
+      "internalPlayerId": "marcel-sabitzer",
+      "name": "Marcel Sabitzer",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 6.7,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_VOLUMES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "borussia-dortmund",
+      "internalPlayerId": "julian-ryerson",
+      "name": "Julian Ryerson",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 21.2,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_VOLUMES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "borussia-dortmund",
+      "internalPlayerId": "patrick-drewes",
+      "name": "Patrick Drewes",
+      "role": "goalkeeper",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "TEAM_VOLUMES_UNAVAILABLE",
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "borussia-dortmund",
+      "internalPlayerId": "alexander-meyer",
+      "name": "Alexander Meyer",
+      "role": "goalkeeper",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "TEAM_VOLUMES_UNAVAILABLE",
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "borussia-dortmund",
+      "internalPlayerId": "kaua-prates",
+      "name": "Kauã Prates",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "TEAM_VOLUMES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "borussia-dortmund",
+      "internalPlayerId": "filippo-mane",
+      "name": "Filippo Mane",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 1.3,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_VOLUMES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "borussia-dortmund",
+      "internalPlayerId": "mathis-albert",
+      "name": "Mathis Albert",
+      "role": "forward",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "TEAM_VOLUMES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "borussia-dortmund",
+      "internalPlayerId": "luca-reggiani",
+      "name": "Luca Reggiani",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 6,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_VOLUMES_UNAVAILABLE"
+      ]
+    }
+  ],
+  "events": [
+    {
+      "modelId": "champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f",
+      "target": {
+        "scope": "match",
+        "metric": "result",
+        "threshold": null,
+        "direction": "1",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": 0.376,
+      "mean": null,
+      "quote": {
+        "decimal": 10,
+        "oddsRaw": 1000,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911206:823774138:5386996554",
+      "eventId": "[\"[\\\"champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f\\\",\\\"match\\\",\\\"result\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"1\"]:",
+      "baselineProbability": 0.4970178926441352,
+      "baseline": {
+        "probability": 0.4970178926441352,
+        "n": 503,
+        "positives": 250,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f",
+      "target": {
+        "scope": "match",
+        "metric": "result",
+        "threshold": null,
+        "direction": "X",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": 0.215,
+      "mean": null,
+      "quote": {
+        "decimal": 6,
+        "oddsRaw": 600,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911206:823774138:5386996555",
+      "eventId": "[\"[\\\"champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f\\\",\\\"match\\\",\\\"result\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"X\"]:",
+      "baselineProbability": 0.1749502982107356,
+      "baseline": {
+        "probability": 0.1749502982107356,
+        "n": 503,
+        "positives": 88,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f",
+      "target": {
+        "scope": "match",
+        "metric": "result",
+        "threshold": null,
+        "direction": "2",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": 0.409,
+      "mean": null,
+      "quote": {
+        "decimal": 1.28,
+        "oddsRaw": 128,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911206:823774138:5386996556",
+      "eventId": "[\"[\\\"champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f\\\",\\\"match\\\",\\\"result\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"2\"]:",
+      "baselineProbability": 0.32803180914512925,
+      "baseline": {
+        "probability": 0.32803180914512925,
+        "n": 503,
+        "positives": 165,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f",
+      "target": {
+        "scope": "match",
+        "metric": "double-chance",
+        "threshold": null,
+        "direction": "1X",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": 0.591,
+      "mean": null,
+      "quote": {
+        "decimal": 3.6,
+        "oddsRaw": 360,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911206:823775150:5387003398",
+      "eventId": "[\"[\\\"champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f\\\",\\\"match\\\",\\\"double-chance\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"1X\"]:",
+      "baselineProbability": 0.6719681908548708,
+      "baseline": {
+        "probability": 0.6719681908548708,
+        "n": 503,
+        "positives": 338,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f",
+      "target": {
+        "scope": "match",
+        "metric": "double-chance",
+        "threshold": null,
+        "direction": "X2",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": 0.624,
+      "mean": null,
+      "quote": {
+        "decimal": 1.06,
+        "oddsRaw": 106,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911206:823775150:5387003400",
+      "eventId": "[\"[\\\"champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f\\\",\\\"match\\\",\\\"double-chance\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"X2\"]:",
+      "baselineProbability": 0.5029821073558648,
+      "baseline": {
+        "probability": 0.5029821073558648,
+        "n": 503,
+        "positives": 253,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    }
+  ],
+  "teamProjections": [
+    {
+      "teamId": "sabah",
+      "team": "Sabah",
+      "venue": "home",
+      "expectedGoals": 1.62,
+      "shotsTotal": null,
+      "shotsOnTarget": null,
+      "corners": null,
+      "fouls": null,
+      "cards": null,
+      "lines": {
+        "shotsTotal": [],
+        "shotsOnTarget": [],
+        "corners": []
+      }
+    },
+    {
+      "teamId": "borussia-dortmund",
+      "team": "Borussia Dortmund",
+      "venue": "away",
+      "expectedGoals": 1.7,
+      "shotsTotal": null,
+      "shotsOnTarget": null,
+      "corners": null,
+      "fouls": null,
+      "cards": null,
+      "lines": {
+        "shotsTotal": [],
+        "shotsOnTarget": [],
+        "corners": []
+      }
+    }
+  ],
+  "contentHash": "32972b66ba62b6169f737a35138e9f67260b1fe00a87925b09fb08fdde099b9d"
+}

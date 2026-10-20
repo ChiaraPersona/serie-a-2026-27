@@ -1,0 +1,5203 @@
+{
+  "schemaVersion": 1,
+  "kind": "champions-immutable-prematch-player-forecast-snapshot",
+  "immutable": true,
+  "createdAt": "2026-10-20T14:36:53.313Z",
+  "competition": "champions",
+  "phase": "league",
+  "season": "2026-27",
+  "matchday": 3,
+  "fixtureId": "ucl-2026-27-md03-16",
+  "date": "2026-10-21",
+  "kickoff": "21:00",
+  "timezone": "Europe/Rome",
+  "kickoffAt": "2026-10-21T19:00:00.000Z",
+  "homeTeam": "Real Madrid",
+  "awayTeam": "Leipzig",
+  "chronologyStatus": "VALID_PREMATCH_SNAPSHOT",
+  "evaluationWindow": "test",
+  "model": {
+    "ids": {
+      "collective": "champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f",
+      "player": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1"
+    },
+    "modules": {
+      "collective": {
+        "scripts/build-champions-pilot-predictions.js": "33f125092367f1d518d67bece8a55cc6b253e34cb9f114cb4233c80e79341cd7",
+        "scripts/build-champions-1x2.js": "14862aba1553ab311ac0a9c634acdb748e38950d6ea5c32be2b4e48fe9dfde83",
+        "scripts/champions/offline-collective.js": "c061eabcac55ca28bb32ba68143009e50fa668a829108c22bb7fcf0987e31ab6"
+      },
+      "player": {
+        "scripts/build-champions-md3-probable.cjs": "3f81ca7dabbeeb96779ee6c9ee0f3897367865cbeae0904f3eece48c260e0b11",
+        "scripts/champions/md3-lineup-policy.js": "5de9c6e48c301568096e200c9a032ea1dc7e9eb6b07d3962f6863b57a8d02e40",
+        "scripts/champions/current-season-offline.js": "893ca70e5d73cf30f193aa16d4add179eabb381d431f9cba56e9779c89eb9bdd",
+        "scripts/champions/context-adjusted-player-baseline.js": "67bfffa938d134b6dca9b8018cd4b55146f4aead56b61ad25072fb7eb00d9f3d",
+        "scripts/champions/player-volume-utils.js": "d283e14790930987242f42c2d57fd14e9274635d1fcfa0f8c2fad7fa0a7ef6a6",
+        "scripts/champions/substitute-minutes.js": "bf74d46f1b41ab33821dcc277a4259f4ea7f35762f1f26fd4bfd2797663780cd"
+      }
+    }
+  },
+  "dataVersion": {
+    "capturedAt": "2026-10-20T14:36:53.313Z",
+    "availabilityProof": "CONTROLLED_LOCAL_CAPTURE_BEFORE_KICKOFF_NOT_EXTERNAL_TIMESTAMP_AUTHORITY",
+    "inputs": {
+      "data/sources/champions-pilot-match-stats-2025-27.json": "6fe3bd617f8cc6d739669fca4d7a019baa30e65d6ef40377dc9492bd512b93cb",
+      "data/normalized/champions-league-2026-27.json": "976ba156fc47ce8e908a3102539b0dd22005303dde6a9bca2e42f21cac8df0da",
+      "data/normalized/champions-md03-probable-individuals-2026-27.json": "ec5843586edd877946b3e878f8a6a992c2b4c6ae665217b71fb6ff7512a2ba62",
+      "data/normalized/champions-md03-preliminary-2026-27.json": "d26b35e51c804872c8beae51a6044d69d46f97190d6ea4536d23fde8a44f7c66",
+      "data/normalized/schedina-champions-md03.json": "4aeb2efabb30c6e205d7ef1a9d1673f0e2651d754a5a1ba5acc8bfbf06a2f936",
+      "data/normalized/odds/sisal/champions-league.json": "aa6fd6de6bd301dd16298337abff92e1869d96b4aa6be4313fe3a3dd410aa09b",
+      "data/normalized/uefa-europe-history-2023-26.json": "0817482042ba8bf3a522185aee52c580f3f21be79cec4daf83a7a2bae79c1e0e",
+      "data/normalized/uefa-1x2-model-2026-27.json": "d02e3b50291c32bacdadc7eaaa9a2fcc0633cd57a06df9480a347fb0f441b19d",
+      "data/sources/champions-probable-formations-md03-2026-27.json": "bffa9eb554cc5143bdbe51fcb22c7b53a2e9768cd7e7444fb26bf09d89fa99f9",
+      "data/normalized/champions-md03-player-database-2026-27.json": "5252d97d536f832ac8672a09c4d75a4cc7d130c5f977a5e42a5c17732d8c2db6"
+    }
+  },
+  "kickoffVerification": {
+    "source": "data/normalized/champions-league-2026-27.json",
+    "timezone": "Europe/Rome"
+  },
+  "identityOverlaySource": "CANONICAL_PLAYER_AND_TEAM_IDS_ONLY",
+  "coverage": {
+    "completeForSnapshotUniverse": true,
+    "universe": "ALL_EXISTING_PROBABLE_PLAYERS_AND_AVAILABLE_CONTRACT_EVENTS_INCLUDING_EXPLICIT_BLOCKERS",
+    "players": 60,
+    "events": 109,
+    "unresolved": 0
+  },
+  "players": [
+    {
+      "teamId": "real-madrid",
+      "internalPlayerId": "thibaut-courtois",
+      "name": "Thibaut Courtois",
+      "role": "goalkeeper",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 75.7,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE"
+      ]
+    },
+    {
+      "teamId": "real-madrid",
+      "internalPlayerId": "antonio-rudiger",
+      "name": "Antonio Rüdiger",
+      "role": "defender",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 80.6,
+      "startingProbability": null,
+      "projectedShots": 0.56,
+      "projectedShotsOnTarget": 0.07,
+      "eventProbabilities": {
+        "shotsOver05": 0.42879093615118513,
+        "shotsOver15": 0.10891386039584883,
+        "shotsOver25": 0.019348279184354666,
+        "sotOver05": 0.06760618009405173,
+        "sotOver15": 0.0023386127006352897,
+        "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
+      },
+      "blockers": []
+    },
+    {
+      "teamId": "real-madrid",
+      "internalPlayerId": "ibrahima-konate",
+      "name": "Ibrahima Konaté",
+      "role": "defender",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 77.5,
+      "startingProbability": null,
+      "projectedShots": 0.43,
+      "projectedShotsOnTarget": 0.12,
+      "eventProbabilities": {
+        "shotsOver05": 0.3494909052766835,
+        "shotsOver15": 0.06977199454565741,
+        "shotsOver25": 0.009632428738486798,
+        "sotOver05": 0.11307956328284252,
+        "sotOver15": 0.006649110876783659,
+        "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
+      },
+      "blockers": []
+    },
+    {
+      "teamId": "real-madrid",
+      "internalPlayerId": "marc-cucurella",
+      "name": "Marc Cucurella",
+      "role": "defender",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 78.5,
+      "startingProbability": null,
+      "projectedShots": 0.48,
+      "projectedShotsOnTarget": 0.13,
+      "eventProbabilities": {
+        "shotsOver05": 0.38121660819385916,
+        "shotsOver15": 0.08420058012691156,
+        "shotsOver25": 0.012916733390844093,
+        "sotOver05": 0.1219045690794387,
+        "sotOver15": 0.007752163059765671,
+        "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
+      },
+      "blockers": []
+    },
+    {
+      "teamId": "real-madrid",
+      "internalPlayerId": "denzel-dumfries",
+      "name": "Denzel Dumfries",
+      "role": "defender",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 74.7,
+      "startingProbability": null,
+      "projectedShots": 1.05,
+      "projectedShotsOnTarget": 0.25,
+      "eventProbabilities": {
+        "shotsOver05": 0.6500622508888447,
+        "shotsOver15": 0.28262761432213157,
+        "shotsOver25": 0.08972443012460718,
+        "sotOver05": 0.22119921692859512,
+        "sotOver15": 0.026499021160743874,
+        "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
+      },
+      "blockers": []
+    },
+    {
+      "teamId": "real-madrid",
+      "internalPlayerId": "aurelien-tchouameni",
+      "name": "Aurélien Tchouaméni",
+      "role": "midfielder",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 76.7,
+      "startingProbability": null,
+      "projectedShots": 1.19,
+      "projectedShotsOnTarget": 0.26,
+      "eventProbabilities": {
+        "shotsOver05": 0.6957787359332959,
+        "shotsOver15": 0.3337554316939181,
+        "shotsOver25": 0.1183515656714883,
+        "sotOver05": 0.22894841419643375,
+        "sotOver15": 0.028475001887506513,
+        "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
+      },
+      "blockers": []
+    },
+    {
+      "teamId": "real-madrid",
+      "internalPlayerId": "federico-valverde",
+      "name": "Federico Valverde",
+      "role": "midfielder",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 79.9,
+      "startingProbability": null,
+      "projectedShots": 1.24,
+      "projectedShotsOnTarget": 0.5,
+      "eventProbabilities": {
+        "shotsOver05": 0.7106157820609493,
+        "shotsOver15": 0.3517793518165264,
+        "shotsOver25": 0.12930076506498422,
+        "sotOver05": 0.3934693402873666,
+        "sotOver15": 0.09020401043104986,
+        "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
+      },
+      "blockers": []
+    },
+    {
+      "teamId": "real-madrid",
+      "internalPlayerId": "jude-bellingham",
+      "name": "Jude Bellingham",
+      "role": "midfielder",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 80.7,
+      "startingProbability": null,
+      "projectedShots": 1.86,
+      "projectedShotsOnTarget": 0.78,
+      "eventProbabilities": {
+        "shotsOver05": 0.8443273696320027,
+        "shotsOver15": 0.5547762771475276,
+        "shotsOver25": 0.2854937611369659,
+        "sotOver05": 0.5415939886947765,
+        "sotOver15": 0.18403729987670214,
+        "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
+      },
+      "blockers": []
+    },
+    {
+      "teamId": "real-madrid",
+      "internalPlayerId": "vinicius-junior",
+      "name": "Vinícius Júnior",
+      "role": "forward",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 80.7,
+      "startingProbability": null,
+      "projectedShots": 2.88,
+      "projectedShotsOnTarget": 1.2,
+      "eventProbabilities": {
+        "shotsOver05": 0.9438652371658662,
+        "shotsOver15": 0.7821971202035611,
+        "shotsOver25": 0.5493950317778418,
+        "sotOver05": 0.6988057880877979,
+        "sotOver15": 0.33737273379315535,
+        "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
+      },
+      "blockers": []
+    },
+    {
+      "teamId": "real-madrid",
+      "internalPlayerId": "yan-diomande",
+      "name": "Yan Diomande",
+      "role": "midfielder",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 75.9,
+      "startingProbability": null,
+      "projectedShots": 1.44,
+      "projectedShotsOnTarget": 0.66,
+      "eventProbabilities": {
+        "shotsOver05": 0.7630722413178782,
+        "shotsOver15": 0.4218962688156229,
+        "shotsOver25": 0.1762495686139991,
+        "sotOver05": 0.4831486655083008,
+        "sotOver15": 0.14202678474377928,
+        "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
+      },
+      "blockers": []
+    },
+    {
+      "teamId": "real-madrid",
+      "internalPlayerId": "kylian-mbappe",
+      "name": "Kylian Mbappé",
+      "role": "forward",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 80.7,
+      "startingProbability": null,
+      "projectedShots": 3.99,
+      "projectedShotsOnTarget": 1.8,
+      "eventProbabilities": {
+        "shotsOver05": 0.9815002858801808,
+        "shotsOver15": 0.907686426542102,
+        "shotsOver25": 0.7604277771626349,
+        "sotOver05": 0.8347011117784134,
+        "sotOver15": 0.5371631129795577,
+        "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
+      },
+      "blockers": []
+    },
+    {
+      "teamId": "real-madrid",
+      "internalPlayerId": "andriy-lunin",
+      "name": "Andriy Lunin",
+      "role": "goalkeeper",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE"
+      ]
+    },
+    {
+      "teamId": "real-madrid",
+      "internalPlayerId": "sergio-mestre",
+      "name": "Sergio Mestre",
+      "role": "goalkeeper",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "real-madrid",
+      "internalPlayerId": "javi-navarro",
+      "name": "Javi Navarro",
+      "role": "goalkeeper",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "real-madrid",
+      "internalPlayerId": "eder-militao",
+      "name": "Éder Militão",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 16.3,
+      "startingProbability": null,
+      "projectedShots": 0.23,
+      "projectedShotsOnTarget": 0.08,
+      "eventProbabilities": null,
+      "blockers": []
+    },
+    {
+      "teamId": "real-madrid",
+      "internalPlayerId": "dean-huijsen",
+      "name": "Dean Huijsen",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 11.9,
+      "startingProbability": null,
+      "projectedShots": 0.09,
+      "projectedShotsOnTarget": 0.02,
+      "eventProbabilities": null,
+      "blockers": []
+    },
+    {
+      "teamId": "real-madrid",
+      "internalPlayerId": "trent-alexander-arnold",
+      "name": "Trent Alexander-Arnold",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 9.8,
+      "startingProbability": null,
+      "projectedShots": 0.07,
+      "projectedShotsOnTarget": 0.01,
+      "eventProbabilities": null,
+      "blockers": []
+    },
+    {
+      "teamId": "real-madrid",
+      "internalPlayerId": "alvaro-carreras",
+      "name": "Álvaro Carreras",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 0.4,
+      "startingProbability": null,
+      "projectedShots": 0,
+      "projectedShotsOnTarget": 0,
+      "eventProbabilities": null,
+      "blockers": []
+    },
+    {
+      "teamId": "real-madrid",
+      "internalPlayerId": "jesus-fortea",
+      "name": "Jesus Fortea",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "real-madrid",
+      "internalPlayerId": "joan-martinez",
+      "name": "Joan Martínez",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "real-madrid",
+      "internalPlayerId": "mario-rivas",
+      "name": "Mario Rivas",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "real-madrid",
+      "internalPlayerId": "eduardo-camavinga",
+      "name": "Eduardo Camavinga",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 14,
+      "startingProbability": null,
+      "projectedShots": 0.14,
+      "projectedShotsOnTarget": 0.04,
+      "eventProbabilities": null,
+      "blockers": []
+    },
+    {
+      "teamId": "real-madrid",
+      "internalPlayerId": "arda-guler",
+      "name": "Arda Güler",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 21.2,
+      "startingProbability": null,
+      "projectedShots": 0.44,
+      "projectedShotsOnTarget": 0.17,
+      "eventProbabilities": null,
+      "blockers": []
+    },
+    {
+      "teamId": "real-madrid",
+      "internalPlayerId": "bernardo-silva",
+      "name": "Bernardo Silva",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 13.5,
+      "startingProbability": null,
+      "projectedShots": 0.14,
+      "projectedShotsOnTarget": 0.04,
+      "eventProbabilities": null,
+      "blockers": []
+    },
+    {
+      "teamId": "real-madrid",
+      "internalPlayerId": "thiago-pitarch",
+      "name": "Thiago Pitarch",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 1.3,
+      "startingProbability": null,
+      "projectedShots": 0.01,
+      "projectedShotsOnTarget": 0,
+      "eventProbabilities": null,
+      "blockers": []
+    },
+    {
+      "teamId": "real-madrid",
+      "internalPlayerId": "jorge-cestero",
+      "name": "Jorge Cestero",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "real-madrid",
+      "internalPlayerId": "diego-villalba",
+      "name": "Diego Villalba",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "real-madrid",
+      "internalPlayerId": "gabriel-valero",
+      "name": "Gabriel Valero",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "real-madrid",
+      "internalPlayerId": "sergio-martinez",
+      "name": "Sergio Martínez",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "real-madrid",
+      "internalPlayerId": "endrick",
+      "name": "Endrick",
+      "role": "forward",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 6.4,
+      "startingProbability": null,
+      "projectedShots": 0.22,
+      "projectedShotsOnTarget": 0.1,
+      "eventProbabilities": null,
+      "blockers": []
+    },
+    {
+      "teamId": "real-madrid",
+      "internalPlayerId": "carlos-espi",
+      "name": "Carlos Espi",
+      "role": "forward",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 8.2,
+      "startingProbability": null,
+      "projectedShots": 0.29,
+      "projectedShotsOnTarget": 0.12,
+      "eventProbabilities": null,
+      "blockers": []
+    },
+    {
+      "teamId": "real-madrid",
+      "internalPlayerId": "brahim-diaz",
+      "name": "Brahim Díaz",
+      "role": "forward",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 12,
+      "startingProbability": null,
+      "projectedShots": 0.22,
+      "projectedShotsOnTarget": 0.11,
+      "eventProbabilities": null,
+      "blockers": []
+    },
+    {
+      "teamId": "real-madrid",
+      "internalPlayerId": "daniel-yanez",
+      "name": "Daniel Yañez",
+      "role": "forward",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 13.4,
+      "startingProbability": null,
+      "projectedShots": 0.32,
+      "projectedShotsOnTarget": 0.12,
+      "eventProbabilities": null,
+      "blockers": []
+    },
+    {
+      "teamId": "leipzig",
+      "internalPlayerId": "maarten-vandevoordt",
+      "name": "Maarten Vandevoordt",
+      "role": "goalkeeper",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 90,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE"
+      ]
+    },
+    {
+      "teamId": "leipzig",
+      "internalPlayerId": "castello-lukeba",
+      "name": "Castello Lukeba",
+      "role": "defender",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 83.8,
+      "startingProbability": null,
+      "projectedShots": 0.46,
+      "projectedShotsOnTarget": 0.1,
+      "eventProbabilities": {
+        "shotsOver05": 0.36871635449307405,
+        "shotsOver15": 0.07832587755988807,
+        "shotsOver25": 0.011536067865255295,
+        "sotOver05": 0.09516258196404048,
+        "sotOver15": 0.0046788401604445085,
+        "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
+      },
+      "blockers": []
+    },
+    {
+      "teamId": "leipzig",
+      "internalPlayerId": "willi-orban",
+      "name": "Willi Orbán",
+      "role": "defender",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 90,
+      "startingProbability": null,
+      "projectedShots": 0.72,
+      "projectedShotsOnTarget": 0.26,
+      "eventProbabilities": {
+        "shotsOver05": 0.5132477440400283,
+        "shotsOver15": 0.1627861197488487,
+        "shotsOver25": 0.03661993500402405,
+        "sotOver05": 0.22894841419643375,
+        "sotOver15": 0.028475001887506513,
+        "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
+      },
+      "blockers": []
+    },
+    {
+      "teamId": "leipzig",
+      "internalPlayerId": "david-raum",
+      "name": "David Raum",
+      "role": "defender",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 87.4,
+      "startingProbability": null,
+      "projectedShots": 0.9,
+      "projectedShotsOnTarget": 0.25,
+      "eventProbabilities": {
+        "shotsOver05": 0.5934303402594009,
+        "shotsOver15": 0.22751764649286166,
+        "shotsOver25": 0.06285693429791905,
+        "sotOver05": 0.22119921692859512,
+        "sotOver15": 0.026499021160743874,
+        "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
+      },
+      "blockers": []
+    },
+    {
+      "teamId": "leipzig",
+      "internalPlayerId": "ridle-baku",
+      "name": "Ridle Baku",
+      "role": "midfielder",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 81.8,
+      "startingProbability": null,
+      "projectedShots": 1.2,
+      "projectedShotsOnTarget": 0.25,
+      "eventProbabilities": {
+        "shotsOver05": 0.6988057880877979,
+        "shotsOver15": 0.33737273379315535,
+        "shotsOver25": 0.12051290121636982,
+        "sotOver05": 0.22119921692859512,
+        "sotOver15": 0.026499021160743874,
+        "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
+      },
+      "blockers": []
+    },
+    {
+      "teamId": "leipzig",
+      "internalPlayerId": "nicolas-seiwald",
+      "name": "Nicolas Seiwald",
+      "role": "midfielder",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 83.3,
+      "startingProbability": null,
+      "projectedShots": 0.87,
+      "projectedShotsOnTarget": 0.26,
+      "eventProbabilities": {
+        "shotsOver05": 0.581048450752361,
+        "shotsOver15": 0.21656060290691515,
+        "shotsOver25": 0.058008389094146184,
+        "sotOver05": 0.22894841419643375,
+        "sotOver15": 0.028475001887506513,
+        "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
+      },
+      "blockers": []
+    },
+    {
+      "teamId": "leipzig",
+      "internalPlayerId": "neil-el-aynaoui",
+      "name": "Neil El Aynaoui",
+      "role": "midfielder",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 87,
+      "startingProbability": null,
+      "projectedShots": 1.03,
+      "projectedShotsOnTarget": 0.35,
+      "eventProbabilities": {
+        "shotsOver05": 0.6429930394308526,
+        "shotsOver15": 0.27527587004463083,
+        "shotsOver25": 0.08590152781072657,
+        "sotOver05": 0.29531191028128656,
+        "sotOver15": 0.04867107887973687,
+        "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
+      },
+      "blockers": []
+    },
+    {
+      "teamId": "leipzig",
+      "internalPlayerId": "antonio-nusa",
+      "name": "Antonio Nusa",
+      "role": "midfielder",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 79.1,
+      "startingProbability": null,
+      "projectedShots": 2.32,
+      "projectedShotsOnTarget": 0.67,
+      "eventProbabilities": {
+        "shotsOver05": 0.9017264143956385,
+        "shotsOver15": 0.6737316957935198,
+        "shotsOver25": 0.409257822215062,
+        "sotOver05": 0.48829142221345756,
+        "sotOver15": 0.14544667509647413,
+        "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
+      },
+      "blockers": []
+    },
+    {
+      "teamId": "leipzig",
+      "internalPlayerId": "andrija-maksimovic",
+      "name": "Andrija Maksimović",
+      "role": "midfielder",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "leipzig",
+      "internalPlayerId": "christopher-nkunku",
+      "name": "Christopher Nkunku",
+      "role": "midfielder",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 66.6,
+      "startingProbability": null,
+      "projectedShots": 1.45,
+      "projectedShotsOnTarget": 0.61,
+      "eventProbabilities": {
+        "shotsOver05": 0.7654297119062023,
+        "shotsOver15": 0.4253027941701958,
+        "shotsOver25": 0.17871077881159103,
+        "sotOver05": 0.4566491309255002,
+        "sotOver15": 0.1252051007900553,
+        "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
+      },
+      "blockers": []
+    },
+    {
+      "teamId": "leipzig",
+      "internalPlayerId": "romulo-cardoso",
+      "name": "Rômulo Cardoso",
+      "role": "forward",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 75.4,
+      "startingProbability": null,
+      "projectedShots": 2.43,
+      "projectedShotsOnTarget": 0.89,
+      "eventProbabilities": {
+        "shotsOver05": 0.9119631674176274,
+        "shotsOver15": 0.6980336642424622,
+        "shotsOver25": 0.43810931788463625,
+        "sotOver05": 0.5893442472476546,
+        "sotOver15": 0.2238606272980671,
+        "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
+      },
+      "blockers": []
+    },
+    {
+      "teamId": "leipzig",
+      "internalPlayerId": "orjan-nyland",
+      "name": "Ørjan Nyland",
+      "role": "goalkeeper",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE"
+      ]
+    },
+    {
+      "teamId": "leipzig",
+      "internalPlayerId": "franz-hantschmann",
+      "name": "Franz Hantschmann",
+      "role": "goalkeeper",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "leipzig",
+      "internalPlayerId": "janos-kanyai",
+      "name": "Janos Kanyai",
+      "role": "goalkeeper",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "leipzig",
+      "internalPlayerId": "elian-hahner",
+      "name": "Elian Hähner",
+      "role": "goalkeeper",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "leipzig",
+      "internalPlayerId": "abdoul-kone",
+      "name": "Abdoul Kone",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "leipzig",
+      "internalPlayerId": "lukas-klostermann",
+      "name": "Lukas Klostermann",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "leipzig",
+      "internalPlayerId": "max-finkgrafe",
+      "name": "Max Finkgräfe",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 5.6,
+      "startingProbability": null,
+      "projectedShots": 0.05,
+      "projectedShotsOnTarget": 0.02,
+      "eventProbabilities": null,
+      "blockers": []
+    },
+    {
+      "teamId": "leipzig",
+      "internalPlayerId": "benjamin-henrichs",
+      "name": "Benjamin Henrichs",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 11.1,
+      "startingProbability": null,
+      "projectedShots": 0.11,
+      "projectedShotsOnTarget": 0.04,
+      "eventProbabilities": null,
+      "blockers": []
+    },
+    {
+      "teamId": "leipzig",
+      "internalPlayerId": "maxime-esteve",
+      "name": "Maxime Esteve",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "leipzig",
+      "internalPlayerId": "ezechiel-banzuzi",
+      "name": "Ezechiel Banzuzi",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 14.7,
+      "startingProbability": null,
+      "projectedShots": 0.33,
+      "projectedShotsOnTarget": 0.08,
+      "eventProbabilities": null,
+      "blockers": []
+    },
+    {
+      "teamId": "leipzig",
+      "internalPlayerId": "rocco-reitz",
+      "name": "Rocco Reitz",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "leipzig",
+      "internalPlayerId": "benno-kaltefleiter",
+      "name": "Benno Kaltefleiter",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "leipzig",
+      "internalPlayerId": "viggo-gebel",
+      "name": "Viggo Gebel",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "leipzig",
+      "internalPlayerId": "brajan-gruda",
+      "name": "Brajan Gruda",
+      "role": "forward",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 19.1,
+      "startingProbability": null,
+      "projectedShots": 0.57,
+      "projectedShotsOnTarget": 0.2,
+      "eventProbabilities": null,
+      "blockers": []
+    },
+    {
+      "teamId": "leipzig",
+      "internalPlayerId": "johan-bakayoko",
+      "name": "Johan Bakayoko",
+      "role": "forward",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 9.2,
+      "startingProbability": null,
+      "projectedShots": 0.3,
+      "projectedShotsOnTarget": 0.1,
+      "eventProbabilities": null,
+      "blockers": []
+    },
+    {
+      "teamId": "leipzig",
+      "internalPlayerId": "tidiam-gomis",
+      "name": "Tidiam Gomis",
+      "role": "forward",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 15.9,
+      "startingProbability": null,
+      "projectedShots": 0.48,
+      "projectedShotsOnTarget": 0.15,
+      "eventProbabilities": null,
+      "blockers": []
+    }
+  ],
+  "events": [
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "antonio-rudiger",
+        "teamId": "real-madrid"
+      },
+      "probability": 0.42879093615118513,
+      "mean": 0.56,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:antonio-rudiger",
+      "baselineProbability": 0.5454545454545454,
+      "baseline": {
+        "probability": 0.5454545454545454,
+        "n": 22,
+        "positives": 12,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "antonio-rudiger",
+        "teamId": "real-madrid"
+      },
+      "probability": 0.10891386039584883,
+      "mean": 0.56,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:antonio-rudiger",
+      "baselineProbability": 0.2727272727272727,
+      "baseline": {
+        "probability": 0.2727272727272727,
+        "n": 22,
+        "positives": 6,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 2.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "antonio-rudiger",
+        "teamId": "real-madrid"
+      },
+      "probability": 0.019348279184354666,
+      "mean": 0.56,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",2.5,\"OVER\"]:antonio-rudiger",
+      "baselineProbability": 0.18181818181818182,
+      "baseline": {
+        "probability": 0.18181818181818182,
+        "n": 22,
+        "positives": 4,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "antonio-rudiger",
+        "teamId": "real-madrid"
+      },
+      "probability": 0.06760618009405173,
+      "mean": 0.07,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:antonio-rudiger",
+      "baselineProbability": 0.36363636363636365,
+      "baseline": {
+        "probability": 0.36363636363636365,
+        "n": 22,
+        "positives": 8,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "antonio-rudiger",
+        "teamId": "real-madrid"
+      },
+      "probability": 0.0023386127006352897,
+      "mean": 0.07,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:antonio-rudiger",
+      "baselineProbability": 0.045454545454545456,
+      "baseline": {
+        "probability": 0.045454545454545456,
+        "n": 22,
+        "positives": 1,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "ibrahima-konate",
+        "teamId": "real-madrid"
+      },
+      "probability": 0.3494909052766835,
+      "mean": 0.43,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:ibrahima-konate",
+      "baselineProbability": 0.5454545454545454,
+      "baseline": {
+        "probability": 0.5454545454545454,
+        "n": 22,
+        "positives": 12,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "ibrahima-konate",
+        "teamId": "real-madrid"
+      },
+      "probability": 0.06977199454565741,
+      "mean": 0.43,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:ibrahima-konate",
+      "baselineProbability": 0.2727272727272727,
+      "baseline": {
+        "probability": 0.2727272727272727,
+        "n": 22,
+        "positives": 6,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 2.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "ibrahima-konate",
+        "teamId": "real-madrid"
+      },
+      "probability": 0.009632428738486798,
+      "mean": 0.43,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",2.5,\"OVER\"]:ibrahima-konate",
+      "baselineProbability": 0.18181818181818182,
+      "baseline": {
+        "probability": 0.18181818181818182,
+        "n": 22,
+        "positives": 4,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "ibrahima-konate",
+        "teamId": "real-madrid"
+      },
+      "probability": 0.11307956328284252,
+      "mean": 0.12,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:ibrahima-konate",
+      "baselineProbability": 0.36363636363636365,
+      "baseline": {
+        "probability": 0.36363636363636365,
+        "n": 22,
+        "positives": 8,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "ibrahima-konate",
+        "teamId": "real-madrid"
+      },
+      "probability": 0.006649110876783659,
+      "mean": 0.12,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:ibrahima-konate",
+      "baselineProbability": 0.045454545454545456,
+      "baseline": {
+        "probability": 0.045454545454545456,
+        "n": 22,
+        "positives": 1,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "marc-cucurella",
+        "teamId": "real-madrid"
+      },
+      "probability": 0.38121660819385916,
+      "mean": 0.48,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:marc-cucurella",
+      "baselineProbability": 0.5454545454545454,
+      "baseline": {
+        "probability": 0.5454545454545454,
+        "n": 22,
+        "positives": 12,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "marc-cucurella",
+        "teamId": "real-madrid"
+      },
+      "probability": 0.08420058012691156,
+      "mean": 0.48,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:marc-cucurella",
+      "baselineProbability": 0.2727272727272727,
+      "baseline": {
+        "probability": 0.2727272727272727,
+        "n": 22,
+        "positives": 6,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 2.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "marc-cucurella",
+        "teamId": "real-madrid"
+      },
+      "probability": 0.012916733390844093,
+      "mean": 0.48,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",2.5,\"OVER\"]:marc-cucurella",
+      "baselineProbability": 0.18181818181818182,
+      "baseline": {
+        "probability": 0.18181818181818182,
+        "n": 22,
+        "positives": 4,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "marc-cucurella",
+        "teamId": "real-madrid"
+      },
+      "probability": 0.1219045690794387,
+      "mean": 0.13,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:marc-cucurella",
+      "baselineProbability": 0.36363636363636365,
+      "baseline": {
+        "probability": 0.36363636363636365,
+        "n": 22,
+        "positives": 8,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "marc-cucurella",
+        "teamId": "real-madrid"
+      },
+      "probability": 0.007752163059765671,
+      "mean": 0.13,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:marc-cucurella",
+      "baselineProbability": 0.045454545454545456,
+      "baseline": {
+        "probability": 0.045454545454545456,
+        "n": 22,
+        "positives": 1,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "denzel-dumfries",
+        "teamId": "real-madrid"
+      },
+      "probability": 0.6500622508888447,
+      "mean": 1.05,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:denzel-dumfries",
+      "baselineProbability": 0.5454545454545454,
+      "baseline": {
+        "probability": 0.5454545454545454,
+        "n": 22,
+        "positives": 12,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "denzel-dumfries",
+        "teamId": "real-madrid"
+      },
+      "probability": 0.28262761432213157,
+      "mean": 1.05,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:denzel-dumfries",
+      "baselineProbability": 0.2727272727272727,
+      "baseline": {
+        "probability": 0.2727272727272727,
+        "n": 22,
+        "positives": 6,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 2.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "denzel-dumfries",
+        "teamId": "real-madrid"
+      },
+      "probability": 0.08972443012460718,
+      "mean": 1.05,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",2.5,\"OVER\"]:denzel-dumfries",
+      "baselineProbability": 0.18181818181818182,
+      "baseline": {
+        "probability": 0.18181818181818182,
+        "n": 22,
+        "positives": 4,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "denzel-dumfries",
+        "teamId": "real-madrid"
+      },
+      "probability": 0.22119921692859512,
+      "mean": 0.25,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:denzel-dumfries",
+      "baselineProbability": 0.36363636363636365,
+      "baseline": {
+        "probability": 0.36363636363636365,
+        "n": 22,
+        "positives": 8,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "denzel-dumfries",
+        "teamId": "real-madrid"
+      },
+      "probability": 0.026499021160743874,
+      "mean": 0.25,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:denzel-dumfries",
+      "baselineProbability": 0.045454545454545456,
+      "baseline": {
+        "probability": 0.045454545454545456,
+        "n": 22,
+        "positives": 1,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "aurelien-tchouameni",
+        "teamId": "real-madrid"
+      },
+      "probability": 0.6957787359332959,
+      "mean": 1.19,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:aurelien-tchouameni",
+      "baselineProbability": 0.5454545454545454,
+      "baseline": {
+        "probability": 0.5454545454545454,
+        "n": 22,
+        "positives": 12,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "aurelien-tchouameni",
+        "teamId": "real-madrid"
+      },
+      "probability": 0.3337554316939181,
+      "mean": 1.19,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:aurelien-tchouameni",
+      "baselineProbability": 0.2727272727272727,
+      "baseline": {
+        "probability": 0.2727272727272727,
+        "n": 22,
+        "positives": 6,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 2.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "aurelien-tchouameni",
+        "teamId": "real-madrid"
+      },
+      "probability": 0.1183515656714883,
+      "mean": 1.19,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",2.5,\"OVER\"]:aurelien-tchouameni",
+      "baselineProbability": 0.18181818181818182,
+      "baseline": {
+        "probability": 0.18181818181818182,
+        "n": 22,
+        "positives": 4,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "aurelien-tchouameni",
+        "teamId": "real-madrid"
+      },
+      "probability": 0.22894841419643375,
+      "mean": 0.26,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:aurelien-tchouameni",
+      "baselineProbability": 0.36363636363636365,
+      "baseline": {
+        "probability": 0.36363636363636365,
+        "n": 22,
+        "positives": 8,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "aurelien-tchouameni",
+        "teamId": "real-madrid"
+      },
+      "probability": 0.028475001887506513,
+      "mean": 0.26,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:aurelien-tchouameni",
+      "baselineProbability": 0.045454545454545456,
+      "baseline": {
+        "probability": 0.045454545454545456,
+        "n": 22,
+        "positives": 1,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "federico-valverde",
+        "teamId": "real-madrid"
+      },
+      "probability": 0.7106157820609493,
+      "mean": 1.24,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:federico-valverde",
+      "baselineProbability": 0.5454545454545454,
+      "baseline": {
+        "probability": 0.5454545454545454,
+        "n": 22,
+        "positives": 12,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "federico-valverde",
+        "teamId": "real-madrid"
+      },
+      "probability": 0.3517793518165264,
+      "mean": 1.24,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:federico-valverde",
+      "baselineProbability": 0.2727272727272727,
+      "baseline": {
+        "probability": 0.2727272727272727,
+        "n": 22,
+        "positives": 6,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 2.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "federico-valverde",
+        "teamId": "real-madrid"
+      },
+      "probability": 0.12930076506498422,
+      "mean": 1.24,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",2.5,\"OVER\"]:federico-valverde",
+      "baselineProbability": 0.18181818181818182,
+      "baseline": {
+        "probability": 0.18181818181818182,
+        "n": 22,
+        "positives": 4,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "federico-valverde",
+        "teamId": "real-madrid"
+      },
+      "probability": 0.3934693402873666,
+      "mean": 0.5,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:federico-valverde",
+      "baselineProbability": 0.36363636363636365,
+      "baseline": {
+        "probability": 0.36363636363636365,
+        "n": 22,
+        "positives": 8,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "federico-valverde",
+        "teamId": "real-madrid"
+      },
+      "probability": 0.09020401043104986,
+      "mean": 0.5,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:federico-valverde",
+      "baselineProbability": 0.045454545454545456,
+      "baseline": {
+        "probability": 0.045454545454545456,
+        "n": 22,
+        "positives": 1,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "jude-bellingham",
+        "teamId": "real-madrid"
+      },
+      "probability": 0.8443273696320027,
+      "mean": 1.86,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:jude-bellingham",
+      "baselineProbability": 0.5454545454545454,
+      "baseline": {
+        "probability": 0.5454545454545454,
+        "n": 22,
+        "positives": 12,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "jude-bellingham",
+        "teamId": "real-madrid"
+      },
+      "probability": 0.5547762771475276,
+      "mean": 1.86,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:jude-bellingham",
+      "baselineProbability": 0.2727272727272727,
+      "baseline": {
+        "probability": 0.2727272727272727,
+        "n": 22,
+        "positives": 6,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 2.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "jude-bellingham",
+        "teamId": "real-madrid"
+      },
+      "probability": 0.2854937611369659,
+      "mean": 1.86,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",2.5,\"OVER\"]:jude-bellingham",
+      "baselineProbability": 0.18181818181818182,
+      "baseline": {
+        "probability": 0.18181818181818182,
+        "n": 22,
+        "positives": 4,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "jude-bellingham",
+        "teamId": "real-madrid"
+      },
+      "probability": 0.5415939886947765,
+      "mean": 0.78,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:jude-bellingham",
+      "baselineProbability": 0.36363636363636365,
+      "baseline": {
+        "probability": 0.36363636363636365,
+        "n": 22,
+        "positives": 8,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "jude-bellingham",
+        "teamId": "real-madrid"
+      },
+      "probability": 0.18403729987670214,
+      "mean": 0.78,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:jude-bellingham",
+      "baselineProbability": 0.045454545454545456,
+      "baseline": {
+        "probability": 0.045454545454545456,
+        "n": 22,
+        "positives": 1,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "vinicius-junior",
+        "teamId": "real-madrid"
+      },
+      "probability": 0.9438652371658662,
+      "mean": 2.88,
+      "quote": null,
+      "role": "forward",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:vinicius-junior",
+      "baselineProbability": 0.5454545454545454,
+      "baseline": {
+        "probability": 0.5454545454545454,
+        "n": 22,
+        "positives": 12,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "vinicius-junior",
+        "teamId": "real-madrid"
+      },
+      "probability": 0.7821971202035611,
+      "mean": 2.88,
+      "quote": null,
+      "role": "forward",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:vinicius-junior",
+      "baselineProbability": 0.2727272727272727,
+      "baseline": {
+        "probability": 0.2727272727272727,
+        "n": 22,
+        "positives": 6,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 2.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "vinicius-junior",
+        "teamId": "real-madrid"
+      },
+      "probability": 0.5493950317778418,
+      "mean": 2.88,
+      "quote": null,
+      "role": "forward",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",2.5,\"OVER\"]:vinicius-junior",
+      "baselineProbability": 0.18181818181818182,
+      "baseline": {
+        "probability": 0.18181818181818182,
+        "n": 22,
+        "positives": 4,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "vinicius-junior",
+        "teamId": "real-madrid"
+      },
+      "probability": 0.6988057880877979,
+      "mean": 1.2,
+      "quote": null,
+      "role": "forward",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:vinicius-junior",
+      "baselineProbability": 0.36363636363636365,
+      "baseline": {
+        "probability": 0.36363636363636365,
+        "n": 22,
+        "positives": 8,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "vinicius-junior",
+        "teamId": "real-madrid"
+      },
+      "probability": 0.33737273379315535,
+      "mean": 1.2,
+      "quote": null,
+      "role": "forward",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:vinicius-junior",
+      "baselineProbability": 0.045454545454545456,
+      "baseline": {
+        "probability": 0.045454545454545456,
+        "n": 22,
+        "positives": 1,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "yan-diomande",
+        "teamId": "real-madrid"
+      },
+      "probability": 0.7630722413178782,
+      "mean": 1.44,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:yan-diomande",
+      "baselineProbability": 0.5454545454545454,
+      "baseline": {
+        "probability": 0.5454545454545454,
+        "n": 22,
+        "positives": 12,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "yan-diomande",
+        "teamId": "real-madrid"
+      },
+      "probability": 0.4218962688156229,
+      "mean": 1.44,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:yan-diomande",
+      "baselineProbability": 0.2727272727272727,
+      "baseline": {
+        "probability": 0.2727272727272727,
+        "n": 22,
+        "positives": 6,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 2.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "yan-diomande",
+        "teamId": "real-madrid"
+      },
+      "probability": 0.1762495686139991,
+      "mean": 1.44,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",2.5,\"OVER\"]:yan-diomande",
+      "baselineProbability": 0.18181818181818182,
+      "baseline": {
+        "probability": 0.18181818181818182,
+        "n": 22,
+        "positives": 4,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "yan-diomande",
+        "teamId": "real-madrid"
+      },
+      "probability": 0.4831486655083008,
+      "mean": 0.66,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:yan-diomande",
+      "baselineProbability": 0.36363636363636365,
+      "baseline": {
+        "probability": 0.36363636363636365,
+        "n": 22,
+        "positives": 8,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "yan-diomande",
+        "teamId": "real-madrid"
+      },
+      "probability": 0.14202678474377928,
+      "mean": 0.66,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:yan-diomande",
+      "baselineProbability": 0.045454545454545456,
+      "baseline": {
+        "probability": 0.045454545454545456,
+        "n": 22,
+        "positives": 1,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "kylian-mbappe",
+        "teamId": "real-madrid"
+      },
+      "probability": 0.9815002858801808,
+      "mean": 3.99,
+      "quote": null,
+      "role": "forward",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:kylian-mbappe",
+      "baselineProbability": 0.5454545454545454,
+      "baseline": {
+        "probability": 0.5454545454545454,
+        "n": 22,
+        "positives": 12,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "kylian-mbappe",
+        "teamId": "real-madrid"
+      },
+      "probability": 0.907686426542102,
+      "mean": 3.99,
+      "quote": null,
+      "role": "forward",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:kylian-mbappe",
+      "baselineProbability": 0.2727272727272727,
+      "baseline": {
+        "probability": 0.2727272727272727,
+        "n": 22,
+        "positives": 6,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 2.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "kylian-mbappe",
+        "teamId": "real-madrid"
+      },
+      "probability": 0.7604000000000001,
+      "mean": 3.99,
+      "quote": {
+        "decimal": null,
+        "verifiedAt": null,
+        "marketUpdatedAt": null,
+        "availability": "UNAVAILABLE",
+        "providerStatus": null,
+        "source": null
+      },
+      "selectionId": "forecast:v2:ucl-2026-27-md03-16:kylian-mbappe:shots:3",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",2.5,\"OVER\"]:kylian-mbappe",
+      "baselineProbability": 0.18181818181818182,
+      "baseline": {
+        "probability": 0.18181818181818182,
+        "n": 22,
+        "positives": 4,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "kylian-mbappe",
+        "teamId": "real-madrid"
+      },
+      "probability": 0.8347011117784134,
+      "mean": 1.8,
+      "quote": null,
+      "role": "forward",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:kylian-mbappe",
+      "baselineProbability": 0.36363636363636365,
+      "baseline": {
+        "probability": 0.36363636363636365,
+        "n": 22,
+        "positives": 8,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "kylian-mbappe",
+        "teamId": "real-madrid"
+      },
+      "probability": 0.5371631129795577,
+      "mean": 1.8,
+      "quote": null,
+      "role": "forward",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:kylian-mbappe",
+      "baselineProbability": 0.045454545454545456,
+      "baseline": {
+        "probability": 0.045454545454545456,
+        "n": 22,
+        "positives": 1,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "castello-lukeba",
+        "teamId": "leipzig"
+      },
+      "probability": 0.36871635449307405,
+      "mean": 0.46,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:castello-lukeba",
+      "baselineProbability": 0.5454545454545454,
+      "baseline": {
+        "probability": 0.5454545454545454,
+        "n": 22,
+        "positives": 12,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "castello-lukeba",
+        "teamId": "leipzig"
+      },
+      "probability": 0.07832587755988807,
+      "mean": 0.46,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:castello-lukeba",
+      "baselineProbability": 0.2727272727272727,
+      "baseline": {
+        "probability": 0.2727272727272727,
+        "n": 22,
+        "positives": 6,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 2.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "castello-lukeba",
+        "teamId": "leipzig"
+      },
+      "probability": 0.011536067865255295,
+      "mean": 0.46,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",2.5,\"OVER\"]:castello-lukeba",
+      "baselineProbability": 0.18181818181818182,
+      "baseline": {
+        "probability": 0.18181818181818182,
+        "n": 22,
+        "positives": 4,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "castello-lukeba",
+        "teamId": "leipzig"
+      },
+      "probability": 0.09516258196404048,
+      "mean": 0.1,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:castello-lukeba",
+      "baselineProbability": 0.36363636363636365,
+      "baseline": {
+        "probability": 0.36363636363636365,
+        "n": 22,
+        "positives": 8,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "castello-lukeba",
+        "teamId": "leipzig"
+      },
+      "probability": 0.0046788401604445085,
+      "mean": 0.1,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:castello-lukeba",
+      "baselineProbability": 0.045454545454545456,
+      "baseline": {
+        "probability": 0.045454545454545456,
+        "n": 22,
+        "positives": 1,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "willi-orban",
+        "teamId": "leipzig"
+      },
+      "probability": 0.5132477440400283,
+      "mean": 0.72,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:willi-orban",
+      "baselineProbability": 0.5454545454545454,
+      "baseline": {
+        "probability": 0.5454545454545454,
+        "n": 22,
+        "positives": 12,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "willi-orban",
+        "teamId": "leipzig"
+      },
+      "probability": 0.1627861197488487,
+      "mean": 0.72,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:willi-orban",
+      "baselineProbability": 0.2727272727272727,
+      "baseline": {
+        "probability": 0.2727272727272727,
+        "n": 22,
+        "positives": 6,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 2.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "willi-orban",
+        "teamId": "leipzig"
+      },
+      "probability": 0.03661993500402405,
+      "mean": 0.72,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",2.5,\"OVER\"]:willi-orban",
+      "baselineProbability": 0.18181818181818182,
+      "baseline": {
+        "probability": 0.18181818181818182,
+        "n": 22,
+        "positives": 4,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "willi-orban",
+        "teamId": "leipzig"
+      },
+      "probability": 0.22894841419643375,
+      "mean": 0.26,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:willi-orban",
+      "baselineProbability": 0.36363636363636365,
+      "baseline": {
+        "probability": 0.36363636363636365,
+        "n": 22,
+        "positives": 8,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "willi-orban",
+        "teamId": "leipzig"
+      },
+      "probability": 0.028475001887506513,
+      "mean": 0.26,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:willi-orban",
+      "baselineProbability": 0.045454545454545456,
+      "baseline": {
+        "probability": 0.045454545454545456,
+        "n": 22,
+        "positives": 1,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "david-raum",
+        "teamId": "leipzig"
+      },
+      "probability": 0.5934303402594009,
+      "mean": 0.9,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:david-raum",
+      "baselineProbability": 0.5454545454545454,
+      "baseline": {
+        "probability": 0.5454545454545454,
+        "n": 22,
+        "positives": 12,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "david-raum",
+        "teamId": "leipzig"
+      },
+      "probability": 0.22751764649286166,
+      "mean": 0.9,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:david-raum",
+      "baselineProbability": 0.2727272727272727,
+      "baseline": {
+        "probability": 0.2727272727272727,
+        "n": 22,
+        "positives": 6,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 2.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "david-raum",
+        "teamId": "leipzig"
+      },
+      "probability": 0.06285693429791905,
+      "mean": 0.9,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",2.5,\"OVER\"]:david-raum",
+      "baselineProbability": 0.18181818181818182,
+      "baseline": {
+        "probability": 0.18181818181818182,
+        "n": 22,
+        "positives": 4,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "david-raum",
+        "teamId": "leipzig"
+      },
+      "probability": 0.22119921692859512,
+      "mean": 0.25,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:david-raum",
+      "baselineProbability": 0.36363636363636365,
+      "baseline": {
+        "probability": 0.36363636363636365,
+        "n": 22,
+        "positives": 8,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "david-raum",
+        "teamId": "leipzig"
+      },
+      "probability": 0.026499021160743874,
+      "mean": 0.25,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:david-raum",
+      "baselineProbability": 0.045454545454545456,
+      "baseline": {
+        "probability": 0.045454545454545456,
+        "n": 22,
+        "positives": 1,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "ridle-baku",
+        "teamId": "leipzig"
+      },
+      "probability": 0.6988057880877979,
+      "mean": 1.2,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:ridle-baku",
+      "baselineProbability": 0.5454545454545454,
+      "baseline": {
+        "probability": 0.5454545454545454,
+        "n": 22,
+        "positives": 12,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "ridle-baku",
+        "teamId": "leipzig"
+      },
+      "probability": 0.33737273379315535,
+      "mean": 1.2,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:ridle-baku",
+      "baselineProbability": 0.2727272727272727,
+      "baseline": {
+        "probability": 0.2727272727272727,
+        "n": 22,
+        "positives": 6,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 2.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "ridle-baku",
+        "teamId": "leipzig"
+      },
+      "probability": 0.12051290121636982,
+      "mean": 1.2,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",2.5,\"OVER\"]:ridle-baku",
+      "baselineProbability": 0.18181818181818182,
+      "baseline": {
+        "probability": 0.18181818181818182,
+        "n": 22,
+        "positives": 4,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "ridle-baku",
+        "teamId": "leipzig"
+      },
+      "probability": 0.22119921692859512,
+      "mean": 0.25,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:ridle-baku",
+      "baselineProbability": 0.36363636363636365,
+      "baseline": {
+        "probability": 0.36363636363636365,
+        "n": 22,
+        "positives": 8,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "ridle-baku",
+        "teamId": "leipzig"
+      },
+      "probability": 0.026499021160743874,
+      "mean": 0.25,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:ridle-baku",
+      "baselineProbability": 0.045454545454545456,
+      "baseline": {
+        "probability": 0.045454545454545456,
+        "n": 22,
+        "positives": 1,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "nicolas-seiwald",
+        "teamId": "leipzig"
+      },
+      "probability": 0.581048450752361,
+      "mean": 0.87,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:nicolas-seiwald",
+      "baselineProbability": 0.5454545454545454,
+      "baseline": {
+        "probability": 0.5454545454545454,
+        "n": 22,
+        "positives": 12,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "nicolas-seiwald",
+        "teamId": "leipzig"
+      },
+      "probability": 0.21656060290691515,
+      "mean": 0.87,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:nicolas-seiwald",
+      "baselineProbability": 0.2727272727272727,
+      "baseline": {
+        "probability": 0.2727272727272727,
+        "n": 22,
+        "positives": 6,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 2.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "nicolas-seiwald",
+        "teamId": "leipzig"
+      },
+      "probability": 0.058008389094146184,
+      "mean": 0.87,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",2.5,\"OVER\"]:nicolas-seiwald",
+      "baselineProbability": 0.18181818181818182,
+      "baseline": {
+        "probability": 0.18181818181818182,
+        "n": 22,
+        "positives": 4,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "nicolas-seiwald",
+        "teamId": "leipzig"
+      },
+      "probability": 0.22894841419643375,
+      "mean": 0.26,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:nicolas-seiwald",
+      "baselineProbability": 0.36363636363636365,
+      "baseline": {
+        "probability": 0.36363636363636365,
+        "n": 22,
+        "positives": 8,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "nicolas-seiwald",
+        "teamId": "leipzig"
+      },
+      "probability": 0.028475001887506513,
+      "mean": 0.26,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:nicolas-seiwald",
+      "baselineProbability": 0.045454545454545456,
+      "baseline": {
+        "probability": 0.045454545454545456,
+        "n": 22,
+        "positives": 1,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "neil-el-aynaoui",
+        "teamId": "leipzig"
+      },
+      "probability": 0.6429930394308526,
+      "mean": 1.03,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:neil-el-aynaoui",
+      "baselineProbability": 0.5454545454545454,
+      "baseline": {
+        "probability": 0.5454545454545454,
+        "n": 22,
+        "positives": 12,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "neil-el-aynaoui",
+        "teamId": "leipzig"
+      },
+      "probability": 0.27527587004463083,
+      "mean": 1.03,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:neil-el-aynaoui",
+      "baselineProbability": 0.2727272727272727,
+      "baseline": {
+        "probability": 0.2727272727272727,
+        "n": 22,
+        "positives": 6,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 2.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "neil-el-aynaoui",
+        "teamId": "leipzig"
+      },
+      "probability": 0.08590152781072657,
+      "mean": 1.03,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",2.5,\"OVER\"]:neil-el-aynaoui",
+      "baselineProbability": 0.18181818181818182,
+      "baseline": {
+        "probability": 0.18181818181818182,
+        "n": 22,
+        "positives": 4,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "neil-el-aynaoui",
+        "teamId": "leipzig"
+      },
+      "probability": 0.29531191028128656,
+      "mean": 0.35,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:neil-el-aynaoui",
+      "baselineProbability": 0.36363636363636365,
+      "baseline": {
+        "probability": 0.36363636363636365,
+        "n": 22,
+        "positives": 8,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "neil-el-aynaoui",
+        "teamId": "leipzig"
+      },
+      "probability": 0.04867107887973687,
+      "mean": 0.35,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:neil-el-aynaoui",
+      "baselineProbability": 0.045454545454545456,
+      "baseline": {
+        "probability": 0.045454545454545456,
+        "n": 22,
+        "positives": 1,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "antonio-nusa",
+        "teamId": "leipzig"
+      },
+      "probability": 0.9017264143956385,
+      "mean": 2.32,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:antonio-nusa",
+      "baselineProbability": 0.5454545454545454,
+      "baseline": {
+        "probability": 0.5454545454545454,
+        "n": 22,
+        "positives": 12,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "antonio-nusa",
+        "teamId": "leipzig"
+      },
+      "probability": 0.6737316957935198,
+      "mean": 2.32,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:antonio-nusa",
+      "baselineProbability": 0.2727272727272727,
+      "baseline": {
+        "probability": 0.2727272727272727,
+        "n": 22,
+        "positives": 6,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 2.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "antonio-nusa",
+        "teamId": "leipzig"
+      },
+      "probability": 0.409257822215062,
+      "mean": 2.32,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",2.5,\"OVER\"]:antonio-nusa",
+      "baselineProbability": 0.18181818181818182,
+      "baseline": {
+        "probability": 0.18181818181818182,
+        "n": 22,
+        "positives": 4,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "antonio-nusa",
+        "teamId": "leipzig"
+      },
+      "probability": 0.48829142221345756,
+      "mean": 0.67,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:antonio-nusa",
+      "baselineProbability": 0.36363636363636365,
+      "baseline": {
+        "probability": 0.36363636363636365,
+        "n": 22,
+        "positives": 8,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "antonio-nusa",
+        "teamId": "leipzig"
+      },
+      "probability": 0.14544667509647413,
+      "mean": 0.67,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:antonio-nusa",
+      "baselineProbability": 0.045454545454545456,
+      "baseline": {
+        "probability": 0.045454545454545456,
+        "n": 22,
+        "positives": 1,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "christopher-nkunku",
+        "teamId": "leipzig"
+      },
+      "probability": 0.7654297119062023,
+      "mean": 1.45,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:christopher-nkunku",
+      "baselineProbability": 0.5454545454545454,
+      "baseline": {
+        "probability": 0.5454545454545454,
+        "n": 22,
+        "positives": 12,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "christopher-nkunku",
+        "teamId": "leipzig"
+      },
+      "probability": 0.4253027941701958,
+      "mean": 1.45,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:christopher-nkunku",
+      "baselineProbability": 0.2727272727272727,
+      "baseline": {
+        "probability": 0.2727272727272727,
+        "n": 22,
+        "positives": 6,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 2.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "christopher-nkunku",
+        "teamId": "leipzig"
+      },
+      "probability": 0.17871077881159103,
+      "mean": 1.45,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",2.5,\"OVER\"]:christopher-nkunku",
+      "baselineProbability": 0.18181818181818182,
+      "baseline": {
+        "probability": 0.18181818181818182,
+        "n": 22,
+        "positives": 4,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "christopher-nkunku",
+        "teamId": "leipzig"
+      },
+      "probability": 0.4566491309255002,
+      "mean": 0.61,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:christopher-nkunku",
+      "baselineProbability": 0.36363636363636365,
+      "baseline": {
+        "probability": 0.36363636363636365,
+        "n": 22,
+        "positives": 8,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "christopher-nkunku",
+        "teamId": "leipzig"
+      },
+      "probability": 0.1252051007900553,
+      "mean": 0.61,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:christopher-nkunku",
+      "baselineProbability": 0.045454545454545456,
+      "baseline": {
+        "probability": 0.045454545454545456,
+        "n": 22,
+        "positives": 1,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "romulo-cardoso",
+        "teamId": "leipzig"
+      },
+      "probability": 0.9119631674176274,
+      "mean": 2.43,
+      "quote": null,
+      "role": "forward",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:romulo-cardoso",
+      "baselineProbability": 0.5454545454545454,
+      "baseline": {
+        "probability": 0.5454545454545454,
+        "n": 22,
+        "positives": 12,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "romulo-cardoso",
+        "teamId": "leipzig"
+      },
+      "probability": 0.6980336642424622,
+      "mean": 2.43,
+      "quote": null,
+      "role": "forward",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:romulo-cardoso",
+      "baselineProbability": 0.2727272727272727,
+      "baseline": {
+        "probability": 0.2727272727272727,
+        "n": 22,
+        "positives": 6,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 2.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "romulo-cardoso",
+        "teamId": "leipzig"
+      },
+      "probability": 0.43810000000000004,
+      "mean": 2.43,
+      "quote": {
+        "decimal": null,
+        "verifiedAt": null,
+        "marketUpdatedAt": null,
+        "availability": "UNAVAILABLE",
+        "providerStatus": null,
+        "source": null
+      },
+      "selectionId": "forecast:v2:ucl-2026-27-md03-16:romulo-cardoso:shots:3",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",2.5,\"OVER\"]:romulo-cardoso",
+      "baselineProbability": 0.18181818181818182,
+      "baseline": {
+        "probability": 0.18181818181818182,
+        "n": 22,
+        "positives": 4,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "romulo-cardoso",
+        "teamId": "leipzig"
+      },
+      "probability": 0.5893,
+      "mean": 0.89,
+      "quote": {
+        "decimal": null,
+        "verifiedAt": null,
+        "marketUpdatedAt": null,
+        "availability": "UNAVAILABLE",
+        "providerStatus": null,
+        "source": null
+      },
+      "selectionId": "forecast:v2:ucl-2026-27-md03-16:romulo-cardoso:sot:1",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:romulo-cardoso",
+      "baselineProbability": 0.36363636363636365,
+      "baseline": {
+        "probability": 0.36363636363636365,
+        "n": 22,
+        "positives": 8,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "romulo-cardoso",
+        "teamId": "leipzig"
+      },
+      "probability": 0.2238606272980671,
+      "mean": 0.89,
+      "quote": null,
+      "role": "forward",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:romulo-cardoso",
+      "baselineProbability": 0.045454545454545456,
+      "baseline": {
+        "probability": 0.045454545454545456,
+        "n": 22,
+        "positives": 1,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f",
+      "target": {
+        "scope": "match",
+        "metric": "result",
+        "threshold": null,
+        "direction": "1",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": 0.754,
+      "mean": null,
+      "quote": {
+        "decimal": 1.25,
+        "oddsRaw": 125,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911224:823803040:5387049425",
+      "eventId": "[\"[\\\"champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f\\\",\\\"match\\\",\\\"result\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"1\"]:",
+      "baselineProbability": 0.4970178926441352,
+      "baseline": {
+        "probability": 0.4970178926441352,
+        "n": 503,
+        "positives": 250,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f",
+      "target": {
+        "scope": "match",
+        "metric": "result",
+        "threshold": null,
+        "direction": "X",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": 0.129,
+      "mean": null,
+      "quote": {
+        "decimal": 7,
+        "oddsRaw": 700,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911224:823803040:5387049426",
+      "eventId": "[\"[\\\"champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f\\\",\\\"match\\\",\\\"result\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"X\"]:",
+      "baselineProbability": 0.1749502982107356,
+      "baseline": {
+        "probability": 0.1749502982107356,
+        "n": 503,
+        "positives": 88,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f",
+      "target": {
+        "scope": "match",
+        "metric": "result",
+        "threshold": null,
+        "direction": "2",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": 0.11699999999999999,
+      "mean": null,
+      "quote": {
+        "decimal": 9,
+        "oddsRaw": 900,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911224:823803040:5387049427",
+      "eventId": "[\"[\\\"champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f\\\",\\\"match\\\",\\\"result\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"2\"]:",
+      "baselineProbability": 0.32803180914512925,
+      "baseline": {
+        "probability": 0.32803180914512925,
+        "n": 503,
+        "positives": 165,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f",
+      "target": {
+        "scope": "match",
+        "metric": "double-chance",
+        "threshold": null,
+        "direction": "1X",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": 0.883,
+      "mean": null,
+      "quote": {
+        "decimal": 1.06,
+        "oddsRaw": 106,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911224:823803537:5387054077",
+      "eventId": "[\"[\\\"champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f\\\",\\\"match\\\",\\\"double-chance\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"1X\"]:",
+      "baselineProbability": 0.6719681908548708,
+      "baseline": {
+        "probability": 0.6719681908548708,
+        "n": 503,
+        "positives": 338,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f",
+      "target": {
+        "scope": "match",
+        "metric": "double-chance",
+        "threshold": null,
+        "direction": "X2",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": 0.24600000000000002,
+      "mean": null,
+      "quote": {
+        "decimal": 3.75,
+        "oddsRaw": 375,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911224:823803537:5387054080",
+      "eventId": "[\"[\\\"champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f\\\",\\\"match\\\",\\\"double-chance\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"X2\"]:",
+      "baselineProbability": 0.5029821073558648,
+      "baseline": {
+        "probability": 0.5029821073558648,
+        "n": 503,
+        "positives": 253,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f",
+      "target": {
+        "scope": "team",
+        "metric": "sot",
+        "threshold": null,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": "real-madrid"
+      },
+      "probability": null,
+      "mean": 6.58,
+      "quote": {
+        "decimal": 2.3,
+        "oddsRaw": 230,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911224:825862367:5398022597",
+      "eventId": "[\"[\\\"champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f\\\",\\\"team\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"OVER\"]:real-madrid",
+      "baselineProbability": 0.9830917874396136,
+      "baseline": {
+        "probability": 0.9830917874396136,
+        "n": 414,
+        "positives": 407,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f",
+      "target": {
+        "scope": "team",
+        "metric": "sot",
+        "threshold": null,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": "leipzig"
+      },
+      "probability": null,
+      "mean": 4.23,
+      "quote": {
+        "decimal": 16,
+        "oddsRaw": 1600,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911224:825862406:5398022751",
+      "eventId": "[\"[\\\"champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f\\\",\\\"team\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"OVER\"]:leipzig",
+      "baselineProbability": 0.9830917874396136,
+      "baseline": {
+        "probability": 0.9830917874396136,
+        "n": 414,
+        "positives": 407,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f",
+      "target": {
+        "scope": "match",
+        "metric": "shots",
+        "threshold": null,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": null,
+      "mean": 30.5,
+      "quote": {
+        "decimal": 1.75,
+        "oddsRaw": 175,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911224:825859348:5398011555",
+      "eventId": "[\"[\\\"champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f\\\",\\\"match\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"OVER\"]:",
+      "baselineProbability": 1,
+      "baseline": {
+        "probability": 1,
+        "n": 207,
+        "positives": 207,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f",
+      "target": {
+        "scope": "team",
+        "metric": "shots",
+        "threshold": null,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": "real-madrid"
+      },
+      "probability": null,
+      "mean": 17.3,
+      "quote": {
+        "decimal": 2.5,
+        "oddsRaw": 250,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911224:825840148:5398015590",
+      "eventId": "[\"[\\\"champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f\\\",\\\"team\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"OVER\"]:real-madrid",
+      "baselineProbability": 1,
+      "baseline": {
+        "probability": 1,
+        "n": 414,
+        "positives": 414,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f",
+      "target": {
+        "scope": "team",
+        "metric": "shots",
+        "threshold": null,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": "leipzig"
+      },
+      "probability": null,
+      "mean": 13.21,
+      "quote": {
+        "decimal": 1.22,
+        "oddsRaw": 122,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911224:825862397:5398022711",
+      "eventId": "[\"[\\\"champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f\\\",\\\"team\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"OVER\"]:leipzig",
+      "baselineProbability": 1,
+      "baseline": {
+        "probability": 1,
+        "n": 414,
+        "positives": 414,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 2.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": true,
+        "woodwork": false,
+        "extraTime": true,
+        "conditionalOnStart": true,
+        "subjectId": "vinicius-junior",
+        "teamId": "real-madrid"
+      },
+      "probability": null,
+      "mean": 2.88,
+      "quote": {
+        "decimal": 1.16,
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "marketUpdatedAt": "2026-10-20T11:20:57.145Z",
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "providerStatus": "open",
+        "source": {
+          "provider": "sisal",
+          "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001",
+          "snapshotPath": "data/normalized/odds/sisal/champions-league.json",
+          "rawFile": "data/raw/odds/sisal/champions-league/2026-10-20T12-48-29-424Z.json.gz",
+          "acquisition": "public-page-browser-cdp"
+        }
+      },
+      "selectionId": "forecast:v2:ucl-2026-27-md03-16:vinicius-junior:shots:3",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",true,false,true,true]\",2.5,\"OVER\"]:vinicius-junior",
+      "baselineProbability": 0.18181818181818182,
+      "baseline": {
+        "probability": 0.18181818181818182,
+        "n": 22,
+        "positives": 4,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 2.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": true,
+        "woodwork": false,
+        "extraTime": true,
+        "conditionalOnStart": true,
+        "subjectId": "antonio-nusa",
+        "teamId": "leipzig"
+      },
+      "probability": null,
+      "mean": 2.32,
+      "quote": {
+        "decimal": 2.5,
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "marketUpdatedAt": "2026-10-20T11:09:11.714Z",
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "providerStatus": "open",
+        "source": {
+          "provider": "sisal",
+          "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001",
+          "snapshotPath": "data/normalized/odds/sisal/champions-league.json",
+          "rawFile": "data/raw/odds/sisal/champions-league/2026-10-20T12-48-29-424Z.json.gz",
+          "acquisition": "public-page-browser-cdp"
+        }
+      },
+      "selectionId": "forecast:v2:ucl-2026-27-md03-16:antonio-nusa:shots:3",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",true,false,true,true]\",2.5,\"OVER\"]:antonio-nusa",
+      "baselineProbability": 0.18181818181818182,
+      "baseline": {
+        "probability": 0.18181818181818182,
+        "n": 22,
+        "positives": 4,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": true,
+        "woodwork": true,
+        "extraTime": true,
+        "conditionalOnStart": true,
+        "subjectId": "kylian-mbappe",
+        "teamId": "real-madrid"
+      },
+      "probability": null,
+      "mean": 1.8,
+      "quote": {
+        "decimal": 1.12,
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "marketUpdatedAt": "2026-10-19T10:01:59.834Z",
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "providerStatus": "open",
+        "source": {
+          "provider": "sisal",
+          "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001",
+          "snapshotPath": "data/normalized/odds/sisal/champions-league.json",
+          "rawFile": "data/raw/odds/sisal/champions-league/2026-10-20T12-48-29-424Z.json.gz",
+          "acquisition": "public-page-browser-cdp"
+        }
+      },
+      "selectionId": "forecast:v2:ucl-2026-27-md03-16:kylian-mbappe:sot:2",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",true,true,true,true]\",1.5,\"OVER\"]:kylian-mbappe",
+      "baselineProbability": 0.045454545454545456,
+      "baseline": {
+        "probability": 0.045454545454545456,
+        "n": 22,
+        "positives": 1,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": true,
+        "woodwork": true,
+        "extraTime": true,
+        "conditionalOnStart": true,
+        "subjectId": "vinicius-junior",
+        "teamId": "real-madrid"
+      },
+      "probability": null,
+      "mean": 1.2,
+      "quote": {
+        "decimal": 1.75,
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "marketUpdatedAt": "2026-10-20T11:20:57.230Z",
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "providerStatus": "open",
+        "source": {
+          "provider": "sisal",
+          "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001",
+          "snapshotPath": "data/normalized/odds/sisal/champions-league.json",
+          "rawFile": "data/raw/odds/sisal/champions-league/2026-10-20T12-48-29-424Z.json.gz",
+          "acquisition": "public-page-browser-cdp"
+        }
+      },
+      "selectionId": "forecast:v2:ucl-2026-27-md03-16:vinicius-junior:sot:2",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",true,true,true,true]\",1.5,\"OVER\"]:vinicius-junior",
+      "baselineProbability": 0.045454545454545456,
+      "baseline": {
+        "probability": 0.045454545454545456,
+        "n": 22,
+        "positives": 1,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    }
+  ],
+  "teamProjections": [
+    {
+      "teamId": "real-madrid",
+      "team": "Real Madrid",
+      "venue": "home",
+      "expectedGoals": 2.65,
+      "shotsTotal": {
+        "central": 17.3,
+        "sd": 4.76,
+        "min": 13.3,
+        "max": 21.3,
+        "interval": "p20-p80-approx",
+        "normalization": {
+          "method": "relative-to-domestic-league",
+          "targetBaseline": 14.419,
+          "currentSeasonReliabilityPct": 53.8
+        },
+        "inputs": [
+          {
+            "label": "Real Madrid in casa",
+            "value": 20.147,
+            "weightPct": 50.2
+          },
+          {
+            "label": "Leipzig concede in trasferta",
+            "value": 12.882,
+            "weightPct": 39
+          },
+          {
+            "label": "ultime 8 Real Madrid",
+            "value": 20.007,
+            "weightPct": 10.8
+          }
+        ]
+      },
+      "shotsOnTarget": {
+        "central": 6.58,
+        "sd": 2.65,
+        "min": 4.4,
+        "max": 8.8,
+        "interval": "p20-p80-approx",
+        "normalization": {
+          "method": "relative-to-domestic-league",
+          "targetBaseline": 5.226,
+          "currentSeasonReliabilityPct": 53.8
+        },
+        "inputs": [
+          {
+            "label": "Real Madrid in casa",
+            "value": 8.197,
+            "weightPct": 50.2
+          },
+          {
+            "label": "Leipzig concede in trasferta",
+            "value": 4.08,
+            "weightPct": 39
+          },
+          {
+            "label": "ultime 8 Real Madrid",
+            "value": 8.113,
+            "weightPct": 10.8
+          }
+        ]
+      },
+      "corners": {
+        "central": 5.84,
+        "sd": 2.79,
+        "min": 3.5,
+        "max": 8.2,
+        "interval": "p20-p80-approx",
+        "normalization": {
+          "method": "relative-to-domestic-league",
+          "targetBaseline": 5.565,
+          "currentSeasonReliabilityPct": 53.8
+        },
+        "inputs": [
+          {
+            "label": "Real Madrid in casa",
+            "value": 6.855,
+            "weightPct": 50.2
+          },
+          {
+            "label": "Leipzig concede in trasferta",
+            "value": 4.278,
+            "weightPct": 39
+          },
+          {
+            "label": "ultime 8 Real Madrid",
+            "value": 6.817,
+            "weightPct": 10.8
+          }
+        ]
+      },
+      "fouls": {
+        "central": 9.6,
+        "sd": 2.85,
+        "min": 7.2,
+        "max": 12,
+        "interval": "p20-p80-approx",
+        "normalization": {
+          "method": "relative-to-domestic-league",
+          "targetBaseline": 11.401,
+          "currentSeasonReliabilityPct": 53.8
+        },
+        "inputs": [
+          {
+            "label": "Real Madrid in casa",
+            "value": 9.209,
+            "weightPct": 50.2
+          },
+          {
+            "label": "Leipzig concede in trasferta",
+            "value": 10.709,
+            "weightPct": 39
+          },
+          {
+            "label": "ultime 8 Real Madrid",
+            "value": 7.371,
+            "weightPct": 10.8
+          }
+        ]
+      },
+      "cards": {
+        "central": 1.59,
+        "sd": 1.18,
+        "min": 0.6,
+        "max": 2.6,
+        "interval": "p20-p80-approx",
+        "normalization": {
+          "method": "relative-to-domestic-league",
+          "targetBaseline": 1.848,
+          "currentSeasonReliabilityPct": 53.8
+        },
+        "inputs": [
+          {
+            "label": "Real Madrid in casa",
+            "value": 1.623,
+            "weightPct": 50.2
+          },
+          {
+            "label": "Leipzig concede in trasferta",
+            "value": 1.572,
+            "weightPct": 39
+          },
+          {
+            "label": "ultime 8 Real Madrid",
+            "value": 1.542,
+            "weightPct": 10.8
+          }
+        ]
+      },
+      "lines": {
+        "shotsTotal": [
+          {
+            "threshold": 8.5,
+            "overPct": 97.9,
+            "underPct": 2.1
+          },
+          {
+            "threshold": 10.5,
+            "overPct": 93.4,
+            "underPct": 6.6
+          },
+          {
+            "threshold": 12.5,
+            "overPct": 84.5,
+            "underPct": 15.5
+          },
+          {
+            "threshold": 14.5,
+            "overPct": 70.9,
+            "underPct": 29.1
+          },
+          {
+            "threshold": 16.5,
+            "overPct": 54.5,
+            "underPct": 45.5
+          }
+        ],
+        "shotsOnTarget": [
+          {
+            "threshold": 2.5,
+            "overPct": 95.5,
+            "underPct": 4.5
+          },
+          {
+            "threshold": 3.5,
+            "overPct": 88.6,
+            "underPct": 11.4
+          },
+          {
+            "threshold": 4.5,
+            "overPct": 77.6,
+            "underPct": 22.4
+          },
+          {
+            "threshold": 5.5,
+            "overPct": 63.5,
+            "underPct": 36.5
+          },
+          {
+            "threshold": 6.5,
+            "overPct": 48.3,
+            "underPct": 51.7
+          }
+        ],
+        "corners": [
+          {
+            "threshold": 3.5,
+            "overPct": 79.3,
+            "underPct": 20.7
+          },
+          {
+            "threshold": 4.5,
+            "overPct": 65.6,
+            "underPct": 34.4
+          },
+          {
+            "threshold": 5.5,
+            "overPct": 50.9,
+            "underPct": 49.1
+          },
+          {
+            "threshold": 6.5,
+            "overPct": 37,
+            "underPct": 63
+          }
+        ]
+      }
+    },
+    {
+      "teamId": "leipzig",
+      "team": "Leipzig",
+      "venue": "away",
+      "expectedGoals": 0.88,
+      "shotsTotal": {
+        "central": 13.21,
+        "sd": 4.05,
+        "min": 9.8,
+        "max": 16.6,
+        "interval": "p20-p80-approx",
+        "normalization": {
+          "method": "relative-to-domestic-league",
+          "targetBaseline": 11.57,
+          "currentSeasonReliabilityPct": 40
+        },
+        "inputs": [
+          {
+            "label": "Leipzig in trasferta",
+            "value": 13.953,
+            "weightPct": 51.8
+          },
+          {
+            "label": "Real Madrid concede in casa",
+            "value": 11.988,
+            "weightPct": 40.3
+          },
+          {
+            "label": "ultime 8 Leipzig",
+            "value": 14.557,
+            "weightPct": 8
+          }
+        ]
+      },
+      "shotsOnTarget": {
+        "central": 4.23,
+        "sd": 2.05,
+        "min": 2.5,
+        "max": 6,
+        "interval": "p20-p80-approx",
+        "normalization": {
+          "method": "relative-to-domestic-league",
+          "targetBaseline": 3.991,
+          "currentSeasonReliabilityPct": 40
+        },
+        "inputs": [
+          {
+            "label": "Leipzig in trasferta",
+            "value": 4.386,
+            "weightPct": 51.8
+          },
+          {
+            "label": "Real Madrid concede in casa",
+            "value": 3.895,
+            "weightPct": 40.3
+          },
+          {
+            "label": "ultime 8 Leipzig",
+            "value": 4.864,
+            "weightPct": 8
+          }
+        ]
+      },
+      "corners": {
+        "central": 4.65,
+        "sd": 2.76,
+        "min": 2.3,
+        "max": 7,
+        "interval": "p20-p80-approx",
+        "normalization": {
+          "method": "relative-to-domestic-league",
+          "targetBaseline": 4.277,
+          "currentSeasonReliabilityPct": 40
+        },
+        "inputs": [
+          {
+            "label": "Leipzig in trasferta",
+            "value": 4.886,
+            "weightPct": 51.8
+          },
+          {
+            "label": "Real Madrid concede in casa",
+            "value": 4.248,
+            "weightPct": 40.3
+          },
+          {
+            "label": "ultime 8 Leipzig",
+            "value": 5.19,
+            "weightPct": 8
+          }
+        ]
+      },
+      "fouls": {
+        "central": 11.51,
+        "sd": 3.28,
+        "min": 8.8,
+        "max": 14.3,
+        "interval": "p20-p80-approx",
+        "normalization": {
+          "method": "relative-to-domestic-league",
+          "targetBaseline": 11.633,
+          "currentSeasonReliabilityPct": 40
+        },
+        "inputs": [
+          {
+            "label": "Leipzig in trasferta",
+            "value": 11.176,
+            "weightPct": 51.8
+          },
+          {
+            "label": "Real Madrid concede in casa",
+            "value": 12.325,
+            "weightPct": 40.3
+          },
+          {
+            "label": "ultime 8 Leipzig",
+            "value": 9.546,
+            "weightPct": 8
+          }
+        ]
+      },
+      "cards": {
+        "central": 1.77,
+        "sd": 1.3,
+        "min": 0.7,
+        "max": 2.9,
+        "interval": "p20-p80-approx",
+        "normalization": {
+          "method": "relative-to-domestic-league",
+          "targetBaseline": 2.075,
+          "currentSeasonReliabilityPct": 40
+        },
+        "inputs": [
+          {
+            "label": "Leipzig in trasferta",
+            "value": 1.836,
+            "weightPct": 51.8
+          },
+          {
+            "label": "Real Madrid concede in casa",
+            "value": 1.688,
+            "weightPct": 40.3
+          },
+          {
+            "label": "ultime 8 Leipzig",
+            "value": 1.737,
+            "weightPct": 8
+          }
+        ]
+      },
+      "lines": {
+        "shotsTotal": [
+          {
+            "threshold": 8.5,
+            "overPct": 88.4,
+            "underPct": 11.6
+          },
+          {
+            "threshold": 10.5,
+            "overPct": 73.8,
+            "underPct": 26.2
+          },
+          {
+            "threshold": 12.5,
+            "overPct": 54.6,
+            "underPct": 45.4
+          },
+          {
+            "threshold": 14.5,
+            "overPct": 35.4,
+            "underPct": 64.6
+          },
+          {
+            "threshold": 16.5,
+            "overPct": 20.2,
+            "underPct": 79.8
+          }
+        ],
+        "shotsOnTarget": [
+          {
+            "threshold": 2.5,
+            "overPct": 79.4,
+            "underPct": 20.6
+          },
+          {
+            "threshold": 3.5,
+            "overPct": 61,
+            "underPct": 39
+          },
+          {
+            "threshold": 4.5,
+            "overPct": 41.6,
+            "underPct": 58.4
+          },
+          {
+            "threshold": 5.5,
+            "overPct": 25.2,
+            "underPct": 74.8
+          },
+          {
+            "threshold": 6.5,
+            "overPct": 13.6,
+            "underPct": 86.4
+          }
+        ],
+        "corners": [
+          {
+            "threshold": 3.5,
+            "overPct": 61.8,
+            "underPct": 38.2
+          },
+          {
+            "threshold": 4.5,
+            "overPct": 46.6,
+            "underPct": 53.4
+          },
+          {
+            "threshold": 5.5,
+            "overPct": 33.2,
+            "underPct": 66.8
+          },
+          {
+            "threshold": 6.5,
+            "overPct": 22.6,
+            "underPct": 77.4
+          }
+        ]
+      }
+    }
+  ],
+  "contentHash": "b56524b1eb36e3edafae65c0ab7b3351bd0806433dec7030cd15752500fdb355"
+}

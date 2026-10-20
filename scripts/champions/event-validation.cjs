@@ -4,23 +4,27 @@ const finite=v=>typeof v==='number'&&Number.isFinite(v);
 const round=v=>finite(v)?Number(v.toFixed(6)):null;
 function targetForLeg(leg){
  const market=leg.betSelection?.market||{},sem=market.bookmakerSemantics||{},family=String(leg.suggestionAnalysis?.family||'');
+ const modifiers=market.modifiers||leg.modifiers||{};
+ const period=modifiers.periodScope||market.periodScope||leg.periodScope||'REGULATION';
  const player=leg.marketScope==='player',team=String(market.subject?.type||'')==='team'||family.startsWith('team-');
  const metric=/sot|porta/i.test(family)?'sot':/shots|tiri/i.test(family)?'shots':/corner/i.test(family)?'corners':family==='result'||family==='double-chance'?family:null;
  return {scope:player?'player':team?'team':'match',metric,threshold:finite(market.threshold)?market.threshold:finite(leg.threshold)?leg.threshold:null,
-   direction:['result','double-chance'].includes(metric)?String(leg.selection):String(leg.selection||'OVER').toUpperCase(),period:'REGULATION',duo:sem.duo===true,
-   woodwork:sem.postsAndCrossbarIncluded===true,extraTime:sem.extraTimeIncluded===true,conditionalOnStart:player,
+   direction:['result','double-chance'].includes(metric)?String(leg.selection):String(leg.selection||'OVER').toUpperCase(),period:['full-match','REGULATION','full-time'].includes(period)?'REGULATION':period,duo:sem.duo===true||modifiers.duo===true||modifiers.replacementIncluded===true,
+   woodwork:sem.postsAndCrossbarIncluded===true||modifiers.woodworkIncluded===true,extraTime:sem.extraTimeIncluded===true,conditionalOnStart:player&&leg.betSelection?.evaluation?.probabilitySemantics!=='ABSOLUTE_EVENT',
    subjectId:player?leg.playerId:team?(leg.teamId||market.subject?.id):null};
 }
 function familyKey(modelId,t){return JSON.stringify([modelId,t.scope,t.metric,t.period,t.duo,t.woodwork,t.extraTime,t.conditionalOnStart]);}
 function eventKey(modelId,t){return JSON.stringify([familyKey(modelId,t),t.threshold,t.direction]);}
 function observationIssue(row){
  if(!row.modelId||!row.fixtureId||!row.target?.metric||(['player','team'].includes(row.target.scope)&&!row.target.subjectId))return 'IDENTITY_OR_TARGET_MISSING';
+ if(!['result','double-chance'].includes(row.target.metric)&&(!finite(row.target.threshold)||!['OVER','UNDER'].includes(row.target.direction)))return 'EXACT_COUNT_TARGET_UNAVAILABLE';
  if(row.target.period!=='REGULATION')return 'PERIOD_NOT_SUPPORTED';
  const ko=Date.parse(row.kickoffAt),made=Date.parse(row.availableAt);
  if(!Number.isFinite(ko)||!Number.isFinite(made)||made>=ko||row.availabilityVerified!==true)return 'PREMATCH_AVAILABILITY_UNPROVEN';
  for(const field of ['latestInputAt','trainingThroughAt','baselineAvailableAt'])if(!Number.isFinite(Date.parse(row[field]))||Date.parse(row[field])>=ko)return 'INPUT_OR_BASELINE_LEAKAGE';
  if(!finite(row.probability)||row.probability<0||row.probability>1)return 'ORIGINAL_EVENT_PROBABILITY_MISSING';
  if(!finite(row.baselineProbability)||row.baselineProbability<0||row.baselineProbability>1)return 'PREMATCH_BASELINE_MISSING';
+ if(row.baseline&&finite(row.baseline.probability)&&Math.abs(row.baseline.probability-row.baselineProbability)>1e-9)return 'BASELINE_PROBABILITY_RECEIPT_MISMATCH';
  if(!row.baseline||row.baseline.positives<C.thresholdPositives||row.baseline.n-row.baseline.positives<C.thresholdNegatives)return 'PREMATCH_BASELINE_SAMPLE_INSUFFICIENT';
  if(![0,1].includes(row.outcome)||row.actualVerified!==true)return 'EXACT_ACTUAL_MISSING_OR_DISPUTED';
  if(row.target.duo||row.target.woodwork||row.target.extraTime)return 'EXTENDED_CONTRACT_ACTUALS_NOT_CERTIFIED';
@@ -72,11 +76,13 @@ function resolveValidation(leg,registry,modelIds,kickoffAt){
  if(registry.modelIds?.[t.scope==='player'?'player':'collective']!==modelId){base.reasons=['MODEL_VERSION_MISMATCH'];return base;}
  const e=registry.events?.find(e=>e.key===base.eventKey);
  if(!e){base.status='INSUFFICIENT_HISTORY';base.reasons=['NO_ADMISSIBLE_EXACT_MODEL_EVENT_HOLDOUT'];return base;}
+ if(!(Date.parse(registry.generatedAt)<Date.parse(kickoffAt))){base.reasons=['VALIDATION_REGISTRY_NOT_AVAILABLE_BEFORE_TARGET'];return base;}
  if(!(Date.parse(e.validatedThrough)<Date.parse(kickoffAt))){base.reasons=['VALIDATION_OUTCOME_AFTER_TARGET_KICKOFF'];return base;}
- return {...base,...e,status:e.approvable?'VALIDATED':'NOT_VALIDATED'};
+ const approvable=e.approvable===true&&e.status==='PASS'&&e.protocol==='PREREGISTERED_FROZEN_FORECAST_TEMPORAL_HOLDOUT';
+ return {...base,...e,approvable,status:approvable?'VALIDATED':'NOT_VALIDATED'};
 }
 function prudentEvaluation(probabilityPct,validation,odds,{limitedHistory=false}={}){
- if(!validation?.approvable||!finite(probabilityPct))return {prudentProbabilityPct:null,conservativeExpectedValuePct:null,uncertaintyDeductionPp:null};
+ if(!validation?.approvable||!finite(validation.metrics?.ece)||!finite(probabilityPct))return {prudentProbabilityPct:null,conservativeExpectedValuePct:null,uncertaintyDeductionPp:null};
  const deduction=Math.max(0.02,Math.min(0.06,Math.max(limitedHistory?0.05:0.02,validation.metrics.ece/2)));
  const prudent=Math.max(0,Math.min(1,probabilityPct/100-deduction));
  return {prudentProbabilityPct:round(prudent*100),conservativeExpectedValuePct:finite(odds)?round((prudent*odds-1)*100):null,uncertaintyDeductionPp:round(deduction*100)};

@@ -1,0 +1,5020 @@
+{
+  "schemaVersion": 1,
+  "status": "DIAGNOSTIC_ONLY_NOT_PRODUCTION_MD3",
+  "approvable": false,
+  "model": "SHARED_MD7_COUNT_ENGINE_COMPARATOR",
+  "trainingMatches": 94,
+  "testMatches": 95,
+  "independentFixtures": 95,
+  "protocol": "FIRST_HALF_TRAIN_FIXED_DISPERSION_THEN_EVENT_DATE_WALK_FORWARD_STRICTLY_BEFORE_TARGET_DATE",
+  "chronologyLimitation": "Historical event dates are ordered; no historical as-of receipt proves availability of every feature. Not admitted by the prospective validation gate.",
+  "thresholdLimitation": "Current provider threshold grid used for diagnostic comparison, not selected on test performance and not a preregistered 2025/26 portfolio.",
+  "subfamilies": {
+    "corners-match-over": {
+      "matchClusters": 95,
+      "probabilityObservations": 0,
+      "brier": null,
+      "baselineBrier": null,
+      "deltaBrier": 0,
+      "logLoss": null,
+      "ece": 0,
+      "meanBias": -0.4733,
+      "mae": 2.9803,
+      "gate": "FAIL",
+      "gateCriteria": "clusters>=180; deltaBrier<=0.005; ECE<=0.08; absolute bias within family limit; exact threshold must have >=30 positive and >=30 negative holdout outcomes",
+      "thresholds": {}
+    },
+    "corners-1x2-fulltime": {
+      "matchClusters": 95,
+      "probabilityObservations": 285,
+      "brier": 0.1747,
+      "baselineBrier": 0.1826,
+      "deltaBrier": -0.0079,
+      "logLoss": 0.5192,
+      "ece": 0.0449,
+      "meanBias": -0.2367,
+      "mae": 2.427,
+      "gate": "FAIL",
+      "gateCriteria": "clusters>=180; deltaBrier<=0.005; ECE<=0.08; absolute bias within family limit; exact threshold must have >=30 positive and >=30 negative holdout outcomes",
+      "thresholds": {
+        "overall": {
+          "observations": 285,
+          "positives": 95,
+          "negatives": 190,
+          "brier": 0.1747,
+          "baselineBrier": 0.1826,
+          "deltaBrier": -0.0079,
+          "ece": 0.0449,
+          "gate": "PASS"
+        }
+      }
+    },
+    "shots-1x2": {
+      "matchClusters": 95,
+      "probabilityObservations": 285,
+      "brier": 0.1601,
+      "baselineBrier": 0.1694,
+      "deltaBrier": -0.0093,
+      "logLoss": 0.4971,
+      "ece": 0.0931,
+      "meanBias": 0.0541,
+      "mae": 4.6733,
+      "gate": "FAIL",
+      "gateCriteria": "clusters>=180; deltaBrier<=0.005; ECE<=0.08; absolute bias within family limit; exact threshold must have >=30 positive and >=30 negative holdout outcomes",
+      "thresholds": {
+        "overall": {
+          "observations": 285,
+          "positives": 95,
+          "negatives": 190,
+          "brier": 0.1601,
+          "baselineBrier": 0.1694,
+          "deltaBrier": -0.0093,
+          "ece": 0.0931,
+          "gate": "PASS"
+        }
+      }
+    },
+    "sot-1x2": {
+      "matchClusters": 95,
+      "probabilityObservations": 285,
+      "brier": 0.1794,
+      "baselineBrier": 0.1819,
+      "deltaBrier": -0.0026,
+      "logLoss": 0.5319,
+      "ece": 0.0238,
+      "meanBias": -0.0205,
+      "mae": 2.2784,
+      "gate": "FAIL",
+      "gateCriteria": "clusters>=180; deltaBrier<=0.005; ECE<=0.08; absolute bias within family limit; exact threshold must have >=30 positive and >=30 negative holdout outcomes",
+      "thresholds": {
+        "overall": {
+          "observations": 285,
+          "positives": 95,
+          "negatives": 190,
+          "brier": 0.1794,
+          "baselineBrier": 0.1819,
+          "deltaBrier": -0.0026,
+          "ece": 0.0238,
+          "gate": "PASS"
+        }
+      }
+    },
+    "sot-match-over": {
+      "matchClusters": 95,
+      "probabilityObservations": 0,
+      "brier": null,
+      "baselineBrier": null,
+      "deltaBrier": 0,
+      "logLoss": null,
+      "ece": 0,
+      "meanBias": -0.0411,
+      "mae": 3.1115,
+      "gate": "FAIL",
+      "gateCriteria": "clusters>=180; deltaBrier<=0.005; ECE<=0.08; absolute bias within family limit; exact threshold must have >=30 positive and >=30 negative holdout outcomes",
+      "thresholds": {}
+    },
+    "shots-match-over": {
+      "matchClusters": 95,
+      "probabilityObservations": 0,
+      "brier": null,
+      "baselineBrier": null,
+      "deltaBrier": 0,
+      "logLoss": null,
+      "ece": 0,
+      "meanBias": 0.1083,
+      "mae": 6.0318,
+      "gate": "FAIL",
+      "gateCriteria": "clusters>=180; deltaBrier<=0.005; ECE<=0.08; absolute bias within family limit; exact threshold must have >=30 positive and >=30 negative holdout outcomes",
+      "thresholds": {}
+    },
+    "corners-team-over": {
+      "matchClusters": 95,
+      "probabilityObservations": 0,
+      "brier": null,
+      "baselineBrier": null,
+      "deltaBrier": 0,
+      "logLoss": null,
+      "ece": 0,
+      "meanBias": -0.2367,
+      "mae": 2.427,
+      "gate": "FAIL",
+      "gateCriteria": "clusters>=180; deltaBrier<=0.005; ECE<=0.08; absolute bias within family limit; exact threshold must have >=30 positive and >=30 negative holdout outcomes",
+      "thresholds": {}
+    },
+    "sot-team-over": {
+      "matchClusters": 95,
+      "probabilityObservations": 0,
+      "brier": null,
+      "baselineBrier": null,
+      "deltaBrier": 0,
+      "logLoss": null,
+      "ece": 0,
+      "meanBias": -0.0205,
+      "mae": 2.2784,
+      "gate": "FAIL",
+      "gateCriteria": "clusters>=180; deltaBrier<=0.005; ECE<=0.08; absolute bias within family limit; exact threshold must have >=30 positive and >=30 negative holdout outcomes",
+      "thresholds": {}
+    },
+    "shots-team-over": {
+      "matchClusters": 95,
+      "probabilityObservations": 0,
+      "brier": null,
+      "baselineBrier": null,
+      "deltaBrier": 0,
+      "logLoss": null,
+      "ece": 0,
+      "meanBias": 0.0541,
+      "mae": 4.6733,
+      "gate": "FAIL",
+      "gateCriteria": "clusters>=180; deltaBrier<=0.005; ECE<=0.08; absolute bias within family limit; exact threshold must have >=30 positive and >=30 negative holdout outcomes",
+      "thresholds": {}
+    }
+  },
+  "rows": [
+    {
+      "fixtureId": "757747",
+      "date": "2025-12-09",
+      "family": "shots",
+      "latestInputEventDate": "2025-11-26",
+      "mean": {
+        "home": 15.791805555555555,
+        "away": 12.103611111111112,
+        "baselineHome": 15.655555555555555,
+        "baselineAway": 11.544444444444444
+      },
+      "actual": {
+        "home": 14,
+        "away": 10
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757747",
+      "date": "2025-12-09",
+      "family": "sot",
+      "latestInputEventDate": "2025-11-26",
+      "mean": {
+        "home": 5.2713580246913585,
+        "away": 4.340941358024692,
+        "baselineHome": 5.944444444444445,
+        "baselineAway": 4.411111111111111
+      },
+      "actual": {
+        "home": 4,
+        "away": 5
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757747",
+      "date": "2025-12-09",
+      "family": "corners",
+      "latestInputEventDate": "2025-11-26",
+      "mean": {
+        "home": 5.215570987654321,
+        "away": 4.089598765432099,
+        "baselineHome": 5.355555555555555,
+        "baselineAway": 3.8666666666666667
+      },
+      "actual": {
+        "home": 2,
+        "away": 5
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757748",
+      "date": "2025-12-09",
+      "family": "shots",
+      "latestInputEventDate": "2025-11-26",
+      "mean": {
+        "home": 15.884166666666667,
+        "away": 12.518194444444445,
+        "baselineHome": 15.655555555555555,
+        "baselineAway": 11.544444444444444
+      },
+      "actual": {
+        "home": 8,
+        "away": 10
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757748",
+      "date": "2025-12-09",
+      "family": "sot",
+      "latestInputEventDate": "2025-11-26",
+      "mean": {
+        "home": 6.286635802469137,
+        "away": 4.681219135802469,
+        "baselineHome": 5.944444444444445,
+        "baselineAway": 4.411111111111111
+      },
+      "actual": {
+        "home": 6,
+        "away": 5
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757748",
+      "date": "2025-12-09",
+      "family": "corners",
+      "latestInputEventDate": "2025-11-26",
+      "mean": {
+        "home": 5.221820987654321,
+        "away": 3.93820987654321,
+        "baselineHome": 5.355555555555555,
+        "baselineAway": 3.8666666666666667
+      },
+      "actual": {
+        "home": 2,
+        "away": 3
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757749",
+      "date": "2025-12-09",
+      "family": "shots",
+      "latestInputEventDate": "2025-11-26",
+      "mean": {
+        "home": 14.955,
+        "away": 11.544583333333332,
+        "baselineHome": 15.655555555555555,
+        "baselineAway": 11.544444444444444
+      },
+      "actual": {
+        "home": 16,
+        "away": 12
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757749",
+      "date": "2025-12-09",
+      "family": "sot",
+      "latestInputEventDate": "2025-11-26",
+      "mean": {
+        "home": 5.279691358024692,
+        "away": 4.007608024691359,
+        "baselineHome": 5.944444444444445,
+        "baselineAway": 4.411111111111111
+      },
+      "actual": {
+        "home": 10,
+        "away": 5
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757749",
+      "date": "2025-12-09",
+      "family": "corners",
+      "latestInputEventDate": "2025-11-26",
+      "mean": {
+        "home": 4.886404320987655,
+        "away": 3.6701543209876544,
+        "baselineHome": 5.355555555555555,
+        "baselineAway": 3.8666666666666667
+      },
+      "actual": {
+        "home": 8,
+        "away": 3
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757750",
+      "date": "2025-12-09",
+      "family": "shots",
+      "latestInputEventDate": "2025-11-26",
+      "mean": {
+        "home": 15.139722222222222,
+        "away": 12.052916666666667,
+        "baselineHome": 15.655555555555555,
+        "baselineAway": 11.544444444444444
+      },
+      "actual": {
+        "home": 13,
+        "away": 15
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757750",
+      "date": "2025-12-09",
+      "family": "sot",
+      "latestInputEventDate": "2025-11-26",
+      "mean": {
+        "home": 5.702608024691359,
+        "away": 4.470108024691358,
+        "baselineHome": 5.944444444444445,
+        "baselineAway": 4.411111111111111
+      },
+      "actual": {
+        "home": 3,
+        "away": 9
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757750",
+      "date": "2025-12-09",
+      "family": "corners",
+      "latestInputEventDate": "2025-11-26",
+      "mean": {
+        "home": 5.235015432098765,
+        "away": 4.637515432098766,
+        "baselineHome": 5.355555555555555,
+        "baselineAway": 3.8666666666666667
+      },
+      "actual": {
+        "home": 9,
+        "away": 5
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757751",
+      "date": "2025-12-09",
+      "family": "shots",
+      "latestInputEventDate": "2025-11-26",
+      "mean": {
+        "home": 14.666111111111112,
+        "away": 12.645972222222222,
+        "baselineHome": 15.655555555555555,
+        "baselineAway": 11.544444444444444
+      },
+      "actual": {
+        "home": 19,
+        "away": 13
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757751",
+      "date": "2025-12-09",
+      "family": "sot",
+      "latestInputEventDate": "2025-11-26",
+      "mean": {
+        "home": 5.485246913580247,
+        "away": 4.877052469135803,
+        "baselineHome": 5.944444444444445,
+        "baselineAway": 4.411111111111111
+      },
+      "actual": {
+        "home": 5,
+        "away": 2
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757751",
+      "date": "2025-12-09",
+      "family": "corners",
+      "latestInputEventDate": "2025-11-26",
+      "mean": {
+        "home": 5.137793209876543,
+        "away": 3.7395987654320986,
+        "baselineHome": 5.355555555555555,
+        "baselineAway": 3.8666666666666667
+      },
+      "actual": {
+        "home": 8,
+        "away": 3
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757752",
+      "date": "2025-12-10",
+      "family": "shots",
+      "latestInputEventDate": "2025-12-09",
+      "mean": {
+        "home": 14.018265993265992,
+        "away": 11.00747053872054,
+        "baselineHome": 15.505050505050505,
+        "baselineAway": 11.525252525252526
+      },
+      "actual": {
+        "home": 17,
+        "away": 20
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757752",
+      "date": "2025-12-10",
+      "family": "sot",
+      "latestInputEventDate": "2025-12-09",
+      "mean": {
+        "home": 5.658999719416386,
+        "away": 3.8664492143658813,
+        "baselineHome": 5.878787878787879,
+        "baselineAway": 4.444444444444445
+      },
+      "actual": {
+        "home": 6,
+        "away": 8
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757752",
+      "date": "2025-12-10",
+      "family": "corners",
+      "latestInputEventDate": "2025-12-09",
+      "mean": {
+        "home": 4.819626823793491,
+        "away": 4.277833894500562,
+        "baselineHome": 5.3232323232323235,
+        "baselineAway": 3.8484848484848486
+      },
+      "actual": {
+        "home": 4,
+        "away": 6
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757753",
+      "date": "2025-12-10",
+      "family": "shots",
+      "latestInputEventDate": "2025-12-09",
+      "mean": {
+        "home": 14.596043771043773,
+        "away": 11.917192760942761,
+        "baselineHome": 15.505050505050505,
+        "baselineAway": 11.525252525252526
+      },
+      "actual": {
+        "home": 19,
+        "away": 8
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757753",
+      "date": "2025-12-10",
+      "family": "sot",
+      "latestInputEventDate": "2025-12-09",
+      "mean": {
+        "home": 5.294416386083053,
+        "away": 4.678949214365882,
+        "baselineHome": 5.878787878787879,
+        "baselineAway": 4.444444444444445
+      },
+      "actual": {
+        "home": 5,
+        "away": 4
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757753",
+      "date": "2025-12-10",
+      "family": "corners",
+      "latestInputEventDate": "2025-12-09",
+      "mean": {
+        "home": 4.477960157126824,
+        "away": 4.288250561167228,
+        "baselineHome": 5.3232323232323235,
+        "baselineAway": 3.8484848484848486
+      },
+      "actual": {
+        "home": 6,
+        "away": 4
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757754",
+      "date": "2025-12-10",
+      "family": "shots",
+      "latestInputEventDate": "2025-12-09",
+      "mean": {
+        "home": 15.688404882154883,
+        "away": 10.767887205387206,
+        "baselineHome": 15.505050505050505,
+        "baselineAway": 11.525252525252526
+      },
+      "actual": {
+        "home": 13,
+        "away": 9
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757754",
+      "date": "2025-12-10",
+      "family": "sot",
+      "latestInputEventDate": "2025-12-09",
+      "mean": {
+        "home": 5.592333052749719,
+        "away": 4.022004769921437,
+        "baselineHome": 5.878787878787879,
+        "baselineAway": 4.444444444444445
+      },
+      "actual": {
+        "home": 5,
+        "away": 2
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757754",
+      "date": "2025-12-10",
+      "family": "corners",
+      "latestInputEventDate": "2025-12-09",
+      "mean": {
+        "home": 5.646710157126824,
+        "away": 4.032695005611672,
+        "baselineHome": 5.3232323232323235,
+        "baselineAway": 3.8484848484848486
+      },
+      "actual": {
+        "home": 2,
+        "away": 6
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757755",
+      "date": "2025-12-10",
+      "family": "shots",
+      "latestInputEventDate": "2025-12-09",
+      "mean": {
+        "home": 15.377293771043773,
+        "away": 11.485248316498316,
+        "baselineHome": 15.505050505050505,
+        "baselineAway": 11.525252525252526
+      },
+      "actual": {
+        "home": 22,
+        "away": 7
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757755",
+      "date": "2025-12-10",
+      "family": "sot",
+      "latestInputEventDate": "2025-12-09",
+      "mean": {
+        "home": 6.515249719416386,
+        "away": 4.597004769921437,
+        "baselineHome": 5.878787878787879,
+        "baselineAway": 4.444444444444445
+      },
+      "actual": {
+        "home": 9,
+        "away": 3
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757755",
+      "date": "2025-12-10",
+      "family": "corners",
+      "latestInputEventDate": "2025-12-09",
+      "mean": {
+        "home": 5.09601571268238,
+        "away": 3.743111672278339,
+        "baselineHome": 5.3232323232323235,
+        "baselineAway": 3.8484848484848486
+      },
+      "actual": {
+        "home": 10,
+        "away": 4
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757756",
+      "date": "2025-12-10",
+      "family": "shots",
+      "latestInputEventDate": "2025-12-09",
+      "mean": {
+        "home": 16.246738215488215,
+        "away": 10.528303872053872,
+        "baselineHome": 15.505050505050505,
+        "baselineAway": 11.525252525252526
+      },
+      "actual": {
+        "home": 25,
+        "away": 12
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757756",
+      "date": "2025-12-10",
+      "family": "sot",
+      "latestInputEventDate": "2025-12-09",
+      "mean": {
+        "home": 5.993721941638609,
+        "away": 4.115060325476993,
+        "baselineHome": 5.878787878787879,
+        "baselineAway": 4.444444444444445
+      },
+      "actual": {
+        "home": 5,
+        "away": 3
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757756",
+      "date": "2025-12-10",
+      "family": "corners",
+      "latestInputEventDate": "2025-12-09",
+      "mean": {
+        "home": 5.442543490460157,
+        "away": 3.3181116722783397,
+        "baselineHome": 5.3232323232323235,
+        "baselineAway": 3.8484848484848486
+      },
+      "actual": {
+        "home": 13,
+        "away": 4
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757757",
+      "date": "2025-12-10",
+      "family": "shots",
+      "latestInputEventDate": "2025-12-09",
+      "mean": {
+        "home": 14.648821548821548,
+        "away": 12.71997053872054,
+        "baselineHome": 15.505050505050505,
+        "baselineAway": 11.525252525252526
+      },
+      "actual": {
+        "home": 18,
+        "away": 20
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757757",
+      "date": "2025-12-10",
+      "family": "sot",
+      "latestInputEventDate": "2025-12-09",
+      "mean": {
+        "home": 5.483999719416387,
+        "away": 5.172004769921437,
+        "baselineHome": 5.878787878787879,
+        "baselineAway": 4.444444444444445
+      },
+      "actual": {
+        "home": 7,
+        "away": 11
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757757",
+      "date": "2025-12-10",
+      "family": "corners",
+      "latestInputEventDate": "2025-12-09",
+      "mean": {
+        "home": 4.333515712682379,
+        "away": 4.083389450056117,
+        "baselineHome": 5.3232323232323235,
+        "baselineAway": 3.8484848484848486
+      },
+      "actual": {
+        "home": 1,
+        "away": 5
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757758",
+      "date": "2025-12-10",
+      "family": "shots",
+      "latestInputEventDate": "2025-12-09",
+      "mean": {
+        "home": 14.249515993265993,
+        "away": 12.840803872053872,
+        "baselineHome": 15.505050505050505,
+        "baselineAway": 11.525252525252526
+      },
+      "actual": {
+        "home": 17,
+        "away": 13
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757758",
+      "date": "2025-12-10",
+      "family": "sot",
+      "latestInputEventDate": "2025-12-09",
+      "mean": {
+        "home": 5.3041386083052755,
+        "away": 5.140754769921437,
+        "baselineHome": 5.878787878787879,
+        "baselineAway": 4.444444444444445
+      },
+      "actual": {
+        "home": 7,
+        "away": 5
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757758",
+      "date": "2025-12-10",
+      "family": "corners",
+      "latestInputEventDate": "2025-12-09",
+      "mean": {
+        "home": 5.351571268237934,
+        "away": 4.295889450056117,
+        "baselineHome": 5.3232323232323235,
+        "baselineAway": 3.8484848484848486
+      },
+      "actual": {
+        "home": 9,
+        "away": 6
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757759",
+      "date": "2025-12-10",
+      "family": "shots",
+      "latestInputEventDate": "2025-12-09",
+      "mean": {
+        "home": 14.469654882154883,
+        "away": 13.508164983164985,
+        "baselineHome": 15.505050505050505,
+        "baselineAway": 11.525252525252526
+      },
+      "actual": {
+        "home": 9,
+        "away": 18
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757759",
+      "date": "2025-12-10",
+      "family": "sot",
+      "latestInputEventDate": "2025-12-09",
+      "mean": {
+        "home": 5.064555274971942,
+        "away": 5.362282547699214,
+        "baselineHome": 5.878787878787879,
+        "baselineAway": 4.444444444444445
+      },
+      "actual": {
+        "home": 1,
+        "away": 5
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757759",
+      "date": "2025-12-10",
+      "family": "corners",
+      "latestInputEventDate": "2025-12-09",
+      "mean": {
+        "home": 4.91476571268238,
+        "away": 4.400056116722784,
+        "baselineHome": 5.3232323232323235,
+        "baselineAway": 3.8484848484848486
+      },
+      "actual": {
+        "home": 4,
+        "away": 6
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757760",
+      "date": "2025-12-10",
+      "family": "shots",
+      "latestInputEventDate": "2025-12-09",
+      "mean": {
+        "home": 16.685627104377105,
+        "away": 12.872053872053872,
+        "baselineHome": 15.505050505050505,
+        "baselineAway": 11.525252525252526
+      },
+      "actual": {
+        "home": 16,
+        "away": 12
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757760",
+      "date": "2025-12-10",
+      "family": "sot",
+      "latestInputEventDate": "2025-12-09",
+      "mean": {
+        "home": 6.633305274971942,
+        "away": 5.117143658810326,
+        "baselineHome": 5.878787878787879,
+        "baselineAway": 4.444444444444445
+      },
+      "actual": {
+        "home": 1,
+        "away": 8
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757760",
+      "date": "2025-12-10",
+      "family": "corners",
+      "latestInputEventDate": "2025-12-09",
+      "mean": {
+        "home": 6.045321268237935,
+        "away": 4.157695005611672,
+        "baselineHome": 5.3232323232323235,
+        "baselineAway": 3.8484848484848486
+      },
+      "actual": {
+        "home": 3,
+        "away": 3
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757761",
+      "date": "2026-01-20",
+      "family": "shots",
+      "latestInputEventDate": "2025-12-10",
+      "mean": {
+        "home": 15.211358024691359,
+        "away": 11.70074074074074,
+        "baselineHome": 15.657407407407407,
+        "baselineAway": 11.666666666666666
+      },
+      "actual": {
+        "home": 8,
+        "away": 17
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757761",
+      "date": "2026-01-20",
+      "family": "sot",
+      "latestInputEventDate": "2025-12-10",
+      "mean": {
+        "home": 5.19716049382716,
+        "away": 4.649629629629629,
+        "baselineHome": 5.814814814814815,
+        "baselineAway": 4.527777777777778
+      },
+      "actual": {
+        "home": 2,
+        "away": 6
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757761",
+      "date": "2026-01-20",
+      "family": "corners",
+      "latestInputEventDate": "2025-12-10",
+      "mean": {
+        "home": 4.79,
+        "away": 3.7606172839506176,
+        "baselineHome": 5.361111111111111,
+        "baselineAway": 3.935185185185185
+      },
+      "actual": {
+        "home": 1,
+        "away": 3
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757762",
+      "date": "2026-01-20",
+      "family": "shots",
+      "latestInputEventDate": "2025-12-10",
+      "mean": {
+        "home": 15.034691358024691,
+        "away": 12.87074074074074,
+        "baselineHome": 15.657407407407407,
+        "baselineAway": 11.666666666666666
+      },
+      "actual": {
+        "home": 8,
+        "away": 16
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757762",
+      "date": "2026-01-20",
+      "family": "sot",
+      "latestInputEventDate": "2025-12-10",
+      "mean": {
+        "home": 5.02827160493827,
+        "away": 5.635185185185184,
+        "baselineHome": 5.814814814814815,
+        "baselineAway": 4.527777777777778
+      },
+      "actual": {
+        "home": 5,
+        "away": 5
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757762",
+      "date": "2026-01-20",
+      "family": "corners",
+      "latestInputEventDate": "2025-12-10",
+      "mean": {
+        "home": 4.878888888888889,
+        "away": 4.201728395061728,
+        "baselineHome": 5.361111111111111,
+        "baselineAway": 3.935185185185185
+      },
+      "actual": {
+        "home": 2,
+        "away": 9
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757763",
+      "date": "2026-01-20",
+      "family": "shots",
+      "latestInputEventDate": "2025-12-10",
+      "mean": {
+        "home": 15.671358024691358,
+        "away": 12.280740740740741,
+        "baselineHome": 15.657407407407407,
+        "baselineAway": 11.666666666666666
+      },
+      "actual": {
+        "home": 18,
+        "away": 17
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757763",
+      "date": "2026-01-20",
+      "family": "sot",
+      "latestInputEventDate": "2025-12-10",
+      "mean": {
+        "home": 5.433827160493827,
+        "away": 5.348518518518518,
+        "baselineHome": 5.814814814814815,
+        "baselineAway": 4.527777777777778
+      },
+      "actual": {
+        "home": 4,
+        "away": 6
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757763",
+      "date": "2026-01-20",
+      "family": "corners",
+      "latestInputEventDate": "2025-12-10",
+      "mean": {
+        "home": 5.203333333333333,
+        "away": 3.9239506172839507,
+        "baselineHome": 5.361111111111111,
+        "baselineAway": 3.935185185185185
+      },
+      "actual": {
+        "home": 4,
+        "away": 7
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757764",
+      "date": "2026-01-20",
+      "family": "shots",
+      "latestInputEventDate": "2025-12-10",
+      "mean": {
+        "home": 17.676913580246914,
+        "away": 12.39074074074074,
+        "baselineHome": 15.657407407407407,
+        "baselineAway": 11.666666666666666
+      },
+      "actual": {
+        "home": 25,
+        "away": 20
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757764",
+      "date": "2026-01-20",
+      "family": "sot",
+      "latestInputEventDate": "2025-12-10",
+      "mean": {
+        "home": 6.454938271604938,
+        "away": 4.71962962962963,
+        "baselineHome": 5.814814814814815,
+        "baselineAway": 4.527777777777778
+      },
+      "actual": {
+        "home": 5,
+        "away": 6
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757764",
+      "date": "2026-01-20",
+      "family": "corners",
+      "latestInputEventDate": "2025-12-10",
+      "mean": {
+        "home": 5.816666666666666,
+        "away": 4.255061728395062,
+        "baselineHome": 5.361111111111111,
+        "baselineAway": 3.935185185185185
+      },
+      "actual": {
+        "home": 10,
+        "away": 6
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757765",
+      "date": "2026-01-20",
+      "family": "shots",
+      "latestInputEventDate": "2025-12-10",
+      "mean": {
+        "home": 15.945802469135804,
+        "away": 11.29074074074074,
+        "baselineHome": 15.657407407407407,
+        "baselineAway": 11.666666666666666
+      },
+      "actual": {
+        "home": 6,
+        "away": 17
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757765",
+      "date": "2026-01-20",
+      "family": "sot",
+      "latestInputEventDate": "2025-12-10",
+      "mean": {
+        "home": 5.602716049382716,
+        "away": 4.127407407407407,
+        "baselineHome": 5.814814814814815,
+        "baselineAway": 4.527777777777778
+      },
+      "actual": {
+        "home": 2,
+        "away": 6
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757765",
+      "date": "2026-01-20",
+      "family": "corners",
+      "latestInputEventDate": "2025-12-10",
+      "mean": {
+        "home": 5.32,
+        "away": 3.838395061728395,
+        "baselineHome": 5.361111111111111,
+        "baselineAway": 3.935185185185185
+      },
+      "actual": {
+        "home": 2,
+        "away": 8
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757766",
+      "date": "2026-01-20",
+      "family": "shots",
+      "latestInputEventDate": "2025-12-10",
+      "mean": {
+        "home": 15.360246913580248,
+        "away": 11.41074074074074,
+        "baselineHome": 15.657407407407407,
+        "baselineAway": 11.666666666666666
+      },
+      "actual": {
+        "home": 19,
+        "away": 15
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757766",
+      "date": "2026-01-20",
+      "family": "sot",
+      "latestInputEventDate": "2025-12-10",
+      "mean": {
+        "home": 5.420493827160493,
+        "away": 4.321851851851852,
+        "baselineHome": 5.814814814814815,
+        "baselineAway": 4.527777777777778
+      },
+      "actual": {
+        "home": 8,
+        "away": 5
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757766",
+      "date": "2026-01-20",
+      "family": "corners",
+      "latestInputEventDate": "2025-12-10",
+      "mean": {
+        "home": 4.783333333333333,
+        "away": 4.089506172839506,
+        "baselineHome": 5.361111111111111,
+        "baselineAway": 3.935185185185185
+      },
+      "actual": {
+        "home": 7,
+        "away": 5
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757767",
+      "date": "2026-01-20",
+      "family": "shots",
+      "latestInputEventDate": "2025-12-10",
+      "mean": {
+        "home": 15.092469135802471,
+        "away": 11.094074074074074,
+        "baselineHome": 15.657407407407407,
+        "baselineAway": 11.666666666666666
+      },
+      "actual": {
+        "home": 5,
+        "away": 19
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757767",
+      "date": "2026-01-20",
+      "family": "sot",
+      "latestInputEventDate": "2025-12-10",
+      "mean": {
+        "home": 5.971604938271605,
+        "away": 3.9640740740740736,
+        "baselineHome": 5.814814814814815,
+        "baselineAway": 4.527777777777778
+      },
+      "actual": {
+        "home": 4,
+        "away": 5
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757767",
+      "date": "2026-01-20",
+      "family": "corners",
+      "latestInputEventDate": "2025-12-10",
+      "mean": {
+        "home": 5.064444444444445,
+        "away": 4.417283950617285,
+        "baselineHome": 5.361111111111111,
+        "baselineAway": 3.935185185185185
+      },
+      "actual": {
+        "home": 1,
+        "away": 11
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757768",
+      "date": "2026-01-20",
+      "family": "shots",
+      "latestInputEventDate": "2025-12-10",
+      "mean": {
+        "home": 14.593580246913582,
+        "away": 13.665185185185184,
+        "baselineHome": 15.657407407407407,
+        "baselineAway": 11.666666666666666
+      },
+      "actual": {
+        "home": 10,
+        "away": 28
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757768",
+      "date": "2026-01-20",
+      "family": "sot",
+      "latestInputEventDate": "2025-12-10",
+      "mean": {
+        "home": 5.56716049382716,
+        "away": 5.0996296296296295,
+        "baselineHome": 5.814814814814815,
+        "baselineAway": 4.527777777777778
+      },
+      "actual": {
+        "home": 4,
+        "away": 6
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757768",
+      "date": "2026-01-20",
+      "family": "corners",
+      "latestInputEventDate": "2025-12-10",
+      "mean": {
+        "home": 4.738888888888889,
+        "away": 4.550617283950618,
+        "baselineHome": 5.361111111111111,
+        "baselineAway": 3.935185185185185
+      },
+      "actual": {
+        "home": 2,
+        "away": 10
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757769",
+      "date": "2026-01-20",
+      "family": "shots",
+      "latestInputEventDate": "2025-12-10",
+      "mean": {
+        "home": 14.640246913580249,
+        "away": 11.767407407407408,
+        "baselineHome": 15.657407407407407,
+        "baselineAway": 11.666666666666666
+      },
+      "actual": {
+        "home": 16,
+        "away": 6
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757769",
+      "date": "2026-01-20",
+      "family": "sot",
+      "latestInputEventDate": "2025-12-10",
+      "mean": {
+        "home": 5.760493827160493,
+        "away": 4.658518518518518,
+        "baselineHome": 5.814814814814815,
+        "baselineAway": 4.527777777777778
+      },
+      "actual": {
+        "home": 5,
+        "away": 1
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757769",
+      "date": "2026-01-20",
+      "family": "corners",
+      "latestInputEventDate": "2025-12-10",
+      "mean": {
+        "home": 4.957777777777778,
+        "away": 4.187283950617284,
+        "baselineHome": 5.361111111111111,
+        "baselineAway": 3.935185185185185
+      },
+      "actual": {
+        "home": 4,
+        "away": 2
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757770",
+      "date": "2026-01-21",
+      "family": "shots",
+      "latestInputEventDate": "2026-01-20",
+      "mean": {
+        "home": 14.5925641025641,
+        "away": 11.228005698005699,
+        "baselineHome": 15.435897435897436,
+        "baselineAway": 12.094017094017094
+      },
+      "actual": {
+        "home": 11,
+        "away": 8
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757770",
+      "date": "2026-01-21",
+      "family": "sot",
+      "latestInputEventDate": "2026-01-20",
+      "mean": {
+        "home": 5.596951566951567,
+        "away": 4.281908831908831,
+        "baselineHome": 5.700854700854701,
+        "baselineAway": 4.572649572649572
+      },
+      "actual": {
+        "home": 5,
+        "away": 5
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757770",
+      "date": "2026-01-21",
+      "family": "corners",
+      "latestInputEventDate": "2026-01-20",
+      "mean": {
+        "home": 4.6484615384615395,
+        "away": 3.977435897435898,
+        "baselineHome": 5.230769230769231,
+        "baselineAway": 4.153846153846154
+      },
+      "actual": {
+        "home": 7,
+        "away": 1
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757771",
+      "date": "2026-01-21",
+      "family": "shots",
+      "latestInputEventDate": "2026-01-20",
+      "mean": {
+        "home": 15.465897435897435,
+        "away": 12.566894586894586,
+        "baselineHome": 15.435897435897436,
+        "baselineAway": 12.094017094017094
+      },
+      "actual": {
+        "home": 7,
+        "away": 15
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757771",
+      "date": "2026-01-21",
+      "family": "sot",
+      "latestInputEventDate": "2026-01-20",
+      "mean": {
+        "home": 5.672507122507122,
+        "away": 4.737464387464387,
+        "baselineHome": 5.700854700854701,
+        "baselineAway": 4.572649572649572
+      },
+      "actual": {
+        "home": 2,
+        "away": 5
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757771",
+      "date": "2026-01-21",
+      "family": "corners",
+      "latestInputEventDate": "2026-01-20",
+      "mean": {
+        "home": 5.044017094017095,
+        "away": 4.682991452991454,
+        "baselineHome": 5.230769230769231,
+        "baselineAway": 4.153846153846154
+      },
+      "actual": {
+        "home": 4,
+        "away": 7
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757772",
+      "date": "2026-01-21",
+      "family": "shots",
+      "latestInputEventDate": "2026-01-20",
+      "mean": {
+        "home": 15.10145299145299,
+        "away": 11.754672364672366,
+        "baselineHome": 15.435897435897436,
+        "baselineAway": 12.094017094017094
+      },
+      "actual": {
+        "home": 14,
+        "away": 4
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757772",
+      "date": "2026-01-21",
+      "family": "sot",
+      "latestInputEventDate": "2026-01-20",
+      "mean": {
+        "home": 5.114729344729344,
+        "away": 4.277464387464387,
+        "baselineHome": 5.700854700854701,
+        "baselineAway": 4.572649572649572
+      },
+      "actual": {
+        "home": 4,
+        "away": 3
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757772",
+      "date": "2026-01-21",
+      "family": "corners",
+      "latestInputEventDate": "2026-01-20",
+      "mean": {
+        "home": 4.726239316239317,
+        "away": 3.9207692307692312,
+        "baselineHome": 5.230769230769231,
+        "baselineAway": 4.153846153846154
+      },
+      "actual": {
+        "home": 5,
+        "away": 2
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757773",
+      "date": "2026-01-21",
+      "family": "shots",
+      "latestInputEventDate": "2026-01-20",
+      "mean": {
+        "home": 15.71145299145299,
+        "away": 10.623561253561254,
+        "baselineHome": 15.435897435897436,
+        "baselineAway": 12.094017094017094
+      },
+      "actual": {
+        "home": 21,
+        "away": 4
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757773",
+      "date": "2026-01-21",
+      "family": "sot",
+      "latestInputEventDate": "2026-01-20",
+      "mean": {
+        "home": 5.4102849002849,
+        "away": 3.943019943019942,
+        "baselineHome": 5.700854700854701,
+        "baselineAway": 4.572649572649572
+      },
+      "actual": {
+        "home": 7,
+        "away": 2
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757773",
+      "date": "2026-01-21",
+      "family": "corners",
+      "latestInputEventDate": "2026-01-20",
+      "mean": {
+        "home": 5.814017094017095,
+        "away": 3.5252136752136756,
+        "baselineHome": 5.230769230769231,
+        "baselineAway": 4.153846153846154
+      },
+      "actual": {
+        "home": 15,
+        "away": 2
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757774",
+      "date": "2026-01-21",
+      "family": "shots",
+      "latestInputEventDate": "2026-01-20",
+      "mean": {
+        "home": 16.26034188034188,
+        "away": 11.991339031339031,
+        "baselineHome": 15.435897435897436,
+        "baselineAway": 12.094017094017094
+      },
+      "actual": {
+        "home": 14,
+        "away": 5
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757774",
+      "date": "2026-01-21",
+      "family": "sot",
+      "latestInputEventDate": "2026-01-20",
+      "mean": {
+        "home": 6.248062678062678,
+        "away": 4.524131054131054,
+        "baselineHome": 5.700854700854701,
+        "baselineAway": 4.572649572649572
+      },
+      "actual": {
+        "home": 4,
+        "away": 1
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757774",
+      "date": "2026-01-21",
+      "family": "corners",
+      "latestInputEventDate": "2026-01-20",
+      "mean": {
+        "home": 5.432905982905984,
+        "away": 3.9741025641025645,
+        "baselineHome": 5.230769230769231,
+        "baselineAway": 4.153846153846154
+      },
+      "actual": {
+        "home": 4,
+        "away": 1
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757775",
+      "date": "2026-01-21",
+      "family": "shots",
+      "latestInputEventDate": "2026-01-20",
+      "mean": {
+        "home": 15.975897435897435,
+        "away": 11.412450142450142,
+        "baselineHome": 15.435897435897436,
+        "baselineAway": 12.094017094017094
+      },
+      "actual": {
+        "home": 12,
+        "away": 16
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757775",
+      "date": "2026-01-21",
+      "family": "sot",
+      "latestInputEventDate": "2026-01-20",
+      "mean": {
+        "home": 6.023618233618233,
+        "away": 4.109686609686609,
+        "baselineHome": 5.700854700854701,
+        "baselineAway": 4.572649572649572
+      },
+      "actual": {
+        "home": 4,
+        "away": 3
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757775",
+      "date": "2026-01-21",
+      "family": "corners",
+      "latestInputEventDate": "2026-01-20",
+      "mean": {
+        "home": 6.107350427350427,
+        "away": 4.334102564102564,
+        "baselineHome": 5.230769230769231,
+        "baselineAway": 4.153846153846154
+      },
+      "actual": {
+        "home": 4,
+        "away": 7
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757776",
+      "date": "2026-01-21",
+      "family": "shots",
+      "latestInputEventDate": "2026-01-20",
+      "mean": {
+        "home": 13.829230769230769,
+        "away": 13.645783475783476,
+        "baselineHome": 15.435897435897436,
+        "baselineAway": 12.094017094017094
+      },
+      "actual": {
+        "home": 15,
+        "away": 11
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757776",
+      "date": "2026-01-21",
+      "family": "sot",
+      "latestInputEventDate": "2026-01-20",
+      "mean": {
+        "home": 5.173618233618234,
+        "away": 5.504131054131054,
+        "baselineHome": 5.700854700854701,
+        "baselineAway": 4.572649572649572
+      },
+      "actual": {
+        "home": 4,
+        "away": 3
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757776",
+      "date": "2026-01-21",
+      "family": "corners",
+      "latestInputEventDate": "2026-01-20",
+      "mean": {
+        "home": 5.0829059829059835,
+        "away": 5.014102564102564,
+        "baselineHome": 5.230769230769231,
+        "baselineAway": 4.153846153846154
+      },
+      "actual": {
+        "home": 7,
+        "away": 4
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757777",
+      "date": "2026-01-21",
+      "family": "shots",
+      "latestInputEventDate": "2026-01-20",
+      "mean": {
+        "home": 15.138119658119658,
+        "away": 11.61911680911681,
+        "baselineHome": 15.435897435897436,
+        "baselineAway": 12.094017094017094
+      },
+      "actual": {
+        "home": 11,
+        "away": 6
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757777",
+      "date": "2026-01-21",
+      "family": "sot",
+      "latestInputEventDate": "2026-01-20",
+      "mean": {
+        "home": 5.951396011396011,
+        "away": 4.226353276353276,
+        "baselineHome": 5.700854700854701,
+        "baselineAway": 4.572649572649572
+      },
+      "actual": {
+        "home": 4,
+        "away": 1
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757777",
+      "date": "2026-01-21",
+      "family": "corners",
+      "latestInputEventDate": "2026-01-20",
+      "mean": {
+        "home": 5.701794871794872,
+        "away": 4.6318803418803425,
+        "baselineHome": 5.230769230769231,
+        "baselineAway": 4.153846153846154
+      },
+      "actual": {
+        "home": 3,
+        "away": 1
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757778",
+      "date": "2026-01-21",
+      "family": "shots",
+      "latestInputEventDate": "2026-01-20",
+      "mean": {
+        "home": 14.324786324786324,
+        "away": 13.18022792022792,
+        "baselineHome": 15.435897435897436,
+        "baselineAway": 12.094017094017094
+      },
+      "actual": {
+        "home": 12,
+        "away": 20
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757778",
+      "date": "2026-01-21",
+      "family": "sot",
+      "latestInputEventDate": "2026-01-20",
+      "mean": {
+        "home": 5.401396011396011,
+        "away": 4.955242165242165,
+        "baselineHome": 5.700854700854701,
+        "baselineAway": 4.572649572649572
+      },
+      "actual": {
+        "home": 2,
+        "away": 12
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757778",
+      "date": "2026-01-21",
+      "family": "corners",
+      "latestInputEventDate": "2026-01-20",
+      "mean": {
+        "home": 4.654017094017094,
+        "away": 4.092991452991454,
+        "baselineHome": 5.230769230769231,
+        "baselineAway": 4.153846153846154
+      },
+      "actual": {
+        "home": 5,
+        "away": 4
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757779",
+      "date": "2026-01-28",
+      "family": "shots",
+      "latestInputEventDate": "2026-01-21",
+      "mean": {
+        "home": 12.89891774891775,
+        "away": 12.34911014911015,
+        "baselineHome": 15.261904761904763,
+        "baselineAway": 11.936507936507937
+      },
+      "actual": {
+        "home": 11,
+        "away": 11
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757779",
+      "date": "2026-01-28",
+      "family": "sot",
+      "latestInputEventDate": "2026-01-21",
+      "mean": {
+        "home": 4.616786916786916,
+        "away": 4.5977633477633475,
+        "baselineHome": 5.579365079365079,
+        "baselineAway": 4.523809523809524
+      },
+      "actual": {
+        "home": 4,
+        "away": 3
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757779",
+      "date": "2026-01-28",
+      "family": "corners",
+      "latestInputEventDate": "2026-01-21",
+      "mean": {
+        "home": 5.005844155844156,
+        "away": 4.28032708032708,
+        "baselineHome": 5.285714285714286,
+        "baselineAway": 4.087301587301587
+      },
+      "actual": {
+        "home": 5,
+        "away": 4
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757780",
+      "date": "2026-01-28",
+      "family": "shots",
+      "latestInputEventDate": "2026-01-21",
+      "mean": {
+        "home": 15.93982683982684,
+        "away": 11.296584896584898,
+        "baselineHome": 15.261904761904763,
+        "baselineAway": 11.936507936507937
+      },
+      "actual": {
+        "home": 25,
+        "away": 4
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757780",
+      "date": "2026-01-28",
+      "family": "sot",
+      "latestInputEventDate": "2026-01-21",
+      "mean": {
+        "home": 6.349615199615199,
+        "away": 3.9270562770562765,
+        "baselineHome": 5.579365079365079,
+        "baselineAway": 4.523809523809524
+      },
+      "actual": {
+        "home": 11,
+        "away": 2
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757780",
+      "date": "2026-01-28",
+      "family": "corners",
+      "latestInputEventDate": "2026-01-21",
+      "mean": {
+        "home": 5.215440115440116,
+        "away": 3.5187109187109185,
+        "baselineHome": 5.285714285714286,
+        "baselineAway": 4.087301587301587
+      },
+      "actual": {
+        "home": 11,
+        "away": 0
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757781",
+      "date": "2026-01-28",
+      "family": "shots",
+      "latestInputEventDate": "2026-01-21",
+      "mean": {
+        "home": 14.603463203463203,
+        "away": 11.087493987493987,
+        "baselineHome": 15.261904761904763,
+        "baselineAway": 11.936507936507937
+      },
+      "actual": {
+        "home": 9,
+        "away": 9
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757781",
+      "date": "2026-01-28",
+      "family": "sot",
+      "latestInputEventDate": "2026-01-21",
+      "mean": {
+        "home": 4.977898027898028,
+        "away": 4.213419913419913,
+        "baselineHome": 5.579365079365079,
+        "baselineAway": 4.523809523809524
+      },
+      "actual": {
+        "home": 2,
+        "away": 6
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757781",
+      "date": "2026-01-28",
+      "family": "corners",
+      "latestInputEventDate": "2026-01-21",
+      "mean": {
+        "home": 4.993722943722944,
+        "away": 3.58032708032708,
+        "baselineHome": 5.285714285714286,
+        "baselineAway": 4.087301587301587
+      },
+      "actual": {
+        "home": 6,
+        "away": 7
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757782",
+      "date": "2026-01-28",
+      "family": "shots",
+      "latestInputEventDate": "2026-01-21",
+      "mean": {
+        "home": 16.02164502164502,
+        "away": 11.442544492544492,
+        "baselineHome": 15.261904761904763,
+        "baselineAway": 11.936507936507937
+      },
+      "actual": {
+        "home": 27,
+        "away": 11
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757782",
+      "date": "2026-01-28",
+      "family": "sot",
+      "latestInputEventDate": "2026-01-21",
+      "mean": {
+        "home": 6.530423280423281,
+        "away": 4.576046176046175,
+        "baselineHome": 5.579365079365079,
+        "baselineAway": 4.523809523809524
+      },
+      "actual": {
+        "home": 8,
+        "away": 7
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757782",
+      "date": "2026-01-28",
+      "family": "corners",
+      "latestInputEventDate": "2026-01-21",
+      "mean": {
+        "home": 5.963924963924964,
+        "away": 3.9798220298220293,
+        "baselineHome": 5.285714285714286,
+        "baselineAway": 4.087301587301587
+      },
+      "actual": {
+        "home": 12,
+        "away": 1
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757783",
+      "date": "2026-01-28",
+      "family": "shots",
+      "latestInputEventDate": "2026-01-21",
+      "mean": {
+        "home": 15.087301587301589,
+        "away": 11.423352573352574,
+        "baselineHome": 15.261904761904763,
+        "baselineAway": 11.936507936507937
+      },
+      "actual": {
+        "home": 28,
+        "away": 6
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757783",
+      "date": "2026-01-28",
+      "family": "sot",
+      "latestInputEventDate": "2026-01-21",
+      "mean": {
+        "home": 5.617797017797018,
+        "away": 4.54018759018759,
+        "baselineHome": 5.579365079365079,
+        "baselineAway": 4.523809523809524
+      },
+      "actual": {
+        "home": 13,
+        "away": 1
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757783",
+      "date": "2026-01-28",
+      "family": "corners",
+      "latestInputEventDate": "2026-01-21",
+      "mean": {
+        "home": 4.974531024531025,
+        "away": 4.362145262145262,
+        "baselineHome": 5.285714285714286,
+        "baselineAway": 4.087301587301587
+      },
+      "actual": {
+        "home": 10,
+        "away": 1
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757784",
+      "date": "2026-01-28",
+      "family": "shots",
+      "latestInputEventDate": "2026-01-21",
+      "mean": {
+        "home": 13.53780663780664,
+        "away": 12.818302068302069,
+        "baselineHome": 15.261904761904763,
+        "baselineAway": 11.936507936507937
+      },
+      "actual": {
+        "home": 15,
+        "away": 5
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757784",
+      "date": "2026-01-28",
+      "family": "sot",
+      "latestInputEventDate": "2026-01-21",
+      "mean": {
+        "home": 4.9981000481000475,
+        "away": 4.183621933621933,
+        "baselineHome": 5.579365079365079,
+        "baselineAway": 4.523809523809524
+      },
+      "actual": {
+        "home": 7,
+        "away": 2
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757784",
+      "date": "2026-01-28",
+      "family": "corners",
+      "latestInputEventDate": "2026-01-21",
+      "mean": {
+        "home": 5.057359307359308,
+        "away": 3.937902837902838,
+        "baselineHome": 5.285714285714286,
+        "baselineAway": 4.087301587301587
+      },
+      "actual": {
+        "home": 4,
+        "away": 1
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757785",
+      "date": "2026-01-28",
+      "family": "shots",
+      "latestInputEventDate": "2026-01-21",
+      "mean": {
+        "home": 14.972150072150074,
+        "away": 13.061736411736412,
+        "baselineHome": 15.261904761904763,
+        "baselineAway": 11.936507936507937
+      },
+      "actual": {
+        "home": 22,
+        "away": 16
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757785",
+      "date": "2026-01-28",
+      "family": "sot",
+      "latestInputEventDate": "2026-01-21",
+      "mean": {
+        "home": 5.332443482443482,
+        "away": 5.164430014430014,
+        "baselineHome": 5.579365079365079,
+        "baselineAway": 4.523809523809524
+      },
+      "actual": {
+        "home": 12,
+        "away": 6
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757785",
+      "date": "2026-01-28",
+      "family": "corners",
+      "latestInputEventDate": "2026-01-21",
+      "mean": {
+        "home": 5.076046176046177,
+        "away": 4.411640211640211,
+        "baselineHome": 5.285714285714286,
+        "baselineAway": 4.087301587301587
+      },
+      "actual": {
+        "home": 6,
+        "away": 5
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757786",
+      "date": "2026-01-28",
+      "family": "shots",
+      "latestInputEventDate": "2026-01-21",
+      "mean": {
+        "home": 14.513059163059165,
+        "away": 13.085978835978835,
+        "baselineHome": 15.261904761904763,
+        "baselineAway": 11.936507936507937
+      },
+      "actual": {
+        "home": 9,
+        "away": 12
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757786",
+      "date": "2026-01-28",
+      "family": "sot",
+      "latestInputEventDate": "2026-01-21",
+      "mean": {
+        "home": 5.864766714766715,
+        "away": 4.632106782106781,
+        "baselineHome": 5.579365079365079,
+        "baselineAway": 4.523809523809524
+      },
+      "actual": {
+        "home": 1,
+        "away": 5
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757786",
+      "date": "2026-01-28",
+      "family": "corners",
+      "latestInputEventDate": "2026-01-21",
+      "mean": {
+        "home": 5.097258297258298,
+        "away": 4.213155363155363,
+        "baselineHome": 5.285714285714286,
+        "baselineAway": 4.087301587301587
+      },
+      "actual": {
+        "home": 5,
+        "away": 3
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757787",
+      "date": "2026-01-28",
+      "family": "shots",
+      "latestInputEventDate": "2026-01-21",
+      "mean": {
+        "home": 15.42770562770563,
+        "away": 12.955675805675806,
+        "baselineHome": 15.261904761904763,
+        "baselineAway": 11.936507936507937
+      },
+      "actual": {
+        "home": 11,
+        "away": 18
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757787",
+      "date": "2026-01-28",
+      "family": "sot",
+      "latestInputEventDate": "2026-01-21",
+      "mean": {
+        "home": 6.20012025012025,
+        "away": 4.903823953823953,
+        "baselineHome": 5.579365079365079,
+        "baselineAway": 4.523809523809524
+      },
+      "actual": {
+        "home": 5,
+        "away": 9
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757787",
+      "date": "2026-01-28",
+      "family": "corners",
+      "latestInputEventDate": "2026-01-21",
+      "mean": {
+        "home": 4.227056277056277,
+        "away": 4.0833573833573835,
+        "baselineHome": 5.285714285714286,
+        "baselineAway": 4.087301587301587
+      },
+      "actual": {
+        "home": 4,
+        "away": 10
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757788",
+      "date": "2026-01-28",
+      "family": "shots",
+      "latestInputEventDate": "2026-01-21",
+      "mean": {
+        "home": 13.433766233766235,
+        "away": 12.461736411736412,
+        "baselineHome": 15.261904761904763,
+        "baselineAway": 11.936507936507937
+      },
+      "actual": {
+        "home": 4,
+        "away": 15
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757788",
+      "date": "2026-01-28",
+      "family": "sot",
+      "latestInputEventDate": "2026-01-21",
+      "mean": {
+        "home": 4.91123136123136,
+        "away": 4.873015873015873,
+        "baselineHome": 5.579365079365079,
+        "baselineAway": 4.523809523809524
+      },
+      "actual": {
+        "home": 1,
+        "away": 6
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757788",
+      "date": "2026-01-28",
+      "family": "corners",
+      "latestInputEventDate": "2026-01-21",
+      "mean": {
+        "home": 4.563419913419913,
+        "away": 4.541438191438191,
+        "baselineHome": 5.285714285714286,
+        "baselineAway": 4.087301587301587
+      },
+      "actual": {
+        "home": 0,
+        "away": 6
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757789",
+      "date": "2026-01-28",
+      "family": "shots",
+      "latestInputEventDate": "2026-01-21",
+      "mean": {
+        "home": 16.550937950937954,
+        "away": 11.305170755170755,
+        "baselineHome": 15.261904761904763,
+        "baselineAway": 11.936507936507937
+      },
+      "actual": {
+        "home": 38,
+        "away": 5
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757789",
+      "date": "2026-01-28",
+      "family": "sot",
+      "latestInputEventDate": "2026-01-21",
+      "mean": {
+        "home": 6.142544492544491,
+        "away": 4.428571428571428,
+        "baselineHome": 5.579365079365079,
+        "baselineAway": 4.523809523809524
+      },
+      "actual": {
+        "home": 12,
+        "away": 1
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757789",
+      "date": "2026-01-28",
+      "family": "corners",
+      "latestInputEventDate": "2026-01-21",
+      "mean": {
+        "home": 5.9518037518037525,
+        "away": 3.9783068783068782,
+        "baselineHome": 5.285714285714286,
+        "baselineAway": 4.087301587301587
+      },
+      "actual": {
+        "home": 14,
+        "away": 1
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757790",
+      "date": "2026-01-28",
+      "family": "shots",
+      "latestInputEventDate": "2026-01-21",
+      "mean": {
+        "home": 15.715584415584416,
+        "away": 11.91022126022126,
+        "baselineHome": 15.261904761904763,
+        "baselineAway": 11.936507936507937
+      },
+      "actual": {
+        "home": 10,
+        "away": 4
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757790",
+      "date": "2026-01-28",
+      "family": "sot",
+      "latestInputEventDate": "2026-01-21",
+      "mean": {
+        "home": 6.055170755170755,
+        "away": 4.438672438672438,
+        "baselineHome": 5.579365079365079,
+        "baselineAway": 4.523809523809524
+      },
+      "actual": {
+        "home": 5,
+        "away": 4
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757790",
+      "date": "2026-01-28",
+      "family": "corners",
+      "latestInputEventDate": "2026-01-21",
+      "mean": {
+        "home": 5.57049062049062,
+        "away": 3.7434583934583934,
+        "baselineHome": 5.285714285714286,
+        "baselineAway": 4.087301587301587
+      },
+      "actual": {
+        "home": 4,
+        "away": 4
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757791",
+      "date": "2026-01-28",
+      "family": "shots",
+      "latestInputEventDate": "2026-01-21",
+      "mean": {
+        "home": 16.005988455988458,
+        "away": 13.674867724867724,
+        "baselineHome": 15.261904761904763,
+        "baselineAway": 11.936507936507937
+      },
+      "actual": {
+        "home": 11,
+        "away": 5
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757791",
+      "date": "2026-01-28",
+      "family": "sot",
+      "latestInputEventDate": "2026-01-21",
+      "mean": {
+        "home": 5.6349687349687345,
+        "away": 5.25988455988456,
+        "baselineHome": 5.579365079365079,
+        "baselineAway": 4.523809523809524
+      },
+      "actual": {
+        "home": 5,
+        "away": 0
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757791",
+      "date": "2026-01-28",
+      "family": "corners",
+      "latestInputEventDate": "2026-01-21",
+      "mean": {
+        "home": 5.784126984126984,
+        "away": 4.627801827801827,
+        "baselineHome": 5.285714285714286,
+        "baselineAway": 4.087301587301587
+      },
+      "actual": {
+        "home": 6,
+        "away": 0
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757792",
+      "date": "2026-01-28",
+      "family": "shots",
+      "latestInputEventDate": "2026-01-21",
+      "mean": {
+        "home": 14.55901875901876,
+        "away": 11.952645502645503,
+        "baselineHome": 15.261904761904763,
+        "baselineAway": 11.936507936507937
+      },
+      "actual": {
+        "home": 8,
+        "away": 11
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757792",
+      "date": "2026-01-28",
+      "family": "sot",
+      "latestInputEventDate": "2026-01-21",
+      "mean": {
+        "home": 4.946079846079846,
+        "away": 4.459884559884559,
+        "baselineHome": 5.579365079365079,
+        "baselineAway": 4.523809523809524
+      },
+      "actual": {
+        "home": 5,
+        "away": 5
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757792",
+      "date": "2026-01-28",
+      "family": "corners",
+      "latestInputEventDate": "2026-01-21",
+      "mean": {
+        "home": 5.266955266955266,
+        "away": 4.493458393458393,
+        "baselineHome": 5.285714285714286,
+        "baselineAway": 4.087301587301587
+      },
+      "actual": {
+        "home": 4,
+        "away": 1
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757793",
+      "date": "2026-01-28",
+      "family": "shots",
+      "latestInputEventDate": "2026-01-21",
+      "mean": {
+        "home": 14.267099567099567,
+        "away": 13.395574795574795,
+        "baselineHome": 15.261904761904763,
+        "baselineAway": 11.936507936507937
+      },
+      "actual": {
+        "home": 13,
+        "away": 17
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757793",
+      "date": "2026-01-28",
+      "family": "sot",
+      "latestInputEventDate": "2026-01-21",
+      "mean": {
+        "home": 5.218302068302068,
+        "away": 5.582611832611832,
+        "baselineHome": 5.579365079365079,
+        "baselineAway": 4.523809523809524
+      },
+      "actual": {
+        "home": 7,
+        "away": 8
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757793",
+      "date": "2026-01-28",
+      "family": "corners",
+      "latestInputEventDate": "2026-01-21",
+      "mean": {
+        "home": 5.457359307359307,
+        "away": 4.262145262145261,
+        "baselineHome": 5.285714285714286,
+        "baselineAway": 4.087301587301587
+      },
+      "actual": {
+        "home": 5,
+        "away": 6
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757794",
+      "date": "2026-01-28",
+      "family": "shots",
+      "latestInputEventDate": "2026-01-21",
+      "mean": {
+        "home": 13.895887445887446,
+        "away": 12.724362674362673,
+        "baselineHome": 15.261904761904763,
+        "baselineAway": 11.936507936507937
+      },
+      "actual": {
+        "home": 17,
+        "away": 13
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757794",
+      "date": "2026-01-28",
+      "family": "sot",
+      "latestInputEventDate": "2026-01-21",
+      "mean": {
+        "home": 4.923352573352573,
+        "away": 4.782106782106782,
+        "baselineHome": 5.579365079365079,
+        "baselineAway": 4.523809523809524
+      },
+      "actual": {
+        "home": 8,
+        "away": 3
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757794",
+      "date": "2026-01-28",
+      "family": "corners",
+      "latestInputEventDate": "2026-01-21",
+      "mean": {
+        "home": 4.694227994227994,
+        "away": 3.7419432419432415,
+        "baselineHome": 5.285714285714286,
+        "baselineAway": 4.087301587301587
+      },
+      "actual": {
+        "home": 8,
+        "away": 2
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757795",
+      "date": "2026-01-28",
+      "family": "shots",
+      "latestInputEventDate": "2026-01-21",
+      "mean": {
+        "home": 16.941847041847044,
+        "away": 12.414261664261662,
+        "baselineHome": 15.261904761904763,
+        "baselineAway": 11.936507936507937
+      },
+      "actual": {
+        "home": 25,
+        "away": 10
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757795",
+      "date": "2026-01-28",
+      "family": "sot",
+      "latestInputEventDate": "2026-01-21",
+      "mean": {
+        "home": 6.502645502645503,
+        "away": 5.046753246753246,
+        "baselineHome": 5.579365079365079,
+        "baselineAway": 4.523809523809524
+      },
+      "actual": {
+        "home": 7,
+        "away": 4
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757795",
+      "date": "2026-01-28",
+      "family": "corners",
+      "latestInputEventDate": "2026-01-21",
+      "mean": {
+        "home": 6.10079365079365,
+        "away": 4.302044252044252,
+        "baselineHome": 5.285714285714286,
+        "baselineAway": 4.087301587301587
+      },
+      "actual": {
+        "home": 5,
+        "away": 1
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757796",
+      "date": "2026-01-28",
+      "family": "shots",
+      "latestInputEventDate": "2026-01-21",
+      "mean": {
+        "home": 14.499422799422799,
+        "away": 12.793554593554592,
+        "baselineHome": 15.261904761904763,
+        "baselineAway": 11.936507936507937
+      },
+      "actual": {
+        "home": 8,
+        "away": 13
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757796",
+      "date": "2026-01-28",
+      "family": "sot",
+      "latestInputEventDate": "2026-01-21",
+      "mean": {
+        "home": 5.6571909571909575,
+        "away": 4.589177489177489,
+        "baselineHome": 5.579365079365079,
+        "baselineAway": 4.523809523809524
+      },
+      "actual": {
+        "home": 4,
+        "away": 2
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757796",
+      "date": "2026-01-28",
+      "family": "corners",
+      "latestInputEventDate": "2026-01-21",
+      "mean": {
+        "home": 4.9326118326118324,
+        "away": 4.0328523328523325,
+        "baselineHome": 5.285714285714286,
+        "baselineAway": 4.087301587301587
+      },
+      "actual": {
+        "home": 0,
+        "away": 6
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401858735",
+      "date": "2026-02-17",
+      "family": "shots",
+      "latestInputEventDate": "2026-01-28",
+      "mean": {
+        "home": 15.696805555555557,
+        "away": 13.258472222222224,
+        "baselineHome": 15.375,
+        "baselineAway": 11.729166666666666
+      },
+      "actual": {
+        "home": 10,
+        "away": 16
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401858735",
+      "date": "2026-02-17",
+      "family": "sot",
+      "latestInputEventDate": "2026-01-28",
+      "mean": {
+        "home": 6.030555555555556,
+        "away": 5.227222222222222,
+        "baselineHome": 5.694444444444445,
+        "baselineAway": 4.472222222222222
+      },
+      "actual": {
+        "home": 3,
+        "away": 7
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401858735",
+      "date": "2026-02-17",
+      "family": "corners",
+      "latestInputEventDate": "2026-01-28",
+      "mean": {
+        "home": 5.212268518518519,
+        "away": 4.4256018518518525,
+        "baselineHome": 5.381944444444445,
+        "baselineAway": 3.986111111111111
+      },
+      "actual": {
+        "home": 3,
+        "away": 6
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401858758",
+      "date": "2026-02-17",
+      "family": "shots",
+      "latestInputEventDate": "2026-01-28",
+      "mean": {
+        "home": 14.273472222222221,
+        "away": 14.931805555555554,
+        "baselineHome": 15.375,
+        "baselineAway": 11.729166666666666
+      },
+      "actual": {
+        "home": 7,
+        "away": 30
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401858758",
+      "date": "2026-02-17",
+      "family": "sot",
+      "latestInputEventDate": "2026-01-28",
+      "mean": {
+        "home": 5.06888888888889,
+        "away": 5.022222222222222,
+        "baselineHome": 5.694444444444445,
+        "baselineAway": 4.472222222222222
+      },
+      "actual": {
+        "home": 4,
+        "away": 10
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401858758",
+      "date": "2026-02-17",
+      "family": "corners",
+      "latestInputEventDate": "2026-01-28",
+      "mean": {
+        "home": 5.253935185185186,
+        "away": 4.780601851851852,
+        "baselineHome": 5.381944444444445,
+        "baselineAway": 3.986111111111111
+      },
+      "actual": {
+        "home": 1,
+        "away": 8
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401858759",
+      "date": "2026-02-17",
+      "family": "shots",
+      "latestInputEventDate": "2026-01-28",
+      "mean": {
+        "home": 14.95347222222222,
+        "away": 13.021805555555556,
+        "baselineHome": 15.375,
+        "baselineAway": 11.729166666666666
+      },
+      "actual": {
+        "home": 22,
+        "away": 7
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401858759",
+      "date": "2026-02-17",
+      "family": "sot",
+      "latestInputEventDate": "2026-01-28",
+      "mean": {
+        "home": 5.567222222222222,
+        "away": 4.942222222222223,
+        "baselineHome": 5.694444444444445,
+        "baselineAway": 4.472222222222222
+      },
+      "actual": {
+        "home": 9,
+        "away": 3
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401858759",
+      "date": "2026-02-17",
+      "family": "corners",
+      "latestInputEventDate": "2026-01-28",
+      "mean": {
+        "home": 5.255601851851852,
+        "away": 4.5906018518518525,
+        "baselineHome": 5.381944444444445,
+        "baselineAway": 3.986111111111111
+      },
+      "actual": {
+        "home": 5,
+        "away": 5
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401858761",
+      "date": "2026-02-17",
+      "family": "shots",
+      "latestInputEventDate": "2026-01-28",
+      "mean": {
+        "home": 14.305138888888889,
+        "away": 11.946805555555555,
+        "baselineHome": 15.375,
+        "baselineAway": 11.729166666666666
+      },
+      "actual": {
+        "home": 9,
+        "away": 7
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401858761",
+      "date": "2026-02-17",
+      "family": "sot",
+      "latestInputEventDate": "2026-01-28",
+      "mean": {
+        "home": 5.765555555555556,
+        "away": 4.070555555555556,
+        "baselineHome": 5.694444444444445,
+        "baselineAway": 4.472222222222222
+      },
+      "actual": {
+        "home": 2,
+        "away": 3
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401858761",
+      "date": "2026-02-17",
+      "family": "corners",
+      "latestInputEventDate": "2026-01-28",
+      "mean": {
+        "home": 5.132268518518519,
+        "away": 3.860601851851852,
+        "baselineHome": 5.381944444444445,
+        "baselineAway": 3.986111111111111
+      },
+      "actual": {
+        "home": 3,
+        "away": 2
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401858734",
+      "date": "2026-02-18",
+      "family": "shots",
+      "latestInputEventDate": "2026-02-17",
+      "mean": {
+        "home": 14.227927927927928,
+        "away": 13.665810810810813,
+        "baselineHome": 15.283783783783784,
+        "baselineAway": 11.817567567567568
+      },
+      "actual": {
+        "home": 8,
+        "away": 15
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401858734",
+      "date": "2026-02-18",
+      "family": "sot",
+      "latestInputEventDate": "2026-02-17",
+      "mean": {
+        "home": 5.120135135135136,
+        "away": 5.1188738738738735,
+        "baselineHome": 5.662162162162162,
+        "baselineAway": 4.506756756756757
+      },
+      "actual": {
+        "home": 6,
+        "away": 4
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401858734",
+      "date": "2026-02-18",
+      "family": "corners",
+      "latestInputEventDate": "2026-02-17",
+      "mean": {
+        "home": 4.697027027027027,
+        "away": 4.6609909909909915,
+        "baselineHome": 5.3175675675675675,
+        "baselineAway": 4.02027027027027
+      },
+      "actual": {
+        "home": 3,
+        "away": 3
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401858736",
+      "date": "2026-02-18",
+      "family": "shots",
+      "latestInputEventDate": "2026-02-17",
+      "mean": {
+        "home": 14.416261261261262,
+        "away": 12.789144144144146,
+        "baselineHome": 15.283783783783784,
+        "baselineAway": 11.817567567567568
+      },
+      "actual": {
+        "home": 8,
+        "away": 22
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401858736",
+      "date": "2026-02-18",
+      "family": "sot",
+      "latestInputEventDate": "2026-02-17",
+      "mean": {
+        "home": 5.451801801801802,
+        "away": 5.1172072072072075,
+        "baselineHome": 5.662162162162162,
+        "baselineAway": 4.506756756756757
+      },
+      "actual": {
+        "home": 2,
+        "away": 14
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401858736",
+      "date": "2026-02-18",
+      "family": "corners",
+      "latestInputEventDate": "2026-02-17",
+      "mean": {
+        "home": 5.215360360360361,
+        "away": 4.442657657657659,
+        "baselineHome": 5.3175675675675675,
+        "baselineAway": 4.02027027027027
+      },
+      "actual": {
+        "home": 8,
+        "away": 6
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401858737",
+      "date": "2026-02-18",
+      "family": "shots",
+      "latestInputEventDate": "2026-02-17",
+      "mean": {
+        "home": 14.73626126126126,
+        "away": 11.959144144144146,
+        "baselineHome": 15.283783783783784,
+        "baselineAway": 11.817567567567568
+      },
+      "actual": {
+        "home": 13,
+        "away": 8
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401858737",
+      "date": "2026-02-18",
+      "family": "sot",
+      "latestInputEventDate": "2026-02-17",
+      "mean": {
+        "home": 5.141801801801802,
+        "away": 4.337207207207207,
+        "baselineHome": 5.662162162162162,
+        "baselineAway": 4.506756756756757
+      },
+      "actual": {
+        "home": 1,
+        "away": 5
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401858737",
+      "date": "2026-02-18",
+      "family": "corners",
+      "latestInputEventDate": "2026-02-17",
+      "mean": {
+        "home": 4.963693693693693,
+        "away": 4.275990990990991,
+        "baselineHome": 5.3175675675675675,
+        "baselineAway": 4.02027027027027
+      },
+      "actual": {
+        "home": 3,
+        "away": 3
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401858760",
+      "date": "2026-02-18",
+      "family": "shots",
+      "latestInputEventDate": "2026-02-17",
+      "mean": {
+        "home": 14.929594594594596,
+        "away": 13.544144144144145,
+        "baselineHome": 15.283783783783784,
+        "baselineAway": 11.817567567567568
+      },
+      "actual": {
+        "home": 17,
+        "away": 13
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401858760",
+      "date": "2026-02-18",
+      "family": "sot",
+      "latestInputEventDate": "2026-02-17",
+      "mean": {
+        "home": 5.631801801801802,
+        "away": 5.292207207207207,
+        "baselineHome": 5.662162162162162,
+        "baselineAway": 4.506756756756757
+      },
+      "actual": {
+        "home": 10,
+        "away": 4
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401858760",
+      "date": "2026-02-18",
+      "family": "corners",
+      "latestInputEventDate": "2026-02-17",
+      "mean": {
+        "home": 4.39036036036036,
+        "away": 4.987657657657659,
+        "baselineHome": 5.3175675675675675,
+        "baselineAway": 4.02027027027027
+      },
+      "actual": {
+        "home": 4,
+        "away": 6
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401858764",
+      "date": "2026-02-24",
+      "family": "shots",
+      "latestInputEventDate": "2026-02-18",
+      "mean": {
+        "home": 15.434166666666666,
+        "away": 11.05706140350877,
+        "baselineHome": 15.18421052631579,
+        "baselineAway": 11.888157894736842
+      },
+      "actual": {
+        "home": 19,
+        "away": 13
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401858764",
+      "date": "2026-02-24",
+      "family": "sot",
+      "latestInputEventDate": "2026-02-18",
+      "mean": {
+        "home": 6.0397807017543865,
+        "away": 4.071710526315789,
+        "baselineHome": 5.6381578947368425,
+        "baselineAway": 4.565789473684211
+      },
+      "actual": {
+        "home": 8,
+        "away": 6
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401858764",
+      "date": "2026-02-24",
+      "family": "corners",
+      "latestInputEventDate": "2026-02-18",
+      "mean": {
+        "home": 5.814736842105264,
+        "away": 3.9217543859649124,
+        "baselineHome": 5.296052631578948,
+        "baselineAway": 4.032894736842105
+      },
+      "actual": {
+        "home": 9,
+        "away": 6
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401858766",
+      "date": "2026-02-24",
+      "family": "shots",
+      "latestInputEventDate": "2026-02-18",
+      "mean": {
+        "home": 17.082500000000003,
+        "away": 11.222061403508771,
+        "baselineHome": 15.18421052631579,
+        "baselineAway": 11.888157894736842
+      },
+      "actual": {
+        "home": 30,
+        "away": 7
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401858766",
+      "date": "2026-02-24",
+      "family": "sot",
+      "latestInputEventDate": "2026-02-18",
+      "mean": {
+        "home": 6.07311403508772,
+        "away": 4.6633771929824555,
+        "baselineHome": 5.6381578947368425,
+        "baselineAway": 4.565789473684211
+      },
+      "actual": {
+        "home": 7,
+        "away": 5
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401858766",
+      "date": "2026-02-24",
+      "family": "corners",
+      "latestInputEventDate": "2026-02-18",
+      "mean": {
+        "home": 5.894736842105264,
+        "away": 3.753421052631579,
+        "baselineHome": 5.296052631578948,
+        "baselineAway": 4.032894736842105
+      },
+      "actual": {
+        "home": 16,
+        "away": 1
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401858767",
+      "date": "2026-02-24",
+      "family": "shots",
+      "latestInputEventDate": "2026-02-18",
+      "mean": {
+        "home": 13.6575,
+        "away": 12.042061403508772,
+        "baselineHome": 15.18421052631579,
+        "baselineAway": 11.888157894736842
+      },
+      "actual": {
+        "home": 7,
+        "away": 7
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401858767",
+      "date": "2026-02-24",
+      "family": "sot",
+      "latestInputEventDate": "2026-02-18",
+      "mean": {
+        "home": 5.203114035087719,
+        "away": 4.328377192982456,
+        "baselineHome": 5.6381578947368425,
+        "baselineAway": 4.565789473684211
+      },
+      "actual": {
+        "home": 1,
+        "away": 1
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401858767",
+      "date": "2026-02-24",
+      "family": "corners",
+      "latestInputEventDate": "2026-02-18",
+      "mean": {
+        "home": 5.064736842105264,
+        "away": 4.126754385964912,
+        "baselineHome": 5.296052631578948,
+        "baselineAway": 4.032894736842105
+      },
+      "actual": {
+        "home": 4,
+        "away": 5
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401858768",
+      "date": "2026-02-24",
+      "family": "shots",
+      "latestInputEventDate": "2026-02-18",
+      "mean": {
+        "home": 16.20916666666667,
+        "away": 11.293728070175437,
+        "baselineHome": 15.18421052631579,
+        "baselineAway": 11.888157894736842
+      },
+      "actual": {
+        "home": 14,
+        "away": 11
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401858768",
+      "date": "2026-02-24",
+      "family": "sot",
+      "latestInputEventDate": "2026-02-18",
+      "mean": {
+        "home": 6.281447368421053,
+        "away": 4.30671052631579,
+        "baselineHome": 5.6381578947368425,
+        "baselineAway": 4.565789473684211
+      },
+      "actual": {
+        "home": 5,
+        "away": 6
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401858768",
+      "date": "2026-02-24",
+      "family": "corners",
+      "latestInputEventDate": "2026-02-18",
+      "mean": {
+        "home": 5.954736842105263,
+        "away": 3.363421052631579,
+        "baselineHome": 5.296052631578948,
+        "baselineAway": 4.032894736842105
+      },
+      "actual": {
+        "home": 2,
+        "away": 7
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401858762",
+      "date": "2026-02-25",
+      "family": "shots",
+      "latestInputEventDate": "2026-02-24",
+      "mean": {
+        "home": 15.592606837606837,
+        "away": 11.089273504273505,
+        "baselineHome": 15.243589743589743,
+        "baselineAway": 11.826923076923077
+      },
+      "actual": {
+        "home": 15,
+        "away": 7
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401858762",
+      "date": "2026-02-25",
+      "family": "sot",
+      "latestInputEventDate": "2026-02-24",
+      "mean": {
+        "home": 5.222948717948718,
+        "away": 4.328846153846154,
+        "baselineHome": 5.628205128205129,
+        "baselineAway": 4.564102564102564
+      },
+      "actual": {
+        "home": 9,
+        "away": 4
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401858762",
+      "date": "2026-02-25",
+      "family": "corners",
+      "latestInputEventDate": "2026-02-24",
+      "mean": {
+        "home": 4.962649572649573,
+        "away": 3.9516239316239314,
+        "baselineHome": 5.358974358974359,
+        "baselineAway": 4.051282051282051
+      },
+      "actual": {
+        "home": 5,
+        "away": 1
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401858763",
+      "date": "2026-02-25",
+      "family": "shots",
+      "latestInputEventDate": "2026-02-24",
+      "mean": {
+        "home": 18.12594017094017,
+        "away": 12.244273504273503,
+        "baselineHome": 15.243589743589743,
+        "baselineAway": 11.826923076923077
+      },
+      "actual": {
+        "home": 21,
+        "away": 10
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401858763",
+      "date": "2026-02-25",
+      "family": "sot",
+      "latestInputEventDate": "2026-02-24",
+      "mean": {
+        "home": 6.387948717948718,
+        "away": 4.595512820512821,
+        "baselineHome": 5.628205128205129,
+        "baselineAway": 4.564102564102564
+      },
+      "actual": {
+        "home": 6,
+        "away": 4
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401858763",
+      "date": "2026-02-25",
+      "family": "corners",
+      "latestInputEventDate": "2026-02-24",
+      "mean": {
+        "home": 5.749316239316239,
+        "away": 4.014957264957265,
+        "baselineHome": 5.358974358974359,
+        "baselineAway": 4.051282051282051
+      },
+      "actual": {
+        "home": 8,
+        "away": 4
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401858765",
+      "date": "2026-02-25",
+      "family": "shots",
+      "latestInputEventDate": "2026-02-24",
+      "mean": {
+        "home": 15.162606837606837,
+        "away": 11.857606837606836,
+        "baselineHome": 15.243589743589743,
+        "baselineAway": 11.826923076923077
+      },
+      "actual": {
+        "home": 28,
+        "away": 16
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401858765",
+      "date": "2026-02-25",
+      "family": "sot",
+      "latestInputEventDate": "2026-02-24",
+      "mean": {
+        "home": 5.511282051282052,
+        "away": 4.522179487179487,
+        "baselineHome": 5.628205128205129,
+        "baselineAway": 4.564102564102564
+      },
+      "actual": {
+        "home": 9,
+        "away": 8
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401858765",
+      "date": "2026-02-25",
+      "family": "corners",
+      "latestInputEventDate": "2026-02-24",
+      "mean": {
+        "home": 5.532649572649572,
+        "away": 3.786623931623932,
+        "baselineHome": 5.358974358974359,
+        "baselineAway": 4.051282051282051
+      },
+      "actual": {
+        "home": 9,
+        "away": 4
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401858769",
+      "date": "2026-02-25",
+      "family": "shots",
+      "latestInputEventDate": "2026-02-24",
+      "mean": {
+        "home": 16.594273504273502,
+        "away": 12.43094017094017,
+        "baselineHome": 15.243589743589743,
+        "baselineAway": 11.826923076923077
+      },
+      "actual": {
+        "home": 14,
+        "away": 12
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401858769",
+      "date": "2026-02-25",
+      "family": "sot",
+      "latestInputEventDate": "2026-02-24",
+      "mean": {
+        "home": 5.969615384615385,
+        "away": 4.508846153846154,
+        "baselineHome": 5.628205128205129,
+        "baselineAway": 4.564102564102564
+      },
+      "actual": {
+        "home": 4,
+        "away": 4
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401858769",
+      "date": "2026-02-25",
+      "family": "corners",
+      "latestInputEventDate": "2026-02-24",
+      "mean": {
+        "home": 6.370982905982906,
+        "away": 4.721623931623931,
+        "baselineHome": 5.358974358974359,
+        "baselineAway": 4.051282051282051
+      },
+      "actual": {
+        "home": 4,
+        "away": 7
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862577",
+      "date": "2026-03-10",
+      "family": "shots",
+      "latestInputEventDate": "2026-02-25",
+      "mean": {
+        "home": 14.315886363636364,
+        "away": 13.511875,
+        "baselineHome": 15.35,
+        "baselineAway": 11.8125
+      },
+      "actual": {
+        "home": 16,
+        "away": 9
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862577",
+      "date": "2026-03-10",
+      "family": "sot",
+      "latestInputEventDate": "2026-02-25",
+      "mean": {
+        "home": 5.896018939393938,
+        "away": 5.096121212121212,
+        "baselineHome": 5.6625,
+        "baselineAway": 4.575
+      },
+      "actual": {
+        "home": 4,
+        "away": 2
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862577",
+      "date": "2026-03-10",
+      "family": "corners",
+      "latestInputEventDate": "2026-02-25",
+      "mean": {
+        "home": 5.335768939393939,
+        "away": 4.118234848484849,
+        "baselineHome": 5.3875,
+        "baselineAway": 4.05
+      },
+      "actual": {
+        "home": 9,
+        "away": 4
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862579",
+      "date": "2026-03-10",
+      "family": "shots",
+      "latestInputEventDate": "2026-02-25",
+      "mean": {
+        "home": 15.663310606060605,
+        "away": 11.727935606060607,
+        "baselineHome": 15.35,
+        "baselineAway": 11.8125
+      },
+      "actual": {
+        "home": 11,
+        "away": 11
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862579",
+      "date": "2026-03-10",
+      "family": "sot",
+      "latestInputEventDate": "2026-02-25",
+      "mean": {
+        "home": 5.83223106060606,
+        "away": 4.566878787878789,
+        "baselineHome": 5.6625,
+        "baselineAway": 4.575
+      },
+      "actual": {
+        "home": 7,
+        "away": 5
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862579",
+      "date": "2026-03-10",
+      "family": "corners",
+      "latestInputEventDate": "2026-02-25",
+      "mean": {
+        "home": 5.556829545454546,
+        "away": 4.2555075757575755,
+        "baselineHome": 5.3875,
+        "baselineAway": 4.05
+      },
+      "actual": {
+        "home": 4,
+        "away": 2
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862641",
+      "date": "2026-03-10",
+      "family": "shots",
+      "latestInputEventDate": "2026-02-25",
+      "mean": {
+        "home": 15.268916666666666,
+        "away": 12.76657196969697,
+        "baselineHome": 15.35,
+        "baselineAway": 11.8125
+      },
+      "actual": {
+        "home": 11,
+        "away": 25
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862641",
+      "date": "2026-03-10",
+      "family": "sot",
+      "latestInputEventDate": "2026-02-25",
+      "mean": {
+        "home": 5.469655303030303,
+        "away": 5.389303030303031,
+        "baselineHome": 5.6625,
+        "baselineAway": 4.575
+      },
+      "actual": {
+        "home": 3,
+        "away": 13
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862641",
+      "date": "2026-03-10",
+      "family": "corners",
+      "latestInputEventDate": "2026-02-25",
+      "mean": {
+        "home": 5.144405303030304,
+        "away": 3.8097499999999997,
+        "baselineHome": 5.3875,
+        "baselineAway": 4.05
+      },
+      "actual": {
+        "home": 2,
+        "away": 7
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862667",
+      "date": "2026-03-10",
+      "family": "shots",
+      "latestInputEventDate": "2026-02-25",
+      "mean": {
+        "home": 14.200734848484847,
+        "away": 13.537632575757574,
+        "baselineHome": 15.35,
+        "baselineAway": 11.8125
+      },
+      "actual": {
+        "home": 15,
+        "away": 15
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862667",
+      "date": "2026-03-10",
+      "family": "sot",
+      "latestInputEventDate": "2026-02-25",
+      "mean": {
+        "home": 5.274958333333332,
+        "away": 5.274454545454546,
+        "baselineHome": 5.6625,
+        "baselineAway": 4.575
+      },
+      "actual": {
+        "home": 4,
+        "away": 6
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862667",
+      "date": "2026-03-10",
+      "family": "corners",
+      "latestInputEventDate": "2026-02-25",
+      "mean": {
+        "home": 4.889253787878788,
+        "away": 5.152174242424242,
+        "baselineHome": 5.3875,
+        "baselineAway": 4.05
+      },
+      "actual": {
+        "home": 7,
+        "away": 4
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862578",
+      "date": "2026-03-11",
+      "family": "shots",
+      "latestInputEventDate": "2026-03-10",
+      "mean": {
+        "home": 13.647836289726536,
+        "away": 13.176622320768661,
+        "baselineHome": 15.298780487804878,
+        "baselineAway": 11.890243902439025
+      },
+      "actual": {
+        "home": 10,
+        "away": 6
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862578",
+      "date": "2026-03-11",
+      "family": "sot",
+      "latestInputEventDate": "2026-03-10",
+      "mean": {
+        "home": 4.864634146341464,
+        "away": 5.458078344419809,
+        "baselineHome": 5.634146341463414,
+        "baselineAway": 4.621951219512195
+      },
+      "actual": {
+        "home": 3,
+        "away": 2
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862578",
+      "date": "2026-03-11",
+      "family": "corners",
+      "latestInputEventDate": "2026-03-10",
+      "mean": {
+        "home": 4.826060606060606,
+        "away": 4.498464523281596,
+        "baselineHome": 5.390243902439025,
+        "baselineAway": 4.054878048780488
+      },
+      "actual": {
+        "home": 2,
+        "away": 3
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862583",
+      "date": "2026-03-11",
+      "family": "shots",
+      "latestInputEventDate": "2026-03-10",
+      "mean": {
+        "home": 14.266927198817443,
+        "away": 11.254046563192905,
+        "baselineHome": 15.298780487804878,
+        "baselineAway": 11.890243902439025
+      },
+      "actual": {
+        "home": 10,
+        "away": 9
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862583",
+      "date": "2026-03-11",
+      "family": "sot",
+      "latestInputEventDate": "2026-03-10",
+      "mean": {
+        "home": 5.369028085735403,
+        "away": 4.571714708056172,
+        "baselineHome": 5.634146341463414,
+        "baselineAway": 4.621951219512195
+      },
+      "actual": {
+        "home": 5,
+        "away": 2
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862583",
+      "date": "2026-03-11",
+      "family": "corners",
+      "latestInputEventDate": "2026-03-10",
+      "mean": {
+        "home": 4.768787878787879,
+        "away": 4.113161492978565,
+        "baselineHome": 5.390243902439025,
+        "baselineAway": 4.054878048780488
+      },
+      "actual": {
+        "home": 4,
+        "away": 5
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862645",
+      "date": "2026-03-11",
+      "family": "shots",
+      "latestInputEventDate": "2026-03-10",
+      "mean": {
+        "home": 16.220109016999263,
+        "away": 13.297531411677753,
+        "baselineHome": 15.298780487804878,
+        "baselineAway": 11.890243902439025
+      },
+      "actual": {
+        "home": 12,
+        "away": 8
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862645",
+      "date": "2026-03-11",
+      "family": "sot",
+      "latestInputEventDate": "2026-03-10",
+      "mean": {
+        "home": 5.4247856614929795,
+        "away": 5.451260162601626,
+        "baselineHome": 5.634146341463414,
+        "baselineAway": 4.621951219512195
+      },
+      "actual": {
+        "home": 7,
+        "away": 4
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862645",
+      "date": "2026-03-11",
+      "family": "corners",
+      "latestInputEventDate": "2026-03-10",
+      "mean": {
+        "home": 5.677878787878789,
+        "away": 4.586191796008869,
+        "baselineHome": 5.390243902439025,
+        "baselineAway": 4.054878048780488
+      },
+      "actual": {
+        "home": 1,
+        "away": 10
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862646",
+      "date": "2026-03-11",
+      "family": "shots",
+      "latestInputEventDate": "2026-03-10",
+      "mean": {
+        "home": 17.03738174427199,
+        "away": 11.818743532889874,
+        "baselineHome": 15.298780487804878,
+        "baselineAway": 11.890243902439025
+      },
+      "actual": {
+        "home": 9,
+        "away": 9
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862646",
+      "date": "2026-03-11",
+      "family": "sot",
+      "latestInputEventDate": "2026-03-10",
+      "mean": {
+        "home": 6.130240206947524,
+        "away": 4.5901995565410205,
+        "baselineHome": 5.634146341463414,
+        "baselineAway": 4.621951219512195
+      },
+      "actual": {
+        "home": 8,
+        "away": 4
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862646",
+      "date": "2026-03-11",
+      "family": "corners",
+      "latestInputEventDate": "2026-03-10",
+      "mean": {
+        "home": 5.526515151515151,
+        "away": 4.1022524020694755,
+        "baselineHome": 5.390243902439025,
+        "baselineAway": 4.054878048780488
+      },
+      "actual": {
+        "home": 2,
+        "away": 3
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862581",
+      "date": "2026-03-17",
+      "family": "shots",
+      "latestInputEventDate": "2026-03-11",
+      "mean": {
+        "home": 15.605905483405483,
+        "away": 11.103243145743146,
+        "baselineHome": 15.178571428571429,
+        "baselineAway": 11.797619047619047
+      },
+      "actual": {
+        "home": 21,
+        "away": 9
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862581",
+      "date": "2026-03-17",
+      "family": "sot",
+      "latestInputEventDate": "2026-03-11",
+      "mean": {
+        "home": 6.093926767676768,
+        "away": 4.093023088023088,
+        "baselineHome": 5.636904761904762,
+        "baselineAway": 4.583333333333333
+      },
+      "actual": {
+        "home": 12,
+        "away": 2
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862581",
+      "date": "2026-03-17",
+      "family": "corners",
+      "latestInputEventDate": "2026-03-11",
+      "mean": {
+        "home": 5.311881313131313,
+        "away": 3.8503391053391054,
+        "baselineHome": 5.315476190476191,
+        "baselineAway": 4.083333333333333
+      },
+      "actual": {
+        "home": 10,
+        "away": 8
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862584",
+      "date": "2026-03-17",
+      "family": "shots",
+      "latestInputEventDate": "2026-03-11",
+      "mean": {
+        "home": 16.131208513708515,
+        "away": 11.430818903318901,
+        "baselineHome": 15.178571428571429,
+        "baselineAway": 11.797619047619047
+      },
+      "actual": {
+        "home": 38,
+        "away": 9
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862584",
+      "date": "2026-03-17",
+      "family": "sot",
+      "latestInputEventDate": "2026-03-11",
+      "mean": {
+        "home": 6.212411616161616,
+        "away": 4.706053391053391,
+        "baselineHome": 5.636904761904762,
+        "baselineAway": 4.583333333333333
+      },
+      "actual": {
+        "home": 14,
+        "away": 3
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862584",
+      "date": "2026-03-17",
+      "family": "corners",
+      "latestInputEventDate": "2026-03-11",
+      "mean": {
+        "home": 5.586275252525253,
+        "away": 3.827460317460317,
+        "baselineHome": 5.315476190476191,
+        "baselineAway": 4.083333333333333
+      },
+      "actual": {
+        "home": 16,
+        "away": 4
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862647",
+      "date": "2026-03-17",
+      "family": "shots",
+      "latestInputEventDate": "2026-03-11",
+      "mean": {
+        "home": 15.376966089466087,
+        "away": 12.214000721500721,
+        "baselineHome": 15.178571428571429,
+        "baselineAway": 11.797619047619047
+      },
+      "actual": {
+        "home": 22,
+        "away": 14
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862647",
+      "date": "2026-03-17",
+      "family": "sot",
+      "latestInputEventDate": "2026-03-11",
+      "mean": {
+        "home": 6.362563131313131,
+        "away": 4.854083694083694,
+        "baselineHome": 5.636904761904762,
+        "baselineAway": 4.583333333333333
+      },
+      "actual": {
+        "home": 8,
+        "away": 7
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862647",
+      "date": "2026-03-17",
+      "family": "corners",
+      "latestInputEventDate": "2026-03-11",
+      "mean": {
+        "home": 5.287790404040404,
+        "away": 4.209884559884561,
+        "baselineHome": 5.315476190476191,
+        "baselineAway": 4.083333333333333
+      },
+      "actual": {
+        "home": 9,
+        "away": 6
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862648",
+      "date": "2026-03-17",
+      "family": "shots",
+      "latestInputEventDate": "2026-03-11",
+      "mean": {
+        "home": 14.131814574314573,
+        "away": 14.567940115440116,
+        "baselineHome": 15.178571428571429,
+        "baselineAway": 11.797619047619047
+      },
+      "actual": {
+        "home": 18,
+        "away": 8
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862648",
+      "date": "2026-03-17",
+      "family": "sot",
+      "latestInputEventDate": "2026-03-11",
+      "mean": {
+        "home": 5.319381313131314,
+        "away": 5.130901875901875,
+        "baselineHome": 5.636904761904762,
+        "baselineAway": 4.583333333333333
+      },
+      "actual": {
+        "home": 9,
+        "away": 5
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862648",
+      "date": "2026-03-17",
+      "family": "corners",
+      "latestInputEventDate": "2026-03-11",
+      "mean": {
+        "home": 5.527032828282829,
+        "away": 4.815036075036075,
+        "baselineHome": 5.315476190476191,
+        "baselineAway": 4.083333333333333
+      },
+      "actual": {
+        "home": 9,
+        "away": 3
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862580",
+      "date": "2026-03-18",
+      "family": "shots",
+      "latestInputEventDate": "2026-03-17",
+      "mean": {
+        "home": 14.596950317124735,
+        "away": 12.344319943622269,
+        "baselineHome": 15.401162790697674,
+        "baselineAway": 11.755813953488373
+      },
+      "actual": {
+        "home": 18,
+        "away": 18
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862580",
+      "date": "2026-03-18",
+      "family": "sot",
+      "latestInputEventDate": "2026-03-17",
+      "mean": {
+        "home": 5.6100140944326995,
+        "away": 4.5525916138125435,
+        "baselineHome": 5.755813953488372,
+        "baselineAway": 4.575581395348837
+      },
+      "actual": {
+        "home": 11,
+        "away": 6
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862580",
+      "date": "2026-03-18",
+      "family": "corners",
+      "latestInputEventDate": "2026-03-17",
+      "mean": {
+        "home": 5.115244890768146,
+        "away": 4.692855884425652,
+        "baselineHome": 5.4476744186046515,
+        "baselineAway": 4.1104651162790695
+      },
+      "actual": {
+        "home": 7,
+        "away": 7
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862582",
+      "date": "2026-03-18",
+      "family": "shots",
+      "latestInputEventDate": "2026-03-17",
+      "mean": {
+        "home": 16.15998062015504,
+        "away": 12.588713883016208,
+        "baselineHome": 15.401162790697674,
+        "baselineAway": 11.755813953488373
+      },
+      "actual": {
+        "home": 18,
+        "away": 8
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862582",
+      "date": "2026-03-18",
+      "family": "sot",
+      "latestInputEventDate": "2026-03-17",
+      "mean": {
+        "home": 6.136680761099365,
+        "away": 5.339561310782241,
+        "baselineHome": 5.755813953488372,
+        "baselineAway": 4.575581395348837
+      },
+      "actual": {
+        "home": 13,
+        "away": 5
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862582",
+      "date": "2026-03-18",
+      "family": "corners",
+      "latestInputEventDate": "2026-03-17",
+      "mean": {
+        "home": 5.905547921071177,
+        "away": 4.2349770965468645,
+        "baselineHome": 5.4476744186046515,
+        "baselineAway": 4.1104651162790695
+      },
+      "actual": {
+        "home": 6,
+        "away": 2
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862642",
+      "date": "2026-03-18",
+      "family": "shots",
+      "latestInputEventDate": "2026-03-17",
+      "mean": {
+        "home": 16.02998062015504,
+        "away": 11.072047216349542,
+        "baselineHome": 15.401162790697674,
+        "baselineAway": 11.755813953488373
+      },
+      "actual": {
+        "home": 25,
+        "away": 14
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862642",
+      "date": "2026-03-18",
+      "family": "sot",
+      "latestInputEventDate": "2026-03-17",
+      "mean": {
+        "home": 6.369559548978153,
+        "away": 3.9171370683579987,
+        "baselineHome": 5.755813953488372,
+        "baselineAway": 4.575581395348837
+      },
+      "actual": {
+        "home": 8,
+        "away": 8
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862642",
+      "date": "2026-03-18",
+      "family": "corners",
+      "latestInputEventDate": "2026-03-17",
+      "mean": {
+        "home": 5.166002466525722,
+        "away": 3.6887649753347427,
+        "baselineHome": 5.4476744186046515,
+        "baselineAway": 4.1104651162790695
+      },
+      "actual": {
+        "home": 6,
+        "away": 3
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862668",
+      "date": "2026-03-18",
+      "family": "shots",
+      "latestInputEventDate": "2026-03-17",
+      "mean": {
+        "home": 17.578616983791402,
+        "away": 11.641592670894996,
+        "baselineHome": 15.401162790697674,
+        "baselineAway": 11.755813953488373
+      },
+      "actual": {
+        "home": 32,
+        "away": 4
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862668",
+      "date": "2026-03-18",
+      "family": "sot",
+      "latestInputEventDate": "2026-03-17",
+      "mean": {
+        "home": 6.539559548978153,
+        "away": 4.654561310782241,
+        "baselineHome": 5.755813953488372,
+        "baselineAway": 4.575581395348837
+      },
+      "actual": {
+        "home": 16,
+        "away": 1
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862668",
+      "date": "2026-03-18",
+      "family": "corners",
+      "latestInputEventDate": "2026-03-17",
+      "mean": {
+        "home": 6.290396405919662,
+        "away": 3.850280126849894,
+        "baselineHome": 5.4476744186046515,
+        "baselineAway": 4.1104651162790695
+      },
+      "actual": {
+        "home": 6,
+        "away": 2
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862886",
+      "date": "2026-04-07",
+      "family": "shots",
+      "latestInputEventDate": "2026-03-18",
+      "mean": {
+        "home": 16.299750344352617,
+        "away": 14.106775137741046,
+        "baselineHome": 15.579545454545455,
+        "baselineAway": 11.738636363636363
+      },
+      "actual": {
+        "home": 20,
+        "away": 20
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862886",
+      "date": "2026-04-07",
+      "family": "sot",
+      "latestInputEventDate": "2026-03-18",
+      "mean": {
+        "home": 6.033410812672176,
+        "away": 5.973902376033058,
+        "baselineHome": 5.8977272727272725,
+        "baselineAway": 4.5852272727272725
+      },
+      "actual": {
+        "home": 9,
+        "away": 8
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862886",
+      "date": "2026-04-07",
+      "family": "corners",
+      "latestInputEventDate": "2026-03-18",
+      "mean": {
+        "home": 5.559874311294766,
+        "away": 4.61277117768595,
+        "baselineHome": 5.465909090909091,
+        "baselineAway": 4.096590909090909
+      },
+      "actual": {
+        "home": 8,
+        "away": 11
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862888",
+      "date": "2026-04-07",
+      "family": "shots",
+      "latestInputEventDate": "2026-03-18",
+      "mean": {
+        "home": 15.765013774104682,
+        "away": 13.101101928374655,
+        "baselineHome": 15.579545454545455,
+        "baselineAway": 11.738636363636363
+      },
+      "actual": {
+        "home": 11,
+        "away": 8
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862888",
+      "date": "2026-04-07",
+      "family": "sot",
+      "latestInputEventDate": "2026-03-18",
+      "mean": {
+        "home": 5.898743112947658,
+        "away": 5.3411673553719,
+        "baselineHome": 5.8977272727272725,
+        "baselineAway": 4.5852272727272725
+      },
+      "actual": {
+        "home": 5,
+        "away": 4
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862888",
+      "date": "2026-04-07",
+      "family": "corners",
+      "latestInputEventDate": "2026-03-18",
+      "mean": {
+        "home": 5.076601239669421,
+        "away": 4.686656336088154,
+        "baselineHome": 5.465909090909091,
+        "baselineAway": 4.096590909090909
+      },
+      "actual": {
+        "home": 3,
+        "away": 4
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862885",
+      "date": "2026-04-08",
+      "family": "shots",
+      "latestInputEventDate": "2026-04-07",
+      "mean": {
+        "home": 15.999438202247193,
+        "away": 13.269790602655771,
+        "baselineHome": 15.57865168539326,
+        "baselineAway": 11.764044943820224
+      },
+      "actual": {
+        "home": 18,
+        "away": 3
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862885",
+      "date": "2026-04-08",
+      "family": "sot",
+      "latestInputEventDate": "2026-04-07",
+      "mean": {
+        "home": 6.006550051072524,
+        "away": 5.544028770854613,
+        "baselineHome": 5.910112359550562,
+        "baselineAway": 4.601123595505618
+      },
+      "actual": {
+        "home": 6,
+        "away": 0
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862885",
+      "date": "2026-04-08",
+      "family": "corners",
+      "latestInputEventDate": "2026-04-07",
+      "mean": {
+        "home": 5.484805924412666,
+        "away": 4.574834014300306,
+        "baselineHome": 5.466292134831461,
+        "baselineAway": 4.134831460674158
+      },
+      "actual": {
+        "home": 3,
+        "away": 1
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862887",
+      "date": "2026-04-08",
+      "family": "shots",
+      "latestInputEventDate": "2026-04-07",
+      "mean": {
+        "home": 16.1925987402111,
+        "away": 12.317075246850528,
+        "baselineHome": 15.57865168539326,
+        "baselineAway": 11.764044943820224
+      },
+      "actual": {
+        "home": 18,
+        "away": 5
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862887",
+      "date": "2026-04-08",
+      "family": "sot",
+      "latestInputEventDate": "2026-04-07",
+      "mean": {
+        "home": 6.794399046646238,
+        "away": 4.789402451481103,
+        "baselineHome": 5.910112359550562,
+        "baselineAway": 4.601123595505618
+      },
+      "actual": {
+        "home": 7,
+        "away": 3
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862887",
+      "date": "2026-04-08",
+      "family": "corners",
+      "latestInputEventDate": "2026-04-07",
+      "mean": {
+        "home": 5.585789070480081,
+        "away": 4.631039325842696,
+        "baselineHome": 5.466292134831461,
+        "baselineAway": 4.134831460674158
+      },
+      "actual": {
+        "home": 7,
+        "away": 1
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862889",
+      "date": "2026-04-14",
+      "family": "shots",
+      "latestInputEventDate": "2026-04-08",
+      "mean": {
+        "home": 17.34435606060606,
+        "away": 14.178459595959596,
+        "baselineHome": 15.605555555555556,
+        "baselineAway": 11.677777777777777
+      },
+      "actual": {
+        "home": 21,
+        "away": 12
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862889",
+      "date": "2026-04-14",
+      "family": "sot",
+      "latestInputEventDate": "2026-04-08",
+      "mean": {
+        "home": 6.721982323232323,
+        "away": 5.115050505050505,
+        "baselineHome": 5.916666666666667,
+        "baselineAway": 4.566666666666666
+      },
+      "actual": {
+        "home": 5,
+        "away": 6
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862889",
+      "date": "2026-04-14",
+      "family": "corners",
+      "latestInputEventDate": "2026-04-08",
+      "mean": {
+        "home": 5.787201178451179,
+        "away": 4.751203703703704,
+        "baselineHome": 5.461111111111111,
+        "baselineAway": 4.1
+      },
+      "actual": {
+        "home": 8,
+        "away": 2
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862892",
+      "date": "2026-04-14",
+      "family": "shots",
+      "latestInputEventDate": "2026-04-08",
+      "mean": {
+        "home": 15.08364898989899,
+        "away": 13.128510101010102,
+        "baselineHome": 15.605555555555556,
+        "baselineAway": 11.677777777777777
+      },
+      "actual": {
+        "home": 15,
+        "away": 15
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862892",
+      "date": "2026-04-14",
+      "family": "sot",
+      "latestInputEventDate": "2026-04-08",
+      "mean": {
+        "home": 6.007209595959597,
+        "away": 5.253232323232323,
+        "baselineHome": 5.916666666666667,
+        "baselineAway": 4.566666666666666
+      },
+      "actual": {
+        "home": 5,
+        "away": 8
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862892",
+      "date": "2026-04-14",
+      "family": "corners",
+      "latestInputEventDate": "2026-04-08",
+      "mean": {
+        "home": 5.549499158249158,
+        "away": 3.9179461279461276,
+        "baselineHome": 5.461111111111111,
+        "baselineAway": 4.1
+      },
+      "actual": {
+        "home": 2,
+        "away": 4
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862890",
+      "date": "2026-04-15",
+      "family": "shots",
+      "latestInputEventDate": "2026-04-14",
+      "mean": {
+        "home": 15.935198135198135,
+        "away": 10.476090576090577,
+        "baselineHome": 15.631868131868131,
+        "baselineAway": 11.697802197802197
+      },
+      "actual": {
+        "home": 15,
+        "away": 8
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862890",
+      "date": "2026-04-15",
+      "family": "sot",
+      "latestInputEventDate": "2026-04-14",
+      "mean": {
+        "home": 6.651665001665002,
+        "away": 3.887728937728938,
+        "baselineHome": 5.906593406593407,
+        "baselineAway": 4.593406593406593
+      },
+      "actual": {
+        "home": 1,
+        "away": 1
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862890",
+      "date": "2026-04-15",
+      "family": "corners",
+      "latestInputEventDate": "2026-04-14",
+      "mean": {
+        "home": 5.791375291375291,
+        "away": 4.02012987012987,
+        "baselineHome": 5.456043956043956,
+        "baselineAway": 4.087912087912088
+      },
+      "actual": {
+        "home": 8,
+        "away": 3
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862891",
+      "date": "2026-04-15",
+      "family": "shots",
+      "latestInputEventDate": "2026-04-14",
+      "mean": {
+        "home": 17.00469114219114,
+        "away": 12.507650682650684,
+        "baselineHome": 15.631868131868131,
+        "baselineAway": 11.697802197802197
+      },
+      "actual": {
+        "home": 21,
+        "away": 12
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862891",
+      "date": "2026-04-15",
+      "family": "sot",
+      "latestInputEventDate": "2026-04-14",
+      "mean": {
+        "home": 6.662241924741925,
+        "away": 5.010060772560772,
+        "baselineHome": 5.906593406593407,
+        "baselineAway": 4.593406593406593
+      },
+      "actual": {
+        "home": 9,
+        "away": 5
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862891",
+      "date": "2026-04-15",
+      "family": "corners",
+      "latestInputEventDate": "2026-04-14",
+      "mean": {
+        "home": 5.281847319347319,
+        "away": 4.178180153180153,
+        "baselineHome": 5.456043956043956,
+        "baselineAway": 4.087912087912088
+      },
+      "actual": {
+        "home": 9,
+        "away": 2
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862893",
+      "date": "2026-04-28",
+      "family": "shots",
+      "latestInputEventDate": "2026-04-15",
+      "mean": {
+        "home": 16.6596885451505,
+        "away": 13.501710562987737,
+        "baselineHome": 15.657608695652174,
+        "baselineAway": 11.679347826086957
+      },
+      "actual": {
+        "home": 12,
+        "away": 10
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862893",
+      "date": "2026-04-28",
+      "family": "sot",
+      "latestInputEventDate": "2026-04-15",
+      "mean": {
+        "home": 6.517910395763655,
+        "away": 5.693248327759198,
+        "baselineHome": 5.896739130434782,
+        "baselineAway": 4.576086956521739
+      },
+      "actual": {
+        "home": 5,
+        "away": 8
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862893",
+      "date": "2026-04-28",
+      "family": "corners",
+      "latestInputEventDate": "2026-04-15",
+      "mean": {
+        "home": 5.351358695652174,
+        "away": 4.3228922798216285,
+        "baselineHome": 5.489130434782608,
+        "baselineAway": 4.070652173913044
+      },
+      "actual": {
+        "home": 2,
+        "away": 5
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862894",
+      "date": "2026-04-29",
+      "family": "shots",
+      "latestInputEventDate": "2026-04-28",
+      "mean": {
+        "home": 15.053404365904369,
+        "away": 12.481534996534997,
+        "baselineHome": 15.637837837837838,
+        "baselineAway": 11.67027027027027
+      },
+      "actual": {
+        "home": 18,
+        "away": 11
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862894",
+      "date": "2026-04-29",
+      "family": "sot",
+      "latestInputEventDate": "2026-04-28",
+      "mean": {
+        "home": 5.658818433818434,
+        "away": 5.425857588357589,
+        "baselineHome": 5.891891891891892,
+        "baselineAway": 4.594594594594595
+      },
+      "actual": {
+        "home": 4,
+        "away": 2
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862894",
+      "date": "2026-04-29",
+      "family": "corners",
+      "latestInputEventDate": "2026-04-28",
+      "mean": {
+        "home": 4.980859320859321,
+        "away": 4.462834372834373,
+        "baselineHome": 5.47027027027027,
+        "baselineAway": 4.075675675675676
+      },
+      "actual": {
+        "home": 6,
+        "away": 1
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862896",
+      "date": "2026-05-05",
+      "family": "shots",
+      "latestInputEventDate": "2026-04-29",
+      "mean": {
+        "home": 16.11299283154122,
+        "away": 11.86185552798456,
+        "baselineHome": 15.650537634408602,
+        "baselineAway": 11.666666666666666
+      },
+      "actual": {
+        "home": 13,
+        "away": 9
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862896",
+      "date": "2026-05-05",
+      "family": "sot",
+      "latestInputEventDate": "2026-04-29",
+      "mean": {
+        "home": 6.391807968017645,
+        "away": 4.2302488282327,
+        "baselineHome": 5.881720430107527,
+        "baselineAway": 4.580645161290323
+      },
+      "actual": {
+        "home": 2,
+        "away": 2
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862896",
+      "date": "2026-05-05",
+      "family": "corners",
+      "latestInputEventDate": "2026-04-29",
+      "mean": {
+        "home": 5.89132547559967,
+        "away": 4.396464019851116,
+        "baselineHome": 5.473118279569892,
+        "baselineAway": 4.059139784946237
+      },
+      "actual": {
+        "home": 5,
+        "away": 2
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862895",
+      "date": "2026-05-06",
+      "family": "shots",
+      "latestInputEventDate": "2026-05-05",
+      "mean": {
+        "home": 16.45913033045386,
+        "away": 13.755770944741533,
+        "baselineHome": 15.636363636363637,
+        "baselineAway": 11.6524064171123
+      },
+      "actual": {
+        "home": 18,
+        "away": 15
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862895",
+      "date": "2026-05-06",
+      "family": "sot",
+      "latestInputEventDate": "2026-05-05",
+      "mean": {
+        "home": 6.310516934046346,
+        "away": 5.159713081036611,
+        "baselineHome": 5.86096256684492,
+        "baselineAway": 4.566844919786096
+      },
+      "actual": {
+        "home": 6,
+        "away": 7
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862895",
+      "date": "2026-05-06",
+      "family": "corners",
+      "latestInputEventDate": "2026-05-05",
+      "mean": {
+        "home": 5.558165364047717,
+        "away": 4.220324283559577,
+        "baselineHome": 5.470588235294118,
+        "baselineAway": 4.048128342245989
+      },
+      "actual": {
+        "home": 1,
+        "away": 8
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862897",
+      "date": "2026-05-30",
+      "family": "shots",
+      "latestInputEventDate": "2026-05-06",
+      "mean": {
+        "home": 15.822578131088772,
+        "away": 11.754855428259683,
+        "baselineHome": 15.648936170212766,
+        "baselineAway": 11.670212765957446
+      },
+      "actual": {
+        "home": 21,
+        "away": 7
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862897",
+      "date": "2026-05-30",
+      "family": "sot",
+      "latestInputEventDate": "2026-05-06",
+      "mean": {
+        "home": 5.9373158756137485,
+        "away": 4.80287097654119,
+        "baselineHome": 5.861702127659575,
+        "baselineAway": 4.579787234042553
+      },
+      "actual": {
+        "home": 4,
+        "away": 1
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "401862897",
+      "date": "2026-05-30",
+      "family": "corners",
+      "latestInputEventDate": "2026-05-06",
+      "mean": {
+        "home": 4.725545553737042,
+        "away": 4.118214675395527,
+        "baselineHome": 5.446808510638298,
+        "baselineAway": 4.069148936170213
+      },
+      "actual": {
+        "home": 11,
+        "away": 4
+      },
+      "featureAvailabilityVerified": false
+    }
+  ]
+}

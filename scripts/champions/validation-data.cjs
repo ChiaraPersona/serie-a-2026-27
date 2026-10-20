@@ -24,7 +24,8 @@ function collectActuals(now){
  const unique=new Map(),bad=new Set();for(const p of players){const key=[p.fixtureId,p.teamId,p.playerId].join(':');if(unique.has(key)){
   const previous=unique.get(key);if(['shots','sot','minutes'].some(k=>finite(previous[k])&&finite(p[k])&&previous[k]!==p[k])){bad.add(key);conflicts.push({key,reason:'CONFLICTING_PLAYER_ACTUALS'});}else unique.set(key,{...previous,...p,starter:p.starter??previous.starter});
  }else unique.set(key,p);}
- return {teams,players:[...unique].filter(([k])=>!bad.has(k)).map(([,v])=>v),conflicts};
+ const historicalTeamMatches=read('data/sources/champions-pilot-match-stats-2025-27.json').matches.filter(m=>m.league==='uefa.champions'&&m.season==='2025-26'&&m.date<now.slice(0,10));
+ return {historicalTeamMatches,teams,players:[...unique].filter(([k])=>!bad.has(k)).map(([,v])=>v),conflicts};
 }
 function actualFor(target,fixtureId,actuals){
  const sides=actuals.teams.filter(r=>r.fixtureId===fixtureId);
@@ -46,17 +47,19 @@ function actualFor(target,fixtureId,actuals){
 }
 function baselineFor(target,actuals,history,now){
  const values=[];
+ const priorTeams=(actuals.historicalTeamMatches||[]).flatMap(m=>['home','away'].map(side=>({fixtureId:m.eventId,shots:m[side].statistics?.totalShots,sot:m[side].statistics?.shotsOnTarget,corners:m[side].statistics?.wonCorners})));
+ const referenceTeams=[...priorTeams,...actuals.teams];
  if(['result','double-chance'].includes(target.metric))for(const m of history.matches.filter(m=>m.competitionCode==='ucl'&&m.status==='finished')){
   const result=m.score90.home>m.score90.away?'1':m.score90.home<m.score90.away?'2':'X';values.push(Number(target.direction.includes(result)));
  }else if(target.scope==='player')for(const p of actuals.players.filter(p=>p.starter===true&&finite(p[target.metric])))values.push(Number(p[target.metric]>target.threshold));
- else if(target.scope==='team')for(const r of actuals.teams.filter(r=>finite(r[target.metric])))values.push(Number(r[target.metric]>target.threshold));
- else for(const id of new Set(actuals.teams.map(r=>r.fixtureId))){const rows=actuals.teams.filter(r=>r.fixtureId===id);if(rows.length===2&&rows.every(r=>finite(r[target.metric])))values.push(Number(rows.reduce((n,r)=>n+r[target.metric],0)>target.threshold));}
+ else if(target.scope==='team')for(const r of referenceTeams.filter(r=>finite(r[target.metric])))values.push(Number(r[target.metric]>target.threshold));
+ else for(const id of new Set(referenceTeams.map(r=>r.fixtureId))){const rows=referenceTeams.filter(r=>r.fixtureId===id);if(rows.length===2&&rows.every(r=>finite(r[target.metric])))values.push(Number(rows.reduce((n,r)=>n+r[target.metric],0)>target.threshold));}
  return {probability:values.length?values.reduce((a,b)=>a+b,0)/values.length:null,n:values.length,positives:values.reduce((a,b)=>a+b,0),availableAt:now,method:'FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT'};
 }
 function captureCurrent(now,outputRoot){
  const models=currentModels(),calendar=read('data/normalized/champions-league-2026-27.json'),individuals=read('data/normalized/champions-md03-probable-individuals-2026-27.json');
  const catalog=read('data/normalized/schedina-champions-md03.json'),forecasts=read('data/normalized/champions-md03-preliminary-2026-27.json'),actuals=collectActuals(now),history=read('data/normalized/uefa-europe-history-2023-26.json');
- const inputPaths=['data/normalized/champions-league-2026-27.json','data/normalized/champions-md03-probable-individuals-2026-27.json','data/normalized/champions-md03-preliminary-2026-27.json','data/normalized/schedina-champions-md03.json','data/normalized/odds/sisal/champions-league.json','data/normalized/uefa-europe-history-2023-26.json','data/normalized/uefa-1x2-model-2026-27.json','data/sources/champions-probable-formations-md03-2026-27.json','data/normalized/champions-md03-player-database-2026-27.json'];
+ const inputPaths=['data/sources/champions-pilot-match-stats-2025-27.json','data/normalized/champions-league-2026-27.json','data/normalized/champions-md03-probable-individuals-2026-27.json','data/normalized/champions-md03-preliminary-2026-27.json','data/normalized/schedina-champions-md03.json','data/normalized/odds/sisal/champions-league.json','data/normalized/uefa-europe-history-2023-26.json','data/normalized/uefa-1x2-model-2026-27.json','data/sources/champions-probable-formations-md03-2026-27.json','data/normalized/champions-md03-player-database-2026-27.json'];
  const receipts=Object.fromEntries(inputPaths.map(p=>[p,hash(p)]));
  const candidate={generatedAt:now,model:{ids:models.ids,modules:models.modules},dataVersion:{capturedAt:now,availabilityProof:'CONTROLLED_LOCAL_CAPTURE_BEFORE_KICKOFF_NOT_EXTERNAL_TIMESTAMP_AUTHORITY',inputs:receipts},kickoffVerification:{source:'data/normalized/champions-league-2026-27.json',timezone:'Europe/Rome'},identityOverlay:{source:'CANONICAL_PLAYER_AND_TEAM_IDS_ONLY'},fixtures:[]};
  for(const f of calendar.fixtures.filter(f=>f.matchday===3)){

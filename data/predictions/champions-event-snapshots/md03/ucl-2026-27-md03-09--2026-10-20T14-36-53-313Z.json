@@ -1,0 +1,5293 @@
+{
+  "schemaVersion": 1,
+  "kind": "champions-immutable-prematch-player-forecast-snapshot",
+  "immutable": true,
+  "createdAt": "2026-10-20T14:36:53.313Z",
+  "competition": "champions",
+  "phase": "league",
+  "season": "2026-27",
+  "matchday": 3,
+  "fixtureId": "ucl-2026-27-md03-09",
+  "date": "2026-10-20",
+  "kickoff": "21:00",
+  "timezone": "Europe/Rome",
+  "kickoffAt": "2026-10-20T19:00:00.000Z",
+  "homeTeam": "Stuttgart",
+  "awayTeam": "Atlético de Madrid",
+  "chronologyStatus": "VALID_PREMATCH_SNAPSHOT",
+  "evaluationWindow": "test",
+  "model": {
+    "ids": {
+      "collective": "champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f",
+      "player": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1"
+    },
+    "modules": {
+      "collective": {
+        "scripts/build-champions-pilot-predictions.js": "33f125092367f1d518d67bece8a55cc6b253e34cb9f114cb4233c80e79341cd7",
+        "scripts/build-champions-1x2.js": "14862aba1553ab311ac0a9c634acdb748e38950d6ea5c32be2b4e48fe9dfde83",
+        "scripts/champions/offline-collective.js": "c061eabcac55ca28bb32ba68143009e50fa668a829108c22bb7fcf0987e31ab6"
+      },
+      "player": {
+        "scripts/build-champions-md3-probable.cjs": "3f81ca7dabbeeb96779ee6c9ee0f3897367865cbeae0904f3eece48c260e0b11",
+        "scripts/champions/md3-lineup-policy.js": "5de9c6e48c301568096e200c9a032ea1dc7e9eb6b07d3962f6863b57a8d02e40",
+        "scripts/champions/current-season-offline.js": "893ca70e5d73cf30f193aa16d4add179eabb381d431f9cba56e9779c89eb9bdd",
+        "scripts/champions/context-adjusted-player-baseline.js": "67bfffa938d134b6dca9b8018cd4b55146f4aead56b61ad25072fb7eb00d9f3d",
+        "scripts/champions/player-volume-utils.js": "d283e14790930987242f42c2d57fd14e9274635d1fcfa0f8c2fad7fa0a7ef6a6",
+        "scripts/champions/substitute-minutes.js": "bf74d46f1b41ab33821dcc277a4259f4ea7f35762f1f26fd4bfd2797663780cd"
+      }
+    }
+  },
+  "dataVersion": {
+    "capturedAt": "2026-10-20T14:36:53.313Z",
+    "availabilityProof": "CONTROLLED_LOCAL_CAPTURE_BEFORE_KICKOFF_NOT_EXTERNAL_TIMESTAMP_AUTHORITY",
+    "inputs": {
+      "data/sources/champions-pilot-match-stats-2025-27.json": "6fe3bd617f8cc6d739669fca4d7a019baa30e65d6ef40377dc9492bd512b93cb",
+      "data/normalized/champions-league-2026-27.json": "976ba156fc47ce8e908a3102539b0dd22005303dde6a9bca2e42f21cac8df0da",
+      "data/normalized/champions-md03-probable-individuals-2026-27.json": "ec5843586edd877946b3e878f8a6a992c2b4c6ae665217b71fb6ff7512a2ba62",
+      "data/normalized/champions-md03-preliminary-2026-27.json": "d26b35e51c804872c8beae51a6044d69d46f97190d6ea4536d23fde8a44f7c66",
+      "data/normalized/schedina-champions-md03.json": "4aeb2efabb30c6e205d7ef1a9d1673f0e2651d754a5a1ba5acc8bfbf06a2f936",
+      "data/normalized/odds/sisal/champions-league.json": "aa6fd6de6bd301dd16298337abff92e1869d96b4aa6be4313fe3a3dd410aa09b",
+      "data/normalized/uefa-europe-history-2023-26.json": "0817482042ba8bf3a522185aee52c580f3f21be79cec4daf83a7a2bae79c1e0e",
+      "data/normalized/uefa-1x2-model-2026-27.json": "d02e3b50291c32bacdadc7eaaa9a2fcc0633cd57a06df9480a347fb0f441b19d",
+      "data/sources/champions-probable-formations-md03-2026-27.json": "bffa9eb554cc5143bdbe51fcb22c7b53a2e9768cd7e7444fb26bf09d89fa99f9",
+      "data/normalized/champions-md03-player-database-2026-27.json": "5252d97d536f832ac8672a09c4d75a4cc7d130c5f977a5e42a5c17732d8c2db6"
+    }
+  },
+  "kickoffVerification": {
+    "source": "data/normalized/champions-league-2026-27.json",
+    "timezone": "Europe/Rome"
+  },
+  "identityOverlaySource": "CANONICAL_PLAYER_AND_TEAM_IDS_ONLY",
+  "coverage": {
+    "completeForSnapshotUniverse": true,
+    "universe": "ALL_EXISTING_PROBABLE_PLAYERS_AND_AVAILABLE_CONTRACT_EVENTS_INCLUDING_EXPLICIT_BLOCKERS",
+    "players": 51,
+    "events": 116,
+    "unresolved": 0
+  },
+  "players": [
+    {
+      "teamId": "stuttgart",
+      "internalPlayerId": "fabian-bredlow",
+      "name": "Fabian Bredlow",
+      "role": "goalkeeper",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 86.4,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE"
+      ]
+    },
+    {
+      "teamId": "stuttgart",
+      "internalPlayerId": "jeff-chabot",
+      "name": "Jeff Chabot",
+      "role": "defender",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 81,
+      "startingProbability": null,
+      "projectedShots": 0.66,
+      "projectedShotsOnTarget": 0.25,
+      "eventProbabilities": {
+        "shotsOver05": 0.4831486655083008,
+        "shotsOver15": 0.14202678474377928,
+        "shotsOver25": 0.029456564091487225,
+        "sotOver05": 0.22119921692859512,
+        "sotOver15": 0.026499021160743874,
+        "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
+      },
+      "blockers": []
+    },
+    {
+      "teamId": "stuttgart",
+      "internalPlayerId": "finn-jeltsch",
+      "name": "Finn Jeltsch",
+      "role": "midfielder",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 84,
+      "startingProbability": null,
+      "projectedShots": 0.58,
+      "projectedShotsOnTarget": 0.15,
+      "eventProbabilities": {
+        "shotsOver05": 0.44010163343459796,
+        "shotsOver15": 0.11536058082666478,
+        "shotsOver25": 0.021185675570364215,
+        "sotOver05": 0.1392920235749422,
+        "sotOver15": 0.010185827111183543,
+        "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
+      },
+      "blockers": []
+    },
+    {
+      "teamId": "stuttgart",
+      "internalPlayerId": "ramon-hendriks",
+      "name": "Ramon Hendriks",
+      "role": "defender",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 82.2,
+      "startingProbability": null,
+      "projectedShots": 0.33,
+      "projectedShotsOnTarget": 0.08,
+      "eventProbabilities": {
+        "shotsOver05": 0.28107626656807383,
+        "shotsOver15": 0.04383143453553817,
+        "shotsOver25": 0.0046860372501698055,
+        "sotOver05": 0.07688365361336424,
+        "sotOver15": 0.003034345902433344,
+        "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
+      },
+      "blockers": []
+    },
+    {
+      "teamId": "stuttgart",
+      "internalPlayerId": "josha-vagnoman",
+      "name": "Josha Vagnoman",
+      "role": "defender",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 72,
+      "startingProbability": null,
+      "projectedShots": 0.73,
+      "projectedShotsOnTarget": 0.34,
+      "eventProbabilities": {
+        "shotsOver05": 0.5180910099097975,
+        "shotsOver15": 0.16629744714394978,
+        "shotsOver25": 0.03789279673441537,
+        "sotOver05": 0.28822967723739024,
+        "sotOver15": 0.04622776749810287,
+        "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
+      },
+      "blockers": []
+    },
+    {
+      "teamId": "stuttgart",
+      "internalPlayerId": "angelo-stiller",
+      "name": "Angelo Stiller",
+      "role": "midfielder",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 77.8,
+      "startingProbability": null,
+      "projectedShots": 0.59,
+      "projectedShotsOnTarget": 0.19,
+      "eventProbabilities": {
+        "shotsOver05": 0.4456727152654929,
+        "shotsOver15": 0.11861961727213366,
+        "shotsOver25": 0.02213895336409266,
+        "sotOver05": 0.1730408660566377,
+        "sotOver15": 0.015918630607398843,
+        "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
+      },
+      "blockers": []
+    },
+    {
+      "teamId": "stuttgart",
+      "internalPlayerId": "grischa-promel",
+      "name": "Grischa Prömel",
+      "role": "midfielder",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 85.7,
+      "startingProbability": null,
+      "projectedShots": 1.77,
+      "projectedShotsOnTarget": 0.54,
+      "eventProbabilities": {
+        "shotsOver05": 0.8296670111745905,
+        "shotsOver15": 0.5281776209536159,
+        "shotsOver25": 0.2613595106080533,
+        "sotOver05": 0.41725174762601036,
+        "sotOver15": 0.10256769134405586,
+        "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
+      },
+      "blockers": []
+    },
+    {
+      "teamId": "stuttgart",
+      "internalPlayerId": "deniz-undav",
+      "name": "Deniz Undav",
+      "role": "forward",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 77.7,
+      "startingProbability": null,
+      "projectedShots": 3.35,
+      "projectedShotsOnTarget": 1.24,
+      "eventProbabilities": {
+        "shotsOver05": 0.964915645899155,
+        "shotsOver15": 0.8473830596613241,
+        "shotsOver25": 0.6505159777129574,
+        "sotOver05": 0.7106157820609493,
+        "sotOver15": 0.3517793518165264,
+        "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
+      },
+      "blockers": []
+    },
+    {
+      "teamId": "stuttgart",
+      "internalPlayerId": "chris-fuhrich",
+      "name": "Chris Führich",
+      "role": "midfielder",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 73.2,
+      "startingProbability": null,
+      "projectedShots": 1.71,
+      "projectedShotsOnTarget": 0.73,
+      "eventProbabilities": {
+        "shotsOver05": 0.8191342073828779,
+        "shotsOver15": 0.509853702007599,
+        "shotsOver25": 0.24541886991173567,
+        "sotOver05": 0.5180910099097975,
+        "sotOver15": 0.16629744714394978,
+        "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
+      },
+      "blockers": []
+    },
+    {
+      "teamId": "stuttgart",
+      "internalPlayerId": "bilal-el-khannouss",
+      "name": "Bilal El Khannouss",
+      "role": "midfielder",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 77.6,
+      "startingProbability": null,
+      "projectedShots": 1.9,
+      "projectedShotsOnTarget": 0.68,
+      "eventProbabilities": {
+        "shotsOver05": 0.8504313807773649,
+        "shotsOver15": 0.5662510042543584,
+        "shotsOver25": 0.29627964655750216,
+        "sotOver05": 0.49338300763441045,
+        "sotOver15": 0.14888345282580961,
+        "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
+      },
+      "blockers": []
+    },
+    {
+      "teamId": "stuttgart",
+      "internalPlayerId": "dzenan-pejcinovic",
+      "name": "Dzenan Pejcinovic",
+      "role": "forward",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 83.1,
+      "startingProbability": null,
+      "projectedShots": 2.5,
+      "projectedShotsOnTarget": 1.03,
+      "eventProbabilities": {
+        "shotsOver05": 0.9179150013761012,
+        "shotsOver15": 0.7127025048163542,
+        "shotsOver25": 0.4561868841166705,
+        "sotOver05": 0.6429930394308526,
+        "sotOver15": 0.27527587004463083,
+        "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
+      },
+      "blockers": []
+    },
+    {
+      "teamId": "stuttgart",
+      "internalPlayerId": "marius-funk",
+      "name": "Marius Funk",
+      "role": "goalkeeper",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "stuttgart",
+      "internalPlayerId": "dennis-seimen",
+      "name": "Dennis Seimen",
+      "role": "goalkeeper",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE"
+      ]
+    },
+    {
+      "teamId": "stuttgart",
+      "internalPlayerId": "tom-walz",
+      "name": "Tom Walz",
+      "role": "goalkeeper",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "stuttgart",
+      "internalPlayerId": "lucas-nagel",
+      "name": "Lucas Nagel",
+      "role": "goalkeeper",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "stuttgart",
+      "internalPlayerId": "luca-jaquez",
+      "name": "Luca Jaquez",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 22.8,
+      "startingProbability": null,
+      "projectedShots": 0.13,
+      "projectedShotsOnTarget": 0.02,
+      "eventProbabilities": null,
+      "blockers": []
+    },
+    {
+      "teamId": "stuttgart",
+      "internalPlayerId": "lorenz-assignon",
+      "name": "Lorenz Assignon",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 5.9,
+      "startingProbability": null,
+      "projectedShots": 0.06,
+      "projectedShotsOnTarget": 0.02,
+      "eventProbabilities": null,
+      "blockers": []
+    },
+    {
+      "teamId": "stuttgart",
+      "internalPlayerId": "maximilian-herwerth",
+      "name": "Maximilian Herwerth",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "stuttgart",
+      "internalPlayerId": "yanik-spalt",
+      "name": "Yanik Spalt",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 12.1,
+      "startingProbability": null,
+      "projectedShots": 0.08,
+      "projectedShotsOnTarget": 0.02,
+      "eventProbabilities": null,
+      "blockers": []
+    },
+    {
+      "teamId": "stuttgart",
+      "internalPlayerId": "alexander-groi",
+      "name": "Alexander Groiß",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "stuttgart",
+      "internalPlayerId": "dominik-nothnagel",
+      "name": "Dominik Nothnagel",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "stuttgart",
+      "internalPlayerId": "ermedin-demirovic",
+      "name": "Ermedin Demirović",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 17.3,
+      "startingProbability": null,
+      "projectedShots": 0.41,
+      "projectedShotsOnTarget": 0.16,
+      "eventProbabilities": null,
+      "blockers": []
+    },
+    {
+      "teamId": "stuttgart",
+      "internalPlayerId": "atakan-karazor",
+      "name": "Atakan Karazor",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 10.1,
+      "startingProbability": null,
+      "projectedShots": 0.06,
+      "projectedShotsOnTarget": 0.02,
+      "eventProbabilities": null,
+      "blockers": []
+    },
+    {
+      "teamId": "stuttgart",
+      "internalPlayerId": "ertugrul-yigit",
+      "name": "Ertugrul Yigit",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "stuttgart",
+      "internalPlayerId": "leo-sauer",
+      "name": "Leo Sauer",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 14.9,
+      "startingProbability": null,
+      "projectedShots": 0.29,
+      "projectedShotsOnTarget": 0.11,
+      "eventProbabilities": null,
+      "blockers": []
+    },
+    {
+      "teamId": "stuttgart",
+      "internalPlayerId": "lauri-penna",
+      "name": "Lauri Penna",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "stuttgart",
+      "internalPlayerId": "jamie-leweling",
+      "name": "Jamie Leweling",
+      "role": "forward",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 26.2,
+      "startingProbability": null,
+      "projectedShots": 0.64,
+      "projectedShotsOnTarget": 0.22,
+      "eventProbabilities": null,
+      "blockers": []
+    },
+    {
+      "teamId": "stuttgart",
+      "internalPlayerId": "jarzinho-malanga",
+      "name": "Jarzinho Malanga",
+      "role": "forward",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "atletico-de-madrid",
+      "internalPlayerId": "jan-oblak",
+      "name": "Jan Oblak",
+      "role": "goalkeeper",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 89.1,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE"
+      ]
+    },
+    {
+      "teamId": "atletico-de-madrid",
+      "internalPlayerId": "david-hancko",
+      "name": "Dávid Hancko",
+      "role": "defender",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 82,
+      "startingProbability": null,
+      "projectedShots": 0.54,
+      "projectedShotsOnTarget": 0.15,
+      "eventProbabilities": {
+        "shotsOver05": 0.41725174762601036,
+        "shotsOver15": 0.10256769134405586,
+        "shotsOver25": 0.01760299614792815,
+        "sotOver05": 0.1392920235749422,
+        "sotOver15": 0.010185827111183543,
+        "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
+      },
+      "blockers": []
+    },
+    {
+      "teamId": "atletico-de-madrid",
+      "internalPlayerId": "marc-pubill",
+      "name": "Marc Pubill",
+      "role": "defender",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 89.3,
+      "startingProbability": null,
+      "projectedShots": 0.52,
+      "projectedShotsOnTarget": 0.18,
+      "eventProbabilities": {
+        "shotsOver05": 0.40547945202980573,
+        "shotsOver15": 0.09632876708530469,
+        "shotsOver25": 0.01594958899973442,
+        "sotOver05": 0.164729788588728,
+        "sotOver15": 0.014381150534699016,
+        "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
+      },
+      "blockers": []
+    },
+    {
+      "teamId": "atletico-de-madrid",
+      "internalPlayerId": "alejandro-grimaldo",
+      "name": "Alejandro Grimaldo",
+      "role": "defender",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 89.2,
+      "startingProbability": null,
+      "projectedShots": 1.38,
+      "projectedShotsOnTarget": 0.5,
+      "eventProbabilities": {
+        "shotsOver05": 0.7484214469402435,
+        "shotsOver15": 0.4012430437177795,
+        "shotsOver25": 0.1616899454942794,
+        "sotOver05": 0.3934693402873666,
+        "sotOver15": 0.09020401043104986,
+        "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
+      },
+      "blockers": []
+    },
+    {
+      "teamId": "atletico-de-madrid",
+      "internalPlayerId": "marcos-llorente",
+      "name": "Marcos Llorente",
+      "role": "midfielder",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 86.7,
+      "startingProbability": null,
+      "projectedShots": 0.75,
+      "projectedShotsOnTarget": 0.27,
+      "eventProbabilities": {
+        "shotsOver05": 0.5276334472589853,
+        "shotsOver15": 0.17335853270322432,
+        "shotsOver25": 0.04050543974481391,
+        "sotOver05": 0.23662050566314685,
+        "sotOver15": 0.030508042192196494,
+        "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
+      },
+      "blockers": []
+    },
+    {
+      "teamId": "atletico-de-madrid",
+      "internalPlayerId": "morten-hjulmand",
+      "name": "Morten Hjulmand",
+      "role": "midfielder",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 89.3,
+      "startingProbability": null,
+      "projectedShots": 0.89,
+      "projectedShotsOnTarget": 0.27,
+      "eventProbabilities": {
+        "shotsOver05": 0.5893442472476546,
+        "shotsOver15": 0.2238606272980671,
+        "shotsOver25": 0.06122041642050069,
+        "sotOver05": 0.23662050566314685,
+        "sotOver15": 0.030508042192196494,
+        "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
+      },
+      "blockers": []
+    },
+    {
+      "teamId": "atletico-de-madrid",
+      "internalPlayerId": "pablo-barrios",
+      "name": "Pablo Barrios",
+      "role": "midfielder",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 81.8,
+      "startingProbability": null,
+      "projectedShots": 0.9,
+      "projectedShotsOnTarget": 0.25,
+      "eventProbabilities": {
+        "shotsOver05": 0.5934303402594009,
+        "shotsOver15": 0.22751764649286166,
+        "shotsOver25": 0.06285693429791905,
+        "sotOver05": 0.22119921692859512,
+        "sotOver15": 0.026499021160743874,
+        "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
+      },
+      "blockers": []
+    },
+    {
+      "teamId": "atletico-de-madrid",
+      "internalPlayerId": "alex-baena",
+      "name": "Álex Baena",
+      "role": "midfielder",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 63.8,
+      "startingProbability": null,
+      "projectedShots": 0.92,
+      "projectedShotsOnTarget": 0.22,
+      "eventProbabilities": {
+        "shotsOver05": 0.6014809589154858,
+        "shotsOver15": 0.2348434411177327,
+        "shotsOver25": 0.06619018293076628,
+        "sotOver05": 0.1974812020375215,
+        "sotOver15": 0.020927066485776247,
+        "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
+      },
+      "blockers": []
+    },
+    {
+      "teamId": "atletico-de-madrid",
+      "internalPlayerId": "giuliano-simeone",
+      "name": "Giuliano Simeone",
+      "role": "forward",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 74.2,
+      "startingProbability": null,
+      "projectedShots": 1.19,
+      "projectedShotsOnTarget": 0.4,
+      "eventProbabilities": {
+        "shotsOver05": 0.6957787359332959,
+        "shotsOver15": 0.3337554316939181,
+        "shotsOver25": 0.1183515656714883,
+        "sotOver05": 0.3296799539643607,
+        "sotOver15": 0.06155193555010485,
+        "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
+      },
+      "blockers": []
+    },
+    {
+      "teamId": "atletico-de-madrid",
+      "internalPlayerId": "julian-alvarez",
+      "name": "Julián Alvarez",
+      "role": "forward",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 77.9,
+      "startingProbability": null,
+      "projectedShots": 1.92,
+      "projectedShotsOnTarget": 0.9,
+      "eventProbabilities": {
+        "shotsOver05": 0.8533930378696498,
+        "shotsOver15": 0.5719076705793775,
+        "shotsOver25": 0.3016817179807161,
+        "sotOver05": 0.5934303402594009,
+        "sotOver15": 0.22751764649286166,
+        "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
+      },
+      "blockers": []
+    },
+    {
+      "teamId": "atletico-de-madrid",
+      "internalPlayerId": "kang-in-lee",
+      "name": "Kang-in Lee",
+      "role": "midfielder",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 68.4,
+      "startingProbability": null,
+      "projectedShots": 1.22,
+      "projectedShotsOnTarget": 0.47,
+      "eventProbabilities": {
+        "shotsOver05": 0.7047698330759857,
+        "shotsOver15": 0.3445890294286884,
+        "shotsOver25": 0.12487873920383707,
+        "sotOver05": 0.3749977317172992,
+        "sotOver15": 0.08124666562442995,
+        "status": "PRELIMINARY_CONDITIONAL_ON_STARTING_EXISTING_POISSON"
+      },
+      "blockers": []
+    },
+    {
+      "teamId": "atletico-de-madrid",
+      "internalPlayerId": "juan-musso",
+      "name": "Juan Musso",
+      "role": "goalkeeper",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE"
+      ]
+    },
+    {
+      "teamId": "atletico-de-madrid",
+      "internalPlayerId": "salvador-esquivel",
+      "name": "Salvador Esquivel",
+      "role": "goalkeeper",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "atletico-de-madrid",
+      "internalPlayerId": "robin-le-normand",
+      "name": "Robin Le Normand",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 15.2,
+      "startingProbability": null,
+      "projectedShots": 0.06,
+      "projectedShotsOnTarget": 0.02,
+      "eventProbabilities": null,
+      "blockers": []
+    },
+    {
+      "teamId": "atletico-de-madrid",
+      "internalPlayerId": "dani-martinez",
+      "name": "Dani Martínez",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "atletico-de-madrid",
+      "internalPlayerId": "obed-vargas",
+      "name": "Obed Vargas",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 3.3,
+      "startingProbability": null,
+      "projectedShots": 0.03,
+      "projectedShotsOnTarget": 0.01,
+      "eventProbabilities": null,
+      "blockers": []
+    },
+    {
+      "teamId": "atletico-de-madrid",
+      "internalPlayerId": "rodrigo-mendoza",
+      "name": "Rodrigo Mendoza",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 2.3,
+      "startingProbability": null,
+      "projectedShots": 0.03,
+      "projectedShotsOnTarget": 0.01,
+      "eventProbabilities": null,
+      "blockers": []
+    },
+    {
+      "teamId": "atletico-de-madrid",
+      "internalPlayerId": "johnny-cardoso",
+      "name": "Johnny Cardoso",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 13.3,
+      "startingProbability": null,
+      "projectedShots": 0.09,
+      "projectedShotsOnTarget": 0.02,
+      "eventProbabilities": null,
+      "blockers": []
+    },
+    {
+      "teamId": "atletico-de-madrid",
+      "internalPlayerId": "arnau-ortiz",
+      "name": "Arnau Ortiz",
+      "role": "forward",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 15.2,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "atletico-de-madrid",
+      "internalPlayerId": "jorge-castillo",
+      "name": "Jorge Castillo",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "atletico-de-madrid",
+      "internalPlayerId": "alexander-sorloth",
+      "name": "Alexander Sørloth",
+      "role": "forward",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 22.6,
+      "startingProbability": null,
+      "projectedShots": 0.63,
+      "projectedShotsOnTarget": 0.31,
+      "eventProbabilities": null,
+      "blockers": []
+    },
+    {
+      "teamId": "atletico-de-madrid",
+      "internalPlayerId": "ademola-lookman",
+      "name": "Ademola Lookman",
+      "role": "forward",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 16.5,
+      "startingProbability": null,
+      "projectedShots": 0.42,
+      "projectedShotsOnTarget": 0.13,
+      "eventProbabilities": null,
+      "blockers": []
+    },
+    {
+      "teamId": "atletico-de-madrid",
+      "internalPlayerId": "jonathan-david",
+      "name": "Jonathan David",
+      "role": "forward",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 9.9,
+      "startingProbability": null,
+      "projectedShots": 0.2,
+      "projectedShotsOnTarget": 0.08,
+      "eventProbabilities": null,
+      "blockers": []
+    }
+  ],
+  "events": [
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "jeff-chabot",
+        "teamId": "stuttgart"
+      },
+      "probability": 0.4831486655083008,
+      "mean": 0.66,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:jeff-chabot",
+      "baselineProbability": 0.5454545454545454,
+      "baseline": {
+        "probability": 0.5454545454545454,
+        "n": 22,
+        "positives": 12,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "jeff-chabot",
+        "teamId": "stuttgart"
+      },
+      "probability": 0.14202678474377928,
+      "mean": 0.66,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:jeff-chabot",
+      "baselineProbability": 0.2727272727272727,
+      "baseline": {
+        "probability": 0.2727272727272727,
+        "n": 22,
+        "positives": 6,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 2.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "jeff-chabot",
+        "teamId": "stuttgart"
+      },
+      "probability": 0.029456564091487225,
+      "mean": 0.66,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",2.5,\"OVER\"]:jeff-chabot",
+      "baselineProbability": 0.18181818181818182,
+      "baseline": {
+        "probability": 0.18181818181818182,
+        "n": 22,
+        "positives": 4,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "jeff-chabot",
+        "teamId": "stuttgart"
+      },
+      "probability": 0.22119921692859512,
+      "mean": 0.25,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:jeff-chabot",
+      "baselineProbability": 0.36363636363636365,
+      "baseline": {
+        "probability": 0.36363636363636365,
+        "n": 22,
+        "positives": 8,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "jeff-chabot",
+        "teamId": "stuttgart"
+      },
+      "probability": 0.026499021160743874,
+      "mean": 0.25,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:jeff-chabot",
+      "baselineProbability": 0.045454545454545456,
+      "baseline": {
+        "probability": 0.045454545454545456,
+        "n": 22,
+        "positives": 1,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "finn-jeltsch",
+        "teamId": "stuttgart"
+      },
+      "probability": 0.44010163343459796,
+      "mean": 0.58,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:finn-jeltsch",
+      "baselineProbability": 0.5454545454545454,
+      "baseline": {
+        "probability": 0.5454545454545454,
+        "n": 22,
+        "positives": 12,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "finn-jeltsch",
+        "teamId": "stuttgart"
+      },
+      "probability": 0.11536058082666478,
+      "mean": 0.58,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:finn-jeltsch",
+      "baselineProbability": 0.2727272727272727,
+      "baseline": {
+        "probability": 0.2727272727272727,
+        "n": 22,
+        "positives": 6,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 2.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "finn-jeltsch",
+        "teamId": "stuttgart"
+      },
+      "probability": 0.021185675570364215,
+      "mean": 0.58,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",2.5,\"OVER\"]:finn-jeltsch",
+      "baselineProbability": 0.18181818181818182,
+      "baseline": {
+        "probability": 0.18181818181818182,
+        "n": 22,
+        "positives": 4,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "finn-jeltsch",
+        "teamId": "stuttgart"
+      },
+      "probability": 0.1392920235749422,
+      "mean": 0.15,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:finn-jeltsch",
+      "baselineProbability": 0.36363636363636365,
+      "baseline": {
+        "probability": 0.36363636363636365,
+        "n": 22,
+        "positives": 8,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "finn-jeltsch",
+        "teamId": "stuttgart"
+      },
+      "probability": 0.010185827111183543,
+      "mean": 0.15,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:finn-jeltsch",
+      "baselineProbability": 0.045454545454545456,
+      "baseline": {
+        "probability": 0.045454545454545456,
+        "n": 22,
+        "positives": 1,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "ramon-hendriks",
+        "teamId": "stuttgart"
+      },
+      "probability": 0.28107626656807383,
+      "mean": 0.33,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:ramon-hendriks",
+      "baselineProbability": 0.5454545454545454,
+      "baseline": {
+        "probability": 0.5454545454545454,
+        "n": 22,
+        "positives": 12,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "ramon-hendriks",
+        "teamId": "stuttgart"
+      },
+      "probability": 0.04383143453553817,
+      "mean": 0.33,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:ramon-hendriks",
+      "baselineProbability": 0.2727272727272727,
+      "baseline": {
+        "probability": 0.2727272727272727,
+        "n": 22,
+        "positives": 6,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 2.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "ramon-hendriks",
+        "teamId": "stuttgart"
+      },
+      "probability": 0.0046860372501698055,
+      "mean": 0.33,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",2.5,\"OVER\"]:ramon-hendriks",
+      "baselineProbability": 0.18181818181818182,
+      "baseline": {
+        "probability": 0.18181818181818182,
+        "n": 22,
+        "positives": 4,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "ramon-hendriks",
+        "teamId": "stuttgart"
+      },
+      "probability": 0.07688365361336424,
+      "mean": 0.08,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:ramon-hendriks",
+      "baselineProbability": 0.36363636363636365,
+      "baseline": {
+        "probability": 0.36363636363636365,
+        "n": 22,
+        "positives": 8,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "ramon-hendriks",
+        "teamId": "stuttgart"
+      },
+      "probability": 0.003034345902433344,
+      "mean": 0.08,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:ramon-hendriks",
+      "baselineProbability": 0.045454545454545456,
+      "baseline": {
+        "probability": 0.045454545454545456,
+        "n": 22,
+        "positives": 1,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "josha-vagnoman",
+        "teamId": "stuttgart"
+      },
+      "probability": 0.5180910099097975,
+      "mean": 0.73,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:josha-vagnoman",
+      "baselineProbability": 0.5454545454545454,
+      "baseline": {
+        "probability": 0.5454545454545454,
+        "n": 22,
+        "positives": 12,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "josha-vagnoman",
+        "teamId": "stuttgart"
+      },
+      "probability": 0.16629744714394978,
+      "mean": 0.73,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:josha-vagnoman",
+      "baselineProbability": 0.2727272727272727,
+      "baseline": {
+        "probability": 0.2727272727272727,
+        "n": 22,
+        "positives": 6,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 2.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "josha-vagnoman",
+        "teamId": "stuttgart"
+      },
+      "probability": 0.03789279673441537,
+      "mean": 0.73,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",2.5,\"OVER\"]:josha-vagnoman",
+      "baselineProbability": 0.18181818181818182,
+      "baseline": {
+        "probability": 0.18181818181818182,
+        "n": 22,
+        "positives": 4,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "josha-vagnoman",
+        "teamId": "stuttgart"
+      },
+      "probability": 0.28822967723739024,
+      "mean": 0.34,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:josha-vagnoman",
+      "baselineProbability": 0.36363636363636365,
+      "baseline": {
+        "probability": 0.36363636363636365,
+        "n": 22,
+        "positives": 8,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "josha-vagnoman",
+        "teamId": "stuttgart"
+      },
+      "probability": 0.04622776749810287,
+      "mean": 0.34,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:josha-vagnoman",
+      "baselineProbability": 0.045454545454545456,
+      "baseline": {
+        "probability": 0.045454545454545456,
+        "n": 22,
+        "positives": 1,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "angelo-stiller",
+        "teamId": "stuttgart"
+      },
+      "probability": 0.4456727152654929,
+      "mean": 0.59,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:angelo-stiller",
+      "baselineProbability": 0.5454545454545454,
+      "baseline": {
+        "probability": 0.5454545454545454,
+        "n": 22,
+        "positives": 12,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "angelo-stiller",
+        "teamId": "stuttgart"
+      },
+      "probability": 0.11861961727213366,
+      "mean": 0.59,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:angelo-stiller",
+      "baselineProbability": 0.2727272727272727,
+      "baseline": {
+        "probability": 0.2727272727272727,
+        "n": 22,
+        "positives": 6,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 2.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "angelo-stiller",
+        "teamId": "stuttgart"
+      },
+      "probability": 0.02213895336409266,
+      "mean": 0.59,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",2.5,\"OVER\"]:angelo-stiller",
+      "baselineProbability": 0.18181818181818182,
+      "baseline": {
+        "probability": 0.18181818181818182,
+        "n": 22,
+        "positives": 4,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "angelo-stiller",
+        "teamId": "stuttgart"
+      },
+      "probability": 0.1730408660566377,
+      "mean": 0.19,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:angelo-stiller",
+      "baselineProbability": 0.36363636363636365,
+      "baseline": {
+        "probability": 0.36363636363636365,
+        "n": 22,
+        "positives": 8,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "angelo-stiller",
+        "teamId": "stuttgart"
+      },
+      "probability": 0.015918630607398843,
+      "mean": 0.19,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:angelo-stiller",
+      "baselineProbability": 0.045454545454545456,
+      "baseline": {
+        "probability": 0.045454545454545456,
+        "n": 22,
+        "positives": 1,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "grischa-promel",
+        "teamId": "stuttgart"
+      },
+      "probability": 0.8296670111745905,
+      "mean": 1.77,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:grischa-promel",
+      "baselineProbability": 0.5454545454545454,
+      "baseline": {
+        "probability": 0.5454545454545454,
+        "n": 22,
+        "positives": 12,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "grischa-promel",
+        "teamId": "stuttgart"
+      },
+      "probability": 0.5281776209536159,
+      "mean": 1.77,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:grischa-promel",
+      "baselineProbability": 0.2727272727272727,
+      "baseline": {
+        "probability": 0.2727272727272727,
+        "n": 22,
+        "positives": 6,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 2.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "grischa-promel",
+        "teamId": "stuttgart"
+      },
+      "probability": 0.2613595106080533,
+      "mean": 1.77,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",2.5,\"OVER\"]:grischa-promel",
+      "baselineProbability": 0.18181818181818182,
+      "baseline": {
+        "probability": 0.18181818181818182,
+        "n": 22,
+        "positives": 4,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "grischa-promel",
+        "teamId": "stuttgart"
+      },
+      "probability": 0.41725174762601036,
+      "mean": 0.54,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:grischa-promel",
+      "baselineProbability": 0.36363636363636365,
+      "baseline": {
+        "probability": 0.36363636363636365,
+        "n": 22,
+        "positives": 8,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "grischa-promel",
+        "teamId": "stuttgart"
+      },
+      "probability": 0.10256769134405586,
+      "mean": 0.54,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:grischa-promel",
+      "baselineProbability": 0.045454545454545456,
+      "baseline": {
+        "probability": 0.045454545454545456,
+        "n": 22,
+        "positives": 1,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "deniz-undav",
+        "teamId": "stuttgart"
+      },
+      "probability": 0.964915645899155,
+      "mean": 3.35,
+      "quote": null,
+      "role": "forward",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:deniz-undav",
+      "baselineProbability": 0.5454545454545454,
+      "baseline": {
+        "probability": 0.5454545454545454,
+        "n": 22,
+        "positives": 12,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "deniz-undav",
+        "teamId": "stuttgart"
+      },
+      "probability": 0.8473830596613241,
+      "mean": 3.35,
+      "quote": null,
+      "role": "forward",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:deniz-undav",
+      "baselineProbability": 0.2727272727272727,
+      "baseline": {
+        "probability": 0.2727272727272727,
+        "n": 22,
+        "positives": 6,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 2.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "deniz-undav",
+        "teamId": "stuttgart"
+      },
+      "probability": 0.6505159777129574,
+      "mean": 3.35,
+      "quote": null,
+      "role": "forward",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",2.5,\"OVER\"]:deniz-undav",
+      "baselineProbability": 0.18181818181818182,
+      "baseline": {
+        "probability": 0.18181818181818182,
+        "n": 22,
+        "positives": 4,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "deniz-undav",
+        "teamId": "stuttgart"
+      },
+      "probability": 0.7106157820609493,
+      "mean": 1.24,
+      "quote": null,
+      "role": "forward",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:deniz-undav",
+      "baselineProbability": 0.36363636363636365,
+      "baseline": {
+        "probability": 0.36363636363636365,
+        "n": 22,
+        "positives": 8,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "deniz-undav",
+        "teamId": "stuttgart"
+      },
+      "probability": 0.3517793518165264,
+      "mean": 1.24,
+      "quote": null,
+      "role": "forward",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:deniz-undav",
+      "baselineProbability": 0.045454545454545456,
+      "baseline": {
+        "probability": 0.045454545454545456,
+        "n": 22,
+        "positives": 1,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "chris-fuhrich",
+        "teamId": "stuttgart"
+      },
+      "probability": 0.8191342073828779,
+      "mean": 1.71,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:chris-fuhrich",
+      "baselineProbability": 0.5454545454545454,
+      "baseline": {
+        "probability": 0.5454545454545454,
+        "n": 22,
+        "positives": 12,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "chris-fuhrich",
+        "teamId": "stuttgart"
+      },
+      "probability": 0.509853702007599,
+      "mean": 1.71,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:chris-fuhrich",
+      "baselineProbability": 0.2727272727272727,
+      "baseline": {
+        "probability": 0.2727272727272727,
+        "n": 22,
+        "positives": 6,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 2.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "chris-fuhrich",
+        "teamId": "stuttgart"
+      },
+      "probability": 0.24541886991173567,
+      "mean": 1.71,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",2.5,\"OVER\"]:chris-fuhrich",
+      "baselineProbability": 0.18181818181818182,
+      "baseline": {
+        "probability": 0.18181818181818182,
+        "n": 22,
+        "positives": 4,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "chris-fuhrich",
+        "teamId": "stuttgart"
+      },
+      "probability": 0.5180910099097975,
+      "mean": 0.73,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:chris-fuhrich",
+      "baselineProbability": 0.36363636363636365,
+      "baseline": {
+        "probability": 0.36363636363636365,
+        "n": 22,
+        "positives": 8,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "chris-fuhrich",
+        "teamId": "stuttgart"
+      },
+      "probability": 0.16629744714394978,
+      "mean": 0.73,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:chris-fuhrich",
+      "baselineProbability": 0.045454545454545456,
+      "baseline": {
+        "probability": 0.045454545454545456,
+        "n": 22,
+        "positives": 1,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "bilal-el-khannouss",
+        "teamId": "stuttgart"
+      },
+      "probability": 0.8504313807773649,
+      "mean": 1.9,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:bilal-el-khannouss",
+      "baselineProbability": 0.5454545454545454,
+      "baseline": {
+        "probability": 0.5454545454545454,
+        "n": 22,
+        "positives": 12,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "bilal-el-khannouss",
+        "teamId": "stuttgart"
+      },
+      "probability": 0.5662510042543584,
+      "mean": 1.9,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:bilal-el-khannouss",
+      "baselineProbability": 0.2727272727272727,
+      "baseline": {
+        "probability": 0.2727272727272727,
+        "n": 22,
+        "positives": 6,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 2.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "bilal-el-khannouss",
+        "teamId": "stuttgart"
+      },
+      "probability": 0.29627964655750216,
+      "mean": 1.9,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",2.5,\"OVER\"]:bilal-el-khannouss",
+      "baselineProbability": 0.18181818181818182,
+      "baseline": {
+        "probability": 0.18181818181818182,
+        "n": 22,
+        "positives": 4,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "bilal-el-khannouss",
+        "teamId": "stuttgart"
+      },
+      "probability": 0.49338300763441045,
+      "mean": 0.68,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:bilal-el-khannouss",
+      "baselineProbability": 0.36363636363636365,
+      "baseline": {
+        "probability": 0.36363636363636365,
+        "n": 22,
+        "positives": 8,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "bilal-el-khannouss",
+        "teamId": "stuttgart"
+      },
+      "probability": 0.14888345282580961,
+      "mean": 0.68,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:bilal-el-khannouss",
+      "baselineProbability": 0.045454545454545456,
+      "baseline": {
+        "probability": 0.045454545454545456,
+        "n": 22,
+        "positives": 1,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "dzenan-pejcinovic",
+        "teamId": "stuttgart"
+      },
+      "probability": 0.9179150013761012,
+      "mean": 2.5,
+      "quote": null,
+      "role": "forward",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:dzenan-pejcinovic",
+      "baselineProbability": 0.5454545454545454,
+      "baseline": {
+        "probability": 0.5454545454545454,
+        "n": 22,
+        "positives": 12,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "dzenan-pejcinovic",
+        "teamId": "stuttgart"
+      },
+      "probability": 0.7127025048163542,
+      "mean": 2.5,
+      "quote": null,
+      "role": "forward",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:dzenan-pejcinovic",
+      "baselineProbability": 0.2727272727272727,
+      "baseline": {
+        "probability": 0.2727272727272727,
+        "n": 22,
+        "positives": 6,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 2.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "dzenan-pejcinovic",
+        "teamId": "stuttgart"
+      },
+      "probability": 0.4562,
+      "mean": 2.5,
+      "quote": {
+        "decimal": null,
+        "verifiedAt": null,
+        "marketUpdatedAt": null,
+        "availability": "UNAVAILABLE",
+        "providerStatus": null,
+        "source": null
+      },
+      "selectionId": "forecast:v2:ucl-2026-27-md03-09:dzenan-pejcinovic:shots:3",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",2.5,\"OVER\"]:dzenan-pejcinovic",
+      "baselineProbability": 0.18181818181818182,
+      "baseline": {
+        "probability": 0.18181818181818182,
+        "n": 22,
+        "positives": 4,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "dzenan-pejcinovic",
+        "teamId": "stuttgart"
+      },
+      "probability": 0.643,
+      "mean": 1.03,
+      "quote": {
+        "decimal": null,
+        "verifiedAt": null,
+        "marketUpdatedAt": null,
+        "availability": "UNAVAILABLE",
+        "providerStatus": null,
+        "source": null
+      },
+      "selectionId": "forecast:v2:ucl-2026-27-md03-09:dzenan-pejcinovic:sot:1",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:dzenan-pejcinovic",
+      "baselineProbability": 0.36363636363636365,
+      "baseline": {
+        "probability": 0.36363636363636365,
+        "n": 22,
+        "positives": 8,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "dzenan-pejcinovic",
+        "teamId": "stuttgart"
+      },
+      "probability": 0.27527587004463083,
+      "mean": 1.03,
+      "quote": null,
+      "role": "forward",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:dzenan-pejcinovic",
+      "baselineProbability": 0.045454545454545456,
+      "baseline": {
+        "probability": 0.045454545454545456,
+        "n": 22,
+        "positives": 1,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "david-hancko",
+        "teamId": "atletico-de-madrid"
+      },
+      "probability": 0.41725174762601036,
+      "mean": 0.54,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:david-hancko",
+      "baselineProbability": 0.5454545454545454,
+      "baseline": {
+        "probability": 0.5454545454545454,
+        "n": 22,
+        "positives": 12,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "david-hancko",
+        "teamId": "atletico-de-madrid"
+      },
+      "probability": 0.10256769134405586,
+      "mean": 0.54,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:david-hancko",
+      "baselineProbability": 0.2727272727272727,
+      "baseline": {
+        "probability": 0.2727272727272727,
+        "n": 22,
+        "positives": 6,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 2.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "david-hancko",
+        "teamId": "atletico-de-madrid"
+      },
+      "probability": 0.01760299614792815,
+      "mean": 0.54,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",2.5,\"OVER\"]:david-hancko",
+      "baselineProbability": 0.18181818181818182,
+      "baseline": {
+        "probability": 0.18181818181818182,
+        "n": 22,
+        "positives": 4,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "david-hancko",
+        "teamId": "atletico-de-madrid"
+      },
+      "probability": 0.1392920235749422,
+      "mean": 0.15,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:david-hancko",
+      "baselineProbability": 0.36363636363636365,
+      "baseline": {
+        "probability": 0.36363636363636365,
+        "n": 22,
+        "positives": 8,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "david-hancko",
+        "teamId": "atletico-de-madrid"
+      },
+      "probability": 0.010185827111183543,
+      "mean": 0.15,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:david-hancko",
+      "baselineProbability": 0.045454545454545456,
+      "baseline": {
+        "probability": 0.045454545454545456,
+        "n": 22,
+        "positives": 1,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "marc-pubill",
+        "teamId": "atletico-de-madrid"
+      },
+      "probability": 0.40547945202980573,
+      "mean": 0.52,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:marc-pubill",
+      "baselineProbability": 0.5454545454545454,
+      "baseline": {
+        "probability": 0.5454545454545454,
+        "n": 22,
+        "positives": 12,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "marc-pubill",
+        "teamId": "atletico-de-madrid"
+      },
+      "probability": 0.09632876708530469,
+      "mean": 0.52,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:marc-pubill",
+      "baselineProbability": 0.2727272727272727,
+      "baseline": {
+        "probability": 0.2727272727272727,
+        "n": 22,
+        "positives": 6,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 2.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "marc-pubill",
+        "teamId": "atletico-de-madrid"
+      },
+      "probability": 0.01594958899973442,
+      "mean": 0.52,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",2.5,\"OVER\"]:marc-pubill",
+      "baselineProbability": 0.18181818181818182,
+      "baseline": {
+        "probability": 0.18181818181818182,
+        "n": 22,
+        "positives": 4,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "marc-pubill",
+        "teamId": "atletico-de-madrid"
+      },
+      "probability": 0.164729788588728,
+      "mean": 0.18,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:marc-pubill",
+      "baselineProbability": 0.36363636363636365,
+      "baseline": {
+        "probability": 0.36363636363636365,
+        "n": 22,
+        "positives": 8,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "marc-pubill",
+        "teamId": "atletico-de-madrid"
+      },
+      "probability": 0.014381150534699016,
+      "mean": 0.18,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:marc-pubill",
+      "baselineProbability": 0.045454545454545456,
+      "baseline": {
+        "probability": 0.045454545454545456,
+        "n": 22,
+        "positives": 1,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "alejandro-grimaldo",
+        "teamId": "atletico-de-madrid"
+      },
+      "probability": 0.7484214469402435,
+      "mean": 1.38,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:alejandro-grimaldo",
+      "baselineProbability": 0.5454545454545454,
+      "baseline": {
+        "probability": 0.5454545454545454,
+        "n": 22,
+        "positives": 12,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "alejandro-grimaldo",
+        "teamId": "atletico-de-madrid"
+      },
+      "probability": 0.4012430437177795,
+      "mean": 1.38,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:alejandro-grimaldo",
+      "baselineProbability": 0.2727272727272727,
+      "baseline": {
+        "probability": 0.2727272727272727,
+        "n": 22,
+        "positives": 6,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 2.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "alejandro-grimaldo",
+        "teamId": "atletico-de-madrid"
+      },
+      "probability": 0.1616899454942794,
+      "mean": 1.38,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",2.5,\"OVER\"]:alejandro-grimaldo",
+      "baselineProbability": 0.18181818181818182,
+      "baseline": {
+        "probability": 0.18181818181818182,
+        "n": 22,
+        "positives": 4,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "alejandro-grimaldo",
+        "teamId": "atletico-de-madrid"
+      },
+      "probability": 0.3934693402873666,
+      "mean": 0.5,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:alejandro-grimaldo",
+      "baselineProbability": 0.36363636363636365,
+      "baseline": {
+        "probability": 0.36363636363636365,
+        "n": 22,
+        "positives": 8,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "alejandro-grimaldo",
+        "teamId": "atletico-de-madrid"
+      },
+      "probability": 0.09020401043104986,
+      "mean": 0.5,
+      "quote": null,
+      "role": "defender",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:alejandro-grimaldo",
+      "baselineProbability": 0.045454545454545456,
+      "baseline": {
+        "probability": 0.045454545454545456,
+        "n": 22,
+        "positives": 1,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "marcos-llorente",
+        "teamId": "atletico-de-madrid"
+      },
+      "probability": 0.5276334472589853,
+      "mean": 0.75,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:marcos-llorente",
+      "baselineProbability": 0.5454545454545454,
+      "baseline": {
+        "probability": 0.5454545454545454,
+        "n": 22,
+        "positives": 12,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "marcos-llorente",
+        "teamId": "atletico-de-madrid"
+      },
+      "probability": 0.17335853270322432,
+      "mean": 0.75,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:marcos-llorente",
+      "baselineProbability": 0.2727272727272727,
+      "baseline": {
+        "probability": 0.2727272727272727,
+        "n": 22,
+        "positives": 6,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 2.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "marcos-llorente",
+        "teamId": "atletico-de-madrid"
+      },
+      "probability": 0.04050543974481391,
+      "mean": 0.75,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",2.5,\"OVER\"]:marcos-llorente",
+      "baselineProbability": 0.18181818181818182,
+      "baseline": {
+        "probability": 0.18181818181818182,
+        "n": 22,
+        "positives": 4,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "marcos-llorente",
+        "teamId": "atletico-de-madrid"
+      },
+      "probability": 0.23662050566314685,
+      "mean": 0.27,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:marcos-llorente",
+      "baselineProbability": 0.36363636363636365,
+      "baseline": {
+        "probability": 0.36363636363636365,
+        "n": 22,
+        "positives": 8,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "marcos-llorente",
+        "teamId": "atletico-de-madrid"
+      },
+      "probability": 0.030508042192196494,
+      "mean": 0.27,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:marcos-llorente",
+      "baselineProbability": 0.045454545454545456,
+      "baseline": {
+        "probability": 0.045454545454545456,
+        "n": 22,
+        "positives": 1,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "morten-hjulmand",
+        "teamId": "atletico-de-madrid"
+      },
+      "probability": 0.5893442472476546,
+      "mean": 0.89,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:morten-hjulmand",
+      "baselineProbability": 0.5454545454545454,
+      "baseline": {
+        "probability": 0.5454545454545454,
+        "n": 22,
+        "positives": 12,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "morten-hjulmand",
+        "teamId": "atletico-de-madrid"
+      },
+      "probability": 0.2238606272980671,
+      "mean": 0.89,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:morten-hjulmand",
+      "baselineProbability": 0.2727272727272727,
+      "baseline": {
+        "probability": 0.2727272727272727,
+        "n": 22,
+        "positives": 6,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 2.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "morten-hjulmand",
+        "teamId": "atletico-de-madrid"
+      },
+      "probability": 0.06122041642050069,
+      "mean": 0.89,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",2.5,\"OVER\"]:morten-hjulmand",
+      "baselineProbability": 0.18181818181818182,
+      "baseline": {
+        "probability": 0.18181818181818182,
+        "n": 22,
+        "positives": 4,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "morten-hjulmand",
+        "teamId": "atletico-de-madrid"
+      },
+      "probability": 0.23662050566314685,
+      "mean": 0.27,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:morten-hjulmand",
+      "baselineProbability": 0.36363636363636365,
+      "baseline": {
+        "probability": 0.36363636363636365,
+        "n": 22,
+        "positives": 8,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "morten-hjulmand",
+        "teamId": "atletico-de-madrid"
+      },
+      "probability": 0.030508042192196494,
+      "mean": 0.27,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:morten-hjulmand",
+      "baselineProbability": 0.045454545454545456,
+      "baseline": {
+        "probability": 0.045454545454545456,
+        "n": 22,
+        "positives": 1,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "pablo-barrios",
+        "teamId": "atletico-de-madrid"
+      },
+      "probability": 0.5934303402594009,
+      "mean": 0.9,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:pablo-barrios",
+      "baselineProbability": 0.5454545454545454,
+      "baseline": {
+        "probability": 0.5454545454545454,
+        "n": 22,
+        "positives": 12,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "pablo-barrios",
+        "teamId": "atletico-de-madrid"
+      },
+      "probability": 0.22751764649286166,
+      "mean": 0.9,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:pablo-barrios",
+      "baselineProbability": 0.2727272727272727,
+      "baseline": {
+        "probability": 0.2727272727272727,
+        "n": 22,
+        "positives": 6,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 2.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "pablo-barrios",
+        "teamId": "atletico-de-madrid"
+      },
+      "probability": 0.06285693429791905,
+      "mean": 0.9,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",2.5,\"OVER\"]:pablo-barrios",
+      "baselineProbability": 0.18181818181818182,
+      "baseline": {
+        "probability": 0.18181818181818182,
+        "n": 22,
+        "positives": 4,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "pablo-barrios",
+        "teamId": "atletico-de-madrid"
+      },
+      "probability": 0.22119921692859512,
+      "mean": 0.25,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:pablo-barrios",
+      "baselineProbability": 0.36363636363636365,
+      "baseline": {
+        "probability": 0.36363636363636365,
+        "n": 22,
+        "positives": 8,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "pablo-barrios",
+        "teamId": "atletico-de-madrid"
+      },
+      "probability": 0.026499021160743874,
+      "mean": 0.25,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:pablo-barrios",
+      "baselineProbability": 0.045454545454545456,
+      "baseline": {
+        "probability": 0.045454545454545456,
+        "n": 22,
+        "positives": 1,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "alex-baena",
+        "teamId": "atletico-de-madrid"
+      },
+      "probability": 0.6014809589154858,
+      "mean": 0.92,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:alex-baena",
+      "baselineProbability": 0.5454545454545454,
+      "baseline": {
+        "probability": 0.5454545454545454,
+        "n": 22,
+        "positives": 12,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "alex-baena",
+        "teamId": "atletico-de-madrid"
+      },
+      "probability": 0.2348434411177327,
+      "mean": 0.92,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:alex-baena",
+      "baselineProbability": 0.2727272727272727,
+      "baseline": {
+        "probability": 0.2727272727272727,
+        "n": 22,
+        "positives": 6,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 2.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "alex-baena",
+        "teamId": "atletico-de-madrid"
+      },
+      "probability": 0.06619018293076628,
+      "mean": 0.92,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",2.5,\"OVER\"]:alex-baena",
+      "baselineProbability": 0.18181818181818182,
+      "baseline": {
+        "probability": 0.18181818181818182,
+        "n": 22,
+        "positives": 4,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "alex-baena",
+        "teamId": "atletico-de-madrid"
+      },
+      "probability": 0.1974812020375215,
+      "mean": 0.22,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:alex-baena",
+      "baselineProbability": 0.36363636363636365,
+      "baseline": {
+        "probability": 0.36363636363636365,
+        "n": 22,
+        "positives": 8,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "alex-baena",
+        "teamId": "atletico-de-madrid"
+      },
+      "probability": 0.020927066485776247,
+      "mean": 0.22,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:alex-baena",
+      "baselineProbability": 0.045454545454545456,
+      "baseline": {
+        "probability": 0.045454545454545456,
+        "n": 22,
+        "positives": 1,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "giuliano-simeone",
+        "teamId": "atletico-de-madrid"
+      },
+      "probability": 0.6957787359332959,
+      "mean": 1.19,
+      "quote": null,
+      "role": "forward",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:giuliano-simeone",
+      "baselineProbability": 0.5454545454545454,
+      "baseline": {
+        "probability": 0.5454545454545454,
+        "n": 22,
+        "positives": 12,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "giuliano-simeone",
+        "teamId": "atletico-de-madrid"
+      },
+      "probability": 0.3337554316939181,
+      "mean": 1.19,
+      "quote": null,
+      "role": "forward",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:giuliano-simeone",
+      "baselineProbability": 0.2727272727272727,
+      "baseline": {
+        "probability": 0.2727272727272727,
+        "n": 22,
+        "positives": 6,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 2.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "giuliano-simeone",
+        "teamId": "atletico-de-madrid"
+      },
+      "probability": 0.1183515656714883,
+      "mean": 1.19,
+      "quote": null,
+      "role": "forward",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",2.5,\"OVER\"]:giuliano-simeone",
+      "baselineProbability": 0.18181818181818182,
+      "baseline": {
+        "probability": 0.18181818181818182,
+        "n": 22,
+        "positives": 4,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "giuliano-simeone",
+        "teamId": "atletico-de-madrid"
+      },
+      "probability": 0.3296799539643607,
+      "mean": 0.4,
+      "quote": null,
+      "role": "forward",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:giuliano-simeone",
+      "baselineProbability": 0.36363636363636365,
+      "baseline": {
+        "probability": 0.36363636363636365,
+        "n": 22,
+        "positives": 8,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "giuliano-simeone",
+        "teamId": "atletico-de-madrid"
+      },
+      "probability": 0.06155193555010485,
+      "mean": 0.4,
+      "quote": null,
+      "role": "forward",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:giuliano-simeone",
+      "baselineProbability": 0.045454545454545456,
+      "baseline": {
+        "probability": 0.045454545454545456,
+        "n": 22,
+        "positives": 1,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "julian-alvarez",
+        "teamId": "atletico-de-madrid"
+      },
+      "probability": 0.8533930378696498,
+      "mean": 1.92,
+      "quote": null,
+      "role": "forward",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:julian-alvarez",
+      "baselineProbability": 0.5454545454545454,
+      "baseline": {
+        "probability": 0.5454545454545454,
+        "n": 22,
+        "positives": 12,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "julian-alvarez",
+        "teamId": "atletico-de-madrid"
+      },
+      "probability": 0.5719076705793775,
+      "mean": 1.92,
+      "quote": null,
+      "role": "forward",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:julian-alvarez",
+      "baselineProbability": 0.2727272727272727,
+      "baseline": {
+        "probability": 0.2727272727272727,
+        "n": 22,
+        "positives": 6,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 2.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "julian-alvarez",
+        "teamId": "atletico-de-madrid"
+      },
+      "probability": 0.3016817179807161,
+      "mean": 1.92,
+      "quote": null,
+      "role": "forward",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",2.5,\"OVER\"]:julian-alvarez",
+      "baselineProbability": 0.18181818181818182,
+      "baseline": {
+        "probability": 0.18181818181818182,
+        "n": 22,
+        "positives": 4,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "julian-alvarez",
+        "teamId": "atletico-de-madrid"
+      },
+      "probability": 0.5934303402594009,
+      "mean": 0.9,
+      "quote": null,
+      "role": "forward",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:julian-alvarez",
+      "baselineProbability": 0.36363636363636365,
+      "baseline": {
+        "probability": 0.36363636363636365,
+        "n": 22,
+        "positives": 8,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "julian-alvarez",
+        "teamId": "atletico-de-madrid"
+      },
+      "probability": 0.22751764649286166,
+      "mean": 0.9,
+      "quote": null,
+      "role": "forward",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:julian-alvarez",
+      "baselineProbability": 0.045454545454545456,
+      "baseline": {
+        "probability": 0.045454545454545456,
+        "n": 22,
+        "positives": 1,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "kang-in-lee",
+        "teamId": "atletico-de-madrid"
+      },
+      "probability": 0.7047698330759857,
+      "mean": 1.22,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:kang-in-lee",
+      "baselineProbability": 0.5454545454545454,
+      "baseline": {
+        "probability": 0.5454545454545454,
+        "n": 22,
+        "positives": 12,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "kang-in-lee",
+        "teamId": "atletico-de-madrid"
+      },
+      "probability": 0.3445890294286884,
+      "mean": 1.22,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:kang-in-lee",
+      "baselineProbability": 0.2727272727272727,
+      "baseline": {
+        "probability": 0.2727272727272727,
+        "n": 22,
+        "positives": 6,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 2.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "kang-in-lee",
+        "teamId": "atletico-de-madrid"
+      },
+      "probability": 0.12487873920383707,
+      "mean": 1.22,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,true]\",2.5,\"OVER\"]:kang-in-lee",
+      "baselineProbability": 0.18181818181818182,
+      "baseline": {
+        "probability": 0.18181818181818182,
+        "n": 22,
+        "positives": 4,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "kang-in-lee",
+        "teamId": "atletico-de-madrid"
+      },
+      "probability": 0.3749977317172992,
+      "mean": 0.47,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",0.5,\"OVER\"]:kang-in-lee",
+      "baselineProbability": 0.36363636363636365,
+      "baseline": {
+        "probability": 0.36363636363636365,
+        "n": 22,
+        "positives": 8,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": true,
+        "subjectId": "kang-in-lee",
+        "teamId": "atletico-de-madrid"
+      },
+      "probability": 0.08124666562442995,
+      "mean": 0.47,
+      "quote": null,
+      "role": "midfielder",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,true]\",1.5,\"OVER\"]:kang-in-lee",
+      "baselineProbability": 0.045454545454545456,
+      "baseline": {
+        "probability": 0.045454545454545456,
+        "n": 22,
+        "positives": 1,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f",
+      "target": {
+        "scope": "match",
+        "metric": "result",
+        "threshold": null,
+        "direction": "1",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": 0.312,
+      "mean": null,
+      "quote": {
+        "decimal": 3.25,
+        "oddsRaw": 325,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911222:823787551:5386946533",
+      "eventId": "[\"[\\\"champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f\\\",\\\"match\\\",\\\"result\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"1\"]:",
+      "baselineProbability": 0.4970178926441352,
+      "baseline": {
+        "probability": 0.4970178926441352,
+        "n": 503,
+        "positives": 250,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f",
+      "target": {
+        "scope": "match",
+        "metric": "result",
+        "threshold": null,
+        "direction": "X",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": 0.193,
+      "mean": null,
+      "quote": {
+        "decimal": 3.75,
+        "oddsRaw": 375,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911222:823787551:5386946534",
+      "eventId": "[\"[\\\"champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f\\\",\\\"match\\\",\\\"result\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"X\"]:",
+      "baselineProbability": 0.1749502982107356,
+      "baseline": {
+        "probability": 0.1749502982107356,
+        "n": 503,
+        "positives": 88,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f",
+      "target": {
+        "scope": "match",
+        "metric": "result",
+        "threshold": null,
+        "direction": "2",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": 0.495,
+      "mean": null,
+      "quote": {
+        "decimal": 2.05,
+        "oddsRaw": 205,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911222:823787551:5386946535",
+      "eventId": "[\"[\\\"champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f\\\",\\\"match\\\",\\\"result\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"2\"]:",
+      "baselineProbability": 0.32803180914512925,
+      "baseline": {
+        "probability": 0.32803180914512925,
+        "n": 503,
+        "positives": 165,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f",
+      "target": {
+        "scope": "match",
+        "metric": "double-chance",
+        "threshold": null,
+        "direction": "1X",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": 0.505,
+      "mean": null,
+      "quote": {
+        "decimal": 1.75,
+        "oddsRaw": 175,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911222:823788048:5387069739",
+      "eventId": "[\"[\\\"champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f\\\",\\\"match\\\",\\\"double-chance\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"1X\"]:",
+      "baselineProbability": 0.6719681908548708,
+      "baseline": {
+        "probability": 0.6719681908548708,
+        "n": 503,
+        "positives": 338,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f",
+      "target": {
+        "scope": "match",
+        "metric": "double-chance",
+        "threshold": null,
+        "direction": "X2",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": 0.688,
+      "mean": null,
+      "quote": {
+        "decimal": 1.33,
+        "oddsRaw": 133,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911222:823788048:5387069741",
+      "eventId": "[\"[\\\"champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f\\\",\\\"match\\\",\\\"double-chance\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"X2\"]:",
+      "baselineProbability": 0.5029821073558648,
+      "baseline": {
+        "probability": 0.5029821073558648,
+        "n": 503,
+        "positives": 253,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f",
+      "target": {
+        "scope": "match",
+        "metric": "corners",
+        "threshold": null,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": null,
+      "mean": 10.4,
+      "quote": {
+        "decimal": 1.8,
+        "oddsRaw": 180,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911222:825861967:5398006520",
+      "eventId": "[\"[\\\"champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f\\\",\\\"match\\\",\\\"corners\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"OVER\"]:",
+      "baselineProbability": 1,
+      "baseline": {
+        "probability": 1,
+        "n": 206,
+        "positives": 206,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f",
+      "target": {
+        "scope": "team",
+        "metric": "corners",
+        "threshold": null,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": "stuttgart"
+      },
+      "probability": null,
+      "mean": 5.89,
+      "quote": {
+        "decimal": 11,
+        "oddsRaw": 1100,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911222:825861977:5398006517",
+      "eventId": "[\"[\\\"champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f\\\",\\\"team\\\",\\\"corners\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"OVER\"]:stuttgart",
+      "baselineProbability": 0.9635922330097088,
+      "baseline": {
+        "probability": 0.9635922330097088,
+        "n": 412,
+        "positives": 397,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f",
+      "target": {
+        "scope": "team",
+        "metric": "corners",
+        "threshold": null,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": "atletico-de-madrid"
+      },
+      "probability": null,
+      "mean": 4.56,
+      "quote": {
+        "decimal": 12,
+        "oddsRaw": 1200,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911222:825861973:5398006524",
+      "eventId": "[\"[\\\"champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f\\\",\\\"team\\\",\\\"corners\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"OVER\"]:atletico-de-madrid",
+      "baselineProbability": 0.9635922330097088,
+      "baseline": {
+        "probability": 0.9635922330097088,
+        "n": 412,
+        "positives": 397,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f",
+      "target": {
+        "scope": "team",
+        "metric": "sot",
+        "threshold": null,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": "stuttgart"
+      },
+      "probability": null,
+      "mean": 5.79,
+      "quote": {
+        "decimal": 20,
+        "oddsRaw": 2000,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911222:825488587:5395925987",
+      "eventId": "[\"[\\\"champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f\\\",\\\"team\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"OVER\"]:stuttgart",
+      "baselineProbability": 0.9830917874396136,
+      "baseline": {
+        "probability": 0.9830917874396136,
+        "n": 414,
+        "positives": 407,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f",
+      "target": {
+        "scope": "team",
+        "metric": "sot",
+        "threshold": null,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": "atletico-de-madrid"
+      },
+      "probability": null,
+      "mean": 4.19,
+      "quote": {
+        "decimal": 10,
+        "oddsRaw": 1000,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911222:825488585:5395925985",
+      "eventId": "[\"[\\\"champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f\\\",\\\"team\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"OVER\"]:atletico-de-madrid",
+      "baselineProbability": 0.9830917874396136,
+      "baseline": {
+        "probability": 0.9830917874396136,
+        "n": 414,
+        "positives": 407,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f",
+      "target": {
+        "scope": "match",
+        "metric": "shots",
+        "threshold": null,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": null,
+      "mean": 27.5,
+      "quote": {
+        "decimal": 4.25,
+        "oddsRaw": 425,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911222:825488552:5395925859",
+      "eventId": "[\"[\\\"champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f\\\",\\\"match\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"OVER\"]:",
+      "baselineProbability": 1,
+      "baseline": {
+        "probability": 1,
+        "n": 207,
+        "positives": 207,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f",
+      "target": {
+        "scope": "team",
+        "metric": "shots",
+        "threshold": null,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": "stuttgart"
+      },
+      "probability": null,
+      "mean": 15.79,
+      "quote": {
+        "decimal": 1.22,
+        "oddsRaw": 122,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911222:825486326:5395925580",
+      "eventId": "[\"[\\\"champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f\\\",\\\"team\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"OVER\"]:stuttgart",
+      "baselineProbability": 1,
+      "baseline": {
+        "probability": 1,
+        "n": 414,
+        "positives": 414,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f",
+      "target": {
+        "scope": "team",
+        "metric": "shots",
+        "threshold": null,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": "atletico-de-madrid"
+      },
+      "probability": null,
+      "mean": 11.69,
+      "quote": {
+        "decimal": 1.04,
+        "oddsRaw": 104,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911222:825488638:5395926193",
+      "eventId": "[\"[\\\"champions-collective:0f6a090047ab4e2883e0212e6787f134f29fddd48d1888f1031f2f68b6d9305f\\\",\\\"team\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"OVER\"]:atletico-de-madrid",
+      "baselineProbability": 1,
+      "baseline": {
+        "probability": 1,
+        "n": 414,
+        "positives": 414,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "shots",
+        "threshold": 2.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": true,
+        "woodwork": false,
+        "extraTime": true,
+        "conditionalOnStart": true,
+        "subjectId": "deniz-undav",
+        "teamId": "stuttgart"
+      },
+      "probability": null,
+      "mean": 3.35,
+      "quote": {
+        "decimal": 1.5,
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "marketUpdatedAt": "2026-10-20T09:41:48.021Z",
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "providerStatus": "open",
+        "source": {
+          "provider": "sisal",
+          "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001",
+          "snapshotPath": "data/normalized/odds/sisal/champions-league.json",
+          "rawFile": "data/raw/odds/sisal/champions-league/2026-10-20T12-48-29-424Z.json.gz",
+          "acquisition": "public-page-browser-cdp"
+        }
+      },
+      "selectionId": "forecast:v2:ucl-2026-27-md03-09:deniz-undav:shots:3",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"shots\\\",\\\"REGULATION\\\",true,false,true,true]\",2.5,\"OVER\"]:deniz-undav",
+      "baselineProbability": 0.18181818181818182,
+      "baseline": {
+        "probability": 0.18181818181818182,
+        "n": 22,
+        "positives": 4,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 0.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": true,
+        "woodwork": true,
+        "extraTime": true,
+        "conditionalOnStart": true,
+        "subjectId": "julian-alvarez",
+        "teamId": "atletico-de-madrid"
+      },
+      "probability": null,
+      "mean": 0.9,
+      "quote": {
+        "decimal": 1.25,
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "marketUpdatedAt": "2026-10-18T16:50:58.084Z",
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "providerStatus": "open",
+        "source": {
+          "provider": "sisal",
+          "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001",
+          "snapshotPath": "data/normalized/odds/sisal/champions-league.json",
+          "rawFile": "data/raw/odds/sisal/champions-league/2026-10-20T12-48-29-424Z.json.gz",
+          "acquisition": "public-page-browser-cdp"
+        }
+      },
+      "selectionId": "forecast:v2:ucl-2026-27-md03-09:julian-alvarez:sot:1",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",true,true,true,true]\",0.5,\"OVER\"]:julian-alvarez",
+      "baselineProbability": 0.36363636363636365,
+      "baseline": {
+        "probability": 0.36363636363636365,
+        "n": 22,
+        "positives": 8,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    },
+    {
+      "modelId": "champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1",
+      "target": {
+        "scope": "player",
+        "metric": "sot",
+        "threshold": 1.5,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": true,
+        "woodwork": true,
+        "extraTime": true,
+        "conditionalOnStart": true,
+        "subjectId": "deniz-undav",
+        "teamId": "stuttgart"
+      },
+      "probability": null,
+      "mean": 1.24,
+      "quote": {
+        "decimal": 3.5,
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "marketUpdatedAt": "2026-10-20T09:41:47.849Z",
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "providerStatus": "open",
+        "source": {
+          "provider": "sisal",
+          "url": "https://www.sisal.it/scommesse-matchpoint/quote/calcio/champions-league?cluster=27&cde=1000001",
+          "snapshotPath": "data/normalized/odds/sisal/champions-league.json",
+          "rawFile": "data/raw/odds/sisal/champions-league/2026-10-20T12-48-29-424Z.json.gz",
+          "acquisition": "public-page-browser-cdp"
+        }
+      },
+      "selectionId": "forecast:v2:ucl-2026-27-md03-09:deniz-undav:sot:2",
+      "eventId": "[\"[\\\"champions-player:a35dbe39d94ea36062c962f3920eccc903e0ec54982f3a6e91516e112db345d1\\\",\\\"player\\\",\\\"sot\\\",\\\"REGULATION\\\",true,true,true,true]\",1.5,\"OVER\"]:deniz-undav",
+      "baselineProbability": 0.045454545454545456,
+      "baseline": {
+        "probability": 0.045454545454545456,
+        "n": 22,
+        "positives": 1,
+        "availableAt": "2026-10-20T14:36:53.313Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:36:53.313Z",
+      "trainingThroughAt": "2026-10-20T14:36:53.313Z",
+      "baselineAvailableAt": "2026-10-20T14:36:53.313Z"
+    }
+  ],
+  "teamProjections": [
+    {
+      "teamId": "stuttgart",
+      "team": "Stuttgart",
+      "venue": "home",
+      "expectedGoals": 1.37,
+      "shotsTotal": {
+        "central": 15.79,
+        "sd": 4.52,
+        "min": 12,
+        "max": 19.6,
+        "interval": "p20-p80-approx",
+        "normalization": {
+          "method": "relative-to-domestic-league",
+          "targetBaseline": 14.419,
+          "currentSeasonReliabilityPct": 40
+        },
+        "inputs": [
+          {
+            "label": "Stuttgart in casa",
+            "value": 16.706,
+            "weightPct": 51.8
+          },
+          {
+            "label": "Atlético de Madrid concede in trasferta",
+            "value": 14.426,
+            "weightPct": 40.3
+          },
+          {
+            "label": "ultime 8 Stuttgart",
+            "value": 16.677,
+            "weightPct": 8
+          }
+        ]
+      },
+      "shotsOnTarget": {
+        "central": 5.79,
+        "sd": 2.68,
+        "min": 3.5,
+        "max": 8,
+        "interval": "p20-p80-approx",
+        "normalization": {
+          "method": "relative-to-domestic-league",
+          "targetBaseline": 5.226,
+          "currentSeasonReliabilityPct": 40
+        },
+        "inputs": [
+          {
+            "label": "Stuttgart in casa",
+            "value": 6.201,
+            "weightPct": 51.8
+          },
+          {
+            "label": "Atlético de Madrid concede in trasferta",
+            "value": 5.165,
+            "weightPct": 40.3
+          },
+          {
+            "label": "ultime 8 Stuttgart",
+            "value": 6.313,
+            "weightPct": 8
+          }
+        ]
+      },
+      "corners": {
+        "central": 5.89,
+        "sd": 3.07,
+        "min": 3.3,
+        "max": 8.5,
+        "interval": "p20-p80-approx",
+        "normalization": {
+          "method": "relative-to-domestic-league",
+          "targetBaseline": 5.565,
+          "currentSeasonReliabilityPct": 40
+        },
+        "inputs": [
+          {
+            "label": "Stuttgart in casa",
+            "value": 6.184,
+            "weightPct": 51.8
+          },
+          {
+            "label": "Atlético de Madrid concede in trasferta",
+            "value": 5.146,
+            "weightPct": 40.3
+          },
+          {
+            "label": "ultime 8 Stuttgart",
+            "value": 7.742,
+            "weightPct": 8
+          }
+        ]
+      },
+      "fouls": {
+        "central": 10.48,
+        "sd": 4.5,
+        "min": 6.7,
+        "max": 14.3,
+        "interval": "p20-p80-approx",
+        "normalization": {
+          "method": "relative-to-domestic-league",
+          "targetBaseline": 11.401,
+          "currentSeasonReliabilityPct": 40
+        },
+        "inputs": [
+          {
+            "label": "Stuttgart in casa",
+            "value": 11.378,
+            "weightPct": 51.8
+          },
+          {
+            "label": "Atlético de Madrid concede in trasferta",
+            "value": 9.301,
+            "weightPct": 40.3
+          },
+          {
+            "label": "ultime 8 Stuttgart",
+            "value": 10.633,
+            "weightPct": 8
+          }
+        ]
+      },
+      "cards": {
+        "central": 1.88,
+        "sd": 1.21,
+        "min": 0.9,
+        "max": 2.9,
+        "interval": "p20-p80-approx",
+        "normalization": {
+          "method": "relative-to-domestic-league",
+          "targetBaseline": 1.848,
+          "currentSeasonReliabilityPct": 40
+        },
+        "inputs": [
+          {
+            "label": "Stuttgart in casa",
+            "value": 1.962,
+            "weightPct": 51.8
+          },
+          {
+            "label": "Atlético de Madrid concede in trasferta",
+            "value": 1.852,
+            "weightPct": 40.3
+          },
+          {
+            "label": "ultime 8 Stuttgart",
+            "value": 1.547,
+            "weightPct": 8
+          }
+        ]
+      },
+      "lines": {
+        "shotsTotal": [
+          {
+            "threshold": 8.5,
+            "overPct": 95.9,
+            "underPct": 4.1
+          },
+          {
+            "threshold": 10.5,
+            "overPct": 88.5,
+            "underPct": 11.5
+          },
+          {
+            "threshold": 12.5,
+            "overPct": 75.8,
+            "underPct": 24.2
+          },
+          {
+            "threshold": 14.5,
+            "overPct": 59.1,
+            "underPct": 40.9
+          },
+          {
+            "threshold": 16.5,
+            "overPct": 41.5,
+            "underPct": 58.5
+          }
+        ],
+        "shotsOnTarget": [
+          {
+            "threshold": 2.5,
+            "overPct": 90.5,
+            "underPct": 9.5
+          },
+          {
+            "threshold": 3.5,
+            "overPct": 79.8,
+            "underPct": 20.2
+          },
+          {
+            "threshold": 4.5,
+            "overPct": 65.8,
+            "underPct": 34.2
+          },
+          {
+            "threshold": 5.5,
+            "overPct": 50.6,
+            "underPct": 49.4
+          },
+          {
+            "threshold": 6.5,
+            "overPct": 36.3,
+            "underPct": 63.7
+          }
+        ],
+        "corners": [
+          {
+            "threshold": 3.5,
+            "overPct": 77,
+            "underPct": 23
+          },
+          {
+            "threshold": 4.5,
+            "overPct": 63.9,
+            "underPct": 36.1
+          },
+          {
+            "threshold": 5.5,
+            "overPct": 50.3,
+            "underPct": 49.7
+          },
+          {
+            "threshold": 6.5,
+            "overPct": 37.7,
+            "underPct": 62.3
+          }
+        ]
+      }
+    },
+    {
+      "teamId": "atletico-de-madrid",
+      "team": "Atlético de Madrid",
+      "venue": "away",
+      "expectedGoals": 1.82,
+      "shotsTotal": {
+        "central": 11.69,
+        "sd": 4.15,
+        "min": 8.2,
+        "max": 15.2,
+        "interval": "p20-p80-approx",
+        "normalization": {
+          "method": "relative-to-domestic-league",
+          "targetBaseline": 11.57,
+          "currentSeasonReliabilityPct": 53.8
+        },
+        "inputs": [
+          {
+            "label": "Atlético de Madrid in trasferta",
+            "value": 11.761,
+            "weightPct": 50.2
+          },
+          {
+            "label": "Stuttgart concede in casa",
+            "value": 10.45,
+            "weightPct": 39
+          },
+          {
+            "label": "ultime 8 Atlético de Madrid",
+            "value": 15.894,
+            "weightPct": 10.8
+          }
+        ]
+      },
+      "shotsOnTarget": {
+        "central": 4.19,
+        "sd": 2.05,
+        "min": 2.5,
+        "max": 5.9,
+        "interval": "p20-p80-approx",
+        "normalization": {
+          "method": "relative-to-domestic-league",
+          "targetBaseline": 3.991,
+          "currentSeasonReliabilityPct": 53.8
+        },
+        "inputs": [
+          {
+            "label": "Atlético de Madrid in trasferta",
+            "value": 4.289,
+            "weightPct": 50.2
+          },
+          {
+            "label": "Stuttgart concede in casa",
+            "value": 3.487,
+            "weightPct": 39
+          },
+          {
+            "label": "ultime 8 Atlético de Madrid",
+            "value": 6.298,
+            "weightPct": 10.8
+          }
+        ]
+      },
+      "corners": {
+        "central": 4.56,
+        "sd": 2.21,
+        "min": 2.7,
+        "max": 6.4,
+        "interval": "p20-p80-approx",
+        "normalization": {
+          "method": "relative-to-domestic-league",
+          "targetBaseline": 4.277,
+          "currentSeasonReliabilityPct": 53.8
+        },
+        "inputs": [
+          {
+            "label": "Atlético de Madrid in trasferta",
+            "value": 4.976,
+            "weightPct": 50.2
+          },
+          {
+            "label": "Stuttgart concede in casa",
+            "value": 4.033,
+            "weightPct": 39
+          },
+          {
+            "label": "ultime 8 Atlético de Madrid",
+            "value": 4.513,
+            "weightPct": 10.8
+          }
+        ]
+      },
+      "fouls": {
+        "central": 12.01,
+        "sd": 3.58,
+        "min": 9,
+        "max": 15,
+        "interval": "p20-p80-approx",
+        "normalization": {
+          "method": "relative-to-domestic-league",
+          "targetBaseline": 11.633,
+          "currentSeasonReliabilityPct": 53.8
+        },
+        "inputs": [
+          {
+            "label": "Atlético de Madrid in trasferta",
+            "value": 10.845,
+            "weightPct": 50.2
+          },
+          {
+            "label": "Stuttgart concede in casa",
+            "value": 13.687,
+            "weightPct": 39
+          },
+          {
+            "label": "ultime 8 Atlético de Madrid",
+            "value": 11.324,
+            "weightPct": 10.8
+          }
+        ]
+      },
+      "cards": {
+        "central": 2.06,
+        "sd": 1.13,
+        "min": 1.1,
+        "max": 3,
+        "interval": "p20-p80-approx",
+        "normalization": {
+          "method": "relative-to-domestic-league",
+          "targetBaseline": 2.075,
+          "currentSeasonReliabilityPct": 53.8
+        },
+        "inputs": [
+          {
+            "label": "Atlético de Madrid in trasferta",
+            "value": 2.001,
+            "weightPct": 50.2
+          },
+          {
+            "label": "Stuttgart concede in casa",
+            "value": 2.268,
+            "weightPct": 39
+          },
+          {
+            "label": "ultime 8 Atlético de Madrid",
+            "value": 1.543,
+            "weightPct": 10.8
+          }
+        ]
+      },
+      "lines": {
+        "shotsTotal": [
+          {
+            "threshold": 8.5,
+            "overPct": 77,
+            "underPct": 23
+          },
+          {
+            "threshold": 10.5,
+            "overPct": 58.5,
+            "underPct": 41.5
+          },
+          {
+            "threshold": 12.5,
+            "overPct": 39.3,
+            "underPct": 60.7
+          },
+          {
+            "threshold": 14.5,
+            "overPct": 23.5,
+            "underPct": 76.5
+          },
+          {
+            "threshold": 16.5,
+            "overPct": 12.6,
+            "underPct": 87.4
+          }
+        ],
+        "shotsOnTarget": [
+          {
+            "threshold": 2.5,
+            "overPct": 78.8,
+            "underPct": 21.2
+          },
+          {
+            "threshold": 3.5,
+            "overPct": 60.3,
+            "underPct": 39.7
+          },
+          {
+            "threshold": 4.5,
+            "overPct": 40.8,
+            "underPct": 59.2
+          },
+          {
+            "threshold": 5.5,
+            "overPct": 24.5,
+            "underPct": 75.5
+          },
+          {
+            "threshold": 6.5,
+            "overPct": 13.1,
+            "underPct": 86.9
+          }
+        ],
+        "corners": [
+          {
+            "threshold": 3.5,
+            "overPct": 65.9,
+            "underPct": 34.1
+          },
+          {
+            "threshold": 4.5,
+            "overPct": 47.6,
+            "underPct": 52.4
+          },
+          {
+            "threshold": 5.5,
+            "overPct": 31,
+            "underPct": 69
+          },
+          {
+            "threshold": 6.5,
+            "overPct": 18.3,
+            "underPct": 81.7
+          }
+        ]
+      }
+    }
+  ],
+  "contentHash": "c49b1507fbae91dde83e18e59a8adb65ddf436d296adc514641e6dd0c9df134b"
+}
