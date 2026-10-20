@@ -52,11 +52,22 @@ function projectDocumentedTeam({teamId,players,lineupVerified,benchVerified,targ
  if(!lineupVerified||!benchVerified||!players.length||players.some(p=>!(p.expectedMinutes>0)||!Number.isFinite(p.per90?.shots)||!Number.isFinite(p.per90?.shotsOnTarget)))return {status:'blocked-documentation-or-minutes',players:[]};
  if(players.reduce((s,p)=>s+p.expectedMinutes,0)>990)return {status:'blocked-existing-990-minute-budget',players:[]};
  if(!Number.isFinite(targetShots)||!Number.isFinite(targetSOT))return {status:'blocked-team-volumes',players:[]};
- const shots=scaleShotProjections(players,'shots',targetShots),sot=scaleShotProjections(players,'shotsOnTarget',targetSOT);
- const result=shots.map(s=>({playerId:s.player.playerId,shots:s.projection,sot:sot.find(t=>t.player.playerId===s.player.playerId)?.projection}));
- const ds=Number((result.reduce((s,p)=>s+p.shots,0)-targetShots).toFixed(2));
- const dt=Number((result.reduce((s,p)=>s+p.sot,0)-targetSOT).toFixed(2));
- // Do not introduce a new conservation formula to conceal an existing helper limit.
+ const projections=precision=>{
+  const shots=scaleShotProjections(players,'shots',targetShots,precision),sot=scaleShotProjections(players,'shotsOnTarget',targetSOT,precision);
+  const result=shots.map(s=>({playerId:s.player.playerId,shots:s.projection,sot:sot.find(t=>t.player.playerId===s.player.playerId)?.projection}));
+  const ds=Number((result.reduce((s,p)=>s+p.shots,0)-targetShots).toFixed(precision));
+  const dt=Number((result.reduce((s,p)=>s+p.sot,0)-targetSOT).toFixed(precision));
+  return {result,ds,dt};
+ };
+ const passes=({result,ds,dt})=>Math.abs(ds)<=0.02&&Math.abs(dt)<=0.02&&result.every(p=>p.sot<=p.shots);
+ let allocation=projections(2);
+ // Retain the established allocation unless only two-decimal rounding blocks it.
+ // The same raw rates, minutes, factors, targets and 0.02 gate apply on retry.
+ if(!passes(allocation)){
+  const precise=projections(4);
+  if(passes(precise))allocation=precise;
+ }
+ const {result,ds,dt}=allocation;
  if(Math.abs(ds)>0.02||Math.abs(dt)>0.02||result.some(p=>p.sot>p.shots))return {status:'blocked-existing-reconciliation-limit',players:[],diagnostic:{shotsDifference:ds,sotDifference:dt,unapprovedRaw:result}};
  return {status:'offline-conditional-only',players:result,shotsDifference:ds,sotDifference:dt};
 }
