@@ -3,7 +3,7 @@ const {settleLeg:settleStrictLeg,settleArchivedLeg}=await import(`./betting-sett
 const {createPersonalBetslipStore}=await import(`./personal-betslip-store.mjs?v=${encodeURIComponent(release)}`);
 const {hasVerifiedPlayableQuote,isUnquotedIndividualForecast,sharedForecastsForMatch,isCanonicalModelForecast}=await import(`./shared-forecast-contract.mjs?v=${encodeURIComponent(release)}`);
 
-const {loadChampionsWorkspace}=await import(`./champions-workspace-catalog.mjs?v=${encodeURIComponent(release)}`);
+const {loadChampionsWorkspaceMd3Derived}=await import(`./champions-workspace-catalog.mjs?v=${encodeURIComponent(release)}`);
 const {championsAuditDisplay}=await import(`./champions-audit-display.mjs?v=${encodeURIComponent(release)}`);
 
 export function createPage(deps){
@@ -356,7 +356,7 @@ export function createPage(deps){
       :data.isAuditArchive
       ?`<span class="betting-archive-performance"><span><small>Successo</small><strong>${metric(success,pct,"%")}</strong></span><span><small>ROI parziale</small><strong>${profit>0?"+":""}${metric(profit,pct,"%")}</strong></span></span><span>${stats.archiveWins} vinte · ${stats.archiveStake-stats.archiveWins-stats.archiveVoids} perse · ${pending} da verificare</span><span>Puntato ${odds(stats.archiveStake)} € · ritorno ${odds(stats.archiveGrossReturn)} €</span><span>Netto ${stats.archiveNetProfit>0?"+":""}${odds(stats.archiveNetProfit)} €</span><span class="betting-champions-verification">Rendimento parziale · 1 € per esito verificato · grigi esclusi</span>`
       :`<span class="betting-archive-performance"><span><small>Successo</small><strong>${metric(success,pct,"%")}</strong></span><span><small>Guadagno</small><strong>${profit>0?"+":""}${metric(profit,pct,"%")}</strong></span></span><span>${wins} esatte su ${total}${stats.archiveVoids?` · ${stats.archiveVoids} annullate`:""}${pending?` · ${pending} da verificare`:""}</span><span>Puntato ${odds(stats.archiveStake)} € · ritorno ${odds(stats.archiveGrossReturn)} €</span><span>Netto ${stats.archiveNetProfit>0?"+":""}${odds(stats.archiveNetProfit)} €</span><span>Calcolo su singole giocate da 1 € definite</span>${verified?'<span class="betting-champions-verification">Verifica statistica · liquidazione Sisal non certificata</span>':""}`;
-    const count=number===3?`7 esiti singoli preliminari · ${data.availableForecasts??7} previsioni disponibili`:data.slips?`${data.slips.length} schedine`:`${data.fixtures.length} schedine partita · ${data.summary.predictions} pronostici`;
+    const count=number===3?`${data.availableForecasts??0} previsioni preliminari disponibili`:data.slips?`${data.slips.length} schedine`:`${data.fixtures.length} schedine partita · ${data.summary.predictions} pronostici`;
     return `<a class="betting-archive-card betting-archive-card--champions team-directory-card team-flip-card" data-champions-matchday="${number}" href="schedina.html?competizione=champions&amp;giornata=${number}" aria-label="Apri le schedine Champions League della ${ordinalWord(number)} giornata" style="--team-primary:#0756c9;--team-secondary:#02183f"><span class="team-flip-inner"><span class="team-flip-face team-flip-front betting-archive-card-front betting-champions-front" style="background:radial-gradient(circle at 70% 18%,rgba(80,196,255,.5),transparent 42%),linear-gradient(145deg,#0966e8,#031b4b)!important;color:#fff"><span class="betting-archive-number">CL${number}</span><small>UEFA</small>${number===3?`<span class="betting-champions-front-summary">3ª giornata · ${total?"In verifica":"Da giocare"}</span>`:""}${number===2?`<span class="betting-champions-front-summary">${number}ª giornata · ${data.summary.predictions} pronostici</span>`:""}</span><span class="team-flip-face team-flip-back betting-archive-card-back"><strong>Champions League</strong><span>${number}ª giornata · ${esc(data.season)}</span><span>${count}</span>${performance}<b>Apri le schedine Champions</b></span></span></a>`;
   }
 
@@ -465,7 +465,7 @@ export function createPage(deps){
     if(competition==="champions"){
       const number=Number(matchday||1);
       if(![1,2,3].includes(number))throw new Error("Giornata Champions non disponibile");
-      const workspace=await loadChampionsWorkspace(load,number);
+      const workspace=await loadChampionsWorkspaceMd3Derived(load,number);
       document.querySelector("#app").innerHTML=hero(`UEFA Champions League · ${number}ª giornata`,"Schedine",number===3?"Pronostici aggiornati con le formazioni probabili e la panchina provvisoria, secondo i criteri condivisi con la Serie A.":"Pronostici e risultati originali archiviati, in sola consultazione.")+`<nav class="betting-round-back"><a href="schedina.html">← Tutte le giornate</a><a href="champions-league.html">Letture Champions →</a></nav>`+championsWorkspaceMarkup(workspace);
       mountChampionsWorkspace(workspace);
       return;
@@ -488,7 +488,7 @@ export function createPage(deps){
       return;
     }
     const {settleMd3}=await import("./champions-md3-approved.mjs");
-    const md3Workspace=await loadChampionsWorkspace(load,3);
+    const md3Workspace=await loadChampionsWorkspaceMd3Derived(load,3);
     const championsMd03={...settleMd3({...md3Workspace.source,slips:[{legs:md3Workspace.all.filter(leg=>leg.suggestionAnalysis.suggested).map(leg=>({...leg,fixtureId:leg.matchId}))}]},{fixtures:md3Workspace.fixtures}),availableForecasts:md3Workspace.all.filter(leg=>leg.suggestionAnalysis.suggested).length};
     document.querySelector("#app").innerHTML=hero("Archivio · Stagione 2026/27","Schedina","Le schedine e le MyCombo sono raccolte separatamente giornata per giornata.")+`<section class="betting-archive" aria-labelledby="betting-archive-title"><header class="betting-archive-intro"><div><p class="eyebrow">Archivio schedine</p><h2 id="betting-archive-title">Competizioni e giornate</h2></div><p>Le card blu raccolgono la Champions; seguono le giornate di Serie A.</p></header><div class="betting-archive-list team-directory-grid team-flip-grid">${championsArchiveCard(champions)}${championsArchiveCard(championsMd02,2)}${championsArchiveCard(championsMd03,3)}${archiveCard(md1,1,matchById)}${archiveCard(md2,2,matchById)}${archiveCard(md3,3,matchById)}${archiveCard(md4,4,matchById)}${archiveCard(md5,5,matchById)}${archiveCard(md6,6,matchById)}${archiveCard(md7,7,matchById)}</div></section>`;
     // First touch reveals the existing reverse face; second touch follows its link.

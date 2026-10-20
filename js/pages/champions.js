@@ -419,8 +419,8 @@ export function createPage(deps){
 
   async function appendSharedSchedina(matchday,fixtureId,host){
     if(!host||typeof host.insertAdjacentHTML!=="function")return;
-    const [{loadChampionsWorkspace},{createPage:createBettingPage}]=await Promise.all([import('./champions-workspace-catalog.mjs?v=20261020-champions-lineup-forecasts-v1'),import('./betting.js?v=20261020-champions-event-validation-v1')]);
-    const workspace=await loadChampionsWorkspace(load,matchday);
+    const [{loadChampionsWorkspaceMd3Derived},{createPage:createBettingPage}]=await Promise.all([import('./champions-workspace-catalog.mjs?v=20261020-md3-derived-v2'),import('./betting.js?v=20261020-md3-derived-v2')]);
+    const workspace=await loadChampionsWorkspaceMd3Derived(load,matchday);
     const controller=createBettingPage({...deps,dateOnly:deps.dateOnly||(value=>String(value||"").slice(0,10))});
     const section=host.querySelector('#lettura-pronostici .rd-section-content');
     const target=section||host;
@@ -450,7 +450,7 @@ export function createPage(deps){
     const motivationByFixture=new Map(motivation.fixtures.map(fixture=>[fixture.matchId,fixture]));
     const requestedCalendarFixture=requestedMatchId?data.fixtures.find(fixture=>fixture.id===requestedMatchId):null;
     if(requestedCalendarFixture?.matchday===3&&requestedCalendarFixture.refereeAssignment?.status==='assigned'){
-      const [profiles,{md3RefereeMarkup},catalog,{md3ForecastMarkup},probables,{md3ProbableMarkup}]=await Promise.all([load('champions-referee-profiles-md03-2026-27.json'),import('./reading-detail/champions-md3-referees.mjs?v=20261019-md3-referees-v1'),load('champions-md03-preliminary-2026-27.json'),import('./champions-md3-ui.mjs?v=20261019-md3-callups-v3'),load('champions-md03-probable-individuals-2026-27.json'),import('./champions-md3-probable.mjs?v=20261020-md3-squads-v1')]);
+      const [profiles,{md3RefereeMarkup},catalog,{md3ForecastMarkup},probables,{md3ProbableMarkup}]=await Promise.all([load('champions-referee-profiles-md03-2026-27.json'),import('./reading-detail/champions-md3-referees.mjs?v=20261019-md3-referees-v1'),load('champions-md03-preliminary-2026-27.json'),import('./champions-md3-ui.mjs?v=20261019-md3-callups-v3'),load('../derived/champions-md03/probable-individuals-v2-2026-10-20.json'),import('./champions-md3-probable.mjs?v=20261020-md3-squads-v1')]);
       const profile=profiles.referees.find(p=>p.refereeId===requestedCalendarFixture.refereeAssignment.refereeId);
       const fixture=catalog.fixtures.find(f=>f.fixtureId===requestedMatchId);
       const probableFixture=probables.fixtures.find(f=>f.fixtureId===requestedMatchId);

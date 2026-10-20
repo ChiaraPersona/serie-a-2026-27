@@ -26,8 +26,7 @@ function assessPreliminary(leg){
  if(leg.marketScope==='player'&&!leg.forecastEvidence)reasons.push('PLAYER_ADMISSION_EVIDENCE_MISSING');
  return {eligible:reasons.length===0,reasons:[...new Set(reasons)],conservativeExpectedValuePct:null};
 }
-function selectPreliminaryMatch(match){
- if(match.matchId!==TARGET)throw Error('Preliminary pilot is restricted to Fenerbahce-Slavia');
+function selectPreliminaryFixture(match){
  const views=match.selections.map(selectorView);
  const result=selector.chooseSuggestions({selections:views},'probability-first',{assessment:assessPreliminary,probabilityKey:'modelProbabilityPct'});
  const ranks=new Map(result.accepted.map((l,i)=>[l.selectionId,i+1]));
@@ -46,4 +45,8 @@ function selectPreliminaryMatch(match){
  const selected=selections.filter(l=>l.suggestionAnalysis.suggested);
  return {...match,selections,suggestions:result.accepted.map(l=>l.selectionId),suggestionSummary:{total:selected.length,byFamily:Object.fromEntries([...new Set(selected.map(l=>l.suggestionAnalysis.family))].map(f=>[f,selected.filter(l=>l.suggestionAnalysis.family===f).length]))}};
 }
-module.exports={TARGET,selectorView,assessPreliminary,selectPreliminaryMatch};
+function selectPreliminaryMatch(match){
+ if(match.matchId!==TARGET)throw Error('Preliminary pilot is restricted to Fenerbahce-Slavia');
+ return selectPreliminaryFixture(match);
+}
+module.exports={TARGET,selectorView,assessPreliminary,selectPreliminaryMatch,selectPreliminaryFixture};

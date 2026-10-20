@@ -111,3 +111,24 @@ export async function loadChampionsWorkspace(load,matchday){
   if(all.some(leg=>!fixtures.some(f=>f.id===leg.matchId)))throw new Error('Fixture Champions estranea alla giornata');
   return {championsWorkspace:true,matchday,teamForecasts,season:source.season,source,fixtures,all,slips:[],oddsRetrievedAt:source.oddsRetrievedAt||all[0]?.betSelection?.quote?.verifiedAt,marketCatalog:{matches}};
 }
+
+// A versioned MD3 view over the archived publication. The historical source,
+// slips and MyCombo stay bound to their original snapshot.
+export async function loadChampionsWorkspaceMd3Derived(load,matchday){
+  const workspace=await loadChampionsWorkspace(load,matchday);
+  if(matchday!==3)return workspace;
+  const derived=await load('../derived/champions-md03/market-catalog-v2-2026-10-20.json');
+  if(derived.version!=='md3-v2-2026-10-20'||derived.status!=='PRELIMINARY_NOT_STATISTICALLY_VALIDATED'||
+    derived.matchday!==3||derived.matches.length!==workspace.fixtures.length||derived.individuals.operationalStarters!==260)
+    throw new Error('Elaborazione Champions MD3 non coerente');
+  const fixtureIds=new Set(workspace.fixtures.map(f=>f.id));
+  if(derived.matches.some(match=>!fixtureIds.has(match.matchId))||new Set(derived.matches.map(match=>match.matchId)).size!==fixtureIds.size)
+    throw new Error('Fixture Champions MD3 non coerenti');
+  const all=derived.matches.flatMap(match=>match.selections);
+  // The official-starter policy may remove selections after a lineup update.
+  if(all.filter(leg=>leg.suggestionAnalysis?.suggested).length>derived.summary.selected)
+    throw new Error('Selezioni preliminari Champions MD3 non coerenti');
+  return {...workspace,all,derivedVersion:derived.version,
+    marketCatalog:{...workspace.marketCatalog,matches:derived.matches,
+      totals:{...workspace.marketCatalog.totals,preliminary:all.filter(leg=>leg.suggestionAnalysis?.suggested).length}}};
+}
