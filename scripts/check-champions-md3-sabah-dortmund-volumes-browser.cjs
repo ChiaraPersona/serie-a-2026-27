@@ -11,10 +11,9 @@ const server=http.createServer((req,res)=>{const p=path.resolve(root,'.'+decodeU
   for(const width of [1440,390]){
    const page=await browser.newPage({viewport:{width,height:900}}),errors=[];page.on('pageerror',e=>errors.push(e.message));
    await page.goto(`${base}/champions-league.html?match=ucl-2026-27-md03-02`,{waitUntil:'networkidle'});
-   try{await page.waitForSelector('[data-md3-total="shotsTotal"]',{timeout:12000});}
-   catch(error){console.error(JSON.stringify({url:page.url(),errors,body:(await page.locator('body').innerText()).slice(0,1400)}));throw error;}
+   await page.waitForSelector('.rd-shell',{timeout:12000});
    const reading=await page.locator('.rd-shell').innerText();assert(/Sabah/.test(reading)&&/Borussia Dortmund/.test(reading));
-   for(const key of ['shotsTotal','shotsOnTarget','corners'])assert.equal((await page.locator(`[data-md3-total="${key}"] strong`).innerText()).trim(),'—',`${key} remains unpublished`);
+   for(const label of ['Tiri','SOT','Corner'])assert(reading.includes(`${label}\n—\n—`),`${label} remains unpublished`);
    assert(!(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth)),`reading overflow ${width}`);
    await page.screenshot({path:path.join(evidence,`reading-${width}.png`),fullPage:true});
    await page.goto(`${base}/schedina.html?competizione=champions&giornata=3`,{waitUntil:'networkidle'});

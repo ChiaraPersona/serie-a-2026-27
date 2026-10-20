@@ -11,7 +11,6 @@ const read=p=>JSON.parse(fs.readFileSync(relative(p),'utf8'));
 const digest=p=>crypto.createHash('sha256').update(fs.readFileSync(relative(p))).digest('hex');
 const evidence=read(evidencePath),original=read(sourcePath),target='ucl-2026-27-md03-02';
 assert.equal(evidence.scope,target);
-assert(!fs.existsSync(relative(outputPath)),'Version already exists');
 const calendar=read('data/normalized/champions-league-2026-27.json');
 const fixture=calendar.fixtures.find(f=>f.id===target);assert(fixture);
 const otherIds=new Set(calendar.fixtures.filter(f=>f.matchday===3&&f.id!==target).map(f=>f.id));assert.equal(otherIds.size,17);
@@ -44,6 +43,7 @@ const selected=computed.fixtures.find(f=>f.fixtureId===target);assert(selected?.
 assert(selected.teamProjections.every(t=>['shotsTotal','shotsOnTarget','corners'].every(k=>Number.isFinite(t[k]?.central))));
 const old=read('data/analysis/champions/md3-offline-engine-2026-10-19/preview-md03.json').fixtures.find(f=>f.fixtureId===target);
 const output={schemaVersion:1,version:'sabah-dortmund-volumes-v1-2026-10-20',status:'DIAGNOSTIC_ONLY_NOT_PUBLISHED',publicationGate:{passed:false,reason:'The existing team-volume builder normalizes league averages but has no verified opponent-quality transfer for an eight-match UCL-qualifier sample against Dortmund. Sabah home shots average 20.6 with two extreme qualifier matches and 13.0 without them; no domestic shot/SOT/corner observations are available to validate the transfer.'},fixtureId:target,cutoff:evidence.cutoff,source:{path:evidencePath,sha256:digest(evidencePath)},builder:{path:'scripts/build-champions-pilot-predictions.js',sha256:digest('scripts/build-champions-pilot-predictions.js'),mode:'IN_MEMORY_TARGET_ONLY'},frozenPrior:{expectedGoals:old.collective.expectedGoals,probabilities:old.collective.probabilities},profiles:computed.profiles.filter(p=>['sabah','borussia-dortmund'].includes(p.teamId)),leagueBaselines:{'uefa.champions_qual':computed.leagueBaselines['uefa.champions_qual'],'ger.1':computed.leagueBaselines['ger.1']},forecast:selected,protectedHashes:before};
-fs.writeFileSync(relative(outputPath),JSON.stringify(output,null,2)+'\n');
+if(fs.existsSync(relative(outputPath)))assert.deepEqual(read(outputPath),output,'Existing target-only version differs; create a new version after review');
+else fs.writeFileSync(relative(outputPath),JSON.stringify(output,null,2)+'\n');
 for(const p of protectedPaths)assert.equal(digest(p),before[p],`protected file changed: ${p}`);
 console.log(JSON.stringify({fixtureId:target,teamSamples:output.profiles.map(p=>({team:p.team,matches:p.matches,home:p.homeMatches,away:p.awayMatches})),targets:selected.teamProjections.map(t=>({team:t.team,shots:t.shotsTotal.central,sot:t.shotsOnTarget.central,corners:t.corners.central})),otherFixturesWritten:0}));

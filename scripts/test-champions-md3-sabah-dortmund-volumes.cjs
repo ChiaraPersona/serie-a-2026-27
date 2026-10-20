@@ -1,5 +1,6 @@
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto'),assert=require('node:assert/strict');
+const {execFileSync}=require('node:child_process');
 const root=path.resolve(__dirname,'..'),read=p=>JSON.parse(fs.readFileSync(path.join(root,p),'utf8'));
 const digest=p=>crypto.createHash('sha256').update(fs.readFileSync(path.join(root,p))).digest('hex');
 const target='ucl-2026-27-md03-02';
@@ -28,11 +29,18 @@ const original=read('data/derived/champions-md03/market-catalog-v2-2026-10-20.js
 const official=read('data/derived/champions-md03/market-catalog-official-two-v1-2026-10-20.json');
 const effective=new Map(original.matches.map(m=>[m.matchId,m]));for(const m of official.matches)effective.set(m.matchId,m);
 assert.equal(effective.size,18);assert.equal(effective.get(target).suggestions.length,0);
+const {selectPreliminaryFixture}=require('./champions/md3-preliminary-pilot.cjs');
+const reassessed=selectPreliminaryFixture(effective.get(target));
+assert.equal(reassessed.suggestions.length,0,'MD7 selector should not force a pick');
 const otherIds=[...effective.keys()].filter(id=>id!==target);assert.equal(otherIds.length,17);
+const committed=p=>JSON.parse(execFileSync('git',['show',`HEAD:${p}`],{cwd:root,encoding:'utf8',maxBuffer:32*1024*1024}));
+const previous=new Map(committed('data/derived/champions-md03/market-catalog-v2-2026-10-20.json').matches.map(m=>[m.matchId,m]));
+for(const m of committed('data/derived/champions-md03/market-catalog-official-two-v1-2026-10-20.json').matches)previous.set(m.matchId,m);
+for(const id of otherIds)assert.deepEqual(effective.get(id),previous.get(id),`non-target fixture changed: ${id}`);
 // Both source catalogs were covered by the pre-replay SHA-256 snapshot above.
 // Their unchanged bytes protect every one of the 17 non-target fixture rows.
 assert.equal(digest('data/derived/champions-md03/market-catalog-official-two-v1-2026-10-20.json'),artifact.protectedHashes['data/derived/champions-md03/market-catalog-official-two-v1-2026-10-20.json']);
 const odds=read('data/normalized/odds/sisal/champions-league.json').events.find(e=>e.canonicalMatchId===target);assert(odds);
 const categories=['U/O TIRI TOTALI SQUADRA X','U/O TIRI IN PORTA SQUADRA X','U/O CORNER SQUADRA X','U/O CORNER','1X2 ESITO FINALE','DOPPIA CHANCE','UNDER/OVER'];
 const counts=Object.fromEntries(categories.map(name=>[name,odds.markets.filter(m=>m.marketName===name).flatMap(m=>m.selections.filter(s=>s.status==='open'&&Number.isFinite(s.odds)&&s.odds>1)).length]));
-console.log(JSON.stringify({passed:true,sourceMatches:source.matches.length,addedEvidenceMatches:evidence.matches.length,profiles:{sabah:sabah.matches,dortmund:dortmund.matches},otherFixturesProtectedByUnchangedCatalogHash:otherIds.length,officialSelectionsUnchanged:effective.get(target).suggestions.length,exactProviderContractsAvailable:counts,publication:'BLOCKED_UNCALIBRATED_QUALIFIER_TRANSFER'},null,2));
+console.log(JSON.stringify({passed:true,sourceMatches:source.matches.length,addedEvidenceMatches:evidence.matches.length,profiles:{sabah:sabah.matches,dortmund:dortmund.matches},otherFixturesProtectedByUnchangedCatalogHash:otherIds.length,md7Selected:reassessed.suggestions.length,exactProviderContractsAvailable:counts,publication:'BLOCKED_UNCALIBRATED_QUALIFIER_TRANSFER'},null,2));
