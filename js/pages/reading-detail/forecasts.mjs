@@ -17,7 +17,7 @@ export function publishedReadingForecasts(catalog,matchId,match=null){
  const unique=new Map();for(const leg of sharedForecastsForMatch(catalog,matchId,match))if(!unique.has(leg.selectionId))unique.set(leg.selectionId,leg);return [...unique.values()];
 }
 export function canPickReading(model,leg){
- return model.fixture.status!=='finished'&&model.competition==='serie-a'&&isPublishedForecast(leg)&&(isCanonicalModelForecast(leg)||hasVerifiedPlayableQuote(leg));
+ return model.fixture.status!=='finished'&&['serie-a','champions'].includes(model.competition)&&isPublishedForecast(leg)&&(isCanonicalModelForecast(leg)||hasVerifiedPlayableQuote(leg));
 }
 export function compactForecastMarkup(model){
  const rows=model.forecasts.map(leg=>{const v=forecastPresentation(leg),enabled=canPickReading(model,leg);return `<tr data-forecast-id="${esc(v.id)}" data-shared-forecast-id="${esc(v.id)}"><td class="rd-forecast-name">${esc(v.label)}</td><td>${pct(v.probability)}</td><td>${v.quoted?number(v.odds,2):'—'}</td><td><button type="button" data-rd-pick="${esc(v.id)}" aria-label="${esc(enabled?'Aggiungi '+v.label:model.fixture.status==='finished'?'Partita conclusa: '+v.label:'Solo consultazione: '+v.label)}" aria-pressed="false" ${enabled?'':'disabled'}>+</button></td></tr>`}).join('');

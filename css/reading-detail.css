@@ -438,3 +438,16 @@ body[data-reading-detail-theme="champions"] .rf-dashboard{--rf-blue:#9ac5ee;--rf
 
 /* MD3 operative decimals and bench labels need a full team column on phones. */
 @media(max-width:600px){.rd-shell #lettura-probabili .rd-player-columns{grid-template-columns:minmax(0,1fr)}.rd-shell #lettura-probabili .rd-player-row>summary{grid-template-columns:17px minmax(0,1fr) 36px 36px 9px;gap:6px}.rd-shell #lettura-probabili .rd-player-column-labels{grid-template-columns:minmax(0,1fr) 36px 36px;gap:6px;padding-right:15px}}
+/* Champions readings share geometry with Serie A; only the palette changes. */
+body[data-reading-detail-theme="champions"]{
+ --rd-bg:#07152c;--rd-surface:#10233f;--rd-soft:#142d4d;
+ --rd-home:#58caff;--rd-away:#b49aff;--rd-accent:#58caff;
+ --ds-color-page:var(--rd-bg);--ds-color-surface:var(--rd-surface);
+ --ds-color-text:var(--rd-ink);--ds-color-text-muted:var(--rd-muted);
+ --ds-color-border:var(--rd-line);--ds-color-accent:var(--rd-accent);
+ --ds-color-accent-strong:#235f91;--ds-color-on-accent:#fff;
+ --rd-page-background:radial-gradient(ellipse at 85% 0%,#142c5038,transparent 65%),linear-gradient(#07152c,#07152c);
+}
+body[data-reading-detail-theme="champions"] .rd-shell .rd-pitch{background:repeating-linear-gradient(90deg,#ffffff07 0 10%,transparent 10% 20%),#102d49}
+body[data-reading-detail-theme="champions"] .rd-champions-catalog{margin-top:20px}
+body[data-reading-detail-theme="champions"] .rd-champions-catalog>.betting-round-page{padding:0;margin:16px 0;border:0;background:none}

@@ -8,6 +8,24 @@ const {championsAuditDisplay}=await import(`./champions-audit-display.mjs?v=${en
 
 export function createPage(deps){
   const {esc,dateOnly,hero,load}=deps;
+  let compactForecasts=false;
+  // Presentation only: keep the underlying family, semantics and IDs intact.
+  const cardFamily=leg=>{
+    const family=leg.betSelection?.market?.family||leg.marketFamily||leg.market||'Mercato';
+    if(!compactForecasts)return family;
+    if(['Tiri individuali','Tiri totali DUO'].includes(family))return 'Tiri totali';
+    if(['Tiri in porta individuali','Tiri in porta DUO'].includes(family))return 'Tiri in porta';
+    return family;
+  };
+  const presentationRank=leg=>{
+    const text=[leg.suggestionAnalysis?.family,leg.marketFamily,leg.betSelection?.market?.name,leg.market].filter(Boolean).join(' ').toUpperCase();
+    if(/\bSOT\b|TIRI IN PORTA|ON.TARGET/.test(text))return 2;
+    if(/\bTIRI\b|\bSHOTS\b/.test(text))return 1;
+    if(/\bRESULT\b|\b1X2\b|\bESITO\b|\bRISULTATO\b|DOPPIA CHANCE|DOUBLE.CHANCE/.test(text))return 0;
+    return 3;
+  };
+  const visualOrder=(rows,getLeg=row=>row)=>compactForecasts?[...rows].sort((a,b)=>presentationRank(getLeg(a))-presentationRank(getLeg(b))):rows;
+  const manualChampionsLegs=(legs,match)=>legs.filter(leg=>!leg.suggestionAnalysis?.suggested&&(leg.context?.matchday!==3||Number.isFinite(leg.betSelection?.evaluation?.modelProbabilityPct)));
   let recordedOutcomes=[];
   const settleLeg=(leg,match)=>settleArchivedLeg(leg,match,recordedOutcomes);
   const pct=value=>Number(value).toLocaleString("it-IT",Number(value)>0&&Number(value)<.01?{minimumFractionDigits:4,maximumFractionDigits:6}:{minimumFractionDigits:2,maximumFractionDigits:2});
@@ -29,7 +47,7 @@ export function createPage(deps){
   function slipCard(slip,matchById){
     if(slip.qualityStatus==="nd"&&!slip.legs.length)return `<article class="betting-nd-compact"><strong>${esc(slip.name)} · N/D</strong><span>${esc(slip.filterNote||"Dati insufficienti per una proposta prudenziale.")}</span></article>`;
     const selectable=[];
-    const legs=slip.legs.map(leg=>{
+    const legs=visualOrder(slip.legs).map(leg=>{
       const settlement=settleLeg(leg,matchById.get(leg.matchId));
       const settled=["won","lost","void"].includes(settlement.status);
       const symbol=settlement.status==="won"?"✓":settlement.status==="lost"?"×":"—";
@@ -83,13 +101,13 @@ export function createPage(deps){
     const result=leg.context?.competition==="champions"&&leg.auditDisplayOnly&&leg.settlement?leg.settlement: settleLeg(leg,match),finished=match?.status==="finished",settled=["won","lost","void"].includes(result.status);
     const badge=finished&&(!settled||result.nonStarter)?`<span class="betting-leg-result" title="${esc(result.reason||"")}">${esc([!settled?"DA VERIFICARE":null,result.nonStarter?"NON TITOLARE":null].filter(Boolean).join(" · "))}</span>`:"";
     const contractNote=duo&&showContractNote?`<span class="betting-market-contract">Contratto Sisal DUO · giocatore + sostituto${semantics.postsAndCrossbarIncluded?" · pali/traverse inclusi":""}${Number.isFinite(individualProbability)?` · ${leg.context?.competition==="champions"?"Singolo":"V2 singolo"} ${pct(individualProbability)}% non applicata al DUO`:""}</span>`:"";
-    return `<li class="betting-market-row betting-selection-row${leg.isOutsider===true?" is-outsider":""}${hasVisiblePreferred(leg)?" is-preferred":""}${settled||leg.auditDisplayOnly?` betting-leg--${result.status}`:""}"${finished?` data-settlement="${result.status}" aria-disabled="true"`:' role="button" tabindex="0"'} data-selection-row${leg.auditDisplayOnly?` data-selection-id="${esc(leg.selectionId)}"`:""}${leg.isOutsider===true?' data-outsider="true"':""}${hasVisiblePreferred(leg)?' data-preferred="true"':""}${finished?"":` data-personal-pick="${esc(selection.selectionId)}"`} data-selection-label="${esc(leg.label)}" data-source-section="${esc(sourceSection)}" data-market-family="${esc(leg.marketFamily||market.family||"")}" data-bookmaker-contract="${duo?"duo":"standard"}" data-selected-forecast="${leg.context?.competition==="champions"&&leg.suggestionAnalysis?.suggested===false?"false":"true"}" data-order="${index}" data-ev="${Number.isFinite(ev)?ev:""}" data-probability="${Number.isFinite(probability)?probability:""}" data-odds="${Number.isFinite(quote)?quote:""}" aria-pressed="false" aria-label="${finished&&leg.auditDisplayOnly?`Esito ${esc(result.label||"da verificare")}: ${esc(leg.label)}`:`Aggiungi alla schedina: ${esc(leg.label)}`}"><div class="betting-market-copy"><small>${esc(market.family||leg.marketFamily||leg.market||"Mercato")}</small>${editorialBadges(leg)}<strong>${esc(leg.label)}</strong>${leg.approvedPreliminary?'<span class="betting-market-contract">Singola preliminare approvata</span>':""}${badge}${contractNote}</div><span class="betting-market-metric"><small>${duo?"Probabilità DUO":"Probabilità"}</small><b>${metricText(probability,pct,"%")}</b></span><span class="betting-market-metric"><small>Quota Sisal</small><b>${metricText(quote,odds)}</b></span><span class="betting-market-metric betting-market-ev ${Number.isFinite(ev)?ev>=0?"is-positive":"is-negative":""}"><small>${duo?"EV DUO":"EV"}</small><b>${Number.isFinite(ev)&&ev>0?"+":""}${metricText(ev,pct,"%")}</b></span><span class="betting-selection-check" aria-hidden="true">✓</span></li>`;
+    return `<li class="betting-market-row betting-selection-row${leg.isOutsider===true?" is-outsider":""}${hasVisiblePreferred(leg)?" is-preferred":""}${settled||leg.auditDisplayOnly?` betting-leg--${result.status}`:""}"${finished?` data-settlement="${result.status}" aria-disabled="true"`:' role="button" tabindex="0"'} data-selection-row${leg.auditDisplayOnly?` data-selection-id="${esc(leg.selectionId)}"`:""}${leg.isOutsider===true?' data-outsider="true"':""}${hasVisiblePreferred(leg)?' data-preferred="true"':""}${finished?"":` data-personal-pick="${esc(selection.selectionId)}"`} data-selection-label="${esc(leg.label)}" data-source-section="${esc(sourceSection)}" data-market-family="${esc(leg.marketFamily||market.family||"")}" data-bookmaker-contract="${duo?"duo":"standard"}" data-selected-forecast="${leg.context?.competition==="champions"&&leg.suggestionAnalysis?.suggested===false?"false":"true"}" data-order="${index}" data-ev="${Number.isFinite(ev)?ev:""}" data-probability="${Number.isFinite(probability)?probability:""}" data-odds="${Number.isFinite(quote)?quote:""}" aria-pressed="false" aria-label="${finished&&leg.auditDisplayOnly?`Esito ${esc(result.label||"da verificare")}: ${esc(leg.label)}`:`Aggiungi alla schedina: ${esc(leg.label)}`}"><div class="betting-market-copy"><small>${esc(cardFamily(leg))}</small>${editorialBadges(leg)}<strong>${esc(leg.label)}</strong>${leg.approvedPreliminary?'<span class="betting-market-contract">Singola preliminare approvata</span>':""}${badge}${contractNote}</div><span class="betting-market-metric"><small>${duo?"Probabilità DUO":"Probabilità"}</small><b>${metricText(probability,pct,"%")}</b></span><span class="betting-market-metric"><small>Quota Sisal</small><b>${metricText(quote,odds)}</b></span><span class="betting-market-metric betting-market-ev ${Number.isFinite(ev)?ev>=0?"is-positive":"is-negative":""}"><small>${duo?"EV DUO":"EV"}</small><b>${Number.isFinite(ev)&&ev>0?"+":""}${metricText(ev,pct,"%")}</b></span><span class="betting-selection-check" aria-hidden="true">✓</span></li>`;
   }
 
 
   function unquotedForecastRow({leg,sourceSection},index){
     const evaluation=leg.betSelection.evaluation,market=leg.betSelection.market||{},probability=Number(evaluation.modelProbabilityPct);
-    return `<li class="betting-market-row betting-selection-row is-unquoted${leg.isOutsider===true?" is-outsider":""}${hasVisiblePreferred(leg)?" is-preferred":""}" data-selection-row${leg.isOutsider===true?' data-outsider="true"':""}${hasVisiblePreferred(leg)?' data-preferred="true"':""} data-selection-label="${esc(leg.label)}" data-source-section="${esc(sourceSection)}" data-selected-forecast="${leg.context?.competition==='champions'&&leg.suggestionAnalysis?.suggested===false?'false':'true'}" data-order="${index}" data-quote-availability="unavailable" data-probability="${probability}" aria-disabled="true"><div class="betting-market-copy"><small>${esc(market.family||leg.marketFamily||leg.market||"Mercato")}</small>${editorialBadges(leg)}<strong>${esc(leg.label)}</strong></div><span class="betting-market-metric"><small>Probabilità</small><b>${Number.isFinite(probability)?`${pct(probability)}%`:"—"}</b></span><span class="betting-market-metric betting-market-quote-unavailable"><small>Quota Sisal</small><b>${leg.linkedSisalQuote?Number(leg.linkedSisalQuote.decimal).toLocaleString("it-IT",{minimumFractionDigits:2,maximumFractionDigits:2}):"Quota non disponibile"}</b>${leg.linkedSisalQuote?`<small>EV ${leg.linkedSisalQuote.expectedValuePct.toLocaleString("it-IT",{maximumFractionDigits:1})}% · quota verificata</small>`:""}</span></li>`;
+    return `<li class="betting-market-row betting-selection-row is-unquoted${leg.isOutsider===true?" is-outsider":""}${hasVisiblePreferred(leg)?" is-preferred":""}" data-selection-row${leg.isOutsider===true?' data-outsider="true"':""}${hasVisiblePreferred(leg)?' data-preferred="true"':""} data-selection-label="${esc(leg.label)}" data-source-section="${esc(sourceSection)}" data-selected-forecast="${leg.context?.competition==='champions'&&leg.suggestionAnalysis?.suggested===false?'false':'true'}" data-order="${index}" data-quote-availability="unavailable" data-probability="${probability}" aria-disabled="true"><div class="betting-market-copy"><small>${esc(cardFamily(leg))}</small>${editorialBadges(leg)}<strong>${esc(leg.label)}</strong></div><span class="betting-market-metric"><small>Probabilità</small><b>${Number.isFinite(probability)?`${pct(probability)}%`:"—"}</b></span><span class="betting-market-metric betting-market-quote-unavailable"><small>Quota Sisal</small><b>${leg.linkedSisalQuote?Number(leg.linkedSisalQuote.decimal).toLocaleString("it-IT",{minimumFractionDigits:2,maximumFractionDigits:2}):"Quota non disponibile"}</b>${leg.linkedSisalQuote?`<small>EV ${leg.linkedSisalQuote.expectedValuePct.toLocaleString("it-IT",{maximumFractionDigits:1})}% · quota verificata</small>`:""}</span></li>`;
   }
 
   function matchScenarioSummary(scenario){
@@ -109,8 +127,13 @@ export function createPage(deps){
       const home=teamById.get(match.homeTeam)?.name||match.homeTeam,away=teamById.get(match.awayTeam)?.name||match.awayTeam,prediction=predictionsByMatch.get(match.id),combo=prediction?.combinations?.find(item=>item.tier==="Safe"),comboLegs=combo?.legs||[],seen=new Set(),markets=[];
       const catalog=catalogByMatch.get(match.id),shared=sharedForecastsForMatch(data.marketCatalog,match.id,match),entries=data.lineupManaged?shared.map(leg=>({leg,sourceSection:leg.catalogOrigin||"catalogo-mercati"})):data.championsWorkspace?(catalog?.selections||[]).filter(leg=>leg.suggestionAnalysis?.suggested&&(!data.matchday||data.matchday!==3||leg.approvedPreliminary||leg.qualifiedSelection||leg.catalogOrigin==="champions-md03-individual-model")).map(leg=>({leg,sourceSection:leg.catalogOrigin||"archivio-champions"})):catalog?.selections?.length?shared.map(leg=>({leg,sourceSection:leg.catalogOrigin||"catalogo-mercati"})):[...(modelByMatch.get(match.id)||[]),...comboLegs.filter(hasVerifiedPlayableQuote).map(leg=>({leg,sourceSection:"mycombo-partita"}))];
       entries.forEach(entry=>{if(entry.leg.selectionId&&!seen.has(entry.leg.selectionId)){seen.add(entry.leg.selectionId);markets.push(entry)}});markets.sort((left,right)=>Number(left.leg.suggestionAnalysis.rank)-Number(right.leg.suggestionAnalysis.rank));
+      const selectedCount=markets.length;
+      if(compactForecasts&&data.championsWorkspace)for(const leg of manualChampionsLegs(catalog?.selections||[],match)){
+        if(!seen.has(leg.selectionId)){seen.add(leg.selectionId);markets.push({leg,sourceSection:'catalogo-manuale-champions'});}
+      }
+      if(compactForecasts)markets.sort((a,b)=>presentationRank(a.leg)-presentationRank(b.leg));
       const fixture=`${home} - ${away}`,marketList=markets.length?`<div class="betting-market-columns" aria-hidden="true"><span>Mercato</span><span>Probabilità</span><span>Quota Sisal</span><span>EV</span><span></span></div><ol class="betting-market-list">${data.championsWorkspace?championsGroupedRows(markets,fixture,match):markets.map((entry,index)=>isUnquotedIndividualForecast(entry.leg)?unquotedForecastRow(entry,index):selectableMarketRow(entry,index,fixture,match)).join("")}</ol>`:`<p class="betting-market-empty">Nessun pronostico selezionato per questa partita.</p>`;
-      return `<details class="betting-match-panel" data-match-panel data-match-id="${esc(match.id)}"><summary><span><small>${esc(dateOnly(match.date))} · ${esc(match.kickoff||"Orario N/D")}</small><strong>${esc(home)} - ${esc(away)}</strong></span><span class="betting-match-count">${markets.length} pronostici selezionati</span><span class="betting-match-toggle" aria-hidden="true">＋</span></summary><div class="betting-match-body">${data.championsWorkspace&&data.matchday===3?championsTeamForecastPanel(data.teamForecasts?.get(match.id)):""}${marketList}${data.championsWorkspace?championsManualMarkets(catalog?.selections||[],fixture,match):""}${data.championsWorkspace?`<a class="betting-match-reading-link" href="${esc(match.readingUrl)}">Apri la lettura della partita →</a>`:""}</div></details>`;
+      return `<details class="betting-match-panel" data-match-panel data-match-id="${esc(match.id)}"><summary><span><small>${esc(dateOnly(match.date))} · ${esc(match.kickoff||"Orario N/D")}</small><strong>${esc(home)} - ${esc(away)}</strong></span><span class="betting-match-count">${selectedCount} pronostici selezionati</span><span class="betting-match-toggle" aria-hidden="true">＋</span></summary><div class="betting-match-body">${data.championsWorkspace&&data.matchday===3?championsTeamForecastPanel(data.teamForecasts?.get(match.id)):""}${marketList}${data.championsWorkspace?championsManualMarkets(catalog?.selections||[],fixture,match):""}${data.championsWorkspace?`<a class="betting-match-reading-link" href="${esc(match.readingUrl)}">Apri la lettura della partita →</a>`:""}</div></details>`;
     }).join("");
     return `<section class="betting-matchday-shell" aria-labelledby="betting-markets-title"><header class="betting-matchday-heading"><div><p class="eyebrow">${matches.length} partite · ordine cronologico</p><h3 id="betting-markets-title">Pronostici selezionati</h3><p class="betting-market-snapshot-note">Quote Sisal verificate nello snapshot del ${esc(dateOnly(data.oddsRetrievedAt))}; la disponibilità attuale va ricontrollata sul bookmaker.</p></div><div class="betting-matchday-actions"><button type="button" data-match-open-all>Apri tutte</button><button type="button" data-match-close-all>Chiudi tutte</button></div></header><div class="betting-match-list">${panels}</div></section>`;
   }
@@ -136,9 +159,9 @@ export function createPage(deps){
       const main=combo.legs.filter(leg=>["PRINCIPALE","INTERESSANTE","OUTSIDER"].includes(leg.betSelection?.operational?.classification)&&leg.betSelection?.operational?.playability?.status!=="NOT_PLAYABLE");
       const watch=combo.legs.filter(leg=>leg.betSelection?.operational?.classification==="WATCH"&&leg.betSelection?.operational?.playability?.status!=="NOT_PLAYABLE");
       const review=combo.legs.filter(leg=>!main.includes(leg)&&!watch.includes(leg));
-      const mainRows=main.length?`<div class="betting-mycombo-group"><h4>Proposte</h4><ol class="betting-mycombo-options">${main.map((leg,index)=>legRow(leg,index,match,finished)).join("")}</ol></div>`:"";
-      const watchRows=watch.length?`<details class="betting-mycombo-watch"><summary>${champions?"Alternative con probabilità · non approvate":"WATCH"}</summary><ol class="betting-mycombo-options">${watch.map((leg,index)=>legRow(leg,index,match,finished)).join("")}</ol></details>`:"";
-      const reviewRows=review.length?`<details class="betting-mycombo-review"><summary>Non valutabili</summary><ol class="betting-mycombo-options">${review.map((leg,index)=>legRow(leg,index,match,finished,true)).join("")}</ol></details>`:"";
+      const mainRows=main.length?`<div class="betting-mycombo-group"><h4>Proposte</h4><ol class="betting-mycombo-options">${visualOrder(main).map((leg,index)=>legRow(leg,index,match,finished)).join("")}</ol></div>`:"";
+      const watchRows=watch.length?`<details class="betting-mycombo-watch"><summary>${champions?"Alternative con probabilità · non approvate":"WATCH"}</summary><ol class="betting-mycombo-options">${visualOrder(watch).map((leg,index)=>legRow(leg,index,match,finished)).join("")}</ol></details>`:"";
+      const reviewRows=review.length?`<details class="betting-mycombo-review"><summary>Non valutabili</summary><ol class="betting-mycombo-options">${visualOrder(review).map((leg,index)=>legRow(leg,index,match,finished,true)).join("")}</ol></details>`:"";
       return `<details class="betting-mycombo-card" data-match-id="${esc(match.id)}"${finished?' data-finished="true"':""}><summary><span><small>${esc(dateOnly(match.date))} · ${esc(match.kickoff||"Orario N/D")}</small><strong>${esc(home)} - ${esc(away)}</strong></span><span aria-hidden="true">＋</span></summary><div class="betting-mycombo-body">${mainRows}${watchRows}${reviewRows}</div></details>`;
     }).join("");
     return `<section class="betting-mycombo-round" aria-labelledby="betting-mycombo-md${code}-title"><header class="betting-section-heading"><h3 id="betting-mycombo-md${code}-title">MyCombo per partita</h3><div class="betting-mycombo-actions"><button type="button" data-mycombo-open-all>Apri tutte</button><button type="button" data-mycombo-close-all>Chiudi tutte</button></div></header><div class="betting-mycombo-list">${cards}</div></section>`;
@@ -369,6 +392,7 @@ export function createPage(deps){
   }
 
   function championsGroupedRows(entries,fixture,match){
+    if(compactForecasts)return visualOrder(entries,entry=>entry.leg).map((entry,index)=>entry.leg.catalogOrigin==='champions-md03-individual-model'?unquotedForecastRow(entry,index):selectableMarketRow(entry,index,fixture,match)).join('');
     const groups=new Map();
     entries.forEach(entry=>{const family=entry.leg.marketFamily||entry.leg.betSelection.market.family||"Altri mercati";if(!groups.has(family))groups.set(family,[]);groups.get(family).push(entry)});
     return [...groups].map(([family,rows])=>`<li class="betting-market-family-heading"><h4>${esc(family)}</h4></li>${rows.map((entry,index)=>entry.leg.catalogOrigin==='champions-md03-individual-model'?unquotedForecastRow(entry,index):selectableMarketRow(entry,index,fixture,match)).join("")}`).join("");
@@ -381,11 +405,12 @@ export function createPage(deps){
     const metrics=[["Tiri previsti","shotsTotal"],["SOT previsti","shotsOnTarget"],["Corner previsti","corners"]];
     const rows=metrics.map(([label,key])=>{const values=teams.map(t=>t[key]?.central??null);return '<div><dt>'+label+'</dt><dd>'+values.map(fmt).join(" – ")+'</dd></div>'}).join("");
     const p=forecast.probabilities||{},dc=[["1X",p.home,p.draw],["X2",p.draw,p.away]].map(([label,a,b])=>'<div><dt>'+label+'</dt><dd>'+fmt(typeof a==="number"&&typeof b==="number"?a+b:null)+'%</dd></div>').join("");
-    return '<section class="betting-team-forecast"><h4>Previsioni della partita</h4><p>Valori casa – trasferta · doppie chance derivate dalle probabilità 1X2, non selezioni approvate.</p><dl>'+rows+dc+'</dl></section>';
+    return '<section class="betting-team-forecast'+(compactForecasts?' betting-team-forecast--compact':'')+'">'+(compactForecasts?'':'<h4>Previsioni della partita</h4><p>Valori casa – trasferta · doppie chance derivate dalle probabilità 1X2, non selezioni approvate.</p>')+'<dl aria-label="Previsioni numeriche casa – trasferta">'+rows+dc+'</dl></section>';
   }
 
   function championsManualMarkets(legs,fixture,match){
-    const manual=legs.filter(leg=>!leg.suggestionAnalysis?.suggested&&(leg.context?.matchday!==3||Number.isFinite(leg.betSelection?.evaluation?.modelProbabilityPct)));
+    if(compactForecasts)return '';
+    const manual=manualChampionsLegs(legs,match);
     if(!manual.length)return "";
     return `<details class="betting-mycombo-watch"><summary>Altri mercati disponibili · ${manual.length} selezioni · ${match.matchday===3?"non approvate":"probabilità N/D"}</summary><p>${match.matchday===3?"Alternative valutabili: non sono pronostici approvati; le righe senza quota non sono giocabili.":"Scelta manuale: non sono pronostici del modello."}</p><ol class="betting-market-list">${championsGroupedRows(manual.map(leg=>({leg,sourceSection:"catalogo-manuale-champions"})),fixture,match)}</ol></details>`;
   }
@@ -419,6 +444,7 @@ export function createPage(deps){
   }
 
   async function render(){
+    compactForecasts=true;
     selectionRegistry.clear();slipRegistry.clear();currentContext=null;personalNotice="";
     recordedOutcomes=(await load("card-settlement-records.json")).records;
     const [champions,championsMd02Operational,md1,md2,md3,md4,md5,md6,matches,predictionData,teams]=await Promise.all([load("schedina-champions-md01.json"),load("schedina-champions-md02.json"),load("schedina.json"),load("schedina-md02.json"),load("schedina-md03.json"),load("schedina-md04.json"),load("schedina-md05.json"),load("schedina-md06.json"),load("matches.json"),load("predictions.json"),load("teams.json")]);

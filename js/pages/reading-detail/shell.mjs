@@ -20,7 +20,7 @@ const definitions=[
 const icon=path=>`<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="${path}"/></svg>`;
 
 export function readingSections(model){
-  return definitions.filter(([key])=>!['verifica','fonti'].includes(key)&&(key!=='pronostici'||model.competition==='serie-a'&&model.forecasts?.length>0))
+  return definitions.filter(([key])=>!['verifica','fonti'].includes(key)&&(key!=='pronostici'||model.competition==='champions'||model.forecasts?.length>0))
     .map(([key,title,,path],i)=>[key,title,String(i+1).padStart(2,'0'),path]);
 }
 
@@ -108,7 +108,7 @@ export async function mountReadingShell(model,root=document.querySelector('#app'
     for(const node of original){
       if(node===oldHero||node===back||node===report)continue;
       if(node.nodeType!==1)continue;
-      const key=classify(node);
+      const key=node.dataset.readingSection||classify(node);
       if(key)move(node,groups.get(key).lastElementChild);
       else if(node.matches('[data-required-attribution],[data-legal-notice]')||node.querySelector('[data-required-attribution],[data-legal-notice]'))move(node,shell);
     }
@@ -119,10 +119,11 @@ export async function mountReadingShell(model,root=document.querySelector('#app'
       const link=document.createElement('a');link.href='#'+group.id;link.textContent=title;link.dataset.sectionLink=key;linkStrip.append(link);
     }
     const mini=document.createElement('div');mini.className='rd-mini';mini.innerHTML=`<span>${escape(model.home.name)}</span><b>VS</b><span>${escape(model.away.name)}</span>`;mini.setAttribute('aria-hidden','true');nav.prepend(mini);
-    if(visibleDefinitions.some(([key])=>key==='pronostici')){const forecasts=installForecasts(model,groups.get('pronostici').lastElementChild,shell,options.store);undo.push(forecasts.undo);}
+    if(model.competition==='serie-a'&&visibleDefinitions.some(([key])=>key==='pronostici')){const forecasts=installForecasts(model,groups.get('pronostici').lastElementChild,shell,options.store);undo.push(forecasts.undo);}
     undo.push(installScenario(model,groups.get('scenario').lastElementChild));
     undo.push(installPeople(model,evidence,Object.fromEntries([...groups].map(([key,group])=>[key,group.lastElementChild])),shell));
     undo.push(installTacticsHistory(model,evidence,Object.fromEntries([...groups].map(([key,group])=>[key,group.lastElementChild]))));
+    if(options.extend){root.replaceChildren(shell);document.body.dataset.readingDetailTheme=model.theme;await options.extend({shell,groups,evidence});}
     // An unavailable informational archive must not prevent the existing reading from mounting.
     try{undo.push(mountRefereeHistory(model,groups.get('disciplina').lastElementChild,refereeHistory,[...(evidence.directory?.teams||[]),...refereeTeams]));}catch(error){console.warn('Storico arbitrale non disponibile',error);}
     if(model.fixture.status==='finished'){

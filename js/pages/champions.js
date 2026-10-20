@@ -421,8 +421,21 @@ export function createPage(deps){
     const [{loadChampionsWorkspace},{createPage:createBettingPage}]=await Promise.all([import('./champions-workspace-catalog.mjs?v=20261020-champions-lineup-forecasts-v1'),import('./betting.js?v=20261020-champions-lineup-forecasts-v1')]);
     const workspace=await loadChampionsWorkspace(load,matchday);
     const controller=createBettingPage({...deps,dateOnly:deps.dateOnly||(value=>String(value||"").slice(0,10))});
-    host.insertAdjacentHTML('beforeend',controller.championsWorkspaceMarkup(workspace,fixtureId));
-    controller.mountChampionsWorkspace(workspace);
+    const section=host.querySelector('#lettura-pronostici .rd-section-content');
+    const target=section||host;
+    const markup=controller.championsWorkspaceMarkup(workspace,fixtureId);
+    if(section){
+      target.insertAdjacentHTML('beforeend',`<details class="rd-disclosure rd-champions-catalog"><summary>Catalogo completo, MyCombo e schedina personale</summary>${markup}</details>`);
+      target.querySelectorAll('.betting-round-page > .rd-section-heading,.betting-round-page > .betting-round-heading').forEach(n=>n.remove());
+    }else target.insertAdjacentHTML('beforeend',markup);
+    const store=controller.mountChampionsWorkspace(workspace);
+    if(section){
+      const [{createReadingView},{installForecasts}]=await Promise.all([import('./reading-detail/view-model.mjs'),import('./reading-detail/forecasts.mjs')]);
+      const fixture=workspace.fixtures.find(f=>f.id===fixtureId);
+      const model=createReadingView({competition:'champions',fixture,home:{name:fixture.homeTeam},away:{name:fixture.awayTeam},forecasts:workspace.all.filter(l=>l.matchId===fixtureId&&l.suggestionAnalysis?.suggested)});
+      const table=document.createElement('div');section.prepend(table);
+      installForecasts(model,table,host,store);
+    }
   }
 
   async function render(){
@@ -438,16 +451,10 @@ export function createPage(deps){
     if(requestedCalendarFixture?.matchday===3&&requestedCalendarFixture.refereeAssignment?.status==='assigned'){
       const [profiles,{md3RefereeMarkup},catalog,{md3ForecastMarkup},probables,{md3ProbableMarkup}]=await Promise.all([load('champions-referee-profiles-md03-2026-27.json'),import('./reading-detail/champions-md3-referees.mjs?v=20261019-md3-referees-v1'),load('champions-md03-preliminary-2026-27.json'),import('./champions-md3-ui.mjs?v=20261019-md3-callups-v3'),load('champions-md03-probable-individuals-2026-27.json'),import('./champions-md3-probable.mjs?v=20261020-md3-squads-v1')]);
       const profile=profiles.referees.find(p=>p.refereeId===requestedCalendarFixture.refereeAssignment.refereeId);
-      document.body.dataset.readingDetailTheme='champions';
-      document.querySelector('#app').innerHTML=md3RefereeMarkup(requestedCalendarFixture,profile,branding);
       const fixture=catalog.fixtures.find(f=>f.fixtureId===requestedMatchId);
-      const discipline=document.querySelector('#lettura-disciplina');
-      discipline.querySelector('.rd-section-number').textContent='02';
-      discipline.insertAdjacentHTML('beforebegin',md3ForecastMarkup(fixture));
-
-      const probableFixture=probables.fixtures.find(f=>f.fixtureId===fixture.fixtureId);
-      await appendSharedSchedina(3,requestedMatchId,discipline.parentElement);
-      document.querySelector('#lettura-disciplina').parentElement.insertAdjacentHTML('beforeend',md3ProbableMarkup(probableFixture));
+      const probableFixture=probables.fixtures.find(f=>f.fixtureId===requestedMatchId);
+      const {mountChampionsReading}=await import('./reading-detail/champions-layout.mjs');
+      await mountChampionsReading({fixture:requestedCalendarFixture,prediction:fixture.forecast,profile,probableFixture,branding,analysis:{matches:data.fixtures,styles:styleProfiles,attackChannels,history:h2h.fixtures.find(f=>f.fixtureId===requestedMatchId),squads},refereeMarkup:md3RefereeMarkup(requestedCalendarFixture,profile,branding),probableMarkup:md3ProbableMarkup(probableFixture),extend:({shell})=>appendSharedSchedina(3,requestedMatchId,shell)});
       return;
     }
     const [md2Pilot,md2Integration,md2Schedina,md2RefereeHistory]=requestedCalendarFixture?.matchday===2?await Promise.all([load("champions-pilot-predictions-md02-2026-27.json"),load("champions-md02-integration-2026-27.json"),load("schedina-champions-md02.json"),load("champions-referee-history-2026-10-13.json")]):[null,null,null,null];
@@ -468,14 +475,14 @@ export function createPage(deps){
           const analysis={match:requestedCalendarFixture,matches:data.fixtures,lineups:md2MarketEntry?.lineups,availability:md2MarketEntry?.availability,referee:refereeProfile,styles:styleProfiles,attackChannels,history:h2h.fixtures.find(f=>f.fixtureId===requestedMatchId),squads,teamProfiles:activePilot.profiles};
           const model=adaptChampionsReading({fixture:requestedFixture,calendarFixture:requestedCalendarFixture,branding,publishedSelections:md2SchedinaFixture?.selections||[],analysis});
           const prepared=await prepareReadingShell(model);
-          finishReading=store=>mountReadingShell(model,undefined,{store,prepared});
+          finishReading=store=>mountReadingShell(model,undefined,{store,prepared,extend:({shell})=>appendSharedSchedina(requestedCalendarFixture.matchday,requestedMatchId,shell)});
         }catch(error){delete document.body.dataset.readingDetailTheme;console.warn('Lettura: vista precedente mantenuta.',error)}
       }
       const release=document.querySelector('script[src*="js/app.js"]')?.src.match(/[?&]v=([^&]+)/)?.[1]||"dev";
 
       document.querySelector("#app").innerHTML=pilotReadingDetail(requestedFixture,activePilot,backtest,squads,branding,h2h,motivationByFixture.get(requestedMatchId),styleProfiles,attackByTeam,surpriseByFixture.get(requestedMatchId),md2MarketEntry?null:playerMarkets.fixtures.find(item=>item.fixtureId===requestedMatchId),md2MarketEntry?null:playerMarkets,md2MarketEntry,md2SchedinaFixture);
       if(finishReading){try{await finishReading(null)}catch(error){delete document.body.dataset.readingDetailTheme;console.warn('Lettura: vista precedente mantenuta.',error)}}
-      await appendSharedSchedina(requestedCalendarFixture.matchday,requestedMatchId,document.querySelector('.rd-shell')||document.querySelector('#app'));
+      if(!document.querySelector('.rd-shell'))await appendSharedSchedina(requestedCalendarFixture.matchday,requestedMatchId,document.querySelector('#app'));
       return;
     }
     if(requestedCalendarFixture&&motivationByFixture.has(requestedMatchId)){
