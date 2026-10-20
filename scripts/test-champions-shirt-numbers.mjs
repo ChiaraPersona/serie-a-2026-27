@@ -8,8 +8,10 @@ const md3=read('data/sources/champions-md03-squads-2026-27.json');
 assert.equal(championsShirtNumber(source,{id:'barcelona'},'Garcia'),null);
 assert.equal(championsShirtNumber(source,{id:'bayern-munchen'},{canonicalPlayerId:null,suppliedName:'Karl'}),42);
 const block1=source.records.filter(r=>(r.block||1)===1),block2=source.records.filter(r=>r.block===2);
+const block3a=source.records.filter(r=>r.block==='3A');
+assert.equal(block3a.length,73);
 assert.equal(block1.length,106);assert.equal(block2.length,237);assert.equal(source.unmatched.length,8);
-assert.equal(new Set(source.records.map(p=>p.stablePlayerId)).size,343);
+assert.equal(new Set(source.records.map(p=>p.stablePlayerId)).size,416);
 assert(source.records.every(r=>r.status==='accepted'&&r.shirtNumber===r.existingConfirmedNumber));
 for(const row of source.records){
  const team=md3.teams.find(t=>t.teamId===row.teamId);const p=team.players.find(p=>p.playerId===row.playerId);assert(p);assert.equal(p.shirtNumber,row.shirtNumber);
@@ -28,5 +30,13 @@ for(const team of db.teams)for(const p of team.players){
  if(record){assert.equal(p.shirtNumber,record.shirtNumber);populated++;}
  else assert.equal(p.shirtNumber,undefined);
 }
-assert.equal(populated,279);
-console.log(JSON.stringify({accepted:source.records.length,block1:block1.length,block2:block2.length,registeredNumbers:populated,unmatched:source.unmatched.length,conflicts:source.records.filter(r=>r.status==='conflict').length}));
+assert.equal(populated,337);
+console.log(JSON.stringify({accepted:source.records.length,block1:block1.length,block2:block2.length,block3a:block3a.length,registeredNumbers:populated,unmatched:source.unmatched.length,conflicts:source.records.filter(r=>r.status==='conflict').length}));
+
+for(const name of ['Akgün','Akgun','Yılmaz','Yilmaz'])assert.equal(championsShirtNumber(source,{id:'galatasaray'},name),null,`Ambiguous surname ${name} must not select a player`);
+for(const [id,n] of [['jankat-yilmaz',24],['baris-alper-yilmaz',53],['cihan-akgun',71],['yunus-akgun',11]])assert.equal(championsShirtNumber(source,{id:'galatasaray'},{playerId:id}),n);
+for(const teamId of ['galatasaray','club-brugge']){
+ const squad=md3.teams.find(t=>t.teamId===teamId),rows=block3a.filter(r=>r.teamId===teamId);
+ assert.equal(new Set(rows.map(r=>r.shirtNumber)).size,rows.length,'No duplicate submitted shirt numbers');
+ assert.equal(new Set(squad.players.map(p=>p.shirtNumber)).size,squad.players.length,'No duplicate confirmed current-season shirt numbers');
+}

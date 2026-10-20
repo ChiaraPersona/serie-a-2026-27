@@ -10,7 +10,7 @@ const require=createRequire(import.meta.url),{publicationIdentity,buildPublicati
 const read=p=>JSON.parse(fs.readFileSync(p,'utf8')),load=async name=>read('data/normalized/'+name);
 const current=read('data/normalized/schedina-champions-md03.json'),before=read('output/champions-md3-md7-policy/schedina-champions-md03.json.before');
 const workspace=await loadChampionsWorkspace(load,3),all=workspace.all,selected=workspace.fixtures.flatMap(f=>sharedForecastsForMatch(workspace.marketCatalog,f.id,f));
-assert.equal(workspace.fixtures.length,18);assert.equal(current.marketCatalog.myCombo.length,18);
+assert.equal(workspace.fixtures.length,18);assert.equal(current.summary.approvedSelections,0);assert.equal(current.marketCatalog.myCombo.length,18);
 assert.deepEqual(current.slips,before.slips);
 const old=new Map(before.marketCatalog.matches.flatMap(m=>m.selections).map(l=>[l.selectionId,l]));
 for(const leg of all){
