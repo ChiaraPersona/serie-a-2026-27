@@ -36,11 +36,15 @@ for(const fixture of current.fixtures){
  assert(!shown.some(l=>l.selection==='12'));
 }
 assert(generated>0&&published>0);
+assert(overlay.matches.flatMap(m=>m.selections).some(l=>l.suggestionAnalysis.suggested&&l.suggestionAnalysis.family==='shots'&&l.threshold===3.5),'Statistically supported 4+ shots retained');
 assert.equal(new Set(current.all.map(l=>l.selectionId)).size,current.all.length);
 const html=createPage({load,esc:String,dateOnly:String,hero:()=>''}).championsWorkspaceMarkup(current);
 assert.equal((html.match(/data-selection-row/g)||[]).length,current.marketCatalog.matches.reduce((n,m)=>n+m.suggestions.length,0));
 assert.equal((html.match(/data-champions-forecast-coverage/g)||[]).length,overlay.matches.length);
 const leg=overlay.matches.flatMap(m=>m.selections).find(l=>l.suggestionAnalysis.suggested);
+globalThis.officialStarterPolicy={eligible:item=>item.playerId!==leg.playerId};
+assert(!sharedForecastsForMatch(current.marketCatalog,leg.matchId,current.fixtures.find(f=>f.id===leg.matchId)).some(item=>item.playerId===leg.playerId));
+delete globalThis.officialStarterPolicy;
 const memory=new Map(),storage={getItem:k=>memory.get(k)||null,setItem:(k,v)=>memory.set(k,v),removeItem:k=>memory.delete(k)};
 const store=createPersonalBetslipStore({storage});store.setContext({competition:'champions',season:'2026-27',matchday:3,forecastPolicy:'SERIE_A_CURRENT'});
 assert.equal(store.add(leg).status,'ADDED');

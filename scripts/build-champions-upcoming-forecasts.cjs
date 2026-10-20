@@ -35,13 +35,32 @@ async function build(){
  const matches=upcoming.map(f=>{
   const original=structuredClone(originals.get(f.id)),fixture=individuals.fixtures.find(x=>x.fixtureId===f.id);
   const oldIds=new Set(original.selections.map(l=>l.selectionId));
-  const newLegs=integration.matches.find(m=>m.matchId===f.id).selections.map(l=>{
+  const newLegs=integration.matches.find(m=>m.matchId===f.id).selections.flatMap(admitted=>{
+   const metric=admitted.suggestionAnalysis.family;
+   const player=fixture.teams.flatMap(t=>t.players).find(p=>p.playerId===admitted.playerId);
+   // Evaluate the full requested ladder after the unchanged per-player admission gate.
+   return (metric==='shots'?[1,2,3,4]:[1,2,3]).map(count=>{
+   const l=structuredClone(admitted),probability=poissonAtLeast(metric==='shots'?player.projectedShots:player.projectedSOT,count)*100;
    // New identity: never reinterpret an existing DUO or saved selection.
-   l.selectionId+=':individual';l.betSelection.selectionId=l.selectionId;
+   l.selectionId=`forecast:v2:${f.id}:${l.playerId}:${metric}:${count}:individual`;l.betSelection.selectionId=l.selectionId;
    l.betSelection.identity.canonicalForecastId=l.selectionId;
+   l.threshold=count-0.5;l.forecastIdentity.threshold=l.threshold;l.betSelection.forecastIdentity.threshold=l.threshold;
+   l.label=`${l.playerName} ${count}+ ${metric==='shots'?'tiri':'tiri in porta'}`;l.variant=l.label;
+   l.betSelection.market.threshold=l.threshold;l.betSelection.market.variant=l.label;
+   l.modelProbabilityPct=probability;l.individualModelProbabilityPct=probability;
+   l.betSelection.evaluation.modelProbabilityPct=probability;
+   l.betSelection.evaluation.individualReference.modelProbabilityPct=probability;
+   const target=`player:${l.playerId}:${metric}:${count}+`;
+   l.betSelection.evaluation.individualReference.modelTarget=target;
+   l.betSelection.evaluation.provenance.modelTarget=target;
+   l.betSelection.evaluation.provenance.source=`${inputPath}#${f.id}/${l.playerId}/${metric==='shots'?'projectedShots':'projectedSOT'}`;
+   l.betSelection.evaluation.provenance.thresholdMethod='EXISTING_POISSON_AT_LEAST';
+   l.betSelection.compatibility.modelTarget=target;
+   l.forecastEvidence.individualModelProbabilityPct=probability;l.forecastEvidence.individualModelTarget=target;
    l.context.forecastPolicy='SERIE_A_CURRENT';
    l.catalogOrigin='champions-upcoming-individual';
    return l;
+   });
   });
   const evaluated=evaluateRequirements(newLegs,preliminary.fixtures.find(x=>x.fixtureId===f.id),fixture,evidence);
   // Statistical admission was already performed by evaluateCandidate in the shared integration.
