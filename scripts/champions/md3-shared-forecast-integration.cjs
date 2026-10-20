@@ -29,7 +29,7 @@ function exactProviderMap(individuals,odds,identityArchive){
 }
 
 function predictionRows(fixture,database){
-  const rows=fixture.teams.flatMap(team=>team.players.filter(p=>p.projectedRole==='starter'&&p.availability==='probable-starter'&&p.playerId&&!p.blockers.length&&Number.isFinite(p.projectedShots)&&Number.isFinite(p.projectedSOT)).map(p=>{
+  const rows=fixture.teams.flatMap(team=>team.players.filter(p=>p.projectedRole==='starter'&&['probable-starter','official-starter'].includes(p.availability)&&p.playerId&&!p.blockers.length&&Number.isFinite(p.projectedShots)&&Number.isFinite(p.projectedSOT)).map(p=>{
     const member=database.teams.find(t=>t.teamId===team.teamId).players.find(x=>x.playerId===p.playerId);
     const historical=member.previousSeason?.totals;
     // The existing Champions model admits only observed current-season rows.
@@ -70,24 +70,27 @@ function unquotedIndividual(leg){
 }
 
 function buildSharedIndividualCatalog({baseMatches,individuals,database,odds,identityArchive}){
+  const official=individuals.status==='official';
   const identities=exactProviderMap(individuals,odds,identityArchive);
   const predictions=individuals.fixtures.map(f=>predictionRows(f,database));
   const probableLineups={provider:'internal-probable-lineup',importedAt:individuals.source.consultedAt,
     teams:individuals.fixtures.flatMap(f=>f.teams.map(t=>({teamId:t.teamId,players:t.players.map(p=>({playerId:p.playerId,teamId:t.teamId,lineupStatus:p.projectedRole==='starter'&&p.availability==='probable-starter'?'starter':'reserve'}))})))};
-  const result=integratePlayerForecasts({catalogMatches:baseMatches,predictions,odds:{...odds,normalizedPath:'data/normalized/odds/sisal/champions-league.json'},probableLineups,officialLineups:{fixtures:[]},verifiedProviderPlayerMap:identities.map});
+  const officialLineups=official?{provider:'Diretta.it',retrievedAt:individuals.source.consultedAt,fixtures:individuals.fixtures.map(f=>({matchId:f.fixtureId,teams:f.teams.map(t=>({players:t.players.filter(p=>p.projectedRole==='starter').map(p=>({playerId:p.playerId}))}))}))}:{fixtures:[]};
+  const result=integratePlayerForecasts({catalogMatches:baseMatches,predictions,odds:{...odds,normalizedPath:'data/normalized/odds/sisal/champions-league.json'},probableLineups,officialLineups,verifiedProviderPlayerMap:identities.map});
   for(const match of result.matches){
     match.selections=match.selections.map(leg=>{
       if(leg.catalogOrigin!=='prediction-v2-player-forecast')return leg;
       leg.context={competition:'champions',season:'2026-27',matchday:3};
-      leg.betSelection.evaluation.individualReference.probabilitySemantics='CONDITIONAL_ON_PROBABLE_START';
-      leg.forecastEvidence.model='existing-champions-probable-lineup';
-      leg.forecastEvidence.lineupInput='data/sources/champions-probable-formations-md03-2026-27.json';
+      leg.betSelection.evaluation.individualReference.probabilitySemantics=official?'OFFICIAL_STARTER_PRELIMINARY':'CONDITIONAL_ON_PROBABLE_START';
+      leg.forecastEvidence.model=official?'existing-champions-official-lineup':'existing-champions-probable-lineup';
+      leg.forecastEvidence.lineupInput=official?'data/sources/champions-official-formations-md03-2026-27.json':'data/sources/champions-probable-formations-md03-2026-27.json';
       if(leg.odds===null)unquotedIndividual(leg);
       else{
         const market=odds.events.find(e=>e.canonicalMatchId===leg.matchId).markets.find(m=>m.providerMarketId===leg.providerMarketId);
         leg.betSelection.market.bookmakerSemantics.extraTimeIncluded=/INC\.?\s*T\.?S\.?|INCL\.?\s*T\.?S\.?/i.test(market.marketName+' '+market.variantName);
         leg.betSelection.identity.canonicalPlayerIds=[leg.playerId];
       }
+      if(official){leg.betSelection.evaluation.probabilitySemantics='OFFICIAL_STARTER_PRELIMINARY';leg.evidenceLabel='Modello Champions MD3 · titolare ufficiale · probabilità preliminare';}
       return leg;
     });
     const selected=match.selections.filter(l=>l.suggestionAnalysis?.suggested);
