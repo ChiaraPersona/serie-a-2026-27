@@ -55,9 +55,10 @@ for(const match of derived.matches){
 }
 const load=name=>Promise.resolve(read(`data/normalized/${name}`));
 const workspace=await loadChampionsWorkspaceMd3Derived(load,3);
-assert.equal(workspace.derivedVersion,'official-two-v1-2026-10-20');
+assert.equal(workspace.derivedVersion,'sabah-dortmund-preliminary-v1-2026-10-20');
 assert.equal(workspace.marketCatalog.matches.length,18);
-assert.equal(workspace.all.filter(l=>l.suggestionAnalysis?.suggested).length,113);
+assert.equal(workspace.all.filter(l=>l.suggestionAnalysis?.suggested).length,115);
+assert.equal(workspace.marketCatalog.matches.find(m=>m.matchId==='ucl-2026-27-md03-02').suggestions.length,2);
 assert.deepEqual(workspace.source.marketCatalog.myCombo,frozen.marketCatalog.myCombo);
 assert.deepEqual(workspace.source.slips,frozen.slips);
-console.log('PASS Champions MD3 derived v2: 30 recovered starters, 18 fixtures, 113 preliminary selections, frozen inputs/MyCombo intact');
+console.log('PASS Champions MD3 derived v2: 30 recovered starters, 18 fixtures, 115 preliminary selections, frozen inputs/MyCombo intact');

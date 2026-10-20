@@ -1,0 +1,41 @@
+'use strict';
+const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto'),assert=require('node:assert/strict');
+const root=path.resolve(__dirname,'..'),target='ucl-2026-27-md03-02';
+const read=p=>JSON.parse(fs.readFileSync(path.join(root,p),'utf8'));
+const sha=p=>crypto.createHash('sha256').update(fs.readFileSync(path.join(root,p))).digest('hex');
+const base=read('data/derived/champions-md03/market-catalog-v2-2026-10-20.json');
+const official=read('data/derived/champions-md03/market-catalog-official-two-v1-2026-10-20.json');
+const overlay=read('data/derived/champions-md03/market-catalog-sabah-dortmund-v1-2026-10-20.json');
+const odds=read('data/normalized/odds/sisal/champions-league.json');
+assert.equal(base.matches.length,18);assert.equal(overlay.matches.length,1);
+assert.equal(overlay.matches[0].matchId,target);
+for(const [p,hash] of Object.entries(overlay.protectedHashes))assert.equal(sha(p),hash,`protected input changed: ${p}`);
+const before=new Map(official.matches.map(m=>[m.matchId,m]));
+const previous=base.matches.map(m=>before.get(m.matchId)||m);
+const after=previous.map(m=>m.matchId===target?overlay.matches[0]:m);
+assert.equal(after.length,18);
+for(const match of previous.filter(m=>m.matchId!==target))
+ assert.deepEqual(after.find(m=>m.matchId===match.matchId),match,`other fixture changed ${match.matchId}`);
+const oldTarget=previous.find(m=>m.matchId===target),newTarget=after.find(m=>m.matchId===target);
+assert.deepEqual(newTarget.selections.map(l=>l.betSelection.evaluation.modelProbabilityPct),oldTarget.selections.map(l=>l.betSelection.evaluation.modelProbabilityPct));
+assert.deepEqual(newTarget.selections.map(l=>l.betSelection.quote.decimal),oldTarget.selections.map(l=>l.betSelection.quote.decimal));
+const selected=newTarget.selections.filter(l=>l.suggestionAnalysis.suggested);
+assert.equal(selected.length,2);assert.deepEqual(selected.map(l=>l.selectionId),newTarget.suggestions);
+const event=odds.events.find(e=>e.canonicalMatchId===target);assert(event);
+for(const leg of selected){
+ assert.equal(leg.selectionStatus,'PRELIMINARY');assert.equal(leg.qualifiedSelection,false);
+ assert.equal(leg.betSelection.evaluation.prudentProbabilityPct,null);
+ assert.equal(leg.suggestionAnalysis.conservativeExpectedValuePct,null);
+ assert(Number.isFinite(leg.betSelection.evaluation.modelProbabilityPct));
+ const [prefix,eventId,marketId,selectionId]=leg.selectionId.split(':');assert.equal(prefix,'sisal');assert.equal(eventId,event.providerEventId);
+ const market=event.markets.find(m=>m.providerMarketId===marketId);assert(market);
+ const quote=market.selections.find(s=>s.providerSelectionId===selectionId);assert(quote&&quote.status==='open');assert.equal(quote.odds,leg.odds);
+ assert.notEqual(leg.selection,'12');
+}
+const full=read('data/derived/champions-md03/sabah-dortmund-volumes-v1-2026-10-20.json');
+const sensitivity=read('data/derived/champions-md03/sabah-dortmund-sensitivity-v1-2026-10-20.json');
+assert.equal(full.status,'DIAGNOSTIC_ONLY_NOT_PUBLISHED');
+assert.equal(sensitivity.status,'DIAGNOSTIC_ONLY_NOT_PUBLISHED');
+assert.equal(full.forecast.teamProjections.find(t=>t.teamId==='sabah').shotsTotal.central,17.29);
+assert.equal(sensitivity.forecast.teamProjections.find(t=>t.teamId==='sabah').shotsTotal.central,13.54);
+console.log(JSON.stringify({passed:true,otherFixturesUnchanged:17,selected:selected.map(l=>({label:l.label,p:l.betSelection.evaluation.modelProbabilityPct,odds:l.odds})),diagnosticOnly:true}));

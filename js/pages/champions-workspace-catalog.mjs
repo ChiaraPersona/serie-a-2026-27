@@ -130,12 +130,17 @@ export async function loadChampionsWorkspaceMd3Derived(load,matchday){
     official.matches.length!==2||official.matches.some((match,index)=>match.matchId!==targetIds[index]))
     throw new Error('Aggiornamento ufficiale Champions MD3 non coerente');
   const overrides=new Map(official.matches.map(match=>[match.matchId,match]));
+  const sabah=await load('../derived/champions-md03/market-catalog-sabah-dortmund-v1-2026-10-20.json');
+  if(sabah.version!=='sabah-dortmund-preliminary-v1-2026-10-20'||sabah.status!=='PRELIMINARY_NOT_STATISTICALLY_VALIDATED'||
+    sabah.fixtureId!=='ucl-2026-27-md03-02'||sabah.matches.length!==1||sabah.matches[0].matchId!==sabah.fixtureId)
+    throw new Error('Selezione Sabah-Dortmund MD3 non coerente');
+  overrides.set(sabah.fixtureId,sabah.matches[0]);
   const matches=derived.matches.map(match=>overrides.get(match.matchId)||match);
   const all=matches.flatMap(match=>match.selections);
   // The official-starter policy may remove selections after a lineup update.
-  if(all.filter(leg=>leg.suggestionAnalysis?.suggested).length>derived.summary.selected)
+  if(all.filter(leg=>leg.suggestionAnalysis?.suggested).length>derived.summary.selected+sabah.matches[0].suggestions.length)
     throw new Error('Selezioni preliminari Champions MD3 non coerenti');
-  return {...workspace,all,derivedVersion:official.version,
+  return {...workspace,all,derivedVersion:sabah.version,
     marketCatalog:{...workspace.marketCatalog,matches,
       totals:{...workspace.marketCatalog.totals,preliminary:all.filter(leg=>leg.suggestionAnalysis?.suggested).length}}};
 }
