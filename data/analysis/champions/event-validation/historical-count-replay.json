@@ -3,174 +3,1110 @@
   "status": "DIAGNOSTIC_ONLY_NOT_PRODUCTION_MD3",
   "approvable": false,
   "model": "SHARED_MD7_COUNT_ENGINE_COMPARATOR",
-  "trainingMatches": 94,
-  "testMatches": 95,
-  "independentFixtures": 95,
+  "trainingMatches": 93,
+  "testMatches": 93,
+  "independentFixtures": 93,
   "protocol": "FIRST_HALF_TRAIN_FIXED_DISPERSION_THEN_EVENT_DATE_WALK_FORWARD_STRICTLY_BEFORE_TARGET_DATE",
   "chronologyLimitation": "Historical event dates are ordered; no historical as-of receipt proves availability of every feature. Not admitted by the prospective validation gate.",
   "thresholdLimitation": "Current provider threshold grid used for diagnostic comparison, not selected on test performance and not a preregistered 2025/26 portfolio.",
   "subfamilies": {
     "corners-match-over": {
-      "matchClusters": 95,
-      "probabilityObservations": 0,
-      "brier": null,
-      "baselineBrier": null,
-      "deltaBrier": 0,
-      "logLoss": null,
-      "ece": 0,
-      "meanBias": -0.4733,
-      "mae": 2.9803,
+      "matchClusters": 93,
+      "probabilityObservations": 744,
+      "brier": 0.2026,
+      "baselineBrier": 0.2036,
+      "deltaBrier": -0.001,
+      "logLoss": 0.5927,
+      "ece": 0.0233,
+      "meanBias": -0.2402,
+      "mae": 2.8599,
       "gate": "FAIL",
       "gateCriteria": "clusters>=180; deltaBrier<=0.005; ECE<=0.08; absolute bias within family limit; exact threshold must have >=30 positive and >=30 negative holdout outcomes",
-      "thresholds": {}
+      "thresholds": {
+        "10.5": {
+          "observations": 93,
+          "positives": 39,
+          "negatives": 54,
+          "brier": 0.2435,
+          "baselineBrier": 0.2492,
+          "deltaBrier": -0.0057,
+          "ece": 0.0603,
+          "gate": "PASS"
+        },
+        "11.5": {
+          "observations": 93,
+          "positives": 23,
+          "negatives": 70,
+          "brier": 0.1879,
+          "baselineBrier": 0.1875,
+          "deltaBrier": 0.0004,
+          "ece": 0.0403,
+          "gate": "FAIL"
+        },
+        "12.5": {
+          "observations": 93,
+          "positives": 18,
+          "negatives": 75,
+          "brier": 0.1576,
+          "baselineBrier": 0.1568,
+          "deltaBrier": 0.0008,
+          "ece": 0.0337,
+          "gate": "FAIL"
+        },
+        "13.5": {
+          "observations": 93,
+          "positives": 15,
+          "negatives": 78,
+          "brier": 0.136,
+          "baselineBrier": 0.1366,
+          "deltaBrier": -0.0005,
+          "ece": 0.0498,
+          "gate": "FAIL"
+        },
+        "7.5": {
+          "observations": 93,
+          "positives": 64,
+          "negatives": 29,
+          "brier": 0.2152,
+          "baselineBrier": 0.2157,
+          "deltaBrier": -0.0005,
+          "ece": 0.0334,
+          "gate": "FAIL"
+        },
+        "8.5": {
+          "observations": 93,
+          "positives": 57,
+          "negatives": 36,
+          "brier": 0.2427,
+          "baselineBrier": 0.2417,
+          "deltaBrier": 0.001,
+          "ece": 0.0826,
+          "gate": "PASS"
+        },
+        "9.5": {
+          "observations": 93,
+          "positives": 47,
+          "negatives": 46,
+          "brier": 0.2512,
+          "baselineBrier": 0.2552,
+          "deltaBrier": -0.004,
+          "ece": 0.048,
+          "gate": "PASS"
+        },
+        "6.5": {
+          "observations": 93,
+          "positives": 70,
+          "negatives": 23,
+          "brier": 0.1869,
+          "baselineBrier": 0.1862,
+          "deltaBrier": 0.0007,
+          "ece": 0.0171,
+          "gate": "FAIL"
+        }
+      },
+      "status": "DIAGNOSTIC_TESTED"
     },
     "corners-1x2-fulltime": {
-      "matchClusters": 95,
-      "probabilityObservations": 285,
-      "brier": 0.1747,
-      "baselineBrier": 0.1826,
-      "deltaBrier": -0.0079,
-      "logLoss": 0.5192,
-      "ece": 0.0449,
-      "meanBias": -0.2367,
-      "mae": 2.427,
+      "matchClusters": 93,
+      "probabilityObservations": 279,
+      "brier": 0.1759,
+      "baselineBrier": 0.1844,
+      "deltaBrier": -0.0085,
+      "logLoss": 0.5221,
+      "ece": 0.047,
+      "meanBias": -0.1201,
+      "mae": 2.3845,
       "gate": "FAIL",
       "gateCriteria": "clusters>=180; deltaBrier<=0.005; ECE<=0.08; absolute bias within family limit; exact threshold must have >=30 positive and >=30 negative holdout outcomes",
       "thresholds": {
         "overall": {
-          "observations": 285,
-          "positives": 95,
-          "negatives": 190,
-          "brier": 0.1747,
-          "baselineBrier": 0.1826,
-          "deltaBrier": -0.0079,
-          "ece": 0.0449,
+          "observations": 279,
+          "positives": 93,
+          "negatives": 186,
+          "brier": 0.1759,
+          "baselineBrier": 0.1844,
+          "deltaBrier": -0.0085,
+          "ece": 0.047,
           "gate": "PASS"
         }
-      }
+      },
+      "status": "DIAGNOSTIC_TESTED"
     },
     "shots-1x2": {
-      "matchClusters": 95,
-      "probabilityObservations": 285,
-      "brier": 0.1601,
-      "baselineBrier": 0.1694,
-      "deltaBrier": -0.0093,
-      "logLoss": 0.4971,
-      "ece": 0.0931,
-      "meanBias": 0.0541,
-      "mae": 4.6733,
+      "matchClusters": 93,
+      "probabilityObservations": 279,
+      "brier": 0.1624,
+      "baselineBrier": 0.1717,
+      "deltaBrier": -0.0092,
+      "logLoss": 0.5026,
+      "ece": 0.0856,
+      "meanBias": 0.2336,
+      "mae": 4.5391,
       "gate": "FAIL",
       "gateCriteria": "clusters>=180; deltaBrier<=0.005; ECE<=0.08; absolute bias within family limit; exact threshold must have >=30 positive and >=30 negative holdout outcomes",
       "thresholds": {
         "overall": {
-          "observations": 285,
-          "positives": 95,
-          "negatives": 190,
-          "brier": 0.1601,
-          "baselineBrier": 0.1694,
-          "deltaBrier": -0.0093,
-          "ece": 0.0931,
+          "observations": 279,
+          "positives": 93,
+          "negatives": 186,
+          "brier": 0.1624,
+          "baselineBrier": 0.1717,
+          "deltaBrier": -0.0092,
+          "ece": 0.0856,
           "gate": "PASS"
         }
-      }
+      },
+      "status": "DIAGNOSTIC_TESTED"
     },
     "sot-1x2": {
-      "matchClusters": 95,
-      "probabilityObservations": 285,
-      "brier": 0.1794,
-      "baselineBrier": 0.1819,
-      "deltaBrier": -0.0026,
-      "logLoss": 0.5319,
-      "ece": 0.0238,
-      "meanBias": -0.0205,
-      "mae": 2.2784,
+      "matchClusters": 93,
+      "probabilityObservations": 279,
+      "brier": 0.181,
+      "baselineBrier": 0.1833,
+      "deltaBrier": -0.0023,
+      "logLoss": 0.5356,
+      "ece": 0.0222,
+      "meanBias": 0.0032,
+      "mae": 2.2119,
       "gate": "FAIL",
       "gateCriteria": "clusters>=180; deltaBrier<=0.005; ECE<=0.08; absolute bias within family limit; exact threshold must have >=30 positive and >=30 negative holdout outcomes",
       "thresholds": {
         "overall": {
-          "observations": 285,
-          "positives": 95,
-          "negatives": 190,
-          "brier": 0.1794,
-          "baselineBrier": 0.1819,
-          "deltaBrier": -0.0026,
-          "ece": 0.0238,
+          "observations": 279,
+          "positives": 93,
+          "negatives": 186,
+          "brier": 0.181,
+          "baselineBrier": 0.1833,
+          "deltaBrier": -0.0023,
+          "ece": 0.0222,
           "gate": "PASS"
         }
-      }
+      },
+      "status": "DIAGNOSTIC_TESTED"
     },
     "sot-match-over": {
-      "matchClusters": 95,
-      "probabilityObservations": 0,
-      "brier": null,
-      "baselineBrier": null,
-      "deltaBrier": 0,
-      "logLoss": null,
-      "ece": 0,
-      "meanBias": -0.0411,
-      "mae": 3.1115,
+      "matchClusters": 93,
+      "probabilityObservations": 1488,
+      "brier": 0.1284,
+      "baselineBrier": 0.1334,
+      "deltaBrier": -0.005,
+      "logLoss": 0.4017,
+      "ece": 0.0368,
+      "meanBias": 0.0064,
+      "mae": 2.9859,
       "gate": "FAIL",
       "gateCriteria": "clusters>=180; deltaBrier<=0.005; ECE<=0.08; absolute bias within family limit; exact threshold must have >=30 positive and >=30 negative holdout outcomes",
-      "thresholds": {}
+      "thresholds": {
+        "10.5": {
+          "observations": 93,
+          "positives": 45,
+          "negatives": 48,
+          "brier": 0.2371,
+          "baselineBrier": 0.253,
+          "deltaBrier": -0.0159,
+          "ece": 0.0619,
+          "gate": "PASS"
+        },
+        "11.5": {
+          "observations": 93,
+          "positives": 37,
+          "negatives": 56,
+          "brier": 0.2322,
+          "baselineBrier": 0.2427,
+          "deltaBrier": -0.0105,
+          "ece": 0.0422,
+          "gate": "PASS"
+        },
+        "12.5": {
+          "observations": 93,
+          "positives": 30,
+          "negatives": 63,
+          "brier": 0.2128,
+          "baselineBrier": 0.2215,
+          "deltaBrier": -0.0087,
+          "ece": 0.0402,
+          "gate": "PASS"
+        },
+        "13.5": {
+          "observations": 93,
+          "positives": 23,
+          "negatives": 70,
+          "brier": 0.1832,
+          "baselineBrier": 0.1883,
+          "deltaBrier": -0.0051,
+          "ece": 0.0661,
+          "gate": "FAIL"
+        },
+        "14.5": {
+          "observations": 93,
+          "positives": 13,
+          "negatives": 80,
+          "brier": 0.1185,
+          "baselineBrier": 0.1212,
+          "deltaBrier": -0.0028,
+          "ece": 0.0379,
+          "gate": "FAIL"
+        },
+        "15.5": {
+          "observations": 93,
+          "positives": 9,
+          "negatives": 84,
+          "brier": 0.0866,
+          "baselineBrier": 0.0881,
+          "deltaBrier": -0.0015,
+          "ece": 0.0375,
+          "gate": "FAIL"
+        },
+        "16.5": {
+          "observations": 93,
+          "positives": 6,
+          "negatives": 87,
+          "brier": 0.0598,
+          "baselineBrier": 0.0609,
+          "deltaBrier": -0.0011,
+          "ece": 0.0353,
+          "gate": "FAIL"
+        },
+        "4.5": {
+          "observations": 93,
+          "positives": 90,
+          "negatives": 3,
+          "brier": 0.0326,
+          "baselineBrier": 0.0333,
+          "deltaBrier": -0.0007,
+          "ece": 0.04,
+          "gate": "FAIL"
+        },
+        "5.5": {
+          "observations": 93,
+          "positives": 85,
+          "negatives": 8,
+          "brier": 0.08,
+          "baselineBrier": 0.0807,
+          "deltaBrier": -0.0007,
+          "ece": 0.0396,
+          "gate": "FAIL"
+        },
+        "6.5": {
+          "observations": 93,
+          "positives": 77,
+          "negatives": 16,
+          "brier": 0.1444,
+          "baselineBrier": 0.1436,
+          "deltaBrier": 0.0008,
+          "ece": 0.054,
+          "gate": "FAIL"
+        },
+        "7.5": {
+          "observations": 93,
+          "positives": 68,
+          "negatives": 25,
+          "brier": 0.192,
+          "baselineBrier": 0.1971,
+          "deltaBrier": -0.0051,
+          "ece": 0.0106,
+          "gate": "FAIL"
+        },
+        "8.5": {
+          "observations": 93,
+          "positives": 63,
+          "negatives": 30,
+          "brier": 0.2102,
+          "baselineBrier": 0.2221,
+          "deltaBrier": -0.0119,
+          "ece": 0.055,
+          "gate": "PASS"
+        },
+        "9.5": {
+          "observations": 93,
+          "positives": 55,
+          "negatives": 38,
+          "brier": 0.2282,
+          "baselineBrier": 0.2467,
+          "deltaBrier": -0.0185,
+          "ece": 0.1077,
+          "gate": "FAIL"
+        },
+        "17.5": {
+          "observations": 93,
+          "positives": 3,
+          "negatives": 90,
+          "brier": 0.0326,
+          "baselineBrier": 0.0323,
+          "deltaBrier": 0.0003,
+          "ece": 0.0408,
+          "gate": "FAIL"
+        },
+        "18.5": {
+          "observations": 93,
+          "positives": 0,
+          "negatives": 93,
+          "brier": 0.0031,
+          "baselineBrier": 0.0021,
+          "deltaBrier": 0.0011,
+          "ece": 0.0528,
+          "gate": "FAIL"
+        },
+        "19.5": {
+          "observations": 93,
+          "positives": 0,
+          "negatives": 93,
+          "brier": 0.0016,
+          "baselineBrier": 0.001,
+          "deltaBrier": 0.0006,
+          "ece": 0.0376,
+          "gate": "FAIL"
+        }
+      },
+      "status": "DIAGNOSTIC_TESTED"
     },
     "shots-match-over": {
-      "matchClusters": 95,
-      "probabilityObservations": 0,
-      "brier": null,
-      "baselineBrier": null,
-      "deltaBrier": 0,
-      "logLoss": null,
-      "ece": 0,
-      "meanBias": 0.1083,
-      "mae": 6.0318,
+      "matchClusters": 93,
+      "probabilityObservations": 1674,
+      "brier": 0.1863,
+      "baselineBrier": 0.1944,
+      "deltaBrier": -0.008,
+      "logLoss": 0.5531,
+      "ece": 0.0229,
+      "meanBias": 0.4672,
+      "mae": 5.7638,
       "gate": "FAIL",
       "gateCriteria": "clusters>=180; deltaBrier<=0.005; ECE<=0.08; absolute bias within family limit; exact threshold must have >=30 positive and >=30 negative holdout outcomes",
-      "thresholds": {}
+      "thresholds": {
+        "18.5": {
+          "observations": 93,
+          "positives": 83,
+          "negatives": 10,
+          "brier": 0.0957,
+          "baselineBrier": 0.0976,
+          "deltaBrier": -0.0019,
+          "ece": 0.0282,
+          "gate": "FAIL"
+        },
+        "19.5": {
+          "observations": 93,
+          "positives": 77,
+          "negatives": 16,
+          "brier": 0.1377,
+          "baselineBrier": 0.1433,
+          "deltaBrier": -0.0056,
+          "ece": 0.0515,
+          "gate": "FAIL"
+        },
+        "20.5": {
+          "observations": 93,
+          "positives": 75,
+          "negatives": 18,
+          "brier": 0.1514,
+          "baselineBrier": 0.1576,
+          "deltaBrier": -0.0063,
+          "ece": 0.0225,
+          "gate": "FAIL"
+        },
+        "21.5": {
+          "observations": 93,
+          "positives": 71,
+          "negatives": 22,
+          "brier": 0.1759,
+          "baselineBrier": 0.1822,
+          "deltaBrier": -0.0063,
+          "ece": 0.0675,
+          "gate": "FAIL"
+        },
+        "22.5": {
+          "observations": 93,
+          "positives": 63,
+          "negatives": 30,
+          "brier": 0.2119,
+          "baselineBrier": 0.22,
+          "deltaBrier": -0.0081,
+          "ece": 0.062,
+          "gate": "PASS"
+        },
+        "23.5": {
+          "observations": 93,
+          "positives": 59,
+          "negatives": 34,
+          "brier": 0.224,
+          "baselineBrier": 0.2334,
+          "deltaBrier": -0.0094,
+          "ece": 0.0408,
+          "gate": "PASS"
+        },
+        "24.5": {
+          "observations": 93,
+          "positives": 56,
+          "negatives": 37,
+          "brier": 0.23,
+          "baselineBrier": 0.2413,
+          "deltaBrier": -0.0113,
+          "ece": 0.0519,
+          "gate": "PASS"
+        },
+        "25.5": {
+          "observations": 93,
+          "positives": 51,
+          "negatives": 42,
+          "brier": 0.2345,
+          "baselineBrier": 0.2498,
+          "deltaBrier": -0.0152,
+          "ece": 0.052,
+          "gate": "PASS"
+        },
+        "26.5": {
+          "observations": 93,
+          "positives": 46,
+          "negatives": 47,
+          "brier": 0.2417,
+          "baselineBrier": 0.2518,
+          "deltaBrier": -0.0101,
+          "ece": 0.0525,
+          "gate": "PASS"
+        },
+        "27.5": {
+          "observations": 93,
+          "positives": 44,
+          "negatives": 49,
+          "brier": 0.2397,
+          "baselineBrier": 0.2513,
+          "deltaBrier": -0.0116,
+          "ece": 0.0648,
+          "gate": "PASS"
+        },
+        "28.5": {
+          "observations": 93,
+          "positives": 40,
+          "negatives": 53,
+          "brier": 0.2358,
+          "baselineBrier": 0.2476,
+          "deltaBrier": -0.0118,
+          "ece": 0.0498,
+          "gate": "PASS"
+        },
+        "29.5": {
+          "observations": 93,
+          "positives": 35,
+          "negatives": 58,
+          "brier": 0.2254,
+          "baselineBrier": 0.2365,
+          "deltaBrier": -0.0112,
+          "ece": 0.0354,
+          "gate": "PASS"
+        },
+        "30.5": {
+          "observations": 93,
+          "positives": 27,
+          "negatives": 66,
+          "brier": 0.1977,
+          "baselineBrier": 0.2077,
+          "deltaBrier": -0.01,
+          "ece": 0.0892,
+          "gate": "FAIL"
+        },
+        "31.5": {
+          "observations": 93,
+          "positives": 26,
+          "negatives": 67,
+          "brier": 0.1939,
+          "baselineBrier": 0.2022,
+          "deltaBrier": -0.0083,
+          "ece": 0.0692,
+          "gate": "FAIL"
+        },
+        "32.5": {
+          "observations": 93,
+          "positives": 23,
+          "negatives": 70,
+          "brier": 0.1773,
+          "baselineBrier": 0.1871,
+          "deltaBrier": -0.0098,
+          "ece": 0.0483,
+          "gate": "FAIL"
+        },
+        "33.5": {
+          "observations": 93,
+          "positives": 20,
+          "negatives": 73,
+          "brier": 0.1671,
+          "baselineBrier": 0.1695,
+          "deltaBrier": -0.0024,
+          "ece": 0.0146,
+          "gate": "FAIL"
+        },
+        "34.5": {
+          "observations": 93,
+          "positives": 18,
+          "negatives": 75,
+          "brier": 0.1528,
+          "baselineBrier": 0.157,
+          "deltaBrier": -0.0043,
+          "ece": 0.0541,
+          "gate": "FAIL"
+        },
+        "17.5": {
+          "observations": 93,
+          "positives": 87,
+          "negatives": 6,
+          "brier": 0.0614,
+          "baselineBrier": 0.0628,
+          "deltaBrier": -0.0013,
+          "ece": 0.0416,
+          "gate": "FAIL"
+        }
+      },
+      "status": "DIAGNOSTIC_TESTED"
     },
     "corners-team-over": {
-      "matchClusters": 95,
-      "probabilityObservations": 0,
-      "brier": null,
-      "baselineBrier": null,
-      "deltaBrier": 0,
-      "logLoss": null,
-      "ece": 0,
-      "meanBias": -0.2367,
-      "mae": 2.427,
+      "matchClusters": 93,
+      "probabilityObservations": 2046,
+      "brier": 0.1342,
+      "baselineBrier": 0.1384,
+      "deltaBrier": -0.0042,
+      "logLoss": 0.4095,
+      "ece": 0.0214,
+      "meanBias": -0.1201,
+      "mae": 2.3845,
       "gate": "FAIL",
       "gateCriteria": "clusters>=180; deltaBrier<=0.005; ECE<=0.08; absolute bias within family limit; exact threshold must have >=30 positive and >=30 negative holdout outcomes",
-      "thresholds": {}
+      "thresholds": {
+        "10.5": {
+          "observations": 186,
+          "positives": 8,
+          "negatives": 178,
+          "brier": 0.0395,
+          "baselineBrier": 0.0409,
+          "deltaBrier": -0.0014,
+          "ece": 0.0097,
+          "gate": "FAIL"
+        },
+        "11.5": {
+          "observations": 186,
+          "positives": 5,
+          "negatives": 181,
+          "brier": 0.0249,
+          "baselineBrier": 0.0258,
+          "deltaBrier": -0.0009,
+          "ece": 0.0069,
+          "gate": "FAIL"
+        },
+        "12.5": {
+          "observations": 186,
+          "positives": 4,
+          "negatives": 182,
+          "brier": 0.0205,
+          "baselineBrier": 0.0209,
+          "deltaBrier": -0.0004,
+          "ece": 0.0102,
+          "gate": "FAIL"
+        },
+        "2.5": {
+          "observations": 186,
+          "positives": 138,
+          "negatives": 48,
+          "brier": 0.1897,
+          "baselineBrier": 0.1938,
+          "deltaBrier": -0.0042,
+          "ece": 0.0398,
+          "gate": "PASS"
+        },
+        "3.5": {
+          "observations": 186,
+          "positives": 117,
+          "negatives": 69,
+          "brier": 0.2243,
+          "baselineBrier": 0.2314,
+          "deltaBrier": -0.007,
+          "ece": 0.0327,
+          "gate": "PASS"
+        },
+        "4.5": {
+          "observations": 186,
+          "positives": 89,
+          "negatives": 97,
+          "brier": 0.2416,
+          "baselineBrier": 0.2519,
+          "deltaBrier": -0.0103,
+          "ece": 0.0399,
+          "gate": "PASS"
+        },
+        "5.5": {
+          "observations": 186,
+          "positives": 70,
+          "negatives": 116,
+          "brier": 0.2296,
+          "baselineBrier": 0.238,
+          "deltaBrier": -0.0083,
+          "ece": 0.0428,
+          "gate": "PASS"
+        },
+        "6.5": {
+          "observations": 186,
+          "positives": 49,
+          "negatives": 137,
+          "brier": 0.1874,
+          "baselineBrier": 0.1907,
+          "deltaBrier": -0.0032,
+          "ece": 0.0605,
+          "gate": "PASS"
+        },
+        "7.5": {
+          "observations": 186,
+          "positives": 35,
+          "negatives": 151,
+          "brier": 0.1439,
+          "baselineBrier": 0.1486,
+          "deltaBrier": -0.0047,
+          "ece": 0.0401,
+          "gate": "PASS"
+        },
+        "8.5": {
+          "observations": 186,
+          "positives": 23,
+          "negatives": 163,
+          "brier": 0.103,
+          "baselineBrier": 0.1064,
+          "deltaBrier": -0.0035,
+          "ece": 0.0462,
+          "gate": "FAIL"
+        },
+        "9.5": {
+          "observations": 186,
+          "positives": 15,
+          "negatives": 171,
+          "brier": 0.072,
+          "baselineBrier": 0.0743,
+          "deltaBrier": -0.0023,
+          "ece": 0.0225,
+          "gate": "FAIL"
+        }
+      },
+      "status": "DIAGNOSTIC_TESTED"
     },
     "sot-team-over": {
-      "matchClusters": 95,
-      "probabilityObservations": 0,
-      "brier": null,
-      "baselineBrier": null,
-      "deltaBrier": 0,
-      "logLoss": null,
-      "ece": 0,
-      "meanBias": -0.0205,
-      "mae": 2.2784,
+      "matchClusters": 93,
+      "probabilityObservations": 2418,
+      "brier": 0.113,
+      "baselineBrier": 0.1174,
+      "deltaBrier": -0.0044,
+      "logLoss": 0.3562,
+      "ece": 0.0202,
+      "meanBias": 0.0032,
+      "mae": 2.2119,
       "gate": "FAIL",
       "gateCriteria": "clusters>=180; deltaBrier<=0.005; ECE<=0.08; absolute bias within family limit; exact threshold must have >=30 positive and >=30 negative holdout outcomes",
-      "thresholds": {}
+      "thresholds": {
+        "10.5": {
+          "observations": 186,
+          "positives": 12,
+          "negatives": 174,
+          "brier": 0.0588,
+          "baselineBrier": 0.0604,
+          "deltaBrier": -0.0016,
+          "ece": 0.0069,
+          "gate": "FAIL"
+        },
+        "11.5": {
+          "observations": 186,
+          "positives": 9,
+          "negatives": 177,
+          "brier": 0.0452,
+          "baselineBrier": 0.0461,
+          "deltaBrier": -0.0009,
+          "ece": 0.0105,
+          "gate": "FAIL"
+        },
+        "2.5": {
+          "observations": 186,
+          "positives": 149,
+          "negatives": 37,
+          "brier": 0.154,
+          "baselineBrier": 0.1587,
+          "deltaBrier": -0.0046,
+          "ece": 0.0101,
+          "gate": "PASS"
+        },
+        "3.5": {
+          "observations": 186,
+          "positives": 135,
+          "negatives": 51,
+          "brier": 0.1912,
+          "baselineBrier": 0.1999,
+          "deltaBrier": -0.0086,
+          "ece": 0.0789,
+          "gate": "PASS"
+        },
+        "4.5": {
+          "observations": 186,
+          "positives": 107,
+          "negatives": 79,
+          "brier": 0.2348,
+          "baselineBrier": 0.2467,
+          "deltaBrier": -0.0119,
+          "ece": 0.0486,
+          "gate": "PASS"
+        },
+        "5.5": {
+          "observations": 186,
+          "positives": 71,
+          "negatives": 115,
+          "brier": 0.2252,
+          "baselineBrier": 0.2355,
+          "deltaBrier": -0.0103,
+          "ece": 0.0433,
+          "gate": "PASS"
+        },
+        "6.5": {
+          "observations": 186,
+          "positives": 52,
+          "negatives": 134,
+          "brier": 0.1881,
+          "baselineBrier": 0.196,
+          "deltaBrier": -0.0079,
+          "ece": 0.0339,
+          "gate": "PASS"
+        },
+        "7.5": {
+          "observations": 186,
+          "positives": 37,
+          "negatives": 149,
+          "brier": 0.1513,
+          "baselineBrier": 0.1586,
+          "deltaBrier": -0.0073,
+          "ece": 0.0515,
+          "gate": "PASS"
+        },
+        "8.5": {
+          "observations": 186,
+          "positives": 23,
+          "negatives": 163,
+          "brier": 0.1051,
+          "baselineBrier": 0.107,
+          "deltaBrier": -0.0018,
+          "ece": 0.0264,
+          "gate": "FAIL"
+        },
+        "9.5": {
+          "observations": 186,
+          "positives": 15,
+          "negatives": 171,
+          "brier": 0.073,
+          "baselineBrier": 0.0743,
+          "deltaBrier": -0.0013,
+          "ece": 0.0222,
+          "gate": "FAIL"
+        },
+        "12.5": {
+          "observations": 186,
+          "positives": 5,
+          "negatives": 181,
+          "brier": 0.0259,
+          "baselineBrier": 0.0263,
+          "deltaBrier": -0.0004,
+          "ece": 0.0031,
+          "gate": "FAIL"
+        },
+        "13.5": {
+          "observations": 186,
+          "positives": 2,
+          "negatives": 184,
+          "brier": 0.0107,
+          "baselineBrier": 0.0108,
+          "deltaBrier": -0.0001,
+          "ece": 0.0086,
+          "gate": "FAIL"
+        },
+        "14.5": {
+          "observations": 186,
+          "positives": 1,
+          "negatives": 185,
+          "brier": 0.0053,
+          "baselineBrier": 0.0054,
+          "deltaBrier": -0.0001,
+          "ece": 0.007,
+          "gate": "FAIL"
+        }
+      },
+      "status": "DIAGNOSTIC_TESTED"
     },
     "shots-team-over": {
-      "matchClusters": 95,
-      "probabilityObservations": 0,
-      "brier": null,
-      "baselineBrier": null,
-      "deltaBrier": 0,
-      "logLoss": null,
-      "ece": 0,
-      "meanBias": 0.0541,
-      "mae": 4.6733,
+      "matchClusters": 93,
+      "probabilityObservations": 3906,
+      "brier": 0.1385,
+      "baselineBrier": 0.147,
+      "deltaBrier": -0.0084,
+      "logLoss": 0.4274,
+      "ece": 0.0209,
+      "meanBias": 0.2336,
+      "mae": 4.5391,
       "gate": "FAIL",
       "gateCriteria": "clusters>=180; deltaBrier<=0.005; ECE<=0.08; absolute bias within family limit; exact threshold must have >=30 positive and >=30 negative holdout outcomes",
-      "thresholds": {}
+      "thresholds": {
+        "10.5": {
+          "observations": 186,
+          "positives": 121,
+          "negatives": 65,
+          "brier": 0.2064,
+          "baselineBrier": 0.218,
+          "deltaBrier": -0.0116,
+          "ece": 0.0647,
+          "gate": "PASS"
+        },
+        "11.5": {
+          "observations": 186,
+          "positives": 106,
+          "negatives": 80,
+          "brier": 0.2223,
+          "baselineBrier": 0.2378,
+          "deltaBrier": -0.0155,
+          "ece": 0.0933,
+          "gate": "PASS"
+        },
+        "12.5": {
+          "observations": 186,
+          "positives": 95,
+          "negatives": 91,
+          "brier": 0.2247,
+          "baselineBrier": 0.2381,
+          "deltaBrier": -0.0134,
+          "ece": 0.0662,
+          "gate": "PASS"
+        },
+        "13.5": {
+          "observations": 186,
+          "positives": 84,
+          "negatives": 102,
+          "brier": 0.222,
+          "baselineBrier": 0.2346,
+          "deltaBrier": -0.0126,
+          "ece": 0.0694,
+          "gate": "PASS"
+        },
+        "14.5": {
+          "observations": 186,
+          "positives": 77,
+          "negatives": 109,
+          "brier": 0.2212,
+          "baselineBrier": 0.2338,
+          "deltaBrier": -0.0126,
+          "ece": 0.0457,
+          "gate": "PASS"
+        },
+        "15.5": {
+          "observations": 186,
+          "positives": 63,
+          "negatives": 123,
+          "brier": 0.2011,
+          "baselineBrier": 0.2119,
+          "deltaBrier": -0.0108,
+          "ece": 0.066,
+          "gate": "PASS"
+        },
+        "16.5": {
+          "observations": 186,
+          "positives": 55,
+          "negatives": 131,
+          "brier": 0.1861,
+          "baselineBrier": 0.1968,
+          "deltaBrier": -0.0107,
+          "ece": 0.0421,
+          "gate": "PASS"
+        },
+        "17.5": {
+          "observations": 186,
+          "positives": 47,
+          "negatives": 139,
+          "brier": 0.1645,
+          "baselineBrier": 0.1775,
+          "deltaBrier": -0.013,
+          "ece": 0.0797,
+          "gate": "PASS"
+        },
+        "18.5": {
+          "observations": 186,
+          "positives": 35,
+          "negatives": 151,
+          "brier": 0.1358,
+          "baselineBrier": 0.147,
+          "deltaBrier": -0.0112,
+          "ece": 0.0411,
+          "gate": "PASS"
+        },
+        "19.5": {
+          "observations": 186,
+          "positives": 29,
+          "negatives": 157,
+          "brier": 0.117,
+          "baselineBrier": 0.1295,
+          "deltaBrier": -0.0124,
+          "ece": 0.0579,
+          "gate": "FAIL"
+        },
+        "20.5": {
+          "observations": 186,
+          "positives": 23,
+          "negatives": 163,
+          "brier": 0.0932,
+          "baselineBrier": 0.1028,
+          "deltaBrier": -0.0096,
+          "ece": 0.0576,
+          "gate": "FAIL"
+        },
+        "21.5": {
+          "observations": 186,
+          "positives": 18,
+          "negatives": 168,
+          "brier": 0.0795,
+          "baselineBrier": 0.0852,
+          "deltaBrier": -0.0056,
+          "ece": 0.0369,
+          "gate": "FAIL"
+        },
+        "22.5": {
+          "observations": 186,
+          "positives": 13,
+          "negatives": 173,
+          "brier": 0.0591,
+          "baselineBrier": 0.0644,
+          "deltaBrier": -0.0053,
+          "ece": 0.0399,
+          "gate": "FAIL"
+        },
+        "23.5": {
+          "observations": 186,
+          "positives": 13,
+          "negatives": 173,
+          "brier": 0.0591,
+          "baselineBrier": 0.0639,
+          "deltaBrier": -0.0048,
+          "ece": 0.0375,
+          "gate": "FAIL"
+        },
+        "24.5": {
+          "observations": 186,
+          "positives": 13,
+          "negatives": 173,
+          "brier": 0.0598,
+          "baselineBrier": 0.0641,
+          "deltaBrier": -0.0043,
+          "ece": 0.0446,
+          "gate": "FAIL"
+        },
+        "5.5": {
+          "observations": 186,
+          "positives": 173,
+          "negatives": 13,
+          "brier": 0.0627,
+          "baselineBrier": 0.0635,
+          "deltaBrier": -0.0008,
+          "ece": 0.0086,
+          "gate": "FAIL"
+        },
+        "6.5": {
+          "observations": 186,
+          "positives": 167,
+          "negatives": 19,
+          "brier": 0.0863,
+          "baselineBrier": 0.0883,
+          "deltaBrier": -0.002,
+          "ece": 0.0365,
+          "gate": "FAIL"
+        },
+        "7.5": {
+          "observations": 186,
+          "positives": 158,
+          "negatives": 28,
+          "brier": 0.118,
+          "baselineBrier": 0.1221,
+          "deltaBrier": -0.0041,
+          "ece": 0.0663,
+          "gate": "FAIL"
+        },
+        "8.5": {
+          "observations": 186,
+          "positives": 143,
+          "negatives": 43,
+          "brier": 0.1656,
+          "baselineBrier": 0.1713,
+          "deltaBrier": -0.0057,
+          "ece": 0.0424,
+          "gate": "PASS"
+        },
+        "9.5": {
+          "observations": 186,
+          "positives": 131,
+          "negatives": 55,
+          "brier": 0.1895,
+          "baselineBrier": 0.1997,
+          "deltaBrier": -0.0102,
+          "ece": 0.0674,
+          "gate": "PASS"
+        },
+        "4.5": {
+          "observations": 186,
+          "positives": 179,
+          "negatives": 7,
+          "brier": 0.0351,
+          "baselineBrier": 0.0357,
+          "deltaBrier": -0.0006,
+          "ece": 0.0033,
+          "gate": "FAIL"
+        }
+      },
+      "status": "DIAGNOSTIC_TESTED"
     }
   },
   "rows": [
+    {
+      "fixtureId": "757746",
+      "date": "2025-12-09",
+      "family": "shots",
+      "latestInputEventDate": "2025-11-26",
+      "mean": {
+        "home": 15.261944444444445,
+        "away": 10.607777777777777,
+        "baselineHome": 15.655555555555555,
+        "baselineAway": 11.544444444444444
+      },
+      "actual": {
+        "home": 19,
+        "away": 6
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757746",
+      "date": "2025-12-09",
+      "family": "sot",
+      "latestInputEventDate": "2025-11-26",
+      "mean": {
+        "home": 5.756774691358025,
+        "away": 4.093024691358025,
+        "baselineHome": 5.944444444444445,
+        "baselineAway": 4.411111111111111
+      },
+      "actual": {
+        "home": 7,
+        "away": 4
+      },
+      "featureAvailabilityVerified": false
+    },
+    {
+      "fixtureId": "757746",
+      "date": "2025-12-09",
+      "family": "corners",
+      "latestInputEventDate": "2025-11-26",
+      "mean": {
+        "home": 5.101682098765432,
+        "away": 3.847932098765432,
+        "baselineHome": 5.355555555555555,
+        "baselineAway": 3.8666666666666667
+      },
+      "actual": {
+        "home": 5,
+        "away": 0
+      },
+      "featureAvailabilityVerified": false
+    },
     {
       "fixtureId": "757747",
       "date": "2025-12-09",
@@ -3436,57 +4372,6 @@
       "featureAvailabilityVerified": false
     },
     {
-      "fixtureId": "401858765",
-      "date": "2026-02-25",
-      "family": "shots",
-      "latestInputEventDate": "2026-02-24",
-      "mean": {
-        "home": 15.162606837606837,
-        "away": 11.857606837606836,
-        "baselineHome": 15.243589743589743,
-        "baselineAway": 11.826923076923077
-      },
-      "actual": {
-        "home": 28,
-        "away": 16
-      },
-      "featureAvailabilityVerified": false
-    },
-    {
-      "fixtureId": "401858765",
-      "date": "2026-02-25",
-      "family": "sot",
-      "latestInputEventDate": "2026-02-24",
-      "mean": {
-        "home": 5.511282051282052,
-        "away": 4.522179487179487,
-        "baselineHome": 5.628205128205129,
-        "baselineAway": 4.564102564102564
-      },
-      "actual": {
-        "home": 9,
-        "away": 8
-      },
-      "featureAvailabilityVerified": false
-    },
-    {
-      "fixtureId": "401858765",
-      "date": "2026-02-25",
-      "family": "corners",
-      "latestInputEventDate": "2026-02-24",
-      "mean": {
-        "home": 5.532649572649572,
-        "away": 3.786623931623932,
-        "baselineHome": 5.358974358974359,
-        "baselineAway": 4.051282051282051
-      },
-      "actual": {
-        "home": 9,
-        "away": 4
-      },
-      "featureAvailabilityVerified": false
-    },
-    {
       "fixtureId": "401858769",
       "date": "2026-02-25",
       "family": "shots",
@@ -3543,10 +4428,10 @@
       "family": "shots",
       "latestInputEventDate": "2026-02-25",
       "mean": {
-        "home": 14.315886363636364,
-        "away": 13.511875,
-        "baselineHome": 15.35,
-        "baselineAway": 11.8125
+        "home": 14.27612064036592,
+        "away": 13.496206403659235,
+        "baselineHome": 15.270440251572326,
+        "baselineAway": 11.786163522012579
       },
       "actual": {
         "home": 16,
@@ -3560,10 +4445,10 @@
       "family": "sot",
       "latestInputEventDate": "2026-02-25",
       "mean": {
-        "home": 5.896018939393938,
-        "away": 5.096121212121212,
-        "baselineHome": 5.6625,
-        "baselineAway": 4.575
+        "home": 5.885040975795693,
+        "away": 5.08477510958643,
+        "baselineHome": 5.6415094339622645,
+        "baselineAway": 4.553459119496855
       },
       "actual": {
         "home": 4,
@@ -3577,10 +4462,10 @@
       "family": "corners",
       "latestInputEventDate": "2026-02-25",
       "mean": {
-        "home": 5.335768939393939,
-        "away": 4.118234848484849,
-        "baselineHome": 5.3875,
-        "baselineAway": 4.05
+        "home": 5.324674099485421,
+        "away": 4.117632933104632,
+        "baselineHome": 5.364779874213837,
+        "baselineAway": 4.050314465408805
       },
       "actual": {
         "home": 9,
@@ -3594,10 +4479,10 @@
       "family": "shots",
       "latestInputEventDate": "2026-02-25",
       "mean": {
-        "home": 15.663310606060605,
-        "away": 11.727935606060607,
-        "baselineHome": 15.35,
-        "baselineAway": 11.8125
+        "home": 15.623544882790165,
+        "away": 11.712267009719842,
+        "baselineHome": 15.270440251572326,
+        "baselineAway": 11.786163522012579
       },
       "actual": {
         "home": 11,
@@ -3611,10 +4496,10 @@
       "family": "sot",
       "latestInputEventDate": "2026-02-25",
       "mean": {
-        "home": 5.83223106060606,
-        "away": 4.566878787878789,
-        "baselineHome": 5.6625,
-        "baselineAway": 4.575
+        "home": 5.821253097007814,
+        "away": 4.555532685344007,
+        "baselineHome": 5.6415094339622645,
+        "baselineAway": 4.553459119496855
       },
       "actual": {
         "home": 7,
@@ -3628,10 +4513,10 @@
       "family": "corners",
       "latestInputEventDate": "2026-02-25",
       "mean": {
-        "home": 5.556829545454546,
-        "away": 4.2555075757575755,
-        "baselineHome": 5.3875,
-        "baselineAway": 4.05
+        "home": 5.545734705546026,
+        "away": 4.254905660377359,
+        "baselineHome": 5.364779874213837,
+        "baselineAway": 4.050314465408805
       },
       "actual": {
         "home": 4,
@@ -3645,10 +4530,10 @@
       "family": "shots",
       "latestInputEventDate": "2026-02-25",
       "mean": {
-        "home": 15.268916666666666,
-        "away": 12.76657196969697,
-        "baselineHome": 15.35,
-        "baselineAway": 11.8125
+        "home": 15.229150943396224,
+        "away": 12.750903373356204,
+        "baselineHome": 15.270440251572326,
+        "baselineAway": 11.786163522012579
       },
       "actual": {
         "home": 11,
@@ -3662,10 +4547,10 @@
       "family": "sot",
       "latestInputEventDate": "2026-02-25",
       "mean": {
-        "home": 5.469655303030303,
-        "away": 5.389303030303031,
-        "baselineHome": 5.6625,
-        "baselineAway": 4.575
+        "home": 5.4586773394320565,
+        "away": 5.377956927768248,
+        "baselineHome": 5.6415094339622645,
+        "baselineAway": 4.553459119496855
       },
       "actual": {
         "home": 3,
@@ -3679,10 +4564,10 @@
       "family": "corners",
       "latestInputEventDate": "2026-02-25",
       "mean": {
-        "home": 5.144405303030304,
-        "away": 3.8097499999999997,
-        "baselineHome": 5.3875,
-        "baselineAway": 4.05
+        "home": 5.133310463121783,
+        "away": 3.809148084619783,
+        "baselineHome": 5.364779874213837,
+        "baselineAway": 4.050314465408805
       },
       "actual": {
         "home": 2,
@@ -3696,10 +4581,10 @@
       "family": "shots",
       "latestInputEventDate": "2026-02-25",
       "mean": {
-        "home": 14.200734848484847,
-        "away": 13.537632575757574,
-        "baselineHome": 15.35,
-        "baselineAway": 11.8125
+        "home": 14.04430245854774,
+        "away": 13.52196397941681,
+        "baselineHome": 15.270440251572326,
+        "baselineAway": 11.786163522012579
       },
       "actual": {
         "home": 15,
@@ -3713,10 +4598,10 @@
       "family": "sot",
       "latestInputEventDate": "2026-02-25",
       "mean": {
-        "home": 5.274958333333332,
-        "away": 5.274454545454546,
-        "baselineHome": 5.6625,
-        "baselineAway": 4.575
+        "home": 5.1973137030684216,
+        "away": 5.263108442919764,
+        "baselineHome": 5.6415094339622645,
+        "baselineAway": 4.553459119496855
       },
       "actual": {
         "home": 4,
@@ -3730,10 +4615,10 @@
       "family": "corners",
       "latestInputEventDate": "2026-02-25",
       "mean": {
-        "home": 4.889253787878788,
-        "away": 5.152174242424242,
-        "baselineHome": 5.3875,
-        "baselineAway": 4.05
+        "home": 4.861492281303602,
+        "away": 5.1515723270440255,
+        "baselineHome": 5.364779874213837,
+        "baselineAway": 4.050314465408805
       },
       "actual": {
         "home": 7,
@@ -3747,10 +4632,10 @@
       "family": "shots",
       "latestInputEventDate": "2026-03-10",
       "mean": {
-        "home": 13.647836289726536,
-        "away": 13.176622320768661,
-        "baselineHome": 15.298780487804878,
-        "baselineAway": 11.890243902439025
+        "home": 13.608908719092769,
+        "away": 13.161563487637107,
+        "baselineHome": 15.220858895705522,
+        "baselineAway": 11.865030674846626
       },
       "actual": {
         "home": 10,
@@ -3764,10 +4649,10 @@
       "family": "sot",
       "latestInputEventDate": "2026-03-10",
       "mean": {
-        "home": 4.864634146341464,
-        "away": 5.458078344419809,
-        "baselineHome": 5.634146341463414,
-        "baselineAway": 4.621951219512195
+        "home": 4.853850158021937,
+        "away": 5.4471472392638045,
+        "baselineHome": 5.613496932515337,
+        "baselineAway": 4.601226993865031
       },
       "actual": {
         "home": 3,
@@ -3781,10 +4666,10 @@
       "family": "corners",
       "latestInputEventDate": "2026-03-10",
       "mean": {
-        "home": 4.826060606060606,
-        "away": 4.498464523281596,
-        "baselineHome": 5.390243902439025,
-        "baselineAway": 4.054878048780488
+        "home": 4.81524725785462,
+        "away": 4.49789273099089,
+        "baselineHome": 5.368098159509202,
+        "baselineAway": 4.0552147239263805
       },
       "actual": {
         "home": 2,
@@ -3798,10 +4683,10 @@
       "family": "shots",
       "latestInputEventDate": "2026-03-10",
       "mean": {
-        "home": 14.266927198817443,
-        "away": 11.254046563192905,
-        "baselineHome": 15.298780487804878,
-        "baselineAway": 11.890243902439025
+        "home": 14.22799962818368,
+        "away": 11.23898773006135,
+        "baselineHome": 15.220858895705522,
+        "baselineAway": 11.865030674846626
       },
       "actual": {
         "home": 10,
@@ -3815,10 +4700,10 @@
       "family": "sot",
       "latestInputEventDate": "2026-03-10",
       "mean": {
-        "home": 5.369028085735403,
-        "away": 4.571714708056172,
-        "baselineHome": 5.634146341463414,
-        "baselineAway": 4.621951219512195
+        "home": 5.358244097415876,
+        "away": 4.560783602900168,
+        "baselineHome": 5.613496932515337,
+        "baselineAway": 4.601226993865031
       },
       "actual": {
         "home": 5,
@@ -3832,10 +4717,10 @@
       "family": "corners",
       "latestInputEventDate": "2026-03-10",
       "mean": {
-        "home": 4.768787878787879,
-        "away": 4.113161492978565,
-        "baselineHome": 5.390243902439025,
-        "baselineAway": 4.054878048780488
+        "home": 4.757974530581893,
+        "away": 4.1125897006878605,
+        "baselineHome": 5.368098159509202,
+        "baselineAway": 4.0552147239263805
       },
       "actual": {
         "home": 4,
@@ -3849,10 +4734,10 @@
       "family": "shots",
       "latestInputEventDate": "2026-03-10",
       "mean": {
-        "home": 16.220109016999263,
-        "away": 13.297531411677753,
-        "baselineHome": 15.298780487804878,
-        "baselineAway": 11.890243902439025
+        "home": 16.181181446365496,
+        "away": 13.2824725785462,
+        "baselineHome": 15.220858895705522,
+        "baselineAway": 11.865030674846626
       },
       "actual": {
         "home": 12,
@@ -3866,10 +4751,10 @@
       "family": "sot",
       "latestInputEventDate": "2026-03-10",
       "mean": {
-        "home": 5.4247856614929795,
-        "away": 5.451260162601626,
-        "baselineHome": 5.634146341463414,
-        "baselineAway": 4.621951219512195
+        "home": 5.414001673173453,
+        "away": 5.440329057445623,
+        "baselineHome": 5.613496932515337,
+        "baselineAway": 4.601226993865031
       },
       "actual": {
         "home": 7,
@@ -3883,10 +4768,10 @@
       "family": "corners",
       "latestInputEventDate": "2026-03-10",
       "mean": {
-        "home": 5.677878787878789,
-        "away": 4.586191796008869,
-        "baselineHome": 5.390243902439025,
-        "baselineAway": 4.054878048780488
+        "home": 5.6670654396728,
+        "away": 4.585620003718164,
+        "baselineHome": 5.368098159509202,
+        "baselineAway": 4.0552147239263805
       },
       "actual": {
         "home": 1,
@@ -3900,10 +4785,10 @@
       "family": "shots",
       "latestInputEventDate": "2026-03-10",
       "mean": {
-        "home": 17.03738174427199,
-        "away": 11.818743532889874,
-        "baselineHome": 15.298780487804878,
-        "baselineAway": 11.890243902439025
+        "home": 16.998454173638223,
+        "away": 11.803684699758321,
+        "baselineHome": 15.220858895705522,
+        "baselineAway": 11.865030674846626
       },
       "actual": {
         "home": 9,
@@ -3917,10 +4802,10 @@
       "family": "sot",
       "latestInputEventDate": "2026-03-10",
       "mean": {
-        "home": 6.130240206947524,
-        "away": 4.5901995565410205,
-        "baselineHome": 5.634146341463414,
-        "baselineAway": 4.621951219512195
+        "home": 6.119456218627998,
+        "away": 4.579268451385016,
+        "baselineHome": 5.613496932515337,
+        "baselineAway": 4.601226993865031
       },
       "actual": {
         "home": 8,
@@ -3934,10 +4819,10 @@
       "family": "corners",
       "latestInputEventDate": "2026-03-10",
       "mean": {
-        "home": 5.526515151515151,
-        "away": 4.1022524020694755,
-        "baselineHome": 5.390243902439025,
-        "baselineAway": 4.054878048780488
+        "home": 5.515701803309166,
+        "away": 4.10168060977877,
+        "baselineHome": 5.368098159509202,
+        "baselineAway": 4.0552147239263805
       },
       "actual": {
         "home": 2,
@@ -3951,10 +4836,10 @@
       "family": "shots",
       "latestInputEventDate": "2026-03-11",
       "mean": {
-        "home": 15.605905483405483,
-        "away": 11.103243145743146,
-        "baselineHome": 15.178571428571429,
-        "baselineAway": 11.797619047619047
+        "home": 15.567121212121211,
+        "away": 11.088384140809291,
+        "baselineHome": 15.10179640718563,
+        "baselineAway": 11.77245508982036
       },
       "actual": {
         "home": 21,
@@ -3968,10 +4853,10 @@
       "family": "sot",
       "latestInputEventDate": "2026-03-11",
       "mean": {
-        "home": 6.093926767676768,
-        "away": 4.093023088023088,
-        "baselineHome": 5.636904761904762,
-        "baselineAway": 4.583333333333333
+        "home": 6.083291598620939,
+        "away": 4.082351660315732,
+        "baselineHome": 5.616766467065868,
+        "baselineAway": 4.562874251497006
       },
       "actual": {
         "home": 12,
@@ -3985,65 +4870,14 @@
       "family": "corners",
       "latestInputEventDate": "2026-03-11",
       "mean": {
-        "home": 5.311881313131313,
-        "away": 3.8503391053391054,
-        "baselineHome": 5.315476190476191,
-        "baselineAway": 4.083333333333333
+        "home": 5.300993467610234,
+        "away": 3.8498475775721284,
+        "baselineHome": 5.293413173652695,
+        "baselineAway": 4.083832335329341
       },
       "actual": {
         "home": 10,
         "away": 8
-      },
-      "featureAvailabilityVerified": false
-    },
-    {
-      "fixtureId": "401862584",
-      "date": "2026-03-17",
-      "family": "shots",
-      "latestInputEventDate": "2026-03-11",
-      "mean": {
-        "home": 16.131208513708515,
-        "away": 11.430818903318901,
-        "baselineHome": 15.178571428571429,
-        "baselineAway": 11.797619047619047
-      },
-      "actual": {
-        "home": 38,
-        "away": 9
-      },
-      "featureAvailabilityVerified": false
-    },
-    {
-      "fixtureId": "401862584",
-      "date": "2026-03-17",
-      "family": "sot",
-      "latestInputEventDate": "2026-03-11",
-      "mean": {
-        "home": 6.212411616161616,
-        "away": 4.706053391053391,
-        "baselineHome": 5.636904761904762,
-        "baselineAway": 4.583333333333333
-      },
-      "actual": {
-        "home": 14,
-        "away": 3
-      },
-      "featureAvailabilityVerified": false
-    },
-    {
-      "fixtureId": "401862584",
-      "date": "2026-03-17",
-      "family": "corners",
-      "latestInputEventDate": "2026-03-11",
-      "mean": {
-        "home": 5.586275252525253,
-        "away": 3.827460317460317,
-        "baselineHome": 5.315476190476191,
-        "baselineAway": 4.083333333333333
-      },
-      "actual": {
-        "home": 16,
-        "away": 4
       },
       "featureAvailabilityVerified": false
     },
@@ -4053,10 +4887,10 @@
       "family": "shots",
       "latestInputEventDate": "2026-03-11",
       "mean": {
-        "home": 15.376966089466087,
-        "away": 12.214000721500721,
-        "baselineHome": 15.178571428571429,
-        "baselineAway": 11.797619047619047
+        "home": 15.33818181818182,
+        "away": 12.199141716566865,
+        "baselineHome": 15.10179640718563,
+        "baselineAway": 11.77245508982036
       },
       "actual": {
         "home": 22,
@@ -4070,10 +4904,10 @@
       "family": "sot",
       "latestInputEventDate": "2026-03-11",
       "mean": {
-        "home": 6.362563131313131,
-        "away": 4.854083694083694,
-        "baselineHome": 5.636904761904762,
-        "baselineAway": 4.583333333333333
+        "home": 6.351927962257303,
+        "away": 4.843412266376339,
+        "baselineHome": 5.616766467065868,
+        "baselineAway": 4.562874251497006
       },
       "actual": {
         "home": 8,
@@ -4087,10 +4921,10 @@
       "family": "corners",
       "latestInputEventDate": "2026-03-11",
       "mean": {
-        "home": 5.287790404040404,
-        "away": 4.209884559884561,
-        "baselineHome": 5.315476190476191,
-        "baselineAway": 4.083333333333333
+        "home": 5.276902558519326,
+        "away": 4.209393032117584,
+        "baselineHome": 5.293413173652695,
+        "baselineAway": 4.083832335329341
       },
       "actual": {
         "home": 9,
@@ -4104,10 +4938,10 @@
       "family": "shots",
       "latestInputEventDate": "2026-03-11",
       "mean": {
-        "home": 14.131814574314573,
-        "away": 14.567940115440116,
-        "baselineHome": 15.178571428571429,
-        "baselineAway": 11.797619047619047
+        "home": 14.093030303030302,
+        "away": 14.55308111050626,
+        "baselineHome": 15.10179640718563,
+        "baselineAway": 11.77245508982036
       },
       "actual": {
         "home": 18,
@@ -4121,10 +4955,10 @@
       "family": "sot",
       "latestInputEventDate": "2026-03-11",
       "mean": {
-        "home": 5.319381313131314,
-        "away": 5.130901875901875,
-        "baselineHome": 5.636904761904762,
-        "baselineAway": 4.583333333333333
+        "home": 5.308746144075485,
+        "away": 5.12023044819452,
+        "baselineHome": 5.616766467065868,
+        "baselineAway": 4.562874251497006
       },
       "actual": {
         "home": 9,
@@ -4138,10 +4972,10 @@
       "family": "corners",
       "latestInputEventDate": "2026-03-11",
       "mean": {
-        "home": 5.527032828282829,
-        "away": 4.815036075036075,
-        "baselineHome": 5.315476190476191,
-        "baselineAway": 4.083333333333333
+        "home": 5.516144982761749,
+        "away": 4.814544547269098,
+        "baselineHome": 5.293413173652695,
+        "baselineAway": 4.083832335329341
       },
       "actual": {
         "home": 9,
@@ -4155,10 +4989,10 @@
       "family": "shots",
       "latestInputEventDate": "2026-03-17",
       "mean": {
-        "home": 14.596950317124735,
-        "away": 12.344319943622269,
-        "baselineHome": 15.401162790697674,
-        "baselineAway": 11.755813953488373
+        "home": 14.49432798573975,
+        "away": 12.333139037433154,
+        "baselineHome": 15.194117647058823,
+        "baselineAway": 11.74705882352941
       },
       "actual": {
         "home": 18,
@@ -4172,10 +5006,10 @@
       "family": "sot",
       "latestInputEventDate": "2026-03-17",
       "mean": {
-        "home": 5.6100140944326995,
-        "away": 4.5525916138125435,
-        "baselineHome": 5.755813953488372,
-        "baselineAway": 4.575581395348837
+        "home": 5.576251336898396,
+        "away": 4.545023172905526,
+        "baselineHome": 5.688235294117647,
+        "baselineAway": 4.564705882352941
       },
       "actual": {
         "home": 11,
@@ -4189,10 +5023,10 @@
       "family": "corners",
       "latestInputEventDate": "2026-03-17",
       "mean": {
-        "home": 5.115244890768146,
-        "away": 4.692855884425652,
-        "baselineHome": 5.4476744186046515,
-        "baselineAway": 4.1104651162790695
+        "home": 5.0742816399286985,
+        "away": 4.690725490196078,
+        "baselineHome": 5.364705882352941,
+        "baselineAway": 4.1117647058823525
       },
       "actual": {
         "home": 7,
@@ -4206,10 +5040,10 @@
       "family": "shots",
       "latestInputEventDate": "2026-03-17",
       "mean": {
-        "home": 16.15998062015504,
-        "away": 12.588713883016208,
-        "baselineHome": 15.401162790697674,
-        "baselineAway": 11.755813953488373
+        "home": 16.057358288770054,
+        "away": 12.577532976827094,
+        "baselineHome": 15.194117647058823,
+        "baselineAway": 11.74705882352941
       },
       "actual": {
         "home": 18,
@@ -4223,10 +5057,10 @@
       "family": "sot",
       "latestInputEventDate": "2026-03-17",
       "mean": {
-        "home": 6.136680761099365,
-        "away": 5.339561310782241,
-        "baselineHome": 5.755813953488372,
-        "baselineAway": 4.575581395348837
+        "home": 6.102918003565062,
+        "away": 5.331992869875222,
+        "baselineHome": 5.688235294117647,
+        "baselineAway": 4.564705882352941
       },
       "actual": {
         "home": 13,
@@ -4240,10 +5074,10 @@
       "family": "corners",
       "latestInputEventDate": "2026-03-17",
       "mean": {
-        "home": 5.905547921071177,
-        "away": 4.2349770965468645,
-        "baselineHome": 5.4476744186046515,
-        "baselineAway": 4.1104651162790695
+        "home": 5.864584670231729,
+        "away": 4.232846702317291,
+        "baselineHome": 5.364705882352941,
+        "baselineAway": 4.1117647058823525
       },
       "actual": {
         "home": 6,
@@ -4257,10 +5091,10 @@
       "family": "shots",
       "latestInputEventDate": "2026-03-17",
       "mean": {
-        "home": 16.02998062015504,
-        "away": 11.072047216349542,
-        "baselineHome": 15.401162790697674,
-        "baselineAway": 11.755813953488373
+        "home": 15.927358288770053,
+        "away": 11.060866310160428,
+        "baselineHome": 15.194117647058823,
+        "baselineAway": 11.74705882352941
       },
       "actual": {
         "home": 25,
@@ -4274,10 +5108,10 @@
       "family": "sot",
       "latestInputEventDate": "2026-03-17",
       "mean": {
-        "home": 6.369559548978153,
-        "away": 3.9171370683579987,
-        "baselineHome": 5.755813953488372,
-        "baselineAway": 4.575581395348837
+        "home": 6.335796791443851,
+        "away": 3.9095686274509807,
+        "baselineHome": 5.688235294117647,
+        "baselineAway": 4.564705882352941
       },
       "actual": {
         "home": 8,
@@ -4291,10 +5125,10 @@
       "family": "corners",
       "latestInputEventDate": "2026-03-17",
       "mean": {
-        "home": 5.166002466525722,
-        "away": 3.6887649753347427,
-        "baselineHome": 5.4476744186046515,
-        "baselineAway": 4.1104651162790695
+        "home": 5.125039215686274,
+        "away": 3.6866345811051695,
+        "baselineHome": 5.364705882352941,
+        "baselineAway": 4.1117647058823525
       },
       "actual": {
         "home": 6,
@@ -4308,10 +5142,10 @@
       "family": "shots",
       "latestInputEventDate": "2026-03-17",
       "mean": {
-        "home": 17.578616983791402,
-        "away": 11.641592670894996,
-        "baselineHome": 15.401162790697674,
-        "baselineAway": 11.755813953488373
+        "home": 17.027882352941177,
+        "away": 11.564960784313724,
+        "baselineHome": 15.194117647058823,
+        "baselineAway": 11.74705882352941
       },
       "actual": {
         "home": 32,
@@ -4325,10 +5159,10 @@
       "family": "sot",
       "latestInputEventDate": "2026-03-17",
       "mean": {
-        "home": 6.539559548978153,
-        "away": 4.654561310782241,
-        "baselineHome": 5.755813953488372,
-        "baselineAway": 4.575581395348837
+        "home": 6.382117647058823,
+        "away": 4.559490196078431,
+        "baselineHome": 5.688235294117647,
+        "baselineAway": 4.564705882352941
       },
       "actual": {
         "home": 16,
@@ -4342,10 +5176,10 @@
       "family": "corners",
       "latestInputEventDate": "2026-03-17",
       "mean": {
-        "home": 6.290396405919662,
-        "away": 3.850280126849894,
-        "baselineHome": 5.4476744186046515,
-        "baselineAway": 4.1104651162790695
+        "home": 6.125941176470588,
+        "away": 3.884529411764706,
+        "baselineHome": 5.364705882352941,
+        "baselineAway": 4.1117647058823525
       },
       "actual": {
         "home": 6,
@@ -4359,10 +5193,10 @@
       "family": "shots",
       "latestInputEventDate": "2026-03-18",
       "mean": {
-        "home": 16.299750344352617,
-        "away": 14.106775137741046,
-        "baselineHome": 15.579545454545455,
-        "baselineAway": 11.738636363636363
+        "home": 16.209504528039012,
+        "away": 14.096129397422501,
+        "baselineHome": 15.379310344827585,
+        "baselineAway": 11.729885057471265
       },
       "actual": {
         "home": 20,
@@ -4376,10 +5210,10 @@
       "family": "sot",
       "latestInputEventDate": "2026-03-18",
       "mean": {
-        "home": 6.033410812672176,
-        "away": 5.973902376033058,
-        "baselineHome": 5.8977272727272725,
-        "baselineAway": 4.5852272727272725
+        "home": 6.004131835597353,
+        "away": 5.9669845001741555,
+        "baselineHome": 5.833333333333333,
+        "baselineAway": 4.574712643678161
       },
       "actual": {
         "home": 9,
@@ -4393,10 +5227,10 @@
       "family": "corners",
       "latestInputEventDate": "2026-03-18",
       "mean": {
-        "home": 5.559874311294766,
-        "away": 4.61277117768595,
-        "baselineHome": 5.465909090909091,
-        "baselineAway": 4.096590909090909
+        "home": 5.523589341692791,
+        "away": 4.610579937304075,
+        "baselineHome": 5.385057471264368,
+        "baselineAway": 4.097701149425287
       },
       "actual": {
         "home": 8,
@@ -4410,10 +5244,10 @@
       "family": "shots",
       "latestInputEventDate": "2026-03-18",
       "mean": {
-        "home": 15.765013774104682,
-        "away": 13.101101928374655,
-        "baselineHome": 15.579545454545455,
-        "baselineAway": 11.738636363636363
+        "home": 14.255437129919889,
+        "away": 13.202887495646117,
+        "baselineHome": 15.379310344827585,
+        "baselineAway": 11.729885057471265
       },
       "actual": {
         "home": 11,
@@ -4427,10 +5261,10 @@
       "family": "sot",
       "latestInputEventDate": "2026-03-18",
       "mean": {
-        "home": 5.898743112947658,
-        "away": 5.3411673553719,
-        "baselineHome": 5.8977272727272725,
-        "baselineAway": 4.5852272727272725
+        "home": 5.386480320445838,
+        "away": 5.370508533611982,
+        "baselineHome": 5.833333333333333,
+        "baselineAway": 4.574712643678161
       },
       "actual": {
         "home": 5,
@@ -4444,10 +5278,10 @@
       "family": "corners",
       "latestInputEventDate": "2026-03-18",
       "mean": {
-        "home": 5.076601239669421,
-        "away": 4.686656336088154,
-        "baselineHome": 5.465909090909091,
-        "baselineAway": 4.096590909090909
+        "home": 4.348416927899686,
+        "away": 4.695893416927899,
+        "baselineHome": 5.385057471264368,
+        "baselineAway": 4.097701149425287
       },
       "actual": {
         "home": 3,
@@ -4461,10 +5295,10 @@
       "family": "shots",
       "latestInputEventDate": "2026-04-07",
       "mean": {
-        "home": 15.999438202247193,
-        "away": 13.269790602655771,
-        "baselineHome": 15.57865168539326,
-        "baselineAway": 11.764044943820224
+        "home": 15.910222968319559,
+        "away": 13.259396522038568,
+        "baselineHome": 15.380681818181818,
+        "baselineAway": 11.755681818181818
       },
       "actual": {
         "home": 18,
@@ -4478,10 +5312,10 @@
       "family": "sot",
       "latestInputEventDate": "2026-04-07",
       "mean": {
-        "home": 6.006550051072524,
-        "away": 5.544028770854613,
-        "baselineHome": 5.910112359550562,
-        "baselineAway": 4.601123595505618
+        "home": 5.977673037190083,
+        "away": 5.537276170798898,
+        "baselineHome": 5.846590909090909,
+        "baselineAway": 4.590909090909091
       },
       "actual": {
         "home": 6,
@@ -4495,10 +5329,10 @@
       "family": "corners",
       "latestInputEventDate": "2026-04-07",
       "mean": {
-        "home": 5.484805924412666,
-        "away": 4.574834014300306,
-        "baselineHome": 5.466292134831461,
-        "baselineAway": 4.134831460674158
+        "home": 5.448949724517906,
+        "away": 4.572865013774105,
+        "baselineHome": 5.386363636363637,
+        "baselineAway": 4.136363636363637
       },
       "actual": {
         "home": 3,
@@ -4512,10 +5346,10 @@
       "family": "shots",
       "latestInputEventDate": "2026-04-07",
       "mean": {
-        "home": 16.1925987402111,
-        "away": 12.317075246850528,
-        "baselineHome": 15.57865168539326,
-        "baselineAway": 11.764044943820224
+        "home": 16.10248364325069,
+        "away": 12.30671918044077,
+        "baselineHome": 15.380681818181818,
+        "baselineAway": 11.755681818181818
       },
       "actual": {
         "home": 18,
@@ -4529,10 +5363,10 @@
       "family": "sot",
       "latestInputEventDate": "2026-04-07",
       "mean": {
-        "home": 6.794399046646238,
-        "away": 4.789402451481103,
-        "baselineHome": 5.910112359550562,
-        "baselineAway": 4.601123595505618
+        "home": 6.765233298898071,
+        "away": 4.782696280991736,
+        "baselineHome": 5.846590909090909,
+        "baselineAway": 4.590909090909091
       },
       "actual": {
         "home": 7,
@@ -4546,10 +5380,10 @@
       "family": "corners",
       "latestInputEventDate": "2026-04-07",
       "mean": {
-        "home": 5.585789070480081,
-        "away": 4.631039325842696,
-        "baselineHome": 5.466292134831461,
-        "baselineAway": 4.134831460674158
+        "home": 5.54956955922865,
+        "away": 4.629063360881544,
+        "baselineHome": 5.386363636363637,
+        "baselineAway": 4.136363636363637
       },
       "actual": {
         "home": 7,
@@ -4563,10 +5397,10 @@
       "family": "shots",
       "latestInputEventDate": "2026-04-08",
       "mean": {
-        "home": 17.34435606060606,
-        "away": 14.178459595959596,
-        "baselineHome": 15.605555555555556,
-        "baselineAway": 11.677777777777777
+        "home": 17.255358358869596,
+        "away": 14.167794518215867,
+        "baselineHome": 15.410112359550562,
+        "baselineAway": 11.668539325842696
       },
       "actual": {
         "home": 21,
@@ -4580,10 +5414,10 @@
       "family": "sot",
       "latestInputEventDate": "2026-04-08",
       "mean": {
-        "home": 6.721982323232323,
-        "away": 5.115050505050505,
-        "baselineHome": 5.916666666666667,
-        "baselineAway": 4.566666666666666
+        "home": 6.69316479400749,
+        "away": 5.108248212461696,
+        "baselineHome": 5.853932584269663,
+        "baselineAway": 4.556179775280899
       },
       "actual": {
         "home": 5,
@@ -4597,10 +5431,10 @@
       "family": "corners",
       "latestInputEventDate": "2026-04-08",
       "mean": {
-        "home": 5.787201178451179,
-        "away": 4.751203703703704,
-        "baselineHome": 5.461111111111111,
-        "baselineAway": 4.1
+        "home": 5.7513491658154585,
+        "away": 4.749072182499148,
+        "baselineHome": 5.382022471910112,
+        "baselineAway": 4.101123595505618
       },
       "actual": {
         "home": 8,
@@ -4614,10 +5448,10 @@
       "family": "shots",
       "latestInputEventDate": "2026-04-08",
       "mean": {
-        "home": 15.08364898989899,
-        "away": 13.128510101010102,
-        "baselineHome": 15.605555555555556,
-        "baselineAway": 11.677777777777777
+        "home": 14.995539666326184,
+        "away": 13.11780303030303,
+        "baselineHome": 15.410112359550562,
+        "baselineAway": 11.668539325842696
       },
       "actual": {
         "home": 15,
@@ -4631,10 +5465,10 @@
       "family": "sot",
       "latestInputEventDate": "2026-04-08",
       "mean": {
-        "home": 6.007209595959597,
-        "away": 5.253232323232323,
-        "baselineHome": 5.916666666666667,
-        "baselineAway": 4.566666666666666
+        "home": 5.97867722165475,
+        "away": 5.246382362955397,
+        "baselineHome": 5.853932584269663,
+        "baselineAway": 4.556179775280899
       },
       "actual": {
         "home": 5,
@@ -4648,10 +5482,10 @@
       "family": "corners",
       "latestInputEventDate": "2026-04-08",
       "mean": {
-        "home": 5.549499158249158,
-        "away": 3.9179461279461276,
-        "baselineHome": 5.461111111111111,
-        "baselineAway": 4.1
+        "home": 5.514006639427987,
+        "away": 3.915819713993871,
+        "baselineHome": 5.382022471910112,
+        "baselineAway": 4.101123595505618
       },
       "actual": {
         "home": 2,
@@ -4665,10 +5499,10 @@
       "family": "shots",
       "latestInputEventDate": "2026-04-14",
       "mean": {
-        "home": 15.935198135198135,
-        "away": 10.476090576090577,
-        "baselineHome": 15.631868131868131,
-        "baselineAway": 11.697802197802197
+        "home": 15.844259259259259,
+        "away": 10.06547138047138,
+        "baselineHome": 15.438888888888888,
+        "baselineAway": 11.688888888888888
       },
       "actual": {
         "home": 15,
@@ -4682,10 +5516,10 @@
       "family": "sot",
       "latestInputEventDate": "2026-04-14",
       "mean": {
-        "home": 6.651665001665002,
-        "away": 3.887728937728938,
-        "baselineHome": 5.906593406593407,
-        "baselineAway": 4.593406593406593
+        "home": 6.622138047138046,
+        "away": 3.764259259259259,
+        "baselineHome": 5.844444444444444,
+        "baselineAway": 4.583333333333333
       },
       "actual": {
         "home": 1,
@@ -4699,10 +5533,10 @@
       "family": "corners",
       "latestInputEventDate": "2026-04-14",
       "mean": {
-        "home": 5.791375291375291,
-        "away": 4.02012987012987,
-        "baselineHome": 5.456043956043956,
-        "baselineAway": 4.087912087912088
+        "home": 5.754646464646465,
+        "away": 3.8013131313131314,
+        "baselineHome": 5.377777777777778,
+        "baselineAway": 4.088888888888889
       },
       "actual": {
         "home": 8,
@@ -4716,10 +5550,10 @@
       "family": "shots",
       "latestInputEventDate": "2026-04-14",
       "mean": {
-        "home": 17.00469114219114,
-        "away": 12.507650682650684,
-        "baselineHome": 15.631868131868131,
-        "baselineAway": 11.697802197802197
+        "home": 16.916822390572392,
+        "away": 12.497213804713803,
+        "baselineHome": 15.438888888888888,
+        "baselineAway": 11.688888888888888
       },
       "actual": {
         "home": 21,
@@ -4733,10 +5567,10 @@
       "family": "sot",
       "latestInputEventDate": "2026-04-14",
       "mean": {
-        "home": 6.662241924741925,
-        "away": 5.010060772560772,
-        "baselineHome": 5.906593406593407,
-        "baselineAway": 4.593406593406593
+        "home": 6.633703703703704,
+        "away": 5.003463804713805,
+        "baselineHome": 5.844444444444444,
+        "baselineAway": 4.583333333333333
       },
       "actual": {
         "home": 9,
@@ -4750,10 +5584,10 @@
       "family": "corners",
       "latestInputEventDate": "2026-04-14",
       "mean": {
-        "home": 5.281847319347319,
-        "away": 4.178180153180153,
-        "baselineHome": 5.456043956043956,
-        "baselineAway": 4.087912087912088
+        "home": 5.246363636363636,
+        "away": 4.176010101010101,
+        "baselineHome": 5.377777777777778,
+        "baselineAway": 4.088888888888889
       },
       "actual": {
         "home": 9,
@@ -4767,10 +5601,10 @@
       "family": "shots",
       "latestInputEventDate": "2026-04-15",
       "mean": {
-        "home": 16.6596885451505,
-        "away": 13.501710562987737,
-        "baselineHome": 15.657608695652174,
-        "baselineAway": 11.679347826086957
+        "home": 16.58010355029586,
+        "away": 13.491571569456184,
+        "baselineHome": 15.467032967032967,
+        "baselineAway": 11.67032967032967
       },
       "actual": {
         "home": 12,
@@ -4784,10 +5618,10 @@
       "family": "sot",
       "latestInputEventDate": "2026-04-15",
       "mean": {
-        "home": 6.517910395763655,
-        "away": 5.693248327759198,
-        "baselineHome": 5.896739130434782,
-        "baselineAway": 4.576086956521739
+        "home": 6.491955480417019,
+        "away": 5.686932938856017,
+        "baselineHome": 5.835164835164835,
+        "baselineAway": 4.565934065934066
       },
       "actual": {
         "home": 5,
@@ -4801,10 +5635,10 @@
       "family": "corners",
       "latestInputEventDate": "2026-04-15",
       "mean": {
-        "home": 5.351358695652174,
-        "away": 4.3228922798216285,
-        "baselineHome": 5.489130434782608,
-        "baselineAway": 4.070652173913044
+        "home": 5.319332910679065,
+        "away": 4.320650183150184,
+        "baselineHome": 5.412087912087912,
+        "baselineAway": 4.071428571428571
       },
       "actual": {
         "home": 2,
@@ -4818,10 +5652,10 @@
       "family": "shots",
       "latestInputEventDate": "2026-04-28",
       "mean": {
-        "home": 15.053404365904369,
-        "away": 12.481534996534997,
-        "baselineHome": 15.637837837837838,
-        "baselineAway": 11.67027027027027
+        "home": 14.974161062070898,
+        "away": 12.471402550091074,
+        "baselineHome": 15.448087431693988,
+        "baselineAway": 11.66120218579235
       },
       "actual": {
         "home": 18,
@@ -4835,10 +5669,10 @@
       "family": "sot",
       "latestInputEventDate": "2026-04-28",
       "mean": {
-        "home": 5.658818433818434,
-        "away": 5.425857588357589,
-        "baselineHome": 5.891891891891892,
-        "baselineAway": 4.594594594594595
+        "home": 5.632990051842511,
+        "away": 5.4196598710942965,
+        "baselineHome": 5.830601092896175,
+        "baselineAway": 4.584699453551913
       },
       "actual": {
         "home": 4,
@@ -4852,10 +5686,10 @@
       "family": "corners",
       "latestInputEventDate": "2026-04-28",
       "mean": {
-        "home": 4.980859320859321,
-        "away": 4.462834372834373,
-        "baselineHome": 5.47027027027027,
-        "baselineAway": 4.075675675675676
+        "home": 4.948924618186913,
+        "away": 4.460620708981365,
+        "baselineHome": 5.39344262295082,
+        "baselineAway": 4.076502732240437
       },
       "actual": {
         "home": 6,
@@ -4869,10 +5703,10 @@
       "family": "shots",
       "latestInputEventDate": "2026-04-29",
       "mean": {
-        "home": 16.11299283154122,
-        "away": 11.86185552798456,
-        "baselineHome": 15.650537634408602,
-        "baselineAway": 11.666666666666666
+        "home": 16.033511008918616,
+        "away": 11.851801142697884,
+        "baselineHome": 15.46195652173913,
+        "baselineAway": 11.657608695652174
       },
       "actual": {
         "home": 13,
@@ -4886,10 +5720,10 @@
       "family": "sot",
       "latestInputEventDate": "2026-04-29",
       "mean": {
-        "home": 6.391807968017645,
-        "away": 4.2302488282327,
-        "baselineHome": 5.881720430107527,
-        "baselineAway": 4.580645161290323
+        "home": 6.365834030100334,
+        "away": 4.22405588071349,
+        "baselineHome": 5.820652173913044,
+        "baselineAway": 4.570652173913044
       },
       "actual": {
         "home": 2,
@@ -4903,10 +5737,10 @@
       "family": "corners",
       "latestInputEventDate": "2026-04-29",
       "mean": {
-        "home": 5.89132547559967,
-        "away": 4.396464019851116,
-        "baselineHome": 5.473118279569892,
-        "baselineAway": 4.059139784946237
+        "home": 5.8592774526198435,
+        "away": 4.394185479375697,
+        "baselineHome": 5.396739130434782,
+        "baselineAway": 4.059782608695652
       },
       "actual": {
         "home": 5,
@@ -4920,10 +5754,10 @@
       "family": "shots",
       "latestInputEventDate": "2026-05-05",
       "mean": {
-        "home": 16.45913033045386,
-        "away": 13.755770944741533,
-        "baselineHome": 15.636363636363637,
-        "baselineAway": 11.6524064171123
+        "home": 16.38000866250866,
+        "away": 13.745701663201663,
+        "baselineHome": 15.448648648648648,
+        "baselineAway": 11.643243243243242
       },
       "actual": {
         "home": 18,
@@ -4937,10 +5771,10 @@
       "family": "sot",
       "latestInputEventDate": "2026-05-05",
       "mean": {
-        "home": 6.310516934046346,
-        "away": 5.159713081036611,
-        "baselineHome": 5.86096256684492,
-        "baselineAway": 4.566844919786096
+        "home": 6.284584199584199,
+        "away": 5.153484060984061,
+        "baselineHome": 5.8,
+        "baselineAway": 4.556756756756757
       },
       "actual": {
         "home": 6,
@@ -4954,65 +5788,14 @@
       "family": "corners",
       "latestInputEventDate": "2026-05-05",
       "mean": {
-        "home": 5.558165364047717,
-        "away": 4.220324283559577,
-        "baselineHome": 5.470588235294118,
-        "baselineAway": 4.048128342245989
+        "home": 5.5262751212751215,
+        "away": 4.218007623007623,
+        "baselineHome": 5.394594594594595,
+        "baselineAway": 4.048648648648649
       },
       "actual": {
         "home": 1,
         "away": 8
-      },
-      "featureAvailabilityVerified": false
-    },
-    {
-      "fixtureId": "401862897",
-      "date": "2026-05-30",
-      "family": "shots",
-      "latestInputEventDate": "2026-05-06",
-      "mean": {
-        "home": 15.822578131088772,
-        "away": 11.754855428259683,
-        "baselineHome": 15.648936170212766,
-        "baselineAway": 11.670212765957446
-      },
-      "actual": {
-        "home": 21,
-        "away": 7
-      },
-      "featureAvailabilityVerified": false
-    },
-    {
-      "fixtureId": "401862897",
-      "date": "2026-05-30",
-      "family": "sot",
-      "latestInputEventDate": "2026-05-06",
-      "mean": {
-        "home": 5.9373158756137485,
-        "away": 4.80287097654119,
-        "baselineHome": 5.861702127659575,
-        "baselineAway": 4.579787234042553
-      },
-      "actual": {
-        "home": 4,
-        "away": 1
-      },
-      "featureAvailabilityVerified": false
-    },
-    {
-      "fixtureId": "401862897",
-      "date": "2026-05-30",
-      "family": "corners",
-      "latestInputEventDate": "2026-05-06",
-      "mean": {
-        "home": 4.725545553737042,
-        "away": 4.118214675395527,
-        "baselineHome": 5.446808510638298,
-        "baselineAway": 4.069148936170213
-      },
-      "actual": {
-        "home": 11,
-        "away": 4
       },
       "featureAvailabilityVerified": false
     }

@@ -1,14 +1,15 @@
 'use strict';
 const {VALIDATION_CRITERIA:C,METRICS,brier,ece,logLoss}=require('../md06-statistical-models');
 const finite=v=>typeof v==='number'&&Number.isFinite(v);
-const round=v=>finite(v)?Number(v.toFixed(6)):null;
+const round=(v,digits=4)=>finite(v)?Number(v.toFixed(digits)):null;
+function numericThreshold(value){if(typeof value!=='number'&&typeof value!=='string'||value===null||String(value).trim()==='')return null;const n=Number(value);return Number.isFinite(n)?n:null;}
 function targetForLeg(leg){
  const market=leg.betSelection?.market||{},sem=market.bookmakerSemantics||{},family=String(leg.suggestionAnalysis?.family||'');
  const modifiers=market.modifiers||leg.modifiers||{};
  const period=modifiers.periodScope||market.periodScope||leg.periodScope||'REGULATION';
  const player=leg.marketScope==='player',team=String(market.subject?.type||'')==='team'||family.startsWith('team-');
  const metric=/sot|porta/i.test(family)?'sot':/shots|tiri/i.test(family)?'shots':/corner/i.test(family)?'corners':family==='result'||family==='double-chance'?family:null;
- return {scope:player?'player':team?'team':'match',metric,threshold:finite(market.threshold)?market.threshold:finite(leg.threshold)?leg.threshold:null,
+ return {scope:player?'player':team?'team':'match',metric,threshold:numericThreshold(market.threshold)??numericThreshold(leg.threshold),
    direction:['result','double-chance'].includes(metric)?String(leg.selection):String(leg.selection||'OVER').toUpperCase(),period:['full-match','REGULATION','full-time'].includes(period)?'REGULATION':period,duo:sem.duo===true||modifiers.duo===true||modifiers.replacementIncluded===true,
    woodwork:sem.postsAndCrossbarIncluded===true||modifiers.woodworkIncluded===true,extraTime:sem.extraTimeIncluded===true,conditionalOnStart:player&&leg.betSelection?.evaluation?.probabilitySemantics!=='ABSOLUTE_EVENT',
    subjectId:player?leg.playerId:team?(leg.teamId||market.subject?.id):null};
@@ -24,6 +25,7 @@ function observationIssue(row){
  for(const field of ['latestInputAt','trainingThroughAt','baselineAvailableAt'])if(!Number.isFinite(Date.parse(row[field]))||Date.parse(row[field])>=ko)return 'INPUT_OR_BASELINE_LEAKAGE';
  if(!finite(row.probability)||row.probability<0||row.probability>1)return 'ORIGINAL_EVENT_PROBABILITY_MISSING';
  if(!finite(row.baselineProbability)||row.baselineProbability<0||row.baselineProbability>1)return 'PREMATCH_BASELINE_MISSING';
+ if(row.baseline?.periodVerified!==true)return 'BASELINE_REGULATION_PERIOD_UNVERIFIED';
  if(row.baseline&&finite(row.baseline.probability)&&Math.abs(row.baseline.probability-row.baselineProbability)>1e-9)return 'BASELINE_PROBABILITY_RECEIPT_MISMATCH';
  if(!row.baseline||row.baseline.positives<C.thresholdPositives||row.baseline.n-row.baseline.positives<C.thresholdNegatives)return 'PREMATCH_BASELINE_SAMPLE_INSUFFICIENT';
  if(![0,1].includes(row.outcome)||row.actualVerified!==true)return 'EXACT_ACTUAL_MISSING_OR_DISPUTED';
@@ -32,12 +34,13 @@ function observationIssue(row){
  if(!finite(row.outcomeAvailableAt?Date.parse(row.outcomeAvailableAt):null)||Date.parse(row.outcomeAvailableAt)<ko)return 'ACTUAL_CHRONOLOGY_UNPROVEN';
  return null;
 }
+function calibrationBins(rows){return Array.from({length:10},(_,i)=>{const bin=rows.filter(r=>Math.min(9,Math.floor(r.probability*10))===i);return {from:i/10,to:(i+1)/10,n:bin.length,meanProbability:bin.length?round(bin.reduce((n,r)=>n+r.probability,0)/bin.length):null,observedFrequency:bin.length?round(bin.reduce((n,r)=>n+r.outcome,0)/bin.length):null};});}
 function summary(rows){
  if(!rows.length)return {observations:0,matchClusters:0,brier:null,baselineBrier:null,deltaBrier:null,ece:null,logLoss:null,meanBias:null,mae:null};
  const base=rows.map(r=>({probability:r.baselineProbability,outcome:r.outcome}));
  const unique=new Map();for(const r of rows)if(finite(r.mean)&&finite(r.actualValue))unique.set(`${r.fixtureId}:${r.target.subjectId||'match'}`,r);
  const errors=[...unique.values()].map(r=>r.mean-r.actualValue),avg=a=>a.length?a.reduce((s,x)=>s+x,0)/a.length:null;
- return {observations:rows.length,matchClusters:new Set(rows.map(r=>r.fixtureId)).size,brier:round(brier(rows)),baselineBrier:round(brier(base)),deltaBrier:round(brier(rows)-brier(base)),ece:round(ece(rows)),logLoss:round(logLoss(rows)),meanBias:round(avg(errors)),mae:round(avg(errors.map(Math.abs)))};
+ return {calibration:calibrationBins(rows),observations:rows.length,matchClusters:new Set(rows.map(r=>r.fixtureId)).size,brier:round(brier(rows)),baselineBrier:round(brier(base)),deltaBrier:round(brier(rows)-brier(base)),ece:round(ece(rows)),logLoss:round(logLoss(rows)),meanBias:round(avg(errors)),mae:round(avg(errors.map(Math.abs)))};
 }
 function evaluateEvidence(observations){
  const excluded=[],eligible=[],seen=new Map(),conflicts=new Set();
@@ -82,9 +85,9 @@ function resolveValidation(leg,registry,modelIds,kickoffAt){
  return {...base,...e,approvable,status:approvable?'VALIDATED':'NOT_VALIDATED'};
 }
 function prudentEvaluation(probabilityPct,validation,odds,{limitedHistory=false}={}){
- if(!validation?.approvable||!finite(validation.metrics?.ece)||!finite(probabilityPct))return {prudentProbabilityPct:null,conservativeExpectedValuePct:null,uncertaintyDeductionPp:null};
+ if(!validation?.approvable||!finite(validation.metrics?.ece)||!finite(probabilityPct)||probabilityPct<0||probabilityPct>100)return {prudentProbabilityPct:null,conservativeExpectedValuePct:null,uncertaintyDeductionPp:null};
  const deduction=Math.max(0.02,Math.min(0.06,Math.max(limitedHistory?0.05:0.02,validation.metrics.ece/2)));
  const prudent=Math.max(0,Math.min(1,probabilityPct/100-deduction));
- return {prudentProbabilityPct:round(prudent*100),conservativeExpectedValuePct:finite(odds)?round((prudent*odds-1)*100):null,uncertaintyDeductionPp:round(deduction*100)};
+ return {prudentProbabilityPct:round(prudent*100,2),conservativeExpectedValuePct:finite(odds)&&odds>=1?round((prudent*odds-1)*100,2):null,uncertaintyDeductionPp:round(deduction*100,2)};
 }
-module.exports={targetForLeg,familyKey,eventKey,observationIssue,summary,evaluateEvidence,resolveValidation,prudentEvaluation};
+module.exports={numericThreshold,targetForLeg,familyKey,eventKey,observationIssue,summary,evaluateEvidence,resolveValidation,prudentEvaluation};

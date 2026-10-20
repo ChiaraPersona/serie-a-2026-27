@@ -21,7 +21,7 @@ export function canPickReading(model,leg){
 }
 export function compactForecastMarkup(model){
  const rows=model.forecasts.map(leg=>{const v=forecastPresentation(leg),enabled=canPickReading(model,leg);return `<tr data-forecast-id="${esc(v.id)}" data-shared-forecast-id="${esc(v.id)}"><td class="rd-forecast-name">${esc(v.label)}${leg.publication?`<small class="rd-footnote" data-publication-status="${esc(leg.publication.status)}">${leg.publication.status==='APPROVED'?'Approvata':'Preliminare'}</small>`:''}</td><td>${pct(v.probability)}</td><td>${v.quoted?number(v.odds,2):'—'}</td><td><button type="button" data-rd-pick="${esc(v.id)}" aria-label="${esc(enabled?'Aggiungi '+v.label:model.fixture.status==='finished'?'Partita conclusa: '+v.label:'Solo consultazione: '+v.label)}" aria-pressed="false" ${enabled?'':'disabled'}>+</button></td></tr>`}).join('');
- return `${model.forecasts.some(l=>l.publication?.status==='PRELIMINARY')?'<p class="rd-footnote">Previsioni preliminari · probabilità non calibrate.</p>':''}<table class="rd-compact-forecast-table"><thead><tr><th scope="col">Nome pronostico</th><th scope="col">Probabilità</th><th scope="col">Quota</th><th scope="col" aria-label="Selezione">+</th></tr></thead><tbody>${rows}</tbody></table>`;
+ return `${model.forecasts.some(l=>l.publication?.status==='PRELIMINARY'&&!l.betSelection?.evaluation?.validation?.approvable)?'<p class="rd-footnote">Le previsioni non validate restano preliminari.</p>':''}<table class="rd-compact-forecast-table"><thead><tr><th scope="col">Nome pronostico</th><th scope="col">Probabilità</th><th scope="col">Quota</th><th scope="col" aria-label="Selezione">+</th></tr></thead><tbody>${rows}</tbody></table>`;
 }
 
 export function installForecasts(model,container,shell,providedStore){

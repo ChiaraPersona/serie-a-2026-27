@@ -1,0 +1,3443 @@
+{
+  "schemaVersion": 1,
+  "kind": "champions-immutable-prematch-player-forecast-snapshot",
+  "immutable": true,
+  "createdAt": "2026-10-20T14:48:25.429Z",
+  "competition": "champions",
+  "phase": "league",
+  "season": "2026-27",
+  "matchday": 3,
+  "fixtureId": "ucl-2026-27-md03-01",
+  "date": "2026-10-20",
+  "kickoff": "18:45",
+  "timezone": "Europe/Rome",
+  "kickoffAt": "2026-10-20T16:45:00.000Z",
+  "homeTeam": "Fenerbahçe",
+  "awayTeam": "Slavia Praha",
+  "chronologyStatus": "VALID_PREMATCH_SNAPSHOT",
+  "evaluationWindow": "test",
+  "model": {
+    "ids": {
+      "collective": "champions-collective:5c8806eae85e73d3def7d0d315e72e89092378f11cfbdbe21fdd38f50f39543b",
+      "player": "champions-player:a17440a51812d0ba2c2343f261bef8dbf9f5432401d4591548670c2d1c5c8c77"
+    },
+    "modules": {
+      "collective": {
+        "scripts/build-champions-pilot-predictions.js": "33f125092367f1d518d67bece8a55cc6b253e34cb9f114cb4233c80e79341cd7",
+        "scripts/build-champions-1x2.js": "14862aba1553ab311ac0a9c634acdb748e38950d6ea5c32be2b4e48fe9dfde83",
+        "scripts/champions/offline-collective.js": "c061eabcac55ca28bb32ba68143009e50fa668a829108c22bb7fcf0987e31ab6",
+        "scripts/champions/league-strength.js": "7274c4825cf794a9f6733c99d184927197ea55153aa000e8bdb7d821df7ddd28"
+      },
+      "player": {
+        "scripts/build-champions-md3-offline.js": "b21a389800bea90e8ef0c42fbdea0dca9b2f494bda03c15dd7d513f6bdae1bbc",
+        "scripts/build-champions-player-stats.js": "f474935dfecf5fef8fcc37b11e2fec28f4f49a71b6d773add021d017af60f8f9",
+        "scripts/build-champions-md3-probable.cjs": "3f81ca7dabbeeb96779ee6c9ee0f3897367865cbeae0904f3eece48c260e0b11",
+        "scripts/champions/md3-lineup-policy.js": "5de9c6e48c301568096e200c9a032ea1dc7e9eb6b07d3962f6863b57a8d02e40",
+        "scripts/champions/current-season-offline.js": "893ca70e5d73cf30f193aa16d4add179eabb381d431f9cba56e9779c89eb9bdd",
+        "scripts/champions/context-adjusted-player-baseline.js": "67bfffa938d134b6dca9b8018cd4b55146f4aead56b61ad25072fb7eb00d9f3d",
+        "scripts/champions/player-volume-utils.js": "d283e14790930987242f42c2d57fd14e9274635d1fcfa0f8c2fad7fa0a7ef6a6",
+        "scripts/champions/substitute-minutes.js": "bf74d46f1b41ab33821dcc277a4259f4ea7f35762f1f26fd4bfd2797663780cd"
+      }
+    }
+  },
+  "dataVersion": {
+    "capturedAt": "2026-10-20T14:48:25.429Z",
+    "availabilityProof": "CONTROLLED_LOCAL_CAPTURE_BEFORE_KICKOFF_NOT_EXTERNAL_TIMESTAMP_AUTHORITY",
+    "inputs": {
+      "data/analysis/champions/md3-offline-engine-2026-10-19/preview-md03.json": "e84153a712946d59bdb6a2c1ec0ca0b472605a45a44c78cc9cf265e2da88cab6",
+      "data/normalized/champions-1x2-2026-27.json": "82ab5b2e031b494c31325368566ec5854c6c5e516da7af79ce2ec822292a21c4",
+      "data/normalized/champions-team-strength-2026-27.json": "a4240939f60d7b2cd2cb352026b7e1ed3f9ce942f7cbfe8919ccf9c53c759ed8",
+      "data/normalized/champions-player-stats-2026-27.json": "a4312785f8e63a23a305df14310d6f32232c0645efac2c8f018cb798fab8499c",
+      "data/normalized/champions-player-stats-2025-26.json": "4c09d7f109f9d5a3b769c153ed4c051cc7a99adb588a11f7c3a7cb3b348ef692",
+      "data/normalized/champions-registered-squads-2026-27.json": "1ae68eb22e4320cee03cf50f9ebe05f6fc9d2861b59c0e03756f271fb6c4a96c",
+      "data/normalized/champions-history-2023-26.json": "1fc2898ca38a8bc1bf0d2c502ea03c13954bbd7277f29dfecd67b40b5fb10182",
+      "data/normalized/champions-motivation-md01-2026-27.json": "58de9d54d6583cefd232d5663e666b2a0b1481c2a75ee2fb35c092acef4441c2",
+      "data/sources/champions-package1-performances-2026-10-19.json": "c339d0b6ce18b8035ce3e689d56fcd93aa6d2d4c481d9ada812fbd28d7ce3fa9",
+      "data/sources/european-player-match-stats-2026-27.json": "c5bbff2459ec9777df7ba0ca0d0a1b825202cac5c7f4a23acb1193beab065af0",
+      "data/analysis/champions/model-calibration-audit-2026-10-11.json": "0d3469fbb9236201d868216c2a7aebdffc0b7adae37e8047e6e87e1702f63209",
+      "data/sources/champions-pilot-match-stats-2025-27.json": "6fe3bd617f8cc6d739669fca4d7a019baa30e65d6ef40377dc9492bd512b93cb",
+      "data/normalized/champions-league-2026-27.json": "976ba156fc47ce8e908a3102539b0dd22005303dde6a9bca2e42f21cac8df0da",
+      "data/normalized/champions-md03-probable-individuals-2026-27.json": "ec5843586edd877946b3e878f8a6a992c2b4c6ae665217b71fb6ff7512a2ba62",
+      "data/normalized/champions-md03-preliminary-2026-27.json": "d26b35e51c804872c8beae51a6044d69d46f97190d6ea4536d23fde8a44f7c66",
+      "data/normalized/schedina-champions-md03.json": "77bd0a130e37ef5a05da7fcc361158d34b1d2cbc010db15ad9432917053ed5a2",
+      "data/normalized/odds/sisal/champions-league.json": "aa6fd6de6bd301dd16298337abff92e1869d96b4aa6be4313fe3a3dd410aa09b",
+      "data/normalized/uefa-europe-history-2023-26.json": "0817482042ba8bf3a522185aee52c580f3f21be79cec4daf83a7a2bae79c1e0e",
+      "data/normalized/uefa-1x2-model-2026-27.json": "d02e3b50291c32bacdadc7eaaa9a2fcc0633cd57a06df9480a347fb0f441b19d",
+      "data/sources/champions-probable-formations-md03-2026-27.json": "bffa9eb554cc5143bdbe51fcb22c7b53a2e9768cd7e7444fb26bf09d89fa99f9",
+      "data/normalized/champions-md03-player-database-2026-27.json": "5252d97d536f832ac8672a09c4d75a4cc7d130c5f977a5e42a5c17732d8c2db6"
+    },
+    "baselinePeriodReceipts": [
+      {
+        "eventId": "757653",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757653.json.gz",
+        "sha256": "7b10b8a66f677dff0c7ae85cad2bcba09a3d6ce41df6bc36458b243d087f368b",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757654",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757654.json.gz",
+        "sha256": "cc316ca1d58ffedb381c3975b82cb66751c7c25521ca66da4ddde6c3ab7cb815",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757655",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757655.json.gz",
+        "sha256": "728e95311755ce82b4942aa402466018f0ed2d36fbec614a1f4190c4361092a4",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757656",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757656.json.gz",
+        "sha256": "a1d14e4a4ae3f26af80e30a4394c46fdd43457d5a5b283b35d23530d5924e152",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757657",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757657.json.gz",
+        "sha256": "e92abac9d4fa9a62a65c8cf6afdbcbf3b658dbfd35c24d4295b27e66f89ef567",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757658",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757658.json.gz",
+        "sha256": "93f00c6507f900b015b8239489671d1f9526a860e61afd1b03b0188ee7617864",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757659",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757659.json.gz",
+        "sha256": "b9f492ad15227bf458b17c756ef408460b9c34132bdafd1fca6dad793df41a8f",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757660",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757660.json.gz",
+        "sha256": "d84b5091408e3ff4fe611217614a07fb8018eb7f3e6cfb6858918356abc5f65e",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757661",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757661.json.gz",
+        "sha256": "86834c04533b9c45c5316d3e8f92e7ed9f505a9d9239089c5b91bd474640d858",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757662",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757662.json.gz",
+        "sha256": "d8fbd41a1f6688a66715163f834fd90681c3eb9419b4fcd8d79194a2c3afd4ec",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757663",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757663.json.gz",
+        "sha256": "f2eb977595be25f5a5323a9b6ba841e0d0af4341b2b852fc70874ce11e159640",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757664",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757664.json.gz",
+        "sha256": "7d3fd4604b876d931ff34063f814f934c5418514a4e386854458872337452a2e",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757665",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757665.json.gz",
+        "sha256": "61b88342cacd5f9a75e68cf8f5ecc82abf9273fc903cb251b79cce876010aa73",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757666",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757666.json.gz",
+        "sha256": "3678605f6ec5c5b1f5fc729a0636dfc8209bad88fc4637013adefe2bd4970006",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757667",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757667.json.gz",
+        "sha256": "d50335d4ca5edf4a68d9d984591ab49bc953e9653a01b8b664f25b489ea011fb",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757668",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757668.json.gz",
+        "sha256": "f1bb26e0f3718de04139af8e80eee06669673a1c223467f0f950044b75d19ec1",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757669",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757669.json.gz",
+        "sha256": "0a41c3e0addebd47c0af7815e82da68ca5e639c37882c7cc92b27f3b25a0dfeb",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757670",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757670.json.gz",
+        "sha256": "5813a4bb44ff0f42f1a54cd4ee90801d3309260bb0d0b35193168ee83fc5dd74",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757671",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757671.json.gz",
+        "sha256": "6e805201f7a0674278f98e70b8d1a8e03b995c3d161fb47149553cd8fa23b072",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757672",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757672.json.gz",
+        "sha256": "32ad73a4678767ac68bf359211c85c225ce01d7bae7713ee0bd84913cb2ccba6",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757673",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757673.json.gz",
+        "sha256": "fa3bf95450c085713106382be56eb85172cf2e4bde41292183e1b1309e10cef5",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757674",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757674.json.gz",
+        "sha256": "9c80a38ad986991b53aa0772c761577338c9a942595f82fe7029fe17130d2b91",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757675",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757675.json.gz",
+        "sha256": "a8698f7e6a3c7266025e26919eb5fadac4e022f47c539a0f09c13c9027e4357d",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757676",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757676.json.gz",
+        "sha256": "c098915247c551e95effa54760788eba25f356dad83c4bb27ecc0c1d68bd9933",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757677",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757677.json.gz",
+        "sha256": "ace4bc80f59e67338d0d2418678cf828eb195b0d38faf852a27581b9cffe18fc",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757678",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757678.json.gz",
+        "sha256": "6abafcd9d6a982006c3d5e034e3f53adab00fe70482f936135bcb86612dde2aa",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757679",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757679.json.gz",
+        "sha256": "014630ba60c2098346b72360b31e7fac2f0b4baed02723e6401452222e2fb881",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757680",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757680.json.gz",
+        "sha256": "326114607c33fe9fa54c0112fe01b758bb9916c7511cae11227530742248b4d5",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757681",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757681.json.gz",
+        "sha256": "3bb9784d4f17ea73ccab9f5fb74698a9a6768ae531db64b60c9c7c043d2649ae",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757682",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757682.json.gz",
+        "sha256": "a87097030737749f5fe4da730f4596c353cb8456039cfc8d5184cebc825846e0",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757683",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757683.json.gz",
+        "sha256": "2777ad673532f0f19e04297ec7eaafdfb31e97ea94f124363fc21384db8251fe",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757684",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757684.json.gz",
+        "sha256": "e7cbe55adbc0598c532754ebe9deba12bd9ee58124d855aece3caacae6df0ba9",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757685",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757685.json.gz",
+        "sha256": "ce6e1514946d040dafddb7ada5dc91fea0c21bd92d45125ff7f236ea2403a61e",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757686",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757686.json.gz",
+        "sha256": "a8472179ed13e947a5af83a94c8c7c4b0b8c492167343860e774bbeef34a5c27",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757687",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757687.json.gz",
+        "sha256": "942e06e8a6420d699ea7400478a9da8a6027f0e8459d6e97b7c9e65c968f8b16",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757688",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757688.json.gz",
+        "sha256": "774c15f2eef4155de62fdc5798d05959a81122f83e44a4cd4cbec470115d88ad",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757689",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757689.json.gz",
+        "sha256": "625608a21b157bbd3be517ac469d920186998521fdd1b137c0e4a7a02aaba068",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757690",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757690.json.gz",
+        "sha256": "a61032f8f973adf4d6044b76da07138436dac66f8a15ff17e24b35e8e9d69e3b",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757691",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757691.json.gz",
+        "sha256": "2f070c0ed1dac5f7f9cc46b20112b4612f260c3ab3f287642ddd27630fdbd585",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757692",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757692.json.gz",
+        "sha256": "53c996193b448c232a822c48510fad91acb66ea9b59fabd315bc819bd994bf2b",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757693",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757693.json.gz",
+        "sha256": "6cbad086567c4e7242cd40657cb559114aa07fb60f3824086b1552604e14d362",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757694",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757694.json.gz",
+        "sha256": "a706227c23093177bc8d532ed0ec6831bf22af14b60ee04bd2223f47f7dda725",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757695",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757695.json.gz",
+        "sha256": "6afe0a839c0bc138ad43623c017b35fbb87a847a186115f0d650b9aae62237f9",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757696",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757696.json.gz",
+        "sha256": "14a88efecb275cf5408d49e369dec88a06c0825fc8ee56a44c1cff5eab6f7d78",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757697",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757697.json.gz",
+        "sha256": "f6dc8ab071759cc2cde764fdc024f616c79a67f9a70e421c275001a9da2145cc",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757698",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757698.json.gz",
+        "sha256": "4b66a2e1bba004bcc806e8a516aab8db3167ae10c158858c6481095bf363365a",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757699",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757699.json.gz",
+        "sha256": "3222ccd0d2a6f0bb0a3f502838dea72d30d83f55e732192bcbc19443443b9c92",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757700",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757700.json.gz",
+        "sha256": "4b2e4032f582b72d6eb0ca6627dde97d270b66c890c8d8bce74b232fa0d61c05",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757701",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757701.json.gz",
+        "sha256": "5465d0f211eef008a784c08f7aa39a22395c5d9deac4328a2e6a386a4207ec02",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757702",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757702.json.gz",
+        "sha256": "3f7ece7a01223a5a0a7c4f58f8e0abe56a07fa724d8620159925ed26596e716a",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757703",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757703.json.gz",
+        "sha256": "701e866a89f29b4d261165e2b69963c3022fb1d13495962caac971babdb8ad5f",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757704",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757704.json.gz",
+        "sha256": "5e3a584ca7994bb4800d6a8960bdb9d0e5eccbcce1dde5237e6f7be2da149c87",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757705",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757705.json.gz",
+        "sha256": "6ad84967fa1ea0852cee45ef16797c8258c5e61049da6102b3dad814c2c09388",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757706",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757706.json.gz",
+        "sha256": "597b1d19b72009ce5e3a089a1326c4ad0e3172a6a81352f73b2f4c982931be25",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757707",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757707.json.gz",
+        "sha256": "aa2f01bc1098f48dda209bef7257a6ffdebd8474edf16d749c3529a49ea57a92",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757708",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757708.json.gz",
+        "sha256": "c09b23ef1d469c4ce330bc55af26ad71fc179d529b52b2050bc8a419bf1c9f5b",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757709",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757709.json.gz",
+        "sha256": "c43cddbebe8b9bb79f24bb551c0c19128d745f6381019924b14f84ca56f56b25",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757710",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757710.json.gz",
+        "sha256": "f7e0fb3ab5842ce1abacca9d53ab2a8708882855b2bd033c70e5c1c95f36fe08",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757711",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757711.json.gz",
+        "sha256": "dbe8f4fe73df63b39ffc4fc9dae10a99436c5f1d2fd741851046b28f47a98095",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757712",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757712.json.gz",
+        "sha256": "01929204855cf8f8b0e74d3238f5e80b0febffc6877c73343ce3d274f8da94e6",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757713",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757713.json.gz",
+        "sha256": "ae6ba274b59597f64b005e381e9a7c0be013b4a8d667a3167ab0bfa80e2bba8b",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757714",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757714.json.gz",
+        "sha256": "8a6eb2b782e1a6bcb0a35c8986f9d419eb8b1469274eaeb8f34f16489ed7246c",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757715",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757715.json.gz",
+        "sha256": "59858cb2dfc876341edd32215e25a3f4d04932241b021148da80053f72062ab5",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757716",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757716.json.gz",
+        "sha256": "0571afcd65bd9f2ccc516c654d8f8423a74600c427c5b9e0506475e699bb3b82",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757717",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757717.json.gz",
+        "sha256": "2daad853c083995237b90612a86a80f38432a7a900797747dd94976df5e7ba74",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757718",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757718.json.gz",
+        "sha256": "ceb44c06e216e9e777067f0e1f870c6e35699af9f3005042c7133dd4029e047b",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757719",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757719.json.gz",
+        "sha256": "eac84d1827e1f22b5495683eb1819250085413686fc0ab2abfe8f5d659bc47c9",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757720",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757720.json.gz",
+        "sha256": "3b57aad4068dc1b896052f3da3f9686c6a3f76a2fcd885973d6c45aca9d119b6",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757721",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757721.json.gz",
+        "sha256": "55f35a60617fa3b40fff7f418e62fb1b30c8d23f8e3d961499723d35eb9f37fc",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757722",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757722.json.gz",
+        "sha256": "11a8c3e5578e9e867ae254118e76e406e12fae295c4bbe00f62c72f4d1b66348",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757723",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757723.json.gz",
+        "sha256": "8dfdb3187def61a716fb460b8c448b9a5e2b65d6b94e3f869ba9eb245bc0d6b3",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757724",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757724.json.gz",
+        "sha256": "3fc4221e7f4be5b94a5b64017b4e90abc4fd0171239b58ae698d158546691523",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757725",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757725.json.gz",
+        "sha256": "d1b4c71e2ba5cdedb411b9c346741e9742bf0d841ffe41297f7868535f694e2e",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757726",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757726.json.gz",
+        "sha256": "a7105a12d869255887b914d82272329f8150eda48057ac13bdebaeeeb91ab0d7",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757727",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757727.json.gz",
+        "sha256": "eff7f6a5eafdce8592e115ce0f5b5757490ea71216df446686f25477ac46bb27",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757728",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757728.json.gz",
+        "sha256": "6f36e78e6ecab98eb1399af9a64c3beecbfa740789940f46f50d5f0fe5be1876",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757729",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757729.json.gz",
+        "sha256": "f3c6c21b68127a0652a9bc4b1d55bcc1350f45d8690b0b571e9ecf0ce50d513b",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757730",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757730.json.gz",
+        "sha256": "2188bbb3051c0f763704743d07232cf5a79d168f2715df54c423b71862fc9613",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757731",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757731.json.gz",
+        "sha256": "b55d3af3fda8486156ed54dcce14ee983e14d45afa8bc2e2cf44c0ac2906c7c3",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757732",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757732.json.gz",
+        "sha256": "ca1229b4402fb85306a59620dbc8d7fc2fb272fa738852de587e98d6c59e3409",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757733",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757733.json.gz",
+        "sha256": "0142ad906af8af473654582c241e1ea1127ccc26b276aa5c0b6b4ff994fc4d20",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757734",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757734.json.gz",
+        "sha256": "05a3e33cc223479a4de22d6ae7856797a7e24a55e732b640f6958b998d7c5add",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757735",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757735.json.gz",
+        "sha256": "5dc9428d07cc818cb472654aa2bfaa1c77bcddde8bf0c102889d53fce346917f",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757736",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757736.json.gz",
+        "sha256": "ff7939d085931ad88a602e3a5c82d450af40bffc10a74ddab8556cc56c50e515",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757737",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757737.json.gz",
+        "sha256": "0f91015b6695315390abee5f089060a54c5df142501dd7853fd0e258afe4314c",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757738",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757738.json.gz",
+        "sha256": "65ed9c13cf152044ed3ca21e267cf1d2794ea40af79d30e9f8de7bbff1da3e19",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757739",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757739.json.gz",
+        "sha256": "c03088ebd726dc226acd2d5b7caf144cb856dc1410ed5c22f9dd66f94eb0f9ef",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757740",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757740.json.gz",
+        "sha256": "d726c13259ca81d651f8ef732f64ee5c43bd587491ce2e74334c5ec46c21285f",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757741",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757741.json.gz",
+        "sha256": "a932949b6a498c7b844515d1b690fe8a44a6950b2b4d0a32ce43e8cf6c7a0ecb",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757742",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757742.json.gz",
+        "sha256": "033a667fcb9fc17ef3f920d4eb97ef49623f16ade7c486183d2a8a7f2262129f",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757743",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757743.json.gz",
+        "sha256": "ed7965c9437e6b8871c1b8378c323da2724a1933a057b59ee403a40e9880397b",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757744",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757744.json.gz",
+        "sha256": "4f770de21bce51ddd56ec98c2a00c1696e56db65829c57a7d8b20c5e633bf115",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757745",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757745.json.gz",
+        "sha256": "7f9e22f0e0036f0996e94ec71bb152fca36410329de6088ae96575f4676c98bb",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757746",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757746.json.gz",
+        "sha256": "ad3d01f14d47ca085b3edd2f1df7e82a9b10e55f4393fe2ef99cd43932d41fa5",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757747",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757747.json.gz",
+        "sha256": "7a882165eefcfcbe97c7421e2412cf35b32030abc7abb5935d1370cb436bf940",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757748",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757748.json.gz",
+        "sha256": "568bb2469103afafc4540aa58b03517c214882aa6fc191b1b99e552d4b35b5dd",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757749",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757749.json.gz",
+        "sha256": "a9f72731af90406d24bf372d678d6ae49959050925e0cefb7410197f57c2b060",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757750",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757750.json.gz",
+        "sha256": "78bbae3f60f6886391da7d0a7ec3d773a78e8a611f1da48f465320a265443744",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757751",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757751.json.gz",
+        "sha256": "c848c7c2ba6b6c78532a5e71f420a241f62b456c976a6fe51ef12a8b41f53bf5",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757752",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757752.json.gz",
+        "sha256": "8f7e64ffc4953708884503c5eb9ee6414deab6d638ccb505f2f364c1024165f2",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757753",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757753.json.gz",
+        "sha256": "8eccbf14e0109db8a201b2715d73a0ba847cae4356847d455ee11c5598afc762",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757754",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757754.json.gz",
+        "sha256": "82422a20bcab387ef86de7312899ddacf62584406d8185b6d4fec6eb668134d2",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757755",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757755.json.gz",
+        "sha256": "506ab631fca7374475adfdc6cfa859d4afc5a706f125b0cd963bcf470af378eb",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757756",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757756.json.gz",
+        "sha256": "0f77858ea3c3017ec82b1c2778f7a1db59e076a7126defcbeb64079648135679",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757757",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757757.json.gz",
+        "sha256": "278a71cd54efd1d7fbd69b5d3dd67006dce4f60ad062869aec21b9b7f4533709",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757758",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757758.json.gz",
+        "sha256": "adc2bccd55e3df1014ea8e881d5e104d31580a74281f449c5695ced8376444c2",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757759",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757759.json.gz",
+        "sha256": "270dd7b1fea0da9f82248114696f5b8a52847d3c7523cc14e0f6f77273f836b3",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757760",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757760.json.gz",
+        "sha256": "4bc7af6472ad537df14606ae1fe7d7ccda29b46143739d6b47282575d4c79e5f",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757761",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757761.json.gz",
+        "sha256": "f87e3e5b112f28c7e4068f269f23c97cb8f7926c788c35b9e58f98b01cdd5ee3",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757762",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757762.json.gz",
+        "sha256": "74d97635ed9980f4e226865bba01bcaf0b9ff1d93784a5fe1980f835a5dd3fab",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757763",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757763.json.gz",
+        "sha256": "bcf026bce1f2d76805e467825d770cee53846cf19d66ebc04b57a74ba602f8b7",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757764",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757764.json.gz",
+        "sha256": "be8fc736c7c097c153927e10dc5136631db189bbf8bba161196693403cf9dd8c",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757765",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757765.json.gz",
+        "sha256": "707b469037a5971778202abbd9627138c0d1edd9a8d9cc6be464976eec76613a",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757766",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757766.json.gz",
+        "sha256": "9ce59758f2c2ab5805b2887fa6e1371b1a13db8635db5f5e31402033de543756",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757767",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757767.json.gz",
+        "sha256": "a71760dd3b779c0686fb986b62f68060b33a7bf9f878c249be88342c974073d0",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757768",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757768.json.gz",
+        "sha256": "2ffff9d11a662fa3f7b49631f3c5e0c6f95076b3821b1f5b0e0956d3537c37b8",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757769",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757769.json.gz",
+        "sha256": "f4f276e06aa04a6d2807d5c2a6dc06925fdc456fc76cfe3bd817274235d84f5a",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757770",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757770.json.gz",
+        "sha256": "79f59b007f2af6a8175f2de54061d0758ea4bd1c59d9a6779382b7f9441b3e73",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757771",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757771.json.gz",
+        "sha256": "b19bd7c6855526446114067f612e724eb98c33081a6a51d34dea4dbe16462a7b",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757772",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757772.json.gz",
+        "sha256": "8c639ce276d2385eb74b6d49af8f8ee82671414928b2f397b4e51dc0259386e2",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757773",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757773.json.gz",
+        "sha256": "928a8a7c0e491c4da72bc8962656703b97d484f582f51fa8f31a981f837c46bb",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757774",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757774.json.gz",
+        "sha256": "754b8dcd0875435cee1047587ede370ded02b5e0f249195257675e4e9f44f53c",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757775",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757775.json.gz",
+        "sha256": "65acb5764932eb7d4664d93cef771054001950b051ced8716762891472a89541",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757776",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757776.json.gz",
+        "sha256": "0fdbe557b0a3ae78ba89bccd6e0e1755b9b635f5e62c67349d67ac75c52bbc80",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757777",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757777.json.gz",
+        "sha256": "51e84f610e26ab6c70c76bc6a5a71f6f26c9028343454edf498093751e5c7cc0",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757778",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757778.json.gz",
+        "sha256": "d2d90048fa8bdb0de95ecf535e3dbd8054dc546265e3d9edd4b581105d13db1d",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757779",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757779.json.gz",
+        "sha256": "10f7bfdedbe8af27f028ba350376b863a077b199aff2bd23310ed8058b1051a6",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757780",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757780.json.gz",
+        "sha256": "574954ee690cffafd09e0fe055fdba93775931eab6050dc2b62243dab2f5fd0a",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757781",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757781.json.gz",
+        "sha256": "199b506e5cf1c1f7cf2e0c07484984cdb061377706d4504dde370b64178490e2",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757782",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757782.json.gz",
+        "sha256": "2b72e7f81a04937f1123f8c23f68587f8036cfe454bd22c17e161ed29fd56d42",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757783",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757783.json.gz",
+        "sha256": "723951d755d7c409ab9625d22dbe716cb5eb4ea8b5b5bb44f7b1379a641c27d5",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757784",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757784.json.gz",
+        "sha256": "0faf351f3824cfd47807f57cf93722b0eb58f93315c0fea18ec6c953a772e91b",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757785",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757785.json.gz",
+        "sha256": "def644852fc10fdfa9e0b3ec595248a1496ceeebc0f89b6b32703e32f618b66d",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757786",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757786.json.gz",
+        "sha256": "4373cf1b40ae351a6e66e7ecfdce255ee263d348a7452e362c77a6cc8268cff8",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757787",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757787.json.gz",
+        "sha256": "9751589f4e1f515b30e41dd1a3a0f095b53ac06bb2f885c12f53443202cb5fb8",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757788",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757788.json.gz",
+        "sha256": "56f5788b6a9953b008648fe64b71c78effeb6e7d8df2ae788d8df82144269caa",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757789",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757789.json.gz",
+        "sha256": "f770f8e93487762bc3ce8415b2988b7a3c2e082915526e6a229e8c6f04f97dfe",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757790",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757790.json.gz",
+        "sha256": "8642ead25b0012d5fefb92e12374a0623c31bcdd85a863444db9f209f491d0c1",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757791",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757791.json.gz",
+        "sha256": "a9754d2abb752f904ebdbcad7bce5554052b5991b1030795d88b0addf622d639",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757792",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757792.json.gz",
+        "sha256": "40be28e22ac26f2b56935ab71e8d83f3050a15c006de283772f2fdda6c2cf6ea",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757793",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757793.json.gz",
+        "sha256": "b5d8160255d98fe6ed97a3ba656fc00405e1be498747bff506cb12a9abf342cf",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757794",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757794.json.gz",
+        "sha256": "acdde078a00a20ead8d04699ee515f0cd10389168b83004ce3ac9bd4ec52efe3",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757795",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757795.json.gz",
+        "sha256": "2dcf142d2c1453ba3917e29f3ddd3afce4c63c700c48e14977c4bc5ad3d1a224",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "757796",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/757796.json.gz",
+        "sha256": "5ac8bf73b9244a62cee9424236ec25191815f98a99cace6102b8788e6e8c1fb5",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "401858735",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/401858735.json.gz",
+        "sha256": "b801f7b715eda10f6f992a5829f98bf10f8df26a0613d6d9417c536a536b9dd5",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "401858758",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/401858758.json.gz",
+        "sha256": "4c3aff7eb25e533211a30ebef81af81128f9e6350fae5bd4cda586e63584f34c",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "401858759",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/401858759.json.gz",
+        "sha256": "2ede3de69d9d66bc5ef90ae47daa125c4e5a1d060553509ca48571c55017b1be",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "401858761",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/401858761.json.gz",
+        "sha256": "d0abcacb092f0bb9f4cce0763da95d71c3a45e2c4422d68fc6dd2bbf1b36f3e0",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "401858734",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/401858734.json.gz",
+        "sha256": "2e61ed43243d41ed6f3ab6938a12625b6bd973b14781d435cf6cfc51c426c954",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "401858736",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/401858736.json.gz",
+        "sha256": "0d19c4e22deae3c849efc1c13b2b2547166e8798eb6c675f61dbe2ed955c84f5",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "401858737",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/401858737.json.gz",
+        "sha256": "e5120045c9970257519c91331d8549fc9d2c53142a4862a92787878a052b396e",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "401858760",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/401858760.json.gz",
+        "sha256": "62f32325aa12da88dc75a2fb9cf7f8e9322bb6035ddb3bf3a92c50be4bdc8153",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "401858764",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/401858764.json.gz",
+        "sha256": "9b08f3d75f5245823b49904538da0b175942c86d02425bbb84ce5b39d253b6c5",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "401858766",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/401858766.json.gz",
+        "sha256": "0a1feac3791d95fa565add00c493aebe20078c232f282c80748ab0b3aebf014c",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "401858767",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/401858767.json.gz",
+        "sha256": "ceae744885a205a70f0fe27a7a65aaf800369b6e8b95ead3ee6ffa9b2e13dbe0",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "401858768",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/401858768.json.gz",
+        "sha256": "1c9ae2aa94bf456d15b191d5960ad1dc488d4315b1aa740370e3f7c463fecf95",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "401858762",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/401858762.json.gz",
+        "sha256": "e02ee177bdbc3708a8bb6ea73ff9d08789253b9330727254d6741936fe89d5af",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "401858763",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/401858763.json.gz",
+        "sha256": "641c5e68b6dc17135cf1be355e97a4654d6e9961c9cef2079ae2b40f335e4c12",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "401858769",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/401858769.json.gz",
+        "sha256": "ef4560fc47aa8195affdf6f77e45013b18d0b3f4fe8c2eacdd004d70fc2d5546",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "401862577",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/401862577.json.gz",
+        "sha256": "1f7236ea97933147e6d2997ebd414b78a6249180f5fd73753668d0842bec8080",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "401862579",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/401862579.json.gz",
+        "sha256": "28bb17280bfa0b85e86edd6d8869ac8425575cae615be3f1d311dc180eb2be60",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "401862641",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/401862641.json.gz",
+        "sha256": "90b19fcc41645b69af5c80e2f3a84b19a702514974170100833604f54ecb85ed",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "401862667",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/401862667.json.gz",
+        "sha256": "3b734c0b5abceea69b0955bde8beadf878bade6283792b114b91e00e6e5b5cd8",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "401862578",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/401862578.json.gz",
+        "sha256": "0a21d2742fc6326963f211f35c18d4cab3575fca381680d8bd7d73bf98f1b94e",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "401862583",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/401862583.json.gz",
+        "sha256": "516efaa4a3ff5a393ad12d4512fa76978c1935a1e1d02170787ae6b9888b0556",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "401862645",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/401862645.json.gz",
+        "sha256": "223c19753c513ebf6055e5a7f859476c1451cc31a0dab82b8e26d51538f56d87",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "401862646",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/401862646.json.gz",
+        "sha256": "5dc81132d91964d4c50a2123ec3e513edde2dedfd30a85042800c2d7339c0980",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "401862581",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/401862581.json.gz",
+        "sha256": "1f73aea11ce41de3077503c10dd7c3b8456e08a335ea2bd8d20aaf191557e4a0",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "401862647",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/401862647.json.gz",
+        "sha256": "dd4db9fe815da58bb063ebc487208e8005d89af387801dd16070ed62e173e446",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "401862648",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/401862648.json.gz",
+        "sha256": "cb8dbff86a6a0fc14c52c035df56de6e5d48a38be81675865e7aaf63fd0c7b37",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "401862580",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/401862580.json.gz",
+        "sha256": "8afc77ce92199e02c0d6893c10f3b594cbf46af6489bc3f68191289ebc9cea8a",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "401862582",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/401862582.json.gz",
+        "sha256": "d6de3b50b83b3d18c19104fa1f64af3c890527dd7660eac1af4d4e2cf8fce56a",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "401862642",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/401862642.json.gz",
+        "sha256": "a65f5808233c0fb7628d18492f84c8bf8705fb49b78c0ea684f69fc4ac48abf8",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "401862668",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/401862668.json.gz",
+        "sha256": "441a853c49baa351f9acc051bad4ab4af18ea5b3568fefee37d4c7ab4f06bab0",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "401862886",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/401862886.json.gz",
+        "sha256": "4cadb0a63529eb278bd2d36288fe03e0a6dface4bc5427934181dda48ed6873d",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "401862888",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/401862888.json.gz",
+        "sha256": "11a1508c4efdc20ff9dd160b9031c631ca03481e904266e350a4bb80ca5751b1",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "401862885",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/401862885.json.gz",
+        "sha256": "c4cd0fccd79efec3c0e3c196cd5ec620529189ea26c7ce628912f386666eeb0f",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "401862887",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/401862887.json.gz",
+        "sha256": "decf95d118e03e1df8c8b308bfd86b6e08c2378850ca83c46f904a7fa73253ce",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "401862889",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/401862889.json.gz",
+        "sha256": "2309027a5a3cdb4e841a06d8875b112c650bc4ab1e5ae7cbb9c36ffd841cb12a",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "401862892",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/401862892.json.gz",
+        "sha256": "9058ec6500b3682b228350685eff2433ff9710607b8f5212788723e73c6c0e2d",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "401862890",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/401862890.json.gz",
+        "sha256": "41d168072320e94d65bbb1fdf63d091563d1047b0772c5565b2e229a30a211bb",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "401862891",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/401862891.json.gz",
+        "sha256": "490eabd2c930c5e9185466ae3ba750dff4308d4b93333ddbd4e6454c5f927aad",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "401862893",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/401862893.json.gz",
+        "sha256": "7a445f4c0ee5edaba073fabf780e5fbb54389fc136fec792c3d8970ce93cb0eb",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "401862894",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/401862894.json.gz",
+        "sha256": "e4a6380a78c24264892281bf01a9be084e2aa3f545129b2ffcca810ffcc33e27",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "401862896",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/401862896.json.gz",
+        "sha256": "4405240c60c45292b56198b37d616d2c7cce8415d063b1ecd05e100d67f24bb3",
+        "status": "STATUS_FULL_TIME"
+      },
+      {
+        "eventId": "401862895",
+        "path": "data/raw/champions-pilot/espn/summaries/2025-26/uefa.champions/401862895.json.gz",
+        "sha256": "674dbd6d5ae71d8637aa4603a60214caca33213c5b6dcb38742138fde4df87a1",
+        "status": "STATUS_FULL_TIME"
+      }
+    ],
+    "baselineReferenceHash": "8ff86333b5da540d5ae2b2acd31bac23e33cc51ae83744c45c619dc390491edf"
+  },
+  "kickoffVerification": {
+    "source": "data/normalized/champions-league-2026-27.json",
+    "timezone": "Europe/Rome"
+  },
+  "identityOverlaySource": "CANONICAL_PLAYER_AND_TEAM_IDS_ONLY",
+  "coverage": {
+    "completeForSnapshotUniverse": true,
+    "universe": "ALL_EXISTING_PROBABLE_PLAYERS_AND_SUPPORTED_CONTRACT_EVENTS_INCLUDING_EXPLICIT_BLOCKERS",
+    "players": 72,
+    "events": 13,
+    "unresolved": 0
+  },
+  "players": [
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "ederson",
+      "name": "Ederson",
+      "role": "goalkeeper",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 88.8,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "nathan-ake",
+      "name": "Nathan Aké",
+      "role": "defender",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 88.8,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "milan-skriniar",
+      "name": "Milan Škriniar",
+      "role": "defender",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 80.2,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "archie-brown",
+      "name": "Archie Brown",
+      "role": "midfielder",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 83.4,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "nelson-semedo",
+      "name": "Nélson Semedo",
+      "role": "defender",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 84.6,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "matteo-guendouzi",
+      "name": "Matteo Guendouzi",
+      "role": "midfielder",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 84.1,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "ismail-yuksek",
+      "name": "İsmail Yüksek",
+      "role": "midfielder",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 73.8,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "irfan-can-kahveci",
+      "name": "İrfan Can Kahveci",
+      "role": "midfielder",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 76.3,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "oguz-aydin",
+      "name": "Oğuz Aydın",
+      "role": "midfielder",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 70,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "mason-greenwood",
+      "name": "Mason Greenwood",
+      "role": "forward",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 82.8,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "vedat-muriqi",
+      "name": "Vedat Muriqi",
+      "role": "forward",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": 74.1,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "tarik-cetin",
+      "name": "Tarık Çetin",
+      "role": "goalkeeper",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "mert-gunok",
+      "name": "Mert Günok",
+      "role": "goalkeeper",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "kuzey-sapaz",
+      "name": "Kuzey Sapaz",
+      "role": "goalkeeper",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "yasir-cakli",
+      "name": "Yasir Caklı",
+      "role": "goalkeeper",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "yigit-efe-demir",
+      "name": "Yiğit Efe Demir",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 10,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "kojo-peprah-oppong",
+      "name": "Kojo Peprah Oppong",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "ognjen-mimovic",
+      "name": "Ognjen Mimović",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "cagan-saridikmen",
+      "name": "Çağan Sarıdikmen",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "bedirhan-korkmaz",
+      "name": "Bedirhan Korkmaz",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "gokmen-ozdemir",
+      "name": "Gökmen Özdemir",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "levent-mercan",
+      "name": "Levent Mercan",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 28.8,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "bartug-elmaz",
+      "name": "Bartuğ Elmaz",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 11.1,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "efe-fettahoglu",
+      "name": "Efe Fettahoğlu",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "emin-sayar",
+      "name": "Emin Sayar",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "guner-ekici",
+      "name": "Güner Ekici",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "emirhan-ates",
+      "name": "Emirhan Ateş",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "n-golo-kante",
+      "name": "N'Golo Kanté",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "kerem-akturkoglu",
+      "name": "Kerem Aktürkoğlu",
+      "role": "forward",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 22.1,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "romelu-lukaku",
+      "name": "Romelu Lukaku",
+      "role": "forward",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 8.6,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "dorgeles-nene",
+      "name": "Dorgeles Nene",
+      "role": "forward",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": 22.5,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "TEAM_RECONCILIATION_NOT_PASSED",
+        "blocked-existing-reconciliation-limit"
+      ]
+    },
+    {
+      "teamId": "fenerbahce",
+      "internalPlayerId": "alaettin-ekici",
+      "name": "Alaettin Ekici",
+      "role": "forward",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "EXPECTED_MINUTES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "jakub-markovic",
+      "name": "Jakub Markovič",
+      "role": "goalkeeper",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "ange-n-guessan",
+      "name": "Ange N'Guessan",
+      "role": "defender",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "david-zima",
+      "name": "David Zima",
+      "role": "defender",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "tomas-vlcek",
+      "name": "Tomáš Vlček",
+      "role": "defender",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "tomas-holes",
+      "name": "Tomáš Holeš",
+      "role": "defender",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "michal-sadilek",
+      "name": "Michal Sadílek",
+      "role": "midfielder",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "david-moses",
+      "name": "David Moses",
+      "role": "midfielder",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "lukas-provod",
+      "name": "Lukáš Provod",
+      "role": "midfielder",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "danijel-sturm",
+      "name": "Danijel Šturm",
+      "role": "midfielder",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "emmanuel-ayaosi",
+      "name": "Emmanuel Ayaosi",
+      "role": "midfielder",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "tomas-chory",
+      "name": "Tomáš Chorý",
+      "role": "forward",
+      "projectedRole": "starter",
+      "availability": "probable-starter",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "nazar-domchak",
+      "name": "Nazar Domchak",
+      "role": "goalkeeper",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "adam-rezek",
+      "name": "Adam Rezek",
+      "role": "goalkeeper",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "adam-paar",
+      "name": "Adam Paar",
+      "role": "goalkeeper",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "ondrej-suchy",
+      "name": "Ondřej Suchý",
+      "role": "goalkeeper",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "GOALKEEPER_SHOT_METRIC_INELIGIBLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "mikulas-konecny",
+      "name": "Mikuláš Konečný",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "jakub-kolisek",
+      "name": "Jakub Kolísek",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "david-barcot",
+      "name": "David Barčot",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "stepan-chalus",
+      "name": "Štěpán Chaluš",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "filip-kocvara",
+      "name": "Filip Kočvara",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "martin-kovar",
+      "name": "Martin Kovář",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "jachym-palivec",
+      "name": "Jáchym Palivec",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "vit-skokan",
+      "name": "Vít Skokan",
+      "role": "defender",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "oskar-kubiak",
+      "name": "Oskar Kubiak",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "samuel-isife",
+      "name": "Samuel Isife",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "mubarak-suleiman",
+      "name": "Mubarak Suleiman",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "toumani-diakite",
+      "name": "Toumani Diakite",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "wiktor-nowak",
+      "name": "Wiktor Nowak",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "pavel-kacor",
+      "name": "Pavel Kačor",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "karel-belzik",
+      "name": "Karel Belžík",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "ondrej-frolik",
+      "name": "Ondřej Frolík",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "aleksa-ilincic",
+      "name": "Aleksa Ilinčič",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "jakub-kratochvil",
+      "name": "Jakub Kratochvíl",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "ondrej-masek",
+      "name": "Ondřej Mašek",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "martin-palascak",
+      "name": "Martin Palaščák",
+      "role": "midfielder",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "mojmir-chytil",
+      "name": "Mojmír Chytil",
+      "role": "forward",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "dan-kohout",
+      "name": "Dan Kohout",
+      "role": "forward",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "matej-kotrba",
+      "name": "Matěj Kotrba",
+      "role": "forward",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "petr-potmesil",
+      "name": "Petr Potměšil",
+      "role": "forward",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    },
+    {
+      "teamId": "slavia-praha",
+      "internalPlayerId": "adam-prochazka",
+      "name": "Adam Procházka",
+      "role": "forward",
+      "projectedRole": "bench",
+      "availability": "predicted-bench",
+      "expectedMinutes": null,
+      "startingProbability": null,
+      "projectedShots": null,
+      "projectedShotsOnTarget": null,
+      "eventProbabilities": null,
+      "blockers": [
+        "COLLECTIVE_ONLY_TEAM",
+        "EXPECTED_MINUTES_UNAVAILABLE",
+        "BASELINE_UNAVAILABLE_OR_UNSAFE"
+      ]
+    }
+  ],
+  "events": [
+    {
+      "modelId": "champions-collective:5c8806eae85e73d3def7d0d315e72e89092378f11cfbdbe21fdd38f50f39543b",
+      "target": {
+        "scope": "match",
+        "metric": "result",
+        "threshold": null,
+        "direction": "1",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": 0.674,
+      "mean": null,
+      "quote": {
+        "decimal": 1.57,
+        "oddsRaw": 157,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911220:823777389:5387046768",
+      "eventId": "[\"[\\\"champions-collective:5c8806eae85e73d3def7d0d315e72e89092378f11cfbdbe21fdd38f50f39543b\\\",\\\"match\\\",\\\"result\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"1\"]:",
+      "baselineProbability": 0.4970178926441352,
+      "baseline": {
+        "probability": 0.4970178926441352,
+        "n": 503,
+        "positives": 250,
+        "periodVerified": true,
+        "availableAt": "2026-10-20T14:48:25.429Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:48:25.429Z",
+      "trainingThroughAt": "2026-10-20T14:48:25.429Z",
+      "baselineAvailableAt": "2026-10-20T14:48:25.429Z"
+    },
+    {
+      "modelId": "champions-collective:5c8806eae85e73d3def7d0d315e72e89092378f11cfbdbe21fdd38f50f39543b",
+      "target": {
+        "scope": "match",
+        "metric": "result",
+        "threshold": null,
+        "direction": "X",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": 0.149,
+      "mean": null,
+      "quote": {
+        "decimal": 4.5,
+        "oddsRaw": 450,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911220:823777389:5387046769",
+      "eventId": "[\"[\\\"champions-collective:5c8806eae85e73d3def7d0d315e72e89092378f11cfbdbe21fdd38f50f39543b\\\",\\\"match\\\",\\\"result\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"X\"]:",
+      "baselineProbability": 0.1749502982107356,
+      "baseline": {
+        "probability": 0.1749502982107356,
+        "n": 503,
+        "positives": 88,
+        "periodVerified": true,
+        "availableAt": "2026-10-20T14:48:25.429Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:48:25.429Z",
+      "trainingThroughAt": "2026-10-20T14:48:25.429Z",
+      "baselineAvailableAt": "2026-10-20T14:48:25.429Z"
+    },
+    {
+      "modelId": "champions-collective:5c8806eae85e73d3def7d0d315e72e89092378f11cfbdbe21fdd38f50f39543b",
+      "target": {
+        "scope": "match",
+        "metric": "result",
+        "threshold": null,
+        "direction": "2",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": 0.177,
+      "mean": null,
+      "quote": {
+        "decimal": 5.5,
+        "oddsRaw": 550,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911220:823777389:5387046770",
+      "eventId": "[\"[\\\"champions-collective:5c8806eae85e73d3def7d0d315e72e89092378f11cfbdbe21fdd38f50f39543b\\\",\\\"match\\\",\\\"result\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"2\"]:",
+      "baselineProbability": 0.32803180914512925,
+      "baseline": {
+        "probability": 0.32803180914512925,
+        "n": 503,
+        "positives": 165,
+        "periodVerified": true,
+        "availableAt": "2026-10-20T14:48:25.429Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:48:25.429Z",
+      "trainingThroughAt": "2026-10-20T14:48:25.429Z",
+      "baselineAvailableAt": "2026-10-20T14:48:25.429Z"
+    },
+    {
+      "modelId": "champions-collective:5c8806eae85e73d3def7d0d315e72e89092378f11cfbdbe21fdd38f50f39543b",
+      "target": {
+        "scope": "match",
+        "metric": "double-chance",
+        "threshold": null,
+        "direction": "1X",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": 0.823,
+      "mean": null,
+      "quote": {
+        "decimal": 1.16,
+        "oddsRaw": 116,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911220:823802443:5387049034",
+      "eventId": "[\"[\\\"champions-collective:5c8806eae85e73d3def7d0d315e72e89092378f11cfbdbe21fdd38f50f39543b\\\",\\\"match\\\",\\\"double-chance\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"1X\"]:",
+      "baselineProbability": 0.6719681908548708,
+      "baseline": {
+        "probability": 0.6719681908548708,
+        "n": 503,
+        "positives": 338,
+        "periodVerified": true,
+        "availableAt": "2026-10-20T14:48:25.429Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:48:25.429Z",
+      "trainingThroughAt": "2026-10-20T14:48:25.429Z",
+      "baselineAvailableAt": "2026-10-20T14:48:25.429Z"
+    },
+    {
+      "modelId": "champions-collective:5c8806eae85e73d3def7d0d315e72e89092378f11cfbdbe21fdd38f50f39543b",
+      "target": {
+        "scope": "match",
+        "metric": "double-chance",
+        "threshold": null,
+        "direction": "X2",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": 0.326,
+      "mean": null,
+      "quote": {
+        "decimal": 2.4,
+        "oddsRaw": 240,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911220:823802443:5387049036",
+      "eventId": "[\"[\\\"champions-collective:5c8806eae85e73d3def7d0d315e72e89092378f11cfbdbe21fdd38f50f39543b\\\",\\\"match\\\",\\\"double-chance\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"X2\"]:",
+      "baselineProbability": 0.5029821073558648,
+      "baseline": {
+        "probability": 0.5029821073558648,
+        "n": 503,
+        "positives": 253,
+        "periodVerified": true,
+        "availableAt": "2026-10-20T14:48:25.429Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:48:25.429Z",
+      "trainingThroughAt": "2026-10-20T14:48:25.429Z",
+      "baselineAvailableAt": "2026-10-20T14:48:25.429Z"
+    },
+    {
+      "modelId": "champions-collective:5c8806eae85e73d3def7d0d315e72e89092378f11cfbdbe21fdd38f50f39543b",
+      "target": {
+        "scope": "match",
+        "metric": "corners",
+        "threshold": null,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": null,
+      "mean": 9.1,
+      "quote": {
+        "decimal": 1.62,
+        "oddsRaw": 162,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911220:825861583:5398001352",
+      "eventId": "[\"[\\\"champions-collective:5c8806eae85e73d3def7d0d315e72e89092378f11cfbdbe21fdd38f50f39543b\\\",\\\"match\\\",\\\"corners\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"OVER\"]:",
+      "baselineProbability": 1,
+      "baseline": {
+        "probability": 1,
+        "n": 203,
+        "positives": 203,
+        "periodVerified": true,
+        "availableAt": "2026-10-20T14:48:25.429Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:48:25.429Z",
+      "trainingThroughAt": "2026-10-20T14:48:25.429Z",
+      "baselineAvailableAt": "2026-10-20T14:48:25.429Z"
+    },
+    {
+      "modelId": "champions-collective:5c8806eae85e73d3def7d0d315e72e89092378f11cfbdbe21fdd38f50f39543b",
+      "target": {
+        "scope": "team",
+        "metric": "corners",
+        "threshold": null,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": "fenerbahce"
+      },
+      "probability": null,
+      "mean": 5.74,
+      "quote": {
+        "decimal": 6,
+        "oddsRaw": 600,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911220:825861578:5398001329",
+      "eventId": "[\"[\\\"champions-collective:5c8806eae85e73d3def7d0d315e72e89092378f11cfbdbe21fdd38f50f39543b\\\",\\\"team\\\",\\\"corners\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"OVER\"]:fenerbahce",
+      "baselineProbability": 0.9630541871921182,
+      "baseline": {
+        "probability": 0.9630541871921182,
+        "n": 406,
+        "positives": 391,
+        "periodVerified": true,
+        "availableAt": "2026-10-20T14:48:25.429Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:48:25.429Z",
+      "trainingThroughAt": "2026-10-20T14:48:25.429Z",
+      "baselineAvailableAt": "2026-10-20T14:48:25.429Z"
+    },
+    {
+      "modelId": "champions-collective:5c8806eae85e73d3def7d0d315e72e89092378f11cfbdbe21fdd38f50f39543b",
+      "target": {
+        "scope": "team",
+        "metric": "corners",
+        "threshold": null,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": "slavia-praha"
+      },
+      "probability": null,
+      "mean": 3.39,
+      "quote": {
+        "decimal": 25,
+        "oddsRaw": 2500,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911220:825861609:5398001463",
+      "eventId": "[\"[\\\"champions-collective:5c8806eae85e73d3def7d0d315e72e89092378f11cfbdbe21fdd38f50f39543b\\\",\\\"team\\\",\\\"corners\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"OVER\"]:slavia-praha",
+      "baselineProbability": 0.9630541871921182,
+      "baseline": {
+        "probability": 0.9630541871921182,
+        "n": 406,
+        "positives": 391,
+        "periodVerified": true,
+        "availableAt": "2026-10-20T14:48:25.429Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:48:25.429Z",
+      "trainingThroughAt": "2026-10-20T14:48:25.429Z",
+      "baselineAvailableAt": "2026-10-20T14:48:25.429Z"
+    },
+    {
+      "modelId": "champions-collective:5c8806eae85e73d3def7d0d315e72e89092378f11cfbdbe21fdd38f50f39543b",
+      "target": {
+        "scope": "team",
+        "metric": "sot",
+        "threshold": null,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": "fenerbahce"
+      },
+      "probability": null,
+      "mean": 7.14,
+      "quote": {
+        "decimal": 7,
+        "oddsRaw": 700,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911220:825386433:5395413666",
+      "eventId": "[\"[\\\"champions-collective:5c8806eae85e73d3def7d0d315e72e89092378f11cfbdbe21fdd38f50f39543b\\\",\\\"team\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"OVER\"]:fenerbahce",
+      "baselineProbability": 0.9828431372549019,
+      "baseline": {
+        "probability": 0.9828431372549019,
+        "n": 408,
+        "positives": 401,
+        "periodVerified": true,
+        "availableAt": "2026-10-20T14:48:25.429Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:48:25.429Z",
+      "trainingThroughAt": "2026-10-20T14:48:25.429Z",
+      "baselineAvailableAt": "2026-10-20T14:48:25.429Z"
+    },
+    {
+      "modelId": "champions-collective:5c8806eae85e73d3def7d0d315e72e89092378f11cfbdbe21fdd38f50f39543b",
+      "target": {
+        "scope": "team",
+        "metric": "sot",
+        "threshold": null,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": "slavia-praha"
+      },
+      "probability": null,
+      "mean": 3.67,
+      "quote": {
+        "decimal": 12,
+        "oddsRaw": 1200,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911220:825386316:5395413202",
+      "eventId": "[\"[\\\"champions-collective:5c8806eae85e73d3def7d0d315e72e89092378f11cfbdbe21fdd38f50f39543b\\\",\\\"team\\\",\\\"sot\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"OVER\"]:slavia-praha",
+      "baselineProbability": 0.9828431372549019,
+      "baseline": {
+        "probability": 0.9828431372549019,
+        "n": 408,
+        "positives": 401,
+        "periodVerified": true,
+        "availableAt": "2026-10-20T14:48:25.429Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:48:25.429Z",
+      "trainingThroughAt": "2026-10-20T14:48:25.429Z",
+      "baselineAvailableAt": "2026-10-20T14:48:25.429Z"
+    },
+    {
+      "modelId": "champions-collective:5c8806eae85e73d3def7d0d315e72e89092378f11cfbdbe21fdd38f50f39543b",
+      "target": {
+        "scope": "match",
+        "metric": "shots",
+        "threshold": null,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": null
+      },
+      "probability": null,
+      "mean": 29.6,
+      "quote": {
+        "decimal": 4,
+        "oddsRaw": 400,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911220:825376075:5395362451",
+      "eventId": "[\"[\\\"champions-collective:5c8806eae85e73d3def7d0d315e72e89092378f11cfbdbe21fdd38f50f39543b\\\",\\\"match\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"OVER\"]:",
+      "baselineProbability": 1,
+      "baseline": {
+        "probability": 1,
+        "n": 204,
+        "positives": 204,
+        "periodVerified": true,
+        "availableAt": "2026-10-20T14:48:25.429Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:48:25.429Z",
+      "trainingThroughAt": "2026-10-20T14:48:25.429Z",
+      "baselineAvailableAt": "2026-10-20T14:48:25.429Z"
+    },
+    {
+      "modelId": "champions-collective:5c8806eae85e73d3def7d0d315e72e89092378f11cfbdbe21fdd38f50f39543b",
+      "target": {
+        "scope": "team",
+        "metric": "shots",
+        "threshold": null,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": "fenerbahce"
+      },
+      "probability": null,
+      "mean": 17.57,
+      "quote": {
+        "decimal": 7,
+        "oddsRaw": 700,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911220:825376108:5395362575",
+      "eventId": "[\"[\\\"champions-collective:5c8806eae85e73d3def7d0d315e72e89092378f11cfbdbe21fdd38f50f39543b\\\",\\\"team\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"OVER\"]:fenerbahce",
+      "baselineProbability": 1,
+      "baseline": {
+        "probability": 1,
+        "n": 408,
+        "positives": 408,
+        "periodVerified": true,
+        "availableAt": "2026-10-20T14:48:25.429Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:48:25.429Z",
+      "trainingThroughAt": "2026-10-20T14:48:25.429Z",
+      "baselineAvailableAt": "2026-10-20T14:48:25.429Z"
+    },
+    {
+      "modelId": "champions-collective:5c8806eae85e73d3def7d0d315e72e89092378f11cfbdbe21fdd38f50f39543b",
+      "target": {
+        "scope": "team",
+        "metric": "shots",
+        "threshold": null,
+        "direction": "OVER",
+        "period": "REGULATION",
+        "duo": false,
+        "woodwork": false,
+        "extraTime": false,
+        "conditionalOnStart": false,
+        "subjectId": "slavia-praha"
+      },
+      "probability": null,
+      "mean": 12,
+      "quote": {
+        "decimal": 1.4,
+        "oddsRaw": 140,
+        "availability": "AVAILABLE_AT_SNAPSHOT",
+        "verifiedAt": "2026-10-20T12:48:29.424Z",
+        "source": {
+          "provider": "Sisal"
+        }
+      },
+      "selectionId": "sisal:4911220:825376081:5395362461",
+      "eventId": "[\"[\\\"champions-collective:5c8806eae85e73d3def7d0d315e72e89092378f11cfbdbe21fdd38f50f39543b\\\",\\\"team\\\",\\\"shots\\\",\\\"REGULATION\\\",false,false,false,false]\",null,\"OVER\"]:slavia-praha",
+      "baselineProbability": 1,
+      "baseline": {
+        "probability": 1,
+        "n": 408,
+        "positives": 408,
+        "periodVerified": true,
+        "availableAt": "2026-10-20T14:48:25.429Z",
+        "method": "FROZEN_EMPIRICAL_REFERENCE_FROM_PRIOR_OBSERVED_EVENTS_NO_FIT"
+      },
+      "latestInputAt": "2026-10-20T14:48:25.429Z",
+      "trainingThroughAt": "2026-10-20T14:48:25.429Z",
+      "baselineAvailableAt": "2026-10-20T14:48:25.429Z"
+    }
+  ],
+  "teamProjections": [
+    {
+      "teamId": "fenerbahce",
+      "team": "Fenerbahçe",
+      "venue": "home",
+      "expectedGoals": 2.2,
+      "shotsTotal": {
+        "central": 17.57,
+        "sd": 4.29,
+        "min": 14,
+        "max": 21.2,
+        "interval": "p20-p80-approx",
+        "normalization": {
+          "method": "relative-to-domestic-league",
+          "targetBaseline": 17.634,
+          "currentSeasonReliabilityPct": 50
+        },
+        "inputs": [
+          {
+            "label": "Fenerbahçe in casa",
+            "value": 14.548,
+            "weightPct": 50.6
+          },
+          {
+            "label": "Slavia Praha concede in trasferta",
+            "value": 21.309,
+            "weightPct": 39.4
+          },
+          {
+            "label": "ultime 8 Fenerbahçe",
+            "value": 18.142,
+            "weightPct": 10
+          }
+        ]
+      },
+      "shotsOnTarget": {
+        "central": 7.14,
+        "sd": 2.64,
+        "min": 4.9,
+        "max": 9.4,
+        "interval": "p20-p80-approx",
+        "normalization": {
+          "method": "relative-to-domestic-league",
+          "targetBaseline": 6.441,
+          "currentSeasonReliabilityPct": 50
+        },
+        "inputs": [
+          {
+            "label": "Fenerbahçe in casa",
+            "value": 6.326,
+            "weightPct": 50.6
+          },
+          {
+            "label": "Slavia Praha concede in trasferta",
+            "value": 7.939,
+            "weightPct": 39.4
+          },
+          {
+            "label": "ultime 8 Fenerbahçe",
+            "value": 8.164,
+            "weightPct": 10
+          }
+        ]
+      },
+      "corners": {
+        "central": 5.74,
+        "sd": 2.01,
+        "min": 4.1,
+        "max": 7.4,
+        "interval": "p20-p80-approx",
+        "normalization": {
+          "method": "relative-to-domestic-league",
+          "targetBaseline": 5.627,
+          "currentSeasonReliabilityPct": 50
+        },
+        "inputs": [
+          {
+            "label": "Fenerbahçe in casa",
+            "value": 4.594,
+            "weightPct": 50.6
+          },
+          {
+            "label": "Slavia Praha concede in trasferta",
+            "value": 6.987,
+            "weightPct": 39.4
+          },
+          {
+            "label": "ultime 8 Fenerbahçe",
+            "value": 6.605,
+            "weightPct": 10
+          }
+        ]
+      },
+      "fouls": {
+        "central": 10.99,
+        "sd": 1.9,
+        "min": 9.4,
+        "max": 12.6,
+        "interval": "p20-p80-approx",
+        "normalization": {
+          "method": "relative-to-domestic-league",
+          "targetBaseline": 11.289,
+          "currentSeasonReliabilityPct": 50
+        },
+        "inputs": [
+          {
+            "label": "Fenerbahçe in casa",
+            "value": 10.841,
+            "weightPct": 50.6
+          },
+          {
+            "label": "Slavia Praha concede in trasferta",
+            "value": 11.164,
+            "weightPct": 39.4
+          },
+          {
+            "label": "ultime 8 Fenerbahçe",
+            "value": 11.096,
+            "weightPct": 10
+          }
+        ]
+      },
+      "cards": {
+        "central": 2.77,
+        "sd": 1.31,
+        "min": 1.7,
+        "max": 3.9,
+        "interval": "p20-p80-approx",
+        "normalization": {
+          "method": "relative-to-domestic-league",
+          "targetBaseline": 1.69,
+          "currentSeasonReliabilityPct": 50
+        },
+        "inputs": [
+          {
+            "label": "Fenerbahçe in casa",
+            "value": 3.203,
+            "weightPct": 50.6
+          },
+          {
+            "label": "Slavia Praha concede in trasferta",
+            "value": 2.48,
+            "weightPct": 39.4
+          },
+          {
+            "label": "ultime 8 Fenerbahçe",
+            "value": 1.759,
+            "weightPct": 10
+          }
+        ]
+      },
+      "lines": {
+        "shotsTotal": [
+          {
+            "threshold": 8.5,
+            "overPct": 99,
+            "underPct": 1
+          },
+          {
+            "threshold": 10.5,
+            "overPct": 95.9,
+            "underPct": 4.1
+          },
+          {
+            "threshold": 12.5,
+            "overPct": 88.6,
+            "underPct": 11.4
+          },
+          {
+            "threshold": 14.5,
+            "overPct": 75.6,
+            "underPct": 24.4
+          },
+          {
+            "threshold": 16.5,
+            "overPct": 58.3,
+            "underPct": 41.7
+          }
+        ],
+        "shotsOnTarget": [
+          {
+            "threshold": 2.5,
+            "overPct": 97.3,
+            "underPct": 2.7
+          },
+          {
+            "threshold": 3.5,
+            "overPct": 92.5,
+            "underPct": 7.5
+          },
+          {
+            "threshold": 4.5,
+            "overPct": 83.9,
+            "underPct": 16.1
+          },
+          {
+            "threshold": 5.5,
+            "overPct": 71.7,
+            "underPct": 28.3
+          },
+          {
+            "threshold": 6.5,
+            "overPct": 57.1,
+            "underPct": 42.9
+          }
+        ],
+        "corners": [
+          {
+            "threshold": 3.5,
+            "overPct": 82.4,
+            "underPct": 17.6
+          },
+          {
+            "threshold": 4.5,
+            "overPct": 67.9,
+            "underPct": 32.1
+          },
+          {
+            "threshold": 5.5,
+            "overPct": 51.2,
+            "underPct": 48.8
+          },
+          {
+            "threshold": 6.5,
+            "overPct": 35.2,
+            "underPct": 64.8
+          }
+        ]
+      }
+    },
+    {
+      "teamId": "slavia-praha",
+      "team": "Slavia Praha",
+      "venue": "away",
+      "expectedGoals": 0.93,
+      "shotsTotal": {
+        "central": 12,
+        "sd": 5.12,
+        "min": 7.7,
+        "max": 16.3,
+        "interval": "p20-p80-approx",
+        "normalization": {
+          "method": "relative-to-domestic-league",
+          "targetBaseline": 12.737,
+          "currentSeasonReliabilityPct": 14.3
+        },
+        "inputs": [
+          {
+            "label": "Slavia Praha in trasferta",
+            "value": 12.02,
+            "weightPct": 54.6
+          },
+          {
+            "label": "Fenerbahçe concede in casa",
+            "value": 11.983,
+            "weightPct": 42.5
+          },
+          {
+            "label": "ultime 8 Slavia Praha",
+            "value": 11.769,
+            "weightPct": 2.9
+          }
+        ]
+      },
+      "shotsOnTarget": {
+        "central": 3.67,
+        "sd": 1.83,
+        "min": 2.1,
+        "max": 5.2,
+        "interval": "p20-p80-approx",
+        "normalization": {
+          "method": "relative-to-domestic-league",
+          "targetBaseline": 4.716,
+          "currentSeasonReliabilityPct": 14.3
+        },
+        "inputs": [
+          {
+            "label": "Slavia Praha in trasferta",
+            "value": 3.389,
+            "weightPct": 54.6
+          },
+          {
+            "label": "Fenerbahçe concede in casa",
+            "value": 4.083,
+            "weightPct": 42.5
+          },
+          {
+            "label": "ultime 8 Slavia Praha",
+            "value": 3.026,
+            "weightPct": 2.9
+          }
+        ]
+      },
+      "corners": {
+        "central": 3.39,
+        "sd": 1.65,
+        "min": 2,
+        "max": 4.8,
+        "interval": "p20-p80-approx",
+        "normalization": {
+          "method": "relative-to-domestic-league",
+          "targetBaseline": 4.168,
+          "currentSeasonReliabilityPct": 14.3
+        },
+        "inputs": [
+          {
+            "label": "Slavia Praha in trasferta",
+            "value": 2.052,
+            "weightPct": 54.6
+          },
+          {
+            "label": "Fenerbahçe concede in casa",
+            "value": 5.12,
+            "weightPct": 42.5
+          },
+          {
+            "label": "ultime 8 Slavia Praha",
+            "value": 3.168,
+            "weightPct": 2.9
+          }
+        ]
+      },
+      "fouls": {
+        "central": 14.96,
+        "sd": 2.32,
+        "min": 13,
+        "max": 16.9,
+        "interval": "p20-p80-approx",
+        "normalization": {
+          "method": "relative-to-domestic-league",
+          "targetBaseline": 11.372,
+          "currentSeasonReliabilityPct": 14.3
+        },
+        "inputs": [
+          {
+            "label": "Slavia Praha in trasferta",
+            "value": 15.612,
+            "weightPct": 54.6
+          },
+          {
+            "label": "Fenerbahçe concede in casa",
+            "value": 14.171,
+            "weightPct": 42.5
+          },
+          {
+            "label": "ultime 8 Slavia Praha",
+            "value": 14.243,
+            "weightPct": 2.9
+          }
+        ]
+      },
+      "cards": {
+        "central": 2.2,
+        "sd": 1.41,
+        "min": 1,
+        "max": 3.4,
+        "interval": "p20-p80-approx",
+        "normalization": {
+          "method": "relative-to-domestic-league",
+          "targetBaseline": 1.792,
+          "currentSeasonReliabilityPct": 14.3
+        },
+        "inputs": [
+          {
+            "label": "Slavia Praha in trasferta",
+            "value": 1.975,
+            "weightPct": 54.6
+          },
+          {
+            "label": "Fenerbahçe concede in casa",
+            "value": 2.533,
+            "weightPct": 42.5
+          },
+          {
+            "label": "ultime 8 Slavia Praha",
+            "value": 1.429,
+            "weightPct": 2.9
+          }
+        ]
+      },
+      "lines": {
+        "shotsTotal": [
+          {
+            "threshold": 8.5,
+            "overPct": 73.6,
+            "underPct": 26.4
+          },
+          {
+            "threshold": 10.5,
+            "overPct": 57.6,
+            "underPct": 42.4
+          },
+          {
+            "threshold": 12.5,
+            "overPct": 41.8,
+            "underPct": 58.2
+          },
+          {
+            "threshold": 14.5,
+            "overPct": 28.3,
+            "underPct": 71.7
+          },
+          {
+            "threshold": 16.5,
+            "overPct": 18,
+            "underPct": 82
+          }
+        ],
+        "shotsOnTarget": [
+          {
+            "threshold": 2.5,
+            "overPct": 70.9,
+            "underPct": 29.1
+          },
+          {
+            "threshold": 3.5,
+            "overPct": 50,
+            "underPct": 50
+          },
+          {
+            "threshold": 4.5,
+            "overPct": 30.7,
+            "underPct": 69.3
+          },
+          {
+            "threshold": 5.5,
+            "overPct": 16.6,
+            "underPct": 83.4
+          },
+          {
+            "threshold": 6.5,
+            "overPct": 7.9,
+            "underPct": 92.1
+          }
+        ],
+        "corners": [
+          {
+            "threshold": 3.5,
+            "overPct": 43.9,
+            "underPct": 56.1
+          },
+          {
+            "threshold": 4.5,
+            "overPct": 25.4,
+            "underPct": 74.6
+          },
+          {
+            "threshold": 5.5,
+            "overPct": 12.8,
+            "underPct": 87.2
+          },
+          {
+            "threshold": 6.5,
+            "overPct": 5.7,
+            "underPct": 94.3
+          }
+        ]
+      }
+    }
+  ],
+  "contentHash": "34adaad2cbed0749ffeb5348d9eb417423751f558a67043681691165a8721f37"
+}

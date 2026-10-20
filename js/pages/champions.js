@@ -419,7 +419,7 @@ export function createPage(deps){
 
   async function appendSharedSchedina(matchday,fixtureId,host){
     if(!host||typeof host.insertAdjacentHTML!=="function")return;
-    const [{loadChampionsWorkspace},{createPage:createBettingPage}]=await Promise.all([import('./champions-workspace-catalog.mjs?v=20261020-champions-lineup-forecasts-v1'),import('./betting.js?v=20261020-champions-lineup-forecasts-v1')]);
+    const [{loadChampionsWorkspace},{createPage:createBettingPage}]=await Promise.all([import('./champions-workspace-catalog.mjs?v=20261020-champions-lineup-forecasts-v1'),import('./betting.js?v=20261020-champions-event-validation-v1')]);
     const workspace=await loadChampionsWorkspace(load,matchday);
     const controller=createBettingPage({...deps,dateOnly:deps.dateOnly||(value=>String(value||"").slice(0,10))});
     const section=host.querySelector('#lettura-pronostici .rd-section-content');
@@ -454,7 +454,7 @@ export function createPage(deps){
       const profile=profiles.referees.find(p=>p.refereeId===requestedCalendarFixture.refereeAssignment.refereeId);
       const fixture=catalog.fixtures.find(f=>f.fixtureId===requestedMatchId);
       const probableFixture=probables.fixtures.find(f=>f.fixtureId===requestedMatchId);
-      const {mountChampionsReading}=await import('./reading-detail/champions-layout.mjs');
+      const {mountChampionsReading}=await import('./reading-detail/champions-layout.mjs?v=20261020-champions-event-validation-v1');
       await mountChampionsReading({fixture:requestedCalendarFixture,prediction:fixture.forecast,profile,probableFixture,branding,analysis:{matches:data.fixtures,styles:styleProfiles,attackChannels,history:h2h.fixtures.find(f=>f.fixtureId===requestedMatchId),squads},refereeMarkup:md3RefereeMarkup(requestedCalendarFixture,profile,branding),probableMarkup:md3ProbableMarkup(probableFixture),extend:({shell})=>appendSharedSchedina(3,requestedMatchId,shell)});
       return;
     }
@@ -472,7 +472,7 @@ export function createPage(deps){
       let finishReading=null;
       if(isReadingPilot('champions',requestedMatchId,location.search)&&typeof document.createElement==='function'){
         try{
-          const [{adaptChampionsReading},{mountReadingShell,prepareReadingShell}]=await Promise.all([import('./reading-detail/champions-adapter.mjs'),import('./reading-detail/shell.mjs?v=20261019-canonical-forecasts-v1')]);
+          const [{adaptChampionsReading},{mountReadingShell,prepareReadingShell}]=await Promise.all([import('./reading-detail/champions-adapter.mjs'),import('./reading-detail/shell.mjs?v=20261020-champions-event-validation-v1')]);
           const analysis={match:requestedCalendarFixture,matches:data.fixtures,lineups:md2MarketEntry?.lineups,availability:md2MarketEntry?.availability,referee:refereeProfile,styles:styleProfiles,attackChannels,history:h2h.fixtures.find(f=>f.fixtureId===requestedMatchId),squads,teamProfiles:activePilot.profiles};
           const model=adaptChampionsReading({fixture:requestedFixture,calendarFixture:requestedCalendarFixture,branding,publishedSelections:md2SchedinaFixture?.selections||[],analysis});
           const prepared=await prepareReadingShell(model);

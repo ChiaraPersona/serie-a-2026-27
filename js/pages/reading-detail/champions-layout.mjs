@@ -1,6 +1,6 @@
 import {esc,number} from './format.mjs';
 import {createReadingView} from './view-model.mjs';
-import {mountReadingShell,prepareReadingShell} from './shell.mjs?v=20261020-champions-layout-v1';
+import {mountReadingShell,prepareReadingShell} from './shell.mjs?v=20261020-champions-event-validation-v1';
 
 // Adapt existing MD3 artifacts for the shared presentation; never recalculate them.
 export async function mountChampionsReading({fixture,prediction,probableFixture,branding,analysis,refereeMarkup,probableMarkup,extend}){

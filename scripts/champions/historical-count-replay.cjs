@@ -1,6 +1,7 @@
 'use strict';
 // Existing Serie A count engine, run on Champions observations as a diagnostic
 // comparator. This is not a replay of the different production MD3 algorithm.
+const {numericThreshold}=require('./event-validation.cjs');
 const {forecastMean,dispersionSize,probabilities,validateSubfamily,MARKET_MODELS}=require('../md06-statistical-models');
 function replayHistoricalCounts(matches,odds){
  const fields={shots:'totalShots',sot:'shotsOnTarget',corners:'wonCorners'};
@@ -14,8 +15,9 @@ function replayHistoricalCounts(matches,odds){
  }}
  const subfamilies={};
  for(const [code,definition] of Object.entries(MARKET_MODELS)){
-  const thresholds=[...new Set(odds.events.flatMap(e=>e.markets.filter(m=>String(m.marketCode)===code).map(m=>m.threshold)).filter(x=>typeof x==='number'))];
-  subfamilies[definition.subfamily]=validateSubfamily({definition,marketCode:code,thresholds,forecasts:forecasts[definition.family]});
+  const thresholds=[...new Set(odds.events.flatMap(e=>e.markets.filter(m=>String(m.marketCode)===code).map(m=>numericThreshold(m.threshold))).filter(x=>x!==null))];
+  const result=validateSubfamily({definition,marketCode:code,thresholds,forecasts:forecasts[definition.family]});
+  subfamilies[definition.subfamily]=result.probabilityObservations?{...result,status:'DIAGNOSTIC_TESTED'}:{...result,status:'NOT_EVALUATED_NO_EXACT_THRESHOLD_GRID',gate:'NOT_EVALUATED',deltaBrier:null,ece:null};
  }
  return {schemaVersion:1,status:'DIAGNOSTIC_ONLY_NOT_PRODUCTION_MD3',approvable:false,model:'SHARED_MD7_COUNT_ENGINE_COMPARATOR',trainingMatches:training.length,testMatches:test.length,independentFixtures:test.length,
  protocol:'FIRST_HALF_TRAIN_FIXED_DISPERSION_THEN_EVENT_DATE_WALK_FORWARD_STRICTLY_BEFORE_TARGET_DATE',chronologyLimitation:'Historical event dates are ordered; no historical as-of receipt proves availability of every feature. Not admitted by the prospective validation gate.',thresholdLimitation:'Current provider threshold grid used for diagnostic comparison, not selected on test performance and not a preregistered 2025/26 portfolio.',subfamilies,rows};

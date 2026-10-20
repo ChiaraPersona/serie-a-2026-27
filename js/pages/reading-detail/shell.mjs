@@ -1,4 +1,4 @@
-import {installForecasts} from './forecasts.mjs?v=20261019-compact-all-v1';
+import {installForecasts} from './forecasts.mjs?v=20261020-champions-event-validation-v1';
 import {installScenario} from './scenario.mjs?v=20261018-reading-clean-copy-v1';
 import {loadEvidence,readArtifact} from './evidence.mjs?v=20261019-starter-scenario-v1';
 import {installPeople} from './people.mjs?v=20261019-starter-scenario-v1';
