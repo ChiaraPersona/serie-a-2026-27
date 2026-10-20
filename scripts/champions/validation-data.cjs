@@ -13,13 +13,14 @@ function collectActuals(now){
  const calendar=read('data/normalized/champions-league-2026-27.json'),teams=[],players=[],conflicts=[];
  for(const f of calendar.fixtures.filter(f=>f.status==='finished')){
   const stats=f.matchReport?.statistics,ko=zonedLocalToUtc(f.date,f.kickoff,'Europe/Rome');
+  if(!(Date.parse(ko)<Date.parse(now))){conflicts.push({fixtureId:f.id,reason:'FINISHED_FIXTURE_NOT_IN_OBSERVED_PAST'});continue;}
   for(let i=0;i<2;i++)teams.push({fixtureId:f.id,side:i?'away':'home',scope:'team',teamId:calendar.teamBranding.find(t=>t.team===f[i?'awayTeam':'homeTeam'])?.id||null,kickoffAt:ko,score:f.score||f.matchReport?.score||null,
     shots:finite(stats?.shots?.[i])?stats.shots[i]:null,sot:finite(stats?.shotsOnTarget?.[i])?stats.shotsOnTarget[i]:null,corners:finite(stats?.corners?.[i])?stats.corners[i]:null,
     periodVerified:calendar.phase==='league',availableAt:now,source:'data/normalized/champions-league-2026-27.json',sourceUrl:stats?.sourceUrl||f.matchReport?.sourceUrl||null});
  }
  const audit=read('data/analysis/champions/model-calibration-audit-2026-10-11.json');
- for(const r of audit.evaluationDataset.admittedObservations)players.push({fixtureId:r.fixtureId,teamId:r.teamId,playerId:r.playerId,shots:r.actualShots,sot:r.actualSot,minutes:r.actualMinutes,starter:null,periodVerified:calendar.phase==='league',source:'data/analysis/champions/model-calibration-audit-2026-10-11.json',availableAt:now,identityVerified:true});
- for(const m of read('data/sources/european-player-match-stats-2026-27.json').matches.filter(m=>m.competition==='champions-league'&&m.linkedFixtureId))for(const p of m.players){if(!p.playerId)continue;
+ for(const r of audit.evaluationDataset.admittedObservations)if(teams.some(t=>t.fixtureId===r.fixtureId))players.push({fixtureId:r.fixtureId,teamId:r.teamId,playerId:r.playerId,shots:r.actualShots,sot:r.actualSot,minutes:r.actualMinutes,starter:null,periodVerified:calendar.phase==='league',source:'data/analysis/champions/model-calibration-audit-2026-10-11.json',availableAt:now,identityVerified:true});
+ for(const m of read('data/sources/european-player-match-stats-2026-27.json').matches.filter(m=>m.competition==='champions-league'&&m.linkedFixtureId&&teams.some(t=>t.fixtureId===m.linkedFixtureId)))for(const p of m.players){if(!p.playerId)continue;
   players.push({fixtureId:m.linkedFixtureId,teamId:m.teamId,playerId:p.playerId,shots:p.shots,sot:p.shotsOnTarget,minutes:p.minutesPlayed,starter:typeof p.starter==='boolean'?p.starter:null,periodVerified:calendar.phase==='league',source:'data/sources/european-player-match-stats-2026-27.json',sourceUrl:m.sourceUrl,availableAt:now,identityVerified:true});
  }
  const unique=new Map(),bad=new Set();for(const p of players){const key=[p.fixtureId,p.teamId,p.playerId].join(':');if(unique.has(key)){
