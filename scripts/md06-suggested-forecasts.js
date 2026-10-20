@@ -126,17 +126,17 @@ function resultFormRank(leg) {
   return 0;
 }
 
-function interestTuple(leg, rankingMode = "probability-first") {
+function interestTuple(leg, rankingMode = "probability-first", probabilityKey = "prudentProbabilityPct") {
   const evaluation = leg.betSelection.evaluation;
   const reliability = RELIABILITY_RANK[leg.betSelection.operational.reliability.level] || 0;
-  const prudent = Number(evaluation.prudentProbabilityPct);
+  const prudent = Number(evaluation[probabilityKey]);
   const central = Number(evaluation.modelProbabilityPct);
   if (rankingMode === "solidity-first") return [scenarioRank(leg), resultFormRank(leg), reliability, prudent, central];
   return [scenarioRank(leg), resultFormRank(leg), prudent, reliability, central];
 }
 
-function compareInterest(left, right, rankingMode = "probability-first") {
-  const a = interestTuple(left, rankingMode), b = interestTuple(right, rankingMode);
+function compareInterest(left, right, rankingMode = "probability-first", probabilityKey = "prudentProbabilityPct") {
+  const a = interestTuple(left, rankingMode, probabilityKey), b = interestTuple(right, rankingMode, probabilityKey);
   for (let index = 0; index < Math.max(a.length, b.length); index += 1) if (a[index] !== b[index]) return b[index] - a[index];
   return String(left.selectionId).localeCompare(String(right.selectionId));
 }
@@ -149,9 +149,9 @@ function thresholdTargetPct(leg) {
   return 55;
 }
 
-function thresholdBalanceTuple(leg) {
+function thresholdBalanceTuple(leg, probabilityKey = "prudentProbabilityPct") {
   const evaluation = leg.betSelection.evaluation;
-  const prudent = Number(evaluation.prudentProbabilityPct);
+  const prudent = Number(evaluation[probabilityKey]);
   const central = Number(evaluation.modelProbabilityPct);
   const reliability = RELIABILITY_RANK[leg.betSelection.operational.reliability.level] || 0;
   const quote = Number(leg.betSelection.quote.decimal);
@@ -160,14 +160,14 @@ function thresholdBalanceTuple(leg) {
   return [reliability, -Math.abs(prudent - target), quoteCompromise, prudent, central];
 }
 
-function compareThresholdBalance(left, right) {
-  const a = thresholdBalanceTuple(left), b = thresholdBalanceTuple(right);
+function compareThresholdBalance(left, right, probabilityKey = "prudentProbabilityPct") {
+  const a = thresholdBalanceTuple(left, probabilityKey), b = thresholdBalanceTuple(right, probabilityKey);
   for (let index = 0; index < a.length; index += 1) if (a[index] !== b[index]) return b[index] - a[index];
   return String(left.selectionId).localeCompare(String(right.selectionId));
 }
 
-function marginalSportsSupportScore(leg, familySelectionsAlreadyAccepted = 0) {
-  const prudent = Number(leg.betSelection.evaluation.prudentProbabilityPct);
+function marginalSportsSupportScore(leg, familySelectionsAlreadyAccepted = 0, probabilityKey = "prudentProbabilityPct") {
+  const prudent = Number(leg.betSelection.evaluation[probabilityKey]);
   const reliability = RELIABILITY_RANK[leg.betSelection.operational.reliability.level] || 0;
   const coherenceBonus = leg.scenarioAnalysis.classification === "COHERENT_WITH_PREVALENT" ? 12 : 0;
   const reliabilityBonus = reliability === 3 ? 6 : reliability === 2 ? 3 : 0;
@@ -178,8 +178,8 @@ function minimumMarginalSportsSupportScore(leg) {
   return ["shots", "sot", "corners"].includes(suggestedFamily(leg)) ? 45 : 48;
 }
 
-function chooseSuggestions(match, rankingMode = "probability-first") {
-  const assessments = new Map(match.selections.map(leg => [leg.selectionId, assessSuggestion(leg)]));
+function chooseSuggestions(match, rankingMode = "probability-first", { assessment = assessSuggestion, probabilityKey = "prudentProbabilityPct" } = {}) {
+  const assessments = new Map(match.selections.map(leg => [leg.selectionId, assessment(leg)]));
   const admitted = match.selections.filter(leg => assessments.get(leg.selectionId).eligible);
   const thresholdGroups = new Map();
   for (const leg of admitted) {
@@ -192,7 +192,7 @@ function chooseSuggestions(match, rankingMode = "probability-first") {
   const thresholdWinners = new Map();
   const rejected = new Map();
   for (const [key, group] of thresholdGroups) {
-    const ranked = group.slice().sort(compareThresholdBalance);
+    const ranked = group.slice().sort((a, b) => compareThresholdBalance(a, b, probabilityKey));
     thresholdWinners.set(key, ranked[0].selectionId);
     for (const leg of ranked.slice(1)) rejected.set(leg.selectionId, "CANONICAL_THRESHOLD_BALANCE_NOT_SELECTED");
   }
@@ -201,12 +201,12 @@ function chooseSuggestions(match, rankingMode = "probability-first") {
       const key = canonicalThresholdIdentity(leg);
       return !key || thresholdWinners.get(key) === leg.selectionId;
     })
-    .sort((left, right) => compareInterest(left, right, rankingMode));
+    .sort((left, right) => compareInterest(left, right, rankingMode, probabilityKey));
   const thresholdSeen = new Set(), thesisSeen = new Set(), accepted = [], familyCounts = new Map();
   for (const leg of candidates) {
     const thresholdKey = canonicalThresholdIdentity(leg), thesisKey = resultThesisIdentity(leg);
     const family = suggestedFamily(leg), familyCount = familyCounts.get(family) || 0;
-    if (marginalSportsSupportScore(leg, familyCount) < minimumMarginalSportsSupportScore(leg)) {
+    if (marginalSportsSupportScore(leg, familyCount, probabilityKey) < minimumMarginalSportsSupportScore(leg)) {
       rejected.set(leg.selectionId, "MARGINAL_SPORTS_SUPPORT_BELOW_PORTFOLIO_STANDARD");
       continue;
     }

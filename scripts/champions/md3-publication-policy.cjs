@@ -38,7 +38,9 @@ function publishMatch(match,fixture,individual,evidence){
      suggestionAnalysis:{...leg.suggestionAnalysis,suggested:publish,rank:publish?accepted.length:null,reasons:[...new Set(reasons)],sharedAdmission:checks},
      betSelection:{...leg.betSelection,operational:{...leg.betSelection.operational,classification:status==='APPROVED'?'SELEZIONATA':'WATCH'}}};
  });
- return {...match,selections,suggestions:selections.filter(l=>l.suggestionAnalysis.suggested).map(l=>l.selectionId),total:selections.length};
+ const published={...match,selections,suggestions:selections.filter(l=>l.suggestionAnalysis.suggested).map(l=>l.selectionId),total:selections.length};
+ const pilot=require('./md3-preliminary-pilot.cjs');
+ return match.matchId===pilot.TARGET?pilot.selectPreliminaryMatch(published):published;
 }
 async function buildPublication({matches,fixtures,individuals,evidence}){
  const published=matches.map(m=>publishMatch(m,fixtures.find(f=>f.fixtureId===m.matchId),individuals.fixtures.find(f=>f.fixtureId===m.matchId),evidence));

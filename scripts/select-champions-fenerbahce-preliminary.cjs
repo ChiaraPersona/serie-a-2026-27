@@ -1,0 +1,17 @@
+'use strict';
+const fs=require('node:fs'),assert=require('node:assert/strict');
+const {TARGET,selectPreliminaryMatch}=require('./champions/md3-preliminary-pilot.cjs');
+const file='data/normalized/schedina-champions-md03.json';
+const before=JSON.parse(fs.readFileSync(file)),out=structuredClone(before);
+const index=out.marketCatalog.matches.findIndex(m=>m.matchId===TARGET);assert(index>=0);
+out.marketCatalog.matches[index]=selectPreliminaryMatch(out.marketCatalog.matches[index]);
+const selected=out.marketCatalog.matches.flatMap(m=>m.selections).filter(l=>l.suggestionAnalysis?.suggested);
+Object.assign(out.marketCatalog.totals,{suggestions:selected.length,approved:selected.filter(l=>l.qualifiedSelection).length,preliminary:selected.filter(l=>!l.qualifiedSelection).length});
+Object.assign(out.summary,{selections:selected.length,approvedSelections:out.marketCatalog.totals.approved,preliminarySelections:out.marketCatalog.totals.preliminary});
+assert.deepEqual(out.marketCatalog.myCombo,before.marketCatalog.myCombo);
+assert.deepEqual(out.slips,before.slips);
+for(let i=0;i<out.marketCatalog.matches.length;i++)if(i!==index)assert.deepEqual(out.marketCatalog.matches[i],before.marketCatalog.matches[i]);
+fs.writeFileSync(file,JSON.stringify(out,null,2)+'\n');
+const target=out.marketCatalog.matches[index];
+const report={matchId:TARGET,selected:target.selections.filter(l=>l.suggestionAnalysis.suggested).sort((a,b)=>a.suggestionAnalysis.rank-b.suggestionAnalysis.rank).map(l=>({id:l.selectionId,label:l.label,probabilityPct:l.betSelection.evaluation.modelProbabilityPct,odds:l.odds,provisionalEvPct:l.betSelection.evaluation.expectedValuePct})),excluded:target.selections.filter(l=>!l.suggestionAnalysis.suggested).map(l=>({id:l.selectionId,label:l.label,probabilityPct:l.betSelection.evaluation.modelProbabilityPct,odds:l.odds,reasons:l.suggestionAnalysis.reasons}))};
+fs.mkdirSync('output/champions-fenerbahce-preliminary-md7',{recursive:true});fs.writeFileSync('output/champions-fenerbahce-preliminary-md7/selection-report.json',JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report.selected,null,2));
